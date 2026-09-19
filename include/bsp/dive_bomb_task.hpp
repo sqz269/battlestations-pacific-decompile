@@ -481,7 +481,7 @@ bool dive_bomb_flyabove_can_dive_009c680e(float height_above_target,
 // at frame slot K=104 is not positive. That slot is max(x, 0) from
 // 009C65E3-009C65FD, and x's own producer is one level further back and NOT
 // established, so the caller passes it and the host still substitutes.
-inline constexpr double kFlyAboveRollInBearing = 1.600000023841858;  // 00CE3D48
+inline constexpr double kFlyAboveRollInBearing = 1.600000023841858;  // 00CE3D48, qword; 009C6790 FLD double ptr. The FLOAT at those bytes is -1.084202e-19, so the width is load-bearing.
 bool dive_bomb_flyabove_roll_in_009c67b0(float bearing_error,
                                          float clamped_slot) noexcept;
 
@@ -558,7 +558,7 @@ DiveBombAttackRunResult dive_bomb_attackrun_tick_009c4220(
 namespace dive_bomb_turndown_constant {
 inline constexpr double kWrapLow = -3.1415927410125732;   // 00CE3D18, qword
 inline constexpr double kWrapHigh = 3.1415927410125732;   // 00CE3D28, qword
-inline constexpr double kRollHandOver = 0.800000011920929;  // 00CE3D40, 45.8 deg
+inline constexpr double kRollHandOver = 0.800000011920929;  // 00CE3D40, qword; 009C45B3 FLD double ptr, 45.8 deg
 inline constexpr float kPi = 3.1415927410125732f;         // 00D7A264, movss
 inline constexpr float kLatchBank = 2.6179940700531006f;   // 00D1FED0, 150 deg
 inline constexpr float kPitchHoldBand = 0.3490658700466156f;  // 00CE398C, 20 deg

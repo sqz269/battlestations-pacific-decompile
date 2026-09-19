@@ -766,13 +766,19 @@ void GameScriptOrdersHost::resolve_plane_squadron_members() {
     const std::size_t count = units_.count();
     if (count == squadron_resolved_units_ && count != 0) return;
     squadron_resolved_units_ = count;
+    bsp::game::resolve_plane_squadron_members(units_, &log_);
+}
+
+std::size_t resolve_plane_squadron_members(const GameUnitsHost& units,
+                                           GameHostLog* log) {
+    const std::size_t count = units.count();
     std::size_t resolved = 0;
     std::size_t missing = 0;
     for (bsp::PlaneSquadronHostRecord& record : bsp::plane_squadron_registry().records()) {
         record.member_units.assign(record.member_names.size(), bsp::kPlaneSquadronNoUnit);
         for (std::size_t slot = 0; slot < record.member_names.size(); ++slot) {
             for (std::size_t unit = 0; unit < count; ++unit) {
-                const GameUnitRow* const unit_row = units_.unit_row(unit);
+                const GameUnitRow* const unit_row = units.unit_row(unit);
                 if (unit_row == nullptr || unit_row->name != record.member_names[slot]) {
                     continue;
                 }
@@ -791,12 +797,13 @@ void GameScriptOrdersHost::resolve_plane_squadron_members() {
             record.squadron_unit = record.flight_leader();
         }
     }
-    if (resolved != 0 || missing != 0) {
-        log_.notef("plane squadron members: %zu of %zu wing record(s) resolved to units "
+    if (log != nullptr && (resolved != 0 || missing != 0)) {
+        log->notef("plane squadron members: %zu of %zu wing record(s) resolved to units "
             "over %zu squadron(s) (007F4B55's +3D0h array, by name)%s",
             resolved, resolved + missing, bsp::plane_squadron_registry().size(),
             missing != 0 ? " - a wing with no unit stays out of +3CCh" : "");
     }
+    return resolved;
 }
 
 int GameScriptOrdersHost::run_pilot_set_target(GameScriptOrderRow& row) {

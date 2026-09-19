@@ -2829,3 +2829,68 @@ cc8-torpedo-descent's listing evidence: `009C43CD`'s result is `009FBA50`'s arg3
 
 **Baseline: everything from here is measured after `67e8ac821`** and cannot share a table with the
 runs above. `local\usn04_span.log` is the first on the new side.
+
+## Constant-width audit, prompted by the torpedo aim tick's `kPitchClampLo`
+
+cc8-torpedo-descent found `00D21318` carried in a header as 0.05625 - the **double** at those eight
+bytes - while both loads are four-byte, and the float is `0xBFB2B8C3` = -1.3962634 = -DEG(80). A
+sign flip and a factor of twenty-five, from a constant that carried a bare address and no width.
+
+`include/bsp/dive_bomb_task.hpp` was audited for the same pattern: constants whose comment gives an
+address but no width word and no load site. Thirty-eight matched, of which **two are declared
+`double`** - the only ones where a width error could flip a value rather than merely be untidy:
+
+| constant | address | load | verdict |
+| --- | --- | --- | --- |
+| `kFlyAboveRollInBearing` = 1.600000023841858 | `00CE3D48` | `009C6790 FLD double ptr` | correct |
+| `kRollHandOver` = 0.800000011920929 | `00CE3D40` | `009C45B3 FLD double ptr` | correct |
+
+Both verified against the listing, and both now carry the width and the site. `00CE3D48` is the
+example they cite - its float is -1.084202e-19 - so had this one been declared `float` the flyabove
+roll-in would have compared a bearing against a denormal and fired on every tick.
+
+The remaining thirty-six are declared `float` and are consistent with `MOVSS`/`FLD float ptr` loads
+at the sites this stream has read, but they were **not** individually re-verified in this pass and
+should not be read as audited. The rule worth carrying forward is the one their packet demonstrates:
+a constant's comment gives the address **and** the width **and** a load site, because the address
+alone does not determine the value.
+
+## The width sweep completed, and a `1.0f` stand-in found by their second rule
+
+### The sweep: 63 checked, 0 mismatched
+
+The earlier audit verified two constants by hand and left thirty-six declared but unverified.
+cc8-torpedo-descent's suggestion - script it and print both widths - closes that honestly. The
+script reads eight bytes at each declared address out of the PE, computes the `float` and the
+`double` there, and flags any line whose declared value does not match its declared width.
+
+**Every constant in `include/bsp/dive_bomb_task.hpp` matches: 63 checked, 0 mismatched.** That is
+the whole header, not just the thirty-eight bare-address ones, so the "not re-verified" caveat on
+the earlier audit is now discharged rather than merely narrowed.
+
+### `speed_ratio_41c`: a `1.0f` stand-in that is not inert
+
+Their second rule - grep the block for `= 1.0f;` on anything named after a class offset, because a
+harmless-looking stand-in is only harmless until it lands in a denominator - turns up one in the
+dive-bomb block, `src/game_hosts_units.cpp:4198`:
+
+```cpp
+in.speed_ratio_41c = 1.0f;     // task+41Ch
+```
+
+It is **not** a denominator, so it does not blow up the way their `pitch_scale_188` did:
+
+```cpp
+// 009C8A1B-009C8A5E: task+4B0h = max(task+4B0h, tuning+4C4h * task+41Ch)
+const float wanted = in.attack_distance * in.speed_ratio_41c;
+```
+
+But it is not inert either. It scales the in-range latch threshold `approach+B8h` directly, and the
+census reports that threshold as exactly 1100.0 m - the bare `Pilot/DiveBomb/AttackDist` - which is
+the value a 1.0 stand-in produces and tells us nothing about the real one. `task+41Ch` is a speed
+ratio whose producer this stream has not read; if it is anything but 1.0, the latch closes at a
+different range, the flyabove starts somewhere else, and every geometry number in the tables above
+shifts with it.
+
+Recorded as a labelled stand-in with its consequence rather than fixed: the fix needs `task+41Ch`'s
+producer, which is a read this packet has not done.
