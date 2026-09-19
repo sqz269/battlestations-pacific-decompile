@@ -1,0 +1,71 @@
+{
+  "packet": "cc8_dive_entry",
+  "baseline_commit": "52418c86b",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-cc8-dive-entry",
+  "documentation": "docs/DIVE_BOMB_TASK.md",
+  "status": "reconstructed, build-tested, run-measured; not game-validated",
+  "production_cpp_changed": [
+    "include/bsp/dive_bomb_task.hpp",
+    "src/dive_bomb_task.cpp",
+    "src/game_hosts_units.cpp"
+  ],
+  "ghidra_mutated": false,
+  "new_native_body_reconstructed": ["009c6e10-009c6f91"],
+  "original_abi": "009C62B0 BSP_BotStateDiveBombFlyAbove_Tick is void __thiscall(ECX = state)(float dt), RET 4, body 009C62B0-009C7083. EDI = state+4h from the single write 009C62C7 LEA EDI,[ESI+4]; [EDI] is the approach. The altitude arm hands 009FB800 (ECX = state+4h) two stack floats and 009FB800 dereferences the receiver once.",
+  "routines": [
+    {
+      "address": "009c6e10",
+      "name": "dive_bomb_flyabove_altitude_009c6e10",
+      "coverage": "complete for the arm; the C selector's ctl+398h branch is substituted",
+      "evidence": "Branch bytes: 009C657C 76 JBE, 009C6E26 76, 009C6E5B 76, 009C6E91 76, 009C6EAF 76, 009C6EC3 76, 009C6EF5 77 JA, 009C6F15 76, 009C6F21 76, 009C6F51 76. Constants at the loading instruction's width: 00CE3DF0 qword 1.1, 00CE6618 qword 0.15, 00D7A2B0 qword 3.0, 00D7A24C MOVSS 1.0, 00CE74F8 MOVSS 0.8, 00CE3D40 qword 0.8.",
+      "uncertainty": "approach+0Ch is unit+9D4h and is unmodelled in this host, so the C selector always takes 009C64B2's fall-back. 009C7AA4-009C7AAD rewrites approach+ACh from [approach+0Ch]+398h every approach update, so the two arms differ only by approach+50h."
+    }
+  ],
+  "calls": [
+    {
+      "address": "009c6f7d",
+      "native": "009fb800",
+      "containing_function": "009c62b0",
+      "note": "the only altitude/pitch command call in the flyabove body; 009FBA50 is NOT called anywhere in 009C62B0-009C7083",
+      "host_method": "dive_bomb_flyabove_altitude_009c6e10 then pitch_command_009fb800"
+    },
+    {
+      "address": "009c6399",
+      "native": "00bf7030",
+      "containing_function": "009c62b0",
+      "note": "the sqrt that builds A, the planar distance to the aim point, guarded by the 1e-10 at 00CE3820 and stored at 009C63A6",
+      "host_method": "dive_bomb_flyabove_altitude_009c6e10 (A is substituted by approach+BCh)"
+    },
+    {
+      "address": "009c3f81",
+      "native": "00bd2f10",
+      "containing_function": "009c3ea0",
+      "note": "item 2: the uniform(0.6, 0.8) whose result 009C3F86 multiplies by classDesc+268h TurnCircleRadius into approach+B4h",
+      "host_method": "none; the draw is pinned"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "docs/DIVE_BOMB_TASK.md and include/bsp/dive_bomb_task.hpp: 'the altitude is read and left unbound; its value needs frame slots this body cannot resolve'",
+      "is": "the altitude arm is 009C6E10-009C6F91 and every slot in it resolves: the target is min(approach+ACh + approach+50h, C) and the reference is one of two quotients capped at 1.0 and 0.8",
+      "evidence": "the walk above, with each branch byte read from the image"
+    },
+    {
+      "was": "approach+B4h's classDesc+268h scale was flagged as transcribed but unverified",
+      "is": "verified; +268h is TurnCircleRadius (include/bsp/plane_class_fields.hpp:174) and both USN04 dive-bomber classes author 1300 in this installation",
+      "evidence": "filtering the WHOLE 009C3EA0 listing for EBP gives 009C3F4A (tuning), 009C3F5D ([ESI+8]) and 009C3F8C ([ESI+8]); 009C3F5D dominates the 009C3F86 multiply"
+    }
+  ],
+  "runs": [
+    {
+      "log": "local/entry_before.log",
+      "frames": 4800,
+      "mission": "USN04",
+      "note": "baseline: movieval releases 2 and spawns 2 bombs each; D3A Val #1.1 and #3.1 release 0; hand-over altitudes 700/729/730/651 (movieval) and 1500/1126/1102/1024 (#1.1)"
+    }
+  ],
+  "open": [
+    "approach+B4h and approach+B8h are both pinned at 1100 in this host; the authored draws are uniform(0.6,0.8)*1300 = 780-1040 and uniform(1.6,1.8)*1300 = 2080-2340",
+    "dive_bomb_aimglide_inputs never counts state+1Ch down, so 009C5689 refuses every glide release call"
+  ]
+}

@@ -661,6 +661,69 @@ DiveBombFlyAboveCommand dive_bomb_flyabove_command_009c6dcd(
     return out;
 }
 
+// 009C6E10-009C6F91, the flyabove tick's altitude arm. Packet cc8_dive_entry;
+// the walk and every branch byte are in include/bsp/dive_bomb_task.hpp.
+DiveBombFlyAboveAltitudeCommand dive_bomb_flyabove_altitude_009c6e10(
+    const DiveBombFlyAboveAltitudeInputs& in) noexcept {
+    DiveBombFlyAboveAltitudeCommand out;
+    const float base = in.begin_altitude_ac + in.aim_point_height_50;  // 009C6E48
+    // 009C6491 TEST EAX,EAX with 009C64A6 `74` JZ: the control block's ordered
+    // cruise altitude when there is one, the approach's own base otherwise.
+    float c = in.has_control_block_0c ? in.cruise_altitude_398 : base;
+    // 009C655F-009C6589. The compare is against 1.1 * R and the store is the
+    // bare R, so the clamp lands 10 per cent under where it triggers.
+    const float release_limit = in.new_release_mul_40 * in.release_altitude_a8;
+    if (static_cast<double>(c) >
+        static_cast<double>(release_limit) *
+            dive_bomb_flyabove_constant::kNewReleaseMargin) {
+        c = release_limit;  // 009C6580-009C6589
+    }
+    out.limit_c = c;
+    // 009C6E1C-009C6E44: the error is measured against approach+ACh, NOT
+    // against the base the target uses - the two differ by approach+50h.
+    const float reference_height =
+        (in.begin_altitude_ac <= c) ? in.begin_altitude_ac : c;  // 009C6E26 JBE
+    out.height_error = in.height_above_aim_b - reference_height;
+    // 009C6E55-009C6E71.
+    out.target_altitude = (base <= c) ? base : c;
+    // 009C6E77-009C6EA1: 0.15 * C against approach+B0h, the smaller.
+    const float scaled = static_cast<float>(
+        static_cast<double>(c) * dive_bomb_flyabove_constant::kDeadBandScale);
+    out.dead_band = (scaled <= in.alt_span_b0) ? scaled : in.alt_span_b0;
+    // 009C6EBD / 009C6F1B: the FLD1 against A picks the divisor.
+    const float divisor =
+        (dive_bomb_flyabove_constant::kClimbReferenceCap <= in.planar_distance)
+            ? in.planar_distance
+            : dive_bomb_flyabove_constant::kClimbReferenceCap;
+    // 009C6EAA COMISS 0, err with 009C6EAF `76` JBE: the fall-through is err < 0.
+    if (out.height_error < 0.0f) {
+        const float v = static_cast<float>(
+            -static_cast<double>(out.height_error) *
+            dive_bomb_flyabove_constant::kClimbGain /
+            static_cast<double>(divisor));
+        // 009C6EF5 `77` JA keeps the cap when the quotient is the larger.
+        out.reference =
+            (v > dive_bomb_flyabove_constant::kClimbReferenceCap)
+                ? dive_bomb_flyabove_constant::kClimbReferenceCap : v;
+        return out;
+    }
+    // 009C6F15 `76` JBE: inside the dead band the arm writes a bare zero pitch
+    // and never reaches 009FB800. XMM0 is the zero 009C6EA7 put there.
+    if (out.height_error <= out.dead_band) {
+        out.level_arm = true;
+        return out;
+    }
+    const float v = static_cast<float>(
+        (static_cast<double>(in.planar_distance) +
+         static_cast<double>(in.planar_distance)) /
+        static_cast<double>(divisor));  // 009C6F33 FADD ST0,ST0 then 009C6F3B FDIV
+    // 009C6F4D FCOMIP against the 0.8 at 00CE3D40, 009C6F51 `76` JBE.
+    out.reference = (static_cast<double>(v) <=
+                     dive_bomb_flyabove_constant::kLeaveSpanScale)
+                        ? v : dive_bomb_flyabove_constant::kDiveReferenceCap;
+    return out;
+}
+
 // 009C658D-009C65FD, the height span both flyabove flags key on.
 DiveBombFlyAboveSpan dive_bomb_flyabove_span_009c65fd(
     float height_above_aim_point) noexcept {
