@@ -420,8 +420,9 @@ struct GameUnitSlot {
     // The aimdive trace. Endpoint values cannot tell a dive that never pointed
     // at the target from one that pointed and was too slow, so the aim states
     // sample their own geometry the way the run-in samples its range.
-    // 009C62B0's heading arm.
+    // 009C62B0's and 009C5180's heading arms.
     int db_flyabove_tick_ticks{0};
+    int db_aimglide_tick_ticks{0};
     int db_flyabove_heading_writes{0};
     float db_flyabove_heading_last{0.0f};
     // The geometry when the turndown starts, which is what decides where the
@@ -4408,6 +4409,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         if (ctx.current == bsp::DiveBombState::kFlyAbove) {
                             run_dive_bomb_flyabove_tick_009c62b0();
                         }
+                        if (ctx.current == bsp::DiveBombState::kAimGlide) {
+                            run_dive_bomb_aimglide_tick_009c5180();
+                        }
                         if (ctx.current == bsp::DiveBombState::kAimGlide &&
                             before != bsp::DiveBombState::kAimGlide) {
                             // 009C4F40-009C4F71, the aimglide enter's seed of
@@ -4522,6 +4526,25 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // 009C44F0, the turndown tick, vtable 00D20C84 slot +Ch.
                     // The arm reaches it through state->vtable[+Ch] at
                     // 009C884C. docs/DIVE_BOMB_TASK.md carries the body.
+                    // 009C5180's heading arm, the glide's counterpart to the
+                    // flyabove's. PARTIAL for the same reason; the bank, the
+                    // altitude and the direct-yaw sibling arm are read in
+                    // include/bsp/dive_bomb_task.hpp and left unbound.
+                    void run_dive_bomb_aimglide_tick_009c5180() {
+                        bsp::DiveBombAimGlideCommandInputs in;
+                        // SUBSTITUTION, labelled: the bearing to the aim point
+                        // in place of the frame slot 009C5435 reads.
+                        in.heading_to_aim_point = unit_.db_bearing_c0;
+                        const bsp::DiveBombAimGlideCommand r =
+                            bsp::dive_bomb_aimglide_command_009c542c(in);
+                        ++unit_.db_aimglide_tick_ticks;
+                        if (r.wrote_heading) {
+                            unit_.plan_heading_2c0 = r.heading_2c0;
+                            unit_.plan_heading_2c0_written = true;
+                            unit_.plan_heading_mode_2cc = r.heading_mode_2cc;
+                        }
+                    }
+
                     // 009C62B0's heading arm. PARTIAL: only the heading is
                     // bound, because it is the one the aim trace indicts and
                     // the only one whose value this host can justify. The bank

@@ -2478,3 +2478,28 @@ starts at 5.0 - where before the pair was mutually exclusive and the ceiling was
 The tick `009C5180` itself is still not dispatched. Binding it whole is the next packet: what is
 corrected here is the release rule it owns and the accumulator that feeds it, so the release can
 fire the moment the tick runs.
+
+### `kAimGlide` dispatched: `009C5180`'s heading arm
+
+The glide tick's command census has the same four-arm shape as the flyabove's:
+
+| site | write | register |
+| --- | --- | --- |
+| `009C5400` / `009C5408` | `cmd+2C4h` bank target, `cmd+2CCh` = EBX | EBX = 1, the servo |
+| `009C5442` / `009C5450` | `cmd+2C0h` heading, `cmd+2CCh` = EBP | EBP = 2, the planner's own arm |
+| `009C55D7` / `009C55DF` | `cmd+2BCh` altitude, `cmd+2D0h` = EBP | EBP = 2 |
+| `009C567F` | `cmd+2D8h` = 0 | |
+
+`EBP` is the 2 that `009C53DD` loads and `EBX` the 1 that `009C53E2`'s `LEA EBX,[EBP-1]` takes from
+it. A sibling arm at `009C5414` commands the **yaw slot** directly instead - `cmd+284h`, `+288h` and
+`+2D4h` = 0 - and is not bound.
+
+Only the heading arm is bound, on the same terms as the flyabove's and with the same labelled
+substitution for its value (the image reads it from `[ESP+6Ch]` at `009C5435`). That is the arm
+that steers, and the flyabove's equivalent measurably worked - it put the aircraft 3.8 m from the
+aim point.
+
+So `kAimGlide` now dispatches, and with the three transcription corrections and the `state+20h`
+seed the release at `009C5777` has a reachable window for the first time: angle under 30 degrees,
+height above the aim point under 260 m, lateral inside 120, and
+`-4*travel - 5.0 < lead < -5.0`.
