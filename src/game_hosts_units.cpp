@@ -413,6 +413,10 @@ struct GameUnitSlot {
     float db_release_speed{-1.0f};
     float db_release_range{-1.0f};
     float db_aim_error_last{0.0f};
+    // 009C6493's height and the span 009C65FD draws from it, the one pair all
+    // three flyabove flags key on.
+    float db_flyabove_height{0.0f};
+    float db_flyabove_span{0.0f};
     // 009C58D0's steering census.
     int db_aimdive_steer_ticks{0};
     float db_aimdive_pitch_last{0.0f};
@@ -1086,9 +1090,10 @@ struct GameUnitsHost::Impl {
         // 009C62B0 is defined and its two decisive flags are recovered, so
         // the geometry stand-in is gone. docs/DIVE_BOMB_TASK.md.
         //
-        // +18h at 009C680E: the aircraft may dive once it is higher above its
-        // target than approach+D4h. approach+D4h has no producer read, so the
-        // zero it holds is labelled and this reduces to "above the target".
+        // All three flyabove flags key on ONE height: B at 009C6493, the
+        // aircraft's Y less out[1] of the approach's vtable[0] (009C40A0), and
+        // the same frame slot reaches 009C67C7's can-dive test. This host's aim
+        // point is the commanded target's own position, so out[1] is its Y.
         {
             float target_y = slot.motion.position[1];
             if (slot.command_target_plus_one != 0) {
@@ -1096,21 +1101,32 @@ struct GameUnitsHost::Impl {
                 if (ti < slots.size()) target_y = slots[ti]->motion.position[1];
             }
             const float height_above = slot.motion.position[1] - target_y;
+            slot.db_flyabove_height = height_above;
+            const bsp::DiveBombFlyAboveSpan span =
+                bsp::dive_bomb_flyabove_span_009c65fd(height_above);
+            slot.db_flyabove_span = span.span;
+            // +18h at 009C680E: dive once higher above the aim point than
+            // approach+D4h, which is now the real 675.0 m.
             in.flyabove_can_dive_790 = bsp::dive_bomb_flyabove_can_dive_009c680e(
                 height_above, slot.db_release_range_d4);
+            // +19h at 009C67B0, BOUND. The first arm is the 1.6 rad bearing
+            // test at 00CE3D48; the second is `span <= 0` (009C67A9 with
+            // 009C67AE the byte 72, JC). With the 0.7/200.0 pair that is
+            // height <= 666.7 m, which is the same gate approach+D4h's 675.0 m
+            // expresses - the substituted 1.0 that stood here is retired.
+            in.flyabove_ready_791 = bsp::dive_bomb_flyabove_roll_in_009c67b0(
+                bsp::wrapped_angle_subtract_00438b10(slot.db_bearing_c0,
+                                                     slot.plane_heading_c6c),
+                span.span);
+            // +1Ah at 009C66E3, BOUND: leave when the folded bearing error
+            // beats a tolerance opening from 20 degrees at span 0 to pi at
+            // approach+B4h * 0.8 - S. 009C66E7 clears +19h on the same edge,
+            // which the transition rule already models by taking `ready` first.
+            in.flyabove_leave_792 = bsp::dive_bomb_flyabove_leave_009c66e3(
+                bsp::wrapped_angle_subtract_00438b10(slot.db_bearing_c0,
+                                                     slot.plane_heading_c6c),
+                span, slot.db_attack_dist_b4);
         }
-        // +19h at 009C67B0: the roll-in fires once the target is behind the
-        // wing line, |bearingError| past the 1.6 rad at 00CE3D48.
-        // SUBSTITUTION, labelled and much narrower than before: the second arm
-        // tests max(x, 0) <= 0 and x's producer is one level back, so the host
-        // passes a positive value and the rule is the bearing test alone.
-        in.flyabove_ready_791 = bsp::dive_bomb_flyabove_roll_in_009c67b0(
-            bsp::wrapped_angle_subtract_00438b10(slot.db_bearing_c0,
-                                                 slot.plane_heading_c6c),
-            1.0f);
-        // +1Ah at 009C66E3/009C66F2/009C6822 is still a stand-in: its own
-        // writers are read but the conditions around them are not.
-        in.flyabove_leave_792 = !slot.db_has_bomb_d1;
         in.flyabove_turn_side_798 = 0;
         in.aimdive_alive_74d = slot.db_aim_alive_19;
         in.aimdive_pull_out_74c = slot.db_aim_pull_out_18;
@@ -7213,7 +7229,8 @@ void GameUnitsHost::report() {
                         "range=%.1f m | aim error 009C5C9B=%.2f m "
                         "(gate 00CE3880 = 25.0 m) closest=%.2f m at range=%.1f m "
                         "alt=%.1f m | 009C58D0 steer: ticks=%d pitch=%.3f "
-                        "roll=%.3f bearing=%.4f rad",
+                        "roll=%.3f bearing=%.4f rad | flyabove B=%.1f m "
+                        "span=%.1f m",
                         slot->row.name.c_str(),
                         static_cast<double>(slot->db_dive_entry_alt),
                         static_cast<double>(slot->db_dive_entry_pitch),
@@ -7227,7 +7244,9 @@ void GameUnitsHost::report() {
                         slot->db_aimdive_steer_ticks,
                         static_cast<double>(slot->db_aimdive_pitch_last),
                         static_cast<double>(slot->db_aimdive_roll_last),
-                        static_cast<double>(slot->db_aimdive_bearing_last));
+                        static_cast<double>(slot->db_aimdive_bearing_last),
+                        static_cast<double>(slot->db_flyabove_height),
+                        static_cast<double>(slot->db_flyabove_span));
                 }
             }
             if (tasked > 0) {

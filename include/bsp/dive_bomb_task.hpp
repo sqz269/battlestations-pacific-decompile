@@ -580,6 +580,46 @@ DiveBombTurnDownResult dive_bomb_turndown_tick_009c44f0(
 float dive_bomb_wrap_signed_pi_009c4551(float angle) noexcept;
 
 // ---------------------------------------------------------------------------
+// 009C6493-009C66F2, the one height the flyabove tick's two decisive flags
+// share. B is the aircraft's height above the aim point: 009C647B calls the
+// approach's vtable[0] (009C40A0), 009C647D takes its out[1] - approach+50h -
+// and 009C6482/009C6493 store `aircraftY - out[1]`. The same frame slot feeds
+// 009C67C7, the first argument of the can-dive test, so all three read one
+// value. docs/DIVE_BOMB_TASK.md, "T closed".
+//
+// Jump senses from the bytes: 009C65A9 `76` JBE, 009C67AE `72` JC,
+// 009C66E1 `76` JBE.
+// ---------------------------------------------------------------------------
+namespace dive_bomb_flyabove_constant {
+// 009C65AB / 009C658D: the floor under B, as a float and as the double the
+// compare loads. dive_bomb_constant::kMoveToRangeBias is the same 00D7A220.
+inline constexpr float kHeightFloor = 100.0f;            // 00CE3D08
+// 009C65C5 and 009C65CB.
+inline constexpr double kHeightScale = 0.7000000029802322;  // 00CEFFA0, qword
+inline constexpr double kHeightBias = 200.0;                // 00CE4D70, qword
+// 009C662F and 009C660B: the leave tolerance runs from 20 degrees to pi.
+inline constexpr float kLeaveToleranceLow = 0.3490658700466156f;  // 00CE398C
+inline constexpr float kLeaveTolerancePi = 3.1415927410125732f;   // 00D7A264
+// 009C661B: the share of approach+B4h the tolerance's far endpoint uses.
+inline constexpr double kLeaveSpanScale = 0.800000011920929;      // 00CE3D40, qword
+}  // namespace dive_bomb_flyabove_constant
+
+struct DiveBombFlyAboveSpan {
+    float floored_height = 0.0f;  // max(B, 100.0), the 009C65A9 select
+    float threshold = 0.0f;       // S = floored * 0.7 + 200.0
+    float span = 0.0f;            // x = max(B - S, 0), 009C65D5-009C65FD
+};
+// 009C658D-009C65FD. `span` is what both flags below consume.
+DiveBombFlyAboveSpan dive_bomb_flyabove_span_009c65fd(
+    float height_above_aim_point) noexcept;
+
+// 009C66D5-009C66E7: leave flyabove when the bearing error beats a tolerance
+// that opens from 20 degrees at span 0 to pi at span `+B4h * 0.8 - S`.
+bool dive_bomb_flyabove_leave_009c66e3(float bearing_error,
+                                       const DiveBombFlyAboveSpan& span,
+                                       float attack_distance_b4) noexcept;
+
+// ---------------------------------------------------------------------------
 // 009C5C9F-009C5DB2, the aimdive tick's steering: the only thing in the whole
 // chain that points the aircraft AT its aim point.
 //

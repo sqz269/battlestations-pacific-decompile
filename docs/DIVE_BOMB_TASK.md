@@ -1925,3 +1925,77 @@ Worked at the run's own geometry, `B = 638.9 m`: `S = 647.2`, `x = 0`, so the to
 `a` is its floor of 20 degrees and `W = 1100 * 0.8 - 647.2 = 232.8 m`. Below 667 m the roll-in arm
 is already satisfied on height alone, which is why `flyabove` has never needed its bearing test in
 any run of this stream.
+
+## `0071EBF0`: the command-target rule, and what the host had instead
+
+The host's `refresh_command_targets` took "the last current row wins". The image does something
+narrower, and the difference is the whole bug.
+
+```
+0071ebf4  MOV  EAX,[EBP + 0x30]
+0071ebfa  CMP  EAX,0x1
+0071ebfe  JNZ  0x0071ecd8                  ; mode 2 -> this+18Ch; anything else -> the static
+0071ec06  LEA  ECX,[EBP + 0x54]            ; the unit's own slot array
+0071ec10  CMP  [ECX],EBX / JZ              ; stop at the first NULL
+0071ec17  ADD  ECX,0x1c                    ; ten entries, stride 1Ch
+0071ec1f  LEA  ESI,[EAX + -0x1]            ; the LAST occupied entry
+0071ec36  MOV  ECX,[EDI]
+0071ec3e  MOV  EAX,[EDX + 0xc] / CALL EAX  ; entry->vtable[+0Ch]
+0071ec43  CMP  EAX,0x1 / JZ 0x0071ecc6     ; accept
+0071ec48  CMP  EAX,0x2 / JZ 0x0071ecc6     ; accept
+0071ec4d  SUB  ESI,0x1 / SUB EDI,0x1c      ; otherwise step BACKWARD
+0071ec55  JGE  0x0071ec36
+0071ec57  ...                              ; none answered -> the static at 00E19BB4
+0071ecd1  LEA  EAX,[EBP + ECX*0x4 + 0x58]  ; the accepted slot's target field
+```
+
+So it is **the most recent command of an accepting category**, walking back over the others, and on
+failure a neutral static record - never another unit.
+
+Both fields are already on `GameCommandRow`: `slot_index` is the entry `0071E6C0` pushed and
+`category` is what `vtable[+0Ch]` answers. The host ignored the category and ordered by vector
+position, so a later row of any kind took the target.
+
+### The blast radius, counted
+
+This is not a dive-bomb bug. The command tables in `local\usn04_aim.log` carry:
+
+| category | commands | rows |
+| --- | --- | --- |
+| 1, accepted | `attackmove` | 48 |
+| 2, accepted | `divebomb` | 1 |
+| 3, stepped over | `stop` 158, `moveto` 30, `cruise` 10 | 198 |
+
+Every unit with an `attackmove` also carries `stop` and `moveto` rows, and the carrier launches now
+add rows mid-mission, which is what rebuilt the map and let the category-3 rows win. So the wrong
+rule was re-pointing the attack target of any of those units, and the dive bomber is simply where a
+census made it visible: `approach+BCh` at exactly 0.0 m, the `d2 <= 1e-10` branch at `00CE3820`.
+
+**Were the torpedo stream's bombers exposed?** Not in these runs, for a reason that has nothing to
+do with the fix: USN04 builds no torpedo task at all - the summary line reads "no ordered aircraft
+carries torpedo ordnance (kind 2Bh), so 0099A170 builds no kind Eh task". The moment that stream's
+strike class gives an aircraft a category-1 or -2 row, it was exposed exactly as the dive bomber
+was, because the rule is per-unit and category-blind, not task-specific.
+
+### The fix
+
+`refresh_command_targets` now walks each unit's accepting rows by descending `slot_index` (vector
+position breaking ties, and unpushed rows ordered behind pushed ones, which is the best standing
+this host has for them), takes the highest, and only then resolves that one row's token. Resolving
+second is deliberate: the image returns the accepted slot's target field whatever it holds, so an
+accepting row naming nothing leaves the unit with no target rather than falling through to an older
+row. The cache key gains the count of current rows, so a row flipping current without the vector
+growing re-resolves too; both halves are O(commands), not the O(commands x units) the name match
+costs.
+
+## The two flyabove flags, bound
+
+With `T` closed, `+19h`'s second arm and `+1Ah` are no longer stand-ins.
+`dive_bomb_flyabove_span_009c65fd` computes the pair once - `S = max(B, 100) * 0.7 + 200` and
+`x = max(B - S, 0)` - and the host feeds it to all three flags, which is what the image does through
+one frame slot. `+19h` gets the real `x` instead of the substituted 1.0, so its second arm fires at
+`B <= 666.7 m`; `+1Ah` is `dive_bomb_flyabove_leave_009c66e3`, the 20-degrees-to-pi tolerance over
+`approach+B4h * 0.8 - S`, in place of "leave when out of bombs".
+
+`009C40A0` is now a defined function in Ghidra, `dive_bomb_approach_aim_point_009c40a0`, taking the
+reviewed ledger name; body `009C40A0`-`009C40B7`, 22 bytes.

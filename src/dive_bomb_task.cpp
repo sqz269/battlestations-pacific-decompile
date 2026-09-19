@@ -511,6 +511,48 @@ DiveBombTurnDownResult dive_bomb_turndown_tick_009c44f0(
     return out;
 }
 
+// 009C658D-009C65FD, the height span both flyabove flags key on.
+DiveBombFlyAboveSpan dive_bomb_flyabove_span_009c65fd(
+    float height_above_aim_point) noexcept {
+    DiveBombFlyAboveSpan out;
+    // 009C658D FLD [00D7A220], 009C659B FCOMIP, 009C65A9 JBE: the floor takes
+    // the height when 100.0 is the smaller, and the 100.0 at 00CE3D08 otherwise.
+    out.floored_height =
+        (static_cast<double>(dive_bomb_constant::kMoveToRangeBias) <=
+         static_cast<double>(height_above_aim_point))
+            ? height_above_aim_point
+            : dive_bomb_flyabove_constant::kHeightFloor;
+    // 009C65C1-009C65D1.
+    out.threshold = static_cast<float>(
+        static_cast<double>(out.floored_height) *
+            dive_bomb_flyabove_constant::kHeightScale +
+        dive_bomb_flyabove_constant::kHeightBias);
+    // 009C65D5-009C65FD: the difference, floored at zero. Note the minuend is
+    // the RAW height, not the floored one - 009C65D5's FSUBP takes the value the
+    // merge at 009C6532 left on the stack.
+    const float difference = height_above_aim_point - out.threshold;
+    out.span = (difference > 0.0f) ? difference : 0.0f;
+    return out;
+}
+
+// 009C66D5-009C66E7.
+bool dive_bomb_flyabove_leave_009c66e3(float bearing_error,
+                                       const DiveBombFlyAboveSpan& span,
+                                       float attack_distance_b4) noexcept {
+    // 009C6615-009C6621: the far endpoint. FSUBRP leaves (+B4h * 0.8) - S.
+    const float far_endpoint = static_cast<float>(
+        static_cast<double>(attack_distance_b4) *
+            dive_bomb_flyabove_constant::kLeaveSpanScale -
+        static_cast<double>(span.threshold));
+    // 009C663E: InterpolateClamped(0, 20 deg, far, pi, span).
+    const float tolerance = dive_bomb_interpolate_clamped_00419010(
+        0.0f, dive_bomb_flyabove_constant::kLeaveToleranceLow, far_endpoint,
+        dive_bomb_flyabove_constant::kLeaveTolerancePi, span.span);
+    // 009C6453's operand is the folded bearing error; 009C66DD FCOMIP and
+    // 009C66E1 `76` JBE leave only the strictly-greater case setting +1Ah.
+    return fold_abs(bearing_error) > tolerance;
+}
+
 // 009C5C9F-009C5DB2, the aimdive tick's steering.
 //
 // PARTIAL, and the partial part is the roll's interpolant. The image draws TWO

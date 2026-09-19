@@ -191,6 +191,9 @@ struct GameGunneryHost::Impl {
     // changes, which is at load and on a new order, not every tick.
     std::vector<std::size_t> command_target_by_unit;
     std::size_t command_rows_resolved{static_cast<std::size_t>(-1)};
+    // The second half of the cache key: a row flipping current without the
+    // vector growing has to re-resolve too. See refresh_command_targets.
+    std::size_t command_rows_current{static_cast<std::size_t>(-1)};
     std::size_t command_targets_resolved{0};
     void run_gun_aim_and_fire(float dt);
     void run_projectiles(float dt);
@@ -1229,27 +1232,78 @@ private:
 // units) every unit every tick - 77 units against 83 current commands - which
 // took a 40-second mission past ten minutes. The semantics are unchanged; only
 // the placement is.
+// 0071EBF0's rule, which is NOT "the last current row wins".
+//
+// With [this+30h] == 1 the image scans the unit's own slot array at +54h - ten
+// entries of 0x1Ch, the scan stopping at the first NULL (0071EC10-0071EC1D) -
+// then walks BACKWARD from the last occupied entry (0071EC1F `LEA ESI,[EAX-1]`,
+// stepping at 0071EC4D/0071EC50) and takes the first whose `vtable[+0Ch]`
+// answers 1 or 2 (0071EC43 `CMP EAX,1` and 0071EC48 `CMP EAX,2`, both to
+// 0071ECC6). A command of any other category is stepped OVER, not taken. When
+// none answers, 0071EC57 falls to the lazily-built static at 00E19BB4, which is
+// a neutral record and never another unit. ([this+30h] == 2 returns this+18Ch
+// instead; this host has no such mode.)
+//
+// The host's rows carry both fields the rule needs: `slot_index` is the entry
+// 0071E6C0 pushed and `category` is what vtable[+0Ch] answers. Taking rows in
+// vector order and ignoring the category is what let a `moveto` row (category
+// 3) appearing mid-mission take the dive bomber's target off its `divebomb` row
+// (category 2) and re-point it at a unit whose position equalled the aircraft's,
+// which showed up as approach+BCh = exactly 0.0 m in local/usn04_aim.log.
+// docs/DIVE_BOMB_TASK.md, "The aim run".
+//
+// Resolving the accepted row's token is a SECOND step on purpose. The image
+// returns the accepted slot's target field whatever it holds, so an accepting
+// row whose token names nothing leaves the unit with no target - it does not
+// fall through to an older row.
 void GameGunneryHost::Impl::refresh_command_targets() {
     const std::vector<GameCommandRow>& command_rows = units.commands().rows();
+    // The cache key is the row count AND how many of them are current, so a row
+    // going current or stale without the vector growing still re-resolves. Both
+    // are O(commands), not the O(commands x units) the name match costs.
+    std::size_t current_rows = 0;
+    for (const GameCommandRow& command : command_rows) {
+        if (command.current) ++current_rows;
+    }
     if (command_rows_resolved == command_rows.size()
+        && command_rows_current == current_rows
         && command_target_by_unit.size() == units.count()) {
         return;
     }
     command_rows_resolved = command_rows.size();
+    command_rows_current = current_rows;
     command_target_by_unit.assign(units.count(), 0);
     std::map<std::string, std::size_t> by_name;
     for (std::size_t i = 0; i < units.count(); ++i) {
         const GameUnitRow* row = units.unit_row(i);
         if (row != nullptr && !row->name.empty()) by_name.emplace(row->name, i + 1);
     }
+    // Step one, the backward walk: per unit, the accepting row that sits in the
+    // highest slot. A row the host never pushed carries slot_index -1; those
+    // are ordered behind every pushed row and among themselves by vector
+    // position, which is the best standing this host has for them.
+    std::vector<const GameCommandRow*> accepted(units.count(), nullptr);
+    std::vector<long long> accepted_rank(units.count(), -1);
+    long long position = 0;
     for (const GameCommandRow& command : command_rows) {
-        if (!command.current || command.target_token.empty()) continue;
-        if (command.unit_index >= command_target_by_unit.size()) continue;
+        ++position;
+        if (!command.current) continue;
+        if (command.unit_index >= accepted.size()) continue;
+        // 0071EC43 and 0071EC48: only these two categories answer.
+        if (command.category != 1 && command.category != 2) continue;
+        const long long rank = command.slot_index >= 0
+            ? (static_cast<long long>(command.slot_index) << 32) + position
+            : position;
+        if (rank <= accepted_rank[command.unit_index]) continue;
+        accepted_rank[command.unit_index] = rank;
+        accepted[command.unit_index] = &command;
+    }
+    // Step two: resolve only that row's token.
+    for (std::size_t i = 0; i < accepted.size(); ++i) {
+        if (accepted[i] == nullptr || accepted[i]->target_token.empty()) continue;
         const std::map<std::string, std::size_t>::const_iterator found =
-            by_name.find(command.target_token);
-        if (found != by_name.end()) {
-            command_target_by_unit[command.unit_index] = found->second;
-        }
+            by_name.find(accepted[i]->target_token);
+        if (found != by_name.end()) command_target_by_unit[i] = found->second;
     }
     command_targets_resolved = 0;
     for (std::size_t i = 0; i < command_target_by_unit.size(); ++i) {
