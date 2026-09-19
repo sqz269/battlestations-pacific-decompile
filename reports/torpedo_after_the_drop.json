@@ -9,6 +9,12 @@
       "name": "BSP_BotStateTorpedoGoAway_Tick",
       "abi": "void __thiscall(this, float dt)",
       "coverage": "complete as a listing read: body 009D0F10-009D1210 (Ghidra live, checked per call site), both arms, all three returns at 009D1153, 009D11ED and 009D120E, every constant checked at both widths against its load. The reconstruction and the host binding are NOT written."
+    },
+    {
+      "address": "009d0c10",
+      "name": "BSP_BotStateTorpedoGoAway_UpdateGeometry",
+      "abi": "void __fastcall(this), no stack argument, SUB ESP,0x3C + PUSH ESI, RET at 009D0D87, body 009D0C10-009D0D87",
+      "coverage": "complete. state+18h = AddWrappedAngle(unitVtable50(), clamp(SubtractWrappedAngle(bearing, heading), -DEG(30), +DEG(30)) nudged by probe * DEG(40) on a sign disagreement), where bearing = 009FD570(state, approach->vtable[0](&scratch, unit, state+24h, &state+2Ch, approach+90h, 0.8)). The SIDE state+2Ch is passed BY POINTER."
     }
   ],
   "host_steps": [
@@ -83,7 +89,9 @@
     "post_window_arm": "009FB800(state+1Ch, 1.0) always; then cmd+2C0h = state+18h with mode 2 when high, else cmd+2C4h = 0.0 with mode 1.",
     "unread_dependencies": "009FD570 and the vtable[0] call before it, which together produce the break-off bearing, and 007F0280s output triple at this call site. Both must be read before 009D0F10 can be bound: substituting either commands a heading that is not the image's. 007F0280 is shared with the aim tick sector probe and both attack-run ticks, so its contract is worth reading once for all of them.",
     "completion_predicate": "009D3150 is a pure range test, approach+90h > state+24h, with an optional * 0.4 arm gated on ctl+369h and the global at 00E17BF2, both off in this host. No altitude condition, unlike the dive bomb 009C7F00 that cost agent/cc8-dive-bomb a run. The aimclass run reads enters=1 break_off_24h=700.0 range_peak_in_goaway=382.2 done_last=0 on every aircraft, so a binding will not be cut off after one tick.",
-    "geometry_009d0c10": "state+18h = AddWrappedAngle(unitHeading, turn), where turn = clamp(SubtractWrappedAngle(bearing, unitHeading), -0.5235988, +0.5235988) (00CEC728 / 00CEC724, +/- DEG(30)), pushed by probe * 0.6981317401 (00D20CC0, a double, DEG(40)) when the terrain probe from 007F0280 disagrees with the turn sign. state+2Ch, the +/-1 side the enter draws, is an argument to the bearing call, which is what makes the break-off turn left or right."
+    "geometry_009d0c10": "state+18h = AddWrappedAngle(unitHeading, turn), where turn = clamp(SubtractWrappedAngle(bearing, unitHeading), -0.5235988, +0.5235988) (00CEC728 / 00CEC724, +/- DEG(30)), pushed by probe * 0.6981317401 (00D20CC0, a double, DEG(40)) when the terrain probe from 007F0280 disagrees with the turn sign. state+2Ch, the +/-1 side the enter draws, is an argument to the bearing call, which is what makes the break-off turn left or right.",
+    "probe_substitution_is_safe": "009D0C96-009D0CAA zero the three 007F0280 out-slots with XORPS/MOVSS immediately before the call, and the probe term is -p[0]*p[1]*p[2]. A no-hit answer leaves it 0, and the nudge at 009D0D50 needs a strict sign, so an inert probe changes nothing. That is how the host already models the same routine for the aim tick.",
+    "remaining_cost": "NOT \"bind 009D0F10\". Step 1 is reading 009FD570 (body 009FD570-009FDEDE, 2414 bytes, SIX callers 007B5AF0, 009A3CF0, 009AD480, 009B5760, 009C47D0, 009D0C10; fourteen callees including BSP_Matrix_Multiply4x4) and the approach vtable[0] break-off-point routine it is fed. Step 2 is then a short window: the tick, the enter, the predicate and the inert probe are all already read. Step 1 pays for six call sites rather than one."
   },
   "independent_confirmation": "agent/cc8-dive-bomb's tools/const_width_sweep.py (main 616382183) with its --load-sites mode, run blind over all 697 constants in include/bsp in a tree that still carried 0.05625f, produced exactly one wrong-width finding: kPitchClampLo. It was told nothing about this packet."
 }
