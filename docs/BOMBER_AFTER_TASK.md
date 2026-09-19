@@ -912,3 +912,337 @@ reports `fstp [mem]` as a read), and `local/aftertask_before_usn04.log`, the BEF
   **`0099B710`**, which is `MOV AL,1 / RET`. The claim that *every* pilot-task vtable shares it is
   still taken from that doc row and `docs/PILOT_TASK_HEADING_ARM.md` line 71; nothing in 6d depends
   on the other nine classes.
+
+## 10. The squadron attack mode, and the two edges it unlocks (packet `cc8_attack_mode`)
+
+Everything in this section is read from the listing. Section 6g item 1 asked for the attack-mode
+feed; binding it required first correcting where the edges it unlocks actually are.
+
+### 10.1 `009C83E0` is symmetric, and `009C8483` is not the disengage edge
+
+`009C83E0 BSP_BotTaskDiveBomb_UpdateStateTransition`, `__fastcall(task)`, `RET 4`, body
+`009C83E0`-`009C8783`, read whole. `ESI` is the task, `EDI` starts as the current state
+`[ESI+310h]`.
+
+```
+009c83eb  CALL 009c7910 IsAttackingState(cur)
+009c83f2  JZ  009c8711                      ; the non-attacking half
+; --- attacking half ---
+009c83f8  CMP byte [ESI+4C8h],0 / JNZ 009c8461
+009c8401  EAX=[ESI+404h] / CMP [EAX+370h],2 / JNZ 009c8419
+009c8410  CMP [ESI+440h],0 / JNZ 009c8461
+009c8419  ECX=[ESI+3FCh] / CALL 007b8ad0 / JNZ -> EDI=+4F0h else EDI=+52Ch
+009c8434  exit/store/enter triple, RET 4    ; <= RETURN TO THE APPROACH
+009c8461  ECX=[ESI+404h] / CMP [ECX+370h],0 / JNZ 009c8483
+009c8470  SetState(prepare +5C4h), RET 4
+009c8483  LEA EBX,[ESI+664h] / CMP EDI,EBX / JZ ret
+009c8495  CALL [[ESI]+1Ch]  ShouldBreakOff
+009c8499  JZ 009c84a9 / 009c849e SetState(+664h), RET 4
+; --- non-attacking half ---
+009c8711  CMP byte [ESI+4C8h],0 / JNZ 009c8732
+009c871a  EDX=[ESI+404h] / CMP [EDX+370h],2 / JNZ 009c873e
+009c8729  CMP [ESI+440h],0 / JZ 009c873e
+009c8732  CALL 009c8310 (the entry chooser), RET 4
+009c873e  ECX=[ESI+3FCh] / CALL 007b8ad0 / JNZ -> EDI=+4F0h else EDI=+52Ch
+009c8759  exit/store/enter triple, RET 4    ; <= RETURN TO THE APPROACH
+```
+
+So `engaged = latch_4C8 || (sqn->370h == 2 && target_440)` is computed **twice**, identically, and
+the `!engaged` -> approach edge occurs **twice**, at `009C8419`-`009C845E` and
+`009C873E`-`009C8783`. **Neither is at `009C8483`.** `009C8483` is the engaged continuation, and
+`+664h` is `done`, not `goaway` (`goaway` is `+704h`; the state table in section 4 of
+`docs/DIVE_BOMB_TASK.md`). `009C8514` is not an instruction boundary at all — `009c8515` is
+`MOV EAX,[ESI+798h]`, inside the flyabove arm. Corrects the packet brief and any summary line
+placing the disengage edge or the break-off call at those addresses.
+
+The break-off call is `009c8495 CALL [[ESI]+1Ch]`. That slot is verified: the dword at
+`00D20E18 + 1Ch = 00D20E34` is `90 8a 9c 00` = `009C8A90 BSP_BotTaskDiveBomb_ShouldBreakOff`,
+which independently confirms both that `00D20E18` is the dive bomb's task vtable (section 9 proves
+it from the `+54h` slot instead) and that the indirect call is the break-off predicate.
+
+### 10.2 `009C7910`: `done` is an attacking state
+
+`009C7910`, read whole (`009c7910`-`009c796b`), is eight `LEA`/`CMP` pairs against
+`+734h` aimdive, `+754h` aimglide, **`+664h` done**, `+778h` flyabove, `+704h` goaway,
+`+5C4h` prepare, `+7BCh` attackrun, `+79Ch` turndown, then `XOR AL,AL`. Only `moveto +4F0h` and
+`follow +52Ch` answer false.
+
+This is what makes the pinned constant fatal. A bomber in `done` runs the **attacking** half; with
+`sqn+370h` pinned to 2 and a target latched, `engaged` is true, so `009c8483`'s `CMP EDI,EBX / JZ`
+returns early on every think and the task can never leave `done`. It is the early return, not the
+Done state's own tick, that parks it.
+
+### 10.3 `009C8310`, the entry chooser: the image never re-attacks a spent bomber
+
+Read whole (`009c8310`-`009c83de`):
+
+| order | test | destination | address |
+| --- | --- | --- | --- |
+| 1 | `sqn+370h == 0` | `prepare +5C4h` | `009c8319` |
+| 2 | `task+4C9h == 0` and not(`sqn+369h` and `[00E17BF2]`) | **`done +664h`** | `009c834f`-`009c836a` |
+| 3 | `task+4C8h != 0` | `flyabove +778h` | `009c8379` |
+| 4 | otherwise | `attackrun +7BCh` | `009c83ae` |
+
+So a bomber with no ordnance left (`+4C9h == 0`) that re-engages is sent to `done`, never back into
+an attack. While it is **not** engaged it flies `moveto`/`follow` — the squadron's move order, which
+is the faithful "leave the target". `src/dive_bomb_task.cpp`'s `dive_bomb_entry_state_009c8310`
+already matches this arm for arm.
+
+### 10.4 The in-range latch `task+4C8h`, read whole: set, clear, and a squadron arm
+
+`task+4C8h` is `approach+D0h` (`4C8h - 3F8h = D0h`). Its only per-tick writer is
+`009C7A80 BSP_BotTaskDiveBombApproach_Update`; a byte census of both base forms
+(`scan-bytes 'c6 ?? c8 04 00 00'`, `'88 ?? c8 04 00 00'`, `'c6 ?? d0 00 00 00'`,
+`'88 ?? d0 00 00 00'`) returns no other writer inside the dive-bomb class. Set and clear are the
+**same store**, `009c7c38 MOV byte [ESI+D0h],AL`, reached with `AL=1` from `009c7cf2` and `AL=0`
+from `009c7c2f XOR EAX,EAX`. With `d` the planar range (`[ESP+34h]`, the `sqrt` at
+`009c7b6a`-`009c7b96`, also cached to `approach+BCh`) and `R = approach+B8h`:
+
+* latch clear -> **set** iff `d < R`. `009c7cde FLD [ESP+34h]` / `FLD [ESI+B8h]` / `FCOMIP` /
+  `JBE 009c7c2f`, so the jump to the zeroing path is taken when `R <= d`.
+* latch set -> **hold** if (`sqn+369h != 0` and `[00E17BF2] != 0`) at `009c7bfc`, else hold iff
+  `d < R + 100.0`. `009c7c15 FLD [ESP+34h]` / `FLD [ESI+B8h]` / `FADD qword [00D7A220]` /
+  `FCOMIP` / `JA 009c7cf2`. `pe_const_read d:00D7A220` = `100.0`.
+* otherwise **clear**.
+
+So there is a **100 m hysteresis band** between the engage and disengage radii.
+`bsp::dive_bomb_in_range_latch_009c7c31` already binds exactly these three arms, correctly.
+
+**What it does not bind.** `009c7c31 CMP byte [ESI+D1h],0` sets the flags that `009c7c3e JNZ`
+consumes — the intervening `MOV` does not write flags. So when `+D1h == 0`, a **spent** bomber, the
+routine continues past the store to `009c7c5d`:
+
+```
+009c7c5d  MOV EDI,[EAX+3D0h]        ; EAX = approach+0Ch, the squadron; EDI = the LEADER
+009c7c63  CMP EDI,[ESI+4h] / JZ 009c7d04   ; the leader itself skips the test
+009c7c7c  FLD [EDI+0FCh] ... FLD [EDI+104h] ... CALL 00414c60   ; 2-D range to the leader
+009c7ccb  FLD [ESI+B8h] / FCOMIP / JBE 009c7cfc  ; EAX = 0 when R <= that range
+009c7cfe  AND byte [ESI+D0h],AL     ; an AND: it can only CLEAR
+```
+
+**A spent wing member further than `R` from its flight leader has its in-range latch forcibly
+cleared.** That is a second, independent mechanism taking a spent squadron out of its attack, it
+bites in exactly the situation this packet is about, and no host code has it. `[sqn+3D0h]` is
+dereferenced here as a unit and read for its position at `+FCh`/`+104h`, which is the same dword
+`0099B757` compares the unit against: two independent sites agreeing that `sqn+3D0h` is member
+array element 0, the flight leader. `src/game_hosts_units.cpp` line 1786 already relies on that
+convention (`wing.front()`).
+
+### 10.5 `009C8A90 ShouldBreakOff`, read whole, and an id-space collision
+
+`009c8a90`-`009c8b5b`, `__thiscall(task)`:
+
+1. `009c8a96 CALL 0099C230` base gate false -> return 0.
+2. `009c8aa6` target `[ESI+440h]` NULL -> return 1.
+3. `009c8ab4` `[target+5Dh] != 0` -> return 1.
+4. `009c8ac4` (`sqn+369h` and `[00E17BF2]`) -> return 0.
+5. `009c8ad6` `IsAttackingState(cur)` and `[ESI+4C9h] != 0` -> return 0.
+6. `009c8af1`-`009c8b51` `|unit - target|` (3-D, `0042b2f0`) against
+   `[tuning+4C8h] * [ESI+41Ch]`; `JA` (threshold > range) -> 0, else 1.
+
+**The `+4C8h` in step 6 is `Pilot/DiveBomb/SafeDist` on the tuning singleton `0042E740` — a
+different object from the task's `+4C8h` in-range latch of section 10.4.** The two are unrelated
+and the brief for this packet invites conflating them.
+
+`bsp::dive_bomb_should_break_off_009c8a90` fuses steps 4, 5 and 6 into one conjunction and drops
+`IsAttackingState(cur)` from step 5. **At the transition call site this is equivalent**, because
+`009c8495` is reached only from the attacking half, so step 5's guard is true there by
+construction; the fused condition for reaching the range test, `not(369 and e17bf2) and not
+ordnance`, is the same set. Left unchanged deliberately: it is a fusion, not a defect, and
+changing it would have muddied this packet's before/after. It would stop being equivalent if a
+caller ever invoked slot `+1Ch` from `moveto` or `follow`.
+
+### 10.6 The producer: `0099B740` SETS the mode to 1, every think
+
+`0099993C`: `BSP_PilotBot_Update`'s slow path calls `0099B740` once per think and **before** the
+task arm `task->vtable[64h](dt)`. `0099B740`, body `0099B740`-`0099B77A`, read whole: it returns
+early unless `[bot+2FCh]` (the squadron) and `[bot+2F4h]` (the unit) are non-null and
+`0099b757 CMP EAX,[ECX+3D0h]` says this unit **is** the flight leader; then it calls the abandon
+predicate `[[bot]+38h]` and, if that is true, `0099b772 PUSH 1` / `0099b774 CALL 007ED3F0`.
+
+* `00D20E50` (= `00D20E18 + 38h`) holds `10 b7 99 00` = `0099B710`, and `0099B710` is
+  `MOV AL,0x1 / RET`. For the dive bomb the predicate is **always true**.
+* `007ED3F0` is `MOV EAX,[ESP+4] / MOV [ECX+370h],EAX / RET 4` — an unconditional **assignment**.
+* `007ED430` is `MOV EAX,[ESP+4] / CMP [ECX+370h],EAX / JGE ret / MOV [ECX+370h],EAX / RET 4` — the
+  **raise** (max) that the Lua attack order uses at `008A4C41` to reach 2.
+
+**So the flight leader drives `squadron+370h` to 1 on every think, and `engaged` collapses to the
+in-range latch alone within one think of any attack order.** The `mode == 2` arm of `engaged` is
+live only in the window between an attack order and the leader's next think.
+
+`tools/callsite_census.py 0099b740` gives **ten** sites: the one `CALL` at `0099993C` and nine tail
+`JMP`s, one per class `+54h` cruise profile, including `009c8a87` in
+`BSP_BotTaskDiveBomb_UpdateCruiseProfile`. So a dive bomber has two paths to the set; both are the
+same idempotent assignment. `bsp::dive_bomb_cruise_profile_009c8920` stops short of that tail JMP
+and **has no host call site**, so the tick added by this packet is this host's only producer.
+
+### 10.7 The host defect, and what was bound
+
+`src/game_hosts_units.cpp` `dive_bomb_transition_inputs` pinned
+`in.engaged.control_mode_370 = 2` as a constant ("a dive bomber with no flight lead sits at 2").
+`movieval` is a flight lead. With the constant, `engaged` is true for as long as a target is
+latched, so **both** return-to-approach edges of 10.1 are unreachable and 10.2's early return parks
+a spent bomber in `done` permanently.
+
+Bound, in the image's order:
+
+* `db_attack_mode_370` per slot, seeded `kForced` (2) because the scene's attack order reaches
+  `007ED430(2)`, with `db_is_flight_lead` resolved from the squadron registry's
+  `member_units[0]` (10.4's two-site proof).
+* `run_dive_bomb_attack_mode_tick_0099b740()`, called at the head of the per-think arm **before**
+  `bsp::dive_bomb_task_arm_009c8790`, mirroring `0099993C`. It runs the existing pure rule
+  `bsp::pilot_attack_mode_0099b740` and, for the leader only, writes the result to every member of
+  its **own** squadron through the registry.
+* `in.engaged.control_mode_370` now reads that field.
+
+**Ownership is a labelled hole, the value is not.** `+370h` belongs to the squadron
+(`plane+9D4h`); this host keeps a per-slot copy the leader broadcasts. A member that ticks before
+its leader reads the previous think's value, which is faithful: in the image each aircraft thinks on
+its own schedule and reads whatever the leader last wrote.
+
+**The no-squadron fallback is faithful, not a guess.** If the registry has no squadron for a
+bomber, `db_is_flight_lead` stays false and the mode stays at the seed 2 — which is what the image
+does, since `0099B740` returns at `0099b74b` when `[bot+2FCh]` is null and nothing then lowers what
+the attack order raised.
+
+**`global_e17bf2 = false` is well founded for this run.** The only writers of `00E17BF2` are
+`005e2fb2` and `0076fe6c`, both `c6 05 .. 00`, writing **0**, plus two computed `MOV [00E17BF2],AL`
+sites at `005e3017` and `008c1458`; all four are in
+`BSP_Game_SyncLobbySettingsFromLua`, `BSP_Session_SetMode` and `FUN_008c1350`, that is lobby and
+session code. Single-player USN04 never raises it. Stated as well founded, not proved: the two
+register writers were not traced.
+
+### 10.8 The altitude clamp `009C16D2`-`009C1846` (section 6g item 2), read
+
+`ESI` is the state, `EDI = [ESI+2Ch]` the leader (pose-refreshed through `00414db0` when
+`[EDI+C8h]` is clear), `EDX = [ESI+6Ch]` the tuning block.
+
+```
+009c16e8  FLD [EDX+4] / FADD [EDI+100h] -> [ESP+34h]     ; leaderY + block+4h
+009c16f5  [ESP+38h] = [ESI+88h]                          ; the candidate v
+009c1707  FCOMPI / JBE   -> v = min(v, leaderY + block4)  ; an upper cap
+009c1734  FLD [EDI+100h] / FSUB qword [0D1F3F8] -> lo    ; leaderY - 120.0
+009c174c  FCOMPI / JBE   -> v = max(v, lo)               ; the floor
+009c1779  FLD [EDI+100h] / FADD qword [0D1F3F8] -> hi    ; leaderY + 120.0
+009c1789  CALL 0042e740 / FLD [EAX+210h] -> [ESP+2Ch]    ; the tuning ceiling
+009c17a5  FCOMPI / JBE   -> xmm1 = max(hi, tuning+210h)
+009c17f1  MOVSS [ESI+34h],XMM0                           ; the commanded altitude
+009c1811  MOVSS [ESI+48h],XMM0                           ; and the clamp of +48h
+```
+
+`pe_const_read d:00D1F3F8` = **120.0**. So the image clamps a follower's commanded altitude into a
+band of **+/- 120 m around its leader's**, with an extra upper cap at `leaderY + block+4h` and the
+ceiling raised to at least `tuning+210h`.
+
+Note what this does **not** do: a band around the leader would not save a wing member whose leader
+is in the sea — it permits `leaderY + 120`, it does not command it. The clamp bounds deviation; it
+is not an altitude floor. The ditching this packet addresses is fixed by the mode feed, not by the
+clamp.
+
+### 10.9 The before/after, USN04, same binary apart from the one read site
+
+Both runs: `--frames 5000 --press-start-frame 30 --menu-select USN04 --mission-frames 4800
+--mission-frame-seconds 0.05`, both with the instrumentation of this packet compiled in, differing
+only in whether `dive_bomb_transition_inputs` reads `slot.db_attack_mode_370` or the constant 2.
+Both shut down cleanly (`native renderer final COM release`, one each).
+
+**The feed itself works.** `mode_370` is 2 for all 2112 of `movieval`'s ticks before and 1 for all
+2370 after, for every member of the squadron, so the leader's 0099B740 tick and its broadcast both
+land. `lead=1` resolves to exactly one aircraft per squadron.
+
+**It achieves what section 6g item 1 predicted, for the leader.**
+
+| `movieval` | before | after |
+| --- | --- | --- |
+| `plane water contact` | yes, `\|v\|=68.72` | **none** |
+| ticks in `done` | 303 | **0** |
+| `done_min_alt` | 0.1 m | n/a |
+| `approach_returns` | 0 | 1 for `\|.-3` at tick 2014 |
+
+So the diagnosis of 10.1/10.2 is confirmed in a run: with the mode at 1, `engaged` collapses to the
+latch, the latch eventually clears, and the task leaves `done` by the `009C8419` edge instead of
+being parked by `009C8483`'s early return. The leader stops ditching.
+
+**And it is a net regression, so it is not wired.**
+
+| USN04 | before | after |
+| --- | --- | --- |
+| dive-bomber `plane water contact` | 1 (`movieval`) | **7** (two whole `D3A Val` squadrons) |
+| `movieval` releases | 2 | **0** (`rounds_left=2`) |
+| `movieval` states | `attackrun=1527 aimdive=53 flyabove=158 turndown=71 done=303` | `moveto=1493 goaway=719 flyabove=158` |
+| `D3A Val` aimdive exit | `-> aimglide`, alt ~500-660 m | `-> goaway`, alt ~240 m |
+
+The chain, from the log rather than inferred. `approach+B8h` is **1100.0 m**, so with `engaged`
+reduced to the latch the task cannot enter the attack until `d < 1100`. `movieval` reports
+`ticks without latch=1493`: it spends those in `moveto`, and this host's `moveto` does not fly an
+attack profile, where the `attackrun` it used to sit in for 1527 ticks does. The six `D3A Val`
+bombers do reach the dive, but from much lower — their `db aim exit` rows read
+`aimdive -> goaway ... alt=239.5 ... d=66.5 breakoff=0` where before they read
+`aimdive -> aimglide ... alt=601.4 ... d=324.3` — and `goaway` at 240 m in a dive puts them in the
+sea at about 146 m/s.
+
+**What this proves and what it does not.** The gate is faithful: `engaged` really is
+`latch || (mode == 2 && target)`, the leader really does set the mode to 1 every think, and the
+approach edges really are reachable only then. What is not yet true of this host is the state
+behind the gate: `moveto`/`follow` are the states the image uses to close the range on an attack
+profile, and here they are not that. **The mode feed is therefore reconstructed, verified against
+the listing, measured, and deliberately left unwired at the single read site in
+`dive_bomb_transition_inputs`, with `db_attack_mode_370` computed and logged so the next packet can
+re-wire it in one line once the approach states are real.** No tuning was applied to any constant.
+
+Not retracted but worth stating: this does not show the image's `moveto` is different from this
+host's in some particular way that was read. It shows only that gating entry on the latch is
+survivable in the image and is not survivable here, so something in the approach is missing. That
+is the next packet, not a conclusion of this one.
+
+### 10.10 The break-off distance: both endpoints read, and the sign of the host's error
+
+Section 6h names the 3-D/planar divergence and says the SIGN is a hypothesis because the two
+points `009C8A90` measures between were not read. Both are read here, so it is no longer one.
+
+**The near point is the unit.** `009c8af1 MOV ECX,[ESI+3FCh]` / `009c8af8 CALL 00427EB0`
+(`BSP_EntityPose_GetWorldPositionRefreshed`), and `task+3FCh` is `approach+4h`, the unit —
+`009C7A80` uses the same field as the unit throughout. `009c8b0b MOV EDI,EAX`, so `EDI` is the
+unit's world position.
+
+**The far point is the approach's AIM POINT, not the target.** `task+3F8h` **is** the approach
+(`4C8h - 3F8h = D0h` makes `+3F8h` approach-relative zero), so `009c8afd MOV EDX,[ESI+3F8h]` loads
+the approach's own vtable and `009c8b03 MOV EDX,[EDX]` takes **slot 0**, called at `009c8b12` with
+`ECX = LEA [ESI+3F8h]`, the approach itself, and one stacked out-pointer `[ESP+14h]`.
+
+The dive-bomb approach's vtable is **`00D20C48`**, written by its constructor at
+`009c3ee2 MOV dword ptr [ESI],0xd20c48` — identified, not assumed from the torpedo's `009D0670`.
+The dword at `00D20C48` is `a0 40 9c 00` = **`009C40A0`**, whose body is eight instructions:
+
+```
+009c40a0  MOV EAX,[ESP+4]
+009c40a4  FLD [ECX+4Ch] / FSTP [EAX]
+009c40a9  FLD [ECX+50h] / FSTP [EAX+4]
+009c40af  FLD [ECX+54h] / FSTP [EAX+8]
+009c40b5  RET 4
+```
+
+So it returns `approach+4Ch/+50h/+54h`: the **aim point**.
+
+`009c8b14`-`009c8b2c` then subtracts all three components in the order `aimPoint - unitPos` and
+`009c8b3b CALL 0042B2F0` takes the three-vector's length. **The break-off range is
+`|aimPoint - unitPosition|` in 3-D.**
+
+**The sign.** This host feeds `b.distance_to_target = slot.db_planar_bc`. `approach+BCh` is wrong
+on two counts, and both push the same way:
+
+1. It is planar. The image's distance carries `aimPoint.y - unit.y`, and a dive bomber whose last
+   bomb has just left is hundreds of metres above its aim point, so the image's range is larger by
+   very nearly the altitude difference.
+2. It is measured to a different point. `009C7B43`-`009C7BAA` builds `+BCh` from the target
+   entity's `+100h`/`+104h`, not from the approach's `+4Ch`/`+54h` aim point.
+
+Break-off fires when `distance >= SafeDist * ratio`. A distance that is too SMALL therefore fires
+the test too LATE. **So this host breaks a spent bomber off later, and lower, than the image does**
+— which is what section 6h expected: it moves WHEN a spent bomber reaches `done`, not whether it
+ever takes a goaway edge, because `009C8483`'s `ShouldBreakOff` TRUE edge sets `+664h` = `done` and
+there is no goaway edge there to restore (section 10.1).
+
+**Fixing it needs a new input, not a new expression.** The host has `db_aim_point_height_50`
+(`approach+50h`) but carries no `+4Ch`/`+54h`, so a faithful 3-D range needs the aim point's x and
+z plumbed into the slot beside it. Not done here; see 10.11.
