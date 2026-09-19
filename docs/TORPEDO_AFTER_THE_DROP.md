@@ -960,3 +960,64 @@ Premise 3 - that something upstream leads - is then reached by elimination rathe
 the target is the one aimed at and its speed over the window really is of order 15 m/s, a 51.5 m
 closest approach is not what a zero-lead aim produces, and the lead has to be upstream. That is
 weaker than a direct measurement and it is the strongest this host can give.
+
+## 9. The ordnance decrement, tried and falsified by its own run
+
+Section 7.2 named the host gap — `approach+132h` never clears because the loadout does not shrink —
+and prescribed the fix: clear the owner's kind `2Bh` bit on a drop so a spent bomber retires the way
+`009D4030` describes. It was implemented (`1e7c0f2f2`), run, and **the run falsified it**. Reverted
+in the same session; `src/game_hosts_gunnery.cpp` is byte-identical to `1fdecbb39` apart from a
+comment recording this, so no confirming run is needed.
+
+### 9.1 What the run said
+
+`local/ordnance_clear_usn01.log` against `local/closest_approach_usn01.log`, same binary, same
+command:
+
+| quantity | byte stays set (`closest_approach`) | byte clears on the drop (`ordnance_clear`) |
+| --- | --- | --- |
+| `torpedo_loadout_cleared` | (not instrumented) | 5 — the change did fire |
+| `goaway` **enters** | 82 | **0** |
+| `009D0F10` ticks | 465 to 551 | **0** |
+| `states` | `attackrun`, `goaway`, `aim` | `attackrun`, `aim` only |
+| `arm_ticks` (Mav1) | 1299 | 678 |
+| deaths / kill_credits | **2 / 2** | **5 / 5** |
+| hits taken / damage | 59 / 1501.9 | 178 / 2572.9 |
+
+The goaway state was **never entered**, so nothing ran the climb-away, so every bomber went back into
+the water. The churn was the lesser wrong by a wide margin.
+
+### 9.2 Why, and what it proves about the byte
+
+`009D3F60`, the entry chooser (`src/torpedo_task_arm.cpp:54`-`62`, from `009D3FA9`/`009D3FC7`):
+
+```
+if (!attack_flag_52a && (!control_flag_369 || !global_e17bf2))  return kDone;
+```
+
+With `ctl+369h` off — as this host reports it — a task whose `+52Ah` is clear is sent **straight to
+`kDone`** the next time the entry chooser runs. The aim state never hands off to the goaway, because
+the task leaves the attack chain before it can.
+
+* **was** (section 7.2): a drop clears `approach+132h`, and `009D4030` then retires the bomber
+  through the goaway's completion.
+* **is**: a cleared `+132h` removes the whole attack chain, goaway included. The goaway is entered
+  **from aim**, and `009D3F60` retires the task before aim can get there.
+* **therefore**: `approach+132h` **does not clear on a drop in the image**, or something else keeps
+  the task in the attack chain long enough to break off. A state with a 300-byte enter
+  (`009D0D90`-`009D0F04`), a 768-byte tick (`009D0F10`-`009D1210`) and its own completion predicate
+  (`009D3150`) is not dead code, and a model that makes it unreachable is wrong on that ground alone.
+
+What `007B91C0`'s ordnance-object `vtable[8](0)` consumes on a drop **stays unread**, and section
+7.2's confidence that it must consume something is now only half right: it may consume a per-device
+round count without the *kind* bit ever clearing, which would leave `+132h` set and every transition
+above it intact. That is the shape the evidence now favours and it is not proved either.
+
+### 9.3 What section 7.2 should have said
+
+Section 7.2's reading of `009D4030` is unchanged and still correct: with `+52Ah` clear, a completed
+goaway goes to `done`. What was wrong was the inference that clearing the byte is therefore what
+retires a bomber — it is upstream of the goaway, not downstream, and the entry chooser sees it
+first. The 82 re-entries remain unexplained by anything this packet has established, and the honest
+statement is that the host re-attacks because `+132h` stays set **and that may be what the image
+does too**.
