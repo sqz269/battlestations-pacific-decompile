@@ -3007,7 +3007,7 @@ is zero for this class, and then nearly confirmed it from a bad search. `Select-
 the **first match per file**, so a search for `DropAngle` over `vehicleclasses.lua` returned exactly
 one row - a `["Type"] = "Submarine"` class - and I read that as "no aircraft class has DropAngle".
 
-There are **176** of them. The counts by value start 33 at 0.698132, 9 at 0.383972, 9 at 0.523599,
+There are **74** of them (my first count of 176 summed a truncated grouping and is retracted). The counts by value start 33 at 0.698132, 9 at 0.383972, 9 at 0.523599,
 and the torpedo stream's Mavs report 0.4014, which is one of the others. So aircraft do carry a drop
 angle, `plane_drop_angle` is very probably non-zero for the dive bomber too, and `class_gain` is not
 the explanation.
@@ -3022,3 +3022,46 @@ the phantom `cmd+2B4h` write changed nothing observable. The cheap next step is 
 rather than inference - log `span`, `class_gain`, `scale` and `c.clamped_altitude` from the attackrun
 tick for one run, and see which term is dead - and that is one build and one run, against a guess
 that has already been wrong once.
+
+### Class B row 1 settled: the address was wrong, not the value
+
+`ship_ai_attackmove_substates.hpp:408` `kAttackMoveLeadScaleNear` declared 1.0 against an m32 load
+of 0.174533. The lead's hypothesis was right: an interpolation's `x0` = DEG(10) cited on the line of
+its `y0` = 1.0.
+
+Three pieces of evidence, none of them the value:
+
+* `00CE3990` is already cited **correctly** two lines down, on `kAttackMoveLeadScaleNearAngle =
+  0.17453293f` - the same address, the same value, the right name.
+* The `Far` pair is internally consistent - `kAttackMoveLeadScaleFar = 0.5f // 00CE3800` is a true
+  address-value pair - so only the `Near` line is off.
+* **The four instructions that load `00CE3990` are in `FUN_00424730`,
+  `BSP_Plane_HandleStateMessageKinds`, `BSP_TurningGun_StepAim` and one undefined body.** None is
+  ship-AI attackmove code, so the region this header documents never loads that address at all.
+
+So the comment is corrected and **the value is untouched**: no behaviour change, and no USN02
+before/after needed, which is the outcome the "value or address?" question exists to reach. The
+header now sweeps 47/0.
+
+### Class B rows 2 and 3: what the sweep proves, and the one question left in each
+
+Both need their own consumer's site before anything is changed, and the sweep has already narrowed
+each to a single question.
+
+**`hud_updates.hpp:334` `kHudMinimapXDivisor`**, declared 1024, m64 loads read 1/1024. Its sibling
+settles the shape: `kHudMinimapYDivisor` declares 768 and the m64 there **is** 768, loaded by
+`005411CA FDIV` and `0054121A FDIV` - while the X constant is loaded by `005411E0 FMUL` and
+`00541230 FMUL`, adjacent sites in the same function. So the image **divides by 768 and multiplies
+by 1/1024**, and the X row is wrong in name, value and use together. The open question is not what
+the image does but where the consumer lives: making constant and use agree means editing a `src/`
+file this stream does not hold.
+
+**`unit_death_sink.hpp:70` `kWreckAnchorLateralDivisor`**, declared `double` 2, m64 loads read 2.5.
+Its four sites are `004343DD`, `0067CFCD`, `007C5DAE`, `008250F3`, none of them obviously
+death-sink code - so this may be the same fault as row 1, a correct value beside a wrong address,
+rather than a wrong value. Deciding it needs the wreck-anchor site itself, and changing the value on
+the assumption would move the sink geometry on an inference of exactly the kind row 1 disproved.
+
+`kPilotPitchHalfRange` is recorded in the tool's own doc as a **confirmed false positive**: declared
+0.5236 against an m32 0.523599, a four-significant-figure declaration. The 101 A-harmless rows are
+left alone.
