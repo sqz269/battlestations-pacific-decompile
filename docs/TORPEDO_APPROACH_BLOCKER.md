@@ -63,6 +63,10 @@ floor on the commanded altitude. Here that sum is `0.00 + 12.00`:
 
 ## 3. Why `+74h` is zero: a gated store the host's substitution cannot pass
 
+> **WITHDRAWN.** This section's conclusion - that the zero in `+74h` is the defect - does not
+> survive reading `009C89CE`. See the Correction section below before using anything here. The
+> mechanism it describes is accurate; what is withdrawn is calling it the root cause.
+
 `009D3489`-`009D34AE`, already reconstructed in `src/torpedo_approach_update.cpp`:
 
 ```
@@ -83,6 +87,10 @@ store to `+398h` (its only float store in that range is `009D4BA7 MOVSS [ESI+484
 distance). So `+398h` is filled by something else, and the host guessed the wrong key for it.
 
 ## 4. Where to look next, and the bound on the negative
+
+> **SUPERSEDED.** `009C89CE`, which this section names as the next step, has since been read, and
+> what it says withdrew section 3. The census below and its warning about `0079CD26` still stand;
+> the recommendation at the end of the section does not. Section 8.5 carries the live open list.
 
 An exhaustive census of stores to `+398h` (`python tools/store_census.py 0x398`) finds **40** sites.
 Two matter:
@@ -203,3 +211,101 @@ So the next packet should start from the descent law rather than from the altitu
 `docs/TORPEDO_RUN_IN_DESCENT.md`, and whatever writes the pitch demand the census prints. The
 question to answer first is why the demand is a constant `-pi/3` instead of the glide slope those
 documents reconstruct, and what should level the aircraft off at the band.
+
+## 8. Handoff: everything the next worker needs, by address
+
+The worktree and branch are handed over as they stand -
+`J:\PROG\battlestations-pacific-decompile-cc8-plane-squadron` on `agent/cc8-plane-squadron`, built at
+`b882aa1d4` (this branch with `origin/main` merged), with the before-run log already in `local/`.
+Nothing needs rebuilding to start.
+
+### 8.1 The before column is already taken and is complete
+
+`local/tap_before_usn01.log`, `EXITCODE=0`, `frames_presented=3199 loop_finished=1`. Command:
+
+```
+./tools/run_game.ps1 -Log local\tap_before_usn01.log -WaitSeconds 3000 -- --frames 3200 `
+  --press-start-frame 30 --menu-select USN01 --mission-frames 3000 --mission-frame-seconds 0.05
+```
+
+`query session` was `console Active` before it. Section 7's table shows it reproduces the
+`b00c3cd24` run to the centimetre, so it is a valid before column for any change made on this branch.
+A USN01 run takes roughly forty minutes when three agents are sharing the machine, which they were.
+
+### 8.2 The release chain, with the callsite counts that bound it
+
+Established in `docs/PLANE_SQUADRON_HOST.md` section 4.2 and repeated here because it is what stops
+a reader re-deriving it. All from `python tools/callsite_census.py`, which is exhaustive over rel32:
+
+| routine | callsites | what that means |
+| --- | --- | --- |
+| `007BBC00` | **0** | not a function: the store `ADD dword [ECX+C20h],EBX` inside `007BBBA0`, past every early exit |
+| `007BBBA0` | **34** | every one a release decision - `009FA3D0` in `BSP_ReleaseTimer_Tick`, `009D4956` in `BSP_BotTaskTorpedo_TickArm`, `009D26F8`/`009D2938`/`009D29CB` in the torpedo prepare states, `009C5777`/`009C60F1`/`009C88C4` in the dive-bomb states |
+| `007C0D90` | **1** | `007CEA8D` in `007CE040 BSP_PlaneTickElement_FixedStep`, reached only when `unit+C20h > 0` |
+| `007EEF30` | **1** | `007C0F01`, inside `007C0D90` |
+
+So the release-order broadcast is unreachable until an aircraft has already requested a release. It
+is what a plane that has just dropped tells its flight-mates. `009D2287` is what arms the release
+timer, and it runs only after the aim stage - which is why section 1's water contact ends the chain
+before it starts.
+
+### 8.3 `009D4923`, and where it lives in this host
+
+The image: `docs/TORPEDO_TASK_ARM.md` section (1) step 8, the call on the object **embedded at**
+`unit+72Ch` through its `vtable[+38h]`.
+
+The host: `TorpedoArmBinding::manual_release_requested` in `src/game_hosts_units.cpp`, which is
+
+```cpp
+bool manual_release_requested(void*) override {
+    // (unit+72Ch)->vtable[38h] at 009D4923.
+    record("Unit::device_requests_release", "009d4923");
+    return false;
+}
+```
+
+Replacing the `false` with the image's test is worth doing on its own terms. Section 5 is why it is
+not a route to the first drop for USN01: step 8 runs `007BBBA0` only when the state is none of
+`aim`, `attackrun` or `prepare`, and these aircraft spend all 124 arm ticks in `attackrun`.
+
+### 8.4 The edit that is still owed, and the file it waits on
+
+`docs/PLANE_SQUADRON_HOST.md` section 6 writes out one applicable edit to
+`TorpedoReleaseOrderBinding` in `src/game_hosts_units.cpp`, left unmade because that file was leased
+elsewhere for the whole of the packet that found it:
+
+* `is_flight_member` (torpedo ordnance) and `controlled(int)` / `controlled_unit_count()` become a
+  walk over `plane_squadron_registry().find_by_member_unit(index_of_slot(slot_))`'s `member_units`,
+  which is `ctl+3D0h` under `ctl+3CCh`. A caller in no squadron answers a count of 0, which is
+  `007EE891`'s own arm.
+* `in.force_flag_378 = false` becomes that record's `force_flag_378`, seeded `true` after
+  `007F2D1E`.
+
+**The lease is still held.** `python tools/bsp.py lease check src/game_hosts_units.cpp` answers
+`agent/cc8-dive-bomb:cc8_dive_bomb_goaway until 2026-09-19T14:35`, although that worker has reported
+the file released. Check it again rather than trusting either statement, and take it only when the
+check says it is free.
+
+### 8.5 Open, by address
+
+* **The pitch demand.** `-1.0472 rad` held constant over more than 700 m of descent, with
+  `drop_angle=0.4014` and `climb_1ec=0.1854` printed on the same census line and neither flown, and
+  no flare. Find its producer. `docs/TORPEDO_MOVETO_TICK.md` (the glide slope, `009C18C0`) and
+  `docs/TORPEDO_RUN_IN_DESCENT.md` are the two documents on that path. **This is the packet.**
+* `ctl+398h` on the torpedo path has **no located producer**. `009D4A70` only reads it, at
+  `009D4B57`. Whether `read_control_block` passes the right key is unproven either way; the
+  Correction section says why the first answer was withdrawn.
+* `009D3489`'s gate and `alt_floor_74` are understood but not settled: a `+398h` above `100.0`
+  leaves `+74h` at zero, and on the one path whose producer is located that is the normal case.
+* `009D4923`, above.
+* `src/game_hosts_units.cpp`'s `TorpedoReleaseOrderBinding`, 8.4.
+
+### 8.6 The two retractions in this document
+
+Both are this packet's own, and both were caused by reasoning ahead of the evidence. They are listed
+together so a reader does not have to find them.
+
+1. **Section 6**: the arm was predicted to stop because the command row went stale. It stops because
+   the aircraft is in the water. Inferred from the host sources before the log was read.
+2. **The Correction section**: `+398h` was named as the root cause before `009C89CE` was read, and
+   reading it withdrew the claim. Named as the next step in the same commit that depended on it.

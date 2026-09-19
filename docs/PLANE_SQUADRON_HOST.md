@@ -285,6 +285,15 @@ headings.
   `flight_leader()` is not that unit) and to take the leader's member array and `+3C8h` from the
   registry instead of attaching only itself. That file is leased to `agent/cc8-ai-squadron` for the
   length of this packet; the change was sent to its owner rather than made here.
+* **A registry record whose `member_units` is empty is a trap for a consumer, and the contract is
+  stated here.** `PlaneSquadronHostRecord::flight_leader()` answers `kPlaneSquadronNoUnit` when no
+  member resolved, and `live_count()` answers 0, which is the right reading of `+3D0h`/`+3CCh` for a
+  squadron that holds nothing. A consumer that filters "is this unit a wingman?" by comparing
+  against `flight_leader()` must guard the empty case first, or it drops **every** plane of that
+  record instead of none - a silent unit loss rather than the double-order it was fixing.
+  `agent/cc8-ai-squadron` added that guard to `build_squadrons`, and it is the right shape: a
+  seatbelt, since `resolve_plane_squadron_members` fills the array before any order path runs. The
+  case to look at if it ever fires is a squadron whose planes have all died.
 * `squadron+390h` has no located producer. `docs/PLANE_SQUADRON.md` bounds the negative.
 * **`src/game_hosts_units.cpp`, `TorpedoReleaseOrderBinding`: the release-order gate still reads the
   stand-in.** The squadron table now holds the real array, so the binding's three substitutions can
