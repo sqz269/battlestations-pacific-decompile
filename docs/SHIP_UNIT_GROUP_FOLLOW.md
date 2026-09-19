@@ -135,6 +135,36 @@ type 77h (`0077FEE4`) resolves the same id and calls `0077BD70`, and type **78h*
 `+10h`/`+20h` and `+14h`/`+24h` from float arrays at `[msg+28h]` and `[msg+2Ch]` through
 `0070D070`. That is the message that carries columns, and it is not the one a join sends.
 
+#### The census: who can send a type-76h message with columns in it
+
+Asked for explicitly, and the answer is **nobody, and the class is too small to hold them**.
+
+* **Every site in `.text` that pushes the literal `76h`** (18, the whole section, uncapped): two are
+  message builds - `0077C920` in `0077C8D0` and `0077C941`... precisely, `00779941`, which the scan
+  attributes to `BSP_EntityOrderMessage_Construct` but which lies **past that function's `RET 0Ch`
+  at `00779939` and four `INT3`**. Ghidra has no function there; raw disassembly shows a separate
+  out-of-line constructor at `00779940`. The other sixteen are `STL_xlen_throw`, a scene-database
+  clear, an animation reader, `FUN_00A6C2A0`'s two `strchr`-style `00BF86F0` calls ('k' and 'v'),
+  and ten `Unwind@` stubs.
+* **`00779940`**, read from the disk bytes, is the same message as `0077C8D0` builds inline:
+  `PUSH 76h` into `0075B430`, `[msg] = 00D02D30`, `[msg+4] = 1`, `[msg+18h] = [msg+1Ah] =
+  [msg+1Ch] = 0`, and `[msg+20h] = [entity+174h]`, `RET 4`. **The id and nothing else.**
+* **Every site that stamps the class vtable `00D02D30`** (three, uncapped): `0075A2E0` the default
+  constructor, `00779963` that out-of-line one, `0077C94D` the inline one. `0075A2E0` zeroes the
+  object and its **highest write is `+1Ch`**; the two senders' highest is `+20h`. The class is
+  about `24h` bytes, so `+0CCh`..`+0F8h` is not in it at all.
+* And the receiving end agrees: `0077FE80`'s type-76h arm reads `[msg+20h]` and nothing else.
+
+So the columns at `+0CCh`..`+0F8h` belong to `0077FAD0`'s **authored record at `entity+0C0h`**, a
+different structure reached from the scene, not to any wire message. **A runtime join leaves
+`0070ED30`'s join geometry in place**, and the join arm does not "run on zeros" - the arm that
+writes columns is not on the runtime path at all. The station binding can proceed.
+
+The one bound on this census: it enumerates sites that push the literal type byte or stamp the
+class vtable. A type held in a register and a message built by copying another object would both
+escape it. The vtable scan is the stronger of the two, because every instance of this class must
+get that pointer from somewhere.
+
 #### `0077FAD0`, the authored-placement path, `__thiscall(entity)`, body `0077FAD0-0077FE7E`, 245 instructions; its kind-2 arm read whole
 
 `EAX = [entity+0C0h]`, `[EAX+4]` is the record kind, `EDI = [EAX+8]` the payload. For kind 2:
@@ -481,7 +511,32 @@ follower's station depth finite. On USN01 no ship travelled far enough to get ne
 turned back on its own track hard enough. **That arm is transcribed but unexercised**, and it should
 not be called measured until something runs it.
 
-### The call table, and what is NOT a same-binary comparison
+### The same-binary null
+
+`local/wake_usn01_noappend.log`, the control: the same source with the append call switched off by a
+local `constexpr bool`, built, run, and the switch then removed again (a `constexpr true` branch
+compiles to the same code as the unconditional block, so the committed build is the measured one).
+Against `local/wake_usn01_fixed.log`, `local/wake_null_calldiff.txt` is the whole host-call and
+native-call table diffed in both directions:
+
+```
+before rows=1115 after rows=1116 changed=1
+NEW   UnitWake::append_sample   00810190   concrete calls=42000
+```
+
+**One row, in one direction, and nothing else changed.** The control's own wake line reads
+`ships=0 appends=0 advances=0 merges=0`, and `units=62 walked=186000 updated=186000
+motion_ticks=42000 total_path=5600.63`, `torpedo_drop drops=5 refusals=0 water_entry_breakups=0`,
+`swims_started=5`, `torpedo_ranges_derived=35` and `bullet_ranges_derived=234` are identical across
+the pair. 42000 is the run's `motion_ticks` exactly, so the append runs once per ship motion tick
+and on no other schedule.
+
+One caveat stated rather than hidden: the control binary also carries the `written` counter added
+for the trail-length report, which the measured run predates. It is inert with the append off - the
+counter is only touched inside the append, and the report skips any ship with `appends == 0` - and
+the one-row diff is itself the evidence that nothing else moved.
+
+### The earlier cross-binary diff, and why it is not the null
 
 `local/wake_calldiff.txt`, against the predecessor's own USN01 control:
 
@@ -497,12 +552,11 @@ main `3a691e884`, this build merges main `b4aa9e241`, and `6ba5797b3 Ungate the 
 `8108007c4 Torpedo warhead: the damage is the Blast` sit in that range. So this diff is **not** a
 same-binary before/after and is not offered as one.
 
-What can be said without one: the motion totals are identical to the control to the last
-centimetre - `units=62`, `motion_ticks=42000`, `total_path=5600.63`, `moved=0.00` - as are
-`torpedo_drop drops=5 refusals=0 water_entry_breakups=0`, `swims_started=5` and the whole AI
-coordinator line including `formation_requests=306`. And by inspection the append writes only the
-new `GameUnitSlot::wake` field, which nothing reads. A no-append control run on this binary would
-settle it outright and has not been taken.
+It is kept because it is the comparison against the predecessor's own control, and because the
+motion totals match it to the last centimetre anyway - `units=62`, `motion_ticks=42000`,
+`total_path=5600.63`, `moved=0.00`, `torpedo_drop drops=5 refusals=0 water_entry_breakups=0`,
+`swims_started=5`, and the whole AI coordinator line including `formation_requests=306`. The null
+above is what actually settles the question.
 
 ## 8. Uncertainties, and what is not read
 
