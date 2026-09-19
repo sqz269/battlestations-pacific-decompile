@@ -2652,3 +2652,41 @@ actual one, so it pulls harder and turns better.
 
 So `0099E4DC`-`0099E512` is probably a delta on the target rather than an absolute floor. That is
 the planner, shared with the torpedo and squadron streams, so it is named here and not changed.
+
+## The same zero-span defect is in the dive-bomb attackrun
+
+cc8-plane-squadron found that the torpedo attackrun hands `009FBA50` a zero range pair, killing the
+glide bias. The dive-bomb attackrun does the same thing, and the listing shows what the image
+passes instead.
+
+`009C43D2 SUB ESP,0x10` opens the window and the four floats go in at:
+
+```
+009c43f3  FLD [EDI+0xac] / FADD [EDI+0x50]   -> [ESP]      base = approach+ACh + approach+50h
+009c43e3  FLD [EDI+0xb4]                     -> [ESP+4]    approach+B4h
+009c43db  FLD [ESP+0x54]                     -> [ESP+8]    the frame value 009C4317 stored
+009c43cd  CALL 00419010                      -> [ESP+0xC]  an InterpolateClamped result
+009c4401  CALL 0x009fba50
+```
+
+The two range arguments are **`approach+B4h` and a separately computed frame value** - two different
+numbers. This host passes `in.attack_distance_b4` for both:
+
+```cpp
+cin.range_low = in.attack_distance_b4;
+cin.range_high = in.attack_distance_b4;
+```
+
+so `span = max(high - low, 0)` is zero and the bias `span * scale * class+518h` vanishes, leaving
+the bare base. That is precisely the defect on the torpedo side, in a second call site. The base is
+wrong too: the image's is `approach+ACh + approach+50h`, the same sum `009C7F00`'s ceiling uses,
+while this host passes `r.commanded_altitude_base`.
+
+`[ESP+44h]` is the tick's own `dt` slot at entry - the prologue is `SUB ESP,0x38` plus two pushes,
+so entry `[ESP+4]` is `[ESP+44h]` - reused as scratch once `dt` is consumed; the value the call
+reads is the one `009C4317` stores, which is one level further back and not yet traced.
+
+This is a real candidate for why the dive bomber's altitude profile is wrong through the whole
+run-in, and it is upstream of everything the last four packets bound. It needs
+`src/game_hosts_units.cpp`, which is currently released, so it is recorded here and will be taken
+with its own window rather than by quietly re-claiming the file.
