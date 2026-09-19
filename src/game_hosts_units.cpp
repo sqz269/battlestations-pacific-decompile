@@ -1577,6 +1577,46 @@ struct GameUnitsHost::Impl {
         // of -135 m and flies in. Neither is a moveto defect; both are the
         // done-state descent and the dive aim, reached more often because the
         // latch holds.
+        // FED, packet cc8_follow_enter run D, under the integrator's explicit
+        // grant of 2026-09-19 (this line is the integrator's pin, not a
+        // worker's). It was pinned at 2 on two earlier measurements in which
+        // wiring the real squadron attack mode was a net regression
+        // (docs/BOMBER_AFTER_TASK.md 10.9 and docs/DIVE_BOMB_APPROACH.md's B'
+        // run): the leader sets the mode to 1 every think via
+        // 0099B740 -> 007ED3F0, so `engaged` collapses to the in-range latch at
+        // R = approach+B8h = 2080 m.
+        //
+        // Both verdicts were taken when EVERY aircraft answered 007B8AD0 as a
+        // leader and flew its own moveto, with no follow state to fall back to.
+        // This packet removed that premise, so the verdict was RE-TAKEN as run
+        // D. It regressed again, for a third reason, and the pin STAYS. USN04,
+        // 4800 mission frames, placement ON in every run:
+        //
+        //   run                     follow law  releases  mutual kills  deaths
+        //   A  before                        0        35             4      14
+        //   B  predicate fed                 0        35             0      10
+        //   D  B + this line fed            32        26             0       6
+        //
+        // D is the first run in this chain in which the follow LAW executes at
+        // all, and it holds B's gains (the four mutual torpedo kills stay gone,
+        // deaths fall further). But nine releases are lost, and the state that
+        // loses them is FLYABOVE. Six dive-bomber wing members end the run like
+        //
+        //   divebomb movieval|.-2 arm_ticks=1812 transitions=1
+        //       states[follow=1546 flyabove=266] releases=0 rounds_left=2
+        //
+        // - one transition, all of it: they hold formation for 1100-1550 ticks,
+        // leave follow into flyabove, and the run ends before the approach
+        // sequence (aimdive -> turndown -> attackrun) can complete. They never
+        // reach `done` either, so criterion (c) becomes untestable rather than
+        // passing. The aircraft are not lost to a bad command; they are lost to
+        // holding station until there is no mission left to fly.
+        //
+        // What that means is that this pin is NOT only propping up the missing
+        // follow state, as this packet expected. Something downstream of follow
+        // is too slow - most likely the flyabove arm, or the moment the member's
+        // own latch is allowed to set. Feeding this line honestly needs that
+        // read first; it is not blocked on the follow entry any more.
         in.engaged.control_mode_370 = 2;
         in.engaged.has_latched_target_440 = slot.command_target_plus_one != 0;
         in.entry.control_mode_370 = in.engaged.control_mode_370;
@@ -4767,9 +4807,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         bool unit_lacks_follow_target_007b8ad0(int index) override {
                             GameUnitSlot* const u = controlled(index);
-                            // 007B8AD0 tests unit+9D8h. An ordered aircraft has
-                            // a command target, which is what stands in for it.
-                            return u == nullptr || u->command_target_plus_one == 0;
+                            // CORRECTED, packet cc8_follow_enter. This used to
+                            // answer `u->command_target_plus_one == 0` - "an
+                            // ordered aircraft has a command target, which is
+                            // what stands in for it". 007B8AD0 tests unit+9D8h,
+                            // the squadron array slot, so the predicate is the
+                            // flight-leader test and a command target has
+                            // nothing to do with it: an ordered LEADER answered
+                            // false here, which is the wrong way round.
+                            if (u == nullptr) return true;
+                            return owner_.unit_is_flight_leader_007b8ad0(
+                                u->process_index);
                         }
                         bsp::ReleaseOrderSetInputs read_set_inputs(
                             int index, int requested) override {

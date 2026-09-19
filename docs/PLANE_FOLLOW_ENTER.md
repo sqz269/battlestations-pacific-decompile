@@ -244,6 +244,133 @@ sampled at the top of `place_wing_member_on_station_007f23a0`, **before** the pl
 is genuine drift: run A settles at `0-1=94.9 0-2=92.0 1-2=128.3` at tick 5200 for squadron
 `movieval`, against a station geometry of `local=(-60.0 -25.0 70.0)` for seat 1.
 
+### Criterion (e), the mutual torpedo kills: answered by run B
+
+`entity_impact ... life=0.05` rows naming a `B5N Kate`: **A = 4, B = 0.** In run A the two aircraft
+of `#4.1` torpedo each other and the two of `#8.1` do the same, impact points metres apart at a
+common altitude. In run B, with the predicate fed and **placement unchanged**, all four are gone.
+
+That discriminates the three candidates the integrator listed. It is **(i)**: the wing members were
+flying their own attack run and converging on the leader's track, because every aircraft in this
+host steers at the same aim point with no lateral offset. The census shows the mechanism with no
+inference needed - `attackrun=320` in A becomes no `attackrun` entry at all in B, on exactly the
+eight `|.-2`/`|.-3` rows. It is not a duplicate formation index and not a collapsed station
+displacement: the station producer is untouched by this change. Four of twelve torpedoes recovered,
+with `releases` unchanged at 35.
+
+## 7. Run D: the second gate, and its prediction
+
+The integrator granted this packet the one line it had pinned: `in.engaged.control_mode_370`, now
+fed from `slot.db_attack_mode_370`. Its pin rested on two measurements
+(`docs/BOMBER_AFTER_TASK.md` 10.9, `docs/DIVE_BOMB_APPROACH.md`'s B' run) in which wiring the real
+mode was a net regression - but both were taken when every aircraft answered `007B8AD0` as a leader
+and flew its own moveto, with **no follow state to fall back to**. This packet removed that premise,
+so mode 1 no longer means "commanded nothing"; it means "hold formation".
+
+### Prediction for D, written before the run
+
+The integrator's prediction is that wing members stay in follow through the whole approach, engage
+when their own latch sets inside 2080 m, and that the `#1.1|.-2` descent in `done` disappears.
+**Mine differs on one point**, and that is the point worth measuring:
+
+1. Dive-bomber wing members enter follow and **stay** for hundreds of ticks, as the torpedo members
+   already do in B. `follow law` becomes non-zero for the first time in this chain, because the law
+   IS wired into the dive-bomb follow tick (unlike the torpedo seam). This is the first run in which
+   the law executes at all.
+2. **Leaders change too, and that is the risk.** The mode is not a per-member field: `0099B740` ->
+   `007ED3F0` has the leader set the squadron's mode to 1 every think, so feeding it drops the
+   LEADER out of `engaged` as well, and the leader's own `engaged` then collapses to the in-range
+   latch at `R = approach+B8h = 2080 m`. So I expect the leader's `attackrun` to start LATER (nearer
+   the target), not merely the members' to vanish. If total `releases` falls below 35, that is where
+   it will have gone, and it is the same effect that made the two earlier verdicts a regression.
+3. Criterion (c) judged against **31.3 m**, not 0.0: `#1.1|.-2` ends `done` at 31.3 m on this tree.
+   I expect it to stay at or above that, and in D also to sit inside the leader-relative band.
+4. Mutual kills stay at 0 - they are already fixed by B and the dive-bomb mode cannot reintroduce
+   them on the torpedo side.
+
+Falsifier for the whole packet: if `releases` falls and criterion (c) worsens, the pin was right for
+a reason this packet did not remove, and the line goes back with D's table in its comment.
+
+### D, measured. The falsifier fired, and the pin stays
+
+| run | base | `follow law` | releases | mutual kills | deaths | `#1.1\|.-2` done alt |
+| --- | --- | --- | --- | --- | --- | --- |
+| A before | `3e7625be0` | 0 | 35 | 4 | 14 | 274.5 -> 31.3 |
+| B predicate fed | `f49af48e8` | 0 | 35 | **0** | 10 | 274.5 -> 31.3 |
+| D B + mode fed | `f4b6b4bf5`+line | **32** | **26** | 0 | 6 | no `done` line at all |
+
+**Prediction 1 confirmed: `follow law` is 32.** D is the first run in this whole chain in which the
+follow law executes at all - the dive-bomb follow tick is the only place it is wired, and now dive
+bombers reach it. D also holds B's gains: the four mutual kills stay gone and deaths fall 10 -> 6.
+
+**Prediction 2 confirmed, and it is the falsifier: releases fall 35 -> 26.** I predicted that
+feeding the mode drops the LEADER out of `engaged` as well, because `0099B740` -> `007ED3F0` has the
+leader set the squadron mode to 1 every think, and that if releases fell this is where they would
+have gone.
+
+**The state that loses the aircraft is `flyabove`.** Six dive-bomber wing members end the run like
+
+```
+divebomb movieval|.-2      arm_ticks=1812 transitions=1 states[follow=1546 flyabove=266] releases=0 rounds_left=2
+divebomb D3A Val #1.1|.-2  arm_ticks=1400 transitions=1 states[follow=1134 flyabove=266] releases=0 rounds_left=2
+divebomb D3A Val #5.1|.-3  arm_ticks=1349 transitions=3 states[follow=1133 aimdive=52 flyabove=109 turndown=55] releases=0 rounds_left=2
+```
+
+`transitions=1` is the whole story for the first two: they hold formation for 1100-1550 ticks, leave
+follow into flyabove, and the run ends before `aimdive -> turndown -> attackrun` can complete. They
+never reach `done`, so **criterion (c) is untestable in D rather than passing** - the `#1.1|.-2`
+`done` line is absent from the log entirely. Criterion (a) fails: releases fell.
+
+So the line goes back to `2`, with this table in its comment, as the two earlier packets did.
+
+**What D changes about the diagnosis, and it is not what this packet expected.** The pin was not
+only standing in for the missing follow state. This packet supplied the follow state, the members
+held it correctly, and they still lost the attack - to being **too slow after** follow, not to being
+commanded nothing during it. The next reader should look downstream of follow: the flyabove arm, or
+the moment a member's own in-range latch is allowed to set at `R = approach+B8h = 2080 m`. Feeding
+`control_mode_370` is no longer blocked on the follow entry.
+
+Run E (D + placement OFF) is not run and should not be next: D does not hold.
+
+## 8. Two items owed by the altitude band, both closed
+
+**`Pilot/Follow/LeaderFollowAlt` is authored `10`.** From this installation's
+`I:\SteamLibrary\steamapps\common\Battlestations Pacific\scripts\datatables\planeglobals.lua`,
+mtime **2024-10-29 12:54:18**, 46647 bytes, line 497: `["LeaderFollowAlt"] = 10`. That mtime matches
+neither the locally modified `vehicleclasses.lua` (2026-05-09) nor the untouched bulk
+`reconclasses.lua` (2024-07-13), so it is this installation's shipped value and not a local edit.
+Two neighbours corroborate the existing reading rather than adding to it: line 492
+`["LeaderHeadingSpdTime"] = { 0.5, 4.0 }`, which is §5.10's 0.5 s to 4.0 s lag ramp, and line 496
+`["FollowedPointDist"] = 250`, which is the `+250` of §5.12's lead-pursuit point.
+
+So the band's floor is `min(leaderY + 10.0, state+88h)`, with 10 m the authored offset.
+
+**The writer of `state+88h` is the follow state's own Enter, and there is only one.**
+`009BEDBB FSTP float ptr [ESI+88h]`, inside `009BED80 BSP_BotStateFollow_Enter_Provisional`:
+
+```
+009beda0  MOVSS [ESI+94h],XMM0        ; 0.0
+009beda8  MOVSS [ESI+90h],XMM0        ; 0.0
+009bedb0  FLD float ptr [EAX+8]       ; EAX = [ESI+6Ch], loaded at 009BED9A
+009bedb3  MOVSS XMM0,[00D7A24C]       ; 1.0f
+009bedbb  FSTP float ptr [ESI+88h]    ; state+88h = *(float*)([state+6Ch] + 8h)
+009bedc3  MOV  [ESI+84h],BL           ; 0
+009bedc9  MOVSS [ESI+8Ch],XMM0        ; 1.0f
+009bedda  MOV  [ECX+3E4h],1           ; psFormation = 1
+009bede4  CALL 007ED260               ; AssignFormationIndices
+```
+
+So `state+88h` is **latched once, at the moment the member enters follow**, from `[state+6Ch]+8h` -
+it is not maintained per tick. That matters for the substitution: the host currently supplies `1e30`
+so that "the named half of the band floor wins", and the honest replacement is a value sampled at
+entry, not a running one. `state+8Ch` is `1.0f` from the same `[00D7A24C]` §5.2 already names, and
+`state+84h` is cleared beside it.
+
+Census scope, stated: `scan-bytes 'd9 9e 88 00 00 00'` (the ESI form) returns exactly this one site
+image-wide. I did not enumerate the other seven ModRM register forms, so "only writer" is proved for
+the ESI form and is an inference for the rest; `009BED80` being the state's Enter, and `+88h` being
+read as a latched band floor, is what makes the inference reasonable.
+
 ### A retraction
 
 I told the integrator that run A contained no `torpedo ... arm_ticks=` rows and that the torpedo arm
