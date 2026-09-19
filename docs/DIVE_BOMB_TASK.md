@@ -2949,3 +2949,53 @@ address, which the sweep cannot distinguish.
 clean at 63/0. The rest is listed for routing to its owners, with the caveat that a Class A row is
 not a defect until its load width is read and a Class B row may be a site address or a rounded
 declaration.
+
+## `--load-sites`: Class A split, and the danger list is four rows
+
+The sweep's Class A covered two opposite cases. `kPitchClampLo` itself printed as Class A - declared
+`float` 0.05625, the double at the address 0.05625, the float -1.396 - so "matches the other width"
+hid both the harmless case (every load is 8 bytes; the header's C++ type is merely narrower than the
+image's) and the catastrophic one (a load is 4 bytes; the declared VALUE is simply wrong).
+
+`--load-sites` decides it mechanically: for each mismatched constant it finds every instruction with
+an absolute `[disp32]` operand naming that address and reports the operand width.
+
+### The scan had to be built the way the project's own notes prescribe
+
+A linear Capstone sweep from the `.text` start found **none** of the three loads this stream had read
+by hand - `009C6790`, `009C45B3`, `009C43C4` - although it reported 3, 1 and 3 sites at those
+addresses. It desyncs on inline data and every "site" it had was an artefact. Disassembling from each
+**known function start** up to the next, out of `local/bsp_index.sqlite`, finds all three at the
+right widths and raises the site counts to 15, 56 and 168. The tool refuses to run without that
+index rather than silently falling back.
+
+### The result
+
+**697 constants, 122 mismatched: 101 A-harmless, 1 A-WRONG, 4 Class B, 16 unreferenced by the scan.**
+
+So the overwhelming majority are a narrow C++ type over an 8-byte image value - real, but cosmetic.
+The danger list is four rows:
+
+| class | header:line | constant | declared | loads read |
+| --- | --- | --- | --- | --- |
+| **A-WRONG** | `torpedo_aim_tick.hpp:77` | `kPitchClampLo` | `float` 0.05625 | **m32 -> -1.39626** |
+| B | `hud_updates.hpp:334` | `kHudMinimapXDivisor` | `float` 1024 | m64 -> 0.000976562 |
+| B | `ship_ai_attackmove_substates.hpp:408` | `kAttackMoveLeadScaleNear` | `float` 1 | **m32 -> 0.174533** |
+| B | `unit_death_sink.hpp:70` | `kWreckAnchorLateralDivisor` | `double` 2 | m64 -> 2.5 |
+| B | `pilot_controls.hpp:84` | `kPilotPitchHalfRange` | `float` 0.5236 | m32 -> 0.523599 |
+
+The last is the false positive predicted earlier and now confirmed by its loads: a
+four-significant-figure declaration, not a width error. The other three are real, and two are
+recognisable at sight - `0.174533` is `DEG(10)` declared as 1, and `0.000976562` is `1/1024`, the
+reciprocal a divide-by-multiply would store.
+
+**The single A-WRONG is `kPitchClampLo`, which is the bug cc8-torpedo-descent found by hand.** This
+tree still carries `0.05625f`, so the tool found it blind, in a tree where it was still live, having
+been told nothing about it - and found no other constant in 697 that is wrong in the same way. That
+is the validation the sweep needed; a tool that found nothing would have proved nothing.
+
+Sixteen rows are unreferenced by the scan and are reported as their own class, not as safe: an
+address with no referencing instruction may simply be one the function-start sweep did not reach.
+
+Nothing outside this stream's headers was changed. The full table, including all 101 A-harmless
+rows with their sites, is written to `local/output/const_load_widths.txt`.
