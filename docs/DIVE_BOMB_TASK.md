@@ -2999,3 +2999,26 @@ address with no referencing instruction may simply be one the function-start swe
 
 Nothing outside this stream's headers was changed. The full table, including all 101 A-harmless
 rows with their sites, is written to `local/output/const_load_widths.txt`.
+
+## Correction: `plane_drop_angle` is NOT zero, and the span fix's inertness is still unexplained
+
+I proposed that the `009FBA50` span fix came out inert because `class_gain = tan(plane_drop_angle)`
+is zero for this class, and then nearly confirmed it from a bad search. `Select-String -List` returns
+the **first match per file**, so a search for `DropAngle` over `vehicleclasses.lua` returned exactly
+one row - a `["Type"] = "Submarine"` class - and I read that as "no aircraft class has DropAngle".
+
+There are **176** of them. The counts by value start 33 at 0.698132, 9 at 0.383972, 9 at 0.523599,
+and the torpedo stream's Mavs report 0.4014, which is one of the others. So aircraft do carry a drop
+angle, `plane_drop_angle` is very probably non-zero for the dive bomber too, and `class_gain` is not
+the explanation.
+
+That is the vacuous-negative trap this project's own notes name - an empty or near-empty search
+result proves nothing until the pattern is known to occur - and I walked into it while holding a
+tool built specifically to stop people trusting unverified readings.
+
+**So the span fix's inertness is open, not explained.** What is established: `usn04_span.log` is
+identical to `usn04_goaway2.log` to the digit, so correcting the range pair, the composed base and
+the phantom `cmd+2B4h` write changed nothing observable. The cheap next step is instrumentation
+rather than inference - log `span`, `class_gain`, `scale` and `c.clamped_altitude` from the attackrun
+tick for one run, and see which term is dead - and that is one build and one run, against a guess
+that has already been wrong once.
