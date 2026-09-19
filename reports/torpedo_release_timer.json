@@ -94,7 +94,9 @@
   },
   "validation": {
     "before": "local/descentlaw_full_usn01.log",
-    "after": "local/reltimer_after_usn01.log",
-    "build": "clean; ctest reconstructed_math and tool_tests both pass"
+    "after": "local/aimclass_after_usn01.log",
+    "build": "clean; ctest reconstructed_math and tool_tests both pass",
+    "result": "All five aircraft released at 12.0 m and 72.9 to 73.7 m/s, angle to nose 0.2 deg. drops=5 refusals=0 water_entry_breakups=0 swims_started=5; release_arm_009D2287=1, timer fires at aim tick 253; gunnery damage 314.4 -> 2596.8 with 0 -> 5 deaths and 5 kill credits. 12.0 m is TorpReleaseAlt from the SPNormal robots row at approach+78h, and the aim tick census ends with F34=0.01, so the dive command flares to nothing exactly at the release floor.",
+    "open": "The aircraft still touch the water after the drop, at 69.6 m/s and level, because this host runs no goaway tick. 009D0F10 makes three direct 009FB800 calls at 009D109C, 009D10FF and 009D1194, each with a literal 1.0 second argument, capping the climb-out at class+1ECh * 1.0 = 0.1854 rad."
   }
 }

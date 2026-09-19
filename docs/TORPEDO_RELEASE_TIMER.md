@@ -240,3 +240,91 @@ aircraft that has just dropped tells its flight-mates. The write-back is being m
 `src/game_hosts_scene_contents.cpp` and the squadron host by that agent; those files are not touched
 here. If a run of this packet's reaches a drop before that lands, the broadcast is recorded as
 blocked by this and nothing is inferred from its absence.
+
+## `009D1500` confirmed from the run, and where the gates therefore sit
+
+Both remaining gates key off `F0C`, so it is worth an independent check.
+`src/torpedo_approach_update.cpp`'s `torpedo_time_to_target_009d1500` says that when the selected
+release distance is below the float 600 at `00CE4BC4`, the metric is
+`(range - releaseDistance) / 600 + 1`. Fitting the three `F0C` values the aim census printed against
+their ranges, without looking at the reconstruction:
+
+| range 90h | `F0C` printed | `(range + 150) / 600` |
+| --- | --- | --- |
+| 2199.2 | 3.9154 | 3.9153 |
+| 1881.7 | 3.3861 | 3.3862 |
+| 1485.9 | 2.7264 | 2.7265 |
+
+Two points fix the line at `(range + 150)/600` and the third confirms it, which is
+`(range - 450)/600 + 1` with `450` the `TorpReleaseDistNear` selected after the 15-second switch.
+The reconstruction is exact and the aircraft speed does not enter, although it changed from 81 to
+110 m/s across those samples. So `F0C` is a **range** metric, as `docs/TORPEDO_RUN_PROFILE.md` says,
+and not a time.
+
+The gates in metres of range, after the switch:
+
+| gate | opens at | in range terms |
+| --- | --- | --- |
+| altitude `009D20C4`, `Interp(0.4, 40, 1.0, 25, F0C)` | 25 m for `F0C >= 1`, ramping to 40 m at `F0C = 0.4` | 25 m beyond 450 m of range, rising to 40 m at 90 m |
+| cone `009D2209` | 15 degrees for `F0C >= 1.6` | tightest beyond 810 m of range |
+
+So the aircraft has to be under 25 metres while still outside the release distance. That is what the
+descent chain has to deliver, and it is the number to judge the run by.
+
+## Validation, part two: five torpedoes in the water
+
+`local/aimclass_after_usn01.log` against `local/reltimer_after_usn01.log`, one commit apart
+(`d74aa5b4a`), same USN01 command line, `query session` = `console Active`, `exit_code=0
+frames_presented=3199 loop_finished=1`.
+
+**All five aircraft released.** The release census, which is the sample the water-entry arithmetic
+is built on:
+
+```
+release census: unit=Mav3 alt=12.1 m |v|=73.52 m/s angle_to_nose=0.2 deg
+release census: unit=Mav2 alt=12.0 m |v|=73.60 m/s angle_to_nose=0.2 deg
+release census: unit=Mav5 alt=12.0 m |v|=73.66 m/s angle_to_nose=0.2 deg
+release census: unit=Mav4 alt=12.0 m |v|=73.73 m/s angle_to_nose=0.2 deg
+release census: unit=Mav1 alt=12.0 m |v|=72.91 m/s angle_to_nose=0.2 deg
+```
+
+**12.0 metres** is `TorpReleaseAlt` from the `SPNormal` robots row - `approach+78h`, the number
+`docs/TORPEDO_APPROACH_BLOCKER.md` named in its section 2 and mistook for the defect. The aircraft
+arrive at it and hold it: the aim tick's own census ends with `F34=0.01`, the height above the
+release floor, so the dive command has flared to nothing exactly at the floor. 73 m/s is well inside
+`MaxWaterHitVel` 100, which is why nothing breaks up.
+
+| | before | after |
+| --- | --- | --- |
+| `torpedo_drop drops` / `refusals` / `water_entry_breakups` | 0 / 0 / 0 | **5** / 0 / **0** |
+| `swims_started` | - | **5** |
+| `release_arm_009D2287`, `timer_on`, `timer_fires` | 0, 0, 0 | **1, 1, 1**, first fire at aim tick 253 (Mav1) |
+| `run_time_009D1360` | 0 | **112** |
+| `aim_complete_2Ch` | 0 | 1, first true at aim tick 329, `clause=turn` |
+| approach `ticks` / `aim_ticks` / `min` range | 562 / 138 / - | 834 / **329** / **3.7 m** |
+| gunnery damage `queued_hits` / `total_damage` | 10 / 314.4 | **111** / **2596.8** |
+| `deaths` / `kill_credits` | 0 / 0 | **5** / **5** |
+| `plane water contact` | five, `\|v\|` 99.3 to 103.4 | five, `\|v\|` 69.6, after the drop |
+
+These are the first torpedoes any stream in this project has put in the water, and the first mission
+kills they have produced.
+
+### The third retraction of the `009D1360` claim, this time by measurement
+
+`run_time_009D1360` is **112**, not 0. Section 4 said the commit hook at `009D19A0` "can only open
+inside 281 m" with the turn radii substituted at zero, and that is still the arithmetic - but the
+aircraft now get inside 281 m, so it opens. The earlier "never opens" was wrong twice over: once
+because it read a substitution as a measurement, and once because the aircraft never got close
+enough to test it. What stands is that it is not a blocker on the drop: `timer_blocked_007BB110=75`
+counts refusals **after** the release, and the release itself fired with `approach+A0h` still at
+whatever `009D1360` had put there.
+
+### What still goes wrong, by address
+
+The five aircraft still touch the water, but at 69.6 m/s and essentially level (`alt` -0.02 to
+-0.10) rather than at 141 m/s nose-down: they fly on after the drop with nothing commanding a climb.
+`009D0F10 BSP_BotStateTorpedoGoAway_Tick` is the state that does it - three direct `009FB800` calls
+at `009D109C`, `009D10FF` and `009D1194`, each with a literal `1.0` second argument, which caps the
+climb-out at `class+1ECh * 1.0` = 0.1854 rad. This host runs no goaway tick. That is the next
+packet, and it is a climb rather than a descent, so it exercises the arm of `009FB800` that nothing
+in this stream has yet driven.
