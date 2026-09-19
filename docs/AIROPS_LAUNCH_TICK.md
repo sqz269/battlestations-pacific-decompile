@@ -253,7 +253,7 @@ BSP_AirField_TickAdvance` for an airfield. It runs, in order:
 | 006C64B0 | the state-2 wait described in section 1 | no |
 | 006C6540 | the ready-plane pull of section 5 | no |
 | 006CD240 | stock regeneration: a 14h-stride array at block+98h, `timer -= step`, and on expiry a reload from 006CC9F0 | no |
-| 006C5B70 | unread, behind the two failure bytes and the owner's +5Dh | no |
+| 006C5B70 | behind the two failure bytes and the owner's +5Dh: while block+38h is set and 007ED740 answers, re-publishes through 006BF150 every slot whose +28h is that same entity. A third reader of block+38h, and it treats it as the spotted plane | no |
 | 006CD810 | the AI's own launch: walks the slots counting states 3 and 4 whose class answers 13h at vtable+1Ch, against block+E8h | no |
 | the virtual at block+3Ch | unread | no |
 
@@ -493,7 +493,8 @@ reachable in one run.
   `006C0DFB`. Every routine that changes a slot publishes it, which is why it appears at the end of
   the launch start and on several arms of `006CD350` and `006CCDA0`. This also closes the
   corresponding item in `docs/AIROPS_LAUNCH_START.md`.
-* `006C58A0`, `006C5B70` and the virtual at block+3Ch were not read.
+* Of `006CDC70`'s nine sub-updates only the virtual at block+3Ch is now unread; `006C58A0` and
+  `006C5B70` are in the table above. None of the eight but `006C0DA0` is reconstructed.
 * `006BC8E0`, which `006C64B0` calls when a state-2 slot's second has passed, was not read.
 * slot+4Ch has no writer this thread has read. slot+50h now has one: `006CCDA0` stores its fifth
   argument there on two arms (`*(slot + 0x50) = param_5`), which is the `OwnerPlayer` 006C5050
