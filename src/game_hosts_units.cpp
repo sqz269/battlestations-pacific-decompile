@@ -4460,6 +4460,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // target each tick, so that is the bearing it has.
                         in.bearing_error = bsp::wrapped_angle_subtract_00438b10(
                             unit_.db_bearing_c0, unit_.plane_heading_c6c);
+                        // 009C5919-009C592D folds pose+C68h into the slot the
+                        // band test at 009C5D2C reads.
+                        in.bank_c68 = unit_.plane_bank_angle_c68;
                         // (approach+14h)->+64h and ->+68h at 009C5CAB and
                         // 009C5CD0, RECOVERED: 009F9D1E makes approach+14h a
                         // 0x248-stride robots row viewed 0xCh in, so these are

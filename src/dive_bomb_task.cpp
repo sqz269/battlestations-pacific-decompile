@@ -580,12 +580,21 @@ DiveBombAimDiveSteerResult dive_bomb_aimdive_steer_009c5c9f(
         out.pitch_29c = (demand > -1.0f) ? demand : -1.0f;
     }
 
-    // 009C5D8E, the default arm: InterpolateClamped(-0.4, 1.0, 0.4, -1.0, x).
-    // Falling, like every other roll map in this bot: a positive bearing error
-    // gives a negative stick.
+    // 009C5D0E COMISS against the 0.0f at 00D7A218 with 009C5D22 `76` JBE, then
+    // 009C5D2C COMISS the 60 degrees at 00D05AAC against |pose+C68h| with
+    // 009C5D31 `76` JBE. The wide band is taken only while the aircraft is still
+    // inside 60 degrees of bank AND short of its aim point; banked over or past
+    // it, the tighter band applies.
+    out.used_wide_band = in.aim_error > 0.0f &&
+        fold_abs(in.bank_c68) < dive_bomb_constant::kAimDiveRollBandAngle;
+    const float band = out.used_wide_band
+        ? dive_bomb_constant::kAimDiveRollBandWide   // 009C5D48 / 009C5D58
+        : dive_bomb_constant::kAimDiveRollBand;      // 009C5D75 / 009C5D85
+    // 009C5D8E: InterpolateClamped(-band, 1.0, band, -1.0, x). Falling, like
+    // every other roll map in this bot: a positive bearing error gives a
+    // negative stick.
     out.roll_290 = dive_bomb_interpolate_clamped_00419010(
-        -dive_bomb_constant::kAimDiveRollBand, 1.0f,
-        dive_bomb_constant::kAimDiveRollBand, -1.0f, in.bearing_error);
+        -band, 1.0f, band, -1.0f, in.bearing_error);
     return out;
 }
 

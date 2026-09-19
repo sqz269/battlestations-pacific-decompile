@@ -653,6 +653,9 @@ struct DiveBombAimDiveSteerInputs {
     // approach->vtable[0] points and rolls on one of them; see the header note
     // in the .cpp for which, and why this host passes one.
     float bearing_error = 0.0f;
+    // pose+C68h, the bank. 009C5919-009C592D folds it into the frame slot the
+    // band test at 009C5D2C reads, so the two arms are picked by attitude.
+    float bank_c68 = 0.0f;
     // (approach+14h)->+64h and ->+68h, read at 009C5CAB and 009C5CD0. Two more
     // fields of the same difficulty-row record whose +5Ch and +60h the aim
     // error already uses.
@@ -662,6 +665,7 @@ struct DiveBombAimDiveSteerInputs {
 struct DiveBombAimDiveSteerResult {
     float pitch_29c = 0.0f;   // 009C5CFA, with +2A0h = 1 and +2D0h = 0
     float roll_290 = 0.0f;    // 009C5DA3, with +294h = 1 and +2CCh = 0
+    bool used_wide_band = false;  // the 009C5D33 arm rather than 009C5D60
 };
 DiveBombAimDiveSteerResult dive_bomb_aimdive_steer_009c5c9f(
     const DiveBombAimDiveSteerInputs& in) noexcept;

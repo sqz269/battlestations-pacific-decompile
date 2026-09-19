@@ -1999,3 +1999,42 @@ one frame slot. `+19h` gets the real `x` instead of the substituted 1.0, so its 
 
 `009C40A0` is now a defined function in Ghidra, `dive_bomb_approach_aim_point_009c40a0`, taking the
 reviewed ledger name; body `009C40A0`-`009C40B7`, 22 bytes.
+
+## The wide roll arm closed: the band is picked by attitude
+
+`009C5D24`-`009C5D31` chose between two `InterpolateClamped` bands for the aimdive roll, and the
+`fStack_44` its second test compares against 60 degrees had no writer at its corrected slot key.
+The key was wrong, not the slot: `tools/frame_slot_census.py` puts the write at K=56 and the read at
+K=-32, a drift of 100 bytes, and the tool's own docstring names the cause - an argument window
+opened by `SUB ESP,imm` and closed by the callee's `RET imm16` rather than by an `ADD ESP,imm`,
+which `--pop` does not cover.
+
+Settled directly instead. `009C5D2C` is not inside any argument window - the nearest `SUB ESP,0x14`
+is at `009C5D37`, after it - and the tick's frame is one fixed block opened by `SUB ESP,0x48` and
+closed by `ADD ESP,0x48` before both `RET 4`s, so `ESP` there is at the base depth. The only writes
+to that physical slot before it are:
+
+```
+009c590c  MOVSS XMM0,dword ptr [EDX + 0xc68]   ; pose+C68h, the bank
+009c5914  COMISS XMM0,XMM1                     ; XMM1 = 0, XORPS at 009C58D3
+009c5917  JBE   0x009c5921
+009c5919  MOVSS dword ptr [ESP + 0x20],XMM0    ; bank
+009c5929  SUBSS XMM1,XMM0                      ; -0.0 - bank
+009c592d  MOVSS dword ptr [ESP + 0x20],XMM1
+```
+
+So it is **`|pose+C68h|`**, the folded bank, and the arm selection is:
+
+| condition | band | endpoints |
+| --- | --- | --- |
+| `aim error > 0` **and** `|bank| < 60 deg` (`00D05AAC`) | wide | `+/- 0.5`, `00CE3800` |
+| otherwise | tight | `+/- 0.4`, `00CE7804` / `00D1F400` |
+
+Both tests are `76`, JBE: `009C5D22` on the error's sign and `009C5D31` on the bank. The rule reads
+sensibly - while the aircraft is still near wings-level and short of its aim point the roll is
+gentler, and once banked over or past the point it tightens.
+
+The band selection is now bound. What is still a contract is the *other* operand: the image
+interpolates the wide arm over a second bearing error, drawn against the latched reference at
+`approach+D8h`/`+E0h`, and this host keeps one bearing. So the arm that runs is right and the value
+it runs on is the single bearing, which is labelled at the call site.

@@ -88,7 +88,7 @@
   "open": {
     "0071EBF0 mode 2": "this+30h == 2 returns this+18Ch; this host has no such mode.",
     "00E19BB4": "the lazily built static default; read, not modelled.",
-    "009C5D24-009C5D31": "the wide roll arm of the aimdive steering, still named and not bound."
+    "009C5D24-009C5D31 interpolant": "the band selection is bound (folded pose+C68h against the 60 degrees at 00D05AAC); the wide arm interpolates a SECOND bearing error drawn against the latched reference at approach+D8h/+E0h, and this host keeps one bearing."
   },
   "events": [
     {
