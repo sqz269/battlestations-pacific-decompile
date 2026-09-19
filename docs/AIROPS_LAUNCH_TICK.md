@@ -119,6 +119,20 @@ block+50h down) and for each whose +28h is that squadron unregisters the observe
 and +8h, writes state 1, sets the timer to 5.0 and clears the +34h byte. Its one caller is
 `007F1B70 BSP_Squadron_ReleaseFromAllAirBases`, which calls it twice (`007F1BAD`, `007F1BED`).
 
+`006C56D0` is the arrival at the other end of the same cycle, `__thiscall(block, squadron)`, and
+reading it whole sharpens two things this document depends on. Its slot search has a priority the
+header's `air_ops_slot_is_free_006c56d0` deliberately does not model: it **breaks** on the slot whose
++28h already is that squadron, and only while no such slot has been found does it remember the first
+slot that is state 6 **or** state 1 *and* whose class at +4h equals squadron+35Ch *and* whose count
+at +8h equals squadron+3CCh. So "free" is an exact-match test, not a state test, and the state test
+alone is the part that is reconstructed. Having chosen a slot it writes state 1 with the timer pair,
+calls `006C0F00` to reassign the class and count from squadron+3D0h->+538h and squadron+3C8h, and
+ends at state 3 with the squadron in +28h and the observer pair moved.
+
+**It also corroborates entity+3CCh independently.** The tick, `006BD3F0` and `006BF230` all read
++3CCh as the squadron's live plane count, and here it is compared against a slot's own `+8h` count —
+a fourth reader, and one that only makes sense if the two hold the same quantity.
+
 ## 5. block+38h has a writer after all
 
 `docs/AIROPS_LAUNCH_START.md` listed "what writes block+38h" as an open question: three routines
