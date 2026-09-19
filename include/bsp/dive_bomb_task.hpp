@@ -195,8 +195,11 @@ inline constexpr float kTurnCoinRange = 1024.0f;                // 00D05B54
 inline constexpr int kTurnCoinThreshold = 0x200;                // 009C85AA
 
 // The turndown-complete test, 009C7EA0.
-inline constexpr float kTurnDownRollGate = -1.2999999523162842f;  // 00D1F98C
-inline constexpr float kTurnDownPitchGate = 2.356194496154785f;   // 00D20E80, 135 deg
+// Named for the axis each one tests, which is the opposite of what the old
+// names said: 009C7ED8 compares 00D1F98C against pose+C64h (the PITCH) and
+// 009C7EEA compares the folded pose+C68h (the BANK) against 00D20E80.
+inline constexpr float kTurnDownPitchComplete = -1.2999999523162842f;  // 00D1F98C
+inline constexpr float kTurnDownInvertedBank = 2.356194496154785f;     // 00D20E80, 135 deg
 
 // The arming slot 009C8200 and the goaway-complete test 009C7F00.
 inline constexpr float kArmCountdown = 5.0f;              // 00CE3850, written to prepare+98h
@@ -820,7 +823,60 @@ inline constexpr float kAimDiveRollBand = 0.4000000059604645f;   // 00CE7804
 inline constexpr float kAimDiveRollBandWide = 0.5f;              // 00CE3800
 // 009C5D24, the 60 degrees that second test compares against.
 inline constexpr float kAimDiveRollBandAngle = 1.0471975803375244f;  // 00D05AAC
+// 009C4FBF, the 40 degrees below which the Euler heading is abandoned for the
+// body-up axis. `MOVSS XMM0,[ESI+C64h]` then `COMISS XMM0,[00CE7D1C]` with
+// 009C4FC6 `76` JBE, so pitch <= this takes the body-axis arm.
+inline constexpr float kAimHeadingSteepPitch = -0.6981317400932312f;  // 00CE7D1C
+// 009C4FD5, the half turn of bank past which the heading is flipped, and
+// 009C4FE9 the pi it is flipped by.
+inline constexpr double kAimHeadingInvertedBank = 1.5707963705062866;  // 00CE3830
+inline constexpr float kAimHeadingHalfTurn = 3.1415927410125732f;      // 00D7A264
+// 009C5023, the body vector 0042D0D0 transforms: (0, 100, 0), the +Y row of
+// the pose. atan2 is scale-invariant, so only the row matters.
+inline constexpr float kAimHeadingBodyAxisLength = 100.0f;  // 00CE3D08
 }  // namespace dive_bomb_constant
+
+// ---------------------------------------------------------------------------
+// 009C4F80-009C5177, `float __thiscall(state)`, called only by the aimdive tick
+// (009C51A8) and the aimglide tick (009C5935) - `tools/callsite_census.py`,
+// two sites, exhaustive over rel32.
+//
+// It is the heading the two aim states subtract the bearing to the target from
+// at 009C5AA3 and 009C5AF1, and it is NOT pose+C6Ch. Two arms, picked by pitch:
+//
+//   pitch > -40 deg : h = pose->vtable[50h]() (the raw heading), and if the
+//                     folded |bank| is past pi/2 the aircraft is inverted, so
+//                     009C4FFD adds pi.
+//   pitch <= -40 deg: the nose is steep enough that the Euler heading is
+//                     ill-conditioned, so 009C504E transforms (0,100,0) - the
+//                     body +Y axis - by the pose at +CCh and takes the bearing
+//                     of its horizontal projection, pi/2 - atan2(z, x) wrapped
+//                     into [0, 2pi).
+//
+// The two agree: rolling 180 degrees about the forward axis negates body +Y, so
+// its horizontal bearing is the heading plus pi exactly when the aircraft is
+// inverted. What the routine returns is the heading of the lift vector - the
+// direction the aircraft turns toward - not the direction its nose points.
+//
+// That matters because the dive-bomb turndown ends INVERTED by construction
+// (009C7EA0 needs |bank| > 2.356 on its second arm), so the aim states run
+// their whole approach in the regime where this differs from pose+C6Ch by pi.
+// ---------------------------------------------------------------------------
+struct DiveBombAimHeadingInputs {
+    float pitch_c64 = 0.0f;       // 009C4FB7
+    float bank_c68 = 0.0f;        // 009C4F90, folded at 009C4FA5-009C4FB1
+    // pose->vtable[50h] at 009C4FCF. SUBSTITUTION: this host passes the cached
+    // Euler heading pose+C6Ch, which is what 007C1900 writes and what
+    // `unit_set_heading_target_00811960` already calls `heading_virtual_0050`.
+    float heading_c6c = 0.0f;
+    // Pose row 1, the body +Y axis in world coordinates. 0042D0D0 is the
+    // row-vector form - out.x = in.x*m[0] + in.y*m[4] + in.z*m[8], read off
+    // 0042D0F2-0042D116 - so (0,100,0) selects row 1 scaled by 100.
+    float body_up_x = 0.0f;
+    float body_up_z = 0.0f;
+};
+float dive_bomb_aim_heading_009c4f80(
+    const DiveBombAimHeadingInputs& in) noexcept;
 
 struct DiveBombAimDiveSteerInputs {
     // The aim error 009C5C9B leaves in [ESP+5Ch]; its sign picks both gains.
