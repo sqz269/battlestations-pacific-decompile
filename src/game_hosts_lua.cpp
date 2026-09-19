@@ -19,6 +19,7 @@
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/game_hosts_script_orders.hpp"
+#include "bsp/game_hosts_units.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/global_script_folders.hpp"
 #include "bsp/lua_spawn_new.hpp"
@@ -2911,17 +2912,54 @@ bool GameMissionLuaHost::push_resolved_entity(lua_State* state, const char* bind
     int argument_count) {
     if (state == nullptr || binding_name == nullptr) return false;
     if (scene_entity_ids_.empty()) return false;
-    // Only FindEntity. Its argument is a name and 00925a90 answers the scene
-    // database's entity of that name; every other entity-returning row takes
-    // its subject from game state this process does not own.
-    if (std::strcmp(binding_name, "FindEntity") != 0) return false;
-    if (argument_count < 1 || lua_type(state, 1) != LUA_TSTRING) return false;
-    const char* name = lua_tolstring(state, 1, nullptr);
-    if (name == nullptr) return false;
-    const std::map<std::string, int>::const_iterator found = scene_entity_ids_.find(name);
-    if (found == scene_entity_ids_.end()) return false;
+    // FindEntity, and since packet cc8_ship_moveonpath, GetSelectedUnit.
+    // FindEntity's argument is a name and 00925a90 answers the scene database's
+    // entity of that name. GetSelectedUnit 008AB070 takes no argument: it reads
+    // the global at 008AB14D, jumps to the nil arm at 008AB15C when it is null,
+    // and otherwise formats the entity's uint16 at +174h (008AB162 MOVZX EAX,
+    // word ptr [EAX+174h]) and indexes the same `thisTable` FindEntity's tail
+    // uses. The global is 00E188D8, stored at 004C0893 in 004C0890, which this
+    // process runs as GameUnitsHost::set_controlled_unit_004c0890, so the
+    // selected unit is the controlled one and the key is its entity id.
+    // MEASURED, packet cc8_ship_moveonpath, and it is why GetSelectedUnit is
+    // still nil here. Binding it is one line - the controlled unit's entity id,
+    // `units.controlled_bound` standing for the null test at 008AB15C - and
+    // `local/mop_after_usn04.log` is the run that did exactly that. The mission
+    // then died on every frame:
+    //
+    //   script call Think failed: commandhelpers.lua:330: attempt to index
+    //   field '?' (a nil value)
+    //     commandhelpers.lua:330 in luaGetShipsAround
+    //     commandhelpers.lua:13294 in luaCheckMusic
+    //     usn_19_coralus.lua:490
+    //
+    // `luaCheckMusic` returns early while GetSelectedUnit answers nil; with a
+    // unit it reaches `luaGetShipsAround`, whose line 330 is
+    // `pairs(recon[targetUnit.Party][allegiance])` with
+    // `targetUnit = thisTable[target.ID]`. The slot 00928A00 builds here carries
+    // ID, Dead, Ptr and Class and NO `Party`, so `recon[nil]` is nil and the
+    // index raises. USN04's whole Think aborts from frame 61 on, the 98
+    // NavigatorMoveOnPath calls never happen and the world ends at 45 units
+    // instead of 57.
+    //
+    // So this row is a HOLE with a named cause, not an unread native: the
+    // missing half is `Party` (and `Name`, which the same file's helpers read)
+    // on the thisTable slot, plus whatever fills the `recon` table per party.
+    // 008AB070 itself is read - 008AB14D the global 00E188D8, 008AB15C the null
+    // arm, 008AB162 MOVZX EAX,word ptr [EAX+174h] then the same registry index.
+    int entity_id = 0;
+    if (std::strcmp(binding_name, "FindEntity") == 0) {
+        if (argument_count < 1 || lua_type(state, 1) != LUA_TSTRING) return false;
+        const char* name = lua_tolstring(state, 1, nullptr);
+        if (name == nullptr) return false;
+        const std::map<std::string, int>::const_iterator found = scene_entity_ids_.find(name);
+        if (found == scene_entity_ids_.end()) return false;
+        entity_id = found->second;
+    } else {
+        return false;
+    }
     char key[16];
-    std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat, found->second);
+    std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat, entity_id);
     lua_getfield(state, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);
     if (lua_isnil(state, -1)) {
         ::lua_settop(state, ::lua_gettop(state) - 1);

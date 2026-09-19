@@ -2995,6 +2995,16 @@ void GameUnitsHost::run_director_steps_00836920() {
         const GameDirectorStepOutcome outcome = host.commands.director_step_00836920(
             index, host.is_controlled(slot), host.summary.simulated_seconds, slot.ring,
             heading);
+        // Packet cc8_ship_moveonpath, edited under the integrator's hunk
+        // arbitration of 2026-09-19. 00836BF0-00836D66 is the `moveonpath` arm
+        // of the same step, and it is the only place the path cursor moves:
+        // 009E59C0 reads the cursor and never writes it.
+        {
+            float px = 0.0f, py = 0.0f, pz = 0.0f;
+            unit_position_00fc(index, px, py, pz);
+            host.commands.advance_path_cursor_00836bf0(index, px, pz,
+                unit_hull_length_09c8(index), unit_class_turn_radius_0520(index));
+        }
         if (outcome.reissued == bsp::DirectorDefaultCommand::None) continue;
         // The idle tail's own choice becomes the unit's standing command when
         // the slot push took it; 0071be40 is what answers that.
@@ -3004,6 +3014,11 @@ void GameUnitsHost::run_director_steps_00836920() {
 }
 
 const GameCommandsHost& GameUnitsHost::commands() const noexcept { return impl_->commands; }
+
+// Packet cc8_ship_moveonpath, edited under the integrator's hunk arbitration of
+// 2026-09-19: the script-orders host reaches the command path only through this
+// object, and the `moveonpath` path build writes to the director it owns.
+GameCommandsHost& GameUnitsHost::commands() noexcept { return impl_->commands; }
 
 void GameUnitsHost::set_controlled_unit_004c0890(std::size_t index) {
     Impl& host = *impl_;

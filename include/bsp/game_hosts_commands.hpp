@@ -149,6 +149,23 @@ struct GameCommandsSummary {
     unsigned long long restarts{0};          // 0071E430's arm D
 };
 
+// Packet cc8_ship_moveonpath: what one unit's slot-0 path cursor did over a run.
+struct GamePathCursorRow {
+    std::size_t unit_index{0};
+    std::string unit;
+    std::string path;
+    std::size_t points{0};
+    int follow_mode{0};        // PATH_FM_*, command+8h
+    int start_mode{0};         // PATH_SM_*, command+0Ch
+    int start_index{0};
+    int index{0};
+    bool forward{true};
+    bool final_leg{false};
+    unsigned long long advances{0};
+    float travelled{0.0f};
+    std::string visited;       // the leg indices reached, in order
+};
+
 // What one 0071E430 -> 5Dh -> 00720850 round trip did, for the report.
 struct GameCommandCompletion {
     bool ran{false};
@@ -195,6 +212,46 @@ public:
     const GameCommandRow* issue(std::size_t unit_index, const std::string& token,
         const std::string& target_token, const bsp::UnitOrderRing& ring,
         float heading_radians);
+
+    // ---- packet cc8_ship_moveonpath: the slot-0 path cursor -----------------
+    // 0071C1B0(director, msg+24h), body 0071C1B0-0071C1DD, read whole: the pair
+    // at msg+24h/+28h onto the slot's own object at +8h and +0Ch. The slot the
+    // native picks is the one before the first empty record (the scan is over
+    // director+54h + i*1Ch and the store is at director+1A0h + i*4, one element
+    // below 0071BFF0's own +1A4h base), which after the queue of step 3 is the
+    // command just pushed. This host carries slot 0, the one every reader asks
+    // for. False means no director for that unit.
+    bool set_path_follow_pair_0071c1b0(std::size_t unit_index, int follow_mode,
+        int start_mode);
+
+    // 0071F600's `moveonpath` path build, 0071F6A5-0071F885, read whole:
+    // 007AC9D0 takes the path interface off the resolved target, 007B22A0 wraps
+    // it in the 0Ch-byte path source with vtable 00D0534C, and 007B1D30 hands
+    // both, the unit's world position and `unit->vtable[50h](params)` to
+    // 007B1C50, which sets the follow mode, the direction and the start index.
+    // `points` is the authored Path entity's world-space points. False means no
+    // director, no points, or no pair stored yet.
+    bool begin_path_command_0071f600(std::size_t unit_index, const std::string& path_name,
+        const std::vector<std::array<float, 3>>& points, float unit_x, float unit_z);
+
+    // 007ADC30 and 007ADC60 on 0071BFF0(director, 0), for the state step.
+    bool path_cursor_has_no_legs_007adc30(std::size_t unit_index) const;
+    bool path_cursor_on_final_leg_007adc60(std::size_t unit_index) const;
+    // cursor->vtable[4h](&out, leg); leg < 0 is the sentinel both 009E5A50 and
+    // 00836C89 pass, which stands for the cursor's own index.
+    bool path_cursor_point(std::size_t unit_index, int leg, float& x, float& z) const;
+
+    // 00836BF0-00836D66, the director step's `moveonpath` arm. `unit_radius` is
+    // unit+9C8h and `turn_radius` is 0082E850 on the unit's class; the arm takes
+    // min(unit_radius * 2.5, turn_radius * 1.2) at 00836C0D / 00836C1C /
+    // 00836C2E and hands it to 007ADD70 with the cursor. Answers true when
+    // 007ADD70 would answer true, which is only when its guard at 007ADFAC
+    // refuses the advance - the arrival of a PATH_FM_SIMPLE path.
+    bool advance_path_cursor_00836bf0(std::size_t unit_index, float unit_x, float unit_z,
+        float unit_radius, float turn_radius);
+
+    // The rows the report prints.
+    std::vector<GamePathCursorRow> path_cursor_rows() const;
 
     // Milestone 2m. The navigator bindings' own issue. 008a30d0 and 008a2f20
     // push a fixed command object and the descriptor 0088a810 built, so the

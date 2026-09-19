@@ -218,6 +218,18 @@ It is `movetopos` with the goal taken from the command's waypoint list instead o
 `brain+0B2Ch`. `007ADC30` (`009E59F8`) is a second predicate on the same slot and was not read:
 `contract: unread`.
 
+### Correction, packet `cc8_ship_moveonpath`
+
+**`009E59C0` is complete, not partial, and `007ADC30` is read.** All 200 instructions were
+transcribed and `009E5B17-009E5C8D` is byte for byte the `movetopos` target-range arm and
+`finished` block with `00E08F80` in place of `00E08F68`. `007ADC30` (body `007ADC30-007ADC50`) is
+"no path object, or a point count that is not positive", already projected in
+`src/ship_ai_goal_vector.cpp`. The pseudocode above is right except that `state+8h` is raised at
+`009E5BC5` inside the `finished` block, and `009E5AC0` stores the float32 1.0f at `00D7A24C` to
+`brain+308h` only when `007ADC60` answered **false**. The cursor the slot points at, the four
+routines that read it, the path build `0071F600` and the advance in the director step's
+`00836BF0` arm are all in `docs/SHIP_AI_PATH_CURSOR.md`.
+
 ## 009E8820 and 009E86F0, the `attackmove` step
 
 `009E8820`: `__thiscall(state)(float seconds)`, `RET 4`, body `009E8820-009E88F9`, complete. No

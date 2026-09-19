@@ -325,6 +325,12 @@ struct GameShipAiHost::Impl {
         std::unique_ptr<bsp::ShipAiSearchStorage> avoid_search;
         bsp::ShipAiStopStepState stop_state{};
         bsp::ShipAiAttackMoveSelector selector{};
+        // Packet cc8_ship_moveonpath: the `moveonpath` leaf's own state+8h byte
+        // (009E59DE, 009E5A39, 009E5BC5) and the 1.0f 009E5ACA stores at
+        // brain+308h. That field has no reader in this process, so it is carried
+        // and reported rather than consumed.
+        bool moveonpath_announced{false};
+        float moveonpath_leg_scale_0308{0.0f};
         // Milestone 2p. `goal_vector` is the brain fields 009F1420's head owns
         // (+0B20h, +0B24h, +0B28h, +0B2Ch..+0B34h, +0B38h, +0B54h, +0B58h) and
         // `latched` the record at brain+0AF8h that 009E2FB0 writes and
@@ -913,6 +919,155 @@ public:
         HeadingHoldBinding hold(owner_, ctl_, index_);
         bsp::ship_ai_hold_heading_and_stop_009e00a0(ctl_.blk, hold);
         owner_.done("ShipAiMoveTo::hold_heading_and_stop", 0x009e00a0u);
+    }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    GameShipAiHost::Impl::Controller& ctl_;
+    GameShipAiRow& row_;
+    std::size_t index_;
+};
+
+// Packet cc8_ship_moveonpath: 009E59C0's own host. It is MoveToPosStepBinding
+// with the goal taken from the command's path cursor (the commands host owns it,
+// because 0071BFF0 reads it off the director) instead of brain+0B2Ch.
+class MoveOnPathStepBinding final : public bsp::ShipAiMoveOnPathStepHost {
+public:
+    MoveOnPathStepBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
+                          GameShipAiRow& row, std::size_t index)
+        : owner_(owner), ctl_(ctl), row_(row), index_(index) {}
+
+    bool announce_latch_08() override {
+        owner_.done("ShipAiMoveOnPath::announce_latch", 0x009e59deu);
+        return ctl_.moveonpath_announced;
+    }
+    void set_announce_latch_08(bool value) override {
+        ctl_.moveonpath_announced = value;
+    }
+    std::uint32_t director_command_slot_0071bff0(int) override {
+        owner_.done("ShipAiMoveOnPath::director_command_slot", 0x0071bff0u);
+        return static_cast<std::uint32_t>(index_) + 1u;
+    }
+    bool command_slot_has_no_legs_007adc30(std::uint32_t) override {
+        // 007ADC30 reads the slot's path object and its point count; the
+        // projection of the test itself is src/ship_ai_goal_vector.cpp's.
+        const bool empty = owner_.units.commands().path_cursor_has_no_legs_007adc30(index_);
+        owner_.done("ShipAiMoveOnPath::slot_has_no_legs", 0x007adc30u);
+        return bsp::ship_ai_command_slot_has_no_legs_007adc30(!empty, empty ? 0 : 1);
+    }
+    bool command_on_final_leg_007adc60(std::uint32_t) override {
+        owner_.done("ShipAiMoveOnPath::command_final_leg", 0x007adc60u);
+        return owner_.units.commands().path_cursor_on_final_leg_007adc60(index_);
+    }
+    void hold_heading_and_stop_009e00a0() override {
+        HeadingHoldBinding hold(owner_, ctl_, index_);
+        bsp::ship_ai_hold_heading_and_stop_009e00a0(ctl_.blk, hold);
+        owner_.done("ShipAiMoveOnPath::hold_heading_and_stop", 0x009e00a0u);
+    }
+    bool path_point_vtable_0004(std::uint32_t, int leg, float& x, float& z) override {
+        owner_.done("ShipAiMoveOnPath::path_point", 0x009e5a59u);
+        return owner_.units.commands().path_cursor_point(index_, leg, x, z);
+    }
+    bool unit_pose_valid_00c8() override {
+        owner_.done("ShipAiMoveOnPath::unit_pose_valid", 0x009e5a78u);
+        return owner_.units.unit_pose_valid_00c8(index_);
+    }
+    void refresh_unit_pose_00414db0() override {
+        owner_.record("ShipAiMoveOnPath::refresh_unit_pose", 0x00414db0u);
+    }
+    void unit_position_xz_00fc(float& x, float& z) override {
+        float y = 0.0f;
+        owner_.done("ShipAiMoveOnPath::unit_position", 0x009e5a87u);
+        owner_.units.unit_position_00fc(index_, x, y, z);
+    }
+    void set_brain_leg_scale_0308(float value) override {
+        // 009E5ACA, brain+308h. The field has no reader anywhere in this
+        // process, so the store is carried on the controller and reported, not
+        // consumed: a named hole, not a proof.
+        ctl_.moveonpath_leg_scale_0308 = value;
+        owner_.record("ShipAiMoveOnPath::brain_leg_scale_0308", 0x009e5acau);
+    }
+    void set_navigation_goal_009de050(float goal_x, float goal_z, bool keep_mode,
+                                      bool final_leg) override {
+        owner_.run_navigation_goal_009de050(ctl_, row_, index_, goal_x, goal_z, keep_mode,
+                                            final_leg);
+    }
+    bool state_goal_reached_vtable_002c(float goal_x, float goal_z) override {
+        const bsp::ShipAiPathPlanBlock& live
+            = (ctl_.plan_front == 0) ? ctl_.plan_a : ctl_.plan_b;
+        const bsp::ShipAiPathArrivalResult arrival = bsp::ship_ai_path_arrival_009da590(
+            ctl_.goal.flag_2fe, goal_x, goal_z, live.latched_goal_x, live.latched_goal_z);
+        owner_.done("ShipAiMoveOnPath::goal_reached_009da590", 0x009da590u);
+        if (arrival.clears_latch) ctl_.goal.flag_2fe = false;
+        return arrival.reached;
+    }
+    std::uint32_t director_current_command_0054() override {
+        owner_.done("ShipAiMoveOnPath::director_current_command", 0x009e5b19u);
+        return owner_.units.director_current_command_0071be40(index_);
+    }
+    std::uint32_t resolve_command_target_00521ea0() override {
+        bsp::SceneCommandTarget descriptor{};
+        int mode = 0;
+        const bool real = owner_.units.active_command_descriptor_0071eb60(index_, descriptor,
+            mode);
+        owner_.done("ShipAiMoveOnPath::resolve_command_target", 0x00521ea0u);
+        if (!real) return 0u;
+        return owner_.units.resolve_command_target_00521ea0(descriptor);
+    }
+    bool target_is_kind_vtable_005c(std::uint32_t target, int kind) override {
+        // 009E5B47 with the literal 1Ch. The `moveonpath` descriptor carries the
+        // PATH entity, which is not a unit in this process, so this answers
+        // false and the arm returns at 009E5B4B - which is the native's own
+        // behaviour for a path target too, and is why a circling carrier never
+        // reaches the target-range test.
+        owner_.done("ShipAiMoveOnPath::target_is_kind", 0x009e5b47u);
+        if (target == 0u) return false;
+        return owner_.units.unit_is_kind_of(static_cast<std::size_t>(target - 1u), kind);
+    }
+    void target_position_xz_00427eb0(std::uint32_t target, float& x, float& z) override {
+        float y = 0.0f;
+        x = 0.0f;
+        z = 0.0f;
+        if (target == 0u) return;
+        owner_.done("ShipAiMoveOnPath::target_position", 0x00427eb0u);
+        owner_.units.unit_position_00fc(static_cast<std::size_t>(target - 1u), x, y, z);
+    }
+    float planar_length_00414c60(float dx, float dz) override {
+        owner_.done("ShipAiMoveOnPath::planar_length", 0x009e5b91u);
+        return bsp::length_2d_00414c60(std::array<float, 2>{dx, dz});
+    }
+    int target_range_07a0(std::uint32_t) override {
+        owner_.record("ShipAiMoveOnPath::target_range_07a0", 0x009e5ba6u);
+        return 0;
+    }
+    float unit_radius_09c8() override {
+        owner_.done("ShipAiMoveOnPath::unit_radius_09c8", 0x009e5bacu);
+        return owner_.units.unit_hull_length_09c8(index_);
+    }
+    void message_text_assign_0041e870(const char*) override {
+        owner_.record("ShipAiMoveOnPath::message_text_assign", 0x0041e870u);
+    }
+    void post_command_message_00984300(std::uint32_t command) override {
+        const std::size_t callbacks = owner_.units.report_command_event_00984300(
+            index_, command, bsp::kCommandEventStatusFinished);
+        owner_.done("ShipAiMoveOnPath::post_command_message", 0x00984300u);
+        ++row_.command_events;
+        ++owner_.summary.command_events;
+        owner_.summary.command_event_callbacks += callbacks;
+    }
+    void release_message_text_00419cc0() override {
+        owner_.record("ShipAiMoveOnPath::release_message_text", 0x00419cc0u);
+    }
+    void end_command_0071e430(std::uint32_t command, int flag) override {
+        const GameCommandCompletion done
+            = owner_.units.end_command_0071e430(index_, command, flag != 0);
+        owner_.done("ShipAiMoveOnPath::end_command", 0x0071e430u);
+        ++row_.command_endings;
+        ++owner_.summary.command_endings;
+        if (done.queue_advanced) {
+            ++row_.command_completions;
+            ++owner_.summary.command_completions;
+        }
     }
 
 private:
@@ -3789,12 +3944,13 @@ public:
             ++owner_.summary.state_steps_recorded;
             return;
         }
-        // Milestone 2o, second pass: three of the eight leaves now have a body.
+        // Milestone 2o, second pass: four of the eight leaves now have a body.
         // Packet ship_ai_state_steps projected 009E14C0 `stop`, 009E5770
         // `movetopos` and 009E8820 `attackmove` with its selector 009E86F0
-        // complete, so those run here instead of being recorded. `follow`,
-        // `land`, `moveonpath`, `kamikaze_attack` and `sub_attack` are still
-        // records with their own addresses.
+        // complete, and packet cc8_ship_moveonpath added 009E59C0 `moveonpath`,
+        // so those run here instead of being recorded. `follow`, `land`,
+        // `kamikaze_attack` and `sub_attack` are still records with their own
+        // addresses.
         if (state != nullptr && state->step == 0x009e14c0u) {
             StopStepBinding stop(owner_, ctl_, row_, index_);
             bsp::ship_ai_stop_step_009e14c0(ctl_.stop_state, ctl_.blk, ctl_.avoidance, stop);
@@ -3811,6 +3967,16 @@ public:
             MoveToPosStepBinding move(owner_, ctl_, row_, index_);
             bsp::ship_ai_movetopos_step_009e5770(move);
             owner_.done("ShipAiState::movetopos_step", 0x009e5770u);
+            ++owner_.summary.state_steps_concrete;
+            ++row_.state_step_real;
+            ++owner_.summary.state_steps_real;
+            apply_ai_drive();
+            return;
+        }
+        if (state != nullptr && state->step == 0x009e59c0u) {
+            MoveOnPathStepBinding move(owner_, ctl_, row_, index_);
+            bsp::ship_ai_moveonpath_step_009e59c0(move);
+            owner_.done("ShipAiState::moveonpath_step", 0x009e59c0u);
             ++owner_.summary.state_steps_concrete;
             ++row_.state_step_real;
             ++owner_.summary.state_steps_real;
