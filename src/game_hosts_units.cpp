@@ -150,6 +150,24 @@ UnitMotionDispatch unit_motion_dispatch(const bsp::VehicleClassDescriptorRow* de
     return {};
 }
 
+// The stationary prop, which has no vehicle-class descriptor and so no creator
+// to key on. 004F0FB0 takes it at 004F0FFE when the scene property `Stationary`
+// is set: 00748C40 allocates 1ACh bytes and 00748A40 constructs them, storing
+// 00CFF678 at this+0 and 00CFF65C at this+10h (00748A64 and 00748A6A). Those are
+// the same two slots the keyed rows in src/native_unit_observer_endpoint.cpp
+// take, which 00745940 shows for LandFort at 0074597D and 00745983 against its
+// row {00747000, 00CFF3F8, 00CFF3E0}. The prop is 1ACh bytes with no slot at
+// 310h, so unlike a fort it carries no tick vtable and takes no motion dispatch.
+//
+// This lives here rather than beside the keyed rows because that file and its
+// header are Codex-lineage and we do not edit them.
+// docs/SCENE_STATIONARY_UNITS.md.
+void publish_stationary_prop_observer_tables_00748a40(
+    bsp::NativeUnitObserverPrefixStorage& unit) noexcept {
+    unit.observed_00.native_vtable_00 = 0x00cff678u;
+    unit.callback_10.native_vtable_00 = 0x00cff65cu;
+}
+
 const char* unit_motion_coverage_name(UnitMotionCoverage coverage) {
     switch (coverage) {
     case UnitMotionCoverage::direct_ship_body: return "direct_ship_body";
@@ -2264,7 +2282,7 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         if (!slot->observer_prefix_ready && slot->stationary_prop) {
             // The prop's own pair, from its constructor rather than from a
             // creator row, because it has no descriptor to be keyed by.
-            bsp::publish_stationary_prop_observer_tables_00748a40(slot->observer_prefix);
+            publish_stationary_prop_observer_tables_00748a40(slot->observer_prefix);
             slot->observer_prefix_ready = true;
         }
         if (host.observer_runtime != nullptr) {

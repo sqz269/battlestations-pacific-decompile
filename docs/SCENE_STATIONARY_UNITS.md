@@ -141,21 +141,30 @@ them.
 
 ## Corrections
 
-None. This packet completes the reading the previous one left as its contract, and the previous
-packet's retraction stands as written.
+Two, applied after this packet's first commit and neither of them a claim about the binary.
+
+* `publish_stationary_prop_observer_tables_00748a40` was added to
+  `src/native_unit_observer_endpoint.cpp` and its header. Those are Codex-lineage files and we do
+  not edit them. Both are restored to their previous text and the function now lives in
+  `src/game_hosts_units.cpp`, beside its only caller, with a comment saying why it is there rather
+  than beside the keyed rows it belongs with.
+* `004F0BE0` is now defined in Ghidra rather than left for the next reader to rediscover. See
+  no_ghidra_function.
+
+Otherwise none: this packet completes the reading the previous one left as its contract, and the
+previous packet's retraction stands as written.
 
 ## no_ghidra_function
 
-`004F0BE0` has no Ghidra function; it is merged into the range of `FUN_004F0AD0` and was read from
-the image. Unlike `004E5B00` it is a real function, and section 1 gives the check that tells them
-apart.
+None now. `004F0BE0` had no Ghidra function and was merged into the range of `FUN_004F0AD0`; it was
+read from the image, and section 1 gives the check that separates it from a one-byte `RET`. Since
+it genuinely starts a function, one is now defined over `004F0BE0`..`004F0CC0`, 224 bytes, ending
+at the `RET 10h` at `004F0CBD` with the next SEH prologue at `004F0CC0`. The event is recorded in
+`reports/scene_stationary_units_function_definitions.json`.
 
-One consequence is worth passing on: `tools/verify_report_calls.py` cannot check any call site
-inside that body, because its first test is that the site lies in some Ghidra function. The four
-sites in section 2 are therefore carried in the report under `calls_in_unowned_range` rather than
-as call rows. Creating the function in Ghidra would make them checkable and is a real correction to
-the database, since the function genuinely starts at `004F0BE0`; this packet did not take that
-write.
+That also fixes a reporting gap this packet first worked around: `tools/verify_report_calls.py`
+requires a call site to lie in some Ghidra function, so before the definition none of section 2's
+sites could be checked. All four are ordinary verified rows now.
 
 ## Validation
 
