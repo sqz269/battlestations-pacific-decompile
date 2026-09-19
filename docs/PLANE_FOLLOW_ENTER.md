@@ -167,7 +167,89 @@ The general lesson: **a census line that a run prints more than once has no mean
 the last one.** `Select-Object -First` on a growing census is the same class of error as reading a
 constructor store and calling it the value.
 
-Measured results follow in section 6 once the runs land.
+## 6. Measured
+
+USN04, `--frames 5000 --press-start-frame 30 --menu-select USN04 --mission-frames 4800
+--mission-frame-seconds 0.05`, both runs on this tree, same binary apart from the feed.
+
+| | A: before (placement ON, predicate hardcoded) | B: predicate fed, placement ON |
+| --- | --- | --- |
+| `follow law` lines | **0** | **0** |
+| task census rows | 27 | 27, of which **8 differ** |
+| releases, all rows summed | **35** | **35** |
+| gunnery step 4800 deaths | 14 | **10** |
+| gunnery step 4800 hits / damage | 151 / 14042.2 | 109 / 14926.0 |
+| `D3A Val #1.1\|.-2` done alt | 274.5 -> 31.3 | 274.5 -> 31.3 (identical) |
+| `BotStateFollow::station_keeping` | 795 | 697 |
+| `BotStateDiveBombDone::station_keeping` | 7035 | 7035 (identical) |
+
+**The entry defect is real and it is fixed - on the torpedo side.** All eight changed rows are
+torpedo wing members, the `|.-2` and `|.-3` of four `B5N Kate` squadrons, and they change like this:
+
+```
+A  torpedo B5N Kate #2.1|.-2 arm_ticks=2143 transitions=3 states[moveto=646 attackrun=320 goaway=995 aim=182] releases=1
+B  torpedo B5N Kate #2.1|.-2 arm_ticks=2143 transitions=2 states[follow=1003            goaway=935 aim=205] releases=1
+
+A  torpedo B5N Kate #4.1|.-2 arm_ticks=2132 transitions=4 states[moveto=529 done=255 attackrun=262 goaway=932 aim=154] releases=1
+B  torpedo B5N Kate #4.1|.-2 arm_ticks=2132 transitions=3 states[follow=817 done=207            goaway=932 aim=176] releases=1
+```
+
+A wing member that used to fly 646 ticks of moveto and **320 ticks of its own attack run** now
+spends 1003 ticks in **follow** and never enters attackrun at all. That is exactly what section 3
+says the image does: a member cannot self-engage, so it holds formation until the squadron's mode
+reaches 2. `transitions` falls 3 -> 2 because the moveto -> attackrun edge is gone.
+
+**And it still releases.** `releases=1` on every changed row, and the run total is **35 in both
+runs**, so criterion (a) holds exactly. Deaths fall 14 -> 10, so criterion (b) holds - four fewer
+aircraft lost, not more. Criterion (c) is unchanged and could not have changed: see below.
+
+**Prediction 2 is confirmed, on the side it was made about.** Not one dive-bomber row differs. All
+27 dive-bomb census rows, every `done` line, and `BotStateDiveBombDone::station_keeping` at 7035
+are identical between A and B. The reason is the one predicted: `control_mode_370` is hardcoded to
+`2` for the dive-bomb transition, `+440h` is already non-zero when the task is installed, so the
+engaged test of section 3 is satisfied on the first transition tick and the member leaves follow
+before its state tick is ever dispatched. Two facts in the host make that invisible rather than
+merely brief: `dive_bomb_state_bucket(ctx.current)` and the state dispatch both run **after** the
+transition rule, so a state entered and left within one arm tick records zero ticks and runs no
+tick. That is also why run A shows no `moveto=` entry although every aircraft constructs into
+moveto. **The predicate was one of two gates. The second is that constant, and it is not this
+packet's hunk.**
+
+### Why run C (placement OFF) was NOT run, and what should replace it
+
+Not a context decision - an evidence one. `follow law` is **0 in run B** even though eight aircraft
+now spend about a thousand ticks each in follow. The law is wired into exactly one place,
+`run_dive_bomb_follow_tick_009c1fd0`, which is dispatched only when a **dive bomber's**
+`ctx.current == kFollow` - and no dive bomber reaches that, for the reason above. The torpedo follow
+state reaches its station through the torpedo arm's own `follow_base_tick_009c1fd0` seam, which
+records `BotStateFollow::station_keeping` and does not call the law.
+
+So with placement OFF, those eight aircraft would receive **no station-keeping at all** - not the
+law, and no longer the placement. Run C would not measure "the law flies the wing members"; it
+would measure removing station-keeping from eight aircraft that are now holding formation for a
+thousand ticks, and criteria (a)-(d) would be judging that instead. `kPlaneFormationPlacementEnabled`
+is therefore left **ON**, and B is the landing.
+
+The two things that would make a real run C possible, in order:
+
+1. Wire the follow law into the torpedo follow seam as well, so the aircraft that actually reach
+   follow are the ones the law flies; or feed `control_mode_370` so dive bombers reach their own
+   follow tick, which already has the law wired.
+2. Read `009BEE30`'s HOLD arm. With the good-position gate substituted to "fly-to arm always", a
+   member the law holds on station is commanded by the wrong arm, and criterion (d) cannot be
+   judged honestly until that is read.
+
+Criterion (d) has a baseline either way. The `plane formation geometry` line's `pairwise=` column is
+sampled at the top of `place_wing_member_on_station_007f23a0`, **before** the placement gate, so it
+is genuine drift: run A settles at `0-1=94.9 0-2=92.0 1-2=128.3` at tick 5200 for squadron
+`movieval`, against a station geometry of `local=(-60.0 -25.0 70.0)` for seat 1.
+
+### A retraction
+
+I told the integrator that run A contained no `torpedo ... arm_ticks=` rows and that the torpedo arm
+was not exercised on this mission. That was wrong: the rows are indented, and my anchored pattern
+`^torpedo` did not match them. There are eight such rows in both runs and they are the whole of this
+packet's measured effect.
 
 ## 5. Withdrawals owed by this chain
 
