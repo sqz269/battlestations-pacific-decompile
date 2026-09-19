@@ -256,3 +256,127 @@ below 20 m asks for 1000 m. Only **one** unread dependency remains, and it is th
 A binder that skipped it would command heading 0 on every goaway, which on this placement points the
 aircraft north rather than away from the ships that are shooting at them - the kind of substitution
 that reads as a behaviour bug forever. `009D0F10`'s own transcription in 3.1 needs no revision.
+
+### 3.4 `009D0C10` read for its output, and the completion predicate cleared
+
+Two checks stood between section 3.1's transcription and a binding. One is done and one is
+half-done; both are recorded here so the binding packet does not repeat them.
+
+**The completion predicate is clear, and the trap it could have been does not bite.**
+`agent/cc8-dive-bomb` lost an 8800-frame run to a goaway whose completion rule was modelled from its
+first condition only: the state got one tick, the binding was correct and looked broken. The torpedo
+equivalent is `009D3150`, and `docs/TORPEDO_GOAWAY_RELEASE.md` section (3) reads it whole already -
+`approach+90h > state+24h`, with an optional `* 0.4` arm that needs both `ctl+369h` and the global
+at `00E17BF2` and that this host's `read_control_block` reports off. No altitude condition, unlike
+the dive bomb's `009C7F00`. The run agrees: `enters=1 break_off_24h=700.0 range_peak_in_goaway=382.2
+done_last=0` on every aircraft, so the state is entered once, never completes, and would tick for
+the rest of the mission if anything ticked it. A binding here will not be cut off after one tick.
+
+**`009D0C10 BSP_BotStateTorpedoGoAway_UpdateGeometry` produces `state+18h`, and its shape is:**
+
+```
+bearing   = 009FD570(vtable[0](&scratch, approach+4h, state+24h, state+2Ch, approach+90h, 0.8))
+hdgErr    = SubtractWrappedAngle(bearing, unitHeading)          unitHeading via vtable[50h]
+turn      = clamp(hdgErr, -0.5235988, +0.5235988)               00CEC728 / 00CEC724, -/+ DEG(30)
+probe     = -p[0] * p[1] * p[2]        from 007F0280's triple, seeded 00CEB4B0, 00CEB4D4, 00D1A918
+if (turn > 0 && probe < 0) || (turn < 0 && probe > 0)
+          turn += probe * 0.6981317401                          00D20CC0, a double, DEG(40)
+state+18h = AddWrappedAngle(unitHeading, turn)                  009D0C10's only store
+```
+
+So the break-off heading is the aircraft's **current** heading plus a turn of at most 30 degrees
+toward the break-off bearing, pushed further by up to 40 degrees when the terrain probe disagrees
+with the turn's sign. `state+2Ch`, the +/-1 side the enter draws, is an argument to the bearing
+call, which is what makes the break-off turn left or right.
+
+**What is still unread, and it is why this packet stops here rather than binding:**
+
+* `009FD570` and the `vtable[0]` call before it, which together produce the bearing. Without them
+  the turn is `clamp(-unitHeading, ...)` rather than a break-off.
+* `007F0280`'s output triple at this call site. The same routine is called from the aim tick's
+  sector probe and from both attack-run ticks, so its contract is shared and worth reading once for
+  all of them rather than three times.
+
+A binding that substituted either would command a heading that is not the image's, and the run would
+report a climb-away that flies somewhere the native never goes. Given that this stream has spent the
+night correcting exactly that class of error in its own and others' work - `pitch_scale_188 = 1.0f`,
+`rangeLow = rangeHigh = 0`, `kPitchClampLo` - binding on two unread inputs is the wrong trade. The
+listing above is the durable part; the code is one focused packet with `009FD570` and `007F0280`
+read first.
+
+**A blind confirmation of `kPitchClampLo`, recorded because it is independent of this stream.**
+`agent/cc8-dive-bomb` built `tools/const_width_sweep.py` (on main as `616382183`) and added a
+`--load-sites` mode that finds every instruction with an absolute `[disp32]` naming a declared
+constant and reports the operand width. Run blind over all 697 constants in `include/bsp`, in a tree
+that still carried `0.05625f`, it produced exactly **one** wrong-width finding: `kPitchClampLo`. It
+was told nothing about this packet.
+
+**A correction accepted, on `task+41Ch`.** This document's predecessor advised that
+`in.speed_ratio_41c = 1.0f` "needs `task+41Ch`'s producer" and was worth a packet of reading. That
+was wrong: `009F9D37 FLD [EAX+188h]` is `desc+188h MaxSpd` - the same field this stream bound as
+`plane_max_spd` - divided by the reference `009C3EC4` loads from `[EAX+4D8h]`, taken `max(., 1.0)`
+and stored to `approach+24h` at `009F9D61`. It is a stand-in with a known formula, so it is a
+binding in its own window rather than a packet of reading.
+
+### 3.5 `009D0C10` read whole from the listing, and what the binding actually costs
+
+Body `009D0C10`-`009D0D87`, `void __fastcall(this)`, no stack argument, `SUB ESP,0x3C` + `PUSH ESI`,
+balanced by `POP ESI` / `ADD ESP,0x3C` / `RET` at `009D0D83`-`009D0D87`. Section 3.4's shape is
+confirmed and the two call setups are now exact rather than decompiler-shaped.
+
+**The bearing call, from the pushes in stack order** (`009D0C26`-`009D0C4F`):
+
+```
+009d0c16  MOV ECX,[ESI+4]                  ; ECX = approach, the receiver
+009d0c1f  MOV EAX,[ECX+4]                  ; EAX = unit
+009d0c26  SUB ESP,8
+009d0c29  FLD  [0x00ce74f8] -> [ESP+4]     ; 0.8
+009d0c36  FLD  [ESP+0x14]   -> [ESP]       ; approach+90h, saved at 009D0C22
+009d0c3d  PUSH EDX          (EDX = ESI+2Ch); &state+2Ch, the +/-1 SIDE, BY POINTER
+009d0c3e  FLD  [ESI+0x24]   -> PUSH        ; state+24h, the break-off distance
+009d0c45  PUSH EAX                          ; the unit
+009d0c4e  PUSH EDX          (EDX = &scratch)
+009d0c46  EAX = [[ECX]]                     ; approach->vtable[0]
+009d0c4f  CALL EAX
+009d0c51  PUSH EAX                          ; the returned point
+009d0c52  MOV ECX,ESI                       ; this = the goaway state
+009d0c54  CALL 009FD570                     ; -> the bearing, in ST0
+```
+
+so it is `009FD570(state, approach->vtable[0](&scratch, unit, state+24h, &state+2Ch, approach+90h,
+0.8))`. The **side is passed by pointer**, which means `vtable[0]` may write it back - a detail a
+by-value reconstruction would lose.
+
+**The tail** (`009D0D62`-`009D0D87`) is `state+18h = AddWrappedAngle(unitVtable50(), turn)`.
+`0074E260` is `FLD [ECX+0C6Ch] / RET`, so `vtable[50h]` takes nothing and cleans nothing; the two
+`PUSH ECX` at `009D0D71` and `009D0D77` are building `AddWrappedAngle`'s two-argument frame around
+it, which is why only one `SUB ESP,8` appears for two calls. The stack balances against the
+prologue, which is the check that the reading is right.
+
+**`007F0280` can be substituted safely, and this is the one piece of good news.** `009D0C96`-
+`009D0CAA` zero the three out-slots with `XORPS`/`MOVSS` immediately before the call, and the probe
+term is `-p[0] * p[1] * p[2]`. A no-hit answer leaves all three zero, so `probe` is `0`, and the
+nudge at `009D0D50` needs `probe` strictly positive or negative on one side of a sign test. **An
+inert probe therefore changes nothing**, which is exactly how the host already models the same
+routine for the aim tick (`sector_probe_009d1a94` returning a default `TorpedoAimSectorProbe{}`).
+On an open-sea placement that is also the right answer physically.
+
+**`009FD570` cannot, and it is the whole cost of this packet.** Body `009FD570`-`009FDEDE`, 2414
+bytes, **six callers** - `007B5AF0`, `009A3CF0`, `009AD480`, `009B5760`, `009C47D0` and this one -
+and fourteen callees including `00413920 BSP_Matrix_Multiply4x4`, `004134F0 BSP_Matrix_Copy4x4X87`,
+`00414DB0`, `00419010`, `00438AA0`, `00438B10`, `009FA510` and `009FCFD0`. It is a shared
+fly-to-a-point solver, not a bearing helper, and the dive bomb (`009C47D0`) and depth charge
+(`009A3CF0`) reach it too.
+
+So the honest shape of the remaining work is **not** "bind `009D0F10`". It is:
+
+1. read `009FD570` (2.4 KB, six callers) and the `vtable[0]` break-off-point routine it is fed;
+2. then `009D0F10` and `009D0D90` reconstruct and bind in one short window, because everything else
+   they need is already read: the tick in 3.1, the enter's draws in 3.3, the predicate in 3.4, and
+   `007F0280` inert by the argument above.
+
+Step 1 pays for six call sites rather than one, which is why it deserves its own packet rather than
+being done hurriedly inside this one. Binding `009D0F10` with a substituted bearing would command a
+heading that is not the image's, and the run would report a climb-away flying somewhere the native
+never goes - the same failure `agent/cc8-dive-bomb` hit from a modelled-from-one-condition predicate,
+reached by a different road.

@@ -415,7 +415,8 @@ HudGuiPoint hud_minimap_icon_position(float world_dx, float world_dz,
     // 005C1C61: x is multiplied by 00CEDAE8 (1/1024) and y is negated and
     // divided by 00CE42B0 (768), so the two axes do not share a scale.
     HudGuiPoint p;
-    p.x = world_dx / kHudMinimapXDivisor;
+    // 005C1C68 FMUL: the X axis multiplies by the 1/1024 at 00CEDAE8.
+    p.x = static_cast<float>(world_dx * kHudMinimapXScale);
     p.y = -world_dz / kHudMinimapYDivisor;
     p.z = depth;
     return p;

@@ -96,7 +96,8 @@ HudGuiPoint hud_minimap_icon_position_005c1b62(const HudMinimapWorldPoint& point
 
     // 005C1C61..005C1C92: the two divisors differ, so the space is 4:3.
     HudGuiPoint out{};
-    out.x = mx / kHudMinimapXDivisor;
+    // 005C1C68 FMUL: the X axis multiplies by the 1/1024 at 00CEDAE8.
+    out.x = static_cast<float>(mx * kHudMinimapXScale);
     out.y = -my / kHudMinimapYDivisor;
     out.z = depth;
     return out;

@@ -1,0 +1,59 @@
+{
+  "packet": "cc8_bot_probe_007f0280",
+  "owner": "agent/cc8-plane-squadron",
+  "doc": "docs/BOT_PROBE_007F0280.md",
+  "summary": "NOT READ. The contract and the caller census for 007F0280, written first because eighteen bot state ticks depend on it and three hosts substitute it. RET 0x18 says six stack arguments where docs/BOT_TASK_STATES.md records five; the census finds eighteen callers where the brief said sixteen; four call sites pass different extent triples, so no reconstruction may hard-code them.",
+  "routines": [
+    {
+      "address": "007f0280",
+      "name": "FUN_007f0280",
+      "abi": "ECX receiver, six stack arguments (RET 0x18 at 007F0B1F), frame 0x110 (ADD ESP,0x110 at 007F0B19), SEH-registered, body 007F0280-007F0B21",
+      "coverage": "not started. ABI, caller census and four call sites' constants only."
+    }
+  ],
+  "host_steps": [
+    {
+      "host": "BotStateDiveBombAttackRun::sample_offset",
+      "address": "009c42b8",
+      "native": "007f0280",
+      "function": "009c4220",
+      "note": "Extents 80, 60, 120 from 009C4258/009C4268/009C4287 and a final argument of 1. Host stands in with in.sampler_result = 0.0f at src/game_hosts_units.cpp:4533, so the dive-bomb run-in flies straight instead of weaving."
+    },
+    {
+      "host": "BotStateTorpedoAim::sector_probe",
+      "address": "009d1a94",
+      "native": "007f0280",
+      "function": "009d15f0",
+      "note": "A COMPUTED triple {72t, min(0.7*72t, 150), 1.5*72t}. Host stands in with a default TorpedoAimSectorProbe{}, so the obstacle arm is inert."
+    },
+    {
+      "host": "BotStateTorpedoGoAway::terrain_probe",
+      "address": "009d0cbc",
+      "native": "007f0280",
+      "function": "009d0c10",
+      "note": "Extents 60 (00CEB4B0), 50 (00CEB4D4), 90 (00D1A918) and a final argument of 0. Not bound. An inert probe is PROVABLY faithful here: the caller zeroes the three out-slots at 009D0C96-009D0CAA and its use is a strict sign test on -p[0]*p[1]*p[2]."
+    },
+    {
+      "host": "BotStateTorpedoAttackRun::sample_offset",
+      "address": "009d0857",
+      "native": "007f0280",
+      "function": "009d07b0",
+      "note": "00CE5444 = 80 among its extents, final argument 0. Not surveyed for a host stand-in."
+    }
+  ],
+  "callers": {
+    "total": 18,
+    "note": "Exhaustive over rel32 via tools/callsite_census.py. The brief said sixteen. 009FD570 is NOT among them, which matters because this stream reached 007F0280 through 009D0C10 and could have assumed the two travel together.",
+    "sites": ["007b4b22 in 007b48e0", "007b505d in 007b4f60", "009a3805 in BSP_BotStateDepthChargeAttackRun_Tick", "009a3d95 in 009a3cf0", "009a4122 in BSP_BotStateDepthChargeAim_Tick", "009a72dd in 009a71e0", "009b0632 in 009afff0", "009b4dc1 in 009b4d00", "009b580f in 009b5760", "009b5f17 in 009b5c80", "009c42b8 in BSP_BotStateDiveBombAttackRun_Tick", "009c4878 in 009c47d0", "009c6b3a in BSP_BotStateDiveBombFlyAbove_Tick", "009caa12 in 009ca870", "009caead in 009cadb0", "009d0857 in BSP_BotStateTorpedoAttackRun_Tick", "009d0cbc in BSP_BotStateTorpedoGoAway_UpdateGeometry", "009d1a94 in BSP_BotStateTorpedoAim_Tick"]
+  },
+  "open": [
+    "The RET 0x18 versus docs/BOT_TASK_STATES.md row 356's five-argument shape, settled from the listing. Checklist rule 7 says the cleanup wins, so the existing row is the one to doubt.",
+    "The receiver's identity: param_2 carries a pose-gating byte at +10Ch, which is NOT the +C8h a plane unit uses, so the receiver may not be the unit at every site.",
+    "The meaning of each element of the two out-triples and the in-triple, read at two sites with different constants rather than inferred from one.",
+    "The return convention: void per the existing doc, but three callers consume a float, so check whether anything is left in ST0.",
+    "Fifteen of the eighteen callers are unsurveyed for their host stand-ins."
+  ],
+  "validation": {
+    "note": "no code changed; nothing to run. Section 2 of the doc is decompiler output on an SEH-carrying routine and is explicitly marked not to be built on."
+  }
+}

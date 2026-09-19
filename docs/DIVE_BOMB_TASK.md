@@ -3065,3 +3065,178 @@ the assumption would move the sink geometry on an inference of exactly the kind 
 `kPilotPitchHalfRange` is recorded in the tool's own doc as a **confirmed false positive**: declared
 0.5236 against an m32 0.523599, a four-significant-figure declaration. The 101 A-harmless rows are
 left alone.
+
+### Class B rows 2 and 3 settled, and a retraction on row 3's diagnosis
+
+**Row 2, `kHudMinimapXDivisor`** - corrected to the image's form. The two axes are not symmetrical:
+`00CEDAE8` holds the qword 1/1024 and every site **multiplies** by it (`005411E0` FMUL,
+`00541230` FMUL, `005C1C68` FMUL), while `00CE42B0` holds the qword 768 and its sites **divide**
+(`005411CA` FDIV, `0054121A` FDIV) - adjacent instructions in one function. The constant is now
+`kHudMinimapXScale = 0.0009765625` and both consumers multiply, at `src/hud_minimap.cpp:100` and
+`src/hud_updates.cpp:419`. As the lead noted, this is fidelity of form and not a behaviour bug:
+dividing by 1024 and multiplying by 1/1024 agree to the last bit, both being exact powers of two.
+
+**Row 3, `kWreckAnchorLateralDivisor`** - corrected 2.0 to 2.5, and **my earlier diagnosis of it was
+wrong**. I wrote that its four sites were "none of them obviously death-sink code" and that it might
+be row 1 again. One of them, `008250F3`, is squarely inside this header's own documented region
+`008250F0..008251CD` - I read the list and did not check it against the region printed six lines
+above the constant. The region loads the address twice, `008250F3` and `0082515B`, both
+`FLD double ptr`, feeding the FDIV pairs at `00825116`/`00825131` and `00825161`/`00825179`. The
+qword there is `00 00 00 00 00 00 04 40` = 2.5. So the address is right and the value was simply
+wrong - the opposite of row 1.
+
+This one **does** change behaviour: it widens the wreck anchor's lateral divisor by a quarter. No
+before/after run was taken for it, and that is recorded rather than glossed.
+
+### The repo after all three
+
+`checked 696, mismatched 119: A-WRONG 1, B 1, A-unreferenced 1, B-unreferenced 15, A-harmless 101`
+
+The remaining A-WRONG is `kPitchClampLo`, already fixed on `agent/cc8-plane-squadron` and not yet in
+this tree. The remaining B is `kPilotPitchHalfRange`, the confirmed four-significant-figure false
+positive. So every real row the sweep found is now either fixed or fixed elsewhere.
+
+## `007F0280`: three corrections from the probe survey, and my stand-in is a hole
+
+cc8-torpedo-descent's survey (`docs/BOT_PROBE_007F0280.md`, body **not** read and marked so) carries
+three things that correct this doc or the brief:
+
+* **Eighteen callers, not sixteen**, exhaustive over rel32 - and `009FD570` is **not** one of them,
+  although it is reached through the same `009D0C10` geometry.
+* **`RET 0x18` at `007F0B1F` says SIX stack arguments**, against `docs/BOT_TASK_STATES.md` row 356's
+  five. Checklist rule 7: the count is the cleanup, never the pushes anyone listed. The row is the
+  thing to doubt.
+* **The extent triple is per-caller and sometimes computed.** This stream passes 80, 60, 120 with a
+  final **1** (`009C4258`, `009C4268`, `009C4287`); the torpedo goaway passes 60, 50, 90 with a
+  final **0**; the aim tick passes `{72t, min(0.7*72t, 150), 1.5*72t}`. So a pure function that
+  hard-codes the triple would be wrong for fifteen of eighteen sites, and that final argument is a
+  per-caller **mode** - this stream's 1 against the torpedo states' 0 is not noise.
+
+### The part that corrects this stream, and it is not a quibble
+
+Their zero stand-in and this one are **not the same kind of thing**, and their "inert is faithful"
+does not cover mine.
+
+At `009D0CBC` the caller zeroes the three out-slots itself immediately before the call
+(`009D0C96`-`009D0CAA`, XORPS/MOVSS) and the only use is a strict sign test on `-p[0]*p[1]*p[2]`, so
+a no-hit answer cannot fire it: zero there is exactly what the image would compute, and that
+stand-in should stay.
+
+Here at `009C42B8` the result feeds `lateral_offset_20 = -sampler_result * ...`, so zero is **not** a
+no-hit answer - it is a claim that the probe always returns zero, and it is precisely why the run-in
+flies straight at its target instead of weaving. The label on it has been honest about the
+behaviour ("the run-in flies straight rather than weaving") but described it as a contract, which
+undersells it: it is a hole with a known shape, and it is upstream of the whole approach geometry
+this stream has been measuring.
+
+That matters for the inert-span question now under instrumentation. The run-in's commanded heading
+is `bearing + lateral_offset_20` (`009C42DC`-`009C4305`), so with the offset pinned at zero the
+approach path is not the image's, whatever `009FBA50` computes for its altitude. Both are upstream
+of the dive, and only one of them is currently being measured.
+
+### Checked rather than inherited: the offset does reach the heading, and stays zero
+
+cc8-torpedo-descent was careful to say their "yours is a hole" was an argument about the shape of a
+zero substitution and **not** a reading of this stream's heading chain, which they had not done, and
+asked for it to be checked here. Checked, at `src/dive_bomb_task.cpp:395-419`:
+
+```cpp
+out.lateral_offset_20 = in.lateral_offset_20;          // 399, carried on entry
+...
+} else {                                               // the re-roll arm only
+    out.lateral_offset_20 = -in.sampler_result * kLateralOffsetScale;   // 412
+}
+// 009C42DC-009C4305, run on BOTH arms:
+out.commanded_heading_2c0 =
+    wrapped_angle_add_00438aa0(in.target_bearing_c0, out.lateral_offset_20);  // 418
+```
+
+Two facts, and they compound rather than cancel:
+
+* the offset reaches the commanded heading on **every** path, not some - the heading line is outside
+  the `if`, and the comment at `009C42DC` already said "run on both arms";
+* it is only **recomputed** on the re-roll arm, and it is **carried** otherwise, so a zero written
+  once persists until the next re-roll writes zero again.
+
+The census reports `rerolls=153` over the run-in, so the substitution pins the offset to zero 153
+times and it is zero in between. The commanded heading is therefore the bare bearing to the target
+for the whole approach - the aircraft flies straight at the target and never weaves - which is what
+the label always claimed behaviourally and is now established from this side rather than argued from
+the shape of the substitution.
+
+So their conclusion stands and is now independently confirmed, which is the right standing for it:
+they were right not to claim a reading they had not made, and the check was three lines away.
+
+## `007F0280` scoped: the six-argument ABI confirmed from both ends
+
+Ownership moved to this stream, because the zero substitution is a proof at the torpedo goaway site
+and a hole here. Before reading the body, its ABI is confirmed independently of the handover note,
+from the prologue and the epilogue:
+
+```
+007f0280  PUSH -1 / PUSH 0xc8f35b / MOV EAX,FS:[0] / PUSH EAX   ; SEH frame
+007f0295  SUB  ESP,0x104
+007f029b  PUSH EBP / PUSH ESI                                    ; 280 bytes pushed
+007f029d  MOV  ESI,dword ptr [ESP + 0x11c]                       ; = [ESP+284] = arg0
+...
+007f0b19  ADD  ESP,0x110
+007f0b1f  RET  0x18
+```
+
+`RET 0x18` is **24 bytes, six stack arguments**, and the prologue agrees: 280 bytes pushed puts the
+return address at `[ESP+280]` and the first argument at `[ESP+284]` = `[ESP+11Ch]`, which is exactly
+what `007F029D` reads. Two independent ends of the frame giving the same count is worth more than
+either alone, and it stands against `docs/BOT_TASK_STATES.md` row 356's five - that row is the thing
+to doubt, and it is not this stream's to edit.
+
+Body `007F0280`-`007F0B21`, 2209 bytes, SEH-registered, 0x110 of frame. Per the project's own notes
+that is a body to script rather than decompile, with ESP anchored on the SEH state stores and
+back-propagated - the decompiler's frame reasoning is least trustworthy exactly where an SEH
+registration sits, which the handover doc also says of its own contents.
+
+Queued behind the `usn04_terms` run and the `task+41Ch` binding. `009FD570`, which `009C47D0` also
+calls, belongs to cc8-flyto-solver and will not be transcribed here.
+
+## `007F0280`'s frame walked, and the argument shape from both sides
+
+The body is scripted rather than decompiled, with the depth walked forward from the prologue and
+every `[ESP+n]` access resolved to a corrected slot. The walk validates against the hand
+computation: `007F029D`'s `[ESP+11Ch]` resolves to slot -4, which is `entry+4`, the first stacked
+argument, exactly as the `RET 18h` arithmetic predicted.
+
+### The six slots, from inside the callee
+
+| arg | slot | first read | width |
+| --- | --- | --- | --- |
+| 0 | -4 | `007F029D` `[ESP+11Ch]` | m32 |
+| 1 | -8 | `007F02E9` `[ESP+124h]` | m32 |
+| 2 | -12 | `007F02B8` `[ESP+128h]` | m32 |
+| 3 | -16 | `007F02CD` `[ESP+12Ch]` | m32 |
+| 4 | -20 | `007F038D` `[ESP+138h]` | **m8, a CMP** |
+| 5 | -24 | - | no direct `[ESP+n]` read |
+
+The differing displacements for a uniform 4-byte argument list are the depth changing between the
+reads, which is the whole reason for anchoring rather than grepping literals: `[ESP+124h]` and
+`[ESP+128h]` are consecutive arguments read four bytes apart in the frame and four apart in the
+displacement only because the depth happened to be equal there.
+
+Two things worth having before the body: **arg4 is read as a byte**, by a `CMP`, which is the shape
+of a mode or flag rather than a float; and **arg5 is never read through `[ESP+n]`** in the whole
+2209 bytes, so it is either taken through a pointer or genuinely unused - a question for the body,
+and one the caller survey could not have answered.
+
+### And from the caller side, at this stream's own site
+
+```
+009c4260  PUSH 0x1                         ; pushed FIRST, so the LAST argument
+009c4276  PUSH ECX   ; LEA ECX,[ESP+0x14]  ; an out-pointer
+009c4280  PUSH EDX   ; LEA EDX,[ESP+0x30]  ; an out-pointer
+009c4293  PUSH ECX   ; LEA ECX,[ESP+0x40]  ; an out-pointer
+009c4262/009c4281/009c4294  MOVSS [ESP+20h]/[ESP+2Ch]/[ESP+34h]   ; the 80, 60, 120
+```
+
+So the three extents are **stored into the argument window, not pushed**, while the three
+out-pointers and the mode are pushed - which is why a reader counting pushes gets a different answer
+from a reader counting the cleanup, and why row 356 had five. The mapping of which push lands in
+which of the six slots is the next step and belongs to the body read, not to inference from this
+side.

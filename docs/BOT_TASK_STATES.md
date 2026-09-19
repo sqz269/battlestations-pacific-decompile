@@ -353,7 +353,7 @@ convention at the site; `gate` is the condition under which the site runs.
 | in `009A4010`, `009D07B0`, `009C18C0` | `BSP_Math_InterpolateClamped` | `interpolate_clamped` | `- / x0, y0, x1, y1, t / float` | every geometry step |
 | in `009A3770`, `009A4010`, `009D07B0` | `BSP_Math_AddWrappedAngle` | `add_wrapped_angle` | `- / a, b / float` | every heading step |
 | in `009A4010` | `BSP_Math_SubtractWrappedAngle` | `subtract_wrapped_angle` | `- / a, b / float` | the heading clamp |
-| in `009A3770`, `009A4010`, `009D07B0` | `007F0280` | `sample_offset_direction` | `unit / in, out, out, out, flag / void` | on a re-roll |
+| in `009A3770`, `009A4010`, `009D07B0` | `007F0280` | `sample_offset_direction` | `unit / SIX stacked, see the correction below / void` | on a re-roll |
 | in `009A3770`, `009A4010`, `009D07B0` | `009FBA50` | `command_altitude_and_throttle` | `approach / alt, a, b, throttle / void` | every tick |
 | in `009C18C0`, `009A3770` | `0042E740 BSP_GameTuning_GetSingleton` | `game_tuning` | `- / - / void*` | each constant fetch |
 
@@ -571,3 +571,33 @@ glide path at `atan(t * tan(DropAngle))`. Step 5 then calls `009F9E40` for the h
 and makes three tail calls at `009C1B45`, `009C1B50` and `009C1B5B` that are unread.
 
 `docs/TORPEDO_MOVETO_TICK.md`.
+
+## Correction to row 356: `007F0280` takes SIX stack arguments, not five
+
+The row gave `unit / in, out, out, out, flag / void` - five stacked. The frame says six, from both
+ends, and checklist rule 7 says the count is the cleanup rather than the pushes anyone listed:
+
+```
+007f0280  PUSH -1 / PUSH 0xc8f35b / MOV EAX,FS:[0] / PUSH EAX   ; the SEH triple, 12
+007f0295  SUB  ESP,0x104                                        ; 260
+007f029b  PUSH EBP / PUSH ESI                                   ; 8   -> 280 pushed
+007f029d  MOV  ESI,dword ptr [ESP + 0x11c]                      ; [ESP+284] = arg0
+...
+007f0b19  ADD  ESP,0x110
+007f0b1f  RET  0x18                                             ; 24 bytes = six arguments
+```
+
+`RET 18h` gives six. The prologue agrees independently: 280 bytes pushed puts the return address at
+`[ESP+280]`, so the first stacked argument is at `[ESP+284]` = `[ESP+11Ch]` - exactly the operand
+`007F029D` reads. Two ends of one frame agreeing is a stronger statement than either alone, and
+neither depends on reading the body, which is still unread.
+
+The caller evidence agrees too, and shows why the fifth slot was mistaken for the last: the extent
+triple differs per caller and is sometimes computed - `009C4258`/`009C4268`/`009C4287` push 80, 60
+and 120 with a final **1**, the torpedo goaway pushes 60, 50 and 90 with a final **0**, and the aim
+tick pushes `{72t, min(0.7 x 72t, 150), 1.5 x 72t}`. That final argument is a per-caller **mode**,
+not the `flag` terminating a five-argument list, and there is a sixth beyond it that the row never
+had.
+
+Body `007F0280`-`007F0B21`, 2209 bytes, SEH-registered, `0x110` of frame; eighteen callers by
+exhaustive rel32 scan. docs/DIVE_BOMB_TASK.md carries the survey.
