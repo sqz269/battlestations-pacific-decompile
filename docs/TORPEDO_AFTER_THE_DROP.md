@@ -2006,6 +2006,13 @@ member from its leader. The image's own spacing for this is `Formation_UnitDist 
 (`00CE3AE8`, `src/ai_tuning_globals.cpp`), at which no dropped torpedo could be inside a mate's
 hull box.
 
+**So the fix for this defect is the formation ring, not anything in the torpedo chain**: binding
+`0077C8D0` behind `tick_request_join_formation` so a wing member is displaced from its leader.
+There is no faithful change in `src/game_hosts_gunnery.cpp` or the torpedo task files that reaches
+`swims_started=6`, and 15.3 is the record of the one candidate that looked like a torpedo-side fix
+and was refuted from the listing before it was written. Until the ring exists, USN04 cannot measure
+the torpedo chain end to end without the probe of 15.5.
+
 That also settles the question the handoff left open about the wingmen reporting numbers identical
 to the last digit. **It is neither the flight-lead binding nor three tasks sharing one solution.**
 The torpedo task's inputs are filled per unit from the unit's own position -
