@@ -2329,3 +2329,37 @@ could never fire in this host, at any altitude, independently of the ceiling cor
 
 Not changed in this commit: a run is in flight on the current build, and the fix wants
 `state+20h`'s own producer read as well. It is the first thing to do after this run lands.
+
+## `local\usn04_flyabove.log`: the heading arm works, and the gate moves to the turndown
+
+`009C62B0 ticks=159 heading writes=159` - the arm ran on every flyabove tick - and the geometry it
+produces is the point:
+
+| measure | `usn04_target` | `usn04_flyabove` |
+| --- | --- | --- |
+| flyabove ticks / heading writes | 159 / 0 | 159 / **159** |
+| **range when the turndown starts** | not measured | **3.8 m** |
+| bearing when the turndown starts | not measured | 2.9100 rad |
+| turndown ticks | 67 | 71 |
+| aimdive entry range | 443.3 m | 472.6 m |
+| aimdive entry bearing | -3.1411 rad | 3.1219 rad |
+| closest range in the aim states | 443.3 m | 472.6 m |
+| closest miss vs the 25.0 m window | 347.40 m | 374.99 m |
+| releases / bombs / rounds left | 0 / 0 / 2 | 0 / 0 / 2 |
+
+**The flyabove now flies the aircraft to 3.8 m of its aim point.** That is the binding working: with
+no tick it held the run-in heading and overflew; with the heading arm re-arming mode 2 every tick
+the planner banks it right over the target.
+
+**The gate has moved one state earlier than the aim window.** The turndown begins directly overhead
+and ends 472.6 m away pointing 178.9 degrees off, because `009C7EA0` exits on **attitude alone** -
+`pose+C64h < -1.0` with `|bank|` past 2.356 - and carries no heading or range term at all. 71 ticks
+is 6.4 s, and at the run's speed that is the 472 m. So the wingover spends the whole approach the
+flyabove just bought, and `aimdive` inherits an aircraft pointing away exactly as before; the aim
+trace still shows the range rising monotonically, 660 to 1842 m.
+
+The miss is 374.99 m, slightly worse than the previous run's 347.40 m, which is noise on the same
+geometry: in both, the aimdive entry range **is** the closest range.
+
+So the next gate is `009C7EA0` and the turndown's pull rate, not the aim error and not the flyabove.
+The dive-bomb chain now reaches the right place and leaves it too slowly.

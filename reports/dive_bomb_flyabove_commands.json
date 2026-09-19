@@ -73,7 +73,21 @@
     "kRollIn": "does not exist. The registrar 009C73A0 names exactly ten states through BSP_BotStateRegistry_Add at 009C7680-009C76C6; the roll-in is the flyabove+19h flag, not a state.",
     "next_by_size": "009C5180 (1675 bytes, owns a release site) then 009C4A40 (1061 bytes)"
   },
-  "runs": [],
+  "runs": [
+    {
+      "log": "local/usn04_flyabove.log",
+      "arguments": "--frames 5000 --press-start-frame 30 --menu-select USN04 --mission-frames 4800 --mission-frame-seconds 0.05",
+      "result": "arm_ticks=2118 transitions=7 states[goaway=1 aimdive=318 aimglide=42 flyabove=159 turndown=71 attackrun=1527]; 009C62B0 ticks=159 heading writes=159.",
+      "owed_numbers": {
+        "where_the_aircraft_is_when_turndown_starts": "range 3.8 m, bearing 2.9100 rad - directly over the aim point",
+        "dive_entry_bearing": "3.1219 rad, 178.9 degrees",
+        "closest_miss_vs_25m": "374.99 m at range 472.6 m, altitude 643.0 m",
+        "release": "none; releases=0 bombs_spawned=0 rounds_left=2"
+      },
+      "finding": "the heading arm works - the flyabove now flies the aircraft to 3.8 m of its aim point instead of overflying it. The gate moves one state earlier than the aim window: the turndown starts overhead and ends 472.6 m away pointing 178.9 degrees off, because 009C7EA0 exits on attitude alone (pose+C64h < -1.0 with |bank| past 2.356) with no heading or range term, and its 71 ticks are 6.4 s of travel. The aim trace still rises monotonically, 660 to 1842 m.",
+      "next_gate": "009C7EA0 and the turndown pull rate, not the aim error and not the flyabove."
+    }
+  ],
   "open": {
     "009C69B1": "the flyabove bank-target arm: cmd+2C4h = 0.0 with cmd+2CCh = 1. Read, not bound.",
     "009C6F89": "the flyabove altitude arm: cmd+2BCh with the pitch mode in EDX, on the arm that skips 009FB800. Read, not bound.",
