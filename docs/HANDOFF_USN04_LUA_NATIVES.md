@@ -68,6 +68,26 @@ packet depends on it.
 **Consequence for the ranking: `FindEntity` is NOT a gap and must not be taken as one.** It also
 means the 399-call figure over 24 natives is really 267 over 23.
 
+### Correction from packet `cc8_navigator_path`: every earlier log's entity rows read `2n-1`
+
+The fix above took only half. `b5a31c82f` guarded the first-insert branch of `note_native_call`
+and left the repeat branch calling `log_.unimplemented` unconditionally, on top of the
+`note_entity_status` the bottom of `binding_trampoline` already makes. So an entity-returning row
+was recorded twice for every call after the first: `1 + 2(n-1) = 2n-1`.
+
+**In every log written before `d47d7bead`, every one of the nineteen `kEntityReturningBindings`
+rows reads `2n-1`, not `n`. The real count is `(printed + 1) / 2`.** Measured on two independent
+runs of the unfixed build (`local/census2_usn04.log` and `local/nav_before_usn04.log`): `FindEntity`
+printed `concrete calls=263` for 132 calls and `GetSelectedUnit` printed `UNIMPLEMENTED calls=97`
+for 49. It is not only the row that resolves — the status was right on both, only the count was
+wrong, and it was wrong for all nineteen.
+
+`d47d7bead` puts the same guard on the repeat branch. Confirmed by
+`local/nav_base2_usn04.log`: `FindEntity 00898e30 concrete calls=132`,
+`GetSelectedUnit 008ab070 UNIMPLEMENTED calls=49`, `entity_resolves=132`, and a world summary
+identical to the unfixed run's (`moved=100.51 total_path=34734.24`), which is the control that
+shows the change is reporting-only.
+
 ## 2. The ranking, corrected from the script
 
 Rank is by what the mission's control flow loses, not by call count.

@@ -37,7 +37,128 @@ int issue_navigator_command(LuaCommandTargetSource& targets, LuaBindingNavigator
     return 0;
 }
 
+// 008A3600's optional arguments, in the order the body reads them. Packet
+// cc8_navigator_path.
+constexpr int kArgumentFollowMode = 2;    // 008A374B PUSH EBX, EBX = 2
+constexpr int kArgumentPathParameter = 3; // 008A378B PUSH 0x3
+constexpr int kArgumentSpeed = 4;         // 008A37CA PUSH 0x4
+
+// 008A3B10 and 008A3CD0 share this sequence and differ only in the selector and
+// in whether the disable side has an arm. Both read the entity from argument 0
+// and the boolean from argument 1, and both take *(entity+738h) as the director.
+int set_navigator_avoidance_flag(LuaBindingNavigatorHost& host, int selector,
+                                 bool has_disable_arm)
+{
+    // 008A3C0E / 008A3DCF.
+    void* entity = host.argument_entity(kArgumentSelf);
+
+    // 008A3C40 / 008A3E06. 008A3CD0 reads *(entity+738h) at 008A3DF6, BEFORE the
+    // boolean; 008A3B10 reads it at 008A3C60, after. Nothing observes the order,
+    // so one sequence serves both.
+    const bool enabled = host.argument_boolean(kArgumentTarget);
+
+    // Neither native null-tests the entity between 00888AA0 and the +738h read,
+    // so a non-entity argument dereferences null in the executable. The
+    // reconstruction stops instead of reproducing that; the host sees nothing.
+    if (entity == nullptr) return 0;
+
+    void* director = host.entity_weapon_director(entity);
+    if (director != nullptr) {
+        // 00835A40 at 008A3C67 / 00835940 at 008A3E0E.
+        host.session_route_avoidance_message(director, selector, enabled);
+    }
+
+    // 008A3C6C TEST BL,BL / 008A3C6E JNZ 008A3C7E: the arm runs when the boolean
+    // is FALSE. 008A3CD0 has nothing here.
+    if (has_disable_arm && !enabled) {
+        host.unit_parts_land_avoidance_disabled(entity);
+    }
+
+    // 008A3C82 / 008A3E27.
+    return 0;
+}
+
 }  // namespace
+
+// ---------------------------------------------------------------------------
+// 008A3600
+// ---------------------------------------------------------------------------
+
+int lua_binding_navigator_move_on_path(LuaCommandTargetSource& targets,
+                                       LuaBindingNavigatorHost& host,
+                                       NavigatorPathOrder& order_out)
+{
+    order_out = NavigatorPathOrder{};
+
+    // 008A3707: the acting unit, read before anything else.
+    void* entity = host.argument_entity(kArgumentSelf);
+
+    // 008A3724, into the same slot argument 4 overwrites at 008A37E9. The
+    // default is read from the class even when the entity is null in the
+    // executable, which is another unguarded dereference; the reconstruction
+    // reads it only when there is an entity and reports the difference.
+    float speed = (entity != nullptr) ? host.entity_class_max_speed(entity) : 0.0f;
+
+    // 008A3730 and 008A3734.
+    int follow_mode = kNavigatorPathFollowModeDefault;
+    int path_parameter = kNavigatorPathParameterDefault;
+
+    // 008A373D, 008A3781, 008A37C0. Three separate 00B663F0 calls, each gating
+    // one argument and each jumping to the SAME 008A37FD, so the arguments are
+    // strictly cumulative: no argument 3 without argument 2.
+    const int argc = host.argument_count();
+    if (argc >= 3) {
+        follow_mode = host.argument_integer(kArgumentFollowMode);   // 008A3764
+        if (argc >= 4) {
+            path_parameter = host.argument_integer(kArgumentPathParameter);  // 008A37A5
+            if (argc >= 5) {
+                speed = host.argument_number(kArgumentSpeed);       // 008A37E4
+            }
+        }
+    }
+
+    // 008A381A, and note the ORDER: the path argument is read LAST, after the
+    // three optional ones, even though it is Lua argument 1.
+    const SceneCommandTarget target = lua_read_command_target(targets, kArgumentTarget);
+
+    // 008A382F-008A3877. `kind` 0 leaves EDI null and the body still reads
+    // [EDI+174h] at 008A38A9, so a non-entity path argument dereferences null in
+    // the executable. The two surviving branches are: the descriptor's resolved
+    // object when it is non-null (008A383A), otherwise the object id through the
+    // two-range table at 008A3842-008A3873. This host is handed the object the
+    // descriptor already carries, which is that first branch; the table walk is
+    // the executable re-resolving an id it has, and it lands on the same entity.
+    void* path_entity = (target.kind != 0) ? target.object : nullptr;
+    if (path_entity == nullptr) return 0;
+
+    order_out.path_object_id = host.entity_object_id(path_entity);  // 008A38A9
+    order_out.follow_mode = follow_mode;                            // 008A38B5
+    order_out.path_parameter = path_parameter;                      // 008A38B9
+
+    if (entity != nullptr) {
+        // 008A38D0, this = the acting unit, flags 0.
+        host.session_route_path_order_message(entity, order_out);
+
+        // 008A38D5-008A3912, AFTER the message and unconditionally. FLD the
+        // speed, FLDZ, FCOMIP ST0,ST1 compares 0.0 against the speed and JBE at
+        // 008A38F4 takes the speed when 0.0 <= speed, so a negative clamps to
+        // zero. The +28h mission-clock half is the host's own clock.
+        host.entity_store_commanded_speed(entity, speed < 0.0f ? 0.0f : speed);
+    }
+
+    // 008A3917 with nothing pushed above the arguments.
+    return 0;
+}
+
+int lua_binding_navigator_set_avoid_land_collision(LuaBindingNavigatorHost& host)
+{
+    return set_navigator_avoidance_flag(host, kNavigatorAvoidanceSelectorLandCollision, true);
+}
+
+int lua_binding_navigator_set_torpedo_evasion(LuaBindingNavigatorHost& host)
+{
+    return set_navigator_avoidance_flag(host, kNavigatorAvoidanceSelectorTorpedo, false);
+}
 
 // ---------------------------------------------------------------------------
 // 0088A810

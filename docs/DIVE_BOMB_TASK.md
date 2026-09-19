@@ -3610,3 +3610,119 @@ branch builds.** `local\usn04_geo3.log` measures the bearing fix ONLY: its autho
 The x87 walk and the `009C5AF1` argument order were each established twice, by two scripts written
 independently (`local\x87_walk.py` and `local\x87trace.py`), which is why both are stated here
 without hedging.
+
+## `approach+D8h` is the predicted bomb impact point, rewritten every tick
+
+**This withdraws three claims in this document.** In order of how wrong they were:
+
+1. "`approach+D8h`/`+DCh`/`+E0h` are the aircraft's own world position, **latched once at task
+   construction**" (the section that renamed `kAimPointX/Y/Z` to `kRunInOriginX/Y/Z`). Wrong: the
+   constructor's store at `009C405D`-`009C407D` is one of **three** writers, and it is overwritten
+   on the first approach-update tick.
+2. The same section's "the **second** bearing, taken against the aircraft's live position, is the
+   one the aim error uses". Wrong, and the correction in section 6 of the aim-error walk is right:
+   the aim error uses the bearing taken against `+D8h`/`+E0h`.
+3. Section 6's own "the aircraft's own position **at dive entry**, latched once, constant for the
+   dive". Wrong in the same way. There is no latch to bind.
+
+### The census
+
+An `fstp`/`mov` scan for `[reg+0D8h]` over `009C3E00`-`009CA000` (the whole class) returns three
+stores, not one:
+
+| site | function | what it stores |
+| --- | --- | --- |
+| `009C4065` | `FUN_009C3EA0`, the constructor | `unit+FCh`/`+100h`/`+104h`, the raw position |
+| `009C7D31` | `009C7A80`, the approach update | the same raw position |
+| `009C7E13` | `009C7A80`, the approach update | the point below |
+
+`009C7A80` runs on **every** arm tick, before the transition and before the state tick (section (1)
+step 3), so the constructor's value survives exactly zero ticks. The two update arms are chosen at
+`009C7D04`-`009C7D12`:
+
+```
+009c7d04  cmp byte ptr [esp + 0x38], 0     ; the `diving` argument
+009c7d09  jne 0x9c7d71                     ; -> the second arm
+009c7d0b  cmp byte ptr [esi + 0xd0], 0     ; approach+D0h, the in-range latch
+009c7d12  jne 0x9c7d71                     ; -> the second arm
+009c7d27  fld dword ptr [edi + 0xfc]       ; else the raw unit position
+```
+
+`[ESP+38h]` is the third argument, confirmed from both ends. The callee's frame is `SUB ESP,28h`
+plus `PUSH ESI`/`PUSH EDI` (the epilogue at `009C7D64`-`009C7D6E` pops exactly those two and adds
+`28h`), so `[ESP+38h]` is `entry+8`, the first of the two pushes; and at the call site `009C87DF
+PUSH EDX` pushes the `diving` byte `009C87D2` had just set, before `PUSH ECX`/`FSTP [ESP]` puts
+`dt` in the second slot. `RET 8` closes it. The four states `009C8794`-`009C87D7` calls `diving`
+include `aimdive` and `aimglide`, so **during a dive the second arm always runs**.
+
+### The second arm, `009C7D71`-`009C7E33`
+
+```
+h    = unit.y - aimPoint.y                      ; 009C7B49 stores it negated, 009C7D88 negates it
+                                                ;   back ([00D7A208] is -0.0f, so this is a negate,
+                                                ;   not a subtraction from a constant)
+tf   = 007BCC80(unit, h) + 0.1                  ; 009C7D94, then the qword 0.1 at 00D7A3A0
+v    = unit->vtable[+34h]()                     ; 009C7DB0, through [ESI+4] - the UNIT's vtable
++D8h = unit.x + tf * v.x                        ; 009C7DDC / 009C7DC8 / 009C7E13
++DCh = unit.y + 0.0f, then aimPoint.y           ; 009C7DF1 ([00D7A258] = 0.0f), then 009C7E33
++E0h = unit.z + tf * v.z                        ; 009C7E01 / 009C7DCF / 009C7E27
+```
+
+`007BCC80` is `RET 4`, `__thiscall(unit, float height)`, body `007BCC80`-`007BCCEB`, and it is the
+**time of flight of a dropped body**:
+
+```
+007bcc86  height <= 0  ->  0.0
+007bcc95  vy = unit->vtable[+34h]().y - [00E08E54]     ; 00E08E54 = 3.0f, in .data
+007bccb0  d  = vy*vy + 2*height*[00CF9058]             ; 00CF9058 = 9.81, qword
+007bccca  t  = (sqrt(d) + vy) / [00CF9058]
+```
+
+which is the positive root of `h = -vy*t + g*t^2/2` with `vy` the world-Y velocity, upward
+positive: `vy = 0` gives `sqrt(2h/g)` and a descending aircraft gets a shorter fall. That same
+function is what identifies `unit->vtable[+34h]`: it reads `.y` of the slot's result as a vertical
+velocity inside a free-fall solution, so the slot is the unit's **velocity** getter. The slot has no
+recovered name and the identification rests on that use plus the dimensions of `unit.x + tf * v.x`;
+`007B3DF0`, which occupies the same index of the *approach*'s vtable `00D20C48`, is a bare `RET` and
+is not this call - `009C7D9F MOV ECX,[ESI+4]` rebases to the unit first.
+
+`007BCC80` is shared: `009D139D` in the torpedo approach update calls it for the drop lead, where
+`docs/TORPEDO_APPROACH_UPDATE.md` carries `fall_time` as an unimplemented host contract. It is
+reconstructed in this packet as `weapon_fall_time_007bcc80`; nothing on the torpedo side is changed.
+
+### What that makes the aim error
+
+`approach+D8h`/`+E0h` is the **predicted impact point of a bomb released this tick** - the aircraft
+advanced by its own velocity over the bomb's time of flight - and `+DCh` is the aim point's own Y.
+The aimdive tick differences the aim point against it at `009C5950`/`009C5960`, and that difference
+is the input of the second `sqrt` (`[ESP+5Ch]`) and of the bearing at `009C5AF1` (`[ESP+18h]`),
+which are the aim error's two geometric inputs. So
+
+```
+error = gain(h) * ( cos(aimHeading - bearing(aimPoint - impactPoint)) * |aimPoint - impactPoint|
+                    - lead(h) )
+```
+
+and the 25.0 at `00CE3880` is a **25-metre CCIP window**: release when the predicted impact point
+is within 25 m, along track, of the aim point. That is why this host, which passed the live
+aircraft-to-target range to both, measured `range/error = 433/433` and never approached the gate -
+the substituted quantity has no reason to fall to 25 m, and the real one does so by construction.
+
+It also withdraws this document's "no gravity term, no time of flight and no target velocity
+anywhere in `009C58D0`-`009C6161`". That sentence is true of the tick's own body and was read
+correctly; the ballistic work is one level up, in the approach update, and reaches the tick through
+`approach+D8h`.
+
+### The roll arms take different bearings, and that was a real defect
+
+Walked with frame bases (`local\t.ps1`), so the `SUB ESP,14h` at `009C5D37`/`009C5D64` is not read
+as a displacement:
+
+| arm | slot | quantity |
+| --- | --- | --- |
+| `009C5D33`, wide band | `[ESP+18h]` | bearing error from the **impact point**, `009C5AF1` |
+| `009C5D60`, default band | `[ESP+24h]` | bearing error from the **aircraft**, `009C5AA3` |
+
+`DiveBombAimDiveSteerInputs` carried one `bearing_error` and both arms used it. It now carries both,
+and `dive_bomb_aimdive_steer_009c5c9f` picks by `used_wide_band`, the same predicate that picks the
+band constant.

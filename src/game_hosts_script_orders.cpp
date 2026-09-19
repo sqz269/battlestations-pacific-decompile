@@ -10,6 +10,7 @@
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/command_execution.hpp"
 #include "bsp/lua_binding_navigator.hpp"
 #include "bsp/mission_lua_bindings.hpp"
 #include "bsp/attack_commands.hpp"
@@ -44,6 +45,15 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // of magnitude - 1125 lines across 197 shipped files - and the one USN01
     // actually calls (`native PilotSetTarget argc=2 phase=luaStageInit`).
     {"PilotSetTarget", 0x008a4c90u},
+    // Packet cc8_navigator_path. The navigator sibling cc_lua_navigator left
+    // out, with its two per-unit companions: 98, 18 and 18 calls on USN04, and
+    // the eight script sites are the Lexington and the Town being told to circle
+    // their authored patrol paths. 008a3600 is NOT a 0077d600 issue like the
+    // four rows above it - it routes a 5Bh session message that the receiving
+    // unit's weapon director turns into the moveonpath command.
+    {"NavigatorMoveOnPath", 0x008a3600u},
+    {"NavigatorSetAvoidLandCollision", 0x008a3b10u},
+    {"NavigatorSetTorpedoEvasion", 0x008a3cd0u},
     {"NavigatorMoveToRange", 0x008a2f20u},
     {"NavigatorMoveToPos", 0x008a2bc0u},
     {"NavigatorDirectMoveToRange", 0x008a2d70u},
@@ -196,6 +206,9 @@ void format_address(std::uint32_t value, char (&out)[16]) {
 const char* command_name_of(std::uint32_t object) noexcept {
     if (object == bsp::kCommandObjectAttackMove) return "attackmove";
     if (object == bsp::kCommandObjectMoveTo) return "moveto";
+    // Packet cc8_navigator_path. 00E08F80, the third object a navigator row
+    // names; the constant is command_execution.hpp's, not a new one.
+    if (object == bsp::kCommandMoveOnPath) return "moveonpath";
     return "";
 }
 
@@ -1122,6 +1135,125 @@ void GameScriptOrdersHost::entity_issue_command(void* entity,
     }
 }
 
+// ---------------------------------------------------------------------------
+// Packet cc8_navigator_path: 008a3600 and its two companions
+// ---------------------------------------------------------------------------
+
+// 00B663F0 and 00B66270. Both already exist on this host for the nine rows of
+// packet cc_lua_binding_audit; these two names are the navigator host's spelling
+// of the same two reads, so they forward rather than duplicate the stack logic.
+int GameScriptOrdersHost::argument_count() { return count(); }
+
+float GameScriptOrdersHost::argument_number(int index) {
+    return static_cast<float>(get_number(index));
+}
+
+// *(*(entity+538h)+500h) at 008a3724, which is exactly
+// GameUnitsHost::unit_class_max_speed_0500.
+float GameScriptOrdersHost::entity_class_max_speed(void* entity) {
+    const std::size_t index = index_of(entity);
+    if (index >= units_.count()) return 0.0f;
+    return units_.unit_class_max_speed_0500(index);
+}
+
+// 0075B430(5Bh) at 008a387f + 0077c2a0 at 008a38d0.
+//
+// This host does not carry session messages, so the message is not transported;
+// what is reproduced is the receiver's net effect, which packet cc8_navigator_path
+// read whole at 00721a9d-00721ae6: 00720fa0 re-resolves the path entity from the
+// uint16 at msg+20h, 00465080 builds a descriptor from it, and the director's
+// vtable[60h] queues 00E08F80 `moveonpath` against that descriptor.
+//
+// Two differences from the executable, both holes and neither a proof:
+//
+//  1. The ENTRY POINT. The executable reaches the director through its own
+//     vtable[60h] (008358d0, the queue). This host has one command-issue seam,
+//     the projected 0077d600 / 00816e30 path, and uses it. 00816e30's moveonpath
+//     arm at 00816f7d exists (docs/ENTITY_COMMAND_ARMS.md), so the destination
+//     slot is the same one; the route to it is not.
+//  2. The FOLLOW MODE has nowhere to land. 0071c1b0 (body 0071c1b0-0071c1dd,
+//     read whole) walks [director+54h + i*1Ch] for the first i < 10 whose dword
+//     is zero and writes msg+24h to [[director+1a0h + i*4] + 8h] and msg+28h to
+//     +0Ch - a pair, not the single value docs/DIRECTOR_UPDATE_ARMS.md records.
+//     Both land on the slot's PATH OBJECT, which src/game_hosts_commands.cpp's
+//     command_count already says "this process does not build". So the pair is
+//     recorded and reported, not stored.
+void GameScriptOrdersHost::session_route_path_order_message(void* entity,
+    const bsp::NavigatorPathOrder& order) {
+    if (!logged_path_order_) {
+        logged_path_order_ = true;
+        log_.notef("luaMW_NavigatorMoveOnPath 008a3600 routes a 5Bh session message "
+            "rather than calling 0077d600 like the other four navigator rows. The "
+            "receiver 00721a40's 5Bh arm at 00721ab6 queues 00E08F80 `moveonpath` "
+            "against a descriptor built from the path entity, which is what this host "
+            "issues; 0071c1b0's follow-mode pair needs the slot's path object that "
+            "0071f600 would build, and this process does not build it");
+    }
+    // 00465080 BSP_CommandTarget_FromEntity over the entity 00720fa0 resolved.
+    // The descriptor the receiver builds carries the PATH entity, not the unit.
+    void* path_entity = path_entity_for_order_;
+    bsp::SceneCommandTarget target{};
+    if (path_entity != nullptr) {
+        target.kind = 1;
+        target.position_valid = 0;
+        target.object = path_entity;
+        target.object_id = order.path_object_id;
+    }
+    entity_issue_command(entity, bsp::kCommandMoveOnPath, target,
+        bsp::kNavigatorPathOrderRouteFlags);
+    ++summary_.path_orders;
+    // 0071c1b0's two stores, with no path object to receive them.
+    record_unimplemented("Navigator::path_object_set_follow_mode", "0071c1b0");
+}
+
+// The pair at *(entity+73Ch)+24h and +28h, 008a3901 and 008a3912. The same
+// store luaMW_SetShipSpeed 00890d30 makes, which this host already owns.
+void GameScriptOrdersHost::entity_store_commanded_speed(void* entity, float speed) {
+    const std::size_t index = index_of(entity);
+    if (index >= units_.count()) return;
+    units_.store_commanded_speed_00890e6f(index, speed);
+    ++summary_.commanded_speed_stores;
+}
+
+// *(entity+738h), read at 008a3c60 and 008a3df6. This host holds one GameDirector
+// per unit slot and keys it by unit index, so the unit handle identifies the
+// director; nothing here dereferences +738h.
+void* GameScriptOrdersHost::entity_weapon_director(void* entity) {
+    const std::size_t index = index_of(entity);
+    return (index < units_.count()) ? entity : nullptr;
+}
+
+// 00835a40 (selector 9) and 00835940 (selector 7), both building 0075B430(5Ah)
+// with vtable 00CFD9C4 and routing through 0077c2a0 with flags 7.
+//
+// The send side is complete: both senders were read whole and the two selectors
+// are the only thing that differs between them. The RECEIVE side is the hole.
+// 00721a40's 5Ah arm at 00721a93 hands the message to director->vtable[38h] =
+// 00835640 over 0071c1e0, and neither is projected in this process. The block
+// the value would land in does exist - bsp::ShipAiAvoidanceRequest's enable_3f4
+// (blk+3ECh) - and its two setters 009dabb0 (torpedo) and 009dabd0 (land) are
+// the ones include/bsp/ship_ai_avoidance_request.hpp marks Unused, i.e. with no
+// caller found. So this is a store with a named consumer that nothing calls yet.
+void GameScriptOrdersHost::session_route_avoidance_message(void* director,
+    int selector, bool enabled) {
+    static_cast<void>(director);
+    if (selector == bsp::kNavigatorAvoidanceSelectorLandCollision) {
+        ++summary_.land_avoidance_orders;
+        record_unimplemented("Navigator::avoidance_receiver_land", "0071c1e0");
+    } else {
+        ++summary_.torpedo_evasion_orders;
+        record_unimplemented("Navigator::avoidance_receiver_torpedo", "0071c1e0");
+    }
+    static_cast<void>(enabled);
+}
+
+// 0092bd00 over 0080e490 at 008a3c72/008a3c79, the arm 008a3b10 takes on the
+// disable side only. Neither body was read by this packet.
+void GameScriptOrdersHost::unit_parts_land_avoidance_disabled(void* entity) {
+    static_cast<void>(entity);
+    record_unimplemented("Navigator::parts_land_avoidance_disabled", "0092bd00");
+}
+
 bool GameScriptOrdersHost::entity_command_is_available(void* entity,
     const char* command_name, void* target) {
     static_cast<void>(entity);
@@ -1275,6 +1407,21 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         results = run_pilot_set_target(row);
     } else if (std::strcmp(binding->name, "NavigatorAttackMove") == 0) {
         results = bsp::lua_binding_navigator_attack_move(*this, *this);
+    } else if (std::strcmp(binding->name, "NavigatorMoveOnPath") == 0) {
+        bsp::NavigatorPathOrder order{};
+        void* outer_path_entity = path_entity_for_order_;
+        path_entity_for_order_ = entity_from_argument(1);
+        results = bsp::lua_binding_navigator_move_on_path(*this, *this, order);
+        path_entity_for_order_ = outer_path_entity;
+        row.command = "moveonpath";
+        row.target = name_of(entity_from_argument(1));
+        row.path_follow_mode = order.follow_mode;
+        row.path_parameter = order.path_parameter;
+        row.path_object_id = order.path_object_id;
+    } else if (std::strcmp(binding->name, "NavigatorSetAvoidLandCollision") == 0) {
+        results = bsp::lua_binding_navigator_set_avoid_land_collision(*this);
+    } else if (std::strcmp(binding->name, "NavigatorSetTorpedoEvasion") == 0) {
+        results = bsp::lua_binding_navigator_set_torpedo_evasion(*this);
     } else if (std::strcmp(binding->name, "JoinFormation") == 0) {
         void* leader = entity_from_argument(1);
         row.formation_leader = name_of(leader);

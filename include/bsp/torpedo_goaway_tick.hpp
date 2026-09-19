@@ -60,10 +60,13 @@ struct TorpedoGoAwayEnterTailInputs {
     bool has_ordnance_132 = false;   // approach+132h, 009D0E42
     float alt_floor_74 = 0.0f;       // approach+74h
     float alt_margin_78 = 0.0f;      // approach+78h
-    // [[approach+0Ch]+394h], the squadron altitude limit. When the ordnance
-    // byte is clear this is the ONLY producer of the climb altitude.
-    float squadron_alt_limit_394 = 0.0f;
-    bool has_squadron_394 = false;
+    // [[approach+0Ch]+394h]: 009D0E7C is MOV ECX,[EAX+0Ch] / FLD [ECX+394h], and
+    // 009F9CE0 sets approach+0Ch = unit+9D4h, the PILOT CONTROL BLOCK, so this is
+    // Pilot/Torpedo/CruisingAlt (500 in this installation), not a squadron field as
+    // the first reading named it. When the ordnance byte is clear this is the ONLY
+    // producer of the climb altitude.
+    float pilot_cruising_alt_394 = 0.0f;
+    bool has_pilot_cruising_alt_394 = false;
     // BSP_Random_UniformFloatRange(50.0, 100.0) at 009D0E71.
     float climb_jitter = torpedo_goaway_tick::kClimbJitterLo;
     // BSP_Random_UniformFloatRange(row+10h, row+14h) at 009D0EA3, the same

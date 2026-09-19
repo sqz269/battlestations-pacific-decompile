@@ -629,6 +629,62 @@ public:
     // same: any table carrying light userdata answers.
     void* argument_ptr_field(int index) override { return argument_entity(index); }
 
+    // --- packet cc8_navigator_path: 008a3600, 008a3b10, 008a3cd0 -------------
+    // The probe is not a game and no ship moves in it, so these record what the
+    // native asked for and perform nothing, the same rule the rows above follow.
+    int argument_count() override { return lua_gettop(state_); }
+
+    float argument_number(int index) override
+    {
+        return static_cast<float>(
+            lua_tonumber(state_, bsp::mission_binding_argument_slot(index)));
+    }
+
+    // *(*(entity+538h)+500h). The probe has no class record behind its minted
+    // entities, so the speed default is unavailable rather than invented.
+    float entity_class_max_speed(void* entity) override
+    {
+        (void)entity;
+        record_navigator_step("entity_class_max_speed_0500 (no class record)");
+        return 0.0f;
+    }
+
+    void session_route_path_order_message(void* entity,
+                                          const bsp::NavigatorPathOrder& order) override
+    {
+        record_navigator_step("session_route_path_order_message_5bh");
+        char buffer[128];
+        std::snprintf(buffer, sizeof(buffer),
+                      "moveonpath -> path id %u, follow mode %d, parameter %d",
+                      static_cast<unsigned>(order.path_object_id), order.follow_mode,
+                      order.path_parameter);
+        probe_entity_state(entity).orders.push_back(buffer);
+    }
+
+    void entity_store_commanded_speed(void* entity, float speed) override
+    {
+        (void)entity;
+        (void)speed;
+        record_navigator_step("entity_store_commanded_speed_73ch");
+    }
+
+    void* entity_weapon_director(void* entity) override { return entity; }
+
+    void session_route_avoidance_message(void* director, int selector, bool enabled) override
+    {
+        (void)director;
+        record_navigator_step(selector == bsp::kNavigatorAvoidanceSelectorLandCollision
+                                  ? "session_route_avoidance_message_5ah (land)"
+                                  : "session_route_avoidance_message_5ah (torpedo)");
+        (void)enabled;
+    }
+
+    void unit_parts_land_avoidance_disabled(void* entity) override
+    {
+        (void)entity;
+        record_navigator_step("unit_parts_land_avoidance_disabled_0092bd00");
+    }
+
     void entity_issue_command(void* entity, std::uint32_t command_object,
                               const bsp::SceneCommandTarget& target, int flags) override
     {

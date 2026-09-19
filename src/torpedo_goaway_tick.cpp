@@ -48,14 +48,14 @@ void torpedo_goaway_enter_tail_009d0e3a(const TorpedoGoAwayEnterTailInputs& in,
                                         TorpedoGoAwayRuntime& state) noexcept {
     // 009D0E42: the ordnance byte picks which producer fills the climb
     // altitude. The first leg is the release band plus a 50-to-100 m draw; the
-    // second is the squadron ceiling, which this reconstruction reports as
+    // second is the pilot control block's cruising altitude (ctl+394h), reported as
     // absent rather than substituting a number the image never uses.
     const float band = in.alt_margin_78 + in.alt_floor_74;
     if (in.has_ordnance_132) {
         state.climb_altitude_1c = in.climb_jitter + band;
         state.climb_altitude_known = true;
-    } else if (in.has_squadron_394) {
-        state.climb_altitude_1c = in.squadron_alt_limit_394;
+    } else if (in.has_pilot_cruising_alt_394) {
+        state.climb_altitude_1c = in.pilot_cruising_alt_394;
         state.climb_altitude_known = true;
     } else {
         state.climb_altitude_1c = 0.0f;
