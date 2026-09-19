@@ -796,7 +796,76 @@ inline constexpr float kLeaveToleranceLow = 0.3490658700466156f;  // 00CE398C
 inline constexpr float kLeaveTolerancePi = 3.1415927410125732f;   // 00D7A264
 // 009C661B: the share of approach+B4h the tolerance's far endpoint uses.
 inline constexpr double kLeaveSpanScale = 0.800000011920929;      // 00CE3D40, qword
+// The altitude arm's constants, packet cc8_dive_entry. Each is at the width of
+// the instruction that loads it: FMUL/FLD `double ptr` for the three doubles,
+// MOVSS for the two floats, and the 1.0 at 009C6EBD/009C6F1B is an FLD1.
+inline constexpr double kNewReleaseMargin = 1.100000023841858;  // 00CE3DF0, qword; 009C6570 FMUL double ptr
+inline constexpr double kDeadBandScale = 0.15000000596046448;   // 00CE6618, qword; 009C6E6B FMUL double ptr
+inline constexpr double kClimbGain = 3.0;                       // 00D7A2B0, qword; 009C6EDF FMUL double ptr
+inline constexpr float kClimbReferenceCap = 1.0f;               // 00D7A24C, MOVSS at 009C6EB5/009C6F23
+inline constexpr float kDiveReferenceCap = 0.800000011920929f;  // 00CE74F8, MOVSS at 009C6F53
 }  // namespace dive_bomb_flyabove_constant
+
+// ---------------------------------------------------------------------------
+// 009C6E10-009C6F91, the flyabove tick's ALTITUDE arm - the command this host
+// did not have at all, which is why a dive bomber held its cruise height across
+// the whole state and handed the turndown whatever altitude it happened to be
+// flying at. Packet cc8_dive_entry.
+//
+// Read from the listing, with every jump sense from the branch byte:
+//
+//   C      = approach+0Ch ? ctl+398h : approach+ACh + approach+50h
+//                                              009C6491 TEST / 009C64A6 `74` JZ
+//   R      = (approach+14h)->+40h * approach+A8h            009C655F-009C6568
+//   C     := R  when  C > 1.1 * R                           009C657C `76` JBE
+//   base   = approach+ACh + approach+50h                    009C6E48-009C6E51
+//   err    = B - min(approach+ACh, C)                       009C6E1C-009C6E44
+//   target = min(base, C)                                   009C6E55-009C6E71
+//   band   = min(0.15 * C, approach+B0h)                    009C6E77-009C6EA1
+//   A      = the planar distance to the aim point           009C6379-009C63B1
+//
+//   err <  0     : 009FB800(target, min(3 * -err / max(A, 1), 1.0))
+//                                                           009C6EAF `76` JBE
+//   err <= band  : NO 009FB800 - cmd+2BCh = 0.0 with cmd+2D0h = 2, a dead band
+//                  that holds level flight                  009C6F15 `76` JBE
+//   otherwise    : 009FB800(target, min(2 * A / max(A, 1), 0.8))
+//
+// The two references are the second argument 009FB800 caps its pitch demand
+// with, the same slot 009FBA50 fills for the run-in. On the dive arm A is the
+// planar range in metres and is never under 1, so `2 * A / A` is exactly 2 and
+// the cap at 00CE74F8 takes it: the reference is 0.8 at every geometry this
+// mission produces. That is transcribed rather than folded, because the divisor
+// is only pinned to A by the `1.0 <= A` test at 009C6F1D.
+//
+// UNCERTAIN, and labelled at the call site: `C`. The image prefers the control
+// block's ordered cruise altitude ctl+398h and falls back to the approach's own
+// base; this host models no control block, so it takes the fall-back. The image
+// is not known to reach the other arm in this mission - approach+0Ch is
+// unit+9D4h (009F9CFC) and nothing in this reconstruction fills it.
+// ---------------------------------------------------------------------------
+struct DiveBombFlyAboveAltitudeInputs {
+    float height_above_aim_b = 0.0f;    // B, 009C6493
+    float begin_altitude_ac = 0.0f;     // approach+ACh
+    float aim_point_height_50 = 0.0f;   // approach+50h
+    float alt_span_b0 = 0.0f;           // approach+B0h
+    float release_altitude_a8 = 0.0f;   // approach+A8h
+    float new_release_mul_40 = 0.0f;    // (approach+14h)->+40h, row+4Ch
+    float planar_distance = 0.0f;       // A, 009C63A6
+    float cruise_altitude_398 = 0.0f;   // ctl+398h
+    bool has_control_block_0c = false;  // approach+0Ch, 009C6491
+};
+struct DiveBombFlyAboveAltitudeCommand {
+    bool level_arm = false;        // 009C6F84: cmd+2BCh = 0, no 009FB800
+    float target_altitude = 0.0f;  // 009FB800 arg1
+    float reference = 0.0f;        // 009FB800 arg2
+    int pitch_mode_2d0 = 2;        // EDX, 009C6DD5 MOV EDX,2
+    // Kept for the run census, not commands.
+    float limit_c = 0.0f;
+    float dead_band = 0.0f;
+    float height_error = 0.0f;
+};
+DiveBombFlyAboveAltitudeCommand dive_bomb_flyabove_altitude_009c6e10(
+    const DiveBombFlyAboveAltitudeInputs& in) noexcept;
 
 // ---------------------------------------------------------------------------
 // 009C6DCD-009C6DEF, the flyabove tick's heading arm - the command the trace in
@@ -823,7 +892,10 @@ inline constexpr double kLeaveSpanScale = 0.800000011920929;      // 00CE3D40, q
 //                      heading arm in the body, so the heading's mode 2 wins
 //                      whenever both run.
 //   009C6F84/009C6F89/009C6F91  cmd+2BCh with the pitch mode in EDX, on the arm
-//                      that does NOT call 009FB800 at 009C6F7D.
+//                      that does NOT call 009FB800 at 009C6F7D. NO LONGER
+//                      UNBOUND: packet cc8_dive_entry read the whole altitude
+//                      arm 009C6E10-009C6F91 and this is its dead-band case,
+//                      dive_bomb_flyabove_altitude_009c6e10's `level_arm`.
 //   009C6FEA/009C6FF1/009C6FFB  cmd+2B0h = 0, cmd+2D8h = 1 and cmd+2B4h, the
 //                      desired speed, built as `something + approach+A4h`
 //                      (009C6FE1).
@@ -946,11 +1018,16 @@ DiveBombGoAwayCommand dive_bomb_goaway_climb_009c4b44(
 struct DiveBombFlyAboveSpan {
     float floored_height = 0.0f;  // max(B, 100.0), the 009C65A9 select
     float threshold = 0.0f;       // S = floored * 0.7 + 200.0
-    float span = 0.0f;            // x = max(B - S, 0), 009C65D5-009C65FD
+    // x = max(R - S, 0), 009C65D5-009C65FD. R is the PLANAR RANGE, base
+    // [ESP+28h], written once at 009C63A6; NOT the height. Packet
+    // cc8_dive_heading; the stack walk is in the .cpp.
+    float span = 0.0f;
 };
-// 009C658D-009C65FD. `span` is what both flags below consume.
+// 009C658D-009C65FD. `span` is what both flags below consume. Two different
+// quantities go in: the threshold is built from the height, the span is the
+// range less that threshold.
 DiveBombFlyAboveSpan dive_bomb_flyabove_span_009c65fd(
-    float height_above_aim_point) noexcept;
+    float height_above_aim_point, float planar_range) noexcept;
 
 // 009C66D5-009C66E7: leave flyabove when the bearing error beats a tolerance
 // that opens from 20 degrees at span 0 to pi at span `+B4h * 0.8 - S`.

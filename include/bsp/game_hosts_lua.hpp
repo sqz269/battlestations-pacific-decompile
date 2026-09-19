@@ -144,6 +144,10 @@ struct GameVehicleClassRow {
     // desc+194h SwimHeight, 007D2413. One of the two terms of the free-flight
     // arm's water line; the other, desc+508h, is derived at 007C4D03.
     float swim_height{0.0f};
+    // desc+268h TurnCircleRadius. The dive-bomb approach constructor 009C3EA0
+    // multiplies it twice, at 009C3F86 into approach+B4h and at 009C3FB5 into
+    // approach+B8h/+BCh. Packet cc8_dive_race.
+    float turn_circle_radius{0.0f};
 };
 
 // Actual selected class+570 bits and the existing producer's provenance.

@@ -421,6 +421,7 @@ GameVehicleClassRow GameMissionLuaHost::read_vehicle_class_row(int index) {
             row.air_brake_drag = number("AirBrakeDrag");
             row.drop_angle = number("DropAngle");
             row.swim_height = number("SwimHeight");
+            row.turn_circle_radius = number("TurnCircleRadius");
             // 00960363 uses bare GetNumber, including numeric strings and
             // the native float32 spill. Other row readers keep their scope.
             ::lua_getfield(state_, -1, "Width");

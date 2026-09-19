@@ -661,9 +661,74 @@ DiveBombFlyAboveCommand dive_bomb_flyabove_command_009c6dcd(
     return out;
 }
 
-// 009C658D-009C65FD, the height span both flyabove flags key on.
+// 009C6E10-009C6F91, the flyabove tick's altitude arm. Packet cc8_dive_entry;
+// the walk and every branch byte are in include/bsp/dive_bomb_task.hpp.
+DiveBombFlyAboveAltitudeCommand dive_bomb_flyabove_altitude_009c6e10(
+    const DiveBombFlyAboveAltitudeInputs& in) noexcept {
+    DiveBombFlyAboveAltitudeCommand out;
+    const float base = in.begin_altitude_ac + in.aim_point_height_50;  // 009C6E48
+    // 009C6491 TEST EAX,EAX with 009C64A6 `74` JZ: the control block's ordered
+    // cruise altitude when there is one, the approach's own base otherwise.
+    float c = in.has_control_block_0c ? in.cruise_altitude_398 : base;
+    // 009C655F-009C6589. The compare is against 1.1 * R and the store is the
+    // bare R, so the clamp lands 10 per cent under where it triggers.
+    const float release_limit = in.new_release_mul_40 * in.release_altitude_a8;
+    if (static_cast<double>(c) >
+        static_cast<double>(release_limit) *
+            dive_bomb_flyabove_constant::kNewReleaseMargin) {
+        c = release_limit;  // 009C6580-009C6589
+    }
+    out.limit_c = c;
+    // 009C6E1C-009C6E44: the error is measured against approach+ACh, NOT
+    // against the base the target uses - the two differ by approach+50h.
+    const float reference_height =
+        (in.begin_altitude_ac <= c) ? in.begin_altitude_ac : c;  // 009C6E26 JBE
+    out.height_error = in.height_above_aim_b - reference_height;
+    // 009C6E55-009C6E71.
+    out.target_altitude = (base <= c) ? base : c;
+    // 009C6E77-009C6EA1: 0.15 * C against approach+B0h, the smaller.
+    const float scaled = static_cast<float>(
+        static_cast<double>(c) * dive_bomb_flyabove_constant::kDeadBandScale);
+    out.dead_band = (scaled <= in.alt_span_b0) ? scaled : in.alt_span_b0;
+    // 009C6EBD / 009C6F1B: the FLD1 against A picks the divisor.
+    const float divisor =
+        (dive_bomb_flyabove_constant::kClimbReferenceCap <= in.planar_distance)
+            ? in.planar_distance
+            : dive_bomb_flyabove_constant::kClimbReferenceCap;
+    // 009C6EAA COMISS 0, err with 009C6EAF `76` JBE: the fall-through is err < 0.
+    if (out.height_error < 0.0f) {
+        const float v = static_cast<float>(
+            -static_cast<double>(out.height_error) *
+            dive_bomb_flyabove_constant::kClimbGain /
+            static_cast<double>(divisor));
+        // 009C6EF5 `77` JA keeps the cap when the quotient is the larger.
+        out.reference =
+            (v > dive_bomb_flyabove_constant::kClimbReferenceCap)
+                ? dive_bomb_flyabove_constant::kClimbReferenceCap : v;
+        return out;
+    }
+    // 009C6F15 `76` JBE: inside the dead band the arm writes a bare zero pitch
+    // and never reaches 009FB800. XMM0 is the zero 009C6EA7 put there.
+    if (out.height_error <= out.dead_band) {
+        out.level_arm = true;
+        return out;
+    }
+    const float v = static_cast<float>(
+        (static_cast<double>(in.planar_distance) +
+         static_cast<double>(in.planar_distance)) /
+        static_cast<double>(divisor));  // 009C6F33 FADD ST0,ST0 then 009C6F3B FDIV
+    // 009C6F4D FCOMIP against the 0.8 at 00CE3D40, 009C6F51 `76` JBE.
+    out.reference = (static_cast<double>(v) <=
+                     dive_bomb_flyabove_constant::kLeaveSpanScale)
+                        ? v : dive_bomb_flyabove_constant::kDiveReferenceCap;
+    return out;
+}
+
+// 009C658D-009C65FD, the span both flyabove flags key on. The threshold is
+// built from the HEIGHT and the span is the RANGE less that threshold: the two
+// arguments are different quantities and 009C65DB's FSUBP is what says so.
 DiveBombFlyAboveSpan dive_bomb_flyabove_span_009c65fd(
-    float height_above_aim_point) noexcept {
+    float height_above_aim_point, float planar_range) noexcept {
     DiveBombFlyAboveSpan out;
     // 009C658D FLD [00D7A220], 009C659B FCOMIP, 009C65A9 JBE: the floor takes
     // the height when 100.0 is the smaller, and the 100.0 at 00CE3D08 otherwise.
@@ -677,10 +742,28 @@ DiveBombFlyAboveSpan dive_bomb_flyabove_span_009c65fd(
         static_cast<double>(out.floored_height) *
             dive_bomb_flyabove_constant::kHeightScale +
         dive_bomb_flyabove_constant::kHeightBias);
-    // 009C65D5-009C65FD: the difference, floored at zero. Note the minuend is
-    // the RAW height, not the floored one - 009C65D5's FSUBP takes the value the
-    // merge at 009C6532 left on the stack.
-    const float difference = height_above_aim_point - out.threshold;
+    // 009C65D5-009C65FD: the difference, floored at zero. CORRECTION, packet
+    // cc8_dive_heading: the minuend is R, the PLANAR RANGE at 009C63A6, not the
+    // height. The x87 stack, walked forward from 009C64EE with every push and
+    // pop accounted (local/f.ps1, zero join conflicts over the whole body):
+    //   009C64EE FLD [ESP+28h]  ST0=R
+    //   009C64F4 FLD [ESP+38h]  ST0=B ST1=R
+    //   009C64F8 FLD [ESP+3Ch]  ST0=X ST1=B ST2=R   (all four BL paths rejoin
+    //                                                at 009C6532 with this)
+    //   009C6578 FCOMPI ST(1) pop / 009C657A FSTP ST(0)  -> ST0=B ST1=R
+    //   009C659B FCOMPI ST(1) pop / 009C659D FSTP ST(0)  -> ST0=R   B is gone
+    //   009C65D1 FSTP [ESP+10h]  ST0=R   ([ESP+10h] = threshold)
+    //   009C65D5 FLD  [ESP+10h]  ST0=S ST1=R
+    //   009C65D9 FLD  ST(0)      ST0=S ST1=S ST2=R
+    //   009C65DB FSUBP ST(2)     ST2 = R - S
+    // [ESP+28h] is written once, at 009C63A6 (the 00BF7030 sqrt at 009C6399),
+    // and never overwritten in the 949-instruction body.
+    //
+    // The earlier reading took the minuend as the height. That is where the
+    // "flyabove leaves at B <= 666.7 m" in docs/HANDOFF_DIVE_BOMB_ENTRY.md came
+    // from: max(B - (0.7B + 200), 0) is zero at B = 666.7. No such number is in
+    // the image - the arm is a range-to-go test against a glide slope.
+    const float difference = planar_range - out.threshold;
     out.span = (difference > 0.0f) ? difference : 0.0f;
     return out;
 }
