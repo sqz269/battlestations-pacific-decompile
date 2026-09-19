@@ -19,11 +19,42 @@ inline float fold_abs(float x) noexcept {
 }
 
 // 00438AA0 BSP_Math_AddWrappedAngle: add and wrap into [0, 2pi).
+//
+// DEFECT, found by packet cc8_dive_flyover and NOT fixed here because this
+// helper is shared by hunks other workers hold (2026-09-19 arbitration). The
+// image wraps into (-pi, pi], not [0, 2pi): 00438AB0 loads the double -pi at
+// 00CE3D18 and 00438AB6's FCOMI with 00438AB8's `72` JC sends every sum above
+// -pi to 00438ADF, which loads the +pi at 00CE3D28 and subtracts the 2pi at
+// 00CE3828 while the sum exceeds it; the other arm adds 2pi while the sum is at
+// or below -pi. src/unit_rudder.cpp's wrap_native_angle has it right and cites
+// the same ranges. Inert for the commands this file produces, because the only
+// consumer (game_hosts_units.cpp, the PilotBotHeadingTerm at the unit arm)
+// takes wrapped_angle_subtract_00438b10 of the result against the aircraft's
+// own heading, and that subtraction is invariant to a 2pi offset.
 inline float wrapped_angle_add_00438aa0(float base, float delta) noexcept {
     const float two_pi = static_cast<float>(dive_bomb_constant::kTwoPi);
     float v = base + delta;
     while (v >= two_pi) v -= two_pi;
     while (v < 0.0f) v += two_pi;
+    return v;
+}
+
+// 00438B10 BSP_Math_SubtractWrappedAngle: subtract and wrap into (-pi, pi].
+// 00438B20..00438B7B is the same loop pair as the add above, and this one is
+// transcribed from it rather than from the sibling helper.
+inline float wrapped_angle_subtract_00438b10(float left, float right) noexcept {
+    const double pi = 3.1415927410125732;       // 00CE3D28 / 00CE3D18 negated
+    const double two_pi = 6.2831854820251465;   // 00CE3828
+    float v = left - right;
+    if (static_cast<double>(v) <= -pi) {
+        do {
+            v = static_cast<float>(static_cast<double>(v) + two_pi);
+        } while (static_cast<double>(v) <= -pi);
+    } else {
+        while (static_cast<double>(v) > pi) {
+            v = static_cast<float>(static_cast<double>(v) - two_pi);
+        }
+    }
     return v;
 }
 
@@ -784,6 +815,133 @@ bool dive_bomb_flyabove_leave_009c66e3(float bearing_error,
     // 009C6453's operand is the folded bearing error; 009C66DD FCOMIP and
     // 009C66E1 `76` JBE leave only the strictly-greater case setting +1Ah.
     return fold_abs(bearing_error) > tolerance;
+}
+
+// 009C664B-009C6674.
+float dive_bomb_flyabove_span_dead_band_009c6674(float span) noexcept {
+    return dive_bomb_interpolate_clamped_00419010(
+        0.0f, dive_bomb_flyabove_constant::kSpanDeadBandLow,
+        dive_bomb_flyabove_constant::kSpanDeadBandSpan, 0.0f, span);
+}
+
+// 009C64EE-009C6530, BL. Header carries the branch table; this is the
+// transcription. `state_query_14` is the 009C64EC vtable[5Ch](0x14) result and
+// is the one input no reconstruction supplies.
+bool dive_bomb_flyabove_bank_arm_009c6530(bool state_query_14,
+                                          float release_range_d4,
+                                          float limit_c,
+                                          float attack_distance_b4,
+                                          float lead_range_r,
+                                          float height_above_aim_b) noexcept {
+    // 009C64F2 TEST AL,AL with 009C64FC `75` JNE -> 009C6530 XOR BL,BL.
+    if (state_query_14) return false;
+    // 009C650E FCOMI with ST0 = approach+D4h and ST1 = C, 009C6510 `77` JA.
+    if (release_range_d4 > limit_c) return false;
+    // 009C6518 FCOMPI ST(4) with ST0 = approach+B4h and ST4 = R, then
+    // 009C651A `76` JBE -> 009C652A MOV BL,1.
+    if (!(attack_distance_b4 > lead_range_r)) return true;
+    // 009C651C FXCH ST(2) puts B in ST0 and approach+D4h in ST2, 009C651E
+    // FCOMI ST0,ST2, 009C6522 `72` JB -> 009C6530 XOR BL,BL.
+    return !(height_above_aim_b < release_range_d4);
+}
+
+// 009C6857-009C6923, the bank arm: the roll-in latch and the dead-band width.
+DiveBombFlyAboveBank dive_bomb_flyabove_bank_009c6857(
+    const DiveBombFlyAboveBankInputs& in) noexcept {
+    DiveBombFlyAboveBank out;
+    out.latched_1c = in.latched_1c;
+    out.dead_band_t = in.span_dead_band;
+    // 009C67BF TEST BL,BL with 009C67C1 `0F84` JZ: without BL the body leaves
+    // for the dead band at 009C6A37 and T stays as 009C6674 left it.
+    if (!in.bank_arm_bl) {
+        return out;
+    }
+    // 009C6861 CMP [ESI+1Ch],0 with 009C6865 `0F85` JNZ: once latched the arm
+    // is skipped whole. T is then irrelevant, because 009C6923's `0F84` JZ is
+    // not taken either and the dead band at 009C6A37 never runs.
+    if (in.latched_1c) {
+        return out;
+    }
+    const double eabs = static_cast<double>(in.bearing_error_abs);
+    const double range = static_cast<double>(in.lead_range_r);
+    // 009C6847-009C6853, base[ESP+30h]: the turn circle the roll-in must fit.
+    const float turn_circle = static_cast<float>(
+        static_cast<double>(in.turn_circle_radius) *
+        dive_bomb_flyabove_constant::kTurnCircleMul);
+    // 009C6857-009C687D. FSIN, then (sin + 0.5 * sin), then * R, stored as a
+    // float at 009C687D and reloaded at 009C6885.
+    out.cross_track = static_cast<float>(
+        std::sin(eabs) * (1.0 + dive_bomb_flyabove_constant::kRollInSinHalf) *
+        range);
+    // 009C6889 FCOMIP ST0,ST1 with ST0 = cross-track and ST1 = the turn circle,
+    // 009C688D `76` JBE: only a strictly wider offset leaves.
+    if (out.cross_track > turn_circle) {
+        out.clear_roll_in_19 = true;  // 009C688F
+        out.dead_band_t = 0.0f;       // 009C6893, the XORPS zero of 009C67BC
+        return out;
+    }
+    out.weapon_select_3 = true;  // 009C68A0 approach+CCh = 3
+    // 009C68AA-009C68C8. FCOS, * R, less 120 m, stored as a float.
+    out.along_track = static_cast<float>(std::cos(eabs) * range);
+    const float margin = static_cast<float>(
+        std::cos(eabs) * range - dive_bomb_flyabove_constant::kRollInAlongTrack);
+    // 009C68D2 FCOMIP with ST0 = margin and ST1 = the FLDZ zero, 009C68D4 `76`
+    // JBE -> 009C6919, the latch.
+    if (!(margin > 0.0f)) {
+        out.latched_1c = true;
+        return out;
+    }
+    out.clear_roll_in_19 = true;  // 009C68E1
+    // 009C68D6-009C6911. The argument window the `SUB ESP,14h` at 009C68DA
+    // opens: arg5 = R (the FXCH at 009C68D8 brings it to ST0), arg4 = 10 deg,
+    // arg3 = classDesc+268h UNMULTIPLIED, arg2 = 100 deg, arg1 = the FLDZ zero
+    // that survives the 009C68D2 pop.
+    out.dead_band_t = dive_bomb_interpolate_clamped_00419010(
+        0.0f, dive_bomb_flyabove_constant::kBankDeadBandNear,
+        in.turn_circle_radius, dive_bomb_flyabove_constant::kBankDeadBandFar,
+        in.lead_range_r);
+    return out;
+}
+
+// 009C6A37-009C6A7F.
+float dive_bomb_flyabove_dead_band_009c6a37(float bearing_error,
+                                            float half_width_t) noexcept {
+    // 009C6A43 COMISS XMM2,XMM0 with XMM0 zero and 009C6A46 `76` JBE: a
+    // non-positive T skips the arm and base[ESP+44h] keeps the raw bearing, so
+    // the caller's delta is the untouched bearing error.
+    if (!(half_width_t > 0.0f)) {
+        return bearing_error;
+    }
+    // 009C6A48 COMISS XMM1,XMM0 with 009C6A4B `76` JBE.
+    if (bearing_error > 0.0f) {
+        // 009C6A4D-009C6A51 E - T; 009C6A59 FLD then 009C6A5D FLDZ put the zero
+        // in ST0, so 009C6A73's FCOMIP compares 0 with E - T and 009C6A77 `77`
+        // JA keeps the XORPS zero when the difference went negative.
+        const float shrunk = bearing_error - half_width_t;
+        return (0.0f > shrunk) ? 0.0f : shrunk;
+    }
+    // 009C6A61-009C6A65 T + E; 009C6A6D FLDZ then 009C6A6F FLD put the sum in
+    // ST0, so the same JA keeps the zero when the sum went positive.
+    const float shrunk = half_width_t + bearing_error;
+    return (shrunk > 0.0f) ? 0.0f : shrunk;
+}
+
+// 009C6D6F-009C6DC8.
+float dive_bomb_flyabove_slew_009c6d6f(float heading_c, float desired_a,
+                                       float limit_l) noexcept {
+    // 009C6D6F SubtractWrappedAngle(A, C) -> base[ESP+1Ch].
+    const float delta = wrapped_angle_subtract_00438b10(desired_a, heading_c);
+    // 009C6D78-009C6DB0: 009C6D7E FCHS builds -L, 009C6D8C FCOMPI compares -L
+    // with delta and 009C6D8E `76` JBE lets it through, then 009C6D9C compares
+    // delta with L and 009C6DA0 `76` JBE lets it through.
+    float clamped = delta;
+    if (!(-limit_l <= clamped)) {
+        clamped = -limit_l;
+    } else if (clamped > limit_l) {
+        clamped = limit_l;
+    }
+    // 009C6DC8 AddWrappedAngle(C, clamped) -> base[ESP+44h] -> cmd+2C0h.
+    return wrapped_angle_add_00438aa0(heading_c, clamped);
 }
 
 // 009C4F80-009C5177, the heading the two aim states steer on. Header carries
