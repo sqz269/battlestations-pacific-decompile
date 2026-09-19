@@ -1870,3 +1870,39 @@ binding carries is **the image's own value for this aircraft**, not a floor bene
 break-off threshold is exactly 700.0 m. Nothing to bind and nothing to re-measure. The dive-bomb
 side's `in.speed_ratio_41c = 1.0f` is the same quantity through a different row and is not settled
 by this; its divisor is `+4D8h` and its numerator is its own class's `MaxSpd`.
+
+### 14.7 The run-in crossing angle, measured at both ends of the swim
+
+Section 11 measures a 5 to 12 degree crossing angle at the closest approach and reads the misses as
+a stern chase. The angle the aircraft *starts* the run-in with had never been measured, so it was
+not known whether that geometry is inherited or produced. Both ends are now censused in one
+convention - hull **pose** headings at both, `atan2(pose_row2.x, pose_row2.z)`, the same quantity the
+closest-approach crossing already differences the round's track against, and never the ship-ai step
+heading section 13 warns about.
+
+| aircraft | crossing at attackrun entry | at the drop | at closest approach |
+| --- | --- | --- | --- |
+| Mav1 | 0.8397 rad (48.1 deg) | 0.0945 (5.4) | 0.094 |
+| Mav2 | 0.6150 (35.2) | 0.1888 (10.8) | 0.189 |
+| Mav3 | 0.6150 (35.2) | 0.1592 (9.1) | 0.159 |
+| Mav4 | 0.6150 (35.2) | 0.2050 (11.7) | 0.205 |
+| Mav5 | 0.6150 (35.2) | 0.1776 (10.2) | 0.178 |
+
+1. **The crossing angle collapses during the run-in**, from 35-48 degrees at attackrun entry to
+   5-12 at the drop. The stern chase is **not** the geometry the run-in starts from; the run-in
+   steering produces it. The pursuit curl is real and it lives in the attackrun.
+2. **The drop angle is the closest-approach angle**, to three decimals on all five. That is two
+   facts at once: the round holds its launch heading through a 21-26 s swim, and the ship's course
+   barely moves over that window. The round leaves along the aircraft's nose, so the aim error at
+   the drop *is* the miss.
+3. **Both ends move, and the ship more than the aircraft.** The target's pose heading goes from
+   -0.6155/-0.8397 at entry to -1.6474/-1.7297 at the drop, about a radian of turn, while the
+   aircraft goes from its spawn heading of 0.0000 to -1.82/-1.88. The aircraft tracked a turning
+   ship around and finished behind it.
+
+**Caveat on row 1.** `entries=1` and the aircraft's heading at entry is still its spawn heading, so
+the attackrun is entered before the aircraft has turned at all. The 35-to-48 degree figure is the
+initial offset between a spawn heading and a target course, not a geometry the task chose. What the
+table settles is that the convergence happens inside the attackrun; **whether the steering chases
+the ship's current course or a lead point is the next question, and this census does not answer
+it.**
