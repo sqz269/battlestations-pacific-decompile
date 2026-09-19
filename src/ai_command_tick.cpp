@@ -34,7 +34,8 @@ AiOrderBridgeResult ai_order_bridge_00a02020(bool is_plane_squadron, bool squadr
         return result;
     }
     // 00A0205C-00A0206E: the squared planar separation of the member's pose
-    // (+FCh, +104h) from the requested point, against the dword at 00D21530.
+    // (+FCh, +104h) from the requested point, against the DOUBLE at 00D21530,
+    // which is 6400.0 and not the 0.0f the dword reading gave. See the header.
     const float dx = member_position[0] - target[0];
     const float dz = member_position[2] - target[2];
     if (dx * dx + dz * dz < kAiOrderIssueDistanceSquared) return result;

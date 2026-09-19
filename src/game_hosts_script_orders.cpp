@@ -20,6 +20,9 @@
 #include "bsp/pilot_order_bindings.hpp"
 #include "bsp/plane_squadron_host.hpp"
 #include "bsp/mission_lua_host.hpp"
+// Packet cc8_ship_follow: 00779D50's transcription and the ship-base kind.
+#include "bsp/ship_ai_states.hpp"
+#include "bsp/unit_gunnery_pass.hpp"
 
 extern "C" {
 #include "lua.h"
@@ -1289,21 +1292,50 @@ void GameScriptOrdersHost::unit_parts_land_avoidance_disabled(void* entity) {
 
 bool GameScriptOrdersHost::entity_command_is_available(void* entity,
     const char* command_name, void* target) {
-    static_cast<void>(entity);
-    static_cast<void>(command_name);
-    static_cast<void>(target);
+    // Packet cc8_ship_follow read 008162B0 and the routine its follow arm defers
+    // to, 00779D50, whole. The old note here said answering true would invent the
+    // predicate; it is now transcribed instead, and this is the script path's
+    // copy of the same answer the AI path already gives.
+    // docs/SHIP_UNIT_GROUP_FOLLOW.md section 8.
     if (!logged_predicate_) {
         logged_predicate_ = true;
-        log_.notef("JoinFormation stops at its first question. 0077c8d0 asks the follower's "
-            "vtable 16Ch whether it may `follow` the leader, which for MDestroyer is "
-            "008162b0; that body was not read by the packet that reconstructed the binding "
-            "(docs/LUA_BINDING_NAVIGATOR.md, follow-up 3), so the host answers the neutral "
-            "false and 0077c902 ends the routine with no effect. Answering true would "
-            "invent the predicate");
+        log_.notef("JoinFormation's first question is answered now: 0077C8D0 asks the "
+            "follower's vtable 16Ch (008162B0 for MDestroyer), whose follow arm is entirely "
+            "008162BF's call to 00779D50 - a live ship may follow a live ship of its own "
+            "side. The +188h OwnerPlayer arm is skipped, this process has no producer for "
+            "it (docs/SHIP_UNIT_GROUP_FOLLOW.md section 8)");
     }
-    log_.unimplemented("Formation::command_is_available", "0077c8fe");
-    ++summary_.formations_refused;
-    return false;
+    const std::size_t follower_index = index_of(entity);
+    const std::size_t leader_index = index_of(target);
+    const bool token_is_follow = command_name != nullptr
+        && std::strcmp(command_name, "follow") == 0;   // 00779D68, 00CFB52C
+    if (follower_index >= units_.count() || leader_index >= units_.count()) {
+        ++summary_.formations_refused;
+        log_.implemented("Formation::command_is_available", "0077c8fe");
+        return false;                                   // 00779D76
+    }
+    bsp::EntityFollowFacts facts;
+    facts.follower_flag_005d = units_.unit_flag_005d(follower_index);
+    facts.target_present = true;
+    facts.target_flag_005d = units_.unit_flag_005d(leader_index);
+    facts.target_kind_02 = units_.unit_is_kind_of(leader_index, 0x02);
+    facts.follower_kind_06 =
+        units_.unit_is_kind_of(follower_index, bsp::kUnitGunneryKindShipBase);
+    facts.follower_kind_08 = units_.unit_is_kind_of(follower_index, 0x08);
+    facts.target_kind_06 = units_.unit_is_kind_of(leader_index, bsp::kUnitGunneryKindShipBase);
+    facts.target_kind_08 = units_.unit_is_kind_of(leader_index, 0x08);
+    facts.follower_party_0054 = units_.unit_side_0054(follower_index);
+    facts.target_party_0054 = units_.unit_side_0054(leader_index);
+    const std::int32_t follower_group = units_.unit_formation_group_0284(follower_index);
+    facts.same_entity_or_group_00779820 =
+        (follower_index == leader_index)
+        || (follower_group >= 0
+            && follower_group == units_.unit_formation_group_0284(leader_index));
+    facts.owner_player_known = false;                   // +188h has no producer here
+    const bool available = bsp::entity_may_follow_target_00779d50(facts, token_is_follow);
+    if (!available) ++summary_.formations_refused;
+    log_.implemented("Formation::command_is_available", "0077c8fe");
+    return available;
 }
 
 int GameScriptOrdersHost::entity_route_slot(void* entity) {
@@ -1322,9 +1354,24 @@ void GameScriptOrdersHost::slot_counter_increment(int slot) {
 
 void GameScriptOrdersHost::session_route_formation_message(void* follower,
     std::uint16_t leader_object_id) {
-    static_cast<void>(follower);
-    static_cast<void>(leader_object_id);
-    log_.unimplemented("Formation::route_join_message", "0077c964");
+    // 0077C964 routes a type-76h message whose only payload is the leader's
+    // 16-bit id; 0077FE80's arm for that type is four instructions - resolve the
+    // id and call 0077F940 - and in this process the route is local, so the join
+    // runs here. The wire hop is what is not modelled, not the merge.
+    // docs/SHIP_UNIT_GROUP_FOLLOW.md section 3.
+    const std::size_t follower_index = index_of(follower);
+    // entity_object_id above stands the unit index + 1 in for entity+174h, so the
+    // receiver's 00521E30 lookup inverts to the same substitution.
+    const std::size_t leader_index = static_cast<std::size_t>(leader_object_id) - 1u;
+    if (follower_index >= units_.count() || leader_object_id == 0
+        || leader_index >= units_.count()) {
+        log_.unimplemented("Formation::route_join_message", "0077c964");
+        return;
+    }
+    if (units_.formation_join_0077f940(follower_index, leader_index)) {
+        ++summary_.formations_joined;
+    }
+    log_.implemented("Formation::route_join_message", "0077c964");
 }
 
 void GameScriptOrdersHost::entity_set_skill_level(void* entity, int level) {

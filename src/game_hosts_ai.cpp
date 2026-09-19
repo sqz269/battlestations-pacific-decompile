@@ -1493,12 +1493,76 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         return true;
     }
     bool tick_request_join_formation(void* follower, void* leader) override {
-        // 0077C8D0 BSP_Entity_RequestJoinFormation, contract: unread. This
-        // process has no formation ring to join, so the request is recorded.
-        (void)follower;
-        (void)leader;
-        record("AiCommand::request_join_formation", 0x0077c8d0u);
-        return true;
+        // 0077C8D0 BSP_Entity_RequestJoinFormation asks the follower's
+        // vtable[16Ch] first (008162B0 for MDestroyer) and ends at 0077C902 with
+        // no effect when the answer is false. Packet cc8_ship_follow read that
+        // chain: for the `follow` token the answer is decided entirely by
+        // 008162BF's call to 00779D50, whose 78 instructions are now
+        // transcribed as bsp::entity_may_follow_target_00779d50.
+        // docs/SHIP_UNIT_GROUP_FOLLOW.md section 8.
+        //
+        // The host used to answer a neutral false here, which is why every one
+        // of USN01's 306 requests stopped at the first question.
+        ++formation_requests_seen;
+        if (follower == nullptr || leader == nullptr) {
+            ++formation_requests_refused;
+            record("AiCommand::request_join_formation", 0x0077c8d0u);
+            return false;                                      // 00779D76
+        }
+        const std::size_t follower_index = unit_index_of(follower);
+        const std::size_t leader_index = unit_index_of(leader);
+        bsp::EntityFollowFacts facts;
+        facts.follower_flag_005d = units.unit_flag_005d(follower_index);
+        facts.target_present = true;
+        facts.target_flag_005d = units.unit_flag_005d(leader_index);
+        facts.target_kind_02 = units.unit_is_kind_of(leader_index, 0x02);
+        facts.follower_kind_06 =
+            units.unit_is_kind_of(follower_index, bsp::kUnitGunneryKindShipBase);
+        facts.follower_kind_08 = units.unit_is_kind_of(follower_index, 0x08);
+        facts.target_kind_06 =
+            units.unit_is_kind_of(leader_index, bsp::kUnitGunneryKindShipBase);
+        facts.target_kind_08 = units.unit_is_kind_of(leader_index, 0x08);
+        facts.follower_party_0054 = units.unit_side_0054(follower_index);
+        facts.target_party_0054 = units.unit_side_0054(leader_index);
+        // 00779820 whole: the same entity, or already sharing a unit group.
+        const std::int32_t follower_group =
+            units.unit_formation_group_0284(follower_index);
+        facts.same_entity_or_group_00779820 =
+            (follower == leader)
+            || (follower_group >= 0
+                && follower_group == units.unit_formation_group_0284(leader_index));
+        // 00779DB4's OwnerPlayer arm: +188h has no producer in this process
+        // (game_hosts_scene_contents.cpp:1364), so it is skipped rather than
+        // guessed. It can only ever admit a follow between two differently
+        // owned ships that the image would refuse.
+        facts.owner_player_known = false;
+        const bool available = bsp::entity_may_follow_target_00779d50(facts, true);
+        if (available) {
+            ++formation_requests_available;
+            // 0077C964 routes a type-76h message whose only payload is the
+            // leader's 16-bit id, and 0077FE80's four-instruction arm resolves it
+            // and calls 0077F940. In this process the route is local, so the join
+            // runs here rather than through the session; the wire hop is the
+            // part that is not modelled, not the merge.
+            if (units.formation_join_0077f940(follower_index, leader_index)) {
+                ++formation_joins_made;
+            }
+        } else {
+            ++formation_requests_refused;
+        }
+        if (diag_follow_lines < 12) {
+            ++diag_follow_lines;
+            log.notef("  ai diag follow %s -> %s available=%d (ship %d/%d, kind2=%d, "
+                "party %d/%d, alive %d/%d)",
+                unit_name(follower_index).c_str(), unit_name(leader_index).c_str(),
+                available ? 1 : 0,
+                facts.follower_kind_06 ? 1 : 0, facts.target_kind_06 ? 1 : 0,
+                facts.target_kind_02 ? 1 : 0,
+                facts.follower_party_0054, facts.target_party_0054,
+                facts.follower_flag_005d ? 0 : 1, facts.target_flag_005d ? 0 : 1);
+        }
+        done("AiCommand::request_join_formation", 0x0077c8d0u);
+        return available;
     }
     bool tick_avoid_zone_point(void* member, const float target[3], float out[2]) override {
         // 00417B10 BSP_AvoidZoneGroup_OffsetPointSequential, contract: unread.
@@ -1592,6 +1656,12 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     int diag_member_lines{0};
     int diag_order_lines{0};
     int diag_moveto_lines{0};
+    // Packet cc8_ship_follow: what 0077C8D0's first question now answers.
+    int diag_follow_lines{0};
+    unsigned long long formation_requests_seen{0};
+    unsigned long long formation_requests_available{0};
+    unsigned long long formation_requests_refused{0};
+    unsigned long long formation_joins_made{0};
 
     bsp::AiGroupCandidateFlags entity_flags(void* entity) override {
         return unit_flags(unit_index_of(entity));
@@ -2117,11 +2187,41 @@ void GameAiCoordinatorHost::Impl::order_attack(void* group, void* target, float 
     if (current_party >= 0) ++party_row(current_party).attack_orders;
     done("AiPlanners::order_attack", 0x00a2cbd0u);
 
-    // The substitution for 00A2C790's unread member->vtable[+114h]: each member
-    // gets the order as a scene command. The token is the member's own weapon
-    // kind, because the 26-row registry has no single "attack": a plane takes
-    // `dogfight` against a plane group and `attackmove` against a surface one,
-    // and a ship takes `artillery`. docs/ENTITY_LUA_ORDER_PATH.md.
+    // Packet cc8_ship_command. `00A2C790`'s `vtable[+114h]` is now read, and it
+    // is not an order arm. The member pass calls it three times per member
+    // (00A2C7F5, 00A2C805, 00A2C81A) and the answer feeds
+    // `0071EB60 BSP_EntityCommand_ActiveTargetDescriptor` and
+    // `0071BE40` current-command, whose pair goes to the group command's own
+    // `vtable[+24h]` at 00A2C839: the pass READS every member's director and
+    // reports it upward. `00A2CBD0`'s callee list carries neither `00A02020`
+    // nor `0077D600`, so the attack order itself reaches no member either.
+    //
+    // A member is reached only by the command's `vt+0Ch` tick, through
+    // `00A02020`, the one bridge (docs/AI_COMMAND_TICK.md). There the split is
+    // by kind, not by token: `00A10DC0`'s follower pass hands a SHIP follower
+    // `0077C8D0 BSP_Entity_RequestJoinFormation` and pushes no command at all
+    // (00A10E3E, 00A10E61), and only the leader and squadron followers reach
+    // `00A02020`, whose one descriptor is `00E08F68 moveto`.
+    //
+    // So a SHIP member must receive no scene command here, leader or follower:
+    // a follower's only contact is `0077C8D0`, and a ship leader's order is the
+    // `moveto` the class tick already issues through `00A02020`
+    // (`ai_command_tick`'s `tick_orders`).
+    //
+    // Issuing an `artillery` on top is what ended the USN04 Yorktown's
+    // `moveonpath`, and the measured mechanism is blunter than a stage raise: a
+    // scene command REPLACES the whole queue. The trace row is
+    //   349.29s issue scene/attackmove  slots 3 -> 1  moveonpath -> attackmove
+    // - three filled slots become one and the new command is the head, so the
+    // path order is discarded outright rather than terminated. That is the same
+    // replace semantics 0077D600 has in the image, which is exactly why the
+    // image never sends a scene command to a ship follower.
+    // docs/SHIP_COMMAND_LIFETIME.md.
+    //
+    // The plane tokens stay: a squadron follower IS reached by `00A02020`, and
+    // the 26-row registry has no single "attack", so the member's own weapon
+    // kind is still the labelled substitution for the token
+    // (docs/ENTITY_LUA_ORDER_PATH.md) - a stand-in, and named as one.
     const std::string target_name = t->members.empty() ? std::string()
         : unit_name(t->members.front());
     const bool target_is_air = !t->members.empty() &&
@@ -2129,6 +2229,10 @@ void GameAiCoordinatorHost::Impl::order_attack(void* group, void* target, float 
     for (const std::size_t member : g->members) {
         const bool member_is_air = units.unit_is_kind_of(member,
             bsp::kUnitGunneryKindPlaneBase);
+        if (units.unit_is_kind_of(member, bsp::kUnitGunneryKindShipBase)) {
+            ++summary.ship_members_not_ordered;
+            continue;  // 00A10E3E / 00A2CBD0: no scene command reaches a ship
+        }
         const char* token = "artillery";
         if (member_is_air) token = target_is_air ? "dogfight" : "attackmove";
         issue_to_member(member, token, target_name, current_party);
@@ -2364,7 +2468,7 @@ void GameAiCoordinatorHost::report() {
         "splits_taken=%llu auto_merges=%llu prox_merges=%llu member_passes=%llu "
         "tick_orders=%llu tick_followers=%llu formation_requests=%llu promotions=%llu "
         "collect_dist=%.1f served=%llu attackmove=%llu settarget=%llu fallback=%llu "
-        "scored=%llu",
+        "scored=%llu ship_members_not_ordered=%llu",
         s.game_mode, s.compose_passes, s.seed_candidates, s.groups_created,
         s.groups_destroyed, s.members_added, s.members_evicted, s.splits,
         s.splits_taken, s.auto_merges, s.proximity_merges, s.member_passes,
@@ -2372,7 +2476,14 @@ void GameAiCoordinatorHost::report() {
         s.command_promotions,
         static_cast<double>(host.tuning.at(bsp::kAiTuningCloseAttackCollectDist)),
         s.close_members_served, s.close_attack_move_orders, s.close_set_target_orders,
-        s.close_fallback_movetos, s.close_candidates_scored);
+        s.close_fallback_movetos, s.close_candidates_scored,
+        s.ship_members_not_ordered);
+    // Packet cc8_ship_follow: 0077C8D0's first question, 008162B0 -> 00779D50.
+    host.log.notef("summary mission ai follow requests=%llu available=%llu refused=%llu "
+        "joins=%llu (00779D50: a live ship may follow a live ship of its own side; the "
+        "+188h OwnerPlayer arm is skipped, this process has no producer for it)",
+        host.formation_requests_seen, host.formation_requests_available,
+        host.formation_requests_refused, host.formation_joins_made);
     host.log.notef("summary mission ai tuning mode=%d (%s) merge_dist=%.1f "
         "near=%.1f far=%.1f sticky=%.2f",
         s.tuning_mode, bsp::ai_tuning_mode_table_name(
