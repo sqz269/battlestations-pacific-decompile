@@ -123,6 +123,10 @@ mission with land structures.
 
 ## 3. Validation
 
+**Superseded on 2026-09-18 by "Correction: the census is measured" at the end of this file. The
+three runs completed once the session was reconnected; the paragraphs below record why they were
+blocked, and the expected column they set up is scored against the measurement there.**
+
 **Not measured. The census this packet owes is blocked by the environment, not by the packet, and
 the cause is known.**
 
@@ -188,3 +192,102 @@ packet adds and on the existing coordinator line:
 * `00923BE0 BSP_UnitInstance_GetHealth` into slot D, which turns on the damage preference.
 * The attacker's `vtable[+18h]`, which `00A0F859` asks with `1Ch` and which is not the `+5Ch` class
   test the other three use.
+
+## Correction: the census is measured (packet `cc8_ai_target_weight_census`, 2026-09-18)
+
+Section 3's "blocked, not measured" is retracted. The remote-desktop session was reconnected and
+all three missions ran. The build is `4baa3f3f0` for every row below
+(`build/win32/Release/bsp_game.exe`, 16:33), so the three measured rows share one executable.
+
+### The measured column
+
+`summary mission ai coordinator`, the four order counters and `scored`:
+
+| Mission | Run | served | attackmove | settarget | fallback | scored |
+| --- | --- | --- | --- | --- | --- | --- |
+| IJN01 | before, `local/obj2_ijn01.log` 15:37 | 2450 | 2250 | 150 | 50 | 465500 |
+| IJN01 | after, `local/tw_ijn01.log` 16:54 | 2450 | 2250 | **141** | **59** | 465500 |
+| USN02 | before, `local/obj_usn02_after.log` 15:04 | 616 | 559 | 0 | 57 | 4004 |
+| USN02 | after, `local/tw_usn02.log` 17:08 | 616 | 559 | 0 | 57 | 4004 |
+| USN01 | before, `local/obj2_usn01.log` 15:50 | 0 | 0 | 0 | 0 | 0 |
+| USN01 | after, `local/tw_usn01.log` | 0 | 0 | 0 | 0 | 0 |
+
+The three `summary mission ai target weight` lines this packet added, which exist only in the
+after runs:
+
+| Mission | queries | objective_hits | fort_targets | non_command | torn_down | model_runs | stand_ins | weapon_rows |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| IJN01 | 465500 | 0 | 460600 | 460600 | 0 | 0 | 465500 | 321 |
+| USN02 | 4004 | 0 | 0 | 0 | 0 | 0 | 4004 | 32 |
+| USN01 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 77 |
+
+### Expected against measured
+
+| Expectation (section 3) | Measured | Verdict |
+| --- | --- | --- |
+| IJN01 `scored` keeps 465500 while the ranking under it changes | 465500 both runs; every candidate re-weighted | **held** |
+| IJN01 `attackmove`/`settarget` moves off 2250/150 | 2250 unchanged; 150 to 141, 50 to 59 | **held in the letter, wrong in the cause** — see below |
+| USN02 unchanged at 616 served / 559 attackmove | 616 / 559, and every other counter identical | **held** |
+| USN01 stays at zero served | 0 across the board, `queries` 0 | **held** |
+| `objective_hits` zero on all three | 0, 0, 0 | **held** |
+
+### What moved, and what the movement is not
+
+**The weight itself moved, on IJN01 only, and completely.** `queries` 465500 with `fort_targets`
+460600 means 188 of every 190 candidates a served member scores answer the `009FE0B0` trio. The
+sharp measured fact the expected column did not predict is that **`non_command` equals
+`fort_targets` exactly**: not one trio target in IJN01 is also `IsKindOf(1Ch)`, so **every one of
+the 460600 takes the `0.01f` arm and the `0.1f` arm at `00D7A2F0` never fires in this mission**.
+The mission's land structures are uniformly a hundredth, not a tenth. USN02 confirms the other
+side: `fort_targets` 0, so the trio never fires and the control is exact.
+
+**The 9 order-ticks that moved from `settarget` to `fallback` are not this binding, and attributing
+them to it would be wrong.** `ai_close_attack_score` is
+`range_factor x target_weight x group_mul x sticky_mul`, and a member takes the fallback moveto
+only when `chosen == nullptr`, which needs every admitted candidate to score at or below the
+`0.0f` seed. The binding multiplies each candidate's weight by `10.0`, `1.0`, `0.1` or `0.01` —
+strictly positive every one, with `target_term` measured at a uniform `1.0` — so a candidate that
+scored positive before scores positive after. `best > 0` before therefore implies `best > 0`
+after, and the binding **cannot** turn a chosen target into a fallback. It changes the argmax, not
+its existence. `scored` holding at 465500 confirms admission did not move either.
+
+The interval `obj2_ijn01` (15:37) to `tw_ijn01` (16:54) carries about thirty commits from four
+streams, not just this one: `7610d07ed` the health term, `627f2866e` the binding, `d4d381de8` the
+inner weight, `b0ec8d97b`/`b527286ee`/`9d06efce5` the gunnery rows and the muzzle-count divide, and
+the dive-bomb and torpedo-run-in work. A plane whose candidates all cross `far_dist` scores zero
+and falls back, so any commit that moved aircraft moves this counter. **The 9 ticks belong to that
+interval, not to `00A0F810`, and the IJN01 pair is not a clean A/B for this packet.** The counters
+in the second table above are, because they measure the binding's own arithmetic directly.
+
+**Second-order lines moved and are likewise unattributable.** IJN01 gunnery went from
+`shots=39143 entity_impacts=17 hull=16 deaths=3 total_damage=793.2 first_hit=4.65 s` to
+`shots=38349 entity_impacts=104 hull=102 deaths=4 total_damage=1571.8 first_hit=2.45 s`, and
+pilot attack from `heading_error_last_mean=0.265` to `0.055` at an unchanged `ordered=33`. Six
+times the impacts on slightly fewer shots is the shape of `b527286ee`'s muzzle-count divide
+correction, which landed in the same interval. Named here as movement, not as this packet's
+result.
+
+**What did not move, and why.** `objective_hits` is 0 on all three because the eight objective
+sets hold no units (`docs/MISSION_OBJECTIVES.md`), so slot B is `1.0` everywhere and the `10.0f`
+at `00CE38B8` is unexercised. `torn_down_targets` is 0 on all three because `00A13B60`'s candidate
+loop drops anything failing `close_candidate_alive` before scoring, so every candidate is live,
+takes the full-health `1.0` and leaves slot D at a uniform `1.0`. **Slot D moved nothing in any
+mission**, and the earlier "halve every candidate weight" reading (`7610d07ed`, 16:17) was already
+retracted in the tree by the comment at `src/game_hosts_ai.cpp:1005` before these runs: the term is
+`2.0 - 1.0 = 1.0` for a live target, not `0.5`. Any brief still carrying the halving is stale.
+
+**`model_runs` is 0 on all three with rows published on all three**, which is the gap and not a
+plumbing failure. IJN01 publishes `weapon_rows=321`, one per entity in the mission
+(`summary world walk entities=321`), so the lookup finds a row for both attacker and target. The
+gate at `src/game_hosts_ai.cpp:931` also requires `inputs_complete`, and
+`src/game_hosts_gunnery.cpp:2704` holds `barrel.accuracy = 0.0f` with the flag forced false at
+`2711`, for the single reason that `009FE270` at `00A094E6` has no producer. **Rows are complete
+but for one field.**
+
+### What this census cannot see
+
+The coordinator counters record chosen-versus-none and ship-versus-plane, never **which** target
+was chosen. The re-ranking of 460600 candidates to a hundredth is therefore established in the
+weight and **not observed in the choice**: the expectation "change which units appear in the
+pilot-attack table" is untested, because no line names the picked target. Instrumenting
+`close_issue_order` with the chosen target's class is the smallest thing that would close it.

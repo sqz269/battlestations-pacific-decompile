@@ -248,6 +248,44 @@ kept.
 
 
 
+## The one input left, `009FE270`
+
+`BSP_Ai_BarrelAccuracyForKind`, `__fastcall(ECX, EDX, one stack argument) -> float in ST0`,
+`RET 4`, body `009FE270`-`009FE6C3`. The accuracy `00A08460` multiplies into its barrel damage at
+`00A094E6`, and the only model input this process has no producer for.
+
+It is a seventeen-way dispatch. `009FE277` calls the stack argument's `vtable[+1Ch]` first;
+`009FE27F` takes the selector from the **second argument's `+8h`**, `009FE288` subtracts `2` and
+`009FE28E` rejects anything above `10h`, so the live range is `2`..`12h`. `009FE294` indexes a byte
+table and `009FE29B` jumps through a dword table:
+
+```
+009fe6ec  00 00 09 01 01 01 09 02 03 04 09 05 09 06 07 05 08
+009fe6c4  009FE2A2 009FE313 009FE384 009FE3F5 009FE44A
+          009FE64A 009FE465 009FE480 009FE4F1 009FE6BB
+```
+
+| Selector | Byte | Handler |
+| --- | --- | --- |
+| `2`, `3` | `0` | `009FE2A2` |
+| `5`, `6`, `7` | `1` | `009FE313` |
+| `9` | `2` | `009FE384` |
+| `0Ah` | `3` | `009FE3F5` |
+| `0Bh` | `4` | `009FE44A` |
+| `0Dh`, `11h` | `5` | `009FE64A` |
+| `0Fh` | `6` | `009FE465` |
+| `10h` | `7` | `009FE480` |
+| `12h` | `8` | `009FE4F1` |
+| `4`, `8`, `0Ch`, `0Eh` | `9` | `009FE6BB`, the reject arm |
+
+Each live arm reads one float out of the `00A371A0` tuning record, gated by the first argument's
+`vtable[+18h]` type queries: `009FE2A2` answers `[00A371A0()+110h]` when `vtable[+18h](0Fh)` holds
+and otherwise falls to a `PUSH 6` query.
+
+`coverage: partial` — the dispatch is complete, the nine handler bodies are not read. Reading them
+is what would let the publisher mark a row complete and turn the model on, so it is the next
+packet's obvious first move.
+
 ## Validation
 
 **Blocked, not measured.** The remote-desktop session the agents run in is disconnected, so the
