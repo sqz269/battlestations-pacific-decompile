@@ -2191,3 +2191,29 @@ Three cautions on reading this section, because the probe is doing work in it:
 * the targets are stationary (`target_moved=0.0 m`). A moving carrier is a different problem and
   this says nothing about it;
 * the run is not deterministic, so these counts reproduce the shape, not the digits.
+
+## 15. The lead question is answered elsewhere: see docs/TORPEDO_AIM_LEAD.md
+
+Packet `cc8_torpedo_lead`. Section 6.3 closed with "whether the target point itself is a lead point
+is open, and it is now one well-posed question", and section 13.5 left the lead as "the remaining
+candidate". Both are now answered: **the image does not lead**, and the proof is in
+`docs/TORPEDO_AIM_LEAD.md`. The short form:
+
+* The steering bearing `approach+94h` is a pure `atan2` of `vtable[0]() - own position`
+  (`009D3517` -> `009D357E`/`009D35C0`), with no velocity and no time term, and both steering sites
+  read only that (`009D161A`, `009D07BD`).
+* A lead needs the target's velocity and the chain never fetches one. The only virtual calls on the
+  target are slot `+50h` (heading, used at `009D1739` as an absolute angle-off) and slot `+5Ch` (a
+  tag predicate). `009FA2E0`, the velocity forwarder, has exactly two callers image-wide, both
+  `BSP_BotStateDiveBombFlyAbove`.
+* The image answers target motion with a release **gate** instead: `|cos(aspect)|` scales the
+  aim-solution range threshold at `009D1F9F` -> `009D2021`.
+
+**Two corrections to this file.** Section 6.3's in-band `+D0h` negatives were reached by a method
+that cannot establish them - `bsp.py scan-bytes` silently caps at 20 results, so a filtered pass
+over a capped list returns empty whether or not in-band hits exist. The conclusions survive a
+re-run with `--limit 4000` over sixteen encodings, but the reasoning did not establish them. And
+section 6.3's own named escape route - "the producer holds the approach at some other offset" - was
+real: the approach is a sub-object at `task+3F8h`, so `+D0h` is also addressable as `task+4C8h`.
+That second displacement is now scanned too, and is equally clean. The writer is still not found,
+and `docs/TORPEDO_AIM_LEAD.md` says so rather than calling the field dead.

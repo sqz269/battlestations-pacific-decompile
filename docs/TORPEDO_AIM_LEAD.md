@@ -20,7 +20,7 @@ Addresses are from the raw listing (`bsp.py disasm-raw`, disk bytes) because `00
 | --- | --- | --- |
 | the aim point | `009D0670` `BSP_BotApproachTorpedo_GetAimPoint` | `FLD [ECX+D0h]/[+D4h]/[+D8h]` -> the out-param at `[ESP+4]`. Eight instructions, `RET 4`, **no arithmetic**. |
 | own position | `009D34EA`, `009D34F8` | `unit+FCh` (X) and `unit+104h` (Z), the translation row of the entity world matrix that starts at `unit+CCh`. |
-| the call | `009D3517` | `this->vtable[0](&local)` - the update asks itself for the aim point. |
+| the call | `009D3517` | `this->vtable[0](&local)` - the update asks itself for the aim point. It calls the same slot twice more: `009D36E4`, feeding a line-of-sight query at `007DF360` with the target pointer, and `009D3DC8`, whose result is read as X and Z at `009D3DCA`/`009D3DD7`. All three are the same eight-instruction copy; none of them leads. |
 | the difference | `009D3519`, `009D3523` | `aim.x - own.x` and `aim.z - own.z`. |
 | range | `009D3552` sqrt -> `009D357E` | `approach+90h`, with an epsilon at `00CE3820` that collapses it to zero. |
 | bearing | `009D3586` atan2, `fsubr` `00CE3830`, wrap by `00CE3828` -> `009D35C0` | `approach+94h`, a compass bearing. |
@@ -100,7 +100,13 @@ named escape route for a disp8 write through an aliased pointer.
 ### 3.0 The second displacement, which no earlier census had
 
 Section 6.3 of `docs/TORPEDO_AFTER_THE_DROP.md` names the escape route for its own negative: "the
-producer holds the approach at some other offset". It does, and this packet found the offset.
+producer holds the approach at some other offset". It does.
+
+**Credit where it is due: the layout below was already in the ledger**, on `009D0670`'s own record
+("found from `009D3050`'s `LEA EDI,[ESI+3F8h]` at `009D3080` and `MOV [EDI],0D213C0h` at
+`009D30A7`"). I re-derived it here without having read that record first. What is new in this packet
+is not the layout but the *consequence nobody had drawn from it* - that `+D0h` is therefore also
+addressable as `task+4C8h`, and that this second displacement had never been scanned.
 
 `009D3050 BSP_BotTaskTorpedo_Construct` lays the task out as follows:
 
@@ -275,11 +281,99 @@ What the table does *not* license: it does not say a lead term would convert the
 correct lead would remove the 135-160 m geometric term and leave the 40-50 m residual, and whether
 that is a hit depends on the hull box this host does not have.
 
-## 7. Status
+## 7. USN04, out of sample - and a retraction of section 6's residual guess
+
+One run, no code change: `local/aimlead/usn04_torpedo.log`,
+`--frames 8000 --press-start-frame 30 --menu-select USN04 --mission-frames 6000
+--mission-frame-seconds 0.05`, launched 13:08:53 on launcher slot 1, finished with
+`native renderer final COM release`. `torpedo_drop drops=12 refusals=0 water_entry_breakups=0`,
+`swims_started=8`, `torpedo_closest_approach swims=8`.
+
+| trace | shooter -> ordered | exit | ordered min | at | target moved | drop crossing |
+| --- | --- | --- | --- | --- | --- | --- |
+| 3 | Kate #4.1\|.-2 -> Yorktown-class01 | **hit `Yorktown-class01`** | 23.7 m | 7.30 s | 120.8 m | 172.0 deg |
+| 4 | Kate #2.1 -> Lexington-class01 | **hit `Lexington-class01`** | 55.4 m | 9.75 s | 0.0 m | 163.7 deg |
+| 5 | Kate #2.1\|.-2 -> Lexington-class01 | **hit `Lexington-class01`** | 50.1 m | 9.90 s | 0.0 m | 163.2 deg |
+| 6 | Kate #2.1\|.-3 -> Lexington-class01 | **hit `Lexington-class01`** | 49.5 m | 10.00 s | 0.0 m | 163.9 deg |
+| 10 | Kate #6.1 -> Lexington-class01 | hit `Fletcher-class02` at 5.00 s | 202.0 m | 5.00 s | 0.0 m | 163.7 deg |
+| 11 | Kate #6.1\|.-2 -> Lexington-class01 | hit `Fletcher-class02` at 5.30 s | 192.1 m | 5.30 s | 0.0 m | 163.2 deg |
+| 12 | Kate #6.1\|.-3 -> Lexington-class01 | hit `Fletcher-class02` at 5.30 s | 194.5 m | 5.30 s | 0.0 m | 163.9 deg |
+| 9 | Kate #8.1\|.-2 -> Yorktown-class01 | `expired`, range 1852.0 | 167.9 m | 7.75 s | 128.3 m | 110.8 deg |
+
+Traces 10-12 were stopped by the **escort screen**: the ordered target was Lexington, and they
+struck `Fletcher-class02` a third of the way there. Traces 2, 7 and 8 are not in the table because
+they never swam - they `entity_impact` a **friendly B5N Kate at life=0.05 s**, at y = 11.66, 11.76
+and 11.78, i.e. the round strikes an aircraft of the dropping formation immediately on release.
+Both of those are outside this packet and are reported to the integrator as observations, not
+diagnosed here.
+
+### 7.1 The out-of-sample test the model could have failed
+
+The section 6 model, run on USN04 with **nothing refitted** (same `s = 30.87 m/s`, same equations,
+`R` back-solved from each row's own `t_cpa`):
+
+| trace | target | v_t | crossing | zero-lead miss | recorded | outcome |
+| --- | --- | --- | --- | --- | --- | --- |
+| 3 | Yorktown, moving | 16.55 | 172.0 deg | 16.8 m | 23.7 m | hit |
+| 9 | Yorktown, moving | 16.55 | 110.8 deg | 130.1 m | 167.9 m | miss |
+| 4 | Lexington, stopped | 0.00 | 163.7 deg | 0.0 m | 55.4 m | hit |
+| 5 | Lexington, stopped | 0.00 | 163.2 deg | 0.0 m | 50.1 m | hit |
+| 6 | Lexington, stopped | 0.00 | 163.9 deg | 0.0 m | 49.5 m | hit |
+
+**Traces 3 and 9 are the strongest single piece of evidence in this packet.** Same mission, same
+ship class, same target speed, same torpedo - the *only* material difference is the crossing angle.
+At 172 degrees the perpendicular component of the target's 120.8 m of travel is
+`120.8 * sin(172 deg) = 16.8 m` and the round **hits**; at 110.8 degrees the perpendicular component
+of 128.3 m is 130 m and the round **misses and expires**. The hit/miss split follows
+`target_travel * sin(crossing)` - which is exactly and only what a zero-lead aim produces. A leading
+aim would have brought both to zero.
+
+### 7.2 Retraction: section 6's explanation of the residual is wrong
+
+Section 6 offered, as unmeasured candidates for its `+40` to `+50 m` residual, that `target_travel`
+is a chord while the escorts turn, and that the escorts are still accelerating - both of which make
+the residual **scale with target motion**. USN04 refutes that: traces 4-6 have `target_moved = 0.0`
+and a residual of `+49.5` to `+55.4 m`, while trace 3 moves 120.8 m and has a residual of `+6.9 m`.
+The residual does not track motion at all.
+
+The decomposition that does fit both missions is the measurement definition, which section 6 quoted
+and then failed to apply: **distances are centre to centre** (`src/game_hosts_gunnery.cpp:3601`).
+
+* For a **hit**, the recorded number is where the round met the hull *relative to the target's
+  centre*, so it is not model error at all. It tracks the target's size: Northampton (180 m class
+  length) 8.5 and 9.1 m; Yorktown 23.7 m; Lexington, a far longer carrier, 49.5 to 55.4 m.
+* For a **miss**, the model under-predicts by `+37.8` to `+49.6 m` across four independent rounds in
+  two missions (USN01 Mav1/Mav4/Mav5, USN04 trace 9). That band is tight and is the real residual.
+
+I am recording that the real residual is therefore a consistent `+40 m`-ish under-prediction on
+misses, and that **its cause is still unmeasured**. What section 6 got wrong was not the number but
+the explanation, and the explanation was refuted by the first out-of-sample data it met.
+
+## 8. Status
 
 * **Proved from the listing**: sections 1, 2, 3, 5.
 * **Corroborated, different class**: section 3.1.
 * **Open**: the writer of the torpedo task's `+D0h` (section 3), and which of H1/H2 holds
   (section 3.2).
-* **Measured**: section 6, against the existing `docs/SHIP_ESCORT_SCREEN.md` section 6.3 trace.
+* **Measured**: section 6 against the existing `docs/SHIP_ESCORT_SCREEN.md` section 6.3 trace, and
+  section 7 out of sample on USN04 (`local/aimlead/usn04_torpedo.log`).
+* **Retracted by my own later evidence**: section 6's explanation of the residual (section 7.2), and
+  the claim I first sent the integrator that `00D213C0` is the task vtable (section 5).
 * **Not changed**: no source file, no constant, no Ghidra annotation.
+
+## 9. The one thing worth a follow-up packet
+
+`src/game_hosts_units.cpp:7887` sets `in.aspect_scale_84 = 1.0f`, with a comment saying
+`approach+84h` "is not in the approach struct yet". It is a labelled substitution, not a silent
+stub, so it breaks no project rule - but it makes section 3.3's mechanism **inert**, and that is
+worth stating because the mechanism is the image's whole answer to a moving target.
+
+`009D1FED` calls `InterpolateClamped(0.5, 1.0, 1.0, approach+84h, |cos aspect|)`. With
+`approach+84h` forced to `1.0` both interpolation endpoints are `1.0`, so the result is `1.0` for
+every aspect and the permitted release range stops depending on the crossing angle at all. In the
+image it presumably does depend on it.
+
+So the well-posed next question is: **what writes `approach+84h`, and is it 1.0?** Until that is
+answered, this host's torpedo bombers release on a range gate that ignores aspect, which is the one
+place where their behaviour is known to be shaped differently from the image's. I did not chase it:
+it is outside this packet's addresses and I hold no lease on it.
