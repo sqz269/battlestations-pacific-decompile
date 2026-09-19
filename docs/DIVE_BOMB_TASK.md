@@ -3291,3 +3291,24 @@ It enters **none** of the five. `base` is `+ACh + +50h`; `span` is `+BCh - +B4h`
 `tan(plane_drop_angle)` off the Lua row; `scale` is the `009C43CD` interpolation over the height
 margin against the clamped distance. The substituted 350.0 reaches the release floor and the
 `009C4045` dive-entry height, not this chain.
+
+### Correction to the saturation reading above
+
+"The bias is roughly four times too large and the clamp has been hiding it" is **withdrawn**.
+`base + distance x tan(angle)` clamped to a ceiling **is** a glide-slope law, and at 9.7 km it is
+supposed to sit on the ceiling: it only comes off when `span x scale x gain < 450`, i.e. inside
+about 810 m of span, and `approach+B8h` = 1100 ends the attack run outside that. Given the same
+inputs the image may fly the whole run-in at the ceiling too. **The law is not shown wrong** - what
+is shown is that in this regime it cannot explain the ditch.
+
+Both settling facts are named:
+
+* the **1450** is the authored `Dynamics/Ceiling` = **1500** from this installation's
+  `scripts/datatables/planeglobals.lua` ("ez a plafon. ennyi meter folott minden repulogep atesik")
+  with a 50 m margin in the clamp - a separate authored altitude, **not** `base + 450`. The exact
+  form of that 50 m margin is the one detail not read.
+* **`class+518h` is written as `tan(DropAngle)`**: `include/bsp/bot_task_states.hpp:330` records
+  `gain = tan(desc+1F0h DropAngle)` at the store site `007C4A3F`/`007C4A44`. The measured 0.577 is
+  `tan(30 deg)`, so this class's authored `DropAngle` is 0.5236.
+
+`docs/HANDOFF_DIVE_BOMB_PROBE.md` carries this stream's state for a cold reader.
