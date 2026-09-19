@@ -1,0 +1,106 @@
+{
+  "packet": "cc8_dive_bomb_servo_run",
+  "baseline_commit": "71d61d023",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-cc8-dive-bomb",
+  "documentation": "docs/DIVE_BOMB_TASK.md",
+  "status": "servo arm split in two; the planner's pitch-mode gate bound; the dive-bomb chain now reaches aimdive; still no release",
+  "production_cpp_changed": [
+    "src/plane_ai_control.cpp",
+    "include/bsp/plane_ai_control.hpp",
+    "src/game_hosts_units.cpp"
+  ],
+  "ghidra_mutated": false,
+  "new_native_body_reconstructed": false,
+  "original_abi": {
+    "0099d300": "BSP_PilotBot_PlanControls, body 0099D300-0099EBAB. The servo arm and the pitch arm are regions inside it, not separate functions.",
+    "009c44f0": "BSP_BotStateDiveBombTurnDown_Tick, ECX turndown state; one stacked float dt the body never reads; RET 4 at 009C46A7, 009C46C6 and 009C4736; body 009C44F0-009C4738"
+  },
+  "routines": [
+    {
+      "name": "pilot_roll_bank_demand_0099e2ba",
+      "range": "0099E2BA-0099E33A",
+      "containing_function": "0099d300",
+      "coverage": "complete",
+      "note": "the scaled bank error and the band/rate demand drawn from it; the first half of the servo arm, split at the 0099E340 store"
+    },
+    {
+      "name": "pilot_roll_rate_limited_0099e344",
+      "range": "0099E344-0099E39D",
+      "containing_function": "0099d300",
+      "coverage": "partial: the rate limit 0099E344-0099E367 builds from desc+1A8h, desc+1BCh and EBX[0], which have no producer read here and are supplied whole as a contract",
+      "note": "the falling InterpolateClamped map and the plan+290h store"
+    },
+    {
+      "name": "the pitch-mode gate 0099E3BF-0099E3D1",
+      "range": "0099E3BF-0099E3D1",
+      "containing_function": "0099d300",
+      "coverage": "partial: the mode-0 branch 0099E3D7-0099E483 is not modelled; its only writes are cmd+2ECh from 00E0E2F4 and 00E0E2F0, and this host keeps no +2ECh",
+      "note": "MOV ECX,[ESI+2D0h] / TEST ECX,ECX / JNE 0099E490: the planner's pitch arm runs only when the pitch mode is non-zero"
+    }
+  ],
+  "calls": [
+    {
+      "address": "0099e2ce",
+      "native": "00438b10",
+      "containing_function": "0099d300",
+      "note": "BSP_Math_SubtractWrappedAngle(plan+2C4h, measured bank); the product with [ESP+28h] at 0099E2D3 is the scaled error",
+      "host_method": "pilot_roll_bank_demand_0099e2ba"
+    },
+    {
+      "address": "0099e390",
+      "native": "00419010",
+      "containing_function": "0099d300",
+      "note": "BSP_Math_InterpolateClamped(-limit, 1.0, +limit, -1.0, demand); the fifth argument at [ESP+2Ch] is the demand stored at [ESP+18h] before 0099E34A SUB ESP,0x14",
+      "host_method": "pilot_roll_rate_limited_0099e344"
+    },
+    {
+      "address": "009c4718",
+      "native": "00419010",
+      "containing_function": "009c44f0",
+      "note": "the post-latch pitch command; its result is stored to +29Ch at 009C471D beside +2A0h = 1 at 009C4723 and +2D0h = 0 at 009C472A",
+      "host_method": "run_dive_bomb_turndown_tick_009c44f0"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "PilotBotRollServoInputs::interpolant is a contract input, '[ESP+2Ch] at 0099E36B, the fifth argument to BSP_Math_InterpolateClamped'",
+      "is": "it is the demand the same region computes and stores at 0099E340; there is no such incoming slot, and the host no longer calls the arm twice to manufacture one",
+      "evidence": "0099E340 FSTP [ESP+18h] with ESP = E0-8 and 0099E36B FLD [ESP+2Ch] with ESP = E0-0x1C after 0099E34A SUB ESP,0x14 are the same frame slot, E0+0x10"
+    },
+    {
+      "was": "the servo's demand arms multiply and offset the folded magnitude of the bank error",
+      "is": "they act on the signed scaled error; the fold feeds only the band compare at 0099E30E and the sign test at 0099E319",
+      "evidence": "0099E2E7 FCOMI ST0,ST1 then 0099E2E9 FSTP ST1 leave the signed error in ST0 across the fold, and 0099E310 FSTP ST0 pops the folded value before 0099E314 FMUL [EBX+44h], 0099E332 FSUB [EBX+48h] and 0099E337 FADD [EBX+48h]"
+    },
+    {
+      "was": "the planner's pitch arm 0099E490-0099E739 runs on every pilot think",
+      "is": "it runs only when the pitch mode cmd+2D0h the task left behind is non-zero; the dive-bomb turndown writes 0 and keeps its own plan+29Ch",
+      "evidence": "0099E3BF MOV ECX,[ESI+2D0h], 0099E3C9 TEST ECX,ECX, 0099E3D1 JNE 0099E490; the fall-through 0099E3D7-0099E483 ends at JMP 0099E756, past the arm. The turndown's writes are 009C469C and 009C472A, both MOV [reg+2D0h],EBP with EBP zeroed at 009C44FB"
+    },
+    {
+      "was": "the mission summary line named the in-range latch approach+D0h at 009C7C31 as the reason for no release",
+      "is": "that latch closes; the summary now names the walk - 009C7C31 into flyabove, 009C7EA0 into aimdive, then the 25.0 m aim gate at 00CE3880",
+      "evidence": "local/usn04_pitchgate.log: latch_closed_tick=1481, turndown 67 ticks, aimdive 664 ticks, aim error 009C5C9B last -3706.33 m"
+    }
+  ],
+  "runs": [
+    {
+      "log": "local/usn04_fa.log",
+      "arguments": "--frames 5000 --press-start-frame 30 --menu-select USN04 --mission-frames 4800 --mission-frame-seconds 0.05",
+      "result": "arm_ticks=2370 transitions=3 states[flyabove=159 turndown=731 attackrun=1480] releases=0; |bank| 3.1381 rad, turndown latched at arm tick 1673, 009C7EA0 never satisfied"
+    },
+    {
+      "log": "local/usn04_pitchgate.log",
+      "arguments": "--frames 5000 --press-start-frame 30 --menu-select USN04 --mission-frames 4800 --mission-frame-seconds 0.05",
+      "result": "arm_ticks=2370 transitions=4 states[aimdive=664 flyabove=159 turndown=67 attackrun=1480] releases=0; the turndown now completes in 67 ticks and the chain reaches aimdive for the first time"
+    }
+  ],
+  "open": {
+    "00ce3880": "the 25.0 m aim gate; the last aim error in the aimdive run was -3706.33 m, taken after the overfly. A closest-approach census was added and needs a run to read.",
+    "approach+D4h": "no producer read; the can-dive test at 009C680E reduces to 'above the target'",
+    "approach+50h": "no producer read",
+    "flyabove+1Ah": "009C66E3/009C66F2/009C6822 writers read, their conditions not",
+    "006e3500": "the per-device round count, still to route through the gunnery host's process-wide accessor",
+    "cmd+2ECh": "written by both the servo's rate arm at 0099E328 and the mode-0 pitch branch at 0099E459/0099E47B; no consumer read, not modelled"
+  }
+}

@@ -1292,3 +1292,123 @@ aim-precision distance is "from far away it aims this much beside the target, th
 accurate as it closes", and the multiplier is "the aiming accuracy scale, the smaller the better".
 So the whole aim-error chain, and the 25-metre gate at `00CE3880`, is authored imprecision in the
 authors' own words.
+
+## The servo run, `local\usn04_fa.log` (17:19:38, 5000 frames / 4800 mission frames)
+
+The run that carried the servo call on the mode-1 roll path. It moved the chain three states
+further than the run before it, and it named the gate that stops it.
+
+| measure | before (`usn04_dive.log`) | this run (`usn04_fa.log`) |
+| --- | --- | --- |
+| aircraft on the task | 1, `movieval` | 1, `movieval` |
+| arm ticks | 2370 | 2370 |
+| transitions | 2 | 3 |
+| attackrun ticks (`009C4220`) | 1480 | 1480 |
+| flyabove ticks (`009C62B0`) | 144 | 159 |
+| turndown ticks (`009C44F0`) | 746 | 731 |
+| in-range latch `approach+D0h` (`009C7C31`) | never | closed at arm tick 1481 |
+| `|bank|` reached against the 150 deg latch at `009C4654` | 34.8 deg (0.6074 rad) | **179.8 deg (3.1381 rad)** |
+| turndown latch `state+1Ch` | never | **set at arm tick 1673** |
+| turndown roll writes / pitch writes | - | 15 / 731 |
+| release floor drawn (`approach+A8h`) | 350.0 m | 350.0 m |
+| `approach+B8h` (AttackDist floor, `009C8A5E`) | 1100.0 m | 1100.0 m |
+| `approach+BCh` at the end | - | 4437.5 m |
+| rounds | 2 | 2, none spent |
+| `009C7EA0` window (`pose+C64h` under -1.3) | never met | **never met** |
+| releases / bombs spawned | 0 / 0 | 0 / 0 |
+
+The state walk this run, read off the tick counts and the two latch ticks (159 + 731 + 1480 = 2370):
+
+```
+attackrun  arm ticks    1 .. 1480   closes from 11050 m to roughly 3800 m
+                                    latch approach+D0h closes at 1481
+flyabove   arm ticks 1481 .. 1640   159 ticks, +19h fires
+turndown   arm ticks 1641 .. 2370   731 ticks; bank latch at 1673, then stalled
+```
+
+`attackrun` heading 3.2240 rad, throttle 1.000, `alt_base` 1000.0 m, 149 rerolls; the range
+samples fall 11050 -> 10265 over the first 160 arm ticks, about 98 m/s of closure. The gate line
+reports 2021 arm ticks without the latch and 0 without bombs, so the latch held for 349 ticks and
+then re-opened as the aircraft overflew: `approach+BCh` is back out at 4437.5 m at the summary.
+
+### The new gate: the planner's pitch arm, `0099E3BF`-`0099E3D1`
+
+The chain now stops inside `turndown`, at the transition `009C8620` guarded by `009C7EA0`. With
+`|bank|` at 3.1381 rad the folded-bank arm of that test is already satisfied (3.1381 > the 2.356
+at `00D20E80`), so the whole test reduces to `pose+C64h < -1.0`: the nose has to come down past
+57 degrees. It never did, although the turndown wrote its full nose-down deflection on all 731
+ticks (`pitch_writes=731`, `pitch=1.0000`).
+
+It is **an unbound branch in the planner**, not an unread body and not a contract input. The
+listing:
+
+```
+0099e3bf  MOV  ECX,dword ptr [ESI + 0x2d0]
+0099e3c5  FLD  float ptr [ESP + 0x20]
+0099e3c9  TEST ECX,ECX
+0099e3cb  MOVSS dword ptr [ESP + 0x10],XMM2
+0099e3d1  JNE  0x0099e490            ; the pitch arm runs only when +2D0h != 0
+0099e3d7  ...                        ; mode 0: reads cmd+2ECh against 00E0E2F4,
+0099e483  JMP  0x0099e756            ; writes only cmd+2ECh, then jumps PAST the arm
+```
+
+`plan_yaw_0099d300()` ran `pilot_pitch_demand_0099e490` unconditionally and overwrote the pitch
+slot every think, so the turndown's deflection never reached the elevator. The pitch mode was
+already on the plan state - `pilot_plan_slots.hpp` declares `pitch_mode_2d0`, reset to 2 at
+`0099B54E` - but nothing read it and nothing but the reset wrote it.
+
+This is the pitch twin of the roll gate on `+2CCh`. The turndown writes the zero that passes it,
+in both of its pitch arms, with `EBP` zeroed at `009C44FB`:
+
+```
+009c469c  MOV dword ptr [EAX + 0x2d0],EBP    ; before the latch, beside +29Ch/+2A0h
+009c472a  MOV dword ptr [ESI + 0x2d0],EBP    ; after the latch, beside +29Ch/+2A0h
+```
+
+Bound in this packet: the gate at `0099E3BF`, the two turndown writes, and the explicit `= 2` the
+run-in's `009FB800` chain leaves behind. The mode-0 branch `0099E3D7`-`0099E483` is NOT modelled -
+its only writes are `cmd+2ECh` from `00E0E2F4`/`00E0E2F0`, and this host keeps no `+2ECh`.
+
+### The two servo contracts, re-traced
+
+The packet named `[ESP+28h]`, `[ESP+2Ch]` and the `EBX` tuning block as the first suspects if the
+bank stalled. The bank did not stall, and tracing them anyway retired one of the three.
+
+`[ESP+2Ch]` at `0099E36B` is **not** an incoming slot. `0099E34A SUB ESP,0x14` sits between the
+demand's store and that read:
+
+```
+0099e340  FSTP  float ptr [ESP + 0x18]   ; ESP = E0-8   -> frame slot E0+0x10
+0099e34a  SUB   ESP,0x14                 ; ESP = E0-0x1C
+0099e36b  FLD   float ptr [ESP + 0x2c]   ; ESP = E0-0x1C -> frame slot E0+0x10
+```
+
+Same slot. The fifth argument to `BSP_Math_InterpolateClamped` is the demand the arm just computed.
+`[ESP+28h]` at `0099E2D3` is read before the adjustment (E0+0x20) and is still a contract, as is
+the `EBX` block and the limit `0099E344`-`0099E367` builds from `desc+1A8h`, `desc+1BCh`, `EBX[0]`.
+
+## Correction to "`0099E26E`-`0099E39D`, the servo arm": two readings, and the split
+
+The servo arm is now two pure functions, `pilot_roll_bank_demand_0099e2ba` (`0099E2BA`-`0099E33A`)
+and `pilot_roll_rate_limited_0099e344` (`0099E344`-`0099E39D`), so the host calls each once. The
+image computes both in one region; the split is at the `0099E340` store, which is the region's own
+hand-off from the demand to the map.
+
+Splitting it turned up two errors in the single-function shape. They cancelled under the
+substituted tuning, so **the mode-1 roll command this host produces is unchanged** and the
+179.8-degree bank in `usn04_fa.log` stands.
+
+| was | is | evidence |
+| --- | --- | --- |
+| `interpolant` is a contract input, "[ESP+2Ch] at `0099E36B`" | it is the demand `0099E340` stores; the host no longer calls the arm twice to feed it | `0099E34A SUB ESP,0x14` between the two references makes `[ESP+18h]` and `[ESP+2Ch]` the same frame slot |
+| the demand arms act on the folded magnitude | they act on the SIGNED scaled error; the fold feeds only the band compare and the sign test | `0099E2E7 FCOMI ST0,ST1` then `0099E2E9 FSTP ST1` leave the signed error on the stack; `0099E310 FSTP ST0` discards the folded value before `0099E314`/`0099E332`/`0099E337` |
+
+Why they cancel: with the substituted tuning (`band_40` 0, `gain_44` 1, `rate_48` 0) the band
+compare always takes the rate arm, and the rate arm with a zero rate returns the signed error
+unchanged - which is exactly what the host was passing as the interpolant. The two errors only
+diverge once a real `EBX` tuning block is recovered, and then the corrected shape is the one that
+holds: the demand keeps the error's sign, so the falling map still rolls both ways.
+
+One side effect is now reported and not modelled: `0099E328 MOVSS [ESI+2ECh],XMM1` with
+`00E0E2F4`, on the rate arm. `cmd+2ECh` is the same word the mode-0 pitch branch at `0099E3D7`
+reads and writes; this host keeps no `+2ECh`.

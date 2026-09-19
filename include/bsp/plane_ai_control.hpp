@@ -459,33 +459,56 @@ PilotBotRollResult pilot_plan_roll_0099e2ba(const PilotBotRollInputs& in);
 //
 // Jump senses from the branch bytes: 0099E2EB `76` JBE, 0099E312 `76` JBE,
 // 0099E330 `76` JBE.
+//
+// The image computes both halves in one region; the two functions below are the
+// two halves of it, split at the 0099E340 store so that a host calls each once.
+//
+// CORRECTION to the single-function shape that stood here. Two readings of the
+// listing were wrong and they cancelled, so the mode-1 roll command is unchanged:
+//
+//  * `interpolant` was declared a contract, "[ESP+2Ch] at 0099E36B". 0099E34A
+//    `SUB ESP,0x14` sits between the demand's store and that read, so [ESP+2Ch]
+//    at 0099E36B and [ESP+18h] at 0099E340 are the SAME frame slot: the fifth
+//    argument to BSP_Math_InterpolateClamped is the demand this region just
+//    computed, not an input. Only [ESP+28h] (the error scale, read at 0099E2D3,
+//    before the adjustment) is still an incoming slot.
+//  * the demand arms were modelled on the folded magnitude. 0099E310 `FSTP ST0`
+//    pops the folded value after the band compare, leaving the SIGNED scaled
+//    error in ST0, and 0099E314/0099E332/0099E337 act on that. The fold only
+//    feeds the band compare at 0099E30E and the sign test at 0099E319.
 // ---------------------------------------------------------------------------
-struct PilotBotRollServoInputs {
+struct PilotBotRollDemandInputs {
     // plan+2C4h, the target the task wrote. 0099E2C5 loads it as the first
     // argument to BSP_Math_SubtractWrappedAngle at 0099E2CE.
     float bank_target_2c4 = 0.0f;
     // The measured bank the error is taken against, [ESP+34h] at 0099E2BA.
     float bank = 0.0f;
-    // [ESP+28h] at 0099E2D3, the scale on the raw error.
+    // [ESP+28h] at 0099E2D3, the scale on the raw error. Still a contract.
     float error_scale = 1.0f;
     // The three tuning floats the arm reads off EBX: +40h the band inside which
     // the proportional gain +44h applies, and +48h the constant rate outside it.
     float band_40 = 0.0f;
     float gain_44 = 1.0f;
     float rate_48 = 0.0f;
-    // The rate limit 0099E344-0099E367 builds: (desc+1A8h / desc+1BCh / EBX[0])
-    // times desc+1A8h. Supplied whole because its three fields are a contract.
-    float rate_limit = 1.0f;
-    // [ESP+2Ch] at 0099E36B, the fifth argument to BSP_Math_InterpolateClamped.
-    float interpolant = 0.0f;
 };
-struct PilotBotRollServoResult {
+struct PilotBotRollDemandResult {
     float bank_error = 0.0f;   // SubtractWrappedAngle(target, bank) * scale
+    float demand = 0.0f;       // [ESP+18h] at 0099E340, the map's interpolant
     bool used_gain = false;    // the 0099E314 arm rather than 0099E332/0099E337
-    float desired_290 = 0.0f;  // plan+290h, the roll command
+    // 0099E328 `MOVSS [ESI+2ECh],XMM1` with 00E0E2F4: the rate arm stamps the
+    // command's +2ECh. Reported, not modelled; this host keeps no +2ECh.
+    bool wrote_saturation_2ec = false;
 };
-// 0099E2BA-0099E39D.
-PilotBotRollServoResult pilot_roll_servo_0099e26e(const PilotBotRollServoInputs& in);
+// 0099E2BA-0099E33A, the scaled bank error and the demand drawn from it.
+PilotBotRollDemandResult pilot_roll_bank_demand_0099e2ba(
+    const PilotBotRollDemandInputs& in);
+
+// 0099E344-0099E39D, the rate-limited map, ending at the plan+290h store.
+// `rate_limit` is 0099E344-0099E367 supplied whole - desc+1A8h squared over
+// desc+1BCh times EBX[0] - because those three fields are a contract.
+// The call at 0099E390 is BSP_Math_InterpolateClamped(-limit, 1.0, +limit,
+// -1.0, demand): the endpoints are negated across the pair, so the map falls.
+float pilot_roll_rate_limited_0099e344(float demand, float rate_limit);
 
 
 // ---------------------------------------------------------------------------
