@@ -635,3 +635,33 @@ its no-bonus arms for every attacker. Whether the residue is that, or authored-z
 attackers' actual barrel types against the fall-through group, is **not settled here** and is the
 next packet's question. The counters that would settle it are a per-arm barrel census inside
 `barrel_accuracy`, which no run so far carries.
+
+#### What was checked and did not explain it
+
+Three candidates were eliminated rather than left hanging, so the next packet does not re-walk them.
+
+* **The published selector is the refined one.** `weapon_class_derive_engagement_range` assigns
+  `out.sub_type = weapon_class_refined_sub_type(in)` at `src/bullet_engagement_range.cpp:96`, so an
+  artillery barrel publishes `5`, `6` or `7` and not the constructor's `4`, which the reject arm
+  would have turned into a silent zero. The latch early-return above it cannot fire here: the
+  gunnery host builds a fresh input per gun.
+* **Target hit points.** Refuted by the third run, as above.
+* **`ForcedTargetWeightValues`.** `AiWeightModelBinding::forced_rule_weight` stubs `00A31DB0`, and
+  that table is real and unrun: `scripts/datatables/highlvlaiglobals.lua:164` and the six repeats,
+  rows of `{ attacker class, target class, target-is-neutral, weight }` that override one pair's
+  weight outright. It is a genuine missing producer and worth its own packet. It does **not**
+  explain this collapse: the shipped rows are mostly overrides **to zero**
+  (`TORPEDOBOAT`/`COMMANDBUILDING`, `TORPEDOBOAT`/`SHIP`, `SUBMARINE`/`COMMANDBUILDING`), the two
+  positive ones raise `TORPEDOBOMBER` and `DIVEBOMBER` against `SHIP`, and no row covers an
+  AA-armed ship against a landfort. Running it would zero more pairs here, not rescue any.
+
+The arithmetic that remains consistent with every measurement: `damage = time_factor * accuracy *
+shots`, `time_factor` is now non-zero and `shots` is at least 1, so a zero total means **every
+barrel's accuracy is zero**, and the split is exact — all 188 in-range trio candidates per member
+pass score zero while both non-trio candidates score positive. Two authored rows have exactly that
+shape, `MachineGun` (`0.10, 0.15, 0, 0.0`) and `Flak` (`0.50, 0.20, 0.00, 0.00`): positive against a
+plane or a small ship, zero against a big ship or a landfort. That fits an AA-armed party-0 force
+scoring its two nearby aircraft and nothing else, which would make the accuracy **correct** and the
+missing attack orders a consequence of the unprojected plane-attacker branch instead. It is a
+hypothesis with no counter behind it yet, which is why the flag stays off rather than the reading
+being written up as settled.
