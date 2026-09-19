@@ -4387,3 +4387,271 @@ model follows a 24-degree demand. Two of those three are substitutions in this h
 does establish is that binding this arm **alone** is not an improvement, because the aimglide it
 hands every aircraft to cannot release at all - `blocked[rearm=809 ...] passed=0` for `movieval`,
 `779` for `#1.1` - which is the re-arm timer defect recorded in the section above.
+
+## Packet `cc8_dive_race`: the run-in climb angle, the two attack distances, and who wins the race
+
+Packet `cc8_dive_race`, 2026-09-19, on `agent/cc8-dive-race` = `main` `f4eb153de` merged with the
+held-back `agent/cc8-dive-entry`. Three 4800-frame USN04 runs on the same tree, each differing from
+the one before it by one binding, so the two substitutions can be told apart:
+
+| window | log | binary |
+| --- | --- | --- |
+| A, baseline | `local\race_base.log` | the merge, unchanged |
+| B, climb angle | `local\race_climb.log` | A plus `pin.class_climb_angle`, plus three census fields |
+| C, attack distances | `local\race_dist.log` | B plus `approach+B4h`/`+B8h` from `TurnCircleRadius` |
+
+Window A reproduces `cc8_dive_entry`'s `local\entry_rearm.log` **to the digit** for the two aircraft
+that packet tabulated - `movieval` `calls=809 blocked[rearm=0 bearing=701 ceiling=108] passed=0`,
+`throw=871.6 m range=560.1 m`; `D3A Val #1.1` `calls=779 blocked[rearm=0 bearing=762 ceiling=17]`,
+`throw=868.4 m range=960.1 m` - so the merge changed nothing in this path and the three windows are
+comparable with that packet's.
+
+### What the race actually is, closed from the transition rule
+
+`009C84FB`-`009C8515` and the two flag derivations already in this document leave exactly one route
+into the wingover dive, and it is worth stating as a closed form because it is what every number
+below is measured against:
+
+* `+791h` (roll-in) = `|bearing error| > 1.6 rad` **OR** `B <= 666.7 m`
+* `+790h` (can-dive) = `B > approach+D4h` = 675.0 m
+* `turndown` needs **both**; `+791h` without `+790h` is the `aimglide`
+
+The height arm of `+791h` fires only at `B <= 666.7`, which is below the 675.0 the can-dive flag
+demands, so **the height arm can never produce a dive**. The only door into the turndown is the
+*bearing* arm firing while the aircraft is still above 675 m - that is, the bomber has to still be
+high when it passes over its target. Everything in this packet is about that one question.
+
+There is a **third** exit and this packet is the first to record it as a competitor: `009C85F5`
+sends the aircraft to `goaway` on `flyabove->+1Ah`, which is checked when `+19h` is still clear.
+`009C66E1` is a `JBE` whose fall-through at `009C66E3` sets `+1Ah = 1` and clears `+19h = 0`, so
+`+1Ah` fires when its quantity *exceeds* its tolerance. In window A that arm took **six of the
+fifteen aircraft** - `#3.1` and `#7.1`, all three ships each - at 695-732 m and 44-69 m of range,
+i.e. above the can-dive height and almost over the target. They did not lose the race to the height
+gate; they were taken out of it.
+
+### Window A, the baseline, per aircraft
+
+`alt`/`rng` at each hand-over; `cmd` is `plane_commanded_altitude`. Wing members are no longer
+co-located since tonight's formation fix, so the three ships of a squadron are listed separately
+rather than averaged.
+
+| aircraft | spawn | attackrun -> flyabove | flyabove -> ? |
+| --- | --- | --- | --- |
+| `movieval` | 700 m @ 11088 m | 729 m @ 1093 m, cmd 1000 | **aimglide** 665 m @ 849 m |
+| `movieval\|.-2` | 675 m @ 11176 m | 705 m @ 1100 m, cmd 1004 | **aimglide** 665 m @ 917 m |
+| `movieval\|.-3` | 725 m @ 11076 m | 755 m @ 1094 m, cmd 1001 | **aimglide** 667 m @ 794 m |
+| `D3A Val #1.1` | 1500 m @ 8203 m | 1126 m @ 1095 m, cmd 1002 | **aimglide** 666 m @ 14 m |
+| `#1.1\|.-2` | 1475 m @ 8274 m | 1127 m @ 1097 m, cmd 1002 | **aimglide** 662 m @ 6 m |
+| `#1.1\|.-3` | 1525 m @ 8274 m | 1126 m @ 1095 m, cmd 1001 | **aimglide** 666 m @ 13 m |
+| `D3A Val #3.1` | 1500 m @ 8198 m | 1143 m @ 1099 m, cmd 1003 | **goaway** 715 m @ 57 m |
+| `#3.1\|.-2` | 1475 m @ 8269 m | 1135 m @ 1094 m, cmd 1001 | **goaway** 695 m @ 69 m |
+| `#3.1\|.-3` | 1525 m @ 8269 m | 1143 m @ 1100 m, cmd 1004 | **goaway** 715 m @ 60 m |
+| `D3A Val #5.1` x3 | 1500/1475/1525 m @ ~8250 m | 1126/1127/1126 m @ ~1096 m | still in the flyabove at frame 4800 |
+| `D3A Val #7.1` | 1500 m @ 8199 m | 1154 m @ 1096 m, cmd 1002 | **goaway** 732 m @ 44 m |
+| `#7.1\|.-2` | 1475 m @ 8269 m | 1142 m @ 1097 m, cmd 1003 | **goaway** 704 m @ 61 m |
+| `#7.1\|.-3` | 1525 m @ 8269 m | 1153 m @ 1094 m, cmd 1001 | **goaway** 731 m @ 46 m |
+
+`summary mission dive-bomb task: aircraft=15 releases=0 bombs_spawned=0`. **Nobody reaches the
+turndown**, so the bearing arm wins for no aircraft at all.
+
+Two things in that table are worth naming before any binding is judged.
+
+**The run-in commands 1000 m, not 1450 m, and the 1000 is a stand-in.** `alt_base=1000.0 m` in the
+attackrun census is `cin.base_altitude = db_begin_alt_ac + db_aim_point_height_50`, and
+`db_begin_alt_ac` is `kPilotDiveBombBeginAltRange1 = 1000.0f`, this host's pin for `approach+ACh`,
+which the retraction above establishes is the per-unit `ctl+398h` `Pilot/DiveBomb/BeginAltRange/1`.
+`cmd` at the hand-over is 1000-1004, so the range term of `009FBA50` contributes 0-4 m there and the
+whole commanded altitude *is* the pin. The handoff's "commanded 1450 m" is the `009FB800` ceiling
+clamp, which nothing in this mission reaches. **So the ordered cruise altitude is not a background
+substitution in this race; it is the single number that sets where the fly-over begins.**
+
+**`approach+B4h` is an input to that altitude as well as to the attack geometry.**
+`cin.range_low = attack_distance_b4` and `cin.range_high = planar_distance_bc`, so `009FBA50`'s span
+is `range - B4h`. With `+B4h` and `+B8h` both pinned to 1100 the span is exactly zero at the moment
+the run-in hands over, which is why `cmd` equals the base to within 4 m. That coupling is why
+window C is not only a change of geometry.
+
+### Window B: the climb angle, and why the literal zero could not have been a transcription
+
+`src/game_hosts_units.cpp` passed a literal `0.0f` for `pin.class_climb_angle` at both dive-bomb
+call sites. Read from the listing, `009FB800` cannot take a climb angle from anyone:
+
+```
+009fb800  PUSH ECX / PUSH ESI                ; one local slot, then the frame
+009fb96b  RET 0x8                            ; TWO dword arguments, no more
+009fb819  FLD  float ptr [ESP + 0xc]         ; arg1, the desired altitude
+009fb85c  FLD  float ptr [ESP + 0x10]        ; arg2, the reference
+009fb882  MOV  ECX,dword ptr [ESI]           ; this->[0]
+009fb884  MOV  EDX,dword ptr [ECX + 0x4]     ;   ->+4, the unit
+009fb887  MOV  EAX,dword ptr [EDX + 0x538]   ;     ->+538h, the class descriptor
+009fb88d  FLD  float ptr [EAX + 0x1ec]       ; the CLIMB gain, fetched here
+009fb979  FLD  float ptr [EDX + 0x1f0]       ; the DIVE gain, same chain
+```
+
+Both angles are fetched inside the routine off the same three-hop chain; the two stack arguments are
+the altitude and the reference and nothing else. The one caller this stream had already read,
+`009FBB13`, agrees: `SUB ESP,8`, `FSTP [ESP+4]`, `FSTP [ESP]`, `MOV ECX,ESI`, and the wrapper's own
+`RET 0x10`. **No caller passes an angle, so no caller can pass zero**, and the dive-bomb run-in
+reads exactly the `desc+1ECh` every other path reads. The literal was a host defect, not a
+transcription of a dive-bomb-specific argument, and the same defect sat at the flyabove's own
+`009FB800` call added by `cc8_dive_entry`. Both are now `unit_.plane_climb_angle_1ec`.
+
+The field is not zero and is not argued from a source constant: the attackrun census prints
+`climb_1ec=0.1872 rad` (10.7 deg) for **both** classes, computed at class load by
+`max_sustainable_climb_angle_007d98f0` as this document records.
+
+**Measured, A -> B.** The binding moves exactly the aircraft the listing says it should and no
+others: the climb arm of `009FB800` runs only when the aircraft is *below* its command, and only
+`movieval` is.
+
+| aircraft | flyabove entry, A -> B | attackrun ticks | flyabove exit, A -> B |
+| --- | --- | --- | --- |
+| `movieval` | 729 -> **1127 m** | 1527 -> 1657 | aimglide 665 m @ 849 m -> aimglide 663 m @ **7 m** |
+| `movieval\|.-2` | 705 -> **1125 m** | 1539 -> 1677 | aimglide 665 m @ 917 m -> aimglide 665 m @ **10 m** |
+| `movieval\|.-3` | 755 -> **1126 m** | 1526 -> 1650 | aimglide 667 m @ 794 m -> aimglide 667 m @ **15 m** |
+| `D3A Val #1.1` x3 | unchanged | unchanged | unchanged |
+| `#3.1`, `#5.1`, `#7.1` x3 | unchanged | unchanged | unchanged |
+
+`movieval` gains 398 m of fly-over entry altitude, reaches its commanded 1000 m instead of drifting
+29 m above its spawn, and its exit moves from 849 m short of the target to **7 m** - it now flies the
+whole fly-over and crosses the height gate essentially over the aim point, which is where `#1.1` has
+always crossed it. Its flyabove lasts 34 -> 114 ticks and its glide shortens: `calls=809 -> 599`,
+`ceiling` blocks `108 -> 1`, glide range `560.1 -> 158.5 m`.
+
+It is still not a dive. `releases=0 bombs_spawned=0` across the mission, unchanged.
+
+**Two corrections that fall out of window B.** `db_attackrun_throttle_last`, printed as
+`throttle=` in the attackrun census, is assigned `r.descent_scale` - it is the descent scale, not a
+throttle, and its move from `1.000` to `0.748` is that scale responding to the new geometry, not a
+throttle change. And the `+1Ah` tolerance recorded in "The two flags, complete" as
+`InterpolateClamped(0, 20 deg, W, pi, x)` does not match the constants at the `009C666F` interpolate
+call, which are `(0.0, 0.5236, 200.0, 0.0, x)` - 0.5236 rad is 30 deg, not 20, and the sequence
+descends to zero rather than rising to pi. There are two `00419010` calls in that chain
+(`009C663E` and `009C666F`) and I did not filter EBP across the whole 949-instruction listing, so I
+am **not** withdrawing the formula, only flagging that its endpoints do not reproduce and that the
+goaway arm deserves a re-read by whoever owns it - it decided six of fifteen aircraft in window A.
+
+### Window C: `approach+B4h` and `+B8h` from `TurnCircleRadius`
+
+The two fields were both seeded from `kPilotDiveBombAttackDist = 1100.0`. The constructor listing,
+re-read for this packet rather than carried over, settles both the register and the pairs:
+
+```
+009c3f45  CALL 0042E740            ; the tuning singleton
+009c3f4a  MOV  EBP,EAX
+009c3f5d  MOV  EBP,dword ptr [ESI + 0x8]   ; the plane class descriptor
+009c3f68  FSTP float ptr [ESI + 0xb0]      ; +B0h = tuning+4D0h - tuning+4CCh
+009c3f6e  FLD  [00CE74F8] -> [ESP+4]       ; 0.8
+009c3f78  FLD  [00CE3D30] -> [ESP]         ; 0.6
+009c3f81  CALL 00BD2F10                    ; uniform(0.6, 0.8)
+009c3f86  FMUL float ptr [EBP + 0x268]
+009c3f97  FSTP float ptr [ESI + 0xb4]      ; +B4h
+009c3f8c  MOV  EBP,dword ptr [ESI + 0x8]   ; reloaded for the second draw
+009c3f9d  FLD  [00CF4848] -> [ESP+4]       ; 1.8
+009c3fa7  FLD  [00D06BB4] -> [ESP]         ; 1.6
+009c3fb0  CALL 00BD2F10                    ; uniform(1.6, 1.8)
+009c3fb5  FMUL float ptr [EBP + 0x268]
+009c3fe8  FST  float ptr [ESI + 0xb8]      ; +B8h, no pop
+009c3ff5  FSTP float ptr [ESI + 0xbc]      ; +BCh, the same draw
+```
+
+`009C3F5D` is the only write to EBP between the tuning load and `009C3F86`, and `009C3F8C` reloads
+the same pointer before `009C3FB5`, so both multiplies take `classDesc+268h` and neither takes
+`tuning+268h`; all four constants are `FLD float ptr` and read 0.6, 0.8, 1.6, 1.8 at that width.
+Pinned at the low end of each draw, as this host pins every draw. `009C8A5E`'s floor
+`max(itself, AttackDist * task+41Ch)` = 1100 m is then inert, which is how the 1100 came to stand in
+for both fields in the first place. The attackrun census prints the result rather than the source
+constant: `b4=780.0 b8=2080.0`, i.e. 0.6 and 1.6 times this installation's `TurnCircleRadius` 1300.
+
+**Measured, B -> C.** `+B8h` is where the fly-over starts and `+B4h` is `009FBA50`'s `range_low`, so
+both the geometry and the run-in's commanded altitude move:
+
+| | window B | window C |
+| --- | --- | --- |
+| fly-over starts at | 1091-1098 m | **2073-2080 m** |
+| run-in commands | 1000-1003 m | **1300-1302 m** |
+| fly-over entry altitude | 1125-1154 m | **1393-1403 m**, all fifteen |
+| fly-over exit | aimglide 663-667 m @ 7-15 m (`movieval`), 662-666 m @ 6-14 m (`#1.1`), **goaway** for `#3.1`/`#7.1` | **aimglide** 662-666 m @ 150-368 m, all fifteen |
+| `goaway` exits | 6 of 15 | **0 of 15** |
+| releases / bombs | 0 / 0 | 0 / 0 |
+
+Binding `+B4h` **removes the `+1Ah` goaway exit from this mission entirely**: the six aircraft of
+`#3.1` and `#7.1` that were taken out of the race at 695-732 m now fly the whole fly-over, and
+`#5.1`, which used to still be in the state at frame 4800, now completes it. That is the one
+unambiguous gain of the window, and it is a consequence of `+B4h` feeding the goaway tolerance, not
+of the attack geometry.
+
+Against that, the aircraft now has 2080 m of fly-over to descend through instead of 1095 m, and the
+extra 268 m of entry altitude does not pay for it.
+
+### The race, in the one arithmetic all three windows obey
+
+This host's response to the fly-over's commanded 210 m is the same in every window: the descent
+across the state, altitude lost over planar range covered, is
+
+```
+A  #1.1      (1126 - 666) / (1095 - 14)  = 0.426
+B  movieval  (1127 - 663) / (1098 - 7)   = 0.425
+C  movieval  (1394 - 665) / (2079 - 368) = 0.426
+```
+
+so to still be above the can-dive height `approach+D4h` = 675.0 m when it passes over its target, a
+bomber must enter the fly-over above `675 + 0.426 * L`, where `L` is the fly-over's own length. The
+whole packet reduces to that one comparison:
+
+| window | aircraft | `L` | needed entry | actual entry | short by |
+| --- | --- | --- | --- | --- | --- |
+| A | `movieval` | 1093 m | 1141 m | 729 m | **412 m** |
+| A | `D3A Val #1.1` | 1095 m | 1141 m | 1126 m | **15 m** |
+| B | `movieval` | 1098 m | 1143 m | 1127 m | **16 m** |
+| C | every aircraft | 2078 m | 1560 m | 1395 m | **165 m** |
+
+The climb angle closed `movieval`'s gap from 412 m to 16 m; the attack distances, which are the
+faithful values, reopened it to 165 m for everyone. **The bearing arm won for no aircraft in any
+window**, so this set does not restore the dive and the branch is not mergeable on its own measure.
+
+### What is still a substitution, and which one is now the whole question
+
+`approach+ACh`, the ordered cruise altitude `ctl+398h` = `Pilot/DiveBomb/BeginAltRange/1`, pinned at
+`kPilotDiveBombBeginAltRange1 = 1000.0f`. It is not one lever among several - it is the only one
+left that moves the entry altitude, because:
+
+* it *is* the run-in's commanded altitude (`cin.base_altitude = db_begin_alt_ac + db_aim_point_height_50`,
+  and window C measures `cmd = +ACh + 302` with the span term the bound `+B4h`/`+B8h` now produce,
+  and an entry altitude of `+ACh + 395` once the aircraft's tracking lag is included);
+* it sets the can-dive height itself, `approach+D4h = max(+A8h + 250, (+ACh + +A8h) * 0.5)`, which is
+  675.0 m only because `+ACh` is 1000 here.
+
+Putting the measured `+395` entry lag and the measured 0.426 descent into the can-dive height gives
+the condition for the wingover to exist at all, with `+B8h` at its bound 2080 m and `+A8h` pinned at
+350 m:
+
+```
++ACh + 395  >  max(600, (+ACh + 350) / 2) + 0.426 * 2080
+            ->  +ACh > 1332 m
+```
+
+**This is an extrapolation from three runs of this host, not a reading of the image**: it assumes the
+0.426 descent and the 395 m lag hold as `+ACh` moves, and both are this reconstruction's flight
+model rather than recovered behaviour. What it does establish is where the next reader should go.
+At the pinned 1000 the dive is arithmetically unreachable; somewhere above about 1330 it is
+comfortable; and `ctl+398h` is per-unit, which is exactly the freedom needed for the scripted
+`movieval` and a spawned `D3A Val` to behave differently. `cc8_dive_glide`'s retraction already
+pointed here - "the next reader should start at `ctl+398h`: who writes it" - and this packet turns
+that from a loose end into the load-bearing unknown.
+
+Two further substitutions are named for completeness and are **not** candidates on these numbers.
+`approach+A8h` is pinned at 350 by the integrator's decision rather than drawn from `uniform(350, 450)`;
+at 450 the can-dive height would be 700 m and the gap would widen, not close. And the aimglide's own
+steering remains blocked - `bearing` stops 590-610 of ~640 calls in window C, best error 0.0016 rad
+against a 0.5236 rad gate, `passed=0` - so even the aircraft that do reach the glide cannot release,
+which is the defect `cc8_dive_entry` recorded and this packet reproduces unchanged.
+
+### Status of the branch
+
+`agent/cc8-dive-race` carries `agent/cc8-dive-entry` plus this packet's two bindings. Both bindings
+are faithful and both are improvements in their own terms - the climb angle is proved from the
+listing to be a host defect that could not have been a transcription, and the attack distances
+remove six spurious `goaway` exits. Neither restores a release, and the set as a whole leaves the
+mission at `releases=0 bombs_spawned=0` against `main`'s six drops. **The branch remains not
+mergeable on the dive's own measure**, and the reason is now a single named number rather than three.

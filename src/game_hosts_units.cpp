@@ -813,6 +813,10 @@ struct GameUnitSlot {
     // having no producer because it is derived rather than authored.
     float plane_climb_angle_1e4{0.0f};
     float plane_climb_angle_1ec{0.0f};
+    // desc+268h TurnCircleRadius, the scale both of the dive-bomb approach's
+    // attack-distance draws multiply (009C3F86 and 009C3FB5, each dominated by
+    // its own `MOV EBP,[ESI+8]`). Packet cc8_dive_race.
+    float plane_turn_circle_radius{0.0f};
     // desc+194h SwimHeight, one of the two terms of the free-flight arm's water
     // line at 007CC4E8.
     float plane_swim_height{0.0f};
@@ -2923,6 +2927,10 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
             slot->plane_drag_pitch_ratio = lua_row.drag_pitch_ratio;
             slot->plane_air_brake_drag = lua_row.air_brake_drag;
             slot->plane_drop_angle = lua_row.drop_angle;
+            // Packet cc8_dive_race: desc+268h, read by the dive-bomb approach
+            // constructor. The loader already parsed it (plane_class_fields.cpp
+            // "TurnCircleRadius"); only the copy onto the slot was missing.
+            slot->plane_turn_circle_radius = lua_row.turn_circle_radius;
             slot->plane_swim_height = lua_row.swim_height;
             // 007C4BC5-007C4C14. The probe speed of the first call is
             // tuning+24Ch LevelFlight times desc+184h StallSpd, which is the
@@ -5288,8 +5296,35 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // max(itself, Pilot/DiveBomb/AttackDist * task+41Ch).
                             // The clamp alone is a floor, and that is what the
                             // host applies.
-                            unit_.db_in_range_b8 = GameUnitsHost::Impl::kPilotDiveBombAttackDist;
-                            unit_.db_attack_dist_b4 = GameUnitsHost::Impl::kPilotDiveBombAttackDist;
+                            // BOUND, packet cc8_dive_race. 009C3EA0 draws the
+                            // two separately off the class's turn circle, and
+                            // the constructor listing settles which register
+                            // carries it - `009C3F5D MOV EBP,[ESI+8]` is the
+                            // only write to EBP between the 0042E740 tuning
+                            // load and `009C3F86 FMUL [EBP+268h]`, and
+                            // `009C3F8C` reloads the same pointer for
+                            // `009C3FB5`:
+                            //   +B4h = uniform(0.6, 0.8) * desc+268h   009C3F97
+                            //   +B8h = +BCh = uniform(1.6, 1.8) * ...  009C3FE8/FF5
+                            // (00CE3D30 0.6, 00CE74F8 0.8, 00D06BB4 1.6,
+                            // 00CF4848 1.8, all `FLD float ptr`; the second
+                            // draw is ONE call stored twice, `FST` then `FSTP`).
+                            // Pinned at the low end of each draw, as this host
+                            // pins every draw. 009C8A5E's floor
+                            // max(itself, AttackDist * task+41Ch) = 1100 is then
+                            // inert, which is why it was mistaken for the value.
+                            {
+                                const float r = unit_.plane_turn_circle_radius;
+                                if (r > 0.0f) {
+                                    unit_.db_in_range_b8 = 1.6f * r;
+                                    unit_.db_attack_dist_b4 = 0.6f * r;
+                                } else {
+                                    unit_.db_in_range_b8 =
+                                        GameUnitsHost::Impl::kPilotDiveBombAttackDist;
+                                    unit_.db_attack_dist_b4 =
+                                        GameUnitsHost::Impl::kPilotDiveBombAttackDist;
+                                }
+                            }
                             // approach+D4h RECOVERED. The approach constructor
                             // 009C3EA0 - the routine that writes the vtable
                             // 00D20C48 at 009C3EE2 and draws +A8h at 009C3F2E
@@ -5650,7 +5685,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             pin.climb_dist = g.pilot_general_climb_dist;
                             pin.drop_dist = g.pilot_general_drop_dist;
                         }
-                        pin.class_climb_angle = 0.0f;
+                        // Packet cc8_dive_race. Was a literal 0.0f, which is a
+                        // host defect and cannot be a transcription: 009FB800
+                        // takes only TWO stack arguments (009FB96B `RET 0x8`,
+                        // the clamped altitude at [ESP+0Ch] and the reference at
+                        // [ESP+10h]) and fetches both angles itself off the same
+                        // pointer chain, `MOV ECX,[ESI]` / `MOV EDX,[ECX+4]` /
+                        // `MOV EAX,[EDX+538h]`:
+                        //   009FB88D  FLD float ptr [EAX + 0x1ec]   ; climb gain
+                        //   009FB979  FLD float ptr [EDX + 0x1f0]   ; DropAngle
+                        // No caller passes either, so the dive-bomb run-in reads
+                        // exactly the desc+1ECh every other path reads. With the
+                        // gain at zero 009FB918's `min(gain * t, limit)` is zero
+                        // and the run-in could never climb to its command.
+                        pin.class_climb_angle = unit_.plane_climb_angle_1ec;
                         pin.class_drop_angle = unit_.plane_drop_angle;
                         unit_.plane_commanded_altitude = c.clamped_altitude;
                         unit_.plane_commanded_pitch = bsp::pitch_command_009fb800(pin);
@@ -5793,7 +5841,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     pin.climb_dist = g.pilot_general_climb_dist;
                                     pin.drop_dist = g.pilot_general_drop_dist;
                                 }
-                                pin.class_climb_angle = 0.0f;
+                                // Packet cc8_dive_race, the same one-field defect
+                                // as the run-in above; 009FB800 reads desc+1ECh
+                                // itself at 009FB88D. Expected inert in USN04,
+                                // because the flyabove's own target is the 210 m
+                                // release clamp and every dive bomber here is
+                                // above it, so 009FB87C takes the dive arm.
+                                pin.class_climb_angle = unit_.plane_climb_angle_1ec;
                                 pin.class_drop_angle = unit_.plane_drop_angle;
                                 unit_.plane_commanded_altitude = a.target_altitude;
                                 unit_.plane_commanded_pitch =
@@ -8917,12 +8971,18 @@ void GameUnitsHost::report() {
                     }
                     host.log.notef("  divebomb %-12s attackrun 009C4220: ticks=%d "
                         "rerolls=%d latch_closed_tick=%d heading=%.4f rad "
-                        "throttle=%.3f alt_base=%.1f m | range per second: %s",
+                        "throttle=%.3f alt_base=%.1f m | climb_1ec=%.4f rad "
+                        "b4=%.1f b8=%.1f | range per second: %s",
                         slot->row.name.c_str(), slot->db_attackrun_ticks,
                         slot->db_attackrun_rerolls, slot->db_latch_closed_tick,
                         static_cast<double>(slot->db_attackrun_heading_last),
                         static_cast<double>(slot->db_attackrun_throttle_last),
-                        static_cast<double>(slot->db_attackrun_alt_last), ranges);
+                        static_cast<double>(slot->db_attackrun_alt_last),
+                        // Packet cc8_dive_race: the two substitutions under test,
+                        // printed so neither is argued from a source constant.
+                        static_cast<double>(slot->plane_climb_angle_1ec),
+                        static_cast<double>(slot->db_attack_dist_b4),
+                        static_cast<double>(slot->db_in_range_b8), ranges);
                 }
                 // Packet cc8_dive_glide: the aimglide release chain
                 // 009C5689-009C5755, per aircraft. blocked[] counts the calls
