@@ -665,3 +665,69 @@ scoring its two nearby aircraft and nothing else, which would make the accuracy 
 missing attack orders a consequence of the unprojected plane-attacker branch instead. It is a
 hypothesis with no counter behind it yet, which is why the flag stays off rather than the reading
 being written up as settled.
+
+## The zero-weight question (packet `cc8_ai_target_weight_zero`, 2026-09-18)
+
+### The gate on `00A0861F`, read from the bytes
+
+The branch is gated on a byte, and the byte is the **attacker**'s class, which settles that the
+label "attacker-is-type-`0Fh`" is right and that the target tests inside it are subordinate to it:
+
+```
+00a085ad  push 0Fh            ; PlaneBase
+00a085af  mov ecx,ebp         ; EBP, the attacker vehicle class, EDX at entry
+00a085bd  call edx            ; vtable[+18h]
+00a085bf  mov [esp+37h],al
+...
+00a0860a  cmp byte ptr [esp+37h],bl
+00a08619  je  00a09228        ; NOT a plane -> the subsystem and barrel walk
+00a0861f  ...                 ; a plane -> the unprojected region
+```
+
+So `00A09228` onward, the subsystem walk at `00A09379` and the accuracy at `00A094E6`, is the
+**non-plane** path, and it is the one this process projects. A plane attacker never reaches it in
+the native. Inside the region the first two queries are on `EDI`, the target
+(`00A08624 PUSH 0Fh`, `00A08633 PUSH 8`), which is why a quick reading can mistake the whole region
+for a target branch; `EDI` is the first stack argument, the target, and `[EDI+4Ch]` at `00A085A8` is
+the capture state the projected path already reads.
+
+`coverage: partial` and deliberately so. The region is about 3 KB and is a **different damage
+model**, not a variation on the barrel walk: it reads target-class fields `+28h`, `+30h`, `+34h`,
+`+3Ch`, `+58h`, `+5Ch`, `+64h`, `+68h`, `+70h`, `+74h`, `+7Ch` and `+80h` in ratio pairs, asks class
+queries `25h`, `6`, `10h` and `1Ch`, and calls `00443490`, `00731040`, `009552E0` and `009FF3A0`.
+Projecting it is a packet of its own and this one did not attempt it.
+
+One cross-link worth having: `00A08870`, `00A0888B` and `00A088A0` call **`006E3260`, `007B80A0`
+and `007B80C0`** — the same three target-state predicates that `009FE270`'s rocket arm `009FE4F1`
+branches on. Reading those three once resolves the rocket split and part of this branch together,
+which makes them the highest-value next read in this area.
+
+**Its shape, which matters for what this packet published.** The region's tail is not a separate
+accuracy model: it calls **`009FE270` itself**, at `00A08E60`, `00A08F42`, `00A0909A` and
+`00A091F1`, with `00A08E9C` fetching the same `00A371A0` tuning record. Each of those four sites
+sits in a repeating group with `009FE200`, the distance falloff, `00A001D0`, a per-slot query, and
+`00415550`, a max — the same accuracy-times-falloff-then-max shape the barrel walk has, iterated
+over a plane's ordnance slots through `00A001D0` and `00A07A60` instead of over subsystem barrels.
+Class queries seen across the region: `0Fh` and `8` on the target at the head, then `25h`, `6`,
+`10h`, `1Ch`, `17h`, `20h` and `14h`.
+
+So **the BulletTypeAccuracy table this packet loaded and the dispatch it implemented serve both
+paths**. Whatever the census says about IJN01, the tuning load and
+`ai_bullet_type_accuracy_offset_009fe270` are not wasted on a plane-attacker projection: that
+projection would call straight into them.
+
+### The census, and why it is an observation pass
+
+`inputs_complete` stays `false`, so the model still does not run and the stand-in still scores. The
+census therefore could not live inside `barrel_accuracy`, which is only reached when the model runs
+— measuring it there would have required switching on the regression it is meant to diagnose. It is
+instead a pure observation pass in `close_target_weight`: for every candidate it reads what
+`009FE270` **would** answer for each of the attacker's barrels, and the time factor and barrel
+contribution `00A08460` would build from it, and stores nothing back. Behaviour is unchanged by
+construction.
+
+Two lines come out of it. `summary mission ai target weight path` splits every query by whether the
+attacker is a plane, which says whether IJN01's close-attack members take the projected barrel walk
+at all or the unprojected region. `summary mission ai target weight accuracy` gives one row per
+(bullet sub-type, target group) pair with the looked-up accuracy, the zero count and the summed
+contribution, which says whether the zeros are authored or a coverage gap.
