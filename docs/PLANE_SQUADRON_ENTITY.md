@@ -323,3 +323,26 @@ lookup through the flight leader.
   than one, which is the only part of the squadron model this packet left at one wing.
 * `007ED260`, called by both `007ED610` and `007F3970`.
 * `007F3500 BSP_PlaneSquadron_CloneFrom`'s caller, still unlocated.
+
+## The first of those three is now a packet (`cc8_plane_squadron_members`)
+
+The first bullet above — "spawning `WingCount` planes per scene entity rather than one, which is the
+only part of the squadron model this packet left at one wing" — turned out to be the root cause of
+the torpedo stream's stall, reached from the opposite direction.
+
+`007EEF30 BSP_PilotControl_IssueReleaseOrders` walks this document's `+3D0h` member array under its
+`+3CCh` count to issue release orders, and `007EE7F0 BSP_PilotControl_RefreshArmedFraction` computes
+an armed fraction over the same array from each `member+5Ch`, storing it at `+374h`. Both collapse
+when the array is empty: `007EE7F0` writes `+374h = 0` at `007EE891`, and `007EEF40`'s count test
+`CMP [ESI+3CCh],EBX / JLE` fails on its own. This host has one plane per `PlaneSquadronGen` row and
+one plane per air-ops launch, so `+3CCh` is always 0, and USN01's five kind Eh torpedo tasks never
+issue an order.
+
+`+374h` is named by its writer. `+390h`, the other operand of `007EEF40`'s float test, has **no
+located producer**: zero LEA references image-wide and none of the 39 stores at that offset is a
+float store on this class (the `BSP_GameTuning_LoadFromPlaneGlobals` pair is the tuning singleton at
+the same offsets, a collision). It is unread rather than absent.
+
+The full brief, including the census multiplier that makes 1566 authored squadrons about 4,800
+aircraft and the list of places the one-plane stand-in lives in the host, is the handoff section at
+the end of `docs/PLANE_SQUADRON.md`.

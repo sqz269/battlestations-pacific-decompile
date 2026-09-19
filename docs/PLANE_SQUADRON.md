@@ -336,3 +336,121 @@ One row per native call site this packet models. `this`/args are read from the l
 | `007F3500` | `BSP_PlaneSquadron_CloneFrom` | analyzed |
 | `007F1D90` | `BSP_PlaneSquadron_SelectAvoidZoneLayers` | analyzed |
 | `007F2BD0` | `BSP_PlaneSquadron_InitTimerBlock` | analyzed (call site only) |
+
+## Handoff: why no squadron in this host has members (packet `cc8_plane_squadron_members`)
+
+Written by the torpedo run-in stream as the brief for a fresh worker taking the host half. Nothing
+below changes this document's existing readings; it adds the chain that arrives here from the
+torpedo side and the state of the host.
+
+### 1. The gate chain, as one unit
+
+The torpedo stream reached this class from the other end: USN01 builds five kind Eh torpedo tasks
+(`009D4E30`) on `Mav1..Mav5` and they never close — `aim_ticks=0`, `min == last` on every approach,
+`007CE9FD` waiting 7200 frames with `issues=0`. The reason is one routine.
+
+`007EEF30 BSP_PilotControl_IssueReleaseOrders` is a single unit of logic with the block the
+disassembly labels `007EEF40`, which is **not a function**: it is the fall-through body entered
+immediately after `007EEF3B CALL 007EE7F0`.
+
+```
+007eef3b: CALL 0x007ee7f0            ; RefreshArmedFraction, which WRITES ctl+374h
+007eef40: FLD  float ptr [ESI + 0x374]
+007eef46: FLD  float ptr [ESI + 0x390]
+007eef4c: FCOMIP ST0,ST1
+007eef50: JBE  0x007eef96            ; test 1: needs ctl+390h > ctl+374h, strictly
+007eef54: CMP  dword ptr [ESI + 0x3cc],EBX
+007eef5a: JLE  0x007eef96            ; test 2: needs the member count > 0
+007eef5c: LEA  EDI,[ESI + 0x3d0]     ; the member array of this document
+007eef62: CMP  byte ptr [ESI + 0x378],0x0
+007eef7f: CALL 0x007bcbe0  (0x3E7)   ; per member, when 007B8AD0 says so
+```
+
+`007EE7F0 BSP_PilotControl_RefreshArmedFraction` walks the same `+3D0h` array under the same `+3CCh`
+count, counts members whose `[member+5Ch]` is set, calls `007C1F60` on each, and accumulates two
+floats; **when `+3CCh <= 0` it jumps to `007EE891` and stores zero into `+374h`.** So `+374h` is the
+armed fraction, named by its writer. `007F3BA0 BSP_PlaneSquadron_TickAdvance` calls the same
+refresh, which is what identifies the object as this class.
+
+**`+390h`'s producer is unlocated, and that is a negative I am not claiming as absent.** A store
+census of the offset over `.text` returns 39 sites and an address-of (LEA) census returns **zero**;
+none of the 39 is a float store on this class. The two that look tempting —
+`BSP_GameTuning_LoadFromPlaneGlobals` writing `Pilot/Follow/LargePlaneTurnMul` at tuning+390h and
+`Pilot/MoveTo/SwitchNextPointTime` at tuning+374h — are the **tuning singleton**, a different object
+sharing the offsets. A pure collision, and the same trap that made a census on `block+C0h` vacuous in
+`docs/AIROPS_LAUNCH_TICK.md`. Neither this document nor `PLANE_SQUADRON_ENTITY.md` names `+374h` or
+`+390h`, so both are unread fields of this class; `+390h` did **not** fall out of reading the spawn
+tail, and finding it is left open rather than guessed.
+
+It does not block the diagnosis, because **test 2 fails on its own**.
+
+### 2. The root cause, in one paragraph
+
+This host makes **one plane per `PlaneSquadronGen` scene row** and **one plane per air-ops launch**,
+with no squadron object in either case, so `+3CCh` is always 0 and `+3D0h[]` always empty. Every
+symptom follows: `007EE7F0` writes `+374h = 0`, `007EEF40`'s float test cannot pass against an
+unset `+390h`, its count test fails regardless, no member is ever offered an arm, and the torpedo
+task's issue stage waits for ever. The image's aircraft are squadrons; this host's are lone planes.
+
+### 3. What it costs to fix: the census multiplier
+
+From the authored data in this document's own table:
+
+| `WingCount` | authored entities |
+| --- | --- |
+| 1 | 63 |
+| 2 | 62 |
+| **3** | **872** |
+| 4 | 39 |
+| **5** | **530** |
+
+1566 authored squadrons, modal wing **3**, and an entity that omits `WingCount` gets the code default
+of 3 rather than the descriptor's own default of 1. So this lands at roughly **4,800 aircraft where
+the host has 1,566 units today**, and every aircraft census in every mission moves by about 3x.
+That is the reason for the before columns in section 5.
+
+### 4. Where the stand-in lives today
+
+| place | what it does now | what it must become |
+| --- | --- | --- |
+| `src/game_hosts_scene_contents.cpp`, the class-creator block | a `PlaneSquadronGen` row becomes one unit through `create_plane_squadron_004f0ad0`, which allocates an instance and places it | a squadron entity that then runs the spawn tail, creating `WingCount` member planes |
+| `GameUnitsHost::create_units` | one `GameUnitSlot` per created record | unchanged for the squadron, plus one slot per member plane |
+| `GameScriptOrdersHost::create_air_ops_squadron_006c5050` | **one plane of the slot's class stands in for the squadron**, labelled in `docs/AIROPS_LAUNCH_TICK.md` section 7 | the same squadron entity, so the launch route and the scene route converge on one spawn tail. `LaunchSquadron(carrier, class, 3)` already passes the modal wing and `006C5050`'s bag already carries `WingCount` |
+| `GameMissionLuaHost::attach_created_entity_00928a00` | gives the single unit a `thisTable` slot | the **squadron** keeps the script-facing slot; members need none, since the script never names them |
+| the `squadron` key in `push_air_ops_slot_entry` | pushes the integer entity id, which the script converts with `thisTable[tostring(...)]` | unchanged. `GenerateObject` returns the table, `squadron` the integer; both conventions are recorded in `docs/USN04_STRIKE_CLASS.md` section 5 and must not be swapped again |
+| `run_pilot_set_target` and the class stored beside the `0099A170` install | orders the one unit | orders the **squadron**, which `007EEF30` then walks to reach members |
+| `air_ops_squadron_plane_count` | returns the recorded wing while the stand-in unit is alive | the real `+3CCh`, which the air-ops tick `006C0510`, `006BD3F0` and `006BF230` all already read as the squadron's live plane count |
+
+The last row is worth stating twice: `+3CCh` is already load-bearing in the air-operations
+reconstruction, and this packet makes it real rather than substituted.
+
+### 5. Validation plan
+
+1. **Same-binary before columns first**, on USN01 and USN04, because every aircraft census moves.
+   A short run is enough for the unit census (`--frames 400 --mission-frames 300`); the long runs are
+   for the order path.
+2. Then the first run in which `007EEF30` issues release orders. Read, in order: the per-Mav approach
+   rows (`ticks`, `replans`, `aim_ticks`, and whether `min < last` at last), the issue stage
+   `007CE9FD` (`waiting`, `issues`, `first_issue_at_arm_tick`), the issue gate `007EEF40`
+   (`ctl+390h`, `ctl+374h`, `open`), then the torpedo run-in itself: move-to, the glide census, the
+   commanded-speed pair against the per-class stall speed, throttle samples, release altitude and
+   speed, and drops / water-entry breakups / swims.
+3. USN01's five Mavs start at `range_first_mean = 4174.3 m` against an engage distance of 2200.0 x 2.2
+   = 4840 m, so they begin **inside** the threshold; USN04 remains the mission whose launched strike
+   should start outside it. Both numbers move when the wing is real.
+
+### 6. Open items this stream carries
+
+* **`SpawnNew 0094C480`** is parked at its request-record half. The drain does not exist: `004C6BA0`
+  has exactly three callers, all Lua bindings, and the manager's scan `009469F0` sums a per-party
+  cost for `BSP_AiParty_AvailableResources`, so it is a reinforcement request against a party's
+  resource budget that the AI planner spends. No unit results until `00A38DA0` and the two planner
+  thinks are reconstructed.
+* **`GenerateObject 00944FD0` is implemented and not validated by a run.** Neither USN01 nor USN04
+  reaches a call in 7200 frames (`MissionPhase=1` and phase 2.5 respectively). The `Hidden` hold-back
+  that feeds it *is* validated, on both missions, against a predicted count.
+* **The USN01 run exited 1** after completing its full frame budget with a clean shutdown and no
+  cause in the log. Next USN01 run should record `EXITCODE`, the last twenty lines, and whether the
+  parent or the child returned it.
+* **`DummyTargetVehicle`** is carried on this stream's list by the integrator; this packet did not
+  investigate it and has nothing to add, so its provenance should be taken from whoever raised it.
