@@ -541,6 +541,24 @@ public:
     // Native instance+C4h class id, or -1 for an unresolved identity/invalid index.
     int unit_class_id(std::size_t index) const noexcept;
 
+    // ---- packet cc8_ship_follow: the unit group at entity+284h -------------
+    // The 508h-byte object 0070DB20 creates and 0070EF30 joins, whose leader is
+    // group+14h, member records start at group+18h, count at group+4F8h and
+    // pattern index at group+500h. docs/SHIP_UNIT_GROUP_FOLLOW.md,
+    // docs/SHIP_AI_FORMATION.md. A unit not in a group answers -1.
+    std::int32_t unit_formation_group_0284(std::size_t index) const noexcept;
+    // group+14h. Answers the unit count of the index, or SIZE_MAX when there is
+    // no such group. 007788D0 BSP_Unit_FormationLeader is this on a unit.
+    std::size_t formation_leader_0014(std::int32_t group) const noexcept;
+    // 007788B0 BSP_Unit_IsFormationFollower: in a group and not its leader.
+    bool unit_is_formation_follower_007788b0(std::size_t index) const noexcept;
+    // group+4F8h.
+    std::int32_t formation_member_count(std::int32_t group) const noexcept;
+    // 0077F940 BSP_UnitGroup_JoinOrMerge reduced to the arm a runtime join takes:
+    // create the group around the leader when it has none (0070DB20), then append
+    // the follower (0070EF30). Answers true when the membership changed.
+    bool formation_join_0077f940(std::size_t follower, std::size_t leader);
+
     // ---- milestone 2k: what the two HUD world screens read off a unit ------
     // 0043f080 BSP_UnitInstance_IsAliveAndVisible, the four-byte filter both the
     // minimap walk (005c1628..005c164a) and the marker gate (006431a8) run.

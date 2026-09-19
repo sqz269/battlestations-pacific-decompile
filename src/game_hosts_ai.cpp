@@ -1524,11 +1524,13 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         facts.target_kind_08 = units.unit_is_kind_of(leader_index, 0x08);
         facts.follower_party_0054 = units.unit_side_0054(follower_index);
         facts.target_party_0054 = units.unit_side_0054(leader_index);
-        // 00779820: the same entity, or already sharing a unit group. This
-        // process has no unit group yet, so only the identity half can be
-        // answered; the group half arrives with the group object and will
-        // start refusing the re-requests a joined follower makes every tick.
-        facts.same_entity_or_group_00779820 = (follower == leader);
+        // 00779820 whole: the same entity, or already sharing a unit group.
+        const std::int32_t follower_group =
+            units.unit_formation_group_0284(follower_index);
+        facts.same_entity_or_group_00779820 =
+            (follower == leader)
+            || (follower_group >= 0
+                && follower_group == units.unit_formation_group_0284(leader_index));
         // 00779DB4's OwnerPlayer arm: +188h has no producer in this process
         // (game_hosts_scene_contents.cpp:1364), so it is skipped rather than
         // guessed. It can only ever admit a follow between two differently
@@ -1537,6 +1539,14 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         const bool available = bsp::entity_may_follow_target_00779d50(facts, true);
         if (available) {
             ++formation_requests_available;
+            // 0077C964 routes a type-76h message whose only payload is the
+            // leader's 16-bit id, and 0077FE80's four-instruction arm resolves it
+            // and calls 0077F940. In this process the route is local, so the join
+            // runs here rather than through the session; the wire hop is the
+            // part that is not modelled, not the merge.
+            if (units.formation_join_0077f940(follower_index, leader_index)) {
+                ++formation_joins_made;
+            }
         } else {
             ++formation_requests_refused;
         }
@@ -1651,6 +1661,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     unsigned long long formation_requests_seen{0};
     unsigned long long formation_requests_available{0};
     unsigned long long formation_requests_refused{0};
+    unsigned long long formation_joins_made{0};
 
     bsp::AiGroupCandidateFlags entity_flags(void* entity) override {
         return unit_flags(unit_index_of(entity));
@@ -2469,10 +2480,10 @@ void GameAiCoordinatorHost::report() {
         s.ship_members_not_ordered);
     // Packet cc8_ship_follow: 0077C8D0's first question, 008162B0 -> 00779D50.
     host.log.notef("summary mission ai follow requests=%llu available=%llu refused=%llu "
-        "(00779D50: a live ship may follow a live ship of its own side; the +188h "
-        "OwnerPlayer arm is skipped, this process has no producer for it)",
+        "joins=%llu (00779D50: a live ship may follow a live ship of its own side; the "
+        "+188h OwnerPlayer arm is skipped, this process has no producer for it)",
         host.formation_requests_seen, host.formation_requests_available,
-        host.formation_requests_refused);
+        host.formation_requests_refused, host.formation_joins_made);
     host.log.notef("summary mission ai tuning mode=%d (%s) merge_dist=%.1f "
         "near=%.1f far=%.1f sticky=%.2f",
         s.tuning_mode, bsp::ai_tuning_mode_table_name(

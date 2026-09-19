@@ -56,6 +56,7 @@
 #include "bsp/ship_ai_throttle_ring.hpp"
 #include "bsp/ship_ai_nav_block_ctor.hpp"
 #include "bsp/ship_ai_wake_trail.hpp"
+#include "bsp/ship_ai_path_corridor.hpp"  // ShipAiUnitGroupMember, the 34h record
 #include "bsp/ship_class_fields.hpp"
 #include "bsp/ship_hull_body.hpp"
 #include "bsp/ship_motion.hpp"
@@ -875,6 +876,9 @@ struct GameUnitSlot {
     // read by 0070D290 for every formation follower's station. Packet
     // cc8_ship_follow, docs/SHIP_UNIT_GROUP_FOLLOW.md sections 5b and 5c.
     bsp::ShipAiWakeTrail wake{};
+    // unit+284h, the unit group pointer 0070EF38 writes before any test, as an
+    // index into Impl::formation_groups. -1 is a null pointer.
+    std::int32_t formation_group{-1};
     bsp::UnitHullExtents hull_extents{};
     float class_width_00a4{};
     bsp::ShipClassFields fields{};
@@ -934,6 +938,21 @@ struct GameUnitsHost::Impl {
     // message hops between the authored `Command` token and its command slot.
     GameCommandsHost commands;
     std::vector<std::unique_ptr<GameUnitSlot>> slots;
+    // Packet cc8_ship_follow: the 508h-byte unit groups 0070DB20 allocates. A
+    // unit points at one through GameUnitSlot::formation_group (unit+284h).
+    struct FormationGroup {
+        std::size_t leader{0};                               // group+14h
+        std::vector<bsp::ShipAiUnitGroupMember> members;     // group+18h, 34h each
+        std::int32_t column{0};                              // group+500h, the
+                                                             // pattern index the
+                                                             // constructor leaves 0
+        std::int32_t type_04fc{6};                           // group+4FCh, 6 for a
+                                                             // ship leader (0070D82F)
+    };
+    std::vector<FormationGroup> formation_groups;
+    unsigned long long formation_joins{0};
+    unsigned long long formation_creates{0};
+    unsigned long long formation_rejoins{0};
     // A flat copy of the rows, rebuilt on demand so units() can hand the caller
     // one contiguous table without exposing the slots.
     mutable std::vector<GameUnitRow> rows;
@@ -8241,6 +8260,92 @@ bool GameUnitsHost::unit_flag_005d(std::size_t index) const {
     return host.slots[index]->state->simulate != 0;
 }
 
+// ---- packet cc8_ship_follow: the unit group at entity+284h -----------------
+
+std::int32_t GameUnitsHost::unit_formation_group_0284(std::size_t index) const noexcept {
+    const Impl& host = *impl_;
+    if (index >= host.slots.size()) return -1;
+    return host.slots[index]->formation_group;
+}
+
+std::size_t GameUnitsHost::formation_leader_0014(std::int32_t group) const noexcept {
+    const Impl& host = *impl_;
+    if (group < 0 || static_cast<std::size_t>(group) >= host.formation_groups.size()) {
+        return static_cast<std::size_t>(-1);
+    }
+    return host.formation_groups[static_cast<std::size_t>(group)].leader;
+}
+
+bool GameUnitsHost::unit_is_formation_follower_007788b0(std::size_t index) const noexcept {
+    // 007788B0 whole: g = [unit+284h]; g && [g+14h] != unit.
+    const std::int32_t group = unit_formation_group_0284(index);
+    if (group < 0) return false;
+    return formation_leader_0014(group) != index;
+}
+
+std::int32_t GameUnitsHost::formation_member_count(std::int32_t group) const noexcept {
+    const Impl& host = *impl_;
+    if (group < 0 || static_cast<std::size_t>(group) >= host.formation_groups.size()) {
+        return 0;
+    }
+    return static_cast<std::int32_t>(
+        host.formation_groups[static_cast<std::size_t>(group)].members.size());
+}
+
+bool GameUnitsHost::formation_join_0077f940(std::size_t follower, std::size_t leader) {
+    Impl& host = *impl_;
+    if (follower >= host.slots.size() || leader >= host.slots.size()) return false;
+    if (follower == leader) return false;                 // 00779824, the identity arm
+
+    // 0077F940 creates a group around `other` when it has none (0070DB20), and
+    // otherwise redirects to `other`'s leader. Only that arm is implemented here;
+    // the merge of two existing groups, the detach of the ordered unit's own
+    // followers and the FormationMaxCount cap at settings+420h (24, cited from
+    // docs/SHIP_AI_FORMATION.md rather than re-read) are NOT, because a runtime
+    // join in this process only ever brings one ungrouped ship to a leader.
+    std::int32_t group = host.slots[leader]->formation_group;
+    if (group < 0) {
+        // 0070DB20: the leader becomes member 0 with an all-zero relative
+        // position, the count is 1, and shape stays 0 so column 0 is live.
+        group = static_cast<std::int32_t>(host.formation_groups.size());
+        host.formation_groups.emplace_back();
+        Impl::FormationGroup& created = host.formation_groups.back();
+        created.leader = leader;
+        bsp::ShipAiUnitGroupMember record;
+        record.entity = static_cast<std::uint32_t>(leader + 1u);
+        created.members.push_back(record);
+        host.slots[leader]->formation_group = group;       // leader+284h = group
+        ++host.formation_creates;
+    } else {
+        // "otherwise redirects to other's leader": the group the leader already
+        // belongs to is the one joined, whoever it is led by.
+        group = host.slots[leader]->formation_group;
+    }
+
+    Impl::FormationGroup& target = host.formation_groups[static_cast<std::size_t>(group)];
+    const std::uint32_t handle = static_cast<std::uint32_t>(follower + 1u);
+    for (const bsp::ShipAiUnitGroupMember& member : target.members) {
+        if (member.entity == handle) {
+            // 0070EF30 with an entity that is already a member: only the observer
+            // pair is added, no record is appended and the count does not move.
+            ++host.formation_rejoins;
+            return false;
+        }
+    }
+    // 0070EF38 writes entity+284h before any test.
+    host.slots[follower]->formation_group = group;
+    bsp::ShipAiUnitGroupMember record;
+    record.entity = handle;
+    record.field_30 = 999u;                                // 0070EF85's record+30h
+    target.members.push_back(record);
+    ++host.formation_joins;
+    // 0070ED30 fills the four columns at the join index and 0070DA00 re-reduces
+    // the speed ceiling. NEITHER is run here: the columns need 00811180's
+    // across sign, which is not yet read, so every record's columns stay zero
+    // and no station may be computed from them.
+    return true;
+}
+
 bool GameUnitsHost::unit_flag_0061(std::size_t index) const {
     // docs/UNIT_AUTOPILOT_PAIR.md scanned .text for a writer of unit+61h at the
     // direct displacement and at the seven shifted unit bases and found none, so
@@ -8829,6 +8934,26 @@ void GameUnitsHost::report() {
             "longest_trail=%.2f m (00810190, 4 m gate, 50 m legs, 40 slots)",
             static_cast<unsigned long long>(with_trail), appends, advances, merges,
             static_cast<double>(longest));
+    }
+    // Packet cc8_ship_follow: the unit groups at entity+284h. Columns are NOT
+    // produced yet (0070ED30 needs 00811180's across sign), so membership is all
+    // this reports and no station may be computed from these records.
+    host.log.notef("summary unit formation groups=%llu joins=%llu creates=%llu rejoins=%llu "
+        "(0070DB20 create, 0070EF30 join; columns unfilled)",
+        static_cast<unsigned long long>(host.formation_groups.size()),
+        host.formation_joins, host.formation_creates, host.formation_rejoins);
+    for (std::size_t g = 0; g < host.formation_groups.size(); ++g) {
+        const Impl::FormationGroup& group = host.formation_groups[g];
+        std::string members;
+        for (const bsp::ShipAiUnitGroupMember& member : group.members) {
+            const std::size_t index = static_cast<std::size_t>(member.entity) - 1u;
+            if (!members.empty()) members += " ";
+            members += (index < host.slots.size()) ? host.slots[index]->row.name : "?";
+        }
+        host.log.notef("  formation %zu leader=%s count=%zu column=%d: %s", g,
+            (group.leader < host.slots.size()) ? host.slots[group.leader]->row.name.c_str()
+                                               : "?",
+            group.members.size(), group.column, members.c_str());
     }
     // Milestone 2k added the ordered pair each unit is running under, which is
     // unit+980h / unit+984h as the ring published them. Milestone 2l adds the

@@ -465,10 +465,48 @@ And the middle is now read in outline, which is what a reconstruction needs:
   `0081172A`, `0081172D` and `00811730` the stack has moved 16 bytes, so the tail's
   `MOVSS XMM0,[ESP+38h]` at `008117FD` reads that same accumulator.
 
-**What is still unread** is the sign convention and the exact interpolation between the nearest
-sample and its neighbour that the cross product at `00811768` is taken over. A reconstruction can
-be written against the contract without it, but the sign of `record+10h` cannot be claimed until it
-is, and column 0's across offset is that sign.
+**The geometry after the search is now read too, and it is a point-to-LINE distance, not a
+point-to-sample one.** The stack frame is pinned first, because four `PUSH`es are interleaved with
+the prologue's stores: `SUB ESP,34h` then `PUSH EBX/ESI/EDI/EBP` leaves the body running at
+`E0-44h`, so **`point.x`, `point.y` and `point.z` live at `[ESP+18h]`, `[ESP+1Ch]` and `[ESP+20h]`**
+through the whole routine, and the prologue also keeps them in `ST2`, `ST1`, `ST0`.
+
+```
+008115C2..008115DA  [ESP+38h..40h] = sample[a] - sample[b]        ; the segment
+008115DE            0042B260 normalize_in_place on it             ; u, a unit vector
+008115F6..00811626  [ESP+2Ch..34h] = sample[i] - point            ; w
+0081162A..00811658  [ESP+48h] = dot(w, u)                         ; the projection
+00811660            ... stored over [ESP+20h], point.z's own slot
+00811768..008117C2  |w x u|^2                                     ; a 3D cross product
+008117C6..008117EB  dist = (|w x u|^2 > 1e-10) ? sqrt(...) : 0
+00811803            *out_across = sign * dist
+```
+
+So the across component is the distance from the point to the **line through the winning sample and
+its neighbour**, with `u` normalised so that `|w x u|` is that distance directly. `[ESP+20h]` being
+overwritten with the projection is safe because `point.z` is still live in `ST0`, and it is the kind
+of slot reuse that makes a naive `[ESP+n]` reading wrong.
+
+**Still unread: the sign alone.** `00811726-00811760` forms `a*b - c*d` from four x87 registers
+(`FLD ST1 / FMUL ST3`, `FLD ST1 / FMUL ST5`, `FSUBP`) and takes `-1`, `+1` or `0` from its sign at
+`00811743`, `00811756` and `00811760`. Naming those four operands needs the x87 stack tracked
+through a 40-times-unrolled search, and this packet stopped short of that. `record+10h`'s sign - and
+therefore which side of the wake column 0 puts a follower on - is the one quantity still open, which
+is the same thing `include/bsp/ship_ai_path_corridor.hpp` line 62 already says: "which sign is port
+is still open". It will be settled by a run instead: a follower that joined off the port quarter
+must hold the port quarter, and the answer will be labelled measured rather than read.
+
+**But for column 0 the sign cancels, and that is what unblocks the station.** `00811180` is the
+only producer of column 0 and `0070D290` is its only consumer, and they are inverse operations:
+the decomposition writes `(across, along)` from a position, and `0070D290` rebuilds a position as
+`base + across * (-dir.z, +dir.x)` at `along` metres back along the trail (`0070D342`, `0070D348`).
+If the reconstruction uses **one** convention in both, the round trip is the identity and a follower
+holds exactly the offset it had when it joined - which is precisely what column 0 means. The
+absolute sign only becomes load-bearing for columns 1, 2 and 3, the canned LINE / COLUMN / DIAMOND
+tables, which are authored in the image's own convention and are selected only by a reshape
+(`0070EFD0`, message type 78h). So this reconstruction adopts `0070D290`'s left normal
+`(-dir.z, +dir.x)` as positive, says so, and marks the canned tables as the thing that cannot be
+trusted until the four x87 operands at `00811726` are named.
 
 ## 6. The cut this packet proposes
 
@@ -693,6 +731,34 @@ is named as such. A refusal arm will be exercised the moment the group object ex
 
 `total_path=5600.63`, `units=62`, `motion_ticks=42000` are unchanged from the packet-1 build:
 nothing consumes the answer yet, so this step is still a motion null.
+
+### Membership, and the refusal arm the gate step could not exercise
+
+`0077F940`'s runtime arm - create the group around the leader when it has none (`0070DB20`), then
+append the follower (`0070EF30`) - is bound in the units host, with the group on the unit slot at
+`unit+284h` exactly as the image holds it. `local/follow_join_usn01.log`:
+
+```
+summary mission ai follow requests=306 available=6 refused=300 joins=6
+summary unit formation groups=1 joins=6 creates=1 rejoins=0
+  formation 0 leader=Enterprise count=7 column=0:
+      Enterprise Northampton SaltLakeCity Dunlap Ralph McCall Blue
+```
+
+**The 300 refusals are the point.** `00779820` answers true once a follower shares the leader's
+group, so the first request from each of the six is accepted and every later one is refused with a
+reason read from the listing - the arm that the previous step could only name. One group, the
+leader as member 0, six followers appended in join order, `column=0` as the constructor leaves it.
+
+`total_path=5600.63` is still unchanged: membership alone moves nothing, because no state step
+reads it yet.
+
+What is **not** implemented from `0077F940`, and named rather than skipped silently: the merge of
+two existing groups, the detach of an ordered unit's own followers when it was leading, and the
+`FormationMaxCount` cap (`settings+420h`, 24, cited from `docs/SHIP_AI_FORMATION.md` rather than
+re-read). A runtime join in this process only ever brings one ungrouped ship to a leader, so no arm
+that is missing was reached. `0070ED30`'s column production and `0070DA00`'s speed ceiling are not
+run either, which is why every record's columns are zero and the report says so.
 
 ## 9. Uncertainties, and what is not read
 
