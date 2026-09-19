@@ -884,3 +884,123 @@ what devaluing 188 of every 190 in-range candidates by the `0.01` arm would do.
 
 The flip therefore stays on: every measurable part of the prediction held, and the one unmeasurable
 part is labelled as unmeasured rather than counted as confirmation.
+
+## The choice observed (packet `cc8_ai_target_choice_observed`, 2026-09-18)
+
+### Which commits every column in this document sits before
+
+Two baseline-moving commits bound these measurements, and both are named rather than assumed.
+
+**`0daec4b56`, the `0071EBF0` command-target rule.** Every column in the sections **above** predates
+it; every column in **this** section is after it. See below.
+
+**`67e8ac821`, the `Hidden = B true` hold-back.** **Every column in this document, including all
+three runs in this section, predates it.** That commit makes the scene loader hold back every
+authored object whose block sets `Hidden`, as `0046D3B5` does, so such objects are registered but
+not created until a mission script spawns them and missions load emptier: USN04 creates 19 units
+instead of 53 and USN01 62 instead of 77, with IJN01 and USN02 uncounted. Candidate counts, served
+counts, the chosen-class table and every gunnery number can all move across it, so **no column here
+may be compared with one taken after it**. The binary these three runs used was built at 22:22 from
+a tree without it.
+
+### Which side of `0daec4b56` each column is on
+
+Every column in the sections **above** predates `0daec4b56` and is on the old "last current row wins"
+command-target rule. Every column in **this** section is on the image's `0071EBF0` rule. The
+baseline moves across it: IJN01 model-off went from `settarget` 141 / `fallback` 59 / `scored`
+465500 on the old rule to **166 / 34 / 514990** on the new one, so old and new columns are not
+comparable and are not compared.
+
+The three runs below come from **one binary**, using the `BSP_AI_WEIGHT_MODEL` switch this packet
+added, and ran concurrently in slots 0, 1 and 2 on cores 2, 4 and 6.
+
+### IJN01, new rule, one binary
+
+| Column | `served` | `attackmove` | `settarget` | `fallback` | `scored` | `model_runs` | `complete_rows` |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| model off | 2450 | 2250 | 166 | 34 | 514990 | 0 | 321 |
+| model on | 2450 | 2206 | 166 | **78** | **475370** | 514990 | 321 |
+
+### What the model actually prefers, measured
+
+This is the line no earlier run carried. Chosen counts, with the runner-up counts beside them:
+
+| Class | off, chosen | off, runner-up | on, chosen | on, runner-up |
+| --- | --- | --- | --- | --- |
+| `08h` Submarine | 2344 | 539 | **2104** | 573 |
+| `11h` TorpedoBomber | 20 | 1877 | **214** | 1799 |
+| `13h` Fighter | 15 | 0 | 17 | 0 |
+| `1Bh` LandFort | 37 | 0 | **37** | 0 |
+
+Both columns' chosen counts sum to `attackmove + settarget` exactly (2416 = 2250 + 166, and
+2372 = 2206 + 166), so the table is complete rather than sampled.
+
+**The prediction was right about forts and wrong about what the model does.** The calculation in the
+previous section argued the model would move preference off the forts by about three orders of
+magnitude. Measured: **the land-fort count does not move at all, 37 either way**, because the
+stand-in was already picking forts only 37 times in 2416 — the `0.01` arm had nothing left to take
+away. The effect the model actually has is one the calculation never considered: **torpedo bombers
+go from 20 chosen to 214, a factor of ten**, taken mostly out of the submarines, which drop 2344 to
+2104. The real model prefers **aircraft** more than the class-weight stand-in does. That was not
+predicted and is recorded as a miss.
+
+### The sampled arithmetic, with real hit points
+
+Model **off**, a sampled choice: `chosen_class=08h(Submarine) weight=4.000000 hp=200.0`. The
+stand-in makes `base_weight` `1.0`, `target_scale` the authored class weight — `Submarine` is
+**4.0** — and the health and trio slots `1.0`. Predicted `4.0`, measured `4.000000`. The
+`00A0F810` product is exact on a real candidate.
+
+Model **on**, the same class at the same `hp=200.0`, weights `0.336`, `0.280`, `0.240`, `1.536`,
+`0.504`. Dividing out the class weight gives the model's own answer, and multiplying by the real hit
+points gives its `total`:
+
+| weight | `/4.0` = model | `x hp 200` = total | reads as `best + min(sum, 60)` |
+| --- | --- | --- | --- |
+| 0.336 | 0.084 | 16.8 | one barrel: `best` 8.4, `sum` 8.4 |
+| 0.240 | 0.060 | 12.0 | one barrel: `best` 6.0, `sum` 6.0 |
+| 1.536 | 0.384 | 76.8 | `best` 16.8 with `sum` at or past the 60 clamp |
+
+Every sampled total is either twice a single barrel's damage or a barrel plus exactly 60, which is
+`total = best + min(sum_damage, DamageCalcTime)` with `DamageCalcTime` = 60. **The listing's
+arithmetic and the run agree on real numbers.**
+
+**My earlier estimate of a submarine's hit points was wrong by more than a factor of seven**: I
+assumed 1500, the measured value is **200.0**. That is exactly why the prediction's absolute
+magnitudes could not be trusted and why this run was needed.
+
+**The fort side was not sampled.** The 24-choice window caught only submarines, so no land-fort
+weight or hit points were measured, and the fort-versus-submarine ratio remains a calculation. What
+*is* measured is the aggregate that matters more: forts are chosen 37 times out of 2416 with the
+stand-in and 37 out of 2372 with the model.
+
+### USN02, the ship control, new rule, model on
+
+`served` 616, `attackmove` 559, `settarget` 0, `fallback` 57, `scored` 4004, `model_runs` 4004,
+`complete_rows` 32 of 32. **Identical to every previous USN02 coordinator row in this document**,
+across both the old and the new command-target rule and with the model on rather than standing in.
+Chosen classes: `07h` Destroyer 471 and `0Ah` Cruiser 88, summing to 559 = `attackmove`. The control
+holds exactly.
+
+### The unresolved bullet class, attributed
+
+`unresolved_bullet_class attacker=0Ah(Cruiser) barrel_lookups=21020` and
+`attacker=0Dh(BattleShip) barrel_lookups=21020`, identical in both IJN01 columns. **Cruisers and
+battleships, not planes.** An earlier reading noticed that sub-type `00h` totalled 38000 lookups
+while `plane_attacker` was also 38000 and flagged the coincidence as not evidence; it was right to,
+because the attribution is nothing to do with planes.
+
+The leading explanation, with its supporting fact and its problem both stated: of the 416 device
+classes in this installation **only the 20 `CATAPULT` rows author no `Bullet` block at all**, so a
+catapult built as a gun row takes `gun.bullet_class = -1` and publishes a sub-type `0` barrel; and
+catapults are mounted mostly on battleships and cruisers. **The problem with it** is that destroyers
+mount them too and show no unresolved lookups at all, so the explanation is incomplete as it stands
+and is **not** accepted here. The check that would settle it is whether the gunnery host builds a
+gun row for a `CATAPULT` device at all, the same question `docs/ORDNANCE_KIND_IDENTITY.md` already
+answered "no" for `BOMBPLATFORM`; that file is leased elsewhere, so this packet did not run it.
+
+One thing the attribution does **not** explain: the admission shortfall. `scored` falls 514990 to
+475370, a difference of 39620, against 42040 unresolved barrel lookups. The two are close and are
+not equal, and a ship carrying a catapult also carries real guns whose barrels resolve, so those
+attackers are not zero-weight and the shortfall cannot simply be them. It is left open rather than
+fitted.
