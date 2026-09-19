@@ -19,24 +19,34 @@ to resume.
 * Doc withdrawals: `docs/BOT_TASK_STATES.md`'s `unit+9D8h` section, and `docs/PLANE_FORMATION.md`
   section 6's "`009BFEE0`, the station-keeping law".
 
-## The open questions, in dependency order
+## What to do next, in the integrator's order
 
-1. **`009BEE30`'s HOLD arm, `009BEE56`-`009BF9E5`**, still the biggest hole, untouched by this
+These four are the queue. The integrator named 1, 2 and 3; run D added 0, and 0 is stated first
+only because it is what gates 1, not to displace the order.
+
+0. **Why a wing member is too slow AFTER follow** - the flyabove arm, or the moment a member's own
+   in-range latch may set at `R = approach+B8h = 2080 m`. Run D held follow correctly for
+   1100-1550 ticks and still lost nine releases, six aircraft ending `transitions=1
+   states[follow=1546 flyabove=266] releases=0`. Until that is read, `control_mode_370` cannot be
+   fed, and **run E inherits the same loss**, because E is D plus placement OFF.
+1. **E: D + placement OFF.** The run that decides the landing, and the first in which the law alone
+   flies the members. Blocked on 0 for the reason above; with the mode pinned back at `2` instead,
+   E only re-takes the predecessor's null, because followers leave follow within a tick.
+2. **Wire the follow law into the torpedo follow seam.** Today the law is wired into exactly one
+   place, `run_dive_bomb_follow_tick_009c1fd0`. The torpedo follow state reaches its station through
+   the torpedo arm's own `follow_base_tick_009c1fd0` seam and never calls the law - which is why
+   run B has eight aircraft at ~1000 follow ticks each and `follow law` = 0. This is also what makes
+   placement OFF dangerous for them: they would get no station-keeping at all.
+3. **`009BEE30`'s HOLD arm, `009BEE56`-`009BF9E5`**, the biggest hole, untouched by this
    packet as by the last one. Recon only: the gate is `009BEE49 CMP byte ptr [ESI+85h],0` /
    `009BEE50 JZ 009BF9EA`, so a member in **good position** takes the hold arm and one out of
    position jumps to the fly-to arm at `009BF9EA`. The arm opens with the lazy pose-matrix refresh
    pattern (`00414DB0` then `00B63D50` guarded by the `+10Ch` dirty byte) applied twice, then
    `0042D0D0` and x87. The function is 997 instructions. Call census in
    `docs/HANDOFF_PLANE_FOLLOW_REGIMES.md`.
-2. **The second entry gate, and it is not mine.** `src/game_hosts_units.cpp` hardcodes
-   `in.engaged.control_mode_370 = 2` for the dive-bomb transition, so the engaged test of section 3
-   is satisfied from the first tick and a member leaves follow before it can fly it. The torpedo
-   side does not share the hardcode (`torpedo_attack_mode_370` is maintained). Until that constant
-   is fed, the follow state cannot be measured on the dive-bomb path however correct the predicate
-   is. Owner: the attack-mode / dive packets, not this one.
-3. **Phase A `009C0251`-`009C0EE0`** and the **`009C1552` subtree**, both untouched, as
+4. **Phase A `009C0251`-`009C0EE0`** and the **`009C1552` subtree**, both untouched, as
    `docs/HANDOFF_PLANE_FOLLOW_REGIMES.md` left them.
-4. `007B8AD0` for a unit that is **not a plane**. 85 call sites; the non-task ones are HUD markers,
+5. `007B8AD0` for a unit that is **not a plane**. 85 call sites; the non-task ones are HUD markers,
    mission scoring, AI-party resources and gunnery scoring. No writer of `+9D8h` exists outside
    plane/squadron code, so what a ship reads there is whatever its own class puts at that offset.
    Unread, and it does not affect this host, which feeds the predicate only for plane tasks.
