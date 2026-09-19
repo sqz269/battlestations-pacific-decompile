@@ -1193,6 +1193,11 @@ void GameStartupHost::exit_if_native_renderer_incomplete() noexcept {
 }
 
 GameStartupHost::~GameStartupHost() {
+    if(scripts_&&scripts_->input().requires_process_retention()) {
+        try {log_.note("native input settings interrupted; retaining shared Lua/VFS/manager bindings until process exit");log_.close();}
+        catch(...) {std::fputs("bsp_game: native input settings require process retention\n",stderr);std::fflush(stderr);}
+        std::_Exit(1);
+    }
     exit_if_native_renderer_incomplete();
     exit_if_native_lua_interrupted();
     exit_if_frame_clock_failed();
@@ -1210,6 +1215,7 @@ GameStartupHost::~GameStartupHost() {
     if (singletons_) {
         if (native_renderer_) native_renderer_->drain_singletons();
         else singletons_->shutdown();
+        if(scripts_)scripts_->input().after_singleton_drain();
         if (clock_services_) clock_services_->phase = ClockServices::Phase::drained;
     }
     if (input_) {
@@ -1524,13 +1530,17 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         renderer_capabilities_.resolutions.size());
 
     scripts_ = new GameScriptHost(log_, vfs_->context(), content_suffixes_,
-        *lua_services_);
+        *lua_services_,*singletons_,*native_data_,vfs_->borrow_raw_services());
+    // Retain the source context before native getter/table execution begins.
+    scripts_->input().load_tables();
+    log_.implemented("Phase 5 input_script_tables", "005547d0/006ab6b0/006a7be0");
     log_.notef("native Lua fundamentals: published=%d getters=%u storage=raw0ch shared_globals=actual0ch",
         lua_services_->fundamentals_published() ? 1 : 0, lua_services_->fundamentals_getter_calls());
-    summary_.input_scripts_ready = scripts_->input().data_tables_started();
-    summary_.input_devices = scripts_->input().settings().devices.size();
-    summary_.input_names = scripts_->input().settings().input_names.size();
-    summary_.controller_names = scripts_->input().settings().controller_input_names.size();
+    const auto input_tables=scripts_->input().summary();
+    summary_.input_scripts_ready = input_tables.tables_started;
+    summary_.input_devices = input_tables.devices;
+    summary_.input_names = input_tables.input_names;
+    summary_.controller_names = input_tables.controller_names;
 
     // Phase 5, the settings block at 00f88980 filled by 008d8190 at 0073daa5. It runs before
     // window creation at 0073dc0f, which is the ordering constraint the whole phase exists

@@ -166,8 +166,10 @@ int binding_trampoline(lua_State* state) {
     const bool objective_row = dispatch_row.address == 0x008cd440u
         || dispatch_row.address == 0x008cdd60u || dispatch_row.address == 0x008ce510u;
     const bool get_property_row = dispatch_row.address == 0x0088bf80u;
-    const bool handled = avoidance_setting || objective_row || get_property_row
-        || (orders != nullptr && GameScriptOrdersHost::handles(dispatch_row.name));
+    const bool ready_row = dispatch_row.address == 0x00895d20u;
+    const bool launch_row = dispatch_row.address == 0x0089e3c0u;
+    const bool handled = avoidance_setting || objective_row || get_property_row || ready_row
+        || launch_row || (orders != nullptr && GameScriptOrdersHost::handles(dispatch_row.name));
     // The replay of a failed named call, which the executable makes only to
     // recover the error message, must not count a second time.
     if (!host->error_replay()) {
@@ -239,6 +241,12 @@ int binding_trampoline(lua_State* state) {
     }
     if (get_property_row && !host->error_replay()) {
         return host->run_get_property_0088bf80(state, argc);
+    }
+    if (ready_row && !host->error_replay()) {
+        return host->run_is_ready_to_send_planes_00895d20(state, argc);
+    }
+    if (launch_row && !host->error_replay()) {
+        return host->run_launch_squadron_0089e3c0(state, argc);
     }
     if (avoidance_setting) {
         // 008D0849 uses bare 00B66250, which is lua_toboolean with no type
@@ -1356,6 +1364,118 @@ void GameMissionLuaHost::note_native_call(std::size_t row, int argument_count,
     log_.unimplemented(method, address);
 }
 
+namespace {
+// Argument 0 of all three air-operations bindings is the entity table 00888AA0
+// resolves. Its `ID` is the unit index plus one, which is what the deck registry
+// is bound to.
+int air_ops_entity_id(lua_State* state) {
+    if (state == nullptr || ::lua_type(state, 1) != LUA_TTABLE) return 0;
+    const int top = ::lua_gettop(state);
+    ::lua_getfield(state, 1, "ID");
+    const int type = ::lua_type(state, -1);
+    const int id = (type == LUA_TNUMBER || type == LUA_TSTRING)
+        ? static_cast<int>(::lua_tonumber(state, -1)) : 0;
+    ::lua_settop(state, top);
+    return id;
+}
+
+// 0089E3C0 reads its integers through the call frame; a non-number argument
+// reaches it as the reader's own zero.
+std::int32_t air_ops_integer_argument(lua_State* state, int index, bool& present) {
+    const int slot = index + 1;
+    present = false;
+    if (slot > ::lua_gettop(state)) return 0;
+    const int type = ::lua_type(state, slot);
+    if (type != LUA_TNUMBER && type != LUA_TSTRING) return 0;
+    present = true;
+    return static_cast<std::int32_t>(::lua_tonumber(state, slot));
+}
+} // namespace
+
+bool GameMissionLuaHost::stationary_class_exists(const std::string& name) {
+    if (state_ == nullptr || name.empty()) return false;
+    const int top = ::lua_gettop(state_);
+    bool found = false;
+    // 00851CB0: BSP_LuaStateOwner_GetGlobals, BSP_LuaObject_GetByName with the
+    // literal, then BSP_LuaObject_GetByNativeString with the type's own text.
+    ::lua_getfield(state_, LUA_GLOBALSINDEX, "StationaryClass");
+    if (::lua_type(state_, -1) == LUA_TTABLE) {
+        ::lua_getfield(state_, -1, name.c_str());
+        found = ::lua_type(state_, -1) == LUA_TTABLE;
+    }
+    ::lua_settop(state_, top);
+    return found;
+}
+
+int GameMissionLuaHost::run_is_ready_to_send_planes_00895d20(lua_State* state,
+    int argument_count) {
+    static_cast<void>(argument_count);
+    if (state == nullptr) return 0;
+    // 00895E3B takes the block, 00895E4B the class test, 00895E5F the answer.
+    // The native pushes a boolean whatever happens, so a unit with no deck in
+    // this process answers false rather than pushing nothing.
+    const bsp::AirOpsDeck* deck = bsp::air_ops_decks().find_by_entity_id(
+        air_ops_entity_id(state));
+    const bool ready = deck != nullptr && bsp::air_ops_is_ready_to_send_planes_00895d20(*deck);
+    ++summary_.air_ops_ready_calls;
+    if (ready) ++summary_.air_ops_ready_true;
+    if (summary_.air_ops_ready_calls <= 12) {
+        log_.notef("  IsReadyToSendPlanes 00895d20: deck=%d slots=%zu launch_in_progress=%u "
+            "-> %s", deck != nullptr ? 1 : 0, deck != nullptr ? deck->slots.size() : 0u,
+            deck != nullptr ? deck->launch_in_progress : 0u, ready ? "true" : "false");
+    }
+    ::lua_pushboolean(state, ready ? 1 : 0);
+    log_.implemented("MissionLuaNative::IsReadyToSendPlanes", "00895d20");
+    return 1;
+}
+
+int GameMissionLuaHost::run_launch_squadron_0089e3c0(lua_State* state, int argument_count) {
+    if (state == nullptr) return 0;
+    bsp::AirOpsDeck* deck = bsp::air_ops_decks().find_mutable_by_entity_id(
+        air_ops_entity_id(state));
+    ++summary_.air_ops_launch_calls;
+    if (deck == nullptr) {
+        // With no block the native would still run 006CC690 against whatever the
+        // getter returned; this process has nothing to run it on, so the record
+        // is the honest answer and the caller gets no index.
+        log_.notef("  LaunchSquadron 0089e3c0: no deck for this entity, no slot");
+        log_.unimplemented("MissionLuaNative::LaunchSquadron", "0089e3c0");
+        return 0;
+    }
+    bsp::AirOpsLaunchRequest request;
+    bool present = false;
+    // 0089E4xx reads argument 1 as the class token and argument 2 as the count.
+    request.vehicle_class = static_cast<std::uint32_t>(
+        air_ops_integer_argument(state, 1, present));
+    request.count = air_ops_integer_argument(state, 2, present);
+    // The 00B663F0 argument-count test against 4: only a fourth argument
+    // replaces the arm, which otherwise defaults to class+134h.
+    bool arm_present = false;
+    const std::int32_t arm = air_ops_integer_argument(state, 3, arm_present);
+    // class+134h is not authored under any key in this installation's
+    // vehicleclasses.lua, so the default is zero here. contract.
+    request.class_default_arm = 0;
+    request.arm_given = arm_present && argument_count >= 4;
+    request.arm = request.arm_given ? arm : request.class_default_arm;
+
+    const bsp::AirOpsLaunchResult result
+        = bsp::air_ops_launch_squadron_006cc690(*deck, request);
+    if (result.started) ++summary_.air_ops_launch_started;
+    if (result.queued) ++summary_.air_ops_launch_queued;
+    if (summary_.air_ops_launch_calls <= 12) {
+        log_.notef("  LaunchSquadron 0089e3c0: class=%u count=%d arm=%d%s -> slot %d (%s), "
+            "returns %d", request.vehicle_class, request.count, request.arm,
+            request.arm_given ? " (given)" : " (class default)", result.slot_index,
+            result.started ? "started" : result.queued ? "queued" : "none",
+            result.slot_index + 1);
+    }
+    // 0089E4xx pushes the 006CC690 result plus one, which is the 1-based index
+    // into the same `slots` array GetProperty publishes.
+    ::lua_pushinteger(state, static_cast<lua_Integer>(result.slot_index) + 1);
+    log_.implemented("MissionLuaNative::LaunchSquadron", "0089e3c0");
+    return 1;
+}
+
 void GameMissionLuaHost::note_objective_binding(const char* binding,
     const std::string& objective, unsigned int slot_mask, int units_touched) {
     ++summary_.objective_binding_calls;
@@ -1457,17 +1577,8 @@ int GameMissionLuaHost::run_get_property_0088bf80(lua_State* state, int argument
     // that owns none, still reaches the four keys here because this host cannot
     // pick the reader by class; it answers with an empty deck rather than with
     // the nothing the native pushes. That deviation is unchanged.
-    const bsp::AirOpsDeck* deck = nullptr;
-    if (::lua_type(state, 1) == LUA_TTABLE) {
-        const int top = ::lua_gettop(state);
-        ::lua_getfield(state, 1, "ID");
-        const int id_type = ::lua_type(state, -1);
-        if (id_type == LUA_TNUMBER || id_type == LUA_TSTRING) {
-            deck = bsp::air_ops_decks().find_by_entity_id(
-                static_cast<int>(::lua_tonumber(state, -1)));
-        }
-        ::lua_settop(state, top);
-    }
+    const bsp::AirOpsDeck* deck = bsp::air_ops_decks().find_by_entity_id(
+        air_ops_entity_id(state));
     const bsp::AirOpsSlot* slots = deck != nullptr && !deck->slots.empty()
         ? deck->slots.data() : nullptr;
     int slot_count = deck != nullptr ? static_cast<int>(deck->slots.size()) : 0;
@@ -2228,8 +2339,14 @@ void GameMissionLuaHost::report_mission_script_state() {
     // which stays at zero for as long as this process holds no air-operations
     // block. docs/MISSION_LUA_GETPROPERTY.md.
     log_.notef("summary mission getproperty 0088bf80: calls=%llu served=%llu unserved=%llu "
-        "slots_rows=%llu", summary_.get_property_calls, summary_.get_property_served,
-        summary_.get_property_unserved, summary_.get_property_slots_rows);
+        "slots_rows=%llu decks=%zu", summary_.get_property_calls, summary_.get_property_served,
+        summary_.get_property_unserved, summary_.get_property_slots_rows,
+        bsp::air_ops_decks().size());
+    log_.notef("summary mission airops gates: ready_calls=%llu ready_true=%llu "
+        "launch_calls=%llu started=%llu queued=%llu (00895d20, 0089e3c0)",
+        summary_.air_ops_ready_calls, summary_.air_ops_ready_true,
+        summary_.air_ops_launch_calls, summary_.air_ops_launch_started,
+        summary_.air_ops_launch_queued);
 }
 
 void GameMissionLuaHost::report_natives(std::size_t limit) {

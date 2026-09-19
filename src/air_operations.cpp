@@ -348,6 +348,109 @@ const AirOpsDeck* AirOpsDeckRegistry::find_by_entity_id(int entity_id) const noe
     return nullptr;
 }
 
+AirOpsDeck* AirOpsDeckRegistry::find_mutable_by_entity_id(int entity_id) noexcept {
+    for (const auto& binding : entity_ids_) {
+        if (binding.first != entity_id) continue;
+        for (auto& row : decks_) {
+            if (row.first == binding.second) return &row.second;
+        }
+        return nullptr;
+    }
+    return nullptr;
+}
+
+// ---------------------------------------------------------------------------
+// 00895D20 and 006CC690, the launch gates
+// ---------------------------------------------------------------------------
+bool air_ops_is_ready_to_send_planes_00895d20(const AirOpsDeck& deck) noexcept {
+    // 00895E4F and 00895E58: the false arm is taken only when BOTH the class
+    // test against 45h passes and the byte at entity+720h is set. Either one
+    // failing falls through to 006BF620, so a mother ship never takes it.
+    if (deck.is_airfield && deck.airfield_blocked) return false;
+    // 006BF620, in its own order: the two failure bytes clear, the owner at
+    // block+7Ch non-null, its byte at +5Dh clear, and block+38h zero.
+    if (deck.runway_failure || deck.hangar_failure) return false;
+    if (!deck.owner_present) return false;
+    if (deck.owner_blocked) return false;
+    return deck.launch_in_progress == 0;
+}
+
+int air_ops_pick_launch_slot_006c7210(const AirOpsDeck& deck) noexcept {
+    // 006C7243: walk while the index is below block+50h, reading slot+2Ch; the
+    // first slot in state 1 or 5 is the answer. When the walk runs out the
+    // native continues into the growth path, and the index it has then is one
+    // past the last slot, which is where the new record lands.
+    for (std::size_t index = 0; index < deck.slots.size(); ++index) {
+        const std::int32_t state = static_cast<std::int32_t>(deck.slots[index].state);
+        if (state == static_cast<std::int32_t>(AirOpsSlotState::kCooldown)
+            || state == static_cast<std::int32_t>(AirOpsSlotState::kReady)) {
+            return static_cast<int>(index);
+        }
+    }
+    return static_cast<int>(deck.slots.size());
+}
+
+void air_ops_launch_start_006c7490(AirOpsDeck& deck, int slot_index) noexcept {
+    if (slot_index < 0 || static_cast<std::size_t>(slot_index) >= deck.slots.size()) return;
+    AirOpsSlot& slot = deck.slots[static_cast<std::size_t>(slot_index)];
+    // 006C74C2: the requested count takes the assigned count, but only when the
+    // slot was already in state 2.
+    if (slot.state == AirOpsSlotState::kLaunching) slot.requested_count = slot.assigned_count;
+    // 006C74CE and 006C74D5: state 3 and a zero timer, then 006C74E1's carry of
+    // the launch-requested byte into the 5.0 cooldown, which is the same pair
+    // 006CADD0 mode 1 writes for a FakeAllocated slot. State 3 is a fourth value
+    // for this field, after the 1, 2 and 5 the launch routines showed and the 6
+    // the scene loader writes; what it means is not established.
+    slot.state = static_cast<AirOpsSlotState>(3);
+    slot.timer = 0.0F;
+    if (slot.launch_requested) {
+        slot.timer = kAirOpsSlotCooldownSeconds;
+        slot.launch_requested = false;
+    }
+    // 006C74F4: slot+28h takes the squadron 006C5050 built, and the observer
+    // pair moves with it. This process builds no squadron, so the field stays
+    // zero and the Lua `squadron` key stays absent. See the doc: creating it
+    // needs the units host, not these files.
+}
+
+AirOpsLaunchResult air_ops_launch_squadron_006cc690(AirOpsDeck& deck,
+                                                    const AirOpsLaunchRequest& request) {
+    AirOpsLaunchResult result;
+    result.slot_index = air_ops_pick_launch_slot_006c7210(deck);
+    if (result.slot_index < 0) return result;
+    if (static_cast<std::size_t>(result.slot_index) >= deck.slots.size()) {
+        // The growth path. 006CADD0's own array grows as 2n+2; what matters to
+        // the caller is that the record exists at the index that comes back.
+        deck.slots.resize(static_cast<std::size_t>(result.slot_index) + 1);
+    }
+    AirOpsSlot& slot = deck.slots[static_cast<std::size_t>(result.slot_index)];
+    // 006CC6D0: the class is written only when it differs, and that same arm
+    // takes the class's own default at class+134h. 006CC6F5 then overwrites the
+    // arm with the argument, so the default only survives when the caller passed
+    // the class's own value.
+    if (slot.vehicle_class != request.vehicle_class) {
+        slot.vehicle_class = request.vehicle_class;
+        slot.class_field_134 = request.vehicle_class != 0 ? request.class_default_arm : 0;
+    }
+    slot.assigned_count = request.count;
+    slot.class_field_134 = request.arm;
+    if (deck.launch_in_progress == 0) {
+        // 006CC733 calls 006C7490 with the block in ECX and the slot index and a
+        // zero pushed. CORRECTED: an earlier version of this function also wrote
+        // block+38h here. Neither 006CC690 nor 006C7490 writes that field; both
+        // only read it (006CC715 and 006C5078). Writing it made the deck report
+        // a launch in progress for ever after the first call, which would have
+        // made IsReadyToSendPlanes answer false from then on.
+        // docs/AIROPS_LAUNCH_START.md.
+        result.started = true;
+        air_ops_launch_start_006c7490(deck, result.slot_index);
+    } else {
+        // 006CC72C: the stock goes back and 006CA640 queues instead.
+        result.queued = true;
+    }
+    return result;
+}
+
 std::size_t AirOpsDeckRegistry::size() const noexcept { return decks_.size(); }
 
 AirOpsDeckRegistry& air_ops_decks() noexcept {

@@ -1208,3 +1208,87 @@ So:
 This corrects this doc's earlier phrasing. The dive floor is not "a per-aircraft random draw" in the
 sense of being arbitrary: it is a draw between two authored, difficulty-scaled altitudes, and the
 aim error is authored imprecision rather than a geometric residue.
+
+## The hand-over run: no change, and the reason is a gap in the planner reconstruction
+
+`local/usn04_hand.log`, USN04, 4800 mission frames. Preconditions recorded: `query session` shows
+session 1 **Active** at the console, `Get-Process bsp_game` empty, no lock file. `EXITCODE=0`.
+
+The census is **bit-identical** to the run before the hand-over:
+
+| measure | gated run | hand-over run |
+| --- | --- | --- |
+| states | `attackrun` 1480, `flyabove` 144, `turndown` 746 | the same |
+| bank reached | 0.6072 rad | **0.6072 rad** |
+| turndown roll writes | 446 of 746 | **446 of 746** |
+| latch tick | 1481 | 1481 |
+| final `approach+BCh` | 206.5 m | 206.5 m |
+| `009C7EA0` window | not met | **not met** |
+| releases | 0 | 0 |
+
+### Why: `pilot_plan_roll_0099e2ba` reconstructs only the mode-2 arm
+
+The image's roll region has **two** entries, and the reconstruction has one.
+
+* The **mode-2** path, `0099DE93`-`0099E25C`, computes the bank target from the heading error and
+  writes it to `cmd+2C4h` at `0099E25C`. That is what `pilot_plan_roll_0099e2ba` models:
+  `PilotBotRollInputs` has a heading error, a bank, a pitch error and the tuning, and **no bank-target
+  input at all**.
+* The **mode-1** path, jumped to at `0099E26E`, does not compute a target. It **servos** `cmd+2C8h`
+  toward whatever `cmd+2C4h` already holds: `0099E27B FLD [ESI+2C8h]`, the wrap against the `+pi` at
+  `00CE3D28` at `0099E28F`, then `0099E2A5 LEA ECX,[ESI+2C4h]` and `0099E2B5 CALL 00415690`, through
+  to the roll write at `0099E39D`.
+
+So writing `pi` into the host's `bank_target_2c4` on the hand-over changes nothing: the host still
+runs the mode-2 computation, and the field it was told to aim at is one nothing reads. **The
+reasoning behind the hand-over stands and the code that would act on it does not exist yet.**
+
+**The next gate, by address:** reconstruct the servo arm `0099E26E`-`0099E3AE` in
+`src/plane_ai_control.cpp`, with a bank-target input, and call it on the mode-1 path instead of the
+mode-2 computation. Until then the turndown can hand the planner a 180-degree target and the host
+will keep flying its own.
+
+## `0099E26E`-`0099E39D`, the servo arm
+
+The other entry to the roll region, reconstructed as `pilot_roll_servo_0099e26e` in
+`src/plane_ai_control.cpp`. It computes no target and servos toward whatever `plan+2C4h` holds.
+
+| address | step |
+| --- | --- |
+| `0099E2C5`-`0099E2CE` | `BSP_Math_SubtractWrappedAngle(plan+2C4h, measured bank)` |
+| `0099E2D3` | scale by `[ESP+28h]` |
+| `0099E2E1`-`0099E301` | fold to the absolute value with the usual `-0.0f` subtract |
+| `0099E30B`-`0099E314` | inside the band `EBX+40h`, multiply by the gain `EBX+44h` |
+| `0099E319`-`0099E337` | outside it, add or subtract the constant rate `EBX+48h` by the error's sign, and set `plan+2ECh` |
+| `0099E344`-`0099E367` | the rate limit from `desc+1A8h`, `desc+1BCh` and `EBX[0]` |
+| `0099E373`-`0099E390` | `InterpolateClamped(-limit, 1.0, +limit, -1.0, [ESP+2Ch])`, a **falling** map |
+| `0099E39D` | `plan+290h`, the roll command |
+
+Jump senses from the branch bytes: `0099E2EB` `76` `JBE`, `0099E312` `76` `JBE`, `0099E330` `76`
+`JBE`.
+
+**It is not called yet.** The call site is `plan_yaw_0099d300()` in `src/game_hosts_units.cpp`,
+which `cc8-torpedo-run-in` holds until 07:57. Until that one line lands the host still runs the
+mode-2 computation on both paths and the turndown's `pi` target goes nowhere.
+
+`coverage: partial`: `[ESP+28h]`, `[ESP+2Ch]` and the `EBX` tuning block are taken as inputs rather
+than traced, so the function is faithful in shape and sourced in its constants, not in its feeds.
+
+## The authored values, quoted
+
+From this installation's `scripts/datatables/robots.lua` (mtime 13 Jul 2024), the `SPNormal` row:
+
+```
+["DiveBombReleaseAlt"] = { 350, 450 }, -- M -- regi tipusu, leboritos bumbazasnal a bomba
+                                       --      oldasi magassag valahol a ketto kozott
+["DiveBombAimPrecDist"] = 70.0,        -- F -- tavolrol ennyivel melle celoz, aztan
+                                       --      kozeledve egyre pontosabban
+["DiveBombAimPrecMul"]  = 0.3,         -- F -- celzasi pontossag szorzo. minel kisebb,
+                                       --      annal jobb
+```
+
+The release altitude is "somewhere between the two", which is the uniform draw at `009C3F29`. The
+aim-precision distance is "from far away it aims this much beside the target, then gets more
+accurate as it closes", and the multiplier is "the aiming accuracy scale, the smaller the better".
+So the whole aim-error chain, and the 25-metre gate at `00CE3880`, is authored imprecision in the
+authors' own words.

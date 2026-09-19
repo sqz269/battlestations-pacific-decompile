@@ -1,0 +1,108 @@
+{
+ "packet": "cc8_scene_stationary_units_path",
+ "owner": "agent/cc8-torpedo-run-in",
+ "doc": "docs/SCENE_STATIONARY_UNITS.md",
+ "tree_base": "main merged at the start of the packet",
+ "result": "The stationary path is a second class factory, not a gap. 004F0BE0 resolves its type by text through 00851CB0, which takes the row from the StationaryClass Lua global and wraps it in a 3Ch-byte class, entirely separate from 00964790's VehicleClass chain. Ormoc Bay's units reach it a different way: they are LandFort rows whose Stationary scene property makes 004F0FB0 allocate through 00748C40, a 1ACh prop. Its observer pair is 00CFF678 and 00CFF65C, and the units host now uses it.",
+ "question": "Read 004F0BE0 whole and whatever the Stationary class's own instantiate does instead of the descriptor chain, and note the DummyTargetVehicle gap.",
+ "answer": "004F0BE0 looks up Type at 004F0BFE, requires the property to be type 4 or 2, takes its text with 008F0DF0, calls 00851CB0 with it, calls that class's vtable+4h to allocate and then 004F04C0 for the shared setup. 00851CB0 checks a cache through 00851B40 and otherwise fetches the globals, takes StationaryClass by name, takes the row by the type's own text, and builds a 3Ch-byte class. That is why this installation's 220 StationaryClass rows carry no Type literal: the field would have no reader. USN22's units do not come that way. They are LandFort scene rows whose type token names a StationaryTypes symbol, so they reach 004F0FB0, which tests the scene property Stationary and takes the instance from 00748C40 instead of the descriptor's vtable+28h. 00748C40 is operator new(1ACh) then 00748A40, which stores 00CFF678 at this+0, 00CFF65C at this+10h and 00CFF654 at this+24h. Which of those is the observer pair is checked against a class that already has a row rather than assumed: 00745940, the LandFort constructor, stores 00CFF3F8 at this+0, 00CFF3E0 at this+10h and 00CFF3B4 at this+310h, and LandFort's row is {00747000, 00CFF3F8, 00CFF3E0} with 00CFF3B4 as its tick vtable. So observed is the vptr at this and callback the one at this+10h. The prop is 1ACh bytes with no slot at 310h, so it carries no tick vtable and takes no motion dispatch.",
+ "coverage": "complete for 004F0BE0, 00851CB0, the 004F0FB0 stationary arm and the prop's observer pair; the rest of the prop's construction and 00851B40's cache are contracts.",
+ "named_routines": [
+  {
+   "native": "004f0be0",
+   "ledger_name": "the Stationary scene class instantiate",
+   "evidence": "a full SEH prologue at 004F0BE0 with the previous function ending RET 10h at 004F0BDD and no INT3 between; read from the image with disasm-raw",
+   "status": "read whole; Ghidra had no function there and one was defined at 004F0BE0..004F0CC0 (224 bytes), recorded in reports/scene_stationary_units_function_definitions.json"
+  },
+  {
+   "native": "00851cb0",
+   "ledger_name": "the StationaryClass factory",
+   "evidence": "carries the literal StationaryClass; globals, GetByName, GetByNativeString, new(3Ch)",
+   "status": "read whole"
+  },
+  {
+   "native": "00748c40",
+   "ledger_name": "BSP_LandFort_AllocateStationaryProp",
+   "evidence": "operator new(1ACh) then 00748A40; already named by packet cc2_land_and_structures",
+   "status": "previously reconstructed, unchanged"
+  },
+  {
+   "native": "00748a40",
+   "ledger_name": "the stationary prop constructor",
+   "evidence": "00748A64/6A/71 store 00CFF678, 00CFF65C and 00CFF654",
+   "status": "read for its vptr stores"
+  },
+  {
+   "native": "00745940",
+   "ledger_name": "BSP_LandFort_Construct",
+   "evidence": "0074597D/83 store 00CFF3F8 and 00CFF3E0, which are LandFort's observer row, and 007459A5 stores its tick vtable 00CFF3B4; this is the control that fixes the rule",
+   "status": "read for its vptr stores"
+  }
+ ],
+ "no_ghidra_function": [],
+ "host_methods": [
+  {
+   "method": "bsp::publish_stationary_prop_observer_tables_00748a40",
+   "native": "00748a40",
+   "file": "src/native_unit_observer_endpoint.cpp"
+  },
+  {
+   "method": "GameMissionLuaHost::stationary_class_exists",
+   "native": "00851cb0",
+   "file": "src/game_hosts_lua.cpp",
+   "note": "the lookup only, not the 3Ch class"
+  }
+ ],
+ "authored_rows": [
+  {
+   "file": "scripts/datatables/autoload/stationaryclasses.lua of this installation (mtime 2024-07-13, bulk install date)",
+   "row": "why the rows carry no Type",
+   "values": {
+    "StationaryClass rows": 220,
+    "occurrences of Type": 0,
+    "reader": "00851CB0 takes the row by name, so a Type field would have no reader"
+   }
+  }
+ ],
+ "contracts": [
+  "Not run. The fix is reasoned from the observer-pair rule, not observed. The rest of the prop's construction, 0084F7F0 and 004F04C0's shared setup, was not read, so USN22 may still stop somewhere else.",
+  "The type id a StationaryTypes token resolves to may collide with an unrelated VehicleClass row of the same number, because the host indexes VehicleClass by that id and the two enums are different id spaces. The StationaryClass test is by text and is immune, but a false positive on the VehicleClass side would take the descriptor arm first.",
+  "What 00851B40's cache is keyed on, and what the 3Ch stationary class holds.",
+  "DummyTargetVehicle is the one Type literal with no observer row and no motion-dispatch row. It is the same shape of gap and would raise the same throw. Left open deliberately: its leaf constructor was not read, and inventing its pair from the pattern is what the control in 00745940 exists to avoid."
+ ],
+ "corrections": [
+  "Two corrections applied after the first commit of this packet. publish_stationary_prop_observer_tables_00748a40 was added to src/native_unit_observer_endpoint.cpp and its header, which are Codex-lineage files we do not edit; both are restored to their previous text and the function now lives in src/game_hosts_units.cpp beside its only caller. And 004F0BE0, which genuinely starts a function, is now defined in Ghidra, so its four call sites are ordinary verified rows instead of being carried outside them.",
+  "None. This packet completes the reading the previous one left as its contract, and that packet's retraction of 004E5B00 stands as written.",
+  "No retraction of a native-behaviour claim in this packet."
+ ],
+ "validation": {
+  "runner": "tools/run_game.ps1",
+  "outcome": "not run",
+  "build": "clean, both ctest suites pass",
+  "reason": "The shared game lock is queued: the USN04 deck and gates run is ahead of this one and had not started when this packet closed.",
+  "command": "./tools/run_game.ps1 -Log local/usn22_stationary.log -WaitSeconds 2400 -- --frames 3200 --press-start-frame 30 --menu-select USN22 --mission-frames 3000 --mission-frame-seconds 0.05",
+  "expected": "more than four `unit world registration` lines before any refusal, and, if one still comes, a message naming a non-zero creator, which would be a different gap"
+ },
+ "calls": [
+  {
+   "address": "004f0c07",
+   "native": "008f2260",
+   "note": "the Type lookup in the bag"
+  },
+  {
+   "address": "004f0c28",
+   "native": "008f0df0",
+   "note": "the type's text"
+  },
+  {
+   "address": "004f0c43",
+   "native": "00851cb0",
+   "note": "the stationary class factory"
+  },
+  {
+   "address": "004f0c88",
+   "native": "004f04c0",
+   "note": "the shared scene-unit setup"
+  }
+ ]
+}
