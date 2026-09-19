@@ -509,6 +509,26 @@ struct GameUnitSlot {
     float db_impact_fall_time{0.0f};
     float db_impact_planar_5c{-1.0f};
     float db_impact_bearing_18{0.0f};
+    // Packet cc8_dive_glide. The aimglide tick builds a THIRD planar vector
+    // from the same point, `impactPoint - unit` at 009C5207-009C522E, and its
+    // magnitude at 009C52C7-009C5303 is the [ESP+14h] the 120 m gate and the
+    // lead read. The aimdive never needs it, which is why no slot carried it.
+    float db_impact_throw_14{0.0f};
+    // The aimglide release census, packet cc8_dive_glide: how far down the
+    // 009C5689-009C5755 chain each call got, and the lead when it was computed.
+    int db_glide_calls{0};
+    int db_glide_gate_reached[7]{};
+    float db_glide_lead_last{0.0f};
+    float db_glide_lead_min{0.0f};      // the most negative lead seen
+    float db_glide_bearing_min{-1.0f};
+    int db_glide_releases{0};
+    int db_glide_rounds{0};
+    // Packet cc8_dive_glide: the bomb side of the release, which until now had
+    // no fields of its own. The summary's `bombs_spawned` column was printing
+    // torpedo_drops_spawned - a different field with a different producer.
+    int db_bay_requests_accepted{0};
+    int db_bay_requests_refused{0};
+    int db_bombs_spawned{0};
     // The 009C5B01-009C5B48 abort's own operands the first time it fires.
     int db_abort_fires{0};
     int db_abort_first_tick{-1};
@@ -1250,6 +1270,20 @@ struct GameUnitsHost::Impl {
             }
             slot.db_impact_bearing_18 = ib;
         }
+        // 009C5207-009C522E then 009C52C7-009C5303: the aimglide's throw, the
+        // planar distance from the aircraft to that same predicted impact
+        // point. Built with the same epsilon the other two sqrt guards use
+        // (00CE3820, 1e-10), which 009C52DB compares the squared sum against.
+        {
+            const double wx = static_cast<double>(slot.db_run_in_origin[0]) -
+                              static_cast<double>(slot.motion.position[0]);
+            const double wz = static_cast<double>(slot.db_run_in_origin[2]) -
+                              static_cast<double>(slot.motion.position[2]);
+            const double w2 = wx * wx + wz * wz;
+            slot.db_impact_throw_14 =
+                (w2 <= bsp::dive_bomb_constant::kDistanceEpsilonSq)
+                    ? 0.0f : static_cast<float>(std::sqrt(w2));
+        }
     }
 
     bsp::DiveBombTransitionInputs dive_bomb_transition_inputs(GameUnitSlot& slot) {
@@ -1492,12 +1526,33 @@ struct GameUnitsHost::Impl {
 
     bsp::DiveBombAimGlideReleaseInputs dive_bomb_aimglide_inputs(GameUnitSlot& slot) {
         bsp::DiveBombAimGlideReleaseInputs in;
-        // PARTIAL, labelled: the four frame slots behind 009C5693-009C5755 were
-        // not traced to their producers. The host supplies the two it can name
-        // from the geometry it has and leaves the other two at zero, which
-        // opens the height gate and closes the lead gate.
-        in.dive_angle = slot.plane_pitch_angle_c64 < 0.0f
-            ? -slot.plane_pitch_angle_c64 : slot.plane_pitch_angle_c64;
+        // Packet cc8_dive_glide: every slot behind 009C5689-009C5755 is now
+        // traced to its producer and bound from the geometry this host already
+        // keeps. The `four frame slots not traced` note is withdrawn.
+        //
+        // [ESP+18h], 009C5357-009C53CA. CORRECTED: this was |pitch|, and the
+        // slot is not an attitude at all - it is the horizontal angle between
+        // the bearing to the aim point (approach+C0h's own construction, taken
+        // from the AIRCRAFT here, unlike the aimdive's, which 009C5AF1 takes
+        // from the impact point) and 009C4F80's aim heading, then abs'd. The
+        // wrapped subtract is even and so is the 009C5708 cosine, so the
+        // argument order is immaterial to both consumers.
+        in.rearm_timer_1c = slot.db_aim_rearm_1c;
+        {
+            bsp::DiveBombAimHeadingInputs ahin;
+            ahin.pitch_c64 = slot.plane_pitch_angle_c64;
+            ahin.bank_c68 = slot.plane_bank_angle_c68;
+            ahin.heading_c6c = slot.plane_heading_c6c;
+            ahin.body_up_x = slot.motion.pose_row1[0];
+            ahin.body_up_z = slot.motion.pose_row1[2];
+            const float be = bsp::wrapped_angle_subtract_00438b10(
+                bsp::dive_bomb_aim_heading_009c4f80(ahin), slot.db_bearing_c0);
+            in.bearing_error_18 = be < 0.0f ? -be : be;
+            if (slot.db_glide_bearing_min < 0.0f ||
+                in.bearing_error_18 < slot.db_glide_bearing_min) {
+                slot.db_glide_bearing_min = in.bearing_error_18;
+            }
+        }
         // Both RECOVERED this packet; see include/bsp/dive_bomb_task.hpp. The
         // height is measured against the aim point, as 009C5281 builds it, and
         // the ceiling is row+4Ch times the drawn release altitude - 0.6 * 350.0
@@ -1512,17 +1567,97 @@ struct GameUnitsHost::Impl {
         }
         in.glide_release_ceiling =
             kDiveBombNewReleaseMul * slot.db_dive_alt_a8;
-        in.lateral_a = slot.db_planar_bc;
+        // CORRECTED: both of these were slot.db_planar_bc, one quantity standing
+        // in for two different ones, which made 009C56C2's gate `0 < 120` and
+        // 009C5704's lead `range * (1 - cos)`, never negative - so the salvo at
+        // 009C5777 could not fire at any altitude, angle or travel. [ESP+14h]
+        // is the throw to the predicted impact point and [ESP+10h] is the range
+        // to the aim point; see the header for the three-vector walk.
+        in.lateral_a = slot.db_impact_throw_14;
         in.lateral_b = slot.db_planar_bc;
         in.travel_accumulator_20 = slot.db_glide_travel_20;
-        in.rounds_cap = kDiveBombCarriedRoundsSubstitute;
+        // The cap is EBP, the literal 2 at 009C53DD - a proof, not the
+        // kDiveBombCarriedRoundsSubstitute the two happened to share.
+        in.rounds_cap = bsp::dive_bomb_constant::kGlideSalvoCap;
         in.rearm_draw = bsp::dive_bomb_constant::kAimGlideRearmLow;
-        in.drift_rate_a4 = 0.0f;
+        // RECOVERED, packet cc8_dive_glide - this was a labelled 0.0f, and a
+        // zero here freezes the release window at the 009C4F50 seed. A scan of
+        // 009C3E00-009CA000 for `[reg+0A4h]` returns exactly one writer among
+        // six touches, 009C3F16 in the constructor FUN_009C3EA0:
+        //   009C3EF4 MOV ECX,[ESI+8]        ; the plane class descriptor
+        //   009C3EF7 FLD  [ECX+188h]        ; MaxSpd, already named in this repo
+        //   009C3F00 FMUL qword [00CEFFB0]  ; 0.95
+        //   009C3F16 FSTP [ESI+0A4h]
+        // so approach+A4h is 0.95 * MaxSpd, set once and never rewritten. The
+        // three following instructions settle approach+A8h in the same breath:
+        // 009C3F1C/009C3F23 push (approach+14h)->+3Ch and ->+38h into
+        // BSP_Random_UniformFloatRange and 009C3F2E stores the draw, which is
+        // the authored uniform(350, 450) this host pins at 350.
+        in.drift_rate_a4 = static_cast<float>(
+            bsp::dive_bomb_constant::kApproachDriftScaleA4) * slot.plane_max_spd;
         return in;
     }
 
-    void note_dive_bomb_release(GameUnitSlot& slot) {
+    // Packet cc8_dive_glide. The dive-bomb twin of release_ordnance_007bbba0
+    // above, kept separate rather than sharing it: that one spawns through
+    // release_ordnance_drop, which selects torpedo rows and clears kind 2Bh, and
+    // a bomb needs the kind 2Ah selection instead. The bay-open command itself
+    // is the same 007BBBA0 the image calls at 009C60F1 and at 009C5777.
+    //
+    // The point handed to the spawn is slot.db_run_in_origin, which is
+    // approach+D8h/+DCh/+E0h and which 009C7A80 has already rewritten this tick
+    // through 009C7D71 - the predicted impact point of a bomb released now. So
+    // it is the prediction to score the round against, not a latched origin.
+    void release_bomb_007bbba0(GameUnitSlot& slot, int rounds) {
+        if (!slot.actuator_block_dec.channel_c.enabled) {
+            slot.actuator_block_dec.channel_c.enabled = true;
+            slot.actuator_block_dec.channel_c.rate = 1.0f;
+        }
+        // The bay request is raised ONCE per release even when the salvo is two
+        // rounds, and that is not a shortcut. 007BBBA0 is a latch: 007BBBB2
+        // leaves when channel C is already at the top, so the image's own
+        // 009C5771-009C5784 loop gets one acceptance and one refusal from a
+        // two-round salvo. The bay is a bay; what the image counts per round is
+        // approach+2Ch, which the loop decrements whether or not 007BBBA0
+        // accepted - the call's result is never tested at 009C5777.
+        const bool accepted =
+            bsp::ordnance_release_request_007bbba0(slot.actuator_block_dec);
+        done("Unit::request_ordnance_release_007bbba0", 0x007bbba0u);
+        if (accepted) {
+            ++slot.db_bay_requests_accepted;
+        } else {
+            ++slot.db_bay_requests_refused;
+        }
+        // SUBSTITUTION, labelled, and the reason the spawn does not hang off
+        // `accepted`: the image's chain from the bay to a round is 007BBBA0 ->
+        // unit+C20h -> 007CE040 -> 007C0D90 -> 007EEF30 -> 007BCBE0 ->
+        // unit+C58h, and the bot task's release slot at the far end is UNREAD.
+        // Tying the spawn to the latch would drop the second round of every
+        // salvo, which is a property of the bay, not of the ordnance. One round
+        // per counted round is the smallest model that keeps the count the
+        // image keeps.
+        if (gunnery == nullptr) return;
+        const std::size_t index = index_of_slot(slot);
+        if (index >= slots.size()) return;
+        for (int i = 0; i < rounds; ++i) {
+            if (!gunnery->release_bomb_drop(index, slot.db_run_in_origin)) break;
+            ++slot.db_bombs_spawned;
+            // NO decrement of dive_bomb_rounds_remaining here. The task's own
+            // `spend_round` already does it, and a second one took the stock
+            // from 2 to 0 on the first bomb: db_has_bomb_d1 went false, the
+            // aimdive ended 15 ticks early and `movieval` dropped from
+            // releases=2 to releases=1. Measured in local\bomb_spawn.log before
+            // this line came out.
+        }
+    }
+
+    // `rounds` is 1 for the aimdive, whose 009C60F1 raises one request per gate,
+    // and r.rounds_released for the aimglide, whose 009C5771-009C5784 loop calls
+    // 007BBBA0 once per round of the salvo.
+    void note_dive_bomb_release(GameUnitSlot& slot, int rounds = 1) {
         ++slot.dive_bomb_releases;
+        // Packet cc8_dive_glide: the release was only ever COUNTED here.
+        release_bomb_007bbba0(slot, rounds);
         if (slot.db_release_alt < 0.0f) {
             slot.db_release_alt = slot.motion.position[1];
             slot.db_release_speed = slot.plane_travel_speed;
@@ -4780,7 +4915,27 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             void*, const bsp::DiveBombAimGlideReleaseResult& r) override {
                             slot_.db_aim_rearm_1c = r.rearm_timer_1c;
                             slot_.db_glide_travel_20 = r.travel_accumulator_20;
-                            if (r.released) owner_.note_dive_bomb_release(slot_);
+                            // Packet cc8_dive_glide's census: which gate of
+                            // 009C5689-009C5755 stopped this call, and the lead
+                            // when the chain got far enough to compute one.
+                            ++slot_.db_glide_calls;
+                            if (r.gate_reached >= 0 && r.gate_reached <= 6) {
+                                ++slot_.db_glide_gate_reached[r.gate_reached];
+                            }
+                            if (r.gate_reached >= 4) {
+                                slot_.db_glide_lead_last = r.lead;
+                                if (r.lead < slot_.db_glide_lead_min) {
+                                    slot_.db_glide_lead_min = r.lead;
+                                }
+                            }
+                            if (r.released) {
+                                ++slot_.db_glide_releases;
+                                slot_.db_glide_rounds += r.rounds_released;
+                            }
+                            if (r.released) {
+                                owner_.note_dive_bomb_release(
+                                    slot_, r.rounds_released);
+                            }
                         }
                         int rounds_remaining_007c1db0(void*) override {
                             // 007C1DB0 walks the device list at unit+48h and
@@ -5057,16 +5212,55 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // at 00D7A370, and 009C4F4E `76` JBE takes the 5.0
                             // at 00CE3850 when the argument is the smaller - so
                             // the travel accumulator starts at max(arg, 5.0) and
-                            // is never zero. SUBSTITUTION, labelled: the
-                            // argument's own producer is 009C4F00's caller,
-                            // unread, so the floor stands in for it.
+                            // is never zero.
+                            //
+                            // CORRECTION, packet cc8_dive_glide. `the argument's
+                            // own producer is 009C4F00's caller, unread` is
+                            // withdrawn: 009C4F00 is __thiscall(state) with no
+                            // stack argument at all - it ends `ADD ESP,8` /
+                            // `RET` with no immediate, balancing its own 009C4F00
+                            // `SUB ESP,8` - and it builds the quantity itself:
+                            //   009C4F15 FLD [EAX+0A4h]     ; 0.95 * MaxSpd
+                            //   009C4F22 CALL 007C1DB0      ; rounds remaining
+                            //   009C4F27 SUB EAX,1
+                            //   009C4F2E FILD / 009C4F32 FMUL qword 00CED0D8 (0.07)
+                            //   009C4F38 FMUL [ESP+8]
+                            // so the seed is max((rounds - 1) * 0.07 *
+                            // approach+A4h, 5.0). For the two-round USN04 Vals
+                            // that is 1 * 0.07 * 0.95 * 69.44 = 4.62, under the
+                            // floor - which is why the flat 5.0 happened to be
+                            // right here. It is a coincidence, not the rule.
                             //
                             // This matters because the lead gates at
                             // 009C5743/009C5751 are satisfiable only while the
                             // accumulator is positive; the 0.0 that stood here
                             // closed the glide release by itself.
-                            unit_.db_glide_travel_20 =
-                                bsp::dive_bomb_constant::kGlideTravelSeed;
+                            {
+                                // 009C4F0C/009C4F10, the two stores before the
+                                // seed: the aimglide enter clears state+18h and
+                                // state+1Ch of its OWN state object, exactly as
+                                // the aimdive enter does at 009C5876. This host
+                                // carries one db_aim_rearm_1c for both states,
+                                // so without this clear an aimdive release's
+                                // 0.2-0.5 s draw would still be running when the
+                                // glide's 009C5689 gate first asks.
+                                unit_.db_aim_rearm_1c = 0.0f;
+                                unit_.db_aim_pull_out_18 = false;
+                                const int rounds =
+                                    owner_.dive_bomb_rounds_remaining(unit_);
+                                const float seed =
+                                    static_cast<float>(rounds - 1) *
+                                    static_cast<float>(
+                                        bsp::dive_bomb_constant::kGlideSeedScale) *
+                                    (static_cast<float>(
+                                         bsp::dive_bomb_constant::
+                                             kApproachDriftScaleA4) *
+                                     unit_.plane_max_spd);
+                                unit_.db_glide_travel_20 =
+                                    seed > bsp::dive_bomb_constant::kGlideTravelSeed
+                                        ? seed
+                                        : bsp::dive_bomb_constant::kGlideTravelSeed;
+                            }
                         }
                         // The run-in census: one range sample per second of
                         // mission time, and the tick the latch closes.
@@ -8327,12 +8521,22 @@ void GameUnitsHost::report() {
                         slot->dive_bomb_state_ticks[i]);
                     if (n >= static_cast<int>(sizeof(states))) break;
                 }
+                // CORRECTED, packet cc8_dive_glide: `bombs_spawned` was printing
+                // slot->torpedo_drops_spawned, which is the TORPEDO drop's
+                // counter and can only ever be zero for a dive bomber. It now
+                // prints the bomb spawn's own field, with the bay requests
+                // 007BBBA0 accepted and refused beside it.
                 host.log.notef("  divebomb %-12s arm_ticks=%d transitions=%d "
-                    "states[%s] releases=%d bombs_spawned=%d rounds_left=%d",
+                    "states[%s] releases=%d bombs_spawned=%d rounds_left=%d "
+                    "| bay 007BBBA0: accepted=%d refused=%d (torpedo column "
+                    "was %d)",
                     slot->row.name.c_str(), slot->dive_bomb_arm_ticks,
                     slot->dive_bomb_transitions, states,
-                    slot->dive_bomb_releases, slot->torpedo_drops_spawned,
-                    slot->dive_bomb_rounds_remaining);
+                    slot->dive_bomb_releases, slot->db_bombs_spawned,
+                    slot->dive_bomb_rounds_remaining,
+                    slot->db_bay_requests_accepted,
+                    slot->db_bay_requests_refused,
+                    slot->torpedo_drops_spawned);
                 // The first gate check the packet asks for: approach+BCh
                 // against approach+B8h in the latch at 009C7C31.
                 if (slot->db_turndown_ticks > 0) {
@@ -8398,6 +8602,35 @@ void GameUnitsHost::report() {
                         static_cast<double>(slot->db_attackrun_heading_last),
                         static_cast<double>(slot->db_attackrun_throttle_last),
                         static_cast<double>(slot->db_attackrun_alt_last), ranges);
+                }
+                // Packet cc8_dive_glide: the aimglide release chain
+                // 009C5689-009C5755, per aircraft. blocked[] counts the calls
+                // that stopped at each gate in order; the lead window is
+                // -4*travel - 5.0 < lead < -5.0, so with the 009C4F50 seed of
+                // 5.0 and approach+A4h held at zero it is -25.0 .. -5.0 m.
+                if (slot->db_glide_calls > 0) {
+                    host.log.notef("  divebomb %-12s aimglide 009C5689-009C5755: "
+                        "calls=%d blocked[rearm=%d bearing=%d ceiling=%d "
+                        "lateral=%d lead_hi=%d lead_lo=%d] passed=%d | "
+                        "releases=%d rounds=%d | lead last=%.2f m min=%.2f m "
+                        "(window -%.1f..-%.1f m) | bearing err min=%.4f rad "
+                        "(gate %.4f) | throw=%.1f m range=%.1f m travel=%.2f",
+                        slot->row.name.c_str(), slot->db_glide_calls,
+                        slot->db_glide_gate_reached[0], slot->db_glide_gate_reached[1],
+                        slot->db_glide_gate_reached[2], slot->db_glide_gate_reached[3],
+                        slot->db_glide_gate_reached[4], slot->db_glide_gate_reached[5],
+                        slot->db_glide_gate_reached[6],
+                        slot->db_glide_releases, slot->db_glide_rounds,
+                        static_cast<double>(slot->db_glide_lead_last),
+                        static_cast<double>(slot->db_glide_lead_min),
+                        4.0 * static_cast<double>(slot->db_glide_travel_20) + 5.0,
+                        5.0,
+                        static_cast<double>(slot->db_glide_bearing_min),
+                        static_cast<double>(
+                            bsp::dive_bomb_constant::kGlideDiveAngleLimit),
+                        static_cast<double>(slot->db_impact_throw_14),
+                        static_cast<double>(slot->db_planar_bc),
+                        static_cast<double>(slot->db_glide_travel_20));
                 }
                 host.log.notef("  divebomb %-12s gate 009C7C31: "
                     "approach+BCh=%.1f m approach+B8h=%.1f m latch_D0h=%d "
