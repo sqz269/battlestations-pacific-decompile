@@ -22,6 +22,8 @@
 #include "bsp/unit_rudder.hpp"
 #include "bsp/dive_bomb_task.hpp"
 #include "bsp/torpedo_aim_tick.hpp"
+#include "bsp/torpedo_goaway_tick.hpp"
+#include "bsp/plane_fly_to_solver.hpp"
 #include "bsp/torpedo_approach_update.hpp"
 #include "bsp/torpedo_first_release.hpp"
 #include "bsp/torpedo_issue_timing.hpp"
@@ -34,6 +36,7 @@
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_ai.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/torpedo_release_spawn.hpp"
 #include "bsp/bot_tasks.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
@@ -593,6 +596,16 @@ struct GameUnitSlot {
     int torpedo_goaway_enters{0};
     bool torpedo_goaway_done_last{false};
     float torpedo_goaway_range_peak{-1.0f};
+    // 009D0F10's own state object, the rest of task+6D8h. The five fields above
+    // stay because the report and 009D3150 read them; this carries +18h, +1Ch,
+    // +20h, +28h, +30h and +34h, which only the tick uses.
+    bsp::TorpedoGoAwayRuntime torpedo_goaway_runtime{};
+    int torpedo_goaway_ticks{0};
+    int torpedo_goaway_arm_ticks[5]{0, 0, 0, 0, 0};  // index 1..4 = the four arms
+    int torpedo_goaway_heading_ticks{0};             // arms that publish +2C0h
+    float torpedo_goaway_alt_cmd_last{0.0f};
+    float torpedo_goaway_alt_min{1e9f};
+    float torpedo_goaway_alt_max{-1e9f};
     int torpedo_aim_run_time_updates{0};   // 009D19A4
     int torpedo_aim_release_arms{0};       // 009D2287
     float torpedo_aim_timer{0.0f};         // 009D2027, 009FA3A0(state+18h, dt)
@@ -2706,6 +2719,16 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
     host.log.notef("world units: %zu created instance(s) carried into the frame, %zu with a "
         "VehicleClass row out of the installed table", host.summary.units,
         host.summary.class_rows);
+    // The plane-squadron member write-back, here because the slots now exist
+    // and the AI host below reads the array as soon as it is constructed.
+    // GameScriptOrdersHost owns this body but the free function needs no
+    // scripts-orders host: it takes the process-wide registry and this host's
+    // own count()/unit_row(). Without the call, a squadron that came from a
+    // SCENE row still had an empty +3D0h array when build_squadrons asked, and
+    // USN04 built 7 AI squadrons over 15 member planes where the mission has 5.
+    // `only_unresolved` so the wipe inside it can never un-fill the inline
+    // answer an air-ops launch already wrote; docs/PLANE_SQUADRON_HOST.md.
+    bsp::game::resolve_plane_squadron_members(*this, &host.log, true);
     // Milestone 2t: the unit-side gunnery pass. 00810DD0's creation block puts a
     // 558h-byte object at unit+6DCh and attaches it to the unit's own tick
     // element unit+310h through its vtable +4h (00864BD0), which is why it runs
@@ -4107,6 +4130,46 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 slot_.torpedo_goaway_side_2c = g.break_off_side_2c;
                                 ++slot_.torpedo_goaway_enters;
                                 slot_.torpedo_goaway_range_peak = -1.0f;
+                                // 009D0E3A-009D0F04, the rest of the same
+                                // enter. It is what fills the climb altitude
+                                // +1Ch and the `high` threshold +20h that the
+                                // tick tests unit world y against, and without
+                                // it the tick reads zeros.
+                                bsp::TorpedoGoAwayEnterTailInputs gt;
+                                gt.has_ordnance_132 =
+                                    slot_.torpedo_approach.has_ordnance_132;
+                                gt.alt_floor_74 = slot_.torpedo_approach.alt_floor_74;
+                                gt.alt_margin_78 = slot_.torpedo_approach.alt_margin_78;
+                                // [[approach+0Ch]+394h]. The squadron block is
+                                // unmodelled here, as it already is for
+                                // 009FBA9B's ceiling leg.
+                                gt.has_squadron_394 = false;
+                                // 00BD2F10 UniformFloatRange(50, 100) at
+                                // 009D0E71; this host takes the low end of
+                                // every draw.
+                                gt.climb_jitter =
+                                    bsp::torpedo_goaway_tick::kClimbJitterLo;
+                                // UniformFloatRange(row+10h, row+14h) at
+                                // 009D0EA3. row+10h and row+14h are
+                                // TorpFlikFlakTime 1 and 2 in
+                                // PilotBotParameters (docs/TORPEDO_RUN_PROFILE.md
+                                // fixes row+0h as TorpReleaseAlt, so +10h is the
+                                // fifth float). This host does not load the
+                                // PilotBotConfig at all, so the draw is a HOLE,
+                                // not a stand-in: it is left at zero and the
+                                // manoeuvre window therefore opens on the first
+                                // tick the aircraft is above +20h instead of
+                                // after the authored delay.
+                                owner_.log.unimplemented(
+                                    "PilotBotParameters::TorpFlikFlakTime",
+                                    "00997c68");
+                                gt.window_delay_draw = 0.0f;
+                                bsp::torpedo_goaway_enter_tail_009d0e3a(
+                                    gt, slot_.torpedo_goaway_runtime);
+                                slot_.torpedo_goaway_runtime
+                                    .break_off_distance_24 = g.break_off_distance_24;
+                                slot_.torpedo_goaway_runtime.side_2c =
+                                    g.break_off_side_2c;
                             }
                             slot_.torpedo_state = next;
                             ++slot_.torpedo_transitions;
@@ -5101,6 +5164,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // sector scan chose. docs/TORPEDO_APPROACH_UPDATE.md.
                         if (ctx.current == bsp::TorpedoState::kAim) {
                             run_torpedo_aim_tick_009d15f0(dt);
+                        } else if (ctx.current == bsp::TorpedoState::kGoAway) {
+                            // 009D0F10. Until this packet the goaway state ran
+                            // NO tick at all, which is why the five bombers
+                            // held their post-release descent into the water:
+                            // nothing commanded the climb-away.
+                            run_goaway_tick_009d0f10(dt);
                         } else if (ctx.current == bsp::TorpedoState::kMoveTo ||
                                    ctx.current == bsp::TorpedoState::kFollow) {
                             run_move_to_tick_009c18c0();
@@ -5599,6 +5668,165 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     unit_.plane_world_velocity[1] * unit_.plane_world_velocity[1] +
                                     unit_.plane_world_velocity[2] * unit_.plane_world_velocity[2])),
                                 static_cast<double>(unit_.plane_live_throttle));
+                        }
+                    }
+
+                    // The same lookup TorpedoApproachBinding::target() does, on
+                    // this class's own slot reference.
+                    const GameUnitSlot* goaway_target() const {
+                        if (unit_.command_target_plus_one == 0) return nullptr;
+                        const std::size_t i = unit_.command_target_plus_one - 1;
+                        if (i >= owner_.slots.size()) return nullptr;
+                        return owner_.slots[i].get();
+                    }
+
+                    // 009D0C10 then 009D0F10, the goaway state's geometry
+                    // update and its tick. docs/TORPEDO_FLY_TO_SOLVER.md and
+                    // docs/TORPEDO_AFTER_THE_DROP.md section 3.1.
+                    void run_goaway_tick_009d0f10(float dt) {
+                        bsp::TorpedoGoAwayRuntime& g = unit_.torpedo_goaway_runtime;
+
+                        // --- 009D0F46, the geometry update, which runs first.
+                        bsp::FlyToSolverInputs fin;
+                        // arg1, approach->vtable[0](): the target point. The
+                        // torpedo class's slot 0 body is still a contract, and
+                        // the ordered target's world position stands in for it
+                        // exactly as approach_target_point already does.
+                        bool have_point = false;
+                        {
+                            float p[3] = {0.0f, 0.0f, 0.0f};
+                            if (const GameUnitSlot* const t = goaway_target()) {
+                                p[0] = t->motion.position[0];
+                                p[1] = t->motion.position[1];
+                                p[2] = t->motion.position[2];
+                                have_point = true;
+                            }
+                            fin.point[0] = p[0];
+                            fin.point[1] = p[1];
+                            fin.point[2] = p[2];
+                        }
+                        for (int i = 0; i < 3; ++i) {
+                            fin.unit_position[i] = unit_.motion.position[i];
+                            // unit->vtable[34h] is 007BBB70, which copies out
+                            // unit+AC8h..AD0h (all nine vtables that carry
+                            // 0074E260 at slot 50h carry 007BBB70 at 34h). That
+                            // vector has NO literal-address writer in .text -
+                            // the only two disp32 references, 007BBB74 and
+                            // 007C1B85, are both reads - so its identity is a
+                            // HYPOTHESIS: this host feeds its own world
+                            // velocity, which makes the solver's 3.0 multiplier
+                            // a three-second lead. If the vector is not the
+                            // velocity the break-off BEARING is wrong; nothing
+                            // else in the tick depends on it.
+                            fin.unit_lead_vector[i] = unit_.plane_world_velocity[i];
+                        }
+                        fin.standoff = g.break_off_distance_24;
+                        fin.range = unit_.torpedo_approach.range_90;
+                        // arg6 at this call site is the literal 0.8 at 00CE74F8.
+                        fin.offset_scale = 0.8f;
+                        // The cached obstacle list is a walk of GGame+19CCh's
+                        // unit list, which this host does not expose. Empty is
+                        // the answer for an open-water placement with no other
+                        // unit inside its own extent plus 100 m of the lead
+                        // point, and it is reported rather than assumed.
+                        fin.obstacles = nullptr;
+                        fin.obstacle_count = 0;
+                        // 00681F40 / 009FA510 over GGame+711Ch..7130h: the world
+                        // bounds are unmodelled, and USN01's aircraft are in
+                        // open ocean rather than against a map edge.
+                        fin.world_edge.near_edge = false;
+
+                        const bsp::FlyToSolverResult fr =
+                            bsp::fly_to_point_heading_009fd570(fin, g.side_2c);
+                        g.side_2c = fr.side;
+
+                        bsp::TorpedoGoAwayGeometryInputs geo;
+                        geo.unit_heading_c6c = unit_.plane_heading_c6c;
+                        geo.break_off_bearing = fr.heading;
+                        // 007F0280's three out-slots stay at the zeros the
+                        // caller writes at 009D0C96-009D0CAA, so the 009D0D50
+                        // nudge cannot fire. docs/TORPEDO_AFTER_THE_DROP.md 3.5.
+                        const float heading_18 =
+                            bsp::torpedo_goaway_heading_009d0c10(geo);
+
+                        // --- 009D0F4E onward, the tick.
+                        bsp::TorpedoGoAwayTickInputs in;
+                        in.unit_altitude = unit_.motion.position[1];
+                        in.range_90 = unit_.torpedo_approach.range_90;
+                        in.elapsed_134 = unit_.torpedo_approach.elapsed_134;
+                        in.heading_18 = have_point ? heading_18 : g.heading_18;
+                        // UniformFloatRange(3, 6) at 009D0FD7, low end.
+                        in.window_jitter_draw =
+                            bsp::torpedo_goaway_tick::kWindowJitterLo;
+                        // The same TorpFlikFlakTime hole the enter reports.
+                        in.window_delay_draw = 0.0f;
+
+                        const bsp::TorpedoGoAwayTickResult r =
+                            bsp::torpedo_goaway_tick_009d0f10(g, in, dt);
+                        ++unit_.torpedo_goaway_ticks;
+                        if (r.arm >= 1 && r.arm <= 4) {
+                            ++unit_.torpedo_goaway_arm_ticks[r.arm];
+                        }
+
+                        // 009FB800(altitude, 1.0). The altitude command is the
+                        // whole point of this binding, so it goes through the
+                        // same helper the attack run uses rather than a
+                        // shortcut: 009FB800 writes cmd+2BCh and cmd+2D0h = 2,
+                        // and cmd+2D0h non-zero is what lets 0099E3BF run the
+                        // pitch arm at all.
+                        if (r.commands_altitude && r.altitude_known) {
+                            bsp::PlanePitchCommandInputs pin;
+                            pin.desired_altitude = r.altitude;
+                            pin.reference = bsp::torpedo_goaway_tick::kPitchReference;
+                            pin.unit_world_y = unit_.motion.position[1];
+                            if (owner_.lua.plane_globals_loaded()) {
+                                const bsp::GameTuningBlock& gt =
+                                    owner_.lua.plane_globals();
+                                pin.ceiling = gt.dynamics_ceiling;
+                                pin.climb_dist = gt.pilot_general_climb_dist;
+                                pin.drop_dist = gt.pilot_general_drop_dist;
+                            }
+                            pin.class_climb_angle = unit_.plane_climb_angle_1ec;
+                            pin.class_drop_angle = unit_.plane_drop_angle;
+                            unit_.plane_commanded_altitude = r.altitude;
+                            unit_.plane_commanded_pitch =
+                                bsp::pitch_command_009fb800(pin);
+                            unit_.plan_state.pitch_target_2bc =
+                                unit_.plane_commanded_pitch;
+                            unit_.plan_state.pitch_mode_2d0 = 2;
+                            unit_.torpedo_goaway_alt_cmd_last = r.altitude;
+                        } else if (r.commands_altitude) {
+                            // The +1Ch hole: the ordnance byte was clear at the
+                            // enter and there is no squadron block, so the image
+                            // would command [[approach+0Ch]+394h] and this host
+                            // has no value. Commanding nothing is the honest
+                            // answer; commanding zero would be a dive.
+                            owner_.log.unimplemented(
+                                "BotStateTorpedoGoAway::climb_altitude_1c",
+                                "009d0e7f");
+                        }
+
+                        // cmd+2C0h / cmd+2CCh, the pair 0099D300's yaw arm reads.
+                        if (r.commands_heading) {
+                            unit_.plan_heading_2c0 = r.heading_2c0;
+                            unit_.plan_heading_mode_2cc = r.heading_mode_2cc;
+                            unit_.plan_heading_2c0_written = true;
+                            ++unit_.torpedo_goaway_heading_ticks;
+                        } else {
+                            // Mode 1 leaves the heading alone and lets the roll
+                            // target through, which is exactly what arms 2 and 4
+                            // want. docs/PILOT_PLANNER_PITCH_ROLL.md.
+                            unit_.plan_heading_mode_2cc = r.heading_mode_2cc;
+                        }
+                        if (r.commands_roll) {
+                            unit_.plan_state.bank_target_2c4 = r.roll_2c4;
+                        }
+                        const float y = unit_.motion.position[1];
+                        if (y < unit_.torpedo_goaway_alt_min) {
+                            unit_.torpedo_goaway_alt_min = y;
+                        }
+                        if (y > unit_.torpedo_goaway_alt_max) {
+                            unit_.torpedo_goaway_alt_max = y;
                         }
                     }
 
@@ -7858,6 +8086,31 @@ void GameUnitsHost::report() {
                             host.lua.plane_globals_loaded()
                                 ? host.lua.plane_globals().pilot_torpedo_safe_dist
                                 : 0.0f));
+                    // 009D0F10, bound by packet cc8_flyto_solver_and_goaway.
+                    // arms: 1 = window/below 20 m (climb to 1000 on +18h),
+                    // 2 = window/above 20 m (roll), 3 = post-window/high
+                    // (heading +18h), 4 = post-window/low (wings level).
+                    host.log.notef("  torpedo %-12s goaway 009D0F10: ticks=%d "
+                        "arms[win_low=%d win_high=%d post_high=%d post_low=%d] "
+                        "heading_ticks=%d climb_1Ch=%.1f known=%d high_20h=%.1f "
+                        "alt_cmd=%.1f alt_range=[%.1f,%.1f]",
+                        slot->row.name.c_str(),
+                        slot->torpedo_goaway_ticks,
+                        slot->torpedo_goaway_arm_ticks[1],
+                        slot->torpedo_goaway_arm_ticks[2],
+                        slot->torpedo_goaway_arm_ticks[3],
+                        slot->torpedo_goaway_arm_ticks[4],
+                        slot->torpedo_goaway_heading_ticks,
+                        static_cast<double>(
+                            slot->torpedo_goaway_runtime.climb_altitude_1c),
+                        slot->torpedo_goaway_runtime.climb_altitude_known ? 1 : 0,
+                        static_cast<double>(
+                            slot->torpedo_goaway_runtime.high_threshold_20),
+                        static_cast<double>(slot->torpedo_goaway_alt_cmd_last),
+                        static_cast<double>(slot->torpedo_goaway_ticks > 0
+                            ? slot->torpedo_goaway_alt_min : 0.0f),
+                        static_cast<double>(slot->torpedo_goaway_ticks > 0
+                            ? slot->torpedo_goaway_alt_max : 0.0f));
                 } else {
                     host.log.notef("  torpedo %-12s approach 009D3420: "
                         "ticks=%d no_target=%d replans=%d aim_ticks=%d | "

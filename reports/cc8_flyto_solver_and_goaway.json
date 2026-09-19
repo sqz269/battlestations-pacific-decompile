@@ -1,0 +1,212 @@
+{
+  "packet": "cc8_flyto_solver_and_goaway",
+  "owner": "agent/cc8-plane-squadron",
+  "doc": "docs/TORPEDO_FLY_TO_SOLVER.md",
+  "summary": "009FD570 is a standoff-ring controller, not a bearing helper: it returns the compass heading that flies a unit away from, around or in toward a point depending on range - standoff, with an obstacle-avoidance term and a map-edge term folded in. Its RET 0x18 says six stack arguments, which retracts docs/TORPEDO_AFTER_THE_DROP.md section 3.5's reading that approach->vtable[0] takes five of them: vtable[0] is RET 4 and takes only its return buffer. The torpedo break-off 009D0C10 and the goaway tick 009D0F10 are reconstructed on top of it.",
+  "routines": [
+    {
+      "address": "009fd570",
+      "name": "BSP_Bot_FlyToPointHeading",
+      "abi": "float __thiscall(cache, const Vec3* point, Unit* unit, float standoff, float* side, float range, float offset_scale); RET 0x18 at 009FDEDC, the only RET in the body; result in ST0 already wrapped into [0, 2pi)",
+      "coverage": "complete: body 009FD570-009FDEDE, both frame regions (E-0xC4 before the POP EBP/POP EBX at 009FDAE8/009FDAED, E-0xBC after), all 24 call sites, every constant at its load width"
+    },
+    {
+      "address": "009d0c10",
+      "name": "BSP_BotStateTorpedoGoAway_UpdateGeometry",
+      "abi": "void __thiscall(this), no stack argument, RET at 009D0D87",
+      "coverage": "complete for the frame and the six-argument layout of its 009FD570 call; its arithmetic is docs/TORPEDO_AFTER_THE_DROP.md section 3.4"
+    },
+    {
+      "address": "009d0d90",
+      "name": "BSP_BotStateTorpedoGoAway_Enter",
+      "abi": "void __thiscall(this), RET at 009D0EF4 and 009D0F04",
+      "coverage": "complete for the tail 009D0E3A-009D0F04, which this packet reconstructs: +1Ch, +28h, +30h, +34h, +20h. The head through 009D0E3A is already torpedo_goaway_enter_009d0d90 in bsp/torpedo_task_arm.hpp"
+    },
+    {
+      "address": "009d0f10",
+      "name": "BSP_BotStateTorpedoGoAway_Tick",
+      "abi": "void __thiscall(this, float dt), RET 4 at 009D1153, 009D11ED and 009D120E",
+      "coverage": "complete: reconstructed from docs/TORPEDO_AFTER_THE_DROP.md section 3.1's transcript with the window arm 009D1084-009D1112 re-verified instruction by instruction from the disk bytes"
+    },
+    {
+      "address": "00419010",
+      "name": "BSP_Math_InterpolateClamped",
+      "abi": "float __cdecl(float x0, float y0, float x1, float y1, float x); RET 0x14",
+      "coverage": "complete: y0 + (x-x0)/(x1-x0) * (y1-y0), clamped into [min(y0,y1), max(y0,y1)], returning y0 when x1 == x0"
+    },
+    {
+      "address": "00681f40",
+      "name": "GGame_NearWorldEdge",
+      "abi": "bool __thiscall(GGame*, const Vec3* pos, float margin); RET 8",
+      "coverage": "complete: true when pos.x or pos.z is within margin of GGame+711Ch/7128h (x) or +7124h/7130h (z)"
+    },
+    {
+      "address": "009fa510",
+      "name": "GGame_WorldEdgeOverrun",
+      "abi": "float __thiscall(GGame*, const Vec3* pos, float margin); RET 8",
+      "coverage": "partial: read from 009FA53D to 009FA613. The largest of the four margin overruns, running maximum seeded at 0 by the FLDZ at 009FA545. The three instructions before 009FA53D are unread."
+    },
+    {
+      "address": "007b5af0",
+      "name": "FUN_007b5af0",
+      "coverage": "partial: only the 009FD570 call setup at 007B5AF9-007B5B2D"
+    },
+    {
+      "address": "009a3cf0",
+      "name": "FUN_009a3cf0",
+      "coverage": "partial: only the 009FD570 call setup at 009A3CF9-009A3D2D"
+    },
+    {
+      "address": "009ad480",
+      "name": "FUN_009ad480",
+      "coverage": "partial: only the FLD1 scale at 009AD4BE and the call at 009AD54C"
+    },
+    {
+      "address": "009b5760",
+      "name": "FUN_009b5760",
+      "coverage": "partial: only the 009FD570 call setup at 009B576A-009B57A8"
+    },
+    {
+      "address": "009c47d0",
+      "name": "FUN_009c47d0",
+      "coverage": "partial: only the 009FD570 call setup at 009C47D6-009C4810, read as the independent confirmation of the six-argument layout"
+    },
+    {
+      "address": "009d0670",
+      "name": "BSP_BotApproachTorpedo_GetAimPoint",
+      "abi": "Vec3 __thiscall(approach*, Vec3* out), RET 4, 31 bytes 009D0670-009D068E",
+      "coverage": "complete: copies approach+D0h/+D4h/+D8h and does no arithmetic. Slot 0 of BotApproachTorpedo's vtable 00D213C0, found from 009D3050's LEA EDI,[ESI+3F8h] at 009D3080 and MOV [EDI],0D213C0h at 009D30A7"
+    }
+  ],
+  "corrections": [
+    {
+      "doc": "docs/TORPEDO_AFTER_THE_DROP.md",
+      "section": "3.5",
+      "was": "009FD570(state, approach->vtable[0](&scratch, unit, state+24h, &state+2Ch, approach+90h, 0.8)) - vtable[0] takes a return buffer plus five arguments and 009FD570 takes one, with the side passed by pointer to vtable[0]",
+      "is": "approach->vtable[0] is RET 4 and takes only its return buffer; 009FD570 is RET 0x18 and takes all six. The five values are staged before the vtable[0] call and left across it. The side IS an in/out pointer, but it is 009FD570's, written at 009FDC48.",
+      "evidence": "the stack balance of 009D0C10 walked backwards from its POP ESI / ADD ESP,0x3C at 009D0D83 with each callee's own RET imm (007F0280 RET 0x18, 00438B10/00438AA0 RET 8, 0074E260 bare RET) puts ESP at S-0x18 before CALL 009FD570; the six pushes before CALL EAX put ESP at S-0x18 too and PUSH EAX sits between them, so vtable[0] popped four bytes. Confirmed independently by 009C47D0's byte-identical call setup at 009C47D6-009C4810."
+    },
+    {
+      "doc": "docs/TORPEDO_AFTER_THE_DROP.md",
+      "section": "4 (this packet's own)",
+      "was": "the before column was local/aimclass_after_usn01.log, taken on d74aa5b4a",
+      "is": "that baseline is 159 lines of plane/ship/AI path away from the after tree (game_hosts_ai.cpp +85, game_hosts_units.cpp +47, plane_squadron_host.hpp, ship_ai_attackmove_substates.hpp, unit_death_sink.hpp). The before column was re-taken at 81ccfd29d, the after tree minus exactly the binding.",
+      "evidence": "local/goaway_before_usn01.log reproduces the old baseline to the digit: deaths=5 kill_credits=5 queued_hits=111 total_damage=2596.8 first_hit=58.65 s, goaway enters=1, range_peak 368.9 to 382.2. The confound was a real risk and inert in fact; the attribution is now earned."
+    },
+    {
+      "doc": "docs/TORPEDO_AFTER_THE_DROP.md",
+      "section": "5 (this packet's own)",
+      "was": "approach->vtable[0]'s body is unread and is the last place a lead could hide",
+      "is": "it is 009D0670, it returns the stored vec3 at approach+D0h..D8h with no arithmetic, so it cannot lead. The open question is now approach+D0h's producer, which no literal-address encoding reaches in the bot band (seven forms, each with a positive control) - a bound on where the writer is, not a proof that there is none.",
+      "evidence": "009D3050's LEA EDI,[ESI+3F8h] then MOV [EDI],0D213C0h gives the vtable; the body is MOV EAX,[ESP+4] and three FLD/FSTP pairs, RET 4"
+    },
+    {
+      "doc": "docs/TORPEDO_AFTER_THE_DROP.md",
+      "section": "5 (this packet's own)",
+      "was": "the escorts make 13.7 m/s, so a 22.7 s run lets the target move about 311 m",
+      "is": "13.7 came from two d32c endpoints spanning the acceleration and a rudder-0.805 turn. The steady-state rate over steps 1600 to 3000 is 15.0 m/s and every drop falls in that phase, so the displacement is about 340 m - and it is a lower bound, because d32c is distance-to-waypoint and the hull is not pointing at the waypoint.",
+      "evidence": "d32c 12046.18 / 11745.50 / 11109.09 / 10496.68 / 10059.83 at ship ai steps 90 / 800 / 1600 / 2400 / 3000; reference_speed 16.72 at throttle 0.92"
+    }
+  ],
+  "host": [],
+  "validation": [
+    {
+      "run": "local/goaway_bound_usn01.log",
+      "baseline": "local/aimclass_after_usn01.log",
+      "command": "--frames 3200 --press-start-frame 30 --menu-select USN01 --mission-frames 3000 --mission-frame-seconds 0.05",
+      "session": "console session 1 Active",
+      "result": "deaths 5 -> 2, kill_credits 5 -> 2, hits taken 111 -> 59, damage taken 2596.8 -> 1501.9. All five aircraft climb away: world y in the goaway bottoms at 6.9 to 9.4 m and peaks at 47.7 to 57.7 m, against the previous run's descent to the water at 69.6 m/s. Mav2 and Mav3 finish at full health, Mav4 at 175/450; Mav1 and Mav5 are killed at 134.9 s and 129.7 s by Dunlap and SaltLakeCity.",
+      "arms": "Mav1 465 ticks 0/106/0/359, Mav2 546 0/170/17/359, Mav3 551 0/170/23/358, Mav4 507 0/150/0/357, Mav5 517 0/162/0/355 (win_low/win_high/post_high/post_low)",
+      "substitution_exposure": "the commanded heading, the only output that depends on the unproved unit+AC8h lead vector, is published on 40 of 2586 goaway ticks; three of the five aircraft never publish it",
+      "not_settled": "goaway enters 1 -> 82 and transitions 3 -> 165, because the break-off now opens the range past 700 m and 009D3150 answers true. 009D4030's transition rule for a torpedo-less aircraft is not established to be the image's."
+    },
+    {
+      "run": "local/goaway_before_usn01.log",
+      "tree": "81ccfd29d detached, the after tree minus exactly the binding; both ctest suites passed",
+      "purpose": "a before column one commit from the after column instead of thirty",
+      "result": "deaths=5 kill_credits=5 queued_hits=111 total_damage=2596.8 first_hit=58.65 s, all five Mav killed at 109.15 to 136.95 s, goaway enters=1, transitions 3 to 4, range_peak_in_goaway 382.2 / 368.9 / 370.6 for Mav1 / Mav3 / Mav5. Identical to the d74aa5b4a baseline, so the 159 intervening lines move nothing in this mission."
+    },
+    {
+      "claim": "the image does not lead the torpedo through 009D1360",
+      "method": "byte census over .text with --limit 4000 (the default cap is 20 and truncated the first pass), four encodings per field plus the task+4F0h alias and the SIB forms",
+      "result": "approach+F8h has three stores (009D3D2F, 009D3D52, 009D3D65, all in 009D3420) and no read anywhere in the image; approach+98h is read only by 009D3D12; approach+A0h is read only by the release gate at 009D2044 and the getter 009D12D0",
+      "positive_controls": "the same encodings occur 20, 18, 9, 1, 2, 23 and 4 times elsewhere in .text, none of them in the bot-task band",
+      "measured": "cmd_2C0 == bearing_94 - 2pi exactly at every aim census, with turn_5c = 0, so the host commands the bare bearing to the target's present position; the escorts make 13.7 m/s and a 22.7 s run lets a 180 m hull move about 311 m"
+    }
+  ],
+  "host_methods": [
+    {
+      "method": "run_goaway_tick_009d0f10 -> geometry update",
+      "address": "009d0f46",
+      "native": "009d0c10",
+      "note": "009D0F10's first call; the host runs the fly-to solver and 009D0C10's turn before the tick"
+    },
+    {
+      "method": "fly_to_point_heading_009fd570",
+      "address": "009d0c54",
+      "native": "009fd570",
+      "note": "six stack arguments, ECX = the goaway state; arg6 is the literal 0.8 at 00CE74F8"
+    },
+    {
+      "method": "torpedo_goaway_enter_tail_009d0e3a",
+      "address": "009d0e3a",
+      "native": "009d0c10",
+      "note": "the enter runs the geometry update too, so state+18h is filled before the first tick"
+    },
+    {
+      "method": "pitch_command_009fb800, window arm above 20 m",
+      "address": "009d109c",
+      "native": "009fb800",
+      "note": "altitude state+1Ch, reference the literal 1.0"
+    },
+    {
+      "method": "pitch_command_009fb800, window arm below 20 m",
+      "address": "009d10ff",
+      "native": "009fb800",
+      "note": "altitude 1000.0 at 00CE3804 - the only climb command in the torpedo chain"
+    },
+    {
+      "method": "pitch_command_009fb800, post-window arm",
+      "address": "009d1194",
+      "native": "009fb800",
+      "note": "altitude state+1Ch, issued before the high/low split so both arms get it"
+    },
+    {
+      "method": "wrapped_angle_subtract_00438b10 in the geometry update",
+      "address": "009d0cee",
+      "native": "00438b10"
+    },
+    {
+      "method": "wrapped_angle_add_00438aa0, the only store of state+18h",
+      "address": "009d0d7b",
+      "native": "00438aa0"
+    },
+    {
+      "method": "clamped_interpolate_00419010, the obstacle falloff",
+      "address": "009fd921",
+      "native": "00419010"
+    },
+    {
+      "method": "GGame::NearWorldEdge, the world-edge gate",
+      "address": "009fdd62",
+      "native": "00681f40"
+    },
+    {
+      "method": "GGame::WorldEdgeOverrun, its magnitude",
+      "address": "009fdd80",
+      "native": "009fa510"
+    },
+    {
+      "method": "unit->vtable[34h], the lead vector",
+      "address": "009fd5a6",
+      "native": "007bbb70",
+      "note": "resolved from the vtable rather than the call: all nine .rdata vtables carrying 0074E260 at slot 50h carry 007BBB70 at slot 34h. HYPOTHESIS that unit+AC8h..AD0h is the velocity; no literal-address writer exists in .text"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "009d0670",
+      "why": "009D0380 BSP_BotApproachTorpedo_Reset's Ghidra body is 009D0380-009D066F, one byte short, so byte scans report this address as inside it and ghidra_annotate.py refuses with 'No function at address'. Creating it is a Ghidra mutation and belongs to a packet that holds the write lock."
+    }
+  ]
+}

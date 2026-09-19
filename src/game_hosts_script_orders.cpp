@@ -770,11 +770,15 @@ void GameScriptOrdersHost::resolve_plane_squadron_members() {
 }
 
 std::size_t resolve_plane_squadron_members(const GameUnitsHost& units,
-                                           GameHostLog* log) {
+                                           GameHostLog* log,
+                                           bool only_unresolved) {
     const std::size_t count = units.count();
     std::size_t resolved = 0;
     std::size_t missing = 0;
     for (bsp::PlaneSquadronHostRecord& record : bsp::plane_squadron_registry().records()) {
+        // Leave a record that already has an answer alone when asked to, so the
+        // wipe below can never un-fill the air-ops route's inline slots.
+        if (only_unresolved && record.live_count() != 0) continue;
         record.member_units.assign(record.member_names.size(), bsp::kPlaneSquadronNoUnit);
         for (std::size_t slot = 0; slot < record.member_names.size(); ++slot) {
             for (std::size_t unit = 0; unit < count; ++unit) {
