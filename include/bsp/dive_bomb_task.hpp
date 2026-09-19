@@ -565,6 +565,53 @@ DiveBombTurnDownResult dive_bomb_turndown_tick_009c44f0(
 // 009C4530-009C4575: fmod by 2pi through 00BF857A, then the (-pi, pi] wrap.
 float dive_bomb_wrap_signed_pi_009c4551(float angle) noexcept;
 
+// ---------------------------------------------------------------------------
+// 009C5C9F-009C5DB2, the aimdive tick's steering: the only thing in the whole
+// chain that points the aircraft AT its aim point.
+//
+// 009C58D0's tick had no binding at all - `tick_state` was an empty override -
+// so through 664 live aimdive ticks the host issued no roll and no pitch, the
+// planner levelled the aircraft, and it flew past the target at 444 m. That is
+// the whole of the 340 m the aim census reported. docs/DIVE_BOMB_TASK.md.
+//
+// Both writes carry the mode that survives the planner: 009C5D1C puts EBX
+// (zeroed at 009C58DE) in cmd+2D0h, which is the value the pitch gate at
+// 0099E3BF lets through, and 009C5DB2 puts it in cmd+2CCh, which is neither 2
+// nor 1 so the planner's roll arm is skipped entirely.
+//
+// Jump senses from the branch bytes: 009C5CA9, 009C5CBC, 009C5CE5, 009C5D22
+// and 009C5D31 are all `76` JBE.
+// ---------------------------------------------------------------------------
+namespace dive_bomb_constant {
+// 009C5D85 / 009C5D75: the default roll band, +/- 0.4 rad of bearing error
+// mapped onto the full stick. 00D1F400 is the negative endpoint.
+inline constexpr float kAimDiveRollBand = 0.4000000059604645f;   // 00CE7804
+// 009C5D58 / 009C5D48: the wider band the 009C5D22/009C5D31 pair selects.
+inline constexpr float kAimDiveRollBandWide = 0.5f;              // 00CE3800
+// 009C5D24, the 60 degrees that second test compares against.
+inline constexpr float kAimDiveRollBandAngle = 1.0471975803375244f;  // 00D05AAC
+}  // namespace dive_bomb_constant
+
+struct DiveBombAimDiveSteerInputs {
+    // The aim error 009C5C9B leaves in [ESP+5Ch]; its sign picks both gains.
+    float aim_error = 0.0f;
+    // The roll interpolant. The image draws two bearing errors from two
+    // approach->vtable[0] points and rolls on one of them; see the header note
+    // in the .cpp for which, and why this host passes one.
+    float bearing_error = 0.0f;
+    // (approach+14h)->+64h and ->+68h, read at 009C5CAB and 009C5CD0. Two more
+    // fields of the same difficulty-row record whose +5Ch and +60h the aim
+    // error already uses.
+    float pitch_gain_positive_64 = 1.0f;
+    float pitch_gain_negative_68 = 1.0f;
+};
+struct DiveBombAimDiveSteerResult {
+    float pitch_29c = 0.0f;   // 009C5CFA, with +2A0h = 1 and +2D0h = 0
+    float roll_290 = 0.0f;    // 009C5DA3, with +294h = 1 and +2CCh = 0
+};
+DiveBombAimDiveSteerResult dive_bomb_aimdive_steer_009c5c9f(
+    const DiveBombAimDiveSteerInputs& in) noexcept;
+
 // 009C3FFB-009C4045, the tail of the approach constructor: approach+D4h, the
 // height above the target the aircraft must have before 009C680E lets it dive.
 // max(+A8h + 250.0, (+ACh + +A8h) * 0.5); the JBE at 009C4035 is the byte `76`.

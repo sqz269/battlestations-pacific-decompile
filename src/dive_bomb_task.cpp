@@ -511,6 +511,42 @@ DiveBombTurnDownResult dive_bomb_turndown_tick_009c44f0(
     return out;
 }
 
+// 009C5C9F-009C5DB2, the aimdive tick's steering.
+//
+// PARTIAL, and the partial part is the roll's interpolant. The image draws TWO
+// bearing errors, from two calls to approach->vtable[0] at 009C594C and
+// 009C5988: one against the latched target the constructor parked at
+// approach+D8h/+DCh/+E0h (009C4065-009C407D), one against the aircraft's own
+// position at unit+FCh/+100h/+104h. The default roll arm interpolates the
+// first; the wider arm 009C5D24-009C5D31 selects the second when the error is
+// positive and a folded angle is inside the 60 degrees at 00D05AAC. This host
+// re-reads the commanded target each tick and keeps ONE bearing, so it passes
+// that one and takes the default band. The wide arm is named, not bound.
+DiveBombAimDiveSteerResult dive_bomb_aimdive_steer_009c5c9f(
+    const DiveBombAimDiveSteerInputs& in) noexcept {
+    DiveBombAimDiveSteerResult out;
+
+    // 009C5C9F FLDZ, 009C5CA5 FCOMI ST0,ST1, 009C5CA9 JBE: the sign of the aim
+    // error picks the gain, and each arm clamps at its own end of the stick.
+    if (in.aim_error > 0.0f) {
+        const float demand = in.aim_error * in.pitch_gain_positive_64;
+        // 009C5CB6 FLD1, 009C5CB8 FCOMIP, 009C5CBC JBE.
+        out.pitch_29c = (demand < 1.0f) ? demand : 1.0f;
+    } else {
+        const float demand = in.aim_error * in.pitch_gain_negative_68;
+        // 009C5CD7 FLD [00D7A260], 009C5CE1 FCOMIP, 009C5CE5 JBE.
+        out.pitch_29c = (demand > -1.0f) ? demand : -1.0f;
+    }
+
+    // 009C5D8E, the default arm: InterpolateClamped(-0.4, 1.0, 0.4, -1.0, x).
+    // Falling, like every other roll map in this bot: a positive bearing error
+    // gives a negative stick.
+    out.roll_290 = dive_bomb_interpolate_clamped_00419010(
+        -dive_bomb_constant::kAimDiveRollBand, 1.0f,
+        dive_bomb_constant::kAimDiveRollBand, -1.0f, in.bearing_error);
+    return out;
+}
+
 // 009C3FFB-009C4045, the tail of the approach constructor 009C3EA0.
 float dive_bomb_dive_entry_height_009c4045(float dive_altitude_a8,
                                            float begin_altitude_ac) noexcept {
