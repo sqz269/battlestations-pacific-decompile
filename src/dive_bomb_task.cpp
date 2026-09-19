@@ -665,17 +665,36 @@ bool dive_bomb_goaway_complete_009c7f00(
 DiveBombGoAwayCommand dive_bomb_goaway_climb_009c4b44(
     const DiveBombGoAwayInputs& in) noexcept {
     DiveBombGoAwayCommand out;
-    // 009C4BB3: InterpolateClamped(60.0, climb angle, 300.0, 0.0, altitude) -
-    // the full climb angle below 60 m, easing to level by 300 m.
-    const float eased = dive_bomb_interpolate_clamped_00419010(
+    // 009C4ACF-009C4B05, the ceiling: the smaller of ctl+398h and
+    // approach+ACh + approach+50h. 009C4AF1's FCOMIP/JBE takes ctl+398h when it
+    // is the smaller, which is the same rule 009C7F00 runs at 009C7F23.
+    const float sum = in.begin_altitude_ac + in.aim_point_height_50;
+    const float ceiling =
+        (in.cruise_altitude_398 <= sum) ? in.cruise_altitude_398 : sum;
+    // 009C4B26 `FSUB float ptr [EBP+100h]`: curve A's interpolant is how far
+    // BELOW the ceiling the aircraft is, so the command grows as the aircraft
+    // sinks and falls to zero once it is 50 m above the ceiling.
+    const float deficit = ceiling - in.altitude;
+    // 009C4B32-009C4B61, curve A - the climb-back-to-cruise arm.
+    out.curve_a_deficit = dive_bomb_interpolate_clamped_00419010(
+        dive_bomb_goaway_constant::kClimbDeficitLow, 0.0f,
+        dive_bomb_goaway_constant::kClimbEaseAltitude, in.climb_angle_1ec,
+        deficit);
+    // 009C4B8C-009C4BB3, curve B - the ground-avoidance arm: the full climb
+    // angle below 60 m, level at and above 300 m, over the raw altitude.
+    out.curve_b_altitude = dive_bomb_interpolate_clamped_00419010(
         dive_bomb_goaway_constant::kClimbFullAltitude, in.climb_angle_1ec,
         dive_bomb_goaway_constant::kClimbEaseAltitude, 0.0f, in.altitude);
-    // 009C4B61 is a second curve over the same 300.0 upper endpoint whose y1 and
-    // interpolant were not traced; 009C4BC4/009C4BC8 `77` JA take the larger of
-    // the two. SUBSTITUTION, labelled: the same curve stands in for it, so the
-    // max is the curve itself and the command is never weaker than the image's.
-    out.pitch_target_2bc = eased;
+    // 009C4BBC-009C4BD8: FLD curve B, FLD curve A, FCOMIP, `77` JA takes A.
+    out.pitch_target_2bc = (out.curve_a_deficit > out.curve_b_altitude)
+                               ? out.curve_a_deficit
+                               : out.curve_b_altitude;
     out.pitch_mode_2d0 = 1;      // 009C4BE8, EBX
+    // 009C4A43-009C4A68 then 009C4BD8/009C4BEF: the wings-level pair is written
+    // only while the aircraft is pitched steeper nose-down than -5 degrees.
+    // 009C4A66's JA keeps the byte at 1 when the constant is ABOVE the pitch.
+    out.wrote_bank_heading =
+        dive_bomb_goaway_constant::kNoseDownGate > in.unit_pitch_c64;
     out.bank_target_2c4 = 0.0f;  // 009C4BFE, the XORPS zero
     out.heading_mode_2cc = 1;    // 009C4C06, EBX
     out.air_brake_mode_2d8 = 0;  // 009C4CA7 / 009C4CE7

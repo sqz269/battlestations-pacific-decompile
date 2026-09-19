@@ -498,6 +498,19 @@ struct GameUnitSlot {
     int db_cruise_samples{0};
     int db_goaway_tick_ticks{0};
     float db_goaway_pitch_last{0.0f};
+    // Packet cc8_dive_goaway: the climb census. `pitch_last` on its own cannot
+    // tell a state that never commanded a climb from one whose command was
+    // eaten later, so the altitude the aircraft actually reaches goes beside it,
+    // and so do the two operands of 009C7F00's second arm - the ceiling
+    // min(ctl+398h, approach+ACh + approach+50h) and the deficit ceiling - Y,
+    // which 009C4B36 is about to be shown to feed to the climb curve as well.
+    float db_goaway_pitch_max{0.0f};
+    float db_goaway_alt_first{-1.0f};
+    float db_goaway_alt_last{0.0f};
+    float db_goaway_alt_max{-1.0f};
+    float db_goaway_ceiling_last{0.0f};
+    float db_goaway_deficit_last{0.0f};
+    int db_goaway_complete_ticks{0};
     // The goaway state's OWN +20h. 009C7F00's completion rule reads the goaway
     // state, not the aimglide's, and conflating them made goaway finish on its
     // first tick.
@@ -1746,6 +1759,9 @@ struct GameUnitsHost::Impl {
             g.control_flag_369 = false;
             g.global_e17bf2 = false;
             in.goaway_complete = bsp::dive_bomb_goaway_complete_009c7f00(g);
+            if (in.goaway_complete) {
+                ++slot.db_goaway_complete_ticks;
+            }
         }
         in.unit_bank_c68 = slot.plane_bank_angle_c68;
         in.bank_high_00ce398c = 0.0f;
@@ -6440,10 +6456,47 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // from the Lua row as 0.6 of the sustainable climb
                         // angle 007D98F0 returns - the real field, not a stand-in.
                         in.climb_angle_1ec = unit_.plane_climb_angle_1ec;
+                        // Packet cc8_dive_goaway: curve A, 009C4B32-009C4B61,
+                        // whose interpolant is the altitude DEFICIT against the
+                        // ceiling min(ctl+398h, approach+ACh + approach+50h).
+                        // Without it the tick modelled only the ground-avoidance
+                        // curve, which is zero at and above 300 m, so an aircraft
+                        // that left its dive at 82-174 m climbed to 300 m and
+                        // then held level for the rest of the mission while
+                        // 009C7F00 waited for 900 m. ctl+398h is what
+                        // approach+ACh is refreshed from every tick here, so this
+                        // host has one value for both, as 009C7F00's feed does.
+                        in.cruise_altitude_398 = unit_.db_begin_alt_ac;
+                        in.begin_altitude_ac = unit_.db_begin_alt_ac;
+                        in.aim_point_height_50 = unit_.db_aim_point_height_50;
+                        in.unit_pitch_c64 = unit_.plane_pitch_angle_c64;
                         const bsp::DiveBombGoAwayCommand r =
                             bsp::dive_bomb_goaway_climb_009c4b44(in);
                         ++unit_.db_goaway_tick_ticks;
                         unit_.db_goaway_pitch_last = r.pitch_target_2bc;
+                        // Packet cc8_dive_goaway census. `pitch_max` is a
+                        // running maximum over the whole state, `pitch_last` the
+                        // final sample; quoting either one alone has misled this
+                        // area before, so both are printed.
+                        if (r.pitch_target_2bc > unit_.db_goaway_pitch_max) {
+                            unit_.db_goaway_pitch_max = r.pitch_target_2bc;
+                        }
+                        const float goaway_y = unit_.motion.position[1];
+                        if (unit_.db_goaway_alt_first < 0.0f) {
+                            unit_.db_goaway_alt_first = goaway_y;
+                        }
+                        unit_.db_goaway_alt_last = goaway_y;
+                        if (goaway_y > unit_.db_goaway_alt_max) {
+                            unit_.db_goaway_alt_max = goaway_y;
+                        }
+                        // 009C4ACF-009C4B05, the ceiling, and 009C4B26's FSUB.
+                        const float goaway_sum = unit_.db_begin_alt_ac +
+                                                 unit_.db_aim_point_height_50;
+                        const float goaway_ceiling =
+                            (unit_.db_begin_alt_ac <= goaway_sum)
+                                ? unit_.db_begin_alt_ac : goaway_sum;
+                        unit_.db_goaway_ceiling_last = goaway_ceiling;
+                        unit_.db_goaway_deficit_last = goaway_ceiling - goaway_y;
                         // 009C4BE0/009C4BE8: the planner's own pitch arm flies
                         // this, because mode 1 passes the gate at 0099E3BF.
                         unit_.plan_state.pitch_target_2bc = r.pitch_target_2bc;
@@ -6451,6 +6504,21 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 009C4BFE/009C4C06: wings level through the servo, the
                         // mode-1 arm at 0099E26E, which rolls the aircraft
                         // upright out of the inverted dive.
+                        //
+                        // 009C4BEF's JZ does put this pair on the nose-down side
+                        // only (r.wrote_bank_heading carries the test), but the
+                        // pair is NOT gated here, deliberately. The flag-0 path
+                        // is not command-free: it falls through 009C4CBA to the
+                        // timer block and then splits at 009C4DAD into a bank arm
+                        // (009C4DAF-009C4DF6: cmd+2C4h = clamp(2 * state+28h *
+                        // state+18h) with cmd+2CCh = 1) or a heading arm
+                        // (009C4E05-009C4E1D: 009C47D0 fills state+1Ch, then
+                        // cmd+2C0h = state+1Ch with cmd+2CCh = 2). Both need the
+                        // +24h/+28h/+2Ch timers and 009C47D0, which this packet
+                        // does not bind. Gating the pair off without them would
+                        // leave the goaway with no lateral command at all, which
+                        // is further from the image than the wings-level the host
+                        // writes now. docs/DIVE_BOMB_GOAWAY.md section 2.
                         unit_.plan_state.bank_target_2c4 = r.bank_target_2c4;
                         unit_.plan_heading_mode_2cc = r.heading_mode_2cc;
                         unit_.plan_heading_2c0_written = false;
@@ -10309,6 +10377,26 @@ void GameUnitsHost::report() {
                         static_cast<double>(slot->db_impact_throw_14),
                         static_cast<double>(slot->db_planar_bc),
                         static_cast<double>(slot->db_glide_travel_20));
+                }
+                // Packet cc8_dive_goaway. 009C4A40's climb-out and 009C7F00's
+                // completion, side by side: the state exists to put the aircraft
+                // back at its ceiling, so the question is only whether the pitch
+                // it commands moves the altitude toward the ceiling.
+                if (slot->db_goaway_tick_ticks > 0) {
+                    host.log.notef("  divebomb %-12s goaway 009C4A40: ticks=%d "
+                        "pitch last=%.4f max=%.4f rad | alt first=%.1f last=%.1f "
+                        "max=%.1f m | ceiling=%.1f m deficit=%.1f m | "
+                        "009C7F00 complete_ticks=%d travel_20=%.2f",
+                        slot->row.name.c_str(), slot->db_goaway_tick_ticks,
+                        static_cast<double>(slot->db_goaway_pitch_last),
+                        static_cast<double>(slot->db_goaway_pitch_max),
+                        static_cast<double>(slot->db_goaway_alt_first),
+                        static_cast<double>(slot->db_goaway_alt_last),
+                        static_cast<double>(slot->db_goaway_alt_max),
+                        static_cast<double>(slot->db_goaway_ceiling_last),
+                        static_cast<double>(slot->db_goaway_deficit_last),
+                        slot->db_goaway_complete_ticks,
+                        static_cast<double>(slot->db_goaway_travel_20));
                 }
                 host.log.notef("  divebomb %-12s gate 009C7C31: "
                     "approach+BCh=%.1f m approach+B8h=%.1f m latch_D0h=%d "
