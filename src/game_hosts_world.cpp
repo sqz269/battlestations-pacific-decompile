@@ -14,6 +14,7 @@
 
 #include "bsp/in_mission_subsystem_tick.hpp"
 #include "bsp/local_player_unit_lists.hpp"
+#include "bsp/lua_spawn_new.hpp"
 #include "bsp/unit_instance.hpp"
 #include "bsp/world_entity_update.hpp"
 
@@ -241,6 +242,15 @@ void GameWorldHost::run_world_entity_update_00904bf0(float scaled_delta) {
     ++host.summary.walks;
     host.summary.entities_walked += visited;
     host.done("InMissionTick::update_world_entities", 0x00904bf0u);
+    // Packet cc8_spawn_new_route. BSP_Game_OnMove runs the spawn manager's tick
+    // at 004E534F, `MOV ECX,[00F89B3C]` then the `CALL 0094C490; RET 4` thunk at
+    // 0094C8F0, with the SCALED delta - docs/GAME_ON_MOVE_MAP.md step 20 "World
+    // tick". This walk is step 18's entity pass, so the drain runs after it in
+    // the same frame and on the same delta, which is the native's order. The
+    // manager is a process global there and the drain is one here for the same
+    // reason: neither caller owns the object it ticks.
+    // docs/LUA_SPAWN_NEW_HOST.md.
+    bsp::run_spawn_queue_step_0094c8f0(scaled_delta);
 }
 
 void GameWorldHost::build_local_player_unit_lists_004c3cb0() {

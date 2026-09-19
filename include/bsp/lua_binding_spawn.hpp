@@ -76,11 +76,18 @@ inline constexpr std::size_t kSpawnRequestCallbackDataOffset = 0x88; // 00948D76
 // Which Lua field of the request table feeds each one was not separated: SpawnNew stages four
 // floats through x87 stores into the outgoing frame at 00949F67..00949F8C, and this packet did
 // not follow each store to its slot. Marked provisional for that reason.
-inline constexpr std::size_t kSpawnRequestScalarAOffset = 0x68; // 00948D2C, uint
-inline constexpr std::size_t kSpawnRequestScalarBOffset = 0x6C; // 00948D32, int
-inline constexpr std::size_t kSpawnRequestScalarCOffset = 0x70; // 00948D38, uint
-inline constexpr std::size_t kSpawnRequestFloatAOffset = 0x74;  // 00948D41, float
-inline constexpr std::size_t kSpawnRequestFloatBOffset = 0x78;  // 00948D47, float
+// CORRECTED by packet cc8_spawn_new_route from the consumer side: the drain's
+// solver 0094A140 reads +68h and +6Ch as FLOATS and turns their midpoint and
+// half-width into a yaw through BSP_Matrix_BuildRotationY, so they are
+// `angleRange`; it compares +70h against +74h low-against-high and then divides
+// a lateral offset by +70h to get an angle, so they are `distRange`; and +78h it
+// compares as an INT against an entity's +54h, the party field, so +78h is not a
+// float. See include/bsp/lua_spawn_new.hpp and docs/LUA_SPAWN_NEW_HOST.md.
+inline constexpr std::size_t kSpawnRequestScalarAOffset = 0x68; // 00948D2C, angleRange low
+inline constexpr std::size_t kSpawnRequestScalarBOffset = 0x6C; // 00948D32, angleRange high
+inline constexpr std::size_t kSpawnRequestScalarCOffset = 0x70; // 00948D38, distRange low
+inline constexpr std::size_t kSpawnRequestFloatAOffset = 0x74;  // 00948D41, distRange high
+inline constexpr std::size_t kSpawnRequestFloatBOffset = 0x78;  // 00948D47, an int, not a float
 inline constexpr std::size_t kSpawnRequestSerialOffset = 0x7C;  // 00948EC9
 inline constexpr std::size_t kSpawnRequestScalarDOffset = 0x80; // 00948D4D
 
@@ -98,9 +105,20 @@ inline constexpr std::size_t kSpawnRequestGroupEndOffset = 0x8;
 inline constexpr std::size_t kSpawnRequestGroupElementBytes = 0x10;
 
 // Trailing fields the constructor zeroes or copies last.
-inline constexpr std::size_t kSpawnRequestFlagByteOffset = 0xC0;  // 00948E3B, always 0
-inline constexpr std::size_t kSpawnRequestPartyOffset = 0xC4;     // 00948E42
-inline constexpr std::size_t kSpawnRequestPlayerOffset = 0xC8;    // 00948E48
+//
+// CORRECTED by packet cc8_spawn_new_route. +C0h is not "always zero": it is the
+// FULFILLED flag, cleared here and set by the creator at
+// 009487AD `MOV byte ptr [EBX + 0xc0],0x1`, which the drain reads at 0094C5A7 to
+// decide between completing the request and putting it back on the queue. And
+// +C4h/+C8h are not the party and the player: they are the completion callback's
+// function pointer and its context word (0094C777 CMP dword ptr [ESI + 0xc4],0
+// skips the walk when +C4h is null; 0094C7D2/0094C7DF load and CALL it). The
+// party is +80h below, which 0094C542 indexes game+18CCh with and 0094C7D9
+// passes to that callback in ECX. The names here are kept so existing readers
+// still resolve; use the corrected ones in include/bsp/lua_spawn_new.hpp.
+inline constexpr std::size_t kSpawnRequestFlagByteOffset = 0xC0;  // 00948E3B / 009487AD, fulfilled
+inline constexpr std::size_t kSpawnRequestPartyOffset = 0xC4;     // 00948E42, the completion fn
+inline constexpr std::size_t kSpawnRequestPlayerOffset = 0xC8;    // 00948E48, its context
 
 // The serial the request carries. 00949F2B loads the counter at 00E0CF74, 00949F30 compares
 // it against 3E80h unsigned, 00949F37 replaces it with 1 when it is strictly greater, and
@@ -140,10 +158,16 @@ inline constexpr std::size_t kSpawnNewFieldCount = 12;
 const char* spawn_new_field_name(SpawnNewField field) noexcept;
 
 // `refPos` accepts either an entity table or a bare position: 00949B51 asks 008889C0 first and
-// takes 00888AA0 on yes (00949BE5) or 00888760 on no (00949B5E). Both `distRange` and
-// `angleRange` are read as two indexed numbers, slot 0 then slot 1 (00949CF5/00949D2C and
-// 00949DB1/00949DE7); `angleRange` keeps the defaults 200.0 and 2500.0 from 00D19908/00D1990C
-// when the field is nil, and its first element is then clamped to at least 10.0 (00D198B8).
+// takes 00888AA0 on yes (00949BE5) or 00888760 on no (00949B5E).
+//
+// CORRECTED by packet cc8_spawn_new_route, three ways. The defaults and the clamp belong to
+// `distRange`, not `angleRange`: 00949D69/00949D77 load them AFTER the `distRange` key push at
+// 00949D50 and inside the absence arm 00949D95 CALL 00B65FB0 / 00949D9C JNZ. Both ranges are read
+// at Lua indices 1 and 2 (00949CDA PUSH 0x1, 00949D19 PUSH 0x2; 00949D9E, 00949DD4), not slot 0
+// and slot 1. And `angleRange` has no absence test, no default and no clamp at all; the clamp is
+// on distRange's first element, 00949E0A MOVSS XMM0,[00CE38B8] / 00949E12 COMISS / 00949E21 JA,
+// i.e. `distLow = max(10.0f, distRange[1])`. The names here keep their spelling for existing
+// readers; the corrected ones are kSpawnNewDistRange* in include/bsp/lua_spawn_new.hpp.
 inline constexpr float kSpawnNewAngleRangeDefaultLow = 200.0f;  // 00D19908
 inline constexpr float kSpawnNewAngleRangeDefaultHigh = 2500.0f; // 00D1990C
 inline constexpr float kSpawnNewAngleRangeLowMinimum = 10.0f;    // 00CE38B8

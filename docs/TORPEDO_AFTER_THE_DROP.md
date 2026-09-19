@@ -1427,3 +1427,190 @@ almost test: aiming continuously at a target's present position turns any approa
 as range closes, with no state ever choosing it. Section 11's angles at closest approach — 5.4 to
 11.7 degrees, all small, all the same sign of smallness across three different ships and two classes
 — are what that looks like. Not proved here.
+
+## 13. `009D4C10` re-read independently, `0099C230` named, and the three vtables of `BotTaskTorpedo`
+
+Packet `cc8_torpedo_breakoff`. Section 12 was read by the previous worker and acted on here, so the
+first thing this packet did was re-derive it from the listing rather than trust it. It holds in
+every particular. What follows is the confirmation, two things section 12 did not have, and one
+correction to how the vtable slot has been described throughout this document.
+
+### 13.1 Confirmation: every jump sense of `009D4C10`, from the branch bytes
+
+Body `009D4C10`-`009D4C8E`, `__thiscall(task)`. Both exits are a bare `RET` with no immediate, and
+the entry is `PUSH ECX / PUSH ESI / MOV ESI,ECX`, so it takes `this` in ECX and no stack argument.
+
+| address | bytes read as | taken means |
+| --- | --- | --- |
+| `009D4C1B` | `JNE 009D4C22` | `0099C230` false falls to `009D4C1D XOR AL,AL` -> **false** |
+| `009D4C2A` | `JE 009D4C8A` | target pointer null -> `MOV AL,1` -> **true** |
+| `009D4C30` | `JNE 009D4C8A` | `target+5Dh` set -> **true** |
+| `009D4C3F` | `JE 009D4C4A` | `ctl+369h` clear **skips** the global test |
+| `009D4C48` | `JNE 009D4C1D` | `ctl+369h` and `[00E17BF2]` both set -> **false** |
+| `009D4C5A` | `JE 009D4C65` | not in an attack state **skips** the ordnance test |
+| `009D4C63` | `JNE 009D4C1D` | in an attack state and `task+52Ah` set -> **false** |
+| `009D4C88` | `JA 009D4C1D` | `SafeDist * ratio > range` -> **false**, else fall to **true** |
+
+The range arm in full, and every width is from the loading instruction:
+
+```
+009d4c65: fld   dword ptr [esi+488h]     ; FLOAT, 4 bytes -- `dword ptr`
+009d4c6b: fstp  dword ptr [esp+4]        ; spilled across the call, the x87 stack freed
+009d4c6f: call  0042E740                 ; BSP_GameTuning_GetSingleton
+009d4c74: fld   dword ptr [esp+4]        ; st0 = range
+009d4c78: fld   dword ptr [eax+438h]     ; st0 = Pilot/Torpedo/SafeDist, st1 = range
+009d4c7e: fmul  dword ptr [esi+41Ch]     ; st0 = SafeDist * speed ratio
+009d4c84: fcompi st(1)                   ; compare threshold against range
+009d4c86: fstp  st(0)
+009d4c88: ja    009D4C1D                 ; threshold > range -> false
+```
+
+So the predicate is `range >= SafeDist * ratio`, not `>`. `FCOMPI` sets CF/ZF the way `COMISS` does,
+so an unordered compare leaves `JA` untaken and the routine returns **true** on a NaN range.
+
+Every offset checks out arithmetically against the approach at `task+3F8h`: `4C4h-3F8h = CCh` the
+target pointer, `404h-3F8h = 0Ch` the control block, `488h-3F8h = 90h` the range, `41Ch-3F8h = 24h`
+the speed ratio, `52Ah-3F8h = 132h` the ordnance byte. `task+310h` is the state pointer and is not
+an approach field. The call at `009D4C53` is `009D31D0`, which the ledger already carries as
+`BSP_BotTaskTorpedo_IsAttackState`; it is reached as `__thiscall(task, current_state)`.
+
+**Section 12 is confirmed in full and nothing in it is withdrawn.**
+
+### 13.2 `0099C230` is the player-aircraft exemption, and that makes `base_gate` a proof here
+
+Section 12 carried `0099C230` as an unnamed base gate. Its body, `0099C230`-`0099C266`:
+
+```
+eax = [00E198C4];          if (eax == 0)            return true;
+                           if ([eax+8Ch] == 0)      return true;
+eax = [eax+8Ch];           if ([eax+4] == 0)        return true;
+eax = [eax+34h];           if (eax == [ecx+2F4h])   return false;
+                           if (eax != [ecx+2FCh])   return true;
+                                                    return false;
+```
+
+`00E198C4` is the **in-mission interface manager** (`docs/FRONTEND_MANAGERS.md:11`,
+`docs/FIXED_STEP_FANOUT.md:187`, `docs/FRONTEND_STATE_MACHINE.md:99`). So the routine returns false
+only for the task whose unit is the one the in-mission interface is attached to: **the break-off is
+disabled for the player's own aircraft**, and for whichever second unit `task+2FCh` holds.
+
+Two things follow.
+
+* It is shared, not torpedo-specific. `0099C230` has four other callers and all four are the sibling
+  break-off bodies: `009A65F0` depth charge, `009AE1B0` drop-kamikaze, `009B8D80` level bomb,
+  `009C8A90` dive bomb. That is independent confirmation that `009D4C10` is the torpedo's
+  `ShouldBreakOff`, arrived at without the vtable.
+* **`base_gate = true` in this host is a proof, not a stand-in.** `bsp_game` publishes no in-mission
+  interface manager for an AI-flown Mav, and with `[00E198C4]` null the image takes its own first
+  branch and returns true. The host is not substituting for an unread contract here; it is computing
+  what the image computes. The existing dive-bomb binding at `src/game_hosts_units.cpp:1140` already
+  passes `base_0099c230 = true` and was right to, for this reason rather than by assumption.
+
+### 13.3 Correction: `009D4C10` is slot `1Ch` of a vtable that is **not** `00D213C0`
+
+Throughout sections 7, 10 and 12 the break-off has been called `task->vtable[1Ch]`, and the aim-point
+reader `009D0670` has been called `approach->vtable[0]`. Both are right, but they are slots of two
+different vtables, and `00D213C0` -- the address this document has used for "the torpedo approach
+vtable" -- is only one of three. `BSP_BotTaskTorpedo_Construct` writes all three, read from the
+listing at `009D3080`-`009D30B7`:
+
+```
+009d3080: lea   edi, [esi+3F8h]          ; esi = the task, edi = the approach subobject
+009d3091: call  009D2DA0                 ; BSP_BotTaskTorpedo_ConstructStates, ecx = edi
+009d30a1: mov   dword ptr [esi],      0x00D213C8   ; the TASK vptr
+009d30a7: mov   dword ptr [edi],      0x00D213C0   ; the APPROACH vptr, at task+3F8h
+009d30ad: mov   dword ptr [esi+530h], 0x00D213BC   ; a third subobject vptr, at task+530h
+```
+
+This also settles that the approach really is embedded at `task+3F8h` from the constructor's own
+`LEA`, rather than only by the offset arithmetic that section 10.2 used.
+
+So the layout is three adjacent vtables, and the approach's is two slots wide:
+
+| vtable | belongs to | slots |
+| --- | --- | --- |
+| `00D213BC` | the subobject at `task+530h` | 1 (not read this packet) |
+| `00D213C0` | the approach at `task+3F8h` | 2: `009D0670`, then **null** |
+| `00D213C8` | the task itself | 27, listed below |
+
+`009D0670` is slot 0 of `00D213C0`, so its `ECX` is the **approach**, and it reads
+`approach+D0h/+D4h/+D8h` -- three floats copied to an out-pointer at `[ESP+4]`. The document's
+naming has been right; only the vtable address attached to it was doing double duty.
+
+**The task vtable `00D213C8`, slot by slot.** Recorded whole because the dive-bomb and depth-charge
+classes need the same table and this is the cheap moment to take it.
+
+| slot | target | slot | target | slot | target |
+| --- | --- | --- | --- | --- | --- |
+| `00h` | `009D4E10` | `24h` | `009D49A0` | `48h` | `007B4130` |
+| `04h` | `009D4230` | `28h` | `007B4100` | `4Ch` | `009D4970` |
+| `08h` | `007B40C0` | `2Ch` | `009D3270` | `50h` | `009D49E0` |
+| `0Ch` | `009D4A30` | `30h` | `0099B6F0` | `54h` | `009D4A70` |
+| `10h` | `009D3290` | `34h` | `0099B700` | `58h` | `009D3E80` |
+| `14h` | `009D32A0` | `38h` | `0099B710` | `5Ch` | `007B4150` |
+| `18h` | `009D4C90` | `3Ch` | `009D3280` | `60h` | `0099D060` |
+| **`1Ch`** | **`009D4C10`** | `40h` | `009D3EF0` | `64h` | `009D4850` |
+| `20h` | `007B40F0` | `44h` | `007B4120` | `68h` | null, the end |
+
+Slot `1Ch` is `009D4C10`, exactly as section 7.1 said. Slot `54h` is `009D4A70`, which is why Ghidra
+offered `BSP_BotTaskTorpedo_UpdateCruiseProfile` as the "enclosing candidate" when asked about
+`009D4C10`: `009D4C10` is not a defined function in the project, and the attribution was the
+nearest-preceding artefact again.
+
+### 13.4 The sibling-vtable route to the aim point does not open, and here is why
+
+The plan was: find the class that registers `"calcHitPos"` at its own `+D0h` (section 11's
+`FUN_009B4690`), find which vtable slot produces it, and read the same slot of the torpedo's approach
+vtable. Carried out, it fails at the second step, and the failure is worth more than a guess.
+
+`FUN_009B4690` is called from `FUN_009B77C0`, which is a constructor of the same three-vptr shape:
+
+```
+009b77ed: call  009B4690
+009b77f2: lea   edi, [esi+0DCh]          ; this class's approach subobject is at task+DCh
+009b7817: mov   dword ptr [esi], 0x00D20204    ; the TASK vptr
+009b781d: mov   dword ptr [edi], 0x00D20200    ; the APPROACH vptr
+```
+
+Its approach vtable `00D20200` is **one slot wide** and that slot is `009B77B0`, which is an
+adjustor thunk:
+
+```
+009b77b0: sub   ecx, 0DCh
+009b77b6: jmp   009B7970
+```
+
+`009B7970` is a scalar deleting destructor (`call 009B6480`, the `test byte [esp+8],1` /
+`operator delete` tail, `RET 4`). So this sibling's approach-subobject vtable carries **only the
+adjustor-thunked destructor**, while the torpedo's carries `009D0670` and a null and no destructor
+thunk at all.
+
+**The premise "sibling approach classes share a vtable layout" is therefore false for this pair**,
+and there is no "same slot" to read across. `"calcHitPos"` names a field of a class whose secondary
+vtable has one entry that is not a getter; nothing about slot numbering transfers to `00D213C0`. The
+caution sections 11 and 6.3.3 attached to the name -- that it is a different class and the name does
+not transfer by offset -- turns out to understate it: the *vtables* do not correspond either.
+
+**What did come out of it: the writer census for `approach+D0h` is now closed on all three
+encodings.** Section 11 closed the out-pointer `LEA` form with its control (29 image-wide, none in
+the torpedo band, positive control `+ACh` = 21). This packet ran the two store forms it had not:
+
+| form | encoding | image-wide | in the `009C`/`009D` torpedo band |
+| --- | --- | --- | --- |
+| x87 store/load at `+D0h` | `D9 ?? D0 00 00 00` | 109 | one only: `009D0674`, the `FLD` **inside** `009D0670`. No `FSTP`. |
+| integer store at `+D0h` | `89 ?? D0 00 00 00` | 59 | one only: `009DBE62`, `MOV [ESI+D0h],ESI` in an array-ctor helper, not an approach |
+
+Both have healthy image-wide counts, so neither negative is vacuous. The x87 form matters
+specifically: **Capstone reports `FSTP [mem]` as a read**, so a census built on operand-access flags
+would have classified every `D9 9x` store as a read and missed the form entirely. Scanning the
+displacement bytes avoids that, and the sibling bands prove the form occurs on this very field --
+`009B4636` and `009B53D9` (`FSTP [ESI+D0h]`), `009CA604`, `009CCF16` and `009CCFA1` in classes that
+all call `009F9CE0 BSP_BotApproach_ConstructSpeedReference` and so are approach classes too.
+
+So: **sibling approach classes do write their own `+D0h`; the torpedo class never writes its own by
+any instruction that names the displacement.** What remains open is a block copy or a write through a
+pointer aliased in a register, neither of which names `+D0h` -- the standing caveat, not a new one.
+Taken with section 6.2 (`009D0670` does no arithmetic) and section 5, the reading this supports is
+that the torpedo's `+D0h` is a **dead field** and the image does not lead. That is consistent with
+section 11's measurement, which closed the misses as a stern chase with no lead term needed. It is
+**not proved**: "no writer names the displacement" is not "no writer".

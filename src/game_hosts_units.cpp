@@ -460,11 +460,34 @@ struct GameUnitSlot {
     float db_aimdive_pitch_last{0.0f};
     float db_aimdive_roll_last{0.0f};
     float db_aimdive_bearing_last{0.0f};
+    float db_aim_heading_last{0.0f};   // 009C4F80's result, the aim heading
     // The closest the aim error came to the 25.0 m gate at 00CE3880 while an aim
     // state owned the tick, with the geometry at that sample. -1 means never.
     float db_aim_error_abs_min{-1.0f};
     float db_aim_error_min_range{-1.0f};
     float db_aim_error_min_alt{-1.0f};
+    // Packet cc8_dive_geometry: a per-tick window over the split-S and the
+    // start of the dive, to settle which manoeuvre the host flies against the
+    // one 009C44F0 commands. Additive; nothing here feeds a command.
+    static constexpr int kDbGeoSamples = 140;
+    struct DbGeoSample {
+        int tick;
+        int state;
+        float pitch_c64;
+        float bank_c68;
+        float heading_c6c;
+        float altitude;
+        float range;
+        float bearing_err;
+        float aim_heading;
+        float roll_input;
+        float roll_cmd;
+        float pitch_cmd;
+        int pitch_mode_2d0;
+        int heading_mode_2cc;
+    };
+    DbGeoSample db_geo[kDbGeoSamples]{};
+    int db_geo_samples{0};
     int db_blocked_no_latch{0};      // ticks with approach+D0h clear
     int db_blocked_no_bomb{0};       // ticks with approach+D1h clear
     // The torpedo bot task (kind Eh) this ordered aircraft runs, when its
@@ -4546,6 +4569,45 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         if (ctx.current == bsp::DiveBombState::kGoAway) {
                             run_dive_bomb_goaway_tick_009c4a40();
                         }
+                        // Packet cc8_dive_geometry: sample every turndown and
+                        // aimdive tick, after the state tick has written its
+                        // commands, until the buffer fills. Read-only.
+                        if ((ctx.current == bsp::DiveBombState::kTurnDown ||
+                             ctx.current == bsp::DiveBombState::kAimDive) &&
+                            unit_.db_geo_samples < GameUnitSlot::kDbGeoSamples) {
+                            GameUnitSlot::DbGeoSample& s =
+                                unit_.db_geo[unit_.db_geo_samples++];
+                            s.tick = unit_.dive_bomb_arm_ticks;
+                            s.state = dive_bomb_state_bucket(ctx.current);
+                            s.pitch_c64 = unit_.plane_pitch_angle_c64;
+                            s.bank_c68 = unit_.plane_bank_angle_c68;
+                            s.heading_c6c = unit_.plane_heading_c6c;
+                            s.altitude = unit_.motion.position[1];
+                            s.range = unit_.db_planar_bc;
+                            s.bearing_err =
+                                bsp::wrapped_angle_subtract_00438b10(
+                                    unit_.db_bearing_c0,
+                                    unit_.plane_heading_c6c);
+                            {
+                                bsp::DiveBombAimHeadingInputs hin;
+                                hin.pitch_c64 = unit_.plane_pitch_angle_c64;
+                                hin.bank_c68 = unit_.plane_bank_angle_c68;
+                                hin.heading_c6c = unit_.plane_heading_c6c;
+                                hin.body_up_x = unit_.motion.pose_row1[0];
+                                hin.body_up_z = unit_.motion.pose_row1[2];
+                                s.aim_heading =
+                                    bsp::dive_bomb_aim_heading_009c4f80(hin);
+                                s.roll_input =
+                                    bsp::wrapped_angle_subtract_00438b10(
+                                        s.aim_heading, unit_.db_bearing_c0);
+                            }
+                            s.roll_cmd =
+                                unit_.plan_slots[bsp::kPilotSlotRoll].desired;
+                            s.pitch_cmd =
+                                unit_.plan_slots[bsp::kPilotSlotPitch].desired;
+                            s.pitch_mode_2d0 = unit_.plan_state.pitch_mode_2d0;
+                            s.heading_mode_2cc = unit_.plan_heading_mode_2cc;
+                        }
                         if (ctx.current == bsp::DiveBombState::kAimGlide &&
                             before != bsp::DiveBombState::kAimGlide) {
                             // 009C4F40-009C4F71, the aimglide enter's seed of
@@ -4808,11 +4870,28 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 009C5C9B's own result, computed for this same tick by
                         // dive_bomb_aimdive_inputs() a few lines earlier.
                         in.aim_error = unit_.db_aim_error_last;
+                        // 009C5935 calls 009C4F80 for the heading and
+                        // 009C5AA3 subtracts the bearing FROM it - arg0 at
+                        // [ESP] is the 009C4F80 result, arg1 at [ESP+4] is the
+                        // bearing - so the interpolant's x is
+                        // (aim heading - bearing), not (bearing - heading).
+                        // Both the order and the source stood wrong here: the
+                        // raw pose+C6Ch is off by pi for the whole of the dive,
+                        // because 009C7EA0's second arm ends the turndown while
+                        // the aircraft is still inverted.
+                        bsp::DiveBombAimHeadingInputs hin;
+                        hin.pitch_c64 = unit_.plane_pitch_angle_c64;
+                        hin.bank_c68 = unit_.plane_bank_angle_c68;
+                        hin.heading_c6c = unit_.plane_heading_c6c;
+                        hin.body_up_x = unit_.motion.pose_row1[0];
+                        hin.body_up_z = unit_.motion.pose_row1[2];
+                        unit_.db_aim_heading_last =
+                            bsp::dive_bomb_aim_heading_009c4f80(hin);
                         // The image rolls on a bearing drawn from
                         // approach->vtable[0]; this host re-reads the commanded
                         // target each tick, so that is the bearing it has.
                         in.bearing_error = bsp::wrapped_angle_subtract_00438b10(
-                            unit_.db_bearing_c0, unit_.plane_heading_c6c);
+                            unit_.db_aim_heading_last, unit_.db_bearing_c0);
                         // 009C5919-009C592D folds pose+C68h into the slot the
                         // band test at 009C5D2C reads.
                         in.bank_c68 = unit_.plane_bank_angle_c68;
@@ -7749,6 +7828,7 @@ void GameUnitsHost::report() {
             std::size_t tasked = 0;
             int releases_total = 0;
             int spawned_total = 0;
+            bool geo_trace_printed = false;
             for (const auto& slot : host.slots) {
                 if (!slot->dive_bomb_task_installed) continue;
                 ++tasked;
@@ -7790,6 +7870,32 @@ void GameUnitsHost::report() {
                         static_cast<double>(slot->plane_desired_speed_2b4),
                         static_cast<double>(slot->db_turndown_pose_c64_last),
                         static_cast<double>(slot->db_turndown_pose_c64_min));
+                }
+                // Packet cc8_dive_geometry: the per-tick window, first slot
+                // only - the three USN04 bombers fly identical traces.
+                if (slot->db_geo_samples > 0 && !geo_trace_printed) {
+                    geo_trace_printed = true;
+                    host.log.notef("  divebomb %-12s geo trace: state tick "
+                        "pitch_c64 bank_c68 heading_c6c alt range bearing_err "
+                        "aim_head roll_in roll_cmd pitch_cmd mode_2d0 mode_2cc",
+                        slot->row.name.c_str());
+                    for (int i = 0; i < slot->db_geo_samples; ++i) {
+                        const GameUnitSlot::DbGeoSample& s = slot->db_geo[i];
+                        host.log.notef("  geo %-9s %5d %8.4f %8.4f %8.4f "
+                            "%8.1f %8.1f %8.4f %8.4f %8.4f %7.3f %7.3f %d %d",
+                            kDiveBombStateNames[s.state], s.tick,
+                            static_cast<double>(s.pitch_c64),
+                            static_cast<double>(s.bank_c68),
+                            static_cast<double>(s.heading_c6c),
+                            static_cast<double>(s.altitude),
+                            static_cast<double>(s.range),
+                            static_cast<double>(s.bearing_err),
+                            static_cast<double>(s.aim_heading),
+                            static_cast<double>(s.roll_input),
+                            static_cast<double>(s.roll_cmd),
+                            static_cast<double>(s.pitch_cmd),
+                            s.pitch_mode_2d0, s.heading_mode_2cc);
+                    }
                 }
                 if (slot->db_attackrun_ticks > 0) {
                     char ranges[192];

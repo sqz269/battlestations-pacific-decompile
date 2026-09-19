@@ -3312,3 +3312,103 @@ Both settling facts are named:
   `tan(30 deg)`, so this class's authored `DropAngle` is 0.5236.
 
 `docs/HANDOFF_DIVE_BOMB_PROBE.md` carries this stream's state for a cold reader.
+
+---
+
+# `009C4F80`, the heading the aim states steer on, and why the bomber ditched
+
+Packet `cc8_dive_geometry`, owner `agent/cc8-dive-bomb`. Listing read plus one instrumented USN04
+run per side, same binary apart from the change under test.
+
+## 1. The turndown is a split-S, and this host already flew it
+
+`009C44F0` was read whole (153 instructions) and every constant taken at the width of the
+instruction that loads it. With `a = |wrap(pose+C68h)|`, the bank magnitude in `[0, pi]`:
+
+| range | what it writes | evidence |
+| --- | --- | --- |
+| `state+1Ch` clear, `a < 0.8` | `cmd+290h = InterpolateClamped(30deg, 1, 0, 0, pi-a) * state+18h`, `cmd+294h = 1`, `cmd+2CCh = 0` - a roll **rate** | `009C45B9` FCOMIP / `009C45BB` JBE; `009C45EA`-`009C462F` |
+| `state+1Ch` clear, `a >= 0.8` | `cmd+2C4h = pi` (`00D7A264`), `cmd+2CCh = 1` - a roll **angle** demand of 180 degrees | `009C4637`-`009C464E` |
+| either arm | latch `state+1Ch` once `a > 2.618` (150 deg, `00D1FED0`) | `009C4654` COMISS / `009C465B` JBE |
+| either arm, on pitch | `|pose+C64h| < 0.3491` (20 deg): `cmd+29Ch = 0`, `cmd+2A0h = 1`, `cmd+2D0h = 0`; otherwise `cmd+2BCh = 0`, `cmd+2D0h = 2` | `009C4660`-`009C46AA` |
+| `state+1Ch` set | hold `cmd+2C4h = pi`, `cmd+2CCh = 1`, and pull: `cmd+29Ch = InterpolateClamped(30deg, 0, 3deg, 1, pi-a)`, `cmd+2A0h = 1`, `cmd+2D0h = 0` | `009C46C9`-`009C4736` |
+
+Roll to inverted, then pull through: a split-S. `009C7EA0` agrees - its second arm ends the state at
+`pose+C64h < -1.0` only when `|pose+C68h| > 2.356`, i.e. **while the aircraft is still inverted**
+(disassembled at `009C7EA0`-`009C7EFB`; `009C7EDB` `JA`, `009C7EE8` `JBE`, `009C7EF1` `JA`).
+
+The per-tick trace (`local\usn04_geo1.log`, ticks 1686-1756) shows this host flying exactly that:
+
+```
+state      tick  pitch_c64 bank_c68 heading_c6c    alt    range  bearing  roll  pitch
+turndown   1686    -0.0001  -0.2792  -3.0193     729.6      3.8   2.9100 -0.800  0.000
+turndown   1710     0.1119   1.3521  -2.6239     730.7    168.1   2.9274 -1.000  0.000
+turndown   1722     0.1226   2.6022  -2.6233     737.2    247.5   2.9876 -0.606  0.000
+turndown   1740    -0.2827   3.0805  -2.6783     732.1    365.5   3.0836 -0.071  0.981
+turndown   1756    -0.9795   3.1252  -2.7049     658.5    462.8   3.1195 -0.016  1.000
+```
+
+**So the 470 m and the "target 178.9 degrees behind" are not the defect.** They are what a split-S
+looks like halfway through: the roll phase flies level and straight, and the heading does not
+reverse until the pull passes the vertical, which `009C7EA0` deliberately does not wait for.
+
+## 2. `009C4F80`: the aim states do not steer on `pose+C6Ch`
+
+`float __thiscall(state)`, body `009C4F80`-`009C5177`. Two callers, exhaustive over rel32
+(`tools/callsite_census.py`): `009C51A8` in the aimglide tick and `009C5935` in the aimdive tick.
+Its result is arg0 of the `00438B10` at `009C5AA3` and of the one at `009C5AF1`, with the bearing to
+the target as arg1 - so **the roll interpolant's x is `(aim heading - bearing)`**, not
+`(bearing - heading)`. Slots, not pushes: `009C5A95 SUB ESP,8`, `009C5A98 FSTP [ESP+4]` is the
+bearing, `009C5A9C FLD [ESP+18h]` reads the slot `009C593A` wrote and `009C5AA0 FSTP [ESP]` makes it
+arg0.
+
+The routine itself, with `a = |pose+C68h|` folded at `009C4F90`-`009C4FB1`:
+
+* **`pose+C64h > -0.6981`** (`00CE7D1C`, -40 degrees; `009C4FBF` COMISS, `009C4FC6` `76` JBE):
+  `h = pose->vtable[50h]()`, the raw heading - the same virtual
+  `unit_set_heading_target_00811960` calls `heading_virtual_0050`. Then `009C4FDF` FCOMIP against
+  the pi/2 at `00CE3830` with `009C4FE3` `76` JBE: **a bank strictly past pi/2 adds the pi at
+  `00D7A264`** through `00438AA0` (`009C4FE9`-`009C4FFD`). Otherwise `009C516C` returns `h` as it is.
+* **`pose+C64h <= -0.6981`**: the Euler heading is ill-conditioned, so `009C504E` transforms
+  `(0, 100, 0)` (`00CE3D08`) by the pose at `+CCh` through `0042D0D0` and takes
+  `pi/2 - atan2(out.z, out.x)`, wrapped into `[0, 2pi)` by `009C5068`-`009C507C`. `0042D0D0` is the
+  row-vector form - `out.x = in.x*m[0] + in.y*m[4] + in.z*m[8]`, read off `0042D0F2`-`0042D116` -
+  so `(0,100,0)` selects **pose row 1, the body +Y axis**, and the 100 is irrelevant to an `atan2`.
+
+The two arms agree, which is what makes the reading safe: rolling 180 degrees about the forward axis
+negates body +Y, so the bearing of its horizontal projection is the heading plus pi exactly when the
+aircraft is inverted. **`009C4F80` returns the heading of the lift vector - the direction the
+aircraft turns toward - not the direction its nose points.**
+
+## 3. Why that is the ditch
+
+The turndown hands the aim states an inverted aircraft by construction. So for the whole dive
+`009C4F80` differs from `pose+C6Ch` by pi, and this host had **both** the source and the subtraction
+order wrong: it passed `wrapped_angle_subtract_00438B10(bearing_c0, heading_c6c)`.
+
+At the first aimdive tick (1757) the host's value is `3.1210`; the image's is
+`wrap(H + pi - B) = +0.0206` rad. The default band is 0.4 rad (`00CE7804`), so the image's roll stick
+is about `-0.05` - hold the bank, keep pulling - while this host's saturated at the far end of
+`InterpolateClamped(-0.4, 1, 0.4, -1, x)` and flipped sign every time the error crossed pi. The
+trace shows the result: bank `3.13 -> -2.64 -> 3.10 -> 2.47 -> -2.79 -> -1.44`, range `468 -> 1037`,
+altitude `651 -> 273`. A barrel roll into the sea.
+
+`src/dive_bomb_task.cpp` now carries `dive_bomb_aim_heading_009c4f80` and the aimdive host passes
+`wrapped_angle_subtract_00438b10(aim_heading, db_bearing_c0)`.
+
+**SUBSTITUTION, labelled:** the shallow arm's `pose->vtable[50h]` is stood in for by the cached
+Euler heading `pose+C6Ch` that `007C1900` writes. The steep arm is exact - `unit.motion.pose_row1`
+is the same row `plane_attitude_angles_007c1900` reads `m[8]`/`m[9]`/`m[10]` out of.
+
+## 4. What this does NOT fix, and is not claimed to
+
+The pitch half of the aimdive. `009C5BD4` COMISS `pose+C64h` against `00CEC728` = `-0.5236`
+(-30 degrees) with `009C5BDB` `JA`: **above 30 degrees nose-down the image writes
+`cmd+29Ch = -1.0` outright** at `009C5CEF`, and only below that does the aim-error arm at `009C5C9F`
+run. This host implements neither the gate nor the aim error - `db_aim_error_last` stands in for the
+unread block `009C5B01`-`009C5C9B`, and it is what put the pitch command at `-1.0` for all 318
+aimdive ticks in the before run, one tick after the turndown had it at `+1.0`.
+
+That block, and the wide roll arm's second bearing (the one drawn against the latched
+`approach+D8h/+E0h` at `009C594C`, which this host does not compute separately), are the next thing
+to read.
