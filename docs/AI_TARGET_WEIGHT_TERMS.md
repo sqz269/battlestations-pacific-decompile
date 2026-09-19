@@ -795,3 +795,49 @@ whose weight is not positive when it is in the target group, which is exactly
 subsystem carrying every barrel" are the contract; the fix is to hand the walk the attacker handle,
 which is what resolves back to that flattened subsystem. The native's `00A09379` resolving a real
 subsystem object stays the labelled substitution it already was.
+
+### A second annihilating stub, of the same family
+
+Fixing the handle was not enough, and the second fault is worth stating because it is the same
+mistake twice: **a stand-in whose contract does not match its caller's.**
+
+`AiWeightModelBinding::distance_falloff` answered `return a`, on the reading that `a` was the value
+being scaled and returning it kept the value undiminished. The one call site,
+`src/ai_target_weights.cpp:379`, **multiplies by the answer** and passes `(0, 0, 0, 0)` — four
+distance arguments this projection has not recovered. So the stub answered `0.0f`, `weighted` was
+zero for every barrel, `best` could never leave `0`, and the barrel loop still contributed nothing
+to `total`. A falloff is a multiplier, so its neutral value is `1.0f`. Labelled: the real `009FE200`
+diminishes with range, so `1.0f` over-states a distant barrel rather than annihilating it.
+
+With both fixed the model's shape is finally the listing's:
+`total = best + min(sum_damage, DamageCalcTime)`, clamped by hit points and `MaxTargetKillRatio`,
+where `best` is the largest single barrel contribution.
+
+### The prediction, written before the run reported
+
+Registered in advance so the check is a test and not a fit. From the census, `06h` artillery medium
+against the `other` group contributed `12370968.9` over `921200` lookups, so one such barrel's
+damage averages **13.43**. A unit with several of them saturates the capture term, which clamps at
+`DamageCalcTime` = 60. So
+
+```
+model ~= (13.43 + 60) / hit_points        a fort, artillery at 0.55
+model ~= (17.1  + 60) / hit_points        a submarine, artillery at 0.70
+```
+
+and `00A0F810` then multiplies by the class weight in `target_scale` and by `0.01` for a
+non-command member of the trio. The authored class weights are `Landfort` **1.0** and `Submarine`
+**4.0**, so
+
+```
+fort      ~= (73.4 / hp_fort) * 1.0 * 0.01   ~= 0.0004  at hp 2000
+submarine ~= (77.1 / hp_sub)  * 4.0          ~= 0.2      at hp 1500
+```
+
+**Predicted: the real model prefers the submarines and ships by roughly three orders of magnitude
+over the forts**, which is the `0.01` static-installation arm doing exactly what section 1 says it
+does, amplified by the class weight. Predicted coordinator row: `served` unchanged at 2450,
+`attackmove` and `settarget` back above zero, `fallback` small, and `scored` back near 465500
+because every weight is now positive so admission stops depending on the target-group arm.
+
+If the run instead shows attacks still off, or shows forts preferred, the flip comes back off.
