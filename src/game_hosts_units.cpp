@@ -953,6 +953,8 @@ struct GameUnitsHost::Impl {
     unsigned long long formation_joins{0};
     unsigned long long formation_creates{0};
     unsigned long long formation_rejoins{0};
+    unsigned long long formation_clamped{0};
+    unsigned long long formation_columns_unmeasurable{0};
     // A flat copy of the rows, rebuilt on demand so units() can hand the caller
     // one contiguous table without exposing the slots.
     mutable std::vector<GameUnitRow> rows;
@@ -8292,6 +8294,72 @@ std::int32_t GameUnitsHost::formation_member_count(std::int32_t group) const noe
         host.formation_groups[static_cast<std::size_t>(group)].members.size());
 }
 
+GameUnitsHost::FormationStation GameUnitsHost::formation_station_0070d290(
+    std::size_t unit, float across_scale, float along_scale) const noexcept {
+    FormationStation out{};
+    const Impl& host = *impl_;
+    if (unit >= host.slots.size()) return out;
+    const std::int32_t group_index = host.slots[unit]->formation_group;
+
+    // 0070D2A1 resolves the member record through 0070D080 and 0070D2A6/0070D2AF
+    // take the leader branch when the unit IS the leader or has no record.
+    const bsp::ShipAiUnitGroupMember* record = nullptr;
+    std::size_t leader = unit;
+    if (group_index >= 0
+        && static_cast<std::size_t>(group_index) < host.formation_groups.size()) {
+        const Impl::FormationGroup& group =
+            host.formation_groups[static_cast<std::size_t>(group_index)];
+        leader = group.leader;
+        if (leader != unit) {
+            const std::uint32_t handle = static_cast<std::uint32_t>(unit + 1u);
+            for (const bsp::ShipAiUnitGroupMember& member : group.members) {
+                if (member.entity == handle) { record = &member; break; }
+            }
+        }
+        if (record != nullptr) {
+            const std::size_t column = static_cast<std::size_t>(group.column);
+            if (column < bsp::kShipAiUnitGroupColumnCount) {
+                out.across = record->lateral[column] * across_scale;   // 0070D2BD
+                out.along = record->axial[column] * along_scale;       // 0070D2CC
+            }
+        }
+    }
+
+    if (record != nullptr && leader < host.slots.size()) {
+        // 0070D2EE: 00811150(leader, along) -> the wake point and its direction,
+        // then out[0] = pos.x - across * dir.z and out[1] = pos.z + across * dir.x
+        // (0070D342, 0070D348), the left normal this packet also decomposes on.
+        const bsp::ShipAiWakePoint base = bsp::ship_ai_wake_sample_at_distance_00810630(
+            host.slots[leader]->wake, out.along);
+        out.x = base.x - out.across * base.dir_z;
+        out.z = base.z + out.across * base.dir_x;
+        out.dir_x = base.dir_x;
+        out.dir_z = base.dir_z;
+        out.wake_yaw_rate = base.yaw_rate;
+        out.wake_yaw_written = base.yaw_rate_written;
+        out.valid = true;
+        return out;
+    }
+
+    // 0070D362: the unit's own position and (cos, sin) of wrap_2pi(pi/2 - heading).
+    out.is_leader_branch = true;
+    const bsp::ShipMotionState& motion = host.slots[unit]->motion;
+    out.x = motion.position[0];
+    out.z = motion.position[2];
+    const float heading = static_cast<float>(
+        std::atan2(static_cast<double>(motion.pose_row2[0]),
+                   static_cast<double>(motion.pose_row2[2])));
+    float angle = 1.5707963705062866f - heading;                  // 00CE3830
+    if (angle < 0.0f) angle += 6.2831854820251465f;               // 00CE3828
+    out.dir_x = std::cos(angle);
+    out.dir_z = std::sin(angle);
+    out.across = 0.0f;                                            // 0070D3E1
+    out.along = 0.0f;                                             // 0070D3E9
+    out.wake_yaw_written = false;                                 // 0070D3F1 writes 0
+    out.valid = true;
+    return out;
+}
+
 bool GameUnitsHost::formation_join_0077f940(std::size_t follower, std::size_t leader) {
     Impl& host = *impl_;
     if (follower >= host.slots.size() || leader >= host.slots.size()) return false;
@@ -8337,12 +8405,54 @@ bool GameUnitsHost::formation_join_0077f940(std::size_t follower, std::size_t le
     bsp::ShipAiUnitGroupMember record;
     record.entity = handle;
     record.field_30 = 999u;                                // 0070EF85's record+30h
+
+    // 0070ED30, the column-0 arm, run at the join index before the count moves.
+    // The image expresses the member's position in the leader's frame, clamps
+    // that to FollowerMaxDist, transforms it back to world and decomposes it
+    // against the leader's wake. A rigid transform preserves length, so clamping
+    // the world offset is the same clamp; the leader-frame round trip is not
+    // modelled because column 0 never reads record+4h.
+    //
+    // FollowerMaxDist is settings+424h. 4000.0 is this installation's authored
+    // value, from scripts/datatables/shipglobals.lua (mtime 2024-07-13, the
+    // untouched bulk date, so not one of this install's modified tables). The
+    // host parses the same key into GameplaySettings::formacio_follower_max_dist
+    // but nothing reaches it from here, so the constant is named rather than
+    // plumbed. It does not bind in either measured mission: USN01's widest
+    // follower sits about 1460 m from the Enterprise.
+    constexpr float kFormationFollowerMaxDist = 4000.0f;
+    const float* const leader_pos = host.slots[leader]->motion.position;
+    const float* const member_pos = host.slots[follower]->motion.position;
+    float offset[3] = {member_pos[0] - leader_pos[0], member_pos[1] - leader_pos[1],
+                       member_pos[2] - leader_pos[2]};
+    const float offset_len2 = offset[0] * offset[0] + offset[1] * offset[1]
+                            + offset[2] * offset[2];
+    if (offset_len2 > kFormationFollowerMaxDist * kFormationFollowerMaxDist) {
+        const float scale = kFormationFollowerMaxDist / std::sqrt(offset_len2);
+        offset[0] *= scale;
+        offset[1] *= scale;
+        offset[2] *= scale;
+        ++host.formation_clamped;
+    }
+    const float world[3] = {leader_pos[0] + offset[0], leader_pos[1] + offset[1],
+                            leader_pos[2] + offset[2]};
+    const bsp::ShipAiWakeDecomposition decomposition =
+        bsp::ship_ai_wake_decompose_00811180(host.slots[leader]->wake, world);
+    if (decomposition.valid) {
+        record.lateral[0] = decomposition.across;           // record+10h
+        record.axial[0] = decomposition.along;              // record+20h
+    } else {
+        // The leader has laid no trail yet, so there is nothing to measure
+        // along. The image would decompose against its zeroed ring; this
+        // refuses and counts it instead of storing a number it cannot justify.
+        ++host.formation_columns_unmeasurable;
+    }
     target.members.push_back(record);
     ++host.formation_joins;
-    // 0070ED30 fills the four columns at the join index and 0070DA00 re-reduces
-    // the speed ceiling. NEITHER is run here: the columns need 00811180's
-    // across sign, which is not yet read, so every record's columns stay zero
-    // and no station may be computed from them.
+    // 0070DA00's speed ceiling over the new membership is NOT run: nothing reads
+    // group+504h yet. Columns 1, 2 and 3 are not produced either - they are the
+    // canned LINE / COLUMN / DIAMOND tables, which only a type-78h reshape
+    // selects and which this packet's across convention cannot be trusted for.
     return true;
 }
 
@@ -8939,21 +9049,24 @@ void GameUnitsHost::report() {
     // produced yet (0070ED30 needs 00811180's across sign), so membership is all
     // this reports and no station may be computed from these records.
     host.log.notef("summary unit formation groups=%llu joins=%llu creates=%llu rejoins=%llu "
-        "(0070DB20 create, 0070EF30 join; columns unfilled)",
+        "clamped=%llu columns_unmeasurable=%llu (0070DB20 create, 0070EF30 join, "
+        "0070ED30 column 0)",
         static_cast<unsigned long long>(host.formation_groups.size()),
-        host.formation_joins, host.formation_creates, host.formation_rejoins);
+        host.formation_joins, host.formation_creates, host.formation_rejoins,
+        host.formation_clamped, host.formation_columns_unmeasurable);
     for (std::size_t g = 0; g < host.formation_groups.size(); ++g) {
         const Impl::FormationGroup& group = host.formation_groups[g];
-        std::string members;
-        for (const bsp::ShipAiUnitGroupMember& member : group.members) {
-            const std::size_t index = static_cast<std::size_t>(member.entity) - 1u;
-            if (!members.empty()) members += " ";
-            members += (index < host.slots.size()) ? host.slots[index]->row.name : "?";
-        }
-        host.log.notef("  formation %zu leader=%s count=%zu column=%d: %s", g,
+        host.log.notef("  formation %zu leader=%s count=%zu column=%d", g,
             (group.leader < host.slots.size()) ? host.slots[group.leader]->row.name.c_str()
                                                : "?",
-            group.members.size(), group.column, members.c_str());
+            group.members.size(), group.column);
+        for (const bsp::ShipAiUnitGroupMember& member : group.members) {
+            const std::size_t index = static_cast<std::size_t>(member.entity) - 1u;
+            host.log.notef("    %-18s across=%9.2f along=%9.2f",
+                (index < host.slots.size()) ? host.slots[index]->row.name.c_str() : "?",
+                static_cast<double>(member.lateral[0]),
+                static_cast<double>(member.axial[0]));
+        }
     }
     // Milestone 2k added the ordered pair each unit is running under, which is
     // unit+980h / unit+984h as the ring published them. Milestone 2l adds the

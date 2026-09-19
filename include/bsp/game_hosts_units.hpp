@@ -559,6 +559,27 @@ public:
     // the follower (0070EF30). Answers true when the membership changed.
     bool formation_join_0077f940(std::size_t follower, std::size_t leader);
 
+    // What 0070D290 answers: the formation slot point and its direction. It
+    // lives here because it needs both the member record (group+18h) and the
+    // LEADER's wake ring (leader+0BD0h), and the units host owns both.
+    struct FormationStation {
+        float x{0.0f};
+        float z{0.0f};
+        float dir_x{0.0f};
+        float dir_z{0.0f};
+        float across{0.0f};       // out[5], record+10h * across_scale
+        float along{0.0f};        // out[6], record+20h * along_scale
+        float wake_yaw_rate{0.0f};
+        bool wake_yaw_written{false};  // 00810630's along<=0 arm never writes it
+        bool is_leader_branch{false};  // 0070D362, the unit is its own leader
+        bool valid{false};
+    };
+    // 0070D290, __thiscall(group)(unit, out[7], across_scale, along_scale),
+    // RET 10h. A unit that is its own leader, or has no record, takes the
+    // 0070D362 branch and answers its own pose.
+    FormationStation formation_station_0070d290(std::size_t unit, float across_scale,
+                                                float along_scale) const noexcept;
+
     // ---- milestone 2k: what the two HUD world screens read off a unit ------
     // 0043f080 BSP_UnitInstance_IsAliveAndVisible, the four-byte filter both the
     // minimap walk (005c1628..005c164a) and the marker gate (006431a8) run.

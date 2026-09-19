@@ -234,6 +234,50 @@ ShipAiWakePoint ship_ai_wake_sample_at_distance_00810630(const ShipAiWakeTrail& 
     return out;
 }
 
+ShipAiWakeDecomposition ship_ai_wake_decompose_00811180(const ShipAiWakeTrail& trail,
+                                                        const float point[3]) noexcept {
+    ShipAiWakeDecomposition out{};
+    if (trail.written == 0) return out;   // no trail yet: nothing to measure along
+
+    // 008111BB..00811260 and the unrolled rest: the nearest sample by full 3D
+    // squared distance, seeded with FLT_MAX (00D7A248), walking back from the
+    // head through all forty slots. `steps` is what the image keeps in EDI.
+    float best = 3.4028235e38f;
+    int steps = 0;
+    int index = trail.head;
+    for (std::size_t n = 0; n < kShipAiWakeSampleCount; ++n) {
+        const ShipAiWakeSample& sample = trail.samples[index];
+        const float dx = point[0] - sample.x;
+        const float dy = point[1] - sample.y;
+        const float dz = point[2] - sample.z;
+        const float d2 = dx * dx + dy * dy + dz * dz;
+        if (d2 < best) {
+            best = d2;
+            steps = static_cast<int>(n);
+        }
+        index = ring_step_back(index);
+    }
+
+    // 0081167F..008116E5: the arc length back to it is the SUM OF THE STORED
+    // LEGS, each term the sample's own +10h, not a recomputed distance.
+    float along = 0.0f;
+    int walk = trail.head;
+    for (int n = 0; n < steps; ++n) {
+        along += trail.samples[walk].segment;
+        walk = ring_step_back(walk);
+    }
+    out.along = along;
+
+    // The chosen convention, as the header states: take the trail point this
+    // `along` resolves to and measure the offset along 0070D290's own left
+    // normal, so that 0070D290 rebuilds the point exactly.
+    const ShipAiWakePoint base = ship_ai_wake_sample_at_distance_00810630(trail, along);
+    out.across = (point[0] - base.x) * (-base.dir_z)
+               + (point[2] - base.z) * (base.dir_x);
+    out.valid = true;
+    return out;
+}
+
 float ship_ai_wake_trail_length(const ShipAiWakeTrail& trail) noexcept {
     float total = 0.0f;
     int i = ring_step_back(trail.head);

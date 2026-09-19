@@ -94,6 +94,50 @@ void ship_ai_wake_append_00810190(ShipAiWakeTrail& trail,
 ShipAiWakePoint ship_ai_wake_sample_at_distance_00810630(const ShipAiWakeTrail& trail,
                                                          float along) noexcept;
 
+// What 00811180 BSP_Unit_DecomposeAgainstWake answers: a member's position
+// resolved into the leader's wake frame, which is column 0 of its group record.
+struct ShipAiWakeDecomposition {
+    float across{0.0f};  // *out_across at 00811803, signed
+    float along{0.0f};   // *out_along at 00811809, an arc length
+    bool valid{false};   // false when the trail has no leg to measure along
+};
+
+// 00811180, __thiscall(entity)(const float point[3], float* across, float* along),
+// RET 0Ch. The search (over sample POINTS, 3D squared distance, FLT_MAX seed at
+// 00D7A248, all forty slots back from the head) and the arc accumulation (the sum
+// of the stored +10h legs, 0081167F..008116E5) are transcribed.
+//
+// THE SIGN IS NOT TRANSCRIBED, and this matters only as stated here.
+// 00811726..00811760 forms `a*b - c*d` from four x87 registers and takes -1, +1
+// or 0 from it; naming those four needs the x87 stack tracked through a
+// 40-times-unrolled search, which this packet did not do. Instead the convention
+// is CHOSEN so that this routine is the exact inverse of 0070D290, which rebuilds
+// a position as `base + across * (-dir.z, +dir.x)` at `along` metres back
+// (0070D342, 0070D348): `across` here is the component of (point - base) along
+// that same left normal, taken at the base 00810630 answers for this `along`.
+// 00811180 is column 0's ONLY producer and 0070D290 its only consumer, so one
+// self-consistent convention makes the round trip the identity and a follower
+// holds exactly the offset it joined with - which is what column 0 means.
+// The absolute sign remains open, so the canned LINE / COLUMN / DIAMOND tables in
+// columns 1, 2 and 3 CANNOT be trusted from this convention; only a type-78h
+// reshape selects those.
+//
+// THE ROUND TRIP IS LOSSY OFF THE END OF THE TRAIL, in the image as much as here.
+// The out-parameters are a perpendicular distance and an arc length, and neither
+// carries an along-track overshoot, so a point beyond the trail's extent decomposes
+// to (perpendicular distance, 0) and rebuilds abeam of the head rather than where it
+// was. Measured on USN01: every follower joined 4000 m out and every `along` came
+// back 0.00. The identity above therefore holds only while the projection lands
+// inside the trail.
+//
+// One further divergence, named: the image measures `across` perpendicular to the
+// LINE through the winning sample and its neighbour (a normalised segment and a
+// cross product, 008115DE and 00811768), while this measures it from the
+// interpolated trail point at `along`. The two agree when the point is abeam of
+// that trail point and differ by the segment's curvature otherwise.
+ShipAiWakeDecomposition ship_ai_wake_decompose_00811180(const ShipAiWakeTrail& trail,
+                                                        const float point[3]) noexcept;
+
 // How much trail exists behind the head, in metres: the sum of the legs over the
 // slots this ship has actually laid down. Not a native routine - the host reports
 // it so a run can show the trail filling, and it stops at `written` so the

@@ -732,6 +732,54 @@ is named as such. A refusal arm will be exercised the moment the group object ex
 `total_path=5600.63`, `units=62`, `motion_ticks=42000` are unchanged from the packet-1 build:
 nothing consumes the answer yet, so this step is still a motion null.
 
+### Column 0 produced, and a correction to this document's own round-trip claim
+
+`0070ED30`'s column-0 arm is bound: the member's offset from the leader, clamped to
+`FollowerMaxDist`, decomposed against the leader's wake. The clamp is `4000.0`, `settings+424h`,
+from this installation's `scripts/datatables/shipglobals.lua` (mtime 2024-07-13, the untouched bulk
+date, so not one of this install's modified tables); the host parses the same key into
+`GameplaySettings::formacio_follower_max_dist` but nothing reaches it from the units host, so the
+constant is named rather than plumbed. The image clamps in the leader's frame and transforms back;
+a rigid transform preserves length, so clamping the world offset is the same clamp, and column 0
+never reads `record+4h`.
+
+`local/follow_columns_usn01.log`:
+
+```
+summary unit formation groups=1 joins=6 creates=1 rejoins=0 clamped=3 columns_unmeasurable=0
+  formation 0 leader=Enterprise count=7 column=0
+    Enterprise      across=    0.00  along= 0.00
+    Northampton     across= 3216.82  along= 0.00
+    SaltLakeCity    across= 3152.01  along= 0.00
+    Dunlap          across= 3152.01  along= 0.00
+    Ralph           across=   68.92  along= 0.00
+    McCall          across= -561.47  along= 0.00
+    Blue            across=  561.47  along= 0.00
+```
+
+**Three of the six hit the 4000 m clamp**, so the group forms while its members are kilometres
+apart, not in company. `columns_unmeasurable=0`: the leader always had a trail by the time the
+first request arrived.
+
+**And every `along` is 0.00, which falsifies the round-trip claim above as stated.** The reason is
+structural, not a bug in either side: `00811180` answers an across distance and an **arc length
+along the trail**, and when the query point lies beyond the trail's extent - which is exactly the
+case here, a follower 4000 m away from a leader whose ring is a few hundred metres long - the
+nearest sample is the head, the arc length is 0, and **the along-track part of the offset is simply
+not representable**. It is discarded. So:
+
+> **Correction.** "One self-consistent convention makes the round trip the identity" is true only
+> when the projection lands *inside* the trail and the point is abeam of it. Off the end of the
+> trail the decomposition is lossy in the image too, because the image's own out-parameters are a
+> perpendicular distance and an arc length and neither carries an along-track overshoot. What
+> column 0 then means is not "hold the offset you joined with" but "hold the perpendicular distance
+> you joined with, abeam of the trail point nearest you".
+
+That is a property of the mechanism, and it is what the measured stations are: six followers abeam
+of the leader at 68 m to 3216 m. Whether this host's AI groups *should* be forming at that spread
+is a question for the coordinator's composition rule (`merge_dist=650.0` in the same run's tuning
+line), not for this chain, and it is flagged rather than worked around here.
+
 ### Membership, and the refusal arm the gate step could not exercise
 
 `0077F940`'s runtime arm - create the group around the leader when it has none (`0070DB20`), then
