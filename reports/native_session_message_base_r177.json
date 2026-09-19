@@ -1447,5 +1447,57 @@
     "sha256": "c4ca14b940fde892835c722cb757c586be6fb67d0b6df9db823449f166394456",
     "files": 99,
     "head": "e3b7ff14afbf4703cb69a73b8d3168ef5e9bf7bd"
+  },
+  "primary_integration": {
+    "commit": "4609d52fabcab3c8f12b52d67387d2e768be5b98",
+    "main_observed_at_seal": "4609d52fabcab3c8f12b52d67387d2e768be5b98",
+    "tested_commit_is_ancestor_of_observed_main": true,
+    "strict_win32_build": true,
+    "ctests_passed": 3,
+    "coff_checks": [
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_bit_cursor_write.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "39bde039ca70397b0d04f86d5e679dc4965adf106aa1e02d31ae78a70f67ac9f",
+        "combined_sha256": "39bde039ca70397b0d04f86d5e679dc4965adf106aa1e02d31ae78a70f67ac9f"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_session_message_base.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "2d12cbce25ec1faed503f14dc57f616f969fab33e081adaf32418b91e9a73bc4",
+        "combined_sha256": "2d12cbce25ec1faed503f14dc57f616f969fab33e081adaf32418b91e9a73bc4"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_bit_cursor_read.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "df5170b26b3b2c256046c6039ae0d56383ed282318b13cbd9ba7518a8cabac2c",
+        "combined_sha256": "df5170b26b3b2c256046c6039ae0d56383ed282318b13cbd9ba7518a8cabac2c"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/singleton_lifetime.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "d6f6dbc057817a5b1c935b03d88108a60ac97eb28262fc24ab96cebbc7547bd6",
+        "combined_sha256": "d6f6dbc057817a5b1c935b03d88108a60ac97eb28262fc24ab96cebbc7547bd6"
+      }
+    ],
+    "fixture": {
+      "result": {
+        "exit": 0,
+        "exe_sha256": "760F88560DA62DF11A8E48B7BD8300A43A740B7964D889C0EE38D6AB9A1C4754",
+        "utc": "2026-09-19T04:29:56.6592175Z",
+        "library_sha256": "5ED336B02C90BA4999E9C247CDB67D59821CE2312F0DA2174CD1F6E20BBA9EC7",
+        "flags": "/std:c++17 /O2 /MD /W4 /WX /fp:strict /MANIFEST:EMBED"
+      },
+      "pairs": 957,
+      "matching_bytes": 958952,
+      "observations_identical_to_tested": true
+    },
+    "game_sha256": "96439f326b6ed8908cd95ff87ed05cd396069d6cb4506e08492f4652ad0f10c0",
+    "artifact_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r177\\native-session-message-base-main-r177.zip",
+      "sha256": "f39e95cde3be6f1382eca1d7c801c46498152687d8eb94b554b36b5375b55722",
+      "files": 111,
+      "head": "4609d52fabcab3c8f12b52d67387d2e768be5b98"
+    }
   }
 }
