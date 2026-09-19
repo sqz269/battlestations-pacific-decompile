@@ -244,4 +244,33 @@ private:
 
 SceneSpawnPool& scene_spawn_pool() noexcept;
 
+// Packet cc8_ship_moveonpath. The authored `Path` entities (class 0x47), with
+// their `Point%02i.Pos` triples carried into WORLD space by the record's own
+// composed frame through the recovered 00B62D10, which is the transform
+// 007AF800 already applies to the same points on the avoidance side.
+//
+// Why a process-level registry and not a member. `NavigatorMoveOnPath` reaches
+// the command path through GameScriptOrdersHost, which holds a GameUnitsHost
+// and nothing else; the scene-contents host is not on that chain and the one
+// place that owns both (src/game_hosts_mission_frame.cpp) is another agent's
+// file. This is the same shape scene_spawn_pool() already uses for the same
+// reason, and like it, it is cleared with the rest of the scene state.
+struct ScenePathEntry {
+    std::string name;
+    std::vector<std::array<float, 3>> points_world;
+};
+
+class ScenePathRegistry {
+public:
+    void clear() noexcept;
+    void add(const std::string& name, std::vector<std::array<float, 3>> points_world);
+    const ScenePathEntry* find(const std::string& name) const noexcept;
+    std::size_t size() const noexcept;
+
+private:
+    std::vector<ScenePathEntry> entries_;
+};
+
+ScenePathRegistry& scene_path_registry() noexcept;
+
 }  // namespace bsp::game

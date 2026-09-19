@@ -1202,8 +1202,41 @@ void GameScriptOrdersHost::session_route_path_order_message(void* entity,
     entity_issue_command(entity, bsp::kCommandMoveOnPath, target,
         bsp::kNavigatorPathOrderRouteFlags);
     ++summary_.path_orders;
-    // 0071c1b0's two stores, with no path object to receive them.
-    record_unimplemented("Navigator::path_object_set_follow_mode", "0071c1b0");
+    // Packet cc8_ship_moveonpath fills difference 2 above. 0071C1B0's pair now
+    // has a slot object to land on, and 0071F600's build (0071F6A5-0071F885)
+    // turns the authored Path entity's points into the cursor 009E59C0 reads.
+    // The order is the executable's: the queue of step 3, then 0071C1B0 at
+    // 00721ADB, and the build only when the command is begun, which is why the
+    // build reads the pair rather than being handed it.
+    const std::size_t index = index_of(entity);
+    if (index < units_.count()) {
+        units_.commands().set_path_follow_pair_0071c1b0(index, order.follow_mode,
+                                                        order.path_parameter);
+        // The marker registry first, not name_of(). A Path entity is always a
+        // scene marker, and marker ids are handed out from the unit count as it
+        // stood at scene load (21 on USN04); by the time the script issues these
+        // orders SpawnNew has taken the count past that, so name_of()'s first
+        // branch resolves marker id 22 to unit index 21 and answers a plane's
+        // name. `local/mop_after2_usn04.log` printed exactly that:
+        // `no authored points for path "D3A Val #1.1"`.
+        const SceneMarker* marker
+            = marker_for_id(static_cast<int>(reinterpret_cast<std::uintptr_t>(path_entity)));
+        const std::string path_name = marker != nullptr ? marker->name
+                                                        : name_of(path_entity);
+        const bsp::game::ScenePathEntry* authored
+            = bsp::game::scene_path_registry().find(path_name);
+        float ux = 0.0f, uy = 0.0f, uz = 0.0f;
+        units_.unit_position_00fc(index, ux, uy, uz);
+        static const std::vector<std::array<float, 3>> kNoPoints;
+        const bool built = units_.commands().begin_path_command_0071f600(index, path_name,
+            authored != nullptr ? authored->points_world : kNoPoints, ux, uz);
+        if (!built && !logged_path_points_missing_) {
+            logged_path_points_missing_ = true;
+            log_.notef("moveonpath path build 0071f600 found no authored points for "
+                "path \"%s\": 007ADC30 then answers `no legs` on the first state step "
+                "and the ship holds its heading", path_name.c_str());
+        }
+    }
 }
 
 // The pair at *(entity+73Ch)+24h and +28h, 008a3901 and 008a3912. The same

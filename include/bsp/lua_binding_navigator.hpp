@@ -273,13 +273,14 @@ struct NavigatorPathOrder {
     // +20h, stored at 008A38B0 from the uint16 at pathEntity+174h.
     std::uint16_t path_object_id{0};
     // +24h, stored at 008A38B5. Lua argument 2, default 1 (EDI at 008A3730).
-    // The script's PATH_FM_CIRCLE is one of this field's values; which integer
-    // it is was NOT read, because the constant lives in the shipped Lua and not
-    // in the binding.
+    // Packet cc8_ship_moveonpath closed this: the values are PATH_FM_SIMPLE 1,
+    // PATH_FM_PINGPONG 2 and PATH_FM_CIRCLE 3, and 007ADC60 and 007ADCC0 branch
+    // on exactly those three. docs/SHIP_AI_PATH_CURSOR.md.
     int follow_mode{0};
     // +28h, stored at 008A38B9. Lua argument 3, default 5 (LEA EBP,[EBX+3] at
-    // 008A3734 with EBX = 2). What the value selects was not read: the only
-    // consumer found is 0071C1B0, which stores it beside the follow mode.
+    // 008A3734 with EBX = 2). Packet cc8_ship_moveonpath closed this too: it is
+    // the START MODE, PATH_SM_JOIN 5, PATH_SM_BEGIN 6, PATH_SM_JOIN_RANDOM_DIR 7
+    // and PATH_SM_JOIN_BACKWARDS 8, and 007B1C50 branches on exactly those four.
     int path_parameter{0};
 };
 

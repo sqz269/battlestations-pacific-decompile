@@ -223,6 +223,11 @@ void ship_ai_stop_step_009e14c0(ShipAiStopStepState& state, ShipAiControlBlock& 
 // The command object 009DAE20 returns (`MOV EAX,0E08F68h; RET` at 009DAE20).
 // Milestone 2n's kShipAiCommandStates lists the same value for `movetopos`.
 inline constexpr std::uint32_t kShipAiMoveToPosCommandObject = 0x00e08f68u;
+// 009E5B1F CMP dword ptr [EAX + 0x54],0xe08f80 and the same value pushed at
+// 009E5C26 and 009E5C6B.
+inline constexpr std::uint32_t kShipAiMoveOnPathCommandObject = 0x00e08f80u;
+// 00D7A24C, read at the width of the MOVSS at 009E5AC2.
+inline constexpr float kShipAiMoveOnPathLegScale = 1.0f;
 
 struct ShipAiMoveToPosStepHost {
     virtual ~ShipAiMoveToPosStepHost() = default;
@@ -282,6 +287,85 @@ struct ShipAiMoveToPosStepHost {
 // Returns true when the step reached the "finished" arm (009E58E6) and the
 // command was ended; false on every early return.
 bool ship_ai_movetopos_step_009e5770(ShipAiMoveToPosStepHost& host);
+
+// ---------------------------------------------------------------------------
+// 009E59C0, the `moveonpath` step
+// ---------------------------------------------------------------------------
+//
+// __thiscall(state)(float), RET 4, body 009E59C0-009E5C90, 200 instructions,
+// READ WHOLE by packet `cc8_ship_moveonpath`. No Ghidra function starts there;
+// the SEH prologue is at 009E59C0 after eight INT3, the last RET 4 is at
+// 009E5C8E. The vtable is 00D21688 slot +0Ch and the command is 00E08F80.
+//
+// It is 009E5770 `movetopos` with three differences and nothing else:
+//
+//  1. the head at 009E59DE-009E5A3C, an announce latch on the state byte at
+//     state+8h that 009E5BC5 raises when the command finishes;
+//  2. the goal comes from the command's own path cursor
+//     (`cursor->vtable[4h](&out, -1)` at 009E5A59) instead of brain+0B2Ch;
+//  3. 009E5AC0 stores 1.0f (00D7A24C) at brain+308h on every step whose leg is
+//     not the final one.
+//
+// The tail 009E5B17-009E5C8D is byte for byte the `movetopos` target-range arm
+// and `finished` block with 00E08F80 in place of 00E08F68, transcribed here for
+// the first time: docs/SHIP_AI_STATE_STEPS.md called it partial.
+struct ShipAiMoveOnPathStepHost {
+    virtual ~ShipAiMoveOnPathStepHost() = default;
+    // 009E59DE and 009E5A39 / 009E5BC5, the byte at state+8h.
+    virtual bool announce_latch_08() = 0;
+    virtual void set_announce_latch_08(bool value) = 0;
+    // 009E59F1 / 009E5A0E / 009E5A46 / 009E5AAC, 0071BFF0(director, 0).
+    virtual std::uint32_t director_command_slot_0071bff0(int index) = 0;
+    // 009E59F8, 007ADC30 on that slot: no path object, or an empty one.
+    virtual bool command_slot_has_no_legs_007adc30(std::uint32_t slot) = 0;
+    // 009E5A15 / 009E5AB3, 007ADC60 on that slot.
+    virtual bool command_on_final_leg_007adc60(std::uint32_t slot) = 0;
+    // 009E5A20 and 009E5C77, 009E00A0(&state->owner).
+    virtual void hold_heading_and_stop_009e00a0() = 0;
+    // 009E5A59, cursor->vtable[4h](&out, -1) -> the current leg's waypoint. The
+    // -1 is a sentinel: 007ADD70 calls the same slot at 007ADE0D with the
+    // cursor's own index, so the value is the point the cursor stands on. The
+    // cursor's vtable was not located, so the sentinel's meaning is a
+    // HYPOTHESIS; the two call sites agreeing on -1 is the whole evidence.
+    virtual bool path_point_vtable_0004(std::uint32_t slot, int leg,
+                                        float& x, float& z) = 0;
+    // 009E5A78 / 009E5A82 and 009E5A87 / 009E5A9D.
+    virtual bool unit_pose_valid_00c8() = 0;
+    virtual void refresh_unit_pose_00414db0() = 0;
+    virtual void unit_position_xz_00fc(float& x, float& z) = 0;
+    // 009E5AC0-009E5ACA, brain+308h = the float32 1.0f at 00D7A24C, stored only
+    // when 007ADC60 answered false (009E5ABE JNZ skips the store).
+    virtual void set_brain_leg_scale_0308(float value) = 0;
+    // 009E5AE2, 009DE050(brain+8h, &goal, 0, final_leg).
+    virtual void set_navigation_goal_009de050(float goal_x, float goal_z,
+                                              bool keep_mode, bool final_leg) = 0;
+    // 009E5AF4, state->vtable[2Ch](&goal).
+    virtual bool state_goal_reached_vtable_002c(float goal_x, float goal_z) = 0;
+    // 009E5B19, [brain+0AB8h]+54h, compared against 00E08F80 at 009E5B1F.
+    virtual std::uint32_t director_current_command_0054() = 0;
+    // 009E5B2F, 00521EA0 on director+58h.
+    virtual std::uint32_t resolve_command_target_00521ea0() = 0;
+    // 009E5B47, target->vtable[5Ch](1Ch).
+    virtual bool target_is_kind_vtable_005c(std::uint32_t target, int kind) = 0;
+    // 009E5B53, 00427EB0 on the target: the refreshed world position.
+    virtual void target_position_xz_00427eb0(std::uint32_t target,
+                                             float& x, float& z) = 0;
+    // 009E5B91, 00414C60 on (unit position - target position).
+    virtual float planar_length_00414c60(float dx, float dz) = 0;
+    // 009E5BA6, the signed int at target+7A0h loaded with FILD.
+    virtual int target_range_07a0(std::uint32_t target) = 0;
+    // 009E5BAC, the float at [brain+0AA8h]+9C8h.
+    virtual float unit_radius_09c8() = 0;
+    // 009E5BC9 / 009E5C35 / 009E5C55 / 009E5C70, the `finished` block.
+    virtual void message_text_assign_0041e870(const char* text) = 0;
+    virtual void post_command_message_00984300(std::uint32_t command) = 0;
+    virtual void release_message_text_00419cc0() = 0;
+    virtual void end_command_0071e430(std::uint32_t command, int flag) = 0;
+};
+
+// Returns true when the step reached the `finished` arm at 009E5BBC. Every
+// other exit, including the 009E5A20 early return, answers false.
+bool ship_ai_moveonpath_step_009e59c0(ShipAiMoveOnPathStepHost& host);
 
 // ---------------------------------------------------------------------------
 // 009E8820, the `attackmove` step, and 009E86F0, its sub-state selector

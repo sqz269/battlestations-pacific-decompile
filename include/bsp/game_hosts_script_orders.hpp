@@ -201,6 +201,11 @@ class GameScriptOrdersHost final : public bsp::LuaBindingNavigatorHost,
 public:
     GameScriptOrdersHost(GameHostLog& log, GameUnitsHost& units);
 
+    // Packet cc8_ship_moveonpath: `GetSelectedUnit` 008AB070 reads the global
+    // 00E188D8, which 004C0893 stores in BSP_Game_SetControlledUnit 004C0890.
+    // This host is the only object the Lua host holds that reaches the units.
+    const GameUnitsHost& units() const noexcept { return units_; }
+
     // The eight navigator rows src/lua_binding_navigator.cpp reconstructs plus the
     // nine rows src/lua_binding_mission.cpp reconstructs. A row this answers false
     // for keeps milestone 2l's record.
@@ -466,6 +471,7 @@ private:
     // one dispatch so the 5Bh arm can build the receiver's descriptor from the
     // same entity 00720fa0 would have re-resolved out of the message.
     bool logged_path_order_{false};
+    bool logged_path_points_missing_{false};
     void* path_entity_for_order_{nullptr};
 
     // Packet cc_lua_binding_audit.
