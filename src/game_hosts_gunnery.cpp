@@ -2748,6 +2748,25 @@ void GameGunneryHost::Impl::publish_ai_weapon_facts() {
     // barrel entries at +74h/+78h. This process has one gun row per gun and a
     // barrel count on it, so the barrels are flattened into one list per unit.
     for (const GameGunRow& gun : guns) {
+        // A gun whose bullet class never resolved is not a weapon and must not
+        // reach 00A08460's barrel walk. The case measured on IJN01 is the
+        // CATAPULT: it is gunnery category 0Bh, one of the twelve, so a gun row
+        // IS built for it here, but of the 416 device classes in this
+        // installation the 20 CATAPULT rows are the only ones that author no
+        // `Bullet` block, so gun.bullet_class stays -1 and the sub-type stays 0.
+        // The image says the same thing from the other side: the authored
+        // preference row for category 0Bh at 00E0A374 is EMPTY, so a catapult
+        // targets nothing. Measured before this skip: 21020 barrel lookups on
+        // Cruiser and 21020 on BattleShip, the two member classes in IJN01 that
+        // mount one.
+        //
+        // This changes no weight. A sub-type 0 barrel answered accuracy 0 and
+        // 00A094F5 already skipped it, so the totals are identical; what goes
+        // away is a phantom barrel in the row and in the census.
+        if (gun.bullet_sub_type == 0) {
+            ++summary.ai_barrels_unresolved_skipped;
+            continue;
+        }
         GameAiWeaponFacts::Unit& row = facts.row_for_write(gun.unit_index);
         GameAiWeaponFacts::Barrel barrel;
         barrel.reload = gun.reload_time;

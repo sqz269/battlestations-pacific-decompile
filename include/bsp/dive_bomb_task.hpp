@@ -708,6 +708,49 @@ struct DiveBombAimGlideCommand {
 DiveBombAimGlideCommand dive_bomb_aimglide_command_009c542c(
     const DiveBombAimGlideCommandInputs& in) noexcept;
 
+// ---------------------------------------------------------------------------
+// 009C4B44-009C4C06, the goaway tick's climb-out - the state that exists to get
+// the aircraft out of its dive, and the one whose absence ditched it. The walk
+// in local/usn04_circuit2.log is `aimdive` 318 -> `goaway` 1 tick -> water
+// contact at -1.12 m; the pull-out edge fires, the state changes, and nothing
+// happens because `kGoAway` dispatched nothing.
+//
+// Its command census, with EBX the 1 that 009C4A5C loads:
+//   009C4BE0 / 009C4BE8  cmd+2BCh the pitch target, cmd+2D0h = 1
+//   009C4BFE / 009C4C06  cmd+2C4h = 0.0 (XORPS), cmd+2CCh = 1
+//   009C4CA7, 009C4CE7   cmd+2D8h = 0
+//   009C4DF0 / 009C4DF6  a second bank-target arm, cmd+2CCh = 1
+//   009C4E17 / 009C4E1D  cmd+2C0h with cmd+2CCh = 2, a heading arm
+//
+// Both modes are 1, and that is the whole shape: hand the planner a pitch
+// target and let its own arm at 0099E490 fly it, and hand the roll servo a
+// wings-level target so the aircraft rolls upright out of the inverted dive.
+// The mode-1 pair is exactly what the gates bound in the last two packets pass.
+//
+// The pitch target is the larger of two clamped interpolations over the
+// aircraft's own altitude (`[EDI+100h]`), 009C4B61 and 009C4BB3, taken by the
+// `77` JA at 009C4BC8. The second one's endpoints are recovered; the first's
+// `y1` and interpolant are not, so it is supplied as the same curve, labelled.
+// ---------------------------------------------------------------------------
+namespace dive_bomb_goaway_constant {
+inline constexpr float kClimbFullAltitude = 60.0f;    // 00CEB4B0, 009C4BAA
+inline constexpr float kClimbEaseAltitude = 300.0f;   // 00CE3AE8, 009C4B48/009C4B96
+}  // namespace dive_bomb_goaway_constant
+
+struct DiveBombGoAwayInputs {
+    float altitude = 0.0f;         // [EDI+100h], the unit's world Y
+    float climb_angle_1ec = 0.0f;  // (approach+8h)->+1ECh, 009C4BA0
+};
+struct DiveBombGoAwayCommand {
+    float pitch_target_2bc = 0.0f;  // 009C4BE0
+    int pitch_mode_2d0 = 1;         // 009C4BE8, EBX
+    float bank_target_2c4 = 0.0f;   // 009C4BFE, the XORPS zero
+    int heading_mode_2cc = 1;       // 009C4C06, EBX
+    int air_brake_mode_2d8 = 0;     // 009C4CA7 / 009C4CE7
+};
+DiveBombGoAwayCommand dive_bomb_goaway_climb_009c4b44(
+    const DiveBombGoAwayInputs& in) noexcept;
+
 struct DiveBombFlyAboveSpan {
     float floored_height = 0.0f;  // max(B, 100.0), the 009C65A9 select
     float threshold = 0.0f;       // S = floored * 0.7 + 200.0
