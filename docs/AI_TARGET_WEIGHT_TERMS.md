@@ -887,6 +887,22 @@ part is labelled as unmeasured rather than counted as confirmation.
 
 ## The choice observed (packet `cc8_ai_target_choice_observed`, 2026-09-18)
 
+### Which commits every column in this document sits before
+
+Two baseline-moving commits bound these measurements, and both are named rather than assumed.
+
+**`0daec4b56`, the `0071EBF0` command-target rule.** Every column in the sections **above** predates
+it; every column in **this** section is after it. See below.
+
+**`67e8ac821`, the `Hidden = B true` hold-back.** **Every column in this document, including all
+three runs in this section, predates it.** That commit makes the scene loader hold back every
+authored object whose block sets `Hidden`, as `0046D3B5` does, so such objects are registered but
+not created until a mission script spawns them and missions load emptier: USN04 creates 19 units
+instead of 53 and USN01 62 instead of 77, with IJN01 and USN02 uncounted. Candidate counts, served
+counts, the chosen-class table and every gunnery number can all move across it, so **no column here
+may be compared with one taken after it**. The binary these three runs used was built at 22:22 from
+a tree without it.
+
 ### Which side of `0daec4b56` each column is on
 
 Every column in the sections **above** predates `0daec4b56` and is on the old "last current row wins"
