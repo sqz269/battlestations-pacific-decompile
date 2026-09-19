@@ -22,11 +22,20 @@ it is written to be read in order. This file is only what that document does not
   "fix" this with a constant. At 9000 frames all six complete at 899.7-900.0 m and fly a **second
   attack run**: `transitions` 6 -> 10-15, a second `turndown` and `aimdive`, `releases` 1 -> **2**,
   `rounds_left` 1 -> **0**, ending in `done`. The chain closes with no constant touched.
-* **`local\goaway_long.log`'s mission-level numbers are not comparable to the pair** and must not be
-  quoted: `bomb_impacts=0`, `total_damage=3596.8`, `deaths=5`, `Lexington-class01` unsunk, and the
-  arm starting ~2100 frames later. Two unchecked candidates: `--frames` changing the pre-mission
-  budget, and my not passing `--instance-tag`/`--affinity-core` while another worker's runs
-  overlapped. Only the state/tick/release counts from it are used.
+* **`local\goaway_long.log`'s mission-level numbers must not be quoted** - `bomb_impacts=0`,
+  `total_damage=3596.8`, `deaths=5`, `Lexington-class01` unsunk - but the reason recorded here was
+  wrong and is **withdrawn** (packet `cc8_dive_aim`). The run did NOT diverge: 4800 `world frame`
+  lines, every `torpedo trace` to t = 133.45 s, every `dive probe` and 200 `plane` lines are
+  identical to the same prefix of `goaway_after.log`, and both runs carry the launcher's `slot0`
+  tag. **`GameUnitsHost::create_units` rebuilds the gunnery host unconditionally on every spawn
+  batch** (`src/game_hosts_units.cpp` ~3704), discarding the summary and every in-flight round; a
+  batch after frame 4800 (`aircraft=24` against 15) reset it, which is why `first_hit` is *earlier*
+  at 15.10 s. Withdrawn with it: the two candidates above (`--frames` - the pre-mission budget is
+  200 either way - and the missing instance tag), the "~2100 frames later" observation (a symptom of
+  the same reset), and two later readings, "the summary merely under-reports" and "the run
+  diverged". Fix: packet `cc8-gunnery-host`. **The state/tick/release counts used here are dive-bomb
+  TASK counters on the units host, which a batch does not reset, so section (a)'s second attack run
+  stands unchanged.**
 * **The -5 degree nose-down flag** (`009C4A43`-`009C4A68`, `00CF885C`) is recovered and carried on
   `DiveBombGoAwayCommand::wrote_bank_heading`, deliberately **unconsumed**. See (c).
 

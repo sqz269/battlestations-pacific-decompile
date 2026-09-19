@@ -2035,7 +2035,12 @@ struct GameUnitsHost::Impl {
         const std::size_t index = index_of_slot(slot);
         if (index >= slots.size()) return;
         for (int i = 0; i < rounds; ++i) {
-            if (!gunnery->release_bomb_drop(index, slot.db_run_in_origin)) break;
+            // Packet cc8_dive_aim item 2, edited under the integrator's hunk
+            // arbitration of 2026-09-19: db_impact_fall_time is 009C7D71's tf
+            // as of THIS tick, so carrying it here is the one sample that is
+            // provably a release-tick one.
+            if (!gunnery->release_bomb_drop(index, slot.db_run_in_origin,
+                                            slot.db_impact_fall_time)) break;
             ++slot.db_bombs_spawned;
             // NO decrement of dive_bomb_rounds_remaining here. The task's own
             // `spend_round` already does it, and a second one took the stock

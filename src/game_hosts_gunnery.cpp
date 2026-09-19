@@ -2583,6 +2583,33 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
             const float tdz = rec.actual[2] - rec.target_release[2];
             rec.target_error = std::sqrt(tdx * tdx + tdz * tdz);
         }
+        // Packet cc8_dive_aim item 2. Everything above is sampled at the DROP;
+        // these are sampled HERE, as the round dies, which is the only tick at
+        // which "where the target actually is when the bomb arrives" exists.
+        rec.release_fall_time = row.release_fall_time;
+        rec.target_speed_release = row.target_speed_release;
+        rec.target_heading_release = row.target_heading_release;
+        if (row.ordered_target != 0) {
+            rec.target_name = unit_name_or_index(row.ordered_target - 1);
+            float ix = 0.0f, iy = 0.0f, iz = 0.0f;
+            units.unit_position_00fc(row.ordered_target - 1, ix, iy, iz);
+            rec.target_pos_impact[0] = ix;
+            rec.target_pos_impact[1] = iy;
+            rec.target_pos_impact[2] = iz;
+            rec.target_heading_impact =
+                units.unit_heading_radians(row.ordered_target - 1);
+            const float mx = rec.actual[0] - ix;
+            const float mz = rec.actual[2] - iz;
+            rec.impact_error = std::sqrt(mx * mx + mz * mz);
+            // Resolve the miss in the target's own frame. The hull heading is
+            // the same pose convention the rest of this file uses, so its
+            // forward axis is (sin h, cos h) and its starboard axis (cos h,
+            // -sin h) - the convention 009C7C7C's `pi/2 - atan2(dz, dx)` fixes.
+            const float sh = std::sin(rec.target_heading_impact);
+            const float ch = std::cos(rec.target_heading_impact);
+            rec.miss_along = mx * sh + mz * ch;
+            rec.miss_across = mx * ch - mz * sh;
+        }
         rec.life = row.life;
         rec.died_above_water = row.position[1] > 0.0f;
         bomb_impacts.push_back(rec);
@@ -3359,7 +3386,8 @@ bool GameGunneryHost::release_ordnance_drop(std::size_t unit_index) {
 // the dive bomber needs in place of the torpedo `swim_speed > 0` one. See the
 // header for why the predicate was the whole defect.
 bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
-                                        const float predicted_impact[3]) {
+                                        const float predicted_impact[3],
+                                        float release_fall_time) {
     Impl& h = *impl_;
     const GameGunRow* chosen = nullptr;
     for (const GameGunRow& gun : h.guns) {
@@ -3392,6 +3420,9 @@ bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
     shot.bullet_class = chosen->bullet_class;
     shot.alive = true;
     shot.is_bomb = true;
+    // Packet cc8_dive_aim item 2: the tf in force at THIS tick, not the one the
+    // aimdive summary prints after the dive has ended.
+    shot.release_fall_time = release_fall_time;
     for (int i = 0; i < 3; ++i) {
         shot.position[i] = origin[i];
         shot.predicted_impact[i] = predicted_impact[i];
@@ -3412,6 +3443,15 @@ bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
             shot.target_pos_release[0] = tx;
             shot.target_pos_release[1] = ty;
             shot.target_pos_release[2] = tz;
+            // Packet cc8_dive_aim item 2. A ship's velocity is its forward
+            // speed along its hull axis, so these two ARE the velocity at the
+            // drop; recording them rather than a derived vector keeps the
+            // census on accessors that are already proven (0092D730 and the
+            // vtable[50h] hull heading the torpedo drop above uses).
+            shot.target_speed_release =
+                h.units.unit_forward_speed_0092d730(shot.ordered_target - 1);
+            shot.target_heading_release =
+                h.units.unit_heading_radians(shot.ordered_target - 1);
         }
     }
     h.shots.push_back(shot);
@@ -3598,6 +3638,33 @@ void GameGunneryHost::report() {
                 static_cast<double>(r.target_error),
                 r.died_above_water ? "above water (entity sweep)"
                                    : "at the sea surface");
+            // Packet cc8_dive_aim item 2. Every label here names WHEN it was
+            // sampled, because the trap this line exists to close is the
+            // aimdive census `tf=` column, which is last-sampled and was read
+            // as a release value. `tf@release` is 009C7D71's own fall time on
+            // the tick the round left; compare it against `after` on the line
+            // above, which is the fall this round actually flew.
+            host.log.notef("    at release: tf@release=%.2f s | target %-12s "
+                "speed=%.1f m/s heading=%.3f rad "
+                "| at impact: target moved to %.0f %.0f %.0f heading=%.3f rad "
+                "| miss vs target AT IMPACT = %.1f m "
+                "(along course %+.1f m, across %+.1f m)",
+                static_cast<double>(r.release_fall_time),
+                // CORRECTED: this slot printed `owner_name` under a `target`
+                // label in the first cut, which is the exact trap the packet
+                // rules name - a column's meaning comes from its printing code.
+                // local\aim_before.log's rows read `target D3A Val #3.1`, which
+                // is the BOMBER. The ordered target's name is carried now.
+                r.target_name.empty() ? "-" : r.target_name.c_str(),
+                static_cast<double>(r.target_speed_release),
+                static_cast<double>(r.target_heading_release),
+                static_cast<double>(r.target_pos_impact[0]),
+                static_cast<double>(r.target_pos_impact[1]),
+                static_cast<double>(r.target_pos_impact[2]),
+                static_cast<double>(r.target_heading_impact),
+                static_cast<double>(r.impact_error),
+                static_cast<double>(r.miss_along),
+                static_cast<double>(r.miss_across));
         }
         for (const GameProjectileRow& row : host.shots) {
             if (!row.is_bomb) continue;

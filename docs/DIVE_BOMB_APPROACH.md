@@ -329,9 +329,18 @@ result about USN04, not about the rule.
 * `unit+0C25h` has no host field, so `009C18C0`'s step-3 early return is not modelled.
 * `009C1FD0` past `009BFD70` is unread, about 2900 instructions. `kFollow` is unreachable in this
   host, so nothing measured here bears on it.
-* The aim point `approach+4Ch`/`+50h`/`+54h` still has no producer read, in this packet or in
-  `docs/DIVE_BOMB_TASK.md`. Everything here that needs the aim point uses the host's standing
-  substitution, the commanded target's position, and says so at the use site.
+* ~~The aim point `approach+4Ch`/`+50h`/`+54h` still has no producer read~~ - **WITHDRAWN by packet
+  `cc8_dive_aim`; see `docs/DIVE_BOMB_AIM_POINT.md`.** It has a producer: `009FADA0`, which
+  `009C7A80` calls as its first act every tick (`009C7A93`/`009C7A9F`). No census of this
+  displacement could have found it, because the aim point is the `+1Ch`/`+20h`/`+24h` of a
+  target-reference **sub-object at `approach+30h`** (vtable `00D21CB4`, from `009C3EDF LEA
+  ECX,[ESI+30h]`). Its value is the target's live world matrix applied to a body-frame hull point
+  the target itself chooses through `vtable[+100h]` - **no velocity term and no fall-time term**, so
+  the image does not lead. The original sentence, left for the record, was: "still has no producer
+  read, in this packet or in `docs/DIVE_BOMB_TASK.md`." Everything here that needs the aim point
+  still uses the host's standing substitution, the commanded target's position, and says so at the
+  use site - and that substitution is now known to be faithful **except** that it aims at the
+  target's origin rather than at the chosen hull point.
 * `approach+B4h` and `approach+B8h` are main's `1100.0` in every window here. `cc8-dive-heading`
   holds a change that makes them draws around 780 and 2080; these numbers do not carry across it.
 

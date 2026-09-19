@@ -269,14 +269,27 @@ So the chain closes: goaway completes at 900 m, `009C86EE` returns an aircraft w
 was changed to produce this.** The 4800-frame mission was simply about four seconds too short, as
 run 2's 866.8 m predicted.
 
-**What this run may NOT be used for.** Its mission-level numbers diverged from the pair and I did not
-isolate why: `bomb_impacts=0` (against 18), `total_damage=3596.8` (against 10188.4), `deaths=5`
-(against 9), `queued_hits=272` (against 77), and `Lexington-class01` is not sunk (`taken 2497` of
-8000) where the pair sinks it at 123.70 s. `#3.1`'s arm also starts about 2100 frames later in
-mission terms. Two candidate causes, neither checked: changing `--frames` changed the pre-mission
-frame budget, and I did not pass `--instance-tag`/`--affinity-core` while another worker's runs
-overlapped mine. **Quote no damage, impact or death figure from this run.** The state, tick and
-release counts above are properties of the dive-bomb task's own transitions and stand on their own.
+**What this run may NOT be used for.** Its mission-level numbers are wrong: `bomb_impacts=0`
+(against 18), `total_damage=3596.8` (against 10188.4), `deaths=5` (against 9), `queued_hits=272`
+(against 77), and `Lexington-class01` is not sunk (`taken 2497` of 8000) where the pair sinks it at
+123.70 s. **Quote no damage, impact or death figure from this run.**
+
+**The cause is known, and it withdraws four earlier diagnoses** (packet `cc8_dive_aim`). The run did
+**not** diverge: all 4800 `world frame` lines, every `torpedo trace` line to t = 133.45 s, every
+`dive probe` line and all 200 `plane` lines are identical to the same prefix of `goaway_after.log`.
+`GameUnitsHost::create_units` ends with `host.gunnery = std::make_unique<GameGunneryHost>(...)`
+(`src/game_hosts_units.cpp` around line 3704) **unconditionally**, and it runs once per spawn batch,
+so every batch discards the gunnery summary and every in-flight round, swimming torpedo and queued
+hit. A batch after frame 4800 (`aircraft=24` against 15) reset it here, so this summary counts only
+since that batch - which is also why `first_hit` is *earlier* (15.10 s against 17.15 s), measured on
+a younger host's clock. Withdrawn by this: the two candidates that stood here (the `--frames`
+pre-mission budget - identical at 200 frames either way - and a missing instance tag: both runs
+carry the launcher's `slot0`), the reading that the end-of-run summary merely under-reports, and the
+reading that the simulation diverged. The "`#3.1`'s arm starts ~2100 frames later" observation was a
+symptom of the same reset and is withdrawn with them. Fix: packet `cc8-gunnery-host`.
+
+The state, tick and release counts above are properties of the dive-bomb task's own transitions,
+which live on the **units** host and survive a batch, so they stand on their own.
 
 ## 5. The delivered cross-track error: the attack run cannot be making it *here*
 
