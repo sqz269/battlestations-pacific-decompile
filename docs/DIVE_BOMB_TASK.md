@@ -2503,3 +2503,53 @@ So `kAimGlide` now dispatches, and with the three transcription corrections and 
 seed the release at `009C5777` has a reachable window for the first time: angle under 30 degrees,
 height above the aim point under 260 m, lateral inside 120, and
 `-4*travel - 5.0 < lead < -5.0`.
+
+## The three slot runs, and a retraction
+
+Three runs on slots 0-2, all on a tree **without** main's `67e8ac821`, so they compare directly with
+`usn04_after.log` and `usn01_after.log`.
+
+| measure | `usn01_after` | `usn01_glide` | `usn04_after` | `usn04_glide` | `usn04_circuit2` |
+| --- | --- | --- | --- | --- | --- |
+| mission frames | 4800 | 4800 | 4800 | 4800 | **8800** |
+| `closed_mean` | 368.1 m | **368.1 m** | - | - | - |
+| `worst_closed` | 330.7 m | **330.7 m** | - | - | - |
+| `heading_error_last_mean` | 0.005 rad | **0.005 rad** | - | - | - |
+| dive-bomb arm ticks | - | - | 2117 | 2118 | **2118** |
+| transitions | - | - | 7 | 7 | 7 |
+| aimdive / aimglide / goaway | - | - | 318 / 41 / 1 | 318 / 42 / 1 | 318 / 42 / 1 |
+| releases | - | - | 0 | 0 | 0 |
+
+USN01 reproduces the control exactly, so the `kAimGlide` dispatch costs the torpedo planner nothing.
+USN04 is unchanged too - the glide corrections and the dispatch do not move the walk, because
+`aimglide`'s 42 ticks happen after the aircraft is already low and out of position.
+
+### Retraction: there is no second circuit, and the window was never the reason
+
+The last packet predicted that a longer run would show `009C86D9` sending `goaway` back to
+`flyabove` for a second circuit, and that our 4800-frame runs simply ended first. **That is wrong.**
+The 8800-frame run stops at **2118 arm ticks, the same as the 4800-frame run** - 190 s of task in
+both - and the log says why:
+
+```
+plane water contact: unit=movieval alt=-1.12 water=0.00 |v|=43.72 state 7 -> 6
+  (007CB7F0 tail 007CB92C); the free-flight gate 0074E210 is now false
+```
+
+**The dive bomber flies into the sea.** Once the flight state leaves 7 the pilot think stops, the
+task stops being armed, and no amount of mission time changes anything. The chain does not run out
+of window; it runs out of aircraft.
+
+### What that makes the gate: `009C4A40`, the goaway tick
+
+The walk is `aimdive` 318 -> **`goaway` 1 tick** -> water. So the pull-out edge works: it is computed
+at `009C6131`-`009C6154` and `apply_aimdive_result` does store it back into `db_aim_pull_out_18`,
+`009C8677` reads it and the state does leave `aimdive`. What happens next is nothing, because
+**`kGoAway`'s tick `009C4A40` is one of the six this host still dispatches nothing for**. The state
+that exists to climb the aircraft away from its dive issues no command, so the aircraft holds its
+dive attitude and ditches one tick later.
+
+That also retracts the milder claim that "the image overshoots this pass too". The image's dive
+bomber does not fly into the water; it pulls out, goes round, and `009C86D9` gives it the second
+circuit with its two remaining rounds. The missing piece is not a law in the aimdive - it is the
+goaway tick, at `009C4A40`, body `009C4A40`-`009C4E65`, 1061 bytes.
