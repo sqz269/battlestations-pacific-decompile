@@ -20,7 +20,7 @@ Addresses are from the raw listing (`bsp.py disasm-raw`, disk bytes) because `00
 | --- | --- | --- |
 | the aim point | `009D0670` `BSP_BotApproachTorpedo_GetAimPoint` | `FLD [ECX+D0h]/[+D4h]/[+D8h]` -> the out-param at `[ESP+4]`. Eight instructions, `RET 4`, **no arithmetic**. |
 | own position | `009D34EA`, `009D34F8` | `unit+FCh` (X) and `unit+104h` (Z), the translation row of the entity world matrix that starts at `unit+CCh`. |
-| the call | `009D3517` | `this->vtable[0](&local)` - the update asks itself for the aim point. |
+| the call | `009D3517` | `this->vtable[0](&local)` - the update asks itself for the aim point. It calls the same slot twice more: `009D36E4`, feeding a line-of-sight query at `007DF360` with the target pointer, and `009D3DC8`, whose result is read as X and Z at `009D3DCA`/`009D3DD7`. All three are the same eight-instruction copy; none of them leads. |
 | the difference | `009D3519`, `009D3523` | `aim.x - own.x` and `aim.z - own.z`. |
 | range | `009D3552` sqrt -> `009D357E` | `approach+90h`, with an epsilon at `00CE3820` that collapses it to zero. |
 | bearing | `009D3586` atan2, `fsubr` `00CE3830`, wrap by `00CE3828` -> `009D35C0` | `approach+94h`, a compass bearing. |
@@ -100,7 +100,13 @@ named escape route for a disp8 write through an aliased pointer.
 ### 3.0 The second displacement, which no earlier census had
 
 Section 6.3 of `docs/TORPEDO_AFTER_THE_DROP.md` names the escape route for its own negative: "the
-producer holds the approach at some other offset". It does, and this packet found the offset.
+producer holds the approach at some other offset". It does.
+
+**Credit where it is due: the layout below was already in the ledger**, on `009D0670`'s own record
+("found from `009D3050`'s `LEA EDI,[ESI+3F8h]` at `009D3080` and `MOV [EDI],0D213C0h` at
+`009D30A7`"). I re-derived it here without having read that record first. What is new in this packet
+is not the layout but the *consequence nobody had drawn from it* - that `+D0h` is therefore also
+addressable as `task+4C8h`, and that this second displacement had never been scanned.
 
 `009D3050 BSP_BotTaskTorpedo_Construct` lays the task out as follows:
 
