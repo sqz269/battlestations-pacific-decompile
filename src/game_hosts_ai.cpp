@@ -446,6 +446,65 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     // both number ShipBase 6, PlaneBase 0Fh, Submarine 8, LandingShip 0Ch and
     // TorpedoBoat 0Eh - and both are selected from the same VehicleClass.Type,
     // so the codes below are the native's. The vtables are not the same vtable.
+    // One row per (bullet sub-type, target group) pair the accuracy lookup is
+    // asked for, with the time factor and the barrel contribution 00A08460
+    // would have built from it. Observation only.
+    struct AccuracyCensusRow {
+        unsigned long long lookups{0};
+        unsigned long long zero_accuracy{0};
+        unsigned long long unresolved{0};
+        float accuracy{0.0f};        // one value per pair, so the last wins
+        double contribution_sum{0.0};
+    };
+    static constexpr int kCensusSubTypes = 0x14;
+    static constexpr int kCensusGroups = 5;
+    AccuracyCensusRow accuracy_census[kCensusSubTypes][kCensusGroups]{};
+
+    // 00A085AD PUSH 0Fh on EBP, the attacker vehicle class, stored to
+    // [ESP+37h]; 00A08619 JE 00A09228 skips 00A0861F..00A09222 when it is
+    // clear. So a PLANE attacker takes the big unprojected branch and everyone
+    // else falls through to the subsystem-and-barrel walk this process does
+    // project. Counting the split says whether IJN01's zero weights are the
+    // barrel path answering honestly or the wrong path being walked at all.
+    unsigned long long census_plane_attacker{0};
+    unsigned long long census_other_attacker{0};
+
+    void census_barrel_accuracy(const GameAiWeaponFacts::Unit* attacker_row,
+                                std::size_t attacker_unit, std::size_t target) {
+        if (units.unit_is_kind_of(attacker_unit, 0x0F)) {
+            ++census_plane_attacker;
+        } else {
+            ++census_other_attacker;
+        }
+        if (attacker_row == nullptr || attacker_row->barrels.empty()) return;
+        const bsp::AiAccuracyTargetGroup group = accuracy_target_group(target);
+        const int g = static_cast<int>(group);
+        if (g < 0 || g >= kCensusGroups) return;
+        const float damage_calc_time = tuning.at(bsp::kAiTuningDamageCalcTime);
+        for (const GameAiWeaponFacts::Barrel& barrel : attacker_row->barrels) {
+            const int s = barrel.bullet_sub_type;
+            if (s < 0 || s >= kCensusSubTypes) continue;
+            AccuracyCensusRow& row = accuracy_census[s][g];
+            ++row.lookups;
+            bool resolved = false;
+            const std::uint32_t offset =
+                bsp::ai_bullet_type_accuracy_offset_009fe270(s, group, resolved);
+            if (!resolved) {
+                ++row.unresolved;
+                continue;
+            }
+            const float accuracy = offset == 0u ? 0.0f : tuning.at(offset);
+            row.accuracy = accuracy;
+            if (!(accuracy > 0.0f)) ++row.zero_accuracy;
+            // ai_barrel_time_factor and ai_barrel_damage, the two the model
+            // multiplies the accuracy through at 00A09544 and 00A09548.
+            const float factor =
+                bsp::ai_barrel_time_factor(damage_calc_time, barrel.reload);
+            row.contribution_sum +=
+                static_cast<double>(bsp::ai_barrel_damage(factor, accuracy, barrel.shots));
+        }
+    }
+
     bsp::AiAccuracyTargetGroup accuracy_target_group(std::size_t unit) {
         if (units.unit_is_kind_of(unit, 0x0F)) {
             return bsp::AiAccuracyTargetGroup::Plane;
@@ -983,6 +1042,13 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         const std::size_t attacker_unit = proxy(member);
         const GameAiWeaponFacts::Unit* attacker_row = facts.row(attacker_unit);
         const GameAiWeaponFacts::Unit* target_row = facts.row(target);
+        // Packet cc8_ai_target_weight_zero. An OBSERVATION pass: it reads what
+        // 009FE270 would answer for every (attacker barrel, this target) pair
+        // and changes nothing, so it runs while inputs_complete is still false
+        // and the stand-in is still what scores. Without this the census would
+        // need the model switched on, which is the regression it is meant to
+        // diagnose.
+        census_barrel_accuracy(attacker_row, attacker_unit, target);
         if (attacker_row != nullptr && target_row != nullptr
             && attacker_row->inputs_complete && target_row->inputs_complete) {
             bsp::AiTargetWeightKey key;
@@ -2106,6 +2172,39 @@ void GameAiCoordinatorHost::report() {
             "an incomplete row is one with a Rocket barrel, sub-type 12h)",
             host.summary.weight_model_runs, host.summary.weight_class_stand_ins,
             game_ai_weapon_facts().known_units(), complete);
+    }
+    {
+        // Packet cc8_ai_target_weight_zero: one line per (bullet sub-type,
+        // target group) pair actually asked for. `accuracy` is what 009FE270
+        // answers for the pair and `contribution` the sum of
+        // time_factor * accuracy * shots over every lookup, which is what
+        // 00A08460 accumulates. A pair with lookups and a zero contribution is
+        // a barrel that can never move the weight.
+        host.log.notef("summary mission ai target weight path plane_attacker=%llu "
+            "other_attacker=%llu (00A085AD PUSH 0Fh on the attacker vehicle class, stored to "
+            "[ESP+37h]; 00A08619 JE 00A09228 sends a NON-plane attacker to the subsystem and "
+            "barrel walk this process projects, and a plane attacker into 00A0861F..00A09222, "
+            "which it does not)",
+            host.census_plane_attacker, host.census_other_attacker);
+        static const char* const kGroupNames[] = {
+            "plane", "submarine", "smallship", "bigship", "other"};
+        static const char* const kSubTypeNames[] = {
+            "?0", "bullet_raw", "machinegun", "machinegun_aa", "artillery_raw",
+            "artillery_light", "artillery_medium", "artillery_heavy", "?8", "bomb",
+            "torpedo", "depthcharge", "dummytarget", "dummykamikaze", "dummysub",
+            "paratrooper", "flak", "kamikaze", "rocket", "watermine"};
+        for (int sub = 0; sub < GameAiCoordinatorHost::Impl::kCensusSubTypes; ++sub) {
+            for (int grp = 0; grp < GameAiCoordinatorHost::Impl::kCensusGroups; ++grp) {
+                const auto& row = host.accuracy_census[sub][grp];
+                if (row.lookups == 0) continue;
+                host.log.notef("summary mission ai target weight accuracy "
+                    "subtype=%02Xh(%s) group=%s lookups=%llu accuracy=%.4f "
+                    "zero=%llu unresolved=%llu contribution=%.3f",
+                    sub, kSubTypeNames[sub], kGroupNames[grp], row.lookups,
+                    static_cast<double>(row.accuracy), row.zero_accuracy,
+                    row.unresolved, row.contribution_sum);
+            }
+        }
     }
     for (const GameAiPartyRow& row : host.parties) {
         host.log.notef("  ai party %d record=%d ai_enabled=%d brain=%d thinks=%llu "
