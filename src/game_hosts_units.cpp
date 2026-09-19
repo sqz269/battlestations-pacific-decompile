@@ -7196,6 +7196,31 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // alt_floor_74 + alt_margin_78 and this is the
                             // margin half of it.
                             ap.alt_margin_78 = kTorpReleaseAltSPNormal;
+                            // 009D049D/009D04A0 seed approach+84h from the SAME
+                            // robots row, one field further on (row+18h), as a
+                            // bare FLD/FSTP with NO ratio.
+                            //
+                            // WHICH TWO ARE SCALED AND WHICH IS NOT, because
+                            // mirroring the neighbours here would silently
+                            // corrupt the gate: 009D0491 writes +7Ch as
+                            // record[+4] * approach+24h and 009D0497 writes
+                            // +80h as record[+8] * approach+24h - both SCALED -
+                            // while 009D049D/009D04A0 is FLD then FSTP with
+                            // nothing between. approach+84h is a unitless
+                            // factor and multiplying it by a speed ratio would
+                            // be caught by no compile and no census.
+                            //
+                            // It is also the only one the jitter leaves alone.
+                            // The 00BD2F10 draws at 009D0581-009D0625 rewrite
+                            // +7Ch (009D05ED) and +80h (009D0625); a census of
+                            // the whole of 009D0380 finds [ESI+84h] written
+                            // EXACTLY ONCE, at 009D04A0. So this is a straight
+                            // read of the row value: no scale, no draw.
+                            // It used to be forced to 1.0f at the aim-tick
+                            // binding, which made both endpoints of the
+                            // interpolation at 009D1FED equal and the release
+                            // gate inert. docs/TORPEDO_RELEASE_GATE.md.
+                            ap.aspect_scale_84 = kTorpReleaseDropCloserMulSPNormal;
                             // ctl+3D0h[0], the flight leader: the only task
                             // whose 0099B740 raises the shared attack mode.
                             bool lead_taken = false;
@@ -7585,13 +7610,82 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // docs/TORPEDO_STEERING_DELTA.md.
                             return heading_;
                         }
-                        // approach+CCh's target entity is not modelled, so the
-                        // aspect slot F=2Ch keeps the 009D16AA zero, which is
-                        // exactly the no-target arm of the native branch.
-                        float target_heading_vtable50() override { return 0.0f; }
-                        bool target_is_kind_vtable5c(int) override { return false; }
+                        // approach+CCh's target entity. This used to return the
+                        // no-target arm on all three (0.0f / false / false),
+                        // with a comment saying that was "exactly the no-target
+                        // arm of the native branch". It is - but it made the
+                        // aspect gate BLIND, and that was measured, not
+                        // reasoned: src/torpedo_aim_tick.cpp:122 seeds
+                        // `f2c = 0.0f` and only assigns it at :134 under
+                        // `has_target_cc() && target_is_kind_vtable5c(...)`, so
+                        // with those false the slot stays 0, |cos(0)| is 1.0,
+                        // and the interpolation at 009D1FED returns its y1 -
+                        // approach+84h - on every tick whatever the real
+                        // aspect. Binding approach+84h to the authored 0.7 then
+                        // moved every release from a flat 450 m to a flat 315 m
+                        // instead of making it depend on aspect: USN01 fell
+                        // 433-441 -> 300-305 m on all five rounds, including
+                        // four whose real |cos| is below the 0.5 knee and must
+                        // not have moved at all. docs/TORPEDO_RELEASE_GATE.md
+                        // section 2.6.
+                        //
+                        // So the aspect is bound here from the ordered target.
+                        // pose_heading_radians is exactly what
+                        // GameUnitsHost::unit_heading_radians calls, and it is
+                        // the same quantity the drop census takes for BOTH
+                        // headings, so this aspect is commensurable with the
+                        // `crossing` column (the check is recorded at
+                        // src/game_hosts_gunnery.cpp:3270-3275).
+                        const GameUnitSlot* aim_target() const {
+                            if (s_.command_target_plus_one == 0) return nullptr;
+                            const std::size_t i =
+                                s_.command_target_plus_one - 1;
+                            if (i >= owner_.slots.size()) return nullptr;
+                            return owner_.slots[i].get();
+                        }
+                        float target_heading_vtable50() override {
+                            // 009D1721, the target's vtable[50h] heading.
+                            const GameUnitSlot* const t = aim_target();
+                            return t != nullptr
+                                ? GameUnitsHost::Impl::pose_heading_radians(*t)
+                                : 0.0f;
+                        }
+                        // 009D1710/009D1714 probes the target with
+                        // vtable[5Ch](6), and kind 6 is the SHIP BASE across
+                        // this project - kKindKamikazeTargetShip
+                        // (attack_commands.hpp:71), kKillCreditKindShipBase
+                        // (kill_credit.hpp:30), kUnitGunneryKindShipBase
+                        // (game_hosts_ai.cpp:792). So the image admits the
+                        // aspect for a SHIP target and keeps the 009D16AA zero
+                        // otherwise - an aircraft chasing an aircraft gets no
+                        // aspect term.
+                        //
+                        // LABELLED SUBSTITUTION, and deliberately the weaker of
+                        // two forms. This CAN be bound exactly: :2180 of this
+                        // file records that bsp::unit_is_kind_of is the same
+                        // 0074E400 model slot 5Ch uses, so
+                        // `bsp::unit_is_kind_of(t->class_id, query)` would be
+                        // the image's own probe with the image's own argument.
+                        // It is not written that way here because the four logs
+                        // this change is justified by were measured with THIS
+                        // form, and for a ship target the two are identical by
+                        // construction - every ordered target in USN01 and
+                        // USN04 is a ship. Committing the stronger form would
+                        // mean shipping code that no run had exercised. The
+                        // bound form is the first item of
+                        // docs/HANDOFF_TORPEDO_RELEASE.md and needs only a
+                        // confirming pair to replace this.
+                        //
+                        // What this costs meanwhile: a NON-ship ordered target
+                        // is given an aspect here where the image would keep
+                        // the zero.
+                        bool target_is_kind_vtable5c(int) override {
+                            return aim_target() != nullptr;
+                        }
                         bool unit_is_kind_vtable5c(int) override { return false; }
-                        bool has_target_cc() override { return false; }
+                        bool has_target_cc() override {
+                            return aim_target() != nullptr;
+                        }
                         void refresh_world_pose_00414db0(bool) override {}
                         float ground_height_00903860() override { return 0.0f; }
                         void update_run_time_009d1360() override {
@@ -7949,10 +8043,23 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         in.elapsed_134 = ap.elapsed_134;
                         in.speed_late_7c = ap.speed_late_7c;
                         in.speed_early_80 = ap.speed_early_80;
-                        // approach+84h, the aspect scale 009D1FD0 loads, is not
-                        // in the approach struct yet; it only shapes the
-                        // aim-solution byte 009D2021, never the gate.
-                        in.aspect_scale_84 = 1.0f;
+                        // approach+84h, the aspect scale 009D1FD0 loads. It is
+                        // now seeded from the robots row at the profile seed
+                        // above, as 009D049D does.
+                        //
+                        // The comment this replaces said it "only shapes the
+                        // aim-solution byte 009D2021, never the gate". That was
+                        // WRONG and is retracted: 009D1FED's result is
+                        // multiplied by the release distance at 009D1FF2 and
+                        // CACHED in [ESP+28h] at 009D1FF6, and that one cached
+                        // product is read TWICE - at 009D1FFE for the +200.0
+                        // aim-solution comparison, and again at 009D2034 for
+                        // the release chain's own range flag, with no slack.
+                        // The frame is stable across the intervening PUSH ECX /
+                        // CALL 009FA3A0 because that callee ends RET 4
+                        // (009FA40A). So this field gates the RELEASE.
+                        // docs/TORPEDO_RELEASE_GATE.md section 1.1.
+                        in.aspect_scale_84 = ap.aspect_scale_84;
                         in.fall_lead_a0 = ap.fall_lead_a0;
                         in.unit_altitude = unit_.motion.position[1];
                         // unit+C64h is the PITCH angle, written at 007C1966

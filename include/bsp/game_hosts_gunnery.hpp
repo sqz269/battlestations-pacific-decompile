@@ -237,6 +237,15 @@ struct GameProjectileRow {
     float drop_owner_heading{0.0f};
     float drop_target_heading{0.0f};
     float drop_crossing_angle{-1.0f};   // -1 = no ordered target at the drop
+    // Packet cc8_torpedo_release item 1. The horizontal centre-to-centre range
+    // to the ordered target AT THE DROP. This is the quantity the image's
+    // aspect gate scales: 009D2008 and 009D203D both compare the interpolated
+    // release distance against approach+90h, which 009D3519/009D3552 build
+    // from exactly this X/Z difference. No census recorded it - the drop line
+    // prints the drop ALTITUDE (origin[1]), not a range - so the aspect gate
+    // could not be measured at all. INSTRUMENTATION, no behaviour.
+    // -1 = no ordered target at the drop.
+    float drop_ordered_range{-1.0f};
     // Packet cc8_torpedo_swim, item 1: the drop index this round was filed
     // under, so every later line about it can be keyed to the id on its own
     // `torpedo drop N` line rather than matched on a bare number across the
@@ -289,6 +298,8 @@ struct GameTorpedoApproachRow {
     float drop_owner_heading{0.0f};
     float drop_target_heading{0.0f};
     float drop_crossing_angle{-1.0f};
+    // Packet cc8_torpedo_release item 1, carried from the round.
+    float drop_ordered_range{-1.0f};
 };
 
 // Per unit, what the chain did to it and what it did with its guns.
