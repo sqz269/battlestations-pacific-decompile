@@ -1289,3 +1289,20 @@ z plumbed into the slot beside it. Not done here; see 10.11.
    `|aimPoint.xz - unit.xz|`. The two ranges share both endpoints; they differ only in the
    vertical term, which `009C7B40` computes as `dy` and then drops. 10.10's error 1 and its
    reading of the sign stand.
+
+7. **MEASURED, and 10.9's diagnosis is confirmed and half-resolved.** Three USN04 windows, all
+   with `approach+B4h`/`+B8h` at main's 1100.0. **A** (moveto bound, read site pinned) is an
+   exact null against the accepted baseline -- zero `db moveto` rows, 6 835 436 bytes against
+   `attackmode_before.log`'s 6 835 437. **A2** (plus items 2 and 4 above) differs from A only in
+   the printed `d` on 11 `db aim exit` rows: the vertical term is the aircraft's altitude to the
+   digit, and no decision changes, because the break-off threshold is 100 m and both ranges are
+   two to three times that. **B** (A2 plus the one read-site line) fixes the approach: dive entry
+   651/626/677 m -> 1044/1040/1045 m, the authored `BeginAltRange/1`; aim error
+   -24.9/-33.1/-18.0 -> +12.9/-3.7/+17.3, all inside the 25 m gate; `movieval` exits aimdive to
+   `aimglide` at 530 m instead of to `done` at 180 m; **mission water contacts 1 -> 0**, against
+   the **7** of 10.9. The releases still go 5 -> 0, but NOT to this change: A2's releases all come
+   from the aimdive gate reached from a dive entry 350 m too low, and the aimglide release gate
+   passes **zero** times in both runs (`rearm` blocks 343 of `movieval`'s 344 calls) because the
+   re-arm timer is only counted down by the aimdive input builder in this tree. Packet
+   `cc8_dive_entry` reports fixing that. The read site stays pinned, with the measurement in the
+   comment; the decisive experiment is that fix plus this one line plus one window.
