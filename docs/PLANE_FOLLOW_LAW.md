@@ -447,6 +447,152 @@ Unverified here: §5.2 cites the altitude command as `009BFC0C CALL 009F9ED0` an
 `009BFC21`. That call is in `009BEE30`, outside this section's reading; the discrepancy is noted,
 not resolved.
 
+## 5.10 The reference direction: the leader's heading, LAGGED by distance
+
+Packet `cc8_follow_regimes`. This closes §5.6.2's "still open" on what `A` and `V` mean.
+
+`009C00C8` calls unit virtual slot `+50h` on the **leader** (`state+2Ch`); `009C01B6` calls the
+**same slot** on the own unit. That slot is the heading getter — `src/game_hosts_units.cpp`
+already records it, at the `00835AC0` latch, as "a RET 0 getter … atan2 over pose row 2", which
+is independent of this packet. Then:
+
+```
+009C00F7  T   = InterpolateClamped(block+44h, block+3Ch, block+48h, block+40h, R)
+009C0109  G   = 007D7DA0(leader+0AB0h) * T
+009C0128  ref = SubtractWrappedAngle(leaderHeading, G)     ; = leaderHeading - G
+```
+
+`00438B10`'s own entry is `FLD [ESP+4] / FSUB [ESP+8]`, so the order is `wrap(arg0 - arg1)`.
+The four block offsets are `singleton+3C4h/+3BCh/+3C8h/+3C0h`, which
+`docs/GAME_TUNING_SINGLETON.md` names:
+
+| block | singleton | key | this installation |
+|---|---|---|---|
+| `+04h` | `+384h` | `Pilot/Follow/LeaderFollowAlt` | — (§5.9 left this one unnamed) |
+| `+3Ch` | `+3BCh` | `Pilot/Follow/LeaderHeadingSpdTime/1` | 0.5 |
+| `+40h` | `+3C0h` | `Pilot/Follow/LeaderHeadingSpdTime/2` | 4.0 |
+| `+44h` | `+3C4h` | `Pilot/Follow/LeaderHeadingSpdDist/1` | 100 |
+| `+48h` | `+3C8h` | `Pilot/Follow/LeaderHeadingSpdDist/2` | 500 |
+
+So `T` is a **time**, ramped by the member's range to its station: 0.5 s at 100 m, 4.0 s at
+500 m. `ref` is the leader's heading lagged by `rate * T` — a member well out of position steers
+on the track its leader held seconds ago, not on where the leader points now. The tuning key's
+own name, `LeaderHeadingSpdTime`, says the same thing, which is what makes this a reading.
+
+`007D7DA0` (one caller, this body) is the rate. Its body reads `[obj+0C68h]` through `FSIN` and
+`FCOS`, `[obj+0C64h]` through `FCOS` of its absolute value, and `[desc+1C8h]`. This host carries
+those three as `plane_bank_angle_c68`, `plane_pitch_angle_c64` and `plane_class_turn_roll_spd`
+(`desc+1C8h TurnRollSpd`), so it is a **coordinated-turn rate from bank, pitch and speed**, in
+rad/s. The body itself is not reconstructed and the name is a hypothesis.
+
+### 5.10.1 `A` and `V` are the heading error and the cross-track offset
+
+`009C0139` is `_CIatan2` in its **x87-argument** form — the arguments arrive in `ST(1)`/`ST(0)`
+and there is no stack adjustment, which is why the call has no `SUB ESP` beside it. It gives
+`atan2(dz, dx)` over `own - station`, and `009C0142`-`009C0164` rewrites that as
+`wrap(pi/2 - it)` into `[0, 2pi)`: the **compass bearing station->aircraft**, this image's
+heading convention being `direction = (sin h, cos h)`. With `A0 = wrap(bearing - ref)`:
+
+```
+009C018D  V     = R * sin(A0)     the CROSS-TRACK offset, +ve to the RIGHT of the lagged track
+009C01A9  along = R * cos(A0)     the ALONG-TRACK offset
+009C01CE  A     = wrap(ownHeading - ref)          the heading error against that track
+```
+
+That is the whole frame: both quantities are the member's displacement and attitude expressed
+about the leader's lagged track through the station.
+
+## 5.11 `BL` is REWRITTEN in Phase A, so the quadrant does not select the regime
+
+> **Withdrawn 2026-09-19, packet `cc8_follow_regimes`.** §5.6.2 concluded that "any path that
+> reaches `009C1247` without passing `009C0ED9` has `BL` in {1,2,3,4}", i.e. that the dispatch
+> tests the quadrant. It does not. The classifier and the bit constants are unaffected; what is
+> withdrawn is that the classifier's value survives to the dispatch.
+
+A census of every write to `BL`/`EBX` over the whole body gives **nine**, not five:
+
+```
+009C0213/0235 BL=1   009C0239 BL=3   009C024B BL=2   009C024F BL=4   the quadrant classifier
+009C032D  MOV BL,[ESP+13h]        base-21h, the saved SIGN OF V
+009C0814  MOV BL,[00E0E2FB] = 4
+009C08CD  MOV BL,[00E0E2FA] = 1
+009C08F5  MOV BL,[00E0E2F9] = 2
+009C0909  MOV BL,[ESP+13h]        the V-sign byte again
+009C0BC7  MOV BL,[00E0E2FA] = 1
+009C0BD9  MOV BL,[ESP+13h]
+009C0EDF  MOV BL,AL             = (BL ? 2 : 4) | 8
+```
+
+The quadrant value is consumed **inside** Phase A by thirteen `TEST BL,BL` booleans. The five
+blocks that reach the convergence point `009C0EE1` are `009C0814`, `009C08CD`, `009C08F5`,
+`009C0BC7` and `009C0ED9`, so the `BL` the dispatch tests has exactly five possible values:
+
+| `BL` at dispatch | set at | regime |
+|---|---|---|
+| 1 | `009C08CD`, `009C0BC7` | lead pursuit (`009C1059` tests `BL&1`) |
+| 2 | `009C08F5` | abeam, `(-uz, ux)` = LEFT |
+| 4 | `009C0814` | abeam, `(uz, -ux)` = RIGHT |
+| 10 / 12 | `009C0EDF` | the `009C1328` regime (`009C1241` tests `BL&8`) |
+
+Two leaf guards are read. `009C08B5`-`009C08C7` is `JA` on `e > 0.05 * p` (`[00D7A270]`, a
+**double**, read at the `FMUL`'s own width); its twin is `009C0B82`/`009C0B9C`. Failing it gives
+`BL=1`; passing it gives the bit-8 regime. The abeam **side** is decided at `009C08E7` by
+`TEST BL,BL` where `BL` is the V-sign byte, so `BL=4` (V >= 0, the aircraft **right** of the
+track) selects the abeam **RIGHT** direction: the member is steered 250 m to the side it is
+already on. On that branch the manoeuvre is a **break-away, not a rejoin**.
+
+## 5.12 The lead-pursuit regime, read end to end
+
+This is the one a member converging on its station flies, and the three "store sites"
+`009C10F7`, `009C11D5` and `009C1222` are not three regimes but three **stages** of one point;
+the block ends `009C123C JMP 009C16C0`.
+
+```
+D  = |ownPos - station|3D                         009C10A9 CALL 0042B2F0 (Y NOT zeroed here)
+Lh = max(|leader horizontal forward|, 0.01)       009C0F0D-009C0F80, floor [00D7A238]
+Tdir = wrap(pi/2 - ref)                           009C0F86-009C0FAE
+U  = normalize(Lh*cos Tdir, leaderFwd.Y, Lh*sin Tdir)          009C0FB2-009C104C
+     = the unit vector along `ref` carrying the leader's own vertical slope
+P  = station + D * U                              009C10D2-009C1105
+n  = normalize(ownPos - P)                        009C111E-009C117D
+P += 0.20 * D * n                                 009C1184-009C11EC   [00CE3D10] = 0.2, double
+P += FollowedPointDist * U     (250 m)            009C11EF-009C1239   block+00h
+state+44h/48h/4Ch = P
+```
+
+In words: the station pushed **(D + 250) m ahead along the leader's lagged track**, then pulled
+**0.2 x D back toward the aircraft**. `FollowedPointDist` is the same 250 the abeam regime
+spends, spent along-track here instead of abeam.
+
+**A register trap that costs a plausible wrong answer.** At `009C0F13` and `009C100F` MSVC
+emits `LEA EAX,[EDI+0CCh]` — the leader's pose row 0 — and then calls `00419510`, which is
+`__fastcall(out = ECX, v = EDX)` and **returns `out` in EAX** (`00419545 MOV EAX,EDI`). The
+`LEA` is therefore dead, and the `[EAX]`/`[EAX+4]`/`[EAX+8]` copy that follows reads the
+**normalized local**, not the pose row. Taking the `LEA` at face value gives
+"steer point = station + D x leaderRight", which is wrong and reads perfectly well.
+
+### 5.12.1 The other two regimes, and what Phase A still owes
+
+* **Abeam**, `009C15C0`-`009C16CF` (§5.5, §5.6): `ownPos + 250 * perpendicular(own nose)`, with
+  `steerY = stationY + U.y * base-0Ch`.
+* **`009C1328`**, `009C12DD`-`009C1336`: `station + base-0Ch * U` — the same lead construction
+  with `base-0Ch` in place of `D` and without the 0.2 pull-back or the 250 push. The
+  perpendicular this block also builds (`009C124D`-`009C12D9`, swapped components with one
+  negated on the sign of V, scaled by `base-20h`) feeds computation past `009C1365` that is not
+  part of the steer point.
+
+Phase A (`009C0251`-`009C0EE0`, ~1200 instructions) is still unread, but it now reaches the
+dispatch through **exactly two channels**, which is what makes the remaining substitution
+bounded rather than open-ended:
+
+1. the **regime selector** (§5.11);
+2. **`base-0Ch`**, last written at `009C0EE1`-`009C0F00` as `base-0Ch *= base-8h` and never
+   written again before `009C16B2` — so the abeam regime's altitude offset is
+   `stationY + U.y * base-0Ch`, the same slope-times-distance shape the lead regime uses.
+
+Also settled in passing: `009C0EF4` writes **`state+5Ch = -1.0f`** (`[00D7A260]`), which this
+host already carries as `kPlaneContactTimerExpired`, so that auxiliary field is a timer reset.
+
 ## 6. What is bound, and what is not
 
 Bound, pure, no globals: `include/bsp/plane_follow_law.hpp` + `src/plane_follow_law.cpp`,
@@ -478,7 +624,12 @@ is unread; the ~1000-instruction commander that consumes it is read and bound".
 | `009BFEE0` fly-to arm, abeam regime | `009C1662`-`009C16CF` | **read** (§5.5); reached ONLY from `009C1654`, not by fall-through |
 | `009BFEE0` fly-to arm, abeam direction | `009C15C0`-`009C1661` | **read** (§5.6) — perpendicular of the nose; entered only from `JE` at `009C1247` |
 | `009BFEE0` fly-to arm, `BL` classifier | `009C01D3`-`009C024F` | **read** (§5.6.2) — quadrant of `(V, A)` about `±π/2`; sets the abeam side and the `009C1247` guard |
-| `009BFEE0` fly-to arm, the rest | `009C0026`-`009C15BF` | **OPEN** — the blocker; four `+44h` sites (`009C10F7`, `009C11D5`, `009C1222`, `009C1328`), the fifth at `009C1552`, their guards, and the producers of `A` and `V` |
+| `009BFEE0` fly-to arm, the frame | `009C0026`-`009C0250` | **read** (§5.10) — R, the lagged reference heading, `A`, `V`, the quadrant classifier |
+| `009BFEE0` fly-to arm, PHASE A | `009C0251`-`009C0EE0` | **OPEN** — the remaining blocker, but it reaches the dispatch through only two channels (§5.12.1): the regime selector and `base-0Ch` |
+| `009BFEE0` fly-to arm, `U` producer | `009C0EE1`-`009C1058` | **read** (§5.12) — the unit vector along the lagged track with the leader's slope |
+| `009BFEE0` fly-to arm, lead pursuit | `009C1059`-`009C123C` | **read and bound** (§5.12) — three stages of ONE point, not three regimes |
+| `009BFEE0` fly-to arm, `009C1328` | `009C1241`-`009C1336` | **read** (§5.12.1); the tail past `009C1365` is not part of the steer point and is unread |
+| `009BFEE0` fly-to arm, `009C1552` site | `009C1455`-`009C1560` | **OPEN** — reached from a subtree this packet did not enter; ends `JMP 009C16D2` |
 | `009BFEE0` tail | `009C16D2`-`009C1846` | read previously (BOMBER_AFTER_TASK 10.8) |
 | `009BEE30` fly-to arm | `009BF9EA`-`009BFD38` | **read and bound** (section 5) |
 | `009BEE30` hold arm | `009BEE56`-`009BF9E5` | **OPEN** — the larger arm; writes cmd `+278h`-`+29Ch` |

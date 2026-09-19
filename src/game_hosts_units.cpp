@@ -29,6 +29,7 @@
 #include "bsp/torpedo_first_release.hpp"
 #include "bsp/torpedo_issue_timing.hpp"
 #include "bsp/plane_squadron_host.hpp"
+#include "bsp/plane_follow_law.hpp"
 #include "bsp/plane_formation.hpp"
 #include "bsp/torpedo_release_orders.hpp"
 #include "bsp/torpedo_task_arm.hpp"
@@ -2112,8 +2113,32 @@ struct GameUnitsHost::Impl {
     // measurement is the same binary as the AFTER apart from the placement: the
     // station and the wing-geometry report are produced either way. It ships
     // true.
-    static constexpr bool kPlaneFormationPlacementEnabled = true;
-    bool place_wing_member_on_station_007f23a0(GameUnitSlot& unit, bool once) {
+    // Packet `cc8_follow_regimes` replaces the placement with the law itself.
+    // 009BFEE0's steer-point producer is now read far enough to fly a member:
+    // the LEAD-PURSUIT regime (009C107B-009C123C) end to end, the abeam regime
+    // (009C15C0-009C16CF), the 009C1328 regime and the tail's altitude band,
+    // all in src/plane_follow_law.cpp against 009BEE30's already-bound fly-to
+    // arm.  TWO SUBSTITUTIONS remain and they are named, not hidden:
+    //
+    //   * the REGIME SELECTOR is an output of the unread Phase A
+    //     (009C0251-009C0EE0), because BL is rewritten there - see the header.
+    //     This host always takes lead pursuit, whose D -> 0 limit is
+    //     `station + FollowedPointDist * U`, i.e. steering along the leader's
+    //     lagged track at the station, which is formation flight.
+    //   * the GOOD-POSITION gate selects 009BEE30's hold arm
+    //     (009BEE56-009BF9E5, ~700 instructions, unread), so this host runs the
+    //     fly-to arm unconditionally.  At d_station = 0 that arm's own ramps
+    //     return the leader's speed and stationY, so this is the fly-to law's
+    //     limit standing in for the hold law, not an invented hold law.
+    //
+    // The two flags are a pair: exactly one of them should be true, so that a
+    // before/after is the same binary apart from which one flies the member.
+    static constexpr bool kPlaneFormationPlacementEnabled = false;
+    static constexpr bool kPlaneFollowLawEnabled = true;
+    bool place_wing_member_on_station_007f23a0(
+        GameUnitSlot& unit, bool once,
+        bsp::PlaneFormationStation* station_out = nullptr,
+        const GameUnitSlot** leader_out = nullptr) {
         bsp::PlaneSquadronHostRecord* const squadron =
             bsp::plane_squadron_registry().find_by_member_unit(unit.process_index);
         if (squadron == nullptr) return false;
@@ -2206,6 +2231,11 @@ struct GameUnitsHost::Impl {
         const bsp::PlaneFormationStation station =
             bsp::plane_formation_station_007f23a0(in);
         if (!station.produced) return false;
+        // Handed out before the placement gate below, so the follow law can use
+        // the station whether or not the placement that used to stand in for it
+        // is enabled.
+        if (station_out != nullptr) *station_out = station;
+        if (leader_out != nullptr) *leader_out = &leader;
 
         // Reporting, from the first non-leader seat only so one squadron gives
         // one line. This runs whether or not the placement below is enabled,
@@ -6284,11 +6314,167 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     void run_dive_bomb_follow_tick_009c1fd0() {
                         ++unit_.db_follow_tick_ticks;
                         unit_.plan_mode_26c = 2;   // 009C1FE2
-                        if (owner_.place_wing_member_on_station_007f23a0(unit_, false)) {
+                        bsp::PlaneFormationStation station;
+                        const GameUnitSlot* leader = nullptr;
+                        if (owner_.place_wing_member_on_station_007f23a0(
+                                unit_, false, &station, &leader)) {
                             owner_.log.implemented("BotStateFollow::station_point",
                                                    "007f23a0");
                         }
+                        if (owner_.kPlaneFollowLawEnabled && station.produced
+                            && leader != nullptr) {
+                            run_follow_law_009bfee0_009bee30(station, *leader);
+                        }
                         owner_.record("BotStateFollow::station_keeping", 0x009bfee0u);
+                    }
+
+                    // 009C2068 CALL 009BFEE0 then 009C2077 CALL 009BEE30, in
+                    // that order and with the station 009BFD70 produced, which
+                    // is the tick's own order (section 2 of
+                    // docs/PLANE_FOLLOW_LAW.md).
+                    void run_follow_law_009bfee0_009bee30(
+                        const bsp::PlaneFormationStation& station,
+                        const GameUnitSlot& leader) {
+                        if (!owner_.lua.plane_globals_loaded()) return;
+                        const bsp::GameTuningBlock& gt = owner_.lua.plane_globals();
+
+                        bsp::PlaneFollowGeometryInputs gin;
+                        for (int i = 0; i < 3; ++i) {
+                            gin.own_pos[i] = unit_.motion.position[i];
+                            gin.station[i] = station.world[i];
+                        }
+                        gin.own_heading = unit_.plane_heading_c6c;
+                        gin.leader_heading = leader.plane_heading_c6c;
+                        // CameraMatrix is the image's 16-float order, so row 2
+                        // at leader+0ECh is the forward basis and row 3 at
+                        // leader+0FCh the translation - the same two rows
+                        // 009C0F0D and 009C16EB read.
+                        for (int i = 0; i < 3; ++i) {
+                            gin.leader_forward[i] = leader.motion.pose_row2[i];
+                            gin.leader_pos[i] = leader.motion.position[i];
+                        }
+                        // SUBSTITUTION, labelled: 007D7DA0(leader+0AB0h) at
+                        // 009C0109 is the leader's turn rate and its body is
+                        // unread.  Zero makes `ref` the leader's instantaneous
+                        // heading, which is this law's own zero-turn-rate limit;
+                        // it costs the lag only while the leader is turning.
+                        gin.leader_turn_rate = 0.0f;
+                        gin.followed_point_dist = gt.pilot_follow_followed_point_dist;
+                        gin.leader_heading_time_1 =
+                            gt.pilot_follow_leader_heading_spd_time_1;
+                        gin.leader_heading_time_2 =
+                            gt.pilot_follow_leader_heading_spd_time_2;
+                        gin.leader_heading_dist_1 =
+                            gt.pilot_follow_leader_heading_spd_dist_1;
+                        gin.leader_heading_dist_2 =
+                            gt.pilot_follow_leader_heading_spd_dist_2;
+                        // 009C16E8 reads block+04h = singleton+384h, which this
+                        // host already carries as Pilot/Follow/LeaderFollowAlt,
+                        // and 009C1789 reads singleton+210h = Dynamics/Ceiling.
+                        gin.band_floor_offset = gt.pilot_follow_leader_follow_alt;
+                        gin.band_ceiling_210 = gt.dynamics_ceiling;
+                        // SUBSTITUTION, labelled: state+88h is the floor's other
+                        // half and this host has no field for it.  A huge value
+                        // makes the min pick `leaderY + LeaderFollowAlt`, which
+                        // is the half that is named; it can only RAISE the floor
+                        // relative to the image, never lower it.
+                        gin.state_88 = 1.0e30f;
+                        gin.band_inputs_available = true;
+
+                        const bsp::PlaneFollowGeometry geo =
+                            bsp::plane_follow_geometry_009bfee0(
+                                gin, bsp::PlaneFollowRegime::kLeadPursuit);
+                        owner_.record("BotStateFollow::steer_point", 0x009bfee0u);
+
+                        bsp::PlaneFollowFlyToInputs fin;
+                        for (int i = 0; i < 3; ++i) {
+                            fin.station[i] = station.world[i];
+                            fin.steer_point[i] = geo.steer_point[i];
+                            fin.unit_pos[i] = unit_.motion.position[i];
+                        }
+                        // The tail rewrote the station's Y (009C17F1), and that
+                        // rewritten value is what 009BEE30 blends from.
+                        fin.station[1] = geo.station_y;
+                        fin.unit_forward_x = static_cast<float>(
+                            std::sin(static_cast<double>(unit_.plane_heading_c6c)));
+                        fin.unit_forward_z = static_cast<float>(
+                            std::cos(static_cast<double>(unit_.plane_heading_c6c)));
+                        // 009BFC58 `CALL [[state+2Ch]]+38h`, the leader-speed
+                        // virtual: the leader's own travel speed.
+                        fin.leader_speed = leader.plane_travel_speed;
+                        // SUBSTITUTIONS, labelled: 007C47F0
+                        // BSP_PlaneClass_LevelFlightSpeed (009BFC41, then
+                        // `FMUL double [00D7A390]` = 0.9) and the floor at
+                        // classDesc+188h (009BFC7D) are not carried by this
+                        // host.  §5.4 records that the alignment ramp can only
+                        // reach 0.39 of the way toward the first of them, and
+                        // the second only scales the catch-up end.
+                        fin.level_flight_speed = unit_.plane_max_spd * 0.9f;
+                        fin.class_min_speed = unit_.plane_stall_spd;
+                        fin.good_position_dist = gt.pilot_follow_good_position_dist;
+                        fin.align_ramp_lo = gt.pilot_follow_max_follow_spd_target_dir;
+                        fin.align_ramp_hi = gt.pilot_follow_min_follow_spd_target_dir;
+                        fin.catchup_speed_scale =
+                            gt.dynamics_spd_multipliers_turbo_multiplier;
+                        fin.min_command_dist = gt.pilot_follow_followed_point_dist;
+                        const bsp::PlaneFollowFlyToCommand cmd =
+                            bsp::plane_follow_flyto_command_009bee30(fin);
+                        if (!cmd.produced) return;
+
+                        // 009BF9EA-009BF9F0: the pilot is steered at the steer
+                        // point.  Same mode-2 pair the moveto and attackrun
+                        // ticks write; 009F9E40's body is unread, so the bearing
+                        // is this host's own heading_command_009f9e40.
+                        unit_.plan_heading_2c0 = bsp::heading_command_009f9e40(
+                            geo.steer_point[0], geo.steer_point[2],
+                            unit_.motion.position[0], unit_.motion.position[2]);
+                        unit_.plan_heading_2c0_written = true;
+                        unit_.plan_heading_mode_2cc = 2;
+                        owner_.record("BotStateFollow::steer_to_point", 0x009f9e40u);
+
+                        // 009BFC0C CALL 009F9ED0(cmdAlt - ownY, dist).  That
+                        // body is unread, so the commanded altitude is turned
+                        // into a pitch through the same 009FB800 every other
+                        // state uses, with the commanded altitude as its own
+                        // reference.  SUBSTITUTION, labelled.
+                        bsp::PlanePitchCommandInputs pin;
+                        pin.desired_altitude = cmd.commanded_altitude;
+                        pin.reference = cmd.commanded_altitude;
+                        pin.unit_world_y = unit_.motion.position[1];
+                        pin.ceiling = gt.dynamics_ceiling;
+                        pin.climb_dist = gt.pilot_general_climb_dist;
+                        pin.drop_dist = gt.pilot_general_drop_dist;
+                        pin.class_climb_angle = unit_.plane_climb_angle_1ec;
+                        pin.class_drop_angle = unit_.plane_drop_angle;
+                        unit_.plane_commanded_altitude = cmd.commanded_altitude;
+                        unit_.plane_commanded_pitch = bsp::pitch_command_009fb800(pin);
+                        unit_.plan_state.pitch_target_2bc = unit_.plane_commanded_pitch;
+
+                        // 009BFD0F-009BFD1C.
+                        unit_.plane_desired_speed_2b4 = cmd.desired_speed_2b4;
+                        owner_.record("BotStateFollow::command_step", 0x009bee30u);
+
+                        if ((unit_.db_follow_tick_ticks % 400) == 1) {
+                            owner_.log.notef("  follow law %-12s n=%d R=%.1f D=%.1f "
+                                "ref=%.3f V=%.1f along=%.1f A=%.3f lag=%.2f "
+                                "steer=(%.1f %.1f %.1f) cmdalt=%.1f ownY=%.1f "
+                                "spd=%.2f band=%d",
+                                unit_.row.name.c_str(), unit_.db_follow_tick_ticks,
+                                static_cast<double>(geo.range_horizontal),
+                                static_cast<double>(geo.range_3d),
+                                static_cast<double>(geo.reference_heading),
+                                static_cast<double>(geo.cross_track),
+                                static_cast<double>(geo.along_track),
+                                static_cast<double>(geo.heading_error),
+                                static_cast<double>(geo.lag_time),
+                                static_cast<double>(geo.steer_point[0]),
+                                static_cast<double>(geo.steer_point[1]),
+                                static_cast<double>(geo.steer_point[2]),
+                                static_cast<double>(cmd.commanded_altitude),
+                                static_cast<double>(unit_.motion.position[1]),
+                                static_cast<double>(cmd.desired_speed_2b4),
+                                geo.band_applied ? 1 : 0);
+                        }
                     }
 
                     // 009C4220, the attackrun tick, vtable 00D20C68 slot +Ch.

@@ -152,6 +152,130 @@ float plane_follow_blended_altitude_009bfaac(float station_y, float steer_y,
                                              float distance_to_station,
                                              float distance_to_steer) noexcept;
 
+// ---------------------------------------------------------------------------
+// 009BFEE0, the GEOMETRY step: the producer of the steer point.
+//
+// THE REFERENCE DIRECTION, and it is the key to the whole body.  009C00C8
+// calls unit virtual slot +50h on the LEADER (state+2Ch) for its heading, and
+// 009C01B6 calls the SAME slot on the own unit (009C0026 `[[ESI+4]+4]`).  That
+// slot is the atan2-over-pose-row-2 heading getter this host already documents
+// at the 00835AC0 latch in src/game_hosts_units.cpp.  Then
+//
+//     009C00F7  T   = InterpolateClamped(block+44h, block+3Ch,
+//                                        block+48h, block+40h, R)
+//     009C0109  G   = 007D7DA0(leader+0AB0h) * T
+//     009C0128  ref = SubtractWrappedAngle(leaderHeading, G)
+//
+// and block+3Ch/+40h/+44h/+48h are singleton +3BCh/+3C0h/+3C4h/+3C8h, which
+// docs/GAME_TUNING_SINGLETON.md names `Pilot/Follow/LeaderHeadingSpdTime/1,2`
+// = 0.5, 4.0 and `.../LeaderHeadingSpdDist/1,2` = 100, 500.  So T is a TIME
+// ramped by the member's range to its station, and `ref` is the leader's
+// heading LAGGED by it: a member 500 m out of position follows the track its
+// leader held 4 s ago, one at 100 m the track of 0.5 s ago.  The tuning key's
+// own name says the same thing, which is why this is a reading and not a
+// guess.  `leader_turn_rate` below is 007D7DA0's result; its body is unread,
+// and its dimension (rad/s) is fixed by this use.
+//
+// THE FRAME.  009C0139 is `_CIatan2` in its x87-argument form (no stack
+// adjustment), giving atan2(dz, dx) over `own - station`; 009C0142-009C0164
+// rewrites it as wrap(pi/2 - that) into [0, 2pi), i.e. the compass bearing
+// station->aircraft, since this image's heading convention is
+// direction = (sin h, cos h).  With A0 = wrap(bearing - ref):
+//
+//     009C018D  V     = R * sin(A0)    the CROSS-TRACK offset, +ve to the
+//                                      right of the lagged track
+//     009C01A9  along = R * cos(A0)    the ALONG-TRACK offset
+//     009C01CE  A     = wrap(ownHeading - ref)   the heading error
+//
+// WHAT IS NOT READ, named exactly.  Phase A, 009C0251-009C0EE0 (~1200
+// instructions), is unread.  It reaches the dispatch through exactly two
+// channels, which is what makes the substitution bounded:
+//
+//   * the REGIME SELECTOR.  BL is rewritten in Phase A - 009C0814 sets 4,
+//     009C08CD and 009C0BC7 set 1, 009C08F5 sets 2, 009C0EDF sets
+//     (BL ? 2 : 4) | 8 - so the quadrant classifier's BL in {1,2,3,4}
+//     (009C01D3-009C024F) is consumed inside Phase A by thirteen `TEST BL,BL`
+//     booleans and does NOT survive.  `009C1059 TEST [00E0E2FA],BL` (BL&1)
+//     picks lead pursuit, `009C1241 TEST [00E0E2F8],BL` (BL&8) picks the
+//     009C1328 regime, and BL&2 picks the abeam side.
+//   * `base-0Ch`, the scalar of the abeam regime's altitude offset, last
+//     written at 009C0EE1-009C0F00 as `base-0Ch *= base-8h` from Phase A
+//     values and never written again before 009C16B2.
+//
+// THE THREE REGIMES this binds, all read from the listing:
+//
+//   lead pursuit   BL&1     009C107B-009C123C, then JMP 009C16C0
+//   abeam          !BL&8    009C15C0-009C16CF, entered by JE at 009C1247
+//   009C1328       BL&8     009C12DD-009C1336
+//
+// THE TAIL, 009C16D2-009C1846, then clamps BOTH the station Y and the steer Y
+// into one leader-relative band; see section 5.9 of docs/PLANE_FOLLOW_LAW.md.
+struct PlaneFollowGeometryInputs {
+    // The own unit: pose +FCh/+100h/+104h, and virtual slot +50h.
+    float own_pos[3] = {0.0f, 0.0f, 0.0f};
+    float own_heading = 0.0f;
+    // state+30h/34h/38h, the station 007F23A0 produced.
+    float station[3] = {0.0f, 0.0f, 0.0f};
+    // The leader, state+2Ch: pose +FCh/+100h/+104h, virtual slot +50h, and
+    // pose row 2 +ECh/+F0h/+F4h (its forward basis).
+    float leader_pos[3] = {0.0f, 0.0f, 0.0f};
+    float leader_heading = 0.0f;
+    float leader_forward[3] = {0.0f, 0.0f, 0.0f};
+    // 007D7DA0(leader+0AB0h) at 009C0109, in rad/s.  SUBSTITUTION when the
+    // caller has no rate: zero makes `ref` the leader's instantaneous heading,
+    // which is the lag law's own zero-turn-rate limit.
+    float leader_turn_rate = 0.0f;
+    // The `Pilot/Follow` block at state+6Ch = singleton+380h.
+    float followed_point_dist = 250.0f;     // block+00h
+    float leader_heading_time_1 = 0.5f;     // block+3Ch
+    float leader_heading_time_2 = 4.0f;     // block+40h
+    float leader_heading_dist_1 = 100.0f;   // block+44h
+    float leader_heading_dist_2 = 500.0f;   // block+48h
+    // The tail's band, 009C16E8-009C17B9.  Floor L = min(leaderY + block+04h,
+    // state+88h); ceiling = min(singleton+210h, leaderY + 120.0).
+    float band_floor_offset = 0.0f;         // block+04h
+    float state_88 = 0.0f;                  // state+88h
+    float band_ceiling_210 = 0.0f;          // singleton+210h
+    // False leaves both Y values unclamped and says so, rather than inventing
+    // a band out of defaults.
+    bool band_inputs_available = false;
+};
+
+// Which of the three regimes produced the point.  `kLeadPursuit` is what a
+// member converging on its station flies; see the selector note above for why
+// a caller that cannot run Phase A must choose.
+enum class PlaneFollowRegime { kLeadPursuit, kAbeam, kOffsetPoint009c1328 };
+
+struct PlaneFollowGeometry {
+    bool produced = false;
+    // state+44h/48h/4Ch after the tail.
+    float steer_point[3] = {0.0f, 0.0f, 0.0f};
+    // state+34h after the tail, which is the station Y 009BEE30 then blends
+    // from.  The tail writes it at 009C17F1.
+    float station_y = 0.0f;
+    PlaneFollowRegime regime = PlaneFollowRegime::kLeadPursuit;
+    // The reading above, exposed so a caller can log it rather than re-derive.
+    float reference_heading = 0.0f;   // 009C0128
+    float lag_time = 0.0f;            // 009C00F7
+    float cross_track = 0.0f;         // 009C018D, V
+    float along_track = 0.0f;         // 009C01A9
+    float heading_error = 0.0f;       // 009C01CE, A
+    int quadrant_bl = 0;              // 009C01D3-009C024F, Phase A's input
+    float range_horizontal = 0.0f;    // 009C00A2, R
+    float range_3d = 0.0f;            // 009C10A9, D
+    bool band_applied = false;
+};
+
+// 009BFEE0's fly-to arm, 009C0026-009C16D1 plus the tail 009C16D2-009C1846.
+// Original ABI: `__thiscall void(this = ESI)`, RET 0 at 009C1846; every output
+// is a field of the follow state, which this returns by value instead.  Pure:
+// the only global it reads are the four never-written bit constants at
+// 00E0E2F8-00E0E2FB, which are folded into the branch structure here.
+// `regime` selects which of the three the caller wants, because the selector
+// lives in the unread Phase A.
+PlaneFollowGeometry plane_follow_geometry_009bfee0(
+    const PlaneFollowGeometryInputs& in, PlaneFollowRegime regime) noexcept;
+
 }  // namespace bsp
 
 #endif  // BSP_PLANE_FOLLOW_LAW_HPP
