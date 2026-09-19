@@ -2076,3 +2076,118 @@ This also finishes the aimdive steering's last contract in principle: the wide a
 `SubtractWrappedAngle(heading, bearing(aimPoint - runInOrigin))`. This host does not latch a run-in
 origin, so it still passes the live bearing to both arms, labelled at the call site - but the value
 is now named rather than unknown.
+
+## `local\usn04_target.log`: the command-target fix works, and the chain runs end to end
+
+| measure | `usn04_aim` (broken target) | `usn04_target` (fixed) |
+| --- | --- | --- |
+| arm ticks | 2370 | 2109 |
+| transitions | 3 | **7** |
+| attackrun | 240 | 1527 |
+| flyabove | 1 | 159 |
+| turndown | 0 | 67 |
+| aimdive | 0 | **318** |
+| aimglide | 2129 | 37 |
+| goaway | 0 | **1** |
+| latch closed at | tick 241 (bogus) | tick 1528 |
+| `approach+BCh` at the end | **0.0 m** | 1866.0 m |
+| turndown latch | never | tick 1719, `|bank|` 3.1256 rad |
+| `009C58D0` steer ticks | 0 | **318** |
+| closest miss vs the 25.0 m window | 359.50 m | **347.40 m** |
+| release altitude vs the {350, 450} floor | none | none; `approach+A8h` drew 350.0 |
+| releases / bombs / rounds left | 0 / 0 / 2 | 0 / 0 / 2 |
+
+The target no longer collapses: `approach+BCh` ends at a sane 1866.0 m instead of exactly 0.0, the
+run-in takes its full 1527 ticks, and the walk reaches four states it had never reached together -
+`aimdive`, `aimglide` and `goaway` in one sortie, seven transitions. The aimdive steering bound last
+packet ran for all 318 of its ticks.
+
+**No release, and the aim window is still the gate.** The closest the error came was 347.40 m
+against 25.0 m - twelve metres better than before, which is noise, not progress.
+
+### Why the steering did not help, to the metre
+
+The arithmetic that cleared the aim error last packet says the same thing about this run. At the
+closest sample - `|error|` 347.40 m, range 443.3 m, altitude 654.0 m - the model gives `x0 = 450`,
+`x1 = 1000`, `t = 0.3709`, `lead = 25.96`, `gain = 0.7404`, so
+`|cos(bearing) * 443.3 - 25.96| = 469.2`. The positive branch needs `cos = 1.116`, impossible; the
+negative one gives **`cos(bearing) = -0.99977`**. The target was dead astern at the best moment of
+the whole dive, exactly as in the previous run.
+
+The last aimdive tick agrees: `bearing=2.8765 rad`, 164.8 degrees, with both commands saturated
+(`pitch=-1.000`, `roll=-1.000`). So the steering is issuing full deflection the whole time and the
+aircraft is not getting its nose onto the target.
+
+That leaves two possibilities the endpoint numbers cannot separate:
+
+1. the dive **starts** with the target already behind - the run-in closes to 1100 m, then `flyabove`
+   (159 ticks) and `turndown` (67 ticks) burn 226 ticks, about 20 s, and a split-S reverses the
+   heading, so `aimdive` may begin past the aim point; or
+2. the dive starts pointed correctly and the roll is **too slow** to hold the nose on over 318
+   ticks.
+
+These have different fixes, so this packet adds a trace rather than guessing: the aim states now
+record their entry range and bearing, their closest range, and range/error/bank/bearing every 30
+ticks. `flyabove B=3.4 m span=0.0 m` at the end says the aircraft finished at sea level, so the
+`approach+A8h` release floor of 350.0 m was reachable - the altitude gate is not what is blocking.
+
+## The trace settles it: the dive starts pointing away, and `009C62B0` is why
+
+`local\usn04_trace.log`, same walk as `usn04_target.log` (2109 arm ticks, seven transitions,
+`aimdive` 318). The trace the last commit added:
+
+```
+aim trace: entry range=443.3 m bearing=-3.1411 rad | closest range=443.3 m | ticks=317
+range/error/bank/bearing per 30 ticks:
+  639/-625/2.98/2.93    945/-879/-3.03/-2.77   1177/-1088/1.75/2.75
+  1320/-1285/-0.89/3.05 1431/-944/2.10/2.37    1493/-1142/-1.28/2.65
+  1545/-1245/-0.98/2.77 1616/-1495/-0.75/2.86  1688/-1639/-0.55/2.90
+  1752/-1697/-0.38/2.89
+```
+
+Three readings, and together they close the question the last run left open.
+
+1. **The dive begins with the target 179.9 degrees behind it** - entry bearing -3.1411 rad - at
+   443.3 m.
+2. **443.3 m is the closest the aircraft ever gets.** The entry range is the minimum; the range
+   rises monotonically to 1752 m over 317 ticks. The aircraft never turns back.
+3. The bearing never falls below 2.37 rad, and the bank thrashes: +2.98, -3.03, +1.75, -0.89,
+   +2.10, -1.28, -0.98, -0.75, -0.38. That is the falling roll map's limit cycle - the command
+   clamps to -1, the aircraft rolls past inverted, the bearing's sign flips, the command flips.
+
+So the earlier hypothesis pair resolves cleanly: **the dive starts past the aim point**, and the
+roll is not "too slow" - it never had a chance, because nothing ever pointed the aircraft at its
+target. The aim error inside the dive is a symptom.
+
+### The gate, by address: `009C62B0` is unbound
+
+The flyabove tick has no host binding. `tick_state` is still an empty override, and the wrapper
+dispatches only `kAttackRun`, `kTurnDown` and `kAimDive` - exactly the omission that cost 664
+aimdive ticks two packets ago, one state earlier. A command census over its body finds what it
+would have issued:
+
+| site | write |
+| --- | --- |
+| `009C69B1` / `009C69B9` | `cmd+2C4h` the bank target, with the mode `cmd+2CCh` |
+| `009C6DE7` / `009C6DEF` | `cmd+2C0h` the **commanded heading**, with `cmd+2CCh` |
+| `009C6F89` / `009C6F91` | `cmd+2BCh` the altitude, with the pitch mode `cmd+2D0h` |
+| `009C6FF1` / `009C6FFB` | `cmd+2D8h` = 1 and `cmd+2B4h`, the air brake and desired speed |
+
+A commanded heading, an altitude hold, a bank target and a speed: this is the state that flies the
+aircraft into position over its target before the wingover. Without it the aircraft holds whatever
+the run-in left and simply carries on for 159 ticks, about 14 s, overflying the target; the
+turndown's split-S then reverses the heading and hands `aimdive` an aircraft pointed 180 degrees
+the wrong way at 443 m.
+
+That is one packet's work on its own - the body is 949 instructions with heading, altitude and
+speed arms - so it is named here and not started.
+
+### A second release path, also blocked, also by address
+
+`aimglide` ran 37 ticks in these runs and issues its own salvo at `009C5777`. Its first two gates
+are `009C569B`, the flight path shallower than 30 degrees, and `009C56AE`,
+`height_above + 50.0 > height_limit`. The host supplies `height_above` as the raw altitude and
+`height_limit` as `approach+ACh` = 1000.0, so `009C56AE` demands more than 950 m and the aircraft
+is at 654 m by then. Both of those inputs sit inside the PARTIAL that
+`dive_bomb_aimglide_inputs` labels - four frame slots behind `009C5693`-`009C5755` were never
+traced - so the aimglide release is closed by a substitution, not by a recovered rule.
