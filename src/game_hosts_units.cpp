@@ -3099,6 +3099,15 @@ void GameUnitsHost::run_director_steps_00836920() {
         {
             float px = 0.0f, py = 0.0f, pz = 0.0f;
             unit_position_00fc(index, px, py, pz);
+            // Packet cc8_ship_drive, edited under the integrator's hunk
+            // arbitration of 2026-09-19. 00835C70's begin runs before the arm:
+            // 0071F600 builds the path object for the command that is the queue
+            // head, so a `moveonpath` that was queued under another command
+            // begins on the step the queue advances to it. Where in a frame
+            // 00835C70 runs is not established (00D09FD0/00D09FD4 are its only
+            // references), so this is the same choice milestone 2m already made
+            // for the `cruise` begin: immediately, on the director step.
+            host.commands.begin_current_command_00835c70(index, px, pz);
             host.commands.advance_path_cursor_00836bf0(index, px, pz,
                 unit_hull_length_09c8(index), unit_class_turn_radius_0520(index));
         }

@@ -469,6 +469,17 @@ public:
         int id{0};
         int class_index{-1};
         bool findable{true};
+        // Packet cc8_ship_drive. 00928A00 does not seed these: 00928F50
+        // BSP_MissionEntity_SetPartyRaceLuaMirror does, on the object 00927B40
+        // answers with, through 00B67460 with the field names `Race` (00928FD9)
+        // and `Party` (00929046), and it reads them off the entity rather than
+        // off its own arguments (00928FC7 and 00929034 both load from ESI). The
+        // shipped `commandhelpers.lua` indexes `recon[targetUnit.Party]` at 330,
+        // 494 and 518, so a slot without `Party` makes every one of those raise.
+        // A negative value means the caller does not know it and the mirror does
+        // not run, which is the state of every marker.
+        int party{-1};
+        int race{-1};
     };
     std::size_t attach_scene_entities_00928a00(const std::vector<SceneEntity>& entities);
 

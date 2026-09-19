@@ -1,0 +1,79 @@
+{
+ "packet": "cc8_ship_drive",
+ "owner": "agent/cc8-ship-drive",
+ "doc": "docs/SHIP_AI_DRIVE_GATE.md",
+ "tree_base": "main at d196d1c52",
+ "question": "Wire the moveonpath queue arithmetic, and find why a ship with a correct navigation goal does not move on USN04.",
+ "answer": "The hulls DO drive and two of the previous packet's numbers are artefacts of this host. The Yorktown steams the whole run under moveonpath at the commanded speed: its cursor `travelled 48.30` was the hull path since the last of 49 path rebuilds, 3.06 s of motion at 15.8 m/s, and its ship-AI distance-to-waypoint falls 5850.94 -> 3584.72 over the mission. The rebuilds are the bug: 0071F600 is called only from 00835D33 inside 00835C70 BSP_WeaponDirector_BeginCurrentCommand and 0071F62F takes the queue head at [ESI+54h], so the executable builds the path object once per BEGUN command, while this host built one per 5Bh message and zeroed the cursor with it. A second host bug is the displacement: GameCommandsHost::register_units assigned a fresh director vector, and it runs again for every batch of units the mission creates, so every unit's command queue, cruise latch, path object and commanded speed were destroyed several times a mission. 0071D780's `moveonpath` weighting is NOT the displacement: it has exactly one caller, 0071E6C3, where the answer meets CMP EAX,0xa, so it is the queue-full test and never a slot index; wired there it answers 8 against the unweighted walk's 1 and refuses nothing. The Lexington is a separate, faithful case: it is the player's unit, and 009E1170's arm at 009E11C2 tests unit+184h and latches the unit's own pair at +994h/+998h through the same two setters instead of computing one, so with no player input it holds zero. Neither 009E59C0 nor 009E5770 tests that byte.",
+ "coverage": "complete for 0071D780 (0071D780-0071D807), 009281C0 and 009E1170's player-controlled arm 009E11C2-009E1262. PARTIAL for 0071E6C0 (0071E6C0-0071E70C, the capacity test, the slot walk and the duplicate refusal), 0071E550 (0071E550-0071E582, the head only), 0071F600 (0071F618-0071F62F, the argument test and the queue-head fetch) and 00835C70 (00835C70-00835D3A). 00928F50 is not re-read; docs/MISSION_ENTITY_LUA_ATTACH.md's reading is cited.",
+ "calls": [
+  {
+   "address": "0071e6c3",
+   "native": "0071d780",
+   "enclosing_address": "0071e6c0",
+   "note": "the only caller of the weighted count; 0071E6C8 CMP EAX,0xa is the whole use"
+  },
+  {
+   "address": "0071e70c",
+   "native": "0071e200",
+   "enclosing_address": "0071e6c0",
+   "note": "the duplicate test against the slot below, which refuses the script's repeats"
+  },
+  {
+   "address": "00835d33",
+   "native": "0071f600",
+   "enclosing_address": "00835c70",
+   "note": "the only rel32 caller of the path build; EBX is the queue-head flag"
+  },
+  {
+   "address": "009e1249",
+   "native": "009dffb0",
+   "enclosing_address": "009e1170",
+   "note": "the player-controlled arm's rudder setter, over [state+0Ch]"
+  },
+  {
+   "address": "009e1257",
+   "native": "009dbf90",
+   "enclosing_address": "009e1170",
+   "note": "the player-controlled arm's throttle setter, over [state+8h]"
+  },
+  {
+   "address": "009e11ad",
+   "native": "00927f10",
+   "enclosing_address": "009e1170",
+   "note": "the controller-kind test the step makes before either arm"
+  }
+ ],
+ "corrections": [
+  {
+   "was": "docs/SHIP_AI_PATH_CURSOR.md section 8: `The ships still do not drive`, resting on advances 0 in 900 tries and travelled 48.30.",
+   "is": "The Yorktown drives at the commanded speed for the whole mission. Both numbers are reset by begin_path_command_0071f600, which this host called once per 5Bh message, i.e. every 3.06 s.",
+   "evidence": "48.30 m / 3.06 s = 15.8 m/s, the commanded 16.719 m/s less the turn; `ship ai step` d32c 5850.94 -> 3584.72 at 0.83 m per 0.05 s step; with the build moved behind the begin, travelled 48.30 -> 645.86 and the path build count 98 -> 6 with no other census row moving."
+  },
+  {
+   "was": "Both carriers' command rows read `latch -`, `steer 0.000`, `thrust 0.000`, read as a gate.",
+   "is": "Those three columns are written only by finish_issue's `cruise` arm (00835E0E..00835E5D). Any non-cruise row prints them empty by construction.",
+   "evidence": "src/game_hosts_commands.cpp, the row.current && current == kCruiseCommandObjectAddress branch."
+  },
+  {
+   "was": "docs/SHIP_AI_PATH_CURSOR.md section 9: the missing half is `Party` (and `Name`, which the same file's helpers read).",
+   "is": "`Name` is not needed on that path.",
+   "evidence": "Every .Name read in luaGetShipsAround (this installation's scripts/global/commandhelpers.lua 322 and 333) is inside a RELEASE_LOGOFF comment; the live reads are target.ID, targetUnit.Party and targetUnit.ID."
+  }
+ ],
+ "runs": [
+  {
+   "log": "local/drive_before_usn04.log",
+   "build": "main d196d1c52",
+   "cursor": "Lexington-class01 CarrierPath1 travelled 0.00 advances 0; Yorktown-class01 CarrierPath4 travelled 48.30 advances 0",
+   "world": "moved=100.51 total_path=36963.45"
+  },
+  {
+   "log": "local/drive_after_usn04.log",
+   "build": "the begin gate and the weighted count",
+   "cursor": "Yorktown-class01 CarrierPath4 travelled 645.86 advances 0; no Lexington row",
+   "world": "moved=100.51 total_path=36963.45",
+   "census": "1241 rows both ways, two changed: WeaponDirector::path_build_0071f600 98 -> 6 and PlatformLoopCallbacks::pretranslate 19 -> 18"
+  }
+ ]
+}

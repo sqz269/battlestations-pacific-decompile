@@ -2839,6 +2839,7 @@ std::size_t GameMissionLuaHost::attach_scene_entities_00928a00(
     }
     std::size_t made = 0;
     std::size_t classes = 0;
+    std::size_t parties = 0;
     for (const SceneEntity& entity : entities) {
         char key[16];
         std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat, entity.id);
@@ -2883,6 +2884,20 @@ std::size_t GameMissionLuaHost::attach_scene_entities_00928a00(
             }
             ::lua_settop(state_, ::lua_gettop(state_) - 1);
         }
+        // Packet cc8_ship_drive: 00928F50's mirror, the one other writer of this
+        // slot the image has. It is a separate event from the attach - the root
+        // entity vtable's slot 11, reached through the adjustor thunk 00951F30 -
+        // and it runs when the party is set, which for a scene unit is before
+        // the mission's first Think. Both fields are integers (00B67460).
+        if (entity.party >= 0) {
+            lua_pushinteger(state_, entity.party);
+            lua_setfield(state_, -2, "Party");
+            ++parties;
+        }
+        if (entity.race >= 0) {
+            lua_pushinteger(state_, entity.race);
+            lua_setfield(state_, -2, "Race");
+        }
         lua_setfield(state_, -2, key);
         // Packet cc_lua_find_entity: the slot is built for every entity that
         // reaches virtual slot 39; only the entities whose world bucket
@@ -2905,6 +2920,10 @@ std::size_t GameMissionLuaHost::attach_scene_entities_00928a00(
         "goes through 00b675d0; what the executable supplies is the slot with its recovered "
         "`ID`, `Dead` and `Ptr` fields, so the entity tail at 0089903c can take its "
         "resolved arm instead of the nil one", made, classes);
+    log_.notef("thisTable: %zu slot(s) carry 00928f50's `Party` mirror. A slot without it "
+        "makes commandhelpers.lua:330 `recon[targetUnit.Party][allegiance]` index a nil, "
+        "which is what reverted the GetSelectedUnit binding in packet cc8_ship_moveonpath; "
+        "the caller supplies the value and a negative one means it does not know it", parties);
     return made;
 }
 
