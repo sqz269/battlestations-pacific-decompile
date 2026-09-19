@@ -6390,5 +6390,123 @@
     "sha256": "46540450771dcfb2ed205c814f1b0684387b32724ad128e83ee5c29e62b1f234",
     "files": 104,
     "head": "df3ba2a2b818b7117a299e8399181b4aed91f48a"
+  },
+  "primary_integration": {
+    "commit": "d9252b2ffd56dcd35d0053d28bbbf1d479773f93",
+    "main_observed_at_seal": "d9252b2ffd56dcd35d0053d28bbbf1d479773f93",
+    "tested_commit_is_ancestor_of_observed_main": true,
+    "strict_win32_build": true,
+    "ctests_passed": 3,
+    "coff_checks": [
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_session_message55.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "4e65edd49447ac05e24b5ec0a8189b70715aea2298c98ff2bb9f5dd7ec9bffa7",
+        "combined_sha256": "4e65edd49447ac05e24b5ec0a8189b70715aea2298c98ff2bb9f5dd7ec9bffa7"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_session_message_tags_56_to_62.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "a9720ee983ae5ef7f2f4243e9c5991c78def484f6c9ffedf22ba87799bf88835",
+        "combined_sha256": "a9720ee983ae5ef7f2f4243e9c5991c78def484f6c9ffedf22ba87799bf88835"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_bit_cursor_numeric_array.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "2fc5fbe87cc912bf9ca94c7073b39e57d4d2fd85a72c59c4924d5be1788624af",
+        "combined_sha256": "2fc5fbe87cc912bf9ca94c7073b39e57d4d2fd85a72c59c4924d5be1788624af"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_bit_cursor_owned_string.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "d97eaa861a3f7c400b611f64a1a91144acd976474dd0b10ed5610d7e7e3ce6f5",
+        "combined_sha256": "d97eaa861a3f7c400b611f64a1a91144acd976474dd0b10ed5610d7e7e3ce6f5"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_bit_cursor_fields.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "fbe6e2ed46af62f41d031f1b9477e26669cd8b1393b9942d0f47698031367eb3",
+        "combined_sha256": "fbe6e2ed46af62f41d031f1b9477e26669cd8b1393b9942d0f47698031367eb3"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_bit_cursor_numeric.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "4974d1ed2fdf1e94053ea3d518d21807fb4fa15644c2947d24c0d333988e4ab8",
+        "combined_sha256": "4974d1ed2fdf1e94053ea3d518d21807fb4fa15644c2947d24c0d333988e4ab8"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_bit_cursor_read.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "df5170b26b3b2c256046c6039ae0d56383ed282318b13cbd9ba7518a8cabac2c",
+        "combined_sha256": "df5170b26b3b2c256046c6039ae0d56383ed282318b13cbd9ba7518a8cabac2c"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_bit_cursor_write.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "39bde039ca70397b0d04f86d5e679dc4965adf106aa1e02d31ae78a70f67ac9f",
+        "combined_sha256": "39bde039ca70397b0d04f86d5e679dc4965adf106aa1e02d31ae78a70f67ac9f"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_session_message_base.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "2d12cbce25ec1faed503f14dc57f616f969fab33e081adaf32418b91e9a73bc4",
+        "combined_sha256": "2d12cbce25ec1faed503f14dc57f616f969fab33e081adaf32418b91e9a73bc4"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_string.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "96e6a624d4d1a61d9aa93b5badad8ead7e2718e5ab09c923c836e3ff81134abc",
+        "combined_sha256": "96e6a624d4d1a61d9aa93b5badad8ead7e2718e5ab09c923c836e3ff81134abc"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_string_pool_owner.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "43ec239c5962d3760701e0f5ac010272e75dbc5db9624cddfc4cf0d7f33dd55f",
+        "combined_sha256": "43ec239c5962d3760701e0f5ac010272e75dbc5db9624cddfc4cf0d7f33dd55f"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_string_pool_storage.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "dab9746705cf936f5bda61c9b048d34c1a6425b9d33698fa29669fd1e93bb726",
+        "combined_sha256": "dab9746705cf936f5bda61c9b048d34c1a6425b9d33698fa29669fd1e93bb726"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_render_batch_keys.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "8f83a3ef5545c599fdb51ac91d2dfe34524efaeefa196f9a3192345be9c6e5e2",
+        "combined_sha256": "8f83a3ef5545c599fdb51ac91d2dfe34524efaeefa196f9a3192345be9c6e5e2"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/singleton_lifetime.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "d6f6dbc057817a5b1c935b03d88108a60ac97eb28262fc24ab96cebbc7547bd6",
+        "combined_sha256": "d6f6dbc057817a5b1c935b03d88108a60ac97eb28262fc24ab96cebbc7547bd6"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_session_message55_library.obj",
+        "identical_except_coff_timestamp": true,
+        "tested_sha256": "3796ac75bdef70cb46e8c66211c19913416e96b30efddb860a85bc94b6c53c85",
+        "combined_sha256": "3796ac75bdef70cb46e8c66211c19913416e96b30efddb860a85bc94b6c53c85"
+      }
+    ],
+    "fixture": {
+      "result": {
+        "utc": "2026-09-19T11:05:05.6676669Z",
+        "exit": 0,
+        "library_sha256": "9F806C7EF66B9EF23D18FEFD8F97ACBF3FAE4902E6DA9AE0AAE090DDF09AB74D",
+        "flags": "/std:c++17 /O2 /MD /W4 /WX /fp:strict /MANIFEST:EMBED",
+        "exe_sha256": "2EF1C21971E47528773C527A71786D5EFEA4442918AFBE799F685EEC99068CB2"
+      },
+      "pairs": 1183,
+      "matching_bytes": 2134893,
+      "observations_identical_to_tested": true
+    },
+    "game_sha256": "51d5bc2b65d66a9c921ba10b38e3d2e93d153e1ac646e0cb38d6a755dcde77f1",
+    "artifact_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r193\\native-message55-library-main-r193.zip",
+      "sha256": "6c7ffaaa086f0a3b75ca6de103bffcd49adad7ac6fa0d0eae3f22a23beb1b234",
+      "files": 115,
+      "head": "d9252b2ffd56dcd35d0053d28bbbf1d479773f93"
+    }
   }
 }
