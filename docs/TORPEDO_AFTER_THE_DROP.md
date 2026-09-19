@@ -747,3 +747,91 @@ lives in `src/game_hosts_mission_frame.cpp`, which is Codex-owned. It is a packe
 different owner, not something to pick up on the way; recorded here so the next reader does not
 re-derive it. Meanwhile the hole's reach is bounded and stated in section 4: the window opens on the
 first tick above `state+20h` instead of after the authored delay.
+
+## 8. The closest approach, measured — and it contradicts section 5's magnitude
+
+Packet `cc8_torpedo_closest_approach`, the number this stream has owed since section 2.
+`src/game_hosts_gunnery.cpp` census (commit `1fdecbb39`), run `local/closest_approach_usn01.log`,
+USN01, 3000 mission frames.
+
+**A swimming round carries no target.** `GameProjectileRow` has `owner_unit` and no victim, and the
+swim keeps its launch heading, so "closest approach to its target" is not directly measurable. The
+census measures against every unit of another side and names the nearest. Distances are **centre to
+centre and horizontal** — this host has no oriented hull box for a ship — so they are not miss
+distances from the plating and have to be read against the target's own Length.
+
+| torpedo | nearest unit of another side | closest approach | at | run length |
+| --- | --- | --- | --- | --- |
+| Mav1 | Dunlap | **51.5 m** | 26.45 s | 60.05 s |
+| Mav2 | Storage, 04 01 | 26.1 m | 56.15 s | 60.05 s |
+| Mav3 | Hangar, Small, 04 01 | 17.3 m | 51.75 s | 51.75 s |
+| Mav4 | SaltLakeCity | **76.8 m** | 21.60 s | 60.05 s |
+| Mav5 | SaltLakeCity | **67.9 m** | 21.85 s | 60.05 s |
+
+Two facts fall straight out. The rounds **swim for a full minute**, not the 22.7 s the section 5
+arithmetic used — that figure was the time to the target, and the round keeps going past it; two of
+the five ran on to shore structures. And the closest approach to an escort happens at **21.6 to
+26.5 s**, which is exactly the 22.7 s the geometry predicted, so the timing half of section 5 holds.
+
+### 8.1 The magnitude does not hold, and this is a retraction of the prediction, not of the reading
+
+Section 5 predicted that a zero-lead aim against a target making 15.0 m/s over a 22.7 s run would
+miss by **about 340 m**. Even taking only the component across the torpedo's track — the escorts
+head about `-1.05` rad and the commanded heading at release is about `-1.79` rad, some 42 degrees
+apart — that is still roughly 220 m. **The measured closest approach to the ships aimed at is 51.5
+to 76.8 m**, three to six times smaller.
+
+* **was**: the miss is of the order of the target's displacement during the run, about 340 m.
+* **is**: the miss is 51.5 to 76.8 m centre to centre, at the predicted time. The *timing* model was
+  right and the *displacement* model is wrong by a factor of three to six.
+* **not concluded**: which of the premises fails. Three survive the evidence here and this document
+  does not choose between them:
+  1. the escorts' speed over the drop window is well below the 15.0 m/s that `d32c` implies —
+     `d32c` is the distance to a waypoint, not a path length, and nothing in this run reports a hull
+     speed directly (the single `keel=` line is at load time);
+  2. the ships the torpedoes came closest to are not the ships they were aimed at — the census
+     reports the nearest unit of another side, and `PilotSetTarget` logs
+     `target_object_id=45 target_valid=0 pos=(0.0 0.0 0.0)`, so the ordered target's identity is
+     never resolved to a name anywhere in the log;
+  3. something upstream does lead after all, which is exactly the open question of section 6.3 —
+     what writes `approach+D0h..D8h`.
+
+Premise 3 is the one that matters, and the measurement now bears on it directly: a 51.5 m closest
+approach is **much closer than a zero-lead aim against a 15 m/s crosser can produce**. That is
+evidence for a lead somewhere upstream, and it is the first evidence in either direction that did
+not come from a byte census.
+
+**The next check is small and belongs with this census**: record, per swimming round, the ordered
+target's identity and that target's world position at release and at closest approach. That
+separates premise 1 from premise 2 from premise 3 in one run, and it is three more fields in the
+same structure this packet already added. It is not done here.
+
+Until it is, section 5's *conclusion* — that nothing reaches the commanded heading through
+`009D1360`, proved by census — stands, and section 5's *arithmetic about how big the resulting miss
+must be* is withdrawn.
+
+#### 6.3.2 Eleven forms, and the Reset does not touch the aim point either
+
+Two more encodings with positive controls, both empty in the `009C`/`009D` band: `05 D0 00 00 00`
+(`ADD EAX,0D0h`, 4 image-wide) and `81 ?? D0 00 00 00` (the group-1 immediates, 44 image-wide).
+**Eleven valid encodings** now, and no writer of `approach+D0h..D8h` in the bot-task band.
+
+Two structural facts from the other end, which is where the lead pointed:
+
+* **Six routines take `&task+3F8h`** (`8D ?? F8 03 00 00`, 88 image-wide): `009D3080` in
+  `BSP_BotTaskTorpedo_Construct`, `009D42BC` in `FUN_009D4230`, `009D485A` in
+  `BSP_BotTaskTorpedo_TickArm`, `009D4BA1` in `BSP_BotTaskTorpedo_UpdateCruiseProfile`, `009D4D1B`
+  in `FUN_009D4C90` and `009D4DD7` in `FUN_009D4DB0`. `009D42BC`'s is a **read**: `LEA ECX,[EBP+3F8h]`
+  then `LEA EDX,[ESP+5Ch]` then `CALL EAX`, which is `approach->vtable[0](&buf)` again.
+* **`009D0380 BSP_BotApproachTorpedo_Reset` does not touch it.** Over its whole body
+  `009D0380`-`009D066F` there is no store at any displacement in `0C0h`..`0DFh`, and the only address
+  it takes of a member is `LEA ECX,[ESI+0B4h]` at `009D052F`. So `approach+CCh` and `+D0h..D8h`
+  **survive a reset**, which fits a pair owned by whatever installs the target rather than by the
+  approach itself.
+
+The static bound is now as tight as scanning can make it. **The cheaper and more decisive next step
+is section 8.1's**, not more of this: record the ordered target's identity and its world position at
+release and at closest approach. That separates "the escorts are slower than `d32c` implies" from
+"the nearest ship is not the ship aimed at" from "something upstream leads" in a single run, and it
+does not depend on finding the producer at all — if the aim point sits ahead of the target, the
+producer hunt has its answer from the outside.

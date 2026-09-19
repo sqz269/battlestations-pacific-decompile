@@ -1,0 +1,61 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "009d0670",
+    "end_address": "009d0691"
+   },
+   "result": {
+    "success": true,
+    "start_address": "009d0670",
+    "end_address": "009d0690",
+    "bytes_disassembled": 33,
+    "message": "Successfully disassembled 33 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "009d0670",
+    "disassemble_first": false,
+    "name": "BSP_BotApproachTorpedo_GetAimPoint"
+   },
+   "result": {
+    "success": true,
+    "address": "009d0670",
+    "function_name": "BSP_BotApproachTorpedo_GetAimPoint",
+    "entry_point": "009d0670",
+    "body_size": 33,
+    "message": "Function created successfully at 009d0670",
+    "warnings": [
+     "Function name 'BSP_BotApproachTorpedo_GetAimPoint' \u2014 main part 'BotApproachTorpedo_GetAimPoint' is not PascalCase. Expected: BotapproachtorpedoGetaimpoint",
+     "Function name 'BSP_BotApproachTorpedo_GetAimPoint' \u2014 main part 'BotApproachTorpedo_GetAimPoint' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_BotApproachTorpedo_GetAimPoint' does not start with a recognized verb. First word 'Bot' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "009d0670",
+   "end": "009d0691",
+   "name": "BSP_BotApproachTorpedo_GetAimPoint",
+   "after": "Function: BSP_BotApproachTorpedo_GetAimPoint at 009d0670\nSignature: undefined BSP_BotApproachTorpedo_GetAimPoint(void)\nEntry: 009d0670\nBody: 009d0670 - 009d0690"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
