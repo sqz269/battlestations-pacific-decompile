@@ -8,6 +8,12 @@ library providers. The fixture binds those providers to original helper bytes;
 it does not furnish a production STL provider. The full `00768530` stream
 factory, runtime composition and gameplay remain open.
 
+R193 follow-up: [concrete MSVC container bindings](NATIVE_MESSAGE55_LIBRARY_BINDINGS_R193.md)
+now implement the source library interface and recover the receive value's
+copy/destructor methods. Its source-side comparison no longer uses original
+STL helpers. R192's evidence below records the earlier fixture configuration;
+full runtime composition and gameplay remain open.
+
 Evidence comes from `C:/Users/sqz269/bsp.gpr`, program
 `/battlestationspacific.exe`: 19,462 live bytes matched against the original PE,
 73 owned direct-call edges, and one separately recorded raw factory call.
