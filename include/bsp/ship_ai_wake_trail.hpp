@@ -66,13 +66,58 @@ struct ShipAiWakeTrail {
     std::uint32_t appends{0};   // calls that got past the 4 m gate
     std::uint32_t advances{0};  // 008105BE, the head moved to a new slot
     std::uint32_t merges{0};    // 0081056B, the head moved back
-    // How many slots the ship has actually laid down, capped at the ring. Host
-    // bookkeeping with no address in the image: the image's ring starts zeroed
-    // and its first leg therefore runs from the origin to wherever the ship is,
-    // which is a real several-kilometre segment sitting in the ring until the
-    // head laps it. Only the reported trail length uses this; no branch does.
+    // How many slots hold a sample, capped at the ring. Host bookkeeping with no
+    // address in the image. RETRACTION (packet cc8_ship_station): the comment
+    // here used to say "the image's ring starts zeroed". It does not - see
+    // ship_ai_wake_fill_00810020 below. The fill lays down all forty slots at
+    // spawn, so this is 40 from the first tick and only a ring that was never
+    // filled reads below it. Only the reported trail length uses this.
     std::uint32_t written{0};
 };
+
+// 00810020 BSP_UnitPoseHistoryRing_Fill, __thiscall(wake)(const float pos[3],
+// float heading), RET 8, body 00810020-00810157, read whole in packet
+// cc8_ship_station. This is what makes the ring non-empty before a ship has
+// moved a metre, and the previous packet's "the ring starts zeroed" is retracted
+// with it.
+//
+// Two call sites reach it on a unit's own lifetime, both proved from the
+// listing:
+//   * 00815600 BSP_UnitPoseHistoryRing_Construct, itself called at 0081F03D from
+//     0081ED40 BSP_UnitVehicleBase_Construct with ECX = entity+0BD0h. It zeroes
+//     each sample's heading and arc length (00815614, forty iterations of 18h)
+//     and then calls this with the zero triple at 00F87574 and heading 0.0f
+//     (0081562A..0081563A), i.e. it builds the trail at the world ORIGIN.
+//   * 00818EA0's tail, 00819367..00819381: the entity's vtable slot +50h is
+//     called for a float, &entity+0FCh - the cached world position, the same
+//     field docs/AI_PLANNERS.md quotes at +0FCh/+104h - is pushed as the point,
+//     and the ring at entity+0BD0h is filled again. 00822C20
+//     BSP_UnitInstance_SEntityInit calls 00818EA0 unconditionally at 00823508,
+//     in straight-line code just before the property-bag arm this host already
+//     runs. So EVERY unit re-fills its ring at the spawn pose.
+//
+// What it writes, from the listing: the flag is cleared (00810027) and the head
+// index is set to 27h, the LAST slot (00810034), not 0. Then
+// `a = wrap_2pi(pi/2 - heading)` and a step of 50.0 * (cos a, 0, sin a) - the
+// same 50.0 double 00CE3938 that gates the head's advance - and forty
+// iterations from the head backwards through the ring (0081013B wraps 0 to 27h):
+// each slot takes the running position, the argument heading, and an arc length
+// of 0.0f for the first slot written and 50.0f (00D09290, a float) for the other
+// thirty-nine (008100E4..008100FB); the position then steps BACK by that vector
+// (008100F9, 00810124, 00810133).
+//
+// So a spawned ship carries a straight synthetic trail of forty samples 50 m
+// apart, about 1950 m dead astern of its spawn heading, and a follower of a
+// leader that has never moved measures its station along THAT rather than along
+// a ring of zeros pointing at the origin.
+//
+// NAMED DIVERGENCE: the sample's yaw rate (+14h) is written by neither routine -
+// the constructor's loop zeroes only +0Ch and +10h - so in the image those forty
+// slots hold whatever the allocation left. This host leaves them 0.0f. Only
+// 00810630's fifth out-parameter reads them, and only on the along > 0 arm.
+void ship_ai_wake_fill_00810020(ShipAiWakeTrail& trail,
+                                const float position[3],
+                                float heading) noexcept;
 
 // 00810190 BSP_UnitWake_AppendSample,
 // __thiscall(wake)(const float world_pos[3], float heading, float yaw_rate),

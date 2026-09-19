@@ -3282,6 +3282,33 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
 
         bsp::construct_unit_order_ring_00812d40(slot->ring);
 
+        // Packet cc8_ship_station, edited under the integrator's hunk
+        // arbitration of 2026-09-19. 00822C20's FIRST reconstructed step, before
+        // the property-bag arm below: 00823508 calls 00818EA0 in straight-line
+        // code, and 00818EA0's tail 00819367..00819381 fills the pose-history
+        // ring at entity+0BD0h from the entity's cached world position
+        // (&entity+0FCh) and the float its vtable slot +50h returns. That is what
+        // gives a ship a trail before it has moved: forty samples 50 m apart
+        // running 1950 m astern of the spawn heading. Without it a follower of a
+        // leader that never moves measures its station along a ring of zeros and
+        // steams for the world origin, which is what USN01 did
+        // (docs/SHIP_UNIT_GROUP_FOLLOW.md section 5e).
+        //
+        // The heading is the same expression the motion tail uses for the append
+        // at 00826CEE - an atan2 over world row 2, unit+1050h - because slot +50h
+        // is that field's getter (docs/SHIP_AI_RUDDER_HOP.md).
+        //
+        // Not ship-gated: 00818EA0 is reached from the shared game-unit
+        // SEntityInit, so every unit this host creates fills its ring.
+        {
+            const float spawn_heading = static_cast<float>(
+                std::atan2(static_cast<double>(slot->motion.pose_row2[0]),
+                           static_cast<double>(slot->motion.pose_row2[2])));
+            bsp::ship_ai_wake_fill_00810020(slot->wake, slot->motion.position,
+                spawn_heading);
+            host.done("UnitPoseHistoryRing::fill_at_spawn", 0x00810020u);
+        }
+
         // Milestone 2q: 00926110, BSP_SEntity_InitAll's call of the entity's
         // vtable slot 0A0h, which for this class family is 00822C20. Only that
         // routine's property-bag arm 0082356C..008235FB is run here, and only
@@ -8727,10 +8754,38 @@ bool GameUnitsHost::formation_join_0077f940(std::size_t follower, std::size_t le
         record.lateral[0] = decomposition.across;           // record+10h
         record.axial[0] = decomposition.along;              // record+20h
     } else {
-        // The leader has laid no trail yet, so there is nothing to measure
-        // along. The image would decompose against its zeroed ring; this
-        // refuses and counts it instead of storing a number it cannot justify.
+        // RETRACTED (packet cc8_ship_station): this used to say "the image
+        // would decompose against its zeroed ring". The image's ring is never
+        // zeroed - 00822C20 fills it with forty synthetic legs at the spawn
+        // pose through 00818EA0 -> 00810020, which this host now runs at
+        // creation. The counter should read 0 from here on; a non-zero value
+        // means a unit reached a join without its ring filled.
         ++host.formation_columns_unmeasurable;
+    }
+    // Packet cc8_ship_station. One line per join - thirteen on USN01 - because
+    // the first run with 00810020 bound moved `columns_unmeasurable` 10 -> 0 and
+    // left every follower's path and station error bit-identical, which the
+    // numbers below are there to explain. The head sample is the leader's ring
+    // head, which the fill puts at its spawn pose.
+    {
+        const bsp::ShipAiWakeSample& head =
+            host.slots[leader]->wake.samples[host.slots[leader]->wake.head];
+        host.log.notef("formation column: follower=%s leader=%s group=%d "
+            "member=(%.1f %.1f) leader_pos=(%.1f %.1f) clamped_point=(%.1f %.1f) "
+            "wake{written=%u head=%d sample=(%.1f %.1f) seg=%.1f} "
+            "across=%.2f along=%.2f valid=%d",
+            host.slots[follower]->row.name.c_str(),
+            host.slots[leader]->row.name.c_str(),
+            group,
+            static_cast<double>(member_pos[0]), static_cast<double>(member_pos[2]),
+            static_cast<double>(leader_pos[0]), static_cast<double>(leader_pos[2]),
+            static_cast<double>(world[0]), static_cast<double>(world[2]),
+            host.slots[leader]->wake.written, host.slots[leader]->wake.head,
+            static_cast<double>(head.x), static_cast<double>(head.z),
+            static_cast<double>(head.segment),
+            static_cast<double>(decomposition.across),
+            static_cast<double>(decomposition.along),
+            decomposition.valid ? 1 : 0);
     }
     target.members.push_back(record);
     ++host.formation_joins;

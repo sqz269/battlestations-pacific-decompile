@@ -59,6 +59,44 @@ void write_sample(ShipAiWakeSample& sample, float x, float y, float z,
 
 }  // namespace
 
+void ship_ai_wake_fill_00810020(ShipAiWakeTrail& trail, const float position[3],
+                                float heading) noexcept {
+    constexpr int kCount = static_cast<int>(kShipAiWakeSampleCount);
+
+    trail.leg_shrank = false;                    // 00810027, byte [ECX+3CCh]
+    trail.head = kCount - 1;                     // 00810034, 27h - the LAST slot
+    const float a = wrap_two_pi_from_half_pi(heading);  // 0081002E..00810055
+
+    // 0081005C FCOS / 0081006E FSIN, each multiplied by the double 50.0 at
+    // 00CE3938 (0081008C, 008100C3); the middle component is FLDZ at 008100A3.
+    const float step[3] = {kShipAiWakeAdvanceLeg * std::cos(a), 0.0f,
+                           kShipAiWakeAdvanceLeg * std::sin(a)};
+
+    float p[3] = {position[0], position[1], position[2]};
+    int slot = trail.head;
+    for (int i = 0; i < kCount; ++i) {
+        ShipAiWakeSample& sample = trail.samples[slot];
+        // 008100DF writes the heading into every slot, 008100E4..008100FB the
+        // arc length: zero for the first slot written, which is the head and
+        // whose leg the append then grows, and 50.0f for the other thirty-nine.
+        sample.heading = heading;
+        sample.segment = (i == 0) ? 0.0f : kShipAiWakeAdvanceLeg;
+        sample.x = p[0];                         // 00810106
+        sample.y = p[1];                         // 00810119
+        sample.z = p[2];                         // 00810126
+        // The yaw rate at +14h is NOT written here and was not zeroed by the
+        // constructor's loop; see the header. This host leaves it as it stands.
+        p[0] -= step[0];                         // 008100F9
+        p[1] -= step[1];                         // 00810124
+        p[2] -= step[2];                         // 00810133
+        slot = ring_step_back(slot);             // 00810139..00810142
+    }
+
+    // Host bookkeeping only: the fill really does lay down every slot, so the
+    // reported trail length counts the whole ring from here on.
+    trail.written = static_cast<std::uint32_t>(kShipAiWakeSampleCount);
+}
+
 void ship_ai_wake_append_00810190(ShipAiWakeTrail& trail, const float world_pos[3],
                                   float heading, float yaw_rate) noexcept {
     // 00810198..008101EB: the point is the argument plus the residual.
@@ -237,7 +275,13 @@ ShipAiWakePoint ship_ai_wake_sample_at_distance_00810630(const ShipAiWakeTrail& 
 ShipAiWakeDecomposition ship_ai_wake_decompose_00811180(const ShipAiWakeTrail& trail,
                                                         const float point[3]) noexcept {
     ShipAiWakeDecomposition out{};
-    if (trail.written == 0) return out;   // no trail yet: nothing to measure along
+    // Host-only, no address in the image, and since packet cc8_ship_station's
+    // binding of 00810020 at spawn it is UNREACHABLE for any unit this host
+    // creates: the ring is filled with forty legs before the first tick. It is
+    // kept as a diagnostic, because the alternative for an unfilled ring is the
+    // failure that packet measured - every sample zero, so the nearest sample is
+    // the origin and the follower steams for it.
+    if (trail.written == 0) return out;
 
     // 008111BB..00811260 and the unrolled rest: the nearest sample by full 3D
     // squared distance, seeded with FLT_MAX (00D7A248), walking back from the

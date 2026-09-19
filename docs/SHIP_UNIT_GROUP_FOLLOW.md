@@ -529,6 +529,164 @@ tables, which are authored in the image's own convention and are selected only b
 `(-dir.z, +dir.x)` as positive, says so, and marks the canned tables as the thing that cannot be
 trusted until the four x87 operands at `00811726` are named.
 
+### 5e. The ring is never empty: `00810020`, and a retraction (packet `cc8_ship_station`)
+
+Packet `cc8_ship_follow` closed saying the ring "starts zeroed", that a follower of a leader which
+has never moved therefore reads a trail of zeros, and that the open question was whether to seed it
+or to find a test that keeps such a follower out of the follower branch. **Both premises are wrong,
+and both are retracted here.** There is a third routine on the ring and it is the one that makes the
+trail exist before a ship has moved a metre.
+
+`00810020 BSP_UnitPoseHistoryRing_Fill`, `__thiscall(wake)(const float pos[3], float heading)`,
+`RET 8` at `00810157`, body `00810020-00810159`, 85 instructions, **read whole this packet**. The
+ledger already carried the name from packet `cc2_unit_subobjects` with the x87 interpolation
+unread; that arm is read here.
+
+```
+wake+3CCh = 0                                          ; the flag              00810027
+wake+3C8h = 27h                                        ; the head is the LAST slot, not 0   00810034
+a    = wrap_2pi(pi/2 - heading)                        ; 00CE3830, 00CE3828    0081002E..00810055
+step = 50.0 * (cos a, 0, sin a)                        ; 00CE3938 DOUBLE, FLDZ 0081005C..008100C7
+p    = pos ; i = 27h
+for n in 0..27h:                                                               008100D7..0081014B
+    sample[i]+0Ch = heading                            ; every slot            008100DF
+    sample[i]+10h = (n == 0) ? 0.0f : 50.0f            ; 00D09290, a FLOAT     008100E4..008100FB
+    sample[i].xyz = p                                                          00810106..00810126
+    p -= step                                          ; walk BACKWARDS        008100F9, 00810124, 00810133
+    i  = (i == 0) ? 27h : i-1                                                  00810139..00810142
+```
+
+So the fill lays a **straight synthetic trail of forty samples 50 m apart, about 1950 m dead astern
+of the pose it is given** - the leg length is the same `50.0` the append uses as its advance
+threshold, so the ring is exactly as full as forty real advances would have left it. The head is
+slot `27h` with a zero leg, which is the state the append expects to grow.
+
+**Its three callers**, `tools/callsite_census.py` over rel32, total 3:
+
+| call site | in | arguments |
+| --- | --- | --- |
+| `0081563A` | `00815600 BSP_UnitPoseHistoryRing_Construct` | `&00F87574` (a zero triple) and `0.0f` |
+| `00819381` | `00818EA0` | `&entity+0FCh` and the float vtable slot `+50h` returns |
+| `008203F7` | `0081F980` | the unit load / serialise path, not read here |
+
+`00815600` is reached at `0081F03D` from `0081ED40 BSP_UnitVehicleBase_Construct` with
+`ECX = ESI+0BD0h` (`0081F02A`), and before the fill it zeroes each sample's **heading and arc
+length only** - `0081560C..00815623` walks `ESI+14h` and `ESI+18h` by `18h` forty times, which are
+`sample+0Ch` and `sample+10h`. It then sets the residual `wake+3D0h..3D8h` from the same
+`00F8757x` triple. So the constructed ring is a trail at the world **origin** along heading 0.
+
+`00818EA0` is the one that matters: its tail calls the entity's vtable slot `+50h` for a float
+(`00819367`), pushes that as `heading` and `&entity+0FCh` - the cached world pose whose X and Z
+`docs/AI_PLANNERS.md` and `docs/AI_TARGET_WEIGHT_TERMS.md` already quote at `+0FCh` / `+104h` - as
+`pos`, and fills the ring at `entity+0BD0h`. **`00822C20 BSP_UnitInstance_SEntityInit` calls
+`00818EA0` at `00823508`, in straight-line code**, immediately before the property-bag arm at
+`00823537` that this host already runs for `StartSpeed`. Every game unit therefore re-fills its ring
+at its spawn pose, and `00810630`'s walk has forty real legs to consume from the first tick.
+
+That answers the question the previous packet left open, and answers it against seeding-by-invention
+and against a missing guard alike: **the image needs no test for an empty ring because it never has
+one.** There is no sample count anywhere in the object - `wake+3C8h` is a head index, `wake+3CCh` a
+byte flag, `wake+3D0h` a residual - and `0070D290`, `009DF2D0` and `009E1610` accordingly have no
+gate that could look for one. A follower of a leader that never moves holds station on the leader's
+synthetic trail, which is the line astern of its spawn heading.
+
+**Named divergence, and a hole in the image, not in this host:** neither routine writes the sample's
+yaw rate at `+14h`, and the constructor's zeroing loop skips it too, so in the image those forty
+slots hold whatever the allocation left. This host leaves them `0.0f`. Only `00810630`'s fifth
+out-parameter reads them, on the `along > 0` arm, and only `009DF2D0`'s speed blend reads that.
+
+The host binds the fill at the spawn point in `src/game_hosts_units.cpp` - after the instance's
+world 4x4 is copied into the motion block and before the `StartSpeed` arm, which is `00822C20`'s own
+order - with the heading taken as `atan2(pose_row2[0], pose_row2[2])`, the same expression the
+motion tail already uses for the append because slot `+50h` is that field's getter
+(`docs/SHIP_AI_RUDDER_HOP.md`). It is not ship-gated: `00818EA0` hangs off the shared game-unit
+`SEntityInit`.
+
+#### The prediction, written before the run
+
+Recorded before `local/follow_fill_usn01.log` was read, against
+`local/follow_moves_usn01.log` in the `cc8-ship-follow` tree as the control. The one change is the
+fill at spawn; nothing else moved.
+
+| quantity | control | predicted | why |
+| --- | --- | --- | --- |
+| `columns_unmeasurable` | 10 of 13 | 0 | every join now decomposes against forty real legs; `00811180` can no longer answer "no leg to measure along" |
+| `Dunlap` `err_final` | 3826.31 | under ~500 | its station is now a fixed point on `Northampton`'s synthetic trail, and a fixed reachable station is converged on, not chased |
+| `SaltLakeCity` `err_final` | 5151.99 | under ~500 | same |
+| `err_max`, both | 8431.22 / 9375.16 | at most the join distance, ~4000 | the error should start at the spawn offset and fall, not grow |
+| `total_path` | 10852.37 | between 5600 and 9000 | the four `StartSpeed` ships still cruise; the two escorts now travel to a station once instead of steaming for the origin for 150 s |
+| ships in `stop` | 49 | 49 | the fill touches no state selection |
+| `follow` | 2 | 2 | same |
+
+The `along` values may still come back 0.00 for a follower joined near the 4000 m clamp: the trail
+is about 1950 m long and section 5d's round trip is lossy off its end. `columns_unmeasurable` is a
+different question - it is whether there was a leg at all - and that is what should go to zero.
+
+#### Measured, and the prediction was wrong in the most useful way
+
+`local/follow_fill_usn01.log` and `local/follow_diag_usn01.log` (identical builds but for one log
+line), both `frames=3200 press_start_frame=30 menu_select=USN01 mission_frames=3000
+mission_frame_seconds=0.05`, the control `follow_moves_usn01.log` in the `cc8-ship-follow` tree at
+the same parameters. Clean shutdown, `native renderer final COM release`.
+
+| quantity | control | predicted | measured |
+| --- | --- | --- | --- |
+| `UnitPoseHistoryRing::fill_at_spawn [00810020]` | absent | - | concrete, **calls=62** |
+| `columns_unmeasurable` | 10 of 13 | 0 | **0** |
+| `Dunlap` steps / err_final / err_max | 600 / 3826.31 / 8431.22 | under ~500 | **600 / 3826.31 / 8431.22** |
+| `SaltLakeCity` | 600 / 5151.99 / 9375.16 | under ~500 | **600 / 5151.99 / 9375.16** |
+| `total_path` | 10852.37 | 5600-9000 | **10852.37** |
+| groups / joins / creates / clamped | 3 / 13 / 3 / 3 | unchanged | 3 / 13 / 3 / 3 |
+| director stop / cruise / follow | 49 / 1 / 2 | unchanged | 49 / 1 / 2 |
+
+**Every number that describes the ships is bit-identical to the control.** One log line per join, at
+the column-0 production site, says why, and what it says is worth more than the prediction was:
+
+```
+follower=Convoy2      leader=Convoy1     group=0 member=(-3300 -500)  leader_pos=(-3500 -1000)  across=200.00   along=450.00
+follower=Convoy3      leader=Convoy1     group=0                                                across=-300.00  along=650.00
+follower=Convoy4      leader=Convoy1     group=0                                                across=350.00   along=750.00
+follower=Convoy5      leader=Convoy1     group=0                                                across=0.00     along=950.00
+follower=Convoy6      leader=Convoy1     group=0                                                across=-300.00  along=850.00
+follower=SaltLakeCity leader=Northampton group=1 member=(6000 -3700) leader_pos=(6300 -3200)    across=300.00   along=450.00
+follower=Dunlap       leader=Northampton group=1 member=(6000 -2700) leader_pos=(6300 -3200)    across=300.00   along=0.00
+follower=Ralph        leader=Enterprise  group=2 member=(5600 7600)  leader_pos=(6000 8000)     across=68.92    along=0.00
+follower=McCall       leader=Enterprise  group=2 member=(5600 8400)  leader_pos=(6000 8000)     across=-561.47  along=0.00
+follower=Blue         leader=Enterprise  group=2 member=(6400 7600)  leader_pos=(6000 8000)     across=561.47   along=0.00
+follower=Northampton  leader=Enterprise  group=2 member=(6300 -3200) leader_pos=(5999.7 7999.8) across=3216.82  along=0.00
+follower=SaltLakeCity leader=Enterprise  group=2 member=(6000 -3700) leader_pos=(5999.7 7999.8) across=3152.01  along=0.00
+follower=Dunlap       leader=Enterprise  group=2 member=(6000 -2700) leader_pos=(5999.7 7999.8) across=3152.01  along=0.00
+```
+
+Every one carries `wake{written=40 head=39 ...}` with the head sample at the leader's own position,
+so the fill is doing exactly what section 5e says. Three things follow.
+
+**1. `Dunlap` and `SaltLakeCity` do not follow `Northampton`.** They join it, and then the script
+joins them, and `Northampton` itself, to `Enterprise` - and each later join overwrites
+`slot->formation_group`, so at run time both are members of group 2 under `Enterprise`. The group
+table's `formation 1 leader=Northampton count=3` is a stale record of a group nobody is in any more.
+The predecessor's account - that the two escorts steer for the world origin because
+`Northampton`'s ring is zero - is **refuted**: their leader is the one ship in the mission that does
+lay a real wake.
+
+**2. That is why the fill changed nothing measurable.** The last three joins happen a few ticks
+after the other ten - `leader_pos=(5999.7 7999.8)` against `(6000.0 8000.0)`, `Enterprise` has moved
+0.3 m - so in the control `Enterprise` had already advanced its ring and those three joins were
+already measurable. They are exactly the three that decide the two followers that run the `follow`
+state. The fill made the other ten measurable; none of those ten units is a `follow` stepper, so no
+ship moved differently. The retraction in section 5e stands on the listing regardless, and
+`columns_unmeasurable` 10 -> 0 is its measured effect.
+
+**3. The real defect is now named, and it is `0077F940`'s unimplemented merge.** `Northampton`
+already led group 1 with two followers when the script ordered it to join `Enterprise`. The image's
+`0077F940` has a merge-of-two-groups arm and a detach-of-the-ordered-unit's-followers arm; this host
+implements neither, and instead re-joins all three ships to group 2 individually as though each were
+ungrouped. Each is then 10700 m from `Enterprise`, clamped to the `FollowerMaxDist` 4000 m, and the
+clamped point lies far off the end of a 1950 m trail - so section 5d's lossy round trip discards the
+along-track part and hands back `along=0.00, across=3152.01`. The station rebuilds 3152 m abeam of
+`Enterprise` instead of 4000 m astern of it, and the two escorts chase that. `err_max` 8431 / 9375
+and the doubled `total_path` are that chase.
+
 ## 6. The cut this packet proposes
 
 The chain does not fit one context at this project's reading fidelity: ~1000 instructions of unread
