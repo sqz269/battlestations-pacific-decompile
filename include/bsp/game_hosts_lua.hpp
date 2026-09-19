@@ -31,6 +31,7 @@
 #include <string>
 #include <vector>
 
+#include "bsp/air_operations.hpp"
 #include "bsp/mission_load_hosts.hpp"
 #include "bsp/mission_lua_host.hpp"
 #include "bsp/ship_ai_obstacle_tables.hpp"
@@ -233,6 +234,9 @@ struct GameMissionLuaSummary {
     unsigned long long air_ops_launch_calls{0};
     unsigned long long air_ops_launch_started{0};
     unsigned long long air_ops_launch_queued{0};
+    // 006C5050 through the factory seam. docs/AIROPS_LAUNCH_TICK.md.
+    unsigned long long air_ops_squadrons_created{0};
+    unsigned long long air_ops_squadron_key_pushes{0};
     std::vector<GameMissionNativeCall> natives; // distinct, in first-call order
     std::string first_error;
     std::string first_error_phase;
@@ -240,7 +244,11 @@ struct GameMissionLuaSummary {
 
 // The mission Lua machine for one run. It is built the way 00884be0 builds it
 // and it outlives the load, because 004dd627 constructs it once per process.
-class GameMissionLuaHost final : public bsp::MissionLuaHostServices {
+// Packet cc8_airops_launch_tick: this host is also what 006C5050's creator seam
+// resolves to, because the squadron has to reach the mission script's own table
+// and that table is this host's.
+class GameMissionLuaHost final : public bsp::MissionLuaHostServices,
+                                 public bsp::AirOpsSquadronFactory {
 public:
     GameMissionLuaHost(GameHostLog& log, GameVfsHost& vfs);
     ~GameMissionLuaHost() override;
@@ -510,6 +518,17 @@ public:
 
     int run_is_ready_to_send_planes_00895d20(lua_State* state, int argument_count);
     int run_launch_squadron_0089e3c0(lua_State* state, int argument_count);
+
+    // --- bsp::AirOpsSquadronFactory, packet cc8_airops_launch_tick ----------
+    // 006C5050's seam. The unit is made by the script-orders host, which owns the
+    // units host; what this adds is the `thisTable` slot, without which the
+    // squadron the deck hands back is an id no binding can resolve.
+    std::uint32_t create_squadron(const bsp::AirOpsSquadronRequest& request) override;
+    // One more slot in the table 00928A00 filled at load, for a unit that did not
+    // exist then. The native's own 00925F20 walk reaches every entity as it is
+    // created, so a mid-mission unit gets its slot the same way.
+    bool attach_created_entity_00928a00(int entity_id, const std::string& name,
+        int class_index);
     void note_created_script(std::string name);
     void note_binding_subject(std::size_t row, int entity_id);
     // A failed named call is replayed once with errfunc 0 purely to recover the

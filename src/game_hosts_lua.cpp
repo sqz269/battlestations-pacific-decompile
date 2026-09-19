@@ -1298,6 +1298,22 @@ void GameMissionLuaHost::note_error(const std::string& message) {
 
 void GameMissionLuaHost::attach_script_orders(GameScriptOrdersHost* orders) noexcept {
     script_orders_ = orders;
+    // Packet cc8_airops_launch_tick. 006C5050's creator and the squadron's live
+    // plane count at entity+3CCh are the two things the air-operations code
+    // cannot reach on its own; both are bound here, where the orders host and the
+    // mission table are both in hand, and both are cleared on a detach.
+    if (orders == nullptr) {
+        bsp::set_air_ops_squadron_factory(nullptr);
+        bsp::set_air_ops_squadron_plane_count(nullptr, nullptr);
+        return;
+    }
+    bsp::set_air_ops_squadron_factory(this);
+    bsp::set_air_ops_squadron_plane_count(
+        [](std::uint32_t squadron, void* context) -> std::int32_t {
+            GameScriptOrdersHost* host = static_cast<GameScriptOrdersHost*>(context);
+            return host != nullptr ? host->air_ops_squadron_plane_count(squadron) : 0;
+        },
+        orders);
 }
 
 GameScriptOrdersHost* GameMissionLuaHost::script_orders() const noexcept {
@@ -1476,6 +1492,68 @@ int GameMissionLuaHost::run_launch_squadron_0089e3c0(lua_State* state, int argum
     return 1;
 }
 
+std::uint32_t GameMissionLuaHost::create_squadron(const bsp::AirOpsSquadronRequest& request) {
+    // 006C74C6 calls 006C5050 and 006C74FF stores what comes back in slot+28h.
+    // The unit itself is the script-orders host's to make, because that host owns
+    // the units host; this adds the table slot the script indexes it by.
+    if (script_orders_ == nullptr) return 0u;
+    std::string name;
+    std::int32_t wing = 0;
+    const std::uint32_t entity = script_orders_->create_air_ops_squadron_006c5050(
+        request.type, request.wing_count, request.equipment, request.home_base, name,
+        wing);
+    if (entity == 0u) return 0u;
+    if (!attach_created_entity_00928a00(static_cast<int>(entity), name,
+                                        static_cast<int>(request.type))) {
+        log_.notef("  air ops squadron %s: unit %u exists but no `thisTable` slot was "
+            "made, so `squadron` would name an id the bindings cannot resolve",
+            name.c_str(), entity);
+        return 0u;
+    }
+    ++summary_.air_ops_squadrons_created;
+    return entity;
+}
+
+bool GameMissionLuaHost::attach_created_entity_00928a00(int entity_id,
+    const std::string& name, int class_index) {
+    if (state_ == nullptr || entity_id <= 0) return false;
+    lua_getfield(state_, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);
+    if (lua_isnil(state_, -1)) {
+        ::lua_settop(state_, ::lua_gettop(state_) - 1);
+        return false;
+    }
+    char key[16];
+    std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat, entity_id);
+    // The same four fields 00928A00 seeds, in the same order and with `ID` as the
+    // key TEXT rather than a number; a number there is a different Lua key and
+    // every shipped helper indexes `thisTable[Obj.ID]`.
+    lua_createtable(state_, 0, 3);
+    ::lua_pushstring(state_, key);
+    lua_setfield(state_, -2, "ID");
+    lua_pushboolean(state_, 0);
+    lua_setfield(state_, -2, "Dead");
+    lua_pushlightuserdata(state_,
+        reinterpret_cast<void*>(static_cast<std::uintptr_t>(entity_id)));
+    lua_setfield(state_, -2, "Ptr");
+    if (class_index >= 0) {
+        lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
+        if (lua_istable(state_, -1)) {
+            lua_rawgeti(state_, -1, class_index);
+            if (lua_istable(state_, -1)) {
+                lua_setfield(state_, -3, "Class");
+            } else {
+                ::lua_settop(state_, ::lua_gettop(state_) - 1);
+            }
+        }
+        ::lua_settop(state_, ::lua_gettop(state_) - 1);
+    }
+    lua_setfield(state_, -2, key);
+    ::lua_settop(state_, ::lua_gettop(state_) - 1);
+    if (!name.empty()) scene_entity_ids_[name] = entity_id;
+    ++summary_.self_table_entities;
+    return true;
+}
+
 void GameMissionLuaHost::note_objective_binding(const char* binding,
     const std::string& objective, unsigned int slot_mask, int units_touched) {
     ++summary_.objective_binding_calls;
@@ -1506,6 +1584,29 @@ bool get_property_key_is(const char* key, const char* name) noexcept {
     }
 }
 
+// The `thisTable` slot 00928A00 built for an entity id. 006C6895 pushes the
+// entity object that sits at slot+28h; the stand-in for an entity object in this
+// process is exactly that table, and it is what every binding's 00888AA0 resolve
+// takes. Leaves the table on the stack on success and the stack unchanged
+// otherwise.
+bool push_entity_table(lua_State* state, int entity_id) {
+    if (state == nullptr || entity_id <= 0) return false;
+    lua_getfield(state, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);
+    if (!lua_istable(state, -1)) {
+        ::lua_settop(state, ::lua_gettop(state) - 1);
+        return false;
+    }
+    char key[16];
+    std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat, entity_id);
+    lua_getfield(state, -1, key);
+    if (!lua_istable(state, -1)) {
+        ::lua_settop(state, ::lua_gettop(state) - 2);
+        return false;
+    }
+    ::lua_remove(state, -2);
+    return true;
+}
+
 // 006C6714 through 006C68A6 build one table per slot in this key order. The
 // field offsets are the slot record's own, cross-checked against
 // include/bsp/air_operations.hpp: classid slot+4h (006C6782), count slot+8h
@@ -1521,11 +1622,18 @@ void push_air_ops_slot_entry(lua_State* state, const bsp::AirOpsSlot& slot) {
     ::lua_setfield(state, -2, "count");
     ::lua_pushinteger(state, static_cast<lua_Integer>(slot.class_field_134));
     ::lua_setfield(state, -2, "equipment");
-    // 006C6895 pushes the launched squadron entity, not a number, and the whole
+    // 006C6895 pushes the launched squadron ENTITY, not a number, and the whole
     // point of the key for luaGetSlotsAndSquads is that it is nil until a launch
     // fills slot+28h. An unlaunched slot therefore carries no `squadron` field.
-    if (slot.launched_squadron != 0u) {
-        ::lua_pushinteger(state, static_cast<lua_Integer>(slot.launched_squadron));
+    //
+    // CORRECTED by packet cc8_airops_launch_tick: this pushed the raw id, and an
+    // integer is not what `PilotSetTarget` takes. The script does
+    // `PilotSetTarget(slot.squadron, target)`, and 00888AA0's stand-in requires a
+    // table with an `ID` field; a number fails `lua_type == LUA_TTABLE` at the
+    // first test and the order is dropped. What goes here is the entity's own
+    // `thisTable` slot, which is what the native's +28h entity resolves to.
+    if (slot.launched_squadron != 0u
+        && push_entity_table(state, static_cast<int>(slot.launched_squadron))) {
         ::lua_setfield(state, -2, "squadron");
     }
 }
@@ -1600,6 +1708,9 @@ int GameMissionLuaHost::run_get_property_0088bf80(lua_State* state, int argument
             push_air_ops_slot_entry(state, slots[index]);
             ::lua_rawseti(state, -2, index + 1);
             ++summary_.get_property_slots_rows;
+            if (slots[index].launched_squadron != 0u) {
+                ++summary_.air_ops_squadron_key_pushes;
+            }
         }
         log_.implemented("MissionLuaNative::GetProperty", "0088bf80");
         return 1;
