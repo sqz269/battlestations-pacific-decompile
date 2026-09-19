@@ -2295,11 +2295,31 @@ void GameAiCoordinatorHost::Impl::build_squadrons() {
             const bsp::PlaneSquadronHostRecord* record =
                 bsp::plane_squadron_registry().find_by_member_name(unit_name(only));
             if (record == nullptr) continue;
+            // A one-wing squadron IS one plane, so "built one member" is only
+            // wrong when the record has more than one live member to give. The
+            // first version of this check lacked the test and fired on all five
+            // of USN01's correctly grouped Mavs, whose WingCount is 1.
+            if (record->live_count() <= 1) continue;
             log.notef("  ai squadron UNGROUPED %s: the registry knows it as a member of "
                 "%s (+3D0h holds %zu slot(s), %d live), so it should not have seeded a "
                 "squadron of its own",
                 unit_name(only).c_str(), record->name.c_str(),
                 record->member_units.size(), record->live_count());
+        }
+        // The other half of that question: a lone plane the registry does NOT
+        // know. Printing its name separates "no record yet" from "the plane has
+        // no name yet", which the silent case could not.
+        for (const Squadron& built : squadrons) {
+            if (built.member_units.size() != 1) continue;
+            const std::size_t only = built.member_units.front();
+            if (bsp::plane_squadron_registry().find_by_member_name(unit_name(only))
+                != nullptr) {
+                continue;
+            }
+            log.notef("  ai squadron LONE name=\"%s\" (no registry record names this "
+                "plane at census time; an empty name here would mean the unit row is "
+                "not named yet rather than that the record is missing)",
+                unit_name(only).c_str());
         }
     } else {
         log.notef("ai squadrons: this mission created no unit answering IsKindOf(0Fh), "
