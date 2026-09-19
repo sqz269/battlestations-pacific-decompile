@@ -143,7 +143,7 @@ turn circle it very nearly stops steering.
 Read for the same packet, `009C64EE`-`009C6530`, because everything in section 2 sits behind it:
 
 ```
-009c64ec  AL = vtable[5Ch](0x14) on (approach+0Ch)->+4     UNBOUND
+009c64ec  AL = vtable[5Ch](0x14) on approach+4h, the UNIT  UNBOUND
 009c64fc  AL != 0                          -> BL = 0
 009c6510  approach+D4h  >  C               -> BL = 0    (FCOMI / `77` JA)
 009c651a  approach+B4h <=  R               -> BL = 1    (FCOMPI ST(4) / `76` JBE)
@@ -157,8 +157,43 @@ UNCLAMPED commanded altitude** of `009C64C9`. That ordering matters: the 210 m c
 every tick of every mission, which is the trap this binding avoids and the reason `unclamped_c` is
 computed separately at the call site.
 
-`vtable[5Ch](0x14)` is the one input no reconstruction supplies. It is a **labelled substitution**,
-taken as `false` (the arm runs), which is the reading the previous packet's run supports.
+`vtable[5Ch](0x14)` is the one input no reconstruction supplies, and it is better understood than
+"unknown". `ECX` is the approach - `009C64B2` and `009C64B8` read `[ECX+ACh]` and `[ECX+50h]` off
+it - and `009C64E2` takes `[ECX+4]`, which `include/bsp/dive_bomb_task.hpp:116` records as **the
+aircraft unit** (`009F9CEA`). And `include/bsp/attack_commands.hpp:29` already establishes
+`entity->vtable[5Ch]` as **`IsKindOf(int)`**, the class-id test, with a table of the kinds other
+call sites ask for: `0x0F`/`0x18` aircraft, `0x10` level-bomber-self, `0x16`
+dogfight-excluded-self, `0x17` kamikaze-capable-self, `0x1C` structure. A byte scan for the same
+call shape (`8B 42 5C 6A ?? FF D0`) finds 267 sites across the image with small enum literals, which
+is what a generic class test looks like.
+
+So `009C64EC` is **`aircraft->IsKindOf(0x14)`**, and `0x14` is a kind the repository has not named.
+Two consequences:
+
+* it is a **class** test, so for a given aircraft type it is constant for the whole mission - not a
+  per-tick state. For the D3A Val it is either always true or always false;
+* it is a self-test in the same family as `0x10` and `0x17`, and `009C64FC`'s JNE reads "if this
+  aircraft IS kind 0x14, do not run the bank arm". The bank arm is the dive-bomb fly-over's
+  roll-in machinery, so a dive bomber being the excluded kind would make it dead code for the very
+  aircraft it exists for. That is the argument for taking it `false` - an argument, not evidence.
+
+It is a **labelled substitution**, taken as `false`.
+
+**This single substitution decides the whole behavioural change, and that has to be said plainly.**
+If the query returns true, `BL` is 0 on every tick, the bank arm never runs, `T` is whatever
+`009C6674` left, and `009C6674`'s value is 0 for every span at or above 200 m - which is most of
+the fly-over. With `T <= 0` the dead band at `009C6A46` is skipped and the commanded heading *is*
+the bearing, i.e. exactly what this host did before this packet. So the two readings are:
+
+* query false (taken here): the bank arm runs, `T` is 10-35 degrees, the fly-over holds heading
+  inside the dead band. This is what the run below measures.
+* query true: the fly-over commands the bearing, and the host was already right.
+
+Nothing in this packet distinguishes them. Naming kind `0x14` and deciding whether the D3A Val
+answers it is the single highest-value follow-up to this reading, and it should be settled before
+the behavioural change is taken as final - it is one class-id lookup, not a trace, now that
+`vtable[5Ch]` is known to be `IsKindOf`. The measurement below stands either way: it is what the
+host does with the query taken `false`.
 
 ## 4. What is bound, and the prediction written before the run
 
