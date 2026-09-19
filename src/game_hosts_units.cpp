@@ -1550,8 +1550,24 @@ struct GameUnitsHost::Impl {
         return in;
     }
 
-    bsp::DiveBombAimGlideReleaseInputs dive_bomb_aimglide_inputs(GameUnitSlot& slot) {
+    bsp::DiveBombAimGlideReleaseInputs dive_bomb_aimglide_inputs(GameUnitSlot& slot,
+                                                                 float dt) {
         bsp::DiveBombAimGlideReleaseInputs in;
+        // 009C5188-009C51A5, packet cc8_dive_entry. The aimglide tick counts
+        // state+1Ch down by its OWN dt at the top of every tick, exactly as
+        // 009C58E9 does for the aimdive, and 009C519B (byte 72, JC) against the
+        // 0.0f at 00D7A218 keeps it from running below zero:
+        //   009c5188 MOVSS XMM0,[ESI+1Ch] / 009c518d COMISS XMM0,[00D7A218]
+        //   009c519b JC 009c51a8 / 009c519d FLD [ESP+28h] / 009c51a1 FSUB dt
+        //   009c51a5 FSTP [ESI+1Ch]
+        // This host decremented the timer only in dive_bomb_aimdive_inputs,
+        // which runs only while the state is kAimDive, so in the glide the
+        // timer sat at the 0.0 its enter writes and gate 1 at 009C5689
+        // (`state+1Ch < 0`) refused every call: local/entry_before.log has
+        // `blocked[rearm=629 bearing=0 ceiling=1 ...] passed=0` out of 630 for
+        // D3A Val #1.1, where docs/DIVE_BOMB_TASK.md's table from the glide
+        // packet's own tree reads `rearm=0 bearing=523 ceiling=107`.
+        if (slot.db_aim_rearm_1c >= 0.0f) slot.db_aim_rearm_1c -= dt;
         // Packet cc8_dive_glide: every slot behind 009C5689-009C5755 is now
         // traced to its producer and bound from the geometry this host already
         // keeps. The `four frame slots not traced` note is withdrawn.
@@ -4934,8 +4950,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             if (r.released) owner_.note_dive_bomb_release(slot_);
                         }
                         bsp::DiveBombAimGlideReleaseInputs read_aimglide_inputs(
-                            void*, float) override {
-                            return owner_.dive_bomb_aimglide_inputs(slot_);
+                            void*, float dt) override {
+                            return owner_.dive_bomb_aimglide_inputs(slot_, dt);
                         }
                         void apply_aimglide_result(
                             void*, const bsp::DiveBombAimGlideReleaseResult& r) override {

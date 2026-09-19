@@ -4273,3 +4273,58 @@ listing and the run - an authored per-class altitude (no such field), a `PilotBo
 row index is unmodelled and the altitude is not in it), and the per-unit ordered cruise altitude
 (one process-wide row plus 15 m) - and what is left is where the aircraft is put and what the task
 does about it, which is nothing.
+
+### Measured, after: the arm works exactly as transcribed, and it removes the dive
+
+`local\entry_after.log`, the same binary as `local\entry_before.log` apart from binding
+`009C6E10`-`009C6F91`. The census the arm prints is the transcription checking itself:
+
+```
+movieval      flyabove altitude 009C6E10: calls=34  level_arm=0 | C=210.0 band=31.5
+              target=210.0 ref=0.800 | err first=519.5 last=458.5 | pitch=-0.419 rad
+D3A Val #1.1  flyabove altitude 009C6E10: calls=113 level_arm=0 | C=210.0 band=31.5
+              target=210.0 ref=0.800 | err first=916.1 last=460.8 | pitch=-0.419 rad
+```
+
+`C` clamps to 210.0 as read, the dead band is `min(0.15 * 210, 200)` = 31.5 and is never entered,
+the reference is the predicted flat 0.8, and `009FB800` returns `-min(DropAngle * 0.8, ...)` =
+**-0.419 rad**, a 24-degree descent. The aircraft follow it: the commanded altitude stops being
+frozen (`cmd` 1000 -> **210**) and the hand-overs move.
+
+| aircraft | attackrun -> flyabove | flyabove -> ... | before |
+| --- | --- | --- | --- |
+| `movieval` | 729 m @ 1093 m | **aimglide** at 665 m @ 849 m, 34 ticks | turndown at 730 m @ 4 m |
+| `D3A Val #1.1` | 1126 m @ 1095 m | **aimglide** at 666 m @ 14 m, 113 ticks | turndown at 1102 m @ 3 m |
+
+`#1.1` loses **460 m** in 113 ticks, which is the commanded 24 degrees at its own speed. So the arm
+is bound correctly and it does what the listing says.
+
+**And that removes the wingover dive entirely.** Both aircraft now cross `B = 666.7 m` - the
+`x <= 0` arm of `+19h` - *before* the bearing arm fires, so the flyabove ends on the height arm with
+`+18h` (`B > 675`) necessarily false, and `009C850F` routes every dive bomber to the **aimglide**.
+`movieval` goes from `states[done=303 aimdive=53 flyabove=158 turndown=71 attackrun=1527]
+releases=2 bombs_spawned=2` to `states[aimglide=809 flyabove=34 attackrun=1527] releases=0
+bombs_spawned=0`, and the mission's bomb drops go 6 -> **0**. `#1.1` likewise never reaches the
+turndown.
+
+**That is a regression against the brief's guard, and it is reported as one rather than tuned away.**
+Three things are established by it, and none of them is "the transcription is wrong":
+
+* The altitude arm runs on **every** flyabove tick. No branch in `009C62B0`-`009C7083` reaches the
+  epilogue before the arm: the only jumps to the two `RET 4` sites are `009C702B`'s, which is past
+  `009C6F7D`.
+* `movieval` enters the flyabove only **54 m** above the 666.7 m leave threshold, so at the
+  commanded 24 degrees it crosses in about two seconds with 849 m still to run. **An aircraft
+  entering the flyabove below roughly 700 m cannot reach the turndown once the altitude arm is
+  bound**, whatever its bearing does.
+* The dive-versus-glide choice is therefore a **race between the two `+19h` arms**: bearing first
+  means the wingover, height first means the glide. Nothing in the flyabove favours the bearing arm
+  at this host's geometry.
+
+**What is NOT established**, and must not be read into this: that the image's dive bombers glide.
+The race depends on `approach+B8h` (where the flyabove starts, which this host holds at 1100 m
+against the authored 2080-2340 m), on the ordered cruise altitude, and on how fast the real flight
+model follows a 24-degree demand. Two of those three are substitutions in this host. What the run
+does establish is that binding this arm **alone** is not an improvement, because the aimglide it
+hands every aircraft to cannot release at all - `blocked[rearm=809 ...] passed=0` for `movieval`,
+`779` for `#1.1` - which is the re-arm timer defect recorded in the section above.
