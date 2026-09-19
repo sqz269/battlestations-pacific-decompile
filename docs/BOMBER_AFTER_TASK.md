@@ -672,13 +672,49 @@ actually taken at the tick the task leaves `aimdive`, measured before any change
 
 In the order they are worth doing, with the reason each is next.
 
-1. **Feed the squadron attack mode to the dive bomb.** Section 6d: `dive_bomb_transition_inputs`
-   pins `control_mode_370` to the constant `2`, so `009C8483`'s return-to-approach edge can never
-   fire. The rule `bsp::pilot_attack_mode_0099b740` and the host wrapper
-   `run_attack_mode_tick_0099b740` both already exist for the torpedo; the dive bomb needs the same
-   two calls and a per-squadron field. This is the one change with a real chance of keeping a spent
-   bomber out of the sea, and it is an input of the dive-bomb transition, so it belongs to whoever
-   owns those inputs.
+**Ownership, by the integrator's arbitration of 2026-09-19.** The `control_mode_370` hunk of
+`dive_bomb_transition_inputs`, the dive-bomb **transition law**, the **break-off evaluation** and
+the **Done dispatch** belong to this stream, not to `cc8-dive-race`, which owns the attackrun,
+flyabove, turndown, aimdive and aimglide ticks and their inputs. Items 1 and 2 below are in those
+hunks: edit them in your own tree without waiting for the lease, prefer pure insertions, and cite
+the arbitration in the commit.
+
+1. **Feed the squadron attack mode to the dive bomb.** Section 6d.
+
+   * **The site.** `src/game_hosts_units.cpp`, `dive_bomb_transition_inputs`, the line
+     `in.engaged.control_mode_370 = 2;` (with `in.entry.control_mode_370` copied from it on the
+     next line). Drop the constant.
+   * **Reuse, do not rewrite.** `bsp::pilot_attack_mode_0099b740` is already reconstructed as a
+     pure rule, and `run_attack_mode_tick_0099b740` is already a host wrapper — read the torpedo
+     wiring (`unit_.torpedo_attack_mode_370`, `in.unit_is_flight_lead`,
+     `in.task_authorises_38h = true`, and the loop that copies the leader's value to every aircraft
+     of the flight) and mirror it with a per-squadron dive-bomb field. `task_authorises_38h` is
+     **true** for this class: verified at `00D20E50` = `0099B710` = `MOV AL,1 / RET`, section 9.
+     Run it once per think **before** the task arm, which is where `009998A0` calls `0099B740`.
+   * **Verify from the listing FIRST, both unread here.** (a) Where the in-range latch `task+4C8h`
+     (= `approach+D0h`) is **set and CLEARED** — once the mode is 1 it is the only thing sustaining
+     `engaged` (`009C83F8`), so its clear condition is what decides when the squadron leaves the
+     attack. (b) What `009C8483`'s approach state actually does for a bomber with **no ordnance
+     left**: does it fly the squadron's move order, which would be the faithful "fly home", or
+     re-attack? Note `in.unit_lacks_follow_target = true` is also hardcoded in the same host
+     function, which forces `moveto` over `follow`.
+   * **Log before changing.** At the tick the task leaves `aimdive` (and `aimglide`): which
+     transition edge was taken, every input of `engaged` (`in_range_latch_4c8`, `control_mode_370`,
+     `has_latched_target_440`), and every input of the break-off predicate with **which arm
+     returned true**.
+   * **Measure**, same-binary USN04 4800 frames: the spent bombers' next state and their altitude
+     after it, `plane water contact` for the LEADER `1 -> 0` (the member's is already gone, by the
+     stand-in), and `movieval`'s attack numbers unmoved — releases 2, aim error 8.06 m, bombs
+     landing within about 25 m.
+
+2. **The three break-off defects of section 6h**, which may close item 1 on their own — the
+   integrator's reading is that the two are one problem seen from opposite sides. Smallest first:
+   read the two endpoints of the `009C8A90` range test (`00427EB0([task+3FCh])` and
+   `[task+3F8h]->vtable[0]()`) to settle whether the host's planar `db_planar_bc` breaks off too
+   early or too late; then fix the planar-versus-3-D distance and the missing `IsAttackState`
+   conjunct together, since both live in `dive_bomb_should_break_off_009c8a90` and its feed. If the
+   goaway edge at `009C8664` comes back, `movieval` stops entering `done` pointed at the sea and
+   item 1 may be unnecessary.
 2. **The altitude clamp `009C16D2`-`009C1846`.** Section 6e: the placement stand-in has no
    counterpart to it, which is the one place the stand-in can put an aircraft where the image never
    would. The tail is already read whole in section 6; what is missing are `state+88h`'s seed,
