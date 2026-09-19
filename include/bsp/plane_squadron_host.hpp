@@ -18,6 +18,7 @@
 // docs/PLANE_SQUADRON.md section 4 carries the listing evidence.
 
 #include <cstddef>
+#include <functional>
 #include <cstdint>
 #include <string>
 #include <vector>
@@ -131,7 +132,24 @@ class PlaneSquadronRegistry {
     // The squadron a member plane belongs to, by the member's name. This is the
     // host's stand-in for reading plane+9D4h.
     PlaneSquadronHostRecord* find_by_member_name(const std::string& member) noexcept;
-    // The same by unit index, valid once `resolve_member_units` has run.
+    // The same by unit index, valid once the member array has been resolved by
+    // GameScriptOrdersHost::resolve_plane_squadron_members
+    // (src/game_hosts_script_orders.cpp). Two corrections to what this comment
+    // used to say, both of which cost a consumer real time:
+    //
+    //  - it named the resolver `resolve_member_units`, which exists NOWHERE in
+    //    the tree, so a consumer grepping for it concludes the write-back was
+    //    never written and starts writing its own;
+    //  - the line on `member_units` below claimed the units host fills it. It
+    //    does not. The air-ops route fills its own slots inline, and every
+    //    other route is filled only when the resolver runs.
+    //
+    // Timing is the part that bites. The resolver's call sites are in the
+    // mission loop, and a consumer running from `create_units`'s tail - the AI
+    // host's build_squadrons does - reads an EMPTY array for a scene-row
+    // squadron. Measured: USN04 built 7 AI squadrons over 15 member planes
+    // where the mission has 5. A consumer that must answer before the
+    // resolution pass should use find_by_member_name, which needs no units.
     PlaneSquadronHostRecord* find_by_member_unit(std::size_t unit) noexcept;
     const PlaneSquadronHostRecord* find_by_member_unit(std::size_t unit) const noexcept;
     // plane+9D8h for a member unit, or -1 when the unit is in no squadron.
