@@ -1277,3 +1277,82 @@ torpedo's `+D0h` has to be named from the torpedo's own code, and neither name t
 returns a point ahead of it, the image leads, and the same routine is the first place to look for
 the torpedo's `+D0h`. If it copies a position, it does not. Either way it is a body to read rather
 than a byte pattern to scan, which is where section 6.3.3 said this had to go.
+
+## 12. `009D4C10` read whole: the ordnance byte gates the break-off, and section 10.3 is wrong
+
+Answering "why is the break-off test false at the tick the range first exceeds 700" found two things:
+the host's answer, and the arm of `009D4C10` I had left unread.
+
+### 12.1 The host answer: it is not computed at all
+
+`src/game_hosts_units.cpp:4074` is `in.should_break_off = false;`, and the vtable binding at
+`:3901`-`:3904` is
+
+```
+bool should_break_off(void*) override {
+    // task->vtable[1Ch] == 009D4C10. contract: unread.
+    record("BotTaskTorpedo::should_break_off", "009d4c10");
+    return false;
+}
+```
+
+**Hardwired false, because the contract was unread when it was written.** So `009D4030`'s first test
+has never fired in any run this stream has taken, whatever the range. That is the direct answer to
+the question and it is not about `approach+24h` or about ordering.
+
+### 12.2 The arm I had not read is the ordnance byte
+
+Sections 7.4 and 10 read `009D4C10` except for `009D4C5C`-`009D4C63`. Its bytes are
+`80 BE 2A 05 00 00 00 75` = **`CMP byte ptr [ESI+52Ah],0` then `JNZ 009D4C1D`** (return false). The
+routine whole:
+
+```
+if (!0099C230(this))                         return false;
+if (target == 0 || target->+5Dh)             return true;    ; target gone
+if (ctl->+369h && [00E17BF2])                return false;
+if (IsAttackState(current) && task+52Ah)     return false;    ; STILL HAS ORDNANCE
+return (range > SafeDist * approach+24h);
+```
+
+`task+52Ah` is `approach+132h`, the has-ordnance byte (section 10.2). So **the image's break-off is
+gated on ordnance**: an aircraft that still has a torpedo never breaks off by range, and one that has
+dropped does, as soon as the range opens past `SafeDist * approach+24h`. That is the same shape as
+the dive bomb's `009C8A90`, which `src/dive_bomb_task.cpp:791`-`804` already reconstructs with
+`!has_bomb_ordnance_4c9` guarding its range test; the torpedo adds the `IsAttackState` conjunct.
+
+### 12.3 Section 10.3 is falsified by 12.1
+
+Section 10.3 explained the decrement run by "clearing the byte released the aim hold while
+`009D4C10` was already true, so the first test retired the task". **`009D4C10` is hardwired false in
+this host**, so that test cannot have fired and the explanation is impossible.
+
+* **was** (10.3): the break-off test retired the task before the aim branch was reached.
+* **is**: it could not have. The route the decrement run actually took to `done` is **unexplained**,
+  and this document does not guess at it a third time. What is certain is that with
+  `should_break_off` pinned false, `009D4030`'s aim branch with the byte clear returns `kGoAway` —
+  and the run recorded `goaway enters=0`, so something before the switch diverted it. The candidates
+  are `engaged` (`009D3210`) going false and the `!attacking` arm, both of which this packet has not
+  instrumented.
+* 10.1 and 10.2 are untouched: the one call site with its zero dword scan, and the one byte with two
+  names, are both from the listing and stand.
+
+### 12.4 What the fix actually is, and why it is two parts not one
+
+The image retires a spent bomber through `009D4C10`, and `009D4C10` needs **both** halves:
+
+1. `should_break_off` bound to the routine above instead of `false` — the host has the target
+   pointer, the target's death byte, `range_90`, `Pilot/Torpedo/SafeDist` and a `speed_ratio` whose
+   formula is known (`max(desc+188h MaxSpd / the reference at +4D8h, 1.0)`, so it is at least 1.0
+   and the threshold is at least 700); and
+2. the ordnance byte clearing on a drop — **the decrement this document reverted in section 9**.
+
+Neither alone does anything. With only (2), as section 9 measured, the goaway is lost and deaths go
+back to 5. With only (1), the byte stays set for the whole mission (section 7.2), the
+`IsAttackState && task+52Ah` arm returns false on every tick, and nothing changes at all. **That is
+why section 9's experiment failed, and it is a better reason than either section 9.2 or section 10.3
+gave.**
+
+Both parts together are the spent-bomber fix, and its before/after is already defined: `goaway`
+entries 82 to one per aircraft, task reaching `done`, deaths no worse than 2. Not attempted here —
+it is a binding plus a revert-of-a-revert plus a mission-length run, and this packet is at its
+context limit. The reading it needs is complete and is in this section.
