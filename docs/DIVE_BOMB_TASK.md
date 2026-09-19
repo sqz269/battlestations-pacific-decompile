@@ -1648,3 +1648,127 @@ It is also not on the critical path: the run census reads `rounds=2 rounds_left=
 is never reached because no release is issued, and the gate is the 25 m aim window. The substituted
 two rounds stay labelled where they are, and the shape the accessor should take is recorded above
 so the packet that owns the gunnery host can take it whole.
+
+## The 340 m: a missing steering command, and `009C58D0`'s aim
+
+The aim census said the release was blocked by a 359.50 m miss against a 25.0 m window. It is not
+the aim error's arithmetic and it is not a unit error. **Nothing was steering the aircraft.**
+
+`tick_state` was an empty override at both dive-bomb binding sites, so across 664 live aimdive
+ticks the task issued no roll and no pitch. With no task command the pitch mode stayed at the 2 the
+reset leaves at `0099B54E`, the planner's own arm at `0099E490` levelled the aircraft, and it flew
+straight past its target.
+
+### The arithmetic, which clears the aim error
+
+At the closest sample - `|error|` 359.50 m, range 444.2 m, altitude 631.2 m - the reconstructed
+model gives `x0 = 350 + 100 = 450`, `x1 = 1000 + 0 = 1000`, `t = (631.2 - 450) / 550 = 0.3295`,
+`lead = 23.06`, `gain = 0.7694`. Solving `gain * (cos(bearing) * 444.2 - 23.06) = ±359.50`:
+
+| branch | required `cos(bearing)` | verdict |
+| --- | --- | --- |
+| `+359.50` | 1.1038 | impossible |
+| `-359.50` | -0.99998 | the target dead astern |
+
+So at the moment the error came closest to the window, the aircraft had already passed the target
+and the along-track term was running negative. The closest planar range in the whole dive was
+444.2 m: that is the miss distance, not an aiming error.
+
+### `approach->vtable[0]`, the lead's first suspect, is clean
+
+Slot 0 of the vtable `00D20C48` that the constructor writes at `009C3EE2` is `009C40A0`, which
+Ghidra has no function for:
+
+```
+009c40a0  MOV  EAX,dword ptr [ESP + 4]
+009c40a4  FLD  dword ptr [ECX + 0x4c]   / FSTP [EAX]
+009c40a9  FLD  dword ptr [ECX + 0x50]   / FSTP [EAX + 4]
+009c40af  FLD  dword ptr [ECX + 0x54]   / FSTP [EAX + 8]
+009c40b5  RET  4
+```
+
+It returns the approach's own aim point, not a moveto row. The host draws its bearing and planar
+distance from the commanded target the same way `009C7B4F`-`009C7BB0` does, so the inputs agree
+stage for stage.
+
+### Correction: `approach+50h` is not a range
+
+It is **component 1 of that aim point** - its vertical component. The aimdive tick takes `out[0]`
+and `out[2]` as the horizontal pair for its `atan2` and its planar distance, and subtracts `out[1]`
+from the aircraft's Y to get the height above the aim point. That also makes the aim error's
+`x1 = approach+ACh + approach+50h` coherent: altitude plus altitude, not altitude plus range.
+
+`009C8D40` writes all three offsets - `009C8D9B`, `009C8F27`, `009C8F2E`, with `009C8D45 MOV
+ESI,ECX` making `ESI` the approach - and is reached from `009C91A0`, `009C91B0` and `009C9FB0`, not
+from the arm. Whether it is the only writer is not established. The host's 0.0 substitution stays
+numerically right for a sea-level target, so this is a naming correction, not a numeric one: the
+field `db_extra_range_50` and the input `extra_range_50` are misnamed.
+
+### `009C5C9F`-`009C5DB2`, the steering, now bound
+
+```
+009c5c9f  FLDZ                              ; the sign of the aim error
+009c5ca5  FCOMI ST0,ST1
+009c5ca9  JBE   0x009c5cd0                  ; byte `76`
+009c5cab  FMUL  float ptr [EBP + 0x64]      ; positive arm, clamped at +1 (009C5CBC)
+009c5cd0  FMUL  float ptr [EBP + 0x68]      ; negative arm, clamped at -1 (009C5CE5)
+009c5cfa  MOVSS dword ptr [EDI + 0x29c],XMM0
+009c5d15  MOV   byte ptr [EDI + 0x2a0],0x1
+009c5d1c  MOV   dword ptr [EDI + 0x2d0],EBX ; EBX = 0 from 009C58DE
+...
+009c5d8e  CALL  BSP_Math_InterpolateClamped ; (-0.4, 1.0, 0.4, -1.0, bearing error)
+009c5da3  MOVSS dword ptr [EAX + 0x290],XMM0
+009c5dab  MOV   byte ptr [EAX + 0x294],0x1
+009c5db2  MOV   dword ptr [EAX + 0x2cc],EBX
+```
+
+Both writes carry the mode that survives the planner, and that is the whole point of the pair:
+`cmd+2D0h = 0` is the value the pitch gate at `0099E3BF` lets through, and `cmd+2CCh = 0` is
+neither 2 nor 1, so the roll arm at `0099E26E` is skipped and the task's `+290h` reaches the stick.
+The gate bound in the previous packet is what makes this tick effective.
+
+`EBP` is `(approach+14h)`: `009C5CAB` and `009C5CD0` read `+64h` and `+68h` of the **same
+difficulty-row record** whose `+5Ch` and `+60h` the aim error already uses. Neither has a producer
+read, so both are substituted at 1.0 and labelled; at that gain the clamp bites on any error past a
+metre and the pitch is bang-bang on the sign of the aim error rather than proportional to it.
+
+The wide roll arm `009C5D24`-`009C5D31` is named, not bound: it swaps in a second bearing error and
+the 0.5 band at `00CE3800` when the aim error is positive and a folded angle is inside the 60
+degrees at `00D05AAC`. The folded angle's frame slot has no writer at its corrected key in
+`tools/frame_slot_census.py 009c58d0` with the cleanups `--pop 009c594c=4 --pop 009c5988=4 --pop
+009c59cd=4 --pop 009c5a66=0 --pop 009c5ab4=0 --pop 009c5df1=4 --pop 009c5ede=0`.
+
+Jump senses, all from the bytes: `009C5CA9`, `009C5CBC`, `009C5CE5`, `009C5D22` and `009C5D31` are
+each `76`, JBE.
+
+### The two pitch gains recovered, and the record identified for certain
+
+`009F9CE0` is what sets `approach+14h`, and it settles what the record is:
+
+```
+009f9d08  MOV  EDX,dword ptr [EAX + 0xdf4]
+009f9d0e  MOV  EDX,dword ptr [EDX + 0x34]      ; the difficulty index
+009f9d11  IMUL EDX,EDX,0x248                   ; the row stride
+009f9d18  MOV  ESI,dword ptr [0x00f8a30c]      ; the table base
+009f9d1e  LEA  EDX,[EDX + ESI*0x1 + 0xc]
+009f9d22  MOV  dword ptr [ECX + 0x14],EDX      ; approach+14h
+```
+
+`approach+14h` is a 0x248-stride robots row viewed `0xCh` in. So the four fields the dive-bomb
+chain reads off it map to row offsets exactly:
+
+| read | row offset | `include/bsp/robot_config.hpp` | this installation's `SPNormal` |
+| --- | --- | --- | --- |
+| `->+5Ch` | `+68h` | `dive_bomb_aim_prec_dist_068` | `DiveBombAimPrecDist` 70.0 |
+| `->+60h` | `+6Ch` | `dive_bomb_aim_prec_mul_06c` | `DiveBombAimPrecMul` 0.3 |
+| `->+64h` | `+70h` | `dive_bomb_aim_prec_pull_plus_070` | `DiveBombAimPrecPullPlus` **0.018** |
+| `->+68h` | `+74h` | `dive_bomb_aim_prec_pull_minus_074` | `DiveBombAimPrecPullMinus` **0.025** |
+
+The first two were a substitution picked by name; the `0xCh` offset makes them a proof. The last
+two are the aimdive tick's pitch gains, and the row's own Hungarian comments name them for what
+they are: "tavolsagtol fuggoen mennyire huzza a pitch-t, ha nem pontos a celzas", how much it pulls
+the pitch when the aim is not precise, and its push twin.
+
+So the pitch is proportional, not bang-bang: `clamp(error * 0.018, -1, +1)` on the positive side
+and `clamp(error * 0.025, -1, +1)` on the negative. It saturates past about 55 m of error and eases
+off inside that, which is the behaviour a 25 m release window needs.
