@@ -58,6 +58,8 @@ public:
     void begin_frame(std::uint32_t clear_color);
     NativeRendererPresentObservation end_frame();
     void copy_settings_capabilities(SettingsRendererCapabilities&) const;
+    // The loader reads CURRENT renderer fields and rebuilds its raw AA table.
+    void* const volatile& publication_00f8d394() noexcept;
     IDirect3D9& api() const;
     IDirect3DDevice9* device() const noexcept;
     NativeRendererParametersOwner& parameters() const;

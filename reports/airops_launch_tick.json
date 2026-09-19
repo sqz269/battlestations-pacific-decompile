@@ -1,0 +1,133 @@
+{
+ "packet": "cc8_airops_launch_tick",
+ "owner": "agent/cc8-torpedo-run-in",
+ "doc": "docs/AIROPS_LAUNCH_TICK.md",
+ "tree_base": "main merged at the start of the packet",
+ "result": "006C0510 is the air-operations slot tick and the only writer of state 5 in the image. The packet's premise had two errors and both are corrected from the listing: there is no cooldown compare, and the slot does not return to state 1. A slot leaves state 3 when slot+28h is zero and goes to state 5, and slot+30h accumulates rather than counting down. Implementing the tick holds every deck at its authored four slots for a whole run, which is the unbounded growth docs/AIROPS_LAUNCH_START.md found and could not fix. The creation seam now makes the squadron a real unit with a thisTable slot, and USN04 launches its twelve-plane strike: four squadrons of three, two from each carrier. The run also shows that class 101, the class those slots launch, carries general-bomb ordnance and not torpedo ordnance 2Bh, so no kind Eh torpedo task can be built from this launch path.",
+ "question": "Read whole, then implement, the tick that fills a launched slot's squadron field and returns the slot from state 3 to state 1 when its cooldown completes. Deliver the state machine's states with every writer by address, the cooldown compare and its constant, the creation call and its bag keys, the observer-pair move; then the implementation.",
+ "answer": "The squadron field is not filled by the tick but by the launch start 006C7490 at 006C74C6/006C74FF, which docs/AIROPS_LAUNCH_START.md established. The tick is 006C0510, __thiscall(slot, float step), called for every slot by 006C0DA0, which 006CDC70 BSP_AirOps_Update runs from the owning unit's motion pass. It does three things: slot+30h += step at 006C051A, an arm at 006C0527 that raises the timer to at least 5.0 (00CE3850) and clears slot+34h when that byte is set, and then a split at 006C0549 on slot+28h. With a squadron it mirrors entity+3CCh into slot+8h and returns. With none, and only in states 3 or 4 (006C054E, 006C0553), it zeroes slot+8h, takes min(block+58h - 006BD3F0, 006BF230(class).available, slot+0Ch), stores it and writes state 5 at 006C058F. There is no compare against slot+30h anywhere in the routine. The only timer compare found is 006C64B0's, against DAT_00D7A24C = 1.0, for a state-2 slot; DAT_00CE3850 = 5.0 is a state-entry preload at every site that writes it, which makes slot+34h mean 'do not wait' because 006C0534's COMISS/JA arm is max(timer, 5.0). The observer pair moves at 006C7502-006C751F: the record base is slot+14h and the observed slot is [slot+14h]+14h = slot+28h, with 006952A0 to unregister and 00694A60 to register, and the same shape holds for the block, whose pair is at block+24h and whose observed slot is block+38h. An exhaustive store census of slot+2Ch names every writer of states 1 to 6; 006CD350's 1/2/3 arms are dead code because 006CD39B already required state 5. The cycle closes at 006C65B0, the landing release, which is the only thing that zeroes slot+28h.",
+ "coverage": "complete for 006C0510, 006C0DA0, 006BF230 and 006C65B0; 006CDC70 is one of nine sub-updates and only 006C0DA0 is reconstructed; the squadron container 004F0AD0 builds is a labelled substitution (one plane stands for the wing) and 006BD520's replication message is a count, not a message.",
+ "calls": [
+  {
+   "address": "006c0562",
+   "native": "006bd3f0",
+   "note": "committed planes, called after slot+8h is zeroed at 006C055C"
+  },
+  {
+   "address": "006c0575",
+   "native": "006bf230",
+   "note": "the per-class stock pair, whose first word is the available count"
+  },
+  {
+   "address": "006c0dfb",
+   "native": "006c0510",
+   "note": "the tick, once per slot"
+  },
+  {
+   "address": "006c6582",
+   "native": "006952a0",
+   "note": "unregisters the block's old observer pair before block+38h is written"
+  },
+  {
+   "address": "006c6592",
+   "native": "00694a60",
+   "note": "registers the new pair on the entity block+38h now holds"
+  },
+  {
+   "address": "006c659b",
+   "native": "00922f30",
+   "note": "enables that entity's scene node; the pushed 0 is the routine's own second argument"
+  },
+  {
+   "address": "006c6502",
+   "native": "006bc8e0",
+   "note": "what 006C64B0 calls once a state-2 slot's 1.0 s has passed; not read"
+  },
+  {
+   "address": "006c74c6",
+   "native": "006c5050",
+   "note": "builds the squadron, which is the seam this packet implements"
+  }
+ ],
+ "named_routines": [
+  {
+   "native": "006c0510",
+   "ledger_name": "BSP_AirOps_SlotTick",
+   "evidence": "the only writer of state 5 (006C058F); accumulates slot+30h; splits on slot+28h",
+   "status": "read whole and implemented"
+  },
+  {
+   "native": "006c0da0",
+   "ledger_name": "BSP_AirOps_UpdateSlots",
+   "evidence": "walks block+4Ch by index calling 006C0510 and routes 006BD520's message at 006C0DFB",
+   "status": "read whole and implemented"
+  },
+  {
+   "native": "006bf230",
+   "ledger_name": "BSP_AirOps_StockAvailable",
+   "evidence": "the class total from block+44h minus what slots in state 1 or 5 hold",
+   "status": "read whole and implemented"
+  },
+  {
+   "native": "006c65b0",
+   "ledger_name": "BSP_AirOps_ReleaseSquadronSlot",
+   "evidence": "walks every slot with no early exit; zeroes +28h and +8h, state 1, timer 5.0, +34h clear",
+   "status": "read whole and implemented"
+  },
+  {
+   "native": "006c6540",
+   "ledger_name": "BSP_AirOps_PullReadyPlane",
+   "evidence": "006C6589 is the writer of block+38h that docs/AIROPS_LAUNCH_START.md listed as missing: the head of the queue at block+D8h, with the observer pair at block+24h moved onto it",
+   "status": "read whole, not implemented"
+  },
+  {
+   "native": "006c64b0",
+   "ledger_name": "BSP_AirOps_QueuedSlotWait",
+   "evidence": "state 2 and slot+30h > DAT_00D7A24C (1.0) and block+38h zero, then 006BC8E0",
+   "status": "read whole, not implemented"
+  },
+  {
+   "native": "006ccda0",
+   "ledger_name": "BSP_AirOps_SlotCommand",
+   "evidence": "the live copy of the 1/2/3/4/5 dispatch that 006CD350 inlines behind a state-5 guard; writes states 1, 3 and 4",
+   "status": "read, not implemented"
+  }
+ ],
+ "run": {
+  "log": "local/usn04_tick.log",
+  "mission": "USN04",
+  "exit_code": 0,
+  "mission_frames": 3000,
+  "mission_frame_seconds": 0.05,
+  "decks": 6,
+  "slots_per_deck_at_end": 4,
+  "slot_ticks": 72000,
+  "refills_3_4_to_5": 0,
+  "releases_006c65b0": 0,
+  "squadrons_created": 4,
+  "wing_per_squadron": 3,
+  "is_ready_calls": 4,
+  "launch_calls": 4,
+  "launch_started": 4,
+  "ordered_aircraft": 6,
+  "range_first_mean_m": 0.0,
+  "units_with_torpedo_ordnance": 34,
+  "units_with_general_bomb_ordnance": 5,
+  "torpedo_task_kind_eh": 0,
+  "torpedo_drops": 0,
+  "water_entry_breakups": 0,
+  "swims_started": 0,
+  "think_failures": 0
+ },
+ "open": [
+  "What fills the queue at block+D8h that 006C6540 drains. Without it nothing makes IsReadyToSendPlanes answer false, and a 24-squadron process ceiling stands in for the brake.",
+  "Class 101, which USN04's slots launch, carries general-bomb and not torpedo ordnance 2Bh, so this launch path cannot build a kind Eh task. Which mission or which slot carries 2Bh is the stream's next question.",
+  "The mission's own order for the launched squadrons is in a luaDoTimeTable entry that still had 34.95 s of delay when the 150 s window closed; the same line is in the before log, so it is a window length and not a regression.",
+  "006CDC70 is driven from GameScriptOrdersHost::run_script_timers, not from GameUnitsHost::motion_step_00825f20 where the executable has it, because src/game_hosts_units.cpp was leased to cc8-dive-bomb and the claim was refused.",
+  "006C58A0, 006C5B70, 006BC8E0, 006C7680 and the virtual at block+3Ch were not read."
+ ],
+ "retractions": [
+  "A first draft of docs/AIROPS_LAUNCH_TICK.md read the 0 pushed to 00922F30 at 006C659B and 006C7528 as a disable flag and said the deck holds its ready plane hidden. 00922F30 is BSP_SceneNode_Enable and sets node+5Ch to 1; the 0 is its own second argument, forwarded to vtable[68h]. docs/AIROPS_LAUNCH_START.md's reading was right and the draft was corrected before commit.",
+  "push_air_ops_slot_entry pushed slot+28h as an integer. 006C6895 pushes the entity, and 00888AA0's stand-in requires a table with an ID field, so PilotSetTarget would have dropped every order on a squadron without a message. The key now carries the entity's thisTable slot."
+ ]
+}

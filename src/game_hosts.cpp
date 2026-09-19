@@ -12,7 +12,8 @@
 #include "bsp/game_native_vfs_runtime.hpp"
 #include "bsp/native_renderer_reset_process.hpp"
 #include "bsp/native_renderer_reset_readiness.hpp"
-#include "bsp/settings_initial_state.hpp"
+#include "bsp/game_native_settings_process.hpp"
+#include "bsp/game_native_settings_application.hpp"
 #include "bsp/lua_runtime_globals.hpp"
 #include <stdexcept>
 
@@ -1030,7 +1031,8 @@ struct GameStartupHost::SoundServices {
     // at73DC7C and input backend construction at73DD8E, after sound/window.
     // Until those owners exist, these verified loader-zero slots stay null.
     // No independent online/input/action owner is constructed for sound loads.
-    NativeOnlineManagerStorage* volatile online_00f8abe8{};
+    GameNativeSettingsProcess& settings_process;
+    NativeOnlineManagerStorage* volatile& online_00f8abe8;
     NativeOnlinePumpContext* volatile online_pump{};
     std::uint8_t cursor_shown_0109db8e{}, focus_reset_pending_0109db8f{}, previous_ui_0109db90{};
     XLiveLibrary xlive;
@@ -1047,7 +1049,8 @@ struct GameStartupHost::SoundServices {
     GameSoundRuntime core;
 
     explicit SoundServices(GameStartupHost& app)
-        : xlive(selected_library_path(app.options_.xlive_dll, L"xlive.dll"),
+        : settings_process(*app.settings_process_),online_00f8abe8(settings_process.online_00f8abe8()),
+          xlive(selected_library_path(app.options_.xlive_dll, L"xlive.dll"),
               app.options_.xlive_dependencies),
           signin(xlive, app.require_frame_clock_context()),
           device_adapter(xlive),
@@ -1062,9 +1065,14 @@ struct GameStartupHost::SoundServices {
               &alternate_00f8bbcc}, selected_library_path(app.options_.fmod_dll, L"fmodex.dll"),
               selected_library_path(app.options_.fmod_event_dll, L"fmod_event.dll")) {
         dialog.attach(core, core.fmod());
+        settings_process.bind_profile_sdk(&xlive);
         // Registration happens in startup, after the raw deletion dispatcher
         // has this exact core allocation available.
         app.singletons_->bind_sound_runtime(&core);
+    }
+    ~SoundServices() {
+        try{settings_process.bind_profile_sdk(nullptr);}
+        catch(...){std::fputs("bsp_game: online owner outlived settings SDK binding\n",stderr);std::fflush(stderr);std::_Exit(1);}
     }
 };
 
@@ -1074,7 +1082,7 @@ NativeOnlineSigninCalls* GameStartupHost::online_signin_calls() const noexcept {
 
 struct GameStartupHost::InputServices {
     // Source storage initialized from the verified image words. Mutable settings
-    // producers are still required; these cells are not snapshots of settings_.
+    // producers are still required; these cells are not snapshots of settings_view_.
     NativeInputDeviceSdk sdk;
     XInputLibrary xinput;
     bool rumble_00e12f2c{true};
@@ -1140,7 +1148,16 @@ GameStartupHost::GameStartupHost(GameHostLog& log, HINSTANCE instance,
     // Represented CRT table order: CE2BAC -> CCD6A0 precedes CE3054 -> CD2D80.
     // Keep context/publication cells alive if later source construction fails.
     singletons->observers().initialize_dispatch_00ccd6a0();
-    initialize_static_game_settings_00cd2d80(settings_);
+    if(!native_data_)throw std::runtime_error("Native settings require retained verified data");
+    try {
+        settings_process_=&game_native_settings_process(*native_data_);
+        const auto registration=settings_process_->initialize_once();
+        copy_native_game_settings_read_view(settings_process_->settings(),{},settings_view_);
+        log_.notef("native settings CRT owners initialized: storage=rawBCh/raw0Ch atexit=%d/%d/%d/%d online=process_cell input=process_cell",
+            registration[0],registration[1],registration[2],registration[3]);
+    }catch(...){
+        log_.note("native settings CRT construction interrupted; retaining process contexts and partial ownership");log_.close();std::_Exit(1);
+    }
     // The represented CRT entries then reach CE30C0/CD3910 and CE30C4/CD3940.
     // These are process owners, with real CRT shutdown callbacks, not members
     // of GameStartupHost. The native initializer table ignores returned status.
@@ -1193,6 +1210,11 @@ void GameStartupHost::exit_if_native_renderer_incomplete() noexcept {
 }
 
 GameStartupHost::~GameStartupHost() {
+    if(settings_host_&&settings_host_->requires_process_retention()) {
+        try{log_.notef("native settings loader interrupted at %08x; retaining actual settings/catalog/VFS/renderer graph",settings_host_->failure_site());log_.close();}
+        catch(...){std::fputs("bsp_game: native settings require process retention\n",stderr);std::fflush(stderr);}
+        std::_Exit(1);
+    }
     if(scripts_&&scripts_->input().requires_process_retention()) {
         try {log_.note("native input settings interrupted; retaining shared Lua/VFS/manager bindings until process exit");log_.close();}
         catch(...) {std::fputs("bsp_game: native input settings require process retention\n",stderr);std::fflush(stderr);}
@@ -1545,11 +1567,11 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     // Phase 5, the settings block at 00f88980 filled by 008d8190 at 0073daa5. It runs before
     // window creation at 0073dc0f, which is the ordering constraint the whole phase exists
     // for: arguments 7, 8, 3, 4 and 9 of 00becee0 are read straight out of this block.
-    settings_host_ = new GameSettingsBinding(log_, vfs_->context(),
-        vfs_->search_registrations(), content_suffixes_, profile_hints_, *renderer_api_,
-        renderer_capabilities_, options_.settings_personal_root);
+    settings_host_ = new GameNativeSettingsApplication(log_,*settings_process_,*singletons_,
+        *vfs_,*native_renderer_,*native_data_,content_suffixes_,options_.settings_personal_root,{});
     auto& settings_host = *settings_host_;
-    load_game_settings_008d8190(settings_, settings_host);
+    settings_host.load();
+    settings_host.copy_read_view(settings_view_);
     if (command_line.fixed_frame_rate)
         enable_fixed_published_native_frame_clock(require_frame_clock_context(), 50);
     log_.implemented("Phase 5 load_game_settings", "008d8190");
@@ -1557,22 +1579,22 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     summary_.options_path = settings_host.options_path();
     log_.notef("options file %s %s", settings_host.options_path().c_str(),
         summary_.options_file_present ? "loaded" : "absent, initial options write attempted");
-    summary_.language = settings_.options_file.language;
-    summary_.settings_width = settings_.options_file.width_14;
-    summary_.settings_height = settings_.options_file.height_18;
-    summary_.settings_fullscreen = settings_.options_file.fullscreen_1e;
-    summary_.settings_vsync = settings_.options_file.vsync_60;
-    summary_.settings_antialias = settings_.options_file.antialias_58;
+    summary_.language = settings_view_.options_file.language;
+    summary_.settings_width = settings_view_.options_file.width_14;
+    summary_.settings_height = settings_view_.options_file.height_18;
+    summary_.settings_fullscreen = settings_view_.options_file.fullscreen_1e;
+    summary_.settings_vsync = settings_view_.options_file.vsync_60;
+    summary_.settings_antialias = settings_view_.options_file.antialias_58;
     log_.notef("settings resolution=%dx%d index=%d fullscreen=%d vsync=%d antialias=%d "
-        "shader_model=%d language=%s", settings_.options_file.width_14, settings_.options_file.height_18,
-        settings_.options_file.resolution_index_78, settings_.options_file.fullscreen_1e ? 1 : 0,
-        settings_.options_file.vsync_60 ? 1 : 0, settings_.options_file.antialias_58, settings_.options_file.shader_model_88,
-        settings_.options_file.language.empty() ? "(none)" : settings_.options_file.language.c_str());
+        "shader_model=%d language=%s", settings_view_.options_file.width_14, settings_view_.options_file.height_18,
+        settings_view_.options_file.resolution_index_78, settings_view_.options_file.fullscreen_1e ? 1 : 0,
+        settings_view_.options_file.vsync_60 ? 1 : 0, settings_view_.options_file.antialias_58, settings_view_.options_file.shader_model_88,
+        settings_view_.options_file.language.empty() ? "(none)" : settings_view_.options_file.language.c_str());
 
     bind_legacy_crt_math_runtime(application_math_runtime);
     sound_ = std::make_unique<SoundServices>(*this);
     try {
-        sound_->core.startup(!settings_.audio.enabled_24);
+        sound_->core.startup(!settings_view_.audio.enabled_24);
     } catch (...) {
         // Read the existing SDK call journal; do not issue further FMOD calls
         // while reporting a constructor or its recovery failure.
@@ -1593,9 +1615,9 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     // Native73DB7E/73DB8E reload the same current alternate publication for
     // each direct store. Do not maintain separate music/speech gain copies.
     std::memcpy(static_cast<std::byte*>(sound_->alternate_00f8bbcc) + 0x218,
-        &settings_.audio.music_28, sizeof(float));
+        &settings_view_.audio.music_28, sizeof(float));
     std::memcpy(static_cast<std::byte*>(sound_->alternate_00f8bbcc) + 0x21c,
-        &settings_.audio.speech_30, sizeof(float));
+        &settings_view_.audio.speech_30, sizeof(float));
     const auto sound_start = sound_->core.summary();
     log_.notef("sound startup before window: enabled=%d classes=%zu resources=%zu "
         "resource_bytes=%u opens=%zu closes=%zu fmod_calls=%zu fmod_errors=%zu "
@@ -1611,7 +1633,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     if (vfs_ != nullptr && vfs_->ready()) {
         std::vector<std::string> probes{"interface/_common.lua"};
         probes.push_back("lockit/"
-            + (settings_.options_file.language.empty() ? std::string("english") : settings_.options_file.language)
+            + (settings_view_.options_file.language.empty() ? std::string("english") : settings_view_.options_file.language)
             + ".lng");
         probes.push_back("effects/a_fiji_terr_atl.dds");
         for (const std::string& extra : options_.vfs_probes) probes.push_back(extra);
@@ -1628,13 +1650,13 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     PlatformWindowRequest request{};
     window_class_name_ = kWindowName;
     request.name = window_class_name_.c_str();
-    request.fullscreen = settings_.options_file.fullscreen_1e;
-    request.color_depth_selector = settings_.options_file.vsync_60;
+    request.fullscreen = settings_view_.options_file.fullscreen_1e;
+    request.color_depth_selector = settings_view_.options_file.vsync_60;
     request.x = 0;
     request.y = 0;
-    request.width = settings_.options_file.width_14;
-    request.height = settings_.options_file.height_18;
-    request.renderer_option = static_cast<std::uint32_t>(settings_.options_file.antialias_58);
+    request.width = settings_view_.options_file.width_14;
+    request.height = settings_view_.options_file.height_18;
+    request.renderer_option = static_cast<std::uint32_t>(settings_view_.options_file.antialias_58);
     request.application = this;
     request.instance = instance_;
     request.procedure = &game_window_procedure;
@@ -1707,7 +1729,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     // Locale construction and exact setter/register/reload order0073e057..e135.
     locale_ = new GameLocaleHost(log_);
     locale_->initialize(settings_host.locale_source(), language_name_008d4870(
-        settings_host.language_catalog(), static_cast<std::size_t>(settings_.gameplay.language_index_04)));
+        settings_host.language_catalog(), static_cast<std::size_t>(settings_view_.gameplay.language_index_04)));
     summary_.locale_keys = locale_->tables().size();
     summary_.locale_files = locale_->tables().loaded_files().size();
     // The tables the phase loaded, and one string id resolved out of them, so a run states
@@ -1746,7 +1768,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     frontend_ = new GameFrontendHost(log_, *vfs_, *scripts_, *fonts_, *device_->device(),
         platform_.widescreen);
     frontend_->run_font_and_gui_startup_0073bae0(language_font_path_008d4890(
-        settings_host_->language_catalog(), settings_.gameplay.language_index_04));
+        settings_host_->language_catalog(), settings_view_.gameplay.language_index_04));
     // 0073E14B follows the retail-stubbed After InitGui checkpoint. Borrow the
     // canonical host cell and its shared raw lifetime domain; an earlier
     // diagnostic path may already have made this warm.
