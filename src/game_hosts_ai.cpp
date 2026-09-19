@@ -2297,6 +2297,35 @@ void GameAiCoordinatorHost::Impl::build_squadrons() {
             "negation of 007EDA90 is what admits them",
             static_cast<unsigned long long>(summary.squadrons_built),
             static_cast<unsigned long long>(summary.squadron_members));
+        // The +3C8h each squadron ended up with, which no line carried before.
+        // It is the discriminator for whether the wing count came from the
+        // authored WingCount or from 007F4735's absent-key default of 3: they
+        // coincide at 3 for USN04's movieval and for every air-ops launch, and
+        // differ on USN01, whose five rows author 1.
+        std::map<int, std::size_t> wing_count_histogram;
+        for (const Squadron& built : squadrons) {
+            ++wing_count_histogram[built.entity.wing_count];
+        }
+        for (const std::pair<const int, std::size_t>& entry : wing_count_histogram) {
+            log.notef("  ai squadron wing_count +3C8h=%d over %zu squadron(s)",
+                entry.first, entry.second);
+        }
+        // A squadron of exactly one plane that the registry does know about is
+        // the ungrouped case: USN04 ends at 7 squadrons over 15 planes because
+        // one air-ops launch's three planes each seeded one. Name them so the
+        // next run says which launch rather than leaving it to arithmetic.
+        for (const Squadron& built : squadrons) {
+            if (built.member_units.size() != 1) continue;
+            const std::size_t only = built.member_units.front();
+            const bsp::PlaneSquadronHostRecord* record =
+                bsp::plane_squadron_registry().find_by_member_name(unit_name(only));
+            if (record == nullptr) continue;
+            log.notef("  ai squadron UNGROUPED %s: the registry knows it as a member of "
+                "%s (+3D0h holds %zu slot(s), %d live), so it should not have seeded a "
+                "squadron of its own",
+                unit_name(only).c_str(), record->name.c_str(),
+                record->member_units.size(), record->live_count());
+        }
     } else {
         log.notef("ai squadrons: this mission created no unit answering IsKindOf(0Fh), "
             "so no PlaneSquadronGen is built and 009FE080 falls to its ship tail");
