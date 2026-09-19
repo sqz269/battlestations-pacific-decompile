@@ -1,0 +1,45 @@
+{
+ "packet": "cc8_squadron_resolver_call",
+ "owner": "agent/cc8-ai-squadron",
+ "doc": "include/bsp/game_hosts_script_orders.hpp (the free function's contract) and include/bsp/plane_squadron_host.hpp (the two corrected comments)",
+ "tree_base": "main merged; 15563fdf9 real wings, 67e8ac821 Hidden hold-back and 6b0a12422 present; e94f9905d NOT present",
+ "question": "A squadron that came from a scene row had an empty +3D0h member array when GameAiCoordinatorHost::Impl::build_squadrons asked, so every wingman seeded an AI squadron of its own: USN04 built 7 over 15 where the mission has 5. Find why and fix it so every consumer sees a resolved array.",
+ "answer": "The resolver existed and ran too late. GameScriptOrdersHost::resolve_plane_squadron_members fills the registry's +3D0h array by name for scene rows and launches alike, but its only call sites were in the mission loop, while build_squadrons runs from create_units' tail via host.ai->create_00a32350(). The header advertised the resolver as `resolve_member_units`, a name that exists nowhere, which is why a grep for it came back empty and a duplicate got written before the real one was found. The body needed nothing from the scripts-orders host - only the process-wide plane_squadron_registry() and the units host's own count()/unit_row() - so it became a free function, bsp::game::resolve_plane_squadron_members(units, log, only_unresolved), with the member as a one-line delegate, and create_units calls it after the slots exist and before the AI host is constructed. The find_by_member_name fallback added while this was being chased is removed in the same commit, leaving one route.",
+ "coverage": "complete for the scene route: measured. NOT complete for the air-ops route, which is a separate ordering defect this packet located but did not fix.",
+ "calls": [
+  {
+   "address": "007f4b55",
+   "native": "none, the +3D0h array this fills",
+   "note": "the member array; 007F4B60 is the +3CCh count live_count() models"
+  },
+  {
+   "address": "007eda91",
+   "native": "none, a load",
+   "note": "MOV ESI,[ECX+3D0h], slot 0 whatever the count: the flight leader, which is what decides who seeds"
+  },
+  {
+   "address": "007eef30",
+   "native": "none",
+   "note": "the torpedo release-order broadcast that reads the same array through find_by_member_unit; it saw zero members for a scene-row squadron before this"
+  }
+ ],
+ "corrections": [
+  {
+   "was": "include/bsp/plane_squadron_host.hpp named the resolver `resolve_member_units`.",
+   "is": "GameScriptOrdersHost::resolve_plane_squadron_members, src/game_hosts_script_orders.cpp.",
+   "evidence": "`resolve_member_units` appears in that one comment and nowhere else in src/ or include/; the real name has two mission-loop call sites."
+  },
+  {
+   "was": "The same header said member_units is filled 'by the units host'.",
+   "is": "It was filled inline by the air-ops route only, and by the resolver for everything else. After this commit the units host does fill it, so the line is true as written for the first time.",
+   "evidence": "game_hosts_script_orders.cpp pushes member_units per wing at launch; the scene path in game_hosts_scene_contents.cpp clears it and fills only member_names and member_spawn_index."
+  },
+  {
+   "was": "A registry-level resolve_member_units written by this packet.",
+   "is": "Deleted as a duplicate; the existing body is the one implementation, and its preserve-filled-slots behaviour was dropped as an unnecessary extra rule since 007F4B55 keys the array on the names.",
+   "evidence": "Both did the same job; the existing one has the run record behind it."
+  }
+ ],
+ "validation": "Build clean at /W4 /WX, both ctest suites pass, and it links. Three runs on the final binary. USN01: 'plane squadron members: 5 of 5 wing record(s) resolved to units over 5 squadron(s)' at create_units time, before the AI host exists, so find_by_member_unit answers Mav1's record from then on and 007EEF30 sees live members. USN01: 'ai squadron wing_count +3C8h=1 over 5 squadron(s)', so the filter takes the AUTHORED WingCount rather than 007F4735's absent-key default of 3; USN04 cannot discriminate this because authored and default coincide at 3 there. USN04: first census 1 squadron over 3 member planes, which is what the removed fallback used to produce, so removing it cost nothing.",
+ "open": "USN04 still ends at 7 squadrons over 15 planes. The progression 1/3, 4/6, 5/9, 6/12, 7/15 says the FIRST air-ops launch adds three planes as three squadrons while every later launch adds three as one. The ungrouped diagnostic printed no line, and it prints only when find_by_member_name succeeds, so the registry does not know those planes by name when the census runs: the record is not there yet rather than there and wrong. Reading eliminated the other two candidates - the wing name goes into both the unit record and member_names from the same expression, and member_units[wing] = before + wing matches batch order. Caveat: an unnamed unit would produce the same silence, and separating that needs the plane's name in the diagnostic line."
+}

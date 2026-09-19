@@ -36,6 +36,7 @@
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_ai.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/torpedo_release_spawn.hpp"
 #include "bsp/bot_tasks.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
@@ -2718,6 +2719,16 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
     host.log.notef("world units: %zu created instance(s) carried into the frame, %zu with a "
         "VehicleClass row out of the installed table", host.summary.units,
         host.summary.class_rows);
+    // The plane-squadron member write-back, here because the slots now exist
+    // and the AI host below reads the array as soon as it is constructed.
+    // GameScriptOrdersHost owns this body but the free function needs no
+    // scripts-orders host: it takes the process-wide registry and this host's
+    // own count()/unit_row(). Without the call, a squadron that came from a
+    // SCENE row still had an empty +3D0h array when build_squadrons asked, and
+    // USN04 built 7 AI squadrons over 15 member planes where the mission has 5.
+    // `only_unresolved` so the wipe inside it can never un-fill the inline
+    // answer an air-ops launch already wrote; docs/PLANE_SQUADRON_HOST.md.
+    bsp::game::resolve_plane_squadron_members(*this, &host.log, true);
     // Milestone 2t: the unit-side gunnery pass. 00810DD0's creation block puts a
     // 558h-byte object at unit+6DCh and attaches it to the unit's own tick
     // element unit+310h through its vtable +4h (00864BD0), which is why it runs
