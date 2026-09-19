@@ -8,7 +8,7 @@
       "address": "009d0f10",
       "name": "BSP_BotStateTorpedoGoAway_Tick",
       "abi": "void __thiscall(this, float dt)",
-      "coverage": "not started: only its three direct 009FB800 call sites and their literal 1.0 second argument are established, from packet cc8_torpedo_descent_law."
+      "coverage": "complete as a listing read: body 009D0F10-009D1210 (Ghidra live, checked per call site), both arms, all three returns at 009D1153, 009D11ED and 009D120E, every constant checked at both widths against its load. The reconstruction and the host binding are NOT written."
     }
   ],
   "host_steps": [
@@ -25,6 +25,13 @@
       "native": "009fb800",
       "function": "009d0f10",
       "note": "Its own literal 1.0 at 009D1158 FLD1."
+    },
+    {
+      "host": "BotStateTorpedoGoAway::climb_out_low",
+      "address": "009d10ff",
+      "native": "009fb800",
+      "function": "009d0f10",
+      "note": "The low arm, taken when unitY <= 20.0 (00CE3930): altitude 1000.0 (00CE3804) with the same literal 1.0 reference, then cmd+2C0h = state+18h and cmd+2CCh = 2. This is the climb-away proper and the aircraft that ditch at 69.6 m/s are in exactly this altitude band with nothing running it."
     }
   ],
   "attribution": {
@@ -49,5 +56,19 @@
   "validation": {
     "run": "local/aimclass_after_usn01.log",
     "note": "read-only analysis of an existing run; no code changed in this part of the packet"
+  },
+  "corrections": [
+    {
+      "doc": "docs/TORPEDO_GOAWAY_RELEASE.md",
+      "was": "009D0F10's body given as 009D0F10-009D1153.",
+      "is": "009D0F10-009D1210. 009D1153 is the FIRST of three RET 4; 009D1032 JBE jumps past it to a second arm at 009D1156 whose returns are at 009D11ED and 009D120E, and the 009D1194 call site lives in that arm.",
+      "evidence": "bsp.py ghidra proto on 009D0F10, 009D109C, 009D10FF and 009D1194 all answer body 009d0f10 - 009d1210."
+    }
+  ],
+  "goaway_tick": {
+    "structure": "high = unitY > state+20h (009D0F3C JBE -> 0); 009D0C10 heading update; countdown state+28h -= dt while approach+90h < state+24h - 100.0; state+30h += dt; re-seed state+34h = jitter(3.0, 6.0), state+28h = jitter(row+10h, row+14h) + state+34h, state+30h = -state+34h/2 when state+28h < 0 and high; then the manoeuvre window state+30h < state+34h selects the arm.",
+    "window_arm": "009FB800(state+1Ch, 1.0) and a roll cmd+2C4h = clamp(2 * state+2Ch * state+30h, -1.2, 1.2) with cmd+2CCh = 1 when unitY > 20.0; otherwise 009FB800(1000.0, 1.0) with cmd+2C0h = state+18h and cmd+2CCh = 2.",
+    "post_window_arm": "009FB800(state+1Ch, 1.0) always; then cmd+2C0h = state+18h with mode 2 when high, else cmd+2C4h = 0.0 with mode 1.",
+    "unread_dependencies": "009D0C10 at 009D0F46 fills state+18h, the heading both arms command, and is unread. state+1Ch, state+2Ch, state+20h and state+24h come from the goaway enter 009D0D90, of which docs/TORPEDO_GOAWAY_RELEASE.md section (2) reads only +24h and +28h; +1Ch has no producer in that document."
   }
 }

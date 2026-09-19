@@ -1,7 +1,8 @@
 # After the drop: the five deaths are the five bombers, and the torpedoes hit nothing
 
-Packet `cc8_torpedo_after_the_drop`, owner `agent/cc8-plane-squadron`. Parts (1) and (2); part (3),
-the goaway tick `009D0F10`, is handed on at the end.
+Packet `cc8_torpedo_after_the_drop`, owner `agent/cc8-plane-squadron`. All three parts. Sections 3.1
+and 3.2 are appended after Coverage and Uncertainty, which were written before the listing read; the
+Coverage table below is amended by 3.1.
 
 Run: `local/aimclass_after_usn01.log`, the same run `docs/TORPEDO_RELEASE_TIMER.md` validates.
 
@@ -89,7 +90,7 @@ is not read: whether anything in the chain **leads** a moving target over those 
 says: correct altitude, correct speed, no breakup, a swim at the authored speed. The next question
 is an aiming question, one state earlier.
 
-## 3. Handed on: the climb-away, `009D0F10`
+## 3. The climb-away `009D0F10`, read whole
 
 The five aircraft still touch the water, but 21 to 49 s after dropping, at 69.6 m/s and level
 (`alt` -0.02 to -0.10), and the table says they were **already dead** by then or dying: `sunk_at`
@@ -107,6 +108,8 @@ stream has driven: every measurement so far has been of the dive arm. `class+1EC
 than authored (`007C4C08`-`007C4C14`, 0.6 times `desc+1E4h`), so the climb arm also tests a field
 this lineage has only ever read.
 
+The listing is transcribed in section 3.1 below.
+
 ## Coverage
 
 | question | coverage |
@@ -115,7 +118,7 @@ this lineage has only ever read.
 | what the torpedoes did to water entry and the start of the swim | complete |
 | what ended each torpedo | **partial**: established that none hit and that the host's swim can hit; which of range expiry or geometry ended them is not separated |
 | why they missed | not established; bounded above to an aiming question in the replan or `009D1360`'s lead, not the release chain |
-| `009D0F10` | not started, handed on |
+| `009D0F10` | **amended by section 3.1 below: transcribed complete**, both returns, every constant width-checked. The reconstruction and the host binding are not written; 3.2 says what a binder still needs |
 
 ## Uncertainty
 
@@ -125,3 +128,94 @@ this lineage has only ever read.
   this exact.
 * `projectiles ... expired=885` is a whole-mission figure over 1119 rounds; the five torpedoes are
   not separated out of it, so "they expired" is a plausible end rather than a measured one.
+
+### 3.1 `009D0F10` transcribed, with both of its returns
+
+**`docs/TORPEDO_GOAWAY_RELEASE.md` gives the body as `009D0F10`-`009D1153`. That is wrong, and it
+is wrong in the way that matters: `009D1153` is the **first** `RET 4`, not the end.** Ghidra's live
+body is `009D0F10`-`009D1210`, `009D1032 JBE` jumps over that return to a second arm at `009D1156`
+with its own two returns at `009D11ED` and `009D120E`, and one of the three `009FB800` call sites -
+`009D1194` - lives in it. Checked with `bsp.py ghidra proto` on each call site rather than by
+scrolling: all four answer body `009d0f10 - 009d1210`.
+
+`void __thiscall(BotStateTorpedoGoAway* this, float dt)`, `RET 4`. `approach = this+4h`,
+`unit = approach+4h`, `cmd = approach+18h`, `class = approach+8h`, `row = approach+14h` (the
+`PilotBotParameters` difficulty row).
+
+```
+high      = unitY > state+20h                                   009D0F2F .. 009D0F42  (JBE -> 0)
+009D0C10(this)                                                  009D0F46, the heading update
+if (approach+90h < state+24h - 100.0)   state+28h -= dt         009D0F56 [00D7A220], 009D0F64 JBE
+state+30h += dt                                                 009D0F6E, 009D0F81 FST
+if (approach+134h < 1.0 && state+30h > state+34h + 6.0)
+        state+28h = -1.0                                        009D0F84 COMISS, 009D0F9C, 009D0FA6
+if (state+28h < 0.0 && high) {                                  009D0FB2 COMISS, 009D0FBA JZ
+    state+34h = jitter(3.0, 6.0)                                009D0FD7 -> 009D0FDE
+    state+28h = jitter(row+10h, row+14h) + state+34h            009D1000 -> 009D101A
+    state+30h = -(state+34h * 0.5)                              009D101D, 009D1023 FCHS, 009D1025
+}
+if (state+30h < state+34h) {            the manoeuvre window    009D1032 JBE -> the else arm
+    cmd+278h = 1.0; cmd+27Ch = 1; cmd+2A8h = 0.0; cmd+2ACh = 1; cmd+2D8h = 0
+    if (unitY > 20.0) {                                         009D108B COMISS [00CE3930]
+        009FB800(state+1Ch, 1.0)                                009D109C, arg1 from 009D107A FLD1
+        cmd+2C4h = clamp(2 * state+2Ch * state+30h, -1.2, 1.2)  009D10A7 FADD ST0,ST0; 009D10B1
+        cmd+2CCh = 1                                            009D10EA
+    } else {
+        009FB800(1000.0, 1.0)                                   009D10FF, altitude [00CE3804]
+        cmd+2C0h = state+18h;  cmd+2CCh = 2                     009D110C, 009D1112
+    }
+    (approach+1Ch)+40h = tuning+674h                            009D111C .. 009D112C
+    009FABE0(approach+1Ch, state+18h, class+1ECh)               009D114A
+    RET                                                         009D1153
+} else {                                the window is over      009D1156
+    cmd+278h = 1.0; cmd+27Ch = 1; cmd+2A8h = 0.0; cmd+2ACh = 1; cmd+2D8h = 0
+    009FB800(state+1Ch, 1.0)                                    009D1194, arg1 from 009D1158 FLD1
+    if (high) {
+        cmd+2C0h = state+18h;  cmd+2CCh = 2                     009D11A5, 009D11AB
+        (approach+1Ch)+40h = tuning+670h                        009D11B5 .. 009D11C5
+        009FABE0(approach+1Ch, state+18h, 0099B630(cmd))        009D11D0, 009D11E4
+        RET                                                     009D11ED
+    } else {
+        cmd+2C4h = 0.0;  cmd+2CCh = 1                           009D11FB, 009D1203
+        RET                                                     009D120E
+    }
+}
+```
+
+| constant | address | width at its load | value |
+| --- | --- | --- | --- |
+| the break-off slack | `00D7A220` | `FSUB double ptr`, `009D0F56` | 100.0 |
+| the re-seed guard | `00CE6628` | `FADD double ptr`, `009D0F90` | 6.0 |
+| the window jitter high | `00CE6630` | `FLD float ptr`, `009D0FBC` | 6.0 |
+| the window jitter low | `00CE3854` | `FLD float ptr`, `009D0FCE` | 3.0 |
+| the half | `00D7A280` | `FMUL double ptr`, `009D101D` | 0.5 |
+| the low-altitude split | `00CE3930` | `COMISS`, `009D108B` | **20.0 m** |
+| the climb-out altitude | `00CE3804` | `FLD float ptr`, `009D10F6` | **1000.0 m** |
+| the roll clamp | `00D05EA4` / `00CE3814` | `FLD float ptr` / `MOVSS` | -1.2 / +1.2 |
+| `009FB800`'s reference, all three sites | `FLD1` | - | **1.0** |
+
+Every one checked at both widths against the width of the instruction that loads it, the habit that
+found `kPitchClampLo`.
+
+**So the climb-away is: below 20 metres, command altitude 1000 m and fly the heading `state+18h` in
+heading mode 2; above 20 metres, command `state+1Ch` and roll.** The aircraft that ditch at 69.6 m/s
+after their drop are below 20 m with nothing running this arm, so nothing ever tells them to climb
+to 1000. `009FB800`'s reference is the literal `1.0` at all three sites, which caps the climb at
+`class+1ECh * 1.0` = 0.1854 rad for the Mav - the fourth independent confirmation that the second
+argument is a dimensionless scale.
+
+### 3.2 What is still needed, and it is code rather than reading
+
+The listing is complete above. What is not done is the reconstruction and the host binding:
+`src/torpedo_goaway_tick.cpp` and its header, then `run_goaway_tick_009d0f10` beside
+`run_torpedo_aim_tick_009d15f0` in `src/game_hosts_units.cpp`'s state switch, which currently
+handles only `kAim`, `kMoveTo`/`kFollow` and `kAttackRun`.
+
+Two things a binder must not take on trust:
+
+* `009D0C10` at `009D0F46` is called before everything and is **unread** here; it is the goaway's
+  own heading update and it is what fills `state+18h`, the heading both arms command. Binding the
+  tick without it commands a heading that nothing writes.
+* `state+1Ch`, `state+2Ch`, `state+20h` and `state+24h` come from the goaway **enter** `009D0D90`,
+  which `docs/TORPEDO_GOAWAY_RELEASE.md` section (2) reads for `+24h` and `+28h` only. `+1Ch` is the
+  altitude both `009D109C` and `009D1194` command and it has no producer in this document.
