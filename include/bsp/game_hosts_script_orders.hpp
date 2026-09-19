@@ -118,6 +118,10 @@ struct GameScriptOrderRow {
     std::string formation_leader;    // 00899d10's argument 1
     int role{-1};                    // 008ab850's argument 1
     int role_value{-1};              // 008ab850's argument 2
+    // Packet cc8_navigator_path: 008a3600's 5Bh message, as the native built it.
+    int path_follow_mode{-1};        // msg+24h, Lua argument 2, default 1
+    int path_parameter{-1};          // msg+28h, Lua argument 3, default 5
+    int path_object_id{-1};          // msg+20h, the path entity's uint16 +174h
 };
 
 struct GameScriptOrdersSummary {
@@ -128,6 +132,11 @@ struct GameScriptOrdersSummary {
     std::size_t reached_director{0};   // of those, past 00816e30's arm test
     std::size_t formations_requested{0};
     std::size_t formations_refused{0}; // vtable 16Ch answered false
+    // Packet cc8_navigator_path.
+    std::size_t path_orders{0};            // 008a3600's 5Bh message
+    std::size_t commanded_speed_stores{0}; // 008a3901 / 008a3912
+    std::size_t land_avoidance_orders{0};  // 008a3b10, 5Ah selector 9
+    std::size_t torpedo_evasion_orders{0}; // 008a3cd0, 5Ah selector 7
     std::size_t skills{0};
     std::size_t repairs{0};
     std::size_t roles{0};
@@ -306,6 +315,17 @@ private:
     void role_owner_set_role_available(void* owner, int role, int value) override;
     void session_route_role_message(void* owner, int role, int value) override;
     void game_assign_party_player_slots(int value) override;
+    // Packet cc8_navigator_path: 008a3600, 008a3b10 and 008a3cd0.
+    int argument_count() override;
+    float argument_number(int index) override;
+    float entity_class_max_speed(void* entity) override;
+    void session_route_path_order_message(void* entity,
+        const bsp::NavigatorPathOrder& order) override;
+    void entity_store_commanded_speed(void* entity, float speed) override;
+    void* entity_weapon_director(void* entity) override;
+    void session_route_avoidance_message(void* director, int selector,
+        bool enabled) override;
+    void unit_parts_land_avoidance_disabled(void* entity) override;
 
     // --- bsp::LuaBindingArgumentReader, the reads the nine rows of packet
     // cc_lua_binding_audit make through 00B677E0 --------------------------------
@@ -442,6 +462,11 @@ private:
     std::vector<std::size_t> ordered_units_;
     bool logged_path_{false};
     bool logged_predicate_{false};
+    // Packet cc8_navigator_path. 008a3600's path argument, kept for the span of
+    // one dispatch so the 5Bh arm can build the receiver's descriptor from the
+    // same entity 00720fa0 would have re-resolved out of the message.
+    bool logged_path_order_{false};
+    void* path_entity_for_order_{nullptr};
 
     // Packet cc_lua_binding_audit.
     std::vector<GameScriptEntity> script_entities_;
