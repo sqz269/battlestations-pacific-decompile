@@ -3505,3 +3505,64 @@ error = gain * along                                             ; 009C5C97, sto
 
 which is what that function already computes, term for term. The handoff's "unread block" framing is
 withdrawn in the document itself.
+
+## 5. Measured: the gate regulates the dive angle, and the abort is what ends it
+
+`local\usn04_gate1.log` against `local\usn04_geo3.log`, same binary apart from the gate.
+
+```
+geo3 (no gate)                          gate1 (gate bound)
+1788  pitch -0.766  cmd +1.000          1788  pitch -0.766  cmd +1.000
+1794  pitch -0.504  cmd +1.000          1794  pitch -0.504  cmd -1.000   <- gate fires
+1800  pitch -0.242  cmd +1.000          1800  pitch -0.401  cmd -1.000
+1806  pitch  +0.02  cmd +1.000          1806  pitch -0.534  cmd +1.000   <- and releases
+1808  pitch +0.107                      closest range 209.3 (geo3: 204.1)
+```
+
+Measure 1 and measure 2 of the handoff are met: `pitch_cmd` stops being a constant, and
+`pose+C64h` stops walking back up past zero. It is a bang-bang regulator and it holds the dive at
+the gate's own angle, about -0.52 rad. That is the authored dive angle of this class from the other
+end as well: `class+518h` is `tan(DropAngle)` and its measured 0.577 is `tan(30 deg)`.
+
+`releases` is still 0 and the state counts are unchanged (`aimdive=52`, then `aimglide=562`),
+because what ends the dive is the abort, not the pitch: see section 6.
+
+## 6. Two things the release still needs, and neither is the pitch
+
+**The abort's height input** was a range. Corrected in this packet (`7d5c667ec`) with the
+derivation in that commit; with a range in both operands `009C5B3E` reduced to
+`0.3*range + 150 > range`, an abort at any range under 214 m whatever the altitude, and both runs
+lose the dive just inside that (204.1 m and 209.3 m). The run measuring the correction is
+`local\usn04_abort1.log`.
+
+**`[ESP+5Ch]` is not the current range, and this host's substitution for it is a HOLE.** The two
+`approach->vtable[0]` calls differ their result against two different points, and the register that
+picks them changes between them:
+
+* `009C593E MOV EDI,[ESI+4]` makes EDI the approach, so `009C5950 FSUB [EDI+0D8h]` differences the
+  aim point against `approach+D8h`. `009C405D`-`009C407D` in the constructor stores `unit+FCh`,
+  `+100h`, `+104h` there: **the aircraft's own position at dive entry**, latched once.
+* `009C5966 MOV EDI,[EBP+4]` then makes EDI the unit, so `009C598C FSUB [EDI+0FCh]` and
+  `009C5999 FSUB [EDI+104h]` difference the aim point against the aircraft's **current** position.
+  EDI is written five times before `009C5BEB` and this is the only reload between the two
+  differences, which is what settles it.
+
+So `[ESP+1Ch]` (first `sqrt`) is the live aircraft-to-aim-point range, and `[ESP+5Ch]` (second
+`sqrt`, the one the aim error multiplies `cos` into) is the **dive-entry-point-to-aim-point range**,
+a constant for the whole dive. Likewise `[ESP+18h]`, the wide roll error, is measured from the
+latched entry point and `[ESP+24h]`, the default one, from the aircraft.
+
+This host passes `db_planar_bc`, the live range, for both. That is why the measured aim error tracks
+the range exactly (`range/error` = `433/433` in both runs) and never approaches the 25 m window.
+Whether the image's own quantity ever does is **not established here**: with `D_entry` fixed at
+472.6 m and the lead interpolating to 0 at low altitude, `cos(...) * 472.6 - lead` has no obvious
+zero either, so either `approach+D8h` is re-latched by something outside `009C58D0` or the release
+this mission needs is the aimglide's at `009C5777`, not this one. That is the next question, and it
+is a reading question, not a tuning one.
+
+**`approach+A8h` = 350.0 is a proof of the range and a hole in the draw.** The release's first gate
+is `approach+A8h > pose+100h`, so it depends on it directly. `009C3F23` draws it uniformly, and this
+installation's `scripts/datatables/robots.lua` SPNormal row authors
+`DiveBombReleaseAlt = { 350, 450 }`; the host pins the low end and the difficulty index is
+unmodelled. Pinning the low end is the conservative direction - it demands a lower aircraft before
+releasing, so it can suppress a release the image would make, never cause one it would not.
