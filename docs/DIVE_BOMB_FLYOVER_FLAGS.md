@@ -143,7 +143,7 @@ turn circle it very nearly stops steering.
 Read for the same packet, `009C64EE`-`009C6530`, because everything in section 2 sits behind it:
 
 ```
-009c64ec  AL = vtable[5Ch](0x14) on (approach+0Ch)->+4     UNBOUND
+009c64ec  AL = vtable[5Ch](0x14) on approach+4h, the UNIT  UNBOUND
 009c64fc  AL != 0                          -> BL = 0
 009c6510  approach+D4h  >  C               -> BL = 0    (FCOMI / `77` JA)
 009c651a  approach+B4h <=  R               -> BL = 1    (FCOMPI ST(4) / `76` JBE)
@@ -157,8 +157,43 @@ UNCLAMPED commanded altitude** of `009C64C9`. That ordering matters: the 210 m c
 every tick of every mission, which is the trap this binding avoids and the reason `unclamped_c` is
 computed separately at the call site.
 
-`vtable[5Ch](0x14)` is the one input no reconstruction supplies. It is a **labelled substitution**,
-taken as `false` (the arm runs), which is the reading the previous packet's run supports.
+`vtable[5Ch](0x14)` is the one input no reconstruction supplies, and it is better understood than
+"unknown". `ECX` is the approach - `009C64B2` and `009C64B8` read `[ECX+ACh]` and `[ECX+50h]` off
+it - and `009C64E2` takes `[ECX+4]`, which `include/bsp/dive_bomb_task.hpp:116` records as **the
+aircraft unit** (`009F9CEA`). And `include/bsp/attack_commands.hpp:29` already establishes
+`entity->vtable[5Ch]` as **`IsKindOf(int)`**, the class-id test, with a table of the kinds other
+call sites ask for: `0x0F`/`0x18` aircraft, `0x10` level-bomber-self, `0x16`
+dogfight-excluded-self, `0x17` kamikaze-capable-self, `0x1C` structure. A byte scan for the same
+call shape (`8B 42 5C 6A ?? FF D0`) finds 267 sites across the image with small enum literals, which
+is what a generic class test looks like.
+
+So `009C64EC` is **`aircraft->IsKindOf(0x14)`**. That predicate decides the whole behavioural change
+this packet makes: if it were true, `BL` would be 0 on every tick, the bank arm would never run,
+`T` would stay at `009C6674`'s value, and `009C6674` gives 0 for every span at or above 200 m -
+most of the fly-over. With `T <= 0` the dead band at `009C6A46` is skipped and the commanded
+heading *is* the bearing, exactly what this host did before this packet. So it was worth settling
+rather than labelling, and it is **settled**.
+
+**Kind `0x14` is the RECON PLANE.** Two independent scans agree:
+
+* the only store of `14h` to the class-id field `+C4h` anywhere in the image is `0074E145`, inside
+  `BSP_ReconPlaneUnitInstance_Construct` at `0074E0F0`. The same scan shape
+  (`c7 ?? c4 00 00 00 ?? 00 00 00`) finds 90 other sites carrying other ids, so this negative is
+  not a vacuous byte scan - the pattern is known to occur;
+* every function in the image that tests `14h` at all (`83 f8 14 74`) is a recon class:
+  `BSP_MReconPlane_IsKindOf`, `BSP_MLargeReconPlane_IsKindOf`, `BSP_MSmallReconPlane_IsKindOf`,
+  `BSP_ReconPlaneClass_IsKindOf`, `BSP_Recon_PublishRelationCategories`, and the two constructors
+  `BSP_VehicleClass_ConstructSmallReconPlane` and `BSP_VehicleClass_ConstructLargeReconPlane`.
+
+The concrete `IsKindOf` body reached from this unit's table, `00953530`, accepts the ancestor
+literals `{0, 1, 2, 4, 5, 0Fh, 12h}` and the instance's own `[ECX+C4h]`; `14h` is in neither for a
+bomber. So `009C64FC` reads **"if this aircraft is a recon plane, do not run the bank arm"** - the
+fly-over skips its roll-in geometry for reconnaissance aircraft, which is why the arm exists behind
+a class test at all - and for a dive bomber the predicate is false and the arm runs.
+
+The host passes `is_recon_plane = false` as a **bound value, not a substitution**, and the run
+below measures the image's own branch. The only input still unbound in this arm is the avoidance
+increment `009C6D59` takes from `007F0280`.
 
 ## 4. What is bound, and the prediction written before the run
 
@@ -240,12 +275,27 @@ where `T = 100 - 90 * 930/1300 = 35.6` degrees. The measured `T=0.6149 rad` is 3
 the interpolation predicts 0.6213 rad at the printed `along=932.6 m`; the residual is the sample
 being the last bank tick rather than the last tick of the state.
 
+That 1300 is authored, not a host default: `scripts\datatables\autoload\vehicleclasses.lua`
+line 54263 carries `["TurnCircleRadius"] = 1300` for the row whose `Comment` at 54032 is
+`"D3A Val"`. **In this installation** - that file is locally modified, mtime 2026-05-09 21:52, and
+the repository's notes already record this install as modded, so the number is this install's and
+not necessarily retail's.
+
 The same number is why the latch cannot fire here. `along = cos(|E|) * R` is 914-974 m at the
 hand-out, and the gate is 120 m: the fly-over gives the aircraft to the turndown at seven times the
 distance the roll-in latch wants. The `+1Ch` arm is therefore **read, bound and inert on USN04** -
 which is a result, not a gap, and it is what makes `009C6929`'s bank command and `009C6DDA`'s
 suppression unreachable in this mission. `cross=` separates the two groups cleanly: 110-111 m for
 the six aircraft that fly a clean dive, 330-449 m for the nine that do not.
+
+**Coverage of the new binding, honestly.** `dive_bomb_flyabove_bank_009c6857` has four exits and
+USN04 exercises **one**. `bank_arm_bl == false` never happens (`bl=` is the tick count);
+`cross_track > turn_circle * 1.4` never happens (the widest measured cross-track is 449 m against
+1820 m); the latch never fires. Every live tick takes the `009C6911` exit. So `009C6893`'s `T = 0`,
+the latch itself and the `009C67C1` early-out are proved from the listing and **not** exercised by
+any run in this repository. `dive_bomb_flyabove_dead_band_009c6a37` and
+`dive_bomb_flyabove_slew_009c6d6f` are exercised on every fly-over tick, and the release numbers
+below are their evidence.
 
 ### The behavioural change, and what moved
 
@@ -270,12 +320,57 @@ included - it had released nothing at all before (`release alt=-1.0 m`), and it 
 345.4 m with an aim error of 6.47 m inside the 25 m gate. `movieval`'s aim error more than halved.
 So the looser fly-over hands the turndown a better dive, not a worse one.
 
-**What cannot be attributed.** `queued_hits` counts every hit in the mission. Bomb impacts went
-**up** by two (16 -> 18), so non-bomb hits went down by nine (52 -> 43) and that is gunnery, which
-this mission does not reproduce run to run. `deaths=8`, `kill_credits=8` and `first_hit=17.15 s` are
-identical across the pair. The honest split: the bomb rows are this packet's, the damage and hit
-totals are one sample and include a gunnery difference this packet cannot separate from its own
-effect with one run each.
+### RETRACTED: the damage drop is mine, and USN04 is deterministic
+
+The first draft of this section said the damage totals were "one sample" and carried a gunnery
+difference that could not be separated from this packet's effect. **That was wrong, and the reason
+it was wrong is worth more than the claim.** The brief this packet was given states that "gunnery
+totals on USN04 are NOT deterministic run to run". They are.
+
+`local\usn04_rebaseline.log` and `local\usn04_rebaseline2.log` are two runs of the same binary at
+the same settings, taken one after the other. Filtering both logs to the census lines
+(`divebomb`, `torpedo`, `summary mission`) gives **3340 lines each and zero differences**. The raw
+files do differ on 9426 of 46917 lines, and every one of those carries a process address, a handle
+or a worker id (`owner=006EF810`, `lua=03D8CED0`, `worker=18560`, `storage=actual1d94h`). The
+mission is reproducible; only the allocator is not.
+
+So the before/after pair differs only by this packet's commit, and the damage move is **this
+packet's**, not noise:
+
+| unit, `taken` column | `heading_after.log` | `flyover_after.log` |
+| --- | --- | --- |
+| `Yorktown-class01` | **1445** | **0** |
+| `Northampton-class03` | 221 | 0 |
+| `Northampton-class02` | 39 | 0 |
+| `Fletcher-class05` | 0 | 204 |
+| `Northampton-class05` | 14 | 36 |
+| `Northampton-class04` | 0 | 16 |
+| `Lexington-class01` | 8000 (sunk 123.70 s, `B5N Kate #6.1|.-2`) | 8000 (same, same second) |
+
+The whole of the 1600-point drop is the carrier: the dive bombers' own target took 1445 before and
+takes nothing now. Two more bombs are released and two more impact, and the target is hit less.
+
+**The mechanism, from the per-round rows.** The bombs miss by tens of metres in *both* runs:
+
+```
+BEFORE  bomb from D3A Val #3.1 impact ... | vs target at release = 30.3 m | died above water (entity sweep)
+AFTER   bomb from D3A Val #3.1 impact ... | vs target at release = 41.7 m | died at the sea surface
+```
+
+`died above water (entity sweep)` is a hit on a hull; `died at the sea surface` is a miss into the
+water. Across both runs the release solution puts bombs 11 to 43 m from the aim point, and a
+warship is a few tens of metres wide - so the chain is sitting exactly on its hit/miss boundary,
+and an 11 m shift flips individual bombs across it. The predicted impact point of `009C7D71` is
+good to 2-12 m in both runs; it is the *release geometry*, not the ballistics, that is loose.
+
+**What that means for this packet.** The binding is faithful to the listing and the dive quality
+improved by every measure the dive-bomb census has - two more releases, two more impacts,
+`movieval`'s aim error more than halved, `#7.1`'s whole flight bombing for the first time - and the
+mission outcome still got worse, because the release accuracy downstream is not fine enough for
+those improvements to survive to the hull. This is a result, not a defect in the reading, and it
+relocates the lever: the dive-bomb chain's bottleneck is now the **release solution's 25-43 m
+error**, not the fly-over's steering. Whether to carry the change is the integrator's call, and the
+evidence for both sides is above.
 
 ## 6. Item 3: why `D3A Val #3.1` drops one bomb and never the second
 

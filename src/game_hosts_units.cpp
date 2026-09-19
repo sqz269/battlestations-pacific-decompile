@@ -21,6 +21,7 @@
 #include "bsp/plane_ai_control.hpp"
 #include "bsp/unit_rudder.hpp"
 #include "bsp/dive_bomb_task.hpp"
+#include "bsp/move_to_glide.hpp"
 #include "bsp/torpedo_aim_tick.hpp"
 #include "bsp/torpedo_goaway_tick.hpp"
 #include "bsp/plane_fly_to_solver.hpp"
@@ -372,6 +373,12 @@ struct GameUnitSlot {
     float db_attack_dist_b4{0.0f};   // approach+B4h, the moveto speed argument
     float db_in_range_b8{0.0f};      // approach+B8h == task+4B0h
     float db_planar_bc{0.0f};        // approach+BCh, the planar range
+    // 009C8B14-009C8B3B: what 009C8A90's range arm actually measures, which is
+    // NOT approach+BCh. The far point is the approach's own aim point, fetched
+    // through vtable slot 0 (00D20E10 -> 009C40A0, which copies +4Ch/+50h/+54h),
+    // the near point is the unit, and 0042B2F0 takes the full three-vector
+    // length. docs/BOMBER_AFTER_TASK.md 10.10, docs/DIVE_BOMB_APPROACH.md 7.
+    float db_aim_point_3d{0.0f};
     float db_bearing_c0{0.0f};       // approach+C0h
     float db_aim_point_height_50{0.0f};   // approach+50h
     float db_release_range_d4{0.0f};  // approach+D4h
@@ -463,6 +470,11 @@ struct GameUnitSlot {
     // 009C62B0's and 009C5180's heading arms.
     int db_flyabove_tick_ticks{0};
     int db_aimglide_tick_ticks{0};
+    // 009C18C0 and 009C1FD0, the two approach states the arm's virtual tick
+    // dispatch at 009C884C reaches and this host never ran.
+    // docs/DIVE_BOMB_APPROACH.md.
+    int db_moveto_tick_ticks{0};
+    int db_follow_tick_ticks{0};
     // 009C7240 and 009C7270, the dive-bomb done/prepare state, packet
     // cc8_done_state. `plan_mode_26c` is the value 009C1FE2 stamps into the
     // pilot command block at the head of every follow tick. Nothing in this
@@ -1330,6 +1342,21 @@ struct GameUnitsHost::Impl {
         const double d2 = dx * dx + dz * dz;
         slot.db_planar_bc = (d2 <= bsp::dive_bomb_constant::kDistanceEpsilonSq)
             ? 0.0f : static_cast<float>(std::sqrt(d2));
+        // 009C8B14-009C8B3B, the break-off's own range. The image subtracts all
+        // THREE components of `aimPoint - unitPosition` and takes 0042B2F0's
+        // length; approach+BCh is planar and measured to the target entity, so
+        // feeding it made the break-off fire late and low. The aim point this
+        // host carries is the commanded target's position (the same labelled
+        // substitution +BCh and +C0h already run on), so the x and z are the
+        // same two differences and only the vertical term is new.
+        {
+            const double dy = static_cast<double>(tp[1]) -
+                              static_cast<double>(slot.motion.position[1]);
+            const double d3 = d2 + dy * dy;
+            slot.db_aim_point_3d =
+                (d3 <= bsp::dive_bomb_constant::kDistanceEpsilonSq)
+                    ? 0.0f : static_cast<float>(std::sqrt(d3));
+        }
         // 009C7B8A-009C7BB0: pi/2 - atan2, wrapped into [0, 2pi).
         {
             float b = static_cast<float>(bsp::dive_bomb_constant::kHalfPi -
@@ -1346,6 +1373,43 @@ struct GameUnitsHost::Impl {
         lin.in_range_distance = slot.db_in_range_b8;
         lin.control_flag_369 = false;
         lin.global_e17bf2 = false;
+        // 009C7C31-009C7CFE, the spent-member arm. A bomber with no bombs left
+        // that is not its flight leader has its latch ANDed with "the leader is
+        // within approach+B8h of this aircraft's aim point" - a second,
+        // independent mechanism taking a spent squadron out of its attack, and
+        // it bites in exactly the situation docs/BOMBER_AFTER_TASK.md section 10
+        // is about. `[sqn+3D0h]` is member_units[0]: 0099B757 compares the unit
+        // against that same dword to decide the flight lead, and 009C7C7C reads
+        // it for a position at +FCh/+104h.
+        lin.has_bomb_ordnance_d1 = slot.db_has_bomb_d1;
+        {
+            auto* const sqn = bsp::plane_squadron_registry().find_by_member_unit(
+                slot.process_index);
+            if (sqn != nullptr) {
+                for (const std::size_t member : sqn->member_units) {
+                    if (member == bsp::kPlaneSquadronNoUnit) continue;
+                    lin.is_flight_leader = (member == slot.process_index);
+                    if (!lin.is_flight_leader && member < slots.size()) {
+                        const float* const lp = slots[member]->motion.position;
+                        // SUBSTITUTION, labelled: the aim point is this host's
+                        // commanded-target position, the same stand-in +BCh and
+                        // +C0h run on, so this is |target.xz - leader.xz|.
+                        const double lx = static_cast<double>(tp[0]) -
+                                          static_cast<double>(lp[0]);
+                        const double lz = static_cast<double>(tp[2]) -
+                                          static_cast<double>(lp[2]);
+                        // 00414C60 BSP_Vector2f_LengthWithCutoff carries the
+                        // same 00CE3820 cutoff the other two sqrt guards use.
+                        const double l2 = lx * lx + lz * lz;
+                        lin.leader_to_aim_point =
+                            (l2 <= bsp::dive_bomb_constant::kDistanceEpsilonSq)
+                                ? 0.0f : static_cast<float>(std::sqrt(l2));
+                        lin.leader_known = true;
+                    }
+                    break;
+                }
+            }
+        }
         slot.db_in_range_d0 = bsp::dive_bomb_in_range_latch_009c7c31(lin);
         // 009C7D04-009C7E33, packet cc8_dive_release item 2. approach+D8h/+DCh/
         // +E0h is rewritten HERE, every tick, not latched: see the header note on
@@ -1433,6 +1497,64 @@ struct GameUnitsHost::Impl {
         // bombers arrive low and exit aimdive to `goaway` at ~240 m instead of
         // `aimglide` at ~600 m. The gate is faithful; the approach state behind
         // it is not yet. Re-wire this when moveto/follow are real, not before.
+        //
+        // STILL NOT WIRED after packet cc8_dive_approach, and the new
+        // measurement says the blocker has MOVED. `moveto` is now real: the arm
+        // dispatches 009C18C0 for kMoveTo and it commands the glide from
+        // BeginAltRange/1 above the target down to that altitude at
+        // approach+B4h. Runs A2 (unwired) and B (this line reading
+        // db_attack_mode_370), same binary apart from this line:
+        //
+        //   dive entry altitude   651 / 626 / 677 m  ->  1044 / 1040 / 1045 m
+        //   aim error 009C5C9B    -24.9 / -33.1 / -18.0 m -> +12.9 / -3.7 / +17.3 m
+        //   mission water contacts             1    ->  0
+        //   total dive-bomb releases           5    ->  0
+        //
+        // So the approach defect 10.9 diagnosed is FIXED: the bombers now enter
+        // the dive at the authored BeginAltRange/1 instead of 200-400 m below
+        // it, all three aim errors move inside the 25 m gate, and nobody
+        // ditches. What the wiring costs is the five releases, and they are not
+        // lost to this change: A2's releases all came from the AIMDIVE gate
+        // reached from a dive entry 350 m too low, and with the faithful entry
+        // every bomber pulls out into AIMGLIDE instead -- where the release gate
+        // passes ZERO times in both runs (9 and 11 aimglide rows, `passed=0`
+        // and `releases=0` on every one, `rearm` blocking 343 of 344 calls).
+        // The aimglide re-arm timer is frozen in this tree: only the aimdive
+        // input builder counts it down (line ~1544, 009C58E9); the aimglide
+        // builder below reads it and never decrements it. Packet
+        // cc8_dive_entry reports fixing exactly that on agent/cc8-dive-entry,
+        // which is not in this tree.
+        //
+        // Re-wire this once that fix is merged and B is re-run; the experiment
+        // is one line and one window. docs/DIVE_BOMB_APPROACH.md section 13.
+        //
+        // RE-TAKEN on the merged base dd5364d6d, where approach+B8h is the
+        // image's draw 2080.0 instead of main's old 1100.0, and the verdict
+        // CHANGED SIGN on the criterion that mattered. Runs A2' and B', same
+        // binary apart from this line:
+        //
+        //   total dive-bomb releases          19  ->  20   (up)
+        //   movieval / #1.1 releases        2 / 2  ->  2 / 2
+        //   mission water contacts             0  ->  2
+        //   movieval approach_returns          -  ->  0, done_ticks=609
+        //
+        // The releases held and rose, but movieval NEVER leaves done, and on
+        // the OLD base with R = 1100 it left done entirely (no done ticks at
+        // all). The reason is this line's own gate: engaged = latch || (mode ==
+        // 2 && target), the mode is 1, so engaged IS the latch, and the latch
+        // disengages only past approach+B8h + 100. movieval ends at
+        // approach+BCh = 494.9 m against B8h = 2080.0, so the latch can never
+        // clear and 009C8483's `CMP EDI,EBX / JZ ret` parks it. Raising B8h
+        // from 1100 to 2080 widened the hysteresis past the whole engagement,
+        // which is what removes the benefit this feed had at R = 1100.
+        //
+        // So the two ditchers are downstream of that: D3A Val #1.1|.-2 had
+        // ALREADY released both bombs and descends out of done (alt 274.5 ->
+        // 31.3 unwired, 270.6 -> 0.0 wired - the same descent, 31 m of margin
+        // in one and none in the other), and #3.1|.-2 dives with an aim error
+        // of -135 m and flies in. Neither is a moveto defect; both are the
+        // done-state descent and the dive aim, reached more often because the
+        // latch holds.
         in.engaged.control_mode_370 = 2;
         in.engaged.has_latched_target_440 = slot.command_target_plus_one != 0;
         in.entry.control_mode_370 = in.engaged.control_mode_370;
@@ -1446,7 +1568,12 @@ struct GameUnitsHost::Impl {
             b.base_0099c230 = true;
             b.has_latched_target = slot.command_target_plus_one != 0;
             b.has_bomb_ordnance_4c9 = slot.db_has_bomb_d1;
-            b.distance_to_target = slot.db_planar_bc;
+            // CORRECTED, packet cc8_dive_approach. This was db_planar_bc, which
+            // is planar and measured to the target entity; 009C8B14-009C8B3B
+            // measures the 3-D `aimPoint - unitPosition`. Both errors pushed the
+            // same way, so the break-off used to fire later and lower than the
+            // image's. docs/BOMBER_AFTER_TASK.md 10.10.
+            b.distance_to_target = slot.db_aim_point_3d;
             b.speed_ratio_41c = 1.0f;
             in.should_break_off = bsp::dive_bomb_should_break_off_009c8a90(b);
             // 009C8B40-009C8B51: the range arm is `[tuning+4C8h] * [task+41Ch]`
@@ -5321,7 +5448,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             in.base_0099c230 = true;
                             in.has_latched_target = slot_.command_target_plus_one != 0;
                             in.has_bomb_ordnance_4c9 = slot_.db_has_bomb_d1;
-                            in.distance_to_target = slot_.db_planar_bc;
+                            // CORRECTED with the feed above: the 3-D range to
+                            // the aim point, 009C8B14-009C8B3B.
+                            in.distance_to_target = slot_.db_aim_point_3d;
                             in.speed_ratio_41c = 1.0f;
                             return bsp::dive_bomb_should_break_off_009c8a90(in);
                         }
@@ -5800,6 +5929,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.db_aim_alive_19 = true;
                             ++unit_.db_aimdive_entries;
                         }
+                        // 009C883D-009C884C. The image's arm has NO per-state
+                        // chain: it ends with `MOV ECX,[ESI+310h] / MOV EAX,[ECX]
+                        // / MOV EDX,[EAX+0Ch] / CALL EDX`, one virtual tick on
+                        // whatever state the transition left. moveto task+4F0h
+                        // and follow task+52Ch are states like any other and
+                        // were the only two this host never dispatched, so a
+                        // dive bomber in the approach flew whatever command the
+                        // previous state had left behind. docs/DIVE_BOMB_APPROACH.md.
+                        if (ctx.current == bsp::DiveBombState::kMoveTo) {
+                            run_dive_bomb_move_to_tick_009c18c0();
+                        }
+                        if (ctx.current == bsp::DiveBombState::kFollow) {
+                            run_dive_bomb_follow_tick_009c1fd0();
+                        }
                         if (ctx.current == bsp::DiveBombState::kAttackRun) {
                             run_dive_bomb_attackrun_tick_009c4220(dt);
                         }
@@ -5949,6 +6092,156 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 unit_.db_planar_bc;
                             ++unit_.db_range_samples;
                         }
+                    }
+
+                    // 009C18C0, the move-to tick, vtable 00D20AEC slot +Ch.
+                    // PROVED for this task: 009C7436 constructs task+4F0h with
+                    // 009C2AC0, which writes [state] = 0xD20AEC at 009C2B32, and
+                    // 00D20AF8 holds 009C18C0. Nothing later overwrites it - the
+                    // task ctor 009C7710 rewrites only [task], [task+3F8h] and
+                    // [task+4DCh]. The same ctor call passes the TASK'S TARGET as
+                    // the state's +2Ch (009C8C70 -> 009C7710 arg2 -> 009C73A0
+                    // arg2 -> EBP at 009C7434), so step 1's separation is the
+                    // aircraft-to-target planar range this host already keeps as
+                    // db_planar_bc.
+                    //
+                    // The state's three floats come from 009C8825's
+                    // `009BDE80(task+4A4h - 100.0, task+4A4h, task+4ACh)` - the
+                    // arm refreshes them every tick, so the values are the LIVE
+                    // approach+ACh (BeginAltRange/1) and approach+B4h.
+                    // docs/DIVE_BOMB_APPROACH.md.
+                    void run_dive_bomb_move_to_tick_009c18c0() {
+                        ++unit_.db_moveto_tick_ticks;
+                        // 009C198A-009C1999: the +1Ch speed slot is called with
+                        // the separation UNCONDITIONALLY, before either early
+                        // return. 00D20AEC+1Ch is 009C1850, which writes
+                        // cmd+2B4h from 009BECD0(ctl+3A0h, 007C47F0(), speed),
+                        // clears cmd+2B0h and raises cmd+2D8h.
+                        //
+                        // SUBSTITUTION, labelled and inherited from
+                        // docs/TORPEDO_MOVETO_TICK.md: 009BECD0 shapes that
+                        // product against the distance and is still unread, so
+                        // what stands in is the shaping, not the speed. The
+                        // speed itself is 007C47F0's LevelFlight * StallSpd.
+                        unit_.plane_desired_speed_2b4 =
+                            owner_.bot_desired_speed_007c47f0(unit_);
+                        unit_.plane_air_brake_mode_2d8 = 1;
+                        ++unit_.plane_speed_commands;
+                        owner_.record("BotStateMoveTo::set_desired_speed", 0x009c1850u);
+
+                        // 009C19A1: `CMP byte [unit+0C25h],0` returns early with
+                        // four command writes. A contract: this host has no
+                        // +0C25h and its bot aircraft are never under it.
+                        // 009C19E7: with no target the tick takes the 009C1B69
+                        // arm instead. Both are the image's own guards.
+                        if (unit_.command_target_plus_one == 0) return;
+                        const std::size_t ti = unit_.command_target_plus_one - 1;
+                        if (ti >= owner_.slots.size()) return;
+                        const float* const tp = owner_.slots[ti]->motion.position;
+
+                        bsp::MoveToGlideInputs gin;
+                        // 009C8814's `FSUB double [00D7A220]`, 100.0.
+                        gin.near_range_30 = unit_.db_begin_alt_ac -
+                            bsp::move_to_glide_constant::kNearRangeDrop;
+                        gin.far_range_34 = unit_.db_begin_alt_ac;   // task+4A4h
+                        gin.speed_range_38 = unit_.db_attack_dist_b4;  // task+4ACh
+                        gin.target_world_y = tp[1];
+                        gin.unit_world_y = unit_.motion.position[1];
+                        // 009C1950's own sqrt; db_planar_bc is the same
+                        // quantity, built by 009C7B4F from the same two poses
+                        // with the same 00CE3820 epsilon.
+                        gin.planar_distance = unit_.db_planar_bc;
+                        const bsp::MoveToGlideCommand g =
+                            bsp::move_to_glide_009c18c0(gin);
+
+                        bsp::PlaneCruiseAltitudeInputs cin;
+                        cin.base_altitude = g.base;
+                        cin.range_low = g.range_low;
+                        cin.range_high = g.range_high;
+                        cin.scale = g.scale;
+                        // class+518h, derived at 007C4A44 as tan(DropAngle).
+                        cin.class_gain = static_cast<float>(
+                            std::tan(static_cast<double>(unit_.plane_drop_angle)));
+                        cin.has_squadron = false;
+                        if (owner_.lua.plane_globals_loaded()) {
+                            cin.ceiling = owner_.lua.plane_globals().dynamics_ceiling;
+                        }
+                        const bsp::PlaneCruiseAltitudeResult c =
+                            bsp::cruise_altitude_command_009fba50(cin);
+                        bsp::PlanePitchCommandInputs pin;
+                        pin.desired_altitude = c.clamped_altitude;
+                        pin.reference = c.pitch_reference;  // 009FBB06, not the altitude
+                        pin.unit_world_y = unit_.motion.position[1];
+                        pin.ceiling = cin.ceiling;
+                        if (owner_.lua.plane_globals_loaded()) {
+                            const bsp::GameTuningBlock& gt = owner_.lua.plane_globals();
+                            pin.climb_dist = gt.pilot_general_climb_dist;
+                            pin.drop_dist = gt.pilot_general_drop_dist;
+                        }
+                        pin.class_climb_angle = unit_.plane_climb_angle_1ec;
+                        pin.class_drop_angle = unit_.plane_drop_angle;
+                        unit_.plane_commanded_altitude = c.clamped_altitude;
+                        unit_.plane_commanded_pitch = bsp::pitch_command_009fb800(pin);
+                        unit_.plan_state.pitch_target_2bc = unit_.plane_commanded_pitch;
+                        owner_.record("BotStateMoveTo::glide_slope", 0x009c18c0u);
+
+                        // 009C1B1C-009C1B23: `LEA ECX,[ESP+1Ch]` is the target
+                        // world position step 1 parked there, so 009F9E40
+                        // BSP_PilotBot_CommandHeadingToPoint steers at the
+                        // target. SUBSTITUTION, labelled: 009F9E40's body is
+                        // unread, so the bearing this host writes is its own
+                        // db_bearing_c0, the pi/2 - atan2 convention 009C7B8A
+                        // was read for, through the same mode-2 pair the
+                        // attackrun and flyabove ticks use.
+                        unit_.plan_heading_2c0 = unit_.db_bearing_c0;
+                        unit_.plan_heading_2c0_written = true;
+                        unit_.plan_heading_mode_2cc = 2;
+                        owner_.record("BotStateMoveTo::steer_to_point", 0x009f9e40u);
+                        if ((unit_.db_moveto_tick_ticks % 200) == 1) {
+                            owner_.log.notef("  db moveto %-12s n=%d range=%.1f "
+                                "base=%.1f low=%.1f scale=%.3f gain=%.3f "
+                                "commanded=%.1f live_alt=%.1f hdg=%.3f spd=%.2f",
+                                unit_.row.name.c_str(), unit_.db_moveto_tick_ticks,
+                                static_cast<double>(gin.planar_distance),
+                                static_cast<double>(g.base),
+                                static_cast<double>(g.range_low),
+                                static_cast<double>(g.scale),
+                                static_cast<double>(cin.class_gain),
+                                static_cast<double>(c.clamped_altitude),
+                                static_cast<double>(unit_.motion.position[1]),
+                                static_cast<double>(unit_.db_bearing_c0),
+                                static_cast<double>(unit_.plane_desired_speed_2b4));
+                        }
+                    }
+
+                    // 009C1FD0, the follow tick, vtable 00D20AB8 slot +Ch.
+                    // PROVED that it is NOT 009C18C0: 009C7451 constructs
+                    // task+52Ch with 009C2980, which writes [state] = 0xD20AB8
+                    // at 009C29B5, and 00D20AC4 holds 009C1FD0. The ledger note
+                    // on 009C18C0 calling 00D20AEC+0Ch "shared by moveto and
+                    // follow" is wrong, and so is the last paragraph of section
+                    // 2 of docs/TORPEDO_MOVETO_TICK.md.
+                    //
+                    // WHAT IS MISSING: 009C1FEA CALL 009BFD70 (the station
+                    // point, bound) then 009BFEE0 and 009BEE30, about 2900
+                    // instructions of station-keeping law that are not read
+                    // (docs/PLANE_FORMATION.md section 6). This host places the
+                    // member on its station instead - the geometry is the
+                    // image's, the path to it is not - exactly as the done and
+                    // prepare states do, which is faithful in that they reach
+                    // this same body through 009C7278.
+                    //
+                    // Unreachable in this host today: 009C777E and 009C8419 both
+                    // choose moveto when 007B8AD0 says the unit lacks a follow
+                    // target, and unit_has_no_follow_target() is hardcoded true.
+                    void run_dive_bomb_follow_tick_009c1fd0() {
+                        ++unit_.db_follow_tick_ticks;
+                        unit_.plan_mode_26c = 2;   // 009C1FE2
+                        if (owner_.place_wing_member_on_station_007f23a0(unit_, false)) {
+                            owner_.log.implemented("BotStateFollow::station_point",
+                                                   "007f23a0");
+                        }
+                        owner_.record("BotStateFollow::station_keeping", 0x009bfee0u);
                     }
 
                     // 009C4220, the attackrun tick, vtable 00D20C68 slot +Ch.
@@ -6330,10 +6623,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // roll-in latch flyabove+1Ch, the dead band on the
                         // bearing error and the slew limiter.
                         //
-                        // STILL UNBOUND, and both are labelled: the 009C64EC
-                        // vtable[5Ch](0x14) query that can veto BL, taken as
-                        // false here; and the avoidance increment 009C6D59 adds
-                        // to A, which comes out of the unbound 007F0280.
+                        // STILL UNBOUND, and labelled: the avoidance increment
+                        // 009C6D59 adds to A, which comes out of the unbound
+                        // 007F0280. The 009C64EC query that can veto BL is NOT
+                        // in that list any more - it is IsKindOf(RECON_PLANE),
+                        // and these are dive bombers.
                         const float bearing_error =
                             bsp::wrapped_angle_subtract_00438b10(
                                 unit_.db_flyabove_lead_bearing,
@@ -6355,7 +6649,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                                   unit_.db_aim_point_height_50;
                         const bool bank_arm_bl =
                             bsp::dive_bomb_flyabove_bank_arm_009c6530(
-                                /*state_query_14=*/false,
+                                /*is_recon_plane=*/false,
                                 unit_.db_release_range_d4,
                                 unclamped_c,
                                 unit_.db_attack_dist_b4,
