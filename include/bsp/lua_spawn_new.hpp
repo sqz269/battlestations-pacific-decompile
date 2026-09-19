@@ -25,10 +25,11 @@
 //                              composes the member frame and asks 00941D30
 //                              whether that placement is legal; when EVERY
 //                              member passes it calls 009483D0 once.
-//   009483D0                   __thiscall(record, frame): creates every member,
-//                              appends each created entity to the vector at
-//                              record+CCh, and at its tail (009487Bx) stores
-//                              `*(record+C0h) = 1`.
+//   009483D0                   __thiscall(record, frame) (`RET 4` at 009487C3):
+//                              creates every member, appends each created entity
+//                              to the vector at record+CCh, and at its tail
+//                              stores `*(record+C0h) = 1` (009487AD
+//                              `MOV byte ptr [EBX + 0xc0],0x1`, EBX = the record).
 //
 // So +C0h is the FULFILLED flag, not "always zero": 00948CC0 clears it at
 // construction and 009483D0 sets it. 0094C490 reads it back at 0094C5A7 and,
@@ -76,7 +77,7 @@ inline constexpr const char* kSpawnAttemptDelayGlobalsKey = "SpawnAttemptDelay";
 // in ECX to the completion callback. +C4h is that callback's function pointer
 // and +C8h its context word; 0094C777 `CMP dword ptr [ESI + 0xC4],0` skips the
 // whole completion walk when it is null, which a raw party index could not do.
-inline constexpr std::size_t kSpawnRequestFulfilledOffset = 0xC0;   // 009487B9
+inline constexpr std::size_t kSpawnRequestFulfilledOffset = 0xC0;   // 009487AD
 inline constexpr std::size_t kSpawnRequestPartyIndexOffset = 0x80;  // 0094C7D9
 inline constexpr std::size_t kSpawnRequestCompletionFnOffset = 0xC4;  // 0094C7D2
 inline constexpr std::size_t kSpawnRequestCompletionCtxOffset = 0xC8; // 0094C7CA
@@ -85,7 +86,9 @@ inline constexpr std::size_t kSpawnRequestCompletionCtxOffset = 0xC8; // 0094C7C
 // checked begin/end pair 00645C40/00645C70, walked with `ADD EDI,4`: a
 // std::vector<Entity*> whose proxy is +CCh and whose three pointers are
 // +D0h/+D4h/+D8h, which is what lua_binding_spawn.hpp records as "zeroed".
-// 009483D0 appends to it at 00948779 (`*piVar = entity`) as each member is made.
+// 009483D0 appends to it as each member is made: 00948742 `MOV dword ptr
+// [EAX],ESI` / `ADD EAX,4` / `MOV [EDI+8],EAX` with EDI = record+CCh is the
+// in-place arm, and 00948766 `CALL 00647A10` the reallocating one.
 inline constexpr std::size_t kSpawnRequestCreatedVectorOffset = 0xCC;
 
 // Per-member formation offsets, a std::vector<float[3]> at +90h/+94h: the count
@@ -95,24 +98,27 @@ inline constexpr std::size_t kSpawnRequestMemberOffsetsBeginOffset = 0x90;
 inline constexpr std::size_t kSpawnRequestMemberOffsetsEndOffset = 0x94;
 
 // One 10h-byte group-member element, read by 00949300 and 009483D0:
-//   +0h  the vehicle class object; slot 18h of its vtable is a kind test and
-//        slot 28h constructs the instance (00948462, 0094847E)
-//   +8h  a char* name, defaulted to the empty NativeString data at 00F89B40
-//        (00948488) and memcpy'd into the created entity's +154h/+158h string
-//   +Ch  one dword read into the property-bag argument (0094845B)
+//   +0h  the vehicle class object; slot 18h of its vtable is a kind test
+//        (00948510 / 00948519) and slot 28h constructs the instance
+//        (00948522 / 00948529)
+//   +8h  a char* name, defaulted to the empty NativeString data at 00F89B40,
+//        memcpy'd into the created entity's +154h/+158h string
+//   +Ch  one dword read into the property-bag argument
 inline constexpr std::size_t kSpawnMemberClassOffset = 0x0;
 inline constexpr std::size_t kSpawnMemberNameOffset = 0x8;
 inline constexpr std::size_t kSpawnMemberWordOffset = 0xC;
 
-// 009483D0's two arms. `vtable+18h(6)` answers whether the class is of kind 6;
-// when it is NOT, the routine takes `operator_new(0x414)` and
-// BSP_PlaneSquadronTickableEntity_Construct (00948467..00948477), and when it
-// IS it calls the class's own `vtable+28h(0)`. So kind 6 is the surface arm and
-// everything else spawns as a plane squadron.
+// 009483D0's two arms, with the branch sense taken from the bytes:
+// `0094851B TEST AL,AL` / `0094851D JZ 0x00948533`. AL == 0 (NOT kind 6) jumps
+// to `PUSH 0x414`, the plane-squadron allocation whose constructor is
+// `00948563 CALL 007F2C60 BSP_PlaneSquadronTickableEntity_Construct`; AL != 0
+// (kind 6) falls through to the class's own `vtable+28h(0)` at 00948529. So
+// kind 6 is the surface arm and everything else spawns as a plane squadron.
 inline constexpr int kSpawnMemberKindSurface = 6;
 inline constexpr std::size_t kPlaneSquadronTickableEntityBytes = 0x414;
 
-// The serial the created entity carries: 0094845x `*(entity + 28Ch) = *(record + 7Ch)`.
+// The serial the created entity carries: 009485A4 `MOV dword ptr [ESI + 0x28c],EAX`
+// with ESI the created entity and EAX loaded from record+7Ch.
 inline constexpr std::size_t kSpawnedEntitySerialOffset = 0x28C;
 
 // CORRECTION to include/bsp/lua_binding_spawn.hpp's range comment, three ways.

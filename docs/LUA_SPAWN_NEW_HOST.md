@@ -52,8 +52,9 @@ zero", which is true of the constructor and not of the record's life:
 
 - **was**: `+C0h`, a byte, always zero (`00948E3B`).
 - **is**: the constructor clears it and `009483D0` sets it at its tail; `0094C490` reads it back.
-- **evidence**: `009487B9 MOV byte ptr [ESI + 0xC0],1`, the last store in `009483D0` before its
-  epilogue, reached only after the whole member loop; and `0094C5A7`, which branches on it.
+- **evidence**: `009487AD MOV byte ptr [EBX + 0xc0],0x1` with `EBX` the record, the last store in
+  `009483D0` before its epilogue (`009487C3 RET 4`), reached only after the whole member loop and
+  after `0094879A CALL 00925F20 BSP_SEntity_InitAll`; and `0094C5A7`, which branches on it.
 
 When it is still clear, `0094C802` runs `MOV ECX,EDI` / `CALL 009478B0`, and `009478B0` is the same
 `00943C00` node-allocate-and-link the enqueue uses, with the manager as `this`. So an unsatisfiable
@@ -135,19 +136,21 @@ Per member, in group-member order, with the 10h-byte element at `record+4h + 10h
 
 | element offset | meaning | evidence |
 | --- | --- | --- |
-| `+0h` | the vehicle class object | `00948462` calls its `vtable+18h`, `0094847E` its `vtable+28h` |
-| `+8h` | a `char*` name, defaulted to the empty NativeString data at `00F89B40` | `00948488`, then a `_memcpy` into the created entity's `+154h`/`+158h` string |
-| `+Ch` | one dword, read into the property-bag argument | `0094845B` |
+| `+0h` | the vehicle class object | `00948510`/`00948519` call its `vtable+18h`, `00948522`/`00948529` its `vtable+28h` |
+| `+8h` | a `char*` name, defaulted to the empty NativeString data at `00F89B40` | a `_memcpy` into the created entity's `+154h`/`+158h` string |
+| `+Ch` | one dword, read into the property-bag argument | `009486B6 CALL 00922E20` |
 
-- `vtable+18h(6)` is a kind test. When the class is **not** kind 6, the routine takes
-  `operator_new(0x414)` and `BSP_PlaneSquadronTickableEntity_Construct`; when it **is**, it calls
-  the class's own `vtable+28h(0)`. So kind 6 is the surface arm and everything else spawns as a
-  plane squadron.
-- `*(entity + 28Ch) = *(record + 7Ch)`: the created entity carries the request's serial.
+- `vtable+18h(6)` is a kind test, and the branch sense is from the bytes: `0094851B TEST AL,AL` /
+  `0094851D JZ 0x00948533`. `AL == 0`, i.e. **not** kind 6, jumps to `PUSH 0x414` and
+  `00948563 CALL 007F2C60 BSP_PlaneSquadronTickableEntity_Construct`; `AL != 0`, kind 6, falls
+  through to the class's own `vtable+28h(0)` at `00948529`. So kind 6 is the surface arm and
+  everything else spawns as a plane squadron.
+- `009485A4 MOV dword ptr [ESI + 0x28c],EAX`: the created entity carries the request's serial from
+  `record+7Ch`.
 - `record+90h`/`+94h` is a `std::vector<float[3]>` of per-member offsets, one per member
-  (`00949356` divides the span by 0Ch; `00948440` reads element `i`).
-- a kind-6 member after the first calls `BSP_Entity_RequestJoinFormation` on the first created
-  entity (`0094875x`, guarded by `0 < local_b0`).
+  (`00949356` divides the span by 0Ch).
+- a kind-6 member after the first calls `BSP_Entity_RequestJoinFormation` at `0094870E`, guarded by
+  the same kind test repeated at `009486C8`/`009486DA` and by a non-zero member index.
 - each created entity is appended to `record+CCh`, a checked `std::vector<Entity*>` whose three
   pointers are `+D0h`/`+D4h`/`+D8h` - the three words `docs/LUA_BINDING_SPAWN.md` records as
   "zeroed", which is simply an empty vector.

@@ -2025,7 +2025,7 @@ void GameMissionLuaHost::fulfil_spawn_request_009483d0(bsp::SpawnNewRequest& req
     }
     summary_.spawn_new_units += made.size();
     request.created = std::move(made);
-    request.fulfilled = true;  // 009487B9 MOV byte ptr [ESI + 0xC0],1
+    request.fulfilled = true;  // 009487AD MOV byte ptr [EBX + 0xc0],0x1
 }
 
 void GameMissionLuaHost::complete_spawn_request_0094c777(
