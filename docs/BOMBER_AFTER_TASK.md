@@ -282,6 +282,66 @@ Almost all of `009BFEE0`'s writes are stack locals. Outside `esp` it writes only
 `esi+44h..68h` and `ebx+10Ch` (the pose-valid byte). It does **not** write the pilot command block;
 `009C1FD0` does that itself (`+26Ch`, `+2BCh`, `+2C4h`, `+2CCh`, `+2D0h` off `[approach+18h]`).
 
+## 6a. `+26Ch` is the pilot planner's mode, and `009C1FD0` writes it for the leader too
+
+`009C1FD0`'s head writes `[[state+4]+18h]+26Ch = 2` **before** the `009BFD70` gate, so it runs for
+every aircraft in the state, leader included. `[approach+18h]` is the pilot command block (the
+object carrying `+2BCh`, `+2C4h`, `+2CCh`, `+2D0h`).
+
+Who consumes the value, by exhaustive byte scan rather than by xref:
+
+* writers, `scan-bytes 'c6 ?? 6c 02 00 00'` plus the register form at `009C1FE2`:
+  `009BC8ED` (in `009BC890`), `009C2440` (in `FUN_009C2430`, which writes **1**) and `009C1FE2`
+  (which writes **2**). `FUN_009C2430` has the same shape as a state tick — `ebp` the state,
+  `[ebp+4]` the approach, `[approach+18h]` the command block — so **different states stamp
+  different modes every tick**.
+* readers, `scan-bytes '0f b6 ?? 6c 02 00 00'` → none; `scan-bytes '80 ?? 6c 02 00 00'` →
+  `0099D309` and `0099EA84`, **both inside `0099D300 BSP_PilotBot_PlanControls`** and nowhere else.
+
+`0099D309` is the second instruction of the planner:
+
+```
+0099d305  mov  esi,ecx                       ; the pilot command block
+0099d309  cmp  byte ptr [esi+26Ch],2
+0099d310  jne  0099d3c5                      ; every other mode leaves this path
+0099d329  cmp  byte ptr [ecx+eax+9C2h],0     ; ecx = [esi+2F0h], eax = [00F876B8]*8
+0099d337  mov  ecx,[esi+270h]  / cmp / je 0099d3c5
+0099d35a  [cmd+284h] = 0.0f
+0099d362  [cmd+288h] = 1                     ; byte
+0099d369  [cmd+2D4h] = 0
+0099d36f  [cmd+29Ch] = 0.0f
+```
+
+So the byte is the plan-mode selector and `2` is the mode the follow tick asks for.
+`0099D300` is the last call of `009998A0 BSP_PilotBot_Update`'s order, which is how the mode reaches
+the controls. **Coverage: the mode-2 body past `009D36F` is not read**, so this document does not
+claim what the mode commands, only that the value is consumed there and nowhere else.
+
+The consequence for this host is sharp: when a dive-bomb task reaches `done` and no state tick runs,
+**nothing writes `+26Ch` at all** and the block keeps whatever the last attack state stamped.
+
+## 6b. The BEFORE measurement, USN04 on this binary
+
+`local/aftertask_before_usn04.log`, `--frames 5000 --press-start-frame 30 --menu-select USN04
+--mission-frames 4800 --mission-frame-seconds 0.05`, built at main `f14732dc4`.
+
+| aircraft | `arm_ticks` | `done` ticks | releases | `rounds_left` | water contact |
+| --- | --- | --- | --- | --- | --- |
+| `movieval` | 2112 | **303** | 2 | 0 | **yes**, `alt=-0.00 |v|=68.72` |
+| `movieval|.-2` | 2370 | none | 1 | 1 | no |
+| `movieval|.-3` | 2299 | **492** | 2 | 0 | **yes**, `alt=-0.01 |v|=68.45` |
+
+**Two water contacts, not three**, and the two that ditch are exactly the two whose task reached
+`done` with the ordnance spent. `movieval|.-2` still carries a round, never completes, and never
+ditches — the same ordnance gating recorded elsewhere, reproduced here.
+
+`plane formation geometry: squadron movieval tick=0 wing=3 ... seat1 index=1` — the squadron is
+three aircraft with formation indices 0, 1, 2, and the unit named plain `movieval` is seat 0, the
+flight leader. **So one of the two ditching aircraft is the flight LEADER and the other is a wing
+member.** They need different halves of the same fix: the member reaches the station-keeping law
+through `009BFD70`, while for the leader `009BFD70` returns false at `009BFEB1` and the only thing
+the image commands is the `+26Ch = 2` of section 6a.
+
 ## 7. Corrections to other documents
 
 **7.1 `approach+0Ch` is a dereference, and the object is the squadron.**
@@ -294,7 +354,48 @@ so the base is **the pilot control block**". The listing dereferences:
 ```
 
 `approach+0Ch = *(unit+9D4h)`, and that object carries `+3CCh`/`+3D0h` (the member count and
-array), `+3E4h` (`psFormation`) and `+3E8h` — it is the object `007ED260` takes as `this`. The
+array), `+3E4h` (`psFormation`) and `+3E8h` — it is the object `007ED260` takes as `this`.
+
+**The producer settles the identity, and it is the squadron.** Every writer of the `+9D4h` field is
+a `PlaneSquadron` method. A scan for the store form (`python tools/bsp.py scan-bytes
+'89 ?? d4 09 00 00'`) returns seven sites, and two of them say what is stored:
+
+```
+007F4B43  in BSP_PlaneSquadron_AttachLuaSelfAndSpawnPlanes   (esi = the squadron, ebx = the plane)
+007f4b3d  mov eax,[esi+3CCh]              ; the squadron's member count
+007f4b43  mov [ebx+9D8h],eax              ; plane+9D8h = its slot in the array
+007f4b49  mov [ebx+9D4h],esi              ; plane+9D4h = THE SQUADRON
+007f4b4f  mov eax,[esi+3CCh]
+007f4b55  mov [esi+eax*4+3D0h],ebx        ; squadron members[count] = the plane
+
+007ED0E6  in BSP_PlaneSquadron_InsertPlaneSorted             (ecx = this = the squadron)
+007ed0d7  mov byte ptr [ecx+3ECh],1
+007ed0e6  mov [ebp+9D4h],ecx              ; the same pair, the same order
+007ed0ec  mov [ebp+9D8h],esi
+```
+
+The one routine that appends the plane to `squadron+3D0h` is the routine that writes
+`plane+9D4h`, in the same four instructions. So the three adjacent fields are
+
+| field | meaning | evidence |
+| --- | --- | --- |
+| `plane+9D0h` | the formation index | `009BFDBE` feeds it to `007F23A0`; `007ED260` uses it as `taken[]`'s subscript |
+| `plane+9D4h` | **the squadron pointer** | `007F4B49`, `007ED0E6` |
+| `plane+9D8h` | the member-array slot | `007F4B43`, and `007ED292` rewrites it per walk |
+
+**Consequence.** `approach+0Ch` is the squadron from both ends: the producer stores the squadron
+there, and the consumer `009BFD70` reads `[[approach+0Ch]+3D0h]` and compares it with
+`[approach+4]`, the approach's own unit, to refuse to follow itself — a comparison that only makes
+sense if `+3D0h` is an array of units. Therefore `+369h`, `+394h` (`Pilot/Torpedo/CruisingAlt`),
+`+398h` and `+39Ch` (`BeginAltRange`) are fields of the **squadron's shared cruise profile**, not of
+a per-plane control block. Every document that calls that object `ctl` or "the pilot control block"
+is wrong about its identity; the values those documents bind are unaffected, because it is the same
+pointer either way. `include/bsp/torpedo_goaway_tick.hpp`'s input should be
+`squadron_cruising_alt_394`. This also explains
+`dive_bomb_cruise_profile_009c8920` step 2, "a following aircraft keeps its own profile": the
+follower must not overwrite the shared block.
+
+The
 goaway climb at `009D0E7C` reads `+394h` off the same pointer, so section 14.4's **value** is
 undisturbed and its binding stands; the **name and the object identity** are wrong.
 `dive_bomb_cruise_profile_009c8920` step 2 corroborates it: "a following aircraft keeps its own
