@@ -65,6 +65,16 @@ name chosen from one call site became the contract.
 The dive-bomb task is the mirror. `00D20D28` is installed twice in `FUN_009C73A0` (`009C747E`,
 `009C74B8`), with `+4h` = `009C7240` and `+Ch` = `009C7270`.
 
+**Reconciliation with the record that renamed these.** `009D2720`'s and `009D2570`'s ledger records
+(packet `cc8_torpedo_first_release_authority`, `docs/TORPEDO_FIRST_RELEASE.md`) say `009D2DA0`
+"registers `param_1+0xD2` as `torpedo/prepare`" and that "`torpedo/done` is a different state at
+`param_1+0x88`". Those are the **same two offsets** read through a decompiler that typed `param_1`
+in four-byte elements: `0x88 * 4 = 0x220` and `0xD2 * 4 = 0x348`, and with `esi = task+3F8h` those
+are `task+618h` and `task+740h`. That record is right that they are two different state **objects**
+and wrong only in the inference drawn from it: `009D2E9C` and `009D2F79` install the *same* vtable
+on both, so they share one class and therefore one enter, one exit and one tick. Reading them as
+different classes is what put `Prepare` alone into the names.
+
 ## 2. The enter, read whole
 
 `009D2530`, body `009D2530-009D256E`, `RET 0`, `__thiscall(state)`:

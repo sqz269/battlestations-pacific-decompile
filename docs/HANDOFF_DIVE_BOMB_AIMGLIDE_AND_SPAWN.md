@@ -212,6 +212,17 @@ In `local\usn04_rel_impact.log`, for each of the three `movieval` bombers:
 * `host AiPlanners::planner_tick [00a26510] UNIMPLEMENTED, returning a neutral value` is in the same
   log. Nothing assigns a follow-up task, so the aircraft flies unsteered from `done` into the sea.
 
+  > **CORRECTED 2026-09-19 by packet `cc8_after_task` (`docs/BOMBER_AFTER_TASK.md`).** The
+  > conclusion in that second sentence does not follow from that log line. `00A26510` is
+  > `BSP_AiPlanner_SiegeThink` (body `00A26510-00A265E8`, `__thiscall(planner)`, `RET 0`): it
+  > quick-spawns a group tagged `[siege]` (`00D23014`). It is a strategic planner, not the
+  > per-aircraft hand-over, so the host's `AiPlanners::planner_tick` label misnames it and its being
+  > unimplemented is not evidence about the ditch. What the image actually runs when a bomber's task
+  > reaches `done` is the state's own tick — `009C7270` for this class, which is 13 bytes of
+  > `009C1FD0(state, dt)`, the follow tick — and this host has no `kDone` branch in
+  > `run_dive_bomb_task_arm_009c8790` to call it. The routines to read for a genuine hand-over are
+  > `009998A0 BSP_PilotBot_Update` and `0099B740 BSP_BotTask_AbandonIfStale`.
+
 **There is no goaway attitude to report, because goaway never ran.** All three `movieval` bombers
 show no `goaway` entry in their state list. That is not a vacuous negative: the printer emits the
 bucket when it is non-zero, and `D3A Val #3.1` in the same log shows `goaway=1`. The last attitude
