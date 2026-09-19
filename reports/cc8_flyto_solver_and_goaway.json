@@ -1,0 +1,86 @@
+{
+  "packet": "cc8_flyto_solver_and_goaway",
+  "owner": "agent/cc8-plane-squadron",
+  "doc": "docs/TORPEDO_FLY_TO_SOLVER.md",
+  "summary": "009FD570 is a standoff-ring controller, not a bearing helper: it returns the compass heading that flies a unit away from, around or in toward a point depending on range - standoff, with an obstacle-avoidance term and a map-edge term folded in. Its RET 0x18 says six stack arguments, which retracts docs/TORPEDO_AFTER_THE_DROP.md section 3.5's reading that approach->vtable[0] takes five of them: vtable[0] is RET 4 and takes only its return buffer. The torpedo break-off 009D0C10 and the goaway tick 009D0F10 are reconstructed on top of it.",
+  "routines": [
+    {
+      "address": "009fd570",
+      "name": "BSP_Bot_FlyToPointHeading",
+      "abi": "float __thiscall(cache, const Vec3* point, Unit* unit, float standoff, float* side, float range, float offset_scale); RET 0x18 at 009FDEDC, the only RET in the body; result in ST0 already wrapped into [0, 2pi)",
+      "coverage": "complete: body 009FD570-009FDEDE, both frame regions (E-0xC4 before the POP EBP/POP EBX at 009FDAE8/009FDAED, E-0xBC after), all 24 call sites, every constant at its load width"
+    },
+    {
+      "address": "009d0c10",
+      "name": "BSP_BotStateTorpedoGoAway_UpdateGeometry",
+      "abi": "void __thiscall(this), no stack argument, RET at 009D0D87",
+      "coverage": "complete for the frame and the six-argument layout of its 009FD570 call; its arithmetic is docs/TORPEDO_AFTER_THE_DROP.md section 3.4"
+    },
+    {
+      "address": "009d0d90",
+      "name": "BSP_BotStateTorpedoGoAway_Enter",
+      "abi": "void __thiscall(this), RET at 009D0EF4 and 009D0F04",
+      "coverage": "complete for the tail 009D0E3A-009D0F04, which this packet reconstructs: +1Ch, +28h, +30h, +34h, +20h. The head through 009D0E3A is already torpedo_goaway_enter_009d0d90 in bsp/torpedo_task_arm.hpp"
+    },
+    {
+      "address": "009d0f10",
+      "name": "BSP_BotStateTorpedoGoAway_Tick",
+      "abi": "void __thiscall(this, float dt), RET 4 at 009D1153, 009D11ED and 009D120E",
+      "coverage": "complete: reconstructed from docs/TORPEDO_AFTER_THE_DROP.md section 3.1's transcript with the window arm 009D1084-009D1112 re-verified instruction by instruction from the disk bytes"
+    },
+    {
+      "address": "00419010",
+      "name": "BSP_Math_InterpolateClamped",
+      "abi": "float __cdecl(float x0, float y0, float x1, float y1, float x); RET 0x14",
+      "coverage": "complete: y0 + (x-x0)/(x1-x0) * (y1-y0), clamped into [min(y0,y1), max(y0,y1)], returning y0 when x1 == x0"
+    },
+    {
+      "address": "00681f40",
+      "name": "GGame_NearWorldEdge",
+      "abi": "bool __thiscall(GGame*, const Vec3* pos, float margin); RET 8",
+      "coverage": "complete: true when pos.x or pos.z is within margin of GGame+711Ch/7128h (x) or +7124h/7130h (z)"
+    },
+    {
+      "address": "009fa510",
+      "name": "GGame_WorldEdgeOverrun",
+      "abi": "float __thiscall(GGame*, const Vec3* pos, float margin); RET 8",
+      "coverage": "partial: read from 009FA53D to 009FA613. The largest of the four margin overruns, running maximum seeded at 0 by the FLDZ at 009FA545. The three instructions before 009FA53D are unread."
+    },
+    {
+      "address": "007b5af0",
+      "name": "FUN_007b5af0",
+      "coverage": "partial: only the 009FD570 call setup at 007B5AF9-007B5B2D"
+    },
+    {
+      "address": "009a3cf0",
+      "name": "FUN_009a3cf0",
+      "coverage": "partial: only the 009FD570 call setup at 009A3CF9-009A3D2D"
+    },
+    {
+      "address": "009ad480",
+      "name": "FUN_009ad480",
+      "coverage": "partial: only the FLD1 scale at 009AD4BE and the call at 009AD54C"
+    },
+    {
+      "address": "009b5760",
+      "name": "FUN_009b5760",
+      "coverage": "partial: only the 009FD570 call setup at 009B576A-009B57A8"
+    },
+    {
+      "address": "009c47d0",
+      "name": "FUN_009c47d0",
+      "coverage": "partial: only the 009FD570 call setup at 009C47D6-009C4810, read as the independent confirmation of the six-argument layout"
+    }
+  ],
+  "corrections": [
+    {
+      "doc": "docs/TORPEDO_AFTER_THE_DROP.md",
+      "section": "3.5",
+      "was": "009FD570(state, approach->vtable[0](&scratch, unit, state+24h, &state+2Ch, approach+90h, 0.8)) - vtable[0] takes a return buffer plus five arguments and 009FD570 takes one, with the side passed by pointer to vtable[0]",
+      "is": "approach->vtable[0] is RET 4 and takes only its return buffer; 009FD570 is RET 0x18 and takes all six. The five values are staged before the vtable[0] call and left across it. The side IS an in/out pointer, but it is 009FD570's, written at 009FDC48.",
+      "evidence": "the stack balance of 009D0C10 walked backwards from its POP ESI / ADD ESP,0x3C at 009D0D83 with each callee's own RET imm (007F0280 RET 0x18, 00438B10/00438AA0 RET 8, 0074E260 bare RET) puts ESP at S-0x18 before CALL 009FD570; the six pushes before CALL EAX put ESP at S-0x18 too and PUSH EAX sits between them, so vtable[0] popped four bytes. Confirmed independently by 009C47D0's byte-identical call setup at 009C47D6-009C4810."
+    }
+  ],
+  "host": [],
+  "validation": []
+}
