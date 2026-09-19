@@ -1,0 +1,307 @@
+{
+  "packet": "orch4_native_input_process_r169",
+  "status": "process_input_publication_and_settings_crt_boundary_component_verified",
+  "scope": {
+    "addresses": [
+      "008d4950",
+      "008d78d0",
+      "00cdeec0"
+    ],
+    "new_native_bodies": 0,
+    "ordinary_input_publication_process_lived": true,
+    "ordinary_raw_bch_settings_owner_bound": false
+  },
+  "evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "008d4950",
+        "length": 164,
+        "kind": "body",
+        "hex": "64a1000000006aff68182fca00506489250000000083ec08833de898e10000747456e8d909b4ff8b701085f6c7442404fc37ce0089742408740b56ff151822ce0083461801c744241400000000833de898e10000742fe8a509b4ff8b0de898e100518bc8e8e7b22f008b0de898e10085c974088b118b026a01ffd0c705e898e1000000000085f6740b834618ff56ff151022ce005e8b4c240864890d0000000083c414c3",
+        "sha256": "b7b607b8e605c475bb9775ae9573ebb9fcd5052ee2b7543e30ab2a396f08eae2"
+      },
+      {
+        "address": "008d78d0",
+        "length": 171,
+        "kind": "body",
+        "hex": "6aff682a32ca0064a100000000506489250000000051568bf15789742408c706585dd100c744241402000000e84fd0ffff8b86b800000085c0c64424140174198b8eb40000006a0183c1015150e89e23b4ff8bc8e8e79b2f008dbea40000006a008bcfc644241800e8d3f7b4ff8b3f57e844f0310083c40481c6980000006a008bcec7442418ffffffffe8b1f7b4ff8b0650e822f031008b4c241083c4045f5e64890d0000000083c410c3",
+        "sha256": "9f660214c541f570c261f6aab82df59fadbbe303bc4bd0d33aecf6ed8eb45658"
+      },
+      {
+        "address": "00cdeec0",
+        "length": 10,
+        "kind": "body",
+        "hex": "b98089f800e9068abfff",
+        "sha256": "831ee0e3e00c225b2f374334380da0557767db9ad5eaf6d545fcb0ee222fbb9d"
+      }
+    ],
+    "call_rows": [
+      {
+        "address": "008d4972",
+        "native": "00415350",
+        "function": "008d4950",
+        "kind": "call"
+      },
+      {
+        "address": "008d49a6",
+        "native": "00415350",
+        "function": "008d4950",
+        "kind": "call"
+      },
+      {
+        "address": "008d49b4",
+        "native": "00bcfca0",
+        "function": "008d4950",
+        "kind": "call"
+      },
+      {
+        "address": "008d78fc",
+        "native": "008d4950",
+        "function": "008d78d0",
+        "kind": "call"
+      },
+      {
+        "address": "008d791d",
+        "native": "00419cc0",
+        "function": "008d78d0",
+        "kind": "call"
+      },
+      {
+        "address": "008d7924",
+        "native": "00bd1510",
+        "function": "008d78d0",
+        "kind": "call"
+      },
+      {
+        "address": "008d7938",
+        "native": "00427110",
+        "function": "008d78d0",
+        "kind": "call"
+      },
+      {
+        "address": "008d7940",
+        "native": "00bf6989",
+        "function": "008d78d0",
+        "kind": "call"
+      },
+      {
+        "address": "008d795a",
+        "native": "00427110",
+        "function": "008d78d0",
+        "kind": "call"
+      },
+      {
+        "address": "008d7962",
+        "native": "00bf6989",
+        "function": "008d78d0",
+        "kind": "call"
+      },
+      {
+        "address": "00cdeec5",
+        "native": "008d78d0",
+        "function": "00cdeec0",
+        "kind": "tail_jump"
+      }
+    ]
+  },
+  "indirect_calls": [
+    {
+      "address": "008d498b",
+      "target": "IAT00CE2218 EnterCriticalSection"
+    },
+    {
+      "address": "008d49c9",
+      "target": "CURRENT input slot0 flags1"
+    },
+    {
+      "address": "008d49de",
+      "target": "IAT00CE2210 LeaveCriticalSection"
+    }
+  ],
+  "contract": "Process E198E8 publication and stable binding cell survive application retirement. Native null-input branch never resolves application context; nonnull scalar resolves only after unregister and CURRENT input reload. Existing fixed-context source callers remain accepted.",
+  "validation": {
+    "strict_win32_build": true,
+    "ctests_passed": 3,
+    "legacy_fixture": {
+      "result": {
+        "exe_sha256": "BBF9A345337ADA9F6149AE57125B59F27759AAAAA624C5CD55E366BE04D275A2",
+        "library_sha256": "2B5DFF24FFCB859A3006015D08D1094D1DD5663088A225A35F15A83FAE379101",
+        "flags": "/std:c++17 /O2 /MD /W4 /WX /fp:strict /MANIFEST:EMBED",
+        "exit": 0
+      },
+      "unchanged_original_and_source_probe": true,
+      "pairs": 13,
+      "matching_bytes": 3076,
+      "observations_sha256": "32d9ec7cfe74fa5fe1ba93b3d6b9367ae9236972d370aa2922639b76dc053695"
+    },
+    "component": {
+      "result": {
+        "library_sha256": "2B5DFF24FFCB859A3006015D08D1094D1DD5663088A225A35F15A83FAE379101",
+        "exe_sha256": "A98DA38EB0E2A5333C5B08EE4D6C012AA9BB057B54C8C86318FD3B1FB660B291",
+        "exit": 0
+      },
+      "observations": {
+        "shared": {
+          "component_log_sha256": "8b04bde7833e59a29d078e9e826ff12b31797c9ca03d682466774960e51f1c65",
+          "crt_receipt": "R169 CRT PASS application_destroyed=1 publication=null binding=retired null_release_manager_untouched=1 full_settings_callback=complete",
+          "crt_log_sha256": "5167a277c64064025247f5d33a48764493bbcdbd80c059d3ebc415a288dbba74"
+        },
+        "release": {
+          "component_log_sha256": "6c5a587f0c9a7bdd79ab8c088c021fb18efe17802c18e48e37c0ca16332e7e68",
+          "crt_receipt": "R169 CRT PASS application_destroyed=1 publication=null binding=retired null_release_manager_untouched=1 full_settings_callback=complete",
+          "crt_log_sha256": "5167a277c64064025247f5d33a48764493bbcdbd80c059d3ebc415a288dbba74"
+        }
+      },
+      "scope": "Actual mounted VFS/input/Lua/strings/host objects; two shutdown orders and real CRT callbacks after application destruction; fixture BCh owner, null online/game, rejecting SDK boundary"
+    },
+    "ordinary_application": {
+      "peer_processes": [
+        {
+          "ProcessId": 88636,
+          "CreationDate": "2026-09-18T17:08:43.48728-07:00",
+          "ExecutablePath": "J:\\PROG\\battlestations-pacific-decompile-cc8-dive-bomb\\build\\win32\\Release\\bsp_game.exe"
+        },
+        {
+          "ProcessId": 35968,
+          "CreationDate": "2026-09-18T17:08:43.522606-07:00",
+          "ExecutablePath": "J:\\PROG\\battlestations-pacific-decompile-cc8-dive-bomb\\build\\win32\\Release\\bsp_game.exe"
+        }
+      ],
+      "build": {
+        "utc": "2026-09-19T00:13:45.4372556Z",
+        "library_sha256": "F8BF476C2E7AADB3A4673B75D10977CB5FF06B93F8364B1AD1918C5F145419B0",
+        "head": "78a8fa9de552c0419bd530f1ad0b9b6e2a200870",
+        "exe": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\build\\win32\\Release\\bsp_game.exe",
+        "exe_sha256": "F7CFE6ABB58AB1FE101969C9BD82F5053446E40D7988F8BDA13A3AB83512514E"
+      },
+      "wait_seconds": 60,
+      "reason": "gave up after 60 s: lock held by 'battlestations-pacific-decompile-cc8-dive-bomb 2026-09-18T17:08:43 pid=42604', live bsp_game pids: 35968,88636",
+      "terminal_launcher_exit": 1,
+      "status": "not_run_shared_runtime_busy"
+    },
+    "source_sha256_by_path": {
+      "include/bsp/native_game_settings_owner.hpp": "f34fc7f768b785334a2c1432f1fe0a235aa6c2edb7c9c84a83b0a08a049b88f5",
+      "src/native_game_settings_owner.cpp": "251c0a349760dd2131bf23f3838fdb1dc5c629c6e95535a04590a94137cbb2e3",
+      "include/bsp/game_native_input_settings_process.hpp": "9e7d6b835b14f42d1e39fd7f4ccb93f0e4dc882f17ab10473b2313880a27ef80",
+      "src/game_native_input_settings_process.cpp": "74b7f54a2ca9a8b590a6a17c08e286aeea0615d27f8dd3427078d4ac8534c43a",
+      "include/bsp/game_hosts_singletons.hpp": "2c12e192ebbcbf7bc2b17552ca51253e643878d73c37c33b076302ebc082cb03",
+      "src/game_hosts_singletons.cpp": "783fc6654822b6511c13c6f548e693fc31f6dcf8c17e43bf3a40d836408e6dda",
+      "cmake/startup.cmake": "9db199b51e53d7c536bb028d919d19cb1643fb078b78033e9f629f9961672852"
+    },
+    "source_lf_sha256": {
+      "include/bsp/native_game_settings_owner.hpp": "f34fc7f768b785334a2c1432f1fe0a235aa6c2edb7c9c84a83b0a08a049b88f5",
+      "src/native_game_settings_owner.cpp": "251c0a349760dd2131bf23f3838fdb1dc5c629c6e95535a04590a94137cbb2e3",
+      "include/bsp/game_native_input_settings_process.hpp": "9e7d6b835b14f42d1e39fd7f4ccb93f0e4dc882f17ab10473b2313880a27ef80",
+      "src/game_native_input_settings_process.cpp": "74b7f54a2ca9a8b590a6a17c08e286aeea0615d27f8dd3427078d4ac8534c43a",
+      "include/bsp/game_hosts_singletons.hpp": "2c12e192ebbcbf7bc2b17552ca51253e643878d73c37c33b076302ebc082cb03",
+      "src/game_hosts_singletons.cpp": "783fc6654822b6511c13c6f548e693fc31f6dcf8c17e43bf3a40d836408e6dda",
+      "cmake/startup.cmake": "a90362f5ceda4c6cc95feddb8b9180591717acbfd6f3a9bb02f5a9ba32989c0b"
+    },
+    "library_sha256": "2b5dff24ffcb859a3006015d08d1094d1dd5663088a225a35f15a83fae379101",
+    "game_sha256": "126f4df7239adc66c39c966df655ea1d9a3de9bd13ca8fd77ced8a3c5c9d34d8",
+    "object_paths": [
+      "build/win32/bsp_core.dir/Release/native_game_settings_owner.obj",
+      "build/win32/bsp_core.dir/Release/game_native_input_settings_process.obj",
+      "build/win32/bsp_core.dir/Release/game_native_input_settings_application.obj",
+      "build/win32/bsp_game.dir/Release/game_hosts_singletons.obj",
+      "build/win32/bsp_game.dir/Release/game_hosts.obj",
+      "build/win32/bsp_game.dir/Release/game_hosts_vfs.obj",
+      "build/win32/bsp_game.dir/Release/game_native_string_process.obj",
+      "build/win32/bsp_core.dir/Release/native_input_settings_lifetime.obj",
+      "build/win32/bsp_core.dir/Release/native_input_settings_tables.obj",
+      "build/win32/bsp_core.dir/Release/native_singleton_destruction.obj",
+      "build/win32/bsp_core.dir/Release/native_string_pool_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_profile_settings.obj"
+    ],
+    "call_verification": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\reports\\native_input_settings_process_r169.json: 11 call rows checked, 0 failed\n"
+  },
+  "limits": [
+    "Ordinary BCh game settings and R167 loader remain projected/unbound; the component retained BCh owner is a fixture",
+    "Source lifetime guards and retained process allocation are explicit host contracts, not new native branches",
+    "No original binary ABI, FH3/SEH, concurrent mutation, renderer/window/gameplay proof",
+    "Full ordinary application outcome recorded separately; peer runtime ownership preserved"
+  ],
+  "owned_files": [
+    "include/bsp/native_game_settings_owner.hpp",
+    "src/native_game_settings_owner.cpp",
+    "include/bsp/game_native_input_settings_process.hpp",
+    "src/game_native_input_settings_process.cpp",
+    "include/bsp/game_hosts_singletons.hpp",
+    "src/game_hosts_singletons.cpp",
+    "cmake/startup.cmake",
+    "docs/NATIVE_INPUT_SETTINGS_PROCESS_R169.md",
+    "reports/native_input_settings_process_r169.json",
+    "config/names/008d0000.jsonl",
+    "config/reconstruction/008d0000.jsonl",
+    "config/names/00cd0000.jsonl",
+    "config/reconstruction/00cd0000.jsonl"
+  ],
+  "ghidra_annotations": {
+    "prior_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\ghidra-annotations-20260919T001600Z.json",
+    "prior_values": [
+      {
+        "address": "008d4950",
+        "before": {
+          "address": "008d4950",
+          "function_name": "BSP_GameSettings_ReleaseInputSettings",
+          "comment": "[BSP reconstruction 008d4950]\nComplete164B,no native arguments,RET. IfE198E8nonnull capture first manager+10 lock,enter/recheck,second manager lookup before current-publication unregister,reload/current scalar1,clear and leave captured section. Source CF81CC and CE3818 defaults delegate existing full scalar bodies. Descriptive hypothesis,not recovered symbol. R157 complete normal raw settings lifecycle: six bodies843B,1048live/PEbytes,19CALL/tail edges. 8D78D0 returning-free tail restored through8D797A with prior metadata preserved;8D7980 three-byte gap repaired. Strict Win32/3CTests;13 copied-original/source pairs,3076 observed bytes,presence-normalized owner98/A4/B8 pointers;opaque BCh bytes preserved,vector free role/live counts checked. Real raw string pool/manager locks and existing input cleanup; SDK/backing frees controlled. One retained source failure/replay rejection;real std::atexit callback executes full source shutdown. Existing projected settings remain separate;ordinary raw settings/profile binding and native-game admission,FH3/SEH,arbitrary vtables,originalABI/gameplay remain open. docs/NATIVE_GAME_SETTINGS_OWNER_R157.md;reports/native_game_settings_owner_r157.json."
+        },
+        "after": {
+          "address": "008d4950",
+          "name": "BSP_GameSettings_ReleaseInputSettings",
+          "evidence": "Complete164B,no native arguments,RET. IfE198E8nonnull capture first manager+10 lock,enter/recheck,second manager lookup before current-publication unregister,reload/current scalar1,clear and leave captured section. Source CF81CC and CE3818 defaults delegate existing full scalar bodies. Descriptive hypothesis,not recovered symbol. R157 complete normal raw settings lifecycle: six bodies843B,1048live/PEbytes,19CALL/tail edges. 8D78D0 returning-free tail restored through8D797A with prior metadata preserved;8D7980 three-byte gap repaired. Strict Win32/3CTests;13 copied-original/source pairs,3076 observed bytes,presence-normalized owner98/A4/B8 pointers;opaque BCh bytes preserved,vector free role/live counts checked. Real raw string pool/manager locks and existing input cleanup; SDK/backing frees controlled. One retained source failure/replay rejection;real std::atexit callback executes full source shutdown. Existing projected settings remain separate;ordinary raw settings/profile binding and native-game admission,FH3/SEH,arbitrary vtables,originalABI/gameplay remain open. docs/NATIVE_GAME_SETTINGS_OWNER_R157.md;reports/native_game_settings_owner_r157.json. | Existing164B body: first E198E8 test precedes manager/context use. Resolve source context only for CURRENT input scalar flags1 after unregister; retain captured section/reloads/clear order. Fixed legacy contexts and late-bound process contexts share this body. R169 source lifetime binding only; no new native body or original binary ABI. GameNativeInputSettingsProcess retains actual E198E8 source publication and a live application context cell through CRT shutdown; same canonical process manager. Strict Win32/3 CTests; unchanged R157 13 original/source pairs3076B. Actual mounted-VFS input component loads4 devices/16 input names/12 controller names in2 child processes, one settings release and one shared drain, then real registered CDEEC0 after application scopes end. Null release leaves manager untouched; full fixture BCh shutdown completes. Ordinary BCh owner/options loader still projected, ordinary application runtime pending, no FH3/SEH or gameplay proof. docs/NATIVE_INPUT_SETTINGS_PROCESS_R169.md; reports/native_input_settings_process_r169.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "008d78d0",
+        "before": {
+          "address": "008d78d0",
+          "function_name": "BSP_GameSettings_Destroy",
+          "comment": "[BSP reconstruction 008d78d0]\nComplete171B,ECXactualBCh,RET. StampD15D58,full8D4950,input release then captured clan string,427110 resize0/freeBF6989 atA4 then98;do not clear dangling headers or add rollback. Retained operation preserves failure site/unwind state,not native FH3. Descriptive hypothesis,not recovered symbol. R157 complete normal raw settings lifecycle: six bodies843B,1048live/PEbytes,19CALL/tail edges. 8D78D0 returning-free tail restored through8D797A with prior metadata preserved;8D7980 three-byte gap repaired. Strict Win32/3CTests;13 copied-original/source pairs,3076 observed bytes,presence-normalized owner98/A4/B8 pointers;opaque BCh bytes preserved,vector free role/live counts checked. Real raw string pool/manager locks and existing input cleanup; SDK/backing frees controlled. One retained source failure/replay rejection;real std::atexit callback executes full source shutdown. Existing projected settings remain separate;ordinary raw settings/profile binding and native-game admission,FH3/SEH,arbitrary vtables,originalABI/gameplay remain open. docs/NATIVE_GAME_SETTINGS_OWNER_R157.md;reports/native_game_settings_owner_r157.json."
+        },
+        "after": {
+          "address": "008d78d0",
+          "name": "BSP_GameSettings_Destroy",
+          "evidence": "Complete171B,ECXactualBCh,RET. StampD15D58,full8D4950,input release then captured clan string,427110 resize0/freeBF6989 atA4 then98;do not clear dangling headers or add rollback. Retained operation preserves failure site/unwind state,not native FH3. Descriptive hypothesis,not recovered symbol. R157 complete normal raw settings lifecycle: six bodies843B,1048live/PEbytes,19CALL/tail edges. 8D78D0 returning-free tail restored through8D797A with prior metadata preserved;8D7980 three-byte gap repaired. Strict Win32/3CTests;13 copied-original/source pairs,3076 observed bytes,presence-normalized owner98/A4/B8 pointers;opaque BCh bytes preserved,vector free role/live counts checked. Real raw string pool/manager locks and existing input cleanup; SDK/backing frees controlled. One retained source failure/replay rejection;real std::atexit callback executes full source shutdown. Existing projected settings remain separate;ordinary raw settings/profile binding and native-game admission,FH3/SEH,arbitrary vtables,originalABI/gameplay remain open. docs/NATIVE_GAME_SETTINGS_OWNER_R157.md;reports/native_game_settings_owner_r157.json. | Existing171B body at8D78FC passes stable process publication reference; null input does not inspect retired application tables/Lua context. Clan/vector order unchanged. R169 source lifetime binding only; no new native body or original binary ABI. GameNativeInputSettingsProcess retains actual E198E8 source publication and a live application context cell through CRT shutdown; same canonical process manager. Strict Win32/3 CTests; unchanged R157 13 original/source pairs3076B. Actual mounted-VFS input component loads4 devices/16 input names/12 controller names in2 child processes, one settings release and one shared drain, then real registered CDEEC0 after application scopes end. Null release leaves manager untouched; full fixture BCh shutdown completes. Ordinary BCh owner/options loader still projected, ordinary application runtime pending, no FH3/SEH or gameplay proof. docs/NATIVE_INPUT_SETTINGS_PROCESS_R169.md; reports/native_input_settings_process_r169.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00cdeec0",
+        "before": {
+          "address": "00cdeec0",
+          "function_name": "BSP_GameSettings_DestroyStatic",
+          "comment": "[BSP inventory 00cdeec0] static_init (high): inside .text$yc/.text$yd - dynamic initializers for globals and atexit destructor thunks [00cc893b,00ce2000)\n\n[BSP reconstruction 00cdeec0]\nComplete10B,no native args,ECXF88980 then tailJMP8D78D0. Source explicit static-storage/context thunk delegates complete normal destructor;realCRT registration/shutdown exercised. Descriptive hypothesis,not recovered symbol. R157 complete normal raw settings lifecycle: six bodies843B,1048live/PEbytes,19CALL/tail edges. 8D78D0 returning-free tail restored through8D797A with prior metadata preserved;8D7980 three-byte gap repaired. Strict Win32/3CTests;13 copied-original/source pairs,3076 observed bytes,presence-normalized owner98/A4/B8 pointers;opaque BCh bytes preserved,vector free role/live counts checked. Real raw string pool/manager locks and existing input cleanup; SDK/backing frees controlled. One retained source failure/replay rejection;real std::atexit callback executes full source shutdown. Existing projected settings remain separate;ordinary raw settings/profile binding and native-game admission,FH3/SEH,arbitrary vtables,originalABI/gameplay remain open. docs/NATIVE_GAME_SETTINGS_OWNER_R157.md;reports/native_game_settings_owner_r157.json."
+        },
+        "after": {
+          "address": "00cdeec0",
+          "name": "BSP_GameSettings_DestroyStatic",
+          "evidence": "Complete10B,no native args,ECXF88980 then tailJMP8D78D0. Source explicit static-storage/context thunk delegates complete normal destructor;realCRT registration/shutdown exercised. Descriptive hypothesis,not recovered symbol. R157 complete normal raw settings lifecycle: six bodies843B,1048live/PEbytes,19CALL/tail edges. 8D78D0 returning-free tail restored through8D797A with prior metadata preserved;8D7980 three-byte gap repaired. Strict Win32/3CTests;13 copied-original/source pairs,3076 observed bytes,presence-normalized owner98/A4/B8 pointers;opaque BCh bytes preserved,vector free role/live counts checked. Real raw string pool/manager locks and existing input cleanup; SDK/backing frees controlled. One retained source failure/replay rejection;real std::atexit callback executes full source shutdown. Existing projected settings remain separate;ordinary raw settings/profile binding and native-game admission,FH3/SEH,arbitrary vtables,originalABI/gameplay remain open. docs/NATIVE_GAME_SETTINGS_OWNER_R157.md;reports/native_game_settings_owner_r157.json. | Existing10B static shutdown wrapper validated in real atexit callback after input/Lua/VFS/host scopes end. Fixture settings owner and string contexts retained; canonical ordinary BCh owner remains follow-up. R169 source lifetime binding only; no new native body or original binary ABI. GameNativeInputSettingsProcess retains actual E198E8 source publication and a live application context cell through CRT shutdown; same canonical process manager. Strict Win32/3 CTests; unchanged R157 13 original/source pairs3076B. Actual mounted-VFS input component loads4 devices/16 input names/12 controller names in2 child processes, one settings release and one shared drain, then real registered CDEEC0 after application scopes end. Null release leaves manager untouched; full fixture BCh shutdown completes. Ordinary BCh owner/options loader still projected, ordinary application runtime pending, no FH3/SEH or gameplay proof. docs/NATIVE_INPUT_SETTINGS_PROCESS_R169.md; reports/native_input_settings_process_r169.json."
+        },
+        "status": "applied"
+      }
+    ],
+    "readback_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\input_settings_process_r169\\comments-after.json",
+    "readback_sha256": "0eae1e56a454a977c519183bdb68705ea0f2b09b54e7ff9f044481e588a7824d",
+    "status": "Three existing bodies with process input lifetime binding evidence saved under write lock;prior values preserved,readback checked,exports refreshed"
+  },
+  "ledger_receipts": [
+    "008d4950 -> BSP_GameSettings_ReleaseInputSettings\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"008d4950\", \"name\": \"BSP_GameSettings_ReleaseInputSettings\", \"evidence\": \"Complete164B,no native arguments,RET. IfE198E8nonnull capture first manager+10 lock,enter/recheck,second manager lookup before current-publication unregister,reload/current scalar1,clear and leave captured section. Source CF81CC and CE3818 defaults delegate existing full scalar bodies. Descriptive hypothesis,not recovered symbol. R157 complete normal raw settings lifecycle: six bodies843B,1048live/PEbytes,19CALL/tail edges. 8D78D0 returning-free tail restored through8D797A with prior metadata preserved;8D7980 three-byte gap repaired. Strict Win32/3CTests;13 copied-original/source pairs,3076 observed bytes,presence-normalized owner98/A4/B8 pointers;opaque BCh bytes preserved,vector free role/live counts checked. Real raw string pool/manager locks and existing input cleanup; SDK/backing frees controlled. One retained source failure/replay rejection;real std::atexit callback executes full source shutdown. Existing projected settings remain separate;ordinary raw settings/profile binding and native-game admission,FH3/SEH,arbitrary vtables,originalABI/gameplay remain open. docs/NATIVE_GAME_SETTINGS_OWNER_R157.md;reports/native_game_settings_owner_r157.json.\"})\n",
+    "008d4950 fragment native_settings_input_process_reference_r169\n",
+    "008d78d0 -> BSP_GameSettings_Destroy\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"008d78d0\", \"name\": \"BSP_GameSettings_Destroy\", \"evidence\": \"Complete171B,ECXactualBCh,RET. StampD15D58,full8D4950,input release then captured clan string,427110 resize0/freeBF6989 atA4 then98;do not clear dangling headers or add rollback. Retained operation preserves failure site/unwind state,not native FH3. Descriptive hypothesis,not recovered symbol. R157 complete normal raw settings lifecycle: six bodies843B,1048live/PEbytes,19CALL/tail edges. 8D78D0 returning-free tail restored through8D797A with prior metadata preserved;8D7980 three-byte gap repaired. Strict Win32/3CTests;13 copied-original/source pairs,3076 observed bytes,presence-normalized owner98/A4/B8 pointers;opaque BCh bytes preserved,vector free role/live counts checked. Real raw string pool/manager locks and existing input cleanup; SDK/backing frees controlled. One retained source failure/replay rejection;real std::atexit callback executes full source shutdown. Existing projected settings remain separate;ordinary raw settings/profile binding and native-game admission,FH3/SEH,arbitrary vtables,originalABI/gameplay remain open. docs/NATIVE_GAME_SETTINGS_OWNER_R157.md;reports/native_game_settings_owner_r157.json.\"})\n",
+    "008d78d0 fragment native_settings_destroy_process_input_reference_r169\n",
+    "00cdeec0 -> BSP_GameSettings_DestroyStatic\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00cdeec0\", \"name\": \"BSP_GameSettings_DestroyStatic\", \"evidence\": \"Complete10B,no native args,ECXF88980 then tailJMP8D78D0. Source explicit static-storage/context thunk delegates complete normal destructor;realCRT registration/shutdown exercised. Descriptive hypothesis,not recovered symbol. R157 complete normal raw settings lifecycle: six bodies843B,1048live/PEbytes,19CALL/tail edges. 8D78D0 returning-free tail restored through8D797A with prior metadata preserved;8D7980 three-byte gap repaired. Strict Win32/3CTests;13 copied-original/source pairs,3076 observed bytes,presence-normalized owner98/A4/B8 pointers;opaque BCh bytes preserved,vector free role/live counts checked. Real raw string pool/manager locks and existing input cleanup; SDK/backing frees controlled. One retained source failure/replay rejection;real std::atexit callback executes full source shutdown. Existing projected settings remain separate;ordinary raw settings/profile binding and native-game admission,FH3/SEH,arbitrary vtables,originalABI/gameplay remain open. docs/NATIVE_GAME_SETTINGS_OWNER_R157.md;reports/native_game_settings_owner_r157.json.\"})\n",
+    "00cdeec0 fragment native_settings_crt_process_input_reference_r169\n"
+  ],
+  "tested_artifact_archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r169\\native-input-process-tested-r169.zip",
+    "sha256": "cf7b6006177c1f9dc4d0c75b2bfdfcad32c1a3235c4de08f7f179794ed073f40",
+    "files": 79,
+    "head": "78a8fa9de552c0419bd530f1ad0b9b6e2a200870"
+  }
+}

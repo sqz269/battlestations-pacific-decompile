@@ -1,4 +1,5 @@
 #include "bsp/game_hosts_singletons.hpp"
+#include "bsp/game_native_input_settings_process.hpp"
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/game_native_weak_pool.hpp"
 #include "bsp/game_hosts.hpp"
@@ -13,6 +14,7 @@ namespace bsp::game {
 
 GameSingletonHost::GameSingletonHost(GameHostLog& log)
     : log_(log), manager_publication_01090aa0_(game_native_string_process().manager_01090aa0()),
+      input_settings_publication_00e198e8_(game_native_input_settings_process().publication_00e198e8()),
       deletion_bindings_{&effect_publication_00f87664_, nullptr},
       observers_(std::make_unique<GameObserverRuntime>(*this, log)) {
     // Admit factory+4 before startup can register that exact subobject.
@@ -59,7 +61,8 @@ void GameSingletonHost::bind_input_backend(NativeInputBackendOwnerContext* conte
 void GameSingletonHost::bind_input_actions(NativeInputActionOwnerContext* context) noexcept {
     deletion_bindings_.input_actions = context;
 }
-void GameSingletonHost::bind_input_settings(NativeInputSettingsLifetimeContext* context) noexcept {
+void GameSingletonHost::bind_input_settings(NativeInputSettingsLifetimeContext* context) {
+    game_native_input_settings_process().bind_context(context);
     deletion_bindings_.input_settings = context;
 }
 void GameSingletonHost::bind_observer_lifetime(NativeObserverLifetime* lifetime) noexcept {
