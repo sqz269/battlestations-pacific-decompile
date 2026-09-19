@@ -528,6 +528,43 @@ and are not candidates. So at most six aircraft can pull out.
    that the chain sits on a 25-43 m hit/miss boundary, so any release count change moves damage in
    a direction this packet cannot forecast. It will be reported, not predicted.
 
+## 8. Where the dive-entry error is born: not in the fly-over, and not a wingman offset
+
+The integrator asked for a per-squadron bearing table to decide whether the error that makes
+`#3.1` and `#7.1` enter the dive at 0.89 rad belongs to this packet or to `cc8-dive-approach`'s.
+The `attackrun>flyabove` bearing is not printed by any census, so the exact column needs one more
+field; but the question it was meant to answer is already answered by the `cross=` column this
+packet added, and the answer does not need it.
+
+| flight | `cross=` at the last bank tick, leader / .-2 / .-3 | `attackrun>flyabove` |
+| --- | --- | --- |
+| `movieval` | 111.3 / 110.7 / 111.1 | `@1544 alt 1394 rng 2079 span 678` |
+| `D3A Val #1.1` | 110.9 / 111.2 / 110.9 | `@1144 alt 1395 rng 2078 span 675` |
+| `D3A Val #5.1` | 110.9 / 111.2 / 110.9 | `@1144 alt 1395 rng 2078 span 675` |
+| `D3A Val #3.1` | **409.4 / 448.8 / 409.5** | `@1073 alt 1400 rng 2077 span 648` |
+| `D3A Val #7.1` | **329.8 / 420.6 / 334.8** | `@973 alt 1403 rng 2077 span 633` |
+
+Three things fall out.
+
+1. **It is not a wingman offset.** Within every flight the three aircraft agree to about 1 m in the
+   good group and to within 12 per cent in the bad one. If the formation offset were delivering the
+   error, the leader and the two wingmen would differ; they do not.
+2. **It is per-squadron, and two squadrons are literally identical.** `#1.1` and `#5.1` hand over
+   on the same tick with the same altitude, range and span to every printed digit, and their
+   cross-track triples match digit for digit. Two squadrons flying byte-identical approaches from
+   different spawns is what a deterministic harness looks like, and it means the split is a
+   property of the approach geometry, not of anything stochastic.
+3. **The fly-over does not create it.** All five flights enter the fly-over at the same altitude
+   (1394-1403 m) and the same range (2077-2079 m); only the lateral geometry differs, and it
+   differs *before* the fly-over's first tick. The fly-over's own steering cannot be the source of
+   a difference that is already present at its entry.
+
+So the error is delivered to the fly-over, not made by it, and it belongs upstream - the attack run
+or the moveto, `cc8-dive-approach`'s area. The remaining column (the bearing error at the first
+fly-over tick) is one census field in the fly-over feed; it is worth adding on the next window
+rather than a run of its own, because it would only refine a conclusion the cross-track column has
+already reached.
+
 ### Column checks, before quoting any of the above
 
 `throw=` in the aimglide row is `db_impact_throw_14` and `range=` is `db_planar_bc`, both
