@@ -457,6 +457,32 @@ struct GameUnitSlot {
     float db_goaway_travel_20{0.0f};
     int db_flyabove_heading_writes{0};
     float db_flyabove_heading_last{0.0f};
+    // Packet cc8_dive_entry. Where the dive-entry altitude comes from is a
+    // question about the altitude at each HAND-OVER, and no existing census
+    // carries it: db_dive_entry_alt is the aimdive entry only, and the geo
+    // trace prints one slot and starts at the turndown. One record per state
+    // change, for every dive bomber.
+    struct DbTransition {
+        int tick{0};
+        signed char from{-1};
+        signed char to{-1};
+        float alt{0.0f};
+        float range{0.0f};
+        float cmd_alt{0.0f};
+    };
+    static constexpr int kDbTransitions = 12;
+    DbTransition db_transitions[kDbTransitions]{};
+    int db_transition_count{0};
+    // 009C6E10-009C6F91, the flyabove's altitude arm.
+    int db_fa_alt_calls{0};
+    int db_fa_level_ticks{0};
+    float db_fa_limit_c{0.0f};
+    float db_fa_band{0.0f};
+    float db_fa_target_last{0.0f};
+    float db_fa_ref_last{0.0f};
+    float db_fa_err_last{0.0f};
+    float db_fa_err_first{0.0f};
+    float db_fa_pitch_last{0.0f};
     // The geometry when the turndown starts, which is what decides where the
     // dive begins.
     float db_turndown_entry_range{-1.0f};
@@ -801,6 +827,10 @@ struct GameUnitSlot {
     // having no producer because it is derived rather than authored.
     float plane_climb_angle_1e4{0.0f};
     float plane_climb_angle_1ec{0.0f};
+    // desc+268h TurnCircleRadius, the scale both of the dive-bomb approach's
+    // attack-distance draws multiply (009C3F86 and 009C3FB5, each dominated by
+    // its own `MOV EBP,[ESI+8]`). Packet cc8_dive_race.
+    float plane_turn_circle_radius{0.0f};
     // desc+194h SwimHeight, one of the two terms of the free-flight arm's water
     // line at 007CC4E8.
     float plane_swim_height{0.0f};
@@ -1539,8 +1569,24 @@ struct GameUnitsHost::Impl {
         return in;
     }
 
-    bsp::DiveBombAimGlideReleaseInputs dive_bomb_aimglide_inputs(GameUnitSlot& slot) {
+    bsp::DiveBombAimGlideReleaseInputs dive_bomb_aimglide_inputs(GameUnitSlot& slot,
+                                                                 float dt) {
         bsp::DiveBombAimGlideReleaseInputs in;
+        // 009C5188-009C51A5, packet cc8_dive_entry. The aimglide tick counts
+        // state+1Ch down by its OWN dt at the top of every tick, exactly as
+        // 009C58E9 does for the aimdive, and 009C519B (byte 72, JC) against the
+        // 0.0f at 00D7A218 keeps it from running below zero:
+        //   009c5188 MOVSS XMM0,[ESI+1Ch] / 009c518d COMISS XMM0,[00D7A218]
+        //   009c519b JC 009c51a8 / 009c519d FLD [ESP+28h] / 009c51a1 FSUB dt
+        //   009c51a5 FSTP [ESI+1Ch]
+        // This host decremented the timer only in dive_bomb_aimdive_inputs,
+        // which runs only while the state is kAimDive, so in the glide the
+        // timer sat at the 0.0 its enter writes and gate 1 at 009C5689
+        // (`state+1Ch < 0`) refused every call: local/entry_before.log has
+        // `blocked[rearm=629 bearing=0 ceiling=1 ...] passed=0` out of 630 for
+        // D3A Val #1.1, where docs/DIVE_BOMB_TASK.md's table from the glide
+        // packet's own tree reads `rearm=0 bearing=523 ceiling=107`.
+        if (slot.db_aim_rearm_1c >= 0.0f) slot.db_aim_rearm_1c -= dt;
         // Packet cc8_dive_glide: every slot behind 009C5689-009C5755 is now
         // traced to its producer and bound from the geometry this host already
         // keeps. The `four frame slots not traced` note is withdrawn.
@@ -2895,6 +2941,10 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
             slot->plane_drag_pitch_ratio = lua_row.drag_pitch_ratio;
             slot->plane_air_brake_drag = lua_row.air_brake_drag;
             slot->plane_drop_angle = lua_row.drop_angle;
+            // Packet cc8_dive_race: desc+268h, read by the dive-bomb approach
+            // constructor. The loader already parsed it (plane_class_fields.cpp
+            // "TurnCircleRadius"); only the copy onto the slot was missing.
+            slot->plane_turn_circle_radius = lua_row.turn_circle_radius;
             slot->plane_swim_height = lua_row.swim_height;
             // 007C4BC5-007C4C14. The probe speed of the first call is
             // tuning+24Ch LevelFlight times desc+184h StallSpd, which is the
@@ -5123,8 +5173,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             if (r.released) owner_.note_dive_bomb_release(slot_);
                         }
                         bsp::DiveBombAimGlideReleaseInputs read_aimglide_inputs(
-                            void*, float) override {
-                            return owner_.dive_bomb_aimglide_inputs(slot_);
+                            void*, float dt) override {
+                            return owner_.dive_bomb_aimglide_inputs(slot_, dt);
                         }
                         void apply_aimglide_result(
                             void*, const bsp::DiveBombAimGlideReleaseResult& r) override {
@@ -5260,8 +5310,35 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // max(itself, Pilot/DiveBomb/AttackDist * task+41Ch).
                             // The clamp alone is a floor, and that is what the
                             // host applies.
-                            unit_.db_in_range_b8 = GameUnitsHost::Impl::kPilotDiveBombAttackDist;
-                            unit_.db_attack_dist_b4 = GameUnitsHost::Impl::kPilotDiveBombAttackDist;
+                            // BOUND, packet cc8_dive_race. 009C3EA0 draws the
+                            // two separately off the class's turn circle, and
+                            // the constructor listing settles which register
+                            // carries it - `009C3F5D MOV EBP,[ESI+8]` is the
+                            // only write to EBP between the 0042E740 tuning
+                            // load and `009C3F86 FMUL [EBP+268h]`, and
+                            // `009C3F8C` reloads the same pointer for
+                            // `009C3FB5`:
+                            //   +B4h = uniform(0.6, 0.8) * desc+268h   009C3F97
+                            //   +B8h = +BCh = uniform(1.6, 1.8) * ...  009C3FE8/FF5
+                            // (00CE3D30 0.6, 00CE74F8 0.8, 00D06BB4 1.6,
+                            // 00CF4848 1.8, all `FLD float ptr`; the second
+                            // draw is ONE call stored twice, `FST` then `FSTP`).
+                            // Pinned at the low end of each draw, as this host
+                            // pins every draw. 009C8A5E's floor
+                            // max(itself, AttackDist * task+41Ch) = 1100 is then
+                            // inert, which is why it was mistaken for the value.
+                            {
+                                const float r = unit_.plane_turn_circle_radius;
+                                if (r > 0.0f) {
+                                    unit_.db_in_range_b8 = 1.6f * r;
+                                    unit_.db_attack_dist_b4 = 0.6f * r;
+                                } else {
+                                    unit_.db_in_range_b8 =
+                                        GameUnitsHost::Impl::kPilotDiveBombAttackDist;
+                                    unit_.db_attack_dist_b4 =
+                                        GameUnitsHost::Impl::kPilotDiveBombAttackDist;
+                                }
+                            }
                             // approach+D4h RECOVERED. The approach constructor
                             // 009C3EA0 - the routine that writes the vtable
                             // 00D20C48 at 009C3EE2 and draws +A8h at 009C3F2E
@@ -5330,6 +5407,21 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             bsp::dive_bomb_task_arm_009c8790(binding, ctx, dt);
                         (void)r;
                         unit_.dive_bomb_state = ctx.current;
+                        // Packet cc8_dive_entry: the altitude at each hand-over.
+                        if (ctx.current != before &&
+                            unit_.db_transition_count <
+                                GameUnitSlot::kDbTransitions) {
+                            GameUnitSlot::DbTransition& t =
+                                unit_.db_transitions[unit_.db_transition_count++];
+                            t.tick = unit_.dive_bomb_arm_ticks;
+                            t.from = static_cast<signed char>(
+                                dive_bomb_state_bucket(before));
+                            t.to = static_cast<signed char>(
+                                dive_bomb_state_bucket(ctx.current));
+                            t.alt = unit_.motion.position[1];
+                            t.range = unit_.db_planar_bc;
+                            t.cmd_alt = unit_.plane_commanded_altitude;
+                        }
                         if (before == bsp::DiveBombState::kAimDive &&
                             ctx.current != bsp::DiveBombState::kAimDive) {
                             ++unit_.db_aimdive_exits;
@@ -5619,7 +5711,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             pin.climb_dist = g.pilot_general_climb_dist;
                             pin.drop_dist = g.pilot_general_drop_dist;
                         }
-                        pin.class_climb_angle = 0.0f;
+                        // Packet cc8_dive_race. Was a literal 0.0f, which is a
+                        // host defect and cannot be a transcription: 009FB800
+                        // takes only TWO stack arguments (009FB96B `RET 0x8`,
+                        // the clamped altitude at [ESP+0Ch] and the reference at
+                        // [ESP+10h]) and fetches both angles itself off the same
+                        // pointer chain, `MOV ECX,[ESI]` / `MOV EDX,[ECX+4]` /
+                        // `MOV EAX,[EDX+538h]`:
+                        //   009FB88D  FLD float ptr [EAX + 0x1ec]   ; climb gain
+                        //   009FB979  FLD float ptr [EDX + 0x1f0]   ; DropAngle
+                        // No caller passes either, so the dive-bomb run-in reads
+                        // exactly the desc+1ECh every other path reads. With the
+                        // gain at zero 009FB918's `min(gain * t, limit)` is zero
+                        // and the run-in could never climb to its command.
+                        pin.class_climb_angle = unit_.plane_climb_angle_1ec;
                         pin.class_drop_angle = unit_.plane_drop_angle;
                         unit_.plane_commanded_altitude = c.clamped_altitude;
                         unit_.plane_commanded_pitch = bsp::pitch_command_009fb800(pin);
@@ -5791,6 +5896,75 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const bsp::DiveBombFlyAboveCommand r =
                             bsp::dive_bomb_flyabove_command_009c6dcd(in);
                         ++unit_.db_flyabove_tick_ticks;
+                        // 009C6E10-009C6F91, the altitude arm, BOUND (packet
+                        // cc8_dive_entry). It sits on the same straight-line
+                        // path as the heading arm above: 009C6DDA and 009C6DF9
+                        // both jump forward into it, and nothing between
+                        // 009C6DCD and 009C6E10 leaves the body.
+                        {
+                            bsp::DiveBombFlyAboveAltitudeInputs ain;
+                            ain.height_above_aim_b = unit_.db_flyabove_height;
+                            ain.begin_altitude_ac = unit_.db_begin_alt_ac;
+                            ain.aim_point_height_50 = unit_.db_aim_point_height_50;
+                            ain.alt_span_b0 = unit_.db_alt_span_b0;
+                            ain.release_altitude_a8 = unit_.db_dive_alt_a8;
+                            ain.new_release_mul_40 =
+                                GameUnitsHost::Impl::kDiveBombNewReleaseMul;
+                            // A at 009C63A6 is the planar distance to the aim
+                            // point, the same quantity 009C7A80 keeps in
+                            // approach+BCh; the flyabove recomputes it locally.
+                            ain.planar_distance = unit_.db_planar_bc;
+                            // SUBSTITUTION, labelled: approach+0Ch is unit+9D4h
+                            // and nothing in this reconstruction fills it, so
+                            // the arm takes 009C64B2's fall-back. The ordered
+                            // cruise altitude ctl+398h is unreachable here.
+                            ain.has_control_block_0c = false;
+                            const bsp::DiveBombFlyAboveAltitudeCommand a =
+                                bsp::dive_bomb_flyabove_altitude_009c6e10(ain);
+                            ++unit_.db_fa_alt_calls;
+                            unit_.db_fa_limit_c = a.limit_c;
+                            unit_.db_fa_band = a.dead_band;
+                            unit_.db_fa_target_last = a.target_altitude;
+                            unit_.db_fa_ref_last = a.reference;
+                            unit_.db_fa_err_last = a.height_error;
+                            if (unit_.db_fa_alt_calls == 1) {
+                                unit_.db_fa_err_first = a.height_error;
+                            }
+                            if (a.level_arm) {
+                                // 009C6F89 / 009C6F91.
+                                ++unit_.db_fa_level_ticks;
+                                unit_.plan_state.pitch_target_2bc = 0.0f;
+                                unit_.plan_state.pitch_mode_2d0 = a.pitch_mode_2d0;
+                                unit_.plane_commanded_pitch = 0.0f;
+                            } else {
+                                bsp::PlanePitchCommandInputs pin;
+                                pin.desired_altitude = a.target_altitude;
+                                pin.reference = a.reference;
+                                pin.unit_world_y = unit_.motion.position[1];
+                                if (owner_.lua.plane_globals_loaded()) {
+                                    const bsp::GameTuningBlock& g =
+                                        owner_.lua.plane_globals();
+                                    pin.ceiling = g.dynamics_ceiling;
+                                    pin.climb_dist = g.pilot_general_climb_dist;
+                                    pin.drop_dist = g.pilot_general_drop_dist;
+                                }
+                                // Packet cc8_dive_race, the same one-field defect
+                                // as the run-in above; 009FB800 reads desc+1ECh
+                                // itself at 009FB88D. Expected inert in USN04,
+                                // because the flyabove's own target is the 210 m
+                                // release clamp and every dive bomber here is
+                                // above it, so 009FB87C takes the dive arm.
+                                pin.class_climb_angle = unit_.plane_climb_angle_1ec;
+                                pin.class_drop_angle = unit_.plane_drop_angle;
+                                unit_.plane_commanded_altitude = a.target_altitude;
+                                unit_.plane_commanded_pitch =
+                                    bsp::pitch_command_009fb800(pin);
+                                unit_.plan_state.pitch_target_2bc =
+                                    unit_.plane_commanded_pitch;
+                                unit_.plan_state.pitch_mode_2d0 = 2;
+                            }
+                            unit_.db_fa_pitch_last = unit_.plane_commanded_pitch;
+                        }
                         if (r.wrote_heading) {
                             ++unit_.db_flyabove_heading_writes;
                             unit_.db_flyabove_heading_last = r.heading_2c0;
@@ -8920,12 +9094,18 @@ void GameUnitsHost::report() {
                     }
                     host.log.notef("  divebomb %-12s attackrun 009C4220: ticks=%d "
                         "rerolls=%d latch_closed_tick=%d heading=%.4f rad "
-                        "throttle=%.3f alt_base=%.1f m | range per second: %s",
+                        "throttle=%.3f alt_base=%.1f m | climb_1ec=%.4f rad "
+                        "b4=%.1f b8=%.1f | range per second: %s",
                         slot->row.name.c_str(), slot->db_attackrun_ticks,
                         slot->db_attackrun_rerolls, slot->db_latch_closed_tick,
                         static_cast<double>(slot->db_attackrun_heading_last),
                         static_cast<double>(slot->db_attackrun_throttle_last),
-                        static_cast<double>(slot->db_attackrun_alt_last), ranges);
+                        static_cast<double>(slot->db_attackrun_alt_last),
+                        // Packet cc8_dive_race: the two substitutions under test,
+                        // printed so neither is argued from a source constant.
+                        static_cast<double>(slot->plane_climb_angle_1ec),
+                        static_cast<double>(slot->db_attack_dist_b4),
+                        static_cast<double>(slot->db_in_range_b8), ranges);
                 }
                 // Packet cc8_dive_glide: the aimglide release chain
                 // 009C5689-009C5755, per aircraft. blocked[] counts the calls
@@ -8965,6 +9145,52 @@ void GameUnitsHost::report() {
                     slot->db_in_range_d0 ? 1 : 0,
                     slot->db_has_bomb_d1 ? 1 : 0,
                     slot->db_blocked_no_latch, slot->db_blocked_no_bomb);
+                // Packet cc8_dive_entry: the altitude at every hand-over, for
+                // every dive bomber, outside the dive-entry guard below so the
+                // aircraft that never dive are in it too. `cmd` is
+                // plane_commanded_altitude, which only the run-in writes in this
+                // host - 009C6E10-009C6F7D, the flyabove's own altitude command,
+                // is unbound - so a cmd that stops moving across the flyabove is
+                // that gap measured rather than argued.
+                if (slot->db_transition_count > 0) {
+                    char tr[400];
+                    int tn = 0;
+                    tr[0] = '\0';
+                    for (int i = 0; i < slot->db_transition_count; ++i) {
+                        const GameUnitSlot::DbTransition& t =
+                            slot->db_transitions[i];
+                        tn += std::snprintf(tr + tn,
+                            (tn < static_cast<int>(sizeof(tr)))
+                                ? sizeof(tr) - static_cast<std::size_t>(tn) : 0u,
+                            "%s%s>%s@%d alt=%.0f rng=%.0f cmd=%.0f",
+                            i > 0 ? " | " : "",
+                            (t.from >= 0 && t.from < 10)
+                                ? kDiveBombStateNames[t.from] : "?",
+                            (t.to >= 0 && t.to < 10)
+                                ? kDiveBombStateNames[t.to] : "?",
+                            t.tick, static_cast<double>(t.alt),
+                            static_cast<double>(t.range),
+                            static_cast<double>(t.cmd_alt));
+                        if (tn >= static_cast<int>(sizeof(tr))) break;
+                    }
+                    host.log.notef("  divebomb %-12s hand-overs: %s",
+                        slot->row.name.c_str(), tr);
+                }
+                if (slot->db_fa_alt_calls > 0) {
+                    host.log.notef("  divebomb %-12s flyabove altitude "
+                        "009C6E10: calls=%d level_arm=%d | C=%.1f band=%.1f "
+                        "target=%.1f ref=%.3f | err first=%.1f last=%.1f | "
+                        "pitch=%.3f rad",
+                        slot->row.name.c_str(), slot->db_fa_alt_calls,
+                        slot->db_fa_level_ticks,
+                        static_cast<double>(slot->db_fa_limit_c),
+                        static_cast<double>(slot->db_fa_band),
+                        static_cast<double>(slot->db_fa_target_last),
+                        static_cast<double>(slot->db_fa_ref_last),
+                        static_cast<double>(slot->db_fa_err_first),
+                        static_cast<double>(slot->db_fa_err_last),
+                        static_cast<double>(slot->db_fa_pitch_last));
+                }
                 if (slot->db_dive_entry_alt >= 0.0f ||
                     slot->db_release_alt >= 0.0f) {
                     host.log.notef("  divebomb %-12s dive entry alt=%.1f m "
