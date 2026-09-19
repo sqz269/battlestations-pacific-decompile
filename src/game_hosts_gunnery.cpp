@@ -19,6 +19,7 @@
 #include <string>
 #include <vector>
 
+#include "bsp/ai_tuning_globals.hpp"
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_ai.hpp"
 #include "bsp/gun_gravity_arc.hpp"
@@ -560,6 +561,10 @@ void GameGunneryHost::Impl::build_guns() {
                     gun.bullet_class, "MinRange", 0.0f);
                 const bsp::WeaponClassFinaliseResult finalised =
                     bsp::weapon_class_derive_engagement_range(fin);
+                // The hook's other product, which this call already computed and
+                // used to discard: +8h after the 006E9968 rewrite. 009FE270
+                // switches on it for the AI target-weight accuracy.
+                gun.bullet_sub_type = finalised.sub_type;
                 if (finalised.engagement_range > 0.0f) {
                     gun.max_range = finalised.engagement_range;
                     ++summary.bullet_ranges_derived;
@@ -2698,16 +2703,57 @@ void GameGunneryHost::Impl::publish_ai_weapon_facts() {
         // this one IS available; the earlier reading that it was not came from
         // mistaking the muzzle count for a barrel count.
         barrel.shots = gun.barrel_num > 0 ? gun.barrel_num : 1;
-        // 009FE270 at 00A094E6, the per-barrel accuracy against the target, is
-        // the one input with no producer here. It stays zero and the row is NOT
-        // complete; publishing a 1.0f would invent it rather than supply it.
-        barrel.accuracy = 0.0f;
+        // 009FE270 at 00A094E6 is not a stored accuracy: it is a lookup by
+        // (bullet sub-type, target class group) into the AI mode tuning record,
+        // so what the row owes is the selector and the lookup runs per target.
+        // docs/AI_TARGET_WEIGHT_TERMS.md.
+        barrel.bullet_sub_type = gun.bullet_sub_type;
+        {
+            // Resolvable is a property of the sub-type alone: every group of a
+            // resolvable sub-type answers either an offset or a legitimate
+            // zero. Asked with one group here purely to read the flag back.
+            bool resolved = false;
+            (void)bsp::ai_bullet_type_accuracy_offset_009fe270(
+                barrel.bullet_sub_type, bsp::AiAccuracyTargetGroup::BigShip,
+                resolved);
+            barrel.accuracy_resolved = resolved;
+        }
         row.barrels.push_back(barrel);
     }
-    // Nothing is complete yet, for the two reasons above. The flag is set here
-    // rather than in the reader so that the day those two producers land, this
-    // is the only line that changes.
+    // A row is complete when every input 00A08460 reads is published. The
+    // reload and the shot count always are; the accuracy is now reachable for
+    // every sub-type but Rocket (12h), whose small/big split 009FE4F1 makes
+    // through unread target-state predicates. A unit carrying any rocket barrel
+    // therefore stays on the stand-in rather than scoring that barrel at zero.
+    // Vacuously true for a unit with no guns: the barrels are the ATTACKER's
+    // side of 00A08460 and the hit points above are the TARGET's, and the gate
+    // asks both rows, so requiring barrels here would refuse every gunless
+    // target and the model would never run on the static installations that
+    // make up most of IJN01.
     for (GameAiWeaponFacts::Unit& row : facts.units) {
+        // What the row itself now owes IS published: the reload, the shot count
+        // and the bullet sub-type, for every sub-type but Rocket.
+        bool row_inputs_published = true;
+        for (const GameAiWeaponFacts::Barrel& barrel : row.barrels) {
+            if (!barrel.accuracy_resolved) row_inputs_published = false;
+        }
+        // ... and the model is still NOT switched on, for a reason measured
+        // rather than assumed. With `row_inputs_published` assigned straight to
+        // the flag, IJN01 answers a zero weight for 460600 of its 465500
+        // candidates - exactly its `fort_targets` count - so `scored` falls to
+        // 4900 and `attackmove` 2250 and `settarget` 141 both go to 0 with all
+        // 2450 served members taking the fallback moveto. The AI stops
+        // attacking altogether. That is a regression against the stand-in and
+        // it is 00A08460's own coverage, not this row's: its
+        // attacker-is-type-0Fh branch 00A0861F..00A09222 is unprojected and
+        // AiWeightModelBinding::entity_is_type and entity_kind are stubs.
+        //
+        // A first reading blamed the target hit points and was REFUTED by a
+        // second run: gating on `hit_points > 0` left complete_rows at 321 and
+        // changed no other number, so every row has real health.
+        //
+        // One line, and it is this one. docs/AI_TARGET_WEIGHT_TERMS.md.
+        (void)row_inputs_published;
         row.inputs_complete = false;
     }
 }

@@ -8,6 +8,7 @@
 #include <array>
 #include <cmath>
 #include <cstdio>
+#include <functional>
 #include <map>
 #include <memory>
 #include <string>
@@ -140,8 +141,12 @@ namespace {
 // docs/AI_TARGET_WEIGHT_TERMS.md term 2.
 class AiWeightModelBinding final : public bsp::AiTargetWeightModelHost {
 public:
-    AiWeightModelBinding(const GameAiWeaponFacts& facts, const bsp::AiModeTuning& tuning)
-        : facts_(facts), tuning_(tuning) {}
+    // The target group is a callback because 009FE270 asks the target itself,
+    // so the answer cannot be baked into the published row.
+    using TargetGroupFn = std::function<bsp::AiAccuracyTargetGroup(std::size_t)>;
+    AiWeightModelBinding(const GameAiWeaponFacts& facts, const bsp::AiModeTuning& tuning,
+                         const bsp::AiTuningBlock& block, TargetGroupFn group)
+        : facts_(facts), tuning_(tuning), block_(block), group_(std::move(group)) {}
 
     // 00A03B90 and 00A079B0, the memo map at 00F8A734. A memo only caches, so
     // skipping it changes no answer; the census counts the queries instead.
@@ -181,9 +186,21 @@ public:
         const GameAiWeaponFacts::Barrel* b = barrel_at(subsystem, barrel);
         return b != nullptr ? b->shots : 0;
     }
-    float barrel_accuracy(const void* subsystem, int barrel, const void*) override {
+    // 009FE270 at 00A094E6. Not a stored value: the published row carries the
+    // bullet class record's +8h selector and the answer is a lookup into the AI
+    // mode tuning record by (that selector, the target's class group).
+    // docs/AI_TARGET_WEIGHT_TERMS.md.
+    float barrel_accuracy(const void* subsystem, int barrel, const void* target) override {
         const GameAiWeaponFacts::Barrel* b = barrel_at(subsystem, barrel);
-        return b != nullptr ? b->accuracy : 0.0f;
+        if (b == nullptr || !b->accuracy_resolved || !group_) return 0.0f;
+        bool resolved = false;
+        const std::uint32_t offset = bsp::ai_bullet_type_accuracy_offset_009fe270(
+            b->bullet_sub_type, group_(index_of(target)), resolved);
+        // A zero offset is the reject arm, which is a real answer of no
+        // accuracy, and 00A094F5 then skips the barrel exactly as the native
+        // does.
+        if (!resolved || offset == 0u) return 0.0f;
+        return block_.at(offset);
     }
     // 009FE200 at 00A09578 and 00424C40+3B0h at 00A09624, both unread. The
     // falloff keeps the undiminished value and the capture scale stays neutral.
@@ -203,6 +220,8 @@ private:
 
     const GameAiWeaponFacts& facts_;
     const bsp::AiModeTuning& tuning_;
+    const bsp::AiTuningBlock& block_;
+    TargetGroupFn group_;
 };
 
 // 004BCA50 BSP_Game_GetEffectiveGameMode returns [world+614h], remapped by the
@@ -414,6 +433,42 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     // are carried: MaxTargetKillRatio at record +05Ch and DamageCalcTime at
     // +060h (include/bsp/ai_target_weights.hpp). Everything else keeps its
     // default, which is what an unfilled record holds natively too.
+    // 009FE270's target axis, read from arm 009FE2A2 and the torpedo arm
+    // 009FE3F5: PUSH 0Fh the plane base, else PUSH 6 the ship base split by
+    // 00827F70, else the fall-through. PUSH 8, the submarine, is asked first
+    // only by the torpedo arm; everywhere else a submarine is ship-base and not
+    // small surface, which is the same slot this returns for it.
+    //
+    // Labelled substitution on the query family, not on the codes: the native
+    // asks the VEHICLE CLASS descriptor's vtable[+18h] and this asks the
+    // instance's vtable[+5Ch]. The two id spaces coincide - VehicleClassKind in
+    // vehicle_class.hpp and the entity class ids in docs/ENTITY_CLASS_IDS.md
+    // both number ShipBase 6, PlaneBase 0Fh, Submarine 8, LandingShip 0Ch and
+    // TorpedoBoat 0Eh - and both are selected from the same VehicleClass.Type,
+    // so the codes below are the native's. The vtables are not the same vtable.
+    bsp::AiAccuracyTargetGroup accuracy_target_group(std::size_t unit) {
+        if (units.unit_is_kind_of(unit, 0x0F)) {
+            return bsp::AiAccuracyTargetGroup::Plane;
+        }
+        if (units.unit_is_kind_of(unit, 0x06)) {
+            if (units.unit_is_kind_of(unit, 0x08)) {
+                return bsp::AiAccuracyTargetGroup::Submarine;
+            }
+            // 00827F70, read from its bytes: 00827F78 PUSH 0Eh TorpedoBoat,
+            // then 00827F89 PUSH 0Ch LandingShip with 00827F95 requiring the
+            // byte at class+808h, BigLandingShip, to be zero. The two codes are
+            // exact; the +808h byte is the one thing this host does not hold,
+            // so a BIG landing ship is classed small here where the native
+            // would class it big. Labelled.
+            if (units.unit_is_kind_of(unit, 0x0E) ||
+                units.unit_is_kind_of(unit, 0x0C)) {
+                return bsp::AiAccuracyTargetGroup::SmallShip;
+            }
+            return bsp::AiAccuracyTargetGroup::BigShip;
+        }
+        return bsp::AiAccuracyTargetGroup::Other;
+    }
+
     bsp::AiModeTuning mode_tuning_record() const {
         bsp::AiModeTuning record{};
         record.max_target_kill_ratio = tuning.at(0x05Cu);
@@ -936,7 +991,8 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             key.target = handle(target);
             key.target_is_neutral = 0;   // target record +1Ch, no producer here
             const bsp::AiModeTuning record = mode_tuning_record();
-            AiWeightModelBinding model(facts, record);
+            AiWeightModelBinding model(facts, record, tuning,
+                [this](std::size_t unit) { return accuracy_target_group(unit); });
             in.base_weight = bsp::ai_target_weight_00a08460(model, key);
             ++summary.weight_model_runs;
         } else {
@@ -2036,11 +2092,21 @@ void GameAiCoordinatorHost::report() {
         "(00923BE0's +5Dh arm; the fraction unit+370h/unit+36Ch has no producer here, so a live "
         "candidate takes the full-health 1.0 and slot D is 1.0)",
         host.summary.weight_torn_down_targets);
-    host.log.notef("summary mission ai target weight base model_runs=%llu class_stand_ins=%llu "
-        "weapon_rows=%zu (00A08460 runs when the weapon-facts table carries a row for both the "
-        "attacker and the target; one publish call from the gunnery host fills it)",
-        host.summary.weight_model_runs, host.summary.weight_class_stand_ins,
-        game_ai_weapon_facts().known_units());
+    {
+        // A row is incomplete only when it carries a Rocket barrel, whose
+        // small/big split 009FE4F1 makes through unread target-state
+        // predicates, so the gap between the two counts is the rocket cost.
+        std::size_t complete = 0;
+        for (const GameAiWeaponFacts::Unit& row : game_ai_weapon_facts().units) {
+            if (row.known && row.inputs_complete) ++complete;
+        }
+        host.log.notef("summary mission ai target weight base model_runs=%llu "
+            "class_stand_ins=%llu weapon_rows=%zu complete_rows=%zu (00A08460 runs when the "
+            "weapon-facts table carries a COMPLETE row for both the attacker and the target; "
+            "an incomplete row is one with a Rocket barrel, sub-type 12h)",
+            host.summary.weight_model_runs, host.summary.weight_class_stand_ins,
+            game_ai_weapon_facts().known_units(), complete);
+    }
     for (const GameAiPartyRow& row : host.parties) {
         host.log.notef("  ai party %d record=%d ai_enabled=%d brain=%d thinks=%llu "
             "claims=%llu planner_ticks=%llu attacks=%llu commands=%llu refused=%llu",

@@ -86,6 +86,11 @@ struct AiTuningKey {
 };
 
 inline constexpr std::size_t kAiTuningKeyCount = 33;
+
+// +110h..+18Ch inclusive, the BulletTypeAccuracy block.
+inline constexpr std::uint32_t kAiTuningBulletTypeAccuracyBase = 0x110u;
+inline constexpr std::uint32_t kAiTuningBulletTypeAccuracyLast = 0x18Cu;
+inline constexpr std::size_t kAiTuningBulletTypeAccuracyCount = 32;
 const AiTuningKey* ai_tuning_keys() noexcept;
 
 // The block, addressed by record offset. Every slot outside the reconstructed
@@ -155,6 +160,44 @@ struct AiTuningAuthoredRow {
 // The twenty per-class weight offsets, in record order.
 inline constexpr std::uint32_t kAiTuningClassWeightBase = 0x000u;
 inline constexpr std::size_t kAiTuningClassWeightCount = 20;
+
+// 00A335D0 reads this block with push_index rather than the flat
+// GetFloatOrDefault path the keys above take, because every entry but
+// DepthCharge and Paratroopers is a Lua array element. It therefore gets its
+// own loader rather than 36 contrived leaf key names.
+// docs/AI_TARGET_WEIGHT_TERMS.md.
+void ai_tuning_load_bullet_type_accuracy_00a335d0(AiTuningMode mode,
+                                                  AiTuningBlock& out) noexcept;
+
+// +05Ch MaxTargetKillRatio and +060h DamageCalcTime, the `AttackerVSTarget`
+// pair 00A08460 itself reads. They are not in the 33-key subset, and
+// DamageCalcTime is the numerator of every barrel's time factor
+// (ai_barrel_time_factor), so leaving them at the unloaded zero would make the
+// model answer zero for every pair and collapse candidate admission. Both are
+// uniform across the seven mode tables.
+inline constexpr std::uint32_t kAiTuningMaxTargetKillRatio = 0x05Cu;
+inline constexpr std::uint32_t kAiTuningDamageCalcTime = 0x060u;
+void ai_tuning_load_attacker_vs_target_00a335d0(AiTuningMode mode,
+                                                AiTuningBlock& out) noexcept;
+
+// The target axis 009FE270 selects with its vtable[+18h] queries. The Lua
+// per-row comment `Repulore/Kishajora/Nagyhajora/Landfortra` names indices
+// 1..4; `Submarine` is the extra first test only the Torpedo arm makes
+// (`009FE3FA PUSH 8`), and `Other` is the fall-through, which is everything
+// that answers neither the plane base nor the ship base rather than a landfort
+// specifically.
+enum class AiAccuracyTargetGroup { Plane, Submarine, SmallShip, BigShip, Other };
+
+// 009FE270's dispatch as a pure function: the bullet sub-type at the class
+// record's +8h and the target group, to the tuning record offset the matching
+// arm reads. Answers 0 when that pair has no accuracy, which is the reject arm
+// 009FE6BB, the out-of-range check at 009FE28E, or an arm that rejects this
+// group. `resolved` distinguishes "no accuracy" from "this packet cannot say":
+// it is false only for the Rocket sub-type, whose small/big split is a
+// target-state chain through 006E3260, 007B80A0 and 007B80C0 that is not read.
+std::uint32_t ai_bullet_type_accuracy_offset_009fe270(int sub_type,
+                                                      AiAccuracyTargetGroup group,
+                                                      bool& resolved) noexcept;
 
 const AiTuningAuthoredRow* ai_tuning_authored_row(AiTuningMode mode) noexcept;
 
