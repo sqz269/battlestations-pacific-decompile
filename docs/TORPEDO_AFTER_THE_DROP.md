@@ -1127,3 +1127,27 @@ the option is on the table rather than rediscovered.
 Section 9's conclusion is unchanged: the decrement as written is wrong and stays reverted. What
 changes is the reason, and the reason matters because it says the byte is an **aim hold**, not a
 retire signal.
+
+### 8.2.1 Correction: the Destroyer Length was in the log, on a line I did not find
+
+Section 8.2 left Dunlap's Length blank and said it was "not in this run's log". **It was.**
+`local/closest_approach_usn01.log` line 1377 prints `unit hull input unit=Dunlap type_id=309 kind=7
+length=110 width=10`, from the class data the gunnery host reads at
+`src/game_hosts_gunnery.cpp:513` (`flat_scaled(type_id, "length", ...)`). My searches were for
+`Length` and for `key=Destroyer`; the line spells it lowercase and carries neither. Recorded because
+"not in the log" is a claim about a search, not about a log.
+
+| torpedo | nearest | Length | half-Length | beam | closest approach | fraction of half-Length |
+| --- | --- | --- | --- | --- | --- | --- |
+| Mav1 | Dunlap | **110 m** | 55 m | 10 m | 51.5 m | **0.94** |
+| Mav4 | SaltLakeCity | 180 m | 90 m | 16 m | 76.8 m | 0.85 |
+| Mav5 | SaltLakeCity | 180 m | 90 m | 16 m | 67.9 m | 0.75 |
+
+Northampton and SaltLakeCity are `length=180 width=16` (lines 1364 and 1379), confirming from the
+class data what section 8.2 had quoted from the hydrodynamics line.
+
+All three passes are **inside the target's along-track envelope**, and Mav1's is at 0.94 of it -
+against a 5 m half-beam. That sharpens section 8.2's point rather than settling it: 51.5 m from the
+centre of a 110 by 10 metre hull is either a clean miss abeam by some forty-six metres, or a pass
+through the bow or stern line, and the crossing angle the section 8.1 census now records is the only
+thing that can say which.
