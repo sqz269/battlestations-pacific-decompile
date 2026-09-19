@@ -424,6 +424,13 @@ struct GameUnitSlot {
     // 009C62B0's and 009C5180's heading arms.
     int db_flyabove_tick_ticks{0};
     int db_aimglide_tick_ticks{0};
+    // 009FBA50's terms, sampled through the run-in.
+    float db_cruise_span[8]{};
+    float db_cruise_gain[8]{};
+    float db_cruise_scale[8]{};
+    float db_cruise_base[8]{};
+    float db_cruise_clamped[8]{};
+    int db_cruise_samples{0};
     int db_goaway_tick_ticks{0};
     float db_goaway_pitch_last{0.0f};
     // The goaway state's OWN +20h. 009C7F00's completion rule reads the goaway
@@ -4590,6 +4597,24 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         const bsp::PlaneCruiseAltitudeResult c =
                             bsp::cruise_altitude_command_009fba50(cin);
+                        // Instrumentation, not a rule. The 009FBA50 fix came back
+                        // byte-identical and two inferences about why have already
+                        // been wrong - class_gain being zero, and a -List search
+                        // that claimed no aircraft carries DropAngle - so these
+                        // terms get measured rather than guessed at again.
+                        if (unit_.db_cruise_samples < 8 &&
+                            unit_.db_attackrun_ticks >=
+                                (unit_.db_cruise_samples + 1) * 120) {
+                            const int i = unit_.db_cruise_samples;
+                            unit_.db_cruise_span[i] =
+                                (cin.range_high > cin.range_low)
+                                    ? cin.range_high - cin.range_low : 0.0f;
+                            unit_.db_cruise_gain[i] = cin.class_gain;
+                            unit_.db_cruise_scale[i] = cin.scale;
+                            unit_.db_cruise_base[i] = cin.base_altitude;
+                            unit_.db_cruise_clamped[i] = c.clamped_altitude;
+                            ++unit_.db_cruise_samples;
+                        }
                         bsp::PlanePitchCommandInputs pin;
                         pin.desired_altitude = c.clamped_altitude;
                         pin.reference = c.pitch_reference;  // 009FBB06, not the altitude
@@ -7562,6 +7587,28 @@ void GameUnitsHost::report() {
                         static_cast<double>(slot->db_aimdive_bearing_last),
                         static_cast<double>(slot->db_flyabove_height),
                         static_cast<double>(slot->db_flyabove_span));
+                // 009FBA50's own terms, to settle why correcting its arguments
+                // changed nothing observable.
+                if (slot->db_cruise_samples > 0) {
+                    char ct[320];
+                    int cn = 0;
+                    ct[0] = '\0';
+                    for (int i = 0; i < slot->db_cruise_samples; ++i) {
+                        cn += std::snprintf(ct + cn,
+                            (cn < static_cast<int>(sizeof(ct)))
+                                ? sizeof(ct) - static_cast<std::size_t>(cn) : 0u,
+                            "%s%.0f/%.3f/%.3f/%.0f/%.0f", i > 0 ? " " : "",
+                            static_cast<double>(slot->db_cruise_span[i]),
+                            static_cast<double>(slot->db_cruise_gain[i]),
+                            static_cast<double>(slot->db_cruise_scale[i]),
+                            static_cast<double>(slot->db_cruise_base[i]),
+                            static_cast<double>(slot->db_cruise_clamped[i]));
+                        if (cn >= static_cast<int>(sizeof(ct))) break;
+                    }
+                    host.log.notef("  divebomb %-12s 009FBA50 terms "
+                        "span/gain/scale/base/clamped per 120 attackrun ticks: %s",
+                        slot->row.name.c_str(), ct);
+                }
                 // The aim trace: what the endpoint numbers cannot say.
                 if (slot->db_aim_state_ticks > 0) {
                     char trace[320];
