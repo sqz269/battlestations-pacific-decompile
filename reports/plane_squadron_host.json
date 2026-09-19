@@ -160,8 +160,8 @@
   {
    "what": "what stops the first torpedo run-in",
    "was": "the empty member array",
-   "is": "the approach: aim_ticks=0 with min == last on all five Mavs, so no aim stage ran, the release timer 009FA3A0 was never armed at 009D2287, nothing dropped and unit+C20h stayed 0. A squadron with real members is necessary for 007EEF30 to have anyone to issue to and is not sufficient to open the gate",
-   "evidence": "local/sqn_before_usn01.log approach rows; src/game_hosts_units.cpp:924 is the only raiser of C20h and its callers are the release paths"
+   "is": "the approach and one unread gate: aim_ticks=0 with min == last on all five Mavs, so no aim stage ran and the release timer 009FA3A0 was never armed at 009D2287; the other route into the raise, request_ordnance_release at 009D4956, is gated on 009D4923 which this host hard-codes to false and labels contract. Nothing dropped, unit+C20h stayed 0 and the release-order broadcast was never entered. A squadron with real members is necessary for 007EEF30 to have anyone to issue to and is not sufficient to open the gate. 007BBC00 is not a function: a rel32 callsite census finds zero calls to it and 34 to 007BBBA0, whose body contains it as the store past every early exit",
+   "evidence": "local/sqn_before_usn01.log approach rows; src/game_hosts_units.cpp:924 is the only raiser of C20h; python tools/callsite_census.py 0x007bbc00 and 0x007bbba0"
   },
   {
    "what": "the census multiplier for USN01",
@@ -182,8 +182,94 @@
    "evidence": "python tools/bsp.py ghidra disasm 007f2c60"
   }
  ],
- "runs": [],
+ "censuses": [
+  {
+   "what": "stores to squadron+390h",
+   "tool": "python tools/store_census.py 0x390",
+   "result": "39 sites over twelve store forms in disp8 and disp32; the only float store on an object built at run time is 0079CD36, and that object is the 0x410 allocation at 0079CC2D in FUN_0079CBD0, not the 0x414 squadron. Not covered: a 16-byte MOVAPS/MOVUPS store reaching +390h from +384h or +388h"
+  },
+  {
+   "what": "stores to plane+9D4h",
+   "tool": "python tools/store_census.py 0x9d4",
+   "result": "10 writers, all in the plane/squadron band: 007CDF6C, 007CFE6C, 007D68D5, 007D694B, 007ECE68, 007ECE80, 007ED0E6, 007ED21A, 007F3A07, 007F4B49. FUN_0079CBD0's chain is not among them, which is what proves its 0x410 object never becomes 007EEF30's receiver"
+  },
+  {
+   "what": "callsites of the release-order chain",
+   "tool": "python tools/callsite_census.py",
+   "result": "007BBC00 has 0 (it is a store inside 007BBBA0, not a function); 007BBBA0 has 34, every one a release decision; 007C0D90 has 1 (007CEA8D in 007CE040's issue stage); 007EEF30 has 1 (007C0F01 in 007C0D90). The release-order broadcast is unreachable until some aircraft has already requested a release"
+  }
+ ],
+ "runs": [
+  {
+   "mission": "USN01",
+   "command": "./tools/run_game.ps1 -Log local\\sqn_<before|after>_usn01.log -- --frames 3200 --press-start-frame 30 --menu-select USN01 --mission-frames 3000 --mission-frame-seconds 0.05",
+   "session": "console Active",
+   "before_commit": "b00c3cd24",
+   "before": {
+    "scene_class_18h_seen_created": "20 / 5",
+    "authored_wing_count": "1 each",
+    "member_aircraft": 5,
+    "world_units": 62,
+    "ai_squadrons": "5 over 5",
+    "pilot_set_target_ordered": 5,
+    "mav1_approach": "ticks=124 replans=13 aim_ticks=0 min=3928.5 last=3928.5",
+    "mav1_issue_stage_007ce9fd": "stage_ticks=3000 waiting=3000 issues=0 requests_007BBBA0=0 C20h_left=0 C28h=-150.005",
+    "mav1_issue_gate_007eef40": "ctl+390h=0.0000 ctl+374h=0.0000 open=0 (unevaluated)",
+    "exitcode": 0,
+    "host_methods_concrete": 740
+   },
+   "after": {
+    "scene_class_18h_seen_created": "20 / 5",
+    "member_aircraft": 5,
+    "world_units": 62,
+    "ai_squadrons": "5 over 5",
+    "pilot_set_target_ordered": 5,
+    "fan_out_007ecf80": "+3CCh=1 -> 0 wingman task(s), five times",
+    "mav1_approach": "identical",
+    "mav1_issue_stage_007ce9fd": "identical",
+    "mav1_issue_gate_007eef40": "identical",
+    "exitcode": 0,
+    "host_methods_concrete": 741
+   },
+   "note": "nothing moves, and that is the expected answer: USN01's five created squadrons are the five one-wing Mavis rows"
+  },
+  {
+   "mission": "USN04",
+   "command": "./tools/run_game.ps1 -Log local\\sqn_<before|after>_usn04.log -- --frames 5000 --press-start-frame 30 --menu-select USN04 --mission-frames 4800 --mission-frame-seconds 0.05",
+   "session": "console Active",
+   "before_commit": "b00c3cd24",
+   "before": {
+    "scene_class_18h_seen_created": "2 / 1 (movieval)",
+    "authored_wing_count": 3,
+    "world_units_after_load": 19,
+    "air_ops_launches": "4, wing=3 each",
+    "units_per_launch": 1,
+    "world_units_final": 23,
+    "squadrons_over_member_aircraft": "5 / 5",
+    "ai_squadrons": "5 over 5",
+    "pilot_set_target_ordered": 1,
+    "exitcode": 0
+   },
+   "after": {
+    "scene_class_18h_seen_created": "2 / 1 (movieval)",
+    "world_units_after_load": 21,
+    "air_ops_launches": "4, wing=3 each",
+    "units_per_launch": 3,
+    "world_units_final": 33,
+    "squadrons_over_member_aircraft": "5 / 15",
+    "ai_squadrons": "15 over 15, the double count recorded under open",
+    "pilot_set_target_ordered": 3,
+    "fan_out_007ecf80": "squadron=movieval +3CCh=3 -> 2 wingman task(s)",
+    "pilot_attack_means": "unchanged: the three wings fly one trajectory because 007F4813 has no per-wing offset and this host has no formation model",
+    "exitcode": 0
+   }
+  },
+  {
+   "gate": "007EEF40 did not open in either mission, before or after, and this packet did not expect it to. No drop, water entry, breakup or swim was produced, so there is nothing to report under those headings"
+  }
+ ],
  "open": [
+  "src/game_hosts_ai.cpp build_squadrons now double-counts: it seeds one AI squadron per unit answering IsKindOf(0Fh), so every wingman becomes its own candidate, which its own unit_owned_by_squadron comment says must not happen. The fix is to skip a wingman (plane_squadron_registry().find_by_member_unit(unit) whose flight_leader() is not that unit) and to take the leader's member array and +3C8h from the registry. That file is leased to agent/cc8-ai-squadron; the change was sent to its owner rather than made here",
   "squadron+390h has no located producer; docs/PLANE_SQUADRON.md bounds the negative and names the sibling 0079CD36 so it is not adopted",
   "src/game_hosts_units.cpp: +378h must pass the constructed 1, and is_flight_member must read bsp::plane_squadron_registry() rather than the torpedo ordnance mask",
   "007ED0D0 BSP_PlaneSquadron_InsertPlaneSorted and 007D5D20 BSP_Plane_ReadPropertyBag are two further producers of plane+9D4h, both contract: unread",

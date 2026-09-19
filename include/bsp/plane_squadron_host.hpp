@@ -94,6 +94,12 @@ struct PlaneSquadronHostRecord {
     std::int32_t type_class_id{0};     // the `Type` the wing was built from
     int party{-1};
     bool from_air_ops_launch{false};   // 006C5050 rather than a scene row
+    // +378h, the force flag 007EEF62 tests before it consults 007B8AD0.
+    // 007F2D1E seeds it SET, so a squadron that has not been through 007ED3C0
+    // raises a release order for every member unconditionally. `release_orders_
+    // clear_007ed3c0` is reconstructed and nothing in this host calls it,
+    // because its caller is unlocated, so the flag stays set here. Labelled.
+    bool force_flag_378{true};
     // The squadron entity itself. This process fuses no unit into it: the
     // squadron is its own slot, and every member below is a separate one.
     std::size_t squadron_unit{kPlaneSquadronNoUnit};

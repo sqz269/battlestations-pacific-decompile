@@ -2117,7 +2117,7 @@ void GameSceneContentsHost::run_load_scene_contents_004d4df0(const std::string& 
     // The wings 007F4580 spawned, flushed after the census loops so the scene
     // tallies stay a count of scene rows: a member plane is not a scene entity,
     // it is what a scene entity's slot-39 attach made.
-    if (!impl.pending_squadron_members.empty()) {
+    if (bsp::plane_squadron_registry().size() != 0) {
         const std::size_t before = impl.entities.size();
         impl.entities.insert(impl.entities.end(),
             std::make_move_iterator(impl.pending_squadron_members.begin()),

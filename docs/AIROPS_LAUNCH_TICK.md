@@ -558,3 +558,29 @@ None. Every address in this document is a function Ghidra has.
 
 Built with `./scripts/build.ps1`; both ctest suites pass. The measured section below is the USN04
 run.
+
+## Correction: the one-plane stand-in for a launched squadron is gone
+
+Packet `cc8_plane_squadron_host`.
+
+* **was**: section 7's labelled substitution - "what is created here is ONE unit of the slot's own
+  class, a plane, standing for the squadron, and the deck reports the authored `WingCount` as its
+  live plane count"; the wingmen were not created.
+* **is**: `create_air_ops_squadron_006c5050` now builds the squadron record and one record per extra
+  wing as a single batch and hands them to `create_units` in one call, so a launched squadron holds
+  `WingCount` real plane units named by `007F4926` / `007F49EF`. `air_ops_squadron_plane_count`
+  reports the real `+3CCh` - the number of entries in the squadron's `+3D0h` array whose unit is
+  still active - instead of the authored wing.
+* **evidence**: `docs/PLANE_SQUADRON_HOST.md`, and the before and after columns of USN04 there.
+
+Two things about section 7 stand unchanged and are worth restating so they are not re-litigated.
+The squadron the script sees is still ONE entity with one integer entity id: the `squadron` key in
+`push_air_ops_slot_entry` is that id and not a table, because five script readers do
+`thisTable[tostring(id)]`. And the launch is still airborne over the home base rather than off the
+deck through the taxi and catapult paths, which remain `contract: unread`; every wing takes the
+squadron's own frame, because `007F4813` has no per-wing offset - the formation spacing belongs to
+the pilot bot.
+
+What this host still fuses is the container with its flight leader: the unit carrying the squadron's
+own name is wing 0 rather than a separate `0x414` object. `docs/PLANE_SQUADRON_HOST.md` section 1
+states that substitution and why it is the design here.

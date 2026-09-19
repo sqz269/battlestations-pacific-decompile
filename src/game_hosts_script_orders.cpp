@@ -413,6 +413,11 @@ std::uint32_t GameScriptOrdersHost::create_air_ops_squadron_006c5050(
 // and not of result. docs/AIROPS_LAUNCH_TICK.md.
 void GameScriptOrdersHost::run_air_ops_update_006cdc70(float step) {
     if (!(step > 0.0f)) return;
+    // The squadron table's +3D0h array holds names until create_units has made
+    // the units; this is the per-frame pass that keeps it current for a mission
+    // that never calls PilotSetTarget. It returns at once unless the unit count
+    // has moved.
+    resolve_plane_squadron_members();
     // A squadron whose unit is gone is what 007F1B70 hands 006C65B0. This process
     // has no destruction path that calls it, so the reader's own zero is the
     // signal and the release runs here, once, for each slot still holding it.
@@ -465,13 +470,25 @@ std::int32_t GameScriptOrdersHost::air_ops_squadron_plane_count(
     std::uint32_t squadron) const noexcept {
     for (const AirOpsSquadron& made : squadrons_) {
         if (made.entity_id != squadron || squadron == 0u) continue;
-        // entity+3CCh is the squadron's live plane count. The stand-in reports the
-        // authored wing while the unit it was made for is still active and zero
-        // once it is not, which is what makes the tick's own arithmetic and
-        // 006C65B0's release agree.
-        const GameUnitRow* row = units_.unit_row(made.unit_index);
-        if (row == nullptr || !row->active) return 0;
-        return made.wing_count;
+        // entity+3CCh is the squadron's live plane count, and since packet
+        // cc8_plane_squadron_host the squadron has real members: the count is the
+        // number of entries in its +3D0h array whose unit is still active, which
+        // is what 007F3970's compaction leaves behind. The authored wing is no
+        // longer reported in its place.
+        const bsp::PlaneSquadronHostRecord* record =
+            bsp::plane_squadron_registry().find(made.name);
+        if (record == nullptr) {
+            const GameUnitRow* row = units_.unit_row(made.unit_index);
+            if (row == nullptr || !row->active) return 0;
+            return made.wing_count;
+        }
+        std::int32_t live = 0;
+        for (std::size_t member : record->member_units) {
+            if (member == bsp::kPlaneSquadronNoUnit) continue;
+            const GameUnitRow* row = units_.unit_row(member);
+            if (row != nullptr && row->active) ++live;
+        }
+        return live;
     }
     return 0;
 }
@@ -879,6 +896,15 @@ int GameScriptOrdersHost::run_pilot_set_target(GameScriptOrderRow& row) {
             bsp::plane_squadron_registry().find_by_member_unit(row.unit_index);
         std::size_t fanned = 0;
         if (squadron != nullptr) {
+            // entity_issue_command writes the outcome onto the binding row, and
+            // the row belongs to the call the script made, which named the
+            // leader. Keep the leader's outcome and let the wingmen's show up in
+            // the summary counters and the fan-out line below.
+            const std::string leader_command = row.command;
+            const std::string leader_target = row.target;
+            const bool leader_issued = row.issued;
+            const bool leader_reached = row.reached_director;
+            const std::string leader_blocked = row.blocked;
             for (std::size_t slot = 0; slot < squadron->member_units.size(); ++slot) {
                 const std::size_t member = squadron->member_units[slot];
                 if (member == bsp::kPlaneSquadronNoUnit) continue;
@@ -896,6 +922,11 @@ int GameScriptOrdersHost::run_pilot_set_target(GameScriptOrderRow& row) {
                     ++fanned;
                 }
             }
+            row.command = leader_command;
+            row.target = leader_target;
+            row.issued = leader_issued;
+            row.reached_director = leader_reached;
+            row.blocked = leader_blocked;
             log_.notef("  PilotSetTarget fan-out 007ECF80: squadron=%s +3CCh=%d "
                 "-> %zu wingman task(s) beside the leader %s",
                 squadron->name.c_str(), squadron->live_count(), fanned,

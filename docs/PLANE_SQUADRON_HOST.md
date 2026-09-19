@@ -69,7 +69,7 @@ One row per native call site. `contract: unread` is stated where it applies.
 | `007F4811` | `007F4580` | `create_plane_instance` | factory; `0` | a member plan, which becomes a unit when `create_units` runs |
 | `007F48BA`/`007F48D2` | `007F4580` | `place_plane_in_world` | plane; parent, world node, matrix | records which arm was taken; the frame itself is the squadron's, which is what `007F48C9 LEA ECX,[ESI+74h]` passes |
 | `007F48D6`/`007F48FD` | `007F4580` | `clone_spawn_descriptor_00922de0` | `0Ch` block; `squadron+C0h` | the same bag is carried to every member record, which is the sharing the clone produces |
-| `007F492F`/`007F49F8`/`007F4A32`/`007F4A47` | `007F4580` | `set_plane_name` | squadron name; suffix | `<squadron>|` or `<squadron>|.-<i+1>`, from `squadron_plane_name_suffix_007f4926`. `007F4926` and `007F49EF` are the PUSHes of the two suffix literals; the calls are the addresses in this row |
+| `007F492F`/`007F49F8`/`007F4A32`/`007F4A47` | `007F4580` | `set_plane_name` | squadron name; suffix | `<squadron>` plus the separator, or `<squadron>` plus the separator, `.-` and `<i+1>`, from `squadron_plane_name_suffix_007f4926`. `007F4926` and `007F49EF` are the PUSHes of the two suffix literals; the calls are the addresses in this row |
 | `007F4B43`..`007F4B6E` | `007F4580` | `plane_squadron_attach_plane_007f4b43` | squadron; plane | the spawn stamp, the array slot, `+3CCh` and `+3ECh` |
 | `007ECF80` | vtable `+128h` | the fan-out in `run_pilot_set_target` | squadron; the chosen command | one `entity_issue_command` and one `0099A170` install per wingman |
 
@@ -95,17 +95,39 @@ authored data. They are corrected here rather than quietly worked around.
 
 ### 4.2 What actually stops the first torpedo run-in is the approach, not the member array
 
-`unit+C20h` is raised in exactly one place in this host, `release_ordnance_007bbba0`, and its three
-callers are the device release path and the torpedo task's release timer `009FA3A0`, which
-`009D2287` arms **after** the aim stage. The USN01 before column reads `aim_ticks=0` on all five
-Mavs with `min == last` on every approach, so no aim stage ran, no release timer was armed, nothing
-dropped, `C20h` stayed 0 and the release-order broadcast was never entered.
+`unit+C20h` is raised in exactly one place in this host, `release_ordnance_007bbba0`, and it has
+three callers there:
 
-In the image the same shape holds: `007BBC00`'s callers are `007BBBA0`'s callers. The release-order
-broadcast is what a plane that has just dropped tells its flight-mates; it is not what starts a
-torpedo run. So **a squadron with real members is necessary for `007EEF30` to have anyone to issue
-to, and is not sufficient to open the gate**. This packet does not claim the first torpedo run-in,
-and the blocker belongs to whoever owns the approach `009D3420`.
+| caller | what it needs | what the run says |
+| --- | --- | --- |
+| the torpedo task's release timer `009FA3A0` | `009D2287` arms it **after** the aim stage | `aim_ticks=0` on all five Mavs, so it was never armed |
+| `request_ordnance_release` (the device path, `009D4956`) | `manual_release_requested` at `009D4923`, which this host hard-codes to `false` and labels `contract` | never true |
+| the dive-bomb release | not a torpedo aircraft's path | — |
+
+So no aim stage ran, no release timer was armed, nothing dropped, `C20h` stayed 0 and the
+release-order broadcast was never entered.
+
+The same shape holds in the image, and it is exhaustive rather than inferred. Rel32 callsite
+censuses over `.text` (`python tools/callsite_census.py`):
+
+| routine | callsites |
+| --- | --- |
+| `007BBC00` | **0** - it is not a function. It is the store `ADD dword [ECX+C20h],EBX` inside `007BBBA0`'s body, past every early exit |
+| `007BBBA0` | 34, every one of them a release decision: `009FA3D0` in `BSP_ReleaseTimer_Tick`, `009D4956` in `BSP_BotTaskTorpedo_TickArm`, `009D26F8`/`009D2938`/`009D29CB` in the torpedo prepare states, `009C5777`/`009C60F1`/`009C88C4` in the dive-bomb states, and so on |
+| `007C0D90` | **1**: `007CEA8D` in `007CE040 BSP_PlaneTickElement_FixedStep`, the issue stage, which reaches it only when `unit+C20h > 0` |
+| `007EEF30` | **1**: `007C0F01` in `007C0D90` |
+
+So in the image too the release-order broadcast is unreachable until some aircraft has already
+requested a release. It is what a plane that has just dropped tells its flight-mates; it is not what
+starts a torpedo run. **A squadron with real members is necessary for `007EEF30` to have anyone to
+issue to, and is not sufficient to open the gate.**
+
+The USN01 rows say the same from the other end: `orders: ... arm_offers=0 blocked_0099af53=124` and
+`prepare window: first_prepare_at_arm_tick=-1 first_blocked_no_order_at_arm_tick=1`. Each Mav's own
+prepare stage is waiting for a release order, and with a one-wing squadron there is no flight-mate
+to have dropped first. This packet does not claim the first torpedo run-in; the blocker is the
+approach `009D3420` (which never reaches the aim stage, so `009D2287` never arms the release timer)
+and the unread `009D4923`, and both belong to other streams.
 
 ### 4.3 USN01's aircraft census does not move, because its five squadrons are one-wing
 
@@ -145,15 +167,102 @@ Every column is from one binary. The before columns are `b00c3cd24` (this worktr
 three same-day baseline moves `0daec4b56`, `bb9123bc5` and `67e8ac821`+`6b0a12422` all already in
 it); the after columns are this packet's tree.
 
-_(filled in below)_
+### USN01, `--frames 3200 --press-start-frame 30 --mission-frames 3000 --mission-frame-seconds 0.05`
+
+`local/sqn_before_usn01.log`, `local/sqn_after_usn01.log`. `query session` was `console Active` before
+both runs.
+
+| | before | after |
+| --- | --- | --- |
+| `PlaneSquadronGen` scene rows seen / created | 20 / 5 | 20 / 5 |
+| authored `WingCount` of the five created | `" 1"` each | `" 1"` each |
+| member aircraft | 5 | 5 |
+| world units | 62 | 62 |
+| AI squadrons (`build_squadrons`) | 5 over 5 | 5 over 5 |
+| `PilotSetTarget` ordered | 5 | 5 |
+| fan-out `007ECF80` | - | `+3CCh=1 -> 0 wingman task(s)`, five times |
+| Mav1 approach `009D3420` | `ticks=124 replans=13 aim_ticks=0 min=3928.5 last=3928.5` | identical |
+| Mav1 `orders` | `arm_offers=0 blocked_0099af53=124 peak_C58h=0` | identical |
+| Mav1 issue stage `007CE9FD` | `stage_ticks=3000 waiting=3000 issues=0 requests_007BBBA0=0 C20h_left=0 C28h=-150.005` | identical |
+| Mav1 issue gate `007EEF40` | `ctl+390h=0.0000 ctl+374h=0.0000 open=0` (unevaluated) | identical |
+| gunnery | `queued_hits=10 total_damage=326.1 first_hit=58.65 s` | identical |
+| pilot attack | `ordered=5 range_first_mean=4174.3 closed_mean=368.1` | identical |
+| `EXITCODE` | 0 | 0 |
+| host methods | 740 concrete | 741 concrete |
+
+**Nothing moves, and that is the expected answer for this mission.** Its five created squadrons are
+the five one-wing Mavis rows (section 4.3), so the wing loop makes one plane each and the fused
+leader is that plane. The one new host method is `PlaneSquadron::spawn_planes 007f4580`. The
+fan-out line is the evidence that the squadron table is live and that `+3CCh` is 1 rather than 0.
+
+### USN04, `--frames 5000 --press-start-frame 30 --mission-frames 4800 --mission-frame-seconds 0.05`
+
+`local/sqn_before_usn04.log`, `local/sqn_after_usn04.log`.
+
+| | before | after |
+| --- | --- | --- |
+| `PlaneSquadronGen` scene rows seen / created | 2 / 1 (`movieval`) | 2 / 1 |
+| authored `WingCount` | 3 | 3 |
+| world units after the scene load | 19 | **21** |
+| air-ops launches | 4, `wing=3` each | 4, `wing=3` each |
+| units created per launch | 1 | **3** |
+| world units at the end | 23 | **33** |
+| squadrons / member aircraft | 5 / 5 | 5 / **15** |
+| AI squadrons (`build_squadrons`) | 5 over 5 | **15 over 15** - the double count of section 6 |
+| `PilotSetTarget` ordered | 1 | **3** |
+| fan-out `007ECF80` | - | `squadron=movieval +3CCh=3 -> 2 wingman task(s)` |
+| pilot attack means | `range_first_mean=11109.9 range_last_mean=1934.1 closed_mean=9175.9` | identical |
+| gunnery | `queued_hits=16 total_damage=0.0 first_hit=190.71 s` | identical |
+| `EXITCODE` | 0 | 0 |
+
+The unit arithmetic is exact: 18 non-squadron units plus `movieval`'s three wings is 21, and four
+launches of three is 33. The count rises by ten, which is the sum of the authored wing counts less
+the five stand-ins they replace.
+
+The three members of `movieval` fly identical attack runs -
+`divebomb movieval|.-2` and `movieval|.-3` both report `attackrun 009C4220 ticks=1527 rerolls=153`,
+`dive entry alt=650.9 m`, `aim error 009C5C9B=-1689.72 m closest=374.9` - which is why the pilot
+attack means are unchanged with three aircraft ordered instead of one. That is the expected result
+and not a defect of the spawn: `007F4813` has no per-wing offset, `docs/PLANE_SQUADRON.md` section 4
+records that the formation spacing belongs to the pilot bot rather than to the spawn, and this host
+has no formation model, so three wings placed on one frame with one order fly one trajectory. The
+aircraft are distinct units with distinct names, world registrations and tasks; only their motion
+coincides.
+
+### The gate
+
+`007EEF40` did not open in either mission, before or after, and this packet did not expect it to.
+Section 4.2 is why: the broadcast is unreachable until an aircraft has already requested a release,
+and neither of the two routes into `007BBBA0` fires here. No torpedo run-in, no drop, no water entry
+and no breakup or swim was produced by either run, so there is nothing to report under those
+headings.
 
 ## 6. Open, by address
 
+* **`src/game_hosts_ai.cpp`, `build_squadrons` (around line 2155): the AI layer now double-counts.**
+  It seeds one `Squadron` per unit answering `IsKindOf(0Fh)`, and its own comment above
+  `unit_owned_by_squadron` says a plane a squadron owns must not be an AI candidate of its own
+  because "keeping both in a group double-orders the same aircraft". Now that wingmen exist, every
+  wingman becomes its own one-member AI squadron and its own candidate. The fix is to skip a plane
+  that is a wingman of a real squadron (`plane_squadron_registry().find_by_member_unit(unit)` whose
+  `flight_leader()` is not that unit) and to take the leader's member array and `+3C8h` from the
+  registry instead of attaching only itself. That file is leased to `agent/cc8-ai-squadron` for the
+  length of this packet; the change was sent to its owner rather than made here.
 * `squadron+390h` has no located producer. `docs/PLANE_SQUADRON.md` bounds the negative.
-* `+378h`: `src/game_hosts_units.cpp`, `TorpedoReleaseOrderBinding::read_issue_inputs`, must pass
-  the constructed `1` rather than `false` (`007F2D1E`).
-* `+3CCh` / `+3D0h` in the same binding: `is_flight_member` must become "this unit's own squadron",
-  read from `bsp::plane_squadron_registry()`, rather than "carries torpedo ordnance".
+* **`src/game_hosts_units.cpp`, `TorpedoReleaseOrderBinding`: the release-order gate still reads the
+  stand-in.** The squadron table now holds the real array, so the binding's three substitutions can
+  go. The change is bounded and is written out here so it can be applied as one edit when the lease
+  frees:
+  * `is_flight_member` (torpedo ordnance) and `controlled(int)` / `controlled_unit_count()` (a walk
+    over every slot) become a walk over `plane_squadron_registry().find_by_member_unit(index_of_slot(slot_))`'s
+    `member_units`, which is `ctl+3D0h` under `ctl+3CCh`. A caller in no squadron answers a count of
+    0, which is `007EE891`'s own arm - it stores `+374h = 0`.
+  * `in.force_flag_378 = false` becomes that record's `force_flag_378`, which
+    `include/bsp/plane_squadron_host.hpp` seeds `true` after `007F2D1E`. Nothing in this host calls
+    `007ED3C0`, whose caller is unlocated, so it never clears; that is a labelled divergence and its
+    effect is that every member is offered the raise without the `007B8AD0` follow-target test.
+  * the armed fraction `007EE7F0` then runs over the squadron's own members rather than over every
+    torpedo-armed aircraft in the mission, which is what `+374h` means.
 * `007ED0D0 BSP_PlaneSquadron_InsertPlaneSorted` and `007D5D20 BSP_Plane_ReadPropertyBag` are two
   further producers of `plane+9D4h`, both `contract: unread`, so membership in this host is the
   spawn tail's only.
