@@ -1007,6 +1007,25 @@ earlier column could show in isolation.
 The control **moved across the hold-back**, from 616 / 559 / 0 / 57 / 4004, so its long-standing
 identity with every earlier USN02 row ends here; that is the hold-back, not the model.
 
+### Which of these columns survive `15563fdf9`, the third baseline move
+
+`15563fdf9` spawns a squadron's real `WingCount` wingmen, so any mission with a multi-wing
+`PlaneSquadronGen` row or an air-ops launch gains aircraft. Checked per mission from the runs
+themselves rather than assumed:
+
+* **USN02 survives.** Its log says *"this mission created no unit answering `IsKindOf(0Fh)`, so no
+  `PlaneSquadronGen` is built"* — it creates no aircraft at all, so no wing can spawn. **The USN02
+  off/on pair above remains valid after the wing change**, which is the pair that matters most,
+  because it is the one that isolates the model's effect with every order counter held equal.
+* **IJN01 is stale.** Its squadron line climbs 2, 3, 4 … 12 as planes arrive over the mission, so it
+  does build squadrons and the wing change will alter its aircraft population. **The IJN01 off/on
+  pair above, and the per-class arithmetic taken from it, are superseded for any count that depends
+  on how many aircraft exist.** The two sampled decompositions are not: a Fighter at `hp 280` scoring
+  `0.257143` and a LandFort at `hp 300` scoring `0.000440` are properties of the authored tables and
+  the barrels, not of how many aircraft the mission loaded, and they would reproduce unchanged.
+
+So the `584 = 100 x 5.45 x 1.07` decomposition stands; the IJN01 chosen-class counts do not.
+
 ## The choice observed (packet `cc8_ai_target_choice_observed`, 2026-09-18)
 
 ### Which commits every column in this document sits before
