@@ -161,6 +161,50 @@ BSP_AirOpsSite_SetReadyPlaneObserver` is the obvious next address for it.
 process ever makes `IsReadyToSendPlanes` answer false, so the mission script launches on every check
 it makes.
 
+### What fills that queue, found while a run was queued
+
+`006C6540` drains it; the filler is `006CC760`, and the chain runs from the squadron side.
+
+A store census of block+D8h and +DCh over `.text` is **empty**, and so is an address-of census of
++D8h — 42 `LEA [reg+0D8h]` sites in the image and not one in the air-operations segment. Neither
+negative means anything on its own, because the container is not addressed at +D8h: `006C6567` takes
+`LEA ECX,[ESI + 0C0h]`, so the object starts at **block+C0h** and +D8h and +DCh are its head pointer
+and its count. Four sites in the segment take that address: `006C6540` (the drain), `006CA410`,
+`006CAC00` and `006CC760`.
+
+`006CC760` is the push, `__thiscall(block, entity)`:
+
+```
+006cc760: LEA ESI,[ECX + 0xc0]        ; the container
+          CALL 00694a60               ; register an observer pair on the entity
+          MOV  iVar1,[block + 0xd8]   ; the list header
+          CALL 006bfbd0               ; splice a node carrying the entity
+          MOV  [iVar1 + 4],iVar3      ; link it in
+```
+
+Its one caller is `007F1C00`, `__thiscall(squadron, airbase_entity, flag)`, which sits beside
+`007F1B70 BSP_Squadron_ReleaseFromAllAirBases` — the caller of the landing release. It holds the
+squadron's home air base at squadron+404h behind an observer pair, and when that is set it takes the
+block off the entity through `006BCD20 BSP_AirOps_GetBlock` and, when `*(00E188A8 + 1FE4h)` is not
+zero, calls `006CC760` and `007ED6E0`; otherwise it calls `006CC7B0`, a second path not read here.
+`007F1C00`'s own callers name what puts a squadron on a deck:
+
+| caller | what it is |
+| --- | --- |
+| `007F4580 BSP_PlaneSquadron_AttachLuaSelfAndSpawnPlanes` | the squadron's own attach-and-spawn |
+| `0089E220` | a Lua binding, immediately before `0089E3C0 LaunchSquadron` |
+| `007F1FE0` | not read |
+
+So the loop closes: `006C5050` builds a squadron whose `HomeBase` is the owner, the squadron's
+attach path hands that air base to `007F1C00`, which pushes it onto block+C0h; `006C6540` pulls the
+head into block+38h and enables its scene node — the aircraft appears on the deck — and `006BF620`
+refuses readiness for as long as it is held. **That is the brake**, and it is why the native does
+not launch on every check while this process does.
+
+For whoever implements it: the seam is already in place. `create_air_ops_squadron_006c5050` is
+where a created squadron would push itself onto its home deck, and the 24-squadron ceiling that
+stands in for the brake comes out at the same time.
+
 ## 6. 006CDC70's nine sub-updates, and which of them this packet reconstructs
 
 `006CDC70 BSP_AirOps_Update`, `__thiscall(block, step)`, is the block's own update, reached from the
@@ -403,8 +447,10 @@ reachable in one run.
 
 ## Uncertainty
 
-* What fills the queue at block+D8h that `006C6540` drains. Until that is reconstructed this
-  process has no brake on the script's launches, and the 24-squadron ceiling stands in for it.
+* ~~What fills the queue at block+D8h that `006C6540` drains.~~ **Answered in section 5**: `006CC760`,
+  from `007F1C00` on the squadron side. Still open is `006CC7B0`, the arm `007F1C00` takes when
+  `*(00E188A8 + 1FE4h)` is zero, and `007F1FE0`, one of the three callers. Implementing the push is
+  what removes the 24-squadron ceiling.
 * `006C58A0`, `006C5B70` and the virtual at block+3Ch were not read.
 * `006BC8E0`, which `006C64B0` calls when a state-2 slot's second has passed, was not read.
 * slot+4Ch has no writer this thread has read. slot+50h now has one: `006CCDA0` stores its fifth
