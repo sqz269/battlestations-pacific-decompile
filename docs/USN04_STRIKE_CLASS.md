@@ -218,6 +218,88 @@ it already works because the tick keeps slot+28h filled. The campaign arm is now
 spotting arm is deliberately not, because it cannot execute here. The ceiling stays as a safety net,
 raised to 64 so it sits above the bound the script's gates impose rather than at it.
 
+## 8. Measured: the 7200-frame run of 2026-09-18
+
+`local/usn04_strike.log`, exit 0, 8974495 bytes, 7200 mission frames at 0.05 s = **360 s**, which is
+2.4x the window of the first run and 1.2x the second.
+
+**Binary composition, stated once.** This run's `bsp_game.exe` was built at 19:16:12 and the run took
+the lock at 19:18:11, so it carries four changes, not two: the `GetDifficulty` routing, the integer
+`squadron` key, the deck-queue campaign arm, and the five audited routing rows. The last two are
+argued neutral — the five rows all `return 0` and the assign-queue drain finds the launching slot by
+its own +28h — and the run bears that out: `slot_ticks=172800` is exactly 7200 x 6 decks x 4 slots,
+the same shape as 144000 and 72000 in the two earlier runs, so the decks stayed at their authored
+size and the drain changed no slot structure.
+
+| measurement | 150 s | 300 s | **360 s** |
+| --- | --- | --- | --- |
+| `LaunchSquadron` calls, all class 101 | 4 | 4 | **4** |
+| squadrons created | 4 | 4 | **4** |
+| slot ticks | 72000 | 144000 | **172800** |
+| refills 3/4 -> 5, releases | 0, 0 | 0, 0 | **0, 0** |
+| `PilotSetTarget` calls | 1 | 1 | **1**, on `movieval` |
+| ordered aircraft | 6 | 6 | **6** |
+| `range_first_mean` | 0.0 m | 0.0 m | **0.0 m** |
+| units with torpedo 2Bh / general bomb | 34 / 5 | 34 / 5 | **34 / 5** |
+| kind Eh tasks | 0 | 0 | **0** |
+| drops / breakups / swims | 0 / 0 / 0 | 0 / 0 / 0 | **0 / 0 / 0** |
+
+**The five routed bindings all report `concrete`**, `GetDifficulty` among them, so part 1's fix took.
+And it changed nothing, because there is another gate in front of it.
+
+### Zuikaku and Shokaku did not launch, and the reason is `GenerateObject`
+
+`GenerateObject` **does not appear in the run at all — zero calls.** The Japanese carriers are not
+scene units the script finds; they are units the script *creates*, at mission phase 3:
+
+```lua
+1702: function luaMoveToPh3()
+1704:   if Mission.MissionPhase == 2.5 and not Mission.IJNFleetHere then
+1706:     Mission.MissionPhase = 3
+1710:     Mission.Zuikaku = GenerateObject("Zuikaku-class01")
+1711:     Mission.Shokaku = GenerateObject("Shokaku-class01")
+1712-1716: five escorts, the same way
+```
+
+and the striker block's own first gate is `:1384 if Mission.Zuikaku and not Mission.Zuikaku.Dead
+and not Mission.ZuikakuRetreating`. With `GenerateObject` pushing nothing, `Mission.Zuikaku` is nil
+and the gate is false **before** the difficulty test at `:1382` can matter. So the difficulty was
+never the last gate; it was the second of at least three.
+
+This is `docs/LUA_BINDING_ROUTING_AUDIT.md`'s ranking confirmed against its own prediction.
+`GenerateObject` was named there as the largest remaining hole on 1639 assignments, and it turns out
+to block this stream at its own target rather than only at USN01 and USN22.
+
+### A second divergence the run exposes: our gate defers nothing
+
+```
+scene class MotherShipGen id=09 seen=6 generated=6 rejected=0 created=6
+scene class DestroyerGen  id=07 seen=43 generated=43 rejected=0 created=43
+```
+
+Our `0046C550` reconstruction **rejected nothing**, so this process instantiated all six carriers at
+scene load, `Zuikaku-class01` among them with a working deck. The executable defers the ones the
+script will `GenerateObject`. So the two divergences compound: the scene is too full at load *and*
+the script's own spawn step does nothing.
+
+For the spawn host that follows, this decides the design: for a name this process has already
+created, `GenerateObject` must return that entity's existing `thisTable` slot rather than create a
+second carrier. That is a **reconciliation of two divergences, not a faithful reproduction** of
+`0046D930`, and it should be labelled as one wherever it lands.
+
+### The command-target rule this run used
+
+This run predates `0daec4b56`, so it carries the **old** "last current row" rule, not the dive-bomb
+worker's backward slot walk to the first category 1 or 2 row. It did exercise that path —
+`Gunnery::director_newest_command_target_0071ebf0` reports `concrete` and
+`command_targets units_with=7` — so the answer is **yes, the aircraft were exposed to the old rule**,
+through the party AI's attackmove path that drives the four squadrons.
+
+It changes nothing here. `TORPEDO-category owners=34, of which with a command target=0`, the single
+`PilotSetTarget` was on `movieval` rather than a strike aircraft, and `range_first_mean` is 0.0
+because the AI's attackmove carries no target position at all. The rule would matter to a run that
+gets past `GenerateObject`; this one does not reach it.
+
 ## Uncertainty
 
 * The `Zero` at `:1393` must launch first and set `Mission.ZeroOverZuikaku` before the `else` arm
