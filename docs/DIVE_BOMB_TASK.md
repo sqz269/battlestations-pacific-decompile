@@ -2274,3 +2274,24 @@ manoeuvre, just flying straight at it, it uses the ReleaseAlt value multiplied b
 So the gate is a **ceiling, not a floor**: `0.6 * 350.0 + 50.0 = 260.0 m`. The glide release opens
 below 260 m, and the reconstruction had it demanding more than 950 m - which is why `aimglide` ran
 37 ticks in `usn04_target.log` and released nothing.
+
+### A split worth naming: `cmd+2CCh` is two fields in this host
+
+`cmd+2CCh` is one word in the image. This host has two:
+
+* `GameUnitSlot::plan_heading_mode_2cc` (`src/game_hosts_units.cpp:595`), which is the field the
+  planner's gate reads at `0099DE8A`/`0099E275` and which every task tick writes; and
+* `PilotPlanState::heading_mode_2cc` (`include/bsp/pilot_plan_slots.hpp:90`), which
+  `pilot_reset_plan_0099b450` sets to **1** every think, transcribing `0099B548`.
+
+The reset therefore never reaches the gate. In the image `0099B548` re-arms mode 1 on every pilot
+think, so a state that writes no mode still gets the **servo** arm, holding whatever bank target
+`cmd+2C4h` already carries. In this host the field persists between thinks instead, and the
+planner's own mode-2 arm ends by writing 0 to it at `0099E3B5` - so after one think a state that
+writes no mode gets **neither** roll arm and the aircraft simply stops banking.
+
+That is the shape of the flyabove drift, and it is why binding the heading arm is not merely
+cosmetic: re-arming mode 2 every flyabove tick is what keeps the planner banking. It is also a
+planner-wide difference, not a dive-bomb one - every bot state that writes no roll mode is affected -
+so it is named here and **not** changed in this packet: the fix is one word in the reset path, but
+it moves the default roll behaviour of every planned aircraft and needs its own run.
