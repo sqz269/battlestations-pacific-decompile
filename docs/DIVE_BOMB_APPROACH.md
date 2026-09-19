@@ -497,3 +497,35 @@ Three things the host's comments got slightly wrong and one it got right:
 
 So an aircraft only re-attacks by reaching `goaway` first, and the aimglide can only reach it
 through those two gates. Whether run B' ever takes the `009C86EE` edge is recorded below.
+
+## 16. The new base, and run A2'
+
+Merged `origin/main` at **`dd5364d6d`** ("Merge agent/cc8-dive-flyover") into
+`agent/cc8-dive-approach`; the merge was clean, no conflicts, and touched none of this packet's
+hunks. Sections 9, 12 and 13 above stand as the **old-base verdict** (main `6f26aceab`,
+`approach+B4h`/`+B8h` = 1100.0, the glide hand-over) and are kept because they isolate the moveto
+glide from the run-in change. Everything from here is the new base.
+
+What moved under this packet: `approach+B4h`/`+B8h` are now the image's draws, pinned low at
+**780.0 / 2080.0**, so the in-range latch radius R in 10.9's chain is 2080, not 1100; the fly-over
+hand-over is a range test to a three-second lead point; and both dive-bomb call sites pass the
+class climb angle to `009FB800`.
+
+**Run A2'** `local/approach_a2p_unwired.log`, everything of this packet bound, the read site still
+pinned to `2`. One clean shutdown. **Zero `db moveto` rows**, so the dispatch is still correctly
+gated and the whole packet is still an exact null while the constant is pinned — the same control
+run A gave on the old base.
+
+| A2' baseline | value |
+| --- | --- |
+| total dive-bomb releases | **19** |
+| mission dive-bomber water contacts | **0** |
+| `movieval` | `done=617 aimdive=57 flyabove=96 turndown=56 attackrun=1544`, releases 2, `rounds_left=0` |
+| `D3A Val #1.1` | releases 2, `rounds_left=0` |
+| `#3.1` / `#5.1` / `#7.1` | releases 1 each |
+| `movieval` dive entry / aim error | 820.7 m / 2.89 m |
+| `movieval` `ticks without latch` | 1544, at `b4=780.0 b8=2080.0` |
+| mission damage | `queued_hits=61 hull=41 deaths=8 total_damage=9826.4` |
+
+This is the number B' must be judged against — this binary, this tree — not the integrator's 17
+or 19 from another branch.
