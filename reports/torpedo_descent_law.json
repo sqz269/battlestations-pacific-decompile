@@ -65,6 +65,27 @@
       "native": "009fb800",
       "function": "009fba50",
       "note": "009FBB06 FSTP [ESP+4] stores arg3 as the second argument; 009FBB0C FLD [ESP+14h] the clamped altitude as the first."
+    },
+    {
+      "host": "BotStateTorpedoGoAway::climb_out",
+      "address": "009d109c",
+      "native": "009fb800",
+      "function": "009d0f10",
+      "note": "A DIRECT call, not through 009FBA50, and its second argument is a literal 1.0: 009D107A FLD1, 009D1084 SUB ESP,8, 009D1087 FSTP [ESP+4]. Independent proof that the argument is a dimensionless scale and never an altitude."
+    },
+    {
+      "host": "BotStateTorpedoGoAway::climb_out",
+      "address": "009d10ff",
+      "native": "009fb800",
+      "function": "009d0f10",
+      "note": "Shares the 009D107A FLD1 store; the 009D1094 JBE branches after it."
+    },
+    {
+      "host": "BotStateTorpedoGoAway::climb_out",
+      "address": "009d1194",
+      "native": "009fb800",
+      "function": "009d0f10",
+      "note": "Its own literal 1.0 at 009D1158 FLD1."
     }
   ],
   "corrections": [
@@ -85,6 +106,18 @@
       "was": "section 8.5: the -1.0472 rad pitch demand needs a producer, and section 2's commanded altitude of 12 m is what the image commands.",
       "is": "-1.0472 is -DEG(60) at 00D05AAC, saturated by the host's own second argument. The image's commanded altitude is a glide slope, base + max(range_90 - releaseDist, 0) * scale * tan(DropAngle), that reaches 12 m at the release distance.",
       "evidence": "docs/TORPEDO_DESCENT_LAW.md sections 1 and 3; the run local/descentlaw_after_usn01.log has no plane water contact line at all."
+    },
+    {
+      "doc": "src/plane_ai_control.cpp lines 339-342",
+      "was": "the pitch floor 'can only RAISE the target - which is the whole of what stops a bot flying into the sea'.",
+      "is": "the floor is inert in level flight: at q = 0 it is DEG(6) - 2.5 = -2.395 rad. Nothing in this law stops a bot flying into the sea, and nothing needs to: 0099E490 CONSUMES a pitch target that 009FB800 PRODUCES, and the plunge was 009FB800's second argument. Only the sentence was wrong; the block's shape is confirmed by agent/cc8-dive-bomb's byte read at 8647b8c02.",
+      "evidence": "0099E4E4 FSTP builds the floor as an absolute; 0099E4FA FCOMIP / 0099E4FE JBE takes the larger of it and cmd+2BCh; 0099E512 stores the winner. No FADD against the target in the block."
+    },
+    {
+      "doc": "docs/TORPEDO_APPROACH_BLOCKER.md section 9",
+      "was": "9.3: '009D07B0 step 4's two range arguments are unread, and do not assume the move-to pair is right - +7Ch and +80h are commanded SPEEDS'. 9.1: 'the arm is right and the COMMAND is wrong'.",
+      "is": "009D07B0 step 4 does pass a real pair and it IS +7Ch/+80h, which are RELEASE DISTANCES in metres, not speeds (include/bsp/torpedo_approach_update.hpp, packet cc8_torpedo_run_profile). The base is +78h + +74h as assumed. And the arm was NOT right: it was fed the commanded altitude as its second argument, so restoring the range pair alone would not have fixed the plunge.",
+      "evidence": "009D09FC/009D0A08/009D0A71 for rangeHigh = approach+90h; 009D0A0E/009D0A10/009D0A1A/009D0A2A/009D0A79 for rangeLow = +80h before 15 s and +7Ch after; 009D0A81 for the base. The run prints low=650.0 then low=450.0, the authored TorpReleaseDistFar and Near."
     },
     {
       "doc": "src/dive_bomb_task.cpp (owed to agent/cc8-dive-bomb)",

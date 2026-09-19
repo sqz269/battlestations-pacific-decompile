@@ -126,7 +126,15 @@ stores. Nothing is left on the stack at the `RET`.
 **(b) The decompiler.** `exports/bsp/functions/009fba50/decompiled.c` ends
 `FUN_009fb800(param_2,param_5);` - the clamped altitude and the fourth float.
 
-**(c) The `1.6` that appears twice.** The move-to tick's own ramp at `009C1AF3` is
+**(c) Three call sites pass a literal `1.0`.** `009D0F10 BSP_BotStateTorpedoGoAway_Tick` calls
+`009FB800` **directly**, not through `009FBA50`, at `009D109C`, `009D10FF` and `009D1194`, and its
+second argument is `FLD1`: `009D107A FLD1`, `009D1084 SUB ESP,8`, `009D1087 FSTP [ESP+4]` covers
+the first two calls (the `009D1094 JBE` branches after the store), and `009D1158 FLD1` covers the
+third. An altitude reference of 1.0 metre is meaningless; a **scale** of 1.0 caps the climb-out at
+`class+1ECh * 1.0` = 0.1854 rad for the Mav, a 10.6-degree climb. This is the cleanest evidence in
+the binary that the argument is dimensionless, and it is independent of the x87 walk.
+
+**(d) The `1.6` that appears twice.** The move-to tick's own ramp at `009C1AF3` is
 `Interp(0.05, 0.35, 0.4, 1.6, .)` (`00CE7638`, `00CF6560`, `00CE7804`, `00D06BB4`), so its largest
 scale is **1.6**, and the dive cap at `009FB97F` is `max(DropAngle * 1.6, DEG(60))` with the same
 `1.6` (`00CE3D48`). The steepest scale the move-to state can command makes `DropAngle * t` land
@@ -257,10 +265,21 @@ clean, so `[ESP+0xc]` at `009D09C2` is the slot `009D07E4` wrote and it holds `a
 
 ## Validation
 
-Both runs are `--frames 3200 --press-start-frame 30 --menu-select USN01 --mission-frames 3000
+All runs are `--frames 3200 --press-start-frame 30 --menu-select USN01 --mission-frames 3000
 --mission-frame-seconds 0.05`, on the same binary lineage and the same placement, with
 `query session` = `console Active` before each and `exit_code=0 frames_presented=3199
 loop_finished=1`.
+
+**The before column is one commit away.** `local/relbind_after_usn01.log` is on `b2be05c68`, this
+branch's HEAD before `e5cae8ef6`, so it is the exact one-commit before column and it is the one the
+table below uses where it matters. It reproduces `local/tap_before_usn01.log` (on `b882aa1d4`)
+line for line on everything checked: the five `plane water contact` lines to the centimetre
+(`-4.13 / -5.05 / -5.88 / -5.05 / -0.01`, `|v|` 140.95 to 141.12), Mav1's
+`approach 009D3420: ticks=124 ... min=3928.5 last=3928.5`, `issue stage 007CE9FD: stage_ticks=3000
+... C28h=-150.005` and `summary mission pilot attack: ordered=5 range_first_mean=4174.3
+range_last_mean=3806.2 closed_mean=368.1 worst_closed=330.7 ... final_pitch_mean=-1.010`. So
+`e15cb7091`'s `TorpedoReleaseOrderBinding` edit moved nothing, as its own coverage note predicts,
+and either log is a valid before column for this packet.
 
 | | before, `local/tap_before_usn01.log` | after, `local/descentlaw_full_usn01.log` |
 | --- | --- | --- |
@@ -272,6 +291,8 @@ loop_finished=1`.
 | pitch demand at 800 m | -1.0472 (`-DEG(60)`), and unchanged to the water | **-0.0573** |
 | commanded altitude at 4183 m range | 12.00 | **761.91** |
 | `\|v\|` entering aim | n/a, dead at 141 m/s | 81.00 m/s |
+| `closed_mean` / `worst_closed` | 368.1 m / 330.7 m | **3570.8 m / 3272.8 m** |
+| `final_pitch_mean` | -1.010 rad | **-0.020 rad** |
 | `release_arm_009D2287`, releases | 0, 0 | 0, 0 - see below |
 
 Mav1's descent census after the fix, the whole attack run:

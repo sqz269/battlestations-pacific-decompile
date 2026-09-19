@@ -338,8 +338,21 @@ PilotBotPitchResult pilot_pitch_demand_0099e490(const PilotBotPitchInputs& in) {
 
     // 0099E4DC-0099E512. The floor: PitchTurnMaxPitch when the turn is hard,
     // 2.5 radians below it when the plane is level and on heading. It is applied
-    // unconditionally on every pass of the law, and it can only RAISE the
-    // target - which is the whole of what stops a bot flying into the sea.
+    // unconditionally on every pass of the law, and it can only RAISE the target.
+    //
+    // CORRECTED, packet cc8_torpedo_descent_law: the clause that used to end this
+    // sentence - "which is the whole of what stops a bot flying into the sea" -
+    // is wrong and is struck. At q = 0 the floor is DEG(6) - 2.5 = -2.395 rad,
+    // below anything flyable, so in level flight it is inert; it bites only in a
+    // hard bank well off heading, which is what it is for. Nothing here stops a
+    // bot flying into the sea, and nothing here needs to: this law CONSUMES a
+    // pitch target that 009FB800 produces, and what drowned USN01's torpedo
+    // bombers was 009FB800 being handed the commanded altitude as its second
+    // argument instead of 009FBA50's arg3. A floor cannot undo a command that
+    // should never have been issued. docs/TORPEDO_DESCENT_LAW.md; the listing of
+    // this block was re-read by agent/cc8-dive-bomb at 8647b8c02 and the shape
+    // below - an absolute built by FSUBP, then FCOMIP/JBE taking the larger -
+    // is confirmed. Only the sentence was wrong.
     const float floor_target = in.pitch_turn_max_pitch -
         static_cast<float>(2.5 * (1.0 - static_cast<double>(q)));
     out.floored_target = (floor_target > in.pitch_target) ? floor_target : in.pitch_target;
