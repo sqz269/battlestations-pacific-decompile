@@ -2295,3 +2295,37 @@ cosmetic: re-arming mode 2 every flyabove tick is what keeps the planner banking
 planner-wide difference, not a dive-bomb one - every bot state that writes no roll mode is affected -
 so it is named here and **not** changed in this packet: the fix is one word in the reset path, but
 it moves the default roll behaviour of every planned aircraft and needs its own run.
+
+### Both aimglide lead gates are mis-transcribed, and that is why it never fires
+
+Reading `009C5704`-`009C5755` to interpret this run turned up the same class of error as the
+ceiling, twice more. The listing:
+
+```
+009c5725  FSUB  float ptr [ESP + 0x2c]       ; lead = lateral_b - cos(angle) * lateral_a
+009c5729  FLD   float ptr [ESP + 0x1c]       ; travel = state+20h
+009c572f  FADDP ST2,ST0                      ; ST1 = lead + travel
+009c5733  FADD  double ptr [0x00d7a370]      ; + 5.0
+009c5743  FCOMI ST0,ST1                      ; travel  vs  (lead + travel + 5.0)
+009c5745  JBE   0x009c57c0                   ; byte `76`
+009c5747  FCHS                               ; -travel   (ST0 survived the FCOMI)
+009c5749  FMUL  double ptr [0x00d7a2b0]      ; * 3.0
+009c5751  FCOMIP ST0,ST1                     ; (lead + travel + 5.0)  vs  (-travel * 3.0)
+009c5755  JBE   0x009c57c4                   ; byte `76`
+```
+
+| gate | the image proceeds when | the reconstruction requires |
+| --- | --- | --- |
+| `009C5745` | `travel > lead + travel + 5.0`, i.e. **`lead < -5.0`** | `lead > 5.0` |
+| `009C5755` | `lead + travel + 5.0 > -travel * 3.0`, i.e. `lead > -4*travel - 5.0` | `-(lead + travel) * 3.0 > travel + 5.0` |
+
+Both are wrong, and the first has the **sign of the lead backwards**. The image's two gates are
+satisfiable together - `-4*travel - 5.0 < lead < -5.0`, a window that is non-empty whenever the
+travel accumulator `state+20h` is positive - whereas the reconstruction's pair is mutually
+exclusive at `travel = 0`, which is what the host substitutes. So the aimglide salvo at `009C5777`
+could never fire in this host, at any altitude, independently of the ceiling corrected above.
+
+`00D7A370` is 5.0 and `00D7A2B0` is 3.0, both qwords; both branch bytes are `76`, JBE.
+
+Not changed in this commit: a run is in flight on the current build, and the fix wants
+`state+20h`'s own producer read as well. It is the first thing to do after this run lands.
