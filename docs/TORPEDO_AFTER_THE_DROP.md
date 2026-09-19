@@ -643,3 +643,21 @@ across the run instead:
 The conclusion is unchanged and slightly stronger: the displacement over the run is close to twice
 the 180.0 m hull length, so a torpedo aimed at the present position cannot hit except bow-on or
 stern-on.
+
+#### 6.3.1 The census extended to nine forms, and one scan withdrawn as malformed
+
+Three more encodings, each with a positive control, all empty in the `009C`/`009D` band:
+`0F 11 ?? D0 00 00 00` (MOVUPS store, 16 image-wide), `05 CC 00 00 00` (`ADD EAX,0CCh`, 138
+image-wide, one hit at `009C964E` in the dive-bomb band) and `81 ?? CC 00 00 00` (the group-1
+immediate forms including `ADD reg,0CCh`, 86 image-wide). With the seven in 6.3 that is **nine
+valid encodings** and no writer of `approach+D0h..D8h`, and no pointer arithmetic that would reach
+it at disp8, anywhere in the bot-task band.
+
+Withdrawn: a scan written as `81 C? CC 00 00 00` returned zero. `C?` is not the pattern syntax -
+only a whole-byte `??` is - so that scan proved nothing and is replaced by the `81 ?? CC 00 00 00`
+row above. `66 0F 11 ?? D0 00 00 00` and the two MOVQ forms in 6.3 remain vacuous for the other
+reason: no image-wide hits, so no positive control.
+
+The bound is now tight enough to name the next move, and it is not another scan: the producer has to
+be found from the other end, by reading what constructs or re-targets the approach rather than by
+looking for the field.
