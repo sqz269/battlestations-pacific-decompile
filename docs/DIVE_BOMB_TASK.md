@@ -3133,3 +3133,36 @@ That matters for the inert-span question now under instrumentation. The run-in's
 is `bearing + lateral_offset_20` (`009C42DC`-`009C4305`), so with the offset pinned at zero the
 approach path is not the image's, whatever `009FBA50` computes for its altitude. Both are upstream
 of the dive, and only one of them is currently being measured.
+
+### Checked rather than inherited: the offset does reach the heading, and stays zero
+
+cc8-torpedo-descent was careful to say their "yours is a hole" was an argument about the shape of a
+zero substitution and **not** a reading of this stream's heading chain, which they had not done, and
+asked for it to be checked here. Checked, at `src/dive_bomb_task.cpp:395-419`:
+
+```cpp
+out.lateral_offset_20 = in.lateral_offset_20;          // 399, carried on entry
+...
+} else {                                               // the re-roll arm only
+    out.lateral_offset_20 = -in.sampler_result * kLateralOffsetScale;   // 412
+}
+// 009C42DC-009C4305, run on BOTH arms:
+out.commanded_heading_2c0 =
+    wrapped_angle_add_00438aa0(in.target_bearing_c0, out.lateral_offset_20);  // 418
+```
+
+Two facts, and they compound rather than cancel:
+
+* the offset reaches the commanded heading on **every** path, not some - the heading line is outside
+  the `if`, and the comment at `009C42DC` already said "run on both arms";
+* it is only **recomputed** on the re-roll arm, and it is **carried** otherwise, so a zero written
+  once persists until the next re-roll writes zero again.
+
+The census reports `rerolls=153` over the run-in, so the substitution pins the offset to zero 153
+times and it is zero in between. The commanded heading is therefore the bare bearing to the target
+for the whole approach - the aircraft flies straight at the target and never weaves - which is what
+the label always claimed behaviourally and is now established from this side rather than argued from
+the shape of the substitution.
+
+So their conclusion stands and is now independently confirmed, which is the right standing for it:
+they were right not to claim a reading they had not made, and the check was three lines away.
