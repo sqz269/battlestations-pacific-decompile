@@ -288,10 +288,11 @@ check says it is free.
 
 ### 8.5 Open, by address
 
-* **The pitch demand.** `-1.0472 rad` held constant over more than 700 m of descent, with
-  `drop_angle=0.4014` and `climb_1ec=0.1854` printed on the same census line and neither flown, and
-  no flare. Find its producer. `docs/TORPEDO_MOVETO_TICK.md` (the glide slope, `009C18C0`) and
-  `docs/TORPEDO_RUN_IN_DESCENT.md` are the two documents on that path. **This is the packet.**
+* ~~**The pitch demand.**~~ **RESOLVED by section 9, which supersedes this line.** The demand is a
+  correct saturation of `009FB800`'s dive arm, not a clamp bug; the defect is the zero range pair
+  the attackrun tick's step 4 hands `009FBA50`, which kills the glide bias and commands 12 m from
+  800 m. The remaining work is reading `009D07B0` step 4's real argument setup. **That is the
+  packet.**
 * `ctl+398h` on the torpedo path has **no located producer**. `009D4A70` only reads it, at
   `009D4B57`. Whether `read_control_block` passes the right key is unproven either way; the
   Correction section says why the first answer was withdrawn.
@@ -309,3 +310,79 @@ together so a reader does not have to find them.
    the aircraft is in the water. Inferred from the host sources before the log was read.
 2. **The Correction section**: `+398h` was named as the root cause before `009C89CE` was read, and
    reading it withdrew the claim. Named as the next step in the same commit that depended on it.
+
+## 9. The cause, located: the attackrun tick passes a zero range pair to `009FBA50`
+
+This supersedes section 8.5's "find the producer of the pitch demand". The producer is found, the
+`-pi/3` is not a clamp bug, and the defect is one call site in this host.
+
+### 9.1 The `-pi/3` is a correct saturation, not a stray constant
+
+`pitch_command_009fb800` (`src/plane_flight.cpp`), the dive arm at `009FB96E`..`009FBA4D`:
+
+```
+limit = max(class_drop_angle * kPlaneAngleLimitScale, kPlaneDiveAngleFloor)
+t     = clamp(-weighted / drop_dist, 0, reference)
+return -min(class_drop_angle * t, limit)
+```
+
+`class_drop_angle` is the `0.4014` the census prints, so `drop_angle` **is** being used - the arm
+simply saturates. With the aircraft 788 m above its commanded altitude, `t` clamps to `reference`,
+`class_drop_angle * t` exceeds `limit`, and the arm returns `-limit`. That is `-pi/3` to four
+decimals and it is the arm doing exactly what it should when told to lose 788 m at once.
+
+So the question is not "why is the demand a constant" but "why is the aircraft told to be at 12 m
+while it is at 800 m and 4 km out".
+
+### 9.2 The answer: `span` is zero because the call site says so
+
+The attackrun tick's step 4, in `src/game_hosts_units.cpp`:
+
+```cpp
+binding.command_altitude_and_throttle(
+    nullptr, ap.alt_margin_78 + ap.alt_floor_74,
+    0.0f, 0.0f, 0.0f);          //  <-- range_low and range_high
+```
+
+The binding behind it does run the right chain, `009FBA50` then `009FB800`, and `009FBA50` biases
+the base by `span * scale * class+518h` where `span = max(range_high - range_low, 0)`. With both
+range arguments zero the span is zero, the bias is dead, and the commanded altitude is the bare
+12 m. The binding's own comment already says it - "with span at zero the gain is unreachable anyway"
+- it was written as a description of the state of things rather than read as the defect.
+
+**The contrast that proves it is a defect rather than the native's shape.** The move-to tick's own
+glide slope, about four hundred lines further down the same file, passes a real pair:
+
+```cpp
+cin.range_low  = ap.elapsed_134 >= 15.0f ? ap.speed_late_7c : ap.speed_early_80;
+cin.range_high = distance;
+```
+
+That path produces a sloping descent, and `docs/TORPEDO_MOVETO_TICK.md`'s title says so. It never
+runs for these aircraft: they are in `attackrun`, not `moveto`, and the run's own census confirms it
+- **there is not one `glide census` line in the log**, only `descent census` lines. The mission's
+aircraft are flown entirely by the step-4 call above.
+
+### 9.3 What to read next, and the one thing not to assume
+
+`009D07B0`, the attackrun tick, steps 1 to 5. `docs/BOT_TASK_STATES.md`'s "The torpedo run" records
+step 4 as "altitude `approach->+78h` + `approach->+74h` through `009FBA50`" but this document has
+not read what that step passes as the **two range arguments**, and the host's zeros are a
+placeholder rather than a reading. That is the whole of the remaining work: read `009D07B0` step 4's
+argument setup from the listing, pass the real pair, and the glide slope the move-to path already
+produces becomes available to the run-in.
+
+Do **not** assume the move-to pair is the right answer for the attackrun tick. `009D48CF` fills the
+move-to ranges from `approach+74h`/`+78h` and `+7Ch`/`+80h`, and `docs/TORPEDO_APPROACH_UPDATE.md`
+establishes that `+7Ch` and `+80h` are commanded **speeds** selected by the approach clock, which is
+already an odd thing for a range slot; whatever `009D07B0` passes is its own and has to come from
+its own listing.
+
+### 9.4 Why this probably also explains the dive bomber
+
+`agent/cc8-dive-bomb` reports its aircraft ditching at -1.12 m with pitch bottoming at -0.9795 rad,
+and is binding a goaway climb-out that feeds `plane_climb_angle_1ec` - the very field this census
+prints and does not fly. The climb arm of `009FB800` is the mirror of the dive arm above and takes
+its bias from the same `009FBA50` span. If that path's call site also passes a zero range pair, the
+climb saturates or collapses for the same reason and the binding cannot work. Worth checking on that
+side before concluding the climb-out itself is wrong.
