@@ -377,6 +377,34 @@ struct GameUnitSlot {
     float db_gain_high_60{0.0f};     // (approach+14h)->+60h
     bool db_in_range_d0{false};      // approach+D0h == task+4C8h
     bool db_has_bomb_d1{false};      // approach+D1h == task+4C9h
+    // squadron+370h, the attack mode. Its faithful owner is the squadron
+    // (`plane+9D4h`), not the unit: 0099B740 writes it through `bot+2FCh` and
+    // 009C83F8 reads it through `task+404h`, which is the same object. This
+    // host keeps a per-slot copy that the flight leader broadcasts to its
+    // squadron's members every think, so every member holds the value the
+    // leader wrote. Labelled: the copy is a hole in OWNERSHIP only, the value
+    // is the leader's. Seeded kForced because the scene's attack order reaches
+    // 008A4C41 -> 007ED430(2); the leader's first think then sets it to 1.
+    bsp::PilotAttackMode db_attack_mode_370{bsp::PilotAttackMode::kForced};
+    // sqn+3D0h[0] == this unit, the test at 0099B757. Only the leader's think
+    // writes the mode.
+    bool db_is_flight_lead{false};
+    bool db_flight_lead_resolved{false};
+    int db_mode_ticks[3]{0, 0, 0};
+    int db_mode_changes{0};
+    int db_mode_first_set_tick{-1};
+    // Cached inputs of the two predicates, sampled where they are computed so
+    // the exit log can print what actually decided the edge.
+    bool db_dbg_engaged{false};
+    bool db_dbg_break_off{false};
+    float db_dbg_break_off_distance{0.0f};
+    float db_dbg_break_off_threshold{0.0f};
+    // Where a spent bomber ends up, and how low it gets afterwards.
+    int db_spent_exit_logs{0};
+    int db_post_done_ticks{0};
+    float db_post_done_min_alt{-1.0f};
+    int db_approach_returns{0};
+    int db_approach_return_tick{-1};
     // The per-state fields the two aim states and flyabove carry.
     float db_aim_rearm_1c{0.0f};     // aimdive/aimglide state+1Ch
     float db_glide_travel_20{0.0f};  // aimglide state+20h
@@ -1305,9 +1333,26 @@ struct GameUnitsHost::Impl {
         bsp::DiveBombTransitionInputs in;
         in.current = slot.dive_bomb_state;
         in.engaged.in_range_latch_4c8 = slot.db_in_range_d0;
-        // ctl+370h is the shared attack mode the torpedo packet bound; a dive
-        // bomber with no flight lead sits at 2, which is what 009C83E0 step 4
-        // and the entry chooser's first arm both read.
+        // squadron+370h, the attack mode 009C83F8 reads through task+404h.
+        // The constant 2 makes `engaged` true for as long as a target is
+        // latched, which makes BOTH of 009C83E0's return-to-approach edges
+        // (009C8419-009C845E in the attacking half, 009C873E-009C8783 in the
+        // other) unreachable. The real producer is the flight leader's 0099B740
+        // tick, which SETS it to 1 every think; `slot.db_attack_mode_370` now
+        // carries that value and is correct (docs/BOMBER_AFTER_TASK.md 10.6).
+        //
+        // NOT WIRED, and the measurement says why. Feeding the real mode here
+        // was measured on USN04, same binary apart from this one line
+        // (docs/BOMBER_AFTER_TASK.md 10.9): it does take the leader out of the
+        // sea -- `movieval` loses its `plane water contact` and its 303 done
+        // ticks, and the approach edge fires for the first time -- but it also
+        // takes `movieval`'s releases from 2 to 0 and the mission's dive-bomber
+        // water contacts from 1 to 7. With `engaged` collapsed to the latch,
+        // entry into the attack waits for `d < approach+B8h` = 1100 m, and this
+        // host's `moveto` approach state does not fly an attack profile, so the
+        // bombers arrive low and exit aimdive to `goaway` at ~240 m instead of
+        // `aimglide` at ~600 m. The gate is faithful; the approach state behind
+        // it is not yet. Re-wire this when moveto/follow are real, not before.
         in.engaged.control_mode_370 = 2;
         in.engaged.has_latched_target_440 = slot.command_target_plus_one != 0;
         in.entry.control_mode_370 = in.engaged.control_mode_370;
@@ -1324,7 +1369,15 @@ struct GameUnitsHost::Impl {
             b.distance_to_target = slot.db_planar_bc;
             b.speed_ratio_41c = 1.0f;
             in.should_break_off = bsp::dive_bomb_should_break_off_009c8a90(b);
+            // 009C8B40-009C8B51: the range arm is `[tuning+4C8h] * [task+41Ch]`
+            // against the 3-D range. NOTE the id-space collision: that +4C8h is
+            // Pilot/DiveBomb/SafeDist on the tuning singleton 0042E740, a
+            // different object from the task's +4C8h in-range latch above.
+            slot.db_dbg_break_off = in.should_break_off;
+            slot.db_dbg_break_off_distance = b.distance_to_target;
+            slot.db_dbg_break_off_threshold = b.safe_distance * b.speed_ratio_41c;
         }
+        slot.db_dbg_engaged = bsp::dive_bomb_engaged_009c83f8(in.engaged);
         // 009C62B0 is defined and its two decisive flags are recovered, so
         // the geometry stand-in is gone. docs/DIVE_BOMB_TASK.md.
         //
@@ -5197,6 +5250,53 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // 0099A170 builds a kind 8 task for an ordered aircraft
                     // whose class carries general bomb ordnance and is not
                     // IsKindOf(10h) (docs/ATTACK_COMMANDS.md, 007EE9C5).
+                    // 0099993C. BSP_PilotBot_Update's slow path calls 0099B740
+                    // once per think and BEFORE the task arm task->vtable[64h].
+                    // 0099B740 (0099B740-0099B77A, read whole) is flight-leader
+                    // only -- 0099B757 `CMP EAX,[ECX+3D0h]` -- and its abandon
+                    // predicate [[bot]+38h] is 0099B710, `MOV AL,1 / RET`, for
+                    // the dive bomb: the task vtable is 00D20E18 (proved by its
+                    // +1Ch slot 00D20E34 = 009C8A90, the break-off predicate)
+                    // and 00D20E50 = +38h holds 0099B710. So for a flight leader
+                    // the predicate is always true and 0099B774 CALL 007ED3F0
+                    // with PUSH 1 SETS squadron+370h to 1 on every think --
+                    // 007ED3F0 is `MOV [ECX+370h],EAX / RET 4`, an assignment.
+                    // Its sibling 007ED430 is the max/raise the Lua attack order
+                    // uses at 008A4C41 to reach 2; nothing here calls that.
+                    void run_dive_bomb_attack_mode_tick_0099b740() {
+                        bsp::PilotAttackModeInputs in;
+                        in.has_control_block_2fc = true;
+                        in.has_unit_2f4 = true;
+                        in.unit_is_flight_lead = unit_.db_is_flight_lead;
+                        in.task_authorises_38h = true;
+                        const bsp::PilotAttackMode next =
+                            bsp::pilot_attack_mode_0099b740(
+                                unit_.db_attack_mode_370, in);
+                        if (next != unit_.db_attack_mode_370) {
+                            unit_.db_attack_mode_370 = next;
+                            ++unit_.db_mode_changes;
+                            if (unit_.db_mode_first_set_tick < 0) {
+                                unit_.db_mode_first_set_tick =
+                                    unit_.dive_bomb_arm_ticks;
+                            }
+                        }
+                        // +370h lives on the squadron, so the leader's value is
+                        // what every member reads. Scoped through the registry
+                        // to this unit's OWN squadron, not to every dive bomber
+                        // in the mission.
+                        if (!unit_.db_is_flight_lead) return;
+                        auto* const sqn =
+                            bsp::plane_squadron_registry().find_by_member_unit(
+                                unit_.process_index);
+                        if (sqn == nullptr) return;
+                        for (const std::size_t member : sqn->member_units) {
+                            if (member == bsp::kPlaneSquadronNoUnit) continue;
+                            if (member >= owner_.slots.size()) continue;
+                            owner_.slots[member]->db_attack_mode_370 =
+                                unit_.db_attack_mode_370;
+                        }
+                    }
+
                     void run_dive_bomb_task_arm_009c8790(float dt) {
                         // 0099A170 builds a task from the class 007EEC50
                         // chose, so the only correct test is that the class IS
@@ -5310,6 +5410,28 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 static_cast<double>(unit_.db_in_range_b8),
                                 unit_.dive_bomb_rounds_remaining);
                         }
+                        // 0099B757 `CMP EAX,[ECX+3D0h]` compares this unit
+                        // against the dword at squadron+3D0h, which is element
+                        // 0 of the member array: the flight leader. Corroborated
+                        // at 009C7C5D, where the same dword is dereferenced as a
+                        // unit and read for its position at +FCh/+104h. Only the
+                        // leader's think writes the attack mode.
+                        if (!unit_.db_flight_lead_resolved) {
+                            auto* const sqn =
+                                bsp::plane_squadron_registry().find_by_member_unit(
+                                    unit_.process_index);
+                            if (sqn != nullptr) {
+                                for (const std::size_t member : sqn->member_units) {
+                                    if (member == bsp::kPlaneSquadronNoUnit) continue;
+                                    unit_.db_is_flight_lead =
+                                        (member == unit_.process_index);
+                                    break;
+                                }
+                                unit_.db_flight_lead_resolved = true;
+                            }
+                        }
+                        // 0099993C: before the task arm, once per think.
+                        run_dive_bomb_attack_mode_tick_0099b740();
                         DiveBombArmBinding binding(owner_, unit_);
                         bsp::DiveBombTaskContext ctx;
                         ctx.task = &unit_;
@@ -5343,10 +5465,70 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             }
                             unit_.db_aimdive_run_ticks = 0;
                         }
+                        // Packet cc8_attack_mode item 2. The edge out of the
+                        // two aim states, with every input of the two
+                        // predicates 009C83E0 consults, so the before/after can
+                        // be read off the log rather than inferred.
+                        if ((before == bsp::DiveBombState::kAimDive ||
+                             before == bsp::DiveBombState::kAimGlide) &&
+                            ctx.current != before &&
+                            unit_.db_spent_exit_logs < 12) {
+                            ++unit_.db_spent_exit_logs;
+                            static const char* const kNames[10] = {
+                                "moveto", "follow", "prepare", "done", "goaway",
+                                "aimdive", "aimglide", "flyabove", "turndown",
+                                "attackrun"};
+                            const int bb = dive_bomb_state_bucket(before);
+                            const int ba = dive_bomb_state_bucket(ctx.current);
+                            owner_.log.notef(
+                                "db aim exit %s: %s -> %s tick=%d alt=%.1f "
+                                "lead=%d engaged=%d latch_4c8=%d mode_370=%d "
+                                "tgt_440=%d bomb_4c9=%d breakoff=%d d=%.1f "
+                                "thr=%.1f R_b8=%.1f",
+                                unit_.row.name.c_str(),
+                                bb >= 0 ? kNames[bb] : "?",
+                                ba >= 0 ? kNames[ba] : "?",
+                                unit_.dive_bomb_arm_ticks,
+                                static_cast<double>(unit_.motion.position[1]),
+                                unit_.db_is_flight_lead ? 1 : 0,
+                                unit_.db_dbg_engaged ? 1 : 0,
+                                unit_.db_in_range_d0 ? 1 : 0,
+                                static_cast<int>(unit_.db_attack_mode_370),
+                                unit_.command_target_plus_one != 0 ? 1 : 0,
+                                pre_bomb_d1 ? 1 : 0,
+                                unit_.db_dbg_break_off ? 1 : 0,
+                                static_cast<double>(unit_.db_dbg_break_off_distance),
+                                static_cast<double>(unit_.db_dbg_break_off_threshold),
+                                static_cast<double>(unit_.db_in_range_b8));
+                        }
+                        // What a spent bomber does after it is put down: how
+                        // long it sits in kDone, the lowest it gets there, and
+                        // whether the approach edge ever fires for it.
+                        if (ctx.current == bsp::DiveBombState::kDone) {
+                            ++unit_.db_post_done_ticks;
+                            const float alt = unit_.motion.position[1];
+                            if (unit_.db_post_done_min_alt < 0.0f ||
+                                alt < unit_.db_post_done_min_alt) {
+                                unit_.db_post_done_min_alt = alt;
+                            }
+                        }
+                        if ((ctx.current == bsp::DiveBombState::kMoveTo ||
+                             ctx.current == bsp::DiveBombState::kFollow) &&
+                            before != ctx.current) {
+                            ++unit_.db_approach_returns;
+                            if (unit_.db_approach_return_tick < 0) {
+                                unit_.db_approach_return_tick =
+                                    unit_.dive_bomb_arm_ticks;
+                            }
+                        }
                         if (ctx.current == bsp::DiveBombState::kAimDive) {
                             ++unit_.db_aimdive_run_ticks;
                         }
                         ++unit_.dive_bomb_arm_ticks;
+                        {
+                            const int m = static_cast<int>(unit_.db_attack_mode_370);
+                            if (m >= 0 && m <= 2) ++unit_.db_mode_ticks[m];
+                        }
                         const int b = dive_bomb_state_bucket(ctx.current);
                         if (b >= 0) ++unit_.dive_bomb_state_ticks[b];
                         if (!unit_.db_in_range_d0) ++unit_.db_blocked_no_latch;
@@ -9022,6 +9204,23 @@ void GameUnitsHost::report() {
                     static_cast<double>(slot->db_impact_fall_time),
                     static_cast<double>(slot->db_impact_planar_5c),
                     static_cast<double>(slot->db_planar_bc));
+                // Packet cc8_attack_mode. squadron+370h per aircraft, and what
+                // the spent bomber did afterwards. mode_ticks is indexed by the
+                // PilotAttackMode value: [0]=kHold, [1]=kAttack (what 0099B740
+                // sets), [2]=kForced (what the Lua attack order raises to).
+                host.log.notef("  divebomb %-12s attack mode: lead=%d "
+                    "mode_370=%d ticks[hold=%d attack=%d forced=%d] changes=%d "
+                    "first_set_tick=%d | after: done_ticks=%d done_min_alt=%.1f "
+                    "approach_returns=%d first_return_tick=%d",
+                    slot->row.name.c_str(),
+                    slot->db_is_flight_lead ? 1 : 0,
+                    static_cast<int>(slot->db_attack_mode_370),
+                    slot->db_mode_ticks[0], slot->db_mode_ticks[1],
+                    slot->db_mode_ticks[2], slot->db_mode_changes,
+                    slot->db_mode_first_set_tick,
+                    slot->db_post_done_ticks,
+                    static_cast<double>(slot->db_post_done_min_alt),
+                    slot->db_approach_returns, slot->db_approach_return_tick);
                 // 009FBA50's own terms, to settle why correcting its arguments
                 // changed nothing observable.
                 if (slot->db_cruise_samples > 0) {
