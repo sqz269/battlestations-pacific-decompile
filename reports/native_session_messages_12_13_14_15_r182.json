@@ -1,0 +1,1918 @@
+{
+  "packet": "orch4_native_session_messages_12_13_14_15_r182",
+  "status": "twenty_one_complete_normal_bodies_build_and_original_compared",
+  "scope": {
+    "new_native_bodies": 21,
+    "new_body_bytes": 894,
+    "message_tags": [
+      12,
+      13,
+      14,
+      15
+    ],
+    "parent_dependency_fragments": [
+      "00768530"
+    ],
+    "native_profiles": [
+      "00ce74c8",
+      "00d03034",
+      "00d0300c",
+      "00d02fbc"
+    ],
+    "full_factory_bound": false
+  },
+  "evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "names": {
+      "00429030": "FUN_00429030",
+      "004b5fb0": "FUN_004b5fb0",
+      "004b5fe0": "FUN_004b5fe0",
+      "004b5ff0": "FUN_004b5ff0",
+      "004b6010": "FUN_004b6010",
+      "004b6030": "FUN_004b6030",
+      "0075d4b0": "FUN_0075d4b0",
+      "0075d530": "FUN_0075d530",
+      "0075d550": "FUN_0075d550",
+      "0075d580": "FUN_0075d580",
+      "0075d5b0": "FUN_0075d5b0",
+      "0075d2e0": "FUN_0075d2e0",
+      "0075d350": "FUN_0075d350",
+      "0075d370": "FUN_0075d370",
+      "0075d3a0": "FUN_0075d3a0",
+      "0075d3d0": "FUN_0075d3d0",
+      "0075caa0": "FUN_0075caa0",
+      "0075cb00": "FUN_0075cb00",
+      "0075cb10": "FUN_0075cb10",
+      "0075cb60": "FUN_0075cb60",
+      "0075ce40": "FUN_0075ce40",
+      "00428bb0": "BSP_BitCursor_ReadBits",
+      "00428c70": "BSP_BitCursor_ReadUnsignedByte",
+      "00428cb0": "BSP_BitCursor_ReadUnsignedWord",
+      "00428d70": "BSP_BitCursor_ReadBoolean",
+      "00428f50": "BSP_BitCursor_WriteBits",
+      "00428ff0": "BSP_BitCursor_WriteByteBits",
+      "004290b0": "BSP_BitCursor_WriteBoolean",
+      "00449910": "BSP_SessionMessageRoot_ScalarDelete",
+      "00449940": "BSP_SessionMessage_WriteType",
+      "00449960": "BSP_SessionMessage_ReadType",
+      "004499a0": "BSP_SessionMessage_TypeEquals",
+      "004499c0": "BSP_SessionMessage_AlwaysTrue",
+      "00759cd0": "BSP_SessionMessageBase_ScalarDelete",
+      "0075b430": "BSP_SessionMessage_ConstructBase",
+      "00768530": "BSP_SessionMessage_CreateFromStream"
+    },
+    "spans": [
+      {
+        "address": "00429030",
+        "length": 18,
+        "kind": "new_body",
+        "sha256": "b7ff6ab3ff2772a22c0b3e4026c392c13f692be2095e6023e6befb9d348b116a",
+        "hex": "8b442408508d54240852e811ffffffc20800"
+      },
+      {
+        "address": "004b5fb0",
+        "length": 27,
+        "kind": "new_body",
+        "sha256": "e511e66754aed24be8dc0336dd71ed02b497b4c9e76c1a147ebd22f488b1d1a4",
+        "hex": "566a0c8bf1e876542a00c7460401000000c706c874ce008bc65ec3"
+      },
+      {
+        "address": "004b5fe0",
+        "length": 13,
+        "kind": "new_body",
+        "sha256": "fde3587d66bce912feb4e37971681db6153bf64287bc18150e1d623b21f8bce5",
+        "hex": "33c0837c24040c0f94c0c20400"
+      },
+      {
+        "address": "004b5ff0",
+        "length": 19,
+        "kind": "new_body",
+        "sha256": "2e2cbeb7cca220a7f637222efa919ce7153bf7e5be31dd685660fe3eac62e2a0",
+        "hex": "0fb641108b4c24046a0850e8f02ff7ffc20400"
+      },
+      {
+        "address": "004b6010",
+        "length": 21,
+        "kind": "new_body",
+        "sha256": "f61a3b4e9c77cb37326947fc8e7305aee181fd64bdb3fdac8dbb9efcc7f17f9f",
+        "hex": "83c1106a08518b4c240c83c104e84e2cf7ffc20400"
+      },
+      {
+        "address": "004b6030",
+        "length": 31,
+        "kind": "new_body",
+        "sha256": "baad80894980d3341e820c133cb0341dffeda1d2d5b49c4f0abba3b9372dabfc",
+        "hex": "f644240401568bf1c7067449ce00740956e86605740083c4048bc65ec20400"
+      },
+      {
+        "address": "0075d4b0",
+        "length": 99,
+        "kind": "new_body",
+        "sha256": "76c1d88804c7fab6a42595305d51f98bfd89edc93814c408e12f17a019830a39",
+        "hex": "8bc1c7400403000000c7400800000000c7400c00000000c700682cd000c640100d8b15a888e1008b8aec18000085c97c1d83f9077f188b8c8acc180000894814c7400401000000c7003430d000c3c7401400000000c7400401000000c7003430d000c3"
+      },
+      {
+        "address": "0075d530",
+        "length": 30,
+        "kind": "new_body",
+        "sha256": "8b3d13fa9eca8cafdebddf83eff80e63ea36a7f1271d2e0c0163a3bf3f917f77",
+        "hex": "8b44240483f80d740d0fb649103bc1740533c0c20400b801000000c20400"
+      },
+      {
+        "address": "0075d550",
+        "length": 39,
+        "kind": "new_body",
+        "sha256": "09fa62981868a0a24dd12dc03da8ed2818b1ad214e5b94d962c26e6009d0d4f1",
+        "hex": "568bf10fb64610578b7c240c6a08508bcfe88abaccff0fb64e18518bcfe83ebbccff5f5ec20400"
+      },
+      {
+        "address": "0075d580",
+        "length": 40,
+        "kind": "new_body",
+        "sha256": "8e655cc8cc261c00b8848e580ca19f1150a74ca9d100db0cb6abf70d09b9560f",
+        "hex": "56578b7c240c8bf16a088d461083c704508bcfe8d8b6ccff83c618568bcfe8cdb7ccff5f5ec20400"
+      },
+      {
+        "address": "0075d5b0",
+        "length": 31,
+        "kind": "new_body",
+        "sha256": "19e25f4450b288d8c6e098eb34ad3897bd7875ee171f88eb63ca0da142ffbf84",
+        "hex": "f644240401568bf1c7067449ce00740956e8e68f490083c4048bc65ec20400"
+      },
+      {
+        "address": "0075d2e0",
+        "length": 96,
+        "kind": "new_body",
+        "sha256": "a98fd8409943cfa431e2b0229eb92b8df799e3992883f1112a12e4ccf9e7f3cc",
+        "hex": "8bc1c7400403000000c7400800000000c7400c00000000c700682cd000c640100e8b15a888e1008b8aec18000085c97c1183f9077f0c8b8c8acc180000894814eb07c74014000000008a542404c7400401000000c7000c30d000885018c20400"
+      },
+      {
+        "address": "0075d350",
+        "length": 30,
+        "kind": "new_body",
+        "sha256": "e4bd1756d3ec799ffae5a1f6a1d5e1547149fd80f3637295a8f903925f6b7e73",
+        "hex": "8b44240483f80e740d0fb649103bc1740533c0c20400b801000000c20400"
+      },
+      {
+        "address": "0075d370",
+        "length": 39,
+        "kind": "new_body",
+        "sha256": "2d80f62acdf68bf5bdb066de9c93799f2320fe808ac1b40375b7a14fb5f6c286",
+        "hex": "568bf10fb64610578b7c240c6a08508bcfe86abcccff0fb64e18518bcfe81ebdccff5f5ec20400"
+      },
+      {
+        "address": "0075d3a0",
+        "length": 40,
+        "kind": "new_body",
+        "sha256": "75f28366c8ac0d7160cdce1b3dba2921f3f36830a7dc20de18989d5dea6b9b1a",
+        "hex": "56578b7c240c8bf16a088d461083c704508bcfe8b8b8ccff83c618568bcfe8adb9ccff5f5ec20400"
+      },
+      {
+        "address": "0075d3d0",
+        "length": 31,
+        "kind": "new_body",
+        "sha256": "f4ddc4582b6aa2ddb0c6de54387f46a50f308b92cd539a2c99ff72eefb4f5457",
+        "hex": "f644240401568bf1c7067449ce00740956e8c691490083c4048bc65ec20400"
+      },
+      {
+        "address": "0075caa0",
+        "length": 92,
+        "kind": "new_body",
+        "sha256": "77a2470d704fd756d9d76aa6f2a179d6b850c33065b9d635ff1b7d5e65071cce",
+        "hex": "8bc15633f6c740040300000089700889700cc700682cd000c640100f8b15a888e1008b8aec1800003bce7c1e83f9077f198b8c8acc18000089700466897018894814c700bc2fd0005ec389701489700466897018c700bc2fd0005ec3"
+      },
+      {
+        "address": "0075cb00",
+        "length": 13,
+        "kind": "new_body",
+        "sha256": "14c00a46e667db3197296a5aa33de7905e9eabe60ac15aa5dc209f84684b6d97",
+        "hex": "33c0837c24040f0f94c0c20400"
+      },
+      {
+        "address": "0075cb10",
+        "length": 76,
+        "kind": "new_body",
+        "sha256": "b0d5bac973f1690a5f349828bebe60f4ae199f78209ab7c0be0dcfbcb0f26bfc",
+        "hex": "538b5c2408568bf10fb64610576a08508bcbe8c9c4ccff0fb74e186a10518bcbe8fbc4ccff33ff66397e1876198d49006a086a218bcbe8a5c4ccff0fb7561883c7013bfa7cea5f5e5bc20400"
+      },
+      {
+        "address": "0075cb60",
+        "length": 78,
+        "kind": "new_body",
+        "sha256": "e1a98465caa6088dbc2e0156257e1361937a1708164d761f845b30301220483c",
+        "hex": "53568b74240c578bf96a088d471083c604508bcee8f7c0ccff6a1083c718578bcee82ac1ccff33db66391f761b8d49006a088d4c2414518bcee8d2c0ccff0fb71783c3013bda7ce85f5e5bc20400"
+      },
+      {
+        "address": "0075ce40",
+        "length": 31,
+        "kind": "new_body",
+        "sha256": "849622ebbe727b0f68f673d4675d0f040af3ae35c76e0dd4a47d4c6ca5c43a3f",
+        "hex": "f644240401568bf1c7067449ce00740956e85697490083c4048bc65ec20400"
+      },
+      {
+        "address": "00428bb0",
+        "length": 184,
+        "kind": "support_body",
+        "sha256": "9abf8383be14c26b413849fd75e15b00d88afc519896eec488968ac0a2b617ea",
+        "hex": "53558b6c24108bc18bcd568b742410c1e90385c9577e3d8bd98da424000000008b48088a118a480cd2ea8816834008018b500c85d28b78087e0db9080000002bca8a17d2e2081683ed08740383c60183eb0175cc83e5077458b9080000002bcdbbff000000d3fb8b48088a118a480cd2ea885c241422d388168b48088d79018b480403083bf973148a1fb9080000002b480cd2e3225c24140ada881e01680c8b480c83f9077e0a83c1f88340080189480c5f5e5d5bc20800"
+      },
+      {
+        "address": "00428c70",
+        "length": 16,
+        "kind": "support_body",
+        "sha256": "5b0a3d32c5e4bd4a67f2637d123a21ab1bd81544b13e3417ba1fbdc478f02cce",
+        "hex": "8b442404c6000089442404e930ffffff"
+      },
+      {
+        "address": "00428cb0",
+        "length": 18,
+        "kind": "support_body",
+        "sha256": "d08aca4f6d6a789a6d07437d6e7112ee07a7b3d0ac121b7bcf6942d64e69d1b8",
+        "hex": "8b44240466c700000089442404e9eefeffff"
+      },
+      {
+        "address": "00428d70",
+        "length": 36,
+        "kind": "support_body",
+        "sha256": "e63f5d75927e2977c7272644e56d6d2f1fec6db4b1a81c7d6b20cb70a295ade9",
+        "hex": "516a018d44240750c644240b00e82efeffff807c2403018b5424080f94c1880a59c20400"
+      },
+      {
+        "address": "00428f50",
+        "length": 148,
+        "kind": "support_body",
+        "sha256": "ecc635a9c94cce898c3c9aeb56b98457f3afd78d54139d368a00bce4b96deac0",
+        "hex": "8b5424088bc1538bca568b74240cc1e90385c9577e34558be98da424000000000fb61e8b480c8b7808d2e3b10883c601081f834008010fb65eff2a480c8b7808d2eb83ed01881f75d75d8bfa83e707743db9080000002bcfbaff000000d3fa8b480c22168b70088adad2e3b108081e2a480c01780cd2ea8b480c83f9077e0f83c1f88340080189480c8b400888105f5e5bc20800"
+      },
+      {
+        "address": "00428ff0",
+        "length": 18,
+        "kind": "support_body",
+        "sha256": "46ef27a735b58905252db1a9f990f997de850746448a69d48e990f389026ad4d",
+        "hex": "8b442408508d54240852e851ffffffc20800"
+      },
+      {
+        "address": "004290b0",
+        "length": 27,
+        "kind": "support_body",
+        "sha256": "83c94b94d02e87a7dd3f180bdf952c85095a910ee9d4fbcfb754be7f5d2c0c9b",
+        "hex": "807c2404006a018d5424080f95c0528844240ce888feffffc20400"
+      },
+      {
+        "address": "00449910",
+        "length": 31,
+        "kind": "support_body",
+        "sha256": "30a0b928757babf23b0a6b61a281c32c311533cd7670a698155a650addd450d9",
+        "hex": "f644240401568bf1c7067449ce00740956e886cc7a0083c4048bc65ec20400"
+      },
+      {
+        "address": "00449940",
+        "length": 19,
+        "kind": "support_body",
+        "sha256": "89ac6b68fa97c3f603481846b7b9999aeda09f803f08f3659d1e3f075c45c34e",
+        "hex": "0fb641108b4c24046a0850e8a0f6fdffc20400"
+      },
+      {
+        "address": "00449960",
+        "length": 21,
+        "kind": "support_body",
+        "sha256": "f9adf74f2c3cb6d2982ec1dcb91ffc8c6ae4aa21a4be31b1fd6a70664e66d64f",
+        "hex": "83c1106a08518b4c240c83c104e8fef2fdffc20400"
+      },
+      {
+        "address": "004499a0",
+        "length": 18,
+        "kind": "support_body",
+        "sha256": "776a95a17bd611453b920e5eb9d3bea250a2aea7dffd3ecd3a15bee07fb1e300",
+        "hex": "0fb6411033c9394424040f94c18ac1c20400"
+      },
+      {
+        "address": "004499c0",
+        "length": 3,
+        "kind": "support_body",
+        "sha256": "e18aacce29affcdddaa5f641ac1ec12552e0fe9d066e6408941b1792818b8619",
+        "hex": "b001c3"
+      },
+      {
+        "address": "00759cd0",
+        "length": 31,
+        "kind": "support_body",
+        "sha256": "24445d69776c25f48f7f6bedb336aa69d7986968b9a4752cab9bb4262bafe260",
+        "hex": "f644240401568bf1c7067449ce00740956e8c6c8490083c4048bc65ec20400"
+      },
+      {
+        "address": "0075b430",
+        "length": 80,
+        "kind": "support_body",
+        "sha256": "523008b2c0e6c87d3f56d32ab9ac1d23601b49579702386a9cd11dfede7e37d6",
+        "hex": "8bc18a4c2404c7400403000000c7400800000000c7400c00000000c700682cd0008848108b15a888e1008b8aec18000085c97c1283f9077f0d8b948acc180000895014c20400c7401400000000c20400"
+      },
+      {
+        "address": "00768530",
+        "length": 7528,
+        "kind": "parent_body",
+        "sha256": "f026559defeeea77eae2c8e5b1f1936c1dbc2075329423e62d73f5634266e7c4",
+        "hex": "64a1000000006aff68328fc800506489250000000083ec0856578bf96a088d44240f8d7704508bcee81307ccff6a088bcee81a06ccff0fb64c240b8d41ff3de80000000f87fe1c0000ff248598a276006a18e894e2480083c40485c074106a018bc8e8c932ffff8bf0e9dd1c000033c08bf0e9d41c00006a30e86de2480083c4048944240c85c0c74424180000000074168bc8e8e8edffffc7442418ffffffff8bf0e9a41c000033c0c7442418ffffffff8bf0e9931c00006a1ce82ce2480083c40485c074a88bc8e83364ffff8bf0e9771c00006a20e810e2480083c40485c0748c8bc8e82765ffff8bf0e95b1c00006a2ce8f4e1480083c40485c00f846cffffff8bc8e8b7ddffff8bf0e93b1c00006a1ce8d4e1480083c40485c00f844cffffff8bc8e85766ffff8bf0e91b1c00006a30e8b4e1480083c40485c00f842cffffff8bc8e87767ffff8bf0e9fb1b00006a28e894e1480083c40485c00f840cffffff8bc8e86769ffff8bf0e9db1b00006a30e874e1480083c40485c00f84ecfeffff8bc8e8e76affff8bf0e9bb1b00006a2ce854e1480083c40485c00f84ccfeffff8bc8e8776cffff8bf0e99b1b00006a1ce834e1480083c40485c00f84acfeffff8bc8e8476effff8bf0e97b1b00006a1ce814e1480083c40485c00f848cfeffff8bc8e8b75dffff8bf0e95b1b00006a20e8f4e0480083c40485c00f846cfeffff8bc8e8672bffff8bf0e93b1b00006a18e8d4e0480083c40485c00f844cfeffff6a028bc8e80531ffff8bf0e9191b00006a24e8b2e0480083c40485c00f842afeffff8bc8e80547ffff8bf0e9f91a000068c0000000e88fe0480083c40485c00f8407feffff8bc8e8324effff8bf0e9d61a00006a1ce86fe0480083c40485c00f84e7fdffff8bc8e8d251ffff8bf0e9b61a00006888000000e84ce0480083c40485c00f84c4fdffff8bc8e82f48ffff8bf0e9931a00006a18e82ce0480083c40485c00f84a4fdffff8bc8e83f61ffff8bf0e9731a00006a2ce80ce0480083c40485c00f8484fdffff8bc8e8efd5ffff8bf0e9531a00006a18e8ecdf480083c40485c00f8464fdffff8bc8e8ff5cffff8bf0e9331a00006a30e8ccdf480083c40485c00f8444fdffff8bc8e86fd9ffff8bf0e9131a00006a1ce8acdf480083c40485c00f8424fdffff8bc8e8af5dffff8bf0e9f31900006a1ce88cdf480083c40485c00f8404fdffff8bc8e80f4cffff8bf0e9d31900006a18e86cdf480083c40485c00f84e4fcffff8bc8e8efd6d4ff8bf0e9b31900006a1ce84cdf480083c40485c00f84c4fcffff6a008bc8e8fd49ffff8bf0e9911900006a1ce82adf480083c40485c00f84a2fcffff8bc8e89d41ffff8bf0e9711900006a78e80adf480083c40485c00f8482fcffff8bc8e89d42ffff8bf0e9511900006a18e8eade480083c40485c00f8462fcffff8bc8e8ad4affff8bf0e9311900006a18e8cade480083c40485c00f8442fcffff8bc8e8dd5dffff8bf0e9111900006a1ce8aade480083c40485c00f8422fcffff8bc8e8cdd6d4ff8bf0e9f11800006a1ce88ade480083c40485c00f8402fcffff8bc8e88d5effff8bf0e9d11800006890010000e867de480083c40485c00f84dffbffff8bc8e87ab9ffff8bf0e9ae1800006838010000e844de480083c40485c00f84bcfbffff8bc8e8f7b9ffff8bf0e98b1800006a50e824de480083c40485c00f849cfbffff8bc8e8f755ffff8bf0e96b1800006a24e804de480083c40485c00f847cfbffff8bc8e837d6ffff8bf0e94b1800006a20e8e4dd480083c40485c00f845cfbffff6a198bc8e85550ffff8bf0e9291800006a20e8c2dd480083c40485c00f843afbffff8bc8e80551ffff8bf0e9091800006a20e8a2dd480083c40485c00f841afbffff8bc8e89551ffff8bf0e9e91700006a20e882dd480083c40485c00f84fafaffff8bc8e82552ffff8bf0e9c91700006a20e862dd480083c40485c00f84dafaffff8bc8e80554ffff8bf0e9a91700006a20e842dd480083c40485c00f84bafaffff8bc8e85556ffff8bf0e9891700006a20e822dd480083c40485c00f849afaffff8bc8e86557ffff8bf0e9691700006a20e802dd480083c40485c00f847afaffff8bc8e87558ffff8bf0e9491700006a40e8e2dc480083c40485c00f845afaffff8bc8e885d0ffff8bf0e9291700006a20e8c2dc480083c40485c00f843afaffff8bc8e8b5d1ffff8bf0e9091700006a54e8a2dc480083c40485c00f841afaffff8bc8e86523dcff8bf0e9e91600006a28e882dc480083c40485c00f84faf9ffff8bc8e8c5baffff8bf0e9c91600006a20e862dc480083c40485c00f84daf9ffff8bc8e87513ffff8bf0e9a91600006a24e842dc480083c40485c00f84baf9ffff8bc8e89551ffff8bf0e9891600006a20e822dc480083c40485c00f849af9ffff8bc8e8656affff8bf0e9691600006a20e802dc480083c40485c00f847af9ffff8bc8e8556bffff8bf0e9491600006a30e8e2db480083c40485c00f845af9ffff8bc8e8456cffff8bf0e929160000e8c9aafcff8bf0e91d160000e8cd8817008bf0e9111600006a30e8aadb480083c40485c00f8422f9ffff8bc8e89daaffff8bf0e9f11500006a30e88adb480083c40485c00f8402f9ffff8bc8e88dacffff8bf0e9d11500006a20e86adb480083c40485c00f84e2f8ffff8bc8e86d24ffff8bf0e9b11500006a5ce84adb480083c4048944240c85c0c7442418010000000f84eff8ffff8bc8e811e0ffffc7442418ffffffff8bf0e97d1500006a30e816db480083c40485c00f848ef8ffff8bc8e849caffff8bf0e95d1500006a44e8f6da480083c40485c00f846ef8ffff8bc8e819cbffff8bf0e93d1500006a38e8d6da480083c4048944240c85c0c7442418020000000f847bf8ffff8bc8e80de8ffffc7442418ffffffff8bf0e9091500006a34e8a2da480083c40485c00f841af8ffff8bc8e8b510ffff8bf0e9e91400006a28e882da480083c40485c00f84faf7ffff8bc8e81511ffff8bf0e9c91400006a28e862da480083c40485c00f84daf7ffff8bc8e8852fffff8bf0e9a91400006a24e842da480083c40485c00f84baf7ffff8bc8e84512ffff8bf0e9891400006a24e822da480083c40485c00f849af7ffff8bc8e8a512ffff8bf0e9691400006a20e802da480083c40485c00f847af7ffff8bc8e83508e9ff8bf0e9491400006a24e8e2d9480083c40485c00f845af7ffff8bc8e82516ffff8bf0e9291400006a38e8c2d9480083c40485c00f843af7ffff8bc8e8b531ffff8bf0e9091400006a24e8a2d9480083c40485c00f841af7ffff8bc8e8f534ffff8bf0e9e91300006a24e882d9480083c40485c00f84faf6ffff8bc8e8a535ffff8bf0e9c91300006a28e862d9480083c40485c00f84daf6ffff8bc8e88512ffff8bf0e9a91300006a24e842d9480083c40485c00f84baf6ffff8bc8e88536ffff8bf0e9891300006a28e822d9480083c40485c00f849af6ffff8bc8e8e512ffff8bf0e9691300006a24e802d9480083c40485c00f847af6ffff8bc8e8f5fffbff8bf0e9491300006a24e8e2d8480083c40485c00f845af6ffff8bc8e85500fcff8bf0e9291300006a38e8c2d8480083c40485c00f843af6ffff8bc8e8a587ffff8bf0e9091300006a24e8a2d8480083c40485c00f841af6ffff8bc8e85589ffff8bf0e9e91200006a24e882d8480083c40485c00f84faf5ffff8bc8e8058affff8bf0e9c91200006a24e862d8480083c40485c00f84daf5ffff8bc8e8b58affff8bf0e9a91200006a24e842d8480083c40485c00f84baf5ffff8bc8e8658bffff8bf0e9891200006a38e822d8480083c40485c00f849af5ffff8bc8e8158cffff8bf0e9691200006a2ce802d8480083c40485c00f847af5ffff8bc8e8658dffff8bf0e9491200006a2ce8e2d7480083c40485c00f845af5ffff8bc8e8f5aaffff8bf0e9291200006a24e8c2d7480083c40485c00f843af5ffff8bc8e83586f6ff8bf0e9091200006a24e8a2d7480083c40485c00f841af5ffff8bc8e89586f6ff8bf0e9e91100006a24e882d7480083c40485c00f84faf4ffff8bc8e8f586f6ff8bf0e9c91100006a24e862d7480083c40485c00f84daf4ffff8bc8e85587f6ff8bf0e9a91100006a24e842d7480083c40485c00f84baf4ffff8bc8e8f511ffff8bf0e9891100006a24e822d7480083c40485c00f849af4ffff8bc8e82512ffff8bf0e9691100006a30e802d7480083c40485c00f847af4ffff8bc8e85512ffff8bf0e9491100006a3ce8e2d6480083c40485c00f845af4ffff8bc8e8156effff8bf0e9291100006a24e8c2d6480083c40485c00f843af4ffff8bc8e85573ffff8bf0e9091100006a24e8a2d6480083c40485c00f841af4ffff8bc8e81570ffff8bf0e9e91000006a24e882d6480083c40485c00f84faf3ffff8bc8e85570ffff8bf0e9c91000006a20e862d6480083c40485c00f84daf3ffff8bc8e89570ffff8bf0e9a91000006a20e842d6480083c40485c00f84baf3ffff8bc8e8a571ffff8bf0e9891000006a30e822d6480083c40485c00f849af3ffff8bc8e8359fffff8bf0e9691000006a30e802d6480083c40485c00f847af3ffff8bc8e8f5a0ffff8bf0e9491000006a28e8e2d5480083c40485c00f845af3ffff8bc8e8559fffff8bf0e9291000006a38e8c2d5480083c40485c00f843af3ffff8bc8e815a1ffff8bf0e9091000006a28e8a2d5480083c40485c00f841af3ffff8bc8e855a1ffff8bf0e9e90f00006a24e882d5480083c40485c00f84faf2ffff8bc8e895a1ffff8bf0e9c90f00006a24e862d5480083c40485c00f84daf2ffff8bc8e835a2ffff8bf0e9a90f00006a28e842d5480083c40485c00f84baf2ffff8bc8e8b5a1ffff8bf0e9890f00006a24e822d5480083c40485c00f849af2ffff8bc8e8d530f5ff8bf0e9690f0000682c010000e8ffd4480083c4048944240c85c0c7442418030000000f84a4f2ffff8bc8e8864f0a00c7442418ffffffff8bf0e9320f00006854010000e8c8d4480083c4048944240c85c0c7442418040000000f846df2ffff8bc8e87fdbffffc7442418ffffffff8bf0e9fb0e00006a4ce894d4480083c40485c00f840cf2ffff8bc8e89712ffff8bf0e9db0e000068b41a0000e871d4480083c4048944240c85c0c7442418050000000f8416f2ffff8bc8e84878ffffc7442418ffffffff8bf0e9a40e00006a3ce83dd4480083c40485c00f84b5f1ffff8bc8e8a012ffff8bf0e9840e000068e8000000e81ad4480083c40485c00f8492f1ffff8bc8e81d8dffff8bf0e9610e00006a28e8fad3480083c40485c00f8472f1ffff8bc8e8ed8dffff8bf0e9410e00006a24e8dad3480083c40485c00f8452f1ffff8bc8e87d8fffff8bf0e9210e00006a2ce8bad3480083c40485c00f8432f1ffff8bc8e8ed8affff8bf0e9010e00006a1ce89ad3480083c40485c00f8412f1ffff8bc8e8fd8cffff8bf0e9e10d00006a20e87ad3480083c40485c00f84f2f0ffff8bc8e86d13eeff8bf0e9c10d00006a20e85ad3480083c40485c00f84d2f0ffff8bc8e8bd79ffff8bf0e9a10d00006a24e83ad3480083c40485c00f84b2f0ffff8bc8e8dd7cffff8bf0e9810d00006a38e81ad3480083c40485c00f8492f0ffff8bc8e81d26ffff8bf0e9610d00006a20e8fad2480083c40485c00f8472f0ffff8bc8e8dd7dffff8bf0e9410d00006a24e8dad2480083c40485c00f8452f0ffff8bc8e8fd7effff8bf0e9210d00006a20e8bad2480083c40485c00f8432f0ffff8bc8e83d7effff8bf0e9010d00006a2ce89ad2480083c40485c00f8412f0ffff8bc8e8fd7fffff8bf0e9e10c00006a20e87ad2480083c40485c00f84f2efffff8bc8e8fdafffff8bf0e9c10c00006a30e85ad2480083c40485c00f84d2efffff8bc8e8fd79ffff8bf0e9a10c00006a28e83ad2480083c40485c00f84b2efffff8bc8e8ed72ffff8bf0e9810c00006a20e81ad2480083c40485c00f8492efffff8bc8e83d74ffff8bf0e9610c00006a20e8fad1480083c40485c00f8472efffff8bc8e83d75ffff8bf0e9410c00006a24e8dad1480083c40485c00f8452efffff8bc8e88d17ffff8bf0e9210c00006a24e8bad1480083c40485c00f8432efffff8bc8e89d17ffff8bf0e9010c00006848010000e897d1480083c4048944240c85c0c7442418060000000f843cefffff8bc8e82ee3ffffc7442418ffffffff8bf0e9ca0b00006834010000e860d1480083c4048944240c85c0c7442418070000000f8405efffff8bc8e84702ffffc7442418ffffffff8bf0e9930b00006a20e82cd1480083c40485c00f84a4eeffff8bc8e8ff17ffff8bf0e9730b00006a1ce80cd1480083c40485c00f8484eeffff8bc8e87f03feff8bf0e9530b00006a28e8ecd0480083c40485c00f8464eeffff8bc8e86fa5ffff8bf0e9330b00006a28e8ccd0480083c40485c00f8444eeffff8bc8e8afa5ffff8bf0e9130b00006a28e8acd0480083c40485c00f8424eeffff8bc8e8efa5ffff8bf0e9f30a00006a2ce88cd0480083c40485c00f8404eeffff8bc8e82fa6ffff8bf0e9d30a00006824010000e869d048008bd083c4048954240c85d2c744241808000000741c8bcae892d7ffffc7021cdecf00c7442418ffffffff8bf2e9980a000033d2c7442418ffffffff8bf2e9870a00006a24e820d0480083c40485c00f8498edffff8bc8e8430dffff8bf0e9670a00006a24e800d0480083c40485c00f8478edffff6a008bc8e811a1f7ff8bf0e9450a00006a24e8decf480083c40485c00f8456edffff8bc8e8310dffff8bf0e9250a00006a44e8becf480083c40485c00f8436edffff8bc8e82166ffff8bf0e9050a00006a40e89ecf480083c40485c00f8416edffff8bc8e8310dffff8bf0e9e50900006a54e87ecf480083c40485c00f84f6ecffff8bc8e8519dffff8bf0e9c50900006a24e85ecf480083c40485c00f84d6ecffff6aff8bc8e88fa1f7ff8bf0e9a30900006a20e83ccf480083c40485c00f84b4ecffff8bc8e86f9dffff8bf0e9830900006a28e81ccf480083c40485c00f8494ecffff8bc8e8af9dffff8bf0e9630900006a1ce8fcce480083c40485c00f8474ecffff8bc8e87fafffff8bf0e9430900006820010000e8d9ce48008bd083c4048954240c85d2c7442418090000000f8488feffff8bcae8fed5ffffc7022493cf00c7442418ffffffff8bf2e9040900006828010000e89ace48008bd083c4048954240c85d2c74424180a0000000f8449feffff8bcae8bfd5ffffc70228bccf00c7442418ffffffff8bf2e9c5080000682c010000e85bce48008bd083c4048954240c85d2c74424180b0000000f840afeffff8bcae880d5ffffc702bc37d000c7442418ffffffff8bf2e986080000682c010000e81cce48008bd083c4048954240c85d2c74424180c0000000f84cbfdffff8bcae841d5ffffc702e037d000c7442418ffffffff8bf2e9470800006a3ce8e0cd480083c40485c00f8458ebffff8bc8e8830affff8bf0e9270800006828010000e8bdcd480083c4048944240c85c0c74424180d0000000f8462ebffff8bc8e804410800c7442418ffffffff8bf0e9f00700006a24e889cd480083c40485c00f8401ebffff8bc8e88c12ffff8bf0e9d00700006a20e869cd480083c40485c00f84e1eaffff8bc8e89c12ffff8bf0e9b00700006a24e849cd480083c40485c00f84c1eaffff8bc8e83c17ffff8bf0e9900700006830010000e826cd48008bd083c4048954240c85d2c74424180e0000000f84d5fcffff8bcae84bd4ffffc7029c37d000c7442418ffffffff8bf2e95107000068b0000000e8e7cc480083c40485c00f845feaffff8bc8e86a0fffff8bf0e92e070000681c020000e8c4cc480083c40485c00f843ceaffff8bc8e8778bffff8bf0e90b0700006a24e8a4cc480083c40485c00f841ceaffff8bc8e8f78cffff8bf0e9eb0600006a20e884cc480083c40485c00f84fce9ffff8bc8e8c7b6e9ff8bf0e9cb0600006a24e864cc480083c40485c00f84dce9ffff8bc8e8378effff8bf0e9ab0600006a20e844cc480083c40485c00f84bce9ffff8bc8e8778effff8bf0e98b0600006a24e824cc480083c40485c00f849ce9ffff8bc8e8178fffff8bf0e96b0600006a2ce804cc480083c40485c00f847ce9ffff8bc8e85790ffff8bf0e94b0600006a3ce8e4cb480083c40485c00f845ce9ffff8bc8e8f70effff8bf0e92b0600006a3ce8c4cb480083c40485c00f843ce9ffff8bc8e8770fffff8bf0e90b0600006a28e8a4cb480083c40485c00f841ce9ffff8bc8e8c70fffff8bf0e9eb0500006a20e884cb480083c40485c00f84fce8ffff8bc8e88782dbff8bf0e9cb0500006a3ce864cb480083c40485c00f84dce8ffff8bc8e8b7afffff8bf0e9ab0500006a28e844cb480083c40485c00f84bce8ffff8bc8e87712ffff8bf0e98b0500006a2ce824cb480083c40485c00f849ce8ffff8bc8e88712ffff8bf0e96b0500006a3ce804cb480083c40485c00f847ce8ffff8bc8e867b2ffff8bf0e94b0500006a28e8e4ca480083c40485c00f845ce8ffff8bc8e8e712ffff8bf0e92b0500006a24e8c4ca480083c40485c00f843ce8ffff8bc8e8f712ffff8bf0e90b0500006a30e8a4ca480083c40485c00f841ce8ffff8bc8e87713ffff8bf0e9eb0400006a24e884ca480083c40485c00f84fce7ffff8bc8e82713ffff8bf0e9cb0400006a28e864ca480083c40485c00f84dce7ffff8bc8e8c704ffff8bf0e9ab0400006a24e844ca480083c40485c00f84bce7ffff8bc8e8c705ffff8bf0e98b0400006a24e824ca480083c40485c00f849ce7ffff8bc8e8972bffff8bf0e96b0400006a2ce804ca480083c40485c00f847ce7ffff8bc8e8f7bbffff8bf0e94b0400006810010000e8e1c948008bd083c4048954240c85d2c74424180f0000000f8490f9ffff8bcae806d1ffffc70218fdcf00c7442418ffffffff8bf2e90c0400006a1ce8a5c9480083c40485c00f841de7ffff8bc8e81810ffff8bf0e9ec0300006834010000e882c948008bd083c4048954240c85d2c7442418100000000f8431f9ffff8bcae8a7d0ffffc702bcf2cf00c7442418ffffffff8bf2e9ad0300006818010000e843c9480083c4048944240c85c0c7442418110000000f84e8e6ffff8bc8e87adbffffc7442418ffffffff8bf0e9760300006a2ce80fc9480083c40485c00f8487e6ffff8bc8e8b20fffff8bf0e9560300006a20e8efc8480083c40485c00f8467e6ffff8bc8e8425dffff8bf0e9360300006a24e8cfc8480083c40485c00f8447e6ffff8bc8e8c2a2ffff8bf0e9160300006a24e8afc8480083c40485c00f8427e6ffff8bc8e802a3ffff8bf0e9f60200006a28e88fc8480083c40485c00f8407e6ffff8bc8e842a3ffff8bf0e9d60200006a28e86fc8480083c40485c00f84e7e5ffff8bc8e8a2c6ffff8bf0e9b60200006a1ce84fc8480083c40485c00f84c7e5ffff8bc8e8b2a4ffff8bf0e9960200006820010000e82cc8480083c4048944240c85c0c7442418120000000f84d1e5ffff8bc8e8b3d6ffffc7442418ffffffff8bf0e95f0200006a30e8f8c7480083c40485c00f8470e5ffff8bc8e80b08ffff8bf0e93f0200006a2ce8d8c7480083c40485c00f8450e5ffff8bc8e85b08ffff8bf0e91f0200006a30e8b8c7480083c40485c00f8430e5ffff8bc8e8ab08ffff8bf0e9ff0100006a24e898c7480083c40485c00f8410e5ffff8bc8e8fb08ffff8bf0e9df0100006a20e878c7480083c40485c00f84f0e4ffff8bc8e84b5affff8bf0e9bf0100006818020000e855c7480083c40485c00f84cde4ffff8bc8e8985affff8bf0e99c0100006810010000e832c748008bd083c4048954240c85d2c7442418130000000f84e1f6ffff8bcae857ceffffc7020438d000c7442418ffffffff8bf2e95d0100006a30e8f6c6480083c4048944240c85c0c7442418140000000f849be4ffff8bc8e87de2ffffc7442418ffffffff8bf0e9290100006a2ce8c2c6480083c40485c00f843ae4ffff8bc8e8d5b7ffff8bf0e9090100006a28e8a2c6480083c40485c00f841ae4ffff8bc8e805b3ffff8bf0e9e90000006a28e882c6480083c40485c00f84fae3ffff8bc8e8d524ffff8bf0e9c90000006a28e862c6480083c4048944240c85c0c7442418150000000f8407e4ffff8bc8e8e9c4ffffc7442418ffffffff8bf0e9950000006a1ce82ec6480083c40485c00f84a6e3ffff8bc8e88164ffff8bf0eb786a1ce811c6480083c40485c00f8489e3ffff8bc8e89465ffff8bf0eb5b6a20e8f4c5480083c40485c00f846ce3ffff8bc8e8d7b3ffff8bf0eb3e6a28e8d7c5480083c40485c00f844fe3ffff8bc8e87a57ffff8bf0eb216a20e8bac5480083c40485c00f8432e3ffff8bc8e85dc3ffff8bf0eb048b74240c8b168b4208578bceffd08b4c24105f8bc65e64890d0000000083c414c3"
+      },
+      {
+        "address": "00ce4974",
+        "length": 12,
+        "kind": "native_data",
+        "sha256": "1de1783d0bcaff6f676451c2973530c6ea20896f87fe48fd7cba1e3534ebb0e8",
+        "hex": "109944008e69bf008e69bf00"
+      },
+      {
+        "address": "00d02c68",
+        "length": 20,
+        "kind": "native_data",
+        "sha256": "42678d7bb528a8382a295a4bd9ec14c64f9e9db585a6f100e834151f53fbf751",
+        "hex": "d09c75004099440060994400a0994400c0994400"
+      },
+      {
+        "address": "00ce74c8",
+        "length": 20,
+        "kind": "native_data",
+        "sha256": "c2ff1e484ccbba0f90de9bb328a38c5a4bcffbcabe56e29ae531ea458c184258",
+        "hex": "30604b00f05f4b0010604b00e05f4b00c0994400"
+      },
+      {
+        "address": "00d03034",
+        "length": 20,
+        "kind": "native_data",
+        "sha256": "00ab0b76b2cd18d1c73b4c7d47e2ea348e8f971cc29e574461eb033e11724ef8",
+        "hex": "b0d5750050d5750080d5750030d57500c0994400"
+      },
+      {
+        "address": "00d0300c",
+        "length": 20,
+        "kind": "native_data",
+        "sha256": "b7c7a1551256136205df11178777b8b855be3ac9537be810a2194f653953c614",
+        "hex": "d0d3750070d37500a0d3750050d37500c0994400"
+      },
+      {
+        "address": "00d02fbc",
+        "length": 20,
+        "kind": "native_data",
+        "sha256": "ca2aba4325ec620b7bfe95d5e9763816d7b8a4c097110c22e08fcddbf3548424",
+        "hex": "40ce750010cb750060cb750000cb7500c0994400"
+      }
+    ],
+    "call_rows": [
+      {
+        "address": "0042903a",
+        "native": "00428f50",
+        "function": "00429030",
+        "kind": "call"
+      },
+      {
+        "address": "004b5fb5",
+        "native": "0075b430",
+        "function": "004b5fb0",
+        "kind": "call"
+      },
+      {
+        "address": "004b5ffb",
+        "native": "00428ff0",
+        "function": "004b5ff0",
+        "kind": "call"
+      },
+      {
+        "address": "004b601d",
+        "native": "00428c70",
+        "function": "004b6010",
+        "kind": "call"
+      },
+      {
+        "address": "004b6041",
+        "native": "00bf65ac",
+        "function": "004b6030",
+        "kind": "call"
+      },
+      {
+        "address": "0075d561",
+        "native": "00428ff0",
+        "function": "0075d550",
+        "kind": "call"
+      },
+      {
+        "address": "0075d56d",
+        "native": "004290b0",
+        "function": "0075d550",
+        "kind": "call"
+      },
+      {
+        "address": "0075d593",
+        "native": "00428c70",
+        "function": "0075d580",
+        "kind": "call"
+      },
+      {
+        "address": "0075d59e",
+        "native": "00428d70",
+        "function": "0075d580",
+        "kind": "call"
+      },
+      {
+        "address": "0075d5c1",
+        "native": "00bf65ac",
+        "function": "0075d5b0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d381",
+        "native": "00428ff0",
+        "function": "0075d370",
+        "kind": "call"
+      },
+      {
+        "address": "0075d38d",
+        "native": "004290b0",
+        "function": "0075d370",
+        "kind": "call"
+      },
+      {
+        "address": "0075d3b3",
+        "native": "00428c70",
+        "function": "0075d3a0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d3be",
+        "native": "00428d70",
+        "function": "0075d3a0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d3e1",
+        "native": "00bf65ac",
+        "function": "0075d3d0",
+        "kind": "call"
+      },
+      {
+        "address": "0075cb22",
+        "native": "00428ff0",
+        "function": "0075cb10",
+        "kind": "call"
+      },
+      {
+        "address": "0075cb30",
+        "native": "00429030",
+        "function": "0075cb10",
+        "kind": "call"
+      },
+      {
+        "address": "0075cb46",
+        "native": "00428ff0",
+        "function": "0075cb10",
+        "kind": "call"
+      },
+      {
+        "address": "0075cb74",
+        "native": "00428c70",
+        "function": "0075cb60",
+        "kind": "call"
+      },
+      {
+        "address": "0075cb81",
+        "native": "00428cb0",
+        "function": "0075cb60",
+        "kind": "call"
+      },
+      {
+        "address": "0075cb99",
+        "native": "00428c70",
+        "function": "0075cb60",
+        "kind": "call"
+      },
+      {
+        "address": "0075ce51",
+        "native": "00bf65ac",
+        "function": "0075ce40",
+        "kind": "call"
+      },
+      {
+        "address": "00428c7b",
+        "native": "00428bb0",
+        "function": "00428c70",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00428cbd",
+        "native": "00428bb0",
+        "function": "00428cb0",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00428d7d",
+        "native": "00428bb0",
+        "function": "00428d70",
+        "kind": "call"
+      },
+      {
+        "address": "00428ffa",
+        "native": "00428f50",
+        "function": "00428ff0",
+        "kind": "call"
+      },
+      {
+        "address": "004290c3",
+        "native": "00428f50",
+        "function": "004290b0",
+        "kind": "call"
+      },
+      {
+        "address": "00449921",
+        "native": "00bf65ac",
+        "function": "00449910",
+        "kind": "call"
+      },
+      {
+        "address": "0044994b",
+        "native": "00428ff0",
+        "function": "00449940",
+        "kind": "call"
+      },
+      {
+        "address": "0044996d",
+        "native": "00428c70",
+        "function": "00449960",
+        "kind": "call"
+      },
+      {
+        "address": "00759ce1",
+        "native": "00bf65ac",
+        "function": "00759cd0",
+        "kind": "call"
+      },
+      {
+        "address": "00768558",
+        "native": "00428c70",
+        "function": "00768530",
+        "kind": "call"
+      }
+    ],
+    "new_native_bodies": 21,
+    "new_body_bytes": 894,
+    "fixture_relocations": [
+      {
+        "body": "00429030",
+        "offset": 11,
+        "relative": true,
+        "target": "00428f50"
+      },
+      {
+        "body": "004b5fb0",
+        "offset": 6,
+        "relative": true,
+        "target": "0075b430"
+      },
+      {
+        "body": "004b5fb0",
+        "offset": 19,
+        "relative": false,
+        "target": "00ce74c8"
+      },
+      {
+        "body": "004b5ff0",
+        "offset": 12,
+        "relative": true,
+        "target": "00428ff0"
+      },
+      {
+        "body": "004b6010",
+        "offset": 14,
+        "relative": true,
+        "target": "00428c70"
+      },
+      {
+        "body": "004b6030",
+        "offset": 10,
+        "relative": false,
+        "target": "00ce4974"
+      },
+      {
+        "body": "004b6030",
+        "offset": 18,
+        "relative": true,
+        "target": "00bf65ac"
+      },
+      {
+        "body": "0075d4b0",
+        "offset": 25,
+        "relative": false,
+        "target": "00d02c68"
+      },
+      {
+        "body": "0075d4b0",
+        "offset": 35,
+        "relative": false,
+        "target": "00e188a8"
+      },
+      {
+        "body": "0075d4b0",
+        "offset": 73,
+        "relative": false,
+        "target": "00d03034"
+      },
+      {
+        "body": "0075d4b0",
+        "offset": 94,
+        "relative": false,
+        "target": "00d03034"
+      },
+      {
+        "body": "0075d550",
+        "offset": 18,
+        "relative": true,
+        "target": "00428ff0"
+      },
+      {
+        "body": "0075d550",
+        "offset": 30,
+        "relative": true,
+        "target": "004290b0"
+      },
+      {
+        "body": "0075d580",
+        "offset": 20,
+        "relative": true,
+        "target": "00428c70"
+      },
+      {
+        "body": "0075d580",
+        "offset": 31,
+        "relative": true,
+        "target": "00428d70"
+      },
+      {
+        "body": "0075d5b0",
+        "offset": 10,
+        "relative": false,
+        "target": "00ce4974"
+      },
+      {
+        "body": "0075d5b0",
+        "offset": 18,
+        "relative": true,
+        "target": "00bf65ac"
+      },
+      {
+        "body": "0075d2e0",
+        "offset": 25,
+        "relative": false,
+        "target": "00d02c68"
+      },
+      {
+        "body": "0075d2e0",
+        "offset": 35,
+        "relative": false,
+        "target": "00e188a8"
+      },
+      {
+        "body": "0075d2e0",
+        "offset": 86,
+        "relative": false,
+        "target": "00d0300c"
+      },
+      {
+        "body": "0075d370",
+        "offset": 18,
+        "relative": true,
+        "target": "00428ff0"
+      },
+      {
+        "body": "0075d370",
+        "offset": 30,
+        "relative": true,
+        "target": "004290b0"
+      },
+      {
+        "body": "0075d3a0",
+        "offset": 20,
+        "relative": true,
+        "target": "00428c70"
+      },
+      {
+        "body": "0075d3a0",
+        "offset": 31,
+        "relative": true,
+        "target": "00428d70"
+      },
+      {
+        "body": "0075d3d0",
+        "offset": 10,
+        "relative": false,
+        "target": "00ce4974"
+      },
+      {
+        "body": "0075d3d0",
+        "offset": 18,
+        "relative": true,
+        "target": "00bf65ac"
+      },
+      {
+        "body": "0075caa0",
+        "offset": 20,
+        "relative": false,
+        "target": "00d02c68"
+      },
+      {
+        "body": "0075caa0",
+        "offset": 30,
+        "relative": false,
+        "target": "00e188a8"
+      },
+      {
+        "body": "0075caa0",
+        "offset": 68,
+        "relative": false,
+        "target": "00d02fbc"
+      },
+      {
+        "body": "0075caa0",
+        "offset": 86,
+        "relative": false,
+        "target": "00d02fbc"
+      },
+      {
+        "body": "0075cb10",
+        "offset": 19,
+        "relative": true,
+        "target": "00428ff0"
+      },
+      {
+        "body": "0075cb10",
+        "offset": 33,
+        "relative": true,
+        "target": "00429030"
+      },
+      {
+        "body": "0075cb10",
+        "offset": 55,
+        "relative": true,
+        "target": "00428ff0"
+      },
+      {
+        "body": "0075cb60",
+        "offset": 21,
+        "relative": true,
+        "target": "00428c70"
+      },
+      {
+        "body": "0075cb60",
+        "offset": 34,
+        "relative": true,
+        "target": "00428cb0"
+      },
+      {
+        "body": "0075cb60",
+        "offset": 58,
+        "relative": true,
+        "target": "00428c70"
+      },
+      {
+        "body": "0075ce40",
+        "offset": 10,
+        "relative": false,
+        "target": "00ce4974"
+      },
+      {
+        "body": "0075ce40",
+        "offset": 18,
+        "relative": true,
+        "target": "00bf65ac"
+      },
+      {
+        "body": "00428c70",
+        "offset": 12,
+        "relative": true,
+        "target": "00428bb0"
+      },
+      {
+        "body": "00428cb0",
+        "offset": 14,
+        "relative": true,
+        "target": "00428bb0"
+      },
+      {
+        "body": "00428d70",
+        "offset": 14,
+        "relative": true,
+        "target": "00428bb0"
+      },
+      {
+        "body": "00428ff0",
+        "offset": 11,
+        "relative": true,
+        "target": "00428f50"
+      },
+      {
+        "body": "004290b0",
+        "offset": 20,
+        "relative": true,
+        "target": "00428f50"
+      },
+      {
+        "body": "00449910",
+        "offset": 10,
+        "relative": false,
+        "target": "00ce4974"
+      },
+      {
+        "body": "00449910",
+        "offset": 18,
+        "relative": true,
+        "target": "00bf65ac"
+      },
+      {
+        "body": "00449940",
+        "offset": 12,
+        "relative": true,
+        "target": "00428ff0"
+      },
+      {
+        "body": "00449960",
+        "offset": 14,
+        "relative": true,
+        "target": "00428c70"
+      },
+      {
+        "body": "00759cd0",
+        "offset": 10,
+        "relative": false,
+        "target": "00ce4974"
+      },
+      {
+        "body": "00759cd0",
+        "offset": 18,
+        "relative": true,
+        "target": "00bf65ac"
+      },
+      {
+        "body": "0075b430",
+        "offset": 29,
+        "relative": false,
+        "target": "00d02c68"
+      },
+      {
+        "body": "0075b430",
+        "offset": 38,
+        "relative": false,
+        "target": "00e188a8"
+      }
+    ],
+    "raw_parent_calls_without_stored_ownership": [
+      {
+        "site": "0076889c",
+        "target": "0075d4b0",
+        "native_parent": "00768530",
+        "live_instruction_and_pe_bytes_verified": true,
+        "ghidra_stored_membership": false
+      },
+      {
+        "site": "007688bc",
+        "target": "004b5fb0",
+        "native_parent": "00768530",
+        "live_instruction_and_pe_bytes_verified": true,
+        "ghidra_stored_membership": false
+      },
+      {
+        "site": "007688de",
+        "target": "0075d2e0",
+        "native_parent": "00768530",
+        "live_instruction_and_pe_bytes_verified": true,
+        "ghidra_stored_membership": false
+      },
+      {
+        "site": "007688fe",
+        "target": "0075caa0",
+        "native_parent": "00768530",
+        "live_instruction_and_pe_bytes_verified": true,
+        "ghidra_stored_membership": false
+      }
+    ],
+    "factory_allocation_instruction_context": {
+      "0076889c": {
+        "address": "0076889c",
+        "instruction": "CALL 0x0075d4b0",
+        "context_before": [
+          "0076889a: MOV ECX,EAX",
+          "00768894: JZ 0x0076859e",
+          "00768892: TEST EAX,EAX",
+          "0076888f: ADD ESP,0x4",
+          "0076888a: CALL 0x00bf681b",
+          "00768888: PUSH 0x1c"
+        ],
+        "context_after": [
+          "007688a1: MOV ESI,EAX",
+          "007688a3: JMP 0x0076a27b",
+          "007688a8: PUSH 0x18",
+          "007688aa: CALL 0x00bf681b",
+          "007688af: ADD ESP,0x4",
+          "007688b2: TEST EAX,EAX"
+        ],
+        "mnemonic": "CALL",
+        "patterns_detected": [
+          "control_flow"
+        ]
+      },
+      "007688bc": {
+        "address": "007688bc",
+        "instruction": "CALL 0x004b5fb0",
+        "context_before": [
+          "007688ba: MOV ECX,EAX",
+          "007688b4: JZ 0x0076859e",
+          "007688b2: TEST EAX,EAX",
+          "007688af: ADD ESP,0x4",
+          "007688aa: CALL 0x00bf681b",
+          "007688a8: PUSH 0x18"
+        ],
+        "context_after": [
+          "007688c1: MOV ESI,EAX",
+          "007688c3: JMP 0x0076a27b",
+          "007688c8: PUSH 0x1c",
+          "007688ca: CALL 0x00bf681b",
+          "007688cf: ADD ESP,0x4",
+          "007688d2: TEST EAX,EAX"
+        ],
+        "mnemonic": "CALL",
+        "patterns_detected": [
+          "control_flow"
+        ]
+      },
+      "007688de": {
+        "address": "007688de",
+        "instruction": "CALL 0x0075d2e0",
+        "context_before": [
+          "007688dc: MOV ECX,EAX",
+          "007688da: PUSH 0x0",
+          "007688d4: JZ 0x0076859e",
+          "007688d2: TEST EAX,EAX",
+          "007688cf: ADD ESP,0x4",
+          "007688ca: CALL 0x00bf681b"
+        ],
+        "context_after": [
+          "007688e3: MOV ESI,EAX",
+          "007688e5: JMP 0x0076a27b",
+          "007688ea: PUSH 0x1c",
+          "007688ec: CALL 0x00bf681b",
+          "007688f1: ADD ESP,0x4",
+          "007688f4: TEST EAX,EAX"
+        ],
+        "mnemonic": "CALL",
+        "patterns_detected": [
+          "control_flow"
+        ]
+      },
+      "007688fe": {
+        "address": "007688fe",
+        "instruction": "CALL 0x0075caa0",
+        "context_before": [
+          "007688fc: MOV ECX,EAX",
+          "007688f6: JZ 0x0076859e",
+          "007688f4: TEST EAX,EAX",
+          "007688f1: ADD ESP,0x4",
+          "007688ec: CALL 0x00bf681b",
+          "007688ea: PUSH 0x1c"
+        ],
+        "context_after": [
+          "00768903: MOV ESI,EAX",
+          "00768905: JMP 0x0076a27b",
+          "0076890a: PUSH 0x78",
+          "0076890c: CALL 0x00bf681b",
+          "00768911: ADD ESP,0x4",
+          "00768914: TEST EAX,EAX"
+        ],
+        "mnemonic": "CALL",
+        "patterns_detected": [
+          "control_flow"
+        ]
+      }
+    }
+  },
+  "ghidra_repairs": {
+    "defined-functions.json": {
+      "events": [
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "004b5fe0",
+            "end_address": "004b5fed"
+          },
+          "result": {
+            "success": true,
+            "start_address": "004b5fe0",
+            "end_address": "004b5fec",
+            "bytes_disassembled": 13,
+            "message": "Successfully disassembled 13 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "004b5fe0",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "004b5fe0",
+            "function_name": "FUN_004b5fe0",
+            "entry_point": "004b5fe0",
+            "body_size": 13,
+            "message": "Function created successfully at 004b5fe0"
+          }
+        },
+        {
+          "defined": "004b5fe0",
+          "end": "004b5fed",
+          "name": null,
+          "after": "Function: FUN_004b5fe0 at 004b5fe0\nSignature: undefined FUN_004b5fe0(void)\nEntry: 004b5fe0\nBody: 004b5fe0 - 004b5fec"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "004b5ff0",
+            "end_address": "004b6003"
+          },
+          "result": {
+            "success": true,
+            "start_address": "004b5ff0",
+            "end_address": "004b6002",
+            "bytes_disassembled": 19,
+            "message": "Successfully disassembled 19 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "004b5ff0",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "004b5ff0",
+            "function_name": "FUN_004b5ff0",
+            "entry_point": "004b5ff0",
+            "body_size": 19,
+            "message": "Function created successfully at 004b5ff0"
+          }
+        },
+        {
+          "defined": "004b5ff0",
+          "end": "004b6003",
+          "name": null,
+          "after": "Function: FUN_004b5ff0 at 004b5ff0\nSignature: undefined FUN_004b5ff0(void)\nEntry: 004b5ff0\nBody: 004b5ff0 - 004b6002"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "004b6010",
+            "end_address": "004b6025"
+          },
+          "result": {
+            "success": true,
+            "start_address": "004b6010",
+            "end_address": "004b6024",
+            "bytes_disassembled": 21,
+            "message": "Successfully disassembled 21 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "004b6010",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "004b6010",
+            "function_name": "FUN_004b6010",
+            "entry_point": "004b6010",
+            "body_size": 21,
+            "message": "Function created successfully at 004b6010"
+          }
+        },
+        {
+          "defined": "004b6010",
+          "end": "004b6025",
+          "name": null,
+          "after": "Function: FUN_004b6010 at 004b6010\nSignature: undefined FUN_004b6010(void)\nEntry: 004b6010\nBody: 004b6010 - 004b6024"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "004b6030",
+            "end_address": "004b604f"
+          },
+          "result": {
+            "success": true,
+            "start_address": "004b6030",
+            "end_address": "004b604e",
+            "bytes_disassembled": 31,
+            "message": "Successfully disassembled 31 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "004b6030",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "004b6030",
+            "function_name": "FUN_004b6030",
+            "entry_point": "004b6030",
+            "body_size": 28,
+            "message": "Function created successfully at 004b6030"
+          }
+        },
+        {
+          "defined": "004b6030",
+          "end": "004b604f",
+          "name": null,
+          "after": "Function: FUN_004b6030 at 004b6030\nSignature: undefined FUN_004b6030(void)\nEntry: 004b6030\nBody: 004b6030 - 004b604e"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "0075d530",
+            "end_address": "0075d54e"
+          },
+          "result": {
+            "success": true,
+            "start_address": "0075d530",
+            "end_address": "0075d54d",
+            "bytes_disassembled": 30,
+            "message": "Successfully disassembled 30 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "0075d530",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "0075d530",
+            "function_name": "FUN_0075d530",
+            "entry_point": "0075d530",
+            "body_size": 30,
+            "message": "Function created successfully at 0075d530"
+          }
+        },
+        {
+          "defined": "0075d530",
+          "end": "0075d54e",
+          "name": null,
+          "after": "Function: FUN_0075d530 at 0075d530\nSignature: undefined FUN_0075d530(void)\nEntry: 0075d530\nBody: 0075d530 - 0075d54d"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "0075d580",
+            "end_address": "0075d5a8"
+          },
+          "result": {
+            "success": true,
+            "start_address": "0075d580",
+            "end_address": "0075d5a7",
+            "bytes_disassembled": 40,
+            "message": "Successfully disassembled 40 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "0075d580",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "0075d580",
+            "function_name": "FUN_0075d580",
+            "entry_point": "0075d580",
+            "body_size": 40,
+            "message": "Function created successfully at 0075d580"
+          }
+        },
+        {
+          "defined": "0075d580",
+          "end": "0075d5a8",
+          "name": null,
+          "after": "Function: FUN_0075d580 at 0075d580\nSignature: undefined FUN_0075d580(void)\nEntry: 0075d580\nBody: 0075d580 - 0075d5a7"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "0075d5b0",
+            "end_address": "0075d5cf"
+          },
+          "result": {
+            "success": true,
+            "start_address": "0075d5b0",
+            "end_address": "0075d5ce",
+            "bytes_disassembled": 31,
+            "message": "Successfully disassembled 31 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "0075d5b0",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "0075d5b0",
+            "function_name": "FUN_0075d5b0",
+            "entry_point": "0075d5b0",
+            "body_size": 28,
+            "message": "Function created successfully at 0075d5b0"
+          }
+        },
+        {
+          "defined": "0075d5b0",
+          "end": "0075d5cf",
+          "name": null,
+          "after": "Function: FUN_0075d5b0 at 0075d5b0\nSignature: undefined FUN_0075d5b0(void)\nEntry: 0075d5b0\nBody: 0075d5b0 - 0075d5ce"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "0075d350",
+            "end_address": "0075d36e"
+          },
+          "result": {
+            "success": true,
+            "start_address": "0075d350",
+            "end_address": "0075d36d",
+            "bytes_disassembled": 30,
+            "message": "Successfully disassembled 30 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "0075d350",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "0075d350",
+            "function_name": "FUN_0075d350",
+            "entry_point": "0075d350",
+            "body_size": 30,
+            "message": "Function created successfully at 0075d350"
+          }
+        },
+        {
+          "defined": "0075d350",
+          "end": "0075d36e",
+          "name": null,
+          "after": "Function: FUN_0075d350 at 0075d350\nSignature: undefined FUN_0075d350(void)\nEntry: 0075d350\nBody: 0075d350 - 0075d36d"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "0075d3a0",
+            "end_address": "0075d3c8"
+          },
+          "result": {
+            "success": true,
+            "start_address": "0075d3a0",
+            "end_address": "0075d3c7",
+            "bytes_disassembled": 40,
+            "message": "Successfully disassembled 40 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "0075d3a0",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "0075d3a0",
+            "function_name": "FUN_0075d3a0",
+            "entry_point": "0075d3a0",
+            "body_size": 40,
+            "message": "Function created successfully at 0075d3a0"
+          }
+        },
+        {
+          "defined": "0075d3a0",
+          "end": "0075d3c8",
+          "name": null,
+          "after": "Function: FUN_0075d3a0 at 0075d3a0\nSignature: undefined FUN_0075d3a0(void)\nEntry: 0075d3a0\nBody: 0075d3a0 - 0075d3c7"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "0075d3d0",
+            "end_address": "0075d3ef"
+          },
+          "result": {
+            "success": true,
+            "start_address": "0075d3d0",
+            "end_address": "0075d3ee",
+            "bytes_disassembled": 31,
+            "message": "Successfully disassembled 31 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "0075d3d0",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "0075d3d0",
+            "function_name": "FUN_0075d3d0",
+            "entry_point": "0075d3d0",
+            "body_size": 28,
+            "message": "Function created successfully at 0075d3d0"
+          }
+        },
+        {
+          "defined": "0075d3d0",
+          "end": "0075d3ef",
+          "name": null,
+          "after": "Function: FUN_0075d3d0 at 0075d3d0\nSignature: undefined FUN_0075d3d0(void)\nEntry: 0075d3d0\nBody: 0075d3d0 - 0075d3ee"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "0075cb00",
+            "end_address": "0075cb0d"
+          },
+          "result": {
+            "success": true,
+            "start_address": "0075cb00",
+            "end_address": "0075cb0c",
+            "bytes_disassembled": 13,
+            "message": "Successfully disassembled 13 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "0075cb00",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "0075cb00",
+            "function_name": "FUN_0075cb00",
+            "entry_point": "0075cb00",
+            "body_size": 13,
+            "message": "Function created successfully at 0075cb00"
+          }
+        },
+        {
+          "defined": "0075cb00",
+          "end": "0075cb0d",
+          "name": null,
+          "after": "Function: FUN_0075cb00 at 0075cb00\nSignature: undefined FUN_0075cb00(void)\nEntry: 0075cb00\nBody: 0075cb00 - 0075cb0c"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "0075cb60",
+            "end_address": "0075cbae"
+          },
+          "result": {
+            "success": true,
+            "start_address": "0075cb60",
+            "end_address": "0075cbad",
+            "bytes_disassembled": 78,
+            "message": "Successfully disassembled 78 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "0075cb60",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "0075cb60",
+            "function_name": "FUN_0075cb60",
+            "entry_point": "0075cb60",
+            "body_size": 78,
+            "message": "Function created successfully at 0075cb60"
+          }
+        },
+        {
+          "defined": "0075cb60",
+          "end": "0075cbae",
+          "name": null,
+          "after": "Function: FUN_0075cb60 at 0075cb60\nSignature: undefined FUN_0075cb60(void)\nEntry: 0075cb60\nBody: 0075cb60 - 0075cbad"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "0075ce40",
+            "end_address": "0075ce5f"
+          },
+          "result": {
+            "success": true,
+            "start_address": "0075ce40",
+            "end_address": "0075ce5e",
+            "bytes_disassembled": 31,
+            "message": "Successfully disassembled 31 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "0075ce40",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "0075ce40",
+            "function_name": "FUN_0075ce40",
+            "entry_point": "0075ce40",
+            "body_size": 28,
+            "message": "Function created successfully at 0075ce40"
+          }
+        },
+        {
+          "defined": "0075ce40",
+          "end": "0075ce5f",
+          "name": null,
+          "after": "Function: FUN_0075ce40 at 0075ce40\nSignature: undefined FUN_0075ce40(void)\nEntry: 0075ce40\nBody: 0075ce40 - 0075ce5e"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        }
+      ]
+    }
+  },
+  "ghidra_metadata_limits": {
+    "factory_calls_without_stored_membership": [
+      "0076889c",
+      "007688bc",
+      "007688de",
+      "007688fe"
+    ],
+    "prior_factory_limits_preserved": true,
+    "new_scalar_listing_gaps": 0
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "ctests_passed": 3,
+    "fixture": {
+      "result": {
+        "exe_sha256": "687A16401D8048459185C8C3DDF55C81D579A6214BD5E41987E77423DA04948F",
+        "flags": "/std:c++17 /O2 /MD /W4 /WX /fp:strict /MANIFEST:EMBED",
+        "exit": 0,
+        "library_sha256": "71709C00B7B3725A5CB1D2176A7F57CA443339E38E477FCDA99A4F627A0B98A4",
+        "utc": "2026-09-19T06:03:13.9895190Z"
+      },
+      "pairs": 3148,
+      "matching_bytes": 4999100,
+      "observations_sha256": "882a45ca60b2fc14617faf651134d7359e2d4e978c55ffdc6e9a6ab98fda67dd",
+      "constructor_cases": 196,
+      "five_slot_class_cases": 2128,
+      "signed_word_cases": 816,
+      "freeing_scalar_cases": 8,
+      "all_eight_cursor_alignments": true,
+      "count_values": [
+        0,
+        1,
+        31,
+        255,
+        256,
+        32768,
+        65535
+      ],
+      "source_and_native_full_count": true,
+      "arbitrary_reader_payload": true,
+      "writer_zero_declared_length_with_backing": true
+    },
+    "source_sha256_by_path": {
+      "include/bsp/native_session_message_tags_12_13_14_15.hpp": "e803ffb7ba41063e513c573f11f1e9ad2c9bf1b73c4c721fab3b62e45adf7770",
+      "src/native_session_message_tags_12_13_14_15.cpp": "b32c2cb3ef61b990c787646a48e02e011afabe0512f381fba69360ed9add6ec0",
+      "include/bsp/native_bit_cursor_fields.hpp": "e8f170001981470be8db80f359aa3b261660e7be4507b79fe551f39b16780544",
+      "src/native_bit_cursor_fields.cpp": "e734aab56456aab557c636ea90470ccb708678901c921efcc34bdba00238a552",
+      "cmake/startup.cmake": "a735de854119d7622dc2b7c29ff633eb508a67671328dc72a1f150d0a478f7e1"
+    },
+    "source_lf_sha256": {
+      "include/bsp/native_session_message_tags_12_13_14_15.hpp": "2e0d0249141c4674eefcc0f21130f9aaee21757cf5df3edc6de0f41d57372284",
+      "src/native_session_message_tags_12_13_14_15.cpp": "8abfb3f2889dbbef81106a8774af1bad13e2b175c337be37b8399bad98c5b0c6",
+      "include/bsp/native_bit_cursor_fields.hpp": "e8f170001981470be8db80f359aa3b261660e7be4507b79fe551f39b16780544",
+      "src/native_bit_cursor_fields.cpp": "e734aab56456aab557c636ea90470ccb708678901c921efcc34bdba00238a552",
+      "cmake/startup.cmake": "fad144fc35296e7e85d13a7f9b8ef817919de0f0a42b8677861128819a87e843"
+    },
+    "library_sha256": "71709c00b7b3725a5cb1d2176a7f57ca443339e38e477fcda99a4f627a0b98a4",
+    "game_sha256": "2ff0c6bab8f87d739e929491c48208cbe60b2a21cc8d3b4983dbaeaa76e6ab7b",
+    "object_paths": [
+      "build/win32/bsp_core.dir/Release/native_session_message_tags_12_13_14_15.obj",
+      "build/win32/bsp_core.dir/Release/native_bit_cursor_fields.obj",
+      "build/win32/bsp_core.dir/Release/native_bit_cursor_read.obj",
+      "build/win32/bsp_core.dir/Release/native_bit_cursor_write.obj",
+      "build/win32/bsp_core.dir/Release/native_session_message_base.obj",
+      "build/win32/bsp_core.dir/Release/singleton_lifetime.obj"
+    ],
+    "call_verification": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\reports\\native_session_messages_12_13_14_15_r182.json: 32 call rows checked, 0 failed\n"
+  },
+  "owned_files": [
+    "include/bsp/native_session_message_tags_12_13_14_15.hpp",
+    "src/native_session_message_tags_12_13_14_15.cpp",
+    "include/bsp/native_bit_cursor_fields.hpp",
+    "src/native_bit_cursor_fields.cpp",
+    "cmake/startup.cmake",
+    "docs/NATIVE_SESSION_MESSAGES_12_13_14_15_R182.md",
+    "reports/native_session_messages_12_13_14_15_r182.json",
+    "config/names/00420000.jsonl",
+    "config/reconstruction/00420000.jsonl",
+    "config/names/004b0000.jsonl",
+    "config/reconstruction/004b0000.jsonl",
+    "config/names/00750000.jsonl",
+    "config/reconstruction/00750000.jsonl",
+    "config/names/00760000.jsonl",
+    "config/reconstruction/00760000.jsonl"
+  ],
+  "limitations": [
+    "Full factory, remaining message classes, packet recorder, network workers, ordinary startup, network exchange and gameplay remain open",
+    "Explicit C++ interfaces and raw virtual adapters are not proof of whole binary ABI. No original CRT identity or original FH3/SEH exception comparison",
+    "Four live/PE verified factory CALL instructions have absent stored Ghidra function membership and are excluded from the 32 ownership-checked call rows",
+    "Fixture uses actual singleton allocation/free providers through a native free bridge; no released heap bytes are inspected",
+    "No arbitrary object/cursor/backing aliasing, live concurrent mutation, allocation failure or access-fault schedule comparison. Unsigned count reloads and native store order are preserved from assembly",
+    "Writer never clamps to declared length; fixture supplies full physical backing including carry byte. Reader arbitrary payload bytes are consumed/discarded without validation"
+  ],
+  "ghidra_annotations": {
+    "status": "Twenty-one complete normal bodies and one parent dependency fragment named/commented/saved under write lock; prior values preserved; exports refreshed and readback checked",
+    "prior_values": [
+      {
+        "address": "00429030",
+        "before": {
+          "address": "00429030",
+          "function_name": "FUN_00429030"
+        },
+        "after": {
+          "address": "00429030",
+          "name": "BSP_BitCursor_WriteSignedWordBits",
+          "evidence": "Complete18B;ECXcursor,DWORDvalue/bits stack,RET8. Pass address of full value stack cell to428F50;no signed conversion. Normal word widths0..16 verified. Descriptive hypothesis, not a recovered symbol. R182:21complete normalbodies894B;strictWin32/3CTests;3148original/sourcepairs4999100B:196constructors,2128five-slotcases,816wordwrites,8freeingreturns. Allalignments;unsignedcounts0..65535;rawboolbytes;fixed/currentpredicates;retainedpadding.9184live/PEbytes;32ownedCALL/tailJMP plus4rawfactorycalls. Thirteenfunctionsdefined/scalarlistings0gaps. Explicitinterfaces,notwholeABI;fullfactory/recorder/workers,ordinarystartup/network/gameplay open. docs/NATIVE_SESSION_MESSAGES_12_13_14_15_R182.md;reports/native_session_messages_12_13_14_15_r182.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "004b5fb0",
+        "before": {
+          "address": "004b5fb0",
+          "function_name": "FUN_004b5fb0"
+        },
+        "after": {
+          "address": "004b5fb0",
+          "name": "BSP_SessionMessage12_Construct",
+          "evidence": "Complete27B;ECXmessage,EAXidentity. Base type12,oneE188A8 capture,signed18EC0..7 selects18CC table else null. Retains padding11..13. Final profile00CE74C8. No stackargs,RET. Mode1 thenprofile,no payload. Descriptive hypothesis, not a recovered symbol. R182:21complete normalbodies894B;strictWin32/3CTests;3148original/sourcepairs4999100B:196constructors,2128five-slotcases,816wordwrites,8freeingreturns. Allalignments;unsignedcounts0..65535;rawboolbytes;fixed/currentpredicates;retainedpadding.9184live/PEbytes;32ownedCALL/tailJMP plus4rawfactorycalls. Thirteenfunctionsdefined/scalarlistings0gaps. Explicitinterfaces,notwholeABI;fullfactory/recorder/workers,ordinarystartup/network/gameplay open. docs/NATIVE_SESSION_MESSAGES_12_13_14_15_R182.md;reports/native_session_messages_12_13_14_15_r182.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "004b5fe0",
+        "before": {
+          "address": "004b5fe0",
+          "function_name": "FUN_004b5fe0"
+        },
+        "after": {
+          "address": "004b5fe0",
+          "name": "BSP_SessionMessage12_IsType",
+          "evidence": "Complete13B;DWORDquery,RET4. ECXignored;fullquery equalsfixed12 only,independentofmutablewirebyte. Descriptive hypothesis, not a recovered symbol. R182:21complete normalbodies894B;strictWin32/3CTests;3148original/sourcepairs4999100B:196constructors,2128five-slotcases,816wordwrites,8freeingreturns. Allalignments;unsignedcounts0..65535;rawboolbytes;fixed/currentpredicates;retainedpadding.9184live/PEbytes;32ownedCALL/tailJMP plus4rawfactorycalls. Thirteenfunctionsdefined/scalarlistings0gaps. Explicitinterfaces,notwholeABI;fullfactory/recorder/workers,ordinarystartup/network/gameplay open. docs/NATIVE_SESSION_MESSAGES_12_13_14_15_R182.md;reports/native_session_messages_12_13_14_15_r182.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "004b5ff0",
+        "before": {
+          "address": "004b5ff0",
+          "function_name": "FUN_004b5ff0"
+        },
+        "after": {
+          "address": "004b5ff0",
+          "name": "BSP_SessionMessage12_Write",
+          "evidence": "Complete19B;ECXmessage,stackRAW10hcursor,RET4. Typebyte10 as8bits. No payload. Descriptive hypothesis, not a recovered symbol. R182:21complete normalbodies894B;strictWin32/3CTests;3148original/sourcepairs4999100B:196constructors,2128five-slotcases,816wordwrites,8freeingreturns. Allalignments;unsignedcounts0..65535;rawboolbytes;fixed/currentpredicates;retainedpadding.9184live/PEbytes;32ownedCALL/tailJMP plus4rawfactorycalls. Thirteenfunctionsdefined/scalarlistings0gaps. Explicitinterfaces,notwholeABI;fullfactory/recorder/workers,ordinarystartup/network/gameplay open. docs/NATIVE_SESSION_MESSAGES_12_13_14_15_R182.md;reports/native_session_messages_12_13_14_15_r182.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "004b6010",
+        "before": {
+          "address": "004b6010",
+          "function_name": "FUN_004b6010"
+        },
+        "after": {
+          "address": "004b6010",
+          "name": "BSP_SessionMessage12_Read",
+          "evidence": "Complete21B;ECXmessage,stack18hreadstream usescursor+4,RET4. Type8 replacesbyte10. No payload. Descriptive hypothesis, not a recovered symbol. R182:21complete normalbodies894B;strictWin32/3CTests;3148original/sourcepairs4999100B:196constructors,2128five-slotcases,816wordwrites,8freeingreturns. Allalignments;unsignedcounts0..65535;rawboolbytes;fixed/currentpredicates;retainedpadding.9184live/PEbytes;32ownedCALL/tailJMP plus4rawfactorycalls. Thirteenfunctionsdefined/scalarlistings0gaps. Explicitinterfaces,notwholeABI;fullfactory/recorder/workers,ordinarystartup/network/gameplay open. docs/NATIVE_SESSION_MESSAGES_12_13_14_15_R182.md;reports/native_session_messages_12_13_14_15_r182.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "004b6030",
+        "before": {
+          "address": "004b6030",
+          "function_name": "FUN_004b6030"
+        },
+        "after": {
+          "address": "004b6030",
+          "name": "BSP_SessionMessage12_ScalarDelete",
+          "evidence": "Complete31B;ECXmessage,stackflags,RET4/EAXidentity. StampCE4974;freeBF65AC onlyflagsbit0. Fullreturning-free listing0gaps. Descriptive hypothesis, not a recovered symbol. R182:21complete normalbodies894B;strictWin32/3CTests;3148original/sourcepairs4999100B:196constructors,2128five-slotcases,816wordwrites,8freeingreturns. Allalignments;unsignedcounts0..65535;rawboolbytes;fixed/currentpredicates;retainedpadding.9184live/PEbytes;32ownedCALL/tailJMP plus4rawfactorycalls. Thirteenfunctionsdefined/scalarlistings0gaps. Explicitinterfaces,notwholeABI;fullfactory/recorder/workers,ordinarystartup/network/gameplay open. docs/NATIVE_SESSION_MESSAGES_12_13_14_15_R182.md;reports/native_session_messages_12_13_14_15_r182.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0075caa0",
+        "before": {
+          "address": "0075caa0",
+          "function_name": "FUN_0075caa0"
+        },
+        "after": {
+          "address": "0075caa0",
+          "name": "BSP_SessionMessage15_Construct",
+          "evidence": "Complete92B;ECXmessage,EAXidentity. Base type15,oneE188A8 capture,signed18EC0..7 selects18CC table else null. Retains padding11..13. Final profile00D02FBC. No stackargs,RET. Valid selection readsowner thenmode0/countWORD18zero beforeownerstore;invalidnullowner beforemode/count;profilelast. Retains1A/1B. Descriptive hypothesis, not a recovered symbol. R182:21complete normalbodies894B;strictWin32/3CTests;3148original/sourcepairs4999100B:196constructors,2128five-slotcases,816wordwrites,8freeingreturns. Allalignments;unsignedcounts0..65535;rawboolbytes;fixed/currentpredicates;retainedpadding.9184live/PEbytes;32ownedCALL/tailJMP plus4rawfactorycalls. Thirteenfunctionsdefined/scalarlistings0gaps. Explicitinterfaces,notwholeABI;fullfactory/recorder/workers,ordinarystartup/network/gameplay open. docs/NATIVE_SESSION_MESSAGES_12_13_14_15_R182.md;reports/native_session_messages_12_13_14_15_r182.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0075cb00",
+        "before": {
+          "address": "0075cb00",
+          "function_name": "FUN_0075cb00"
+        },
+        "after": {
+          "address": "0075cb00",
+          "name": "BSP_SessionMessage15_IsType",
+          "evidence": "Complete13B;DWORDquery,RET4. ECXignored;fullquery equalsfixed15 only,independentofmutablewirebyte. Descriptive hypothesis, not a recovered symbol. R182:21complete normalbodies894B;strictWin32/3CTests;3148original/sourcepairs4999100B:196constructors,2128five-slotcases,816wordwrites,8freeingreturns. Allalignments;unsignedcounts0..65535;rawboolbytes;fixed/currentpredicates;retainedpadding.9184live/PEbytes;32ownedCALL/tailJMP plus4rawfactorycalls. Thirteenfunctionsdefined/scalarlistings0gaps. Explicitinterfaces,notwholeABI;fullfactory/recorder/workers,ordinarystartup/network/gameplay open. docs/NATIVE_SESSION_MESSAGES_12_13_14_15_R182.md;reports/native_session_messages_12_13_14_15_r182.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0075cb10",
+        "before": {
+          "address": "0075cb10",
+          "function_name": "FUN_0075cb10"
+        },
+        "after": {
+          "address": "0075cb10",
+          "name": "BSP_SessionMessage15_Write",
+          "evidence": "Complete76B;ECXmessage,stackRAW10hcursor,RET4. Typebyte10 as8bits. CountWORD18 through429030 as16bits thencount copies0x21/8bits. Reloadcountafterheader andeachbyte;unsigned16bound,signed32index,noclamp. Descriptive hypothesis, not a recovered symbol. R182:21complete normalbodies894B;strictWin32/3CTests;3148original/sourcepairs4999100B:196constructors,2128five-slotcases,816wordwrites,8freeingreturns. Allalignments;unsignedcounts0..65535;rawboolbytes;fixed/currentpredicates;retainedpadding.9184live/PEbytes;32ownedCALL/tailJMP plus4rawfactorycalls. Thirteenfunctionsdefined/scalarlistings0gaps. Explicitinterfaces,notwholeABI;fullfactory/recorder/workers,ordinarystartup/network/gameplay open. docs/NATIVE_SESSION_MESSAGES_12_13_14_15_R182.md;reports/native_session_messages_12_13_14_15_r182.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0075cb60",
+        "before": {
+          "address": "0075cb60",
+          "function_name": "FUN_0075cb60"
+        },
+        "after": {
+          "address": "0075cb60",
+          "name": "BSP_SessionMessage15_Read",
+          "evidence": "Complete78B;ECXmessage,stack18hreadstream usescursor+4,RET4. Type8 replacesbyte10. ReadunsignedWORD18 via428CB0 bits16,thenreadanddiscardcount bytes viaC70. Acceptsanypayload,noclamp,reloadunsignedcountaftereachbyte. Descriptive hypothesis, not a recovered symbol. R182:21complete normalbodies894B;strictWin32/3CTests;3148original/sourcepairs4999100B:196constructors,2128five-slotcases,816wordwrites,8freeingreturns. Allalignments;unsignedcounts0..65535;rawboolbytes;fixed/currentpredicates;retainedpadding.9184live/PEbytes;32ownedCALL/tailJMP plus4rawfactorycalls. Thirteenfunctionsdefined/scalarlistings0gaps. Explicitinterfaces,notwholeABI;fullfactory/recorder/workers,ordinarystartup/network/gameplay open. docs/NATIVE_SESSION_MESSAGES_12_13_14_15_R182.md;reports/native_session_messages_12_13_14_15_r182.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0075ce40",
+        "before": {
+          "address": "0075ce40",
+          "function_name": "FUN_0075ce40"
+        },
+        "after": {
+          "address": "0075ce40",
+          "name": "BSP_SessionMessage15_ScalarDelete",
+          "evidence": "Complete31B;ECXmessage,stackflags,RET4/EAXidentity. StampCE4974;freeBF65AC onlyflagsbit0. Fullreturning-free listing0gaps. Descriptive hypothesis, not a recovered symbol. R182:21complete normalbodies894B;strictWin32/3CTests;3148original/sourcepairs4999100B:196constructors,2128five-slotcases,816wordwrites,8freeingreturns. Allalignments;unsignedcounts0..65535;rawboolbytes;fixed/currentpredicates;retainedpadding.9184live/PEbytes;32ownedCALL/tailJMP plus4rawfactorycalls. Thirteenfunctionsdefined/scalarlistings0gaps. Explicitinterfaces,notwholeABI;fullfactory/recorder/workers,ordinarystartup/network/gameplay open. docs/NATIVE_SESSION_MESSAGES_12_13_14_15_R182.md;reports/native_session_messages_12_13_14_15_r182.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0075d2e0",
+        "before": {
+          "address": "0075d2e0",
+          "function_name": "FUN_0075d2e0"
+        },
+        "after": {
+          "address": "0075d2e0",
+          "name": "BSP_SessionMessage14_Construct",
+          "evidence": "Complete96B;ECXmessage,EAXidentity. Base type14,oneE188A8 capture,signed18EC0..7 selects18CC table else null. Retains padding11..13. Final profile00D0300C. DWORDstackflag RET4:lowbyteonly captured afterselection;mode1 thenprofile thenrawbyte18,padding19..1B retained. Descriptive hypothesis, not a recovered symbol. R182:21complete normalbodies894B;strictWin32/3CTests;3148original/sourcepairs4999100B:196constructors,2128five-slotcases,816wordwrites,8freeingreturns. Allalignments;unsignedcounts0..65535;rawboolbytes;fixed/currentpredicates;retainedpadding.9184live/PEbytes;32ownedCALL/tailJMP plus4rawfactorycalls. Thirteenfunctionsdefined/scalarlistings0gaps. Explicitinterfaces,notwholeABI;fullfactory/recorder/workers,ordinarystartup/network/gameplay open. docs/NATIVE_SESSION_MESSAGES_12_13_14_15_R182.md;reports/native_session_messages_12_13_14_15_r182.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0075d350",
+        "before": {
+          "address": "0075d350",
+          "function_name": "FUN_0075d350"
+        },
+        "after": {
+          "address": "0075d350",
+          "name": "BSP_SessionMessage14_IsType",
+          "evidence": "Complete30B;DWORDquery,RET4. ECXmessage;true forfixed14 OR currenttypebyte10,fullquery not truncated. Descriptive hypothesis, not a recovered symbol. R182:21complete normalbodies894B;strictWin32/3CTests;3148original/sourcepairs4999100B:196constructors,2128five-slotcases,816wordwrites,8freeingreturns. Allalignments;unsignedcounts0..65535;rawboolbytes;fixed/currentpredicates;retainedpadding.9184live/PEbytes;32ownedCALL/tailJMP plus4rawfactorycalls. Thirteenfunctionsdefined/scalarlistings0gaps. Explicitinterfaces,notwholeABI;fullfactory/recorder/workers,ordinarystartup/network/gameplay open. docs/NATIVE_SESSION_MESSAGES_12_13_14_15_R182.md;reports/native_session_messages_12_13_14_15_r182.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0075d370",
+        "before": {
+          "address": "0075d370",
+          "function_name": "FUN_0075d370"
+        },
+        "after": {
+          "address": "0075d370",
+          "name": "BSP_SessionMessage14_Write",
+          "evidence": "Complete39B;ECXmessage,stackRAW10hcursor,RET4. Typebyte10 as8bits. Rawbyte18!=0 throughbool4290B0 as1bit. Descriptive hypothesis, not a recovered symbol. R182:21complete normalbodies894B;strictWin32/3CTests;3148original/sourcepairs4999100B:196constructors,2128five-slotcases,816wordwrites,8freeingreturns. Allalignments;unsignedcounts0..65535;rawboolbytes;fixed/currentpredicates;retainedpadding.9184live/PEbytes;32ownedCALL/tailJMP plus4rawfactorycalls. Thirteenfunctionsdefined/scalarlistings0gaps. Explicitinterfaces,notwholeABI;fullfactory/recorder/workers,ordinarystartup/network/gameplay open. docs/NATIVE_SESSION_MESSAGES_12_13_14_15_R182.md;reports/native_session_messages_12_13_14_15_r182.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0075d3a0",
+        "before": {
+          "address": "0075d3a0",
+          "function_name": "FUN_0075d3a0"
+        },
+        "after": {
+          "address": "0075d3a0",
+          "name": "BSP_SessionMessage14_Read",
+          "evidence": "Complete40B;ECXmessage,stack18hreadstream usescursor+4,RET4. Type8 replacesbyte10. ReadboolD70 canonicallyreplacesbyte18,retains padding. Descriptive hypothesis, not a recovered symbol. R182:21complete normalbodies894B;strictWin32/3CTests;3148original/sourcepairs4999100B:196constructors,2128five-slotcases,816wordwrites,8freeingreturns. Allalignments;unsignedcounts0..65535;rawboolbytes;fixed/currentpredicates;retainedpadding.9184live/PEbytes;32ownedCALL/tailJMP plus4rawfactorycalls. Thirteenfunctionsdefined/scalarlistings0gaps. Explicitinterfaces,notwholeABI;fullfactory/recorder/workers,ordinarystartup/network/gameplay open. docs/NATIVE_SESSION_MESSAGES_12_13_14_15_R182.md;reports/native_session_messages_12_13_14_15_r182.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0075d3d0",
+        "before": {
+          "address": "0075d3d0",
+          "function_name": "FUN_0075d3d0"
+        },
+        "after": {
+          "address": "0075d3d0",
+          "name": "BSP_SessionMessage14_ScalarDelete",
+          "evidence": "Complete31B;ECXmessage,stackflags,RET4/EAXidentity. StampCE4974;freeBF65AC onlyflagsbit0. Fullreturning-free listing0gaps. Descriptive hypothesis, not a recovered symbol. R182:21complete normalbodies894B;strictWin32/3CTests;3148original/sourcepairs4999100B:196constructors,2128five-slotcases,816wordwrites,8freeingreturns. Allalignments;unsignedcounts0..65535;rawboolbytes;fixed/currentpredicates;retainedpadding.9184live/PEbytes;32ownedCALL/tailJMP plus4rawfactorycalls. Thirteenfunctionsdefined/scalarlistings0gaps. Explicitinterfaces,notwholeABI;fullfactory/recorder/workers,ordinarystartup/network/gameplay open. docs/NATIVE_SESSION_MESSAGES_12_13_14_15_R182.md;reports/native_session_messages_12_13_14_15_r182.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0075d4b0",
+        "before": {
+          "address": "0075d4b0",
+          "function_name": "FUN_0075d4b0"
+        },
+        "after": {
+          "address": "0075d4b0",
+          "name": "BSP_SessionMessage13_Construct",
+          "evidence": "Complete99B;ECXmessage,EAXidentity. Base type13,oneE188A8 capture,signed18EC0..7 selects18CC table else null. Retains padding11..13. Final profile00D03034. No stackargs,RET. Mode1 thenprofile;rawbyte18/padding19..1B untouched. Descriptive hypothesis, not a recovered symbol. R182:21complete normalbodies894B;strictWin32/3CTests;3148original/sourcepairs4999100B:196constructors,2128five-slotcases,816wordwrites,8freeingreturns. Allalignments;unsignedcounts0..65535;rawboolbytes;fixed/currentpredicates;retainedpadding.9184live/PEbytes;32ownedCALL/tailJMP plus4rawfactorycalls. Thirteenfunctionsdefined/scalarlistings0gaps. Explicitinterfaces,notwholeABI;fullfactory/recorder/workers,ordinarystartup/network/gameplay open. docs/NATIVE_SESSION_MESSAGES_12_13_14_15_R182.md;reports/native_session_messages_12_13_14_15_r182.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0075d530",
+        "before": {
+          "address": "0075d530",
+          "function_name": "FUN_0075d530"
+        },
+        "after": {
+          "address": "0075d530",
+          "name": "BSP_SessionMessage13_IsType",
+          "evidence": "Complete30B;DWORDquery,RET4. ECXmessage;true forfixed13 OR currenttypebyte10,fullquery not truncated. Descriptive hypothesis, not a recovered symbol. R182:21complete normalbodies894B;strictWin32/3CTests;3148original/sourcepairs4999100B:196constructors,2128five-slotcases,816wordwrites,8freeingreturns. Allalignments;unsignedcounts0..65535;rawboolbytes;fixed/currentpredicates;retainedpadding.9184live/PEbytes;32ownedCALL/tailJMP plus4rawfactorycalls. Thirteenfunctionsdefined/scalarlistings0gaps. Explicitinterfaces,notwholeABI;fullfactory/recorder/workers,ordinarystartup/network/gameplay open. docs/NATIVE_SESSION_MESSAGES_12_13_14_15_R182.md;reports/native_session_messages_12_13_14_15_r182.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0075d550",
+        "before": {
+          "address": "0075d550",
+          "function_name": "FUN_0075d550"
+        },
+        "after": {
+          "address": "0075d550",
+          "name": "BSP_SessionMessage13_Write",
+          "evidence": "Complete39B;ECXmessage,stackRAW10hcursor,RET4. Typebyte10 as8bits. Rawbyte18!=0 throughbool4290B0 as1bit. Descriptive hypothesis, not a recovered symbol. R182:21complete normalbodies894B;strictWin32/3CTests;3148original/sourcepairs4999100B:196constructors,2128five-slotcases,816wordwrites,8freeingreturns. Allalignments;unsignedcounts0..65535;rawboolbytes;fixed/currentpredicates;retainedpadding.9184live/PEbytes;32ownedCALL/tailJMP plus4rawfactorycalls. Thirteenfunctionsdefined/scalarlistings0gaps. Explicitinterfaces,notwholeABI;fullfactory/recorder/workers,ordinarystartup/network/gameplay open. docs/NATIVE_SESSION_MESSAGES_12_13_14_15_R182.md;reports/native_session_messages_12_13_14_15_r182.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0075d580",
+        "before": {
+          "address": "0075d580",
+          "function_name": "FUN_0075d580"
+        },
+        "after": {
+          "address": "0075d580",
+          "name": "BSP_SessionMessage13_Read",
+          "evidence": "Complete40B;ECXmessage,stack18hreadstream usescursor+4,RET4. Type8 replacesbyte10. ReadboolD70 canonicallyreplacesbyte18,retains padding. Descriptive hypothesis, not a recovered symbol. R182:21complete normalbodies894B;strictWin32/3CTests;3148original/sourcepairs4999100B:196constructors,2128five-slotcases,816wordwrites,8freeingreturns. Allalignments;unsignedcounts0..65535;rawboolbytes;fixed/currentpredicates;retainedpadding.9184live/PEbytes;32ownedCALL/tailJMP plus4rawfactorycalls. Thirteenfunctionsdefined/scalarlistings0gaps. Explicitinterfaces,notwholeABI;fullfactory/recorder/workers,ordinarystartup/network/gameplay open. docs/NATIVE_SESSION_MESSAGES_12_13_14_15_R182.md;reports/native_session_messages_12_13_14_15_r182.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0075d5b0",
+        "before": {
+          "address": "0075d5b0",
+          "function_name": "FUN_0075d5b0"
+        },
+        "after": {
+          "address": "0075d5b0",
+          "name": "BSP_SessionMessage13_ScalarDelete",
+          "evidence": "Complete31B;ECXmessage,stackflags,RET4/EAXidentity. StampCE4974;freeBF65AC onlyflagsbit0. Fullreturning-free listing0gaps. Descriptive hypothesis, not a recovered symbol. R182:21complete normalbodies894B;strictWin32/3CTests;3148original/sourcepairs4999100B:196constructors,2128five-slotcases,816wordwrites,8freeingreturns. Allalignments;unsignedcounts0..65535;rawboolbytes;fixed/currentpredicates;retainedpadding.9184live/PEbytes;32ownedCALL/tailJMP plus4rawfactorycalls. Thirteenfunctionsdefined/scalarlistings0gaps. Explicitinterfaces,notwholeABI;fullfactory/recorder/workers,ordinarystartup/network/gameplay open. docs/NATIVE_SESSION_MESSAGES_12_13_14_15_R182.md;reports/native_session_messages_12_13_14_15_r182.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00768530",
+        "before": {
+          "address": "00768530",
+          "function_name": "BSP_SessionMessage_CreateFromStream",
+          "comment": "[BSP reconstruction 00768530]\nHypothesis, not a recovered symbol. Packet cc_unit_orders_apply, read-only analysis. message* __fastcall(stream), body 00768530..0076A28F. Reads an 8-bit type into a switch of about 190 cases, does operator_new of the class size, calls the class constructor and then piVar2->vtable[2](stream), the deserializer. Type 8Ch is operator_new(4Ch) at 00769380 and constructor 0075A630 at 00769394. docs/UNIT_STATE_MESSAGE.md\n\n[BSP reconstruction 00768530] update\nHypothesis, not a recovered symbol. Packet cc_unit_orders_apply, read-only analysis. message* __fastcall(stream), body 00768530..0076A28F. Reads an 8-bit type into a switch of about 190 cases, does operator_new of the class size, calls the class constructor and then piVar2->vtable[2](stream), the deserializer. Type 8Ch is operator_new(4Ch) at 00769380 and constructor 0075A630 at 00769394. docs/UNIT_STATE_MESSAGE.md | Partial parent only: exact76854A..768565 showsLEAESI,[EDI+4],readtype8bits via428C70 at768558,thenrewind8 via428B80 at768561. Thefullfactory selects nativeclassconstructors/deserializers; those dependencies remainopen. Reconstructedcursor is a dependency,not a substituteparser. Descriptive hypothesis, not a recovered symbol. R176 supplies14 complete normal cursor-reader bodies715B plus2 parent dependency fragments. Strict Win32/3CTests;2064 original/source pairs1826760B across all8 bit alignments,scalar widths/zero counts,rewind,overlapping input/output,declared-end carries,WORD arrays,boolean/u64 and length0/1/5/255 strings. 817live/PE bytes and19 direct CALL/tail-JMP rows. Actual existing malloc/new-handler provider is used on both allocation paths;original request sizes checked. Source interfaces are new, not original binary ABI. Native faults/arbitrary cursor-field aliasing,original allocator identity/failure/new-handler/private EH,full message factory/recorder/workers/constructor,ordinary startup,network exchange and gameplay remain unproved. docs/NATIVE_BIT_CURSOR_READ_R176.md;reports/native_bit_cursor_read_r176.json.\n\n[BSP reconstruction 00768530] update\nHypothesis, not a recovered symbol. Packet cc_unit_orders_apply, read-only analysis. message* __fastcall(stream), body 00768530..0076A28F. Reads an 8-bit type into a switch of about 190 cases, does operator_new of the class size, calls the class constructor and then piVar2->vtable[2](stream), the deserializer. Type 8Ch is operator_new(4Ch) at 00769380 and constructor 0075A630 at 00769394. docs/UNIT_STATE_MESSAGE.md | Partial parent only: exact76854A..768565 showsLEAESI,[EDI+4],readtype8bits via428C70 at768558,thenrewind8 via428B80 at768561. Thefullfactory selects nativeclassconstructors/deserializers; those dependencies remainopen. Reconstructedcursor is a dependency,not a substituteparser. Descriptive hypothesis, not a recovered symbol. R176 supplies14 complete normal cursor-reader bodies715B plus2 parent dependency fragments. Strict Win32/3CTests;2064 original/source pairs1826760B across all8 bit alignments,scalar widths/zero counts,rewind,overlapping input/output,declared-end carries,WORD arrays,boolean/u64 and length0/1/5/255 strings. 817live/PE bytes and19 direct CALL/tail-JMP rows. Actual existing malloc/new-handler provider is used on both allocation paths;original request sizes checked. Source interfaces are new, not original binary ABI. Native faults/arbitrary cursor-field aliasing,original allocator identity/failure/new-handler/private EH,full message factory/recorder/workers/constructor,ordinary startup,network exchange and gameplay remain unproved. docs/NATIVE_BIT_CURSOR_READ_R176.md;reports/native_bit_cursor_read_r176.json. | Partial parent only: full7528B parent span byteverified and directcalls to newlycomplete constructors checked. Type1/type2 allocate18h anduse75B860 thenvirtualslot8->449960 toreadtype. Baseandmode0/1/2 constructors nowreal,selectedowner andfive-slot profiles supplied. Fullfactoryswitch,other nativeclassconstructors/deserializers andpacketrecorder remainunbound. Descriptive hypothesis, not a recovered symbol. R177 supplies19 complete normal bodies709B, four real translated five-slot message profiles and three-slot root, plus one factory dependency fragment. Strict Win32/3CTests;957 original/source pairs958952B:616 writers,112 constructors,96 raw-vtable cases,128 extended-header roundtrips,5 freeing scalar return checks. All8 alignments,overlapping buffers,constructor padding/current game selection,raw pointer identities before normalization;8583live/PE bytes including92 profile bytes;25 direct calls. Nine missing functions defined underwrite lock;returning-free instructions retained. Actual existing allocation/free providers used;original pre-free stamp/count recorded,source stamp checked on retained paths,not read afterfree. Native faults/arbitrary cursor-field aliases,original allocation failure/private EH/CRT identity,whole-module ABI,pure-call fatal execution,fullfactory/recorder/workers,ordinary startup,network exchange and gameplay remain unproved. docs/NATIVE_SESSION_MESSAGE_BASE_R177.md;reports/native_session_message_base_r177.json.\n\n[BSP reconstruction 00768530] update\nHypothesis, not a recovered symbol. Packet cc_unit_orders_apply, read-only analysis. message* __fastcall(stream), body 00768530..0076A28F. Reads an 8-bit type into a switch of about 190 cases, does operator_new of the class size, calls the class constructor and then piVar2->vtable[2](stream), the deserializer. Type 8Ch is operator_new(4Ch) at 00769380 and constructor 0075A630 at 00769394. docs/UNIT_STATE_MESSAGE.md | Partial parent only: exact76854A..768565 showsLEAESI,[EDI+4],readtype8bits via428C70 at768558,thenrewind8 via428B80 at768561. Thefullfactory selects nativeclassconstructors/deserializers; those dependencies remainopen. Reconstructedcursor is a dependency,not a substituteparser. Descriptive hypothesis, not a recovered symbol. R176 supplies14 complete normal cursor-reader bodies715B plus2 parent dependency fragments. Strict Win32/3CTests;2064 original/source pairs1826760B across all8 bit alignments,scalar widths/zero counts,rewind,overlapping input/output,declared-end carries,WORD arrays,boolean/u64 and length0/1/5/255 strings. 817live/PE bytes and19 direct CALL/tail-JMP rows. Actual existing malloc/new-handler provider is used on both allocation paths;original request sizes checked. Source interfaces are new, not original binary ABI. Native faults/arbitrary cursor-field aliasing,original allocator identity/failure/new-handler/private EH,full message factory/recorder/workers/constructor,ordinary startup,network exchange and gameplay remain unproved. docs/NATIVE_BIT_CURSOR_READ_R176.md;reports/native_bit_cursor_read_r176.json. | Partial parent only: full7528B parent span byteverified and directcalls to newlycomplete constructors checked. Type1/type2 allocate18h anduse75B860 thenvirtualslot8->449960 toreadtype. Baseandmode0/1/2 constructors nowreal,selectedowner andfive-slot profiles supplied. Fullfactoryswitch,other nativeclassconstructors/deserializers andpacketrecorder remainunbound. Descriptive hypothesis, not a recovered symbol. R177 supplies19 complete normal bodies709B, four real translated five-slot message profiles and three-slot root, plus one factory dependency fragment. Strict Win32/3CTests;957 original/source pairs958952B:616 writers,112 constructors,96 raw-vtable cases,128 extended-header roundtrips,5 freeing scalar return checks. All8 alignments,overlapping buffers,constructor padding/current game selection,raw pointer identities before normalization;8583live/PE bytes including92 profile bytes;25 direct calls. Nine missing functions defined underwrite lock;returning-free instructions retained. Actual existing allocation/free providers used;original pre-free stamp/count recorded,source stamp checked on retained paths,not read afterfree. Native faults/arbitrary cursor-field aliases,original allocation failure/private EH/CRT identity,whole-module ABI,pure-call fatal execution,fullfactory/recorder/workers,ordinary startup,network exchange and gameplay remain unproved. docs/NATIVE_SESSION_MESSAGE_BASE_R177.md;reports/native_session_message_base_r177.json. | R177 metadata limit: parent calls00768592 and00768756 are live/PE-verified CALL75B860 instructions but remain outside stored factory body. Recreate preserved name/comment/undefined-void prototype and did not fix ownership. Script endpoint disabled; Computer Use native pipe unavailable. Report keeps23 owned call checks and2 separate raw parent edges, with failed verification and repair receipts. No fullfactory/body-ownership claim. | R177 metadata limit: parent calls00768592 and00768756 are live/PE-verified CALL75B860 instructions but remain outside stored factory body. Recreate preserved name/comment/undefined-void prototype and did not fix ownership. Script endpoint disabled; Computer Use native pipe unavailable. Report keeps23 owned call checks and2 separate raw parent edges, with failed verification and repair receipts. No fullfactory/body-ownership claim.\n\n[BSP reconstruction 00768530] update\nHypothesis, not a recovered symbol. Packet cc_unit_orders_apply, read-only analysis. message* __fastcall(stream), body 00768530..0076A28F. Reads an 8-bit type into a switch of about 190 cases, does operator_new of the class size, calls the class constructor and then piVar2->vtable[2](stream), the deserializer. Type 8Ch is operator_new(4Ch) at 00769380 and constructor 0075A630 at 00769394. docs/UNIT_STATE_MESSAGE.md | Partial parent only: exact76854A..768565 showsLEAESI,[EDI+4],readtype8bits via428C70 at768558,thenrewind8 via428B80 at768561. Thefullfactory selects nativeclassconstructors/deserializers; those dependencies remainopen. Reconstructedcursor is a dependency,not a substituteparser. Descriptive hypothesis, not a recovered symbol. R176 supplies14 complete normal cursor-reader bodies715B plus2 parent dependency fragments. Strict Win32/3CTests;2064 original/source pairs1826760B across all8 bit alignments,scalar widths/zero counts,rewind,overlapping input/output,declared-end carries,WORD arrays,boolean/u64 and length0/1/5/255 strings. 817live/PE bytes and19 direct CALL/tail-JMP rows. Actual existing malloc/new-handler provider is used on both allocation paths;original request sizes checked. Source interfaces are new, not original binary ABI. Native faults/arbitrary cursor-field aliasing,original allocator identity/failure/new-handler/private EH,full message factory/recorder/workers/constructor,ordinary startup,network exchange and gameplay remain unproved. docs/NATIVE_BIT_CURSOR_READ_R176.md;reports/native_bit_cursor_read_r176.json. | Partial parent only: full7528B parent span byteverified and directcalls to newlycomplete constructors checked. Type1/type2 allocate18h anduse75B860 thenvirtualslot8->449960 toreadtype. Baseandmode0/1/2 constructors nowreal,selectedowner andfive-slot profiles supplied. Fullfactoryswitch,other nativeclassconstructors/deserializers andpacketrecorder remainunbound. Descriptive hypothesis, not a recovered symbol. R177 supplies19 complete normal bodies709B, four real translated five-slot message profiles and three-slot root, plus one factory dependency fragment. Strict Win32/3CTests;957 original/source pairs958952B:616 writers,112 constructors,96 raw-vtable cases,128 extended-header roundtrips,5 freeing scalar return checks. All8 alignments,overlapping buffers,constructor padding/current game selection,raw pointer identities before normalization;8583live/PE bytes including92 profile bytes;25 direct calls. Nine missing functions defined underwrite lock;returning-free instructions retained. Actual existing allocation/free providers used;original pre-free stamp/count recorded,source stamp checked on retained paths,not read afterfree. Native faults/arbitrary cursor-field aliases,original allocation failure/private EH/CRT identity,whole-module ABI,pure-call fatal execution,fullfactory/recorder/workers,ordinary startup,network exchange and gameplay remain unproved. docs/NATIVE_SESSION_MESSAGE_BASE_R177.md;reports/native_session_message_base_r177.json. | R177 metadata limit: parent calls00768592 and00768756 are live/PE-verified CALL75B860 instructions but remain outside stored factory body. Recreate preserved name/comment/undefined-void prototype and did not fix ownership. Script endpoint disabled; Computer Use native pipe unavailable. Report keeps23 owned call checks and2 separate raw parent edges, with failed verification and repair receipts. No fullfactory/body-ownership claim. | R177 metadata limit: parent calls00768592 and00768756 are live/PE-verified CALL75B860 instructions but remain outside stored factory body. Recreate preserved name/comment/undefined-void prototype and did not fix ownership. Script endpoint disabled; Computer Use native pipe unavailable. Report keeps23 owned call checks and2 separate raw parent edges, with failed verification and repair receipts. No fullfactory/body-ownership claim. | R177 metadata limit: parent calls00768592 and00768756 are live/PE-verified CALL75B860 instructions but remain outside stored factory body. Recreate preserved name/comment/undefined-void prototype and did not fix ownership. Script endpoint disabled; Computer Use native pipe unavailable. Report keeps23 owned call checks and2 separate raw parent edges, with failed verification and repair receipts. No fullfactory/body-ownership claim.\n\n[BSP reconstruction 00768530] update\nHypothesis, not a recovered symbol. Packet cc_unit_orders_apply, read-only analysis. message* __fastcall(stream), body 00768530..0076A28F. Reads an 8-bit type into a switch of about 190 cases, does operator_new of the class size, calls the class constructor and then piVar2->vtable[2](stream), the deserializer. Type 8Ch is operator_new(4Ch) at 00769380 and constructor 0075A630 at 00769394. docs/UNIT_STATE_MESSAGE.md | Partial parent only: exact76854A..768565 showsLEAESI,[EDI+4],readtype8bits via428C70 at768558,thenrewind8 via428B80 at768561. Thefullfactory selects nativeclassconstructors/deserializers; those dependencies remainopen. Reconstructedcursor is a dependency,not a substituteparser. Descriptive hypothesis, not a recovered symbol. R176 supplies14 complete normal cursor-reader bodies715B plus2 parent dependency fragments. Strict Win32/3CTests;2064 original/source pairs1826760B across all8 bit alignments,scalar widths/zero counts,rewind,overlapping input/output,declared-end carries,WORD arrays,boolean/u64 and length0/1/5/255 strings. 817live/PE bytes and19 direct CALL/tail-JMP rows. Actual existing malloc/new-handler provider is used on both allocation paths;original request sizes checked. Source interfaces are new, not original binary ABI. Native faults/arbitrary cursor-field aliasing,original allocator identity/failure/new-handler/private EH,full message factory/recorder/workers/constructor,ordinary startup,network exchange and gameplay remain unproved. docs/NATIVE_BIT_CURSOR_READ_R176.md;reports/native_bit_cursor_read_r176.json. | Partial parent only: full7528B parent span byteverified and directcalls to newlycomplete constructors checked. Type1/type2 allocate18h anduse75B860 thenvirtualslot8->449960 toreadtype. Baseandmode0/1/2 constructors nowreal,selectedowner andfive-slot profiles supplied. Fullfactoryswitch,other nativeclassconstructors/deserializers andpacketrecorder remainunbound. Descriptive hypothesis, not a recovered symbol. R177 supplies19 complete normal bodies709B, four real translated five-slot message profiles and three-slot root, plus one factory dependency fragment. Strict Win32/3CTests;957 original/source pairs958952B:616 writers,112 constructors,96 raw-vtable cases,128 extended-header roundtrips,5 freeing scalar return checks. All8 alignments,overlapping buffers,constructor padding/current game selection,raw pointer identities before normalization;8583live/PE bytes including92 profile bytes;25 direct calls. Nine missing functions defined underwrite lock;returning-free instructions retained. Actual existing allocation/free providers used;original pre-free stamp/count recorded,source stamp checked on retained paths,not read afterfree. Native faults/arbitrary cursor-field aliases,original allocation failure/private EH/CRT identity,whole-module ABI,pure-call fatal execution,fullfactory/recorder/workers,ordinary startup,network exchange and gameplay remain unproved. docs/NATIVE_SESSION_MESSAGE_BASE_R177.md;reports/native_session_message_base_r177.json. | R177 metadata limit: parent calls00768592 and00768756 are live/PE-verified CALL75B860 instructions but remain outside stored factory body. Recreate preserved name/comment/undefined-void prototype and did not fix ownership. Script endpoint disabled; Computer Use native pipe unavailable. Report keeps23 owned call checks and2 separate raw parent edges, with failed verification and repair receipts. No fullfactory/body-ownership claim. | R177 metadata limit: parent calls00768592 and00768756 are live/PE-verified CALL75B860 instructions but remain outside stored factory body. Recreate preserved name/comment/undefined-void prototype and did not fix ownership. Script endpoint disabled; Computer Use native pipe unavailable. Report keeps23 owned call checks and2 separate raw parent edges, with failed verification and repair receipts. No fullfactory/body-ownership claim. | R177 metadata limit: parent calls00768592 and00768756 are live/PE-verified CALL75B860 instructions but remain outside stored factory body. Recreate preserved name/comment/undefined-void prototype and did not fix ownership. Script endpoint disabled; Computer Use native pipe unavailable. Report keeps23 owned call checks and2 separate raw parent edges, with failed verification and repair receipts. No fullfactory/body-ownership claim. | Partial parent only: full7528B byteverified;three raw instruction/PE-verified directcalls to constructors75CE80/75D990/75E940 now have complete class profiles/serializers. Other switch arms and factory composition remain unbound; prior R177 body-membership gaps at768592/768756 persist and are not claimed repaired. Descriptive hypothesis, not a recovered symbol. R178:18 complete normal bodies1482B;strictWin32/3CTests;173211 original/source pairs16110776B;172032 numeric and1176 class cases plus3freeing scalars. Original CRT code used on original side. PC0/2/3,all4RC,both conversion modes,masked exception flags/CW/TOP and MXCSR compared.9733live/PEbytes,33owned directCALLs plus3raw factory calls without stored ownership,10missing functionsdefined under lock. Fullfactory/recorder/workers,wholeABI/privateEH,ordinary startup/network/gameplay remain open. docs/NATIVE_SESSION_MESSAGE_NUMERIC_R178.md;reports/native_session_message_numeric_r178.json.\n\n[BSP reconstruction 00768530] update\nHypothesis, not a recovered symbol. Packet cc_unit_orders_apply, read-only analysis. message* __fastcall(stream), body 00768530..0076A28F. Reads an 8-bit type into a switch of about 190 cases, does operator_new of the class size, calls the class constructor and then piVar2->vtable[2](stream), the deserializer. Type 8Ch is operator_new(4Ch) at 00769380 and constructor 0075A630 at 00769394. docs/UNIT_STATE_MESSAGE.md | Partial parent only: exact76854A..768565 showsLEAESI,[EDI+4],readtype8bits via428C70 at768558,thenrewind8 via428B80 at768561. Thefullfactory selects nativeclassconstructors/deserializers; those dependencies remainopen. Reconstructedcursor is a dependency,not a substituteparser. Descriptive hypothesis, not a recovered symbol. R176 supplies14 complete normal cursor-reader bodies715B plus2 parent dependency fragments. Strict Win32/3CTests;2064 original/source pairs1826760B across all8 bit alignments,scalar widths/zero counts,rewind,overlapping input/output,declared-end carries,WORD arrays,boolean/u64 and length0/1/5/255 strings. 817live/PE bytes and19 direct CALL/tail-JMP rows. Actual existing malloc/new-handler provider is used on both allocation paths;original request sizes checked. Source interfaces are new, not original binary ABI. Native faults/arbitrary cursor-field aliasing,original allocator identity/failure/new-handler/private EH,full message factory/recorder/workers/constructor,ordinary startup,network exchange and gameplay remain unproved. docs/NATIVE_BIT_CURSOR_READ_R176.md;reports/native_bit_cursor_read_r176.json. | Partial parent only: full7528B parent span byteverified and directcalls to newlycomplete constructors checked. Type1/type2 allocate18h anduse75B860 thenvirtualslot8->449960 toreadtype. Baseandmode0/1/2 constructors nowreal,selectedowner andfive-slot profiles supplied. Fullfactoryswitch,other nativeclassconstructors/deserializers andpacketrecorder remainunbound. Descriptive hypothesis, not a recovered symbol. R177 supplies19 complete normal bodies709B, four real translated five-slot message profiles and three-slot root, plus one factory dependency fragment. Strict Win32/3CTests;957 original/source pairs958952B:616 writers,112 constructors,96 raw-vtable cases,128 extended-header roundtrips,5 freeing scalar return checks. All8 alignments,overlapping buffers,constructor padding/current game selection,raw pointer identities before normalization;8583live/PE bytes including92 profile bytes;25 direct calls. Nine missing functions defined underwrite lock;returning-free instructions retained. Actual existing allocation/free providers used;original pre-free stamp/count recorded,source stamp checked on retained paths,not read afterfree. Native faults/arbitrary cursor-field aliases,original allocation failure/private EH/CRT identity,whole-module ABI,pure-call fatal execution,fullfactory/recorder/workers,ordinary startup,network exchange and gameplay remain unproved. docs/NATIVE_SESSION_MESSAGE_BASE_R177.md;reports/native_session_message_base_r177.json. | R177 metadata limit: parent calls00768592 and00768756 are live/PE-verified CALL75B860 instructions but remain outside stored factory body. Recreate preserved name/comment/undefined-void prototype and did not fix ownership. Script endpoint disabled; Computer Use native pipe unavailable. Report keeps23 owned call checks and2 separate raw parent edges, with failed verification and repair receipts. No fullfactory/body-ownership claim. | R177 metadata limit: parent calls00768592 and00768756 are live/PE-verified CALL75B860 instructions but remain outside stored factory body. Recreate preserved name/comment/undefined-void prototype and did not fix ownership. Script endpoint disabled; Computer Use native pipe unavailable. Report keeps23 owned call checks and2 separate raw parent edges, with failed verification and repair receipts. No fullfactory/body-ownership claim. | R177 metadata limit: parent calls00768592 and00768756 are live/PE-verified CALL75B860 instructions but remain outside stored factory body. Recreate preserved name/comment/undefined-void prototype and did not fix ownership. Script endpoint disabled; Computer Use native pipe unavailable. Report keeps23 owned call checks and2 separate raw parent edges, with failed verification and repair receipts. No fullfactory/body-ownership claim. | Partial parent only: full7528B byteverified;three raw instruction/PE-verified directcalls to constructors75CE80/75D990/75E940 now have complete class profiles/serializers. Other switch arms and factory composition remain unbound; prior R177 body-membership gaps at768592/768756 persist and are not claimed repaired. Descriptive hypothesis, not a recovered symbol. R178:18 complete normal bodies1482B;strictWin32/3CTests;173211 original/source pairs16110776B;172032 numeric and1176 class cases plus3freeing scalars. Original CRT code used on original side. PC0/2/3,all4RC,both conversion modes,masked exception flags/CW/TOP and MXCSR compared.9733live/PEbytes,33owned directCALLs plus3raw factory calls without stored ownership,10missing functionsdefined under lock. Fullfactory/recorder/workers,wholeABI/privateEH,ordinary startup/network/gameplay remain open. docs/NATIVE_SESSION_MESSAGE_NUMERIC_R178.md;reports/native_session_message_numeric_r178.json. | Partial parent only:full7528B verified;raw factory allocationsC0/88 and constructorcalls768799->75D5D0,7687DC->75D010. Bothclasses andprofiles nowcomplete. Bothcalls havevalid liveinstructions butno storedfunctionownership;do notclaim bodyrepair. Otherfactoryarms/recorder/workers remainopen. Descriptive hypothesis, not a recovered symbol. R179:14complete normalbodies1666B;strictWin32/3CTests;3810 original/sourcepairs3682192B:1808fields,320strings,1680classcases,2freeing scalars. All8alignments,stringwrap255/256/511andoverlap,PC0/2/3allRCbothCRT modes,FPstatus/CW/TOP compared;original CRThelpers copied.10924live/PEbytes;100ownedCALLs plus2rawfactorycalls withoutstoredmembership. Fourmissingfunctionsdefined underlock. Fullfactory,recorder/workers,wholeABI/privateEH,ordinary startup/network/gameplay remainopen. docs/NATIVE_SESSION_MESSAGE_RECORDS_R179.md;reports/native_session_message_records_r179.json.\n\n[BSP reconstruction 00768530] update\nHypothesis, not a recovered symbol. Packet cc_unit_orders_apply, read-only analysis. message* __fastcall(stream), body 00768530..0076A28F. Reads an 8-bit type into a switch of about 190 cases, does operator_new of the class size, calls the class constructor and then piVar2->vtable[2](stream), the deserializer. Type 8Ch is operator_new(4Ch) at 00769380 and constructor 0075A630 at 00769394. docs/UNIT_STATE_MESSAGE.md | Partial parent only: exact76854A..768565 showsLEAESI,[EDI+4],readtype8bits via428C70 at768558,thenrewind8 via428B80 at768561. Thefullfactory selects nativeclassconstructors/deserializers; those dependencies remainopen. Reconstructedcursor is a dependency,not a substituteparser. Descriptive hypothesis, not a recovered symbol. R176 supplies14 complete normal cursor-reader bodies715B plus2 parent dependency fragments. Strict Win32/3CTests;2064 original/source pairs1826760B across all8 bit alignments,scalar widths/zero counts,rewind,overlapping input/output,declared-end carries,WORD arrays,boolean/u64 and length0/1/5/255 strings. 817live/PE bytes and19 direct CALL/tail-JMP rows. Actual existing malloc/new-handler provider is used on both allocation paths;original request sizes checked. Source interfaces are new, not original binary ABI. Native faults/arbitrary cursor-field aliasing,original allocator identity/failure/new-handler/private EH,full message factory/recorder/workers/constructor,ordinary startup,network exchange and gameplay remain unproved. docs/NATIVE_BIT_CURSOR_READ_R176.md;reports/native_bit_cursor_read_r176.json. | Partial parent only: full7528B parent span byteverified and directcalls to newlycomplete constructors checked. Type1/type2 allocate18h anduse75B860 thenvirtualslot8->449960 toreadtype. Baseandmode0/1/2 constructors nowreal,selectedowner andfive-slot profiles supplied. Fullfactoryswitch,other nativeclassconstructors/deserializers andpacketrecorder remainunbound. Descriptive hypothesis, not a recovered symbol. R177 supplies19 complete normal bodies709B, four real translated five-slot message profiles and three-slot root, plus one factory dependency fragment. Strict Win32/3CTests;957 original/source pairs958952B:616 writers,112 constructors,96 raw-vtable cases,128 extended-header roundtrips,5 freeing scalar return checks. All8 alignments,overlapping buffers,constructor padding/current game selection,raw pointer identities before normalization;8583live/PE bytes including92 profile bytes;25 direct calls. Nine missing functions defined underwrite lock;returning-free instructions retained. Actual existing allocation/free providers used;original pre-free stamp/count recorded,source stamp checked on retained paths,not read afterfree. Native faults/arbitrary cursor-field aliases,original allocation failure/private EH/CRT identity,whole-module ABI,pure-call fatal execution,fullfactory/recorder/workers,ordinary startup,network exchange and gameplay remain unproved. docs/NATIVE_SESSION_MESSAGE_BASE_R177.md;reports/native_session_message_base_r177.json. | R177 metadata limit: parent calls00768592 and00768756 are live/PE-verified CALL75B860 instructions but remain outside stored factory body. Recreate preserved name/comment/undefined-void prototype and did not fix ownership. Script endpoint disabled; Computer Use native pipe unavailable. Report keeps23 owned call checks and2 separate raw parent edges, with failed verification and repair receipts. No fullfactory/body-ownership claim. | R177 metadata limit: parent calls00768592 and00768756 are live/PE-verified CALL75B860 instructions but remain outside stored factory body. Recreate preserved name/comment/undefined-void prototype and did not fix ownership. Script endpoint disabled; Computer Use native pipe unavailable. Report keeps23 owned call checks and2 separate raw parent edges, with failed verification and repair receipts. No fullfactory/body-ownership claim. | R177 metadata limit: parent calls00768592 and00768756 are live/PE-verified CALL75B860 instructions but remain outside stored factory body. Recreate preserved name/comment/undefined-void prototype and did not fix ownership. Script endpoint disabled; Computer Use native pipe unavailable. Report keeps23 owned call checks and2 separate raw parent edges, with failed verification and repair receipts. No fullfactory/body-ownership claim. | Partial parent only: full7528B byteverified;three raw instruction/PE-verified directcalls to constructors75CE80/75D990/75E940 now have complete class profiles/serializers. Other switch arms and factory composition remain unbound; prior R177 body-membership gaps at768592/768756 persist and are not claimed repaired. Descriptive hypothesis, not a recovered symbol. R178:18 complete normal bodies1482B;strictWin32/3CTests;173211 original/source pairs16110776B;172032 numeric and1176 class cases plus3freeing scalars. Original CRT code used on original side. PC0/2/3,all4RC,both conversion modes,masked exception flags/CW/TOP and MXCSR compared.9733live/PEbytes,33owned directCALLs plus3raw factory calls without stored ownership,10missing functionsdefined under lock. Fullfactory/recorder/workers,wholeABI/privateEH,ordinary startup/network/gameplay remain open. docs/NATIVE_SESSION_MESSAGE_NUMERIC_R178.md;reports/native_session_message_numeric_r178.json. | Partial parent only:full7528B verified;raw factory allocationsC0/88 and constructorcalls768799->75D5D0,7687DC->75D010. Bothclasses andprofiles nowcomplete. Bothcalls havevalid liveinstructions butno storedfunctionownership;do notclaim bodyrepair. Otherfactoryarms/recorder/workers remainopen. Descriptive hypothesis, not a recovered symbol. R179:14complete normalbodies1666B;strictWin32/3CTests;3810 original/sourcepairs3682192B:1808fields,320strings,1680classcases,2freeing scalars. All8alignments,stringwrap255/256/511andoverlap,PC0/2/3allRCbothCRT modes,FPstatus/CW/TOP compared;original CRThelpers copied.10924live/PEbytes;100ownedCALLs plus2rawfactorycalls withoutstoredmembership. Fourmissingfunctionsdefined underlock. Fullfactory,recorder/workers,wholeABI/privateEH,ordinary startup/network/gameplay remainopen. docs/NATIVE_SESSION_MESSAGE_RECORDS_R179.md;reports/native_session_message_records_r179.json. | Partialparentonly:full7528Bverified;2Challocation768808 andconstructorcall76881C->765E10 nowhavecomplete tag08 normalbodies/actualprofile. Callinstruction/PEverifiedbutstoredGhidra functionmembership absent;no factorybodyrepair claimed. Otherclasses/fullfactory/recorder/workers remainopen. Descriptive hypothesis, not a recovered symbol. R180:6complete normalbodies567B;strictWin32/3CTests;618 original/sourcepairs4129336B:576class/lifetime,40embeddedNUL,2freeing scalars;onesource-only SEHfaultrootcleanupcheck. Actualrawpoolproviders,prepublishedprivateowner,poolring/arena/header/cursor states compared.9013live/PEbytes;41ownedCALL/tailJMP plus1rawfactorycall. Fullreader225B restored,scalarfreegap repaired,oneIsType functiondefined;existingEHfunclets/metadata retained. OriginalFH3exception/wholeABI,lazyrecreation/failure,fullfactory/recorder/workers,ordinarystartup/network/gameplay remainopen. docs/NATIVE_SESSION_MESSAGE_STRINGS_R180.md;reports/native_session_message_strings_r180.json.\n\n[BSP reconstruction 00768530] update\nHypothesis, not a recovered symbol. Packet cc_unit_orders_apply, read-only analysis. message* __fastcall(stream), body 00768530..0076A28F. Reads an 8-bit type into a switch of about 190 cases, does operator_new of the class size, calls the class constructor and then piVar2->vtable[2](stream), the deserializer. Type 8Ch is operator_new(4Ch) at 00769380 and constructor 0075A630 at 00769394. docs/UNIT_STATE_MESSAGE.md | Partial parent only: exact76854A..768565 showsLEAESI,[EDI+4],readtype8bits via428C70 at768558,thenrewind8 via428B80 at768561. Thefullfactory selects nativeclassconstructors/deserializers; those dependencies remainopen. Reconstructedcursor is a dependency,not a substituteparser. Descriptive hypothesis, not a recovered symbol. R176 supplies14 complete normal cursor-reader bodies715B plus2 parent dependency fragments. Strict Win32/3CTests;2064 original/source pairs1826760B across all8 bit alignments,scalar widths/zero counts,rewind,overlapping input/output,declared-end carries,WORD arrays,boolean/u64 and length0/1/5/255 strings. 817live/PE bytes and19 direct CALL/tail-JMP rows. Actual existing malloc/new-handler provider is used on both allocation paths;original request sizes checked. Source interfaces are new, not original binary ABI. Native faults/arbitrary cursor-field aliasing,original allocator identity/failure/new-handler/private EH,full message factory/recorder/workers/constructor,ordinary startup,network exchange and gameplay remain unproved. docs/NATIVE_BIT_CURSOR_READ_R176.md;reports/native_bit_cursor_read_r176.json. | Partial parent only: full7528B parent span byteverified and directcalls to newlycomplete constructors checked. Type1/type2 allocate18h anduse75B860 thenvirtualslot8->449960 toreadtype. Baseandmode0/1/2 constructors nowreal,selectedowner andfive-slot profiles supplied. Fullfactoryswitch,other nativeclassconstructors/deserializers andpacketrecorder remainunbound. Descriptive hypothesis, not a recovered symbol. R177 supplies19 complete normal bodies709B, four real translated five-slot message profiles and three-slot root, plus one factory dependency fragment. Strict Win32/3CTests;957 original/source pairs958952B:616 writers,112 constructors,96 raw-vtable cases,128 extended-header roundtrips,5 freeing scalar return checks. All8 alignments,overlapping buffers,constructor padding/current game selection,raw pointer identities before normalization;8583live/PE bytes including92 profile bytes;25 direct calls. Nine missing functions defined underwrite lock;returning-free instructions retained. Actual existing allocation/free providers used;original pre-free stamp/count recorded,source stamp checked on retained paths,not read afterfree. Native faults/arbitrary cursor-field aliases,original allocation failure/private EH/CRT identity,whole-module ABI,pure-call fatal execution,fullfactory/recorder/workers,ordinary startup,network exchange and gameplay remain unproved. docs/NATIVE_SESSION_MESSAGE_BASE_R177.md;reports/native_session_message_base_r177.json. | R177 metadata limit: parent calls00768592 and00768756 are live/PE-verified CALL75B860 instructions but remain outside stored factory body. Recreate preserved name/comment/undefined-void prototype and did not fix ownership. Script endpoint disabled; Computer Use native pipe unavailable. Report keeps23 owned call checks and2 separate raw parent edges, with failed verification and repair receipts. No fullfactory/body-ownership claim. | R177 metadata limit: parent calls00768592 and00768756 are live/PE-verified CALL75B860 instructions but remain outside stored factory body. Recreate preserved name/comment/undefined-void prototype and did not fix ownership. Script endpoint disabled; Computer Use native pipe unavailable. Report keeps23 owned call checks and2 separate raw parent edges, with failed verification and repair receipts. No fullfactory/body-ownership claim. | R177 metadata limit: parent calls00768592 and00768756 are live/PE-verified CALL75B860 instructions but remain outside stored factory body. Recreate preserved name/comment/undefined-void prototype and did not fix ownership. Script endpoint disabled; Computer Use native pipe unavailable. Report keeps23 owned call checks and2 separate raw parent edges, with failed verification and repair receipts. No fullfactory/body-ownership claim. | Partial parent only: full7528B byteverified;three raw instruction/PE-verified directcalls to constructors75CE80/75D990/75E940 now have complete class profiles/serializers. Other switch arms and factory composition remain unbound; prior R177 body-membership gaps at768592/768756 persist and are not claimed repaired. Descriptive hypothesis, not a recovered symbol. R178:18 complete normal bodies1482B;strictWin32/3CTests;173211 original/source pairs16110776B;172032 numeric and1176 class cases plus3freeing scalars. Original CRT code used on original side. PC0/2/3,all4RC,both conversion modes,masked exception flags/CW/TOP and MXCSR compared.9733live/PEbytes,33owned directCALLs plus3raw factory calls without stored ownership,10missing functionsdefined under lock. Fullfactory/recorder/workers,wholeABI/privateEH,ordinary startup/network/gameplay remain open. docs/NATIVE_SESSION_MESSAGE_NUMERIC_R178.md;reports/native_session_message_numeric_r178.json. | Partial parent only:full7528B verified;raw factory allocationsC0/88 and constructorcalls768799->75D5D0,7687DC->75D010. Bothclasses andprofiles nowcomplete. Bothcalls havevalid liveinstructions butno storedfunctionownership;do notclaim bodyrepair. Otherfactoryarms/recorder/workers remainopen. Descriptive hypothesis, not a recovered symbol. R179:14complete normalbodies1666B;strictWin32/3CTests;3810 original/sourcepairs3682192B:1808fields,320strings,1680classcases,2freeing scalars. All8alignments,stringwrap255/256/511andoverlap,PC0/2/3allRCbothCRT modes,FPstatus/CW/TOP compared;original CRThelpers copied.10924live/PEbytes;100ownedCALLs plus2rawfactorycalls withoutstoredmembership. Fourmissingfunctionsdefined underlock. Fullfactory,recorder/workers,wholeABI/privateEH,ordinary startup/network/gameplay remainopen. docs/NATIVE_SESSION_MESSAGE_RECORDS_R179.md;reports/native_session_message_records_r179.json. | Partialparentonly:full7528Bverified;2Challocation768808 andconstructorcall76881C->765E10 nowhavecomplete tag08 normalbodies/actualprofile. Callinstruction/PEverifiedbutstoredGhidra functionmembership absent;no factorybodyrepair claimed. Otherclasses/fullfactory/recorder/workers remainopen. Descriptive hypothesis, not a recovered symbol. R180:6complete normalbodies567B;strictWin32/3CTests;618 original/sourcepairs4129336B:576class/lifetime,40embeddedNUL,2freeing scalars;onesource-only SEHfaultrootcleanupcheck. Actualrawpoolproviders,prepublishedprivateowner,poolring/arena/header/cursor states compared.9013live/PEbytes;41ownedCALL/tailJMP plus1rawfactorycall. Fullreader225B restored,scalarfreegap repaired,oneIsType functiondefined;existingEHfunclets/metadata retained. OriginalFH3exception/wholeABI,lazyrecreation/failure,fullfactory/recorder/workers,ordinarystartup/network/gameplay remainopen. docs/NATIVE_SESSION_MESSAGE_STRINGS_R180.md;reports/native_session_message_strings_r180.json. | Partialparentonly:full7528Bverified. Allocations18/30/1Ch at768828/768848/768868,constructors76883C->75E540,76885C->7661D0,76887C->75E630 nowcomplete withactualprofiles. ThreeCALLinstructions/PEverifiedbutstoredfunctionmembership absent;no factorybodyrepair claim. Otherclasses/fullfactory/recorder/workers remainopen. Descriptive hypothesis, not a recovered symbol. R181:16complete normalbodies924B;strictWin32/3CTests;1182original/sourcepairs4102056B:576tag09,560tag10/11,40embeddedNUL,6freeing scalars;onesource-only SEHrootcleanupcheck. Actualrawpoolproviders,prepublishedprivateowner,poolring/arena/header/cursor states compared.9413live/PEbytes;45ownedCALL/tailJMP plus3rawfactorycalls. Ninefunctionsdefined,type09reader198B fulltailandscalarfreegaprepaired;metadata retained. OriginalFH3/wholeABI,lazyrecreation/failure,fullfactory/recorder/workers,ordinarystartup/network/gameplay remainopen. docs/NATIVE_SESSION_MESSAGES_09_10_11_R181.md;reports/native_session_messages_09_10_11_r181.json."
+        },
+        "after": {
+          "address": "00768530",
+          "name": "BSP_SessionMessage_CreateFromStream",
+          "evidence": "Hypothesis, not a recovered symbol. Packet cc_unit_orders_apply, read-only analysis. message* __fastcall(stream), body 00768530..0076A28F. Reads an 8-bit type into a switch of about 190 cases, does operator_new of the class size, calls the class constructor and then piVar2->vtable[2](stream), the deserializer. Type 8Ch is operator_new(4Ch) at 00769380 and constructor 0075A630 at 00769394. docs/UNIT_STATE_MESSAGE.md | Partial parent only: exact76854A..768565 showsLEAESI,[EDI+4],readtype8bits via428C70 at768558,thenrewind8 via428B80 at768561. Thefullfactory selects nativeclassconstructors/deserializers; those dependencies remainopen. Reconstructedcursor is a dependency,not a substituteparser. Descriptive hypothesis, not a recovered symbol. R176 supplies14 complete normal cursor-reader bodies715B plus2 parent dependency fragments. Strict Win32/3CTests;2064 original/source pairs1826760B across all8 bit alignments,scalar widths/zero counts,rewind,overlapping input/output,declared-end carries,WORD arrays,boolean/u64 and length0/1/5/255 strings. 817live/PE bytes and19 direct CALL/tail-JMP rows. Actual existing malloc/new-handler provider is used on both allocation paths;original request sizes checked. Source interfaces are new, not original binary ABI. Native faults/arbitrary cursor-field aliasing,original allocator identity/failure/new-handler/private EH,full message factory/recorder/workers/constructor,ordinary startup,network exchange and gameplay remain unproved. docs/NATIVE_BIT_CURSOR_READ_R176.md;reports/native_bit_cursor_read_r176.json. | Partial parent only: full7528B parent span byteverified and directcalls to newlycomplete constructors checked. Type1/type2 allocate18h anduse75B860 thenvirtualslot8->449960 toreadtype. Baseandmode0/1/2 constructors nowreal,selectedowner andfive-slot profiles supplied. Fullfactoryswitch,other nativeclassconstructors/deserializers andpacketrecorder remainunbound. Descriptive hypothesis, not a recovered symbol. R177 supplies19 complete normal bodies709B, four real translated five-slot message profiles and three-slot root, plus one factory dependency fragment. Strict Win32/3CTests;957 original/source pairs958952B:616 writers,112 constructors,96 raw-vtable cases,128 extended-header roundtrips,5 freeing scalar return checks. All8 alignments,overlapping buffers,constructor padding/current game selection,raw pointer identities before normalization;8583live/PE bytes including92 profile bytes;25 direct calls. Nine missing functions defined underwrite lock;returning-free instructions retained. Actual existing allocation/free providers used;original pre-free stamp/count recorded,source stamp checked on retained paths,not read afterfree. Native faults/arbitrary cursor-field aliases,original allocation failure/private EH/CRT identity,whole-module ABI,pure-call fatal execution,fullfactory/recorder/workers,ordinary startup,network exchange and gameplay remain unproved. docs/NATIVE_SESSION_MESSAGE_BASE_R177.md;reports/native_session_message_base_r177.json. | R177 metadata limit: parent calls00768592 and00768756 are live/PE-verified CALL75B860 instructions but remain outside stored factory body. Recreate preserved name/comment/undefined-void prototype and did not fix ownership. Script endpoint disabled; Computer Use native pipe unavailable. Report keeps23 owned call checks and2 separate raw parent edges, with failed verification and repair receipts. No fullfactory/body-ownership claim. | R177 metadata limit: parent calls00768592 and00768756 are live/PE-verified CALL75B860 instructions but remain outside stored factory body. Recreate preserved name/comment/undefined-void prototype and did not fix ownership. Script endpoint disabled; Computer Use native pipe unavailable. Report keeps23 owned call checks and2 separate raw parent edges, with failed verification and repair receipts. No fullfactory/body-ownership claim. | R177 metadata limit: parent calls00768592 and00768756 are live/PE-verified CALL75B860 instructions but remain outside stored factory body. Recreate preserved name/comment/undefined-void prototype and did not fix ownership. Script endpoint disabled; Computer Use native pipe unavailable. Report keeps23 owned call checks and2 separate raw parent edges, with failed verification and repair receipts. No fullfactory/body-ownership claim. | Partial parent only: full7528B byteverified;three raw instruction/PE-verified directcalls to constructors75CE80/75D990/75E940 now have complete class profiles/serializers. Other switch arms and factory composition remain unbound; prior R177 body-membership gaps at768592/768756 persist and are not claimed repaired. Descriptive hypothesis, not a recovered symbol. R178:18 complete normal bodies1482B;strictWin32/3CTests;173211 original/source pairs16110776B;172032 numeric and1176 class cases plus3freeing scalars. Original CRT code used on original side. PC0/2/3,all4RC,both conversion modes,masked exception flags/CW/TOP and MXCSR compared.9733live/PEbytes,33owned directCALLs plus3raw factory calls without stored ownership,10missing functionsdefined under lock. Fullfactory/recorder/workers,wholeABI/privateEH,ordinary startup/network/gameplay remain open. docs/NATIVE_SESSION_MESSAGE_NUMERIC_R178.md;reports/native_session_message_numeric_r178.json. | Partial parent only:full7528B verified;raw factory allocationsC0/88 and constructorcalls768799->75D5D0,7687DC->75D010. Bothclasses andprofiles nowcomplete. Bothcalls havevalid liveinstructions butno storedfunctionownership;do notclaim bodyrepair. Otherfactoryarms/recorder/workers remainopen. Descriptive hypothesis, not a recovered symbol. R179:14complete normalbodies1666B;strictWin32/3CTests;3810 original/sourcepairs3682192B:1808fields,320strings,1680classcases,2freeing scalars. All8alignments,stringwrap255/256/511andoverlap,PC0/2/3allRCbothCRT modes,FPstatus/CW/TOP compared;original CRThelpers copied.10924live/PEbytes;100ownedCALLs plus2rawfactorycalls withoutstoredmembership. Fourmissingfunctionsdefined underlock. Fullfactory,recorder/workers,wholeABI/privateEH,ordinary startup/network/gameplay remainopen. docs/NATIVE_SESSION_MESSAGE_RECORDS_R179.md;reports/native_session_message_records_r179.json. | Partialparentonly:full7528Bverified;2Challocation768808 andconstructorcall76881C->765E10 nowhavecomplete tag08 normalbodies/actualprofile. Callinstruction/PEverifiedbutstoredGhidra functionmembership absent;no factorybodyrepair claimed. Otherclasses/fullfactory/recorder/workers remainopen. Descriptive hypothesis, not a recovered symbol. R180:6complete normalbodies567B;strictWin32/3CTests;618 original/sourcepairs4129336B:576class/lifetime,40embeddedNUL,2freeing scalars;onesource-only SEHfaultrootcleanupcheck. Actualrawpoolproviders,prepublishedprivateowner,poolring/arena/header/cursor states compared.9013live/PEbytes;41ownedCALL/tailJMP plus1rawfactorycall. Fullreader225B restored,scalarfreegap repaired,oneIsType functiondefined;existingEHfunclets/metadata retained. OriginalFH3exception/wholeABI,lazyrecreation/failure,fullfactory/recorder/workers,ordinarystartup/network/gameplay remainopen. docs/NATIVE_SESSION_MESSAGE_STRINGS_R180.md;reports/native_session_message_strings_r180.json. | Partialparentonly:full7528Bverified. Allocations18/30/1Ch at768828/768848/768868,constructors76883C->75E540,76885C->7661D0,76887C->75E630 nowcomplete withactualprofiles. ThreeCALLinstructions/PEverifiedbutstoredfunctionmembership absent;no factorybodyrepair claim. Otherclasses/fullfactory/recorder/workers remainopen. Descriptive hypothesis, not a recovered symbol. R181:16complete normalbodies924B;strictWin32/3CTests;1182original/sourcepairs4102056B:576tag09,560tag10/11,40embeddedNUL,6freeing scalars;onesource-only SEHrootcleanupcheck. Actualrawpoolproviders,prepublishedprivateowner,poolring/arena/header/cursor states compared.9413live/PEbytes;45ownedCALL/tailJMP plus3rawfactorycalls. Ninefunctionsdefined,type09reader198B fulltailandscalarfreegaprepaired;metadata retained. OriginalFH3/wholeABI,lazyrecreation/failure,fullfactory/recorder/workers,ordinarystartup/network/gameplay remainopen. docs/NATIVE_SESSION_MESSAGES_09_10_11_R181.md;reports/native_session_messages_09_10_11_r181.json. | Partialparentonly:full7528Bverified. ConstructorCALLs76889C->75D4B0(1Ch),7688BC->4B5FB0(18h),7688DE->75D2E0(1Ch,flag0),7688FE->75CAA0(1Ch). Allfourlive/PEinstructionsvalidbutstoredmembershipabsent. Otherclasses/fullfactory/recorder/workers remainopen. Descriptive hypothesis, not a recovered symbol. R182:21complete normalbodies894B;strictWin32/3CTests;3148original/sourcepairs4999100B:196constructors,2128five-slotcases,816wordwrites,8freeingreturns. Allalignments;unsignedcounts0..65535;rawboolbytes;fixed/currentpredicates;retainedpadding.9184live/PEbytes;32ownedCALL/tailJMP plus4rawfactorycalls. Thirteenfunctionsdefined/scalarlistings0gaps. Explicitinterfaces,notwholeABI;fullfactory/recorder/workers,ordinarystartup/network/gameplay open. docs/NATIVE_SESSION_MESSAGES_12_13_14_15_R182.md;reports/native_session_messages_12_13_14_15_r182.json."
+        },
+        "status": "applied"
+      }
+    ],
+    "attempts": [
+      {
+        "log": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\session_messages_12_13_14_15_r182\\annotations-0.log",
+        "exit": 0
+      }
+    ],
+    "readback_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\session_messages_12_13_14_15_r182\\comments-after.json",
+    "readback_sha256": "c60415e614c70af33a12169b972f88f491da21f60f1aca32654ca4f7bc575d1d"
+  },
+  "ledger_receipts": [
+    "00429030 -> BSP_BitCursor_WriteSignedWordBits\n",
+    "00429030 function write_native_signed_word_bits_00429030\n",
+    "004b5fb0 -> BSP_SessionMessage12_Construct\n",
+    "004b5fb0 function construct_native_session_message12_004b5fb0\n",
+    "004b5fe0 -> BSP_SessionMessage12_IsType\n",
+    "004b5fe0 function native_session_message_is12_004b5fe0\n",
+    "004b5ff0 -> BSP_SessionMessage12_Write\n",
+    "004b5ff0 function write_native_session_message12_004b5ff0\n",
+    "004b6010 -> BSP_SessionMessage12_Read\n",
+    "004b6010 function read_native_session_message12_004b6010\n",
+    "004b6030 -> BSP_SessionMessage12_ScalarDelete\n",
+    "004b6030 function delete_native_session_message12_004b6030\n",
+    "0075d4b0 -> BSP_SessionMessage13_Construct\n",
+    "0075d4b0 function construct_native_session_message13_0075d4b0\n",
+    "0075d530 -> BSP_SessionMessage13_IsType\n",
+    "0075d530 function native_session_message_is13_0075d530\n",
+    "0075d550 -> BSP_SessionMessage13_Write\n",
+    "0075d550 function write_native_session_message13_0075d550\n",
+    "0075d580 -> BSP_SessionMessage13_Read\n",
+    "0075d580 function read_native_session_message13_0075d580\n",
+    "0075d5b0 -> BSP_SessionMessage13_ScalarDelete\n",
+    "0075d5b0 function delete_native_session_message13_0075d5b0\n",
+    "0075d2e0 -> BSP_SessionMessage14_Construct\n",
+    "0075d2e0 function construct_native_session_message14_0075d2e0\n",
+    "0075d350 -> BSP_SessionMessage14_IsType\n",
+    "0075d350 function native_session_message_is14_0075d350\n",
+    "0075d370 -> BSP_SessionMessage14_Write\n",
+    "0075d370 function write_native_session_message14_0075d370\n",
+    "0075d3a0 -> BSP_SessionMessage14_Read\n",
+    "0075d3a0 function read_native_session_message14_0075d3a0\n",
+    "0075d3d0 -> BSP_SessionMessage14_ScalarDelete\n",
+    "0075d3d0 function delete_native_session_message14_0075d3d0\n",
+    "0075caa0 -> BSP_SessionMessage15_Construct\n",
+    "0075caa0 function construct_native_session_message15_0075caa0\n",
+    "0075cb00 -> BSP_SessionMessage15_IsType\n",
+    "0075cb00 function native_session_message_is15_0075cb00\n",
+    "0075cb10 -> BSP_SessionMessage15_Write\n",
+    "0075cb10 function write_native_session_message15_0075cb10\n",
+    "0075cb60 -> BSP_SessionMessage15_Read\n",
+    "0075cb60 function read_native_session_message15_0075cb60\n",
+    "0075ce40 -> BSP_SessionMessage15_ScalarDelete\n",
+    "0075ce40 function delete_native_session_message15_0075ce40\n",
+    "00768530 -> BSP_SessionMessage_CreateFromStream\n[bsp: TRUNCATED at 2000 tokens. 1 more lines, 8367 more bytes.\n Whole output: local/output/ledger-add-name-00768530-bsp-sessionmessage-createfromstream-230650.txt  (ignored by git)\n Read the rest with:  rg -n '<term>' local/output/ledger-add-name-00768530-bsp-sessionmessage-createfromstream-230650.txt   or   sed -n '2,81p' local/output/ledger-add-name-00768530-bsp-sessionmessage-createfromstream-230650.txt\n Re-run uncapped with --full, or BSP_OUTPUT_BUDGET=0. Do not conclude from the head alone.]\n",
+    "00768530 fragment native_session_messages_12_13_14_15_factory_dependency_r182\n"
+  ],
+  "tested_artifact_archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r182\\native-session-messages-12-13-14-15-tested-r182.zip",
+    "sha256": "08496412952e5f67d0e6f417f0f1898bf64a4538beaa4ee1eea1a8a663ffa19e",
+    "files": 99,
+    "head": "9e1ad3271fd2271fb7edf64ebd22b9e14c5cba23"
+  }
+}

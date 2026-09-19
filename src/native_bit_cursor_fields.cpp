@@ -2,6 +2,7 @@
 namespace bsp {
 using U=std::uint32_t;
 void write_native_signed_byte_bits_00429010(NativeBitCursor* c,U value,U bits){write_native_bits_00428f50(c,&value,bits);}
+void write_native_signed_word_bits_00429030(NativeBitCursor* c,U value,U bits){write_native_bits_00428f50(c,&value,bits);}
 void write_native_unsigned_dword_bits_00429070(NativeBitCursor* c,U value,U bits){write_native_bits_00428f50(c,&value,bits);}
 void write_native_bit_string_004290d0(NativeBitCursor* c,const char* value){
     const volatile char* end=value;

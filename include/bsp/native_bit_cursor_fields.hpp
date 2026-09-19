@@ -4,6 +4,8 @@ namespace bsp {
 // Original ECX cursor; DWORD stack value/bits, RET8. Signed-byte callers pass
 // zero-extended byte bits; the signed interpretation belongs to the reader.
 void write_native_signed_byte_bits_00429010(NativeBitCursor*,std::uint32_t,std::uint32_t bits);
+// Signed-word wrapper also forwards the address of its DWORD stack value.
+void write_native_signed_word_bits_00429030(NativeBitCursor*,std::uint32_t,std::uint32_t bits);
 void write_native_unsigned_dword_bits_00429070(NativeBitCursor*,std::uint32_t,std::uint32_t bits);
 // Scan through the actual terminator, then write length modulo256 and exactly
 // that many leading bytes. No native length clamp or capacity check exists.
