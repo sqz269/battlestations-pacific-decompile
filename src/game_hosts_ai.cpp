@@ -8,7 +8,9 @@
 #include <array>
 #include <cmath>
 #include <cstdio>
+#include <cstdlib>
 #include <functional>
+#include <utility>
 #include <map>
 #include <memory>
 #include <string>
@@ -456,6 +458,28 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     // both number ShipBase 6, PlaneBase 0Fh, Submarine 8, LandingShip 0Ch and
     // TorpedoBoat 0Eh - and both are selected from the same VehicleClass.Type,
     // so the codes below are the native's. The vtables are not the same vtable.
+    // Packet cc8_ai_target_choice_observed. The buffer 00A13B60's per-member
+    // loop fills, and the chosen-class table the mission summary prints.
+    void* choice_member{nullptr};
+    std::vector<std::pair<std::size_t, float>> choice_weights;
+    std::map<int, unsigned long long> chosen_class_counts;
+    std::map<int, unsigned long long> runnerup_class_counts;
+    unsigned long long choice_samples_logged{0};
+
+    static bool ai_weight_model_enabled() {
+        // _dupenv_s rather than getenv, which is a /W4 /WX error under MSVC;
+        // the same form native_frame_job_lifetime.cpp already uses.
+        static const bool enabled = [] {
+            char* text = nullptr;
+            std::size_t bytes = 0;
+            if (_dupenv_s(&text, &bytes, "BSP_AI_WEIGHT_MODEL") != 0) return true;
+            const bool on = text == nullptr || text[0] != '0';
+            std::free(text);
+            return on;
+        }();
+        return enabled;
+    }
+
     // One row per (bullet sub-type, target group) pair the accuracy lookup is
     // asked for, with the time factor and the barrel contribution 00A08460
     // would have built from it. Observation only.
@@ -478,6 +502,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     // barrel path answering honestly or the wrong path being walked at all.
     unsigned long long census_plane_attacker{0};
     unsigned long long census_other_attacker{0};
+    std::map<int, unsigned long long> unresolved_by_attacker_class;
 
     void census_barrel_accuracy(const GameAiWeaponFacts::Unit* attacker_row,
                                 std::size_t attacker_unit, std::size_t target) {
@@ -496,6 +521,13 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             if (s < 0 || s >= kCensusSubTypes) continue;
             AccuracyCensusRow& row = accuracy_census[s][g];
             ++row.lookups;
+            // Packet cc8_ai_target_choice_observed item 3: sub-type 0 is a
+            // barrel whose bullet class never resolved, which is what the
+            // 37600-candidate admission shortfall traced back to. Counting the
+            // ATTACKER's class for those says which units carry them, which the
+            // gunnery-side census cannot be asked for from here because that
+            // file is leased elsewhere.
+            if (s == 0) ++unresolved_by_attacker_class[units.unit_class_id(attacker_unit)];
             bool resolved = false;
             const std::uint32_t offset =
                 bsp::ai_bullet_type_accuracy_offset_009fe270(s, group, resolved);
@@ -1059,7 +1091,10 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         // need the model switched on, which is the regression it is meant to
         // diagnose.
         census_barrel_accuracy(attacker_row, attacker_unit, target);
-        if (attacker_row != nullptr && target_row != nullptr
+        // One build, two columns: BSP_AI_WEIGHT_MODEL=0 keeps the class
+        // stand-in so a before run and an after run come from the same binary
+        // and differ in nothing else. Default is on.
+        if (ai_weight_model_enabled() && attacker_row != nullptr && target_row != nullptr
             && attacker_row->inputs_complete && target_row->inputs_complete) {
             bsp::AiTargetWeightKey key;
             key.attacker = handle(attacker_unit);
@@ -1148,7 +1183,18 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         if (in.target_term == 0.0f) ++summary.weight_torn_down_targets;
         ++summary.weight_queries;
         done("AiCommand::close_target_weight", 0x00a0f810u);
-        return bsp::ai_candidate_target_weight_00a0f810(in);
+        const float weight = bsp::ai_candidate_target_weight_00a0f810(in);
+        // Packet cc8_ai_target_choice_observed. 00A13B60 scores every candidate
+        // of one member and then issues one order, so a buffer cleared on a
+        // change of member holds exactly that member's candidates when
+        // close_issue_order runs and can name the chosen target's weight and
+        // the runner-up's. Observation only.
+        if (member != choice_member) {
+            choice_member = member;
+            choice_weights.clear();
+        }
+        choice_weights.emplace_back(target, weight);
+        return weight;
     }
     bool close_in_target_group(void* target_group, void* candidate) override {
         // 00A2C720 walks the group's +563Ch list for the entity.
@@ -1187,8 +1233,84 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         ++summary.commands_issued;
         if (current_party >= 0) ++party_row(current_party).commands_issued;
         if (summary.first_command_seconds < 0.0f) summary.first_command_seconds = clock_seconds;
+        observe_target_choice(member, target);
         done("AiCommand::close_issue_order", 0x0077d600u);
         return true;
+    }
+
+    // Packet cc8_ai_target_choice_observed. What no run before this one
+    // recorded: WHICH target the weight actually picked. The chosen entry is
+    // looked up by target in the member's buffer, and the runner-up is the
+    // highest-weight entry that is not the chosen one. Labelled: 00A149A8
+    // orders candidates by SCORE, which is the weight times the range factor
+    // and the two multipliers, so this runner-up is the runner-up by weight
+    // and can differ from the one the score would have named.
+    void observe_target_choice(void* member, void* target) {
+        if (member != choice_member) return;
+        const std::size_t chosen = unit_index_of(target);
+        float chosen_weight = 0.0f;
+        bool chosen_found = false;
+        std::size_t runner = 0;
+        float runner_weight = -1.0f;
+        for (const std::pair<std::size_t, float>& entry : choice_weights) {
+            if (entry.first == chosen) {
+                chosen_weight = entry.second;
+                chosen_found = true;
+            } else if (entry.second > runner_weight) {
+                runner_weight = entry.second;
+                runner = entry.first;
+            }
+        }
+        if (!chosen_found) return;
+        const int chosen_class = units.unit_class_id(chosen);
+        ++chosen_class_counts[chosen_class];
+        if (runner_weight >= 0.0f) ++runnerup_class_counts[units.unit_class_id(runner)];
+        // A bounded sample of individual choices, so a fort and a ship can be
+        // checked against the listing's arithmetic with their REAL hit points
+        // rather than assumed ones.
+        if (choice_samples_logged < 24) {
+            ++choice_samples_logged;
+            const GameAiWeaponFacts::Unit* row = game_ai_weapon_facts().row(chosen);
+            const GameAiWeaponFacts::Unit* runner_row =
+                runner_weight >= 0.0f ? game_ai_weapon_facts().row(runner) : nullptr;
+            log.notef("  ai target choice chosen_class=%02Xh(%s) weight=%.6f hp=%.1f "
+                "trio=%d command_building=%d | runner_class=%02Xh(%s) weight=%.6f hp=%.1f",
+                chosen_class, ai_class_name(chosen_class),
+                static_cast<double>(chosen_weight),
+                static_cast<double>(row != nullptr ? row->hit_points : 0.0f),
+                units.unit_is_kind_of(chosen, 0x1B) || units.unit_is_kind_of(chosen, 0x45) ||
+                    units.unit_is_kind_of(chosen, 0x46) ? 1 : 0,
+                units.unit_is_kind_of(chosen, 0x1C) ? 1 : 0,
+                runner_weight >= 0.0f ? units.unit_class_id(runner) : 0,
+                runner_weight >= 0.0f ? ai_class_name(units.unit_class_id(runner)) : "none",
+                static_cast<double>(runner_weight),
+                static_cast<double>(runner_row != nullptr ? runner_row->hit_points : 0.0f));
+        }
+    }
+
+    static const char* ai_class_name(int class_id) {
+        switch (class_id) {
+        case 0x07: return "Destroyer";
+        case 0x08: return "Submarine";
+        case 0x09: return "MotherShip";
+        case 0x0A: return "Cruiser";
+        case 0x0B: return "Cargo";
+        case 0x0C: return "LandingShip";
+        case 0x0D: return "BattleShip";
+        case 0x0E: return "TorpedoBoat";
+        case 0x10: return "LevelBomber";
+        case 0x11: return "TorpedoBomber";
+        case 0x12: return "DiveBomber";
+        case 0x13: return "Fighter";
+        case 0x14: return "ReconPlane";
+        case 0x17: return "Kamikaze";
+        case 0x19: return "LandVehicle";
+        case 0x1B: return "LandFort";
+        case 0x1C: return "CommandBuilding";
+        case 0x45: return "AirField";
+        case 0x46: return "Shipyard";
+        default:   return "other";
+        }
     }
     bool close_issue_moveto(void* member, const float point[3]) override {
         return tick_issue_moveto(member, point);
@@ -2190,12 +2312,47 @@ void GameAiCoordinatorHost::report() {
         // time_factor * accuracy * shots over every lookup, which is what
         // 00A08460 accumulates. A pair with lookups and a zero contribution is
         // a barrel that can never move the weight.
+    {
+        // Packet cc8_ai_target_choice_observed: which class the weight actually
+        // picked, over the whole mission. This is the line no earlier run in
+        // this stream carried, and the one that turns the preference from a
+        // calculation into a measurement.
+        host.log.notef("summary mission ai target choice model=%d chosen_classes=%zu "
+            "runnerup_classes=%zu (00A14A6E's order, the target 00A149A8 left in the slot)",
+            GameAiCoordinatorHost::Impl::ai_weight_model_enabled() ? 1 : 0,
+            host.chosen_class_counts.size(), host.runnerup_class_counts.size());
+        for (const std::pair<const int, unsigned long long>& entry : host.chosen_class_counts) {
+            unsigned long long as_runner = 0;
+            const auto found = host.runnerup_class_counts.find(entry.first);
+            if (found != host.runnerup_class_counts.end()) as_runner = found->second;
+            host.log.notef("  ai target choice class=%02Xh(%s) chosen=%llu runnerup=%llu",
+                entry.first,
+                GameAiCoordinatorHost::Impl::ai_class_name(entry.first),
+                entry.second, as_runner);
+        }
+        for (const std::pair<const int, unsigned long long>& entry : host.runnerup_class_counts) {
+            if (host.chosen_class_counts.find(entry.first) != host.chosen_class_counts.end()) {
+                continue;
+            }
+            host.log.notef("  ai target choice class=%02Xh(%s) chosen=0 runnerup=%llu",
+                entry.first,
+                GameAiCoordinatorHost::Impl::ai_class_name(entry.first), entry.second);
+        }
+    }
         host.log.notef("summary mission ai target weight path plane_attacker=%llu "
             "other_attacker=%llu (00A085AD PUSH 0Fh on the attacker vehicle class, stored to "
             "[ESP+37h]; 00A08619 JE 00A09228 sends a NON-plane attacker to the subsystem and "
             "barrel walk this process projects, and a plane attacker into 00A0861F..00A09222, "
             "which it does not)",
             host.census_plane_attacker, host.census_other_attacker);
+        for (const std::pair<const int, unsigned long long>& entry :
+             host.unresolved_by_attacker_class) {
+            host.log.notef("  ai target weight unresolved_bullet_class attacker=%02Xh(%s) "
+                "barrel_lookups=%llu (gun.bullet_class < 0, or a Bullets row whose Type matches "
+                "none of 006EA910's thirteen literals)",
+                entry.first, GameAiCoordinatorHost::Impl::ai_class_name(entry.first),
+                entry.second);
+        }
         static const char* const kGroupNames[] = {
             "plane", "submarine", "smallship", "bigship", "other"};
         static const char* const kSubTypeNames[] = {
