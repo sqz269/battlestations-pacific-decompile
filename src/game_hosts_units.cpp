@@ -4228,15 +4228,38 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // host applies.
                             unit_.db_in_range_b8 = GameUnitsHost::Impl::kPilotDiveBombAttackDist;
                             unit_.db_attack_dist_b4 = GameUnitsHost::Impl::kPilotDiveBombAttackDist;
-                            // SUBSTITUTION, labelled: approach+D4h, +50h and
-                            // the two interpolation endpoints (approach+14h)
-                            // ->+5Ch/+60h have no producer read. Zero leaves
-                            // the lead at 0 and the gain at 1, so the aim error
-                            // is the bare along-track miss the release gate
-                            // compares against 25 m.
-                            // approach+D4h and +50h still have no producer
-                            // read; zero is labelled, not recovered.
-                            unit_.db_release_range_d4 = 0.0f;
+                            // approach+D4h RECOVERED. The approach constructor
+                            // 009C3EA0 - the routine that writes the vtable
+                            // 00D20C48 at 009C3EE2 and draws +A8h at 009C3F2E
+                            // and +ACh at 009C3F3F - closes with
+                            // 009C3FFB-009C4045:
+                            //
+                            //   S24 = (+ACh + +A8h) * 0.5      (00D7A280)
+                            //   S20 = +A8h + 250.0             (00CF8850)
+                            //   +D4h = max(S20, S24)           (009C4035 `76` JBE)
+                            //
+                            // ESI is `this` from 009C3EB8 and is never
+                            // reassigned, so both reads are the approach's own
+                            // fields. With the drawn 350.0 and the 1000.0
+                            // begin-altitude that is 675.0 m, and 009C680E's
+                            // can-dive test becomes a real height gate rather
+                            // than "above the target".
+                            unit_.db_release_range_d4 =
+                                bsp::dive_bomb_dive_entry_height_009c4045(
+                                    unit_.db_dive_alt_a8, unit_.db_begin_alt_ac);
+                            // SUBSTITUTION, labelled: approach+50h and the two
+                            // interpolation endpoints (approach+14h)->+5Ch/+60h
+                            // have no producer read. Zero leaves the lead at 0
+                            // and the gain at 1, so the aim error is the bare
+                            // along-track miss the release gate compares
+                            // against 25 m.
+                            //
+                            // +50h was searched for this packet and is NOT the
+                            // store at 009C3E2E that a `+50h` census turns up:
+                            // 009C3DAD `MOV EDI,ECX` makes EDI the approach and
+                            // 009C3E11 `LEA ESI,[EDI+30h]` rebases ESI, so that
+                            // store lands on approach+80h. No writer through
+                            // the approach base exists in the dive-bomb range.
                             unit_.db_extra_range_50 = 0.0f;
                             // 007C1DB0 at the aimglide enter 009C4F00 latches
                             // the count the salvo caps against.

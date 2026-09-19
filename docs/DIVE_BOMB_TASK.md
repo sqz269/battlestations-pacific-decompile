@@ -1412,3 +1412,53 @@ holds: the demand keeps the error's sign, so the falling map still rolls both wa
 One side effect is now reported and not modelled: `0099E328 MOVSS [ESI+2ECh],XMM1` with
 `00E0E2F4`, on the rate arm. `cmd+2ECh` is the same word the mode-0 pitch branch at `0099E3D7`
 reads and writes; this host keeps no `+2ECh`.
+
+## `approach+D4h` recovered: the dive-entry height, set once by the constructor
+
+`009C3EA0` is the approach's constructor - it writes the vtable `00D20C48` at `009C3EE2`, draws
+`+A8h` at `009C3F2E` and `+ACh` at `009C3F3F`, and tail-calls `009C3DA0` at `009C4083`. Its last
+act before that tail call is `+D4h`:
+
+```
+009c3ffb  FLD   float ptr [ESI + 0xa8]         ; the drawn release altitude
+009c4001  FSTP  float ptr [ESP + 0x20]
+009c4005  FLD   float ptr [ESI + 0xac]         ; the begin altitude
+009c400b  FLD   float ptr [ESP + 0x20]
+009c400f  FLD   ST0
+009c4011  FADDP ST2,ST0                        ; ST1 = +ACh + +A8h
+009c4013  FXCH                                 ; ST0 = the sum, ST1 = +A8h
+009c4015  FMUL  double ptr [0x00d7a280]        ; 0.5
+009c401b  FSTP  float ptr [ESP + 0x24]         ; S24 = (+ACh + +A8h) * 0.5
+009c401f  FADD  double ptr [0x00cf8850]        ; 250.0, on the +A8h copy
+009c4025  FSTP  float ptr [ESP + 0x20]         ; S20 = +A8h + 250.0
+009c4031  FCOMIP ST0,ST1
+009c4035  JBE   0x009c403f                     ; byte `76`
+009c4045  MOVSS dword ptr [ESI + 0xd4],XMM0
+```
+
+`+D4h = max(+A8h + 250.0, (+ACh + +A8h) * 0.5)`. `ESI` is `this` from `009C3EB8 MOV ESI,ECX` and
+is never reassigned in the body, so both reads are the approach's own fields; the only `LEA` off it,
+`009C3EDF LEA ECX,[ESI+30h]`, lands in `ECX`.
+
+With this installation's `SPNormal` draw (`+A8h` 350.0) and the begin altitude 1000.0 that is
+**675.0 m**: `max(600.0, 675.0)`. So `009C680E`'s can-dive test is a real height gate - the
+aircraft must be 675 m above its target before `flyabove` will roll it in - and not the "above the
+target" the zero reduced it to. Bound in `game_hosts_units.cpp` through
+`dive_bomb_dive_entry_height_009c4045`.
+
+### `approach+50h` is still open, and the obvious candidate is not it
+
+A `+50h` store census over `.text` turns up eight stores in the `009Cxxxx` range. The one that
+looks like the approach, `009C3E2E MOVSS [ESI+50h],XMM0` in `009C3DA0`, is **not** `approach+50h`:
+
+```
+009c3dad  MOV EDI,ECX          ; EDI is `this`, the approach
+009c3daf  MOV ESI,[EDI + 0x14]
+009c3e11  LEA ESI,[EDI + 0x30] ; ESI is rebased 0x30 past `this`
+009c3e2e  MOVSS [ESI + 0x50],XMM0
+```
+
+That store lands on `approach+80h`, along with `+7Ch` and `+78h` from the same value
+(`[[EDI+14h]+58h]`). No writer through the approach base exists in the dive-bomb range, so `+50h`
+keeps its labelled zero, and the next reader should look for a sub-object base or a block copy
+rather than repeating the offset census.

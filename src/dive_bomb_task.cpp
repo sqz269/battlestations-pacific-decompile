@@ -511,6 +511,23 @@ DiveBombTurnDownResult dive_bomb_turndown_tick_009c44f0(
     return out;
 }
 
+// 009C3FFB-009C4045, the tail of the approach constructor 009C3EA0.
+float dive_bomb_dive_entry_height_009c4045(float dive_altitude_a8,
+                                           float begin_altitude_ac) noexcept {
+    // 009C400F FLD ST0 / 009C4011 FADDP ST2,ST0 / 009C4013 FXCH / 009C4015 FMUL:
+    // the sum of the two altitudes, halved.
+    const float mean = static_cast<float>(
+        (static_cast<double>(begin_altitude_ac) +
+         static_cast<double>(dive_altitude_a8)) *
+        dive_bomb_constant::kDiveEntryHeightMean);
+    // 009C401F FADD, on the copy of +A8h the FXCH left behind.
+    const float margin = static_cast<float>(
+        static_cast<double>(dive_altitude_a8) +
+        dive_bomb_constant::kDiveEntryHeightMargin);
+    // 009C4031 FCOMIP then 009C4035 JBE: the larger of the two wins.
+    return (margin > mean) ? margin : mean;
+}
+
 // 009C7EA0-009C7EF2, __fastcall(state) -> bool.
 bool dive_bomb_turndown_complete_009c7ea0(float attitude_c64,
                                           float attitude_c68) noexcept {

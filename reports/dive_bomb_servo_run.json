@@ -31,6 +31,13 @@
       "note": "the falling InterpolateClamped map and the plan+290h store"
     },
     {
+      "name": "dive_bomb_dive_entry_height_009c4045",
+      "range": "009C3FFB-009C4045",
+      "containing_function": "009c3ea0",
+      "coverage": "complete",
+      "note": "approach+D4h = max(+A8h + 250.0, (+ACh + +A8h) * 0.5), set once by the approach constructor; 675.0 m with this installation's draw"
+    },
+    {
       "name": "the pitch-mode gate 0099E3BF-0099E3D1",
       "range": "0099E3BF-0099E3D1",
       "containing_function": "0099d300",
@@ -97,8 +104,7 @@
   ],
   "open": {
     "00ce3880": "the 25.0 m aim gate; the last aim error in the aimdive run was -3706.33 m, taken after the overfly. A closest-approach census was added and needs a run to read.",
-    "approach+D4h": "no producer read; the can-dive test at 009C680E reduces to 'above the target'",
-    "approach+50h": "no producer read",
+    "approach+50h": "no producer read. The +50h store census turns up 009C3E2E in 009C3DA0, which is NOT it: 009C3DAD MOV EDI,ECX makes EDI `this` and 009C3E11 LEA ESI,[EDI+30h] rebases, so that store lands on approach+80h. Look for a sub-object base or a block copy.",
     "flyabove+1Ah": "009C66E3/009C66F2/009C6822 writers read, their conditions not",
     "006e3500": "the per-device round count, still to route through the gunnery host's process-wide accessor",
     "cmd+2ECh": "written by both the servo's rate arm at 0099E328 and the mode-0 pitch branch at 0099E459/0099E47B; no consumer read, not modelled"
