@@ -2503,3 +2503,101 @@ So `kAimGlide` now dispatches, and with the three transcription corrections and 
 seed the release at `009C5777` has a reachable window for the first time: angle under 30 degrees,
 height above the aim point under 260 m, lateral inside 120, and
 `-4*travel - 5.0 < lead < -5.0`.
+
+## The three slot runs, and a retraction
+
+Three runs on slots 0-2, all on a tree **without** main's `67e8ac821`, so they compare directly with
+`usn04_after.log` and `usn01_after.log`.
+
+| measure | `usn01_after` | `usn01_glide` | `usn04_after` | `usn04_glide` | `usn04_circuit2` |
+| --- | --- | --- | --- | --- | --- |
+| mission frames | 4800 | 4800 | 4800 | 4800 | **8800** |
+| `closed_mean` | 368.1 m | **368.1 m** | - | - | - |
+| `worst_closed` | 330.7 m | **330.7 m** | - | - | - |
+| `heading_error_last_mean` | 0.005 rad | **0.005 rad** | - | - | - |
+| dive-bomb arm ticks | - | - | 2117 | 2118 | **2118** |
+| transitions | - | - | 7 | 7 | 7 |
+| aimdive / aimglide / goaway | - | - | 318 / 41 / 1 | 318 / 42 / 1 | 318 / 42 / 1 |
+| releases | - | - | 0 | 0 | 0 |
+
+USN01 reproduces the control exactly, so the `kAimGlide` dispatch costs the torpedo planner nothing.
+USN04 is unchanged too - the glide corrections and the dispatch do not move the walk, because
+`aimglide`'s 42 ticks happen after the aircraft is already low and out of position.
+
+### Retraction: there is no second circuit, and the window was never the reason
+
+The last packet predicted that a longer run would show `009C86D9` sending `goaway` back to
+`flyabove` for a second circuit, and that our 4800-frame runs simply ended first. **That is wrong.**
+The 8800-frame run stops at **2118 arm ticks, the same as the 4800-frame run** - 190 s of task in
+both - and the log says why:
+
+```
+plane water contact: unit=movieval alt=-1.12 water=0.00 |v|=43.72 state 7 -> 6
+  (007CB7F0 tail 007CB92C); the free-flight gate 0074E210 is now false
+```
+
+**The dive bomber flies into the sea.** Once the flight state leaves 7 the pilot think stops, the
+task stops being armed, and no amount of mission time changes anything. The chain does not run out
+of window; it runs out of aircraft.
+
+### What that makes the gate: `009C4A40`, the goaway tick
+
+The walk is `aimdive` 318 -> **`goaway` 1 tick** -> water. So the pull-out edge works: it is computed
+at `009C6131`-`009C6154` and `apply_aimdive_result` does store it back into `db_aim_pull_out_18`,
+`009C8677` reads it and the state does leave `aimdive`. What happens next is nothing, because
+**`kGoAway`'s tick `009C4A40` is one of the six this host still dispatches nothing for**. The state
+that exists to climb the aircraft away from its dive issues no command, so the aircraft holds its
+dive attitude and ditches one tick later.
+
+That also retracts the milder claim that "the image overshoots this pass too". The image's dive
+bomber does not fly into the water; it pulls out, goes round, and `009C86D9` gives it the second
+circuit with its two remaining rounds. The missing piece is not a law in the aimdive - it is the
+goaway tick, at `009C4A40`, body `009C4A40`-`009C4E65`, 1061 bytes.
+
+## `009C4A40`, the goaway tick: the climb-out bound
+
+### The command census, with EBX the 1 that `009C4A5C` loads
+
+| site | write | mode |
+| --- | --- | --- |
+| `009C4BE0` / `009C4BE8` | `cmd+2BCh`, the pitch target | `cmd+2D0h` = **1** |
+| `009C4BFE` / `009C4C06` | `cmd+2C4h` = 0.0 (`XORPS`) | `cmd+2CCh` = **1** |
+| `009C4CA7`, `009C4CE7` | `cmd+2D8h` = 0 | |
+| `009C4DF0` / `009C4DF6` | a second bank-target arm | `cmd+2CCh` = 1 |
+| `009C4E17` / `009C4E1D` | `cmd+2C0h`, a heading | `cmd+2CCh` = 2 |
+
+Both of the climb-out's modes are **1**, and that is the whole shape: hand the planner a pitch
+target and let its own arm at `0099E490` fly it, and hand the roll servo a wings-level target so the
+aircraft rolls upright out of the inverted dive. The mode-1 pair is exactly what the two gates bound
+in the previous packets pass - `0099E3BF` for the pitch, `0099E26E` for the roll.
+
+### The pitch target
+
+```
+009c4ba0  FLD   float ptr [ECX + 0x1ec]      ; (approach+8h)->+1ECh, the climb angle
+009c4baa  FLD   float ptr [0x00ceb4b0]       ; 60.0
+009c4b96  FLD   float ptr [0x00ce3ae8]       ; 300.0
+009c4b90  FLDZ
+009c4b8c  FSTP  float ptr [ESP + 0x10]       ; [EDI+100h], the aircraft's own Y
+009c4bb3  CALL  BSP_Math_InterpolateClamped
+009c4bc4  FCOMIP ST0,ST1                     ; against the 009C4B61 curve
+009c4bc8  JA    0x009c4bd2                   ; byte `77`, so the larger wins
+```
+
+`InterpolateClamped(60.0, climbAngle, 300.0, 0.0, altitude)`: the full climb angle below 60 m,
+easing to level by 300 m, and the larger of it and a second curve over the same upper endpoint whose
+`y1` and interpolant were not traced. The second is supplied as the same curve and labelled, so the
+command is never weaker than the image's.
+
+`(approach+8h)->+1ECh` needs no substitution at all: this host already carries it as
+`plane_climb_angle_1ec`, filled from the Lua row as 0.6 of the sustainable climb angle
+`007D98F0` returns.
+
+### A correction the binding turned up: `009C7F00` was reading another state's field
+
+`goaway_complete` was fed `db_glide_travel_20` - the **aimglide** state's `+20h`. `009C7F00` is the
+goaway state's own completion rule and reads the goaway state's `+20h`; they are different objects.
+Once the aimglide seed was recovered last packet as `max(arg, 5.0)`, that conflation made
+`planar > 5.0 * 0.9` true at once, which is the **one-tick goaway** in every run so far. The goaway
+now has its own accumulator. The rule stays the labelled PARTIAL it was, but it is no longer fed a
+value belonging to another state.
