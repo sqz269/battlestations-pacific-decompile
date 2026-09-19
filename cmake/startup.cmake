@@ -1403,3 +1403,4 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/game_native_online
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_network_console_storage.cpp src/native_network_console_owner.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_network_console_runtime.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_network_console_receive.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_network_console_send.cpp)
