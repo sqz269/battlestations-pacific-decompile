@@ -3,6 +3,30 @@
 Milestone 2n is the current state of the executable, and its section corrects the earlier
 ones. Milestone 1 is the spine it was all built on.
 
+## Mission reference baselines, 2026-09-19 (impact burst)
+
+An impact now spawns the class row's `Blast` burst, as `0084BC60` step 7 does, for **every** class
+that carries one - torpedoes, bombs and shells alike. That changes the mission totals every earlier
+measurement in this repository recorded, so these are the reference lines to compare against from
+now on. `docs/TORPEDO_WARHEAD.md` has the reading and the per-record detail.
+
+| mission | frames | damage | deaths | supersedes | recorded in |
+| --- | --- | --- | --- | --- | --- |
+| USN01 | 3000 mission | **3595.4** | **4** | `1285.0` / `1` | docs/TORPEDO_AFTER_THE_DROP.md 14.5 |
+| USN04 | 4500 mission | **9459.0** | **5** | `3309.9` / `3` | docs/TORPEDO_WARHEAD.md 9 |
+
+Why they moved, so a later reader does not read this as a regression: before the burst, a hit that
+the victim's `Armour` exceeded did **nothing at all**, and that is most hits - a torpedo against a
+carrier resolved to exactly `(50 - 50) = 0`. The burst is the damage source those missions were
+missing. What did **not** move is as important: on USN01 the whole torpedo chain is byte-identical
+across the change (`drops=5`, `swims_started=5`, five tasks `releases=1` with identical state
+histograms, `goaway` once per aircraft, the same round striking the same hangar at the same
+position and time), and on USN04 `drops=12` and `swims_started=8` are unchanged. Per-round traces
+are the thing to regress against; these totals are a coarser check.
+
+Ten of USN01's twelve shell bursts do nothing, because the SaltLakeCity's `Armour` of 90 is above
+both shell blast bases, so almost all of that mission's movement is one torpedo into a hangar.
+
 Addresses added by milestone 2a: 0073d604-0073d899 (the phase-2 VFS block of Init), 00beda60
 (provider manager), 004fc150 / 00736a90 / 00736b60 (the three provider factory singletons),
 00be0660 (factory registration), 00be1890 (mount), 0073cb10 with the two call sites 0073d881

@@ -66,8 +66,16 @@ radius. The same test is the flak shell's decal branch elsewhere in `0084BC60`
 
 `EDX` is `&classDesc[+70h]`, one float read in place: the radius is **not** a draw. The centre is
 `hitPos - direction * 0.05` - `[ESI+24h..2Ch]` minus `[ESI+10h..18h]` scaled by the double at
-`00D7A270`, differenced at `0084BEBF`..`0084BEDF`. `0.05` is one 20 Hz frame of travel
-(`python tools/pe_const_read.py d:00d7a270`).
+`00D7A270`, differenced at `0084BEBF`..`0084BEDF`.
+
+**What `0.05` scales, corrected.** An earlier draft of this document read it as "one 20 Hz frame of
+travel", which assumed the direction was a velocity. It is not: `buffer+10h` is written by
+`0084BF00` as `delta * (1 / BSP_Vector3f_Length(delta))`, and docs/PROJECTILE_IMPACT.md's field
+table calls it "the segment direction, **normalised**". So the back-off is a flat **5 cm** out of
+the struck surface at every speed, not a time step. The difference is invisible on a 30 m/s torpedo
+(1.5 m against 0.05 m) and decisive on a 700 m/s shell, where treating it as a velocity puts the
+burst 35 m back down the flight path - which is exactly how this host's first ungated run was
+caught doing it (section 11).
 
 **Correction to docs/PROJECTILE_IMPACT.md.** Its step-7 row (line 315) reads "radius randomised
 from `classDesc[+B4h]`/`[+B8h]`". Those two fields are the blast **damage** min and max and they
@@ -238,27 +246,14 @@ write the hull pass uses.
 | **the distance that feeds the falloff** | **stand-in.** The array at `+3Ch` that `004705C0` indexes has no read producer in the image; this host measures the burst centre to the hull box |
 | a non-negative `+34h`, and therefore flooding, fire and roll torque on a real hit | **hole**, unread, see section 7 |
 
-### The burst is restricted to torpedoes here, and the image does not restrict it
+### The burst is not torpedo-only, and this host no longer pretends it is
 
 `0084BE28` gates the burst on `classDesc[+6Ch]`, not on the projectile's kind, so in the image
-**every** class with a `Blast` table bursts on impact - bombs, rockets and the artillery rounds that
-carry one. The host call is nevertheless gated on the torpedo category, and that is a scope
-decision rather than a reading.
-
-It is not a cosmetic one. Built without the gate and measured, the same code changed two other
-paths at once:
-
-* on USN04 the four bomb impacts each added a burst (`base=80.0`, `range=25.0`), worth about 57
-  extra damage on the Lexington;
-* on USN01, whose totals are otherwise reproducible run to run, **every shell impact with a
-  `Blast` table burst as well** (`base=65.0 range=57.0` and `base=50.0 range=35.0` against the
-  SaltLakeCity, each `took=0.0` because its `Armour` of 90 exceeds those bases) - and the mission
-  total moved from the expected **deaths 1, damage 1285.0** to **deaths 3, damage 3641.9**.
-
-So the generic rule is real and reading it is part of this packet's answer, but turning it on for
-every ordnance kind moves the gunnery and dive-bomb baselines that other packets measure against.
-Extending the burst to bombs and shells is a one-line change at the call site and belongs to
-whoever owns those paths, together with a fresh baseline for them.
+**every** class with a `Blast` table bursts on impact - bombs, rockets and the artillery rounds
+that carry one. The first commit of this packet gated the host call on the torpedo category to
+protect other packets' baselines; that gate was a host invention and is gone. `apply_impact_blast`
+now runs for every shot, and its only gate is the row's own `BlastRange`, which is the image's
+`+6Ch` test. Section 11 records the baselines that replaces.
 
 ## 9. Measured on USN04, 4500 mission frames, no probe
 
@@ -358,3 +353,104 @@ that hit did nothing, because the hangar's `Armour` of 70 exceeds the contact da
 delivers 1098.9 and the burst reaches three parked wildcats, two more hangars and an oil tank
 inside 50 m. So USN01 does not control for "the torpedo chain is untouched" by its totals - it
 controls for it by the per-round trace above, which is identical.
+
+## 11. The ungated burst, the defect it exposed, and the new reference baselines
+
+Section 8's torpedo-only gate is removed: `apply_impact_blast` now runs on every entity impact and
+the only gate is the row's `BlastRange`, which is the image's `classDesc+6Ch`. Two missions were
+re-run to replace the reference numbers that change as a result.
+
+### 11.1 The defect the first ungated run exposed
+
+Turning the burst on for fast ordnance immediately showed something that could not be right. The
+burst centre is `hitPos - direction * 0.05`, and this host was handing `apply_impact_blast` the
+shot's **velocity** as `direction`. At a torpedo's 30.9 m/s that is a harmless 1.5 m; at a bomb's
+127 m/s it is 6.3 m; at an AA shell's speed it is tens of metres. In the first ungated USN01 run
+the burst from a bullet-44 round sat **33.2 m** from the aircraft it had actually struck, so the
+splash was credited to that aircraft's neighbour instead:
+
+```
+  (before)  impact blast bullet=44 on Mav2 dist=33.2 ... took=0.0    <- the round hit Mav2
+            impact blast bullet=44 on Mav3 dist=4.2  ... took=20.8   <- Mav3 paid for it
+  (after)   impact blast bullet=44 on Mav2 dist=0.0  ... took=25.0
+            impact blast bullet=44 on Mav3 dist=28.8 ... took=0.0
+```
+
+The image does not do this. `buffer+10h` is written by `0084BF00` as `delta * (1 /
+BSP_Vector3f_Length(delta))` and docs/PROJECTILE_IMPACT.md's field table calls it "the segment
+direction, **normalised**", so `0.05` is a flat 5 cm nudge out of the struck surface at every
+speed. The host now normalises before applying it, and every directly-struck victim reports
+`dist=0.0`. This also corrects the torpedo numbers of section 10 upward, because the burst no
+longer starts 1.5 m off the hull: a carrier hit is now `(1 - 0/50) * 1200 - 50 = 1150` exactly,
+against the 1146.2 measured with the 1.5 m offset.
+
+This was worth the two extra runs: the same error was silently costing the torpedo its last 4
+damage per hit, and no torpedo-only measurement could ever have exposed it.
+
+### 11.2 USN01, 3000 mission frames - the new reference
+
+`local/baseline_usn01.log`. **Supersedes docs/TORPEDO_AFTER_THE_DROP.md section 14.5's
+`deaths 1, damage 1285.0`**, which was measured when no impact produced a burst.
+
+| | 14.5 reference | torpedo-gated (intermediate) | **ungated, normalised** |
+| --- | --- | --- | --- |
+| damage | 1285.0 | 3560.4 | **3595.4** |
+| deaths | 1 | 2 | **4** |
+| blast records | none | 7 | **27** |
+
+The torpedo chain is **byte-identical in all three**: `drops=5`, `swims_started=5`, five tasks with
+`releases=1` and identical state histograms, `goaway` entered once per aircraft, torpedo 1 striking
+`Hangar, Small, 04 01` at `(4165.8, 0.00, -3294.7)` at life 51.75 and the other four expiring at
+life 60.05. Nothing about the run-in, drop, swim, break-off or retire moved; only what an impact
+then does.
+
+The 27 blast records, so a later reader can tell a second record beside a direct hit from a new
+hit. `dist=0.0` marks the entity the round actually struck; every other row is splash:
+
+| bullet | victim | n | dist | base/range | armour | took each |
+| --- | --- | --- | --- | --- | --- | --- |
+| 31 | SaltLakeCity | 2 | 0.0 | 65 / 57 | 90 | 0.0 |
+| 19 | SaltLakeCity | 8 | 0.0 | 50 / 35 | 90 | 0.0 |
+| 44 | Mav2 | 4 | 0.0 | 35 / 35 | 10 | 25.0 |
+| 44 | Mav3 | 4 | 28.6-28.8 | 35 / 35 | 10 | 0.0 |
+| 69 | Hangar, Small, 04 01 | 1 | 0.0 | 1200 / 50 | 70 | 1129.0 |
+| 69 | Hangar, Small, 04 02 | 1 | 20.2 | 1200 / 50 | 70 | 645.5 |
+| 69 | Hangar, Small, 04 03 | 1 | 42.3 | 1200 / 50 | 70 | 114.7 |
+| 69 | Multi Hangar 1 | 1 | 49.1 | 1200 / 50 | 70 | 0.0 |
+| 69 | Static wildcat, closed 02 / 03 | 2 | 37.9, 43.3 | 1200 / 50 | 5 | 150.0 (destroyed) |
+| 69 | Static wildcat, closed 04 | 1 | 48.7 | 1200 / 50 | 5 | 25.5 |
+| 69 | Oil Tank, Big 01 | 1 | 45.9 | 1200 / 50 | 2 | 96.8 |
+
+Ten of the twelve shell bursts do **nothing** - the SaltLakeCity's `Armour` of 90 is above both
+shell blast bases - so the whole of USN01's movement is one torpedo and four bullet-44 rounds. The
+three extra deaths over the 14.5 reference are two static wildcats parked beside the hangar the
+torpedo hits, plus one more; none is a combatant the mission's outcome turns on.
+
+### 11.3 USN04, 4500 mission frames - the new reference
+
+`local/baseline_usn04.log`. `drops=12`, `swims_started=8`, five hits, unchanged from section 9.
+
+| | before the burst | torpedo-gated | **ungated, normalised** |
+| --- | --- | --- | --- |
+| mission damage | 3309.9 | 9398.6 | **9459.0** |
+| deaths | 3 | 5 | **5** |
+| Yorktown-class01 | hits 2, taken 0, health 8000 | hits 4, taken 2293, health 5707 | **hits 4, taken 2300, health 5700** |
+| Lexington-class01 | hits 7, taken 1791, health 6209 | hits 10, taken 5334, health 2666 | **hits 14, taken 5350, health 2650** |
+
+The Yorktown is again the clean measure, and on the corrected build it is exact: two torpedo hits,
+`2 x (1200 - 50) = 2300`, both bursts logged at `took=1149.9`. The Lexington's four extra hits over
+the gated column are its four bomb bursts, now `took=29.9` each (`80 - 50` at `dist=0.0`) where the
+6.3 m offset had been giving them 13 to 16.
+
+### 11.4 What was checked for and not found
+
+The two failure shapes worth ruling out, both checked against `local/baseline_usn01.log` and
+`local/baseline_usn04.log`:
+
+* **No burst damages its own firer.** `0084BBF9` skips the source entity and this host skips
+  `i == shooter`; no blast row in either run names the unit that fired the round.
+* **No burst on a water impact.** The call sits inside the entity-impact branch only, so a round
+  that reaches the sea makes no burst here. Whether the image bursts on a water or terrain impact
+  is **unread** - `0084BC60` is the general impact handler and its step 7 does not test what was
+  struck - so this is a boundary of this host, not a reading. It is the obvious next question for
+  whoever takes the bomb path.

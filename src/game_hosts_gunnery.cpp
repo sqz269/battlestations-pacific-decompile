@@ -60,7 +60,9 @@ constexpr float kGravity = 9.8100004196166992187500f;      // 00CF9058
 constexpr int kDirectHitHullSegment = -1;
 // FLD double ptr [00D7A270] at 0084BE63: the burst centre is backed off from
 // the impact point along the impact direction by this much. The value reads
-// 0.05, one 20 Hz frame of travel. tools/pe_const_read.py d:00d7a270
+// 0.05 (tools/pe_const_read.py d:00d7a270), and the direction it scales is the
+// **unit** direction 0084BF00 stores at buffer+10h, so this is 5 cm out of the
+// struck surface and not a time step.
 constexpr float kBlastCentreBackOff = 0.05f;
 
 float dot3(const float a[3], const float b[3]) noexcept {
@@ -238,8 +240,9 @@ struct GameGunneryHost::Impl {
         const float point[3], const float direction[3],
         const bsp::HitRecord* blast_record = nullptr);
     // 0084BC60 step 7 (0084BE28..0084BEE3) and the gather behind 0084BAD0: the
-    // radial burst that carries a torpedo's warhead. docs/TORPEDO_WARHEAD.md.
-    void apply_torpedo_blast(std::size_t shooter, std::size_t gun_row,
+    // radial burst every class with a Blast table makes on impact, and the one
+    // that carries a torpedo's warhead. docs/TORPEDO_WARHEAD.md.
+    void apply_impact_blast(std::size_t shooter, std::size_t gun_row,
         const float point[3], const float direction[3]);
     void kill_unit(std::size_t victim);
 
@@ -2429,18 +2432,12 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
             // torpedo's warhead. Without it a torpedo does its DamageMin draw
             // and nothing else, which a carrier's Armour cancels exactly.
             //
-            // The image's gate is the class descriptor's +6Ch, so it is NOT
-            // torpedo-only: a bomb or a rocket with a Blast table bursts on the
-            // same step, and this loop carries those shots too. The burst is
-            // restricted to torpedoes here on purpose, because the bomb path is
-            // another packet's and widening it would move that packet's
-            // baseline. docs/TORPEDO_WARHEAD.md section 8.
-            // `swim_speed > 0` is this file's own test for a torpedo gun (the
-            // row's WaterTravelSpeed), the same one the drop path uses.
-            if (shot.gun_row < guns.size() && guns[shot.gun_row].swim_speed > 0.0f) {
-                apply_torpedo_blast(shot.owner_unit - 1, shot.gun_row, point,
-                    direction);
-            }
+            // The image's gate is the class descriptor's +6Ch and nothing else,
+            // so this is NOT torpedo-only: every class with a Blast table
+            // bursts on this step, and this loop carries bombs and shells too.
+            // apply_impact_blast returns without doing anything when the row
+            // has no Blast, which is that same gate.
+            apply_impact_blast(shot.owner_unit - 1, shot.gun_row, point, direction);
             shot.alive = false;
             continue;
         }
@@ -2873,7 +2870,7 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
 // 004705C0's falloff has no read producer in the image at all -- the array at
 // +3Ch is docs/EXPLOSION_RADIAL_DAMAGE.md's labelled gap. The falloff
 // arithmetic is 004705C0's; the distance handed to it is this host's.
-void GameGunneryHost::Impl::apply_torpedo_blast(std::size_t shooter,
+void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
     std::size_t gun_row, const float point[3], const float direction[3]) {
     if (gun_row >= guns.size() || shooter >= unit_state.size()) return;
     const GameGunRow& gun = guns[gun_row];
@@ -2882,9 +2879,20 @@ void GameGunneryHost::Impl::apply_torpedo_blast(std::size_t shooter,
 
     const float damage = random_range_00bd2f10(weapon->blast_damage_min,
         weapon->blast_damage_max);
-    float centre[3];
-    for (int i = 0; i < 3; ++i) {
-        centre[i] = point[i] - direction[i] * kBlastCentreBackOff;
+    // The image backs the burst centre off along buffer+10h, which 0084BF00
+    // writes as the **unit** direction of the swept segment (delta scaled by
+    // the reciprocal of BSP_Vector3f_Length; docs/PROJECTILE_IMPACT.md's field
+    // table calls it "the segment direction, normalised"). The caller here
+    // hands over the shot's velocity, so it must be normalised first: at a
+    // shell's 700 m/s the raw vector would put the burst 35 m back down the
+    // flight path instead of 5 cm out of the surface.
+    float centre[3] = {point[0], point[1], point[2]};
+    const float speed = std::sqrt(direction[0] * direction[0]
+        + direction[1] * direction[1] + direction[2] * direction[2]);
+    if (speed > 0.0f) {
+        for (int i = 0; i < 3; ++i) {
+            centre[i] -= (direction[i] / speed) * kBlastCentreBackOff;
+        }
     }
 
     for (std::size_t i = 0; i < unit_state.size(); ++i) {
@@ -2929,8 +2937,9 @@ void GameGunneryHost::Impl::apply_torpedo_blast(std::size_t shooter,
 
         const float before = state.health;
         apply_hit(shooter, gun_row, i, point, direction, &blast);
-        log.notef("  torpedo blast on %s dist=%.1f base=%.1f range=%.1f "
+        log.notef("  impact blast bullet=%d on %s dist=%.1f base=%.1f range=%.1f "
             "armour=%.1f took=%.1f health=%.1f",
+            gun.bullet_class,
             unit_name_or_index(i + 1).c_str(), static_cast<double>(distance),
             static_cast<double>(damage),
             static_cast<double>(weapon->blast_range),
