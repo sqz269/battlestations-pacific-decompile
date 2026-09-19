@@ -5603,10 +5603,36 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // docs/DIVE_BOMB_TASK.md, "The roll-arm gate".
                         const int roll_mode = unit_.plan_heading_mode_2cc;
                         if (roll_mode == 2) {
-                            unit_.plan_state.bank_target_2c4 = roll.bank_target;  // 0099E25C
-                        }
-                        if (roll_mode == 2 || roll_mode == 1) {
+                            // The mode-2 arm: the planner computes the target and
+                            // writes it at 0099E25C, then runs its own law.
+                            unit_.plan_state.bank_target_2c4 = roll.bank_target;
                             unit_.plan_slots[bsp::kPilotSlotRoll].desired = roll.desired;
+                            unit_.plan_slots[bsp::kPilotSlotRoll].active = 1;  // 0099E3AE
+                            unit_.plan_heading_mode_2cc = 0;  // 0099E3B5
+                        } else if (roll_mode == 1) {
+                            // The mode-1 arm, 0099E26E-0099E39D. The jump at
+                            // 0099DE8D skipped both 0099E25C and 0099E264, so
+                            // plan+2C4h still holds what the TASK wrote and this
+                            // arm servos toward it rather than computing one.
+                            // The dive-bomb turndown writes pi there at 009C4646.
+                            bsp::PilotBotRollServoInputs sin;
+                            sin.bank_target_2c4 = unit_.plan_state.bank_target_2c4;
+                            sin.bank = unit_.plane_bank_angle_c68;
+                            // SUBSTITUTION, labelled: [ESP+28h], [ESP+2Ch] and the
+                            // EBX tuning block are contracts, so the scale is 1,
+                            // the band is open and the interpolant is the error.
+                            sin.error_scale = 1.0f;
+                            sin.band_40 = 0.0f;
+                            sin.gain_44 = 1.0f;
+                            sin.rate_48 = 0.0f;
+                            sin.rate_limit = 1.0f;
+                            const bsp::PilotBotRollServoResult sr =
+                                bsp::pilot_roll_servo_0099e26e(sin);
+                            bsp::PilotBotRollServoInputs sin2 = sin;
+                            sin2.interpolant = sr.bank_error;
+                            const bsp::PilotBotRollServoResult sr2 =
+                                bsp::pilot_roll_servo_0099e26e(sin2);
+                            unit_.plan_slots[bsp::kPilotSlotRoll].desired = sr2.desired_290;
                             unit_.plan_slots[bsp::kPilotSlotRoll].active = 1;  // 0099E3AE
                             unit_.plan_heading_mode_2cc = 0;  // 0099E3B5
                         }
