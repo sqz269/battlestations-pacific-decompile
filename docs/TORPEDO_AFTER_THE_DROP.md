@@ -1021,3 +1021,34 @@ retires a bomber — it is upstream of the goaway, not downstream, and the entry
 first. The 82 re-entries remain unexplained by anything this packet has established, and the honest
 statement is that the host re-attacks because `+132h` stays set **and that may be what the image
 does too**.
+
+#### 6.3.3 The hunt closed image-wide, and a gap in 6.3 corrected
+
+Sections 6.3 and 6.3.1 filtered every scan to the `009C`/`009D` bot-task band. **That was too
+narrow**: the order path that installs the target lives at `0099xxxx` and the shared approach
+machinery at `009Fxxxx`, neither of which those filters covered. Re-run without the band filter:
+
+* `F3 0F 11 ?? D0 00 00 00`, all **16** image-wide hits, by containing function: `004CB420`,
+  `006E22D0 BSP_ProjectileShotBase_Construct`, `007868C0`/`00786A80` the peer rows, `00799B00`,
+  `0079C910`, `007A0E00`, `007AB230`, `00812D40 BSP_UnitOrderRing_Construct`,
+  `009E0270 BSP_ShipAi_HullPreStep`, `00B4D500`, `00BA3BD0`, `00BA40F0`, `00BB0E30`. **Not one is a
+  bot-approach class.**
+* The `0099`/`009A`/`009B` bands do carry `+D0h` accesses, but they belong to other objects:
+  `009973B0 read_PilotBot_parameters_009973B0` writes its own, and `009B5C80`, `009B6670` and the
+  thunk at `009B5C50` **read** a `+D0h` vec3 exactly the way `009D0670` does - `009B5760` is one of
+  `009FD570`'s six callers, so that is a sibling approach class with the same field.
+
+So the field is a **shared approach-class vec3, read by several of them and written by none of them
+through a literal displacement, anywhere in the image**. The remaining mechanisms are a struct
+assignment through a pointer the callee received (the `LEA` that would hand it over is excluded,
+`8D ?? D0 00 00 00`, 29 image-wide, no bot-class hit) or a block copy over a region whose base is
+the object, which is the documented shape of a field with no literal-address writer.
+
+**One route this packet found and could not use.** `009A6FB3` builds `{3, &esi+0D0h}` followed by
+`{0, 00D1F878}` = `"inattackrange"` - a Lua property registration, the pattern that names original
+struct fields. It is `FUN_009A6D40`'s class, not `BotApproachTorpedo`, so the name does not
+transfer; and `8D ?? D0 00 00 00` has no hit in the `009C`/`009D` band, so the torpedo approach
+registers no such property for its own `+D0h`. Recorded because a reader who finds
+`"inattackrange"` next to a `+D0h` elsewhere should not carry it across.
+
+The static hunt is closed. What remains is a native trace or the elimination argument in 8.4.
