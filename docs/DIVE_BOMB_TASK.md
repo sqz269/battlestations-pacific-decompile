@@ -2442,3 +2442,39 @@ USN04 is unchanged to within a tick because every dive-bomb state now writes a m
 attackrun 2, turndown 0 then 1, aimdive 0, flyabove 2 - so the reset's default never applies there.
 That is the control: a planner-wide change that improves the mission whose states leave the mode
 alone and does not disturb the one whose states do not.
+
+### `state+20h` recovered, and the glide path's three corrections applied
+
+`state+20h`, the aimglide travel accumulator, has two writers and both are now read.
+
+```
+009c4f44  FLD   double ptr [0x00d7a370]   ; 5.0
+009c4f4a  FCOMIP ST0,ST1                  ; 5.0 vs the enter's argument
+009c4f4e  JBE   0x009c4f62                ; byte `76`
+009c4f50  MOVSS XMM0,dword ptr [0x00ce3850] ; 5.0
+009c4f58  MOVSS dword ptr [ESI + 0x20],XMM0
+009c4f62  MOVSS XMM0,dword ptr [ESP + 0x4]
+009c4f68  MOVSS dword ptr [ESI + 0x20],XMM0
+```
+
+The aimglide enter `009C4F00` seeds it to **`max(arg, 5.0)`** - never zero - and the tick
+accumulates into it at `009C57B8`/`009C57BB`. The host seeded 0.0, which closed the glide release
+by itself: the two lead gates are satisfiable only while the accumulator is positive.
+
+With all three transcription errors corrected the glide path's gates now read:
+
+| gate | rule |
+| --- | --- |
+| `009C569B` | flight path shallower than 30 degrees |
+| `009C56A6`-`009C56B8` | height above the aim point **below** `0.6 * 350.0 + 50.0` = 260.0 m |
+| `009C56C2`-`009C56FE` | lateral offset inside 120.0 |
+| `009C5743` | `lead < -5.0` |
+| `009C5751` | `lead > -4*travel - 5.0` |
+
+which is a coherent window - `-4*travel - 5.0 < lead < -5.0`, non-empty because the accumulator
+starts at 5.0 - where before the pair was mutually exclusive and the ceiling was a floor demanding
+950 m. The salvo at `009C5777` could not fire under any of those; it can now.
+
+The tick `009C5180` itself is still not dispatched. Binding it whole is the next packet: what is
+corrected here is the release rule it owns and the accumulator that feeds it, so the release can
+fire the moment the tick runs.
