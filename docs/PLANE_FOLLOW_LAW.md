@@ -281,12 +281,67 @@ right, the side chosen by a global bit — not 250 m ahead. Heading at a point f
 own nose is a turn command that renews itself every tick, which is why the old "ahead" reading
 made the law look like a straight-line chase when it is not.
 
-**Open, and named as such:** the four globals `00E0E2F8`-`00E0E2FB` are tested against `BL`,
-which this body sets to 1, 2, 3 or 4 (`009C0213`-`009C024F`) and also reloads from
-`[00E0E2F9]` itself (`009C0ECD`/`009C0EDF`) and from the saved byte `base-21h`. Whether they are
-a static mask table, per-frame scratch or tuning is **not** established here; their writers have
-not been censused. Until they are, the *side* of the abeam point is unexplained, and the guard
-at `009C1247` (§5.7) is unnamed.
+### 5.6.1 The four `00E0E2Fx` globals are bit constants, and `BL` is the variable
+
+An earlier draft of this section left open whether `00E0E2F8`-`00E0E2FB` were a mask table,
+scratch or tuning. Settled, and the answer inverts which operand of the `TEST` is the variable:
+
+* **Every reference in the whole image is inside `009BFEE0` itself** — 11 sites, found by
+  scanning the image for each address dword (the pattern is known to occur, so this is not a
+  vacuous negative). **None of them is a write.**
+* They are in **`.data` and initialised**, not loader-zero BSS: the bytes at
+  `00E0E2F8..00E0E2FB` are `08 02 01 04`, i.e. `[F8]=8`, `[F9]=2`, `[FA]=1`, `[FB]=4`.
+* `009C0ED9` does `OR AL, byte [00E0E2F8]`, which only makes sense on a bit.
+
+So they are four never-written single-bit constants, and `TEST byte [00E0E2F9], BL` is
+`BL & 2` — the *mask* is in memory and `BL` is the value under test. `BL` is built by this
+function and never leaves it.
+
+### 5.6.2 `BL` is a quadrant classifier, and it picks the side
+
+`009C01D3`-`009C024F` classifies two quantities into `BL ∈ {1,2,3,4}`:
+
+* `A` = `base-1Ch`, the wrapped angle returned by `00438B10 SubtractWrappedAngle` at
+  `009C01CE` (proved by adjacency: the call returns in ST0 and the next x87 op stores it);
+* `V` = `base+0Ch`, tested only for sign at `009C01E7`. Its sign is also saved to the byte
+  `base-21h` (0 for `V >= 0` at `009C01F0`, 1 for `V < 0` at `009C021E`), which later sites
+  reload into `BL`.
+
+The thresholds are exactly a quadrant split: `[00D7A218] = 0.0f`, `[00CE3830] = +π/2`,
+`[00CF48A0] = -π/2` (`1.5707963705062866`, the `double` form).
+
+| sign of `V` | sign of `A` | `|A|` vs π/2 | `BL` |
+|---|---|---|---|
+| `>= 0` | `>= 0` | `<= π/2` | 2 |
+| `>= 0` | `>= 0` | `> π/2` | 4 |
+| `>= 0` | `< 0` | `<= π/2` | 1 |
+| `>= 0` | `< 0` | `> π/2` | 3 |
+| `< 0` | `>= 0` | `<= π/2` | 1 |
+| `< 0` | `>= 0` | `> π/2` | 3 |
+| `< 0` | `< 0` | `<= π/2` | 2 |
+| `< 0` | `< 0` | `> π/2` | 4 |
+
+Equivalently, with `s = (V >= 0)` and `a = (A >= 0)`: `BL = 2` when `s == a` and `|A| <= π/2`,
+`4` when `s == a` and `|A| > π/2`, `1` when `s != a` and `|A| <= π/2`, `3` otherwise. The two
+paths that share the comparison at `009C0247` deliberately push their operands in opposite
+orders so one `FCOMPI` serves both.
+
+Two consequences follow directly, and they close §5.7's open guard:
+
+* **The side of the abeam point.** `009C15F6` tests `BL & 2`, which is set exactly for
+  `BL ∈ {2,3}`. So the direction is `(-uz, ux)` when `BL ∈ {2,3}` and `(uz, -ux)` when
+  `BL ∈ {1,4}` — i.e. the turn side is `(s == a) == (|A| <= π/2)`.
+* **The guard at `009C1247`.** It tests `BL & 8`, and the classifier never sets bit 8: the
+  *only* writer of that bit is `009C0EDF` (`BL = (BL ? 2 : 4) | 8`). So any path that reaches
+  `009C1247` without passing `009C0ED9` has `BL ∈ {1,2,3,4}`, the test yields zero and the
+  `JE` is **taken** into the abeam regime. The abeam block is therefore the default for that
+  branch, which is what the old "fall-through" wording was groping at — but it is a bit test on
+  a value this function computed, not a fall-through, and a path through `009C0ED9` skips it.
+
+**Still open here:** what `A` and `V` mean geometrically — `A` is a bearing error in radians and
+`V` is sign-tested only, but neither has been traced to its own producer, so the *name* of the
+quadrant (relative to the leader? to the station? to a threat?) is not established. Names are
+hypotheses.
 
 ## 5.7 `009C1662` is one guarded regime, not the fall-through
 
@@ -369,7 +424,8 @@ is unread; the ~1000-instruction commander that consumes it is read and bound".
 | `009BFEE0` hold arm | `009BFEE0`-`009C0025` | **read** — writes the steer point, no commands |
 | `009BFEE0` fly-to arm, abeam regime | `009C1662`-`009C16CF` | **read** (§5.5); reached ONLY from `009C1654`, not by fall-through |
 | `009BFEE0` fly-to arm, abeam direction | `009C15C0`-`009C1661` | **read** (§5.6) — perpendicular of the nose; entered only from `JE` at `009C1247` |
-| `009BFEE0` fly-to arm, the rest | `009C0026`-`009C15BF` | **OPEN** — the blocker; four `+44h` sites (`009C10F7`, `009C11D5`, `009C1222`, `009C1328`), the fifth at `009C1552`, and their guards |
+| `009BFEE0` fly-to arm, `BL` classifier | `009C01D3`-`009C024F` | **read** (§5.6.2) — quadrant of `(V, A)` about `±π/2`; sets the abeam side and the `009C1247` guard |
+| `009BFEE0` fly-to arm, the rest | `009C0026`-`009C15BF` | **OPEN** — the blocker; four `+44h` sites (`009C10F7`, `009C11D5`, `009C1222`, `009C1328`), the fifth at `009C1552`, their guards, and the producers of `A` and `V` |
 | `009BFEE0` tail | `009C16D2`-`009C1846` | read previously (BOMBER_AFTER_TASK 10.8) |
 | `009BEE30` fly-to arm | `009BF9EA`-`009BFD38` | **read and bound** (section 5) |
 | `009BEE30` hold arm | `009BEE56`-`009BF9E5` | **OPEN** — the larger arm; writes cmd `+278h`-`+29Ch` |
