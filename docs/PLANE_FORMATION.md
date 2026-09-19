@@ -267,7 +267,8 @@ from the existing `follow_base_tick_009c1fd0` seam that `src/torpedo_task_arm.cp
 | `007F23A0` shape 1 and the whole tail | reconstructed | proof |
 | `007F23A0` shapes 2 to 5 | refused: `produced = false`, no station, no placement | **hole**, stated |
 | `009BFD70`'s squadron lookup, leader refusal and index read | reconstructed | proof |
-| `009BFEE0`, the station-keeping law | **not reconstructed** | **hole**, stated |
+| `009BFEE0`, ~~the station-keeping law~~ the station GEOMETRY | reconstructed as `plane_follow_geometry_009bfee0`, packet `cc8_follow_regimes` | proof (see the correction below) |
+| `009BEE30`'s HOLD arm `009BEE56`-`009BF9E5`, what a member in good position is commanded | **not read** | **hole**, stated |
 | the moment `007ED260` runs | the image runs it in the spawn tail at `007F4BFA` and again on every promote, leave and follow entry; this host runs it once per squadron at the member's first step, because at `007F4580` time the members are still plans with no unit and no pose | scheduling difference, stated |
 | flying the member to its station | the member is **placed** on its station instead | **hole**: the geometry is the image's, the path to it is not |
 | the moment the station is APPLIED | the image spreads the wing inside the follow state's tick (`009C1FD0`); this host applies it once at the member's first plane step, and from packet `cc8_done_state` also on every tick a DIVE BOMBER spends in `kDone`/`kPrepare` | **hole**, stated |
@@ -283,9 +284,28 @@ bomber's wing members reach the placement every tick they spend there. The place
 counterpart to the image's altitude clamp `009C16D2`-`009C1846`, which is the limit of the
 stand-in; `docs/BOMBER_AFTER_TASK.md` section 6e states it.
 
-The placement is the honest name for what replaces `009BFEE0`. A wing member in the follow state is
-put at its station every tick; when the state leaves (a torpedo run-in, for instance) the placement
-stops and the member flies on from where it stood, with the velocity its own physics gave it.
+The placement is the honest name for what replaces the follow law. A wing member in the follow state
+is put at its station every tick; when the state leaves (a torpedo run-in, for instance) the
+placement stops and the member flies on from where it stood, with the velocity its own physics gave
+it.
+
+**CORRECTION, packet `cc8_follow_enter` (2026-09-19), withdrawing this section's "`009BFEE0`, the
+station-keeping law".** `009BFEE0` is not the law that flies the member; it is **pure geometry** and
+it is reconstructed (`plane_follow_geometry_009bfee0`, packet `cc8_follow_regimes`). The chain is
+`009BFD70` station point and good-position flag `state+85h` -> `009BFEE0` geometry -> steer point
+`state+44h/48h/4Ch` -> **`009BEE30 BSP_BotStateFollow_CommandStep`**, which is what issues the
+heading, altitude and speed. `009BEE30`'s own gate is `009BEE49 CMP byte ptr [ESI+85h],0` /
+`009BEE50 JZ 009BF9EA`: a member in good position takes the HOLD arm `009BEE56`-`009BF9E5`
+(~700 instructions, still unread) and a member out of position takes the fly-to arm at `009BF9EA`,
+which is bound. So the hole is the hold arm, not `009BFEE0`.
+`docs/BOMBER_AFTER_TASK.md` section 6 carries the same wording and the same withdrawal applies to it.
+
+**Also withdrawn here, packet `cc8_follow_enter`:** this section's premise that the placement is the
+only route because nothing enters the follow state. Nothing entered it because
+`unit_lacks_follow_target` was hardcoded `true` in the host, and that predicate (`007B8AD0`) is the
+**flight-leader test**, not a follow-target test - `unit+9D8h` is the member's slot in `+3D0h`.
+`docs/PLANE_FOLLOW_ENTER.md` has the writer census; section 2 of this document already had the
+field right.
 
 ## 7. Measurement
 
