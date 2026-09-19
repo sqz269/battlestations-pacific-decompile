@@ -264,3 +264,30 @@ never refreshed still gets them.
 Section 5 items 3 and 4 are therefore **retired**: the glide slope can be wired with no
 substitution, from values this host already computes.
 `docs/TORPEDO_AIM_ALT_AND_SAFE_DIST.md`.
+
+## Correction from packet `cc8_dive_approach`: the follow state does not share this body
+
+Section 2's closing paragraph says "Both states share this body (`00D20AEC+0Ch` and
+`00D20B24+0Ch`)". Both addresses it cites do hold `009C18C0`, but neither belongs to the follow
+state. Read from the two constructors and the `.rdata`:
+
+* `009C2AC0 BSP_BotStateMoveTo_Construct` writes `[state] = 0D20AECh` at `009C2B32`. `00D20AEC` is
+  an eight-slot table: `009C3D10`, `007B3DB0`, `007B3DC0`, **`009C18C0`**, `007B3DE0`, `007B3DF0`,
+  `007B45E0`, `009C1850`.
+* `009C2980 BSP_BotStateFollow_Construct` writes `[state] = 0D20AB8h` at `009C29B5`. `00D20AB8` is
+  a **seven**-slot table: `009C2A60`, `009BED80`, `009BDE40`, **`009C1FD0`**, `007B3DE0`,
+  `009BE590`, `009A4860`.
+* `00D20B24` is a third, moveto-derived table: `+0Ch` is `009C18C0` but `+1Ch` is `009C1BC0`
+  rather than `009C1850`.
+
+The follow table has no `+1Ch` slot at all, and `009C1999` — the speed call `009C18C0` makes
+unconditionally — is through `+1Ch`. So the follow state cannot be running this body. Its tick is
+`009C1FD0`, the formation body: `009BFD70` for the station point, then `009BFEE0` and `009BEE30`
+(`docs/PLANE_FORMATION.md` section 6).
+
+What survives unchanged: `unit+9D8h` selects which state the task starts in rather than which arm
+this tick takes, and the branch inside `009C18C0` is on the target at `+2Ch`. The dive-bomb task's
+use of this same body is in `docs/DIVE_BOMB_APPROACH.md`; its `009BDE80` call site
+(`009C8825`) passes `(approach+ACh - 100.0, approach+ACh, approach+B4h)`, so `+30h` and `+34h`
+differ there by 100 m instead of being equal as they are here, and `base = max(+34h + targetY,
++30h)` is the `+34h` term for any target above -100 m.
