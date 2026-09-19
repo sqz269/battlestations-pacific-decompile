@@ -1100,6 +1100,16 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
     // native keeps it. docs/LUA_GENERATE_OBJECT_HOST.md.
     if (scene_property_bool(bag.find(bsp::kSceneHiddenPropertyKey))) {
         record.skipped_because = "Hidden: held back for GenerateObject";
+        // `generated` means the instantiate pass took the entity, which is what
+        // puts it on the pending list 00925F20 walks and what makes a
+        // creator-less entity a scene marker with its own `thisTable` slot. A
+        // hidden entity is skipped at 0046D3C5 BEFORE 0046C550 is called, so it
+        // has no gate answer at all and is on no pending list. Leaving the gate's
+        // `true` here made every held-back entity a marker: USN01's
+        // `ScoutDauntless` took marker id 126, so `FindEntity` would have
+        // answered for a unit that does not exist and `GenerateObject` would
+        // later have added a second slot under a different id for the same name.
+        record.generated = false;
         ++tally.rejected;
         ++owner.summary.rejected;
         ++owner.summary.held_back_hidden;
