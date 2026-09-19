@@ -352,6 +352,93 @@ member.** They need different halves of the same fix: the member reaches the sta
 through `009BFD70`, while for the leader `009BFD70` returns false at `009BFEB1` and the only thing
 the image commands is the `+26Ch = 2` of section 6a.
 
+## 6c. Plan mode 2, read whole — and why the leader's one byte commands nothing
+
+Packet `cc8_done_state`. This section **withdraws section 6a's coverage note** ("the mode-2 body
+past `009D36F` is not read"). It was not unread even when 6a was written:
+`docs/PILOT_BOT_TICK_GATES.md` section (3), "Entry gate A — the neutral plan", already carried the
+whole store table and all four gate conditions. What follows adds the reachability, which no
+document had.
+
+**The body, `0099D309`-`0099D3C2`, 39 instructions.** It rejoins nothing. It writes a complete
+neutral plan and `RET 4`, skipping the remaining ~1400 instructions of the planner — the per-tick
+frame `0099D46E`, the stick overrides, the speed hold `0099D8C1`, the power ceiling `0099DC8F`,
+the bank-target arm, the yaw law `0099E81A` and the pitch law `0099E68D`.
+
+| store | slot field | value |
+| --- | --- | --- |
+| `0099D35A` / `0099D362` / `0099D369` | yaw desired `+284h` / active `+288h` / `+2D4h` | `0.0f` / `1` / `0` |
+| `0099D36F` / `0099D377` / `0099D37E` | pitch desired `+29Ch` / active `+2A0h` / `+2D0h` | `0.0f` / `1` / `0` |
+| `0099D384` / `0099D38C` / `0099D393` | roll desired `+290h` / active `+294h` / `+2CCh` | `0.0f` / `1` / `0` |
+| `0099D399` / `0099D3A1` | power desired `+278h` / active `+27Ch` | `1.0f` (`00D7A24C`) / `1` |
+| `0099D3A8` / `0099D3B0` / `0099D3B7` | brake desired `+2A8h` / active `+2ACh` / `+2D8h` | `0.0f` / `1` / `0` |
+
+Wings level, no pitch, no yaw, no air brake, full power, and the four mode/target words cleared.
+It commands **no point and no altitude**: nothing in the arm reads the follow state at all — `ESI`
+is the command block from `0099D305` to the `RET`, so `state+44h/48h/4Ch` and `state+34h` are not
+its inputs. Section 6's reading of `009BFEE0` as the producer of those four fields is unaffected;
+they are simply consumed elsewhere.
+
+**The byte is one condition of four** (`0099D309`-`0099D34D`; any failure falls to `0099D3C5`):
+
+| address | condition |
+| --- | --- |
+| `0099D309` | `cmd+26Ch == 2` |
+| `0099D329` | `unit[9C2h + idx*8] != 0`, `idx = word [00F876B8]` |
+| `0099D33D` | `cmd+270h != 0`, the plan's target |
+| `0099D345` | `target[9C2h + idx*8] != 0` |
+
+`unit[idx*8 + 9C2h]` is the per-step published copy of **`unit+520h`**
+(`007CDCD0` in `FUN_007CDC70`; `docs/GAMEPLAY_LOOSE_ENDS_2.md` A4, consumers read the previous
+index `[00F876B8]`).
+
+**Who produces conditions 2 and 3: `009BEE30`, which a Done leader never reaches.** An exhaustive
+census of `unit+520h` writers (`scan-bytes 'c6 ?? 20 05 00 00'` and `'88 ?? 20 05 00 00'`, both
+forms shown to occur) gives `00699B14`, `007B959B`, `007BBCF8`, `00959454`, `0099D431`,
+`009BF0B8`, `00698716`, `0095CDD7`, `0099EB73`. The one on the follow path is `009BF0B8`:
+
+```
+009bee36  MOV ESI,ECX                       ; the follow state
+009bee3f  LEA EDI,[ESI+4]                   ; &approach
+009bee42  MOV byte [[approach+18h]+2E5h],1
+009bee49  CMP byte [ESI+85h],0 / JZ 009bf9ea   ; GoodPosition; the HOLD arm continues here
+009beef2  MOV EBP,[ESI+2Ch]                 ; the flight LEADER (009BEDFF seeds state+2Ch)
+009beefc  JZ 009bf0eb                       ; no leader -> skip
+009bef09  CMP byte [EBP+EAX*8+9C2h],0       ; THE LEADER's published +520h
+009bef11  JZ 009bf0eb                       ; leader's byte clear -> skip
+   ... four float tests, 009BF086-009BF0B6 ...
+009bf0b8  MOV byte [EBX+520h],1             ; EBX = [approach+4] = this unit   -> condition 2
+009bf0c4  MOV [[approach+18h]+270h],EBP     ; the plan's target := the leader  -> condition 3
+```
+
+Two consequences.
+
+* **The byte propagates down a formation.** A member arms gate A only if its LEADER already
+  carries it; `009BEF09` is gate A's condition 4 tested in the producer.
+* **A Done flight leader executes none of it.** `009C1FF1 JZ 009C234E` on `009BFD70`'s false
+  return, and `009C234E` is the epilogue (`POP EBP / POP EBX / ADD ESP,68h / RET 4`), not a join.
+  So the leader never sets its own `+520h` and never gets a `cmd+270h`, while `0099D431` clears
+  `unit+520h` at the top of the normal planner on every think. **Gate A is unsatisfiable for a
+  Done flight leader, so the `+26Ch = 2` of section 6a commands nothing for the aircraft that
+  writes it.** What keeps a leader flying in the image is the ordinary planner path, which runs
+  precisely because gate A did not fire.
+
+**A reachability fact for gate A in general.** `009998A0`'s entry gate (`009998A4`-`009998C6`)
+returns at `009999B0` doing nothing when `task+270h == 2` **and** `task+274h != 0` **and** the
+target's `9C2h` byte is set — a **superset** of gate A's condition. `tools/callsite_census.py`
+gives `0099D300` exactly two call sites, `00999907` and `009999AA`, both inside `009998A0`. So
+gate A can only fire when the mode byte was written *during the current tick*, by the state tick
+that runs between the entry gate and the planner call — that is, by `009C1FE2` itself.
+(`009998CD LEA EDI,[ESI+4]` fixes plan = task+4, so `plan+26Ch` and `task+270h` are one byte.)
+
+**The second reader is not a flight law.** `0099EA84` is `CMP byte [ESI+26Ch],0` — a test for
+**non-zero**, not for 2. Its block `0099EA84`-`0099EB89` ends at `0099EB73 MOV byte [EDI+520h],CL`
+with `CL = SETZ([[00E188A8]+5FCh]+908h == unit+54h)` and `0099EB81 plan+2ECh = [00E0E2EC]`, so the
+mode byte's other consumer only feeds the `+520h` publish loop above. The `[00E188A8]+5FCh`
+identity is **provisional**: `00E188A8` is the mission/game singleton, and
+`docs/PILOT_BOT_TICK_GATES.md` reads the `9C2h` byte provisionally as "under human control for the
+local slot", which a `SETZ` against one named unit fits. It was not recovered here.
+
 ## 7. Corrections to other documents
 
 **7.1 `approach+0Ch` is a dereference, and the object is the squadron.**
