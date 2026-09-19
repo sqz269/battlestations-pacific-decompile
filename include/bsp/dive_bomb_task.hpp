@@ -94,9 +94,18 @@ inline constexpr int kWeaponSelect = 0xCC;    // aimdive writes 0, flyabove writ
 inline constexpr int kInRangeLatch = 0xD0;    // task+4C8h
 inline constexpr int kHasBombOrdnance = 0xD1;  // task+4C9h
 inline constexpr int kReleaseRange = 0xD4;    // the aimdive abort test's range
-// SETTLED, and these were misnamed kAimPointX/Y/Z: the aim point 009C40A0
-// hands out is +4Ch/+50h/+54h. These three are the RUN-IN ORIGIN, the
-// aircraft's own world position latched once at task construction, and the
+// CORRECTED TWICE. These were first misnamed kAimPointX/Y/Z (the aim point
+// 009C40A0 hands out is +4Ch/+50h/+54h), then renamed kRunInOrigin* on the
+// reading below - "the aircraft's own world position latched once at task
+// construction". That second reading is ALSO withdrawn: 009C4065 is one of
+// three writers and the other two are in 009C7A80, which runs every arm tick,
+// so the constructor's value survives no ticks at all. During a dive these
+// three are the PREDICTED BOMB IMPACT POINT; the note above
+// dive_bomb_impact_point_009c7d71 below carries the listing and the census.
+// The names are kept because nothing else references them and a third rename
+// would only cost a diff.
+//
+// What the constructor's own store is, unchanged, is: the
 // aimdive tick subtracts +D8h and +E0h from the aim point to take a bearing
 // along the attack run as it was set up.
 //
@@ -155,6 +164,10 @@ inline constexpr float kMinusOne = -1.0f;               // 00D7A260, movss
 inline constexpr float kPlusOne = 1.0f;                 // 00D7A24C, movss
 inline constexpr double kDiveAltitudeDecay = 0.05;      // 00D7A270, qword
 inline constexpr float kCruisingAltitudeThird = 9999.0f;  // 00CE4C04, the +39Ch write
+// 007BCC80's two, and the bias 009C7D99 adds to its result.
+inline constexpr double kGravity = 9.8100004196167;     // 00CF9058, qword
+inline constexpr float kFallTimeVerticalBias = 3.0f;    // 00E08E54, fld dword
+inline constexpr double kImpactPointFallTimeBias = 0.1;  // 00D7A3A0, qword
 
 // approach+D4h, set once by the constructor 009C3EA0 at 009C3FFB-009C4045.
 // The same 00D7A280 half that kPullOutAltitudeFraction names, in its other role:
@@ -307,6 +320,79 @@ bool dive_bomb_in_range_latch_009c7c31(const DiveBombRangeLatchInputs& in) noexc
 // 009C7A94-009C7AB4: the dive altitude decays toward the third cruise altitude.
 float dive_bomb_decay_dive_altitude_009c7a94(float dive_altitude_a8,
                                              float control_alt_39c) noexcept;
+
+// ---------------------------------------------------------------------------
+// 007BCC80, RET 4, __thiscall(unit, float height): how long a body released now
+// takes to fall `height` metres. Read whole from the listing 007BCC80-007BCCEB:
+//
+//   007BCC86  height <= 0            -> 0.0
+//   007BCC95  vy = unit->vtable[+34h]().y - [00E08E54]   ([00E08E54] = 3.0f)
+//   007BCCB0  d  = vy*vy + 2*height*[00CF9058]           ([00CF9058] = 9.81)
+//   007BCCCA  t  = (sqrt(d) + vy) / [00CF9058]
+//
+// The + sign on vy is what fixes the sign convention: with vy the world Y
+// velocity, upward positive, vy = 0 gives sqrt(2h/g) and a descending aircraft
+// gets a shorter fall, which is the free-fall solution of h = -vy*t + g*t^2/2.
+// The 3.0f is a constant bias on the vertical velocity, in .data, not traced to
+// its writer here.
+//
+// This is a SHARED helper, not a dive-bomb one: 009D139D in the torpedo
+// approach update calls it for the drop lead, where docs/TORPEDO_APPROACH_UPDATE
+// .md carries it as the unimplemented contract `fall_time`. It is declared here
+// because this packet is the first to read its body; nothing on the torpedo side
+// is changed by this commit.
+// ---------------------------------------------------------------------------
+float weapon_fall_time_007bcc80(float height_above_aim_point,
+                                float unit_velocity_y) noexcept;
+
+// ---------------------------------------------------------------------------
+// 009C7A80's second arm, 009C7D71-009C7E33, and the CORRECTION it forces on
+// `approach+D8h`/`+DCh`/`+E0h`.
+//
+// Those three are NOT "the aircraft's own position latched once", either at task
+// construction (the note above `kRunInOriginX` said so) or at dive entry. The
+// approach update rewrites all three EVERY tick, through one of two arms chosen
+// at 009C7D04-009C7D12 by the `diving` argument (the third argument 009C87EA
+// pushes, read back at `[ESP+38h]`) and by approach+D0h:
+//
+//   diving == 0 && approach+D0h == 0   ->  009C7D27: the raw unit position
+//   otherwise                          ->  009C7D71: the arm below
+//
+// The four states the arm calls `diving` include aimdive and aimglide, so during
+// a dive it is always the second arm:
+//
+//   h    = unit.y - aimPoint.y                       ; 009C7B49, held negated
+//   tf   = weapon_fall_time_007BCC80(h, v.y) + 0.1   ; 009C7D94, 00D7A3A0
+//   v    = unit->vtable[+34h]()                      ; 009C7DB0, the velocity
+//   +D8h = unit.x + tf * v.x                         ; 009C7DDC-009C7E13
+//   +DCh = aimPoint.y                                ; 009C7E33 overwrites +0.0
+//   +E0h = unit.z + tf * v.z                         ; 009C7E01-009C7E27
+//
+// So the triple is the **predicted impact point** of a bomb released this tick:
+// the aircraft advanced by its own velocity over the bomb's time of flight. The
+// aimdive tick differences the aim point against it (009C5950 `FSUB [EDI+0D8h]`,
+// 009C5960 `FSUB [EDI+0E0h]`) and that difference feeds the second sqrt at
+// 009C5A40, `[ESP+5Ch]`, and the bearing at 009C5AF1, `[ESP+18h]` - the two
+// inputs of the aim error. The release gate at 00CE3880 is therefore a 25-metre
+// CCIP window: release when the predicted impact point is within 25 m, along
+// track, of the aim point.
+//
+// `unit->vtable[+34h]` is the velocity getter on the unit's own vtable, not the
+// approach's: 009C7D9F loads it through `[ESI+4]`. It is identified from
+// 007BCC80 itself, which reads `.y` of the same slot's result as a vertical
+// velocity in a free-fall solution; the slot has no recovered name.
+// ---------------------------------------------------------------------------
+struct DiveBombImpactPointInputs {
+    float unit_position[3]{};   // unit+FCh, +100h, +104h
+    float unit_velocity[3]{};   // unit->vtable[+34h]()
+    float aim_point_y = 0.0f;   // approach->vtable[0]().y
+};
+struct DiveBombImpactPoint {
+    float point[3]{};        // approach+D8h, +DCh, +E0h
+    float fall_time = 0.0f;  // the tf above, seconds
+};
+DiveBombImpactPoint dive_bomb_impact_point_009c7d71(
+    const DiveBombImpactPointInputs& in) noexcept;
 
 // ---------------------------------------------------------------------------
 // 009C58D0, the aimdive tick's release, 009C608C-009C6119, and the pull-out
@@ -914,10 +1000,14 @@ struct DiveBombAimDiveSteerInputs {
     // enumerating every access to the slot over the whole body: between
     // 009C5BDB and 009C5D08 the only writers are inside the jumped-over range.
     float planar_distance_slot_5c = 0.0f;
-    // The roll interpolant. The image draws two bearing errors from two
-    // approach->vtable[0] points and rolls on one of them; see the header note
-    // in the .cpp for which, and why this host passes one.
-    float bearing_error = 0.0f;
+    // The roll interpolant, and the two arms DO take different ones - walked
+    // with the frame bases, so the `SUB ESP,14h` at 009C5D37/009C5D64 is not
+    // read as a displacement: 009C5D33 (the wide arm) loads `[ESP+18h]`, the
+    // bearing error measured from the predicted impact point approach+D8h/+E0h,
+    // and 009C5D60 (the default arm) loads `[ESP+24h]`, the one measured from
+    // the aircraft. Both subtract their bearing from the same 009C4F80 heading.
+    float bearing_error = 0.0f;         // [ESP+24h], 009C5AA3
+    float bearing_error_wide_18 = 0.0f;  // [ESP+18h], 009C5AF1
     // pose+C68h, the bank. 009C5919-009C592D folds it into the frame slot the
     // band test at 009C5D2C reads, so the two arms are picked by attitude.
     float bank_c68 = 0.0f;
