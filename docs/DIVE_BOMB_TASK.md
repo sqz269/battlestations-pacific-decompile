@@ -3196,3 +3196,47 @@ registration sits, which the handover doc also says of its own contents.
 
 Queued behind the `usn04_terms` run and the `task+41Ch` binding. `009FD570`, which `009C47D0` also
 calls, belongs to cc8-flyto-solver and will not be transcribed here.
+
+## `007F0280`'s frame walked, and the argument shape from both sides
+
+The body is scripted rather than decompiled, with the depth walked forward from the prologue and
+every `[ESP+n]` access resolved to a corrected slot. The walk validates against the hand
+computation: `007F029D`'s `[ESP+11Ch]` resolves to slot -4, which is `entry+4`, the first stacked
+argument, exactly as the `RET 18h` arithmetic predicted.
+
+### The six slots, from inside the callee
+
+| arg | slot | first read | width |
+| --- | --- | --- | --- |
+| 0 | -4 | `007F029D` `[ESP+11Ch]` | m32 |
+| 1 | -8 | `007F02E9` `[ESP+124h]` | m32 |
+| 2 | -12 | `007F02B8` `[ESP+128h]` | m32 |
+| 3 | -16 | `007F02CD` `[ESP+12Ch]` | m32 |
+| 4 | -20 | `007F038D` `[ESP+138h]` | **m8, a CMP** |
+| 5 | -24 | - | no direct `[ESP+n]` read |
+
+The differing displacements for a uniform 4-byte argument list are the depth changing between the
+reads, which is the whole reason for anchoring rather than grepping literals: `[ESP+124h]` and
+`[ESP+128h]` are consecutive arguments read four bytes apart in the frame and four apart in the
+displacement only because the depth happened to be equal there.
+
+Two things worth having before the body: **arg4 is read as a byte**, by a `CMP`, which is the shape
+of a mode or flag rather than a float; and **arg5 is never read through `[ESP+n]`** in the whole
+2209 bytes, so it is either taken through a pointer or genuinely unused - a question for the body,
+and one the caller survey could not have answered.
+
+### And from the caller side, at this stream's own site
+
+```
+009c4260  PUSH 0x1                         ; pushed FIRST, so the LAST argument
+009c4276  PUSH ECX   ; LEA ECX,[ESP+0x14]  ; an out-pointer
+009c4280  PUSH EDX   ; LEA EDX,[ESP+0x30]  ; an out-pointer
+009c4293  PUSH ECX   ; LEA ECX,[ESP+0x40]  ; an out-pointer
+009c4262/009c4281/009c4294  MOVSS [ESP+20h]/[ESP+2Ch]/[ESP+34h]   ; the 80, 60, 120
+```
+
+So the three extents are **stored into the argument window, not pushed**, while the three
+out-pointers and the mode are pushed - which is why a reader counting pushes gets a different answer
+from a reader counting the cleanup, and why row 356 had five. The mapping of which push lands in
+which of the six slots is the next step and belongs to the body read, not to inference from this
+side.
