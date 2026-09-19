@@ -130,6 +130,79 @@ second, independent route to a torpedo aircraft.
 
 None.
 
+## Measured
+
+Two missions, and **both columns of each pair sit after `0daec4b56` and `bb9123bc5`**, so neither is
+comparable to the three USN04 columns in `docs/USN04_STRIKE_CLASS.md` on the command-target or
+AI-target-weight axes. The before column is `main` (which does not carry the hold-back); the after is
+this branch. The mission-length before column was deliberately **not** measured: every mission-level
+number re-baselines when the script-spawned side stops existing at load, so a long before run buys a
+lock slot's worth of numbers that only say "the fleet was there".
+
+### The census, which is the whole point of the hold-back
+
+| | USN04 before | USN04 after | USN01 before | USN01 after |
+| --- | --- | --- | --- | --- |
+| registered / instantiated | 58 / 58 | 58 / 58 | 147 / 147 | 147 / 147 |
+| generated / rejected | 58 / 0 | **24 / 34** | 147 / 0 | **132 / 15** |
+| created | 53 | **19** | 77 | **62** |
+| held back by `Hidden` | — | **34** | — | **15** |
+
+**34 and 15 are exactly the counts the scene scan predicted**, which is the prediction landing on the
+nose in both missions. The blast radius is as large as promised: USN04's air-ops decks fall 6 to 2,
+its units with guns 57 to 23 and its torpedo-ordnance owners 34 to 11; USN01 keeps `Airfield2` and
+`Enterprise` and falls 41 to fewer units with guns.
+
+### `GenerateObject` was not called in either run
+
+It has **no row in the native call table** of either log. USN01 ended with `MissionPhase=1`, and
+`ScoutDauntless` is created at `luaMoveToPh2:707`, so the phase-2 trigger was never reached in 7200
+frames. USN04's `luaMoveToPh3` needs phase 2.5 and was not reached either, while `SpawnNew` fired
+8 times there.
+
+So the binding is implemented and unexercised, and the honest statement is that **this packet's
+`GenerateObject` has not been validated by a run**. What the runs did validate is the hold-back, in
+both missions, against a predicted count.
+
+### What USN01 did instead, and it is the stream's best result so far
+
+With the Japanese side of USN04 absent this is the mission that still has aircraft, and for the first
+time the torpedo path runs:
+
+```
+torpedo task 009D4E30 kind Eh installed for an ordered aircraft   x5   (Mav1..Mav5, flight_lead=1 then 0)
+009D4A70 sets the engage distance task+484h=2200.0 (Pilot/Torpedo/AttackDist)
+summary mission pilot attack: ordered=5 range_first_mean=4174.3 m range_last_mean=3858.8 m closed_mean=315.6 m
+torpedo Mav1 approach 009D3420: ticks=120 no_target=0 replans=13 aim_ticks=0 | range min=3978.9 last=3978.9
+torpedo Mav2 ... min=3708.4 last=3708.4     torpedo Mav3 ... min=3633.5 last=3633.5
+```
+
+Five kind Eh tasks, which this stream had never seen built. The aircraft start at 4174.3 m against an
+engage threshold of 2200 x 2.2 = 4840 m, so they begin **inside** it — USN01 remains the wrong
+geometry for the move-to, exactly as `docs/TORPEDO_MISSION_SURVEY.md` predicted, though 4174.3 m is
+far outside the 1490.8 m that survey measured.
+
+And they do not close: `min == last` on every one, `aim_ticks=0`, and the order issue gate never
+opens:
+
+```
+torpedo Mav5 issue stage 007CE9FD: stage_ticks=7200 guard_blocked=0 waiting=7200 issues=0
+torpedo Mav5 issue gate 007EEF40: ctl+390h=0.0000 ctl+374h=0.0000 open=0
+torpedo Mav5 aim tick 009D15F0: aim_complete_2Ch=0 first_true_at_aim_tick=-1
+torpedo Mav5 prepare window: first_prepare_at_arm_tick=1 first_blocked_no_order_at_arm_tick=1 coincide=yes
+```
+
+`blocked_0099af53=121`, no drops, no swims, no shots. That is a precise next address for whoever owns
+the torpedo task: `007EEF40`'s two gate inputs are both zero from the first tick.
+
+### One caveat on the USN01 run
+
+It exited **1** while running its full frame budget: `frames_presented=5642 presents_skipped=1757`
+sums to 7399, `loop_finished=1`, every summary printed and the shutdown sequence completed cleanly to
+`native renderer final COM release`. Nothing in the log names a cause and I have not established one,
+so the data is reported as it stands with the non-zero exit noted rather than explained away. The
+USN04 run and the USN01 before run both exited 0.
+
 ## Validation
 
 Build clean, both ctest suites pass. The before/after run pair is below; **both columns sit after
