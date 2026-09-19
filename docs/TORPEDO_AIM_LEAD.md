@@ -484,3 +484,47 @@ rounds release roughly 30 per cent closer, which should *reduce* the escort-scre
 (traces 10-12 struck `Fletcher-class02` a third of the way to the ordered Lexington) because the
 bomber flies further in before the round is in the water. I am not making that change here: it is
 outside this packet's addresses, I hold no lease on it, and it needs its own before/after window.
+
+## 10. The aim point's writer, found (integrator's note, 2026-09-19)
+
+Section 3 closed its census honestly: no store names `approach+D0h/+D4h/+D8h`, nor the
+task-relative `task+4C8h`, anywhere in the image, "which is not 'no writer'". The writer exists and
+the census could not have found it, because the aim point is not a field of the approach proper.
+
+Packet `cc8_dive_aim` found the mechanism on the dive-bomb side (`docs/DIVE_BOMB_AIM_POINT.md`): a
+**target-reference sub-object** (`009FB200` constructs it and installs vtable `00D21CB4`), refreshed
+every tick by `009FADA0`, whose tail `009FAEDF CALL 004142E0` transforms a body-frame point by the
+target's world matrix and stores the result to the sub-object's `+1Ch/+20h/+24h`
+(`009FAEEA` / `009FAEF5` / `009FAF00`). The body-frame point is chosen by the TARGET through
+`target->vtable[+100h]` (`009FA260`) and re-picked every 1.5-2.5 s.
+
+The torpedo approach embeds the same sub-object at `approach+B4h`, verified from the bytes:
+
+```
+009d34ae  fld  dword ptr [ebp+8]        ; dt
+009d34b1  push ecx
+009d34b2  lea  ecx,[esi+0B4h]           ; this = approach+B4h
+009d34b8  fstp dword ptr [esp]
+009d34bb  call 009FADA0                 ; BSP_BotApproachTargetRef_Update
+```
+
+inside `009D3420 BSP_BotApproachTorpedo_Update`, before the `vtable[0]` call at `009D3517`.
+`B4h + 1Ch = D0h`, so `009FADA0`'s three stores ARE the writes to `approach+D0h/+D4h/+D8h`; they
+address the field as `[sub+1Ch]`, a disp8 displacement on a different base, which is why sixteen
+encodings at two displacements found nothing. `tools/callsite_census.py 009fada0` lists eleven call
+sites: the torpedo (`009D34BB`), the dive bomb (`009C7A9F`), the depth charge (`009A6043`) and six
+more approach classes, plus two inside the sub-object's own code.
+
+What this changes in this document, and what it does not:
+
+* Section 3's "the writer is unfound" is **closed**. Section 3 itself listed `009FADA0` among the
+  three calls `009D3420` makes before `009D3517` and set it aside because it "writes only small"
+  offsets on its own `this`; that observation was correct and was the answer, read without its
+  base.
+* The no-lead conclusion is **unchanged and strengthened**: the writer has no velocity term and no
+  time term either. The aim point is the target's live pose applied to a hull point.
+* The host's `approach_target_point` (section 4) returns the target's ORIGIN. The image aims at a
+  target-chosen HULL POINT. That is a host gap shared with the dive-bomb task, scoped as packet
+  `cc8_hull_aim_point` in `docs/HANDOFF_DIVE_BOMB_AIM.md`; an offset of tens of metres on a
+  180-270 m hull has the shape of section 7's unexplained +37.8 to +49.6 m under-prediction on the
+  misses, which stays unmeasured until that packet binds the point.
