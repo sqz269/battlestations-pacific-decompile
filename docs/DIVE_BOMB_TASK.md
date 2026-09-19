@@ -3095,3 +3095,74 @@ before/after run was taken for it, and that is recorded rather than glossed.
 The remaining A-WRONG is `kPitchClampLo`, already fixed on `agent/cc8-plane-squadron` and not yet in
 this tree. The remaining B is `kPilotPitchHalfRange`, the confirmed four-significant-figure false
 positive. So every real row the sweep found is now either fixed or fixed elsewhere.
+
+## `007F0280`: three corrections from the probe survey, and my stand-in is a hole
+
+cc8-torpedo-descent's survey (`docs/BOT_PROBE_007F0280.md`, body **not** read and marked so) carries
+three things that correct this doc or the brief:
+
+* **Eighteen callers, not sixteen**, exhaustive over rel32 - and `009FD570` is **not** one of them,
+  although it is reached through the same `009D0C10` geometry.
+* **`RET 0x18` at `007F0B1F` says SIX stack arguments**, against `docs/BOT_TASK_STATES.md` row 356's
+  five. Checklist rule 7: the count is the cleanup, never the pushes anyone listed. The row is the
+  thing to doubt.
+* **The extent triple is per-caller and sometimes computed.** This stream passes 80, 60, 120 with a
+  final **1** (`009C4258`, `009C4268`, `009C4287`); the torpedo goaway passes 60, 50, 90 with a
+  final **0**; the aim tick passes `{72t, min(0.7*72t, 150), 1.5*72t}`. So a pure function that
+  hard-codes the triple would be wrong for fifteen of eighteen sites, and that final argument is a
+  per-caller **mode** - this stream's 1 against the torpedo states' 0 is not noise.
+
+### The part that corrects this stream, and it is not a quibble
+
+Their zero stand-in and this one are **not the same kind of thing**, and their "inert is faithful"
+does not cover mine.
+
+At `009D0CBC` the caller zeroes the three out-slots itself immediately before the call
+(`009D0C96`-`009D0CAA`, XORPS/MOVSS) and the only use is a strict sign test on `-p[0]*p[1]*p[2]`, so
+a no-hit answer cannot fire it: zero there is exactly what the image would compute, and that
+stand-in should stay.
+
+Here at `009C42B8` the result feeds `lateral_offset_20 = -sampler_result * ...`, so zero is **not** a
+no-hit answer - it is a claim that the probe always returns zero, and it is precisely why the run-in
+flies straight at its target instead of weaving. The label on it has been honest about the
+behaviour ("the run-in flies straight rather than weaving") but described it as a contract, which
+undersells it: it is a hole with a known shape, and it is upstream of the whole approach geometry
+this stream has been measuring.
+
+That matters for the inert-span question now under instrumentation. The run-in's commanded heading
+is `bearing + lateral_offset_20` (`009C42DC`-`009C4305`), so with the offset pinned at zero the
+approach path is not the image's, whatever `009FBA50` computes for its altitude. Both are upstream
+of the dive, and only one of them is currently being measured.
+
+### Checked rather than inherited: the offset does reach the heading, and stays zero
+
+cc8-torpedo-descent was careful to say their "yours is a hole" was an argument about the shape of a
+zero substitution and **not** a reading of this stream's heading chain, which they had not done, and
+asked for it to be checked here. Checked, at `src/dive_bomb_task.cpp:395-419`:
+
+```cpp
+out.lateral_offset_20 = in.lateral_offset_20;          // 399, carried on entry
+...
+} else {                                               // the re-roll arm only
+    out.lateral_offset_20 = -in.sampler_result * kLateralOffsetScale;   // 412
+}
+// 009C42DC-009C4305, run on BOTH arms:
+out.commanded_heading_2c0 =
+    wrapped_angle_add_00438aa0(in.target_bearing_c0, out.lateral_offset_20);  // 418
+```
+
+Two facts, and they compound rather than cancel:
+
+* the offset reaches the commanded heading on **every** path, not some - the heading line is outside
+  the `if`, and the comment at `009C42DC` already said "run on both arms";
+* it is only **recomputed** on the re-roll arm, and it is **carried** otherwise, so a zero written
+  once persists until the next re-roll writes zero again.
+
+The census reports `rerolls=153` over the run-in, so the substitution pins the offset to zero 153
+times and it is zero in between. The commanded heading is therefore the bare bearing to the target
+for the whole approach - the aircraft flies straight at the target and never weaves - which is what
+the label always claimed behaviourally and is now established from this side rather than argued from
+the shape of the substitution.
+
+So their conclusion stands and is now independently confirmed, which is the right standing for it:
+they were right not to claim a reading they had not made, and the check was three lines away.
