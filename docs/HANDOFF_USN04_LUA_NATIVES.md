@@ -43,10 +43,27 @@ What is on the branch now: `note_native_call` skips the `unimplemented` line for
 `binding_trampoline` calls `note_entity_status(binding, resolved)`, which records exactly one of the
 two. The `native <name> argc=` line and the summary row are unaffected.
 
-**Confirm before trusting the new census.** The checks are: `FindEntity` reads `concrete calls=132`
-(not 264 - a doubled count is the signature of the broken version); the other eighteen
-entity-returning rows still read `UNIMPLEMENTED` with their old counts; and `entity_resolves` is
-still 132.
+### NOT CONFIRMED BY A RUN
+
+The corrected version on this branch (`b5a31c82f`) **has not been confirmed by a run**. It compiles
+and both ctest targets pass, and the reasoning is the measured `calls=264` above, but no run has
+read back the corrected census line. The packet ended at its context limit rather than spend it on
+another 40-minute run.
+
+**These are the three checks, and they are the first measure the successor should take** — the next
+USN04 run makes them for free:
+
+1. `MissionLuaNative::FindEntity 00898e30` reads **`concrete calls=132`**. `264` means the fix did
+   not take and the sticky record is still deciding the row; `UNIMPLEMENTED calls=132` means the
+   status is being recorded somewhere this packet did not find.
+2. The other eighteen `kEntityReturningBindings` rows still read `UNIMPLEMENTED` with the same
+   counts as `local/spawn_final_usn04.log` — in particular `GetSelectedUnit 008ab070 calls=49`.
+   Any of them flipping to `concrete` means `push_resolved_entity` is answering a row it should
+   refuse.
+3. `entity_resolves` is still `132`, i.e. the change touched the reporting and not the resolution.
+
+If check 1 fails, the change is reporting-only and can be reverted on its own; nothing else in the
+packet depends on it.
 
 **Consequence for the ranking: `FindEntity` is NOT a gap and must not be taken as one.** It also
 means the 399-call figure over 24 natives is really 267 over 23.
