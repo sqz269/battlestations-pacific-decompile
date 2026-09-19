@@ -316,16 +316,28 @@ bool dive_bomb_dive_abort_009c5b43(const DiveBombDiveAbortInputs& in) noexcept {
     return bound > in.aim_point_distance;  // 009C5B3E
 }
 
-// 009C5693-009C57A6. coverage: partial; the four frame slots are host inputs.
+// 009C5689-009C57BB. coverage: complete; every gate slot's producer is traced,
+// see the header. The five frame slots remain host inputs.
 DiveBombAimGlideReleaseResult dive_bomb_aimglide_release_009c5777(
     const DiveBombAimGlideReleaseInputs& in) noexcept {
     DiveBombAimGlideReleaseResult out;
     out.travel_accumulator_20 = in.travel_accumulator_20;
+    out.rearm_timer_1c = in.rearm_timer_1c;
 
-    // 009C569B: the flight path has to be shallower than 30 degrees.
-    if (!(dive_bomb_constant::kGlideDiveAngleLimit > in.dive_angle)) {
+    // 009C5689 COMISS XMM2,[ESI+1Ch] with XMM2 zeroed at 009C562D; 009C568D JBE
+    // bails unless the rearm countdown has gone negative. ADDED, packet
+    // cc8_dive_glide: the host began the gate chain at 009C569B and so had no
+    // cooldown between salvoes at all.
+    if (!(0.0f > in.rearm_timer_1c)) {
         return out;
     }
+    out.gate_reached = 1;
+    // 009C569B: the bearing to the aim point has to be within 30 degrees of the
+    // aim heading. NOT a flight-path angle; see kGlideDiveAngleLimit.
+    if (!(dive_bomb_constant::kGlideDiveAngleLimit > in.bearing_error_18)) {
+        return out;
+    }
+    out.gate_reached = 2;
     // 009C56A6-009C56B8, CORRECTED: the aircraft must be BELOW the glide release
     // ceiling, not above an altitude. 009C56A6 loads [ESP+20h] first and
     // 009C56AA loads [ESP+1Ch] second, so 009C56B4's FCOMIP compares
@@ -336,23 +348,37 @@ DiveBombAimGlideReleaseResult dive_bomb_aimglide_release_009c5777(
           static_cast<double>(in.height_above_aim_point))) {
         return out;
     }
-    // 009C56C2-009C56FE: the lateral offset inside 120.0.
+    out.gate_reached = 3;
+    // 009C56BE-009C56FE: |throw - range| inside 120.0. 009C56E4's `SUBSS XMM4`
+    // is the negate arm of an abs: XMM4 is loaded once in the whole body, at
+    // 009C561B from the -0.0f at 00D7A208, and that load dominates 009C56E4.
     const float lateral = fold_abs(in.lateral_a - in.lateral_b);
     if (!(dive_bomb_constant::kGlideLateralLimit > static_cast<double>(lateral))) {
         return out;
     }
+    out.gate_reached = 4;
     // 009C5704-009C5755, BOTH ARMS CORRECTED. 009C572F FADDP and 009C5733 FADD
     // build `lead + travel + 5.0` in ST1 while ST0 keeps the bare travel.
-    const float lead = in.lateral_b - std::cos(in.dive_angle) * in.lateral_a;
+    // 009C5715 FLD [ESP+10h], 009C5719 FLD [ESP+20h] (the cosine 009C5708 just
+    // took of the bearing error), 009C571D FMUL [ESP+14h], 009C5725 FSUB: the
+    // lead is `range - cos(bearing error) * throw`, the along-track shortfall
+    // of the predicted impact point against the target. It goes NEGATIVE when
+    // the throw overruns, and the window below is `-4*travel - 5.0 < lead <
+    // -5.0` - a deliberate overshoot of 5 m up to 4*travel + 5 m, which is what
+    // walks a stick of bombs through the target.
+    const float lead =
+        in.lateral_b - std::cos(in.bearing_error_18) * in.lateral_a;
     const double lead_travel_margin =
         static_cast<double>(lead) + static_cast<double>(in.travel_accumulator_20) +
         dive_bomb_constant::kGlideLeadMargin;
     // 009C5743 FCOMI ST0,ST1 compares the travel with that sum and 009C5745
     // `76` JBE bails unless the travel is the greater - that is, unless
     // `lead < -5.0`. This was written `lead > 5.0`: the lead's sign backwards.
+    out.lead = lead;
     if (!(static_cast<double>(in.travel_accumulator_20) > lead_travel_margin)) {
         return out;
     }
+    out.gate_reached = 5;
     // 009C5747 FCHS negates the TRAVEL the FCOMI left on the stack, 009C5749
     // scales it by the 3.0 at 00D7A2B0, and 009C5751/009C5755 `76` JBE bail
     // unless the sum is the greater. This negated `lead + travel` instead.
@@ -366,6 +392,7 @@ DiveBombAimGlideReleaseResult dive_bomb_aimglide_release_009c5777(
               dive_bomb_constant::kGlideLeadScale)) {
         return out;
     }
+    out.gate_reached = 6;
 
     // 009C575D-009C5784: the salvo. min(rounds, cap), then one request each.
     int count = in.rounds_available;

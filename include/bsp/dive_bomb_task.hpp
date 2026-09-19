@@ -186,8 +186,22 @@ inline constexpr float kAbortRollFloor = -1.0471975803375244f;  // 00D20338, -60
 inline constexpr double kAbortRangeSlope = 0.30000001192092896;  // 00CE3DC8, qword
 inline constexpr double kAbortRangeBias = 150.0;                 // 00CE3DD8, qword
 
-// The aimglide release, 009C5693-009C5755.
+// The aimglide release, 009C5689-009C5755.
+// CORRECTION, packet cc8_dive_glide. `kGlideDiveAngleLimit` is not a limit on a
+// dive angle. 009C569B compares it against [ESP+18h], and [ESP+18h]'s producer
+// is the chain 009C5357-009C53CA: FLD [ESP+40h] / FLD [ESP+38h] (the planar
+// aimPoint - unit vector) -> 00BF701A atan2 -> `pi/2 - atan2`, +2pi when
+// negative (00CE3830, 00CE3828 - the same wrap 009C7B8A-009C7BB0 builds for
+// approach+C0h) -> 00438B10 against 009C4F80's aim heading -> abs at
+// 009C53A5-009C53CA. It is a HORIZONTAL BEARING ERROR, so the gate is a 30 deg
+// bearing tolerance and the 009C5715 cosine is the projection of the throw onto
+// the line of sight. The name is kept because the ledger and the doc carry it.
 inline constexpr float kGlideDiveAngleLimit = 0.5235987901687622f;  // 00CEC724, 30 deg
+// 009C53DD `MOV EBP,2` / 009C53E2 `LEA EBX,[EBP-1]`, both on the straight-line
+// path into 009C53E5's branch, so both arms carry EBP=2 and EBX=1 to the salvo:
+// 009C5762 caps the loop at two rounds and 009C5782 steps it by one. This is a
+// literal immediate, not a substitution.
+inline constexpr int kGlideSalvoCap = 2;         // 009C53DD, the EBP cap
 inline constexpr double kGlideHeightMargin = 50.0;        // 00CE3938, qword
 inline constexpr double kGlideLateralLimit = 120.0;       // 00D1F3F8, qword
 inline constexpr double kGlideLeadMargin = 5.0;           // 00D7A370, qword
@@ -196,6 +210,14 @@ inline constexpr double kGlideLeadMargin = 5.0;           // 00D7A370, qword
 // therefore starts at max(arg, 5.0) and is never zero, which is what makes the
 // lead gates at 009C5743/009C5751 satisfiable at all.
 inline constexpr float kGlideTravelSeed = 5.0f;           // 00CE3850
+// 009C4F32's scale on `(rounds - 1)` in that same seed. RECOVERED, packet
+// cc8_dive_glide: 009C4F00 takes no stack argument, so the seed is
+// `max((007C1DB0(unit) - 1) * 0.07 * approach+A4h, 5.0)` entirely locally.
+inline constexpr double kGlideSeedScale = 0.07000000029802322;  // 00CED0D8, qword
+// 00CEFFB0, the qword 009C3F00 scales the plane class descriptor's +188h
+// MaxSpd by into approach+A4h, in the constructor FUN_009C3EA0 - the one and
+// only writer of that field in 009C3E00-009CA000.
+inline constexpr double kApproachDriftScaleA4 = 0.949999988079071;  // 00CEFFB0, qword
 inline constexpr double kGlideLeadScale = 3.0;            // 00D7A2B0, qword
 inline constexpr float kAimGlideRearmLow = 0.2f;          // 00CE54A0
 inline constexpr float kAimGlideRearmHigh = 0.5f;         // 00CE3800
@@ -487,11 +509,24 @@ bool dive_bomb_dive_abort_009c5b43(const DiveBombDiveAbortInputs& in) noexcept;
 // 007C1DB0 how many rounds the unit still has and calls 007BBBA0 that many
 // times in the loop at 009C5771-009C5784.
 //
-// coverage: partial. The three range terms are frame slots whose producers this
-// packet did not trace; the gates, the constants and the loop are transcribed.
+// coverage: complete for 009C5689-009C57BB. Packet cc8_dive_glide walked
+// 009C5180-009C580B with frame bases (SUB ESP,58h + PUSH EBX/EBP/ESI/EDI, so
+// the canonical frame is 0x68 below entry and [ESP+6Ch] is the `dt` argument,
+// which the body then reuses as scratch) and traced every one of the five gate
+// slots to its producer. The `three range terms ... not traced` note is
+// withdrawn.
 // ---------------------------------------------------------------------------
 struct DiveBombAimGlideReleaseInputs {
-    float dive_angle = 0.0f;        // [ESP+18h], compared against 30 deg
+    // 009C5689 `COMISS XMM2,[ESI+1Ch]` with XMM2 = 0.0 from 009C562D, which
+    // dominates it (every jump into 009C562D-009C5689 starts inside that
+    // block). JBE bails, so the release needs `state+1Ch < 0`: the same rearm
+    // countdown the aimdive gates on, drawn as uniform(0.2, 0.5) at 009C579E
+    // and counted down by dt at 009C519D-009C51A5. The host was skipping this
+    // gate entirely, which would let a satisfied geometry release every tick.
+    float rearm_timer_1c = 0.0f;    // state+1Ch, [ESI+1Ch]
+    // RENAMED from `dive_angle`, packet cc8_dive_glide: it is the abs of the
+    // horizontal bearing error, not a dive angle. See kGlideDiveAngleLimit.
+    float bearing_error_18 = 0.0f;  // [ESP+18h], 009C53CA, already abs
     // CORRECTION. These two were `height_above` at [ESP+1Ch] and `height_limit`
     // at [ESP+20h], and the gate was written `height_above + 50 > height_limit`
     // - the operands the wrong way round, which made it demand ALTITUDE rather
@@ -514,11 +549,28 @@ struct DiveBombAimGlideReleaseInputs {
     // So the glide release ceiling is 0.6 * 350.0 + 50.0 = 260.0 m.
     float height_above_aim_point = 0.0f;   // [ESP+20h]
     float glide_release_ceiling = 0.0f;    // [ESP+1Ch]
-    float lateral_a = 0.0f;         // [ESP+14h]
-    float lateral_b = 0.0f;         // [ESP+10h]
+    // BOTH PRODUCERS RECOVERED, packet cc8_dive_glide. The hypothesis this
+    // stream carried - `lateral_a` the throw and `lateral_b` the MISS - is half
+    // right and half withdrawn. 009C5204-009C5256 builds two planar vectors
+    // from approach+D8h/+E0h, and an earlier block 009C51CC-009C51F7 builds a
+    // third, so there are THREE, not two:
+    //   [ESP+38h]/[ESP+40h] = aimPoint - unit    (009C51D5-009C51F7)
+    //   [ESP+44h]/[ESP+4Ch] = impactPoint - unit (009C5207-009C522E, the throw;
+    //       the 009C521B PUSH EAX is why 009C521C's literal [ESP+48h] and
+    //       009C522E's literal [ESP+50h] are frame slots 44h and 4Ch)
+    //   [ESP+50h]/[ESP+58h] = aimPoint - impactPoint (009C5234-009C5256)
+    // Their magnitudes go to [ESP+10h] (009C52B6/009C52C1), [ESP+14h]
+    // (009C52F8/009C5303) and [ESP+1Ch] (009C533A/009C5345) respectively.
+    // 009C56BE/009C56C2 then read [ESP+14h] and [ESP+10h] - so the 120 m gate
+    // and the lead are the THROW against the RANGE TO THE AIM POINT. The miss
+    // is not a release input at all: its only consumer is 009C53D8's 140 m
+    // command-arm split, and 009C5493 overwrites [ESP+1Ch] with the release
+    // ceiling before the gates run.
+    float lateral_a = 0.0f;         // [ESP+14h], |impactPoint - unit| planar
+    float lateral_b = 0.0f;         // [ESP+10h], |aimPoint - unit| planar
     float travel_accumulator_20 = 0.0f;  // state+20h
     int rounds_available = 0;       // 007C1DB0(unit)
-    int rounds_cap = 0;             // the EBP cap the loop clamps against
+    int rounds_cap = 0;             // EBP, the literal 2 at 009C53DD
     float rearm_draw = 0.0f;        // BSP_Random_UniformFloatRange(0.2, 0.5)
     float drift_rate_a4 = 0.0f;     // approach+A4h, the +20h feed
 };
@@ -527,6 +579,13 @@ struct DiveBombAimGlideReleaseResult {
     int rounds_released = 0;        // one 007BBBA0 each, one approach+2Ch each
     float rearm_timer_1c = 0.0f;
     float travel_accumulator_20 = 0.0f;
+    // INSTRUMENTATION, not an image output: how far down the gate chain the
+    // call got, so a run can name the binding gate instead of only counting
+    // zeroes. 0 rearm 009C5689, 1 bearing 009C569B, 2 ceiling 009C56B8,
+    // 3 lateral 009C56FE, 4 lead-upper 009C5745, 5 lead-lower 009C5755,
+    // 6 past every gate. The image returns nothing at all.
+    int gate_reached = 0;
+    float lead = 0.0f;              // 009C5725, the value the window tests
 };
 DiveBombAimGlideReleaseResult dive_bomb_aimglide_release_009c5777(
     const DiveBombAimGlideReleaseInputs& in) noexcept;

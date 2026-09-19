@@ -143,6 +143,8 @@ struct GameGunneryHost::Impl {
     // Packet cc8_torpedo_closest_approach: one row per swimming round, kept
     // after the round is erased.
     std::vector<GameTorpedoApproachRow> torpedo_approaches;
+    // Packet cc8_dive_glide: one row per released bomb, kept after the erase.
+    std::vector<GameBombImpactRow> bomb_impacts;
     // Packet cc8_torpedo_aim_census: the ordered-target half of one record.
     void fill_ordered_fields(GameTorpedoApproachRow& rec,
                              const GameProjectileRow& row) const {
@@ -2476,6 +2478,29 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
         fill_ordered_fields(rec, row);
         torpedo_approaches.push_back(rec);
     }
+    // Packet cc8_dive_glide, the same shape one hunk up and for the same
+    // reason: a bomb's impact has to be taken before the row is erased.
+    for (const GameProjectileRow& row : shots) {
+        if (row.alive || !row.is_bomb) continue;
+        GameBombImpactRow rec;
+        rec.owner_name = unit_name_or_index(row.owner_unit);
+        for (int i = 0; i < 3; ++i) {
+            rec.predicted[i] = row.predicted_impact[i];
+            rec.actual[i] = row.position[i];
+            rec.target_release[i] = row.target_pos_release[i];
+        }
+        const float pdx = rec.actual[0] - rec.predicted[0];
+        const float pdz = rec.actual[2] - rec.predicted[2];
+        rec.predicted_error = std::sqrt(pdx * pdx + pdz * pdz);
+        if (row.ordered_target != 0) {
+            const float tdx = rec.actual[0] - rec.target_release[0];
+            const float tdz = rec.actual[2] - rec.target_release[2];
+            rec.target_error = std::sqrt(tdx * tdx + tdz * tdz);
+        }
+        rec.life = row.life;
+        rec.died_above_water = row.position[1] > 0.0f;
+        bomb_impacts.push_back(rec);
+    }
     shots.erase(std::remove_if(shots.begin(), shots.end(),
         [](const GameProjectileRow& row) { return !row.alive; }), shots.end());
 }
@@ -3083,6 +3108,93 @@ bool GameGunneryHost::release_ordnance_drop(std::size_t unit_index) {
     return true;
 }
 
+// Packet cc8_dive_glide, edited under the integrator's hunk arbitration of
+// 2026-09-19. The bomb twin of release_ordnance_drop above: the same 0072F830
+// spawn and the same substituted release geometry, with the kind 2Ah selection
+// the dive bomber needs in place of the torpedo `swim_speed > 0` one. See the
+// header for why the predicate was the whole defect.
+bool GameGunneryHost::release_bomb_drop(std::size_t unit_index,
+                                        const float predicted_impact[3]) {
+    Impl& h = *impl_;
+    const GameGunRow* chosen = nullptr;
+    for (const GameGunRow& gun : h.guns) {
+        if (gun.unit_index != unit_index) continue;
+        if (!bsp::ordnance_has_general_bomb_2ah(gun.ordnance)) continue;
+        chosen = &gun;
+        break;
+    }
+    if (chosen == nullptr) {
+        ++h.summary.bomb_drop_refusals;
+        return false;
+    }
+
+    float right[3], up[3], forward[3], origin[3];
+    h.unit_pose(unit_index, right, up, forward, origin);
+    // Same substitution as the torpedo drop, and for the same reason: the
+    // native mount node and the platform's release slot are unread, so the
+    // round leaves from the plane's origin along its forward axis at the
+    // plane's own forward speed. A bomb inherits the aircraft's velocity - it
+    // is not given a muzzle speed - which is exactly the assumption 007BCC80's
+    // fall time makes when it advances the aircraft by its own velocity.
+    const float speed = h.units.unit_forward_speed_0092d730(unit_index);
+    const float velocity[3] = {forward[0] * speed, forward[1] * speed,
+        forward[2] * speed};
+
+    GameProjectileRow shot;
+    shot.gun_row = static_cast<std::size_t>(chosen - h.guns.data());
+    shot.owner_unit = unit_index + 1;
+    shot.owner_side = h.units.unit_side_0054(unit_index);
+    shot.bullet_class = chosen->bullet_class;
+    shot.alive = true;
+    shot.is_bomb = true;
+    for (int i = 0; i < 3; ++i) {
+        shot.position[i] = origin[i];
+        shot.predicted_impact[i] = predicted_impact[i];
+    }
+    shot.flight.velocity = bsp::TickPoint3{velocity[0], velocity[1], velocity[2]};
+    shot.flight.snapshot_current = bsp::TickPoint3{origin[0], origin[1], origin[2]};
+    shot.flight.local_position = shot.flight.snapshot_current;
+    shot.flight.mode = bsp::ProjectileMotionMode::kBallistic;
+    shot.flight.class_disables_gravity = false;
+    {
+        const std::size_t owner = shot.owner_unit - 1;
+        if (owner < h.command_target_by_unit.size()) {
+            shot.ordered_target = h.command_target_by_unit[owner];
+        }
+        if (shot.ordered_target != 0) {
+            float tx = 0.0f, ty = 0.0f, tz = 0.0f;
+            h.units.unit_position_00fc(shot.ordered_target - 1, tx, ty, tz);
+            shot.target_pos_release[0] = tx;
+            shot.target_pos_release[1] = ty;
+            shot.target_pos_release[2] = tz;
+        }
+    }
+    h.shots.push_back(shot);
+    ++h.summary.projectiles;
+    ++h.summary.bomb_drops;
+    // NOT DONE, deliberately: no kind 2Ah twin of the torpedo drop's 2Bh clear.
+    // The torpedo side can clear its bit because one drop is its whole loadout;
+    // a dive bomber's is a salvo of up to two per pass out of a stock this host
+    // does not model per device (006E3500 is unread, the same hole
+    // kDiveBombCarriedRoundsSubstitute names). Clearing 2Ah here would make
+    // 009C7AFE's HasGeneralBombOrdnance false after the FIRST bomb and take the
+    // aimdive's second release away with it - and the torpedo side's own
+    // history is the warning: the bare clear was tried in 1e7c0f2f2 and
+    // reverted in c5235a9c6. The unit-side `dive_bomb_rounds_remaining` is what
+    // counts the stock down today.
+    if (h.summary.bomb_drops <= 6) {
+        h.log.notef("gunnery: bomb drop %llu by %s at %.0f m, speed %.1f m/s, "
+            "bullet %d | predicted impact %.0f %.0f %.0f",
+            h.summary.bomb_drops, chosen->unit_name.c_str(),
+            static_cast<double>(origin[1]), static_cast<double>(speed),
+            chosen->bullet_class,
+            static_cast<double>(predicted_impact[0]),
+            static_cast<double>(predicted_impact[1]),
+            static_cast<double>(predicted_impact[2]));
+    }
+    return true;
+}
+
 const bsp::ReconSensorPassState& GameGunneryHost::recon_sensor_pass_state() const noexcept {
     return impl_->recon_pass;
 }
@@ -3202,6 +3314,38 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery torpedo_loadout_cleared=%llu "
             "(drops that cleared the owner's kind 2Bh bit, so approach+132h goes false)",
             s.torpedo_loadout_cleared);
+    // Packet cc8_dive_glide: the bomb drops, and each round's impact against
+    // the point approach+D8h/+E0h predicted for it at the release tick. The
+    // predicted error is the one that scores the CCIP chain; the target error
+    // scores the whole attack. Both are planar and centre to centre.
+    {
+        host.log.notef("summary mission gunnery bomb_drops=%llu refusals=%llu "
+            "(kind 2Ah rows; a refusal means the unit carried no bomb platform)",
+            s.bomb_drops, s.bomb_drop_refusals);
+        std::vector<GameBombImpactRow> rows = host.bomb_impacts;
+        host.log.notef("summary mission gunnery bomb_impacts=%zu", rows.size());
+        for (const GameBombImpactRow& r : rows) {
+            host.log.notef("  bomb from %-12s impact %.0f %.0f %.0f after %.2f s "
+                "| vs predicted 009C7D71 %.0f %.0f %.0f = %.1f m "
+                "| vs target at release = %.1f m | died %s",
+                r.owner_name.c_str(),
+                static_cast<double>(r.actual[0]), static_cast<double>(r.actual[1]),
+                static_cast<double>(r.actual[2]), static_cast<double>(r.life),
+                static_cast<double>(r.predicted[0]),
+                static_cast<double>(r.predicted[1]),
+                static_cast<double>(r.predicted[2]),
+                static_cast<double>(r.predicted_error),
+                static_cast<double>(r.target_error),
+                r.died_above_water ? "above water (entity sweep)"
+                                   : "at the sea surface");
+        }
+        for (const GameProjectileRow& row : host.shots) {
+            if (!row.is_bomb) continue;
+            host.log.notef("  bomb from %-12s still in flight at alt %.0f m",
+                host.unit_name_or_index(row.owner_unit).c_str(),
+                static_cast<double>(row.position[1]));
+        }
+    }
     // Packet cc8_torpedo_closest_approach: the measurement the torpedo stream
     // has owed since docs/TORPEDO_AFTER_THE_DROP.md section 2. Distances are
     // CENTRE TO CENTRE and horizontal - this host has no oriented hull box - so

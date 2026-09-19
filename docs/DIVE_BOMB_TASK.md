@@ -3726,3 +3726,161 @@ as a displacement:
 `DiveBombAimDiveSteerInputs` carried one `bearing_error` and both arms used it. It now carries both,
 and `dive_bomb_aimdive_steer_009c5c9f` picks by `used_wide_band`, the same predicate that picks the
 band constant.
+
+---
+
+## The aimglide release, walked with frame bases: three vectors, and the salvo can fire
+
+Packet `cc8_dive_glide`. Addresses `009C5180`-`009C580B`, `009C4F00`-`009C4F71`, `009C3F16`.
+
+**This withdraws four claims.**
+
+1. `docs/HANDOFF_DIVE_BOMB_AIMGLIDE_AND_SPAWN.md`'s hypothesis that `lateral_a` is the throw and
+   `lateral_b` is the **miss**. The throw half is right; `lateral_b` is the **range to the aim
+   point**. The miss is not a release input at all.
+2. `kGlideDiveAngleLimit`'s name and every comment calling `[ESP+18h]` a dive angle or a flight
+   path. It is a horizontal **bearing error**.
+3. `src/game_hosts_units.cpp`'s "the argument's own producer is `009C4F00`'s caller, unread".
+   `009C4F00` takes no stack argument; it builds the seed itself.
+4. The header's "the three range terms are frame slots whose producers this packet did not trace"
+   and the `partial` coverage that went with it.
+
+### The frame, which is why the literal displacements mislead
+
+`009C5180` is `SUB ESP,58h` then `PUSH EBX` / `PUSH EBP` / `PUSH ESI` / `PUSH EDI`, so the canonical
+frame sits `0x68` below entry: `[ESP+68h]` is the return address and **`[ESP+6Ch]` is the `dt`
+argument**, which the body then reuses as scratch from `009C5295` onward. One `PUSH EAX` at
+`009C521B` is what makes `009C521C`'s literal `[ESP+48h]` the frame slot `44h` and `009C522E`'s
+literal `[ESP+50h]` the frame slot `4Ch` - the stack reuse the handoff warned about, and the reason
+`009C523C`'s literal `[ESP+50h]` is a *different* slot from `009C522E`'s.
+
+### Three planar vectors, not two
+
+| built at | vector | components land in | magnitude |
+| --- | --- | --- | --- |
+| `009C51D5`-`009C51F7` | `aimPoint - unit` | `[ESP+38h]`, `[ESP+40h]` | `[ESP+10h]`, `009C52B6` |
+| `009C5207`-`009C522E` | `impactPoint - unit`, the **throw** | `[ESP+44h]`, `[ESP+4Ch]` | `[ESP+14h]`, `009C52F8` |
+| `009C5234`-`009C5256` | `aimPoint - impactPoint`, the **miss** | `[ESP+50h]`, `[ESP+58h]` | `[ESP+1Ch]`, `009C533A` |
+
+The handoff transcribed the second and third and missed the first, which is why its hypothesis had
+to put the miss where the range belongs. `impactPoint` is `approach+D8h`/`+E0h`, the predicted bomb
+impact point `009C7D71` rewrites every tick.
+
+**The miss never reaches the release.** Its only consumer is `009C53D8`'s 140.0 (`00D04A24`)
+command-arm split, and `009C5493` overwrites `[ESP+1Ch]` with the release ceiling
+`(approach+14h)->+40h * approach+A8h` at the join of both command arms, which dominates every gate.
+
+### The six gates, in order
+
+| # | site | test | constant |
+| --- | --- | --- | --- |
+| 1 | `009C5689` | `state+1Ch < 0`, the rearm countdown | XMM2 = 0, `009C562D` |
+| 2 | `009C569B` | `|bearing error| < pi/6` | `00CEC724` |
+| 3 | `009C56A6`-`009C56B8` | `ceiling + 50.0 > height above aim point` | `00CE3938` |
+| 4 | `009C56BE`-`009C56FE` | `|throw - range| < 120.0` | `00D1F3F8` |
+| 5 | `009C5743` | `lead < -5.0` | `00D7A370` |
+| 6 | `009C5755` | `lead > -4*travel - 5.0` | `00D7A2B0` = 3.0, plus the bare travel |
+
+Gate 1 was **missing from the host entirely**: the reconstruction began at `009C569B`, so a
+satisfied geometry would have released on every tick instead of once per 0.2-0.5 s draw. XMM2 is
+zeroed once, at `009C562D`, and every jump into `009C562D`-`009C5689` starts inside that block, so
+the load dominates the compare. The same dominance argument settles gate 4's abs: `009C56E4`'s
+`SUBSS XMM4` is a negate, XMM4 being loaded once in the whole body at `009C561B` from the `-0.0f` at
+`00D7A208`.
+
+`[ESP+18h]` is built at `009C5357`-`009C53CA`: `FLD [ESP+40h]` / `FLD [ESP+38h]` -> `atan2` ->
+`pi/2 -` that (`00CE3830`), `+2pi` when negative (`00CE3828`) - **the same wrap `009C7B8A`-`009C7BB0`
+builds for `approach+C0h`** - then `00438B10` against `009C4F80`'s aim heading, then abs. So it is
+the horizontal angle between the line of sight to the aim point and the commanded aim heading. The
+aimdive's aim error takes its bearing from the *impact point* (`009C5AF1`); the aimglide takes it
+from the *aircraft*. Both feed `009C4F80`.
+
+### What the lead actually is
+
+`009C5715`-`009C5725`: `lead = range - cos(bearing error) * throw`. That is the **along-track
+shortfall of the predicted impact point against the target**, and it goes negative when the throw
+overruns. With gates 5 and 6 the window is
+
+```
+-4*travel - 5.0  <  lead  <  -5.0
+```
+
+a deliberate overshoot of 5 m up to `4*travel + 5` m - which is how a stick of bombs is walked
+through a target rather than aimed at it. Two equal inputs made `lead = range * (1 - cos)`, never
+negative, so `009C5777` could not fire at any altitude, angle or travel.
+
+### `travel` (`state+20h`) and `approach+A4h`, both recovered
+
+`009C4F00` is `__thiscall(state)` with **no stack argument** - `SUB ESP,8` at entry, `ADD ESP,8` and
+a bare `RET` at both exits. It zeroes `state+18h` and `state+1Ch`, then seeds:
+
+```
+009c4f15  fld  [approach+0A4h]
+009c4f22  call 007c1db0            ; BSP_Unit_CountRemainingOrdnanceRounds
+009c4f27  sub  eax, 1
+009c4f2e  fild / 009c4f32 fmul qword 00CED0D8 (0.07) / 009c4f38 fmul the +A4h value
+009c4f44..009c4f4e                 ; against the qword 5.0 at 00D7A370
+009c4f50  [esi+20h] = 5.0f (00CE3850)   |   009c4f62  [esi+20h] = the product
+```
+
+so `state+20h = max((rounds - 1) * 0.07 * approach+A4h, 5.0)`.
+
+A Capstone scan of `009C3E00`-`009CA000` for `[reg+0A4h]` returns six touches and **one writer**,
+`009C3F16` in the constructor `FUN_009C3EA0`: `MOV ECX,[ESI+8]` (the plane class descriptor), `FLD
+[ECX+188h]` (MaxSpd, already named in this repo), `FMUL qword 00CEFFB0` (0.95), `FSTP [ESI+0A4h]`.
+So **`approach+A4h = 0.95 * MaxSpd`**, set once and never rewritten, and `009C57A9` adds
+`approach+A4h * 0.35` into `state+20h` after every salvo.
+
+For the USN04 Vals - MaxSpd 69.44, two rounds - the seed is `1 * 0.07 * 0.95 * 69.44 = 4.62`, under
+the floor, so the flat 5.0 the host used happened to be right. That is a coincidence, not the rule,
+and the formula is bound now.
+
+### One more literal
+
+`009C53DD MOV EBP,2` and `009C53E2 LEA EBX,[EBP-1]` sit on the straight-line path before
+`009C53E5`'s branch, so both command arms carry EBP=2 and EBX=1 into `009C5762`'s cap and
+`009C5782`'s step. The salvo is **at most two rounds**, from a literal immediate - not the
+`kDiveBombCarriedRoundsSubstitute` the host happened to share with it.
+
+### The measurement: `local\glide_before.log` / `local\glide_after.log`, same binary apart from the change
+
+Two 4800-frame USN04 runs, before taken at `e19129b34` in this tree rather than reused from the
+retired worker's.
+
+**Nothing else moved.** Every dive-bomb figure is identical to the digit: `movieval` `arm_ticks=2112`,
+`states[done=303 aimdive=53 flyabove=158 turndown=71 attackrun=1527]`, `releases=2`, release
+`alt=278.9 m speed=66.7 m/s range=365.0 m`, `aim error closest=8.06 m`; the Vals `aimglide=630`/`626`;
+three `plane water contact` lines in both. The binding changes what the aimglide *asks*, not what the
+aircraft do, which is what a before/after on this chain should show.
+
+**The salvo still does not fire, and the reason has moved.** Per `D3A Val #1.1`, 630 aimglide calls:
+
+| gate | blocked |
+| --- | --- |
+| 1, `009C5689` rearm | 0 |
+| 2, `009C569B` bearing | **523** |
+| 3, `009C56B8` ceiling | **107** |
+| 4, `009C56FE` lateral | 0 |
+| 5/6, the lead window | 0 |
+| passed | 0 |
+
+`#3.1` is the same shape: 626 calls, 520 and 106. **The chain never reaches the lead**, so
+`lead last`/`min` are both 0.00 - not a lead of zero, a lead never computed. That is worth stating
+plainly: this packet did **not** make the salvo fire, and nothing here should be read as claiming it.
+
+What it did is move the defect out of the release arithmetic. Before, the pair of lead gates was
+mutually exclusive at any geometry, so `009C5777` was unreachable by construction. Now the chain is
+well formed and the block is upstream geometry, which the same line measures:
+
+* `throw=748.8 m` against `range=201.4 m`. `|throw - range| = 547 m` is 4.6x the 120 m gate 4
+  allows, so even with the ceiling open the lateral gate would refuse. A 748.8 m throw at ~70 m/s is
+  a fall time near 10.7 s, i.e. a release height near 560 m - the Vals are gliding far too high for
+  the geometry the release wants.
+* `bearing err min=0.0008 rad` against the 0.5236 gate: the bearing gate is satisfiable and is met at
+  its best, but fails on 83% of ticks, so the aircraft is not tracking the target for most of the
+  glide.
+* `travel=5.00`, which is the seed formula's own prediction confirmed in the run:
+  `(2-1) * 0.07 * 0.95 * 69.44 = 4.62`, under the 5.0 floor, so `max` takes the floor.
+
+Both the ceiling block and the 748.8 m throw point at the same thing as item 2 of this packet - the
+Vals enter their dive from 1024.3 m against `movieval`'s 650.9 m - and not at the release chain.

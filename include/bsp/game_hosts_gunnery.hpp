@@ -236,6 +236,32 @@ struct GameProjectileRow {
     float drop_owner_heading{0.0f};
     float drop_target_heading{0.0f};
     float drop_crossing_angle{-1.0f};   // -1 = no ordered target at the drop
+    // Packet cc8_dive_glide. A bomb released by the dive-bomb task, and the
+    // predicted impact point approach+D8h/+E0h carried at the release tick so
+    // the run can print predicted against actual. INSTRUMENTATION; the image
+    // keeps neither flag nor point on the round.
+    bool is_bomb{false};
+    float predicted_impact[3]{};
+};
+
+// Packet cc8_dive_glide. One released bomb's impact, kept after the round is
+// gone. `predicted` is approach+D8h/+E0h at the release tick - the point
+// 009C7D71 computed as where a bomb dropped then would land - so the two
+// errors below say whether the CCIP solution the dive steers on is the one the
+// released round actually flies to.
+struct GameBombImpactRow {
+    std::string owner_name;
+    float predicted[3]{};
+    float actual[3]{};
+    float target_release[3]{};
+    float predicted_error{-1.0f};  // planar |actual - predicted|
+    float target_error{-1.0f};     // planar |actual - target at release|
+    float life{0.0f};              // seconds of flight
+    // A round the entity sweep killed dies where it met the hull, above the
+    // sea; one that reached the water crossing dies at or below y = 0. This
+    // host keeps no hit flag on the round, so that height IS the discriminator
+    // and is reported as such rather than as a recovered field.
+    bool died_above_water{false};
 };
 
 // One swimming round's closest approach, kept after the round is gone.
@@ -396,6 +422,9 @@ struct GameGunnerySummary {
     unsigned long long torpedo_cat_score_accepted{0};
     unsigned long long torpedo_drops{0};
     unsigned long long torpedo_drop_refusals{0};   // no torpedo-capable gun on the unit
+    // Packet cc8_dive_glide, the kind 2Ah drop.
+    unsigned long long bomb_drops{0};
+    unsigned long long bomb_drop_refusals{0};      // no kind 2Ah gun on the unit
     // Packet cc8_torpedo_breakoff: drops that cleared the owner's torpedo kind
     // 2Bh bit, so approach+132h goes false on the next approach update.
     unsigned long long torpedo_loadout_cleared{0};
@@ -476,6 +505,26 @@ public:
     //
     // Returns true when a round was created.
     bool release_ordnance_drop(std::size_t unit_index);
+
+    // Packet cc8_dive_glide, edited under the integrator's hunk arbitration of
+    // 2026-09-19. The dive bomber's release, 009C60F1 and 009C5777, could not
+    // use release_ordnance_drop above: that method selects the unit's
+    // torpedo-capable rows (`swim_speed > 0`) and clears the kind 2Bh bit on a
+    // drop, and a dive bomber carries kind 2Ah - so the selection found
+    // nothing and `bombs_spawned` stayed 0 however many releases were counted.
+    // The spawn is right and the predicate was wrong: a bomb platform is a Gun
+    // subclass (00730B80 calls BSP_Gun_Construct at 00730B88), so its round is
+    // made by the same 0072F830 a tube's is. This selects on
+    // ordnance_has_general_bomb_2ah - kind 2Ah excluding 2Ch/31h/2Bh/33h/2Dh,
+    // the same set 007B9320 tests for BSP_WeaponController -
+    // and clears 2Ah rather than 2Bh.
+    //
+    // `predicted_impact` is approach+D8h/+E0h at the release tick, which
+    // 009C7D71 has already made the predicted impact point of a bomb dropped
+    // this tick; it is carried on the round only so the run can print
+    // predicted against actual. It is not an image field.
+    bool release_bomb_drop(std::size_t unit_index,
+                           const float predicted_impact[3]);
     const std::vector<GameGunneryUnitRow>& unit_rows() const noexcept;
     const GameGunnerySummary& summary() const noexcept;
 
