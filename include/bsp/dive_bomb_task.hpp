@@ -178,6 +178,11 @@ inline constexpr float kGlideDiveAngleLimit = 0.5235987901687622f;  // 00CEC724,
 inline constexpr double kGlideHeightMargin = 50.0;        // 00CE3938, qword
 inline constexpr double kGlideLateralLimit = 120.0;       // 00D1F3F8, qword
 inline constexpr double kGlideLeadMargin = 5.0;           // 00D7A370, qword
+// 009C4F50: the floor the aimglide enter 009C4F00 puts under state+20h when its
+// argument is under the 5.0 at 00D7A370 (009C4F4E, byte 76 JBE). The accumulator
+// therefore starts at max(arg, 5.0) and is never zero, which is what makes the
+// lead gates at 009C5743/009C5751 satisfiable at all.
+inline constexpr float kGlideTravelSeed = 5.0f;           // 00CE3850
 inline constexpr double kGlideLeadScale = 3.0;            // 00D7A2B0, qword
 inline constexpr float kAimGlideRearmLow = 0.2f;          // 00CE54A0
 inline constexpr float kAimGlideRearmHigh = 0.5f;         // 00CE3800

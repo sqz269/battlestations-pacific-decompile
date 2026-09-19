@@ -4408,6 +4408,24 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         if (ctx.current == bsp::DiveBombState::kFlyAbove) {
                             run_dive_bomb_flyabove_tick_009c62b0();
                         }
+                        if (ctx.current == bsp::DiveBombState::kAimGlide &&
+                            before != bsp::DiveBombState::kAimGlide) {
+                            // 009C4F40-009C4F71, the aimglide enter's seed of
+                            // state+20h: `FLD [ESP+4]`, compare against the 5.0
+                            // at 00D7A370, and 009C4F4E `76` JBE takes the 5.0
+                            // at 00CE3850 when the argument is the smaller - so
+                            // the travel accumulator starts at max(arg, 5.0) and
+                            // is never zero. SUBSTITUTION, labelled: the
+                            // argument's own producer is 009C4F00's caller,
+                            // unread, so the floor stands in for it.
+                            //
+                            // This matters because the lead gates at
+                            // 009C5743/009C5751 are satisfiable only while the
+                            // accumulator is positive; the 0.0 that stood here
+                            // closed the glide release by itself.
+                            unit_.db_glide_travel_20 =
+                                bsp::dive_bomb_constant::kGlideTravelSeed;
+                        }
                         // The run-in census: one range sample per second of
                         // mission time, and the tick the latch closes.
                         if (unit_.db_in_range_d0 && unit_.db_latch_closed_tick < 0) {
@@ -5587,6 +5605,21 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // pitch floor from ratcheting.
                             bsp::pilot_reset_plan_0099b450(unit_.plan_state,
                                 unit_.plan_slots, live);
+                            // cmd+2CCh is ONE word in the image and two fields
+                            // here: PilotPlanState::heading_mode_2cc, which the
+                            // reset above sets to 1 for 0099B548, and
+                            // plan_heading_mode_2cc, which the roll gate at
+                            // 0099DE8A/0099E275 actually reads and every task
+                            // tick writes. Without this copy the reset never
+                            // reached the gate, so where the image re-arms the
+                            // SERVO arm every think - holding whatever bank
+                            // target cmd+2C4h carries - this host left the field
+                            // wherever the last writer put it, and the planner's
+                            // own mode-2 arm zeroes it at 0099E3B5. A state that
+                            // wrote no roll mode then got neither arm and simply
+                            // stopped banking. docs/DIVE_BOMB_TASK.md.
+                            unit_.plan_heading_mode_2cc =
+                                unit_.plan_state.heading_mode_2cc;
 
                             // 0099D300's yaw arm. It writes `desired` only when
                             // the unit has a commanded target; every other slot
