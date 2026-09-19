@@ -891,3 +891,39 @@ half-beam by some sixty metres. A single scalar distance cannot tell those apart
 force of the centre-to-centre caveat. Separating them needs the bearing of the closest-approach
 point relative to the target's heading, which is one more field in the same census and is part of
 section 8.1's next check.
+
+### 8.3 Retraction: `target_valid=0` does not mean the order's target failed to resolve
+
+Section 8.1's premise 2 said the ordered target's identity "is never resolved to a name anywhere in
+the log", citing `PilotSetTarget: unit=Mav1 target_object_id=45 target_valid=0 pos=(0.0 0.0 0.0)`,
+and I put the stronger form of it - "an order whose target never resolves" - to the lead and to
+`agent/cc8-ai-squadron`. **That reading is wrong**, and the producer says so.
+
+`src/game_hosts_script_orders.cpp:1000`-`1009` prints `target_valid` from
+**`target.position_valid`** and `pos` from `target.position` - the `SceneCommandTarget`'s *position*
+fields, not its object. An order that names an object carries no explicit point, so `0` and
+`(0,0,0)` are the **expected** values for an object-targeted order, and line 1013 counts exactly
+this case as resolved: `if (target.object_id != 0 || target.position_valid)
+++pilot_set_target_target_resolved_`.
+
+* **was**: the order's target never resolves, which puts a fault upstream of everything measured.
+* **is**: the order carries object id 45 (Mav1), 44 (Mav2, Mav3) and 46 (Mav4, Mav5). Only the
+  *position* is absent, and correctly so. Nothing is broken here.
+* **still open**: which object those ids name. That is a real question and this document does not
+  answer it.
+
+**And the obvious way to answer it is a trap.** The same run prints
+`scene path retained: id=44 ... name=p6de`, `id=45 ... name=p7de`, `id=46 ... name=p8de`, and also
+`scene class Landscape id=44` and `scene class AirField id=45`. Three different id spaces carry 44,
+45 and 46 in this one log. Matching `target_object_id` against either table on the number alone is
+the bare-offset collision in another dress; a first pass here did exactly that and briefly concluded
+the Mavs were ordered against paths. **Withdrawn.** `SceneCommandTarget::object_id` is a
+`std::uint16_t` in the scene *object* id space, and nothing in this run prints that space's table.
+
+The fix is one line in the same census section 8.1 already needs: print the object-id-to-entity
+mapping for the ids the orders actually carry, in the same run. Until then the five Mavs' ordered
+target is **unnamed**, and the separate question of what the gunnery path resolves is also unnamed:
+`src/game_hosts_gunnery.cpp:1318`-`1322` picks the newest current command row per unit
+(`0071EBF0`'s rule, categories 1 and 2 only) and resolves `row.target_token` **by unit name**
+through `by_name`, but the token string is never logged. `summary mission gunnery command_targets
+units_with=5` says five units got one; which unit it names is not in the log either.
