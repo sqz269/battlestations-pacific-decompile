@@ -1,0 +1,122 @@
+{
+  "packet": "cc8_torpedo_descent_law",
+  "owner": "agent/cc8-plane-squadron",
+  "doc": "docs/TORPEDO_DESCENT_LAW.md",
+  "summary": "009FB800's second argument is 009FBA50's fourth argument, a dimensionless ramp in [0.35, 0.8], not an altitude. The host passed the commanded altitude, which saturated the DEG(60) dive cap at every altitude error over about 80 m and put USN01's five torpedo bombers in the sea. The torpedo attack run also passed three zeros for 009FBA50's range and scale arguments, which killed the glide slope.",
+  "routines": [
+    {
+      "address": "009fb800",
+      "name": "BSP_PilotBot_CommandPitchFromAltitude",
+      "abi": "void __thiscall(this, float desiredAltitude, float reference), RET 8, body 009FB800-009FBA4F",
+      "coverage": "complete"
+    },
+    {
+      "address": "009fba50",
+      "name": "BSP_PilotBot_CommandCruiseAltitude",
+      "abi": "void __thiscall(this, float base, float rangeLow, float rangeHigh, float scale), RET 10h, body 009FBA50-009FBB1C",
+      "coverage": "complete except the ctl+394h squadron limit at 009FBA9B, which this host passes has_squadron=false"
+    },
+    {
+      "address": "009d07b0",
+      "name": "BSP_BotStateTorpedoAttackRun_Tick",
+      "abi": "void __thiscall(this, float dt), RET 4, body 009D07B0-009D0B0F",
+      "coverage": "partial: step 4's altitude half only (009D0951-009D0A92). Steps 1-3, step 4's throttle half and step 5 are not run by this host and are unchanged by this packet."
+    }
+  ],
+  "host_steps": [
+    {
+      "host": "BotApproach::command_altitude",
+      "address": "009d0a92",
+      "native": "009fba50",
+      "function": "009d07b0",
+      "note": "step 4 of the torpedo attack run. The four arguments are computed at 009D0951-009D0A92 and are now all passed."
+    },
+    {
+      "host": "BotStateMoveTo::glide_slope",
+      "address": "009c1b17",
+      "native": "009fba50",
+      "function": "009c18c0",
+      "note": "the same chain from the move-to state; its ramp is Interp(0.05, 0.35, 0.4, 1.6, .) at 009C1AF3."
+    },
+    {
+      "host": "torpedo attack run scale",
+      "address": "009d0a63",
+      "native": "00419010",
+      "function": "009d07b0",
+      "note": "Interp(0.1, 0.35, 0.4, 0.8, margin/denom); its result is 009FBA50's arg3 and 009FB800's reference."
+    },
+    {
+      "host": "dive bomb attack run scale",
+      "address": "009c43cd",
+      "native": "00419010",
+      "function": "009c4220",
+      "note": "the same ramp constants; the host had this value under the name commanded_throttle."
+    },
+    {
+      "host": "BotStateDiveBombAttackRun::command_altitude",
+      "address": "009c4401",
+      "native": "009fba50",
+      "function": "009c4220",
+      "note": "cin.scale now comes from 009C43CD's result."
+    },
+    {
+      "host": "PlaneCruiseAltitude::tail",
+      "address": "009fbb13",
+      "native": "009fb800",
+      "function": "009fba50",
+      "note": "009FBB06 FSTP [ESP+4] stores arg3 as the second argument; 009FBB0C FLD [ESP+14h] the clamped altitude as the first."
+    }
+  ],
+  "corrections": [
+    {
+      "doc": "docs/ATTACK_RUN_DESCENT.md",
+      "was": "weighted = err * ((A + 1) * 0.5); t = clamp(-weighted / DropDist, 0, A) with A the commanded altitude, and therefore 'nothing in the planner's pitch path stops a 60-degree dive, so the host is faithful'.",
+      "is": "weighted = err * ((s + 1) * 0.5); t = clamp(-weighted / DropDist, 0, s) with s the SECOND argument, which every 009FBA50 caller supplies as that routine's arg3. On the torpedo attack run s is in [0.35, 0.8], so DropAngle * t cannot exceed 0.321 rad and the image never commands a 60-degree dive here.",
+      "evidence": "009FB853 POP EDI re-bases the frame between 009FB849 and 009FB854, so every later [ESP+0x10] is the second argument. 009FBA50's decompiler output ends FUN_009fb800(param_2,param_5). The x87 walk is docs/TORPEDO_DESCENT_LAW.md section 2."
+    },
+    {
+      "doc": "docs/PLANE_FLIGHT.md",
+      "was": "009FBA50 step 6: 009FB800(this, alt, base), 'the second argument is the value before the ceiling clamp'; and 'the FLD at 009FBAC5 is never popped, so scale is still in ST0 at the RET: the native ABI returns a float'.",
+      "is": "009FB800(this, alt, scale). 009FBB06 FSTP [ESP+4] pops the scale into the second argument slot, the x87 stack is empty at the RET and nothing is returned. The pre-clamp altitude is passed nowhere.",
+      "evidence": "009FBAD9 is FMUL ST0,ST1 with no pop; 009FBAE5 pops the biased altitude; 009FBAF1/009FBAF3 pop the clamp pair. exports/bsp/functions/009fba50/decompiled.c."
+    },
+    {
+      "doc": "docs/TORPEDO_APPROACH_BLOCKER.md",
+      "was": "section 8.5: the -1.0472 rad pitch demand needs a producer, and section 2's commanded altitude of 12 m is what the image commands.",
+      "is": "-1.0472 is -DEG(60) at 00D05AAC, saturated by the host's own second argument. The image's commanded altitude is a glide slope, base + max(range_90 - releaseDist, 0) * scale * tan(DropAngle), that reaches 12 m at the release distance.",
+      "evidence": "docs/TORPEDO_DESCENT_LAW.md sections 1 and 3; the run local/descentlaw_after_usn01.log has no plane water contact line at all."
+    },
+    {
+      "doc": "src/dive_bomb_task.cpp (owed to agent/cc8-dive-bomb)",
+      "was": "DiveBombAttackRunResult::commanded_throttle, 'the throttle, interpolated on the margin over the clamped distance'.",
+      "is": "009C43CD's interpolation result is 009FBA50's arg3, the descent scale, not a throttle. The throttle that state commands is the literal 1.0 at 009C4413.",
+      "evidence": "009C43D2 SUB ESP,0x10 then 009C43D5 FSTP [ESP+0xc] places it in arg3's slot for the 009C4401 call; the ramp uses the same 00D7A2F0 = 0.1 and 00CE7804 = 0.4 as 009D0A63."
+    }
+  ],
+  "constants": {
+    "00d1f8d0": "1400.0 double, the margin ceiling",
+    "00ceb4d4": "50.0f, the margin floor (gate 00CE3938)",
+    "00cfd710": "400.0f, the margin cap (gate 00CE3D90)",
+    "00cffd60": "2000.0f, the denominator cap (gate 00CF0DD8)",
+    "00d7a2f0": "0.1f, ramp x0",
+    "00cf6560": "0.35f, ramp y0",
+    "00ce7804": "0.4f, ramp x1",
+    "00ce74f8": "0.8f, ramp y1 on the attack run",
+    "00ce7638": "0.05f, ramp x0 on the move-to state",
+    "00d06bb4": "1.6f, ramp y1 on the move-to state",
+    "00cf3f20": "15.0 double, the release-distance switch",
+    "00d7a210": "1.0 double, the (s + 1) term",
+    "00d7a280": "0.5 double, the * 0.5 term",
+    "00d7a208": "-0.0f, the negation of the dive demand",
+    "00d7a218": "0.0f, the span > 0 gate",
+    "00ce3938": "50.0 double, the ceiling margin",
+    "00ce3d48": "1.6 double, the cap scale",
+    "00d05aac": "1.0471976f, DEG(60), the dive cap",
+    "00ce7d20": "0.6981317f, DEG(40), the climb cap"
+  },
+  "validation": {
+    "before": "local/tap_before_usn01.log",
+    "after": "local/descentlaw_after_usn01.log, local/descentlaw_full_usn01.log",
+    "build": "clean; ctest reconstructed_math and tool_tests both pass"
+  }
+}

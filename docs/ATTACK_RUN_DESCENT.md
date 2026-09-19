@@ -211,3 +211,45 @@ this placement the aircraft crosses `009D20B4`'s 25-to-40 metre release band at 
 inside it for roughly a tenth of a second, less than the 0.09 s pilot think interval. So even a
 complete release chain would rarely catch this approach, which is consistent with the run and is
 not evidence that the chain is wrong.
+
+## Correction from packet `cc8_torpedo_descent_law`: section 1's equation reads the wrong stack slot, and section 4 is withdrawn
+
+Section 1 writes the profile as
+
+```
+weighted  = err * ((A + 1) * 0.5)                                     ; 009FB858
+t         = clamp(-weighted / DropDist, 0, A)                          ; 009FB9B8
+```
+
+with `A`, the commanded altitude, in both places. `A` is `009FB800`'s **first** argument. The value
+`009FB85C FLD [ESP+0x10]` and `009FB9D5 FLD [ESP+0x10]` read is the **second**.
+
+The two are one slot apart and `009FB853 POP EDI` is what hides it: `009FB849 FLD [ESP+0x10]` does
+read the commanded altitude, because `009FB835 PUSH EDI` has shifted the frame; the `POP` at
+`009FB853` shifts it back, so `009FB854 FSTP [ESP+0xc]` writes `err` into the **first** argument's
+slot and every later `[ESP+0x10]` is the **second** argument. Reading the post-`POP` `[ESP+0x10]` as
+"still the altitude" is the whole error.
+
+* **was**: `weighted = err * ((A + 1) * 0.5)`, `t = clamp(-weighted / DropDist, 0, A)`,
+  `demand = -min(DropAngle * t, max(DropAngle * 1.6, DEG(60)))`, and therefore
+  "nothing in the planner's pitch path stops a 60-degree dive ... the host's measured `-1.07` rad is
+  faithful to the native's own chain, constant for constant".
+* **is**: `weighted = err * ((s + 1) * 0.5)` and `t = clamp(-weighted / DropDist, 0, s)`, where `s`
+  is `009FB800`'s second argument. Every caller that arrives through `009FBA50` gets that routine's
+  arg3 - `009FBB06 FSTP [ESP+4]` stores the `ST0` that `009FBAC5` pushed and nothing popped - and on
+  the torpedo attack run `009D0A63` makes arg3 `Interp(0.1, 0.35, 0.4, 0.8, .)`, so
+  `s` lies in `[0.35, 0.8]` and `DropAngle * t` cannot exceed 0.321 rad. **The image's attack run
+  never commands a 60-degree dive**, so the `-1.0472` this host measured was not faithful to it: it
+  was the host feeding the commanded altitude, 12.0, into `t`'s clamp.
+* **evidence**: `009FBA50`'s decompiler output ends `FUN_009fb800(param_2,param_5)`; the x87 walk is
+  in `docs/TORPEDO_DESCENT_LAW.md` section 2; the run after the fix shows `pitch_demand` of -0.057 to
+  -0.152 rad over the same descent where this branch measured a constant -1.0472.
+
+**Sections 2 and 3 stand.** Pitch mode 2 is a rate limiter on the way up and passes a dive through,
+and the nose-up floor at `0099E4FE` cannot reach a 60-degree dive. They are simply not the question:
+nothing in the pitch path needs to stop a 60-degree dive, because nothing in the image ever asks for
+one here.
+
+The "Where the five torpedo drops went" section below is unaffected - it is about releases that
+happened after a plunge that no longer happens - but its premise, an aircraft crossing the release
+band at about 142 m/s, is gone: after the fix the aircraft flies the run-in at about 81 m/s.
