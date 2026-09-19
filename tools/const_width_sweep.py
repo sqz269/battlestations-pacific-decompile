@@ -51,6 +51,69 @@ def read8(sections, va):
     return None
 
 
+def load_site_index():
+    """addr -> [(va, mnemonic, operand bytes)] for absolute [disp32] operands.
+
+    Linear disassembly of .text with Capstone. It desyncs on inline data, so an
+    address with no entry is UNREFERENCED BY THIS SCAN, which is not the same as
+    unreferenced: report it as its own class rather than as safe. The operand
+    size is what discriminates `FLD m32` from `FLD m64` and `MOVSS` from `MOVSD`,
+    and it is the field the x87 access-flag quirk in our notes does not touch.
+    """
+    import capstone
+
+    with open("config/target.json", encoding="utf-8") as fh:
+        exe = json.load(fh)["binary"]
+    pe = pefile.PE(exe, fast_load=True)
+    base = pe.OPTIONAL_HEADER.ImageBase
+    text = None
+    for s in pe.sections:
+        if s.Name.rstrip(b"\0") == b".text":
+            text = (base + s.VirtualAddress, s.get_data())
+    if text is None:
+        return {}
+
+    md = capstone.Cs(capstone.CS_ARCH_X86, capstone.CS_MODE_32)
+    md.detail = True
+    index = {}
+    va0, data = text
+
+    # Sweeping linearly from the section start desyncs on inline data and finds
+    # none of the sites this stream has read by hand. Disassemble from each
+    # KNOWN FUNCTION START instead, up to the next one, which is the technique
+    # the project's own notes prescribe for exactly this reason.
+    import sqlite3
+
+    starts = []
+    try:
+        db = sqlite3.connect("local/bsp_index.sqlite")
+        starts = [r[0] for r in db.execute(
+            "SELECT address FROM functions ORDER BY address")]
+    except sqlite3.Error:
+        starts = []
+    if not starts:
+        raise SystemExit("local/bsp_index.sqlite has no function table; run "
+                         "`python tools/bsp.py index` first")
+
+    end = va0 + len(data)
+    for i, start in enumerate(starts):
+        if start < va0 or start >= end:
+            continue
+        stop = starts[i + 1] if i + 1 < len(starts) else end
+        stop = min(stop, end)
+        off = start - va0
+        for insn in md.disasm(data[off:off + (stop - start)], start):
+            for op in insn.operands:
+                if op.type != capstone.x86.X86_OP_MEM:
+                    continue
+                mem = op.mem
+                # An absolute [disp32]: no base, no index.
+                if mem.base == 0 and mem.index == 0 and mem.disp:
+                    index.setdefault(mem.disp & 0xFFFFFFFF, []).append(
+                        (insn.address, insn.mnemonic, op.size))
+    return index
+
+
 def main(argv):
     full = "--full" in argv
     args = [a for a in argv if not a.startswith("--")]
@@ -87,12 +150,80 @@ def main(argv):
                 if not ok:
                     misses.append((path, line_no, name, width, declared, f, d))
 
+    if "--load-sites" not in argv:
+        for path, line_no, name, width, declared, f, d in misses:
+            print("%s:%d  %s declared %s=%g  but float=%g double=%g"
+                  % (path, line_no, name, width, declared, f, d))
+        print("checked %d constants in %d headers, %d mismatched"
+              % (checked, len(args), len(misses)))
+        return 1 if misses else 0
+
+    # The discriminator. "Matches the other width" covers two opposite cases:
+    # every load is 8 bytes, so the image value IS the declared one and only the
+    # C++ type is narrow (harmless); or some load is 4 bytes, so the declared
+    # value was read at the wrong width and is simply wrong (the kPitchClampLo
+    # case, which prints as Class A). Only the load sites tell them apart.
+    index = load_site_index()
+    buckets = {"A-harmless": [], "A-WRONG": [], "A-unreferenced": [],
+               "B": [], "B-unreferenced": []}
     for path, line_no, name, width, declared, f, d in misses:
-        print("%s:%d  %s declared %s=%g  but float=%g double=%g"
-              % (path, line_no, name, width, declared, f, d))
-    print("checked %d constants in %d headers, %d mismatched"
-          % (checked, len(args), len(misses)))
-    return 1 if misses else 0
+        addr = None
+        with open(path, encoding="utf-8", errors="replace") as fh:
+            for i, line in enumerate(fh, 1):
+                if i == line_no:
+                    m = PATTERN.search(line)
+                    if m:
+                        addr = int(m.group(4), 16)
+                    break
+        sites = index.get(addr, []) if addr is not None else []
+        sizes = sorted({size for _, _, size in sites})
+        other = d if width == "float" else f
+        class_a = abs(other - declared) <= max(1e-9, abs(declared) * 1e-6)
+        row = (path, line_no, name, width, declared, f, d, sites, sizes)
+        if not class_a:
+            buckets["B" if sites else "B-unreferenced"].append(row)
+        elif not sites:
+            buckets["A-unreferenced"].append(row)
+        elif 4 in sizes and width == "float":
+            buckets["A-WRONG"].append(row)
+        elif 8 in sizes and width == "double":
+            buckets["A-WRONG"].append(row)
+        else:
+            buckets["A-harmless"].append(row)
+
+    out = os.path.join("local", "output", "const_load_widths.txt")
+    os.makedirs(os.path.dirname(out), exist_ok=True)
+    with open(out, "w", encoding="utf-8") as fh:
+        for bucket in ("A-WRONG", "B", "A-unreferenced", "B-unreferenced",
+                       "A-harmless"):
+            fh.write("=== %s (%d) ===\n" % (bucket, len(buckets[bucket])))
+            for path, line_no, name, width, declared, f, d, sites, sizes in buckets[bucket]:
+                shown = ", ".join("%08x %s m%d" % (va, mn, sz * 8)
+                                  for va, mn, sz in sites[:4])
+                fh.write("%s:%d  %s  declared %s=%g  float=%g double=%g  "
+                         "sizes=%s  %s\n"
+                         % (path, line_no, name, width, declared, f, d,
+                            sizes or "none", shown))
+
+    for bucket in ("A-WRONG", "B"):
+        for path, line_no, name, width, declared, f, d, sites, sizes in buckets[bucket]:
+            # The value the CODE reads: whatever width its loads use. Mixed
+            # widths mean the address is shared and both are named.
+            if sizes == [4]:
+                reads = "m32 -> %g" % f
+            elif sizes == [8]:
+                reads = "m64 -> %g" % d
+            else:
+                reads = "mixed %s -> m32 %g / m64 %g" % (sizes, f, d)
+            print("%-10s %s:%d %s declared %s=%g; loads read %s"
+                  % (bucket, path, line_no, name, width, declared, reads))
+    print("checked %d, mismatched %d: A-WRONG %d, B %d, A-unreferenced %d, "
+          "B-unreferenced %d, A-harmless %d"
+          % (checked, len(misses), len(buckets["A-WRONG"]), len(buckets["B"]),
+             len(buckets["A-unreferenced"]), len(buckets["B-unreferenced"]),
+             len(buckets["A-harmless"])))
+    print("full table: %s" % out)
+    return 1 if buckets["A-WRONG"] or buckets["B"] else 0
 
 
 if __name__ == "__main__":
