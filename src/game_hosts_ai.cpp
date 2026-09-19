@@ -27,6 +27,7 @@
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/plane_squadron_entity.hpp"
+#include "bsp/plane_squadron_host.hpp"
 #include "bsp/unit_gunnery_pass.hpp"
 
 namespace bsp::game {
@@ -2204,24 +2205,50 @@ void GameAiCoordinatorHost::Impl::build_squadrons() {
         // 009FE0F0's air test: the plane base 0Fh. A squadron's own members are
         // planes, and nothing else in the scene produces one.
         if (!units.unit_is_kind_of(unit, bsp::kPlaneSquadronMemberKindId)) continue;
+        // Packet cc8_plane_squadron_host (15563fdf9) spawns a squadron's real
+        // WingCount wingmen, so a plane can now be a MEMBER of a squadron
+        // rather than a squadron in its own right. Seeding one squadron per
+        // member is exactly the double-order the comment on
+        // unit_owned_by_squadron forbids - "keeping both in a group
+        // double-orders the same aircraft" - and it showed as 15 AI squadrons
+        // on a USN04 that has 5. The registry's back pointer is this process's
+        // stand-in for plane+9D4h: a plane whose squadron names another unit as
+        // its flight leader is a wingman and is not a seed.
+        const bsp::PlaneSquadronHostRecord* owner =
+            bsp::plane_squadron_registry().find_by_member_unit(unit);
+        if (owner != nullptr && owner->member_units.empty()) owner = nullptr;
+        if (owner != nullptr && owner->flight_leader() != unit) continue;
         Squadron s;
-        // 007F4778 stores the wing count at +3C8h. No bag is read here, so the
-        // absent-key arm 007F4735 is the one that applies.
-        s.entity.wing_count =
-            bsp::plane_squadron_wing_count_007f4754(false, 0);
-        int spawn_index = 0;
-        if (!bsp::plane_squadron_attach_plane_007f4b43(
-                s.entity, handle(unit), &spawn_index)) {
-            continue;
+        // 007F4778 stores the wing count at +3C8h. Take the authored WingCount
+        // the registry carries when there is one; the absent-key arm 007F4735,
+        // which defaults to 3, is only right for a plane in no squadron.
+        s.entity.wing_count = owner != nullptr
+            ? owner->wing_count
+            : bsp::plane_squadron_wing_count_007f4754(false, 0);
+        // 007F4B43 is still the rule that fills +3D0h and bumps +3CCh. Only the
+        // SOURCE of the members changes: the registry's array in array order
+        // for a real squadron, and this unit alone otherwise.
+        bool attached = false;
+        const std::vector<std::size_t> lone(1, unit);
+        const std::vector<std::size_t>& wing =
+            owner != nullptr ? owner->member_units : lone;
+        for (const std::size_t plane : wing) {
+            int spawn_index = 0;
+            if (!bsp::plane_squadron_attach_plane_007f4b43(
+                    s.entity, handle(plane), &spawn_index)) {
+                continue;
+            }
+            s.member_units.push_back(plane);
+            if (unit_owned_by_squadron.size() <= plane) {
+                unit_owned_by_squadron.resize(plane + 1u, false);
+            }
+            unit_owned_by_squadron[plane] = true;
+            ++summary.squadron_members;
+            attached = true;
         }
-        s.member_units.push_back(unit);
-        if (unit_owned_by_squadron.size() <= unit) {
-            unit_owned_by_squadron.resize(unit + 1u, false);
-        }
-        unit_owned_by_squadron[unit] = true;
+        if (!attached) continue;
         squadrons.push_back(std::move(s));
         ++summary.squadrons_built;
-        ++summary.squadron_members;
     }
     if (!squadrons.empty()) {
         log.notef("ai squadrons: %llu PlaneSquadronGen objects built over %llu member "
