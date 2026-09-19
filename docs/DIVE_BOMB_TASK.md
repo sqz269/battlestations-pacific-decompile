@@ -3166,3 +3166,33 @@ the shape of the substitution.
 
 So their conclusion stands and is now independently confirmed, which is the right standing for it:
 they were right not to claim a reading they had not made, and the check was three lines away.
+
+## `007F0280` scoped: the six-argument ABI confirmed from both ends
+
+Ownership moved to this stream, because the zero substitution is a proof at the torpedo goaway site
+and a hole here. Before reading the body, its ABI is confirmed independently of the handover note,
+from the prologue and the epilogue:
+
+```
+007f0280  PUSH -1 / PUSH 0xc8f35b / MOV EAX,FS:[0] / PUSH EAX   ; SEH frame
+007f0295  SUB  ESP,0x104
+007f029b  PUSH EBP / PUSH ESI                                    ; 280 bytes pushed
+007f029d  MOV  ESI,dword ptr [ESP + 0x11c]                       ; = [ESP+284] = arg0
+...
+007f0b19  ADD  ESP,0x110
+007f0b1f  RET  0x18
+```
+
+`RET 0x18` is **24 bytes, six stack arguments**, and the prologue agrees: 280 bytes pushed puts the
+return address at `[ESP+280]` and the first argument at `[ESP+284]` = `[ESP+11Ch]`, which is exactly
+what `007F029D` reads. Two independent ends of the frame giving the same count is worth more than
+either alone, and it stands against `docs/BOT_TASK_STATES.md` row 356's five - that row is the thing
+to doubt, and it is not this stream's to edit.
+
+Body `007F0280`-`007F0B21`, 2209 bytes, SEH-registered, 0x110 of frame. Per the project's own notes
+that is a body to script rather than decompile, with ESP anchored on the SEH state stores and
+back-propagated - the decompiler's frame reasoning is least trustworthy exactly where an SEH
+registration sits, which the handover doc also says of its own contents.
+
+Queued behind the `usn04_terms` run and the `task+41Ch` binding. `009FD570`, which `009C47D0` also
+calls, belongs to cc8-flyto-solver and will not be transcribed here.
