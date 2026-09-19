@@ -633,8 +633,13 @@ struct GameUnitSlot {
     // plane's velocity onto its nose. docs/TORPEDO_RUN_IN_VELOCITY.md.
     float plane_x_drag{0.0f};
     float plane_y_drag{0.0f};
-    // desc+188h MaxSpd, the numerator of 009F9D30's run-profile speed ratio.
+    // desc+188h MaxSpd, the numerator of 009F9D30's run-profile speed ratio,
+    // and the scale on the torpedo aim tick's pitch denominator at 009D1E64.
     float plane_max_spd{0.0f};
+    // desc+1ACh PitchSpd (DEG(30) on this installation's TBD). 007DA8EB uses it
+    // as the pitch rate; 009D1E39 divides the nose-down angle by it to shallow
+    // the aim tick's dive command as the dive steepens.
+    float plane_pitch_spd{0.0f};
     // desc+18Ch TravelSpeed, the airspeed 007C6340 seeds a plane with.
     float plane_travel_speed{0.0f};
     // desc+164h Accel, desc+208h GlideRate, desc+1D4h DragPitchRatio and
@@ -2355,6 +2360,7 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
             slot->plane_x_drag = lua_row.x_drag;
             slot->plane_y_drag = lua_row.y_drag;
             slot->plane_max_spd = lua_row.max_spd;
+            slot->plane_pitch_spd = lua_row.pitch_spd;
             slot->plane_travel_speed = lua_row.travel_speed;
             slot->plane_accel = lua_row.accel;
             slot->plane_glide_rate = lua_row.glide_rate;
@@ -4533,7 +4539,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.db_attackrun_timer_1c = r.reroll_timer_1c;
                         unit_.db_attackrun_offset_20 = r.lateral_offset_20;
                         unit_.db_attackrun_heading_last = r.commanded_heading_2c0;
-                        unit_.db_attackrun_throttle_last = r.commanded_throttle;
+                        unit_.db_attackrun_throttle_last = r.descent_scale;
                         unit_.db_attackrun_alt_last = r.commanded_altitude_base;
                         // 009C42FF and 009C4305: cmd+2C0h with cmd+2CCh = 2.
                         unit_.plan_heading_2c0 = r.commanded_heading_2c0;
@@ -4544,13 +4550,33 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.plan_slots[bsp::kPilotSlotThrottle].active = 1;
                         unit_.plan_slots[bsp::kPilotSlotAirBrake].desired = 0.0f;
                         unit_.plan_slots[bsp::kPilotSlotAirBrake].active = 1;
-                        // 009C4401: 009FBA50 with the base, the class range and
-                        // the throttle, the same chain the torpedo attackrun
-                        // uses, so the altitude reaches the pitch command.
+                        // 009C4401's four arguments, all now read from the image
+                        // rather than inferred. 009C43D2 SUB ESP,0x10 opens the
+                        // window and they go in at:
+                        //   [ESP]    009C43F3  approach+ACh + approach+50h
+                        //   [ESP+4]  009C43E3  approach+B4h, the attack distance
+                        //   [ESP+8]  009C43DB  approach+BCh, the LIVE planar range
+                        //   [ESP+Ch] 009C43CD  the InterpolateClamped result
+                        //
+                        // CORRECTED. Both ranges used to be attack_distance_b4,
+                        // so `span = max(high - low, 0)` was identically zero,
+                        // the bias `span * scale * class+518h` vanished and the
+                        // aircraft was commanded to the bare base from 11 km
+                        // out - it descended at once instead of gliding down as
+                        // it closed. The second range is 009C4311's read of
+                        // approach+BCh, parked at 009C4317 in the tick's own dt
+                        // slot ([ESP+44h], reused as scratch once dt is spent).
+                        // So span is the distance STILL TO CLOSE: about 9900 m
+                        // at 11 km, zero at the attack distance. That is the
+                        // glide slope. The base is composed too, and it is the
+                        // same +ACh + +50h sum 009C7F00's ceiling uses.
+                        // Found alongside cc8-plane-squadron's zero-range-pair
+                        // diagnosis on the torpedo side. docs/DIVE_BOMB_TASK.md.
                         bsp::PlaneCruiseAltitudeInputs cin;
-                        cin.base_altitude = r.commanded_altitude_base;
+                        cin.base_altitude =
+                            unit_.db_begin_alt_ac + unit_.db_aim_point_height_50;
                         cin.range_low = in.attack_distance_b4;
-                        cin.range_high = in.attack_distance_b4;
+                        cin.range_high = in.planar_distance_bc;
                         // CORRECTION, packet cc8_torpedo_descent_law, for the
                         // owner of src/dive_bomb_task.cpp: 009C43CD's
                         // InterpolateClamped result is NOT a throttle. 009C43D5
@@ -4561,7 +4587,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // The full throttle this state commands is the literal
                         // 1.0 at 009C4413 above. The field keeps its name here
                         // because renaming it reaches into another lease.
-                        cin.scale = r.commanded_throttle;
+                        cin.scale = r.descent_scale;
                         cin.class_gain = static_cast<float>(
                             std::tan(static_cast<double>(unit_.plane_drop_angle)));
                         cin.has_squadron = false;
@@ -4590,8 +4616,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // reset at 0099B54E already leaves 2 there; this is the
                         // write made explicit next to the gate at 0099E3BF.
                         unit_.plan_state.pitch_mode_2d0 = 2;
-                        unit_.plane_desired_speed_2b4 = r.commanded_throttle;
-                        unit_.plane_air_brake_mode_2d8 = 0;
+                        // REMOVED: `plane_desired_speed_2b4 = descent_scale`.
+                        // A command census over 009C4220-009C447D finds no write
+                        // to cmd+2B4h at all, so the run-in issues no desired
+                        // speed; the host was inventing one out of 009C43CD's
+                        // result, which cc8_torpedo_descent_law has just shown is
+                        // the descent scale and never was a throttle. The only
+                        // throttle this state commands is the literal 1.0 at
+                        // 009C4413, already modelled above.
+                        unit_.plane_air_brake_mode_2d8 = 0;   // 009C4434
                     }
 
                     // 009C44F0, the turndown tick, vtable 00D20C84 slot +Ch.
@@ -5597,8 +5630,25 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         in.turn_radius_26c = 0.0f;
                         in.cruise_speed_25c = 1.0f;
                         in.alt_fold_a4 = 1.0f;
-                        in.pitch_scale_188 = 1.0f;
-                        in.pitch_div_1ac = 1.0f;
+                        // CORRECTED, packet cc8_torpedo_release_timer: both of
+                        // these were the stand-in 1.0f, and both are inputs to
+                        // the aim tick's DIVE command.
+                        //
+                        // 009D1E64 FLD [EAX+188h] / 009D1E6A FMUL denom, then
+                        // 009D1E7E takes pitchDen = max(range - 1200, that
+                        // product). Inside 1200 m of range the first term is
+                        // negative, so the product IS the denominator: about
+                        // 208 upward with MaxSpd, 3.0 upward with 1.0. With 1.0
+                        // the command saturates at -DEG(80) for any height
+                        // above the release floor over about four metres, and
+                        // the aircraft goes vertical inside 1200 m.
+                        in.pitch_scale_188 = unit_.plane_max_spd;
+                        // 009D1E39 FDIV [EDX+1ACh], the divisor of the
+                        // nose-down damper denom = 3 + (-unit+C64h / PitchSpd)
+                        // * sel, which is what shallows the command as the dive
+                        // steepens. 009D1DFD JBE is taken when -unit+C64h <= 0,
+                        // so it runs only while the nose is already down.
+                        in.pitch_div_1ac = unit_.plane_pitch_spd;
                         in.state_flag_24 = false;
                         const bsp::TorpedoAimTickResult r =
                             bsp::torpedo_aim_tick_full_009d15f0(binding, in, dt);
@@ -5699,13 +5749,21 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 009D1EDD writes plan+2BCh, the PITCH target
                         // (docs/PILOT_PLANNER_PITCH_ROLL.md note 6 and section
                         // 2a), and 009D1EE5 writes the mode plan+2D0h = 1 that
-                        // 0099E3D1 gates the whole pitch law on. The value is
-                        // clamp(-f34 / den, 0.05625, 0.872665) and f34 is the
-                        // aircraft's height ABOVE the altitude floor, so the
-                        // quotient is negative whenever the aircraft is high and
-                        // the clamp floors it at 0.05625 rad. It is a nose-up
-                        // floor and a pull-up, not a descent command: nothing in
-                        // the aim tick brings a torpedo bomber down.
+                        // 0099E3D1 gates the whole pitch law on.
+                        //
+                        // CORRECTED, packet cc8_torpedo_release_timer. The value
+                        // is clamp(-f34 / den, -1.3962634, 0.872665), i.e.
+                        // [-DEG(80), +DEG(50)]: 00D21318 holds the FLOAT
+                        // 0xBFB2B8C3 = -1.3962634, and the 0.05625 this comment
+                        // used to cite is the DOUBLE at those same eight bytes,
+                        // which neither of the two four-byte loads (009D1EA6
+                        // FLD float ptr, 009D1EB0 MOVSS) reads. f34 is the
+                        // aircraft's height ABOVE the altitude floor and
+                        // 009D1E98 FCHS negates it, so this IS the descent
+                        // command: the aim state's own dive, from the in-range
+                        // latch down to the 25-to-40 metre release band at
+                        // 009D20C4, easing to zero as the height above the
+                        // floor closes. docs/TORPEDO_RELEASE_TIMER.md.
                         unit_.plan_state.pitch_target_2bc = r.commanded_altitude_2bc;
                         unit_.torpedo_approach.aim_solution_130 = r.aim_solution_130;
                         if (r.aim_complete_2c && !unit_.torpedo_aim_complete_2c) {

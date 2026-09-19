@@ -2783,3 +2783,242 @@ cin.range_high    = in.planar_distance_bc;                          // 009C43DB
 
 Both are now read from the image rather than inferred. It needs `src/game_hosts_units.cpp`, which
 this stream has released, so it waits for a declared window.
+
+## `usn04_goaway2.log`: the completion rule works, and the ditch survives it
+
+| measure | `usn04_goaway` | `usn04_goaway2` |
+| --- | --- | --- |
+| arm ticks | 2118 | 2117 |
+| transitions | 7 | **5** |
+| goaway ticks | **1** | **43** |
+| aimglide ticks | 42 | 0 |
+| flyabove / turndown / aimdive | 159 / 71 / 318 | 158 / 71 / 318 |
+| water contact | -1.12 m, 43.72 m/s | -0.36 m, 44.92 m/s |
+| releases | 0 | 0 |
+
+Reading `009C7F00` whole did what it should: **goaway now runs 43 ticks instead of 1**, the climb-out
+arm bound beside it gets to act, and the state no longer ends on its first tick. The completion rule
+was the fault and it is fixed.
+
+The aircraft still ditches. 43 ticks is 3.9 s, and nothing recovers a dive-bomber that entered its
+dive at 650 m with the target astern and spent 318 ticks descending. That is not a goaway fault;
+it is the profile the aircraft arrived with.
+
+## Three defects at one call site, `009C4401`
+
+With the whole call now read, the host's binding was wrong in three separate ways, and they
+compound:
+
+| was | is | evidence |
+| --- | --- | --- |
+| `range_low = range_high = attack_distance_b4`, so `span` was identically 0 | `range_low` = `approach+B4h`, `range_high` = `approach+BCh`, the live planar range | `009C43E3` and `009C43DB`, the latter fed by `009C4311`/`009C4317` |
+| `base_altitude = r.commanded_altitude_base` | `approach+ACh + approach+50h` | `009C43F3` |
+| `plane_desired_speed_2b4 = commanded_throttle` | **nothing** - a census over `009C4220`-`009C447D` finds no `cmd+2B4h` write at all | the absence itself |
+
+The first is the one that matters. `span = max(high - low, 0)` is the distance **still to close** -
+about 9900 m at 11 km out, zero at the attack distance - so the bias `span * scale * class+518h`
+is the glide slope. Forced to zero, the aircraft is commanded to the bare base from 11 km out and
+descends immediately instead of gliding down as it closes. Every state this stream has bound was
+compensating for a command that should never have been given.
+
+The third is a consequence of the second's misnaming: `commanded_throttle` was never a throttle, so
+wiring it to a desired speed invented a command the state does not issue. Renamed to
+`descent_scale` here, with `kThrottleRatioLow`/`AtLow`/`RatioHigh`/`AtHigh` renamed to match, on
+cc8-torpedo-descent's listing evidence: `009C43CD`'s result is `009FBA50`'s arg3 and then
+`009FB800`'s arg2, the clamp on `t` in both of its arms.
+
+**Baseline: everything from here is measured after `67e8ac821`** and cannot share a table with the
+runs above. `local\usn04_span.log` is the first on the new side.
+
+## Constant-width audit, prompted by the torpedo aim tick's `kPitchClampLo`
+
+cc8-torpedo-descent found `00D21318` carried in a header as 0.05625 - the **double** at those eight
+bytes - while both loads are four-byte, and the float is `0xBFB2B8C3` = -1.3962634 = -DEG(80). A
+sign flip and a factor of twenty-five, from a constant that carried a bare address and no width.
+
+`include/bsp/dive_bomb_task.hpp` was audited for the same pattern: constants whose comment gives an
+address but no width word and no load site. Thirty-eight matched, of which **two are declared
+`double`** - the only ones where a width error could flip a value rather than merely be untidy:
+
+| constant | address | load | verdict |
+| --- | --- | --- | --- |
+| `kFlyAboveRollInBearing` = 1.600000023841858 | `00CE3D48` | `009C6790 FLD double ptr` | correct |
+| `kRollHandOver` = 0.800000011920929 | `00CE3D40` | `009C45B3 FLD double ptr` | correct |
+
+Both verified against the listing, and both now carry the width and the site. `00CE3D48` is the
+example they cite - its float is -1.084202e-19 - so had this one been declared `float` the flyabove
+roll-in would have compared a bearing against a denormal and fired on every tick.
+
+The remaining thirty-six are declared `float` and are consistent with `MOVSS`/`FLD float ptr` loads
+at the sites this stream has read, but they were **not** individually re-verified in this pass and
+should not be read as audited. The rule worth carrying forward is the one their packet demonstrates:
+a constant's comment gives the address **and** the width **and** a load site, because the address
+alone does not determine the value.
+
+## The width sweep completed, and a `1.0f` stand-in found by their second rule
+
+### The sweep: 63 checked, 0 mismatched
+
+The earlier audit verified two constants by hand and left thirty-six declared but unverified.
+cc8-torpedo-descent's suggestion - script it and print both widths - closes that honestly. The
+script reads eight bytes at each declared address out of the PE, computes the `float` and the
+`double` there, and flags any line whose declared value does not match its declared width.
+
+**Every constant in `include/bsp/dive_bomb_task.hpp` matches: 63 checked, 0 mismatched.** That is
+the whole header, not just the thirty-eight bare-address ones, so the "not re-verified" caveat on
+the earlier audit is now discharged rather than merely narrowed.
+
+### `speed_ratio_41c`: a `1.0f` stand-in that is not inert
+
+Their second rule - grep the block for `= 1.0f;` on anything named after a class offset, because a
+harmless-looking stand-in is only harmless until it lands in a denominator - turns up one in the
+dive-bomb block, `src/game_hosts_units.cpp:4198`:
+
+```cpp
+in.speed_ratio_41c = 1.0f;     // task+41Ch
+```
+
+It is **not** a denominator, so it does not blow up the way their `pitch_scale_188` did:
+
+```cpp
+// 009C8A1B-009C8A5E: task+4B0h = max(task+4B0h, tuning+4C4h * task+41Ch)
+const float wanted = in.attack_distance * in.speed_ratio_41c;
+```
+
+But it is not inert either. It scales the in-range latch threshold `approach+B8h` directly, and the
+census reports that threshold as exactly 1100.0 m - the bare `Pilot/DiveBomb/AttackDist` - which is
+the value a 1.0 stand-in produces and tells us nothing about the real one. `task+41Ch` is a speed
+ratio whose producer this stream has not read; if it is anything but 1.0, the latch closes at a
+different range, the flyabove starts somewhere else, and every geometry number in the tables above
+shifts with it.
+
+Recorded as a labelled stand-in with its consequence rather than fixed: the fix needs `task+41Ch`'s
+producer, which is a read this packet has not done.
+
+## `tools/const_width_sweep.py`: a repo-wide constant-width sweep
+
+Promoted from the scratchpad script to a tracked tool. It reads eight bytes at each declared image
+address out of the PE, computes the `float` and the `double` there, and flags any
+`inline constexpr float|double kName = VALUE;  // 00XXXXXX` whose declared value matches neither its
+declared width. `--all` sweeps every header under `include/bsp`; `--full` prints a line per constant.
+
+**697 constants in 1727 headers, 122 mismatched.** They fall into two very different classes and
+should be routed differently.
+
+### Class A, 102: the value matches the OTHER width
+
+`kRampHalf declared float=0.5 but float=0 double=0.5` is the pattern - the address holds a qword and
+the header declares `float`. This is exactly the `kPitchClampLo` family. It is **harmless if the load
+is `FLD double ptr` and wrong if the load is four-byte**, and the sweep cannot tell which: only the
+listing can. Every one needs its load site read before anything is changed.
+
+### Class B, 20: the value matches NEITHER width
+
+These are the ones worth reading first, because the declared value is not at that address in either
+interpretation:
+
+```
+cruise_command.hpp:153/154/155/156   kCruiseHeading*Epsilon, kCruiseSpeedSettingInactive
+gui_widget_scene.hpp:45/46           kGuiVisibleFactor, kGuiHiddenFactor
+gun_bot_ticks.hpp:156/170            kGunBotFixedStep, kAAGunnerBotSpanAtSkillZero
+hud_updates.hpp:334                  kHudMinimapXDivisor  declared 1024, double there is 0.000976562
+pilot_controls.hpp:84                kPilotPitchHalfRange declared 0.5236, float there is 0.523599
+ship_ai_attackmove_substates.hpp:408 kAttackMoveLeadScaleNear declared 1, float there is 0.174533
+ship_ai_goal_vector.hpp:93           kShipAiGoalKeepLengthSq
+ship_ai_nav_block_ctor.hpp:37        kShipAiNavBlockThrottleFull
+ship_ai_obstacle_tables.hpp:159      kShipAiDangerClearanceMin
+submarine_model.hpp:218              kSubCrushTickSeconds
+unit_commanded_speed.hpp:113         kDirectorWeaponTargetAbandonDistanceSq
+unit_controller.hpp:270              kUnitEffectGateAstern
+unit_damage.hpp:49                   kUnitInvincibleOff
+unit_death_sink.hpp:70               kWreckAnchorLateralDivisor declared 2, double there is 2.5
+world_entity_update.hpp:83           kMatrixInterpolatorPhaseCeiling
+```
+
+Two are worth naming as likely real: `kHudMinimapXDivisor` declares 1024 where the address holds
+**1/1024** as a double - the reciprocal, which is what a divide-by-multiply would store - and
+`kWreckAnchorLateralDivisor` declares 2 where the double is **2.5**.
+
+And one is a false positive worth recording so the tool is not over-trusted:
+`kPilotPitchHalfRange` declares 0.5236 against a float of 0.523599, a four-significant-figure
+declaration rather than a width error. Several of the "declared 1 or 0, address holds garbage" rows
+are likely constants whose comment carries a **code** address (a load site) rather than the data
+address, which the sweep cannot distinguish.
+
+**Nothing outside this stream's own headers has been changed.** `include/bsp/dive_bomb_task.hpp` is
+clean at 63/0. The rest is listed for routing to its owners, with the caveat that a Class A row is
+not a defect until its load width is read and a Class B row may be a site address or a rounded
+declaration.
+
+## `--load-sites`: Class A split, and the danger list is four rows
+
+The sweep's Class A covered two opposite cases. `kPitchClampLo` itself printed as Class A - declared
+`float` 0.05625, the double at the address 0.05625, the float -1.396 - so "matches the other width"
+hid both the harmless case (every load is 8 bytes; the header's C++ type is merely narrower than the
+image's) and the catastrophic one (a load is 4 bytes; the declared VALUE is simply wrong).
+
+`--load-sites` decides it mechanically: for each mismatched constant it finds every instruction with
+an absolute `[disp32]` operand naming that address and reports the operand width.
+
+### The scan had to be built the way the project's own notes prescribe
+
+A linear Capstone sweep from the `.text` start found **none** of the three loads this stream had read
+by hand - `009C6790`, `009C45B3`, `009C43C4` - although it reported 3, 1 and 3 sites at those
+addresses. It desyncs on inline data and every "site" it had was an artefact. Disassembling from each
+**known function start** up to the next, out of `local/bsp_index.sqlite`, finds all three at the
+right widths and raises the site counts to 15, 56 and 168. The tool refuses to run without that
+index rather than silently falling back.
+
+### The result
+
+**697 constants, 122 mismatched: 101 A-harmless, 1 A-WRONG, 4 Class B, 16 unreferenced by the scan.**
+
+So the overwhelming majority are a narrow C++ type over an 8-byte image value - real, but cosmetic.
+The danger list is four rows:
+
+| class | header:line | constant | declared | loads read |
+| --- | --- | --- | --- | --- |
+| **A-WRONG** | `torpedo_aim_tick.hpp:77` | `kPitchClampLo` | `float` 0.05625 | **m32 -> -1.39626** |
+| B | `hud_updates.hpp:334` | `kHudMinimapXDivisor` | `float` 1024 | m64 -> 0.000976562 |
+| B | `ship_ai_attackmove_substates.hpp:408` | `kAttackMoveLeadScaleNear` | `float` 1 | **m32 -> 0.174533** |
+| B | `unit_death_sink.hpp:70` | `kWreckAnchorLateralDivisor` | `double` 2 | m64 -> 2.5 |
+| B | `pilot_controls.hpp:84` | `kPilotPitchHalfRange` | `float` 0.5236 | m32 -> 0.523599 |
+
+The last is the false positive predicted earlier and now confirmed by its loads: a
+four-significant-figure declaration, not a width error. The other three are real, and two are
+recognisable at sight - `0.174533` is `DEG(10)` declared as 1, and `0.000976562` is `1/1024`, the
+reciprocal a divide-by-multiply would store.
+
+**The single A-WRONG is `kPitchClampLo`, which is the bug cc8-torpedo-descent found by hand.** This
+tree still carries `0.05625f`, so the tool found it blind, in a tree where it was still live, having
+been told nothing about it - and found no other constant in 697 that is wrong in the same way. That
+is the validation the sweep needed; a tool that found nothing would have proved nothing.
+
+Sixteen rows are unreferenced by the scan and are reported as their own class, not as safe: an
+address with no referencing instruction may simply be one the function-start sweep did not reach.
+
+Nothing outside this stream's headers was changed. The full table, including all 101 A-harmless
+rows with their sites, is written to `local/output/const_load_widths.txt`.
+
+## Correction: `plane_drop_angle` is NOT zero, and the span fix's inertness is still unexplained
+
+I proposed that the `009FBA50` span fix came out inert because `class_gain = tan(plane_drop_angle)`
+is zero for this class, and then nearly confirmed it from a bad search. `Select-String -List` returns
+the **first match per file**, so a search for `DropAngle` over `vehicleclasses.lua` returned exactly
+one row - a `["Type"] = "Submarine"` class - and I read that as "no aircraft class has DropAngle".
+
+There are **176** of them. The counts by value start 33 at 0.698132, 9 at 0.383972, 9 at 0.523599,
+and the torpedo stream's Mavs report 0.4014, which is one of the others. So aircraft do carry a drop
+angle, `plane_drop_angle` is very probably non-zero for the dive bomber too, and `class_gain` is not
+the explanation.
+
+That is the vacuous-negative trap this project's own notes name - an empty or near-empty search
+result proves nothing until the pattern is known to occur - and I walked into it while holding a
+tool built specifically to stop people trusting unverified readings.
+
+**So the span fix's inertness is open, not explained.** What is established: `usn04_span.log` is
+identical to `usn04_goaway2.log` to the digit, so correcting the range pair, the composed base and
+the phantom `cmd+2B4h` write changed nothing observable. The cheap next step is instrumentation
+rather than inference - log `span`, `class_gain`, `scale` and `c.clamped_altitude` from the attackrun
+tick for one run, and see which term is dead - and that is one build and one run, against a guess
+that has already been wrong once.

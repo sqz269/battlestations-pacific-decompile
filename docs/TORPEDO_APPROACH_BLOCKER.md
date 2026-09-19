@@ -427,3 +427,48 @@ placement as `local/tap_before_usn01.log`: `plane water contact` does not appear
 3928.5 m to **3.8 m**. The blocker this document named is gone. `release_arm_009D2287` is still 0:
 the next gate is `009D1360`'s own gate at `009D19A0` and the fact that `009D15F0` commands no
 altitude, both recorded in `docs/TORPEDO_DESCENT_LAW.md`.
+
+## Correction settling section 9, from packet `cc8_torpedo_descent_law`
+
+Section 9 is right that the host's zero range pair is a defect and it is half of the plunge.
+Sections 9.1 and 9.3 need correcting, and 9.4's question is answered.
+
+**9.3's open question is closed: the image passes a real pair, and it is `+7Ch`/`+80h`.**
+`009D07B0` step 4 read from the bytes:
+
+```
+009d09fc  MOVSS XMM0,[EDI + 0x90]    ; the planar range
+009d0a08  MOVSS [ESP + 0x8],XMM0     ; -> arg2, rangeHigh          (009D0A71 reads it back)
+009d0a0e  JBE 009d0a1a               ; taken when 15 <= approach+134h
+009d0a10  MOVSS XMM0,[EDI + 0x80]    ; before 15 s: TorpReleaseDistFar
+009d0a1a  MOVSS XMM0,[EDI + 0x7c]    ; after  15 s: TorpReleaseDistNear
+009d0a2a  MOVSS [ESP + 0x20],XMM0    ; -> arg1, rangeLow           (009D0A79 reads it back)
+009d0a81  FLD [EDI + 0x78] / FADD [EDI + 0x74]  ; -> arg0, the base
+```
+
+So the pair is `(releaseDistance, liveRange)` and the base **is** `+78h + +74h` - that assumption
+held. Section 9.3's warning not to borrow the move-to pair was right about the method and wrong
+about the risk: `009D07B0` does use the same two fields, and they are **not** commanded speeds.
+`include/bsp/torpedo_approach_update.hpp` already carries packet `cc8_torpedo_run_profile`'s
+correction - `+7Ch` is `TorpReleaseDistNear` and `+80h` is `TorpReleaseDistFar`, **release distances
+in metres**, with the names `speed_late_7c`/`speed_early_80` kept only because they were load
+bearing. The run settles it: the census prints `low=650.0` and then `low=450.0` after the
+15-second switch, which are the authored `Far` and `Near` rows exactly.
+
+**9.1 understates the defect.** "The `-pi/3` is `pitch_command_009fb800`'s dive arm saturating
+correctly ... so the arm is right and the COMMAND is wrong" is true of the host's arithmetic and
+false of its inputs. `009FB800`'s **second** argument is `009FBA50`'s **fourth** - the scale -
+and the host was passing the unclamped altitude. With 12.0 in `t`'s clamp the dive arm saturates at
+any error over about 80 m no matter what altitude is commanded, so restoring the range pair alone
+would not have fixed this. Both halves were needed. `docs/TORPEDO_DESCENT_LAW.md`.
+
+**9.4 is answered, and the climb call sites are clean of the pair problem but not of the other
+one.** The climb-out does not go through `009FBA50` at all: `009D0F10
+BSP_BotStateTorpedoGoAway_Tick` calls `009FB800` **directly** at `009D109C`, `009D10FF` and
+`009D1194`, and its second argument is a literal **1.0** - `009D107A FLD1` then `009D1084 SUB ESP,8`
+/ `009D1087 FSTP [ESP+4]`, and `009D1158 FLD1` for the third. That is decisive independent evidence
+that the second argument is a dimensionless scale and never an altitude: a 1.0 metre altitude
+reference is meaningless, while a scale of 1.0 caps the climb at `class+1ECh * 1.0` = 0.1854 rad
+for the Mav, a 10.6-degree climb-out. So there is no zero-pair fault on the climb path; if the
+dive bomb's climb-out is wrong it is wrong for some other reason, and the thing to check on that
+side is `009C6F7D`'s own second argument in `009C62B0 BSP_BotStateDiveBombFlyAbove_Tick`.

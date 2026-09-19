@@ -2201,6 +2201,21 @@ void GameAiCoordinatorHost::Impl::build_squadrons() {
     // for 007F4580's loop, complete for the member array and the class id.
     squadrons.clear();
     unit_owned_by_squadron.assign(units.count(), false);
+    // A name-to-unit map, because a SCENE-ROW squadron's registry record never
+    // gets its member units filled. Only the air-ops path fills them
+    // (game_hosts_script_orders.cpp, `squadron.member_units.push_back(unit)`);
+    // the scene path clears the array and then fills only `member_names` and
+    // `member_spawn_index`, queueing the wings into `pending_squadron_members`,
+    // and the `resolve_member_units` the registry's header says makes
+    // find_by_member_unit valid does not exist anywhere. Measured on USN04 with
+    // the unit lookup alone: 7 squadrons over 15 planes, which is its four
+    // air-ops wings grouped correctly and its one scene wing seeding three
+    // squadrons of its own. Resolving by name closes that.
+    std::map<std::string, std::size_t> unit_by_name;
+    for (std::size_t u = 0; u < units.count(); ++u) {
+        const std::string named = unit_name(u);
+        if (!named.empty()) unit_by_name.emplace(named, u);
+    }
     for (std::size_t unit = 0; unit < units.count(); ++unit) {
         // 009FE0F0's air test: the plane base 0Fh. A squadron's own members are
         // planes, and nothing else in the scene produces one.
@@ -2214,10 +2229,38 @@ void GameAiCoordinatorHost::Impl::build_squadrons() {
         // on a USN04 that has 5. The registry's back pointer is this process's
         // stand-in for plane+9D4h: a plane whose squadron names another unit as
         // its flight leader is a wingman and is not a seed.
-        const bsp::PlaneSquadronHostRecord* owner =
-            bsp::plane_squadron_registry().find_by_member_unit(unit);
-        if (owner != nullptr && owner->member_units.empty()) owner = nullptr;
-        if (owner != nullptr && owner->flight_leader() != unit) continue;
+        // find_by_member_unit is the right question, but it cannot answer yet:
+        // this runs from create_units' tail and the registry's +3D0h array is
+        // resolved by GameScriptOrdersHost::resolve_plane_squadron_members,
+        // whose only call sites are in the mission loop. Until that resolver is
+        // also called at the end of create_units, a scene-row squadron's array
+        // is empty here and the name route is the one that answers.
+        bsp::PlaneSquadronRegistry& wings = bsp::plane_squadron_registry();
+        const bsp::PlaneSquadronHostRecord* owner = wings.find_by_member_unit(unit);
+        if (owner == nullptr) owner = wings.find_by_member_name(unit_name(unit));
+        // The wing in +3D0h order when the array is resolved, and by name when
+        // it is not. Slots whose plane never became a unit are skipped, which
+        // is live_count()'s rule.
+        std::vector<std::size_t> wing_units;
+        if (owner != nullptr) {
+            for (const std::size_t member : owner->member_units) {
+                if (member != bsp::kPlaneSquadronNoUnit) wing_units.push_back(member);
+            }
+            if (wing_units.empty()) {
+                for (const std::string& member : owner->member_names) {
+                    const auto found = unit_by_name.find(member);
+                    if (found != unit_by_name.end()) wing_units.push_back(found->second);
+                }
+            }
+        }
+        // A record that resolves to nothing is no owner: without this the
+        // leader check would fail for every plane in it and drop them all.
+        if (wing_units.empty()) {
+            owner = nullptr;
+            wing_units.assign(1, unit);
+        }
+        // 007EDA91 reads slot 0 whatever the count: only the flight leader seeds.
+        if (wing_units.front() != unit) continue;
         Squadron s;
         // 007F4778 stores the wing count at +3C8h. Take the authored WingCount
         // the registry carries when there is one; the absent-key arm 007F4735,
@@ -2229,10 +2272,7 @@ void GameAiCoordinatorHost::Impl::build_squadrons() {
         // SOURCE of the members changes: the registry's array in array order
         // for a real squadron, and this unit alone otherwise.
         bool attached = false;
-        const std::vector<std::size_t> lone(1, unit);
-        const std::vector<std::size_t>& wing =
-            owner != nullptr ? owner->member_units : lone;
-        for (const std::size_t plane : wing) {
+        for (const std::size_t plane : wing_units) {
             int spawn_index = 0;
             if (!bsp::plane_squadron_attach_plane_007f4b43(
                     s.entity, handle(plane), &spawn_index)) {
@@ -2257,6 +2297,35 @@ void GameAiCoordinatorHost::Impl::build_squadrons() {
             "negation of 007EDA90 is what admits them",
             static_cast<unsigned long long>(summary.squadrons_built),
             static_cast<unsigned long long>(summary.squadron_members));
+        // The +3C8h each squadron ended up with, which no line carried before.
+        // It is the discriminator for whether the wing count came from the
+        // authored WingCount or from 007F4735's absent-key default of 3: they
+        // coincide at 3 for USN04's movieval and for every air-ops launch, and
+        // differ on USN01, whose five rows author 1.
+        std::map<int, std::size_t> wing_count_histogram;
+        for (const Squadron& built : squadrons) {
+            ++wing_count_histogram[built.entity.wing_count];
+        }
+        for (const std::pair<const int, std::size_t>& entry : wing_count_histogram) {
+            log.notef("  ai squadron wing_count +3C8h=%d over %zu squadron(s)",
+                entry.first, entry.second);
+        }
+        // A squadron of exactly one plane that the registry does know about is
+        // the ungrouped case: USN04 ends at 7 squadrons over 15 planes because
+        // one air-ops launch's three planes each seeded one. Name them so the
+        // next run says which launch rather than leaving it to arithmetic.
+        for (const Squadron& built : squadrons) {
+            if (built.member_units.size() != 1) continue;
+            const std::size_t only = built.member_units.front();
+            const bsp::PlaneSquadronHostRecord* record =
+                bsp::plane_squadron_registry().find_by_member_name(unit_name(only));
+            if (record == nullptr) continue;
+            log.notef("  ai squadron UNGROUPED %s: the registry knows it as a member of "
+                "%s (+3D0h holds %zu slot(s), %d live), so it should not have seeded a "
+                "squadron of its own",
+                unit_name(only).c_str(), record->name.c_str(),
+                record->member_units.size(), record->live_count());
+        }
     } else {
         log.notef("ai squadrons: this mission created no unit answering IsKindOf(0Fh), "
             "so no PlaneSquadronGen is built and 009FE080 falls to its ship tail");

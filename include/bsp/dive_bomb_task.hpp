@@ -481,7 +481,7 @@ bool dive_bomb_flyabove_can_dive_009c680e(float height_above_target,
 // at frame slot K=104 is not positive. That slot is max(x, 0) from
 // 009C65E3-009C65FD, and x's own producer is one level further back and NOT
 // established, so the caller passes it and the host still substitutes.
-inline constexpr double kFlyAboveRollInBearing = 1.600000023841858;  // 00CE3D48
+inline constexpr double kFlyAboveRollInBearing = 1.600000023841858;  // 00CE3D48, qword; 009C6790 FLD double ptr. The FLOAT at those bytes is -1.084202e-19, so the width is load-bearing.
 bool dive_bomb_flyabove_roll_in_009c67b0(float bearing_error,
                                          float clamped_slot) noexcept;
 
@@ -501,10 +501,10 @@ namespace dive_bomb_attackrun_constant {
 inline constexpr double kDistanceClamp = 2000.0;      // 00CF0DD8 qword / 00CFFD60 float
 inline constexpr double kMarginCeiling = 1400.0;      // 00D1F8D0 qword
 inline constexpr double kMarginFloor = 50.0;          // 00CE3938 qword / 00CEB4D4 float
-inline constexpr float kThrottleRatioLow = 0.10000000149011612f;   // 00D7A2F0
-inline constexpr float kThrottleAtLow = 0.4000000059604645f;       // 00CE7804
-inline constexpr float kThrottleRatioHigh = 0.3499999940395355f;   // 00CF6560
-inline constexpr float kThrottleAtHigh = 1.0f;                     // the FLD1
+inline constexpr float kDescentScaleRatioLow = 0.10000000149011612f;   // 00D7A2F0
+inline constexpr float kDescentScaleAtLow = 0.4000000059604645f;       // 00CE7804
+inline constexpr float kDescentScaleRatioHigh = 0.3499999940395355f;   // 00CF6560
+inline constexpr float kDescentScaleAtHigh = 1.0f;                     // the FLD1
 inline constexpr double kLateralOffsetScale = 0.5235987901687622;  // 00CEC730 qword
 inline constexpr float kSamplerA = 80.0f;             // 00CE5444
 inline constexpr float kSamplerB = 60.0f;             // 00CEB4B0
@@ -536,7 +536,7 @@ struct DiveBombAttackRunResult {
     float clamped_distance = 0.0f;       // min(approach+BCh, 2000)
     float height_margin = 0.0f;          // max(1400 - altitude, 50)
     float throttle_ratio = 0.0f;         // margin / clamped distance
-    float commanded_throttle = 0.0f;     // the fourth argument to 009FBA50
+    float descent_scale = 0.0f;     // 009FBA50 arg3, then 009FB800 arg2
     float commanded_altitude_base = 0.0f;  // its first
     bool wrote_full_throttle = true;     // cmd+278h = 1.0f, +27Ch = 1
     bool wrote_zero_air_brake = true;    // cmd+2A8h = 0.0f, +2ACh = 1
@@ -558,7 +558,7 @@ DiveBombAttackRunResult dive_bomb_attackrun_tick_009c4220(
 namespace dive_bomb_turndown_constant {
 inline constexpr double kWrapLow = -3.1415927410125732;   // 00CE3D18, qword
 inline constexpr double kWrapHigh = 3.1415927410125732;   // 00CE3D28, qword
-inline constexpr double kRollHandOver = 0.800000011920929;  // 00CE3D40, 45.8 deg
+inline constexpr double kRollHandOver = 0.800000011920929;  // 00CE3D40, qword; 009C45B3 FLD double ptr, 45.8 deg
 inline constexpr float kPi = 3.1415927410125732f;         // 00D7A264, movss
 inline constexpr float kLatchBank = 2.6179940700531006f;   // 00D1FED0, 150 deg
 inline constexpr float kPitchHoldBand = 0.3490658700466156f;  // 00CE398C, 20 deg

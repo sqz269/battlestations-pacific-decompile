@@ -74,7 +74,17 @@ inline constexpr float kTurnFactorFloor = 0.1f;     // 00D7A3A0 / 00D7A2F0
 
 // The commanded pitch, 009D1E53-009D1EDD.
 inline constexpr float kPitchRangeBias = 1200.0f;   // 00D1FAF8, 009D1E5A
-inline constexpr float kPitchClampLo = 0.05625f;    // 00D21318
+// CORRECTED, packet cc8_torpedo_release_timer: this was 0.05625f, which is the
+// DOUBLE at 00D21318. Both instructions that load it are four-byte -
+// 009D1EA6 FLD float ptr [00D21318] and 009D1EB0 MOVSS XMM0,dword ptr
+// [00D21318] - and the float there is 0xBFB2B8C3 = -1.3962634, which is
+// -DEG(80). Every other constant in this header that needed a width check
+// carries two addresses (the double form and the float form) or a named site;
+// this one carried a bare address and was never checked. The sign is the whole
+// of it: 009D1E98 FCHS makes the quotient NEGATIVE whenever the aircraft is
+// above the altitude floor, and a lower bound of +0.05625 turned every descent
+// command into a 3.2-degree climb. docs/TORPEDO_RELEASE_TIMER.md.
+inline constexpr float kPitchClampLo = -1.3962634f;  // 00D21318 as a float, -DEG(80)
 inline constexpr float kPitchClampHi = 0.872665f;   // 00D057E0 / 00D05B40
 
 // The throttle chain, 009D1BDB-009D1CD7.

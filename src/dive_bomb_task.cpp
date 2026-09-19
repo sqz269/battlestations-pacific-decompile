@@ -437,11 +437,11 @@ DiveBombAttackRunResult dive_bomb_attackrun_tick_009c4220(
     // clamped distance. Flat 0.4 below a tenth, full at just over a third.
     out.throttle_ratio = (out.clamped_distance != 0.0f)
         ? out.height_margin / out.clamped_distance : 0.0f;
-    out.commanded_throttle = dive_bomb_interpolate_clamped_00419010(
-        dive_bomb_attackrun_constant::kThrottleRatioLow,
-        dive_bomb_attackrun_constant::kThrottleAtLow,
-        dive_bomb_attackrun_constant::kThrottleRatioHigh,
-        dive_bomb_attackrun_constant::kThrottleAtHigh,
+    out.descent_scale = dive_bomb_interpolate_clamped_00419010(
+        dive_bomb_attackrun_constant::kDescentScaleRatioLow,
+        dive_bomb_attackrun_constant::kDescentScaleAtLow,
+        dive_bomb_attackrun_constant::kDescentScaleRatioHigh,
+        dive_bomb_attackrun_constant::kDescentScaleAtHigh,
         out.throttle_ratio);
 
     // 009C43ED-009C4401: the altitude base handed to 009FBA50.

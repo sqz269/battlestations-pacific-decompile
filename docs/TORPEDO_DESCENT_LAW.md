@@ -126,7 +126,23 @@ stores. Nothing is left on the stack at the `RET`.
 **(b) The decompiler.** `exports/bsp/functions/009fba50/decompiled.c` ends
 `FUN_009fb800(param_2,param_5);` - the clamped altitude and the fourth float.
 
-**(c) The `1.6` that appears twice.** The move-to tick's own ramp at `009C1AF3` is
+**(c) Three call sites pass a literal `1.0`.** `009D0F10 BSP_BotStateTorpedoGoAway_Tick` calls
+`009FB800` **directly**, not through `009FBA50`, at `009D109C`, `009D10FF` and `009D1194`, and its
+second argument is `FLD1`: `009D107A FLD1`, `009D1084 SUB ESP,8`, `009D1087 FSTP [ESP+4]` covers
+the first two calls (the `009D1094 JBE` branches after the store), and `009D1158 FLD1` covers the
+third. An altitude reference of 1.0 metre is meaningless; a **scale** of 1.0 caps the climb-out at
+`class+1ECh * 1.0` = 0.1854 rad for the Mav, a 10.6-degree climb. This is the cleanest evidence in
+the binary that the argument is dimensionless, and it is independent of the x87 walk.
+
+A fourth direct call site, read by `agent/cc8-dive-bomb` after this packet flagged it, agrees on the
+type and differs on the policy: `009C6F7D` in `009C62B0 BSP_BotStateDiveBombFlyAbove_Tick` selects
+its second argument between `00CE74F8` = **0.8** (`009C6F53 MOVSS`, reached when `009C6F51 JBE` is
+not taken) and a live computed value at `[ESP+0x10]`, pushing it through `009C6F6D SUB ESP,8` /
+`009C6F69 FLD [ESP+0x10]`. So that state caps its climb at `class+1ECh * 0.8` where the torpedo
+goaway caps at `class+1ECh * 1.0`. Three states, three different dimensionless values in the same
+slot, no altitude anywhere.
+
+**(d) The `1.6` that appears twice.** The move-to tick's own ramp at `009C1AF3` is
 `Interp(0.05, 0.35, 0.4, 1.6, .)` (`00CE7638`, `00CF6560`, `00CE7804`, `00D06BB4`), so its largest
 scale is **1.6**, and the dive cap at `009FB97F` is `max(DropAngle * 1.6, DEG(60))` with the same
 `1.6` (`00CE3D48`). The steepest scale the move-to state can command makes `DropAngle * t` land
@@ -257,10 +273,21 @@ clean, so `[ESP+0xc]` at `009D09C2` is the slot `009D07E4` wrote and it holds `a
 
 ## Validation
 
-Both runs are `--frames 3200 --press-start-frame 30 --menu-select USN01 --mission-frames 3000
+All runs are `--frames 3200 --press-start-frame 30 --menu-select USN01 --mission-frames 3000
 --mission-frame-seconds 0.05`, on the same binary lineage and the same placement, with
 `query session` = `console Active` before each and `exit_code=0 frames_presented=3199
 loop_finished=1`.
+
+**The before column is one commit away.** `local/relbind_after_usn01.log` is on `b2be05c68`, this
+branch's HEAD before `e5cae8ef6`, so it is the exact one-commit before column and it is the one the
+table below uses where it matters. It reproduces `local/tap_before_usn01.log` (on `b882aa1d4`)
+line for line on everything checked: the five `plane water contact` lines to the centimetre
+(`-4.13 / -5.05 / -5.88 / -5.05 / -0.01`, `|v|` 140.95 to 141.12), Mav1's
+`approach 009D3420: ticks=124 ... min=3928.5 last=3928.5`, `issue stage 007CE9FD: stage_ticks=3000
+... C28h=-150.005` and `summary mission pilot attack: ordered=5 range_first_mean=4174.3
+range_last_mean=3806.2 closed_mean=368.1 worst_closed=330.7 ... final_pitch_mean=-1.010`. So
+`e15cb7091`'s `TorpedoReleaseOrderBinding` edit moved nothing, as its own coverage note predicts,
+and either log is a valid before column for this packet.
 
 | | before, `local/tap_before_usn01.log` | after, `local/descentlaw_full_usn01.log` |
 | --- | --- | --- |
@@ -272,6 +299,8 @@ loop_finished=1`.
 | pitch demand at 800 m | -1.0472 (`-DEG(60)`), and unchanged to the water | **-0.0573** |
 | commanded altitude at 4183 m range | 12.00 | **761.91** |
 | `\|v\|` entering aim | n/a, dead at 141 m/s | 81.00 m/s |
+| `closed_mean` / `worst_closed` | 368.1 m / 330.7 m | **3570.8 m / 3272.8 m** |
+| `final_pitch_mean` | -1.010 rad | **-0.020 rad** |
 | `release_arm_009D2287`, releases | 0, 0 | 0, 0 - see below |
 
 Mav1's descent census after the fix, the whole attack run:
@@ -312,3 +341,37 @@ torpedo, and neither is in this packet:
 The 60-second intermediate run `local/descentlaw_after_usn01.log` is kept as the first evidence that
 the latch closes: at 1200 mission frames Mav2 and Mav3 had 38 and 51 aim ticks with the other three
 still inside 2400 m and descending.
+
+## Correction from packet `cc8_torpedo_release_timer`: "the aim state commands no altitude" was right and its conclusion was wrong
+
+The Validation section's second open item reads: "**The aim state commands no altitude.**
+`009D15F0`'s callee list contains neither `009FBA50` nor `009FB800` ... So when the `2200 m` latch
+closes the descent command stops, and the aircraft hold 488.9 to 559.9 m over the target ...
+Something between the latch and the band has to bring them the last 400 m, and it is not the chain
+this packet fixed."
+
+* **was**: the absence of `009FBA50`/`009FB800` from `009D15F0`'s callees means nothing in the aim
+  state brings the aircraft down.
+* **is**: the callee observation stands and the inference does not. The aim tick does not command an
+  **altitude**; it writes the **pitch** directly, `009D1EDD MOVSS [EAX+2BCh],XMM0` with
+  `009D1EE5 MOV [EAX+2D0h],1`, bypassing the altitude chain entirely. That write is the second
+  descent, and the reason the aircraft climbed instead of diving was one clamp constant read at the
+  wrong width in `include/bsp/torpedo_aim_tick.hpp`: `00D21318`'s float is `-1.3962634` = `-DEG(80)`
+  and the header carried the double at those bytes, `0.05625`, which turned every descent command
+  into a 3.2-degree climb.
+* **evidence**: `docs/TORPEDO_RELEASE_TIMER.md` section 1.
+
+So the chain is two descents, one per state: the attack run's glide slope down to the in-range latch
+at 2200 m, and the aim tick's pitch command from there to the 25-to-40 metre release band. This
+packet fixed the first; `cc8_torpedo_release_timer` fixed the second. The first open item, the
+`009D19A0` gate keeping `run_time_009D1360` at 0, is **not** a blocker on the drop after all: it
+feeds `approach+A0h`, and the flag it reaches at `009D2052` is `range + 80 > +A0h`, which a zero
+satisfies.
+
+### Withdrawn with it: the `009D19A0` gate claim
+
+The same Correction's closing sentence says the `009D19A0` gate "never opens". That was read off a
+run in which `src/game_hosts_units.cpp` passes `in.turn_radius_268 = in.turn_radius_26c = 0.0f`, so
+the host's `turn_room` is `speed + 200` whatever the aircraft is doing. Nothing has been established
+about when the image opens that gate. The rest of the sentence stands: `approach+A0h` at zero still
+satisfies `009D2052`'s `range + 80 > +A0h`, so the hook is not a blocker on the drop either way.

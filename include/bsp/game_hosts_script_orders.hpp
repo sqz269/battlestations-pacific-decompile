@@ -58,6 +58,32 @@ struct lua_State;
 
 namespace bsp::game {
 
+class GameUnitsHost;
+class GameHostLog;
+
+// The plane-squadron member write-back, as a free function so that a caller
+// which holds no scripts-orders host can drive it. It fills the registry's
+// +3D0h array by name from the units host, which is the only thing the body
+// ever needed: `bsp::plane_squadron_registry()` is process-wide and
+// `count()` / `unit_row()` are the units host's own public API. Same shape as
+// `game_objective_sets()` - a producer and a reader in different hosts with
+// neither owning the other.
+//
+// It exists as a free function because the consumer that needs it earliest,
+// GameAiCoordinatorHost::Impl::build_squadrons, runs from `create_units`'s
+// tail, while the member's own call sites are both in the mission loop: a
+// scene-row squadron's array was therefore still empty when the AI asked, and
+// USN04 built 7 AI squadrons over 15 member planes where the mission has 5.
+// Adding a scripts-orders pointer to the units host instead would need a
+// wiring line in the Codex-owned src/game_hosts.cpp.
+//
+// Unguarded and idempotent: it reassigns every slot from the names each time,
+// so it is safe to call after any pass that creates units. The member below
+// keeps the "only when the unit count changed" guard for the mission loop,
+// where it runs every frame. Returns the number of slots that resolved.
+std::size_t resolve_plane_squadron_members(const GameUnitsHost& units,
+                                           GameHostLog* log);
+
 class GameHostLog;
 class GameUnitsHost;
 struct GameSceneEntityRecord;
