@@ -276,7 +276,13 @@ TorpedoAimTickResult torpedo_aim_tick_full_009d15f0(TorpedoAimTickHost& host,
     float pitch_den = f14_range - kPitchRangeBias;              // 009D1E5A
     const float scaled = in.pitch_scale_188 * denom;            // 009D1E6A
     if (scaled > pitch_den) pitch_den = scaled;                 // 009D1E7E
+    // 009D1E8E FLD F=3Ch (f34), 009D1E98 FCHS, 009D1E9A FDIV F=50h. f34 is the
+    // aircraft's height above the altitude floor, so the quotient is NEGATIVE
+    // whenever the aircraft is high: this is a DESCENT command, not a pull-up.
     float pitch = -f34 / pitch_den;                             // 009D1E9A
+    // 009D1EAE JBE is taken when kPitchClampLo <= pitch, so the fall-through
+    // takes the low bound; 009D1EC8 JBE is taken when pitch <= kPitchClampHi,
+    // so the fall-through takes the high bound. The band is [-DEG(80), +DEG(50)].
     pitch = clamp_listing(pitch, kPitchClampLo, kPitchClampHi); // 009D1EAE
     out.commanded_altitude_2bc = pitch;                         // 009D1EDD
     out.altitude_mode_2d0 = 1;                                  // 009D1EE5

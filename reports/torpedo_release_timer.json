@@ -1,0 +1,88 @@
+{
+  "packet": "cc8_torpedo_release_timer",
+  "owner": "agent/cc8-plane-squadron",
+  "doc": "docs/TORPEDO_RELEASE_TIMER.md",
+  "summary": "009D1EDD writes a DIVE command, clamp(-F34 / pitchDen, -DEG(80), +DEG(50)). The host carried 0.05625 for the lower bound, which is the DOUBLE at 00D21318; both instructions that load it are four-byte and the float there is -1.3962634 = -DEG(80). Every descent the aim tick asked for was floored into a 3.2-degree climb, which held USN01's torpedo bombers at 489 to 560 m while the release flag at 009D20C4 wanted them under 25 to 40 m.",
+  "routines": [
+    {
+      "address": "009d15f0",
+      "name": "BSP_BotStateTorpedoAim_Tick",
+      "abi": "void __thiscall(this, float dt), RET 4, body 009D15F0-009D2379",
+      "coverage": "complete for 009D1D44-009D1EE5 (the release threshold and the commanded pitch) and 009D202C-009D2287 (the five-flag chain and the arm); the rest is unchanged by this packet."
+    },
+    {
+      "address": "009d1360",
+      "name": "BSP_BotApproachTorpedo_UpdateRunTime",
+      "abi": "void __fastcall(this), RET, body 009D1360-009D14F3",
+      "coverage": "partial: read for its two outputs approach+98h and approach+A0h and their producers. The 007BCC80 fall-time curve and the 007BCFA0 water speed are contract: unread."
+    }
+  ],
+  "host_steps": [
+    {
+      "host": "BotStateTorpedoAim::update_run_time",
+      "address": "009d19a4",
+      "native": "009d1360",
+      "function": "009d15f0",
+      "note": "Reached only when turn_room > range at 009D19A0, a commit hook. Cold on USN01, and NOT a blocker on the drop: its output approach+A0h reaches 009D2052 as range + 80 > +A0h, which a zero satisfies."
+    },
+    {
+      "host": "BotStateTorpedoAim::accumulate_timer",
+      "address": "009d2027",
+      "native": "009fa3a0",
+      "function": "009d15f0",
+      "note": "009FA3A0 subtracts the step from state+18h and calls 007BBBA0 at 009FA3D0 on a strictly negative countdown."
+    },
+    {
+      "host": "BotStateTorpedoAim::ground_height",
+      "address": "009d2265",
+      "native": "00903860",
+      "function": "009d15f0",
+      "note": "The arm at 009D2239 needs 1.0 > groundHeight at 009D2272, satisfied over water."
+    }
+  ],
+  "corrections": [
+    {
+      "doc": "include/bsp/torpedo_aim_tick.hpp, kPitchClampLo",
+      "was": "0.05625f, cited as 00D21318.",
+      "is": "-1.3962634f, the float 0xBFB2B8C3 at 00D21318, which is -DEG(80). 0.05625 is the double at the same eight bytes.",
+      "evidence": "009D1EA6 FLD float ptr [00D21318] and 009D1EB0 MOVSS XMM0,dword ptr [00D21318] are both four-byte; the double form is never loaded. One instruction later the HIGH bound IS stored at both widths, 00D057E0 double for the FLD double ptr at 009D1EBC and 00D05B40 float for the MOVSS at 009D1ECA, which is the pattern a constant used at both widths produces."
+    },
+    {
+      "doc": "src/game_hosts_units.cpp, the comment above plan_state.pitch_target_2bc",
+      "was": "'It is a nose-up floor and a pull-up, not a descent command: nothing in the aim tick brings a torpedo bomber down.'",
+      "is": "It is the aim state's descent, from the in-range latch at 2200 m to the 25-to-40 metre release band, flaring to zero as the height above the release floor closes.",
+      "evidence": "009D1E98 FCHS negates F34, which is the height above the floor; the clamp band is [-DEG(80), +DEG(50)]. The edit itself is queued: that file is leased to agent/cc8-dive-bomb."
+    },
+    {
+      "doc": "docs/TORPEDO_AIM_TICK.md section (4)",
+      "was": "the 009D1DD6-009D1EE5 row reads clamp(..., 0.05625, 0.872665), and follow-up 1 calls the cone flag 'the whole remaining distance to a drop'.",
+      "is": "clamp(..., -1.3962634, 0.8726646); and the altitude flag at 009D20C4 was in front of the cone flag.",
+      "evidence": "docs/TORPEDO_RELEASE_TIMER.md section 1."
+    },
+    {
+      "doc": "docs/TORPEDO_DESCENT_LAW.md, Validation",
+      "was": "'The aim state commands no altitude ... Something between the latch and the band has to bring them the last 400 m, and it is not the chain this packet fixed.'",
+      "is": "The callee observation stands; the inference does not. The aim tick writes the PITCH directly at 009D1EDD with mode cmd+2D0h = 1, bypassing the altitude chain, and that write is the second descent.",
+      "evidence": "docs/TORPEDO_RELEASE_TIMER.md section 1."
+    },
+    {
+      "doc": "docs/TORPEDO_RUN_IN_DESCENT.md section 5 and docs/PLANE_POSE_THROTTLE_ALTITUDE.md section 4",
+      "was": "both read the 009D1EDD write as a nose-up floor and a pull-up.",
+      "is": "it is a dive command.",
+      "evidence": "the same listing."
+    }
+  ],
+  "release_flags": {
+    "009d2038": "!state+24h",
+    "009d2052": "envelope > range AND range + 80 > approach+A0h",
+    "009d20c4": "Interp(0.4, 40, 1.0, 25, t) > unitAltitude - THE BLOCKER, 25 to 40 metres against 489 to 560 m",
+    "009d2165": "unit+C64h > max(range * 0.006 - 0.8, -0.1), computed only while |unit+C68h| < 0.8",
+    "009d2209": "cone(t) > |turn|, Interp(0.3, 80deg, 0.8, 50deg, t) under 0.8 s and Interp(0.8, 50deg, 1.6, 15deg, t) over",
+    "009d2272": "the arm also needs 1.0 > groundHeight; 009D2282 starts the countdown at ZERO so the drop lands on the next aim tick"
+  },
+  "validation": {
+    "before": "local/descentlaw_full_usn01.log",
+    "after": "local/reltimer_after_usn01.log",
+    "build": "clean; ctest reconstructed_math and tool_tests both pass"
+  }
+}

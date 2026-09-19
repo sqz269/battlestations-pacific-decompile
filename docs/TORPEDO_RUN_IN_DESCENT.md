@@ -298,3 +298,22 @@ answered in `docs/TORPEDO_THROTTLE_CUT.md` section 4: the commanded 12 m is the 
 for a torpedo bomber, because `approach+74h` comes from a field constructed zero at `00939E83` whose
 only gameplay writer is the dive-bomb task's `009C89CE`. What is missing is the `moveto` tick
 `009C18C0`, which would bring the aircraft to `Pilot/Torpedo/CruisingAlt` before the run begins.
+
+## Correction from packet `cc8_torpedo_release_timer`: the aim tick's `plan+2BCh` is a dive, not a nose-up floor
+
+Section 5, "The aim tick's own altitude handling, for completeness", records the `009D1EDD` write as
+a nose-up floor. It is the aim state's descent command.
+
+* **was**: `cmd+2BCh = clamp(-F34 / den, 0.05625, 0.872665)`, a positive pitch, so the aim tick can
+  only hold the nose up.
+* **is**: `clamp(-F34 / den, -1.3962634, +0.8726646)`. The lower bound at `00D21318` is the float
+  `0xBFB2B8C3` = `-DEG(80)`; `0.05625` is the double at the same address, and both instructions that
+  load it (`009D1EA6 FLD float ptr`, `009D1EB0 MOVSS`) are four-byte. `F34` is the height above the
+  release floor and `009D1E98 FCHS` negates it, so the command dives while the aircraft is high and
+  eases to zero at the floor.
+* **evidence**: `docs/TORPEDO_RELEASE_TIMER.md` section 1.
+
+The consequence for this document's chain: the attack run's glide slope
+(`docs/TORPEDO_DESCENT_LAW.md`) brings the aircraft down to the in-range latch at 2200 m, and the
+aim tick takes it from there to the 25-to-40 metre release band at `009D20B4`. Two descents, one per
+state, and this host had neither.
