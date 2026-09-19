@@ -809,3 +809,29 @@ same structure this packet already added. It is not done here.
 Until it is, section 5's *conclusion* — that nothing reaches the commanded heading through
 `009D1360`, proved by census — stands, and section 5's *arithmetic about how big the resulting miss
 must be* is withdrawn.
+
+#### 6.3.2 Eleven forms, and the Reset does not touch the aim point either
+
+Two more encodings with positive controls, both empty in the `009C`/`009D` band: `05 D0 00 00 00`
+(`ADD EAX,0D0h`, 4 image-wide) and `81 ?? D0 00 00 00` (the group-1 immediates, 44 image-wide).
+**Eleven valid encodings** now, and no writer of `approach+D0h..D8h` in the bot-task band.
+
+Two structural facts from the other end, which is where the lead pointed:
+
+* **Six routines take `&task+3F8h`** (`8D ?? F8 03 00 00`, 88 image-wide): `009D3080` in
+  `BSP_BotTaskTorpedo_Construct`, `009D42BC` in `FUN_009D4230`, `009D485A` in
+  `BSP_BotTaskTorpedo_TickArm`, `009D4BA1` in `BSP_BotTaskTorpedo_UpdateCruiseProfile`, `009D4D1B`
+  in `FUN_009D4C90` and `009D4DD7` in `FUN_009D4DB0`. `009D42BC`'s is a **read**: `LEA ECX,[EBP+3F8h]`
+  then `LEA EDX,[ESP+5Ch]` then `CALL EAX`, which is `approach->vtable[0](&buf)` again.
+* **`009D0380 BSP_BotApproachTorpedo_Reset` does not touch it.** Over its whole body
+  `009D0380`-`009D066F` there is no store at any displacement in `0C0h`..`0DFh`, and the only address
+  it takes of a member is `LEA ECX,[ESI+0B4h]` at `009D052F`. So `approach+CCh` and `+D0h..D8h`
+  **survive a reset**, which fits a pair owned by whatever installs the target rather than by the
+  approach itself.
+
+The static bound is now as tight as scanning can make it. **The cheaper and more decisive next step
+is section 8.1's**, not more of this: record the ordered target's identity and its world position at
+release and at closest approach. That separates "the escorts are slower than `d32c` implies" from
+"the nearest ship is not the ship aimed at" from "something upstream leads" in a single run, and it
+does not depend on finding the producer at all — if the aim point sits ahead of the target, the
+producer hunt has its answer from the outside.
