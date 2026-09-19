@@ -1,0 +1,90 @@
+{
+ "packet": "cc8_ai_bullet_type_accuracy",
+ "owner": "agent/cc8-ai-squadron",
+ "doc": "docs/AI_TARGET_WEIGHT_TERMS.md",
+ "tree_base": "main merged at the start of the packet",
+ "question": "Publish the per-barrel accuracy 00A08460 reads so the model replaces its class stand-in, and measure IJN01 before and after on one build.",
+ "answer": "The accuracy is not stored on any weapon record. 00A093D7 reads the bullet class record out of the 48h-stride barrel entry's +34h, 00A093DA hands it to 009FE270 as EDX at 00A094E6, and 009FE270 switches on that record's +8h to pick one float out of the 00A371A0 per-mode AI tuning record. The only writer of those floats is 00A335D0, loading the BulletTypeAccuracy section of Scripts\\datatables\\HighLvlAIGlobals.lua into record offsets 110h-18Ch. So the row owes a SELECTOR, not an accuracy, and the lookup runs per target. Three pieces land together: the gunnery host keeps the sub-type 006E9890 already computed and publishes it on the barrel; ai_tuning_load_00a335d0 fills 110h-18Ch and also 05Ch/060h, because DamageCalcTime was outside the 33-key subset and is the numerator of every barrel's time factor, so turning the model on without it would have answered zero for every pair; and AiWeightModelBinding::barrel_accuracy resolves the target axis it was already being handed and discarding. The target axis is arm 009FE2A2's own shape: PUSH 0Fh the plane base, else PUSH 6 the ship base split by 00827F70, else the fall-through, which the authored Lua comment names Repulore/Kishajora/Nagyhajora/Landfortra.",
+ "coverage": "complete for 009FE270's dispatch (byte table 009FE6EC and jump table 009FE6C4 read from bytes), for arms 009FE2A2, 009FE313, 009FE384, 009FE3F5, 009FE44A, 009FE465, 009FE480 and 009FE64A, for the twelve bullet-class constructors that store +8h, and for 00827F70. PARTIAL for arm 009FE4F1: the predicates 006E3260, 007B80A0 and 007B80C0 that choose SmallRocket over BigRocket are not read, so the Rocket sub-type 12h is flagged unresolved and its units keep the stand-in rather than scoring at a fabricated zero. 00A08460's attacker-is-type-0Fh branch 00A0861F..00A09222 remains unprojected, as before this packet.",
+ "calls": [
+  {
+   "address": "00a093d7",
+   "native": "none, a load",
+   "enclosing_address": "00a08460",
+   "note": "barrel+34h, the bullet class record; 00A093DA stores it into the slot that becomes EDX"
+  },
+  {
+   "address": "00a093de",
+   "native": "none, a load",
+   "enclosing_address": "00a08460",
+   "note": "that record's +8h, the selector; 00A093E1 CMP EAX,0Ah tests it against the Torpedo arm"
+  },
+  {
+   "address": "00a094e6",
+   "native": "009fe270",
+   "enclosing_address": "00a08460",
+   "note": "the accuracy lookup, ECX=EBP, EDX=the bullet class record, stack=the target"
+  },
+  {
+   "address": "009fe2b1",
+   "native": "00a371a0",
+   "enclosing_address": "009fe270",
+   "note": "the per-mode AI tuning record the arms FLD out of"
+  },
+  {
+   "address": "009fe2d4",
+   "native": "00827f70",
+   "enclosing_address": "009fe270",
+   "note": "splits the ship base into small surface and the rest, the index 2 / index 3 axis"
+  },
+  {
+   "address": "009fe42b",
+   "native": "00827f70",
+   "enclosing_address": "009fe270",
+   "note": "the torpedo arm, where a true answer REJECTS instead of selecting"
+  },
+  {
+   "address": "00827f78",
+   "native": "vtable+18h",
+   "enclosing_address": "00827f70",
+   "note": "PUSH 0Eh TorpedoBoat"
+  },
+  {
+   "address": "00827f89",
+   "native": "vtable+18h",
+   "enclosing_address": "00827f70",
+   "note": "PUSH 0Ch LandingShip, with 00827F95 requiring the BigLandingShip byte at class+808h clear"
+  },
+  {
+   "address": "006e99d8",
+   "native": "none, a store",
+   "enclosing_address": "006e9890",
+   "note": "the generic Bullet class refined to 2 or 3 by the \"AA\" name test; cc7 recorded this rule first"
+  },
+  {
+   "address": "006e9a06",
+   "native": "none, a store",
+   "enclosing_address": "006e9890",
+   "note": "the Artillery class refined to 5, 6 or 7 by the 75.0f and 150.0f damage bands"
+  }
+ ],
+ "corrections": [
+  {
+   "was": "GameAiWeaponFacts::Barrel::accuracy, a float published per barrel, held at 0.0f with the row forced incomplete.",
+   "is": "GameAiWeaponFacts::Barrel::bullet_sub_type plus accuracy_resolved. The accuracy is a function of (bullet sub-type, target class group) and cannot be a per-barrel constant.",
+   "evidence": "009FE270 takes the target as its stack argument and queries it; 00A094E6 passes a different target on every candidate."
+  },
+  {
+   "was": "The 009FE0B0 trio's three class ids 1Bh, 45h and 46h were recorded as unresolved.",
+   "is": "LandFort, AirField and Shipyard, so the routine answers 'is this a static installation' and the census line fort_targets counts all three.",
+   "evidence": "include/bsp/vehicle_class.hpp's VehicleClassKind, the same id space the vtable+5Ch queries use, selected from the same VehicleClass.Type."
+  },
+  {
+   "was": "docs/AI_TARGET_WEIGHT_TERMS.md: '009FE270's arms are gated by the FIRST argument's vtable[+18h] type queries' and 'nine handler bodies'.",
+   "is": "The queries are on the STACK argument; the first argument is never dereferenced. Nine live arms cover ten bullet types because 009FE4F1 serves both rockets.",
+   "evidence": "009FE273 MOV ESI,[ESP+10h] after three pushes; every vtable call in the routine is on ESI."
+  }
+ ],
+ "result": "The three pieces are implemented and verified against the listing, and the model is left SWITCHED OFF because switching it on is a measured regression. Three IJN01 runs, one build each. Before (local/acc_ijn01_before.log): served 2450, attackmove 2250, settarget 141, fallback 59, scored 465500, model_runs 0; this reproduces local/tw_ijn01.log exactly on a tree with main merged, so the pair is a clean A/B. With the model on (local/acc_ijn01_after.log): model_runs 465500, class_stand_ins 0, complete_rows 321 of 321, so the plumbing works - but the model answers zero for 460600 candidates, exactly the fort_targets count, scored collapses to 4900, and attackmove and settarget both go to 0 with all 2450 served members taking the fallback moveto. The AI stops attacking. inputs_complete is therefore held false in src/game_hosts_gunnery.cpp, one line. A first reading blamed the target hit points and was REFUTED by a third run (local/acc_ijn01_after2.log) that gated completeness on hit_points > 0: complete_rows stayed 321 and no other number moved, so every row has real health, and the condition was removed rather than left in. The residue is 00A08460's own coverage - its attacker-is-type-0Fh branch 00A0861F..00A09222 is unprojected and entity_is_type and entity_kind are stubs - or authored-zero accuracy for the attackers' actual barrel types against the fall-through group. Which of the two is not settled here.",
+ "validation": "Build clean at /W4 /WX; both ctest suites pass. Three game runs as above. With inputs_complete false the model never runs, and the only tuning offsets this packet adds (05Ch, 060h, 110h-18Ch) are read by nothing but the model, so main keeps exactly the before behaviour the first run measured."
+}

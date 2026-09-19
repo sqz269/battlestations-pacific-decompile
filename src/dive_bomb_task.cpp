@@ -224,7 +224,7 @@ DiveBombAimError dive_bomb_aim_error_009c5c9b(const DiveBombAimErrorInputs& in) 
     // 009C5BEE-009C5BF7 and 009C5C27-009C5C38: one x window for both calls.
     const float x0 = in.dive_altitude_a8 +
                      static_cast<float>(dive_bomb_constant::kMoveToRangeBias);
-    const float x1 = in.begin_altitude_ac + in.extra_range_50;
+    const float x1 = in.begin_altitude_ac + in.aim_point_height_50;
     // 009C5C49: the lead, 0 at the floor up to (approach+14h)->+5Ch high up.
     out.lead = dive_bomb_interpolate_clamped_00419010(x0, 0.0f, x1, in.lead_at_high_5c,
                                                       in.height_above_target);
@@ -269,7 +269,7 @@ DiveBombAimDiveReleaseResult dive_bomb_aimdive_release_009c60f1(
 
 // 009C5AFD-009C5B48.
 bool dive_bomb_dive_abort_009c5b43(const DiveBombDiveAbortInputs& in) noexcept {
-    if (!(in.release_range_d4 + in.extra_range_50 > in.slant_range)) {
+    if (!(in.release_range_d4 + in.aim_point_height_50 > in.slant_range)) {
         return false;  // 009C5B18
     }
     if (!(in.unit_attitude_c64 > dive_bomb_constant::kAbortRollFloor)) {
@@ -431,7 +431,7 @@ DiveBombAttackRunResult dive_bomb_attackrun_tick_009c4220(
         out.throttle_ratio);
 
     // 009C43ED-009C4401: the altitude base handed to 009FBA50.
-    out.commanded_altitude_base = in.begin_altitude_ac + in.extra_range_50;
+    out.commanded_altitude_base = in.begin_altitude_ac + in.aim_point_height_50;
     return out;
 }
 
@@ -508,6 +508,42 @@ DiveBombTurnDownResult dive_bomb_turndown_tick_009c44f0(
         dive_bomb_turndown_constant::kEaseOffAngle, 0.0f,
         dive_bomb_turndown_constant::kFullPitchAngle, 1.0f,
         out.angle_to_inverted);
+    return out;
+}
+
+// 009C5C9F-009C5DB2, the aimdive tick's steering.
+//
+// PARTIAL, and the partial part is the roll's interpolant. The image draws TWO
+// bearing errors, from two calls to approach->vtable[0] at 009C594C and
+// 009C5988: one against the latched target the constructor parked at
+// approach+D8h/+DCh/+E0h (009C4065-009C407D), one against the aircraft's own
+// position at unit+FCh/+100h/+104h. The default roll arm interpolates the
+// first; the wider arm 009C5D24-009C5D31 selects the second when the error is
+// positive and a folded angle is inside the 60 degrees at 00D05AAC. This host
+// re-reads the commanded target each tick and keeps ONE bearing, so it passes
+// that one and takes the default band. The wide arm is named, not bound.
+DiveBombAimDiveSteerResult dive_bomb_aimdive_steer_009c5c9f(
+    const DiveBombAimDiveSteerInputs& in) noexcept {
+    DiveBombAimDiveSteerResult out;
+
+    // 009C5C9F FLDZ, 009C5CA5 FCOMI ST0,ST1, 009C5CA9 JBE: the sign of the aim
+    // error picks the gain, and each arm clamps at its own end of the stick.
+    if (in.aim_error > 0.0f) {
+        const float demand = in.aim_error * in.pitch_gain_positive_64;
+        // 009C5CB6 FLD1, 009C5CB8 FCOMIP, 009C5CBC JBE.
+        out.pitch_29c = (demand < 1.0f) ? demand : 1.0f;
+    } else {
+        const float demand = in.aim_error * in.pitch_gain_negative_68;
+        // 009C5CD7 FLD [00D7A260], 009C5CE1 FCOMIP, 009C5CE5 JBE.
+        out.pitch_29c = (demand > -1.0f) ? demand : -1.0f;
+    }
+
+    // 009C5D8E, the default arm: InterpolateClamped(-0.4, 1.0, 0.4, -1.0, x).
+    // Falling, like every other roll map in this bot: a positive bearing error
+    // gives a negative stick.
+    out.roll_290 = dive_bomb_interpolate_clamped_00419010(
+        -dive_bomb_constant::kAimDiveRollBand, 1.0f,
+        dive_bomb_constant::kAimDiveRollBand, -1.0f, in.bearing_error);
     return out;
 }
 

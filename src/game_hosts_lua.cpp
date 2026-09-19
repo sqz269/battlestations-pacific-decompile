@@ -1584,29 +1584,6 @@ bool get_property_key_is(const char* key, const char* name) noexcept {
     }
 }
 
-// The `thisTable` slot 00928A00 built for an entity id. 006C6895 pushes the
-// entity object that sits at slot+28h; the stand-in for an entity object in this
-// process is exactly that table, and it is what every binding's 00888AA0 resolve
-// takes. Leaves the table on the stack on success and the stack unchanged
-// otherwise.
-bool push_entity_table(lua_State* state, int entity_id) {
-    if (state == nullptr || entity_id <= 0) return false;
-    lua_getfield(state, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);
-    if (!lua_istable(state, -1)) {
-        ::lua_settop(state, ::lua_gettop(state) - 1);
-        return false;
-    }
-    char key[16];
-    std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat, entity_id);
-    lua_getfield(state, -1, key);
-    if (!lua_istable(state, -1)) {
-        ::lua_settop(state, ::lua_gettop(state) - 2);
-        return false;
-    }
-    ::lua_remove(state, -2);
-    return true;
-}
-
 // 006C6714 through 006C68A6 build one table per slot in this key order. The
 // field offsets are the slot record's own, cross-checked against
 // include/bsp/air_operations.hpp: classid slot+4h (006C6782), count slot+8h
@@ -1622,18 +1599,29 @@ void push_air_ops_slot_entry(lua_State* state, const bsp::AirOpsSlot& slot) {
     ::lua_setfield(state, -2, "count");
     ::lua_pushinteger(state, static_cast<lua_Integer>(slot.class_field_134));
     ::lua_setfield(state, -2, "equipment");
-    // 006C6895 pushes the launched squadron ENTITY, not a number, and the whole
-    // point of the key for luaGetSlotsAndSquads is that it is nil until a launch
-    // fills slot+28h. An unlaunched slot therefore carries no `squadron` field.
+    // 006C6895 pushes the launched squadron, and the whole point of the key for
+    // luaGetSlotsAndSquads is that it is nil until a launch fills slot+28h. An
+    // unlaunched slot therefore carries no `squadron` field.
     //
-    // CORRECTED by packet cc8_airops_launch_tick: this pushed the raw id, and an
-    // integer is not what `PilotSetTarget` takes. The script does
-    // `PilotSetTarget(slot.squadron, target)`, and 00888AA0's stand-in requires a
-    // table with an `ID` field; a number fails `lua_type == LUA_TTABLE` at the
-    // first test and the order is dropped. What goes here is the entity's own
-    // `thisTable` slot, which is what the native's +28h entity resolves to.
-    if (slot.launched_squadron != 0u
-        && push_entity_table(state, static_cast<int>(slot.launched_squadron))) {
+    // RETRACTED, packet cc8_usn04_strike_class. Packet cc8_airops_launch_tick
+    // changed this to push the entity's `thisTable` slot, reasoning that the
+    // script hands `slot.squadron` straight to `PilotSetTarget`, which needs a
+    // table. **The script does no such thing.** All four readers in
+    // usn_19_coralus.lua go through `thisTable` themselves:
+    //
+    //   :545  local launchedWildcat = thisTable[tostring(GetProperty(Mission.Lex,
+    //                                   "slots")[slotIndex].squadron)]
+    //   :560, :1394, :1409 have the same shape, and :1411 is
+    //         PilotSetTarget(launchedStriker, bombertrg) on the RESULT of :1409
+    //
+    // `kMissionLuaEntityKeyFormat` is "%d", so a `thisTable` key is the entity id
+    // as text and `tostring` of the number is exactly that key. Pushing a table
+    // here makes `tostring` yield "table: 0x...", so every one of those lookups
+    // returns nil and the mission then orders nil. The original integer was
+    // right and the reasoning that replaced it was wrong.
+    // docs/USN04_STRIKE_CLASS.md.
+    if (slot.launched_squadron != 0u) {
+        ::lua_pushinteger(state, static_cast<lua_Integer>(slot.launched_squadron));
         ::lua_setfield(state, -2, "squadron");
     }
 }

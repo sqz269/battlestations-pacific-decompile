@@ -154,6 +154,12 @@ struct GameGunRow {
     // What this gun's projectile descriptor answers to vtable[8], from the
     // authored `Bullets` row's `Type`. docs/ORDNANCE_KIND_IDENTITY.md.
     bsp::OrdnanceKindSet ordnance{};
+    // The bullet class record's +8h AFTER 006E9890's rewrite, a different id
+    // space from `ordnance` above: 006E9890 turns the constructor's 1 into 2 or
+    // 3 by the "AA" name test and its 4 into 5, 6 or 7 by the damage bands, and
+    // 009FE270 switches on the result to pick a BulletTypeAccuracy row.
+    // docs/AI_TARGET_WEIGHT_TERMS.md, docs/BULLET_ENGAGEMENT_RANGE.md.
+    int bullet_sub_type{0};
     float max_range{0.0f};            // 00731020's answer, the bullet `Range`
     float muzzle_speed{0.0f};
     float water_travel_speed{0.0f};   // MTorpedo classDesc+0E4h, 008566B0

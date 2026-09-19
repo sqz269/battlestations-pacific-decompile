@@ -532,3 +532,136 @@ calibre, which is what its own record already says.
 The cost was avoidable. `python tools/bsp.py lookup 006e9890` answers this in one call, and this
 packet reached the routine by a byte scan and read it cold instead. Look the address up before
 reading it, even when a scan hands you the function name.
+
+## The accuracy is published (packet `cc8_ai_bullet_type_accuracy`, 2026-09-18)
+
+Three pieces, landed together because none of them turns the model on alone.
+
+### 1. The selector reaches the row
+
+`006E9890`'s reconstruction already computed the refined `+8h` and the gunnery host already called
+it for the engagement range; it simply dropped the other half of the answer.
+`src/game_hosts_gunnery.cpp` now keeps `finalised.sub_type` on `GameGunRow::bullet_sub_type` and
+publishes it onto `GameAiWeaponFacts::Barrel::bullet_sub_type`. **`Barrel::accuracy` is deleted**,
+because an accuracy is not a property a barrel has: it is a property of a (barrel, target) pair.
+
+### 2. The tuning block carries the table
+
+`bsp::AiTuningBlock` spans the whole `23Ch` record but `ai_tuning_keys()` loaded only 33 keys.
+`ai_tuning_load_00a335d0` now also calls `ai_tuning_load_bullet_type_accuracy_00a335d0`, which
+fills `110h`-`18Ch` from the authored table, and `ai_tuning_load_attacker_vs_target_00a335d0`,
+which fills `05Ch` and `060h`.
+
+That second one is not incidental. `00A08460` divides `DamageCalcTime` by each barrel's reload to
+get its time factor, and `DamageCalcTime` was **not** among the 33 keys, so it was reading the
+unloaded `0.0f`. Turning the model on without it would have multiplied every barrel's damage by
+zero and answered a zero weight for every pair, collapsing candidate admission — a result that
+would have looked like a finding and been an artefact. Both values are uniform across the seven
+mode tables (`DamageCalcTime` 60, `MaxTargetKillRatio` 150.0, diffed across all seven).
+
+`ai_load_globals_00a335d0` in `ai_target_weights.cpp` **still has no caller**, and this packet did
+not give it one. It is the fuller reconstruction and wants an `AiGlobalsLoaderHost` backed by a
+live Lua state; the only generic Lua reader in the process lives in `src/game_hosts_lua.cpp`, which
+is leased to another worker. The path actually in use is the authored-reader one extended here.
+Naming that rather than duplicating it.
+
+### 3. The lookup resolves the target at query time
+
+`AiWeightModelBinding::barrel_accuracy` received a target argument and discarded it. It now takes
+the tuning block and a target-group callback, and answers
+`ai_bullet_type_accuracy_offset_009fe270(sub_type, group)` out of the block. The dispatch is the
+byte table and the arms, written as a pure function so it can be read against the listing.
+
+The group is `Impl::accuracy_target_group`, which is arm `009FE2A2`'s own shape: `PUSH 0Fh` the
+plane base, else `PUSH 6` the ship base split by `00827F70`, else the fall-through. Two labelled
+substitutions, both narrow:
+
+* **The query family.** The native asks the vehicle class descriptor's `vtable[+18h]`; this asks
+  the instance's `vtable[+5Ch]` through `unit_is_kind_of`. The **codes** are the native's, because
+  `VehicleClassKind` and the entity class ids are one id space selected from the same
+  `VehicleClass.Type`. The vtables are still two different vtables.
+* **The small-ship split.** `00827F70`'s two codes are exact, read from `00827F78 PUSH 0Eh`
+  TorpedoBoat and `00827F89 PUSH 0Ch` LandingShip. Its third condition, the `BigLandingShip` byte
+  at class`+808h`, has no producer here, so **a big landing ship is classed small** where the
+  native would class it big.
+
+### What stays incomplete, and why that is a flag rather than a zero
+
+`Barrel::accuracy_resolved` is false for exactly one sub-type, Rocket (`12h`), whose SmallRocket and
+BigRocket blocks `009FE4F1` chooses between through target-state predicates `006E3260`, `007B80A0`
+and `007B80C0` that are not read. A unit carrying any rocket barrel keeps its row **incomplete** and
+therefore keeps the class stand-in, rather than scoring that barrel at a fabricated zero. Six of the
+120 authored bullet classes in this installation are `Rocket`, so the shortfall is small; the census
+line now prints `complete_rows` beside `weapon_rows` so the cost is visible rather than assumed.
+
+A resolved sub-type that answers offset `0` is a different thing and is passed through as a real
+`0.0f`: that is the reject arm, and `00A094F5 FCOMIP / JNC` skipping the barrel is the native's own
+behaviour. MachineGun against a big ship or a landfort, Artillery and Bomb against a plane, and a
+torpedo against a torpedo boat all legitimately answer zero.
+
+### Measured, and the model is left switched OFF
+
+Three IJN01 runs, one build each, `--frames 3200 --mission-frames 3000`.
+
+| Run | Log | `served` | `attackmove` | `settarget` | `fallback` | `scored` | `model_runs` | `complete_rows` |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| before, model off | `local/acc_ijn01_before.log` | 2450 | 2250 | 141 | 59 | 465500 | 0 | - |
+| after, model on | `local/acc_ijn01_after.log` | 2450 | **0** | **0** | **2450** | **4900** | 465500 | 321 |
+| after, gated on health | `local/acc_ijn01_after2.log` | 2450 | 0 | 0 | 2450 | 4900 | 465500 | 321 |
+
+The before run reproduces `local/tw_ijn01.log` from the census packet exactly, on a tree with main
+merged, so the pair is the clean A/B the earlier census could not be.
+
+**Turning the model on is a regression, and it is not shipped.** `model_runs` reaches 465500 and
+`class_stand_ins` falls to 0, so the plumbing works and every row is complete. But the model answers
+a zero weight for **460600** candidates, which is exactly IJN01's `fort_targets`, so `scored`
+collapses from 465500 to 4900 and every one of the 2450 served members takes the fallback moveto:
+**the AI issues no attack orders at all.** `inputs_complete` is therefore held at `false` in
+`src/game_hosts_gunnery.cpp`, one line, with the three pieces left in place for the packet that can
+flip it.
+
+**A first reading of that collapse blamed the target hit points and was wrong.** The argument was
+that this installation's `vehicleclasses.lua` has no `Landfort` `Type` row, so the 239 LandFort
+entities — registered from a `LandFortClasses` table that is not among the loose scripts — would
+resolve no `hp`, and `ai_target_weight_result` answers 0 whenever `target_hit_points` is 0. The
+second run tested it by requiring `hit_points > 0` for completeness and **refuted it**:
+`complete_rows` stayed at 321 and not one other number moved, so every row carries real health. The
+condition was removed again rather than left in as a harmless-looking extra.
+
+What remains is `00A08460`'s own coverage rather than anything this packet publishes. Its
+attacker-is-type-`0Fh` branch `00A0861F..00A09222` is unprojected, and
+`AiWeightModelBinding::entity_is_type` and `entity_kind` both answer a constant, so the model takes
+its no-bonus arms for every attacker. Whether the residue is that, or authored-zero accuracy for the
+attackers' actual barrel types against the fall-through group, is **not settled here** and is the
+next packet's question. The counters that would settle it are a per-arm barrel census inside
+`barrel_accuracy`, which no run so far carries.
+
+#### What was checked and did not explain it
+
+Three candidates were eliminated rather than left hanging, so the next packet does not re-walk them.
+
+* **The published selector is the refined one.** `weapon_class_derive_engagement_range` assigns
+  `out.sub_type = weapon_class_refined_sub_type(in)` at `src/bullet_engagement_range.cpp:96`, so an
+  artillery barrel publishes `5`, `6` or `7` and not the constructor's `4`, which the reject arm
+  would have turned into a silent zero. The latch early-return above it cannot fire here: the
+  gunnery host builds a fresh input per gun.
+* **Target hit points.** Refuted by the third run, as above.
+* **`ForcedTargetWeightValues`.** `AiWeightModelBinding::forced_rule_weight` stubs `00A31DB0`, and
+  that table is real and unrun: `scripts/datatables/highlvlaiglobals.lua:164` and the six repeats,
+  rows of `{ attacker class, target class, target-is-neutral, weight }` that override one pair's
+  weight outright. It is a genuine missing producer and worth its own packet. It does **not**
+  explain this collapse: the shipped rows are mostly overrides **to zero**
+  (`TORPEDOBOAT`/`COMMANDBUILDING`, `TORPEDOBOAT`/`SHIP`, `SUBMARINE`/`COMMANDBUILDING`), the two
+  positive ones raise `TORPEDOBOMBER` and `DIVEBOMBER` against `SHIP`, and no row covers an
+  AA-armed ship against a landfort. Running it would zero more pairs here, not rescue any.
+
+The arithmetic that remains consistent with every measurement: `damage = time_factor * accuracy *
+shots`, `time_factor` is now non-zero and `shots` is at least 1, so a zero total means **every
+barrel's accuracy is zero**, and the split is exact — all 188 in-range trio candidates per member
+pass score zero while both non-trio candidates score positive. Two authored rows have exactly that
+shape, `MachineGun` (`0.10, 0.15, 0, 0.0`) and `Flak` (`0.50, 0.20, 0.00, 0.00`): positive against a
+plane or a small ship, zero against a big ship or a landfort. That fits an AA-armed party-0 force
+scoring its two nearby aircraft and nothing else, which would make the accuracy **correct** and the
+missing attack orders a consequence of the unprojected plane-attacker branch instead. It is a
+hypothesis with no counter behind it yet, which is why the flag stays off rather than the reading
+being written up as settled.

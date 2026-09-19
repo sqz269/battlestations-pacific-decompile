@@ -1,0 +1,58 @@
+{
+ "packet": "cc8_usn04_strike_class",
+ "owner": "agent/cc8-torpedo-run-in",
+ "doc": "docs/USN04_STRIKE_CLASS.md",
+ "tree_base": "main at 4aaba7584",
+ "result": "The question as asked has a mundane answer and no defect behind it: the only two LaunchSquadron sites that ran have planeTypes = {101, 101}, so luaPickRnd cannot return anything else, and the chooser chain (luaPickRnd -> luaRnd -> random 0088C160) is reconstructed and sound. Looking for the defect found two real ones instead. GetDifficulty 008AE030 was never routed, so it pushed nothing, Mission.Difficulty was nil, and all six Japanese striker launch sites - gated on == 0 / == 1 / == 2 - were unreachable at every difficulty. And this thread's own previous packet had changed the Lua `squadron` key from the entity id to a table, which breaks the thisTable[tostring(...squadron)] lookup every reader uses, so the mission would have ordered nil even once the strikers launched. Both are fixed. Walking the three class tables settles the packet's other ask by id: of the four classes this mission launches only 162, the Kate, carries ordnance kind 2Bh.",
+ "question": "Why does every LaunchSquadron call pass class 101? Read the script's launch blocks, find what drives the choice, and check whether that producer is implemented or returns a neutral value that always selects the first option; if it is an unimplemented native in our files, read it whole and implement it. Say which class ids carry ordnance kind 2Bh so the torpedo option is identified by id.",
+ "answer": "Nothing drives it: usn_19_coralus.lua:540-543 and :554-557 author planeTypes = {101, 101} at the two sites that run, Mission.Lex :544 and Mission.Town :558, and :539/:553 gate them on stloPlaneNum < 2, which is why there were exactly four launches. The producer is luaPickRnd (commandhelpers.lua:995), which draws luaRnd() per entry and keeps the highest; luaRnd() with no arguments reaches random() 0088C160. That binding is reconstructed AND routed: bsp::lua_binding_random takes the zero-argument range [0, 32767) and samples it through a fixed-seed LCG, so draws are well spread and luaPickRnd({158, 162}) is a real coin flip. Note the failure mode a neutral producer would actually cause: the comparison is a strict >, so a constant-zero producer leaves rndSelected nil and luaPickRnd returns nil - it would not select the first option. The unimplemented native that did matter was GetDifficulty 008AE030, whose body was already complete in src/lua_binding_core.cpp and merely missing its kScriptOrderBindings row. 008AE059 zeroes EBP, 008AE113 compares game+1FE4h against it and 008AE121's JZ takes the campaign arm at 008AE12A, which pushes game+6ACh; the other arm pushes the literal 2.",
+ "coverage": "complete for the launch blocks, the chooser chain and 008AE030; the run below covers the rest. luaAddZuikakuZeroListener and the listener bindings were not read.",
+ "calls": [
+  {
+   "address": "008ae109",
+   "native": "00b679b0",
+   "note": "before the difficulty read; the failure-string construction the shipped build throws away"
+  },
+  {
+   "address": "008ae135",
+   "native": "00b664b0",
+   "note": "lua_pushnumber, the one value this binding pushes and the one this process was not pushing"
+  },
+  {
+   "address": "008ae13e",
+   "native": "00b66400",
+   "note": "the tail after the push"
+  }
+ ],
+ "named_routines": [
+  {
+   "native": "008ae030",
+   "ledger_name": "BSP_LuaBinding_GetDifficulty",
+   "evidence": "already named and read; this packet routed it rather than reading it anew",
+   "status": "routed, not renamed"
+  }
+ ],
+ "class_table": {
+  "installation_note": "scripts/missions/usn/usn_19_coralus.lua is untouched bulk (99030 bytes, 2024-08-26); scripts/datatables/autoload/vehicleclasses.lua is this installation's own (3349364 bytes, 2026-05-09)",
+  "chain": "VehicleClass[N] -> platform Gun[1] -> Devices[id] -> dev.Bullet[i].Bullet -> Bullets[id].Type == Torpedo",
+  "torpedo_bullet_classes": [4, 27, 29, 61, 62, 63, 64, 65, 66, 67, 69, 70],
+  "device_classes_firing_one": 36,
+  "vehicle_classes_with_2bh": 89,
+  "launched_ids": {
+   "101": {"name": "globals.unitclass_wildcat", "type": "Fighter", "carries_2bh": false},
+   "150": {"name": "globals.unitclass_zero", "type": "(fighter)", "carries_2bh": false},
+   "158": {"name": "globals.unitclass_val", "type": "DiveBomber", "carries_2bh": false},
+   "162": {"name": "globals.unitclass_kate", "type": "TorpedoBomber", "carries_2bh": true, "via_device": 85}
+  }
+ },
+ "open": [
+  "The Zero at :1393 must launch first and set Mission.ZeroOverZuikaku before the else arm reaches the strikers, and that arm also needs stloPlaneNum >= 1, so the first launch on each Japanese carrier is a fighter. Untested until the run.",
+  "luaAddZuikakuZeroListener at :1400 and the listener bindings were not read.",
+  "Whether this installation's vehicleclasses.lua changed 158 or 162's weapons from the shipped ones was not checked."
+ ],
+ "retractions": [
+  "Packet cc8_airops_launch_tick changed the Lua `squadron` key from the entity id to the entity's thisTable slot, on the reasoning that the script hands slot.squadron straight to PilotSetTarget. The script does not: all four readers are thisTable[tostring(...squadron)] at usn_19_coralus.lua :545, :560, :1394 and :1409, and :1411 orders the RESULT of :1409. kMissionLuaEntityKeyFormat is \"%d\", so tostring of the number is the key while tostring of a table is not, and the change made every one of those lookups nil. The original integer was right and is restored.",
+  "docs/AIROPS_LAUNCH_TICK.md said the script stopped launching because slot.squadron was no longer nil. The gate is the explicit stloPlaneNum < 2 at :539 and :553. The squadron key is still what makes that count real, but the stopping condition is the count.",
+  "docs/AIROPS_LAUNCH_TICK.md left open that the mission's order was blocked by run length, the luaDoTimeTable entry with 34.95 s left. Measured false: the 6000-frame run, double the mission time, produced identical results - four class-101 launches, no strikers, no torpedo task. The blocker was the difficulty gate."
+ ]
+}

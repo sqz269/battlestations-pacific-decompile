@@ -511,6 +511,15 @@ struct AirOpsDeck {
     std::int32_t owner_player{0};
     // The entity side of the gate, not the block's: 00895E4B tests the class
     // through vtable+5Ch against 45h and 00895E51 the byte at entity+720h.
+    // block+74h with its count at block+78h: the queue 006CC7B0 pushes and
+    // 006C58A0 drains, which is the arm a campaign session takes. Each entry is
+    // a squadron with the class and count 006C56D0 matches a free slot on.
+    struct AssignQueueEntry {
+        std::uint32_t squadron{0};
+        std::uint32_t vehicle_class{0};  // the squadron's own +35Ch
+        std::int32_t plane_count{0};     // its +3CCh
+    };
+    std::vector<AssignQueueEntry> assign_queue;
     bool is_airfield{false};
     bool airfield_blocked{false};
 };
@@ -596,6 +605,47 @@ void air_ops_launch_start_006c7490(AirOpsDeck& deck, int slot_index) noexcept;
 std::size_t air_ops_release_squadron_slot_006c65b0(AirOpsDeck& deck,
                                                    std::uint32_t squadron) noexcept;
 
+// ---------------------------------------------------------------------------
+// The two queues a squadron reaches its deck through, and which one runs
+// ---------------------------------------------------------------------------
+// 007F1C00 BSP_PlaneSquadron_SetHomeAirBase holds the squadron's home base at
+// squadron+404h (its observer pair is at squadron+3F0h, observed slot
+// [squadron+3F0h]+14h) and then hands it to one of two queues on the block. The
+// branch is read from the bytes, because it inverts the obvious guess:
+//
+//   007f1c4b: CMP dword ptr [ECX + 0x1fe4],0x0
+//   007f1c55: JZ  0x007f1c69          ; ZERO -> 006CC7B0, the block+74h queue
+//   007f1c57: CALL 0x006cc760         ; non-zero -> the block+C0h spotting queue
+//
+// So the **spotting** queue, the one whose drain 006C6540 puts an aircraft in
+// block+38h and so makes 006BF620 refuse readiness, is the NON-campaign arm.
+// A campaign session takes 006CC7B0 into block+74h, which 006C58A0 drains
+// before 006CDC70's game-state gate straight into a slot through 006C56D0.
+//
+// This process asserts a campaign session (`game_non_campaign_flag()` is 0,
+// with two more assertions of the same word in src/game_hosts_mission.cpp), so
+// **the campaign arm is the only one it can take, and in a campaign the deck has
+// no readiness brake at all**: nothing writes block+38h. What paces a campaign
+// launch is the mission script's own gate, `stloPlaneNum < 2` for the American
+// carriers and `< 4` for the Japanese ones, and that gate only works because the
+// tick keeps slot+28h filled. docs/USN04_STRIKE_CLASS.md.
+//
+// Only the campaign arm is reconstructed below. The spotting arm is left out
+// rather than written unreachable.
+void air_ops_push_assign_queue_006cc7b0(AirOpsDeck& deck, std::uint32_t squadron,
+                                        std::uint32_t vehicle_class,
+                                        std::int32_t plane_count);
+
+// 006C56D0's arrival rule, the one 006C58A0 applies to each drained entry.
+// Returns the slot it used, or the slot count when none matched.
+std::size_t air_ops_arrive_squadron_006c56d0(AirOpsDeck& deck, std::uint32_t squadron,
+                                             std::uint32_t vehicle_class,
+                                             std::int32_t plane_count) noexcept;
+
+// 006C58A0, sub-update 1 of 006CDC70 and the only one before the game-state
+// gate. Returns how many entries it placed.
+std::size_t air_ops_drain_assign_queue_006c58a0(AirOpsDeck& deck);
+
 // 006C56D0, the other end: a squadron coming back to the deck. It walks the
 // slots for the one whose +28h is that squadron and otherwise takes a free slot,
 // where free is state 1 OR state 6 and the class and count match the squadron's
@@ -667,6 +717,7 @@ struct AirOpsDeckTickResult {
     std::size_t dirty{0};
     std::size_t became_ready{0};
     std::size_t tracking{0};   // slots whose +28h holds a squadron
+    std::size_t assigned{0};   // entries 006C58A0 placed through 006C56D0
 };
 
 // 006C0DA0, __thiscall(block, float step): every slot of block+4Ch in index
