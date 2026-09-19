@@ -100,8 +100,12 @@ struct AirOpsSlotOffsets {
     static constexpr std::size_t kLaunchRequested = 0x34; // byte, set by 00896750
 };
 
-// State values observed at slot+2Ch. Only these three appear in the routines
-// this packet read; the remaining values of the enum are unread.
+// State values observed at slot+2Ch. Five values are now known to be written;
+// only the three named ones have a meaning established by the routine that
+// reads them, and the enum deliberately does not name the other two.
+//   3  006C74E0, the launch start writes it. Meaning unestablished.
+//   6  006CB28B, the scene loader writes it for a `FakeAllocated` slot. Same.
+// docs/AIROPS_LAUNCH_START.md and docs/AIROPS_LOAD_FROM_SCENE.md.
 enum class AirOpsSlotState : std::int32_t {
     kCooldown = 1, // 006C65B0 and 006CD40F leave the slot here with kTimer set
     kLaunching = 2, // LaunchAirBaseSlot refuses to re-launch a slot in this state
@@ -112,10 +116,13 @@ struct AirOpsSlot {
     std::uint32_t vehicle_class{0};
     std::int32_t assigned_count{0};
     std::int32_t requested_count{0};
-    // slot+10h, the copy of class+134h that 006BC6F0 writes. The Lua reader
-    // 006C6630 publishes it under the key `equipment` (006C6811 names the key,
-    // 006C681F loads slot+10h), which is the only name recovered for it.
-    // docs/MISSION_LUA_GETPROPERTY.md.
+    // slot+10h, the copy of class+134h that 006BC6F0 writes. Four independent
+    // spellings of the one field: the scene authors it as `Arm` (006CB213), the
+    // Lua reader publishes it as `equipment` (006C6811 names the key, 006C681F
+    // loads the field), the squadron property bag carries it as `Equipment`
+    // (006C5050), and the class holds its default at +134h.
+    // docs/MISSION_LUA_GETPROPERTY.md, docs/AIROPS_LOAD_FROM_SCENE.md,
+    // docs/AIROPS_LAUNCH_START.md.
     std::int32_t class_field_134{0};
     std::uint32_t launched_squadron{0};
     AirOpsSlotState state{AirOpsSlotState::kCooldown};
@@ -442,13 +449,20 @@ struct AirOpsDeck {
     // scene key, so both start clear.
     bool runway_failure{false};  // block+1Ch
     bool hangar_failure{false};  // block+1Dh
-    // block+38h. 006BF620 requires it zero for readiness and 006CC690 branches on
-    // it: zero starts the launch through 006C7490, non-zero adds the stock back
-    // and queues through 006CA640. Two sites agreeing is why it is named.
+    // block+38h. PROVISIONAL. Three sites read it and none of them writes it:
+    // 006BF620 requires it zero for readiness, 006CC690 branches on it at
+    // 006CC715 to choose between starting a launch and queueing one, and
+    // 006C5050 refuses at 006C5078 when it is set and its own flag is clear.
+    // All three treat it as "something is already pending", but no writer has
+    // been found, so the name is an interpretation of three readers rather than
+    // a recovered meaning. docs/AIROPS_LAUNCH_START.md.
     std::uint32_t launch_in_progress{0};
-    // block+7Ch must be non-null and the byte at its +5Dh must be clear. That
-    // object has no counterpart in this process, so `owner_present` is a
-    // labelled substitution: a deck the scene loaded reports it present.
+    // block+7Ch is the OWNING ENTITY, named from 006C5050, which reads its
+    // virtual at +12Ch for `Skill`, its +54h for `Party`, its +58h, its +188h
+    // for `OwnerPlayer` and passes the pointer itself as `HomeBase`. 006BF620
+    // requires it non-null and the byte at its +5Dh clear. This process has no
+    // such entity object, so `owner_present` is a labelled substitution: a deck
+    // the scene loaded reports it present.
     bool owner_present{true};
     bool owner_blocked{false};
     // The entity side of the gate, not the block's: 00895E4B tests the class
@@ -481,6 +495,13 @@ struct AirOpsLaunchResult {
     bool started{false}; // 006C7490 ran
     bool queued{false};  // the stock went back and 006CA640 ran instead
 };
+
+// 006C7490, the launch start 006CC690 calls. It builds the squadron through
+// 006C5050 and puts it in slot+28h, sets the slot to state 3 with a zero timer,
+// carries the launch-requested byte into the 5.0 cooldown, and moves the
+// observer pair to the new squadron. It does NOT write block+38h.
+// docs/AIROPS_LAUNCH_START.md.
+void air_ops_launch_start_006c7490(AirOpsDeck& deck, int slot_index) noexcept;
 
 // 006CC690, which 0089E3C0 delegates to and whose result it pushes plus one.
 AirOpsLaunchResult air_ops_launch_squadron_006cc690(AirOpsDeck& deck,

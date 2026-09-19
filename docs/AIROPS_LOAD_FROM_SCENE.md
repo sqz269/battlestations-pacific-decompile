@@ -113,6 +113,60 @@ itself launch anything: `00895D20` calls `BSP_AirOps_GetBlock` and tests the cla
 vtable+5Ch against 45h before it answers, and `0089E3C0` has to create a squadron entity and
 register it in the script's `thisTable`. Those are the next packet.
 
+## Measured: the USN04 run of 2026-09-18
+
+`local/usn04_gates.log`, exit 0, 3000 mission frames. The binary carried the deck, both launch
+gates and the stationary fix, and it also carried the block+38h correction of
+`docs/AIROPS_LAUNCH_START.md`, which had been built before the run took the lock.
+
+| measurement | value |
+| --- | --- |
+| decks built | 6 |
+| each deck | `NumSlots=4 MaxInAirPlanes=12 slots=4 stock=4` |
+| `GetProperty` calls / served / unserved | 164 / 164 / 0 |
+| slot tables published | 3394 |
+| `IsReadyToSendPlanes` calls / true | 82 / 82 |
+| `LaunchSquadron` calls / started / queued | 82 / 82 / 0 |
+| `script call Think failed` | **0**, was 41 |
+| ordered aircraft | 2, unchanged |
+| torpedo task built | still none |
+
+**The carriers do author `Slot %d` blocks.** That was the open question, and the answer is four
+slots and four stock entries on every one of the six, with a plane limit of twelve. A sample line:
+
+```
+air ops deck: unit=Zuikaku-class01 class=9 NumSlots=4 MaxInAirPlanes=12 slots=4 stock=4 (006cadd0 mode 1)
+```
+
+**The mission think no longer fails.** It ran all 3000 frames without one failure, where before it
+aborted 41 times at `commandhelpers.lua:2496`. That is what serving `slots` was for.
+
+**The gates run and the script tolerates the nil striker.** Every readiness check answered true and
+every launch started, so the script reached and passed its launch line, and the line after it,
+which reads the absent `squadron` key, raised nothing. That was the one thing
+`docs/AIROPS_LAUNCH_GATES.md` section 5 could not predict.
+
+**No strike, exactly as predicted.** `ordered` is still 2 and no torpedo task is built, because
+nothing creates the squadron entity. That is the remaining step named in
+`docs/AIROPS_LAUNCH_START.md` section 4.
+
+### One thing the run found that no reading did
+
+The slot index grows without bound:
+
+```
+LaunchSquadron 0089e3c0: class=101 count=3 arm=0 (class default) -> slot 0 (started), returns 1
+... slot 1 ... slot 2 ... slot 3 ... slot 4 ... slot 5 ...
+```
+
+`006C7210` takes the first slot in state 1 or 5 and otherwise continues into the array-growth path,
+which is the native's own behaviour. In the native a launched slot returns to state 1 when its
+cooldown completes, so growth is rare. This process has no launch tick, so every slot it writes
+stays in state 3 for ever and the next launch grows the array again: 82 launches over two carriers
+left roughly forty slots each where four were authored. Nothing reads those slots, so nothing is
+wrong downstream, but the deck is no longer a faithful projection after the first four launches on
+a carrier. The tick that would return a slot to state 1 is the same one that fills slot+28h.
+
 ## Uncertainty
 
 * Whether USN04's carriers author `Slot %d` blocks at all. The scene is binary and this process
