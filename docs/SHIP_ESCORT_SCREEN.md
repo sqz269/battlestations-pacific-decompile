@@ -4,6 +4,22 @@ Packet `cc8_ship_screen`, branch `agent/cc8-ship-screen`, third and last worker 
 formation-follow chain (after `cc8-ship-follow` and `cc8-ship-station`). This doc records what
 `008193A0` is, and it **retracts the defect the previous two packets were chasing**.
 
+## Read this first: `err_max` is not a defect, and three of us read it as one
+
+`err_max` is the **first follow step's error**, not evidence of divergence.
+`src/game_hosts_ship_ai.cpp:4179` seeds `follow_station_error_max` at `0.0f` and takes a running
+maximum from the first step onward, so its value is dominated by the initial gap and can only be
+compared with the *starting* distance, never read as growth. Rebuilding the station from the
+logged join line (base `(5999.7, 7999.8)`, `across 3152.01`, `along 0`, left normal
+`(-d.z, d.x) = (0.61569, -0.78799)`) puts it at `(7940.4, 5516.0)`; `Dunlap` starts at
+`(6000, -2700)`, **8442.1 m** from it, against a logged `err_max` of **8431.22**, and
+`SaltLakeCity` starts **9418.1 m** away against **9375.16**. Both match to a few tens of metres.
+
+So the escorts **converge** - 8431 -> 3826 and 9375 -> 5152 over 150 s - rather than diverge, and
+"`err_max` 8431 with `err_final` 3826" describes a follower that closed 4.6 km, not one steaming
+for the world origin. Two predecessor packets and the integrator all read that column as a defect.
+It is not one, and the station it converges on is the image's own (section 3).
+
 ## The residual, stated first
 
 There is **no station defect left to fix**, and the two numbers that were read as one are
@@ -361,6 +377,62 @@ The two in `follow` are exactly the two `steppers` the follow summary reports. N
 a *last-state-per-unit* census; the "ships in `stop` = 49" figure the previous packet's prediction
 table used counts a different population and the two are not comparable.
 
+### 6.7 The two-way call-table diff against a `main` build
+
+`J:\PROG\battlestations-pacific-decompile-cc8\local\main_usn01_3b6277359.log`, taken by the
+integrator on `main@3b6277359` with this packet's exact parameters, against
+`local/screen_usn01.log`. Main has 1227 call-table rows, this branch 1166.
+
+| section | rows | what they are |
+| --- | --- | --- |
+| only on `main` | **84** | almost entirely the `ShipAiApproach::*` and `ShipAiApproachPoint::*` family - the `order_attack` stand-in this branch replaces. `score_slot_009E6640` and `score_slot_009E6870` alone are 210240 calls each, `scan_scale_1284_target_0370` 277984, and the family's frame routines sit at 3504 = one per tick per standing-in ship |
+| only on this branch | **23** | the `ShipAiFollow::*` family - `station_point [0070D290] calls=1200`, `update_formation_point [009DF2D0] 1200`, `leader_body_speed [0092D730] 4800`, `turn_radius [0082E850] 3598`, `push_out_of_zones [00417B10] 2400` - plus `Formation::route_join_message [0077C964] calls=10` and `Formation::entity_route_slot [0077C904] calls=10` |
+| status moved | **2** | `AiCommand::request_join_formation` and `Formation::command_is_available`, both `UNIMPLEMENTED` on `main` and **`concrete`** here. These two rows are the packet chain's core contribution |
+| calls moved | 197 | led by `WeaponDirector` (28 rows), `Gun` (13), `ShipAiGoal` (11), `Projectile` (10), `ShipAiPlanner` and `ShipAiMoveTo` (8 each) - the downstream consequence of two ships holding station instead of steaming, and of `main`'s own dive-bomb work |
+
+**Which ships move, and the reverse.** Final state per unit:
+
+| build | `attackmove` | `cruise` | `follow` | `stop` | `movetopos` | `not_ship` | `total_path` |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `main@3b6277359` | **6** | 6 | 0 | 1 | 1 | 7 | **17579.17** |
+| this branch | 0 | 9 | **2** | 2 | 1 | 7 | **10852.37** |
+
+On `main`, `Dunlap`, `SaltLakeCity` **and `Northampton`** are all in `attackmove`, steaming under
+the stand-in; on this branch `Dunlap` and `SaltLakeCity` are in `follow` and `Northampton` is in
+`stop`. No ship moves on this branch that does not move on `main`. The 6726.80 m of `total_path`
+the branch does **not** travel is the stand-in's six `attackmove` ships being replaced by two
+station-keepers and four ships that correctly hold `cruise` or `stop` - which is also why
+`Northampton` is stationary here and takes both torpedo hits (section 6.3).
+
+### 6.8 What `00811180` answers off both ends of the trail
+
+The integrator asked for this explicitly, so it is stated with addresses. The search seeded at
+`00D7A248` (`FLT_MAX`) walks back from the head through **all forty slots**, keeping the nearest
+by full 3D squared distance and its step count in `EDI`; the answer is therefore always **one of
+the forty stored samples**, never a point interpolated along a leg. The arc length is then the sum
+of those samples' own stored legs, `EDI` terms of `FLD float ptr [ESI+EDX*8]` accumulated into
+`[ESP+44h]` by the loop at `00811700-00811721`, which `008117FD` returns from `[ESP+38h]` after
+three intervening `POP`s.
+
+* **Forward of the head.** The nearest sample is the head, `EDI = 0`, the accumulator loop does
+  not execute at all, and `along` is exactly `0.0`. `across` is then
+  `sign * |(point - head) x dir_head|` (`00811768-008117C0`, magnitude at `008117D6`, sign applied
+  at `00811803`), i.e. the perpendicular distance from the head's direction line. **The
+  along-track component pointing ahead is discarded**, because the wake frame has no ahead. This
+  is what `Ralph` and `McCall` get at 68.9 m forward, and what `SaltLakeCity` and `Dunlap` get at
+  2462 m forward after the `FollowerMaxDist` clamp.
+* **Beyond the tail.** The nearest sample is the oldest live slot, `along` is the sum of every
+  stored leg, i.e. the whole trail length, and `across` is again the perpendicular distance from
+  that sample's direction line. **There is no extrapolation along the last leg** - the excess
+  beyond the tail is discarded exactly as the excess ahead of the head is.
+
+Both ends are clamped structurally rather than by a test: because the result is always one of the
+forty samples, `along` is confined to `[0, trail length]` by construction. `src/ship_ai_wake_trail.cpp`'s
+`ship_ai_wake_decompose_00811180` has the same two properties - a nearest-**sample** search over
+`kShipAiWakeSampleCount` and an `along` summed from `samples[...].segment` - so **the host is
+faithful at both ends**, and that is the instruction-level answer to whether the 3152 m abeam
+station is ours or the image's. It is the image's.
+
 ## Still open
 
 * **The absolute sign of `record+10h`.** `00811180`'s sign comes from `sign(ST1 - ST0)` at
@@ -371,14 +443,13 @@ table used counts a different population and the two are not comparable.
   `1` routes the placement through a session message; what the states *are* is not read here.
 * **`this+0BCCh = 1.25f`.** Written on every placement, immediately below the wake object at
   `+0BD0h`. Its reader is not identified.
-* **The two-way call-table diff against a `main` build was not made.** This worker cannot create a
-  worktree, so there is no `main@3b6277359` build of USN01 or USN04 to diff against, and the
-  comparisons in sections 6.3 and 6.4 are against the *previous packet's* logs
-  (`coord_on_usn04.log`, `follow_merge_usn01.log`) and against
-  `cc8-ship-command/local/lead_usn01_control.log`, none of which is a `main` build. Every moved row
-  in those tables is therefore attributed jointly to this branch and to `main`'s dive-bomb work,
-  and the two are **not** separated. This is the packet's one unmet deliverable; the integrator has
-  the tree to make it.
+* **The USN01 call-table diff is DONE** (section 6.7), on a `main@3b6277359` build the integrator
+  took at this packet's parameters. **A `main`-build USN04 was not taken**, so section 6.4's two
+  moved rows (`requests` -17, `total_path` +0.18) are still attributed jointly to this branch and
+  to `main`'s dive-bomb work rather than separated. Sections 6.3's per-aircraft torpedo ticks are
+  likewise compared against the brief's quoted `main` reference, not against a `main` build of
+  `3b6277359`; the USN01 diff now bounds how much of that is this branch (the `ShipAiApproach`
+  family disappearing and `ShipAiFollow` appearing) and how much is not.
 * **`008193A0` is bound but not wired.** The host's placement path does not apply the formation
   override, the placement refusal or the occupant-owner group snap. Nothing in USN01 or USN04
   dispatches slot `+118h` at a unit that is already a formation follower, so wiring it would have
