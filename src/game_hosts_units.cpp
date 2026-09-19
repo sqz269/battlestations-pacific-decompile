@@ -28,6 +28,7 @@
 #include "bsp/torpedo_first_release.hpp"
 #include "bsp/torpedo_issue_timing.hpp"
 #include "bsp/plane_squadron_host.hpp"
+#include "bsp/plane_formation.hpp"
 #include "bsp/torpedo_release_orders.hpp"
 #include "bsp/torpedo_task_arm.hpp"
 
@@ -1560,6 +1561,180 @@ struct GameUnitsHost::Impl {
         slot.world[11] = 0.0f;
         slot.world[15] = 1.0f;
         slot.local = slot.world;
+    }
+
+    // 009BFD70, the first half of the follow tick 009C1FD0. The plane wing's
+    // formation, which is NOT the ship unit group: see docs/PLANE_FORMATION.md
+    // and the header note on why 0077C8D0 cannot reach a plane.
+    //
+    // WHAT IS BOUND: 009BFD70 takes the squadron from `[[task+4]+0Ch]`, refuses
+    // when the unit IS the flight leader (009BFD92 `CMP EAX,[ECX+4]` / JZ
+    // 009BFEB1), reads the unit's own `plane+9D0h` and asks 007F23A0 for the
+    // station (009BFDBE-009BFDCC). 007ED260 and 007F23A0 are reconstructed in
+    // src/plane_formation.cpp from the listing.
+    //
+    // WHAT IS NOT, stated as a hole rather than dressed as a proof: 009BFEE0
+    // (1795 instructions, 009BFEE0-009C1846, 55 calls) is the law that FLIES a
+    // member to its station - the throttle, the heading and the GoodPosition /
+    // WaitForHdg gates of the whole `Pilot/Follow/*` tuning block. It is not
+    // reconstructed. What runs here instead PLACES the member on its station.
+    // The geometry is the image's; the path by which a member reaches it is not.
+    //
+    // The switch below exists so that the BEFORE half of this packet's
+    // measurement is the same binary as the AFTER apart from the placement: the
+    // station and the wing-geometry report are produced either way. It ships
+    // true.
+    static constexpr bool kPlaneFormationPlacementEnabled = true;
+    bool place_wing_member_on_station_007f23a0(GameUnitSlot& unit, bool once) {
+        bsp::PlaneSquadronHostRecord* const squadron =
+            bsp::plane_squadron_registry().find_by_member_unit(unit.process_index);
+        if (squadron == nullptr) return false;
+        // +3D0h in array order, skipping slots whose plane never became a unit,
+        // which is live_count()'s own rule.
+        std::vector<std::size_t> wing;
+        for (const std::size_t member : squadron->member_units) {
+            if (member != bsp::kPlaneSquadronNoUnit) wing.push_back(member);
+        }
+        if (wing.size() < 2u) return false;
+        // 007EDA91 reads slot 0 whatever the count, and 009BFD92 refuses when
+        // the leader is the unit itself.
+        if (wing.front() == unit.process_index) return false;
+
+        // 007ED260. `tools/callsite_census.py` gives it nine call sites where
+        // `ghidra callers` gives four, and the one that decides the schedule is
+        // 007F4BFA inside the spawn tail 007F4580, just past the 007F4B43
+        // attach: the image assigns the indices AT SPAWN, and again on every
+        // promote (007ED645), leave (007F3A11) and follow entry (009BEDE4).
+        // This host runs the same rule once per squadron at the member's first
+        // step, because at 007F4580 time its members are still plans with no
+        // unit and no pose to transform against.
+        if (!squadron->formation_indices_assigned
+            || squadron->member_formation_index.size() != wing.size()) {
+            squadron->member_formation_index.assign(wing.size(), 0);
+            std::vector<std::int32_t> stamps(wing.size(), 0);
+            bsp::plane_formation_assign_indices_007ed260(
+                squadron->member_formation_index.data(), stamps.data(),
+                static_cast<int>(wing.size()));
+            squadron->formation_indices_assigned = true;
+            std::string indices;
+            for (std::size_t i = 0; i < wing.size(); ++i) {
+                if (i != 0) indices += " ";
+                indices += std::to_string(squadron->member_formation_index[i]);
+            }
+            log.notef("plane formation: squadron %s assigned 007ED260 indices [%s] over "
+                "%zu live members; shape +3E4h=%d morale +3E8h=%.3f",
+                squadron->name.c_str(), indices.c_str(), wing.size(),
+                static_cast<int>(squadron->formation_shape_3e4),
+                static_cast<double>(squadron->morale_3e8));
+        }
+        std::size_t seat = wing.size();
+        for (std::size_t i = 0; i < wing.size(); ++i) {
+            if (wing[i] == unit.process_index) { seat = i; break; }
+        }
+        if (seat >= squadron->member_formation_index.size()) return false;
+
+        const std::size_t leader_index = wing.front();
+        if (leader_index >= slots.size() || slots[leader_index] == nullptr) return false;
+        const GameUnitSlot& leader = *slots[leader_index];
+
+        // The triple is the authored one or nothing: without the installation's
+        // own `Pilot/Follow/*` block there is no spacing to place anyone at, and
+        // inventing one is exactly what this packet must not do.
+        if (!lua.plane_globals_loaded()) return false;
+        const bsp::GameTuningBlock& tuning = lua.plane_globals();
+
+        bsp::PlaneFormationStationInputs in;
+        in.formation_index = squadron->member_formation_index[seat];
+        in.shape = squadron->formation_shape_3e4;
+        in.morale = squadron->morale_3e8;
+        // 007F23F0 `84 c0 75 6c` and 007F2403 `84 c0 75 59`, both JNZ into the
+        // bomber arm: the LEADER's class chain decides for the whole wing.
+        // `unit_is_kind_of` is the same 0074E400 model slot 5Ch uses.
+        const bool bomber = bsp::plane_formation_uses_bomber_displacement(
+            bsp::unit_is_kind_of(leader.class_id, 0x10),
+            bsp::unit_is_kind_of(leader.class_id, 0x14));
+        in.displacement[0] = bomber ? tuning.pilot_follow_bomber_displacement
+                                    : tuning.pilot_follow_small_plane_displacement;
+        in.displacement[1] = bomber ? tuning.pilot_follow_bomber_displacement_2
+                                    : tuning.pilot_follow_small_plane_displacement_2;
+        in.displacement[2] = bomber ? tuning.pilot_follow_bomber_displacement_3
+                                    : tuning.pilot_follow_small_plane_displacement_3;
+        in.symmetrical_position = tuning.pilot_follow_symmetrical_position;
+        in.symmetrical_altitude = tuning.pilot_follow_symmetrical_altitude;
+        // `[[squadron+35Ch]+A4h]`: squadron+35Ch is the plane class descriptor
+        // and class+A4h is the Lua `Width` this host already carries.
+        in.leader_class_width = leader.class_width_00a4;
+        // The small-plane arm transforms by the leader's whole world matrix,
+        // leader+0CCh (007F2456); the bomber arm rebuilds a yaw-only frame from
+        // `leader->vtable[50h]()` with the same translation (007F24AB,
+        // 007F24E4-007F2508). This host has the leader's published pose, which
+        // IS leader+0CCh; for a bomber leader the roll and pitch rows are
+        // therefore carried where the image would have flattened them, and that
+        // difference is labelled, not hidden. On USN04 the leaders are
+        // TorpedoBombers (11h), which take the small-plane arm, so it does not
+        // arise there.
+        in.leader_frame = leader.world;
+
+        const bsp::PlaneFormationStation station =
+            bsp::plane_formation_station_007f23a0(in);
+        if (!station.produced) return false;
+
+        // Reporting, from the first non-leader seat only so one squadron gives
+        // one line. This runs whether or not the placement below is enabled,
+        // which is what makes a before/after on the same binary possible.
+        if (seat == 1u) {
+            const std::int32_t tick = squadron->formation_report_ticks++;
+            if (tick == 0 || (tick % 400) == 0) {
+                std::string pairs;
+                for (std::size_t a = 0; a < wing.size(); ++a) {
+                    for (std::size_t b = a + 1u; b < wing.size(); ++b) {
+                        if (wing[a] >= slots.size() || wing[b] >= slots.size()) continue;
+                        const GameUnitSlot& ua = *slots[wing[a]];
+                        const GameUnitSlot& ub = *slots[wing[b]];
+                        float d2 = 0.0f;
+                        for (int i = 0; i < 3; ++i) {
+                            const float dv = ua.motion.position[i] - ub.motion.position[i];
+                            d2 += dv * dv;
+                        }
+                        if (!pairs.empty()) pairs += " ";
+                        pairs += std::to_string(a) + "-" + std::to_string(b) + "=";
+                        pairs += std::to_string(static_cast<double>(std::sqrt(d2)));
+                    }
+                }
+                log.notef("plane formation geometry: squadron %s tick=%d wing=%zu "
+                    "pairwise=[%s] seat1 index=%d local=(%.1f %.1f %.1f) disp=(%.1f %.1f %.1f) "
+                    "bomber_triple=%d",
+                    squadron->name.c_str(), static_cast<int>(tick), wing.size(),
+                    pairs.c_str(), in.formation_index,
+                    static_cast<double>(station.local[0]),
+                    static_cast<double>(station.local[1]),
+                    static_cast<double>(station.local[2]),
+                    static_cast<double>(in.displacement[0]),
+                    static_cast<double>(in.displacement[1]),
+                    static_cast<double>(in.displacement[2]),
+                    bomber ? 1 : 0);
+            }
+        }
+
+        // The placement that stands in for 009BFEE0. `false` here is the BEFORE
+        // half of this packet's measurement and is not a shipped configuration.
+        if (!kPlaneFormationPlacementEnabled) return false;
+        if (once) {
+            // The image separates the wing inside the follow state and holds it
+            // there. This host never enters that state - every plane of every
+            // USN04 squadron reports `states[attackrun=...]` and
+            // `prepare_entries=0` - so the only moment left is the member's
+            // first step. Applied once, the member then flies its own run from
+            // its own station, which is the geometry the run-in starts from.
+            if (squadron->member_station_applied.size() != wing.size()) {
+                squadron->member_station_applied.assign(wing.size(), 0u);
+            }
+            if (squadron->member_station_applied[seat] != 0u) return false;
+            squadron->member_station_applied[seat] = 1u;
+        }
+        for (int i = 0; i < 3; ++i) unit.motion.position[i] = station.world[i];
+        publish_pose(unit);
+        return true;
     }
 
     void refresh_row(GameUnitSlot& slot);
@@ -3604,6 +3779,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // the copy is taken at the committed pose, which is
                         // 007D8230 with its step at zero.
                         GameUnitsHost::Impl::publish_pose(unit_);
+                        // The plane wing's formation station, applied once per
+                        // member. The image's own site for this is the follow
+                        // state's tick (009C1FD0 -> 009BFD70 -> 007F23A0) and
+                        // this host binds that seam too, but no plane in this
+                        // process ever enters that state, so the station would
+                        // never be applied at all. docs/PLANE_FORMATION.md
+                        // section 6 states this as a scheduling hole.
+                        owner_.place_wing_member_on_station_007f23a0(unit_, true);
                         // 007CC523-007CC562, the free-flight arm own water
                         // test, and the answer to why a plane here could fly to
                         // -400 m. The arm samples the sea under the aircraft and
@@ -4623,7 +4806,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             record("BotApproachTorpedo::committed_hook", "009d1360");
                         }
                         void follow_base_tick_009c1fd0(void*, float) override {
-                            record("BotStateFollow::tick", "009c1fd0");
+                            // 009C1FD0 runs 009BFD70 (the station) and then
+                            // 009BFEE0 (the law that flies to it). Only the
+                            // first is bound; see
+                            // Impl::place_wing_member_on_station_007f23a0 and
+                            // docs/PLANE_FORMATION.md for what that leaves open.
+                            if (owner_.place_wing_member_on_station_007f23a0(slot_, false)) {
+                                owner_.log.implemented("BotStateFollow::station_point",
+                                                       "007f23a0");
+                            }
+                            record("BotStateFollow::station_keeping", "009bfee0");
                         }
                         void steer_toward_target_009f9e40(void*) override {
                             record("BotApproach::steer_to_point", "009f9e40");
