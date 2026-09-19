@@ -146,6 +146,16 @@ struct GameExecutableOptions {
     std::string game_root;
     // Explicit CSIDL_PERSONAL substitute for isolated settings runs.
     std::string settings_personal_root;
+    // Harness only, added by the Claude cc8 integrator at the user's request (2026-09-18) so runs
+    // from several worktrees can overlap instead of queueing on one machine lock.
+    // --instance-tag <text>: appended to the single-instance mutex name (00d16a64) that
+    // WinMain's 008f8301 check creates. Empty keeps the image's name, and with it the image's
+    // "already running" behaviour. The WinMain logic itself is unchanged.
+    std::string instance_tag;
+    // --affinity-core <n>: the processor 008f83fc pins the main thread to, in place of the
+    // image's processor 0. Negative keeps processor 0. Overlapping runs pinned to one
+    // processor would only share it.
+    int affinity_core{-1};
     // Optional absolute library selections, resolved before --game-root changes
     // CWD. Empty DLL paths select the original names in the current game root.
     std::wstring fmod_dll;
