@@ -835,3 +835,37 @@ release and at closest approach. That separates "the escorts are slower than `d3
 "the nearest ship is not the ship aimed at" from "something upstream leads" in a single run, and it
 does not depend on finding the producer at all — if the aim point sits ahead of the target, the
 producer hunt has its answer from the outside.
+
+### 7.4 `009D4C10` is a target-and-range rule, not the ordnance route
+
+Section 7.1 listed `task->vtable[1Ch]` (`009D4C10`) as the first of two routes to `done` without
+saying what it tests. Read from the listing, because acting on 7.1 made the difference matter:
+
+```
+009d4c22: EAX = [ESI+4C4h]                ; task+4C4h = approach+CCh, THE TARGET POINTER
+009d4c28: if (EAX == 0)            -> true
+009d4c2c: if ([EAX+5Dh] != 0)      -> true
+009d4c32: EAX = [ESI+404h]                ; approach+0Ch, the control block
+009d4c38: if ([EAX+369h] && [00E17BF2]) -> false
+009d4c4a: ... a call on the current state [ESI+310h] ...  -> false on one arm
+009d4c65: FLD [ESI+488h]                  ; approach+90h, the range
+009d4c6f: CALL 0042E740                   ; the tuning singleton
+009d4c78: FLD [EAX+438h]                  ; Pilot/Torpedo/SafeDist, 700 here
+009d4c7e: FMUL [ESI+41Ch]                 ; approach+24h, the speed ratio
+009d4c88: if (SafeDist * ratio > range) -> false
+009d4c8a: -> true
+```
+
+So it fires when the **target pointer is null**, when the target's `+5Dh` byte is set, or when the
+**range has opened past `SafeDist * approach+24h`**. It has nothing to do with the ordnance byte. A
+bomber is therefore retired by losing its target or by opening the range, on any attack state - and
+in `local/goaway_bound_usn01.log` the range peaks at 701.0 against a SafeDist of 700, right at that
+threshold.
+
+**A false alarm recorded so nobody re-raises it.** Reading `src/torpedo_task_arm.cpp:384` -
+`if (!in.has_ordnance_132) return false;` - without its enclosing guard suggested `009D3150` refuses
+outright whenever the byte is clear, which would make section 7.1's `task+52Ah == 0 -> done` branch
+unreachable and the whole diagnosis self-contradictory. It is not: `009D3168` and `009D3171` skip
+the whole block unless **both** `ctl+369h` and `[00E17BF2]` are set, and the host's reconstruction
+nests the refusal inside exactly that condition. With `ctl+369h` off, as this host reports it,
+`009D3150` is the plain range test and the ordnance byte does not gate it. Section 7.1 stands.

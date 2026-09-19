@@ -332,6 +332,9 @@ struct GameGunnerySummary {
     unsigned long long gun_pending_timers_live{0};
     unsigned long long torpedo_ranges_derived{0};
     unsigned long long torpedo_swims_started{0};   // water crossings that became a swim
+    // Packet cc8_torpedo_ordnance_decrement: drops that cleared the owner's
+    // torpedo kind bit, so approach+132h goes false on the next approach update.
+    unsigned long long torpedo_loadout_cleared{0};
     // Packet cc8_torpedo_release_spawn. Where a torpedo-carrying gun stops on
     // the way to a shot, one counter per conjunct of the same `want_fire` the
     // gun loop builds. A gun counts as a torpedo gun when its bullet class

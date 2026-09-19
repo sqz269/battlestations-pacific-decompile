@@ -2954,6 +2954,33 @@ bool GameGunneryHost::release_ordnance_drop(std::size_t unit_index) {
     h.shots.push_back(shot);
     ++h.summary.projectiles;
     ++h.summary.torpedo_drops;
+    // Packet cc8_torpedo_ordnance_decrement. 009D34C5 refreshes approach+132h
+    // from 007B93F0(0), which is 007B91C0(2Bh, 0): walk the controller's
+    // devices at ctl+974h, take the one carrying kind 2Bh, and ask the ordnance
+    // object it returns `vtable[8](0)`. THAT body is unread, so what the image
+    // consumes on a drop is a hypothesis - but it has to consume something,
+    // because 009D4030's goaway branch only reaches `done` when task+52Ah (the
+    // same byte) is CLEAR, and a sibling predicate at 007B9426 tests a live
+    // round count at ordnance+E0h. The host's own binding said the opposite in
+    // its comment - "the loadout does not shrink in this host" - which is why a
+    // bomber that had dropped kept re-attacking (82 goaway entries).
+    //
+    // The smallest faithful model: a drop consumes the unit's torpedo loadout,
+    // so the kind bit clears and approach+132h goes false on the next approach
+    // update. This host models no per-device round count, so it cannot decrement
+    // one - the count and its producer 006E3500 are unread here, and modelling
+    // "one torpedo per aircraft" is the assumption this makes explicit rather
+    // than hides. USN01's Mavs release once each, which is consistent with it
+    // and does not prove it.
+    {
+        const std::size_t owner = shot.owner_unit - 1;
+        const std::uint64_t mask = h.units.unit_ordnance(owner);
+        const std::uint64_t torpedo_bit = std::uint64_t(1) << (0x2b - 0x08);
+        if ((mask & torpedo_bit) != 0) {
+            h.units.store_unit_ordnance(owner, mask & ~torpedo_bit);
+            ++h.summary.torpedo_loadout_cleared;
+        }
+    }
     if (h.summary.torpedo_drops <= 4) {
         h.log.notef("gunnery: torpedo drop %llu by %s at %.0f m, speed %.1f m/s, "
             "bullet %d, swim %.1f m/s",
@@ -3080,6 +3107,9 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery torpedo_drop drops=%llu refusals=%llu "
             "water_entry_breakups=%llu",
             s.torpedo_drops, s.torpedo_drop_refusals, s.water_entry_breakups);
+    host.log.notef("summary mission gunnery torpedo_loadout_cleared=%llu "
+        "(drops that cleared the owner's kind 2Bh bit, so approach+132h goes false)",
+        s.torpedo_loadout_cleared);
     // Packet cc8_torpedo_closest_approach: the measurement the torpedo stream
     // has owed since docs/TORPEDO_AFTER_THE_DROP.md section 2. Distances are
     // CENTRE TO CENTRE and horizontal - this host has no oriented hull box - so
