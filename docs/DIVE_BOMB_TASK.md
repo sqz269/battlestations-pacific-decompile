@@ -2191,3 +2191,86 @@ are `009C569B`, the flight path shallower than 30 degrees, and `009C56AE`,
 is at 654 m by then. Both of those inputs sit inside the PARTIAL that
 `dive_bomb_aimglide_inputs` labels - four frame slots behind `009C5693`-`009C5755` were never
 traced - so the aimglide release is closed by a substitution, not by a recovered rule.
+
+## The state-dispatch inventory: which ticks still run nothing
+
+`tick_state` is an empty override at both dive-bomb binding sites; every state tick this host runs
+is dispatched explicitly from the arm wrapper. After this packet that is four of ten.
+
+| state | task offset | tick | dispatched? |
+| --- | --- | --- | --- |
+| `kMoveTo` | `4F0h` | `009C1FD0` (the follow base) | **no** |
+| `kFollow` | `52Ch` | `009C1FD0` (the follow base) | **no** |
+| `kPrepare` | `5C4h` | `009C7270` `BSP_BotStateDiveBombDone_Tick` | **no** |
+| `kDone` | `664h` | `009C7270` `BSP_BotStateDiveBombDone_Tick` | **no** |
+| `kGoAway` | `704h` | `009C4A40`, body `009C4A40`-`009C4E65` | **no** |
+| `kAimDive` | `734h` | `009C58D0` | yes, steering only |
+| `kAimGlide` | `754h` | `009C5180`, body `009C5180`-`009C580B` | **no** |
+| `kFlyAbove` | `778h` | `009C62B0` | yes, heading only (this packet) |
+| `kTurnDown` | `79Ch` | `009C44F0` | yes |
+| `kAttackRun` | `7BCh` | `009C4220` | yes |
+
+There is **no `kRollIn` state**: the registrar `009C73A0` names exactly ten through
+`BSP_BotStateRegistry_Add` at `009C7680`-`009C76C6`, and the enum above is all of them. The
+roll-in is a *flag*, `flyabove+19h`, not a state.
+
+So the next empty overrides, found by reading rather than by a run, are **`009C5180`** (aimglide,
+1675 bytes - it owns the second release site `009C5777`, which ran 37 ticks in `usn04_target.log`)
+and **`009C4A40`** (goaway, 1061 bytes). `009C7270` is ten bytes and tail-calls `009C1FD0`.
+`009C7240` and `009C7260` are the done state's enter and exit, not ticks.
+
+## `009C62B0`'s command side, and `009C56AE` recovered
+
+### The four command arms, read
+
+| site | write | condition |
+| --- | --- | --- |
+| `009C69B1` / `009C69B9` | `cmd+2C4h` = 0.0, `cmd+2CCh` = 1 | a wings-level bank target handed to the planner's servo |
+| `009C6DE7` / `009C6DEF` | `cmd+2C0h` = the heading, `cmd+2CCh` = 2 | `state+1Ch == 0` (`009C6DCD`, `009C6DDA` byte `75` JNZ) |
+| `009C6F89` / `009C6F91` | `cmd+2BCh`, `cmd+2D0h` = EDX | the arm that does **not** call `009FB800` at `009C6F7D` |
+| `009C6FEA` / `009C6FF1` / `009C6FFB` | `cmd+2B0h` = 0, `cmd+2D8h` = 1, `cmd+2B4h` | the speed is `something + approach+A4h` (`009C6FE1`) |
+
+Only the heading arm is bound, and the packet says so rather than inventing the rest. The reason is
+the same one that bit the aimdive: `tools/frame_slot_census.py` cannot be trusted in this body. It
+flags nine call sites it cannot account for, and the gap its own docstring names - an argument
+window opened by `SUB ESP,imm` and closed by the callee's `RET imm16` - already puts the write at
+`009C6336` and the read at `009C6DC1` four bytes apart on paper when both name `[ESP+54h]`.
+
+So the heading's **value** is a labelled substitution: the image writes
+`AddWrappedAngle(base, clamp(delta, -L, +L))` - the call at `009C6DC8`, the clamp built at
+`009C6D7E`-`009C6DB0` from `[ESP+1Ch]`, `[ESP+34h]` and the negation at `009C6D7E` - and the host
+commands the bearing to the aim point instead. What is **not** substituted is the part the trace
+indicts: that a heading is commanded at all, with mode 2, which is the planner arm the run-in
+already uses and `pilot_plan_roll_0099e2ba` already models.
+
+### `009C56AE`: both producers recovered, and the gate was inverted
+
+The aimglide release's second gate was reconstructed as `height_above + 50 > height_limit`, with
+the host feeding raw altitude against `approach+ACh` = 1000.0 - so it demanded the aircraft be above
+950 m. The operands are the other way round:
+
+```
+009c56a6  FLD  float ptr [ESP + 0x20]        ; loaded FIRST -> ST1
+009c56aa  FLD  float ptr [ESP + 0x1c]        ; loaded second -> ST0
+009c56ae  FADD double ptr [0x00ce3938]       ; + 50.0
+009c56b4  FCOMIP ST0,ST1                     ; ([ESP+1Ch] + 50) vs [ESP+20h]
+009c56b8  JBE  0x009c57c4
+```
+
+Both producers:
+
+* **`[ESP+20h]`**, written at `009C5281`, is the **height above the aim point** - the same
+  construction as the flyabove's `B`: `009C5278` calls `approach->vtable[0]`, `009C527A` takes its
+  `out[1]`, `009C527D` `FSUBR` subtracts it from the aircraft's Y.
+* **`[ESP+1Ch]`**, written at `009C5493`, is `(approach+14h)->+40h * approach+A8h`
+  (`009C548A`/`009C548D`). `approach+14h` is the 0x248-stride robots row viewed `0xCh` in, so
+  `->+40h` is row `+4Ch`, `dive_bomb_new_release_mul_04c`.
+
+This installation's `SPNormal` row authors `DiveBombNewReleaseMul = 0.6`, and the authors' own
+comment settles what it is: *"ha nem leboritott manoverrel bombaz, csak siman rarepulve, akkor a
+fenti ReleaseAlt erteket ennyivel megszorozva hasznalja"* - if it bombs **without** the wingover
+manoeuvre, just flying straight at it, it uses the ReleaseAlt value multiplied by this.
+
+So the gate is a **ceiling, not a floor**: `0.6 * 350.0 + 50.0 = 260.0 m`. The glide release opens
+below 260 m, and the reconstruction had it demanding more than 950 m - which is why `aimglide` ran
+37 ticks in `usn04_target.log` and released nothing.

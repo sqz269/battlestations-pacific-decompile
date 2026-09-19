@@ -420,6 +420,14 @@ struct GameUnitSlot {
     // The aimdive trace. Endpoint values cannot tell a dive that never pointed
     // at the target from one that pointed and was too slow, so the aim states
     // sample their own geometry the way the run-in samples its range.
+    // 009C62B0's heading arm.
+    int db_flyabove_tick_ticks{0};
+    int db_flyabove_heading_writes{0};
+    float db_flyabove_heading_last{0.0f};
+    // The geometry when the turndown starts, which is what decides where the
+    // dive begins.
+    float db_turndown_entry_range{-1.0f};
+    float db_turndown_entry_bearing{0.0f};
     float db_aimdive_entry_range{-1.0f};
     float db_aimdive_entry_bearing{0.0f};
     float db_aimdive_min_range{-1.0f};
@@ -1000,6 +1008,10 @@ struct GameUnitsHost::Impl {
     // how much it pulls the pitch when the aim is off - and its push twin.
     static constexpr float kDiveBombAimPrecPullPlus = 0.018f;   // row+70h, ->+64h
     static constexpr float kDiveBombAimPrecPullMinus = 0.025f;  // row+74h, ->+68h
+    // row+4Ch, ->+40h. "ha nem leboritott manoverrel bombaz, csak siman
+    // rarepulve, akkor a fenti ReleaseAlt erteket ennyivel megszorozva
+    // hasznalja" - bombing without the wingover, it uses ReleaseAlt times this.
+    static constexpr float kDiveBombNewReleaseMul = 0.6f;       // row+4Ch, ->+40h
 
     // 007C1DB0: the device list at unit+48h, summing 006E3500 over every device
     // whose vtable[+5Ch] answers 25h. The gunnery host owns that list; the
@@ -1249,8 +1261,20 @@ struct GameUnitsHost::Impl {
         // opens the height gate and closes the lead gate.
         in.dive_angle = slot.plane_pitch_angle_c64 < 0.0f
             ? -slot.plane_pitch_angle_c64 : slot.plane_pitch_angle_c64;
-        in.height_above = slot.motion.position[1];
-        in.height_limit = slot.db_begin_alt_ac;
+        // Both RECOVERED this packet; see include/bsp/dive_bomb_task.hpp. The
+        // height is measured against the aim point, as 009C5281 builds it, and
+        // the ceiling is row+4Ch times the drawn release altitude - 0.6 * 350.0
+        // = 210.0, so with the 50.0 margin the glide release opens below 260 m.
+        {
+            float target_y = slot.motion.position[1];
+            if (slot.command_target_plus_one != 0) {
+                const std::size_t ti = slot.command_target_plus_one - 1;
+                if (ti < slots.size()) target_y = slots[ti]->motion.position[1];
+            }
+            in.height_above_aim_point = slot.motion.position[1] - target_y;
+        }
+        in.glide_release_ceiling =
+            kDiveBombNewReleaseMul * slot.db_dive_alt_a8;
         in.lateral_a = slot.db_planar_bc;
         in.lateral_b = slot.db_planar_bc;
         in.travel_accumulator_20 = slot.db_glide_travel_20;
@@ -4381,6 +4405,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         if (ctx.current == bsp::DiveBombState::kAimDive) {
                             run_dive_bomb_aimdive_tick_009c58d0();
                         }
+                        if (ctx.current == bsp::DiveBombState::kFlyAbove) {
+                            run_dive_bomb_flyabove_tick_009c62b0();
+                        }
                         // The run-in census: one range sample per second of
                         // mission time, and the tick the latch closes.
                         if (unit_.db_in_range_d0 && unit_.db_latch_closed_tick < 0) {
@@ -4477,6 +4504,37 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // 009C44F0, the turndown tick, vtable 00D20C84 slot +Ch.
                     // The arm reaches it through state->vtable[+Ch] at
                     // 009C884C. docs/DIVE_BOMB_TASK.md carries the body.
+                    // 009C62B0's heading arm. PARTIAL: only the heading is
+                    // bound, because it is the one the aim trace indicts and
+                    // the only one whose value this host can justify. The bank
+                    // target, the altitude and the desired speed are read in
+                    // include/bsp/dive_bomb_task.hpp and left unbound; their
+                    // values need frame slots this body cannot resolve.
+                    void run_dive_bomb_flyabove_tick_009c62b0() {
+                        bsp::DiveBombFlyAboveCommandInputs in;
+                        // A contract: this host keeps no flyabove state+1Ch.
+                        in.suppress_heading_1c = false;
+                        // SUBSTITUTION, labelled: the bearing to the aim point
+                        // in place of 009C6DC8's AddWrappedAngle(base, clamped
+                        // delta). Same quantity the run-in's own mode-2 command
+                        // uses, so the aircraft turns toward its target instead
+                        // of holding the run-in heading through the state.
+                        in.heading_to_aim_point = unit_.db_bearing_c0;
+                        const bsp::DiveBombFlyAboveCommand r =
+                            bsp::dive_bomb_flyabove_command_009c6dcd(in);
+                        ++unit_.db_flyabove_tick_ticks;
+                        if (r.wrote_heading) {
+                            ++unit_.db_flyabove_heading_writes;
+                            unit_.db_flyabove_heading_last = r.heading_2c0;
+                            // 009C6DE7 and 009C6DEF. Mode 2 is the planner's own
+                            // roll arm, the one 0099DE8A lets through and
+                            // pilot_plan_roll_0099e2ba models.
+                            unit_.plan_heading_2c0 = r.heading_2c0;
+                            unit_.plan_heading_2c0_written = true;
+                            unit_.plan_heading_mode_2cc = r.heading_mode_2cc;
+                        }
+                    }
+
                     // 009C58D0's steering, the part of the aimdive tick that
                     // aims. Until this was bound, `tick_state` was empty and
                     // 664 live aimdive ticks issued no command at all: the
@@ -4543,6 +4601,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         in.desired_speed = owner_.bot_desired_speed_007c47f0(unit_);
                         const bsp::DiveBombTurnDownResult r =
                             bsp::dive_bomb_turndown_tick_009c44f0(in);
+                        if (unit_.db_turndown_entry_range < 0.0f) {
+                            unit_.db_turndown_entry_range = unit_.db_planar_bc;
+                            unit_.db_turndown_entry_bearing =
+                                bsp::wrapped_angle_subtract_00438b10(
+                                    unit_.db_bearing_c0, unit_.plane_heading_c6c);
+                        }
                         ++unit_.db_turndown_ticks;
                         unit_.db_turndown_bank_last = r.folded_bank;
                         unit_.db_turndown_pose_c64_last = unit_.plane_pitch_angle_c64;
@@ -7299,10 +7363,17 @@ void GameUnitsHost::report() {
                             static_cast<double>(slot->db_aim_trace_bearing[i]));
                         if (tn >= static_cast<int>(sizeof(trace))) break;
                     }
-                    host.log.notef("  divebomb %-12s aim trace: entry range=%.1f m "
-                        "bearing=%.4f rad | closest range=%.1f m | ticks=%d | "
-                        "range/error/bank/bearing per 30 ticks: %s",
+                    host.log.notef("  divebomb %-12s aim trace: 009C62B0 ticks=%d "
+                        "heading writes=%d last=%.4f rad | turndown entry "
+                        "range=%.1f m bearing=%.4f rad | aimdive entry "
+                        "range=%.1f m bearing=%.4f rad | closest range=%.1f m | "
+                        "ticks=%d | range/error/bank/bearing per 30 ticks: %s",
                         slot->row.name.c_str(),
+                        slot->db_flyabove_tick_ticks,
+                        slot->db_flyabove_heading_writes,
+                        static_cast<double>(slot->db_flyabove_heading_last),
+                        static_cast<double>(slot->db_turndown_entry_range),
+                        static_cast<double>(slot->db_turndown_entry_bearing),
                         static_cast<double>(slot->db_aimdive_entry_range),
                         static_cast<double>(slot->db_aimdive_entry_bearing),
                         static_cast<double>(slot->db_aimdive_min_range),
