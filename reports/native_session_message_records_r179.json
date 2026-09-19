@@ -1,0 +1,2301 @@
+{
+  "packet": "orch4_native_session_message_records_r179",
+  "status": "fourteen_complete_normal_bodies_build_and_original_compared",
+  "scope": {
+    "new_native_bodies": 14,
+    "new_body_bytes": 1666,
+    "parent_dependency_fragments": [
+      "00768530"
+    ],
+    "message_tags": [
+      4,
+      5
+    ],
+    "native_profile_addresses": [
+      "00d03048",
+      "00d02ff8"
+    ],
+    "full_message_factory_bound": false
+  },
+  "evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "names": {
+      "00429010": "FUN_00429010",
+      "00429070": "FUN_00429070",
+      "004290d0": "FUN_004290d0",
+      "00429180": "FUN_00429180",
+      "0075d5d0": "FUN_0075d5d0",
+      "0075d650": "FUN_0075d650",
+      "0075d660": "FUN_0075d660",
+      "0075d7e0": "FUN_0075d7e0",
+      "0075d970": "FUN_0075d970",
+      "0075d010": "FUN_0075d010",
+      "0075d0d0": "FUN_0075d0d0",
+      "0075d0e0": "FUN_0075d0e0",
+      "0075d1d0": "FUN_0075d1d0",
+      "0075d2c0": "FUN_0075d2c0",
+      "00428bb0": "BSP_BitCursor_ReadBits",
+      "00428c70": "BSP_BitCursor_ReadUnsignedByte",
+      "00428c80": "BSP_BitCursor_ReadSignedByte",
+      "00428d10": "BSP_BitCursor_ReadUnsignedDword",
+      "00428d30": "BSP_BitCursor_ReadSignedDword",
+      "00428d70": "BSP_BitCursor_ReadBoolean",
+      "00428df0": "BSP_BitCursor_ReadByteLengthString",
+      "00428e90": "BSP_BitCursor_ReadQword",
+      "00428f50": "BSP_BitCursor_WriteBits",
+      "00428ff0": "BSP_BitCursor_WriteByteBits",
+      "00429090": "BSP_BitCursor_WriteSignedDwordBits",
+      "004290b0": "BSP_BitCursor_WriteBoolean",
+      "004293f0": "BSP_BitCursor_ReadNumericFloat",
+      "004295c0": "BSP_BitCursor_WriteNumericFloat",
+      "004499c0": "BSP_SessionMessage_AlwaysTrue",
+      "00bfaed0": "__aullshr",
+      "00bf7df0": "__allmul",
+      "00768530": "BSP_SessionMessage_CreateFromStream"
+    },
+    "spans": [
+      {
+        "address": "00429010",
+        "length": 18,
+        "kind": "new_body",
+        "sha256": "30c2e547a6c8f24574e5c7355ba0b22807d7dcd449bcf1a19b74e5bc8382b23a",
+        "hex": "8b442408508d54240852e831ffffffc20800"
+      },
+      {
+        "address": "00429070",
+        "length": 18,
+        "kind": "new_body",
+        "sha256": "4da979995e3d7b8ca247fdfcd26c12da7a177805f9ae61af4fceb5e9e33ad2de",
+        "hex": "8b442408508d54240852e8d1feffffc20800"
+      },
+      {
+        "address": "004290d0",
+        "length": 71,
+        "kind": "new_body",
+        "sha256": "338043401f7f6e15d7a809560487571441578c42f7801dbbd79f6ffa7b875422",
+        "hex": "5356578b7c24108bc78bf18d50018bff8a0883c00184c975f72bc28ad86a088d442414508bce885c2418e851feffff0fb6cb03c903c903c951578bcee83ffeffff5f5e5bc20400"
+      },
+      {
+        "address": "00429180",
+        "length": 36,
+        "kind": "new_body",
+        "sha256": "5e7f21d1ec380fdefd0170517e7c107e6c6a84b97251a7c33b37b584f35a718a",
+        "hex": "83ec088b44240c8b5424108904246a408d442404508954240ce8b2fdffff83c408c20800"
+      },
+      {
+        "address": "0075d5d0",
+        "length": 99,
+        "kind": "new_body",
+        "sha256": "0a391f6db4aac739470ff5c461d8e38152bce6a879be41f357d08d2050cc7893",
+        "hex": "8bc1c7400403000000c7400800000000c7400c00000000c700682cd000c64010048b15a888e1008b8aec18000085c97c1d83f9077f188b8c8acc180000894814c7400401000000c7004830d000c3c7401400000000c7400401000000c7004830d000c3"
+      },
+      {
+        "address": "0075d650",
+        "length": 13,
+        "kind": "new_body",
+        "sha256": "e3773d6ac930cda615b04bd9c874612faf4e79bccee82551d4e6b610c730a765",
+        "hex": "33c0837c2404040f94c0c20400"
+      },
+      {
+        "address": "0075d660",
+        "length": 381,
+        "kind": "new_body",
+        "sha256": "f6d2f0e3176863cdaca4af5b478e4f82472b93becee0707e567cb05a046c8e94",
+        "hex": "5355568bf10fb64610578b7c24146a08508bcfe878b9ccff8b4e248b562051528bcfe8f9baccff8b46186a06508bcfe8fcb9ccff8b4e546a02518bcfe8cfb9ccff8d5628528bcfe824baccff8d4648508bcfe819baccff0fb64e58518bcfe8edb9ccff8b565c6a20528bcfe8a0b9ccff0fb6869e000000508bcfe8d1b9ccff0fb64e606a05518bcfe803b9ccff0fb656616a02528bcfe8f5b8ccff8b46506a20508bcfe868b9ccff33db8d9b000000000fb64c1e626a08518bcfe8d1b8ccff83c30183fb2472e933db8da424000000000fb6941e860000006a08528bcfe8aeb8ccff83c30183fb1072e633db8d6424000fb6841e960000006a08508bcfe88eb8ccff83c30183fb0872e68d9ea0000000bd030000008b0b6a20518bcfe80fb9ccff83c30483ed0175ec8b96b00000006a20528bcfe8d7b8ccff8b86b00000008b96b40000006a20b120e822d74900508bcfe8bab8ccff8b86b80000006a20508bcfe8aab8ccff8b8ebc0000006a20518bcfe89ab8ccff5f5e5d5bc20400"
+      },
+      {
+        "address": "0075d7e0",
+        "length": 387,
+        "kind": "new_body",
+        "sha256": "d04ca4f9c51ac1916668b79312da09ed617b457d2afcd2e56b90108085a1b735",
+        "hex": "535556578b7c24148bf16a088d461083c704508bcfe876b4ccff8d4e20518bcfe88bb6ccff6a068d5618528bcfe81eb5ccff6a028d4654508bcfe8f1b4ccff8d4e28518bcfe8c6b5ccff8d5648528bcfe8bbb5ccff8d4658508bcfe830b5ccff6a208d4e5c518bcfe8c3b4ccff8d969e000000528bcfe815b5ccff6a058d4660508bcfe808b4ccff6a028d4e61518bcfe8fbb3ccff6a208d5650528bcfe88eb4ccff33db6a088d441e62508bcfe8deb3ccff83c30183fb2472ea33db8d6424006a088d8c1e86000000518bcfe8bfb3ccff83c30183fb1072e733dbeb038d49006a088d941e96000000528bcfe89fb3ccff83c30183fb0872e78d9ea0000000bd030000006a20538bcfe842b4ccff83c30483ed0175ee6a208d442418508bcfe80cb4ccff8b4c24146a208d542418898eb0000000528bcf89aeb4000000e8eeb3ccff8b4424146a01555550e8c0a449000186b00000006a208d8eb80000001196b4000000518bcfe8c4b3ccff6a2081c6bc000000568bcfe8b4b3ccff5f5e5d5bc20400"
+      },
+      {
+        "address": "0075d970",
+        "length": 31,
+        "kind": "new_body",
+        "sha256": "c0fdae17528556270cefcee00981aa4ad02e5788594a87807644228afafec2ed",
+        "hex": "f644240401568bf1c7067449ce00740956e8268c490083c4048bc65ec20400"
+      },
+      {
+        "address": "0075d010",
+        "length": 99,
+        "kind": "new_body",
+        "sha256": "47586d38f7781d942c2e974a5fd334435ed9ac2339c9d527d0f672ea66cc2a61",
+        "hex": "8bc1c7400403000000c7400800000000c7400c00000000c700682cd000c64010058b15a888e1008b8aec18000085c97c1d83f9077f188b8c8acc180000894814c7400401000000c700f82fd000c3c7401400000000c7400401000000c700f82fd000c3"
+      },
+      {
+        "address": "0075d0d0",
+        "length": 13,
+        "kind": "new_body",
+        "sha256": "d8ae8f16916c1d88b20f4fbf259e7df617bd363e2d2ac5b9691182d1911f0b31",
+        "hex": "33c0837c2404050f94c0c20400"
+      },
+      {
+        "address": "0075d0e0",
+        "length": 231,
+        "kind": "new_body",
+        "sha256": "83340a8c53d3c2253fc47c2008d5ee6a7fe4691aef0c5dd50e0eccac1c1bbc4b",
+        "hex": "5355568bf10fb64610578b7c24146a08508bcfe8f8beccff0fb64e186a05518bcfe80abfccff0fb656196a05528bcfe8fcbeccff8d461a508bcfe8b1bfccff0fb64e3b518bcfe885bfccff0fb6563c6a05528bcfe8d7beccff0fb6463d6a05508bcfe8c9beccff0fb64e446a06518bcfe8bbbeccff0fb656456a06528bcfe8adbeccff8d5e50bd0d000000eb038d49008b036a04508bcfe8f4beccff83c30483ed0175ecd9e86a0851d91c24d946405555518bcfd91c24e824c4ccff8b4e486a20518bcfe8c7beccff8b46488b564c6a20b120e818dd4900508bcfe8b0beccff5f5e5d5bc20400"
+      },
+      {
+        "address": "0075d1d0",
+        "length": 238,
+        "kind": "new_body",
+        "sha256": "926093d932a57519d86a4b60ccfca62f7eb9d3dc644628b5d45dd7d77b55ca67",
+        "hex": "535556578b7c24148bf16a088d461083c704508bcfe886baccff6a058d4e18518bcfe889baccff6a058d5619528bcfe87cbaccff8d461a508bcfe8e1bbccff8d4e3b518bcfe856bbccff6a058d563c528bcfe859baccff6a058d463d508bcfe84cbaccff6a068d4e44518bcfe83fbaccff6a068d5645528bcfe832baccff8d5e50bd0d0000006a04538bcfe8b0baccff83c30483ed0175eed9e86a0851d91c2455558d4640508bcfe873c1ccff6a208d4c2418518bcfe885baccff8b5424146a208d442418508bcf895648896e4ce86dbaccff8b4c24146a01555551e83fab49000146485f11564c5e5d5bc20400"
+      },
+      {
+        "address": "0075d2c0",
+        "length": 31,
+        "kind": "new_body",
+        "sha256": "763ed8ea5e8260a64e96a4ff5ddd81be581212d3540d8328cacb7c4e569bbd0b",
+        "hex": "f644240401568bf1c7067449ce00740956e8d692490083c4048bc65ec20400"
+      },
+      {
+        "address": "00428bb0",
+        "length": 184,
+        "kind": "support_body",
+        "sha256": "9abf8383be14c26b413849fd75e15b00d88afc519896eec488968ac0a2b617ea",
+        "hex": "53558b6c24108bc18bcd568b742410c1e90385c9577e3d8bd98da424000000008b48088a118a480cd2ea8816834008018b500c85d28b78087e0db9080000002bca8a17d2e2081683ed08740383c60183eb0175cc83e5077458b9080000002bcdbbff000000d3fb8b48088a118a480cd2ea885c241422d388168b48088d79018b480403083bf973148a1fb9080000002b480cd2e3225c24140ada881e01680c8b480c83f9077e0a83c1f88340080189480c5f5e5d5bc20800"
+      },
+      {
+        "address": "00428c70",
+        "length": 16,
+        "kind": "support_body",
+        "sha256": "5b0a3d32c5e4bd4a67f2637d123a21ab1bd81544b13e3417ba1fbdc478f02cce",
+        "hex": "8b442404c6000089442404e930ffffff"
+      },
+      {
+        "address": "00428c80",
+        "length": 47,
+        "kind": "support_body",
+        "sha256": "c167e8ac8b744cabbc66c1ab53a4def702b7d161293d81cfbd380b97c3732c83",
+        "hex": "568b742408578b7c24105756c60600e81cffffff83ff087d118d4fff0cffd2e08a0e84c874040ac8880e5f5ec20800"
+      },
+      {
+        "address": "00428d10",
+        "length": 19,
+        "kind": "support_body",
+        "sha256": "5f7d6b40d16f38b298ef8b4163c07423b2cae7eac3d3ceb42a078a05b35bd3a8",
+        "hex": "8b442404c7000000000089442404e98dfeffff"
+      },
+      {
+        "address": "00428d30",
+        "length": 51,
+        "kind": "support_body",
+        "sha256": "fc3b9ef872ebe89949187d67b3bee02386e82ba08e1f0256d320fea688adae05",
+        "hex": "568b742408578b7c24105756c70600000000e869feffff83ff207d128d4fff83c8ffd3e08b0e85c874040bc8890e5f5ec20800"
+      },
+      {
+        "address": "00428d70",
+        "length": 36,
+        "kind": "support_body",
+        "sha256": "e63f5d75927e2977c7272644e56d6d2f1fec6db4b1a81c7d6b20cb70a295ade9",
+        "hex": "516a018d44240750c644240b00e82efeffff807c2403018b5424080f94c1880a59c20400"
+      },
+      {
+        "address": "00428df0",
+        "length": 59,
+        "kind": "support_body",
+        "sha256": "6dec04f3b93677b26f45740df74d4042fe89e939947e783db3e467e343bb2ae1",
+        "hex": "515356576a088d442413508bf1c644241700e8a9fdffff0fb67c240f8b5c24148d0cfd0000000051538bcee890fdffffc6041f005f5e5b59c20400"
+      },
+      {
+        "address": "00428e90",
+        "length": 37,
+        "kind": "support_body",
+        "sha256": "a4910b39cb94f02cf8e0bf03ce61382c5214de5ae1e5d70d545a14da585e96bb",
+        "hex": "83ec086a408d44240450e811fdffff8b44240c8b0c248b542404890889500483c408c20400"
+      },
+      {
+        "address": "00428f50",
+        "length": 148,
+        "kind": "support_body",
+        "sha256": "ecc635a9c94cce898c3c9aeb56b98457f3afd78d54139d368a00bce4b96deac0",
+        "hex": "8b5424088bc1538bca568b74240cc1e90385c9577e34558be98da424000000000fb61e8b480c8b7808d2e3b10883c601081f834008010fb65eff2a480c8b7808d2eb83ed01881f75d75d8bfa83e707743db9080000002bcfbaff000000d3fa8b480c22168b70088adad2e3b108081e2a480c01780cd2ea8b480c83f9077e0f83c1f88340080189480c8b400888105f5e5bc20800"
+      },
+      {
+        "address": "00428ff0",
+        "length": 18,
+        "kind": "support_body",
+        "sha256": "46ef27a735b58905252db1a9f990f997de850746448a69d48e990f389026ad4d",
+        "hex": "8b442408508d54240852e851ffffffc20800"
+      },
+      {
+        "address": "00429090",
+        "length": 18,
+        "kind": "support_body",
+        "sha256": "1d5119b40a2172c177f7e35585b27beac9cb4803567ef521108eb58a4b7f5030",
+        "hex": "8b442408508d54240852e8b1feffffc20800"
+      },
+      {
+        "address": "004290b0",
+        "length": 27,
+        "kind": "support_body",
+        "sha256": "83c94b94d02e87a7dd3f180bdf952c85095a910ee9d4fbcfb754be7f5d2c0c9b",
+        "hex": "807c2404006a018d5424080f95c0528844240ce888feffffc20400"
+      },
+      {
+        "address": "004293f0",
+        "length": 251,
+        "kind": "support_body",
+        "sha256": "7670becbf9fad589549771103edffc25f6af627d5789a62093b372c46c668187",
+        "hex": "807c240800578bf974276a018d44241050c644241400e8a5f7ffff807c240c01750f8b4c24080f57c0f30f11015fc21400568b74241c83fe207512568b742410568bcfe878f7ffffe986000000807c241400c74424100000000056743e8d542414528bcfe857f7ffff83fe207d1283c8ff8d4effd3e085442410740409442410db4424108d4effb801000000d3e083e80189442410da742410eb328d4c2414518bcfe819f7ffffdb4424108b54241085d27d06d8057839ce00b8010000008bced3e083e80189442410da7424108b74240cd91ed9442418d9c0dd0578a2d700d9c9dfe9ddd89ff6c4447b09d80ed91e5e5fc214005eddd85fc21400"
+      },
+      {
+        "address": "004295c0",
+        "length": 450,
+        "kind": "support_body",
+        "sha256": "fe4f270b8c5697c3a137e98e746faa49060d5e1d9cf1f10871de8f85cafb6a42",
+        "hex": "f30f1044240483ec08807c241000578bf974340f2e0518a2d7009ff6c444537a04b301eb0232db6a018d4c241c84db0f95c0518bcf88442420e852f9ffff84db5b0f8574010000d944241cd9c0dd0578a2d700d9c9dfe9ddd89ff6c4447a27ddd8f30f11442414568b74242483fe207552568d54241c528bcfe812f9ffff5e5f83c408c21400d87c2410d95c2414d9442414d90560a2d700dff1ddd8760af30f100560a2d700ebb9f30f10442414f30f100d4ca2d7000f2fc176a6f30f114c2414eba4807c241c00746b8d4effb801000000d3e083e8018944241cdb44241cd84c2418d9eed9c9dbf1ddd97624dc0580a2d700e868dd7c00568d4c241c518bcf89442420e887f8ffff5e5f83c408c21400dc2580a2d700e844dd7c00568d4c241c518bcf89442420e863f8ffff5e5f83c408c21400ba010000008bced3e283ea018954241cdb44241cd84c2418d9eed9c9dbf1ddd9762adc0580a2d700d97c24180fb74424180d000c00008944241cd96c241cdf7c24088b442408d96c2418eb28dc2580a2d700d97c24180fb74424180d000c00008944241cd96c241cdf7c24088b442408d96c241889442418568d44241c508bcfe8d6f7ffff5e5f83c408c21400"
+      },
+      {
+        "address": "004499c0",
+        "length": 3,
+        "kind": "support_body",
+        "sha256": "e18aacce29affcdddaa5f641ac1ec12552e0fe9d066e6408941b1792818b8619",
+        "hex": "b001c3"
+      },
+      {
+        "address": "00bfaed0",
+        "length": 31,
+        "kind": "support_body",
+        "sha256": "909b1a39b7337f2fa8d8626167f578bf92643cf163ee37f401893b5b813db166",
+        "hex": "80f940731580f92073060fadd0d3eac38bc233d280e11fd3e8c333c033d2c3"
+      },
+      {
+        "address": "00bf7df0",
+        "length": 52,
+        "kind": "support_body",
+        "sha256": "3d0898d998acc8af3ea17032ff56fd1b963c685b072f669c52d4b8267f9d0a78",
+        "hex": "8b4424088b4c24100bc88b4c240c75098b442404f7e1c2100053f7e18bd88b442408f764241403d88b442408f7e103d35bc21000"
+      },
+      {
+        "address": "00768530",
+        "length": 7528,
+        "kind": "parent_body",
+        "sha256": "f026559defeeea77eae2c8e5b1f1936c1dbc2075329423e62d73f5634266e7c4",
+        "hex": "64a1000000006aff68328fc800506489250000000083ec0856578bf96a088d44240f8d7704508bcee81307ccff6a088bcee81a06ccff0fb64c240b8d41ff3de80000000f87fe1c0000ff248598a276006a18e894e2480083c40485c074106a018bc8e8c932ffff8bf0e9dd1c000033c08bf0e9d41c00006a30e86de2480083c4048944240c85c0c74424180000000074168bc8e8e8edffffc7442418ffffffff8bf0e9a41c000033c0c7442418ffffffff8bf0e9931c00006a1ce82ce2480083c40485c074a88bc8e83364ffff8bf0e9771c00006a20e810e2480083c40485c0748c8bc8e82765ffff8bf0e95b1c00006a2ce8f4e1480083c40485c00f846cffffff8bc8e8b7ddffff8bf0e93b1c00006a1ce8d4e1480083c40485c00f844cffffff8bc8e85766ffff8bf0e91b1c00006a30e8b4e1480083c40485c00f842cffffff8bc8e87767ffff8bf0e9fb1b00006a28e894e1480083c40485c00f840cffffff8bc8e86769ffff8bf0e9db1b00006a30e874e1480083c40485c00f84ecfeffff8bc8e8e76affff8bf0e9bb1b00006a2ce854e1480083c40485c00f84ccfeffff8bc8e8776cffff8bf0e99b1b00006a1ce834e1480083c40485c00f84acfeffff8bc8e8476effff8bf0e97b1b00006a1ce814e1480083c40485c00f848cfeffff8bc8e8b75dffff8bf0e95b1b00006a20e8f4e0480083c40485c00f846cfeffff8bc8e8672bffff8bf0e93b1b00006a18e8d4e0480083c40485c00f844cfeffff6a028bc8e80531ffff8bf0e9191b00006a24e8b2e0480083c40485c00f842afeffff8bc8e80547ffff8bf0e9f91a000068c0000000e88fe0480083c40485c00f8407feffff8bc8e8324effff8bf0e9d61a00006a1ce86fe0480083c40485c00f84e7fdffff8bc8e8d251ffff8bf0e9b61a00006888000000e84ce0480083c40485c00f84c4fdffff8bc8e82f48ffff8bf0e9931a00006a18e82ce0480083c40485c00f84a4fdffff8bc8e83f61ffff8bf0e9731a00006a2ce80ce0480083c40485c00f8484fdffff8bc8e8efd5ffff8bf0e9531a00006a18e8ecdf480083c40485c00f8464fdffff8bc8e8ff5cffff8bf0e9331a00006a30e8ccdf480083c40485c00f8444fdffff8bc8e86fd9ffff8bf0e9131a00006a1ce8acdf480083c40485c00f8424fdffff8bc8e8af5dffff8bf0e9f31900006a1ce88cdf480083c40485c00f8404fdffff8bc8e80f4cffff8bf0e9d31900006a18e86cdf480083c40485c00f84e4fcffff8bc8e8efd6d4ff8bf0e9b31900006a1ce84cdf480083c40485c00f84c4fcffff6a008bc8e8fd49ffff8bf0e9911900006a1ce82adf480083c40485c00f84a2fcffff8bc8e89d41ffff8bf0e9711900006a78e80adf480083c40485c00f8482fcffff8bc8e89d42ffff8bf0e9511900006a18e8eade480083c40485c00f8462fcffff8bc8e8ad4affff8bf0e9311900006a18e8cade480083c40485c00f8442fcffff8bc8e8dd5dffff8bf0e9111900006a1ce8aade480083c40485c00f8422fcffff8bc8e8cdd6d4ff8bf0e9f11800006a1ce88ade480083c40485c00f8402fcffff8bc8e88d5effff8bf0e9d11800006890010000e867de480083c40485c00f84dffbffff8bc8e87ab9ffff8bf0e9ae1800006838010000e844de480083c40485c00f84bcfbffff8bc8e8f7b9ffff8bf0e98b1800006a50e824de480083c40485c00f849cfbffff8bc8e8f755ffff8bf0e96b1800006a24e804de480083c40485c00f847cfbffff8bc8e837d6ffff8bf0e94b1800006a20e8e4dd480083c40485c00f845cfbffff6a198bc8e85550ffff8bf0e9291800006a20e8c2dd480083c40485c00f843afbffff8bc8e80551ffff8bf0e9091800006a20e8a2dd480083c40485c00f841afbffff8bc8e89551ffff8bf0e9e91700006a20e882dd480083c40485c00f84fafaffff8bc8e82552ffff8bf0e9c91700006a20e862dd480083c40485c00f84dafaffff8bc8e80554ffff8bf0e9a91700006a20e842dd480083c40485c00f84bafaffff8bc8e85556ffff8bf0e9891700006a20e822dd480083c40485c00f849afaffff8bc8e86557ffff8bf0e9691700006a20e802dd480083c40485c00f847afaffff8bc8e87558ffff8bf0e9491700006a40e8e2dc480083c40485c00f845afaffff8bc8e885d0ffff8bf0e9291700006a20e8c2dc480083c40485c00f843afaffff8bc8e8b5d1ffff8bf0e9091700006a54e8a2dc480083c40485c00f841afaffff8bc8e86523dcff8bf0e9e91600006a28e882dc480083c40485c00f84faf9ffff8bc8e8c5baffff8bf0e9c91600006a20e862dc480083c40485c00f84daf9ffff8bc8e87513ffff8bf0e9a91600006a24e842dc480083c40485c00f84baf9ffff8bc8e89551ffff8bf0e9891600006a20e822dc480083c40485c00f849af9ffff8bc8e8656affff8bf0e9691600006a20e802dc480083c40485c00f847af9ffff8bc8e8556bffff8bf0e9491600006a30e8e2db480083c40485c00f845af9ffff8bc8e8456cffff8bf0e929160000e8c9aafcff8bf0e91d160000e8cd8817008bf0e9111600006a30e8aadb480083c40485c00f8422f9ffff8bc8e89daaffff8bf0e9f11500006a30e88adb480083c40485c00f8402f9ffff8bc8e88dacffff8bf0e9d11500006a20e86adb480083c40485c00f84e2f8ffff8bc8e86d24ffff8bf0e9b11500006a5ce84adb480083c4048944240c85c0c7442418010000000f84eff8ffff8bc8e811e0ffffc7442418ffffffff8bf0e97d1500006a30e816db480083c40485c00f848ef8ffff8bc8e849caffff8bf0e95d1500006a44e8f6da480083c40485c00f846ef8ffff8bc8e819cbffff8bf0e93d1500006a38e8d6da480083c4048944240c85c0c7442418020000000f847bf8ffff8bc8e80de8ffffc7442418ffffffff8bf0e9091500006a34e8a2da480083c40485c00f841af8ffff8bc8e8b510ffff8bf0e9e91400006a28e882da480083c40485c00f84faf7ffff8bc8e81511ffff8bf0e9c91400006a28e862da480083c40485c00f84daf7ffff8bc8e8852fffff8bf0e9a91400006a24e842da480083c40485c00f84baf7ffff8bc8e84512ffff8bf0e9891400006a24e822da480083c40485c00f849af7ffff8bc8e8a512ffff8bf0e9691400006a20e802da480083c40485c00f847af7ffff8bc8e83508e9ff8bf0e9491400006a24e8e2d9480083c40485c00f845af7ffff8bc8e82516ffff8bf0e9291400006a38e8c2d9480083c40485c00f843af7ffff8bc8e8b531ffff8bf0e9091400006a24e8a2d9480083c40485c00f841af7ffff8bc8e8f534ffff8bf0e9e91300006a24e882d9480083c40485c00f84faf6ffff8bc8e8a535ffff8bf0e9c91300006a28e862d9480083c40485c00f84daf6ffff8bc8e88512ffff8bf0e9a91300006a24e842d9480083c40485c00f84baf6ffff8bc8e88536ffff8bf0e9891300006a28e822d9480083c40485c00f849af6ffff8bc8e8e512ffff8bf0e9691300006a24e802d9480083c40485c00f847af6ffff8bc8e8f5fffbff8bf0e9491300006a24e8e2d8480083c40485c00f845af6ffff8bc8e85500fcff8bf0e9291300006a38e8c2d8480083c40485c00f843af6ffff8bc8e8a587ffff8bf0e9091300006a24e8a2d8480083c40485c00f841af6ffff8bc8e85589ffff8bf0e9e91200006a24e882d8480083c40485c00f84faf5ffff8bc8e8058affff8bf0e9c91200006a24e862d8480083c40485c00f84daf5ffff8bc8e8b58affff8bf0e9a91200006a24e842d8480083c40485c00f84baf5ffff8bc8e8658bffff8bf0e9891200006a38e822d8480083c40485c00f849af5ffff8bc8e8158cffff8bf0e9691200006a2ce802d8480083c40485c00f847af5ffff8bc8e8658dffff8bf0e9491200006a2ce8e2d7480083c40485c00f845af5ffff8bc8e8f5aaffff8bf0e9291200006a24e8c2d7480083c40485c00f843af5ffff8bc8e83586f6ff8bf0e9091200006a24e8a2d7480083c40485c00f841af5ffff8bc8e89586f6ff8bf0e9e91100006a24e882d7480083c40485c00f84faf4ffff8bc8e8f586f6ff8bf0e9c91100006a24e862d7480083c40485c00f84daf4ffff8bc8e85587f6ff8bf0e9a91100006a24e842d7480083c40485c00f84baf4ffff8bc8e8f511ffff8bf0e9891100006a24e822d7480083c40485c00f849af4ffff8bc8e82512ffff8bf0e9691100006a30e802d7480083c40485c00f847af4ffff8bc8e85512ffff8bf0e9491100006a3ce8e2d6480083c40485c00f845af4ffff8bc8e8156effff8bf0e9291100006a24e8c2d6480083c40485c00f843af4ffff8bc8e85573ffff8bf0e9091100006a24e8a2d6480083c40485c00f841af4ffff8bc8e81570ffff8bf0e9e91000006a24e882d6480083c40485c00f84faf3ffff8bc8e85570ffff8bf0e9c91000006a20e862d6480083c40485c00f84daf3ffff8bc8e89570ffff8bf0e9a91000006a20e842d6480083c40485c00f84baf3ffff8bc8e8a571ffff8bf0e9891000006a30e822d6480083c40485c00f849af3ffff8bc8e8359fffff8bf0e9691000006a30e802d6480083c40485c00f847af3ffff8bc8e8f5a0ffff8bf0e9491000006a28e8e2d5480083c40485c00f845af3ffff8bc8e8559fffff8bf0e9291000006a38e8c2d5480083c40485c00f843af3ffff8bc8e815a1ffff8bf0e9091000006a28e8a2d5480083c40485c00f841af3ffff8bc8e855a1ffff8bf0e9e90f00006a24e882d5480083c40485c00f84faf2ffff8bc8e895a1ffff8bf0e9c90f00006a24e862d5480083c40485c00f84daf2ffff8bc8e835a2ffff8bf0e9a90f00006a28e842d5480083c40485c00f84baf2ffff8bc8e8b5a1ffff8bf0e9890f00006a24e822d5480083c40485c00f849af2ffff8bc8e8d530f5ff8bf0e9690f0000682c010000e8ffd4480083c4048944240c85c0c7442418030000000f84a4f2ffff8bc8e8864f0a00c7442418ffffffff8bf0e9320f00006854010000e8c8d4480083c4048944240c85c0c7442418040000000f846df2ffff8bc8e87fdbffffc7442418ffffffff8bf0e9fb0e00006a4ce894d4480083c40485c00f840cf2ffff8bc8e89712ffff8bf0e9db0e000068b41a0000e871d4480083c4048944240c85c0c7442418050000000f8416f2ffff8bc8e84878ffffc7442418ffffffff8bf0e9a40e00006a3ce83dd4480083c40485c00f84b5f1ffff8bc8e8a012ffff8bf0e9840e000068e8000000e81ad4480083c40485c00f8492f1ffff8bc8e81d8dffff8bf0e9610e00006a28e8fad3480083c40485c00f8472f1ffff8bc8e8ed8dffff8bf0e9410e00006a24e8dad3480083c40485c00f8452f1ffff8bc8e87d8fffff8bf0e9210e00006a2ce8bad3480083c40485c00f8432f1ffff8bc8e8ed8affff8bf0e9010e00006a1ce89ad3480083c40485c00f8412f1ffff8bc8e8fd8cffff8bf0e9e10d00006a20e87ad3480083c40485c00f84f2f0ffff8bc8e86d13eeff8bf0e9c10d00006a20e85ad3480083c40485c00f84d2f0ffff8bc8e8bd79ffff8bf0e9a10d00006a24e83ad3480083c40485c00f84b2f0ffff8bc8e8dd7cffff8bf0e9810d00006a38e81ad3480083c40485c00f8492f0ffff8bc8e81d26ffff8bf0e9610d00006a20e8fad2480083c40485c00f8472f0ffff8bc8e8dd7dffff8bf0e9410d00006a24e8dad2480083c40485c00f8452f0ffff8bc8e8fd7effff8bf0e9210d00006a20e8bad2480083c40485c00f8432f0ffff8bc8e83d7effff8bf0e9010d00006a2ce89ad2480083c40485c00f8412f0ffff8bc8e8fd7fffff8bf0e9e10c00006a20e87ad2480083c40485c00f84f2efffff8bc8e8fdafffff8bf0e9c10c00006a30e85ad2480083c40485c00f84d2efffff8bc8e8fd79ffff8bf0e9a10c00006a28e83ad2480083c40485c00f84b2efffff8bc8e8ed72ffff8bf0e9810c00006a20e81ad2480083c40485c00f8492efffff8bc8e83d74ffff8bf0e9610c00006a20e8fad1480083c40485c00f8472efffff8bc8e83d75ffff8bf0e9410c00006a24e8dad1480083c40485c00f8452efffff8bc8e88d17ffff8bf0e9210c00006a24e8bad1480083c40485c00f8432efffff8bc8e89d17ffff8bf0e9010c00006848010000e897d1480083c4048944240c85c0c7442418060000000f843cefffff8bc8e82ee3ffffc7442418ffffffff8bf0e9ca0b00006834010000e860d1480083c4048944240c85c0c7442418070000000f8405efffff8bc8e84702ffffc7442418ffffffff8bf0e9930b00006a20e82cd1480083c40485c00f84a4eeffff8bc8e8ff17ffff8bf0e9730b00006a1ce80cd1480083c40485c00f8484eeffff8bc8e87f03feff8bf0e9530b00006a28e8ecd0480083c40485c00f8464eeffff8bc8e86fa5ffff8bf0e9330b00006a28e8ccd0480083c40485c00f8444eeffff8bc8e8afa5ffff8bf0e9130b00006a28e8acd0480083c40485c00f8424eeffff8bc8e8efa5ffff8bf0e9f30a00006a2ce88cd0480083c40485c00f8404eeffff8bc8e82fa6ffff8bf0e9d30a00006824010000e869d048008bd083c4048954240c85d2c744241808000000741c8bcae892d7ffffc7021cdecf00c7442418ffffffff8bf2e9980a000033d2c7442418ffffffff8bf2e9870a00006a24e820d0480083c40485c00f8498edffff8bc8e8430dffff8bf0e9670a00006a24e800d0480083c40485c00f8478edffff6a008bc8e811a1f7ff8bf0e9450a00006a24e8decf480083c40485c00f8456edffff8bc8e8310dffff8bf0e9250a00006a44e8becf480083c40485c00f8436edffff8bc8e82166ffff8bf0e9050a00006a40e89ecf480083c40485c00f8416edffff8bc8e8310dffff8bf0e9e50900006a54e87ecf480083c40485c00f84f6ecffff8bc8e8519dffff8bf0e9c50900006a24e85ecf480083c40485c00f84d6ecffff6aff8bc8e88fa1f7ff8bf0e9a30900006a20e83ccf480083c40485c00f84b4ecffff8bc8e86f9dffff8bf0e9830900006a28e81ccf480083c40485c00f8494ecffff8bc8e8af9dffff8bf0e9630900006a1ce8fcce480083c40485c00f8474ecffff8bc8e87fafffff8bf0e9430900006820010000e8d9ce48008bd083c4048954240c85d2c7442418090000000f8488feffff8bcae8fed5ffffc7022493cf00c7442418ffffffff8bf2e9040900006828010000e89ace48008bd083c4048954240c85d2c74424180a0000000f8449feffff8bcae8bfd5ffffc70228bccf00c7442418ffffffff8bf2e9c5080000682c010000e85bce48008bd083c4048954240c85d2c74424180b0000000f840afeffff8bcae880d5ffffc702bc37d000c7442418ffffffff8bf2e986080000682c010000e81cce48008bd083c4048954240c85d2c74424180c0000000f84cbfdffff8bcae841d5ffffc702e037d000c7442418ffffffff8bf2e9470800006a3ce8e0cd480083c40485c00f8458ebffff8bc8e8830affff8bf0e9270800006828010000e8bdcd480083c4048944240c85c0c74424180d0000000f8462ebffff8bc8e804410800c7442418ffffffff8bf0e9f00700006a24e889cd480083c40485c00f8401ebffff8bc8e88c12ffff8bf0e9d00700006a20e869cd480083c40485c00f84e1eaffff8bc8e89c12ffff8bf0e9b00700006a24e849cd480083c40485c00f84c1eaffff8bc8e83c17ffff8bf0e9900700006830010000e826cd48008bd083c4048954240c85d2c74424180e0000000f84d5fcffff8bcae84bd4ffffc7029c37d000c7442418ffffffff8bf2e95107000068b0000000e8e7cc480083c40485c00f845feaffff8bc8e86a0fffff8bf0e92e070000681c020000e8c4cc480083c40485c00f843ceaffff8bc8e8778bffff8bf0e90b0700006a24e8a4cc480083c40485c00f841ceaffff8bc8e8f78cffff8bf0e9eb0600006a20e884cc480083c40485c00f84fce9ffff8bc8e8c7b6e9ff8bf0e9cb0600006a24e864cc480083c40485c00f84dce9ffff8bc8e8378effff8bf0e9ab0600006a20e844cc480083c40485c00f84bce9ffff8bc8e8778effff8bf0e98b0600006a24e824cc480083c40485c00f849ce9ffff8bc8e8178fffff8bf0e96b0600006a2ce804cc480083c40485c00f847ce9ffff8bc8e85790ffff8bf0e94b0600006a3ce8e4cb480083c40485c00f845ce9ffff8bc8e8f70effff8bf0e92b0600006a3ce8c4cb480083c40485c00f843ce9ffff8bc8e8770fffff8bf0e90b0600006a28e8a4cb480083c40485c00f841ce9ffff8bc8e8c70fffff8bf0e9eb0500006a20e884cb480083c40485c00f84fce8ffff8bc8e88782dbff8bf0e9cb0500006a3ce864cb480083c40485c00f84dce8ffff8bc8e8b7afffff8bf0e9ab0500006a28e844cb480083c40485c00f84bce8ffff8bc8e87712ffff8bf0e98b0500006a2ce824cb480083c40485c00f849ce8ffff8bc8e88712ffff8bf0e96b0500006a3ce804cb480083c40485c00f847ce8ffff8bc8e867b2ffff8bf0e94b0500006a28e8e4ca480083c40485c00f845ce8ffff8bc8e8e712ffff8bf0e92b0500006a24e8c4ca480083c40485c00f843ce8ffff8bc8e8f712ffff8bf0e90b0500006a30e8a4ca480083c40485c00f841ce8ffff8bc8e87713ffff8bf0e9eb0400006a24e884ca480083c40485c00f84fce7ffff8bc8e82713ffff8bf0e9cb0400006a28e864ca480083c40485c00f84dce7ffff8bc8e8c704ffff8bf0e9ab0400006a24e844ca480083c40485c00f84bce7ffff8bc8e8c705ffff8bf0e98b0400006a24e824ca480083c40485c00f849ce7ffff8bc8e8972bffff8bf0e96b0400006a2ce804ca480083c40485c00f847ce7ffff8bc8e8f7bbffff8bf0e94b0400006810010000e8e1c948008bd083c4048954240c85d2c74424180f0000000f8490f9ffff8bcae806d1ffffc70218fdcf00c7442418ffffffff8bf2e90c0400006a1ce8a5c9480083c40485c00f841de7ffff8bc8e81810ffff8bf0e9ec0300006834010000e882c948008bd083c4048954240c85d2c7442418100000000f8431f9ffff8bcae8a7d0ffffc702bcf2cf00c7442418ffffffff8bf2e9ad0300006818010000e843c9480083c4048944240c85c0c7442418110000000f84e8e6ffff8bc8e87adbffffc7442418ffffffff8bf0e9760300006a2ce80fc9480083c40485c00f8487e6ffff8bc8e8b20fffff8bf0e9560300006a20e8efc8480083c40485c00f8467e6ffff8bc8e8425dffff8bf0e9360300006a24e8cfc8480083c40485c00f8447e6ffff8bc8e8c2a2ffff8bf0e9160300006a24e8afc8480083c40485c00f8427e6ffff8bc8e802a3ffff8bf0e9f60200006a28e88fc8480083c40485c00f8407e6ffff8bc8e842a3ffff8bf0e9d60200006a28e86fc8480083c40485c00f84e7e5ffff8bc8e8a2c6ffff8bf0e9b60200006a1ce84fc8480083c40485c00f84c7e5ffff8bc8e8b2a4ffff8bf0e9960200006820010000e82cc8480083c4048944240c85c0c7442418120000000f84d1e5ffff8bc8e8b3d6ffffc7442418ffffffff8bf0e95f0200006a30e8f8c7480083c40485c00f8470e5ffff8bc8e80b08ffff8bf0e93f0200006a2ce8d8c7480083c40485c00f8450e5ffff8bc8e85b08ffff8bf0e91f0200006a30e8b8c7480083c40485c00f8430e5ffff8bc8e8ab08ffff8bf0e9ff0100006a24e898c7480083c40485c00f8410e5ffff8bc8e8fb08ffff8bf0e9df0100006a20e878c7480083c40485c00f84f0e4ffff8bc8e84b5affff8bf0e9bf0100006818020000e855c7480083c40485c00f84cde4ffff8bc8e8985affff8bf0e99c0100006810010000e832c748008bd083c4048954240c85d2c7442418130000000f84e1f6ffff8bcae857ceffffc7020438d000c7442418ffffffff8bf2e95d0100006a30e8f6c6480083c4048944240c85c0c7442418140000000f849be4ffff8bc8e87de2ffffc7442418ffffffff8bf0e9290100006a2ce8c2c6480083c40485c00f843ae4ffff8bc8e8d5b7ffff8bf0e9090100006a28e8a2c6480083c40485c00f841ae4ffff8bc8e805b3ffff8bf0e9e90000006a28e882c6480083c40485c00f84fae3ffff8bc8e8d524ffff8bf0e9c90000006a28e862c6480083c4048944240c85c0c7442418150000000f8407e4ffff8bc8e8e9c4ffffc7442418ffffffff8bf0e9950000006a1ce82ec6480083c40485c00f84a6e3ffff8bc8e88164ffff8bf0eb786a1ce811c6480083c40485c00f8489e3ffff8bc8e89465ffff8bf0eb5b6a20e8f4c5480083c40485c00f846ce3ffff8bc8e8d7b3ffff8bf0eb3e6a28e8d7c5480083c40485c00f844fe3ffff8bc8e87a57ffff8bf0eb216a20e8bac5480083c40485c00f8432e3ffff8bc8e85dc3ffff8bf0eb048b74240c8b168b4208578bceffd08b4c24105f8bc65e64890d0000000083c414c3"
+      },
+      {
+        "address": "00ce4974",
+        "length": 12,
+        "kind": "native_data",
+        "sha256": "1de1783d0bcaff6f676451c2973530c6ea20896f87fe48fd7cba1e3534ebb0e8",
+        "hex": "109944008e69bf008e69bf00"
+      },
+      {
+        "address": "00d02c68",
+        "length": 20,
+        "kind": "native_data",
+        "sha256": "42678d7bb528a8382a295a4bd9ec14c64f9e9db585a6f100e834151f53fbf751",
+        "hex": "d09c75004099440060994400a0994400c0994400"
+      },
+      {
+        "address": "00d03048",
+        "length": 20,
+        "kind": "native_data",
+        "sha256": "7c78a264c94832d7f3834f5ee8d106ee30caa806faa9385adfe69b40095598dd",
+        "hex": "70d9750060d67500e0d7750050d67500c0994400"
+      },
+      {
+        "address": "00d02ff8",
+        "length": 20,
+        "kind": "native_data",
+        "sha256": "49e3b02d2626302655c0eafac38f8ba4e699bdfc96585c6b9b053b301e6c00f8",
+        "hex": "c0d27500e0d07500d0d17500d0d07500c0994400"
+      },
+      {
+        "address": "00d7a218",
+        "length": 4,
+        "kind": "native_data",
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "hex": "00000000"
+      },
+      {
+        "address": "00d7a248",
+        "length": 8,
+        "kind": "native_data",
+        "sha256": "8cc9b2e22f237bb7b0ce353d140c5ef9411f7624f1d8ca57e4bf941d55ae05c6",
+        "hex": "ffff7f7f0000803f"
+      },
+      {
+        "address": "00d7a260",
+        "length": 4,
+        "kind": "native_data",
+        "sha256": "c68830a25204a09f8e77aada6bc5807f607cccaaa0ebb2a7122d317584478a8b",
+        "hex": "000080bf"
+      },
+      {
+        "address": "00ce3978",
+        "length": 4,
+        "kind": "native_data",
+        "sha256": "9d459b445179d46efc315fd7ef9a5c8185bd7f3e2860dc6d325ab1b85acf6a96",
+        "hex": "0000804f"
+      },
+      {
+        "address": "00d7a278",
+        "length": 8,
+        "kind": "native_data",
+        "sha256": "25a2bb9e8b123cafaae979f5fc34503fe67d8482f280260011ad677c582acf62",
+        "hex": "000000e0ffffef47"
+      },
+      {
+        "address": "00d7a280",
+        "length": 8,
+        "kind": "native_data",
+        "sha256": "4cfa5b42ca669328764e67cd9a34bb8f90b16ed7ca8d85e8443783d7ccce15ed",
+        "hex": "000000000000e03f"
+      },
+      {
+        "address": "0109eea4",
+        "length": 4,
+        "kind": "native_data",
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "hex": "00000000"
+      },
+      {
+        "address": "00bf7420",
+        "length": 171,
+        "kind": "fixture_crt_block",
+        "sha256": "79bef72f6967ef5ec8414c36f64fdb35a6167893f6dca509f73ef9312a2786c2",
+        "hex": "833da4ee090100742d558bec83ec0883e4f8dd1c24f20f2c0424c9c3833da4ee090100741183ec04d93c24586683e07f6683f87f74d3558bec83ec2083e4f0d9c0d9542418df7c2410df6c24108b5424188b44241085c0743cdee985d2791ed91c248b0c2481f10000008081c1ffffff7f83d0008b54241483d200eb2cd91c248b0c2481c1ffffff7f83d8008b54241483da00eb148b542414f7c2ffffff7f75b8d95c2418d95c2418c9c3"
+      }
+    ],
+    "call_rows": [
+      {
+        "address": "0042901a",
+        "native": "00428f50",
+        "function": "00429010",
+        "kind": "call"
+      },
+      {
+        "address": "0042907a",
+        "native": "00428f50",
+        "function": "00429070",
+        "kind": "call"
+      },
+      {
+        "address": "004290fa",
+        "native": "00428f50",
+        "function": "004290d0",
+        "kind": "call"
+      },
+      {
+        "address": "0042910c",
+        "native": "00428f50",
+        "function": "004290d0",
+        "kind": "call"
+      },
+      {
+        "address": "00429199",
+        "native": "00428f50",
+        "function": "00429180",
+        "kind": "call"
+      },
+      {
+        "address": "0075d673",
+        "native": "00428ff0",
+        "function": "0075d660",
+        "kind": "call"
+      },
+      {
+        "address": "0075d682",
+        "native": "00429180",
+        "function": "0075d660",
+        "kind": "call"
+      },
+      {
+        "address": "0075d68f",
+        "native": "00429090",
+        "function": "0075d660",
+        "kind": "call"
+      },
+      {
+        "address": "0075d69c",
+        "native": "00429070",
+        "function": "0075d660",
+        "kind": "call"
+      },
+      {
+        "address": "0075d6a7",
+        "native": "004290d0",
+        "function": "0075d660",
+        "kind": "call"
+      },
+      {
+        "address": "0075d6b2",
+        "native": "004290d0",
+        "function": "0075d660",
+        "kind": "call"
+      },
+      {
+        "address": "0075d6be",
+        "native": "004290b0",
+        "function": "0075d660",
+        "kind": "call"
+      },
+      {
+        "address": "0075d6cb",
+        "native": "00429070",
+        "function": "0075d660",
+        "kind": "call"
+      },
+      {
+        "address": "0075d6da",
+        "native": "004290b0",
+        "function": "0075d660",
+        "kind": "call"
+      },
+      {
+        "address": "0075d6e8",
+        "native": "00428ff0",
+        "function": "0075d660",
+        "kind": "call"
+      },
+      {
+        "address": "0075d6f6",
+        "native": "00428ff0",
+        "function": "0075d660",
+        "kind": "call"
+      },
+      {
+        "address": "0075d703",
+        "native": "00429070",
+        "function": "0075d660",
+        "kind": "call"
+      },
+      {
+        "address": "0075d71a",
+        "native": "00428ff0",
+        "function": "0075d660",
+        "kind": "call"
+      },
+      {
+        "address": "0075d73d",
+        "native": "00428ff0",
+        "function": "0075d660",
+        "kind": "call"
+      },
+      {
+        "address": "0075d75d",
+        "native": "00428ff0",
+        "function": "0075d660",
+        "kind": "call"
+      },
+      {
+        "address": "0075d77c",
+        "native": "00429090",
+        "function": "0075d660",
+        "kind": "call"
+      },
+      {
+        "address": "0075d794",
+        "native": "00429070",
+        "function": "0075d660",
+        "kind": "call"
+      },
+      {
+        "address": "0075d7a9",
+        "native": "00bfaed0",
+        "function": "0075d660",
+        "kind": "call"
+      },
+      {
+        "address": "0075d7b1",
+        "native": "00429070",
+        "function": "0075d660",
+        "kind": "call"
+      },
+      {
+        "address": "0075d7c1",
+        "native": "00429070",
+        "function": "0075d660",
+        "kind": "call"
+      },
+      {
+        "address": "0075d7d1",
+        "native": "00429070",
+        "function": "0075d660",
+        "kind": "call"
+      },
+      {
+        "address": "0075d7f5",
+        "native": "00428c70",
+        "function": "0075d7e0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d800",
+        "native": "00428e90",
+        "function": "0075d7e0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d80d",
+        "native": "00428d30",
+        "function": "0075d7e0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d81a",
+        "native": "00428d10",
+        "function": "0075d7e0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d825",
+        "native": "00428df0",
+        "function": "0075d7e0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d830",
+        "native": "00428df0",
+        "function": "0075d7e0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d83b",
+        "native": "00428d70",
+        "function": "0075d7e0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d848",
+        "native": "00428d10",
+        "function": "0075d7e0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d856",
+        "native": "00428d70",
+        "function": "0075d7e0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d863",
+        "native": "00428c70",
+        "function": "0075d7e0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d870",
+        "native": "00428c70",
+        "function": "0075d7e0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d87d",
+        "native": "00428d10",
+        "function": "0075d7e0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d88d",
+        "native": "00428c70",
+        "function": "0075d7e0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d8ac",
+        "native": "00428c70",
+        "function": "0075d7e0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d8cc",
+        "native": "00428c70",
+        "function": "0075d7e0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d8e9",
+        "native": "00428d30",
+        "function": "0075d7e0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d8ff",
+        "native": "00428d10",
+        "function": "0075d7e0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d91d",
+        "native": "00428d10",
+        "function": "0075d7e0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d92b",
+        "native": "00bf7df0",
+        "function": "0075d7e0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d947",
+        "native": "00428d10",
+        "function": "0075d7e0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d957",
+        "native": "00428d10",
+        "function": "0075d7e0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d981",
+        "native": "00bf65ac",
+        "function": "0075d970",
+        "kind": "call"
+      },
+      {
+        "address": "0075d0f3",
+        "native": "00428ff0",
+        "function": "0075d0e0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d101",
+        "native": "00429010",
+        "function": "0075d0e0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d10f",
+        "native": "00429010",
+        "function": "0075d0e0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d11a",
+        "native": "004290d0",
+        "function": "0075d0e0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d126",
+        "native": "004290b0",
+        "function": "0075d0e0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d134",
+        "native": "00429010",
+        "function": "0075d0e0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d142",
+        "native": "00429010",
+        "function": "0075d0e0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d150",
+        "native": "00429010",
+        "function": "0075d0e0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d15e",
+        "native": "00429010",
+        "function": "0075d0e0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d177",
+        "native": "00429070",
+        "function": "0075d0e0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d197",
+        "native": "004295c0",
+        "function": "0075d0e0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d1a4",
+        "native": "00429070",
+        "function": "0075d0e0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d1b3",
+        "native": "00bfaed0",
+        "function": "0075d0e0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d1bb",
+        "native": "00429070",
+        "function": "0075d0e0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d1e5",
+        "native": "00428c70",
+        "function": "0075d1d0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d1f2",
+        "native": "00428c80",
+        "function": "0075d1d0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d1ff",
+        "native": "00428c80",
+        "function": "0075d1d0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d20a",
+        "native": "00428df0",
+        "function": "0075d1d0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d215",
+        "native": "00428d70",
+        "function": "0075d1d0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d222",
+        "native": "00428c80",
+        "function": "0075d1d0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d22f",
+        "native": "00428c80",
+        "function": "0075d1d0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d23c",
+        "native": "00428c80",
+        "function": "0075d1d0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d249",
+        "native": "00428c80",
+        "function": "0075d1d0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d25b",
+        "native": "00428d10",
+        "function": "0075d1d0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d278",
+        "native": "004293f0",
+        "function": "0075d1d0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d286",
+        "native": "00428d10",
+        "function": "0075d1d0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d29e",
+        "native": "00428d10",
+        "function": "0075d1d0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d2ac",
+        "native": "00bf7df0",
+        "function": "0075d1d0",
+        "kind": "call"
+      },
+      {
+        "address": "0075d2d1",
+        "native": "00bf65ac",
+        "function": "0075d2c0",
+        "kind": "call"
+      },
+      {
+        "address": "00428c7b",
+        "native": "00428bb0",
+        "function": "00428c70",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00428c8f",
+        "native": "00428bb0",
+        "function": "00428c80",
+        "kind": "call"
+      },
+      {
+        "address": "00428d1e",
+        "native": "00428bb0",
+        "function": "00428d10",
+        "kind": "tail_jump"
+      },
+      {
+        "address": "00428d42",
+        "native": "00428bb0",
+        "function": "00428d30",
+        "kind": "call"
+      },
+      {
+        "address": "00428d7d",
+        "native": "00428bb0",
+        "function": "00428d70",
+        "kind": "call"
+      },
+      {
+        "address": "00428e02",
+        "native": "00428bb0",
+        "function": "00428df0",
+        "kind": "call"
+      },
+      {
+        "address": "00428e1b",
+        "native": "00428bb0",
+        "function": "00428df0",
+        "kind": "call"
+      },
+      {
+        "address": "00428e9a",
+        "native": "00428bb0",
+        "function": "00428e90",
+        "kind": "call"
+      },
+      {
+        "address": "00428ffa",
+        "native": "00428f50",
+        "function": "00428ff0",
+        "kind": "call"
+      },
+      {
+        "address": "0042909a",
+        "native": "00428f50",
+        "function": "00429090",
+        "kind": "call"
+      },
+      {
+        "address": "004290c3",
+        "native": "00428f50",
+        "function": "004290b0",
+        "kind": "call"
+      },
+      {
+        "address": "00429406",
+        "native": "00428bb0",
+        "function": "004293f0",
+        "kind": "call"
+      },
+      {
+        "address": "00429433",
+        "native": "00428bb0",
+        "function": "004293f0",
+        "kind": "call"
+      },
+      {
+        "address": "00429454",
+        "native": "00428bb0",
+        "function": "004293f0",
+        "kind": "call"
+      },
+      {
+        "address": "00429492",
+        "native": "00428bb0",
+        "function": "004293f0",
+        "kind": "call"
+      },
+      {
+        "address": "004295f9",
+        "native": "00428f50",
+        "function": "004295c0",
+        "kind": "call"
+      },
+      {
+        "address": "00429639",
+        "native": "00428f50",
+        "function": "004295c0",
+        "kind": "call"
+      },
+      {
+        "address": "004296b3",
+        "native": "00bf7420",
+        "function": "004295c0",
+        "kind": "call"
+      },
+      {
+        "address": "004296c4",
+        "native": "00428f50",
+        "function": "004295c0",
+        "kind": "call"
+      },
+      {
+        "address": "004296d7",
+        "native": "00bf7420",
+        "function": "004295c0",
+        "kind": "call"
+      },
+      {
+        "address": "004296e8",
+        "native": "00428f50",
+        "function": "004295c0",
+        "kind": "call"
+      },
+      {
+        "address": "00429775",
+        "native": "00428f50",
+        "function": "004295c0",
+        "kind": "call"
+      },
+      {
+        "address": "00768558",
+        "native": "00428c70",
+        "function": "00768530",
+        "kind": "call"
+      }
+    ],
+    "new_native_bodies": 14,
+    "new_body_bytes": 1666,
+    "fixture_relocations": [
+      {
+        "body": "00429010",
+        "offset": 11,
+        "relative": true,
+        "target": "00428f50"
+      },
+      {
+        "body": "00429070",
+        "offset": 11,
+        "relative": true,
+        "target": "00428f50"
+      },
+      {
+        "body": "004290d0",
+        "offset": 43,
+        "relative": true,
+        "target": "00428f50"
+      },
+      {
+        "body": "004290d0",
+        "offset": 61,
+        "relative": true,
+        "target": "00428f50"
+      },
+      {
+        "body": "00429180",
+        "offset": 26,
+        "relative": true,
+        "target": "00428f50"
+      },
+      {
+        "body": "0075d5d0",
+        "offset": 25,
+        "relative": false,
+        "target": "00d02c68"
+      },
+      {
+        "body": "0075d5d0",
+        "offset": 35,
+        "relative": false,
+        "target": "00e188a8"
+      },
+      {
+        "body": "0075d5d0",
+        "offset": 73,
+        "relative": false,
+        "target": "00d03048"
+      },
+      {
+        "body": "0075d5d0",
+        "offset": 94,
+        "relative": false,
+        "target": "00d03048"
+      },
+      {
+        "body": "0075d660",
+        "offset": 20,
+        "relative": true,
+        "target": "00428ff0"
+      },
+      {
+        "body": "0075d660",
+        "offset": 35,
+        "relative": true,
+        "target": "00429180"
+      },
+      {
+        "body": "0075d660",
+        "offset": 48,
+        "relative": true,
+        "target": "00429090"
+      },
+      {
+        "body": "0075d660",
+        "offset": 61,
+        "relative": true,
+        "target": "00429070"
+      },
+      {
+        "body": "0075d660",
+        "offset": 72,
+        "relative": true,
+        "target": "004290d0"
+      },
+      {
+        "body": "0075d660",
+        "offset": 83,
+        "relative": true,
+        "target": "004290d0"
+      },
+      {
+        "body": "0075d660",
+        "offset": 95,
+        "relative": true,
+        "target": "004290b0"
+      },
+      {
+        "body": "0075d660",
+        "offset": 108,
+        "relative": true,
+        "target": "00429070"
+      },
+      {
+        "body": "0075d660",
+        "offset": 123,
+        "relative": true,
+        "target": "004290b0"
+      },
+      {
+        "body": "0075d660",
+        "offset": 137,
+        "relative": true,
+        "target": "00428ff0"
+      },
+      {
+        "body": "0075d660",
+        "offset": 151,
+        "relative": true,
+        "target": "00428ff0"
+      },
+      {
+        "body": "0075d660",
+        "offset": 164,
+        "relative": true,
+        "target": "00429070"
+      },
+      {
+        "body": "0075d660",
+        "offset": 187,
+        "relative": true,
+        "target": "00428ff0"
+      },
+      {
+        "body": "0075d660",
+        "offset": 222,
+        "relative": true,
+        "target": "00428ff0"
+      },
+      {
+        "body": "0075d660",
+        "offset": 254,
+        "relative": true,
+        "target": "00428ff0"
+      },
+      {
+        "body": "0075d660",
+        "offset": 285,
+        "relative": true,
+        "target": "00429090"
+      },
+      {
+        "body": "0075d660",
+        "offset": 309,
+        "relative": true,
+        "target": "00429070"
+      },
+      {
+        "body": "0075d660",
+        "offset": 330,
+        "relative": true,
+        "target": "00bfaed0"
+      },
+      {
+        "body": "0075d660",
+        "offset": 338,
+        "relative": true,
+        "target": "00429070"
+      },
+      {
+        "body": "0075d660",
+        "offset": 354,
+        "relative": true,
+        "target": "00429070"
+      },
+      {
+        "body": "0075d660",
+        "offset": 370,
+        "relative": true,
+        "target": "00429070"
+      },
+      {
+        "body": "0075d7e0",
+        "offset": 22,
+        "relative": true,
+        "target": "00428c70"
+      },
+      {
+        "body": "0075d7e0",
+        "offset": 33,
+        "relative": true,
+        "target": "00428e90"
+      },
+      {
+        "body": "0075d7e0",
+        "offset": 46,
+        "relative": true,
+        "target": "00428d30"
+      },
+      {
+        "body": "0075d7e0",
+        "offset": 59,
+        "relative": true,
+        "target": "00428d10"
+      },
+      {
+        "body": "0075d7e0",
+        "offset": 70,
+        "relative": true,
+        "target": "00428df0"
+      },
+      {
+        "body": "0075d7e0",
+        "offset": 81,
+        "relative": true,
+        "target": "00428df0"
+      },
+      {
+        "body": "0075d7e0",
+        "offset": 92,
+        "relative": true,
+        "target": "00428d70"
+      },
+      {
+        "body": "0075d7e0",
+        "offset": 105,
+        "relative": true,
+        "target": "00428d10"
+      },
+      {
+        "body": "0075d7e0",
+        "offset": 119,
+        "relative": true,
+        "target": "00428d70"
+      },
+      {
+        "body": "0075d7e0",
+        "offset": 132,
+        "relative": true,
+        "target": "00428c70"
+      },
+      {
+        "body": "0075d7e0",
+        "offset": 145,
+        "relative": true,
+        "target": "00428c70"
+      },
+      {
+        "body": "0075d7e0",
+        "offset": 158,
+        "relative": true,
+        "target": "00428d10"
+      },
+      {
+        "body": "0075d7e0",
+        "offset": 174,
+        "relative": true,
+        "target": "00428c70"
+      },
+      {
+        "body": "0075d7e0",
+        "offset": 205,
+        "relative": true,
+        "target": "00428c70"
+      },
+      {
+        "body": "0075d7e0",
+        "offset": 237,
+        "relative": true,
+        "target": "00428c70"
+      },
+      {
+        "body": "0075d7e0",
+        "offset": 266,
+        "relative": true,
+        "target": "00428d30"
+      },
+      {
+        "body": "0075d7e0",
+        "offset": 288,
+        "relative": true,
+        "target": "00428d10"
+      },
+      {
+        "body": "0075d7e0",
+        "offset": 318,
+        "relative": true,
+        "target": "00428d10"
+      },
+      {
+        "body": "0075d7e0",
+        "offset": 332,
+        "relative": true,
+        "target": "00bf7df0"
+      },
+      {
+        "body": "0075d7e0",
+        "offset": 360,
+        "relative": true,
+        "target": "00428d10"
+      },
+      {
+        "body": "0075d7e0",
+        "offset": 376,
+        "relative": true,
+        "target": "00428d10"
+      },
+      {
+        "body": "0075d970",
+        "offset": 10,
+        "relative": false,
+        "target": "00ce4974"
+      },
+      {
+        "body": "0075d970",
+        "offset": 18,
+        "relative": true,
+        "target": "00bf65ac"
+      },
+      {
+        "body": "0075d010",
+        "offset": 25,
+        "relative": false,
+        "target": "00d02c68"
+      },
+      {
+        "body": "0075d010",
+        "offset": 35,
+        "relative": false,
+        "target": "00e188a8"
+      },
+      {
+        "body": "0075d010",
+        "offset": 73,
+        "relative": false,
+        "target": "00d02ff8"
+      },
+      {
+        "body": "0075d010",
+        "offset": 94,
+        "relative": false,
+        "target": "00d02ff8"
+      },
+      {
+        "body": "0075d0e0",
+        "offset": 20,
+        "relative": true,
+        "target": "00428ff0"
+      },
+      {
+        "body": "0075d0e0",
+        "offset": 34,
+        "relative": true,
+        "target": "00429010"
+      },
+      {
+        "body": "0075d0e0",
+        "offset": 48,
+        "relative": true,
+        "target": "00429010"
+      },
+      {
+        "body": "0075d0e0",
+        "offset": 59,
+        "relative": true,
+        "target": "004290d0"
+      },
+      {
+        "body": "0075d0e0",
+        "offset": 71,
+        "relative": true,
+        "target": "004290b0"
+      },
+      {
+        "body": "0075d0e0",
+        "offset": 85,
+        "relative": true,
+        "target": "00429010"
+      },
+      {
+        "body": "0075d0e0",
+        "offset": 99,
+        "relative": true,
+        "target": "00429010"
+      },
+      {
+        "body": "0075d0e0",
+        "offset": 113,
+        "relative": true,
+        "target": "00429010"
+      },
+      {
+        "body": "0075d0e0",
+        "offset": 127,
+        "relative": true,
+        "target": "00429010"
+      },
+      {
+        "body": "0075d0e0",
+        "offset": 152,
+        "relative": true,
+        "target": "00429070"
+      },
+      {
+        "body": "0075d0e0",
+        "offset": 184,
+        "relative": true,
+        "target": "004295c0"
+      },
+      {
+        "body": "0075d0e0",
+        "offset": 197,
+        "relative": true,
+        "target": "00429070"
+      },
+      {
+        "body": "0075d0e0",
+        "offset": 212,
+        "relative": true,
+        "target": "00bfaed0"
+      },
+      {
+        "body": "0075d0e0",
+        "offset": 220,
+        "relative": true,
+        "target": "00429070"
+      },
+      {
+        "body": "0075d1d0",
+        "offset": 22,
+        "relative": true,
+        "target": "00428c70"
+      },
+      {
+        "body": "0075d1d0",
+        "offset": 35,
+        "relative": true,
+        "target": "00428c80"
+      },
+      {
+        "body": "0075d1d0",
+        "offset": 48,
+        "relative": true,
+        "target": "00428c80"
+      },
+      {
+        "body": "0075d1d0",
+        "offset": 59,
+        "relative": true,
+        "target": "00428df0"
+      },
+      {
+        "body": "0075d1d0",
+        "offset": 70,
+        "relative": true,
+        "target": "00428d70"
+      },
+      {
+        "body": "0075d1d0",
+        "offset": 83,
+        "relative": true,
+        "target": "00428c80"
+      },
+      {
+        "body": "0075d1d0",
+        "offset": 96,
+        "relative": true,
+        "target": "00428c80"
+      },
+      {
+        "body": "0075d1d0",
+        "offset": 109,
+        "relative": true,
+        "target": "00428c80"
+      },
+      {
+        "body": "0075d1d0",
+        "offset": 122,
+        "relative": true,
+        "target": "00428c80"
+      },
+      {
+        "body": "0075d1d0",
+        "offset": 140,
+        "relative": true,
+        "target": "00428d10"
+      },
+      {
+        "body": "0075d1d0",
+        "offset": 169,
+        "relative": true,
+        "target": "004293f0"
+      },
+      {
+        "body": "0075d1d0",
+        "offset": 183,
+        "relative": true,
+        "target": "00428d10"
+      },
+      {
+        "body": "0075d1d0",
+        "offset": 207,
+        "relative": true,
+        "target": "00428d10"
+      },
+      {
+        "body": "0075d1d0",
+        "offset": 221,
+        "relative": true,
+        "target": "00bf7df0"
+      },
+      {
+        "body": "0075d2c0",
+        "offset": 10,
+        "relative": false,
+        "target": "00ce4974"
+      },
+      {
+        "body": "0075d2c0",
+        "offset": 18,
+        "relative": true,
+        "target": "00bf65ac"
+      },
+      {
+        "body": "00428c70",
+        "offset": 12,
+        "relative": true,
+        "target": "00428bb0"
+      },
+      {
+        "body": "00428c80",
+        "offset": 16,
+        "relative": true,
+        "target": "00428bb0"
+      },
+      {
+        "body": "00428d10",
+        "offset": 15,
+        "relative": true,
+        "target": "00428bb0"
+      },
+      {
+        "body": "00428d30",
+        "offset": 19,
+        "relative": true,
+        "target": "00428bb0"
+      },
+      {
+        "body": "00428d70",
+        "offset": 14,
+        "relative": true,
+        "target": "00428bb0"
+      },
+      {
+        "body": "00428df0",
+        "offset": 19,
+        "relative": true,
+        "target": "00428bb0"
+      },
+      {
+        "body": "00428df0",
+        "offset": 44,
+        "relative": true,
+        "target": "00428bb0"
+      },
+      {
+        "body": "00428e90",
+        "offset": 11,
+        "relative": true,
+        "target": "00428bb0"
+      },
+      {
+        "body": "00428ff0",
+        "offset": 11,
+        "relative": true,
+        "target": "00428f50"
+      },
+      {
+        "body": "00429090",
+        "offset": 11,
+        "relative": true,
+        "target": "00428f50"
+      },
+      {
+        "body": "004290b0",
+        "offset": 20,
+        "relative": true,
+        "target": "00428f50"
+      },
+      {
+        "body": "004293f0",
+        "offset": 23,
+        "relative": true,
+        "target": "00428bb0"
+      },
+      {
+        "body": "004293f0",
+        "offset": 68,
+        "relative": true,
+        "target": "00428bb0"
+      },
+      {
+        "body": "004293f0",
+        "offset": 101,
+        "relative": true,
+        "target": "00428bb0"
+      },
+      {
+        "body": "004293f0",
+        "offset": 163,
+        "relative": true,
+        "target": "00428bb0"
+      },
+      {
+        "body": "004293f0",
+        "offset": 181,
+        "relative": false,
+        "target": "00ce3978"
+      },
+      {
+        "body": "004293f0",
+        "offset": 219,
+        "relative": false,
+        "target": "00d7a278"
+      },
+      {
+        "body": "004295c0",
+        "offset": 22,
+        "relative": false,
+        "target": "00d7a218"
+      },
+      {
+        "body": "004295c0",
+        "offset": 58,
+        "relative": true,
+        "target": "00428f50"
+      },
+      {
+        "body": "004295c0",
+        "offset": 79,
+        "relative": false,
+        "target": "00d7a278"
+      },
+      {
+        "body": "004295c0",
+        "offset": 122,
+        "relative": true,
+        "target": "00428f50"
+      },
+      {
+        "body": "004295c0",
+        "offset": 148,
+        "relative": false,
+        "target": "00d7a260"
+      },
+      {
+        "body": "004295c0",
+        "offset": 162,
+        "relative": false,
+        "target": "00d7a260"
+      },
+      {
+        "body": "004295c0",
+        "offset": 178,
+        "relative": false,
+        "target": "00d7a24c"
+      },
+      {
+        "body": "004295c0",
+        "offset": 239,
+        "relative": false,
+        "target": "00d7a280"
+      },
+      {
+        "body": "004295c0",
+        "offset": 244,
+        "relative": true,
+        "target": "00bf7420"
+      },
+      {
+        "body": "004295c0",
+        "offset": 261,
+        "relative": true,
+        "target": "00428f50"
+      },
+      {
+        "body": "004295c0",
+        "offset": 275,
+        "relative": false,
+        "target": "00d7a280"
+      },
+      {
+        "body": "004295c0",
+        "offset": 280,
+        "relative": true,
+        "target": "00bf7420"
+      },
+      {
+        "body": "004295c0",
+        "offset": 297,
+        "relative": true,
+        "target": "00428f50"
+      },
+      {
+        "body": "004295c0",
+        "offset": 345,
+        "relative": false,
+        "target": "00d7a280"
+      },
+      {
+        "body": "004295c0",
+        "offset": 387,
+        "relative": false,
+        "target": "00d7a280"
+      },
+      {
+        "body": "004295c0",
+        "offset": 438,
+        "relative": true,
+        "target": "00428f50"
+      },
+      {
+        "body": "00bf7420",
+        "offset": 2,
+        "relative": false,
+        "target": "0109eea4"
+      },
+      {
+        "body": "00bf7420",
+        "offset": 30,
+        "relative": false,
+        "target": "0109eea4"
+      }
+    ],
+    "raw_parent_calls_without_stored_ownership": [
+      {
+        "site": "00768799",
+        "target": "0075d5d0",
+        "native_parent": "00768530",
+        "live_instruction_and_pe_bytes_verified": true,
+        "ghidra_stored_membership": false
+      },
+      {
+        "site": "007687dc",
+        "target": "0075d010",
+        "native_parent": "00768530",
+        "live_instruction_and_pe_bytes_verified": true,
+        "ghidra_stored_membership": false
+      }
+    ],
+    "factory_allocation_instruction_context": {
+      "00768799": {
+        "address": "00768799",
+        "instruction": "CALL 0x0075d5d0",
+        "context_before": [
+          "00768797: MOV ECX,EAX",
+          "00768791: JZ 0x0076859e",
+          "0076878f: TEST EAX,EAX",
+          "0076878c: ADD ESP,0x4",
+          "00768787: CALL 0x00bf681b",
+          "00768782: PUSH 0xc0"
+        ],
+        "context_after": [
+          "0076879e: MOV ESI,EAX",
+          "007687a0: JMP 0x0076a27b",
+          "007687a5: PUSH 0x1c",
+          "007687a7: CALL 0x00bf681b",
+          "007687ac: ADD ESP,0x4",
+          "007687af: TEST EAX,EAX"
+        ],
+        "mnemonic": "CALL",
+        "patterns_detected": [
+          "control_flow"
+        ]
+      },
+      "007687dc": {
+        "address": "007687dc",
+        "instruction": "CALL 0x0075d010",
+        "context_before": [
+          "007687da: MOV ECX,EAX",
+          "007687d4: JZ 0x0076859e",
+          "007687d2: TEST EAX,EAX",
+          "007687cf: ADD ESP,0x4",
+          "007687ca: CALL 0x00bf681b",
+          "007687c5: PUSH 0x88"
+        ],
+        "context_after": [
+          "007687e1: MOV ESI,EAX",
+          "007687e3: JMP 0x0076a27b",
+          "007687e8: PUSH 0x18",
+          "007687ea: CALL 0x00bf681b",
+          "007687ef: ADD ESP,0x4",
+          "007687f2: TEST EAX,EAX"
+        ],
+        "mnemonic": "CALL",
+        "patterns_detected": [
+          "control_flow"
+        ]
+      }
+    }
+  },
+  "ghidra_repairs": {
+    "defined-functions.json": {
+      "events": [
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "0075d650",
+            "end_address": "0075d65d"
+          },
+          "result": {
+            "success": true,
+            "start_address": "0075d650",
+            "end_address": "0075d65c",
+            "bytes_disassembled": 13,
+            "message": "Successfully disassembled 13 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "0075d650",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "0075d650",
+            "function_name": "FUN_0075d650",
+            "entry_point": "0075d650",
+            "body_size": 13,
+            "message": "Function created successfully at 0075d650"
+          }
+        },
+        {
+          "defined": "0075d650",
+          "end": "0075d65d",
+          "name": null,
+          "after": "Function: FUN_0075d650 at 0075d650\nSignature: undefined FUN_0075d650(void)\nEntry: 0075d650\nBody: 0075d650 - 0075d65c"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "0075d970",
+            "end_address": "0075d98f"
+          },
+          "result": {
+            "success": true,
+            "start_address": "0075d970",
+            "end_address": "0075d98e",
+            "bytes_disassembled": 31,
+            "message": "Successfully disassembled 31 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "0075d970",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "0075d970",
+            "function_name": "FUN_0075d970",
+            "entry_point": "0075d970",
+            "body_size": 28,
+            "message": "Function created successfully at 0075d970"
+          }
+        },
+        {
+          "defined": "0075d970",
+          "end": "0075d98f",
+          "name": null,
+          "after": "Function: FUN_0075d970 at 0075d970\nSignature: undefined FUN_0075d970(void)\nEntry: 0075d970\nBody: 0075d970 - 0075d98e"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "0075d0d0",
+            "end_address": "0075d0dd"
+          },
+          "result": {
+            "success": true,
+            "start_address": "0075d0d0",
+            "end_address": "0075d0dc",
+            "bytes_disassembled": 13,
+            "message": "Successfully disassembled 13 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "0075d0d0",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "0075d0d0",
+            "function_name": "FUN_0075d0d0",
+            "entry_point": "0075d0d0",
+            "body_size": 13,
+            "message": "Function created successfully at 0075d0d0"
+          }
+        },
+        {
+          "defined": "0075d0d0",
+          "end": "0075d0dd",
+          "name": null,
+          "after": "Function: FUN_0075d0d0 at 0075d0d0\nSignature: undefined FUN_0075d0d0(void)\nEntry: 0075d0d0\nBody: 0075d0d0 - 0075d0dc"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "0075d2c0",
+            "end_address": "0075d2df"
+          },
+          "result": {
+            "success": true,
+            "start_address": "0075d2c0",
+            "end_address": "0075d2de",
+            "bytes_disassembled": 31,
+            "message": "Successfully disassembled 31 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "0075d2c0",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "0075d2c0",
+            "function_name": "FUN_0075d2c0",
+            "entry_point": "0075d2c0",
+            "body_size": 28,
+            "message": "Function created successfully at 0075d2c0"
+          }
+        },
+        {
+          "defined": "0075d2c0",
+          "end": "0075d2df",
+          "name": null,
+          "after": "Function: FUN_0075d2c0 at 0075d2c0\nSignature: undefined FUN_0075d2c0(void)\nEntry: 0075d2c0\nBody: 0075d2c0 - 0075d2de"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        }
+      ]
+    }
+  },
+  "ghidra_metadata_limits": {
+    "parent_exists": true,
+    "raw_factory_calls_without_stored_membership": [
+      "00768799",
+      "007687dc"
+    ],
+    "prior_r177_r178_limits_preserved": true,
+    "repair_not_claimed": true
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "ctests_passed": 3,
+    "fixture": {
+      "result": {
+        "exit": 0,
+        "exe_sha256": "25ADC4DD6CF1D1FC5FDA3DEC875F81F546661FE83599914F9F67CAEF6B9DB883",
+        "flags": "/std:c++17 /O2 /MD /W4 /WX /fp:strict /MANIFEST:EMBED",
+        "utc": "2026-09-19T05:08:55.1196406Z",
+        "library_sha256": "6B47907F7DE6298DA307251246B19D70882F72B1BB0EB34AEC35367BAD7872BF"
+      },
+      "pairs": 3810,
+      "matching_bytes": 3682192,
+      "observations_sha256": "3b8e5372f7f6c6855d08fbbe71f44a06dad3abc76474a3bd20ddbd24b480aad0",
+      "field_cases": 1808,
+      "string_cases": 320,
+      "class_virtual_constructor_scalar_cases": 1680,
+      "freeing_scalar_cases": 2,
+      "string_lengths": [
+        0,
+        1,
+        7,
+        31,
+        32,
+        127,
+        255,
+        256,
+        257,
+        511
+      ],
+      "string_output_placements": [
+        "separate",
+        "input_minus_one",
+        "input",
+        "input_plus_one"
+      ],
+      "all_eight_cursor_alignments": true,
+      "precision_controls": [
+        0,
+        2,
+        3
+      ],
+      "rounding_controls": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "crt_conversion_modes": [
+        0,
+        1
+      ],
+      "x87_exception_flags_control_word_and_stack_depth_compared": true,
+      "mxcsr_exception_flags_and_rounding_compared": true,
+      "original_support": "Copied bit/numeric helpers, original171-byte CRT converter block and actual __aullshr/__allmul bodies; no source converter substituted on original side"
+    },
+    "library_sha256": "6b47907f7de6298da307251246b19d70882f72b1bb0eb34aec35367bad7872bf",
+    "game_sha256": "9a51ad462f0764c920d0e00b95e6f1cf8f000398e7a74f42d314dd2818643d96",
+    "source_sha256_by_path": {
+      "include/bsp/native_bit_cursor_fields.hpp": "95d03f1f575ef80d6382e8d378bbd8249e52a874b931bd0398b48d538875c753",
+      "src/native_bit_cursor_fields.cpp": "08f52dc88743bc75d7866d406424e7def82dc5615accfa86d8ef1b213ff850d8",
+      "include/bsp/native_session_message_tags_04_05.hpp": "1abc9e2ea94bca8115340f5df919f5836a4558647115eb1d16ce2b82e89c51b1",
+      "src/native_session_message_tags_04_05.cpp": "fe67858f53f5e8d1523bf12383ba1d3039754e8efeb86a5db48d586c45f3a7f9",
+      "cmake/startup.cmake": "c1ec609114a61f723525a3a76ea059906d556f262e6d442781aa8b6fd95ccdd1"
+    },
+    "source_lf_sha256": {
+      "include/bsp/native_bit_cursor_fields.hpp": "95d03f1f575ef80d6382e8d378bbd8249e52a874b931bd0398b48d538875c753",
+      "src/native_bit_cursor_fields.cpp": "08f52dc88743bc75d7866d406424e7def82dc5615accfa86d8ef1b213ff850d8",
+      "include/bsp/native_session_message_tags_04_05.hpp": "1abc9e2ea94bca8115340f5df919f5836a4558647115eb1d16ce2b82e89c51b1",
+      "src/native_session_message_tags_04_05.cpp": "fe67858f53f5e8d1523bf12383ba1d3039754e8efeb86a5db48d586c45f3a7f9",
+      "cmake/startup.cmake": "cb4268046e34effa3e1b0a74a2b18786cc66fc3ce060d1d5bad8f97a98cc57c8"
+    },
+    "object_paths": [
+      "build/win32/bsp_core.dir/Release/native_bit_cursor_fields.obj",
+      "build/win32/bsp_core.dir/Release/native_session_message_tags_04_05.obj",
+      "build/win32/bsp_core.dir/Release/native_bit_cursor_numeric.obj",
+      "build/win32/bsp_core.dir/Release/native_bit_cursor_write.obj",
+      "build/win32/bsp_core.dir/Release/native_bit_cursor_read.obj",
+      "build/win32/bsp_core.dir/Release/native_session_message_base.obj",
+      "build/win32/bsp_core.dir/Release/native_render_batch_keys.obj",
+      "build/win32/bsp_core.dir/Release/singleton_lifetime.obj"
+    ],
+    "call_verification": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\reports\\native_session_message_records_r179.json: 100 call rows checked, 0 failed\n"
+  },
+  "contract": "Four bit-field write helpers and full constructor/write/read/fixed-type/scalar behavior for native C0h tag04 and88h tag05 records, actual profiles and ordered wire fields, with borrowed numeric bindings for tag05.",
+  "limits": [
+    "Full factory and remaining native classes, packet recorder, network workers, ordinary startup, network exchange and gameplay remain open",
+    "Original ECX/stack virtual placement is supplied by adapters; source context-bearing APIs do not prove whole binary ABI, original private EH or allocator-failure parity",
+    "Type05 profile has SOURCE-ONLY trailing numeric binding metadata after five slots; native D02FF8 has only five slots. Caller owns profile/context lifetimes",
+    "Strings intentionally have no native capacity check; class fixture covers payload strings fitting the observed field spans. Native malformed/oversized class input faults or corruption, arbitrary message/cursor aliasing, concurrent mutation and unmasked FP traps are not validated",
+    "Field semantic names are unresolved. Store order follows the native listing; final snapshots do not prove concurrent observers",
+    "Two factory calls768799/7687DC are live instruction/PE-verified but absent from stored Ghidra function ownership; prior R177/R178 gaps persist, repair not claimed",
+    "Original pre-free root stamp/count recorded; source retained scalar stamp compared without reading released storage"
+  ],
+  "owned_files": [
+    "include/bsp/native_bit_cursor_fields.hpp",
+    "src/native_bit_cursor_fields.cpp",
+    "include/bsp/native_session_message_tags_04_05.hpp",
+    "src/native_session_message_tags_04_05.cpp",
+    "cmake/startup.cmake",
+    "docs/NATIVE_SESSION_MESSAGE_RECORDS_R179.md",
+    "reports/native_session_message_records_r179.json",
+    "config/names/00420000.jsonl",
+    "config/reconstruction/00420000.jsonl",
+    "config/names/00750000.jsonl",
+    "config/reconstruction/00750000.jsonl",
+    "config/names/00760000.jsonl",
+    "config/reconstruction/00760000.jsonl"
+  ],
+  "ghidra_annotations": {
+    "status": "Fourteen complete normal bodies and one parent dependency fragment named/commented/saved under write lock; prior values preserved; exports refreshed and readback checked",
+    "prior_values": [
+      {
+        "address": "00429010",
+        "before": {
+          "address": "00429010",
+          "function_name": "FUN_00429010"
+        },
+        "after": {
+          "address": "00429010",
+          "name": "BSP_BitCursor_WriteSignedByteBits",
+          "evidence": "Complete18B;ECX rawcursor,stackDWORDvalue/bits,RET8. Pass actual value address to428F50. Class05 MOVZX-byte callers write5/6bits; signed interpretation belongs to reader428C80. Descriptive hypothesis, not a recovered symbol. R179:14complete normalbodies1666B;strictWin32/3CTests;3810 original/sourcepairs3682192B:1808fields,320strings,1680classcases,2freeing scalars. All8alignments,stringwrap255/256/511andoverlap,PC0/2/3allRCbothCRT modes,FPstatus/CW/TOP compared;original CRThelpers copied.10924live/PEbytes;100ownedCALLs plus2rawfactorycalls withoutstoredmembership. Fourmissingfunctionsdefined underlock. Fullfactory,recorder/workers,wholeABI/privateEH,ordinary startup/network/gameplay remainopen. docs/NATIVE_SESSION_MESSAGE_RECORDS_R179.md;reports/native_session_message_records_r179.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00429070",
+        "before": {
+          "address": "00429070",
+          "function_name": "FUN_00429070"
+        },
+        "after": {
+          "address": "00429070",
+          "name": "BSP_BitCursor_WriteUnsignedDwordBits",
+          "evidence": "Complete18B;ECX rawcursor,stackDWORDvalue/bits,RET8. Pass actual value address to428F50; no masking beyond rawwriter. Descriptive hypothesis, not a recovered symbol. R179:14complete normalbodies1666B;strictWin32/3CTests;3810 original/sourcepairs3682192B:1808fields,320strings,1680classcases,2freeing scalars. All8alignments,stringwrap255/256/511andoverlap,PC0/2/3allRCbothCRT modes,FPstatus/CW/TOP compared;original CRThelpers copied.10924live/PEbytes;100ownedCALLs plus2rawfactorycalls withoutstoredmembership. Fourmissingfunctionsdefined underlock. Fullfactory,recorder/workers,wholeABI/privateEH,ordinary startup/network/gameplay remainopen. docs/NATIVE_SESSION_MESSAGE_RECORDS_R179.md;reports/native_session_message_records_r179.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "004290d0",
+        "before": {
+          "address": "004290d0",
+          "function_name": "FUN_004290d0"
+        },
+        "after": {
+          "address": "004290d0",
+          "name": "BSP_BitCursor_WriteByteLengthString",
+          "evidence": "Complete71B;ECX rawcursor,stackCstring,RET4. Scan through terminator,retain length LOWBYTE,write8bit length then length*8 leading bits from saved original pointer. Length wraps modulo256;no clamp. Prefix write may overlap and alter subsequent source bytes; no input snapshot. Descriptive hypothesis, not a recovered symbol. R179:14complete normalbodies1666B;strictWin32/3CTests;3810 original/sourcepairs3682192B:1808fields,320strings,1680classcases,2freeing scalars. All8alignments,stringwrap255/256/511andoverlap,PC0/2/3allRCbothCRT modes,FPstatus/CW/TOP compared;original CRThelpers copied.10924live/PEbytes;100ownedCALLs plus2rawfactorycalls withoutstoredmembership. Fourmissingfunctionsdefined underlock. Fullfactory,recorder/workers,wholeABI/privateEH,ordinary startup/network/gameplay remainopen. docs/NATIVE_SESSION_MESSAGE_RECORDS_R179.md;reports/native_session_message_records_r179.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00429180",
+        "before": {
+          "address": "00429180",
+          "function_name": "FUN_00429180"
+        },
+        "after": {
+          "address": "00429180",
+          "name": "BSP_BitCursor_WriteQword",
+          "evidence": "Complete36B;ECX rawcursor,two stackDWORDs,RET8. Capture low/high into contiguous8byte local before rawwriter428F50 count64. Descriptive hypothesis, not a recovered symbol. R179:14complete normalbodies1666B;strictWin32/3CTests;3810 original/sourcepairs3682192B:1808fields,320strings,1680classcases,2freeing scalars. All8alignments,stringwrap255/256/511andoverlap,PC0/2/3allRCbothCRT modes,FPstatus/CW/TOP compared;original CRThelpers copied.10924live/PEbytes;100ownedCALLs plus2rawfactorycalls withoutstoredmembership. Fourmissingfunctionsdefined underlock. Fullfactory,recorder/workers,wholeABI/privateEH,ordinary startup/network/gameplay remainopen. docs/NATIVE_SESSION_MESSAGE_RECORDS_R179.md;reports/native_session_message_records_r179.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0075d010",
+        "before": {
+          "address": "0075d010",
+          "function_name": "FUN_0075d010"
+        },
+        "after": {
+          "address": "0075d010",
+          "name": "BSP_SessionMessage05_Construct",
+          "evidence": "Complete99B;ECX88h message,no stackargs,RET/EAXidentity. Base type5,one currentgamecapture/signed18ECselection,else null;mode1 thenprofileD02FF8. Retainpayload/padding;factory allocation88 at7687C5. Source profile has5ABI-visible slots plus explicitlysource-only borrowed numeric metadata. Descriptive hypothesis, not a recovered symbol. R179:14complete normalbodies1666B;strictWin32/3CTests;3810 original/sourcepairs3682192B:1808fields,320strings,1680classcases,2freeing scalars. All8alignments,stringwrap255/256/511andoverlap,PC0/2/3allRCbothCRT modes,FPstatus/CW/TOP compared;original CRThelpers copied.10924live/PEbytes;100ownedCALLs plus2rawfactorycalls withoutstoredmembership. Fourmissingfunctionsdefined underlock. Fullfactory,recorder/workers,wholeABI/privateEH,ordinary startup/network/gameplay remainopen. docs/NATIVE_SESSION_MESSAGE_RECORDS_R179.md;reports/native_session_message_records_r179.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0075d0d0",
+        "before": {
+          "address": "0075d0d0",
+          "function_name": "FUN_0075d0d0"
+        },
+        "after": {
+          "address": "0075d0d0",
+          "name": "BSP_SessionMessage05_IsType",
+          "evidence": "Complete13B;ECX ignored,stackDWORDquery,RET4/AL. FullDWORDequalsfixed5 irrespectivemutabletype. Descriptive hypothesis, not a recovered symbol. R179:14complete normalbodies1666B;strictWin32/3CTests;3810 original/sourcepairs3682192B:1808fields,320strings,1680classcases,2freeing scalars. All8alignments,stringwrap255/256/511andoverlap,PC0/2/3allRCbothCRT modes,FPstatus/CW/TOP compared;original CRThelpers copied.10924live/PEbytes;100ownedCALLs plus2rawfactorycalls withoutstoredmembership. Fourmissingfunctionsdefined underlock. Fullfactory,recorder/workers,wholeABI/privateEH,ordinary startup/network/gameplay remainopen. docs/NATIVE_SESSION_MESSAGE_RECORDS_R179.md;reports/native_session_message_records_r179.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0075d0e0",
+        "before": {
+          "address": "0075d0e0",
+          "function_name": "FUN_0075d0e0"
+        },
+        "after": {
+          "address": "0075d0e0",
+          "name": "BSP_SessionMessage05_Write",
+          "evidence": "Complete231B;ECX message,stackRAWcursor,RET4. Type8;signedbytes18/19low5;string1A;flag3B;signed3C/3Dlow5,44/45low6;13DWORDs50low4;float40viaFLD1/FSTPscale andFLD/FSTPpayload then4295C0(zero0,signed0,bits8);splitqword48 lowwrite thenreloadpair/__aullshr32/highwrite. Preserve sNaN quieting andx87status. Descriptive hypothesis, not a recovered symbol. R179:14complete normalbodies1666B;strictWin32/3CTests;3810 original/sourcepairs3682192B:1808fields,320strings,1680classcases,2freeing scalars. All8alignments,stringwrap255/256/511andoverlap,PC0/2/3allRCbothCRT modes,FPstatus/CW/TOP compared;original CRThelpers copied.10924live/PEbytes;100ownedCALLs plus2rawfactorycalls withoutstoredmembership. Fourmissingfunctionsdefined underlock. Fullfactory,recorder/workers,wholeABI/privateEH,ordinary startup/network/gameplay remainopen. docs/NATIVE_SESSION_MESSAGE_RECORDS_R179.md;reports/native_session_message_records_r179.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0075d1d0",
+        "before": {
+          "address": "0075d1d0",
+          "function_name": "FUN_0075d1d0"
+        },
+        "after": {
+          "address": "0075d1d0",
+          "name": "BSP_SessionMessage05_Read",
+          "evidence": "Complete238B;ECX message,stack18hREADwrapper,cursor+4,RET4. Same wireorder;signed5/6 extension into sixbytes,unbounded string1A,boolean,13unsignednibbles,4293F0 unsigned8 withFLD1scale. Splitqword48 storeslow/zerohigh before secondread then__allmul32/ADD/ADC. Padding andretained84 untouched. Descriptive hypothesis, not a recovered symbol. R179:14complete normalbodies1666B;strictWin32/3CTests;3810 original/sourcepairs3682192B:1808fields,320strings,1680classcases,2freeing scalars. All8alignments,stringwrap255/256/511andoverlap,PC0/2/3allRCbothCRT modes,FPstatus/CW/TOP compared;original CRThelpers copied.10924live/PEbytes;100ownedCALLs plus2rawfactorycalls withoutstoredmembership. Fourmissingfunctionsdefined underlock. Fullfactory,recorder/workers,wholeABI/privateEH,ordinary startup/network/gameplay remainopen. docs/NATIVE_SESSION_MESSAGE_RECORDS_R179.md;reports/native_session_message_records_r179.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0075d2c0",
+        "before": {
+          "address": "0075d2c0",
+          "function_name": "FUN_0075d2c0"
+        },
+        "after": {
+          "address": "0075d2c0",
+          "name": "BSP_SessionMessage05_ScalarDelete",
+          "evidence": "Complete31B;ECX message,stackflags,RET4/EAXidentity. StampCE4974,freeBF65AC onlyflagsbit0;normal returning-free path retained. Descriptive hypothesis, not a recovered symbol. R179:14complete normalbodies1666B;strictWin32/3CTests;3810 original/sourcepairs3682192B:1808fields,320strings,1680classcases,2freeing scalars. All8alignments,stringwrap255/256/511andoverlap,PC0/2/3allRCbothCRT modes,FPstatus/CW/TOP compared;original CRThelpers copied.10924live/PEbytes;100ownedCALLs plus2rawfactorycalls withoutstoredmembership. Fourmissingfunctionsdefined underlock. Fullfactory,recorder/workers,wholeABI/privateEH,ordinary startup/network/gameplay remainopen. docs/NATIVE_SESSION_MESSAGE_RECORDS_R179.md;reports/native_session_message_records_r179.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0075d5d0",
+        "before": {
+          "address": "0075d5d0",
+          "function_name": "FUN_0075d5d0"
+        },
+        "after": {
+          "address": "0075d5d0",
+          "name": "BSP_SessionMessage04_Construct",
+          "evidence": "Complete99B;ECX C0h message,no stackargs,RET/EAX identity. Base type4,one currentgame E188A8 capture,signed18EC0..7->18CC selection,else null;store mode1 thenprofileD03048. Allpayload andpadding retained;factory allocationC0 at768782. Descriptive hypothesis, not a recovered symbol. R179:14complete normalbodies1666B;strictWin32/3CTests;3810 original/sourcepairs3682192B:1808fields,320strings,1680classcases,2freeing scalars. All8alignments,stringwrap255/256/511andoverlap,PC0/2/3allRCbothCRT modes,FPstatus/CW/TOP compared;original CRThelpers copied.10924live/PEbytes;100ownedCALLs plus2rawfactorycalls withoutstoredmembership. Fourmissingfunctionsdefined underlock. Fullfactory,recorder/workers,wholeABI/privateEH,ordinary startup/network/gameplay remainopen. docs/NATIVE_SESSION_MESSAGE_RECORDS_R179.md;reports/native_session_message_records_r179.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0075d650",
+        "before": {
+          "address": "0075d650",
+          "function_name": "FUN_0075d650"
+        },
+        "after": {
+          "address": "0075d650",
+          "name": "BSP_SessionMessage04_IsType",
+          "evidence": "Complete13B;ECX ignored,stackDWORDquery,RET4/AL. FullDWORD comparison tofixed4 independentof mutable typebyte. Descriptive hypothesis, not a recovered symbol. R179:14complete normalbodies1666B;strictWin32/3CTests;3810 original/sourcepairs3682192B:1808fields,320strings,1680classcases,2freeing scalars. All8alignments,stringwrap255/256/511andoverlap,PC0/2/3allRCbothCRT modes,FPstatus/CW/TOP compared;original CRThelpers copied.10924live/PEbytes;100ownedCALLs plus2rawfactorycalls withoutstoredmembership. Fourmissingfunctionsdefined underlock. Fullfactory,recorder/workers,wholeABI/privateEH,ordinary startup/network/gameplay remainopen. docs/NATIVE_SESSION_MESSAGE_RECORDS_R179.md;reports/native_session_message_records_r179.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0075d660",
+        "before": {
+          "address": "0075d660",
+          "function_name": "FUN_0075d660"
+        },
+        "after": {
+          "address": "0075d660",
+          "name": "BSP_SessionMessage04_Write",
+          "evidence": "Complete381B;ECX message,stackRAWcursor,RET4. Wire order:type8,qword20,signed18low6,value54low2,strings28/48,flag58,value5C32,flag9E,byte60low5/61low2,value5032,36/16/8byte spans62/86/96,three signedDWORDsA0,qwordB0 split32,valueB8/BC32. QwordB0 reloads low/high after lowwrite before __aullshr32. Descriptive hypothesis, not a recovered symbol. R179:14complete normalbodies1666B;strictWin32/3CTests;3810 original/sourcepairs3682192B:1808fields,320strings,1680classcases,2freeing scalars. All8alignments,stringwrap255/256/511andoverlap,PC0/2/3allRCbothCRT modes,FPstatus/CW/TOP compared;original CRThelpers copied.10924live/PEbytes;100ownedCALLs plus2rawfactorycalls withoutstoredmembership. Fourmissingfunctionsdefined underlock. Fullfactory,recorder/workers,wholeABI/privateEH,ordinary startup/network/gameplay remainopen. docs/NATIVE_SESSION_MESSAGE_RECORDS_R179.md;reports/native_session_message_records_r179.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0075d7e0",
+        "before": {
+          "address": "0075d7e0",
+          "function_name": "FUN_0075d7e0"
+        },
+        "after": {
+          "address": "0075d7e0",
+          "name": "BSP_SessionMessage04_Read",
+          "evidence": "Complete387B;ECX message,stack18hREADwrapper,cursor+4,RET4. Exact corresponding wire order/signextension/boolean normalization. Raw qword20 uses8byte temp. SplitqwordB0 storeslow andzero high BEFOREsecondread,then __allmul(high,0,0,1) andADD/ADC. Reader strings have no capacity checks. Otherpadding retained. Descriptive hypothesis, not a recovered symbol. R179:14complete normalbodies1666B;strictWin32/3CTests;3810 original/sourcepairs3682192B:1808fields,320strings,1680classcases,2freeing scalars. All8alignments,stringwrap255/256/511andoverlap,PC0/2/3allRCbothCRT modes,FPstatus/CW/TOP compared;original CRThelpers copied.10924live/PEbytes;100ownedCALLs plus2rawfactorycalls withoutstoredmembership. Fourmissingfunctionsdefined underlock. Fullfactory,recorder/workers,wholeABI/privateEH,ordinary startup/network/gameplay remainopen. docs/NATIVE_SESSION_MESSAGE_RECORDS_R179.md;reports/native_session_message_records_r179.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "0075d970",
+        "before": {
+          "address": "0075d970",
+          "function_name": "FUN_0075d970"
+        },
+        "after": {
+          "address": "0075d970",
+          "name": "BSP_SessionMessage04_ScalarDelete",
+          "evidence": "Complete31B;ECX message,stackflags,RET4/EAXidentity. StampCE4974,freeBF65AC onlyflagsbit0;returning-free path retained,actual existing freeprovider. Descriptive hypothesis, not a recovered symbol. R179:14complete normalbodies1666B;strictWin32/3CTests;3810 original/sourcepairs3682192B:1808fields,320strings,1680classcases,2freeing scalars. All8alignments,stringwrap255/256/511andoverlap,PC0/2/3allRCbothCRT modes,FPstatus/CW/TOP compared;original CRThelpers copied.10924live/PEbytes;100ownedCALLs plus2rawfactorycalls withoutstoredmembership. Fourmissingfunctionsdefined underlock. Fullfactory,recorder/workers,wholeABI/privateEH,ordinary startup/network/gameplay remainopen. docs/NATIVE_SESSION_MESSAGE_RECORDS_R179.md;reports/native_session_message_records_r179.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00768530",
+        "before": {
+          "address": "00768530",
+          "function_name": "BSP_SessionMessage_CreateFromStream",
+          "comment": "[BSP reconstruction 00768530]\nHypothesis, not a recovered symbol. Packet cc_unit_orders_apply, read-only analysis. message* __fastcall(stream), body 00768530..0076A28F. Reads an 8-bit type into a switch of about 190 cases, does operator_new of the class size, calls the class constructor and then piVar2->vtable[2](stream), the deserializer. Type 8Ch is operator_new(4Ch) at 00769380 and constructor 0075A630 at 00769394. docs/UNIT_STATE_MESSAGE.md\n\n[BSP reconstruction 00768530] update\nHypothesis, not a recovered symbol. Packet cc_unit_orders_apply, read-only analysis. message* __fastcall(stream), body 00768530..0076A28F. Reads an 8-bit type into a switch of about 190 cases, does operator_new of the class size, calls the class constructor and then piVar2->vtable[2](stream), the deserializer. Type 8Ch is operator_new(4Ch) at 00769380 and constructor 0075A630 at 00769394. docs/UNIT_STATE_MESSAGE.md | Partial parent only: exact76854A..768565 showsLEAESI,[EDI+4],readtype8bits via428C70 at768558,thenrewind8 via428B80 at768561. Thefullfactory selects nativeclassconstructors/deserializers; those dependencies remainopen. Reconstructedcursor is a dependency,not a substituteparser. Descriptive hypothesis, not a recovered symbol. R176 supplies14 complete normal cursor-reader bodies715B plus2 parent dependency fragments. Strict Win32/3CTests;2064 original/source pairs1826760B across all8 bit alignments,scalar widths/zero counts,rewind,overlapping input/output,declared-end carries,WORD arrays,boolean/u64 and length0/1/5/255 strings. 817live/PE bytes and19 direct CALL/tail-JMP rows. Actual existing malloc/new-handler provider is used on both allocation paths;original request sizes checked. Source interfaces are new, not original binary ABI. Native faults/arbitrary cursor-field aliasing,original allocator identity/failure/new-handler/private EH,full message factory/recorder/workers/constructor,ordinary startup,network exchange and gameplay remain unproved. docs/NATIVE_BIT_CURSOR_READ_R176.md;reports/native_bit_cursor_read_r176.json.\n\n[BSP reconstruction 00768530] update\nHypothesis, not a recovered symbol. Packet cc_unit_orders_apply, read-only analysis. message* __fastcall(stream), body 00768530..0076A28F. Reads an 8-bit type into a switch of about 190 cases, does operator_new of the class size, calls the class constructor and then piVar2->vtable[2](stream), the deserializer. Type 8Ch is operator_new(4Ch) at 00769380 and constructor 0075A630 at 00769394. docs/UNIT_STATE_MESSAGE.md | Partial parent only: exact76854A..768565 showsLEAESI,[EDI+4],readtype8bits via428C70 at768558,thenrewind8 via428B80 at768561. Thefullfactory selects nativeclassconstructors/deserializers; those dependencies remainopen. Reconstructedcursor is a dependency,not a substituteparser. Descriptive hypothesis, not a recovered symbol. R176 supplies14 complete normal cursor-reader bodies715B plus2 parent dependency fragments. Strict Win32/3CTests;2064 original/source pairs1826760B across all8 bit alignments,scalar widths/zero counts,rewind,overlapping input/output,declared-end carries,WORD arrays,boolean/u64 and length0/1/5/255 strings. 817live/PE bytes and19 direct CALL/tail-JMP rows. Actual existing malloc/new-handler provider is used on both allocation paths;original request sizes checked. Source interfaces are new, not original binary ABI. Native faults/arbitrary cursor-field aliasing,original allocator identity/failure/new-handler/private EH,full message factory/recorder/workers/constructor,ordinary startup,network exchange and gameplay remain unproved. docs/NATIVE_BIT_CURSOR_READ_R176.md;reports/native_bit_cursor_read_r176.json. | Partial parent only: full7528B parent span byteverified and directcalls to newlycomplete constructors checked. Type1/type2 allocate18h anduse75B860 thenvirtualslot8->449960 toreadtype. Baseandmode0/1/2 constructors nowreal,selectedowner andfive-slot profiles supplied. Fullfactoryswitch,other nativeclassconstructors/deserializers andpacketrecorder remainunbound. Descriptive hypothesis, not a recovered symbol. R177 supplies19 complete normal bodies709B, four real translated five-slot message profiles and three-slot root, plus one factory dependency fragment. Strict Win32/3CTests;957 original/source pairs958952B:616 writers,112 constructors,96 raw-vtable cases,128 extended-header roundtrips,5 freeing scalar return checks. All8 alignments,overlapping buffers,constructor padding/current game selection,raw pointer identities before normalization;8583live/PE bytes including92 profile bytes;25 direct calls. Nine missing functions defined underwrite lock;returning-free instructions retained. Actual existing allocation/free providers used;original pre-free stamp/count recorded,source stamp checked on retained paths,not read afterfree. Native faults/arbitrary cursor-field aliases,original allocation failure/private EH/CRT identity,whole-module ABI,pure-call fatal execution,fullfactory/recorder/workers,ordinary startup,network exchange and gameplay remain unproved. docs/NATIVE_SESSION_MESSAGE_BASE_R177.md;reports/native_session_message_base_r177.json.\n\n[BSP reconstruction 00768530] update\nHypothesis, not a recovered symbol. Packet cc_unit_orders_apply, read-only analysis. message* __fastcall(stream), body 00768530..0076A28F. Reads an 8-bit type into a switch of about 190 cases, does operator_new of the class size, calls the class constructor and then piVar2->vtable[2](stream), the deserializer. Type 8Ch is operator_new(4Ch) at 00769380 and constructor 0075A630 at 00769394. docs/UNIT_STATE_MESSAGE.md | Partial parent only: exact76854A..768565 showsLEAESI,[EDI+4],readtype8bits via428C70 at768558,thenrewind8 via428B80 at768561. Thefullfactory selects nativeclassconstructors/deserializers; those dependencies remainopen. Reconstructedcursor is a dependency,not a substituteparser. Descriptive hypothesis, not a recovered symbol. R176 supplies14 complete normal cursor-reader bodies715B plus2 parent dependency fragments. Strict Win32/3CTests;2064 original/source pairs1826760B across all8 bit alignments,scalar widths/zero counts,rewind,overlapping input/output,declared-end carries,WORD arrays,boolean/u64 and length0/1/5/255 strings. 817live/PE bytes and19 direct CALL/tail-JMP rows. Actual existing malloc/new-handler provider is used on both allocation paths;original request sizes checked. Source interfaces are new, not original binary ABI. Native faults/arbitrary cursor-field aliasing,original allocator identity/failure/new-handler/private EH,full message factory/recorder/workers/constructor,ordinary startup,network exchange and gameplay remain unproved. docs/NATIVE_BIT_CURSOR_READ_R176.md;reports/native_bit_cursor_read_r176.json. | Partial parent only: full7528B parent span byteverified and directcalls to newlycomplete constructors checked. Type1/type2 allocate18h anduse75B860 thenvirtualslot8->449960 toreadtype. Baseandmode0/1/2 constructors nowreal,selectedowner andfive-slot profiles supplied. Fullfactoryswitch,other nativeclassconstructors/deserializers andpacketrecorder remainunbound. Descriptive hypothesis, not a recovered symbol. R177 supplies19 complete normal bodies709B, four real translated five-slot message profiles and three-slot root, plus one factory dependency fragment. Strict Win32/3CTests;957 original/source pairs958952B:616 writers,112 constructors,96 raw-vtable cases,128 extended-header roundtrips,5 freeing scalar return checks. All8 alignments,overlapping buffers,constructor padding/current game selection,raw pointer identities before normalization;8583live/PE bytes including92 profile bytes;25 direct calls. Nine missing functions defined underwrite lock;returning-free instructions retained. Actual existing allocation/free providers used;original pre-free stamp/count recorded,source stamp checked on retained paths,not read afterfree. Native faults/arbitrary cursor-field aliases,original allocation failure/private EH/CRT identity,whole-module ABI,pure-call fatal execution,fullfactory/recorder/workers,ordinary startup,network exchange and gameplay remain unproved. docs/NATIVE_SESSION_MESSAGE_BASE_R177.md;reports/native_session_message_base_r177.json. | R177 metadata limit: parent calls00768592 and00768756 are live/PE-verified CALL75B860 instructions but remain outside stored factory body. Recreate preserved name/comment/undefined-void prototype and did not fix ownership. Script endpoint disabled; Computer Use native pipe unavailable. Report keeps23 owned call checks and2 separate raw parent edges, with failed verification and repair receipts. No fullfactory/body-ownership claim. | R177 metadata limit: parent calls00768592 and00768756 are live/PE-verified CALL75B860 instructions but remain outside stored factory body. Recreate preserved name/comment/undefined-void prototype and did not fix ownership. Script endpoint disabled; Computer Use native pipe unavailable. Report keeps23 owned call checks and2 separate raw parent edges, with failed verification and repair receipts. No fullfactory/body-ownership claim.\n\n[BSP reconstruction 00768530] update\nHypothesis, not a recovered symbol. Packet cc_unit_orders_apply, read-only analysis. message* __fastcall(stream), body 00768530..0076A28F. Reads an 8-bit type into a switch of about 190 cases, does operator_new of the class size, calls the class constructor and then piVar2->vtable[2](stream), the deserializer. Type 8Ch is operator_new(4Ch) at 00769380 and constructor 0075A630 at 00769394. docs/UNIT_STATE_MESSAGE.md | Partial parent only: exact76854A..768565 showsLEAESI,[EDI+4],readtype8bits via428C70 at768558,thenrewind8 via428B80 at768561. Thefullfactory selects nativeclassconstructors/deserializers; those dependencies remainopen. Reconstructedcursor is a dependency,not a substituteparser. Descriptive hypothesis, not a recovered symbol. R176 supplies14 complete normal cursor-reader bodies715B plus2 parent dependency fragments. Strict Win32/3CTests;2064 original/source pairs1826760B across all8 bit alignments,scalar widths/zero counts,rewind,overlapping input/output,declared-end carries,WORD arrays,boolean/u64 and length0/1/5/255 strings. 817live/PE bytes and19 direct CALL/tail-JMP rows. Actual existing malloc/new-handler provider is used on both allocation paths;original request sizes checked. Source interfaces are new, not original binary ABI. Native faults/arbitrary cursor-field aliasing,original allocator identity/failure/new-handler/private EH,full message factory/recorder/workers/constructor,ordinary startup,network exchange and gameplay remain unproved. docs/NATIVE_BIT_CURSOR_READ_R176.md;reports/native_bit_cursor_read_r176.json. | Partial parent only: full7528B parent span byteverified and directcalls to newlycomplete constructors checked. Type1/type2 allocate18h anduse75B860 thenvirtualslot8->449960 toreadtype. Baseandmode0/1/2 constructors nowreal,selectedowner andfive-slot profiles supplied. Fullfactoryswitch,other nativeclassconstructors/deserializers andpacketrecorder remainunbound. Descriptive hypothesis, not a recovered symbol. R177 supplies19 complete normal bodies709B, four real translated five-slot message profiles and three-slot root, plus one factory dependency fragment. Strict Win32/3CTests;957 original/source pairs958952B:616 writers,112 constructors,96 raw-vtable cases,128 extended-header roundtrips,5 freeing scalar return checks. All8 alignments,overlapping buffers,constructor padding/current game selection,raw pointer identities before normalization;8583live/PE bytes including92 profile bytes;25 direct calls. Nine missing functions defined underwrite lock;returning-free instructions retained. Actual existing allocation/free providers used;original pre-free stamp/count recorded,source stamp checked on retained paths,not read afterfree. Native faults/arbitrary cursor-field aliases,original allocation failure/private EH/CRT identity,whole-module ABI,pure-call fatal execution,fullfactory/recorder/workers,ordinary startup,network exchange and gameplay remain unproved. docs/NATIVE_SESSION_MESSAGE_BASE_R177.md;reports/native_session_message_base_r177.json. | R177 metadata limit: parent calls00768592 and00768756 are live/PE-verified CALL75B860 instructions but remain outside stored factory body. Recreate preserved name/comment/undefined-void prototype and did not fix ownership. Script endpoint disabled; Computer Use native pipe unavailable. Report keeps23 owned call checks and2 separate raw parent edges, with failed verification and repair receipts. No fullfactory/body-ownership claim. | R177 metadata limit: parent calls00768592 and00768756 are live/PE-verified CALL75B860 instructions but remain outside stored factory body. Recreate preserved name/comment/undefined-void prototype and did not fix ownership. Script endpoint disabled; Computer Use native pipe unavailable. Report keeps23 owned call checks and2 separate raw parent edges, with failed verification and repair receipts. No fullfactory/body-ownership claim. | R177 metadata limit: parent calls00768592 and00768756 are live/PE-verified CALL75B860 instructions but remain outside stored factory body. Recreate preserved name/comment/undefined-void prototype and did not fix ownership. Script endpoint disabled; Computer Use native pipe unavailable. Report keeps23 owned call checks and2 separate raw parent edges, with failed verification and repair receipts. No fullfactory/body-ownership claim.\n\n[BSP reconstruction 00768530] update\nHypothesis, not a recovered symbol. Packet cc_unit_orders_apply, read-only analysis. message* __fastcall(stream), body 00768530..0076A28F. Reads an 8-bit type into a switch of about 190 cases, does operator_new of the class size, calls the class constructor and then piVar2->vtable[2](stream), the deserializer. Type 8Ch is operator_new(4Ch) at 00769380 and constructor 0075A630 at 00769394. docs/UNIT_STATE_MESSAGE.md | Partial parent only: exact76854A..768565 showsLEAESI,[EDI+4],readtype8bits via428C70 at768558,thenrewind8 via428B80 at768561. Thefullfactory selects nativeclassconstructors/deserializers; those dependencies remainopen. Reconstructedcursor is a dependency,not a substituteparser. Descriptive hypothesis, not a recovered symbol. R176 supplies14 complete normal cursor-reader bodies715B plus2 parent dependency fragments. Strict Win32/3CTests;2064 original/source pairs1826760B across all8 bit alignments,scalar widths/zero counts,rewind,overlapping input/output,declared-end carries,WORD arrays,boolean/u64 and length0/1/5/255 strings. 817live/PE bytes and19 direct CALL/tail-JMP rows. Actual existing malloc/new-handler provider is used on both allocation paths;original request sizes checked. Source interfaces are new, not original binary ABI. Native faults/arbitrary cursor-field aliasing,original allocator identity/failure/new-handler/private EH,full message factory/recorder/workers/constructor,ordinary startup,network exchange and gameplay remain unproved. docs/NATIVE_BIT_CURSOR_READ_R176.md;reports/native_bit_cursor_read_r176.json. | Partial parent only: full7528B parent span byteverified and directcalls to newlycomplete constructors checked. Type1/type2 allocate18h anduse75B860 thenvirtualslot8->449960 toreadtype. Baseandmode0/1/2 constructors nowreal,selectedowner andfive-slot profiles supplied. Fullfactoryswitch,other nativeclassconstructors/deserializers andpacketrecorder remainunbound. Descriptive hypothesis, not a recovered symbol. R177 supplies19 complete normal bodies709B, four real translated five-slot message profiles and three-slot root, plus one factory dependency fragment. Strict Win32/3CTests;957 original/source pairs958952B:616 writers,112 constructors,96 raw-vtable cases,128 extended-header roundtrips,5 freeing scalar return checks. All8 alignments,overlapping buffers,constructor padding/current game selection,raw pointer identities before normalization;8583live/PE bytes including92 profile bytes;25 direct calls. Nine missing functions defined underwrite lock;returning-free instructions retained. Actual existing allocation/free providers used;original pre-free stamp/count recorded,source stamp checked on retained paths,not read afterfree. Native faults/arbitrary cursor-field aliases,original allocation failure/private EH/CRT identity,whole-module ABI,pure-call fatal execution,fullfactory/recorder/workers,ordinary startup,network exchange and gameplay remain unproved. docs/NATIVE_SESSION_MESSAGE_BASE_R177.md;reports/native_session_message_base_r177.json. | R177 metadata limit: parent calls00768592 and00768756 are live/PE-verified CALL75B860 instructions but remain outside stored factory body. Recreate preserved name/comment/undefined-void prototype and did not fix ownership. Script endpoint disabled; Computer Use native pipe unavailable. Report keeps23 owned call checks and2 separate raw parent edges, with failed verification and repair receipts. No fullfactory/body-ownership claim. | R177 metadata limit: parent calls00768592 and00768756 are live/PE-verified CALL75B860 instructions but remain outside stored factory body. Recreate preserved name/comment/undefined-void prototype and did not fix ownership. Script endpoint disabled; Computer Use native pipe unavailable. Report keeps23 owned call checks and2 separate raw parent edges, with failed verification and repair receipts. No fullfactory/body-ownership claim. | R177 metadata limit: parent calls00768592 and00768756 are live/PE-verified CALL75B860 instructions but remain outside stored factory body. Recreate preserved name/comment/undefined-void prototype and did not fix ownership. Script endpoint disabled; Computer Use native pipe unavailable. Report keeps23 owned call checks and2 separate raw parent edges, with failed verification and repair receipts. No fullfactory/body-ownership claim. | Partial parent only: full7528B byteverified;three raw instruction/PE-verified directcalls to constructors75CE80/75D990/75E940 now have complete class profiles/serializers. Other switch arms and factory composition remain unbound; prior R177 body-membership gaps at768592/768756 persist and are not claimed repaired. Descriptive hypothesis, not a recovered symbol. R178:18 complete normal bodies1482B;strictWin32/3CTests;173211 original/source pairs16110776B;172032 numeric and1176 class cases plus3freeing scalars. Original CRT code used on original side. PC0/2/3,all4RC,both conversion modes,masked exception flags/CW/TOP and MXCSR compared.9733live/PEbytes,33owned directCALLs plus3raw factory calls without stored ownership,10missing functionsdefined under lock. Fullfactory/recorder/workers,wholeABI/privateEH,ordinary startup/network/gameplay remain open. docs/NATIVE_SESSION_MESSAGE_NUMERIC_R178.md;reports/native_session_message_numeric_r178.json."
+        },
+        "after": {
+          "address": "00768530",
+          "name": "BSP_SessionMessage_CreateFromStream",
+          "evidence": "Hypothesis, not a recovered symbol. Packet cc_unit_orders_apply, read-only analysis. message* __fastcall(stream), body 00768530..0076A28F. Reads an 8-bit type into a switch of about 190 cases, does operator_new of the class size, calls the class constructor and then piVar2->vtable[2](stream), the deserializer. Type 8Ch is operator_new(4Ch) at 00769380 and constructor 0075A630 at 00769394. docs/UNIT_STATE_MESSAGE.md | Partial parent only: exact76854A..768565 showsLEAESI,[EDI+4],readtype8bits via428C70 at768558,thenrewind8 via428B80 at768561. Thefullfactory selects nativeclassconstructors/deserializers; those dependencies remainopen. Reconstructedcursor is a dependency,not a substituteparser. Descriptive hypothesis, not a recovered symbol. R176 supplies14 complete normal cursor-reader bodies715B plus2 parent dependency fragments. Strict Win32/3CTests;2064 original/source pairs1826760B across all8 bit alignments,scalar widths/zero counts,rewind,overlapping input/output,declared-end carries,WORD arrays,boolean/u64 and length0/1/5/255 strings. 817live/PE bytes and19 direct CALL/tail-JMP rows. Actual existing malloc/new-handler provider is used on both allocation paths;original request sizes checked. Source interfaces are new, not original binary ABI. Native faults/arbitrary cursor-field aliasing,original allocator identity/failure/new-handler/private EH,full message factory/recorder/workers/constructor,ordinary startup,network exchange and gameplay remain unproved. docs/NATIVE_BIT_CURSOR_READ_R176.md;reports/native_bit_cursor_read_r176.json. | Partial parent only: full7528B parent span byteverified and directcalls to newlycomplete constructors checked. Type1/type2 allocate18h anduse75B860 thenvirtualslot8->449960 toreadtype. Baseandmode0/1/2 constructors nowreal,selectedowner andfive-slot profiles supplied. Fullfactoryswitch,other nativeclassconstructors/deserializers andpacketrecorder remainunbound. Descriptive hypothesis, not a recovered symbol. R177 supplies19 complete normal bodies709B, four real translated five-slot message profiles and three-slot root, plus one factory dependency fragment. Strict Win32/3CTests;957 original/source pairs958952B:616 writers,112 constructors,96 raw-vtable cases,128 extended-header roundtrips,5 freeing scalar return checks. All8 alignments,overlapping buffers,constructor padding/current game selection,raw pointer identities before normalization;8583live/PE bytes including92 profile bytes;25 direct calls. Nine missing functions defined underwrite lock;returning-free instructions retained. Actual existing allocation/free providers used;original pre-free stamp/count recorded,source stamp checked on retained paths,not read afterfree. Native faults/arbitrary cursor-field aliases,original allocation failure/private EH/CRT identity,whole-module ABI,pure-call fatal execution,fullfactory/recorder/workers,ordinary startup,network exchange and gameplay remain unproved. docs/NATIVE_SESSION_MESSAGE_BASE_R177.md;reports/native_session_message_base_r177.json. | R177 metadata limit: parent calls00768592 and00768756 are live/PE-verified CALL75B860 instructions but remain outside stored factory body. Recreate preserved name/comment/undefined-void prototype and did not fix ownership. Script endpoint disabled; Computer Use native pipe unavailable. Report keeps23 owned call checks and2 separate raw parent edges, with failed verification and repair receipts. No fullfactory/body-ownership claim. | R177 metadata limit: parent calls00768592 and00768756 are live/PE-verified CALL75B860 instructions but remain outside stored factory body. Recreate preserved name/comment/undefined-void prototype and did not fix ownership. Script endpoint disabled; Computer Use native pipe unavailable. Report keeps23 owned call checks and2 separate raw parent edges, with failed verification and repair receipts. No fullfactory/body-ownership claim. | R177 metadata limit: parent calls00768592 and00768756 are live/PE-verified CALL75B860 instructions but remain outside stored factory body. Recreate preserved name/comment/undefined-void prototype and did not fix ownership. Script endpoint disabled; Computer Use native pipe unavailable. Report keeps23 owned call checks and2 separate raw parent edges, with failed verification and repair receipts. No fullfactory/body-ownership claim. | Partial parent only: full7528B byteverified;three raw instruction/PE-verified directcalls to constructors75CE80/75D990/75E940 now have complete class profiles/serializers. Other switch arms and factory composition remain unbound; prior R177 body-membership gaps at768592/768756 persist and are not claimed repaired. Descriptive hypothesis, not a recovered symbol. R178:18 complete normal bodies1482B;strictWin32/3CTests;173211 original/source pairs16110776B;172032 numeric and1176 class cases plus3freeing scalars. Original CRT code used on original side. PC0/2/3,all4RC,both conversion modes,masked exception flags/CW/TOP and MXCSR compared.9733live/PEbytes,33owned directCALLs plus3raw factory calls without stored ownership,10missing functionsdefined under lock. Fullfactory/recorder/workers,wholeABI/privateEH,ordinary startup/network/gameplay remain open. docs/NATIVE_SESSION_MESSAGE_NUMERIC_R178.md;reports/native_session_message_numeric_r178.json. | Partial parent only:full7528B verified;raw factory allocationsC0/88 and constructorcalls768799->75D5D0,7687DC->75D010. Bothclasses andprofiles nowcomplete. Bothcalls havevalid liveinstructions butno storedfunctionownership;do notclaim bodyrepair. Otherfactoryarms/recorder/workers remainopen. Descriptive hypothesis, not a recovered symbol. R179:14complete normalbodies1666B;strictWin32/3CTests;3810 original/sourcepairs3682192B:1808fields,320strings,1680classcases,2freeing scalars. All8alignments,stringwrap255/256/511andoverlap,PC0/2/3allRCbothCRT modes,FPstatus/CW/TOP compared;original CRThelpers copied.10924live/PEbytes;100ownedCALLs plus2rawfactorycalls withoutstoredmembership. Fourmissingfunctionsdefined underlock. Fullfactory,recorder/workers,wholeABI/privateEH,ordinary startup/network/gameplay remainopen. docs/NATIVE_SESSION_MESSAGE_RECORDS_R179.md;reports/native_session_message_records_r179.json."
+        },
+        "status": "applied"
+      }
+    ],
+    "attempts": [
+      {
+        "log": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\session_message_records_r179\\annotations-0.log",
+        "exit": 0
+      }
+    ],
+    "readback_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\session_message_records_r179\\comments-after.json",
+    "readback_sha256": "b0a80403dea0efb477daf22e599ab296d5cf9d372080a5c2c51988bab2008d4e"
+  },
+  "ledger_receipts": [
+    "00429010 -> BSP_BitCursor_WriteSignedByteBits\n",
+    "00429010 function write_native_signed_byte_bits_00429010\n",
+    "00429070 -> BSP_BitCursor_WriteUnsignedDwordBits\n",
+    "00429070 function write_native_unsigned_dword_bits_00429070\n",
+    "004290d0 -> BSP_BitCursor_WriteByteLengthString\n",
+    "004290d0 function write_native_bit_string_004290d0\n",
+    "00429180 -> BSP_BitCursor_WriteQword\n",
+    "00429180 function write_native_u64_bits_00429180\n",
+    "0075d5d0 -> BSP_SessionMessage04_Construct\n",
+    "0075d5d0 function construct_native_session_message04_0075d5d0\n",
+    "0075d650 -> BSP_SessionMessage04_IsType\n",
+    "0075d650 function native_session_message_is04_0075d650\n",
+    "0075d660 -> BSP_SessionMessage04_Write\n",
+    "0075d660 function write_native_session_message04_0075d660\n",
+    "0075d7e0 -> BSP_SessionMessage04_Read\n",
+    "0075d7e0 function read_native_session_message04_0075d7e0\n",
+    "0075d970 -> BSP_SessionMessage04_ScalarDelete\n",
+    "0075d970 function delete_native_session_message04_0075d970\n",
+    "0075d010 -> BSP_SessionMessage05_Construct\n",
+    "0075d010 function construct_native_session_message05_0075d010\n",
+    "0075d0d0 -> BSP_SessionMessage05_IsType\n",
+    "0075d0d0 function native_session_message_is05_0075d0d0\n",
+    "0075d0e0 -> BSP_SessionMessage05_Write\n",
+    "0075d0e0 function write_native_session_message05_0075d0e0\n",
+    "0075d1d0 -> BSP_SessionMessage05_Read\n",
+    "0075d1d0 function read_native_session_message05_0075d1d0\n",
+    "0075d2c0 -> BSP_SessionMessage05_ScalarDelete\n",
+    "0075d2c0 function delete_native_session_message05_0075d2c0\n",
+    "00768530 -> BSP_SessionMessage_CreateFromStream\nappended evidence (record keeps its earlier text; previous record: {\"address\": \"00768530\", \"name\": \"BSP_SessionMessage_CreateFromStream\", \"evidence\": \"Hypothesis, not a recovered symbol. Packet cc_unit_orders_apply, read-only analysis. message* __fastcall(stream), body 00768530..0076A28F. Reads an 8-bit type into a switch of about 190 cases, does operator_new of the class size, calls the class constructor and then piVar2->vtable[2](stream), the deserializer. Type 8Ch is operator_new(4Ch) at 00769380 and constructor 0075A630 at 00769394. docs/UNIT_STATE_MESSAGE.md | Partial parent only: exact76854A..768565 showsLEAESI,[EDI+4],readtype8bits via428C70 at768558,thenrewind8 via428B80 at768561. Thefullfactory selects nativeclassconstructors/deserializers; those dependencies remainopen. Reconstructedcursor is a dependency,not a substituteparser. Descriptive hypothesis, not a recovered symbol. R176 supplies14 complete normal cursor-reader bodies715B plus2 parent dependency fragments. Strict Win32/3CTests;2064 original/source pairs1826760B across all8 bit alignments,scalar widths/zero counts,rewind,overlapping input/output,declared-end carries,WORD arrays,boolean/u64 and length0/1/5/255 strings. 817live/PE bytes and19 direct CALL/tail-JMP rows. Actual existing malloc/new-handler provider is used on both allocation paths;original request sizes checked. Source interfaces are new, not original binary ABI. Native faults/arbitrary cursor-field aliasing,original allocator identity/failure/new-handler/private EH,full message factory/recorder/workers/constructor,ordinary startup,network exchange and gameplay remain unproved. docs/NATIVE_BIT_CURSOR_READ_R176.md;reports/native_bit_cursor_read_r176.json. | Partial parent only: full7528B parent span byteverified and directcalls to newlycomplete constructors checked. Type1/type2 allocate18h anduse75B860 thenvirtualslot8->449960 toreadtype. Baseandmode0/1/2 constructors nowreal,selectedowner andfive-slot profiles supplied. Fullfactoryswitch,other nativeclassconstructors/deserializers andpacketrecorder remainunbound. Descriptive hypothesis, not a recovered symbol. R177 supplies19 complete normal bodies709B, four real translated five-slot message profiles and three-slot root, plus one factory dependency fragment. Strict Win32/3CTests;957 original/source pairs958952B:616 writers,112 constructors,96 raw-vtable cases,128 extended-header roundtrips,5 freeing scalar return checks. All8 alignments,overlapping buffers,constructor padding/current game selection,raw pointer identities before normalization;8583live/PE bytes including92 profile bytes;25 direct calls. Nine missing functions defined underwrite lock;returning-free instructions retained. Actual existing allocation/free providers used;original pre-free stamp/count recorded,source stamp checked on retained paths,not read afterfree. Native faults/arbitrary cursor-field aliases,original allocation failure/private EH/CRT identity,whole-module ABI,pure-call fatal execution,fullfactory/recorder/workers,ordinary startup,network exchange and gameplay remain unproved. docs/NATIVE_SESSION_MESSAGE_BASE_R177.md;reports/native_session_message_base_r177.json. | R177 metadata limit: parent calls00768592 and00768756 are live/PE-verified CALL75B860 instructions but remain outside stored factory body. Recreate preserved name/comment/undefined-void prototype and did not fix ownership. Script endpoint disabled; Computer Use native pipe unavailable. Report keeps23 owned call checks and2 separate raw parent edges, with failed verification and repair receipts. No fullfactory/body-ownership claim. | R177 metadata limit: parent calls00768592 and00768756 are live/PE-verified CALL75B860 instructions but remain outside stored factory body. Recreate preserved name/comment/undefined-void prototype and did not fix ownership. Script endpoint disabled; Computer Use native pipe unavailable. Report keeps23 owned call checks and2 separate raw parent edges, with failed verification and repair receipts. No fullfactory/body-ownership claim. | R177 metadata limit: parent calls00768592 and00768756 are live/PE-verified CALL75B860 instructions but remain outside stored factory body. Recreate preserved name/comment/undefined-void prototype and did not fix ownership. Script endpoint disabled; Computer Use native pipe unavailable. Report keeps23 owned call checks and2 separate raw parent edges, with failed verification and repair receipts. No fullfactory/body-ownership claim. | Partial parent only: full7528B byteverified;three raw instruction/PE-verified directcalls to constructors75CE80/75D990/75E940 now have complete class profiles/serializers. Other switch arms and factory composition remain unbound; prior R177 body-membership gaps at768592/768756 persist and are not claimed repaired. Descriptive hypothesis, not a recovered symbol. R178:18 complete normal bodies1482B;strictWin32/3CTests;173211 original/source pairs16110776B;172032 numeric and1176 class cases plus3freeing scalars. Original CRT code used on original side. PC0/2/3,all4RC,both conversion modes,masked exception flags/CW/TOP and MXCSR compared.9733live/PEbytes,33owned directCALLs plus3raw factory calls without stored ownership,10missing functionsdefined under lock. Fullfactory/recorder/workers,wholeABI/privateEH,ordinary startup/network/gameplay remain open. docs/NATIVE_SESSION_MESSAGE_NUMERIC_R178.md;reports/native_session_message_numeric_r178.json.\"})\n",
+    "00768530 fragment native_session_message_records_factory_dependency_r179\n"
+  ],
+  "tested_artifact_archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r179\\native-session-message-records-tested-r179.zip",
+    "sha256": "c00e00ef65a40efe6502ff4ee66b3281d0f8309e6f9aa274620a54459092fd5c",
+    "files": 98,
+    "head": "7331a2857bc3891b9e5874618bc4f791dbff3bc7"
+  }
+}
