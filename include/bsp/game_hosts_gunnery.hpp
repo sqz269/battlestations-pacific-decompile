@@ -283,6 +283,7 @@ struct GameBombImpactRow {
     float release_fall_time{-1.0f};      // 009C7D71's tf AT THE RELEASE TICK
     float target_speed_release{0.0f};
     float target_heading_release{0.0f};
+    std::string target_name;             // the ORDERED TARGET, not the bomber
     float target_pos_impact[3]{};        // where the target was AT IMPACT
     float target_heading_impact{0.0f};
     float impact_error{-1.0f};           // planar |actual - target AT IMPACT|

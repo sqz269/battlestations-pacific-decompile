@@ -2589,6 +2589,7 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
         rec.target_speed_release = row.target_speed_release;
         rec.target_heading_release = row.target_heading_release;
         if (row.ordered_target != 0) {
+            rec.target_name = unit_name_or_index(row.ordered_target - 1);
             float ix = 0.0f, iy = 0.0f, iz = 0.0f;
             units.unit_position_00fc(row.ordered_target - 1, ix, iy, iz);
             rec.target_pos_impact[0] = ix;
@@ -3639,7 +3640,12 @@ void GameGunneryHost::report() {
                 "| miss vs target AT IMPACT = %.1f m "
                 "(along course %+.1f m, across %+.1f m)",
                 static_cast<double>(r.release_fall_time),
-                r.owner_name.c_str(),
+                // CORRECTED: this slot printed `owner_name` under a `target`
+                // label in the first cut, which is the exact trap the packet
+                // rules name - a column's meaning comes from its printing code.
+                // local\aim_before.log's rows read `target D3A Val #3.1`, which
+                // is the BOMBER. The ordered target's name is carried now.
+                r.target_name.empty() ? "-" : r.target_name.c_str(),
                 static_cast<double>(r.target_speed_release),
                 static_cast<double>(r.target_heading_release),
                 static_cast<double>(r.target_pos_impact[0]),

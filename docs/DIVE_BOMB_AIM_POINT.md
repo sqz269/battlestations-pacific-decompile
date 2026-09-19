@@ -169,10 +169,61 @@ Print-only, so the pair must be a null on every behavioural column.
    across-course component would mean the aim point is off the hull line, which is the signature the
    unread `vtable[100h]` offset would leave - and is what would justify a later packet on it.
 
-### MEASURED
+### MEASURED, `local\aim_before.log`
 
-(filled in below once `local\aim_before.log` completes; nothing is quoted from
-`goaway_long.log`, whose gunnery side reports `bomb_drops=0` - see section 6.)
+**Prediction 1 (null pair) CANNOT BE TESTED FROM THIS RUN, and the fault is mine.** I compared
+against `goaway_after.log`, which was built in a different worktree at commit `b7be4aca1`; this tree
+is at main `4e02a7a78`, many packets later. The two are not a pair and never were, and the numbers
+duly moved: `bomb_drops` 19 -> 23, `bomb_impacts` 18 -> 20, `deaths` 9 -> 14, `total_damage` 10188.4
+-> 14042.2, `first_hit` 17.15 -> 13.35 s. **None of that is evidence about this census.** The change
+is print-only *by inspection* - added struct fields, one extra parameter, read-only position and
+heading samples, one log line, nothing feeding back into the simulation - but "print-only" is a
+claim that must be MEASURED, and it is not measured here. A true before needs a run from this tree
+with the census reverted. Left for the successor; see the handoff.
+
+**Prediction 2 CONFIRMED, and it is the packet's real result.** `tf@release` is **2.38-3.24 s** on
+every round, against measured falls of 2.6-3.25 s. The aimdive summary's 7.62 s (`#7.1`) and 10.64 s
+(`#3.1`) are therefore confirmed **last-sampling artefacts** and nothing else. **`007BCC80
+BSP_Weapon_DropFallTime` and its feed are cleared**; the error is in the geometry, which is where
+sections 1-3 put it.
+
+**Prediction 3 CONFIRMED, quantitatively.** Against the moving target (speed 16.7 m/s) `miss_along`
+is negative on every single round, -45.9 to -77.0 m - the bomb lands **astern**. `16.7 m/s x ~3 s`
+is about 50 m, which is the along-course miss to within the spread. That is the no-lead signature,
+measured.
+
+**The control is in the same run and it is decisive.** `D3A Val #1.1`'s target is **stationary**
+(`speed=-0.0 m/s`, and its position is identical at release and at impact). Its two rounds miss by
+**25.5 m and 11.3 m**, with `along` **+11.1** and **+3.8** - the along-course miss collapses to
+nothing the moment the target stops moving, while the moving-target rounds sit at -45 to -77 m. A
+stationary-vs-moving contrast inside one run, on the same binary and the same tick, is much stronger
+evidence than the before/after pair I failed to set up.
+
+**Prediction 4 FALSIFIED.** `|miss_across|` is NOT much smaller than `|miss_along|`: it runs -28.0
+to -72.6 m, comparable throughout. The reason is visible in the census's own new column - the target
+is **turning**, its heading moving from -1.216 to -1.295 rad between release and impact - so its
+displacement during the fall has a large cross-course component too, and both components are target
+motion rather than an aim-point error. This does NOT show the unread `vtable[100h]` hull offset; the
+stationary control's across term is only -23.0 and -10.7 m, which is the prediction-error scale.
+
+| round | target | `tf@release` | speed | miss vs target at impact | along | across |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | moving | 3.24 s | 16.7 m/s | 78.7 m | -52.8 | -58.4 |
+| 2 | moving | 2.73 s | 16.7 m/s | 97.2 m | -64.6 | -72.6 |
+| 3 | moving | 3.21 s | 16.7 m/s | 67.4 m | -45.9 | -49.4 |
+| 4 | moving | 2.67 s | 16.7 m/s | 82.9 m | -59.8 | -57.3 |
+| 5 | moving | 3.22 s | 16.7 m/s | 81.9 m | -77.0 | -28.0 |
+| 6 | moving | 2.38 s | 16.7 m/s | 67.9 m | -47.0 | -49.1 |
+| 7 | **stationary** | 3.24 s | -0.0 m/s | **25.5 m** | **+11.1** | -23.0 |
+| 8 | **stationary** | 2.72 s | -0.0 m/s | **11.3 m** | **+3.8** | -10.7 |
+
+**A census bug this run exposed, now fixed.** The `target` column of these rows printed the
+**bomber's** name, not the target's - the rows read `target D3A Val #3.1`, which is the aircraft.
+That is precisely the trap the packet rules name ("a summary column's meaning comes from its
+printing code"), walked into while adding a census meant to close another instance of it. The row
+now carries `GameBombImpactRow::target_name`, filled from the ordered target. The positions, speeds
+and headings in the table above were always the target's and are unaffected; only the name was
+wrong. The fix is a format argument and is itself unmeasured.
 
 ## 6. Item 4: the long run's summary is not windowed, it is a different simulation
 

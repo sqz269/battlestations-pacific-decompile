@@ -93,7 +93,23 @@ fixes. That axis convention is a LABELLED choice, not a recovered fact.
 
 | log | binary | what it is |
 | --- | --- | --- |
-| `aim_before.log` | this packet's census | the print-only window; behavioural columns must match `goaway_after.log` |
+| `aim_before.log` | `5a92141d0` | the census's first run. **Not half of a valid pair** - see below |
+
+**The one thing I got wrong, and the first thing to redo.** I treated
+`J:\PROG\battlestations-pacific-decompile-cc8-dive-goaway\local\goaway_after.log` as this packet's
+before. It is not: it was built in another worktree at `b7be4aca1`, and this tree is at main
+`4e02a7a78`. Every behavioural column moved (`bomb_drops` 19 -> 23, `deaths` 9 -> 14, `total_damage`
+10188.4 -> 14042.2, `first_hit` 17.15 -> 13.35 s) and **none of it is evidence about the census**.
+The census is print-only by inspection but that is not measured. **Do this first:** revert the
+census hunks in this tree, run the same command line, and pair it against `aim_before.log`.
+
+What survives that mistake, and does not depend on the pair, is in
+`docs/DIVE_BOMB_AIM_POINT.md` section 5: `tf@release` is 2.38-3.24 s against measured falls of
+2.6-3.25 s, which clears `007BCC80`; and the stationary-target control inside the SAME run
+(`D3A Val #1.1`, `speed=-0.0 m/s`) misses by 11.3-25.5 m with an along-course component of +3.8 and
++11.1 m, against -45.9 to -77.0 m for the rounds aimed at a target making 16.7 m/s. A
+stationary-vs-moving contrast on one binary and one tick is stronger evidence for "the miss is
+target motion, and neither side leads" than the pair would have been.
 
 ## (f) Two traps this area set
 
