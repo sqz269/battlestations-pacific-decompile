@@ -1543,3 +1543,71 @@ That write is the `max(x, 0)` the earlier note assumed:
 compare at `009C659B` against the 100.0 at `00D7A220`. `T` is still on the x87 stack from further
 back. So `+19h` stays a labelled substitution, but the trace is now two levels deeper and the next
 reader starts at `009C659B` with the slot key and the cleanups above rather than repeating them.
+
+## `flyabove+1Ah`: the leave rule, and what it shares with `+19h`
+
+`+1Ah` is written at `009C66E3` (set) and `009C66F2` / `009C6822` (clear). The set is one compare:
+
+```
+009c66d5  FLD    float ptr [ESP + 0x10]    ; a, the bearing tolerance
+009c66d9  FLD    float ptr [ESP + 0x2c]    ; b, the folded bearing error
+009c66dd  FCOMIP ST0,ST1
+009c66e1  JBE    0x009c66f0                ; byte `76`
+009c66e3  MOV    byte ptr [ESI + 0x1a],0x1 ; leave, and
+009c66e7  MOV    byte ptr [ESI + 0x19],0x0 ; clear the roll-in in the same breath
+```
+
+So the aircraft leaves `flyabove` when `b > a`. Both operands were resolved with
+`tools/frame_slot_census.py 009c62b0` and the cleanups recorded above, not by literal offset.
+
+**`b`, slot K=108, written once at `009C6453`**: the `-0.0f` fold (`009C642F JBE`) of the
+`00438B10` wrapped-angle result from the call at `009C641C`. A bearing error.
+
+**`a`, written at `009C6643`**: the return of `BSP_Math_InterpolateClamped` at `009C663E`, whose
+five arguments the window opened by `009C65FA SUB ESP,0x14` fills:
+
+| arg | site | value |
+| --- | --- | --- |
+| x0 | `009C6639` | 0.0 |
+| y0 | `009C662F` | `00CE398C` = 0.34906587 rad, **20 degrees** |
+| x1 | `009C662B` | `W` |
+| y1 | `009C660B` | `00D7A264` = pi, **180 degrees** |
+| x | `009C6603`/`009C6607` | **`max(T - S, 0)`** |
+
+`W = approach+B4h * 0.8 (00CE3D40) - S`, from `009C6615 FLD [EBP+0xB4]`, `009C661B FMUL` and the
+`009C6621 FSUBRP`. `EBP` is the approach: the last write before it is `009C655A MOV EBP,[EDI]`,
+and `009C6562 FMUL [EBP+0xA8]` reads the same `+A8h` the constructor draws.
+
+The tolerance therefore opens from 20 degrees at `x = 0` to 180 degrees at `x = W`. At 180 degrees
+no folded error can exceed it, so **the leave only fires while `x` is small** - the aircraft gives
+up the roll-in when it is close in and the target has swung more than about 20 degrees off.
+
+### The two flags share one quantity
+
+`x` at `009C6603` is the **same frame slot K=104** the `+19h` second arm reads at `009C67A9`, and
+the same write at `009C65FD` reaches both. So `+19h`'s `max(x, 0) <= 0` and `+1Ah`'s interpolation
+are two readings of one value, and closing it closes both flags at once. The `+19h` arm's jump
+sense is confirmed: `009C67AE` is the byte `72`, JC, so a positive slot skips the flag.
+
+### What is left, to the instruction
+
+`S = x0 * 0.7 (00CEFFA0) + 200.0 (00CE4D70)` with `x0` the selection at `009C65BB`, which the slot
+census confirms is the write that reaches `009C65C1`:
+
+```
+009c658d  FLD    double ptr [0x00d7a220]   ; 100.0
+009c659b  FCOMIP ST0,ST1
+009c65a9  JBE    0x009c65b5
+009c65ab  MOVSS  XMM0,dword ptr [0x00ce3d08]  ; 100.0
+009c65b5  MOVSS  XMM0,dword ptr [ESP + 0x38]
+009c65bb  MOVSS  dword ptr [ESP + 0x10],XMM0
+```
+
+Both arms of that select are a 100.0 floor on `[ESP+38h]` against whatever `ST1` holds. Note that
+`009C6568` writes the same slot earlier with `(approach+14h)->+40h * approach+A8h`, and that value
+is **not** `x0`: `009C65BB` overwrites it, and the product only feeds the compare at `009C6578`
+against the 1.1 at `00CE3DF0`.
+
+`T` and the `ST1` at `009C659B` both arrive on the x87 stack from the branchy merge at `009C6532`,
+where two arms pop a value (`009C6528`, `009C652E`) and one does not. That merge is where the next
+reader starts; everything between it and `009C66E3` is now named.
