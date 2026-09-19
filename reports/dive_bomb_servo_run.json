@@ -113,7 +113,7 @@
     "flyabove+1Ah": "the rule is named, the last operand is not. 009C66E3 sets it (and clears +19h) when b > a: b is the 00438B10 fold written once at 009C6453, a is InterpolateClamped(0.0, 20 deg at 00CE398C, W, pi at 00D7A264, max(T - S, 0)) returned at 009C663E, W = approach+B4h * 0.8 (00CE3D40) - S with EBP the approach from 009C655A. 009C66E1 is the byte 76. Its fifth argument is the SAME slot K=104 the +19h second arm reads, so closing T closes both flags.",
     "T and the ST1 at 009C659B": "both reach the region on the x87 stack across the branchy merge at 009C6532, where 009C6528 and 009C652E pop a value and the third arm does not. That merge is the next step for both flyabove flags.",
     "approach+50h": "no producer read. The +50h store census turns up 009C3E2E in 009C3DA0, which is NOT it: 009C3DAD MOV EDI,ECX makes EDI `this` and 009C3E11 LEA ESI,[EDI+30h] rebases, so that store lands on approach+80h. Look for a sub-object base or a block copy.",
-    "006e3500": "the per-device round count, still to route through the gunnery host's process-wide accessor",
+    "006e3500": "body read: device->vtable[+21Ch](2Ah) + device->+484h, ECX the device, no stacked argument, RET 0. NOT routed through the gunnery host's process-wide accessor, and deliberately so: src/game_hosts_gunnery.cpp models an ordnance mask per unit (gun.ordnance, published by store_unit_ordnance) and nothing per device, so the producer half of that work edits a file this stream does not own. Not on the critical path either - rounds=2 rounds_left=2 and no release is issued.",
     "cmd+2ECh": "written by both the servo's rate arm at 0099E328 and the mode-0 pitch branch at 0099E459/0099E47B; no consumer read, not modelled"
   }
 }

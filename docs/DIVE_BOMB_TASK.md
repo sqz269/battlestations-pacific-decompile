@@ -1611,3 +1611,40 @@ against the 1.1 at `00CE3DF0`.
 `T` and the `ST1` at `009C659B` both arrive on the x87 stack from the branchy merge at `009C6532`,
 where two arms pop a value (`009C6528`, `009C652E`) and one does not. That merge is where the next
 reader starts; everything between it and `009C66E3` is now named.
+
+## `006E3500`, the per-device round count: the body, and why the accessor is a separate packet
+
+The body is nine instructions and is now read:
+
+```
+006e3500  PUSH ESI
+006e3501  MOV  ESI,ECX                       ; ECX is the device; no stacked argument
+006e3503  MOV  EAX,dword ptr [ESI]
+006e3505  MOV  EDX,dword ptr [EAX + 0x21c]
+006e350b  PUSH 0x2a                          ; the ordnance kind 2Ah
+006e350d  CALL EDX                           ; callee-clean, no ADD ESP follows
+006e350f  ADD  EAX,dword ptr [ESI + 0x484]
+006e3515  POP  ESI
+006e3516  RET                                ; RET 0, the count in EAX
+```
+
+`006E3500(device) = device->vtable[+21Ch](2Ah) + device->+484h`. `2Ah` is the ordnance kind
+`docs/ORDNANCE_KIND_IDENTITY.md` already tracks - the one `007B9320` requires and `006EA2A0`
+accepts alongside `29h`. So the count is "how many of kind 2Ah this device holds" plus a second
+term at `+484h`, which `007C1DB0` then sums over every class-25h device of the unit.
+
+### Why this packet stops here
+
+Routing it through the gunnery host's process-wide accessor pattern - the one
+`include/bsp/game_hosts_ai.hpp` sets out for `GameAiWeaponFacts`, where the owning host publishes
+a table and the reading host holds no pointer to it - needs a producer that does not exist yet.
+`src/game_hosts_gunnery.cpp` models an ordnance **mask** per unit (`gun.ordnance`, published by
+`store_unit_ordnance` at its load pass) and nothing per device: no magazine count, no `+484h`
+equivalent, and no class-25h device rows to hang them on. The accessor would therefore be the
+second half of a packet whose first half is "give the gunnery host a per-device round count", and
+that half edits `src/game_hosts_gunnery.cpp`, which this stream does not own.
+
+It is also not on the critical path: the run census reads `rounds=2 rounds_left=2`, the salvo cap
+is never reached because no release is issued, and the gate is the 25 m aim window. The substituted
+two rounds stay labelled where they are, and the shape the accessor should take is recorded above
+so the packet that owns the gunnery host can take it whole.
