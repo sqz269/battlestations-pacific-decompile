@@ -747,3 +747,65 @@ lives in `src/game_hosts_mission_frame.cpp`, which is Codex-owned. It is a packe
 different owner, not something to pick up on the way; recorded here so the next reader does not
 re-derive it. Meanwhile the hole's reach is bounded and stated in section 4: the window opens on the
 first tick above `state+20h` instead of after the authored delay.
+
+## 8. The closest approach, measured — and it contradicts section 5's magnitude
+
+Packet `cc8_torpedo_closest_approach`, the number this stream has owed since section 2.
+`src/game_hosts_gunnery.cpp` census (commit `1fdecbb39`), run `local/closest_approach_usn01.log`,
+USN01, 3000 mission frames.
+
+**A swimming round carries no target.** `GameProjectileRow` has `owner_unit` and no victim, and the
+swim keeps its launch heading, so "closest approach to its target" is not directly measurable. The
+census measures against every unit of another side and names the nearest. Distances are **centre to
+centre and horizontal** — this host has no oriented hull box for a ship — so they are not miss
+distances from the plating and have to be read against the target's own Length.
+
+| torpedo | nearest unit of another side | closest approach | at | run length |
+| --- | --- | --- | --- | --- |
+| Mav1 | Dunlap | **51.5 m** | 26.45 s | 60.05 s |
+| Mav2 | Storage, 04 01 | 26.1 m | 56.15 s | 60.05 s |
+| Mav3 | Hangar, Small, 04 01 | 17.3 m | 51.75 s | 51.75 s |
+| Mav4 | SaltLakeCity | **76.8 m** | 21.60 s | 60.05 s |
+| Mav5 | SaltLakeCity | **67.9 m** | 21.85 s | 60.05 s |
+
+Two facts fall straight out. The rounds **swim for a full minute**, not the 22.7 s the section 5
+arithmetic used — that figure was the time to the target, and the round keeps going past it; two of
+the five ran on to shore structures. And the closest approach to an escort happens at **21.6 to
+26.5 s**, which is exactly the 22.7 s the geometry predicted, so the timing half of section 5 holds.
+
+### 8.1 The magnitude does not hold, and this is a retraction of the prediction, not of the reading
+
+Section 5 predicted that a zero-lead aim against a target making 15.0 m/s over a 22.7 s run would
+miss by **about 340 m**. Even taking only the component across the torpedo's track — the escorts
+head about `-1.05` rad and the commanded heading at release is about `-1.79` rad, some 42 degrees
+apart — that is still roughly 220 m. **The measured closest approach to the ships aimed at is 51.5
+to 76.8 m**, three to six times smaller.
+
+* **was**: the miss is of the order of the target's displacement during the run, about 340 m.
+* **is**: the miss is 51.5 to 76.8 m centre to centre, at the predicted time. The *timing* model was
+  right and the *displacement* model is wrong by a factor of three to six.
+* **not concluded**: which of the premises fails. Three survive the evidence here and this document
+  does not choose between them:
+  1. the escorts' speed over the drop window is well below the 15.0 m/s that `d32c` implies —
+     `d32c` is the distance to a waypoint, not a path length, and nothing in this run reports a hull
+     speed directly (the single `keel=` line is at load time);
+  2. the ships the torpedoes came closest to are not the ships they were aimed at — the census
+     reports the nearest unit of another side, and `PilotSetTarget` logs
+     `target_object_id=45 target_valid=0 pos=(0.0 0.0 0.0)`, so the ordered target's identity is
+     never resolved to a name anywhere in the log;
+  3. something upstream does lead after all, which is exactly the open question of section 6.3 —
+     what writes `approach+D0h..D8h`.
+
+Premise 3 is the one that matters, and the measurement now bears on it directly: a 51.5 m closest
+approach is **much closer than a zero-lead aim against a 15 m/s crosser can produce**. That is
+evidence for a lead somewhere upstream, and it is the first evidence in either direction that did
+not come from a byte census.
+
+**The next check is small and belongs with this census**: record, per swimming round, the ordered
+target's identity and that target's world position at release and at closest approach. That
+separates premise 1 from premise 2 from premise 3 in one run, and it is three more fields in the
+same structure this packet already added. It is not done here.
+
+Until it is, section 5's *conclusion* — that nothing reaches the commanded heading through
+`009D1360`, proved by census — stands, and section 5's *arithmetic about how big the resulting miss
+must be* is withdrawn.

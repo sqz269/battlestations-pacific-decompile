@@ -328,3 +328,25 @@ at `009D109C`, `009D10FF` and `009D1194`, each with a literal `1.0` second argum
 climb-out at `class+1ECh * 1.0` = 0.1854 rad. This host runs no goaway tick. That is the next
 packet, and it is a climb rather than a descent, so it exercises the arm of `009FB800` that nothing
 in this stream has yet driven.
+
+### Correction from packet `cc8_torpedo_aim_point`: the broadcast's stated blocker is gone
+
+The section above, "Known downstream: the post-drop broadcast has no members to issue to", rests on
+`member_units` never being filled for scene-row squadrons, so that `find_by_member_unit` answers no
+record for USN01's Mavs and the release-order binding sees zero members.
+
+* **was**: scene-row squadrons have no members, so `007EEF30`'s post-drop broadcast has nobody to
+  issue to, and a run that reaches a drop records the broadcast as blocked by this.
+* **is**: `agent/cc8-ai-squadron`'s `a0d98383b`, on main as `c92e5cf16`, resolves the wing records to
+  units in `GameUnitsHost::create_units` before the AI host is built. `local/closest_approach_usn01.log`
+  line 2691 reports **`plane squadron members: 5 of 5 wing record(s) resolved to units over 5
+  squadron(s)` (`007F4B55`'s `+3D0h` array, by name)**, so the Mavs have members from that point on.
+* **not concluded**: that the broadcast now issues. `007EEF30` appears nowhere in that run's log, so
+  this correction retracts the stated *cause* and claims nothing about the *consequence*. A run that
+  instruments `007EEF30` is what would settle it.
+
+A second widening is in that agent's tree and not yet on main (`1bebf23f7`): an air-ops **launched**
+squadron registered its record after `create_units`, so its members were invisible to the census
+that `create_units` runs and the last launch was never grouped at all. Moving the record creation
+before `create_units` fixes it. USN01's Mavs are scene rows and are unaffected; a USN04 torpedo path
+that goes through a launched wing is not, so re-read this note before quoting it for that mission.
