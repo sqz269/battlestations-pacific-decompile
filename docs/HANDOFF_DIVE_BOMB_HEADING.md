@@ -6,11 +6,11 @@ else; this file is only what that section does not say.
 
 ## (a) What is settled, and must not be re-derived
 
-`009C62B0`-`009C7083` is walked whole from the listing: `local/f.ps1` drives `local/x87trace.py`
+`009C62B0`-`009C7083` is walked whole from the listing: `tools/flyabove_trace.ps1` drives `tools/x87trace.py`
 with frame base **0x98** and a callee table whose every `RET imm` and x87 effect comes from that
-callee's own tail (`local/calleefx.py`). The walk reports zero join conflicts, zero unknown call
+callee's own tail (`tools/calleefx.py`). The walk reports zero join conflicts, zero unknown call
 targets, zero notes and both `RET`s at depth 0 over all 949 instructions. Re-run it with
-`./local/f.ps1 <from> <to>` for any window; `./local/f.ps1 all` rewrites
+`./tools/flyabove_trace.ps1 <from> <to>` for any window; `./tools/flyabove_trace.ps1 all` rewrites
 `local/output/fa_trace.txt`. **Do not re-seed the callee table by hand**: `009FB800` is `RET 8`
 (`009FB94B`/`96B`/`BA4D`), and the `RET 10h` at `009FBB1A` belongs to a wrapper that calls it at
 `009FBB13`; `009C6404` is the one indirect call that pushes nothing and returns a float in ST0.
