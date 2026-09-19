@@ -2894,3 +2894,58 @@ shifts with it.
 
 Recorded as a labelled stand-in with its consequence rather than fixed: the fix needs `task+41Ch`'s
 producer, which is a read this packet has not done.
+
+## `tools/const_width_sweep.py`: a repo-wide constant-width sweep
+
+Promoted from the scratchpad script to a tracked tool. It reads eight bytes at each declared image
+address out of the PE, computes the `float` and the `double` there, and flags any
+`inline constexpr float|double kName = VALUE;  // 00XXXXXX` whose declared value matches neither its
+declared width. `--all` sweeps every header under `include/bsp`; `--full` prints a line per constant.
+
+**697 constants in 1727 headers, 122 mismatched.** They fall into two very different classes and
+should be routed differently.
+
+### Class A, 102: the value matches the OTHER width
+
+`kRampHalf declared float=0.5 but float=0 double=0.5` is the pattern - the address holds a qword and
+the header declares `float`. This is exactly the `kPitchClampLo` family. It is **harmless if the load
+is `FLD double ptr` and wrong if the load is four-byte**, and the sweep cannot tell which: only the
+listing can. Every one needs its load site read before anything is changed.
+
+### Class B, 20: the value matches NEITHER width
+
+These are the ones worth reading first, because the declared value is not at that address in either
+interpretation:
+
+```
+cruise_command.hpp:153/154/155/156   kCruiseHeading*Epsilon, kCruiseSpeedSettingInactive
+gui_widget_scene.hpp:45/46           kGuiVisibleFactor, kGuiHiddenFactor
+gun_bot_ticks.hpp:156/170            kGunBotFixedStep, kAAGunnerBotSpanAtSkillZero
+hud_updates.hpp:334                  kHudMinimapXDivisor  declared 1024, double there is 0.000976562
+pilot_controls.hpp:84                kPilotPitchHalfRange declared 0.5236, float there is 0.523599
+ship_ai_attackmove_substates.hpp:408 kAttackMoveLeadScaleNear declared 1, float there is 0.174533
+ship_ai_goal_vector.hpp:93           kShipAiGoalKeepLengthSq
+ship_ai_nav_block_ctor.hpp:37        kShipAiNavBlockThrottleFull
+ship_ai_obstacle_tables.hpp:159      kShipAiDangerClearanceMin
+submarine_model.hpp:218              kSubCrushTickSeconds
+unit_commanded_speed.hpp:113         kDirectorWeaponTargetAbandonDistanceSq
+unit_controller.hpp:270              kUnitEffectGateAstern
+unit_damage.hpp:49                   kUnitInvincibleOff
+unit_death_sink.hpp:70               kWreckAnchorLateralDivisor declared 2, double there is 2.5
+world_entity_update.hpp:83           kMatrixInterpolatorPhaseCeiling
+```
+
+Two are worth naming as likely real: `kHudMinimapXDivisor` declares 1024 where the address holds
+**1/1024** as a double - the reciprocal, which is what a divide-by-multiply would store - and
+`kWreckAnchorLateralDivisor` declares 2 where the double is **2.5**.
+
+And one is a false positive worth recording so the tool is not over-trusted:
+`kPilotPitchHalfRange` declares 0.5236 against a float of 0.523599, a four-significant-figure
+declaration rather than a width error. Several of the "declared 1 or 0, address holds garbage" rows
+are likely constants whose comment carries a **code** address (a load site) rather than the data
+address, which the sweep cannot distinguish.
+
+**Nothing outside this stream's own headers has been changed.** `include/bsp/dive_bomb_task.hpp` is
+clean at 63/0. The rest is listed for routing to its owners, with the caveat that a Class A row is
+not a defect until its load width is read and a Class B row may be a site address or a rounded
+declaration.
