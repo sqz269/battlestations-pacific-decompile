@@ -394,6 +394,59 @@ result immediately); `009C025E` is slot `+34h` with one pushed out-pointer, retu
 pointer in EAX; `009C02CF` / `009C02DE` are slot `+5Ch` taking `push 10h` / `push 16h` and
 returning a bool in AL.
 
+## 5.9 The tail clamps BOTH Y values into one leader-relative band
+
+This is the `done`-state floor, and it is the measurable consequence of the whole chain, so it is
+read here from the listing rather than taken from `docs/BOMBER_AFTER_TASK.md` 10.8 secondhand.
+
+The band is built in two halves:
+
+```
+009C16E8  FLD [[ESI+6Ch]+4]          ; tuning block+04h  (= singleton+384h)
+009C16EB  FADD [EDI+100h]            ; + leader world Y      (EDI = [ESI+2Ch], the leader)
+009C16F1  base+00h = leaderY + block[+4]
+009C16F5  base+04h = state+88h
+009C16FF-009C1725   base+04h = L = min(leaderY + block[+4], state+88h)     ; FCOMIP + select
+
+009C1779  FLD [EDI+100h] / FADD qword [00D1F3F8]   ; leaderY + 120.0  (the double is 120.0)
+009C1789  CALL 0042E740 / FLD [EAX+210h]           ; the tuning singleton's +210h
+009C17A5-009C17B9   cap = min(singleton[+210h], leaderY + 120.0)
+```
+
+Then the same band is applied twice, by two ordered selects of identical shape:
+
+```
+009C17C6-009C17F1   state+34h = clamp(stationY, L, cap)     ; the STATION point's Y
+009C17F6-009C183B   state+48h = clamp(steerY,   L, cap)     ; the STEER point's Y
+                    floor at 009C1811, ceiling at 009C1827, pass-through at 009C183B
+```
+
+Both clamps are a true band: below `L` the bound wins, above `cap` the cap wins, otherwise the
+value passes. `FCOMI` (`db f1`, no pop) at `009C17CE` versus `FCOMIP` (`df f1`, pops) at
+`009C17A5`/`009C1803` is what keeps `L` and `cap` live across the selects — read the opcode
+byte, not the mnemonic spelling, or the stack tracking goes wrong here.
+
+**Why it matters, and it is the first acceptance row for any host switch:** §5.2's commanded
+altitude is `lerp(stationY, steerY, t) - ownY` fed to `009F9ED0`, and *both* of its inputs have
+just been floored at `L`, which is tied to the leader's own Y every tick. A spent **wing member**
+in `done` therefore cannot descend to the water while its leader flies. This host's
+`D3A Val #1.1|.-2` sinking 270 m -> 0 m in `done` is exactly this command going missing. A
+finished flight **leader** is commanded nothing at all (`009C1FF1 JZ 009C234E` ends the tick), so
+a leader sitting low in `done` is faithful-by-omission and is not a defect to fix.
+
+**Two corrections to how this was relayed**, both from the listing above:
+
+* The band is **not** `leaderY ± 120.0`. `120.0` at `00D1F3F8` is loaded **once**, and only into
+  the *ceiling*. The *floor* is `min(leaderY + block[+4], state+88h)` — a different tuning key
+  (`singleton+384h`, not yet named in §5.1's table) and a state field, not a symmetric offset.
+* `009C1789` loads `[EAX+210h]`, which is a *candidate* ceiling; the effective cap is the **min**
+  of it and `leaderY + 120.0`, taken at `009C17A5`-`009C17B9`. Quoting `[EAX+210h]` alone
+  overstates the ceiling whenever the leader is low.
+
+Unverified here: §5.2 cites the altitude command as `009BFC0C CALL 009F9ED0` and the relay cites
+`009BFC21`. That call is in `009BEE30`, outside this section's reading; the discrepancy is noted,
+not resolved.
+
 ## 6. What is bound, and what is not
 
 Bound, pure, no globals: `include/bsp/plane_follow_law.hpp` + `src/plane_follow_law.cpp`,

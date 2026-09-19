@@ -17,6 +17,12 @@ Read and committed this turn:
   the abeam side and decides the `009C1247` guard.
 * **§5.7** — `009C1662` is one guarded regime, not the fall-through. **Withdraws** that too.
 * **§5.8 + `tools/callee_effects_009bfee0.json`** — the callee table the frame walk needs.
+* **§5.9 the tail's altitude band** (`009C16FF`-`009C183B`) — `state+34h` *and* `state+48h` are
+  both clamped into `[L, cap]` with `L = min(leaderY + block[+4], state+88h)` and
+  `cap = min(singleton[+210h], leaderY + 120.0)`. This is the `done` floor that keeps a spent
+  **wing member** out of the water, and it is **the first acceptance row** when the `done` /
+  `prepare` ticks switch onto the law. A finished flight **leader** is commanded nothing
+  (`009C1FF1`), so a low leader in `done` is faithful, not a defect.
 
 Not started: item 3 (binding), item 4 (measurement). The host switch is **untouched** —
 `kPlaneFormationPlacementEnabled` stays true, and reading the abeam direction made that *more*
