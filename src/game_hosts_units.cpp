@@ -3325,8 +3325,19 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
     host.gunnery = std::make_unique<GameGunneryHost>(host.log, *this, host.lua);
     host.gunnery->set_ship_ai(host.ship_ai);
     host.gunnery->attach_00864bd0();
-    host.ai = std::make_unique<GameAiCoordinatorHost>(host.log, *this);
-    host.ai->create_00a32350();
+    // Packet cc8_ship_follow. This used to rebuild the coordinator on EVERY
+    // spawn batch, which on USN04's twelve batches threw away its groups and its
+    // counters eleven times: the AI summary reported available=0 refused=238
+    // joins=0 while the units host, which survives, reported joins=17 for the
+    // same run. The image creates one coordinator for the mission - 00A32350 is
+    // a creation, not a per-batch refresh - and this is the same class of host
+    // artefact as the director destruction cc8_ship_drive fixed in
+    // register_units. New units need no registration here: the coordinator reads
+    // the units host live and its next compose pass picks them up.
+    if (host.ai == nullptr) {
+        host.ai = std::make_unique<GameAiCoordinatorHost>(host.log, *this);
+        host.ai->create_00a32350();
+    }
 }
 
 void GameUnitsHost::issue_authored_commands() {

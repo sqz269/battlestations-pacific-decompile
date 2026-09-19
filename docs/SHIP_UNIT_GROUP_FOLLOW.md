@@ -1,5 +1,14 @@
 # The ship unit group's follow chain: who orders the leader, and what moves the escorts
 
+> **Warning to anyone reading an AI summary on a multi-batch mission.** `create_units` builds a
+> **fresh `GameAiCoordinatorHost`** on every spawn batch (`src/game_hosts_units.cpp`;
+> `src/game_hosts_script_orders.cpp` records the same), and USN04 spawns in twelve batches. Every
+> counter on `summary mission ai ...` is therefore a **last-instance count, not a mission total**.
+> Measured here: USN04 reported `available=0 refused=238 joins=0` from the AI host while the units
+> host, which survives the rebuild, reported `joins=17` for the same run. USN01 creates in one batch
+> and its numbers are whole. The image has one coordinator for the mission, so the rebuild is a host
+> artefact of the same class as the director destruction `cc8_ship_drive` fixed.
+
 Packet `cc8_ship_follow`, branch `agent/cc8-ship-follow`, on top of the held `agent/cc8-ship-command`.
 This document is the **map** asked for before any binding. Every address below was read from the
 listing in this packet unless it is marked *(cited)*, in which case it comes from the named earlier
