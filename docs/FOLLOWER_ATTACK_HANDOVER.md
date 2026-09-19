@@ -1,0 +1,375 @@
+# What happens when a follower LEAVES follow to attack (packet `cc8_follow_attack`)
+
+Worker `cc8-follow-attack`, 2026-09-19, branch `agent/cc8-follow-attack`, base `0920f88e8`
+(main `17bbbfc36` + the merge of `agent/cc8-follow-enter`'s handoff commit `d8019b8cc`).
+Fifth on the plane squadron FOLLOW chain. `docs/PLANE_FOLLOW_ENTER.md` is the packet before this
+one; its section 7 is the run this packet re-reads.
+
+## 1. Run D was not truncated. Two of the six flew into the sea
+
+`docs/PLANE_FOLLOW_ENTER.md` section 7 reads run D's six 0-release wing members as
+"they hold formation for 1100-1550 ticks ... and the run ends before the approach sequence can
+complete", and the pin's comment in `src/game_hosts_units.cpp` says "they are lost to holding
+station until there is no mission left to fly". **Both are wrong**, and the predecessor's own log
+falsifies them. Re-read of `...-cc8-follow-enter\local\D_mode_fed.log` against
+`B_fed_placement_on.log`:
+
+**Run B has zero `plane water contact` lines. Run D has four.** Two are the dive-bomb wing members
+in question:
+
+```
+plane water contact: unit=D3A Val #1.1|.-2 alt=-1.66 water=0.00 |v|=48.38 state 7 -> 6
+plane water contact: unit=movieval|.-2     alt=-1.34 water=0.00 |v|=49.11 state 7 -> 6
+```
+
+A second instrument agrees: the last `flyabove altitude 009C6E10` sample for those two units is
+`err last=-209.4` and `-207.8` against `target=210.0`, i.e. an altitude of **0.6 m and 2.2 m**.
+Their arms stop at 1812 and 1400 ticks because the aircraft died, not because the mission ended -
+their squadron-mates' arms run to 2370 and 2149.
+
+So landing criterion (b), "no new water contact", **FAILS** in run D. That was not reported.
+
+**Only two of the four are this packet's mechanism**, and the distinction matters. The other two are
+`D3A Val #3.1`, a flight **leader**, and `Yorktown-class01_sqn02|.-2`, a **torpedo** wing member.
+The leader released both its bombs (`releases=2`) and its only long post-attack state is `done`
+(786 ticks); a flight leader is never placed on a station, so its contact cannot be the section 7
+mechanism and is more likely the `done`-state descent that `docs/BOMBER_AFTER_TASK.md` already
+records. Attributing all four to one cause would be wrong.
+
+### The six, one at a time
+
+| unit | states in D | why it released nothing |
+| --- | --- | --- |
+| `movieval\|.-2` | `follow=1546 flyabove=266` | **water contact** at arm tick 1812 |
+| `D3A Val #1.1\|.-2` | `follow=1134 flyabove=266` | **water contact** at arm tick 1400 |
+| `D3A Val #3.1\|.-2` | `follow=969 goaway=1071 flyabove=98` | **aborted** the fly-over at 904 m (`err last=694.1`) on the `009C66E3` edge, not on roll-in, then sat in `goaway` for 1071 ticks |
+| `D3A Val #7.1\|.-2` | `follow=1070 goaway=186 flyabove=83` | `transitions=32`, thrashing |
+| `D3A Val #5.1\|.-2` | `follow=1134 flyabove=215` | truncated; whole squadron's arm ends at 1349 |
+| `D3A Val #5.1\|.-3` | `follow=1133 aimdive=52 flyabove=109 turndown=55` | truncated mid-attack |
+
+Only the `#5.1` pair is the mission window, and **that pair released 0 in run B as well**, so it is
+not a loss this change caused. Four of the six are new failures that more mission time cannot undo.
+
+And `#5.1|.-2` was not going to recover either: its last fly-over altitude sample is
+`calls=215 ... err last=68.1 ... pitch=-0.161 rad`, i.e. 278 m and still nose-down, 215 ticks into a
+fly-over the others leave in 86-129. It was truncated on the same trajectory as the two that
+drowned, not short of a release.
+
+### The loss is entirely the wing members, and it is exactly nine
+
+Per-unit dive-bomb releases, B -> D. Five `.-2` members go `2,2,2,0,0` -> `0,0,0,0,0`; three `.-3`
+members go `2 -> 1`; every leader is unchanged. Total `-9`, which is the whole `35 -> 26`.
+
+The runs' own summary lines decompose it and confirm the hand tally: `summary mission dive-bomb
+task ... releases=` is **23** in A, **23** in B and **14** in D, while `summary mission gunnery
+torpedo_drop drops=` is **12** in all three. So the `-9` is entirely dive-bomb, the torpedo side is
+untouched by the mode line, and the "releases" figure in `docs/PLANE_FOLLOW_ENTER.md`'s table is
+those two summed.
+
+## 2. What the pin actually does: it is the only thing that makes `attackrun` reachable
+
+In run B **every** dive bomber flies `attackrun` for 978-1564 ticks. In run D **no aircraft enters
+`attackrun` at all** - leaders go `moveto -> flyabove`, members go `follow -> flyabove`.
+
+That is forced by the chooser. `009C8310` returns `kAttackRun` only on its last arm, reached when
+the task is `engaged` with the in-range latch **clear**; `009C83F8`'s `engaged` is
+`latch || (mode == 2 && has target)`. With mode 1, `engaged == latch`, so `engaged` implies the
+latch is set and the chooser always takes `kFlyAbove` first. **`attackrun` is unreachable for any
+aircraft whose squadron mode is 1.** Pinning the mode to 2 is what makes it reachable, and that -
+not "standing in for the missing follow state" - is what the pin has been buying.
+
+## 3. And mode 1 is the image's value for these aircraft
+
+`docs/TORPEDO_ATTACK_MODE.md` section 1 already carries the complete writer census of `ctl+370h`,
+over every store form with `007ED3F4`/`007ED43C` as positive controls. Mode **2** has exactly two
+producers image-wide:
+
+* `008A4C41`, inside `008A4B10 BSP_LuaBinding_PilotStopCloseToShip`. `tools/callsite_census.py
+  007ED430` returns `total 1`, so that is the only call site of the raising setter.
+* pilot-control message `BCh` with a non-zero payload, at `007F0068`. Its producer is `unread`;
+  `docs/TORPEDO_ATTACK_MODE.md` section 2 states no site in the image builds the message with an
+  immediate `BCh`.
+
+An AI-ordered bomber has no `closetoship` task (section 3), so nothing lowers or raises it: the
+flight leader's `0099B740` tail sets it to **1** on the first cruise think and it stays there.
+
+**So the fed line is faithful and the pin is the substitution**, not the other way round. The pin
+cannot be defended as the image's behaviour; it can only be defended as a stand-in that scores
+better. Answering the question the brief put: there is **no** image path that sends an AI wing
+member to `attackrun` in this mission.
+
+## 4. Why an aircraft that enters the fly-over too steep can never leave it
+
+`009C83E0`'s `kFlyAbove` arm leaves only on `flyabove_ready_791`, the `+19h` roll-in permission
+`009C67B0` computes. Its two arms are `|bearing error| > 1.6 rad` (`00CE3D48`) and `span <= 0`,
+where `009C65FD` builds
+
+```
+span = max(R - (0.7 * max(B, 100) + 200), 0)
+```
+
+with `R` the three-second lead range and `B` the height above the aim point. The three constants
+are read at the width of their loading instructions: `0.7` is the **qword** at `00CEFFA0`, `200.0`
+the qword at `00CE4D70`, `100.0` the float at `00CE3D08`, and the bearing `1.6` the qword at
+`00CE3D48` (the float at those bytes is `-1.08e-19`, so the width is load-bearing there). Differentiate along
+the flight path, with closing rate `Rdot` and descent rate `Bdot` both positive:
+
+```
+d(span)/dt = -Rdot + 0.7 * Bdot
+```
+
+so **the span shrinks only while the flight-path angle is shallower than `atan(1/0.7) = 55.0
+degrees`.** Steeper than that, descending makes the threshold recede faster than the aircraft
+closes, the span grows, and roll-in can never be earned - and `kFlyAbove` has no other exit.
+
+Measured, both endpoints instrumented rather than derived. `movieval|.-2` left follow at
+`alt=1340 rng=2073 span=862` and hit the water 1405.7 m short of the aim point (its last
+`approach+BCh`): 1339 m down for 667 m closed, a mean path angle of **63 degrees**. Its span at
+death is `1405.7 - 270 = ~1136`, up from 862. The aircraft that work are at 12-22 degrees and leave
+in 86-129 ticks.
+
+## 5. The entry geometry, and why this packet does NOT yet blame the follow station
+
+Span at the fly-over entry, every dive bomber in both runs:
+
+| entered `flyabove` from | span | altitude |
+| --- | --- | --- |
+| `attackrun` (run B, all 15) | 672-678 | ~1393 |
+| `moveto` (run D leaders) | 690 | 1360 |
+| `follow`, slot `.-3` (run D) | 762 | 1382 |
+| `follow`, slot `.-2` (run D) | 862-865 | 1340 |
+
+`movieval|.-2` enters at the same planar `rng=2073` in both runs, so the extra 190 m of span is
+lead-range geometry - the bearing the station leaves it on - and not distance to go. The `.-2`
+station is on the unfavourable side and carries ~100 m more span than `.-3`.
+
+**This is a thin margin, not a demonstrated defect.** `.-3` reaches `span = 0` in 109 ticks at
+~5.8 m/tick; 100 m of extra span is ~17 ticks, and the fly-over's descent steepens past the
+55-degree line somewhere near there. So the honest statement is: the follower arrives with less
+margin than any other entry, and on the unfavourable side that margin is gone.
+
+Section 7 then reads the station law itself and **clears it**: the geometry is the image's, and the
+margin is spent by how this host reaches the station rather than by where the station is.
+
+## 6. An unmodelled contract on this packet's own addresses
+
+`009C6270`, the fly-over ENTER, opens with `CALL 009C3DA0` on `[ESI+4]`, the approach. `009C3DA0`
+(`009C3DA0`-`009C3E9A`, `__thiscall(approach)`, its other caller being the task seed `009C3EA0`) is
+**three `BSP_Random_UniformFloatRange` draws**: `009C3DCB` and `009C3DF5` from the pilot config row
+at `[approach+14h]+30h` and `+34h`, written through `009FA380` into the approach's `+30h`..`+3Ch`,
+and `009C3E8C` from `+2Ch` into `approach+C8h`.
+
+**Which config fields those are is NOT settled, and this packet does not settle it.** The names in
+`include/bsp/robot_config.hpp` encode image offsets, so `[row+30h]`/`+34h`/`+2Ch` taken at face
+value are `torp_target_point_select_prec_030`, `torp_throw_mul_034` and `torp_targetv_error_02c` -
+**torpedo** parameters inside a dive-bomb function. The host's own comment at `009C3EA0` instead
+reads row `+38h`/`+3Ch` as `dive_bomb_release_alt_1_044`/`_2_048`, which asserts a `+0Ch` shift
+between `[approach+14h]` and the row base those names are keyed to; under that shift the three
+draws are `dive_bomb_calc_target_pos_error_038`, `targeth_error_03c` and `targetv_error_040`, which
+is what a dive-bomb aim-error draw ought to read. One of the two readings is wrong. Settling it
+belongs to whoever owns `009F9D22` and the approach constructor, not to this packet.
+**`contract: unread` - the base of `[approach+14h]`.**
+
+What is settled either way is the shape: **the fly-over enter re-draws three random approach
+parameters every time it is entered**, so in the image each aircraft enters the fly-over with its
+own draw. This host draws none: `db_aim_point_height_50` is a labelled `0.0f`
+substitution and nothing re-seeds on the enter. The enter's other unmodelled effects are the
+`unit+844h` byte clear (`009C6283`) and `state+20h` (`009C628C`); the host models only the `+1Ch`
+clear. `contract: unread` - the consumers of `approach+30h`..`+3Ch` and `approach+C8h`.
+
+This does not explain the drowning - a zero error is the same for every aircraft - and it is
+recorded as a contract for the next reader, not as this packet's cause.
+
+## 7. The station is the image's. The way this host reaches it is not, and that is the defect
+
+The station itself is not to blame. `007F23A0` shape 1 is reconstructed in
+`src/plane_formation.cpp`: each component is `pair_number * displacement * morale`, with the
+odd-index mirror at `007F285F`-`007F28B9`. The run's own census prints
+`seat1 index=1 local=(-60.0 -25.0 70.0) disp=(60.0 25.0 70.0)`, so seat 1 sits 60 m left, **25 m
+below** and 70 m behind, and seat 2 60 m right, **25 m above** and 70 m behind. That ±25 m is
+exactly the entry-altitude split measured in section 5 (leader 1360, `.-2` 1340, `.-3` 1382). The
+geometry is authored and faithful.
+
+**What is not faithful is how the member gets there.** `place_wing_member_on_station_007f23a0`
+ends with
+
+```
+for (int i = 0; i < 3; ++i) unit.motion.position[i] = station.world[i];
+publish_pose(unit);
+```
+
+and that is its whole effect: it writes `motion.position`. Meanwhile the flight model integrates
+two independent state variables (`src/game_hosts_units.cpp`, the plane step):
+
+```
+unit_.plane_world_velocity[i] += world_accel[i] * step;
+unit_.motion.position[i]      += unit_.plane_world_velocity[i] * step;
+```
+
+`plane_world_velocity` has exactly two assignment sites in the file, both in the one-time seed
+(`plane_velocity_seeded`); nothing anywhere re-derives it from a position delta. So for the
+1100-1550 ticks a wing member spends in follow, **its position is overwritten every tick and its
+velocity is never corrected to match.** The member appears to fly the leader's track at ~8 m/tick
+because it is being teleported along it; its own velocity is free to drift anywhere the
+accelerations take it, and nothing constrains it, because the teleport hides the consequence.
+
+At the follow -> fly-over hand-over the teleport stops and the aircraft is released with that
+velocity. That is one mechanism for both failure modes in section 1:
+
+* released with too much downward and too little forward velocity -> path angle past the 55-degree
+  line of section 4 -> the span grows, roll-in is never earned, and the fly-over's descent carries
+  it into the sea (`movieval|.-2`, `D3A Val #1.1|.-2`);
+* released off-axis -> the bearing error exceeds the `009C66E3` tolerance, which tightens to 20
+  degrees as the span closes -> `flyabove_leave_792` fires, `009C85F5` sends it to `goaway`, and it
+  re-enters the fly-over and aborts again: `D3A Val #3.1|.-2` (`transitions=6`, `goaway=1071`) and
+  `D3A Val #7.1|.-2` (`transitions=32`) are in a fly-over/go-away limit cycle, not a stall.
+
+It also explains the two things section 5 could not: why the leader (never teleported) and the
+members diverge at all, and why `.-2` and `.-3` diverge with no principled difference between them
+- an unconstrained variable does not need a reason to differ.
+
+**Two controls already in the data, and they point the same way.**
+
+* Run B's dive-bomb wing members were placed **once** (`once=true`, the member's first step) and
+  then flew their own `attackrun`: position and velocity consistent throughout, and all fifteen
+  aircraft completed. Run D's are placed **every tick** for 1100-1550 ticks.
+* Run B's **torpedo** wing members were placed every tick for ~1000 follow ticks and came to no
+  harm - because they never left follow. Torpedo drops are 12 in both runs. So being teleported is
+  harmless while it continues; the damage appears at the **moment it stops**, which is exactly
+  where a mechanism about an inconsistent released velocity predicts it.
+
+So the blocker run D found is **not** downstream of follow in the image's law. It is this host's
+placement substitution leaking an inconsistent velocity into the fly-over. That inverts the
+predecessor's queue: run E - placement off, the follow law flying the member - is not a later
+nice-to-have, it is the experiment that tests the actual cause.
+
+## 8. Prediction for the 9000-frame pair, written before the runs
+
+Same base `0920f88e8`, USN04, `--frames 9200 --press-start-frame 30 --menu-select USN04
+--mission-frames 9000 --mission-frame-seconds 0.05`.
+
+* `E1_pinned_9000.log` - the tree as it stands: mode pinned to 2, placement on.
+* `E2_fed_noplace_9000.log` - two lines changed: `in.engaged.control_mode_370` fed from
+  `slot.db_attack_mode_370`, and the **dive-bomb** follow tick calling the placement with
+  `apply_position=false` so the follow law flies the member. The torpedo seam keeps placement,
+  because the law is not wired into it and turning it off there would leave those members with no
+  station-keeping at all.
+
+E2 was chosen after section 7 was read and **before either run finished**; the original plan was
+"fed alone at 9000", which run D has already measured at 4800 and which section 7 says would only
+re-take D's result at greater length.
+
+**What E2 is not, stated before it runs.** E2 is not "the image's follow". The follow law as wired
+here writes `plan_heading_2c0` (via `009F9E40`) and `plane_commanded_pitch`/`plane_commanded_altitude`
+(via `009FB800`) and **commands no speed**: the image's speed and station-holding live in the HOLD
+arm `009BEE56`-`009BF9E5`, 997 unreconstructed instructions. So E2 is "heading and pitch commands
+instead of a teleport". That asymmetry cuts one way only:
+
+* If E2 removes the drowning and the limit cycle, section 7 is confirmed - the teleport's
+  unconstrained velocity was the cause, and it was cured by the weakest possible replacement.
+* If E2 is **worse**, that does **not** vindicate the teleport. A member with no speed control
+  cannot hold station, so a worse E2 is consistent with either "the teleport was right" or "the
+  missing HOLD arm is what the law still needs". Distinguishing those two needs the HOLD arm read,
+  and this packet will say so rather than choose.
+
+1. **E2's dive-bomb wing members reach `done` and release.** If section 7 is right, a member flown
+   by the law rather than teleported enters the fly-over with a velocity consistent with its track,
+   its path angle stays under 55 degrees, and it rolls in like its leader. I expect
+   `states[follow=... flyabove=~100 turndown=~55 aimdive=~60 done=...]` and `releases >= 1` for the
+   members that drowned in D.
+2. **No dive-bomb wing-member water contact in E2.** This is the sharpest test of section 7. If a
+   member still drowns with placement off, the velocity mechanism is not the cause and section 7
+   is withdrawn.
+3. **The fly-over/go-away limit cycle disappears.** `D3A Val #3.1|.-2` and `#7.1|.-2` come back
+   with `transitions` in the normal 4-7 range instead of 6 and 32, and `goaway` in the tens rather
+   than 1071 and 186.
+4. **E2's total releases reach or beat E1's.** This is landing criterion (a). If they do, the mode
+   can be un-pinned *together with* placement off for dive-bomb followers, and I will say so as a
+   package rather than as a verdict on the one line.
+5. **`follow law` lines stay > 0** (criterion e) and **mutual torpedo kills stay 0** (criterion d);
+   the torpedo seam is untouched by both changes.
+
+**A third outcome, and it is not a pass.** With no speed command the law may simply let a member
+lag, so that its own range never closes to `approach+B8h` = 2080 m, its latch never sets, and it
+stays in `follow` for the whole run: `states[follow=<everything>]` with no `flyabove` at all. That
+would satisfy prediction 2 trivially - no fly-over, so no fly-over descent, so no water contact -
+while releasing nothing. **If E2 shows that, it is a null, not a confirmation**, and it says the
+HOLD arm of section 10 item 0 is the next read rather than that section 7 is right.
+
+**Falsifier for section 7:** any dive-bomb wing member that still flies into the water in E2, or a
+`.-2` member that still holds the fly-over past ~150 ticks. Either one says the velocity the
+teleport leaves behind is not what loses these aircraft, and section 7 comes out.
+
+**Falsifier for the packet's verdict on the pin:** if E2's releases reach or beat E1's with no new
+water contact, the pin is not load-bearing once placement is off, and the honest recommendation is
+to un-pin and turn dive-bomb follow placement off in the same change - not to keep the pin.
+
+## 9. Measured
+
+### E1, the pinned baseline at 9000 frames: it drowns sixteen aircraft
+
+`local/E1_pinned_9000.log`, base `0920f88e8`, the tree exactly as it stands (mode pinned to `2`,
+placement on). It reproduces run B's behaviour first: every dive bomber enters the fly-over from
+`attackrun` at `alt` 1388-1401, `rng` 2073-2080, `span` 646-700, and all fifteen of B's aircraft
+release 2 bombs each. `follow law` is **0**, as it must be - with the pin nothing enters follow.
+
+**Then the mission keeps running, and the `done` state flies them all into the sea.** Every
+dive-bomb `done` row is a descent that does not stop:
+
+```
+movieval|.-2      done ... ticks=950  placed=950  alt 278.5 -> 0.1
+D3A Val #1.1|.-2  done ... ticks=1025 placed=1025 alt 274.5 -> 0.0
+D3A Val #3.1|.-2  done ... ticks=965  placed=965  alt 208.8 -> 0.1
+D3A Val #7.1|.-2  done ... ticks=918  placed=918  alt 277.0 -> 0.1
+```
+
+and the log carries **sixteen** `plane water contact` lines - five dive-bomb leaders, five dive-bomb
+wing members, and six torpedo aircraft from `Lexington-class01_sqn01` and `Yorktown-class01_sqn02`.
+
+**This reframes the whole comparison, and it is the single most important thing this packet
+measured.** Run D's four water contacts at 4800 frames looked like a regression the pin did not
+have. At 9000 frames the *pinned* configuration has sixteen. The pin was never the safe
+configuration; 4800 frames was simply short enough to end the mission before the `done`-state
+descent finished. Landing criterion (b), "no new water contact", cannot be judged against a 4800-
+frame pinned baseline, and criterion (c), "a spent wing member in `done` stays inside the
+leader-relative altitude band", **fails in the pinned baseline itself** - every wing member in
+`done` ends between 0.0 and 30.2 m.
+
+Prediction 2 of section 8 is confirmed in its own terms: the pinned run does gain releases from the
+longer mission, **23 -> 30** dive-bomb releases (`summary mission dive-bomb task`, `aircraft=24`
+rather than 15, because three more squadrons - `Yorktown-class01_sqn08`, `Zuiho-class01_sqn09`,
+`Yorktown-class01_sqn13` - spawn later and sit in `attackrun` to the end). So E2's bar is **30**.
+
+**A measurement discipline note, and I nearly broke it.** `summary mission gunnery torpedo_drop
+drops=` reads **0** in E1 against 12 in A, B and D. That is not a collapse in torpedo releases: the
+gunnery totals are since-the-last-`create_units` counts until `cc8-gunnery-host` lands its fix, and
+a later `create_units` in the longer mission reset them. Every release figure in this section is
+the dive-bomb **task** row, which lives on the units host and survives. No torpedo release number
+from any 9000-frame run in this packet is usable.
+
+## 10. What the next reader should do, in order
+
+0. **Read the HOLD arm `009BEE56`-`009BF9E5`.** It was item 3 on the last handoff and it is item 0
+   now, because section 8's caveat cannot be resolved without it: the follow law this host wires
+   commands heading and pitch and **no speed**, so "the law flies the member" is not yet a fair
+   test of the image's follow. The gate is `009BEE49 CMP byte ptr [ESI+85h],0` / `009BEE50 JZ
+   009BF9EA` - a member in good position takes the hold arm, one out of position jumps to the
+   fly-to arm at `009BF9EA`. The arm opens with the lazy pose-matrix refresh pattern (`00414DB0`
+   then `00B63D50` guarded by the `+10Ch` dirty byte) applied twice, then `0042D0D0` and x87. 997
+   instructions. Call census in `docs/HANDOFF_PLANE_FOLLOW_REGIMES.md`.
+1. **Wire the follow law into the torpedo follow seam.** `src/game_hosts_units.cpp:5600`,
+   `follow_base_tick_009c1fd0`, calls placement and nothing else. Wiring it is not a one-liner: the
+   two seams live in **different nested classes**, so the law helper
+   `run_follow_law_009bfee0_009bee30` has to be hoisted out of the dive-bomb arm class onto `Impl`
+   (or made a free function taking the slot, the station and the leader) before the torpedo seam
+   can call it. Until it is, dive-bomb follow placement can be turned off and torpedo follow
+   placement cannot - which is exactly the asymmetry E2 is built around.
+2. **The fly-over's own arms.** `009C62B0` is `PARTIAL` by its own comment: only the heading is
+   bound; the bank target, the altitude and the desired speed are unbound. Section 4's 55-degree
+   trap is a property of the image's `009C65FD`/`009C67B0` pair and is real, but whether the image
+   ever *reaches* that angle depends on arms this host does not command.
+3. **`009C6270`'s unmodelled enter effects**, section 6: the `009C3DA0` aim-error draw, the
+   `unit+844h` clear and `state+20h`. `009C3DA0` deserves a Ghidra name and a ledger record; this
+   packet did **not** write one, because `009C3DA0` and `009C6270` are outside its lease and
+   AGENTS.md puts Ghidra writes behind the lease. It is owed.
+4. **Phase A `009C0251`-`009C0EE0`** and the **`009C1552` subtree**, both still untouched.
