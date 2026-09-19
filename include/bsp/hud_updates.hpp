@@ -331,8 +331,17 @@ inline constexpr float kHudMinimapPulseScale = 0.1f;     // 00D7A3A0, a double
 inline constexpr float kHudMinimapPulseBase = 1.0f;      // 00D7A210, a double
 inline constexpr float kHudMinimapRampRate = 4.0f;       // 00D7A328 again
 // World-to-minimap conversion of every icon placement (005C1C68, 005C1C8C).
-inline constexpr float kHudMinimapXDivisor = 1024.0f;    // 00CEDAE8 is 1/1024
-inline constexpr float kHudMinimapYDivisor = 768.0f;     // 00CE42B0
+// CORRECTED to the image's form. The two axes are NOT symmetrical: the X
+// constant at 00CEDAE8 is the qword 1/1024 and every site MULTIPLIES by it
+// (005411E0 FMUL, 00541230 FMUL, 005C1C68 FMUL), while the Y constant at
+// 00CE42B0 is the qword 768 and its sites DIVIDE (005411CA FDIV, 0054121A
+// FDIV) - adjacent instructions in the same function. Carrying the X as a
+// 1024.0f "divisor" was a form error, not a numeric one: dividing by 1024 and
+// multiplying by 1/1024 agree to the last bit, both being exact powers of two.
+// Found by tools/const_width_sweep.py --load-sites, which flagged the declared
+// 1024 against an m64 read of 0.000976562.
+inline constexpr double kHudMinimapXScale = 0.0009765625;  // 00CEDAE8, qword, FMUL
+inline constexpr float kHudMinimapYDivisor = 768.0f;     // 00CE42B0, qword, FDIV
 inline constexpr float kHudMinimapHeadingBias = 1.5707964f; // 00CE3830, pi/2
 // The depth literals the three placement sites choose between.
 inline constexpr float kHudMinimapDepthSelf = -1.0f;     // 00D7A260
