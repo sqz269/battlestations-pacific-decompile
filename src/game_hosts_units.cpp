@@ -1727,6 +1727,40 @@ struct GameUnitsHost::Impl {
         // is too slow - most likely the flyabove arm, or the moment the member's
         // own latch is allowed to set. Feeding this line honestly needs that
         // read first; it is not blocked on the follow entry any more.
+        // PACKET cc8_follow_attack. The pin STAYS, but for a different reason
+        // than the two paragraphs above give, and both of those are now wrong.
+        //
+        // (1) "They are lost to holding station until there is no mission left
+        // to fly" is FALSE. Run B has no `plane water contact` line; run D has
+        // four, and two are those wing members, at alt=-1.34 and -1.66 with the
+        // last flyabove altitude sample at err=-209.4 against target=210.0.
+        // Of the six: two drowned, two are in a fly-over/go-away limit cycle
+        // (transitions=6 with goaway=1071, and transitions=32), and only the
+        // #5.1 pair is the mission window - and that pair released 0 in run B.
+        //
+        // (2) The pin is NOT the faithful value. docs/TORPEDO_ATTACK_MODE.md's
+        // writer census gives mode 2 exactly two producers image-wide, 008A4C41
+        // inside the Lua binding 008A4B10 (callsite_census 007ED430 = total 1)
+        // and pilot-control message BCh; an AI-ordered bomber reaches neither,
+        // so 0099B740 leaves it at 1. What the pin actually buys is `attackrun`,
+        // which 009C8310 can only return when `engaged` is true with the latch
+        // CLEAR - impossible at mode 1, where 009C83F8 collapses `engaged` to
+        // the latch.
+        //
+        // (3) The blocker is THIS HOST'S placement substitution, not anything
+        // downstream of follow: see the note on
+        // place_wing_member_on_station_007f23a0 below.
+        //
+        // (4) And the pinned baseline is not safe either. Run E1 (pinned, USN04
+        // at 9000 mission frames) reproduces run B and then the `done` state
+        // flies everything into the sea - every dive-bomb done row descends
+        // without stopping (alt 278.5 -> 0.1, 274.5 -> 0.0) and the log carries
+        // SIXTEEN water contacts against run D's four. 4800 frames merely ended
+        // the mission first. Dive-bomb releases pinned at 9000 are 30.
+        //
+        // So the pin is held here only because the change it blocks has not
+        // been measured yet, not because it is right. Run E2 measures it; see
+        // docs/FOLLOWER_ATTACK_HANDOVER.md sections 8 and 9.
         in.engaged.control_mode_370 = 2;
         in.engaged.has_latched_target_440 = slot.command_target_plus_one != 0;
         in.entry.control_mode_370 = in.engaged.control_mode_370;
@@ -2368,10 +2402,19 @@ struct GameUnitsHost::Impl {
         return true;   // a record with no live member: the same unknown case
     }
 
+    // `apply_position` false computes the station and hands it to the caller
+    // WITHOUT teleporting the member onto it. Packet cc8_follow_attack: the
+    // teleport writes `motion.position` only, while `plane_world_velocity` goes
+    // on integrating from its own accelerations in the plane step
+    // (`plane_world_velocity[i] += world_accel[i] * step`), so a member held
+    // in follow by placement carries a velocity that never had to match the
+    // motion the teleport displayed. The fly-over inherits that velocity at the
+    // hand-over. docs/FOLLOWER_ATTACK_HANDOVER.md section 7.
     bool place_wing_member_on_station_007f23a0(
         GameUnitSlot& unit, bool once,
         bsp::PlaneFormationStation* station_out = nullptr,
-        const GameUnitSlot** leader_out = nullptr) {
+        const GameUnitSlot** leader_out = nullptr,
+        bool apply_position = true) {
         bsp::PlaneSquadronHostRecord* const squadron =
             bsp::plane_squadron_registry().find_by_member_unit(unit.process_index);
         if (squadron == nullptr) return false;
@@ -2510,6 +2553,9 @@ struct GameUnitsHost::Impl {
         // The placement that stands in for 009BFEE0. `false` here is the BEFORE
         // half of this packet's measurement and is not a shipped configuration.
         if (!kPlaneFormationPlacementEnabled) return false;
+        // Packet cc8_follow_attack: the station and the leader are already in
+        // the out-params above, so the follow law still gets its geometry.
+        if (!apply_position) return false;
         if (once) {
             // The image separates the wing inside the follow state and holds it
             // there. This host never enters that state - every plane of every
@@ -6632,6 +6678,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.plan_mode_26c = 2;   // 009C1FE2
                         bsp::PlaneFormationStation station;
                         const GameUnitSlot* leader = nullptr;
+                        // Packet cc8_follow_attack measured run E2 with
+                        // `/*apply_position=*/false` here - the dive-bomb follow
+                        // tick alone stops teleporting, so the follow LAW flies
+                        // the member and its velocity stays consistent with its
+                        // motion, while the torpedo seam keeps placement because
+                        // the law is not wired into it yet. That is the ONE
+                        // argument to change to re-take E2; nothing else moves.
+                        // Left at `true` here because E2 had not been read when
+                        // this packet closed. docs/FOLLOWER_ATTACK_HANDOVER.md
+                        // sections 7 and 9.
                         if (owner_.place_wing_member_on_station_007f23a0(
                                 unit_, false, &station, &leader)) {
                             owner_.log.implemented("BotStateFollow::station_point",
