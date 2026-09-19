@@ -1181,9 +1181,21 @@ struct GameUnitsHost::Impl {
         // far. The goaway's own accumulator starts at zero here, so the rule
         // stays the labelled PARTIAL it was - but it is no longer fed a value
         // that belongs to another state.
-        in.goaway_complete = slot.db_planar_bc >
-            slot.db_goaway_travel_20 *
-                static_cast<float>(bsp::dive_bomb_constant::kGoAwayDistanceScale);
+        {
+            bsp::DiveBombGoAwayCompleteInputs g;
+            g.planar_distance_bc = slot.db_planar_bc;
+            g.travel_20 = slot.db_goaway_travel_20;
+            g.altitude = slot.motion.position[1];
+            // ctl+398h is what approach+ACh is refreshed from every tick, so
+            // this host has one value for both.
+            g.cruise_altitude_398 = slot.db_begin_alt_ac;
+            g.begin_altitude_ac = slot.db_begin_alt_ac;
+            g.aim_point_height_50 = slot.db_aim_point_height_50;
+            g.has_bomb_ordnance_d1 = slot.db_has_bomb_d1;
+            g.control_flag_369 = false;
+            g.global_e17bf2 = false;
+            in.goaway_complete = bsp::dive_bomb_goaway_complete_009c7f00(g);
+        }
         in.unit_bank_c68 = slot.plane_bank_angle_c68;
         in.bank_high_00ce398c = 0.0f;
         in.bank_low_00d1fbc0 = 0.0f;
