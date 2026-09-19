@@ -6,6 +6,8 @@
 
 #include "bsp/dive_bomb_task.hpp"
 
+#include "bsp/unit_rudder.hpp"
+
 #include <cmath>
 
 namespace bsp {
@@ -18,45 +20,15 @@ inline float fold_abs(float x) noexcept {
     return (x > 0.0f) ? x : (dive_bomb_constant::kNegativeZero - x);
 }
 
-// 00438AA0 BSP_Math_AddWrappedAngle: add and wrap into [0, 2pi).
-//
-// DEFECT, found by packet cc8_dive_flyover and NOT fixed here because this
-// helper is shared by hunks other workers hold (2026-09-19 arbitration). The
-// image wraps into (-pi, pi], not [0, 2pi): 00438AB0 loads the double -pi at
-// 00CE3D18 and 00438AB6's FCOMI with 00438AB8's `72` JC sends every sum above
-// -pi to 00438ADF, which loads the +pi at 00CE3D28 and subtracts the 2pi at
-// 00CE3828 while the sum exceeds it; the other arm adds 2pi while the sum is at
-// or below -pi. src/unit_rudder.cpp's wrap_native_angle has it right and cites
-// the same ranges. Inert for the commands this file produces, because the only
-// consumer (game_hosts_units.cpp, the PilotBotHeadingTerm at the unit arm)
-// takes wrapped_angle_subtract_00438b10 of the result against the aircraft's
-// own heading, and that subtraction is invariant to a 2pi offset.
-inline float wrapped_angle_add_00438aa0(float base, float delta) noexcept {
-    const float two_pi = static_cast<float>(dive_bomb_constant::kTwoPi);
-    float v = base + delta;
-    while (v >= two_pi) v -= two_pi;
-    while (v < 0.0f) v += two_pi;
-    return v;
-}
-
-// 00438B10 BSP_Math_SubtractWrappedAngle: subtract and wrap into (-pi, pi].
-// 00438B20..00438B7B is the same loop pair as the add above, and this one is
-// transcribed from it rather than from the sibling helper.
-inline float wrapped_angle_subtract_00438b10(float left, float right) noexcept {
-    const double pi = 3.1415927410125732;       // 00CE3D28 / 00CE3D18 negated
-    const double two_pi = 6.2831854820251465;   // 00CE3828
-    float v = left - right;
-    if (static_cast<double>(v) <= -pi) {
-        do {
-            v = static_cast<float>(static_cast<double>(v) + two_pi);
-        } while (static_cast<double>(v) <= -pi);
-    } else {
-        while (static_cast<double>(v) > pi) {
-            v = static_cast<float>(static_cast<double>(v) - two_pi);
-        }
-    }
-    return v;
-}
+// 00438AA0 BSP_Math_AddWrappedAngle and 00438B10 BSP_Math_SubtractWrappedAngle
+// are NOT redefined here. This file used to carry its own `add`, and it wrapped
+// into [0, 2pi) where the image wraps into (-pi, pi]: 00438AB0 loads the double
+// -pi at 00CE3D18, 00438AB6's FCOMI with 00438AB8's `72` JC sends every sum
+// above -pi to 00438ADF, and that arm subtracts the 2pi at 00CE3828 while the
+// sum exceeds the +pi at 00CE3D28, while the other adds 2pi while the sum is at
+// or below -pi. bsp/unit_rudder.hpp declares both, src/unit_rudder.cpp
+// transcribes them from 00438AB0..00438B0B and 00438B20..00438B7B, and every
+// call below now resolves to that one pair. Packet cc8_dive_flyover.
 
 }  // namespace
 
@@ -943,6 +915,13 @@ DiveBombFlyAboveBank dive_bomb_flyabove_bank_009c6857(
         in.turn_circle_radius, dive_bomb_flyabove_constant::kBankDeadBandFar,
         in.lead_range_r);
     return out;
+}
+
+// 009C57C4-009C57FF, arm A. Header carries arm B and why it is not modelled.
+bool dive_bomb_aimglide_pull_out_009c57ff(float bearing_error_abs) noexcept {
+    // 009C57CA COMISS XMM0,[00CE380C] with XMM0 = [ESP+18h] and 009C57D1 `77`
+    // JA: only a strictly wider error latches on this arm.
+    return bearing_error_abs > dive_bomb_constant::kGlidePullOutBearing;
 }
 
 // 009C6A37-009C6A7F.

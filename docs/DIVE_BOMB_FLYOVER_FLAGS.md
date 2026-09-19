@@ -404,7 +404,7 @@ lead gate is reached three times and fails low every time.
 **Would the image re-dive, glide-release or retire with a bomb aboard? It would RE-DIVE, and the
 869-tick sit is a host artefact.** The transition rule gives the aimglide exactly two exits, both
 to `goaway`: `009C8694` on out-of-bombs and `009C86B4` on the state's `+76Ch` pull-out. From
-`goaway`, `009C86D9` sends an aircraft that still has bomb ordnance (`has_bomb_ordnance_4c9`) back
+`goaway`, `009C86EE` sends an aircraft that still has bomb ordnance (`has_bomb_ordnance_4c9`) back
 to **flyabove** - a second attack run. Neither exit can fire in this host:
 
 * `aimglide_out_of_bombs` is false, because the aircraft has a bomb left;
@@ -419,6 +419,190 @@ producer, which is not this packet's hunk; it is recorded here and reported to t
 Nothing about the abort itself is wrong - `dive_bomb_dive_abort_009c5b43` is a faithful binding of
 a real rule, and the aircraft that abort are the ones that reach the dive with a saturated roll and
 a bearing error near 0.89 rad while `movieval` reaches it at -0.16 rad.
+
+## 7. The aimglide pull-out `+76Ch`, read from the listing
+
+Routed to this packet by the integrator after section 6. Everything below is read from the
+listing before any host change, and the host's own model is checked against it rather than trusted.
+
+### The transition edges, verified in `009C83E0` rather than taken from the host
+
+```
+009c868b  LEA ECX,[ESI+754h]      kAimGlide
+009c8691  CMP EAX,ECX
+009c8693  JNZ 009c86d3            not aimglide -> the goaway arm
+009c8695  CALL 009c7850           !HasGeneralBombOrdnance
+009c869c  JZ  009c86b2            has bombs -> fall to the pull-out test
+009c869e  -> 009c82d0([ESI+704h]) kGoAway        OUT OF BOMBS
+009c86b2  CMP byte [ESI+76Ch],0
+009c86b9  JZ  009c84e7            no pull-out -> stay in aimglide
+009c86bf  -> 009c82d0([ESI+704h]) kGoAway        PULL-OUT
+
+009c86d3  LEA ECX,[ESI+704h]      kGoAway
+009c86db  JNZ 009c84e7
+009c86e1  CALL 009c7f00           goaway complete?
+009c86e8  JZ  009c84e7
+009c86ee  CMP byte [ESI+4C9h],0   has_bomb_ordnance_4c9
+009c86f7  JZ  009c8705            no bomb -> done
+009c86f9  PUSH EDI / CALL 009c82d0
+```
+
+`EDI` at `009C86F9` is **`[ESI+778h]`, `kFlyAbove`**, established by filtering the whole 289-line
+listing for `EDI`: the last write on this path is `009C84ED LEA EDI,[ESI+778h]`, and `009C84F5`'s
+JNZ jumps the entire fly-above arm (which holds the only later writes, three
+`LEA EDI,[ESI+79Ch]` at `009C853F`, `009C856B` and `009C85B8`, each inside a branch that dispatches
+and returns). So a goaway that completes with bomb ordnance **does go back to flyabove** - a second
+attack run - and `dive_bomb_next_state_009c83e0` in `src/dive_bomb_task.cpp` already carries both
+aimglide edges and this one with the same conditions. Nothing to report to `cc8-dive-approach`.
+
+### The producer: one writer each way, and it is a per-state latch
+
+The aimglide state's `+18h` is the whole-object `+76Ch` (`754h + 18h`). Filtering the whole tick
+`009C5180`-`009C5809` for `+ 0x18]` gives exactly one store to `[ESI+18h]`, at the very tail:
+
+```
+009c57c4  XMM0 = [ESP+18h]                    the abs bearing error
+009c57ca  COMISS XMM0,[00CE380C]              1.5
+009c57d1  JA  009c57ff                        |E| > 1.5 rad          -> PULL OUT   (arm A)
+009c57d3  XMM0 = [00CE3D30]                   0.6
+009c57db  COMISS XMM0,[ESP+24h]
+009c57e0  JBE 009c5802                        0.6 <= [ESP+24h]       -> no pull-out
+009c57e2  EDX=[ESI+4]  EAX=[EDX+4]            the approach, then the unit
+009c57e8  COMISS XMM2,[EAX+C64h]              XMM2 = 0 (009C57AF XORPS)
+009c57ef  JBE 009c5802                        pitch >= 0             -> no pull-out
+009c57f1  FLD [ESP+6Ch] / FLD [ESP+28h]
+009c57f9  FCOMIP / 009c57fd JBE 009c5802      [ESP+28h] <= [ESP+6Ch] -> no pull-out
+009c57ff  MOV byte [ESI+18h],BL                                      -> PULL OUT   (arm B)
+```
+
+`BL` is **1**: `EBX` is written once in the whole tick, `009C53E2 LEA EBX,[EBP-1]` with `EBP` the
+literal 2 of `009C53DD`. And the enter clears it: `009C4F0C MOV byte [ESI+18h],0`, beside
+`009C4F10`'s clear of the re-arm timer `+1Ch`. So `+76Ch` is a **per-state latch**, the same shape
+as `flyabove+1Ch`.
+
+`[ESP+18h]` is already a bound quantity in this repository: `DiveBombAimGlideReleaseInputs::
+bearing_error_18`, the **abs horizontal bearing error** written at `009C53CA` (packet
+`cc8_dive_glide` renamed it from `dive_angle` and recorded why). Arm A is therefore exact with what
+the host already computes.
+
+### What is bound, and what is deliberately not
+
+**Arm A is bound. Arm B is read and NOT bound.** `[ESP+24h]` and `[ESP+28h]` are frame slots this
+packet has not walked, and the tick reuses its own argument slot `[ESP+6Ch]` as scratch (dozens of
+`FLD`/`FSTP` between `009C5295` and `009C5563`), so none of the three can be named without the same
+kind of frame walk `tools/flyabove_trace.ps1` does for the fly-over - a callee table for ten targets
+plus three indirect calls. Modelling arm B from its two known conditions alone would make the
+pull-out fire **more** often than the image, which is the unsafe direction, so this host models
+neither of arm B's unknown gates and the latch fires strictly **less** often than the image's. That
+is a deliberate under-approximation and it is what the window below tests.
+
+### Prediction, written before the run
+
+The six aircraft that reach the aimglide in `flyover_after.log` are `D3A Val #3.1` x3 (864, 785 and
+852 aimglide ticks) and `#7.1` x3 (172, 112, 162). `#5.1` x3 are still in `aimdive` at frame 4800
+and are not candidates. So at most six aircraft can pull out.
+
+1. **Whether arm A fires at all is genuinely open.** The census says `#3.1`'s bearing gate blocks
+   817 of 869 ticks, which only means `|E| > 0.5236`; arm A needs `|E| > 1.5 rad`, nearly three
+   times wider. I therefore add a `bearing err max=` column to the aimglide census so the run
+   answers this even if the latch never fires. My expectation is that it **does** fire for `#3.1`,
+   because those aircraft overfly and then orbit with the target behind them, which puts `|E|` past
+   90 degrees for long stretches - but I would not be surprised to be wrong, and if `max` comes
+   back under 1.5 the answer is that arm B is the live arm and it gets the next packet.
+2. **If it fires, `#3.1` gets a second attack run and `#7.1` probably does not.** `#3.1` reaches
+   the aimglide around tick 1274 with about 3500 ticks left; `#7.1` reaches it around tick 1167 of
+   a 1339-tick life, so it has roughly 170 ticks - not enough for goaway plus a fly-over plus a
+   turndown plus a dive, which cost about 96 + 56 + 57 ticks after the goaway.
+3. **The second fly-over should start LOW, and that is the interesting part.** These aircraft leave
+   the dive at about 300 m (`aimdive>aimglide` at `alt 306-326`), far below the 675 m
+   `approach+D4h`. `009C86EE` sends them to flyabove regardless of altitude, so unless goaway
+   climbs them back above `approach+ACh` first, the second fly-over runs with `B` under `+D4h`,
+   `009C680E`'s can-dive flag clears, and the transition rule hands them to **aimglide again**
+   rather than to turndown. My prediction is that this is exactly what happens on the first
+   attempt and that the gain, if any, comes from the goaway climb: watch `db_goaway_travel_20` and
+   the altitude at the second `attackrun>flyabove`.
+4. **Releases: +1 to +3, not +6.** Each `#3.1` aircraft has one bomb left, and a second dive has to
+   pass the same 25 m aim gate that the first one passed. I expect one to three more releases and
+   no change at all for `#5.1` or the six two-release aircraft.
+5. **Total damage is not predicted.** Section 5 established that the harness is deterministic and
+   that the chain sits on a 25-43 m hit/miss boundary, so any release count change moves damage in
+   a direction this packet cannot forecast. It will be reported, not predicted.
+
+### Measured: `local\pullout_after.log`, and the blocker moves one state downstream
+
+4800-frame USN04 on `fcd7c145e`, against `flyover_after.log`. The pair differs only by the pull-out
+commit and the wrap fix (`1f30cd6db`, which section 7's commit message shows is inert for every
+consumer).
+
+**Arm A fires, and the prediction's open question is answered.** `bearing err max=` comes back at
+**2.7935 rad** for `#3.1` and **2.5912** for `#7.1`, against the 1.5 rad gate - so the aircraft do
+end up with the target nearly behind them, and arm A is the live arm. `pull_outs=1` on all six.
+
+| quantity | `flyover_after.log` | `pullout_after.log` |
+| --- | --- | --- |
+| `#3.1` transitions / aimglide ticks | 5 / 864, 785, 852 | **6 / 23, 24, 22** |
+| `#7.1` transitions / aimglide ticks | 5 / 172, 112, 162 | **6 / 22, 23, 23** |
+| `#3.1` goaway ticks | 0 | **841, 761, 830** |
+| `#7.1` goaway ticks | 0 | **150, 89, 139** |
+| dive-bomb `releases` | 19 | 19 |
+| `bomb_drops` / `bomb_impacts` | 19 / 18 | 19 / 18 |
+| `total_damage` / `deaths` | 9826.4 / 8 | 9820.7 / 8 |
+
+So predictions 1 and 2 held and **prediction 4 was wrong**: the aimglide is no longer terminal - all
+six aircraft leave it within about 23 ticks instead of sitting for up to 869 - but **not one of them
+reaches a second attack run**, and there are no extra releases. The 5.7-point damage difference is
+the six aircraft flying a goaway instead of an orbit; nothing else moved.
+
+**The new blocker is `009C7F00`, the goaway completion.** `#3.1` sits in `goaway` for 761-841 ticks
+and never completes, so `009C86E8`'s JZ keeps it there and `009C86F9`'s return to flyabove is never
+reached. `dive_bomb_goaway_complete_009c7f00` is already bound and its two gates say why this is
+expected rather than broken: the range has to open past `travel_20 * 0.9`, **and the aircraft has to
+have climbed back to `min(cruise_altitude_398, begin_altitude_ac + aim_point_height_50)`**. These
+aircraft leave the dive at about 300 m and that ceiling is about 1000 m, so a second attack run
+needs 700 m of climb inside the goaway. Whether the goaway's climb arm
+(`dive_bomb_goaway_climb_009c4b44`) actually commands it, and how long it would take, is the next
+thread and it is not this packet's.
+
+What this window does settle: the chain `aimglide -> goaway -> flyabove` is real, the first edge is
+now bound and works, and the reconstruction's terminal state has moved from the aimglide to the
+goaway. That is one gate closer to a second attack run, with the next gate named.
+
+## 8. Where the dive-entry error is born: not in the fly-over, and not a wingman offset
+
+The integrator asked for a per-squadron bearing table to decide whether the error that makes
+`#3.1` and `#7.1` enter the dive at 0.89 rad belongs to this packet or to `cc8-dive-approach`'s.
+The `attackrun>flyabove` bearing is not printed by any census, so the exact column needs one more
+field; but the question it was meant to answer is already answered by the `cross=` column this
+packet added, and the answer does not need it.
+
+| flight | `cross=` at the last bank tick, leader / .-2 / .-3 | `attackrun>flyabove` |
+| --- | --- | --- |
+| `movieval` | 111.3 / 110.7 / 111.1 | `@1544 alt 1394 rng 2079 span 678` |
+| `D3A Val #1.1` | 110.9 / 111.2 / 110.9 | `@1144 alt 1395 rng 2078 span 675` |
+| `D3A Val #5.1` | 110.9 / 111.2 / 110.9 | `@1144 alt 1395 rng 2078 span 675` |
+| `D3A Val #3.1` | **409.4 / 448.8 / 409.5** | `@1073 alt 1400 rng 2077 span 648` |
+| `D3A Val #7.1` | **329.8 / 420.6 / 334.8** | `@973 alt 1403 rng 2077 span 633` |
+
+Three things fall out.
+
+1. **It is not a wingman offset.** Within every flight the three aircraft agree to about 1 m in the
+   good group and to within 12 per cent in the bad one. If the formation offset were delivering the
+   error, the leader and the two wingmen would differ; they do not.
+2. **It is per-squadron, and two squadrons are literally identical.** `#1.1` and `#5.1` hand over
+   on the same tick with the same altitude, range and span to every printed digit, and their
+   cross-track triples match digit for digit. Two squadrons flying byte-identical approaches from
+   different spawns is what a deterministic harness looks like, and it means the split is a
+   property of the approach geometry, not of anything stochastic.
+3. **The fly-over does not create it.** All five flights enter the fly-over at the same altitude
+   (1394-1403 m) and the same range (2077-2079 m); only the lateral geometry differs, and it
+   differs *before* the fly-over's first tick. The fly-over's own steering cannot be the source of
+   a difference that is already present at its entry.
+
+So the error is delivered to the fly-over, not made by it, and it belongs upstream - the attack run
+or the moveto, `cc8-dive-approach`'s area. The remaining column (the bearing error at the first
+fly-over tick) is one census field in the fly-over feed; it is worth adding on the next window
+rather than a run of its own, because it would only refine a conclusion the cross-track column has
+already reached.
 
 ### Column checks, before quoting any of the above
 

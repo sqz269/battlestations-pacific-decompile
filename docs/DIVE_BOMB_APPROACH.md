@@ -589,3 +589,22 @@ first thing to read before wiring this again.
 
 **The second-attack-run edge did not open.** Twelve aircraft carry `goaway` ticks in both runs, so
 the wiring does not cause anyone to take `009C86EE` -> flyabove in this window.
+
+## 18. The old-base hypothesis is retired: A2' and B' already had the re-arm fix
+
+Section 13 left the old-base packet with one named suspect — the frozen aimglide re-arm timer —
+and proposed merging `cc8_dive_entry`'s fix as the decisive experiment. **That experiment has
+already been run, inside A2' and B', and the suspect is cleared.**
+
+`git merge-base --is-ancestor d3d4910ec HEAD` returns 0, so `cc8_dive_entry`'s fix is an ancestor
+of the merged base `dd5364d6d`, and the countdown `if (slot.db_aim_rearm_1c >= 0.0f)
+slot.db_aim_rearm_1c -= dt;` is present in **both** input builders in this tree (the aimdive one
+and the aimglide one). So both new windows ran with the timer counting down, and the old base's
+`rearm` blocker cannot explain anything in them.
+
+That matters for reading section 17 correctly. On the old base the wired build lost all five
+releases to a frozen timer; on the new base the wired build **gains** one, 19 -> 20, which is what
+a working re-arm looks like. **B' loses no releases in any state** — the two failures are the two
+water contacts and `movieval`'s `approach_returns = 0`, and section 17 traces both: the ditchers
+are the `done`-state descent and the dive aim, and the `done` park is the `approach+B8h` = 2080
+hysteresis, not a release gate.

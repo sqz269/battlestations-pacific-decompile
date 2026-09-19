@@ -35,6 +35,9 @@
 #include "bsp/director_update_arms.hpp"
 #include "bsp/ship_ai_approach_update.hpp"
 #include "bsp/ship_ai_attackmove_substates.hpp"
+// Packet cc8_ship_follow: the `follow` state's two halves and the unit group.
+#include "bsp/ship_ai_follow_land.hpp"
+#include "bsp/ship_ai_formation.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/recon_sensor_pass.hpp"
 #include "bsp/projectile_kinds.hpp"
@@ -169,6 +172,15 @@ const StateDescriptor* state_for_ai_offset(std::uint32_t ai_offset) noexcept {
     static const StateDescriptor kStates[] = {
         {"cruise",          0x00e08f70u, 0x009e1170u, kCruiseIntervalGetter, true},
         {"stop",            0x00e08f88u, 0x009e14c0u, kSharedIntervalGetter, false},
+        // MUST STAY false, and the field is misnamed. `step_concrete` does not
+        // mean "this state's step has a reconstruction" - `stop`, `movetopos`,
+        // `moveonpath` and `attackmove` all have one and all carry false. It
+        // gates the block at the head of state_step_vtable0c that runs the
+        // CRUISE step 009E1170 and returns, so it means "this state is cruise".
+        // Packet cc8_ship_follow set it true on the strength of the name and
+        // sent every follower into the cruise step, which returned before the
+        // `follow` arm below could run: the state was selected, 009E1610 never
+        // executed, and no ShipAiFollow record appeared in the run.
         {"follow",          0x00e08f60u, 0x009e1610u, kSharedIntervalGetter, false},
         {"land",            0x00e08fa0u, 0x009e1950u, kSharedIntervalGetter, false},
         {"movetopos",       0x00e08f68u, 0x009e5770u, kSharedIntervalGetter, false},
@@ -325,6 +337,17 @@ struct GameShipAiHost::Impl {
         std::unique_ptr<bsp::ShipAiSearchStorage> avoid_search;
         bsp::ShipAiStopStepState stop_state{};
         bsp::ShipAiAttackMoveSelector selector{};
+        // Packet cc8_ship_follow: the `follow` leaf's own state object at
+        // brain+0B8Ch. 009F39C0 constructs it with `making_way` SET (009F3A4C)
+        // and `out_of_station` CLEAR (009F3A53); 009DF2D0 writes everything else
+        // before the step reads it.
+        bsp::ShipAiFollowState follow_state{};
+        // What the follow step published, for the report only: the distance from
+        // the ship to the station 009DE050 was given, last and worst.
+        float follow_station_error{0.0f};
+        float follow_station_error_max{0.0f};
+        unsigned long long follow_steps{0};
+        bool follow_ran{false};
         // Packet cc8_ship_moveonpath: the `moveonpath` leaf's own state+8h byte
         // (009E59DE, 009E5A39, 009E5BC5) and the 1.0f 009E5ACA stores at
         // brain+308h. That field has no reader in this process, so it is carried
@@ -764,6 +787,169 @@ private:
     GameShipAiHost::Impl::Controller& ctl_;
     GameShipAiRow& row_;
     std::size_t index_;
+};
+
+// ---------------------------------------------------------------------------
+// Packet cc8_ship_follow: 009DF2D0 and 009E1610, the `follow` state's two halves
+// ---------------------------------------------------------------------------
+
+// 009DF2D0's nine call sites. The unit group, the member record and the leader's
+// wake all live on the units host, so the station comes back through one call.
+class FollowFormationPointBinding final : public bsp::ShipAiFollowFormationPointHost {
+public:
+    FollowFormationPointBinding(GameShipAiHost::Impl& owner, std::size_t index,
+                                std::size_t leader)
+        : owner_(owner), index_(index), leader_(leader) {}
+
+    bsp::ShipAiFormationStation station_point_0070d290(std::uint32_t, float across_scale,
+                                                       float along_scale) override {
+        const GameUnitsHost::FormationStation station =
+            owner_.units.formation_station_0070d290(index_, across_scale, along_scale);
+        owner_.done("ShipAiFollow::station_point", 0x0070d290u);
+        bsp::ShipAiFormationStation out{};
+        out.x = station.x;
+        out.z = station.z;
+        out.dir_x = station.dir_x;
+        out.dir_z = station.dir_z;
+        out.across = station.across;
+        out.along = station.along;
+        out.yaw_rate = station.wake_yaw_rate;
+        // 00810630 never writes the yaw rate on its along<=0 arm and 0070D290
+        // then leaves out[4] stale. The projection carries validity instead of
+        // reproducing the uninitialised read (docs/SHIP_AI_FORMATION.md).
+        out.yaw_rate_valid = station.wake_yaw_written;
+        return out;
+    }
+    float leader_body_axis_speed_0092d730() override {
+        // 009DF359 takes the LEADER's controller, not this ship's.
+        owner_.done("ShipAiFollow::leader_body_speed", 0x0092d730u);
+        return owner_.units.unit_forward_speed_0092d730(leader_);
+    }
+    float unit_hull_radius_9c8() override {
+        // unit+9C8h. docs/SHIP_AI_FOLLOW_LAND.md calls it the hull radius at this
+        // site; the units host named the same field `hull_length` for its own
+        // packet. One field, two names, and no conversion is applied here.
+        owner_.done("ShipAiFollow::hull_radius", 0x009df32eu);
+        return owner_.units.unit_hull_length_09c8(index_);
+    }
+    std::uint32_t zone_set_vtable_218(std::uint32_t) override {
+        owner_.record("ShipAiFollow::zone_set_218", 0x009df41au);
+        return 0u;
+    }
+    bsp::ShipAiFollowLandXZ push_out_of_zones_00417b10(std::uint32_t,
+                                                       bsp::ShipAiFollowLandXZ point,
+                                                       float) override {
+        // The same stand-in the rest of this host uses for 00417B10 (see
+        // zone_exit_point_00417b10): the body is unread, so the point comes back
+        // unchanged rather than pushed by an invented margin.
+        owner_.record("ShipAiFollow::push_out_of_zones", 0x00417b10u);
+        return point;
+    }
+    float ship_class_turn_radius_0082e850() override {
+        // 009DF44A takes it off brain+0AACh, the ship class descriptor. The units
+        // host's own name for the same class field is `unit_class_turn_radius_0520`.
+        owner_.done("ShipAiFollow::turn_radius", 0x0082e850u);
+        return owner_.units.unit_class_turn_radius_0520(index_);
+    }
+    float leader_command_yaw_rate_00811940(float, float) override {
+        owner_.record("ShipAiFollow::leader_yaw_rate", 0x00811940u);
+        return 0.0f;
+    }
+    float unit_reference_speed_0080fc30() override {
+        owner_.done("ShipAiFollow::reference_speed", 0x0080fc30u);
+        return owner_.units.throttle_ceiling_inputs(index_).reference_speed;
+    }
+    void publish_member_speed_0070d100(std::uint32_t, float speed) override {
+        // 0070D100 stores into this unit's own member record at +30h. Nothing in
+        // this process reads group+504h or record+30h yet, so the value is
+        // recorded rather than stored.
+        static_cast<void>(speed);
+        owner_.record("ShipAiFollow::publish_member_speed", 0x0070d100u);
+    }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    std::size_t index_;
+    std::size_t leader_;
+};
+
+// 009E1610's nine call sites.
+class FollowStepBinding final : public bsp::ShipAiFollowStepHost {
+public:
+    FollowStepBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
+                      GameShipAiRow& row, std::size_t index, std::size_t leader)
+        : owner_(owner), ctl_(ctl), row_(row), index_(index), leader_(leader) {}
+
+    bool leader_matches_kind_5c(int kind) override {
+        // 009E1642, leader->vtable[5Ch](6) with ECX = [[unit+284h]+14h]. A ship
+        // whose formation has no leader of that kind does nothing at all this
+        // tick, not even a heading hold.
+        owner_.done("ShipAiFollow::leader_kind", 0x009e1642u);
+        return owner_.units.unit_is_kind_of(leader_, kind);
+    }
+    float leader_body_axis_speed_0092d730() override {
+        owner_.done("ShipAiFollow::leader_body_speed", 0x0092d730u);
+        return owner_.units.unit_forward_speed_0092d730(leader_);
+    }
+    void update_formation_point_009df2d0(bsp::ShipAiFollowState& state) override {
+        FollowFormationPointBinding point(owner_, index_, leader_);
+        const std::uint32_t handle = static_cast<std::uint32_t>(index_ + 1u);
+        const std::int32_t group = owner_.units.unit_formation_group_0284(index_);
+        // 009DF2EC returns with the state untouched when [unit+284h] is null.
+        if (bsp::ship_ai_follow_update_formation_point(
+                point, handle, static_cast<std::uint32_t>(group + 1), state)) {
+            owner_.done("ShipAiFollow::update_formation_point", 0x009df2d0u);
+        }
+    }
+    void refresh_world_pose_00414db0() override {
+        owner_.record("ShipAiFollow::refresh_world_pose", 0x00414db0u);
+    }
+    bsp::ShipAiFollowLandXZ unit_position() override {
+        float x = 0.0f;
+        float y = 0.0f;
+        float z = 0.0f;
+        owner_.units.unit_position_00fc(index_, x, y, z);
+        owner_.done("ShipAiFollow::unit_position", 0x009e16a7u);
+        return bsp::ShipAiFollowLandXZ{x, z};
+    }
+    float ship_class_turn_radius_0082e850() override {
+        owner_.done("ShipAiFollow::turn_radius", 0x0082e850u);
+        return owner_.units.unit_class_turn_radius_0520(index_);
+    }
+    float min_float_by_ref_00415510(float a, float b) override {
+        owner_.done("ShipAiFollow::min_float", 0x00415510u);
+        return (a < b) ? a : b;
+    }
+    void set_navigation_goal_009de050(const bsp::ShipAiFollowLandXZ& goal, bool keep_mode,
+                                      bool final_leg) override {
+        // 009E1837, 009DE050(blk, &state+14h, 0, 1): a follower re-plans against
+        // its station every tick and always reports the last leg.
+        station_x_ = goal.x;
+        station_z_ = goal.z;
+        owner_.run_navigation_goal_009de050(ctl_, row_, index_, goal.x, goal.z, keep_mode,
+                                            final_leg);
+    }
+    void publish_station_request_009da3b0(const bsp::ShipAiStationRequest& request) override {
+        // 009E18B6, the nineteen-byte copy into blk+38Ch..+3A6h. The consumer is
+        // the station-keeping arm of 009ED6B0, which runs only while blk+3A5h is
+        // set and blk+3A6h clear (docs/SHIP_AI_GOAL_VECTOR.md). That arm is not
+        // bound in this process, so the request is recorded, and the ship is
+        // steered by the navigation goal above alone.
+        static_cast<void>(request);
+        owner_.record("ShipAiFollow::publish_station_request", 0x009da3b0u);
+    }
+
+    float station_x() const { return station_x_; }
+    float station_z() const { return station_z_; }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    GameShipAiHost::Impl::Controller& ctl_;
+    GameShipAiRow& row_;
+    std::size_t index_;
+    std::size_t leader_;
+    float station_x_{0.0f};
+    float station_z_{0.0f};
 };
 
 class MoveToPosStepBinding final : public bsp::ShipAiMoveToPosStepHost {
@@ -3973,6 +4159,36 @@ public:
             apply_ai_drive();
             return;
         }
+        if (state != nullptr && state->step == 0x009e1610u) {
+            // Packet cc8_ship_follow. 009E1610's three gates are the formation at
+            // unit+284h, its leader at +14h and leader->vtable[5Ch](6); the step
+            // runs only for a unit that is actually a follower.
+            const std::int32_t group = owner_.units.unit_formation_group_0284(index_);
+            const std::size_t leader = owner_.units.formation_leader_0014(group);
+            if (group >= 0 && leader != static_cast<std::size_t>(-1)
+                && leader != index_) {
+                FollowStepBinding follow(owner_, ctl_, row_, index_, leader);
+                bsp::ship_ai_follow_step_009e1610(ctl_.follow_state, follow);
+                float x = 0.0f;
+                float y = 0.0f;
+                float z = 0.0f;
+                owner_.units.unit_position_00fc(index_, x, y, z);
+                const float dx = follow.station_x() - x;
+                const float dz = follow.station_z() - z;
+                ctl_.follow_station_error = std::sqrt(dx * dx + dz * dz);
+                if (ctl_.follow_station_error > ctl_.follow_station_error_max) {
+                    ctl_.follow_station_error_max = ctl_.follow_station_error;
+                }
+                ++ctl_.follow_steps;
+                ctl_.follow_ran = true;
+                owner_.done("ShipAiState::follow_step", 0x009e1610u);
+                ++owner_.summary.state_steps_concrete;
+                ++row_.state_step_real;
+                ++owner_.summary.state_steps_real;
+                apply_ai_drive();
+            }
+            return;
+        }
         if (state != nullptr && state->step == 0x009e59c0u) {
             MoveOnPathStepBinding move(owner_, ctl_, row_, index_);
             bsp::ship_ai_moveonpath_step_009e59c0(move);
@@ -5261,6 +5477,30 @@ void GameShipAiHost::log_sample(unsigned long long step_index, unsigned long lon
 void GameShipAiHost::report() {
     Impl& host = *impl_;
     if (host.rows.empty()) return;
+    // Packet cc8_ship_follow: what 009E1610 did for each follower. The error is
+    // the distance from the ship to the station point 009DE050 was handed.
+    {
+        std::size_t followers = 0;
+        for (std::size_t i = 0; i < host.controllers.size(); ++i) {
+            if (!host.controllers[i].follow_ran) continue;
+            ++followers;
+        }
+        if (followers != 0) {
+            host.log.notef("summary ship follow steppers=%zu (009E1610 -> 009DF2D0 -> "
+                "0070D290 -> 009DE050)", followers);
+            host.log.notef("  %-20s %10s %12s %12s", "follower", "steps", "err_final",
+                "err_max");
+            for (std::size_t i = 0; i < host.controllers.size(); ++i) {
+                const Impl::Controller& ctl = host.controllers[i];
+                if (!ctl.follow_ran) continue;
+                host.log.notef("  %-20s %10llu %12.2f %12.2f",
+                    (i < host.rows.size()) ? host.rows[i].unit.c_str() : "?",
+                    ctl.follow_steps,
+                    static_cast<double>(ctl.follow_station_error),
+                    static_cast<double>(ctl.follow_station_error_max));
+            }
+        }
+    }
     host.log.notef("ship avoidance search: queries=%llu refills=%llu clears=%llu",
         host.avoidance_queries, host.avoidance_refills, host.avoidance_clears);
     host.log.notef("ship avoidance cruise owners: reads=%llu unavailable=%llu",

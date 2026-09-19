@@ -307,4 +307,56 @@ struct ShipAiCommandAvailabilityHost {
 bool ship_ai_command_available_008162b0(ShipAiCommandAvailabilityHost& host,
                                         bool has_target);
 
+// ---------------------------------------------------------------------------
+// 00779D50, the follow answer 008162B0 defers to
+// ---------------------------------------------------------------------------
+//
+// Packet cc8_ship_follow read this body whole; the `call_00779d50` virtual above
+// was declared "contract unread" and is now this function.
+// docs/SHIP_UNIT_GROUP_FOLLOW.md section 8.
+//
+// 00803510 BSP_Party_RelativeTo, __fastcall(a /*ECX*/, b /*EDX*/), RET 0, body
+// 00803510-00803536, 18 instructions, read whole. Party 2 is the odd one out,
+// and the answer is a relation code, not a boolean:
+//   a == 2 -> (b == 2) ? 0 : 2      ; 00803515, 0080352C..00803533
+//   a == b -> 0                     ; 00803519
+//   else   -> (b == 2) ? 2 : 1      ; 0080351E..00803529
+// 00779D50 demands 0, so: the same party, or both of them party 2.
+int party_relative_to_00803510(int party_a, int party_b) noexcept;
+
+// What 00779D50 reads, in the order it reads it. `+54h` is Party and `+188h` is
+// OwnerPlayer (docs/AIROPS_LAUNCH_GATES.md); `+5Dh` is the byte that is clear
+// for a live unit (docs/UNIT_INSTANCE.md `simulate`).
+struct EntityFollowFacts {
+    bool follower_flag_005d{false};   // 00779D53 and again 00779D8D
+    bool target_present{false};       // 00779D76
+    bool target_flag_005d{false};     // 00779D93
+    bool target_kind_02{false};       // 00779D83, target->vtable[5Ch](2)
+    bool follower_kind_06{false};     // 00779DCC
+    bool follower_kind_08{false};     // 00779DDB
+    bool target_kind_06{false};       // 00779DEA
+    bool target_kind_08{false};       // 00779DF9
+    int follower_party_0054{0};       // 00779D9C
+    int target_party_0054{0};         // 00779D99
+    // 00779DAB, 00779820: true when the two are the SAME entity or already share
+    // a unit group. Body read whole, 12 instructions:
+    //   if (a == b) return true; g = [a+284h]; return g && g == [b+284h];
+    bool same_entity_or_group_00779820{false};
+    // 00779DB4..00779DC5: the owner players must match, or the target's must be
+    // 9. A host that cannot read +188h sets `owner_player_known` false, and this
+    // arm is then SKIPPED rather than answered - it is the one arm of the seven
+    // that this process cannot evaluate, and skipping it can only ever admit a
+    // follow the image would refuse between two differently owned ships.
+    bool owner_player_known{false};
+    int follower_owner_0188{0};
+    int target_owner_0188{0};
+};
+
+// 00779D50, __thiscall(follower)(const char* token, entity* target), RET 8, body
+// 00779D50-00779E10, 78 instructions, read whole. `token_is_follow` is
+// 00438E10(token, 00CFB52C "follow") == 0 at 00779D68; the routine answers false
+// for every other token, so it exists for this one command.
+bool entity_may_follow_target_00779d50(const EntityFollowFacts& facts,
+                                       bool token_is_follow) noexcept;
+
 }  // namespace bsp

@@ -40,12 +40,22 @@ inline constexpr std::uint32_t kAiSceneCommandMoveTo = 0x00E08F68u;
 // The flags argument 00A02020 hands 0077D600 at 00A02136.
 inline constexpr int kAiSceneCommandFlags = 1;
 
-// 00A02020's distance gate at 00A0206E reads this dword, which is 00 00 00 00
-// in the image, so the comparison `d2 >= value` always holds and the order is
-// issued whenever the class gate passes. Recorded as read; Ghidra flags an
-// overlapping symbol at the address.
+// 00A02020's distance gate at 00A0206E.
+//
+// CORRECTION, packet cc8_ship_command. This was recorded as 0.0f, read as the
+// DWORD at the address, with the conclusion that "the comparison `d2 >= value`
+// always holds and the order is issued whenever the class gate passes". The
+// loading instruction is `00A02098 FLD double ptr [0x00D21530]`, eight bytes,
+// and 6400.0 is 40 B9 00 00 00 00 00 00 big-endian, i.e. `00 00 00 00` in the
+// low dword and `00 00 B9 40` in the high one. The old reading took the low
+// half of a double. At the instruction's own width the value is 6400.0
+// (`tools/pe_const_read.py d:00d21530`), so the gate is a real 80 m radius:
+// 00A02020 issues nothing to a member already within 80 m of the point it
+// would be ordered to. The Ghidra overlapping symbol the old note mentions is
+// what makes the dword reading look plausible; the width of the load settles
+// it. docs/SHIP_COMMAND_LIFETIME.md.
 inline constexpr std::uint32_t kAiOrderIssueDistanceSquaredAddress = 0x00D21530u;
-inline constexpr float kAiOrderIssueDistanceSquared = 0.0f;
+inline constexpr float kAiOrderIssueDistanceSquared = 6400.0f;  // 80 m squared
 
 // The tuning fields the ticks read live in bsp/ai_tuning_globals.hpp, which
 // packet cc8_ai_command_inputs taught the loader to fill:
