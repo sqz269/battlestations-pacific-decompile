@@ -248,6 +248,20 @@ struct GameProjectileRow {
     // keeps neither flag nor point on the round.
     bool is_bomb{false};
     float predicted_impact[3]{};
+    // Packet cc8_dive_aim item 2. The aimdive summary's `tf=` is LAST-SAMPLED -
+    // it is read after the aircraft has left the dive, so it is not the fall
+    // time that was in force when the round left. These four are sampled AT THE
+    // RELEASE TICK and at no other time, which is the whole point of them: a
+    // release-tick `tf` that is 3x the measured fall puts the defect in
+    // 007BCC80 or its feed, and one that matches puts it in the geometry.
+    // `release_fall_time` is 009C7D71's own tf (fall time + 0.1, 00D7A3A0).
+    float release_fall_time{-1.0f};
+    float target_speed_release{0.0f};    // 0092D730 forward speed, at the drop
+    float target_heading_release{0.0f};  // vtable[50h] hull heading, at the drop
+    // Sampled when the round DIES, not at the drop: where the target had got to
+    // while the bomb fell, which is what the miss is actually against.
+    float target_pos_impact[3]{};
+    float target_heading_impact{0.0f};
 };
 
 // Packet cc8_dive_glide. One released bomb's impact, kept after the round is
@@ -263,6 +277,22 @@ struct GameBombImpactRow {
     float predicted_error{-1.0f};  // planar |actual - predicted|
     float target_error{-1.0f};     // planar |actual - target at release|
     float life{0.0f};              // seconds of flight
+    // Packet cc8_dive_aim item 2, all carried from the round. Every one of
+    // these says in its own name WHEN it was sampled, because the trap this
+    // census exists to avoid is a last-sampled column read as a release one.
+    float release_fall_time{-1.0f};      // 009C7D71's tf AT THE RELEASE TICK
+    float target_speed_release{0.0f};
+    float target_heading_release{0.0f};
+    float target_pos_impact[3]{};        // where the target was AT IMPACT
+    float target_heading_impact{0.0f};
+    float impact_error{-1.0f};           // planar |actual - target AT IMPACT|
+    // The miss against the target at impact, resolved in the target's own
+    // frame: +along is ahead of the ship on its course, +across is to its
+    // starboard. This is the decomposition the integrator asked for, and it is
+    // what separates "the bomb fell short of a moving ship" from "the aim point
+    // was off the hull line".
+    float miss_along{0.0f};
+    float miss_across{0.0f};
     // A round the entity sweep killed dies where it met the hull, above the
     // sea; one that reached the water crossing dies at or below y = 0. This
     // host keeps no hit flag on the round, so that height IS the discriminator
@@ -529,8 +559,13 @@ public:
     // 009C7D71 has already made the predicted impact point of a bomb dropped
     // this tick; it is carried on the round only so the run can print
     // predicted against actual. It is not an image field.
+    // `release_fall_time` is the caller's 009C7D71 tf for THIS tick, carried
+    // for the same reason and with the same caveat (packet cc8_dive_aim item 2:
+    // the aimdive census `tf=` column is last-sampled and cannot be read as a
+    // release value). Pass a negative when the caller has none.
     bool release_bomb_drop(std::size_t unit_index,
-                           const float predicted_impact[3]);
+                           const float predicted_impact[3],
+                           float release_fall_time);
     const std::vector<GameGunneryUnitRow>& unit_rows() const noexcept;
     const GameGunnerySummary& summary() const noexcept;
 
