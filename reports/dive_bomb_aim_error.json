@@ -65,7 +65,18 @@
       "evidence": "009C58D0's steering at 009C5C9F-009C5DB2 had no host binding at all"
     }
   ],
-  "runs": [],
+  "runs": [
+    {
+      "log": "local/usn04_aim.log",
+      "tree": "f5b279eb5, after this packet merged main",
+      "arguments": "--frames 5000 --press-start-frame 30 --menu-select USN04 --mission-frames 4800 --mission-frame-seconds 0.05",
+      "result": "INCONCLUSIVE for the steering: arm_ticks=2370 transitions=3 states[aimglide=2129 flyabove=1 attackrun=240], no aimdive tick at all, so 009C5C9F-009C5DB2 never ran. releases=0 bombs_spawned=0.",
+      "upstream_failure": "approach+BCh ends at exactly 0.0 m, which the producer only writes through its d2 <= 1e-10 epsilon branch at 00CE3820 - the aircraft's position and its target's are the same point. The latch closed at arm tick 241 although the range samples were still at 10265 m at tick 160, which needs at least 9165 m in 7.3 s against a 34.5 m/s commanded speed. The target was re-resolved, not flown to.",
+      "mechanism": "GameGunneryHost::Impl::refresh_command_targets in src/game_hosts_gunnery.cpp keeps the LAST current command row per unit, and this run's census shows movieval carrying three current rows (stop, moveto, divebomb). The map is rebuilt whenever command_rows.size() changes, so a row appearing mid-mission can take the dive bomber's target away.",
+      "fix_location": "src/game_hosts_gunnery.cpp, refresh_command_targets. NOT owned by this stream; named and not touched.",
+      "window": "usn04_d4h ran at 6b8907c3f, before the merge of main; usn04_aim at f5b279eb5, after. The merge brought src/game_hosts_script_orders.cpp (new, +187), src/game_hosts_lua.cpp (+117), src/air_operations.cpp (+228) and src/game_hosts_scene_contents.cpp (+6). No commit is named: no fresh detached-tree repro was run, and the run lock is arbitrated to another worker."
+    }
+  ],
   "open": {
     "009C5D24-009C5D31": "the wide roll arm: a second bearing error and the 0.5 band at 00CE3800, selected when the aim error is positive and a folded angle is inside the 60 degrees at 00D05AAC. The folded angle's slot has no writer at its corrected key in tools/frame_slot_census.py 009c58d0.",
     "009c8d40": "the aim-point updater is read but not bound; this host uses the commanded target's own position as the aim point, so it carries no lead of its own.",
