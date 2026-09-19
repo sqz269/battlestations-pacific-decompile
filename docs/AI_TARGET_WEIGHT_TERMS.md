@@ -427,3 +427,47 @@ concrete step, and it is what the gunnery host needs before it can publish a sel
 Until that lands, `GameGunRow::ordnance` is **not** a substitute: it is the `vtable[8]` entity-class
 answer set (`29h`-`34h`), a different id space from this selector, and using it here would be a
 guess.
+
+### The constructors, read
+
+The hop above is now read rather than inferred. Each constant is a `MOV dword ptr [ESI+8], imm` in
+the named constructor, and each vtable install matches `ORDNANCE_KIND_IDENTITY.md`'s census column,
+which is what ties the constructor to its authored `Type` string. `BSP_TorpedoClass_Construct` was
+the control: `006EA500` installs `00CFA56C` and `006EA50C` stores `0Ah`, the value
+`00A093E1 CMP EAX,0Ah` independently tests for.
+
+| Constructor | Selector | Byte-table arm | Accuracy row |
+| --- | --- | --- | --- |
+| `006EA1C0 BSP_ArtilleryBulletClass_Construct` | `4` | **reject** | none |
+| `006EA260 BSP_BombClass_Construct` | `9` | `009FE384` | Bomb |
+| `006EA4F0 BSP_TorpedoClass_Construct` | `0Ah` | `009FE3F5` | Torpedo |
+| `006EA3A0 BSP_DepthChargeClass_Construct` | `0Bh` | `009FE44A` | DepthCharge |
+| `006EA6B0 BSP_DummyTargetClass_Construct` | `0Ch` | reject | none |
+| `006EA7F0 BSP_DummyKamikazePlaneClass_Construct` | `0Dh` | `009FE64A` | Kamikaze |
+| `006EA870 BSP_DummySubmarineClass_Construct` | `0Eh` | reject | none |
+| `006EA720 BSP_ParatrooperClass_Construct` | `0Fh` | `009FE465` | Paratroopers |
+| `006EA470 BSP_FlakBulletClass_Construct` | `10h` | `009FE480` | Flak |
+| `006EA200 BSP_KamikazePlaneClass_Construct` | `11h` | `009FE64A` | Kamikaze |
+| `006EA330 BSP_RocketClass_Construct` | `12h` | `009FE4F1` | SmallRocket / BigRocket |
+| `006EA5E0 BSP_WaterMineClass_Construct` | `13h` | out of range at `009FE28E` | none |
+| `006E8320 BSP_BulletClass_Construct` | **none** | - | - |
+
+Three of the four byte-table rejects are now explained by name: `0Ch` DummyTarget, `0Eh`
+DummySubmarine and, outside the range check rather than the table, `13h` WaterMine. Those are
+targets and mines, and having no hit chance is right.
+
+**The fourth reject is not explained, and it is an anomaly worth stating rather than smoothing
+over.** `BSP_ArtilleryBulletClass_Construct` stores `4`, and selector `4` takes the reject arm,
+while the Artillery accuracy row at `120h`-`12Ch` is reached only by selectors `5`, `6` and `7`. So
+on the reading that `+8h` is fixed at construction, an artillery shell would get no accuracy at all
+and every artillery barrel would be skipped at `00A094F5` — which the authored row
+`{0.00, 0.50, 0.70, 0.55}` contradicts.
+
+**The open question, sharpened.** Selectors `2`, `3` (MachineGun) and `5`, `6`, `7` (Artillery) have
+no constructor among the thirteen, and `006E8320` sets `+8h` for none of them: it writes `+4h` and
+then zeroes `+10h` through `+3Ch`, stepping over `+8h`. Five unattributed selectors plus the
+Artillery anomaly point the same way: **`+8h` is very likely refined after construction**, by a
+writer that splits artillery into three and machine-gun into two from authored data, with the
+constructor constant only a default. That writer is not found yet. Until it is, no selector can be
+published per barrel without inventing it, which is why this packet stops here rather than turning
+the model on with a guessed mapping.
