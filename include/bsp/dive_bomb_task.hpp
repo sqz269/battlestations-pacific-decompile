@@ -1079,17 +1079,33 @@ float dive_bomb_flyabove_span_dead_band_009c6674(float span) noexcept;
 // walk's (tools/flyabove_trace.ps1), which carries R, B and C on the stack
 // across the four-way merge at 009C6532.
 //
-//   009C64EC  AL = vtable[5Ch](0x14) on (approach+0Ch)->+4  - UNBOUND here
+//   009C64EC  AL = IsKindOf(RECON_PLANE) on approach+4h, the AIRCRAFT UNIT
+//             (ECX is the approach at 009C64B2's [ECX+ACh]/[ECX+50h], 009C64E2
+//             takes [ECX+4], and approach+4h is the unit per 009F9CEA)
 //   009C64FC  AL != 0                     -> BL = 0
 //   009C6510  approach+D4h  >  C          -> BL = 0   (FCOMI/JA)
 //   009C651A  approach+B4h <=  R          -> BL = 1   (FCOMPI/JBE)
 //   009C6522  B < approach+D4h            -> BL = 0   (FCOMI/JB), else BL = 1
 //
-// C is the commanded altitude of 009C64C9, i.e. the `limit_c` the altitude arm
-// returns; B is the height above the aim point; R is the three-second lead
-// range. `state_query_14` is the one unbound input and it is a LABELLED
-// SUBSTITUTION at the call site.
-bool dive_bomb_flyabove_bank_arm_009c6530(bool state_query_14,
+// C is the commanded altitude of 009C64C9 BEFORE the 210 m clamp (the clamp at
+// 009C6580 is inside the 009C654A branch and runs after this test, so the
+// altitude arm's `limit_c` is the WRONG value to pass); B is the height above
+// the aim point; R is the three-second lead range.
+//
+// `is_recon_plane` is BOUND, not substituted, and it decides the whole arm, so
+// it was worth settling. attack_commands.hpp establishes vtable[5Ch] as
+// IsKindOf(int); the concrete body reached from this unit's table (00953530)
+// accepts the ancestor literals {0, 1, 2, 4, 5, 0Fh, 12h} and the instance's own
+// class id at [ECX+C4h]. Kind 14h is the RECON PLANE: the only store of 14h to
+// +C4h anywhere in the image is 0074E145 inside
+// BSP_ReconPlaneUnitInstance_Construct (the same scan shape finds 90 other class
+// ids, so the negative is not vacuous), and every function in the image that
+// tests 14h is a recon class - BSP_MReconPlane_IsKindOf,
+// BSP_MLargeReconPlane_IsKindOf, BSP_MSmallReconPlane_IsKindOf,
+// BSP_ReconPlaneClass_IsKindOf and the two recon constructors at 009536E0 and
+// 00953770. So the fly-over skips its roll-in geometry for RECON aircraft, and
+// for a dive bomber the predicate is false and the bank arm runs.
+bool dive_bomb_flyabove_bank_arm_009c6530(bool is_recon_plane,
                                           float release_range_d4,
                                           float limit_c,
                                           float attack_distance_b4,

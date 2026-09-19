@@ -27,6 +27,47 @@ are the thing to regress against; these totals are a coarser check.
 Ten of USN01's twelve shell bursts do nothing, because the SaltLakeCity's `Armour` of 90 is above
 both shell blast bases, so almost all of that mission's movement is one torpedo into a hangar.
 
+## Mission reference baselines, 2026-09-19 (dive bombers bomb)
+
+The USN04 row above is stale: it was taken when the dive-bomb task released nothing at all. The
+fly-over, turndown, aimdive and release sites have been bound since, and USN04's dive bombers now
+drop. Packet `cc8_dive_flyover`, commit `65c997deb` (the two commits after it are docs and ledger
+only, so the binary is the same). Command line, exactly the one the row above cites:
+`--frames 4700 --press-start-frame 30 --menu-select USN04 --mission-frames 4500
+--mission-frame-seconds 0.05`, through `./tools/run_game.ps1`.
+
+| mission | frames | damage | deaths | supersedes | recorded in |
+| --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 mission | **8170.6** | **7** | `9459.0` / `5` | `local\usn04_rebaseline.log` |
+
+Full row: `queued_hits=57 dispatched=57 hit_records=57 hull=41 attributions=57 deaths=7
+kill_credits=7 total_damage=8170.6 first_hit=17.15 s`, with `bomb_drops=17 bomb_impacts=15`,
+`torpedo_drop drops=12`, and `summary mission dive-bomb task: aircraft=15 releases=17`.
+
+### Which rows are stable, measured rather than assumed
+
+**Every row here is stable, and USN04 is deterministic run to run.** This was measured, not
+assumed: `local\usn04_rebaseline.log` and `local\usn04_rebaseline2.log` are consecutive runs of the
+same binary at these settings, and filtering both to the census lines (`divebomb`, `torpedo`,
+`summary mission`) gives 3340 lines each with **zero** differences - damage, deaths, hits, drops,
+impacts, per-unit `taken` and per-round impact positions all reproduce exactly. The raw logs differ
+on 9426 of 46917 lines, and every one of those carries a process address, a handle or a worker id
+(`owner=`, `lua=`, `worker=`, `storage=actual...`), not a mission quantity.
+
+So a USN04 before/after pair on this harness is a controlled comparison, and a change in these
+totals is attributable to the change under test. Earlier guidance in this repository that USN04's
+gunnery totals are not reproducible is **withdrawn**; it should not be used to excuse a moved
+number again.
+
+### One caveat about the frame count, which is not noise
+
+4500 mission frames truncates this mission's late squadrons. At 4500, `D3A Val #5.1`'s three
+aircraft have taken only two transitions and are still in `flyabove`, and `#7.1|.-2` is still in
+`aimdive`: six of the fifteen dive bombers never finish an attack. At 4800 the same binary reaches
+`releases=19`, `bomb_drops=19`, `bomb_impacts=18`. The 4500-frame row is therefore a *partial*
+picture of the dive-bomb chain by construction, and a comparison that changes the frame count is
+not a comparison of the same thing. Keep the frame count fixed, or quote both.
+
 Addresses added by milestone 2a: 0073d604-0073d899 (the phase-2 VFS block of Init), 00beda60
 (provider manager), 004fc150 / 00736a90 / 00736b60 (the three provider factory singletons),
 00be0660 (factory registration), 00be1890 (mount), 0073cb10 with the two call sites 0073d881

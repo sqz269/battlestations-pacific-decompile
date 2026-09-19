@@ -824,17 +824,16 @@ float dive_bomb_flyabove_span_dead_band_009c6674(float span) noexcept {
         dive_bomb_flyabove_constant::kSpanDeadBandSpan, 0.0f, span);
 }
 
-// 009C64EE-009C6530, BL. Header carries the branch table; this is the
-// transcription. `state_query_14` is the 009C64EC vtable[5Ch](0x14) result and
-// is the one input no reconstruction supplies.
-bool dive_bomb_flyabove_bank_arm_009c6530(bool state_query_14,
+// 009C64EE-009C6530, BL. Header carries the branch table and the evidence that
+// 009C64EC's kind 14h is the recon plane; this is the transcription.
+bool dive_bomb_flyabove_bank_arm_009c6530(bool is_recon_plane,
                                           float release_range_d4,
                                           float limit_c,
                                           float attack_distance_b4,
                                           float lead_range_r,
                                           float height_above_aim_b) noexcept {
     // 009C64F2 TEST AL,AL with 009C64FC `75` JNE -> 009C6530 XOR BL,BL.
-    if (state_query_14) return false;
+    if (is_recon_plane) return false;
     // 009C650E FCOMI with ST0 = approach+D4h and ST1 = C, 009C6510 `77` JA.
     if (release_range_d4 > limit_c) return false;
     // 009C6518 FCOMPI ST(4) with ST0 = approach+B4h and ST4 = R, then

@@ -6266,10 +6266,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // roll-in latch flyabove+1Ch, the dead band on the
                         // bearing error and the slew limiter.
                         //
-                        // STILL UNBOUND, and both are labelled: the 009C64EC
-                        // vtable[5Ch](0x14) query that can veto BL, taken as
-                        // false here; and the avoidance increment 009C6D59 adds
-                        // to A, which comes out of the unbound 007F0280.
+                        // STILL UNBOUND, and labelled: the avoidance increment
+                        // 009C6D59 adds to A, which comes out of the unbound
+                        // 007F0280. The 009C64EC query that can veto BL is NOT
+                        // in that list any more - it is IsKindOf(RECON_PLANE),
+                        // and these are dive bombers.
                         const float bearing_error =
                             bsp::wrapped_angle_subtract_00438b10(
                                 unit_.db_flyabove_lead_bearing,
@@ -6291,7 +6292,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                                   unit_.db_aim_point_height_50;
                         const bool bank_arm_bl =
                             bsp::dive_bomb_flyabove_bank_arm_009c6530(
-                                /*state_query_14=*/false,
+                                /*is_recon_plane=*/false,
                                 unit_.db_release_range_d4,
                                 unclamped_c,
                                 unit_.db_attack_dist_b4,
