@@ -273,6 +273,25 @@ The latched offsets agree with `docs/ATTACK_COMMANDS.md`'s predicate table, whic
 the `+40h` predicates independently. `t->+5Dh` is the byte that marks a target no longer engageable;
 its producer was not read, so that reading is provisional.
 
+**The fifth override, `009D4C10` (torpedo)**, read whole by packets `cc8_torpedo_breakoff` and
+`cc8_torpedo_retire` (`docs/TORPEDO_AFTER_THE_DROP.md` sections 12, 13 and 14). It has the same six
+steps and the same order, and differs from the four above in two ways worth the row:
+
+| class | latched target | class extra at step 3 | SafeDist | step 4 |
+| --- | --- | --- | --- | --- |
+| `torpedo` `009D4C10` | `+4C4h` (`= approach+CCh`) | `!009D31D0(this->+310h) \|\| this->+52Ah == 0` | `+438h` `Pilot/Torpedo/SafeDist` = 700 | no distance call: `FLD [ESI+488h]`, the **cached** range |
+
+Step 4 is the difference that matters. The other four recompute a distance through
+`BSP_EntityPose_GetWorldPositionRefreshed` and the approach's `vtable[0]`; the torpedo reads the
+range the approach update already left at `task+488h` (`= approach+90h`). The class extra is the
+ordnance byte, so the predicate can only reach its range test once the aircraft is **spent** - which
+is what makes it the retirement rule for a bomber that has dropped, and is direct evidence that the
+image keeps arming this task after the drop.
+
+`this->+41Ch` for this class is `max(1.0, MaxSpd / Pilot/Torpedo/ReferenceSpeed)` with the divisor
+at tuning `+440h`, pushed to `009F9CE0` at `009D03A1`-`009D03B7`. Measured live in USN01:
+`69.44 / 83.33 = 0.833`, so the clamp takes `1.0` and the threshold is exactly 700 m.
+
 ### Slot `+50h`, the three-value step result
 
 `009A5D80` (depthcharge, three instructions plus the call):
