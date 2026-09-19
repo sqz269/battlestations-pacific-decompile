@@ -505,7 +505,10 @@ struct DiveBombDiveAbortInputs {
 bool dive_bomb_dive_abort_009c5b43(const DiveBombDiveAbortInputs& in) noexcept;
 
 // ---------------------------------------------------------------------------
-// 009C5180, the aimglide tick's release, 009C5693-009C57A6. A salvo: it asks
+// The aimglide tick is 009C5180-009C580B, and its release chain begins at
+// 009C5689, not 009C5693: this comment read "009C5693-009C57A6", the narrow
+// range this repository cited everywhere until packet cc8_dive_glide walked the
+// body. Correct it in place wherever it survives. A salvo: it asks
 // 007C1DB0 how many rounds the unit still has and calls 007BBBA0 that many
 // times in the loop at 009C5771-009C5784.
 //

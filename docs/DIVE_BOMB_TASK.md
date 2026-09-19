@@ -3962,6 +3962,13 @@ hands over, not from an authored altitude - which is where the next packet shoul
 
 Packet `cc8_dive_glide`. `local\bomb_spawn2.log`, 4800-frame USN04.
 
+**Every earlier `bombs_spawned=0` in this stream was structurally zero, and said nothing about the
+release.** The summary column was printing `slot->torpedo_drops_spawned` - the TORPEDO drop's
+counter, which a dive bomber can never raise, because the only thing that increments it is
+`release_ordnance_drop`'s torpedo-row path. So the column could not have shown a bomb however many
+the task spawned, and no run that printed it was evidence about bombing. It now prints the bomb
+field, with the torpedo value kept beside it so an older log can be compared against a newer one.
+
 **The selection predicate was the whole defect.** `GameGunneryHost::release_ordnance_drop` selects
 `swim_speed > 0` rows and clears kind `2Bh`; a dive bomber carries kind `2Ah`, so it found nothing.
 The new `release_bomb_drop` selects on `ordnance_has_general_bomb_2ah` - kind `2Ah` excluding
@@ -4011,3 +4018,56 @@ bombing is worth in this mission and should not be quoted as one.
 whole loadout; a bomber's is a salvo out of a per-device stock this host does not model (`006E3500`
 unread). Clearing `2Ah` would make `009C7AFE`'s `HasGeneralBombOrdnance` false after the first bomb
 and take the aimdive's second release with it - the same shape as the regression above.
+
+### RETRACTION: `approach+ACh` is NOT the global. The constructor's store survives zero ticks
+
+Packet `cc8_dive_glide` withdraws the section "Item 2, first half: `approach+ACh` is a GLOBAL, so it
+is not what makes the Vals dive high" above, and the matching ledger evidence at `009C3F3F`. The
+section's listing is accurate and its conclusion is wrong, for a reason this document has already
+recorded once about `approach+D8h`: **I scanned for one displacement and assumed the constructor was
+authoritative.** I scanned `[reg+0A4h]`, read the neighbouring stores while I was there, and never
+scanned `[reg+0ACh]`.
+
+Scanning it returns **two** writers in `009C3E00`-`009CA000`, not one:
+
+| site | function | what it stores |
+| --- | --- | --- |
+| `009C3F3F` | `FUN_009C3EA0`, the constructor | `tuning+4CCh`, from `0042E740` |
+| `009C7AAD` | `009C7A80`, the approach update | `ctl+398h` |
+
+`009C7A80` runs on **every** arm tick, before the transition and before the state tick, so the
+constructor's value survives exactly zero ticks - the identical trap `approach+D8h` set:
+
+```
+009c7aa4  mov eax, dword ptr [esi + 0xc]    ; approach+Ch, which 009F9CFC set to unit+9D4h
+009c7aa7  fld dword ptr [eax + 0x398]       ; ctl+398h, BeginAltRange/1
+009c7aad  fstp dword ptr [esi + 0xac]       ; approach+ACh, rewritten this tick
+009c7ab3  fld dword ptr [eax + 0x39c]       ; ctl+39Ch, BeginAltRange/2
+009c7ab9  fld dword ptr [esi + 0xa8]        ; approach+A8h
+009c7abf  fmul qword ptr [0xd7a270]         ; 0.05
+009c7ac5  fsubp st(1)                       ; ctl+39Ch - 0.05 * approach+A8h
+```
+
+`docs/HANDOFF_DIVE_BOMB_AIMGLIDE_AND_SPAWN.md` section 1a had this right - `approach+ACh` is
+`ctl+398h` - and this packet's earlier section contradicted it from a partial scan.
+
+**What the retraction costs, stated plainly.** `approach+Ch` is `unit+9D4h`, a **per-unit**
+controller, so `ctl+398h` *can* differ between `movieval` and `D3A Val`. The claim "it is global,
+therefore not the cause" is withdrawn on both halves: the field is not global, and it is **once again
+a live candidate** for the 1024.3 m against 650.9 m difference - candidate 1 in section 1a, which is
+where it should have stayed.
+
+**And the run evidence I cited does not say what I said it said.** `approach+ACh=1000.0` prints
+identically for all twelve dive bombers because it is *this host's own pinned substitute* on its
+install line, not a reading of the image's `ctl+398h`. A host substitution being constant is not
+evidence that the image's field is. That is the "check what a summary column actually reads" rule,
+and I broke it in the same packet in which I caught the `bombs_spawned` column doing the same thing.
+
+**What still stands from that section**, re-checked rather than assumed: `approach+B0h` has exactly
+one writer in the range, `009C3F68`, so it is `tuning+4D0h - tuning+4CCh`; `approach+B4h` and
+`approach+B8h`/`+BCh` are as transcribed; the `009F9CE0` row-index reading and the `[00F8A30C]`
+pointer correction are unaffected, as is `tuning+4D8h` as the speed-ratio divisor.
+
+**So item 2's first candidate is open, not closed**, and the next reader should start at `ctl+398h`:
+who writes it, and whether a spawned Val's controller carries a different `Pilot/DiveBomb/BeginAltRange/1`
+from the scripted `movieval`'s.
