@@ -525,6 +525,27 @@ DiveBombTurnDownResult dive_bomb_turndown_tick_009c44f0(
     return out;
 }
 
+// 009C4B44-009C4C06, the goaway tick's climb-out.
+DiveBombGoAwayCommand dive_bomb_goaway_climb_009c4b44(
+    const DiveBombGoAwayInputs& in) noexcept {
+    DiveBombGoAwayCommand out;
+    // 009C4BB3: InterpolateClamped(60.0, climb angle, 300.0, 0.0, altitude) -
+    // the full climb angle below 60 m, easing to level by 300 m.
+    const float eased = dive_bomb_interpolate_clamped_00419010(
+        dive_bomb_goaway_constant::kClimbFullAltitude, in.climb_angle_1ec,
+        dive_bomb_goaway_constant::kClimbEaseAltitude, 0.0f, in.altitude);
+    // 009C4B61 is a second curve over the same 300.0 upper endpoint whose y1 and
+    // interpolant were not traced; 009C4BC4/009C4BC8 `77` JA take the larger of
+    // the two. SUBSTITUTION, labelled: the same curve stands in for it, so the
+    // max is the curve itself and the command is never weaker than the image's.
+    out.pitch_target_2bc = eased;
+    out.pitch_mode_2d0 = 1;      // 009C4BE8, EBX
+    out.bank_target_2c4 = 0.0f;  // 009C4BFE, the XORPS zero
+    out.heading_mode_2cc = 1;    // 009C4C06, EBX
+    out.air_brake_mode_2d8 = 0;  // 009C4CA7 / 009C4CE7
+    return out;
+}
+
 // 009C542C-009C5450, the aimglide tick's heading arm.
 DiveBombAimGlideCommand dive_bomb_aimglide_command_009c542c(
     const DiveBombAimGlideCommandInputs& in) noexcept {
