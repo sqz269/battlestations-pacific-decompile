@@ -400,6 +400,98 @@ void set_air_ops_squadron_factory(AirOpsSquadronFactory* factory) noexcept {
 
 AirOpsSquadronFactory* air_ops_squadron_factory() noexcept { return g_squadron_factory; }
 
+void air_ops_push_assign_queue_006cc7b0(AirOpsDeck& deck, std::uint32_t squadron,
+                                        std::uint32_t vehicle_class,
+                                        std::int32_t plane_count) {
+    if (squadron == 0u) return;
+    // 006CC7B0: register the observer pair, splice a node carrying the entity
+    // through 006BFBD0 and link it into the list at block+74h. The observer pair
+    // is not modelled; the node's payload is.
+    AirOpsDeck::AssignQueueEntry entry;
+    entry.squadron = squadron;
+    entry.vehicle_class = vehicle_class;
+    entry.plane_count = plane_count;
+    deck.assign_queue.push_back(entry);
+}
+
+std::size_t air_ops_arrive_squadron_006c56d0(AirOpsDeck& deck, std::uint32_t squadron,
+                                             std::uint32_t vehicle_class,
+                                             std::int32_t plane_count) noexcept {
+    const std::size_t none = deck.slots.size();
+    std::size_t chosen = none;
+    // 006C56D0's own priority, and the break matters: the walk stops at the slot
+    // that already holds this squadron, and the free-slot candidate is only
+    // remembered while no such slot has been found. "Free" is not a state test
+    // alone - state 6 or 1 AND the class equal to the squadron's +35Ch AND the
+    // count equal to its +3CCh.
+    for (std::size_t index = 0; index < deck.slots.size(); ++index) {
+        const AirOpsSlot& slot = deck.slots[index];
+        if (slot.launched_squadron == squadron) {
+            chosen = index;
+            break;
+        }
+        if (chosen != none) continue;
+        const std::int32_t state = static_cast<std::int32_t>(slot.state);
+        if (state != 6 && state != static_cast<std::int32_t>(AirOpsSlotState::kCooldown)) {
+            continue;
+        }
+        if (slot.vehicle_class != vehicle_class) continue;
+        if (slot.assigned_count != plane_count) continue;
+        chosen = index;
+    }
+    if (chosen == none) return none;
+
+    AirOpsSlot& slot = deck.slots[chosen];
+    // 006C5788: state 1 with the timer pair.
+    slot.state = AirOpsSlotState::kCooldown;
+    slot.timer = 0.0F;
+    if (slot.launch_requested) {
+        slot.timer = kAirOpsSlotCooldownSeconds;
+        slot.launch_requested = false;
+    }
+    // 006C57C4 calls 006C0F00 with the squadron's class and count. That routine
+    // is NOT a plain pair of stores, which is worth stating because this models
+    // it as one: it clamps the count three times before storing, against
+    // 006BF230's `total` for the class, against 006BD460 of the slot (unread),
+    // and against `available` plus this slot's own +8h when the class is
+    // unchanged, and when it still does not fit it walks the slots under the
+    // block's critical section to make room. On the path this function is called
+    // from, the class and count are the ones the slot already holds, so every
+    // clamp is slack and the simplification is exact here. It would not be for a
+    // squadron arriving with a count the deck cannot stock. contract.
+    slot.vehicle_class = vehicle_class;
+    slot.assigned_count = plane_count;
+    // 006C57D8 tests the state again AFTER that call, so this is not dead in the
+    // native: 006C0F00 could move it. Nothing here does, so it cannot fire.
+    if (static_cast<std::int32_t>(slot.state) == 2) {
+        slot.requested_count = slot.assigned_count;
+    }
+    // 006C57F5: state 3 with the timer pair, and the squadron in +28h.
+    slot.state = AirOpsSlotState::kLaunched;
+    slot.timer = 0.0F;
+    if (slot.launch_requested) {
+        slot.timer = kAirOpsSlotCooldownSeconds;
+        slot.launch_requested = false;
+    }
+    slot.launched_squadron = squadron;
+    return chosen;
+}
+
+std::size_t air_ops_drain_assign_queue_006c58a0(AirOpsDeck& deck) {
+    // 006C58A0 loops while block+78h is non-zero, taking the head each time,
+    // handing node+8h to 006C56D0 and unlinking it. An entry whose squadron
+    // matches no slot is still consumed, which is what the unconditional unlink
+    // at 006C58D6 does.
+    std::size_t placed = 0;
+    for (const AirOpsDeck::AssignQueueEntry& entry : deck.assign_queue) {
+        const std::size_t slot = air_ops_arrive_squadron_006c56d0(
+            deck, entry.squadron, entry.vehicle_class, entry.plane_count);
+        if (slot < deck.slots.size()) ++placed;
+    }
+    deck.assign_queue.clear();
+    return placed;
+}
+
 std::size_t air_ops_release_squadron_slot_006c65b0(AirOpsDeck& deck,
                                                    std::uint32_t squadron) noexcept {
     std::size_t released = 0;
@@ -471,6 +563,18 @@ void air_ops_launch_start_006c7490(AirOpsDeck& deck, int slot_index) noexcept {
     if (squadron != 0u && slot.launched_squadron != squadron) {
         slot.launched_squadron = squadron;
     }
+    if (squadron == 0u) return;
+    // The squadron's own construction registers it with its home base:
+    // 007F4580 BSP_PlaneSquadron_AttachLuaSelfAndSpawnPlanes calls 007F1C00,
+    // which stores the base at squadron+404h and queues the squadron on it. In a
+    // campaign session that is 006CC7B0's queue at block+74h, drained by
+    // 006C58A0 on the next update. It changes nothing for the slot this launch
+    // just filled - 006C56D0 finds that same slot by its +28h and rewrites the
+    // state it already has - and it is here because the mechanism is the
+    // native's and a squadron that arrives any other way needs it.
+    // docs/USN04_STRIKE_CLASS.md.
+    air_ops_push_assign_queue_006cc7b0(deck, squadron, slot.vehicle_class,
+                                       slot.assigned_count);
 }
 
 AirOpsLaunchResult air_ops_launch_squadron_006cc690(AirOpsDeck& deck,
@@ -633,6 +737,9 @@ void set_air_ops_squadron_plane_count(AirOpsSquadronPlaneCount reader,
 
 AirOpsDeckTickResult air_ops_deck_update_006c0da0(AirOpsDeck& deck, float step_seconds) {
     AirOpsDeckTickResult out;
+    // 006CDC70 runs 006C58A0 first of all nine and before its game-state gate,
+    // so the assign queue is drained ahead of the slot walk on the same step.
+    out.assigned = air_ops_drain_assign_queue_006c58a0(deck);
     if (deck.slots.empty()) return out;
     // The native reads entity+3CCh inside each slot's tick; this reads all of
     // them once before the walk, which differs only if a squadron's count could
@@ -669,6 +776,7 @@ AirOpsDeckTickResult air_ops_update_decks_006cdc70(float step_seconds) {
         total.dirty += one.dirty;
         total.became_ready += one.became_ready;
         total.tracking += one.tracking;
+        total.assigned += one.assigned;
     }
     return total;
 }

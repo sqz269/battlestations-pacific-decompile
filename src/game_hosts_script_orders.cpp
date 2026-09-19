@@ -72,6 +72,21 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // `:1526`), so every one of the six striker launches was unreachable.
     // docs/USN04_STRIKE_CLASS.md.
     {"GetDifficulty", 0x008ae030u},
+    // Packet cc8_lua_binding_routing_audit. Five more bodies that already exist
+    // in src/lua_binding_core.cpp and had no row. Unlike GetDifficulty, none of
+    // these changes a script branch: every one returns 0, so it pushes nothing
+    // and the native pushes nothing either, which makes nil and no-value the
+    // same thing to the caller. They are routed so the host's own records stop
+    // reporting UNIMPLEMENTED for work that is reconstructed - a record that lies
+    // in that direction is what hid the GetDifficulty gap.
+    // `PrepareClass` 008C8F70 is deliberately NOT here although its body exists:
+    // its host reader `resolve_global_integer` is a stub, so routing it would
+    // claim work it does not do. docs/LUA_BINDING_ROUTING_AUDIT.md.
+    {"SETLOG", 0x0088c620u},
+    {"EnableMessages", 0x008cfe40u},
+    {"LoadMessageMap", 0x008c61c0u},
+    {"Music_Control_SetLevel", 0x008c4d10u},
+    {"Scoring_SetFinalScoringFunctionName", 0x008b8640u},
     // Packet cc_mission_blackout: the fade whose completion callback is the only
     // route from the intro movie to `luaIn`. src/mission_blackout.cpp.
     {"Blackout", 0x008d1340u},
@@ -235,11 +250,23 @@ std::uint32_t GameScriptOrdersHost::create_air_ops_squadron_006c5050(
     created_name.clear();
     wing_count_out = 0;
     if (vehicle_class == 0u) return 0u;
-    // A process guard, not a native rule. The native refuses a launch while the
-    // deck is already spotting a plane (block+38h, written by 006C6540 out of the
-    // queue at block+D8h); neither that queue nor its filler is reconstructed, so
-    // the script's launches are ungated here and would create a unit per call.
-    constexpr std::size_t kSquadronCreateLimit = 24;
+    // A process guard, and RE-JUSTIFIED by packet cc8_airops_deck_brake. It was
+    // written as a stand-in for the deck's readiness brake, block+38h, on the
+    // assumption that reconstructing that brake would replace it. It would not:
+    // 007F1C55's JZ sends a **campaign** session's squadron to 006CC7B0's queue
+    // at block+74h, and only a non-campaign one to the spotting queue whose drain
+    // 006C6540 writes block+38h. This process asserts a campaign session, so
+    // nothing writes block+38h and the native has no readiness brake here either.
+    //
+    // What bounds a campaign launch is the mission script's own gate -
+    // `stloPlaneNum < 2` for each American carrier and `< 4` for each Japanese
+    // one - and that gate works only because the tick keeps slot+28h filled. Over
+    // USN04's six decks it admits about two dozen squadrons, so the number below
+    // is at the bound rather than under it and has never fired. It stays as a
+    // safety net against a mission whose gates this process does not satisfy,
+    // raised so that it cannot shadow the script's own pacing.
+    // docs/USN04_STRIKE_CLASS.md.
+    constexpr std::size_t kSquadronCreateLimit = 64;
     // Metres above the carrier's own origin. The native launches the plane off
     // the deck through the taxi and catapult paths; none of that is reconstructed
     // here, so the squadron starts airborne over its home base. contract.
@@ -248,9 +275,11 @@ std::uint32_t GameScriptOrdersHost::create_air_ops_squadron_006c5050(
         if (!squadron_limit_logged_) {
             squadron_limit_logged_ = true;
             log_.notef("air ops squadron: the %zu-squadron ceiling of this process is "
-                "reached; further launches leave slot+28h zero. It is a guard, not a "
-                "native rule: 006C6540's ready-plane queue at block+D8h, which is what "
-                "makes the deck refuse at 006BF620, is not reconstructed",
+                "reached; further launches leave slot+28h zero. It is a safety net, not "
+                "a native rule: a campaign session takes 007F1C55's zero arm into the "
+                "block+74h queue and nothing writes block+38h, so the deck has no "
+                "readiness brake here either, and the mission script's own stloPlaneNum "
+                "gate is what paces a launch",
                 kSquadronCreateLimit);
         }
         return 0u;
@@ -1035,6 +1064,23 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         // bsp::lua_binding_get_difficulty already.
         SetThinkCoreHost core(*this);
         results = bsp::lua_binding_get_difficulty(*this, core);
+    } else if (std::strcmp(binding->name, "SETLOG") == 0) {
+        // Packet cc8_lua_binding_routing_audit. These five push nothing, so none
+        // of them changes a script branch; they are routed for the accuracy of
+        // the host's own records. docs/LUA_BINDING_ROUTING_AUDIT.md.
+        results = bsp::lua_binding_setlog();
+    } else if (std::strcmp(binding->name, "EnableMessages") == 0) {
+        SetThinkCoreHost core(*this);
+        results = bsp::lua_binding_enable_messages(*this, core);
+    } else if (std::strcmp(binding->name, "LoadMessageMap") == 0) {
+        SetThinkCoreHost core(*this);
+        results = bsp::lua_binding_load_message_map(*this, core);
+    } else if (std::strcmp(binding->name, "Music_Control_SetLevel") == 0) {
+        SetThinkCoreHost core(*this);
+        results = bsp::lua_binding_music_control_set_level(*this, core);
+    } else if (std::strcmp(binding->name, "Scoring_SetFinalScoringFunctionName") == 0) {
+        SetThinkCoreHost core(*this);
+        results = bsp::lua_binding_scoring_set_final_scoring_function_name(*this, core);
     } else if (std::strcmp(binding->name, "Blackout") == 0) {
         // 008D142F..008D1612 reads the frame; the marshalling stays here and the
         // decode, the arm and the immediate step are src/mission_blackout.cpp.

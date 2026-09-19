@@ -192,6 +192,32 @@ stream needs**. The run corroborates it independently and by id: a launched 162 
 `units_with torpedo` proves it, and the earlier run already proved the converse for 101, which
 raised `general_bomb` and left `torpedo` at 34.
 
+## 7. The deck brake is a non-campaign mechanism, so it is not what paces this
+
+Recorded here because it bears directly on the launch counts above.
+`docs/AIROPS_LAUNCH_TICK.md` section 5 proposed implementing the deck's readiness brake — block+38h,
+written by `006C6540` out of the spotting queue — to replace this process's squadron ceiling. The
+branch bytes in `007F1C00` say that cannot work:
+
+```
+007f1c4b: CMP dword ptr [ECX + 0x1fe4],0x0
+007f1c55: JZ  0x007f1c69          ; ZERO -> 006CC7B0, the block+74h queue
+007f1c57: CALL 0x006cc760         ; non-zero -> the block+C0h spotting queue
+```
+
+The spotting queue is the **non-campaign** arm. A campaign session takes `006CC7B0` into block+74h,
+which `006C58A0` drains straight into a slot through `006C56D0`, and nothing on that path writes
+block+38h. This process asserts a campaign session in three places, so **in a campaign the deck has
+no readiness brake** — which is consistent with what the runs show, and with why the mission script
+carries its own `stloPlaneNum` gates.
+
+So the pacing this packet was looking for is the script's gate, section 2's `stloPlaneNum < 2`, and
+it already works because the tick keeps slot+28h filled. The campaign arm is now reconstructed
+(`air_ops_push_assign_queue_006cc7b0`, `air_ops_arrive_squadron_006c56d0`,
+`air_ops_drain_assign_queue_006c58a0`, drained first in the deck update as `006CDC70` has it); the
+spotting arm is deliberately not, because it cannot execute here. The ceiling stays as a safety net,
+raised to 64 so it sits above the bound the script's gates impose rather than at it.
+
 ## Uncertainty
 
 * The `Zero` at `:1393` must launch first and set `Mission.ZeroOverZuikaku` before the `else` arm

@@ -234,10 +234,46 @@ So the two queues are two ways onto a deck:
 the split reads as "a mission is running, bring the aircraft up on deck" against "assign it to a
 slot without ceremony", which is what a deck built at scene load needs.
 
-For whoever implements the brake: the seam is already in place. `create_air_ops_squadron_006c5050`
-is where a created squadron would push itself onto its home deck, and the 24-squadron ceiling that
-stands in for the brake comes out at the same time. Note which queue that is — a squadron created
-mid-mission takes the spotting one.
+### Correction: a campaign takes the other queue, and has no brake at all
+
+The paragraph that stood here said a squadron created mid-mission takes the spotting queue, so
+implementing that queue would give this process the deck's brake and retire the 24-squadron ceiling.
+**That is wrong, and the branch bytes say so.** `007F1C00` chooses like this:
+
+```
+007f1c45: MOV ECX,dword ptr [0x00e188a8]
+007f1c4b: CMP dword ptr [ECX + 0x1fe4],0x0
+007f1c55: JZ  0x007f1c69          ; ZERO -> 007f1c69, which CALLs 006CC7B0
+007f1c57: CALL 0x006cc760         ; non-zero falls through to the spotting queue
+```
+
+The **zero** arm — a campaign session — goes to `006CC7B0` and the block+74h queue, which `006C58A0`
+drains straight into a slot. The spotting queue at block+C0h, the one whose drain `006C6540` writes
+block+38h and so makes `006BF620` refuse readiness, is the **non-campaign** arm.
+
+This process asserts a campaign session in three places now (`game_non_campaign_flag()` returning 0
+for `GetDifficulty`, `non_campaign_session()` returning false, and `inputs.non_campaign_session =
+false`), so it can only take the zero arm. **In a campaign the deck has no readiness brake**: nothing
+writes block+38h, `006BF620` never refuses on it, and `006CC690` never takes its queue arm. That is
+not a gap in the reconstruction; it is what the executable does.
+
+What paces a campaign launch is the mission script. `usn_19_coralus.lua` gates each American carrier
+on `stloPlaneNum < 2` and each Japanese one on `stloPlaneNum < 4`, counting through
+`luaGetSlotsAndSquads`, which counts slots whose `squadron` is not nil — so the gate works only
+because the tick keeps slot+28h filled. That is the pacing, and it is already correct on this branch:
+the run that went from 82 launches to 4 is the gate doing its job.
+
+So the ceiling is not replaced by a brake. It is re-justified as a safety net, raised to 64 so it
+sits above the two dozen the script's own gates admit over six decks rather than at it, and it has
+never fired. `docs/USN04_STRIKE_CLASS.md`.
+
+What **is** implemented from this section is the campaign arm itself:
+`air_ops_push_assign_queue_006cc7b0`, `air_ops_arrive_squadron_006c56d0` and
+`air_ops_drain_assign_queue_006c58a0`, with the drain first in the deck update where `006CDC70` has
+it. A launched squadron registers with its home base the way `007F4580` registers it, and the drain
+finds that same slot by its +28h and rewrites the state it already holds, so the mechanism is the
+native's and the behaviour is unchanged. The spotting arm is deliberately **not** written: it cannot
+execute here, and an unreachable reconstruction is worth less than the note saying why.
 
 ## 6. 006CDC70's nine sub-updates, and which of them this packet reconstructs
 
