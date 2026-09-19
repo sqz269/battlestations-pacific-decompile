@@ -1860,3 +1860,68 @@ after. The merge brought `src/game_hosts_script_orders.cpp` (new, +187), `src/ga
 that add and drive command rows. That is the window. No commit is named here: a repro on a fresh
 detached tree at the suspect commit has not been run, and the run lock is currently arbitrated to
 another worker, so it could not be.
+
+## `T` closed: both flyabove flags are one height test
+
+The operand the last two packets left open - `T`, the x87 value arriving at the merge `009C6532` -
+is resolved, and with it `+19h`'s second arm and `+1Ah` together.
+
+### The merge is stack-balanced, which is why `T` survives it
+
+Three arms reach `009C6532`. After `009C64EE`, `009C64F4` and `009C64F8` the stack is
+`{C, B, A}` from `[ESP+3Ch]`, `[ESP+38h]` and `[ESP+28h]`:
+
+| path | branch | pops | stack at `009C6532` |
+| --- | --- | --- | --- |
+| kind test true | `009C64FC` `75` JNZ to `009C6530` | none | `{C, B, A}` |
+| `+D4h > C` | `009C6510` `77` JA to `009C652E` | `FSTP ST0` | `{C, B, A}` |
+| `+B4h <= A` | `009C651A` `76` JBE to `009C6528` | `FSTP ST0` | `{C, B, A}` |
+| otherwise | `009C6522` `72` JC | `FSTP ST2` at `009C6520` | `{C, B, A}` |
+
+Every arm balances. Then `009C656C`-`009C657A` pushes the product
+`(approach+14h)->+40h * approach+A8h`, multiplies by the 1.1 at `00CE3DF0`, compares and pops
+twice (`009C657C` `76` JBE), leaving `{B, A}`. So the value that `009C65D5`'s `FSUBP` subtracts `S`
+from - the `T` of the earlier note - is **`B`, the float at `[ESP+38h]`**, not `C`.
+
+### `B` is the height above the aim point
+
+Frame slot K=96 has exactly one writer, `009C6493`, and `B` is its only product:
+
+```
+009c646d  FSTP  double ptr [ESP + 0x10]   ; the aircraft's Y, promoted
+009c647b  CALL  EDX                       ; ECX = the approach: vtable[0], 009C40A0
+009c647d  FLD   float ptr [EAX + 0x4]     ; out[1] - approach+50h
+009c6482  FSUBR double ptr [ESP + 0x10]
+009c6493  FSTP  float ptr [ESP + 0x38]    ; B = aircraftY - aimPointY
+```
+
+`out[1]` is the aim point's vertical component, which is the `approach+50h` this packet corrected.
+The same slot is read at `009C67C7`, the first argument of
+`dive_bomb_flyabove_can_dive_009c680e`, so the can-dive test and both flags key on **one** height.
+
+### The two flags, complete
+
+```
+B = height above the aim point                                    009C6493
+S = max(B, 100.0) * 0.7 + 200.0        00D7A220/00CE3D08, 00CEFFA0, 00CE4D70
+x = max(B - S, 0)                                          009C65D5-009C65FD
+```
+
+`009C65A9` is the byte `76`, JBE, so the floor takes `[ESP+38h]` when 100.0 is the smaller: `x0` is
+`max(B, 100.0)`, and the `009C6568` product is a different occupant of that slot, as recorded.
+
+* **`+19h`, second arm** (`009C67A9`, `009C67AE` byte `72` JC): fires on `x <= 0`, i.e. `B <= S`.
+  For `B >= 100` that is `0.3B <= 200`, so **`B <= 666.7 m`**.
+* **`+1Ah`** (`009C66E3`, `009C66E1` byte `76` JBE): fires on
+  `|bearing error| > InterpolateClamped(0, 20 deg, W, pi, x)` with `W = approach+B4h * 0.8 - S`.
+
+The two numbers corroborate each other and the packet before: `approach+D4h`, the can-dive height,
+is `max(+A8h + 250, (+ACh + +A8h) * 0.5)` = **675.0 m** with this installation's row, and the
+roll-in arm flips at **666.7 m**. Both are the same gate expressed twice - the aircraft rolls in
+and may dive at essentially the same height - and both read the same `B`. Nothing here was fitted
+to that agreement; it fell out of two independent traces.
+
+Worked at the run's own geometry, `B = 638.9 m`: `S = 647.2`, `x = 0`, so the tolerance
+`a` is its floor of 20 degrees and `W = 1100 * 0.8 - 647.2 = 232.8 m`. Below 667 m the roll-in arm
+is already satisfied on height alone, which is why `flyabove` has never needed its bearing test in
+any run of this stream.
