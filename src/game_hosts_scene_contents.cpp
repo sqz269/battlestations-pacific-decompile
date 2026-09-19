@@ -1073,6 +1073,70 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
         owner.entities.push_back(record);
         return;
     }
+
+    // `Hidden`, and it is what holds an entity back for `GenerateObject`. In the
+    // executable the test sits BEFORE the gate, not inside it, which is why
+    // 0046C550 has nothing to say about a held-back entity and why this host's
+    // `rejected=0` was a faithful answer to the wrong question:
+    //
+    //   0046d39d: CMP byte ptr [EDI + 0x4],0x0   ; the pass flag
+    //   0046d3b3: JZ  0x0046d3cb                 ; clear -> no Hidden test
+    //   0046d3b5: PUSH 0xce5708                  ; "Hidden"
+    //   0046d3bc: CALL 0x008f2260                ; bag.find
+    //   0046d3c1: CMP byte ptr [EAX + 0xc],0x0
+    //   0046d3c5: JNZ 0x0046d5e4                 ; SET -> jumps past the creation
+    //   ...
+    //   0046d426: CALL 0x0046c550                ; never reached for a hidden one
+    //
+    // A hidden entity is therefore REGISTERED AND NOT CREATED: the registration
+    // branch still runs 0046BF70 at 0046D531, which reads the same string three
+    // more times, so the record stays in the scene database's named-object map
+    // and `GenerateObject` instantiates it from there by name. That is what stops
+    // the script's own spawn step making a second carrier.
+    //
+    // The test runs on the instantiate pass only, which `[EDI+4]` selects; this
+    // host reaches the creator from that pass alone, so the pass condition is the
+    // call site rather than a flag here. The record is kept, exactly as the
+    // native keeps it. docs/LUA_GENERATE_OBJECT_HOST.md.
+    if (scene_property_bool(bag.find(bsp::kSceneHiddenPropertyKey))) {
+        record.skipped_because = "Hidden: held back for GenerateObject";
+        ++tally.rejected;
+        ++owner.summary.rejected;
+        ++owner.summary.held_back_hidden;
+        // The stand-in for the scene database's named-object map at sceneDb+18h,
+        // which is the only thing 0046D930 looks a name up in.
+        scene_spawn_pool().add(record);
+        // A held-back carrier or airfield skips the 006CADD0 mode 1 build below,
+        // because that sits on the created path. Its deck is authored in this same
+        // bag, so it is built here and handed over when the script spawns the
+        // unit. Without this a script-spawned Zuikaku would answer
+        // `GetProperty(carrier, "slots")` with nothing and could never launch.
+        if (klass != nullptr
+            && (klass->class_id == bsp::kAirOpsSceneClassIdMothership
+                || klass->class_id == bsp::kAirOpsSceneClassIdAirfield)) {
+            const bsp::AirOpsSceneDeck authored = read_scene_deck_006cadd0(bag);
+            bsp::AirOpsDeck deck = bsp::air_ops_load_from_scene_006cadd0(authored,
+                [](const std::string& type, void*) -> std::uint32_t {
+                    std::int32_t parsed = 0;
+                    if (!scene_scan_int(type, parsed) || parsed < 0) return 0u;
+                    return static_cast<std::uint32_t>(parsed);
+                },
+                nullptr);
+            deck.is_airfield = klass->class_id == bsp::kAirOpsSceneClassIdAirfield;
+            deck.owner_name = record.name;
+            deck.owner_party = record.party;
+            if (SceneSpawnPoolEntry* held = scene_spawn_pool().find(record.name)) {
+                held->has_deck = true;
+                held->deck = std::move(deck);
+            }
+            owner.log.notef("air ops deck: unit=%s class=%d NumSlots=%d MaxInAirPlanes=%d "
+                "held back for GenerateObject (006cadd0 mode 1, registered on spawn)",
+                record.name.c_str(), klass->class_id, authored.num_slots,
+                authored.max_in_air_planes);
+        }
+        owner.entities.push_back(record);
+        return;
+    }
     ++tally.generated;
     ++owner.summary.generated;
 
@@ -1793,6 +1857,43 @@ GameSceneContentsHost::GameSceneContentsHost(GameHostLog& log, GameVfsHost& vfs)
 
 GameSceneContentsHost::~GameSceneContentsHost() = default;
 
+// ---------------------------------------------------------------------------
+// The GenerateObject pool, the stand-in for the named-object map at sceneDb+18h
+// ---------------------------------------------------------------------------
+void SceneSpawnPool::clear() noexcept { entries_.clear(); }
+
+void SceneSpawnPool::add(const GameSceneEntityRecord& record) {
+    // 0046D96F looks a name up in a map, so a repeated name is one entry.
+    for (SceneSpawnPoolEntry& entry : entries_) {
+        if (entry.record.name == record.name) return;
+    }
+    SceneSpawnPoolEntry entry;
+    entry.record = record;
+    entries_.push_back(entry);
+}
+
+SceneSpawnPoolEntry* SceneSpawnPool::find(const std::string& name) noexcept {
+    for (SceneSpawnPoolEntry& entry : entries_) {
+        if (entry.record.name == name) return &entry;
+    }
+    return nullptr;
+}
+
+std::size_t SceneSpawnPool::size() const noexcept { return entries_.size(); }
+
+std::size_t SceneSpawnPool::spawned_count() const noexcept {
+    std::size_t total = 0;
+    for (const SceneSpawnPoolEntry& entry : entries_) {
+        if (entry.spawned) ++total;
+    }
+    return total;
+}
+
+SceneSpawnPool& scene_spawn_pool() noexcept {
+    static SceneSpawnPool pool;
+    return pool;
+}
+
 const GameSceneContentsSummary& GameSceneContentsHost::summary() const noexcept {
     return impl_->summary;
 }
@@ -1822,6 +1923,12 @@ void GameSceneContentsHost::run_load_scene_contents_004d4df0(const std::string& 
     impl.summary.scene_path = scene_path;
     impl.summary.short_name = derive_scene_short_name(scene_path);
 
+    // The pool belongs to the scene being loaded, and 004D54A4 destroys the
+    // scene database's own range at [00E18680]+8h before pass 2 fills it. A run
+    // in this process loads one mission, so this changes nothing measured today;
+    // without it a process that loaded a second mission would answer
+    // `GenerateObject` out of the first one's records.
+    scene_spawn_pool().clear();
     impl.load_property_library();
 
     const int mode = effective_game_mode_004bca50(raw_game_mode, mode_forced,
@@ -1834,11 +1941,12 @@ void GameSceneContentsHost::run_load_scene_contents_004d4df0(const std::string& 
     impl.summary.ran = true;
 
     impl.log.notef("scene contents: mode=%d (004bca50 with raw=%d forced=%d multiplayer=%d), "
-        "%zu entities registered, %zu instantiated, %zu generated, %zu rejected, %zu created",
+        "%zu entities registered, %zu instantiated, %zu generated, %zu rejected, %zu created, "
+        "%zu held back by Hidden (0046d3c5, the GenerateObject pool)",
         impl.summary.effective_game_mode, raw_game_mode, mode_forced ? 1 : 0,
         multiplayer_session ? 1 : 0, impl.summary.registration_entities,
         impl.summary.instantiate_entities, impl.summary.generated, impl.summary.rejected,
-        impl.summary.created);
+        impl.summary.created, impl.summary.held_back_hidden);
     // The distinct resolved `Type` values, which is what the registration pass
     // marked and what each creator handed 00964790.
     std::map<std::string, std::size_t> types;

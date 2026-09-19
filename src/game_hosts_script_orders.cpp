@@ -396,6 +396,24 @@ void GameScriptOrdersHost::run_air_ops_update_006cdc70(float step) {
     log_.implemented("AirOps::slot_tick", "006c0510");
 }
 
+std::uint32_t GameScriptOrdersHost::create_unit_from_scene_record_0046db4b(
+    const GameSceneEntityRecord& record) {
+    // 0046DB4B `CALL EAX` with EAX = [descriptor+4h] is the instantiate-pass
+    // creator, the same descriptor[1] the .scn reader uses, so a script-spawned
+    // object is created exactly as a load-time one is. This host reaches that
+    // creator the way the scene pass does, through the units host.
+    GameSceneEntityRecord copy = record;
+    copy.created = true;
+    copy.skipped_because.clear();
+    const std::size_t before = units_.count();
+    std::vector<GameSceneEntityRecord> one;
+    one.push_back(copy);
+    units_.create_units(one);
+    if (units_.count() <= before) return 0u;
+    const std::size_t index = units_.count() - 1;
+    return static_cast<std::uint32_t>(index + 1);
+}
+
 std::int32_t GameScriptOrdersHost::air_ops_squadron_plane_count(
     std::uint32_t squadron) const noexcept {
     for (const AirOpsSquadron& made : squadrons_) {

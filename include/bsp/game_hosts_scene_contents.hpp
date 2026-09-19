@@ -38,6 +38,7 @@
 #include <string>
 #include <vector>
 
+#include "bsp/air_operations.hpp"
 #include "bsp/scene_file.hpp"
 
 namespace bsp::game {
@@ -140,6 +141,12 @@ struct GameSceneContentsSummary {
     std::size_t registration_bodies{0};    // descriptor[2] calls on pass 2
     std::size_t party_class_marks{0};      // 0095ba60 writes the pass produced
     std::size_t nested_entities{0};        // entities below the top level
+    // Packet cc8_lua_generate_object: entities the instantiate pass held back
+    // because their bag carries `Hidden`, which 0046D3C5 tests before the gate.
+    // They are registered and not created, and they are the pool `GenerateObject`
+    // instantiates from. docs/LUA_GENERATE_OBJECT_HOST.md.
+    std::size_t held_back_hidden{0};
+    std::size_t spawned_by_script{0};      // held-back entities GenerateObject built
     // Milestone 2q: created entities whose bag carries `StartSpeed`, the key
     // 00823590 finds and 008235B0..008235F7 seeds the order ring from.
     std::size_t start_speed_entities{0};
@@ -188,5 +195,46 @@ public:
 private:
     std::unique_ptr<Impl> impl_;
 };
+
+// ---------------------------------------------------------------------------
+// The GenerateObject pool
+// ---------------------------------------------------------------------------
+// Not a native structure. The executable keeps the authored objects in the scene
+// database's named-object map at `sceneDb+18h`, which `0046D930` looks a name up
+// in; this process has no scene database, so the instantiate pass publishes the
+// entities it held back at `0046D3C5` into one process-wide table instead. That
+// is the same shape `bsp::air_ops_decks()` already uses for the decks.
+//
+// An entry stays after it is spawned, with `spawned` set and the entity id the
+// script's table knows it by, because `0046D930` is reached once per script call
+// and a mission that asks twice must not get two carriers.
+// docs/LUA_GENERATE_OBJECT_HOST.md.
+struct SceneSpawnPoolEntry {
+    GameSceneEntityRecord record;
+    bool spawned{false};
+    int entity_id{0};
+    // A held-back carrier or airfield never reaches the deck build at scene load,
+    // because 006CADD0 mode 1 runs on the created path this entity skipped. The
+    // deck is authored in the same property bag, so it is built at hold-back time
+    // and registered when the script spawns the unit; otherwise
+    // `GetProperty(carrier, "slots")` would find nothing and the launch gates
+    // would refuse a carrier the script had just created.
+    bool has_deck{false};
+    AirOpsDeck deck;
+};
+
+class SceneSpawnPool {
+public:
+    void clear() noexcept;
+    void add(const GameSceneEntityRecord& record);
+    SceneSpawnPoolEntry* find(const std::string& name) noexcept;
+    std::size_t size() const noexcept;
+    std::size_t spawned_count() const noexcept;
+
+private:
+    std::vector<SceneSpawnPoolEntry> entries_;
+};
+
+SceneSpawnPool& scene_spawn_pool() noexcept;
 
 }  // namespace bsp::game
