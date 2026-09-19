@@ -94,9 +94,29 @@
  ],
  "validation": {
   "runner": "tools/run_game.ps1",
-  "outcome": "not run from this packet",
-  "build": "clean before the last two comment-only edits; the rebuild is blocked while a run holds the binary",
-  "reason": "The USN04 run covering the deck, both gates and the stationary fix acquired the shared lock while this packet was being written and holds bsp_game.exe open, so the linker cannot replace it. That run's binary predates this correction.",
-  "note": "The corrected code changes one observable thing: before it, a second IsReadyToSendPlanes on the same carrier would have answered false whatever the deck said. After it, readiness depends only on the fields the native reads."
+  "outcome": "run, exit 0",
+  "build": "clean, both ctest suites pass",
+  "log": "local/usn04_gates.log",
+  "note": "The run started after the block+38h correction was built and before the two comment-only edits that could not link, so its binary carried the correction. The log shows it: every IsReadyToSendPlanes line reads launch_in_progress=0 and all 82 launches started with none queued. With the invented write, only the first launch per carrier would have started and readiness would have answered false from then on.",
+  "measured": {
+   "decks": 6,
+   "num_slots_each": 4,
+   "max_in_air_planes_each": 12,
+   "stock_entries_each": 4,
+   "get_property_calls": 164,
+   "get_property_served": 164,
+   "get_property_unserved": 0,
+   "slots_rows": 3394,
+   "ready_calls": 82,
+   "ready_true": 82,
+   "launch_calls": 82,
+   "launch_started": 82,
+   "launch_queued": 0,
+   "think_failures": 0,
+   "think_failures_before": 41,
+   "ordered_aircraft": 2,
+   "torpedo_task_built": false
+  },
+  "found_by_the_run": "The slot index grows without bound. 006C7210 takes the first slot in state 1 or 5 and otherwise continues into the growth path, which is the native's behaviour; in the native a launched slot returns to state 1 when its cooldown completes. This process has no launch tick, so every slot stays in state 3 and 82 launches over two carriers left about forty slots each where four were authored. Nothing reads them, so nothing downstream is wrong, but the deck stops being a faithful projection after the first four launches on a carrier."
  }
 }
