@@ -347,3 +347,19 @@ result about USN04, not about the rule.
 | `009C7710` / `009C73A0` construction | read for the state classes and the vtables |
 | `009C8A90`'s range endpoints | both read; the feed corrected |
 | `009C7C31`-`009C7CFE` spent-member arm | read whole, bound |
+
+## 11. Why the follow tick and the done tick are the same six lines of host code
+
+`009C7270 BSP_BotStateDiveBombDone_Tick` is a **five-instruction thunk**:
+
+```
+009c7270  fld dword [esp+4] / push ecx / fstp dword [esp] / call 009c1fd0 / ret 4
+```
+
+It forwards `dt` and its own `this` and does nothing else, so the dive-bomb done and prepare
+states literally run the follow tick. That is the evidence behind the two near-identical host
+bodies `run_dive_bomb_done_prepare_tick_009c7270` and `run_dive_bomb_follow_tick_009c1fd0`: they
+are two call sites of one image body, not two reconstructions of one rule, and they differ only
+in which counters and `record` labels they keep. The `plan_mode_26c = 2` both write is
+`009C1FE2 MOV byte [ECX+26Ch],BL` with `BL = 2` and `ECX = (state+4h)->+18h`, the command block —
+a byte, inside `009C1FD0`, which is why it belongs to both.
