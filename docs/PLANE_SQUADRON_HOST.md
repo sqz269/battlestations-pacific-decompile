@@ -40,12 +40,13 @@ consistency, not a proof.
 container override that would let the squadron be its own non-flying slot was not available and is
 not attempted. The fusion is the design, not a placeholder for it.
 
-## 2. The two seams, and that they converge
+## 2. The seams, and that they converge
 
 | Seam | Where | What it does now |
 | --- | --- | --- |
 | authored scene row | `queue_plane_squadron_wing_007f4580` in `src/game_hosts_scene_contents.cpp` | a created class-`18h` row reads `Type`, `WingCount`, `PlaneParentID` and `Behaviour` out of its own bag, runs the loop, and stages one entity record per extra wing; the records are flushed into the scene's record list after the census loops, so a member plane never enters the scene class tallies |
 | air-ops launch | `create_air_ops_squadron_006c5050` in `src/game_hosts_script_orders.cpp` | `006C5050`'s bag already carried `WingCount`; the squadron record and its wing records are now built as one batch and handed to `create_units` in a single call |
+| `GenerateObject` on a held-back row | `create_unit_from_scene_record_0046db4b` in the same file | the same plan, with `WingCount` read at hold-back time and carried on the spawn-pool entry. **Unvalidated by a run** - see section 6 |
 
 Both call `plane_squadron_plan_members_007f4580`, so a launched squadron and an authored one have
 the same shape, the same naming and the same array order. The squadron table
@@ -90,8 +91,9 @@ authored data. They are corrected here rather than quietly worked around.
   `torpedo_issue_release_orders_007c0d90`, which the issue stage only calls when `unit+C20h > 0`,
   and the USN01 before column reads `requests_007BBBA0=0 C20h_left=0`. Both operands the run prints
   as `ctl+390h=0.0000 ctl+374h=0.0000 open=0` are **unset fields, not measurements**.
-* **evidence**: the before column below; `src/game_hosts_units.cpp:3598` (`is_flight_member`) and
-  `src/torpedo_issue_timing.cpp` (`issue_requests_c20 > 0` is what selects the issue arm).
+* **evidence**: the before column below; `TorpedoReleaseOrderBinding::is_flight_member` in
+  `src/game_hosts_units.cpp` and `plane_release_issue_stage_007ce9fd` in
+  `src/torpedo_issue_timing.cpp`, where `issue_requests_c20 > 0` is what selects the issue arm.
 
 ### 4.2 What actually stops the first torpedo run-in is the approach, not the member array
 
@@ -161,6 +163,35 @@ opposite of the constructed state and makes the host's issue path stricter than 
 fix belongs in `src/game_hosts_units.cpp` and that file is leased elsewhere; it is recorded here as
 an open item with its address rather than applied.
 
+### 4.6 Where section 4.2's chain actually stops: two different thresholds
+
+Recorded here because the handoff conflated them, and whoever takes the approach blocker will meet
+both. USN01's Mavs are **engaged but not in range**.
+
+| test | routine | threshold | USN01 |
+| --- | --- | --- | --- |
+| the task-level engaged predicate | `009D3210 BSP_BotTaskTorpedo_IsEngaged` | `task+484h * 2.2` at `009D324F` = **4840 m** | satisfied: `range_first_mean = 4174.3 m` is inside it |
+| the approach's in-range latch `+131h`, the attackrun-to-aim flag | `009D3420`, `009D35D4`..`009D361E` | `range < approach+8Ch`, and the run prints `engage 8Ch=2200.0` | **never satisfied**: `min = 3928.5`, `last = 3928.5` |
+
+So the aim tick is not refusing an aircraft that reached it; the aircraft never reaches it, because
+the latch wants 2200 m and the approach never closes below 3928.5 m with `replans=13`. The question
+for that packet is why an ordered aircraft inside the engaged radius does not close, which is a
+move-to and steering question rather than an aim one. `docs/TORPEDO_APPROACH_UPDATE.md` section on
+the latch, and `docs/TORPEDO_ENGAGED_TEST.md` for the 2.2, carry both readings.
+
+One thing that packet gains from this one: `009D3624`'s branch measures `00414C60` between the
+target point and **`ctl->+3D0h`'s position** - the squadron's flight leader, which this host now
+really has. That branch only ever clears the latch and only runs when the aircraft has no torpedoes
+left, so it is not USN01's blocker; it is named because it is a second reader of the member array
+and a host that stood `+3D0h` in would have had to substitute for it.
+
+And one asymmetry in the same USN01 rows that is worth checking before anything else, because it
+would reframe the question: the plane's own issue stage reports `stage_ticks=3000` while the torpedo
+task reports `arm_ticks=124 transitions=1 states[attackrun=124]` and `approach ticks=124`. The tick
+element ran for the whole mission and the task's arm ran for about six seconds of it. If that is
+real rather than a sampling artefact of the census, then "the approach never closes" is a
+consequence of the task not being ticked, and the first thing to establish is what stops it at 124.
+
 ## 5. Runs
 
 Every column is from one binary. The before columns are `b00c3cd24` (this worktree's base, with the
@@ -219,6 +250,12 @@ The unit arithmetic is exact: 18 non-squadron units plus `movieval`'s three wing
 launches of three is 33. The count rises by ten, which is the sum of the authored wing counts less
 the five stand-ins they replace.
 
+The after column was taken twice, because `air_ops_squadron_plane_count` changed after the first one
+to report the real `+3CCh` instead of the authored wing. The second run (`local/sqn_after2_usn04.log`,
+on the tree this packet ends with) reproduces every figure above exactly - 21 after the load, 33 at
+the end, `+3CCh=3 -> 2 wingman task(s)`, `ordered=3`, `EXITCODE=0` - which is the expected result,
+since the two readings differ only once a member dies and none does here.
+
 The three members of `movieval` fly identical attack runs -
 `divebomb movieval|.-2` and `movieval|.-3` both report `attackrun 009C4220 ticks=1527 rerolls=153`,
 `dive entry alt=650.9 m`, `aim error 009C5C9B=-1689.72 m closest=374.9` - which is why the pilot
@@ -268,7 +305,12 @@ headings.
   spawn tail's only.
 * `00521E30`: `PlaneParentID` is never resolved, so an authored parent's placement arm
   (`007F48AE`..`007F48BA`, the identity matrix under the parent) is never taken.
-* `GenerateObject 00944FD0`: a `PlaneSquadronGen` row held back by `Hidden` and spawned by the
-  script reaches `create_unit_from_scene_record_0046db4b`, which this packet did not extend, so such
-  a squadron would still be one plane. Neither USN01 nor USN04 reaches a `GenerateObject` call in
-  its frame budget, so nothing measured this.
+* `GenerateObject 00944FD0`, the **third seam**, is implemented and **unvalidated by a run**. A
+  `PlaneSquadronGen` row held back by `Hidden` reaches `004F0AD0` through
+  `create_unit_from_scene_record_0046db4b` rather than at scene load, so its wing is spawned there
+  from the same plan. The property bag does not survive the hold-back, so `WingCount` is read at
+  hold-back time and carried on the spawn-pool entry, the same way the air-ops deck already is.
+  Neither USN01 nor USN04 reaches a `GenerateObject` call in its frame budget, though both have rows
+  waiting for one: USN01 holds back 15 of its 20 `PlaneSquadronGen` rows (`moviefisher` is USN04's
+  one of two, out of 34 rows it holds back in all). So no run has exercised it. It is written to the
+  same rule as the other two seams and measured by neither.
