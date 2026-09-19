@@ -234,6 +234,22 @@ private:
 // One per process, as the singleton is.
 SpawnRequestQueue& spawn_request_queue();
 
+// The drain needs the mission Lua host - it creates through that host's
+// script-orders host and answers through that host's `thisTable` - but the
+// frame step that runs it is the world walk, which cannot reach that host.
+// 0094C8F0 has the same shape: BSP_Game_OnMove reaches the manager through a
+// process global rather than through anything it owns. So the host registers
+// itself here when it is attached and the world walk calls the free function.
+class SpawnQueueDrain {
+public:
+    virtual ~SpawnQueueDrain() = default;
+    virtual void run_spawn_queue_0094c490(float step_seconds) = 0;
+};
+void set_spawn_queue_drain(SpawnQueueDrain* drain) noexcept;
+// 004E534F's call, reduced to the part 0094C490 actually uses. Does nothing
+// when no host is attached, which is the null-manager arm at 0094C4B8.
+void run_spawn_queue_step_0094c8f0(float scaled_delta);
+
 // The frame 0094A140 hands 00949300, reduced to what this process can justify:
 // a position and a heading. The native composes a full 4x4 and rotates it
 // through a bounded retry; only the first candidate is reproduced here, because

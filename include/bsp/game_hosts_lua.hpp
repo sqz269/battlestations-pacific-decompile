@@ -264,7 +264,8 @@ struct GameMissionLuaSummary {
 // resolves to, because the squadron has to reach the mission script's own table
 // and that table is this host's.
 class GameMissionLuaHost final : public bsp::MissionLuaHostServices,
-                                 public bsp::AirOpsSquadronFactory {
+                                 public bsp::AirOpsSquadronFactory,
+                                 public bsp::SpawnQueueDrain {
 public:
     GameMissionLuaHost(GameHostLog& log, GameVfsHost& vfs);
     ~GameMissionLuaHost() override;
@@ -551,7 +552,7 @@ public:
     // `SpawnAttemptDelay`; a request that cannot be placed goes back on the
     // queue (009478B0) instead of being dropped. The step is the mission
     // frame's, because the native's own clock is the world time at DAT_00F876A4.
-    void run_spawn_queue_0094c490(float step_seconds);
+    void run_spawn_queue_0094c490(float step_seconds) override;
     void report_spawn_queue();
 
     // --- bsp::AirOpsSquadronFactory, packet cc8_airops_launch_tick ----------

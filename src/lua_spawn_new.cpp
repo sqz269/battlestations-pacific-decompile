@@ -93,6 +93,19 @@ SpawnRequestQueue& spawn_request_queue() {
     return queue;
 }
 
+namespace {
+SpawnQueueDrain* g_spawn_queue_drain = nullptr;
+}  // namespace
+
+void set_spawn_queue_drain(SpawnQueueDrain* drain) noexcept {
+    g_spawn_queue_drain = drain;
+}
+
+void run_spawn_queue_step_0094c8f0(float scaled_delta) {
+    if (g_spawn_queue_drain == nullptr) return;
+    g_spawn_queue_drain->run_spawn_queue_0094c490(scaled_delta);
+}
+
 SpawnNewFrame spawn_member_frame_0094a140(const SpawnNewRequest& request,
                                           std::size_t member) noexcept {
     SpawnNewFrame frame;

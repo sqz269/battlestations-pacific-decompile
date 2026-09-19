@@ -324,6 +324,8 @@ GameMissionLuaHost::GameMissionLuaHost(GameHostLog& log, GameVfsHost& vfs)
 }
 
 GameMissionLuaHost::~GameMissionLuaHost() {
+    // The world walk holds a bare pointer to this host for the spawn drain.
+    bsp::set_spawn_queue_drain(nullptr);
     if (state_ != nullptr) {
         lua_close(state_);
         state_ = nullptr;
@@ -1319,7 +1321,15 @@ void GameMissionLuaHost::attach_script_orders(GameScriptOrdersHost* orders) noex
     // plane count at entity+3CCh are the two things the air-operations code
     // cannot reach on its own; both are bound here, where the orders host and the
     // mission table are both in hand, and both are cleared on a detach.
+    // Packet cc8_spawn_new_route, and the same rule: the world walk that runs
+    // the spawn drain cannot reach this host, so the host publishes itself for
+    // the duration of the mission and takes itself back on a detach. The queue
+    // is cleared with it, because the manager is constructed per world
+    // (004DFAC3 writes 00F89B3C in BSP_Game_ConstructWorld and 004D2D7E clears
+    // it in BSP_Game_DestroyWorld), so a request cannot outlive its mission.
+    bsp::set_spawn_queue_drain(orders == nullptr ? nullptr : this);
     if (orders == nullptr) {
+        bsp::spawn_request_queue().clear();
         bsp::set_air_ops_squadron_factory(nullptr);
         bsp::set_air_ops_squadron_plane_count(nullptr, nullptr);
         return;
