@@ -390,6 +390,29 @@ int air_ops_pick_launch_slot_006c7210(const AirOpsDeck& deck) noexcept {
     return static_cast<int>(deck.slots.size());
 }
 
+void air_ops_launch_start_006c7490(AirOpsDeck& deck, int slot_index) noexcept {
+    if (slot_index < 0 || static_cast<std::size_t>(slot_index) >= deck.slots.size()) return;
+    AirOpsSlot& slot = deck.slots[static_cast<std::size_t>(slot_index)];
+    // 006C74C2: the requested count takes the assigned count, but only when the
+    // slot was already in state 2.
+    if (slot.state == AirOpsSlotState::kLaunching) slot.requested_count = slot.assigned_count;
+    // 006C74CE and 006C74D5: state 3 and a zero timer, then 006C74E1's carry of
+    // the launch-requested byte into the 5.0 cooldown, which is the same pair
+    // 006CADD0 mode 1 writes for a FakeAllocated slot. State 3 is a fourth value
+    // for this field, after the 1, 2 and 5 the launch routines showed and the 6
+    // the scene loader writes; what it means is not established.
+    slot.state = static_cast<AirOpsSlotState>(3);
+    slot.timer = 0.0F;
+    if (slot.launch_requested) {
+        slot.timer = kAirOpsSlotCooldownSeconds;
+        slot.launch_requested = false;
+    }
+    // 006C74F4: slot+28h takes the squadron 006C5050 built, and the observer
+    // pair moves with it. This process builds no squadron, so the field stays
+    // zero and the Lua `squadron` key stays absent. See the doc: creating it
+    // needs the units host, not these files.
+}
+
 AirOpsLaunchResult air_ops_launch_squadron_006cc690(AirOpsDeck& deck,
                                                     const AirOpsLaunchRequest& request) {
     AirOpsLaunchResult result;
@@ -412,12 +435,15 @@ AirOpsLaunchResult air_ops_launch_squadron_006cc690(AirOpsDeck& deck,
     slot.assigned_count = request.count;
     slot.class_field_134 = request.arm;
     if (deck.launch_in_progress == 0) {
-        // 006CC71E: FUN_006C7490(slot, 0) starts the launch. That routine is not
-        // read and is what eventually fills slot+28h with the squadron entity,
-        // so this process marks the request and leaves the squadron unset.
+        // 006CC733 calls 006C7490 with the block in ECX and the slot index and a
+        // zero pushed. CORRECTED: an earlier version of this function also wrote
+        // block+38h here. Neither 006CC690 nor 006C7490 writes that field; both
+        // only read it (006CC715 and 006C5078). Writing it made the deck report
+        // a launch in progress for ever after the first call, which would have
+        // made IsReadyToSendPlanes answer false from then on.
+        // docs/AIROPS_LAUNCH_START.md.
         result.started = true;
-        deck.launch_in_progress = static_cast<std::uint32_t>(result.slot_index) + 1u;
-        slot.launch_requested = true;
+        air_ops_launch_start_006c7490(deck, result.slot_index);
     } else {
         // 006CC72C: the stock goes back and 006CA640 queues instead.
         result.queued = true;

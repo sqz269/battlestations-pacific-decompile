@@ -41,11 +41,18 @@ descriptor pair for each and terminates the group with the name: `LEA EDX,[EBP+1
 followed by the terminator carrying `runwayFailure` at 006CBE35, and `LEA ECX,[EBP+1Dh]` at
 006CBE62 by `hangarFailure` at 006CBE77. Neither is a scene key, so both start clear.
 
-**block+38h is the launch already in progress.** Two sites agree: 006BF620 requires it zero for
-readiness, and 006CC690 branches on it to choose between starting a launch and queueing one.
+**block+38h is provisionally the launch already in progress.** Three sites read it: 006BF620
+requires it zero for readiness, 006CC690 branches on it at 006CC715 to choose between starting a
+launch and queueing one, and 006C5050 refuses at 006C5078 when it is set. All three treat it as
+"something is already pending". **None of them writes it**, and no writer has been found, so the
+name is an interpretation of three readers rather than a recovered meaning. This paragraph
+originally called it named on the strength of two agreeing sites; agreeing readers are weaker
+evidence than that wording implied. See `docs/AIROPS_LAUNCH_START.md`.
 
-block+7Ch and its +5Dh byte are read but not named. They are an object this process has no
-counterpart for.
+block+7Ch is the **owning entity**, named since this document was written by `006C5050`, which
+reads its virtual at +12Ch for `Skill`, its +54h for `Party`, its +188h for `OwnerPlayer` and
+passes the pointer itself as `HomeBase`. Its +5Dh byte is still unnamed. This process has no such
+entity object.
 
 ## 2. LaunchSquadron, 0089E3C0
 

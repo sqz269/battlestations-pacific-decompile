@@ -1,0 +1,102 @@
+{
+ "packet": "cc8_airops_launch_start",
+ "owner": "agent/cc8-torpedo-run-in",
+ "doc": "docs/AIROPS_LAUNCH_START.md",
+ "tree_base": "main merged at the start of the packet",
+ "result": "006C7490 read whole, and with it 006C5050, which builds the squadron. The packet also corrects a defect this thread put on main: the write to block+38h was invented. Neither 006CC690 nor 006C7490 writes that field and 006C5050 only tests it, so the write would have made a deck report a launch in progress for ever after the first call and IsReadyToSendPlanes answer false from then on.",
+ "question": "Read the routine LaunchSquadron delegates to: what it allocates for the squadron entity, what it writes into the slot field the `squadron` key publishes, how it registers in the script's thisTable, and the in-progress byte at block+38h it sets. Then implement it.",
+ "answer": "It sets no in-progress byte: that part of the question has a negative answer, and finding it is what exposed the defect above. 006C7490 forms the slot at slot_index * 58h + block[4Ch], calls 006C5050 at 006C74C6 with the flag, the slot index plus one, the class's +70h and the slot's +8h, +10h, +4Ch and +50h, and takes the squadron back. It then carries the assigned count into the requested count at 006C74D6 but only when the state was 2, writes state 3 at 006C74E0, zeroes the timer at 006C74E7, turns a set launch-requested byte into the 5.0 cooldown at 006C74F6 and clears it at 006C74FB, and, when slot+28h differs from the new squadron, unregisters the old observer pair at 006C750F, stores the squadron, and registers the new pair at 006C751F. It ends with 00922F30 to enable the scene node and 006BF150. It allocates nothing itself. 006C5050 fills a scene property bag with Type, WingCount, Skill, Party, OwnerPlayer, HomeBase, State, VelocitySI, Invincible, Equipment and AutoAttackTarget, and hands it to 004F0AD0 BSP_SceneUnit_CreatePlaneSquadronGen, the same creator a PlaneSquadronGen scene row uses. That is also how the squadron reaches thisTable: it becomes an ordinary created unit. Every one of Skill, Party, OwnerPlayer and HomeBase is read from block+7Ch, which names that field the owning entity.",
+ "coverage": "complete for 006C7490 and for 006C5050's bag keys and creator; 006BF150, the meaning of states 3 and 6, and what writes block+38h are contracts.",
+ "calls": [
+  {
+   "address": "006c74c6",
+   "native": "006c5050",
+   "note": "builds the squadron"
+  },
+  {
+   "address": "006c750f",
+   "native": "006952a0",
+   "note": "unregisters the old observer pair"
+  },
+  {
+   "address": "006c751f",
+   "native": "00694a60",
+   "note": "registers the new pair"
+  },
+  {
+   "address": "006c7528",
+   "native": "00922f30",
+   "note": "enables the scene node"
+  },
+  {
+   "address": "006c7530",
+   "native": "006bf150",
+   "note": "not read"
+  }
+ ],
+ "named_routines": [
+  {
+   "native": "006c7490",
+   "ledger_name": "the air-operations launch start",
+   "evidence": "fills slot+28h with the squadron and sets state 3; does not write block+38h",
+   "status": "read whole; the slot effects implemented, the squadron not"
+  },
+  {
+   "native": "006c5050",
+   "ledger_name": "the squadron builder",
+   "evidence": "fills a scene property bag and calls 004F0AD0 BSP_SceneUnit_CreatePlaneSquadronGen",
+   "status": "read for its bag keys and its creator"
+  },
+  {
+   "native": "006bf150",
+   "ledger_name": "unknown",
+   "evidence": "called at 006C7530 with the slot index",
+   "status": "not read"
+  }
+ ],
+ "no_ghidra_function": [],
+ "host_methods": [
+  {
+   "method": "bsp::air_ops_launch_start_006c7490",
+   "native": "006c7490",
+   "file": "src/air_operations.cpp",
+   "note": "the slot effects only, not the squadron"
+  }
+ ],
+ "authored_rows": [
+  {
+   "file": "the shipped image, the property bag 006C5050 builds",
+   "row": "the squadron's authored keys",
+   "values": {
+    "Type": "the class's +70h",
+    "WingCount": "slot+8h",
+    "Skill": "the owner's +12Ch",
+    "Party": "the owner's +54h",
+    "OwnerPlayer": "the slot+50h argument, or the owner's +188h when it is 9",
+    "HomeBase": "the owner itself",
+    "State": "1 normally, 7 when the flag is set",
+    "Equipment": "slot+10h when positive",
+    "AutoAttackTarget": "the +174h of the object at slot+4Ch"
+   }
+  }
+ ],
+ "contracts": [
+  "Creating the squadron needs the units host and the scene host, which this packet was asked to keep out of. 006C5050 hands a bag to 004F0AD0, and this process's counterpart is driven from the scene contents pass with a SceneUnitCreationInputs and a SceneUnitCreatorBinding. Making a unit appear mid-mission and take a thisTable slot is not an air-operations or Lua operation. It is named as the remaining step rather than forced from these files.",
+  "What writes block+38h. Three routines read it and none of them writes it.",
+  "What states 3 and 6 mean. Both are written; neither has a reader that gives it a meaning.",
+  "006BF150, called at the end of 006C7490, was not read.",
+  "slot+4Ch and slot+50h are passed to 006C5050 as the auto-attack target source and the owner player, and nothing this thread has read writes either."
+ ],
+ "corrections": [
+  "DEFECT IN THIS THREAD'S OWN COMMITTED CODE. air_ops_launch_squadron_006cc690 wrote block+38h when it started a launch. The native does not: 006CC690 only compares it at 006CC715, 006C7490 does not touch it, and 006C5050 only tests it at 006C5078. The effect would have been a deck reporting a launch in progress for ever after the first call, so IsReadyToSendPlanes would have answered false from then on, which is the opposite of what that packet was for. It is on main as part of 605e213ed and this commit removes it.",
+  "OVERSTATED NAME. docs/AIROPS_LAUNCH_GATES.md called block+38h named on the strength of two agreeing sites. There are three readers and no writer, so it is an interpretation rather than a recovered meaning. Both documents and the header now say provisional. Three routines agreeing on how to treat a field is weaker evidence than one routine writing it.",
+  "An addition rather than a correction: block+7Ch is the owning entity, named by 006C5050, and slot+10h now has a fourth independent spelling, Equipment in the squadron bag."
+ ],
+ "validation": {
+  "runner": "tools/run_game.ps1",
+  "outcome": "not run from this packet",
+  "build": "clean before the last two comment-only edits; the rebuild is blocked while a run holds the binary",
+  "reason": "The USN04 run covering the deck, both gates and the stationary fix acquired the shared lock while this packet was being written and holds bsp_game.exe open, so the linker cannot replace it. That run's binary predates this correction.",
+  "note": "The corrected code changes one observable thing: before it, a second IsReadyToSendPlanes on the same carrier would have answered false whatever the deck said. After it, readiness depends only on the fields the native reads."
+ }
+}
