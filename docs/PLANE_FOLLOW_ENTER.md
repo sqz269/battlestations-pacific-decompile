@@ -291,6 +291,47 @@ when their own latch sets inside 2080 m, and that the `#1.1|.-2` descent in `don
 Falsifier for the whole packet: if `releases` falls and criterion (c) worsens, the pin was right for
 a reason this packet did not remove, and the line goes back with D's table in its comment.
 
+### D, measured. The falsifier fired, and the pin stays
+
+| run | base | `follow law` | releases | mutual kills | deaths | `#1.1\|.-2` done alt |
+| --- | --- | --- | --- | --- | --- | --- |
+| A before | `3e7625be0` | 0 | 35 | 4 | 14 | 274.5 -> 31.3 |
+| B predicate fed | `f49af48e8` | 0 | 35 | **0** | 10 | 274.5 -> 31.3 |
+| D B + mode fed | `f4b6b4bf5`+line | **32** | **26** | 0 | 6 | no `done` line at all |
+
+**Prediction 1 confirmed: `follow law` is 32.** D is the first run in this whole chain in which the
+follow law executes at all - the dive-bomb follow tick is the only place it is wired, and now dive
+bombers reach it. D also holds B's gains: the four mutual kills stay gone and deaths fall 10 -> 6.
+
+**Prediction 2 confirmed, and it is the falsifier: releases fall 35 -> 26.** I predicted that
+feeding the mode drops the LEADER out of `engaged` as well, because `0099B740` -> `007ED3F0` has the
+leader set the squadron mode to 1 every think, and that if releases fell this is where they would
+have gone.
+
+**The state that loses the aircraft is `flyabove`.** Six dive-bomber wing members end the run like
+
+```
+divebomb movieval|.-2      arm_ticks=1812 transitions=1 states[follow=1546 flyabove=266] releases=0 rounds_left=2
+divebomb D3A Val #1.1|.-2  arm_ticks=1400 transitions=1 states[follow=1134 flyabove=266] releases=0 rounds_left=2
+divebomb D3A Val #5.1|.-3  arm_ticks=1349 transitions=3 states[follow=1133 aimdive=52 flyabove=109 turndown=55] releases=0 rounds_left=2
+```
+
+`transitions=1` is the whole story for the first two: they hold formation for 1100-1550 ticks, leave
+follow into flyabove, and the run ends before `aimdive -> turndown -> attackrun` can complete. They
+never reach `done`, so **criterion (c) is untestable in D rather than passing** - the `#1.1|.-2`
+`done` line is absent from the log entirely. Criterion (a) fails: releases fell.
+
+So the line goes back to `2`, with this table in its comment, as the two earlier packets did.
+
+**What D changes about the diagnosis, and it is not what this packet expected.** The pin was not
+only standing in for the missing follow state. This packet supplied the follow state, the members
+held it correctly, and they still lost the attack - to being **too slow after** follow, not to being
+commanded nothing during it. The next reader should look downstream of follow: the flyabove arm, or
+the moment a member's own in-range latch is allowed to set at `R = approach+B8h = 2080 m`. Feeding
+`control_mode_370` is no longer blocked on the follow entry.
+
+Run E (D + placement OFF) is not run and should not be next: D does not hold.
+
 ## 8. Two items owed by the altitude band, both closed
 
 **`Pilot/Follow/LeaderFollowAlt` is authored `10`.** From this installation's

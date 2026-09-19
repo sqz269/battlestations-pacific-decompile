@@ -82,7 +82,16 @@ members now hold formation (`follow` ~1000 ticks) instead of flying their own at
 are 35 in both runs, deaths fall 14 -> 10, and every dive-bomber row is identical. `follow law` is
 still 0, because the law is wired only into the dive-bomb follow tick and no dive bomber reaches it.
 
-**The next run to do is not C.** Wire the law into the torpedo follow seam, or feed
-`control_mode_370`, first - otherwise placement OFF removes station-keeping from the only aircraft
-that now reach follow. Full argument and the criterion (d) baseline: `docs/PLANE_FOLLOW_ENTER.md`
-section 6.
+| D | `local/D_mode_fed.log` | B + `control_mode_370` fed (the integrator's granted line) |
+
+**Run D was taken and it regressed; the pin is back**, with D's table in its comment at the line.
+`follow law` 0 -> **32** (the law executes for the first time in this chain) and the mutual kills
+stay at 0, but releases fall **35 -> 26** and six dive-bomber wing members end the run
+`transitions=1 states[follow=1546 flyabove=266] releases=0` - they hold formation correctly and then
+run out of mission in **flyabove**, never reaching `done`, so criterion (c) becomes untestable.
+
+**The first thing to read next is therefore NOT the hold arm.** D shows the remaining defect is
+downstream of follow: the flyabove arm, or when a member's own in-range latch may set at
+`R = approach+B8h = 2080 m`. `control_mode_370` is no longer blocked on the follow entry, and run E
+(D + placement OFF) should not be taken until D holds. The hold arm (item 1 above) is the read after
+that. Full argument and the criterion (d) baseline: `docs/PLANE_FOLLOW_ENTER.md` sections 6 and 7.
