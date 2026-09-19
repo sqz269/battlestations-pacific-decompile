@@ -582,6 +582,10 @@ public:
     // state this process does not own and keeps the recovered nil arm.
     bool push_resolved_entity(lua_State* state, const char* binding_name, int argument_count);
     void note_entity_return();
+    // Packet cc8_spawn_new_route, second pass. An entity-returning row that
+    // answers from push_resolved_entity is decided AFTER `handled`, so without
+    // this it stayed UNIMPLEMENTED in the summary while resolving every call.
+    void note_entity_resolved(const bsp::MissionLuaBinding& binding);
     // Milestone 2m. The globals walk 004d3167 performs: 00b67980 opens the
     // table, 00b67080 / 00b67190 iterate it and 00b66200 is
     // `lua_type(value) == LUA_TFUNCTION`. One entry per key, in the order the

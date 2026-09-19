@@ -279,11 +279,22 @@ int binding_trampoline(lua_State* state) {
         return orders->dispatch(state, binding.name, argc);
     }
     if (bsp::mission_binding_returns_entity(binding.name)) {
+        // Packet cc8_spawn_new_route, second pass. `handled` was decided above,
+        // before this arm ran, so a row that answers HERE was still counted as
+        // unimplemented and the summary said so. On USN04 that made
+        // `MissionLuaNative::FindEntity 00898e30 UNIMPLEMENTED calls=132` sit in
+        // the same report as `entity_resolves=132`, which is every one of those
+        // calls answered with a real entity table. The count was right and the
+        // status was a lie, and the UNIMPLEMENTED census is what a reader picks
+        // the next packet from. The status is now recorded from the outcome.
         // 0089903C is the arm the native takes when the lookup produced
         // nothing. When it produced an entity the same tail pushes that
         // entity's thisTable slot instead, and milestone 2l fills those slots
         // for the created scene instances, so `FindEntity` can answer for real.
-        if (host->push_resolved_entity(state, binding.name, argc)) return 1;
+        if (host->push_resolved_entity(state, binding.name, argc)) {
+            if (!host->error_replay()) host->note_entity_resolved(binding);
+            return 1;
+        }
         if (!host->error_replay()) host->note_entity_return();
         lua_pushnil(state);
         return 1;
@@ -2122,6 +2133,18 @@ void GameMissionLuaHost::complete_spawn_request_0094c777(
     ::lua_settop(state_, top);
     log_.notef("  spawn queue 0094c490: serial %u fulfilled, \"%s\"(%d unit table(s)) ran",
         request.serial, request.callback.c_str(), pushed);
+}
+
+void GameMissionLuaHost::note_entity_resolved(const bsp::MissionLuaBinding& binding) {
+    // The row answered with a real entity table, so it is concrete for this run
+    // whatever the `handled` flag decided before the arm ran. GameHostLog keys
+    // the status by the address, so one call per resolution is enough and
+    // repeats are free.
+    char address[16];
+    std::snprintf(address, sizeof(address), "%08x", binding.address);
+    char label[96];
+    std::snprintf(label, sizeof(label), "MissionLuaNative::%s", binding.name);
+    log_.implemented(label, address);
 }
 
 void GameMissionLuaHost::report_spawn_queue() {
