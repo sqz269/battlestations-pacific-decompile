@@ -3701,9 +3701,49 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
     // on the fixed step beside the motion pass. The guns themselves come from
     // the authored `VehicleClass[id].Platforms` table, because this process
     // builds no model hierarchy; include/bsp/game_hosts_gunnery.hpp says so.
-    host.gunnery = std::make_unique<GameGunneryHost>(host.log, *this, host.lua);
-    host.gunnery->set_ship_ai(host.ship_ai);
-    host.gunnery->attach_00864bd0();
+    // Packet cc8_gunnery_host. This used to construct a FRESH gunnery host on
+    // every create_units, which is every spawn batch: USN04 ran create_units 13
+    // times in 4800 mission frames and 25 times in 9000 (four SpawnNew batches
+    // at t=0, four air-ops launches at t=27..30 s, four more SpawnNew at
+    // t=105 s, three single-unit creations at t=345 s and nine more air-ops
+    // launches at t=366..381 s). Each one threw away the summary, the hit
+    // records, the kill credits and every round, bomb and torpedo in flight.
+    // The image creates the per-unit gun object once per unit - 00810DD0's
+    // creation block puts the 558h-byte object at unit+6DCh and attaches it
+    // through 00864BD0 - and has no per-batch refresh, so the host is the
+    // mission's, not the batch's. Same class of artefact as the coordinator
+    // below and the weapon directors cc8_ship_drive fixed in register_units.
+    //
+    // Packet cc8_gunnery_host measured the pair this guard is for, on one build
+    // differing only by the guard (`if (true)` reproduces the old path exactly),
+    // USN04, same parameters, 4800 mission frames: the summary stops being a
+    // since-the-last-batch count and becomes the mission's. `first_hit` goes
+    // 13.35 s -> 119.90 s, which is the SAME event relabelled - the last batch
+    // built its host at mission 106.55 s, and 13.35 + 106.55 = 119.90.
+    // `queued_hits` 151 -> 143 and `total_damage` 14042.2 -> 14607.3
+    // (local/gh_off_usn04.log vs local/gh_on_usn04.log); `bomb_drops` 23,
+    // `bomb_impacts` 20, `torpedo_drop drops` 12 and `deaths` 14 are unchanged,
+    // because USN04 drops its first bomb after the last batch anyway and the
+    // deaths that moved cancel.
+    //
+    // They do move, though, and that is the gameplay half of this. Ignoring the
+    // clock relabel, the two runs are identical for 6274 census lines and
+    // diverge at mission 224.80 s, where a torpedo that hits Fletcher-class02
+    // unguarded swims past it guarded. Four sinkings flip: Lexington-class01
+    // (the controlled carrier) took 6291 of 8000 and lived unguarded, takes the
+    // full 8000 and SINKS at 230.26 s guarded; movieval dies; Fletcher-class02
+    // and movieval|.-3 now survive. The cause is that build_guns ran
+    // `state.health = state.max_health` over every unit on every batch, so a
+    // unit was fully healed 12 times in this mission. USN01 makes one
+    // create_units call and is bit-identical across the pair: 7140 census lines,
+    // zero differences (local/gh_off_usn01.log vs local/gh_on_usn01.log).
+    if (host.gunnery == nullptr) {
+        host.gunnery = std::make_unique<GameGunneryHost>(host.log, *this, host.lua);
+        host.gunnery->set_ship_ai(host.ship_ai);
+        host.gunnery->attach_00864bd0();
+    } else {
+        host.gunnery->register_new_units_00864bd0();
+    }
     // Packet cc8_ship_follow. This used to rebuild the coordinator on EVERY
     // spawn batch, which on USN04's twelve batches threw away its groups and its
     // counters eleven times: the AI summary reported available=0 refused=238

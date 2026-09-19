@@ -216,9 +216,18 @@ struct GameGunneryHost::Impl {
         return static_cast<float>(raw) / scale;
     }
 
-    void build_guns();
+    // Packet cc8_gunnery_host: both take the first unit index to build, so a
+    // later spawn batch registers only the units it added. `guns` is appended
+    // to and never cleared, so re-running either over an already-built unit
+    // would duplicate its guns and re-seed its throttle, health and category
+    // state. See GameGunneryHost::register_new_units_00864bd0.
+    void build_guns(std::size_t first_unit);
     void build_rank_table();
-    void attach_passes();
+    void attach_passes(std::size_t first_unit);
+    // How many units of the units host this object has already registered.
+    // The units host only ever appends, so [0, built_units) is settled.
+    std::size_t built_units{0};
+    void refresh_build_summary();
 
     void run_gunnery_pass(std::size_t index, float dt);
     void refresh_command_targets();
@@ -490,13 +499,20 @@ void GameGunneryHost::Impl::build_rank_table() {
     done("Gunnery::build_target_rank_table_00727bd0", 0x00727bd0u);
 }
 
-void GameGunneryHost::Impl::build_guns() {
+void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
     const std::size_t count = units.count();
+    if (first_unit >= count) return;
+    // resize, not assign: the units host appends, so the states already built
+    // keep their health, timers and category state and the new units come in
+    // default-constructed behind them.
     unit_state.resize(count);
 
-    // The distinct class ids the scene created, for one flatten pass.
+    // The distinct class ids the scene created, for one flatten pass. Only the
+    // new units': flatten writes `VehicleClass[id].BSPGun` into the Lua state,
+    // which outlives this call, so a class an earlier batch flattened is
+    // already there and re-flattening it would rewrite the same table.
     std::vector<int> class_ids;
-    for (std::size_t i = 0; i < count; ++i) {
+    for (std::size_t i = first_unit; i < count; ++i) {
         const GameUnitRow* row = units.unit_row(i);
         if (row == nullptr || row->type_id < 0) continue;
         if (std::find(class_ids.begin(), class_ids.end(), row->type_id) == class_ids.end()) {
@@ -506,7 +522,7 @@ void GameGunneryHost::Impl::build_guns() {
     flatten_class_tables(class_ids);
 
     bool think_read = false;
-    for (std::size_t i = 0; i < count; ++i) {
+    for (std::size_t i = first_unit; i < count; ++i) {
         UnitState& state = unit_state[i];
         const GameUnitRow* row = units.unit_row(i);
         state.row.unit_index = i;
@@ -739,6 +755,9 @@ void GameGunneryHost::Impl::build_guns() {
     // answer sets, since the family asks "does any slot carry kind N".
     // docs/ORDNANCE_KIND_IDENTITY.md. Stored at load, not at report time,
     // because the mission script issues its orders during luaStageInit.
+    // Recomputed over the whole gun list rather than the new range, because the
+    // mask is an aggregate: this is a re-store of the same value for a unit an
+    // earlier batch built, since `guns` only ever gained rows since then.
     {
         std::vector<std::uint64_t> masks(count, 0u);
         for (const GameGunRow& gun : guns) {
@@ -749,8 +768,12 @@ void GameGunneryHost::Impl::build_guns() {
 
     // 00956C20: the twelve category lists at unit+394h, the all-guns list at
     // unit+424h and the ranges at unit+430h, over the device list this process
-    // built. Run through the reconstruction's own sequence.
-    for (std::size_t i = 0; i < count; ++i) {
+    // built. Run through the reconstruction's own sequence. New units only: an
+    // already-built unit's gun set did not change, and the binding below
+    // rebuilds every gun as `dead=false operational=true`, so re-running it
+    // over an existing unit would put a gun this run has destroyed back into
+    // its category lists.
+    for (std::size_t i = first_unit; i < count; ++i) {
         UnitState& state = unit_state[i];
         std::vector<std::size_t> owned;
         for (std::size_t g = 0; g < guns.size(); ++g) {
@@ -834,8 +857,12 @@ void GameGunneryHost::Impl::build_guns() {
     }
 }
 
-void GameGunneryHost::Impl::attach_passes() {
-    for (std::size_t i = 0; i < unit_state.size(); ++i) {
+void GameGunneryHost::Impl::attach_passes(std::size_t first_unit) {
+    // New units only: the body below re-primes the throttle accumulator, the
+    // category state, the bridge countdown and the fire cache, which is the
+    // load-time seed and not something an already-ticking unit may be given a
+    // second time.
+    for (std::size_t i = first_unit; i < unit_state.size(); ++i) {
         UnitState& state = unit_state[i];
         if (state.row.guns == 0) continue;
         // 00864BD0: the base attach onto the unit's tick element unit+310h, the
@@ -3037,22 +3064,47 @@ void GameGunneryHost::set_ship_ai(GameShipAiHost* ai) noexcept {
     if (ai != nullptr) ai->bind_gunnery(this);
 }
 
+void GameGunneryHost::Impl::refresh_build_summary() {
+    summary.guns = guns.size();
+    summary.device_rows = devices.size();
+    summary.bullet_rows = bullets.size();
+    // A count over the current rows, not an accumulator, so it is recomputed
+    // rather than added to when a later batch registers.
+    summary.units_with_guns = 0;
+    for (const UnitState& state : unit_state) {
+        if (state.row.guns > 0) ++summary.units_with_guns;
+    }
+    built_units = units.count();
+}
+
 void GameGunneryHost::attach_00864bd0() {
     Impl& host = *impl_;
     host.build_rank_table();
-    host.build_guns();
-    host.attach_passes();
-    host.summary.guns = host.guns.size();
-    host.summary.device_rows = host.devices.size();
-    host.summary.bullet_rows = host.bullets.size();
-    for (const Impl::UnitState& state : host.unit_state) {
-        if (state.row.guns > 0) ++host.summary.units_with_guns;
-    }
+    host.build_guns(0);
+    host.attach_passes(0);
+    host.refresh_build_summary();
     host.log.notef("gunnery: %zu unit(s) carry %zu gun(s) from %zu authored device class "
         "row(s) and %zu bullet class row(s); the weapon director think time is %.3f s "
         "(Globals.WeaponSystems.WeaponDirectorThinkTime, 0087e16b)",
         host.summary.units_with_guns, host.summary.guns, host.summary.device_rows,
         host.summary.bullet_rows, static_cast<double>(host.think_time));
+}
+
+void GameGunneryHost::register_new_units_00864bd0() {
+    Impl& host = *impl_;
+    const std::size_t first = host.built_units;
+    const std::size_t count = host.units.count();
+    if (count <= first) return;
+    const std::size_t guns_before = host.guns.size();
+    // The rank table is built from the compiled-in preference lists alone and
+    // carries no per-unit state, so it is not rebuilt here.
+    host.build_guns(first);
+    host.attach_passes(first);
+    host.refresh_build_summary();
+    host.log.notef("gunnery: spawn batch registered unit(s) %zu..%zu on the existing host, "
+        "%zu new gun(s) (%zu total); the summary, hit records and in-flight rounds of the "
+        "%zu unit(s) already built are untouched",
+        first, count - 1, host.guns.size() - guns_before, host.guns.size(), first);
 }
 
 void GameGunneryHost::fixed_step(float step_seconds) {

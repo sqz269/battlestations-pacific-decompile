@@ -8799,3 +8799,63 @@ passes to `SetThreadAffinityMask`. Both print a `harness:` note in the log when 
 absent from a plain launch, which keeps the image's single-instance behaviour and its pin to
 processor 0. `tools/run_game.ps1` supplies them per slot; the protocol and its validation are in
 `docs/COORDINATION.md`, "Running the executable: three slots instead of one lock".
+
+## Mission reference baselines, 2026-09-19 (the gunnery summary is a mission total again)
+
+Packet `cc8_gunnery_host`, base `3e7625be0`. **Every gunnery row recorded in this repository from
+a multi-batch mission before this date is a since-the-last-batch count, not a mission total.**
+
+`GameUnitsHost::create_units` used to construct a fresh `GameGunneryHost` unconditionally, and it
+is not a load-time routine: it runs again for every spawn batch, from three producers (the
+initial scene pass, the air-ops squadron launch, the `SpawnNew` queue). USN04 calls it **13 times
+in 4800 mission frames and 25 times in 9000**. Each call threw the host away, and every column of
+`summary mission gunnery` lives on that host's `GameGunnerySummary` - `bomb_drops`,
+`bomb_impacts`, `queued_hits`, `hit_records`, `deaths`, `kill_credits`, `total_damage`,
+`first_hit`, the torpedo and recon counters - together with every round, bomb and torpedo in
+flight. `first_hit` and the `t=` of every `torpedo trace` line are the host's own
+`clock_seconds`, so they were batch-relative too. `docs/GUNNERY_HOST_LIFETIME.md` has the
+derivation and the log evidence.
+
+For USN04 at these settings the last batch built its host at mission **106.55 s** (measured: the
+same run reports `first_hit=13.35 s` unguarded and `119.90 s` guarded). So the rows below
+superseded a summary of the last 133.5 s of a 240 s mission. `summary mission dive-bomb task` and
+`summary mission world` live on the units host, which survives, and were always mission totals -
+that asymmetry is what made the artefact look harmless.
+
+Command lines exactly as the sections above cite them, through `./tools/run_game.ps1`:
+
+| mission | frames | damage | deaths | queued_hits | bomb_drops | bomb_impacts | first_hit | supersedes | recorded in |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 mission | **10022.4** | **8** | 90 | 18 | 18 | 119.90 s | `8170.6` / `7` / `57` / `17`/ `15` / `17.15 s` | `local\gh_on_usn04_ref.log` |
+| USN01 | 3000 mission | **2914.7** | **1** | 38 | 0 | 0 | 62.55 s | unchanged | `local\gh_on_usn01.log` |
+
+Full USN04 row: `queued_hits=90 dispatched=90 hit_records=90 hull=67 part=0 fires=0 floods=0
+attributions=90 deaths=8 kill_credits=8 total_damage=10022.4 first_hit=119.90 s`, with
+`bomb_drops=18 bomb_impacts=18`, `torpedo_drop drops=12`, and `summary mission dive-bomb task:
+aircraft=15 releases=18`.
+
+**USN01 is unchanged and is the control**: it calls `create_units` once, so the defect could not
+reach it. Its two runs across the fix are bit-identical on 7140 census lines. A USN01 row taken
+before today is still good.
+
+### The USN04 change is partly gameplay, not only reporting
+
+On the controlled pair (one build, one token apart, same parameters) at 4800 mission frames the
+columns move little - `bomb_drops` 23 either way, `deaths` 14 either way, `total_damage` 14042.2
+-> 14607.3 - because USN04 drops its first bomb after the last batch. But `build_guns` ran
+`state.health = state.max_health` over every unit on every batch, healing each living unit 12
+times, and removing that changes the battle: the runs are identical for 6274 census lines and
+diverge at mission 224.80 s, after which **`Lexington-class01`, the mission's controlled carrier,
+takes the full 8000 and sinks at 230.26 s** where it used to survive on 1709. `movieval` also
+dies; `Fletcher-class02` and `movieval|.-3` now survive. Two deaths gained and two lost is why
+the `deaths` column shows a null.
+
+So a USN04 gunnery row taken before this date is wrong in two ways at once, and the
+`deaths`/`bomb_drops` columns can agree with the new ones while describing a different battle.
+
+### The superset property now holds
+
+A longer run of the same mission used to report *less*. At 4800 against 9000 mission frames on
+the fixed binary: `bomb_drops` 23 -> 30, `bomb_impacts` 20 -> 30, `queued_hits` 143 -> 171,
+`deaths` 14 -> 15, `total_damage` 14607.3 -> 15447.8, and `first_hit` **119.90 s in both**, the
+same event. Unguarded the same comparison ran backwards on every column.

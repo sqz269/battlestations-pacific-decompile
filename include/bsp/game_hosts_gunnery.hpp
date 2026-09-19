@@ -480,8 +480,17 @@ public:
 
     // 00727BD0 over the authored preference lists, then the twelve per-unit
     // category lists through 00956C20's sequence, then 00864BD0 on every unit
-    // that ended with at least one gun. Runs once, after create_units.
+    // that ended with at least one gun. Runs once, after the first create_units.
     void attach_00864bd0();
+
+    // Packet cc8_gunnery_host. The same per-unit work for the units a later
+    // create_units appended, and nothing else: the image builds the 558h-byte
+    // object at unit+6DCh once per unit in 00810DD0's creation block and has
+    // no per-batch refresh, so an already-built unit keeps its guns, its
+    // health, its throttle and its category state. Calling attach_00864bd0()
+    // a second time instead would duplicate every existing gun and throw the
+    // whole host's accumulated state away. Safe to call with no new units.
+    void register_new_units_00864bd0();
 
     // One fixed simulation step: the gunnery pass 00864FE0, the aim ticks and
     // the trigger latch, 0072D130's 0ADh send with BSP_Gun_Fire behind it, and
