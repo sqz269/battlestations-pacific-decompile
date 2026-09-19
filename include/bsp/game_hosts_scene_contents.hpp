@@ -38,6 +38,7 @@
 #include <string>
 #include <vector>
 
+#include "bsp/air_operations.hpp"
 #include "bsp/scene_file.hpp"
 
 namespace bsp::game {
@@ -212,6 +213,14 @@ struct SceneSpawnPoolEntry {
     GameSceneEntityRecord record;
     bool spawned{false};
     int entity_id{0};
+    // A held-back carrier or airfield never reaches the deck build at scene load,
+    // because 006CADD0 mode 1 runs on the created path this entity skipped. The
+    // deck is authored in the same property bag, so it is built at hold-back time
+    // and registered when the script spawns the unit; otherwise
+    // `GetProperty(carrier, "slots")` would find nothing and the launch gates
+    // would refuse a carrier the script had just created.
+    bool has_deck{false};
+    AirOpsDeck deck;
 };
 
 class SceneSpawnPool {

@@ -1652,6 +1652,18 @@ int GameMissionLuaHost::run_generate_object_00944fd0(lua_State* state, int argum
     }
     entry->spawned = true;
     entry->entity_id = static_cast<int>(entity_id);
+    // The deck the scene pass built for a held-back carrier, handed over now that
+    // the unit exists. 006CADD0 mode 1 runs on the load-time created path, which
+    // this entity skipped, so without this a script-spawned carrier would answer
+    // `GetProperty(carrier, "slots")` with nothing and IsReadyToSendPlanes would
+    // refuse it for ever.
+    if (entry->has_deck) {
+        bsp::air_ops_decks().set(name, entry->deck);
+        bsp::air_ops_decks().bind_entity_id(static_cast<int>(entity_id), name);
+        log_.notef("  GenerateObject 00944fd0: \"%s\" carries an air-ops deck "
+            "(slots=%zu stock=%zu), registered now that the unit exists",
+            name.c_str(), entry->deck.slots.size(), entry->deck.stock.size());
+    }
     ++summary_.generate_object_created;
     if (summary_.generate_object_created <= 16) {
         log_.notef("  GenerateObject 00944fd0: \"%s\" (%s type=%d party=%d) -> id %u at "

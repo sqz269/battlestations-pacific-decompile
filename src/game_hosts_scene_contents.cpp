@@ -1106,6 +1106,34 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
         // The stand-in for the scene database's named-object map at sceneDb+18h,
         // which is the only thing 0046D930 looks a name up in.
         scene_spawn_pool().add(record);
+        // A held-back carrier or airfield skips the 006CADD0 mode 1 build below,
+        // because that sits on the created path. Its deck is authored in this same
+        // bag, so it is built here and handed over when the script spawns the
+        // unit. Without this a script-spawned Zuikaku would answer
+        // `GetProperty(carrier, "slots")` with nothing and could never launch.
+        if (klass != nullptr
+            && (klass->class_id == bsp::kAirOpsSceneClassIdMothership
+                || klass->class_id == bsp::kAirOpsSceneClassIdAirfield)) {
+            const bsp::AirOpsSceneDeck authored = read_scene_deck_006cadd0(bag);
+            bsp::AirOpsDeck deck = bsp::air_ops_load_from_scene_006cadd0(authored,
+                [](const std::string& type, void*) -> std::uint32_t {
+                    std::int32_t parsed = 0;
+                    if (!scene_scan_int(type, parsed) || parsed < 0) return 0u;
+                    return static_cast<std::uint32_t>(parsed);
+                },
+                nullptr);
+            deck.is_airfield = klass->class_id == bsp::kAirOpsSceneClassIdAirfield;
+            deck.owner_name = record.name;
+            deck.owner_party = record.party;
+            if (SceneSpawnPoolEntry* held = scene_spawn_pool().find(record.name)) {
+                held->has_deck = true;
+                held->deck = std::move(deck);
+            }
+            owner.log.notef("air ops deck: unit=%s class=%d NumSlots=%d MaxInAirPlanes=%d "
+                "held back for GenerateObject (006cadd0 mode 1, registered on spawn)",
+                record.name.c_str(), klass->class_id, authored.num_slots,
+                authored.max_in_air_planes);
+        }
         owner.entities.push_back(record);
         return;
     }
@@ -1895,6 +1923,12 @@ void GameSceneContentsHost::run_load_scene_contents_004d4df0(const std::string& 
     impl.summary.scene_path = scene_path;
     impl.summary.short_name = derive_scene_short_name(scene_path);
 
+    // The pool belongs to the scene being loaded, and 004D54A4 destroys the
+    // scene database's own range at [00E18680]+8h before pass 2 fills it. A run
+    // in this process loads one mission, so this changes nothing measured today;
+    // without it a process that loaded a second mission would answer
+    // `GenerateObject` out of the first one's records.
+    scene_spawn_pool().clear();
     impl.load_property_library();
 
     const int mode = effective_game_mode_004bca50(raw_game_mode, mode_forced,
