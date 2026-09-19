@@ -324,8 +324,11 @@ Who consumes the value, by exhaustive byte scan rather than by xref:
 
 So the byte is the plan-mode selector and `2` is the mode the follow tick asks for.
 `0099D300` is the last call of `009998A0 BSP_PilotBot_Update`'s order, which is how the mode reaches
-the controls. **Coverage: the mode-2 body past `009D36F` is not read**, so this document does not
-claim what the mode commands, only that the value is consumed there and nowhere else.
+the controls. ~~Coverage: the mode-2 body past `009D36F` is not read.~~ **CORRECTED in place,
+packet `cc8_done_state`:** that body was never unread — `docs/PILOT_BOT_TICK_GATES.md` section (3),
+"Entry gate A — the neutral plan", already tabulated every store and all four gate conditions, and
+section **6c** below now reads it whole and adds the reachability. It is a neutral plan that
+returns, and the byte alone does not command it: see 6c.
 
 The consequence for this host is sharp: when a dive-bomb task reaches `done` and no state tick runs,
 **nothing writes `+26Ch` at all** and the block keeps whatever the last attack state stamped.
@@ -603,17 +606,115 @@ only new log lines are the three first-occurrence host records at 35501-35503, w
 the leader's water-contact line moved from 40981 to 40984 while its mission frame did not move at
 all.
 
+## 6h. `009C8A90`, the dive-bomb break-off predicate, read whole — three defects in its feed
+
+Packet `cc8_done_state`, the goaway-skip investigation. Body `009C8A90`-`009C8B5D`, `__thiscall(task)`,
+plain `RET`. Read from the listing, in the image's own order:
+
+```
+009c8a96  CALL 0099C230 / TEST AL,AL / JNZ         ; base gate; false -> 009C8A9F return FALSE
+009c8aa6  EAX = [ESI+440h] / JZ 009c8b57           ; no latched target -> TRUE
+009c8ab4  CMP byte [EAX+5Dh],0 / JNZ 009c8b57      ; target dead   -> TRUE
+009c8abe  EAX = [ESI+404h]                         ; the squadron (task+404h = approach+0Ch)
+009c8ac4  CMP byte [EAX+369h],0 / JZ 009c8ad6
+009c8acd  CMP byte [00E17BF2],0 / JNZ 009c8a9f     ; both set      -> FALSE
+009c8ad6  ECX = [ESI+310h] / CALL 009C7910         ; IsAttackState(CURRENT STATE)
+009c8ae4  TEST AL,AL / JZ 009c8af1
+009c8ae8  CMP byte [ESI+4C9h],0 / JNZ 009c8a9f     ; attack state AND ordnance -> FALSE
+009c8af1  ECX = [ESI+3FCh] / CALL 00427EB0         ; EDI = one point
+009c8afd  [ESI+3F8h]->vtable[0](&pt)               ; EAX = the other point
+009c8b14  three FLD/FSUB pairs into [ESP+8..10h]   ; a 3-D delta, x, y AND z
+009c8b30  CALL 0042E740                            ; the GAME TUNING SINGLETON -> EDI
+009c8b3b  LEA ECX,[ESP+8] / CALL 0042B2F0          ; |delta|, a 3-D length
+009c8b40  FLD [EDI+4C8h] / FMUL [ESI+41Ch]         ; tuning+4C8h * task+41Ch
+009c8b4d  FCOMIP / JA 009c8a9f                     ; threshold > distance -> FALSE
+009c8b57  MOV AL,1 / RET                           ; otherwise TRUE
+```
+
+`src/dive_bomb_task.cpp`'s `dive_bomb_should_break_off_009c8a90` matches the first three arms. The
+last two are where it diverges, and `src/game_hosts_units.cpp`'s feed adds a third divergence.
+
+1. **The `IsAttackState` conjunct is missing.** The image returns FALSE on
+   `IsAttackState(task+310h) && task+4C9h`; the host's guard is `!has_bomb_ordnance_4c9` alone.
+   The image therefore reaches the range test in a case the host does not — not an attack state,
+   ordnance still aboard — so this one makes the host **more** reluctant to break off, not less.
+   It is still wrong and it is the cheapest of the three to fix, because `009C7910` is already
+   reconstructed as `dive_bomb_is_attacking_009c7910` and `task+310h` is `ctx.current`.
+2. **`+4C8h` is read off the wrong object in the naming, though the value may be right.** The
+   listing loads `[EDI+4C8h]` where `EDI` is `0042E740()`, the **game tuning singleton** — it is
+   `Pilot/DiveBomb/SafeDist`, and it is NOT `task+4C8h`, which
+   `docs/DIVE_BOMB_TASK.md` line 142 establishes as the approach-relative in-range latch
+   (`4C8h - 3F8h = D0h`). Two different objects share the offset. The host's
+   `kSafeDistance = 100.0f` is labelled `Pilot/DiveBomb/SafeDist`, so the VALUE is probably right;
+   what is unproven here is that 100.0 is what `tuning+4C8h` holds in this installation. **Not
+   verified**, and worth one `const_width_sweep` before anyone leans on it.
+3. **The distance is 3-D in the image and planar in the host.** `009C8B14`-`009C8B2C` subtracts
+   all three components, including `+4h`, and `0042B2F0` takes the length of that three-vector.
+   The host feeds `b.distance_to_target = slot.db_planar_bc`. For a dive bomber this is the
+   difference that matters: at the moment its last bomb leaves it is still a few hundred metres
+   **above** the target, so the image's 3-D distance is large while a planar distance can be small,
+   and the two predicates disagree exactly in the window where the goaway edge should be taken.
+   Which two points the image measures between — `00427EB0([task+3FCh])` and
+   `[task+3F8h]->vtable[0]()` — is **not read here**, so the sign of the disagreement is a
+   hypothesis, not a proof.
+
+`b.speed_ratio_41c = 1.0f` is a fourth, already-labelled substitution for `task+41Ch`.
+
+**Why this is the goaway skip.** The transition tests `should_break_off` before the state switch
+(`009C8514`), so a TRUE answer takes `aimdive` straight to `done` and the goaway edges at
+`009C8664` (ordnance clear) and `009C8677` (pull-out) are never reached. That is precisely
+`movieval`'s census: `states[done=303 aimdive=53 flyabove=158 turndown=71 attackrun=1527]`, **no
+goaway at all**, and the water 1.5 s later. **Nothing above is bound yet**: per the integrator's
+instruction the next step is additive logging of every input of this predicate and of the edge
+actually taken at the tick the task leaves `aimdive`, measured before any change.
+
 ## 6g. What packet `cc8_done_state` leaves for the next reader
 
 In the order they are worth doing, with the reason each is next.
 
-1. **Feed the squadron attack mode to the dive bomb.** Section 6d: `dive_bomb_transition_inputs`
-   pins `control_mode_370` to the constant `2`, so `009C8483`'s return-to-approach edge can never
-   fire. The rule `bsp::pilot_attack_mode_0099b740` and the host wrapper
-   `run_attack_mode_tick_0099b740` both already exist for the torpedo; the dive bomb needs the same
-   two calls and a per-squadron field. This is the one change with a real chance of keeping a spent
-   bomber out of the sea, and it is an input of the dive-bomb transition, so it belongs to whoever
-   owns those inputs.
+**Ownership, by the integrator's arbitration of 2026-09-19.** The `control_mode_370` hunk of
+`dive_bomb_transition_inputs`, the dive-bomb **transition law**, the **break-off evaluation** and
+the **Done dispatch** belong to this stream, not to `cc8-dive-race`, which owns the attackrun,
+flyabove, turndown, aimdive and aimglide ticks and their inputs. Items 1 and 2 below are in those
+hunks: edit them in your own tree without waiting for the lease, prefer pure insertions, and cite
+the arbitration in the commit.
+
+1. **Feed the squadron attack mode to the dive bomb.** Section 6d.
+
+   * **The site.** `src/game_hosts_units.cpp`, `dive_bomb_transition_inputs`, the line
+     `in.engaged.control_mode_370 = 2;` (with `in.entry.control_mode_370` copied from it on the
+     next line). Drop the constant.
+   * **Reuse, do not rewrite.** `bsp::pilot_attack_mode_0099b740` is already reconstructed as a
+     pure rule, and `run_attack_mode_tick_0099b740` is already a host wrapper — read the torpedo
+     wiring (`unit_.torpedo_attack_mode_370`, `in.unit_is_flight_lead`,
+     `in.task_authorises_38h = true`, and the loop that copies the leader's value to every aircraft
+     of the flight) and mirror it with a per-squadron dive-bomb field. `task_authorises_38h` is
+     **true** for this class: verified at `00D20E50` = `0099B710` = `MOV AL,1 / RET`, section 9.
+     Run it once per think **before** the task arm, which is where `009998A0` calls `0099B740`.
+   * **Verify from the listing FIRST, both unread here.** (a) Where the in-range latch `task+4C8h`
+     (= `approach+D0h`) is **set and CLEARED** — once the mode is 1 it is the only thing sustaining
+     `engaged` (`009C83F8`), so its clear condition is what decides when the squadron leaves the
+     attack. (b) What `009C8483`'s approach state actually does for a bomber with **no ordnance
+     left**: does it fly the squadron's move order, which would be the faithful "fly home", or
+     re-attack? Note `in.unit_lacks_follow_target = true` is also hardcoded in the same host
+     function, which forces `moveto` over `follow`.
+   * **Log before changing.** At the tick the task leaves `aimdive` (and `aimglide`): which
+     transition edge was taken, every input of `engaged` (`in_range_latch_4c8`, `control_mode_370`,
+     `has_latched_target_440`), and every input of the break-off predicate with **which arm
+     returned true**.
+   * **Measure**, same-binary USN04 4800 frames: the spent bombers' next state and their altitude
+     after it, `plane water contact` for the LEADER `1 -> 0` (the member's is already gone, by the
+     stand-in), and `movieval`'s attack numbers unmoved — releases 2, aim error 8.06 m, bombs
+     landing within about 25 m.
+
+2. **The three break-off defects of section 6h**, which may close item 1 on their own — the
+   integrator's reading is that the two are one problem seen from opposite sides. Smallest first:
+   read the two endpoints of the `009C8A90` range test (`00427EB0([task+3FCh])` and
+   `[task+3F8h]->vtable[0]()`) to settle whether the host's planar `db_planar_bc` breaks off too
+   early or too late; then fix the planar-versus-3-D distance and the missing `IsAttackState`
+   conjunct together, since both live in `dive_bomb_should_break_off_009c8a90` and its feed. If the
+   goaway edge at `009C8664` comes back, `movieval` stops entering `done` pointed at the sea and
+   item 1 may be unnecessary.
 2. **The altitude clamp `009C16D2`-`009C1846`.** Section 6e: the placement stand-in has no
    counterpart to it, which is the one place the stand-in can put an aircraft where the image never
    would. The tail is already read whole in section 6; what is missing are `state+88h`'s seed,
