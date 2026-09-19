@@ -134,6 +134,14 @@ third. An altitude reference of 1.0 metre is meaningless; a **scale** of 1.0 cap
 `class+1ECh * 1.0` = 0.1854 rad for the Mav, a 10.6-degree climb. This is the cleanest evidence in
 the binary that the argument is dimensionless, and it is independent of the x87 walk.
 
+A fourth direct call site, read by `agent/cc8-dive-bomb` after this packet flagged it, agrees on the
+type and differs on the policy: `009C6F7D` in `009C62B0 BSP_BotStateDiveBombFlyAbove_Tick` selects
+its second argument between `00CE74F8` = **0.8** (`009C6F53 MOVSS`, reached when `009C6F51 JBE` is
+not taken) and a live computed value at `[ESP+0x10]`, pushing it through `009C6F6D SUB ESP,8` /
+`009C6F69 FLD [ESP+0x10]`. So that state caps its climb at `class+1ECh * 0.8` where the torpedo
+goaway caps at `class+1ECh * 1.0`. Three states, three different dimensionless values in the same
+slot, no altitude anywhere.
+
 **(d) The `1.6` that appears twice.** The move-to tick's own ramp at `009C1AF3` is
 `Interp(0.05, 0.35, 0.4, 1.6, .)` (`00CE7638`, `00CF6560`, `00CE7804`, `00D06BB4`), so its largest
 scale is **1.6**, and the dive cap at `009FB97F` is `max(DropAngle * 1.6, DEG(60))` with the same
