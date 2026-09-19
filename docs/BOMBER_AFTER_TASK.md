@@ -445,6 +445,62 @@ What is missing is not the branch but the body of `009D29E0` (section 4).
 | `009D2720` disarmed arm | **not read past its head**, `009D29E0-009D2CF3` | **hole**, stated |
 | `007F23A0` shape 2 | **not read**, `007F25BD` | **hole**, stated |
 
+## 8a. Handoff for a cold reader
+
+Nothing in this packet is bound. Everything below is scoped from the readings above.
+
+**The squadron shape, USN04.** Thirteen squadrons print formation lines and every plane squadron in
+the log is `wing=3` with `seat1 index=1` — indices 0, 1, 2, one leader and two members. `D3A Val
+#1.1` is identical in shape to `movieval`. **Caveat, stated:** the printer names the squadron, not
+the seat, so "plain `movieval` is seat 0" is inferred from the naming convention
+(`movieval`, `movieval|.-2`, `movieval|.-3`) and not read off a seat-labelled line. A successor that
+needs it proved should print the seat with the unit name rather than trust this.
+
+**Cut A — the dive-bomb Done state.** `run_dive_bomb_task_arm_009c8790`
+(`src/game_hosts_units.cpp:5186`) has no per-state tick dispatch for `kDone`; add one mirroring
+`src/torpedo_task_arm.cpp:291-294`. Bind the enter `009C7240` (27 bytes, read whole here: two field
+writes then a tail jump into `009BED80`, which assigns the formation indices and leaves
+`psFormation` on **shape 1**, already proved in `src/plane_formation.cpp`) and the tick `009C7270`
+(13 bytes: `009C1FD0(state, dt)` and nothing else). Measure on USN04 at 4800 mission frames against
+section 6b: **two** water contacts today, not three, so the target is 2 -> 0.
+
+*The leader caveat.* One of the two ditching aircraft is the flight leader, and for a leader
+`009BFD70` returns false at `009BFEB1`, so `009C1FD0` ends at `009C1FF1` having written only
+`[[state+4]+18h]+26Ch = 2`. Cut A can only remove the leader's ditch if that byte is what keeps a
+spent aircraft flying. Section 6a proves the byte is the pilot planner's mode selector and that
+`0099D300 BSP_PilotBot_PlanControls` is its only reader, but **the mode-2 body past `0099D36F` is
+not read**. Finish that first; it is cheap and it decides the cut.
+
+*If the leader ditches anyway*, the next reads in order are `009D2720`'s disarmed arm
+`009D29E0-009D2CF3` (787 bytes — the one branch a Done leader does run, and section 4 shows it
+reading the leader and a class-row distance), then the task consumer `009998A0 BSP_PilotBot_Update`
+and `0099B740 BSP_BotTask_AbandonIfStale`.
+
+*A trap to check before reading any after-run as proof.* `kPlaneFormationPlacementEnabled` is `true`
+(`src/game_hosts_units.cpp:1722`) and `follow_base_tick_009c1fd0` calls
+`place_wing_member_on_station_007f23a0(slot_, false)` — `once = false`, so a member reached through
+that seam is pinned onto its station every tick. That would mask whatever a newly-bound tick
+commands for the members (not for the leader, who never reaches it).
+
+**Cut B — `007F23A0` shape 2**, body at `007F25BD` (at most to `007F26AC`, ~240 bytes, x87 with two
+`00415550 MaxFloatByRef` calls and a reciprocal). This is what the **torpedo** Done enter selects
+(`009D254E` writes `psFormation = 2`), so until it is read a spent torpedo flight has no station and
+binding the torpedo Done enter faithfully would make things worse, not better.
+
+**Cut C — `009D29E0-009D2CF3`**, the 787-byte disarmed arm, today `kIdle` in
+`src/torpedo_task_arm.cpp:226-229`. Labelled `partial_projection` in section 8.
+
+**The follow law's real size.** `009BFD70` (reconstructed) + `009BFEE0` arm B (~1500 instructions)
++ `009BEE30` (3895 bytes) is roughly **2900 unread instructions**. Any packet proposing to
+"reconstruct the follow law" should be sized against that, not against the 1795 of `009BFEE0`.
+
+**Artefacts left in `J:\PROG\battlestations-pacific-decompile-cc8-after-task`** (read-only for the
+successor, who starts in a fresh tree): `local/bfee0_listing.txt` (`009BFEE0` decoded whole),
+`local/c1fd0_listing.txt` (`009C1FD0` decoded whole), `local/bfee0_map.py` (the mapper — takes
+`<start_hex> <end_hex> <out>`, works on any body, detects stores by mnemonic because Capstone
+reports `fstp [mem]` as a read), and `local/aftertask_before_usn04.log`, the BEFORE run at main
+`f14732dc4`.
+
 ## 9. Uncertainty
 
 * `block+18h` as `GoodPositionDist` and `block+14h` as `GoodPositionDir` are read from their use
