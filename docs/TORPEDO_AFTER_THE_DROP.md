@@ -317,3 +317,66 @@ was wrong: `009F9D37 FLD [EAX+188h]` is `desc+188h MaxSpd` - the same field this
 `plane_max_spd` - divided by the reference `009C3EC4` loads from `[EAX+4D8h]`, taken `max(., 1.0)`
 and stored to `approach+24h` at `009F9D61`. It is a stand-in with a known formula, so it is a
 binding in its own window rather than a packet of reading.
+
+### 3.5 `009D0C10` read whole from the listing, and what the binding actually costs
+
+Body `009D0C10`-`009D0D87`, `void __fastcall(this)`, no stack argument, `SUB ESP,0x3C` + `PUSH ESI`,
+balanced by `POP ESI` / `ADD ESP,0x3C` / `RET` at `009D0D83`-`009D0D87`. Section 3.4's shape is
+confirmed and the two call setups are now exact rather than decompiler-shaped.
+
+**The bearing call, from the pushes in stack order** (`009D0C26`-`009D0C4F`):
+
+```
+009d0c16  MOV ECX,[ESI+4]                  ; ECX = approach, the receiver
+009d0c1f  MOV EAX,[ECX+4]                  ; EAX = unit
+009d0c26  SUB ESP,8
+009d0c29  FLD  [0x00ce74f8] -> [ESP+4]     ; 0.8
+009d0c36  FLD  [ESP+0x14]   -> [ESP]       ; approach+90h, saved at 009D0C22
+009d0c3d  PUSH EDX          (EDX = ESI+2Ch); &state+2Ch, the +/-1 SIDE, BY POINTER
+009d0c3e  FLD  [ESI+0x24]   -> PUSH        ; state+24h, the break-off distance
+009d0c45  PUSH EAX                          ; the unit
+009d0c4e  PUSH EDX          (EDX = &scratch)
+009d0c46  EAX = [[ECX]]                     ; approach->vtable[0]
+009d0c4f  CALL EAX
+009d0c51  PUSH EAX                          ; the returned point
+009d0c52  MOV ECX,ESI                       ; this = the goaway state
+009d0c54  CALL 009FD570                     ; -> the bearing, in ST0
+```
+
+so it is `009FD570(state, approach->vtable[0](&scratch, unit, state+24h, &state+2Ch, approach+90h,
+0.8))`. The **side is passed by pointer**, which means `vtable[0]` may write it back - a detail a
+by-value reconstruction would lose.
+
+**The tail** (`009D0D62`-`009D0D87`) is `state+18h = AddWrappedAngle(unitVtable50(), turn)`.
+`0074E260` is `FLD [ECX+0C6Ch] / RET`, so `vtable[50h]` takes nothing and cleans nothing; the two
+`PUSH ECX` at `009D0D71` and `009D0D77` are building `AddWrappedAngle`'s two-argument frame around
+it, which is why only one `SUB ESP,8` appears for two calls. The stack balances against the
+prologue, which is the check that the reading is right.
+
+**`007F0280` can be substituted safely, and this is the one piece of good news.** `009D0C96`-
+`009D0CAA` zero the three out-slots with `XORPS`/`MOVSS` immediately before the call, and the probe
+term is `-p[0] * p[1] * p[2]`. A no-hit answer leaves all three zero, so `probe` is `0`, and the
+nudge at `009D0D50` needs `probe` strictly positive or negative on one side of a sign test. **An
+inert probe therefore changes nothing**, which is exactly how the host already models the same
+routine for the aim tick (`sector_probe_009d1a94` returning a default `TorpedoAimSectorProbe{}`).
+On an open-sea placement that is also the right answer physically.
+
+**`009FD570` cannot, and it is the whole cost of this packet.** Body `009FD570`-`009FDEDE`, 2414
+bytes, **six callers** - `007B5AF0`, `009A3CF0`, `009AD480`, `009B5760`, `009C47D0` and this one -
+and fourteen callees including `00413920 BSP_Matrix_Multiply4x4`, `004134F0 BSP_Matrix_Copy4x4X87`,
+`00414DB0`, `00419010`, `00438AA0`, `00438B10`, `009FA510` and `009FCFD0`. It is a shared
+fly-to-a-point solver, not a bearing helper, and the dive bomb (`009C47D0`) and depth charge
+(`009A3CF0`) reach it too.
+
+So the honest shape of the remaining work is **not** "bind `009D0F10`". It is:
+
+1. read `009FD570` (2.4 KB, six callers) and the `vtable[0]` break-off-point routine it is fed;
+2. then `009D0F10` and `009D0D90` reconstruct and bind in one short window, because everything else
+   they need is already read: the tick in 3.1, the enter's draws in 3.3, the predicate in 3.4, and
+   `007F0280` inert by the argument above.
+
+Step 1 pays for six call sites rather than one, which is why it deserves its own packet rather than
+being done hurriedly inside this one. Binding `009D0F10` with a substituted bearing would command a
+heading that is not the image's, and the run would report a climb-away flying somewhere the native
+never goes - the same failure `agent/cc8-dive-bomb` hit from a modelled-from-one-condition predicate,
+reached by a different road.
