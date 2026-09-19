@@ -89,18 +89,62 @@ only arrangement seen so far that can satisfy `lead < -5.0`.
 aimdive, `#3.1` 618 against 50. Nine of the twelve dive bombers in USN04 get a dive in; three
 release (`movieval`), and the six Vals do not.
 
-**The six Vals are NOT blocked by the aimglide, and you should know that before you start.** Their
-aim error reaches 0.48 m (`#1.1`) and 0.37 m (`#3.1`) against the 25 m gate - better than
-`movieval`'s 8.06 m - and they still do not release. Those samples are **aimdive** ticks: the census
-lives in `dive_bomb_aimdive_inputs`, which `src/dive_bomb_task.cpp:906` calls only when
-`ctx.current == kAimDive`, so the `kAimDive || kAimGlide` test inside that function is nearly
-vacuous. The gate that stops them is `009C60AF`, `approach+A8h > altitude`: their minima land at
-**606.8 m** and **718.3 m** against the pinned 350. Binding the authored draw would not help - 450 is
-still far below 606.8. What is worth reading is **why they dive from 1024.3 m** when `movieval`
-enters at 650.9 m from an almost identical entry range (478.2 m against 472.6 m), and **which
-`PilotBotParameters` row they draw**: `approach+14h` is `00F8A30C + index*248h + 0Ch` and this host
-always takes SPNormal, so the difficulty index is unmodelled. That is a separate packet from the
-aimglide; do not conflate them.
+**The six Vals are NOT blocked by the aimglide**, and you should know that before you start. Section
+1a below has the measurement and what does block them. Do not conflate the two; they are separate
+packets, and this one comes first.
+
+---
+
+## 1a. Three of twelve release. The other six that dive are held by the altitude gate
+
+The headline "the dive releases" is true of `movieval` and needs this qualification, which reorders
+the work below. From `local\usn04_rel_impact.log`, all twelve dive bombers in USN04:
+
+| squadron | x | states reached | aim error, closest | releases |
+| --- | --- | --- | --- | --- |
+| `movieval` | 3 | attackrun, flyabove, turndown, aimdive, **done** | 8.06 m | **2** |
+| `D3A Val #1.1` | 3 | ... aimdive 49, aimglide 630 | **0.48 m** | 0 |
+| `D3A Val #3.1` | 3 | ... aimdive 50, aimglide 618, goaway 1 | **0.37 m** | 0 |
+| `D3A Val #5.1` | 3 | flyabove 92, attackrun 1257 - never dives | - | 0 |
+| `D3A Val #7.1` | 3 | flyabove 82, attackrun 1257 - never dives | - | 0 |
+
+So the aim solution is good for **nine** aircraft and only three release. `#5.1` and `#7.1` spawn
+late and the mission ends before they leave attackrun; at 3000 frames even `movieval` does not, so
+that is the mission, not a defect.
+
+**Those minima are aimdive ticks, not aimglide ticks.** The census that records them lives in
+`dive_bomb_aimdive_inputs`, and `src/dive_bomb_task.cpp:906` calls it only when
+`ctx.current == DiveBombState::kAimDive`. The `state == kAimDive || state == kAimGlide` test inside
+the function is therefore nearly vacuous - it cannot admit an aimglide sample, because the function
+never runs in the aimglide. Check this yourself before you build on it; it is the whole reason the
+next paragraph is not about the glide.
+
+**One gate is left standing: `009C60AF`, `approach+A8h > altitude`.** The other two release gates are
+satisfied - the aim error is inside the 25 m window and the re-arm timer has run out - so the
+altitude test is what refuses. `approach+A8h` is pinned at 350.0 and the Vals' minima land at
+**606.8 m** (`#1.1`) and **718.3 m** (`#3.1`).
+
+**Binding the authored draw would NOT unblock them.** `009C3F23` draws `approach+A8h` as
+`uniform(row->+38h, row->+3Ch)` = `uniform(350, 450)` on this installation's SPNormal row. 450 is
+still far below 606.8 m, so every value the draw can produce refuses. The draw stays pinned (see the
+decision at the top of this document); do not spend a run on it expecting these six to release.
+
+**Two candidates, in this order.**
+
+1. **The dive-entry altitude, first.** The Vals enter the aimdive at **1024.3 m** where `movieval`
+   enters at **650.9 m**, from an almost identical entry range - 478.2 m against 472.6 m. Same range,
+   374 m more altitude: their solution comes good while they are still twice as high as any value
+   the release floor can take. So ask where each class's fly-above and dive-entry height come from -
+   `approach+ACh` is `ctl+398h`, which the cruise profile `009C8920` holds at
+   `Pilot/DiveBomb/BeginAltRange/1`, and the host pins it at 1000.0 with `BeginAltRange/2` = 1200.0
+   unused. `009C3EA0` is where the approach's altitudes are set up. A dive that starts 374 m too high
+   is a likelier defect than a release floor 250 m too low.
+2. **Which `PilotBotParameters` row a spawned AI aircraft draws, second.** `009F9D1E` makes
+   `approach+14h` = `00F8A30C + index*248h + 0Ch`, a 0x248-stride robots row viewed 0xCh in. This
+   host always takes SPNormal and the difficulty index is unmodelled. That row carries `+38h`/`+3Ch`
+   (the release-altitude draw), `->+5Ch`/`->+60h` (the aim error's lead and gain endpoints) and
+   `->+64h`/`->+68h` (the pitch gains), so the index moves the whole solution, not just the floor.
+   The spawned Vals and the scripted `movieval` may not draw the same row at all.
 
 ---
 
