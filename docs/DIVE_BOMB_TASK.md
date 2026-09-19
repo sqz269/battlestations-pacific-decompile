@@ -2734,3 +2734,19 @@ Stated plainly so the two are not read as mutual support: `0099E490` consumes a 
 `009FB800` produces one. The zero range pair is a fault in the **producer**, and a floor that
 worked perfectly would only cap how steeply an aircraft obeyed a command it should never have been
 given. The two findings are independent, and the zero range pair is the one that matters.
+
+## Baseline: which logs may share a table
+
+Two trees are in play across the streams and their numbers must not be merged.
+
+| side | tree | carries `67e8ac821`? |
+| --- | --- | --- |
+| this stream's runs, `usn01_*`, `usn04_*` | `794922056` and later on `agent/cc8-dive-bomb` | **no** |
+| `local/tap_before_usn01.log` (plane-squadron) | `b882aa1d4` | **yes**, plus the AI weight model and the squadron wing |
+
+`67e8ac821` holds back every authored object whose block sets `Hidden = B true`, so USN04 creates 19
+units at load instead of 53. Every aircraft census moves with it. A planner-wide before/after - the
+zero range pair is the one worth measuring - therefore needs **both** columns on one side: either a
+fresh before taken here, or this stream's runs re-taken on a merged tree. Not one column from each.
+
+Recorded because the two `before` logs look interchangeable by name and are not.
