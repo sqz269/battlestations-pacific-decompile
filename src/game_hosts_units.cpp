@@ -490,6 +490,32 @@ struct GameUnitSlot {
     int db_geo_samples{0};
     int db_blocked_no_latch{0};      // ticks with approach+D0h clear
     int db_blocked_no_bomb{0};       // ticks with approach+D1h clear
+    // Packet cc8_dive_release, item 1: which of 009C8634-009C8682's three arms
+    // ends the aimdive, with the three flags as the transition read them (that
+    // is, BEFORE the same arm's tick can rewrite them). Additive census only.
+    int db_aimdive_entries{0};
+    int db_aimdive_exits{0};
+    int db_aimdive_exit_alive{0};    // 009C8645 taken: +19h was 0
+    int db_aimdive_exit_nobomb{0};   // 009C8668 taken: approach+D1h was 0
+    int db_aimdive_exit_pullout{0};  // 009C8671 not taken: +18h was set
+    int db_aimdive_exit_other{0};
+    int db_aimdive_run_ticks{0};     // ticks in the current aimdive run
+    int db_aimdive_first_run{-1};    // ticks the first aimdive run lasted
+    int db_aimdive_last_run{-1};
+    // approach+D8h/+DCh/+E0h and the two quantities the aimdive tick takes from
+    // them: the second sqrt at 009C5A40 ([ESP+5Ch]) and the bearing 009C5AF1
+    // leaves in [ESP+18h].
+    float db_run_in_origin[3]{};
+    float db_impact_fall_time{0.0f};
+    float db_impact_planar_5c{-1.0f};
+    float db_impact_bearing_18{0.0f};
+    // The 009C5B01-009C5B48 abort's own operands the first time it fires.
+    int db_abort_fires{0};
+    int db_abort_first_tick{-1};
+    float db_abort_d4{0.0f};
+    float db_abort_h14{0.0f};
+    float db_abort_range{0.0f};
+    float db_abort_pitch{0.0f};
     // The torpedo bot task (kind Eh) this ordered aircraft runs, when its
     // class carries torpedo ordnance (kind 2Bh). docs/TORPEDO_TASK_ARM.md.
     // The task object itself is src/bot_tasks.cpp's; what lives here is the
@@ -1080,6 +1106,10 @@ struct GameUnitsHost::Impl {
     static constexpr float kPilotDiveBombBeginAltRange2 = 1200.0f;
     // scripts/datatables/robots.lua, the SPNormal row, the fields
     // include/bsp/robot_config.hpp names from the same Lua keys.
+    // docs/GAME_TUNING_SINGLETON.md +4D8h, `Pilot/DiveBomb/ReferenceSpeed`,
+    // authored KMH(280) and read by 009C3EA0 - the divisor of task+41Ch's
+    // max(1.0, MaxSpd / ReferenceSpeed). Logged, not yet bound.
+    static constexpr float kPilotDiveBombReferenceSpeed = 280.0f / 3.6f;
     static constexpr float kDiveBombReleaseAlt1 = 350.0f;   // row+38h
     static constexpr float kDiveBombReleaseAlt2 = 450.0f;   // row+3Ch
     // These four are (approach+14h)->+5Ch, +60h, +64h and +68h. 009F9D1E sets
@@ -1122,7 +1152,8 @@ struct GameUnitsHost::Impl {
     // 009C7A80's outputs, the producer of every state-machine input. The body
     // is 009C7A80-009C7E9E and its tail 009C7C5B-009C7E9E is read for its
     // outputs only, so this is a PARTIAL binding of the rules that were read.
-    void update_dive_bomb_approach(GameUnitSlot& slot, float dt) {
+    void update_dive_bomb_approach(GameUnitSlot& slot, float dt,
+                                   bool diving = false) {
         (void)dt;
         // 009C7AFE: approach+D1h = BSP_WeaponController_HasGeneralBombOrdnance.
         const bsp::OrdnanceKindSet set{slot.ordnance_mask};
@@ -1173,6 +1204,52 @@ struct GameUnitsHost::Impl {
         lin.control_flag_369 = false;
         lin.global_e17bf2 = false;
         slot.db_in_range_d0 = bsp::dive_bomb_in_range_latch_009c7c31(lin);
+        // 009C7D04-009C7E33, packet cc8_dive_release item 2. approach+D8h/+DCh/
+        // +E0h is rewritten HERE, every tick, not latched: see the header note on
+        // dive_bomb_impact_point_009c7d71. Before the aircraft is diving and
+        // before the range latch it is the raw unit position (009C7D27); from
+        // then on it is the predicted bomb impact point (009C7D71). The aim
+        // point this host has is the commanded target's position, the same
+        // substitution +BCh/+C0h above already carry.
+        if (!diving && !slot.db_in_range_d0) {
+            slot.db_run_in_origin[0] = slot.motion.position[0];
+            slot.db_run_in_origin[1] = tp[1];
+            slot.db_run_in_origin[2] = slot.motion.position[2];
+            slot.db_impact_fall_time = 0.0f;
+        } else {
+            bsp::DiveBombImpactPointInputs ip;
+            ip.unit_position[0] = slot.motion.position[0];
+            ip.unit_position[1] = slot.motion.position[1];
+            ip.unit_position[2] = slot.motion.position[2];
+            ip.unit_velocity[0] = slot.motion.linear_velocity.x;
+            ip.unit_velocity[1] = slot.motion.linear_velocity.y;
+            ip.unit_velocity[2] = slot.motion.linear_velocity.z;
+            ip.aim_point_y = tp[1];
+            const bsp::DiveBombImpactPoint r =
+                bsp::dive_bomb_impact_point_009c7d71(ip);
+            slot.db_run_in_origin[0] = r.point[0];
+            slot.db_run_in_origin[1] = r.point[1];
+            slot.db_run_in_origin[2] = r.point[2];
+            slot.db_impact_fall_time = r.fall_time;
+        }
+        // 009C5950/009C5960 then 009C5A40 and 009C5AF1: the aim error's range
+        // and bearing are taken from that point, not from the aircraft.
+        {
+            const double idx = static_cast<double>(tp[0]) -
+                               static_cast<double>(slot.db_run_in_origin[0]);
+            const double idz = static_cast<double>(tp[2]) -
+                               static_cast<double>(slot.db_run_in_origin[2]);
+            const double id2 = idx * idx + idz * idz;
+            slot.db_impact_planar_5c =
+                (id2 <= bsp::dive_bomb_constant::kDistanceEpsilonSq)
+                    ? 0.0f : static_cast<float>(std::sqrt(id2));
+            float ib = static_cast<float>(bsp::dive_bomb_constant::kHalfPi -
+                                          std::atan2(idz, idx));
+            if (ib < 0.0f) {
+                ib += static_cast<float>(bsp::dive_bomb_constant::kTwoPi);
+            }
+            slot.db_impact_bearing_18 = ib;
+        }
     }
 
     bsp::DiveBombTransitionInputs dive_bomb_transition_inputs(GameUnitSlot& slot) {
@@ -1323,9 +1400,20 @@ struct GameUnitsHost::Impl {
         ahin.heading_c6c = slot.plane_heading_c6c;
         ahin.body_up_x = slot.motion.pose_row1[0];
         ahin.body_up_z = slot.motion.pose_row1[2];
+        // CORRECTED, packet cc8_dive_release item 2. The aim error's two
+        // geometric inputs are 009C5AF1's bearing ([ESP+18h]) and the second
+        // sqrt at 009C5A40 ([ESP+5Ch]), and BOTH are measured from
+        // approach+D8h/+E0h, not from the aircraft: 009C593E makes EDI the
+        // approach for 009C5950/009C5960 and only 009C5966 `MOV EDI,[EBP+4]`
+        // rebases it to the unit, for 009C598C/009C5999 - so the first sqrt
+        // ([ESP+1Ch]) and 009C5AA3's bearing ([ESP+24h]) are the live pair and
+        // this one is not. And approach+D8h is the predicted impact point the
+        // approach update rewrites every tick, so this is a CCIP solution:
+        // passing the live range here made the error track the range exactly.
         e.bearing_error = bsp::wrapped_angle_subtract_00438b10(
-            bsp::dive_bomb_aim_heading_009c4f80(ahin), slot.db_bearing_c0);
-        e.planar_distance = slot.db_planar_bc;
+            bsp::dive_bomb_aim_heading_009c4f80(ahin), slot.db_impact_bearing_18);
+        e.planar_distance = slot.db_impact_planar_5c >= 0.0f
+                                ? slot.db_impact_planar_5c : slot.db_planar_bc;
         const bsp::DiveBombAimError err = bsp::dive_bomb_aim_error_009c5c9b(e);
         slot.db_aim_error_last = err.error;
         // The release gate 00CE3880 tests the magnitude, so the census keeps the
@@ -1371,7 +1459,8 @@ struct GameUnitsHost::Impl {
         in.aim_error =
             (slot.plane_pitch_angle_c64 >
              bsp::dive_bomb_constant::kAimDiveSteepGateAngle)
-                ? slot.db_planar_bc
+                ? (slot.db_impact_planar_5c >= 0.0f ? slot.db_impact_planar_5c
+                                                    : slot.db_planar_bc)
                 : err.error;
         // 009C5B01-009C5B48, the dive abort: clearing +19h is what sends the
         // state to aimglide on the next transition.
@@ -1387,6 +1476,14 @@ struct GameUnitsHost::Impl {
         ab.aim_point_distance = slot.db_planar_bc;
         ab.unit_attitude_c64 = slot.plane_pitch_angle_c64;
         if (bsp::dive_bomb_dive_abort_009c5b43(ab)) {
+            if (slot.db_abort_first_tick < 0) {
+                slot.db_abort_first_tick = slot.dive_bomb_arm_ticks;
+                slot.db_abort_d4 = ab.release_range_d4;
+                slot.db_abort_h14 = ab.height_above_target_14;
+                slot.db_abort_range = ab.aim_point_distance;
+                slot.db_abort_pitch = ab.unit_attitude_c64;
+            }
+            ++slot.db_abort_fires;
             slot.db_aim_alive_19 = false;
             slot.db_aim_pull_out_18 = false;
         }
@@ -4633,8 +4730,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
 
                         // --- DiveBombTaskHost ---
                         void update_dive_bomb_approach_009c7a80(void*, float dt,
-                                                                bool) override {
-                            owner_.update_dive_bomb_approach(slot_, dt);
+                                                                bool diving)
+                            override {
+                            // The third argument was discarded; 009C7D09 reads
+                            // it, so it now reaches the impact-point arm.
+                            owner_.update_dive_bomb_approach(slot_, dt, diving);
                         }
                         bsp::DiveBombTransitionInputs read_transition_inputs(
                             void*) override {
@@ -4835,10 +4935,32 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         ctx.state = &unit_;
                         ctx.current = unit_.dive_bomb_state;
                         const bsp::DiveBombState before = ctx.current;
+                        // Packet cc8_dive_release item 1: the three flags the
+                        // 009C8634 arm reads, sampled before the arm so the
+                        // same tick's 009C58D0 cannot overwrite them.
+                        const bool pre_alive_19 = unit_.db_aim_alive_19;
+                        const bool pre_pull_18 = unit_.db_aim_pull_out_18;
+                        const bool pre_bomb_d1 = unit_.db_has_bomb_d1;
                         const bsp::DiveBombArmTickResult r =
                             bsp::dive_bomb_task_arm_009c8790(binding, ctx, dt);
                         (void)r;
                         unit_.dive_bomb_state = ctx.current;
+                        if (before == bsp::DiveBombState::kAimDive &&
+                            ctx.current != bsp::DiveBombState::kAimDive) {
+                            ++unit_.db_aimdive_exits;
+                            if (!pre_alive_19) ++unit_.db_aimdive_exit_alive;
+                            else if (!pre_bomb_d1) ++unit_.db_aimdive_exit_nobomb;
+                            else if (pre_pull_18) ++unit_.db_aimdive_exit_pullout;
+                            else ++unit_.db_aimdive_exit_other;
+                            unit_.db_aimdive_last_run = unit_.db_aimdive_run_ticks;
+                            if (unit_.db_aimdive_first_run < 0) {
+                                unit_.db_aimdive_first_run = unit_.db_aimdive_run_ticks;
+                            }
+                            unit_.db_aimdive_run_ticks = 0;
+                        }
+                        if (ctx.current == bsp::DiveBombState::kAimDive) {
+                            ++unit_.db_aimdive_run_ticks;
+                        }
                         ++unit_.dive_bomb_arm_ticks;
                         const int b = dive_bomb_state_bucket(ctx.current);
                         if (b >= 0) ++unit_.dive_bomb_state_ticks[b];
@@ -4854,6 +4976,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.db_aim_rearm_1c = 0.0f;
                             unit_.db_aim_pull_out_18 = !unit_.db_has_bomb_d1;
                             unit_.db_aim_alive_19 = true;
+                            ++unit_.db_aimdive_entries;
                         }
                         if (ctx.current == bsp::DiveBombState::kAttackRun) {
                             run_dive_bomb_attackrun_tick_009c4220(dt);
@@ -5178,7 +5301,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // aim error is computed at all, and what [ESP+5Ch]
                         // still holds when it is not.
                         in.pitch_c64 = unit_.plane_pitch_angle_c64;
-                        in.planar_distance_slot_5c = unit_.db_planar_bc;
+                        // [ESP+5Ch] is the second sqrt, the impact point to aim
+                        // point range - not the aircraft's own.
+                        in.planar_distance_slot_5c =
+                            unit_.db_impact_planar_5c >= 0.0f
+                                ? unit_.db_impact_planar_5c : unit_.db_planar_bc;
                         // 009C5935 calls 009C4F80 for the heading and
                         // 009C5AA3 subtracts the bearing FROM it - arg0 at
                         // [ESP] is the 009C4F80 result, arg1 at [ESP+4] is the
@@ -5196,11 +5323,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         hin.body_up_z = unit_.motion.pose_row1[2];
                         unit_.db_aim_heading_last =
                             bsp::dive_bomb_aim_heading_009c4f80(hin);
-                        // The image rolls on a bearing drawn from
-                        // approach->vtable[0]; this host re-reads the commanded
-                        // target each tick, so that is the bearing it has.
+                        // 009C5D60's arm takes the bearing measured from the
+                        // aircraft, 009C5D33's the one measured from the
+                        // predicted impact point. Both from the same heading.
                         in.bearing_error = bsp::wrapped_angle_subtract_00438b10(
                             unit_.db_aim_heading_last, unit_.db_bearing_c0);
+                        in.bearing_error_wide_18 =
+                            bsp::wrapped_angle_subtract_00438b10(
+                                unit_.db_aim_heading_last,
+                                unit_.db_impact_bearing_18);
                         // 009C5919-009C592D folds pose+C68h into the slot the
                         // band test at 009C5D2C reads.
                         in.bank_c68 = unit_.plane_bank_angle_c68;
@@ -8287,6 +8418,38 @@ void GameUnitsHost::report() {
                         static_cast<double>(slot->db_aimdive_bearing_last),
                         static_cast<double>(slot->db_flyabove_height),
                         static_cast<double>(slot->db_flyabove_span));
+                // Packet cc8_dive_release item 1: which 009C8634 arm ends the
+                // aimdive, and the 009C5B01 abort's own operands when it first
+                // fired. MaxSpd/ReferenceSpeed is item 4's quotient, logged in
+                // a run taken anyway.
+                host.log.notef("  divebomb %-12s aimdive: entries=%d exits=%d "
+                    "by[alive_19=%d nobomb_d1=%d pullout_18=%d other=%d] "
+                    "first_run=%d last_run=%d | abort 009C5B43: fires=%d "
+                    "first_tick=%d d4=%.1f h14=%.1f range=%.1f pitch=%.3f | "
+                    "speed: max=%.2f ref=%.2f quotient=%.3f | impact 009C7D71: "
+                    "tf=%.2f s range=%.1f m (live %.1f m)",
+                    slot->row.name.c_str(),
+                    slot->db_aimdive_entries, slot->db_aimdive_exits,
+                    slot->db_aimdive_exit_alive, slot->db_aimdive_exit_nobomb,
+                    slot->db_aimdive_exit_pullout, slot->db_aimdive_exit_other,
+                    slot->db_aimdive_first_run, slot->db_aimdive_last_run,
+                    slot->db_abort_fires, slot->db_abort_first_tick,
+                    static_cast<double>(slot->db_abort_d4),
+                    static_cast<double>(slot->db_abort_h14),
+                    static_cast<double>(slot->db_abort_range),
+                    static_cast<double>(slot->db_abort_pitch),
+                    // desc+188h MaxSpd, NOT motion.max_speed: that one is the
+                    // ship row and is 0.00 for every aircraft, which is what the
+                    // first run of this packet measured.
+                    static_cast<double>(slot->plane_max_spd),
+                    // GAME_TUNING_SINGLETON +4D8h Pilot/DiveBomb/ReferenceSpeed
+                    // = KMH(280); 009C3EA0 reads it.
+                    static_cast<double>(280.0f / 3.6f),
+                    static_cast<double>(slot->plane_max_spd /
+                                        (280.0f / 3.6f)),
+                    static_cast<double>(slot->db_impact_fall_time),
+                    static_cast<double>(slot->db_impact_planar_5c),
+                    static_cast<double>(slot->db_planar_bc));
                 // 009FBA50's own terms, to settle why correcting its arguments
                 // changed nothing observable.
                 if (slot->db_cruise_samples > 0) {
