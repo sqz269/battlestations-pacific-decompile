@@ -160,6 +160,59 @@ struct GameCommandsHost::Impl {
     bool logged_navigator_params{false};
     bool logged_commanded_step{false};
 
+    // Packet cc8_ship_command: a bounded command-lifetime trace for the two
+    // USN04 carriers, against 00836920's stage spine. Every line is one change
+    // of (stage, queue head, filled slots) on one unit, tagged with the arm
+    // that made it, so "what ended the running command and what began after it"
+    // is read off the trace rather than inferred from the summary counters.
+    struct CommandLifeState {
+        int stage{-1};
+        std::uint32_t head{0u};
+        int slots{-1};
+        bool seen{false};
+    };
+    std::vector<CommandLifeState> life;
+    int life_lines{0};
+    // The last clock the director step was given. An issue that arrives between
+    // two steps is stamped with the previous step's clock, which is within one
+    // fixed step of the truth and is enough to order arrivals against ends.
+    float life_clock{0.0f};
+
+    bool life_traced(std::size_t index) const {
+        if (index >= units.size()) return false;
+        const std::string& name = units[index].name;
+        return name == "Yorktown-class01" || name == "Lexington-class01";
+    }
+    const char* life_command_name(std::uint32_t object) {
+        if (object == 0u) return "(none)";
+        const bsp::EntityOrderCommandClass* klass = class_of(object);
+        return klass != nullptr ? klass->name : "?";
+    }
+    void life_emit(std::size_t index, const char* arm, float clock,
+                   const GameDirector& director, bool force = false) {
+        if (!life_traced(index)) return;
+        if (life.size() < directors.size()) life.resize(directors.size());
+        CommandLifeState& prev = life[index];
+        const int slots = command_count(director);
+        const std::uint32_t head = director.slot_command[0];
+        if (!force && prev.seen && prev.stage == director.stage && prev.head == head
+            && prev.slots == slots) {
+            return;
+        }
+        if (life_lines < 4000) {
+            ++life_lines;
+            log.notef("  cmdlife %8.2fs %-17s %-22s stage %d -> %d   head %s -> %s   "
+                "slots %d -> %d", static_cast<double>(clock), units[index].name.c_str(),
+                arm, prev.seen ? prev.stage : -1, director.stage,
+                prev.seen ? life_command_name(prev.head) : "-",
+                life_command_name(head), prev.seen ? prev.slots : -1, slots);
+        }
+        prev.stage = director.stage;
+        prev.head = head;
+        prev.slots = slots;
+        prev.seen = true;
+    }
+
     void record(const char* method, std::uint32_t address) {
         char text[16];
         std::snprintf(text, sizeof(text), "%08lx", static_cast<unsigned long>(address));
@@ -1216,6 +1269,18 @@ const GameCommandRow* finish_issue(GameCommandsHost::Impl& host, ChainState& cha
             "of the 00d21598 family and has no reconstruction";
     }
 
+    if (host.life_traced(unit_index)) {
+        // The arrival, so a slot that appears is attributed to its producer.
+        // NOT forced: a repeat the queue refuses changes nothing and would
+        // otherwise drown the trace, and the run's own per-command table
+        // already counts every issue by source.
+        char label[80];
+        std::snprintf(label, sizeof(label), "issue %.16s/%.16s %s",
+            row.source.empty() ? "?" : row.source.c_str(),
+            row.command.empty() ? "?" : row.command.c_str(),
+            row.slot_pushed ? "pushed" : "REFUSED");
+        host.life_emit(unit_index, label, host.life_clock, director);
+    }
     host.rows.push_back(row);
     host.summary.command_name = row.command;
     return &host.rows.back();
@@ -1806,6 +1871,12 @@ GameCommandCompletion GameCommandsHost::end_command_0071e430(std::size_t unit_in
     }
     out.promoted_command = director.slot_command[0];
     out.stage_after = director.stage;
+    if (host.life_traced(unit_index)) {
+        char label[64];
+        std::snprintf(label, sizeof(label), "end 0071e430 %.28s",
+            out.arm.empty() ? "?" : out.arm.c_str());
+        host.life_emit(unit_index, label, host.life_clock, director, true);
+    }
     static_cast<void>(ring);
     static_cast<void>(heading_radians);
     return out;
@@ -1850,14 +1921,21 @@ GameDirectorStepOutcome GameCommandsHost::director_step_00836920(std::size_t uni
 
     outcome.ran = true;
     ++host.summary.director_steps;
+    host.life_clock = mission_clock;
+    host.life_emit(unit_index, "step entry 00836920", mission_clock, director);
     outcome.prepass_flag = bsp::weapon_director_step_prepass_00836941(state, stage);
     host.done("WeaponDirector::step_prepass", 0x00836941u);
     state.primary_stage = director.stage;
+    // 00836962..00836985. The prepass is the only arm that can end a running
+    // `moveonpath` short of arrival: it raises the stage when the filled-slot
+    // count is above one, or when the unit is the controlled one.
+    host.life_emit(unit_index, "prepass 00836941", mission_clock, director);
 
     outcome.stop_arm_raised = bsp::weapon_director_stop_arm_00836a8b(state,
         host.params_of(unit_index), stage);
     host.done("WeaponDirector::stop_arm", 0x00836a8bu);
     state.primary_stage = director.stage;
+    host.life_emit(unit_index, "stop arm 00836a8b", mission_clock, director);
 
     outcome.reissued = bsp::weapon_director_idle_reissue_00836dc9(state,
         outcome.prepass_flag, stage.post_reset, stage);
@@ -1883,6 +1961,7 @@ GameDirectorStepOutcome GameCommandsHost::director_step_00836920(std::size_t uni
         }
         finish_issue(host, chain, row, ring);
     }
+    host.life_emit(unit_index, "idle tail 00836dc9", mission_clock, director);
     return outcome;
 }
 

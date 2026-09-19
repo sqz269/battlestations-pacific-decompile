@@ -57,6 +57,20 @@ The dword at `00D21530` reads `00 00 00 00`, so `d2 >= 0.0f` always holds and th
 never blocks an order. Ghidra reports an overlapping symbol at that address, so the value is
 recorded as read rather than as a designed threshold.
 
+> **Correction, packet `cc8_ship_command`.** The paragraph above is wrong, and it is wrong in the
+> one way this project has a tool for: it read a DWORD where the instruction loads a QWORD.
+> `00A02098` is `FLD double ptr [0x00D21530]`, eight bytes. 6400.0 as an IEEE double is
+> `00 00 00 00 00 00 B9 40`, whose **low dword is `00 00 00 00`** - exactly the bytes the old note
+> saw - and whose high dword is `00 00 B9 40`. At the width the instruction loads,
+> `tools/pe_const_read.py d:00d21530` answers **6400.0**, against `f:00d21530` = 0.0.
+>
+> So the distance gate is real and it is an **80 m radius**: `00A02020` issues nothing to a member
+> already within 80 m of the point it would be ordered to. `kAiOrderIssueDistanceSquared` in
+> `include/bsp/ai_command_tick.hpp` was 0.0f on the strength of the old reading and is now 6400.0f.
+> The overlapping symbol Ghidra reports is what made the dword reading look defensible; the width
+> of the load settles it, and `tools/const_width_sweep.py --all --load-sites` is the sweep that
+> catches this class. See `docs/SHIP_COMMAND_LIFETIME.md`.
+
 ## `00A10C20` and `00A10DC0`, the shared halves
 
 `00A10C20 BSP_AiGroup_LeaderPoint`, `__thiscall(group)`: the first member's `+FCh` pose, or the
