@@ -42,6 +42,16 @@ These are not general advice; each one cost real time tonight in this exact area
    `plane_attacker` 38000, which only matches if those attackers carry one barrel each). A peer
    nearly published "the Mavs are ordered against paths" because ids 44, 45 and 46 exist in three
    different id spaces in one log.
+
+   **This one will be directly in your way, so it is spelled out.** At least three id spaces are
+   live at once and all three carry small integers: the **scene object** id (what an order's
+   `target_object_id` holds), the **scene path** id (`scene path retained: id=44 name=p6de`) and
+   the **scene class** id (`scene class Landscape id=44`, `scene class AirField id=45`). **No
+   current log prints the scene object id table**, so an object id cannot be turned into a name
+   from a log alone, and matching it against either of the other two produces a confident wrong
+   answer. `agent/cc8-flyto-solver` ran aground here trying to name what object `45` is; that is
+   still open. If `SpawnNew` hands you an id, establish which space it is in before resolving it,
+   and consider printing the object table as the first thing you add.
 3. **A count that looks wrong may be a correct count of something else.** A diagnostic here flagged
    every correctly grouped one-wing squadron as ungrouped, because "one member" is right when
    `WingCount` is 1. Check the authored value before reporting a defect.
