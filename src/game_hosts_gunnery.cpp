@@ -2954,6 +2954,15 @@ bool GameGunneryHost::release_ordnance_drop(std::size_t unit_index) {
     h.shots.push_back(shot);
     ++h.summary.projectiles;
     ++h.summary.torpedo_drops;
+    // Packet cc8_torpedo_ordnance_decrement, REVERTED. A drop used to clear the
+    // owner's kind 2Bh bit here, so approach+132h went false on the next approach
+    // update. The run falsified it: 009D3F60's entry chooser sends a task whose
+    // +52Ah is clear straight to kDone when ctl+369h is off, so the goaway was
+    // never entered at all (ticks=0), nothing commanded the climb-away, and deaths
+    // went back to 5. A state with a 300-byte enter, a 768-byte tick and its own
+    // completion predicate is not dead code in the image, so a model that makes it
+    // unreachable is wrong. What 007B91C0's ordnance-object vtable[8](0) consumes
+    // on a drop stays unread. docs/TORPEDO_AFTER_THE_DROP.md section 9.
     if (h.summary.torpedo_drops <= 4) {
         h.log.notef("gunnery: torpedo drop %llu by %s at %.0f m, speed %.1f m/s, "
             "bullet %d, swim %.1f m/s",

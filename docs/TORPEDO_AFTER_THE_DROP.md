@@ -835,3 +835,189 @@ release and at closest approach. That separates "the escorts are slower than `d3
 "the nearest ship is not the ship aimed at" from "something upstream leads" in a single run, and it
 does not depend on finding the producer at all — if the aim point sits ahead of the target, the
 producer hunt has its answer from the outside.
+
+### 7.4 `009D4C10` is a target-and-range rule, not the ordnance route
+
+Section 7.1 listed `task->vtable[1Ch]` (`009D4C10`) as the first of two routes to `done` without
+saying what it tests. Read from the listing, because acting on 7.1 made the difference matter:
+
+```
+009d4c22: EAX = [ESI+4C4h]                ; task+4C4h = approach+CCh, THE TARGET POINTER
+009d4c28: if (EAX == 0)            -> true
+009d4c2c: if ([EAX+5Dh] != 0)      -> true
+009d4c32: EAX = [ESI+404h]                ; approach+0Ch, the control block
+009d4c38: if ([EAX+369h] && [00E17BF2]) -> false
+009d4c4a: ... a call on the current state [ESI+310h] ...  -> false on one arm
+009d4c65: FLD [ESI+488h]                  ; approach+90h, the range
+009d4c6f: CALL 0042E740                   ; the tuning singleton
+009d4c78: FLD [EAX+438h]                  ; Pilot/Torpedo/SafeDist, 700 here
+009d4c7e: FMUL [ESI+41Ch]                 ; approach+24h, the speed ratio
+009d4c88: if (SafeDist * ratio > range) -> false
+009d4c8a: -> true
+```
+
+So it fires when the **target pointer is null**, when the target's `+5Dh` byte is set, or when the
+**range has opened past `SafeDist * approach+24h`**. It has nothing to do with the ordnance byte. A
+bomber is therefore retired by losing its target or by opening the range, on any attack state - and
+in `local/goaway_bound_usn01.log` the range peaks at 701.0 against a SafeDist of 700, right at that
+threshold.
+
+**A false alarm recorded so nobody re-raises it.** Reading `src/torpedo_task_arm.cpp:384` -
+`if (!in.has_ordnance_132) return false;` - without its enclosing guard suggested `009D3150` refuses
+outright whenever the byte is clear, which would make section 7.1's `task+52Ah == 0 -> done` branch
+unreachable and the whole diagnosis self-contradictory. It is not: `009D3168` and `009D3171` skip
+the whole block unless **both** `ctl+369h` and `[00E17BF2]` are set, and the host's reconstruction
+nests the refusal inside exactly that condition. With `ctl+369h` off, as this host reports it,
+`009D3150` is the plain range test and the ordnance byte does not gate it. Section 7.1 stands.
+
+### 8.2 The same numbers against each class's own Length
+
+| torpedo | nearest | class | beam (`width`) | Length | closest approach | as a fraction of half-Length |
+| --- | --- | --- | --- | --- | --- | --- |
+| Mav1 | Dunlap | Destroyer (`type_id` 309) | 10 | not in this run's log | 51.5 m | - |
+| Mav4 | SaltLakeCity | HeavyCruiser (`type_id` 297) | 16 | 180.0 m | 76.8 m | 0.85 |
+| Mav5 | SaltLakeCity | HeavyCruiser | 16 | 180.0 m | 67.9 m | 0.75 |
+| Mav2 | Storage, 04 01 | shore structure | - | - | 26.1 m | - |
+| Mav3 | Hangar, Small, 04 01 | shore structure | - | - | 17.3 m | - |
+
+`Length 180.0` is Northampton's class row, quoted by the hydrodynamics line at load; SaltLakeCity
+shares `key=HeavyCruiser` and the same `reference_speed`, so it is the same row. The Destroyer
+Length is **not** in this run's log and is left blank rather than guessed.
+
+**What the fraction does and does not say.** A centre-to-centre distance of 0.75 to 0.85 of the
+half-Length means the round passed within the hull's *along-track* envelope: had it been crossing
+near the bow or stern line it would have been a hit, and had it been abeam it cleared the 8 m
+half-beam by some sixty metres. A single scalar distance cannot tell those apart, which is the whole
+force of the centre-to-centre caveat. Separating them needs the bearing of the closest-approach
+point relative to the target's heading, which is one more field in the same census and is part of
+section 8.1's next check.
+
+### 8.3 Retraction: `target_valid=0` does not mean the order's target failed to resolve
+
+Section 8.1's premise 2 said the ordered target's identity "is never resolved to a name anywhere in
+the log", citing `PilotSetTarget: unit=Mav1 target_object_id=45 target_valid=0 pos=(0.0 0.0 0.0)`,
+and I put the stronger form of it - "an order whose target never resolves" - to the lead and to
+`agent/cc8-ai-squadron`. **That reading is wrong**, and the producer says so.
+
+`src/game_hosts_script_orders.cpp:1000`-`1009` prints `target_valid` from
+**`target.position_valid`** and `pos` from `target.position` - the `SceneCommandTarget`'s *position*
+fields, not its object. An order that names an object carries no explicit point, so `0` and
+`(0,0,0)` are the **expected** values for an object-targeted order, and line 1013 counts exactly
+this case as resolved: `if (target.object_id != 0 || target.position_valid)
+++pilot_set_target_target_resolved_`.
+
+* **was**: the order's target never resolves, which puts a fault upstream of everything measured.
+* **is**: the order carries object id 45 (Mav1), 44 (Mav2, Mav3) and 46 (Mav4, Mav5). Only the
+  *position* is absent, and correctly so. Nothing is broken here.
+* **still open**: which object those ids name. That is a real question and this document does not
+  answer it.
+
+**And the obvious way to answer it is a trap.** The same run prints
+`scene path retained: id=44 ... name=p6de`, `id=45 ... name=p7de`, `id=46 ... name=p8de`, and also
+`scene class Landscape id=44` and `scene class AirField id=45`. Three different id spaces carry 44,
+45 and 46 in this one log. Matching `target_object_id` against either table on the number alone is
+the bare-offset collision in another dress; a first pass here did exactly that and briefly concluded
+the Mavs were ordered against paths. **Withdrawn.** `SceneCommandTarget::object_id` is a
+`std::uint16_t` in the scene *object* id space, and nothing in this run prints that space's table.
+
+The fix is one line in the same census section 8.1 already needs: print the object-id-to-entity
+mapping for the ids the orders actually carry, in the same run. Until then the five Mavs' ordered
+target is **unnamed**, and the separate question of what the gunnery path resolves is also unnamed:
+`src/game_hosts_gunnery.cpp:1318`-`1322` picks the newest current command row per unit
+(`0071EBF0`'s rule, categories 1 and 2 only) and resolves `row.target_token` **by unit name**
+through `by_name`, but the token string is never logged. `summary mission gunnery command_targets
+units_with=5` says five units got one; which unit it names is not in the log either.
+
+### 8.4 One of section 8.1's three fields cannot answer what it was meant to
+
+Section 8.1 proposed recording, beside the target's identity and position, "the stored aim point
+`approach+D0h..D8h` at release", on the reasoning that if the stored point sits ahead of the target
+along its course then the producer question is answered from outside, without finding the writer.
+
+**That field is vacuous in this host.** `TorpedoApproachHost::approach_target_point`
+(`src/game_hosts_units.cpp:3759`-`3769`) substitutes the ordered target's **current world position**
+for `approach->vtable[0]`, and `src/torpedo_approach_update.cpp:443` stores that same value into
+`plan_target_x_ac`/`plan_target_z_b0`. So the host's stored aim point **is** the target's position by
+construction: logging it and comparing it to the target can only ever return "identical", whatever
+the image does. A run spent on it would produce a confirmation of the host's own substitution and
+read afterwards as evidence about the image.
+
+* **was**: instrumenting the stored aim point answers the producer question from outside.
+* **is**: it cannot, in this host. The producer question needs either the image's writer (the static
+  hunt, bounded at eleven encodings in 6.3) or a native trace; nothing the host stores can stand in,
+  because the host is where the substitution lives.
+
+**What the same run can still settle, and it is worth one run:**
+
+| field | premise it decides |
+| --- | --- |
+| the ordered target's identity, and the `target_token` the gunnery rule resolved | 8.1's premise 2 - whether the ship a torpedo came nearest to is the ship it was aimed at |
+| that target's world position at release and at closest approach | 8.1's premise 1 - the target's real speed over the run window, instead of the waypoint-closing rate `d32c` gives |
+| the bearing of the closest-approach point relative to the target's heading | whether 51.5 m is a near miss abeam or a pass inside the bow or stern line (section 8.2), which a scalar distance cannot separate |
+| the object-id to entity mapping for the ids the orders carry | what object 44, 45 and 46 are (section 8.3), which three colliding id spaces make unanswerable from the current log |
+
+Premise 3 - that something upstream leads - is then reached by elimination rather than directly: if
+the target is the one aimed at and its speed over the window really is of order 15 m/s, a 51.5 m
+closest approach is not what a zero-lead aim produces, and the lead has to be upstream. That is
+weaker than a direct measurement and it is the strongest this host can give.
+
+## 9. The ordnance decrement, tried and falsified by its own run
+
+Section 7.2 named the host gap — `approach+132h` never clears because the loadout does not shrink —
+and prescribed the fix: clear the owner's kind `2Bh` bit on a drop so a spent bomber retires the way
+`009D4030` describes. It was implemented (`1e7c0f2f2`), run, and **the run falsified it**. Reverted
+in the same session; `src/game_hosts_gunnery.cpp` is byte-identical to `1fdecbb39` apart from a
+comment recording this, so no confirming run is needed.
+
+### 9.1 What the run said
+
+`local/ordnance_clear_usn01.log` against `local/closest_approach_usn01.log`, same binary, same
+command:
+
+| quantity | byte stays set (`closest_approach`) | byte clears on the drop (`ordnance_clear`) |
+| --- | --- | --- |
+| `torpedo_loadout_cleared` | (not instrumented) | 5 — the change did fire |
+| `goaway` **enters** | 82 | **0** |
+| `009D0F10` ticks | 465 to 551 | **0** |
+| `states` | `attackrun`, `goaway`, `aim` | `attackrun`, `aim` only |
+| `arm_ticks` (Mav1) | 1299 | 678 |
+| deaths / kill_credits | **2 / 2** | **5 / 5** |
+| hits taken / damage | 59 / 1501.9 | 178 / 2572.9 |
+
+The goaway state was **never entered**, so nothing ran the climb-away, so every bomber went back into
+the water. The churn was the lesser wrong by a wide margin.
+
+### 9.2 Why, and what it proves about the byte
+
+`009D3F60`, the entry chooser (`src/torpedo_task_arm.cpp:54`-`62`, from `009D3FA9`/`009D3FC7`):
+
+```
+if (!attack_flag_52a && (!control_flag_369 || !global_e17bf2))  return kDone;
+```
+
+With `ctl+369h` off — as this host reports it — a task whose `+52Ah` is clear is sent **straight to
+`kDone`** the next time the entry chooser runs. The aim state never hands off to the goaway, because
+the task leaves the attack chain before it can.
+
+* **was** (section 7.2): a drop clears `approach+132h`, and `009D4030` then retires the bomber
+  through the goaway's completion.
+* **is**: a cleared `+132h` removes the whole attack chain, goaway included. The goaway is entered
+  **from aim**, and `009D3F60` retires the task before aim can get there.
+* **therefore**: `approach+132h` **does not clear on a drop in the image**, or something else keeps
+  the task in the attack chain long enough to break off. A state with a 300-byte enter
+  (`009D0D90`-`009D0F04`), a 768-byte tick (`009D0F10`-`009D1210`) and its own completion predicate
+  (`009D3150`) is not dead code, and a model that makes it unreachable is wrong on that ground alone.
+
+What `007B91C0`'s ordnance-object `vtable[8](0)` consumes on a drop **stays unread**, and section
+7.2's confidence that it must consume something is now only half right: it may consume a per-device
+round count without the *kind* bit ever clearing, which would leave `+132h` set and every transition
+above it intact. That is the shape the evidence now favours and it is not proved either.
+
+### 9.3 What section 7.2 should have said
+
+Section 7.2's reading of `009D4030` is unchanged and still correct: with `+52Ah` clear, a completed
+goaway goes to `done`. What was wrong was the inference that clearing the byte is therefore what
+retires a bomber — it is upstream of the goaway, not downstream, and the entry chooser sees it
+first. The 82 re-entries remain unexplained by anything this packet has established, and the honest
+statement is that the host re-attacks because `+132h` stays set **and that may be what the image
+does too**.
