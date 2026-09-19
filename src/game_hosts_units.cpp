@@ -469,6 +469,14 @@ struct GameUnitSlot {
         float alt{0.0f};
         float range{0.0f};
         float cmd_alt{0.0f};
+        // Packet cc8_dive_heading: the three flyabove numbers that decide the
+        // race, latched at the hand-over so the arm that fired can be named
+        // instead of inferred. `span` is 009C65FD's, `f18` is 009C680E's
+        // can-dive and `f19` is 009C67B0's roll-in permission.
+        float span{0.0f};
+        float b_height{0.0f};
+        signed char f18{-1};
+        signed char f19{-1};
     };
     static constexpr int kDbTransitions = 12;
     DbTransition db_transitions[kDbTransitions]{};
@@ -1377,6 +1385,7 @@ struct GameUnitsHost::Impl {
             // approach+D4h, which is now the real 675.0 m.
             in.flyabove_can_dive_790 = bsp::dive_bomb_flyabove_can_dive_009c680e(
                 height_above, slot.db_release_range_d4);
+            slot.db_flyabove_can_dive_18 = in.flyabove_can_dive_790;
             // +19h at 009C67B0, BOUND. The first arm is the 1.6 rad bearing
             // test at 00CE3D48; the second is `span <= 0` (009C67A9 with
             // 009C67AE the byte 72, JC). With the 0.7/200.0 pair that is
@@ -1386,6 +1395,7 @@ struct GameUnitsHost::Impl {
                 bsp::wrapped_angle_subtract_00438b10(slot.db_bearing_c0,
                                                      slot.plane_heading_c6c),
                 span.span);
+            slot.db_flyabove_ready_19 = in.flyabove_ready_791;
             // +1Ah at 009C66E3, BOUND: leave when the folded bearing error
             // beats a tolerance opening from 20 degrees at span 0 to pi at
             // approach+B4h * 0.8 - S. 009C66E7 clears +19h on the same edge,
@@ -5421,6 +5431,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             t.alt = unit_.motion.position[1];
                             t.range = unit_.db_planar_bc;
                             t.cmd_alt = unit_.plane_commanded_altitude;
+                            t.span = unit_.db_flyabove_span;
+                            t.b_height = unit_.db_flyabove_height;
+                            t.f18 = unit_.db_flyabove_can_dive_18 ? 1 : 0;
+                            t.f19 = unit_.db_flyabove_ready_19 ? 1 : 0;
                         }
                         if (before == bsp::DiveBombState::kAimDive &&
                             ctx.current != bsp::DiveBombState::kAimDive) {
@@ -9153,7 +9167,7 @@ void GameUnitsHost::report() {
                 // is unbound - so a cmd that stops moving across the flyabove is
                 // that gap measured rather than argued.
                 if (slot->db_transition_count > 0) {
-                    char tr[400];
+                    char tr[1200];  // cc8_dive_heading widened the per-entry text
                     int tn = 0;
                     tr[0] = '\0';
                     for (int i = 0; i < slot->db_transition_count; ++i) {
@@ -9162,7 +9176,8 @@ void GameUnitsHost::report() {
                         tn += std::snprintf(tr + tn,
                             (tn < static_cast<int>(sizeof(tr)))
                                 ? sizeof(tr) - static_cast<std::size_t>(tn) : 0u,
-                            "%s%s>%s@%d alt=%.0f rng=%.0f cmd=%.0f",
+                            "%s%s>%s@%d alt=%.0f rng=%.0f cmd=%.0f "
+                            "span=%.0f b=%.0f f18=%d f19=%d",
                             i > 0 ? " | " : "",
                             (t.from >= 0 && t.from < 10)
                                 ? kDiveBombStateNames[t.from] : "?",
@@ -9170,7 +9185,10 @@ void GameUnitsHost::report() {
                                 ? kDiveBombStateNames[t.to] : "?",
                             t.tick, static_cast<double>(t.alt),
                             static_cast<double>(t.range),
-                            static_cast<double>(t.cmd_alt));
+                            static_cast<double>(t.cmd_alt),
+                            static_cast<double>(t.span),
+                            static_cast<double>(t.b_height),
+                            static_cast<int>(t.f18), static_cast<int>(t.f19));
                         if (tn >= static_cast<int>(sizeof(tr))) break;
                     }
                     host.log.notef("  divebomb %-12s hand-overs: %s",
