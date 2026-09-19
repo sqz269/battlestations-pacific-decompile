@@ -159,15 +159,38 @@ runs the same autoload folder `00886900` does:
 | 158 | `globals.unitclass_val` | `DiveBomber` | the striker coin flip |
 | 162 | `globals.unitclass_kate` | `TorpedoBomber` | the striker coin flip |
 
-**On ordnance kind 2Bh specifically.** `Type` above is the authored class type and is not itself the
-ordnance. The 2Bh bit comes from a gun's *bullet* class: `game_hosts_gunnery.cpp:538` reads the
-bullet class's `Type` string and `ordnance_kinds_for_bullet_type` maps it, and only
-`{"Torpedo", bit(0x2b) | bit(0x2a) | bit(0x29)}` sets 2Bh. So a vehicle class carries 2Bh exactly
-when one of its weapons points at a bullet class whose `Type` is `"Torpedo"` — a second table away
-from the vehicle class, which is why the id alone cannot answer it. The run settles it directly and
-by id: the ordnance census counts units, so a launched 162 that raises `units_with torpedo` proves
-162 carries 2Bh, and the earlier run already proved the converse for 101, which raised
-`general_bomb` and left `torpedo` at 34.
+### Which ids carry ordnance kind 2Bh
+
+`Type` above is the authored class type and is not the ordnance. The 2Bh bit comes from a gun's
+*bullet* class: `game_hosts_gunnery.cpp:538` reads the bullet class's `Type` string and
+`ordnance_kinds_for_bullet_type` maps it, and only `{"Torpedo", bit(0x2b) | bit(0x2a) | bit(0x29)}`
+sets 2Bh. That is three tables away from the vehicle class, along the chain the gunnery host's own
+Lua chunk walks:
+
+```
+VehicleClass[N] -> a platform's ["Gun"][1] -> Devices[id] -> dev.Bullet[i].Bullet
+                -> Bullets[id]["Type"] == "Torpedo"
+```
+
+Walking those three tables in this installation (`classtables/arcade/bulletclasses.lua`,
+`classtables/arcade/deviceclasses.lua`, `autoload/vehicleclasses.lua`) gives:
+
+* 12 bullet classes have `Type = "Torpedo"`: 4, 27, 29, 61-67, 69, 70.
+* 36 device classes fire one of those.
+* **89 vehicle classes carry ordnance 2Bh**, and of the four ids this mission launches exactly one
+  of them does:
+
+| id | class | carries 2Bh |
+| --- | --- | --- |
+| 101 | Wildcat, `Fighter` | no |
+| 150 | Zero | no |
+| 158 | Val, `DiveBomber` | no |
+| **162** | **Kate, `TorpedoBomber`** | **yes**, through device 85 |
+
+So the striker coin flip `{158, 162}` has one torpedo-capable face, and **162 is the id the whole
+stream needs**. The run corroborates it independently and by id: a launched 162 that raises
+`units_with torpedo` proves it, and the earlier run already proved the converse for 101, which
+raised `general_bomb` and left `torpedo` at 34.
 
 ## Uncertainty
 
