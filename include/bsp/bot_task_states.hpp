@@ -316,6 +316,60 @@ void depth_charge_tick(BotTaskStateHost& host, BotTaskStateContext& ctx,
                        const DepthChargeTransitionInputs& in, float dt, int rounds_remaining,
                        void* const state_objects[static_cast<int>(DepthChargeState::kCount)]);
 
+// ---------------------------------------------------------------------------
+// 009D0951-009D0A92, step 4 of the torpedo attack run: the four arguments the
+// tick hands 009FBA50. coverage: complete for this half of step 4; the throttle
+// half and steps 1-3 are elsewhere.
+//
+// margin = clamp(1400 - unitWorldY, 50, 400)      009D0957 / 009D096D / 009D09B0
+// denom  = min(range_90, 2000)                    009D09D6
+// scale  = Interp(0.1, 0.35, 0.4, 0.8, margin / denom)          009D0A63
+// low    = elapsed_134 >= 15 ? +7Ch : +80h        009D0A0E, the release distance
+// high   = range_90                               009D09FC
+// base   = +74h + +78h                            009D0A81
+// gain   = tan(desc+1F0h DropAngle)               class+518h, 007C4A3F/007C4A44
+//
+// 009FBA50 then commands `min(base + max(high - low, 0) * scale * gain, cap)`,
+// which is a GLIDE SLOPE down to `base` at the release distance, and hands
+// `scale` to 009FB800 as the reference that caps its pitch demand at
+// DropAngle * scale. docs/TORPEDO_DESCENT_LAW.md.
+// ---------------------------------------------------------------------------
+namespace torpedo_attack_run_constant {
+inline constexpr float kMarginCeiling_00d1f8d0 = 1400.0f;  // the double at 00D1F8D0
+inline constexpr float kMarginFloor_00ceb4d4 = 50.0f;      // 00CEB4D4, gate 00CE3938
+inline constexpr float kMarginCap_00cfd710 = 400.0f;       // 00CFD710, gate 00CE3D90
+inline constexpr float kDenomCap_00cffd60 = 2000.0f;       // 00CFFD60, gate 00CF0DD8
+inline constexpr float kScaleRatioLow_00d7a2f0 = 0.1f;
+inline constexpr float kScaleAtLow_00cf6560 = 0.35f;
+inline constexpr float kScaleRatioHigh_00ce7804 = 0.4f;
+inline constexpr float kScaleAtHigh_00ce74f8 = 0.8f;
+inline constexpr float kReleaseDistSwitchSeconds_00cf3f20 = 15.0f;
+}  // namespace torpedo_attack_run_constant
+
+struct TorpedoAttackRunAltitudeInputs {
+    float alt_floor_74{0.0f};     // approach+74h
+    float alt_margin_78{0.0f};    // approach+78h
+    float speed_late_7c{0.0f};    // approach+7Ch, TorpReleaseDistNear scaled
+    float speed_early_80{0.0f};   // approach+80h, TorpReleaseDistFar scaled
+    float range_90{0.0f};         // approach+90h, the planar range to the target
+    float elapsed_134{0.0f};      // approach+134h
+    float unit_world_y{0.0f};     // unit+100h
+    float drop_angle{0.0f};       // desc+1F0h
+};
+
+struct TorpedoAttackRunAltitudeCommand {
+    float base{0.0f};        // 009FBA50 arg0
+    float range_low{0.0f};   // arg1
+    float range_high{0.0f};  // arg2
+    float scale{0.0f};       // arg3, and 009FB800's reference
+    float class_gain{0.0f};  // class+518h
+    float margin{0.0f};      // kept for the run census
+    float denom{0.0f};
+};
+
+TorpedoAttackRunAltitudeCommand torpedo_attack_run_altitude_009d0951(
+    const TorpedoAttackRunAltitudeInputs& in) noexcept;
+
 // 009A3770 and 009D07B0, the two attackrun ticks. They differ only in constants,
 // which is why one sequence carries both through `variant`.
 struct AttackRunTickInputs {
