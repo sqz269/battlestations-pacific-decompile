@@ -2750,3 +2750,36 @@ zero range pair is the one worth measuring - therefore needs **both** columns on
 fresh before taken here, or this stream's runs re-taken on a merged tree. Not one column from each.
 
 Recorded because the two `before` logs look interchangeable by name and are not.
+
+### The `009FBA50` call fully determined: the second range is the live planar distance
+
+The one argument left unnamed above is read. `009C4311 FLD [ECX+0xbc]` / `009C4317 FSTP [ESP+44h]`
+puts **`approach+BCh`, the live planar range to the target**, into the slot `009C43DB` later loads
+into `[ESP+8]`. So the whole call at `009C4401` is:
+
+```
+009FBA50( base       = approach+ACh + approach+50h    009C43F3
+          range_low  = approach+B4h                   009C43E3   the attack distance
+          range_high = approach+BCh                   009C43DB   the LIVE planar range
+          throttle   = the 009C43CD InterpolateClamped result )
+```
+
+`span = max(range_high - range_low, 0)` is therefore **the distance still to close**: about 9900 m
+at 11 km out, shrinking to zero as the aircraft reaches its attack distance. That is the glide
+slope - hold high while far out, come down to the base as you close.
+
+This host passes `attack_distance_b4` for both, so `span` is identically zero and the aircraft is
+commanded to the bare base altitude from 11 km out. It descends at once instead of gliding down as
+it closes, which is why its whole altitude profile is wrong before any of the states this stream has
+bound get a say.
+
+The fix is two lines at the call site in `run_dive_bomb_attackrun_tick_009c4220`:
+
+```cpp
+cin.base_altitude = in.begin_altitude_ac + in.aim_point_height_50;  // 009C43F3
+cin.range_low     = in.attack_distance_b4;                          // 009C43E3
+cin.range_high    = in.planar_distance_bc;                          // 009C43DB
+```
+
+Both are now read from the image rather than inferred. It needs `src/game_hosts_units.cpp`, which
+this stream has released, so it waits for a declared window.
