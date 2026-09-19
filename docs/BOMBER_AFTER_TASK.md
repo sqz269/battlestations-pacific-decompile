@@ -1194,3 +1194,55 @@ Not retracted but worth stating: this does not show the image's `moveto` is diff
 host's in some particular way that was read. It shows only that gating entry on the latch is
 survivable in the image and is not survivable here, so something in the approach is missing. That
 is the next packet, not a conclusion of this one.
+
+### 10.10 The break-off distance: both endpoints read, and the sign of the host's error
+
+Section 6h names the 3-D/planar divergence and says the SIGN is a hypothesis because the two
+points `009C8A90` measures between were not read. Both are read here, so it is no longer one.
+
+**The near point is the unit.** `009c8af1 MOV ECX,[ESI+3FCh]` / `009c8af8 CALL 00427EB0`
+(`BSP_EntityPose_GetWorldPositionRefreshed`), and `task+3FCh` is `approach+4h`, the unit —
+`009C7A80` uses the same field as the unit throughout. `009c8b0b MOV EDI,EAX`, so `EDI` is the
+unit's world position.
+
+**The far point is the approach's AIM POINT, not the target.** `task+3F8h` **is** the approach
+(`4C8h - 3F8h = D0h` makes `+3F8h` approach-relative zero), so `009c8afd MOV EDX,[ESI+3F8h]` loads
+the approach's own vtable and `009c8b03 MOV EDX,[EDX]` takes **slot 0**, called at `009c8b12` with
+`ECX = LEA [ESI+3F8h]`, the approach itself, and one stacked out-pointer `[ESP+14h]`.
+
+The dive-bomb approach's vtable is **`00D20C48`**, written by its constructor at
+`009c3ee2 MOV dword ptr [ESI],0xd20c48` — identified, not assumed from the torpedo's `009D0670`.
+The dword at `00D20C48` is `a0 40 9c 00` = **`009C40A0`**, whose body is eight instructions:
+
+```
+009c40a0  MOV EAX,[ESP+4]
+009c40a4  FLD [ECX+4Ch] / FSTP [EAX]
+009c40a9  FLD [ECX+50h] / FSTP [EAX+4]
+009c40af  FLD [ECX+54h] / FSTP [EAX+8]
+009c40b5  RET 4
+```
+
+So it returns `approach+4Ch/+50h/+54h`: the **aim point**.
+
+`009c8b14`-`009c8b2c` then subtracts all three components in the order `aimPoint - unitPos` and
+`009c8b3b CALL 0042B2F0` takes the three-vector's length. **The break-off range is
+`|aimPoint - unitPosition|` in 3-D.**
+
+**The sign.** This host feeds `b.distance_to_target = slot.db_planar_bc`. `approach+BCh` is wrong
+on two counts, and both push the same way:
+
+1. It is planar. The image's distance carries `aimPoint.y - unit.y`, and a dive bomber whose last
+   bomb has just left is hundreds of metres above its aim point, so the image's range is larger by
+   very nearly the altitude difference.
+2. It is measured to a different point. `009C7B43`-`009C7BAA` builds `+BCh` from the target
+   entity's `+100h`/`+104h`, not from the approach's `+4Ch`/`+54h` aim point.
+
+Break-off fires when `distance >= SafeDist * ratio`. A distance that is too SMALL therefore fires
+the test too LATE. **So this host breaks a spent bomber off later, and lower, than the image does**
+— which is what section 6h expected: it moves WHEN a spent bomber reaches `done`, not whether it
+ever takes a goaway edge, because `009C8483`'s `ShouldBreakOff` TRUE edge sets `+664h` = `done` and
+there is no goaway edge there to restore (section 10.1).
+
+**Fixing it needs a new input, not a new expression.** The host has `db_aim_point_height_50`
+(`approach+50h`) but carries no `+4Ch`/`+54h`, so a faithful 3-D range needs the aim point's x and
+z plumbed into the slot beside it. Not done here; see 10.11.
