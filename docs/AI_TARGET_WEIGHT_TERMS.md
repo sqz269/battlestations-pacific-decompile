@@ -731,3 +731,67 @@ attacker is a plane, which says whether IJN01's close-attack members take the pr
 at all or the unprojected region. `summary mission ai target weight accuracy` gives one row per
 (bullet sub-type, target group) pair with the looked-up accuracy, the zero count and the summed
 contribution, which says whether the zeros are authored or a coverage gap.
+
+### The census, measured: `local/zero_ijn01.log`
+
+**Both of the candidates the last packet named are refuted.** The run is on the old command-target
+rule, i.e. **before** `0daec4b56`, the same side as every other column in this document.
+
+`path`: `plane_attacker=38000 other_attacker=427500`. So **92% of queries take the projected
+non-plane barrel walk**, and the unprojected region `00A0861F..00A09222` is not where IJN01's
+weights come from.
+
+`accuracy`, the rows with a non-zero lookup count:
+
+| sub-type | group | lookups | accuracy | zero | contribution |
+| --- | --- | --- | --- | --- | --- |
+| `00h` unresolved class | other | 37600 | 0.0000 | 37600 | 0.000 |
+| `02h` machinegun | other | 84600 | 0.0000 | 84600 | 0.000 |
+| `03h` machinegun AA | other | 2566200 | 0.0000 | 2566200 | 0.000 |
+| `06h` artillery medium | other | 921200 | **0.5500** | 0 | **12370968.9** |
+| `07h` artillery heavy | other | 423000 | **0.5500** | 0 | **800611.4** |
+| `09h` bomb | other | 65800 | **0.2000** | 0 | **13160.0** |
+| `0Ah` torpedo | other | 338400 | 0.0000 | 338400 | 0.000 |
+| `0Bh` depthcharge | other | 94000 | **0.5000** | 0 | **1410000.0** |
+| `10h` flak | other | 564000 | 0.0000 | 564000 | 0.000 |
+
+(the `submarine` rows mirror these at about a ninetieth of the volume, with `06h`/`07h` at `0.7000`
+and `0Ah` torpedo at `0.4500`, which is the torpedo arm's submarine entry firing correctly.)
+
+**So the zeros are not authored.** IJN01's attackers carry artillery, bombs and depth charges whose
+authored accuracy against the fall-through group is `0.55`, `0.20` and `0.50`, and their summed
+contribution is over 14 million. The "AA-armed force" reading in the previous section is **wrong**
+and is retracted: machine-gun and flak barrels do answer zero there, but they are not the only
+barrels these units carry.
+
+Two things the census does **not** establish, said plainly. Only the `submarine` and `other` groups
+were ever exercised — no candidate in the 3000-unit collect radius classified as plane, small ship
+or big ship — so the `Plane`, `SmallShip` and `BigShip` rows of the dispatch are **untested by this
+run**, and the labelled `00827F70` substitution with them. And `00h`, an unresolved bullet class,
+accounts for 37600 lookups, which is the `gun.bullet_class < 0` guard in the gunnery host rather
+than anything in this dispatch.
+
+### The actual cause: a null subsystem handle
+
+Neither candidate. `src/ai_target_weights.cpp` walked the barrels with
+
+```cpp
+const void* subsystem = nullptr;   // resolved natively at 00A09379
+```
+
+and `AiWeightModelBinding` keys every barrel accessor on that pointer through
+`index_of(entity) = (std::size_t)entity - 1`. For a null handle that is `SIZE_MAX`,
+`GameAiWeaponFacts::row` bounds-checks it away, and **`barrel_count` answers 0**. The inner loop
+therefore never executed once: `best` stayed `0`, `capture_accumulator` stayed `0`, `total` stayed
+`0`, and `ai_target_weight_result` returns `0` for a non-positive total. Every candidate, every
+mission, whatever the accuracy table said.
+
+That also explains the one number that never fitted the authored-zero reading: the 4900 that still
+scored. They were not admitted on their weight at all. `00A146D9`'s second arm admits a candidate
+whose weight is not positive when it is in the target group, which is exactly
+`ai_close_attack_candidate_admitted(0.0f, true)`.
+
+`subsystem_count` returning `1` and the binding's own comment that "the attacker has a single
+subsystem carrying every barrel" are the contract; the fix is to hand the walk the attacker handle,
+which is what resolves back to that flattened subsystem. The native's `00A09379` resolving a real
+subsystem object stays the labelled substitution it already was.

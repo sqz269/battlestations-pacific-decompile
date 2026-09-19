@@ -2752,9 +2752,11 @@ void GameGunneryHost::Impl::publish_ai_weapon_facts() {
         // second run: gating on `hit_points > 0` left complete_rows at 321 and
         // changed no other number, so every row has real health.
         //
-        // One line, and it is this one. docs/AI_TARGET_WEIGHT_TERMS.md.
-        (void)row_inputs_published;
-        row.inputs_complete = false;
+        // The collapse that held this at false is now traced and fixed: it was
+        // ai_target_weights.cpp handing the barrel walk a null subsystem, so
+        // barrel_count answered 0 and the loop never ran. Enabled here, and the
+        // run that justifies it is in docs/AI_TARGET_WEIGHT_TERMS.md.
+        row.inputs_complete = row_inputs_published;
     }
 }
 
