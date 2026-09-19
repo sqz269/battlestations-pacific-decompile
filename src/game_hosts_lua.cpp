@@ -1431,7 +1431,20 @@ void GameMissionLuaHost::note_native_call(std::size_t row, int argument_count,
     std::snprintf(address, sizeof(address), "%08lx", static_cast<unsigned long>(binding.address));
     char method[96];
     std::snprintf(method, sizeof(method), "MissionLuaNative::%s", binding.name);
-    log_.unimplemented(method, address);
+    // Packet cc8_navigator_path. The guard above was added to the first-insert
+    // branch only, and this repeat branch kept calling unimplemented() for every
+    // later call of an entity-returning row - on top of the note_entity_status()
+    // the bottom of binding_trampoline already makes. That is two GameHostLog
+    // bumps per call after the first, so n calls printed 1 + 2(n-1) = 2n-1.
+    // `local/census2_usn04.log` measured it on both rows that have a known
+    // count: FindEntity 132 calls printed `concrete calls=263` and
+    // GetSelectedUnit 49 printed `UNIMPLEMENTED calls=97`. The status half of
+    // b5a31c82f did take - the row reads `concrete` where it used to read
+    // `UNIMPLEMENTED` - so only the count was still wrong. Same guard, same
+    // reason: for these rows the arm at the bottom is the only recorder.
+    if (!bsp::mission_binding_returns_entity(binding.name)) {
+        log_.unimplemented(method, address);
+    }
 }
 
 namespace {
