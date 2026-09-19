@@ -8670,3 +8670,14 @@ whose token has no handler in this reconstruction.
 **So: no run can start while the session is disconnected.** A run that hits this signature should
 check `query session` first. Retrying, changing trees or bisecting commits cannot help, and the
 earlier steps of this packet's bisect are recorded above only to show that the base fails too.
+
+### Harness options for overlapping runs: `--instance-tag` and `--affinity-core` (2026-09-18)
+
+Two options exist only so several runs can overlap; neither changes reconstructed logic.
+`--instance-tag <text>` (1 to 32 characters from `[A-Za-z0-9_-]`) suffixes the mutex name passed
+to `StartupHost::create_single_instance_mutex` (`008f8301`); `--affinity-core <n>` (0 to 31)
+replaces the mask `1` that `StartupHost::set_thread_affinity_to_first_processor` (`008f83fc`)
+passes to `SetThreadAffinityMask`. Both print a `harness:` note in the log when used, and both are
+absent from a plain launch, which keeps the image's single-instance behaviour and its pin to
+processor 0. `tools/run_game.ps1` supplies them per slot; the protocol and its validation are in
+`docs/COORDINATION.md`, "Running the executable: three slots instead of one lock".
