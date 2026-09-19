@@ -303,9 +303,18 @@ so 0099A170 builds no kind Eh task
 
 So the move-to tick, the glide slope, the desired-speed setter and the release above the sea are
 still unexercised, and **they will not be exercised by USN04's carrier launch** whatever else is
-fixed, unless a slot is launched with a torpedo class. `LaunchSquadron`'s class argument comes from
-the mission script, so the next step for the stream is to find which mission, or which slot, carries
-2Bh — not to press further on this launch path.
+fixed, unless a launch asks for a torpedo class. The class is not the deck's: `LaunchSquadron`'s
+first argument comes from the mission script, and every one of the four calls passed 101 with a
+count of 3. The next step for the stream is to find which mission, or which scripted launch, asks
+for a class carrying 2Bh — not to press further on this launch path.
+
+One caveat on that reading, stated because it is load-bearing. The slot's class travels from the
+scene's numeric `Type` token through `LaunchSquadron`'s argument to `read_vehicle_class_row` as an
+index into the `VehicleClass` global, unchanged. That is the same id-as-index convention
+`attach_scene_entities_00928a00` already uses for an entity's `Class` field, and the row was found
+rather than missing, so the ordnance reading is the process's existing convention and not a new
+assumption — but if that numbering is ever shown to differ from the `VehicleClass` index, this
+paragraph's conclusion goes with it.
 
 **The squadrons are ordered by the party AI, not by the mission script.** All four appear in the
 pilot-attack tally (`ordered` 2 -> 6), and each one's line is
@@ -326,8 +335,22 @@ script entity 100006 created_for=luaDoTimeTable think=luaTimetable armed=1 delay
 ```
 
 That line is **identical in the before log**, so it is not a regression from this packet; the 150 s
-window is simply shorter than the mission's own schedule. A longer run is the cheap next
-measurement.
+window is simply shorter than the mission's own schedule.
+
+The longer run that would settle it was **not taken**. `cc8-dive-bomb` held
+`%USERPROFILE%\.bsp\bsp_game.lock` for the whole of the remaining turn (its two processes started at
+17:59:43, the second this packet's own run released the lock), and a doubled run queued behind it
+would not have fitted in the foreground call. Orphaning a run that holds the lock would have cost
+the peer more than the measurement is worth. The command for whoever takes it:
+
+```
+./tools/run_game.ps1 -Log local\usn04_tick_long.log -WaitSeconds 2400 -- --frames 6400 \
+  --press-start-frame 30 --menu-select USN04 --mission-frames 6000 --mission-frame-seconds 0.05
+```
+
+What it would answer: whether `luaTimetable` entity 100006 fires at ~185 s and whether the order it
+carries is the one that sends the four squadrons. It cannot produce a torpedo task either way, for
+the reason above.
 
 ## Uncertainty
 
