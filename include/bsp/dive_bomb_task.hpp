@@ -340,6 +340,23 @@ struct DiveBombRangeLatchInputs {
     float in_range_distance = 0.0f;  // approach+B8h
     bool control_flag_369 = false;
     bool global_e17bf2 = false;
+    // 009C7C31-009C7CFE, the spent-member arm, added by packet
+    // cc8_dive_approach. `009C7C31 CMP byte [ESI+D1h],0` sets the flags that
+    // `009C7C3E JNZ` consumes - the intervening store does not write flags - so
+    // a bomber with no bombs left falls THROUGH the store into a second,
+    // independent clear. `009C7CFE AND byte [ESI+D0h],AL` can only clear.
+    bool has_bomb_ordnance_d1 = true;   // approach+D1h; true skips the whole arm
+    // 009C7C5D `MOV EDI,[EAX+3D0h]` with EAX = approach+0Ch, then 009C7C63
+    // `CMP EDI,[ESI+4h] / JZ`: the flight leader itself is exempt.
+    bool is_flight_leader = false;
+    bool leader_known = false;          // no squadron resolves, so no arm runs
+    // 009C7C7C-009C7CC6. NOTE what the two endpoints are: `009C7C9B CALL [[ESI]]`
+    // is the approach's vtable slot 0, 009C40A0, which copies the AIM POINT
+    // approach+4Ch/+50h/+54h, and 009C7C82's EDI is the LEADER's pose. The
+    // subtractions at 009C7CAE and 009C7CBA are `aimPoint - leader`, components
+    // 0 and 2, and 00414C60 takes the 2-D length. The unit's own position is
+    // not in this expression at all.
+    float leader_to_aim_point = 0.0f;
 };
 bool dive_bomb_in_range_latch_009c7c31(const DiveBombRangeLatchInputs& in) noexcept;
 
