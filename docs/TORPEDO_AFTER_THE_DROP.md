@@ -1799,6 +1799,13 @@ shape and the class table), and for this class that value is `Pilot/Torpedo/Crui
 `+430h`. Bound from the live value, with `kPilotTorpedoCruisingAltDefault` only as a fallback. The
 run reports `climb_1Ch=500.0 known=1 alt_cmd=500.0` and the aircraft climb from 12 m to 285 m.
 
+**The reconstruction already knew this, and only the binding did not.** The ledger record for
+`009D0D90` has carried "`else ctl+394h`" since packet `cc8_torpedo_goaway_release` read the tail's
+extent. What went wrong is downstream of the reading: `include/bsp/torpedo_goaway_tick.hpp` named
+the input `squadron_alt_limit_394`, and `src/game_hosts_units.cpp` then fed it `false` on the
+strength of that name. The lesson is the field name, not a gap in the listing - so the ledger entry
+now carries the `009D0E7C` bytes and what the base register is, where a name cannot mislead.
+
 **Uncertainty, stated rather than waved past.** This host models no pilot control block, so it
 cannot observe the write and assumes the cruise profile's write landed. That is exactly the
 assumption `read_control_block()` already makes for `+398h` and `+39Ch` - no weaker and no stronger.
