@@ -180,7 +180,7 @@ None.
 
 ## Validation
 
-**Blocked, not skipped.** The run is one call once the session is back:
+**Run, and it did what this section said it would.** The USN04 run of 2026-09-18, `local/usn04_gates.log`, exit 0: `summary mission getproperty 0088bf80: calls=164 served=164 unserved=0 slots_rows=3394 decks=6`, and zero `script call Think failed` lines where there had been 41. No launched strike, as this section predicted. The full table is in `docs/AIROPS_LOAD_FROM_SCENE.md`. The command was:
 
 ```
 ./tools/run_game.ps1 -Log local\usn04_getproperty.log -WaitSeconds 2400 -- --frames 3200 `

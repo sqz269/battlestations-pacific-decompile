@@ -12,7 +12,7 @@
    "native": "004f0be0",
    "ledger_name": "the Stationary scene class instantiate",
    "evidence": "a full SEH prologue at 004F0BE0 with the previous function ending RET 10h at 004F0BDD and no INT3 between; read from the image with disasm-raw",
-   "status": "read whole; Ghidra merges it into FUN_004F0AD0"
+   "status": "read whole; Ghidra had no function there and one was defined at 004F0BE0..004F0CC0 (224 bytes), recorded in reports/scene_stationary_units_function_definitions.json"
   },
   {
    "native": "00851cb0",
@@ -39,9 +39,7 @@
    "status": "read for its vptr stores"
   }
  ],
- "no_ghidra_function": [
-  "004f0be0"
- ],
+ "no_ghidra_function": [],
  "host_methods": [
   {
    "method": "bsp::publish_stationary_prop_observer_tables_00748a40",
@@ -73,6 +71,7 @@
   "DummyTargetVehicle is the one Type literal with no observer row and no motion-dispatch row. It is the same shape of gap and would raise the same throw. Left open deliberately: its leaf constructor was not read, and inventing its pair from the pattern is what the control in 00745940 exists to avoid."
  ],
  "corrections": [
+  "Two corrections applied after the first commit of this packet. publish_stationary_prop_observer_tables_00748a40 was added to src/native_unit_observer_endpoint.cpp and its header, which are Codex-lineage files we do not edit; both are restored to their previous text and the function now lives in src/game_hosts_units.cpp beside its only caller. And 004F0BE0, which genuinely starts a function, is now defined in Ghidra, so its four call sites are ordinary verified rows instead of being carried outside them.",
   "None. This packet completes the reading the previous one left as its contract, and that packet's retraction of 004E5B00 stands as written.",
   "No retraction of a native-behaviour claim in this packet."
  ],
@@ -84,30 +83,26 @@
   "command": "./tools/run_game.ps1 -Log local/usn22_stationary.log -WaitSeconds 2400 -- --frames 3200 --press-start-frame 30 --menu-select USN22 --mission-frames 3000 --mission-frame-seconds 0.05",
   "expected": "more than four `unit world registration` lines before any refusal, and, if one still comes, a message naming a non-zero creator, which would be a different gap"
  },
- "calls": [],
- "calls_in_unowned_range": {
-  "why": "tools/verify_report_calls.py cannot check these: Ghidra owns no function covering 004F0BE0, which is the mis-bounding section 1 of the doc is about, so every call site inside that body fails the \"is in some Ghidra function\" test. The sites were read from the image with disasm-raw and the bytes are quoted in the doc. Creating the function in Ghidra would make them checkable and is a database correction worth making, but it is a write this packet did not take.",
-  "rows": [
-   {
-    "site": "004f0c07",
-    "callee": "008f2260",
-    "note": "the Type lookup in the bag"
-   },
-   {
-    "site": "004f0c28",
-    "callee": "008f0df0",
-    "note": "the type's text"
-   },
-   {
-    "site": "004f0c43",
-    "callee": "00851cb0",
-    "note": "the stationary class factory"
-   },
-   {
-    "site": "004f0c88",
-    "callee": "004f04c0",
-    "note": "the shared scene-unit setup"
-   }
-  ]
- }
+ "calls": [
+  {
+   "address": "004f0c07",
+   "native": "008f2260",
+   "note": "the Type lookup in the bag"
+  },
+  {
+   "address": "004f0c28",
+   "native": "008f0df0",
+   "note": "the type's text"
+  },
+  {
+   "address": "004f0c43",
+   "native": "00851cb0",
+   "note": "the stationary class factory"
+  },
+  {
+   "address": "004f0c88",
+   "native": "004f04c0",
+   "note": "the shared scene-unit setup"
+  }
+ ]
 }

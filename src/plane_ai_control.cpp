@@ -637,4 +637,56 @@ PilotBotThrottleResult pilot_plan_throttle_0099d300(const PilotBotThrottleInputs
     return out;
 }
 
+
+// ---------------------------------------------------------------------------
+// 0099E2BA-0099E39D, the servo arm. See include/bsp/plane_ai_control.hpp.
+// ---------------------------------------------------------------------------
+PilotBotRollServoResult pilot_roll_servo_0099e26e(const PilotBotRollServoInputs& in) {
+    PilotBotRollServoResult out;
+
+    // 0099E2C5-0099E2D3: the error between the target the task wrote and the
+    // measured bank, scaled by [ESP+28h].
+    out.bank_error =
+        wrapped_angle_subtract_00438b10(in.bank_target_2c4, in.bank) * in.error_scale;
+
+    // 0099E2E1-0099E301: the usual -0.0f fold.
+    const float folded = (out.bank_error > 0.0f) ? out.bank_error : (-0.0f - out.bank_error);
+
+    // 0099E30B FLD [EBX+40h], 0099E30E FCOMIP, 0099E312 JBE: inside the band the
+    // arm is proportional; outside it, a constant rate signed by the error.
+    float demand;
+    if (in.band_40 > folded) {
+        demand = folded * in.gain_44;              // 0099E314
+        out.used_gain = true;
+    } else {
+        // 0099E319 COMISS against the 0.0f at 00D7A218 and 0099E330 JBE pick the
+        // sign: subtract when the error is the larger, add otherwise.
+        demand = (out.bank_error > 0.0f) ? (folded - in.rate_48)   // 0099E332
+                                         : (folded + in.rate_48);  // 0099E337
+    }
+
+    // 0099E373-0099E390: InterpolateClamped(-limit, 1.0, +limit, -1.0, x). The
+    // endpoints are negated across the pair, so the map is falling: a positive
+    // interpolant gives a negative roll.
+    // 00419010 with equal ordered endpoints returning y0, otherwise a clamped
+    // linear map between the two y values.
+    {
+        const float x0 = -in.rate_limit, y0 = 1.0f;
+        const float x1 = in.rate_limit, y1 = -1.0f;
+        float v;
+        if (x1 == x0) {
+            v = y0;
+        } else {
+            v = ((in.interpolant - x0) / (x1 - x0)) * (y1 - y0) + y0;
+            const float hi = (y1 < y0) ? y0 : y1;
+            const float lo = (y0 < y1) ? y0 : y1;
+            if (v < lo) v = lo;
+            else if (v > hi) v = hi;
+        }
+        out.desired_290 = v;
+    }
+    (void)demand;
+    return out;
+}
+
 }  // namespace bsp

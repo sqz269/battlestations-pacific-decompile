@@ -61,17 +61,6 @@ const NativeUnitObserverTablePair* unit_observer_tables_for_creator(
 bool publish_unit_leaf_observer_tables_for_creator(
     NativeUnitObserverPrefixStorage&, std::uint32_t creator) noexcept;
 
-// The stationary prop, which has no vehicle-class descriptor and so no creator
-// to key on. 004F0FB0 takes it at 004F0FFE when the scene property `Stationary`
-// is set: 00748C40 allocates 1ACh bytes and 00748A40 constructs them, storing
-// 00CFF678 at this+0 and 00CFF65C at this+10h (00748A64 and 00748A6A). Those are
-// the same two slots the 21 keyed rows take, which 00745940 shows for LandFort
-// at 0074597D and 00745983 against its row {00747000, 00CFF3F8, 00CFF3E0}.
-// The prop is 1ACh bytes and has no slot at 310h, so unlike a fort it carries no
-// tick vtable and takes no motion dispatch. docs/SCENE_STATIONARY_UNITS.md.
-void publish_stationary_prop_observer_tables_00748a40(
-    NativeUnitObserverPrefixStorage&) noexcept;
-
 // All table words are native identities, not callable process pointers.
 // Primary slot04 is0042B970 for the 21 leaf tables. Callback slot04/08 varies
 // by producer and requires its actual provider; no default handler is added.

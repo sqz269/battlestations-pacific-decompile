@@ -150,6 +150,24 @@ UnitMotionDispatch unit_motion_dispatch(const bsp::VehicleClassDescriptorRow* de
     return {};
 }
 
+// The stationary prop, which has no vehicle-class descriptor and so no creator
+// to key on. 004F0FB0 takes it at 004F0FFE when the scene property `Stationary`
+// is set: 00748C40 allocates 1ACh bytes and 00748A40 constructs them, storing
+// 00CFF678 at this+0 and 00CFF65C at this+10h (00748A64 and 00748A6A). Those are
+// the same two slots the keyed rows in src/native_unit_observer_endpoint.cpp
+// take, which 00745940 shows for LandFort at 0074597D and 00745983 against its
+// row {00747000, 00CFF3F8, 00CFF3E0}. The prop is 1ACh bytes with no slot at
+// 310h, so unlike a fort it carries no tick vtable and takes no motion dispatch.
+//
+// This lives here rather than beside the keyed rows because that file and its
+// header are Codex-lineage and we do not edit them.
+// docs/SCENE_STATIONARY_UNITS.md.
+void publish_stationary_prop_observer_tables_00748a40(
+    bsp::NativeUnitObserverPrefixStorage& unit) noexcept {
+    unit.observed_00.native_vtable_00 = 0x00cff678u;
+    unit.callback_10.native_vtable_00 = 0x00cff65cu;
+}
+
 const char* unit_motion_coverage_name(UnitMotionCoverage coverage) {
     switch (coverage) {
     case UnitMotionCoverage::direct_ship_body: return "direct_ship_body";
@@ -2287,7 +2305,7 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         if (!slot->observer_prefix_ready && slot->stationary_prop) {
             // The prop's own pair, from its constructor rather than from a
             // creator row, because it has no descriptor to be keyed by.
-            bsp::publish_stationary_prop_observer_tables_00748a40(slot->observer_prefix);
+            publish_stationary_prop_observer_tables_00748a40(slot->observer_prefix);
             slot->observer_prefix_ready = true;
         }
         if (host.observer_runtime != nullptr) {
@@ -5585,10 +5603,36 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // docs/DIVE_BOMB_TASK.md, "The roll-arm gate".
                         const int roll_mode = unit_.plan_heading_mode_2cc;
                         if (roll_mode == 2) {
-                            unit_.plan_state.bank_target_2c4 = roll.bank_target;  // 0099E25C
-                        }
-                        if (roll_mode == 2 || roll_mode == 1) {
+                            // The mode-2 arm: the planner computes the target and
+                            // writes it at 0099E25C, then runs its own law.
+                            unit_.plan_state.bank_target_2c4 = roll.bank_target;
                             unit_.plan_slots[bsp::kPilotSlotRoll].desired = roll.desired;
+                            unit_.plan_slots[bsp::kPilotSlotRoll].active = 1;  // 0099E3AE
+                            unit_.plan_heading_mode_2cc = 0;  // 0099E3B5
+                        } else if (roll_mode == 1) {
+                            // The mode-1 arm, 0099E26E-0099E39D. The jump at
+                            // 0099DE8D skipped both 0099E25C and 0099E264, so
+                            // plan+2C4h still holds what the TASK wrote and this
+                            // arm servos toward it rather than computing one.
+                            // The dive-bomb turndown writes pi there at 009C4646.
+                            bsp::PilotBotRollServoInputs sin;
+                            sin.bank_target_2c4 = unit_.plan_state.bank_target_2c4;
+                            sin.bank = unit_.plane_bank_angle_c68;
+                            // SUBSTITUTION, labelled: [ESP+28h], [ESP+2Ch] and the
+                            // EBX tuning block are contracts, so the scale is 1,
+                            // the band is open and the interpolant is the error.
+                            sin.error_scale = 1.0f;
+                            sin.band_40 = 0.0f;
+                            sin.gain_44 = 1.0f;
+                            sin.rate_48 = 0.0f;
+                            sin.rate_limit = 1.0f;
+                            const bsp::PilotBotRollServoResult sr =
+                                bsp::pilot_roll_servo_0099e26e(sin);
+                            bsp::PilotBotRollServoInputs sin2 = sin;
+                            sin2.interpolant = sr.bank_error;
+                            const bsp::PilotBotRollServoResult sr2 =
+                                bsp::pilot_roll_servo_0099e26e(sin2);
+                            unit_.plan_slots[bsp::kPilotSlotRoll].desired = sr2.desired_290;
                             unit_.plan_slots[bsp::kPilotSlotRoll].active = 1;  // 0099E3AE
                             unit_.plan_heading_mode_2cc = 0;  // 0099E3B5
                         }
