@@ -2601,3 +2601,54 @@ Once the aimglide seed was recovered last packet as `max(arg, 5.0)`, that confla
 `planar > 5.0 * 0.9` true at once, which is the **one-tick goaway** in every run so far. The goaway
 now has its own accumulator. The rule stays the labelled PARTIAL it was, but it is no longer fed a
 value belonging to another state.
+
+## `009C7F00` read whole: the half that was missing
+
+The first goaway run changed nothing - 2118 arm ticks, a one-tick goaway, water contact at
+-1.12 m - because the completion rule still answered true on the state's first tick. It was
+modelled from its first condition only. Read whole:
+
+```
+009c7f03  FLD  float ptr [ECX + 0x20]        ; the goaway state's own +20h
+009c7f09  FLD  double ptr [0x00d7a390]       ; 0.9
+009c7f12  FMUL ST1                           ; term = state+20h * 0.9
+009c7f23  FLD  float ptr [EAX + 0xac]        ; approach+ACh
+009c7f29  FADD float ptr [EAX + 0x50]        ; + approach+50h, the aim point's height
+009c7f38  FCOMIP ST0,ST1 / JBE               ; ceiling = min(ctl+398h, that sum)
+009c7f51..009c7f7a                           ; all three flags set -> term *= 0.9 again;
+                                             ; the first two set without the ordnance -> false
+009c7f8d  FCOMIP ST0,ST1 / JBE 0x009c7fd1    ; approach+BCh must exceed the term
+009c7fb2  FSUB double ptr [0x00d7a220]       ; ceiling - 100.0
+009c7fc2  FCOMIP ST0,ST1 / JBE 0x009c7fd1    ; and the aircraft's Y must exceed that
+009c7fc8  MOV  EAX,0x1
+```
+
+So `goaway_complete` is **two** conditions, and the second is the whole point of the state:
+
+| condition | site |
+| --- | --- |
+| `approach+BCh > state+20h * 0.9` (again * 0.9 with the three flags) | `009C7F8D`, byte `76` |
+| **aircraft Y > min(ctl+398h, +ACh + +50h) - 100.0** | `009C7FC2`, byte `76` |
+
+The aircraft must have **both** opened the range and climbed back to within 100 m of its cruise
+altitude. With `approach+ACh` at 1000.0 and the aim point at sea level that is **900 m**, so an
+aircraft coming out of a dive at 650 m stays in goaway and keeps climbing - which is exactly what
+the climb-out arm bound above it exists to do. Modelling only the first condition made the state
+end instantly no matter what the tick commanded.
+
+### A planner reading worth checking, from the torpedo side
+
+cc8-plane-squadron reports USN01's Mavs flying into the water holding a pitch demand of exactly
+`-pi/3` while `climb_1ec` is printed and not flown. The pitch floor they are hitting is
+`plane_ai_control.cpp:343`, `floor_target = pitch_turn_max_pitch - 2.5 * (1 - q)`, whose comment
+says it "can only RAISE the target - which is the whole of what stops a bot flying into the sea".
+
+That cannot be true with the authored value. `PitchTurnMaxPitch` is `DEG(06)` = 0.10472 rad, so at
+`q = 0` the floor is `0.10472 - 2.5` = **-2.395 rad** - below anything an aircraft can fly, hence
+inert. And the row's own comment describes an increment, not an absolute: *"max ennyi fokkal a
+tenyleges target pitch-nel nagyobb target pitch-t akar elerni. emiatt jobban fogja huzni a pitch
+kontrollt, es jobban kanyarodik"* - at most this many degrees **greater** target pitch than the
+actual one, so it pulls harder and turns better.
+
+So `0099E4DC`-`0099E512` is probably a delta on the target rather than an absolute floor. That is
+the planner, shared with the torpedo and squadron streams, so it is named here and not changed.
