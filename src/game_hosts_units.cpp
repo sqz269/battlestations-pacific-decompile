@@ -4457,8 +4457,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // stronger. If the not-overridden gate refused
                                 // the write, the image would read whatever the
                                 // motion controller left there instead.
-                                gt.has_squadron_394 = true;
-                                gt.squadron_alt_limit_394 = cruising_alt_394();
+                                gt.has_pilot_cruising_alt_394 = true;
+                                gt.pilot_cruising_alt_394 = cruising_alt_394();
                                 // 00BD2F10 UniformFloatRange(50, 100) at
                                 // 009D0E71; this host takes the low end of
                                 // every draw.
