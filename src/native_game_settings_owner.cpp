@@ -49,14 +49,29 @@ int NativeGameSettingsCalls::register_shutdown_00bf6ff5(void (*shutdown)()){retu
 void NativeGameSettingsCalls::free_00bf6989(void* p){singleton_lifetime_free(p);}
 Op::~NativeGameSettingsOperation(){if(phase==Phase::running||phase==Phase::failed)std::terminate();}
 void Op::acknowledge_diagnostic_cleanup() noexcept {phase=Phase::diagnostic_retired;}
+NativeGameSettingsInputReference::NativeGameSettingsInputReference(NativeInputSettingsLifetimeContext& c) noexcept
+    :publication_00e198e8(c.publication_00e198e8),manager_publication_01090aa0(c.manager_publication_01090aa0),fixed_(&c){}
+NativeGameSettingsInputReference::NativeGameSettingsInputReference(void* volatile& p,void* volatile& m,
+    NativeInputSettingsLifetimeContext*& live) noexcept
+    :publication_00e198e8(p),manager_publication_01090aa0(m),live_(&live){}
+NativeInputSettingsLifetimeContext& NativeGameSettingsInputReference::require_context() const {
+    auto* const context=live_?*live_:fixed_;
+    if(!context||&context->publication_00e198e8!=&publication_00e198e8||
+        &context->manager_publication_01090aa0!=&manager_publication_01090aa0)
+        throw std::logic_error("native settings input has no matching live source context");
+    return *context;
+}
 void release_native_settings_input_008d4950(NativeInputSettingsLifetimeContext& c,NativeGameSettingsCalls& calls) {
+    release_native_settings_input_008d4950(NativeGameSettingsInputReference(c),calls);
+}
+void release_native_settings_input_008d4950(const NativeGameSettingsInputReference& c,NativeGameSettingsCalls& calls) {
     if(!c.publication_00e198e8)return;
     SoundLifetimeAccess lifetime(c.manager_publication_01090aa0);
     CapturedSoundLifetimeSection section(lifetime);
     if(c.publication_00e198e8) {
         auto manager=lifetime.get_manager_00415350();
         manager->unregister_object(c.publication_00e198e8);
-        if(void* const current=c.publication_00e198e8)calls.delete_current_input(current,1,c);
+        if(void* const current=c.publication_00e198e8)calls.delete_current_input(current,1,c.require_context());
         c.publication_00e198e8=nullptr;
     }
 }

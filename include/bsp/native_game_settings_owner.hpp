@@ -21,11 +21,27 @@ struct NativeGameSettingsCalls : NativeProfileCollectionCalls {
     virtual int register_shutdown_00bf6ff5(void (*shutdown)());
     virtual void free_00bf6989(void*);
 };
+// The native null-publication path needs only loader-lifetime cells. A CRT
+// settings destructor must not inspect an already retired application context.
+// Fixed contexts retain the original source API; a live binding cell allows
+// the application services to retire while these two publications survive.
+class NativeGameSettingsInputReference final {
+public:
+    NativeGameSettingsInputReference(NativeInputSettingsLifetimeContext&) noexcept;
+    NativeGameSettingsInputReference(void* volatile& publication,
+        void* volatile& manager,NativeInputSettingsLifetimeContext*& live) noexcept;
+    NativeInputSettingsLifetimeContext& require_context() const;
+    void* volatile& publication_00e198e8;
+    void* volatile& manager_publication_01090aa0;
+private:
+    NativeInputSettingsLifetimeContext* fixed_{};
+    NativeInputSettingsLifetimeContext* const* live_{};
+};
 struct NativeGameSettingsContext {
     NativeStringStorage& strings;
     NativeStringRawPoolContext& raw_strings;
     NativeProfileSettingsContext& profile;
-    NativeInputSettingsLifetimeContext& input;
+    NativeGameSettingsInputReference input;
     NativeGameSettingsCalls& calls;
     const volatile std::uint32_t& audio_bits_00ce3800;
     const volatile std::uint32_t& video_bits_00ce7d20;
@@ -51,6 +67,7 @@ struct NativeGameSettingsOperation final {
 // recheck publication, resolve manager again, unregister CURRENT input,
 // reload/delete CURRENT input through slot0 flags1, clear, leave captured lock.
 void release_native_settings_input_008d4950(NativeInputSettingsLifetimeContext&,NativeGameSettingsCalls&);
+void release_native_settings_input_008d4950(const NativeGameSettingsInputReference&,NativeGameSettingsCalls&);
 // 8D7710: ECX BCh owner, EAX same, RET. Partial byte/DWORD stores, actual
 // string construction and current-manager selected-user import; no zero-fill.
 void* construct_native_game_settings_008d7710(void*,NativeGameSettingsContext&,NativeGameSettingsOperation&);
