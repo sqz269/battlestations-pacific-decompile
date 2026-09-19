@@ -224,7 +224,7 @@ optional decoration; it is the frame the station lives in.
 
 | address | name | instructions | state |
 | --- | --- | --- | --- |
-| `00810190` | `BSP_UnitWake_AppendSample` | 303 | unread, x87-dense |
+| `00810190` | `BSP_UnitWake_AppendSample` | 303 | **read whole, this packet** (section 5b) |
 | `00810630` | `BSP_UnitWake_SampleAtDistance` | 198 | unread |
 | `00811180` | `BSP_Unit_DecomposeAgainstWake` | 523 | unread |
 | `00811150` | `BSP_Unit_WakePointAtDistance` | 12 | trivial forwarder, `+0BD0h` |
@@ -233,26 +233,68 @@ The ring is 40 samples of `18h` bytes at `wake+8h` (`entity+0BD8h`) with the hea
 `wake+3C8h` (`entity+0F98h`) *(cited, `docs/SHIP_AI_FORMATION.md`)*, confirmed by this packet's read
 of `00810190`'s indexing: `EAX = [this+3C8h]`, `LEA EAX,[EAX+EAX*2]`, `LEA EAX,[this+EAX*8+8]`.
 
-`00810190`'s first 78 instructions, read this packet:
+### 5b. `00810190 BSP_UnitWake_AppendSample`, read whole this packet
+
+`__thiscall(wake /*ECX = entity+0BD0h*/)(const float world_pos[3], float heading, float yaw_rate)`,
+`RET 0Ch` at `0081062C`, body `00810190-0081062E`, 303 instructions. Ring: 40 samples of `18h`
+bytes at `wake+8h`, head index `wake+3C8h`, a byte flag at `wake+3CCh`, a residual accumulator at
+`wake+3D0h`. The trail is **not** one sample per tick; it is a decimated polyline.
 
 ```
-new = arg0[0..2] + [this+3D0h][0..2]          ; an accumulator at wake+3D0h   008101 98..008101EB
-head = sample at this+8 + 18h*[this+3C8h]
-d2 = (new.x-head.x)^2 + 0^2 + (new.z-head.z)^2                                0081020F..0081021D
-if (16.0f > d2) return                        ; 00CE6454, float, JA 00810626  00810225..0081022F
-if ([this+3D0h] == (00F87574,78,7Ch)) goto 0081032A   ; the three read 0.0 at load
-0042B2F0 length(this+3D0h) ; sqrt(d2) ; * 0.25 (double 00D7A348)              00810273..00810293
+new = world_pos + acc                               ; acc = wake+3D0h        00810198..008101EB
+h   = wake+3C8h ; head = wake+8h + 18h*h
+d2  = (new.x-head.x)^2 + 0^2 + (new.z-head.z)^2                              0081020F..0081021D
+if (16.0f > d2) return                              ; 00CE6454 float, 4 m    00810225..0081022F
+q = 0.25 * sqrt(d2)                                 ; 00D7A348 DOUBLE        00810280..00810293
+acc = (q < |acc|) ? acc * (|acc|-q)/|acc| : (0,0,0)  ; decay, or the 00F8757x triple
+new = world_pos + acc                               ; recomputed             008102F3..00810326
+
+sample[h]   = new.xyz ; +10h = 0 ; +0Ch = heading ; +14h = yaw_rate          0081034B..008103AB
+sample[h-1]+0Ch = wrap_2pi(pi/2 - atan2(new.z-p2.z, new.x-p2.x))             0081043F..0081047B
+       ; p2 = sample[h-2]; 00CE3830 = pi/2, 00CE3828 = 2pi, both doubles
+len = |new - sample[h-1]|                           ; 0042B2F0               00810416
+if (len > sample[h-1]+10h) { wake+3CCh = 1 ; sample[h-1]+10h = len }          00810484..00810493
+else if (!wake+3CCh)        { sample[h-1]+10h = len }                        0081049D..008104B1
+else if (|new - p2|_2d < 55.0) {                    ; 00D09438 DOUBLE, merge 008104E2..008104F9
+    sample[h-1] = the new sample ; p2+10h = that distance ; 00810160 copies
+    sample[h] -> sample[h+1] ; wake+3C8h = h-1       ; the head moves BACK    008104FB..0081056B
+} else { sample[h-1]+10h = len ; wake+3CCh = 0 }                             00810573..0081057E
+
+if (50.0 > sample[h-1]+10h) return                  ; 00CE3938 DOUBLE        00810585..00810593
+if (wake+3CCh) return                                                        00810599
+h = (h >= 27h) ? 0 : h+1 ; wake+3C8h = h            ; ADVANCE, wrap at 40     008105A6..008105BE
+sample[h] = new.xyz ; +10h = 0 ; +0Ch = heading ; +14h = yaw_rate             008105C7..00810620
 ```
 
-**A sample is appended only after the ship has moved 4 m horizontally** (`d2 > 16.0f`). `00D7A348`
-is the double `0.25`; read as a float it is `0.0`, the same trap `docs/AI_COMMAND_TICK.md` records.
-The remaining 225 instructions are unread.
+So: **nothing happens until the ship has moved 4 m** from the head sample (`d2 > 16.0f`); the head
+sample is then rewritten in place and the previous sample's heading is back-filled from the
+direction to it; and **the head only advances to a new slot once the current leg exceeds 50 m**.
+Forty slots of up to 50 m is a trail of about 2 km, which is the length a follower's station can be
+measured back along. Three of the four thresholds are **doubles** (`0.25`, `55.0`, `50.0`) and all
+three read `0.0` at float width - the same trap `docs/AI_COMMAND_TICK.md` records at `00D21530`.
+
+The `[ESP+n]` slots above were traced across the two `PUSH EBP` / `POP EBP` shifts at `00810332` and
+`0081058B`, and `[ESP+0x4C]` is the incoming `delta` argument's own slot reused as scratch after
+`EBX` has it. `RET 0Ch` gives the three arguments.
 
 Its one caller is `00825F20 BSP_UnitInstance_UpdateShipMotion`, at `00826CEE`, with the tick's yaw
 rate as the third argument (*cited*, `src/game_hosts_ship_ai.cpp:5156`, from
 `docs/SHIP_AI_RUDDER_HOP.md`). **The host already ticks that motion virtual**
 (`motion_step_00825f20`), so the append has a hook point that exists; what is unimplemented there is
 the motion tail.
+
+`00810160`, the 24-byte sample copy used by the merge arm, is unread; so is what writes the residual
+accumulator `wake+3D0h`, which this routine only ever decays - a producer must exist elsewhere,
+and until it is found the accumulator should be modelled as zero and said to be a hole, not a proof.
+
+**Two offset bases, one layout.** The earlier ledger evidence on `00810190` (packet
+`cc_ai_rudder_hop`) names the sample fields `+0/+4/+8`, `+14h` heading, `+18h` length, `+1Ch` yaw,
+because it measures from `wake + 18h*h`, the `ESI + EDX*8` form the instructions use. This document
+and `docs/SHIP_AI_FORMATION.md` measure from the sample itself, `wake + 8h + 18h*h`, giving `+0Ch`,
+`+10h`, `+14h`. The two differ by the ring's own `+8h` base and agree field for field; neither is a
+correction of the other. It also read the first argument as the world position, which is why this
+document calls it `world_pos` and not a delta: the ring stores `new` directly as a sample position,
+so an argument that were a per-tick delta would store a near-zero vector.
 
 ## 6. The cut this packet proposes
 
@@ -276,8 +318,8 @@ the trail. Doing the wake first is what keeps the station from being invented.
 
 ## 7. Uncertainties, and what is not read
 
-* `00810190`'s last 225 instructions, `00810630` and `00811180` whole. No claim here depends on
-  them except the 4 m threshold and the ring geometry, which are quoted from the instructions above.
+* `00810630` and `00811180` whole, and `00810160`. `00810190` is now read whole (section 5b); what
+  writes its residual accumulator `wake+3D0h` is not, and nothing here may assume it stays zero.
 * `00F87574/78/7Ch` read 0.0 at load because they are past `.data`'s raw size (loader zero-fill).
   Whether anything writes them at runtime is **unchecked**; a literal-address xref negative would
   not settle it (`docs/` records block-copy writers that xref only a base).
