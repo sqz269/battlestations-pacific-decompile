@@ -1442,3 +1442,5 @@ cmake_language(DEFER CALL include "${CMAKE_SOURCE_DIR}/cmake/native_data_placeme
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_session_message_tags_94_to97.cpp)
 
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_session_message_tags_99_to102.cpp)
+
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_session_message_tags_103_to106.cpp)
