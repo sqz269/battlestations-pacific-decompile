@@ -3016,15 +3016,44 @@ bool GameGunneryHost::release_ordnance_drop(std::size_t unit_index) {
     h.shots.push_back(shot);
     ++h.summary.projectiles;
     ++h.summary.torpedo_drops;
-    // Packet cc8_torpedo_ordnance_decrement, REVERTED. A drop used to clear the
-    // owner's kind 2Bh bit here, so approach+132h went false on the next approach
-    // update. The run falsified it: 009D3F60's entry chooser sends a task whose
-    // +52Ah is clear straight to kDone when ctl+369h is off, so the goaway was
-    // never entered at all (ticks=0), nothing commanded the climb-away, and deaths
-    // went back to 5. A state with a 300-byte enter, a 768-byte tick and its own
-    // completion predicate is not dead code in the image, so a model that makes it
-    // unreachable is wrong. What 007B91C0's ordnance-object vtable[8](0) consumes
-    // on a drop stays unread. docs/TORPEDO_AFTER_THE_DROP.md section 9.
+    // Packet cc8_torpedo_breakoff: RESTORED, as half two of the spent-bomber
+    // fix. A drop clears the owner's kind 2Bh bit, so approach+132h (== task+52Ah,
+    // section 10.2) goes false on the next approach update.
+    //
+    // This was tried alone in 1e7c0f2f2 and reverted in c5235a9c6. The revert's
+    // stated reason -- "009D3F60's entry chooser sends a task whose +52Ah is clear
+    // straight to kDone" -- is WITHDRAWN by section 12: 009D3F60 has one call site
+    // that cannot run after a drop (10.1), and the route that run took to `done`
+    // is unexplained, not diagnosed. What the run did prove is that the clear
+    // alone makes things worse, and section 12.4 gives the reason: the image
+    // retires a spent bomber through 009D4C10, whose ordnance arm at 009D4C5C
+    // (`CMP byte [ESI+52Ah],0` / `JNZ 009D4C1D`) is one of TWO halves. With
+    // should_break_off still pinned false the clear had nothing to feed. It is
+    // restored here only together with that binding in src/game_hosts_units.cpp.
+    //
+    // What the image consumes on a drop is still a HYPOTHESIS and stays one:
+    // 009D34C5 refreshes approach+132h from 007B93F0(0) = 007B91C0(2Bh, 0), which
+    // walks the controller's devices at ctl+974h, takes the one carrying kind 2Bh
+    // and asks the ordnance object it returns `vtable[8](0)`. THAT body is unread.
+    // The supporting evidence is a sibling predicate at 007B9426 testing a live
+    // round count at ordnance+E0h, and the fact that 009D4030's goaway branch
+    // reaches `done` only with the byte clear.
+    //
+    // The smallest faithful model: a drop consumes the unit's torpedo loadout, so
+    // the kind bit clears. This host models no per-device round count, so it
+    // cannot decrement one -- the count and its producer 006E3500 are unread here,
+    // and "one torpedo per aircraft" is the assumption this makes explicit rather
+    // than hides. USN01's Mavs release once each, which is consistent with it and
+    // does not prove it. docs/TORPEDO_AFTER_THE_DROP.md sections 9, 12 and 13.
+    {
+        const std::size_t owner = shot.owner_unit - 1;
+        const std::uint64_t mask = h.units.unit_ordnance(owner);
+        const std::uint64_t torpedo_bit = std::uint64_t(1) << (0x2b - 0x08);
+        if ((mask & torpedo_bit) != 0) {
+            h.units.store_unit_ordnance(owner, mask & ~torpedo_bit);
+            ++h.summary.torpedo_loadout_cleared;
+        }
+    }
     if (h.summary.torpedo_drops <= 4) {
         h.log.notef("gunnery: torpedo drop %llu by %s at %.0f m, speed %.1f m/s, "
             "bullet %d, swim %.1f m/s",
@@ -3151,6 +3180,9 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery torpedo_drop drops=%llu refusals=%llu "
             "water_entry_breakups=%llu",
             s.torpedo_drops, s.torpedo_drop_refusals, s.water_entry_breakups);
+        host.log.notef("summary mission gunnery torpedo_loadout_cleared=%llu "
+            "(drops that cleared the owner's kind 2Bh bit, so approach+132h goes false)",
+            s.torpedo_loadout_cleared);
     // Packet cc8_torpedo_closest_approach: the measurement the torpedo stream
     // has owed since docs/TORPEDO_AFTER_THE_DROP.md section 2. Distances are
     // CENTRE TO CENTRE and horizontal - this host has no oriented hull box - so

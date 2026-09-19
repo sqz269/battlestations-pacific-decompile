@@ -385,6 +385,9 @@ struct GameGunnerySummary {
     unsigned long long torpedo_cat_score_accepted{0};
     unsigned long long torpedo_drops{0};
     unsigned long long torpedo_drop_refusals{0};   // no torpedo-capable gun on the unit
+    // Packet cc8_torpedo_breakoff: drops that cleared the owner's torpedo kind
+    // 2Bh bit, so approach+132h goes false on the next approach update.
+    unsigned long long torpedo_loadout_cleared{0};
     unsigned long long water_entry_breakups{0};    // 008568E0's two limits rejected the entry
     unsigned long long torpedo_heading_snaps{0};   // 007F6190 snapped the heading onto a window edge
     unsigned long long angle_sets{0};
