@@ -2690,3 +2690,47 @@ This is a real candidate for why the dive bomber's altitude profile is wrong thr
 run-in, and it is upstream of everything the last four packets bound. It needs
 `src/game_hosts_units.cpp`, which is currently released, so it is recorded here and will be taken
 with its own window rather than by quietly re-claiming the file.
+
+## Correction to the `PitchTurnMaxPitch` note above: it is a max, not a delta
+
+I wrote that `0099E4DC`-`0099E512` is "probably a delta on the target, not a floor", inferring it
+from the authored row comment. **That is wrong**, and cc8-plane-squadron refuted it from the
+listing:
+
+```
+0099e4dc  FMUL  double ptr [0x00ce3de0]
+0099e4e2  FSUBP                           ; floor = pitch_turn_max_pitch - 2.5*(1-q), an ABSOLUTE
+0099e4e8  FLD   float ptr [ESI + 0x2bc]   ; the existing target
+0099e4fa  FCOMIP ST0,ST1                  ; floor vs target
+0099e4fe  JBE   0x0099e508                ; floor <= target -> keep the target
+0099e500  MOVSS XMM0,dword ptr [ESP+0x40] ; else take the floor
+0099e512  MOVSS dword ptr [ESI + 0x2bc],XMM0
+```
+
+`FSUBP` builds the floor as an absolute and `FCOMIP`/`JBE` selects the larger of it and `cmd+2BCh`.
+There is **no `FADD` against the target anywhere in the block**, so it is a max and
+`src/plane_ai_control.cpp` has the shape right. Reading the Hungarian row as a delta was my
+inference, not evidence, and an increment would have been a behaviour change in the wrong
+direction. The row fits the max reading too: raising the target in a hard bank *is* what makes it
+pull harder and turn better.
+
+### What does stand: the floor is inert in level flight, and one comment says otherwise
+
+With `PitchTurnMaxPitch` = `DEG(06)` = 0.10472 rad the floor is `0.10472 - 2.5*(1 - q)`, which at
+`q = 0` is **-2.395 rad** - below anything an aircraft can fly - and rises to +0.10472 only as `q`
+approaches 1. As a max that is a coherent design: hold the nose at least six degrees up in a hard
+bank, do not interfere in level flight.
+
+So the defect is one sentence of a comment, not the code. `src/plane_ai_control.cpp:339-342` says
+the floor "is applied unconditionally on every pass of the law, and it can only RAISE the target -
+which is the whole of what stops a bot flying into the sea". The first half is right; the last
+clause is not. It is inert in level flight by construction, so it stops nothing in a straight-line
+descent - which is exactly what USN01's Mavs and this dive bomber both do. That file is not held
+here; the one-sentence fix belongs to whoever next holds it.
+
+### And it does not support the zero-span finding either
+
+Stated plainly so the two are not read as mutual support: `0099E490` consumes a pitch target and
+`009FB800` produces one. The zero range pair is a fault in the **producer**, and a floor that
+worked perfectly would only cap how steeply an aircraft obeyed a command it should never have been
+given. The two findings are independent, and the zero range pair is the one that matters.
