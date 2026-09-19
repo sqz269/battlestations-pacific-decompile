@@ -1462,3 +1462,84 @@ That store lands on `approach+80h`, along with `+7Ch` and `+78h` from the same v
 (`[[EDI+14h]+58h]`). No writer through the approach base exists in the dive-bomb range, so `+50h`
 keeps its labelled zero, and the next reader should look for a sub-object base or a block copy
 rather than repeating the offset census.
+
+## The run after the pitch gate, `local\usn04_pitchgate.log` and `local\usn04_d4h.log`
+
+Same arguments as `usn04_fa.log`, so the three runs compare directly.
+
+| measure | `usn04_fa` | `usn04_pitchgate` | `usn04_d4h` |
+| --- | --- | --- | --- |
+| transitions | 3 | 4 | 4 |
+| attackrun ticks | 1480 | 1480 | 1480 |
+| flyabove ticks | 159 | 159 | 159 |
+| turndown ticks | 731 | **67** | 67 |
+| aimdive ticks | 0 | **664** | 664 |
+| `|bank|` last | 3.1381 | 3.1261 | 3.1261 |
+| turndown latch tick | 1673 | 1673 | 1673 |
+| dive entry altitude | - | 638.9 m | 638.9 m |
+| releases / bombs | 0 / 0 | 0 / 0 | 0 / 0 |
+
+Binding the pitch gate is what moved it: the turndown now completes in 67 ticks instead of
+stalling for 731, and the chain reaches `aimdive`, a state it had never entered.
+
+`pose_c64_min=-0.9594` is the last sample taken while `turndown` still owned the tick; the arm
+runs every 0.09 s while the pose refreshes every frame, so the angle crossed the -1.0 the
+`009C7EA0` window needs between that sample and the next arm call.
+
+Binding `approach+D4h` at 675.0 m changed nothing in the walk, which is the expected result: the
+aircraft is above `alt_base` 1000.0 m when `flyabove` makes the can-dive decision and only falls to
+638.9 m by the time `aimdive` takes over. The gate is now real rather than vacuous, and it will
+bite on a mission that orders a lower approach.
+
+### The gate now: the 25 m aim window at `00CE3880`
+
+The release is blocked by the aim error, not by a state gate. The census added for this run keeps
+the closest the error came to the window while an aim state owned the tick:
+
+```
+aim error 009C5C9B=-3706.33 m (gate 00CE3880 = 25.0 m) closest=359.50 m at range=444.2 m alt=631.2 m
+```
+
+359.50 m against a 25.0 m window, at 444 m of planar range. The last sample, -3706.33 m, is taken
+after the overfly and says nothing about the dive. The error's open inputs are `approach+50h`
+(above) and the two interpolation endpoints `(approach+14h)->+5Ch/+60h`, which the host substitutes
+from this installation's `robots.lua` row (`DiveBombAimPrecDist` 70.0, `DiveBombAimPrecMul` 0.3).
+An authored miss of 70 x 0.3 = 21 m at close range is inside the window, so a 359 m error means an
+input or a term of `009C5C9B` is wrong, not that the aircraft aimed badly. That is the next packet.
+
+### `flyabove+19h`, second arm: the reaching writer, and how far back it goes
+
+The second arm at `009C67A9` is `COMISS XMM0,[ESP+30h]` with `XMM0` zeroed at `009C67A0`, and
+`009C67AE JC` skips the flag when the slot is positive - so the arm fires on `slot <= 0`.
+
+A literal-offset grep would not find its producer: the flyabove tick has nine call sites the frame
+walker cannot account for. `tools/frame_slot_census.py 009c62b0` with the cleanups
+
+```
+--pop 009c62cf=4 --pop 009c6342=4 --pop 009c63bf=0 --pop 009c6404=0 --pop 009c647b=4
+--pop 009c64ec=4 --pop 009c6705=4 --pop 009c6728=0 --pop 009c6b3a=12
+```
+
+(4 for each `CALL EDX`/`CALL EAX` virtual with one pushed argument - the walker's "156 bytes" at
+`009C62CF` is the `SUB ESP,0x88` and four register pushes, not a cleanup - and 0 for the `00BF701A`
+x87 helpers) puts the read in **frame slot K=104** with the reaching write at `009C65FD`, which
+carries the literal offset `[ESP+44h]` because `009C65FA SUB ESP,0x14` sits between them.
+
+That write is the `max(x, 0)` the earlier note assumed:
+
+```
+009c65c1  FLD   [ESP+0x10]                 ; x0
+009c65c5  FMUL  double ptr [0x00ceffa0]    ; 0.7
+009c65cb  FADD  double ptr [0x00ce4d70]    ; 200.0
+009c65d1  FSTP  [ESP+0x10]                 ; S = x0 * 0.7 + 200.0
+009c65d5  FLD   [ESP+0x10]                 ; T is already in ST0 from further back
+009c65db  FSUBP ST2,ST0                    ; T - S
+009c65e9  FCOMIP ST0,ST1                   ; against zero
+009c65ed  JBE   0x009c65f4                 ; byte `76`
+009c65fd  MOVSS [ESP+0x44],XMM0            ; max(T - S, 0)
+```
+
+`x0` itself is chosen at `009C65BB` between the constant at `00CE3D08` and `[ESP+38h]`, by the
+compare at `009C659B` against the 100.0 at `00D7A220`. `T` is still on the x87 stack from further
+back. So `+19h` stays a labelled substitution, but the trace is now two levels deeper and the next
+reader starts at `009C659B` with the slot key and the cleanups above rather than repeating them.

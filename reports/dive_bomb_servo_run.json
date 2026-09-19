@@ -100,10 +100,16 @@
       "log": "local/usn04_pitchgate.log",
       "arguments": "--frames 5000 --press-start-frame 30 --menu-select USN04 --mission-frames 4800 --mission-frame-seconds 0.05",
       "result": "arm_ticks=2370 transitions=4 states[aimdive=664 flyabove=159 turndown=67 attackrun=1480] releases=0; the turndown now completes in 67 ticks and the chain reaches aimdive for the first time"
+    },
+    {
+      "log": "local/usn04_d4h.log",
+      "arguments": "--frames 5000 --press-start-frame 30 --menu-select USN04 --mission-frames 4800 --mission-frame-seconds 0.05",
+      "result": "the same walk with approach+D4h bound at 675.0 m, which is the expected no-change: the aircraft is above alt_base 1000.0 m at the can-dive decision. aim error closest=359.50 m at range=444.2 m alt=631.2 m against the 25.0 m window"
     }
   ],
   "open": {
-    "00ce3880": "the 25.0 m aim gate; the last aim error in the aimdive run was -3706.33 m, taken after the overfly. A closest-approach census was added and needs a run to read.",
+    "00ce3880": "the 25.0 m aim gate, and the gate the chain now stops at. usn04_d4h.log: closest=359.50 m at range=444.2 m alt=631.2 m. The authored miss from this installation's robots.lua row is 70.0 x 0.3 = 21 m at close range, inside the window, so an input or a term of 009C5C9B is wrong.",
+    "flyabove+19h second arm": "the reaching writer is 009C65FD, found with tools/frame_slot_census.py 009c62b0 and the cleanups in the doc (slot K=104). The slot is max(T - S, 0) with S = x0 * 0.7 (00CEFFA0) + 200.0 (00CE4D70); x0 is chosen at 009C65BB between 00CE3D08 and [ESP+38h] by the compare at 009C659B against the 100.0 at 00D7A220. T is still on the x87 stack from further back.",
     "approach+50h": "no producer read. The +50h store census turns up 009C3E2E in 009C3DA0, which is NOT it: 009C3DAD MOV EDI,ECX makes EDI `this` and 009C3E11 LEA ESI,[EDI+30h] rebases, so that store lands on approach+80h. Look for a sub-object base or a block copy.",
     "flyabove+1Ah": "009C66E3/009C66F2/009C6822 writers read, their conditions not",
     "006e3500": "the per-device round count, still to route through the gunnery host's process-wide accessor",
