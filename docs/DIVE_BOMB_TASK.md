@@ -3240,3 +3240,75 @@ out-pointers and the mode are pushed - which is why a reader counting pushes get
 from a reader counting the cleanup, and why row 356 had five. The mapping of which push lands in
 which of the six slots is the next step and belongs to the body read, not to inference from this
 side.
+
+## `usn04_terms.log`: every input is alive, the output is pinned
+
+Eight samples, one per 120 attackrun ticks, identical on all three aircraft
+(`movieval`, `|.-2`, `|.-3`):
+
+```
+span / gain / scale / base / clamped
+9715 / 0.577 / 0.963 / 1000 / 1450
+8930 / 0.577 / 0.965 / 1000 / 1450
+8100 / 0.577 / 0.965 / 1000 / 1450
+7268 / 0.577 / 0.965 / 1000 / 1450
+6435 / 0.577 / 0.965 / 1000 / 1450
+5602 / 0.577 / 0.965 / 1000 / 1450
+4769 / 0.577 / 0.965 / 1000 / 1450
+3936 / 0.577 / 0.965 / 1000 / 1450
+```
+
+| term | over ticks 120-960 | verdict |
+| --- | --- | --- |
+| `span` | 9715 -> 3936, monotone | **alive** - the fix works; it is the distance still to close |
+| `class_gain` | 0.577 throughout | **alive**, and `atan(0.577)` = 30 deg, so this class's `DropAngle` is 0.5236 |
+| `scale` | 0.963 then 0.965 | alive, near-constant |
+| `base_altitude` | 1000 throughout | constant by construction: `+ACh` 1000 + `+50h` 0 |
+| `clamped_altitude` | **1450 throughout** | **DEAD** |
+
+**The dead term is the output, not an input.** The range pair fix did exactly what it was supposed
+to - span is live and falling - and the commanded altitude still never moves, because
+`base + span * scale * gain` is 1000 + 9715 x 0.965 x 0.577 = **6410 m** at the first sample and
+still 3190 m at the last, so the result saturates on its ceiling at 1450 on every single tick of the
+run-in. That is why correcting the arguments was byte-identical: the command was pinned before and
+is pinned after.
+
+So the bias is roughly four times too large, and the clamp has been hiding it. The next question is
+the bias's own form - `span * scale * class+518h` - and in particular whether `class+518h` is
+`tan(DropAngle)` at all, since 0.577 against a 9.7 km span is what produces a 5.4 km bias.
+
+### What this log cannot clear
+
+It cannot clear the altitude chain as a whole. It shows which term is pinned and that the inputs
+reaching `009FBA50` are live; it says nothing about whether `009FB800` downstream, or the pitch arm
+after it, does the right thing with a saturated altitude. And the approach **path** is still not the
+image's - the lateral offset is pinned at zero across all 153 re-rolls - so these numbers describe a
+run-in flying straight at its target rather than weaving.
+
+### `approach+A8h`, still a substituted 350.0
+
+It enters **none** of the five. `base` is `+ACh + +50h`; `span` is `+BCh - +B4h`; `gain` is
+`tan(plane_drop_angle)` off the Lua row; `scale` is the `009C43CD` interpolation over the height
+margin against the clamped distance. The substituted 350.0 reaches the release floor and the
+`009C4045` dive-entry height, not this chain.
+
+### Correction to the saturation reading above
+
+"The bias is roughly four times too large and the clamp has been hiding it" is **withdrawn**.
+`base + distance x tan(angle)` clamped to a ceiling **is** a glide-slope law, and at 9.7 km it is
+supposed to sit on the ceiling: it only comes off when `span x scale x gain < 450`, i.e. inside
+about 810 m of span, and `approach+B8h` = 1100 ends the attack run outside that. Given the same
+inputs the image may fly the whole run-in at the ceiling too. **The law is not shown wrong** - what
+is shown is that in this regime it cannot explain the ditch.
+
+Both settling facts are named:
+
+* the **1450** is the authored `Dynamics/Ceiling` = **1500** from this installation's
+  `scripts/datatables/planeglobals.lua` ("ez a plafon. ennyi meter folott minden repulogep atesik")
+  with a 50 m margin in the clamp - a separate authored altitude, **not** `base + 450`. The exact
+  form of that 50 m margin is the one detail not read.
+* **`class+518h` is written as `tan(DropAngle)`**: `include/bsp/bot_task_states.hpp:330` records
+  `gain = tan(desc+1F0h DropAngle)` at the store site `007C4A3F`/`007C4A44`. The measured 0.577 is
+  `tan(30 deg)`, so this class's authored `DropAngle` is 0.5236.
+
+`docs/HANDOFF_DIVE_BOMB_PROBE.md` carries this stream's state for a cold reader.
