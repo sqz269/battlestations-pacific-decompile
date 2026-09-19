@@ -225,7 +225,7 @@ optional decoration; it is the frame the station lives in.
 | address | name | instructions | state |
 | --- | --- | --- | --- |
 | `00810190` | `BSP_UnitWake_AppendSample` | 303 | **read whole, this packet** (section 5b) |
-| `00810630` | `BSP_UnitWake_SampleAtDistance` | 198 | unread |
+| `00810630` | `BSP_UnitWake_SampleAtDistance` | 198 | **read whole, this packet** (section 5c) |
 | `00811180` | `BSP_Unit_DecomposeAgainstWake` | 523 | unread |
 | `00811150` | `BSP_Unit_WakePointAtDistance` | 12 | trivial forwarder, `+0BD0h` |
 
@@ -295,6 +295,54 @@ and `docs/SHIP_AI_FORMATION.md` measure from the sample itself, `wake + 8h + 18h
 correction of the other. It also read the first argument as the world position, which is why this
 document calls it `world_pos` and not a delta: the ring stores `new` directly as a sample position,
 so an argument that were a per-tick delta would store a near-zero vector.
+
+### 5c. `00810630 BSP_UnitWake_SampleAtDistance`, read whole this packet
+
+`__thiscall(wake /*ECX*/)(float along, float out_pos[3], float out_dir[3], float* out_yaw)`,
+`RET 10h` at `008108F2`, body `00810630-008108F4`, 198 instructions. This is the routine
+`00811150` forwards to (`+0BD0h`), and therefore the one `0070D290` runs for every follower every
+tick. `COMISS`/`JC` at `0081063C` splits it in two.
+
+**`along <= 0`** (`00810645-00810718`), the head-sample branch:
+
+```
+h = wake+3C8h
+a = wrap_2pi(pi/2 - sample[h]+0Ch)          ; 00CE3830 pi/2, 00CE3828 2pi
+out_dir = (cos a, 0, sin a)                                          008106A0..008106B3
+out_pos = sample[h].xyz - along * (cos a, 0.0, sin a)                008106DD..00810712
+                                            ; the middle term via double 00D7A258 = 0.0
+out_yaw is NOT written
+```
+
+**`along > 0`** (`0081071B-008108F2`), the walk:
+
+```
+i = h ; n = 0
+while (along > sample[i]+10h && n < 40):    ; the leg to the next sample     00810740..00810782
+    along -= sample[i]+10h ; i -= 1 ; if (i < 0) i = 27h ; n += 1
+t = (n == 40) ? 1.0f (00D7A24C) : along / sample[i]+10h                00810786..008107A0
+j = (i == 27h) ? 0 : i+1                    ; the sample one step toward the head
+out_pos = t * sample[i].xyz + (1-t) * sample[j].xyz                    008107D7..00810842
+d = 00438B10(sample[i]+0Ch, sample[j]+0Ch)  ; the wrapped angle difference   00810854
+a = wrap_2pi(pi/2 - 00438AA0(sample[j]+0Ch, d * (1-t)))                0081087B..0081089A
+out_dir = (cos a, 0, sin a)                                            008108A2..008108D2
+out_yaw = sample[i]+14h * t + sample[j]+14h * (1-t)                    008108D7..008108ED
+```
+
+`00438B10 subtract_wrapped_angle` is the routine `include/bsp/ship_ai_follow_land.hpp` already
+declares for the `land` step, so the host has it.
+
+Two consequences for the binding:
+
+* **`out_yaw` is genuinely left unwritten on the `along <= 0` branch.** This packet confirms
+  `docs/SHIP_AI_FORMATION.md`'s note independently: `[ESP+4Ch]`, the `out_yaw` argument slot, is
+  reused as the angle scratch at `00810658`. `009DF2D0` reads that yaw at `009DF3F9`, so a follower
+  whose station is abreast of or ahead of the leader reads a stale stack value in the image. The
+  reconstruction must carry a validity flag and substitute 0, which is what `src/ship_ai_formation.cpp`
+  already does - **not** reproduce the uninitialised read.
+* **The walk terminates after at most 40 samples and clamps `t` to 1.0.** A station further back
+  than the whole trail therefore lands on the oldest sample, not off the end. With 50 m legs that
+  is about 2 km of usable station depth.
 
 ## 6. The cut this packet proposes
 
