@@ -201,6 +201,36 @@ float dive_bomb_decay_dive_altitude_009c7a94(float dive_altitude_a8,
     return (dive_altitude_a8 < decayed) ? dive_altitude_a8 : decayed;
 }
 
+// 007BCC80, read whole; see the header for the listing and the sign argument.
+float weapon_fall_time_007bcc80(float height_above_aim_point,
+                                float unit_velocity_y) noexcept {
+    if (!(height_above_aim_point > 0.0f)) return 0.0f;   // 007BCC86
+    const float vy = unit_velocity_y -
+        dive_bomb_constant::kFallTimeVerticalBias;       // 007BCCA4, 00E08E54
+    // 007BCCB6 FMUL and 007BCCDA FDIV both take the QWORD at 00CF9058, and
+    // 007BCCC2/007BCCCF round the discriminant and its root to float on the way.
+    const double g = dive_bomb_constant::kGravity;
+    const float disc = static_cast<float>(
+        static_cast<double>(vy) * vy + 2.0 * height_above_aim_point * g);
+    const float root = std::sqrt(disc);
+    return static_cast<float>((static_cast<double>(root) + vy) / g);
+}
+
+// 009C7D71-009C7E33, the diving arm of the approach update.
+DiveBombImpactPoint dive_bomb_impact_point_009c7d71(
+    const DiveBombImpactPointInputs& in) noexcept {
+    DiveBombImpactPoint out;
+    const float h = in.unit_position[1] - in.aim_point_y;   // 009C7B49, negated
+    out.fall_time = weapon_fall_time_007bcc80(h, in.unit_velocity[1]) +
+        static_cast<float>(dive_bomb_constant::kImpactPointFallTimeBias);
+    out.point[0] = in.unit_position[0] + out.fall_time * in.unit_velocity[0];
+    // 009C7DF1 adds the 0.0f at 00D7A258 and 009C7E33 then overwrites +DCh with
+    // the aim point's own Y, so only that second store survives the tick.
+    out.point[1] = in.aim_point_y;
+    out.point[2] = in.unit_position[2] + out.fall_time * in.unit_velocity[2];
+    return out;
+}
+
 // 00419010, five stack floats, RET 14h. Equal ordered endpoints return y0;
 // otherwise the interpolation is clamped between the two y values whichever way
 // round they are. Transcribed from docs/UNIT_RUDDER_CURVE.md's reconstruction.
@@ -737,9 +767,11 @@ DiveBombAimDiveSteerResult dive_bomb_aimdive_steer_009c5c9f(
         : dive_bomb_constant::kAimDiveRollBand;      // 009C5D75 / 009C5D85
     // 009C5D8E: InterpolateClamped(-band, 1.0, band, -1.0, x). Falling, like
     // every other roll map in this bot: a positive bearing error gives a
-    // negative stick.
+    // negative stick. The x the two arms load is not the same slot: 009C5D33
+    // takes [ESP+18h] and 009C5D60 takes [ESP+24h].
     out.roll_290 = dive_bomb_interpolate_clamped_00419010(
-        -band, 1.0f, band, -1.0f, in.bearing_error);
+        -band, 1.0f, band, -1.0f,
+        out.used_wide_band ? in.bearing_error_wide_18 : in.bearing_error);
     return out;
 }
 

@@ -236,6 +236,11 @@ struct GameProjectileRow {
     float drop_owner_heading{0.0f};
     float drop_target_heading{0.0f};
     float drop_crossing_angle{-1.0f};   // -1 = no ordered target at the drop
+    // Packet cc8_torpedo_swim, item 1: the drop index this round was filed
+    // under, so every later line about it can be keyed to the id on its own
+    // `torpedo drop N` line rather than matched on a bare number across the
+    // three id spaces a run prints. 0 = not a torpedo drop and not traced.
+    unsigned long long torpedo_trace_id{0};
 };
 
 // One swimming round's closest approach, kept after the round is gone.

@@ -1906,3 +1906,264 @@ initial offset between a spawn heading and a target course, not a geometry the t
 table settles is that the convergence happens inside the attackrun; **whether the steering chases
 the ship's current course or a lead point is the next question, and this census does not answer
 it.**
+
+## 15. The six USN04 torpedoes never reach the water: they die on their own squadron mates one tick after the drop
+
+Packet `cc8_torpedo_swim`. `local/swim_trace_usn04.log` is the tip binary plus additive per-round
+logging, keyed to the id on each round's own `torpedo drop N` line. It reproduces the defect
+`docs/HANDOFF_TORPEDO_SWIM_START.md` handed over - `drops=6 refusals=0 water_entry_breakups=0`,
+`swims_started=0`, `torpedo_closest_approach swims=0` - so the comparison below is same-binary in
+everything that matters.
+
+Note for anyone reading the two USN04 logs side by side: this mission is **not** deterministic
+run to run. The handed-over run dropped squadron 2 first at mission frame 2799 and ended with
+`deaths=1 total_damage=721.3 created=492`; this one drops squadron 4 first at frame 2791 and ends
+with `deaths=2 total_damage=935.6 created=677`. The six drops and the zero swims reproduce; the
+gunnery totals do not, and no before/after argument may rest on them.
+
+### 15.1 What became of the six rounds, from the trace
+
+Every one of the six exits on its **first** step, at `life=0.05`, as an entity impact on an
+aircraft of its own squadron:
+
+```
+torpedo trace 1 spawn by B5N Kate #4.1      at=(12193.9,11.76,-12547.9) vel=(53.4,0.04,-60.8) bullet=69
+torpedo trace 2 spawn by B5N Kate #4.1|.-2  at=(12193.9,11.76,-12547.9) vel=(53.4,0.04,-60.8) bullet=69
+torpedo trace 3 spawn by B5N Kate #4.1|.-3  at=(12193.9,11.76,-12547.9) vel=(53.4,0.04,-60.8) bullet=69
+torpedo trace 1 t=33.05 life=0.05 from_y=11.76 pos=(12196.6,11.75,-12550.9) vel=(53.4,-0.45,-60.8) swimming=0
+torpedo trace 1 exit=entity_impact hit=B5N Kate #4.1|.-3 at=(12193.9,11.76,-12547.9) life=0.05
+torpedo trace 2 exit=entity_impact hit=B5N Kate #4.1|.-3 at=(12193.9,11.76,-12547.9) life=0.05
+torpedo trace 3 exit=entity_impact hit=B5N Kate #4.1|.-2 at=(12193.9,11.76,-12547.9) life=0.05
+```
+
+and the same three lines again for squadron 2 eight frames later, rounds 4, 5 and 6 hitting
+`B5N Kate #2.1|.-3`, `#2.1|.-3` and `#2.1|.-2` at `(-12624.1,11.78,-12621.3)`.
+
+Two things in those lines are the whole finding:
+
+* **the three aircraft of a squadron report one position and one velocity at the drop**, to every
+  digit printed, and the round spawns at its own aircraft's pose origin
+  (`src/game_hosts_gunnery.cpp`, the labelled release-geometry substitution);
+* **the impact point equals the spawn point.** `SegmentBinding::shape_trace_segment` clamps the
+  slab test's `enter` at `0`, so a hit reported at the segment's start means the segment **began
+  inside** the mate's hull box. The round is dead before it has fallen one centimetre: the step
+  it dies on took it from `y=11.76` to `y=11.75`.
+
+The sweep excludes exactly one unit, the owner, so the two co-located mates are live candidates.
+
+**The closest-approach census and both water arms are downstream of this and are not defects.**
+No round reached the water block at all, which is why `water_entry_breakups=0` *and*
+`swims_started=0`; the census skips rounds that are not swimming.
+
+### 15.2 Two suspects cleared, from the same run
+
+* **`0078CF20` is not involved.** This host never calls the ocean sampler: the crossing test in
+  `run_projectiles` is the literal plane `shot.position[1] <= 0.0f && from[1] > 0.0f`. The plane
+  is reachable in this scene - the same run counts `water=44` crossings by other rounds in Coral
+  Sea - so "whether this scene answers as USN01's does" has no bearing on the six drops. The
+  handoff named it as a suspect, not a finding; it is now cleared.
+* **The drops are not too late in the mission.** They land at mission frames 2791 and 2799 of
+  3000, leaving 209 and 201 frames = 10.45 s and 10.05 s, against a 1.55 s free fall from 11.76 m (g = 9.81038)
+  (`projectile_integrate_position_006e7670`, no drag). A 4500-frame run would change nothing.
+
+### 15.3 The image gives a dropped torpedo no friendly-fire exemption, so this is not the fix
+
+`0084BF00` step 6 is the only friendly-fire arm on this path, and it is **not** a torpedo rule.
+From the listing:
+
+```
+0084c1d3  CALL 0098b370                  ; the entity sweep, AL = hit
+0084c1d8  MOV  ESI,[ESP+0x44]            ; the owner's +9D4h, latched at 0084bf60
+0084c1e4  JZ   0084c251                  ; no control block -> keep the hit
+0084c1f3  PUSH 0xf
+0084c1f5  CALL EAX                       ; hitEntity->vtable[5Ch](0Fh), is it a plane
+0084c1fd  JZ   0084c213                  ; not a plane -> keep the hit
+0084c1ff  MOV  EDX,[ESP+0x64]            ; the class descriptor
+0084c203  CMP  dword ptr [EDX+0x8],0x11  ; the weapon sub-type
+0084c207  JNZ  0084c213                  ; not 11h -> keep the hit
+0084c209  CMP  dword ptr [ECX+0x9d4],ESI ; same control block as the owner
+0084c20f  JNZ  0084c213
+0084c211  XOR  BL,BL                     ; -> discard the hit
+```
+
+`classDesc[+8h] == 11h` is **Kamikaze** (`kProjectileSubTypeKamikaze`, `include/bsp/projectile_kinds.hpp`).
+A torpedo is `0Ah`. The arm cannot fire for a torpedo, so binding step 6 into this host would
+neither be faithful nor move the measure.
+
+The sweep's own exclusion is one entity, not a formation: `0084C1B3`-`0084C1BF` loads
+`EDI = owner->vtable[B0h]()`, which `docs/HIT_NARROWPHASE.md` and `docs/EXPLOSION_RADIAL_DAMAGE.md`
+both read as the shooter's **collision root**, compared with `!=` against one entity and its
+children at `0098AEE4` / `0098ACE3`. Nor can the wing members be sharing the leader's collision
+node (which `0087BDC9`'s parent-chain walk allows for a child that has none): the AA guns hit and
+damage each of the six Kates individually in this run, so each carries its own collision presence.
+
+### 15.4 The cause is the missing formation offset, and it is not in the torpedo chain
+
+The three aircraft of a `SpawnNew` squadron sit on one point because this host has no formation
+ring. `src/game_hosts_ai.cpp`'s `tick_request_join_formation` records `0077C8D0`
+(`BSP_Entity_RequestJoinFormation`, `contract: unread`) and returns; nothing ever displaces a wing
+member from its leader. The image's own spacing for this is `Formation_UnitDist = 300.0`
+(`00CE3AE8`, `src/ai_tuning_globals.cpp`), at which no dropped torpedo could be inside a mate's
+hull box.
+
+**So the fix for this defect is the formation ring, not anything in the torpedo chain**: binding
+`0077C8D0` behind `tick_request_join_formation` so a wing member is displaced from its leader.
+There is no faithful change in `src/game_hosts_gunnery.cpp` or the torpedo task files that reaches
+`swims_started=6`, and 15.3 is the record of the one candidate that looked like a torpedo-side fix
+and was refuted from the listing before it was written. Until the ring exists, USN04 cannot measure
+the torpedo chain end to end without the probe of 15.5.
+
+That also settles the question the handoff left open about the wingmen reporting numbers identical
+to the last digit. **It is neither the flight-lead binding nor three tasks sharing one solution.**
+The torpedo task's inputs are filled per unit from the unit's own position -
+`host.unit_world_xz(unit_xz)` then
+`state.range_90 = torpedo_approach_range_009d3519(unit_xz, target_xz)`
+(`src/torpedo_approach_update.cpp:350` and `:368`, `009D357E`), reached through a binding built
+on the calling unit's own `slot_` (`src/game_hosts_units.cpp:4106`) - so identical outputs are the
+arithmetic of identical **inputs**. `range_peak 428.2` three times is three aircraft at
+one place, not one solution copied three ways.
+
+USN01 is consistent with this and is not a counter-example: its five torpedo bombers are
+independent units (`Mav1`..`Mav5`, no `|.-n` wing suffix), so none of them has a co-located mate
+to hit, and all five swim.
+
+### 15.5 A labelled probe, to show that nothing else in the chain is broken
+
+`local/swim_probe_usn04.log` is the same binary with one extra block in the projectile step,
+**deliberately not the image's rule and not committed**: for traced torpedo rounds only, an entity
+hit on a unit of the owner's own side is skipped instead of applied. It exists to answer one
+question the defect hides - what the rest of the chain does once the six rounds are not killed on
+their own squadron mates - and 15.3 is the reason it is a probe rather than a fix.
+
+Under it, on USN04, 3000 mission frames:
+
+```
+summary mission gunnery torpedo_drop  drops=6 refusals=0 water_entry_breakups=0
+summary mission gunnery torpedo_ranges_derived=34 swims_started=6 snaps=0
+summary mission gunnery torpedo_closest_approach swims=6
+torpedo from B5N Kate #2.1    nearest Lexington-class01 min=55.4 m at t=9.75 s of 9.75 s run
+      | ordered Lexington-class01 min=55.4 m at t=9.75 s target_moved=0.0 m crossing=2.857 rad
+      | at the drop: own_pose=-2.4137 target_pose=1.0123
+torpedo from B5N Kate #4.1    nearest Yorktown-class01  min=34.0 m at t=10.45 s of 10.45 s run
+      | ordered Yorktown-class01 min=34.0 m at t=10.45 s target_moved=0.0 m crossing=2.527 rad
+      | at the drop: own_pose=2.4211 target_pose=-1.3351
+```
+
+with the other two rounds of each squadron reporting the same numbers, as 15.4 requires of three
+aircraft at one point.
+
+Four things that measurement establishes, and one it does not:
+
+* **`swims_started=6`.** Everything from the water crossing through the swim to the
+  closest-approach census does its job; nothing downstream of the drop is broken.
+* **`t = 9.75 s of 9.75 s run` and `10.45 s of 10.45 s`: the minimum is on the last tick.** Both
+  squadrons' rounds were still closing when the mission ended. They are not misses yet, and it
+  would be wrong to read 55.4 m and 34.0 m as miss distances.
+* **`target_moved=0.0 m`.** The carriers are stationary, as expected while the ship AI's
+  path-following state has no body. This is the easiest target the chain will get.
+* **The run-in is nearly reciprocal, not a stern chase.** `crossing` is 2.857 rad (164 deg) and
+  2.527 rad (145 deg) between the round's track and the target's course, where section 11 measured
+  5 to 12 degrees on USN01. A stationary target and an opposed approach are a different geometry
+  from the one sections 11 and 14.7 describe, and nothing here extends to those.
+* **What it does not establish: whether a round hits.** 3000 frames end 9.75 s after the drop.
+  Section 15.6 runs it out.
+
+The distances are centre to centre and horizontal. The Lexington's authored hull is 250 m by 30 m
+(`unit hull input unit=Lexington-class01 ... length=250 width=30`), so 55.4 m from the centre is
+inside the hull's own footprint along its length, which is another reason not to call it a miss.
+
+### 15.6 Under the probe three of the six DO hit the Lexington - and the hit does nothing
+
+Read from the same probe log, `local/swim_probe_usn04.log`, which 15.5 only read the census of.
+The per-round trace carries the rest:
+
+```
+torpedo trace 1..3 swim_started life=1.60 pos=(12279.3,0.00,-12645.1)
+torpedo trace 4..6 swim_started life=1.60 pos=(-12710.2,0.00,-12717.9)
+torpedo trace 4 exit=entity_impact hit=Lexington-class01 at=(-12877.4,0.00,-12905.7) life=9.75
+torpedo trace 5 exit=entity_impact hit=Lexington-class01 at=(-12877.4,0.00,-12905.7) life=9.75
+torpedo trace 6 exit=entity_impact hit=Lexington-class01 at=(-12877.4,0.00,-12905.7) life=9.75
+torpedo trace 1..3 STILL IN FLIGHT at mission end life=10.45 pos=(12459.6,0.00,-12850.5)
+                                                  vel=(20.4,0.00,-23.2) swimming=1
+```
+
+* **Squadron 2's three rounds hit the Lexington** at 9.75 s of swim. Their census row's
+  `min=55.4 m` is not a miss distance at all: it is the centre-to-centre distance at the moment
+  the round met the hull, 55.4 m forward or aft of a 250 m ship's centre point.
+* **Squadron 4's three were still closing on the Yorktown** when the 3000-frame mission ended,
+  34.0 m from its centre, still on the swim at exactly 30.9 m/s (`|(20.4, 0, -23.2)| = 30.9`).
+* The swim starts at `life=1.60` against the 1.55 s free fall 15.2 predicts. Before that the round
+  spends its first **0.75 s inside a squadron mate's hull box** - it is launched with the
+  formation's own velocity, so nothing but gravity separates them - which is the same co-location
+  15.1 measures, seen from the other side.
+
+**And the three hits did nothing.** The carrier's census row reads
+
+```
+Lexington-class01  side 0  guns 22  ...  shots 72  hits_taken 3  dealt 146  taken 0  health 8000
+```
+
+Three hits taken, **zero damage**, full health. The arithmetic is `hull_damage_00470510`:
+`(owner_modifier * hull_damage_base - armour) * weapon_scale`, with `008777D0`'s `> 0` test above
+it. `hull_damage_base` is a uniform draw between the **bullet class row's** `DamageMin`/`DamageMax`
+(`006E7C60` through `00BD2F10`, `src/game_hosts_gunnery.cpp`), and for bullet 69 that draw is about
+**44**: in the unprobed run of 15.1 each Kate's `damage_dealt` is exactly `44` where its torpedo
+struck an unarmoured squadron mate. A carrier's `Armour` is not below that, so every torpedo hit on
+a ship resolves to zero.
+
+**That is a second defect, and it is not this packet's.** It is separable from the swim start, it
+is visible only once the rounds survive the drop, and naming it costs nothing to act on later:
+either the torpedo's warhead is not the bullet row's `DamageMin`/`DamageMax` at all - the torpedo
+class descriptor is `0FCh` bytes against the bullet class's `0D4h`, so it has fields the bullet row
+does not - or the ship-hit path owes a torpedo an armour rule of its own.
+
+One pointer for whoever takes it, and it is a pointer rather than an answer. The hit record already
+carries `shot_is_torpedo` (`shot->vtable[5Ch](2Bh)`), and `src/ship_hit_record.cpp:230` reads it -
+but only to build the roll torque, where `0082712E` takes `host.hull_damage(0.0f)`, **the same
+formula with no armour at all**. So the image itself computes an armour-free damage figure for a
+torpedo hit in one place on this path, while the hull damage beside it keeps the armour
+subtraction. Whether that asymmetry is the image's intent or whether the warhead comes from
+somewhere else entirely is unread. **Nothing above is a reading of the image's torpedo warhead; it
+is a measurement of what this host does.**
+
+### 15.7 Run out to 4500 frames: six hits on two carriers, and both carriers end at full health
+
+`local/swim_probe4500_usn04.log`, the same probe binary, `--frames 4700 --mission-frames 4500`.
+The longer mission lets all four Kate squadrons reach their release, so the sample doubles:
+
+```
+summary mission gunnery torpedo_drop  drops=12 refusals=0 water_entry_breakups=0
+summary mission gunnery torpedo_ranges_derived=34 swims_started=12 snaps=0
+summary mission gunnery torpedo_closest_approach swims=12
+
+torpedo trace 4,5,6 exit=entity_impact hit=Lexington-class01 at=(-12877.4,0.00,-12905.7) life=9.75
+torpedo trace 1,2,3 exit=entity_impact hit=Yorktown-class01  at=( 12464.4,0.00,-12855.9) life=10.70
+torpedo trace 7..12 STILL IN FLIGHT at mission end, swimming, 4.15 s and 5.15 s of run
+```
+
+**Twelve drops, twelve swims, six hits.** Squadron 2's three take the Lexington at 9.75 s and
+squadron 4's three take the Yorktown at 10.70 s - 15.6's three still-closing rounds do arrive, and
+the 34.0 m they were short of in the 3000-frame run closes to a hull hit at 26.3 m centre to
+centre. Squadrons 6 and 8 release much later, and their six rounds are 197.4 m and 228.5 m out and
+still swimming when 4500 frames end; nothing here says whether they would have arrived.
+
+And the damage answer of 15.6 holds at twice the sample:
+
+```
+Lexington-class01  ... shots 95   hits_taken 3  dealt 294  taken 0  health 8000
+Yorktown-class01   ... shots 216  hits_taken 3  dealt 719  taken 0  health 8000
+```
+
+**Six torpedo hits on two carriers, zero damage, both at full health**, for the reason 15.6 reads
+off `hull_damage_00470510`. Every accuracy question the torpedo stream has been asking since
+section 5 is answered in the affirmative here - against a stationary carrier the run-in, the drop,
+the swim and the terminal geometry all work - and the round then does nothing when it arrives.
+
+Three cautions on reading this section, because the probe is doing work in it:
+
+* the probe is **not** the image's rule (15.3) and is not committed; every number above depends on
+  the six-to-twelve rounds not being killed on their squadron mates, which is a defect the probe
+  hides rather than fixes;
+* the targets are stationary (`target_moved=0.0 m`). A moving carrier is a different problem and
+  this says nothing about it;
+* the run is not deterministic, so these counts reproduce the shape, not the digits.
