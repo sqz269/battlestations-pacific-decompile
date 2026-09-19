@@ -1829,6 +1829,17 @@ comment naming the error instead.
 | `torpedo_loadout_cleared` | absent | 5 | 5 | 5 |
 | releases | 5 | 5 | 5 | 5 |
 
+> **The `deaths` and `damage` rows of the last column are superseded from 2026-09-19.** On main
+> after the impact burst (docs/TORPEDO_WARHEAD.md section 11.2), USN01 at 3000 mission frames reads
+> **damage 3595.4, deaths 4** in place of `1285.0` and `1`. Nothing about the torpedo chain moved:
+> `drops=5`, `swims_started=5`, all five tasks with `releases=1` and identical state histograms,
+> `goaway` entered once per aircraft, torpedo 1 striking `Hangar, Small, 04 01` at
+> `(4165.8, 0.00, -3294.7)` at life 51.75 and the other four expiring at 60.05 - byte for byte the
+> same as this column. What changed is that an impact now spawns the class row's `Blast` burst, as
+> `0084BC60` step 7 does, so the hangar this run has always hit now takes its warhead and every
+> shell with a `Blast` table adds a record. **Every other row of this table still stands**, and they
+> are the ones this section's argument rests on. Use the new pair for regressions from now on.
+
 Mav1's shape in the passing run is `attackrun 424 -> aim 254 -> goaway 308 -> done 313`, one goaway
 entry, `range_peak_in_goaway=701.3` against `break_off_24h=700.0`. Only Mav5 is lost, sunk at
 86.65 s by SaltLakeCity; Mav2 survives on 4 health, Mav3 and Mav4 are untouched. The before run lost
