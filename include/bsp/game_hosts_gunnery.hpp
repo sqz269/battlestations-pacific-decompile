@@ -101,8 +101,9 @@ struct GameBulletClassRow {
     float water_damage{0.0f};    // "WaterDamage", weapon->vtable[10h]
     float fire_damage{0.0f};     // "FireDamage", weapon->vtable[14h]
     float fire_chance{0.0f};     // "FireChance", weapon->vtable[18h]
-    float blast_damage_max{0.0f};// "Blast.BlastDamageMax"
-    float blast_range{0.0f};     // "Blast.BlastRange"
+    float blast_damage_min{0.0f};// "Blast.BlastDamageMin", classDesc+B4h
+    float blast_damage_max{0.0f};// "Blast.BlastDamageMax", classDesc+B8h
+    float blast_range{0.0f};     // "Blast.BlastRange", classDesc+70h
     float mass{0.0f};            // "Mass"
     // MTorpedo only. 008566B0 reads "WaterTravelSpeed" into classDesc+0E4h, and
     // it is a different quantity from V0 at +50h: the torpedo bot's intercept
