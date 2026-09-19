@@ -7,7 +7,7 @@
  "classification": "discovery; why no torpedo aircraft in this project has ever reached the aim tick",
  "finding": "All five of USN01's Mavs fly into the water at about 141 m/s roughly eleven seconds into the run. Every symptom the stream was chasing is downstream of that: the approach stops at 124 ticks because run_torpedo_task_arm_009d4850 returns on command_target_plus_one == 0 once the aircraft is gone; min == last == 3928.5 m because it closed 330.7 m and then died; aim_ticks=0 because the in-range latch wants range < 2200 m; and 009D2287, 007BBBA0 and 007EEF30 are all downstream of an aim stage that never runs. The heading error reached 0.000 rad, so steering was correct.",
  "proximate_cause": "The commanded run-in altitude is 12 m and the pitch demand is exactly -pi/3 rad, held from 800 m to the sea. The aim tick's floor is approach+78h + approach+74h at 009D1631: +78h is TorpReleaseAlt 12.0 (correct for what it is) and +74h is 0.00.",
- "root_cause": "009D3489-009D34AE stores alt_floor_74 = ctl+398h only when ctl+398h < 100.0 (FLD [ECX+398h], FCOMIP against the double at 00D7A220, JBE skips). GameUnitsHost's read_control_block feeds that field kPilotTorpedoCruisingAltDefault = 500.0f, whose own comment says it is Pilot/Torpedo/CruisingAlt, the +394h key. 500 fails the gate, so +74h keeps its zero and the band collapses to the 12 m release altitude. The substitution has no producer behind it: 009D4A70 only READS the field (009D4B57 FLD [EAX+398h]) and stores nothing to +398h anywhere in its body.",
+ "root_cause": "OPEN, and the first candidate is withdrawn. 009D3489-009D34AE stores alt_floor_74 = ctl+398h only when ctl+398h < 100.0 (FLD [ECX+398h], FCOMIP against the double at 00D7A220, JBE skips), and the host feeds that field 500.0f, so the store never fires and +74h stays 0. That looked like the defect until 009C89CE was read: on the dive-bomb path +398h is tuning+4CCh plus a jitter, and tuning+4C0h..+4D8h is the dive bomb's cruising-altitude block, so a value above 100 is probably normal and alt_floor_74 = 0 probably is too. A commanded band of 12 m is then a plausible torpedo RELEASE altitude rather than a defect. What is unexplained, and is now the question, is the descent: pitch_demand is exactly -pi/3 rad and is held constant over more than 700 m, which is the shape of a clamp rather than of a computed slope, and the aircraft never flares. See the Correction section of the doc.",
  "routines": [
   {
    "address": "009d3420",
@@ -22,7 +22,7 @@
   {
    "address": "009c8920",
    "name": "BSP_BotTaskDiveBomb_UpdateCruiseProfile",
-   "coverage": "NOT READ. Named as the next step: it is the structural analogue of 009D4A70 and it does write +398h, at 009C89CE"
+   "coverage": "partial; read 009C8920..009C8A2C. Its +398h store at 009C89CE takes 00BD2F10(0, [00CE5380]) + tuning+4CCh, with the tuning singleton from 0042E740 held in EBP at 009C8996, under the dirty-byte guard at 009C89BF/009C89DD and setting 009C89D6 [EDI+3ADh] = 1. The rest of the body is contract: unread"
   },
   {
    "address": "009d4850",
@@ -68,5 +68,5 @@
    "role": "the same-binary before column for whoever makes the fix"
   }
  ],
- "next_step": "Read 009C8920 BSP_BotTaskDiveBomb_UpdateCruiseProfile's store to +398h at 009C89CE and find which tuning key it takes; docs/DIVE_BOMB_TASK.md may already name it. Any value below 100 m makes 009D3489's store fire and the band becomes that value plus 12 m, which is a torpedo run-in altitude rather than a dive into the sea. The fix is one field in read_control_block and it must come from the producer, not from picking a number that passes the gate."
+ "next_step": "Start from the descent law, not the altitude field. pitch_demand is -1.0472 rad, which is -pi/3 to four decimals, held constant over more than 700 m of descent while the same census line prints drop_angle=0.4014 and climb_1ec=0.1854, neither of which the aircraft flies, and the aircraft never flares (pitch tracks the demand to -1.0396 at 62 m and the next sample is under the water). Find what writes that demand and why it is a constant rather than the glide slope docs/TORPEDO_MOVETO_TICK.md reconstructs, and what should level the aircraft at the band. docs/TORPEDO_RUN_IN_DESCENT.md is the other document on that path. Whether read_control_block is also passing the wrong key for +398h is unproven either way and is secondary: no producer of +398h on the torpedo path has been located at all, since 009D4A70 only reads it."
 }

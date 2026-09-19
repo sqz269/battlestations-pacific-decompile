@@ -149,3 +149,57 @@ are `--frames 3200 --press-start-frame 30 --menu-select USN01 --mission-frames 3
 Section 4 is a census plus a recommendation and is **not** yet a reading of `009C8920`. Nothing is
 fixed: no code in this packet has changed, and `local/tap_before_usn01.log` is the same-binary
 before column for whoever makes the change.
+
+## Correction to section 3, made before the fix was attempted: `+398h` is a cruising altitude
+
+Section 4 named `009C89CE` in `009C8920 BSP_BotTaskDiveBomb_UpdateCruiseProfile` as the place to
+find out what `+398h` really carries. Reading it weakens section 3's root-cause claim, so the claim
+is corrected here rather than acted on.
+
+```
+009c8977  CALL 0x0042e740                  ; the tuning singleton -> EAX, kept in EBP at 009c8996
+009c897c  FLD  float ptr [0x00ce5380]
+009c898b  FSTP float ptr [ESP + 0x4]
+009c8994  FLDZ
+009c8998  FSTP float ptr [ESP]
+009c899b  CALL 0x00bd2f10                  ; the (0, 00CE5380) helper, a jitter
+009c89a0  FADD float ptr [EBP + 0x4cc]     ; + tuning+4CCh
+009c89ad  FSTP float ptr [ESP + 0x10]
+009c89b6  COMISS / 009c89bf CMP byte [EDI+3aah],0   ; the dirty-byte guard
+009c89ce  MOVSS dword ptr [EDI + 0x398],XMM0
+009c89d6  MOV  byte ptr [EDI + 0x3ad],0x1
+```
+
+So on the dive-bomb path `+398h` is **tuning+4CCh plus a jitter**, and `tuning+4C0h..+4D8h` is the
+dive bomb's own altitude block - the rows `src/game_hosts_units.cpp` reads as
+`kPilotDiveBombCruisingAlt = 1300.0f` and its neighbours, per `docs/GAME_TUNING_SINGLETON.md`. That
+is a **cruising** altitude, of the order of 1300 m, and it is nowhere near below the `100.0` the gate
+at `009D3489` wants.
+
+* **was** (section 3): the host feeds `+398h` the wrong key, 500 instead of something under 100, so
+  the `009D3489` store never fires and `alt_floor_74` wrongly stays 0.
+* **is**: `+398h` looks like a cruising altitude on the one path whose producer is located, so a
+  value above 100 is probably the normal case and `alt_floor_74 = 0` is probably the normal outcome.
+  A commanded band of `0 + 12 = 12 m` is then a plausible torpedo **release** altitude rather than a
+  defect - torpedoes are dropped low. The host may still be passing the wrong key, and that is now
+  **unproven either way**, because `009D4A70` writes nothing to `+398h` and no producer on the
+  torpedo path has been located at all.
+* **evidence**: the listing above; `009D4B57 FLD float ptr [EAX + 0x398]` is a read.
+
+**What this does not change.** Section 1 stands entirely: the five aircraft fly into the sea at
+about 141 m/s and every downstream symptom follows from that. Section 2 stands as a measurement: the
+commanded altitude is 12.00 m, the pitch demand is exactly `-1.0472 rad` and it is held from 800 m
+to the water.
+
+**What it moves the question to.** If 12 m is the right place to be going, then the defect is the
+way the aircraft goes there. `-1.0472` is `-pi/3` to four decimals, held constant over more than 700
+metres of descent - that is the shape of a **clamp**, not of a computed slope, and the same census
+line prints `drop_angle=0.4014` and `climb_1ec=0.1854`, neither of which the aircraft flies. The
+aircraft also never flares: `pitch` tracks `pitch_demand` to `-1.0396` at 62 m and the next sample
+is under the water.
+
+So the next packet should start from the descent law rather than from the altitude field:
+`docs/TORPEDO_MOVETO_TICK.md`, whose own title says the move-to tick commands a glide slope,
+`docs/TORPEDO_RUN_IN_DESCENT.md`, and whatever writes the pitch demand the census prints. The
+question to answer first is why the demand is a constant `-pi/3` instead of the glide slope those
+documents reconstruct, and what should level the aircraft off at the band.
