@@ -2038,3 +2038,41 @@ The band selection is now bound. What is still a contract is the *other* operand
 interpolates the wide arm over a second bearing error, drawn against the latched reference at
 `approach+D8h`/`+E0h`, and this host keeps one bearing. So the arm that runs is right and the value
 it runs on is the single bearing, which is labelled at the call site.
+
+## `approach+D8h`/`+DCh`/`+E0h` settled: the run-in origin, not a lead point
+
+The provisional note is resolved, and the name was wrong twice over. These three are the
+**aircraft's own world position, latched once at task construction**.
+
+The chain that names the constructor's `EDI`:
+
+```
+009c73c5  PUSH EBP                        ; second argument
+009c73c8  PUSH EAX                        ; FIRST argument
+009c73cd  CALL 0x009c3ea0
+...
+009c3eca  MOV  EDI,dword ptr [ESP + 0x20] ; past seven prologue pushes -> that EAX
+009c3ed2  PUSH EDI                        ; 009F9CE0's first argument
+009c3ed5  CALL 0x009f9ce0
+009f9ce0  MOV  EAX,dword ptr [ESP + 0x4]
+009f9cea  MOV  dword ptr [ECX + 0x4],EAX  ; approach+4h, the unit
+```
+
+`approach+4h` is the unit everywhere else in the class - it is the entity whose `+C8h` pose flag
+and `+FCh` position the approach reads - so `EDI` is the aircraft, and `009C405D`-`009C407D` copies
+its `+FCh`/`+100h`/`+104h` into `+D8h`/`+DCh`/`+E0h`.
+
+So the aimdive tick's **first** bearing, the one it takes after subtracting `+D8h` and `+E0h` from
+the aim point, is the bearing **along the attack run as it was set up** - a fixed reference line
+from where the aircraft was when the task was built to the aim point. The second bearing, taken
+against the aircraft's live position, is the one the aim error uses. That is why the wide roll arm
+exists at all: near wings-level and short of the aim point the roll follows the set-up line, and
+once banked over or past it the roll follows the live bearing.
+
+`dive_bomb_approach_off::kAimPointX/Y/Z` are renamed `kRunInOriginX/Y/Z`. Nothing referenced them,
+so this is a header-only correction.
+
+This also finishes the aimdive steering's last contract in principle: the wide arm's interpolant is
+`SubtractWrappedAngle(heading, bearing(aimPoint - runInOrigin))`. This host does not latch a run-in
+origin, so it still passes the live bearing to both arms, labelled at the call site - but the value
+is now named rather than unknown.

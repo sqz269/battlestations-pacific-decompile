@@ -94,16 +94,22 @@ inline constexpr int kWeaponSelect = 0xCC;    // aimdive writes 0, flyabove writ
 inline constexpr int kInRangeLatch = 0xD0;    // task+4C8h
 inline constexpr int kHasBombOrdnance = 0xD1;  // task+4C9h
 inline constexpr int kReleaseRange = 0xD4;    // the aimdive abort test's range
-// PROVISIONAL, and probably misnamed: the aim point 009C40A0 hands out is
-// +4Ch/+50h/+54h, not this. The constructor fills these three at
-// 009C4065/009C4071/009C407D from `EDI+FCh/+100h/+104h`, EDI being its stacked
-// argument at 009C3ECA, and the aimdive tick subtracts +D8h and +E0h from the
-// aim point at 009C58F8-009C5905 - so this reads as a latched REFERENCE
-// position the aim point is measured against. Which entity EDI is has not been
-// established here. docs/DIVE_BOMB_TASK.md.
-inline constexpr int kAimPointX = 0xD8;
-inline constexpr int kAimPointY = 0xDC;
-inline constexpr int kAimPointZ = 0xE0;
+// SETTLED, and these were misnamed kAimPointX/Y/Z: the aim point 009C40A0
+// hands out is +4Ch/+50h/+54h. These three are the RUN-IN ORIGIN, the
+// aircraft's own world position latched once at task construction, and the
+// aimdive tick subtracts +D8h and +E0h from the aim point to take a bearing
+// along the attack run as it was set up.
+//
+// The chain that names EDI: 009C73C5 and 009C73C8 push EBP then EAX, so EAX is
+// the constructor's FIRST argument, and 009C3ECA `MOV EDI,[ESP+20h]` reads it
+// past the seven prologue pushes. 009C3ED2 then pushes that same EDI as
+// 009F9CE0's first argument, and 009F9CE0 stores its `[ESP+4]` into `[ECX+4]`
+// at 009F9CEA - which is approach+4h, the unit. So EDI is the aircraft, and
+// 009C405D-009C407D copies its +FCh/+100h/+104h here.
+// docs/DIVE_BOMB_TASK.md.
+inline constexpr int kRunInOriginX = 0xD8;
+inline constexpr int kRunInOriginY = 0xDC;
+inline constexpr int kRunInOriginZ = 0xE0;
 }  // namespace dive_bomb_approach_off
 
 // ---------------------------------------------------------------------------
