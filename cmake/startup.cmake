@@ -1409,3 +1409,4 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_bit_cursor_
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_bit_cursor_numeric.cpp src/native_session_message_tags_03_06_07.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_bit_cursor_fields.cpp src/native_session_message_tags_04_05.cpp)
 cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_session_message_tag_08.cpp)
+cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_session_message_tags_09_10_11.cpp)
