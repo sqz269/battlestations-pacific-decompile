@@ -97,12 +97,43 @@ There is no store, in any form, including the four pointer-construction forms (`
 that the earlier census in `docs/TORPEDO_AFTER_THE_DROP.md` section 6.3 never ran and that were the
 named escape route for a disp8 write through an aliased pointer.
 
-**What this does not close, stated plainly.** "No writer names the displacement" is still not "no
-writer". A block copy, or a pointer aliased into a register by some form not enumerated above, would
-be invisible. **I did not find the writer of the torpedo task's `+D0h`, and I am not claiming the
-field is dead.** The lead answer does not rest on it: section 2 is a complete census of the only
-routine in the image that fetches a target velocity for a bot, so whatever writes `+D0h` did not
-obtain a velocity to bake a lead into it.
+### 3.0 The second displacement, which no earlier census had
+
+Section 6.3 of `docs/TORPEDO_AFTER_THE_DROP.md` names the escape route for its own negative: "the
+producer holds the approach at some other offset". It does, and this packet found the offset.
+
+`009D3050 BSP_BotTaskTorpedo_Construct` lays the task out as follows:
+
+| address | instruction | what it establishes |
+| --- | --- | --- |
+| `009D3080` | `LEA EDI,[ESI+3F8h]` | a sub-object at `task+3F8h` |
+| `009D3091` | `CALL 009D2DA0` with `ECX=EDI` | that sub-object is constructed by `ConstructStates` |
+| `009D30A1` | `MOV [ESI],0D213C8h` | the **task's own** vtable is `00D213C8` |
+| `009D30A7` | `MOV [EDI],0D213C0h` | the sub-object's vtable is `00D213C0`, whose slot 0 is `009D0670` |
+| `009D30AD` | `MOV [ESI+530h],0D213BCh` | a third sub-object at `task+530h` |
+
+`00D213C8` slot 0 is `009D4E10`, a `CG_scalar_deleting_dtor` - the ordinary MSVC slot 0 for a class
+with a virtual destructor. So `009D3420`'s `ESI` cannot be the task: `009D3517` would be calling a
+destructor, and the return value is dereferenced as a vec3 at `009D3519`. **`ESI` is the approach
+sub-object at `task+3F8h`**, and its `+D0h` is therefore also reachable as **`task+4C8h`**.
+
+That second displacement was scanned too - `C4 04 00 00`, `C8 04 00 00`, `CC 04 00 00`,
+`D0 04 00 00` over the x87, MOVSS-store, MOVUPS-store and MOV-store forms, image-wide (controls
+15/12/15/15 on the x87 form). The only hits anywhere near the bot bands are **loads**, in the dive
+bomb: `009C8A20` (`BSP_BotTaskDiveBomb_UpdateCruiseProfile`), `009C8B40`
+(`BSP_BotTaskDiveBomb_ShouldBreakOff`) and `009C3F39`/`009C3F51`. No store, and nothing in
+`009D0000`-`009D5000`.
+
+**So both candidate displacements are now closed**: approach-relative `D0 00 00 00` and
+task-relative `C8 04 00 00`. That is strictly more than any earlier census had, and it retires the
+specific escape route section 6.3 named.
+
+**What this still does not close, stated plainly.** "No writer names either displacement" is still
+not "no writer". A block copy, or a pointer aliased into a register by some form not enumerated
+above, would be invisible. **I did not find the writer of the approach's `+D0h`, and I am not
+claiming the field is dead.** The lead answer does not rest on it: section 2 is a complete census of
+the only routine in the image that fetches a target velocity for a bot, so whatever writes `+D0h`
+did not obtain a velocity to bake a lead into it.
 
 ### 3.1 Corroboration from the sibling classes
 
@@ -153,9 +184,14 @@ that reached them did not establish them.
 
 Two naming corrections while this is being recorded:
 
-* `00D213C0` is the **task** vtable, installed by `009D3050 BSP_BotTaskTorpedo_Construct` at
-  `009D30A9`, not an approach vtable. The adjacent `00D213B8` is installed by
-  `009D2DA0 BSP_BotTaskTorpedo_ConstructStates`. Both carry `009D0670` at slot 0.
+* `00D213C0` is the vtable of the **approach sub-object at `task+3F8h`**, installed at `009D30A7`;
+  its slot 0 is `009D0670`. The **task's own** vtable is `00D213C8` (installed at `009D30A1`),
+  whose slot 0 is the `CG_scalar_deleting_dtor` at `009D4E10`. The adjacent `00D213B8` is installed
+  by `009D2DA0 BSP_BotTaskTorpedo_ConstructStates` at `009D2DFE`, and `00D213BC` goes on a third
+  sub-object at `task+530h` (`009D30AD`).
+  *I reported the first half of this to the integrator in an earlier form - "`00D213C0` is the task
+  vtable" - before reading `009D4E10`. That was wrong and this is the correction: `00D213C0` is the
+  approach's, `00D213C8` is the task's.*
 * The approach base class is not at `009F9C00`-`009FA400`. The non-`009D` slots of `00D213C0` point
   at `007B40C0`, `007B40F0` and `007B4100`, so the base band is `007B4xxx`.
 
