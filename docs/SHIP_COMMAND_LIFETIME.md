@@ -244,6 +244,16 @@ doc carries a correction block rather than a rewrite. This is the class
 
 Two USN04 runs, `--frames 9200 --mission-frames 9000` (449.96 s), same binary apart from the
 change under test: `local/cmdlife_before_usn04.log` and `local/cmdlife_after_usn04.log`.
+
+**Both runs were taken on `agent/cc8-ship-command` based at main `3a691e884`, which is BEFORE
+main `f14732dc4`.** That commit gave every weapon class with a Blast table an impact burst
+(`0084BC60` step 7), and it moved the gunnery totals on every mission; `docs/GAME_EXECUTABLE.md`
+carries the new reference lines. The pair below is internally valid, because the two runs differ
+only by the change under test, but **neither number here may be compared against a run taken at
+`f14732dc4` or later**, and re-taking this pair on merged main would move the gunnery columns. The
+rows this packet rests on - the path cursor, the command tables and `end_commands` - are ship
+geometry and command bookkeeping rather than gunnery, so the conclusions stand; `total_path` is
+the one row where a later re-take could drift, since a ship that sinks earlier stops moving.
 The before run reproduces `docs/HANDOFF_SHIP_DRIVE_NEXT.md`'s 450 s numbers exactly
 (`end_commands=5`, `moved=100.51`, `total_path=108653.79`), which is what says the trace is
 additive.
