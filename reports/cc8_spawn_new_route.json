@@ -153,6 +153,12 @@
       "evidence": "00949D69/00949D77 load 00D19908 (00 00 48 43 = 200.0f) and 00D1990C (00 40 1c 45 = 2500.0f) after the distRange key push at 00949D50 and inside the arm 00949D95 CALL 00B65FB0 / 00949D9C JNZ selects; the indices are 00949CDA PUSH 0x1 and 00949D19 PUSH 0x2 for angleRange, 00949D9E and 00949DD4 for distRange; the clamp is 00949E0A MOVSS XMM0,[00CE38B8] / 00949E12 COMISS / 00949E21 JA"
     },
     {
+      "target": "src/game_hosts_lua.cpp read_vector3_00888760, shared with run_generate_object_00944fd0",
+      "was": "a position argument is a table of exactly three numbers at indices 1, 2 and 3",
+      "is": "00888760 iterates the table and matches the keys \"x\", \"y\" and \"z\"; it requires none of them, initialises none of its three staging slots, copies all three out unconditionally and returns the out pointer rather than a success flag",
+      "evidence": "008887A9 CALL 00B67080 opens the walk and 0088882F CALL 00B67190 steps it; 008887C2 PUSH 0xceb488 (\"x\", bytes 78 00) / 008887DD FSTP [ESP+0x8], 008887E3 PUSH 0xd045f8 (\"y\", 79 00) / 008887FE FSTP [ESP+0xc], 00888804 PUSH 0xcfd718 (\"z\", 7a 00) / 0088881F FSTP [ESP+0x10]; filtering the whole 85-instruction listing for those three slots gives only those writes and the three reads at 00888848/00888852/0088885D that copy them into EDI[0]/[4]/[8]; 0088877A MOV EDI,ECX makes EDI the out vector and 0088888B MOV EAX,EDI is the return. The caller does not test: 00949B9B LEA ECX,[ESP+0x80] / 00949BA2 CALL 00888760 / 00949BA7,00949BAB,00949BB0 read all three back with nothing in between. The producer side already agreed: 0088BA30 writes the same three named keys."
+    },
+    {
       "target": "the packet brief",
       "was": "SpawnNew registers an AI resource request against the manager, and 00A38DA0 is part of the route",
       "is": "SpawnNew queues a spawn request that names its own units, position and callback; 00A38DA0 is in neither the enqueue nor the drain chain and 00946FC0 is a planner-side reader, not the consumer",

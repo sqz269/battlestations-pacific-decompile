@@ -1549,10 +1549,32 @@ constexpr double kSceneGenerateObjectYawSentinelCeiling = 6.283185307179586;
 // false for every one of those tables, which is why a 3000-frame USN04 run made
 // eight requests and created nothing.
 //
-// Requiring all three keys is this reader's choice, not a recovered rule: the
-// native leaves an absent component at whatever its caller's slot held. All
-// three is what a position table has, and it keeps the caller's "is this a
-// position table?" question answerable.
+// The native does NOT require all three, and it reports nothing. Its three
+// staging slots are written only by the three matches above - filtering the
+// whole 85-instruction listing for `[ESP+0x8]`, `[ESP+0xc]` and `[ESP+0x10]`
+// gives exactly those three `FSTP`s and the three reads below, and no
+// initialisation anywhere - and the tail copies all three out unconditionally,
+// whatever the walk found:
+//
+//   00888848 MOVSS XMM0,[ESP+0x8]  / 0088884e MOVSS [EDI],XMM0
+//   00888852 MOVSS XMM0,[ESP+0xc]  / 00888858 MOVSS [EDI+0x4],XMM0
+//   0088885d MOVSS XMM0,[ESP+0x10] / 00888867 MOVSS [EDI+0x8],XMM0
+//
+// then `0088888B MOV EAX,EDI` returns the OUT POINTER, not a success flag. So a
+// table carrying only `x` and `z` leaves the y component at whatever that stack
+// slot held, and the caller cannot tell. `00949750`'s own call site confirms the
+// caller does not ask: `00949B9B LEA ECX,[ESP+0x80]` hands it a bare stack local
+// with no adjacent pre-fill, `00949BA2 CALL 00888760`, and `00949BA7`/`00949BAB`/
+// `00949BB0` read all three floats straight back with no test in between.
+//
+// DEVIATION, labelled. An absent component is left at zero here rather than at
+// an uninitialised stack value, because uninitialised is not reproducible and
+// zero is the only defensible substitute. The `bool` is this process's own
+// signal and means "this table carried at least one of x, y, z", which is what
+// keeps a caller's "position or not?" question answerable; the native asks a
+// different question first (`008889C0`, is this an entity handle) and sends
+// everything else here regardless. Requiring all three, which this reader did
+// briefly, would refuse a `{x=..., z=...}` sea-level point the image accepts.
 bool read_vector3_00888760(lua_State* state, int index, float out[3]) {
     if (::lua_type(state, index) != LUA_TTABLE) return false;
     static const char* const kVectorKeys[3] = {"x", "y", "z"};
@@ -1562,10 +1584,12 @@ bool read_vector3_00888760(lua_State* state, int index, float out[3]) {
         if (::lua_type(state, -1) == LUA_TNUMBER) {
             out[i] = static_cast<float>(::lua_tonumber(state, -1));
             ++found;
+        } else {
+            out[i] = 0.0f;
         }
         ::lua_settop(state, ::lua_gettop(state) - 1);
     }
-    return found == 3;
+    return found > 0;
 }
 
 // 00467050(frame, 0.0f, value, 0.0f), the yaw-only rotation 0046DD9F applies to
