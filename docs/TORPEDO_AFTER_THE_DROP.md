@@ -1496,10 +1496,20 @@ disabled for the player's own aircraft**, and for whichever second unit `task+2F
 
 Two things follow.
 
-* It is shared, not torpedo-specific. `0099C230` has four other callers and all four are the sibling
-  break-off bodies: `009A65F0` depth charge, `009AE1B0` drop-kamikaze, `009B8D80` level bomb,
-  `009C8A90` dive bomb. That is independent confirmation that `009D4C10` is the torpedo's
-  `ShouldBreakOff`, arrived at without the vtable.
+* It is shared, not torpedo-specific, and this is from an **exhaustive** rel32-plus-absolute-dword
+  census (`tools/callsite_census.py`), not from `bsp.py ghidra callers`, which under-reports. The
+  census finds **exactly five** direct call sites and they are the five ordnance break-off bodies:
+  `009A65F6` in `009A65F0` depth charge, `009AE1B3` in `009AE1B0` drop-kamikaze, `009B8D86` in
+  `009B8D80` level bomb, `009C8A96` in `009C8A90` dive bomb, and `009D4C14` -- which the census
+  attributes to `009D4A70` for the same reason section 13.3 gives, that `009D4C10` is not a defined
+  function. That is independent confirmation that `009D4C10` is the torpedo's `ShouldBreakOff`,
+  arrived at without the vtable.
+* The census also returns **22 `.rdata` references** that the caller query never showed, so
+  `0099C230` is itself a virtual occupying 22 vtable slots across the image. It does not weaken the
+  reading: all five break-off bodies reach it by a **direct** `CALL`, not through a slot, so they
+  always get this implementation whatever a derived class puts in its own slot. It does mean the
+  routine is a shared base predicate rather than a private helper of these five, and any future
+  packet that meets it through a vtable must check that slot rather than assume this body.
 * **`base_gate = true` in this host is a proof, not a stand-in.** `bsp_game` publishes no in-mission
   interface manager for an AI-flown Mav, and with `[00E198C4]` null the image takes its own first
   branch and returns true. The host is not substituting for an unread contract here; it is computing
@@ -1595,10 +1605,18 @@ not transfer by offset -- turns out to understate it: the *vtables* do not corre
 encodings.** Section 11 closed the out-pointer `LEA` form with its control (29 image-wide, none in
 the torpedo band, positive control `+ACh` = 21). This packet ran the two store forms it had not:
 
-| form | encoding | image-wide | in the `009C`/`009D` torpedo band |
+| form | encoding | image-wide | in the `009D` torpedo band |
 | --- | --- | --- | --- |
 | x87 store/load at `+D0h` | `D9 ?? D0 00 00 00` | 109 | one only: `009D0674`, the `FLD` **inside** `009D0670`. No `FSTP`. |
-| integer store at `+D0h` | `89 ?? D0 00 00 00` | 59 | one only: `009DBE62`, `MOV [ESI+D0h],ESI` in an array-ctor helper, not an approach |
+| integer store at `+D0h` | `89 ?? D0 00 00 00` | 59 | none in `009D0000`-`009D5000`; the nearest, `009DBE62` `MOV [ESI+D0h],ESI`, is an array-ctor helper past the band and stores a pointer, not a float |
+
+**A band correction while this is being recorded.** Section 11 and section 6.3 both wrote "the
+`009C`/`009D` torpedo band". `009C` is **not** torpedo: `009C8A90` is
+`BSP_BotTaskDiveBomb_ShouldBreakOff` and `009CCED0` is reached from
+`BSP_BotTaskStrafe_UpdateCruiseProfile`. The torpedo band is `009D`, and the existing
+`docs/TORPEDO_APPROACH_UPDATE.md` bound is the right one: `009D0000`-`009D5000`. The earlier census
+conclusions are unaffected -- a hit in `009C` was never a torpedo hit either way -- but the label was
+wrong and anything counting on it should use `009D`.
 
 Both have healthy image-wide counts, so neither negative is vacuous. The x87 form matters
 specifically: **Capstone reports `FSTP [mem]` as a read**, so a census built on operand-access flags
@@ -1614,3 +1632,47 @@ Taken with section 6.2 (`009D0670` does no arithmetic) and section 5, the readin
 that the torpedo's `+D0h` is a **dead field** and the image does not lead. That is consistent with
 section 11's measurement, which closed the misses as a stern chase with no lead term needed. It is
 **not proved**: "no writer names the displacement" is not "no writer".
+
+### 13.5 The run-in direction: the image does not fly to a beam position, and the stern chase is faithful
+
+The question this packet was set is whether some torpedo state puts the bomber onto an attack line
+before `attackrun`, using `009FD570`'s standoff ring with a `side` and an offset ramping 0 to pi --
+which is how one flies from astern of a ship to its beam. If the image did that and this host did
+not, section 11's 5.4-to-11.7-degree crossing angles would be a host gap and binding it would fix
+the misses.
+
+**It does not, and the answer was already in two documents that had not been put side by side.**
+
+* `009FD570` has six callers and `docs/TORPEDO_FLY_TO_SOLVER.md` section 5 tabulates all six. Exactly
+  one is in the torpedo band: `009D0C10 BSP_BotStateTorpedoGoAway_UpdateGeometry`, the **climb-away**.
+  No torpedo state calls it before `attackrun`, so the standoff ring is the break-off's geometry in
+  this class, never the run-in's.
+* The torpedo class does choose a run-in direction, but by terrain. `009D3420` scans thirty-six
+  sectors around the target, `sector_clear[i]` meaning a run-in along sector `i` is free of terrain;
+  `009D3BC8` takes the sector the unit occupies as seen from the target, and `009D3BCE`-`009D3C56`
+  walks to the nearest clear sector each way and takes the cheaper turn. The aim tick then flies
+  "the bearing to the target plus the sector turn offset the approach update chose".
+* `docs/TORPEDO_RUN_IN_PATH.md` section (4) already read the branch that settles it,
+  `009D3C5A`-`009D3C88`: `if (ctl->+58h == 0x24 || ctl->+58h == 0)` -- **all thirty-six clear takes
+  the same branch as none clear**, and both write `approach+5Ch = 0`. The gap search that produces a
+  non-zero turn offset runs only on a mixture.
+
+`local/breakoff_before_usn01.log` confirms the antecedent for every aircraft:
+`clear_sectors=36 of 36`, `turn_5c=0.0000 rad`, on 15 to 18 scan runs each.
+
+**So the target's heading and its velocity do not enter the run-in direction at all.** The only
+target-relative quantity in the plan is the *bearing*, and on open water the plan resolves to a zero
+turn offset by the routine's own rule. A torpedo bomber in USN01 therefore runs in along whatever
+bearing it already holds toward the target's present position -- which is a stern chase when it was
+vectored in from astern, exactly what section 11 measured.
+
+**This retires the hypothesis rather than the miss.** There is nothing to bind for the run-in: the
+stern chase is the image's behaviour under these conditions, not a gap in this host. Section 11's
+geometry still explains the five misses, but the cause cannot be a missing beam approach, and the
+remaining candidate is the lead -- which section 13.4 finds no displacement-naming writer for.
+
+**One thing left unverified and flagged rather than waved past.** All five aircraft report
+`home_sector=0`. That is consistent with their all lying in the same sector relative to the target,
+and it is *moot* for USN01 because the all-clear branch above discards the home sector before it can
+matter. But it was not independently checked against the bearings, so it is not evidence that
+`009D3BC8`'s binding is right -- only that nothing in this mission depends on it.
