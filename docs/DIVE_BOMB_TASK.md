@@ -4952,7 +4952,11 @@ pop accounted:
 
 `[ESP+28h]` is the planar distance, written **once** at `009C63A6` from the `00BF7030` square root at
 `009C6399`, and never overwritten anywhere in the 949 instructions (census: two writes, `009C63A6` and
-the zero at `009C63B1`, and nine reads). `[ESP+38h]`, the height `B`, is consumed by `009C659B`'s
+the zero at `009C63B1`, and thirteen reads - the commit message for `7b4c74771` says nine, which is
+wrong; the census is `009C64EE`, `009C6678`, `009C6879`, `009C68B8`, `009C6929`, `009C6A15`,
+`009C6C22`, `009C6C82`, `009C6EB1`, `009C6ECD`, `009C6F17`, `009C6F2D` and `009C7023`, the eighth of
+which reads `[ESP+3Ch]` at `fb=0xac` and resolves to the same slot). `[ESP+38h]`, the height `B`, is
+consumed by `009C659B`'s
 compare and dropped by `009C659D` before the subtraction ever happens. The threshold still comes from
 the height - `S = 0.7 * max(B, 100) + 200`, `00D7A220`/`00CE3D08`/`00CEFFA0`/`00CE4D70` - so the
 function takes **two different quantities**, which is what made the single-argument reconstruction
