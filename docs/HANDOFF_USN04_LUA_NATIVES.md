@@ -21,9 +21,32 @@ nineteen `kEntityReturningBindings` rows that resolves - `push_resolved_entity` 
 name by construction (`src/game_hosts_lua.cpp`, `if (std::strcmp(binding_name, "FindEntity") != 0)
 return false;`) - which is why `entity_resolves` matches its call count exactly.
 
-Fixed on this branch by `note_entity_resolved`, recording the status from the outcome. **Confirm it
-before trusting the new census**: the check is that `FindEntity` reads `concrete calls=132` and that
-no other row changed status.
+### The trap in fixing it, which cost one wasted run
+
+`GameHostLog`'s record is **sticky on first insert**. `GameHostLog::record` in `src/game_hosts.cpp`
+walks `records_` for the method name and, on a hit, returns the existing entry with only `++calls`;
+it sets `implemented` solely in the `records_.push_back` that creates one. So whichever of
+`implemented()` / `unimplemented()` runs first decides the row for the whole run, and a later call
+of the other kind changes nothing but the count.
+
+The first version of this fix called `log_.implemented(...)` from the entity arm and left
+`note_native_call`'s `log_.unimplemented(...)` in place. `note_native_call` runs first, so the row
+stayed `UNIMPLEMENTED` and merely counted every call twice. That is not a deduction: a run on that
+build (`local/census_usn04.log`) printed
+`MissionLuaNative::FindEntity 00898e30 UNIMPLEMENTED calls=264`, the doubled count, beside an
+unchanged `entity_resolves=132`. **`src/game_hosts.cpp` is orch4's**, so
+`GameHostLog` cannot grow an "upgrade this record" method; the fix has to be to not record a status
+before the answer is known.
+
+What is on the branch now: `note_native_call` skips the `unimplemented` line for a row where
+`bsp::mission_binding_returns_entity(binding.name)` is true, and the arm at the bottom of
+`binding_trampoline` calls `note_entity_status(binding, resolved)`, which records exactly one of the
+two. The `native <name> argc=` line and the summary row are unaffected.
+
+**Confirm before trusting the new census.** The checks are: `FindEntity` reads `concrete calls=132`
+(not 264 - a doubled count is the signature of the broken version); the other eighteen
+entity-returning rows still read `UNIMPLEMENTED` with their old counts; and `entity_resolves` is
+still 132.
 
 **Consequence for the ranking: `FindEntity` is NOT a gap and must not be taken as one.** It also
 means the 399-call figure over 24 natives is really 267 over 23.
@@ -137,6 +160,57 @@ report. The route is bound and validated; the open items are listed in that docu
 of which the one a future packet most wants is how the `callback` NativeString at `record+84h`
 reaches the interpreter - the implemented call is a contract read off the script, not a recovered
 dispatch.
+
+## 5. Other self-satisfying branches in the same script
+
+The objective finding was not a one-off shape. Grepping `usn_19_coralus.lua` for the same pattern -
+a gate that an EMPTY collection satisfies - gives five sites on four collections:
+
+| line | gate | collection filled by |
+| --- | --- | --- |
+| 570 | difficulty 0 primary 1 | `Mission.IJNBombersLex`, from `luaBombersSpawnedLex` - **fixed by this packet** |
+| 576, 582 | difficulty 1 and 2 primary 1 | `Mission.IJNBombersLex` **and `Mission.IJNFightersLex`** |
+| 618 | `Mission.IJNShohoEscorts` | `table.insert` at 2096, 2116-2117 from `Mission.ShohoEscN` |
+| 796 | `Mission.IJNTransports` | `table.insert` at 1808-1811, 1861-1862 from `Mission.TransN` |
+
+Two things follow, and neither is settled here:
+
+* **`Mission.IJNFightersLex` is still empty on difficulty 1 and 2.** It is filled only by
+  `luaBombersSpawnedLex`'s difficulty-1/2 arm, from `unit2` - the SECOND group member. The runs
+  behind this packet are difficulty 0, where every `SpawnNew` request carries one member, so that
+  arm never ran and `Mission.IJNFightersLex` is still `{}`. On difficulty 1 or 2 the gates at 576
+  and 582 would still complete the primary objective by themselves. Whether the two-member requests
+  spawn correctly is UNTESTED: run USN04 at a higher difficulty to find out.
+* **618 and 796 are filled late** - after the mission has advanced into the later phases - so
+  whether their gate can be evaluated while the collection is still empty depends on the phase
+  order. Check per phase; do not assume it is broken and do not assume it is safe.
+
+## 6. Traps this packet hit, each of which cost something
+
+1. **An immediate filter that could never match.** Ghidra prints an address immediate with **no
+   leading zeros** (`PUSH 0xd0e1f8`), so `PUSH 0x00......` matches nothing anywhere in the image and
+   proves nothing. Filter `PUSH 0x[0-9a-f]{5,8}` and classify the hits by segment; expect the MSVC
+   prologue's SEH handler to be the one code address in an ordinary function. Also check the listing
+   reached the body end: `ghidra disasm <fn> --lines N` stops silently at N.
+2. **Decompiler-derived addresses.** Four addresses cited inside `009483D0` came from the
+   pseudocode and were wrong by tens of bytes. Take every address from the listing. The decompiler
+   also renders `CMP EAX,1 / JBE` as `< 2`, so a threshold read from pseudocode is off by one in
+   its citation.
+3. **A `done`-shaped column that is not what its name says.** `MissionLuaNative::FindEntity
+   UNIMPLEMENTED calls=132` sat in the same report as `entity_resolves=132`. Section 1. Never pick
+   work from one column without reconciling it against the rest of its own table.
+4. **A sticky log record.** Section 1's trap: whichever of `implemented()` / `unimplemented()` runs
+   first decides a row for the whole run.
+5. **The launcher.** Never pipe `tools/run_game.ps1` through a short-circuiting filter
+   (`Select-Object -First N`) - it closes the pipe, kills the run, exits 0 and writes no log. Use
+   `-Last N` or a redirect. A mission-length run outlasts the foreground cap; note the expected end
+   and do read-only work meanwhile.
+6. **Your own in-flight run holds `bsp_game.exe`.** Linking during a run fails with
+   `LNK1104: cannot open file ... bsp_game.exe`. The compile has already succeeded at that point;
+   wait for the run, then link. Do not interpret it as a build break.
+7. **Three id spaces in one log.** Entity ids, unit indices and vehicle-class ids all appear as
+   small integers. `Mission.TypeD4Y = 159` is a vehicle class, `entity 22` is an entity id, and
+   `units=57` is a count. An exact numerical coincidence across two of them means nothing.
 
 Lease `cc8_spawn_new_route` covers `include/bsp/lua_spawn_new.hpp`, `src/lua_spawn_new.cpp`,
 `include/bsp/game_hosts_lua.hpp`, `src/game_hosts_lua.cpp`, `src/game_hosts_world.cpp`,
