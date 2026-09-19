@@ -1021,3 +1021,259 @@ retires a bomber — it is upstream of the goaway, not downstream, and the entry
 first. The 82 re-entries remain unexplained by anything this packet has established, and the honest
 statement is that the host re-attacks because `+132h` stays set **and that may be what the image
 does too**.
+
+#### 6.3.3 The hunt closed image-wide, and a gap in 6.3 corrected
+
+Sections 6.3 and 6.3.1 filtered every scan to the `009C`/`009D` bot-task band. **That was too
+narrow**: the order path that installs the target lives at `0099xxxx` and the shared approach
+machinery at `009Fxxxx`, neither of which those filters covered. Re-run without the band filter:
+
+* `F3 0F 11 ?? D0 00 00 00`, all **16** image-wide hits, by containing function: `004CB420`,
+  `006E22D0 BSP_ProjectileShotBase_Construct`, `007868C0`/`00786A80` the peer rows, `00799B00`,
+  `0079C910`, `007A0E00`, `007AB230`, `00812D40 BSP_UnitOrderRing_Construct`,
+  `009E0270 BSP_ShipAi_HullPreStep`, `00B4D500`, `00BA3BD0`, `00BA40F0`, `00BB0E30`. **Not one is a
+  bot-approach class.**
+* The `0099`/`009A`/`009B` bands do carry `+D0h` accesses, but they belong to other objects:
+  `009973B0 read_PilotBot_parameters_009973B0` writes its own, and `009B5C80`, `009B6670` and the
+  thunk at `009B5C50` **read** a `+D0h` vec3 exactly the way `009D0670` does - `009B5760` is one of
+  `009FD570`'s six callers, so that is a sibling approach class with the same field.
+
+So the field is a **shared approach-class vec3, read by several of them and written by none of them
+through a literal displacement, anywhere in the image**. The remaining mechanisms are a struct
+assignment through a pointer the callee received (the `LEA` that would hand it over is excluded,
+`8D ?? D0 00 00 00`, 29 image-wide, no bot-class hit) or a block copy over a region whose base is
+the object, which is the documented shape of a field with no literal-address writer.
+
+**One route this packet found and could not use.** `009A6FB3` builds `{3, &esi+0D0h}` followed by
+`{0, 00D1F878}` = `"inattackrange"` - a Lua property registration, the pattern that names original
+struct fields. It is `FUN_009A6D40`'s class, not `BotApproachTorpedo`, so the name does not
+transfer; and `8D ?? D0 00 00 00` has no hit in the `009C`/`009D` band, so the torpedo approach
+registers no such property for its own `+D0h`. Recorded because a reader who finds
+`"inattackrange"` next to a `+D0h` elsewhere should not carry it across.
+
+The static hunt is closed. What remains is a native trace or the elimination argument in 8.4.
+
+## 10. Why the decrement broke the goaway — and it was not the entry chooser
+
+Section 9.2 blamed `009D3F60`, the entry chooser. **That attribution is wrong.** Read properly:
+
+### 10.1 (a) `009D3F60` has exactly one call site, and it cannot run after a drop
+
+`python tools/callsite_census.py 009d3f60` over the whole image: **one** caller, `009D41D3`, inside
+`009D4030` itself. A scan for the absolute dword `60 3F 9D 00` returns **0**, so no vtable carries
+it either. It is not a per-think entry point.
+
+`009D41D3` is reached two ways, and the host's two calls (`src/torpedo_task_arm.cpp:75` and `:94`)
+are those same two paths, not an extra one — the host is faithful here:
+
+* `009D41C4`, when the current state is **not** one of the five attack states (moveto/follow); and
+* the `goto LAB_009d41d1` taken when the current state is **prepare** (`task+740h`).
+
+After a drop the state is `aim`, so **the chooser never runs**. Mav1's decrement run confirms it
+from the other side: `states[attackrun=424 aim=254]`, no prepare ticks at all.
+
+### 10.2 (b) `task+52Ah` is not a copy of `approach+132h` — it is the same byte
+
+The approach is at `task+3F8h`, proved by `009D3050`'s `LEA EDI,[ESI+3F8h]` at `009D3080` followed
+by `MOV [EDI],0D213C0h` at `009D30A7` storing the approach's own vtable. So
+`approach+132h` is `task+(3F8h + 132h)` = **`task+52Ah`**, one byte with two names.
+`009D34CD MOV [ESI+132h],AL` writes it with `ESI` = the approach; `009D4030` reads it as
+`param_1+52Ah` with `param_1` = the task. There is **no copy, therefore no latch and no staleness**,
+and the question of "where is it refreshed" has the answer "in `009D3420`, once per tick, because
+the arm runs the approach update at `009D486F` every tick".
+
+### 10.3 (c) What actually retired the task: the aim hold, released at the wrong moment
+
+`009D4030` evaluates its tests in this order, and the order is the whole answer:
+
+```
+if (current != done) {
+    if (IsAttackState(current) && task->vtable[1Ch]())  -> done     <-- FIRST
+    ...
+    if (current == aim) {
+        if (task+52Ah && !AimHold())  return;      // stay in aim
+        -> goaway
+    }
+```
+
+`vtable[1Ch]` is `009D4C10`, which section 7.4 read: true when the target is gone **or the range has
+opened past `SafeDist * approach+24h`**. It does not consult the ordnance byte.
+
+So with the byte **set**, the aim state *holds*, and the task stays in aim until `009D31B0` lets it
+go — by which time it hands off to the goaway. With the byte **clear**, the hold is released
+immediately, and because the break-off test is evaluated **first** in the same call, a task whose
+range is already past `SafeDist * ratio` — which after a drop at about 700 m against a SafeDist of
+700 it is — goes to `done` **before** the aim branch is ever reached.
+
+* **was** (9.2): `009D3F60` sent the task straight to `kDone`.
+* **is**: the chooser never ran. Clearing the byte released the aim hold at a moment when
+  `009D4C10` was already true, so `009D4030`'s first test retired the task before aim could hand off
+  to the goaway.
+
+### 10.4 What this says about the lead question
+
+The proposed sequence — aim, release, goaway (no chooser), `009D4030` sees the byte clear, done — is
+**not** what the image would do on this placement, and the chooser is not the reason. The byte is
+read by the aim branch as a *hold*, and releasing it at a range already past the break-off threshold
+retires the task on the earlier test. For the sequence to work, the byte would have to clear
+**after** the goaway is entered, not at the release.
+
+That is testable and cheap: the release and the aim-to-goaway transition are separate ticks, so a
+host that cleared the byte one state later — on entering the goaway rather than on the drop — would
+distinguish "the image clears it late" from "the image does not clear it at all". Not done here, and
+not worth a run before the section 8.1 census answers what the bombers were aiming at; recorded so
+the option is on the table rather than rediscovered.
+
+Section 9's conclusion is unchanged: the decrement as written is wrong and stays reverted. What
+changes is the reason, and the reason matters because it says the byte is an **aim hold**, not a
+retire signal.
+
+### 8.2.1 Correction: the Destroyer Length was in the log, on a line I did not find
+
+Section 8.2 left Dunlap's Length blank and said it was "not in this run's log". **It was.**
+`local/closest_approach_usn01.log` line 1377 prints `unit hull input unit=Dunlap type_id=309 kind=7
+length=110 width=10`, from the class data the gunnery host reads at
+`src/game_hosts_gunnery.cpp:513` (`flat_scaled(type_id, "length", ...)`). My searches were for
+`Length` and for `key=Destroyer`; the line spells it lowercase and carries neither. Recorded because
+"not in the log" is a claim about a search, not about a log.
+
+| torpedo | nearest | Length | half-Length | beam | closest approach | fraction of half-Length |
+| --- | --- | --- | --- | --- | --- | --- |
+| Mav1 | Dunlap | **110 m** | 55 m | 10 m | 51.5 m | **0.94** |
+| Mav4 | SaltLakeCity | 180 m | 90 m | 16 m | 76.8 m | 0.85 |
+| Mav5 | SaltLakeCity | 180 m | 90 m | 16 m | 67.9 m | 0.75 |
+
+Northampton and SaltLakeCity are `length=180 width=16` (lines 1364 and 1379), confirming from the
+class data what section 8.2 had quoted from the hydrodynamics line.
+
+All three passes are **inside the target's along-track envelope**, and Mav1's is at 0.94 of it -
+against a 5 m half-beam. That sharpens section 8.2's point rather than settling it: 51.5 m from the
+centre of a 110 by 10 metre hull is either a clean miss abeam by some forty-six metres, or a pass
+through the bow or stern line, and the crossing angle the section 8.1 census now records is the only
+thing that can say which.
+
+## 11. The census answers it: the misses are a stern chase, not a lead failure
+
+`local/aim_census_usn01.log`, USN01, 3000 mission frames, commit `c91545d0c`.
+
+**Every ordered target resolves, and they are named for the first time.** `0071EBF0`'s rule picks a
+row per unit and resolves its token by name:
+
+```
+command target 0071EBF0: unit=Mav1 token="Dunlap"       -> Dunlap
+command target 0071EBF0: unit=Mav2 token="Northampton"  -> Northampton
+command target 0071EBF0: unit=Mav3 token="Northampton"  -> Northampton
+command target 0071EBF0: unit=Mav4 token="SaltLakeCity" -> SaltLakeCity
+command target 0071EBF0: unit=Mav5 token="SaltLakeCity" -> SaltLakeCity
+```
+
+| torpedo | ordered target | closest to it | at | that target moved | crossing angle |
+| --- | --- | --- | --- | --- | --- |
+| Mav1 | Dunlap | 51.5 m | 26.45 s | **449.9 m** | 0.094 rad = **5.4 deg** |
+| Mav2 | Northampton | 77.6 m | 22.60 s | 345.2 m | 0.189 rad = 10.8 deg |
+| Mav3 | Northampton | 66.6 m | 22.85 s | 349.1 m | 0.159 rad = 9.1 deg |
+| Mav4 | SaltLakeCity | 76.8 m | 21.60 s | 313.4 m | 0.205 rad = 11.7 deg |
+| Mav5 | SaltLakeCity | 67.9 m | 21.85 s | 317.1 m | 0.178 rad = 10.2 deg |
+
+### 11.1 Premise 1 was right all along, and section 8.1's retraction of it was wrong
+
+Section 5 predicted the target moves "about 340 m" during the run. **Measured: 313.4 to 449.9 m.**
+Section 8.1 called that prediction three to six times too large and withdrew it. The displacement
+was never the error.
+
+* **was** (8.1): the miss is 51 to 77 m, so the 340 m displacement model is wrong by a factor of
+  three to six.
+* **is**: the displacement is 313 to 450 m, exactly as predicted. What was wrong is the step from
+  displacement to miss - section 5 took a crossing angle of about 42 degrees from a ship heading and
+  a commanded heading read at *different times*, and the real angle between the round's track and
+  the target's course at closest approach is **5.4 to 11.7 degrees**.
+* so **section 8.1's own retraction is retracted**, and section 5's arithmetic is reinstated with
+  its conversion corrected.
+
+### 11.2 The model closes to within ten metres
+
+Cross-track miss should be `sin(crossing) * travel`:
+
+| torpedo | `sin(crossing) * travel` | measured | residual |
+| --- | --- | --- | --- |
+| Mav1 | 42.2 m | 51.5 m | +9.3 |
+| Mav2 | 64.9 m | 77.6 m | +12.7 |
+| Mav3 | 55.3 m | 66.6 m | +11.3 |
+| Mav4 | 63.8 m | 76.8 m | +13.0 |
+| Mav5 | 56.1 m | 67.9 m | +11.8 |
+
+Five for five, with a **consistent positive residual of 9 to 13 m** — the same sign and the same
+order every time, so it is a systematic offset (the release point sits ahead of the aircraft, and the
+round is filed at the drop rather than at the aim solution), not noise. Nothing is left over to
+attribute to a lead.
+
+### 11.3 Section 8.2's question, answered: abeam, not through the bow line
+
+At 5 to 12 degrees the round runs **nearly along the target's axis**, so the closest approach is a
+lateral separation rather than a pass near the bow or stern. Against half-beams of 5 m (Dunlap) and
+8 m (the cruisers), the five rounds missed by **46 to 69 metres of open water**. The "0.94 of the
+half-Length" figure in section 8.2.1 is real but reads the wrong way round: a scalar distance that
+large only looks marginal because the hull is long, and the geometry says the round was never near
+it.
+
+### 11.4 What this does and does not settle about the lead
+
+**Settled**: the misses need no lead to explain them. A zero-lead aim, a 313-to-450 m target
+displacement and a 5-to-12 degree crossing angle predict the measured closest approach within 13 m
+for all five rounds. Section 8.1's premise 3 argument - "a 51.5 m approach is much closer than a
+zero-lead aim against a 15 m/s crosser can produce" - **is withdrawn**: the target is not a crosser
+at this geometry, it is a stern chase, and a zero-lead aim produces exactly what was measured.
+
+**Not settled, and this is the standing limit**: all of it measures the *host*, whose aim point is
+the substituted present position by construction (section 8.4). The image may still lead; nothing
+here can see it. What the census removes is the *evidence for* a lead that section 8.1 thought it
+had. The producer question (section 6.3.3) is untouched and still needs a native trace.
+
+Two further facts worth keeping. Premise 2 is half true: Mav1, Mav4 and Mav5 came nearest to the
+ship they were aimed at, but **Mav2 and Mav3 came nearest to shore structures** (`Storage, 04 01` at
+26.1 m, `Hangar, Small, 04 01` at 17.3 m) while their ordered target Northampton was 77.6 and 66.6 m
+away - so the nearest-unit census alone would have mis-attributed two of the five. And Mav1's target
+moved 449.9 m, a third more than the others, because Dunlap is the Destroyer and makes
+`reference_speed` 19.24 against the cruisers' 16.72.
+
+#### 6.3.4 The out-pointer LEA form, closed with its control — and a much better thread
+
+The one encoding that could hide the writer without a store in the owning function is the
+out-pointer: `LEA reg,[base+0D0h]` handed to a getter that fills `[reg]`, `[reg+4]`, `[reg+8]` -
+the shape `009D0670` itself has from the other side. It **was** in the census, run image-wide, and
+here is the accounting it was missing:
+
+* `8D ?? D0 00 00 00`: **29 hits image-wide**, listed in full. Positive control: the sibling form
+  `8D ?? AC 00 00 00` (a `+ACh` member of the same objects) returns **21**, so MSVC does emit this
+  encoding for members at this displacement range.
+* Of the 29, **none is in the `009C`/`009D` torpedo band**. Twenty-six are effects, GUI, HUD,
+  collision, shader and vertex-pool code. The three in bot bands are:
+  * `009A6FB3` in `FUN_009A6D40` - a Lua property descriptor, not an out-pointer (section 6.3.3);
+  * `009B493E` in `FUN_009B4690` - **also** a Lua property descriptor, same shape:
+    `SUB ESP,8 / MOV [EAX],5 / LEA ECX,[EDI+0D0h] / MOV [EAX+4],ECX` then
+    `MOV [EAX],0 / MOV [EAX+4],00D200AC`;
+  * `009B5C50` - Ghidra answers "No instruction at address", so the byte match is inside a region it
+    has not disassembled and the containing-function attribution is the nearest-preceding artefact
+    again.
+
+So the out-pointer form is genuinely absent for `approach+D0h` in the torpedo class, and **the static
+hunt is closed** as section 6.3.3 said, now with the control the claim needed.
+
+**But the second descriptor names the field, and the name is worth more than the negative.**
+`00D200AC` is `"calcHitPos"`. `FUN_009B4690`'s class registers its own `+D0h` as a **calculated hit
+position** - not a target position, a *computed* one. `009B5760`, in the same band, is one of
+`009FD570`'s six callers, and `009B5C80` and `009B6670` read `[ECX+0D0h]` as a float exactly the way
+`009D0670` does.
+
+The same caveat as `"inattackrange"` applies and must not be waved away: this is a **different
+class**, `FUN_009B4690` is not `BotApproachTorpedo`, and a name at the same offset in a sibling is
+not a name in this one. What makes it worth recording anyway is that `"inattackrange"` and
+`"calcHitPos"` sit at the *same offset in two different classes*, which is itself evidence that
+`+D0h` is **not** a shared base-class field and that each class uses it for its own purpose - so the
+torpedo's `+D0h` has to be named from the torpedo's own code, and neither name transfers.
+
+**The thread for the next packet**, and it is the best one this stream has: find who computes
+`calcHitPos` in `FUN_009B4690`'s class. If that producer takes a target position and a time and
+returns a point ahead of it, the image leads, and the same routine is the first place to look for
+the torpedo's `+D0h`. If it copies a position, it does not. Either way it is a body to read rather
+than a byte pattern to scan, which is where section 6.3.3 said this had to go.
