@@ -529,3 +529,63 @@ run A gave on the old base.
 
 This is the number B' must be judged against — this binary, this tree — not the integrator's 17
 or 19 from another branch.
+
+## 17. Run B': the releases hold, and the verdict changes sign on the new base
+
+`local/approach_bp_wired.log`, A2's binary with the one read-site line. One clean shutdown.
+
+| USN04, merged base `dd5364d6d` | A2' unwired | B' wired |
+| --- | --- | --- |
+| total dive-bomb releases | 19 | **20** |
+| `movieval` / `D3A Val #1.1` releases | 2 / 2 | **2 / 2** |
+| mission dive-bomber water contacts | 0 | **2** |
+| `movieval` states | `done=617 aimdive=57 flyabove=96 turndown=56 attackrun=1544` | `moveto=1554 done=609 aimdive=53 flyabove=98 turndown=56` |
+| `movieval` `approach_returns` | n/a | **0**, `done_ticks=609`, `done_min_alt=54.7` |
+| aircraft with `goaway` ticks | 12 | 12 |
+
+**Against the integrator's four criteria: two pass, two fail.** Releases held and rose by one;
+`movieval` and `#1.1` still release 2 each. But two aircraft gained a water contact, and
+`movieval` never leaves `done`. So the read site stays **unwired**, with this table in the
+comment beside it.
+
+**The `moveto` glide itself works, and it delivers to the interface `cc8-dive-flyover` needs.**
+`attackrun` disappears entirely and `moveto` takes its place tick for tick (1544 -> 1554 for
+`movieval`). The census rows show the glide holding the 1450 m ceiling clamp while the range
+closes and releasing it only at the end:
+
+```
+db moveto movieval n=1    range=11087.9 base=1000.0 low=780.0 scale=1.421 commanded=1450.0 live_alt=700.0
+db moveto movieval n=401  range=9491.2  base=1000.0 low=780.0 scale=0.717 commanded=1450.0 live_alt=1094.6
+db moveto #7.1|.-2 n=1001 range=2257.3  base=1000.1 low=780.0 scale=0.350 commanded=1298.6 live_alt=1395.0
+```
+
+So **`moveto` hands the aircraft over at about 1395-1450 m and 2080-2260 m range** — the same
+interface the attack run handed over at (~1395 m / 2078 m). That is the answer to the integrator's
+question, and it is why the releases did not fall.
+
+**Why `movieval` never leaves `done`, and why this is the constant and not the moveto tick.**
+`engaged = latch_4C8 || (mode == 2 && target)`; the mode is 1, so `engaged` IS the latch, and the
+latch disengages only past `approach+B8h + 100`. `movieval` ends at `approach+BCh = 494.9 m`
+against `B8h = 2080.0`, so it can never clear, and `009C8483`'s `CMP EDI,EBX / JZ ret` returns
+unchanged every think. On the **old** base, with `B8h = 1100`, run B showed `movieval` leaving
+`done` *entirely* — `moveto=1769` and no `done` ticks at all. **Raising `approach+B8h` from 1100
+to 2080 widened the hysteresis past the whole engagement and removed the benefit this feed had.**
+That is an interaction between this packet and the run-in branch's constant, not a regression in
+either alone.
+
+**The two ditchers are downstream of that, and neither is a `moveto` defect.**
+
+* `D3A Val #1.1|.-2` had **already released both bombs** and ditches out of `done`: `alt 274.5 ->
+  31.3` unwired against `270.6 -> 0.0` wired. The same descent in both runs, with 31 m of margin
+  in one and none in the other. It is the `done`-state descent, already present in A2'.
+* `D3A Val #3.1|.-2` dives from 817.5 m with an aim error of **-134.95 m** against a 25 m gate,
+  never releases, and flies in at `|v| = 106.4`. Its unwired aim error was -72.9 m, so the dive
+  aim degraded but was already far outside the gate.
+
+The honest reading is that the glide's commanded SPEED is the weakest labelled substitution in
+this packet: `009C1850` calls `009BECD0(ctl+3A0h, 007C47F0(), speed)` and the shaping is unread,
+so `moveto` commands a flat `spd=34.50` where `attackrun` commanded `throttle=0.400`. That is the
+first thing to read before wiring this again.
+
+**The second-attack-run edge did not open.** Twelve aircraft carry `goaway` ticks in both runs, so
+the wiring does not cause anyone to take `009C86EE` -> flyabove in this window.

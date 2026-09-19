@@ -1501,6 +1501,34 @@ struct GameUnitsHost::Impl {
         //
         // Re-wire this once that fix is merged and B is re-run; the experiment
         // is one line and one window. docs/DIVE_BOMB_APPROACH.md section 13.
+        //
+        // RE-TAKEN on the merged base dd5364d6d, where approach+B8h is the
+        // image's draw 2080.0 instead of main's old 1100.0, and the verdict
+        // CHANGED SIGN on the criterion that mattered. Runs A2' and B', same
+        // binary apart from this line:
+        //
+        //   total dive-bomb releases          19  ->  20   (up)
+        //   movieval / #1.1 releases        2 / 2  ->  2 / 2
+        //   mission water contacts             0  ->  2
+        //   movieval approach_returns          -  ->  0, done_ticks=609
+        //
+        // The releases held and rose, but movieval NEVER leaves done, and on
+        // the OLD base with R = 1100 it left done entirely (no done ticks at
+        // all). The reason is this line's own gate: engaged = latch || (mode ==
+        // 2 && target), the mode is 1, so engaged IS the latch, and the latch
+        // disengages only past approach+B8h + 100. movieval ends at
+        // approach+BCh = 494.9 m against B8h = 2080.0, so the latch can never
+        // clear and 009C8483's `CMP EDI,EBX / JZ ret` parks it. Raising B8h
+        // from 1100 to 2080 widened the hysteresis past the whole engagement,
+        // which is what removes the benefit this feed had at R = 1100.
+        //
+        // So the two ditchers are downstream of that: D3A Val #1.1|.-2 had
+        // ALREADY released both bombs and descends out of done (alt 274.5 ->
+        // 31.3 unwired, 270.6 -> 0.0 wired - the same descent, 31 m of margin
+        // in one and none in the other), and #3.1|.-2 dives with an aim error
+        // of -135 m and flies in. Neither is a moveto defect; both are the
+        // done-state descent and the dive aim, reached more often because the
+        // latch holds.
         in.engaged.control_mode_370 = 2;
         in.engaged.has_latched_target_440 = slot.command_target_plus_one != 0;
         in.entry.control_mode_370 = in.engaged.control_mode_370;
