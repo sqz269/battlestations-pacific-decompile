@@ -885,6 +885,112 @@ what devaluing 188 of every 190 in-range candidates by the `0.01` arm would do.
 The flip therefore stays on: every measurable part of the prediction held, and the one unmeasurable
 part is labelled as unmeasured rather than counted as confirmation.
 
+## Why aircraft win, measured (packet `cc8_ai_target_choice_classes`, 2026-09-18)
+
+**Everything in this section is AFTER `67e8ac821` and `6b0a12422`, and nothing in it may be
+compared with any column above.** The hold-back empties IJN01 sharply: `compose` 3000 to 1636,
+`served` 2450 to 1323, `weapon_rows` 321 to 298, and **every submarine disappears from the chosen
+table**, so the submarine columns above describe units that no longer load. Both columns below come
+from one binary built at 23:07 through the `BSP_AI_WEIGHT_MODEL` switch.
+
+| IJN01, after the hold-back | `served` | `attackmove` | `settarget` | `fallback` | `scored` | `model_runs` | `complete_rows` |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| model off | 1323 | 1215 | 79 | 29 | 177282 | 0 | 298 |
+| model on | 1323 | 1215 | 79 | 29 | **163242** | 177282 | 298 |
+
+| Class | off, chosen | off, runner-up | on, chosen | on, runner-up |
+| --- | --- | --- | --- | --- |
+| `13h` Fighter | 1248 | 1294 | **1194** | 1240 |
+| `1Bh` LandFort | 46 | 0 | **100** | 54 |
+
+Both columns' chosen counts total 1294 = `attackmove` 1215 + `settarget` 79.
+
+### The answer: the accuracy rows, not the hit points and not the class weight
+
+Two sampled choices from the same mission, each with its barrel terms, decomposed against the
+listing.
+
+**A Fighter, chosen by a MotherShip attacker.** `weight=0.257143 hp=280.0`:
+
+| barrels | sub-type | accuracy | reload | factor `60/reload` | damage |
+| --- | --- | --- | --- | --- | --- |
+| 8 | `10h` Flak | **0.5000** | 4.800 | 12.5 | 6.25 |
+| 11 | `03h` MachineGun AA | **0.1000** | 0.500 | 120.0 | 12.00 |
+
+`best` 12.0, `sum` 182.0, clamped to 60, `total` 72.0, `model = 72/280 = 0.257143`, and the Fighter
+class weight is `1.0`, so the published weight is `0.257143`. **Exact.**
+
+**A LandFort, from the same table.** `weight=0.000440 hp=300.0 trio=1 command_building=0`:
+
+| barrels | sub-type | accuracy | reload | factor | damage |
+| --- | --- | --- | --- | --- | --- |
+| 5 | `07h` Artillery heavy | **0.5500** | 15.000 | 4.0 | 2.20 |
+| 8 | `10h` Flak | **0.0000** | 4.800 | 12.5 | 0.00 |
+| 11+ | `03h` MachineGun AA | **0.0000** | 0.240 | 250.0 | 0.00 |
+
+`best` 2.20, `sum` 11.0, under the clamp, `total` 13.2, `model = 13.2/300 = 0.044`, Landfort class
+weight `1.0`, then the `0.01` non-command trio arm: `0.00044`. **Exact.**
+
+**So the 584-fold gap decomposes, and hit points and class weight are not in it.** The Fighter is
+`280` hp and the LandFort `300`; both classes are authored weight `1.0`. What separates them:
+
+| factor | size | where it comes from |
+| --- | --- | --- |
+| the `0.01` trio arm | **100x** | `00A0F92F`, a static installation that is not a command building |
+| the accuracy rows | **5.45x** | `total` 72.0 against 13.2 |
+| hit points | 1.07x | 300 / 280, and it favours the FORT |
+
+`100 x 5.45 x 1.07 = 584`, against the measured `0.257143 / 0.000440 = 584`. The accuracy rows do
+the work because **a warship's anti-air armament is authored to zero against a landfort**: Flak
+`0.00` and MachineGun `0.0` in the fall-through column, so nineteen of the attacker's barrels
+contribute nothing and only five artillery barrels remain.
+
+And yes, this is `00A08460`'s ship-attacker-against-plane path doing exactly what the listing says:
+the attacker is a MotherShip, class `09h`, a ship, so `00A08619` sends it to the barrel walk rather
+than the plane region, and the plane column of `BulletTypeAccuracy` is what its Flak and machine
+guns read.
+
+### The model moves choices TOWARD forts here, and not because forts got better
+
+`1Bh` LandFort goes 46 chosen to **100** with the model on, which looks like the opposite of the
+section above. It is not a preference for forts. Under the stand-in a Fighter weighs `1.0` and a
+fort `0.01`, a ratio of 100; under the model they weigh `0.257143` and `0.000440`, a ratio of 584.
+**Forts get relatively worse, not better.** What moves is admission: `scored` falls 177282 to
+163242, so 14040 candidate-queries that the stand-in admitted now answer a weight of zero and fail
+`00A146CD`. An attacker carrying only artillery has authored accuracy `0.00` against a plane, so
+its aircraft candidates become unscoreable and the fort is what is left to pick. Labelled as
+inference: the run counts the admission loss but does not attribute it per class.
+
+This also revises the reading above it. "The real model prefers aircraft" was measured before the
+hold-back and on a mission full of submarines; after the hold-back the same model shifts choices the
+other way, because what the model really does is **let the authored accuracy table decide which
+targets an attacker can engage at all**, and that depends on what the mission actually loads.
+
+### The catapult, settled and fixed
+
+`CATAPULT` is gunnery category `0Bh`, one of the twelve `kUnitGunneryCategoryCount` admits, so the
+host **did** build a gun row for it; and of the 416 device classes here the 20 `CATAPULT` rows are
+the only ones authoring no `Bullet` block, so `gun.bullet_class` stayed `-1`. The image agrees from
+the other side: the authored preference row for category `0Bh` at `00E0A374` is **empty**, exactly
+like `BOMBPLATFORM` at `00E0A1F0`, so a catapult targets nothing.
+
+The destroyer objection raised against this explanation was mis-framed and is withdrawn: the census
+counts **attacker classes among close-attack members**, not classes that can mount a catapult, so it
+reports which IJN01 members carry one, and only its cruisers and battleships do.
+
+The publication now skips a gun whose bullet class never resolved. Predicted to change no weight,
+because a sub-type `0` barrel answered accuracy `0` and `00A094F5` already skipped it; measured:
+**both new IJN01 runs carry zero `unresolved_bullet_class` lines**, and `complete_rows` equals
+`weapon_rows` at 298. The phantom barrels are gone.
+
+### USN02, after the hold-back
+
+`served` 546, `attackmove` 496, `settarget` 0, `fallback` 50, `scored` 3276, `model_runs` 3276,
+`complete_rows` 32 of 32, chosen `07h` Destroyer 340 and `0Ah` Cruiser 156 summing to 496. The
+control **moved across the hold-back too**, from 616 / 559 / 0 / 57 / 4004, so its long-standing
+identity with every earlier USN02 row ends here and that is the hold-back, not the model. The
+model-off half of this pair was still running when this was written.
+
 ## The choice observed (packet `cc8_ai_target_choice_observed`, 2026-09-18)
 
 ### Which commits every column in this document sits before
