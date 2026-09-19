@@ -1925,3 +1925,154 @@ Worked at the run's own geometry, `B = 638.9 m`: `S = 647.2`, `x = 0`, so the to
 `a` is its floor of 20 degrees and `W = 1100 * 0.8 - 647.2 = 232.8 m`. Below 667 m the roll-in arm
 is already satisfied on height alone, which is why `flyabove` has never needed its bearing test in
 any run of this stream.
+
+## `0071EBF0`: the command-target rule, and what the host had instead
+
+The host's `refresh_command_targets` took "the last current row wins". The image does something
+narrower, and the difference is the whole bug.
+
+```
+0071ebf4  MOV  EAX,[EBP + 0x30]
+0071ebfa  CMP  EAX,0x1
+0071ebfe  JNZ  0x0071ecd8                  ; mode 2 -> this+18Ch; anything else -> the static
+0071ec06  LEA  ECX,[EBP + 0x54]            ; the unit's own slot array
+0071ec10  CMP  [ECX],EBX / JZ              ; stop at the first NULL
+0071ec17  ADD  ECX,0x1c                    ; ten entries, stride 1Ch
+0071ec1f  LEA  ESI,[EAX + -0x1]            ; the LAST occupied entry
+0071ec36  MOV  ECX,[EDI]
+0071ec3e  MOV  EAX,[EDX + 0xc] / CALL EAX  ; entry->vtable[+0Ch]
+0071ec43  CMP  EAX,0x1 / JZ 0x0071ecc6     ; accept
+0071ec48  CMP  EAX,0x2 / JZ 0x0071ecc6     ; accept
+0071ec4d  SUB  ESI,0x1 / SUB EDI,0x1c      ; otherwise step BACKWARD
+0071ec55  JGE  0x0071ec36
+0071ec57  ...                              ; none answered -> the static at 00E19BB4
+0071ecd1  LEA  EAX,[EBP + ECX*0x4 + 0x58]  ; the accepted slot's target field
+```
+
+So it is **the most recent command of an accepting category**, walking back over the others, and on
+failure a neutral static record - never another unit.
+
+Both fields are already on `GameCommandRow`: `slot_index` is the entry `0071E6C0` pushed and
+`category` is what `vtable[+0Ch]` answers. The host ignored the category and ordered by vector
+position, so a later row of any kind took the target.
+
+### The blast radius, counted
+
+This is not a dive-bomb bug. The command tables in `local\usn04_aim.log` carry:
+
+| category | commands | rows |
+| --- | --- | --- |
+| 1, accepted | `attackmove` | 48 |
+| 2, accepted | `divebomb` | 1 |
+| 3, stepped over | `stop` 158, `moveto` 30, `cruise` 10 | 198 |
+
+Every unit with an `attackmove` also carries `stop` and `moveto` rows, and the carrier launches now
+add rows mid-mission, which is what rebuilt the map and let the category-3 rows win. So the wrong
+rule was re-pointing the attack target of any of those units, and the dive bomber is simply where a
+census made it visible: `approach+BCh` at exactly 0.0 m, the `d2 <= 1e-10` branch at `00CE3820`.
+
+**Were the torpedo stream's bombers exposed?** Not in these runs, for a reason that has nothing to
+do with the fix: USN04 builds no torpedo task at all - the summary line reads "no ordered aircraft
+carries torpedo ordnance (kind 2Bh), so 0099A170 builds no kind Eh task". The moment that stream's
+strike class gives an aircraft a category-1 or -2 row, it was exposed exactly as the dive bomber
+was, because the rule is per-unit and category-blind, not task-specific.
+
+### The fix
+
+`refresh_command_targets` now walks each unit's accepting rows by descending `slot_index` (vector
+position breaking ties, and unpushed rows ordered behind pushed ones, which is the best standing
+this host has for them), takes the highest, and only then resolves that one row's token. Resolving
+second is deliberate: the image returns the accepted slot's target field whatever it holds, so an
+accepting row naming nothing leaves the unit with no target rather than falling through to an older
+row. The cache key gains the count of current rows, so a row flipping current without the vector
+growing re-resolves too; both halves are O(commands), not the O(commands x units) the name match
+costs.
+
+## The two flyabove flags, bound
+
+With `T` closed, `+19h`'s second arm and `+1Ah` are no longer stand-ins.
+`dive_bomb_flyabove_span_009c65fd` computes the pair once - `S = max(B, 100) * 0.7 + 200` and
+`x = max(B - S, 0)` - and the host feeds it to all three flags, which is what the image does through
+one frame slot. `+19h` gets the real `x` instead of the substituted 1.0, so its second arm fires at
+`B <= 666.7 m`; `+1Ah` is `dive_bomb_flyabove_leave_009c66e3`, the 20-degrees-to-pi tolerance over
+`approach+B4h * 0.8 - S`, in place of "leave when out of bombs".
+
+`009C40A0` is now a defined function in Ghidra, `dive_bomb_approach_aim_point_009c40a0`, taking the
+reviewed ledger name; body `009C40A0`-`009C40B7`, 22 bytes.
+
+## The wide roll arm closed: the band is picked by attitude
+
+`009C5D24`-`009C5D31` chose between two `InterpolateClamped` bands for the aimdive roll, and the
+`fStack_44` its second test compares against 60 degrees had no writer at its corrected slot key.
+The key was wrong, not the slot: `tools/frame_slot_census.py` puts the write at K=56 and the read at
+K=-32, a drift of 100 bytes, and the tool's own docstring names the cause - an argument window
+opened by `SUB ESP,imm` and closed by the callee's `RET imm16` rather than by an `ADD ESP,imm`,
+which `--pop` does not cover.
+
+Settled directly instead. `009C5D2C` is not inside any argument window - the nearest `SUB ESP,0x14`
+is at `009C5D37`, after it - and the tick's frame is one fixed block opened by `SUB ESP,0x48` and
+closed by `ADD ESP,0x48` before both `RET 4`s, so `ESP` there is at the base depth. The only writes
+to that physical slot before it are:
+
+```
+009c590c  MOVSS XMM0,dword ptr [EDX + 0xc68]   ; pose+C68h, the bank
+009c5914  COMISS XMM0,XMM1                     ; XMM1 = 0, XORPS at 009C58D3
+009c5917  JBE   0x009c5921
+009c5919  MOVSS dword ptr [ESP + 0x20],XMM0    ; bank
+009c5929  SUBSS XMM1,XMM0                      ; -0.0 - bank
+009c592d  MOVSS dword ptr [ESP + 0x20],XMM1
+```
+
+So it is **`|pose+C68h|`**, the folded bank, and the arm selection is:
+
+| condition | band | endpoints |
+| --- | --- | --- |
+| `aim error > 0` **and** `|bank| < 60 deg` (`00D05AAC`) | wide | `+/- 0.5`, `00CE3800` |
+| otherwise | tight | `+/- 0.4`, `00CE7804` / `00D1F400` |
+
+Both tests are `76`, JBE: `009C5D22` on the error's sign and `009C5D31` on the bank. The rule reads
+sensibly - while the aircraft is still near wings-level and short of its aim point the roll is
+gentler, and once banked over or past the point it tightens.
+
+The band selection is now bound. What is still a contract is the *other* operand: the image
+interpolates the wide arm over a second bearing error, drawn against the latched reference at
+`approach+D8h`/`+E0h`, and this host keeps one bearing. So the arm that runs is right and the value
+it runs on is the single bearing, which is labelled at the call site.
+
+## `approach+D8h`/`+DCh`/`+E0h` settled: the run-in origin, not a lead point
+
+The provisional note is resolved, and the name was wrong twice over. These three are the
+**aircraft's own world position, latched once at task construction**.
+
+The chain that names the constructor's `EDI`:
+
+```
+009c73c5  PUSH EBP                        ; second argument
+009c73c8  PUSH EAX                        ; FIRST argument
+009c73cd  CALL 0x009c3ea0
+...
+009c3eca  MOV  EDI,dword ptr [ESP + 0x20] ; past seven prologue pushes -> that EAX
+009c3ed2  PUSH EDI                        ; 009F9CE0's first argument
+009c3ed5  CALL 0x009f9ce0
+009f9ce0  MOV  EAX,dword ptr [ESP + 0x4]
+009f9cea  MOV  dword ptr [ECX + 0x4],EAX  ; approach+4h, the unit
+```
+
+`approach+4h` is the unit everywhere else in the class - it is the entity whose `+C8h` pose flag
+and `+FCh` position the approach reads - so `EDI` is the aircraft, and `009C405D`-`009C407D` copies
+its `+FCh`/`+100h`/`+104h` into `+D8h`/`+DCh`/`+E0h`.
+
+So the aimdive tick's **first** bearing, the one it takes after subtracting `+D8h` and `+E0h` from
+the aim point, is the bearing **along the attack run as it was set up** - a fixed reference line
+from where the aircraft was when the task was built to the aim point. The second bearing, taken
+against the aircraft's live position, is the one the aim error uses. That is why the wide roll arm
+exists at all: near wings-level and short of the aim point the roll follows the set-up line, and
+once banked over or past it the roll follows the live bearing.
+
+`dive_bomb_approach_off::kAimPointX/Y/Z` are renamed `kRunInOriginX/Y/Z`. Nothing referenced them,
+so this is a header-only correction.
+
+This also finishes the aimdive steering's last contract in principle: the wide arm's interpolant is
+`SubtractWrappedAngle(heading, bearing(aimPoint - runInOrigin))`. This host does not latch a run-in
+origin, so it still passes the live bearing to both arms, labelled at the call site - but the value
+is now named rather than unknown.
