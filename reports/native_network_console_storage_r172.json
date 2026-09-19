@@ -1,0 +1,1013 @@
+{
+  "packet": "orch4_native_network_console_storage_r172",
+  "status": "twelve_complete_normal_bodies_build_and_original_compared",
+  "scope": {
+    "new_native_bodies": 12,
+    "new_body_bytes": 706,
+    "new_ghidra_functions": 7,
+    "parent_body_binding": "00a3d060",
+    "derived_owner_and_workers_bound": false
+  },
+  "evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "pe": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "names": {
+      "00a3a330": "FUN_00a3a330",
+      "00a3a340": "FUN_00a3a340",
+      "00a3a3d0": "FUN_00a3a3d0",
+      "00a3a3e0": "FUN_00a3a3e0",
+      "00a3a500": "FUN_00a3a500",
+      "00a3a520": "FUN_00a3a520",
+      "00a3a770": "FUN_00a3a770",
+      "00a3ad10": "FUN_00a3ad10",
+      "00a3ce60": "CG_array_ctor_helper_00a3ce60",
+      "00a3cf00": "FUN_00a3cf00",
+      "00a3cfa0": "FUN_00a3cfa0",
+      "00a3d040": "CG_scalar_deleting_dtor_00a3d040",
+      "00a3d060": "CG_array_ctor_helper_00a3d060"
+    },
+    "spans": [
+      {
+        "address": "00a3a330",
+        "length": 13,
+        "kind": "new_body",
+        "sha256": "5cfa3cb87c75a528ebeb047f2bf1d682ee5cb31a51d3b5e227b2894b72de4bc9",
+        "hex": "8bc1c60000c7400400000000c3"
+      },
+      {
+        "address": "00a3a340",
+        "length": 1,
+        "kind": "new_body",
+        "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+        "hex": "c3"
+      },
+      {
+        "address": "00a3a3d0",
+        "length": 11,
+        "kind": "new_body",
+        "sha256": "701a7c878bc5169d49ce06e12254308dfa8c3a7f215bc61c572cc8394aa6b404",
+        "hex": "8bc18d882c0800008908c3"
+      },
+      {
+        "address": "00a3a3e0",
+        "length": 1,
+        "kind": "new_body",
+        "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+        "hex": "c3"
+      },
+      {
+        "address": "00a3a500",
+        "length": 18,
+        "kind": "new_body",
+        "sha256": "d2b75e14dca87735b005b34573f69c76ca3c70c64c6252183e348e41c2759444",
+        "hex": "8bc18d88200800008908c7401c00000000c3"
+      },
+      {
+        "address": "00a3a520",
+        "length": 1,
+        "kind": "new_body",
+        "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+        "hex": "c3"
+      },
+      {
+        "address": "00a3a770",
+        "length": 22,
+        "kind": "new_body",
+        "sha256": "58a28d8af21069822bbb20dcca2806a58eea0b38004a55b2cad9704909d6e747",
+        "hex": "6840a3a3006a406a1081c18c00000051e8e9d41b00c3"
+      },
+      {
+        "address": "00a3ad10",
+        "length": 223,
+        "kind": "new_body",
+        "sha256": "e74aa6a83a730b703216675d692729fba8ce6a5905bfea1ad1d621061868d69e",
+        "hex": "83ec1053568bf133dbc60601885e188b0db00a09018b018b40208d54240852ffd0df28df68080f57c0c6462901c6462801def9895e38895e34895e30895e2c895e40895e3c895e60895e5c895e68895e64895e70895e6c8d86900000008d4b20d95e20895e74899e80000000895e44895e50895e78899e84000000895e48895e54895e7c899e88000000895e4c895e58f30f118690040000899e8c040000899e94040000f30f1186980400008d6424008858fc89188898fc01000089980002000083c01083e90175e7f30f100560a2d700895e14f30f1146245e5b83c410c3"
+      },
+      {
+        "address": "00a3ce60",
+        "length": 88,
+        "kind": "new_body",
+        "sha256": "deec26a7b4887a8709079dfb65921508e32ff05e24b887a465f6eca68499fd82",
+        "hex": "6aff68883fcb0064a100000000506489250000000051566840a3a3006830a3a3008bf16a406a108d868c0000005089742418e83aae1b008bcec744241000000000e86adeffff8b4c24088bc65e64890d0000000083c410c3"
+      },
+      {
+        "address": "00a3cf00",
+        "length": 145,
+        "kind": "new_body",
+        "sha256": "6109454759c9d8e79df080cbc5a49e2596c2d6ab17427eb7dc75423a07fff343",
+        "hex": "6aff68b03fcb0064a100000000506489250000000083ec0c56578bf9897c2408c744241c00000000c707443fd200e81d849dff8b701085f6c744240cfc37ce0089742410740b56ff151822ce0083461801c644241c01893ddcabf800e8ef839dff8b0ddcabf800518bc8e8c13c190085f6740b834618ff56ff151022ce008b4c24148bc75f5e64890d0000000083c418c3"
+      },
+      {
+        "address": "00a3cfa0",
+        "length": 153,
+        "kind": "new_body",
+        "sha256": "ffd288c8aa98e34a83b279f92aa28c968e794e87b4dae01bb39f3b94028bc019",
+        "hex": "6aff68d03fcb0064a100000000506489250000000083ec0c56578bf9897c2408c707443fd200c744241c00000000e87d839dff8b701085f6c744240cfc37ce0089742410740b56ff151822ce0083461801c644241c01e855839dff8b0ddcabf800518bc8e8972c1900c705dcabf8000000000085f6740b834618ff56ff151022ce008b4c2414c7071838ce005f5e64890d0000000083c418c3"
+      },
+      {
+        "address": "00a3d040",
+        "length": 30,
+        "kind": "new_body",
+        "sha256": "91e946d1a031f993d21d2e3674def55b56f0c0ee2889a40fee4bd5084444cffa",
+        "hex": "568bf1e858fffffff644240801740956e857951b0083c4048bc65ec20400"
+      },
+      {
+        "address": "00a3d060",
+        "length": 314,
+        "kind": "parent_body",
+        "sha256": "24310111b0b84a2bf185e2837d739e49bd559445368cbce8b94517c24c89c1f8",
+        "hex": "6aff683f40cb0064a1000000005064892500000000515355568bf15789742410e87bfeffff6870a7a3006860cea3006a10689c0400008d869c01000033db50895c2430c706483fd200899e5c010000e81dac1b0068e0a3a30068d0a3a30068e8030000682c0800008dbe085b000057c644243001889e5c4b0000899e604b0000899e644b0000e8e6ab1b006820a5a3006800a5a30068e803000068200800008daeec46200055c644243002e8c1ab1b000f57c0c644241c0389bee846200089aeec034000899ebc3e2000899eccfb3f00f30f114604e826471900898648010000e81b4719008b3d3822ce0053535668c0cea300535389864c010000ffd78b2da022ce006a0150898654010000ffd553535668e0cea3005353ffd76a0150898658010000ffd55f8bc65e5d5b8b4c240464890d0000000083c410c3"
+      },
+      {
+        "address": "0073dc9d",
+        "length": 39,
+        "kind": "parent_calls",
+        "sha256": "96675d53953f83a7bed99c73036bb8922ef612523fad078869e93bbc1be3b73c",
+        "hex": "68f0034000e8748b4b0083c404894424103bc7c78424440100001500000074078bc8e89cf32f00"
+      },
+      {
+        "address": "00d23efc",
+        "length": 80,
+        "kind": "thread_labels_and_profiles",
+        "sha256": "c193e8d8c47618ee0c12a9ad901ca2e869a9219c7d3db0806267b2dae1f9aa24",
+        "hex": "634e6574776f726b436f6e736f6c6553656e643a3a7353656e6454687265616400000000634e6574776f726b436f6e736f6c6553656e643a3a73526563765468726561640000000040d0a30060d2a300"
+      },
+      {
+        "address": "00d7a260",
+        "length": 4,
+        "kind": "reset_interval",
+        "sha256": "c68830a25204a09f8e77aada6bc5807f607cccaaa0ebb2a7122d317584478a8b",
+        "hex": "000080bf"
+      },
+      {
+        "address": "00f8abdc",
+        "length": 4,
+        "kind": "loader_zero",
+        "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+        "hex": "00000000"
+      }
+    ],
+    "call_rows": [
+      {
+        "address": "00a3a780",
+        "native": "00bf7c6e",
+        "function": "00a3a770",
+        "kind": "call"
+      },
+      {
+        "address": "00a3ce92",
+        "native": "00bf7cd1",
+        "function": "00a3ce60",
+        "kind": "call"
+      },
+      {
+        "address": "00a3cea1",
+        "native": "00a3ad10",
+        "function": "00a3ce60",
+        "kind": "call"
+      },
+      {
+        "address": "00a3cf2e",
+        "native": "00415350",
+        "function": "00a3cf00",
+        "kind": "call"
+      },
+      {
+        "address": "00a3cf5c",
+        "native": "00415350",
+        "function": "00a3cf00",
+        "kind": "call"
+      },
+      {
+        "address": "00a3cf6a",
+        "native": "00bd0c30",
+        "function": "00a3cf00",
+        "kind": "call"
+      },
+      {
+        "address": "00a3cfce",
+        "native": "00415350",
+        "function": "00a3cfa0",
+        "kind": "call"
+      },
+      {
+        "address": "00a3cff6",
+        "native": "00415350",
+        "function": "00a3cfa0",
+        "kind": "call"
+      },
+      {
+        "address": "00a3d004",
+        "native": "00bcfca0",
+        "function": "00a3cfa0",
+        "kind": "call"
+      },
+      {
+        "address": "00a3d043",
+        "native": "00a3cfa0",
+        "function": "00a3d040",
+        "kind": "call"
+      },
+      {
+        "address": "00a3d050",
+        "native": "00bf65ac",
+        "function": "00a3d040",
+        "kind": "call"
+      },
+      {
+        "address": "00a3d080",
+        "native": "00a3cf00",
+        "function": "00a3d060",
+        "kind": "call"
+      },
+      {
+        "address": "00a3d0af",
+        "native": "00bf7cd1",
+        "function": "00a3d060",
+        "kind": "call"
+      },
+      {
+        "address": "00a3d0e6",
+        "native": "00bf7cd1",
+        "function": "00a3d060",
+        "kind": "call"
+      },
+      {
+        "address": "00a3d10b",
+        "native": "00bf7cd1",
+        "function": "00a3d060",
+        "kind": "call"
+      },
+      {
+        "address": "00a3d135",
+        "native": "00bd1860",
+        "function": "00a3d060",
+        "kind": "call"
+      },
+      {
+        "address": "00a3d140",
+        "native": "00bd1860",
+        "function": "00a3d060",
+        "kind": "call"
+      },
+      {
+        "address": "0073dca2",
+        "native": "00bf681b",
+        "function": "0073d410",
+        "kind": "call"
+      },
+      {
+        "address": "0073dcbf",
+        "native": "00a3d060",
+        "function": "0073d410",
+        "kind": "call"
+      }
+    ],
+    "new_native_bodies": 12,
+    "new_body_bytes": 706,
+    "fixture_relocations": [
+      {
+        "body": "00a3a770",
+        "offset": 1,
+        "relative": false,
+        "target": "00a3a340"
+      },
+      {
+        "body": "00a3a770",
+        "offset": 17,
+        "relative": true,
+        "target": "00bf7c6e"
+      },
+      {
+        "body": "00a3ad10",
+        "offset": 17,
+        "relative": false,
+        "target": "01090ab0"
+      },
+      {
+        "body": "00a3ad10",
+        "offset": 205,
+        "relative": false,
+        "target": "00d7a260"
+      },
+      {
+        "body": "00a3ce60",
+        "offset": 24,
+        "relative": false,
+        "target": "00a3a340"
+      },
+      {
+        "body": "00a3ce60",
+        "offset": 29,
+        "relative": false,
+        "target": "00a3a330"
+      },
+      {
+        "body": "00a3ce60",
+        "offset": 51,
+        "relative": true,
+        "target": "00bf7cd1"
+      },
+      {
+        "body": "00a3ce60",
+        "offset": 66,
+        "relative": true,
+        "target": "00a3ad10"
+      },
+      {
+        "body": "00a3cf00",
+        "offset": 47,
+        "relative": true,
+        "target": "00415350"
+      },
+      {
+        "body": "00a3cf00",
+        "offset": 73,
+        "relative": false,
+        "target": "00ce2218"
+      },
+      {
+        "body": "00a3cf00",
+        "offset": 88,
+        "relative": false,
+        "target": "00f8abdc"
+      },
+      {
+        "body": "00a3cf00",
+        "offset": 93,
+        "relative": true,
+        "target": "00415350"
+      },
+      {
+        "body": "00a3cf00",
+        "offset": 99,
+        "relative": false,
+        "target": "00f8abdc"
+      },
+      {
+        "body": "00a3cf00",
+        "offset": 107,
+        "relative": true,
+        "target": "00bd0c30"
+      },
+      {
+        "body": "00a3cf00",
+        "offset": 122,
+        "relative": false,
+        "target": "00ce2210"
+      },
+      {
+        "body": "00a3cfa0",
+        "offset": 47,
+        "relative": true,
+        "target": "00415350"
+      },
+      {
+        "body": "00a3cfa0",
+        "offset": 73,
+        "relative": false,
+        "target": "00ce2218"
+      },
+      {
+        "body": "00a3cfa0",
+        "offset": 87,
+        "relative": true,
+        "target": "00415350"
+      },
+      {
+        "body": "00a3cfa0",
+        "offset": 93,
+        "relative": false,
+        "target": "00f8abdc"
+      },
+      {
+        "body": "00a3cfa0",
+        "offset": 101,
+        "relative": true,
+        "target": "00bcfca0"
+      },
+      {
+        "body": "00a3cfa0",
+        "offset": 107,
+        "relative": false,
+        "target": "00f8abdc"
+      },
+      {
+        "body": "00a3cfa0",
+        "offset": 126,
+        "relative": false,
+        "target": "00ce2210"
+      },
+      {
+        "body": "00a3d040",
+        "offset": 4,
+        "relative": true,
+        "target": "00a3cfa0"
+      },
+      {
+        "body": "00a3d040",
+        "offset": 17,
+        "relative": true,
+        "target": "00bf65ac"
+      }
+    ]
+  },
+  "ghidra_repairs": {
+    "defined-functions.json": {
+      "events": [
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00a3a330",
+            "end_address": "00a3a33d"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00a3a330",
+            "end_address": "00a3a33c",
+            "bytes_disassembled": 13,
+            "message": "Successfully disassembled 13 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00a3a330",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00a3a330",
+            "function_name": "FUN_00a3a330",
+            "entry_point": "00a3a330",
+            "body_size": 13,
+            "message": "Function created successfully at 00a3a330"
+          }
+        },
+        {
+          "defined": "00a3a330",
+          "end": "00a3a33d",
+          "name": null,
+          "after": "Function: FUN_00a3a330 at 00a3a330\nSignature: undefined FUN_00a3a330(void)\nEntry: 00a3a330\nBody: 00a3a330 - 00a3a33c"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00a3a340",
+            "end_address": "00a3a341"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00a3a340",
+            "end_address": "00a3a340",
+            "bytes_disassembled": 1,
+            "message": "Successfully disassembled 1 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00a3a340",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00a3a340",
+            "function_name": "FUN_00a3a340",
+            "entry_point": "00a3a340",
+            "body_size": 1,
+            "message": "Function created successfully at 00a3a340"
+          }
+        },
+        {
+          "defined": "00a3a340",
+          "end": "00a3a341",
+          "name": null,
+          "after": "Function: FUN_00a3a340 at 00a3a340\nSignature: undefined FUN_00a3a340(void)\nEntry: 00a3a340\nBody: 00a3a340 - 00a3a340"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00a3a3d0",
+            "end_address": "00a3a3db"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00a3a3d0",
+            "end_address": "00a3a3da",
+            "bytes_disassembled": 11,
+            "message": "Successfully disassembled 11 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00a3a3d0",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00a3a3d0",
+            "function_name": "FUN_00a3a3d0",
+            "entry_point": "00a3a3d0",
+            "body_size": 11,
+            "message": "Function created successfully at 00a3a3d0"
+          }
+        },
+        {
+          "defined": "00a3a3d0",
+          "end": "00a3a3db",
+          "name": null,
+          "after": "Function: FUN_00a3a3d0 at 00a3a3d0\nSignature: undefined FUN_00a3a3d0(void)\nEntry: 00a3a3d0\nBody: 00a3a3d0 - 00a3a3da"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00a3a3e0",
+            "end_address": "00a3a3e1"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00a3a3e0",
+            "end_address": "00a3a3e0",
+            "bytes_disassembled": 1,
+            "message": "Successfully disassembled 1 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00a3a3e0",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00a3a3e0",
+            "function_name": "FUN_00a3a3e0",
+            "entry_point": "00a3a3e0",
+            "body_size": 1,
+            "message": "Function created successfully at 00a3a3e0"
+          }
+        },
+        {
+          "defined": "00a3a3e0",
+          "end": "00a3a3e1",
+          "name": null,
+          "after": "Function: FUN_00a3a3e0 at 00a3a3e0\nSignature: undefined FUN_00a3a3e0(void)\nEntry: 00a3a3e0\nBody: 00a3a3e0 - 00a3a3e0"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00a3a500",
+            "end_address": "00a3a512"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00a3a500",
+            "end_address": "00a3a511",
+            "bytes_disassembled": 18,
+            "message": "Successfully disassembled 18 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00a3a500",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00a3a500",
+            "function_name": "FUN_00a3a500",
+            "entry_point": "00a3a500",
+            "body_size": 18,
+            "message": "Function created successfully at 00a3a500"
+          }
+        },
+        {
+          "defined": "00a3a500",
+          "end": "00a3a512",
+          "name": null,
+          "after": "Function: FUN_00a3a500 at 00a3a500\nSignature: undefined FUN_00a3a500(void)\nEntry: 00a3a500\nBody: 00a3a500 - 00a3a511"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00a3a520",
+            "end_address": "00a3a521"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00a3a520",
+            "end_address": "00a3a520",
+            "bytes_disassembled": 1,
+            "message": "Successfully disassembled 1 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00a3a520",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00a3a520",
+            "function_name": "FUN_00a3a520",
+            "entry_point": "00a3a520",
+            "body_size": 1,
+            "message": "Function created successfully at 00a3a520"
+          }
+        },
+        {
+          "defined": "00a3a520",
+          "end": "00a3a521",
+          "name": null,
+          "after": "Function: FUN_00a3a520 at 00a3a520\nSignature: undefined FUN_00a3a520(void)\nEntry: 00a3a520\nBody: 00a3a520 - 00a3a520"
+        },
+        {
+          "endpoint": "disassemble_bytes",
+          "body": {
+            "start_address": "00a3a770",
+            "end_address": "00a3a786"
+          },
+          "result": {
+            "success": true,
+            "start_address": "00a3a770",
+            "end_address": "00a3a785",
+            "bytes_disassembled": 22,
+            "message": "Successfully disassembled 22 byte(s)"
+          }
+        },
+        {
+          "endpoint": "create_function",
+          "body": {
+            "address": "00a3a770",
+            "disassemble_first": false
+          },
+          "result": {
+            "success": true,
+            "address": "00a3a770",
+            "function_name": "FUN_00a3a770",
+            "entry_point": "00a3a770",
+            "body_size": 22,
+            "message": "Function created successfully at 00a3a770"
+          }
+        },
+        {
+          "defined": "00a3a770",
+          "end": "00a3a786",
+          "name": null,
+          "after": "Function: FUN_00a3a770 at 00a3a770\nSignature: undefined FUN_00a3a770(void)\nEntry: 00a3a770\nBody: 00a3a770 - 00a3a785"
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "error": "Unable to lock due to active transaction"
+          }
+        },
+        {
+          "endpoint": "save_program",
+          "body": {},
+          "result": {
+            "success": true,
+            "program": "battlestationspacific.exe",
+            "message": "Program saved successfully"
+          }
+        }
+      ]
+    },
+    "scalar-flow-repair.json": {
+      "repairs": [
+        {
+          "function": "00a3d040",
+          "owner": "agent/orch4-20260915",
+          "when": "2026-09-19T01:44:46Z",
+          "decompile_lines_before": 14,
+          "gaps": [
+            {
+              "site": "00a3d050",
+              "mnemonic": "CALL",
+              "operands": "0x00bf65ac",
+              "gap_start": "00a3d055",
+              "gap_end_exclusive": "00a3d058",
+              "bytes": 3,
+              "after_call": true,
+              "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+            }
+          ],
+          "events": [
+            {
+              "gap": {
+                "site": "00a3d050",
+                "mnemonic": "CALL",
+                "operands": "0x00bf65ac",
+                "gap_start": "00a3d055",
+                "gap_end_exclusive": "00a3d058",
+                "bytes": 3,
+                "after_call": true,
+                "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+              },
+              "clear": "Success: Cleared flow override at 00a3d050 (was: CALL_RETURN, now: NONE)",
+              "disassemble": "Successfully disassembled 3 byte(s)"
+            }
+          ],
+          "decompile_lines_after": 11,
+          "gaps_remaining": 0
+        }
+      ]
+    }
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "ctests_passed": 3,
+    "fixture": {
+      "result": {
+        "library_sha256": "3E2562BFE52A5F24A77C64AE70CDB14C3D64E94A16853A418E74C068A2AEEB2E",
+        "exe_sha256": "68867F31AC2FA4F48FDA8D47A57145DA88FFFA934E9B612DD2D9AB7A2860D870",
+        "utc": "2026-09-19T01:50:49.1480332Z",
+        "exit": 0,
+        "flags": "/std:c++17 /O2 /MD /W4 /WX /fp:strict /MANIFEST:EMBED"
+      },
+      "pairs": 38,
+      "matching_bytes": 8433752,
+      "observations_sha256": "1e9a61928f23599b4c79f9609ecc134d2e0556f30e8acea6c5f7225a271e856d",
+      "x87_combinations": 32,
+      "source_partial_constructor_guard": 1,
+      "current_publication_and_flags_lifetime": true,
+      "queue_pointers_compared_raw_then_normalized": true,
+      "original_body_bytes_executed": 706
+    },
+    "library_sha256": "3e2562bfe52a5f24a77c64ae70cdb14c3d64e94a16853a418e74c068a2aeeb2e",
+    "game_sha256": "655b9e6a119a63050b4b932353ecb87876e17455a0a1a93feacdb91926f076bf",
+    "source_sha256_by_path": {
+      "include/bsp/native_network_console_storage.hpp": "e2c134b1ddf600967a65b1f2106e4f12eeb4f0adfb237ba872fb0aef0582b9e3",
+      "src/native_network_console_storage.cpp": "f66386019b9e3cfed5270978c475587cb48f99eeb7d36b707bb3f97089ac0296",
+      "include/bsp/native_network_console_owner.hpp": "1a16c56b9621c534002fd629c8038cfc91f9239912c3afa3c7e528e245c217d1",
+      "src/native_network_console_owner.cpp": "1ee1f986837ea1c0dd560dcb2ad96e90db8ffafb8a55a6488a271375e5b26786",
+      "cmake/startup.cmake": "a05a19bb95c1a296bd3183cacd70c0134819a94cff0f3b7db0edcf34c9926bca"
+    },
+    "source_lf_sha256": {
+      "include/bsp/native_network_console_storage.hpp": "e2c134b1ddf600967a65b1f2106e4f12eeb4f0adfb237ba872fb0aef0582b9e3",
+      "src/native_network_console_storage.cpp": "42a372d3d622f1d71ca33d2233a9283c6c37953763b07a6d77a1b2625e425735",
+      "include/bsp/native_network_console_owner.hpp": "1a16c56b9621c534002fd629c8038cfc91f9239912c3afa3c7e528e245c217d1",
+      "src/native_network_console_owner.cpp": "b5c219cd194cd67852a02e1abf849511f04c19f225f51f082611d706ec3fb2dc",
+      "cmake/startup.cmake": "7f1714c5ab2b1b385ef62c73d963a84c07daa09344641ed7247a92b500fe24b9"
+    },
+    "object_paths": [
+      "build/win32/bsp_core.dir/Release/native_network_console_storage.obj",
+      "build/win32/bsp_core.dir/Release/native_network_console_owner.obj",
+      "build/win32/bsp_core.dir/Release/native_frame_clock_publication.obj",
+      "build/win32/bsp_core.dir/Release/native_renderer_control_worker.obj",
+      "build/win32/bsp_core.dir/Release/native_singleton_publication.obj",
+      "build/win32/bsp_core.dir/Release/native_singleton_vector_registration_wrappers.obj",
+      "build/win32/bsp_core.dir/Release/native_singleton_removal_reorder.obj",
+      "build/win32/bsp_core.dir/Release/native_diagnostic_sink_lifetime.obj",
+      "build/win32/bsp_core.dir/Release/native_render_service_base.obj"
+    ],
+    "call_verification": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\reports\\native_network_console_storage_r172.json: 19 call rows checked, 0 failed\n",
+    "returning_free_gap_readback": {
+      "instruction": "00a3d055: ADD ESP,0x4",
+      "path": "local\\network_console_storage_r172\\scalar-disasm-after.log",
+      "present": true
+    }
+  },
+  "contract": "Exact native raw extents and selective writes; fixed/current actual clock adapter; x87 load/divide/store interleaving; distinct RET-only destructors; captured tracked guard and current-publication singleton base lifetime.",
+  "limits": [
+    "Full derived network-console owner and send/receive loops remain unbound",
+    "No ordinary application, network peer/exchange, visual or gameplay claim for these bodies",
+    "Fixture substitutes normal CRT vector-iterator boundary while executing copied original callbacks; uses existing actual fixed clock and singleton vector services",
+    "No original FH3/SEH, unmasked FP fault, new-handler, arbitrary allocator identity, hardware exception, concurrency or binary ABI proof",
+    "Caller supplies explicit timestamp stack preimage; fixed-clock fixture overwrites it"
+  ],
+  "owned_files": [
+    "include/bsp/native_network_console_storage.hpp",
+    "src/native_network_console_storage.cpp",
+    "include/bsp/native_network_console_owner.hpp",
+    "src/native_network_console_owner.cpp",
+    "cmake/startup.cmake",
+    "docs/NATIVE_NETWORK_CONSOLE_STORAGE_R172.md",
+    "reports/native_network_console_storage_r172.json",
+    "config/names/00a30000.jsonl",
+    "config/reconstruction/00a30000.jsonl"
+  ],
+  "ghidra_annotations": {
+    "status": "Twelve complete normal bodies and parent evidence named/commented/saved under write lock; prior values preserved; exports refreshed and readback checked",
+    "prior_values": [
+      {
+        "address": "00a3a330",
+        "before": {
+          "address": "00a3a330",
+          "function_name": "FUN_00a3a330"
+        },
+        "after": {
+          "address": "00a3a330",
+          "name": "BSP_NetworkConsoleSlot_Construct",
+          "evidence": "Complete13B; ECX actual10h, EAX same, RET. Write byte0 and DWORD4 zero only. Native49Ch parent places64 entries at+8C. Descriptive hypothesis, not recovered symbol. R172 reconstructs twelve complete normal bodies706B required by the actual4003F0h cNetworkConsoleSend owner. Exact selective byte/DWORD stores and padding; actual clock publication; FILD/FILD/FDIVP and delayed float store; current singleton publication and captured tracked guard. Strict Win32/3CTests;38 original/source pairs8433752B,32 x87 precision/rounding/sample combinations, actual singleton current-slot/flags lifetime and one source partial-clock guard. 1147live/PEbytes,19directCALL rows. Fixture uses normal CRT vector iterator boundary and existing actual fixed clock/vector/Win32 services. Full derived owner/worker composition, ordinary startup, original FH3/SEH, unmasked FP/hardware faults, original allocator/new-handler, binary ABI, concurrency and gameplay remain unproved. docs/NATIVE_NETWORK_CONSOLE_STORAGE_R172.md; reports/native_network_console_storage_r172.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00a3a340",
+        "before": {
+          "address": "00a3a340",
+          "function_name": "FUN_00a3a340"
+        },
+        "after": {
+          "address": "00a3a340",
+          "name": "BSP_NetworkConsoleSlot_Destroy",
+          "evidence": "Complete1B RET-only destructor. No reads, stores or ownership release. Distinct native array callback retained. Descriptive hypothesis, not recovered symbol. R172 reconstructs twelve complete normal bodies706B required by the actual4003F0h cNetworkConsoleSend owner. Exact selective byte/DWORD stores and padding; actual clock publication; FILD/FILD/FDIVP and delayed float store; current singleton publication and captured tracked guard. Strict Win32/3CTests;38 original/source pairs8433752B,32 x87 precision/rounding/sample combinations, actual singleton current-slot/flags lifetime and one source partial-clock guard. 1147live/PEbytes,19directCALL rows. Fixture uses normal CRT vector iterator boundary and existing actual fixed clock/vector/Win32 services. Full derived owner/worker composition, ordinary startup, original FH3/SEH, unmasked FP/hardware faults, original allocator/new-handler, binary ABI, concurrency and gameplay remain unproved. docs/NATIVE_NETWORK_CONSOLE_STORAGE_R172.md; reports/native_network_console_storage_r172.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00a3a3d0",
+        "before": {
+          "address": "00a3a3d0",
+          "function_name": "FUN_00a3a3d0"
+        },
+        "after": {
+          "address": "00a3a3d0",
+          "name": "BSP_NetworkConsoleQueue82c_Construct",
+          "evidence": "Complete11B; ECX actual82Ch element, EAX same, RET. Store one-past-element ECX+82C at+0 only. Native parent constructs1000 entries at+5B08. Queue direction remains unnamed. Descriptive hypothesis, not recovered symbol. R172 reconstructs twelve complete normal bodies706B required by the actual4003F0h cNetworkConsoleSend owner. Exact selective byte/DWORD stores and padding; actual clock publication; FILD/FILD/FDIVP and delayed float store; current singleton publication and captured tracked guard. Strict Win32/3CTests;38 original/source pairs8433752B,32 x87 precision/rounding/sample combinations, actual singleton current-slot/flags lifetime and one source partial-clock guard. 1147live/PEbytes,19directCALL rows. Fixture uses normal CRT vector iterator boundary and existing actual fixed clock/vector/Win32 services. Full derived owner/worker composition, ordinary startup, original FH3/SEH, unmasked FP/hardware faults, original allocator/new-handler, binary ABI, concurrency and gameplay remain unproved. docs/NATIVE_NETWORK_CONSOLE_STORAGE_R172.md; reports/native_network_console_storage_r172.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00a3a3e0",
+        "before": {
+          "address": "00a3a3e0",
+          "function_name": "FUN_00a3a3e0"
+        },
+        "after": {
+          "address": "00a3a3e0",
+          "name": "BSP_NetworkConsoleQueue82c_Destroy",
+          "evidence": "Complete1B RET-only destructor; no memory access or cleanup. Descriptive hypothesis, not recovered symbol. R172 reconstructs twelve complete normal bodies706B required by the actual4003F0h cNetworkConsoleSend owner. Exact selective byte/DWORD stores and padding; actual clock publication; FILD/FILD/FDIVP and delayed float store; current singleton publication and captured tracked guard. Strict Win32/3CTests;38 original/source pairs8433752B,32 x87 precision/rounding/sample combinations, actual singleton current-slot/flags lifetime and one source partial-clock guard. 1147live/PEbytes,19directCALL rows. Fixture uses normal CRT vector iterator boundary and existing actual fixed clock/vector/Win32 services. Full derived owner/worker composition, ordinary startup, original FH3/SEH, unmasked FP/hardware faults, original allocator/new-handler, binary ABI, concurrency and gameplay remain unproved. docs/NATIVE_NETWORK_CONSOLE_STORAGE_R172.md; reports/native_network_console_storage_r172.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00a3a500",
+        "before": {
+          "address": "00a3a500",
+          "function_name": "FUN_00a3a500"
+        },
+        "after": {
+          "address": "00a3a500",
+          "name": "BSP_NetworkConsoleQueue820_Construct",
+          "evidence": "Complete18B; ECX actual820h element, EAX same, RET. Store one-past-element ECX+820 at+0 and zero DWORD1C only. Native parent constructs1000 entries at+2046EC. Descriptive hypothesis, not recovered symbol. R172 reconstructs twelve complete normal bodies706B required by the actual4003F0h cNetworkConsoleSend owner. Exact selective byte/DWORD stores and padding; actual clock publication; FILD/FILD/FDIVP and delayed float store; current singleton publication and captured tracked guard. Strict Win32/3CTests;38 original/source pairs8433752B,32 x87 precision/rounding/sample combinations, actual singleton current-slot/flags lifetime and one source partial-clock guard. 1147live/PEbytes,19directCALL rows. Fixture uses normal CRT vector iterator boundary and existing actual fixed clock/vector/Win32 services. Full derived owner/worker composition, ordinary startup, original FH3/SEH, unmasked FP/hardware faults, original allocator/new-handler, binary ABI, concurrency and gameplay remain unproved. docs/NATIVE_NETWORK_CONSOLE_STORAGE_R172.md; reports/native_network_console_storage_r172.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00a3a520",
+        "before": {
+          "address": "00a3a520",
+          "function_name": "FUN_00a3a520"
+        },
+        "after": {
+          "address": "00a3a520",
+          "name": "BSP_NetworkConsoleQueue820_Destroy",
+          "evidence": "Complete1B RET-only destructor; no memory access or cleanup. Descriptive hypothesis, not recovered symbol. R172 reconstructs twelve complete normal bodies706B required by the actual4003F0h cNetworkConsoleSend owner. Exact selective byte/DWORD stores and padding; actual clock publication; FILD/FILD/FDIVP and delayed float store; current singleton publication and captured tracked guard. Strict Win32/3CTests;38 original/source pairs8433752B,32 x87 precision/rounding/sample combinations, actual singleton current-slot/flags lifetime and one source partial-clock guard. 1147live/PEbytes,19directCALL rows. Fixture uses normal CRT vector iterator boundary and existing actual fixed clock/vector/Win32 services. Full derived owner/worker composition, ordinary startup, original FH3/SEH, unmasked FP/hardware faults, original allocator/new-handler, binary ABI, concurrency and gameplay remain unproved. docs/NATIVE_NETWORK_CONSOLE_STORAGE_R172.md; reports/native_network_console_storage_r172.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00a3a770",
+        "before": {
+          "address": "00a3a770",
+          "function_name": "FUN_00a3a770"
+        },
+        "after": {
+          "address": "00a3a770",
+          "name": "BSP_NetworkConsoleChannel_DestroySlots",
+          "evidence": "Complete22B; ECX actual49Ch channel, RET. BF7C6E reverse-destroys64 entries at+8C stride10h through RET-only A3A340. No other channel fields touched. Descriptive hypothesis, not recovered symbol. R172 reconstructs twelve complete normal bodies706B required by the actual4003F0h cNetworkConsoleSend owner. Exact selective byte/DWORD stores and padding; actual clock publication; FILD/FILD/FDIVP and delayed float store; current singleton publication and captured tracked guard. Strict Win32/3CTests;38 original/source pairs8433752B,32 x87 precision/rounding/sample combinations, actual singleton current-slot/flags lifetime and one source partial-clock guard. 1147live/PEbytes,19directCALL rows. Fixture uses normal CRT vector iterator boundary and existing actual fixed clock/vector/Win32 services. Full derived owner/worker composition, ordinary startup, original FH3/SEH, unmasked FP/hardware faults, original allocator/new-handler, binary ABI, concurrency and gameplay remain unproved. docs/NATIVE_NETWORK_CONSOLE_STORAGE_R172.md; reports/native_network_console_storage_r172.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00a3ad10",
+        "before": {
+          "address": "00a3ad10",
+          "function_name": "FUN_00a3ad10"
+        },
+        "after": {
+          "address": "00a3ad10",
+          "name": "BSP_NetworkConsoleChannel_Reset",
+          "evidence": "Complete223B; ECX actual49Ch channel, RET. Bytes0=1/18=0 precede CURRENT AB0+20 sample atA3AD2F. FILD signedqwords, flags29/28, FDIVP, twelve DWORD clears then FSTP float20 atA3AD70. Preserve remaining scalar order and32 interleaved slot pairs; late D7A260 load atA3ADD9, zero14 then exact bits24. Same actual clock adapter and explicit caller stack preimage. Descriptive hypothesis, not recovered symbol. R172 reconstructs twelve complete normal bodies706B required by the actual4003F0h cNetworkConsoleSend owner. Exact selective byte/DWORD stores and padding; actual clock publication; FILD/FILD/FDIVP and delayed float store; current singleton publication and captured tracked guard. Strict Win32/3CTests;38 original/source pairs8433752B,32 x87 precision/rounding/sample combinations, actual singleton current-slot/flags lifetime and one source partial-clock guard. 1147live/PEbytes,19directCALL rows. Fixture uses normal CRT vector iterator boundary and existing actual fixed clock/vector/Win32 services. Full derived owner/worker composition, ordinary startup, original FH3/SEH, unmasked FP/hardware faults, original allocator/new-handler, binary ABI, concurrency and gameplay remain unproved. docs/NATIVE_NETWORK_CONSOLE_STORAGE_R172.md; reports/native_network_console_storage_r172.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00a3ce60",
+        "before": {
+          "address": "00a3ce60",
+          "function_name": "CG_array_ctor_helper_00a3ce60"
+        },
+        "after": {
+          "address": "00a3ce60",
+          "name": "BSP_NetworkConsoleChannel_Construct",
+          "evidence": "Complete88B; ECX actual49Ch channel, EAX same, RET. Construct64 actual10h elements at+8C through A3A330 before calling full A3AD10. Source C++ cleanup invokes reverse no-op slot cleanup on failure; original private EH not claimed. Descriptive hypothesis, not recovered symbol. R172 reconstructs twelve complete normal bodies706B required by the actual4003F0h cNetworkConsoleSend owner. Exact selective byte/DWORD stores and padding; actual clock publication; FILD/FILD/FDIVP and delayed float store; current singleton publication and captured tracked guard. Strict Win32/3CTests;38 original/source pairs8433752B,32 x87 precision/rounding/sample combinations, actual singleton current-slot/flags lifetime and one source partial-clock guard. 1147live/PEbytes,19directCALL rows. Fixture uses normal CRT vector iterator boundary and existing actual fixed clock/vector/Win32 services. Full derived owner/worker composition, ordinary startup, original FH3/SEH, unmasked FP/hardware faults, original allocator/new-handler, binary ABI, concurrency and gameplay remain unproved. docs/NATIVE_NETWORK_CONSOLE_STORAGE_R172.md; reports/native_network_console_storage_r172.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00a3cf00",
+        "before": {
+          "address": "00a3cf00",
+          "function_name": "FUN_00a3cf00"
+        },
+        "after": {
+          "address": "00a3cf00",
+          "name": "BSP_NetworkConsoleSendBase_Construct",
+          "evidence": "Complete145B; ECX actual4003F0h owner, EAX same, RET. Stamp D23F44, capture first1090AA0 getter+10 tracked section, enter/increment, publish F8ABDC, second getter, register CURRENT F8ABDC atA3CF6A, leave captured section. Descriptive hypothesis, not recovered symbol. R172 reconstructs twelve complete normal bodies706B required by the actual4003F0h cNetworkConsoleSend owner. Exact selective byte/DWORD stores and padding; actual clock publication; FILD/FILD/FDIVP and delayed float store; current singleton publication and captured tracked guard. Strict Win32/3CTests;38 original/source pairs8433752B,32 x87 precision/rounding/sample combinations, actual singleton current-slot/flags lifetime and one source partial-clock guard. 1147live/PEbytes,19directCALL rows. Fixture uses normal CRT vector iterator boundary and existing actual fixed clock/vector/Win32 services. Full derived owner/worker composition, ordinary startup, original FH3/SEH, unmasked FP/hardware faults, original allocator/new-handler, binary ABI, concurrency and gameplay remain unproved. docs/NATIVE_NETWORK_CONSOLE_STORAGE_R172.md; reports/native_network_console_storage_r172.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00a3cfa0",
+        "before": {
+          "address": "00a3cfa0",
+          "function_name": "FUN_00a3cfa0"
+        },
+        "after": {
+          "address": "00a3cfa0",
+          "name": "BSP_NetworkConsoleSendBase_Destroy",
+          "evidence": "Complete153B; ECX captured raw owner, RET. Stamp D23F44; two manager getters under captured first tracked section; unregister CURRENT F8ABDC atA3D004, clear atA3D009, leave captured section, writeCE3818 on captured owner. Descriptive hypothesis, not recovered symbol. R172 reconstructs twelve complete normal bodies706B required by the actual4003F0h cNetworkConsoleSend owner. Exact selective byte/DWORD stores and padding; actual clock publication; FILD/FILD/FDIVP and delayed float store; current singleton publication and captured tracked guard. Strict Win32/3CTests;38 original/source pairs8433752B,32 x87 precision/rounding/sample combinations, actual singleton current-slot/flags lifetime and one source partial-clock guard. 1147live/PEbytes,19directCALL rows. Fixture uses normal CRT vector iterator boundary and existing actual fixed clock/vector/Win32 services. Full derived owner/worker composition, ordinary startup, original FH3/SEH, unmasked FP/hardware faults, original allocator/new-handler, binary ABI, concurrency and gameplay remain unproved. docs/NATIVE_NETWORK_CONSOLE_STORAGE_R172.md; reports/native_network_console_storage_r172.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00a3d040",
+        "before": {
+          "address": "00a3d040",
+          "function_name": "CG_scalar_deleting_dtor_00a3d040"
+        },
+        "after": {
+          "address": "00a3d040",
+          "name": "BSP_NetworkConsoleSendBase_ScalarDelete",
+          "evidence": "Complete30B; ECX captured raw owner, one DWORD flags, RET4/EAX capturedidentity. FullA3CFA0 then only flagsbit0 frees BF65AC atA3D050. Repaired hidden ADD ESP4 atA3D055 without global no-return change. Flags2 retains;101 frees. Descriptive hypothesis, not recovered symbol. R172 reconstructs twelve complete normal bodies706B required by the actual4003F0h cNetworkConsoleSend owner. Exact selective byte/DWORD stores and padding; actual clock publication; FILD/FILD/FDIVP and delayed float store; current singleton publication and captured tracked guard. Strict Win32/3CTests;38 original/source pairs8433752B,32 x87 precision/rounding/sample combinations, actual singleton current-slot/flags lifetime and one source partial-clock guard. 1147live/PEbytes,19directCALL rows. Fixture uses normal CRT vector iterator boundary and existing actual fixed clock/vector/Win32 services. Full derived owner/worker composition, ordinary startup, original FH3/SEH, unmasked FP/hardware faults, original allocator/new-handler, binary ABI, concurrency and gameplay remain unproved. docs/NATIVE_NETWORK_CONSOLE_STORAGE_R172.md; reports/native_network_console_storage_r172.json."
+        },
+        "status": "applied"
+      },
+      {
+        "address": "00a3d060",
+        "before": {
+          "address": "00a3d060",
+          "function_name": "CG_array_ctor_helper_00a3d060"
+        },
+        "after": {
+          "address": "00a3d060",
+          "name": "BSP_NetworkConsoleSend_Construct",
+          "evidence": "Existing314B parent, ECX actual4003F0h, EAX same, RET. Native stringsD23EFC/D23F20 identify cNetworkConsoleSend workers. R172 supplies A3CF00 base,16 channels at+19C (stride49C),1000 queue82C entries at+5B08 and1000 queue820 entries at+2046EC with real member cleanup leaves. Full constructor, locks, send/receive worker loops and derived destruction remain open. Descriptive hypothesis, not recovered symbol. R172 reconstructs twelve complete normal bodies706B required by the actual4003F0h cNetworkConsoleSend owner. Exact selective byte/DWORD stores and padding; actual clock publication; FILD/FILD/FDIVP and delayed float store; current singleton publication and captured tracked guard. Strict Win32/3CTests;38 original/source pairs8433752B,32 x87 precision/rounding/sample combinations, actual singleton current-slot/flags lifetime and one source partial-clock guard. 1147live/PEbytes,19directCALL rows. Fixture uses normal CRT vector iterator boundary and existing actual fixed clock/vector/Win32 services. Full derived owner/worker composition, ordinary startup, original FH3/SEH, unmasked FP/hardware faults, original allocator/new-handler, binary ABI, concurrency and gameplay remain unproved. docs/NATIVE_NETWORK_CONSOLE_STORAGE_R172.md; reports/native_network_console_storage_r172.json."
+        },
+        "status": "applied"
+      }
+    ],
+    "attempts": [
+      {
+        "log": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\network_console_storage_r172\\annotations-0.log",
+        "exit": 0
+      }
+    ],
+    "readback_path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\network_console_storage_r172\\comments-after.json",
+    "readback_sha256": "a9e23ed81b49342d111a29aeda06d0a916aab1d4411d9a5640f437e5d6efa87e"
+  },
+  "ledger_receipts": [
+    "00a3a330 -> BSP_NetworkConsoleSlot_Construct\n",
+    "00a3a330 function construct_native_network_console_slot_00a3a330\n",
+    "00a3a340 -> BSP_NetworkConsoleSlot_Destroy\n",
+    "00a3a340 function destroy_native_network_console_slot_00a3a340\n",
+    "00a3a3d0 -> BSP_NetworkConsoleQueue82c_Construct\n",
+    "00a3a3d0 function construct_native_network_console_queue_00a3a3d0\n",
+    "00a3a3e0 -> BSP_NetworkConsoleQueue82c_Destroy\n",
+    "00a3a3e0 function destroy_native_network_console_queue_00a3a3e0\n",
+    "00a3a500 -> BSP_NetworkConsoleQueue820_Construct\n",
+    "00a3a500 function construct_native_network_console_queue_00a3a500\n",
+    "00a3a520 -> BSP_NetworkConsoleQueue820_Destroy\n",
+    "00a3a520 function destroy_native_network_console_queue_00a3a520\n",
+    "00a3a770 -> BSP_NetworkConsoleChannel_DestroySlots\n",
+    "00a3a770 function destroy_native_network_console_channel_00a3a770\n",
+    "00a3ad10 -> BSP_NetworkConsoleChannel_Reset\n",
+    "00a3ad10 function reset_native_network_console_channel_00a3ad10\n",
+    "00a3ce60 -> BSP_NetworkConsoleChannel_Construct\n",
+    "00a3ce60 function construct_native_network_console_channel_00a3ce60\n",
+    "00a3cf00 -> BSP_NetworkConsoleSendBase_Construct\n",
+    "00a3cf00 function construct_native_network_console_base_00a3cf00\n",
+    "00a3cfa0 -> BSP_NetworkConsoleSendBase_Destroy\n",
+    "00a3cfa0 function destroy_native_network_console_base_00a3cfa0\n",
+    "00a3d040 -> BSP_NetworkConsoleSendBase_ScalarDelete\n",
+    "00a3d040 function delete_native_network_console_base_00a3d040\n",
+    "00a3d060 -> BSP_NetworkConsoleSend_Construct\n",
+    "00a3d060 fragment native_network_console_parent_storage_binding_r172\n"
+  ],
+  "tested_artifact_archive": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-orch4-20260915\\local\\evidence-r172\\native-network-console-storage-tested-r172.zip",
+    "sha256": "07011e96536ec9351a7a70ee60a2dc7b25fd1dcd58ee14a4d985572ee46d2bb4",
+    "files": 72,
+    "head": "5e3f93b63799c419af01a52f4694f10cb49df66c"
+  }
+}
