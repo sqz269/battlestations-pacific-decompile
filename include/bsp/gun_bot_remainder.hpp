@@ -134,10 +134,20 @@ struct ShipLeadSections {
 };
 
 // [ship+538h]+0A0h/+0A4h/+0A8h, the hull box the fallback samples.
+// The field names were SWAPPED here until packet cc8_hull_aim_point: +0A0h was
+// called `width` and +0A4h `length`. docs/VEHICLE_CLASS_FIELDS.md:86-88 gives
+// the authored keys and their store sites - `Length` -> +0A0h (0096038B),
+// `Width` -> +0A4h (00960354), `Height` -> +0A8h (009603C2) - and
+// GameVehicleClassRow in include/bsp/game_hosts_lua.hpp already names them that
+// way round. Only the names moved; the offsets each axis uses are unchanged, so
+// the sampled geometry is identical. It matters because with the old names the
+// routine read as tapering the LENGTH by how far out the WIDTH draw landed,
+// which is geometric nonsense; the right way round it is a ship planform, full
+// beam amidships and pinched at bow and stern.
 struct LeadAimHullExtents {
-    float width = 0.0f;  // +0A0h, halved for the z offset
-    float length = 0.0f; // +0A4h, halved for the x offset
-    float height = 0.0f; // +0A8h, quartered for the y offset
+    float length = 0.0f; // +0A0h, `Length`, halved for the along-hull z offset
+    float width = 0.0f;  // +0A4h, `Width`, halved for the across-hull x offset
+    float height = 0.0f; // +0A8h, `Height`, quartered for the y offset
 };
 
 // The four random draws 00816650 makes, in the order it makes them, so a caller

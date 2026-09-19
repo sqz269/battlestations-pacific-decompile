@@ -190,9 +190,13 @@ std::array<float, 3> ship_lead_point_00816650(const ShipLeadSections& sections,
     // tapered by how far out the z draw landed, the y draw is one sided.
     const float taper = ship_lead_length_taper_00816941(draws.box_z);
     std::array<float, 3> out{};
-    out[0] = origin[0] + taper * draws.box_x * (kShipLeadHalfExtentScale * hull.length);
+    // 0081694A/0081695D uses [class+A4h] for x and 0081684A/008168E8 uses
+    // [class+A0h] for z. The names swapped in this struct at packet
+    // cc8_hull_aim_point; the offsets did not, so these two lines read
+    // `width` and `length` where they used to read `length` and `width`.
+    out[0] = origin[0] + taper * draws.box_x * (kShipLeadHalfExtentScale * hull.width);
     out[1] = origin[1] + draws.box_y * (kShipLeadVerticalExtentScale * hull.height);
-    out[2] = origin[2] + draws.box_z * (kShipLeadHalfExtentScale * hull.width);
+    out[2] = origin[2] + draws.box_z * (kShipLeadHalfExtentScale * hull.length);
     (void)box; // the box is what the caller drew `draws` over
     return out;
 }
