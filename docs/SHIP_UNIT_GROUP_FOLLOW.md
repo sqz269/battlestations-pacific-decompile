@@ -820,7 +820,86 @@ re-read). A runtime join in this process only ever brings one ungrouped ship to 
 that is missing was reached. `0070ED30`'s column production and `0070DA00`'s speed ceiling are not
 run either, which is why every record's columns are zero and the report says so.
 
-## 9. Uncertainties, and what is not read
+## 9. The door the chain cannot open, and why it is the image's door
+
+Everything above is bound: the gate, the membership, column 0, `0070D290`, and `009E1610` itself
+against `009DF2D0` and the navigation goal. `follow` still never runs. This section is the reason,
+read from the listing rather than guessed, because it decides who owes the next piece.
+
+```
+summary mission director steps=186000 idle_reissues=52 stop=51 cruise=1 follow=0
+WeaponDirector::is_formation_follower  007788b0  concrete  calls=53
+total_path=5600.63       (unchanged - no escort moved)
+```
+
+The idle re-issue is **evaluated** 186000 times; its `proceed` gate passes **53**, once per ship at
+`t=0`, and the joins land at 4.2 s. Every ship took `stop` at `t=0` and none was ever reconsidered,
+so `007788D0` was never called once and `follow` was never chosen.
+
+The stage spine says this is the image's behaviour too. `00836A8B` switches on the **running**
+command at `[director+54h]`:
+
+```
+00836A8E  CMP EAX,0E08F88h            ; `stop`?      -> 00836ADC (the follow arm) if not
+00836AA2  if (0071BE60() > 1)             -> raise
+00836AAD  if ([unit+184h])                -> raise
+00836AC1  COMISS [[unit+73Ch]+28h], 0.0   ; 00D7A218
+00836AC8  JC 00836D67                     ; BELOW zero -> the stop keeps running
+00836ACE  0071D810(2)                     ; otherwise raise to finished
+```
+
+and `00835E0E` shows a beginning `cruise` or `stop` raising only to stage **1**. **There is no
+cruise arm at all**: scanning `00836920` for `CMP EAX,0E08F70h` finds none, so a running `cruise`
+is never ended by a kind arm either.
+
+`[unit+73Ch]+28h` is **a timestamp, not an enable** - this host's own note at
+`src/game_hosts_commands.cpp` records it: "+24h = max(requested, 0) and +28h = the mission clock
+DAT_00F876A4 ... +28h is a timestamp, not an enable: 00835C28 measures its age against 1.0f". Its
+never-set value is `-1.0` (`00D7A260`, `009E11C6`), which is below zero, so a ship that has never
+had a commanded speed stored keeps its `stop` for the whole mission. This run stored **none**:
+`commanded_speeds=0`.
+
+So the chain's last link is not missing from the chain. **Membership is necessary for `follow` and
+is not sufficient**: the ship must also be a follower *before* the director's first idle re-issue,
+or something must end the command it already holds. Our coordinator issues its first command at
+4.20 s; the director's first idle step is at `t=0`. Either the group must exist by then, or a
+commanded-speed store must give the stop arm something to raise on. Both live in the command
+lifetime and the AI coordinator's composition, not in this chain, and this packet stops at the
+boundary rather than inventing a trigger.
+
+### USN04 proves the mechanism and names the other two conditions
+
+`local/follow_runs_usn04.log`, same build:
+
+```
+summary mission director steps=132534 idle_reissues=33 stop=31 cruise=1 follow=1
+                        script_issues=380 commanded_speeds=2
+summary unit formation groups=1 joins=17 creates=1 rejoins=0 clamped=9 columns_unmeasurable=17
+  formation 0 leader=Lexington-class01 count=18 column=0      (every across and along 0.00)
+summary mission ai follow requests=238 available=0 refused=238 joins=0
+```
+
+**`follow=1`.** The producer fires on USN04 and not on USN01, and the difference is
+`commanded_speeds=2` against USN01's `0`: a ship that has had a commanded speed stored has a
+timestamp at `[unit+73Ch]+28h` that is not below zero, its `stop` raises at `00836ACE`, the stage
+reaches 2 and the re-issue reconsiders it. That is the door above, opening once, for exactly the
+reason the listing gives.
+
+**The AI counters disagree with the units host's on purpose, and the reason matters.**
+`available=0 refused=238` against `joins=17` is not a contradiction: `create_units` builds a **fresh
+`GameAiCoordinatorHost`** on every spawn batch (`src/game_hosts_units.cpp`, and
+`src/game_hosts_script_orders.cpp` records the same), and USN04 spawns in twelve batches. The
+earlier coordinators made the 17 joins and were destroyed with their counters; the last one saw only
+re-requests from ships already in the group and refused all 238 through `00779820`. USN01 creates in
+one batch, so its numbers are whole. **Any per-mission AI counter on a multi-batch mission is a
+last-instance count, not a total** - which is worth knowing beyond this packet.
+
+**And `columns_unmeasurable=17`**: on USN04 the joins land before the `Lexington` has laid any
+trail, so `00811180` has nothing to measure along and every column is zero. A `follow` produced in
+that state would steer to a station abeam at zero offset, which is the leader's own track. So the
+third condition, after membership and a turning stage, is **a leader that has already laid wake**.
+
+## 10. Uncertainties, and what is not read
 
 * `00810630` and `00811180` whole, and `00810160`. `00810190` is now read whole (section 5b); what
   writes its residual accumulator `wake+3D0h` is not, and nothing here may assume it stays zero.
