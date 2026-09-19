@@ -525,6 +525,34 @@ DiveBombTurnDownResult dive_bomb_turndown_tick_009c44f0(
     return out;
 }
 
+// 009C7F00-009C7FD6, the goaway completion rule, read whole.
+bool dive_bomb_goaway_complete_009c7f00(
+    const DiveBombGoAwayCompleteInputs& in) noexcept {
+    // 009C7F03-009C7F16: the distance term.
+    double term = static_cast<double>(in.travel_20) *
+                  dive_bomb_constant::kGoAwayDistanceScale;
+    // 009C7F51-009C7F7A: all three flags set scales it a second time by the same
+    // 0.9 that 009C7F09 left on the x87 stack; 009C7F72 returns false outright
+    // when the first two are set and the ordnance flag is not.
+    if (in.control_flag_369 && in.global_e17bf2) {
+        if (!in.has_bomb_ordnance_d1) {
+            return false;   // 009C7F74 XOR AL,AL
+        }
+        term *= dive_bomb_constant::kGoAwayDistanceScale;
+    }
+    // 009C7F23-009C7F46: the ceiling, the smaller of the two.
+    const float sum = in.begin_altitude_ac + in.aim_point_height_50;
+    const float ceiling = (in.cruise_altitude_398 <= sum) ? in.cruise_altitude_398 : sum;
+    // 009C7F8D `76` JBE: the range has to have opened past the term.
+    if (!(static_cast<double>(in.planar_distance_bc) > term)) {
+        return false;
+    }
+    // 009C7FB2/009C7FC2 `76` JBE: and the aircraft has to have climbed back to
+    // within the 100.0 at 00D7A220 of that ceiling. This half was missing.
+    return static_cast<double>(in.altitude) >
+           static_cast<double>(ceiling) - dive_bomb_constant::kMoveToRangeBias;
+}
+
 // 009C4B44-009C4C06, the goaway tick's climb-out.
 DiveBombGoAwayCommand dive_bomb_goaway_climb_009c4b44(
     const DiveBombGoAwayInputs& in) noexcept {

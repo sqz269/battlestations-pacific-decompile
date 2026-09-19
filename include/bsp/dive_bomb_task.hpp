@@ -737,6 +737,35 @@ inline constexpr float kClimbFullAltitude = 60.0f;    // 00CEB4B0, 009C4BAA
 inline constexpr float kClimbEaseAltitude = 300.0f;   // 00CE3AE8, 009C4B48/009C4B96
 }  // namespace dive_bomb_goaway_constant
 
+// 009C7F00-009C7FD6, __thiscall(goaway state) -> bool. The completion rule, now
+// read whole. It was PARTIAL and only its first half was modelled, which is why
+// goaway finished on its first tick in every run.
+//
+//   term  = state+20h * 0.9 (00D7A390), and * 0.9 AGAIN at 009C7F7A when
+//           ctl+369h and 00E17BF2 and state+D1h are all set
+//   ceil  = min(ctl+398h, approach+ACh + approach+50h)     009C7F38, `76` JBE
+//   done  = approach+BCh > term                            009C7F8D, `76` JBE
+//           AND aircraft Y > ceil - 100.0 (00D7A220)       009C7FC2, `76` JBE
+//
+// The second condition is the half that was missing, and it is the whole point
+// of the state: goaway ends only once the aircraft has BOTH opened the range and
+// climbed back to within 100 m of its cruise altitude. With approach+ACh at
+// 1000.0 and the aim point at sea level that is 900 m, so an aircraft at 650 m
+// coming out of a dive stays in goaway and keeps climbing.
+struct DiveBombGoAwayCompleteInputs {
+    float planar_distance_bc = 0.0f;  // approach+BCh
+    float travel_20 = 0.0f;           // the goaway state's own +20h
+    float altitude = 0.0f;            // the aircraft's world Y
+    float cruise_altitude_398 = 0.0f;  // ctl+398h
+    float begin_altitude_ac = 0.0f;    // approach+ACh
+    float aim_point_height_50 = 0.0f;  // approach+50h
+    bool has_bomb_ordnance_d1 = false;
+    bool control_flag_369 = false;
+    bool global_e17bf2 = false;
+};
+bool dive_bomb_goaway_complete_009c7f00(
+    const DiveBombGoAwayCompleteInputs& in) noexcept;
+
 struct DiveBombGoAwayInputs {
     float altitude = 0.0f;         // [EDI+100h], the unit's world Y
     float climb_angle_1ec = 0.0f;  // (approach+8h)->+1ECh, 009C4BA0
