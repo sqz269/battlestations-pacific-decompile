@@ -253,6 +253,32 @@ Codex's; both are in Claude-lineage files.
 * Section 3 called USN04 the best candidate on the strength of its launch geometry. The geometry was
   never tested, because the launch does not run; see section 6.
 
+## Correction, packet cc8_airops_launch_tick (2026-09-18)
+
+**The launch runs now, so the Uncertainty item at line 231 is answerable from a run again.** That
+item says whether `launchedStriker` carries torpedo aircraft is "now unanswerable from a run: the
+aircraft never spawn, so their classes never resolve". Aircraft now spawn: the slot tick `006C0510`
+and the creation seam are on this branch, and `local/usn04_tick.log` has four squadrons created as
+real units with resolved class rows and ordnance in the gun census.
+
+What that run measured, and what it did **not**:
+
+* Four squadrons of three launched, from `Lexington-class01` and `Yorktown-class01` — the **American**
+  carriers — with class **101**, and the ordnance census moved by exactly four units into
+  `general_bomb` and by none into `torpedo` (2Bh). So the American strike is a dive-bomber strike,
+  which is what those two carriers flew at Coral Sea.
+* `Zuikaku-class01` and `Shokaku-class01`, which section 3 names as `launchedStriker`'s source, **did
+  not launch in the 150 s window**. Its plane types, 158 and 162 by line 233, were never asked for,
+  so the open item stands exactly as written — but it is now one run away rather than unanswerable.
+* USN04 has six decks in all: the two American carriers, `Zuiho-class01`, `Zuikaku-class01`,
+  `Shokaku-class01` and `dummylex`, each with `NumSlots=4 MaxInAirPlanes=12`.
+
+The blocker is no longer the launch. It is that the mission's own timetable had not reached the
+strike: `script entity 100006 created_for=luaDoTimeTable think=luaTimetable armed=1 delay=34.95
+thinks=0`, the same line as in the before log. A run of `--mission-frames 6000` is what settles
+whether 158 and 162 carry 2Bh. Section 8's USN04 row, "carrier strike never launches", is
+superseded. docs/AIROPS_LAUNCH_TICK.md.
+
 ## no_ghidra_function
 
 None.

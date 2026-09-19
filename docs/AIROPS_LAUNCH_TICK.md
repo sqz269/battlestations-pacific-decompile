@@ -290,31 +290,49 @@ registration` put it in six world lists, and the gun chain gave it ordnance (+4 
 
 ### Two findings that change the stream's own premise
 
-**The launched class carries general bombs, not torpedoes.** The arithmetic is exact: the four new
-units took "units with guns" from 53 to 57 and "general_bomb" from 1 to 5, while "torpedo" stayed at
-34. USN04's carrier slots launch class 101 with a wing of three, and class 101 in this installation
-is not a torpedo carrier. `0099A170` builds a kind Eh task only for an ordered aircraft carrying
-ordnance kind 2Bh, and the run says so in as many words:
+**The launch that was measured carries general bombs, not torpedoes — but it is not the strike this
+stream is after.** The arithmetic is exact: the four new units took "units with guns" from 53 to 57
+and "general_bomb" from 1 to 5, while "torpedo" stayed at 34. The class is 101 with a wing of three,
+and class 101 in this installation is not a torpedo carrier. `0099A170` builds a kind Eh task only
+for an ordered aircraft carrying ordnance kind 2Bh, and the run says so in as many words:
 
 ```
 summary mission torpedo task: no ordered aircraft carries torpedo ordnance (kind 2Bh),
 so 0099A170 builds no kind Eh task
 ```
 
-So the move-to tick, the glide slope, the desired-speed setter and the release above the sea are
-still unexercised, and **they will not be exercised by USN04's carrier launch** whatever else is
-fixed, unless a launch asks for a torpedo class. The class is not the deck's: `LaunchSquadron`'s
-first argument comes from the mission script, and every one of the four calls passed 101 with a
-count of 3. The next step for the stream is to find which mission, or which scripted launch, asks
-for a class carrying 2Bh — not to press further on this launch path.
+### Correction to the paragraph above, same day, before this document left the branch
 
-One caveat on that reading, stated because it is load-bearing. The slot's class travels from the
-scene's numeric `Type` token through `LaunchSquadron`'s argument to `read_vehicle_class_row` as an
-index into the `VehicleClass` global, unchanged. That is the same id-as-index convention
-`attach_scene_entities_00928a00` already uses for an entity's `Class` field, and the row was found
-rather than missing, so the ordnance reading is the process's existing convention and not a new
-assumption — but if that numbering is ever shown to differ from the `VehicleClass` index, this
-paragraph's conclusion goes with it.
+A first version of this section concluded that "USN04's carrier launch will not exercise the
+torpedo path whatever else is fixed". **That is wrong, and the deck list is what disproves it.**
+USN04 has six decks:
+
+```
+Lexington-class01   Yorktown-class01   Zuiho-class01
+Zuikaku-class01     Shokaku-class01    dummylex
+```
+
+All four launches came from `Lexington-class01` and `Yorktown-class01` — the **American** carriers,
+two squadrons each. `docs/TORPEDO_MISSION_SURVEY.md` section 3 names the strike this stream is
+after as `launchedStriker`, twelve aircraft, "launched from `Mission.Zuikaku` and `Mission.Shokaku`
+slots and ordered at launch (`usn_19_coralus.lua:1409`-`1446`)". **Zuikaku and Shokaku did not launch
+in this window at all.**
+
+So what was measured is the US carriers' own strike — twelve dive bombers, which is what a Lexington
+and a Yorktown carried at Coral Sea — and the class-101 finding is a fact about *that* launch, not
+about `launchedStriker`. The Japanese torpedo strike is still ahead of the window, behind the same
+`luaDoTimeTable` entry with 34.95 s left, and the survey's own open item at its line 231 —
+"whether USN04's `launchedStriker` groups contain torpedo-armed aircraft specifically" — remains
+open. The longer run below is the measurement that settles it, and it is now the decisive one rather
+than a nice-to-have.
+
+One caveat on the class-101 ordnance reading, stated because it is load-bearing. The slot's class
+travels from the scene's numeric `Type` token through `LaunchSquadron`'s argument to
+`read_vehicle_class_row` as an index into the `VehicleClass` global, unchanged. That is the same
+id-as-index convention `attach_scene_entities_00928a00` already uses for an entity's `Class` field,
+and the row was found rather than missing, so the ordnance reading is the process's existing
+convention and not a new assumption — but if that numbering is ever shown to differ from the
+`VehicleClass` index, the reading goes with it.
 
 **The squadrons are ordered by the party AI, not by the mission script.** All four appear in the
 pilot-attack tally (`ordered` 2 -> 6), and each one's line is
@@ -348,9 +366,11 @@ the peer more than the measurement is worth. The command for whoever takes it:
   --press-start-frame 30 --menu-select USN04 --mission-frames 6000 --mission-frame-seconds 0.05
 ```
 
-What it would answer: whether `luaTimetable` entity 100006 fires at ~185 s and whether the order it
-carries is the one that sends the four squadrons. It cannot produce a torpedo task either way, for
-the reason above.
+What it would answer: whether `luaTimetable` entity 100006 fires at ~185 s, whether the order it
+carries is the one that sends the four American squadrons, and — the decisive one — whether
+`Zuikaku-class01` and `Shokaku-class01` then launch `launchedStriker` and with what class. If that
+class carries ordnance 2Bh, everything this stream has built downstream of the launch becomes
+reachable in one run.
 
 ## Uncertainty
 
