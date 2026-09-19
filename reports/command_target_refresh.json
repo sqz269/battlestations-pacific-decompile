@@ -1,0 +1,151 @@
+{
+  "packet": "cc8_command_target_refresh",
+  "baseline_commit": "adf4a213b",
+  "worktree": "J:/PROG/battlestations-pacific-decompile-cc8-dive-bomb",
+  "documentation": "docs/DIVE_BOMB_TASK.md",
+  "status": "refresh_command_targets corrected to 0071EBF0's rule; the two flyabove flags bound; 009C40A0 defined in Ghidra",
+  "production_cpp_changed": [
+    "src/game_hosts_gunnery.cpp",
+    "src/game_hosts_units.cpp",
+    "src/dive_bomb_task.cpp",
+    "include/bsp/dive_bomb_task.hpp"
+  ],
+  "ghidra_mutated": true,
+  "new_native_body_reconstructed": false,
+  "original_abi": {
+    "0071ebf0": "ECX the command owner; no stacked argument; RET 0 at 0071ECC5, 0071ECD7 and 0071ECEB; body 0071EBF0-0071ECEB. Returns a pointer: the accepted slot's target field at this+1Ch*i+58h, or this+18Ch in mode 2, or the lazily built static at 00E19BB4.",
+    "009c40a0": "approach->vtable[0]. ECX approach; one stacked out-pointer; RET 4; body 009C40A0-009C40B7, 22 bytes. Defined in Ghidra by tools/ghidra_define_function.py this packet; it took the reviewed ledger name dive_bomb_approach_aim_point_009c40a0."
+  },
+  "routines": [
+    {
+      "name": "GameGunneryHost::Impl::refresh_command_targets",
+      "range": "0071EBF0-0071ECEB",
+      "coverage": "partial: mode 2 (this+30h == 2 -> this+18Ch) and the static default at 00E19BB4 are read and not modelled; this host has neither. The slot array at +54h is modelled through GameCommandRow::slot_index rather than as an array.",
+      "note": "the accepting categories are 1 and 2 at 0071EC43/0071EC48, the walk is backward from the last occupied slot at 0071EC1F with the step at 0071EC4D/0071EC50"
+    },
+    {
+      "name": "dive_bomb_flyabove_span_009c65fd",
+      "range": "009C658D-009C65FD",
+      "containing_function": "009c62b0",
+      "coverage": "complete",
+      "note": "S = max(B, 100.0) * 0.7 + 200.0 and x = max(B - S, 0), B being 009C6493's height above the aim point. 009C65A9 is the byte 76, JBE."
+    },
+    {
+      "name": "dive_bomb_flyabove_leave_009c66e3",
+      "range": "009C66D5-009C66E7",
+      "containing_function": "009c62b0",
+      "coverage": "complete",
+      "note": "|bearing error| > InterpolateClamped(0, 20 deg at 00CE398C, +B4h * 0.8 - S, pi at 00D7A264, x). 009C66E1 is the byte 76, JBE."
+    }
+  ],
+  "calls": [
+    {
+      "address": "009c663e",
+      "native": "00419010",
+      "containing_function": "009c62b0",
+      "note": "the leave tolerance; its result is compared at 009C66DD and sets +1Ah at 009C66E3",
+      "host_method": "dive_bomb_flyabove_leave_009c66e3"
+    },
+    {
+      "address": "009c647b",
+      "native": "009c40a0",
+      "containing_function": "009c62b0",
+      "note": "the approach's aim-point getter; 009C647D takes its out[1] and 009C6493 stores B = aircraftY - out[1]",
+      "host_method": "dive_bomb_flyabove_span_009c65fd"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "refresh_command_targets resolved a unit's command target as the LAST current command row in the global vector whose target token names a unit",
+      "is": "0071EBF0's rule: walk the unit's own slot array backward from the last occupied entry and take the first whose vtable[+0Ch] answers 1 or 2, stepping over every other category; resolve only that row's token, and leave the unit with no target when it names nothing",
+      "evidence": "0071EC1F LEA ESI,[EAX-1]; 0071EC36-0071EC41 the vtable[+0Ch] call; 0071EC43 CMP EAX,1 and 0071EC48 CMP EAX,2 both JZ to 0071ECC6; 0071EC4D/0071EC50 the backward step; 0071EC57 the static at 00E19BB4. Measured: local/usn04_aim.log ends with approach+BCh at exactly 0.0 m, the d2 <= 1e-10 branch at 00CE3820."
+    },
+    {
+      "was": "flyabove +19h's second arm was substituted with a positive constant (1.0)",
+      "is": "it is max(B - S, 0), so the arm fires at B <= 666.7 m",
+      "evidence": "frame slot K=96's single writer 009C6493 with the cleanups recorded in the doc; 009C67AE is the byte 72, JC"
+    },
+    {
+      "was": "flyabove +1Ah was a stand-in, 'leave when out of bombs'",
+      "is": "|bearing error| against a tolerance opening from 20 degrees at span 0 to pi at approach+B4h * 0.8 - S",
+      "evidence": "009C66D5-009C66E7 with the InterpolateClamped arguments at 009C6603-009C6639"
+    }
+  ],
+  "blast_radius": {
+    "question": "were the torpedo stream's bombers exposed to the same re-resolution",
+    "answer": "not in these runs, and not for a reason the fix changes: USN04 builds no torpedo task at all - 'no ordered aircraft carries torpedo ordnance (kind 2Bh), so 0099A170 builds no kind Eh task'. The rule is per-unit and category-blind, so any unit with a category-1 or -2 row was exposed the moment a later row appeared.",
+    "counts_in_usn04_aim_log": {
+      "category_1_attackmove_rows": 48,
+      "category_2_divebomb_rows": 1,
+      "category_3_rows": {
+        "stop": 158,
+        "moveto": 30,
+        "cruise": 10
+      }
+    }
+  },
+  "runs": [],
+  "open": {
+    "0071EBF0 mode 2": "this+30h == 2 returns this+18Ch; this host has no such mode.",
+    "00E19BB4": "the lazily built static default; read, not modelled.",
+    "009C5D24-009C5D31 interpolant": "the band selection is bound (folded pose+C68h against the 60 degrees at 00D05AAC); the wide arm interpolates a SECOND bearing error drawn against the latched reference at approach+D8h/+E0h, and this host keeps one bearing."
+  },
+  "events": [
+    {
+      "endpoint": "disassemble_bytes",
+      "body": {
+        "start_address": "009c40a0",
+        "end_address": "009c40b6"
+      },
+      "result": {
+        "success": true,
+        "start_address": "009c40a0",
+        "end_address": "009c40b5",
+        "bytes_disassembled": 22,
+        "message": "Successfully disassembled 22 byte(s)"
+      }
+    },
+    {
+      "endpoint": "create_function",
+      "body": {
+        "address": "009c40a0",
+        "disassemble_first": false,
+        "name": "dive_bomb_approach_aim_point_009c40a0"
+      },
+      "result": {
+        "success": true,
+        "address": "009c40a0",
+        "function_name": "dive_bomb_approach_aim_point_009c40a0",
+        "entry_point": "009c40a0",
+        "body_size": 24,
+        "message": "Function created successfully at 009c40a0",
+        "warnings": [
+          "Function name 'dive_bomb_approach_aim_point_009c40a0' \u2014 main part 'dive_bomb_approach_aim_point_009c40a0' is not PascalCase. Expected: DiveBombApproachAimPoint009c40a0",
+          "Function name 'dive_bomb_approach_aim_point_009c40a0' \u2014 main part 'dive_bomb_approach_aim_point_009c40a0' contains underscores. Use PascalCase after the module prefix."
+        ]
+      }
+    },
+    {
+      "defined": "009c40a0",
+      "end": "009c40b6",
+      "name": "dive_bomb_approach_aim_point_009c40a0",
+      "after": "Function: dive_bomb_approach_aim_point_009c40a0 at 009c40a0\nSignature: undefined dive_bomb_approach_aim_point_009c40a0(void)\nEntry: 009c40a0\nBody: 009c40a0 - 009c40b7"
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "error": "Unable to lock due to active transaction"
+      }
+    },
+    {
+      "endpoint": "save_program",
+      "body": {},
+      "result": {
+        "success": true,
+        "program": "battlestationspacific.exe",
+        "message": "Program saved successfully"
+      }
+    }
+  ]
+}
