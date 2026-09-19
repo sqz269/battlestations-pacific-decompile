@@ -269,14 +269,19 @@ DiveBombAimDiveReleaseResult dive_bomb_aimdive_release_009c60f1(
 
 // 009C5AFD-009C5B48.
 bool dive_bomb_dive_abort_009c5b43(const DiveBombDiveAbortInputs& in) noexcept {
-    if (!(in.release_range_d4 + in.aim_point_height_50 > in.slant_range)) {
+    // 009C5AFD FLD [ESP+14h] is the height above the aim point, not a range;
+    // 009C5B0E/009C5B12 compare approach+D4h + approach+50h against it.
+    if (!(in.release_range_d4 + in.aim_point_height_50 > in.height_above_target_14)) {
         return false;  // 009C5B18
     }
     if (!(in.unit_attitude_c64 > dive_bomb_constant::kAbortRollFloor)) {
         return false;  // 009C5B2C
     }
+    // 009C5B2E FLD ST1 copies that same height, so the slope multiplies the
+    // height and 009C5B3C compares the sum against ST1, the [ESP+1Ch] range.
     const float bound =
-        in.slant_range * static_cast<float>(dive_bomb_constant::kAbortRangeSlope) +
+        in.height_above_target_14 *
+            static_cast<float>(dive_bomb_constant::kAbortRangeSlope) +
         static_cast<float>(dive_bomb_constant::kAbortRangeBias);
     return bound > in.aim_point_distance;  // 009C5B3E
 }

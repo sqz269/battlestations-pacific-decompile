@@ -1346,7 +1346,12 @@ struct GameUnitsHost::Impl {
         bsp::DiveBombDiveAbortInputs ab;
         ab.release_range_d4 = slot.db_release_range_d4;
         ab.aim_point_height_50 = slot.db_aim_point_height_50;
-        ab.slant_range = slot.db_planar_bc;
+        // CORRECTED: [ESP+14h] is the height above the aim point, the same
+        // quantity `e.height_above_target` above carries, not a second copy of
+        // the planar range. With the range here, 009C5B3E reduced to
+        // `0.3*range + 150 > range` and aborted the dive at any range under
+        // 214 m - which is where usn04_geo3.log lost it, at 204.1 m.
+        ab.height_above_target_14 = e.height_above_target;
         ab.aim_point_distance = slot.db_planar_bc;
         ab.unit_attitude_c64 = slot.plane_pitch_angle_c64;
         if (bsp::dive_bomb_dive_abort_009c5b43(ab)) {

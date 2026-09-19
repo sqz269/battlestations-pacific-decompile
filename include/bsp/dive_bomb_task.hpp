@@ -378,8 +378,20 @@ DiveBombAimDiveReleaseResult dive_bomb_aimdive_release_009c60f1(
 struct DiveBombDiveAbortInputs {
     float release_range_d4 = 0.0f;   // approach+D4h
     float aim_point_height_50 = 0.0f;     // approach+50h
-    float slant_range = 0.0f;        // [ESP+14h], the range the test compares
-    float aim_point_distance = 0.0f;  // [ESP+1Ch], the planar distance to +D8h/+E0h
+    // CORRECTION (packet cc8_dive_aim_error). This was `slant_range`, "the
+    // range the test compares", and the host fed it the planar range. [ESP+14h]
+    // is not a range: 009C59BA-009C59D6 writes it as `unit+100h - target.y`,
+    // and it is the SAME slot the aim error reads as its interpolation x
+    // (DiveBombAimErrorInputs::height_above_target, 009C59D6). Both places the
+    // abort uses it - 009C5B12 against approach+D4h + approach+50h, and
+    // 009C5B30's `* 0.3` - are therefore in metres of ALTITUDE above the aim
+    // point. Feeding a range made 009C5B3E read `0.3*range + 150 > range`,
+    // i.e. an abort at any range under 214 m whatever the altitude.
+    float height_above_target_14 = 0.0f;   // [ESP+14h]
+    // [ESP+1Ch] at 009C5B14, which is the FIRST sqrt (009C5A0B, over the
+    // aircraft-relative dx/dz at [ESP+34h]/[ESP+3Ch]), not the latched one -
+    // that is [ESP+5Ch], written by the second sqrt at 009C5A4D.
+    float aim_point_distance = 0.0f;
     float unit_attitude_c64 = 0.0f;  // pose+C64h, 009C5B1D
 };
 bool dive_bomb_dive_abort_009c5b43(const DiveBombDiveAbortInputs& in) noexcept;
