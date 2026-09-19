@@ -4071,3 +4071,319 @@ pointer correction are unaffected, as is `tuning+4D8h` as the speed-ratio diviso
 **So item 2's first candidate is open, not closed**, and the next reader should start at `ctl+398h`:
 who writes it, and whether a spawned Val's controller carries a different `Pilot/DiveBomb/BeginAltRange/1`
 from the scripted `movieval`'s.
+## Item 2 of `cc8_dive_entry`: `approach+B4h`/`+B8h` verified, and `classDesc+268h` named
+
+Packet `cc8_dive_entry`. The bullets in "Item 2, first half" flagged the `classDesc+268h` scale as
+transcribed but not verified. Both halves are now checked, and the transcription **stands**.
+
+### The register, filtered rather than glanced at
+
+The multiply that matters is `009C3F86 FMUL float ptr [EBP + 0x268]`, and the instruction three
+lines below it is `009C3F8C MOV EBP,[ESI+8]` - so a window opened at `009C3F6E` shows EBP being
+loaded with the class descriptor *after* the multiply that uses it, which is exactly the trap the
+"register provenance" rule is about. Filtering the **whole** constructor listing for EBP gives every
+write:
+
+```
+009c3eb6  PUSH EBP
+009c3f4a  MOV EBP,EAX          ; the 0042E740 tuning singleton
+009c3f5d  MOV EBP,[ESI + 0x8]  ; the plane class descriptor  <- dominates 009C3F86
+009c3f8c  MOV EBP,[ESI + 0x8]  ; reloaded, dominates 009C3FB5
+009c4090  POP EBP
+```
+
+`009C3F5D` is the only write between the tuning load and `009C3F86`, so **both** multiplies take
+`classDesc+268h`. The doc was right and the risk was real: with only `009C3F6E` onward in view the
+natural reading is `tuning+268h`.
+
+### `classDesc+268h` is TurnCircleRadius
+
+`include/bsp/plane_class_fields.hpp:174` already names `+268h` `kTurnCircleRadius`, recovered
+elsewhere in this repo from `007D2xxx`. So the two draws are multiples of the aircraft's own turn
+circle, which is what an attack-distance field should key on.
+
+### The constants, at the width of the loading instruction
+
+`00CE3D30` = 0.6, `00CE74F8` = 0.8, `00D06BB4` = 1.6, `00CF4848` = 1.8, all floats loaded by
+`FLD float ptr`. The push order is argument 2 first (`FSTP [ESP+4]`) then argument 1 (`FSTP [ESP]`),
+so the pairs are `uniform(0.6, 0.8)` and `uniform(1.6, 1.8)` as written.
+
+### This installation's authored rows
+
+`scripts/datatables/autoload/vehicleclasses.lua` (mtime 2026-05-09, the locally modified file):
+
+| class | row | `TurnCircleRadius` | `approach+B4h` = `uniform(0.6,0.8)*r` | `approach+B8h` = `uniform(1.6,1.8)*r` |
+| --- | --- | --- | --- | --- |
+| SBD Dauntless | `VehicleClass[108]`, line 46353 | 1300 (line 46667) | 780 - 1040 m | 2080 - 2340 m |
+| D3A Val | `VehicleClass[46]`, line 23399 | 1300 (line 23623) | 780 - 1040 m | 2080 - 2340 m |
+
+The `VehicleClass[46]` comment in this installation reads `-- Kamikaze D3A Val`; it is the row the
+brief names and the only D3A Val row quoted here.
+
+**A defect falls out, and it is NOT fixed in this packet.** `src/game_hosts_units.cpp` seeds *both*
+`db_in_range_b8` and `db_attack_dist_b4` from `kPilotDiveBombAttackDist` = 1100.0, labelled as
+`009C8A5E`'s floor. Against the authored rows that is wrong twice over: the two fields are not the
+same quantity in the image (`+B4h` is about 0.44 of `+B8h`), and `+B8h`'s own floor
+`max(draw, AttackDist * task+41Ch)` would take the **draw**, 2080 m at the low end of the convention,
+not the 1100 m floor. `+B8h` is the range at which `009C7C31` latches and the aircraft leaves the
+run-in, so this host starts its flyabove at half the distance the authored rows ask for. Binding it
+needs `turn_circle_radius` plumbed from the plane class row into the slot, which is another hunk of
+`src/game_hosts_units.cpp`; it is recorded here with its numbers rather than changed under this
+lease.
+
+## Item 1: the flyabove commands an altitude, this host commanded none, and the entry height is the spawn height
+
+Packet `cc8_dive_entry`. Addresses `009C6E10`-`009C6F91`, `009C84FB`-`009C8515`, `009C67A7`-`009C680E`.
+
+### What decides the hand-over, confirmed at the transition rule
+
+`009C83E0`'s flyabove arm, read from the listing rather than from the state table:
+
+```
+009c84fb  CMP byte ptr [ESI + 0x791],0 ; the flyabove's +19h, the roll-in flag
+009c8502  JZ  0x009c85e8               ; not ready -> stay (or +792h -> goaway)
+009c8508  CMP byte ptr [ESI + 0x790],0 ; the flyabove's +18h, the can-dive flag
+009c850f  JZ  0x009c85d4               ; -> aimglide
+009c8515  ...                          ; otherwise -> +79Ch, the turndown
+```
+
+So **`+19h` decides *when* the flyabove ends and `+18h` decides *what it ends into*.** Both key on
+`B`, the height above the aim point that `009C6493` writes:
+
+* `+19h` (`009C67A7` `77` JA, `009C67AE` `72` JC) is `|bearing error| > 1.6` **OR** `x <= 0`, and
+  `x <= 0` is `B <= 666.7 m` on this installation.
+* `+18h` (`009C67F6` `76` JBE, stored at `009C680E`) is `B > approach+D4h` = **675.0 m**.
+
+The two height arms are within 8 m of each other and point opposite ways, so **the only route from
+the flyabove into the dive is the bearing arm**: the aircraft has to still be above 675 m at the
+moment the target passes 91.7 degrees off its nose. Where it is when that happens is the whole
+question, and it is why this packet is about the altitude and not about the gates.
+
+### The altitude arm the host did not have
+
+`009C62B0` never calls `009FBA50` - a call census over the whole body `009C62B0`-`009C7083` finds
+`00419010` x8, `00438AA0` x3, `00438B10` x3, `00414DB0` x2, `00BF701A` x2, and one each of
+`0042E740`, `007C4810`, `007F0280`, `0099B630`, `009FA2E0`, `009FABE0`, `009FB800`, `00BF7030`. It
+calls `009FB800` **directly**, at `009C6F7D`, and builds both arguments itself. The walk, with every
+jump sense from the branch byte (`009C657C` `76`, `009C6E26` `76`, `009C6E5B` `76`, `009C6E91` `76`,
+`009C6EAF` `76`, `009C6EC3` `76`, `009C6EF5` `77`, `009C6F15` `76`, `009C6F21` `76`, `009C6F51` `76`):
+
+```
+C      = approach+0Ch ? ctl+398h : approach+ACh + approach+50h     009C64A8 / 009C64B2
+R      = (approach+14h)->+40h * approach+A8h                       009C655F-009C6568
+C     := R   when   C > 1.1 * R                                    009C657C
+base   = approach+ACh + approach+50h                               009C6E48-009C6E51
+err    = B - min(approach+ACh, C)                                  009C6E1C-009C6E44
+target = min(base, C)                                              009C6E55-009C6E71   -> 009FB800 arg1
+band   = min(0.15 * C, approach+B0h)                               009C6E77-009C6EA1
+A      = the planar distance to the aim point                      009C6379-009C63B1
+
+err <  0     -> 009FB800(target, min(3 * -err / max(A, 1), 1.0))
+err <= band  -> NO 009FB800: cmd+2BCh = 0.0 with cmd+2D0h = 2, a dead band
+otherwise    -> 009FB800(target, min(2 * A / max(A, 1), 0.8))
+```
+
+`R` is the same product `009C548A`/`009C548D` builds for the aimglide's release ceiling -
+`DiveBombNewReleaseMul * DiveBombReleaseAlt` - which this installation's `robots.lua` SPNormal row
+authors at `0.6` (line 569) and `{350, 450}` (line 568), so with the pinned low end **R = 210.0 m**.
+Any cruise altitude over 231 m is therefore clamped to 210, and the flyabove's target altitude is
+`min(1000 + aimY, 210) = 210 m`: **the state flies the aircraft down toward the glide release
+altitude while it runs in over the target.** On the dive arm `A` is a planar range in metres and is
+never under 1, so `2 * A / A` is exactly 2 and the 0.8 cap at `00CE74F8` takes it; the reference is
+0.8 at every geometry this mission produces.
+
+`approach+ACh` is not the constructor's `tuning+4CCh` at run time: `009C7AA4`-`009C7AAD` rewrites it
+from `[approach+0Ch]+398h` on **every** approach update, so the two arms of `C` are the same ordered
+cruise altitude and differ only by `approach+50h`. That reconciles "Item 2, first half" (the
+constructor seed is a global) with the handoff's "`approach+ACh` is `ctl+398h`" (the per-tick
+rewrite). Both are true, of different moments.
+
+**What this host had instead: nothing.** `run_dive_bomb_flyabove_tick_009c62b0` bound only the
+heading arm, so a dive bomber in the flyabove kept whatever `plan_state.pitch_target_2bc` the run-in
+had last written, for the whole state.
+
+### Measured, before: the dive-entry altitude is the SPAWN altitude, carried through
+
+`local\entry_before.log`, 4800-frame USN04 at `52418c86b` plus the per-hand-over census this packet
+adds. One line per aircraft, the altitude and range at every state change:
+
+| aircraft | spawn | attackrun -> flyabove | flyabove -> turndown | turndown -> aimdive | aimdive -> |
+| --- | --- | --- | --- | --- | --- |
+| `movieval` x3 | **700 m**, 11088 m out | 729 m @ 1093 m | 730 m @ 4 m | 651 m @ 468 m | done, 181 m |
+| `D3A Val #1.1` x3 | **1500 m**, 8203 m out | 1126 m @ 1095 m | 1102 m @ 3 m | 1024 m @ 473 m | aimglide, 503 m |
+| `D3A Val #3.1` x3 | **1500 m**, 8199 m out | 1146 m @ 1096 m | flyabove/goaway chatter | 995 m | aimglide |
+| `D3A Val #5.1` x3 | **1500 m**, 8203 m out | 1126 m @ 1095 m | mission ends in the flyabove | - | - |
+
+Three things fall out of that table, and they answer the packet's question.
+
+1. **The entry altitude is the spawn altitude.** `SpawnNew` places every `D3A Val` at `refPos`
+   y = **1500.0** (the four `0094C480` lines in the log), and the scripted `movieval` starts at
+   **700**. The 374 m difference at aimdive entry - 1024.3 against 650.9 - is what is left of an
+   800 m difference at spawn after the run-in has bled some of it off. Nothing in the task sets it.
+2. **Candidate (a) is refuted.** The Vals are not spawned close: they start **8.2 km** from their
+   target and fly a 1257-tick run-in. They are spawned *high*, not near.
+3. **Candidate (b) is confirmed, and it is the whole flyabove.** Across the flyabove the altitude
+   moves by **+1 m** (`movieval`, 158 ticks) and **-24 m** (`#1.1`, 142 ticks). The `cmd` column -
+   `plane_commanded_altitude` - is frozen at the run-in's last value for the entire state, because
+   nothing writes it. The state whose job is to put the aircraft over its target at a dive height
+   does not touch the altitude at all.
+
+A fourth, recorded because it bounds what the run-in can do: both classes are commanded 1450 m (the
+`Dynamics/Ceiling - 50` clamp) through most of the run-in and neither reaches it. `movieval` climbs
+29 m in 1527 ticks. The cause is named in the next section, and it is **not** the authored data.
+
+## Correction: the aimglide's re-arm timer is never counted down, so gate 1 refuses every call
+
+Packet `cc8_dive_entry`. This withdraws the gate table in "The aimglide release, walked with frame
+bases" **as a description of `main`**. That table - `blocked[rearm=0 bearing=523 ceiling=107
+lateral=0 lead_hi=0 lead_lo=0]` for `D3A Val #1.1` - was measured in the glide packet's own tree. On
+`52418c86b`, `local\entry_before.log` measures the same aircraft at
+
+```
+calls=630 blocked[rearm=629 bearing=0 ceiling=1 lateral=0 lead_hi=0 lead_lo=0] passed=0
+throw=748.8 m range=201.4 m travel=5.00 bearing err min=0.0008 rad
+```
+
+The geometry is identical to the digit; only the gate that stops the chain has moved. `#3.1` is the
+same shape: `calls=802 blocked[rearm=801 bearing=0 ceiling=1 ...]`.
+
+**The cause is in the host, and the listing settles it.** `009C5180` counts `state+1Ch` down by its
+own `dt` at the very top of every aimglide tick, exactly as `009C58E9` does for the aimdive:
+
+```
+009c5188  MOVSS  XMM0,dword ptr [ESI + 0x1c]
+009c518d  COMISS XMM0,dword ptr [0x00d7a218]   ; 0.0f
+009c519b  JC     0x009c51a8                    ; byte 72: below zero -> do not decrement
+009c519d  FLD    float ptr [ESP + 0x28]
+009c51a1  FSUB   float ptr [ESP + 0x6c]        ; the dt argument
+009c51a5  FSTP   float ptr [ESI + 0x1c]
+```
+
+This host decremented `db_aim_rearm_1c` only in `dive_bomb_aimdive_inputs`, which
+`src/dive_bomb_task.cpp` calls only while the state is `kAimDive`. The aimglide's own enter clears
+the timer to 0.0 (`009C4F0C`/`009C4F10`), and nothing then moves it, so `009C5689`'s `state+1Ch < 0`
+is false forever and the release chain never reaches the bearing gate. `read_aimglide_inputs` was
+already being handed the `dt` and discarding it.
+
+Fixed by passing that `dt` through and applying the same `if (timer >= 0) timer -= dt` the aimdive
+uses. The gate table above should be re-measured after this, not quoted.
+
+## Retraction: `class+1ECh` is not an authored row, and the dive-bomb path is what zeroes it
+
+Packet `cc8_dive_entry`, prompted by the integrator against the torpedo stream's own census. **This
+withdraws the claim "`class+1ECh ClimbAngle` is zero on every shipped row, so an aircraft under this
+host's pilot can descend but cannot climb"**, which this packet's first commit message carries. It
+is wrong twice over, and `include/bsp/plane_flight.hpp`'s comment `// class+1ECh, zero for every
+shipped row` is the source of the error.
+
+1. **`ClimbAngle` is not authored at all.** `"ClimbAngle"` occurs **zero** times in this
+   installation's `scripts/datatables/autoload/vehicleclasses.lua`. The field is **computed** at
+   class load: `007C4BC5`-`007C4C14` probes `007D98F0` at `tuning+24Ch LevelFlight * desc+184h
+   StallSpd` and `007C4C0E` scales the answer by the double 0.6 at `00CEFF98` into `desc+1ECh`.
+   `src/game_hosts_units.cpp` already models exactly that (`plane_climb_angle_1e4` then
+   `_1ec = _1e4 * 0.6`), so the value is live for every plane class, dive bombers included.
+2. **The zero is this host's dive-bomb binding, not the data.** `pin.class_climb_angle` is fed
+   `slot.plane_climb_angle_1ec` on the torpedo and general plane paths and a literal `0.0f` on the
+   dive-bomb attack-run path. That is why the torpedo stream's census prints
+   `climb_1ec=0.1854` for a `B5N Kate` - `local\entry_before.log` prints the same 0.1854 in this
+   packet's own run - while a dive bomber commanded 1450 m holds its altitude.
+
+So the correct statement is: **the dive-bomb run-in cannot climb because its own binding passes a
+zero climb gain to `009FB800`**, and the fix is one field, not a data problem. It is named here and
+**not** changed alongside the altitude arm: restoring it lets the run-in climb toward the 1450 m
+ceiling clamp, which moves the dive-entry altitude the other way and needs its own before/after.
+
+## Candidate 3 settled: `ctl+398h` is per unit, but every unit draws it from one process-wide row
+
+Packet `cc8_dive_entry`, raised by the integrator after the `approach+ACh` retraction (`294f5a9de`).
+The retraction is right that `approach+ACh` is rewritten per tick from `[approach+0Ch]+398h`
+(`009C7AA4`-`009C7AAD`) and is therefore a **per-unit** field, so the question "can a spawned `D3A
+Val`'s controller carry a different `BeginAltRange` from the scripted `movieval`'s" is a real one.
+It is answered **no**, and the answer is in the writer.
+
+An exhaustive store census over the whole image for offset `0x398` - `tools/store_census.py 0x398`,
+which covers disp8 and disp32 and the `MOV`/`MOVSS`/`FST`/`FSTP` forms - returns 40 sites. Exactly
+one of them is on this path: `009C89CE` inside `009C8920 BSP_BotTaskDiveBomb_UpdateCruiseProfile`
+(`00939E83` in `BSP_UnitController_ConstructVariantB` is the block's own constructor default).
+
+```
+009c8977  CALL 0042e740              ; the tuning singleton -> EBP (009C8996 MOV EBP,EAX)
+009c897c  FLD  float ptr [00CE5380]  ; 15.0   -> argument 2 at [ESP+4]
+009c8982  MOV  EDI,[ESI + 0x404]     ; the pilot control block
+009c8994  FLDZ                       ; 0.0    -> argument 1 at [ESP]
+009c899b  CALL 00BD2F10              ; uniform(0.0, 15.0)
+009c89a0  FADD float ptr [EBP+0x4CC] ; + tuning+4CCh, Pilot/DiveBomb/BeginAltRange/1
+009c89ce  MOVSS [EDI + 0x398],XMM0
+009c89d6  MOV  byte ptr [EDI+0x3AD],1
+```
+
+So **`ctl+398h` = `BeginAltRange/1` plus a uniform 0-15 m jitter**, and `0042E740` takes no argument:
+there is one tuning record in the process. The field is per unit, as the retraction says, but its
+*source* is process-wide and its *spread* is 15 m. It cannot produce the 374 m difference in dive
+entry, let alone the 800 m difference at spawn, and it does not differ between a scripted unit and a
+`SpawnNew` one - `009C8920` is the dive-bomb task's own cruise update and runs for both.
+
+This host pins `approach+ACh` at `BeginAltRange/1` = 1000.0, which is the low end of what the draw
+can produce, consistent with the convention for `approach+A8h`. The gap to the image is at most 15 m.
+
+**Candidate 3 is therefore refuted, and the measured answer in the section above stands unchanged:
+the dive-entry altitude is the spawn altitude.** Three candidates have now been tested against the
+listing and the run - an authored per-class altitude (no such field), a `PilotBotParameters` row (the
+row index is unmodelled and the altitude is not in it), and the per-unit ordered cruise altitude
+(one process-wide row plus 15 m) - and what is left is where the aircraft is put and what the task
+does about it, which is nothing.
+
+### Measured, after: the arm works exactly as transcribed, and it removes the dive
+
+`local\entry_after.log`, the same binary as `local\entry_before.log` apart from binding
+`009C6E10`-`009C6F91`. The census the arm prints is the transcription checking itself:
+
+```
+movieval      flyabove altitude 009C6E10: calls=34  level_arm=0 | C=210.0 band=31.5
+              target=210.0 ref=0.800 | err first=519.5 last=458.5 | pitch=-0.419 rad
+D3A Val #1.1  flyabove altitude 009C6E10: calls=113 level_arm=0 | C=210.0 band=31.5
+              target=210.0 ref=0.800 | err first=916.1 last=460.8 | pitch=-0.419 rad
+```
+
+`C` clamps to 210.0 as read, the dead band is `min(0.15 * 210, 200)` = 31.5 and is never entered,
+the reference is the predicted flat 0.8, and `009FB800` returns `-min(DropAngle * 0.8, ...)` =
+**-0.419 rad**, a 24-degree descent. The aircraft follow it: the commanded altitude stops being
+frozen (`cmd` 1000 -> **210**) and the hand-overs move.
+
+| aircraft | attackrun -> flyabove | flyabove -> ... | before |
+| --- | --- | --- | --- |
+| `movieval` | 729 m @ 1093 m | **aimglide** at 665 m @ 849 m, 34 ticks | turndown at 730 m @ 4 m |
+| `D3A Val #1.1` | 1126 m @ 1095 m | **aimglide** at 666 m @ 14 m, 113 ticks | turndown at 1102 m @ 3 m |
+
+`#1.1` loses **460 m** in 113 ticks, which is the commanded 24 degrees at its own speed. So the arm
+is bound correctly and it does what the listing says.
+
+**And that removes the wingover dive entirely.** Both aircraft now cross `B = 666.7 m` - the
+`x <= 0` arm of `+19h` - *before* the bearing arm fires, so the flyabove ends on the height arm with
+`+18h` (`B > 675`) necessarily false, and `009C850F` routes every dive bomber to the **aimglide**.
+`movieval` goes from `states[done=303 aimdive=53 flyabove=158 turndown=71 attackrun=1527]
+releases=2 bombs_spawned=2` to `states[aimglide=809 flyabove=34 attackrun=1527] releases=0
+bombs_spawned=0`, and the mission's bomb drops go 6 -> **0**. `#1.1` likewise never reaches the
+turndown.
+
+**That is a regression against the brief's guard, and it is reported as one rather than tuned away.**
+Three things are established by it, and none of them is "the transcription is wrong":
+
+* The altitude arm runs on **every** flyabove tick. No branch in `009C62B0`-`009C7083` reaches the
+  epilogue before the arm: the only jumps to the two `RET 4` sites are `009C702B`'s, which is past
+  `009C6F7D`.
+* `movieval` enters the flyabove only **54 m** above the 666.7 m leave threshold, so at the
+  commanded 24 degrees it crosses in about two seconds with 849 m still to run. **An aircraft
+  entering the flyabove below roughly 700 m cannot reach the turndown once the altitude arm is
+  bound**, whatever its bearing does.
+* The dive-versus-glide choice is therefore a **race between the two `+19h` arms**: bearing first
+  means the wingover, height first means the glide. Nothing in the flyabove favours the bearing arm
+  at this host's geometry.
+
+**What is NOT established**, and must not be read into this: that the image's dive bombers glide.
+The race depends on `approach+B8h` (where the flyabove starts, which this host holds at 1100 m
+against the authored 2080-2340 m), on the ordered cruise altitude, and on how fast the real flight
+model follows a 24-degree demand. Two of those three are substitutions in this host. What the run
+does establish is that binding this arm **alone** is not an improvement, because the aimglide it
+hands every aircraft to cannot release at all - `blocked[rearm=809 ...] passed=0` for `movieval`,
+`779` for `#1.1` - which is the re-arm timer defect recorded in the section above.
