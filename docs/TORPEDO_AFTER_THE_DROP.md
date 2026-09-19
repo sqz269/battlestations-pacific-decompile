@@ -380,3 +380,138 @@ being done hurriedly inside this one. Binding `009D0F10` with a substituted bear
 heading that is not the image's, and the run would report a climb-away flying somewhere the native
 never goes - the same failure `agent/cc8-dive-bomb` hit from a modelled-from-one-condition predicate,
 reached by a different road.
+
+## 4. The goaway is bound, and three of the five bombers now live
+
+Packet `cc8_flyto_solver_and_goaway`. `009FD570` is read whole in `docs/TORPEDO_FLY_TO_SOLVER.md`,
+which also retracts section 3.5's reading of `approach->vtable[0]`'s arguments. With the solver in
+hand, `009D0C10`, the enter tail `009D0E3A`-`009D0F04` and `009D0F10` are reconstructed
+(`include/bsp/torpedo_goaway_tick.hpp`, `src/torpedo_goaway_tick.cpp`) and bound in
+`src/game_hosts_units.cpp`'s state switch, which until now fell through `kGoAway` entirely.
+
+**The mode words the planner gates need.** `009FB800`'s chain writes `cmd+2BCh` and `cmd+2D0h = 2`,
+and `cmd+2D0h` non-zero is what lets `0099E3BF` run the pitch arm at all; the binding publishes both.
+`cmd+2CCh` is 2 on the two arms that command a heading and 1 on the two that do not, and mode 1 is
+what lets the task's own `cmd+2C4h` roll through `0099E2xx`. The tick writes `cmd+278h = 1.0`,
+`cmd+27Ch = 1`, `cmd+2A8h = 0.0`, `cmd+2ACh = 1` and `cmd+2D8h = 0` on every arm.
+
+**One reading of the enter tail is worth stating on its own**: `009D0EBB`-`009D0EFB` computes
+`state+20h` as **`min(approach+78h + approach+74h + 30, 50)`**, a MINIMUM. The `JBE` at `009D0EE1`
+takes the computed value and falls through to the `50.0` at `00CEB4D4`, so the `high` test the tick
+runs is never above 50 m. On USN01 the band is 12.0 m, so `state+20h = 42.0`.
+
+### Run: `local/goaway_bound_usn01.log` against `local/aimclass_after_usn01.log`
+
+Same binary, same command (`--frames 3200 --press-start-frame 30 --menu-select USN01
+--mission-frames 3000 --mission-frame-seconds 0.05`), `query session` Active on the console.
+
+| aircraft | goaway ticks | arms: win/low, win/high, post/high, post/low | heading ticks | `+1Ch` | `+20h` | world y range in goaway | fate |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Mav1 | 465 | 0, 106, 0, 359 | 0 | 62.0 | 42.0 | 6.9 to 50.2 | killed 134.9 s by Dunlap |
+| Mav2 | 546 | 0, 170, 17, 359 | 17 | 62.0 | 42.0 | 8.1 to 56.3 | **alive, 450/450** |
+| Mav3 | 551 | 0, 170, 23, 358 | 23 | 62.0 | 42.0 | 8.1 to 57.7 | **alive, 450/450** |
+| Mav4 | 507 | 0, 150, 0, 357 | 0 | 62.0 | 42.0 | 9.4 to 49.7 | **alive, 175/450** |
+| Mav5 | 517 | 0, 162, 0, 355 | 0 | 62.0 | 42.0 | 9.2 to 47.7 | killed 129.7 s by SaltLakeCity |
+
+| quantity | before | after |
+| --- | --- | --- |
+| `deaths` / `kill_credits` | 5 / 5 | **2 / 2** |
+| hits taken by the flight | 111 | 59 |
+| damage taken | 2596.8 | 1501.9 |
+| post-drop world y | to the water at 69.6 m/s | bottoms at 6.9 to 9.4 m, climbs to 47.7 to 57.7 |
+| `goaway` enters | 1 | 82 |
+| `range_peak_in_goaway` | 382.2 | 701.0 |
+| `transitions` | 3 | 165 |
+| `run_time_009D1360` | 0 | 112 |
+
+So: **yes, the five aircraft climb away instead of touching the water, and three of the five survive
+the AA.** The climb is the post-window arm's `009FB800(state+1Ch, 1.0)` with `state+1Ch = 62.0` m -
+the 12 m release band plus the 50 m low end of `009D0E71`'s draw - and the aircraft level their
+wings (`cmd+2C4h = 0`, `cmd+2CCh = 1`) until they pass `state+20h = 42` m, at which point the
+manoeuvre window opens and they roll.
+
+**What the task does next, and it is not settled.** `releases=1` each, so every aircraft is out of
+ordnance after its drop. The goaway now opens the range past its 700 m break-off (`range_peak`
+701.0 against 382.2), so `009D3150` finally answers true and the arm cycles back through
+`attackrun` and `aim` - 82 goaway entries and 165 transitions where the unbound host had 1 and 3.
+`009D4030 BSP_BotTaskTorpedo_TransitionRule` decides that next state and this host's binding of it
+is **not** established to be the image's for a torpedo-less aircraft. Treat the churn as a finding
+about the transition rule, not as evidence about `009D0F10`: the tick's four arms are exercised
+465 to 551 times each and every one of them behaves as the listing says.
+
+### The two holes, and how far each one reached
+
+| hole | reach in this run |
+| --- | --- |
+| `PilotBotParameters` `TorpFlikFlakTime` (`row+10h`/`+14h`), not loaded by this host, so `state+28h`'s draw starts at 0 | the manoeuvre window opens on the first tick above `state+20h` instead of after the authored delay. `win_high` = 106 to 170 of 465 to 551 ticks |
+| `unit->vtable[34h]` = `007BBB70` copies out `unit+AC8h..AD0h`, whose identity is unproved (no literal-address writer in `.text`; the only two disp32 references, `007BBB74` and `007C1B85`, are reads). The host feeds its own world velocity | it moves the break-off BEARING only, and the bearing is published on **0 to 23 ticks of 465 to 551**. Three of the five aircraft never publish it at all |
+
+The second is why the binding is defensible at all: the substituted input reaches the commanded
+heading on 40 of 2586 goaway ticks across the flight, and the climb - the thing the run is testing -
+does not depend on it.
+
+## 5. The miss: the image does not lead, and the lead it computes is a dead field
+
+The question left open in section 2 was whether anything in the chain leads a moving target over the
+torpedo's 23-second run. Answer: **no**, and the proof is a census rather than a reading.
+
+**`009D1360`'s two outputs.** Full byte census over `.text`, `--limit 4000` on every scan so no list
+is truncated (the default cap is 20 matches, which is how this packet's first pass produced a false
+negative and had to redo every scan):
+
+| field | encoding scanned | every access in the `009C`/`009D` band |
+| --- | --- | --- |
+| `approach+A0h`, the fall lead | `D9 ?? A0 00 00 00`, `D8 ?? ..`, `F3 0F 10/11 ?? ..`, `8B ?? ..` | `009D04E9` store (Reset), `009D13B9` store (`009D1360`), `009D12D0` read - a one-instruction virtual getter `FLD [ECX+0A0h]; RET` - and `009D2044` read, which is the aim tick's release gate `range + 80 > +A0h` |
+| `approach+98h`, the run time | the same four forms | `009D14E7` store (`009D1360`), `009D3D12` read (the engagement estimate) |
+| `approach+F8h`, the engagement estimate | the same four forms, plus the `task+4F0h` alias `?? ?? F0 04 00 00` and the SIB forms | **three stores** at `009D3D2F`, `009D3D52`, `009D3D65`, all inside `009D3420`, and **no read anywhere in the image** |
+
+Positive controls for every negative: `D9 ?? F8 00 00 00` occurs 20 times in `.text`,
+`F3 0F 10 ?? F8 00 00 00` 18 times, `D9 ?? F0 04 00 00` 9 times, `F3 0F 10 ?? F0 04 00 00` once,
+`D8 ?? F0 04 00 00` twice, `D9 ?? ?? F8 00 00 00` 23 times and `F3 0F 10 ?? ?? F8 00 00 00` 4 times
+- none of them in the bot-task band. The encodings the compiler would use exist; they are simply not
+used on this field.
+
+**So `approach+F8h` is a write-only field.** The run time `+98h` reaches it and stops there. The fall
+lead `+A0h` reaches the release **gate** and a getter, never a heading. Neither term can move
+`approach+94h`, the commanded bearing.
+
+**And the host's commanded heading is the bare bearing, measured.** From
+`local/goaway_bound_usn01.log`'s aim census, at every tick and for every aircraft,
+`cmd_2C0 == bearing_94 - 2pi` exactly, with `scan 009D37AE: turn_5c=0.0000 rad`:
+
+| aircraft | aim tick | `cmd_2C0` | `bearing_94` | `bearing_94 - 2pi` | `yaw_C6C` | `range_90` |
+| --- | --- | --- | --- | --- | --- | --- |
+| Mav3 | 201 (the last census before its drop) | -1.8507 | 4.4325 | -1.85069 | -1.8683 | 698.6 |
+| Mav2 | 201 | -1.8819 | 4.4012 | -1.88199 | -1.9010 | 695.3 |
+| Mav3 | 251 | -1.8170 | 4.4662 | -1.81699 | -1.8424 | 398.2 |
+| Mav1 | 251 | -1.8063 | 4.4769 | -1.80629 | -1.8254 | 458.8 |
+
+`bearing_94` is the bearing to `approach+ACh`/`+B0h`, and `src/torpedo_approach_update.cpp` sets
+that pair from `approach->vtable[0]()`, for which this host substitutes the ordered target's
+**present** world position. So the host aims exactly at where the ship is, with zero lead and zero
+sector offset.
+
+**How big the resulting miss has to be.** The three escorts are under way for the whole mission:
+`ship ai step 3000` has Northampton at `throttle 0.841`, Dunlap `0.811` and SaltLakeCity `0.795`
+against a `reference_speed` of 16.72 m/s, and Northampton's own distance-to-waypoint closes from
+12046.18 m at step 90 to 10059.83 m at step 3000, which is 1986 m in 145.5 s = **13.7 m/s**. A
+torpedo released at about 700 m and swimming 30.9 m/s runs for **22.7 s**, in which the target moves
+**about 311 m** - against a 180.0 m hull (`Northampton`'s class-row Length). Aimed at the present
+position it cannot hit unless the approach is nearly bow-on or stern-on.
+
+**The one door left open.** Everything above says the image does not lead *through `009D1360`*. It
+does not say the image never leads: `approach->vtable[0]()` could itself return a lead point rather
+than the target's position, and its body is unread - it is reached only indirectly, through
+`MOV EDX,[EAX] / CALL EDX` at `009D3517`, `009D36E4` and `009D3DC8`, so `BotApproachTorpedo`'s
+vtable has to be found from its constructor before the slot can be disassembled. **That is the next
+packet**, and it is the last place a lead could hide.
+
+### Not measured, and why
+
+Per-torpedo closest approach to the target's hull and its time is **not** in this report. The swim
+is stepped in `src/game_hosts_gunnery.cpp`, which is leased to `agent/cc8-ai-squadron` for packet
+`cc8_ai_target_choice_classes`; instrumenting it needs that lease and its own mission-length run.
+The log records the drops (`drop 1 by Mav3 at 12 m, speed 73.5 m/s, swim 30.9 m/s`, five of five,
+`water_entry_breakups=0`) and the damage ledger (`attributions=59`, all of them gun rounds: side
+1's own `dealt` column sums to 326 against SaltLakeCity's 327 `taken`), so **zero torpedo damage**
+stands, but the closest-approach number itself is still owed.
