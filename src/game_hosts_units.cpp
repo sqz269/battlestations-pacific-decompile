@@ -74,6 +74,7 @@
 #include "bsp/unit_rudder.hpp"
 #include "bsp/unit_rudder_curve.hpp"
 #include "bsp/unit_state_message.hpp"
+#include "bsp/approach_target_ref.hpp"
 #include "bsp/vehicle_class.hpp"
 #include "bsp/world_ocean.hpp"
 #include "bsp/world_construct.hpp"
@@ -379,6 +380,14 @@ struct GameUnitSlot {
     // through vtable slot 0 (00D20E10 -> 009C40A0, which copies +4Ch/+50h/+54h),
     // the near point is the unit, and 0042B2F0 takes the full three-vector
     // length. docs/BOMBER_AFTER_TASK.md 10.10, docs/DIVE_BOMB_APPROACH.md 7.
+    // Packet cc8_hull_aim_point. The target-reference sub-object every attack
+    // approach embeds (approach+30h dive bomb, approach+B4h torpedo), bound in
+    // include/bsp/approach_target_ref.hpp. One per ordered target: the body
+    // frame offset is drawn once, because slot +104h is 0042BB20 on every class
+    // that samples a hull and so never refuses the point it already has.
+    bsp::ApproachTargetRefState hull_aim_ref{};
+    std::size_t hull_aim_target_plus_one{0};
+    std::uint32_t hull_aim_seed{0};
     float db_aim_point_3d{0.0f};
     float db_bearing_c0{0.0f};       // approach+C0h
     float db_aim_point_height_50{0.0f};   // approach+50h
@@ -1015,6 +1024,60 @@ struct GameUnitSlot {
     float standing_rudder{0.0f};
 };
 
+// ---------------------------------------------------------------------------
+// Packet cc8_hull_aim_point: the aim point both attack tasks steer to.
+// ---------------------------------------------------------------------------
+// Until this packet both tasks aimed at the target's ORIGIN. The image does
+// not: 009FADA0 stores target_world_matrix(target+CCh) x body_frame_offset to
+// the sub-object's +1Ch, and for a ship that offset is a point drawn inside the
+// authored hull box by 00816650 (docs/HULL_AIM_POINT.md).
+//
+// A monotonic counter gives each newly ordered (attacker, target) pair its own
+// draw, the way each approach sub-object gets its own in the image. It is
+// deterministic because the order in which targets are assigned is.
+std::uint32_t g_hull_aim_pick_counter = 0;
+
+// 00816650 is reached only through the nine unit vtables that carry it; the
+// plane, land-vehicle and land-fort classes carry 0042D810, the origin. The
+// kind ids are 00964790's, in include/bsp/vehicle_class.hpp.
+bool hull_aim_target_samples_hull(const GameUnitSlot& target) {
+    return target.class_id == bsp::kVehicleClassIsShipKind;
+}
+
+// The world aim point for `shooter` against `target`. Returns false when the
+// target supplies no hull, in which case the caller keeps the origin it had.
+bool hull_aim_world_point(GameUnitSlot& shooter, const GameUnitSlot& target,
+                          std::size_t target_plus_one, float out[3]) {
+    if (shooter.hull_aim_target_plus_one != target_plus_one) {
+        // A new ordered target means a new sub-object: 009FB200.
+        shooter.hull_aim_ref =
+            bsp::approach_target_ref_construct_009fb200(0.0f);
+        shooter.hull_aim_target_plus_one = target_plus_one;
+        shooter.hull_aim_seed = ++g_hull_aim_pick_counter;
+    }
+    bsp::ApproachTargetRefState& st = shooter.hull_aim_ref;
+    const bool samples = hull_aim_target_samples_hull(target);
+    if (st.dirty_41) {
+        // 009FAEB0-009FAEB8, the dirty byte the constructor set at 009FB272.
+        bsp::LeadAimHullExtents hull;
+        hull.length = target.motion_class.hull_length;  // class+A0h `Length`
+        hull.width = target.class_width_00a4;           // class+A4h `Width`
+        hull.height = target.motion_class.hull_height;  // class+A8h `Height`
+        const std::array<float, 4> unit =
+            bsp::approach_target_ref_unit_draws_substitute(shooter.hull_aim_seed);
+        const bsp::ShipLeadRandomDraws draws =
+            bsp::approach_target_ref_draws_from_unit(unit, st.spread_48);
+        bsp::approach_target_ref_pick_009fa260(st, hull, draws, samples);
+    }
+    if (!samples) return false;
+    // 009FAED0-009FAF00.
+    bsp::approach_target_ref_store_world_point_009faeea(st, target.world);
+    out[0] = st.world_point_1c[0];
+    out[1] = st.world_point_1c[1];
+    out[2] = st.world_point_1c[2];
+    return true;
+}
+
 struct GameUnitsHost::Impl {
     Impl(GameHostLog& log_in, GameMissionLuaHost& lua_in)
         : log(log_in), lua(lua_in), commands(log_in) {}
@@ -1355,7 +1418,15 @@ struct GameUnitsHost::Impl {
         }
         const std::size_t ti = slot.command_target_plus_one - 1;
         if (ti >= slots.size()) { slot.db_in_range_d0 = false; return; }
-        const float* const tp = slots[ti]->motion.position;
+        // Packet cc8_hull_aim_point. This was the target's ORIGIN; 009FADA0 on
+        // approach+30h stores the hull point instead. On a target whose vtable
+        // slot +100h is 0042D810 the helper leaves the origin in place, which
+        // is what that class does.
+        float tp_hull[3] = {slots[ti]->motion.position[0],
+                            slots[ti]->motion.position[1],
+                            slots[ti]->motion.position[2]};
+        hull_aim_world_point(slot, *slots[ti], ti + 1, tp_hull);
+        const float* const tp = tp_hull;
         // 009C7B4F-009C7B80: the planar distance, components 0 and 2 only.
         const double dx = static_cast<double>(tp[0]) -
                           static_cast<double>(slot.motion.position[0]);
@@ -4868,14 +4939,21 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             return true;
                         }
                         bool approach_target_point(float out_point[3]) override {
-                            // 009D3517, approach->vtable[0]. The torpedo class's
-                            // slot 0 body is a contract; the ordered target's
-                            // world position stands in for it.
+                            // 009D3517, approach->vtable[0]. Packet
+                            // cc8_hull_aim_point: that getter returns the
+                            // target-reference sub-object's +1Ch, which
+                            // 009FADA0 fills at approach+B4h (B4h + 1Ch = D0h,
+                            // the long-unfound approach+D0h writer). It is the
+                            // hull point, not the target's origin, and there is
+                            // no lead term in it.
                             const GameUnitSlot* const t = target();
                             if (t == nullptr) return false;
                             out_point[0] = t->motion.position[0];
                             out_point[1] = t->motion.position[1];
                             out_point[2] = t->motion.position[2];
+                            hull_aim_world_point(slot_, *t,
+                                                 slot_.command_target_plus_one,
+                                                 out_point);
                             return true;
                         }
                         float terrain_height_0041bc20(float x, float z) override {
