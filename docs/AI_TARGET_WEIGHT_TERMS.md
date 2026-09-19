@@ -248,6 +248,44 @@ kept.
 
 
 
+## The one input left, `009FE270`
+
+`BSP_Ai_BarrelAccuracyForKind`, `__fastcall(ECX, EDX, one stack argument) -> float in ST0`,
+`RET 4`, body `009FE270`-`009FE6C3`. The accuracy `00A08460` multiplies into its barrel damage at
+`00A094E6`, and the only model input this process has no producer for.
+
+It is a seventeen-way dispatch. `009FE277` calls the stack argument's `vtable[+1Ch]` first;
+`009FE27F` takes the selector from the **second argument's `+8h`**, `009FE288` subtracts `2` and
+`009FE28E` rejects anything above `10h`, so the live range is `2`..`12h`. `009FE294` indexes a byte
+table and `009FE29B` jumps through a dword table:
+
+```
+009fe6ec  00 00 09 01 01 01 09 02 03 04 09 05 09 06 07 05 08
+009fe6c4  009FE2A2 009FE313 009FE384 009FE3F5 009FE44A
+          009FE64A 009FE465 009FE480 009FE4F1 009FE6BB
+```
+
+| Selector | Byte | Handler |
+| --- | --- | --- |
+| `2`, `3` | `0` | `009FE2A2` |
+| `5`, `6`, `7` | `1` | `009FE313` |
+| `9` | `2` | `009FE384` |
+| `0Ah` | `3` | `009FE3F5` |
+| `0Bh` | `4` | `009FE44A` |
+| `0Dh`, `11h` | `5` | `009FE64A` |
+| `0Fh` | `6` | `009FE465` |
+| `10h` | `7` | `009FE480` |
+| `12h` | `8` | `009FE4F1` |
+| `4`, `8`, `0Ch`, `0Eh` | `9` | `009FE6BB`, the reject arm |
+
+Each live arm reads one float out of the `00A371A0` tuning record, gated by the first argument's
+`vtable[+18h]` type queries: `009FE2A2` answers `[00A371A0()+110h]` when `vtable[+18h](0Fh)` holds
+and otherwise falls to a `PUSH 6` query.
+
+`coverage: partial` — the dispatch is complete, the nine handler bodies are not read. Reading them
+is what would let the publisher mark a row complete and turn the model on, so it is the next
+packet's obvious first move.
+
 ## Validation
 
 **Blocked, not measured.** The remote-desktop session the agents run in is disconnected, so the
@@ -271,3 +309,226 @@ count. Expected, on the three missions as they stand:
 The behavioural movement `docs/AI_TARGET_WEIGHT.md` predicts for IJN01 is that packet's, not this
 one's: this packet corrects a magnitude and lays the route for the base term without changing which
 candidate wins.
+
+## Correction: `009FE270` traced to its producer (packet `cc8_ai_target_weight_census`, 2026-09-18)
+
+**The premise that a gun or barrel record stores an accuracy is wrong, and the section above is
+corrected on two points.** There is no accuracy field on any weapon record. `009FE270` is a pure
+lookup into the AI mode tuning record, and the value is authored in Lua.
+
+### Two corrections to the section above
+
+1. "Each live arm reads one float out of the `00A371A0` tuning record gated by **the first
+   argument's** `vtable[+18h]` type queries" is wrong. `009FE273 MOV ESI,[ESP+10h]` takes the
+   **stack argument** after the three pushes, and every vtable call in the routine is on `ESI`:
+   `009FE277`/`009FE27C`/`009FE286` is `stack->vtable[+1Ch]()`, and each arm's `009FE2A4`-style
+   `MOV EAX,[EDX+18h]` with `MOV ECX,ESI` is `stack->vtable[+18h](classId)`. The first argument
+   (`ECX`, kept in `EBP` at `009FE282`) is never dereferenced in the dispatch. The selector from
+   the second argument's `+8h` at `009FE27F` was read correctly.
+2. The arm count is right but the reading "nine handler bodies" understated one: **arm 8 serves two
+   bullet types**, so nine live arms cover ten.
+
+### The producer
+
+`00A094E6` calls it as `009FE270(ECX = EBP, EDX = [ESP+5Ch], stack = EDI)`, where `EDX` is the
+weapon record whose `+8h` is the bullet-type selector and `EDI` is the target. The arm then calls
+`00A371A0`, the per-mode AI tuning record (stride `23Ch`, selected by
+`009FFC80 BSP_Ai_EffectiveGameModeIndex`), and `FLD`s one float out of it. **The only writer of
+those floats is `00A335D0`**, the AI globals loader, which reads
+`Scripts\datatables\HighLvlAIGlobals.lua`'s `BulletTypeAccuracy` section into record offsets
+`110h`-`18Ch`. `src/ai_target_weights.cpp` already carries that field map. So the census of the
+field is not a struct-field census: the field is a tuning-table slot with exactly one producer, and
+`config/names` needs no new writer.
+
+The authored values, from this installation's `scripts/datatables/highlvlaiglobals.lua:72`, whose
+Hungarian comment reads "with a given bullet type, when we shoot a given kind of target, what hit
+multiplier to use in the damage calculation, i.e. on average what chance a round has to hit a
+target". **The per-row comment `Repulore/Kishajora/Nagyhajora/Landfortra` names the index: 1 plane,
+2 small ship, 3 big ship, 4 landfort.** That is what the `vtable[+18h]` queries select, and
+`PUSH 0Fh`, the plane base class, is the first test in every four-entry arm.
+
+| Arm | Selector (`record+8h`) | Bullet type | Record offsets | Plane | SmallShip | BigShip | Landfort |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `009FE2A2` | `2`, `3` | MachineGun | `110h`-`11Ch` | 0.10 | 0.15 | 0 | 0.0 |
+| `009FE313` | `5`, `6`, `7` | Artillery | `120h`-`12Ch` | 0.00 | 0.50 | 0.70 | 0.55 |
+| `009FE384` | `9` | Bomb | `130h`-`13Ch` | 0.00 | 0.50 | 0.70 | 0.20 |
+| `009FE3F5` | `0Ah` | Torpedo | `144h` submarine, else `140h` ship | - | 0.75 ship | - | 0.45 sub |
+| `009FE44A` | `0Bh` | DepthCharge | `148h` scalar | - | - | - | 0.50 |
+| `009FE64A` | `0Dh`, `11h` | Kamikaze | `150h`-`15Ch` | 0.00 | 0.50 | 0.70 | 0.80 |
+| `009FE465` | `0Fh` | Paratroopers | `14Ch` scalar | - | - | - | 0.30 |
+| `009FE480` | `10h` | Flak | `180h`-`18Ch` | 0.50 | 0.20 | 0.00 | 0.00 |
+| `009FE4F1` | `12h` | SmallRocket, then BigRocket | `160h`-`16Ch`, `170h`-`17Ch` | 0.15 / 0.00 | 0.25 / 0.25 | 0.70 / 0.90 | 0.50 / 0.75 |
+| `009FE6BB` | `4`, `8`, `0Ch`, `0Eh` | reject, returns `0` | - | - | - | - | - |
+
+Jump table read from the bytes at `009FE6C4` and the selector byte table at `009FE6EC`
+(`00 00 09 01 01 01 09 02 03 04 09 05 09 06 07 05 08`), not from the decompiler.
+
+`coverage: partial` on one point. Arm `009FE4F1` runs four `vtable[+18h]` queries at `009FE4F7`,
+`009FE524`, `009FE542` and `009FE555` before the SmallRocket block at `009FE564` and reaches the
+BigRocket block at `009FE5D5`; **which test splits small from big is not read**, so the two rocket
+rows above are the offsets, not a decided mapping. Every other arm is complete.
+
+### What this means for publishing it
+
+The accuracy is **not a per-barrel constant**: it is a function of (bullet type, target class), and
+`bsp::AiTargetWeightModelHost::barrel_accuracy(subsystem, barrel, target)` already takes the
+target. The flat `GameAiWeaponFacts::Barrel::accuracy` at `include/bsp/game_hosts_ai.hpp` is the
+wrong shape and `AiWeightModelBinding::barrel_accuracy` at `src/game_hosts_ai.cpp:184` discards its
+target argument. Completing the row needs the **bullet-type selector** published per barrel, not an
+accuracy, and the lookup resolved at query time.
+
+Two further blockers, both named by address rather than guessed at:
+
+* `bsp::AiTuningBlock` carries the full `23Ch` stride but `ai_tuning_keys()` loads only 33 keys and
+  **none of them is a `BulletTypeAccuracy` entry**, so `tuning.at(0x110)` returns the unloaded
+  `0.0f`. `mode_tuning_record()` at `src/game_hosts_ai.cpp:417` copies exactly two fields.
+* `ai_load_globals_00a335d0`, the reconstruction that does cover the whole field map, **has no
+  caller anywhere in `src/`**, so the `AiModeTuning` records it fills are never populated in this
+  process.
+
+Publishing a `1.0f` would invent the value; publishing the table makes it real. Note that many
+authored cells are exactly `0.0` (MachineGun against a big ship or a landfort, Artillery and Bomb
+against a plane), and `00A094F5 FCOMIP / JNC` skips a barrel whose accuracy is not above zero, so a
+correct publication makes the model **skip** those barrels rather than score them.
+
+### Where the selector comes from, and the one hop still open
+
+Traced inside `00A08460`'s barrel loop, which settles what `EDX` is:
+
+```
+00a093d0  mov esi,[ebx+74h]      ; the barrel array, +74h/+78h base and count
+00a093d3  add esi,[esp+18h]      ; the 48h-stride barrel entry
+00a093d7  mov eax,[esi+34h]      ; barrel+34h, the bullet class record
+00a093da  mov [esp+5Ch],eax      ; becomes EDX at 00A094E6
+00a093de  mov eax,[eax+8]        ; the selector
+00a093e1  cmp eax,0Ah            ; 0Ah is the Torpedo arm, which confirms the space
+00a093e4  jne 00a093ed
+```
+
+So the chain is **barrel `+34h` -> bullet class record -> `+8h` selector -> arm -> tuning offset**,
+and the `CMP EAX,0Ah` against the Torpedo selector is independent confirmation of the arm mapping
+above, taken from a different site than the jump table.
+
+The bullet class record is what `006EA910 BSP_BulletClass_GetOrCreate` builds
+(`docs/ORDNANCE_KIND_IDENTITY.md`): it reads the authored `Bullets` row's `Type` string, matches it
+case-insensitively against thirteen literals, and runs that kind's constructor. **`+8h` is
+therefore a per-class constant written by each kind's constructor, not authored data**, which is
+why no `BulletType` number appears anywhere in `bulletclasses.lua`.
+
+**The open hop, stated as unfinished rather than guessed:** the thirteen constructors were not
+read, so **which constant each one stores to `+8h` is not established**. The counts are suggestive
+and are not evidence — thirteen `Type` strings against thirteen live selectors, and four rejected
+in-range selectors (`4`, `8`, `0Ch`, `0Eh`) against the four `Dummy*`/`WaterMine` types that have no
+accuracy row — but the grouping `2,3 -> MachineGun` and `5,6,7 -> Artillery` means at least one
+accuracy row serves several classes, so the correspondence is not one-to-one and cannot be assumed.
+Reading the constructor bodies named in `ORDNANCE_KIND_IDENTITY.md`'s census table is the next
+concrete step, and it is what the gunnery host needs before it can publish a selector per barrel.
+
+Until that lands, `GameGunRow::ordnance` is **not** a substitute: it is the `vtable[8]` entity-class
+answer set (`29h`-`34h`), a different id space from this selector, and using it here would be a
+guess.
+
+### The constructors, read
+
+The hop above is now read rather than inferred. Each constant is a `MOV dword ptr [ESI+8], imm` in
+the named constructor, and each vtable install matches `ORDNANCE_KIND_IDENTITY.md`'s census column,
+which is what ties the constructor to its authored `Type` string. `BSP_TorpedoClass_Construct` was
+the control: `006EA500` installs `00CFA56C` and `006EA50C` stores `0Ah`, the value
+`00A093E1 CMP EAX,0Ah` independently tests for.
+
+| Constructor | Selector | Byte-table arm | Accuracy row |
+| --- | --- | --- | --- |
+| `006EA1C0 BSP_ArtilleryBulletClass_Construct` | `4` | **reject** | none |
+| `006EA260 BSP_BombClass_Construct` | `9` | `009FE384` | Bomb |
+| `006EA4F0 BSP_TorpedoClass_Construct` | `0Ah` | `009FE3F5` | Torpedo |
+| `006EA3A0 BSP_DepthChargeClass_Construct` | `0Bh` | `009FE44A` | DepthCharge |
+| `006EA6B0 BSP_DummyTargetClass_Construct` | `0Ch` | reject | none |
+| `006EA7F0 BSP_DummyKamikazePlaneClass_Construct` | `0Dh` | `009FE64A` | Kamikaze |
+| `006EA870 BSP_DummySubmarineClass_Construct` | `0Eh` | reject | none |
+| `006EA720 BSP_ParatrooperClass_Construct` | `0Fh` | `009FE465` | Paratroopers |
+| `006EA470 BSP_FlakBulletClass_Construct` | `10h` | `009FE480` | Flak |
+| `006EA200 BSP_KamikazePlaneClass_Construct` | `11h` | `009FE64A` | Kamikaze |
+| `006EA330 BSP_RocketClass_Construct` | `12h` | `009FE4F1` | SmallRocket / BigRocket |
+| `006EA5E0 BSP_WaterMineClass_Construct` | `13h` | out of range at `009FE28E` | none |
+| `006E8320 BSP_BulletClass_Construct` | **none** | - | - |
+
+Three of the four byte-table rejects are now explained by name: `0Ch` DummyTarget, `0Eh`
+DummySubmarine and, outside the range check rather than the table, `13h` WaterMine. Those are
+targets and mines, and having no hit chance is right.
+
+**The fourth reject is not explained, and it is an anomaly worth stating rather than smoothing
+over.** `BSP_ArtilleryBulletClass_Construct` stores `4`, and selector `4` takes the reject arm,
+while the Artillery accuracy row at `120h`-`12Ch` is reached only by selectors `5`, `6` and `7`. So
+on the reading that `+8h` is fixed at construction, an artillery shell would get no accuracy at all
+and every artillery barrel would be skipped at `00A094F5` — which the authored row
+`{0.00, 0.50, 0.70, 0.55}` contradicts.
+
+**The open question, sharpened.** Selectors `2`, `3` (MachineGun) and `5`, `6`, `7` (Artillery) have
+no constructor among the thirteen, and `006E8320` sets `+8h` for none of them: it writes `+4h` and
+then zeroes `+10h` through `+3Ch`, stepping over `+8h`. Five unattributed selectors plus the
+Artillery anomaly point the same way: **`+8h` is very likely refined after construction**, by a
+writer that splits artillery into three and machine-gun into two from authored data, with the
+constructor constant only a default. That writer is not found yet. Until it is, no selector can be
+published per barrel without inventing it, which is why this packet stops here rather than turning
+the model on with a guessed mapping.
+
+### Resolved: the refiner is `006E9890`, and the anomaly is not one
+
+The prediction in the paragraph above is confirmed and the "anomaly" is closed, so **the Artillery
+reject needs no explaining away: selector `4` is a pre-refinement value that no live projectile
+keeps**. The writer is `006E9890 BSP_ProjectileClass_DeriveEngagementRange`, which the gunnery host
+**already models** for ranges (`summary mission gunnery ... bullet_ranges_derived`). It rewrites
+`[EDI+8]` on exactly the two classes that were unattributed, and leaves every other class on its
+constructor constant (`006E99E5 JNE` jumps past the store to the `006E9A40` tail).
+
+**The generic `Bullet` class, selector `1` (`006E9968 CMP ESI,1`).** It resolves the bullet's name
+(`[EDI+14h]`, defaulting to the literal at `00E199AC`) and runs `00BF9440` against the literal at
+`00CFA420`, whose bytes `41 41 00` are **`"AA"`**. Then `006E99D0 SETNE AL` / `006E99D5 ADD EAX,2`
+/ `006E99D8 MOV [EDI+8],EAX`:
+
+| Bullet name contains `"AA"` | Selector | Row |
+| --- | --- | --- |
+| no | `2` | MachineGun |
+| yes | `3` | MachineGun |
+
+Both land on arm `009FE2A2`, which is why the byte table's first two entries are both `00`, and the
+authored Lua row is commented `geppityu es AA talalati esely` - **"machine gun *and AA* hit
+chance"**. The authored comment and the byte table independently agree with the name test.
+
+**The `Artillery` class, selector `4` (`006E99E2 CMP ESI,4`).** `006E99E7` loads `[EDI+0ACh]` and
+bands it against two thresholds, each test also requiring the same threshold to exceed `[EDI+0B4h]`:
+
+| Band | Selector | Row |
+| --- | --- | --- |
+| `[00CF0B50]` = `75.0f` beats both | `5` | Artillery |
+| else `[00CE3808]` = `150.0f` beats both | `6` | Artillery |
+| else | `7` | Artillery |
+
+Three calibre bands under 75, under 150 and above, which reads as millimetres and matches the three
+selectors arm `009FE313` serves. All three take the same Artillery accuracy row, so the banding
+does not change the accuracy; it is the engagement-range derivation that needs it, and the accuracy
+lookup simply tolerates all three.
+
+**So the selector space is closed.** Every live value `2`-`12h` is now attributed, the two
+in-range rejects are accounted for (`4` and `1` are pre-refinement values, `0Ch` and `0Eh` are the
+two dummies), and `13h` WaterMine falls outside the range check. **Publishing a selector per barrel
+is no longer blocked by an unknown**: the gunnery host already calls the routine that derives it,
+and the remaining work is to carry `[EDI+8]` out of that derivation onto the published row, load the
+`BulletTypeAccuracy` keys into `AiTuningBlock`, and resolve the target class at query time in
+`AiWeightModelBinding::barrel_accuracy`, which already receives the target it currently discards.
+That implementation and its IJN01 run are not in this packet.
+
+**Attribution, and a process note against this packet.** The refinement rule above was **already
+recorded** by the earlier packet `cc7_bullet_engagement_range_kinds`, in `006E9890`'s ledger
+evidence and in `docs/BULLET_ENGAGEMENT_RANGE.md`: the `"AA"` test producing `2` and `3`, the
+`75.0f`/`150.0f` calibre bands producing `5`, `6` and `7`, and the naming of `006E9890` as the
+producer of those five sub-types. This packet re-derived it from the listing without checking, and
+only found the prior record when appending evidence to the address. The re-derivation is therefore
+**a confirmation, not a discovery**, and the credit is `cc7`'s. What is new here is the other half
+of the join: that those sub-types are what `009FE270` switches on, which row of
+`BulletTypeAccuracy` each reaches, and that `cc7`'s `[EDI+0ACh]` is `DamageMin` rather than a
+calibre, which is what its own record already says.
+
+The cost was avoidable. `python tools/bsp.py lookup 006e9890` answers this in one call, and this
+packet reached the routine by a byte scan and read it cold instead. Look the address up before
+reading it, even when a scan hands you the function name.

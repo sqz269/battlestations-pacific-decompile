@@ -136,6 +136,12 @@ inline constexpr float kPlusOne = 1.0f;                 // 00D7A24C, movss
 inline constexpr double kDiveAltitudeDecay = 0.05;      // 00D7A270, qword
 inline constexpr float kCruisingAltitudeThird = 9999.0f;  // 00CE4C04, the +39Ch write
 
+// approach+D4h, set once by the constructor 009C3EA0 at 009C3FFB-009C4045.
+// The same 00D7A280 half that kPullOutAltitudeFraction names, in its other role:
+// the mean of the drawn release altitude and the begin altitude.
+inline constexpr double kDiveEntryHeightMean = 0.5;      // 00D7A280, qword
+inline constexpr double kDiveEntryHeightMargin = 250.0;  // 00CF8850, qword
+
 // The aimdive release, 009C60A9-009C60EC.
 inline constexpr double kAimDiveReleaseErrorLimit = 25.0;  // 00CE3880, qword
 inline constexpr double kPullOutAltitudeFraction = 0.5;    // 00D7A280, qword
@@ -558,6 +564,12 @@ DiveBombTurnDownResult dive_bomb_turndown_tick_009c44f0(
 
 // 009C4530-009C4575: fmod by 2pi through 00BF857A, then the (-pi, pi] wrap.
 float dive_bomb_wrap_signed_pi_009c4551(float angle) noexcept;
+
+// 009C3FFB-009C4045, the tail of the approach constructor: approach+D4h, the
+// height above the target the aircraft must have before 009C680E lets it dive.
+// max(+A8h + 250.0, (+ACh + +A8h) * 0.5); the JBE at 009C4035 is the byte `76`.
+float dive_bomb_dive_entry_height_009c4045(float dive_altitude_a8,
+                                           float begin_altitude_ac) noexcept;
 
 // 009C7EA0, __fastcall(state) -> bool. True ends the turndown for aimdive.
 // The two pose angles in the order the body reads them: +C64h is the one the

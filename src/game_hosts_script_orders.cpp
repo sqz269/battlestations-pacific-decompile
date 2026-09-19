@@ -6,7 +6,9 @@
 
 #include "bsp/game_hosts_script_orders.hpp"
 
+#include "bsp/air_operations.hpp"
 #include "bsp/game_hosts.hpp"
+#include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/lua_binding_navigator.hpp"
 #include "bsp/mission_lua_bindings.hpp"
@@ -188,6 +190,175 @@ void GameScriptOrdersHost::register_scene_marker(int id, const std::string& name
     marker.position[1] = world_position[1];
     marker.position[2] = world_position[2];
     markers_.push_back(marker);
+}
+
+// Packet cc8_airops_launch_tick. 006C5050 fills a scene property bag - `Type`
+// (the class's +70h), `WingCount` (slot+8h), `Skill`, `Party`, `OwnerPlayer` and
+// `HomeBase` off the owner at block+7Ch, `State`, `Equipment` (slot+10h) - and
+// hands it to 004F0AD0 BSP_SceneUnit_CreatePlaneSquadronGen. What that makes is
+// a squadron container of 1089 bytes that then holds `WingCount` planes.
+//
+// LABELLED SUBSTITUTION, and the largest one in this packet. This process has no
+// squadron container: `create_plane_squadron_004f0ad0` allocates an instance and
+// places it, and nothing in it spawns or flies the wing. So what is created here
+// is ONE unit of the slot's own class - a plane - standing for the squadron, and
+// the deck reports the authored `WingCount` as its live plane count so the
+// committed-planes arithmetic of 006BD3F0 and 006BF230 stays the authored one.
+// The Lua `squadron` key therefore names a flyable aircraft rather than a group,
+// which is what lets `PilotSetTarget` install a task at all. The wingmen are not
+// created. docs/AIROPS_LAUNCH_TICK.md.
+std::uint32_t GameScriptOrdersHost::create_air_ops_squadron_006c5050(
+    std::uint32_t vehicle_class, std::int32_t wing_count, std::int32_t equipment,
+    const std::string& home_base, std::string& created_name,
+    std::int32_t& wing_count_out) {
+    created_name.clear();
+    wing_count_out = 0;
+    if (vehicle_class == 0u) return 0u;
+    // A process guard, not a native rule. The native refuses a launch while the
+    // deck is already spotting a plane (block+38h, written by 006C6540 out of the
+    // queue at block+D8h); neither that queue nor its filler is reconstructed, so
+    // the script's launches are ungated here and would create a unit per call.
+    constexpr std::size_t kSquadronCreateLimit = 24;
+    // Metres above the carrier's own origin. The native launches the plane off
+    // the deck through the taxi and catapult paths; none of that is reconstructed
+    // here, so the squadron starts airborne over its home base. contract.
+    constexpr float kAirOpsSquadronLaunchAltitude = 150.0f;
+    if (squadrons_.size() >= kSquadronCreateLimit) {
+        if (!squadron_limit_logged_) {
+            squadron_limit_logged_ = true;
+            log_.notef("air ops squadron: the %zu-squadron ceiling of this process is "
+                "reached; further launches leave slot+28h zero. It is a guard, not a "
+                "native rule: 006C6540's ready-plane queue at block+D8h, which is what "
+                "makes the deck refuse at 006BF620, is not reconstructed",
+                kSquadronCreateLimit);
+        }
+        return 0u;
+    }
+
+    std::size_t owner = units_.count();
+    for (std::size_t index = 0; index < units_.count(); ++index) {
+        const GameUnitRow* row = units_.unit_row(index);
+        if (row != nullptr && row->name == home_base) {
+            owner = index;
+            break;
+        }
+    }
+    if (owner >= units_.count()) {
+        log_.notef("air ops squadron: `HomeBase` \"%s\" names no created instance, so "
+            "006C5050's bag has no owner to read `Party` off and nothing is created",
+            home_base.c_str());
+        return 0u;
+    }
+    const GameUnitRow* owner_row = units_.unit_row(owner);
+    if (owner_row == nullptr) return 0u;
+
+    GameSceneEntityRecord record;
+    char suffix[32];
+    std::snprintf(suffix, sizeof(suffix), "_sqn%02zu", squadrons_.size() + 1);
+    record.name = home_base + suffix;
+    record.class_name = "PlaneSquadronGen";
+    record.class_id = 0x18;  // the creator row 004F0AD0 sits on
+    record.type_id = static_cast<int>(vehicle_class);
+    // `Party` is the owner's +54h, which for this process is the owner unit's own
+    // party rather than the deck's unfilled field.
+    record.party = owner_row->party;
+    record.created = true;
+    // The world 4x4 create_units reads: rows 0..2 the body axes, row 3 the
+    // position. The native places the squadron through 004F03C0's deferral with
+    // the carrier's own frame; this puts it over the deck, airborne, because the
+    // plane rows create_units seeds (+900h = 7, +908h = 3600) describe a plane in
+    // free flight and a plane on the sea surface is not that.
+    record.world[0] = 1.0f;
+    record.world[5] = 1.0f;
+    record.world[10] = 1.0f;
+    record.world[12] = owner_row->position[0];
+    record.world[13] = owner_row->position[1] + kAirOpsSquadronLaunchAltitude;
+    record.world[14] = owner_row->position[2];
+
+    const std::size_t before = units_.count();
+    std::vector<GameSceneEntityRecord> one;
+    one.push_back(record);
+    units_.create_units(one);
+    if (units_.count() <= before) {
+        log_.notef("air ops squadron: create_units made no instance for class %u, so "
+            "slot+28h stays zero", vehicle_class);
+        return 0u;
+    }
+    AirOpsSquadron made;
+    made.unit_index = units_.count() - 1;
+    made.entity_id = static_cast<std::uint32_t>(made.unit_index + 1);
+    made.wing_count = wing_count > 0 ? wing_count : 1;
+    made.name = record.name;
+    squadrons_.push_back(made);
+    created_name = made.name;
+    wing_count_out = made.wing_count;
+    const GameUnitRow* made_row = units_.unit_row(made.unit_index);
+    log_.notef("air ops squadron: %s class=%u wing=%d equipment=%d home=%s -> unit %zu "
+        "id %u at (%.1f %.1f %.1f) class_row=%s (006c5050 bag -> 004f0ad0)",
+        made.name.c_str(), vehicle_class, made.wing_count, equipment, home_base.c_str(),
+        made.unit_index, made.entity_id, record.world[12], record.world[13],
+        record.world[14],
+        (made_row != nullptr && made_row->class_row_found) ? "found" : "absent");
+    log_.implemented("AirOps::build_squadron", "006c5050");
+    return made.entity_id;
+}
+
+// 006CDC70 BSP_AirOps_Update, once per fixed step over every deck this process
+// built. POSITION IS A DEVIATION, and a deliberate one: the executable reaches
+// 006CDC70 from the owning unit's own motion pass, 00758270
+// BSP_MotherShipUnit_UpdateMotion for a carrier and 006D2510
+// BSP_AirField_TickAdvance for an airfield, and the natural home here is
+// GameUnitsHost::motion_step_00825f20. That file is leased to another worker for
+// the length of this packet, so the walk runs from this host's own per-frame
+// pass instead, which the mission frame drives on the same fixed step. The order
+// within the frame therefore differs from the native's; nothing in the tick
+// reads anything the motion pass writes, so the difference is one of position
+// and not of result. docs/AIROPS_LAUNCH_TICK.md.
+void GameScriptOrdersHost::run_air_ops_update_006cdc70(float step) {
+    if (!(step > 0.0f)) return;
+    // A squadron whose unit is gone is what 007F1B70 hands 006C65B0. This process
+    // has no destruction path that calls it, so the reader's own zero is the
+    // signal and the release runs here, once, for each slot still holding it.
+    bsp::AirOpsDeckRegistry& registry = bsp::air_ops_decks();
+    for (std::size_t deck_index = 0; deck_index < registry.size(); ++deck_index) {
+        bsp::AirOpsDeck* deck = registry.mutable_at(deck_index);
+        if (deck == nullptr) continue;
+        for (const bsp::AirOpsSlot& slot : deck->slots) {
+            const std::uint32_t squadron = slot.launched_squadron;
+            if (squadron == 0u) continue;
+            if (air_ops_squadron_plane_count(squadron) > 0) continue;
+            air_ops_released_ += bsp::air_ops_release_squadron_slot_006c65b0(*deck, squadron);
+            break;  // the walk above is invalidated by the release
+        }
+    }
+    const bsp::AirOpsDeckTickResult tick = bsp::air_ops_update_decks_006cdc70(step);
+    air_ops_ticks_ += tick.slots;
+    air_ops_refills_ += tick.became_ready;
+    air_ops_tracking_ = tick.tracking;
+    if (tick.became_ready > 0 && air_ops_refill_logs_ < 8) {
+        ++air_ops_refill_logs_;
+        log_.notef("air ops tick 006c0510: %zu slot(s) left state 3/4 for state 5 this "
+            "step; %zu slot(s) still hold a squadron, %llu released so far",
+            tick.became_ready, tick.tracking, air_ops_released_);
+    }
+    log_.implemented("AirOps::update", "006cdc70");
+    log_.implemented("AirOps::update_slots", "006c0da0");
+    log_.implemented("AirOps::slot_tick", "006c0510");
+}
+
+std::int32_t GameScriptOrdersHost::air_ops_squadron_plane_count(
+    std::uint32_t squadron) const noexcept {
+    for (const AirOpsSquadron& made : squadrons_) {
+        if (made.entity_id != squadron || squadron == 0u) continue;
+        // entity+3CCh is the squadron's live plane count. The stand-in reports the
+        // authored wing while the unit it was made for is still active and zero
+        // once it is not, which is what makes the tick's own arithmetic and
+        // 006C65B0's release agree.
+        const GameUnitRow* row = units_.unit_row(made.unit_index);
+        if (row == nullptr || !row->active) return 0;
+        return made.wing_count;
+    }
+    return 0;
 }
 
 const GameScriptOrdersHost::SceneMarker* GameScriptOrdersHost::marker_for_id(
@@ -1493,6 +1664,7 @@ void GameScriptOrdersHost::run_blackout_update(float step) {
 }
 
 void GameScriptOrdersHost::run_script_timers(float step) {
+    run_air_ops_update_006cdc70(step);
     if (machine_state_ == nullptr) return;
     if (script_entities_.empty()) {
         run_blackout_update(step);
@@ -1544,6 +1716,21 @@ void GameScriptOrdersHost::run_script_timers(float step) {
 }
 
 void GameScriptOrdersHost::report() {
+    // Packet cc8_airops_launch_tick.
+    log_.notef("summary air ops tick slot_ticks=%llu refills_3_4_to_5=%llu "
+        "releases_006c65b0=%llu slots_holding_a_squadron=%zu squadrons_created=%zu",
+        air_ops_ticks_, air_ops_refills_, air_ops_released_, air_ops_tracking_,
+        squadrons_.size());
+    for (const AirOpsSquadron& made : squadrons_) {
+        const GameUnitRow* row = made.unit_index < units_.count()
+            ? units_.unit_row(made.unit_index) : nullptr;
+        log_.notef("  squadron %-24s id=%u unit=%zu wing=%d active=%d pos=(%.0f %.0f %.0f)",
+            made.name.c_str(), made.entity_id, made.unit_index, made.wing_count,
+            (row != nullptr && row->active) ? 1 : 0,
+            row != nullptr ? static_cast<double>(row->position[0]) : 0.0,
+            row != nullptr ? static_cast<double>(row->position[1]) : 0.0,
+            row != nullptr ? static_cast<double>(row->position[2]) : 0.0);
+    }
     if (timers_.scripts_created != 0) {
         log_.notef("mission script timers (packet cc_lua_binding_audit): the delayed-call "
             "scheduler luaDelay -> CreateScript(\"luaDoTimeTable\") -> SetThink/SetWait, "

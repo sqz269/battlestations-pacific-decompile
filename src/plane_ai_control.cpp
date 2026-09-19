@@ -639,54 +639,58 @@ PilotBotThrottleResult pilot_plan_throttle_0099d300(const PilotBotThrottleInputs
 
 
 // ---------------------------------------------------------------------------
-// 0099E2BA-0099E39D, the servo arm. See include/bsp/plane_ai_control.hpp.
+// 0099E2BA-0099E39D, the servo arm, in its two halves: the demand
+// 0099E2BA-0099E33A and the rate-limited map 0099E344-0099E39D. The image runs
+// them as one region. See include/bsp/plane_ai_control.hpp.
 // ---------------------------------------------------------------------------
-PilotBotRollServoResult pilot_roll_servo_0099e26e(const PilotBotRollServoInputs& in) {
-    PilotBotRollServoResult out;
+PilotBotRollDemandResult pilot_roll_bank_demand_0099e2ba(
+    const PilotBotRollDemandInputs& in) {
+    PilotBotRollDemandResult out;
 
     // 0099E2C5-0099E2D3: the error between the target the task wrote and the
-    // measured bank, scaled by [ESP+28h].
+    // measured bank, scaled by [ESP+28h]. FSTP [ESP+18h] parks it.
     out.bank_error =
         wrapped_angle_subtract_00438b10(in.bank_target_2c4, in.bank) * in.error_scale;
 
-    // 0099E2E1-0099E301: the usual -0.0f fold.
+    // 0099E2E1-0099E301: the usual -0.0f fold, into [ESP+3Ch]. FCOMI/FSTP ST1 at
+    // 0099E2E7 leaves the SIGNED error on the x87 stack across it.
     const float folded = (out.bank_error > 0.0f) ? out.bank_error : (-0.0f - out.bank_error);
 
     // 0099E30B FLD [EBX+40h], 0099E30E FCOMIP, 0099E312 JBE: inside the band the
     // arm is proportional; outside it, a constant rate signed by the error.
-    float demand;
+    // 0099E310 FSTP ST0 discards the folded value, so both arms act on the
+    // signed error that FSTP ST1 left behind, not on the magnitude.
     if (in.band_40 > folded) {
-        demand = folded * in.gain_44;              // 0099E314
+        out.demand = out.bank_error * in.gain_44;   // 0099E314
         out.used_gain = true;
     } else {
         // 0099E319 COMISS against the 0.0f at 00D7A218 and 0099E330 JBE pick the
-        // sign: subtract when the error is the larger, add otherwise.
-        demand = (out.bank_error > 0.0f) ? (folded - in.rate_48)   // 0099E332
-                                         : (folded + in.rate_48);  // 0099E337
+        // sign: subtract when the error is positive, add when it is not, so the
+        // rate always pulls the demand back toward zero.
+        out.demand = (out.bank_error > 0.0f) ? (out.bank_error - in.rate_48)   // 0099E332
+                                             : (out.bank_error + in.rate_48);  // 0099E337
+        out.wrote_saturation_2ec = true;           // 0099E328
     }
+    return out;   // 0099E340 FSTP [ESP+18h]
+}
 
-    // 0099E373-0099E390: InterpolateClamped(-limit, 1.0, +limit, -1.0, x). The
-    // endpoints are negated across the pair, so the map is falling: a positive
-    // interpolant gives a negative roll.
+float pilot_roll_rate_limited_0099e344(float demand, float rate_limit) {
+    // 0099E373-0099E390: InterpolateClamped(-limit, 1.0, +limit, -1.0, demand).
+    // The endpoints are negated across the pair, so the map is falling: a
+    // positive demand gives a negative roll.
     // 00419010 with equal ordered endpoints returning y0, otherwise a clamped
     // linear map between the two y values.
-    {
-        const float x0 = -in.rate_limit, y0 = 1.0f;
-        const float x1 = in.rate_limit, y1 = -1.0f;
-        float v;
-        if (x1 == x0) {
-            v = y0;
-        } else {
-            v = ((in.interpolant - x0) / (x1 - x0)) * (y1 - y0) + y0;
-            const float hi = (y1 < y0) ? y0 : y1;
-            const float lo = (y0 < y1) ? y0 : y1;
-            if (v < lo) v = lo;
-            else if (v > hi) v = hi;
-        }
-        out.desired_290 = v;
+    const float x0 = -rate_limit, y0 = 1.0f;
+    const float x1 = rate_limit, y1 = -1.0f;
+    if (x1 == x0) {
+        return y0;
     }
-    (void)demand;
-    return out;
+    float v = ((demand - x0) / (x1 - x0)) * (y1 - y0) + y0;
+    const float hi = (y1 < y0) ? y0 : y1;
+    const float lo = (y0 < y1) ? y0 : y1;
+    if (v < lo) v = lo;
+    else if (v > hi) v = hi;
+    return v;   // 0099E39D FSTP [ESI+290h]
 }
 
 }  // namespace bsp

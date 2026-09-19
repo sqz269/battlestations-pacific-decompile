@@ -192,6 +192,30 @@ public:
     void register_scene_marker(int id, const std::string& name,
         const float world_position[3]);
 
+    // Packet cc8_airops_launch_tick. The unit side of 006C5050: the launch start
+    // 006C7490 calls it at 006C74C6 and stores what it returns in slot+28h. The
+    // native fills a scene property bag and hands it to 004F0AD0, the same
+    // creator a `PlaneSquadronGen` row uses, which is how the squadron becomes an
+    // ordinary created unit and reaches the script's table. This host owns the
+    // units host, so the creation lands here. `wing_count_out` carries the count
+    // the deck's plane-count reader then reports for the new squadron.
+    // Returns the entity id (unit index plus one), or 0 when nothing was made.
+    std::uint32_t create_air_ops_squadron_006c5050(std::uint32_t vehicle_class,
+        std::int32_t wing_count, std::int32_t equipment, const std::string& home_base,
+        std::string& created_name, std::int32_t& wing_count_out);
+
+    // The squadron's live plane count, entity+3CCh, for the tick 006C0510 and for
+    // 006BD3F0. A squadron whose unit is gone reports zero.
+    std::int32_t air_ops_squadron_plane_count(std::uint32_t squadron) const noexcept;
+    std::size_t air_ops_squadrons_created() const noexcept { return squadrons_.size(); }
+    // 006CDC70's walk, driven from run_script_timers. See the .cpp for why it is
+    // not in the unit motion pass, where the executable has it.
+    void run_air_ops_update_006cdc70(float step);
+    unsigned long long air_ops_slot_ticks() const noexcept { return air_ops_ticks_; }
+    unsigned long long air_ops_slot_refills() const noexcept { return air_ops_refills_; }
+    unsigned long long air_ops_slot_releases() const noexcept { return air_ops_released_; }
+    std::size_t air_ops_slots_tracking() const noexcept { return air_ops_tracking_; }
+
     void report();
     const GameScriptOrdersSummary& summary() const noexcept { return summary_; }
     const std::vector<GameScriptOrderRow>& rows() const noexcept { return rows_; }
@@ -318,6 +342,21 @@ private:
         float position[3]{0.0f, 0.0f, 0.0f};
     };
     const SceneMarker* marker_for_id(int id) const noexcept;
+
+    // Packet cc8_airops_launch_tick: what this process made for a slot+28h.
+    struct AirOpsSquadron {
+        std::uint32_t entity_id{0};
+        std::size_t unit_index{0};
+        std::int32_t wing_count{0};
+        std::string name;
+    };
+    std::vector<AirOpsSquadron> squadrons_;
+    bool squadron_limit_logged_{false};
+    unsigned long long air_ops_ticks_{0};
+    unsigned long long air_ops_refills_{0};
+    unsigned long long air_ops_released_{0};
+    std::size_t air_ops_tracking_{0};
+    std::size_t air_ops_refill_logs_{0};
 
     GameHostLog& log_;
     GameUnitsHost& units_;
