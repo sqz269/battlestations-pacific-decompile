@@ -30,6 +30,37 @@ it is written to be read in order. This file is only what that document does not
 * **The -5 degree nose-down flag** (`009C4A43`-`009C4A68`, `00CF885C`) is recovered and carried on
   `DiveBombGoAwayCommand::wrote_bank_heading`, deliberately **unconsumed**. See (c).
 
+## (a2) What the second attack run actually looks like, and one free answer
+
+From `goaway_long.log`'s state counts, comparing the 9000-frame run against the 4800-frame run:
+
+| | 4800 | 9000 |
+| --- | --- | --- |
+| `attackrun` | 1073-1141 | **unchanged**, 1073-1141 |
+| `flyabove` | 84-89 | **85-91** (+1 to +6 only) |
+| `turndown` | 56-57 | 111-167 (doubled) |
+| `aimdive` | 60-66 | 105-174 (doubled) |
+
+So the `009C86EE` split **does** send the aircraft to `flyabove`, but the second pass spends only
+**one or two ticks** there and the `attackrun` state is never re-entered at all. The aircraft is
+already at 900 m and inside `approach+B8h`, so the fly-over's conditions are satisfied on arrival.
+The second attack run is therefore `goaway -> flyabove (1-2 ticks) -> turndown -> aimdive -> release
+-> done`, and it **enters the dive at 789-790 m** against 894.9 m for the first dive (the `dive
+entry` census column is last-sampled, so this value is the second dive's). The second release is at
+325.6-344.9 m with `aim error 009C5C9B` of -4.15 to 19.73 m, inside the 25.0 m gate.
+
+**The exact completion tick and the second fly-over's entry range are NOT in the log**: the
+`hand-overs` census columns are first-sample, so they still show the first pass. A successor that
+wants them needs a per-pass census, not another run.
+
+**A free answer to the leader-relative question.** `009C4A40`'s complete callee set is `00414DB0`,
+`00419010`, `0042E740`, `0099B630`, `009C47D0`, `009FABE0`, `00BD2F10`. **`009F9ED0`, `009FBA50` and
+`009FB800` are not among them.** The goaway commands no altitude at all - it writes a *pitch* to
+`cmd+2BCh` with mode 1 and lets the planner's own pitch arm fly it. So the "leader-relative or
+absolute" question does not arise here, and the aborted bombers' climb and the spent wing members'
+floor in `done` are **two different commands that merely look alike**, not one missing command seen
+from two states. `cc8-follow-steer` and this packet are independent.
+
 ## (b) The one thing to do next in this state
 
 **Bind the evasive turn: the `+24h`/`+28h`/`+2Ch` timers and the two arms at `009C4D9D`-`009C4E63`.**
@@ -53,10 +84,28 @@ than the unconditional wings-level the host writes today. I nearly shipped that;
 ## (c) Left deliberately undone, with the reason
 
 * **Item 4 of the packet brief, release accuracy, is not started.** Nothing was measured and nothing
-  is claimed about it. The material a successor wants is already in the logs: the `dive entry` census
-  line carries `aim error 009C5C9B` and `closest=` per bomb (2-20 m at release against 0.07-3.84 m at
-  closest approach, on `pullout_after.log`), and `009C7D71`'s predicted impact is on the `aimdive`
-  line as `impact 009C7D71: tf= range= (live )`.
+  is claimed about it. Per the integrator, it is now narrowed: every round lands within 2.3-21.4 m of
+  `009C7D71`'s own predicted point while the miss against the target is 6.1-57.0 m, so the loss is in
+  the **lead**, not the ballistics - do not start at `release_bomb_drop`.
+  **The read to do first is the image's producer of the approach's aim point `+4Ch/+50h/+54h`**:
+  filter `009C7A80`'s whole listing for every store to those three (disp8 forms and `float ptr` x87
+  stores) and trace each value back - target position, target position led by velocity times a fall
+  or closure time (the fly-over uses a 3.0 s lead on relative velocity via `009FA2E0`, qword at
+  `00D7A2B0`), or target position plus an authored offset. This host uses the target's **live
+  position with no lead at all** (`update_dive_bomb_approach`, `slots[ti]->motion.position`), so that
+  one read says whether the zero-lead aim point is faithful. Take the release-tick `tf` census field
+  (`007BCC80 BSP_Weapon_DropFallTime`) in the same run as whatever that binds - the existing `tf`
+  column is last-sampled, taken after the aircraft left the dive, so the 3.35 / 7.62 / 10.64 s spread
+  across squadrons is **not** evidence yet.
+  This now matters more than before: with the ship branch landed, the carriers move by the image's
+  own rules, and the ship worker's USN01 torpedo trace shows zero-lead aim missing a moving ship by
+  175-210 m.
+* **Whether the formation mates sit inside the probe's box is not checked.** `007F0280` is an
+  axis-aligned box of half-extents 80 x 60 x 120 m centred on the aircraft that can only see another
+  *unit*, so `sampler_result = 0` is a proof over open sea and a hole only in close formation. Every
+  one of these bombers flies in a three-ship flight. One line of arithmetic against
+  `docs/PLANE_FORMATION.md` section 4.1 settles whether the image weaves the wingmen up to 30 degrees
+  apart on the run-in where this host does not. I did not do it.
 * **Arm B of the aimglide pull-out is still unbound**, but it is two slots from done rather than
   three. See `docs/DIVE_BOMB_GOAWAY.md` section 6: `[ESP+6Ch]` is proved to be the tick's `dt`
   argument, `[ESP+28h]` is the `+1Ch` re-arm timer, and `[ESP+24h]` is `length1 / length2` where
@@ -70,11 +119,19 @@ than the unconditional wings-level the host writes today. I nearly shipped that;
 
 ## (d) The runs, all in this worktree's `local\`
 
-| log | binary | what it is |
-| --- | --- | --- |
-| `goaway_before.log` | census only | the strict before; behavioural columns identical to `pullout_after.log` |
-| `goaway_after.log` | `b7be4aca1` | curve A bound; the strict after |
-| `goaway_long.log` | `b7be4aca1` | 9000 mission frames, the outcome (ii) demonstration - **not** a paired measurement |
+| log | base | binary | what it is |
+| --- | --- | --- | --- |
+| `goaway_before.log` | `78aefa17b` | census only, uncommitted | the strict before |
+| `goaway_after.log` | `78aefa17b` | = `b7be4aca1` | curve A bound; the strict after |
+| `goaway_long.log` | `78aefa17b` | = `b7be4aca1` | 9000 mission frames, the outcome (ii) demonstration - **not** a paired measurement |
+
+**All three ran on base `78aefa17b`, which is BEFORE the ship branch landed.** `main` has since moved
+to `192c2a614` and beyond, and that branch changes how USN04's carriers and escorts move (leaders
+ordered, followers keeping station by formation follow). The pair stays valid **as a pair**, but none
+of its absolute numbers may be carried across the merge. **A successor must merge `main` and take its
+own before on the merged tree.** I did **not** merge `main` into this branch: the merge touches the
+ship hunks of `src/game_hosts_units.cpp`, which I do not own, and I was too near my context limit to
+resolve a conflict there safely. The branch is clean at `a029de233` for the integrator to merge.
 
 `goaway_before.log`'s behavioural columns match the predecessor's
 `J:\PROG\battlestations-pacific-decompile-cc8-dive-flyover\local\pullout_after.log` exactly
