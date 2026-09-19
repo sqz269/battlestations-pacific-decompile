@@ -517,3 +517,18 @@ and the remaining work is to carry `[EDI+8]` out of that derivation onto the pub
 `BulletTypeAccuracy` keys into `AiTuningBlock`, and resolve the target class at query time in
 `AiWeightModelBinding::barrel_accuracy`, which already receives the target it currently discards.
 That implementation and its IJN01 run are not in this packet.
+
+**Attribution, and a process note against this packet.** The refinement rule above was **already
+recorded** by the earlier packet `cc7_bullet_engagement_range_kinds`, in `006E9890`'s ledger
+evidence and in `docs/BULLET_ENGAGEMENT_RANGE.md`: the `"AA"` test producing `2` and `3`, the
+`75.0f`/`150.0f` calibre bands producing `5`, `6` and `7`, and the naming of `006E9890` as the
+producer of those five sub-types. This packet re-derived it from the listing without checking, and
+only found the prior record when appending evidence to the address. The re-derivation is therefore
+**a confirmation, not a discovery**, and the credit is `cc7`'s. What is new here is the other half
+of the join: that those sub-types are what `009FE270` switches on, which row of
+`BulletTypeAccuracy` each reaches, and that `cc7`'s `[EDI+0ACh]` is `DamageMin` rather than a
+calibre, which is what its own record already says.
+
+The cost was avoidable. `python tools/bsp.py lookup 006e9890` answers this in one call, and this
+packet reached the routine by a byte scan and read it cold instead. Look the address up before
+reading it, even when a scan hands you the function name.
