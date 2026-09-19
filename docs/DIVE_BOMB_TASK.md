@@ -2854,3 +2854,43 @@ at the sites this stream has read, but they were **not** individually re-verifie
 should not be read as audited. The rule worth carrying forward is the one their packet demonstrates:
 a constant's comment gives the address **and** the width **and** a load site, because the address
 alone does not determine the value.
+
+## The width sweep completed, and a `1.0f` stand-in found by their second rule
+
+### The sweep: 63 checked, 0 mismatched
+
+The earlier audit verified two constants by hand and left thirty-six declared but unverified.
+cc8-torpedo-descent's suggestion - script it and print both widths - closes that honestly. The
+script reads eight bytes at each declared address out of the PE, computes the `float` and the
+`double` there, and flags any line whose declared value does not match its declared width.
+
+**Every constant in `include/bsp/dive_bomb_task.hpp` matches: 63 checked, 0 mismatched.** That is
+the whole header, not just the thirty-eight bare-address ones, so the "not re-verified" caveat on
+the earlier audit is now discharged rather than merely narrowed.
+
+### `speed_ratio_41c`: a `1.0f` stand-in that is not inert
+
+Their second rule - grep the block for `= 1.0f;` on anything named after a class offset, because a
+harmless-looking stand-in is only harmless until it lands in a denominator - turns up one in the
+dive-bomb block, `src/game_hosts_units.cpp:4198`:
+
+```cpp
+in.speed_ratio_41c = 1.0f;     // task+41Ch
+```
+
+It is **not** a denominator, so it does not blow up the way their `pitch_scale_188` did:
+
+```cpp
+// 009C8A1B-009C8A5E: task+4B0h = max(task+4B0h, tuning+4C4h * task+41Ch)
+const float wanted = in.attack_distance * in.speed_ratio_41c;
+```
+
+But it is not inert either. It scales the in-range latch threshold `approach+B8h` directly, and the
+census reports that threshold as exactly 1100.0 m - the bare `Pilot/DiveBomb/AttackDist` - which is
+the value a 1.0 stand-in produces and tells us nothing about the real one. `task+41Ch` is a speed
+ratio whose producer this stream has not read; if it is anything but 1.0, the latch closes at a
+different range, the flyabove starts somewhere else, and every geometry number in the tables above
+shifts with it.
+
+Recorded as a labelled stand-in with its consequence rather than fixed: the fix needs `task+41Ch`'s
+producer, which is a read this packet has not done.
