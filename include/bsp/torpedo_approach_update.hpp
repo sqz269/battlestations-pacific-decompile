@@ -155,6 +155,15 @@ struct TorpedoApproachState {
     // docs/TORPEDO_RUN_PROFILE.md.
     float speed_late_7c{0.0f};                                 // +7Ch
     float speed_early_80{0.0f};                                // +80h
+    // +84h, packet cc8_torpedo_release. The aspect scale on the release
+    // distance. 009D049D/009D04A0 seed it in BSP_BotApproachTorpedo_Reset as a
+    // bare FLD/FSTP from (approach+14h)->+0Ch - verbatim, with NO speed ratio,
+    // unlike the two fields above - and 009D1FD0 reads it as the y1 of the
+    // interpolation at 009D1FED. The robots row's +18h,
+    // `torp_release_drop_closer_mul_018`. 1.0 would make both interpolation
+    // endpoints equal and the gate inert; no authored row holds 1.0.
+    // docs/TORPEDO_RELEASE_GATE.md section 1.
+    float aspect_scale_84{1.0f};                               // +84h
 
     float scan_radius_seed_88{0.0f};                           // +88h, read only
     // The engage distance. 009D3420 only reads it; 009D4AC4 (the +54h cruise
@@ -243,8 +252,9 @@ struct TorpedoRunSpeeds {
     float speed_early_80{0.0f};  // +80h
 };
 
-// 009D0484-009D0497, inside BSP_BotApproachTorpedo_Reset (009D0380-009D066F).
-// The seed of both speed slots, and the producer this packet had to find:
+// 009D0484-009D04A0, inside BSP_BotApproachTorpedo_Reset (009D0380-009D066F).
+// The seed of both distance slots AND of the aspect scale, and the producer
+// this packet had to find:
 //
 //   009d046c  mov  eax, [esi+14h]      ; the run profile record
 //   009d047d  fld  dword ptr [esi+24h] ; the scale
@@ -253,9 +263,22 @@ struct TorpedoRunSpeeds {
 //   009d0491  fstp dword ptr [esi+7Ch] ; +7Ch = record[+4] * scale
 //   009d0494  fmul dword ptr [eax+8]
 //   009d0497  fstp dword ptr [esi+80h] ; +80h = record[+8] * scale
+//   009d049d  fld  dword ptr [eax+0Ch]
+//   009d04a0  fstp dword ptr [esi+84h] ; +84h = record[+0Ch], NO scale
 //
-// So both are SPEEDS drawn from the run profile at approach+14h, scaled by
-// approach+24h. Neither +14h nor +24h is written anywhere in 009D0380; both
+// The third seed is the one that is NOT scaled: FLD then FSTP with nothing
+// between. It is also the only one the jitter leaves alone - the draws through
+// 00BD2F10 at 009D0581-009D0625 rewrite +7Ch (009D05ED) and +80h (009D0625),
+// while a census of the whole function finds `[ESI+0x84]` written EXACTLY ONCE,
+// at 009D04A0. Mirroring the neighbouring pattern onto +84h would multiply a
+// unitless factor by a scale and corrupt the release gate silently.
+//
+// WITHDRAWN, packet cc8_torpedo_release: this comment used to end "So both are
+// SPEEDS drawn from the run profile at approach+14h, scaled by approach+24h",
+// which contradicted the same header above (009D1500 divides a range by one of
+// them, so it is a range ratio) and src/game_hosts_units.cpp, which records
+// that the robots row authors TorpReleaseDistNear/Far in METRES. They are
+// release DISTANCES in metres, scaled by approach+24h. Neither +14h nor +24h is written anywhere in 009D0380; both
 // arrive already set. 009D05ED and 009D0625 then jitter the pair through two
 // 00BD2F10 draws, and 009D3445 clamps +80h to the control block's ceiling
 // 00CE4C04, which is 9999.0 and therefore never bites.

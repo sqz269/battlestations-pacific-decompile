@@ -161,6 +161,7 @@ struct GameGunneryHost::Impl {
         rec.drop_owner_heading = row.drop_owner_heading;
         rec.drop_target_heading = row.drop_target_heading;
         rec.drop_crossing_angle = row.drop_crossing_angle;
+        rec.drop_ordered_range = row.drop_ordered_range;
         if (row.ordered_target != 0 && row.ordered_min_distance >= 0.0f) {
             const float dx = row.target_pos_at_min[0] - row.target_pos_release[0];
             const float dz = row.target_pos_at_min[2] - row.target_pos_release[2];
@@ -3307,6 +3308,15 @@ bool GameGunneryHost::release_ordnance_drop(std::size_t unit_index) {
             shot.drop_crossing_angle =
                 std::fabs(bsp::wrapped_angle_subtract_00438b10(
                     shot.drop_owner_heading, shot.drop_target_heading));
+            // Packet cc8_torpedo_release item 1: the release range the aspect
+            // gate governs. Horizontal and centre to centre, the same
+            // convention as every other distance this census prints
+            // (:3601), and the same X/Z difference 009D3519 takes.
+            float ox = 0.0f, oy = 0.0f, oz = 0.0f;
+            h.units.unit_position_00fc(owner, ox, oy, oz);
+            const float rdx = tx - ox;
+            const float rdz = tz - oz;
+            shot.drop_ordered_range = std::sqrt(rdx * rdx + rdz * rdz);
         }
     }
     // TRACE, packet cc8_torpedo_swim item 1: the id on this round's own drop
@@ -3688,7 +3698,8 @@ void GameGunneryHost::report() {
                 "of %.2f s run | ordered %-14s min=%.1f m at t=%.2f s "
                 "target_moved=%.1f m crossing=%.3f rad "
                 "| at the drop: own_pose=%.4f target_pose=%.4f "
-                "crossing=%.4f rad (%.1f deg)",
+                "crossing=%.4f rad (%.1f deg) release_range=%.1f m "
+                "abs_cos_aspect=%.3f",
                 r.owner_name.c_str(), r.nearest_name.c_str(),
                 static_cast<double>(r.min_distance), static_cast<double>(r.min_time),
                 static_cast<double>(r.life_at_end), r.ordered_name.c_str(),
@@ -3699,7 +3710,14 @@ void GameGunneryHost::report() {
                 static_cast<double>(r.drop_owner_heading),
                 static_cast<double>(r.drop_target_heading),
                 static_cast<double>(r.drop_crossing_angle),
-                static_cast<double>(r.drop_crossing_angle) * 180.0 / 3.14159265358979323846);
+                static_cast<double>(r.drop_crossing_angle) * 180.0 / 3.14159265358979323846,
+                static_cast<double>(r.drop_ordered_range),
+                // The gate's own x: |cos(aspect)| at 009D1FA3/009D1FBF, printed
+                // beside the range so a moved release can be read against the
+                // 0.5 knee without recomputing it by hand.
+                r.drop_crossing_angle < 0.0f
+                    ? -1.0
+                    : std::fabs(std::cos(static_cast<double>(r.drop_crossing_angle))));
         }
     }
     {

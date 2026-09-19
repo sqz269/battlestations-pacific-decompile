@@ -15,15 +15,35 @@
 namespace bsp {
 
 // The PilotBot `SPNormal` row of the installed scripts/datatables/robots.lua,
-// the three torpedo-run values the aim tick's profile seed wants. Authored
+// the four torpedo-run values the aim tick's profile seed wants. Authored
 // content, not recovered code: the registry that would carry them into the
 // units host is not reachable from there, and the difficulty index at
 // [[unit+DF4h]+34h] that would pick the row is unmodelled, so the row is named
-// rather than chosen. SPVeteran authors 5 / 800 / 1200 and the two MP rows
-// 10 / 800 / 1200. docs/TORPEDO_RELEASE_GEOMETRY.md.
+// rather than chosen.
+//
+// The section has SIX rows, not four (corrected in packet cc8_torpedo_release;
+// an earlier comment here named only SPVeteran and "the two MP rows"). Alt /
+// DistNear / DistFar / DropCloserMul, by Lua line:
+//   SPNormal  554   12 / 450 /  650 / 0.7      <- the row named here
+//   SPVeteran 693    5 / 800 / 1200 / 0.5
+//   MPNormal  831   10 / 800 / 1200 / 0.7
+//   MPVeteran 969   10 / 800 / 1200 / 0.6
+//   Elite    1107    5 / 800 / 1200 / 0.5
+//   Stun     1245   12 / 350 /  600 / 0.7
+// so naming SPNormal costs at most 0.2 on the multiplier against any other row,
+// and NO row authors 1.0. The Lua authoring order 557/558/559/560 matches the
+// robots-row offsets 0Ch/10h/14h/18h exactly, which confirms the offset
+// assignment from the data as well as from the code.
+// docs/TORPEDO_RELEASE_GEOMETRY.md, docs/TORPEDO_RELEASE_GATE.md.
 inline constexpr float kTorpReleaseAltSPNormal = 12.0f;       // "TorpReleaseAlt", metres
 inline constexpr float kTorpReleaseDistNearSPNormal = 450.0f; // "TorpReleaseDistNear", metres
 inline constexpr float kTorpReleaseDistFarSPNormal = 650.0f;  // "TorpReleaseDistFar", metres
+// "TorpReleaseDropCloserMul", dimensionless. Seeded verbatim into approach+84h
+// at 009D049D/009D04A0 with no speed ratio, and read at 009D1FD0 as the y1 of
+// the release-distance interpolation. The row's own comment: the release
+// distance applies to a BEAM attack and shrinks to this multiple from ahead or
+// astern.
+inline constexpr float kTorpReleaseDropCloserMulSPNormal = 0.7f;
 
 
 // One channel of the block. The field names are hypotheses; the offsets are the

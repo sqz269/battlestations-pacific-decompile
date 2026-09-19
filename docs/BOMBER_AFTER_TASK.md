@@ -190,6 +190,14 @@ in `done` writes that one byte and returns. Only wing members reach the station-
 
 ## 6. `009BFEE0`: its size, its gate, and which part is bindable
 
+> **Corrected 2026-09-19, packets `cc8_follow_law` and `cc8_follow_regimes`.** Wherever this
+> section describes `009BFEE0` as the body that flies or commands the member, that is backwards:
+> `009BFEE0` is a pure producer of one steer point and `009BEE30` issues every command. The
+> steer point's lead-pursuit regime (`009C1059`-`009C123C`) and abeam regime
+> (`009C15C0`-`009C16CF`) are now read and bound; `docs/PLANE_FOLLOW_LAW.md` §5.10-§5.12 carries
+> the reading and §7 the current block map. Section 10.8's altitude band is confirmed from the
+> listing in that document's §5.9, with two corrections to it recorded there.
+
 Body `009BFEE0-009C1846`. Measured with `local/bfee0_map.py` over the PE on disk: **1795
 instructions, 210 blocks, 55 calls (19 distinct)** — the same three numbers
 `docs/PLANE_FORMATION.md` section 5 records from Ghidra.

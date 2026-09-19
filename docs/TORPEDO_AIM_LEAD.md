@@ -318,6 +318,24 @@ target's drop-time position, with `s = 1853.5 / 60.05 = 30.87 m/s`:
 `R`, the drop range, is not in the recorded table, so it is back-solved from the measured `t_cpa`.
 **This is therefore a consistency check with one fitted parameter, not a free prediction.**
 
+> **2026-09-19, packet `cc8_torpedo_release`: the fitted `R` in the table below is WITHDRAWN.**
+> That packet added a `release_range` column to the closest-approach census (the drop line printed
+> only the drop altitude, so no run had ever recorded the release range) and measured it directly on
+> this same mission: **433-441 m on all five rounds**, against the 327.0 / 333.7 / 338.5 / 351.9 /
+> 355.0 m back-solved here. The error is about `+100 m` on every round, systematic rather than
+> scatter. `local/rel_usn01_before.log`.
+>
+> What this withdraws is the fitted parameter and every number in the table that depends on it - the
+> `zero-lead miss` column and therefore the `residual` column. What it does **not** touch is this
+> document's conclusion: the zero-lead reading rests on section 7's crossing-angle split (traces 3
+> and 9, same ship, same speed, differing only in aspect), which uses no `R` at all.
+>
+> The correction does not simply slot back in, either. With the measured `R` and the same
+> `s = 30.87 m/s`, `t_cpa` for Mav1 -> Dunlap comes out **9.84 s** against the recorded **7.40 s**, so
+> another term of this model is also wrong - most likely that the round is *dropped* at 435 m but
+> *enters the water* closer, after an air fall these equations do not model. That is recorded, not
+> fitted. `docs/TORPEDO_RELEASE_GATE.md` section 2.4.
+
 | round | v_t (m/s) | R fitted (m) | zero-lead miss | recorded | residual |
 | --- | --- | --- | --- | --- | --- |
 | Mav1 -> Dunlap | 19.09 | 327.0 | 160.7 | 210.3 | +49.6 |
@@ -421,6 +439,15 @@ the explanation, and the explanation was refuted by the first out-of-sample data
   section 7 out of sample on USN04 (`local/aimlead/usn04_torpedo.log`).
 * **Retracted by my own later evidence**: section 6's explanation of the residual (section 7.2), and
   the claim I first sent the integrator that `00D213C0` is the task vtable (section 5).
+* **Withdrawn by a later packet (2026-09-19, `cc8_torpedo_release`)**: section 6's back-solved `R`,
+  and the `zero-lead miss` and `residual` columns that depend on it. The release range is now
+  measured, not fitted, and is about 100 m longer on every round. The zero-lead conclusion stands,
+  because section 7 does not use `R`. See the note in section 6.
+* **Superseded**: section 9's follow-up. `src/game_hosts_units.cpp` no longer forces
+  `aspect_scale_84 = 1.0f`; it is seeded from the robots row as `009D049D` does. That packet also
+  corrects the claim, repeated in section 3.3 here, that `approach+84h` shapes only the aim-solution
+  byte: `009D1FED`'s product is cached at `009D1FF6` and read again at `009D2034`, so it gates the
+  release chain too. `docs/TORPEDO_RELEASE_GATE.md` section 1.1.
 * **Not changed**: no source file, no constant, no Ghidra annotation.
 
 ## 9. The one thing worth a follow-up packet
