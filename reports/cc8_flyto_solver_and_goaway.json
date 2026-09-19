@@ -82,5 +82,92 @@
     }
   ],
   "host": [],
-  "validation": []
+  "validation": [
+    {
+      "run": "local/goaway_bound_usn01.log",
+      "baseline": "local/aimclass_after_usn01.log",
+      "command": "--frames 3200 --press-start-frame 30 --menu-select USN01 --mission-frames 3000 --mission-frame-seconds 0.05",
+      "session": "console session 1 Active",
+      "result": "deaths 5 -> 2, kill_credits 5 -> 2, hits taken 111 -> 59, damage taken 2596.8 -> 1501.9. All five aircraft climb away: world y in the goaway bottoms at 6.9 to 9.4 m and peaks at 47.7 to 57.7 m, against the previous run's descent to the water at 69.6 m/s. Mav2 and Mav3 finish at full health, Mav4 at 175/450; Mav1 and Mav5 are killed at 134.9 s and 129.7 s by Dunlap and SaltLakeCity.",
+      "arms": "Mav1 465 ticks 0/106/0/359, Mav2 546 0/170/17/359, Mav3 551 0/170/23/358, Mav4 507 0/150/0/357, Mav5 517 0/162/0/355 (win_low/win_high/post_high/post_low)",
+      "substitution_exposure": "the commanded heading, the only output that depends on the unproved unit+AC8h lead vector, is published on 40 of 2586 goaway ticks; three of the five aircraft never publish it",
+      "not_settled": "goaway enters 1 -> 82 and transitions 3 -> 165, because the break-off now opens the range past 700 m and 009D3150 answers true. 009D4030's transition rule for a torpedo-less aircraft is not established to be the image's."
+    },
+    {
+      "claim": "the image does not lead the torpedo through 009D1360",
+      "method": "byte census over .text with --limit 4000 (the default cap is 20 and truncated the first pass), four encodings per field plus the task+4F0h alias and the SIB forms",
+      "result": "approach+F8h has three stores (009D3D2F, 009D3D52, 009D3D65, all in 009D3420) and no read anywhere in the image; approach+98h is read only by 009D3D12; approach+A0h is read only by the release gate at 009D2044 and the getter 009D12D0",
+      "positive_controls": "the same encodings occur 20, 18, 9, 1, 2, 23 and 4 times elsewhere in .text, none of them in the bot-task band",
+      "measured": "cmd_2C0 == bearing_94 - 2pi exactly at every aim census, with turn_5c = 0, so the host commands the bare bearing to the target's present position; the escorts make 13.7 m/s and a 22.7 s run lets a 180 m hull move about 311 m"
+    }
+  ],
+  "host_methods": [
+    {
+      "method": "run_goaway_tick_009d0f10 -> geometry update",
+      "address": "009d0f46",
+      "native": "009d0c10",
+      "note": "009D0F10's first call; the host runs the fly-to solver and 009D0C10's turn before the tick"
+    },
+    {
+      "method": "fly_to_point_heading_009fd570",
+      "address": "009d0c54",
+      "native": "009fd570",
+      "note": "six stack arguments, ECX = the goaway state; arg6 is the literal 0.8 at 00CE74F8"
+    },
+    {
+      "method": "torpedo_goaway_enter_tail_009d0e3a",
+      "address": "009d0e3a",
+      "native": "009d0c10",
+      "note": "the enter runs the geometry update too, so state+18h is filled before the first tick"
+    },
+    {
+      "method": "pitch_command_009fb800, window arm above 20 m",
+      "address": "009d109c",
+      "native": "009fb800",
+      "note": "altitude state+1Ch, reference the literal 1.0"
+    },
+    {
+      "method": "pitch_command_009fb800, window arm below 20 m",
+      "address": "009d10ff",
+      "native": "009fb800",
+      "note": "altitude 1000.0 at 00CE3804 - the only climb command in the torpedo chain"
+    },
+    {
+      "method": "pitch_command_009fb800, post-window arm",
+      "address": "009d1194",
+      "native": "009fb800",
+      "note": "altitude state+1Ch, issued before the high/low split so both arms get it"
+    },
+    {
+      "method": "wrapped_angle_subtract_00438b10 in the geometry update",
+      "address": "009d0cee",
+      "native": "00438b10"
+    },
+    {
+      "method": "wrapped_angle_add_00438aa0, the only store of state+18h",
+      "address": "009d0d7b",
+      "native": "00438aa0"
+    },
+    {
+      "method": "clamped_interpolate_00419010, the obstacle falloff",
+      "address": "009fd921",
+      "native": "00419010"
+    },
+    {
+      "method": "GGame::NearWorldEdge, the world-edge gate",
+      "address": "009fdd62",
+      "native": "00681f40"
+    },
+    {
+      "method": "GGame::WorldEdgeOverrun, its magnitude",
+      "address": "009fdd80",
+      "native": "009fa510"
+    },
+    {
+      "method": "unit->vtable[34h], the lead vector",
+      "address": "009fd5a6",
+      "native": "007bbb70",
+      "note": "resolved from the vtable rather than the call: all nine .rdata vtables carrying 0074E260 at slot 50h carry 007BBB70 at slot 34h. HYPOTHESIS that unit+AC8h..AD0h is the velocity; no literal-address writer exists in .text"
+    }
+  ]
 }
