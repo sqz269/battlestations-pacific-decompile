@@ -574,3 +574,31 @@ so `class+518h = tan(DropAngle)`, and `007C4A62` derives `class+51Ch` the same w
 `DropAngle * [00CEFFA0]`. That makes step 4's whole term `horizontalDistance * tan(angle)` - a
 height above a straight glide path - rather than an opaque per-class gain.
 `docs/TORPEDO_MOVETO_TICK.md`.
+
+## Correction from packet `cc8_torpedo_descent_law`: `009FBA50` step 6, and the "leaked" return value
+
+The `009FBA50` table's step 6 and the sentence under it are both wrong, and they are the same
+mistake.
+
+* **was**: step 6, `009FBB03`-`009FBB13`, `009FB800(this, alt, base)` - "the second argument is the
+  value **before** the ceiling clamp"; and "the `FLD` at `009FBAC5` is never popped, so `scale` is
+  still in `ST0` at the `RET`: the native ABI returns a float. Every call site discards it."
+* **is**: `009FB800(this, alt, scale)`. The `FLD` at `009FBAC5` is never popped *by the bias or the
+  clamp* - `009FBAD9` is `FMUL ST0,ST1` with no pop, `009FBAE5` pops the biased altitude and
+  `009FBAF1`/`009FBAF3` pop the clamp pair - so `ST0` at `009FBB06` is `scale`, and `009FBB06 FSTP
+  [ESP+4]` pops it into the **second argument slot**. The x87 stack is empty at the `RET` and
+  nothing is returned. The pre-clamp altitude is passed nowhere; `009FBB0C FLD [ESP+14h]` reads back
+  the clamped value that `009FBAF7` stored.
+* **evidence**: `exports/bsp/functions/009fba50/decompiled.c` ends `FUN_009fb800(param_2,param_5);`.
+  The instruction-by-instruction walk is `docs/TORPEDO_DESCENT_LAW.md` section 2.
+
+This matters because `009FB800`'s second argument is the clamp on `t` in both of its arms, so it
+decides how much of the `DEG(60)` / `DEG(40)` cap the aircraft may ask for. An altitude in metres
+saturates it; the scale, which every `009FBA50` caller computes with `00419010` and which lies in
+`[0.35, 0.8]` on the torpedo attack run and `[0.35, 1.6]` on the move-to state, does not. The `1.6`
+at the top of the move-to ramp (`00D06BB4`) is the same `1.6` as the cap scale at `009FB97F`
+(`00CE3D48`): the steepest scale a state can command lands exactly on the first term of
+`max(DropAngle * 1.6, DEG(60))`.
+
+The `009FB800` section that follows already names the parameter `reference` and clamps `t` to it;
+only its provenance was wrong.

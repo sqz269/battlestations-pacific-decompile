@@ -127,10 +127,12 @@ PlaneCruiseAltitudeResult cruise_altitude_command_009fba50(const PlaneCruiseAlti
         altitude += span * in.scale * in.class_gain;
     }
 
-    out.unclamped_altitude = altitude;                        // 009FBB06 FSTP [ESP+4]
-    out.clamped_altitude = min_float(altitude, ceiling_limit);  // 009FBAF7 / 009FBB10
+    out.unclamped_altitude = altitude;  // the bias sum; 009FBA50 passes it nowhere
+    out.clamped_altitude = min_float(altitude, ceiling_limit);  // 009FBAF7, read back at 009FBB0C
     out.ceiling_limit = ceiling_limit;
-    out.returned_in_st0 = in.scale;  // the value 009FBAC5 leaves on the x87 stack
+    // 009FBB06 FSTP [ESP+4]: ST0 there is the arg3 that 009FBAC5 pushed and that
+    // nothing popped, so the scale - not an altitude - is 009FB800's reference.
+    out.pitch_reference = in.scale;
     return out;
 }
 
