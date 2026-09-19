@@ -363,3 +363,36 @@ are two call sites of one image body, not two reconstructions of one rule, and t
 in which counters and `record` labels they keep. The `plan_mode_26c = 2` both write is
 `009C1FE2 MOV byte [ECX+26Ch],BL` with `BL = 2` and `ECX = (state+4h)->+18h`, the command block —
 a byte, inside `009C1FD0`, which is why it belongs to both.
+
+## 12. Run A2: both corrections are arithmetically confirmed and behaviourally null on USN04
+
+`local/approach_a2_breakoff_latch.log`, same arguments, one clean shutdown. Sections 7 and 8
+compiled in, the read site still pinned.
+
+Comparing every `divebomb`, `db aim exit` and `plane water contact` row of A against A2: 156 rows
+each, and **all 22 differing entries are the printed `d` on the 11 `db aim exit` rows**. Nothing
+else moved — not one state count, altitude, release, water contact or latch decision.
+
+| aircraft | `alt` | `d` in A (planar) | `d` in A2 (3-D) | `sqrt(d_A² + alt²)` |
+| --- | --- | --- | --- | --- |
+| `movieval\|.-3` | 205.4 | 204.2 | **289.6** | 289.6 |
+| `movieval` | 180.6 | 191.9 | **263.5** | 263.5 |
+| `movieval\|.-2` | 164.2 | 189.1 | **250.5** | 250.5 |
+
+The vertical term is exactly the aircraft's altitude above a sea-level aim point, to the digit, on
+every row. So section 7's change does what the listing says it does.
+
+**And it changes no decision here, because the threshold is 100.0 m** (`SafeDist` ×
+`speed_ratio_41c`) and *both* ranges are already two to three times that whenever a bomber is
+spent. `movieval` still breaks off at tick 1809 and still reaches `done` with 303 ticks. So the
+prediction of section 10 was right in direction and too strong in degree: I said `movieval`'s
+`done` count should go **up**, and it did not move at all. 10.10's "it moves WHEN a spent bomber
+reaches `done`" is not observable on USN04 either; the honest statement is that the feed is now
+the quantity `009C8B14`-`009C8B3B` measures, and this mission cannot tell the two apart.
+
+Section 8's spent-member arm is **inert in this window**, as predicted: `movieval` is its
+squadron's lead and exempt, and `movieval|.-3` is spent but its leader is 192 m from the aim
+point, far inside `approach+B8h` = 1100 m. A null about USN04, not about the rule.
+
+(Read the `bomb_4c9` column with care — it is the PRE-arm sample, so the rows above print
+`bomb_4c9=1` on the very transition the break-off fired for.)
