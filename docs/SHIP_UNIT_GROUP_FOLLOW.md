@@ -399,10 +399,27 @@ per sample, walking BACK from the head through all 40 slots (IDIV by 28h):
 ```
 
 **The search is over sample POINTS, by full 3D squared distance, not over the segments between
-them**, and the loop is unrolled, which is most of why the body is 523 instructions. The tail that
-turns the winning sample into the signed perpendicular distance and the accumulated arc length -
-what `docs/SHIP_AI_FORMATION.md` states as the contract and `0070ED30` stores as `record+10h` and
-`record+20h` - is **not read here**. That tail is the last unread piece of the follow chain.
+them**, and the loop is unrolled, which is most of why the body is 523 instructions.
+
+Its last 68 instructions were read too, which pins the ABI and the two answers:
+
+```
+00811731..00811760  sign = (v > 0) ? -1 : (v > w ? +1 : 0)      ; an integer in [ESP+4]
+00811768..008117C2  a cross product, then its squared length     ; [ESP+18h]
+008117C6..008117EB  dist = (sq > 1e-10) ? sqrt(sq) : 0        ; 00CE3820, a DOUBLE; as a float
+                                                              ; it reads -7.59e15, a fifth of these
+008117F1  FILD [ESP+4]                                          ; the sign
+008117F5  EAX = arg1 ; ECX = arg2 ; XMM0 = [ESP+38h]            ; arg0's slot, reused as scratch
+00811803  *arg1 = sign * dist                                   ; the SIGNED perpendicular distance
+00811809  *arg2 = XMM0                                          ; the accumulated arc length
+00811810  RET 0Ch                                               ; three arguments
+```
+
+`RET 0Ch` makes it `__thiscall(entity)(const float point[3], float* out_across, float* out_along)`,
+and the two stores confirm `docs/SHIP_AI_FORMATION.md`'s contract from the other end: a signed
+perpendicular distance and an arc length, which `0070ED30` stores as `record+10h` and `record+20h`.
+**The middle - the arc accumulation, and which segment the perpendicular is measured against - is
+still unread.** That is the last unread piece of the follow chain.
 
 ## 6. The cut this packet proposes
 
@@ -424,7 +441,70 @@ expressed in the leader's wake frame" *(cited)*, it is the live column for every
 because the constructor leaves the pattern index at 0 *(cited)*, and it cannot be computed without
 the trail. Doing the wake first is what keeps the station from being invented.
 
-## 7. Uncertainties, and what is not read
+## 7. What was measured
+
+The wake is bound; nothing consumes it yet. Two runs on the build at this document's commit,
+3000 mission frames each, 0.05 s a frame.
+
+### USN01, `local/wake_usn01_fixed.log`
+
+```
+summary unit wake ships=14 appends=1346 advances=122 merges=0
+summary mission world units=62 walked=186000 updated=186000 motion_ticks=42000
+                      simulated=150.00 s controlled=Airfield2 moved=0.00 total_path=5600.63
+```
+
+**The number that checks the transcription is `advances`.** The head advances once per 50 m of
+travel, so 5600.63 m of fleet path predicts about 112 advances plus one per ship for the opening
+leg out of the zeroed ring. Measured: 122. The first run of this packet, with the `00810480`
+comparison inverted, reported **4**, and that is how the inversion was caught - the flag stayed set
+for every ship steaming straight and `00810599` refused to advance. `appends=1346` is unchanged
+between the two runs, as it must be: the 4 m gate is upstream of the flag.
+
+`merges=0`: no leg shrank on USN01, which is what a fleet on straight courses should give.
+
+### USN04, `local/wake_usn04.log`
+
+```
+summary unit wake ships=18 appends=849 advances=83 merges=0 longest_trail=1950.10 m
+summary mission world units=57 walked=63000 updated=63000 motion_ticks=54000
+                      simulated=150.00 s controlled=Lexington-class01 moved=100.51 total_path=3511.74
+```
+
+3511.74 m of fleet path predicts about 70 advances plus one per moving ship; measured 83. The
+second check is the **ceiling**: forty slots of legs that are each the first measurement past 50 m
+cap a trail at roughly 2 km, and the deepest trail on USN04 is 1950.10 m - the ring has very nearly
+lapped itself, which is what the 50 m advance and the 40 slots together predict and what makes a
+follower's station depth finite. On USN01 no ship travelled far enough to get near it.
+
+`merges=0` on both missions. The merge arm needs a leg that shrinks, and nothing on either mission
+turned back on its own track hard enough. **That arm is transcribed but unexercised**, and it should
+not be called measured until something runs it.
+
+### The call table, and what is NOT a same-binary comparison
+
+`local/wake_calldiff.txt`, against the predecessor's own USN01 control:
+
+```
+NEW   UnitWake::append_sample   00810190   concrete calls=42000
+```
+
+42000 is exactly the run's `motion_ticks`, so the append runs once per ship motion tick and on no
+other schedule. **It is the only row attributable to this packet.** The other 34 changed rows and
+the two other NEW rows (`Projectile::blast_radial_damage_0084bad0`,
+`ShipHit::part_damage_004705c0`) are `main`'s, not this packet's: the control was taken on a base at
+main `3a691e884`, this build merges main `b4aa9e241`, and `6ba5797b3 Ungate the impact burst` and
+`8108007c4 Torpedo warhead: the damage is the Blast` sit in that range. So this diff is **not** a
+same-binary before/after and is not offered as one.
+
+What can be said without one: the motion totals are identical to the control to the last
+centimetre - `units=62`, `motion_ticks=42000`, `total_path=5600.63`, `moved=0.00` - as are
+`torpedo_drop drops=5 refusals=0 water_entry_breakups=0`, `swims_started=5` and the whole AI
+coordinator line including `formation_requests=306`. And by inspection the append writes only the
+new `GameUnitSlot::wake` field, which nothing reads. A no-append control run on this binary would
+settle it outright and has not been taken.
+
+## 8. Uncertainties, and what is not read
 
 * `00810630` and `00811180` whole, and `00810160`. `00810190` is now read whole (section 5b); what
   writes its residual accumulator `wake+3D0h` is not, and nothing here may assume it stays zero.

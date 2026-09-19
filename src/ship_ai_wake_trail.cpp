@@ -81,8 +81,8 @@ void ship_ai_wake_append_00810190(ShipAiWakeTrail& trail, const float world_pos[
     // 00810235..0081026B: when the residual already equals the three globals at
     // 00F87574/78/7Ch the decay is skipped entirely. Those three are .data past
     // the raw size, so they read 0.0 at load; nothing is known to write them and
-    // nothing here may assume they stay zero - see docs/SHIP_UNIT_GROUP_FOLLOW.md
-    // section 7. The reset value below is the same triple.
+    // nothing here may assume they stay zero - see the uncertainties section of
+    // docs/SHIP_UNIT_GROUP_FOLLOW.md. The reset value below is the same triple.
     const bool residual_at_reset = trail.residual[0] == 0.0f
         && trail.residual[1] == 0.0f && trail.residual[2] == 0.0f;
     if (!residual_at_reset) {
