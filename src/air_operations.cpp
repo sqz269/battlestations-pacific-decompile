@@ -390,6 +390,42 @@ int air_ops_pick_launch_slot_006c7210(const AirOpsDeck& deck) noexcept {
     return static_cast<int>(deck.slots.size());
 }
 
+namespace {
+AirOpsSquadronFactory* g_squadron_factory = nullptr;
+} // namespace
+
+void set_air_ops_squadron_factory(AirOpsSquadronFactory* factory) noexcept {
+    g_squadron_factory = factory;
+}
+
+AirOpsSquadronFactory* air_ops_squadron_factory() noexcept { return g_squadron_factory; }
+
+std::size_t air_ops_release_squadron_slot_006c65b0(AirOpsDeck& deck,
+                                                   std::uint32_t squadron) noexcept {
+    std::size_t released = 0;
+    for (AirOpsSlot& slot : deck.slots) {
+        if (slot.launched_squadron != squadron) continue;
+        // 006C65EE guards only the observer unregister and the zeroing of +28h
+        // on the field being non-zero; the four stores below are unconditional,
+        // so calling this with a zero squadron would reset every free slot. No
+        // caller does, and the native has the same shape.
+        slot.launched_squadron = 0u;
+        slot.assigned_count = 0;
+        slot.state = AirOpsSlotState::kCooldown;
+        slot.timer = kAirOpsSlotCooldownSeconds;
+        slot.launch_requested = false;
+        ++released;
+    }
+    return released;
+}
+
+bool air_ops_slot_is_free_006c56d0(const AirOpsSlot& slot) noexcept {
+    // 006C56D0's own test: state 6 or state 1. Nothing else counts as free, which
+    // is why a slot this process leaves in state 3 is never reused.
+    const std::int32_t state = static_cast<std::int32_t>(slot.state);
+    return state == 6 || state == static_cast<std::int32_t>(AirOpsSlotState::kCooldown);
+}
+
 void air_ops_launch_start_006c7490(AirOpsDeck& deck, int slot_index) noexcept {
     if (slot_index < 0 || static_cast<std::size_t>(slot_index) >= deck.slots.size()) return;
     AirOpsSlot& slot = deck.slots[static_cast<std::size_t>(slot_index)];
@@ -407,10 +443,34 @@ void air_ops_launch_start_006c7490(AirOpsDeck& deck, int slot_index) noexcept {
         slot.timer = kAirOpsSlotCooldownSeconds;
         slot.launch_requested = false;
     }
-    // 006C74F4: slot+28h takes the squadron 006C5050 built, and the observer
-    // pair moves with it. This process builds no squadron, so the field stays
-    // zero and the Lua `squadron` key stays absent. See the doc: creating it
-    // needs the units host, not these files.
+    // 006C74C6 builds the squadron before any of the above, and 006C74FF stores
+    // it in slot+28h when it differs from what is there, moving the observer
+    // pair with it. The build is 006C5050's property bag, which this process can
+    // only fill through a factory the units host supplies, because its
+    // counterpart to 004F0AD0 is driven from the scene contents pass. With no
+    // factory nothing is created and the field stays zero, which is what this
+    // process did before the seam existed.
+    AirOpsSquadronFactory* factory = air_ops_squadron_factory();
+    if (factory == nullptr) return;
+    AirOpsSquadronRequest request;
+    request.slot_number = slot_index + 1;  // 006C7490 passes the index plus one
+    // SUBSTITUTION: 006C7490 passes the class's +70h, not the class id. That
+    // field was not read, and 006BF100 uses the same +70h as a grouping key that
+    // docs/AIR_OPERATIONS.md also records as unread. The class id is what this
+    // process has. contract.
+    request.type = slot.vehicle_class;
+    request.wing_count = slot.assigned_count;
+    request.equipment = slot.class_field_134;
+    request.skill = deck.owner_skill;
+    request.party = deck.owner_party;
+    request.race = deck.owner_race;
+    request.owner_player = deck.owner_player;
+    request.home_base = deck.owner_name;
+    request.state = 1;                     // the flag argument is zero from 006CC690
+    const std::uint32_t squadron = factory->create_squadron(request);
+    if (squadron != 0u && slot.launched_squadron != squadron) {
+        slot.launched_squadron = squadron;
+    }
 }
 
 AirOpsLaunchResult air_ops_launch_squadron_006cc690(AirOpsDeck& deck,
@@ -452,6 +512,166 @@ AirOpsLaunchResult air_ops_launch_squadron_006cc690(AirOpsDeck& deck,
 }
 
 std::size_t AirOpsDeckRegistry::size() const noexcept { return decks_.size(); }
+
+AirOpsDeck* AirOpsDeckRegistry::mutable_at(std::size_t index) noexcept {
+    if (index >= decks_.size()) return nullptr;
+    return &decks_[index].second;
+}
+
+const std::string& AirOpsDeckRegistry::name_at(std::size_t index) const noexcept {
+    static const std::string empty;
+    if (index >= decks_.size()) return empty;
+    return decks_[index].first;
+}
+
+// ---------------------------------------------------------------------------
+// The tick
+// ---------------------------------------------------------------------------
+AirOpsStockAvailable air_ops_stock_available_006bf230(
+    const AirOpsDeck& deck, std::uint32_t vehicle_class,
+    const std::int32_t* launched_plane_counts) noexcept {
+    AirOpsStockAvailable out;
+    // 006BF243: the list at block+44h, every node whose +8h is the class, summing
+    // its +0Ch. The reconstruction's stock vector is that list.
+    for (const AirOpsStockEntry& entry : deck.stock) {
+        if (entry.vehicle_class == vehicle_class) out.total += entry.count;
+    }
+    out.available = out.total;
+    // 006BF2A0: the slot walk. Both the class AND a state of 1 or 5 are required
+    // before anything is subtracted, so a slot that has launched stops holding
+    // its stock the moment 006C74E0 writes state 3.
+    for (std::size_t index = 0; index < deck.slots.size(); ++index) {
+        const AirOpsSlot& slot = deck.slots[index];
+        if (slot.vehicle_class != vehicle_class) continue;
+        const std::int32_t state = static_cast<std::int32_t>(slot.state);
+        if (state != static_cast<std::int32_t>(AirOpsSlotState::kCooldown)
+            && state != static_cast<std::int32_t>(AirOpsSlotState::kReady)) {
+            continue;
+        }
+        if (slot.launched_squadron != 0u) {
+            out.available -= launched_plane_counts != nullptr
+                ? launched_plane_counts[index] : 0;
+        } else {
+            out.available -= slot.assigned_count;
+        }
+    }
+    return out;
+}
+
+AirOpsSlotTickResult air_ops_slot_tick_006c0510(
+    AirOpsDeck& deck, std::size_t slot_index, float step_seconds,
+    const std::int32_t* launched_plane_counts) noexcept {
+    AirOpsSlotTickResult out;
+    if (slot_index >= deck.slots.size()) return out;
+    AirOpsSlot& slot = deck.slots[slot_index];
+
+    // 006C051A FADD then 006C0522 FSTP: the timer accumulates.
+    slot.timer += step_seconds;
+    // 006C0527-006C0541. COMISS XMM0(timer), XMM1(5.0) with JA taken keeps the
+    // timer, so the store is max(timer, 5.0): the byte spends the wait rather
+    // than arming one, which is how a scripted launch takes effect at once.
+    if (slot.launch_requested) {
+        if (!(slot.timer > kAirOpsSlotCooldownSeconds)) {
+            slot.timer = kAirOpsSlotCooldownSeconds;
+        }
+        slot.launch_requested = false;
+    }
+
+    // 006C0549 JNZ: a slot holding a squadron does nothing but mirror the
+    // squadron's live plane count into slot+8h, and reports a change so the
+    // deck's own message goes out.
+    if (slot.launched_squadron != 0u) {
+        const std::int32_t live = launched_plane_counts != nullptr
+            ? launched_plane_counts[slot_index] : 0;
+        if (live != slot.assigned_count) {
+            slot.assigned_count = live;
+            out.dirty = true;
+        }
+        return out;
+    }
+
+    // 006C054E/006C0553: only states 3 and 4 refill. Every other state with no
+    // squadron falls through 006C059F to the zero return.
+    const std::int32_t state = static_cast<std::int32_t>(slot.state);
+    if (state != static_cast<std::int32_t>(AirOpsSlotState::kLaunched)
+        && state != static_cast<std::int32_t>(AirOpsSlotState::kRecalled)) {
+        return out;
+    }
+
+    // 006C055C zeroes slot+8h before 006BD3F0 is called at 006C0562, so this
+    // slot's own count is not in the committed total.
+    slot.assigned_count = 0;
+    const std::int32_t committed = launched_plane_counts != nullptr
+        ? air_base_committed_planes_006bd3f0(deck.slots.data(), launched_plane_counts,
+                                             static_cast<int>(deck.slots.size()))
+        : 0;
+    std::int32_t count = deck.max_in_air_planes - committed;
+    // 006C057C CMP EAX,EDI with JL: min of the two.
+    const AirOpsStockAvailable stock = air_ops_stock_available_006bf230(
+        deck, slot.vehicle_class, launched_plane_counts);
+    if (stock.available < count) count = stock.available;
+    // 006C0585 CMP ECX,EAX with JGE: min with slot+0Ch.
+    if (slot.requested_count < count) count = slot.requested_count;
+    slot.assigned_count = count;
+    slot.state = AirOpsSlotState::kReady;  // 006C058F
+    out.dirty = true;                      // 006C0596 MOV AL,1
+    out.became_ready = true;
+    out.refilled_count = count;
+    return out;
+}
+
+namespace {
+AirOpsSquadronPlaneCount g_squadron_plane_count = nullptr;
+void* g_squadron_plane_count_context = nullptr;
+} // namespace
+
+void set_air_ops_squadron_plane_count(AirOpsSquadronPlaneCount reader,
+                                      void* context) noexcept {
+    g_squadron_plane_count = reader;
+    g_squadron_plane_count_context = context;
+}
+
+AirOpsDeckTickResult air_ops_deck_update_006c0da0(AirOpsDeck& deck, float step_seconds) {
+    AirOpsDeckTickResult out;
+    if (deck.slots.empty()) return out;
+    // The native reads entity+3CCh inside each slot's tick; this reads all of
+    // them once before the walk, which differs only if a squadron's count could
+    // change while the walk runs. Nothing in this process changes it there.
+    std::vector<std::int32_t> live(deck.slots.size(), 0);
+    for (std::size_t index = 0; index < deck.slots.size(); ++index) {
+        const std::uint32_t squadron = deck.slots[index].launched_squadron;
+        if (squadron == 0u) continue;
+        ++out.tracking;
+        if (g_squadron_plane_count != nullptr) {
+            live[index] = g_squadron_plane_count(squadron, g_squadron_plane_count_context);
+        }
+    }
+    // 006C0DC6: the walk runs while the cursor is below block+50h, in index
+    // order, and each slot the tick returned true for is routed at 006C0DFB.
+    for (std::size_t index = 0; index < deck.slots.size(); ++index) {
+        const AirOpsSlotTickResult step
+            = air_ops_slot_tick_006c0510(deck, index, step_seconds, live.data());
+        ++out.slots;
+        if (step.dirty) ++out.dirty;
+        if (step.became_ready) ++out.became_ready;
+    }
+    return out;
+}
+
+AirOpsDeckTickResult air_ops_update_decks_006cdc70(float step_seconds) {
+    AirOpsDeckTickResult total;
+    AirOpsDeckRegistry& registry = air_ops_decks();
+    for (std::size_t index = 0; index < registry.size(); ++index) {
+        AirOpsDeck* deck = registry.mutable_at(index);
+        if (deck == nullptr) continue;
+        const AirOpsDeckTickResult one = air_ops_deck_update_006c0da0(*deck, step_seconds);
+        total.slots += one.slots;
+        total.dirty += one.dirty;
+        total.became_ready += one.became_ready;
+        total.tracking += one.tracking;
+    }
+    return total;
+}
 
 AirOpsDeckRegistry& air_ops_decks() noexcept {
     static AirOpsDeckRegistry registry;
