@@ -2309,6 +2309,24 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
         ++summary.projectile_steps;
         done("Projectile::flight_step_006e7670", 0x006e7670u);
 
+        // TRACE, packet cc8_torpedo_swim item 1. Additive logging only: follow
+        // every dropped torpedo from its drop line's id until it leaves the
+        // list, and name the exit that took it. Nothing here changes a value.
+        const bool trace = shot.torpedo_trace_id != 0;
+        if (trace) {
+            log.notef("  torpedo trace %llu t=%.2f life=%.2f from_y=%.2f "
+                "pos=(%.1f,%.2f,%.1f) vel=(%.1f,%.2f,%.1f) swimming=%d",
+                shot.torpedo_trace_id, static_cast<double>(clock_seconds),
+                static_cast<double>(shot.life), static_cast<double>(from[1]),
+                static_cast<double>(shot.position[0]),
+                static_cast<double>(shot.position[1]),
+                static_cast<double>(shot.position[2]),
+                static_cast<double>(shot.flight.velocity.x),
+                static_cast<double>(shot.flight.velocity.y),
+                static_cast<double>(shot.flight.velocity.z),
+                shot.swimming ? 1 : 0);
+        }
+
         // Packet cc8_torpedo_closest_approach. A swimming round carries no
         // target - GameProjectileRow has an owner and no victim, and the swim
         // keeps its launch heading - so the closest approach is measured
@@ -2355,7 +2373,13 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
 
         const bsp::TickPoint3 a{from[0], from[1], from[2]};
         const bsp::TickPoint3 b{shot.position[0], shot.position[1], shot.position[2]};
-        if (!bsp::projectile_segment_is_sweepable(a, b)) continue;
+        if (!bsp::projectile_segment_is_sweepable(a, b)) {
+            if (trace) {
+                log.notef("  torpedo trace %llu skip=not_sweepable",
+                    shot.torpedo_trace_id);
+            }
+            continue;
+        }
         ++summary.sweeps;
 
         // 0084BF00 step 2: the entity sweep. The static trace is the water
@@ -2376,6 +2400,15 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
             const float direction[3] = {shot.flight.velocity.x, shot.flight.velocity.y,
                 shot.flight.velocity.z};
             ++summary.impacts_entity;
+            if (trace) {
+                log.notef("  torpedo trace %llu exit=entity_impact hit=%s "
+                    "at=(%.1f,%.2f,%.1f) life=%.2f",
+                    shot.torpedo_trace_id,
+                    unit_name_or_index(query.hit_unit).c_str(),
+                    static_cast<double>(point[0]), static_cast<double>(point[1]),
+                    static_cast<double>(point[2]),
+                    static_cast<double>(shot.life));
+            }
             done("Projectile::on_impact_0084bc60", 0x0084bc60u);
             apply_hit(shot.owner_unit - 1, shot.gun_row, query.hit_unit - 1, point,
                 direction);
@@ -2408,6 +2441,15 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
                 shot.flight.velocity.y, shot.flight.velocity.z};
             const float entry_speed = length3(entry_velocity);
             const float hit_limit = entry != nullptr ? entry->max_water_hit_vel : 0.0f;
+            if (trace) {
+                log.notef("  torpedo trace %llu water_crossing from_y=%.3f to_y=%.3f "
+                    "life=%.2f swim=%.1f hit_limit=%.1f entry_speed=%.1f swimming=%d",
+                    shot.torpedo_trace_id, static_cast<double>(from[1]),
+                    static_cast<double>(shot.position[1]),
+                    static_cast<double>(shot.life), static_cast<double>(swim),
+                    static_cast<double>(hit_limit),
+                    static_cast<double>(entry_speed), shot.swimming ? 1 : 0);
+            }
             if (swim > 0.0f && !shot.swimming && hit_limit > 0.0f
                 && entry_speed > hit_limit) {
                 ++summary.water_entry_breakups;
@@ -2442,9 +2484,21 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
                 shot.flight.local_position.y = 0.0f;
                 shot.flight.snapshot_current.y = 0.0f;
                 ++summary.torpedo_swims_started;
+                if (trace) {
+                    log.notef("  torpedo trace %llu swim_started life=%.2f "
+                        "pos=(%.1f,%.2f,%.1f)", shot.torpedo_trace_id,
+                        static_cast<double>(shot.life),
+                        static_cast<double>(shot.position[0]),
+                        static_cast<double>(shot.position[1]),
+                        static_cast<double>(shot.position[2]));
+                }
                 continue;
             }
             ++summary.impacts_static;
+            if (trace) {
+                log.notef("  torpedo trace %llu exit=water_static life=%.2f",
+                    shot.torpedo_trace_id, static_cast<double>(shot.life));
+            }
             done("Projectile::water_crossing_0078d1b0", 0x0078d1b0u);
             shot.alive = false;
             continue;
@@ -2460,6 +2514,13 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
         const float speed = cruise;
         if (range > 0.0f && shot.life * speed > range) {
             ++summary.expired;
+            if (trace) {
+                log.notef("  torpedo trace %llu exit=expired life=%.2f speed=%.1f "
+                    "range=%.1f travelled=%.1f", shot.torpedo_trace_id,
+                    static_cast<double>(shot.life), static_cast<double>(speed),
+                    static_cast<double>(range),
+                    static_cast<double>(shot.life * speed));
+            }
             shot.alive = false;
         }
     }
@@ -3032,6 +3093,16 @@ bool GameGunneryHost::release_ordnance_drop(std::size_t unit_index) {
                     shot.drop_owner_heading, shot.drop_target_heading));
         }
     }
+    // TRACE, packet cc8_torpedo_swim item 1: the id on this round's own drop
+    // line, carried on the row so the per-tick trace is keyed to it.
+    shot.torpedo_trace_id = h.summary.torpedo_drops + 1;
+    h.log.notef("  torpedo trace %llu spawn by %s at=(%.1f,%.2f,%.1f) "
+        "vel=(%.1f,%.2f,%.1f) bullet=%d", shot.torpedo_trace_id,
+        chosen->unit_name.c_str(), static_cast<double>(shot.position[0]),
+        static_cast<double>(shot.position[1]),
+        static_cast<double>(shot.position[2]),
+        static_cast<double>(velocity[0]), static_cast<double>(velocity[1]),
+        static_cast<double>(velocity[2]), chosen->bullet_class);
     h.shots.push_back(shot);
     ++h.summary.projectiles;
     ++h.summary.torpedo_drops;
@@ -3202,6 +3273,21 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery torpedo_loadout_cleared=%llu "
             "(drops that cleared the owner's kind 2Bh bit, so approach+132h goes false)",
             s.torpedo_loadout_cleared);
+        // TRACE, packet cc8_torpedo_swim item 1: a traced round still in the
+        // list at mission end took no exit at all, which is its own answer.
+        for (const GameProjectileRow& row : host.shots) {
+            if (row.torpedo_trace_id == 0) continue;
+            host.log.notef("  torpedo trace %llu STILL IN FLIGHT at mission end "
+                "life=%.2f pos=(%.1f,%.2f,%.1f) vel=(%.1f,%.2f,%.1f) swimming=%d",
+                row.torpedo_trace_id, static_cast<double>(row.life),
+                static_cast<double>(row.position[0]),
+                static_cast<double>(row.position[1]),
+                static_cast<double>(row.position[2]),
+                static_cast<double>(row.flight.velocity.x),
+                static_cast<double>(row.flight.velocity.y),
+                static_cast<double>(row.flight.velocity.z),
+                row.swimming ? 1 : 0);
+        }
     // Packet cc8_torpedo_closest_approach: the measurement the torpedo stream
     // has owed since docs/TORPEDO_AFTER_THE_DROP.md section 2. Distances are
     // CENTRE TO CENTRE and horizontal - this host has no oriented hull box - so

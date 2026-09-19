@@ -10,6 +10,7 @@
 #include "bsp/scene_traffic_groups.hpp"
 #include "bsp/mission_scene_contents.hpp"
 #include "bsp/mission_scene_load.hpp"
+#include "bsp/native_camera_plane_transform.hpp"
 #include "bsp/plane_squadron_host.hpp"
 #include "bsp/pose_refresh.hpp"
 #include "bsp/resource_lookup.hpp"
@@ -1192,6 +1193,23 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
         owner.log.notef("scene path retained: id=%zu parent=%zu name=%s points=%zu "
             "valid=%d creator_concrete=0", record.scene_id, record.parent_scene_id,
             record.name.c_str(), record.path_points_local.size(), record.path_points_retained);
+        // Packet cc8_ship_moveonpath: the same local-to-world step 007AF800
+        // makes for an avoidance path, so a `moveonpath` command can find the
+        // authored path by the name `FindEntity` resolved.
+        if (record.path_points_retained && !record.path_points_local.empty()) {
+            std::vector<std::array<float, 3>> world_points;
+            world_points.reserve(record.path_points_local.size());
+            for (const std::array<float, 3>& authored : record.path_points_local) {
+                const std::array<float, 4> source{authored[0], authored[1], authored[2], 1.0f};
+                std::array<float, 4> transformed{};
+                transform_native_vector4_00b62d10(source.data(), transformed.data(),
+                                                  record.world);
+                const float w = transformed[3] != 0.0f ? transformed[3] : 1.0f;
+                world_points.push_back({transformed[0] / w, transformed[1] / w,
+                                        transformed[2] / w});
+            }
+            scene_path_registry().add(record.name, std::move(world_points));
+        }
     }
 
     if (!gate.generate) {
@@ -2052,6 +2070,33 @@ SceneSpawnPool& scene_spawn_pool() noexcept {
     return pool;
 }
 
+void ScenePathRegistry::clear() noexcept { entries_.clear(); }
+
+void ScenePathRegistry::add(const std::string& name,
+                            std::vector<std::array<float, 3>> points_world) {
+    for (ScenePathEntry& entry : entries_) {
+        if (entry.name == name) {
+            entry.points_world = std::move(points_world);
+            return;
+        }
+    }
+    entries_.push_back(ScenePathEntry{name, std::move(points_world)});
+}
+
+const ScenePathEntry* ScenePathRegistry::find(const std::string& name) const noexcept {
+    for (const ScenePathEntry& entry : entries_) {
+        if (entry.name == name) return &entry;
+    }
+    return nullptr;
+}
+
+std::size_t ScenePathRegistry::size() const noexcept { return entries_.size(); }
+
+ScenePathRegistry& scene_path_registry() noexcept {
+    static ScenePathRegistry registry;
+    return registry;
+}
+
 const GameSceneContentsSummary& GameSceneContentsHost::summary() const noexcept {
     return impl_->summary;
 }
@@ -2087,6 +2132,8 @@ void GameSceneContentsHost::run_load_scene_contents_004d4df0(const std::string& 
     // without it a process that loaded a second mission would answer
     // `GenerateObject` out of the first one's records.
     scene_spawn_pool().clear();
+    // Same reason again: the authored Path entities belong to this scene.
+    scene_path_registry().clear();
     // Same reason as the pool above: the squadron table belongs to the scene
     // being loaded, and a second mission must not inherit the first one's wings.
     bsp::plane_squadron_registry().clear();

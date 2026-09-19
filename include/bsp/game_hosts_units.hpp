@@ -274,6 +274,9 @@ public:
 
     // The command path's own rows and counters, for the report.
     const GameCommandsHost& commands() const noexcept;
+    // Packet cc8_ship_moveonpath: the `moveonpath` path build and the follow
+    // mode pair both write to the director this host owns.
+    GameCommandsHost& commands() noexcept;
 
     // 004c0890 on one created unit, through bsp::set_controlled_unit_004c0890.
     void set_controlled_unit_004c0890(std::size_t index);

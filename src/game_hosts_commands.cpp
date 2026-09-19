@@ -25,6 +25,9 @@
 #include "bsp/entity_orders.hpp"
 #include "bsp/entity_command_arms.hpp"
 #include "bsp/weapon_director.hpp"
+#include "bsp/ship_ai_path_cursor.hpp"
+#include <array>
+#include <cmath>
 
 #include <cstdio>
 #include <cstring>
@@ -98,6 +101,23 @@ struct GameDirector {
     // and 00817031's 3.0f is the `cleartarget` arm, which this mission never
     // issues.
     float target_hold_0040{-1.0f};
+    // Packet cc8_ship_moveonpath: the slot-0 path object of director+1A4h, the
+    // one 0071BFF0(director, 0) answers with and the only one both 009E59C0 and
+    // 00836920's `moveonpath` arm ever ask for. The native allocates ten of
+    // them; this host carries the one that is read.
+    bsp::ShipAiPathCursor path_cursor{};
+    std::vector<std::array<float, 3>> path_points;   // the path source's points
+    std::string path_name;
+    int path_follow_mode{0};   // command+8h, 0071C1B0's first store
+    int path_start_mode{0};    // command+0Ch, 0071C1B0's second store
+    bool path_built{false};
+    unsigned long long path_advances{0};
+    int path_start_index{0};
+    float path_travelled{0.0f};
+    float path_last_x{0.0f};
+    float path_last_z{0.0f};
+    bool path_last_valid{false};
+    std::vector<int> path_visited;   // the legs reached, in order
 };
 
 struct GameCommandsHost::Impl {
@@ -1783,6 +1803,192 @@ GameDirectorStepOutcome GameCommandsHost::director_step_00836920(std::size_t uni
     return outcome;
 }
 
+// ---------------------------------------------------------------------------
+// Packet cc8_ship_moveonpath: the slot-0 path cursor
+// ---------------------------------------------------------------------------
+
+bool GameCommandsHost::set_path_follow_pair_0071c1b0(std::size_t unit_index,
+    int follow_mode, int start_mode) {
+    Impl& host = *impl_;
+    if (unit_index >= host.directors.size()) return false;
+    GameDirector& director = host.directors[unit_index];
+    director.path_follow_mode = follow_mode;   // 0071C1D2, [slot+8h]
+    director.path_start_mode = start_mode;     // 0071C1D8, [slot+0Ch]
+    host.done("Navigator::path_object_set_follow_mode", 0x0071c1b0u);
+    return true;
+}
+
+bool GameCommandsHost::begin_path_command_0071f600(std::size_t unit_index,
+    const std::string& path_name, const std::vector<std::array<float, 3>>& points,
+    float unit_x, float unit_z) {
+    Impl& host = *impl_;
+    if (unit_index >= host.directors.size()) return false;
+    GameDirector& director = host.directors[unit_index];
+    // 0071F6C6/0071F6CD answer null for an entity with no path interface and
+    // 007B22A0 still builds the source, so the build always happens and a
+    // zero-point source is what makes 007ADC30 true on the first state step.
+    // `path_built` therefore means "a build ran", and the empty test is separate.
+    director.path_points = points;
+    director.path_name = path_name;
+    director.path_built = true;
+    director.path_advances = 0;
+    director.path_travelled = 0.0f;
+    director.path_last_valid = false;
+    director.path_visited.clear();
+    if (points.empty()) {
+        director.path_cursor = bsp::ShipAiPathCursor{};
+        director.path_cursor.follow_mode_0c = director.path_follow_mode;
+        director.path_start_index = 0;
+        return false;
+    }
+    // 007B11F0's head: the nearest point, then its neighbour in the travel
+    // direction as a second candidate. The projection test that chooses between
+    // them (007B1263 onwards) was not read, so this takes the nearest alone.
+    std::vector<float> flat;
+    flat.reserve(points.size() * 3);
+    for (const std::array<float, 3>& point : points) {
+        flat.push_back(point[0]);
+        flat.push_back(point[1]);
+        flat.push_back(point[2]);
+    }
+    const int joined = bsp::ship_ai_path_nearest_index_007b1100(flat.data(),
+        static_cast<int>(points.size()), unit_x, unit_z);
+    // 007B1C50. `random_forward` is only consulted for PATH_SM_JOIN_RANDOM_DIR,
+    // and the draw 00BD2F10 makes is not reproduced: this host keeps forward,
+    // which is what start modes 5 and 6 give anyway and what every USN04 call
+    // asks for (the eight sites pass three arguments, so the start mode is the
+    // 008A3734 default 5).
+    bsp::ship_ai_path_cursor_start_007b1c50(director.path_cursor,
+        director.path_follow_mode, director.path_start_mode, joined,
+        /*random_forward=*/true);
+    director.path_start_index = director.path_cursor.index_08;
+    director.path_visited.push_back(director.path_cursor.index_08);
+    host.done("WeaponDirector::path_build_0071f600", 0x0071f600u);
+    return true;
+}
+
+bool GameCommandsHost::path_cursor_has_no_legs_007adc30(std::size_t unit_index) const {
+    const Impl& host = *impl_;
+    if (unit_index >= host.directors.size()) return true;
+    const GameDirector& director = host.directors[unit_index];
+    // 007ADC30: no path object, or a point count that is not positive.
+    return !director.path_built || director.path_points.empty();
+}
+
+bool GameCommandsHost::path_cursor_on_final_leg_007adc60(std::size_t unit_index) const {
+    const Impl& host = *impl_;
+    if (unit_index >= host.directors.size()) return true;
+    const GameDirector& director = host.directors[unit_index];
+    return bsp::ship_ai_path_on_final_leg_007adc60(director.path_cursor,
+        director.path_built, static_cast<int>(director.path_points.size()));
+}
+
+bool GameCommandsHost::path_cursor_point(std::size_t unit_index, int leg,
+    float& x, float& z) const {
+    const Impl& host = *impl_;
+    if (unit_index >= host.directors.size()) return false;
+    const GameDirector& director = host.directors[unit_index];
+    if (!director.path_built || director.path_points.empty()) return false;
+    const int count = static_cast<int>(director.path_points.size());
+    int index = leg < 0 ? director.path_cursor.index_08 : leg;
+    if (index < 0) index = 0;
+    if (index >= count) index = count - 1;
+    x = director.path_points[static_cast<std::size_t>(index)][0];
+    z = director.path_points[static_cast<std::size_t>(index)][2];
+    return true;
+}
+
+bool GameCommandsHost::advance_path_cursor_00836bf0(std::size_t unit_index,
+    float unit_x, float unit_z, float unit_radius, float turn_radius) {
+    Impl& host = *impl_;
+    if (unit_index >= host.directors.size()) return false;
+    GameDirector& director = host.directors[unit_index];
+    if (!director.path_built || director.path_points.empty()) return false;
+    // 00836BF0 CMP EAX,0xe08f80: the arm runs only while the director's current
+    // command is `moveonpath`.
+    if (director.slot_command[0] != 0x00e08f80u) return false;
+
+    if (director.path_last_valid) {
+        const float mx = unit_x - director.path_last_x;
+        const float mz = unit_z - director.path_last_z;
+        director.path_travelled += std::sqrt(mx * mx + mz * mz);
+    }
+    director.path_last_x = unit_x;
+    director.path_last_z = unit_z;
+    director.path_last_valid = true;
+
+    // 00836C01-00836C39. The two doubles are read at their own width:
+    // 00CE3DE0 = 2.5 and 00CEC160 = 1.2000000476837158.
+    const double scaled_hull = static_cast<double>(unit_radius) * 2.5;
+    const double scaled_turn = static_cast<double>(turn_radius) * 1.2000000476837158;
+    const float radius = static_cast<float>(scaled_hull < scaled_turn ? scaled_hull
+                                                                      : scaled_turn);
+
+    const int count = static_cast<int>(director.path_points.size());
+    int index = director.path_cursor.index_08;
+    if (index < 0) index = 0;
+    if (index >= count) index = count - 1;
+    const std::array<float, 3>& point = director.path_points[static_cast<std::size_t>(index)];
+    const float dx = point[0] - unit_x;
+    const float dz = point[2] - unit_z;
+    // 007ADDDE FMUL ST0 squares the radius and 007ADE4D-007ADE55 squares the
+    // planar delta, so the comparison is between squares and never takes a root.
+    const bool within = (dx * dx + dz * dz) <= (radius * radius);
+    host.done("WeaponDirector::path_follow_00836bf0", 0x00836bf0u);
+    if (!within) return false;
+
+    // 007ADFAC-007ADFD4. A refusal here is the ONLY way 007ADD70 answers true,
+    // because every advance clears the flag 007ADFFE tests.
+    if (!bsp::ship_ai_path_advance_allowed_007adfac(director.path_cursor,
+            director.path_built, count)) {
+        return true;
+    }
+    // 007ADFDF and 007ADFE9. NOT PROJECTED: 007ADD70's loop can take several
+    // legs in one step, with the count coming from the remaining-leg arithmetic
+    // at 007ADD88-007ADDD3 and the atan2 lookahead at 007ADE5D-007ADF80 that
+    // decides how far to skip. This host takes one leg per director step.
+    const int next = bsp::ship_ai_path_next_index_007adcc0(director.path_cursor, count);
+    director.path_cursor.index_08 = next;
+    ++director.path_advances;
+    if (director.path_visited.size() < 512) director.path_visited.push_back(next);
+    host.done("WeaponDirector::path_cursor_advance_007adcc0", 0x007adcc0u);
+    return false;
+}
+
+std::vector<GamePathCursorRow> GameCommandsHost::path_cursor_rows() const {
+    const Impl& host = *impl_;
+    std::vector<GamePathCursorRow> rows;
+    for (std::size_t i = 0; i < host.directors.size(); ++i) {
+        const GameDirector& director = host.directors[i];
+        if (!director.path_built) continue;
+        GamePathCursorRow row;
+        row.unit_index = i;
+        row.unit = i < host.units.size() ? host.units[i].name : std::string();
+        row.path = director.path_name;
+        row.points = director.path_points.size();
+        row.follow_mode = director.path_follow_mode;
+        row.start_mode = director.path_start_mode;
+        row.start_index = director.path_start_index;
+        row.index = director.path_cursor.index_08;
+        row.forward = director.path_cursor.forward_10;
+        row.final_leg = bsp::ship_ai_path_on_final_leg_007adc60(director.path_cursor,
+            director.path_built, static_cast<int>(director.path_points.size()));
+        row.advances = director.path_advances;
+        row.travelled = director.path_travelled;
+        std::string visited;
+        const std::size_t shown = director.path_visited.size() < 24
+            ? director.path_visited.size() : 24;
+        for (std::size_t k = 0; k < shown; ++k) {
+            if (k != 0) visited += ">";
+            visited += std::to_string(director.path_visited[k]);
+        }
+        if (director.path_visited.size() > shown) visited += ">...";
+        row.visited = visited;
+        rows.push_back(row);
+    }
+    return rows;
+}
+
 bool GameCommandsHost::holds_cruise(std::size_t unit_index) const {
     const Impl& host = *impl_;
     if (unit_index >= host.directors.size()) return false;
@@ -2018,6 +2224,24 @@ void GameCommandsHost::report() {
         } else {
             host.log.notef("  authored token \"%s\" x%zu resolves to command class \"%s\"",
                 entry.token.c_str(), entry.count, entry.resolved.c_str());
+        }
+    }
+    // Packet cc8_ship_moveonpath: the slot-0 path cursor of every unit that was
+    // ordered onto an authored path. `mode` is PATH_FM_* and `start` PATH_SM_*,
+    // this installation's scripts/global/luamw_init.lua 224-232.
+    {
+        const std::vector<GamePathCursorRow> cursors = path_cursor_rows();
+        if (!cursors.empty()) {
+            host.log.notef("  path cursors (0071BFF0 slot 0, 009E59C0 reads, 00836BF0 moves)");
+            host.log.notef("   %-20s %-16s pts mode start from  at dir final advances "
+                "travelled legs", "unit", "path");
+            for (const GamePathCursorRow& row : cursors) {
+                host.log.notef("   %-20s %-16s %3zu %4d %5d %4d %3d %3s %5s %8llu %9.2f %s",
+                    row.unit.c_str(), row.path.c_str(), row.points, row.follow_mode,
+                    row.start_mode, row.start_index, row.index, row.forward ? "fwd" : "rev",
+                    row.final_leg ? "yes" : "no", row.advances,
+                    static_cast<double>(row.travelled), row.visited.c_str());
+            }
         }
     }
     host.log.notef("summary mission commands units=%zu resolved=%zu issued=%zu pushed=%zu "

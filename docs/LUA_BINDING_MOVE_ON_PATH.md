@@ -130,6 +130,24 @@ queued a command. Whether `vtable[60h]` (`008358D0`) has already filled that slo
 *next* one, or defers so that this is the slot the command will land in, was not read. The
 arithmetic above is established; the index it selects relative to step 3 is not.
 
+### Correction, packet `cc8_ship_moveonpath`
+
+**Closed.** The store is at `director+1A0h + i*4`, which is `director+1A4h + (i-1)*4`, one element
+*below* the base `0071BFF0` indexes; `i` is the first *empty* record, so `i-1` is the last
+*occupied* one, which is the command step 3 has just queued. `i` can only be 0 if nothing is queued
+at all. So the pair lands on the command just issued, not on the next one.
+
+**And the target is the command/slot object, not "the slot's path object".** `0071BFF0` answers
+`slot + 10h` and `007ADC60` reads `+4h`, `+8h`, `+0Ch` and `+10h` off that, so `+8h` and `+0Ch` of
+the base object sit below the cursor. The 0Ch-byte thing `007B2250`/`007B22A0` allocate - the one
+this doc's term "path object" fits - has no `+0Ch` to write.
+
+**`msg+28h` is the START MODE.** Section 2's table leaves argument 3 as an unknown integer. It is
+`PATH_SM_*`: 5 `JOIN`, 6 `BEGIN`, 7 `JOIN_RANDOM_DIR`, 8 `JOIN_BACKWARDS`, and `007B1C50` branches
+on exactly those four values with exactly those meanings. The follow mode is `PATH_FM_SIMPLE` 1,
+`PATH_FM_PINGPONG` 2, `PATH_FM_CIRCLE` 3. Both tables are in this installation's
+`scripts/global/luamw_init.lua` 224-232. See `docs/SHIP_AI_PATH_CURSOR.md`.
+
 ## 4. The two companions, `008A3B10` and `008A3CD0`
 
 Neither writes a local flag. Both take `*(entity+738h)` — the weapon director, which is what

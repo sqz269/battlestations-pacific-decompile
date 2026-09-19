@@ -240,6 +240,87 @@ bool ship_ai_movetopos_step_009e5770(ShipAiMoveToPosStepHost& host) {
 }
 
 // ---------------------------------------------------------------------------
+// 009E59C0, body 009E59C0-009E5C90, read whole. __thiscall(state)(float),
+// RET 4. The float argument is never read, exactly as in 009E5770.
+// ---------------------------------------------------------------------------
+bool ship_ai_moveonpath_step_009e59c0(ShipAiMoveOnPathStepHost& host) {
+    // 009E59DE-009E5A3C. The JNZ at 009E59E2 sends a raised latch straight to
+    // the second test, and a clear latch reaches it only when the slot has no
+    // legs, so the disjunction below is the branch, not a paraphrase of it.
+    bool announced = host.announce_latch_08();                     // 009E59DE
+    if (!announced) {
+        const std::uint32_t slot = host.director_command_slot_0071bff0(0); // 009E59F1
+        announced = host.command_slot_has_no_legs_007adc30(slot);   // 009E59F8
+    }
+    if (announced) {
+        const std::uint32_t slot = host.director_command_slot_0071bff0(0); // 009E5A0E
+        if (host.command_on_final_leg_007adc60(slot)) {             // 009E5A15
+            host.hold_heading_and_stop_009e00a0();                  // 009E5A20
+            return false;                                           // 009E5A36
+        }
+        host.set_announce_latch_08(false);                          // 009E5A39
+    }
+
+    // 009E5A46-009E5A6C. The waypoint is taken before the pose is refreshed,
+    // which is the order the listing has.
+    float goal_x = 0.0f, goal_z = 0.0f;
+    {
+        const std::uint32_t slot = host.director_command_slot_0071bff0(0); // 009E5A46
+        host.path_point_vtable_0004(slot, -1, goal_x, goal_z);      // 009E5A59
+    }
+    if (!host.unit_pose_valid_00c8()) {                             // 009E5A78
+        host.refresh_unit_pose_00414db0();                          // 009E5A82
+    }
+    float pos_x = 0.0f, pos_z = 0.0f;
+    host.unit_position_xz_00fc(pos_x, pos_z);                       // 009E5A87, 009E5A9D
+
+    const std::uint32_t slot = host.director_command_slot_0071bff0(0);  // 009E5AAC
+    const bool final_leg = host.command_on_final_leg_007adc60(slot);    // 009E5AB3
+    if (!final_leg) {                                               // 009E5ABE, JNZ
+        host.set_brain_leg_scale_0308(kShipAiMoveOnPathLegScale);   // 009E5ACA
+    }
+    host.set_navigation_goal_009de050(goal_x, goal_z, /*keep_mode=*/false,
+                                      final_leg);                   // 009E5AE2
+    const bool reached = host.state_goal_reached_vtable_002c(goal_x, goal_z); // 009E5AF4
+
+    // 009E5AF8 and 009E5B11: only a reached goal on the final leg finishes the
+    // command outright, and the JNZ at 009E5B11 jumps into the `finished` block
+    // directly rather than falling through the target arm.
+    if (!(reached && final_leg)) {
+        if (host.director_current_command_0054() != kShipAiMoveOnPathCommandObject) {
+            return false;                                           // 009E5B26
+        }
+        const std::uint32_t target = host.resolve_command_target_00521ea0(); // 009E5B2F
+        if (target == 0) return false;                              // 009E5B38
+        if (!host.target_is_kind_vtable_005c(target, 0x1C)) {
+            return false;                                           // 009E5B4B
+        }
+        float tx = 0.0f, tz = 0.0f;
+        host.target_position_xz_00427eb0(target, tx, tz);           // 009E5B53
+        // 009E5B58-009E5B8D: the unit's position minus the target's, each
+        // component spilled to float32 before the length is taken.
+        const float dx = pos_x - tx;
+        const float dz = pos_z - tz;
+        const float distance = host.planar_length_00414c60(dx, dz); // 009E5B91
+        // 009E5BA6 FILD, 009E5BAC FSUB, 009E5BB2 FCOMIP: one 80-bit chain, and
+        // the JBE at 009E5BB6 returns when the range is at or below the
+        // distance.
+        const double range = static_cast<double>(host.target_range_07a0(target)) -
+                             static_cast<double>(host.unit_radius_09c8());
+        if (range <= static_cast<double>(distance)) return false;   // 009E5BB6
+    }
+
+    // 009E5BBC-009E5C7B, the `finished` block.
+    host.set_announce_latch_08(true);                               // 009E5BC5
+    host.message_text_assign_0041e870("finished");                  // 009E5BC9, 00D09FD8
+    host.post_command_message_00984300(kShipAiMoveOnPathCommandObject); // 009E5C35
+    host.release_message_text_00419cc0();                           // 009E5C55, 009E5C5C
+    host.end_command_0071e430(kShipAiMoveOnPathCommandObject, 1);   // 009E5C70
+    host.hold_heading_and_stop_009e00a0();                          // 009E5C77
+    return true;
+}
+
+// ---------------------------------------------------------------------------
 // 009E86F0, body 009E86F0-009E881A, complete. __thiscall(state)(float), RET 4.
 // ---------------------------------------------------------------------------
 void ship_ai_attackmove_select_009e86f0(ShipAiAttackMoveSelector& selector,
