@@ -217,6 +217,7 @@ struct GameMissionLuaSummary {
     std::vector<std::string> created_scripts;
     std::vector<GameMissionEntryPointRun> created_script_runs;
     std::size_t self_table_entities{0};   // thisTable slots 00928a00 would build
+    std::size_t party_mirrors{0};         // slots 00928f50's mirror wrote `Party` on
     unsigned long long entity_resolves{0};  // 0089903c's resolved arm
     unsigned long long native_calls{0};
     // The three objective bindings. docs/MISSION_OBJECTIVES.md.
@@ -518,6 +519,13 @@ public:
     // record.
     void attach_script_orders(GameScriptOrdersHost* orders) noexcept;
     GameScriptOrdersHost* script_orders() const noexcept;
+
+    // Packet cc8_ship_drive. 00928F50 BSP_MissionEntity_SetPartyRaceLuaMirror,
+    // the other writer of a thisTable slot: `Party` at 00929046 and `Race` at
+    // 00928FD9, both through 00B67460. Run once the orders host is attached,
+    // because that is where this host can reach a unit's party. Answers how many
+    // slots it wrote.
+    std::size_t mirror_party_race_00928f50();
 
     // Called by the binding trampolines; public so the C callbacks can reach it.
     // `handled` says the row ran its reconstructed body rather than standing in

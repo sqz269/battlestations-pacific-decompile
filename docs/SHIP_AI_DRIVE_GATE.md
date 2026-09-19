@@ -207,10 +207,34 @@ entity rather than off its own arguments. It is already reconstructed as
 `bsp::mission_entity_set_party_race_00928f50` in `src/mission_entity_lua_attach.cpp`; nothing in
 this process called it.
 
-`src/game_hosts_lua.cpp` now writes both fields when the caller supplies them, and reports how
-many slots carry `Party`. **The value is still missing**: the entity list is assembled in
-`src/game_hosts_mission_frame.cpp`, which this packet does not own. The one line it needs is at
-`src/game_hosts_mission_frame.cpp:1422`, adding `row->party` to the aggregate.
+`src/game_hosts_lua.cpp` runs it as its own pass, `mirror_party_race_00928f50`, from
+`attach_script_orders` - one hop after the attach, which is the first point where this host can
+reach a unit's party, and the same ordering the image has, since `00928F50` is a different virtual
+call from `00928A00`'s. The keys line up: `recon`'s three index tables are `0`, `1` and `2`
+(`src/recon_values.cpp`, the `index != 3` loop), this installation's `luamw_init.lua` 73-75 give
+`PARTY_ALLIED 0`, `PARTY_JAPANESE 1`, `PARTY_NEUTRAL 2`, and `GameUnitRow::party` is in that same
+space (the controlled Lexington reports `party 0`). `Race` is left alone: this host has no race.
+
+**Measured**, `local/drive_party_usn04.log` against `local/drive_keep_usn04.log`:
+
+```
+thisTable: 00928f50's `Party` mirror written on 21 slot(s)
+MissionLuaNative::GetSelectedUnit 008ab070   UNIMPLEMENTED 49 -> concrete 49
+MissionEntity::set_party_race_lua_mirror 00928f50   new, concrete 1
+MissionLuaNative::IsGUIActive 008ca010              new, UNIMPLEMENTED 49
+MissionLuaNative::Music_Control_SetLevel 008c4d10   new, concrete 1
+entity_resolves 132 -> 181       moved / total_path unchanged at 100.51 / 39835.45
+```
+
+No `script call Think failed` line anywhere in the run, and the census gains three rows and loses
+none. The count on `GetSelectedUnit` does not move, which is the control
+`docs/HANDOFF_USN04_LUA_NATIVES.md` asks for: the row resolves, it does not start answering rows
+it should refuse. The two new rows are what `luaCheckMusic` reaches once `luaGetShipsAround`
+returns instead of raising - it asks `IsGUIActive` 49 times and sets the music level once.
+
+`SetSelectedUnit` `008AB260` at script line 1031 is reached once, `argc=1`, in `luaStageInit`, and
+it is still a record: the script hands the entity table straight back and this host does nothing
+with it. Binding it means driving `004C0890`, which is the next packet's.
 
 Correction to `docs/SHIP_AI_PATH_CURSOR.md` section 9, which says the missing half is "`Party`
 (and `Name`, which the same file's helpers read)": `Name` is **not** needed. Every `.Name` read in
