@@ -261,6 +261,13 @@ struct GameProjectileRow {
     // dt on every swim step. The serial is assigned at the first flight step.
     unsigned long long serial{0};
     float swim_seconds{0.0f};
+    // Packet cc9_flak_proximity_burst (docs/FLAK_PROXIMITY_BURST.md): the flak
+    // round's lock byte (+288h, ESI+44h at 0070C661), its locked entity (+294h,
+    // ESI+50h, one based here) and the distance left to the burst (+28Ch,
+    // ESI+48h, written at 0070C6D5 and run down at 0070C7AF).
+    bool flak_locked{false};
+    std::size_t flak_target{0};
+    float flak_remaining{0.0f};
     // Packet cc8_dive_glide. A bomb released by the dive-bomb task, and the
     // predicted impact point approach+D8h/+E0h carried at the release tick so
     // the run can print predicted against actual. INSTRUMENTATION; the image
