@@ -9216,3 +9216,33 @@ sections above.
 - **These rows also carry the shared-stream coupling.** Each death now takes a draw from the
   stream the gunnery draws share, so every later shared draw shifts. The rows cannot be split
   term by term between the death modes and that coupling.
+
+## Mission reference baselines, 2026-09-23 (combined state: death modes, squadron removal, station keeping, torpedo response)
+
+**These rows supersede both sections above:** the faithful-set rows, and my rows taken on
+`94f22374b` before main `3a57fce39`. Main `3a57fce39` added the ship torpedo response, station
+keeping and the turn-radius sites. This packet's death modes, dead-plane squadron removal and
+shared-stream death draws (`docs/PLANE_DEATH_MODES.md`, `docs/PILOT_SURFACE_CLIMBOUT.md`) are on
+top of it. **The combined state has not been measured before, so these are its first rows.**
+
+The binary is built from `617f563db`: main `3a57fce39` plus this branch (`local\rbF`). All
+switches are in their landed states. The death-mode draws are on the shared 00BD2F10 stream,
+keyed like `ship_ai_draw`. Runs are from the worktree root **without**
+`BSP_GUNNERY_RNG_STREAMS`.
+
+| mission | frames | damage | deaths | queued_hits | bomb_drops | bomb_impacts | torpedo drops | plane water contacts | first_hit | mission end | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 mission | **2645.0** | **11** | **148** | **0** | 0 | 4 | 5 | **98.95 s** | none | `local\rbF_usn04.log` |
+| USN01 | 3000 mission | 2250.0 | 5 | 141 | 0 | 0 | 3 | 2 | **63.65 s** | none | `local\rbF_usn01.log` |
+| USN04 (E2) | 9000 mission | **9585.8** | **30** | **369** | **10** | 10 | 8 | 14 | **98.95 s** | none | `local\rbF_e9000.log` |
+
+- **Refused releases from dead aircraft:** 4 at USN04 4500, 2 at USN01 and 6 at E2 9000.
+- **Death modes:**
+  - USN04 4500: 5 explosions, 1 delayed and 5 power-lost.
+  - E2 9000: 6 explosions, 10 delayed and 14 power-lost.
+- **Against my `94f22374b` rows,** the moves belong to main's additions and to the
+  shared-stream coupling together, and are not split here:
+  - USN04 4500 damage 2741.6 to 2645.0, deaths 9 to 11 and bomb drops 2 to 0.
+  - E2 damage 10165.8 to 9585.8, deaths 32 to 30 and bomb drops 8 to 10.
+  - The first hit moves to 98.95 s.
+- **No mission end in 9000 frames,** as in the previous section.
