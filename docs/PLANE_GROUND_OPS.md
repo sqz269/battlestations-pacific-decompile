@@ -405,3 +405,21 @@ named here.
 - **Was:** unit+BF4h is kGroundContactOwner, "the object the plane rests on"
   **Is:** it is a holder one level further out: holder+4h is the owner's air-operations block (owner+72Ch for MAirfield, owner+1188h for MMothership), block+3Ch the launch-site object and block+7Ch the owner unit. The doc's own dereference chain (unit+BF4h)->+4h->+3Ch->vtable[28h](unit) was already right
   **Evidence:** 007B8E96-007B8EB4 dereferences (value)+4h ->+7Ch and ->+3Ch; 006CFA01 passes unit+72Ch to 007C5F60, which reads +3Ch at 007C5F79, +7Ch at 007C5FDB and +80h at 007C6239
+
+## Correction, 2026-09-23 (packet cc9_plane_death_modes)
+
+- **Was:** step 5's hull loop "breaks out on the first point above the reference; otherwise
+  `(unit+72Ch)->vtable[+24h](0)`".
+- **Is:** the loop leaves at the first hull point that is **below** the water. It calls
+  `(unit+72Ch)->vtable[24h](0)` only when no point is below the water.
+- **Evidence:** the listing.
+  - The point comes from `004142E0` into `[ESP+2Ch..+34h]` (x, y, z). Before that call there are
+    two pushes and `LEA EAX,[ESP+30h]` at `007CBD03`, and the callee cleans its two arguments.
+  - The water height from `0078CF20` goes to `[ESP+1Ch]` (`007CBD30`).
+  - `007CBD34 FLD [ESP+30h]` (the point's y), then `007CBD38 FLD [ESP+1Ch]` (the water),
+    `007CBD3C FCOMIP ST0,ST1`, `007CBD40 JA 007CBE6C`. So the loop jumps out when water > y, that
+    is, when the point is under the surface.
+  - The fall-through `007CBD5A`-`007CBD6B` loads `[ESI+72Ch]`, `[EDX+24h]`, and
+    `LEA ECX,[ESI+72Ch]; PUSH 0; CALL EAX`.
+- The loop runs only when `007CBC4E`-`007CBC76` found the plane's height above the swim line at
+  least `desc+508h + 1.5` (`00CE3D78`), and `byte [unit+770h]` is set.

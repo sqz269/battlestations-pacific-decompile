@@ -12,6 +12,7 @@
 
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/plane_flight.hpp"
+#include "bsp/plane_death_modes.hpp"
 #include "bsp/plane_pose_commit.hpp"
 #include "bsp/plane_advance_pose.hpp"
 #include "bsp/plane_angular_velocity.hpp"
@@ -1047,6 +1048,17 @@ struct GameUnitSlot {
     // line at 007CC4E8.
     float plane_swim_height{0.0f};
     int plane_water_contacts{0};
+    // Packet cc9_plane_death_modes (docs/PLANE_DEATH_MODES.md): the death mode
+    // 007CA8A0 chose, unit+C10h the explosion timer 007BBFA0 stored, the flags
+    // 007D0B80 set (unit+C39h power lost, +C36h spinning, +C3Ah message seen),
+    // and whether the aircraft has been killed and left the world.
+    bsp::PlaneDeathMode plane_death_mode{bsp::PlaneDeathMode::None};
+    float plane_death_timer_c10{-1.0f};
+    bool plane_death_c39{false};
+    bool plane_death_c36{false};
+    bool plane_death_c3a{false};
+    bool plane_death_removed{false};
+    float plane_death_seconds{-1.0f};
     // The altitude 009FBA50 was last commanded with, and the pitch 009FB800
     // answered, kept for the census only.
     float plane_commanded_altitude{-1.0f};
@@ -2753,6 +2765,10 @@ struct GameUnitsHost::Impl {
     static constexpr bool kDogfightHeadOnVelocityBound = true;
     // 007CE9FD's release-issue predicates: session mode, +C3Ah, +5Dh, BombDelay.
     static constexpr bool kPlaneFixedStepPredicatesBound = true;
+    // Packet cc9_plane_death_modes: 007CA8A0's death mode, 007CAF10's dead-step
+    // terms, the kill that takes the aircraft out of the world, and the release
+    // refusal of a dead aircraft (007CEA1C). docs/PLANE_DEATH_MODES.md.
+    static constexpr bool kPlaneDeathModesBound = true;
     // 007DA710 (free-flight arm, read) and 007BB920's air-brake override.
     static constexpr bool kPlaneControlRateLawBound = true;
     static constexpr bool kPlaneCommitCommandBound = true;
@@ -5184,6 +5200,88 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                 ++host.summary.generic_tick_unavailable;
             }
             if (slot.motion_dispatch.entry == 0x007ce040u) {
+                // Packet cc9_plane_death_modes (docs/PLANE_DEATH_MODES.md). The
+                // death message chain as it reaches a plane: 00877B90 SetHealth
+                // -> vtable[1B0h] 007CA8A0 chooses the mode on the draw ->
+                // vtable[194h] 007BBFA0 stores unit+C10h and routes its message
+                // -> 007D0B80 sets C39h/C36h, and its tail 007D12FC sets C3Ah and
+                // calls vtable[70h](1), so the aircraft is dead (+5Dh) at once.
+                // An immediate "explosion" also kills it at 007D0CFD. A killed
+                // aircraft leaves the world, so this host stops stepping it.
+                // SUBSTITUTIONS, labelled:
+                // * the death is the gunnery host's (health <= 0 there), seen at
+                //   the next plane step rather than inside SetHealth;
+                // * the two draws come from a units-host generator, not from
+                //   00BD2F10's stream 1 (selection) and stream 0 (delay): the
+                //   gunnery host owns the shared stream and its file is leased;
+                // * unit+DFCh (rammed by a unit) is clear, since this host has no
+                //   ram hit, and unit+800h stays at 007CFDB4's -1, since its hits
+                //   carry no hull segment, so neither spin is reachable;
+                // * the 007D0B80 message is delivered in the same step.
+                if constexpr (GameUnitsHost::Impl::kPlaneDeathModesBound) {
+                    GameGunneryHost* const gun_host = host.gunnery.get();
+                    if (slot.plane_death_mode == bsp::PlaneDeathMode::None
+                        && !slot.plane_death_removed && gun_host != nullptr
+                        && gun_host->unit_dead(index)) {
+                        static std::uint32_t select_stream = 0x2545F491u;
+                        static std::uint32_t delay_stream = 0x9E3779B9u;
+                        const auto next = [](std::uint32_t& state, float low, float high) {
+                            state = state * 1664525u + 1013904223u;
+                            const float unit = static_cast<float>((state >> 8) & 0xFFFFFFu)
+                                / static_cast<float>(0x1000000u);
+                            return low + (high - low) * unit;
+                        };
+                        bsp::PlaneDeathModeInputs din;
+                        din.health_370 = 0.0f;
+                        din.draw = next(select_stream, 0.0f, 1.0f);   // 007CA914
+                        din.rammed_dfc = false;
+                        din.spin_side_800 = -1;
+                        if (host.lua.plane_globals_loaded()) {
+                            const bsp::GameTuningBlock& g = host.lua.plane_globals();
+                            din.chance_explosion = g.death_mode_chances_explosion;
+                            din.chance_explosion_delayed = g.death_mode_chances_explosion_delayed;
+                            din.chance_spinning = g.death_mode_chances_spinning;
+                            din.chance_powerloss = g.death_mode_chances_powerloss;
+                        }
+                        const bsp::PlaneDeathMode mode = bsp::plane_death_mode_007ca8a0(din);
+                        // planepartclasses.lua ExplosionExplosionDelay, which
+                        // 004A9BD0 stores at [00E18710] / [00E1870C].
+                        static bool delay_read = false;
+                        static float delay_pair[2] = {0.6f, 1.8f};
+                        if (!delay_read) {
+                            delay_read = true;
+                            host.lua.read_global_number_pair("ExplosionExplosionDelay",
+                                delay_pair[0], delay_pair[1]);
+                        }
+                        const float delayed = mode == bsp::PlaneDeathMode::ExplosionDelayed
+                            ? next(delay_stream, delay_pair[0], delay_pair[1]) : 0.0f;
+                        slot.plane_death_mode = mode;
+                        slot.plane_death_timer_c10 =
+                            bsp::plane_death_timer_c10_007bbfa0(mode, delayed);
+                        const bsp::PlaneDeathFlags flags = bsp::plane_death_flags_007d0b80(
+                            mode, slot.plane_death_timer_c10);
+                        slot.plane_death_c39 = flags.powerlost_c39;
+                        slot.plane_death_c36 = flags.spinning_c36;
+                        slot.plane_death_c3a = true;
+                        slot.plane_death_seconds = host.summary.simulated_seconds;
+                        host.log.notef("plane death mode: unit=%s t=%.2f draw=%.4f mode=%s "
+                            "c10=%.2f (007CA8A0 -> 007BBFA0 -> 007D0B80, packet "
+                            "cc9_plane_death_modes)", slot.row.name.c_str(),
+                            static_cast<double>(host.summary.simulated_seconds),
+                            static_cast<double>(din.draw), bsp::plane_death_mode_name(mode),
+                            static_cast<double>(slot.plane_death_timer_c10));
+                        host.done("Plane::choose_death_mode_007ca8a0", 0x007ca8a0u);
+                        if (flags.killed_now) {
+                            slot.plane_death_removed = true;
+                            host.log.notef("plane death explosion: unit=%s t=%.2f "
+                                "dead_for=0.00 (007D0CFD Kill, packet cc9_plane_death_modes)",
+                                slot.row.name.c_str(),
+                                static_cast<double>(host.summary.simulated_seconds));
+                            host.done("Death::entity_kill_00926d90", 0x007d0cfdu);
+                        }
+                    }
+                    if (slot.plane_death_removed) continue;
+                }
                 // The plane fixed step. docs/PLANE_FLIGHT_CORE_LAW.md proves the
                 // arm selection is reachable: seed unit+900h to 7 as 007C6481
                 // does and the free-flight arm runs. The arms themselves are not
@@ -5219,6 +5317,48 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // and control_step_007da710's latch runs last.
                         refresh_attitude_007c1900();
                         pilot_think_and_commit(step);
+                        // Packet cc9_plane_death_modes: 007CAF10's death terms,
+                        // called at 007CC322 before the controller step. The
+                        // DeadMeat timer unit+C3Ch runs while the aircraft is
+                        // dead, the explosion fires once it passes unit+C10h,
+                        // and a power-lost aircraft has its throttle and air
+                        // brake zeroed, live and latched, while the pilot keeps
+                        // steering. SUBSTITUTION, labelled: the explosion budget
+                        // [00E186E8] <= [00E1873C] MaxExplosionNum is taken as met.
+                        if constexpr (GameUnitsHost::Impl::kPlaneDeathModesBound) {
+                            if (unit_.plane_death_c3a) {
+                                bsp::PlaneDeathStepInputs dsi;
+                                dsi.dead_5d = true;
+                                dsi.powerlost_c39 = unit_.plane_death_c39;
+                                dsi.spinning_c36 = unit_.plane_death_c36;
+                                dsi.free_flight_gate = true;
+                                dsi.timer_c10 = unit_.plane_death_timer_c10;
+                                dsi.dead_timer_c3c = unit_.plane_lost_drag_timer_c3c;
+                                dsi.step = step;
+                                const bsp::PlaneDeathStepResult dso =
+                                    bsp::plane_death_step_007caf10(dsi);
+                                unit_.plane_lost_drag_timer_c3c = dso.dead_timer_c3c;
+                                if (dso.explode) {
+                                    unit_.plane_death_timer_c10 = -1.0f;
+                                    unit_.plane_death_removed = true;
+                                    owner_.log.notef("plane death explosion: unit=%s "
+                                        "t=%.2f dead_for=%.2f (007CAF10 -> 007D0CFD Kill, "
+                                        "packet cc9_plane_death_modes)",
+                                        unit_.row.name.c_str(),
+                                        static_cast<double>(owner_.summary.simulated_seconds),
+                                        static_cast<double>(dso.dead_timer_c3c));
+                                }
+                                if (dso.zero_throttle) {
+                                    unit_.plane_live_throttle = 0.0f;
+                                    unit_.plane_latched_throttle = 0.0f;
+                                }
+                                if (dso.zero_air_brake) {
+                                    unit_.plane_live_air_brake = 0.0f;
+                                    unit_.plane_latched_air_brake = 0.0f;
+                                }
+                                owner_.done("Plane::death_step_007caf10", 0x007caf10u);
+                            }
+                        }
                         // The class field the law actually depends on. StallSpd
                         // is the only authored one; everything else is a
                         // PlaneGlobals default the mirror fills at load.
@@ -10029,7 +10169,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // 007D0136 and 007B84D0's setter has no caller. This
                             // host delivers no plane state message, so clear is
                             // exact here. unit+5Dh is the scene byte `simulate`.
-                            in.blocked_c3a = false;
+                            // Packet cc9_plane_death_modes: the death message
+                            // tail 007D1314 now runs, so C3Ah is set from death.
+                            in.blocked_c3a = GameUnitsHost::Impl::kPlaneDeathModesBound
+                                && unit_.plane_death_c3a;
                             in.blocked_5d = unit_.state != nullptr && unit_.state->simulate != 0;
                             owner_.done("Plane::issue_block_c3a", 0x007cea1cu);
                             owner_.done("Unit::issue_block_5d", 0x007cea29u);

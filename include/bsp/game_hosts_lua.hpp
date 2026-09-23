@@ -367,6 +367,11 @@ public:
     void set_avoid_all_ship_collision_008d0852(bool value);
     // Stored +194,+1D4,+1D8,+214,+218 snapshot from the represented load.
     bool read_avoidance_tuning(std::array<float, 5>& values) const noexcept;
+    // Packet cc9_plane_death_modes. A global two-number table such as
+    // planepartclasses.lua's ExplosionExplosionDelay = {0.6, 1.8}, which
+    // 004A9BD0 reads into [00E18710]/[00E1870C]. False when the global is
+    // absent or not a table of two numbers.
+    bool read_global_number_pair(const char* name, float& first, float& second);
     // Packet cc9_hit_accuracy: the four WeaponHitAccuracy sub-objects at
     // settings+240h/+298h/+2F0h/+348h as 0083C795..0083C919 fills them. False
     // until ShipGlobals ran; the caller then keeps the 00836EF0 defaults.

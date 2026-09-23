@@ -938,6 +938,25 @@ bool GameMissionLuaHost::read_avoidance_tuning(std::array<float, 5>& values) con
     return true;
 }
 
+bool GameMissionLuaHost::read_global_number_pair(const char* name, float& first,
+    float& second) {
+    if (state_ == nullptr) return false;
+    const int top = ::lua_gettop(state_);
+    ::lua_getfield(state_, LUA_GLOBALSINDEX, name);
+    bool ok = false;
+    if (lua_type(state_, -1) == LUA_TTABLE) {
+        ::lua_rawgeti(state_, -1, 1);
+        ::lua_rawgeti(state_, -2, 2);
+        if (::lua_isnumber(state_, -2) && ::lua_isnumber(state_, -1)) {
+            first = static_cast<float>(::lua_tonumber(state_, -2));
+            second = static_cast<float>(::lua_tonumber(state_, -1));
+            ok = true;
+        }
+    }
+    ::lua_settop(state_, top);
+    return ok;
+}
+
 bool GameMissionLuaHost::read_minimap_globals_0087d7b0(float& minimap_range,
     float& visibility_range) {
     if (state_ == nullptr) {
