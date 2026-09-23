@@ -592,6 +592,13 @@ public:
                            const float predicted_impact[3],
                            float release_fall_time);
     const std::vector<GameGunneryUnitRow>& unit_rows() const noexcept;
+    // Packet cc9_water_surface_law. The gunnery host owns every death, so the
+    // units host asks it two things for an aircraft in the water:
+    // * unit_dead(): stands for 007BC5B0's health test `unit+150h <= 0`;
+    // * kill_unit_00926d90(): 007CE3A7's BSP_MissionEntity_Kill(unit, 1), the
+    //   plane tick's depth kill, through the same funnel a gunfire death takes.
+    bool unit_dead(std::size_t unit_index) const noexcept;
+    void kill_unit_00926d90(std::size_t unit_index, int cause);
     const GameGunnerySummary& summary() const noexcept;
 
     // docs/RECON_SLOT_LISTS.md rule (c). This host owns the one

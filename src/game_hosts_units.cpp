@@ -5540,12 +5540,68 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 unit_.motion.position[0], unit_.motion.position[2], sea);
                             const float line = water + unit_.plane_swim_height
                                 + (0.0f - unit_.plane_swim_height);
+                            // Packet cc9_water_surface_law
+                            // (docs/WATER_SURFACE_LAW.md). 007CB7F0's first test,
+                            // from the listing: 007CB81A sets BL when desc+198h
+                            // MinWaterSpd is zero, then 007CB82D-007CB838 return
+                            // at 007CB9C2 with nothing done when 007BC5B0 is false
+                            // and BL is clear. So a live AI aircraft of a class
+                            // with a non-zero MinWaterSpd (this installation's
+                            // Val: 22.22) stays in free flight under the surface.
+                            // 007BC5B0 SUBSTITUTED: true when the gunnery host has
+                            // the aircraft dead (health unit+150h <= 0); unit+61h
+                            // has no writer and unit+AA0h is not carried (0); every
+                            // aircraft is AI-held, since no human flies one here.
+                            constexpr bool kPlaneWaterContactGateBound = true;
+                            std::size_t self_index = owner_.slots.size();
+                            for (std::size_t i = 0; i < owner_.slots.size(); ++i) {
+                                if (owner_.slots[i].get() == &unit_) { self_index = i; break; }
+                            }
+                            GameGunneryHost* const gun_host = owner_.gunnery.get();
+                            bool contact_ignored = false;
+                            float min_water_spd = 0.0f;
+                            bool dead = false;
                             if (unit_.motion.position[1] < line) {
+                                static std::map<int, float> min_water_spd_by_type;
+                                auto found = min_water_spd_by_type.find(unit_.row.type_id);
+                                if (found == min_water_spd_by_type.end()) {
+                                    found = min_water_spd_by_type.emplace(unit_.row.type_id,
+                                        owner_.lua.read_vehicle_class_row(unit_.row.type_id)
+                                            .min_water_spd).first;
+                                }
+                                min_water_spd = found->second;
+                                dead = gun_host != nullptr
+                                    && self_index < owner_.slots.size()
+                                    && gun_host->unit_dead(self_index);
+                            }
+                            if (kPlaneWaterContactGateBound
+                                && unit_.motion.position[1] < line) {
+                                const bool gate_007bc5b0 = dead;
+                                if (!gate_007bc5b0 && min_water_spd != 0.0f) {
+                                    contact_ignored = true;
+                                    static std::map<const void*, unsigned> ignored_by_unit;
+                                    const unsigned ignored = ++ignored_by_unit[&unit_];
+                                    owner_.record("Plane::water_contact_007cb7f0", 0x007cb7f0u);
+                                    if (ignored == 1) {
+                                        owner_.log.notef("plane water contact ignored: "
+                                            "unit=%s alt=%.2f water=%.2f up_y=%.4f "
+                                            "MinWaterSpd=%.3f; 007BC5B0 false, so 007CB7F0 "
+                                            "returns at 007CB9C2 and the aircraft stays in "
+                                            "free flight (packet cc9_water_surface_law)",
+                                            unit_.row.name.c_str(),
+                                            static_cast<double>(unit_.motion.position[1]),
+                                            static_cast<double>(water),
+                                            static_cast<double>(unit_.motion.pose_row1[1]),
+                                            static_cast<double>(min_water_spd));
+                                    }
+                                }
+                            }
+                            if (!contact_ignored && unit_.motion.position[1] < line) {
                                 ++unit_.plane_water_contacts;
                                 // 007CB92C: 7, 4 and 5 all go to 6. The
-                                // "powerlost" effect, the 0090F6C0(unit, 3)
-                                // damage call and the 0C3h session message are
-                                // contracts, unread here.
+                                // "powerlost" effect and the 0C3h session message
+                                // are contracts; 0090F6C0(unit, 3) is the SA_OC
+                                // scoring award, not damage.
                                 unit_.plane_control_mode_900 = 6;
                                 owner_.record("Plane::water_contact_007cb7f0", 0x007cb7f0u);
                                 if (unit_.plane_water_contacts == 1) {
@@ -5553,7 +5609,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                         "alt=%.2f water=%.2f |v|=%.2f state 7 -> 6 "
                                         "(007CB7F0 tail 007CB92C); the free-flight "
                                         "gate 0074E210 is now false and the water "
-                                        "surface law 007DCDD0 is a contract",
+                                        "surface law 007DCDD0 is a contract "
+                                        "[type=%d MinWaterSpd=%.3f dead=%d up_y=%.4f]",
                                         unit_.row.name.c_str(),
                                         static_cast<double>(unit_.motion.position[1]),
                                         static_cast<double>(water),
@@ -5563,8 +5620,45 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                             + unit_.plane_world_velocity[1]
                                                 * unit_.plane_world_velocity[1]
                                             + unit_.plane_world_velocity[2]
-                                                * unit_.plane_world_velocity[2])));
+                                                * unit_.plane_world_velocity[2])),
+                                        unit_.row.type_id,
+                                        static_cast<double>(min_water_spd), dead ? 1 : 0,
+                                        static_cast<double>(unit_.motion.pose_row1[1]));
                                 }
+                            }
+                        }
+                        // Packet cc9_water_surface_law. 007CE313-007CE3AC, the plane
+                        // tick's depth kill: in net modes other than 2 and with
+                        // unit+61h clear, an altitude unit+100h below minus the
+                        // limit calls BSP_MissionEntity_Kill(unit, 1) at 007CE3A7.
+                        // The limit is 30.0f (00CE38C8) or the float +0Ch of
+                        // (unit+360h)->+160h->+0Ch->vtable[48h](). SUBSTITUTION,
+                        // labelled: that chain is not carried, so the image's own
+                        // 30.0f fallback stands. SUBSTITUTION, labelled: the image
+                        // runs this at the top of every tick in every state; here it
+                        // runs after the free-flight step, for state 7 only, since a
+                        // state-6 aircraft is frozen at the surface in this host.
+                        {
+                            constexpr bool kPlaneDepthKillBound = true;
+                            constexpr float kPlaneDepthKillLimit = 30.0f;  // 00CE38C8
+                            if (kPlaneDepthKillBound && unit_.plane_control_mode_900 == 7
+                                && unit_.motion.position[1] < -kPlaneDepthKillLimit) {
+                                GameGunneryHost* const gun_host = owner_.gunnery.get();
+                                std::size_t self_index = owner_.slots.size();
+                                for (std::size_t i = 0; i < owner_.slots.size(); ++i) {
+                                    if (owner_.slots[i].get() == &unit_) { self_index = i; break; }
+                                }
+                                if (gun_host != nullptr && self_index < owner_.slots.size()
+                                    && !gun_host->unit_dead(self_index)) {
+                                    owner_.log.notef("plane depth kill: unit=%s alt=%.2f "
+                                        "below -%.1f; BSP_MissionEntity_Kill(unit, 1) at "
+                                        "007CE3A7 (packet cc9_water_surface_law)",
+                                        unit_.row.name.c_str(),
+                                        static_cast<double>(unit_.motion.position[1]),
+                                        static_cast<double>(kPlaneDepthKillLimit));
+                                    gun_host->kill_unit_00926d90(self_index, 1);
+                                }
+                                owner_.record("Plane::depth_kill_007ce3a7", 0x007ce3a7u);
                             }
                         }
                         // The release-order issue used to run here. It does not
