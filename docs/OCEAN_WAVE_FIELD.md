@@ -126,3 +126,77 @@ See the report (reports/ocean_wave_field.json, `validation`) for the run status 
   They matter only if the amplitude is ever non-zero.
 - The FFT itself (00B95750, 00B95D30, 00B95AA0, 00B952D0). Reproducing the rendered sea would
   need it; ship motion does not.
+
+## 7. Authored ocean data and the field's other readers (appended 2026-09-23, read-only)
+
+### (a) Where the flat-sea byte and the wave parameters come from
+
+The scene file's header properties reach the record through 00469BF0
+BSP_SceneFile_ReadHeaderBlock, then 004F1D70 BSP_SceneRecord_ApplyHeaderProperties.
+
+- **The ocean branch.** 004F2205 calls 004EB9B0, which reads named keys out of the header's
+  property bag (BSP_ScenePropertyBag_Find):
+
+  | Key | Written to | Then read by |
+  |---|---|---|
+  | `0_SimpleOcean` (type 3, a boolean) | record+0C20h | 004DF7E1, as field+F9h |
+  | `Waves.WindDirection` | +9DCh, block +4Ch | 0078C9EC, 00B9A450 |
+  | `Waves.WindSpeed` | +9E0h, block +50h | 00B9A450 |
+  | `Waves.WaveHeight` | +9E4h, block +54h | 00B96C50, spectrum +80h |
+  | `Waves.ChoppyWavesFactor` | +9E8h, block +58h | spectrum +88h |
+  | `Waves.HeightScale` | +9ECh, block +5Ch | 0078CA0E, field+B8h |
+  | `Waves.Falloff` | +9BCh, block +2Ch | field+18h |
+  | `Waves.LayerScale` | +9C0h, block +30h | field+1Ch and +B0h, with 1/LayerScale at +B4h |
+  | `Waves.TimeScale` | +9C4h, block +34h | field+20h |
+
+  "Block" is the +990h environment block, so block +4Ch is record+9DCh. The remaining
+  `1WaveDampening*` keys and the NormalMaps and foam keys feed the renderer.
+- **The fallback.** 004F2222 looks up `g_Weather` (00CEA414). When it is present, 004ECA30 reads
+  the fog, cloud and rain keys into the same block. When it is absent, 004CB420 builds a default
+  block that 004F224C copies over record+990h.
+
+**The format.** The installation's scenes are text property files: `Key = F 0.4000 ;` for a float
+and `Key = B false ;` for a boolean. Paths are under universe/scenes/missions/.
+
+**Survey of this installation.** A read-only parse of all 259 .scn files (local/scn_survey.py)
+finds:
+- every file authors the Waves block
+- `0_SimpleOcean` is false in all 259, so field+F9h is clear everywhere
+- there are 32 distinct combinations
+- WindDirection 0.4 and WindSpeed 1.0 appear in every file
+- WaveHeight ranges 50..250, ChoppyWavesFactor 1.3..3.5, HeightScale 0.5..3.0, Falloff 0.2..0.7,
+  LayerScale 51..125, TimeScale 0.6..1.0
+
+The two measured missions:
+
+| Mission | WaveHeight | ChoppyWavesFactor | HeightScale | Falloff | LayerScale | TimeScale |
+|---|---|---|---|---|---|---|
+| usn_04_defend_guadalcanal.scn | 100.0 | 1.5 | 2.0 | 0.3 | 80.0 | 0.6 |
+| usn_01_battle_of_eastern_solomons.scn | 100.0 | 3.5 | 2.0 | 0.3 | 125.0 | 0.6 |
+
+The host's stand-in tile of 100.0 (the 004CB420 default) therefore differs from both, which author
+80.0 and 125.0. At the image's amplitude of 0.0 the tile cannot change the sampled height. It
+would matter only if +24h were ever non-zero. Binding it needs a .scn text reader for these keys.
+The host does not read these keys today.
+
+### (b) Whether any other CPU path reads the grid
+
+A rel32 census of the executable on disk (local/rel32_scan.py) finds:
+- **00B960C0**, the grid sample: one call, 0078C928. Nothing else samples the spectrum grid
+  through it.
+- **00B9A3D0**, the field+BCh spectrum getter: one call, 0078C9D0, the parameter set in
+  0078C9B0.
+- **0078C890**, the wave field: seven calls.
+  - 0078CF3E, in 0078CF20
+  - 0078D2A8, in 0078D1B0 BSP_GameWorld_BisectWaterCrossing
+  - 00B9F163, in 00B9F0A0
+  - 00BA365F and 00BA3691, in 00BA2FF0
+  - 00BAB90C, in 00BAB3F0
+  - 00BAB9E9, in 00BAB930
+- **0078CF20**, the water height: 49 calls.
+
+Every one of these paths ends in 0078C890's multiply by field+24h, so every CPU consumer sees the
+same zero amplitude. The last four callers of 0078C890 sit in the water-effects module
+(00B9..00BB, beside the water tracers). The rendered waves therefore cannot come through 0078C890.
+They come from the spectrum vectors the renderer uploads, which is the renderer's contract and is
+not bound here.
