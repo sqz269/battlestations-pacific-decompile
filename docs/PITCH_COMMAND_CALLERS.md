@@ -78,9 +78,28 @@ is the `false` branch.
 Any difference in the pair means a flow that reaches these seams with the mode not at 2, which
 would itself be a finding.
 
-## 4. Runs
+## 4. Runs and decision
 
-(Filled in after the runs.)
+Control P0 is main at `128b845f2`; treatment P1 is the same tree with
+`kPitchCommandCallersBound = true`. Each runs from its own copied binary. The two `.text`
+sections differ, so the stores are compiled in.
+
+| run | mission, parameters | binary | log | `summary mission` rows (refills excluded) | per-unit rows |
+| --- | --- | --- | --- | --- | --- |
+| P0 | USN01, `--frames 3200 --mission-frames 3000` | `localinP0` | `local\P0_usn01.log` | 76 | - |
+| P1 | USN01, same | `localinP1` | `local\P1_usn01.log` | 76, identical to P0 | identical |
+| P0 | USN04, E2 parameters (`--frames 9200 --mission-frames 9000`) | `localinP0` | `local\P0_usn04.log` | 84 | - |
+| P1 | USN04, same | `localinP1` | `local\P1_usn04.log` | 84, identical to P0 | identical |
+
+The per-unit rows compared were every `torpedo`, `divebomb`, `water contact`,
+`release census`, `glide census`, `db aim exit` and `follow law` row: no difference. The seams
+were reached. The torpedo attack-run seam (`BotApproach::command_altitude`, `009FBA50`) ran 1423
+times in USN01 and 1182 in USN04, identically in both runs of each pair. The torpedo moveto's
+glide census prints in both USN01 runs.
+
+**Decision: the three mode stores land** (`kPitchCommandCallersBound = true`). They are the
+image's own stores, and the pair is identical, as section 3 predicted from the mode already
+being 2.
 
 ## 5. For cc9_flyover_speed / cc9_goaway_reattack
 
