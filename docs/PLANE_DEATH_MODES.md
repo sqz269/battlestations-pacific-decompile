@@ -172,3 +172,50 @@ USN04 with the RNG option on, switch off against switch on, same tree.
 - **Hits by entity.** Category 10 hits fall by the dead aircraft's torpedoes once the refusal lands.
   With the stage gate alone, only rows downstream of the removed and power-lost aircraft's paths
   move.
+
+## 5. Pairs
+
+USN04 with the RNG option on both sides, on this tree (main `b17ec69e2` plus this packet).
+The control is `local\dC_*.log` with `kPlaneDeathModesBound` off; the treatment is
+`local\dT_*.log` with it on.
+
+| quantity | 4500 off | 4500 on | 9000 off | 9000 on |
+| --- | --- | --- | --- | --- |
+| torpedo drops | 13 | 4 | 16 | 4 |
+| releases from dead aircraft | 9 | 0 spawned, 2 refused | 12 | 0 spawned, 3 refused |
+| Yorktown-class01 damage taken | 4599 | 0 | 4599 | 0 |
+| Lexington-class01 | 7858 taken, alive | 3259 taken, alive | sunk 225.81 s | 5141 taken, alive |
+| deaths | 18 | 19 | 30 | 27 |
+| total damage | 16504.6 | 7306.4 | 19256.2 | 11025.9 |
+| death modes (explosion / delayed / powerlost) | - | 1 / 12 / 6 | - | 2 / 14 / 11 |
+| removed | - | 11 | - | 15 |
+| negative halvings | 10056 | 46190 | 10879 | 283362 |
+
+**The headline held.** Every torpedo from a dead Kate is gone.
+- Yorktown's 4599 disappears at both lengths.
+- At 9000, Lexington survives. In this control Fletcher-class01 was not sunk, so that
+  prediction had nothing to test.
+- The refusals are fewer than the dropped releases, because most dead Kates now explode 0.6 to
+  1.8 s after death, before they reach a release. Removal times at 9000 were 0.00 to 1.80 s,
+  15 aircraft.
+
+**Mode mix.** At 9000 the modes were explosion 2, delayed 14 and powerlost 11 out of 27, against
+the expected 20/40/40%. Two explosions against 5.4 expected is low, but within chance at n = 27.
+
+**What else moved, and why.** The halvings and category 1 shots rise sharply, 11905 to 41697
+shots at 9000.
+- The cause is one live aircraft, not the death modes. At 9000, movieval|.-2 now survives the
+  flak that killed it at 200.01 s in the control.
+- It reaches the water alive at about 203 s. Under `kPlaneWaterContactGateBound` (packet
+  `cc9_water_surface_law`) that contact is ignored, as `007CB7F0` does for a live AI aircraft
+  with a non-zero MinWaterSpd.
+- It then stays in free flight just below the surface and never goes below -30 m, so it remains
+  a live, unhittable target until the end. It takes 0 hits, while Fletcher-class03 takes 692
+  zero-damage hits around it.
+- At 4500, two contacts are ignored in the same way.
+- **Open item for the lead.** The water gate is faithful to the listing. The host's pilot holding
+  a live aircraft at the surface is not, because the image's pilot would climb. Until the
+  low-altitude flight is fixed, category 1 counts after a live contact do not measure accuracy.
+
+**Deaths** go 30 to 27 at 9000. Lexington's survival accounts for one. The other two were not
+traced aircraft by aircraft.
