@@ -399,6 +399,22 @@ struct GameUnitSlot {
     int df_target_changes{0};
     int df_gun_window_ticks{0};
     bsp::DogfightGunState df_gun{};         // task+314h, packet cc9_dogfight_gun
+    // Packet cc9_fighter_gun_lead. The target's acceleration for 00954650's arc
+    // arm: the image reads the target's own unit+654h..65Ch, a per-fixed-step
+    // finite difference of its velocity (007CEE05-007CEE5B); this host keeps a
+    // per-fighter difference of the target's world velocity over the gun tick's
+    // dt instead (SUBSTITUTION, labelled; zero on the first tick of a target).
+    std::size_t gl_target_plus_one{0};
+    float gl_prev_target_v[3]{0.0f, 0.0f, 0.0f};
+    // 009FA248: plan+2D4h = 0 from the fine aim 009F9FC0. 0099E756 then skips
+    // the planner's yaw arm 0099E81A. Reset by the planner, as 0099B450 seeds 1.
+    bool gl_yaw_mode_2d4_zero{false};
+    int gl_lead_ticks{0};
+    int gl_arc_ticks{0};
+    int gl_fine_aim_ticks{0};
+    double gl_shift_sum{0.0};
+    float gl_shift_max{0.0f};
+    float gl_muzzle{0.0f};
     // unit+C50h (packet cc9_plane_gunfire): the enemy-aircraft list +50h, the
     // refresh clock +7Ch and the finder clock +84h (U(0,P)+P at midpoints),
     // and the finder's cached choice +B0h.
@@ -2842,6 +2858,13 @@ struct GameUnitsHost::Impl {
     // Packet cc9_fighter_gunfire_rate: approach+B4h = uniform(0.6, 0.8) * class+268h
     // (009C3F63-009C3F97), pinned at 0.6 before. OFF: unmeasured (runs blocked).
     static constexpr bool kAttackDistDrawBound = true;
+    // Packet cc9_fighter_gun_lead (docs/FIGHTER_GUN_LEAD.md): the gun's lead
+    // point +5Ch from 009FC931-009FC9F6 (two passes of the target's vtable[48h]
+    // 00954650, both arms, t = d / 007C2610), the envelope against it, and the
+    // fine aim 009F9FC0 (009FCCA0-009FCDB2) writing the yaw and pitch slots.
+    // Before: the target's current position, unled. ON, measured (E2 9000 L0/L1b):
+    // fighter hits 16 -> 66, two Vals shot down before their dive, releases 5 -> 2.
+    static constexpr bool kFighterGunLeadBound = true;
     std::uint32_t db_release_rng{0x9E3779B9u};
     std::map<std::uint64_t, std::uint32_t> db_release_rng_by_key;
     static bool release_rng_streams_enabled() {
@@ -7361,6 +7384,166 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                     }
 
+                    // 00954650, the plane class's vtable[48h] (vtable 00D19D28),
+                    // `__thiscall(out, t)`, RET 8: where the aircraft will be
+                    // after t seconds. v = vtable[34h] 007BBB70 = unit+AC8h,
+                    // P = unit+FCh..104h, acc = unit+654h..65Ch. Straight arm
+                    // 009548C5-00954937 when |v|^2 <= 1e-10 [00CE3820] or
+                    // |v| <= 1.0, or when the turn rate |acc_perp| / |v| is at most
+                    // [00D1A630] = 0.0087266 (pi/360). Otherwise the arc arm: the
+                    // centre c = P + (|v| / rate) * d with d = acc_perp / |acc_perp|
+                    // (0042B2F0), the axis d x n (004F9B30), and 00952340 rotates P
+                    // about c through -rate * t (0095489A FCHS). Returns true on
+                    // the arc arm.
+                    static bool df_predict_00954650(const GameUnitSlot& t, const float acc[3],
+                                                    float time, float out[3]) {
+                        const double v[3] = {t.plane_world_velocity[0], t.plane_world_velocity[1],
+                                             t.plane_world_velocity[2]};
+                        const double p[3] = {t.motion.position[0], t.motion.position[1],
+                                             t.motion.position[2]};
+                        const double s2 = v[0] * v[0] + v[1] * v[1] + v[2] * v[2];
+                        const double s = s2 <= 1e-10 ? 0.0 : std::sqrt(s2);
+                        bool arc = false;
+                        double rate = 0.0, d[3] = {0.0, 0.0, 0.0}, n[3] = {0.0, 0.0, 0.0};
+                        if (s2 > 1e-10 && s > 1.0) {
+                            for (int i = 0; i < 3; ++i) n[i] = v[i] / s;
+                            const double k = n[0] * acc[0] + n[1] * acc[1] + n[2] * acc[2];
+                            double ap[3];
+                            for (int i = 0; i < 3; ++i) ap[i] = acc[i] - k * n[i];
+                            const double w2 = ap[0] * ap[0] + ap[1] * ap[1] + ap[2] * ap[2];
+                            const double w = w2 <= 1e-10 ? 0.0 : std::sqrt(w2);   // 0042B2F0
+                            rate = w / s;
+                            if (w > 0.0 && rate > 0.008726646502812704) {
+                                for (int i = 0; i < 3; ++i) d[i] = ap[i] / w;
+                                arc = true;
+                            }
+                        }
+                        if (!arc) {
+                            for (int i = 0; i < 3; ++i)
+                                out[i] = static_cast<float>(p[i] + v[i] * time);
+                            return false;
+                        }
+                        const double r = s / rate;
+                        const double c[3] = {p[0] + r * d[0], p[1] + r * d[1], p[2] + r * d[2]};
+                        // 004F9B30: axis = d x n.
+                        const double ax[3] = {d[1] * n[2] - d[2] * n[1], d[2] * n[0] - d[0] * n[2],
+                                              d[0] * n[1] - d[1] * n[0]};
+                        // 00952340 -> 0085C3F0 (Rodrigues about the unit axis).
+                        const double th = -rate * time;
+                        const double q[3] = {p[0] - c[0], p[1] - c[1], p[2] - c[2]};
+                        const double qa = q[0] * ax[0] + q[1] * ax[1] + q[2] * ax[2];
+                        double perp[3];
+                        for (int i = 0; i < 3; ++i) perp[i] = q[i] - qa * ax[i];
+                        const double pp = perp[0] * perp[0] + perp[1] * perp[1] + perp[2] * perp[2];
+                        double rq[3] = {q[0], q[1], q[2]};
+                        if (!(pp < 9.999999747378752e-05)) {   // [00D7A268]
+                            const double cr[3] = {ax[1] * perp[2] - ax[2] * perp[1],
+                                                  ax[2] * perp[0] - ax[0] * perp[2],
+                                                  ax[0] * perp[1] - ax[1] * perp[0]};
+                            for (int i = 0; i < 3; ++i)
+                                rq[i] = qa * ax[i] + std::cos(th) * perp[i] + std::sin(th) * cr[i];
+                        }
+                        for (int i = 0; i < 3; ++i) out[i] = static_cast<float>(c[i] + rq[i]);
+                        return true;
+                    }
+
+                    // 009FC931-009FC9F6: +5Ch = the target's vtable[48h] at
+                    // t1 = |pos - own| / 007C2610(), then again at
+                    // t2 = |lead1 - own| / 007C2610(). 007C2610 is FLT_MAX for a
+                    // unit without a fixed gun, so t is about 0.
+                    void df_set_lead(const GameUnitSlot& tgt, float dt, bsp::DogfightGunInputs& gi) {
+                        if constexpr (GameUnitsHost::Impl::kFighterGunLeadBound) {
+                            df_set_lead_bound(tgt, dt, gi);
+                        } else {
+                            (void)dt;
+                            float p[3] = {tgt.motion.position[0], tgt.motion.position[1],
+                                          tgt.motion.position[2]};
+                            df_local(p, gi.lead_local);
+                        }
+                    }
+                    void df_set_lead_bound(const GameUnitSlot& tgt, float dt, bsp::DogfightGunInputs& gi) {
+                        float p[3] = {tgt.motion.position[0], tgt.motion.position[1],
+                                      tgt.motion.position[2]};
+                        const std::size_t ti = tgt.process_index;
+                        float acc[3] = {0.0f, 0.0f, 0.0f};
+                        if (unit_.gl_target_plus_one == ti + 1 && dt > 0.0f) {
+                            for (int i = 0; i < 3; ++i)
+                                acc[i] = (tgt.plane_world_velocity[i] - unit_.gl_prev_target_v[i]) / dt;
+                        }
+                        unit_.gl_target_plus_one = ti + 1;
+                        for (int i = 0; i < 3; ++i) unit_.gl_prev_target_v[i] = tgt.plane_world_velocity[i];
+                        const float muzzle = owner_.gunnery
+                            ? owner_.gunnery->min_fixed_gun_muzzle_speed_007c2610(unit_.process_index)
+                            : FLT_MAX;
+                        unit_.gl_muzzle = muzzle;
+                        const float* own = unit_.motion.position;
+                        auto dist = [&](const float q[3]) {
+                            const double a = q[0] - own[0], b = q[1] - own[1], c = q[2] - own[2];
+                            return static_cast<float>(std::sqrt(a * a + b * b + c * c));
+                        };
+                        float lead[3];
+                        bool arc = df_predict_00954650(tgt, acc, dist(p) / muzzle, lead);
+                        arc = df_predict_00954650(tgt, acc, dist(lead) / muzzle, lead) || arc;
+                        ++unit_.gl_lead_ticks;
+                        if (arc) ++unit_.gl_arc_ticks;
+                        const float shift = static_cast<float>(std::sqrt(
+                            static_cast<double>(lead[0] - p[0]) * (lead[0] - p[0]) +
+                            static_cast<double>(lead[1] - p[1]) * (lead[1] - p[1]) +
+                            static_cast<double>(lead[2] - p[2]) * (lead[2] - p[2])));
+                        unit_.gl_shift_sum += shift;
+                        if (shift > unit_.gl_shift_max) unit_.gl_shift_max = shift;
+                        df_local(lead, gi.lead_local);
+                    }
+
+                    // 009FCCA0-009FCDB2 and 009F9FC0, the fine aim: when
+                    // 1 - (lead dir . +68h) < +40h and +4Ch <= 0, with +68h the
+                    // unit's forward row (009FC857, +68h is reset to 0 each tick
+                    // at 009FCE64 and the dogfight task never writes it) and +40h
+                    // the aim state's Angle_Strafe (0 elsewhere). Angles
+                    // (x / d, y / d) of the lead in the unit frame; 009F9FC0 per
+                    // axis: sign(e) * min(|8 e| / (Spd * Spd / Accel), 1, damp),
+                    // class+1B0h/+1C4h for yaw, +1ACh/+1C0h for pitch. Writes
+                    // plan+29Ch/+2A0h (pitch desired/active), plan+2D0h = 0,
+                    // plan+284h/+288h (yaw desired/active), plan+2D4h = 0.
+                    // SUBSTITUTIONS, labelled: the distortion 009FA7E0 (+20h/+24h
+                    // added at 009FCD41-009FCD8A) is taken as 0, unread; the
+                    // damping (only while gun+4Ah, whose setter is unread) is off.
+                    void df_fine_aim_009f9fc0(const bsp::DogfightGunInputs& gi) {
+                        if (!gi.has_target) return;
+                        const float x = gi.lead_local[0], y = gi.lead_local[1], z = gi.lead_local[2];
+                        const float d = static_cast<float>(std::sqrt(static_cast<double>(x) * x +
+                            static_cast<double>(y) * y + static_cast<double>(z) * z));
+                        const float far_limit = gi.search_range_30 > gi.shoot_distance + 200.0f
+                            ? gi.search_range_30 : gi.shoot_distance + 200.0f;
+                        if (!(d > 1.0f) || !(far_limit > d)) return;   // 009FCB3D, 009FCB6A
+                        float strafe = 0.0f;
+                        if (unit_.dogfight_state == bsp::DogfightState::kAim &&
+                            owner_.lua.plane_globals_loaded()) {
+                            strafe = owner_.lua.plane_globals().pilot_auto_strafe_angle_angle_strafe;
+                        }
+                        const float cone = 1.0f - z / d;
+                        if (!(strafe > cone)) return;              // 009FCCAB
+                        if (unit_.df_gun.hold_4c > 0.0f) return;   // 009FCCB4
+                        const float e_h = x / d, e_v = y / d;
+                        auto stick = [](float e, float spd, float accel) {
+                            const float ratio = accel != 0.0f ? spd / accel : 0.0f;
+                            const float den = ratio * spd;
+                            float m = den != 0.0f ? std::fabs(8.0f * e) / den : 1.0f;
+                            if (m > 1.0f) m = 1.0f;
+                            const float sgn = e < 0.0f ? -1.0f : (e > 0.0f ? 1.0f : 0.0f);
+                            return sgn * m;
+                        };
+                        ++unit_.gl_fine_aim_ticks;
+                        unit_.plan_slots[bsp::kPilotSlotPitch].desired =
+                            stick(e_v, unit_.plane_class.pitch_spd, unit_.plane_class.pitch_accel);
+                        unit_.plan_slots[bsp::kPilotSlotPitch].active = 1;
+                        unit_.plan_state.pitch_mode_2d0 = 0;
+                        unit_.plan_slots[bsp::kPilotSlotYaw].desired =
+                            stick(e_h, unit_.plane_class.yaw_spd, unit_.plane_class.yaw_accel);
+                        unit_.plan_slots[bsp::kPilotSlotYaw].active = 1;
+                        unit_.gl_yaw_mode_2d4_zero = true;
+                    }
+
                     void df_gun_tick_009fc7c0(float dt) {
                         bsp::DogfightGunInputs gi;
                         gi.dt = dt;
@@ -7376,9 +7559,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // unled (the target's vt[48h] prediction is not modelled).
                         if (tgt != nullptr && df_slot_live(*tgt)) {
                             gi.has_target = true;
-                            float p[3];
-                            for (int i = 0; i < 3; ++i) p[i] = tgt->motion.position[i];
-                            df_local(p, gi.lead_local);
+                            if constexpr (GameUnitsHost::Impl::kPlaneFinderBound) {
+                                // Overwritten by the finder below; the lead is taken
+                                // once, for +74h, as 009FC931 does.
+                                float p[3] = {tgt->motion.position[0], tgt->motion.position[1],
+                                              tgt->motion.position[2]};
+                                df_local(p, gi.lead_local);
+                            } else {
+                                df_set_lead(*tgt, dt, gi);
+                            }
                         }
                         if constexpr (GameUnitsHost::Impl::kPlaneFinderBound) {
                             gi.has_target = false;
@@ -7386,6 +7575,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         const bool was_burst = unit_.df_gun.burst_4b;
                         bsp::dogfight_gun_tick_009fc7c0(unit_.df_gun, gi);
+                        if constexpr (GameUnitsHost::Impl::kFighterGunLeadBound) {
+                            df_fine_aim_009f9fc0(gi);
+                        }
                         if constexpr (GameUnitsHost::Impl::kPlaneGunfireBound) {
                             // task+2E0h = plan+2DCh -> cmd+16h -> unit+9FAh (007BB8BF,
                             // forced 0 when unit+5Dh is set) -> +BC9h (007B97B4).
@@ -7619,9 +7811,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 009FC922: a live result becomes +74h.
                         if (found != nullptr && df_slot_live(*found)) {
                             gi.has_target = true;
-                            float p[3] = {found->motion.position[0], found->motion.position[1],
-                                          found->motion.position[2]};
-                            df_local(p, gi.lead_local);
+                            df_set_lead(*found, dt, gi);
                             return found;
                         }
                         return nullptr;
@@ -11347,6 +11537,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // so the turn term is off and the plane holds heading with
                     // what the law calls its rudder.
                     bool plan_yaw_0099d300() {
+                        // 0099E756: plan+2D4h == 0 skips the yaw arm 0099E81A
+                        // (009F9FC0 wrote it this think); 0099B450 reseeds 1.
+                        const bool yaw_mode_zero = unit_.gl_yaw_mode_2d4_zero;
+                        unit_.gl_yaw_mode_2d4_zero = false;
                         if (unit_.command_target_plus_one == 0) return false;
                         const std::size_t target_index =
                             unit_.command_target_plus_one - 1;
@@ -11422,8 +11616,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
 
                         const float desired = bsp::plan_yaw_0099e81a(
                             frame, tuning, scratch, unit_.plane_class.yaw_spd);
-                        unit_.plan_slots[bsp::kPilotSlotYaw].desired = desired;
-                        unit_.plan_slots[bsp::kPilotSlotYaw].active = 1;  // 0099EA46
+                        if (!yaw_mode_zero) {
+                            unit_.plan_slots[bsp::kPilotSlotYaw].desired = desired;
+                            unit_.plan_slots[bsp::kPilotSlotYaw].active = 1;  // 0099EA46
+                        }
 
                         // 0099DE93-0099E39D, the roll arm. Without it the plane
                         // banks unopposed under 007DA710's own yaw-roll coupling
@@ -13864,6 +14060,13 @@ void GameUnitsHost::report() {
                             slot->pg_trigger_ticks, slot->pg_trigger_rises, slot->df_early_edges,
                             slot->df_early_asks, slot->df_head_on_ticks,
                             static_cast<double>(slot->df_head_on_throttle_min));
+                        host.log.notef("  fighter gun lead %-12s lead_ticks=%d arc_ticks=%d "
+                            "fine_aim_ticks=%d shift_mean=%.1f shift_max=%.1f muzzle=%.1f",
+                            slot->row.name.c_str(), slot->gl_lead_ticks, slot->gl_arc_ticks,
+                            slot->gl_fine_aim_ticks,
+                            slot->gl_lead_ticks ? slot->gl_shift_sum / slot->gl_lead_ticks : 0.0,
+                            static_cast<double>(slot->gl_shift_max),
+                            static_cast<double>(slot->gl_muzzle));
                         host.log.notef("  dogfight moveto %-12s speed_commands=%d speed=[%.1f %.1f] pilot_fires=%d",
                             slot->row.name.c_str(), slot->df_moveto_speed_commands,
                             static_cast<double>(slot->df_moveto_speed_commands ? slot->df_moveto_speed_min : 0.0f),

@@ -136,6 +136,10 @@ GameAiWeaponFacts& game_ai_weapon_facts() noexcept {
 }
 
 namespace {
+// Packet cc9_planner_kate_targeting: the planner's range factor as 00A1CD95
+// forms it. docs/PLANNER_KATE_TARGETING.md. OFF, measured (K0/K1): ship-AI rows move
+// through the planner's command targets, not explained row by row.
+constexpr bool kPlannerRangeInterpBound = false;
 
 // Packet cc9_ship_natives_2, docs/SHIP_NATIVES_2.md. True: 009FFD70
 // BSP_Entity_AiClassWeight (ECX = [leader+0C4h], JMP 009FDF30) is the group
@@ -1964,6 +1968,19 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
         return tuning.at(offset);
     }
     float range_interpolation(float near_value, float far_value, float distance) override {
+        if (kPlannerRangeInterpBound) {
+            // Packet cc9_planner_kate_targeting: 00A1CD53-00A1CD95 pushes
+            // 00419010(x0 = +1D0h FreeAttack_NearDist, y0 = 1.0 (FLD1),
+            // x1 = +1D4h FreeAttack_FarDist, y1 = 0.1 [00D7A2F0], x = the planar
+            // range). The two tuning fields are DISTANCES, not the two values.
+            // docs/PLANNER_KATE_TARGETING.md 2.
+            if (far_value == near_value) return 1.0f;
+            const float t = (distance - near_value) / (far_value - near_value);
+            const float v = 1.0f + (0.1f - 1.0f) * t;
+            if (v > 1.0f) return 1.0f;
+            if (v < 0.1f) return 0.1f;
+            return v;
+        }
         const float span = bsp::kAiEngagementRadiusSquaredValue;
         if (span <= 0.0f) return near_value;
         float t = distance / span;

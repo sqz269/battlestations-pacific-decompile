@@ -39,6 +39,9 @@
 // Packet cc8_ship_follow: the `follow` state's two halves and the unit group.
 #include "bsp/ship_ai_follow_land.hpp"
 #include "bsp/ship_ai_station_keeping.hpp"
+#include "bsp/ship_ai_torpedo_response.hpp"
+#include "bsp/ship_ai_arm_final_step.hpp"
+#include "bsp/ship_ai_layer_selection.hpp"
 #include "bsp/ship_ai_formation.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/recon_sensor_pass.hpp"
@@ -147,6 +150,47 @@ inline constexpr float kShipTurnRadiusMultiplier438 = 2.0f;
 // kind query for 0Eh (00857DC0 answers the same chain) and returns class+520h
 // unmultiplied for a torpedo boat. False: every ship is multiplied, as before.
 inline constexpr bool kShipTurnRadiusTorpedoBoatExempt = true;
+// Packet cc9_ship_torpedo_response, docs/SHIP_TORPEDO_RESPONSE.md. True: the brain
+// pre-pass's torpedo walk (009F163F..009F1855) admits live torpedoes into
+// contact tracks (009F0AD0 / 009EACA0 / 009DC060) on blk+400h/+404h, 009E04E0
+// consumes them behind the real 009DA1D0 gate (throttle profile and avoidance
+// vector), and 009DE5B0's section 5 (009DE8F1) points blk+324h down the vector.
+// False: the walk is recorded, the list stays empty and the gate answers false.
+// Landed ON after the USN04 4500 and E2 9000 pairs (docs/SHIP_TORPEDO_RESPONSE.md section 5).
+inline constexpr bool kShipTorpedoResponseBound = true;
+// Packet cc9_ship_torpedo_response, secondary. 0082E850 multiplies class+520h by
+// settings+438h (2.0) at every call site. True: the follow step's two sites
+// (009E16F0 station latch, 009E1790 back-off), the path follower's (009E3EAE)
+// and the arm tail's astern threshold (009EF112) take the same value the
+// formation host's class_turn_radius_0082e850 returns. False: the first three
+// return class+520h unmultiplied and the arm tail's a recorded 0, as before.
+// Landed ON after the USN04 4500 pair (docs/SHIP_TORPEDO_RESPONSE.md section 5).
+inline constexpr bool kShipTurnRadiusSitesBound = true;
+// settings+1ECh / +1F0h, TorpedoAvoidance.CollectTimer: this installation's
+// shipglobals.lua line 279, { 1.5, 2 }. The settings object is not loaded here.
+// Packet cc9_heading_target_sections (docs/HEADING_TARGET_SECTIONS.md). True, with
+// kShipTorpedoResponseBound: (1) the walk's candidate test is the image's: slot38
+// 008561F0 is the record's active byte +458h (set once released, 006E1331) and slot2C
+// 00855F00 answers non-zero only in the water (2 when height < 2 * swim depth, else
+// the underwater flag +354h), which the host's `swimming` projects; (2) the brain
+// constructor's seven stream-1 draws (009F12CD..009F13F0) are made for every built
+// controller when the draw source binds, in the constructor's order, keeping B48h and
+// B44h. False: any live round is a candidate and the two timer draws happen on the
+// ship's first re-plan, as the torpedo-response packet landed it.
+inline constexpr bool kShipTorpedoResponseImageTerms = true;
+// Packet cc9_avoid_zone_escape, docs/AVOID_ZONE_ESCAPE.md. True: 009F51C6 runs
+// 009ECA20 (the navigation layer selection) over the scene's avoid zones, which
+// writes blk+160h, +14Ch, +150h/+154h, +164h and the layers +308h/+30Ch/+310h, and
+// 009DE5B0's sections 3 and 4 (009DE67D..009DE8ED, the escape blend) run before
+// section 5. False: 009ECA20 is recorded and blk+160h stays 0, as before. The
+// planner's layer argument is NOT changed by this switch (kShipPlannerTravelLayerBound).
+inline constexpr bool kShipAvoidZoneEscapeBound = true;
+// 009ED3E0 hands nav+30Ch to 009E3780 at 009ED523/588/5FD/692. True: the planner
+// gets 009ECA20's travel layer. False: the plan block's own zone_layer, as before.
+// Landed ON after the USN01 3000 pair (docs/SHIP_NEIGHBOUR_AVOIDANCE.md section 1).
+inline constexpr bool kShipPlannerTravelLayerBound = true;
+inline constexpr float kTorpedoCollectTimer1 = 1.5f;
+inline constexpr float kTorpedoCollectTimer2 = 2.0f;
 // Packet cc9_station_keeping, docs/STATION_KEEPING.md. True: the follow update's
 // station request 009DA3B0 is stored (blk+38Ch..+3A6h, including blk+39Ch = 0
 // and the enable byte blk+3A5h = brain+3ADh), the pre-pass 009F145E clears the
@@ -323,6 +367,14 @@ struct GameShipAiHost::Impl {
     // GameGunneryHost::set_ship_ai. It is the only thing in this process that
     // runs 00956C20, so it owns unit+394h, +430h, +490h and +494h.
     const GameGunneryHost* gunnery{nullptr};
+    // Packet cc9_avoid_zone_escape: settings+1F4h..+208h, LandAvoidance's
+    // CheckMovePosZoneTime, CheckShipPosZoneTime, CheckTravelZoneTime pairs.
+    std::array<float, 6> layer_timing{};
+    bool layer_timing_loaded{false};
+    // Packet cc9_ship_torpedo_response: the same host, for its stream-1 draw.
+    GameGunneryHost* gunnery_draws{nullptr};
+    std::vector<GameGunneryHost::LiveTorpedo> live_torpedo_cache;
+    unsigned long long live_torpedo_cache_step{~0ull};
 
     // Packet cc9_target_release: whether a unit's damage death has happened.
     // The gunnery host owns the death (its kill funnel sets `sunk`), which is
@@ -550,6 +602,19 @@ struct GameShipAiHost::Impl {
         bsp::ShipAiHullGeometry hull_geometry{};
         std::uint32_t class_reference_0570{};
         bool class_depth_loaded{false};
+        // Packet cc9_avoid_zone_escape: class+560h..+570h and 009ECA20's fields
+        // that no other host struct carries. 009DBE6E/009DBE76 seed +320h/+31Ch
+        // with 1e9f (00D217E8); 009DBE28..009DBE56 zero +308h..+314h.
+        bsp::ShipLeafTuning leaf_tuning{};
+        bool leaf_tuning_loaded{false};
+        float escape_x_150{0.0f};
+        float escape_z_154{0.0f};
+        std::uint32_t class_floor_16c{0};
+        std::uint32_t requested_layer_308{0};
+        std::uint32_t travel_layer_30c{0};
+        std::uint32_t goal_layer_310{0};
+        float last_goal_x_31c{1.0e9f};
+        float last_goal_z_320{1.0e9f};
         // Milestone 2r: the blk half 009EF910 owns - the refresh timer +374h,
         // the clearance +37Ch, the outcome +370h and the hold +354h. Packet
         // cc_ai_clearance_profile. 009F4D87 calls it from inside the publish,
@@ -562,6 +627,9 @@ struct GameShipAiHost::Impl {
         // and the 65-bin profile stays in the bypass 009E435F set.
         bsp::ShipAiThrottleProfileBlock throttle_profile{};
         bsp::ShipAiContactTrack track_scratch{};
+        // Packet cc9_ship_torpedo_response: brain+0B44h/+0B48h and blk+400h/+404h.
+        bsp::ShipAiTorpedoTimer torpedo_timer{};
+        std::vector<bsp::ShipAiTorpedoTrack> torpedo_tracks;
         // blk+608h with the count at blk+604h. Nothing appends to it: 009F0D20's
         // only call site is 009F1A25 inside the brain pre-pass's candidate walk,
         // and the node footprint that walk builds has no producer in this
@@ -735,6 +803,184 @@ struct GameShipAiHost::Impl {
             return radius;
         }
         return radius * kShipTurnRadiusMultiplier438;
+    }
+
+    // Packet cc9_ship_torpedo_response ------------------------------------------
+    const std::vector<GameGunneryHost::LiveTorpedo>& live_torpedoes() {
+        if (live_torpedo_cache_step != steps) {
+            live_torpedo_cache.clear();
+            if (gunnery != nullptr) live_torpedo_cache = gunnery->live_torpedoes();
+            live_torpedo_cache_step = steps;
+        }
+        return live_torpedo_cache;
+    }
+    static bsp::ShipAiTorpedoCandidate torpedo_candidate(const GameGunneryHost::LiveTorpedo& t) {
+        bsp::ShipAiTorpedoCandidate c;
+        c.key = t.serial;
+        c.x = t.position[0];
+        c.z = t.position[2];
+        c.vx = t.velocity[0];
+        c.vz = t.velocity[2];
+        // record+46Ch: the host round keeps its launch heading, so the velocity's
+        // own heading in the pose convention atan2(x, z). SUBSTITUTION, labelled.
+        c.heading = static_cast<float>(std::atan2(static_cast<double>(t.velocity[0]),
+                                                  static_cast<double>(t.velocity[2])));
+        c.run_seconds = t.swim_seconds;
+        c.water_travel_speed = t.water_travel_speed;
+        c.side = t.owner_side;
+        c.from_submarine = false;   // record+49Ch: no host submarine launches underwater
+        c.shooter = t.owner_unit;
+        return c;
+    }
+    const GameGunneryHost::LiveTorpedo* live_torpedo(std::uint64_t key) {
+        for (const GameGunneryHost::LiveTorpedo& t : live_torpedoes()) {
+            if (t.serial == key) return &t;
+        }
+        return nullptr;
+    }
+    struct TorpedoDraw final : bsp::ShipAiTorpedoDraw {
+        TorpedoDraw(Impl& owner, std::size_t index) : owner_(owner), index_(index) {}
+        float uniform_00bd2f10(float low, float high) override {
+            if (owner_.gunnery_draws == nullptr) return low;
+            return owner_.gunnery_draws->ship_ai_draw(index_, low, high);
+        }
+        Impl& owner_;
+        std::size_t index_;
+    };
+    // 009F12CD..009F13F0, the brain constructor 009F1160's seven stream-1 draws, in
+    // order: B3C = U(1, 2.0 [00CE3958]); B40 = -U(0, B3C); B48 = -U(0, 1);
+    // B50 = -U(0, 1); B58 = -U(0, 2); B44 = U(+1ECh, +1F0h); B4C = U(+190h, +194h)
+    // (ShipAvoidance.CollectTimer, shipglobals.lua line 243, { 1, 2 }). Only B44/B48
+    // have a host consumer; the other five are drawn for the stream's order.
+    void seed_brain_draws_009f1160() {
+        for (std::size_t index = 0; index < controllers.size(); ++index) {
+            Controller& ctl = controllers[index];
+            if (!ctl.nav_block_built || ctl.torpedo_timer.seeded) continue;
+            TorpedoDraw draw(*this, index);
+            const float b3c = draw.uniform_00bd2f10(1.0f, 2.0f);        // 009F12CD
+            static_cast<void>(draw.uniform_00bd2f10(0.0f, b3c));        // 009F12F1, B40
+            ctl.torpedo_timer.countdown_b48 = -draw.uniform_00bd2f10(0.0f, 1.0f);   // 009F1330
+            static_cast<void>(draw.uniform_00bd2f10(0.0f, 1.0f));       // 009F1360, B50
+            static_cast<void>(draw.uniform_00bd2f10(0.0f, 2.0f));       // 009F138C, B58
+            ctl.torpedo_timer.period_b44
+                = draw.uniform_00bd2f10(kTorpedoCollectTimer1, kTorpedoCollectTimer2); // 009F13BE
+            static_cast<void>(draw.uniform_00bd2f10(1.0f, 2.0f));       // 009F13F0, B4C
+            ctl.torpedo_timer.seeded = true;
+            ++brain_seed_draws;
+        }
+    }
+    unsigned long long brain_seed_draws{0};
+    // 009DA1D0, whole: not a torpedo boat, not deeper than -15, blk+3ECh set
+    // and the director's torpedoAvoidance +240h set.
+    bool torpedo_gate_009da1d0(std::size_t index, const Controller& ctl) const {
+        if (units.unit_is_kind_of(index, 0x0E)) return false;          // 009DA1E7
+        float x = 0.0f, y = 0.0f, z = 0.0f;
+        units.unit_position_00fc(index, x, y, z);
+        if (-15.0 > static_cast<double>(y)) return false;              // 009DA211, 00CE3D58
+        if (!ctl.avoidance.enable_3f4) return false;                   // 009DA21D, blk+3ECh
+        GameDirectorAvoidance director;
+        if (!units.director_avoidance(index, director)) return false;
+        return director.torpedo;                                       // 009DA231, +240h
+    }
+    // 009F158A..009F15C6 and 009F163F..009F1855, the torpedo half of the walk.
+    void torpedo_walk_009f158a(std::size_t index, Controller& ctl, GameShipAiRow& row,
+                               float elapsed) {
+        TorpedoDraw draw(*this, index);
+        if (!ctl.torpedo_timer.seeded) {
+            // With kShipTorpedoResponseImageTerms the constructor draws were made at
+            // bind time (seed_brain_draws_009f1160); this is the fallback.
+            // 009F1316..009F1330 and 009F139E..009F13BE, in the constructor's
+            // order. The host makes these two of the constructor's seven draws,
+            // on the first re-plan rather than at construction. SUBSTITUTION.
+            ctl.torpedo_timer.countdown_b48 = -draw.uniform_00bd2f10(0.0f, 1.0f);
+            ctl.torpedo_timer.period_b44
+                = draw.uniform_00bd2f10(kTorpedoCollectTimer1, kTorpedoCollectTimer2);
+            ctl.torpedo_timer.seeded = true;
+        }
+        if (!bsp::ship_ai_torpedo_timer_due_009f158a(ctl.torpedo_timer, elapsed)) return;
+        ++row.torpedo_scans;
+        int level = units.skill_level(index);
+        if (level < 0 || level > 5) level = 1;
+        const bsp::ShipAiNavigatorTorpedoRow& tuning = bsp::kShipAiNavigatorTorpedoRows[
+            static_cast<std::size_t>(level)];
+        const float horizon = bsp::ship_ai_torpedo_horizon(ctl.torpedo_timer.period_b44, tuning);
+        float x = 0.0f, y = 0.0f, z = 0.0f;
+        units.unit_position_00fc(index, x, y, z);
+        // 00812090: the local forward axis times 0092D730's body-axis speed.
+        const float heading = units.unit_heading_radians(index);
+        const float speed = units.unit_forward_speed_0092d730(index);
+        const float vx = static_cast<float>(std::sin(static_cast<double>(heading))) * speed;
+        const float vz = static_cast<float>(std::cos(static_cast<double>(heading))) * speed;
+        const float length = units.unit_hull_length_09c8(index);
+        const int side = units.unit_side_0054(index);
+        for (const GameGunneryHost::LiveTorpedo& t : live_torpedoes()) {
+            if (t.owner_unit == index + 1) continue;    // entity+4F8h != self
+            // 009F16A0..: slot38 (+458h active) and slot2C (in the water).
+            if (kShipTorpedoResponseImageTerms && !t.swimming) continue;
+            const bsp::ShipAiTorpedoCandidate candidate = torpedo_candidate(t);
+            if (!bsp::ship_ai_torpedo_admits(x, z, vx, vz, length, horizon, candidate)) continue;
+            ++row.torpedo_admits;
+            if (bsp::ship_ai_admit_torpedo_track_009f0ad0(ctl.torpedo_tracks, candidate, tuning,
+                    length, side, kTorpedoCollectTimer2, draw)) {
+                ++row.torpedo_tracks_built;
+            }
+        }
+        row.torpedo_tracks_max = std::max(row.torpedo_tracks_max, ctl.torpedo_tracks.size());
+    }
+    // 009DE5B6..009DE5E5, then sections 3 and 4 (kShipAvoidZoneEscapeBound), then
+    // 009DE8F1..009DE96C. Sections 6 and 7 stay records (docs/HEADING_TARGET_SECTIONS.md).
+    void torpedo_override_009de8f1(std::size_t index, Controller& ctl, GameShipAiRow& row) {
+        const float signed_speed = units.unit_forward_speed_0092d730(index);
+        if (!(std::fabs(signed_speed) > 1.0f)) return;  // 009DE5DE
+        if (kShipAvoidZoneEscapeBound && ctl.nav_block.flag_160) {
+            // 009DE67D..009DE6D7, section 3.
+            const bool reverse = (signed_speed < 0.0f)
+                ? (ctl.blk.direction == bsp::ShipAiThrottleDirection::Ahead)
+                : (ctl.blk.direction == bsp::ShipAiThrottleDirection::Astern);
+            float heading = units.unit_heading_radians(index);
+            if (ctl.blk.direction == bsp::ShipAiThrottleDirection::Astern) {
+                heading = bsp::wrapped_angle_add_00438aa0(heading, 3.14159265f);   // 00D7A264
+            }
+            // 009DE6DB..009DE8ED, section 4.
+            const bsp::ShipAiArmFinalEscapeTurn escape = bsp::ship_ai_arm_final_escape_turn_009de6db(
+                heading, ctl.blk.heading_target_324, ctl.blk.distance_330,
+                ctl.nav_block.value_14c, ctl.nav.look_ahead_max_3c8,
+                units.unit_hull_length_09c8(index),
+                std::array<float, 2>{ctl.escape_x_150, ctl.escape_z_154}, reverse);
+            if (escape.raise_clearance_hold) {
+                // blk+354h, projected twice in this host: the hold 009E04E0 counts
+                // down and the block's clamp.
+                if (3.0f > ctl.throttle_profile.hold_354) ctl.throttle_profile.hold_354 = 3.0f;
+                if (3.0f > ctl.blk.clamp_354) ctl.blk.clamp_354 = 3.0f;       // 009DE763
+            }
+            if (escape.applied) {
+                units.raise_turn_assist_load_102c(index, escape.load_request);  // 009DE853
+                ctl.blk.heading_target_324 = bsp::wrapped_angle_add_00438aa0(
+                    ctl.blk.heading_target_324, escape.turn);                  // 009DE8E7
+                ++row.zone_escape_turns;
+                row.zone_escape_max_turn = std::max(row.zone_escape_max_turn,
+                                                    std::fabs(escape.turn));
+                if (row.zone_escape_first_s < 0.0f) {
+                    row.zone_escape_first_s = static_cast<float>(steps) * 0.05f;
+                }
+            }
+        }
+        if (!kShipTorpedoResponseBound) return;
+        const bool gate = torpedo_gate_009da1d0(index, ctl);
+        const bsp::ShipAiArmFinalOverride o = bsp::ship_ai_arm_final_avoidance_override_009de8f1(
+            gate, ctl.throttle_profile.hold_354, ctl.throttle_profile.avoid_x_34c,
+            ctl.throttle_profile.avoid_z_350, ctl.blk.direction);
+        if (!o.applied) return;
+        double turn = static_cast<double>(o.heading_target) - ctl.blk.heading_target_324;
+        while (turn > 3.141592653589793) turn -= 6.283185307179586;
+        while (turn < -3.141592653589793) turn += 6.283185307179586;
+        ctl.blk.heading_target_324 = o.heading_target;
+        ++row.torpedo_overrides;
+        row.torpedo_override_max_turn = std::max(row.torpedo_override_max_turn,
+                                                 static_cast<float>(std::fabs(turn)));
+        if (row.torpedo_first_override_s < 0.0f) {
+            row.torpedo_first_override_s = static_cast<float>(steps) * 0.05f;
+        }
     }
 
     // 009F4DA0 on blk+344h / +348h (brain+34Ch / +350h). docs/SHIP_FORMATION_SPEED.md.
@@ -1187,6 +1433,7 @@ public:
         // 009DF44A takes it off brain+0AACh, the ship class descriptor. The units
         // host's own name for the same class field is `unit_class_turn_radius_0520`.
         owner_.done("ShipAiFollow::turn_radius", 0x0082e850u);
+        if (kShipTurnRadiusSitesBound) return owner_.class_turn_radius_0082e850(index_);
         return owner_.units.unit_class_turn_radius_0520(index_);
     }
     float leader_command_yaw_rate_00811940(float, float) override {
@@ -1255,6 +1502,8 @@ public:
     }
     float ship_class_turn_radius_0082e850() override {
         owner_.done("ShipAiFollow::turn_radius", 0x0082e850u);
+        // 009E16F0 and 009E1790.
+        if (kShipTurnRadiusSitesBound) return owner_.class_turn_radius_0082e850(index_);
         return owner_.units.unit_class_turn_radius_0520(index_);
     }
     float min_float_by_ref_00415510(float a, float b) override {
@@ -4167,7 +4416,9 @@ public:
         // derives from MaxSpeed and MaxRotAngle. Milestone 2q recorded this
         // because no packet had read the deriver; packet ship_ai_class_field_0524
         // has, and the units host answers with the derived field.
-        const float radius = owner_.units.unit_class_turn_radius_0520(index_);
+        const float radius = kShipTurnRadiusSitesBound
+            ? owner_.class_turn_radius_0082e850(index_)
+            : owner_.units.unit_class_turn_radius_0520(index_);
         owner_.done("ShipAiPathFollower::class_turn_radius_0082e850", 0x0082e850u);
         return radius;
     }
@@ -4265,19 +4516,42 @@ public:
         owner_.done("ShipAiThrottleProfile::hull_heading_vtable50", 0x009e0509u);
         return owner_.units.unit_heading_radians(index_);
     }
-    bool track_range_within_target_488(int) override {
-        owner_.record("ShipAiThrottleProfile::track_range_488", 0x009e0613u);
-        return false;
+    bool track_range_within_target_488(int index) override {
+        if (!kShipTorpedoResponseBound) {
+            owner_.record("ShipAiThrottleProfile::track_range_488", 0x009e0613u);
+            return false;
+        }
+        // 009E0606..009E0613: skip while the torpedo's run time +488h is below
+        // the track's observation time +10h (JB).
+        owner_.done("ShipAiThrottleProfile::track_range_488", 0x009e0613u);
+        const bsp::ShipAiTorpedoTrack& t = ctl_.torpedo_tracks[static_cast<std::size_t>(index)];
+        const GameGunneryHost::LiveTorpedo* live = owner_.live_torpedo(t.key);
+        if (live == nullptr) return true;   // 009E0604: a null +48h skips the test
+        return !(live->swim_seconds < t.track.range_10);
     }
     bool avoidance_active_009da1d0() override {
-        // 009E061B. 009DA1D0 needs the unit's gameplay byte +240h, which has no
-        // producer here; blk+3ECh is the byte `stop` writes.
-        owner_.record("ShipAiThrottleProfile::avoidance_active_009da1d0", 0x009da1d0u);
-        return false;
+        if (!kShipTorpedoResponseBound) {
+            // 009E061B. 009DA1D0 needs the unit's gameplay byte +240h, which has no
+            // producer here; blk+3ECh is the byte `stop` writes.
+            owner_.record("ShipAiThrottleProfile::avoidance_active_009da1d0", 0x009da1d0u);
+            return false;
+        }
+        owner_.done("ShipAiThrottleProfile::avoidance_active_009da1d0", 0x009da1d0u);
+        const bool open = owner_.torpedo_gate_009da1d0(index_, ctl_);
+        if (open) ++owner_.rows[index_].torpedo_gate_open;
+        return open;
     }
-    bool refresh_track_009dc060(int) override {
-        owner_.record("ShipAiThrottleProfile::refresh_track_009dc060", 0x009dc060u);
-        return false;
+    bool refresh_track_009dc060(int index) override {
+        if (!kShipTorpedoResponseBound) {
+            owner_.record("ShipAiThrottleProfile::refresh_track_009dc060", 0x009dc060u);
+            return false;
+        }
+        owner_.done("ShipAiThrottleProfile::refresh_track_009dc060", 0x009dc060u);
+        bsp::ShipAiTorpedoTrack& t = ctl_.torpedo_tracks[static_cast<std::size_t>(index)];
+        const GameGunneryHost::LiveTorpedo* live = owner_.live_torpedo(t.key);
+        if (live == nullptr) return bsp::ship_ai_refresh_torpedo_track_009dc060(t, nullptr);
+        const bsp::ShipAiTorpedoCandidate c = GameShipAiHost::Impl::torpedo_candidate(*live);
+        return bsp::ship_ai_refresh_torpedo_track_009dc060(t, &c);
     }
     float class_length_three_quarters_00811a30() override {
         const float radius = owner_.units.unit_class_turn_circle_radius_0082e960(index_,
@@ -4287,18 +4561,35 @@ public:
     }
     int track_count_400() override {
         owner_.done("ShipAiThrottleProfile::track_count_400", 0x009e05c0u);
-        return 0;
+        return kShipTorpedoResponseBound ? static_cast<int>(ctl_.torpedo_tracks.size()) : 0;
     }
-    bsp::ShipAiContactTrack& track_at(int) override {
-        owner_.record("ShipAiThrottleProfile::track_at", 0x009e05c7u);
-        return ctl_.track_scratch;
+    bsp::ShipAiContactTrack& track_at(int index) override {
+        if (!kShipTorpedoResponseBound) {
+            owner_.record("ShipAiThrottleProfile::track_at", 0x009e05c7u);
+            return ctl_.track_scratch;
+        }
+        owner_.done("ShipAiThrottleProfile::track_at", 0x009e05c7u);
+        return ctl_.torpedo_tracks[static_cast<std::size_t>(index)].track;
     }
-    void destroy_track(int) override {
-        owner_.record("ShipAiThrottleProfile::destroy_track", 0x009e0fbdu);
+    void destroy_track(int index) override {
+        if (!kShipTorpedoResponseBound) {
+            owner_.record("ShipAiThrottleProfile::destroy_track", 0x009e0fbdu);
+            return;
+        }
+        owner_.done("ShipAiThrottleProfile::destroy_track", 0x009e0fbdu);
+        bsp::ship_ai_destroy_track_009e0fbd(ctl_.torpedo_tracks, static_cast<std::size_t>(index));
     }
-    bool track_has_source(int) override {
-        owner_.record("ShipAiThrottleProfile::track_has_source", 0x009e05efu);
-        return false;
+    bool track_has_source(int index) override {
+        if (!kShipTorpedoResponseBound) {
+            owner_.record("ShipAiThrottleProfile::track_has_source", 0x009e05efu);
+            return false;
+        }
+        // 009E05EF: +48h (or +60h) still non-null. The observer clears +48h when
+        // the torpedo entity goes.
+        owner_.done("ShipAiThrottleProfile::track_has_source", 0x009e05efu);
+        bsp::ShipAiTorpedoTrack& t = ctl_.torpedo_tracks[static_cast<std::size_t>(index)];
+        if (owner_.live_torpedo(t.key) == nullptr) t.source_live = false;
+        return t.source_live;
     }
 
 private:
@@ -4448,6 +4739,84 @@ private:
 // 009EF226. Packet ship_ai_navigation_arm_tail landed on main at 4491d04f
 // during this packet's turn and was merged in before validation, so the tail is
 // a projection rather than the record milestone 2p left.
+// Packet cc9_avoid_zone_escape: bsp::ShipAiLayerSelectionHost, the call sites of 009ECA20.
+class LayerSelectionBinding final : public bsp::ShipAiLayerSelectionHost {
+public:
+    LayerSelectionBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
+                          std::size_t index)
+        : owner_(owner), ctl_(ctl), index_(index) {}
+    bool has_owner_3fc() override { return true; }
+    bool unit_group_leads_00778890() override {
+        owner_.done("ShipAiLayer::unit_leads_00778890", 0x00778890u);
+        const std::int32_t group = owner_.units.unit_formation_group_0284(index_);
+        return group >= 0 && owner_.units.formation_leader_0014(group) == index_;
+    }
+    std::int32_t group_navigation_layer_0070e450() override {
+        // 0070E450: the largest member->vtable[214h]() over the members that
+        // answer vtable[5Ch](6), from 0.
+        owner_.done("ShipAiLayer::group_layer_0070e450", 0x0070e450u);
+        const std::int32_t group = owner_.units.unit_formation_group_0284(index_);
+        std::uint32_t best = 0;
+        const std::int32_t count = owner_.units.formation_member_count(group);
+        for (std::int32_t i = 0; i < count; ++i) {
+            const std::size_t member = owner_.units.formation_member_unit(group, i);
+            if (member >= owner_.controllers.size()) continue;
+            if (!owner_.units.unit_is_kind_of(member, 6)) continue;
+            const auto& other = owner_.controllers[member];
+            if (!other.leaf_tuning_loaded) continue;
+            best = std::max(best, bsp::ship_ai_unit_navigation_layer_006dfd80(other.leaf_tuning));
+        }
+        return static_cast<std::int32_t>(best);
+    }
+    std::uint32_t unit_navigation_layer_v214() override {
+        owner_.done("ShipAiLayer::unit_layer_006dfd80", 0x006dfd80u);
+        return bsp::ship_ai_unit_navigation_layer_006dfd80(ctl_.leaf_tuning);
+    }
+    bool unit_is_kind_v5c(std::uint32_t kind) override {
+        return owner_.units.unit_is_kind_of(index_, static_cast<int>(kind));
+    }
+    std::uint8_t call_unit_v10c() override {
+        // Reached only for kind 0Ch (LandingShip), whose vtable+10Ch is 0042BB40:
+        // XOR AL,AL; RET.
+        owner_.done("ShipAiLayer::landing_ship_v10c", 0x0042bb40u);
+        return 0;
+    }
+    std::uint32_t class_navigation_floor_0560() override {
+        return ctl_.leaf_tuning.array[0];   // [[unit+538h]+560h]
+    }
+    const bsp::AvoidZoneTable& manager_004218e0() override {
+        owner_.done("ShipAiLayer::avoid_zone_manager", 0x004218e0u);
+        return owner_.zones.table();
+    }
+    bsp::AvoidZoneClearanceGroupView native_group(const bsp::AvoidZoneLayerGroup& g) override {
+        return owner_.zones.native_group(g);
+    }
+    bsp::ShipAiLayerTimingView settings_00424c40() override {
+        const auto& t = owner_.layer_timing;
+        return bsp::ShipAiLayerTimingView{t[0], t[1], t[2], t[3], t[4], t[5]};
+    }
+    float uniform_float_00bd2f10(std::uint32_t, float low, float high) override {
+        // Stream 1 at all three reseed sites. Under BSP_GUNNERY_RNG_STREAMS=1 the
+        // key is (unit | 800000h), so these draws never move the unit's torpedo
+        // draws; by default both go to the shared generator in call order.
+        if (owner_.gunnery_draws == nullptr) return low;
+        return owner_.gunnery_draws->ship_ai_draw(index_ | 0x800000u, low, high);
+    }
+    float unit_forward_speed_0092d730() override {
+        return owner_.units.unit_forward_speed_0092d730(index_);
+    }
+    float unit_reference_speed_0080fc30() override {
+        return ctl_.obstacle.reference_speed_3c4;
+    }
+    float vector_length_00414c60(const std::array<float, 2>& v) override {
+        return bsp::length_2d_00414c60(v);
+    }
+private:
+    GameShipAiHost::Impl& owner_;
+    GameShipAiHost::Impl::Controller& ctl_;
+    std::size_t index_;
+};
+
 class ArmTailBinding final : public bsp::ShipAiArmTailHost {
 public:
     ArmTailBinding(GameShipAiHost::Impl& owner, std::size_t index)
@@ -4502,10 +4871,18 @@ public:
         // class+520h, whose only writer 00828F20 is not reconstructed. It only
         // widens the astern test's distance threshold, so a zero answer makes a
         // ship decline to reverse rather than invent a reversal.
+        if (kShipTurnRadiusSitesBound) {
+            owner_.done("ShipAiArmTail::class_turn_radius", 0x0082e850u);
+            return owner_.class_turn_radius_0082e850(index_);
+        }
         owner_.record("ShipAiArmTail::class_turn_radius", 0x0082e850u);
         return 0.0f;
     }
     void after_arm_009de5b0(float) override {
+        if (kShipTorpedoResponseBound || kShipAvoidZoneEscapeBound) {
+            owner_.torpedo_override_009de8f1(index_, owner_.controllers[index_],
+                                             owner_.rows[index_]);
+        }
         owner_.record("ShipAiArmTail::after_arm", 0x009de5b0u);
     }
 
@@ -4547,7 +4924,7 @@ public:
             state, seconds,
             std::array<float, 2>{pose_x, pose_z},
             std::array<float, 2>{ctl_.goal.goal_x_1dc, ctl_.goal.goal_z_1e0},
-            state.in_use->zone_layer, 0.0f,
+            kShipPlannerTravelLayerBound ? ctl_.travel_layer_30c : state.in_use->zone_layer, 0.0f,
             bsp::kShipAiPathCorridorWidthDefault, bsp::kShipAiPathCorridorWidthDefault,
             planner, search);
         owner_.done("ShipAiPath::plan_009e3780", 0x009e3780u);
@@ -4716,7 +5093,12 @@ public:
             = bsp::ship_ai_refresh_goal_vector_009f1420(ctl_.goal_vector, ctl_.latched,
                                                         elapsed, goal);
         owner_.done("ShipAi::replan_prepare", 0x009f1420u);
-        owner_.record("ShipAi::replan_prepare_threat_scan", 0x009f158au);
+        if (kShipTorpedoResponseBound) {
+            owner_.torpedo_walk_009f158a(index_, ctl_, row_, elapsed);
+            owner_.done("ShipAi::replan_prepare_threat_scan", 0x009f158au);
+        } else {
+            owner_.record("ShipAi::replan_prepare_threat_scan", 0x009f158au);
+        }
         const auto request = bsp::ship_ai_avoidance_request_prepass_009f1b7b(
             owner_.avoid_all_ship_collision());
         ctl_.avoidance = request.request;
@@ -4778,6 +5160,24 @@ public:
                 return;
             }
             ++owner_.avoidance_role_reads;
+            if (kShipTorpedoResponseBound) {
+                // Packet cc9_ship_torpedo_response. 009E1170 selects its arm with
+                // no test of the director's command, so for a controlled unit
+                // (forced into cruise at 009F3DF3) arm 2's request store at
+                // 009E11D6 happens whatever the director holds. The commands
+                // host's cruise_step returns before it when the director holds
+                // another command (attackmove), leaving blk+3ECh at the
+                // pre-pass 1, which opened 009DA1D0 for the player's ship.
+                bsp::ShipAiCruiseAvoidanceInputs live = inputs;
+                live.unit_player_controlled = owner_.units.unit_player_controlled_0184(index_);
+                if (bsp::ship_ai_cruise_step_arm_009e11a5(live)
+                        != bsp::ShipAiCruiseAvoidanceArm::CruiseRule) {
+                    bsp::ShipAiAvoidanceRequestBlock block{ctl_.avoidance, ctl_.blk.early_out_3f5};
+                    bsp::ship_ai_cruise_step_request_009e11d6(block, live);
+                    ctl_.avoidance = block.request;
+                    ctl_.blk.early_out_3f5 = block.early_out_3f5;
+                }
+            }
             const bool drove = owner_.units.run_cruise_state_step_009e1170(
                 index_, ctl_.blk, setters, ctl_.avoidance, inputs);
             row_.avoidance_enabled = ctl_.avoidance.enable_3f4;
@@ -4907,7 +5307,29 @@ public:
         owner_.record("ShipAi::replan_finish", 0x009ddbc0u);
     }
     void hold_009da0d0() override { owner_.record("ShipAi::hold", 0x009da0d0u); }
-    void step_009eca20(float) override { owner_.record("ShipAi::step_009eca20", 0x009eca20u); }
+    void step_009eca20(float seconds) override {
+        if (!kShipAvoidZoneEscapeBound || !ctl_.leaf_tuning_loaded || !owner_.zones.ready()) {
+            owner_.record("ShipAi::step_009eca20", 0x009eca20u);
+            return;
+        }
+        // 009F51C6, chain slot 12: 009ECA20(nav)(seconds).
+        auto& nb = ctl_.nav_block;
+        bsp::ShipAiLayerSelectionView view{
+            nb.random_phase_148, nb.value_14c, ctl_.escape_x_150, ctl_.escape_z_154,
+            nb.deadline_158, nb.deadline_15c, nb.flag_160, nb.value_164,
+            ctl_.class_floor_16c, nb.value_170, ctl_.requested_layer_308,
+            ctl_.travel_layer_30c, ctl_.goal_layer_310, ctl_.goal.crossing_314,
+            ctl_.last_goal_x_31c, ctl_.last_goal_z_320, ctl_.hull_geometry, ctl_.blk.mode,
+            ctl_.goal.goal_x_1dc, ctl_.goal.goal_z_1e0, nb.look_ahead_floor_318,
+            ctl_.obstacle.reference_speed_3c4, ctl_.nav.look_ahead_max_3c8};
+        LayerSelectionBinding binding(owner_, ctl_, index_);
+        bsp::ship_ai_select_navigation_layer_009eca20(view, seconds, binding);
+        owner_.done("ShipAi::step_009eca20", 0x009eca20u);
+        ++row_.layer_selections;
+        if (nb.flag_160) ++row_.zone_inside_steps;
+        row_.travel_layer_min = std::min(row_.travel_layer_min, ctl_.travel_layer_30c);
+        row_.travel_layer_max = std::max(row_.travel_layer_max, ctl_.travel_layer_30c);
+    }
     void step_009da6e0(float) override {
         bsp::ShipAiAvoidZoneSearcherInputs inputs;
         inputs.hull_x = ctl_.hull_geometry.position_184[0];
@@ -4959,6 +5381,10 @@ public:
         bsp::ship_ai_build_throttle_profile_009e04e0(ctl_.throttle_profile, in, seconds,
                                                      profile);
         owner_.done("ShipAi::build_throttle_profile_009e04e0", 0x009e04e0u);
+        if (kShipTorpedoResponseBound && (ctl_.throttle_profile.avoid_x_34c != 0.0f
+                || ctl_.throttle_profile.avoid_z_350 != 0.0f)) {
+            ++row_.torpedo_vector_steps;
+        }
         // The profile the drive's middle snaps the throttle with, and the
         // bypass byte that decides whether it does anything at all.
         ctl_.obstacle.profile = ctl_.throttle_profile.profile;
@@ -5044,6 +5470,9 @@ public:
             ctl_.blk.heading_target_324 = st.heading_target_324;
             ctl_.blk.distance_32c = st.distance_32c;
             owner_.done("ShipAi::station_keeping_arm", 0x009eda28u);
+            // 009EE57B JMP 009EF206: the arm ends in 009DE5B0 like every other.
+            if (kShipTorpedoResponseBound || kShipAvoidZoneEscapeBound)
+                owner_.torpedo_override_009de8f1(index_, ctl_, row_);
             ++row_.station_arm_runs;
             row_.station_throttle_min = std::min(row_.station_throttle_min, st.throttle_39c);
             row_.station_throttle_max = std::max(row_.station_throttle_max, st.throttle_39c);
@@ -5929,6 +6358,18 @@ void GameShipAiHost::register_units(GameMissionLuaHost& lua, std::int32_t sessio
                 throw std::runtime_error("Ship depth load for " + row->name + ": " + error);
             ctl.class_reference_0570 = depth.class_reference_0570;
             ctl.class_depth_loaded = true;
+            if (kShipAvoidZoneEscapeBound) {
+                GameShipNavigationInput navigation{};
+                if (!lua.read_ship_navigation_input(row->type_id, session_mode, navigation, error))
+                    throw std::runtime_error("Ship navigation load for " + row->name + ": " + error);
+                ctl.leaf_tuning = navigation.tuning;
+                ctl.leaf_tuning_loaded = true;
+                if (!host.layer_timing_loaded) {
+                    if (!lua.read_ship_layer_timing_input(host.layer_timing, error))
+                        throw std::runtime_error("Ship layer timing load: " + error);
+                    host.layer_timing_loaded = true;
+                }
+            }
             bsp::ShipAiNavBlockUnitInputs in{};
             in.present = row != nullptr;
             in.handle = static_cast<std::uint32_t>(index) + 1u;
@@ -6189,8 +6630,14 @@ void GameShipAiHost::set_ai_drive(std::size_t unit_index, float throttle, float 
         static_cast<double>(rudder));
 }
 
-void GameShipAiHost::bind_gunnery(const GameGunneryHost* gunnery) noexcept {
+void GameShipAiHost::bind_gunnery(GameGunneryHost* gunnery) noexcept {
     impl_->gunnery = gunnery;
+    impl_->gunnery_draws = gunnery;
+    if (kShipTorpedoResponseBound && kShipTorpedoResponseImageTerms && gunnery != nullptr) {
+        impl_->seed_brain_draws_009f1160();
+        impl_->log.notef("ship ai brain constructor draws: %llu controllers seeded (009F1160's "
+            "seven stream-1 draws, made when the draw source binds)", impl_->brain_seed_draws);
+    }
     // Packet cc9_target_release: the dead-target facts need the gunnery rows.
     if (kShipAiTargetReleaseBound) {
         impl_->units.commands().bind_command_target_facts(
@@ -6465,6 +6912,23 @@ void GameShipAiHost::report() {
             row.formation_ceiling_steps, static_cast<double>(row.formation_limit_344_min),
             row.formation_limit_344_below_1, static_cast<double>(row.formation_limit_348_min),
             static_cast<double>(row.formation_limit_348_max));
+        if (row.layer_selections != 0) {
+            host.log.notef("    zone %-16s selections=%llu inside=%llu escape_turns=%llu max_turn=%.3f "
+                "first=%.2f s travel_layer=[%u, %u]", row.unit.c_str(), row.layer_selections,
+                row.zone_inside_steps, row.zone_escape_turns,
+                static_cast<double>(row.zone_escape_max_turn),
+                static_cast<double>(row.zone_escape_first_s),
+                row.travel_layer_min, row.travel_layer_max);
+        }
+        if (row.torpedo_admits != 0 || row.torpedo_overrides != 0) {
+            host.log.notef("    torpedo %-16s scans=%llu admits=%llu tracks_built=%llu tracks_max=%zu "
+                "gate_open=%llu vector_steps=%llu overrides=%llu max_turn=%.3f first=%.2f s",
+                row.unit.c_str(), row.torpedo_scans, row.torpedo_admits,
+                row.torpedo_tracks_built, row.torpedo_tracks_max, row.torpedo_gate_open,
+                row.torpedo_vector_steps, row.torpedo_overrides,
+                static_cast<double>(row.torpedo_override_max_turn),
+                static_cast<double>(row.torpedo_first_override_s));
+        }
         if (row.station_requests != 0 || row.station_arm_runs != 0) {
             host.log.notef("    station %-16s requests=%llu arm_runs=%llu throttle39c=[%.4f, %.4f] "
                 "limit_steps=%llu limit344=[%.4f, %.4f]", row.unit.c_str(),

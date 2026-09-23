@@ -9142,6 +9142,40 @@ above.
 * **The ship-AI standoffs note is not updated.** No standoff was re-measured here, and the ship
   AI is untouched by this set.
 
+## Mission reference baselines, 2026-09-23 (after station keeping, and with the torpedo response)
+
+Packets `cc9_station_keeping` (on main since `25ada6df2`) and `cc9_ship_torpedo_response`
+(docs/SHIP_TORPEDO_RESPONSE.md). Runs are from the `agent/cc9-difficulty` worktree root
+**without** `BSP_GUNNERY_RNG_STREAMS`. The command lines are the section above's, with `-Exe`
+naming the build.
+
+| build | mission | frames | damage | deaths | queued_hits | bomb_drops | bomb_impacts | torpedo drops | first_hit | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `trC2`, main's behaviour | USN04 | 4500 mission | **16668.1** | 18 | **224** | **20** | **20** | 13 | 118.15 s | `local\base3_usn04.log` |
+| `finB`, this packet landed | USN04 | 4500 mission | **17111.1** | **20** | **249** | 20 | 20 | 13 | 118.15 s | `local\base4_usn04.log` |
+| `finB`, this packet landed | USN04 | 9000 mission | 19453.3 | 32 | 377 | 31 | 31 | 16 | 118.15 s | `local\base4_e9000.log` |
+
+`trC2` is this packet's tree with `kShipTorpedoResponseBound` and `kShipTurnRadiusSitesBound` off.
+It behaves as main `e16937d4c`: station keeping on and the torpedo-boat exemption on.
+
+- **The first row supersedes the AA-lead row**, which read 18057.9 damage, 18 deaths and 253 hits.
+  The option-on station-keeping pair (docs/STATION_KEEPING.md, the USN04 rerun) moved total path
+  from 47088.6 m to 50382.4 m and cut ship damage around the stopped Lexington. Fletcher-class04's
+  torpedo hit disappears. The other main merges since the AA-lead row were not separated.
+- **In the first row the Lexington ends at 15 of 8000.** It survives by a hair.
+- **In the second and third rows the Lexington dies at 182.86 s**, to `movieval|.-2`'s bomb. That
+  is a coupling flip, not a behaviour this packet's pairs show:
+  - with the option on, the Lexington's rows are identical across the torpedo pair and its motion
+    is identical across the radius pair;
+  - a default run with only the torpedo response (`local\base_trT2_usn04.log`) leaves it at 66;
+  - a default run with only the radius sites (`local\base_rsT2_usn04.log`) leaves it at 84.
+
+  Only the combination, through the shared generator's order and the escorts' moved AA, flips
+  one dive-bomb hit. **Read the Lexington's fate in USN04 references as knife-edge**
+  (docs/RANDOM_STREAMS.md).
+- The E2 9000 control used for the torpedo pair (option on, `local\tr2_ctl_e2.log`) still loses
+  the Lexington at 225.81 s, and so does its treatment.
+
 ## Mission reference baselines, 2026-09-23 (after the death modes and the dead-plane squadron removal)
 
 Packets `cc9_plane_death_modes` (`docs/PLANE_DEATH_MODES.md`) and `cc9_pilot_surface_climbout`

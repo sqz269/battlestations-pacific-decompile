@@ -245,3 +245,19 @@ BSP_HudMovieCamera_Destruct, `00798C80` BSP_HudMovieCamera_FirstStepReseed.
 - **The census's 84 unresolved ECX sites** (51 register-derived, 24 undecoded, 9 after a call) were not resolved one by
   one. The stream-1 claim for gameplay rests on the 327 literal sites plus the gunnery table
   above.
+
+## 8. The ship AI's torpedo draws (packet cc9_ship_torpedo_response)
+
+The ship AI's torpedo response draws on stream 1 as well. That covers 009F0AD0's three admission
+draws (predict, observation, speed error) and two of the brain constructor's timer seeds
+(009F1316, 009F139E). The host routes them through `GameGunneryHost::ship_ai_draw(unit, lo, hi)`:
+
+| option | generator |
+| --- | --- |
+| unset (default) | the shared gunnery generator, interleaved in call order with every gunnery draw, as in the image |
+| `BSP_GUNNERY_RNG_STREAMS=1` | its own keyed generator, consumer `ship_ai_torpedo` = 7, key (unit, 0) |
+
+With the option on, a treatment that builds torpedo tracks does not move any gunnery key's
+sequence, so a pair isolates the ship's response. With it unset, the treatment shifts every later
+gunnery draw, as it would in the image. The draws only happen when `kShipTorpedoResponseBound` is
+on; with it off, a default run is byte-identical to before. See docs/SHIP_TORPEDO_RESPONSE.md.
