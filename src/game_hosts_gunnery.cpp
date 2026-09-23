@@ -481,6 +481,7 @@ struct GameGunneryHost::Impl {
     std::map<std::size_t, SecondAmmo> second_ammo_by_gun;
     unsigned long long dp_air_rounds{0};
     unsigned long long aa_negative_halvings{0};
+    unsigned long long water_depth_kills{0};   // packet cc9_water_surface_law
     // Set by run_projectiles around apply_hit / apply_impact_blast so a round's
     // own class (the second ammunition) prices its damage; -1 means the gun's.
     int round_bullet_class{-1};
@@ -4086,6 +4087,21 @@ const std::vector<GameGunRow>& GameGunneryHost::guns() const noexcept {
     return impl_->guns;
 }
 
+bool GameGunneryHost::unit_dead(std::size_t unit_index) const noexcept {
+    if (unit_index >= impl_->unit_state.size()) return false;
+    const Impl::UnitState& state = impl_->unit_state[unit_index];
+    return state.dead || state.health <= 0.0f;
+}
+
+void GameGunneryHost::kill_unit_00926d90(std::size_t unit_index, int cause) {
+    if (unit_index >= impl_->unit_state.size()) return;
+    // Cause 1 is the only one a caller passes (007CE3A7); the funnel is the
+    // one a gunfire death takes, which is also cause 1 (0077D1A0 -> 00926C80).
+    (void)cause;
+    ++impl_->water_depth_kills;
+    impl_->kill_unit(unit_index);
+}
+
 const std::vector<GameGunneryUnitRow>& GameGunneryHost::unit_rows() const noexcept {
     static std::vector<GameGunneryUnitRow> rows;
     rows.clear();
@@ -4473,6 +4489,8 @@ void GameGunneryHost::report() {
             host.intercept_solves, kGunInterceptBound ? 1 : 0, host.dp_air_rounds,
             kDualPurposeSecondAmmoBound ? 1 : 0, host.aa_negative_halvings,
             kAaGunnerErrorBound ? 1 : 0);
+        host.log.notef("summary mission gunnery water depth kills=%llu (007CE3A7, packet "
+            "cc9_water_surface_law)", host.water_depth_kills);
         host.log.notef("summary mission aa acceptance bound=%d window_rejects=%llu "
             "armour_rejects=%llu min_range_skips=%llu (packet cc9_aa_targeting)",
             (kAaMinRangeBound ? 1 : 0) | (kAaFireWindowBound ? 2 : 0) | (kAaArmourBound ? 4 : 0),
