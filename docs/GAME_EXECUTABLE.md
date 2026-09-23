@@ -9102,3 +9102,42 @@ above and `--game-root` pointing at the installation.
   retracted that: runs resumed at about 11:05 with the same session table. The cause was
   environmental and is otherwise unknown. The run succeeded after 11:30. Those logs are under
   `local\stale\`.
+
+## Mission reference baselines, 2026-09-23 (after the faithful dive set)
+
+Packet `cc9_faithful_dive_set` (`docs/FAITHFUL_DIVE_SET.md`). **Every row above was measured on
+the frozen-throttle host**, whose speed hold never moved a throttle (`docs/PILOT_THROTTLE_SLOT.md`).
+Its aircraft flew at full throttle, and its Vals dived at 126-135 m/s. This packet switches on eight
+image reads together:
+* `kPilotThrottleSlotBound`;
+* `kPlaneAccelCheatScaleBound`;
+* `kAimDiveTailBound`;
+* `kAimGlidePitchBound`;
+* `kAimGlideYawBound`;
+* `kReleaseAltitudeDrawBound`;
+* `kDogfightMovetoGenericBound`;
+* `kAttackDistDrawBound`.
+
+The binary is built from main abe724891 plus those constants (`local\fdON`). Runs are from the
+worktree root **without** `BSP_GUNNERY_RNG_STREAMS`, with the same command lines as the sections
+above.
+
+| mission | frames | damage | deaths | queued_hits | bomb_drops | bomb_impacts | torpedo drops | plane water contacts | first_hit | mission end | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 mission | **10465.2** | **9** | **147** | 16 | 16 | **5** | 0 | **105.55 s** | none | `local\fdref_usn04.log` |
+| USN01 | 3000 mission | 4467.9 | 5 | **145** | 0 | 0 | 5 | 0 | **64.10 s** | none | `local\fdref_usn01.log` |
+| USN04 (E2) | 9000 mission | 15926.1 | 30 | 384 | **28** | 28 | 16 | 10 | 105.55 s | failed 258.06 s | `local\fdref_e9000.log` |
+
+* **USN04 torpedo drops fall from 13 to 5 at 4500 frames.** The Kates now hold their speeds and
+  release at about 74 m/s instead of 84-89 m/s, so they reach their drop points later. Every
+  throttle-fix run shows this (T1, U1, U3, V2 at 4500: 5 each), and all 16 still drop by 9000.
+  With fewer torpedoes in the first 4500 frames, damage, deaths and hits all fall (10465.2 / 9 /
+  147 against 18057.9 / 18 / 253).
+* **USN01 keeps its damage and deaths.** Its hits rise from 125 to 145, and its first hit moves
+  from 53.65 s to 64.10 s: its five torpedo aircraft arrive later and stay in the AA envelope
+  longer. Not traced row by row.
+* **E2 9000.** The previous 9000-frame row (29 drops, 1494 hits, 32 deaths) predates other merges
+  as well as this one. The same-tree pair in `docs/FAITHFUL_DIVE_SET.md` 3, run with the option,
+  gives 354 hits with the set off and 449 with it on. So the fall to 384 is not this packet's.
+* **The ship-AI standoffs note is not updated.** No standoff was re-measured here, and the ship
+  AI is untouched by this set.
