@@ -1,5 +1,7 @@
 #pragma once
 #include <array>
+#include <cstddef>
+#include <cstdint>
 #include <string>
 struct lua_State;
 
@@ -18,4 +20,9 @@ namespace bsp::game {
 // whole76Ch object. See docs/SHIP_AI_AVOIDANCE_TUNING.md.
 bool read_ship_avoidance_tuning_lua(lua_State&,
     std::array<float, 5>& output, std::string& error);
+// The same table-driven read for any settings offsets ship_ai_settings_keys
+// carries (at most 32), in the order given. Packet cc9_ship_neighbour_list reads
+// the ShipAvoidance block +190h..+1D8h through it. Output is unchanged on error.
+bool read_ship_ai_settings_offsets_lua(lua_State&, const std::uint32_t* offsets,
+    float* output, std::size_t count, std::string& error);
 } // namespace bsp::game

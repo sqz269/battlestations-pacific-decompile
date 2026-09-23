@@ -270,6 +270,71 @@ float ship_ai_arm_final_query_range_009dee7d(float extent_a, float extent_b,
 // ---------------------------------------------------------------------------
 // 009DE5B0 whole.
 // ---------------------------------------------------------------------------
+// 009DE96C..009DEBB2, section 6's walk over the neighbour list. The whole
+// routine below calls it at the same point; hosts that run 009DE5B0 section by
+// section call it directly. Returns the summed push (x, z).
+std::array<float, 2> ship_ai_arm_final_separation_vector_009de96c(
+    const ShipAiArmFinalStepState& state, const ShipAiArmFinalStepTuning& tuning,
+    float body_axis_speed, float class_reference_speed_500,
+    ShipAiArmFinalNeighbourSource& neighbours) {
+    float separation_x = 0.0f; // 009DE988
+    float separation_z = 0.0f; // 009DE98E
+
+    // 009DE994..009DEBA5: how far ahead of its own pose the ship probes,
+    // as a fraction of the way to blk+174h, clamped to +/- one half.
+    float fraction = body_axis_speed / class_reference_speed_500;
+    if (kShipAiArmFinalProbeMin > fraction) {
+        fraction = kShipAiArmFinalProbeMin;
+    } else if (fraction > kShipAiArmFinalProbeMax) {
+        fraction = kShipAiArmFinalProbeMax;
+    }
+    const float probe_x =
+        state.pose_x_184 + fraction * (state.goal_x_174 - state.pose_x_184);
+    const float probe_z =
+        state.pose_z_188 + fraction * (state.goal_z_178 - state.pose_z_188);
+
+    // 009DEA50..009DEBB2.
+    for (int index = 0; index < state.neighbour_count_604; ++index) {
+        const ShipAiArmFinalNeighbour& node = neighbours.neighbour_608(index);
+        if (!node.has_unit) {
+            continue; // 009DEA57
+        }
+        if (!(node.lifetime_78 > kShipAiArmFinalZero)) {
+            continue; // 009DEA69
+        }
+        if (!node.unit_flag_5c || node.unit_flag_5d || node.unit_flag_60 ||
+            node.unit_gone_5e) {
+            continue; // 009DEA73, 009DEA7D, 009DEA87, 009DEA91
+        }
+        // 009DEA99..009DEAAE: the two hull radii over 1.5.
+        const float reach =
+            static_cast<float>((static_cast<double>(node.unit_hull_radius_9c8) +
+                                static_cast<double>(tuning.hull_radius_9c8)) /
+                               kShipAiArmFinalEscapeLoadScale);
+        const float offset_x = probe_x - node.centre_x_20; // 009DEAB2
+        const float offset_z = probe_z - node.centre_z_24; // 009DEABD
+        const float square = static_cast<float>(static_cast<double>(offset_z) * offset_z +
+                                                static_cast<double>(offset_x) * offset_x);
+        if (!(square > kShipAiArmFinalSeparationNearSquare)) {
+            continue; // 009DEAEE
+        }
+        if (!(static_cast<double>(reach) * reach > static_cast<double>(square))) {
+            continue; // 009DEAFE
+        }
+        // 009DEB04..009DEB4C: the falloff, divided by the distance so the
+        // product below is a unit vector times the weight.
+        const float distance = length_2d_00414c60({offset_x, offset_z});
+        const float ratio = distance / reach;
+        const float weight =
+            clamped_interpolate_00419010(kShipAiArmFinalSeparationKnee,
+                                         kShipAiArmFinalHullFloor, 1.0f, 0.0f, ratio) /
+            distance;
+        separation_x += weight * offset_x; // 009DEB5C, 009DEB72
+        separation_z += weight * offset_z; // 009DEB66, 009DEB7E
+    }
+    return {separation_x, separation_z};
+}
+
 ShipAiArmFinalStepResult ship_ai_arm_final_step_009de5b0(
     ShipAiControlBlock& blk, const ShipAiNavState& nav,
     const ShipAiArmFinalStepState& state, const ShipAiArmFinalStepTuning& tuning,
@@ -341,61 +406,13 @@ ShipAiArmFinalStepResult ship_ai_arm_final_step_009de5b0(
 
     // 009DE96C..009DEE07, the traffic separation turn.
     if (state.neighbour_count_604 > 0) {
-        float separation_x = 0.0f; // 009DE988
-        float separation_z = 0.0f; // 009DE98E
-
-        // 009DE994..009DEBA5: how far ahead of its own pose the ship probes,
-        // as a fraction of the way to blk+174h, clamped to +/- one half.
-        float fraction = host.body_axis_speed_0092d730() / host.class_reference_speed_500();
-        if (kShipAiArmFinalProbeMin > fraction) {
-            fraction = kShipAiArmFinalProbeMin;
-        } else if (fraction > kShipAiArmFinalProbeMax) {
-            fraction = kShipAiArmFinalProbeMax;
-        }
-        const float probe_x =
-            state.pose_x_184 + fraction * (state.goal_x_174 - state.pose_x_184);
-        const float probe_z =
-            state.pose_z_188 + fraction * (state.goal_z_178 - state.pose_z_188);
-
-        // 009DEA50..009DEBB2.
-        for (int index = 0; index < state.neighbour_count_604; ++index) {
-            const ShipAiArmFinalNeighbour& node = host.neighbour_608(index);
-            if (!node.has_unit) {
-                continue; // 009DEA57
-            }
-            if (!(node.lifetime_78 > kShipAiArmFinalZero)) {
-                continue; // 009DEA69
-            }
-            if (!node.unit_flag_5c || node.unit_flag_5d || node.unit_flag_60 ||
-                node.unit_gone_5e) {
-                continue; // 009DEA73, 009DEA7D, 009DEA87, 009DEA91
-            }
-            // 009DEA99..009DEAAE: the two hull radii over 1.5.
-            const float reach =
-                static_cast<float>((static_cast<double>(node.unit_hull_radius_9c8) +
-                                    static_cast<double>(tuning.hull_radius_9c8)) /
-                                   kShipAiArmFinalEscapeLoadScale);
-            const float offset_x = probe_x - node.centre_x_20; // 009DEAB2
-            const float offset_z = probe_z - node.centre_z_24; // 009DEABD
-            const float square = static_cast<float>(static_cast<double>(offset_z) * offset_z +
-                                                    static_cast<double>(offset_x) * offset_x);
-            if (!(square > kShipAiArmFinalSeparationNearSquare)) {
-                continue; // 009DEAEE
-            }
-            if (!(static_cast<double>(reach) * reach > static_cast<double>(square))) {
-                continue; // 009DEAFE
-            }
-            // 009DEB04..009DEB4C: the falloff, divided by the distance so the
-            // product below is a unit vector times the weight.
-            const float distance = length_2d_00414c60({offset_x, offset_z});
-            const float ratio = distance / reach;
-            const float weight =
-                clamped_interpolate_00419010(kShipAiArmFinalSeparationKnee,
-                                             kShipAiArmFinalHullFloor, 1.0f, 0.0f, ratio) /
-                distance;
-            separation_x += weight * offset_x; // 009DEB5C, 009DEB72
-            separation_z += weight * offset_z; // 009DEB66, 009DEB7E
-        }
+        // 009DE994..009DEBB2, split out as ship_ai_arm_final_separation_vector_009de96c.
+        const float body_speed = host.body_axis_speed_0092d730();
+        const float class_speed = host.class_reference_speed_500();
+        const std::array<float, 2> push = ship_ai_arm_final_separation_vector_009de96c(
+            state, tuning, body_speed, class_speed, host);
+        const float separation_x = push[0];
+        const float separation_z = push[1];
 
         const ShipAiArmFinalSeparationTurn separation = ship_ai_arm_final_separation_turn_009debb9(
             separation_x, separation_z, heading, blk.heading_target_324, entry_target,

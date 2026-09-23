@@ -10,8 +10,12 @@ extern "C" {
 
 namespace bsp::game {
 namespace {
-constexpr std::uint32_t offsets[] = {0x194, 0x1d4, 0x1d8, 0x214, 0x218};
-struct ReadContext { std::array<float, 5> values; };
+constexpr std::uint32_t kTuningOffsets[] = {0x194, 0x1d4, 0x1d8, 0x214, 0x218};
+struct ReadContext {
+    const std::uint32_t* offsets;
+    float* values;
+    std::size_t count;
+};
 static_assert(std::is_trivially_destructible_v<ReadContext>);
 static_assert(std::is_trivially_destructible_v<NativeLuaStateStorage>);
 static_assert(std::is_trivially_destructible_v<NativeLuaObjectStorage>);
@@ -31,7 +35,8 @@ int read_protected(lua_State* state) {
     const auto* records = ship_ai_settings_keys(count);
     const char* current_section = nullptr;
     std::size_t current_length = 0;
-    for (std::size_t i = 0; i < context.values.size(); ++i) {
+    for (std::size_t i = 0; i < context.count; ++i) {
+        const std::uint32_t* const offsets = context.offsets;
         const ShipAiSettingsKeyRecord* record = nullptr;
         for (std::size_t j = 0; j < count; ++j)
             if (records[j].settings_offset == offsets[i]) { record = &records[j]; break; }
@@ -75,9 +80,14 @@ int read_protected(lua_State* state) {
 }
 } // namespace
 
-bool read_ship_avoidance_tuning_lua(lua_State& state,
-    std::array<float, 5>& output, std::string& error) {
-    ReadContext context{};
+bool read_ship_ai_settings_offsets_lua(lua_State& state,
+    const std::uint32_t* offsets, float* output, std::size_t count, std::string& error) {
+    std::array<float, 32> scratch{};
+    if (count > scratch.size()) {
+        error = "settings offset list exceeds the reader's buffer";
+        return false;
+    }
+    ReadContext context{offsets, scratch.data(), count};
     const int top = lua_gettop(&state);
     lua_pushlightuserdata(&state, &context);
     lua_pushcclosure(&state, &read_protected, 1);
@@ -89,8 +99,17 @@ bool read_ship_avoidance_tuning_lua(lua_State& state,
         return false;
     }
     lua_settop(&state, top);
-    output = context.values;
+    for (std::size_t i = 0; i < count; ++i) output[i] = scratch[i];
     error.clear();
+    return true;
+}
+
+bool read_ship_avoidance_tuning_lua(lua_State& state,
+    std::array<float, 5>& output, std::string& error) {
+    std::array<float, 5> values{};
+    if (!read_ship_ai_settings_offsets_lua(state, kTuningOffsets, values.data(),
+            values.size(), error)) return false;
+    output = values;
     return true;
 }
 } // namespace bsp::game

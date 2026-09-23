@@ -278,7 +278,13 @@ float ship_ai_arm_final_query_range_009dee7d(float extent_a, float extent_b,
 // pure.  The declaration order is the order 009DE5B0 first reaches them.
 // ---------------------------------------------------------------------------
 
-struct ShipAiArmFinalStepHost {
+// The one host method section 6's walk calls (009DEA50).
+struct ShipAiArmFinalNeighbourSource {
+    virtual ~ShipAiArmFinalNeighbourSource() = default;
+    virtual const ShipAiArmFinalNeighbour& neighbour_608(int index) = 0;
+};
+
+struct ShipAiArmFinalStepHost : ShipAiArmFinalNeighbourSource {
     virtual ~ShipAiArmFinalStepHost() = default;
 
     // 009DE5C2, 009DE67D and 009DE994: `0092D730([blk+3FCh]+1018h)`, RET 0,
@@ -397,6 +403,15 @@ struct ShipAiArmFinalStepResult {
 // +35Ch and +3A5h; `nav` supplies +304h, +3C8h and +3D0h; `state` supplies the
 // rest of the block; `tuning` the two unit radii.  `query` is the 20h-byte
 // stack block at [ESP+3Ch], built here and handed to the host.
+// 009DE96C..009DEBB2, section 6's walk: the probe point (a clamped fraction
+// body_axis_speed / class+500h of the way from +184h to +174h) and the summed,
+// falloff-weighted push away from every live neighbour's near-box centre.
+// Called with neighbour_count_604 > 0; 009DEBB9 turns the result.
+std::array<float, 2> ship_ai_arm_final_separation_vector_009de96c(
+    const ShipAiArmFinalStepState& state, const ShipAiArmFinalStepTuning& tuning,
+    float body_axis_speed, float class_reference_speed_500,
+    ShipAiArmFinalNeighbourSource& neighbours);
+
 ShipAiArmFinalStepResult ship_ai_arm_final_step_009de5b0(
     ShipAiControlBlock& blk, const ShipAiNavState& nav,
     const ShipAiArmFinalStepState& state, const ShipAiArmFinalStepTuning& tuning,

@@ -627,6 +627,20 @@ bool GameMissionLuaHost::load_ship_globals_0083b6e6() {
         }
         avoidance_tuning_ = tuning;
         avoidance_tuning_loaded_ = true;
+        {
+            // Packet cc9_ship_neighbour_list: +190h..+1D8h for the neighbour list.
+            std::uint32_t offsets[19];
+            for (std::uint32_t i = 0; i < 19; ++i) offsets[i] = 0x190u + 4u * i;
+            std::array<float, 19> block{};
+            std::string block_error;
+            if (bsp::game::read_ship_ai_settings_offsets_lua(*state_, offsets, block.data(),
+                    block.size(), block_error)) {
+                ship_avoidance_block_ = block;
+                ship_avoidance_block_loaded_ = true;
+            } else {
+                log_.notef("ship avoidance block load failed: %s", block_error.c_str());
+            }
+        }
         log_.implemented("GameSettings::load_avoidance_tuning_projection", "0083b5e0");
         log_.notef("stored ship avoidance tuning 194=%.9g 1d4=%.9g 1d8=%.9g 214=%.9g 218=%.9g",
             tuning[0], tuning[1], tuning[2], tuning[3], tuning[4]);
@@ -935,6 +949,13 @@ void GameMissionLuaHost::set_avoid_all_ship_collision_008d0852(bool value) {
 bool GameMissionLuaHost::read_avoidance_tuning(std::array<float, 5>& values) const noexcept {
     if (!avoidance_tuning_loaded_) return false;
     values = avoidance_tuning_;
+    return true;
+}
+
+bool GameMissionLuaHost::read_ship_avoidance_block(
+    std::array<float, 19>& values) const noexcept {
+    if (!ship_avoidance_block_loaded_) return false;
+    values = ship_avoidance_block_;
     return true;
 }
 
