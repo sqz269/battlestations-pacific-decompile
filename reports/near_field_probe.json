@@ -1,0 +1,43 @@
+{
+ "packet": "cc9_near_field_probe",
+ "calls": [
+  {
+   "address": "009C42B8",
+   "native": "007F0280",
+   "function": "009C4220",
+   "note": "dive-bomb attack run, re-roll arm"
+  },
+  {
+   "address": "009C4878",
+   "native": "007F0280",
+   "function": "009C47D0",
+   "note": "dive-bomb goaway heading"
+  },
+  {
+   "address": "009C6B3A",
+   "native": "007F0280",
+   "function": "009C62B0",
+   "note": "dive-bomb fly-over, speed slot and heading trim"
+  },
+  {
+   "address": "009D0CBC",
+   "native": "007F0280",
+   "function": "009D0C10",
+   "note": "torpedo goaway geometry (contract)"
+  },
+  {
+   "address": "007F05F2",
+   "native": "004142E0",
+   "function": "007F0280",
+   "note": "candidate into the unit frame"
+  },
+  {
+   "address": "007F05C9",
+   "native": "004134F0",
+   "function": "007F0280",
+   "note": "candidate matrix compose"
+  }
+ ],
+ "ledger_names_added": [],
+ "no_ghidra_function": []
+}

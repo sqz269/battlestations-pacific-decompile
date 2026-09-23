@@ -1,0 +1,100 @@
+{
+ "packet": "cc9_plane_gunfire",
+ "calls": [
+  {
+   "address": "009998D2",
+   "native": "0099B450",
+   "function": "009998A0",
+   "note": "per-think seed"
+  },
+  {
+   "address": "0099B591",
+   "native": "0099B450",
+   "function": "0099B590",
+   "note": "hold variant"
+  },
+  {
+   "address": "0099B0A0",
+   "native": "0099BEE0",
+   "function": "0099ACD0",
+   "note": "plan bytes to the command buffer, ECX = task+4"
+  },
+  {
+   "address": "007CE96F",
+   "native": "007B9770",
+   "function": "007CE040",
+   "note": "latch in the fixed step"
+  },
+  {
+   "address": "007CB1F3",
+   "native": "007B9770",
+   "function": "007CAF10",
+   "note": "latch in the limit pass"
+  },
+  {
+   "address": "007B9731",
+   "native": "007E2090",
+   "function": "007B96F0",
+   "note": "forward to the C50h finder"
+  },
+  {
+   "address": "007D620E",
+   "native": "007E1E20",
+   "function": "007D5D20",
+   "note": "C50h object construction"
+  },
+  {
+   "address": "007E1AF3",
+   "native": "007E0F20",
+   "function": "007E11D0",
+   "note": "append to the +50h or +70h list"
+  },
+  {
+   "address": "007E1B0A",
+   "native": "007E0F20",
+   "function": "007E11D0",
+   "note": "append to the +30h list"
+  }
+ ],
+ "no_ghidra_function": [
+  {
+   "start": "007E2010",
+   "end_inclusive": "007E2067",
+   "evidence": "ghidra proto --brief finds no function; vtable 00D06B88 slot +0Ch; RET 4 at 007E2065"
+  }
+ ],
+ "ledger_names_added": [
+  {
+   "address": "007E1E20",
+   "name": "BSP_PlaneNeighbours_Construct"
+  },
+  {
+   "address": "007E11D0",
+   "name": "BSP_PlaneNeighbours_Refresh"
+  },
+  {
+   "address": "007E2090",
+   "name": "BSP_PlaneNeighbours_FindTarget"
+  },
+  {
+   "address": "007DEEC0",
+   "name": "BSP_PlaneNeighbours_ScoreCandidate"
+  }
+ ],
+ "raw_listing_transfers": [
+  {
+   "address": "007E2053",
+   "function": "007E2010",
+   "note": "3 s refresh",
+   "target": "007E11D0",
+   "evidence": "disasm-raw over disk bytes; the enclosing range has no Ghidra function"
+  },
+  {
+   "address": "006EC00C",
+   "function": "006EBFF0",
+   "note": "gun class override calls the base fire-if-ready",
+   "target": "00727E30",
+   "evidence": "disasm-raw over disk bytes; the enclosing range has no Ghidra function"
+  }
+ ]
+}
