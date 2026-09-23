@@ -236,6 +236,14 @@ struct GameShipAiRow {
     std::string formation_role;    // "leader", "follower" or "none" at the last step
     // Packet cc9_station_keeping: the arm 009EDA28 and 009F4DA0's +3ADh arm.
     unsigned long long station_arm_runs{0};
+    // Packet cc9_avoid_zone_escape.
+    unsigned long long layer_selections{0};     // 009ECA20 bodies
+    unsigned long long zone_inside_steps{0};    // blk+160h set after 009ECA20
+    unsigned long long zone_escape_turns{0};    // 009DE8CD applied a turn
+    float zone_escape_max_turn{0.0f};           // |turn|, radians
+    float zone_escape_first_s{-1.0f};
+    std::uint32_t travel_layer_min{0xFFFFFFFFu};// nav+30Ch range
+    std::uint32_t travel_layer_max{0};
     // Packet cc9_ship_torpedo_response.
     unsigned long long torpedo_scans{0};        // 009F163F walks
     unsigned long long torpedo_admits{0};       // 009F0AD0 calls

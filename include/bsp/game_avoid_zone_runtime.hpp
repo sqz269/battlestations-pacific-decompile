@@ -61,6 +61,11 @@ public:
         const std::array<float, 2>& normal_a, const std::array<float, 2>& normal_b) const;
     // Borrow the same allocation/free pair used by selected-list production.
     const AvoidZoneAllocationAccess& allocation_access() const noexcept;
+    // Packet cc9_avoid_zone_escape: the manager's semantic table (what 004218E0
+    // hands 009ECA20) and the native pointer view of one of its groups, found
+    // by the group's address in that table. Throws when not loaded or not ours.
+    const AvoidZoneTable& table() const;
+    AvoidZoneClearanceGroupView native_group(const AvoidZoneLayerGroup& group) const;
 private:
     struct Impl;
     std::unique_ptr<Impl> impl_;
