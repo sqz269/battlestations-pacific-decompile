@@ -371,6 +371,8 @@ struct GameGunneryHost::Impl {
         blast_damage = 5,     // 0084BAD0's blast, key (gun, 0)
         aim_error = 6,        // 006DEFF0's three draws and 006DF5C6's period, key (gun, 0)
         ship_ai_torpedo = 7,  // 009F0AD0 and the brain timer draws, key (unit, 0)
+        death_mode = 8,       // 007CA914, the plane death-mode choice, key (unit, 0)
+        death_delay = 9,      // 007BBFA0's ExplosionExplosionDelay (stream 0), key (unit, 0)
     };
     unsigned long long next_projectile_serial{0};
     static bool rng_streams_enabled() {
@@ -4096,6 +4098,25 @@ bool GameGunneryHost::unit_dead(std::size_t unit_index) const noexcept {
     if (unit_index >= impl_->unit_state.size()) return false;
     const Impl::UnitState& state = impl_->unit_state[unit_index];
     return state.dead || state.health <= 0.0f;
+}
+
+float GameGunneryHost::death_mode_draw_00bd2f10(int stream, std::size_t unit_index,
+    float low, float high) {
+    // Stream 1 is the shared generator, exactly as ship_ai_draw uses it; under the
+    // measurement option both streams get their own labelled key (unit, 0).
+    if (stream == 1) {
+        return impl_->draw(Impl::Draw::death_mode, unit_index, 0, low, high);
+    }
+    if (Impl::rng_streams_enabled()) {
+        return impl_->draw(Impl::Draw::death_delay, unit_index, 0, low, high);
+    }
+    // Stream 0 is a separate generator in the image (ECX = 0). SUBSTITUTION,
+    // labelled: its seed and sequence are not reproduced, only its separation.
+    static std::uint32_t stream0 = 0x2545F491u;
+    stream0 = stream0 * 1664525u + 1013904223u;
+    const float unit = static_cast<float>((stream0 >> 8) & 0xFFFFFFu)
+        / static_cast<float>(0x1000000u);
+    return low + (high - low) * unit;
 }
 
 float GameGunneryHost::min_fixed_gun_muzzle_speed_007c2610(std::size_t unit_index) const noexcept {
