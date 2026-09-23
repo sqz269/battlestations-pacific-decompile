@@ -1,0 +1,49 @@
+{
+  "packet": "cc9_ocean_waves",
+  "doc": "docs/OCEAN_WAVE_FIELD.md",
+  "status": "0078C890 and 00B9CF50 reconstructed as pure rules and bound in the water-height seam behind kOceanWaveFieldBound; the image's field amplitude +24h is 0.0f (its only store, 00BA19C9), so the CPU-side sea is flat in the image and the host; measurement BLOCKED: every bsp_game run on this machine now crashes (0xC0000005) in renderer init, including binaries that ran an hour earlier",
+  "abi_compatible": false,
+  "game_validated": false,
+  "routines": [
+    {"address": "0078C890", "native": "0078C890", "name": "BSP_OceanWaveField_SampleHeight", "role": "F9h gate, frac(k x) / frac(k z), grid sample, times +24h"},
+    {"address": "00B960C0", "native": "00B960C0", "name": "BSP_OceanSpectrum_SampleGrid", "role": "64x64 bilinear over the negated first floats of 8-byte cells"},
+    {"address": "00B9CF50", "native": "00B9CF50", "name": "BSP_OceanWaveField_CoverageMask", "role": "first containing 30h region's bitmap byte / 255, clamped; 1.0 with none"},
+    {"address": "00BA6C40", "native": "00BA6C40", "name": "BSP_OceanWaveField_Construct", "role": "+F9h = third argument"},
+    {"address": "00BA1400", "native": "00BA1400", "name": "BSP_OceanWaveFieldBase_Construct", "role": "+24h = 0.0f"},
+    {"address": "00B95750", "native": "00B95750", "name": "BSP_OceanSpectrum_BuildInitial", "role": "local Mersenne state seeded 1105h, initial spectrum"},
+    {"address": "00B95D30", "native": "00B95D30", "name": "BSP_OceanSpectrum_Advance", "role": "time step and inverse FFT"},
+    {"address": "00BA0C00", "native": "00BA0C00", "name": "BSP_OceanWaveField_AddCoverageRegion", "role": "appends a 30h region record"}
+  ],
+  "call_sites": [
+    {"address": "0078C928", "native": "00B960C0", "function": "0078C890", "note": "grid sample"},
+    {"address": "0078DAF9", "native": "00BA6FB0", "function": "0078DAA0", "note": "field factory, result stored at world+A8h (0078DB03)"},
+    {"address": "00BA6FED", "native": "00BA6C40", "function": "00BA6FB0", "note": "derived constructor"},
+    {"address": "0078CA74", "native": "00B9A4C0", "function": "0078C9B0", "note": "authored +2Ch/+30h/+34h: tile at +B0h, 1/tile at +B4h"},
+    {"address": "0078CA00", "native": "00B9A450", "function": "0078C9B0", "note": "wind direction and speed"},
+    {"address": "0078C9D7", "native": "00B96C50", "function": "0078C9B0", "note": "authored +54h/+58h into the spectrum"},
+    {"address": "00B96C94", "native": "00B95D30", "function": "00B96C80", "note": "per-step spectrum advance"},
+    {"address": "004DF7F1", "native": "0078DAA0", "function": "004DE610", "note": "world construct with [[game+5FCh]+0C20h] as the flat-sea byte"}
+  ],
+  "field_accesses": [
+    {"address": "0078C896", "function": "0078C890", "note": "CMP byte [field+F9h],0"},
+    {"address": "0078C8A8", "function": "0078C890", "note": "FLD [field+B4h]"},
+    {"address": "0078C92D", "function": "0078C890", "note": "FMUL [field+24h]"},
+    {"address": "00BA19C9", "function": "00BA1400", "note": "MOVSS [ESI+24h], 0.0f"},
+    {"address": "00B9A4F1", "function": "00B9A4C0", "note": "FSTP [ECX+0B4h], 1/tile"},
+    {"address": "00B9D0C5", "function": "00B9CF50", "note": "FDIV double [00CE4B48] 255.0"},
+    {"address": "004DF7E1", "function": "004DE610", "note": "MOV DL,[EDX+0C20h], the flat-sea byte from the scene record"}
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1 Win32 Release, both ctests passed; control (switch off) and treatment built",
+    "predictions": "local/ow_predictions.txt, written before any run: heights +/-0.0 everywhere, no motion/gunnery change, about 2.0M unimplemented calls removed",
+    "runs": "BLOCKED. local/ow_{ctl,trt}_usn04.log, local/ow_{ctl,trt}_usn01.log and three probes (local/ow_probe_old*.log, the previous packet's n3T binary) all end at 'host Phase 5 online_manager_initialize' right after 'renderer init request' with EXITCODE=-1073741819; the machine's session 1 is now rdp-tcp#0. Other workers' runs started at 10:52 completed; every run started from 10:55 crashed.",
+    "decision": "not landed pending the pair; the change is behaviour-neutral by construction (amplitude 0.0 in both) but the brief requires the measured pair"
+  },
+  "no_ghidra_function": [],
+  "open": [
+    "rerun the USN04/USN01 pairs once bsp_game starts again on this machine",
+    "a runtime check that field+24h stays 0.0 (debugger on the retail game, not done)",
+    "the scene record's +0C20h byte and +990h environment block per mission (host parses neither)",
+    "the FFT (00B95750, 00B95D30, 00B95AA0, 00B952D0) is needed only for the rendered sea"
+  ]
+}

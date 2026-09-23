@@ -56,6 +56,7 @@
 #include "bsp/dyn_world_settings.hpp"
 #include "bsp/lua_binding_navigator.hpp"
 #include "bsp/ocean_height.hpp"
+#include "bsp/ocean_wave_field.hpp"
 #include "bsp/ship_hydro_forces.hpp"
 #include "bsp/pose_refresh.hpp"
 #include "bsp/rigid_body_integration.hpp"
@@ -3322,25 +3323,46 @@ namespace {
 // record that answers the open-sea state docs/OCEAN_HEIGHT.md evidences: the
 // wave field returns exactly 0.0f when field+F9h is set or field+24h is zero,
 // and the coverage mask returns exactly 1.0f when no region covers the point.
+// Packet cc9_ocean_waves, docs/OCEAN_WAVE_FIELD.md. True: both leaves run their
+// reconstructed rules over the field state this process can establish: amplitude
+// field+24h = 0.0f (00BA19C9, the only store), +B4h = 1/100 (00B9A4C0 over the
+// 004CB420 default tile 100.0 at authored +30h), +F9h clear, no coverage regions
+// (00BA0C00 / 00BA1370 build them from bitmaps this process does not load) and a
+// labelled zero grid for the field+BCh spectrum. False: the records, as before.
+constexpr bool kOceanWaveFieldBound = true;
+
 class OceanFieldBinding final : public bsp::OceanHeightHost {
 public:
     explicit OceanFieldBinding(GameUnitsHost::Impl& owner) : owner_(owner) {}
 
-    float wave_height_0078c890(float, float) override {
+    float wave_height_0078c890(float x, float z) override {
         if (!owner_.logged_ocean) {
             owner_.logged_ocean = true;
-            owner_.log.notef("ocean sampler 0078cf20 runs, both of its leaves are records: "
-                "its receiver is [[00e188a8]+19F0h] and both calls take [world+A8h], the "
-                "renderer/scene owner's field object, so the wave field answers its own "
-                "disabled value 0.0f and the coverage mask its own open-sea value 1.0f, and "
-                "the product 0078cf64 is exactly 0.0f");
+            owner_.log.notef("ocean sampler 0078cf20 runs over [world+A8h]'s field: amplitude "
+                "+24h 0.0f (00ba19c9, its only store), tile 100.0 (004cb420 default), +F9h "
+                "clear, no coverage regions, a labelled zero grid for the +BCh spectrum; "
+                "0078c890 answers h * 0.0f and the product 0078cf64 is 0.0f");
         }
-        owner_.record("ShipMotion::ocean_wave_field", 0x0078c890u);
-        return 0.0f;
+        if (!kOceanWaveFieldBound) {
+            owner_.record("ShipMotion::ocean_wave_field", 0x0078c890u);
+            return 0.0f;
+        }
+        bsp::OceanWaveFieldState field;
+        field.flat_f9 = false;        // [[game+5FCh]+0C20h]: no scene record here
+        field.inv_tile_b4 = static_cast<float>(1.0 / 100.0);   // FLD1; FDIVRP at 00B9A4D2
+        field.amplitude_24 = 0.0f;    // 00BA19C9
+        const bsp::OceanWaveGridView zero_grid{};  // LABELLED: the spectrum is not run
+        owner_.done("ShipMotion::ocean_wave_field", 0x0078c890u);
+        return bsp::ocean_wave_field_sample_0078c890(field, zero_grid, x, z);
     }
-    float coverage_mask_00b9cf50(float, float) override {
-        owner_.record("ShipMotion::ocean_coverage_mask", 0x00b9cf50u);
-        return 1.0f;
+    float coverage_mask_00b9cf50(float x, float z) override {
+        if (!kOceanWaveFieldBound) {
+            owner_.record("ShipMotion::ocean_coverage_mask", 0x00b9cf50u);
+            return 1.0f;
+        }
+        static const std::vector<bsp::OceanCoverageRegion> kNoRegions;
+        owner_.done("ShipMotion::ocean_coverage_mask", 0x00b9cf50u);
+        return bsp::ocean_coverage_mask_00b9cf50(kNoRegions, x, z);
     }
 
 private:
