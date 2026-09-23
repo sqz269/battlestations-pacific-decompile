@@ -252,3 +252,16 @@ degree and does not offset that. The one host term that could inflate the effect
 
   With those two reads, the count is `gun_muzzle_count_0072ab80(elements)` and a flatten field.
   **Not reachable with the current loaders. No code.**
+
+## Correction, 2026-09-23 (packet cc9_flak_proximity_burst)
+
+- **Was:** "this installation's `deviceclasses.lua` has no `Model` or `Mesh` key".
+- **Is:** `scripts/datatables/autoload/deviceclasses.lua` is a 17-line wrapper. It loads
+  `classtables/arcade/deviceclasses.lua` (or the realistic table) into `DeviceClass`. Those rows
+  do carry `["Mesh"] = Platform("models/devices/...mmod", ...)` (350 of 416 rows). That mesh is the
+  gun class's `+50h` resource, and its `Aux` items carry `Identifier` = (`"fire"`, index) with a
+  `Points` list. `docs/FLAK_PROXIMITY_BURST.md` section 6 has the count rule and the three
+  Lexington mounts.
+- **Evidence:** the earlier grep ran on the wrapper, not on the class table.
+  `classtables/arcade/deviceclasses.lua` row 12 (Atlanta 5'' 2X DP) has
+  `"models/devices/us/atlanta_turret.mmod"`.

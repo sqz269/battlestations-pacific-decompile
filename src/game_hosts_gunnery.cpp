@@ -103,6 +103,13 @@ constexpr bool kAaGunnerErrorBound = true;
 //    velocity (vtable[34h] = 007BBB70, unit+AC8h), not its body axis times
 //    0092D730's forward speed. Packet cc9_aa_lethality_audit.
 constexpr bool kAaTargetWorldVelocityBound = true;
+//  * kFlakProximityBurstBound: a Flak-type round runs 0070C370's proximity fuse
+//    after the base tick's direct-strike sweep: it locks the nearest plane,
+//    torpedo boat or landing ship within min(300 m, L/2 + 2 * BlastRange) of
+//    its step's midpoint, takes 00901C20's intercept of it, and bursts that far
+//    along its track (0070C210, the radial blast). OFF: direct strikes only.
+//    Packet cc9_flak_proximity_burst.
+constexpr bool kFlakProximityBurstBound = true;
 
 // 00901C20 BSP_GunBot_InterceptSolution, the time-of-flight half, as a pure rule.
 // rel = target position - shooter position; vel = target velocity - shooter
@@ -507,6 +514,8 @@ struct GameGunneryHost::Impl {
     unsigned long long dp_air_rounds{0};
     unsigned long long aa_negative_halvings{0};
     unsigned long long water_depth_kills{0};   // packet cc9_water_surface_law
+    unsigned long long flak_locks{0};           // packet cc9_flak_proximity_burst
+    unsigned long long flak_bursts{0};
     // Set by run_projectiles around apply_hit / apply_impact_blast so a round's
     // own class (the second ammunition) prices its damage; -1 means the gun's.
     int round_bullet_class{-1};
@@ -3312,6 +3321,113 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
 
         // The water crossing 0078D1B0 solves and the ocean sampler 0078CF20
         // behind it: open sea is height zero.
+        // Packet cc9_flak_proximity_burst. 0070C370 after its first call
+        // 006E6490 (the base tick and its direct-strike sweep above):
+        //   0070C3B1: FlyTime (+54h) spent -> 0070C210(proj, 0), the silent
+        //             expiry the host's life bound already models;
+        //   0070C3E2: armed once flight time > FlakFuseTime (+D8h; no reader
+        //             writes it, so 0 from 006E8320) and the scaled step > 0;
+        //   0070C41C: the step segment from the previous snapshot, its length L
+        //             and unit direction; M the segment midpoint (0070C4A8);
+        //   unlocked (byte +288h clear): walk the world entity list
+        //             (008053C0 +DE8h) for IsKindOf(5) and one of 0Fh (plane),
+        //             0Eh (MTorpedoBoat) or 0Ch (MLandingShip), no side test;
+        //             d2 = |pos - M|^2 must be below min(90000 (00CFD508),
+        //             (0.5 L + 2 BlastRange (+70h))^2) and below the best so
+        //             far; each such entity is locked (+288h = 1, +294h), and
+        //             00901C20 from the round's position with V0 (+50h) and a
+        //             zero shooter velocity (00F87574) gives the aim point A;
+        //             remaining = dot(A - prev, dir) + [+290h], floored at 0;
+        //   locked:   L < remaining -> remaining -= L; else the round moves to
+        //             prev + dir * remaining and 0070C210(proj, 1) bursts it:
+        //             the radial blast at proj+FCh with radius BlastRange and
+        //             U(BlastDamageMin, BlastDamageMax) (docs/EXPLOSION_RADIAL_DAMAGE.md).
+        // SUBSTITUTIONS, labelled: the distance error [+290h] (the AAFlakBot's
+        // DistErr, 008FDBE0 -> bot+60h) is 0, which is exact at the SPVeteran row
+        // USN04 sets; entities are this host's units (dead ones skipped, as the
+        // image's list drops a destroyed entity); the unlocked passing rule at
+        // 0070C7B6-0070C806 (10% per tick beyond 50 m) is not modelled, since it
+        // can only act on the tick that also locks.
+        if constexpr (kFlakProximityBurstBound) {
+            const GameBulletClassRow* const fc = bullet(shot.bullet_class);
+            if (fc != nullptr && fc->type == "Flak" && fc->blast_range > 0.0f
+                && shot.life > 0.0f) {
+                const float seg[3] = {shot.position[0] - from[0],
+                    shot.position[1] - from[1], shot.position[2] - from[2]};
+                const float seg_len = length3(seg);
+                if (seg_len > 0.0f) {
+                    const float dir[3] = {seg[0] / seg_len, seg[1] / seg_len,
+                        seg[2] / seg_len};
+                    if (!shot.flak_locked) {
+                        const float mid[3] = {(shot.position[0] + from[0]) * 0.5f,
+                            (shot.position[1] + from[1]) * 0.5f,
+                            (shot.position[2] + from[2]) * 0.5f};
+                        const float reach = seg_len * 0.5f + fc->blast_range * 2.0f;
+                        const float limit = std::min(90000.0f, reach * reach);
+                        float best = std::numeric_limits<float>::max();
+                        for (std::size_t i = 0; i < unit_state.size(); ++i) {
+                            if (unit_state[i].dead) continue;
+                            if (!units.unit_is_kind_of(i, bsp::kUnitGunneryKindPlaneBase)
+                                && !units.unit_is_kind_of(i, 0x0E)
+                                && !units.unit_is_kind_of(i, 0x0C)) continue;
+                            float r[3], u[3], f[3], o[3];
+                            unit_pose(i, r, u, f, o);
+                            const float dx = o[0] - mid[0], dy = o[1] - mid[1],
+                                dz = o[2] - mid[2];
+                            const float d2 = dx * dx + dy * dy + dz * dz;
+                            if (!(limit > d2) || !(best > d2)) continue;
+                            best = d2;
+                            shot.flak_locked = true;
+                            shot.flak_target = i + 1;
+                            float tv[3] = {0.0f, 0.0f, 0.0f};
+                            if (!units.unit_linear_velocity(i, tv)) {
+                                tv[0] = tv[1] = tv[2] = 0.0f;
+                            }
+                            if (units.unit_is_kind_of(i, bsp::kUnitGunneryKindShipBase)) {
+                                tv[1] = 0.0f;
+                            }
+                            const float rel[3] = {o[0] - shot.position[0],
+                                o[1] - shot.position[1], o[2] - shot.position[2]};
+                            const float dist = length3(rel);
+                            float t = 0.0f;
+                            if (fc->muzzle_speed >= 2.0f) {
+                                t = intercept_time_00901c20(rel, tv, fc->muzzle_speed, dist);
+                                t = aa_time_add_fix + t + (dist / 1000.0f) * aa_time_add_mul;
+                            }
+                            const float aim[3] = {o[0] + tv[0] * t, o[1] + tv[1] * t,
+                                o[2] + tv[2] * t};
+                            float rem = (aim[0] - from[0]) * dir[0]
+                                + (aim[1] - from[1]) * dir[1] + (aim[2] - from[2]) * dir[2];
+                            if (rem < 0.0f) rem = 0.0f;   // 0070C6D8-0070C6E3
+                            shot.flak_remaining = rem;
+                        }
+                        if (shot.flak_locked) {
+                            ++flak_locks;
+                            done("FlakProjectile::proximity_lock_0070c661", 0x0070c661u);
+                        }
+                    }
+                    if (shot.flak_locked) {
+                        if (seg_len < shot.flak_remaining) {
+                            shot.flak_remaining -= seg_len;   // 0070C7AD
+                        } else {
+                            const float burst[3] = {from[0] + dir[0] * shot.flak_remaining,
+                                from[1] + dir[1] * shot.flak_remaining,
+                                from[2] + dir[2] * shot.flak_remaining};
+                            for (int i = 0; i < 3; ++i) shot.position[i] = burst[i];
+                            const float no_dir[3] = {0.0f, 0.0f, 0.0f};
+                            ++flak_bursts;
+                            round_bullet_class = shot.bullet_class;
+                            apply_impact_blast(shot.owner_unit - 1, shot.gun_row, burst, no_dir);
+                            round_bullet_class = -1;
+                            done("FlakProjectile::detonate_0070c210", 0x0070c210u);
+                            shot.alive = false;
+                            continue;
+                        }
+                    }
+                }
+            }
+        }
+
         if (shot.position[1] <= 0.0f && from[1] > 0.0f) {
             ++summary.water_crossings;
             // A torpedo does not die at the surface: it enters its swim. The
@@ -4598,6 +4714,9 @@ void GameGunneryHost::report() {
             kAaGunnerErrorBound ? 1 : 0);
         host.log.notef("summary mission gunnery water depth kills=%llu (007CE3A7, packet "
             "cc9_water_surface_law)", host.water_depth_kills);
+        host.log.notef("summary mission gunnery flak proximity locks=%llu bursts=%llu bound=%d "
+            "(0070C370, packet cc9_flak_proximity_burst)", host.flak_locks, host.flak_bursts,
+            kFlakProximityBurstBound ? 1 : 0);
         host.log.notef("summary mission aa acceptance bound=%d window_rejects=%llu "
             "armour_rejects=%llu min_range_skips=%llu (packet cc9_aa_targeting)",
             (kAaMinRangeBound ? 1 : 0) | (kAaFireWindowBound ? 2 : 0) | (kAaArmourBound ? 4 : 0),
