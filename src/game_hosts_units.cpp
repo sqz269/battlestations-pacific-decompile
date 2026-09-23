@@ -2537,6 +2537,9 @@ struct GameUnitsHost::Impl {
     // altitude as its dimensionless `reference` and so ran bang-bang at the
     // +0.698 / -1.047 caps. docs/PLANE_FOLLOW_PITCH.md.
     static constexpr bool kPlaneFollowFlyToPitch = true;
+    // The pitch mode 009FB800 writes (cmd+2D0h = 2) at the three 009FBA50 seams
+    // that left it out. Packet cc9_pitch_callers, docs/PITCH_COMMAND_CALLERS.md.
+    static constexpr bool kPitchCommandCallersBound = true;
     // Diagnostic period for the `follow trace` row below; 0 compiles it out.
     // Packet cc9_follow_speed ran it at 25 (docs/PLANE_FOLLOW_SPEED.md section 5).
     static constexpr int kFollowTraceEvery = 0;
@@ -5719,6 +5722,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // unit+C84h, which this host does not model, so the
                             // demand reaches the planner as a plain target.
                             slot_.plan_state.pitch_target_2bc = demand;
+                            // 009FBA50 ends in 009FB800, which writes cmd+2D0h = 2
+                            // on every exit (009FB93F / 009FB95F / 009FBA41).
+                            // Packet cc9_pitch_callers, docs/PITCH_COMMAND_CALLERS.md.
+                            if constexpr (GameUnitsHost::Impl::kPitchCommandCallersBound) {
+                                slot_.plan_state.pitch_mode_2d0 = 2;
+                            }
                             record("BotApproach::command_altitude", "009fba50");
                         }
                         void write_command_word(void*, int, int) override {}
@@ -7005,6 +7014,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.plane_commanded_altitude = c.clamped_altitude;
                         unit_.plane_commanded_pitch = bsp::pitch_command_009fb800(pin);
                         unit_.plan_state.pitch_target_2bc = unit_.plane_commanded_pitch;
+                        // 009C1B17 CALL 009FBA50 -> 009FB800, which writes
+                        // cmd+2D0h = 2. docs/PITCH_COMMAND_CALLERS.md.
+                        if constexpr (GameUnitsHost::Impl::kPitchCommandCallersBound) {
+                            unit_.plan_state.pitch_mode_2d0 = 2;
+                        }
                         owner_.record("BotStateMoveTo::glide_slope", 0x009c18c0u);
 
                         // 009C1B1C-009C1B23: `LEA ECX,[ESP+1Ch]` is the target
@@ -8918,6 +8932,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.plane_commanded_altitude = c.clamped_altitude;
                         unit_.plane_commanded_pitch = demand;
                         unit_.plan_state.pitch_target_2bc = demand;
+                        // 009C1B17 CALL 009FBA50 -> 009FB800, which writes
+                        // cmd+2D0h = 2. docs/PITCH_COMMAND_CALLERS.md.
+                        if constexpr (GameUnitsHost::Impl::kPitchCommandCallersBound) {
+                            unit_.plan_state.pitch_mode_2d0 = 2;
+                        }
                         owner_.record("BotStateMoveTo::glide_slope", 0x009c18c0u);
                         if ((unit_.plane_speed_commands % 50) == 1) {
                             owner_.log.notef("  torpedo %-12s glide census n=%d "

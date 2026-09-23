@@ -1,0 +1,100 @@
+{
+ "packet": "cc9_pitch_callers",
+ "calls": [
+  {
+   "address": "009BFC21",
+   "native": "009F9ED0",
+   "function": "009BEE30"
+  },
+  {
+   "address": "009A78BB",
+   "native": "009F9ED0",
+   "function": "009A76E0"
+  },
+  {
+   "address": "009CAC2D",
+   "native": "009F9ED0",
+   "function": "009CA870"
+  },
+  {
+   "address": "007B4D3D",
+   "native": "009F9ED0",
+   "function": "007B4980"
+  },
+  {
+   "address": "009C1B17",
+   "native": "009FBA50",
+   "function": "009C18C0"
+  },
+  {
+   "address": "009C4401",
+   "native": "009FBA50",
+   "function": "009C4220"
+  },
+  {
+   "address": "009D0A92",
+   "native": "009FBA50",
+   "function": "009D07B0"
+  },
+  {
+   "address": "009D109C",
+   "native": "009FB800",
+   "function": "009D0F10"
+  },
+  {
+   "address": "009D10FF",
+   "native": "009FB800",
+   "function": "009D0F10"
+  },
+  {
+   "address": "009D1194",
+   "native": "009FB800",
+   "function": "009D0F10"
+  },
+  {
+   "address": "009C6F7D",
+   "native": "009FB800",
+   "function": "009C62B0"
+  }
+ ],
+ "vtables": [
+  {
+   "vtable": "00D20FE8",
+   "slot_0C": "009CA870",
+   "stored_at": "009CC10B",
+   "by": "009CC020 strafe"
+  },
+  {
+   "vtable": "00D057B8",
+   "slot_0C": "007B4980",
+   "stored_at": "007B691B",
+   "by": "007B6830 rocket"
+  },
+  {
+   "vtable": "00D1F8D8",
+   "slot_0C": "009A76E0",
+   "stored_at": "009A95B4/009A9746",
+   "by": "009A94E0 dogfight, 009A9670"
+  }
+ ],
+ "mode_stores_009fb800": [
+  "009FB93F",
+  "009FB95F",
+  "009FBA41"
+ ],
+ "ledger_names_added": [
+  {
+   "address": "009A76E0",
+   "name": "BSP_BotStateDogfightAim_Tick_Provisional"
+  },
+  {
+   "address": "009CA870",
+   "name": "BSP_BotStateStrafeGoTowards_Tick_Provisional"
+  },
+  {
+   "address": "007B4980",
+   "name": "BSP_BotStateRocketGoTowards_Tick_Provisional"
+  }
+ ],
+ "no_ghidra_function": []
+}
