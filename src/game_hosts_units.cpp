@@ -919,6 +919,15 @@ struct GameUnitSlot {
     // another packet. docs/PILOT_THROTTLE_CUT_RAISER.md.
     float plane_desired_speed_2b4{0.0f};
     int plane_air_brake_mode_2d8{0};
+    // plan+2B0h, a byte. Its only reader in the plane-AI range is 0099D924
+    // `CMP byte [ESI+2B0h],0` in 0099D300's speed-demand arm: ZERO lets
+    // 0099D92D-0099D970 raise the speed-error divisor plan+2B8h to
+    // InterpolateClamped(-TrgSpeedCorrMinPitch, TrgSpeedCorrSpeedMul, 0, 1,
+    // pitch) (singleton+5E8h/5ECh), non-zero skips that raise. The host's
+    // throttle rule substitutes 1.0 for plan+2B8h, so nothing here reads it
+    // yet; it is carried so the image's store sequence is complete.
+    // docs/PLANE_FOLLOW_SPEED.md.
+    std::uint8_t plane_trg_speed_corr_off_2b0{0};
     float plane_throttle_last{1.0f};
     int plane_speed_commands{0};
     // desc+1E4h and desc+1ECh, the two 007C4850 derives with the 007D98F0
@@ -2477,6 +2486,15 @@ struct GameUnitsHost::Impl {
     // enters BotStateFollow.  See docs/HANDOFF_PLANE_FOLLOW_REGIMES.md.
     static constexpr bool kPlaneFormationPlacementEnabled = true;
     static constexpr bool kPlaneFollowLawEnabled = true;
+    // The fly-to arm's last two plan stores, 009BFD15 plan+2B0h = 0 and
+    // 009BFD1C plan+2D8h = 1, after the desired speed at 009BFD0F. Without
+    // +2D8h = 1 an airborne plane (flight state 7) never enters 0099D300's
+    // speed-demand arm, so the follow law's desired speed was never read.
+    // Packet cc9_follow_speed, docs/PLANE_FOLLOW_SPEED.md.
+    static constexpr bool kPlaneFollowFlyToSpeedStores = true;
+    // Diagnostic period for the `follow trace` row below; 0 compiles it out.
+    // Packet cc9_follow_speed ran it at 25 (docs/PLANE_FOLLOW_SPEED.md section 5).
+    static constexpr int kFollowTraceEvery = 0;
     // 007B8AD0, four instructions at 007b8ad0-007b8adb, bytes
     // `33 c0 39 81 d8 09 00 00 0f 94 c0 c3`:
     //   XOR EAX,EAX / CMP [ECX+9D8h],EAX / SETE AL / RET
@@ -2851,6 +2869,10 @@ struct GameUnitsHost::Impl {
 
         // 009BFD0F-009BFD1C.
         unit.plane_desired_speed_2b4 = cmd.desired_speed_2b4;
+        if constexpr (kPlaneFollowFlyToSpeedStores) {
+            unit.plane_trg_speed_corr_off_2b0 = 0;   // 009BFD15, byte
+            unit.plane_air_brake_mode_2d8 = 1;       // 009BFD1C, dword
+        }
         record("BotStateFollow::command_step", 0x009bee30u);
 
         if ((unit.db_follow_tick_ticks % 400) == 1) {
@@ -2873,6 +2895,28 @@ struct GameUnitsHost::Impl {
                 static_cast<double>(unit.motion.position[1]),
                 static_cast<double>(cmd.desired_speed_2b4),
                 geo.band_applied ? 1 : 0);
+        }
+        // DIAGNOSTIC, packet cc9_follow_speed: the throttle slot, the speed mode,
+        // the pitch command and the measured speed, every kFollowTraceEvery ticks.
+        if constexpr (kFollowTraceEvery > 0) {
+        constexpr int kEvery = kFollowTraceEvery > 0 ? kFollowTraceEvery : 1;
+        if ((unit.db_follow_tick_ticks % kEvery) == 1) {
+            const bsp::PilotPlanSlot& th = unit.plan_slots[bsp::kPilotSlotThrottle];
+            const float v2 = unit.plane_world_velocity[0] * unit.plane_world_velocity[0] +
+                unit.plane_world_velocity[1] * unit.plane_world_velocity[1] +
+                unit.plane_world_velocity[2] * unit.plane_world_velocity[2];
+            log.notef("  follow trace %-12s n=%d ownY=%.1f cmdalt=%.1f pitch=%.3f "
+                "v=%.2f want=%.2f mode2d8=%d thr=%.3f/%.3f act=%d state=%d",
+                unit.row.name.c_str(), unit.db_follow_tick_ticks,
+                static_cast<double>(unit.motion.position[1]),
+                static_cast<double>(cmd.commanded_altitude),
+                static_cast<double>(unit.plane_commanded_pitch),
+                static_cast<double>(std::sqrt(v2)),
+                static_cast<double>(unit.plane_desired_speed_2b4),
+                unit.plane_air_brake_mode_2d8,
+                static_cast<double>(th.current), static_cast<double>(th.desired),
+                static_cast<int>(th.active), unit.plane_control_mode_900);
+        }
         }
     }
 

@@ -1,0 +1,77 @@
+{
+ "packet": "cc9_follow_speed",
+ "calls": [
+  {
+   "address": "009C2068",
+   "native": "009BFEE0",
+   "function": "009C1FD0",
+   "note": "geometry step"
+  },
+  {
+   "address": "009C2077",
+   "native": "009BEE30",
+   "function": "009C1FD0",
+   "note": "command step; its fly-to arm owns the stores"
+  },
+  {
+   "address": "009BFD0A",
+   "native": "00419010",
+   "function": "009BEE30",
+   "note": "alignment ramp whose result is stored at 009BFD0F"
+  },
+  {
+   "address": "0099D46E",
+   "native": "0042E740",
+   "function": "0099D300",
+   "note": "EBX = singleton+538h at 0099D47F/0099D487"
+  },
+  {
+   "address": "0099D95C",
+   "native": "00419010",
+   "function": "0099D300",
+   "note": "TrgSpeedCorr ramp, +2B0h == 0 only"
+  },
+  {
+   "address": "0099D96B",
+   "native": "00415550",
+   "function": "0099D300",
+   "note": "plan+2B8h = max(plan+2B8h, v)"
+  }
+ ],
+ "stores": [
+  {
+   "site": "009BFD0F",
+   "field": "plan+2B4h",
+   "width": "float",
+   "value": "desired speed"
+  },
+  {
+   "site": "009BFD15",
+   "field": "plan+2B0h",
+   "width": "byte",
+   "value": "0"
+  },
+  {
+   "site": "009BFD1C",
+   "field": "plan+2D8h",
+   "width": "dword",
+   "value": "1"
+  }
+ ],
+ "readers": [
+  {
+   "site": "0099D79F",
+   "field": "plan+2D8h",
+   "insn": "MOV ECX,[ESI+2D8h]",
+   "effect": "1 -> 0099D8C1 cut test then 0099D924 demand arm, past the state-5 test at 0099D8FD"
+  },
+  {
+   "site": "0099D924",
+   "field": "plan+2B0h",
+   "insn": "CMP byte [ESI+2B0h],0",
+   "effect": "0 -> 0099D92D-0099D970 raise plan+2B8h by the TrgSpeedCorr ramp"
+  }
+ ],
+ "census": "scan-bytes --limit 4000, reads 80/38/8A/0FB6 against +2B0h and 83/8B/39/3B/85 against +2D8h, filtered to 007B and 0099-009F: only the two readers above",
+ "no_ghidra_function": []
+}
