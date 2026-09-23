@@ -9175,3 +9175,44 @@ It behaves as main `e16937d4c`: station keeping on and the torpedo-boat exemptio
   (docs/RANDOM_STREAMS.md).
 - The E2 9000 control used for the torpedo pair (option on, `local\tr2_ctl_e2.log`) still loses
   the Lexington at 225.81 s, and so does its treatment.
+
+## Mission reference baselines, 2026-09-23 (after the death modes and the dead-plane squadron removal)
+
+Packets `cc9_plane_death_modes` (`docs/PLANE_DEATH_MODES.md`) and `cc9_pilot_surface_climbout`
+(`docs/PILOT_SURFACE_CLIMBOUT.md`). **These rows supersede the faithful-dive-set rows above,**
+because the death modes landed after them. That means:
+- a shot-down aircraft takes an explosion, delayed-explosion or power-lost mode, and the first
+  two remove it;
+- a dead aircraft releases nothing;
+- a dead plane leaves its squadron, and the next member leads;
+- the mode draws are on the shared 00BD2F10 stream.
+
+`kPlaneDeathModesBound` and `kSquadronRemovesDeadBound` are on.
+
+The binary is built from `94f22374b`: main `fd70f01dd` plus these packets (`local\cT2`). Runs are
+from the worktree root **without** `BSP_GUNNERY_RNG_STREAMS`, with the same command lines as the
+sections above.
+
+| mission | frames | damage | deaths | queued_hits | bomb_drops | bomb_impacts | torpedo drops | plane water contacts | first_hit | mission end | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 mission | **2741.6** | 9 | **131** | **2** | 2 | **4** | **4** | 105.55 s | none | `local\rb_usn04.log` |
+| USN01 | 3000 mission | **2250.0** | 5 | **141** | 0 | 0 | **3** | **3** | 64.10 s | none | `local\rb_usn01.log` |
+| USN04 (E2) | 9000 mission | **10165.8** | **32** | **372** | **8** | 8 | **8** | **14** | 105.55 s | **none** | `local\rb_e9000.log` |
+
+- **Damage falls at every length, because dead aircraft no longer release.**
+  - USN04 4500: 10465.2 to 2741.6. Six releases were refused (`dead release refused`), and
+    torpedo drops fall from 5 to 4 and bomb drops from 16 to 2.
+  - USN01: 4467.9 to 2250.0. Torpedo drops fall from 5 to 3, one of them refused outright.
+  - E2 9000: 15926.1 to 10165.8. Eight releases were refused. Bomb drops fall from 28 to 8 and
+    torpedo drops from 16 to 8. The gap between refusals and drops is aircraft that exploded, and
+    so were removed, before they reached a release.
+- **E2 no longer fails.** The faithful-set row ended in failure at 258.06 s. This run has no
+  mission end within 9000 frames. The failure branch is not traced here. The fleet's losses fall
+  with the damage, which is the likely route.
+- **Plane water contacts rise** (0 to 4, 0 to 3, 10 to 14). Power-lost aircraft glide to the water
+  at zero throttle, and every such contact is a dead aircraft (`docs/WATER_SURFACE_LAW.md`).
+- **Deaths:** USN04 4500 and USN01 are unchanged (9 and 5). E2 goes from 30 to 32.
+- **Hits** fall slightly at 4500 (147 to 131) and at 9000 (384 to 372).
+- **These rows also carry the shared-stream coupling.** Each death now takes a draw from the
+  stream the gunnery draws share, so every later shared draw shifts. The rows cannot be split
+  term by term between the death modes and that coupling.

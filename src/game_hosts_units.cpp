@@ -2805,6 +2805,10 @@ struct GameUnitsHost::Impl {
     // terms, the kill that takes the aircraft out of the world, and the release
     // refusal of a dead aircraft (007CEA1C). docs/PLANE_DEATH_MODES.md.
     static constexpr bool kPlaneDeathModesBound = true;
+    // Packet cc9_pilot_surface_climbout: a dead plane leaves its squadron
+    // (007BCAA0 -> 007F3970), so no member is placed on a dead leader's station.
+    // docs/PILOT_SURFACE_CLIMBOUT.md.
+    static constexpr bool kSquadronRemovesDeadBound = true;
     // 007DA710 (free-flight arm, read) and 007BB920's air-brake override.
     static constexpr bool kPlaneControlRateLawBound = true;
     static constexpr bool kPlaneCommitCommandBound = true;
@@ -5257,9 +5261,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                 // SUBSTITUTIONS, labelled:
                 // * the death is the gunnery host's (health <= 0 there), seen at
                 //   the next plane step rather than inside SetHealth;
-                // * the two draws come from a units-host generator, not from
-                //   00BD2F10's stream 1 (selection) and stream 0 (delay): the
-                //   gunnery host owns the shared stream and its file is leased;
+                // * the two draws go through the gunnery host, which owns
+                //   00BD2F10: stream 1 (selection) is the shared generator,
+                //   stream 0 (delay) a separate one whose seed is not reproduced;
                 // * unit+DFCh (rammed by a unit) is clear, since this host has no
                 //   ram hit, and unit+800h stays at 007CFDB4's -1, since its hits
                 //   carry no hull segment, so neither spin is reachable;
@@ -5269,17 +5273,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     if (slot.plane_death_mode == bsp::PlaneDeathMode::None
                         && !slot.plane_death_removed && gun_host != nullptr
                         && gun_host->unit_dead(index)) {
-                        static std::uint32_t select_stream = 0x2545F491u;
-                        static std::uint32_t delay_stream = 0x9E3779B9u;
-                        const auto next = [](std::uint32_t& state, float low, float high) {
-                            state = state * 1664525u + 1013904223u;
-                            const float unit = static_cast<float>((state >> 8) & 0xFFFFFFu)
-                                / static_cast<float>(0x1000000u);
-                            return low + (high - low) * unit;
-                        };
                         bsp::PlaneDeathModeInputs din;
                         din.health_370 = 0.0f;
-                        din.draw = next(select_stream, 0.0f, 1.0f);   // 007CA914
+                        // 007CA914: 00BD2F10(ECX = 1, 0.0, 1.0), the shared stream.
+                        din.draw = gun_host->death_mode_draw_00bd2f10(1, index, 0.0f, 1.0f);
                         din.rammed_dfc = false;
                         din.spin_side_800 = -1;
                         if (host.lua.plane_globals_loaded()) {
@@ -5300,7 +5297,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 delay_pair[0], delay_pair[1]);
                         }
                         const float delayed = mode == bsp::PlaneDeathMode::ExplosionDelayed
-                            ? next(delay_stream, delay_pair[0], delay_pair[1]) : 0.0f;
+                            ? gun_host->death_mode_draw_00bd2f10(0, index, delay_pair[0],
+                                delay_pair[1]) : 0.0f;   // 007BBFA0, ECX = 0
                         slot.plane_death_mode = mode;
                         slot.plane_death_timer_c10 =
                             bsp::plane_death_timer_c10_007bbfa0(mode, delayed);
@@ -5317,6 +5315,54 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             static_cast<double>(din.draw), bsp::plane_death_mode_name(mode),
                             static_cast<double>(slot.plane_death_timer_c10));
                         host.done("Plane::choose_death_mode_007ca8a0", 0x007ca8a0u);
+                        // Packet cc9_pilot_surface_climbout
+                        // (docs/PILOT_SURFACE_CLIMBOUT.md). The destroy flush that
+                        // sets unit+5Dh dispatches vtable[7Ch], which for a plane
+                        // is 007BCAA0 (00D19D28+7Ch = 00D19DA4). At 007BCADE-
+                        // 007BCAEB it hands the plane to 007F3970(unit+9D4h, plane,
+                        // 0), BSP_Squadron_RemovePlane: the member array at
+                        // squadron+3D0h is compacted, +3CCh falls by one, plane+9D4h
+                        // is cleared and 007ED260 re-deals the formation indices.
+                        // members[0] is the flight leader, so a dead leader's next
+                        // member leads. Clearing the entry here is that compaction:
+                        // every reader of member_units skips kPlaneSquadronNoUnit,
+                        // and the formation indices are re-dealt when the live count
+                        // no longer matches.
+                        if constexpr (GameUnitsHost::Impl::kSquadronRemovesDeadBound) {
+                            bsp::PlaneSquadronHostRecord* const sq =
+                                bsp::plane_squadron_registry().find_by_member_unit(
+                                    slot.process_index);
+                            if (sq != nullptr) {
+                                bool was_leader = false;
+                                std::size_t live_seat = 0;
+                                bool found_seat = false;
+                                for (std::size_t& member : sq->member_units) {
+                                    if (member == bsp::kPlaneSquadronNoUnit) continue;
+                                    if (member == slot.process_index) {
+                                        was_leader = live_seat == 0;
+                                        member = bsp::kPlaneSquadronNoUnit;
+                                        found_seat = true;
+                                        break;
+                                    }
+                                    ++live_seat;
+                                }
+                                sq->formation_indices_assigned = false;
+                                // The host's first-step station seeding keys its
+                                // "applied" flags by live seat; compact them the
+                                // same way, so a removal does not re-seed (and
+                                // teleport) every surviving member.
+                                if (found_seat && live_seat < sq->member_station_applied.size()) {
+                                    sq->member_station_applied.erase(
+                                        sq->member_station_applied.begin()
+                                        + static_cast<std::ptrdiff_t>(live_seat));
+                                }
+                                host.log.notef("squadron remove plane: squadron=%s unit=%s "
+                                    "leader=%d (007BCAA0 -> 007F3970, packet "
+                                    "cc9_pilot_surface_climbout)", sq->name.c_str(),
+                                    slot.row.name.c_str(), was_leader ? 1 : 0);
+                                host.done("Squadron::remove_plane_007f3970", 0x007f3970u);
+                            }
+                        }
                         if (flags.killed_now) {
                             slot.plane_death_removed = true;
                             host.log.notef("plane death explosion: unit=%s t=%.2f "
@@ -5371,6 +5417,34 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // brake zeroed, live and latched, while the pilot keeps
                         // steering. SUBSTITUTION, labelled: the explosion budget
                         // [00E186E8] <= [00E1873C] MaxExplosionNum is taken as met.
+                        // Packet cc9_pilot_surface_climbout: a census of a LIVE
+                        // aircraft at the surface, once a second for its first
+                        // twelve seconds below 5 m, before the arm's own terms.
+                        if (!unit_.plane_death_c3a && unit_.motion.position[1] < 5.0f) {
+                            static std::map<const void*, std::pair<float, int>> probes;
+                            auto& pr = probes[&unit_];
+                            pr.first -= step;
+                            if (pr.first <= 0.0f && pr.second < 12) {
+                                pr.first = 1.0f;
+                                ++pr.second;
+                                const float* const wv = unit_.plane_world_velocity;
+                                owner_.log.notef("  surface probe %s t=%.2f alt=%.2f vy=%.2f "
+                                    "spd=%.2f pitch_c64=%.4f live_pitch=%.3f throttle=%.3f "
+                                    "cmd_alt=%.1f cmd_pitch=%.4f state=%d (packet "
+                                    "cc9_pilot_surface_climbout)", unit_.row.name.c_str(),
+                                    static_cast<double>(owner_.summary.simulated_seconds),
+                                    static_cast<double>(unit_.motion.position[1]),
+                                    static_cast<double>(wv[1]),
+                                    static_cast<double>(std::sqrt(wv[0] * wv[0] + wv[1] * wv[1]
+                                        + wv[2] * wv[2])),
+                                    static_cast<double>(unit_.plane_pitch_angle_c64),
+                                    static_cast<double>(unit_.plane_live_controls[1]),
+                                    static_cast<double>(unit_.plane_live_throttle),
+                                    static_cast<double>(unit_.plane_commanded_altitude),
+                                    static_cast<double>(unit_.plane_commanded_pitch),
+                                    unit_.plane_control_mode_900);
+                            }
+                        }
                         if constexpr (GameUnitsHost::Impl::kPlaneDeathModesBound) {
                             if (unit_.plane_death_c3a) {
                                 bsp::PlaneDeathStepInputs dsi;
