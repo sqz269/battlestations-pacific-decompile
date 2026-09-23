@@ -66,10 +66,11 @@ In `local\L1b_9000.log` (the fighter lead on), fighters shot down flight lead Va
   and 975 m away (`db aim exit`, `pullout_18=2`). Neither reached aimglide.
 - **The same pull-out ends most of wave #7.1's dives in both logs.** In L0, #7.1, #7.1|.-2 and
   #7.1|.-4 each dive twice and release neither time.
-- **The host's Val squadrons are outside the squadron registry.** USN04 registers only the
-  fighters. So `unit_is_flight_leader_007b8ad0` answers "leader" for every Val, as its labelled
-  substitution says. Each Val runs its own dive task from arm tick 0, and there is no
-  follow-to-leader link for a leader's death to break.
+- **Corrected by `docs/VAL_SQUADRON_REGISTRY.md`:** an earlier version of this bullet said the
+  Val squadrons are outside the registry. They are inside it. Each leader constructs into moveto
+  and each wingman into follow, and every Val hands over to its own attack run on the first arm
+  tick. What the host lacked was the leave at death (007BCAA0 -> 007F3970), which that document
+  binds.
 - **What the image does on promotion (007ED610) affects formation members still in follow.** A
   member already in attackrun is not one of them, so it does not decide this case.
 

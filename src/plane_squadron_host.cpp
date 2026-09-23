@@ -179,6 +179,28 @@ std::size_t PlaneSquadronHostRecord::flight_leader() const noexcept {
     return kPlaneSquadronNoUnit;
 }
 
+bool PlaneSquadronHostRecord::remove_member_unit_007f3970(std::size_t unit) {
+    if (unit == kPlaneSquadronNoUnit) return false;
+    for (std::size_t slot = 0; slot < member_units.size(); ++slot) {
+        if (member_units[slot] != unit) continue;
+        const auto at = static_cast<std::ptrdiff_t>(slot);
+        member_units.erase(member_units.begin() + at);
+        departed_units.push_back(unit);
+        if (slot < member_names.size()) member_names.erase(member_names.begin() + at);
+        if (slot < member_spawn_index.size()) {
+            member_spawn_index.erase(member_spawn_index.begin() + at);
+        }
+        if (slot < member_station_applied.size()) {
+            member_station_applied.erase(member_station_applied.begin() + at);
+        }
+        // 007F3A11 -> 007ED260: the survivors get fresh formation indices.
+        member_formation_index.clear();
+        formation_indices_assigned = false;
+        return true;
+    }
+    return false;
+}
+
 void PlaneSquadronRegistry::clear() noexcept { records_.clear(); }
 
 PlaneSquadronHostRecord& PlaneSquadronRegistry::add(const std::string& name) {
@@ -232,6 +254,19 @@ const PlaneSquadronHostRecord* PlaneSquadronRegistry::find_by_member_unit(
     for (const PlaneSquadronHostRecord& record : records_) {
         if (std::find(record.member_units.begin(), record.member_units.end(), unit)
             != record.member_units.end()) {
+            return &record;
+        }
+    }
+    return nullptr;
+}
+
+const PlaneSquadronHostRecord* PlaneSquadronRegistry::find_by_member_or_departed_unit(
+    std::size_t unit) const noexcept {
+    if (const PlaneSquadronHostRecord* r = find_by_member_unit(unit)) return r;
+    if (unit == kPlaneSquadronNoUnit) return nullptr;
+    for (const PlaneSquadronHostRecord& record : records_) {
+        if (std::find(record.departed_units.begin(), record.departed_units.end(), unit)
+            != record.departed_units.end()) {
             return &record;
         }
     }

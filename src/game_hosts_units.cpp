@@ -1074,6 +1074,7 @@ struct GameUnitSlot {
     bool plane_death_c36{false};
     bool plane_death_c3a{false};
     bool plane_death_removed{false};
+    bool squadron_left_on_death{false};   // packet cc9_val_squadron_registry
     float plane_death_seconds{-1.0f};
     // The altitude 009FBA50 was last commanded with, and the pitch 009FB800
     // answered, kept for the census only.
@@ -2932,14 +2933,51 @@ struct GameUnitsHost::Impl {
     // no-squadron state is the constructor's -1, which is NOT slot 0 and would
     // take follow - but "this host's registry has no record" is not evidence of
     // "the image would have left -1 here". The registry holds the planes spawned
-    // through PlaneSquadronGen/007F4580 only, and USN04 registers one squadron
-    // of three; every other aircraft in the mission reaches a task by a route
-    // this host does not model as a squadron, so answering false for them would
+    // through PlaneSquadronGen/007F4580 only. (Correction, packet
+    // cc9_val_squadron_registry: that includes every SpawnNew squadron, since
+    // 0046db4b runs 007F4580's plan for class 18h, so USN04's Vals, Kates and
+    // Zeros are all registered; the "one squadron of three" this said was the
+    // scene-authored movieval only.) An aircraft outside it reaches a task by a
+    // route this host does not model as a squadron, so answering false for it would
     // put aircraft whose membership is simply unknown into a follow state that
     // 009BFD70 then declines to produce a station for - commanded nothing, on no
     // evidence. Keeping the leader answer confines this packet's change to the
     // aircraft whose slot the host actually knows, which is what makes the
     // before/after separable.
+    // Packet cc9_val_squadron_registry: 009273A0 -> 00926390 -> vtable[7Ch]
+    // 007BCAA0 -> 007F3970 at a plane's death. The host has no destroy flush,
+    // so the death is read where this host records it: the death mode chosen
+    // at 007CA8A0 (plane_death_c3a), a removal, or the gunnery host's dead
+    // flag (health <= 0 or kill_unit, the image's vtable[70h] trigger). The
+    // image leaves on the flush after the lethal step; this sweep runs at the
+    // head of the next motion step, which is the same frame boundary.
+    int squadron_leaves_{0};
+    int squadron_promotions_{0};
+    void squadron_leave_on_death_007bcaa0() {
+        for (const auto& owned : slots) {
+            GameUnitSlot& s = *owned;
+            if (s.squadron_left_on_death) continue;
+            const bool dead = s.plane_death_c3a || s.plane_death_removed ||
+                (gunnery != nullptr && gunnery->unit_dead(s.process_index));
+            if (!dead) continue;
+            bsp::PlaneSquadronHostRecord* const rec =
+                bsp::plane_squadron_registry().find_by_member_unit(s.process_index);
+            if (rec == nullptr) continue;
+            const std::size_t old_leader = rec->flight_leader();
+            if (!rec->remove_member_unit_007f3970(s.process_index)) continue;
+            s.squadron_left_on_death = true;
+            ++squadron_leaves_;
+            const std::size_t leader = rec->flight_leader();
+            if (old_leader == s.process_index) ++squadron_promotions_;
+            log.notef("plane squadron leave: unit=%s squadron=%s t=%.2f live=%d leader %s -> %s "
+                "(007BCAA0 -> 007F3970, packet cc9_val_squadron_registry)",
+                s.row.name.c_str(), rec->name.c_str(),
+                static_cast<double>(summary.simulated_seconds), rec->live_count(),
+                old_leader < slots.size() ? slots[old_leader]->row.name.c_str() : "-",
+                leader < slots.size() ? slots[leader]->row.name.c_str() : "-");
+        }
+    }
+
     bool unit_is_flight_leader_007b8ad0(std::size_t process_index) const {
         const bsp::PlaneSquadronHostRecord* const sqn =
             bsp::plane_squadron_registry().find_by_member_unit(process_index);
@@ -5150,6 +5188,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
     }
     ++host.summary.motion_steps;
     host.summary.simulated_seconds += step_seconds;
+    if constexpr (bsp::kPlaneSquadronLeaveOnDeathBound) {
+        host.squadron_leave_on_death_007bcaa0();
+    }
     // Milestone 2m: the weapon director's own step, before the motion pass that
     // reads what the step decided. 00836920's caller is the unit update's
     // director block, which this process does not reach, so the position is the
@@ -7174,7 +7215,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     void df_approach_update_009aac70(float dt, float attack_dist) {
                         const bsp::PlaneSquadronHostRecord* tsq = nullptr;
                         if (unit_.command_target_plus_one != 0) {
-                            tsq = bsp::plane_squadron_registry().find_by_member_unit(
+                            // The order's squadron, kept after the ordered
+                            // plane dies and leaves (cc9_val_squadron_registry).
+                            tsq = bsp::plane_squadron_registry().find_by_member_or_departed_unit(
                                 unit_.command_target_plus_one - 1);
                         }
                         if (tsq == nullptr) {  // 009AAC76
@@ -7638,7 +7681,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         ++unit_.df_early_asks;
                         const bsp::PlaneSquadronHostRecord* tsq = nullptr;
                         if (unit_.command_target_plus_one != 0) {
-                            tsq = bsp::plane_squadron_registry().find_by_member_unit(
+                            // The order's squadron, kept after the ordered
+                            // plane dies and leaves (cc9_val_squadron_registry).
+                            tsq = bsp::plane_squadron_registry().find_by_member_or_departed_unit(
                                 unit_.command_target_plus_one - 1);
                         }
                         bsp::PlaneFinderParams fp;
@@ -13999,6 +14044,9 @@ void GameUnitsHost::report() {
                             static_cast<double>(slot->df_moveto_speed_max),
                             slot->plane_pilot_fires_c24 ? 1 : 0);
                     }
+                    host.log.notef("summary mission plane squadron leaves=%d promotions=%d "
+                        "(007BCAA0 -> 007F3970 at death, packet cc9_val_squadron_registry)",
+                        host.squadron_leaves_, host.squadron_promotions_);
                     if (df_aircraft > 0) {
                         host.log.notef("summary mission fighter gun: bursts=%d fire_ticks=%d "
                             "rounds=0 (the gunFire consumer is not established; "

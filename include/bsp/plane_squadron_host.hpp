@@ -31,6 +31,16 @@ namespace bsp {
 // create_units has run over the records the plan produced.
 inline constexpr std::size_t kPlaneSquadronNoUnit = static_cast<std::size_t>(-1);
 
+// Packet cc9_val_squadron_registry (docs/VAL_SQUADRON_REGISTRY.md): a member
+// plane LEAVES its squadron when it dies. The image's death flush 009273A0
+// dispatches vtable[74h] 00926390 (+5Dh = +60h = 1), which tail-jumps to
+// vtable[7Ch]; for an aircraft that is 007BCAA0, whose 007BCAEB calls
+// 007F3970 BSP_Squadron_RemovePlane(squadron, plane, 0): the +3D0h array is
+// compacted, so the next member becomes slot 0, the flight leader 007B8AD0
+// and 007EDA91 read. Before: a dead member kept its slot for ever, and a dead
+// leader stayed the leader its wingmen follow.
+inline constexpr bool kPlaneSquadronLeaveOnDeathBound = true;
+
 // The three property-bag keys 007F4580 mode 1 reads besides `Type` (00CE4780,
 // which the scene pass already resolves onto its record). Each is verified from
 // the bytes at the literal's address, not from a name.
@@ -138,6 +148,15 @@ struct PlaneSquadronHostRecord {
     std::int32_t live_count() const noexcept;
     // +3D0h, the flight leader. 007EDA91 reads slot 0 whatever the count.
     std::size_t flight_leader() const noexcept;
+    // 007F3970's compaction for one member unit: its slot leaves every
+    // parallel array (names too, so a later resolve by name cannot restore
+    // it), and the formation indices are re-assigned, as 007F3A11 re-runs
+    // 007ED260. Returns false when the unit is not a member.
+    bool remove_member_unit_007f3970(std::size_t unit);
+    // Members that left at death, so a caller holding a unit as a stand-in
+    // for the squadron pointer (the dogfight order's target) still reaches
+    // the squadron the image's task keeps pointing at. Not +3D0h.
+    std::vector<std::size_t> departed_units;
 };
 
 // Process-wide, like `air_ops_decks()`: the scene pass, the air-ops launch seam,
@@ -173,6 +192,12 @@ class PlaneSquadronRegistry {
     // resolution pass should use find_by_member_name, which needs no units.
     PlaneSquadronHostRecord* find_by_member_unit(std::size_t unit) noexcept;
     const PlaneSquadronHostRecord* find_by_member_unit(std::size_t unit) const noexcept;
+    // The squadron a unit belongs to OR left at its death (packet
+    // cc9_val_squadron_registry). For callers whose unit stands in for a
+    // squadron pointer the image holds, which does not change when the plane
+    // it was resolved from dies.
+    const PlaneSquadronHostRecord* find_by_member_or_departed_unit(
+        std::size_t unit) const noexcept;
     // plane+9D8h for a member unit, or -1 when the unit is in no squadron.
     std::int32_t spawn_index_of_unit(std::size_t unit) const noexcept;
 
