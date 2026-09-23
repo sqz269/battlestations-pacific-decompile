@@ -1,0 +1,55 @@
+{
+  "packet": "cc9_ring_query",
+  "doc": "docs/SHIP_AI_RING_QUERY.md",
+  "status": "ring scan block carries the actual target words and the 10000 no-target divisor behind kShipAiRingQueryBound; unit+9C8h fed from class Length behind kUnitRadiusBound (no effect on USN04 or USN01 today)",
+  "abi_compatible": false,
+  "game_validated": false,
+  "routines": [
+    {"address": "009E7FC0", "native": "009E7FC0", "name": "BSP_ShipAi_ApproachResetSlotScores", "role": "copies nested+127Ch by value (009E8192..009E81A2), overrides words 5-7 and bytes +40h/+41h, calls 009E5DA0 per slot"},
+    {"address": "009E5DA0", "native": "009E5DA0", "name": "BSP_ShipAi_ApproachRateSlotBearing", "role": "per-slot rating through 0095EB40 on the copied block"},
+    {"address": "0095EB40", "native": "0095EB40", "name": "BSP_Unit_RateExpectedWeaponDamage", "role": "the rating; output cap damage_cap x max(1, window/5)"},
+    {"address": "009F1BC0", "native": "009F1BC0", "name": "BSP_ShipAi_ApproachFrameState", "role": "fills nested+127Ch target words (009F2A26..009F2A8F) or no-target constants (009F2A91..009F2AC1)"},
+    {"address": "009E9190", "native": "009E9190", "name": "BSP_ShipAi_ApproachRefreshAvoidance", "role": "calls 009E6240 with nested+1238h; unreached in the host (traffic record count 0)"},
+    {"address": "009E6240", "native": "009E6240", "name": "BSP_ShipAi_ApproachRefreshTargetFirepower", "role": "rates nested+1238h, the block describing this ship; not bound"},
+    {"address": "00810F60", "native": "00810F60", "name": "BSP_Unit_InitializeDirectorAndHullDimensions", "role": "writes unit+9C8h = 2*max(zmax,-zmin) at 0081106E, class+A0h Length at 00811068"},
+    {"address": "009635D0", "native": "009635D0", "name": "BSP_ShipClass_GetUnderwaterArmour", "role": "ship class vtable+24h: class+6B4h"},
+    {"address": "004407A0", "native": "004407A0", "name": "BSP_VehicleClass_GetUnderwaterArmourDefault", "role": "base vehicle-class vtable+24h: class+4Ch Armour, inherited by every non-ship family; Ghidra name still BSP_PlaneClass_GetUnderwaterArmour"}
+  ],
+  "call_sites": [
+    {"address": "009E81A7", "native": "009E5DA0", "function": "009E7FC0", "note": "per-slot rating on the copied nested+127Ch block"},
+    {"address": "009E950F", "native": "009E6240", "function": "009E9190", "note": "avoidance refresh over nested+1238h (pushed at 009E94DF)"}
+  ],
+  "field_accesses": [
+    {"address": "009E8192", "function": "009E7FC0", "note": "REP MOVSD copy of nested+127Ch, 11h dwords"},
+    {"address": "009E8153", "function": "009E7FC0", "note": "word 5 bearing from nested+11DCh"},
+    {"address": "009E814B", "function": "009E7FC0", "note": "word 6 window 20.0 (00CE3930)"},
+    {"address": "009E8161", "function": "009E7FC0", "note": "word 7 ready horizon 60.0 (00CEB4B0)"},
+    {"address": "009E8171", "function": "009E7FC0", "note": "byte +40h = 1"},
+    {"address": "009E8178", "function": "009E7FC0", "note": "byte +41h = 1"},
+    {"address": "009F2AB1", "function": "009F1BC0", "note": "no target: divisor 10000.0f (host ring had 0)"},
+    {"address": "009F294B", "function": "009F1BC0", "note": "nested+123Ch = [unit+9C8h] of this ship"},
+    {"address": "0081106E", "function": "00810F60", "note": "FSTP [ESI+9C8h], 2*max(zmax,-zmin), the full length"}
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1 Win32 Release, both ctests passed; control, treatment, ring-only and two diagnostic builds",
+    "env": "BSP_GUNNERY_RNG_STREAMS=1 on every run",
+    "predictions": {"cap_880": "held", "standoffs_unchanged": "held", "target_curve_zero": "held", "usn01_unchanged": "held", "fewer_heading_changes": "wrong in direction"},
+    "runs": {
+      "usn04_control": {"log": "local/rq_ctl_usn04.log", "heading_changes": [15, 41, 57, 39, 58, 42, 5, 37], "queued_hits": 103, "damage": 15656.2, "deaths": 9, "lexington": "afloat, 141.9 HP"},
+      "usn04_treatment": {"log": "local/rq_trt_usn04.log", "heading_changes": [18, 116, 28, 71, 63, 69, 33, 43], "queued_hits": 103, "damage": 15656.2, "deaths": 9, "lexington": "afloat, 141.9 HP",
+                          "first_standoffs": [2250, 2250, 1450, 1450, 1550, 1450, 1850, 1850], "last_standoffs": 300},
+      "usn04_ring_only": {"log": "local/rq_ring_usn04.log", "note": "identical to the treatment except one platform message count"},
+      "usn04_diagnostic": {"logs": ["local/rq_dgc_usn04.log", "local/rq_dgt_usn04.log"], "tool": "local/rq_cmp.py",
+                           "winner_changes_ctl": [15, 6, 25, 9, 11, 11, 5, 9], "winner_changes_trt": [18, 9, 11, 14, 16, 19, 11, 19],
+                           "trt_max_rating": "880 in 405 of 622 nonzero scans, 723.57 in 160", "ctl_zero_only_window": "scans 127-141 on all ships"},
+      "usn01": {"logs": ["local/rq_ctl_usn01.log", "local/rq_trt_usn01.log"], "note": "identical except one platform message count"}
+    }
+  },
+  "no_ghidra_function": [],
+  "open": [
+    "which held target yields a zero rating for scans 127-141 (health 0 or armour at or above the damage band)",
+    "traffic records that would let 009E9190 reach 009E6240",
+    "the four allow bytes at [0080E160(unit)+220h..+223h] have no producer; host forces 1",
+    "Ghidra name of 004407A0 to be updated to the ledger name by the integrator"
+  ]
+}
