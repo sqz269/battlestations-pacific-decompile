@@ -117,3 +117,11 @@ segments 44 and 91, not next to it.
 
 none. `0078CF20`, `0078C890` and `00B9CF50` each lie inside an existing Ghidra function body,
 checked with `python tools/bsp.py ghidra proto <addr> --brief`.
+
+## Correction, 2026-09-23 (packet cc9_ocean_waves)
+
+The opening says 0078CF20 "has 31 callers across the image". A rel32 census of the executable
+on disk finds 49 `CALL 0078CF20` sites. The wave field 0078C890 has seven callers besides
+0078CF20's own call: 0078D1B0, 00B9F0A0, 00BA2FF0 (twice), 00BAB3F0 and 00BAB930. Its amplitude
+field+24h is 0.0f in the image (docs/OCEAN_WAVE_FIELD.md), which answers this doc's follow-up
+`ocean_wave_field_sample`.
