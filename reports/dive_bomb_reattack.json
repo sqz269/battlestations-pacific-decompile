@@ -1,0 +1,126 @@
+{
+ "packet": "cc9_goaway_reattack",
+ "baseline_commit": "74891ae53",
+ "worktree": "J:/PROG/battlestations-pacific-decompile-cc9-goaway-turn",
+ "documentation": "docs/DIVE_BOMB_REATTACK.md",
+ "production_cpp_changed": [],
+ "ghidra_mutated": false,
+ "status": "re-attack edge read; host matches term by term; no binding; kDiveBombReattackBound not added",
+ "original_abi": {
+  "009c83e0": "BSP_BotTaskDiveBomb_UpdateStateTransition, __fastcall(task), RET 4",
+  "009c82d0": "BSP_BotTaskDiveBomb_SetState, __thiscall(task; state*), RET 4: exit slot +8h, store task+310h, enter slot +4h",
+  "009c6270": "BSP_BotStateDiveBombFlyAbove_Enter, __thiscall(state), plain RET at 009C62A8",
+  "009c6210": "BSP_BotStateDiveBombFlyAbove_Exit, __thiscall(state), plain RET at 009C621D; no Ghidra function",
+  "009c3da0": "BSP_BotTaskDiveBombApproach_RedrawAimError, __thiscall(approach), plain RET at 009C3E9C",
+  "007b3dc0": "goaway exit (00D20CA0 slot +8h): bare RET"
+ },
+ "edges": [
+  {
+   "site": "009C86D3",
+   "rule": "state == goaway (+704h)"
+  },
+  {
+   "site": "009C86E1",
+   "rule": "009C7F00 complete, else stay"
+  },
+  {
+   "site": "009C86EE",
+   "rule": "byte task+4C9h (approach+D1h, bomb ordnance) != 0 -> SetState(EDI = task+778h flyabove, loaded 009C84ED) at 009C86FA; else SetState(EBX = task+664h done, loaded 009C8484) at 009C8706"
+  },
+  {
+   "site": "009C8495",
+   "rule": "task->vtable[1Ch]() = 009C8A90 true -> done (009C849E), ahead of every attacking-state arm"
+  }
+ ],
+ "calls": [
+  {
+   "address": "009c86e1",
+   "native": "009c7f00",
+   "containing_function": "009c83e0",
+   "note": "goaway completion",
+   "host_method": "dive_bomb_goaway_complete_009c7f00"
+  },
+  {
+   "address": "009c86fa",
+   "native": "009c82d0",
+   "containing_function": "009c83e0",
+   "note": "SetState(flyabove)"
+  },
+  {
+   "address": "009c8706",
+   "native": "009c82d0",
+   "containing_function": "009c83e0",
+   "note": "SetState(done)"
+  },
+  {
+   "address": "009c6276",
+   "native": "009c3da0",
+   "containing_function": "009c6270",
+   "note": "fly-over enter re-draws the aim error on every re-attack; host draws none"
+  },
+  {
+   "address": "009c3dcb",
+   "native": "00bd2f10",
+   "containing_function": "009c3da0",
+   "note": "U(-row+30h, row+30h)"
+  },
+  {
+   "address": "009c3df5",
+   "native": "00bd2f10",
+   "containing_function": "009c3da0",
+   "note": "U(-row+34h, row+34h)"
+  },
+  {
+   "address": "009c3e21",
+   "native": "009fa380",
+   "containing_function": "009c3da0",
+   "note": "writes the two draws into approach+30h's aim reference"
+  },
+  {
+   "address": "009c3e8c",
+   "native": "00bd2f10",
+   "containing_function": "009c3da0",
+   "note": "approach+C8h = U(-row+2Ch, row+2Ch)"
+  }
+ ],
+ "indirect_calls": [
+  {
+   "site": "009C8495",
+   "target": "task vtable +1Ch = 009C8A90 BSP_BotTaskDiveBomb_ShouldBreakOff"
+  },
+  {
+   "site": "009C82EB",
+   "target": "old state vtable +8h (goaway: 007B3DC0, RET)"
+  },
+  {
+   "site": "009C82FA",
+   "target": "new state vtable +4h (flyabove: 009C6270)"
+  }
+ ],
+ "no_ghidra_function": [
+  {
+   "start": "009C6210",
+   "end_inclusive": "009C621D",
+   "name": "BSP_BotStateDiveBombFlyAbove_Exit",
+   "evidence": "ghidra proto --brief prints '009c6210 ?  ?  body ?'; 00D20D04 slot +8h; INT3 at 009C621E"
+  }
+ ],
+ "tick_period": {
+  "gate": "0099AD21-0099AD29, [00D1F39C] = 0.09f FLD dword, FCOMIP, JBE",
+  "result": "the arm runs every second 0.05 s frame with dt = 0.10; the host feeds pilot_think_accumulator_70 (matches)"
+ },
+ "runs": [
+  {
+   "log": "local/ctl_e9000.log",
+   "tree": "main 74891ae53 unchanged (local/binCtl)",
+   "arguments": "--frames 9200 --press-start-frame 30 --menu-select USN04 --mission-frames 9000 --mission-frame-seconds 0.05",
+   "result": "dive-bomb aircraft=24 releases=22 bomb_impacts=22 entity_impacts=83 deaths=9. The four goaway Vals (#3.1|.-2, #7.1, #7.1|.-2, #7.1|.-3): first goaway 167-170 ticks to 1405-1412 m, flyabove 1 tick, dive from 1793-1882 m aborted at 166-168 m; climb goaway 888-918 ticks to 900 m at 1564-1575 m; flyabove 1 tick; dive from 1551-1553 m / 805 m aborted at 163 m, 680-699 m out; releases 0 each; none hit (taken 0)",
+   "pair": "none: no binding, so no treatment"
+  }
+ ],
+ "open": {
+  "turndown/aimdive after a goaway": "for cc9_flyover_speed: turndown completes still facing away (2.94 -> 2.64 rad) and every re-attack dive aborts",
+  "009C3DA0 row base": "unsettled",
+  "AA on the goaway Vals": "none hit across four dives, unread"
+ }
+}
