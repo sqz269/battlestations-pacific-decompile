@@ -137,8 +137,9 @@ GameAiWeaponFacts& game_ai_weapon_facts() noexcept {
 
 namespace {
 // Packet cc9_planner_kate_targeting: the planner's range factor as 00A1CD95
-// forms it. docs/PLANNER_KATE_TARGETING.md. OFF, measured (K0/K1): ship-AI rows move
-// through the planner's command targets, not explained row by row.
+// forms it. docs/PLANNER_KATE_TARGETING.md. OFF, held (2026-09-23): its E2 pair (R0/R1,
+// docs/VAL_SQUADRON_REGISTRY.md section 6.1) lost all torpedo drops, 8 -> 0, through an
+// untraced Yorktown order split at 122 s.
 constexpr bool kPlannerRangeInterpBound = false;
 
 // Packet cc9_ship_natives_2, docs/SHIP_NATIVES_2.md. True: 009FFD70
@@ -347,6 +348,9 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     struct Squadron {
         bsp::PlaneSquadronEntity entity;
         std::vector<std::size_t> member_units;  // unit indices in +3D0h order
+        // Built from a registry record, so 007F3970's leave at death (packet
+        // cc9_val_squadron_registry) shrinks the live +3D0h array under it.
+        bool registry_backed{false};
     };
     std::vector<Squadron> squadrons;
     // A plane the squadron owns is NOT an AI candidate of its own. The native
@@ -427,16 +431,34 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     // 0; that is the point the native's formation and leader reads take.
     std::size_t proxy(std::size_t index) const {
         const Squadron* s = squadron_of(index);
-        if (s == nullptr || s->member_units.empty()) return index;
-        return s->member_units.front();
+        if (s == nullptr) return index;
+        const std::size_t lead = lead_member(*s);
+        return lead == bsp::kPlaneSquadronNoUnit ? index : lead;
+    }
+    // +3D0h[0]. With the leave bound, a member that died has left the
+    // registry's array (007BCAA0 -> 007F3970), so slot 0 is the first member
+    // still listed there, and an emptied squadron has none (007EDA99 JZ).
+    std::size_t lead_member(const Squadron& s) const {
+        if (s.member_units.empty()) return bsp::kPlaneSquadronNoUnit;
+        if constexpr (bsp::kPlaneSquadronLeaveOnDeathBound) {
+            if (s.registry_backed) {
+                for (const std::size_t m : s.member_units) {
+                    if (bsp::plane_squadron_registry().find_by_member_unit(m) != nullptr) {
+                        return m;
+                    }
+                }
+                return bsp::kPlaneSquadronNoUnit;
+            }
+        }
+        return s.member_units.front();
     }
     std::size_t proxy(void* entity) const { return proxy(unit_index_of(entity)); }
 
     // 007EDA90's three reads, taken on the squadron's flight leader.
     bsp::PlaneSquadronLeadPlaneFacts squadron_lead_facts(const Squadron& s) const {
         bsp::PlaneSquadronLeadPlaneFacts lead;
-        if (s.member_units.empty()) return lead;          // 007EDA99 JZ
-        const std::size_t leader = s.member_units.front();
+        const std::size_t leader = lead_member(s);
+        if (leader == bsp::kPlaneSquadronNoUnit) return lead;   // 007EDA99 JZ
         lead.has_lead_plane = true;
         // 007EDAA0 PUSH 17h through the leader's vtable[+5Ch].
         lead.lead_is_kamikaze_17 =
@@ -2397,6 +2419,7 @@ void GameAiCoordinatorHost::Impl::build_squadrons() {
             attached = true;
         }
         if (!attached) continue;
+        s.registry_backed = owner != nullptr;
         squadrons.push_back(std::move(s));
         ++summary.squadrons_built;
     }

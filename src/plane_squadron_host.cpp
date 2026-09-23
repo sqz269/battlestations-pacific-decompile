@@ -179,6 +179,39 @@ std::size_t PlaneSquadronHostRecord::flight_leader() const noexcept {
     return kPlaneSquadronNoUnit;
 }
 
+bool PlaneSquadronHostRecord::remove_member_unit_007f3970(std::size_t unit,
+                                                          const std::string& member_name) {
+    if (unit == kPlaneSquadronNoUnit) return false;
+    std::size_t live_seat = 0;
+    for (std::size_t slot = 0; slot < member_units.size(); ++slot) {
+        const bool held = member_units[slot] == unit;
+        const bool cleared = member_units[slot] == kPlaneSquadronNoUnit &&
+            slot < member_names.size() && member_names[slot] == member_name;
+        if (!held && !cleared) {
+            if (member_units[slot] != kPlaneSquadronNoUnit) ++live_seat;
+            continue;
+        }
+        const auto at = static_cast<std::ptrdiff_t>(slot);
+        member_units.erase(member_units.begin() + at);
+        departed_units.push_back(unit);
+        if (slot < member_names.size()) member_names.erase(member_names.begin() + at);
+        if (slot < member_spawn_index.size()) {
+            member_spawn_index.erase(member_spawn_index.begin() + at);
+        }
+        if (held) {
+            // Not yet compacted elsewhere: the station flags are keyed by live
+            // seat, and 007F3A11 -> 007ED260 re-deals the formation indices.
+            if (live_seat < member_station_applied.size()) {
+                member_station_applied.erase(member_station_applied.begin()
+                    + static_cast<std::ptrdiff_t>(live_seat));
+            }
+            formation_indices_assigned = false;
+        }
+        return true;
+    }
+    return false;
+}
+
 void PlaneSquadronRegistry::clear() noexcept { records_.clear(); }
 
 PlaneSquadronHostRecord& PlaneSquadronRegistry::add(const std::string& name) {
@@ -232,6 +265,19 @@ const PlaneSquadronHostRecord* PlaneSquadronRegistry::find_by_member_unit(
     for (const PlaneSquadronHostRecord& record : records_) {
         if (std::find(record.member_units.begin(), record.member_units.end(), unit)
             != record.member_units.end()) {
+            return &record;
+        }
+    }
+    return nullptr;
+}
+
+const PlaneSquadronHostRecord* PlaneSquadronRegistry::find_by_member_or_departed_unit(
+    std::size_t unit) const noexcept {
+    if (const PlaneSquadronHostRecord* r = find_by_member_unit(unit)) return r;
+    if (unit == kPlaneSquadronNoUnit) return nullptr;
+    for (const PlaneSquadronHostRecord& record : records_) {
+        if (std::find(record.departed_units.begin(), record.departed_units.end(), unit)
+            != record.departed_units.end()) {
             return &record;
         }
     }

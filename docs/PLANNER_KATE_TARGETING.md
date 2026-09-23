@@ -191,3 +191,5 @@ Lexington-class01_sqn01.
 * **The next term is the group composition:** the ComposeGroup pass that merges both fighter flights
   (and later six more aircraft) into one group, whose value is the same 00A0C650 formula (section
   3). The group base weight 00A0F970 is also still substituted by population.
+
+**Held OFF (2026-09-23):** the flip is held, because its E2 pair (R1, docs/VAL_SQUADRON_REGISTRY.md section 6.1) lost all torpedo drops, 8 to 0, through an untraced Yorktown order split at 122 s.
