@@ -69,7 +69,10 @@ is what the stand-in heads at.
 * `include/bsp/dogfight_task.hpp` / `src/dogfight_task.cpp`: the state enum,
   `dogfight_engaged_009aafa0`, `dogfight_unengaged_state_009aafa0`, and
   `dogfight_moveto_standin`.
-* In the host, `run_dogfight_task_arm_009ab1c0` installs on class `00E08F58` and applies
+* In the host, `run_dogfight_task_arm_009ab1c0` installs on class `00E08F58` **or** on the
+  director's resolved command token `dogfight`. The token is a labelled SUBSTITUTION for
+  the image's task build through `0099A170`, because a scene-issued order never sets the
+  class in this host (run G1). It then applies
   `009AAFA0`'s unengaged arm (the leader in moveto, wing members in follow). Follow runs the
   generic follow tick: station placement, then the fly-to law with its pitch through
   `009F9ED0`. Moveto is a **labelled stand-in**: head at the command target (`009F9E40`) and
@@ -96,4 +99,60 @@ Control G0 (main `0899b3bb2`) was already running when this was written.
 
 ## 6. Runs
 
-(Filled in after the runs.)
+All USN04 runs use the E2 parameters (`--frames 9200 --press-start-frame 30 --menu-select USN04
+--mission-frames 9000 --mission-frame-seconds 0.05`), each from its own copied binary. USN01's
+script issues no `dogfight` (its only token is `artillery`), so there is no USN01 pair.
+
+| run | configuration | binary | log | fighters drowned | water contacts | dive-bomb rows | gunnery kills |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| G0 | main `0899b3bb2` | `local\binG0` | `local\G0_usn04.log` | 4 of 6 | 11 | - | 11 |
+| G1 | install gated on class `00E08F58` only | `local\binG1` | `local\G1_usn04.log` | 4 of 6 | 11 | identical | 11 |
+| G2 | install on the class **or** the command token `dogfight` | `local\binG2` | `local\G2_usn04.log` | **0 of 6** | **7** | identical | 9 |
+
+**The baseline had moved.** Section 5 was written against the old baseline of 16 contacts with all
+six fighters among them. On main `0899b3bb2` (G0) the count is 11, and four of the six fighters
+are among them: `Yorktown-class01_sqn02` ×3 and `Lexington-class01_sqn01|.-2`, all at |v| 82.
+
+**G1 is a null.** The six fighters never get `attack_command_class`: their order is scene-issued,
+and the per-unit table's `dogfight` is the director's command token (`row.command`). So the class
+gate never fired, and G1 is identical to G0 in all 84 summary rows. G2 adds the token as a
+labelled substitute trigger (section 4).
+
+**G2 against G0, term by term:**
+* **Dogfight rows.** Six `none -> moveto|follow` transitions, as predicted, one per aircraft.
+  The two leaders hold moveto for 4214 ticks and the four wing members follow.
+  `Yorktown-class01_sqn02` comes within 104.7 m of its target and spends 366 ticks inside
+  AttackDist, where the image would engage. `Lexington-class01_sqn01` never comes closer than
+  18190.5 m.
+* **Water contacts 11 -> 7.** The four fighter drownings are gone. The remaining seven are G0's
+  seven Val rows, at identical speeds.
+* **Dive-bomb rows** (`divebomb`, `release census`, `db aim exit`, `gunnery: bomb drop`):
+  identical.
+* **Gunnery 11 -> 9 kills.** The per-unit `killed_by` table shows every kill in both runs is ship
+  anti-aircraft fire on Japanese aircraft; no fighter scores or is killed. Two Kates that died in
+  G0, `B5N Kate #6.1|.-2` (Lexington-class01, 230.41 s) and `#6.1|.-3` (Fletcher-class02,
+  422.02 s), survive in G2. Four other kills move by at most 0.35 s and the damage columns
+  change. The mechanism shows in the recon row: `observers` 7774 -> 7856. The six fighters now
+  live the whole mission and observe, which changes recon identification (`identified` 5822 ->
+  5560, `none` 1838 -> 2212) and so the ships' anti-aircraft picture. The contact counts
+  (`dead` 113375 -> 102333) fall for the same reason: four fewer dead aircraft linger in
+  contact lists.
+* **Plane-motion totals and the `pilot attack` ordered row** change because the six fighters now
+  fly all mission. `worst_closed` -8957.7 m is `Lexington-class01_sqn01`, whose target moves away
+  faster than the stand-in closes.
+
+## 7. Decision
+
+**The skeleton lands** (`kDogfightTaskBound = true`, token trigger included). The measurable goal
+is met: no fighter drowns. Every other change is attributed above to the fighters now being
+alive, and nothing a fighter does in its own right changes another unit.
+
+What remains owed, in order:
+1. `009AAC70`: the approach update. It holds target selection and the `+4C8h` in-range latch
+   the engaged arm needs.
+2. `009A9D90` and the engaged states: prepare, aim (`009A76E0`, partial), maneuver, attackrun,
+   avoid_roll and avoid_turn.
+3. The dogfight moveto's speed slot `009C1BC0` and cruise profile `009AAF30`, which would retire
+   the moveto stand-in.
+4. Where the image turns a scene-issued `dogfight` order into the kind-2 task, which would retire
+   the token trigger.

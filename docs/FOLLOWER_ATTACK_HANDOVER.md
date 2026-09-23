@@ -561,3 +561,13 @@ intercept planner: for each heading quadrant it plans a rejoin turn of radius
 
 Nothing was bound: the four quadrant planners need a per-path verified transcription first.
 Main at `0af2f50eb` is neutral on USN04 (control A3 equals B2).
+
+## 15. The six dogfight fighters (packet cc9_dogfight_task, 2026-09-23)
+
+USN04's six fighters (`Lexington-class01_sqn01` ×3, `Yorktown-class01_sqn02` ×3) carry a
+scene-issued `dogfight` order. Until this packet the host built no task for them, and on main
+`0899b3bb2` four of them drowned at |v| 82. `docs/DOGFIGHT_TASK.md` maps the kind-2 task (eight
+states, the arm `009AB1C0`, the transitions `009AAFA0`) and binds a skeleton: the leaders in
+moveto (a labelled stand-in that holds CruisingAlt 1400 through `009F9ED0`), the wing members on
+the generic follow tick. No fighter drowns now (water contacts 11 -> 7), and the dive-bomb rows
+are unchanged. The engaged states are not bound.
