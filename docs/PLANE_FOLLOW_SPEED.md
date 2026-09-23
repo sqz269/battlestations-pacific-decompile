@@ -102,8 +102,99 @@ All four use USN04 with `--frames 9200 --press-start-frame 30 --menu-select USN0
 --mission-frames 9000 --mission-frame-seconds 0.05`. Each runs from its own copied binary under
 `local\binX\`, built from this branch with the configuration toggled by `local\cfg.py`.
 
-(Filled in after the runs.)
+| run | configuration | binary | log | releases | water contacts | `#3.1\|.-2` / `#7.1\|.-2` transitions | `follow law` rows |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| A | main, pinned, placement on | `local\binA` | `local\A_default_nostores.log` | 30 | 16 | 7 / 13 | 0 |
+| B | A + stores | `local\binB` | `local\B_default_stores.log` | 30 | 16 | 7 / 13 | 0 |
+| D | main + both E2 edits | `local\binD` | `local\D_e2cfg_nostores.log` | 20 | 24 | 23 / 12 | 39 |
+| C | D + stores | `local\binC` | `local\C_e2cfg_stores.log` | 20 | 24 | 23 / 12 | 39 |
+| Ct | C + a log-only trace every 25 ticks | `local\binCt` | `local\Ct_e2cfg_stores_trace.log` | 20 | 24 | 23 / 12 | 39 |
+
+Releases come from the `summary mission dive-bomb task` row, and the other columns from
+`local\e2_digest.ps1`. The digests are `local\<run>_digest.txt`.
+
+* **A reproduces E1 and D reproduces E2 line for line.** The one exception is
+  `gunnery torpedo_drop drops`, which reads 12 against the old runs' 0. The gunnery-host fix
+  that has since landed makes that counter cumulative. So the controls are the measured
+  baselines.
+* **B equals A.** The digest and all 84 `summary mission` rows are identical, excluding the
+  known non-deterministic `ship avoidance search refills`. So are every `follow law`,
+  `water contact`, `release census`, `db aim exit` and `divebomb` row. Prediction B holds:
+  nothing in the default configuration reaches the stores.
+* **C equals D, and predictions 1-3 fail.** The digest, all 84 summary rows and all 39
+  `follow law` rows are identical. The eight follow-only members drown exactly as in E2. The
+  falsifier fires, but not in the direction section 4 expected. The HOLD arm's throttle law is
+  not the missing piece either; see below.
+
+**Why C equals D: run Ct.** Ct's summary rows equal C's, so the trace is log-only. All 516 trace
+rows read:
+
+```
+mode2d8=1  thr=1.000/1.000  act=0  state=7
+```
+
+The stores do set the speed mode to 1, which D never did. But the throttle slot is already at
+1.0, current and desired, on every row of every follow-only member in both runs. The demand arm
+asks for more speed than the aircraft has (`want` 104-130 m/s against `v` 20-68 m/s), and full
+throttle is what it already has. There is nothing for the stores to change.
+
+What kills the members is the **pitch**. `movieval|.-3`, whose altitude equals its commanded
+altitude to within 17 m at tick 26:
+
+```
+n=1   ownY= 725.0 cmdalt= 725.4 pitch= 0.190 v=67.79
+n=26  ownY= 727.3 cmdalt= 744.4 pitch= 0.698 v=67.80
+n=76  ownY= 805.2 cmdalt= 821.6 pitch= 0.698 v=48.05
+n=251 ownY=1021.3 cmdalt=1035.9 pitch= 0.698 v=19.87
+n=326 ownY= 821.8 cmdalt=1103.2 pitch= 0.698 v=47.32
+n=501 ownY=  38.8 cmdalt=1218.3 pitch= 0.698 v=51.63
+```
+
+`Zuiho-class01_sqn09|.-2` repeats the pattern from 125 m. The commanded altitude climbs about
+33 m/s behind the leader. The pitch command is pinned at the class climb angle (0.698 rad) from
+the first ticks. Speed bleeds to about 20 m/s, the aircraft stalls and falls, and the command
+never lets the nose down again. Over all 516 rows the pitch command takes three values: +0.698
+(308), -1.047 (187) and about 0 (6). That is bang-bang. It is the host's own substitution: the
+fly-to binding turns the commanded altitude into a pitch through `009FB800` with the commanded
+altitude as its own reference. The image instead calls `009F9ED0` (`RET 8`, altitude error and
+distance) at `009BFC21`, whose body is unread (`docs/PLANE_FOLLOW_LAW.md` §5.2, the host
+comment at the call).
+
+So the members lack a **pitch law that respects airspeed**, not a speed command. The HOLD arm's
+throttle rule (`include/bsp/plane_follow_hold.hpp`) would not help: it also ends at full
+throttle, and a member this far behind never takes the hold arm. It was not wired.
 
 ## 6. Decision
 
-(Filled in after the runs.)
+* **The stores land**, `kPlaneFollowFlyToSpeedStores = true`, on the default configuration.
+  They are the image's own sequence, B is identical to A, and Ct proves they reach the demand
+  arm (`mode2d8=1`, which D never had). The landing build's `.text` section is byte-identical
+  to run B's binary. Only `.rdata` differs, as it does between any two links.
+* **The E2 configuration does not land.** C against A fails every section 8 criterion: 8 new
+  water contacts, releases 20 against 30, and transitions of 23 and 12 against the 4-7 range.
+  Both E2 edits are reverted again: `control_mode_370` is pinned, and dive-bomb follow
+  placement is on.
+* **The next piece is `009F9ED0`.** Read its body, and bind the fly-to arm's pitch through it
+  instead of the `009FB800` substitute. Then re-take C against D with the same parameters. The
+  `follow trace` row stays in the source at `kFollowTraceEvery = 0`, which compiles it out; set
+  it to 25 to take the trace again.
+
+## 7. Phase A guards, partial (analysis only)
+
+`tools/x87trace.py` over `009BFEE0` with `tools/callee_effects_009bfee0.json` puts the first
+guard at x87 depth 5. There `e = |base+24h + base+0Ch|`, and `009C08B5`-`009C08C7 JA` takes the
+bit-8 regime when `e > 0.05 * p` (double `[00D7A270]`). `base+0Ch` is `V`, the cross-track
+offset (`009C018D`). `base+24h` is last written at `009C040B`, `009C04AC`, `009C0957`,
+`009C09AB` or `009C0AB4`, each time a lateral displacement built from Phase A's turn model:
+
+* `base-8h` is the horizontal speed (`sqrt` at `009C029F`).
+* `ω` is `block+0Ch`/`+10h` (`SmallPlaneTurnMul` / `LargePlaneTurnMul`, picked by vtable
+  `+5Ch(10h/16h)`) times `classDesc+270h`.
+* `base-20h = classDesc+18Ch / ω` is a turn radius.
+* The terms `-r sin θ` and `r (1 - cos θ)` (`base+18h`, `base+1Ch`) are the displacement after
+  turning through `θ = A ± π/2`.
+
+So `e` reads as the cross-track error left after the planned turn. `p` is the top of the x87
+stack, carried through the iterative loop `009C07D6`-`009C0861` (which jumps back to
+`009C07D6`); its identity is **not established**. The twins at `009C0B96`/`009C0BC1` were not
+read.

@@ -512,3 +512,19 @@ speed is computed and never read. "Commands no speed" is true of the host, but t
 arm is two missing stores, not an unread law. It is not fixed here: the brief forbids wiring
 the follow seams without a same-binary control run, and the HOLD arm, which a member on station
 takes instead, is still the larger unread piece.
+
+## 12. The fly-to speed stores, measured (packet cc9_follow_speed, 2026-09-22)
+
+`docs/PLANE_FOLLOW_SPEED.md` has the stores, their readers, the predictions, the runs and the
+decision. In short:
+
+* The host now performs the fly-to arm's `009BFD15` (`plan+2B0h = 0`) and `009BFD1C`
+  (`plan+2D8h = 1`). On the default configuration this is identical to main (runs A and B, USN04
+  at 9000 frames): 30 releases, 16 water contacts, every summary and per-unit row equal.
+* In the E2 configuration the stores change nothing (runs D and C are identical). A log-only
+  trace shows why. The follow-only members already fly at full throttle, and the stores only
+  confirm it. They drown in a **climb stall**. The host's pitch substitute (`009FB800` with the
+  commanded altitude as its own reference, standing in for the unread `009F9ED0`) holds the
+  class climb angle, 0.698 rad, while speed decays from about 67 to 20 m/s. Then they fall.
+* So section 11's "the law commands no speed" was true of the host, but it is not what drowns
+  the members. The E2 configuration stays reverted. The next read is `009F9ED0`.
