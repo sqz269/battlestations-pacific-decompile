@@ -1,0 +1,51 @@
+{
+  "packet": "cc9_own_curve_target",
+  "doc": "docs/SHIP_AI_OWN_CURVE.md",
+  "status": "own-curve block filled from the actual target behind kShipAiOwnCurveTargetBound; every first standoff matches the replay",
+  "abi_compatible": false,
+  "game_validated": false,
+  "routines": [
+    {"address": "009F1BC0", "native": "009F1BC0", "name": "BSP_ShipAi_ApproachFrameState", "role": "fills nested+127Ch from [owner+0B20h] (009F2A26..009F2A8F) or the no-target constants (009F2A91..009F2AC1)"},
+    {"address": "009635D0", "native": "009635D0", "name": "BSP_ShipClass_GetUnderwaterArmour", "role": "ship class vtable+24h: class+6B4h"},
+    {"address": "004407A0", "native": "004407A0", "name": "BSP_PlaneClass_GetUnderwaterArmour", "role": "plane class vtable+24h: FLD [ECX+4Ch]; RET (no Ghidra function)"},
+    {"address": "00810F60", "native": "00810F60", "name": "BSP_Unit_InitializeDirectorAndHullDimensions", "role": "writes unit+9C8h at 0081106E (the target curve's radius; read-only finding)"},
+    {"address": "009E7FC0", "native": "009E7FC0", "name": "BSP_ShipAi_ApproachResetSlotScores", "role": "sets +40h/+41h of nested+127Ch (009E8171/009E8178) and hands it to 009E5DA0"}
+  ],
+  "call_sites": [
+    {"address": "009F2F11", "native": "0095F080", "function": "009F1BC0", "note": "the own curve over nested+127Ch, prefer_long_range 1"}
+  ],
+  "field_accesses": [
+    {"address": "009F2A2C", "function": "009F1BC0", "note": "FLD [class+4Ch] Armour -> +1288h"},
+    {"address": "009F2A3C", "function": "009F1BC0", "note": "CALL [class vtable+24h] -> +128Ch"},
+    {"address": "009F2A44", "function": "009F1BC0", "note": "FLD [target+370h] health -> +1284h"},
+    {"address": "009F2A54", "function": "009F1BC0", "note": "FLD [class+0A0h] Length -> +1280h"},
+    {"address": "009F2A65", "function": "009F1BC0", "note": "CALL vtable[5Ch](6), the ship test"},
+    {"address": "009F2A71", "function": "009F1BC0", "note": "FLD [class+6B8h] DamageThreshold -> +129Ch"},
+    {"address": "009F2A7F", "function": "009F1BC0", "note": "not a ship: 10000.0f (00CE3D64)"},
+    {"address": "009F2AB1", "function": "009F1BC0", "note": "no target: +129Ch = 10000.0f (the host had 0)"},
+    {"address": "009F2AC1", "function": "009F1BC0", "note": "no target: +1280h = 100.0f (00CE3D08)"},
+    {"address": "0081106E", "function": "00810F60", "note": "FSTP [ESI+9C8h], the unit radius"}
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1 Win32 Release, both ctests passed (switch on and off, one diagnostic build)",
+    "env": "BSP_GUNNERY_RNG_STREAMS=1 on every run",
+    "replay": {"log": "local/oc_dg_usn04.log", "tool": "local/standoff_replay.py",
+               "first_target": "D3A Val #1.1: cap 220, length 12, armour 5, torpedo armour 5, divisor 10000",
+               "standoffs": {"Northampton": 2250, "Fletcher-class01/02/04": 1450, "Fletcher-class03": 1550, "York": 1850}},
+    "runs": {
+      "usn04_control": {"log": "local/oc_ctl_usn04.log", "queued_hits": 104, "damage": 14648.4, "deaths": 10, "lexington": "sunk 223.86 s"},
+      "usn04_treatment": {"log": "local/oc_trt_usn04.log", "queued_hits": 103, "damage": 15656.2, "deaths": 9, "lexington": "afloat, 142 HP",
+                          "first_standoffs": [2250, 2250, 1450, 1450, 1550, 1450, 1850, 1850], "last_standoffs": 300},
+      "usn01": {"logs": ["local/oc_ctl_usn01.log", "local/oc_trt_usn01.log"], "note": "identical"}
+    }
+  },
+  "no_ghidra_function": [
+    {"start": "004407A0", "end": "004407A3", "name": "BSP_PlaneClass_GetUnderwaterArmour", "evidence": "FLD dword ptr [ECX+4Ch]; RET from disk bytes; ghidra proto --brief 004407A0 reports no function; FUN_00440770 body ends at 00440788"}
+  ],
+  "open": [
+    "host ring_query (009E5DA0's block) still uses the no-target constants and a zero divisor; in the image it is the same nested+127Ch block",
+    "the avoidance refresh 009E6240's block provenance not traced",
+    "class vtable[24h] read for the ship and plane families only",
+    "unit+9C8h producer (0081106E) formula wants a second read; host still feeds 0 to the target curve"
+  ]
+}
