@@ -89,6 +89,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <exception>
+#include <map>
 #include <memory>
 #include <stdexcept>
 #include <string>
@@ -755,6 +756,8 @@ struct GameUnitSlot {
     int db_glide_gate_reached[7]{};
     float db_glide_lead_last{0.0f};
     float db_glide_ratio_last{0.0f};  // aimglide [ESP+24h], cc9_dive_throttle
+    float db_glide_pitch_last{0.0f};  // aimglide cmd+2BCh, cc9_aimglide_pitch
+    int db_glide_yaw_ticks{0};        // aimglide yaw arm ticks, cc9_aimglide_pitch
     float db_glide_lead_min{0.0f};      // the most negative lead seen
     float db_glide_bearing_min{-1.0f};
     int db_glide_releases{0};
@@ -1222,6 +1225,16 @@ constexpr bool kGoawayThrottleBound = true;
 // ON with kGoawayThrottleBound, measured (local/G0_9000.log vs C0): the drop
 // rows are unchanged, and only the post-release glide and climb-out paths move.
 constexpr bool kAimGlideThrottleBound = true;
+// Packet cc9_aimglide_pitch: the aimglide pitch target 009C5484-009C55DF
+// (cmd+2BCh, cmd+2D0h = 2). docs/AIMGLIDE_PITCH.md section 1.
+// OFF, measured with the throttle fix and the tail (U3, local/U3_9000.log):
+// releases 16 against the control's 29 (8 against 17 at 4500). With the fix off
+// it is unmeasured, so it lands off with the flip.
+constexpr bool kAimGlidePitchBound = false;
+// Packet cc9_aimglide_pitch: the aimglide yaw arm 009C53E7-009C542A, taken when
+// the planar miss is under 140 m; the host ran only the heading arm.
+// OFF with kAimGlidePitchBound, for the same measurement.
+constexpr bool kAimGlideYawBound = false;
 // Packet cc9_flyover_speed: the flyabove desired-speed arm 009C6F97-009C6FFB,
 // and approach+50h fed with the aim point's height. docs/FLYOVER_SPEED.md.
 // ON: USN04 moves only through the approach+50h feed on the two Yorktown
@@ -2741,6 +2754,52 @@ struct GameUnitsHost::Impl {
     // pair no longer stalls but still reaches the water at |v| 100-106, in aim,
     // chasing Vals that the same switch sends gliding into the sea. Still OFF.
     static constexpr bool kDogfightThrottleBound = false;
+    // Packet cc9_aimglide_pitch: approach+A8h is Uniform(row+38h, row+3Ch) drawn
+    // by 00BD2F10 on stream ECX = 1 in the approach constructor 009C3EA0
+    // (009C3F09-009C3F2E), once per dive-bomb task. This host pinned it to the
+    // low end. SUBSTITUTION, labelled: the image's stream is the one process-wide
+    // generator the gunnery host models, but that generator is private to
+    // src/game_hosts_gunnery.cpp, so this draws from a copy of its algorithm and
+    // seed (one sequence across these draws). With BSP_GUNNERY_RNG_STREAMS=1 the
+    // draw is keyed per unit name instead, as the gunnery option keys its draws.
+    // OFF with kAimGlidePitchBound (docs/AIMGLIDE_PITCH.md section 5).
+    static constexpr bool kReleaseAltitudeDrawBound = false;
+    std::uint32_t db_release_rng{0x9E3779B9u};
+    std::map<std::uint64_t, std::uint32_t> db_release_rng_by_key;
+    static bool release_rng_streams_enabled() {
+        static const bool on = [] {
+            char* text = nullptr;
+            std::size_t bytes = 0;
+            bool value = false;
+            if (_dupenv_s(&text, &bytes, "BSP_GUNNERY_RNG_STREAMS") == 0 && text != nullptr)
+                value = text[0] == '1';
+            std::free(text);
+            return value;
+        }();
+        return on;
+    }
+    float release_altitude_draw_00bd2f10(const std::string& unit_name, float low, float high) {
+        std::uint32_t* state = &db_release_rng;
+        if (release_rng_streams_enabled()) {
+            std::uint64_t key = 0xcbf29ce484222325ull;   // FNV-1a of the name
+            for (const char ch : unit_name) {
+                key = (key ^ static_cast<unsigned char>(ch)) * 0x100000001b3ull;
+            }
+            auto it = db_release_rng_by_key.find(key);
+            if (it == db_release_rng_by_key.end()) {
+                std::uint64_t z = key + 0x9E3779B97F4A7C15ull;
+                z = (z ^ (z >> 30)) * 0xBF58476D1CE4E5B9ull;
+                z = (z ^ (z >> 27)) * 0x94D049BB133111EBull;
+                z ^= z >> 31;
+                it = db_release_rng_by_key.emplace(key, static_cast<std::uint32_t>(z)).first;
+            }
+            state = &it->second;
+        }
+        *state = *state * 1664525u + 1013904223u;
+        const float unit = static_cast<float>((*state >> 8) & 0xFFFFFFu)
+            / static_cast<float>(0x1000000u);
+        return low + (high - low) * unit;
+    }
     // Diagnostic period for the `follow trace` row below; 0 compiles it out.
     // Packet cc9_follow_speed ran it at 25 (docs/PLANE_FOLLOW_SPEED.md section 5).
     static constexpr int kFollowTraceEvery = 0;
@@ -7569,6 +7628,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 GameUnitsHost::Impl::dive_bomb_row(unit_);
                             unit_.db_dive_alt_a8 =
                                 db_row.release_alt_1_044;   // Uniform low, 009C3F23
+                            if constexpr (GameUnitsHost::Impl::kReleaseAltitudeDrawBound) {
+                                // 009C3F1C/009C3F23 push row+3Ch then row+38h;
+                                // 009C3F29 00BD2F10(low, high); 009C3F2E stores it.
+                                unit_.db_dive_alt_a8 = owner_.release_altitude_draw_00bd2f10(
+                                    unit_.row.name, db_row.release_alt_1_044,
+                                    db_row.release_alt_2_048);
+                            }
                             // The aimdive interpolation endpoints, the same row:
                             // dive_bomb_aim_prec_dist_068 and _mul_06c. The
                             // row's comments name them exactly: "tavolrol
@@ -8723,7 +8789,33 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const bsp::DiveBombAimGlideCommand r =
                             bsp::dive_bomb_aimglide_command_009c542c(in);
                         ++unit_.db_aimglide_tick_ticks;
-                        if (r.wrote_heading) {
+                        bool glide_yaw_arm = false;
+                        if (kAimGlideYawBound) {
+                            // 009C539C: 00438B10(bearing [ESP+6Ch], aim heading
+                            // [ESP+28h]), in the image's argument order.
+                            bsp::DiveBombAimHeadingInputs ahin;
+                            ahin.pitch_c64 = unit_.plane_pitch_angle_c64;
+                            ahin.bank_c68 = unit_.plane_bank_angle_c68;
+                            ahin.heading_c6c = unit_.plane_heading_c6c;
+                            ahin.body_up_x = unit_.motion.pose_row1[0];
+                            ahin.body_up_z = unit_.motion.pose_row1[2];
+                            const float e = bsp::wrapped_angle_subtract_00438b10(
+                                unit_.db_bearing_c0, bsp::dive_bomb_aim_heading_009c4f80(ahin));
+                            // [ESP+1Ch], the planar miss aimPoint - impactPoint.
+                            const bsp::DiveBombAimGlideSteer st =
+                                bsp::dive_bomb_aimglide_steer_009c53d0(
+                                    unit_.db_impact_planar_5c, e);
+                            if (st.yaw_arm) {
+                                glide_yaw_arm = true;
+                                ++unit_.db_glide_yaw_ticks;
+                                unit_.plan_state.bank_target_2c4 = 0.0f;   // 009C5400
+                                unit_.plan_heading_mode_2cc = 1;           // 009C5408
+                                unit_.plan_heading_2c0_written = false;
+                                unit_.plan_slots[bsp::kPilotSlotYaw].desired = st.yaw_284;
+                                unit_.plan_slots[bsp::kPilotSlotYaw].active = 1;
+                            }
+                        }
+                        if (r.wrote_heading && !glide_yaw_arm) {
                             unit_.plan_heading_2c0 = r.heading_2c0;
                             unit_.plan_heading_2c0_written = true;
                             unit_.plan_heading_mode_2cc = r.heading_mode_2cc;
@@ -8745,6 +8837,29 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.plan_slots[bsp::kPilotSlotAirBrake].desired = g.air_brake_2a8;
                             unit_.plan_slots[bsp::kPilotSlotAirBrake].active = 1;
                             unit_.plane_air_brake_mode_2d8 = 0;  // 009C567F
+                        }
+                        if (kAimGlidePitchBound) {
+                            // 009C5484-009C55DF, the pitch target, mode 2.
+                            const GameUnitsHost::Impl::PilotDiveBombRow& prow =
+                                GameUnitsHost::Impl::dive_bomb_row(unit_);
+                            bsp::DiveBombAimGlidePitchInputs pin;
+                            pin.planar_to_aim_10 = unit_.db_planar_bc;
+                            pin.planar_to_impact_14 = unit_.db_impact_throw_14;
+                            // 009C534B: the same FDIV the throttle's ratio takes.
+                            pin.ratio_24 = unit_.db_planar_bc / unit_.db_impact_throw_14;
+                            // [ESP+20h] 009C5265-009C5281: unit+100h less the fed
+                            // aim point's y, which db_aim_point_height_50 holds.
+                            pin.height_above_aim_20 =
+                                unit_.motion.position[1] - unit_.db_aim_point_height_50;
+                            pin.release_ceiling_1c =
+                                prow.new_release_mul_04c * unit_.db_dive_alt_a8;
+                            pin.climb_angle_1ec = unit_.plane_climb_angle_1ec;
+                            const bsp::DiveBombAimGlidePitch gp =
+                                bsp::dive_bomb_aimglide_pitch_009c5484(pin);
+                            unit_.db_glide_pitch_last = gp.pitch_target_2bc;
+                            unit_.plan_state.pitch_target_2bc = gp.pitch_target_2bc;
+                            unit_.plan_state.pitch_mode_2d0 =
+                                bsp::dive_bomb_glide_pitch_constant::kPitchMode;
                         }
                     }
 
