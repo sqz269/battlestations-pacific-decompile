@@ -263,3 +263,51 @@ section 6.3 read them.
 
 USN01's landed summary: `torpedo_drop drops=5`, `queued_hits=35`, `total_damage=2892.0`,
 `deaths=0`. Mav2 survives with 16 hp.
+
+### 8.1 Why the moving-target Mavs release at 1.06-1.08 and not 1.111
+
+A print now sits on the tick whose five-flag chain arms the release timer at `009D2287`, one line
+per release. It shows the range the tick compared, the live centre-to-centre distance, `F14`,
+`F0C`, the commanded speed, the target's speed, and the aim tick at which each flag last turned
+true. USN01 with the reference parameters (`local\kind_usn01_timer.log`) reproduces
+`kind_usn01_land.log` on every other line.
+
+| Mav | target, speed | arm tick | lead opened | altitude opened | bank / cone opened | `range_90` = centre distance | `F14` | `F0C` | altitude at arm | altitude gate `interp(F0C)` |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Mav3 | Northampton, 0.00 m/s | 188 | **188** | 171 | 154 / 1 | 493.9 | 444.5 | 0.9658 | 17.7 m | 25.9 m |
+| Mav2 | Northampton, 0.00 m/s | 188 | **188** | 171 | 154 / 1 | 489.5 | 440.5 | 0.9592 | 17.7 m | 26.0 m |
+| Mav1 | Dunlap, 19.23 m/s | 176 | 174 | **176** | 156 / 1 | 478.3 | 430.4 | 0.9424 | 25.9 m | 26.4 m |
+| Mav5 | SaltLakeCity, 16.71 m/s | 175 | 174 | **175** | 156 / 1 | 482.5 | 434.2 | 0.9487 | 26.0 m | 26.3 m |
+| Mav4 | SaltLakeCity, 16.71 m/s | 175 | 172 | **175** | 157 / 1 | 469.3 | 422.4 | 0.9290 | 26.2 m | 26.8 m |
+
+The commanded speed is 450.0 for every Mav, and `fall_lead_a0` is 0. The altitude gate column is
+`009D20B4`'s `interp(0.4 -> 40, 1.0 -> 25, F0C)`, computed from the printed `F0C`.
+
+**What the numbers rule out.** `range_90` equals the centre-to-centre distance to 0.1 m for all
+five. So the range the tick compares is not measured to a different point for a moving target,
+and it is not stale. The hull-aim offset that could move the aim point is switched off. The
+timer's time is not the cause either: it is `range_90 / 450`, and the tighten scales it and
+`F14` by the same 0.9.
+
+**What the numbers show.** The arm needs all five flags on one tick (`009D2215`-`009D2231`).
+- For the two stationary-target Mavs the lead flag, `F14` below the envelope, is the last to
+  open. So the arm lands where `0.9 * range_90` crosses the envelope, and the release range scales
+  by 1/0.9 exactly (1.1115, 1.1117).
+- For the three moving-target Mavs the lead flag opens one to three ticks earlier, at ticks 172-174.
+  The arm then waits for the **altitude flag**. These three are still descending through about
+  26 m when the scaled range crosses the envelope, while the stationary pair is already at 17.7 m.
+  The arm comes on the first tick the aircraft is below `interp(F0C)`: 25.9 under 26.4, 26.0 under
+  26.3, 26.2 under 26.8.
+- Each tick of waiting costs one tick of closing. The drop census puts that at about 4.3 m per
+  tick for these three. Arm to drop is 478.3 -> 469.7, 482.5 -> 473.8 and 469.3 -> 460.5, against
+  8.2 m for the stationary pair. At the census speeds of 81.6-84.6 m/s and 0.05 s per tick that
+  interval is two ticks, which is inferred rather than printed. Adding back the waited ticks puts the
+  moving Mavs' lead-flag range at about 478.3 + 2 x 4.3 = 486.9, 482.5 + 1 x 4.3 = 486.8 and
+  469.3 + 3 x 4.3 = 482.2. Their step 1 release ranges divided by 0.9 are 482.9, 486.4 and 481.2.
+  The lead flag therefore opened at the 1/0.9 distance for these three as well, within about 4 m.
+  The shortfall in the release range is the altitude flag's wait.
+
+So the tighten behaves identically for all five Mavs. The difference is that the scaled release
+point arrives before the three moving-target Mavs have descended below the altitude gate. Why
+those three fly about 8 m higher at that point is a descent-profile question this packet does not
+take up. The per-tick closing rate is inferred from the arm-to-drop pair, not printed.
