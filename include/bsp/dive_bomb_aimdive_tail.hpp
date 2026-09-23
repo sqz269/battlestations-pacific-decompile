@@ -128,4 +128,72 @@ DiveBombAimGlideThrottle dive_bomb_aimglide_throttle_009c55e5(
     float planar_to_aim_10, float planar_to_impact_14,
     float max_power_44, float min_power_48) noexcept;
 
+// Packet cc9_aimglide_pitch: the aimglide tick's pitch target 009C5484-009C55DF,
+// cmd+2BCh with cmd+2D0h = EBP = 2. docs/AIMGLIDE_PITCH.md section 1.
+//   C  = (approach+14h)->+40h * approach+A8h     (009C5487-009C5493, the release
+//        ceiling, NewReleaseMul * release altitude; FSTP dword [ESP+1Ch])
+//   D  = |[ESP+10h] - [ESP+14h]|, at least 1.0   (009C5497-009C54CD; AND 7FFFFFFFh)
+//   a  = atan((C - H) / D)                       (009C54CD-009C54F7, 00BF8490 _CIatan;
+//        H = [ESP+20h], height above the fed aim point; FSTP dword each step)
+//   a' = min(a, classDesc+1ECh)                  (009C54FB-009C5522; FCOMIP, JBE)
+//   P1 = 00419010(0.75 [00CEE07C], -1.0 [00D7A260], 1.15 [00D20CE4], a', R)
+//        with R = [ESP+24h], the glide ratio      (009C5522-009C5563)
+//   P2 = 00419010(C * 0.7 [00CEFFA0 qword], 0.0, C * 1.1 [00CE3DF0 qword], -1.0, H)
+//                                                 (009C5567-009C55B0)
+//   target = P1 > P2 ? P1 : P2                    (009C55B4-009C55D7)
+namespace dive_bomb_glide_pitch_constant {
+inline constexpr float kRatioLo = 0.75f;           // 00CEE07C
+inline constexpr float kRatioHi = 1.15f;           // 00D20CE4
+inline constexpr float kSteepest = -1.0f;          // 00D7A260
+inline constexpr float kMinDistance = 1.0f;        // FLD1 at 009C54B5
+inline constexpr double kCeilingLo = 0.699999988079071;   // 00CEFFA0, qword
+inline constexpr double kCeilingHi = 1.100000023841858;   // 00CE3DF0, qword
+inline constexpr int kPitchMode = 2;               // 009C53DD MOV EBP,2; 009C55DF
+}  // namespace dive_bomb_glide_pitch_constant
+
+struct DiveBombAimGlidePitchInputs {
+    float ratio_24 = 0.0f;           // [ESP+24h], 009C5353
+    float height_above_aim_20 = 0.0f;  // [ESP+20h], 009C5281
+    float release_ceiling_1c = 0.0f;   // [ESP+1Ch] after 009C5493
+    float planar_to_aim_10 = 0.0f;     // [ESP+10h]
+    float planar_to_impact_14 = 0.0f;  // [ESP+14h]
+    float climb_angle_1ec = 0.0f;      // classDesc+1ECh, 009C54FB
+};
+
+struct DiveBombAimGlidePitch {
+    float distance_d = 0.0f;
+    float glide_angle = 0.0f;   // min(atan, climb angle)
+    float p1 = 0.0f;
+    float p2 = 0.0f;
+    float pitch_target_2bc = 0.0f;
+};
+
+DiveBombAimGlidePitch dive_bomb_aimglide_pitch_009c5484(
+    const DiveBombAimGlidePitchInputs& in) noexcept;
+
+// Packet cc9_aimglide_pitch: the aimglide tick's steering split 009C53D0-009C542A.
+// 009C53D8 COMISS [00D04A24] = 140.0 against [ESP+1Ch], the planar miss
+// |aimPoint - impactPoint| (009C5309-009C5345); 009C53E5 JBE takes the heading
+// arm (009C542C, dive_bomb_aimglide_command_009c542c) when 140 <= miss.
+// Below 140 the YAW arm runs instead:
+//   cmd+2C4h = 0 (XORPS, 009C5400), cmd+2CCh = EBX = 1 (009C5408), the servo
+//   holding wings level;
+//   cmd+284h = 8.0 [00CE3DB0 qword] * e (009C53EA FMUL, 009C5414 FSTP dword),
+//   cmd+288h = BL = 1, cmd+2D4h = 0 (009C541A-009C5420);
+//   approach+CCh = 3 (009C53F0), not kept by this host.
+// e is the SIGNED 00438B10(bearing to the aim point [ESP+6Ch], aim heading
+// [ESP+28h]) left on the x87 stack at 009C53AB/009C53AF (FSTP ST1 keeps it).
+namespace dive_bomb_glide_steer_constant {
+inline constexpr float kYawArmMiss = 140.0f;   // 00D04A24
+inline constexpr double kYawGain = 8.0;        // 00CE3DB0, qword
+}  // namespace dive_bomb_glide_steer_constant
+
+struct DiveBombAimGlideSteer {
+    bool yaw_arm = false;
+    float yaw_284 = 0.0f;
+};
+
+DiveBombAimGlideSteer dive_bomb_aimglide_steer_009c53d0(float miss_1c,
+                                                        float signed_error) noexcept;
+
 }  // namespace bsp

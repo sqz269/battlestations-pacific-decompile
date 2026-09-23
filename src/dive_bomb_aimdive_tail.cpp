@@ -134,4 +134,44 @@ DiveBombAimGlideThrottle dive_bomb_aimglide_throttle_009c55e5(
     return out;
 }
 
+DiveBombAimGlidePitch dive_bomb_aimglide_pitch_009c5484(
+    const DiveBombAimGlidePitchInputs& in) noexcept {
+    namespace k = dive_bomb_glide_pitch_constant;
+    DiveBombAimGlidePitch out;
+    // 009C5497-009C54AD: the difference, stored dword, sign bit cleared.
+    const float diff = in.planar_to_aim_10 - in.planar_to_impact_14;
+    const float d = std::fabs(diff);
+    // 009C54B5 FLD1; FCOMIP; JBE: 1.0 > d takes 1.0.
+    out.distance_d = k::kMinDistance > d ? k::kMinDistance : d;
+    // 009C54CD-009C54DF: (C - H) / D, stored dword; 009C54E7 atan, stored dword.
+    const float q = (in.release_ceiling_1c - in.height_above_aim_20) / out.distance_d;
+    const float a = static_cast<float>(std::atan(static_cast<double>(q)));
+    // 009C550A-009C5522: [ESP+28h] > climb angle takes the climb angle.
+    out.glide_angle = a > in.climb_angle_1ec ? in.climb_angle_1ec : a;
+    out.p1 = dive_bomb_interpolate_clamped_00419010(
+        k::kRatioLo, k::kSteepest, k::kRatioHi, out.glide_angle, in.ratio_24);
+    const float x_hi = static_cast<float>(
+        static_cast<double>(in.release_ceiling_1c) * k::kCeilingHi);
+    const float x_lo = static_cast<float>(
+        static_cast<double>(in.release_ceiling_1c) * k::kCeilingLo);
+    out.p2 = dive_bomb_interpolate_clamped_00419010(
+        x_lo, 0.0f, x_hi, k::kSteepest, in.height_above_aim_20);
+    out.pitch_target_2bc = out.p1 > out.p2 ? out.p1 : out.p2;
+    return out;
+}
+
+DiveBombAimGlideSteer dive_bomb_aimglide_steer_009c53d0(float miss_1c,
+                                                        float signed_error) noexcept {
+    namespace k = dive_bomb_glide_steer_constant;
+    DiveBombAimGlideSteer out;
+    // 009C53D8 COMISS xmm0(140), [ESP+1Ch]; 009C53E5 JBE: 140 <= miss goes on
+    // to the heading arm.
+    if (!(k::kYawArmMiss > miss_1c)) {
+        return out;
+    }
+    out.yaw_arm = true;
+    out.yaw_284 = static_cast<float>(static_cast<double>(signed_error) * k::kYawGain);
+    return out;
+}
+
 }  // namespace bsp

@@ -1,0 +1,18 @@
+{
+ "packet": "cc9_aimglide_pitch",
+ "calls": [
+  {"address": "009C54E7", "native": "00BF8490", "function": "009C5180", "note": "_CIatan((C - H) / D)"},
+  {"address": "009C555E", "native": "00419010", "function": "009C5180", "note": "P1 = (0.75, -1, 1.15, min(atan, class+1ECh), ratio)"},
+  {"address": "009C55AB", "native": "00419010", "function": "009C5180", "note": "P2 = (0.7C, 0, 1.1C, -1, H)"},
+  {"address": "009C539C", "native": "00438B10", "function": "009C5180", "note": "signed bearing error (bearing [ESP+6Ch], aim heading [ESP+28h]) for the yaw arm"},
+  {"address": "009C3F29", "native": "00BD2F10", "function": "009C3EA0", "note": "approach+A8h = Uniform(row+38h, row+3Ch), ECX=1, once per task"}
+ ],
+ "sites": [
+  {"address": "009C5493", "evidence": "C = (approach+14h)->+40h * approach+A8h into [ESP+1Ch]"},
+  {"address": "009C54A7", "evidence": "AND ECX,7FFFFFFFh: D = |[ESP+10h] - [ESP+14h]|, then max(D, 1.0) at 009C54B5"},
+  {"address": "009C55D7", "evidence": "cmd+2BCh = max(P1, P2); cmd+2D0h = EBP = 2 at 009C55DF"},
+  {"address": "009C53D8", "evidence": "COMISS [00D04A24]=140.0 vs miss [ESP+1Ch]; below: yaw arm 009C53E7-009C542A (cmd+284h = 8.0 [00CE3DB0] * e, cmd+2C4h=0, cmd+2CCh=1, cmd+288h=1, cmd+2D4h=0, approach+CCh=3)"},
+  {"address": "009C3F2E", "evidence": "FSTP approach+A8h from 00BD2F10"}
+ ],
+ "ledger": {"named": [{"address": "009C3EA0", "name": "BSP_DiveBombApproach_Construct", "status": "provisional"}], "evidence_appended": ["009C5180"]}
+}
