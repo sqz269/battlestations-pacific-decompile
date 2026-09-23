@@ -8236,27 +8236,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // otherwise - an aircraft chasing an aircraft gets no
                         // aspect term.
                         //
-                        // LABELLED SUBSTITUTION, and deliberately the weaker of
-                        // two forms. This CAN be bound exactly: :2180 of this
-                        // file records that bsp::unit_is_kind_of is the same
-                        // 0074E400 model slot 5Ch uses, so
-                        // `bsp::unit_is_kind_of(t->class_id, query)` would be
-                        // the image's own probe with the image's own argument.
-                        // It is not written that way here because the four logs
-                        // this change is justified by were measured with THIS
-                        // form, and for a ship target the two are identical by
-                        // construction - every ordered target in USN01 and
-                        // USN04 is a ship. Committing the stronger form would
-                        // mean shipping code that no run had exercised. The
-                        // bound form is the first item of
-                        // docs/HANDOFF_TORPEDO_RELEASE.md and needs only a
-                        // confirming pair to replace this.
-                        //
-                        // What this costs meanwhile: a NON-ship ordered target
-                        // is given an aspect here where the image would keep
-                        // the zero.
-                        bool target_is_kind_vtable5c(int) override {
-                            return aim_target() != nullptr;
+                        // BOUND, packet cc9_torpedo_kind: the image's own probe
+                        // with the image's own argument. bsp::unit_is_kind_of
+                        // decodes all 88 compiled slot-5Ch bodies and answers
+                        // from the object's own class id, so it is the routine
+                        // the target's vtable reaches whatever class the target
+                        // is (0074E400 is the plane body among them). This
+                        // replaces `aim_target() != nullptr`, which gave a
+                        // NON-ship target an aspect the image withholds. Every
+                        // ordered target in USN01 and USN04 is a ship, and the
+                        // confirming pair reproduced both missions to the digit:
+                        // docs/TORPEDO_KIND_PROBE.md section 3.
+                        bool target_is_kind_vtable5c(int query) override {
+                            const GameUnitSlot* const t = aim_target();
+                            return t != nullptr && bsp::unit_is_kind_of(t->class_id, query);
                         }
                         bool unit_is_kind_vtable5c(int) override { return false; }
                         bool has_target_cc() override {
