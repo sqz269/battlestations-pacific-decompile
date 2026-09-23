@@ -141,8 +141,8 @@ All runs use USN04 with `--frames 9200 --press-start-frame 30 --menu-select USN0
      50 m/s threshold.
   2. **Releases rise from 20 to 28.** Every `D3A Val` member and both `movieval` members
      release 2. The only member that releases nothing is `#3.1|.-2`. Prediction 2 holds.
-  3. **Water contacts fall from 24 to 16, and the set of units equals A's exactly.** Twelve are
-     the `done` descents and torpedo aircraft of E1. `#7.1|.-2` drowns in `done` at 69.02 m/s,
+  3. **Water contacts fall from 24 to 16, and the set of units equals A's exactly.** Fifteen are
+     the same `done` descents and torpedo aircraft as in E1. `#7.1|.-2` drowns in `done` at 69.02 m/s,
      not by the one-tick placement snap. `#3.1|.-2` is the exception. It enters the dive,
      leaves `aimdive` for `goaway` at 166 m without releasing (aim error -91.2 m against the
      25 m gate), and drowns 24 ticks later at 124.5 m/s. Prediction 3 missed on the snap: that
