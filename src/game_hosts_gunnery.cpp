@@ -77,6 +77,62 @@ constexpr bool kAaFireWindowBound = false;  // 0085A9A0 (hull-frame substitution
 constexpr bool kGunGravityArcBound = true;
 constexpr bool kBulletNoGravityBound = true;
 constexpr bool kGunAimErrorBound = true;
+// Packet cc9_aa_lead, docs/AA_LEAD.md.
+//  * kPlaneGunfireHooked: a plane's forward guns (PLANEGUN, category 0) take their
+//    trigger from the latched gunFire the plane's fixed step hands each enabled
+//    gun's SetTriggerHeld (007CE9A0-007CE9F4), published as
+//    units.plane_gun_trigger_bc9. The weapon-group enable byte
+//    ([[unit+538h]+94h][gun+38Ch]+0Ch) is taken as on: labelled.
+constexpr bool kPlaneGunfireHooked = true;
+//  * kGunInterceptBound: the AA gunner's and flak bot's lead point is 00901C20's
+//    closed-form intercept, not the target velocity times distance / V0.
+constexpr bool kGunInterceptBound = true;
+//  * kDualPurposeSecondAmmoBound: a sub-type 6 gun meets a plane with its SECOND
+//    ammunition record (00729BC0 / 00729B90 variant 1, +74h + 1*48h, the
+//    device's Bullet[2]) and so through its AAFlakBot. The host had loaded only
+//    Bullet[1] and read the pair of entries as two barrels.
+constexpr bool kDualPurposeSecondAmmoBound = true;
+//  * kAaGunnerErrorBound: the AAGunnerBot's commanded vertical, when negative, is
+//    halved before 0085ABA0 (00902F62..00902F76, [00D7A280] = 0.5). Only this
+//    step of 00902920's error model is bound; the swinging error pair
+//    (00902B38..00902EF7) needs the unread vtable[100h] sample and 00BD2F90 split.
+constexpr bool kAaGunnerErrorBound = true;
+
+// 00901C20 BSP_GunBot_InterceptSolution, the time-of-flight half, as a pure rule.
+// rel = target position - shooter position; vel = target velocity - shooter
+// velocity (a ship target's vertical component zeroed first); speed = V0.
+// Constants: 2.0f speed floor (00CE3958), 1.0 distance floor, 0.01f
+// near-radial threshold (00D7A238), 1.5 (00CE3D78, double) speed-ratio gate,
+// 4.0 (00D7A328, double), the [0, 12] clamp (00CEB4B8). No gravity, no loop.
+float intercept_time_00901c20(const float rel[3], const float vel[3], float speed,
+                              float distance) {
+    if (distance <= 1.0f) return 0.0f;
+    const float a = (vel[0] * rel[0] + vel[1] * rel[1] + vel[2] * rel[2]) / distance;
+    const float vv = vel[0] * vel[0] + vel[1] * vel[1] + vel[2] * vel[2];
+    float t = 0.0f;
+    if (0.01f <= vv - a * a) {
+        if (static_cast<double>(vv) * 1.5 < static_cast<double>(speed) * speed) {
+            const float qa = vv - speed * speed;
+            const float qb = (distance + distance) * a;
+            const float disc = static_cast<float>(static_cast<double>(qb) * qb
+                - static_cast<double>(qa) * 4.0 * distance * distance);
+            float t1 = 0.0f;
+            float t2 = 0.0f;
+            if (0.0f <= disc) {
+                const float root = std::sqrt(disc);
+                t1 = (root - qb) / (qa + qa);
+                t2 = (-qb - root) / (qa + qa);
+            }
+            t = t1;
+            if (t1 < 0.0f || (0.0f <= t2 && t2 < t1)) t = t2;
+            if (t < 0.0f) t = 0.0f;
+        }
+    } else {
+        t = distance / (speed - a);
+        if (t < 0.0f) t = 0.0f;
+    }
+    return std::min(std::max(t, 0.0f), 12.0f);
+}
 
 // This installation's scripts/datatables/robots.lua (modified 2025-06-01),
 // Robots["ArtilleryGunnerBot"], indexed as 00901610 reads the levels and as
@@ -388,6 +444,55 @@ struct GameGunneryHost::Impl {
     unsigned long long artillery_arc_aims{0};
     unsigned long long aim_error_rerolls{0};
     unsigned long long no_gravity_shots{0};
+    unsigned long long plane_trigger_ticks{0};
+    // ShipGlobals.AAGunnerErrorModifier.CalcTargetPosTimeAddFix / AddMul, the
+    // gameplay settings +758h / +75Ch 00901C20 adds to its time of flight
+    // (docs/GAMEPLAY_SETTINGS.md; loader defaults 0, installed 0.05 / 0.1).
+    float aa_time_add_fix{0.0f};
+    float aa_time_add_mul{0.0f};
+    bool aa_time_logged{false};
+    static bool env_flag(const char* name) {
+        char* text = nullptr;
+        std::size_t bytes = 0;
+        bool value = false;
+        if (_dupenv_s(&text, &bytes, name) == 0 && text != nullptr) value = text[0] == '1';
+        std::free(text);
+        return value;
+    }
+    static bool aa_time_bias_off() {
+        static const bool on = env_flag("BSP_AA_TIME_BIAS_OFF");
+        return on;
+    }
+    // MEASUREMENT option, never in a reference run: keep the shooter's own
+    // velocity in the intercept (the host's rounds, like 006E8430's, do not
+    // inherit it), to separate the relative-motion term from the time law.
+    static bool aa_keep_shooter_velocity() {
+        static const bool on = env_flag("BSP_AA_NO_SHOOTER_VEL");
+        return on;
+    }
+    unsigned long long intercept_solves{0};
+    // Packet cc9_aa_lead: Bullet[2] of a sub-type 6 gun, by gun index.
+    struct SecondAmmo {
+        int bullet_class{-1};
+        float muzzle_speed{0.0f};
+        float max_range{0.0f};
+        float min_range{0.0f};
+    };
+    std::map<std::size_t, SecondAmmo> second_ammo_by_gun;
+    unsigned long long dp_air_rounds{0};
+    unsigned long long aa_negative_halvings{0};
+    // Set by run_projectiles around apply_hit / apply_impact_blast so a round's
+    // own class (the second ammunition) prices its damage; -1 means the gun's.
+    int round_bullet_class{-1};
+    const SecondAmmo* dp_air_ammo(std::size_t gun_index, int category,
+                                  std::size_t target) const {
+        if (!kDualPurposeSecondAmmoBound || category != 6) return nullptr;
+        if (!units.unit_is_kind_of(target, bsp::kUnitGunneryKindPlaneBase)) return nullptr;
+        const auto it = second_ammo_by_gun.find(gun_index);
+        return it != second_ammo_by_gun.end() && it->second.bullet_class >= 0
+            && it->second.muzzle_speed > 0.0f ? &it->second : nullptr;
+    }
+    unsigned long long plane_gun_rounds{0};
     // Per gun index: hits landed and damage dealt, for the gunrow lines.
     std::map<std::size_t, std::pair<unsigned long long, double>> hits_by_gun;
     float draw(Draw purpose, std::size_t a, std::size_t b, float low, float high) {
@@ -593,11 +698,19 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         "   and type(Globals.WeaponSystems.WeaponDirectorThinkTime) == 'number' then\n"
         "  think = Globals.WeaponSystems.WeaponDirectorThinkTime\n"
         "end\n"
+        "local aafix, aamul = 0, 0\n"
+        "if type(ShipGlobals) == 'table' and type(ShipGlobals.AAGunnerErrorModifier) == 'table' then\n"
+        "  local m = ShipGlobals.AAGunnerErrorModifier\n"
+        "  if type(m.CalcTargetPosTimeAddFix) == 'number' then aafix = m.CalcTargetPosTimeAddFix end\n"
+        "  if type(m.CalcTargetPosTimeAddMul) == 'number' then aamul = m.CalcTargetPosTimeAddMul end\n"
+        "end\n"
         "for _, id in ipairs(ids) do\n"
         "  local row = type(VehicleClass) == 'table' and VehicleClass[id] or nil\n"
         "  if type(row) == 'table' then\n"
         "    local f = {}\n"
         "    f.think = num(think, 1000) or 2000\n"
+        "    f.aafix = num(aafix, 100000) or 0\n"
+        "    f.aamul = num(aamul, 100000) or 0\n"
         "    f.hp = num(row.HP, 1000) or 0\n"
         "    f.armour = num(row.Armour, 1000) or 0\n"
         "    f.length = num(row.Length, 1000) or 0\n"
@@ -664,6 +777,27 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         "                  f[q .. 'bdmin'] = num(bc.Blast.BlastDamageMin, 1000) or 0\n"
         "                  f[q .. 'bdmax'] = num(bc.Blast.BlastDamageMax, 1000) or 0\n"
         "                  f[q .. 'brange'] = num(bc.Blast.BlastRange, 1000) or 0\n"
+        "                end\n"
+        "              end\n"
+        "            end\n"
+        "            local b2 = nil\n"
+        "            if type(dev.Bullet) == 'table' and type(dev.Bullet[2]) == 'table' then\n"
+        "              b2 = dev.Bullet[2]\n"
+        "            end\n"
+        "            if type(b2) == 'table' then\n"
+        "              f[q .. 'bullet2'] = num(b2.Bullet, 1) or -1\n"
+        "              local BT2 = type(Bullets) == 'table' and Bullets\n"
+        "                 or (type(BulletClass) == 'table' and BulletClass or nil)\n"
+        "              local bc2 = BT2 and BT2[b2.Bullet] or nil\n"
+        "              if type(bc2) == 'table' then\n"
+        "                f[q .. '2v0'] = num(bc2.V0, 1000) or 0\n"
+        "                f[q .. '2dmin'] = num(bc2.DamageMin, 1000) or 0\n"
+        "                f[q .. '2dmax'] = num(bc2.DamageMax, 1000) or 0\n"
+        "                f[q .. '2nograv'] = (bc2.NoGravity == true) and 1000 or 0\n"
+        "                if type(bc2.Blast) == 'table' then\n"
+        "                  f[q .. '2bdmin'] = num(bc2.Blast.BlastDamageMin, 1000) or 0\n"
+        "                  f[q .. '2bdmax'] = num(bc2.Blast.BlastDamageMax, 1000) or 0\n"
+        "                  f[q .. '2brange'] = num(bc2.Blast.BlastRange, 1000) or 0\n"
         "                end\n"
         "              end\n"
         "            end\n"
@@ -781,6 +915,12 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
             if (value > 0.0f) {
                 think_time = value;
                 think_read = true;
+                aa_time_add_fix = flat_scaled(type_id, "aafix", 100000.0f, 0.0f);
+                aa_time_add_mul = flat_scaled(type_id, "aamul", 100000.0f, 0.0f);
+                if (!aa_time_logged) log.notef("gunnery: AAGunnerErrorModifier CalcTargetPosTimeAddFix=%.3f "
+                    "AddMul=%.3f (settings +758h/+75Ch, 00901C20)",
+                    static_cast<double>(aa_time_add_fix), static_cast<double>(aa_time_add_mul));
+                aa_time_logged = true;
                 done("Gunnery::weapon_director_think_time_0087e16b", 0x0087e16bu);
             }
         }
@@ -883,6 +1023,54 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
             gun.rest_horz = flat_scaled(type_id, make("rh"), kAngleScale, 0.0f);
             gun.rest_vert = flat_scaled(type_id, make("rv"), kAngleScale, 0.0f);
 
+            // Packet cc9_aa_lead: Bullet[2], read for every gun, used only by a
+            // sub-type 6 gun against a plane (dp_air_ammo).
+            {
+                const int b2 = flat(type_id, make("bullet2"), -1);
+                if (b2 >= 0) {
+                    SecondAmmo second;
+                    second.bullet_class = b2;
+                    second.muzzle_speed = flat_scaled(type_id, make("2v0"), kMilliScale, 0.0f);
+                    bsp::WeaponClassFinaliseInput fin2;
+                    const std::string type2 = lua.read_bullet_class_string(b2, "Type");
+                    fin2.sub_type = bsp::weapon_class_sub_type_for_lua_type(type2);
+                    fin2.range = lua.read_bullet_class_number(b2, "Range", 0.0f);
+                    fin2.muzzle_speed = lua.read_bullet_class_number(b2, "V0", 0.0f);
+                    fin2.fly_time = lua.read_bullet_class_number(b2, "FlyTime",
+                        bsp::kWeaponClassFlyTimeDefault);
+                    fin2.damage_min = lua.read_bullet_class_number(b2, "DamageMin", 0.0f);
+                    fin2.blast_damage_min = lua.read_bullet_class_number(b2,
+                        "Blast.BlastDamageMin", 0.0f);
+                    fin2.name = lua.read_bullet_class_string(b2, "Name");
+                    fin2.flak_min_range = lua.read_bullet_class_number(b2, "MinRange", 0.0f);
+                    const bsp::WeaponClassFinaliseResult r2 =
+                        bsp::weapon_class_derive_engagement_range(fin2);
+                    second.max_range = r2.engagement_range > 0.0f ? r2.engagement_range
+                                                                  : fin2.range;
+                    second.min_range = fin2.flak_min_range;
+                    bullet_min_range[b2] = fin2.flak_min_range;
+                    second_ammo_by_gun[guns.size()] = second;
+                    if (bullet(b2) == nullptr) {
+                        GameBulletClassRow r;
+                        r.id = b2;
+                        r.found = true;
+                        r.type = type2;
+                        r.muzzle_speed = second.muzzle_speed;
+                        r.range = second.max_range;
+                        r.damage_min = flat_scaled(type_id, make("2dmin"), kMilliScale, 0.0f);
+                        r.damage_max = flat_scaled(type_id, make("2dmax"), kMilliScale, 0.0f);
+                        r.blast_damage_min = flat_scaled(type_id, make("2bdmin"), kMilliScale, 0.0f);
+                        r.blast_damage_max = flat_scaled(type_id, make("2bdmax"), kMilliScale, 0.0f);
+                        r.blast_range = flat_scaled(type_id, make("2brange"), kMilliScale, 0.0f);
+                        r.no_gravity = flat_scaled(type_id, make("2nograv"), kMilliScale, 0.0f) > 0.5f;
+                        bullets.push_back(r);
+                        log.notef("gunnery: bullet class %d Type=%s V0=%.1f range=%.0f "
+                            "NoGravity=%d (second ammunition of category %d)", r.id,
+                            r.type.c_str(), static_cast<double>(r.muzzle_speed),
+                            static_cast<double>(r.range), r.no_gravity ? 1 : 0, gun.category);
+                    }
+                }
+            }
             if (gun.bullet_class >= 0 && bullet(gun.bullet_class) == nullptr) {
                 GameBulletClassRow b;
                 b.id = gun.bullet_class;
@@ -1539,7 +1727,9 @@ public:
             owner_.unit_aim_point(other, theirs);
             const float delta[3] = {theirs[0] - mine[0], theirs[1] - mine[1],
                 theirs[2] - mine[2]};
-            in_range = length3(delta) <= row.max_range;
+            const GameGunneryHost::Impl::SecondAmmo* dp = owner_.dp_air_ammo(slot,
+                row.category, other);
+            in_range = length3(delta) <= (dp != nullptr ? dp->max_range : row.max_range);
         }
         in.slot_accepts_target = in_range;
         // Evaluated on every call so a run with the switch off still counts what
@@ -1606,6 +1796,11 @@ public:
         if (kind == 5) {                                              // 00729B90
             const auto it = owner_.bullet_min_range.find(row.bullet_class);
             if (it != owner_.bullet_min_range.end()) in.minimum_air_range = it->second;
+        }
+        if (kind == 6) {       // 00729BA9: kind 6 reads the SECOND record's +58h
+            const GameGunneryHost::Impl::SecondAmmo* dp = owner_.dp_air_ammo(
+                static_cast<std::size_t>(&row - owner_.guns.data()), kind, other);
+            if (dp != nullptr) in.minimum_air_range = dp->min_range;
         }
         float right[3], up[3], forward[3], origin[3];
         owner_.unit_pose(unit_, right, up, forward, origin);
@@ -2370,7 +2565,11 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                     lead = at;
                 }
             } else if (kGunGravityArcBound && gun.muzzle_speed > 0.0f
-                       && aa_bot_aims(gun.category, target)) {
+                       && (aa_bot_aims(gun.category, target)
+                           || dp_air_ammo(g, gun.category, target) != nullptr)) {
+                const SecondAmmo* dp_round = dp_air_ammo(g, gun.category, target);
+                const float aa_v0 = dp_round != nullptr ? dp_round->muzzle_speed
+                                                        : gun.muzzle_speed;
                 // 00902920 / 009030C0: 00901C20's lead point, no gravity term, no
                 // arc. SUBSTITUTION for 00901C20's closed-form intercept: the lead
                 // is the target's velocity times distance / V0, which is what the
@@ -2383,7 +2582,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 unit_pose(target, tr, tu, tf, origin_of_target);
                 const float span[3] = {origin_of_target[0] - muzzle[0],
                     origin_of_target[1] - muzzle[1], origin_of_target[2] - muzzle[2]};
-                const float flight = length3(span) / gun.muzzle_speed;
+                const float flight = length3(span) / aa_v0;
                 // 00901C20 leads with the target's own velocity. unit_velocity reads
                 // the row's forward_speed, which is zero for a plane (the same
                 // reason release_ordnance_drop reads 0092D730), so a plane target
@@ -2393,8 +2592,38 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                     const float speed = units.unit_forward_speed_0092d730(target);
                     for (int i = 0; i < 3; ++i) target_velocity[i] = tf[i] * speed;
                 }
-                for (int i = 0; i < 3; ++i) {
-                    lead[i] = origin_of_target[i] + target_velocity[i] * flight;
+                if (kGunInterceptBound && aa_v0 >= 2.0f) {
+                    // 00901C20: relative motion (the shooter's own velocity is
+                    // subtracted; a ship target, IsKindOf(6), has its vertical
+                    // zeroed), the closed-form time, the two settings biases,
+                    // then aim = target + t * V. SUBSTITUTION: the 0085E4D0
+                    // turn-rate averaging for a turning plane needs the angular
+                    // velocity at +AF8h, which this host does not carry.
+                    float shooter_velocity[3];
+                    unit_velocity(owner_unit, shooter_velocity);
+                    float rel_v[3];
+                    for (int i = 0; i < 3; ++i) {
+                        rel_v[i] = target_velocity[i]
+                            - (aa_keep_shooter_velocity() ? 0.0f : shooter_velocity[i]);
+                    }
+                    if (units.unit_is_kind_of(target, bsp::kUnitGunneryKindShipBase)) {
+                        rel_v[1] = 0.0f;
+                    }
+                    const float dist = length3(span);
+                    float t = intercept_time_00901c20(span, rel_v, aa_v0, dist);
+                    // BSP_AA_TIME_BIAS_OFF=1 is a MEASUREMENT option (never in a
+                    // reference run) that drops the two settings biases so a pair
+                    // can separate them from the quadratic.
+                    if (!aa_time_bias_off()) {
+                        t = aa_time_add_fix + t + (dist / 1000.0f) * aa_time_add_mul;
+                    }
+                    for (int i = 0; i < 3; ++i) lead[i] = origin_of_target[i] + rel_v[i] * t;
+                    ++intercept_solves;
+                    done("GunBot::intercept_solution_00901c20", 0x00901c20u);
+                } else {
+                    for (int i = 0; i < 3; ++i) {
+                        lead[i] = origin_of_target[i] + target_velocity[i] * flight;
+                    }
                 }
                 pitch = 0.0f;
                 ++aa_direct_aims;
@@ -2501,7 +2730,12 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 }
 
                 done("GunBot::angles_from_world_direction_008fdaf0", 0x008fdaf0u);
+                if (kAaGunnerErrorBound && gun.category == 1 && want_vert < 0.0f) {
+                    want_vert *= 0.5f;    // 00902F76 FMUL [00D7A280]
+                    ++aa_negative_halvings;
+                }
                 if (kGunAimErrorBound && !aa_bot_aims(gun.category, target)
+                    && dp_air_ammo(g, gun.category, target) == nullptr
                     && artillery_bot_aims(gun.category, target)) {
                     const bsp::GunAimAngles error = aim_error_tick(g, owner_unit, dt);
                     bsp::GunAimAngles solved;
@@ -2622,8 +2856,18 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         if (have_target && accepted && settled && !may_fire_here) {
             ++summary.want_fire_no_window;
         }
-        const bool want_fire = have_target && accepted && settled && may_fire_here
+        bool want_fire = have_target && accepted && settled && may_fire_here
             && !inhibited;
+        const bool plane_gun = gun.category == 0
+            && units.unit_is_kind_of(owner_unit, bsp::kUnitGunneryKindPlaneBase);
+        if constexpr (kPlaneGunfireHooked) {
+            if (plane_gun) {
+                // 007CE9F4: gun->vtable[1E8h](gunFire) - the trigger is the pilot's,
+                // not a bot's; no target, window or settle gate stands in front of it.
+                want_fire = units.plane_gun_trigger_bc9(owner_unit);
+                if (want_fire) ++plane_trigger_ticks;
+            }
+        }
 
         FireRequestBinding fire_host(*this, g);
         const bool before = gun.fire.fire_requested;
@@ -2674,6 +2918,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             gun.fire.barrel_timers[static_cast<std::size_t>(barrel)] = gun.reload_time;
         }
         gun.fire.barrel_delay_time = gun.barrel_delay_time;
+        if (plane_gun) ++plane_gun_rounds;
         if (!aa_trace_unit_name().empty() && state.row.name == aa_trace_unit_name()) {
             float aim[3] = {0.0f, 0.0f, 0.0f};
             float mz[3];
@@ -2734,17 +2979,25 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         shot.owner_unit = owner_unit + 1;
         shot.owner_side = units.unit_side_0054(owner_unit);
         shot.bullet_class = gun.bullet_class;
+        float launch_speed = gun.muzzle_speed;
+        if (have_target) {
+            if (const SecondAmmo* dp = dp_air_ammo(g, gun.category, target)) {
+                shot.bullet_class = dp->bullet_class;
+                launch_speed = dp->muzzle_speed;
+                ++dp_air_rounds;
+            }
+        }
         shot.alive = true;
         for (int i = 0; i < 3; ++i) shot.position[i] = muzzle[i];
         const bsp::TickPoint3 launch_direction{direction[0], direction[1], direction[2]};
         const bsp::TickPoint3 velocity = bsp::projectile_launch_velocity_006e8430(
-            gun.muzzle_speed, launch_direction, 0);
+            launch_speed, launch_direction, 0);
         shot.flight.velocity = velocity;
         shot.flight.snapshot_current = bsp::TickPoint3{muzzle[0], muzzle[1], muzzle[2]};
         shot.flight.local_position = shot.flight.snapshot_current;
         shot.flight.mode = bsp::ProjectileMotionMode::kBallistic;
         {
-            const GameBulletClassRow* round_class = bullet(gun.bullet_class);
+            const GameBulletClassRow* round_class = bullet(shot.bullet_class);
             shot.flight.class_disables_gravity = kBulletNoGravityBound
                 && round_class != nullptr && round_class->no_gravity;   // classDesc+20h
             if (shot.flight.class_disables_gravity) ++no_gravity_shots;
@@ -2997,6 +3250,7 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
                     static_cast<double>(shot.life));
             }
             done("Projectile::on_impact_0084bc60", 0x0084bc60u);
+            round_bullet_class = shot.bullet_class;
             apply_hit(shot.owner_unit - 1, shot.gun_row, query.hit_unit - 1, point,
                 direction);
             // 0084BC60 step 7: the impact also spawns the burst that carries a
@@ -3009,6 +3263,7 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
             // apply_impact_blast returns without doing anything when the row
             // has no Blast, which is that same gate.
             apply_impact_blast(shot.owner_unit - 1, shot.gun_row, point, direction);
+            round_bullet_class = -1;
             shot.alive = false;
             continue;
         }
@@ -3358,13 +3613,14 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
     UnitState& target = unit_state[victim];
     if (target.dead) return;
     const GameGunRow& gun = guns[gun_row];
+    const int priced_class = round_bullet_class >= 0 ? round_bullet_class : gun.bullet_class;
     if (!aa_trace_unit_name().empty() && unit_state[shooter].row.name == aa_trace_unit_name()) {
         log.notef("  aa hit t=%.2f %s gun=%zu cat=%d on %s %s health_before=%.1f",
             static_cast<double>(clock_seconds), unit_state[shooter].row.name.c_str(), gun_row,
             gun.category, target.row.name.c_str(), blast_record != nullptr ? "blast" : "direct",
             static_cast<double>(target.health));
     }
-    const GameBulletClassRow* weapon = bullet(gun.bullet_class);
+    const GameBulletClassRow* weapon = bullet(priced_class);
 
     // 00926E80 queues the record, 009239A0 dispatches it: the entity gates, the
     // OnHit delivery and the attribution listener.
@@ -3485,7 +3741,7 @@ void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
     std::size_t gun_row, const float point[3], const float direction[3]) {
     if (gun_row >= guns.size() || shooter >= unit_state.size()) return;
     const GameGunRow& gun = guns[gun_row];
-    const GameBulletClassRow* weapon = bullet(gun.bullet_class);
+    const GameBulletClassRow* weapon = bullet(round_bullet_class >= 0 ? round_bullet_class : gun.bullet_class);
     if (weapon == nullptr || weapon->blast_range <= 0.0f) return;
 
     const float damage = draw(Draw::blast_damage, gun_row, 0, weapon->blast_damage_min,
@@ -4210,6 +4466,13 @@ void GameGunneryHost::report() {
             host.aa_direct_aims, host.artillery_arc_aims, host.aim_error_rerolls,
             host.no_gravity_shots, kGunGravityArcBound ? 1 : 0,
             kBulletNoGravityBound ? 1 : 0, kGunAimErrorBound ? 1 : 0);
+        host.log.notef("summary mission gunnery plane guns trigger_ticks=%llu rounds=%llu "
+            "hooked=%d intercept_solves=%llu intercept=%d dp_air_rounds=%llu dp=%d "
+            "negative_halvings=%llu halving=%d (packet cc9_aa_lead)",
+            host.plane_trigger_ticks, host.plane_gun_rounds, kPlaneGunfireHooked ? 1 : 0,
+            host.intercept_solves, kGunInterceptBound ? 1 : 0, host.dp_air_rounds,
+            kDualPurposeSecondAmmoBound ? 1 : 0, host.aa_negative_halvings,
+            kAaGunnerErrorBound ? 1 : 0);
         host.log.notef("summary mission aa acceptance bound=%d window_rejects=%llu "
             "armour_rejects=%llu min_range_skips=%llu (packet cc9_aa_targeting)",
             (kAaMinRangeBound ? 1 : 0) | (kAaFireWindowBound ? 2 : 0) | (kAaArmourBound ? 4 : 0),

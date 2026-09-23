@@ -1,0 +1,24 @@
+{
+  "packet": "cc9_aa_lead",
+  "date": "2026-09-23",
+  "doc": "docs/AA_LEAD.md",
+  "call_sites": [
+    {"address": "00902A74", "native": "00901C20", "function": "00902920", "what": "the AAGunnerBot's lead point, passing the round's V0 (+50h)"},
+    {"address": "009031CF", "native": "00901C20", "function": "009030C0", "what": "the AAFlakBot's lead point"},
+    {"address": "00903219", "native": "00901C20", "function": "009030C0", "what": "the AAFlakBot's second intercept call"},
+    {"address": "00901E7A", "native": "0085E4D0", "function": "00901C20", "what": "the turn-rate matrix for a turning plane target; not bound, the host carries no angular velocity"},
+    {"address": "00901C49", "native": "00414DB0", "function": "00901C20", "what": "refresh the target's pose before reading +FCh..+104h"}
+  ],
+  "reads": {
+    "intercept": "00901C20: speed floor 2.0f; V = target vtable[34h] minus the shooter velocity, vertical zeroed for a ship target; a = V.D/d, vv = |V|^2; if vv - a^2 >= 0.01f and vv*1.5 < s^2, the positive root of (vv - s^2)t^2 + 2da t + d^2 = 0, else if radial t = d/(s - a); clamp [0,12]; t += settings+758h + (d/1000)*settings+75Ch (installed 0.05, 0.1); aim = target + t*V",
+    "second_ammo": "00729BC0 / 00729B90 take variant 1 ([descriptor+74h] + 48h) for weapon kind 6 against IsKindOf(0Fh): the device's Bullet[2], a Flak class, served by the AAFlakBot",
+    "fighter_trigger": "007CE040 hands the latched unit+BC9h to every enabled fixed gun's SetTriggerHeld (007CE9A0..007CE9F4, through the vtable)",
+    "aa_gunner_halving": "00902F62..00902F76: a negative commanded vertical is multiplied by [00D7A280] = 0.5 before 0085ABA0"
+  },
+  "switches": {
+    "kPlaneGunfireHooked": true,
+    "kGunInterceptBound": true,
+    "kDualPurposeSecondAmmoBound": "see docs/AA_LEAD.md section 6",
+    "kAaGunnerErrorBound": "see docs/AA_LEAD.md section 6"
+  }
+}
