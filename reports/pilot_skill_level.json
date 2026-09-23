@@ -1,0 +1,130 @@
+{
+  "packet": "cc9_skill_level",
+  "doc": "docs/PILOT_SKILL_LEVEL.md",
+  "status": "handoff: steps 1-3 read, step 4 (binding, runs) not done, context budget",
+  "abi_compatible": false,
+  "game_validated": false,
+  "routines": [
+    {
+      "address": "006D1EB0",
+      "native": "006D1EB0",
+      "name": "BSP_Unit_SetSkillLevel_Forward",
+      "role": "unit vtable +128h; tail jump into the skill sub-object at unit+38Ch"
+    },
+    {
+      "address": "007B8AE0",
+      "native": "007B8AE0",
+      "name": "BSP_PlaneSkill_SetLevel",
+      "role": "pilot bot (unit+DF4h) vtable[18h](level), then 009565A0"
+    },
+    {
+      "address": "0080DF90",
+      "native": "0080DF90",
+      "name": "BSP_UnitInstanceSkill_SetLevel",
+      "role": "unit+740h vtable[18h](level), then 009565A0"
+    },
+    {
+      "address": "009565A0",
+      "native": "009565A0",
+      "name": "BSP_UnitSkill_ApplyLevel",
+      "role": "unit+390h = level; director unit+6DCh vtable[18h]; IsKindOf(20h) children vtable[1C4h]"
+    },
+    {
+      "address": "00927A80",
+      "native": "00927A80",
+      "name": "BSP_PropertyBag_GetSkill",
+      "role": "bag Skill (00CF8838), else key 00D19264, else 1"
+    },
+    {
+      "address": "0072BC80",
+      "native": "0072BC80",
+      "name": "BSP_GunBot_SetSkillIndex",
+      "role": "bot+34h = level"
+    },
+    {
+      "address": "0058BDF0",
+      "native": "0058BDF0",
+      "name": "BSP_MainMenu_StartSelectedMission",
+      "role": "game+6ACh = record+B4h, or game+6B0h when that is 3 (0058BF26-0058BF58)"
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "007D65AA",
+      "native": "00927A80",
+      "function": "007D5D20",
+      "note": "read the bag's Skill"
+    },
+    {
+      "address": "007B8B02",
+      "native": "009565A0",
+      "function": "007B8AE0",
+      "note": "apply the level to the unit"
+    },
+    {
+      "address": "0080DFB2",
+      "native": "009565A0",
+      "function": "0080DF90",
+      "note": "same, unit-instance class"
+    },
+    {
+      "address": "007D66E7",
+      "native": "0099A880",
+      "function": "007D5D20",
+      "note": "the pilot bot, after the skill is applied"
+    },
+    {
+      "address": "009995A8",
+      "native": "008FBC80",
+      "function": "009995A0",
+      "note": "the pilot bot's attach, reading unit->vtable[12Ch]",
+      "kind": "no_ghidra_function"
+    }
+  ],
+  "vtables": [
+    {
+      "address": "00D05F20",
+      "slot_128": "006D1EB0",
+      "slot_12C": "006D1EC0",
+      "what": "plane unit"
+    },
+    {
+      "address": "00D05ED8",
+      "slot_0": "007B8AE0",
+      "what": "plane skill sub-object at unit+38Ch (007CFDAA)"
+    },
+    {
+      "address": "00CFC388",
+      "slot_0": "0080DF90",
+      "what": "unit-instance skill sub-object (006FE49F)"
+    },
+    {
+      "address": "00D1A578",
+      "slot_0": "00952930",
+      "what": "game-object base skill sub-object (0095CCC2)"
+    },
+    {
+      "address": "00D1F348",
+      "slot_18": "0072BC80",
+      "what": "pilot bot (0099A8AB)"
+    }
+  ],
+  "answer": {
+    "image_difficulty": 1,
+    "vals_row": "SPNormal (1)",
+    "host_difficulty": 0,
+    "host_row": "SPNormal (constants)"
+  },
+  "validation": {
+    "build": "not rebuilt; no source change",
+    "runs": "none; handoff"
+  },
+  "no_ghidra_function": [
+    {
+      "start": "009995A0",
+      "end": "009995C8",
+      "name": "(plane bot vtable+4, attach)",
+      "evidence": "slot +4 of vtable 00D1F348; calls 008FBC80 then stores 00CF8B3C into +9Ch/+B8h; RET 4 at 009995C6; Ghidra proto reports no function at 009995A0"
+    }
+  ]
+}
