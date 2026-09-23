@@ -155,16 +155,16 @@ inline constexpr bool kShipTurnRadiusTorpedoBoatExempt = true;
 // consumes them behind the real 009DA1D0 gate (throttle profile and avoidance
 // vector), and 009DE5B0's section 5 (009DE8F1) points blk+324h down the vector.
 // False: the walk is recorded, the list stays empty and the gate answers false.
-// LANDED OFF: no pair has run (renderer-init crashes); treatment build trT.
-inline constexpr bool kShipTorpedoResponseBound = false;
+// Landed ON after the USN04 4500 and E2 9000 pairs (docs/SHIP_TORPEDO_RESPONSE.md section 5).
+inline constexpr bool kShipTorpedoResponseBound = true;
 // Packet cc9_ship_torpedo_response, secondary. 0082E850 multiplies class+520h by
 // settings+438h (2.0) at every call site. True: the follow step's two sites
 // (009E16F0 station latch, 009E1790 back-off), the path follower's (009E3EAE)
 // and the arm tail's astern threshold (009EF112) take the same value the
 // formation host's class_turn_radius_0082e850 returns. False: the first three
 // return class+520h unmultiplied and the arm tail's a recorded 0, as before.
-// LANDED OFF: no pair has run (renderer-init crashes); treatment build rsT.
-inline constexpr bool kShipTurnRadiusSitesBound = false;
+// Landed ON after the USN04 4500 pair (docs/SHIP_TORPEDO_RESPONSE.md section 5).
+inline constexpr bool kShipTurnRadiusSitesBound = true;
 // settings+1ECh / +1F0h, TorpedoAvoidance.CollectTimer: this installation's
 // shipglobals.lua line 279, { 1.5, 2 }. The settings object is not loaded here.
 inline constexpr float kTorpedoCollectTimer1 = 1.5f;
@@ -4981,6 +4981,24 @@ public:
                 return;
             }
             ++owner_.avoidance_role_reads;
+            if (kShipTorpedoResponseBound) {
+                // Packet cc9_ship_torpedo_response. 009E1170 selects its arm with
+                // no test of the director's command, so for a controlled unit
+                // (forced into cruise at 009F3DF3) arm 2's request store at
+                // 009E11D6 happens whatever the director holds. The commands
+                // host's cruise_step returns before it when the director holds
+                // another command (attackmove), leaving blk+3ECh at the
+                // pre-pass 1, which opened 009DA1D0 for the player's ship.
+                bsp::ShipAiCruiseAvoidanceInputs live = inputs;
+                live.unit_player_controlled = owner_.units.unit_player_controlled_0184(index_);
+                if (bsp::ship_ai_cruise_step_arm_009e11a5(live)
+                        != bsp::ShipAiCruiseAvoidanceArm::CruiseRule) {
+                    bsp::ShipAiAvoidanceRequestBlock block{ctl_.avoidance, ctl_.blk.early_out_3f5};
+                    bsp::ship_ai_cruise_step_request_009e11d6(block, live);
+                    ctl_.avoidance = block.request;
+                    ctl_.blk.early_out_3f5 = block.early_out_3f5;
+                }
+            }
             const bool drove = owner_.units.run_cruise_state_step_009e1170(
                 index_, ctl_.blk, setters, ctl_.avoidance, inputs);
             row_.avoidance_enabled = ctl_.avoidance.enable_3f4;

@@ -3,7 +3,8 @@
 Packet `cc9_ship_torpedo_response`, 2026-09-23. Offsets are relative to blk = brain+8h unless
 written as brain+N or record+N, and names are hypotheses. The reconstruction is
 `src/ship_ai_torpedo_response.cpp`. The host binding is `kShipTorpedoResponseBound` in
-`src/game_hosts_ship_ai.cpp`, landed **OFF** until its pairs are judged. docs/TORPEDO_EVASION.md
+`src/game_hosts_ship_ai.cpp`, landed **ON** after the pairs in section 5. The secondary
+`kShipTurnRadiusSitesBound` also landed ON. docs/TORPEDO_EVASION.md
 explains why none of this applies to the player-controlled Lexington.
 
 ## 1. What the image does
@@ -110,6 +111,16 @@ It ends with 009DC060.
 | unit+390h | `units.skill_level`, default 1 |
 | the timer seeds | two draws on the ship's first re-plan, not seven at construction. SUBSTITUTION |
 | 009DE5B0 | section 5 only, after the 009DE5DE early out, from the arm tail's 009EF213 hook and the station arm's 009EE57B exit. Sections 3, 4, 6 and 7 stay records, so blk+354h is never raised to 3.0 by section 4 |
+| cruise arm 2's request for the controlled unit | applied in the ship AI host whatever the director holds (see below) |
+
+**A host gap the first treatment exposed.** 009F3DF3 forces the controlled unit into `cruise`,
+and 009E1170's arm 2 stores blk+3ECh = 0 at 009E11D6 without testing the director's command. The
+commands host's `cruise_step` returns before that store when the director holds another command.
+Once the Lexington took its scripted `attackmove` at 125.80 s, blk+3ECh stayed at the pre-pass 1.
+The first treatment build (`trT`) therefore opened 009DA1D0 for the player's ship 682 times. Its
+torpedo tracks then drove its throttle profile, and the idle Lexington steamed at throttle 1.000
+and later astern at -0.562. The ship AI host now applies arm 2's request itself, behind the same
+switch, and the second treatment (`trT2`) keeps the Lexington's gate shut.
 
 The per-ship log line reads:
 
@@ -168,16 +179,70 @@ The pairs are control `build/win32/trC` (both new switches off) against treatmen
    - no ship death appears or vanishes;
    - the Lexington stays flat.
 
-## 5. Runs
+## 5. Runs (2026-09-23, from 13:01, when a 120-frame probe passed)
 
-None yet. Runs are blocked: the renderer-init crash, with session rdp-tcp#0 active. The queue,
-in order, when a 120-frame probe passes:
+All pairs used `BSP_GUNNERY_RNG_STREAMS=1` on both sides. Controls `trC2` and treatments `trT2` /
+`rsT2` are built from one tree, after the controlled-unit fix above.
 
-1. the station-keeping USN04 pair (`skC` / `skT2`);
-2. the torpedo-boat USN04 pair (`tbC` / `trC`);
-3. this packet's USN04 pair (`trC` / `trT`), then E2 (`trC` / `trT`);
-4. the turn-radius USN04 pair (`trC` / `rsT`).
+**Torpedo response, USN04 4500** (`local\tr2_ctl_usn04.log` / `local\tr2_trt_usn04.log`):
+
+| row | control | treatment |
+| --- | --- | --- |
+| Yorktown tracks built / overrides / first / largest turn | - | 8 / 179 / 124.65 s / 1.426 rad |
+| Yorktown damage taken | 4599 | 4599 |
+| Yorktown AA shots / dealt | 525 / 1158 | 424 / 1245 |
+| Fletcher-class01 vector steps / overrides | - | 66 / 0 (under 1 m/s) |
+| Lexington damage taken / moved | 7858 / 100.51 m | 7858 / 100.51 m |
+| deaths / hits / damage | 18 / 220 / 16504.6 | 20 / 254 / 16974.2 |
+| unimplemented calls | 3448445 | 3435047 |
+
+18 ships build tracks, and every track is consumed behind the gate. Only the Yorktown and
+Fletcher-class01 ever leave a non-zero vector. Against the predictions:
+
+1. **Yorktown: met.** The eight tracks form, the overrides start while Kate #4's rounds run, and
+   the damage it takes is unchanged. The largest heading change is 82 degrees.
+2. **Escorts near the Lexington: met.** Fletcher-class01 builds a vector but cannot override
+   below 1 m/s.
+3. **Flat rows: met for the Lexington.** The aircraft rows move after 124 s, as the Yorktown's
+   turn moves its AA: two more aircraft die (`D3A Val #3.1|.-2`, `B5N Kate #8.1`) and
+   `D3A Val #3.1` dies 15 s later.
+4. **Ship deaths: met.** None appears or vanishes.
+
+**Torpedo response, E2 9000** (`local\tr2_ctl_e2.log` / `local\tr2_trt_e2.log`):
+
+5. **Fletcher-class01: not testable.** The control no longer loses it. Station keeping, landed
+   since the DC_9000 reference, keeps the escorts in their latches, and Fletcher-class01 takes
+   0 damage in both runs.
+6. **Lexington: met.** It dies at 225.81 s on both sides, to B5N Kate #6.1.
+7. **Yorktown: met.** Its rows repeat USN04's: 179 overrides, the first at 124.65 s, and 4599
+   damage taken. Deaths go from 30 to 31 and damage from 19256.2 to 19594.2, all aircraft. The
+   unimplemented calls go from 6944285 to 6908333.
+
+**Turn-radius sites, USN04 4500** (`local\tr2_ctl_usn04.log` / `local\rs2_trt_usn04.log`):
+
+8. **Mostly met.**
+   - Fletcher-class03's arm runs rise from 2866 to 3876 and Fletcher-class04's from 1702 to 3876.
+     They now stay in their station latch.
+   - Plan requests fall from 48569 to 45391, arrival latches go from 0 to 3, and stops from 7 to 9.
+   - Deaths stay 18, with the same aircraft at moved times.
+   - The Lexington does not move (100.51 m), but its AA does: shots 283 to 289, hits 26 to 30.
+     That part of the "Lexington flat" prediction was wrong.
+   - The unimplemented calls go from 3448445 to 3395630.
+
+**Decision.** Both switches land ON:
+- The torpedo response matches the read at every stage the rows can show.
+- The turn-radius sites give the image's value at sites that were using half of it.
+
+**Torpedo-boat exemption** (`tbC` against `trC`, the tree before the controlled-unit fix): every
+simulation line is identical, and only pointer values in environment lines differ. This matches
+the one-line prediction; neither mission has a torpedo boat.
 
 ## 6. no_ghidra_function
 
 None. Every address above has a Ghidra function.
+
+**Default runs (option off).** With both switches on, the USN04 4500 reference loses the
+Lexington at 182.86 s to a dive-bomb hit. Main's own reference leaves it at 15 of 8000, and each
+switch alone leaves it at 66 or 84. This is a shared-generator coupling flip on a knife edge, not
+a torpedo-response behaviour. docs/GAME_EXECUTABLE.md, "Mission reference baselines, 2026-09-23
+(after station keeping, and with the torpedo response)", has the rows.
