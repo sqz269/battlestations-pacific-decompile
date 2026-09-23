@@ -35,6 +35,7 @@
 #include "bsp/torpedo_issue_timing.hpp"
 #include "bsp/plane_squadron_host.hpp"
 #include "bsp/plane_follow_law.hpp"
+#include "bsp/plane_follow_hold.hpp"
 #include "bsp/plane_formation.hpp"
 #include "bsp/torpedo_release_orders.hpp"
 #include "bsp/torpedo_task_arm.hpp"
@@ -1075,6 +1076,7 @@ struct GameUnitSlot {
     bool plane_death_c3a{false};
     bool plane_death_removed{false};
     bool squadron_left_on_death{false};   // packet cc9_val_squadron_registry
+    int db_done_law_ticks{0};             // packet cc9_plane_follow_law
     float plane_death_seconds{-1.0f};
     // The altitude 009FBA50 was last commanded with, and the pitch 009FB800
     // answered, kept for the census only.
@@ -2756,6 +2758,13 @@ struct GameUnitsHost::Impl {
     // enters BotStateFollow.  See docs/HANDOFF_PLANE_FOLLOW_REGIMES.md.
     static constexpr bool kPlaneFormationPlacementEnabled = true;
     static constexpr bool kPlaneFollowLawEnabled = true;
+    // Packet cc9_plane_follow_law (docs/PLANE_FOLLOW_LAW.md section 14): the
+    // image's 009C1FD0 body at all three follow seams - the torpedo follow tick
+    // (009D2731 -> 009C1FD0), the dive-bomb follow tick and the dive-bomb done
+    // tick (009C7278 -> 009C1FD0): 009BFD70's station and +85h latch, then
+    // 009BEE30's HOLD arm (009BEE56-009BF9E5) while latched and its fly-to arm
+    // otherwise. The per-tick station PLACEMENT at those seams is the OFF path.
+    static constexpr bool kPlaneFollowLawBound = true;
     // The fly-to arm's last two plan stores, 009BFD15 plan+2B0h = 0 and
     // 009BFD1C plan+2D8h = 1, after the desired speed at 009BFD0F. Without
     // +2D8h = 1 an airborne plane (flight state 7) never enters 0099D300's
@@ -3236,12 +3245,186 @@ struct GameUnitsHost::Impl {
     // that order and with the station 009BFD70 produced, which
     // is the tick's own order (section 2 of
     // docs/PLANE_FOLLOW_LAW.md).
+    // 009BEE30's hold arm, 009BEE56-009BF9E5, through
+    // bsp::plane_follow_hold_command_009bee56 (docs/PLANE_FOLLOW_HOLD_ARM.md).
+    void run_follow_hold_arm_009bee56(GameUnitSlot& unit,
+                                      const bsp::PlaneFormationStation& station,
+                                      const GameUnitSlot& leader,
+                                      const bsp::GameTuningBlock& gt) {
+        ++follow_hold_ticks_;
+        bsp::PlaneFollowHoldInputs in;
+        in.own = follow_hold_attitude(unit);
+        in.leader = follow_hold_attitude(leader);
+        in.leader_present = true;
+        // leader+9C2h[...], the published +520h: clear for an AI leader
+        // (docs/BOMBER_AFTER_TASK.md 6c, provisional), so the lock never runs.
+        in.leader_published_520 = false;
+        follow_to_body(unit, station.world, false, in.station_local);   // 009BEE92
+        follow_to_body(unit, leader.motion.pose_row2, true,
+                       in.leader_forward_local);                        // 009BEEED
+        // SUBSTITUTION, labelled: state+84h/+78h come from 009C1FD0's search
+        // loop 009C216D-009C22F5, read only in part; the sight stays inactive.
+        in.sight_active_84 = false;
+        // SUBSTITUTION, labelled: state+44h in the hold arm is 009BFEE0's own
+        // hold-geometry point (009BFEEE's latched path), unread. The fly-to
+        // geometry's steer point stands in; the blend reads it only while
+        // |leader bank| > 0.5 (009BF531).
+        {
+            bsp::PlaneFollowGeometryInputs gin;
+            for (int i = 0; i < 3; ++i) {
+                gin.own_pos[i] = unit.motion.position[i];
+                gin.station[i] = station.world[i];
+                gin.leader_forward[i] = leader.motion.pose_row2[i];
+                gin.leader_pos[i] = leader.motion.position[i];
+            }
+            gin.own_heading = unit.plane_heading_c6c;
+            gin.leader_heading = leader.plane_heading_c6c;
+            gin.followed_point_dist = gt.pilot_follow_followed_point_dist;
+            gin.leader_heading_time_1 = gt.pilot_follow_leader_heading_spd_time_1;
+            gin.leader_heading_time_2 = gt.pilot_follow_leader_heading_spd_time_2;
+            gin.leader_heading_dist_1 = gt.pilot_follow_leader_heading_spd_dist_1;
+            gin.leader_heading_dist_2 = gt.pilot_follow_leader_heading_spd_dist_2;
+            gin.band_floor_offset = gt.pilot_follow_leader_follow_alt;
+            gin.band_ceiling_210 = gt.dynamics_ceiling;
+            gin.state_88 = 1.0e30f;
+            gin.band_inputs_available = true;
+            const bsp::PlaneFollowGeometry geo = bsp::plane_follow_geometry_009bfee0(
+                gin, bsp::PlaneFollowRegime::kLeadPursuit);
+            follow_to_body(unit, geo.steer_point, false, in.steer_local);   // 009BF57F
+        }
+        // 007C47F0 on [approach+8], 009BF90D/009BF92E.
+        in.level_flight_speed = bot_desired_speed_007c47f0(unit);
+        in.gains.yf_hdg_rad = gt.pilot_follow_yf_hdg_rad;
+        in.gains.yf_yaw_v_rad_per_sec = gt.pilot_follow_yf_yaw_v_rad_per_sec;
+        in.gains.yf_sidepos_meter = gt.pilot_follow_yf_sidepos_meter;
+        in.gains.yf_sidedir = gt.pilot_follow_yf_sidedir;
+        in.gains.pf_pitch_rad = gt.pilot_follow_pf_pitch_rad;
+        in.gains.pf_pitch_v_rad_per_sec = gt.pilot_follow_pf_pitch_v_rad_per_sec;
+        in.gains.pf_vertpos_meter = gt.pilot_follow_pf_vertpos_meter;
+        in.gains.pf_vertdir = gt.pilot_follow_pf_vertdir;
+        in.gains.rf_roll_rad = gt.pilot_follow_rf_roll_rad;
+        in.gains.rf_roll_v_rad_per_sec = gt.pilot_follow_rf_roll_v_rad_per_sec;
+        in.gains.rf_hdg_rad = gt.pilot_follow_rf_hdg_rad;
+        in.gains.rf_hdg_v_rad_per_sec = gt.pilot_follow_rf_hdg_v_rad_per_sec;
+        in.gains.pwr_back_meter = gt.pilot_follow_pwr_back_meter;
+        in.gains.pwr_spd_meter_per_sec = gt.pilot_follow_pwr_spd_meter_per_sec;
+        const bsp::PlaneFollowHoldCommand c = bsp::plane_follow_hold_command_009bee56(in);
+        record("BotStateFollow::hold_arm", 0x009bee56u);
+        if (c.locked) return;   // 009BF0B8-009BF0E8, never for an AI leader
+        // 009BF6F4-009BF70B: pitch desired, slot 3 active, plan+2D0h = 0.
+        unit.plan_slots[bsp::kPilotSlotPitch].desired = c.pitch_29c;
+        unit.plan_slots[bsp::kPilotSlotPitch].active = 1;
+        unit.plan_state.pitch_mode_2d0 = 0;
+        // 009BF716-009BF730: yaw desired, slot 1 active, plan+2D4h = 0 (0099E756
+        // then skips the planner's yaw arm).
+        unit.plan_slots[bsp::kPilotSlotYaw].desired = c.yaw_284;
+        unit.plan_slots[bsp::kPilotSlotYaw].active = 1;
+        unit.gl_yaw_mode_2d4_zero = true;
+        if (c.writes_roll_290) {
+            // 009BF743-009BF752: roll desired, slot 2 active, plan+2CCh = 0.
+            unit.plan_slots[bsp::kPilotSlotRoll].desired = c.roll_290;
+            unit.plan_slots[bsp::kPilotSlotRoll].active = 1;
+            unit.plan_heading_mode_2cc = 0;
+            unit.plan_heading_2c0_written = false;
+        } else if (c.writes_bank_target_2c4) {
+            // 009BF783/009BF789: bank target, plan+2CCh = 1.
+            unit.plan_state.bank_target_2c4 = c.bank_target_2c4;
+            unit.plan_heading_mode_2cc = 1;
+            unit.plan_heading_2c0_written = false;
+        }
+        // 009BF9AA-009BF9C8: throttle and air brake slots, plan+2D8h = 0.
+        unit.plan_slots[bsp::kPilotSlotThrottle].desired = c.throttle_278;
+        unit.plan_slots[bsp::kPilotSlotThrottle].active = 1;
+        unit.plan_slots[bsp::kPilotSlotAirBrake].desired = c.air_brake_2a8;
+        unit.plan_slots[bsp::kPilotSlotAirBrake].active = 1;
+        unit.plane_air_brake_mode_2d8 = 0;
+    }
+
+    // 004142E0 with unit+110h (the inverse of the world matrix): a world point
+    // in the unit's body frame; rows 0/1/2 of the pose are right/up/forward.
+    // With `direction` it is 0042D0D0(normalize = 0): the rotation only.
+    static void follow_to_body(const GameUnitSlot& u, const float p[3], bool direction,
+                               float out[3]) {
+        const float* m = u.world.data();
+        const double d[3] = {
+            static_cast<double>(p[0]) - (direction ? 0.0 : m[12]),
+            static_cast<double>(p[1]) - (direction ? 0.0 : m[13]),
+            static_cast<double>(p[2]) - (direction ? 0.0 : m[14])};
+        for (int r = 0; r < 3; ++r) {
+            const float* row = m + 4 * r;
+            const double n = std::sqrt(static_cast<double>(row[0]) * row[0] +
+                                       static_cast<double>(row[1]) * row[1] +
+                                       static_cast<double>(row[2]) * row[2]);
+            out[r] = static_cast<float>(
+                (d[0] * row[0] + d[1] * row[1] + d[2] * row[2]) / (n > 0 ? n : 1));
+        }
+    }
+    static bsp::PlaneFollowHoldAttitude follow_hold_attitude(const GameUnitSlot& u) {
+        bsp::PlaneFollowHoldAttitude a;
+        a.pitch = u.plane_pitch_angle_c64;
+        a.bank = u.plane_bank_angle_c68;
+        a.heading = u.plane_heading_c6c;
+        // SUBSTITUTION, labelled: unit+C70h is not carried. Its only consumer
+        // here is rf_hdgV, authored 0/DEG(400), so the term is zero either way.
+        a.turn_c70 = 0.0f;
+        // vtable+38h 007B8E60 BSP_Unit_GetCachedSpeed: the world speed.
+        a.speed = static_cast<float>(std::sqrt(
+            static_cast<double>(u.plane_world_velocity[0]) * u.plane_world_velocity[0] +
+            static_cast<double>(u.plane_world_velocity[1]) * u.plane_world_velocity[1] +
+            static_cast<double>(u.plane_world_velocity[2]) * u.plane_world_velocity[2]));
+        // SUBSTITUTION, labelled: ctl+A0h/A4h/A8h (unit+B50h..B58h), which the
+        // gains pair with roll, pitch and yaw rate, are not carried; the body
+        // angular velocity ctl+48h pitch / +4Ch yaw / +50h roll stands in. Of
+        // the three only the pitch rate has a non-zero gain (pf_pitchV
+        // 1/DEG(100)); yf_yawV and rf_rollV are authored 0.
+        a.rate_a0 = u.plane_body_angular[2];
+        a.rate_a4 = u.plane_body_angular[0];
+        a.rate_a8 = u.plane_body_angular[1];
+        return a;
+    }
+    int follow_hold_ticks_{0};
+    int follow_flyto_ticks_{0};
+    int follow_torpedo_follow_ticks_{0};
+    // 009C1FD0 with kPlaneFollowLawBound: 009BFD70's station from the live
+    // slot 0 (no placement), then 009BFEE0/009BEE30. False when the member has
+    // no station (it is its squadron's leader, or alone).
+    bool run_follow_tick_009c1fd0(GameUnitSlot& unit) {
+        bsp::PlaneFormationStation station;
+        const GameUnitSlot* leader = nullptr;
+        place_wing_member_on_station_007f23a0(unit, false, &station, &leader, false);
+        if (!station.produced || leader == nullptr) return false;
+        run_follow_law_009bfee0_009bee30(unit, station, *leader);
+        return true;
+    }
+
     void run_follow_law_009bfee0_009bee30(
         GameUnitSlot& unit,
         const bsp::PlaneFormationStation& station,
         const GameUnitSlot& leader) {
         if (!lua.plane_globals_loaded()) return;
         const bsp::GameTuningBlock& gt = lua.plane_globals();
+        if constexpr (kPlaneFollowLawBound) {
+            // 009BFD70's +85h latch, recomputed every tick with no hysteresis
+            // (009BFDD4 clear, 009BFE19 distance, 009BFE62-7B heading dot):
+            // within GoodPositionDist of the station AND leader-forward .
+            // member-forward above GoodPositionDir.
+            const double dx = static_cast<double>(unit.motion.position[0]) - station.world[0];
+            const double dy = static_cast<double>(unit.motion.position[1]) - station.world[1];
+            const double dz = static_cast<double>(unit.motion.position[2]) - station.world[2];
+            const double dist = std::sqrt(dx * dx + dy * dy + dz * dz);
+            const float* lf = leader.motion.pose_row2;
+            const float* mf = unit.motion.pose_row2;
+            const double dot = static_cast<double>(lf[0]) * mf[0] +
+                               static_cast<double>(lf[1]) * mf[1] +
+                               static_cast<double>(lf[2]) * mf[2];
+            const bool latch_85 = gt.pilot_follow_good_position_dist > dist &&
+                dot > gt.pilot_follow_good_position_dir;
+            if (latch_85) {
+                run_follow_hold_arm_009bee56(unit, station, leader, gt);
+                return;
+            }
+            ++follow_flyto_ticks_;
+        }
 
         bsp::PlaneFollowGeometryInputs gin;
         for (int i = 0; i < 3; ++i) {
@@ -6988,7 +7171,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // first is bound; see
                             // Impl::place_wing_member_on_station_007f23a0 and
                             // docs/PLANE_FORMATION.md for what that leaves open.
-                            if (owner_.place_wing_member_on_station_007f23a0(slot_, false)) {
+                            if constexpr (GameUnitsHost::Impl::kPlaneFollowLawBound) {
+                                // 009D2731 -> 009C1FD0: 009BFD70's station, then
+                                // 009BFEE0/009BEE30 fly the member to it.
+                                bsp::PlaneFormationStation station;
+                                const GameUnitSlot* leader = nullptr;
+                                owner_.place_wing_member_on_station_007f23a0(
+                                    slot_, false, &station, &leader, false);
+                                if (station.produced && leader != nullptr) {
+                                    owner_.run_follow_law_009bfee0_009bee30(
+                                        slot_, station, *leader);
+                                }
+                            } else if (owner_.place_wing_member_on_station_007f23a0(slot_, false)) {
                                 owner_.log.implemented("BotStateFollow::station_point",
                                                        "007f23a0");
                             }
@@ -8035,7 +8229,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             bsp::PlaneFormationStation station;
                             const GameUnitSlot* fl = nullptr;
                             owner_.place_wing_member_on_station_007f23a0(
-                                unit_, false, &station, &fl);
+                                unit_, false, &station, &fl,
+                                !GameUnitsHost::Impl::kPlaneFollowLawBound);
                             if (owner_.kPlaneFollowLawEnabled && station.produced &&
                                 fl != nullptr) {
                                 owner_.run_follow_law_009bfee0_009bee30(unit_, station, *fl);
@@ -8921,7 +9116,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // this packet closed. docs/FOLLOWER_ATTACK_HANDOVER.md
                         // sections 7 and 9.
                         if (owner_.place_wing_member_on_station_007f23a0(
-                                unit_, false, &station, &leader)) {
+                                unit_, false, &station, &leader,
+                                !GameUnitsHost::Impl::kPlaneFollowLawBound)) {
                             owner_.log.implemented("BotStateFollow::station_point",
                                                    "007f23a0");
                         }
@@ -9449,7 +9645,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // PLACES the member on its station instead; the geometry
                         // is the image's, the path to it is not.
                         // docs/PLANE_FORMATION.md section 6.
-                        if (owner_.place_wing_member_on_station_007f23a0(unit_, false)) {
+                        if constexpr (GameUnitsHost::Impl::kPlaneFollowLawBound) {
+                            // 009C7278 -> 009C1FD0: station, then the law.
+                            bsp::PlaneFormationStation station;
+                            const GameUnitSlot* leader = nullptr;
+                            owner_.place_wing_member_on_station_007f23a0(
+                                unit_, false, &station, &leader, false);
+                            if (station.produced && leader != nullptr) {
+                                ++unit_.db_done_law_ticks;
+                                owner_.run_follow_law_009bfee0_009bee30(
+                                    unit_, station, *leader);
+                            }
+                        } else if (owner_.place_wing_member_on_station_007f23a0(unit_, false)) {
                             ++unit_.db_done_placed_ticks;
                             owner_.log.implemented("BotStateDiveBombDone::station_point",
                                                    "007f23a0");
@@ -10331,6 +10538,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // held their post-release descent into the water:
                             // nothing commanded the climb-away.
                             run_goaway_tick_009d0f10(dt);
+                        } else if (GameUnitsHost::Impl::kPlaneFollowLawBound &&
+                                   ctx.current == bsp::TorpedoState::kFollow) {
+                            // 009D48E7-009D48F6 state->vtable[0Ch]: the follow
+                            // state's tick is 009C1FD0 (vtable 00D20AB8 slot
+                            // +0Ch), not the moveto tick this host ran for it.
+                            ++owner_.follow_torpedo_follow_ticks_;
+                            owner_.run_follow_tick_009c1fd0(unit_);
                         } else if (ctx.current == bsp::TorpedoState::kMoveTo ||
                                    ctx.current == bsp::TorpedoState::kFollow) {
                             run_move_to_tick_009c18c0();
@@ -14121,6 +14335,18 @@ void GameUnitsHost::report() {
                             static_cast<double>(slot->df_moveto_speed_commands ? slot->df_moveto_speed_min : 0.0f),
                             static_cast<double>(slot->df_moveto_speed_max),
                             slot->plane_pilot_fires_c24 ? 1 : 0);
+                    }
+                    {
+                        int done_law = 0, done_placed = 0;
+                        for (const auto& sl : host.slots) {
+                            done_law += sl->db_done_law_ticks;
+                            done_placed += sl->db_done_placed_ticks;
+                        }
+                        host.log.notef("summary mission plane follow law hold_ticks=%d flyto_ticks=%d "
+                            "torpedo_follow_ticks=%d done_law_ticks=%d done_placed_ticks=%d "
+                            "(009BEE30 arms, packet cc9_plane_follow_law)", host.follow_hold_ticks_,
+                            host.follow_flyto_ticks_, host.follow_torpedo_follow_ticks_,
+                            done_law, done_placed);
                     }
                     host.log.notef("summary mission plane squadron leaves=%d promotions=%d "
                         "(007BCAA0 -> 007F3970 at death, packet cc9_val_squadron_registry)",
