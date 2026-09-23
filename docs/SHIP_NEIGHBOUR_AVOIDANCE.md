@@ -462,3 +462,95 @@ now concrete. main moved the off side from section 4's 3135486.
 
 **Landed:** `kShipPassSideMessageBound` ON; the traffic pass runs under
 `kShipNeighbourAvoidanceBound` (ON). Section 7 (009DC2E0) was not read in this packet.
+
+## 6. The rudder-gate store, the pi turns and 009DC2E0 (packet cc9_free_bearing_query)
+
+2026-09-23. The switch is `kShipRudderGateStoreBound`.
+
+**009F4D27.** 009F4D10 opens with `MOVSS XMM0,[00D7A260]` (-1.0f) and stores it at blk+33Ch at
+009F4D27, unconditionally and before anything else. The traffic pass 009EF350 may then overwrite
+it with the nearest pass distance. The drive reads it one tick later: 009F4511 clamps the
+desired rudder to ±blk+348h only while blk+33Ch < 0 and the hull and committed latches hold. So
+in the image the gate is open on every tick without a traffic write. The host dropped the store,
+and its gate was always shut.
+
+**009D7AF0's third argument.** It is unread. The frame is `SUB ESP,20h` with no push or pop in
+009D7AF0-009D8000. The arguments sit at [ESP+24h], [ESP+28h] and [ESP+2Ch], and nothing reads
+[ESP+2Ch]. [ESP+28h] is reused as scratch after the point is loaded.
+
+### Predictions, written before the pairs
+
+Control `build/win32/fbC` (store off) against treatment `build/win32/fbT` (on), same tree,
+`BSP_GUNNERY_RNG_STREAMS=1`. Both carry a trace of every traffic turn over 2.0 rad
+(instrumentation only).
+
+1. **rudder_gate_open** goes from 0 to nearly every drive tick on every ship. It is short of the
+   ticks where the traffic pass wrote a distance, which is 23089 writes on USN04 in the previous
+   packet.
+2. **The clamp only bites where blk+348h < 1.** The desired rudder already lies in [-1, 1],
+   followers' limits are 1.0-1.25 and unformed ships' are 1.0, so the clamp does nothing for
+   them. Only formation leaders with a limit below 1 are affected: USN01's Convoy1 at 0.8333, and
+   USN04's leaders at 0.75-1.0. Their turns become slower, and they alone move first.
+3. **Totals.** Total path (USN04 47059 m) and plan requests move slightly through the leaders.
+   The traffic-turn magnitudes are unchanged by this switch.
+4. **Deaths and damage.** No ship death appears or vanishes. Aircraft rows may move.
+5. **USN01.** Only Convoy1 and its column move.
+
+### Results (`local\fb_{ctl,trt}_usn04.log`, `local\fb_{ctl,trt}_usn01.log`)
+
+| row | USN04 off | USN04 on | USN01 off | USN01 on |
+| --- | --- | --- | --- | --- |
+| rudder_gate_open (drive ticks with blk+33Ch < 0) | 0 | 4500 on the Lexington, 3257-3932 on its escorts | 0 | 3000 on most ships, 2463 on SaltLakeCity |
+| total path | 46891.30 m | 46891.30 m | 12211.70 m | 12211.70 m |
+| plan requests / seeds | 44879 / 499 | 44879 / 499 | 9593 / 102 | 9593 / 102 |
+| queued hits / deaths / damage | 282 / 20 / 4529.2 | identical | 140 / 5 / 2250.0 | identical |
+
+Against the predictions:
+1. **The gate opens: met.** It is short of the traffic-write ticks.
+2. **Only leaders with a limit below 1 are affected: met, and smaller than predicted.** The clamp
+   never binds hard enough to move a track: USN04 does not move at all. On USN01 the only moved
+   cell is Convoy1's nearest-contact column, 2638 m to 2643 m.
+3. **Totals flat: met.**
+4. **Deaths: met.**
+5. **USN01, only Convoy1 moves: met.**
+
+**Decision.** `kShipRudderGateStoreBound` lands ON: it is the image's store and moves nothing
+here.
+
+### The pi turns, traced
+
+`local\fb_trt_usn04.log` carries 40 `traffic trace` lines, the first at step 936 on York-class02:
+- the ship's heading is 0.877 rad and its heading target 1.115;
+- there is one side-1 node at 313 m and no side-2 node;
+- the target after the pass is -1.242: a turn of -2.357, the error clamped to hi = -2.119 rad,
+  which is 121 degrees to port;
+- the same clamp holds on every following tick, and the heading does not follow. York-class02
+  is a station-keeping follower of the stopped Lexington group, nearly at rest.
+
+With no side-2 node, the pass sets lo = heading - 3.14 (009EF591..009EF5AE: 00CF0AA8 through
+00438B10) and hi = the side-1 pass bearing minus 5 degrees. The window check against the listing
+(009EF5B0..009EF621) matches the reconstruction. So a side-1 corner on the port quarter drives
+the target round to the far side, as the listing reads.
+
+**Verdict:** a host divergence is not shown. The turns follow 009EF350, 009DCEB0 and 009D7AF0 as
+read, and 009D7AF0's third argument is confirmed unread, so no hidden term changes the corner.
+What is not established is whether the image's node geometry (box extents, the 009D7AF0 quadrant)
+puts that corner astern for this pair of ships. That needs a native trace, which this host cannot
+take. No fix switch is added.
+
+### 009DC2E0, the free-bearing query: read as far as its early outs, not bound
+
+Body 009DC2E0-009DCEA2, callers 009DE5B0 (section 7, 009DF0FA) and 009EB660 (the sector scan,
+009EC0C1). It returns 0:
+- when the searcher's enable byte is clear;
+- when the query range +18h is below the constant at 00CE38B8;
+- after 009D7050 (`BSP_ShipAiAvoidZoneSearcher_RefreshCachedQuery`) refreshes the searcher's
+  cached segments over the box of radius sqrt(max(+10h, +14h)^2 + range^2), when the segment
+  count at searcher+18h is 0.
+
+So it can change a heading only for a ship with avoid-zone segments inside that box. On USN04
+that is never, since there are no zones. On USN01 it happens only near the atolls, which
+docs/AVOID_ZONE_ESCAPE.md shows no ship reaches. The remaining body is about 300 lines of
+pseudocode: 004158E0 (nearest hit), 00416270, headings and min/max. It needs its own packet,
+with the GameAvoidZoneRuntime search methods (`refresh_search`, `search_segment`, `search_arc`,
+`search_clearance`) as the host side. Section 7 and the sector scan's call stay records.

@@ -1082,6 +1082,13 @@ struct GameUnitSlot {
     bool plane_death_removed{false};
     bool squadron_left_on_death{false};   // packet cc9_val_squadron_registry
     int db_done_law_ticks{0};             // packet cc9_plane_follow_law
+    // Packet cc9_wing_achieved_speed, diagnostic: the last follow step's arm
+    // (1 hold, 2 fly-to), station distance and the motion step it ran on.
+    int fw_arm{0};
+    float fw_station_dist{-1.0f};
+    unsigned long long fw_step{0};
+    float fw_station[3]{0.0f, 0.0f, 0.0f};
+    float fw_leader_heading{0.0f};
     float plane_death_seconds{-1.0f};
     // The altitude 009FBA50 was last commanded with, and the pitch 009FB800
     // answered, kept for the census only.
@@ -2777,6 +2784,21 @@ struct GameUnitsHost::Impl {
     // arm's steer point from 009BFEE0's latched path 009BFEFC-009C0021.
     // Before: max speed x 0.9, the stall speed, and the fly-to geometry.
     static constexpr bool kPlaneFollowCatchupBound = true;
+    // Packet cc9_wing_achieved_speed (docs/PLANE_FOLLOW_LAW.md section 16): the
+    // torpedo and dive-bomb moveto speed slot 009C1850 as the image forms it,
+    // 009BECD0(a = [approach+0Ch]+3A0h, b = 007C47F0, sep). squadron+3A0h is
+    // the squadron class's desc+190h TravelSpeed x NewTravelSpeedMul
+    // (007F2020-007F202A, 007ED596-007ED5AE, refreshed from 0099ACD0 through
+    // 007ED5D0), and 009BECD0 blends from b toward it by max(the wait-distance
+    // ramp, 007EF2C0's wingmen value): the leader waits for a wing that is out
+    // of position. Before: 007C47F0 alone, the leader always at LevelFlight x
+    // StallSpd.
+    static constexpr bool kMovetoSpeedBlendBound = true;
+    // DIAGNOSTIC, packet cc9_wing_achieved_speed: every kWingTraceEvery motion
+    // steps, one line per member of the squadron named kWingTraceSquadron.
+    // Off (0) in the landed build.
+    static constexpr int kWingTraceEvery = 0;
+    static constexpr const char* kWingTraceSquadron = "B5N Kate #4.1";
     // The fly-to arm's last two plan stores, 009BFD15 plan+2B0h = 0 and
     // 009BFD1C plan+2D8h = 1, after the desired speed at 009BFD0F. Without
     // +2D8h = 1 an airborne plane (flight state 7) never enters 0099D300's
@@ -3260,6 +3282,63 @@ struct GameUnitsHost::Impl {
     // that order and with the station 009BFD70 produced, which
     // is the tick's own order (section 2 of
     // docs/PLANE_FOLLOW_LAW.md).
+    // 009C1850 BSP_BotStateMoveTo_SetDesiredSpeed's speed for a torpedo or
+    // dive-bomb moveto: 009BECD0(squadron+3A0h, 007C47F0(), sep).
+    float moveto_speed_009c1850(const GameUnitSlot& unit, float sep) {
+        float w1 = 3000.0f, w2 = 5000.0f;
+        float dont_wait = 0.87266463f, wait = 1.7453293f, good = 100.0f, nearby = 200.0f;
+        float travel_mul = 1.6f;
+        if (lua.plane_globals_loaded()) {
+            const bsp::GameTuningBlock& g = lua.plane_globals();
+            w1 = g.pilot_general_wingmen_wait_dist_1;
+            w2 = g.pilot_general_wingmen_wait_dist_2;
+            dont_wait = g.pilot_follow_dont_wait_for_hdg_diff;
+            wait = g.pilot_follow_wait_for_hdg_diff;
+            good = g.pilot_follow_good_position_dist;
+            nearby = g.pilot_follow_nearby_dist;
+            travel_mul = g.dynamics_spd_multipliers_new_travel_speed_mul;
+        }
+        // squadron+3A0h = [squadron+35Ch]+190h, the class's TravelSpeed x
+        // tuning+334h NewTravelSpeedMul (007D23F5/007D2406). The squadron's
+        // class is its members' class, so the unit's own row stands in.
+        const float travel_scaled = unit.plane_travel_speed * travel_mul;
+        const bsp::PlaneSquadronHostRecord* sq =
+            bsp::plane_squadron_registry().find_by_member_unit(unit.process_index);
+        float wingmen = 1.0f;
+        if (sq != nullptr) {
+            std::vector<float> values;
+            for (const std::size_t m : sq->member_units) {
+                float v = -1.0f;   // 007BCC20: dead, leader, no pilot
+                if (m != bsp::kPlaneSquadronNoUnit && m < slots.size() &&
+                    m != unit.process_index) {
+                    const GameUnitSlot& o = *slots[m];
+                    // 00999AE0: the first task answering vtable[4Ch]. For a
+                    // member in the follow state that is 009BE3E0 over its
+                    // station; any other state answers -1 (as the dogfight
+                    // task's 009A9C60 does). SUBSTITUTION, labelled: the torpedo
+                    // and dive tasks' own vtable[4Ch] bodies are unread.
+                    const bool following =
+                        o.torpedo_state == bsp::TorpedoState::kFollow &&
+                        o.fw_step + 2 >= summary.motion_steps;
+                    if (following) {
+                        const float d[3] = {o.motion.position[0] - o.fw_station[0],
+                                            o.motion.position[1] - o.fw_station[1],
+                                            o.motion.position[2] - o.fw_station[2]};
+                        v = bsp::follow_wait_value_009be3e0(o.fw_arm == 1, d,
+                            o.fw_leader_heading, dont_wait, wait, good, nearby);
+                    }
+                }
+                values.push_back(v);
+            }
+            wingmen = bsp::squadron_wingmen_value_007ef2c0(
+                values.data(), static_cast<int>(values.size()), sq->formation_shape_3e4);
+        }
+        ++moveto_blend_calls_;
+        return bsp::dogfight_moveto_speed_009becd0(travel_scaled,
+            bot_desired_speed_007c47f0(unit), sep, w1, w2, sq != nullptr, wingmen);
+    }
+    int moveto_blend_calls_{0};
+
     // 009BEE30's hold arm, 009BEE56-009BF9E5, through
     // bsp::plane_follow_hold_command_009bee56 (docs/PLANE_FOLLOW_HOLD_ARM.md).
     void run_follow_hold_arm_009bee56(GameUnitSlot& unit,
@@ -3461,6 +3540,11 @@ struct GameUnitsHost::Impl {
                                static_cast<double>(lf[2]) * mf[2];
             const bool latch_85 = gt.pilot_follow_good_position_dist > dist &&
                 dot > gt.pilot_follow_good_position_dir;
+            unit.fw_arm = latch_85 ? 1 : 2;
+            unit.fw_station_dist = static_cast<float>(dist);
+            unit.fw_step = summary.motion_steps;
+            for (int i = 0; i < 3; ++i) unit.fw_station[i] = station.world[i];
+            unit.fw_leader_heading = leader.plane_heading_c6c;
             if (latch_85) {
                 run_follow_hold_arm_009bee56(unit, station, leader, gt);
                 return;
@@ -5432,6 +5516,60 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
     host.summary.simulated_seconds += step_seconds;
     if constexpr (bsp::kPlaneSquadronLeaveOnDeathBound) {
         host.squadron_leave_on_death_007bcaa0();
+    }
+    if constexpr (Impl::kWingTraceEvery > 0) {
+        if ((host.summary.motion_steps % Impl::kWingTraceEvery) == 0) {
+            const std::string sq = Impl::kWingTraceSquadron;
+            for (const auto& owned : host.slots) {
+                const GameUnitSlot& u = *owned;
+                if (u.row.name.compare(0, sq.size(), sq) != 0) continue;
+                const double v = std::sqrt(
+                    static_cast<double>(u.plane_world_velocity[0]) * u.plane_world_velocity[0] +
+                    static_cast<double>(u.plane_world_velocity[1]) * u.plane_world_velocity[1] +
+                    static_cast<double>(u.plane_world_velocity[2]) * u.plane_world_velocity[2]);
+                const bool fresh = u.fw_step + 2 >= host.summary.motion_steps;
+                host.log.notef("wing trace t=%.2f %s tstate=%d arm=%d stdist=%.1f cmd2b4=%.1f "
+                    "mode2d8=%d thr_des=%.3f thr_cur=%.3f v=%.2f vy=%.2f pitch=%.4f "
+                    "pcmd=%.4f alt=%.1f cmd_alt=%.1f",
+                    static_cast<double>(host.summary.simulated_seconds),
+                    u.row.name.c_str(), static_cast<int>(u.torpedo_state),
+                    fresh ? u.fw_arm : 0,
+                    static_cast<double>(fresh ? u.fw_station_dist : -1.0f),
+                    static_cast<double>(u.plane_desired_speed_2b4),
+                    static_cast<int>(u.plane_air_brake_mode_2d8),
+                    static_cast<double>(u.plan_slots[bsp::kPilotSlotThrottle].desired),
+                    static_cast<double>(u.plan_slots[bsp::kPilotSlotThrottle].current),
+                    v, static_cast<double>(u.plane_world_velocity[1]),
+                    static_cast<double>(u.plane_pitch_angle_c64),
+                    static_cast<double>(u.plane_commanded_pitch),
+                    static_cast<double>(u.motion.position[1]),
+                    static_cast<double>(u.plane_commanded_altitude));
+                {
+                    const bsp::PlaneSquadronHostRecord* rec =
+                        bsp::plane_squadron_registry().find_by_member_unit(u.process_index);
+                    const std::size_t li = rec != nullptr ? rec->flight_leader()
+                                                          : bsp::kPlaneSquadronNoUnit;
+                    float rel[3] = {0.0f, 0.0f, 0.0f};
+                    float lh = 0.0f;
+                    if (li < host.slots.size() && li != u.process_index) {
+                        const GameUnitSlot& L = *host.slots[li];
+                        Impl::follow_to_body(L, u.motion.position, false, rel);
+                        lh = L.plane_heading_c6c;
+                    }
+                    host.log.notef("wing trace2 t=%.2f %s hdg=%.4f cmd_hdg=%.4f hmode=%d "
+                        "lead_hdg=%.4f rel_right=%.1f rel_up=%.1f rel_fwd=%.1f bank=%.4f "
+                        "yaw_des=%.3f roll_des=%.3f",
+                        static_cast<double>(host.summary.simulated_seconds), u.row.name.c_str(),
+                        static_cast<double>(u.plane_heading_c6c),
+                        static_cast<double>(u.plan_heading_2c0), u.plan_heading_mode_2cc,
+                        static_cast<double>(lh), static_cast<double>(rel[0]),
+                        static_cast<double>(rel[1]), static_cast<double>(rel[2]),
+                        static_cast<double>(u.plane_bank_angle_c68),
+                        static_cast<double>(u.plan_slots[bsp::kPilotSlotYaw].desired),
+                        static_cast<double>(u.plan_slots[bsp::kPilotSlotRoll].desired));
+                }
+            }
+        }
     }
     // Milestone 2m: the weapon director's own step, before the motion pass that
     // reads what the step decided. 00836920's caller is the unit update's
@@ -9084,7 +9222,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // what stands in is the shaping, not the speed. The
                         // speed itself is 007C47F0's LevelFlight * StallSpd.
                         unit_.plane_desired_speed_2b4 =
-                            owner_.bot_desired_speed_007c47f0(unit_);
+                            GameUnitsHost::Impl::kMovetoSpeedBlendBound
+                                ? owner_.moveto_speed_009c1850(unit_, unit_.db_planar_bc)
+                                : owner_.bot_desired_speed_007c47f0(unit_);
                         unit_.plane_air_brake_mode_2d8 = 1;
                         ++unit_.plane_speed_commands;
                         owner_.record("BotStateMoveTo::set_desired_speed", 0x009c1850u);
@@ -11179,7 +11319,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // substituted is the shaping, not the speed.
                         // docs/BOT_SPEED_CLASS_ROWS.md.
                         unit_.plane_desired_speed_2b4 =
-                            owner_.bot_desired_speed_007c47f0(unit_);
+                            GameUnitsHost::Impl::kMovetoSpeedBlendBound
+                                ? owner_.moveto_speed_009c1850(unit_, distance)
+                                : owner_.bot_desired_speed_007c47f0(unit_);
                         unit_.plane_air_brake_mode_2d8 = 1;
                         ++unit_.plane_speed_commands;
                         owner_.record("BotStateMoveTo::set_desired_speed", 0x009c1850u);

@@ -199,6 +199,11 @@ inline constexpr bool kShipAvoidZoneEscapeBound = true;
 // gets 009ECA20's travel layer. False: the plan block's own zone_layer, as before.
 // Landed ON after the USN01 3000 pair (docs/SHIP_NEIGHBOUR_AVOIDANCE.md section 1).
 inline constexpr bool kShipPlannerTravelLayerBound = true;
+// Packet cc9_free_bearing_query, docs/SHIP_NEIGHBOUR_AVOIDANCE.md section 6. True:
+// 009F4D10's -1.0f store at 009F4D27 into blk+33Ch, so the drive's rudder clamp
+// gate at 009F4511 (blk+33Ch < 0) is open except on ticks where the traffic pass
+// wrote a distance. False: the store is dropped and the gate stays shut.
+inline constexpr bool kShipRudderGateStoreBound = true;
 inline constexpr float kTorpedoCollectTimer1 = 1.5f;
 inline constexpr float kTorpedoCollectTimer2 = 2.0f;
 // Packet cc9_station_keeping, docs/STATION_KEEPING.md. True: the follow update's
@@ -465,6 +470,7 @@ struct GameShipAiHost::Impl {
     bool layer_timing_loaded{false};
     // Packet cc9_ship_torpedo_response: the same host, for its stream-1 draw.
     GameGunneryHost* gunnery_draws{nullptr};
+    unsigned long long traffic_trace_lines{0};
     std::vector<GameGunneryHost::LiveTorpedo> live_torpedo_cache;
     unsigned long long live_torpedo_cache_step{~0ull};
 
@@ -4161,9 +4167,31 @@ public:
         // -1.0f store before this call is not bound in this host (the publish
         // result's blk_33c is dropped), so the field is never negative and the
         // rudder clamp it gates stays shut on either side of this switch.
+        const float target_before = ctl_.blk.heading_target_324;
         const bsp::ShipAiTrafficPassResult result = bsp::ship_ai_traffic_pass_009ef350(
             in, ctl_.blk.heading_target_324, ctl_.obstacle.published_33c, ctl_.blk.clamp_354,
             host);
+        // Packet cc9_free_bearing_query: a trace of the large turns (INSTRUMENTATION).
+        if (result.wrote && std::fabs(result.turn) > 2.0f && owner_.traffic_trace_lines < 40) {
+            ++owner_.traffic_trace_lines;
+            owner_.log.notef("  traffic trace step=%llu unit=%s heading=%.4f target_before=%.4f "
+                "target_after=%.4f turn=%.4f side1=%d side2=%d dist=%.1f mode=%d",
+                owner_.steps, owner_.rows[index_].unit.c_str(),
+                static_cast<double>(owner_.units.unit_heading_radians(index_)),
+                static_cast<double>(target_before),
+                static_cast<double>(ctl_.blk.heading_target_324),
+                static_cast<double>(result.turn), result.side1, result.side2,
+                static_cast<double>(ctl_.obstacle.published_33c), in.mode_35c);
+            for (int i = 0; i < host.count_604(); ++i) {
+                const auto& pass = host.pass_state(i);
+                if (!pass.flag_74) continue;
+                auto& node = host.node_608(i);
+                owner_.log.notef("    node %d owner=%s side=%d bearing=%.4f dist2=%.1f",
+                    i, owner_.rows[NeighbourList::store(node).unit].unit.c_str(),
+                    node.pass_side_88,
+                    static_cast<double>(pass.bearing_70), static_cast<double>(pass.distance2_6c));
+            }
+        }
         if (result.wrote && ctl_.throttle_profile.hold_354 < ctl_.blk.clamp_354) {
             // blk+354h is projected twice in this host (see section 4 of
             // docs/HEADING_TARGET_SECTIONS.md): keep the throttle profile's copy.
@@ -6391,6 +6419,10 @@ public:
         return false;
     }
     void publish_009f4d10(float seconds) override {
+        // Packet cc9_free_bearing_query: 009F4D27 MOVSS [ESI+33Ch], XMM0 with
+        // XMM0 = [00D7A260] = -1.0f, the routine's first store, before 009EF350
+        // may overwrite it with the nearest traffic distance.
+        if (kShipRudderGateStoreBound) ctl_.obstacle.published_33c = -1.0f;
         PublishBinding publish(owner_, ctl_, index_);
         const bsp::ShipAiPublishResult result = bsp::ship_ai_publish_order_009f4d10(
             ctl_.blk.heading_target_324, ctl_.blk.distance_32c, ctl_.blk.distance_330,
@@ -6989,6 +7021,7 @@ void GameShipAiHost::Impl::drive_order_ring_009f3f80(std::size_t index, Controll
     ObstacleBinding obstacle(*this, index);
     obstacle.set_direction(ctl.blk.direction);
     const float rudder_before = ctl.blk.desired_rudder;
+    if (ctl.obstacle.published_33c < 0.0f) ++row.rudder_gate_open;
     bsp::ship_ai_drive_order_ring_middle_009f40ca(ctl.blk, ctl.obstacle, frame, settings,
                                                   ceiling, obstacle);
     done("ShipAi::drive_order_ring_body", 0x009f40cau);
@@ -7761,11 +7794,15 @@ void GameShipAiHost::report() {
             static_cast<double>(row.formation_limit_348_max));
         if (row.layer_selections != 0) {
             host.log.notef("    zone %-16s selections=%llu inside=%llu escape_turns=%llu max_turn=%.3f "
-                "first=%.2f s travel_layer=[%u, %u]", row.unit.c_str(), row.layer_selections,
+                "first=%.2f s travel_layer=[%u, %u] rudder_gate_open=%llu free_bearing=%llu/%llu "
+                "fb_max_turn=%.3f traffic_max_turn=%.3f", row.unit.c_str(), row.layer_selections,
                 row.zone_inside_steps, row.zone_escape_turns,
                 static_cast<double>(row.zone_escape_max_turn),
                 static_cast<double>(row.zone_escape_first_s),
-                row.travel_layer_min, row.travel_layer_max);
+                row.travel_layer_min, row.travel_layer_max, row.rudder_gate_open,
+                row.free_bearing_accepts, row.free_bearing_queries,
+                static_cast<double>(row.free_bearing_max_turn),
+                static_cast<double>(row.traffic_max_turn));
         }
         if (row.torpedo_admits != 0 || row.torpedo_overrides != 0) {
             host.log.notef("    torpedo %-16s scans=%llu admits=%llu tracks_built=%llu tracks_max=%zu "
