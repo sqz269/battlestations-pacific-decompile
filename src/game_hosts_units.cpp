@@ -11806,6 +11806,22 @@ std::int32_t GameUnitsHost::formation_member_count(std::int32_t group) const noe
         host.formation_groups[static_cast<std::size_t>(group)].members.size());
 }
 
+std::size_t GameUnitsHost::formation_member_unit(std::int32_t group,
+                                                std::int32_t slot) const noexcept {
+    // Packet cc9_ship_formation_speed. The record's +00h is the one-based handle
+    // the join stores (record.entity = unit + 1).
+    const Impl& host = *impl_;
+    if (group < 0 || static_cast<std::size_t>(group) >= host.formation_groups.size()) {
+        return static_cast<std::size_t>(-1);
+    }
+    const auto& members = host.formation_groups[static_cast<std::size_t>(group)].members;
+    if (slot < 0 || static_cast<std::size_t>(slot) >= members.size()) {
+        return static_cast<std::size_t>(-1);
+    }
+    const std::uint32_t entity = members[static_cast<std::size_t>(slot)].entity;
+    return entity == 0u ? static_cast<std::size_t>(-1) : static_cast<std::size_t>(entity - 1u);
+}
+
 GameUnitsHost::FormationStation GameUnitsHost::formation_station_0070d290(
     std::size_t unit, float across_scale, float along_scale) const noexcept {
     FormationStation out{};
