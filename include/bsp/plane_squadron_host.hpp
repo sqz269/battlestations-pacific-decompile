@@ -32,13 +32,14 @@ namespace bsp {
 inline constexpr std::size_t kPlaneSquadronNoUnit = static_cast<std::size_t>(-1);
 
 // Packet cc9_val_squadron_registry (docs/VAL_SQUADRON_REGISTRY.md): a member
-// plane LEAVES its squadron when it dies. The image's death flush 009273A0
-// dispatches vtable[74h] 00926390 (+5Dh = +60h = 1), which tail-jumps to
-// vtable[7Ch]; for an aircraft that is 007BCAA0, whose 007BCAEB calls
-// 007F3970 BSP_Squadron_RemovePlane(squadron, plane, 0): the +3D0h array is
-// compacted, so the next member becomes slot 0, the flight leader 007B8AD0
-// and 007EDA91 read. Before: a dead member kept its slot for ever, and a dead
-// leader stayed the leader its wingmen follow.
+// plane LEAVES its squadron when it dies, for good. 009273A0 -> 00926390 ->
+// vtable[7Ch] 007BCAA0 -> 007BCAEB 007F3970 compacts +3D0h. The units host's
+// kSquadronRemovesDeadBound (packet cc9_pilot_surface_climbout) clears the
+// dead slot at the death step; this switch completes it: the slot's NAME goes
+// too (the per-frame resolve refills slots by name whenever the unit count
+// moves, which would re-seat a dead leader), the departed unit is kept for
+// the dogfight order's squadron lookup, and the AI host reads slot 0 from the
+// live array.
 inline constexpr bool kPlaneSquadronLeaveOnDeathBound = true;
 
 // The three property-bag keys 007F4580 mode 1 reads besides `Type` (00CE4780,
@@ -148,11 +149,12 @@ struct PlaneSquadronHostRecord {
     std::int32_t live_count() const noexcept;
     // +3D0h, the flight leader. 007EDA91 reads slot 0 whatever the count.
     std::size_t flight_leader() const noexcept;
-    // 007F3970's compaction for one member unit: its slot leaves every
-    // parallel array (names too, so a later resolve by name cannot restore
-    // it), and the formation indices are re-assigned, as 007F3A11 re-runs
-    // 007ED260. Returns false when the unit is not a member.
-    bool remove_member_unit_007f3970(std::size_t unit);
+    // 007F3970's compaction for one dead member, found by unit or, when
+    // kSquadronRemovesDeadBound (units host) already cleared the slot to
+    // kPlaneSquadronNoUnit, by name. The slot leaves every parallel array,
+    // names included, so the per-frame resolve by name cannot bring a dead
+    // plane back. Returns false when the unit is not a member.
+    bool remove_member_unit_007f3970(std::size_t unit, const std::string& member_name);
     // Members that left at death, so a caller holding a unit as a stand-in
     // for the squadron pointer (the dogfight order's target) still reaches
     // the squadron the image's task keeps pointing at. Not +3D0h.

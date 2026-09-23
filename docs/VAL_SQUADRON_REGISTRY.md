@@ -203,3 +203,93 @@ issues the escort group's attackmove onto Val #1.1. Yorktown is not in that bloc
 **Recommendation.** The flip is the image's range law, so it is committed separately as asked. But
 it takes torpedo drops from 8 to 0 through a ship order that is not yet explained. Hold it off
 main, or drop the commit, until Yorktown's 122 s order is traced.
+
+## 7. Reconciled with main f00ccfebf (kSquadronRemovesDeadBound)
+
+Main landed its own death leave from `cc9-gunnery-host` (`docs/PILOT_SURFACE_CLIMBOUT.md` section
+3). In the plane-branch hunk, at the death step, it sets the dead unit's slot to
+`kPlaneSquadronNoUnit` and compacts the station flags. It keeps the member's name.
+This packet's section 3 binding did the same compaction by erasing the slot. Running both would
+compact the station flags twice. So this switch is narrowed to what main's leaves open:
+
+- **Permanence.** The script-orders pass `resolve_plane_squadron_members` refills every slot BY
+  NAME whenever the unit count moves. In V0 that happened at 105.0 s, 106.5 s, 426.1 s and
+  447.05 s, when new waves spawned. With main's version alone, the pass at 105 s re-seats dead Val
+  #3.1 (died 100.3 s) as its squadron's leader. The pass at 426 s re-seats every plane that died
+  before it.
+  - `remove_member_unit_007f3970` now also finds the slot main already cleared, by name, and
+    erases the slot with its name.
+  - It touches the station flags and formation indices only when main's switch is off.
+- **The departed record** for the dogfight order's target squadron (section 5).
+- **The AI host reads slot 0 from the live array.**
+
+Main's `squadron remove plane` log line carries the leader change. The `plane squadron leave` line
+here is the completion, so its `promotions` count stays near 0 on this tree.
+
+**Predictions for the merged-tree pair.** Both binaries have the range factor OFF, so the pair
+measures only this switch against main. M0 (`local\mr0`) has this switch off; M1 (`local\mr1`) has
+it on.
+- M0 should reproduce main's E2 reference in `docs/GAME_EXECUTABLE.md`: 8 bombs, 8 torpedoes,
+  Lexington survives.
+- **Before 105 s the runs are identical.**
+- **From 105 s, the Val #3.1 squadron differs.** In M0 its dead leader is back in slot 0. Its
+  wingmen are already in their own attack runs, so the release rows for #3.1 change little: bombs
+  8 ± 2.
+- **Torpedo drops stay 8.**
+- **After 426 s the two runs can differ more,** because every dead plane is re-seated in M0. Few
+  aircraft still fly then, so the totals change little.
+- **Fighter hits move by ±25%.** They are path-coupled.
+- **The Lexington survives in both.**
+
+## 8. Where the leave meets the station placement (for the follow-law packet, not this one)
+
+The host still stands in for the plane follow law 009BFEE0/009BEE30 by PLACING a wing member on its
+station every tick. It happens at three sites:
+- the torpedo follow tick at 009C1FD0 (`follow_base_tick_009c1fd0`);
+- the dive-bomb follow tick, where placement stays on beside the law;
+- the dive-bomb done tick at 009C1FEA-009C2077 (`run_dive_bomb_done_prepare_tick_009c7270`),
+  which places every wing member after its release (the `placed=` count in the `divebomb ... done`
+  census).
+
+The station is computed from `wing.front()` in `place_wing_member_on_station_007f23a0`, so it
+follows the live slot 0.
+
+When a leader dies:
+- Main's clear and this packet's erase make the next member slot 0.
+- The formation indices are re-dealt on the next placement.
+- Every member still in one of those states is written onto the new leader's station in ONE tick.
+
+The image flies there through the law. The first measurable case in E2 is a done-state Val
+whose leader dies after the release: the member jumps by the distance between the old and the new
+leader's stations. Main's seeding compaction prevents the first-step re-seed. It does not prevent
+this per-tick placement.
+
+The fix belongs to the follow-law packet: wire 009BFEE0/009BEE30 into the done and torpedo follow
+ticks (`kPlaneFollowLawEnabled` already does it for the dive follow tick), and drop the placement.
+
+## 9. The merged-tree pair, measured
+
+Logs: `local\M0_9000.log` (this switch off) and `local\M1_9000.log` (on). Both are main f00ccfebf
+plus this packet with the range factor OFF, E2 9000, `BSP_GUNNERY_RNG_STREAMS=1` on both sides.
+
+**M0 is not directly comparable with main's reference row.** That row in `docs/GAME_EXECUTABLE.md`
+(10 bombs, 8 torpedoes) was taken without the stream option. M0 has 4 bombs, 8 torpedoes, damage
+9216.2 against the row's 9585.8, and the Lexington alive.
+
+| row | M0 | M1 | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| identical before 105 s | - | no: Val #3.1\|.-3 dies at 100.80 s in M0, 102.80 s in M1 | identical | **missed** |
+| bomb drops (aircraft) | 4 (#3.1\|.-2, #3.1\|.-4) | 4 (#3.1\|.-4, #7.1\|.-2) | 8 ± 2 | missed: M0 is 4, and M1 matches it |
+| torpedo drops | 8 | 8 | 8 | held |
+| fighter bursts / hits | 5 / 32 | 10 / 59 | hits ±25% | **missed**: +84% |
+| deaths (all) | 34 | 35 | - | - |
+| Lexington | alive | alive | alive | held |
+| `plane squadron leave` completions | 0 | 35 (main's own removal lines: 34 and 33) | - | - |
+
+**Why the runs part at 100.3 s, not 105 s.** The departed record takes effect as soon as Val #3.1
+dies. In M0 the fighters' target-squadron lookup finds nothing once main has cleared the ordered
+plane's slot. In M1 it still reaches the squadron. So the fighter rows move first, and fighter hits
+rise, before the resolver re-seat I predicted around. That is the section 5 artefact, now shown on
+main's own removal.
+
+**Switch state: `kPlaneSquadronLeaveOnDeathBound` ON,** narrowed as section 7 says.

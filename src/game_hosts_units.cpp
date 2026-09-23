@@ -2964,11 +2964,15 @@ struct GameUnitsHost::Impl {
             const bool dead = s.plane_death_c3a || s.plane_death_removed ||
                 (gunnery != nullptr && gunnery->unit_dead(s.process_index));
             if (!dead) continue;
-            bsp::PlaneSquadronHostRecord* const rec =
+            bsp::PlaneSquadronHostRecord* rec =
                 bsp::plane_squadron_registry().find_by_member_unit(s.process_index);
+            if (rec == nullptr) {
+                // kSquadronRemovesDeadBound cleared the unit; the name remains.
+                rec = bsp::plane_squadron_registry().find_by_member_name(s.row.name);
+            }
             if (rec == nullptr) continue;
             const std::size_t old_leader = rec->flight_leader();
-            if (!rec->remove_member_unit_007f3970(s.process_index)) continue;
+            if (!rec->remove_member_unit_007f3970(s.process_index, s.row.name)) continue;
             s.squadron_left_on_death = true;
             ++squadron_leaves_;
             const std::size_t leader = rec->flight_leader();
