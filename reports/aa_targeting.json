@@ -1,0 +1,35 @@
+{
+  "packet": "cc9_aa_targeting",
+  "date": "2026-09-23",
+  "doc": "docs/AA_TARGETING.md",
+  "base": "main 8d417666b",
+  "call_sites": [
+    {"address": "008657C0", "native": "005459E0", "function": "00864FE0", "what": "the assignment walk's weapon-kind test: [[gun+3F4h]+80h] is 5 or 6 (FLAK, LIGHTARTILLERYFLAK)"},
+    {"address": "008657E1", "native": "00729B90", "function": "00864FE0", "what": "the minimum air range, MinRange +58h of the first (or, kind 6, second) ammunition class"},
+    {"address": "008657F7", "native": "00729BC0", "function": "00864FE0", "what": "the gun's bot-slot acceptance"},
+    {"address": "00865833", "native": "00727F10", "function": "00864FE0", "what": "set the gun's fire target"},
+    {"address": "008FBE93", "native": "0085A9A0", "function": "008FBE00", "what": "AAGunnerBot acceptance: the fire-window test after the armour test"},
+    {"address": "008FBFEC", "native": "0085A9A0", "function": "008FBFC0", "what": "AAFlakBot acceptance: the fire-window test"},
+    {"address": "0085AB32", "native": "007F60A0", "function": "0085A9A0", "what": "BSP_GunPlatform_AnglesInFireWindow(-0.0f - yaw, pitch)"},
+    {"address": "00730A26", "native": "0072F6E0", "kind": "tail_jump", "function": "00730A20", "what": "gun vtable[1D4h]: ADD ECX,424h then JMP into the per-target shot decision"},
+    {"address": "0072F73A", "native": "00729670", "function": "0072F6E0", "what": "the cache miss: the line-of-fire predicate on gun+42Ch's object"},
+    {"address": "008FBEAC", "native": "gun+vtable1D4", "function": "008FBE00", "what": "gun->vtable[1D4h](t), which is 00730A20 on the base gun vtable 00CFE0A8 and its siblings 00CFE308/00CFE548"},
+    {"address": "008FBE22", "native": "target+vtable5C", "function": "008FBE00", "what": "t->vtable[5Ch](4) before the armour test"}
+  ],
+  "vtable_slots": [
+    {"vtable": "00D180A0", "class": "AAGunnerBot", "slot_1Ch": "008FBE00", "read_at": "00D180BC"},
+    {"vtable": "00D18238", "class": "AAFlakBot", "slot_1Ch": "008FBFC0", "read_at": "00D18254"},
+    {"vtable": "00CFE0A8", "class": "gun base", "slot_1D4h": "00730A20", "read_at": "00CFE27C"}
+  ],
+  "host_vs_image": [
+    {"term": "flak minimum air range", "host": "keyed on category 7 with minimum 0", "image": "kind 5/6, MinRange", "status": "bound behind kAaTargetingBound (kind 5)"},
+    {"term": "fire window in acceptance", "host": "absent", "image": "0085A9A0 via 007F60A0", "status": "bound behind kAaTargetingBound, hull frame substitution"},
+    {"term": "AA gunner armour test", "host": "absent", "image": "008FBE00", "status": "bound behind kAaTargetingBound"},
+    {"term": "no-follow +100 penalty", "host": "absent", "image": "00863A4F", "status": "not bound, needs src/game_hosts_units.cpp"}
+  ],
+  "measurements": {
+    "evidence_1": {"logs": ["local/orig_ctl.log", "local/orig_turn.log"], "trees": ["dd4f591b3", "adb4d47cd"], "finding": "Fletcher-class02's assignments identical through 229 s; the first trace difference is a gun-128 shot at 162.31 s; the gunnery totals diverge between 145 and 150 s (28 hits both, damage 6096.7 vs 6094.3): the shared gunnery random stream"},
+    "evidence_2": {"log": "local/trace2_e9000.log", "finding": "the four goaway Vals are assigned 817-3857 times and fired at 4495 times, 0 hits"},
+    "switch_pair": {"control": "local/ctl_usn04.log", "treatment": "local/bound_usn04.log", "deaths": "9 -> 14", "queued_hits": "107 -> 268", "decision": "kAaTargetingBound stays false"}
+  }
+}

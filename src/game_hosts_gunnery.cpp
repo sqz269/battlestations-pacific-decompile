@@ -48,6 +48,12 @@
 namespace bsp::game {
 namespace {
 
+// Packet cc9_aa_targeting: the three gun-side acceptance terms of 00729BC0's
+// bot slots and 00865773's minimum-air-range skip, which the host used to answer
+// with a range test alone. docs/AA_TARGETING.md. Off until a measured pair
+// explains every moved number.
+constexpr bool kAaTargetingBound = false;
+
 constexpr int kMaxPlatformScan = 64;   // the `Platforms` keys this process scans
 constexpr int kMaxWindowScan = 8;      // the `Windows` entries per platform
 constexpr float kAngleScale = 1000000.0f;
@@ -183,6 +189,61 @@ struct GameGunneryHost::Impl {
     std::vector<int> rank_table;
     float think_time{bsp::kInstalledWeaponDirectorThinkTime};
     float clock_seconds{0.0f};
+    // Packet cc9_aa_targeting: observation only, gated by BSP_AA_TRACE_UNIT and
+    // BSP_AA_TRACE_TARGET (see aa_trace_unit()/aa_trace_target() below). Unset,
+    // nothing is recorded or printed.
+    struct AaTargetStats {
+        unsigned long long scored{0};
+        unsigned long long accepted{0};
+        unsigned long long range_rejects{0};
+        unsigned long long gun_range_rejects{0};
+        unsigned long long assigns{0};
+        float min_dist{-1.0f};
+        float min_reject_dist{-1.0f};
+        float reject_range_at_min{0.0f};
+        float alt_at_min{0.0f};
+        std::string ship_at_min;
+        int category_at_min{-1};
+        // The aim-and-fire side, per gun-tick with this target held.
+        unsigned long long targeted_ticks{0};
+        unsigned long long angle_refusals{0};
+        unsigned long long shots{0};
+        float refused_vert_max{-1000.0f};
+        float accepted_vert_max{-1000.0f};
+        float shot_range_min{-1.0f};
+    };
+    std::map<std::size_t, AaTargetStats> aa_target_stats;
+    static const std::string& aa_trace_unit_name() {
+        static const std::string v = [] {
+            char* text = nullptr;
+            std::size_t bytes = 0;
+            std::string out;
+            if (_dupenv_s(&text, &bytes, "BSP_AA_TRACE_UNIT") == 0 && text != nullptr)
+                out = text;
+            std::free(text);
+            return out;
+        }();
+        return v;
+    }
+    static const std::string& aa_trace_target_prefix() {
+        static const std::string v = [] {
+            char* text = nullptr;
+            std::size_t bytes = 0;
+            std::string out;
+            if (_dupenv_s(&text, &bytes, "BSP_AA_TRACE_TARGET") == 0 && text != nullptr)
+                out = text;
+            std::free(text);
+            return out;
+        }();
+        return v;
+    }
+    // "MinRange", classDesc+58h (0070C030), per bullet class; 00729B90 reads it.
+    std::map<int, float> bullet_min_range;
+    unsigned long long aa_window_rejects{0};
+    unsigned long long aa_armour_rejects{0};
+    unsigned long long aa_min_range_skips{0};
+    std::vector<std::string> aa_cand_lines;
+    bool aa_changed{false};
     unsigned long long step_index{0};
     // 00BD2F10's stream. One sequence for the whole run so a rerun repeats.
     std::uint32_t rng{0x9E3779B9u};
@@ -645,6 +706,7 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                     gun.bullet_class, "MaxFall", 0.0f);
                 fin.flak_min_range = lua.read_bullet_class_number(
                     gun.bullet_class, "MinRange", 0.0f);
+                bullet_min_range[gun.bullet_class] = fin.flak_min_range;
                 const bsp::WeaponClassFinaliseResult finalised =
                     bsp::weapon_class_derive_engagement_range(fin);
                 // The hook's other product, which this call already computed and
@@ -939,6 +1001,29 @@ void GameGunneryHost::Impl::attach_passes(std::size_t first_unit) {
 
 namespace {
 
+// Packet cc9_aa_targeting instrumentation. _dupenv_s rather than getenv (a /W4
+// /WX error under MSVC), read once.
+std::string aa_env(const char* name) {
+    char* text = nullptr;
+    std::size_t bytes = 0;
+    std::string out;
+    if (_dupenv_s(&text, &bytes, name) == 0 && text != nullptr) out = text;
+    std::free(text);
+    return out;
+}
+const std::string& aa_trace_unit() {
+    static const std::string v = aa_env("BSP_AA_TRACE_UNIT");
+    return v;
+}
+const std::string& aa_trace_target() {
+    static const std::string v = aa_env("BSP_AA_TRACE_TARGET");
+    return v;
+}
+bool aa_target_matches(const std::string& name) {
+    const std::string& prefix = aa_trace_target();
+    return !prefix.empty() && name.compare(0, prefix.size(), prefix) == 0;
+}
+
 // The bsp::UnitGunneryPassHost binding for one unit, for one call.
 class GunneryPassBinding final : public bsp::UnitGunneryPassHost {
 public:
@@ -1120,6 +1205,33 @@ public:
         in.target_lacks_follow_target = false;
         const bsp::GunneryScoreResult out = bsp::score_candidate_00863990(in);
         distance = out.distance;
+        if (!aa_trace_unit().empty() && state_.row.name == aa_trace_unit()) {
+            char line[256];
+            std::snprintf(line, sizeof line, "    cand cat=%d %-28s rank=%d dist=%.0f "
+                "range=%.0f alt=%.0f %s", category,
+                owner_.unit_state[other].row.name.c_str(),
+                bsp::gunnery_rank(owner_.rank_table.data(), category,
+                    owner_.units.unit_class_id(other)),
+                static_cast<double>(in.distance), static_cast<double>(in.category_range),
+                static_cast<double>(theirs[1]), out.accepted ? "accepted" : "out_of_range");
+            owner_.aa_cand_lines.emplace_back(line);
+        }
+        if (aa_target_matches(owner_.unit_state[other].row.name)) {
+            GameGunneryHost::Impl::AaTargetStats& st = owner_.aa_target_stats[other];
+            ++st.scored;
+            if (out.accepted) ++st.accepted;
+            else ++st.range_rejects;
+            if (st.min_dist < 0.0f || in.distance < st.min_dist) {
+                st.min_dist = in.distance;
+                st.alt_at_min = theirs[1] - mine[1];
+                st.ship_at_min = state_.row.name;
+                st.category_at_min = category;
+            }
+            if (!out.accepted && (st.min_reject_dist < 0.0f || in.distance < st.min_reject_dist)) {
+                st.min_reject_dist = in.distance;
+                st.reject_range_at_min = in.category_range;
+            }
+        }
         owner_.done("Gunnery::score_candidate_00863990", 0x00863990u);
         if (out.distance > 0.0f
             && (state_.row.nearest_enemy <= 0.0f || out.distance < state_.row.nearest_enemy)) {
@@ -1264,10 +1376,89 @@ public:
             in_range = length3(delta) <= row.max_range;
         }
         in.slot_accepts_target = in_range;
+        // Evaluated on every call so a run with the switch off still counts what
+        // the bound terms would refuse; applied only when kAaTargetingBound.
+        if constexpr (kAaTargetingBound) {
+            bind_aa_acceptance(row, other, in);
+        } else {
+            bsp::GunneryGunInputs observed = in;
+            bind_aa_acceptance(row, other, observed);
+        }
+        if (!in_range && other < owner_.unit_state.size()
+            && aa_target_matches(owner_.unit_state[other].row.name)) {
+            ++owner_.aa_target_stats[other].gun_range_rejects;
+        }
         ++owner_.summary.gun_evaluations;
         if (!in_range) ++owner_.summary.gun_slot_rejects;
         owner_.done("Gunnery::bot_slot_accepts_target_00729bc0", 0x00729bc0u);
         return in;
+    }
+    // Packet cc9_aa_targeting, behind kAaTargetingBound. docs/AA_TARGETING.md.
+    //
+    // 005459E0 / 00729B90 (00865773's skip): the weapon kind [[gun+3F4h]+80h] is
+    // the device row's Function id, and the test is kind 5 or 6 - FLAK and
+    // LIGHTARTILLERYFLAK - against the ammunition's MinRange (+58h). The host
+    // keyed the flag on category 7 (TORPEDO) with a zero minimum. Kind 6 reads
+    // its SECOND ammunition entry (+74h+7Ch) against a plane, which this host
+    // does not load, so kind 6 keeps a zero minimum: unbound, labelled.
+    //
+    // 00729BC0 -> the bot slot's vtable[1Ch], for the two AA bots only:
+    //  * AAGunnerBot 008FBE00 (category 1, slot +390h): a target answering
+    //    IsKindOf(4) is refused when max(DamageMax +B0h, BlastDamageMax +B8h) of
+    //    the round is <= the target class's Armour (+4Ch); then 0085A9A0.
+    //  * AAFlakBot 008FBFC0 (category 5, slot +394h): 0085A9A0 alone.
+    //  0085A9A0 turns the gun-to-target direction into the gun frame and answers
+    //  BSP_GunPlatform_AnglesInFireWindow 007F60A0 at (-0.0 - yaw, pitch), the
+    //  same negated convention 008FDAF0 produces for the aim. SUBSTITUTION: the
+    //  host has no per-gun node frame, so this uses the hull frame and the
+    //  shared muzzle point the host's aim code already uses. Both bots then ask
+    //  the gun's vtable[1D4h] = 0072F6E0, which answers 1 while gun+42Ch is zero
+    //  and otherwise caches a line-of-fire predicate whose installer is unread;
+    //  it stays true here.
+    void bind_aa_acceptance(const GameGunRow& row, std::size_t other,
+                            bsp::GunneryGunInputs& in) {
+        if (other >= owner_.units.count()) return;
+        const bool plane = owner_.units.unit_is_kind_of(other,
+            bsp::kUnitGunneryKindPlaneBase);
+        const int kind = row.category;
+        in.is_torpedo_class_launcher = kind == 5 || kind == 6;       // 005459E0
+        in.minimum_air_range = 0.0f;
+        if (kind == 5) {                                              // 00729B90
+            const auto it = owner_.bullet_min_range.find(row.bullet_class);
+            if (it != owner_.bullet_min_range.end()) in.minimum_air_range = it->second;
+        }
+        float right[3], up[3], forward[3], origin[3];
+        owner_.unit_pose(unit_, right, up, forward, origin);
+        float tr[3], tu[3], tf[3], target_pos[3];
+        owner_.unit_pose(other, tr, tu, tf, target_pos);
+        const float muzzle[3] = {origin[0], origin[1] + state_.hull_height, origin[2]};
+        const float d[3] = {target_pos[0] - muzzle[0], target_pos[1] - muzzle[1],
+            target_pos[2] - muzzle[2]};
+        const float len = length3(d);
+        if (plane && in.is_torpedo_class_launcher && in.minimum_air_range > len) {
+            ++owner_.aa_min_range_skips;
+        }
+        if (!in.slot_accepts_target) return;
+        if (kind != 1 && kind != 5) return;
+        if (kind == 1 && owner_.units.unit_is_kind_of(other, 4)) {      // 008FBE17
+            const GameBulletClassRow* b = owner_.bullet(row.bullet_class);
+            const float best = b != nullptr ? std::max(b->damage_max, b->blast_damage_max)
+                                            : 0.0f;
+            if (b != nullptr && best <= owner_.unit_state[other].armour) {
+                in.slot_accepts_target = false;
+                ++owner_.aa_armour_rejects;
+                return;
+            }
+        }
+        if (len <= 0.0f || row.arcs.empty()) return;
+        const float u[3] = {d[0] / len, d[1] / len, d[2] / len};
+        const float horz = std::atan2(dot3(u, right), dot3(u, forward));
+        const float vert = std::asin(std::max(-1.0f, std::min(1.0f, dot3(u, up))));
+        const bsp::GunPlatformArcs arcs{row.arcs.data(), row.arcs.size()};
+        if (!bsp::gun_fire_allowed_007f60a0(arcs, horz, vert)) {        // 0085A9A0
+            in.slot_accepts_target = false;
+            ++owner_.aa_window_rejects;
+        }
     }
     bool target_is_plane(void* target) override {
         const std::size_t other = unit_of(target);
@@ -1279,6 +1470,25 @@ public:
         const std::size_t other = unit_of(target);
         if (slot >= owner_.guns.size()) return;
         GameGunRow& row = owner_.guns[slot];
+        if (!aa_trace_unit().empty() && state_.row.name == aa_trace_unit()
+            && row.target_unit != other + 1) {
+            float mine[3], theirs[3];
+            owner_.unit_aim_point(unit_, mine);
+            owner_.unit_aim_point(other, theirs);
+            const float d[3] = {theirs[0] - mine[0], theirs[1] - mine[1], theirs[2] - mine[2]};
+            owner_.log.notef("  aa trace t=%.2f %s gun=%zu cat=%d %s max_range=%.0f: %s -> %s "
+                "dist=%.0f alt=%.0f fire_target=%d",
+                static_cast<double>(owner_.clock_seconds), state_.row.name.c_str(), slot,
+                row.category, row.function.c_str(), static_cast<double>(row.max_range),
+                row.target_name.empty() ? "none" : row.target_name.c_str(),
+                other < owner_.unit_state.size() ? owner_.unit_state[other].row.name.c_str() : "?",
+                static_cast<double>(length3(d)), static_cast<double>(d[1]),
+                is_fire_target ? 1 : 0);
+            owner_.aa_changed = true;
+        }
+        if (other < owner_.unit_state.size() && aa_target_matches(owner_.unit_state[other].row.name)) {
+            ++owner_.aa_target_stats[other].assigns;
+        }
         row.target_unit = other + 1;
         row.target_name = other < owner_.unit_state.size()
             ? owner_.unit_state[other].row.name : std::string();
@@ -1316,6 +1526,14 @@ public:
         const std::size_t slot = reinterpret_cast<std::size_t>(gun) - 1;
         if (slot >= owner_.guns.size()) return;
         GameGunRow& row = owner_.guns[slot];
+        if (!aa_trace_unit().empty() && state_.row.name == aa_trace_unit()
+            && row.target_unit != 0) {
+            owner_.log.notef("  aa trace t=%.2f %s gun=%zu cat=%d %s max_range=%.0f: %s -> none",
+                static_cast<double>(owner_.clock_seconds), state_.row.name.c_str(), slot,
+                row.category, row.function.c_str(), static_cast<double>(row.max_range),
+                row.target_name.c_str());
+            owner_.aa_changed = true;
+        }
         ++row.clears;
         ++state_.row.clears;
         ++owner_.summary.clears;
@@ -1788,10 +2006,21 @@ void GameGunneryHost::Impl::run_gunnery_pass(std::size_t index, float dt) {
         if (state.fire_target != 0) ++summary.torpedo_cat_with_fire_target;
     }
 
+    aa_cand_lines.clear();
+    aa_changed = false;
     GunneryPassBinding binding(*this, index);
     const float before = state.throttle;
     bool enabled = state.enabled;
     bsp::unit_gunnery_pass_tick_00864fe0(binding, dt, state.throttle, enabled);
+    if (aa_changed) {
+        log.notef("  aa trace t=%.2f %s think candidates (%zu scored):",
+            static_cast<double>(clock_seconds), state.row.name.c_str(), aa_cand_lines.size());
+        std::size_t shown = 0;
+        for (const std::string& line : aa_cand_lines) {
+            if (++shown > 80) break;
+            log.notef("%s", line.c_str());
+        }
+    }
     state.enabled = enabled;
     state.row.pass_enabled = enabled;
     ++state.row.ticks;
@@ -2082,6 +2311,19 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             if (have_target) ++summary.angle_refusals_targeted;
         }
         done("GunBot::set_target_angles_0085aba0", 0x0085aba0u);
+        if (have_target && !aa_trace_target_prefix().empty()
+            && unit_state[target].row.name.compare(0, aa_trace_target_prefix().size(),
+                   aa_trace_target_prefix()) == 0) {
+            AaTargetStats& st = aa_target_stats[target];
+            ++st.targeted_ticks;
+            const float vert_deg = want_vert * 57.2957795f;
+            if (accepted) {
+                st.accepted_vert_max = std::max(st.accepted_vert_max, vert_deg);
+            } else {
+                ++st.angle_refusals;
+                st.refused_vert_max = std::max(st.refused_vert_max, vert_deg);
+            }
+        }
 
         const bsp::GunArcRouteOutcome route = bsp::gun_arc_route_deltas_007f6530(arcs,
             gun.angles.horz, gun.angles.vert, gun.angles.target_horz,
@@ -2204,6 +2446,28 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             gun.fire.barrel_timers[static_cast<std::size_t>(barrel)] = gun.reload_time;
         }
         gun.fire.barrel_delay_time = gun.barrel_delay_time;
+        if (!aa_trace_unit_name().empty() && state.row.name == aa_trace_unit_name()) {
+            float aim[3] = {0.0f, 0.0f, 0.0f};
+            float mz[3];
+            if (have_target) unit_aim_point(target, aim);
+            unit_aim_point(owner_unit, mz);
+            const float sp[3] = {aim[0] - mz[0], aim[1] - mz[1], aim[2] - mz[2]};
+            log.notef("  aa shot t=%.2f %s gun=%zu cat=%d -> %s range=%.0f vert=%.1f",
+                static_cast<double>(clock_seconds), state.row.name.c_str(), g, gun.category,
+                have_target ? unit_state[target].row.name.c_str() : "none",
+                have_target ? static_cast<double>(length3(sp)) : -1.0,
+                static_cast<double>(gun.angles.vert * 57.2957795f));
+        }
+        if (have_target && aa_target_stats.count(target) != 0) {
+            AaTargetStats& st = aa_target_stats[target];
+            ++st.shots;
+            float aim[3], mz[3];
+            unit_aim_point(target, aim);
+            unit_aim_point(owner_unit, mz);
+            const float sp[3] = {aim[0] - mz[0], aim[1] - mz[1], aim[2] - mz[2]};
+            const float r = length3(sp);
+            if (st.shot_range_min < 0.0f || r < st.shot_range_min) st.shot_range_min = r;
+        }
         ++gun.shots;
         ++state.row.shots;
         ++summary.shots;
@@ -2859,6 +3123,12 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
     UnitState& target = unit_state[victim];
     if (target.dead) return;
     const GameGunRow& gun = guns[gun_row];
+    if (!aa_trace_unit_name().empty() && unit_state[shooter].row.name == aa_trace_unit_name()) {
+        log.notef("  aa hit t=%.2f %s gun=%zu cat=%d on %s %s health_before=%.1f",
+            static_cast<double>(clock_seconds), unit_state[shooter].row.name.c_str(), gun_row,
+            gun.category, target.row.name.c_str(), blast_record != nullptr ? "blast" : "direct",
+            static_cast<double>(target.health));
+    }
     const GameBulletClassRow* weapon = bullet(gun.bullet_class);
 
     // 00926E80 queues the record, 009239A0 dispatches it: the entity gates, the
@@ -3694,6 +3964,26 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery torpedo_drop drops=%llu refusals=%llu "
             "water_entry_breakups=%llu",
             s.torpedo_drops, s.torpedo_drop_refusals, s.water_entry_breakups);
+        host.log.notef("summary mission aa acceptance bound=%d window_rejects=%llu "
+            "armour_rejects=%llu min_range_skips=%llu (packet cc9_aa_targeting)",
+            kAaTargetingBound ? 1 : 0, host.aa_window_rejects, host.aa_armour_rejects,
+            host.aa_min_range_skips);
+        for (const auto& kv : host.aa_target_stats) {
+            const GameGunneryHost::Impl::AaTargetStats& st = kv.second;
+            host.log.notef("summary mission aa target %-24s scored=%llu accepted=%llu "
+                "range_rejects=%llu gun_range_rejects=%llu assigns=%llu min_dist=%.0f "
+                "(by %s cat %d, rel_alt %.0f) min_rejected=%.0f against range %.0f | "
+                "held_ticks=%llu angle_refusals=%llu shots=%llu refused_vert_max=%.1f "
+                "accepted_vert_max=%.1f shot_range_min=%.0f",
+                host.unit_state[kv.first].row.name.c_str(), st.scored, st.accepted,
+                st.range_rejects, st.gun_range_rejects, st.assigns,
+                static_cast<double>(st.min_dist), st.ship_at_min.c_str(), st.category_at_min,
+                static_cast<double>(st.alt_at_min), static_cast<double>(st.min_reject_dist),
+                static_cast<double>(st.reject_range_at_min), st.targeted_ticks,
+                st.angle_refusals, st.shots, static_cast<double>(st.refused_vert_max),
+                static_cast<double>(st.accepted_vert_max),
+                static_cast<double>(st.shot_range_min));
+        }
         host.log.notef("summary mission gunnery torpedo_loadout_cleared=%llu "
             "(drops that cleared the owner's kind 2Bh bit, so approach+132h goes false)",
             s.torpedo_loadout_cleared);
