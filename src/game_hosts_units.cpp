@@ -2770,6 +2770,13 @@ struct GameUnitsHost::Impl {
     // 009BEE30's HOLD arm (009BEE56-009BF9E5) while latched and its fly-to arm
     // otherwise. The per-tick station PLACEMENT at those seams is the OFF path.
     static constexpr bool kPlaneFollowLawBound = true;
+    // Packet cc9_follow_catchup_speed (docs/PLANE_FOLLOW_LAW.md section 15):
+    // the fly-to arm's two class terms as the image reads them - cruise =
+    // 007C47F0 (LevelFlight x StallSpd) x 0.9 at 009BFC41/009BFC49 and the
+    // leader-speed floor classDesc+188h MaxSpd at 009BFC7D - and the hold
+    // arm's steer point from 009BFEE0's latched path 009BFEFC-009C0021.
+    // Before: max speed x 0.9, the stall speed, and the fly-to geometry.
+    static constexpr bool kPlaneFollowCatchupBound = true;
     // The fly-to arm's last two plan stores, 009BFD15 plan+2B0h = 0 and
     // 009BFD1C plan+2D8h = 1, after the desired speed at 009BFD0F. Without
     // +2D8h = 1 an airborne plane (flight state 7) never enters 0099D300's
@@ -3273,11 +3280,38 @@ struct GameUnitsHost::Impl {
         // SUBSTITUTION, labelled: state+84h/+78h come from 009C1FD0's search
         // loop 009C216D-009C22F5, read only in part; the sight stays inactive.
         in.sight_active_84 = false;
+        if constexpr (kPlaneFollowCatchupBound) {
+            // 009BFEFC-009C0021, 009BFEE0's latched path: S = the station in
+            // the member's frame (009BFF3B 004142E0), Lf = the leader's forward
+            // row in the member's frame (009BFF97 0042D0D0, normalize 0),
+            // k = (block+00h FollowedPointDist - S.z) / Lf.z (009BFF9C-009BFFAB),
+            // state+44h = station + k * the leader's world forward
+            // (009BFFAF-009C001E), then JMP 009C16D2, the band tail.
+            const float lfz = in.leader_forward_local[2];
+            const double k = lfz != 0.0f
+                ? (static_cast<double>(gt.pilot_follow_followed_point_dist) -
+                   in.station_local[2]) / lfz
+                : 0.0;
+            float steer[3];
+            for (int i = 0; i < 3; ++i) {
+                steer[i] = static_cast<float>(static_cast<double>(station.world[i]) +
+                                              k * leader.motion.pose_row2[i]);
+            }
+            // 009C16D2-009C1846 on the steer Y, the arithmetic of
+            // plane_follow_geometry_009bfee0's tail (state+88h taken as huge,
+            // as at the fly-to call).
+            const float floor_v = leader.motion.position[1] + gt.pilot_follow_leader_follow_alt;
+            const float ceil_c = static_cast<float>(
+                static_cast<double>(leader.motion.position[1]) + 120.0);
+            const float ceil_v = gt.dynamics_ceiling < ceil_c ? gt.dynamics_ceiling : ceil_c;
+            if (steer[1] < floor_v) steer[1] = floor_v;
+            if (steer[1] > ceil_v) steer[1] = ceil_v;
+            follow_to_body(unit, steer, false, in.steer_local);   // 009BF57F
+        } else {
         // SUBSTITUTION, labelled: state+44h in the hold arm is 009BFEE0's own
         // hold-geometry point (009BFEEE's latched path), unread. The fly-to
         // geometry's steer point stands in; the blend reads it only while
         // |leader bank| > 0.5 (009BF531).
-        {
             bsp::PlaneFollowGeometryInputs gin;
             for (int i = 0; i < 3; ++i) {
                 gin.own_pos[i] = unit.motion.position[i];
@@ -3505,8 +3539,17 @@ struct GameUnitsHost::Impl {
         // host.  §5.4 records that the alignment ramp can only
         // reach 0.39 of the way toward the first of them, and
         // the second only scales the catch-up end.
-        fin.level_flight_speed = unit.plane_max_spd * 0.9f;
-        fin.class_min_speed = unit.plane_stall_spd;
+        if constexpr (kPlaneFollowCatchupBound) {
+            // 009BFC41 CALL 007C47F0 (desc+184h StallSpd x tuning+24Ch
+            // LevelFlight), 009BFC49 FMUL double [00D7A390] = 0.9.
+            fin.level_flight_speed = static_cast<float>(
+                static_cast<double>(bot_desired_speed_007c47f0(unit)) * 0.9);
+            // 009BFC7D: the floor is classDesc+188h, MaxSpd.
+            fin.class_min_speed = unit.plane_max_spd;
+        } else {
+            fin.level_flight_speed = unit.plane_max_spd * 0.9f;
+            fin.class_min_speed = unit.plane_stall_spd;
+        }
         fin.good_position_dist = gt.pilot_follow_good_position_dist;
         fin.align_ramp_lo = gt.pilot_follow_max_follow_spd_target_dir;
         fin.align_ramp_hi = gt.pilot_follow_min_follow_spd_target_dir;
