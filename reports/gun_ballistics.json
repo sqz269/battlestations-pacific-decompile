@@ -1,0 +1,26 @@
+{
+  "packet": "cc9_gun_ballistics",
+  "date": "2026-09-23",
+  "doc": "docs/GUN_BALLISTICS.md",
+  "call_sites": [
+    {"address": "006DFAD4", "native": "00955630", "function": "006DF520", "what": "the ArtilleryGunnerBot's gravity arc; the only gun-bot caller"},
+    {"address": "006DF5E9", "native": "006DEFF0", "function": "006DF520", "what": "the envelope reroll on countdown expiry"},
+    {"address": "006DF24A", "native": "006DEFF0", "function": "006DF1F0", "what": "the attach's first reroll"},
+    {"address": "00902A74", "native": "00901C20", "function": "00902920", "what": "the AAGunnerBot's lead point, no gravity term"},
+    {"address": "009031CF", "native": "00901C20", "function": "009030C0", "what": "the AAFlakBot's lead point"},
+    {"address": "00901C49", "native": "00414DB0", "function": "00901C20", "what": "refresh the target's pose before reading +FCh..+104h"}
+  ],
+  "reads": {
+    "arc": "closed form, the minus (low) root of D = R^2 - 4k(k+h), k = R^2 g / 2v^2, g = 9.81f at 00CF9058, v = round V0 +50h; D < 0 returns false with pitch pi/4; no drag, no iteration, no time of flight",
+    "envelope": "t = U(0,1), r = U(0,MaxAngleError) * t^Power, phi = U(0,2pi); (r sin phi, r cos phi); period U(3,8) s; interpolated old->new as the countdown falls; rows indexed Stun 0, SPNormal 1, SPVeteran 2, MPNormal 3, MPVeteran 4, Elite 5",
+    "aa_bot_inputs": "00901C20 reads the target pose position +FCh..+104h (not the Height-raised visibility point) and leads with the target's velocity",
+    "no_gravity": "classDesc+20h NoGravity; this installation's Bullet (AAMG, planegun) and Flak classes set it"
+  },
+  "host_defects_found": [
+    "the arc and its pre-estimate were applied to AA machine guns and flak",
+    "every round flew with gravity",
+    "AA guns aimed at the Height-raised visibility point",
+    "planes were led with the row forward_speed, which is zero for a plane"
+  ],
+  "switches": {"kGunGravityArcBound": true, "kBulletNoGravityBound": true, "kGunAimErrorBound": true}
+}

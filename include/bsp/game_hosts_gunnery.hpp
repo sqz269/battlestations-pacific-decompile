@@ -105,6 +105,10 @@ struct GameBulletClassRow {
     float blast_damage_max{0.0f};// "Blast.BlastDamageMax", classDesc+B8h
     float blast_range{0.0f};     // "Blast.BlastRange", classDesc+70h
     float mass{0.0f};            // "Mass"
+    // "NoGravity", classDesc+20h (docs/WEAPON_CLASS_DESCRIPTOR.md). 006E65C0 and
+    // 006E7670 skip the gravity term for a class that sets it. Packet
+    // cc9_gun_ballistics.
+    bool no_gravity{false};
     // MTorpedo only. 008566B0 reads "WaterTravelSpeed" into classDesc+0E4h, and
     // it is a different quantity from V0 at +50h: the torpedo bot's intercept
     // solver takes +0E4h at 0090022B while the AA flak bot's call at 009031CF
