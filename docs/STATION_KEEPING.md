@@ -183,3 +183,34 @@ are: arm runs per follower; limit344 ranges; whether any follower reverses or st
 station, since the arm can command astern (Dunlap's arm command reached -5.01 on USN01);
 Lexington's 0.947 leader limit; and the gunnery and death tables by entity. Rerun it from
 `build/win32/skC` and `build/win32/skT2`.
+
+## USN04 rerun, 2026-09-23 13:05 (owed from the first pair)
+
+Control `build/win32/skC` against treatment `build/win32/skT2`, USN04 4700/4500,
+`BSP_GUNNERY_RNG_STREAMS=1` on both sides (`local\sk3_ctl_usn04.log`, `local\sk3_trt_usn04.log`).
+
+| row | control | treatment |
+| --- | --- | --- |
+| deaths / queued hits / damage | 19 / 252 / 17679.0 | 18 / 220 / 16504.6 |
+| total path | 47088.63 m | 50382.41 m |
+| Lexington damage taken / health | 7469 / 531 | 7858 / 142 |
+| Fletcher-class04 damage taken | 1149 | 0 |
+| Fletcher-class01 damage taken | 11 | 0 |
+| Yorktown-class01 (every column) | 4599 taken | identical |
+| unimplemented calls | 3550299 | 3448445 |
+
+- **The Lexington's group station-keeps.** The Lexington is idle, and its eight followers run the
+  arm on 1702 to 3877 steps each, holding their stations around a stopped leader:
+  - Northampton-class01 and -02 and Fletcher-class01 to -04 command astern to between -0.6250 and
+    -0.7946 at the extremes. York-class01 and -02 go to -2.7723 and -5.1951. Their limit344
+    reaches 0.0000.
+  - Fletcher-class03 and -04 spend part of the run out of station, with limits up to 1.2201 and
+    1.2036.
+- **The second group barely enters the arm.** Its leader moves, and its seven followers run the
+  arm five times each. Their limit344 sits at s, up to 1.25, the catch-up allowance.
+- **The torpedo that hit Fletcher-class04** at 28.3 m in the control misses a Fletcher-class04
+  that stayed in station.
+- **Deaths.** One aircraft death, `movieval|.-3`, disappears, and the other aircraft deaths move
+  by up to 2 s.
+
+These rows moved the USN04 reference; the re-baseline is in docs/GAME_EXECUTABLE.md.

@@ -370,7 +370,9 @@ struct GameGunneryHost::Impl {
         hull_damage = 4,      // 00470510's base, key (gun, victim unit)
         blast_damage = 5,     // 0084BAD0's blast, key (gun, 0)
         aim_error = 6,        // 006DEFF0's three draws and 006DF5C6's period, key (gun, 0)
+        ship_ai_torpedo = 7,  // 009F0AD0 and the brain timer draws, key (unit, 0)
     };
+    unsigned long long next_projectile_serial{0};
     static bool rng_streams_enabled() {
         static const bool on = [] {
             char* text = nullptr;
@@ -3141,6 +3143,8 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
 void GameGunneryHost::Impl::run_projectiles(float dt) {
     for (GameProjectileRow& shot : shots) {
         if (!shot.alive) continue;
+        if (shot.serial == 0) shot.serial = ++next_projectile_serial;
+        if (shot.swimming) shot.swim_seconds += dt;   // 0085748A, record+488h += dt
         const float from[3] = {shot.position[0], shot.position[1], shot.position[2]};
         shot.flight = bsp::projectile_flight_step(shot.flight, dt);
         shot.position[0] = shot.flight.local_position.x;
@@ -4111,6 +4115,32 @@ void GameGunneryHost::kill_unit_00926d90(std::size_t unit_index, int cause) {
     (void)cause;
     ++impl_->water_depth_kills;
     impl_->kill_unit(unit_index);
+}
+
+std::vector<GameGunneryHost::LiveTorpedo> GameGunneryHost::live_torpedoes() const {
+    std::vector<LiveTorpedo> out;
+    for (const GameProjectileRow& shot : impl_->shots) {
+        if (!shot.alive || shot.serial == 0) continue;
+        const GameBulletClassRow* row = impl_->bullet(shot.bullet_class);
+        if (row == nullptr || !(row->water_travel_speed > 0.0f)) continue;
+        LiveTorpedo t;
+        t.serial = shot.serial;
+        t.owner_unit = shot.owner_unit;
+        t.owner_side = shot.owner_side;
+        for (int i = 0; i < 3; ++i) t.position[i] = shot.position[i];
+        t.velocity[0] = shot.flight.velocity.x;
+        t.velocity[1] = shot.flight.velocity.y;
+        t.velocity[2] = shot.flight.velocity.z;
+        t.swim_seconds = shot.swim_seconds;
+        t.swimming = shot.swimming;
+        t.water_travel_speed = row->water_travel_speed;
+        out.push_back(t);
+    }
+    return out;
+}
+
+float GameGunneryHost::ship_ai_draw(std::size_t unit_index, float low, float high) {
+    return impl_->draw(Impl::Draw::ship_ai_torpedo, unit_index, 0, low, high);
 }
 
 const std::vector<GameGunneryUnitRow>& GameGunneryHost::unit_rows() const noexcept {
