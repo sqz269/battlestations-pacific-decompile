@@ -110,6 +110,12 @@ inline constexpr bool kUnitRadiusBound = true;
 // (009E6170), rates its weapons against this ship through 0095EB40 (009E6240)
 // and steers away by the weighted sum. False: no candidates, as before.
 inline constexpr bool kShipAiTrafficBound = true;
+// Packet cc9_target_release, docs/SHIP_AI_TARGET_RELEASE.md. True: a unit whose
+// damage death has happened reads as torn down at +5Dh / +60h (00926C80 sets
+// +60h, the 009273A0 flush's 00926390 sets +5Dh), so 009F3240 takes its hold arm
+// and 00836920's attackmove arm (00836BC2, 0043F080) ends the command at stage 2.
+// False: the dead unit keeps answering live, and the arm stays a record.
+inline constexpr bool kShipAiTargetReleaseBound = true;
 namespace {
 
 bool has_ship_navigation_class(int kind) noexcept {
@@ -276,6 +282,37 @@ struct GameShipAiHost::Impl {
     // GameGunneryHost::set_ship_ai. It is the only thing in this process that
     // runs 00956C20, so it owns unit+394h, +430h, +490h and +494h.
     const GameGunneryHost* gunnery{nullptr};
+
+    // Packet cc9_target_release: whether a unit's damage death has happened.
+    // The gunnery host owns the death (its kill funnel sets `sunk`), which is
+    // the moment 00926C80 queues the unit and sets +60h.
+    bool unit_dead(std::size_t index) const {
+        if (gunnery == nullptr) return false;
+        const std::vector<GameGunneryUnitRow>& unit_rows = gunnery->unit_rows();
+        return index < unit_rows.size() && unit_rows[index].sunk;
+    }
+
+    // What 00836B45's arm reads off a command target, published to the
+    // commands host (which has no route to the unit table).
+    class CommandTargetFacts final : public GameCommandTargetFactsSource {
+    public:
+        explicit CommandTargetFacts(const Impl& owner) : owner_(owner) {}
+        bool command_target_facts(std::size_t index,
+                                  GameCommandTargetFacts& out) const override {
+            if (index >= owner_.units.count()) return false;
+            out.nav_point_41 = owner_.units.unit_is_kind_of(index, 0x41);
+            out.command_building_1c = owner_.units.unit_is_kind_of(index, 0x1C);
+            bsp::SceneNodeFlags flags;
+            out.flag_05e = owner_.units.unit_scene_node_flags(index, flags) && flags.destroyed;
+            out.live_0043f080 = owner_.units.unit_alive_and_visible(index)
+                && !owner_.unit_dead(index);
+            out.side_0054 = owner_.units.unit_side_0054(index);
+            return true;
+        }
+    private:
+        const Impl& owner_;
+    };
+    CommandTargetFacts command_target_facts{*this};
     // Packet cc8_ship_ai_approach_slot_tune: [unit+73Ch], which
     // BSP_ShipAi_BrainRecordConstruct copies into brain+0AB0h at 009F11AA.
     // BSP_UnitVehicleBase_Construct fills it from ten .rdata immediates at
@@ -2885,11 +2922,16 @@ public:
         owner_.done("ShipAiApproach::brain_target_0b20", 0x009f3262u);
         return ctl_.goal_vector.raw_target_0b20;
     }
-    bool target_retired_005d(std::uint32_t) override {
-        // 009F3277, the byte at target+5Dh. bsp/unit_instance.hpp names unit+5Dh
-        // `simulate` and milestone 2i holds it clear for a live ship.
+    bool target_retired_005d(std::uint32_t target) override {
+        // 009F3277, the byte at target+5Dh. 00926390 sets it (with +60h) when the
+        // 009273A0 flush reaches a unit whose damage death queued it
+        // (docs/ENTITY_DEAD_FLAG.md). Packet cc9_target_release binds that; the
+        // host has no separate flush, so the death itself is the moment.
         owner_.done("ShipAiApproach::target_retired_005d", 0x009f3277u);
-        return false;
+        if (!kShipAiTargetReleaseBound || target == 0u) return false;
+        const bool retired = owner_.unit_dead(static_cast<std::size_t>(target - 1u));
+        if (retired) ++row_.target_retired_holds;
+        return retired;
     }
     void hold_heading_and_stop_009e00a0() override {
         HeadingHoldBinding hold(owner_, ctl_, index_);
@@ -5492,7 +5534,9 @@ void GameShipAiHost::Impl::drive_order_ring_009f3f80(std::size_t index, Controll
 
 GameShipAiHost::GameShipAiHost(GameHostLog& log, GameUnitsHost& units)
     : impl_(std::make_unique<Impl>(log, units)) {}
-GameShipAiHost::~GameShipAiHost() = default;
+GameShipAiHost::~GameShipAiHost() {
+    if (impl_ != nullptr) impl_->units.commands().bind_command_target_facts(nullptr);
+}
 
 void GameShipAiHost::bind_session_participants(
     const bsp::SessionParticipantPools& owner) noexcept {
@@ -5874,6 +5918,11 @@ void GameShipAiHost::set_ai_drive(std::size_t unit_index, float throttle, float 
 
 void GameShipAiHost::bind_gunnery(const GameGunneryHost* gunnery) noexcept {
     impl_->gunnery = gunnery;
+    // Packet cc9_target_release: the dead-target facts need the gunnery rows.
+    if (kShipAiTargetReleaseBound) {
+        impl_->units.commands().bind_command_target_facts(
+            gunnery != nullptr ? &impl_->command_target_facts : nullptr);
+    }
 }
 
 const std::vector<GameShipAiRow>& GameShipAiHost::rows() const noexcept { return impl_->rows; }
