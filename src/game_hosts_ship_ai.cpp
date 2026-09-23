@@ -141,6 +141,12 @@ inline constexpr bool kShipFormationSpeedBound = true;
 // TurnMultiplierMaxSpeed[2]: the gameplay settings object is not loaded here, so
 // its documented value stands in (docs/GAMEPLAY_SETTINGS.md). LABELLED.
 inline constexpr float kShipTurnRadiusMultiplier438 = 2.0f;
+// Packet cc9_torpedo_evasion, docs/TORPEDO_EVASION.md. 0082E850 skips the multiplier
+// when the class descriptor answers vtable[18h](0Eh), which only the torpedo-boat
+// class predicate 00963E90 does (0Eh/6/5/4). True: the host asks the instance's
+// kind query for 0Eh (00857DC0 answers the same chain) and returns class+520h
+// unmultiplied for a torpedo boat. False: every ship is multiplied, as before.
+inline constexpr bool kShipTurnRadiusTorpedoBoatExempt = true;
 // Packet cc9_station_keeping, docs/STATION_KEEPING.md. True: the follow update's
 // station request 009DA3B0 is stored (blk+38Ch..+3A6h, including blk+39Ch = 0
 // and the enable byte blk+3A5h = brain+3ADh), the pre-pass 009F145E clears the
@@ -721,10 +727,14 @@ struct GameShipAiHost::Impl {
     }
 
     // 0082E850 on a unit's class: class+520h, times [settings+438h] unless the
-    // descriptor answers vtable[18h](0Eh); the host cannot ask the descriptor, so
-    // the multiplier is applied (LABELLED).
+    // descriptor answers vtable[18h](0Eh) (0082E866 JNZ 0082E87D), i.e. unless the
+    // class is the torpedo boat's (00963E90). The host asks the instance chain.
     float class_turn_radius_0082e850(std::size_t unit) const {
-        return units.unit_class_turn_radius_0520(unit) * kShipTurnRadiusMultiplier438;
+        const float radius = units.unit_class_turn_radius_0520(unit);
+        if (kShipTurnRadiusTorpedoBoatExempt && units.unit_is_kind_of(unit, 0x0E)) {
+            return radius;
+        }
+        return radius * kShipTurnRadiusMultiplier438;
     }
 
     // 009F4DA0 on blk+344h / +348h (brain+34Ch / +350h). docs/SHIP_FORMATION_SPEED.md.
