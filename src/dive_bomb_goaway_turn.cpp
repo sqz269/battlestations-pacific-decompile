@@ -105,4 +105,24 @@ DiveBombGoAwayTurnCommand dive_bomb_goaway_turn_split_009c4dad(
     return out;
 }
 
+DiveBombGoAwayThrottle dive_bomb_goaway_throttle_009c4c0c(bool nose_down,
+                                                           float unit_pitch_c64) noexcept {
+    namespace k = dive_bomb_goaway_throttle;
+    DiveBombGoAwayThrottle out;
+    if (!nose_down) {
+        out.throttle_278 = k::kFullThrottle;  // 009C4CC8
+        out.air_brake_2a8 = 0.0f;             // 009C4CD9, XORPS zero
+        return out;
+    }
+    // 009C4C41 00419010(x0, y0, x1, y1, x), five stack floats.
+    const float t = dive_bomb_interpolate_clamped_00419010(
+        k::kPitchLo, k::kShapeLo, k::kPitchHi, k::kShapeHi, unit_pitch_c64);
+    // 009C4C79-009C4C88: 0 > t gives 0, t > 1 keeps 1, else t.
+    out.throttle_278 = 0.0f > t ? 0.0f : (t > 1.0f ? 1.0f : t);
+    // 009C4C4A-009C4C76: -0.0 (00D7A208) less t, then the same clamp.
+    const float b = -0.0f - t;
+    out.air_brake_2a8 = 0.0f > b ? 0.0f : (b > 1.0f ? 1.0f : b);
+    return out;
+}
+
 }  // namespace bsp

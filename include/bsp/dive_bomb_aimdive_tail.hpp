@@ -102,4 +102,30 @@ float dive_bomb_flyabove_desired_speed_009c6f97(float approach_a4,
                                                 float min_control_speed,
                                                 float slot_entry_108) noexcept;
 
+// Packet cc9_dive_throttle: the aimglide tick's throttle and air-brake command,
+// 009C55E5-009C5679, then cmd+2D8h = 0 at 009C567F. docs/DIVE_THROTTLE.md 2.
+//   ratio = [ESP+10h] / [ESP+14h]  (009C534B-009C5353, FDIV dword), where
+//     [ESP+10h] = planar |fed aim point - unit| (009C51D3-009C52C1), and
+//     [ESP+14h] = planar |approach+D8h/+E0h - unit| (009C5207-009C5303), the
+//     predicted impact point the host keeps as db_impact_throw_14.
+//   t = 00419010(0.8 (00CE74F8), row+48h MinPowerCtrl, 1.3 (00CEB4B4),
+//                row+44h MaxPowerCtrl, ratio)          (009C55EE-009C5616)
+//   throttle +278h = clamp(t, 0, 1)                      (009C5651-009C5663)
+//   air brake +2A8h = clamp(-0.0 (00D7A208) - t, 0, 1)   (009C5638-009C5671)
+//   +27Ch, +2ACh = BL = 1 (bytes).
+namespace dive_bomb_glide_throttle_constant {
+inline constexpr float kRatioLo = 0.8f;  // 00CE74F8
+inline constexpr float kRatioHi = 1.3f;  // 00CEB4B4
+}  // namespace dive_bomb_glide_throttle_constant
+
+struct DiveBombAimGlideThrottle {
+    float ratio_24 = 0.0f;
+    float throttle_278 = 0.0f;
+    float air_brake_2a8 = 0.0f;
+};
+
+DiveBombAimGlideThrottle dive_bomb_aimglide_throttle_009c55e5(
+    float planar_to_aim_10, float planar_to_impact_14,
+    float max_power_44, float min_power_48) noexcept;
+
 }  // namespace bsp
