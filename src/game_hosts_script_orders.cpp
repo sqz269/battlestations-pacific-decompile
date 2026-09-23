@@ -2251,9 +2251,57 @@ void GameScriptOrdersHost::run_blackout_update(float step) {
     argument_count_ = outer_argument_count;
 }
 
+// Packet cc9_entity_dead, docs/ENTITY_DEAD_FLAG.md. In the image a damage
+// death runs 00958A30 -> vtable[70h](1) (0077D1A0 -> 00926C80: +60h set, +70h =
+// 1, queued on the destroy list 00F899A8). The next frame's 009273A0 flush
+// dispatches vtable[74h] 00926390 (+5Dh = +60h = 1, then JMP vtable[7Ch]); the
+// unit override (ship 006FD8B0, generic 0077D270) ends in 00929B60 ->
+// 00929800, which sets the self table's `Dead` to true (00929896) and
+// `KillReason` to the cause's name from 00E0CF04 (cause 1 is "harm"). Here the
+// flush is taken to run before the frame's script thinks; that order inside
+// the frame is an assumption, and a one-frame difference is the bound.
+// Not modelled: 00929800's think-message branch (+1D8h; a unit has no think
+// here), 0077D270's `LastBanto`, 00927F60's scoring, and the planes that hit
+// the water, whose destroy path was not read.
+void GameScriptOrdersHost::publish_unit_deaths_00929800() {
+    if (!kEntityDeadBound || machine_state_ == nullptr) return;
+    const std::vector<std::pair<std::size_t, float>> deaths = units_.destroyed_units();
+    if (deaths.empty()) return;
+    if (dead_published_.size() < units_.count()) dead_published_.resize(units_.count(), false);
+    lua_State* const L = machine_state_;
+    for (const auto& death : deaths) {
+        const std::size_t index = death.first;
+        if (index >= dead_published_.size() || dead_published_[index]) continue;
+        dead_published_[index] = true;
+        lua_getfield(L, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);
+        if (!lua_istable(L, -1)) {
+            lua_settop(L, lua_gettop(L) - 1);
+            continue;
+        }
+        char key[16];
+        std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat,
+            static_cast<int>(index + 1));
+        lua_getfield(L, -1, key);
+        if (lua_istable(L, -1)) {
+            const GameUnitRow* const row = units_.unit_row(index);
+            const std::string unit_name = row != nullptr ? row->name : std::string();
+            lua_pushboolean(L, 1);
+            lua_setfield(L, -2, "Dead");
+            lua_pushstring(L, "harm");   // 00E0CF04[1], +70h = 1
+            lua_setfield(L, -2, "KillReason");
+            log_.notef("entity dead: unit=%zu \"%s\" died=%.2f s published=%.2f s Dead=true "
+                "KillReason=harm (00929800)", index, unit_name.c_str(),
+                static_cast<double>(death.second), static_cast<double>(units_.mission_clock()));
+        }
+        lua_settop(L, lua_gettop(L) - 2);
+    }
+    log_.implemented("MissionEntity::on_killed_lua_00929800", "00929800");
+}
+
 void GameScriptOrdersHost::run_script_timers(float step) {
     run_air_ops_update_006cdc70(step);
     if (machine_state_ == nullptr) return;
+    publish_unit_deaths_00929800();
     if (script_entities_.empty()) {
         run_blackout_update(step);
         return;

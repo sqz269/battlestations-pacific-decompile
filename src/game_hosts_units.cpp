@@ -4679,6 +4679,16 @@ int GameUnitsHost::skill_level(std::size_t unit_index) const {
     return unit_index < host.slots.size() ? host.slots[unit_index]->pilot_skill_index : 1;
 }
 
+std::vector<std::pair<std::size_t, float>> GameUnitsHost::destroyed_units() const {
+    std::vector<std::pair<std::size_t, float>> out;
+    const Impl& host = *impl_;
+    if (host.gunnery == nullptr) return out;
+    for (const GameGunneryUnitRow& row : host.gunnery->unit_rows()) {
+        if (row.sunk) out.emplace_back(row.unit_index, row.sunk_seconds);
+    }
+    return out;
+}
+
 float GameUnitsHost::mission_clock() const noexcept {
     return impl_->summary.simulated_seconds;
 }
