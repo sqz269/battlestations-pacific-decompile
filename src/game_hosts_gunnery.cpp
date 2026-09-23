@@ -7,6 +7,7 @@
 #include "bsp/game_hosts_gunnery.hpp"
 
 #include <array>
+#include <limits>
 #include <map>
 #include <memory>
 
@@ -4091,6 +4092,16 @@ bool GameGunneryHost::unit_dead(std::size_t unit_index) const noexcept {
     if (unit_index >= impl_->unit_state.size()) return false;
     const Impl::UnitState& state = impl_->unit_state[unit_index];
     return state.dead || state.health <= 0.0f;
+}
+
+float GameGunneryHost::min_fixed_gun_muzzle_speed_007c2610(std::size_t unit_index) const noexcept {
+    float lowest = std::numeric_limits<float>::max();   // 00D7A248
+    for (const GameGunRow& gun : impl_->guns) {
+        if (gun.unit_index != unit_index || gun.category != 0) continue;
+        // 007C264F-007C2657: keep the running minimum unless V0 exceeds it.
+        if (!(gun.muzzle_speed > lowest)) lowest = gun.muzzle_speed;
+    }
+    return lowest;
 }
 
 void GameGunneryHost::kill_unit_00926d90(std::size_t unit_index, int cause) {

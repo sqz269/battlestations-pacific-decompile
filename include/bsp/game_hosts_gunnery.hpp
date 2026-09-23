@@ -599,6 +599,16 @@ public:
     //   plane tick's depth kill, through the same funnel a gunfire death takes.
     bool unit_dead(std::size_t unit_index) const noexcept;
     void kill_unit_00926d90(std::size_t unit_index, int cause);
+    // 007C2610 BSP_Unit_MinKind21ComponentSpeed (body 007C2610-007C2674, RET, the
+    // float in ST0): the minimum round V0 [[gun+3F8h]+34h]+50h over the unit's
+    // child list (unit+48h, next +44h) of components answering IsKindOf(21h),
+    // MRFSGun, the fixed forward guns. It starts at FLT_MAX (00D7A248,
+    // 7F7FFFFFh), so a unit with no such gun answers FLT_MAX; the running
+    // minimum is a float and a tie keeps the later gun's equal value.
+    // SUBSTITUTION, labelled: this host's category 0 (PLANEGUN) rows stand for
+    // the class 21h test, and each row's V0 is its first ammunition record's.
+    // Packet cc9_plane_death_modes, for docs/FIGHTER_GUNFIRE_RATE.md section 3.
+    float min_fixed_gun_muzzle_speed_007c2610(std::size_t unit_index) const noexcept;
     const GameGunnerySummary& summary() const noexcept;
 
     // docs/RECON_SLOT_LISTS.md rule (c). This host owns the one
