@@ -1,0 +1,37 @@
+{
+  "packet": "cc9_turndown_pitch",
+  "doc": "docs/TURNDOWN_HEADING.md",
+  "scope": "Read of the turndown tick, its roll-direction setter and completion test against the host; the producer chain of the aimdive pitch gains. No binding: no bounded term differs.",
+  "abi_compatible": false,
+  "game_validated": false,
+  "routines": [
+    {"address": "009C44F0", "native": "009C44F0", "name": "BSP_BotStateDiveBombTurnDown_Tick", "range": "009C44F0-009C4736", "host": "dive_bomb_turndown_tick_009c44f0, matches"},
+    {"address": "009C7800", "native": "009C7800", "name": "BSP_BotStateDiveBombTurnDown_SetRollDirection", "range": "009C7800-009C7846"},
+    {"address": "009C7EA0", "native": "009C7EA0", "name": "BSP_BotStateDiveBombTurnDown_IsComplete", "range": "009C7EA0-009C7EFB", "host": "dive_bomb_turndown_complete_009c7ea0, matches"},
+    {"address": "0072BBD0", "native": "0072BBD0", "name": "(bot base constructor)", "role": "seeds bot+34h = 1 at 0072BC12"},
+    {"address": "008FBC80", "native": "008FBC80", "name": "BSP_GunBot_Attach", "role": "bot->vtable[18h](unit->vtable[12Ch]()) at 008FBCAC"},
+    {"address": "007ECF80", "native": "007ECF80", "name": "(squadron broadcast)", "role": "SetSkillLevel on a squadron reaches each member's vtable[128h]"}
+  ],
+  "call_sites": [
+    {"address": "009C450D", "native": "007C47F0", "function": "009C44F0", "note": "level-flight speed"},
+    {"address": "009C453C", "native": "00BF857A", "function": "009C44F0", "note": "fmod of the bank by 2pi"},
+    {"address": "009C460A", "native": "00419010", "function": "009C44F0", "note": "roll ease-off"},
+    {"address": "009C4718", "native": "00419010", "function": "009C44F0", "note": "the latched pull"},
+    {"address": "009C7839", "native": "00BD2F10", "function": "009C7800", "note": "Uniform(0.8, 1.0) on stream 1"},
+    {"address": "007D66E7", "native": "0099A880", "function": "007D5D20", "note": "the plane bot object at unit+DF4h"},
+    {"address": "0099A8A4", "native": "0072BBD0", "function": "0099A880", "note": "bot base constructor"}
+  ],
+  "constants": [
+    {"address": "00CE3D40", "width": "double", "value": 0.8},
+    {"address": "00D7A264", "width": "float", "value": 3.1415927410125732},
+    {"address": "00D1FED0", "width": "float", "value": 2.6179940700531006},
+    {"address": "00CE398C", "width": "float", "value": 0.3490658700466156},
+    {"address": "00D0CBA0", "width": "float", "value": 0.05235987901687622},
+    {"address": "00CEC724", "width": "float", "value": 0.5235987901687622},
+    {"address": "00CE74F8", "width": "float", "value": 0.8},
+    {"address": "00D1F98C", "width": "float", "value": -1.2999999523162842},
+    {"address": "00D20E80", "width": "float", "value": 2.356194496154785}
+  ],
+  "gains": {"host": "SPNormal 0.018 / 0.025", "stun": "0.03 / 0.06", "spveteran": "0.0 / 0.0", "row_in_force": "not established"},
+  "validation": {"build": "not rebuilt; no source change", "runs": "none; no bounded term to treat"}
+}
