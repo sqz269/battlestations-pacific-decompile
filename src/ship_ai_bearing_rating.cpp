@@ -13,6 +13,11 @@
 
 #include "bsp/ship_ai_bearing_rating.hpp"
 
+#include "bsp/gun_aiming.hpp"
+#include "bsp/gun_gravity_arc.hpp"
+#include "bsp/gun_heading_snap.hpp"
+#include "bsp/unit_rudder.hpp"
+
 #include <cmath>
 
 namespace bsp {
@@ -430,6 +435,72 @@ void ship_ai_firepower_range_profile_0095f080(ShipAiFirepowerQuery query,
         --remaining;
         ++index;
     } while (remaining > 0); // 0095F15C
+}
+
+bool ship_ai_gun_is_operational_00729f10(bool unit_fire_blocked_720, bool gun_disabled_3b8,
+                                         bool gun_torn_down_5d) noexcept {
+    return !unit_fire_blocked_720 && !gun_disabled_3b8 && !gun_torn_down_5d;
+}
+
+int ship_ai_gun_ready_rounds_00727d70(const float* barrel_timers, int barrel_count,
+                                      int available, float horizon) noexcept {
+    int ready = 0;
+    const int n = barrel_count < available ? barrel_count : available;
+    for (int i = 0; i < n; ++i) {
+        if (!(horizon < barrel_timers[i])) ++ready;   // JC skips when horizon < timer
+    }
+    return ready;
+}
+
+namespace {
+// 0085A8B0: both angles wrapped as 0085ABBD does, then 007F5FC0.
+bool can_reach_angles_0085a8b0(const GunPlatformArcs& arcs, float horz, float vert) noexcept {
+    return gun_traverse_allowed_007f5fc0(arcs, gun_wrap_angle_0085abbd(horz),
+                                         gun_wrap_angle_0085abbd(vert));
+}
+// 00438AA0 (BSP_Math_AddWrappedAngle) and 00438B10: add or subtract with a float
+// store, then fold into (-pi, pi].
+float wrapped_sum(float a, float b) noexcept { return wrapped_angle_add_00438aa0(a, b); }
+float wrapped_difference(float a, float b) noexcept {
+    return wrapped_angle_subtract_00438b10(a, b);
+}
+}  // namespace
+
+bool ship_ai_gun_can_bear_0085b7d0(const ShipAiGunBearInputs& in,
+                                   const GunPlatformArcs& arcs) noexcept {
+    if (in.function == 7) {
+        // 0085B80B..0085B844: the torpedo tube's traverse filter 0085AB50 with a
+        // limit of pi/4 * 0.5; anything but the FLT_MAX sentinel bears.
+        const float limit = static_cast<float>(kShipAiBearSnapQuarterPi * kShipAiBearSnapScale);
+        return !gun_heading_snap_failed(
+            gun_snap_heading_to_fire_window_007f6190(arcs, in.bearing, limit));
+    }
+    float horz = in.bearing;      // [ESP+28h]
+    float vert = 0.0f;            // [ESP+8h], 0085B854
+    const bool artillery = in.function == 2 || in.function == 3 || in.function == 4
+                           || in.function == 6;   // 005459B0
+    if (in.function == 9 || artillery) {
+        // 0085B881..0085B8E5: 007BA2E0's direction, a = pi/2 - bearing folded
+        // into [0, 2pi), (cos a, 0, sin a), scaled by the range; muzzle at the
+        // zero vector 00F87574; no mount (ECX = 0 at 0085B8C5).
+        double a = 1.5707963705062866 - static_cast<double>(in.bearing);
+        float af = static_cast<float>(a);
+        if (af < 0.0f) af = static_cast<float>(static_cast<double>(af) + 6.2831854820251465);
+        GunGravityArcQuery q;
+        q.aim_point = BombVector3{std::cos(af) * in.range, 0.0f, std::sin(af) * in.range};
+        q.muzzle_position = BombVector3{};
+        q.muzzle_speed = in.muzzle_speed;
+        q.mount_frame = nullptr;
+        const GunGravityArcSolution sol = solve_gun_gravity_arc_00955630(q);
+        if (!sol.solved) return false;             // 0085B8E5
+        horz = -sol.angles.horz;                   // 0085B8F1..0085B8FF, -0.0f - h
+        vert = sol.angles.vert;
+    }
+    // 0085B905..0085B966: both edges of a 3-degree window must be reachable.
+    if (!can_reach_angles_0085a8b0(arcs, wrapped_sum(horz, kShipAiBearTolerance), vert)) {
+        return false;
+    }
+    return can_reach_angles_0085a8b0(arcs, wrapped_difference(horz, kShipAiBearTolerance), vert);
 }
 
 }  // namespace bsp

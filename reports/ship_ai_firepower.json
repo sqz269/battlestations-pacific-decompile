@@ -1,0 +1,271 @@
+{
+  "packet": "cc9_ship_firepower",
+  "doc": "docs/SHIP_AI_FIREPOWER.md",
+  "status": "the eight mount predicates of 0095EB40 bound behind kShipFirepowerBound; USN04 and USN01 measured, with three USN04 ablations",
+  "abi_compatible": false,
+  "game_validated": false,
+  "routines": [
+    {
+      "address": "0095EB40",
+      "native": "0095EB40",
+      "name": "BSP_Unit_RateExpectedWeaponDamage",
+      "role": "the rating; already reconstructed (bsp::ship_ai_firepower_rating_0095eb40)"
+    },
+    {
+      "address": "00729F10",
+      "native": "00729F10",
+      "name": "BSP_Gun_IsOperational",
+      "role": "[[gun+3F0h]+720h], [gun+3B8h], [gun+5Dh] bytes all zero"
+    },
+    {
+      "address": "00727D70",
+      "native": "00727D70",
+      "name": "BSP_Gun_CountReadyBarrels",
+      "role": "count of the first [gun+448h] floats at [gun+414h] that are <= horizon; RET 4"
+    },
+    {
+      "address": "0085B7D0",
+      "native": "0085B7D0",
+      "name": "BSP_Gun_CanBearAtRange",
+      "role": "Function 8 true; range > proj+60h false; Function 7 heading snap limit pi/8; Function 9 or 2/3/4/6 gravity arc, heading negated; then both 3-degree edges reachable"
+    },
+    {
+      "address": "006EB060",
+      "native": "006EB060",
+      "name": "BSP_Weapon_HitProbabilityForRange",
+      "role": "switch on the class +8h (refined) sub-type; 006EB0C8 the 1.0 fall-through"
+    },
+    {
+      "address": "00424C40",
+      "native": "00424C40",
+      "name": "BSP_GameSettings_GetSingleton",
+      "role": "settings+3B0h WaterTickDamage 100, +3ACh FireTickDamage 40 (shipglobals.lua:77-78)"
+    },
+    {
+      "address": "007313E0",
+      "native": "007313E0",
+      "name": "BSP_GunClass_ReadBulletLuaFields",
+      "role": "fire record +2Ch = ReloadTime (upper of a pair, else the scalar)"
+    },
+    {
+      "address": "00443090",
+      "native": "00443090",
+      "name": "BSP_DeviceClass_ResolveFromLua",
+      "role": "device class from the Lua Type string; the IsKindOf(22h) family"
+    },
+    {
+      "address": "005459B0",
+      "native": "005459B0",
+      "name": "BSP_Gun_IsArtilleryKind",
+      "role": "Function in {2,3,4,6}"
+    },
+    {
+      "address": "007BA2E0",
+      "native": "007BA2E0",
+      "name": "BSP_Math_HeadingToDirectionXZ",
+      "role": "a = pi/2 - h (+2pi when negative); (cos a, 0, sin a); RET 4"
+    },
+    {
+      "address": "0085A8B0",
+      "native": "0085A8B0",
+      "name": "BSP_TurningGun_CanReachAngles",
+      "role": "wrap both angles, 007F5FC0 on the platform arcs; RET 8"
+    },
+    {
+      "address": "0085AB50",
+      "native": "0085AB50",
+      "name": "BSP_TurningGun_FilterHeadingToTraverse",
+      "role": "007F6190 snap; FLT_MAX when no window holds"
+    },
+    {
+      "address": "00955630",
+      "native": "00955630",
+      "name": "(gun gravity arc)",
+      "role": "bsp::solve_gun_gravity_arc_00955630, mount NULL at 0085B8C5"
+    },
+    {
+      "address": "00438AA0",
+      "native": "00438AA0",
+      "name": "BSP_Math_AddWrappedAngle",
+      "role": "two floats, RET 8"
+    },
+    {
+      "address": "00438B10",
+      "native": "00438B10",
+      "name": "BSP_Math_SubtractWrappedAngle",
+      "role": "two floats, RET 8"
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "0095EC52",
+      "native": "00729F10",
+      "function": "0095EB40",
+      "note": "ECX = EBX = the mount"
+    },
+    {
+      "address": "0095EC84",
+      "native": "00727D70",
+      "function": "0095EB40",
+      "note": "horizon = block+1Ch, 0 for category 7, only when block+41h"
+    },
+    {
+      "address": "0095EDC9",
+      "native": "006EB060",
+      "function": "0095EB40",
+      "note": "p, b[0], b[1]"
+    },
+    {
+      "address": "0095EDFA",
+      "native": "0085B7D0",
+      "function": "0095EB40",
+      "note": "only when block+40h (the ring path)"
+    },
+    {
+      "address": "0095EEAD",
+      "native": "00424C40",
+      "function": "0095EB40",
+      "note": "settings for +3B0h and +3ACh"
+    },
+    {
+      "address": "0085B82F",
+      "native": "0085AB50",
+      "function": "0085B7D0",
+      "note": "Function 7, limit pi/4 * 0.5"
+    },
+    {
+      "address": "0085B874",
+      "native": "005459B0",
+      "function": "0085B7D0",
+      "note": "skipped for Function 9"
+    },
+    {
+      "address": "0085B88D",
+      "native": "007BA2E0",
+      "function": "0085B7D0",
+      "note": "the direction for the arc"
+    },
+    {
+      "address": "0085B8DE",
+      "native": "00955630",
+      "function": "0085B7D0",
+      "note": "muzzle 00F87574 (zero), speed [proj+50h], ECX = 0"
+    },
+    {
+      "address": "0085B921",
+      "native": "00438AA0",
+      "function": "0085B7D0",
+      "note": "h + 0.0523599"
+    },
+    {
+      "address": "0085B92C",
+      "native": "0085A8B0",
+      "function": "0085B7D0",
+      "note": "first edge"
+    },
+    {
+      "address": "0085B951",
+      "native": "00438B10",
+      "function": "0085B7D0",
+      "note": "h - 0.0523599"
+    },
+    {
+      "address": "0085B95C",
+      "native": "0085A8B0",
+      "function": "0085B7D0",
+      "note": "second edge"
+    }
+  ],
+  "field_accesses": [
+    {
+      "address": "00727D77",
+      "function": "00727D70",
+      "note": "MOV EDI,[ECX+448h] barrel count"
+    },
+    {
+      "address": "00727D86",
+      "function": "00727D70",
+      "note": "MOV EDX,[ECX+414h] timer array"
+    },
+    {
+      "address": "0085B7DC",
+      "function": "0085B7D0",
+      "note": "MOV ECX,[EDX+80h] weapon Function"
+    },
+    {
+      "address": "0085B7F5",
+      "function": "0085B7D0",
+      "note": "FLD [EDI+60h] projectile range"
+    },
+    {
+      "address": "0085B8D3",
+      "function": "0085B7D0",
+      "note": "FLD [EDI+50h] muzzle speed"
+    },
+    {
+      "address": "0085B80B",
+      "function": "0085B7D0",
+      "note": "FLD [00E0B588] = 0.7853982f; FMUL double [00D7A280] = 0.5"
+    },
+    {
+      "address": "0085B910",
+      "function": "0085B7D0",
+      "note": "FLD [00D0CBA0] = 0.0523599f"
+    },
+    {
+      "address": "0085B8F1",
+      "function": "0085B7D0",
+      "note": "MOVSS [00D7A208] = -0.0f; SUBSS negates the solved heading"
+    }
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1 Win32 Release, both ctests passed (switch on, off, and three ablations)",
+    "runs": {
+      "usn04_control": {
+        "log": "local/fp_ctl_usn04.log",
+        "queued_hits": 116,
+        "damage": 15970.7,
+        "deaths": 9,
+        "unimplemented_calls": 18125296
+      },
+      "usn04_treatment": {
+        "log": "local/fp_trt_usn04.log",
+        "queued_hits": 92,
+        "damage": 14733.9,
+        "deaths": 9,
+        "lexington_sunk_s": 182.86,
+        "unimplemented_calls_final_binary": 9607363
+      },
+      "usn04_ablation_no_subtype": {
+        "log": "local/fp_abA_usn04.log",
+        "queued_hits": 94,
+        "standoff_northamptons": 1450
+      },
+      "usn04_ablation_no_blast": {
+        "log": "local/fp_abB_usn04.log",
+        "equals": "treatment"
+      },
+      "usn04_ablation_no_arc": {
+        "log": "local/fp_abC_usn04.log",
+        "queued_hits": 111,
+        "standoff_northamptons": 950
+      },
+      "usn01": {
+        "logs": [
+          "local/fp_ctl_usn01.log",
+          "local/fp_trt_usn01.log"
+        ],
+        "note": "identical; the rating is never called"
+      }
+    },
+    "worktree": "J:/PROG/battlestations-pacific-decompile-cc9-difficulty"
+  },
+  "no_ghidra_function": [],
+  "formula": "v = s*h*n*k*e + min(b6, WaterDamage*s*h*n*k)*100 + min(b6, s*h*n*k*e*FireChance*FireDamage/b8)*40, summed over bearing-capable mounts, capped at b2*max(1,b6/5)",
+  "open": [
+    "WeaponHitAccuracy table not loaded; 008386F0 interpolation unread (the standoff move rests on the default 0.5 level)",
+    "GameBulletClassRow::type never filled by the gunnery host",
+    "which rating callers set block byte +41h (ready rounds) not traced",
+    "0085AB50 per-platform bounds check not modelled"
+  ]
+}

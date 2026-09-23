@@ -188,3 +188,14 @@ Appended, not a rewrite.
 - `ship_ai_firepower_allow_bytes`: `[0080E160(unit)+220h..+223h]`, the four category permissions.
 - `ship_ai_approach_target_fields`: `[target+370h]`, `[[target+538h]+4Ch]` and
   `[[target+538h]+0A0h]`, the damage cap, armour and length of the ship being rated.
+
+## Correction, 2026-09-23 (packet `cc9_ship_firepower`, `docs/SHIP_AI_FIREPOWER.md`)
+
+* **The hit probability never reached a profile.** The binding took the sub-type from
+  `GameBulletClassRow::type` through `bsp::projectile_class_for_lua_type`, but the gunnery host
+  never fills that field. Every lookup failed, and every call fell through to `006EB0C8`'s 1.0:
+  1,166,482 calls on USN04, and no `008386F0` call at all. The `1.0` trap this document warned
+  about is the one the host was in.
+* **The sub-type `006EB060` switches on is the refined one.** `006E9968` rewrites Bullet into 2 or 3
+  and Artillery into 5, 6 or 7 by damage tier, and `GameGunRow::bullet_sub_type` carries that value. The binding now
+  reads it.

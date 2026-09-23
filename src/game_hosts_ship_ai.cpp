@@ -41,6 +41,9 @@
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/recon_sensor_pass.hpp"
 #include "bsp/projectile_kinds.hpp"
+#include "bsp/gun_aiming.hpp"
+#include "bsp/gun_gravity_arc.hpp"
+#include "bsp/gun_heading_snap.hpp"
 #include "bsp/gameplay_settings_tail.hpp"
 #include "bsp/ship_ai_approach_curves.hpp"
 #include "bsp/ship_ai_approach_tune.hpp"
@@ -68,6 +71,12 @@
 #include "bsp/weapon_director.hpp"
 
 namespace bsp::game {
+
+// Packet cc9_ship_firepower, docs/SHIP_AI_FIREPOWER.md. True: the eight
+// predicates 0095EB40 asks about a mount answer from the gun rows the gunnery
+// host keeps (barrel timers, arcs, the refined projectile sub-type, the Bullets
+// row's blast minimum). False: the earlier placeholders.
+inline constexpr bool kShipFirepowerBound = true;
 namespace {
 
 bool has_ship_navigation_class(int kind) noexcept {
@@ -1553,26 +1562,55 @@ public:
     // 0095EC46, [[device]+5Ch](22h). Every row the gunnery host keeps is a
     // turning gun mount, so the class test cannot fail here. LABELLED
     // SUBSTITUTION: the class hierarchy has no producer in this process.
-    bool device_is_turning_gun(bsp::NativeHandle) override {
-        owner_.record("ShipAiFirepower::device_is_turning_gun_005c", 0x0095ec46u);
-        return true;
+    // BOUND, packet cc9_ship_firepower: IsKindOf(22h) is the turning-gun
+    // subtree, 22h, MRTGun 23h, MSTGun 24h and MDepthChargeLauncher 27h
+    // (src/unit_kind_query.cpp). BSP_DeviceClass_ResolveFromLua 00443090 picks
+    // the class from the device's Lua `Type`, and in this installation every
+    // device whose Function is one the rating counts (1-4, 6-9) is a
+    // Rapid_Turning_Gun, Single_Turning_Gun or Depth_Charge_Launcher; the only
+    // Rapid_Fixed_Slave_Gun (MRFSGun 21h) devices are PLANEGUN.
+    bool device_is_turning_gun(bsp::NativeHandle device) override {
+        if (!kShipFirepowerBound) {
+            owner_.record("ShipAiFirepower::device_is_turning_gun_005c", 0x0095ec46u);
+            return true;
+        }
+        owner_.done("ShipAiFirepower::device_is_turning_gun_005c", 0x0095ec46u);
+        const GameGunRow* gun = gun_row(device);
+        return gun != nullptr && gun->category != 0 && gun->category != 0x0A
+            && gun->category != 0x0B;
     }
 
     // 0095EC52, 00729F10: [[device+3F0h]+720h], [device+3B8h] and [device+5Dh]
     // all clear. LABELLED SUBSTITUTION: none of the three has a producer here.
+    // BOUND: the same three bytes the gunnery host's own fire gate answers
+    // (FireRequestBinding: unit_fire_blocked, gun_disabled, gun_suppressed),
+    // all clear there, so every mount is operational as it is for firing.
     bool device_is_operational(bsp::NativeHandle) override {
-        owner_.record("ShipAiFirepower::device_is_operational_00729f10", 0x0095ec52u);
-        return true;
+        if (!kShipFirepowerBound) {
+            owner_.record("ShipAiFirepower::device_is_operational_00729f10", 0x0095ec52u);
+            return true;
+        }
+        owner_.done("ShipAiFirepower::device_is_operational_00729f10", 0x0095ec52u);
+        return bsp::ship_ai_gun_is_operational_00729f10(false, false, false);
     }
 
     // 0095EC84, 00727D70: the [device+448h] reload timers at [device+414h] that
     // are at or below the horizon. The gunnery host carries the timer list but
     // nothing pushes to it (GameGunRow::pending_timers), so every barrel counts
     // as ready. LABELLED SUBSTITUTION.
-    int device_ready_rounds(bsp::NativeHandle device, float) override {
-        owner_.record("ShipAiFirepower::device_ready_rounds_00727d70", 0x0095ec84u);
+    // BOUND: 00727D70 counts the barrels whose +414h timer is at or below the
+    // horizon. The gunnery host keeps those timers in fire.barrel_timers
+    // (0072CF00 sets one per shot, the fixed step counts them down).
+    int device_ready_rounds(bsp::NativeHandle device, float horizon) override {
         const GameGunRow* gun = gun_row(device);
-        return gun == nullptr ? 0 : gun->barrel_num;
+        if (!kShipFirepowerBound) {
+            owner_.record("ShipAiFirepower::device_ready_rounds_00727d70", 0x0095ec84u);
+            return gun == nullptr ? 0 : gun->barrel_num;
+        }
+        owner_.done("ShipAiFirepower::device_ready_rounds_00727d70", 0x0095ec84u);
+        if (gun == nullptr) return 0;
+        return bsp::ship_ai_gun_ready_rounds_00727d70(gun->fire.barrel_timers.data(),
+            gun->barrel_num, static_cast<int>(gun->fire.barrel_timers.size()), horizon);
     }
 
     bool device_is_destroyed(bsp::NativeHandle) override { return false; }
@@ -1614,6 +1652,14 @@ public:
         const bsp::ProjectileClassInfo* info
             = bsp::projectile_class_for_lua_type(bullet->type);
         if (info != nullptr) out.sub_type = info->sub_type;
+        // BOUND: the class's +8h is the REFINED sub-type (006E9968 rewrites
+        // Bullet and Artillery), which the gun row carries. The bullet row's
+        // `type` is never filled by the gunnery host, so the lookup above found
+        // nothing and every probability fell through to 006EB0C8's 1.0.
+        if (kShipFirepowerBound) {
+            const GameGunRow* gun = gun_row(ammo);
+            if (gun != nullptr && gun->bullet_sub_type != 0) out.sub_type = gun->bullet_sub_type;
+        }
         out.max_range = bullet->range;
         out.damage_min = bullet->damage_min;
         out.damage_max = bullet->damage_max;
@@ -1621,7 +1667,13 @@ public:
         out.water_damage = bullet->water_damage;
         out.fire_damage = bullet->fire_damage;
         out.fire_chance = bullet->fire_chance;
-        owner_.record("ShipAiFirepower::projectile_blast_damage_min_00b4", 0x0095ed15u);
+        if (kShipFirepowerBound) {
+            // BOUND: Blast.BlastDamageMin, classDesc+B4h, the Bullets row reads it.
+            out.blast_damage_min = bullet->blast_damage_min;
+            owner_.done("ShipAiFirepower::projectile_blast_damage_min_00b4", 0x0095ed15u);
+        } else {
+            owner_.record("ShipAiFirepower::projectile_blast_damage_min_00b4", 0x0095ed15u);
+        }
         // 0095ECDB then 0095EDC9: the class just built is the one the hit
         // probability is asked about a few instructions later.
         last_projectile_ = out;
@@ -1630,8 +1682,15 @@ public:
 
     // [ammo+2Ch], 0095EE07: the period b[6] is divided by. The gun row's reload
     // time is the closest produced value. LABELLED SUBSTITUTION.
+    // BOUND: ammo+2Ch is the fire record's ReloadTime upper value; 007313E0
+    // stores a scalar ReloadTime into both +28h and +2Ch, and every one of this
+    // installation's 500 ReloadTime entries is a scalar, which is the gun row's.
     float ammo_cycle_period(bsp::NativeHandle ammo) override {
-        owner_.record("ShipAiFirepower::ammo_cycle_period_002c", 0x0095ee07u);
+        if (kShipFirepowerBound) {
+            owner_.done("ShipAiFirepower::ammo_cycle_period_002c", 0x0095ee07u);
+        } else {
+            owner_.record("ShipAiFirepower::ammo_cycle_period_002c", 0x0095ee07u);
+        }
         const GameGunRow* gun = gun_row(ammo);
         return gun == nullptr ? 0.0f : gun->reload_time;
     }
@@ -1660,8 +1719,13 @@ public:
                                 || sub == 0x0A || sub == 0x0B || sub == 0x13
                                 || sub == 1 || sub == 2 || sub == 3 || sub == 0x10;
         if (!recognised) {
-            // 006EB0C8, the fall-through return of 1.0f.
-            owner_.record("ShipAiFirepower::hit_probability_unclassified", 0x006eb0c8u);
+            // 006EB0C8, the fall-through return of 1.0f. The image's own answer
+            // for a sub-type the switch does not name.
+            if (kShipFirepowerBound) {
+                owner_.done("ShipAiFirepower::hit_probability_unclassified", 0x006eb0c8u);
+            } else {
+                owner_.record("ShipAiFirepower::hit_probability_unclassified", 0x006eb0c8u);
+            }
             return 1.0f;
         }
         owner_.record("ShipAiFirepower::hit_accuracy_profile_008386f0", 0x008386f0u);
@@ -1684,22 +1748,39 @@ public:
     // BSP_Gun_SolveGravityArc for everything else, has no producer in this
     // process, so a mount in range is allowed to bear. LABELLED SUBSTITUTION.
     bool device_can_bear(bsp::NativeHandle device, bsp::NativeHandle,
-                         float, float range) override {
+                         float bearing, float range) override {
         // 0085B7E0 reads [[device+3F4h]+80h], the weapon Function, NOT the
         // projectile sub-type; Function 8 returns 1 at 0085B7E5 with no test.
         const GameGunRow* gun = gun_row(device);
         if (gun != nullptr && gun->category == 8) return true;
         const bsp::ShipAiFirepowerProjectileClass& p = last_projectile_;
         if (range > p.max_range) return false; // 0085B7F1
-        owner_.record("ShipAiFirepower::device_can_bear_arc_0085b7d0", 0x0085b7d0u);
-        return true;
+        if (!kShipFirepowerBound || gun == nullptr) {
+            owner_.record("ShipAiFirepower::device_can_bear_arc_0085b7d0", 0x0085b7d0u);
+            return true;
+        }
+        // BOUND, packet cc9_ship_firepower: the rest of 0085B7D0.
+        owner_.done("ShipAiFirepower::device_can_bear_arc_0085b7d0", 0x0085b7d0u);
+        const bsp::GunPlatformArcs arcs{gun->arcs.data(), gun->arcs.size()};
+        bsp::ShipAiGunBearInputs in;
+        in.function = gun->category;
+        in.bearing = bearing;
+        in.muzzle_speed = gun->muzzle_speed;   // [projectile+50h], V0
+        in.range = range;
+        return bsp::ship_ai_gun_can_bear_0085b7d0(in, arcs);
     }
 
     // 0095EEAD and 0095EED8, 00424C40 then [settings+3B0h] and [settings+3ACh].
     // Nothing in this process loads the gameplay settings object, so these are
     // the authored defaults docs/GAMEPLAY_SETTINGS.md records. LABELLED.
     bsp::ShipAiFirepowerTickDamage gameplay_tick_damage() override {
-        owner_.record("ShipAiFirepower::gameplay_tick_damage_00424c40", 0x0095eeadu);
+        // BOUND: this installation's shipglobals.lua:77-78 authors 100 and 40,
+        // and the FailureDebug override at :746 is off (scriptoptions.lua:1).
+        if (kShipFirepowerBound) {
+            owner_.done("ShipAiFirepower::gameplay_tick_damage_00424c40", 0x0095eeadu);
+        } else {
+            owner_.record("ShipAiFirepower::gameplay_tick_damage_00424c40", 0x0095eeadu);
+        }
         bsp::ShipAiFirepowerTickDamage out{};
         out.water_tick_damage = 100.0f; // settings+3B0h WaterTickDamage
         out.fire_tick_damage = 40.0f;   // settings+3ACh FireTickDamage
