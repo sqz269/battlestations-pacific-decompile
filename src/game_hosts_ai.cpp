@@ -137,6 +137,13 @@ GameAiWeaponFacts& game_ai_weapon_facts() noexcept {
 
 namespace {
 
+// Packet cc9_ship_natives_2, docs/SHIP_NATIVES_2.md. True: 009FFD70
+// BSP_Entity_AiClassWeight (ECX = [leader+0C4h], JMP 009FDF30) is the group
+// leader's class weight out of the tuning block, read at 00A2EB97/00A2EBA2
+// (the auto-merge pair order) and 00A10D8B/00A10D96 (the merge leader test).
+// False: the leader's unit index, the previous stand-in.
+constexpr bool kAiLeaderOrderKeyBound = true;
+
 // bsp::AiTargetWeightModelHost over the process-wide weapon-facts table, so
 // 00A08460 BSP_Ai_TargetWeight runs for real as soon as something publishes a
 // row. Every method names the native site it stands at. The entity pointers
@@ -1675,13 +1682,20 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     }
 
     double group_leader_order_key(void* group) override {
-        // 009FFD70 is an adjustor thunk onto 009FDF30 with the leader's +C4h;
-        // contract: unread. The key only has to order a pair consistently, so
-        // this process uses the leader's unit index.
+        // 009FFD70 BSP_Entity_AiClassWeight: `MOV ECX,[ECX+0C4h]; JMP 009FDF30`,
+        // the leader's class id into the class-weight switch, which FLDs a float
+        // out of the tuning block (FLD1 when the id has no row). The callers pass
+        // the first node of the group's +5640h list, the leader (00A2EB6D..
+        // 00A2EB95). A squadron's +0C4h is 18h (unit_class_weight's arm).
         Group* g = group_at(group);
-        record("AiGroups::group_leader_order_key", 0x009ffd70u);
-        return (g == nullptr || g->members.empty())
-            ? 0.0 : static_cast<double>(g->members.front());
+        if (!kAiLeaderOrderKeyBound) {
+            record("AiGroups::group_leader_order_key", 0x009ffd70u);
+            return (g == nullptr || g->members.empty())
+                ? 0.0 : static_cast<double>(g->members.front());
+        }
+        done("AiGroups::group_leader_order_key", 0x009ffd70u);
+        if (g == nullptr || g->members.empty()) return 0.0;
+        return static_cast<double>(unit_class_weight(g->members.front()));
     }
     const float* group_leader_position(void* group) override {
         Group* g = group_at(group);
