@@ -9048,3 +9048,7 @@ bomb columns fall by one on USN04 (18 -> 17); which bomber lost its release was 
 | bomb drops / bomb impacts / dive-bomb releases | 29 / 29 / 29 (aircraft 19) |
 | projectiles created / entity impacts / water contacts / expired | 7026 / 278 / 118 / 6635 |
 | `queued_hits` / deaths / damage | 306 / 35 / 21324.9 |
+
+### Ship-AI standoffs as the durable measurement (2026-09-23, integrator note)
+
+The gunnery, difficulty and ship-AI landings of 2026-09-23 each moved the mission totals, and the rows above were re-taken after them. For the ship AI the durable measurement is the standoff per ship, predicted by the offline replay of the standoff scan and matched exactly on USN04 after the own-curve target landing: Northampton-class01/02 2250 m, Fletcher-class01/02/04 1450 m, Fletcher-class03 1550 m, York-class01/02 1850 m, each ending at the 300 m seed once its target is dead (docs/SHIP_AI_OWN_CURVE.md, docs/SHIP_AI_RING_QUERY.md). Heading-change counts are tie-break driven once slot ratings saturate at the 880 cap and are not a stable reference.
