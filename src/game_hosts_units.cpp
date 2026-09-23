@@ -5311,17 +5311,28 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     slot.process_index);
                             if (sq != nullptr) {
                                 bool was_leader = false;
-                                bool first_live = true;
+                                std::size_t live_seat = 0;
+                                bool found_seat = false;
                                 for (std::size_t& member : sq->member_units) {
                                     if (member == bsp::kPlaneSquadronNoUnit) continue;
                                     if (member == slot.process_index) {
-                                        was_leader = first_live;
+                                        was_leader = live_seat == 0;
                                         member = bsp::kPlaneSquadronNoUnit;
+                                        found_seat = true;
                                         break;
                                     }
-                                    first_live = false;
+                                    ++live_seat;
                                 }
                                 sq->formation_indices_assigned = false;
+                                // The host's first-step station seeding keys its
+                                // "applied" flags by live seat; compact them the
+                                // same way, so a removal does not re-seed (and
+                                // teleport) every surviving member.
+                                if (found_seat && live_seat < sq->member_station_applied.size()) {
+                                    sq->member_station_applied.erase(
+                                        sq->member_station_applied.begin()
+                                        + static_cast<std::ptrdiff_t>(live_seat));
+                                }
                                 host.log.notef("squadron remove plane: squadron=%s unit=%s "
                                     "leader=%d (007BCAA0 -> 007F3970, packet "
                                     "cc9_pilot_surface_climbout)", sq->name.c_str(),
