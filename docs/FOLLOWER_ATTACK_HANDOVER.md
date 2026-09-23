@@ -546,3 +546,18 @@ decision. In short:
   `#7.1|.-2` cycle 12 / 14 times. What remains is `#3.1|.-2`'s dive: an aim error outside the
   gate, then a 166 m breakoff it cannot pull out of. That belongs to the aimdive and goaway
   arms.
+
+## 14. Phase A of the follow geometry (packet cc9_follow_phase_a, 2026-09-22)
+
+`docs/PLANE_FOLLOW_PHASE_A.md` reads Phase A (`009C0251`-`009C0EE0`) at block level. It is an
+intercept planner: for each heading quadrant it plans a rejoin turn of radius
+`TravelSpeed / (TurnMul * classDesc+270h)`, then iterates the arcs until they fit.
+* `p` is where the member ends along-track relative to its moving station.
+* `e` is its cross-track error there.
+* `e > 0.05 p` or `p < 0` selects the `009C1328` lead-in, otherwise lead pursuit.
+* A failed arc test selects abeam by the side of the track.
+* `base-0Ch` leaves as the manoeuvre time, so the dispatch's lead distance is the leader's
+  travel during it.
+
+Nothing was bound: the four quadrant planners need a per-path verified transcription first.
+Main at `0af2f50eb` is neutral on USN04 (control A3 equals B2).
