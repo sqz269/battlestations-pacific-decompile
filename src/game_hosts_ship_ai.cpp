@@ -91,6 +91,15 @@ inline constexpr bool kShipAiTargetCurveBound = true;
 // it, with 009F2A91..009F2AC1's constants when there is none. False: the no-target
 // constants always, and a zero fire divisor.
 inline constexpr bool kShipAiOwnCurveTargetBound = true;
+// Packet cc9_ring_query, docs/SHIP_AI_RING_QUERY.md. True: the ring scan's copy of
+// nested+127Ch (009E8192..009E81A2, REP MOVSD 11h dwords) carries the target
+// fields 009F2A26..009F2AC1 wrote, as in the image. False: no-target constants
+// and a zero fire divisor.
+inline constexpr bool kShipAiRingQueryBound = true;
+// Packet cc9_ring_query. True: unit+9C8h is the unit's length, as 00810F60 writes
+// it (0081106E): 2 * max(zmax, -zmin) of the model bounds, or class+A0h Length
+// without them. False: 0.
+inline constexpr bool kUnitRadiusBound = true;
 namespace {
 
 bool has_ship_navigation_class(int kind) noexcept {
@@ -523,6 +532,51 @@ struct GameShipAiHost::Impl {
     // all Impl can do on its own.
     // nested+127Ch as 009E7FC0 hands it to 009E5DA0: the frame-state block with
     // words 5, 6 and 7 and the two bytes overwritten by the ring path.
+    // Packet cc9_own_curve_target / cc9_ring_query. 009F29E0..009F2AC1, the
+    // target words of nested+127Ch. Returns false when there is no unit target, and
+    // leaves q with the caller's no-target constants. See docs/SHIP_AI_OWN_CURVE.md.
+    bool fill_target_block_127ch(const Controller& ctl, bsp::ShipAiFirepowerQuery& q) const {
+        const std::uint32_t handle = ctl.goal_vector.raw_target_0b20;
+        if (handle == 0u || handle - 1u >= units.count()) return false;
+        const std::size_t target = static_cast<std::size_t>(handle - 1u);
+        if (!units.unit_is_kind_of(target, 5)) return false;   // 009F29EC
+        int type_id = -1;
+        float health = 0.0f;
+        if (const GameGunneryUnitRow* row = gunnery_unit_row(target)) {
+            health = row->health;
+            type_id = row->type_id;
+        }
+        const bool ship = units.unit_is_kind_of(target, 6);     // 009F2A65
+        float armour = 0.0f;
+        float length = 0.0f;
+        float underwater = 0.0f;
+        float threshold = 100.0f;
+        if (settings_owner != nullptr && type_id >= 0) {
+            armour = settings_owner->read_vehicle_class_number(type_id, "Armour", 0.0f);
+            length = settings_owner->read_vehicle_class_number(type_id, "Length", 0.0f);
+            underwater = settings_owner->read_vehicle_class_number(type_id,
+                "UnderwaterArmour", 0.0f);
+            threshold = settings_owner->read_vehicle_class_number(type_id,
+                "DamageThreshold", 100.0f);
+        }
+        q.armour = armour;
+        // class vtable[24h]: 009635D0 (UnderwaterArmour) on the ship class, the base
+        // 004407A0 (Armour) on every other family read (plane, runway, door,
+        // structure, wreckable).
+        q.armour_torpedo = ship ? underwater : armour;
+        q.damage_cap = health;
+        q.target_length = length;
+        q.damage_threshold = ship ? threshold : 10000.0f;
+        return true;
+    }
+
+    // unit+9C8h for a unit index, the full hull length 0081106E writes (model
+    // bounds, or class Length without them): the units host already produces it
+    // (docs/UNIT_HULL_EXTENTS.md, GameUnitsHost::unit_hull_length_09c8).
+    float unit_length_9c8(std::size_t index) const {
+        return units.unit_hull_length_09c8(index);
+    }
+
     bsp::ShipAiRingScanClassQuery ring_query(const Controller& ctl) const {
         bsp::ShipAiFirepowerQuery q{};
         // Word 0, 009F2A04 from nested+11E0h: the planar range to the
@@ -548,6 +602,11 @@ struct GameShipAiHost::Impl {
         q.allow_artillery = 1;
         q.allow_torpedo = 1;
         q.allow_depth_charge = 1;
+        if (kShipAiRingQueryBound) {
+            // 009F2AB1's no-target divisor, then the target words if there is one.
+            q.damage_threshold = 10000.0f;
+            fill_target_block_127ch(ctl, q);
+        }
         bsp::ShipAiRingScanClassQuery out{};
         static_assert(sizeof(q) == sizeof(out.word), "the block is 17 dwords");
         std::memcpy(out.word, &q, sizeof(q));
@@ -2515,47 +2574,17 @@ private:
     //                        vtable[5Ch](6), a ship (009F2A6B); else 10000.0f (009F2A7F)
     // Without one, 009F2A91..009F2AC1: 0, 0, 10000.0f, 10000.0f, 100.0f.
     void fill_own_block_target_127ch(bsp::ShipAiFirepowerQuery& q) const {
-        const std::uint32_t handle = ctl_.goal_vector.raw_target_0b20;
-        if (handle == 0u || handle - 1u >= owner_.units.count()) return;
-        const std::size_t target = static_cast<std::size_t>(handle - 1u);
-        if (!owner_.units.unit_is_kind_of(target, 5)) return;   // 009F29EC
-        int type_id = -1;
-        float health = 0.0f;
-        if (owner_.gunnery != nullptr) {
-            const std::vector<GameGunneryUnitRow>& rows = owner_.gunnery->unit_rows();
-            if (target < rows.size()) {
-                health = rows[target].health;
-                type_id = rows[target].type_id;
-            }
+        if (owner_.fill_target_block_127ch(ctl_, q)) {
+            owner_.done("ShipAiApproach::curve_query_target_fields", 0x009f2a44u);
         }
-        const bool ship = owner_.units.unit_is_kind_of(target, 6);     // 009F2A65
-        float armour = 0.0f;
-        float length = 0.0f;
-        float underwater = 0.0f;
-        float threshold = 100.0f;
-        if (owner_.settings_owner != nullptr && type_id >= 0) {
-            armour = owner_.settings_owner->read_vehicle_class_number(type_id, "Armour", 0.0f);
-            length = owner_.settings_owner->read_vehicle_class_number(type_id, "Length", 0.0f);
-            underwater = owner_.settings_owner->read_vehicle_class_number(type_id,
-                "UnderwaterArmour", 0.0f);
-            threshold = owner_.settings_owner->read_vehicle_class_number(type_id,
-                "DamageThreshold", 100.0f);
-        }
-        q.armour = armour;
-        // The class vtable[24h]: UnderwaterArmour for a ship class, Armour for a
-        // plane class. Other families were not read; they take Armour. LABELLED.
-        q.armour_torpedo = ship ? underwater : armour;
-        q.damage_cap = health;
-        q.target_length = length;
-        q.damage_threshold = ship ? threshold : 10000.0f;
-        owner_.done("ShipAiApproach::curve_query_target_fields", 0x009f2a44u);
     }
 
     bsp::ShipAiFirepowerQuery target_query_1238h() const {
         bsp::ShipAiFirepowerQuery q{};
         q.window_seconds = 20.0f;
         q.ready_horizon_seconds = 30.0f;
-        q.target_length = 0.0f;
+        // +123Ch, [unit+9C8h] of THIS ship (009F294B).
+        q.target_length = kUnitRadiusBound ? owner_.unit_length_9c8(index_) : 0.0f;
         q.damage_cap = 0.0f;
         int type_id = -1;
         if (owner_.gunnery != nullptr) {

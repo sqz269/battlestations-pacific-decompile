@@ -141,3 +141,13 @@ state. A correction to docs/WEAPON_HIT_ACCURACY.md is appended there.
 
   The host still feeds 0. That only matters where the target curve is non-zero, which it is not
   on USN04.
+
+## 8. Correction, 2026-09-23 (packet `cc9_ring_query`, `docs/SHIP_AI_RING_QUERY.md`)
+
+* **Section 7's formula for `+9C8h` was wrong.** The FPU trace took `FMUL ST1` at 0081100C as writing
+  ST0. Its bytes are `DC C9`, `FMUL ST(1), ST(0)`, which writes ST1. So:
+  - `+9CCh` = 2 × max(xmax, −xmin), the unit's full width.
+  - `+9C8h` = 2 × max(zmax, −zmin), the unit's full length.
+
+  This is the same quantity as the no-bounds arm's class `+A0h` (Length) and `+A4h`. `+9C8h` is the
+  unit's length, not a radius or a product.

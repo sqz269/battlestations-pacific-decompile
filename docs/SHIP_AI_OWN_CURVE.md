@@ -108,3 +108,12 @@ $env:BSP_GUNNERY_RNG_STREAMS='1'; ./tools/run_game.ps1 -Exe build\win32\<ctlA|tr
 
 **Land it.** The own block is the image's. Every first standoff is predicted by the replay, and
 the last standoff follows from the image's rule for a dead target.
+
+## 7. Correction, 2026-09-23 (packet `cc9_ring_query`, `docs/SHIP_AI_RING_QUERY.md`)
+
+* **004407A0 is not plane-specific.** It is the base vehicle class's `vtable[24h]` (the class
+  `Armour`), installed by every family read except the ship class: the plane classes, runway
+  00D1A9A0, door 00D1AA58, structure 00CFF790 and wreckable 00D1AA18. The ledger name is now
+  `BSP_VehicleClass_GetUnderwaterArmourDefault`, and the binding's "ship → UnderwaterArmour,
+  otherwise Armour" is exact for every family, not LABELLED.
+* **Section 5's ring finding is now bound** by cc9_ring_query.
