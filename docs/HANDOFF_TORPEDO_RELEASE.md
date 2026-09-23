@@ -105,3 +105,21 @@ back at 167.9 m. Sections 2.7.1 and 2.7.3.
   census). Every commit message must say so.
 * `python tools/const_width_sweep.py --all --load-sites` reports `A-WRONG 0`. The two new constants
   are authored Lua values with no image address, so they are correctly absent from its table.
+
+## Correction from docs/TORPEDO_KIND_PROBE.md (2026-09-22)
+
+Packets `cc9_torpedo_kind` and `cc9_torpedo_kind_land`. **Both kind probes of `009D15F0` are now
+bound exactly**, so the "one thing left" and the first "still open" item above are done.
+
+- The target probe (`009D1714`, kind 6) is `bsp::unit_is_kind_of(t->class_id, query)`. Both
+  missions reproduced their controls to the digit, as this handoff predicted.
+- The own-unit probe (`009D175F`/`009D176E` and `009D1E08`/`009D1E17`, kinds 10h and 16h) is
+  `bsp::unit_is_kind_of(s_.class_id, query)`. It fires only for USN01's five H6K Mavis
+  (LargeReconPlane). It scales `F14` and `F0C` by exactly 0.9 and moves their release ranges
+  433-438 m to 460-486 m. USN04's Kates are TorpedoBomber and USN04 is unchanged.
+- **The `:2180` reference above is stale.** The file has moved, and the note that
+  `bsp::unit_is_kind_of` is the slot-5Ch model now sits in the torpedo aim binding of
+  `src/game_hosts_units.cpp`. `bsp::unit_is_kind_of` models all 88 compiled slot-5Ch bodies, and
+  `0074E400` is the plane's body among them, not the routine every class reaches.
+
+The measured values are in `docs/TORPEDO_KIND_PROBE.md` sections 6 and 8.

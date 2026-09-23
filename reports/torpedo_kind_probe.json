@@ -3,27 +3,108 @@
   "date": "2026-09-22",
   "doc": "docs/TORPEDO_KIND_PROBE.md",
   "base": "main 13dd6a438",
-  "no_ghidra_function": [
-    {"start": "009D15F0", "end": "009D2377", "name": "BSP_BotStateTorpedoAim_Tick", "note": "ledger: raw listing 009D15F0-009D2377 inclusive, no Ghidra function"}
-  ],
   "steps": [
-    {"address": "009D1714", "native": "target+vtable5C", "function": "009D15F0", "what": "PUSH 6 / CALL EAX: the ordered target's (approach+CCh) own slot-5Ch kind test; modelled by bsp::unit_is_kind_of(t->class_id, 6)"},
-    {"address": "009D1739", "native": "00438B10", "kind": "no_ghidra_function", "function": "009D15F0", "what": "BSP_Math_SubtractWrappedAngle(target heading, own heading): the aspect F=2Ch, reached only when 009D1714 answers true"},
-    {"address": "009D175F", "native": "00D00308+5C", "function": "009D15F0", "what": "PUSH 10h / CALL EDX on the aircraft [[state+4]+4]; a Mav's vtable 00D00308 is MLargeReconPlane, whose slot 5Ch is 0074E4E0"},
-    {"address": "009D176E", "native": "00D00308+5C", "function": "009D15F0", "what": "PUSH 16h / CALL EDX, same object; true for a Mav, so 009D1774-009D178A scale F=14h and F=0Ch by [00D7A390]=0.9"},
-    {"address": "009D1E08", "native": "00D00308+5C", "function": "009D15F0", "what": "PUSH 10h / CALL EAX on EDI reloaded at 009D1DC1 = [[state+4]+4]: the 2.5/1.5 pitch denominator selector"},
-    {"address": "009D1E17", "native": "00D00308+5C", "function": "009D15F0", "what": "PUSH 16h / CALL EAX, same object"},
-    {"address": "009D1500", "native": "009D1500", "what": "BSP_BotApproachTorpedo_TimeToTarget, entry row: F=0Ch = approach+90h over the commanded speed, so F0C is proportional to range_90"}
+    {
+      "address": "009D1714",
+      "native": "target+vtable5C",
+      "function": "009D15F0",
+      "what": "PUSH 6 / CALL EAX: the ordered target's (approach+CCh) own slot-5Ch kind test; modelled by bsp::unit_is_kind_of(t->class_id, 6)"
+    },
+    {
+      "address": "009D1739",
+      "native": "00438B10",
+      "function": "009D15F0",
+      "what": "BSP_Math_SubtractWrappedAngle(target heading, own heading): the aspect F=2Ch, reached only when 009D1714 answers true"
+    },
+    {
+      "address": "009D175F",
+      "native": "00D00308+5C",
+      "function": "009D15F0",
+      "what": "PUSH 10h / CALL EDX on the aircraft [[state+4]+4]; a Mav's vtable 00D00308 is MLargeReconPlane, whose slot 5Ch is 0074E4E0"
+    },
+    {
+      "address": "009D176E",
+      "native": "00D00308+5C",
+      "function": "009D15F0",
+      "what": "PUSH 16h / CALL EDX, same object; true for a Mav, so 009D1774-009D178A scale F=14h and F=0Ch by [00D7A390]=0.9"
+    },
+    {
+      "address": "009D1E08",
+      "native": "00D00308+5C",
+      "function": "009D15F0",
+      "what": "PUSH 10h / CALL EAX on EDI reloaded at 009D1DC1 = [[state+4]+4]: the 2.5/1.5 pitch denominator selector"
+    },
+    {
+      "address": "009D1E17",
+      "native": "00D00308+5C",
+      "function": "009D15F0",
+      "what": "PUSH 16h / CALL EAX, same object"
+    },
+    {
+      "address": "009D1500",
+      "native": "009D1500",
+      "what": "BSP_BotApproachTorpedo_TimeToTarget, entry row: F=0Ch = approach+90h over the commanded speed, so F0C is proportional to range_90"
+    }
   ],
   "kind_classes": [
-    {"kind": "10h", "class": "MPlaneBomber", "vehicle_type": "LevelBomber", "in_missions": "none running the torpedo aim tick"},
-    {"kind": "16h", "class": "MLargeReconPlane", "vehicle_type": "LargeReconPlane", "in_missions": "USN01 Mav1-Mav5 (VehicleClass 174, H6K Mavis, creator 0074E540, vtable 00D00308)"},
-    {"kind": "11h", "class": "TorpedoBomber", "vehicle_type": "TorpedoBomber", "in_missions": "USN04 twelve B5N Kates (VehicleClass 162), probe false"}
+    {
+      "kind": "10h",
+      "class": "MPlaneBomber",
+      "vehicle_type": "LevelBomber",
+      "in_missions": "none running the torpedo aim tick"
+    },
+    {
+      "kind": "16h",
+      "class": "MLargeReconPlane",
+      "vehicle_type": "LargeReconPlane",
+      "in_missions": "USN01 Mav1-Mav5 (VehicleClass 174, H6K Mavis, creator 0074E540, vtable 00D00308)"
+    },
+    {
+      "kind": "11h",
+      "class": "TorpedoBomber",
+      "vehicle_type": "TorpedoBomber",
+      "in_missions": "USN04 twelve B5N Kates (VehicleClass 162), probe false"
+    }
   ],
   "pairs": [
-    {"step": 1, "mission": "USN01", "a": "local/ctl_usn01.log", "b": "local/kind_usn01_step1.log", "differing_simulation_lines": 0, "verdict": "prediction met, committed"},
-    {"step": 1, "mission": "USN04", "a": "local/ctl_usn04.log", "b": "local/kind_usn04_step1.log", "differing_simulation_lines": 0, "verdict": "prediction met, committed"},
-    {"step": 2, "mission": "USN04", "a": "local/kind_usn04_step1.log", "b": "local/kind_usn04_step2.log", "differing_simulation_lines": 0, "verdict": "prediction met"},
-    {"step": 2, "mission": "USN01", "a": "local/kind_usn01_step1.log", "b": "local/kind_usn01_step2.log", "verdict": "units and factor met (only the five Mavs; F14 = 0.9 * range_90 exactly); release range met for Mav2 and Mav3 (1.1115, 1.1117) and missed for Mav1, Mav5, Mav4 (1.0808, 1.0822, 1.0633); binding NOT committed"}
+    {
+      "step": 1,
+      "mission": "USN01",
+      "a": "local/ctl_usn01.log",
+      "b": "local/kind_usn01_step1.log",
+      "differing_simulation_lines": 0,
+      "verdict": "prediction met, committed"
+    },
+    {
+      "step": 1,
+      "mission": "USN04",
+      "a": "local/ctl_usn04.log",
+      "b": "local/kind_usn04_step1.log",
+      "differing_simulation_lines": 0,
+      "verdict": "prediction met, committed"
+    },
+    {
+      "step": 2,
+      "mission": "USN04",
+      "a": "local/kind_usn04_step1.log",
+      "b": "local/kind_usn04_step2.log",
+      "differing_simulation_lines": 0,
+      "verdict": "prediction met"
+    },
+    {
+      "step": 2,
+      "mission": "USN01",
+      "a": "local/kind_usn01_step1.log",
+      "b": "local/kind_usn01_step2.log",
+      "verdict": "units and factor met (only the five Mavs; F14 = 0.9 * range_90 exactly); release range met for Mav2 and Mav3 (1.1115, 1.1117) and missed for Mav1, Mav5, Mav4 (1.0808, 1.0822, 1.0633); binding NOT committed"
+    },
+    {
+      "step": "land",
+      "mission": "USN01",
+      "a": "local/kind_usn01_step2.log",
+      "b": "local/kind_usn01_land.log",
+      "differing_simulation_lines": 0,
+      "verdict": "binding landed on main 9b77ca812 + this commit; reproduces the step 2 run on all 22784 lines"
+    }
   ]
 }

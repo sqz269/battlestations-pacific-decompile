@@ -8383,7 +8383,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             const GameUnitSlot* const t = aim_target();
                             return t != nullptr && bsp::unit_is_kind_of(t->class_id, query);
                         }
-                        bool unit_is_kind_vtable5c(int) override { return false; }
+                        // Packet cc9_torpedo_kind: the own-unit probe,
+                        // [[state+4]+4] = the aircraft, at 009D175F/009D176E
+                        // (the 0.9 tighten of range and time to target) and
+                        // 009D1E08/009D1E17 (the 2.5/1.5 pitch denominator),
+                        // kinds 10h MPlaneBomber and 16h MLargeReconPlane. It
+                        // was `return false`, so neither use ever fired. Only
+                        // USN01's five H6K Mavis (LargeReconPlane) reach it;
+                        // USN04's Kates are TorpedoBomber and are untouched.
+                        // docs/TORPEDO_KIND_PROBE.md sections 6-8.
+                        bool unit_is_kind_vtable5c(int query) override {
+                            return bsp::unit_is_kind_of(s_.class_id, query);
+                        }
                         bool has_target_cc() override {
                             return aim_target() != nullptr;
                         }
@@ -8806,9 +8817,69 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // so it runs only while the nose is already down.
                         in.pitch_div_1ac = unit_.plane_pitch_spd;
                         in.state_flag_24 = false;
+                        const int arms_before = unit_.torpedo_aim_release_arms;
                         const bsp::TorpedoAimTickResult r =
                             bsp::torpedo_aim_tick_full_009d15f0(binding, in, dt);
                         ++unit_.torpedo_aim_ticks;
+                        // Packet cc9_torpedo_kind_land: one line per release, on
+                        // the tick whose five-flag chain armed the timer at
+                        // 009D2287 (the drop follows on the next tick). It sets
+                        // the range the tick compared (approach+90h, scaled by
+                        // the 0.9 tighten into F14) beside the live centre-to-
+                        // centre distance, so a moving target's release range
+                        // can be read off rather than modelled.
+                        // docs/TORPEDO_KIND_PROBE.md section 8.
+                        // The aim tick at which each flag of the chain last turned
+                        // true, so the line can name the one that opened last.
+                        // Kept per slot in a function-local table because the
+                        // slot struct belongs to other packets; observation only.
+                        static std::map<const GameUnitSlot*, std::array<int, 4>> opened;
+                        {
+                            auto it = opened.try_emplace(&unit_,
+                                std::array<int, 4>{-1, -1, -1, -1}).first;
+                            const bool now[4] = {r.gate_lead, r.gate_altitude,
+                                                 r.gate_bank, r.gate_cone};
+                            for (int g = 0; g < 4; ++g) {
+                                if (!now[g]) it->second[static_cast<std::size_t>(g)] = -1;
+                                else if (it->second[static_cast<std::size_t>(g)] < 0)
+                                    it->second[static_cast<std::size_t>(g)] =
+                                        unit_.torpedo_aim_ticks;
+                            }
+                        }
+                        if (unit_.torpedo_aim_release_arms != arms_before) {
+                            const std::array<int, 4>& op = opened[&unit_];
+                            const GameUnitSlot* const t = binding.aim_target();
+                            float centre = -1.0f;
+                            float target_speed = 0.0f;
+                            if (t != nullptr) {
+                                const double dx = static_cast<double>(t->motion.position[0]) -
+                                                  unit_.motion.position[0];
+                                const double dz = static_cast<double>(t->motion.position[2]) -
+                                                  unit_.motion.position[2];
+                                centre = static_cast<float>(std::sqrt(dx * dx + dz * dz));
+                                const double vx = t->motion.linear_velocity.x;
+                                const double vz = t->motion.linear_velocity.z;
+                                target_speed = static_cast<float>(std::sqrt(vx * vx + vz * vz));
+                            }
+                            owner_.log.notef("  torpedo %-12s timer arm 009D2287 aim_tick=%d "
+                                "target=%s range_90=%.1f centre_dist=%.1f F14=%.1f F0C=%.4f "
+                                "cmd_speed=%.1f fall_lead_a0=%.1f alt=%.1f target_speed=%.2f "
+                                "gates lead=%d alt=%d bank=%d cone=%d "
+                                "opened_at lead=%d alt=%d bank=%d cone=%d",
+                                unit_.row.name.c_str(), unit_.torpedo_aim_ticks,
+                                t != nullptr ? t->row.name.c_str() : "-",
+                                static_cast<double>(ap.range_90), static_cast<double>(centre),
+                                static_cast<double>(r.range_f14),
+                                static_cast<double>(r.time_to_target_f0c),
+                                static_cast<double>(bsp::torpedo_commanded_speed_009d3c99(
+                                    ap.elapsed_134, ap.speed_late_7c, ap.speed_early_80)),
+                                static_cast<double>(ap.fall_lead_a0),
+                                static_cast<double>(unit_.motion.position[1]),
+                                static_cast<double>(target_speed),
+                                r.gate_lead ? 1 : 0, r.gate_altitude ? 1 : 0,
+                                r.gate_bank ? 1 : 0, r.gate_cone ? 1 : 0,
+                                op[0], op[1], op[2], op[3]);
+                        }
                         // Packet cc8_torpedo_steering_delta's per-tick census.
                         // Every heading in one row so the convention question is
                         // answerable from a run rather than from arithmetic:
