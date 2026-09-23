@@ -1,0 +1,316 @@
+{
+ "packet": "cc9_dogfight_engaged",
+ "calls": [
+  {
+   "address": "009AAD10",
+   "native": "009AA630",
+   "function": "009AAC70",
+   "note": "re-select the target"
+  },
+  {
+   "address": "009AADAC",
+   "native": "0042E740",
+   "function": "009AAC70",
+   "note": "tuning singleton for AttackDist +644h"
+  },
+  {
+   "address": "009AADDE",
+   "native": "007C2610",
+   "function": "009AAC70",
+   "note": "flight-time divisor"
+  },
+  {
+   "address": "009AAE35",
+   "native": "009FADA0",
+   "function": "009AAC70",
+   "note": "target reference update, approach+2Ch"
+  },
+  {
+   "address": "009AA65A",
+   "native": "00BD2F10",
+   "function": "009AA630",
+   "note": "reselect timer U(1, 3)"
+  },
+  {
+   "address": "009AA685",
+   "native": "009A7650",
+   "function": "009AA630",
+   "note": "fewer than two members: +3D0h[0]"
+  },
+  {
+   "address": "009AA72E",
+   "native": "0071C4F0",
+   "function": "009AA630",
+   "note": "candidate outside the map"
+  },
+  {
+   "address": "009AA877",
+   "native": "00419010",
+   "function": "009AA630",
+   "note": "range score"
+  },
+  {
+   "address": "009AA914",
+   "native": "00419010",
+   "function": "009AA630",
+   "note": "angle score"
+  },
+  {
+   "address": "009AA94B",
+   "native": "007BBC10",
+   "function": "009AA630",
+   "note": "wingmate already on the candidate"
+  },
+  {
+   "address": "009AA97F",
+   "native": "00BD2F10",
+   "function": "009AA630",
+   "note": "non-current factor U(0.8, 1)"
+  },
+  {
+   "address": "009AA9D1",
+   "native": "009A7650",
+   "function": "009AA630",
+   "note": "set the best target"
+  },
+  {
+   "address": "009AB03C",
+   "native": "009A9D90",
+   "function": "009AAFA0",
+   "note": "engage entry, from moveto/follow and from prepare"
+  },
+  {
+   "address": "009AB053",
+   "native": "009AAA80",
+   "function": "009AAFA0",
+   "note": "switch-to-aim test"
+  },
+  {
+   "address": "009AB0AF",
+   "native": "009A9970",
+   "function": "009AAFA0",
+   "note": "aim too close: pick an avoid state"
+  },
+  {
+   "address": "009AB0C4",
+   "native": "009A98F0",
+   "function": "009AAFA0",
+   "note": "aim bored"
+  },
+  {
+   "address": "009AB0D9",
+   "native": "009A8560",
+   "function": "009AAFA0",
+   "note": "arm the maneuver from aim"
+  },
+  {
+   "address": "009AB0F8",
+   "native": "009A9BD0",
+   "function": "009AAFA0",
+   "note": "maneuver: target in the cone"
+  },
+  {
+   "address": "009AB12F",
+   "native": "009A86F0",
+   "function": "009AAFA0",
+   "note": "avoid_roll timer out"
+  },
+  {
+   "address": "009AB15A",
+   "native": "009A86F0",
+   "function": "009AAFA0",
+   "note": "avoid_turn timer out"
+  },
+  {
+   "address": "009AB19C",
+   "native": "007B8AD0",
+   "function": "009AAFA0",
+   "note": "flight leader: moveto or follow"
+  },
+  {
+   "address": "009A7864",
+   "native": "009F9E40",
+   "function": "009A76E0",
+   "note": "aim heading to the aim point"
+  },
+  {
+   "address": "009A78BB",
+   "native": "009F9ED0",
+   "function": "009A76E0",
+   "note": "aim pitch: a = aimY - ownY, d = approach+D8h"
+  },
+  {
+   "address": "009A95CA",
+   "native": "009A84E0",
+   "function": "009A94E0",
+   "note": "maneuver state constructor"
+  },
+  {
+   "address": "009A95DB",
+   "native": "009A70E0",
+   "function": "009A94E0",
+   "note": "attackrun state constructor"
+  },
+  {
+   "address": "009C1BD7",
+   "native": "007C47F0",
+   "function": "009C1BC0",
+   "note": "desired speed"
+  },
+  {
+   "address": "009C1C02",
+   "native": "009BECD0",
+   "function": "009C1BC0",
+   "note": "speed shaping, unread"
+  },
+  {
+   "address": "009AAF33",
+   "native": "0099B660",
+   "function": "009AAF30",
+   "note": "base cruise profile"
+  },
+  {
+   "address": "009AAF8A",
+   "native": "009AAC70",
+   "function": "009AAF30",
+   "note": "approach update with dt = 0"
+  }
+ ],
+ "no_ghidra_function": [
+  {
+   "start": "009A75C0",
+   "end_inclusive": "009A7641",
+   "evidence": "ghidra proto --brief finds no function; aim enter; vtable 00D1F8D8 slot +4; RET at 009A7641, INT3 from 009A7642"
+  },
+  {
+   "start": "009A71C0",
+   "end_inclusive": "009A71D5",
+   "evidence": "ghidra proto --brief finds no function; attackrun enter; vtable 00D1F8B0 slot +4; RET at 009A71D5, INT3 from 009A71D6"
+  },
+  {
+   "start": "009A7DE0",
+   "end_inclusive": "009A7E76",
+   "evidence": "ghidra proto --brief finds no function; avoid_roll enter; vtable 00D1F918 slot +4; RET at 009A7E76, INT3 from 009A7E77"
+  },
+  {
+   "start": "009A7F70",
+   "end_inclusive": "009A7FEE",
+   "evidence": "ghidra proto --brief finds no function; avoid_roll weight; vtable 00D1F918 slot +1Ch; RET at 009A7FEE"
+  },
+  {
+   "start": "009A6B70",
+   "end_inclusive": "009A6B87",
+   "evidence": "ghidra proto --brief finds no function; approach aim point getter; vtable 00D1F9A4 slot 0; RET 4 at 009A6B85, INT3 from 009A6B88"
+  }
+ ],
+ "ledger_names_added": [
+  {
+   "address": "009AAC70",
+   "name": "BSP_BotTaskDogfight_UpdateApproach"
+  },
+  {
+   "address": "009AA630",
+   "name": "BSP_BotTaskDogfight_SelectTarget"
+  },
+  {
+   "address": "009A7650",
+   "name": "BSP_BotTaskDogfight_SetTarget"
+  },
+  {
+   "address": "007BBC10",
+   "name": "BSP_Unit_PilotTargetIs"
+  },
+  {
+   "address": "007C2610",
+   "name": "BSP_Unit_MinKind21ComponentSpeed"
+  },
+  {
+   "address": "009A9D90",
+   "name": "BSP_BotTaskDogfight_EnterEngaged"
+  },
+  {
+   "address": "009A9D50",
+   "name": "BSP_BotTaskDogfight_SwitchState"
+  },
+  {
+   "address": "009A98F0",
+   "name": "BSP_BotStateDogfightAim_IsBored"
+  },
+  {
+   "address": "009A9970",
+   "name": "BSP_BotTaskDogfight_PickAvoidState"
+  },
+  {
+   "address": "009A9BD0",
+   "name": "BSP_BotStateDogfightManeuver_TargetInCone"
+  },
+  {
+   "address": "009A8560",
+   "name": "BSP_BotStateDogfightManeuver_ArmFromAim"
+  },
+  {
+   "address": "009A84E0",
+   "name": "BSP_BotStateDogfightManeuver_Construct"
+  },
+  {
+   "address": "009A87F0",
+   "name": "BSP_BotStateDogfightManeuver_Enter"
+  },
+  {
+   "address": "009A70E0",
+   "name": "BSP_BotStateDogfightAttackRun_Construct"
+  },
+  {
+   "address": "009A71E0",
+   "name": "BSP_BotStateDogfightAttackRun_Tick"
+  },
+  {
+   "address": "009C1BC0",
+   "name": "BSP_BotStateMoveTo_SetSpeedFromMaxSpd"
+  }
+ ],
+ "raw_listing_transfers": [
+  {
+   "address": "009A75EE",
+   "function": "009A75C0",
+   "note": "aim enter: boring-time draw U(0.8, 1.4)",
+   "evidence": "disasm-raw over the disk bytes; the enclosing range has no Ghidra function (no_ghidra_function)",
+   "target": "00BD2F10"
+  },
+  {
+   "address": "009A7624",
+   "function": "009A75C0",
+   "note": "aim enter: too-close draw U(0.5, 0.8)",
+   "evidence": "disasm-raw over the disk bytes; the enclosing range has no Ghidra function (no_ghidra_function)",
+   "target": "00BD2F10"
+  },
+  {
+   "address": "009AAF92",
+   "function": "009AAF30",
+   "note": "tail JMP: the squadron attack-mode tick",
+   "evidence": "disasm-raw over the disk bytes; JMP, not CALL (tail call)",
+   "target": "0099B740"
+  },
+  {
+   "address": "009A7E8B",
+   "function": "009A7E80",
+   "note": "avoid_roll tick first call",
+   "evidence": "disasm-raw over the disk bytes; the enclosing range has no Ghidra function (no_ghidra_function)",
+   "target": "009A7A50"
+  },
+  {
+   "address": "009A80F0",
+   "function": "009A80E0",
+   "note": "avoid_turn tick first call",
+   "evidence": "disasm-raw over the disk bytes; the enclosing range has no Ghidra function (no_ghidra_function)",
+   "target": "009A7A50"
+  },
+  {
+   "address": "009A7E09",
+   "function": "009A7DE0",
+   "note": "avoid timer U(0.75, 1.5)",
+   "evidence": "disasm-raw over the disk bytes; the enclosing range has no Ghidra function (no_ghidra_function)",
+   "target": "00BD2F10"
+  }
+ ]
+}

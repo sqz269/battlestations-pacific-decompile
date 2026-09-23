@@ -156,3 +156,15 @@ What remains owed, in order:
    the moveto stand-in.
 4. Where the image turns a scene-issued `dogfight` order into the kind-2 task, which would retire
    the token trigger.
+
+## Correction, 2026-09-23 (packet cc9_dogfight_engaged)
+
+* **Section 2 misses an edge.** The listing of `009AAFA0` (`009AB030`-`009AB03C`) sends a task
+  in **prepare** with `ENG` and a non-zero `squadron+370h` to `009A9D90`, the engage entry. The
+  "unit+370h" in that section is `[task+404h]+370h`, which is the squadron's attack mode
+  (`unit+9D4h`), not the unit's.
+* **Sections 4 and 7: the token trigger is not a substitute for a different producer.** The scene
+  token `dogfight` resolves by name to command type 13, object `00E08F58`, whose name getter
+  `006F8790` returns the literal `dogfight` (`docs/SCENE_COMMAND_TYPES.md`). That is the class
+  `0099A170` tests at `0099A3AC`. What the host lacks is only the director-slot write.
+* Section 3 and the owed items 1 and 2 are answered in `docs/DOGFIGHT_ENGAGED.md`.
