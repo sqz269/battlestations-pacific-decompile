@@ -3,7 +3,7 @@
 Packet cc9_ocean_waves, 2026-09-23. Base: main e1d1c0494. Reconstruction:
 include/bsp/ocean_wave_field.hpp and src/ocean_wave_field.cpp. Host seam: the water-height
 binding in src/game_hosts_units.cpp, behind `kOceanWaveFieldBound`, which is on. Status:
-reconstructed and build-tested; measurement in section 5. Not ABI-compatible and not
+reconstructed, build-tested and run-compared (section 5). Not ABI-compatible and not
 game-validated. Names are hypotheses.
 
 Addresses: 0078C890 BSP_OceanWaveField_SampleHeight, 00B9CF50 BSP_OceanWaveField_CoverageMask,
@@ -116,7 +116,29 @@ everywhere.
 
 ## 5. Measurement
 
-See the report (reports/ocean_wave_field.json, `validation`) for the run status on this machine.
+The first attempt, at 10:55 on 2026-09-23, crashed at the renderer init request on every binary.
+That was an environment fault, and the pair was run again after 11:05. Runs used
+`BSP_GUNNERY_RNG_STREAMS=1` on both sides:
+- the control, build/win32/owC, is the same source with `kOceanWaveFieldBound` false
+- the treatment is build/win32/owT
+- USN04 ran at 4700/4500 (local/ow_ctl_usn04.log, local/ow_trt_usn04.log)
+- USN01 ran at 3200/3000 (local/ow_ctl_usn01.log, local/ow_trt_usn01.log)
+
+With heap addresses, thread ids and the module path masked, the only other difference in either
+pair is the ship-avoidance refills counter (58 against 57 on USN01), which is ignored. Every
+ship-AI step, impact, death and motion line is identical. So the prediction held: the height is
+±0.0 everywhere and nothing moves.
+
+| | USN04 control | USN04 treatment |
+|---|---|---|
+| queued hits / damage / deaths | 238 / 18929.4 / 24 | 238 / 18929.4 / 24 |
+| ocean_wave_field, ocean_coverage_mask | 1,001,274 calls each, unimplemented | 1,001,274 calls each, now implemented |
+| unimplemented calls in total | 5,947,155 | 3,944,607 |
+
+USN01's two ocean sites, 408,105 calls each, are also now implemented. The USN04 unimplemented
+total falls by 2,002,548.
+
+Decision: landed. The binding is behaviour-neutral by construction and by measurement.
 
 ## 6. Open
 
