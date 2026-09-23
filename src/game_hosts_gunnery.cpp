@@ -4117,32 +4117,6 @@ void GameGunneryHost::kill_unit_00926d90(std::size_t unit_index, int cause) {
     impl_->kill_unit(unit_index);
 }
 
-std::vector<GameGunneryHost::LiveTorpedo> GameGunneryHost::live_torpedoes() const {
-    std::vector<LiveTorpedo> out;
-    for (const GameProjectileRow& shot : impl_->shots) {
-        if (!shot.alive || shot.serial == 0) continue;
-        const GameBulletClassRow* row = impl_->bullet(shot.bullet_class);
-        if (row == nullptr || !(row->water_travel_speed > 0.0f)) continue;
-        LiveTorpedo t;
-        t.serial = shot.serial;
-        t.owner_unit = shot.owner_unit;
-        t.owner_side = shot.owner_side;
-        for (int i = 0; i < 3; ++i) t.position[i] = shot.position[i];
-        t.velocity[0] = shot.flight.velocity.x;
-        t.velocity[1] = shot.flight.velocity.y;
-        t.velocity[2] = shot.flight.velocity.z;
-        t.swim_seconds = shot.swim_seconds;
-        t.swimming = shot.swimming;
-        t.water_travel_speed = row->water_travel_speed;
-        out.push_back(t);
-    }
-    return out;
-}
-
-float GameGunneryHost::ship_ai_draw(std::size_t unit_index, float low, float high) {
-    return impl_->draw(Impl::Draw::ship_ai_torpedo, unit_index, 0, low, high);
-}
-
 const std::vector<GameGunneryUnitRow>& GameGunneryHost::unit_rows() const noexcept {
     static std::vector<GameGunneryUnitRow> rows;
     rows.clear();
@@ -4838,6 +4812,33 @@ void GameGunneryHost::report() {
             static_cast<double>(state.row.sunk_seconds),
             state.row.killed_by.empty() ? "-" : state.row.killed_by.c_str());
     }
+}
+
+// Packet cc9_ship_torpedo_response.
+std::vector<GameGunneryHost::LiveTorpedo> GameGunneryHost::live_torpedoes() const {
+    std::vector<LiveTorpedo> out;
+    for (const GameProjectileRow& shot : impl_->shots) {
+        if (!shot.alive || shot.serial == 0) continue;
+        const GameBulletClassRow* row = impl_->bullet(shot.bullet_class);
+        if (row == nullptr || !(row->water_travel_speed > 0.0f)) continue;
+        LiveTorpedo t;
+        t.serial = shot.serial;
+        t.owner_unit = shot.owner_unit;
+        t.owner_side = shot.owner_side;
+        for (int i = 0; i < 3; ++i) t.position[i] = shot.position[i];
+        t.velocity[0] = shot.flight.velocity.x;
+        t.velocity[1] = shot.flight.velocity.y;
+        t.velocity[2] = shot.flight.velocity.z;
+        t.swim_seconds = shot.swim_seconds;
+        t.swimming = shot.swimming;
+        t.water_travel_speed = row->water_travel_speed;
+        out.push_back(t);
+    }
+    return out;
+}
+
+float GameGunneryHost::ship_ai_draw(std::size_t unit_index, float low, float high) {
+    return impl_->draw(Impl::Draw::ship_ai_torpedo, unit_index, 0, low, high);
 }
 
 }  // namespace bsp::game
