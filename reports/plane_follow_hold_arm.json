@@ -1,0 +1,417 @@
+{
+ "packet": "cc9_follow_package",
+ "status": "hold arm 009BEE56-009BF9E5 read in full; station-point latch 009BFD70 re-read; sight producer 009C216D-009C22F5 PARTIAL",
+ "reconstruction": {
+  "files": [
+   "include/bsp/plane_follow_hold.hpp",
+   "src/plane_follow_hold.cpp"
+  ],
+  "state": "reconstructed, build-tested; not wired, not fixture- or game-validated"
+ },
+ "hold_arm_calls": [
+  {
+   "address": "009BEE66",
+   "native": "00414DB0",
+   "function": "009BEE30",
+   "callee_name": "BSP_EntityPose_RefreshWorld",
+   "arm": "hold 009BEE56-009BF9E5"
+  },
+  {
+   "address": "009BEE7E",
+   "native": "00B63D50",
+   "function": "009BEE30",
+   "callee_name": "BSP_Matrix_BuildOrthogonalScaledAffineInverse",
+   "arm": "hold 009BEE56-009BF9E5"
+  },
+  {
+   "address": "009BEE92",
+   "native": "004142E0",
+   "function": "009BEE30",
+   "callee_name": "BSP_Vector3f_TransformAffinePoint",
+   "arm": "hold 009BEE56-009BF9E5"
+  },
+  {
+   "address": "009BEEA7",
+   "native": "00414DB0",
+   "function": "009BEE30",
+   "callee_name": "BSP_EntityPose_RefreshWorld",
+   "arm": "hold 009BEE56-009BF9E5"
+  },
+  {
+   "address": "009BEEBF",
+   "native": "00B63D50",
+   "function": "009BEE30",
+   "callee_name": "BSP_Matrix_BuildOrthogonalScaledAffineInverse",
+   "arm": "hold 009BEE56-009BF9E5"
+  },
+  {
+   "address": "009BEED2",
+   "native": "00414DB0",
+   "function": "009BEE30",
+   "callee_name": "BSP_EntityPose_RefreshWorld",
+   "arm": "hold 009BEE56-009BF9E5"
+  },
+  {
+   "address": "009BEEED",
+   "native": "0042D0D0",
+   "function": "009BEE30",
+   "callee_name": "BSP_Vector3f_TransformDirectionOptionalNormalize",
+   "arm": "hold 009BEE56-009BF9E5"
+  },
+  {
+   "address": "009BEF71",
+   "native": "00438B10",
+   "function": "009BEE30",
+   "callee_name": "BSP_Math_SubtractWrappedAngle",
+   "arm": "hold 009BEE56-009BF9E5"
+  },
+  {
+   "address": "009BEFC8",
+   "native": "00438B10",
+   "function": "009BEE30",
+   "callee_name": "BSP_Math_SubtractWrappedAngle",
+   "arm": "hold 009BEE56-009BF9E5"
+  },
+  {
+   "address": "009BF014",
+   "native": "00438B10",
+   "function": "009BEE30",
+   "callee_name": "BSP_Math_SubtractWrappedAngle",
+   "arm": "hold 009BEE56-009BF9E5"
+  },
+  {
+   "address": "009BF0DC",
+   "native": "009BE050",
+   "function": "009BEE30",
+   "callee_name": "BSP_PlaneUnit_CopyLeaderVelocity_Provisional",
+   "arm": "hold 009BEE56-009BF9E5"
+  },
+  {
+   "address": "009BF129",
+   "native": "00414DB0",
+   "function": "009BEE30",
+   "callee_name": "BSP_EntityPose_RefreshWorld",
+   "arm": "hold 009BEE56-009BF9E5"
+  },
+  {
+   "address": "009BF13D",
+   "native": "004142E0",
+   "function": "009BEE30",
+   "callee_name": "BSP_Vector3f_TransformAffinePoint",
+   "arm": "hold 009BEE56-009BF9E5"
+  },
+  {
+   "address": "009BF168",
+   "native": "00414E10",
+   "function": "009BEE30",
+   "callee_name": "BSP_EntityPose_GetDerivedAffineInverse",
+   "arm": "hold 009BEE56-009BF9E5"
+  },
+  {
+   "address": "009BF177",
+   "native": "004142E0",
+   "function": "009BEE30",
+   "callee_name": "BSP_Vector3f_TransformAffinePoint",
+   "arm": "hold 009BEE56-009BF9E5"
+  },
+  {
+   "address": "009BF1FE",
+   "native": "0042BE90",
+   "function": "009BEE30",
+   "callee_name": "BSP_Math_AbsFloatByRef_Provisional",
+   "arm": "hold 009BEE56-009BF9E5"
+  },
+  {
+   "address": "009BF24A",
+   "native": "00415620",
+   "function": "009BEE30",
+   "callee_name": "BSP_Math_ClampFloatByRef",
+   "arm": "hold 009BEE56-009BF9E5"
+  },
+  {
+   "address": "009BF28A",
+   "native": "00415620",
+   "function": "009BEE30",
+   "callee_name": "BSP_Math_ClampFloatByRef",
+   "arm": "hold 009BEE56-009BF9E5"
+  },
+  {
+   "address": "009BF2D1",
+   "native": "00438B10",
+   "function": "009BEE30",
+   "callee_name": "BSP_Math_SubtractWrappedAngle",
+   "arm": "hold 009BEE56-009BF9E5"
+  },
+  {
+   "address": "009BF300",
+   "native": "00438B10",
+   "function": "009BEE30",
+   "callee_name": "BSP_Math_SubtractWrappedAngle",
+   "arm": "hold 009BEE56-009BF9E5"
+  },
+  {
+   "address": "009BF35E",
+   "native": "00419010",
+   "function": "009BEE30",
+   "callee_name": "BSP_Math_InterpolateClamped",
+   "arm": "hold 009BEE56-009BF9E5"
+  },
+  {
+   "address": "009BF3EC",
+   "native": "00438B10",
+   "function": "009BEE30",
+   "callee_name": "BSP_Math_SubtractWrappedAngle",
+   "arm": "hold 009BEE56-009BF9E5"
+  },
+  {
+   "address": "009BF49D",
+   "native": "00438B10",
+   "function": "009BEE30",
+   "callee_name": "BSP_Math_SubtractWrappedAngle",
+   "arm": "hold 009BEE56-009BF9E5"
+  },
+  {
+   "address": "009BF54B",
+   "native": "00414DB0",
+   "function": "009BEE30",
+   "callee_name": "BSP_EntityPose_RefreshWorld",
+   "arm": "hold 009BEE56-009BF9E5"
+  },
+  {
+   "address": "009BF567",
+   "native": "00B63D50",
+   "function": "009BEE30",
+   "callee_name": "BSP_Matrix_BuildOrthogonalScaledAffineInverse",
+   "arm": "hold 009BEE56-009BF9E5"
+  },
+  {
+   "address": "009BF57F",
+   "native": "004142E0",
+   "function": "009BEE30",
+   "callee_name": "BSP_Vector3f_TransformAffinePoint",
+   "arm": "hold 009BEE56-009BF9E5"
+  },
+  {
+   "address": "009BF5C3",
+   "native": "00419510",
+   "function": "009BEE30",
+   "callee_name": "BSP_Vector3f_Normalize",
+   "arm": "hold 009BEE56-009BF9E5"
+  },
+  {
+   "address": "009BF6A3",
+   "native": "00419010",
+   "function": "009BEE30",
+   "callee_name": "BSP_Math_InterpolateClamped",
+   "arm": "hold 009BEE56-009BF9E5"
+  },
+  {
+   "address": "009BF6DA",
+   "native": "00419010",
+   "function": "009BEE30",
+   "callee_name": "BSP_Math_InterpolateClamped",
+   "arm": "hold 009BEE56-009BF9E5"
+  },
+  {
+   "address": "009BF775",
+   "native": "00605070",
+   "function": "009BEE30",
+   "callee_name": "BSP_Math_WrapAngleInPlace_Provisional",
+   "arm": "hold 009BEE56-009BF9E5"
+  },
+  {
+   "address": "009BF90D",
+   "native": "007C47F0",
+   "function": "009BEE30",
+   "callee_name": "BSP_PlaneClass_LevelFlightSpeed",
+   "arm": "hold 009BEE56-009BF9E5"
+  },
+  {
+   "address": "009BF92E",
+   "native": "007C47F0",
+   "function": "009BEE30",
+   "callee_name": "BSP_PlaneClass_LevelFlightSpeed",
+   "arm": "hold 009BEE56-009BF9E5"
+  },
+  {
+   "address": "009BF945",
+   "native": "00419010",
+   "function": "009BEE30",
+   "callee_name": "BSP_Math_InterpolateClamped",
+   "arm": "hold 009BEE56-009BF9E5"
+  },
+  {
+   "address": "009BF9D2",
+   "native": "0042E740",
+   "function": "009BEE30",
+   "callee_name": "BSP_GameTuning_GetSingleton",
+   "arm": "hold 009BEE56-009BF9E5"
+  },
+  {
+   "address": "009BE092",
+   "native": "007D9C10",
+   "function": "009BE050",
+   "callee_name": "BSP_PlaneFlightController_RefreshBodyFrame",
+   "arm": "lock callee body"
+  }
+ ],
+ "entry_calls": [
+  {
+   "address": "009C2077",
+   "native": "009BEE30",
+   "function": "009C1FD0",
+   "note": "the only rel32 reference to 009BEE30; no absolute pointer (scan-bytes '30 ee 9b 00' empty, pattern class shown to occur for 009C1FD0)"
+  },
+  {
+   "address": "009C7278",
+   "native": "009C1FD0",
+   "function": "009C7270",
+   "note": "dive-bomb done thunk"
+  },
+  {
+   "address": "009D2731",
+   "native": "009C1FD0",
+   "function": "009D2720",
+   "note": "torpedo done/prepare; the host's follow_base_tick_009c1fd0 seam"
+  },
+  {
+   "address": "009AD371",
+   "native": "009C1FD0",
+   "function": "009AD1F0",
+   "note": "009AD1F0 is referenced only from .rdata 00D1FC14"
+  },
+  {
+   "address": "009B6A75",
+   "native": "009C1FD0",
+   "function": "009B6670",
+   "note": "009B6670 is referenced only from .rdata 00D201AC"
+  },
+  {
+   "address": "009A4950",
+   "native": "009C1FD0",
+   "function": "009A4940",
+   "note": "routine 009A4940-009A4CDA has no Ghidra function (Ghidra's 009A4900 body ends 009A493E; INT3 at 009A493F and 009A4CDB-); referenced only from .rdata 00D1F708",
+   "kind": "no_ghidra_function"
+  }
+ ],
+ "vtable_refs": [
+  {
+   "address": "00D20AC4",
+   "target": "009C1FD0",
+   "note": "vtable 00D20AB8 slot +0Ch"
+  }
+ ],
+ "plan_writes": [
+  {
+   "site": "009BF0C4",
+   "field": "plan+270h",
+   "value": "leader (lock only)"
+  },
+  {
+   "site": "009BF0F3",
+   "field": "plan+270h",
+   "value": "0"
+  },
+  {
+   "site": "009BF6F4",
+   "field": "plan+29Ch",
+   "value": "pitch desired (slot 3)"
+  },
+  {
+   "site": "009BF702",
+   "field": "plan+2A0h",
+   "value": "1"
+  },
+  {
+   "site": "009BF70B",
+   "field": "plan+2D0h",
+   "value": "0"
+  },
+  {
+   "site": "009BF716",
+   "field": "plan+284h",
+   "value": "yaw desired (slot 1)"
+  },
+  {
+   "site": "009BF729",
+   "field": "plan+288h",
+   "value": "1"
+  },
+  {
+   "site": "009BF730",
+   "field": "plan+2D4h",
+   "value": "0"
+  },
+  {
+   "site": "009BF743",
+   "field": "plan+290h",
+   "value": "roll desired (slot 2), |leader bank| < 0.75"
+  },
+  {
+   "site": "009BF74B",
+   "field": "plan+294h",
+   "value": "1"
+  },
+  {
+   "site": "009BF752",
+   "field": "plan+2CCh",
+   "value": "0"
+  },
+  {
+   "site": "009BF783",
+   "field": "plan+2C4h",
+   "value": "wrap(leader bank - leader ctl+A0h), |leader bank| >= 0.75"
+  },
+  {
+   "site": "009BF789",
+   "field": "plan+2CCh",
+   "value": "1"
+  },
+  {
+   "site": "009BF9AA",
+   "field": "plan+278h",
+   "value": "throttle desired (slot 0)"
+  },
+  {
+   "site": "009BF9B2",
+   "field": "plan+27Ch",
+   "value": "1"
+  },
+  {
+   "site": "009BF9B9",
+   "field": "plan+2A8h",
+   "value": "air brake desired (slot 4)"
+  },
+  {
+   "site": "009BF9C1",
+   "field": "plan+2ACh",
+   "value": "1"
+  },
+  {
+   "site": "009BF9C8",
+   "field": "plan+2D8h",
+   "value": "0"
+  }
+ ],
+ "no_ghidra_function": [
+  {
+   "start": "009A4940",
+   "end_inclusive": "009A4CDA",
+   "evidence": "INT3 at 009A493F before; RET 4 at 009A4CD8 then INT3 009A4CDB-009A4CDE; exits also at 009A4A83, 009A4AE2, 009A4B55; one .rdata reference 00D1F708; calls 009C1FD0 at 009A4950"
+  }
+ ],
+ "ledger_names_added": [
+  {
+   "address": "0042BE90",
+   "name": "BSP_Math_AbsFloatByRef_Provisional"
+  },
+  {
+   "address": "00605070",
+   "name": "BSP_Math_WrapAngleInPlace_Provisional"
+  },
+  {
+   "address": "009BE050",
+   "name": "BSP_PlaneUnit_CopyLeaderVelocity_Provisional"
+  }
+ ]
+}
