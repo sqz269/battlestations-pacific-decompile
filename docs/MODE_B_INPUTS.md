@@ -67,4 +67,4 @@ The leave tolerance's far endpoint is `0.8 × B4h - S`.
   magnitude agrees with the authored top speed.
 * No switch and no run.
 * R0 is still queued behind the renderer-init crash (`docs/DIVE_FLIGHT_RESPONSE.md` 5). This packet's
-  one probe (`localprobeN.log`) died at renderer init again.
+  one probe (`local\probeN.log`) died at renderer init again.
