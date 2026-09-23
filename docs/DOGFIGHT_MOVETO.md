@@ -117,9 +117,10 @@ All runs are USN04 at the E2 parameters, each from its own freshly copied binary
   follow. These are the same values as F1, T1, HT and A1T.
 * The moveto speed command was not the cause, and neither were the re-seed, the head-on
   classification or the missing moveto speed.
-* The speeds are identical across five different treatments. So the stall must be a state that
-  the direct-throttle arm (`007B4ED0`: throttle slot active in mode 0) leaves behind in this
-  host's throttle path, and that the speed-mode commands that follow do not clear.
+* The speeds are identical across five different treatments. That points at, but does not
+  prove, a state that the direct-throttle arm (`007B4ED0`: throttle slot active in mode 0)
+  leaves behind in this host's throttle path, and that the speed-mode commands that follow do
+  not clear.
 * Candidates: the throttle slot's `current` (the slew state) and `plane_throttle_last`. **Not
   traced this packet.**
 * Prediction 2 was wrong.
