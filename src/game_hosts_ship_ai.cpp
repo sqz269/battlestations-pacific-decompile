@@ -121,6 +121,15 @@ inline constexpr bool kShipAiTargetReleaseBound = true;
 // target's health, 009F2A44) or 10000.0f with no target (009F2AA9). False: the
 // no-target constant on both arms.
 inline constexpr bool kApproachScanScaleBound = true;
+// Packet cc9_ship_natives_3, docs/SHIP_NATIVES_3.md. True: 0071F290's arm 6 runs
+// vtable[78h] (00835C70) only while director+44h, the queue head's accepted
+// byte that 00835C70 writes, is clear, so once per head command rather than on
+// every update. False: the byte is always clear, as before.
+inline constexpr bool kDirectorBeginCommandBound = true;
+// Packet cc9_ship_natives_3. True: 009F0100 with an empty neighbour list
+// (blk+604h below 1) returns at 009F0169 / 009F01C5 before any store, which is
+// the only state this process reaches. False: the record, as before.
+inline constexpr bool kShipAiOrderTailBound = true;
 namespace {
 
 bool has_ship_navigation_class(int kind) noexcept {
@@ -532,6 +541,8 @@ struct GameShipAiHost::Impl {
         bsp::ShipAiAttackMoveRingSlot approach_ring[bsp::kAttackMoveRingSlotCount]{};
         bsp::ShipAiApproachSlotScore approach_scores[bsp::kShipAiApproachSlotCount]{};
         bool approach_ring_built{false};
+        // Packet cc9_ship_natives_3: the head command director+44h was set for.
+        std::uint64_t begun_head_key{0};
         // Packet cc9_ship_traffic: the list at nested+14A0h, one 124h-byte record
         // per entry (009E8360). Only the fields with a reader are kept.
         struct TrafficRecord {
@@ -3413,6 +3424,14 @@ public:
         owner_.done("ShipAiOrder::set_heading_target", 0x00811960u);
     }
     void tail_009f0100(float) override {
+        // 009F0100: both arms walk the neighbour list at blk+608h over the count
+        // at blk+604h (009F0163 JLE 009F09FF, 009F01BF JLE 009F09FF), after
+        // nothing but a speed read (0092D730). With no neighbours it stores
+        // nothing. The non-empty body (009F01CB..009F09F9) is unread.
+        if (kShipAiOrderTailBound && ctl_.nav_block.neighbour_count_604 < 1) {
+            owner_.done("ShipAiOrder::tail_009f0100", 0x009f0100u);
+            return;
+        }
         owner_.record("ShipAiOrder::tail_009f0100", 0x009f0100u);
     }
     void tail_009ef350() override {
@@ -5805,7 +5824,11 @@ void GameShipAiHost::controller_step(float seconds) {
         state.mode = 1;
         state.slot0_occupied = host.units.director_slot_command(index, 0) != 0u;
         state.override_command_present = false;
-        state.queue_accepted = false;
+        // director+44h / +4Ch, the accepted bytes vtable[78h] writes. Packet
+        // cc9_ship_natives_3 keys +44h on the head command it was written for.
+        const std::uint64_t head_key = host.units.commands().director_head_key(index);
+        state.queue_accepted = kDirectorBeginCommandBound && head_key != 0u
+            && ctl.begun_head_key == head_key;
         state.override_accepted = false;
         // Same actual scene/session mode that selected ShipGlobals depth.
         state.session_mode = host.session_mode;
@@ -5815,6 +5838,9 @@ void GameShipAiHost::controller_step(float seconds) {
         const bsp::CommandControllerUpdateTrace trace
             = bsp::run_command_controller_update(state, seconds, update);
         host.done("CommandController::update", 0x0071f290u);
+        if (trace.queue_begin_attempted && !trace.queue_terminated) {
+            ctl.begun_head_key = head_key;   // 00835C70 set +44h
+        }
         ++row.controller_updates;
         ++host.summary.controller_updates;
         row.controller_update_session_gate = trace.session_gate_passed;

@@ -1,0 +1,53 @@
+{
+  "packet": "cc9_ship_natives_3",
+  "doc": "docs/SHIP_NATIVES_3.md",
+  "status": "director+44h accepted byte bound (0071F290 arm 6 runs 00835C70 once per head command); 009F0100 bound for the empty neighbour list; 009F4DA0/009F4DC7 and 009F0D20 read and left as records (inputs outside the boundary); override arm unreachable (0071E7F0 is the +188h writer, not 00835C92)",
+  "abi_compatible": false,
+  "game_validated": false,
+  "routines": [
+    {"address": "00835C70", "native": "00835C70", "name": "BSP_WeaponDirector_BeginCurrentCommand", "role": "vtable[78h]; 00835C92 is LEA [ESI+18Ch], a read; writes the accepted byte"},
+    {"address": "0071E7F0", "native": "0071E7F0", "name": "BSP_WeaponDirector_SetOverrideCommand", "role": "writer of director+188h at 0071E89E"},
+    {"address": "009F4DA0", "native": "009F4DA0", "name": "BSP_ShipAi_ThrottleCeilingStep", "role": "formation speed ceiling on brain+34Ch / +350h; read, not bound"},
+    {"address": "009F0D20", "native": "009F0D20", "name": "BSP_ShipAi_NeighbourListAdd", "role": "neighbour admission; only call 009F1A25; not bound"},
+    {"address": "009F0100", "native": "009F0100", "name": "FUN_009f0100", "role": "order tail over the neighbour list; empty-list arm bound"}
+  ],
+  "call_sites": [
+    {"address": "00835D33", "native": "0071F600", "function": "00835C70", "note": "BSP_WeaponDirector_BeginCommandBase"},
+    {"address": "00835E07", "native": "00835860", "function": "00835C70", "note": "attackmove arm sets the fire target"},
+    {"address": "009F4E06", "native": "00778890", "function": "009F4DA0", "note": "leader arm gate"},
+    {"address": "009F4E1F", "native": "0070D140", "function": "009F4DA0", "note": "group member speed reduction"},
+    {"address": "009F4E34", "native": "0070D0F0", "function": "009F4DA0", "note": "group speed ceiling"},
+    {"address": "009F4E6D", "native": "0080FC30", "function": "009F4DA0", "note": "unit reference speed"},
+    {"address": "009F4EAA", "native": "0082E850", "function": "009F4DA0", "note": "ship class value"},
+    {"address": "009F4EB5", "native": "0070E3C0", "function": "009F4DA0", "note": "group value"},
+    {"address": "009F4F10", "native": "007788B0", "function": "009F4DA0", "note": "follower arm gate"},
+    {"address": "009F4F2B", "native": "00863780", "function": "009F4DA0", "note": "unit+6DCh, argument 1"},
+    {"address": "009F50C6", "native": "009F3F80", "function": "009F4DA0", "note": "the only exit, the order ring drive"},
+    {"address": "009F013A", "native": "0092D730", "function": "009F0100", "note": "body axis speed, before the count test"},
+    {"address": "009F1A25", "native": "009F0D20", "function": "009F1420", "note": "the only call of the neighbour admission"}
+  ],
+  "field_accesses": [
+    {"address": "00835C92", "function": "00835C70", "note": "LEA EAX,[ESI+18Ch]: reads the override descriptor"},
+    {"address": "0071E89E", "function": "0071E7F0", "note": "stores director+188h"},
+    {"address": "009F4DBC", "function": "009F4DA0", "note": "brain+350h = 1.0f (00D7A24C)"},
+    {"address": "009F4DC7", "function": "009F4DA0", "note": "FLD [brain+34Ch], min with brain+0AF0h"},
+    {"address": "009F0163", "function": "009F0100", "note": "CMP [blk+604h],0 then JLE 009F09FF"},
+    {"address": "009F01BF", "function": "009F0100", "note": "CMP [blk+604h],0 then JLE 009F09FF"}
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1 Win32 Release, both ctests passed; control and treatment",
+    "env": "BSP_GUNNERY_RNG_STREAMS=1 on every run",
+    "predictions": "local/n3_predictions.txt; held",
+    "runs": {
+      "usn04": {"logs": ["local/n3_ctl_usn04.log", "local/n3_trt_usn04.log"], "note": "ship-AI, standoff, impact, death and throttle lines identical", "begin_command_calls": [94500, 67], "tail_009f0100": "81000 unimplemented -> 81000 concrete", "unimplemented_calls": [6122588, 5947155]},
+      "usn01": {"logs": ["local/n3_ctl_usn01.log", "local/n3_trt_usn01.log"], "note": "identical", "begin_command_calls": [186000, 81], "tail_009f0100": "42000 unimplemented -> 42000 concrete"}
+    }
+  },
+  "no_ghidra_function": [],
+  "open": [
+    "009F4DA0 needs the unit-group speed routines 0070D140/0070D0F0/0070E3C0 in the units host and producers for brain+0AF0h",
+    "009F0D20 needs the pre-pass proximity walk 009F158A..009F1BB8 and the node constructor 009E52E0",
+    "the override arm needs 0071E7F0 bound on the 00721A40 path and a non-queued command",
+    "00835C70's attackmove arm sets the director fire target (gunnery)"
+  ]
+}

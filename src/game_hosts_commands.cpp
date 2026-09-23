@@ -2400,8 +2400,10 @@ bool GameCommandsHost::active_command_descriptor_0071eb60(std::size_t unit_index
         return true;
     }
     if (director.mode == bsp::CruiseCommandMode::Override) {
-        // 00835C92 is the only writer of director+18Ch and this process reaches
-        // it through no path: 0071E7F0's queue arm is a record here
+        // 0071E7F0 BSP_WeaponDirector_SetOverrideCommand (0071E89E) is the
+        // writer of director+188h / +18Ch that matters here (00835C92 is a LEA
+        // that READS +18Ch; packet cc9_ship_natives_3), and this process reaches
+        // it through no path: its call from 00721A40 is a record here
         // (WeaponDirector::queue_command). The descriptor is therefore the one
         // a fresh director carries, and the caller is told which arm it got.
         out = bsp::SceneCommandTarget{};
@@ -2457,6 +2459,15 @@ std::uint32_t GameCommandsHost::director_slot_command(std::size_t unit_index,
     if (unit_index >= host.directors.size()) return 0u;
     if (slot_index < 0 || slot_index >= bsp::kDirectorCommandSlotCount) return 0u;
     return host.directors[unit_index].slot_command[slot_index];
+}
+
+std::uint64_t GameCommandsHost::director_head_key(std::size_t unit_index) const {
+    const Impl& host = *impl_;
+    if (unit_index >= host.directors.size()) return 0u;
+    const GameDirector& director = host.directors[unit_index];
+    if (director.slot_command[0] == 0u) return 0u;
+    return (static_cast<std::uint64_t>(director.slot_command[0]) << 16)
+        | static_cast<std::uint64_t>(director.slot_target[0].object_id);
 }
 
 const char* GameCommandsHost::command_name_of(std::uint32_t command_object) const {
