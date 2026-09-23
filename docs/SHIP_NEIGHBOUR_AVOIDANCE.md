@@ -358,3 +358,107 @@ posts come in (2478 and 116). The only neighbour-related record left in the tabl
 **Landed:** `kShipNeighbourClipsBound` ON. Every moved ship row traces to the bound reads: node
 blocks through 009DD540 / 009DD010 on ships that already held neighbours, and the clearance's
 node-driven danger on the five ships it reports.
+
+## 5. The pass-side message and the traffic pass (packet cc9_pass_side_message)
+
+2026-09-23. Names are hypotheses. Switch `kShipPassSideMessageBound` in
+`src/game_hosts_ship_ai.cpp`; the traffic pass runs under `kShipNeighbourAvoidanceBound`.
+Reconstructions in `src/ship_ai_neighbour_clips.cpp`.
+
+### The route, read
+
+| step | site | what it does |
+| --- | --- | --- |
+| post | 009D8C60 (009D8CAA..009D8CC4) | builds a kind-8Fh message through 009D66B0 (body 009D66B0-009D66EE): base constructor 0075B430(8Fh), vtable 00D034DC, +1Ch = the observed ship's object id (owner+174h), +20h = the side. Routes it with 0077C2A0(ECX = this ship's unit, msg, 2, 0) |
+| route | 0077C2A0 | ECX is the sending entity, not the session (0077C2AB MOV EDI,ECX; 0077C2C6 calls its vtable+5Ch). In a local session the flag word is forced to 1 and the only destination is 0076E520's loopback queue; the addressee is the sender itself (msg+18h = sender+174h, docs/SESSION_MESSAGE_DISPATCH.md) |
+| drain | 00778450 -> 0076C600 -> 00780670 | the session pump at fixed-step row 9 (docs/FIXED_STEP_FANOUT.md). The AI steps inside the world entity tick 00904BF0, which 004C40A0 calls after the fixed-step driver (docs/IN_MISSION_SUBSYSTEM_TICK.md), so a message posted during an AI step is delivered at the next step's pump, before any ship steps |
+| dispatch | 00780670 -> 00780120 -> 0077FE80 | the message answers IsA only for 8Fh and 46h (00762430), so none of the 47h/61h/48h/4Bh..59h arms take it; 0077FE80's gate is 004499C0 (always true) and 8Fh - 53h = 3Ch is past its 26h-entry table, so it goes to the entity's vtable[164h], 00821E80 |
+| receive | 00821E80's 8Fh arm, 00822294 (table 00822400 byte 0Ah, target 008223BC) | resolves +1Ch through 00521E30 and 00815010 (a kind-6 unit), then calls this ship's ai (unit+740h) vtable[28h] (00D21B10 = 009F3E30) with (other, side) |
+| handle | 009F3E30 (body 009F3E30-009F3E77, no caller: a vtable slot) | 009DA690 finds this ship's node for the other (blk+604h/+608h, first +14h match); none, or no ai on the other ship, ends it. Then the other ship's node for this one (may be null) and 009D8CE0(node)(side, other node) |
+| decide | 009D8CE0 (body 009D8CE0-009D9141) | node+88h = side and +75h = 1, unless both ships have assigned each other sides and the tracks cross: then +8Ch is 1 or 2 by the ranges to the crossing, and 2 takes the other ship's side |
+
+The consumers of +88h: 009F0100 (its lateral threshold), the sector scan's 009D84E0, and the
+traffic pass 009EF350, which now runs whole: 009DCEB0 (the pass bearing, body 009DCEB0-009DD00C)
+and 009D7AF0 (the corner to steer at by quadrant and side, body 009D7AF0-009D8000, third argument
+unread) fill +6Ch/+70h/+74h/+75h; the pass keeps the nearest side-1 and side-2 corners, narrows the
+bearing window [lo, hi] by the next ones, clamps blk+324h into it, stores sqrt(nearest squared
+distance) at blk+33Ch and raises blk+354h to 3.0.
+
+**blk+33Ch.** Its reader is the drive's rudder clamp gate at 009F4514, open only when the field is
+negative. 009F4D10 stores -1.0f there at 009F4D27 before calling 009EF350; this host drops that
+store (the publish result's `blk_33c`), so the field is 0 or the traffic pass's distance and the
+gate stays shut on both sides of the switch. Binding the -1.0f store is a separate change.
+
+### Substitutions left
+
+- An inactive sender drops the message (00780670's "entity missing" arm holds it ten ticks first).
+- The drain is modelled for the pass-side kind only, at the head of the next controller step
+  (this host runs one fixed step per 0.05 s frame).
+- 009DC2E0 (section 7) is not read in this packet.
+
+### Predictions, written before the pairs
+
+Sides: **off** (`kShipPassSideMessageBound` false, section 4's state) and **on**.
+
+1. **Delivered**: nearly every post (USN04 posts 2478 off; on, posts change with the tracks), less
+   those whose sender lost its node for the other ship before the next step. An 800-frame probe
+   delivered 370 of 371.
+2. **Pass sides**: ships in the screen take sides for the ships they post about; negotiation
+   (+8Ch non-zero) is rare, a few ships.
+3. **Traffic pass**: writes blk+324h/+33Ch/+354h on most ships that take a side (probe: 8 of 18),
+   with turns up to ~1.7 rad; the tracks of those ships move, so separation turns, sector marks,
+   clearance hits and danger move too.
+4. **Station rows and plan requests**: followers' heading targets change, so plan requests
+   and path rows move; station rows (requests, arm runs) may stay flat.
+5. **Deaths and damage**: may move with the tracks; no ship death expected on either side.
+6. **Unimplemented calls**: the pass-side record goes (2478 on USN04, 116 on USN01); nothing new
+   comes in, so the totals fall by about those amounts (to about 3.13M and 2.53M).
+7. **USN01**: only SaltLakeCity and Ralph posted; small or no moves.
+8. **Flat**: the mission load, the settings rows, everything before the first node forms.
+
+### Results (2026-09-23)
+
+Logs `local\ps_{off,on}_usn04.log` and `local\ps_{off,on}_usn01.log`, each side its own copy of the
+same tree's build (main ec4e7f074 plus this packet), `BSP_GUNNERY_RNG_STREAMS=1`.
+
+| row, USN04 | off | on |
+| --- | --- | --- |
+| pass-side posts / delivered | 2476 / 0 (recorded) | 2636 / 2636 |
+| node+88h changes / negotiated (+8Ch) | - | 182 / 124, on 14 ships |
+| traffic-pass writes (blk+324h/+33Ch/+354h) | 0 | 23089, on 13 ships; largest single turn 3.14 rad |
+| live rudder/throttle pair changes | 33837 | 30575 |
+| total ship path | 48039.62 m | 47058.50 m |
+| sector marks | 7377 | 8081 |
+| plan requests / seeds | 45327 / 541 | 45327 / 532 |
+| station rows | - | requests and arm runs flat; the throttle band moves (Northampton-class01 -0.8425 to -0.7946) |
+| torpedo drops (aircraft) | 2 | 0 |
+| ship deaths | none | none |
+| plane deaths | 16 | 20 (the set shifts; see the logs' `entity dead` lines) |
+
+USN01: 116 posts, all delivered (SaltLakeCity 40, Ralph 76); 5 side changes; 1084 traffic writes
+that never move blk+324h (the window never binds); every summary row flat, deaths included.
+
+Against the predictions: every post was delivered (predicted "nearly every"); negotiation was more
+common than predicted (124 deliveries on 10 ships, not "a few"); the traffic pass wrote on 13 of 18
+ships (predicted most that take a side) and its turns reach pi, larger than the probe's 1.7 rad;
+plan requests stayed flat and station requests and arm runs stayed flat (predicted); the kill set
+moved on USN04 and not on USN01; no ship died.
+
+**The pi turns.** With only side-1 nodes the window's lower bound is the heading - 3.14 (00CF0AA8)
+and its upper bound the nearest side-1 corner's bearing - 5 degrees; 009D7AF0 can pick a corner
+abeam or astern while 009DCEB0 only requires part of the box ahead, so the clamp can send blk+324h
+round to the far side. That follows the listing; it has not been checked against a trace of the
+image, and it is the first thing to look at if the USN04 moves need explaining.
+
+**Unimplemented calls** (sum of the UNIMPLEMENTED table):
+
+| mission | off | on |
+| --- | --- | --- |
+| USN04 | 3094607 | 3092810 |
+| USN01 | 2525608 | 2525492 |
+
+The fall is the pass-side record (2476 and 116); USN04's on side posts more (2636), and those are
+now concrete. main moved the off side from section 4's 3135486.
+
+**Landed:** `kShipPassSideMessageBound` ON; the traffic pass runs under
+`kShipNeighbourAvoidanceBound` (ON). Section 7 (009DC2E0) was not read in this packet.

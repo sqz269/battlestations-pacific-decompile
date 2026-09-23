@@ -150,3 +150,16 @@ on both sides, same tree, with the same trace.
 
 **Decision:** `kAaTargetWorldVelocityBound` lands ON. The lethality against the Lexington's Kates is
 unchanged in kind: they die to the same perfect SPVeteran fire, a fraction of a second later.
+
+## Correction, 2026-09-23 (packet cc9_flak_proximity_burst)
+
+- **Was:** "this installation's `deviceclasses.lua` has no `Model` or `Mesh` key".
+- **Is:** `scripts/datatables/autoload/deviceclasses.lua` is a 17-line wrapper. It loads
+  `classtables/arcade/deviceclasses.lua` (or the realistic table) into `DeviceClass`. Those rows
+  do carry `["Mesh"] = Platform("models/devices/...mmod", ...)` (350 of 416 rows). That mesh is the
+  gun class's `+50h` resource, and its `Aux` items carry `Identifier` = (`"fire"`, index) with a
+  `Points` list. `docs/FLAK_PROXIMITY_BURST.md` section 6 has the count rule and the three
+  Lexington mounts.
+- **Evidence:** the earlier grep ran on the wrapper, not on the class table.
+  `classtables/arcade/deviceclasses.lua` row 12 (Atlanta 5'' 2X DP) has
+  `"models/devices/us/atlanta_turret.mmod"`.
