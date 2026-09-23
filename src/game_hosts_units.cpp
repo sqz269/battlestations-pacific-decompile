@@ -83,6 +83,7 @@
 #include "bsp/vehicle_class.hpp"
 #include "bsp/world_ocean.hpp"
 #include "bsp/world_construct.hpp"
+#include "bsp/plane_class_fields.hpp"
 
 #include <cfloat>
 #include <cmath>
@@ -1217,6 +1218,10 @@ constexpr bool kHullAimTrace = false;
 // swing settles and the tail lifts the brake, but releases stay 0 because the
 // aimglide pitch target 009C5522-009C55DF is unbound. Still OFF.
 constexpr bool kAimDiveTailBound = false;
+// Packet cc9_dive_flight_response: class+164h Accel as the image's reader leaves
+// it (007D20F3-007D2127). docs/DIVE_FLIGHT_RESPONSE.md. OFF, measured: main 32 -> 24
+// releases (local/S1fr_9000.log); the throttle-fix pair lacks its control.
+constexpr bool kPlaneAccelCheatScaleBound = false;
 // Packet cc9_dive_throttle: goaway's throttle and air-brake commands on both
 // sides of the nose-down split, 009C4C0C-009C4CA7 and 009C4CBA-009C4CE1.
 // docs/DIVE_THROTTLE.md section 1.
@@ -4322,6 +4327,19 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
             }
             slot->plane_bomb_delay_1f4 = host.lua.read_vehicle_class_number(row.type_id, "BombDelay", 1.0f);   // class+1F4h BombDelay, 007D2318
             slot->plane_accel = lua_row.accel;
+            // Packet cc9_dive_flight_response: the class reader scales Accel in
+            // place (007D20F3-007D2127): when tuning+31Ch AccelCheatMul > 1.0,
+            // class+164h = tuning+320h AccelCheatMulMul * AccelCheatMul * Accel,
+            // before 007C4850 derives the drag coefficient +50Ch = +164h / MaxSpd^2
+            // (007C4984-007C499C). This installation: 1.15 * 1.5 = 1.725. The host
+            // kept the raw row value for thrust, drag and the climb angle.
+            // docs/DIVE_FLIGHT_RESPONSE.md.
+            if (kPlaneAccelCheatScaleBound && host.lua.plane_globals_loaded()) {
+                const bsp::GameTuningBlock& g = host.lua.plane_globals();
+                slot->plane_accel = bsp::plane_class_accel_007d20f3(
+                    lua_row.accel, g.dynamics_accel_cheat_mul,
+                    g.dynamics_accel_cheat_mul_mul).accel;
+            }
             slot->plane_glide_rate = lua_row.glide_rate;
             slot->plane_drag_pitch_ratio = lua_row.drag_pitch_ratio;
             slot->plane_air_brake_drag = lua_row.air_brake_drag;
