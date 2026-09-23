@@ -1217,11 +1217,11 @@ constexpr bool kHullAimTrace = false;
 // Re-measured with the throttle fix (cc9_dive_throttle, docs/DIVE_THROTTLE.md 4): the
 // swing settles and the tail lifts the brake, but releases stay 0 because the
 // aimglide pitch target 009C5522-009C55DF is unbound. Still OFF.
-constexpr bool kAimDiveTailBound = false;
+constexpr bool kAimDiveTailBound = true;
 // Packet cc9_dive_flight_response: class+164h Accel as the image's reader leaves
 // it (007D20F3-007D2127). docs/DIVE_FLIGHT_RESPONSE.md. OFF, measured: main 32 -> 24
 // releases (local/S1fr_9000.log); the throttle-fix pair lacks its control.
-constexpr bool kPlaneAccelCheatScaleBound = false;
+constexpr bool kPlaneAccelCheatScaleBound = true;
 // Packet cc9_dive_throttle: goaway's throttle and air-brake commands on both
 // sides of the nose-down split, 009C4C0C-009C4CA7 and 009C4CBA-009C4CE1.
 // docs/DIVE_THROTTLE.md section 1.
@@ -1237,11 +1237,11 @@ constexpr bool kAimGlideThrottleBound = true;
 // OFF, measured with the throttle fix and the tail (U3, local/U3_9000.log):
 // releases 16 against the control's 29 (8 against 17 at 4500). With the fix off
 // it is unmeasured, so it lands off with the flip.
-constexpr bool kAimGlidePitchBound = false;
+constexpr bool kAimGlidePitchBound = true;
 // Packet cc9_aimglide_pitch: the aimglide yaw arm 009C53E7-009C542A, taken when
 // the planar miss is under 140 m; the host ran only the heading arm.
 // OFF with kAimGlidePitchBound, for the same measurement.
-constexpr bool kAimGlideYawBound = false;
+constexpr bool kAimGlideYawBound = true;
 // Packet cc9_flyover_speed: the flyabove desired-speed arm 009C6F97-009C6FFB,
 // and approach+50h fed with the aim point's height. docs/FLYOVER_SPEED.md.
 // ON: USN04 moves only through the approach+50h feed on the two Yorktown
@@ -2765,7 +2765,7 @@ struct GameUnitsHost::Impl {
     // OFF, measured (docs/DIVE_MODES.md 5): with the throttle fix the leader holds
     // 1475 m / 82.2 m/s (was 1547 m / 34 m/s), but on main alone (local/G_9000.log)
     // it moves 46 dive-bomb rows through the fighters, not yet explained.
-    static constexpr bool kDogfightMovetoGenericBound = false;
+    static constexpr bool kDogfightMovetoGenericBound = true;
     static constexpr bool kPilotFiresBound = true;
     // Packet cc9_throttle_slot: a per-think trace of the throttle slot for the
     // Yorktown flight (dogfight) and D3A Val #1.1 (dive-bomb). Diagnostic, off.
@@ -2778,7 +2778,7 @@ struct GameUnitsHost::Impl {
     // (009C4C0C-009C4CA7 unmodelled) write no throttle in this host, so the Val
     // dives unpowered at 53 m/s instead of 134. Binding the aimdive tail too
     // (local/S1A_9000.log) still drops nothing. Bind those writers first.
-    static constexpr bool kPilotThrottleSlotBound = false;
+    static constexpr bool kPilotThrottleSlotBound = true;
     // 007B4ED0 wiring (the head-on arm and the maneuver tail's full throttle).
     // OFF, measured: run F1 drowned Yorktown-class01_sqn02 and its .-2 at |v| 51
     // after one maneuver tick left the throttle slot active in mode 0. The image
@@ -2798,10 +2798,10 @@ struct GameUnitsHost::Impl {
     // seed (one sequence across these draws). With BSP_GUNNERY_RNG_STREAMS=1 the
     // draw is keyed per unit name instead, as the gunnery option keys its draws.
     // OFF with kAimGlidePitchBound (docs/AIMGLIDE_PITCH.md section 5).
-    static constexpr bool kReleaseAltitudeDrawBound = false;
+    static constexpr bool kReleaseAltitudeDrawBound = true;
     // Packet cc9_fighter_gunfire_rate: approach+B4h = uniform(0.6, 0.8) * class+268h
     // (009C3F63-009C3F97), pinned at 0.6 before. OFF: unmeasured (runs blocked).
-    static constexpr bool kAttackDistDrawBound = false;
+    static constexpr bool kAttackDistDrawBound = true;
     std::uint32_t db_release_rng{0x9E3779B9u};
     std::map<std::uint64_t, std::uint32_t> db_release_rng_by_key;
     static bool release_rng_streams_enabled() {
