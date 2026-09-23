@@ -9011,3 +9011,40 @@ one `gunrow` line per gun.
 
 Use it on both sides of a pair, with every other parameter matched, and compare the `gunrow` and
 per-unit rows.
+
+## Mission reference baselines, 2026-09-23 (after the firepower, RNG-stream and ballistics landings)
+
+Packet `cc9_gun_ballistics`. **The difficulty-1 rows above predate three landings**, so they are
+no longer the reference:
+- the kind-5/6 flak minimum range and the armour test (`cc9_rng_streams`, `a4ea1a61d`);
+- the per-consumer stream option, which is off here, since these are reference runs;
+- this packet's per-bot aim law, `NoGravity` rounds and aim-error envelope (`1941a6468`).
+
+The binary is built from `1941a6468`: main `b41b50907` plus this packet. Runs are from the
+worktree root **without** `BSP_GUNNERY_RNG_STREAMS`:
+
+```
+./tools/run_game.ps1 -Log local\base_usn01.log -- --frames 3200 --press-start-frame 30 --menu-select USN01 --mission-frames 3000 --mission-frame-seconds 0.05
+./tools/run_game.ps1 -Log local\base_usn04.log -- --frames 4700 --press-start-frame 30 --menu-select USN04 --mission-frames 4500 --mission-frame-seconds 0.05
+./tools/run_game.ps1 -Log local\base_e9000.log -- --frames 9200 --press-start-frame 30 --menu-select USN04 --mission-frames 9000 --mission-frame-seconds 0.05
+```
+
+| mission | frames | damage | deaths | queued_hits | bomb_drops | bomb_impacts | torpedo drops | first_hit | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 mission | **18388.0** | **27** | **243** | **17** | **17** | 13 | **110.95 s** | `local\base_usn04.log` |
+| USN01 | 3000 mission | **4467.9** | **5** | **115** | 0 | 0 | 5 | **53.65 s** | `local\base_usn01.log` |
+
+Against the difficulty-1 rows, USN04 goes 16025.3 -> 18388.0 damage, 8 -> 27 deaths and 116 -> 243
+hits. USN01 goes 2892.0 -> 4467.9, 0 -> 5 and 35 -> 115. The cause is the AA aim law. Ship AA
+now aims at the target's pose position, leads a plane with its real speed, and fires `NoGravity`
+rounds straight, so AA kills aircraft it used to miss (`docs/GUN_BALLISTICS.md` section 6). The
+bomb columns fall by one on USN04 (18 -> 17); which bomber lost its release was not traced.
+
+**USN04 at 9000 mission frames, releases and water contacts** (`local\base_e9000.log`):
+
+| quantity | value |
+| --- | --- |
+| torpedo drops / torpedo task releases | 16 / 16 (aircraft 16), `water_entry_breakups=0` |
+| bomb drops / bomb impacts / dive-bomb releases | 29 / 29 / 29 (aircraft 19) |
+| projectiles created / entity impacts / water contacts / expired | 7026 / 278 / 118 / 6635 |
+| `queued_hits` / deaths / damage | 306 / 35 / 21324.9 |

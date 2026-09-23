@@ -32,6 +32,7 @@
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/gun_bot_remainder.hpp"
 #include "bsp/gun_bot_ticks.hpp"
+#include "bsp/gun_dispersion.hpp"
 #include "bsp/hit_narrowphase.hpp"
 #include "bsp/kill_credit.hpp"
 #include "bsp/attack_target_classify.hpp"
@@ -62,6 +63,35 @@ namespace {
 constexpr bool kAaMinRangeBound = true;     // 005459E0 / 00729B90
 constexpr bool kAaArmourBound = true;       // 008FBE00's armour test
 constexpr bool kAaFireWindowBound = false;  // 0085A9A0 (hull-frame substitution)
+
+// Packet cc9_gun_ballistics. docs/GUN_BALLISTICS.md.
+//  * kGunGravityArcBound: the gravity arc 00955630 and its 006DF8BF pre-estimate
+//    belong to the ArtilleryGunnerBot tick 006DF520 alone (sub-types 2, 3, 4, 9,
+//    and 6 against a non-plane). The AAGunnerBot 00902920 (sub-type 1) and the
+//    AAFlakBot 009030C0 (sub-type 5, and 6 against a plane) aim at the lead point
+//    with no gravity term at all (docs/AA_VERTICAL_WINDOW.md section 2).
+//  * kBulletNoGravityBound: a round flies without gravity when its class sets
+//    NoGravity (classDesc+20h); the host had gravity on for every round.
+//  * kGunAimErrorBound: the ArtilleryGunnerBot's aim-error envelope 006DEFF0 /
+//    006DF5A0 / 006DFB0B, on the row units.skill_level() selects.
+constexpr bool kGunGravityArcBound = true;
+constexpr bool kBulletNoGravityBound = true;
+constexpr bool kGunAimErrorBound = true;
+
+// This installation's scripts/datatables/robots.lua (modified 2025-06-01),
+// Robots["ArtilleryGunnerBot"], indexed as 00901610 reads the levels and as
+// luamw_init.lua's SKILL_* number them (docs/GAME_DIFFICULTY.md): Stun 0,
+// SPNormal 1, SPVeteran 2, MPNormal 3, MPVeteran 4, Elite 5. MaxAngleError is
+// DEG(x) in the file.
+constexpr float kDegToRad = 0.01745329251994329577f;
+constexpr bsp::ArtilleryGunnerAimErrorLevel kArtilleryGunnerLevels[6] = {
+    {10.0f * kDegToRad, 1.0f},  // 0 Stun
+    {5.0f * kDegToRad, 1.0f},   // 1 SPNormal
+    {0.0f * kDegToRad, 2.0f},   // 2 SPVeteran
+    {4.0f * kDegToRad, 1.5f},   // 3 MPNormal
+    {2.0f * kDegToRad, 1.8f},   // 4 MPVeteran
+    {0.0f * kDegToRad, 2.0f},   // 5 Elite
+};
 
 constexpr int kMaxPlatformScan = 64;   // the `Platforms` keys this process scans
 constexpr int kMaxWindowScan = 8;      // the `Windows` entries per platform
@@ -282,6 +312,7 @@ struct GameGunneryHost::Impl {
         hit_effect = 3,       // ship-hit fire/flood chance, key (victim unit, 0)
         hull_damage = 4,      // 00470510's base, key (gun, victim unit)
         blast_damage = 5,     // 0084BAD0's blast, key (gun, 0)
+        aim_error = 6,        // 006DEFF0's three draws and 006DF5C6's period, key (gun, 0)
     };
     static bool rng_streams_enabled() {
         static const bool on = [] {
@@ -296,6 +327,69 @@ struct GameGunneryHost::Impl {
         return on;
     }
     std::map<std::uint64_t, std::uint32_t> rng_by_key;
+    // Packet cc9_gun_ballistics: 006DF1F0 leaves bot+74h = 0 and bot+78h = 1, so
+    // the first tick rerolls.
+    struct AimErrorState {
+        bsp::GunAimAngles previous{};
+        bsp::GunAimAngles target{};
+        float period{1.0f};
+        float countdown{0.0f};
+    };
+    std::map<std::size_t, AimErrorState> aim_error_by_gun;
+    // 0072C6A0's slots, and 00729BC0's dispatch on the projectile kind of the
+    // ammunition in use. A sub-type 6 gun answers a plane with its SECOND
+    // ammunition entry (00729BC0's variant 1, +74h+7Ch), a Flak round that the
+    // AAFlakBot drives. This host loads only the first entry, an Artillery round
+    // (V0 300, gravity on), so a host sub-type 6 shot at anything is an
+    // ArtilleryGunnerBot shot. Until the second entry is loaded, the AA aim law
+    // applies to sub-types 1 and 5 alone. docs/GUN_BALLISTICS.md.
+    bool aa_bot_aims(int category, std::size_t) const {
+        return category == 1 || category == 5;
+    }
+    bool artillery_bot_aims(int category, std::size_t) const {
+        return category == 2 || category == 3 || category == 4 || category == 6
+            || category == 9;
+    }
+    // 006DF59F..006DF651: count down, reroll 006DEFF0 with a fresh U(3, 8)
+    // period on expiry, and interpolate from the old pair to the new one.
+    bsp::GunAimAngles aim_error_tick(std::size_t gun_index, std::size_t owner, float dt) {
+        AimErrorState& st = aim_error_by_gun[gun_index];
+        st.countdown -= dt;
+        if (st.countdown < 0.0f) {
+            int level = units.skill_level(owner);
+            if (level < 0 || level > 5) level = 1;   // the host's default, SPNormal
+            const bsp::ArtilleryGunnerAimErrorLevel& row = kArtilleryGunnerLevels[level];
+            st.period = draw(Draw::aim_error, gun_index, 0, 3.0f, 8.0f);   // 006DF5C6
+            st.countdown = st.period;
+            const float t = draw(Draw::aim_error, gun_index, 0, 0.0f, 1.0f);  // 006DEFF3
+            const float weight = t != 0.0f
+                ? static_cast<float>(std::exp2(static_cast<double>(row.power)
+                    * std::log2(static_cast<double>(t))))
+                : 0.0f;
+            const float span = draw(Draw::aim_error, gun_index, 0, 0.0f,
+                row.max_angle_error);                                          // 006DF0B8
+            const float radius = span * weight;
+            const float roll = draw(Draw::aim_error, gun_index, 0, 0.0f,
+                6.28318548202514648438f);                                      // 006DF0DC
+            st.previous = st.target;
+            st.target.horz = std::sin(roll) * radius;
+            st.target.vert = std::cos(roll) * radius;
+            ++aim_error_rerolls;
+            done("GunBot::reroll_aim_error_envelope_006deff0", 0x006deff0u);
+        }
+        bsp::ArtilleryGunnerBotErrorEnvelope env;
+        env.start_horz = st.target.horz;
+        env.end_horz = st.previous.horz;
+        env.start_vert = st.target.vert;
+        env.end_vert = st.previous.vert;
+        return bsp::gun_bot_muzzle_error_006df520(env, st.period, st.countdown);
+    }
+    unsigned long long aa_direct_aims{0};
+    unsigned long long artillery_arc_aims{0};
+    unsigned long long aim_error_rerolls{0};
+    unsigned long long no_gravity_shots{0};
+    // Per gun index: hits landed and damage dealt, for the gunrow lines.
+    std::map<std::size_t, std::pair<unsigned long long, double>> hits_by_gun;
     float draw(Draw purpose, std::size_t a, std::size_t b, float low, float high) {
         if (!rng_streams_enabled()) return random_range_00bd2f10(low, high);
         const std::uint64_t key = (static_cast<std::uint64_t>(purpose) << 56)
@@ -565,6 +659,7 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         "                f[q .. 'fdmg'] = num(bc.FireDamage, 1000) or 0\n"
         "                f[q .. 'fchance'] = num(bc.FireChance, 1000) or 0\n"
         "                f[q .. 'mass'] = num(bc.Mass, 1000) or 0\n"
+        "                f[q .. 'nograv'] = (bc.NoGravity == true) and 1000 or 0\n"
         "                if type(bc.Blast) == 'table' then\n"
         "                  f[q .. 'bdmin'] = num(bc.Blast.BlastDamageMin, 1000) or 0\n"
         "                  f[q .. 'bdmax'] = num(bc.Blast.BlastDamageMax, 1000) or 0\n"
@@ -808,6 +903,14 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                 b.fire_damage = flat_scaled(type_id, make("fdmg"), kMilliScale, 0.0f);
                 b.fire_chance = flat_scaled(type_id, make("fchance"), kMilliScale, 0.0f);
                 b.mass = flat_scaled(type_id, make("mass"), kMilliScale, 0.0f);
+                // Packet cc9_gun_ballistics: the row's Type string (the same one
+                // the finaliser above maps to a sub-type) and NoGravity.
+                b.type = lua.read_bullet_class_string(gun.bullet_class, "Type");
+                b.no_gravity = flat_scaled(type_id, make("nograv"), kMilliScale, 0.0f) > 0.5f;
+                log.notef("gunnery: bullet class %d \"%s\" Type=%s V0=%.1f range=%.0f "
+                    "NoGravity=%d (first used by category %d)", b.id, b.name.c_str(),
+                    b.type.c_str(), static_cast<double>(b.muzzle_speed),
+                    static_cast<double>(b.range), b.no_gravity ? 1 : 0, gun.category);
                 b.blast_damage_min = flat_scaled(type_id, make("bdmin"), kMilliScale, 0.0f);
                 b.blast_damage_max = flat_scaled(type_id, make("bdmax"), kMilliScale, 0.0f);
                 b.blast_range = flat_scaled(type_id, make("brange"), kMilliScale, 0.0f);
@@ -2266,7 +2369,38 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 } else {
                     lead = at;
                 }
+            } else if (kGunGravityArcBound && gun.muzzle_speed > 0.0f
+                       && aa_bot_aims(gun.category, target)) {
+                // 00902920 / 009030C0: 00901C20's lead point, no gravity term, no
+                // arc. SUBSTITUTION for 00901C20's closed-form intercept: the lead
+                // is the target's velocity times distance / V0, which is what the
+                // host's lead below reduces to at zero pitch.
+                // 00901C55..00901C74 reads the target's pose position +FCh..+104h,
+                // not the Height-raised point 00864D90 tests visibility from, which
+                // is what `at` holds. Aiming a straight round at that raised point
+                // puts it Height/2 over the target's hit box.
+                float tr[3], tu[3], tf[3], origin_of_target[3];
+                unit_pose(target, tr, tu, tf, origin_of_target);
+                const float span[3] = {origin_of_target[0] - muzzle[0],
+                    origin_of_target[1] - muzzle[1], origin_of_target[2] - muzzle[2]};
+                const float flight = length3(span) / gun.muzzle_speed;
+                // 00901C20 leads with the target's own velocity. unit_velocity reads
+                // the row's forward_speed, which is zero for a plane (the same
+                // reason release_ordnance_drop reads 0092D730), so a plane target
+                // is led from its body axis and 0092D730's speed.
+                float target_velocity[3] = {v[0], v[1], v[2]};
+                if (units.unit_is_kind_of(target, bsp::kUnitGunneryKindPlaneBase)) {
+                    const float speed = units.unit_forward_speed_0092d730(target);
+                    for (int i = 0; i < 3; ++i) target_velocity[i] = tf[i] * speed;
+                }
+                for (int i = 0; i < 3; ++i) {
+                    lead[i] = origin_of_target[i] + target_velocity[i] * flight;
+                }
+                pitch = 0.0f;
+                ++aa_direct_aims;
+                record("GunBot::intercept_solution_00901c20", 0x00901c20u);
             } else if (gun.muzzle_speed > 0.0f) {
+                ++artillery_arc_aims;
                 // 006DF520 steps 5, 6 and 7, the muzzle bot's own gravity
                 // pre-estimate (docs/GUN_BOT_TICKS.md section 6.3):
                 //   s     = distance * 9.81 / v^2              006DF8BF
@@ -2317,7 +2451,10 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                     std::sqrt(led[0] * led[0] + led[2] * led[2]);
                 const float direct_line = std::atan2(led[1], led_horizontal);
                 pitch = arc.angles.vert - direct_line;
-                record("GunBot::ballistic_arc_00955630", 0x00955630u);
+                // 00955630 reconstructed (src/gun_gravity_arc.cpp), taken on the
+                // mount == NULL path 0085B8DE uses: the host builds no gun node
+                // frame, so the local-frame round trip is skipped. Labelled.
+                done("GunBot::ballistic_arc_00955630", 0x00955630u);
                 done("GunBot::gravity_pre_estimate_006df8bf", 0x006df8bfu);
             }
 
@@ -2364,6 +2501,17 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 }
 
                 done("GunBot::angles_from_world_direction_008fdaf0", 0x008fdaf0u);
+                if (kGunAimErrorBound && !aa_bot_aims(gun.category, target)
+                    && artillery_bot_aims(gun.category, target)) {
+                    const bsp::GunAimAngles error = aim_error_tick(g, owner_unit, dt);
+                    bsp::GunAimAngles solved;
+                    solved.horz = want_horz;
+                    solved.vert = want_vert;
+                    const bsp::GunAimAngles aimed =
+                        bsp::gun_bot_aim_error_apply_006dfb0b(solved, error);
+                    want_horz = aimed.horz;
+                    want_vert = aimed.vert;
+                }
             }
             if (!arc_solved) {
                 ++gun.arc_unsolved;
@@ -2595,7 +2743,12 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         shot.flight.snapshot_current = bsp::TickPoint3{muzzle[0], muzzle[1], muzzle[2]};
         shot.flight.local_position = shot.flight.snapshot_current;
         shot.flight.mode = bsp::ProjectileMotionMode::kBallistic;
-        shot.flight.class_disables_gravity = false;
+        {
+            const GameBulletClassRow* round_class = bullet(gun.bullet_class);
+            shot.flight.class_disables_gravity = kBulletNoGravityBound
+                && round_class != nullptr && round_class->no_gravity;   // classDesc+20h
+            if (shot.flight.class_disables_gravity) ++no_gravity_shots;
+        }
         shots.push_back(shot);
         ++summary.projectiles;
         done("Projectile::launch_velocity_006e8430", 0x006e8430u);
@@ -3267,6 +3420,11 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
     target.row.health = target.health;
     unit_state[shooter].row.hits_dealt += 1;
     unit_state[shooter].row.damage_dealt += applied;
+    {
+        auto& per_gun = hits_by_gun[gun_row];
+        ++per_gun.first;
+        per_gun.second += applied;
+    }
     summary.damage_total += applied;
     if (summary.first_hit_seconds < 0.0f) summary.first_hit_seconds = clock_seconds;
 
@@ -4046,6 +4204,12 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery torpedo_drop drops=%llu refusals=%llu "
             "water_entry_breakups=%llu",
             s.torpedo_drops, s.torpedo_drop_refusals, s.water_entry_breakups);
+        host.log.notef("summary mission gunnery ballistics aa_direct_aims=%llu "
+            "artillery_arc_aims=%llu aim_error_rerolls=%llu no_gravity_shots=%llu "
+            "switches arc=%d nograv=%d aimerr=%d (packet cc9_gun_ballistics)",
+            host.aa_direct_aims, host.artillery_arc_aims, host.aim_error_rerolls,
+            host.no_gravity_shots, kGunGravityArcBound ? 1 : 0,
+            kBulletNoGravityBound ? 1 : 0, kGunAimErrorBound ? 1 : 0);
         host.log.notef("summary mission aa acceptance bound=%d window_rejects=%llu "
             "armour_rejects=%llu min_range_skips=%llu (packet cc9_aa_targeting)",
             (kAaMinRangeBound ? 1 : 0) | (kAaFireWindowBound ? 2 : 0) | (kAaArmourBound ? 4 : 0),
@@ -4319,11 +4483,13 @@ void GameGunneryHost::report() {
         for (std::size_t g = 0; g < host.guns.size(); ++g) {
             const GameGunRow& gun = host.guns[g];
             host.log.notef("  gunrow %4zu %-24s plat %3d cat %2d assigns %6llu clears %6llu "
-                "shots %6llu rises %6llu refusals %7llu minrange_skips %5llu",
+                "shots %6llu rises %6llu refusals %7llu minrange_skips %5llu hits %4llu dealt %8.1f",
                 g, gun.unit_name.c_str(), gun.platform_key, gun.category, gun.assigns,
                 gun.clears, gun.shots, gun.trigger_rises, gun.angle_refusals,
                 host.aa_min_range_skips_by_gun.count(g) != 0
-                    ? host.aa_min_range_skips_by_gun.at(g) : 0ull);
+                    ? host.aa_min_range_skips_by_gun.at(g) : 0ull,
+                host.hits_by_gun.count(g) != 0 ? host.hits_by_gun.at(g).first : 0ull,
+                host.hits_by_gun.count(g) != 0 ? host.hits_by_gun.at(g).second : 0.0);
         }
     }
     host.log.note("  unit                 side  guns  cats                 range  nearest"
