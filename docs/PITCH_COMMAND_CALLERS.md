@@ -86,10 +86,10 @@ sections differ, so the stores are compiled in.
 
 | run | mission, parameters | binary | log | `summary mission` rows (refills excluded) | per-unit rows |
 | --- | --- | --- | --- | --- | --- |
-| P0 | USN01, `--frames 3200 --mission-frames 3000` | `localinP0` | `local\P0_usn01.log` | 76 | - |
-| P1 | USN01, same | `localinP1` | `local\P1_usn01.log` | 76, identical to P0 | identical |
-| P0 | USN04, E2 parameters (`--frames 9200 --mission-frames 9000`) | `localinP0` | `local\P0_usn04.log` | 84 | - |
-| P1 | USN04, same | `localinP1` | `local\P1_usn04.log` | 84, identical to P0 | identical |
+| P0 | USN01, `--frames 3200 --mission-frames 3000` | `local\binP0` | `local\P0_usn01.log` | 76 | - |
+| P1 | USN01, same | `local\binP1` | `local\P1_usn01.log` | 76, identical to P0 | identical |
+| P0 | USN04, E2 parameters (`--frames 9200 --mission-frames 9000`) | `local\binP0` | `local\P0_usn04.log` | 84 | - |
+| P1 | USN04, same | `local\binP1` | `local\P1_usn04.log` | 84, identical to P0 | identical |
 
 The per-unit rows compared were every `torpedo`, `divebomb`, `water contact`,
 `release census`, `glide census`, `db aim exit` and `follow law` row: no difference. The seams
