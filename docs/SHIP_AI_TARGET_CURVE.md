@@ -127,3 +127,17 @@ state. A correction to docs/WEAPON_HIT_ACCURACY.md is appended there.
   where the image reads the target's `+370h`, `+A0h`, `+4Ch`, `vtable[24h]` and `+6B8h`
   (009F2A26..009F2A77). Binding it the same way will move the standoffs. That is the natural next
   packet.
+
+## 7. Correction, 2026-09-23 (packet `cc9_own_curve_target`, `docs/SHIP_AI_OWN_CURVE.md`)
+
+* **The unit radius `+9C8h` has a producer.** Section 1 repeated docs/GAME_EXECUTABLE.md's "no
+  producer anywhere". A scan of the disp32 store forms finds three writers:
+  - `0081106E` in `BSP_Unit_InitializeDirectorAndHullDimensions` (00810F60), the ship's unit
+    init. With model bounds at `[class+50h]` it stores `+9CCh` = the larger x half-extent, and
+    `+9C8h` = 2.0 (00D7A308) × that half-extent × the larger z half-extent, as traced. That
+    product wants a second read. Without bounds it stores class `+A4h` and `+A0h` (Length).
+  - `0081FA4D` in 0081F980, a save and load path.
+  - `004EC28E` in 004EB9B0, a scene-header property store.
+
+  The host still feeds 0. That only matters where the target curve is non-zero, which it is not
+  on USN04.

@@ -86,6 +86,11 @@ inline constexpr bool kWeaponHitAccuracyBound = true;
 // fills at nested+1238h from this ship's own fields. False: the old curve,
 // this ship's own rating without the long-range bias.
 inline constexpr bool kShipAiTargetCurveBound = true;
+// Packet cc9_own_curve_target, docs/SHIP_AI_OWN_CURVE.md. True: the own curve's
+// block at nested+127Ch describes the approach target as 009F2A26..009F2A77 read
+// it, with 009F2A91..009F2AC1's constants when there is none. False: the no-target
+// constants always, and a zero fire divisor.
+inline constexpr bool kShipAiOwnCurveTargetBound = true;
 namespace {
 
 bool has_ship_navigation_class(int kind) noexcept {
@@ -2498,6 +2503,54 @@ private:
     //                        the calls up to 009F29B2), all four categories
     //   +1278h, +1279h       0, 0 (009F29CA, 009F29D1): no bearing test, whole
     //                        barrel counts
+    // Packet cc9_own_curve_target. 009F29E0..009F2A02: EBX = [owner+0B20h] when it
+    // answers vtable[5Ch](5), else 0. With a target, 009F2A26..009F2A8F:
+    //   +1288h armour        [[t+538h]+4Ch] Armour (009F2A2C)
+    //   +128Ch torpedo armr  [t+538h]->vtable[24h]() (009F2A3C): ship class 009635D0
+    //                        = class+6B4h UnderwaterArmour; plane class 004407A0
+    //                        = class+4Ch Armour (no Ghidra function, 004407A0-004407A3)
+    //   +1284h damage cap    [t+370h] health (009F2A44)
+    //   +1280h length        [[t+538h]+0A0h] Length (009F2A54)
+    //   +129Ch fire divisor  [[t+538h]+6B8h] DamageThreshold when t answers
+    //                        vtable[5Ch](6), a ship (009F2A6B); else 10000.0f (009F2A7F)
+    // Without one, 009F2A91..009F2AC1: 0, 0, 10000.0f, 10000.0f, 100.0f.
+    void fill_own_block_target_127ch(bsp::ShipAiFirepowerQuery& q) const {
+        const std::uint32_t handle = ctl_.goal_vector.raw_target_0b20;
+        if (handle == 0u || handle - 1u >= owner_.units.count()) return;
+        const std::size_t target = static_cast<std::size_t>(handle - 1u);
+        if (!owner_.units.unit_is_kind_of(target, 5)) return;   // 009F29EC
+        int type_id = -1;
+        float health = 0.0f;
+        if (owner_.gunnery != nullptr) {
+            const std::vector<GameGunneryUnitRow>& rows = owner_.gunnery->unit_rows();
+            if (target < rows.size()) {
+                health = rows[target].health;
+                type_id = rows[target].type_id;
+            }
+        }
+        const bool ship = owner_.units.unit_is_kind_of(target, 6);     // 009F2A65
+        float armour = 0.0f;
+        float length = 0.0f;
+        float underwater = 0.0f;
+        float threshold = 100.0f;
+        if (owner_.settings_owner != nullptr && type_id >= 0) {
+            armour = owner_.settings_owner->read_vehicle_class_number(type_id, "Armour", 0.0f);
+            length = owner_.settings_owner->read_vehicle_class_number(type_id, "Length", 0.0f);
+            underwater = owner_.settings_owner->read_vehicle_class_number(type_id,
+                "UnderwaterArmour", 0.0f);
+            threshold = owner_.settings_owner->read_vehicle_class_number(type_id,
+                "DamageThreshold", 100.0f);
+        }
+        q.armour = armour;
+        // The class vtable[24h]: UnderwaterArmour for a ship class, Armour for a
+        // plane class. Other families were not read; they take Armour. LABELLED.
+        q.armour_torpedo = ship ? underwater : armour;
+        q.damage_cap = health;
+        q.target_length = length;
+        q.damage_threshold = ship ? threshold : 10000.0f;
+        owner_.done("ShipAiApproach::curve_query_target_fields", 0x009f2a44u);
+    }
+
     bsp::ShipAiFirepowerQuery target_query_1238h() const {
         bsp::ShipAiFirepowerQuery q{};
         q.window_seconds = 20.0f;
@@ -2562,7 +2615,13 @@ private:
         query.allow_artillery = 1;
         query.allow_torpedo = 1;
         query.allow_depth_charge = 1;
-        owner_.record("ShipAiApproach::curve_query_target_fields", 0x009f2a44u);
+        if (kShipAiOwnCurveTargetBound) {
+            // 009F2AB1: the no-target fire divisor is 10000.0f (00CE3D64), not 0.
+            query.damage_threshold = 10000.0f;
+            fill_own_block_target_127ch(query);
+        } else {
+            owner_.record("ShipAiApproach::curve_query_target_fields", 0x009f2a44u);
+        }
         owner_.record("ShipAiApproach::curve_query_allow_bytes", 0x009f2ae7u);
         FirepowerBinding firepower(owner_, index_);
 
@@ -2589,8 +2648,6 @@ private:
                 bsp::ship_ai_firepower_range_profile_0095f080(them,
                     ctl_.approach_curve_target.samples, false, target_firepower);
                 owner_.done("ShipAiApproach::curve_target_block_1238", 0x009f28fau);
-                owner_.done("ShipAiApproach::curve_refresh_target_0095f080", 0x009f2fb1u);
-                ++owner_.summary.approach_curve_refreshes;
             } else if (has_target) {
                 bsp::ship_ai_firepower_range_profile_0095f080(query,
                     ctl_.approach_curve_target.samples, false, firepower);
