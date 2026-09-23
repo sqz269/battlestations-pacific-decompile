@@ -139,13 +139,14 @@ public:
     // `inputs.non_campaign_session = false`, both in src/game_hosts_mission.cpp,
     // and 006CDC70 gates its sub-updates on the same word. Zero is what those say.
     int game_non_campaign_flag() override { return 0; }
-    // game+6ACh, the effective difficulty. Nothing in this process writes it:
-    // `MissionStart::set_effective_difficulty` is a record at 0058BF58, so the
-    // field holds its constructor zero and that is what 008AE12A would read.
-    // Zero is also the easiest campaign setting, which is the arm usn_19_coralus
-    // gates its Japanese strike on at `:1382`. That is a consequence, not the
-    // reason for the value.
-    int game_effective_difficulty() override { return 0; }
+    // game+6ACh, the effective difficulty, read at 008AE12A. Packet
+    // cc9_difficulty: `MissionStart::set_effective_difficulty` now stores what
+    // 0058BF37 / 0058BF58 would, so this reads it back. With the switch off it
+    // is the old constructor zero, which sent every mission down its
+    // difficulty-0 arms (usn_19_coralus.lua :70, :2582; usn_1_marshall.lua :180).
+    int game_effective_difficulty() override {
+        return kSkillLevelBound ? game_effective_difficulty_6ac() : 0;
+    }
     void log_prepare_class(int) override {}
     bool resolve_global_integer(const std::string&, int&) override { return false; }
     void vehicle_class_mark_party_required(int, int) override {}
@@ -215,7 +216,15 @@ const char* command_name_of(std::uint32_t object) noexcept {
     return "";
 }
 
+// game+6ACh. One word for the process, as the image has one game object.
+std::int32_t g_effective_difficulty_6ac = 0;
+
 }  // namespace
+
+std::int32_t game_effective_difficulty_6ac() noexcept { return g_effective_difficulty_6ac; }
+void set_game_effective_difficulty_6ac(std::int32_t value) noexcept {
+    g_effective_difficulty_6ac = value;
+}
 
 GameScriptOrdersHost::GameScriptOrdersHost(GameHostLog& log, GameUnitsHost& units)
     : log_(log), units_(units) {}
@@ -1380,12 +1389,22 @@ void GameScriptOrdersHost::session_route_formation_message(void* follower,
 }
 
 void GameScriptOrdersHost::entity_set_skill_level(void* entity, int level) {
-    static_cast<void>(entity);
-    // entity->vtable[128h] at 0089539a. The leaf body belongs to the unit class
-    // family and has no reconstruction, so the value is recorded, not applied.
-    log_.unimplemented("UnitInstance::set_skill_level", "0089539a");
     if (row_ != nullptr) row_->skill_level = level;
     ++summary_.skills;
+    // entity->vtable[128h] at 0089539a. Packet cc9_difficulty: for a plane that
+    // is 006D1EB0 -> 007B8AE0, the pilot bot's index (bot+34h), and 009565A0,
+    // unit+390h; a ship reaches 009565A0 through 0080DF90. The host keeps both
+    // as the slot's one index. Its readers: the dive-bomb approach's capture
+    // (009F9D22). The weapon director's and child objects' re-skill that
+    // 009565A0 also performs is not modelled (the gun bots read no skill here).
+    const std::size_t index = index_of(entity);
+    if (!kSkillLevelBound || index >= units_.count()) {
+        log_.unimplemented("UnitInstance::set_skill_level", "0089539a");
+        return;
+    }
+    units_.set_skill_level_007b8ae0(index, level);
+    log_.notef("SetSkillLevel unit=%zu level=%d", index, level);
+    log_.implemented("UnitInstance::set_skill_level", "0089539a");
 }
 
 bool GameScriptOrdersHost::entity_is_kind_of(void* entity, int class_id) {

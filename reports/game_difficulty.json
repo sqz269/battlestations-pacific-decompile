@@ -1,0 +1,233 @@
+{
+  "packet": "cc9_difficulty",
+  "doc": "docs/GAME_DIFFICULTY.md",
+  "status": "bound behind kSkillLevelBound (default true); USN01 and USN04 measured against a switch-off control",
+  "abi_compatible": false,
+  "game_validated": false,
+  "routines": [
+    {
+      "address": "008AE030",
+      "native": "008AE030",
+      "name": "BSP_LuaBinding_GetDifficulty",
+      "role": "returns 2 when *(00E188A8)+1FE4h != 0 (008AE113-008AE123), else *(00E188A8)+6ACh (008AE12A), unchanged"
+    },
+    {
+      "address": "0058BDF0",
+      "native": "0058BDF0",
+      "name": "BSP_MainMenu_StartSelectedMission",
+      "role": "0058BF26 reads record+B4h (dword); != 3 stores it to game+6ACh at 0058BF37; == 3 and [[00E198AC]+58h]+5Ch == 0 (byte, EBX = 0 from 0058BE2C) stores game+6B0h to game+6ACh at 0058BF58; == 3 with the byte set leaves game+6ACh"
+    },
+    {
+      "address": "007FDB20",
+      "native": "007FDB20",
+      "name": "BSP_PlayerProfile_ResetToDefaults",
+      "role": "profile reset; Difficulty and SelectedDifficulty = 1 (docs/GAME_PROFILE_RESET.md); the host's chosen_difficulty substitution"
+    },
+    {
+      "address": "00895250",
+      "native": "00895250",
+      "name": "SetSkillLevel binding",
+      "role": "Lua SetSkillLevel(entity, level); entity->vtable[128h](level) at 0089539A"
+    },
+    {
+      "address": "007B8AE0",
+      "native": "007B8AE0",
+      "name": "BSP_PlaneSkill_SetLevel",
+      "role": "pilot bot (unit+DF4h) index, then 009565A0; the host's set_skill_level_007b8ae0"
+    },
+    {
+      "address": "009565A0",
+      "native": "009565A0",
+      "name": "BSP_UnitSkill_ApplyLevel",
+      "role": "unit+390h = level; director and child re-skill not modelled by the host"
+    },
+    {
+      "address": "0095CC90",
+      "native": "0095CC90",
+      "name": "BSP_UnitGameObject_Construct",
+      "role": "0095CCCC: mov dword [esi+390h], 1 (disk bytes); the slot default"
+    },
+    {
+      "address": "00927A80",
+      "native": "00927A80",
+      "name": "BSP_PropertyBag_GetSkill",
+      "role": "bag Skill (00CF8838) +0Ch; else bag Crew (00D19264) +0Ch through 006E6210 (tail jump 00927AC2); else 1"
+    },
+    {
+      "address": "006E6210",
+      "native": "006E6210",
+      "name": "BSP_Skill_FromCrewLevel",
+      "role": "Crew to SkillLevels: 0,1,2 -> 0,1,2 single player (1,3,4 when game+1FE4h != 0); 3 -> 5; else 1"
+    },
+    {
+      "address": "00945C30",
+      "native": "00945C30",
+      "name": "BSP_SpawnMember_Construct",
+      "role": "SpawnNew member element: new 114h bag at +0Ch, 009420A0(party), 00944210(member); RET 8"
+    },
+    {
+      "address": "009420A0",
+      "native": "009420A0",
+      "name": "BSP_SpawnMember_SeedPropertyBag",
+      "role": "bag defaults Party, 00CE8EE0, Skill = 1 (single player) or 3, OwnerPlayer 9, Behaviour 1; RET 4"
+    },
+    {
+      "address": "00944210",
+      "native": "00944210",
+      "name": "FUN_00944210",
+      "role": "copies the Lua member table into the bag (0043D8F0), then resolves the class and name; RET 4"
+    },
+    {
+      "address": "0043D8F0",
+      "native": "0043D8F0",
+      "name": "BSP_LuaTable_CopyIntoPropertyBag",
+      "role": "generic table walk (IterateFirst/Next) into bag setters; callee set read, PARTIAL"
+    },
+    {
+      "address": "00949750",
+      "native": "00949750",
+      "name": "BSP_SpawnManager_LuaSpawnNew",
+      "role": "SpawnNew; one 00945C30 per groupMembers element (key 00D199A8)"
+    },
+    {
+      "address": "009F9D22",
+      "native": "009F9D22",
+      "name": "(approach row capture, inside the dive-bomb approach constructor)",
+      "role": "approach+14h = 00F8A30C + bot+34h * 248h + 0Ch; the host's db_skill_row_14 capture"
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "007D65AA",
+      "native": "00927A80",
+      "function": "007D5D20",
+      "note": "the plane reads its bag's skill"
+    },
+    {
+      "address": "00949A53",
+      "native": "00945C30",
+      "function": "00949750",
+      "note": "one member element per groupMembers entry"
+    },
+    {
+      "address": "00945C92",
+      "native": "009420A0",
+      "function": "00945C30",
+      "note": "defaults first, Skill = 1"
+    },
+    {
+      "address": "00945C9E",
+      "native": "00944210",
+      "function": "00945C30",
+      "note": "then the Lua member copied over"
+    },
+    {
+      "address": "0094421B",
+      "native": "0043D8F0",
+      "function": "00944210",
+      "note": "ECX = member table, EDX = bag"
+    }
+  ],
+  "field_accesses": [
+    {
+      "address": "008AE12A",
+      "function": "008AE030",
+      "note": "MOV EAX,[EAX+6ACh], GetDifficulty's value"
+    },
+    {
+      "address": "008AE113",
+      "function": "008AE030",
+      "note": "CMP [EAX+1FE4h],EBP; nonzero returns 2"
+    },
+    {
+      "address": "0058BF26",
+      "function": "0058BDF0",
+      "note": "record+B4h"
+    },
+    {
+      "address": "0058BF37",
+      "function": "0058BDF0",
+      "note": "game+6ACh = record+B4h"
+    },
+    {
+      "address": "0058BF48",
+      "function": "0058BDF0",
+      "note": "CMP byte [[[00E198AC]+58h]+5Ch], 0"
+    },
+    {
+      "address": "0058BF58",
+      "function": "0058BDF0",
+      "note": "game+6ACh = game+6B0h"
+    },
+    {
+      "address": "0095CCCC",
+      "function": "0095CC90",
+      "note": "unit+390h = 1"
+    }
+  ],
+  "answer": "The image's fresh-session difficulty is 1 (record 3, profile reset 1); the host now stores and returns it. SetSkillLevel sets a per-slot skill index (default 1) which the dive-bomb approach captures at arm construction and uses to select one of six robots.lua PilotBot rows. SpawnNew planes are seeded Skill=1 by 009420A0, so USN04's phase-1 Vals fly SPNormal at difficulty 1 as at 0; the difficulty moves USN04 only through the phase-1 spawn schedule (4 bombers + 2 Zeros per group instead of 3 bombers), and USN01 not at all.",
+  "validation": {
+    "build": "./scripts/build.ps1, Win32 Release, warnings as errors, both ctests passed, with the switch on and off",
+    "runs": {
+      "usn01_control": {
+        "log": "local/diff_ctl_usn01.log",
+        "damage": 2892.0,
+        "deaths": 0,
+        "queued_hits": 35
+      },
+      "usn01_treatment": {
+        "log": "local/diff_trt_usn01.log",
+        "damage": 2892.0,
+        "deaths": 0,
+        "queued_hits": 35,
+        "note": "only binding lines and the avoidance refills counter differ"
+      },
+      "usn04_control": {
+        "log": "local/diff_ctl_usn04.log",
+        "damage": 13655.6,
+        "deaths": 7,
+        "queued_hits": 89,
+        "dive_releases": 16,
+        "torpedo_drops": 10,
+        "first_hit_s": 121.95
+      },
+      "usn04_treatment": {
+        "log": "local/diff_trt_usn04.log",
+        "damage": 16025.3,
+        "deaths": 8,
+        "queued_hits": 116,
+        "dive_releases": 18,
+        "torpedo_drops": 13,
+        "first_hit_s": 123.3,
+        "note": "Lexington-class01 sunk at 220.36 s, credited to US escort York-class02 (open)"
+      },
+      "usn04_e9000_treatment": {
+        "log": "local/diff_trt_usn04_e9000.log",
+        "damage": 19109.5,
+        "deaths": 15,
+        "queued_hits": 191,
+        "dive_releases": 26,
+        "torpedo_drops": 16,
+        "water_contacts": 12,
+        "mission_phase_end": 2
+      }
+    },
+    "worktree": "J:/PROG/battlestations-pacific-decompile-cc9-difficulty"
+  },
+  "no_ghidra_function": [],
+  "tail_jumps": [
+    {
+      "address": "00927AC2",
+      "function": "00927A80",
+      "note": "JMP, not CALL: tail jump with ECX = the Crew entry +0Ch",
+      "jump_target": "006E6210"
+    }
+  ],
+  "open": [
+    "Lexington kill credited to side-0 York-class02; no per-hit source lines to prove friendly fire vs attribution",
+    "Lexington sunk yet MissionFailedRan nil and phase 2 reached: the host likely never sets entity.Dead for a sunk ship",
+    "gun bots do not read the slot skill (src/game_hosts_gunnery.cpp, integrator)",
+    "carrier launch bags do not carry carrier+390h into the launched slot (phase 3 only)",
+    "save\\0\\player SelectedDifficulty not decoded (zlib block container 00BD48F0/00BD49B0/00BD4A70/00BD4860)"
+  ]
+}

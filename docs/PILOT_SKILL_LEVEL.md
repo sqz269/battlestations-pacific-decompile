@@ -153,3 +153,21 @@ The next worker should bind that.
   authored.
 * The profile at `save\0\player` is encoded. If the image were signed into that profile, its
   `SelectedDifficulty` would apply instead of 1. The codec is in `docs/GAME_PROFILE_ARCHIVE.md`.
+
+## 7. Corrections, 2026-09-23 (packet `cc9_difficulty`, `docs/GAME_DIFFICULTY.md`)
+
+* **GetDifficulty is gated.** 008AE030 returns game+6ACh only when `*(00E188A8)+1FE4h` is zero
+  (008AE113). A nonzero session word returns 2. The single-player value is unchanged.
+* **The fallback key is `Crew`, and it is mapped.** 00927A80's second key, 00D19264, is the string
+  `Crew`. Its value goes through 006E6210 by tail jump at 00927AC2, not straight through. In single
+  player, 006E6210 maps 0, 1 and 2 to themselves and 3 to Elite (5); any other value gives 1.
+* **SpawnNew planes never reach that fallback.** 009420A0 seeds every SpawnNew member bag with
+  `Skill` = 1 in single player. The Lua member table is copied over it afterwards (00944210 into
+  0043D8F0), and no member in these scripts authors `Skill`. So USN04's phase-1 Vals fly SPNormal
+  whatever their `Crew` says (1 at difficulty 0, 2 at difficulty 1). Section 1's conclusion holds.
+* **Section 5's schedule prediction pointed at the wrong block.** Lines 1382-1600 are
+  `luaIJNFleetManager`, the phase-3 carrier launches. The types are the same in every difficulty
+  arm. Only the squadron size (3, 4 or 5) and the relaunch threshold (4, 6 or 8) differ. The
+  first 225 s of USN04 run phase 1 instead, in `luaSpawnPh1Bombers` (line 2572). There,
+  difficulty 1 flies four Vals and four Kates per group instead of three, and adds two Zero
+  escorts (type 150) to each group. Lines 159 and 198 gate `RepairEnable`, not launches.

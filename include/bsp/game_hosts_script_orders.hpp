@@ -98,6 +98,21 @@ std::size_t resolve_plane_squadron_members(const GameUnitsHost& units,
                                            GameHostLog* log,
                                            bool only_unresolved = false);
 
+// Packet cc9_difficulty, docs/GAME_DIFFICULTY.md. The switch for the game
+// difficulty and the per-unit skill level. True: 0058BF37/0058BF58 store the
+// effective difficulty, GetDifficulty (008AE12A) reads it back, and
+// SetSkillLevel (0089539A -> 007B8AE0 / 009565A0) sets the units-host slot's
+// skill index, which the dive-bomb approach captures at 009F9D22. False: the
+// old behaviour, difficulty 0 everywhere and every skill call recorded only.
+inline constexpr bool kSkillLevelBound = true;
+
+// game+6ACh, the effective difficulty, one process-wide word as in the image
+// (`*(00E188A8)+6ACh`). The mission host's MissionStart store writes it and
+// the script host's GetDifficulty reads it. Zero until the first store, the
+// value the game object's constructor leaves.
+std::int32_t game_effective_difficulty_6ac() noexcept;
+void set_game_effective_difficulty_6ac(std::int32_t value) noexcept;
+
 class GameHostLog;
 class GameUnitsHost;
 struct GameSceneEntityRecord;
