@@ -5,6 +5,7 @@
 // call of a bsp:: rule or host already on main, or a recorded gap.
 
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/gun_aim_terms.hpp"
 
 #include <array>
 #include <limits>
@@ -373,6 +374,7 @@ struct GameGunneryHost::Impl {
         ship_ai_torpedo = 7,  // 009F0AD0 and the brain timer draws, key (unit, 0)
         death_mode = 8,       // 007CA914, the plane death-mode choice, key (unit, 0)
         death_delay = 9,      // 007BBFA0's ExplosionExplosionDelay (stream 0), key (unit, 0)
+        aim_wander = 10,      // 009FA620 / 009FA7E0, the dogfight aim distortion, key (unit, 0)
     };
     unsigned long long next_projectile_serial{0};
     static bool rng_streams_enabled() {
@@ -4117,6 +4119,36 @@ float GameGunneryHost::death_mode_draw_00bd2f10(int stream, std::size_t unit_ind
     const float unit = static_cast<float>((stream0 >> 8) & 0xFFFFFFu)
         / static_cast<float>(0x1000000u);
     return low + (high - low) * unit;
+}
+
+void GameGunneryHost::fighter_aim_distortion_009fa7e0(std::size_t unit_index, float dt,
+    bool owner_is_fighter, float out[2]) {
+    static std::map<std::size_t, bsp::GunAimWander> wanders;
+    auto it = wanders.find(unit_index);
+    if (it == wanders.end()) {
+        float draws[4];
+        draws[0] = impl_->draw(Impl::Draw::aim_wander, unit_index, 0, 0.1f, 1.0f);  // 00D7A2F0
+        draws[1] = impl_->draw(Impl::Draw::aim_wander, unit_index, 0, -1.0f, 1.0f);
+        draws[2] = impl_->draw(Impl::Draw::aim_wander, unit_index, 0, -1.0f, 1.0f);
+        draws[3] = impl_->draw(Impl::Draw::aim_wander, unit_index, 0, -1.0f, 1.0f);
+        it = wanders.emplace(unit_index, bsp::GunAimWander{}).first;
+        bsp::gun_aim_wander_init_009fa620(it->second, draws);
+    }
+    const float rx = impl_->draw(Impl::Draw::aim_wander, unit_index, 0, -1.0f, 1.0f);
+    const float ry = impl_->draw(Impl::Draw::aim_wander, unit_index, 0, -1.0f, 1.0f);
+    bsp::gun_aim_wander_step_009fa7e0(it->second, dt, rx, ry);
+    out[0] = it->second.out[0];
+    out[1] = it->second.out[1];
+    if (owner_is_fighter) {
+        float div = 1.8f;   // Pilot/Dogfight/FighterAimMulVersusAI default
+        if (impl_->lua.plane_globals_loaded()) {
+            div = impl_->lua.plane_globals().pilot_dogfight_fighter_aim_mul_versus_ai;
+        }
+        if (div != 0.0f) {
+            out[0] /= div;   // 009FCD4E FDIVP
+            out[1] /= div;   // 009FCD56 FDIVR
+        }
+    }
 }
 
 float GameGunneryHost::min_fixed_gun_muzzle_speed_007c2610(std::size_t unit_index) const noexcept {

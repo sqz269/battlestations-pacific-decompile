@@ -622,6 +622,17 @@ public:
     // Under BSP_GUNNERY_RNG_STREAMS=1, a MEASUREMENT option, each (stream, unit)
     // key gets its own deterministic generator instead.
     float death_mode_draw_00bd2f10(int stream, std::size_t unit_index, float low, float high);
+    // Packet cc9_gun_aim_terms (docs/GUN_AIM_TERMS.md). The dogfight fine aim's
+    // distortion, 009FA7E0 on dogfight-gun+4h, called at 009FCCD7 only on a tick
+    // where the fine aim runs. One wander per unit, created on the first call
+    // (009FA620's four draws) and stepped with two draws per call, all on the
+    // shared 00BD2F10 stream 1 (key Draw::aim_wander under the option). `out`
+    // receives what 009FCD41-009FCD8A adds to the aim angles: (+20h, +24h),
+    // divided by tuning+648h FighterAimMulVersusAI when `owner_is_fighter`.
+    // SUBSTITUTION, labelled: the +64Ch FighterAimMulVersusPlayer arm needs the
+    // target's +DF4h slot record, and every target here is AI-held.
+    void fighter_aim_distortion_009fa7e0(std::size_t unit_index, float dt,
+                                         bool owner_is_fighter, float out[2]);
     const GameGunnerySummary& summary() const noexcept;
 
     // docs/RECON_SLOT_LISTS.md rule (c). This host owns the one
