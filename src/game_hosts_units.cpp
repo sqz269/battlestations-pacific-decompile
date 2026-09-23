@@ -2799,6 +2799,9 @@ struct GameUnitsHost::Impl {
     // draw is keyed per unit name instead, as the gunnery option keys its draws.
     // OFF with kAimGlidePitchBound (docs/AIMGLIDE_PITCH.md section 5).
     static constexpr bool kReleaseAltitudeDrawBound = false;
+    // Packet cc9_fighter_gunfire_rate: approach+B4h = uniform(0.6, 0.8) * class+268h
+    // (009C3F63-009C3F97), pinned at 0.6 before. OFF: unmeasured (runs blocked).
+    static constexpr bool kAttackDistDrawBound = false;
     std::uint32_t db_release_rng{0x9E3779B9u};
     std::map<std::uint64_t, std::uint32_t> db_release_rng_by_key;
     static bool release_rng_streams_enabled() {
@@ -7793,6 +7796,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 if (r > 0.0f) {
                                     unit_.db_in_range_b8 = 1.6f * r;
                                     unit_.db_attack_dist_b4 = 0.6f * r;
+                                    if constexpr (GameUnitsHost::Impl::kAttackDistDrawBound) {
+                                        // 009C3F63-009C3F97: 00BD2F10(0.6 [00CE3D30],
+                                        // 0.8 [00CE74F8]) on ECX = 1, then FMUL
+                                        // class+268h; drawn after +A8h (009C3F29) and
+                                        // before +B8h. docs/FIGHTER_GUNFIRE_RATE.md 5.
+                                        unit_.db_attack_dist_b4 = owner_.release_altitude_draw_00bd2f10(
+                                            unit_.row.name, 0.6f, 0.8f) * r;
+                                    }
                                 } else {
                                     unit_.db_in_range_b8 =
                                         GameUnitsHost::Impl::kPilotDiveBombAttackDist;
