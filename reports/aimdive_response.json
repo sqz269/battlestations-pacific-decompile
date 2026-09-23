@@ -1,0 +1,43 @@
+{
+  "packet": "cc9_aimdive_response",
+  "doc": "docs/AIMDIVE_RESPONSE.md",
+  "source": "include/bsp/dive_bomb_aimdive_tail.hpp, src/dive_bomb_aimdive_tail.cpp, src/game_hosts_units.cpp (aimdive tick, behind kAimDiveTailBound = false)",
+  "scope": "Read the aimdive tick's command chain after the roll (009C5DB8-009C6080) and the fly-over's desired-speed arm (009C6F97-009C6FFB); bind the aimdive tail as a pure rule behind a switch; four USN04 runs.",
+  "abi_compatible": false,
+  "game_validated": false,
+  "reconstructed": [
+    {"address": "009C58D0", "native": "009C58D0", "name": "BSP_BotStateDiveBombAimDive_Tick", "range": "009C5DB8-009C6080", "rule": "dive_bomb_aimdive_tail_009c5db8", "status": "reconstructed, build-tested, bound behind kAimDiveTailBound = false"}
+  ],
+  "call_sites": [
+    {"address": "009C5D8E", "native": "00419010", "function": "009C58D0", "note": "the roll map, bound before this packet"},
+    {"address": "009C5DC8", "native": "00414DB0", "function": "009C58D0", "note": "own pose refresh before the inverse"},
+    {"address": "009C5DE0", "native": "00B63D50", "function": "009C58D0", "note": "orthogonal scaled inverse of unit+CCh into unit+110h, cached by the byte unit+10Ch"},
+    {"address": "009C5DF1", "native": "00D20C48+vtable00", "function": "009C58D0", "note": "approach->vtable[0], the aim point"},
+    {"address": "009C5E01", "native": "004142E0", "function": "009C58D0", "note": "aim point into the aircraft frame; x at [ESP+40h], z at [ESP+48h]"},
+    {"address": "009C5EDE", "native": "unit+vtable38", "function": "009C58D0", "note": "the cached speed"},
+    {"address": "009C5F9E", "native": "00419010", "function": "009C58D0", "note": "power cap: (0, row+44h) .. (1, row+48h) at row+54h x |pitch cmd|"},
+    {"address": "009C5FCB", "native": "00419010", "function": "009C58D0", "note": "brake floor: (0, row+50h) .. (1, row+4Ch) at |pitch cmd|"},
+    {"address": "009C6FB0", "native": "007C4810", "function": "009C62B0", "note": "fly-over desired speed: a class speed subtracted from approach+A4h; the frame slot [ESP+2Ch] that scales it is not paired"}
+  ],
+  "constants": [
+    {"address": "00CE3DB0", "width": "double", "value": 8.0, "use": "yaw gain, 009C5E57"},
+    {"address": "00CE3830", "width": "double", "value": 1.5707963705062866, "use": "|bank| fold, 009C5EA8"},
+    {"address": "00CE3D28", "width": "double", "value": 3.1415927410125732, "use": "009C5EBC"},
+    {"address": "00CE3938", "width": "double", "value": 50.0, "use": "pull-out margin base, 009C5F0F"},
+    {"address": "00CE7638", "width": "float", "value": 0.05, "use": "throttle below the floor, 009C5F2F"},
+    {"address": "00D1F3F8", "width": "double", "value": 120.0, "use": "power ramp band, 009C5FDC"},
+    {"address": "00D7A238", "width": "float", "value": 0.01, "use": "ramp minimum, 009C5FEA"},
+    {"address": "00D7A24C", "width": "float", "value": 1.0, "use": "ramp maximum, 009C6006"},
+    {"address": "00D7A208", "width": "float", "value": -0.0, "use": "the fold's minuend"},
+    {"address": "00D20338", "width": "float", "value": -1.0471975803375244, "use": "abort attitude floor, 009C5B25"},
+    {"address": "00CE3DC8", "width": "double", "value": 0.30000001192092896, "use": "abort slope, 009C5B30"},
+    {"address": "00CE3DD8", "width": "double", "value": 150.0, "use": "abort bias, 009C5B36"}
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1",
+    "target": "MSVC Win32 Release /W4 /WX",
+    "build_passed": true,
+    "existing_ctests_passed": 2,
+    "default_neutrality": "local/coff_usn04.log (tail off, hull off, trace on) matches local/feedoff_usn04.log on all 3743 census lines"
+  }
+}
