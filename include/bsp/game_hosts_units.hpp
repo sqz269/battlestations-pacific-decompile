@@ -368,6 +368,10 @@ public:
     // 0092d730 over the unit's body axis and linear velocity, the same value the
     // trajectory dump's fwd_speed column carries.
     float unit_forward_speed_0092d730(std::size_t index) const;
+    // Packet cc9_aa_lethality_audit: the body linear velocity, which for a
+    // plane is its world velocity (unit+AC8h, what vtable[34h] 007BBB70 copies;
+    // the free-flight step mirrors plane_world_velocity into it).
+    bool unit_linear_velocity(std::size_t index, float out[3]) const;
     // [unit+538h]+508h, `Retardation` out of the installed VehicleClass row,
     // which is the divisor 009ed8ec uses to build the stopping distance.
     float unit_retardation_0508(std::size_t index) const;

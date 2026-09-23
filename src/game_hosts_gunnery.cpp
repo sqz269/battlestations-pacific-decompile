@@ -99,6 +99,10 @@ constexpr bool kDualPurposeSecondAmmoBound = true;
 //    step of 00902920's error model is bound; the swinging error pair
 //    (00902B38..00902EF7) needs the unread vtable[100h] sample and 00BD2F90 split.
 constexpr bool kAaGunnerErrorBound = true;
+//  * kAaTargetWorldVelocityBound: the AA bots lead a plane with its world
+//    velocity (vtable[34h] = 007BBB70, unit+AC8h), not its body axis times
+//    0092D730's forward speed. Packet cc9_aa_lethality_audit.
+constexpr bool kAaTargetWorldVelocityBound = true;
 
 // 00901C20 BSP_GunBot_InterceptSolution, the time-of-flight half, as a pure rule.
 // rel = target position - shooter position; vel = target velocity - shooter
@@ -310,6 +314,20 @@ struct GameGunneryHost::Impl {
         float shot_range_min{-1.0f};
     };
     std::map<std::size_t, AaTargetStats> aa_target_stats;
+    static bool aa_trace_matches(const std::string& name) {
+        const std::string& list = aa_trace_unit_name();
+        if (list.empty()) return false;
+        std::size_t start = 0;
+        while (start <= list.size()) {
+            const std::size_t comma = list.find(',', start);
+            const std::string item = list.substr(start,
+                comma == std::string::npos ? std::string::npos : comma - start);
+            if (item == name) return true;
+            if (comma == std::string::npos) break;
+            start = comma + 1;
+        }
+        return false;
+    }
     static const std::string& aa_trace_unit_name() {
         static const std::string v = [] {
             char* text = nullptr;
@@ -2597,8 +2615,16 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 // is led from its body axis and 0092D730's speed.
                 float target_velocity[3] = {v[0], v[1], v[2]};
                 if (units.unit_is_kind_of(target, bsp::kUnitGunneryKindPlaneBase)) {
-                    const float speed = units.unit_forward_speed_0092d730(target);
-                    for (int i = 0; i < 3; ++i) target_velocity[i] = tf[i] * speed;
+                    // Packet cc9_aa_lethality_audit: vtable[34h] for a plane is
+                    // 007BBB70, a copy of unit+AC8h, the world linear velocity.
+                    float world_v[3];
+                    if (kAaTargetWorldVelocityBound
+                        && units.unit_linear_velocity(target, world_v)) {
+                        for (int i = 0; i < 3; ++i) target_velocity[i] = world_v[i];
+                    } else {
+                        const float speed = units.unit_forward_speed_0092d730(target);
+                        for (int i = 0; i < 3; ++i) target_velocity[i] = tf[i] * speed;
+                    }
                 }
                 if (kGunInterceptBound && aa_v0 >= 2.0f) {
                     // 00901C20: relative motion (the shooter's own velocity is
@@ -2927,14 +2953,20 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         }
         gun.fire.barrel_delay_time = gun.barrel_delay_time;
         if (plane_gun) ++plane_gun_rounds;
-        if (!aa_trace_unit_name().empty() && state.row.name == aa_trace_unit_name()) {
+        if (aa_trace_matches(state.row.name)) {
             float aim[3] = {0.0f, 0.0f, 0.0f};
             float mz[3];
             if (have_target) unit_aim_point(target, aim);
             unit_aim_point(owner_unit, mz);
             const float sp[3] = {aim[0] - mz[0], aim[1] - mz[1], aim[2] - mz[2]};
-            log.notef("  aa shot t=%.2f %s gun=%zu cat=%d -> %s range=%.0f vert=%.1f",
+            log.notef("  aa shot t=%.2f %s gun=%zu cat=%d class=%d v0=%.0f barrels=%d "
+                "-> %s range=%.0f vert=%.1f",
                 static_cast<double>(clock_seconds), state.row.name.c_str(), g, gun.category,
+                (have_target && dp_air_ammo(g, gun.category, target) != nullptr)
+                    ? dp_air_ammo(g, gun.category, target)->bullet_class : gun.bullet_class,
+                static_cast<double>((have_target && dp_air_ammo(g, gun.category, target) != nullptr)
+                    ? dp_air_ammo(g, gun.category, target)->muzzle_speed : gun.muzzle_speed),
+                gun.barrel_num,
                 have_target ? unit_state[target].row.name.c_str() : "none",
                 have_target ? static_cast<double>(length3(sp)) : -1.0,
                 static_cast<double>(gun.angles.vert * 57.2957795f));
@@ -3624,7 +3656,7 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
     if (target.dead) return;
     const GameGunRow& gun = guns[gun_row];
     const int priced_class = round_bullet_class >= 0 ? round_bullet_class : gun.bullet_class;
-    if (!aa_trace_unit_name().empty() && unit_state[shooter].row.name == aa_trace_unit_name()) {
+    if (aa_trace_matches(unit_state[shooter].row.name)) {
         log.notef("  aa hit t=%.2f %s gun=%zu cat=%d on %s %s health_before=%.1f",
             static_cast<double>(clock_seconds), unit_state[shooter].row.name.c_str(), gun_row,
             gun.category, target.row.name.c_str(), blast_record != nullptr ? "blast" : "direct",
@@ -3681,6 +3713,13 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
     done("Projectile::dispatch_queued_hit_009239a0", 0x009239a0u);
 
     const float applied = before - target.health;
+    if (aa_trace_matches(unit_state[shooter].row.name)) {
+        log.notef("  aa hit applied t=%.2f gun=%zu class=%d base=%.1f applied=%.1f health=%.1f "
+            "armour=%.1f", static_cast<double>(clock_seconds), gun_row, priced_class,
+            static_cast<double>(hit.hull_damage_base + hit.part_damage_base),
+            static_cast<double>(applied), static_cast<double>(target.health),
+            static_cast<double>(target.armour));
+    }
     target.row.hits_taken += 1;
     target.row.damage_taken += applied;
     target.row.health = target.health;
