@@ -654,3 +654,143 @@ identified — they are not read by `009BEE30`'s fly-to arm.
 Listings and the census tool used are in this worktree's ignored `local/`:
 `arm_009bfee0.lst`, `step3_009bee30.lst`, `follow_tick_009c1fd0.lst`, `station_009bfd70.lst`,
 `blockmap.py` (`--mode blocks|calls|writes`, `--lo`/`--hi`).
+
+## 14. All three seams on the image's body (packet cc9_plane_follow_law)
+
+`kPlaneFollowLawBound` (`src/game_hosts_units.cpp`) runs 009C1FD0's body at the three seams where
+the host placed the member on its station each tick:
+- the torpedo follow tick, reached through 009D2731;
+- the dive-bomb follow tick, which ran the fly-to law but also kept the placement;
+- the dive-bomb done tick, reached through 009C7278.
+
+Per tick at each seam:
+1. `place_wing_member_on_station_007f23a0(..., apply_position = false)` produces 009BFD70's
+   station from the live slot 0, without moving the member. The first-step seeding at the
+   member's first step stays as it was.
+2. **The +85h latch.** It is recomputed with no hysteresis, as 009BFDD4-009BFEA2 do:
+   distance to the station below `Pilot/Follow/GoodPositionDist` (100) AND leader-forward dot
+   member-forward above `GoodPositionDir` (0.5). Source: `docs/PLANE_FOLLOW_HOLD_ARM.md`
+   section 10.
+3. **Latched: the HOLD arm, 009BEE56-009BF9E5.** It runs through
+   `bsp::plane_follow_hold_command_009bee56`, wired for the first time.
+   - It writes the pitch, yaw and roll slots with modes 0; yaw mode 0 skips the planner's yaw
+     arm at 0099E756.
+   - It writes the bank target with mode 1 when |leader bank| >= 0.75.
+   - It writes the throttle and air-brake slots with plan+2D8h = 0.
+   - Its gains are the `yf_*`, `pf_*`, `rf_*` and `pwr_*` keys at singleton+3ECh..420h.
+   - The power floor uses 007C47F0's level-flight speed.
+   - Everything is sourced in `docs/PLANE_FOLLOW_HOLD_ARM.md` sections 3-9.
+4. **Otherwise: the fly-to arm,** the host's existing `run_follow_law_009bfee0_009bee30`
+   (009BFEE0 lead pursuit, then 009BEE30's 009BF9EA-009BFD38).
+
+**Substitutions, labelled in the code:**
+- **Controller rates.** ctl+A0h/A4h/A8h are replaced by the body angular velocity ctl+50h/48h/4Ch.
+  Only the pitch rate has a non-zero gain, pf_pitchV = 1/DEG(100).
+- **Turn rate.** unit+C70h is taken as 0; its gain rf_hdgV is authored 0.
+- **The steer point in the hold arm.** 009BFEE0's own latched geometry path at 009BFEEE is unread,
+  so the fly-to steer point stands in. The blend uses it only while |leader bank| > 0.5.
+- **The sight correction.** state+84h stays inactive; the search loop that writes it is only
+  partly read.
+- **The lock** is never taken, because an AI leader's +520h byte is clear.
+
+### 14.1 Predictions, written before the pair
+
+Taken from `local\M1_9000.log`, main plus the leave-at-death tree, E2 9000 with the stream option.
+The pair is F0 (switch off) against F1 (on).
+
+**Who is at the seams.**
+- Every Kate wingman spends 1421-1615 ticks in the torpedo follow state BEFORE its aim. This is
+  the whole approach from spawn, and it is placement today.
+- Kates #8.1|.-2 and .-4 add about 600 done ticks after release.
+- The only dive-bomb member placed in done is Val #7.1|.-2, for 841 ticks.
+- No member is in the dive follow state; every Val hands over at arm tick 0.
+
+**The first leader change at a seam.** Kate #8.1 dies at 338.59 s and #8.1|.-2 becomes leader.
+#8.1|.-4, already in follow after its release, is placed on .-2's station from the next tick.
+That jump is about one formation offset, 90-180 m in the pairwise rows. The law closes it
+instead: at the hold arm's power law (+1.0 throttle at 10 m behind the station) and a 10-20 m/s
+speed surplus, it takes 5-15 s. The done-state Val #7.1|.-2 has no leader change in M1, because
+#7.1 survives.
+
+| row | F0 (expected = M1) | F1 prediction |
+| --- | --- | --- |
+| hold / fly-to ticks | 0 / 0 (switch off) | both non-zero; hold dominates for the Kate wingmen in formation |
+| Kate #8.1 wing pairwise distance (placed about 88-116 m) | as M1 | 60-250 m, varying, no longer pinned |
+| torpedo drops | 8 | 8 ± 3: the wingmen now fly their approach, so their aim-entry geometry and times move |
+| bomb drops | 4 | 4 ± 2: only one Val is at a seam, and after its release |
+| Kate deaths | 16 | 16 ± 2; death times move, since they are path-coupled |
+| plane water contacts | 14 | 14 ± 4. The earlier E2 failure (members drowning in follow) had no hold arm and no speed stores; both are now in place |
+| fighter bursts / hits | 10 / 59 | ±25%, path-coupled |
+| Lexington | alive | alive |
+
+### 14.2 The first pair was void, and a fourth seam
+
+**The first treatment (`local\F1_9000.log`) did not test the torpedo follow.** The Kate wingmen's
+follow state never reached 009C1FD0 in the host:
+- The torpedo arm dispatches `state->vtable[0Ch]` (009D48E7-009D48F6).
+- For the follow state that is 009C1FD0 (vtable 00D20AB8 slot +0Ch).
+- The host instead ran the moveto tick 009C18C0 for `kFollow` as well as `kMoveTo`. The wingmen
+  flew their own moveto at the target, in parallel with the leader. That is why the Kate #4.1
+  pairwise rows were identical to the digit in F0 and F1.
+
+The 20606 hold ticks came from the dogfight follow state, a fourth caller of the same body (the
+generic follow tick). It ran the law AND still placed the fighter each tick.
+
+**The fix, same switch:**
+- With `kPlaneFollowLawBound` the torpedo follow state runs `run_follow_tick_009c1fd0`: station
+  without placement, then the law.
+- The dogfight follow site stops placing. Its call to 007F23A0 now passes
+  `apply_position = !kPlaneFollowLawBound`.
+
+The switch-off path is unchanged, so F0 (`local\F0_9000.log`, which reproduces M1 exactly) stays
+the control. First-treatment numbers, for the record: bombs 4 to 2, torpedoes 8 = 8, fighter
+bursts 10 to 17, hits 59 to 79, Val deaths 13 to 15, US fighter deaths 3 to 1, water contacts 16 =
+16.
+
+**Predictions for F1b** (`local\F1b_9000.log`), written before the run:
+- **The Kate wingmen are now flown by the law for their 1400-1600 follow ticks.** Their pairwise
+  rows stop being parallel copies: 60-250 m, varying, with most ticks in the hold arm while
+  within 100 m and 60 degrees.
+- **The Kate follow-to-aim timing moves.** Aim entry for wingmen shifts by up to ±10 s, because
+  their range to the target now follows the leader's station, not their own moveto.
+- **Torpedo drops 8 ± 3, and Kate deaths 16 ± 2.** The #2.1 and #6.1 wings keep dying to the
+  Lexington's AA before 450 m.
+- **Bomb drops 4 ± 2, fighter hits ±30%, water contacts 16 ± 5, Lexington alive.**
+
+### 14.3 The pair, measured (F0 against F1b)
+
+Both runs are E2 9000 with `BSP_GUNNERY_RNG_STREAMS=1`, from the same tree with only the switch
+different. F0 reproduces M1 exactly: 4 bombs, 8 torpedoes, 59 fighter hits, 35 deaths.
+
+| row | F0 (off) | F1b (on) | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| hold / fly-to ticks | 0 / 0 | 8771 / 30866 | hold dominant | **missed**: fly-to dominates |
+| torpedo follow ticks on 009C1FD0 | 0 (moveto ran) | 13491 | - | - |
+| dive-bomb done law ticks / placed ticks | 0 / 841 | 706 / 0 | - | - |
+| Kate #4.1 pairwise, ticks 400-1600 | 70-193 m (parallel moveto) | 0-1 pair 91-147 m; the other wingmen at 95-1477 m, growing | 60-250 m | **missed**: the wingmen fall behind |
+| Kate wingman follow ticks | 1421-1615 | 869-1600 | aim entry ±10 s | follow ends 9-37 s earlier for most |
+| torpedo drops | 8 | 8 | 8 ± 3 | held |
+| Kate #6.1\|.-2 (Lexington) | no release | releases | - | first Lexington-side release |
+| bomb drops | 4 | 6 | 4 ± 2 | held, at the edge |
+| Kate deaths | 16 | 16 | 16 ± 2 | held |
+| fighter bursts / hits | 10 / 59 | 20 / 61 | hits ±30% | held |
+| water contacts | 16 | 14 | 16 ± 5 | held |
+| damage total | 8355.2 | 10851.9 | - | - |
+| Lexington | alive | alive | alive | held |
+
+**Why the formation opens.** The wingmen start on station and fall behind the leader.
+- The leader flies moveto at full throttle through the descent: Kate #4.1 at 89.8-95.5 m/s over
+  its first 100 aim ticks.
+- The fly-to arm's catch-up has no such speed. Its level-flight term is a labelled substitution,
+  max speed x 0.9 (section 6), and its floor is the class minimum.
+- Once a member is beyond GoodPositionDist (100 m) it stays on the fly-to arm, and the gap grows
+  to 1.0-1.5 km by tick 1600.
+
+This is the next term. Is the leader's moveto speed in the descent the image's? Does the fly-to
+arm's catch-up (Dynamics/SpdMultipliers/Turbo, 007C47F0) reach it with the real level-flight
+speed? It is not bound here.
+
+**Switch state landed: `kPlaneFollowLawBound` ON.** At all four seams the members now fly the
+image's 009C1FD0 body instead of being written onto their stations, and the torpedo follow state
+no longer runs the moveto tick. The releases and the Lexington's fate held. The open item is the
+catch-up speed above.
