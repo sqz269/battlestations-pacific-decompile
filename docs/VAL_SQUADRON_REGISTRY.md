@@ -151,3 +151,55 @@ term to read.
 
 **Switch state landed: `kPlaneSquadronLeaveOnDeathBound` ON.** It is the image's compaction at
 death, with one labelled substitution: the leave is read at the next motion step's head.
+## 6. Secondary: kPlannerRangeInterpBound ON, predictions written before its pair
+
+The pair is the landed state of this packet with the range factor off (R0, the `local\vs1b` binary,
+log `local\V1b_9000.log`) against the same tree with it on (R1, `local\rg1`, log
+`local\R1_9000.log`). The predictions come from K0/K1 (`docs/PLANNER_KATE_TARGETING.md`, and this
+lineage's `docs/FIGHTER_GUN_LEAD.md` section 5):
+- **Both fighter flights are ordered onto Val #1.1's group first, not #3.1's.** In K1 both flights
+  took #1.1.
+- **The Yorktown flight's early kills of Val #3.1 and #3.1|.-3, at about 100 s, disappear.** Those
+  kills came from fighting #3.1. The #3.1 wave then keeps its leader to its dive: releasing
+  aircraft rise by 1-4.
+- **Fighter bursts and trigger ticks move,** direction uncertain. In K1 they fell to 4 / 107 with
+  the lead off.
+- **Ship goal replans rise to 2-4x R0's count.** K0 to K1 was 258 to 981. Command-target units
+  rise by a few.
+- **Torpedo drops and the Lexington's fate are unchanged,** since no fighter is sent onto the Kates.
+
+### 6.1 The range-factor pair, measured
+
+R0 is `local\V1b_9000.log` (this packet's landed state). R1 is `local\R1_9000.log`, the same tree
+with `kPlannerRangeInterpBound` ON.
+
+| row | R0 | R1 | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| fighter group's first order | Val #3.1's group | Val #1.1's group | #1.1 first | held |
+| fighter group's second order | Val #1.1's group (12 members) | Zuiho-class01's group (3 members) | - | - |
+| fighter bursts / hits | 16 / 50 | 8 / 19 | move | - |
+| torpedo drops | 8 | **0** | unchanged | **missed** |
+| Kate deaths | 14 | 16 | - | - |
+| dive releases (aircraft / bombs) | 2 / 4 | 2 / 4 | up 1-4 | missed: flat |
+| ship goal replans | 212 | 42 | 2-4x up | **missed**: down 5x |
+| command-target units | 56 | 47 | up | missed: down |
+| Lexington | alive | alive | unchanged | held |
+
+**The first divergence is again the fighter group's planner order** (Val #1.1 instead of #3.1).
+Nothing differs before it.
+
+**The torpedo loss is Yorktown's movement.**
+- In R0, Yorktown-class01 leaves its script path at ship-AI step 2440 (122 s) for a movetopos 24 km
+  away.
+- In R1 it stays on its path, 3.3-3.8 km from its path target through step 3200.
+- Its anti-aircraft fire then downs Kate #4.1 at 158.31 s, before that Kate's release. R0's
+  killer column says Northampton-class03, at 215.21 s.
+- All four #4.1 Kates and all four #8.1 Kates die before releasing. Their only census rows fall
+  after death and are refused.
+
+Which order moves Yorktown at 122 s in R0, and why R1 lacks it, is not traced. R0's 122 s block
+issues the escort group's attackmove onto Val #1.1. Yorktown is not in that block.
+
+**Recommendation.** The flip is the image's range law, so it is committed separately as asked. But
+it takes torpedo drops from 8 to 0 through a ship order that is not yet explained. Hold it off
+main, or drop the commit, until Yorktown's 122 s order is traced.

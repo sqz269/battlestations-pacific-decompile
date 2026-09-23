@@ -191,3 +191,5 @@ Lexington-class01_sqn01.
 * **The next term is the group composition:** the ComposeGroup pass that merges both fighter flights
   (and later six more aircraft) into one group, whose value is the same 00A0C650 formula (section
   3). The group base weight 00A0F970 is also still substituted by population.
+
+**Flipped ON (packet cc9_val_squadron_registry, docs/VAL_SQUADRON_REGISTRY.md section 6):** the ship-side divergence traced back to the fighter group's new pick. Its pair on the leave-at-death state took torpedo drops from 8 to 0, because Yorktown stays on its path and its AA downs the Kates before release; that order split is untraced. The flip is a separate commit so it can be held.

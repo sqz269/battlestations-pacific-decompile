@@ -137,9 +137,10 @@ GameAiWeaponFacts& game_ai_weapon_facts() noexcept {
 
 namespace {
 // Packet cc9_planner_kate_targeting: the planner's range factor as 00A1CD95
-// forms it. docs/PLANNER_KATE_TARGETING.md. OFF, measured (K0/K1): ship-AI rows move
-// through the planner's command targets, not explained row by row.
-constexpr bool kPlannerRangeInterpBound = false;
+// forms it. docs/PLANNER_KATE_TARGETING.md. ON (cc9_val_squadron_registry): the ship-AI
+// moves trace back to the fighter group's new pick. Measured R0/R1: torpedo drops 8 -> 0,
+// through Yorktown's untraced order split (docs/VAL_SQUADRON_REGISTRY.md section 6.1).
+constexpr bool kPlannerRangeInterpBound = true;
 
 // Packet cc9_ship_natives_2, docs/SHIP_NATIVES_2.md. True: 009FFD70
 // BSP_Entity_AiClassWeight (ECX = [leader+0C4h], JMP 009FDF30) is the group
