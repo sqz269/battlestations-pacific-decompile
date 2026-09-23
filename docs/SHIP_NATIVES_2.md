@@ -132,3 +132,17 @@ group's leader through the image's own merge order.
   (00835C92).
 - Lexington's fate now turns on an enemy group's leader identity. Its sinking in the release and
   retask packets and its survival here are both inside a sensitive regime.
+
+## 6. Correction, 2026-09-23 (packet cc9_ship_natives_3)
+
+Section 5 names 00835C92 as the writer of director+188h / +18Ch. That is wrong. 00835C92 is
+`LEA EAX,[ESI+18Ch]` inside 00835C70 BSP_WeaponDirector_BeginCurrentCommand, which **reads** the
+override descriptor when the routine is asked to begin the override (argument byte 0).
+
+A store census finds these writers:
+- `89 ?? 88 01 00 00`: 0071E89E in 0071E7F0 BSP_WeaponDirector_SetOverrideCommand, 00720296
+  (the constructor) and 0072074E (the state copy)
+- `C7 ?? 88 01 00 00`: 0071E6AB in 0071E610 (the clear) and 007784A9 (the session pump step)
+
+The override arm therefore waits on 0071E7F0, which 00721A40 and 00721890 call. That call is a
+record in the host, and it is never reached on USN04 or USN01. See docs/SHIP_NATIVES_3.md.

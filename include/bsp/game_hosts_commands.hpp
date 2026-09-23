@@ -368,6 +368,10 @@ public:
         int max_out) const;
     // The command object one slot carries, for the report's "what slot 0 holds".
     std::uint32_t director_slot_command(std::size_t unit_index, int slot_index) const;
+    // Packet cc9_ship_natives_3: slot 0's command object and its target's object
+    // id, the pair the ship-AI controller update keys director+44h (the queue
+    // head's accepted byte, written by 00835C70) on. 0 when there is no head.
+    std::uint64_t director_head_key(std::size_t unit_index) const;
     // The registry name of a command object, or "" when no row matches.
     const char* command_name_of(std::uint32_t command_object) const;
 
