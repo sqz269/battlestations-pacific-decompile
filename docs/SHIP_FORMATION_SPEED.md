@@ -62,6 +62,8 @@ and blk+348h is brain+350h.
    - when brain+3ADh is set, the station arm; see below
    - brain+350h = clamp(min(0070E3C0 × 1.25 / own turn, own turn / 200.0), 1.0, 1.25)
 
+**Correction (2026-09-23, packet cc9_station_keeping).** The zero at brain+3A4h described below never reaches 009F4DA0: the station arm 009EDA28 overwrites blk+39Ch (brain+3A4h) with its throttle command on the same think. The arm and the brain+3ADh branch are now bound; see docs/STATION_KEEPING.md.
+
 **The station arm is not bound.** brain+3ADh is written only by the pre-pass clear and by
 009DA3B0's station request. In the image that request always zeroes brain+3A4h, so the arm would
 set the follower's limit to ±0. The host records the request and runs no station-keeping arm,

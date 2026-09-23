@@ -234,6 +234,14 @@ struct GameShipAiRow {
     float formation_limit_348_min{1.0e9f};
     float formation_limit_348_max{-1.0e9f};
     std::string formation_role;    // "leader", "follower" or "none" at the last step
+    // Packet cc9_station_keeping: the arm 009EDA28 and 009F4DA0's +3ADh arm.
+    unsigned long long station_arm_runs{0};
+    unsigned long long station_requests{0};
+    float station_throttle_min{1.0e9f};
+    float station_throttle_max{-1.0e9f};
+    unsigned long long station_limit_steps{0};  // 009F4F8C arm entered
+    float station_limit_min{1.0e9f};
+    float station_limit_max{-1.0e9f};
     unsigned long long heading_changes{0};   // nested+120Ch differed from before
     // Packet cc8_ship_ai_approach_slot_scorers: the three gates 009E7FC0 passes
     // before it scores a slot, as the host last answered them.

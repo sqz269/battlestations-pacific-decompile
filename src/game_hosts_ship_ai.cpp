@@ -38,6 +38,7 @@
 #include "bsp/ship_ai_attackmove_substates.hpp"
 // Packet cc8_ship_follow: the `follow` state's two halves and the unit group.
 #include "bsp/ship_ai_follow_land.hpp"
+#include "bsp/ship_ai_station_keeping.hpp"
 #include "bsp/ship_ai_formation.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/recon_sensor_pass.hpp"
@@ -140,6 +141,16 @@ inline constexpr bool kShipFormationSpeedBound = true;
 // TurnMultiplierMaxSpeed[2]: the gameplay settings object is not loaded here, so
 // its documented value stands in (docs/GAMEPLAY_SETTINGS.md). LABELLED.
 inline constexpr float kShipTurnRadiusMultiplier438 = 2.0f;
+// Packet cc9_station_keeping, docs/STATION_KEEPING.md. True: the follow update's
+// station request 009DA3B0 is stored (blk+38Ch..+3A6h, including blk+39Ch = 0
+// and the enable byte blk+3A5h = brain+3ADh), the pre-pass 009F145E clears the
+// enable, 009ED6B0's station-keeping arm 009EDA28 runs when it is set and
+// blk+3A6h clear, and 009F4DA0's brain+3ADh arm (009F4F8C..009F5020) turns the
+// arm's blk+39Ch into the follower's throttle limit and escape byte; 007788B0 in
+// the direct-control arm answers the formation-follower test, so 009ED73F keeps
+// the enable for a follower. False: the request is recorded, 007788B0 answers
+// false and neither arm runs, as before.
+inline constexpr bool kShipStationKeepingBound = true;
 namespace {
 
 bool has_ship_navigation_class(int kind) noexcept {
@@ -490,6 +501,12 @@ struct GameShipAiHost::Impl {
         // gate at 009EDA41 and blk+39Ch the slot 009EE5A5 pins to 1.25f before
         // the path refresh and the station-keeping arm computes instead.
         bool flag_3a6{false};
+        // Packet cc9_station_keeping: blk+38Ch..+3A6h as 009DA3B0 stores them,
+        // and the arm's three bytes blk+388h / +389h / +38Ah.
+        bsp::ShipAiStationRequest station_request{};
+        bool station_aligned_388{false};
+        bool station_reversing_389{false};
+        bool station_close_38a{false};
         float speed_scale_39c{0.0f};
         // The two 68h-byte plan blocks the navigator owns at nav+224h and
         // nav+28Ch, and the front / back pointers at nav+2F4h / +2F8h that
@@ -712,7 +729,9 @@ struct GameShipAiHost::Impl {
 
     // 009F4DA0 on blk+344h / +348h (brain+34Ch / +350h). docs/SHIP_FORMATION_SPEED.md.
     void formation_throttle_ceiling_009f4da0(std::size_t index, const Controller& ctl,
-                                             float& limit_344, float& limit_348) const {
+                                             float& limit_344, float& limit_348,
+                                             bool& escape_36c, bool& station_arm) const {
+        station_arm = false;
         limit_348 = 1.0f;                                     // 009F4DBC, 00D7A24C
         if (ctl.goal_vector.speed_commanded_0b38) return;     // 009F4DC1
         const float speed_scale_af0 = 1.0f;   // brain+0AF0h: 009F144F's reset, no host writer
@@ -757,10 +776,35 @@ struct GameShipAiHost::Impl {
             return;
         }
         // 009F4F1D..009F50B5, 007788B0's arm. 00863780(1) on unit+6DCh is the
-        // weapon side effect the gunnery host owns (recorded by the caller). The
-        // brain+3ADh arm (009F4F8C) needs the station request 009DA3B0 stores,
-        // which this process records; brain+3ADh keeps 009F145E's clear, so the
-        // clamped (ceiling + 6.70421028) / reference term is not applied. LABELLED.
+        // weapon side effect the gunnery host owns (recorded by the caller).
+        // 009F4F30..009F4F88: s = clamp((ceiling + 6.70421028) / reference, 1, 1.25)
+        // (00D21B38; 00415620 with 1.0f and 1.25f).
+        const float s_raw = static_cast<float>(
+            (static_cast<double>(ceiling) + 6.70421028137207) / reference);
+        const float s = (1.0f > s_raw) ? 1.0f : ((s_raw > 1.25f) ? 1.25f : s_raw);
+        if (kShipStationKeepingBound && ctl.blk.flag_3a5) {
+            // 009F4F8C..009F5020, brain+3ADh set: brain+3A4h is blk+39Ch, the
+            // station arm's throttle command; brain+364h is blk+35Ch and brain+374h
+            // the escape byte blk+36Ch.
+            const float v = ctl.speed_scale_39c;
+            if (ctl.blk.direction == bsp::ShipAiThrottleDirection::Ahead) {
+                if (0.0f > v) {                                   // 009F4FAD
+                    limit_344 = -0.0f - v;
+                    escape_36c = true;
+                } else {
+                    escape_36c = false;
+                    limit_344 = v;
+                }
+            } else if (0.0f < v) {                                // 009F4FD9, JC
+                limit_344 = v;
+                escape_36c = true;
+            } else {
+                limit_344 = -0.0f - v;
+                escape_36c = false;
+            }
+            if (limit_344 > s) limit_344 = s;                     // 009F5014
+            station_arm = true;
+        }
         const float a = static_cast<float>(static_cast<double>(group_turn) * 1.25 /
                                            static_cast<double>(own_turn));   // 00CF87C0
         const float b = static_cast<float>(static_cast<double>(own_turn) / 200.0); // 00CE4D70
@@ -1219,11 +1263,17 @@ public:
     void publish_station_request_009da3b0(const bsp::ShipAiStationRequest& request) override {
         // 009E18B6, the nineteen-byte copy into blk+38Ch..+3A6h. The consumer is
         // the station-keeping arm of 009ED6B0, which runs only while blk+3A5h is
-        // set and blk+3A6h clear (docs/SHIP_AI_GOAL_VECTOR.md). That arm is not
-        // bound in this process, so the request is recorded, and the ship is
-        // steered by the navigation goal above alone.
-        static_cast<void>(request);
-        owner_.record("ShipAiFollow::publish_station_request", 0x009da3b0u);
+        // set and blk+3A6h clear (docs/SHIP_AI_GOAL_VECTOR.md).
+        if (!kShipStationKeepingBound) {
+            owner_.record("ShipAiFollow::publish_station_request", 0x009da3b0u);
+            return;
+        }
+        bsp::ship_ai_publish_station_request_009da3b0(request, ctl_.station_request);
+        ctl_.speed_scale_39c = request.unused_10;   // 009DA3DA, blk+39Ch
+        ctl_.blk.flag_3a5 = request.enable;         // 009DA3F7, blk+3A5h = brain+3ADh
+        ctl_.flag_3a6 = request.suppress;           // 009DA400, blk+3A6h
+        ++row_.station_requests;
+        owner_.done("ShipAiFollow::publish_station_request", 0x009da3b0u);
     }
 
     float station_x() const { return station_x_; }
@@ -3431,8 +3481,19 @@ public:
         owner_.done("ShipAiControls::prologue", 0x0080e000u);
     }
     bool controller_belongs_to_another_007788b0() override {
-        owner_.record("ShipAiControls::controller_belongs_to_another", 0x007788b0u);
-        return false;
+        // 007788B0 BSP_Unit_IsFormationFollower: g = [unit+284h]; g && [g+14h] != unit.
+        // 009ED73F clears blk+3A5h (brain+3ADh) unless this answers true, so with
+        // the stub's false the station request never survived to the 009EDA34 gate
+        // or to 009F4DA0 (packet cc9_station_keeping, docs/STATION_KEEPING.md).
+        if (!kShipStationKeepingBound) {
+            owner_.record("ShipAiControls::controller_belongs_to_another", 0x007788b0u);
+            return false;
+        }
+        owner_.done("ShipAiControls::controller_belongs_to_another", 0x007788b0u);
+        const std::int32_t group = owner_.units.unit_formation_group_0284(index_);
+        if (group < 0) return false;
+        const std::size_t leader = owner_.units.formation_leader_0014(group);
+        return leader != index_;
     }
     float unit_body_axis_speed_0092d730() override {
         owner_.done("ShipAiControls::body_axis_speed", 0x0092d730u);
@@ -4638,6 +4699,9 @@ public:
         // +0B4Ch and the proximity scan they drive, is not projected and is
         // recorded with its own address.
         GoalVectorBinding goal(owner_, ctl_, index_);
+        // Packet cc9_station_keeping: 009F145E, MOV byte [brain+3ADh],0, beside the
+        // 0B38h clear the goal refresh models. brain+3ADh is blk+3A5h.
+        if (kShipStationKeepingBound) ctl_.blk.flag_3a5 = false;
         const bsp::ShipAiGoalRefreshResult result
             = bsp::ship_ai_refresh_goal_vector_009f1420(ctl_.goal_vector, ctl_.latched,
                                                         elapsed, goal);
@@ -4929,10 +4993,51 @@ public:
             // 009DDBC0 and 009DE5B0) are all records here, two of them chain
             // steps of this same frame, so the byte is never set and this arm
             // is never entered. The whole span is one record with its address.
-            owner_.record("ShipAi::station_keeping_arm", 0x009eda28u);
             ++row_.station_keeping;
             ++owner_.summary.station_keeping;
-            return false;
+            if (!kShipStationKeepingBound) {
+                owner_.record("ShipAi::station_keeping_arm", 0x009eda28u);
+                return false;
+            }
+            // Packet cc9_station_keeping: the whole arm, 009EDA47..009EE57B.
+            bsp::ShipAiStationKeepingInputs in;
+            in.reference_speed_3c4 = ctl_.obstacle.reference_speed_3c4;
+            in.retardation_508 = owner_.units.unit_retardation_0508(index_);
+            in.goal_x_1dc = ctl_.goal.goal_x_1dc;
+            in.goal_z_1e0 = ctl_.goal.goal_z_1e0;
+            in.hull_x_184 = ctl_.hull_geometry.position_184[0];
+            in.hull_z_188 = ctl_.hull_geometry.position_184[1];
+            in.unit_heading = owner_.units.unit_heading_radians(index_);
+            in.unit_length_9c8 = owner_.units.unit_hull_length_09c8(index_);
+            in.unit_width_9cc = owner_.units.unit_half_width_09cc(index_);
+            in.turn_radius = owner_.class_turn_radius_0082e850(index_);
+            bsp::ShipAiStationKeepingState st;
+            st.direction_35c = ctl_.blk.direction;
+            st.timer_360 = ctl_.blk.timer_360;
+            st.direction_value_374 = ctl_.blk.direction_value_374;
+            st.direction_counter_384 = ctl_.blk.direction_counter_384;
+            st.aligned_388 = ctl_.station_aligned_388;
+            st.reversing_389 = ctl_.station_reversing_389;
+            st.close_38a = ctl_.station_close_38a;
+            st.throttle_39c = ctl_.speed_scale_39c;
+            st.heading_target_324 = ctl_.blk.heading_target_324;
+            st.distance_32c = ctl_.blk.distance_32c;
+            bsp::ship_ai_station_keeping_arm_009eda28(ctl_.station_request, in, st);
+            ctl_.blk.direction = st.direction_35c;
+            ctl_.blk.timer_360 = st.timer_360;
+            ctl_.blk.direction_value_374 = st.direction_value_374;
+            ctl_.blk.direction_counter_384 = st.direction_counter_384;
+            ctl_.station_aligned_388 = st.aligned_388;
+            ctl_.station_reversing_389 = st.reversing_389;
+            ctl_.station_close_38a = st.close_38a;
+            ctl_.speed_scale_39c = st.throttle_39c;
+            ctl_.blk.heading_target_324 = st.heading_target_324;
+            ctl_.blk.distance_32c = st.distance_32c;
+            owner_.done("ShipAi::station_keeping_arm", 0x009eda28u);
+            ++row_.station_arm_runs;
+            row_.station_throttle_min = std::min(row_.station_throttle_min, st.throttle_39c);
+            row_.station_throttle_max = std::max(row_.station_throttle_max, st.throttle_39c);
+            return false;   // AL = [ESP+37h] = 0
         }
         // 009EE580..009EE670, projected by packet cc_ai_goal_vector: the path
         // plan refresh, the path point pick and the lateral-offset publish.
@@ -5626,9 +5731,18 @@ void GameShipAiHost::Impl::drive_order_ring_009f3f80(std::size_t index, Controll
     if (kShipFormationSpeedBound) {
         // Packet cc9_ship_formation_speed: 009F4DA0 ran one chain slot earlier and
         // rewrote both fields; 009F4DC7 is its min against brain+0AF0h.
+        bool station_arm = false;
         formation_throttle_ceiling_009f4da0(index, ctl, ctl.obstacle.throttle_limit_344,
-                                            ctl.obstacle.rudder_limit_348);
+                                            ctl.obstacle.rudder_limit_348,
+                                            ctl.obstacle.escape_enabled_36c, station_arm);
         done("ShipAiObstacle::throttle_ceiling_344", 0x009f4dc7u);
+        if (station_arm) {
+            ++row.station_limit_steps;
+            row.station_limit_min = std::min(row.station_limit_min,
+                                             ctl.obstacle.throttle_limit_344);
+            row.station_limit_max = std::max(row.station_limit_max,
+                                             ctl.obstacle.throttle_limit_344);
+        }
         ++row.formation_ceiling_steps;
         if (ctl.obstacle.throttle_limit_344 < 1.0f) ++row.formation_limit_344_below_1;
         row.formation_limit_344_min = std::min(row.formation_limit_344_min,
@@ -6341,6 +6455,15 @@ void GameShipAiHost::report() {
             row.formation_ceiling_steps, static_cast<double>(row.formation_limit_344_min),
             row.formation_limit_344_below_1, static_cast<double>(row.formation_limit_348_min),
             static_cast<double>(row.formation_limit_348_max));
+        if (row.station_requests != 0 || row.station_arm_runs != 0) {
+            host.log.notef("    station %-16s requests=%llu arm_runs=%llu throttle39c=[%.4f, %.4f] "
+                "limit_steps=%llu limit344=[%.4f, %.4f]", row.unit.c_str(),
+                row.station_requests, row.station_arm_runs,
+                static_cast<double>(row.station_throttle_min),
+                static_cast<double>(row.station_throttle_max), row.station_limit_steps,
+                static_cast<double>(row.station_limit_min),
+                static_cast<double>(row.station_limit_max));
+        }
     }
     host.log.notef("summary mission ship ai command completion events=%llu callbacks=%llu "
         "end_commands=%llu queue_advances=%llu",
