@@ -18,6 +18,7 @@
 #include "bsp/plane_control_rate.hpp"
 #include "bsp/pilot_plan_slots.hpp"
 #include "bsp/dogfight_task.hpp"
+#include "bsp/near_field_probe.hpp"
 #include "bsp/plane_attitude_angles.hpp"
 #include "bsp/plane_ai_control.hpp"
 #include "bsp/unit_rudder.hpp"
@@ -403,6 +404,15 @@ struct GameUnitSlot {
     std::size_t nb_found_plus_one{0};
     int nb_refreshes{0};
     int nb_scans{0};
+    // Packet cc9_near_field_probe census.
+    int nf_calls{0};
+    int nf_hits{0};
+    int nf_attackrun_weaves{0};
+    float nf_attackrun_max_offset{0.0f};
+    int nf_flyover_slot_writes{0};
+    int nf_goaway_hits{0};
+    float nf_flyover_slot_min{0.0f};
+    float nf_flyover_slot_max{0.0f};
     int dive_bomb_state_ticks[10]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     int dive_bomb_arm_ticks{0};
     int dive_bomb_transitions{0};
@@ -2652,6 +2662,9 @@ struct GameUnitsHost::Impl {
     // Packet cc9_plane_gunfire: the unit+C50h enemy-aircraft list (007E11D0,
     // 3 s refresh) and its finder 007E2090/007DEEC0 as the gun's +74h target.
     static constexpr bool kPlaneFinderBound = true;
+    // Packet cc9_near_field_probe: 007F0280 at the dive-bomb attack run
+    // (009C42B8) and the fly-over speed slot (009C6B3A). docs/NEAR_FIELD_PROBE.md.
+    static constexpr bool kNearFieldProbeBound = true;
     // 007B4ED0 wiring (the head-on arm and the maneuver tail's full throttle).
     // OFF, measured: run F1 drowned Yorktown-class01_sqn02 and its .-2 at |v| 51
     // after one maneuver tick left the throttle slot active in mode 0. The image
@@ -6814,6 +6827,55 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // +34h * 0.3, threshold +28h (-1.0), no squadron filter, no
                     // noise. The object's own tick cadence is not read; the
                     // think interval stands in. Labelled.
+                    // plane+9D0h, the tie-break 007F0792/007F07E3/007F082F read:
+                    // the member's formation index from its squadron record (0
+                    // until 007ED260 has run, as in the image).
+                    int nf_formation_index_9d0(std::size_t unit) const {
+                        const bsp::PlaneSquadronHostRecord* sq =
+                            bsp::plane_squadron_registry().find_by_member_unit(unit);
+                        if (sq == nullptr || !sq->formation_indices_assigned) return 0;
+                        for (std::size_t k = 0; k < sq->member_units.size(); ++k) {
+                            if (sq->member_units[k] == unit &&
+                                k < sq->member_formation_index.size()) {
+                                return sq->member_formation_index[k];
+                            }
+                        }
+                        return 0;
+                    }
+
+                    // 007F0280 in mode 1. SUBSTITUTION, labelled: the image walks
+                    // [unit+C50h]'s +30h list (IsKindOf 6 or 0Fh within 1080 m,
+                    // refreshed every 3 s by 007E11D0) and keeps vtable[5Ch](0Fh);
+                    // this scans every live aircraft directly, without the 3 s lag.
+                    // The box is at most 140 m, far inside the list's 1080 m.
+                    bsp::NearFieldProbeResult nf_probe_007f0280(const float extents[3],
+                                                                const float weights[3]) {
+                        std::vector<bsp::NearFieldCandidate> cands;
+                        const float reach = extents[0] + extents[1] + extents[2];
+                        for (std::size_t j = 0; j < owner_.slots.size(); ++j) {
+                            if (j == unit_.process_index) continue;   // 007F056F
+                            const GameUnitSlot& o = *owner_.slots[j];
+                            if (!df_slot_live(o)) continue;
+                            if (!bsp::unit_is_kind_of(o.class_id, 0x0F)) continue;  // 007F03D8
+                            const double dx = static_cast<double>(o.motion.position[0]) - unit_.motion.position[0];
+                            const double dy = static_cast<double>(o.motion.position[1]) - unit_.motion.position[1];
+                            const double dz = static_cast<double>(o.motion.position[2]) - unit_.motion.position[2];
+                            if (dx * dx + dy * dy + dz * dz > static_cast<double>(reach) * reach) continue;
+                            bsp::NearFieldCandidate c;
+                            float pp[3] = {o.motion.position[0], o.motion.position[1], o.motion.position[2]};
+                            df_local(pp, c.local);
+                            c.formation_index_9d0 = nf_formation_index_9d0(j);
+                            cands.push_back(c);
+                        }
+                        const bsp::NearFieldProbeResult r = bsp::near_field_probe_007f0280(
+                            extents, weights, nf_formation_index_9d0(unit_.process_index),
+                            cands.data(), cands.size());
+                        ++unit_.nf_calls;
+                        if (r.hit) ++unit_.nf_hits;
+                        owner_.record("NearFieldProbe::probe", 0x007f0280u);
+                        return r;
+                    }
+
                     const GameUnitSlot* df_finder_007e2090(float dt, bsp::DogfightGunInputs& gi) {
                         unit_.nb_clock_7c += dt;
                         unit_.nb_clock_84 += dt;
@@ -7833,6 +7895,24 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 009C4268 and 009C4287.
                         in.sampler_result = 0.0f;
                         in.sampler_ran = false;
+                        if constexpr (GameUnitsHost::Impl::kNearFieldProbeBound) {
+                            // 009C42B8 runs only on the re-roll arm (dt >= +1Ch).
+                            if (!(in.dt < in.reroll_timer_1c)) {
+                                const float ext[3] = {80.0f, 60.0f, 120.0f};
+                                const float w[3] = {0.0f, 0.0f, 0.0f};
+                                const bsp::NearFieldProbeResult pr = nf_probe_007f0280(ext, w);
+                                in.sampler_result = bsp::near_field_attackrun_sampler_009c42bd(pr);
+                                in.sampler_ran = true;
+                                if (in.sampler_result != 0.0f) {
+                                    ++unit_.nf_attackrun_weaves;
+                                    const float off = in.sampler_result < 0.0f
+                                        ? -in.sampler_result : in.sampler_result;
+                                    if (off > unit_.nf_attackrun_max_offset) {
+                                        unit_.nf_attackrun_max_offset = off;
+                                    }
+                                }
+                            }
+                        }
                         const bsp::DiveBombAttackRunResult r =
                             bsp::dive_bomb_attackrun_tick_009c4220(in);
                         ++unit_.db_attackrun_ticks;
@@ -8175,11 +8255,21 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         bsp::TorpedoGoAwayGeometryInputs geo;
                         geo.unit_heading_c6c = unit_.plane_heading_c6c;  // vtable[50h]
                         geo.break_off_bearing = fr.heading;
-                        // 007F0280 mode 1 over unit+C50h's entity list with
-                        // half-extents 80/50/100: HOLE, the same zero every
-                        // dive-bomb and torpedo caller in this host stands in with.
-                        // Exact over open sea; a hole when a formation mate is
-                        // inside the box. docs/BOT_PROBE_007F0280.md.
+                        // 007F0280 at 009C4878, mode 1, half-extents 80/50/100
+                        // (009C4819/009C482C/009C483A), weights zero: the rule
+                        // forms -probe[0] * probe[1] * probe[2], and 009C487D-
+                        // 009C4892 take out_a.x, out_b.y, out_b.z.
+                        if constexpr (GameUnitsHost::Impl::kNearFieldProbeBound) {
+                            const float ext[3] = {bsp::dive_bomb_goaway_turn::kProbeExtentX,
+                                                  bsp::dive_bomb_goaway_turn::kProbeExtentY,
+                                                  bsp::dive_bomb_goaway_turn::kProbeExtentZ};
+                            const float w[3] = {0.0f, 0.0f, 0.0f};
+                            const bsp::NearFieldProbeResult pr = nf_probe_007f0280(ext, w);
+                            geo.probe[0] = pr.out_a[0];
+                            geo.probe[1] = pr.out_b[1];
+                            geo.probe[2] = pr.out_b[2];
+                            if (pr.hit) ++unit_.nf_goaway_hits;
+                        }
                         return bsp::torpedo_goaway_heading_009d0c10(geo);
                     }
 
@@ -8437,7 +8527,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // unbound in this host, its outputs stay zero, and
                             // |0| > 0.05 fails, so the slot is the 0.0 the
                             // image leaves when no unit is in the near field.
-                            const float slot_entry_108 = 0.0f;
+                            float slot_entry_108 = 0.0f;
+                            if constexpr (GameUnitsHost::Impl::kNearFieldProbeBound) {
+                                const bool b18 = unit_.db_flyabove_can_dive_18;
+                                float ext[3];
+                                bsp::near_field_flyover_extents_009c6aa3(b18, ext);
+                                const float w[3] = {30.0f, 0.0f, 0.0f};  // 00CE38C8
+                                const bsp::NearFieldProbeResult pr = nf_probe_007f0280(ext, w);
+                                slot_entry_108 = bsp::near_field_flyover_slot_009c6b75(pr, b18);
+                                if (slot_entry_108 != 0.0f) {
+                                    ++unit_.nf_flyover_slot_writes;
+                                    if (slot_entry_108 < unit_.nf_flyover_slot_min) unit_.nf_flyover_slot_min = slot_entry_108;
+                                    if (slot_entry_108 > unit_.nf_flyover_slot_max) unit_.nf_flyover_slot_max = slot_entry_108;
+                                }
+                            }
                             unit_.plane_desired_speed_2b4 =
                                 bsp::dive_bomb_flyabove_desired_speed_009c6f97(
                                     static_cast<float>(
@@ -12665,6 +12768,27 @@ void GameUnitsHost::report() {
                     }
                 }
                 {
+                    {
+                        int calls = 0, hits = 0, weaves = 0, slots = 0;
+                        for (const auto& slot : host.slots) {
+                            calls += slot->nf_calls;
+                            hits += slot->nf_hits;
+                            weaves += slot->nf_attackrun_weaves;
+                            slots += slot->nf_flyover_slot_writes;
+                            if (slot->nf_hits == 0) continue;
+                            host.log.notef("  near field %-12s calls=%d hits=%d attackrun_weaves=%d "
+                                "max_offset=%.3f flyover_slot_writes=%d slot=[%.3f %.3f] goaway_hits=%d",
+                                slot->row.name.c_str(), slot->nf_calls, slot->nf_hits,
+                                slot->nf_attackrun_weaves,
+                                static_cast<double>(slot->nf_attackrun_max_offset),
+                                slot->nf_flyover_slot_writes,
+                                static_cast<double>(slot->nf_flyover_slot_min),
+                                static_cast<double>(slot->nf_flyover_slot_max),
+                                slot->nf_goaway_hits);
+                        }
+                        host.log.notef("summary mission near field probe: calls=%d hits=%d "
+                            "attackrun_weaves=%d flyover_slot_writes=%d", calls, hits, weaves, slots);
+                    }
                     int bursts = 0, fire_ticks = 0;
                     for (const auto& slot : host.slots) {
                         if (!slot->dogfight_task_installed) continue;

@@ -221,3 +221,16 @@ there. `docs/TORPEDO_AFTER_THE_DROP.md` section 3.5 has the argument.
 Everything in section 2 is decompiler output, not a listing read, and the routine carries SEH, which
 is the case where a decompiler's frame reasoning is least trustworthy. Nothing in section 2 should
 be built on.
+
+## Correction, 2026-09-23 (packet cc9_near_field_probe)
+
+Section 0.1, arg4: "the dive-bomb caller passes (0,0,0) and so takes 1.0 on all three" is
+**wrong**.
+* The per-axis factors `[ESP+34h..3Ch]` are reset to **0.0** per candidate (`007F0580`-`007F058C`)
+  and become `1 + w*|p|/e` only when `w > 0`.
+* They do not scale the output. They are the threshold of the tie-break sign rule: a component
+  smaller than the factor becomes +-factor by `unit+9D0h`.
+* With zero weights that rule never fires.
+
+The full accumulator, including section 0.6's unread part, is in `docs/NEAR_FIELD_PROBE.md`
+section 1.
