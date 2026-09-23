@@ -236,6 +236,11 @@ struct GameShipAiRow {
     std::string formation_role;    // "leader", "follower" or "none" at the last step
     // Packet cc9_station_keeping: the arm 009EDA28 and 009F4DA0's +3ADh arm.
     unsigned long long station_arm_runs{0};
+    // Packet cc9_free_bearing_query.
+    unsigned long long rudder_gate_open{0};     // drive ticks with blk+33Ch < 0 (009F4511)
+    unsigned long long free_bearing_queries{0}; // 009DC2E0 calls from section 7
+    unsigned long long free_bearing_accepts{0}; // blk+324h = query+1Ch
+    float free_bearing_max_turn{0.0f};
     // Packet cc9_avoid_zone_escape.
     unsigned long long layer_selections{0};     // 009ECA20 bodies
     unsigned long long zone_inside_steps{0};    // blk+160h set after 009ECA20

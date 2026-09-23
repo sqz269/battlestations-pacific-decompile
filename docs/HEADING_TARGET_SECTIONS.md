@@ -93,3 +93,10 @@ Against the predictions:
 
 **Decision.** `kShipTorpedoResponseImageTerms` lands ON. It removes two labelled substitutions,
 and the pair shows no row it moves except the admissions it is meant to move.
+
+**Correction, 2026-09-23 (packet cc9_free_bearing_query), row 7.** 009DC2E0 is read as far as its
+early outs (docs/SHIP_NEIGHBOUR_AVOIDANCE.md section 6). It answers 0 unless the searcher is
+enabled, the range reaches the constant at 00CE38B8, and 009D7050's refreshed cache holds at least
+one avoid-zone segment. It is land avoidance, not a neighbour query, and it serves the sector scan
+009EB660 as well. Row 7 stays a record. The rest of its body is unread, and on both reference
+missions it cannot fire.
