@@ -9096,7 +9096,9 @@ above and `--game-root` pointing at the installation.
   around it. The 007DCDD0 water surface law is still a host contract, so **do not read this
   `queued_hits` as AA accuracy** (`docs/AA_LEAD.md` section 7).
 - Seven launches between 10:54 and 11:06, one of them a short probe, died with 0xC0000005 right
-  after the renderer init request. The integrator traced this to the user's session moving to
-  Remote Desktop (`rdp-tcp#0` active, console connected), which crashed every run on the machine
-  in that window. It was not the binary or concurrent runs. The run succeeded after 11:30. Those
-  logs are under `local\stale\`.
+  after the renderer init request. Every binary launched in that window died the same way,
+  including one that had run cleanly before, so it was not the binary. The integrator first
+  blamed the user's session moving to Remote Desktop (`rdp-tcp#0` in the session table), then
+  retracted that: runs resumed at about 11:05 with the same session table. The cause was
+  environmental and is otherwise unknown. The run succeeded after 11:30. Those logs are under
+  `local\stale\`.
