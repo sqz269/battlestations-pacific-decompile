@@ -13084,6 +13084,16 @@ float GameUnitsHost::unit_forward_speed_0092d730(std::size_t index) const {
     return bsp::unit_forward_speed_0092d730(axis);
 }
 
+bool GameUnitsHost::unit_linear_velocity(std::size_t index, float out[3]) const {
+    const Impl& host = *impl_;
+    if (index >= host.slots.size()) return false;
+    const GameUnitSlot& slot = *host.slots[index];
+    out[0] = slot.motion.linear_velocity.x;
+    out[1] = slot.motion.linear_velocity.y;
+    out[2] = slot.motion.linear_velocity.z;
+    return true;
+}
+
 float GameUnitsHost::unit_retardation_0508(std::size_t index) const {
     const Impl& host = *impl_;
     if (index >= host.slots.size()) return 0.0f;
