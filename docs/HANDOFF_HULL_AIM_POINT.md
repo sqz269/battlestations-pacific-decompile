@@ -184,3 +184,18 @@ Which squadrons stopped releasing and the state they end in; whether the 7 bombs
 that DO land fall near their drawn point on the hull; and the within-squadron
 spread of along-hull impact positions before versus after. I did not have the
 context left to read those rows — the log is on disk and clean.
+
+## Correction from docs/HULL_AIM_AXIS.md (2026-09-22, packet cc9_hull_axis)
+
+Section (f) ranks the axis convention, candidate (ii), as the strongest candidate. It is measured
+clean. 004142E0 is row-vector, with `out = x*row0 + y*row1 + z*row2 + row3`, so body z goes
+through row 2. Row 2 is the forward axis the image scales by `class+A0h` at 00826866. In the live
+run, each target's row 2 heading equals its course: -0.879 against -0.881 rad for the Yorktown.
+Candidate (i) is clean too: 15 draws for 15 aircraft.
+
+Section (f) also says the dive-bomb `tp` feed covers the gates. Three more image sites read the
+hull point through `approach->vtable[0]`, and this host feeds them the target origin: 009C6342
+(fly-over lead point), 009C59CD (aimdive height) and 009C5278 (aimglide height). Feeding them
+leaves releases at 8. The loss scales with the horizontal offset: 23 releases at 1% and 10% of
+it, 16 at 50%, 8 at 100%, and 6 with the height zeroed. The switch stays off.
+docs/HULL_AIM_AXIS.md section 5 gives the surviving lead and the next trace.

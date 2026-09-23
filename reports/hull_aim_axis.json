@@ -1,0 +1,43 @@
+{
+  "packet": "cc9_hull_axis",
+  "doc": "docs/HULL_AIM_AXIS.md",
+  "source": "src/game_hosts_units.cpp (hull-aim region only)",
+  "scope": "Why USN04 dive-bomb releases fell 23 -> 8 with kHullAimOffsetEnabled true; axis convention of the hull aim point; decision on the switch. Analysis plus a behind-the-switch diagnostic print; no new reconstruction.",
+  "abi_compatible": false,
+  "game_validated": false,
+  "routines": [
+    {"address": "004142E0", "native": "004142E0", "name": "BSP_Vector3f_TransformAffinePoint", "role": "row-vector transform: out = x*row0 + y*row1 + z*row2 + row3; body z goes through matrix row 2 (+20h..+28h)", "evidence": "004142FE-00414328 (out.x = [ECX+10h]*y + [ECX]*x + [ECX+20h]*z + [ECX+30h]), 0041432A-00414340 (out.y), 00414343-00414354 (out.z)"},
+    {"address": "009FADA0", "native": "009FADA0", "name": "BSP_BotApproachTargetRef_Update", "role": "producer of the hull aim point: target world matrix x body offset every tick"},
+    {"address": "009FA260", "native": "009FA260", "name": "(ledger)", "role": "the pick of the body-frame offset, run once while the dirty byte is set"},
+    {"address": "00816650", "native": "00816650", "name": "(ledger)", "role": "hull-box sample: out[0] from class+A4h, out[2] from class+A0h"},
+    {"address": "0042D810", "native": "0042D810", "name": "(ledger)", "role": "origin-returning slot +100h for classes that do not sample a hull"},
+    {"address": "0042BB20", "native": "0042BB20", "name": "(ledger)", "role": "slot +104h, always true, so no re-pick"},
+    {"address": "00414DB0", "native": "00414DB0", "name": "BSP_EntityPose_RefreshWorld", "role": "rebuilds the target's +CCh world matrix before 009FAEDF reads it"},
+    {"address": "009C7A80", "native": "009C7A80", "name": "BSP_BotTaskDiveBombApproach_Update", "role": "range latch approach+BCh measured to vtable[0]"},
+    {"address": "009C58D0", "native": "009C58D0", "name": "BSP_BotStateDiveBombAimDive_Tick", "role": "aim error, 25 m release gate 00CE3880, abort 009C5B43"},
+    {"address": "009C5180", "native": "009C5180", "name": "BSP_BotStateDiveBombAimGlide_Tick", "role": "aimglide height to vtable[0] out[1]"},
+    {"address": "009C62B0", "native": "009C62B0", "name": "BSP_BotStateDiveBombFlyAbove_Tick", "role": "3-second lead point built from vtable[0]"},
+    {"address": "00825F20", "native": "00825F20", "name": "BSP_UnitInstance_UpdateShipMotion", "role": "00826866: class+A0h scales matrix row 2 ([EBP+20h..28h]), the forward axis"}
+  ],
+  "call_sites": [
+    {"address": "009FAEB8", "native": "009FA260", "function": "009FADA0", "note": "the pick, gated on the dirty byte sub+41h"},
+    {"address": "009FAECB", "native": "00414DB0", "function": "009FADA0", "note": "pose refresh of the target at sub+18h"},
+    {"address": "009FAEDF", "native": "004142E0", "function": "009FADA0", "note": "ECX = sub+28h (body offset), matrix = target+CCh; stores 009FAEEA/F5/00 to sub+1Ch..24h = approach+4Ch..54h"},
+    {"address": "009C7A9F", "native": "009FADA0", "function": "009C7A80", "note": "first act of the approach tick, ECX = approach+30h"},
+    {"address": "009C7B32", "native": "00D20C48+vtable00", "function": "009C7A80", "note": "CALL EDX = approach vtable[0] = 009C40A0; range BCh = |vtable0 - unit+FCh..104h| (009C7B34-009C7B56)"},
+    {"address": "009C6342", "native": "00D20C48+vtable00", "function": "009C62B0", "note": "fly-over lead point: vtable[0] - 3*(v_own - v_tgt) - unit pose"},
+    {"address": "009C5988", "native": "00D20C48+vtable00", "function": "009C58D0", "note": "aimdive: first sqrt input, vtable[0] - unit+FCh/104h"},
+    {"address": "009C59CD", "native": "00D20C48+vtable00", "function": "009C58D0", "note": "aimdive height [ESP+14h] = unit+100h - vtable[0].out[1] (009C59CF-009C59D6)"},
+    {"address": "009C5278", "native": "00D20C48+vtable00", "function": "009C5180", "note": "aimglide height = unit+100h - vtable[0].out[1] (009C527A)"}
+  ],
+  "no_ghidra_function": [
+    {"start": "009C40A0", "end": "009C40B7", "name": "dive_bomb_approach_aim_point_009c40a0", "evidence": "slot 0 of approach vtable 00D20C48; copies approach+4Ch/+50h/+54h to out[0..2]; RET 4 at 009C40B5; INT3 from 009C40B8"}
+  ],
+  "runs": "see docs/HULL_AIM_AXIS.md section 3",
+  "validation": {
+    "build": "./scripts/build.ps1",
+    "target": "MSVC Win32 Release /W4 /WX",
+    "build_passed": true,
+    "existing_ctests_passed": 2
+  }
+}

@@ -388,6 +388,9 @@ struct GameUnitSlot {
     bsp::ApproachTargetRefState hull_aim_ref{};
     std::size_t hull_aim_target_plus_one{0};
     std::uint32_t hull_aim_seed{0};
+    // Packet cc9_hull_axis: the target the in-range print last fired for, so
+    // it fires once per (attacker, target). Diagnostic only, behind the switch.
+    std::size_t hull_aim_range_printed_plus_one{0};
     float db_aim_point_3d{0.0f};
     float db_bearing_c0{0.0f};       // approach+C0h
     float db_aim_point_height_50{0.0f};   // approach+50h
@@ -1081,12 +1084,57 @@ bool hull_aim_target_samples_hull(const GameUnitSlot& target) {
 // section (f) lists the three candidates to check first. Nothing below this
 // line is disabled - the pick still runs and the state still advances, so a
 // successor can print the drawn offset per aircraft without re-arming the feed.
+//
+// Packet cc9_hull_axis (docs/HULL_AIM_AXIS.md) measured the first two and both
+// are clean: one draw per aircraft, and the offset lies on row 2, which is the
+// ship's course. Three more sites read the hull point in the image (009C6342,
+// 009C59CD, 009C5278) that this host feeds the origin, but feeding them does
+// not restore the releases. The loss scales with the horizontal offset (1% and
+// 10% of it: 23 releases, 50%: 16, 100%: 8) and not with its height, so it
+// stays OFF. With it on, `hull_aim draw` and `hull_aim inrange` lines print.
 constexpr bool kHullAimOffsetEnabled = false;
+
+// Packet cc9_hull_axis, diagnostic only. The drawn body-frame offset, the
+// world point, the target origin and heading, and the world point resolved
+// back onto the target's row 2 (along) and row 0 (across). Row 2 is the axis
+// 004142E0 multiplies body z by and the forward axis 00826866 and 0092D300 use.
+void hull_aim_print(GameHostLog& log, const char* why, const GameUnitSlot& shooter,
+                    const GameUnitSlot& target, std::size_t target_plus_one,
+                    const std::array<float, 3>& w) {
+    const bsp::ApproachTargetRefState& st = shooter.hull_aim_ref;
+    const float* m = target.world.data();
+    const double d[3] = {static_cast<double>(w[0]) - m[12],
+                         static_cast<double>(w[1]) - m[13],
+                         static_cast<double>(w[2]) - m[14]};
+    const double r2n = std::sqrt(static_cast<double>(m[8]) * m[8] +
+                                 static_cast<double>(m[9]) * m[9] +
+                                 static_cast<double>(m[10]) * m[10]);
+    const double r0n = std::sqrt(static_cast<double>(m[0]) * m[0] +
+                                 static_cast<double>(m[1]) * m[1] +
+                                 static_cast<double>(m[2]) * m[2]);
+    const double along = (d[0] * m[8] + d[1] * m[9] + d[2] * m[10]) / (r2n > 0 ? r2n : 1);
+    const double across = (d[0] * m[0] + d[1] * m[1] + d[2] * m[2]) / (r0n > 0 ? r0n : 1);
+    const double vx = target.motion.linear_velocity.x;
+    const double vz = target.motion.linear_velocity.z;
+    log.notef("hull_aim %s shooter=%s target=%s(#%u) seed=%u body=(%.2f %.2f %.2f)"
+              " L=%.1f W=%.1f world=(%.1f %.1f %.1f) origin=(%.1f %.1f %.1f)"
+              " pos=(%.1f %.1f %.1f) row2=(%.3f %.3f %.3f) row0=(%.3f %.3f %.3f)"
+              " along=%.2f across=%.2f vel_heading=%.3f",
+              why, shooter.row.name.c_str(), target.row.name.c_str(),
+              static_cast<unsigned>(target_plus_one), shooter.hull_aim_seed,
+              st.body_offset_28[0], st.body_offset_28[1], st.body_offset_28[2],
+              target.motion_class.hull_length, target.class_width_00a4,
+              w[0], w[1], w[2], m[12], m[13], m[14],
+              target.motion.position[0], target.motion.position[1],
+              target.motion.position[2], m[8], m[9], m[10], m[0], m[1], m[2],
+              along, across, std::atan2(vx, vz));
+}
 
 // The world aim point for `shooter` against `target`. Returns false when the
 // target supplies no hull, in which case the caller keeps the origin it had.
 bool hull_aim_world_point(GameUnitSlot& shooter, const GameUnitSlot& target,
-                          std::size_t target_plus_one, float out[3]) {
+                          std::size_t target_plus_one, float out[3],
+                          GameHostLog* log = nullptr) {
     if (shooter.hull_aim_target_plus_one != target_plus_one) {
         // A new ordered target means a new sub-object: 009FB200.
         shooter.hull_aim_ref =
@@ -1107,6 +1155,13 @@ bool hull_aim_world_point(GameUnitSlot& shooter, const GameUnitSlot& target,
         const bsp::ShipLeadRandomDraws draws =
             bsp::approach_target_ref_draws_from_unit(unit, st.spread_48);
         bsp::approach_target_ref_pick_009fa260(st, hull, draws, samples);
+        if (kHullAimOffsetEnabled && samples && log != nullptr) {
+            // Packet cc9_hull_axis: one line per draw, so a re-draw shows up
+            // as a second line for the same (attacker, target).
+            std::array<float, 3> w{};
+            bsp::transform_point_004142e0(st.body_offset_28, target.world, w);
+            hull_aim_print(*log, "draw", shooter, target, target_plus_one, w);
+        }
     }
     if (!samples || !kHullAimOffsetEnabled) return false;
     // 009FAED0-009FAF00.
@@ -1464,7 +1519,7 @@ struct GameUnitsHost::Impl {
         float tp_hull[3] = {slots[ti]->motion.position[0],
                             slots[ti]->motion.position[1],
                             slots[ti]->motion.position[2]};
-        hull_aim_world_point(slot, *slots[ti], ti + 1, tp_hull);
+        hull_aim_world_point(slot, *slots[ti], ti + 1, tp_hull, &log);
         const float* const tp = tp_hull;
         // 009C7B4F-009C7B80: the planar distance, components 0 and 2 only.
         const double dx = static_cast<double>(tp[0]) -
@@ -1474,6 +1529,24 @@ struct GameUnitsHost::Impl {
         const double d2 = dx * dx + dz * dz;
         slot.db_planar_bc = (d2 <= bsp::dive_bomb_constant::kDistanceEpsilonSq)
             ? 0.0f : static_cast<float>(std::sqrt(d2));
+        // Packet cc9_hull_axis: once per (attacker, target), when the range to
+        // the aim point first falls inside approach+B8h, the attackrun ->
+        // fly-over hand-over range. Diagnostic only, behind the switch.
+        if (kHullAimOffsetEnabled && slot.db_planar_bc < slot.db_in_range_b8 &&
+            slot.hull_aim_range_printed_plus_one != ti + 1) {
+            slot.hull_aim_range_printed_plus_one = ti + 1;
+            hull_aim_print(log, "inrange", slot, *slots[ti], ti + 1,
+                           {tp[0], tp[1], tp[2]});
+            log.notef("hull_aim inrange shooter=%s planar_to_aim=%.1f "
+                      "planar_to_origin=%.1f shooter_pos=(%.1f %.1f %.1f)",
+                      slot.row.name.c_str(), static_cast<double>(slot.db_planar_bc),
+                      std::sqrt(std::pow(static_cast<double>(slots[ti]->motion.position[0]) -
+                                             slot.motion.position[0], 2) +
+                                std::pow(static_cast<double>(slots[ti]->motion.position[2]) -
+                                             slot.motion.position[2], 2)),
+                      slot.motion.position[0], slot.motion.position[1],
+                      slot.motion.position[2]);
+        }
         // 009C8B14-009C8B3B, the break-off's own range. The image subtracts all
         // THREE components of `aimPoint - unitPosition` and takes 0042B2F0's
         // length; approach+BCh is planar and measured to the target entity, so
