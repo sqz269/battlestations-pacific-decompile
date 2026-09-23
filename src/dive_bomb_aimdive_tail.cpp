@@ -118,4 +118,20 @@ float dive_bomb_flyabove_desired_speed_009c6f97(float approach_a4,
     return static_cast<float>(d + approach_a4);
 }
 
+DiveBombAimGlideThrottle dive_bomb_aimglide_throttle_009c55e5(
+    float planar_to_aim_10, float planar_to_impact_14,
+    float max_power_44, float min_power_48) noexcept {
+    namespace k = dive_bomb_glide_throttle_constant;
+    DiveBombAimGlideThrottle out;
+    // 009C534B-009C5353: FLD [ESP+10h], FDIV [ESP+14h], FSTP dword. A zero
+    // divisor is not guarded in the image either.
+    out.ratio_24 = planar_to_aim_10 / planar_to_impact_14;
+    const float t = dive_bomb_interpolate_clamped_00419010(
+        k::kRatioLo, min_power_48, k::kRatioHi, max_power_44, out.ratio_24);
+    out.throttle_278 = 0.0f > t ? 0.0f : (t > 1.0f ? 1.0f : t);
+    const float b = -0.0f - t;
+    out.air_brake_2a8 = 0.0f > b ? 0.0f : (b > 1.0f ? 1.0f : b);
+    return out;
+}
+
 }  // namespace bsp

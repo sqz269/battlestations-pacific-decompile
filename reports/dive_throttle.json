@@ -1,0 +1,119 @@
+{
+ "packet": "cc9_dive_throttle",
+ "calls": [
+  {
+   "address": "009C4C41",
+   "native": "00419010",
+   "function": "009C4A40",
+   "note": "goaway nose-down throttle shape 00419010(-0.5,-1,0,1,unit+C64h)"
+  },
+  {
+   "address": "009C5616",
+   "native": "00419010",
+   "function": "009C5180",
+   "note": "aimglide throttle 00419010(0.8,MinPower,1.3,MaxPower,ratio)"
+  },
+  {
+   "address": "009C5F9E",
+   "native": "00419010",
+   "function": "009C58D0",
+   "note": "aimdive tail power curve"
+  },
+  {
+   "address": "009C5FCB",
+   "native": "00419010",
+   "function": "009C58D0",
+   "note": "aimdive tail brake curve"
+  }
+ ],
+ "sites": [
+  {
+   "address": "009C4A55",
+   "evidence": "nose-down byte: [00CF885C]=-0.0873 COMISS unit+C64h, JA keeps 1"
+  },
+  {
+   "address": "009C4C8B",
+   "evidence": "goaway: +27Ch=BL, +278h=clamp(t,0,1), +2ACh=BL, +2A8h=clamp(-0-t,0,1), +2D8h=0 at 009C4CA7"
+  },
+  {
+   "address": "009C4CC8",
+   "evidence": "goaway flag 0: +278h=1.0, +27Ch=BL, +2A8h=0, +2ACh=BL, +2D8h=0 at 009C4CE7"
+  },
+  {
+   "address": "009C534F",
+   "evidence": "aimglide ratio [ESP+24h] = [ESP+10h] planar to aim / [ESP+14h] planar to approach+D8h/+E0h"
+  },
+  {
+   "address": "009C5663",
+   "evidence": "aimglide +278h, +27Ch=BL, +2A8h 009C5671, +2ACh=BL, +2D8h=0 at 009C567F"
+  },
+  {
+   "address": "009C4524",
+   "evidence": "turndown +2D8h = EBX = 1; its only throttle-side store with 009C4512 +2B4h"
+  },
+  {
+   "address": "009C6FF1",
+   "evidence": "flyabove +2D8h = 1; +2B4h at 009C6FFB; no +278h/+2A8h store in 009C62B0-009C7083"
+  }
+ ],
+ "runs": {
+  "env": "BSP_GUNNERY_RNG_STREAMS=1",
+  "C0": {
+   "log": "local/C0_9000.log",
+   "drops": 29,
+   "kill_credits": 35,
+   "water": 8,
+   "end": "failed 186.06 s"
+  },
+  "G0": {
+   "log": "local/G0_9000.log",
+   "switches": "goaway+aimglide throttle",
+   "drops": 29,
+   "kill_credits": 34,
+   "water": 8,
+   "end": "failed 186.06 s"
+  },
+  "T1": {
+   "log": "local/T1_9000.log",
+   "switches": "fix+goaway+aimglide+tail",
+   "drops": 0,
+   "kill_credits": 36,
+   "water": 0,
+   "end": "failed 342.04 s"
+  },
+  "T2": {
+   "log": "local/T2_9000.log",
+   "switches": "T1+hull offset",
+   "drops": 0,
+   "kill_credits": 36,
+   "water": 2,
+   "end": "failed 342.04 s"
+  },
+  "C0_ref": {
+   "log": "local/C0_4500.log",
+   "drops": 17,
+   "kill_credits": 24,
+   "water": 0,
+   "end": "failed 186.06 s"
+  },
+  "T1_ref": {
+   "log": "local/T1_4500.log",
+   "drops": 0,
+   "kill_credits": 16,
+   "water": 0,
+   "end": "none"
+  }
+ },
+ "decision": {
+  "kGoawayThrottleBound": true,
+  "kAimGlideThrottleBound": true,
+  "kPilotThrottleSlotBound": false,
+  "kAimDiveTailBound": false,
+  "kHullAimOffsetEnabled": false,
+  "missing_term": "aimglide pitch target 009C5522-009C55DF (cmd+2BCh, cmd+2D0h=2) unbound; secondary: release altitude draw pinned at 350 of {350,450}"
+ },
+ "ledger_evidence_appended": [
+  "009C4A40",
+  "009C5180"
+ ]
+}

@@ -165,3 +165,14 @@ depth 152. They all write frame slot entry-108, the slot the speed arm reads at 
 009C6AD9 zeroes it on every tick. Only the 007F0280 near-field avoidance arm overwrites it, so the
 speed arm's frame slot is 0.0 without a neighbour. The desired speed is then 0.95 x MaxSpd in speed
 mode. It is now bound, and it is not the term that saturates the aimdive's pitch command.
+
+## Correction, 2026-09-23 (packet cc9_dive_throttle)
+
+* Section 4(b) was measured with the throttle frozen at 1.0 (`docs/PILOT_THROTTLE_SLOT.md`). The
+  fly-over and turndown could not slow the aircraft, and it entered the dive at about 113 m/s.
+  With the speed hold working (`docs/DIVE_THROTTLE.md` run T1), the dive starts at 54 m/s. The
+  entry error still swings about 540 m peak to peak, but it settles within about 40 ticks and
+  stays inside 25 m from 532 m down. The tail then lifts the brake and adds power. So "holds power
+  0.2 and brake 0.5 ... through the dive" does not hold on a throttling host. Releases are still 0
+  there, for a different reason: the dive-abort and aimglide-ceiling gates. See
+  `docs/DIVE_THROTTLE.md` section 4.

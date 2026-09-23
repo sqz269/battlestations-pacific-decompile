@@ -754,6 +754,7 @@ struct GameUnitSlot {
     int db_glide_calls{0};
     int db_glide_gate_reached[7]{};
     float db_glide_lead_last{0.0f};
+    float db_glide_ratio_last{0.0f};  // aimglide [ESP+24h], cc9_dive_throttle
     float db_glide_lead_min{0.0f};      // the most negative lead seen
     float db_glide_bearing_min{-1.0f};
     int db_glide_releases{0};
@@ -1207,7 +1208,20 @@ constexpr bool kHullAimTrace = false;
 // (local/boff_usn04.log). The host's aim error saturates the pitch command, so
 // the tail holds MinPowerCtrl 0.2 and MaxBrakeCtrl 0.5 through the dive and
 // the aircraft arrives slow and shallow. docs/AIMDIVE_RESPONSE.md section 4.
+// Re-measured with the throttle fix (cc9_dive_throttle, docs/DIVE_THROTTLE.md 4): the
+// swing settles and the tail lifts the brake, but releases stay 0 because the
+// aimglide pitch target 009C5522-009C55DF is unbound. Still OFF.
 constexpr bool kAimDiveTailBound = false;
+// Packet cc9_dive_throttle: goaway's throttle and air-brake commands on both
+// sides of the nose-down split, 009C4C0C-009C4CA7 and 009C4CBA-009C4CE1.
+// docs/DIVE_THROTTLE.md section 1.
+constexpr bool kGoawayThrottleBound = true;
+// Packet cc9_dive_throttle: the aimglide tick's throttle and air brake
+// 009C55E5-009C5679 and its cmd+2D8h = 0 at 009C567F, which this host lacked
+// (so aimglide ran in the per-think speed mode). docs/DIVE_THROTTLE.md 2.
+// ON with kGoawayThrottleBound, measured (local/G0_9000.log vs C0): the drop
+// rows are unchanged, and only the post-release glide and climb-out paths move.
+constexpr bool kAimGlideThrottleBound = true;
 // Packet cc9_flyover_speed: the flyabove desired-speed arm 009C6F97-009C6FFB,
 // and approach+50h fed with the aim point's height. docs/FLYOVER_SPEED.md.
 // ON: USN04 moves only through the approach+50h feed on the two Yorktown
@@ -8409,9 +8423,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         if (r.wrote_bank_heading) {
                             // 009C4BFE/009C4C06: wings level through the servo, the
                             // mode-1 arm at 0099E26E, which rolls the aircraft
-                            // upright out of the inverted dive. The throttle and
-                            // air-brake shaping 009C4C0C-009C4CA7 on this side is
-                            // not modelled: this host keeps no +278h/+2A8h slots.
+                            // upright out of the inverted dive. Then the throttle and
+                            // air-brake shaping 009C4C0C-009C4CA7 (cc9_dive_throttle).
+                            if (kGoawayThrottleBound) {
+                                const bsp::DiveBombGoAwayThrottle gth =
+                                    bsp::dive_bomb_goaway_throttle_009c4c0c(
+                                        true, unit_.plane_pitch_angle_c64);
+                                unit_.plan_slots[bsp::kPilotSlotThrottle].desired = gth.throttle_278;
+                                unit_.plan_slots[bsp::kPilotSlotThrottle].active = 1;
+                                unit_.plan_slots[bsp::kPilotSlotAirBrake].desired = gth.air_brake_2a8;
+                                unit_.plan_slots[bsp::kPilotSlotAirBrake].active = 1;
+                            }
                             unit_.plan_state.bank_target_2c4 = r.bank_target_2c4;
                             unit_.plan_heading_mode_2cc = r.heading_mode_2cc;
                             unit_.plan_heading_2c0_written = false;
@@ -8419,9 +8441,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             return;
                         }
                         // 009C4CBA-009C4CE7: full throttle (+278h = 1.0, +27Ch = 1),
-                        // no air brake (+2A8h = 0, +2ACh = 1), +2D8h = 0. Only the
-                        // last has a slot here.
+                        // no air brake (+2A8h = 0, +2ACh = 1), +2D8h = 0.
                         ++unit_.db_goaway_flag0_ticks;
+                        if (kGoawayThrottleBound) {
+                            const bsp::DiveBombGoAwayThrottle gth =
+                                bsp::dive_bomb_goaway_throttle_009c4c0c(
+                                    false, unit_.plane_pitch_angle_c64);
+                            unit_.plan_slots[bsp::kPilotSlotThrottle].desired = gth.throttle_278;
+                            unit_.plan_slots[bsp::kPilotSlotThrottle].active = 1;
+                            unit_.plan_slots[bsp::kPilotSlotAirBrake].desired = gth.air_brake_2a8;
+                            unit_.plan_slots[bsp::kPilotSlotAirBrake].active = 1;
+                        }
                         unit_.plane_air_brake_mode_2d8 = 0;  // 009C4CE7
                         {
                             // 009C4CF1-009C4D9A, the re-roll.
@@ -8697,6 +8727,24 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.plan_heading_2c0 = r.heading_2c0;
                             unit_.plan_heading_2c0_written = true;
                             unit_.plan_heading_mode_2cc = r.heading_mode_2cc;
+                        }
+                        if (kAimGlideThrottleBound) {
+                            // [ESP+10h] is the planar distance to the fed aim
+                            // point, the quantity 009C7A80 keeps as approach+BCh
+                            // from the same point this tick; [ESP+14h] is the
+                            // throw to the predicted impact point.
+                            const GameUnitsHost::Impl::PilotDiveBombRow& grow =
+                                GameUnitsHost::Impl::dive_bomb_row(unit_);
+                            const bsp::DiveBombAimGlideThrottle g =
+                                bsp::dive_bomb_aimglide_throttle_009c55e5(
+                                    unit_.db_planar_bc, unit_.db_impact_throw_14,
+                                    grow.max_power_ctrl_050, grow.min_power_ctrl_054);
+                            unit_.db_glide_ratio_last = g.ratio_24;
+                            unit_.plan_slots[bsp::kPilotSlotThrottle].desired = g.throttle_278;
+                            unit_.plan_slots[bsp::kPilotSlotThrottle].active = 1;
+                            unit_.plan_slots[bsp::kPilotSlotAirBrake].desired = g.air_brake_2a8;
+                            unit_.plan_slots[bsp::kPilotSlotAirBrake].active = 1;
+                            unit_.plane_air_brake_mode_2d8 = 0;  // 009C567F
                         }
                     }
 

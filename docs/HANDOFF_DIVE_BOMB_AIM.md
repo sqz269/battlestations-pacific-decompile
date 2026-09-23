@@ -149,3 +149,12 @@ target motion, and neither side leads" than the pair would have been.
   and `009C740B` overwrites it with `00D20E08` from the more-derived constructor. Both happen to
   carry `009C40A0` at slot 0, so the aim point conclusion survived - but a claim about any other
   slot taken from `00D20C48` alone would not.
+
+## Correction, 2026-09-23 (packet cc9_dive_throttle)
+
+* The `[ESP+24h]` formula above is **wrong in its divisor**. 009C534B-009C5353 is `FLD [ESP+10h]`,
+  `FDIV [ESP+14h]`. `[ESP+14h]` is the magnitude built at 009C52C7-009C5303 from `[ESP+44h]`/`[ESP+4Ch]`,
+  and those hold `approach+D8h/+E0h - unit` (009C5207-009C522E). So
+  `[ESP+24h] = |aimPoint - aircraft| / |impactPoint - aircraft|`, planar. `|aimPoint - impactPoint|`
+  is `[ESP+1Ch]`, which this ratio does not use. The ratio feeds aimglide's throttle at 009C55EE-009C5616.
+  See `docs/DIVE_THROTTLE.md` section 2.

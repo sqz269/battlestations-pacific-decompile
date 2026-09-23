@@ -141,4 +141,28 @@ struct DiveBombGoAwayTurnCommand {
 DiveBombGoAwayTurnCommand dive_bomb_goaway_turn_split_009c4dad(
     const DiveBombGoAwayTurnState& state, float heading_1c) noexcept;
 
+// Packet cc9_dive_throttle: the throttle and air-brake commands on both sides of
+// the nose-down split. docs/DIVE_THROTTLE.md section 1.
+namespace dive_bomb_goaway_throttle {
+inline constexpr float kPitchLo = -0.5f;     // 00CE69D0, FLD dword at 009C4C38 (x0)
+inline constexpr float kShapeLo = -1.0f;     // 00D7A260, FLD dword at 009C4C2E (y0)
+inline constexpr float kPitchHi = 0.0f;      // FLDZ at 009C4C28 (x1)
+inline constexpr float kShapeHi = 1.0f;      // FLD1 at 009C4C22 (y1)
+inline constexpr float kFullThrottle = 1.0f; // 00D7A24C, MOVSS at 009C4CC0
+}  // namespace dive_bomb_goaway_throttle
+
+struct DiveBombGoAwayThrottle {
+    float throttle_278 = 1.0f;   // 009C4C91 / 009C4CC8, dword
+    float air_brake_2a8 = 0.0f;  // 009C4C9F / 009C4CD9, dword
+    // +27Ch and +2ACh = BL = 1 (009C4C8B/009C4C99, 009C4CD3/009C4CE1, bytes;
+    // EBX = 1 from 009C4A5C) and +2D8h = 0 (009C4CA7 / 009C4CE7, dword).
+};
+
+// nose_down is 009C4A43-009C4A68's byte ([00CF885C] = -0.0873 > unit+C64h).
+// Set: t = 00419010(-0.5, -1, 0, 1, unit+C64h) (009C4C12-009C4C41), throttle =
+// clamp(t, 0, 1) (009C4C79-009C4C88), air brake = clamp(-0.0 - t, 0, 1)
+// (009C4C4A-009C4C76). Clear: throttle 1.0, air brake 0 (009C4CBA-009C4CE1).
+DiveBombGoAwayThrottle dive_bomb_goaway_throttle_009c4c0c(bool nose_down,
+                                                           float unit_pitch_c64) noexcept;
+
 }  // namespace bsp

@@ -163,3 +163,10 @@ commands that follow cannot clear it because their multiplier was 0.
   * Ghidra lists no direct callers of `007CA5F0`, since it is reached through the vtable.
 * The weapon-slot class at `unit+974h` was not reached.
 * Ledger names, both provisional: `00956EE0` BSP_Plane_SetGunFireEffect and `007CA5F0` BSP_Plane_SetGunFireEffects.
+
+## Correction, 2026-09-23 (packet cc9_dive_throttle)
+
+* Section 5 names aimdive and goaway as the mode-0 states that write no throttle in this host.
+  Aimglide belongs on that list too. The image writes throttle, air brake and `+2D8h = 0` at
+  009C5663-009C567F, and this host did none of it, so aimglide ran in the per-think speed mode.
+  All three are now read, in `docs/DIVE_THROTTLE.md`.
