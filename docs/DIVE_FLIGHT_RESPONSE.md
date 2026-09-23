@@ -148,3 +148,23 @@ before that (U3, V1, Q0). **That is a reference, not a same-tree pair.**
 * **The 34.5 m/s entry does not block the release in the image's law.** The dive reaches about
   67 m/s at 62° by the release altitude. What decides it is staying steeper than -60° so the
   009C5B43 abort cannot fire.
+
+## 7. R0 taken, 2026-09-23 (packet cc9_fighter_gunfire_rate)
+
+A 120-frame probe passed at about 12:30, so R0 ran with the binary `frR0` from the same tree as R1:
+`local\R0fr_9000.log`, E2 9000 with `BSP_GUNNERY_RNG_STREAMS=1`.
+
+| run | configuration | drops | kill credits | water | mission end |
+| --- | --- | --- | --- | --- | --- |
+| R0 | V1 set | **16** | 34 | 7 | failed 297.05 s |
+| R1 | V1 set + Accel scale | **26** | 35 | 8 | failed 258.06 s |
+
+* The pair is same-tree and differs only by `kPlaneAccelCheatScaleBound`.
+* R0 releases from the same 8 aircraft as U3 and V1: the #1.1 and #5.1 flights' clean members and
+  movieval / movieval|.-2.
+* R1 adds 10 rounds:
+  * the three Mode A wingmen, #1.1|.-3, #1.1|.-4 and movieval|.-3, 6 rounds;
+  * #3.1|.-2 and #7.1 on later passes, 4 rounds.
+* **Under the throttle fix, the image's class Accel is worth 10 releases.** It stays OFF only because
+  of its main-configuration pair (S0 32 against S1 24). The two belong together: with the frozen
+  throttle, the extra drag slows dives that the host only won by being too fast.
