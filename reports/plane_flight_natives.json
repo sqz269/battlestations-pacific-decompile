@@ -1,0 +1,56 @@
+{
+ "packet": "cc9_plane_flight_natives",
+ "calls": [
+  {
+   "address": "007CEA8D",
+   "native": "007C0D90",
+   "function": "007CE040",
+   "note": "the release issue"
+  },
+  {
+   "address": "007CEAB3",
+   "native": "00BD2F10",
+   "function": "007CE040",
+   "note": "interval draw U(0.9, 1.1), times class+1F4h BombDelay"
+  },
+  {
+   "address": "007BB98B",
+   "native": "007BB6E0",
+   "function": "007BB920",
+   "note": "quantize the command block"
+  },
+  {
+   "address": "007D673E",
+   "native": "007CD930",
+   "function": "007D5D20",
+   "note": "PilotFires computed once at load"
+  }
+ ],
+ "raw_listing_transfers": [
+  {
+   "address": "007CEB0B",
+   "target": "slot->vtable[1FCh]() (device busy, slot class unidentified)",
+   "function": "007CE040",
+   "evidence": "CALL EAX after MOV EAX,[EDX+1FCh] at 007CEB05"
+  },
+  {
+   "address": "007BB963",
+   "target": "unit->vtable[5Ch](17h)",
+   "function": "007BB920",
+   "evidence": "CALL EDX after PUSH 17h"
+  },
+  {
+   "address": "009A7700",
+   "target": "unit->vtable[34h] = 007BBB70 (unit+AC8h velocity)",
+   "function": "009A76E0",
+   "evidence": "aim tick's two vtable[34h] calls; plane vtable 00D05F20+34h holds 007BBB70"
+  }
+ ],
+ "no_ghidra_function": [],
+ "ledger_names_added": [
+  {
+   "address": "007CD930",
+   "name": "BSP_Plane_ComputePilotFires"
+  }
+ ]
+}
