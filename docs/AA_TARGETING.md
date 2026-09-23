@@ -245,3 +245,19 @@ What is established regardless:
   will move unrelated gunnery outcomes through the random stream. A per-gun or per-unit stream
   would make such pairs readable, but it would be less faithful than the image's single
   generator.
+
+## Correction from docs/RANDOM_STREAMS.md (packet cc9_rng_streams, 2026-09-23)
+
+- **Section 3's "one process-wide generator shared with everything" is imprecise.** `00BD2F10`
+  selects its state by the caller's ECX from two MT19937 streams per registered thread
+  (`00BD2ED0`). Every gunnery consumer draws on **stream 1**, and so do the gun bots, the pilot
+  bots and the goaway enter (`009C49FC`). The goaway tick's two draws (`009C4D13`, `009C4D33`)
+  pass `ECX = EBX`, not read here. Stream 0 is a separate stream used mostly by the `004xxxxx`
+  band. The coupling claim stands for stream 1: the gameplay consumers share one sequence, so a
+  behaviour change anywhere shifts every later gunnery draw. That stream is also reseeded from
+  wall-clock milliseconds when the HUD movie camera is destroyed (`0079A260`), so the image's own
+  runs are not reproducible.
+- **Section 2's "bound for kind 5" row is now landed.** The kind 5/6 minimum-air-range term is
+  on by default (`kAaMinRangeBound = true`). Its measured pair, with the per-consumer stream
+  option, moved exactly the eight predicted Yorktown-class01 FLAK rows and nothing else
+  (`docs/RANDOM_STREAMS.md` section 3).

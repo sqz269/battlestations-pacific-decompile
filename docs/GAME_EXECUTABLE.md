@@ -8990,3 +8990,24 @@ There are 12 `plane water contact` lines. Eight are dive bombers: `D3A Val #1.1`
 `#1.1|.-4`, `#5.1`, `#5.1|.-2`, `#5.1|.-4`, `movieval` and `movieval|.-2`, all at |v| 68.3 to
 69.2. The other four are US aircraft: `Yorktown-class01_sqn02`, `|.-2`, `|.-3` and
 `Lexington-class01_sqn01|.-2`, all at about |v| 82.5.
+
+### Harness option `BSP_GUNNERY_RNG_STREAMS` (2026-09-23, packet `cc9_rng_streams`)
+
+This adds to the harness options above (`--instance-tag`, `--affinity-core`). Setting the
+environment variable `BSP_GUNNERY_RNG_STREAMS=1` gives every gunnery random draw its own
+deterministic generator. The key is the consumer plus a stable identity: gun index for the fire
+stagger and blast damage, (gun, victim) for hull damage, victim for hit effects, and (shooter,
+target) for the visibility-cache lifetime. The seed is derived from the run seed and that key.
+**It is a measurement substitution and is never on in a reference run.** The image draws all of
+these from one shared stream (`docs/RANDOM_STREAMS.md` section 1), and so does the host with the
+option unset.
+
+What it is for: a behaviour pair that changes one unit's actions leaves every other gun's draws
+where they were, so the moved rows can be attributed. With the option on, the run also prints
+one `gunrow` line per gun.
+- Two identical runs are identical: `local\str_a1.log` and `local\str_a2.log`, 0 of 50303 lines.
+- Unset, the build is identical to unchanged main: `local\main_4800.log` and
+  `local\off_4800.log`, 0 of 54485 lines.
+
+Use it on both sides of a pair, with every other parameter matched, and compare the `gunrow` and
+per-unit rows.

@@ -48,11 +48,20 @@
 namespace bsp::game {
 namespace {
 
-// Packet cc9_aa_targeting: the three gun-side acceptance terms of 00729BC0's
-// bot slots and 00865773's minimum-air-range skip, which the host used to answer
-// with a range test alone. docs/AA_TARGETING.md. Off until a measured pair
-// explains every moved number.
-constexpr bool kAaTargetingBound = false;
+// Packets cc9_aa_targeting and cc9_rng_streams: the three gun-side acceptance
+// terms of 00729BC0's bot slots and 00865773's minimum-air-range skip, which the
+// host used to answer with a range test alone. docs/AA_TARGETING.md and
+// docs/RANDOM_STREAMS.md. Each is its own switch and was measured as its own
+// pair with BSP_GUNNERY_RNG_STREAMS=1:
+//  * kind 5/6 minimum air range: LANDED. The pair moved exactly the eight
+//    predicted Yorktown-class01 FLAK rows (gun rows 199-206) and nothing else.
+//  * AA gunner armour test: LANDED. No aircraft in USN04 has the armour to
+//    trigger it, and its pair was identical, as predicted.
+//  * fire window: OFF. It needs the per-gun node frame the host does not build;
+//    bound here in the hull frame, which is a substitution.
+constexpr bool kAaMinRangeBound = true;     // 005459E0 / 00729B90
+constexpr bool kAaArmourBound = true;       // 008FBE00's armour test
+constexpr bool kAaFireWindowBound = false;  // 0085A9A0 (hull-frame substitution)
 
 constexpr int kMaxPlatformScan = 64;   // the `Platforms` keys this process scans
 constexpr int kMaxWindowScan = 8;      // the `Windows` entries per platform
@@ -242,6 +251,8 @@ struct GameGunneryHost::Impl {
     unsigned long long aa_window_rejects{0};
     unsigned long long aa_armour_rejects{0};
     unsigned long long aa_min_range_skips{0};
+    // Per gun index: evaluations where 00865773's minimum-air-range skip applies.
+    std::map<std::size_t, unsigned long long> aa_min_range_skips_by_gun;
     std::vector<std::string> aa_cand_lines;
     bool aa_changed{false};
     unsigned long long step_index{0};
@@ -251,6 +262,57 @@ struct GameGunneryHost::Impl {
     float random_range_00bd2f10(float low, float high) {
         rng = rng * 1664525u + 1013904223u;
         const float unit = static_cast<float>((rng >> 8) & 0xFFFFFFu)
+            / static_cast<float>(0x1000000u);
+        return low + (high - low) * unit;
+    }
+
+    // Packet cc9_rng_streams: the gunnery draws, each named by its consumer.
+    // The image draws all of them from 00BD2F10 on stream ECX=1, the one the
+    // pilot bots, gun bots and projectiles share (docs/RANDOM_STREAMS.md), and
+    // the default here keeps that shape: one shared generator, in the same
+    // order as before this packet, so a default run is unchanged.
+    //
+    // BSP_GUNNERY_RNG_STREAMS=1 is a MEASUREMENT SUBSTITUTION, never on in a
+    // reference run: each (consumer, a, b) key gets its own deterministic
+    // generator seeded from the run seed and the key, so a pair that changes
+    // one unit's behaviour leaves every other key's draws where they were.
+    enum class Draw : std::uint32_t {
+        visibility_ttl = 1,   // 00864D90, key (shooter unit, target unit)
+        fire_stagger = 2,     // 0072D2C0 via the fire request, key (gun, 0)
+        hit_effect = 3,       // ship-hit fire/flood chance, key (victim unit, 0)
+        hull_damage = 4,      // 00470510's base, key (gun, victim unit)
+        blast_damage = 5,     // 0084BAD0's blast, key (gun, 0)
+    };
+    static bool rng_streams_enabled() {
+        static const bool on = [] {
+            char* text = nullptr;
+            std::size_t bytes = 0;
+            bool value = false;
+            if (_dupenv_s(&text, &bytes, "BSP_GUNNERY_RNG_STREAMS") == 0 && text != nullptr)
+                value = text[0] == '1';
+            std::free(text);
+            return value;
+        }();
+        return on;
+    }
+    std::map<std::uint64_t, std::uint32_t> rng_by_key;
+    float draw(Draw purpose, std::size_t a, std::size_t b, float low, float high) {
+        if (!rng_streams_enabled()) return random_range_00bd2f10(low, high);
+        const std::uint64_t key = (static_cast<std::uint64_t>(purpose) << 56)
+            ^ (static_cast<std::uint64_t>(a & 0xFFFFFFu) << 28)
+            ^ static_cast<std::uint64_t>(b & 0xFFFFFFFu);
+        auto it = rng_by_key.find(key);
+        if (it == rng_by_key.end()) {
+            // splitmix64 of the run seed and the key: a fixed, key-local start.
+            std::uint64_t z = key + 0x9E3779B97F4A7C15ull * (0x9E3779B9ull + 1u);
+            z = (z ^ (z >> 30)) * 0xBF58476D1CE4E5B9ull;
+            z = (z ^ (z >> 27)) * 0x94D049BB133111EBull;
+            z ^= z >> 31;
+            it = rng_by_key.emplace(key, static_cast<std::uint32_t>(z)).first;
+        }
+        std::uint32_t& state = it->second;
+        state = state * 1664525u + 1013904223u;
+        const float unit = static_cast<float>((state >> 8) & 0xFFFFFFu)
             / static_cast<float>(0x1000000u);
         return low + (high - low) * unit;
     }
@@ -1283,7 +1345,8 @@ public:
         GameGunneryHost::Impl::UnitState::VisibilityEntry entry;
         entry.target = other;
         entry.visible = true;
-        entry.ttl = owner_.random_range_00bd2f10(0.0f,
+        entry.ttl = owner_.draw(GameGunneryHost::Impl::Draw::visibility_ttl, unit_, other,
+            0.0f,
             bsp::kInstalledLosVisibleTimeOut);
         state_.visibility.push_back(entry);
         owner_.done("Gunnery::visibility_cache_append_00864d90", 0x00864d90u);
@@ -1377,12 +1440,23 @@ public:
         }
         in.slot_accepts_target = in_range;
         // Evaluated on every call so a run with the switch off still counts what
-        // the bound terms would refuse; applied only when kAaTargetingBound.
-        if constexpr (kAaTargetingBound) {
-            bind_aa_acceptance(row, other, in);
-        } else {
+        // the bound terms would refuse; applied only when that term's own switch is on.
+        {
+            // Evaluated on every call; each term is applied only when its own
+            // switch is on, and counted either way.
             bsp::GunneryGunInputs observed = in;
             bind_aa_acceptance(row, other, observed);
+            if constexpr (kAaMinRangeBound) {
+                in.is_torpedo_class_launcher = observed.is_torpedo_class_launcher;
+                in.minimum_air_range = observed.minimum_air_range;
+            }
+            if constexpr (kAaFireWindowBound || kAaArmourBound) {
+                if (!observed.slot_accepts_target
+                    && ((kAaFireWindowBound && last_refusal_ == AaRefusal::window)
+                        || (kAaArmourBound && last_refusal_ == AaRefusal::armour))) {
+                    in.slot_accepts_target = false;
+                }
+            }
         }
         if (!in_range && other < owner_.unit_state.size()
             && aa_target_matches(owner_.unit_state[other].row.name)) {
@@ -1393,7 +1467,7 @@ public:
         owner_.done("Gunnery::bot_slot_accepts_target_00729bc0", 0x00729bc0u);
         return in;
     }
-    // Packet cc9_aa_targeting, behind kAaTargetingBound. docs/AA_TARGETING.md.
+    // Packet cc9_aa_targeting, each term behind its own switch above. docs/AA_TARGETING.md.
     //
     // 005459E0 / 00729B90 (00865773's skip): the weapon kind [[gun+3F4h]+80h] is
     // the device row's Function id, and the test is kind 5 or 6 - FLAK and
@@ -1415,8 +1489,11 @@ public:
     //  the gun's vtable[1D4h] = 0072F6E0, which answers 1 while gun+42Ch is zero
     //  and otherwise caches a line-of-fire predicate whose installer is unread;
     //  it stays true here.
+    enum class AaRefusal { none, window, armour };
+    AaRefusal last_refusal_{AaRefusal::none};
     void bind_aa_acceptance(const GameGunRow& row, std::size_t other,
                             bsp::GunneryGunInputs& in) {
+        last_refusal_ = AaRefusal::none;
         if (other >= owner_.units.count()) return;
         const bool plane = owner_.units.unit_is_kind_of(other,
             bsp::kUnitGunneryKindPlaneBase);
@@ -1437,6 +1514,7 @@ public:
         const float len = length3(d);
         if (plane && in.is_torpedo_class_launcher && in.minimum_air_range > len) {
             ++owner_.aa_min_range_skips;
+            ++owner_.aa_min_range_skips_by_gun[static_cast<std::size_t>(&row - owner_.guns.data())];
         }
         if (!in.slot_accepts_target) return;
         if (kind != 1 && kind != 5) return;
@@ -1446,6 +1524,7 @@ public:
                                             : 0.0f;
             if (b != nullptr && best <= owner_.unit_state[other].armour) {
                 in.slot_accepts_target = false;
+                last_refusal_ = AaRefusal::armour;
                 ++owner_.aa_armour_rejects;
                 return;
             }
@@ -1457,6 +1536,7 @@ public:
         const bsp::GunPlatformArcs arcs{row.arcs.data(), row.arcs.size()};
         if (!bsp::gun_fire_allowed_007f60a0(arcs, horz, vert)) {        // 0085A9A0
             in.slot_accepts_target = false;
+            last_refusal_ = AaRefusal::window;
             ++owner_.aa_window_rejects;
         }
     }
@@ -2061,7 +2141,7 @@ public:
     }
     float random_stagger_00bd2f10(float lo, float hi) override {
         owner_.done("Gun::fire_stagger_00bd2f10", 0x00bd2f10u);
-        return owner_.random_range_00bd2f10(lo, hi);
+        return owner_.draw(GameGunneryHost::Impl::Draw::fire_stagger, gun_, 0, lo, hi);
     }
     void stop_firing_0072b4c0() override {
         owner_.record("Gun::stop_firing_0072b4c0", 0x0072b4c0u);
@@ -3019,7 +3099,9 @@ public:
     float weapon_fire_chance() override {
         return weapon_ != nullptr ? weapon_->fire_chance : 0.0f;
     }
-    float random_unit_float() override { return owner_.random_range_00bd2f10(0.0f, 1.0f); }
+    float random_unit_float() override {
+        return owner_.draw(GameGunneryHost::Impl::Draw::hit_effect, victim_, 0, 0.0f, 1.0f);
+    }
     void record_flood_rate(float rate) override {
         if (rate > 0.0f) {
             ++owner_.unit_state[victim_].row.floods_started;
@@ -3143,7 +3225,7 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
     bsp::HitRecord hit;
     const float low = weapon != nullptr ? weapon->damage_min : 0.0f;
     const float high = weapon != nullptr ? weapon->damage_max : 0.0f;
-    hit.hull_damage_base = random_range_00bd2f10(low, high);
+    hit.hull_damage_base = draw(Draw::hull_damage, gun_row, victim, low, high);
     hit.part_damage_base = 0.0f;
     hit.falloff_range = 0.0f;
     hit.ignore_falloff = false;
@@ -3248,7 +3330,7 @@ void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
     const GameBulletClassRow* weapon = bullet(gun.bullet_class);
     if (weapon == nullptr || weapon->blast_range <= 0.0f) return;
 
-    const float damage = random_range_00bd2f10(weapon->blast_damage_min,
+    const float damage = draw(Draw::blast_damage, gun_row, 0, weapon->blast_damage_min,
         weapon->blast_damage_max);
     // The image backs the burst centre off along buffer+10h, which 0084BF00
     // writes as the **unit** direction of the swept segment (delta scaled by
@@ -3966,7 +4048,8 @@ void GameGunneryHost::report() {
             s.torpedo_drops, s.torpedo_drop_refusals, s.water_entry_breakups);
         host.log.notef("summary mission aa acceptance bound=%d window_rejects=%llu "
             "armour_rejects=%llu min_range_skips=%llu (packet cc9_aa_targeting)",
-            kAaTargetingBound ? 1 : 0, host.aa_window_rejects, host.aa_armour_rejects,
+            (kAaMinRangeBound ? 1 : 0) | (kAaFireWindowBound ? 2 : 0) | (kAaArmourBound ? 4 : 0),
+            host.aa_window_rejects, host.aa_armour_rejects,
             host.aa_min_range_skips);
         for (const auto& kv : host.aa_target_stats) {
             const GameGunneryHost::Impl::AaTargetStats& st = kv.second;
@@ -4229,6 +4312,20 @@ void GameGunneryHost::report() {
         }
     }
 
+    if (Impl::rng_streams_enabled()) {
+        // Per-entity rows for BSP_GUNNERY_RNG_STREAMS pairs: every gun, by index.
+        host.log.note("summary mission gunnery per-consumer random streams ON "
+            "(BSP_GUNNERY_RNG_STREAMS=1, a measurement substitution)");
+        for (std::size_t g = 0; g < host.guns.size(); ++g) {
+            const GameGunRow& gun = host.guns[g];
+            host.log.notef("  gunrow %4zu %-24s plat %3d cat %2d assigns %6llu clears %6llu "
+                "shots %6llu rises %6llu refusals %7llu minrange_skips %5llu",
+                g, gun.unit_name.c_str(), gun.platform_key, gun.category, gun.assigns,
+                gun.clears, gun.shots, gun.trigger_rises, gun.angle_refusals,
+                host.aa_min_range_skips_by_gun.count(g) != 0
+                    ? host.aa_min_range_skips_by_gun.at(g) : 0ull);
+        }
+    }
     host.log.note("  unit                 side  guns  cats                 range  nearest"
         "  shots  hits   dealt   taken   health   sunk_at  killed_by");
     for (const Impl::UnitState& state : host.unit_state) {

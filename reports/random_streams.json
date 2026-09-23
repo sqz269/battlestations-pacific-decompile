@@ -1,0 +1,39 @@
+{
+  "packet": "cc9_rng_streams",
+  "date": "2026-09-23",
+  "doc": "docs/RANDOM_STREAMS.md",
+  "generator": {
+    "algorithm": "MT19937, original sgenrand seeding (mt[0]=seed|1, mt[i]=69069*mt[i-1]), standard twist 9908B0DFh and tempering",
+    "state": "9C8h bytes: +0 index, +4..+9C3 624 words, +9C4/+9C5 guard bytes; two streams per registered thread, 01090AF0 + (stream + 2*slot)*9C8h, fallback 00E14748",
+    "gameplay_stream": 1,
+    "seeds": {"stream1": ["123 at 0079D1AB", "12345 at 005CD1B0 and 00798CAD", "wall-clock milliseconds at 0079A2FB"], "stream0": ["54321 at 005CD1BC and 00798CB9"]},
+    "census_00BD2F10": {"call_sites": 625, "stream1": 327, "stream0": 214, "register_derived": 51, "undecoded": 24, "after_call": 9, "tool": "local/ecx_census.py"},
+    "decision": "no kRandomGeneratorBound: the gameplay seed is clock-derived"
+  },
+  "call_sites": [
+    {"address": "00BD2F10", "native": "00BD2F10", "what": "entry row"},
+    {"address": "00BD2FD8", "native": "00BF0CF0", "function": "00BD2FD0", "what": "BSP_RandomThreads_Seed -> BSP_RandomState_Seed"},
+    {"address": "00BA2C45", "native": "00BF0D20", "function": "00BA2C20", "what": "refill at index 270h"},
+    {"address": "00BD2E91", "native": "00BA2C20", "function": "00BD2E60", "what": "NextU32 inside UniformFloatRange"},
+    {"address": "005CD1B0", "native": "00BD2FD0", "function": "005CD1A0", "what": "stream 1 = 12345"},
+    {"address": "005CD1BC", "native": "00BD2FD0", "function": "005CD1A0", "what": "stream 0 = 54321"},
+    {"address": "00798CAD", "native": "00BD2FD0", "function": "00798C80", "what": "stream 1 = 12345 on the first dt > 0"},
+    {"address": "00798CB9", "native": "00BD2FD0", "function": "00798C80", "what": "stream 0 = 54321"},
+    {"address": "0079D1AB", "native": "00BD2FD0", "function": "0079D020", "what": "stream 1 = 123"},
+    {"address": "0079A2FB", "native": "00BD2FD0", "function": "0079A260", "what": "stream 1 = QPC milliseconds"},
+    {"address": "00864F1E", "native": "00BD2F10", "function": "00864D90", "what": "visibility TTL, stream 1"},
+    {"address": "0072D3B3", "native": "00BD2F10", "function": "0072D2C0", "what": "trigger stagger, stream 1"},
+    {"address": "0084BE4D", "native": "00BD2F10", "function": "0084BC60", "what": "impact damage, stream 1"}
+  ],
+  "option": {
+    "name": "BSP_GUNNERY_RNG_STREAMS=1",
+    "kind": "measurement substitution, never on in reference runs",
+    "proof_a": {"logs": ["local/str_a1.log", "local/str_a2.log"], "differing_lines": 0, "of": 50303},
+    "default_neutral": {"logs": ["local/main_4800.log", "local/off_4800.log"], "differing_lines": 0, "of": 54485},
+    "proof_b": {"control": "local/b_ctl.log", "treatment": "local/b_trt.log", "predicted_gun_rows": "199-206", "differing_gun_rows": [199, 200, 201, 202, 203, 204, 205, 206], "per_unit_rows_differing": ["Yorktown-class01 shots 70 -> 76"], "hits_damage_deaths": "identical"}
+  },
+  "landed": {"kAaMinRangeBound": true, "kAaArmourBound": true, "kAaFireWindowBound": false},
+  "armour_pair": {"control": "local/b_trt.log", "treatment": "local/c_armour.log", "differing_lines": 0},
+  "skill": "no consumer: the host models no row-dependent gun-bot constant; prerequisite 006DEFF0",
+  "friendly_fire": "image and host agree: no side filter in 0084BAD0 or the segment sweep; 0077CE60 writes credit without a side test"
+}
