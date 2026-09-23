@@ -794,3 +794,98 @@ speed? It is not bound here.
 image's 009C1FD0 body instead of being written onto their stations, and the torpedo follow state
 no longer runs the moveto tick. The releases and the Lexington's fate held. The open item is the
 catch-up speed above.
+
+## 15. The catch-up terms and the hold steer point (packet cc9_follow_catchup_speed)
+
+`kPlaneFollowCatchupBound` (`src/game_hosts_units.cpp`) replaces three substitutions with the
+image's terms.
+
+**The fly-to speed law**, read in section 5.3:
+- `cruise = 007C47F0 x 0.9` (009BFC41 CALL, 009BFC49 FMUL double [00D7A390] = 0.9). 007C47F0 is
+  desc+184h StallSpd x tuning+24Ch LevelFlight, and the host already binds it as
+  `bot_desired_speed_007c47f0`. For a Kate that is 19.44 x 1.8 x 0.9 = 31.5 m/s. The OFF path's
+  substitute was max speed x 0.9 = 62.5 m/s.
+- `s = max(leaderSpd, classDesc+188h)` (009BFC7D). classDesc+188h is MaxSpd, `kMaxSpd`, 69.44 for
+  a Kate. The OFF path's substitute was the stall speed.
+- `rampD = interp(0 -> leaderSpd, GoodPositionDist 100 -> TurboMultiplier 1.95 x s, d_station)`.
+- `cmd = interp(DEG(30) -> rampD, DEG(100) -> cruise, dot)`. At dot = 1 this reaches 0.39 of the
+  way toward cruise (section 5.4).
+- The command is written as `plan+2B4h` with speed mode `plan+2D8h = 1` (009BFD0F-009BFD1C).
+- **No throttle is written.** The follow does not inherit the leader's dive throttle. The
+  planner's speed hold turns the desired speed into throttle.
+
+**The hold arm's steer point** is 009BFEE0's latched path, 009BFEFC-009C0021:
+
+```
+S  = 004142E0(state+30h, member+110h)          009BFF3B   station in the member frame
+Lf = 0042D0D0(leader+ECh, member+110h, 0)      009BFF97   leader forward in the member frame
+k  = (block+00h FollowedPointDist - S.z) / Lf.z           009BFF9C-009BFFAB
+state+44h = station + k * leader forward (world)          009BFFAF-009C001E
+JMP 009C16D2                                              the Y band tail
+```
+
+So the hold arm's carrot lies on the leader's forward line through the station, FollowedPointDist
+(250 m) ahead of the member in its own frame. The blend reads it only while |leader bank| > 0.5
+(009BF531).
+
+### 15.1 Predictions, written before the pair
+
+The pair is C0 (switch off; should reproduce F1b) against C1 (on).
+
+**The arithmetic.** A member 100 m or more off station, behind a leader at 90 m/s:
+- rampD = 1.95 x max(90, 69.4) = 175.5 m/s.
+- Aligned (dot = 1): cmd = 175.5 + 0.39 x (31.5 - 175.5) = **119.3 m/s** ON, against 131.4 m/s
+  OFF.
+- Both are far above the 69.4 m/s MaxSpd, so the planner holds full throttle either way.
+- The floor matters only while the leader flies below 69.4 m/s. There the catch-up end rises
+  from 1.95 x leaderSpd to 1.95 x 69.4 = 135 m/s.
+
+**So the catch-up term does not explain the open formation.** A member at full throttle cannot
+match a leader that dives at 90-95 m/s under gravity. Expected:
+
+| row | C0 (= F1b) | C1 prediction |
+| --- | --- | --- |
+| Kate #4.1 wing spread at tick 1600 | 1477 m | 1100-1600 m, close to flat |
+| hold / fly-to ticks | 8771 / 30866 | within ±15% |
+| Kate wingman aim entry | as F1b | within ±5 s |
+| torpedo drops / bombs | 8 / 6 | 8 ± 2 / 6 ± 2 |
+| Kate deaths | 16 | 16 ± 2 |
+| fighter hits | 61 | ±30% |
+| Lexington | alive | alive |
+
+### 15.2 The pair, measured (C0 against C1)
+
+Both runs are E2 9000 with `BSP_GUNNERY_RNG_STREAMS=1`, on main 5c2e2a44c plus this switch.
+
+**C0 does not reproduce F1b.** Main moved between the two runs, so C0 is the reference: 0 bombs,
+8 torpedoes, 32 fighter hits, damage 7540.0.
+
+| row | C0 (off) | C1 (on) | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| Kate #4.1 wing spread at tick 1600 (0-2 / 0-3) | 1476.1 / 1185.2 m | 1476.1 / 1185.2 m | 1100-1600 m, near flat | held, to the decimal |
+| hold / fly-to ticks | 8575 / 18047 | 8201 / 18442 | ±15% | held (-4% / +2%) |
+| Kate state ticks, #4.1 and #8.1 wings | - | identical | aim entry ±5 s | held |
+| torpedo drops / bombs | 8 / 0 | 8 / 0 | 8 ± 2 / 6 ± 2 | torpedoes held; bombs are the control's 0 |
+| Kate deaths | 16 | 16 | 16 ± 2 | held; #2.1 and #6.1 death times move by up to 2.7 s |
+| fighter hits | 32 | 32 | ±30% | held |
+| damage | 7540.0 | 7540.0 | - | - |
+| Lexington | alive | alive | alive | held |
+
+**Reading.**
+- The catch-up and cruise terms change the COMMANDED speed and nothing else.
+- Both versions command 119-176 m/s to a member 100 m or more behind, far above the 69.4 m/s
+  MaxSpd, so the throttle is full in both.
+- The hold-arm steer point is read only in steep leader turns (|bank| > 0.5).
+
+So the open wing is not the fly-to speed law. Two things follow from the tick-400 rows (0-2 at
+215 m and 0-3 at 341 m, against the 84 m / 190 m stations the OFF-path placement held):
+- The Kate #4.1 wingmen fall behind while still in follow.
+- #4.1\|.-3 and .-4 then leave follow at 878-908 ticks to fly their own aim. From there the
+  spread is two attack runs, not a formation.
+
+The next suspect is the ACHIEVED speed, not the command: a leader diving on moveto at 90-95 m/s
+against members held to the level-flight envelope. That is the leader's moveto descent law, not
+the follow.
+
+**Switch state landed: `kPlaneFollowCatchupBound` ON.** It carries the image's terms with no
+measured effect.
