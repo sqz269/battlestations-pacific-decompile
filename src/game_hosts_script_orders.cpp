@@ -370,15 +370,20 @@ std::uint32_t GameScriptOrdersHost::create_air_ops_squadron_006c5050(
         wing_record.class_id = -1;
         batch.push_back(std::move(wing_record));
     }
-    // The registry record is built BEFORE create_units, not after it.
-    // create_units constructs a fresh GameAiCoordinatorHost and runs
-    // build_squadrons at its own tail, so a record added afterwards is
-    // invisible to that census and this launch's planes each seed an AI
-    // squadron of their own until the NEXT launch's create_units runs the
-    // census again. Measured on USN04, which has one scene row and four
-    // launches: the census stepped 1 over 3, 4 over 6, 5 over 9, 6 over 12,
-    // 7 over 15 - each launch grouping the PREVIOUS one and the most recent
-    // one never grouped, which is 5 squadrons' worth of records reported as 7.
+    // The registry record is built BEFORE create_units, not after it. That
+    // placement was made when create_units constructed a fresh
+    // GameAiCoordinatorHost on every batch and ran build_squadrons at its tail,
+    // so a record added afterwards missed that census. On USN04 (one scene row,
+    // four launches) the census then stepped 1 over 3, 4 over 6, 5 over 9, 6
+    // over 12, 7 over 15: each launch grouped the PREVIOUS one.
+    //
+    // That is no longer how the coordinator lives. Since packet
+    // cc8_ship_follow, create_units builds it once, at the initial scene pass,
+    // guarded by `host.ai == nullptr` (src/game_hosts_units.cpp), and
+    // build_squadrons runs only inside that one create_00a32350. So an air-ops
+    // launch no longer reaches the census, before or after create_units, and
+    // this placement is kept only because it is harmless.
+    // docs/GUNNERY_HOST_LIFETIME.md section 8 audits this path.
     //
     // Nothing here needs the units to exist yet: `before` is already captured
     // and the batch order IS the wing order, so +3D0h[wing] = before + wing is
