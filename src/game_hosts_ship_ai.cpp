@@ -187,7 +187,8 @@ inline constexpr bool kShipTorpedoResponseImageTerms = true;
 inline constexpr bool kShipAvoidZoneEscapeBound = true;
 // 009ED3E0 hands nav+30Ch to 009E3780 at 009ED523/588/5FD/692. True: the planner
 // gets 009ECA20's travel layer. False: the plan block's own zone_layer, as before.
-inline constexpr bool kShipPlannerTravelLayerBound = false;
+// Landed ON after the USN01 3000 pair (docs/SHIP_NEIGHBOUR_AVOIDANCE.md section 1).
+inline constexpr bool kShipPlannerTravelLayerBound = true;
 inline constexpr float kTorpedoCollectTimer1 = 1.5f;
 inline constexpr float kTorpedoCollectTimer2 = 2.0f;
 // Packet cc9_station_keeping, docs/STATION_KEEPING.md. True: the follow update's
