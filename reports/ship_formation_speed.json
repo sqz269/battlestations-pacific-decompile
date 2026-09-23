@@ -1,0 +1,51 @@
+{
+  "packet": "cc9_ship_formation_speed",
+  "doc": "docs/SHIP_FORMATION_SPEED.md",
+  "status": "009F4DA0 bound over the units host's formation groups: leader limit344 = min(member slot speeds, members' min class MaxSpeed) / own reference speed, limit348 from the turn radii; follower limit348; brain+0AF0h = 1.0 (pre-pass reset, no host writer); follower station arm not bound (labelled)",
+  "abi_compatible": false,
+  "game_validated": false,
+  "routines": [
+    {"address": "009F4DA0", "native": "009F4DA0", "name": "BSP_ShipAi_ThrottleCeilingStep", "role": "brain+34Ch / +350h from the group"},
+    {"address": "0070D140", "native": "0070D140", "name": "BSP_UnitGroup_ReduceMemberSpeeds", "role": "min of record+30h, seed 9999999, empty records 999"},
+    {"address": "0070D0F0", "native": "0070D0F0", "name": "BSP_UnitGroup_GetSpeedCeiling", "role": "group+504h"},
+    {"address": "0070DA00", "native": "0070DA00", "name": "BSP_UnitGroup_RefreshSpeedCeiling", "role": "group+504h = min members' class+500h MaxSpeed"},
+    {"address": "0070D100", "native": "0070D100", "name": "BSP_UnitGroup_PublishMemberSpeed", "role": "record+30h; only caller 009DF6AA"},
+    {"address": "0070E3C0", "native": "0070E3C0", "name": "BSP_UnitGroup_GetMaxFollowerTurnRadius", "role": "max 0082E850 over non-leader ship members, seed 100"},
+    {"address": "0080FC30", "native": "0080FC30", "name": "BSP_UnitInstance_GetReferenceSpeed", "role": "unit+9C0h times the category-4 modifier"},
+    {"address": "0082E850", "native": "0082E850", "name": "BSP_ShipClass_GetTurnRadius", "role": "class+520h times settings+438h unless kind 0Eh"}
+  ],
+  "call_sites": [
+    {"address": "009F4E1F", "native": "0070D140", "function": "009F4DA0", "note": "leader arm, member speeds"},
+    {"address": "009F4E34", "native": "0070D0F0", "function": "009F4DA0", "note": "leader arm, group ceiling"},
+    {"address": "009F4E6D", "native": "0080FC30", "function": "009F4DA0", "note": "leader reference speed"},
+    {"address": "009F4EB5", "native": "0070E3C0", "function": "009F4DA0", "note": "leader turn term"},
+    {"address": "009F4F58", "native": "0070D0F0", "function": "009F4DA0", "note": "follower ceiling term"},
+    {"address": "009F503A", "native": "0070E3C0", "function": "009F4DA0", "note": "follower turn term"},
+    {"address": "009DF6AA", "native": "0070D100", "function": "009DF2D0", "note": "the follow update publishes the member speed"},
+    {"address": "0070E405", "native": "0082E850", "function": "0070E3C0", "note": "member turn radius"},
+    {"address": "0070EF9C", "native": "0070DA00", "function": "0070EF30", "note": "each join refreshes the ceiling"}
+  ],
+  "field_accesses": [
+    {"address": "009F144F", "function": "009F1420", "note": "brain+0AF0h = 1.0f each pre-pass"},
+    {"address": "009F4DD1", "function": "009F4DA0", "note": "FLD [brain+0AF0h], its only reader"},
+    {"address": "0070DA15", "function": "0070DA00", "note": "group+504h = 9999999.0f seed"},
+    {"address": "0070DA3F", "function": "0070DA00", "note": "class+500h MaxSpeed"},
+    {"address": "0070EF76", "function": "0070EF30", "note": "record+30h = 999.0f on join"},
+    {"address": "009F145E", "function": "009F1420", "note": "brain+3ADh cleared each pre-pass"}
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1 Win32 Release, both ctests passed; control and treatment",
+    "env": "BSP_GUNNERY_RNG_STREAMS=1 on every run",
+    "predictions": "local/fs_predictions.txt; held",
+    "runs": {
+      "usn04": {"logs": ["local/fs_ctl_usn04.log", "local/fs_trt_usn04.log"], "note": "only Lexington's reported limit differs (0.947 vs 1.000); every ship-AI, throttle, impact and death line identical", "unimplemented_calls": [3944607, 3772551]},
+      "usn01": {"logs": ["local/fs_ctl_usn01.log", "local/fs_trt_usn01.log"], "note": "Convoy1 leads its convoy with limit 0.5879; the direction-mismatch branch holds its throttle at 0.588 (control 0.59..0.86); downstream scout ranges shift; hits 118, damage 4467.9, deaths 5 unchanged"}
+    }
+  },
+  "no_ghidra_function": [],
+  "open": [
+    "follower station arm: 009DA3B0's store and 009ED6B0's station-keeping arm",
+    "class descriptor vtable[18h](0Eh) answer per class",
+    "settings+438h and the 008E6430 modifier are defaults here"
+  ]
+}

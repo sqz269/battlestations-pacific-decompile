@@ -227,6 +227,13 @@ struct GameShipAiRow {
     // Packet cc9_target_release: 009F3240 steps that took the hold arm because
     // the held target is torn down (+5Dh).
     unsigned long long target_retired_holds{0};
+    // Packet cc9_ship_formation_speed: 009F4DA0's two outputs over the run.
+    unsigned long long formation_ceiling_steps{0};
+    unsigned long long formation_limit_344_below_1{0};
+    float formation_limit_344_min{1.0e9f};
+    float formation_limit_348_min{1.0e9f};
+    float formation_limit_348_max{-1.0e9f};
+    std::string formation_role;    // "leader", "follower" or "none" at the last step
     unsigned long long heading_changes{0};   // nested+120Ch differed from before
     // Packet cc8_ship_ai_approach_slot_scorers: the three gates 009E7FC0 passes
     // before it scores a slot, as the host last answered them.

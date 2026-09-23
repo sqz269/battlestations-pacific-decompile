@@ -130,6 +130,16 @@ inline constexpr bool kDirectorBeginCommandBound = true;
 // (blk+604h below 1) returns at 009F0169 / 009F01C5 before any store, which is
 // the only state this process reaches. False: the record, as before.
 inline constexpr bool kShipAiOrderTailBound = true;
+// Packet cc9_ship_formation_speed, docs/SHIP_FORMATION_SPEED.md. True: 009F4DA0's
+// formation throttle ceiling runs before the drive reads blk+344h / +348h, over
+// the group the units host keeps, the member speeds 009DF6AA publishes and the
+// class speeds and turn radii. False: blk+344h is the arm tail's value (or 1.0)
+// and blk+348h 1.0, as before.
+inline constexpr bool kShipFormationSpeedBound = true;
+// 0082E850's multiplier, [00424C40+438h] Navigator.TurnMultipliers.
+// TurnMultiplierMaxSpeed[2]: the gameplay settings object is not loaded here, so
+// its documented value stands in (docs/GAMEPLAY_SETTINGS.md). LABELLED.
+inline constexpr float kShipTurnRadiusMultiplier438 = 2.0f;
 namespace {
 
 bool has_ship_navigation_class(int kind) noexcept {
@@ -541,6 +551,9 @@ struct GameShipAiHost::Impl {
         bsp::ShipAiAttackMoveRingSlot approach_ring[bsp::kAttackMoveRingSlotCount]{};
         bsp::ShipAiApproachSlotScore approach_scores[bsp::kShipAiApproachSlotCount]{};
         bool approach_ring_built{false};
+        // Packet cc9_ship_formation_speed: this unit's member record +30h, 999.0f
+        // (00CF4888) from the join until 009DF6AA publishes (0070D100).
+        float member_speed_30{999.0f};
         // Packet cc9_ship_natives_3: the head command director+44h was set for.
         std::uint64_t begun_head_key{0};
         // Packet cc9_ship_traffic: the list at nested+14A0h, one 124h-byte record
@@ -688,6 +701,73 @@ struct GameShipAiHost::Impl {
         q.require_bearing = 0;   // 009F29CA
         q.use_ready_rounds = 0;  // 009F29D1
         return q;
+    }
+
+    // 0082E850 on a unit's class: class+520h, times [settings+438h] unless the
+    // descriptor answers vtable[18h](0Eh); the host cannot ask the descriptor, so
+    // the multiplier is applied (LABELLED).
+    float class_turn_radius_0082e850(std::size_t unit) const {
+        return units.unit_class_turn_radius_0520(unit) * kShipTurnRadiusMultiplier438;
+    }
+
+    // 009F4DA0 on blk+344h / +348h (brain+34Ch / +350h). docs/SHIP_FORMATION_SPEED.md.
+    void formation_throttle_ceiling_009f4da0(std::size_t index, const Controller& ctl,
+                                             float& limit_344, float& limit_348) const {
+        limit_348 = 1.0f;                                     // 009F4DBC, 00D7A24C
+        if (ctl.goal_vector.speed_commanded_0b38) return;     // 009F4DC1
+        const float speed_scale_af0 = 1.0f;   // brain+0AF0h: 009F144F's reset, no host writer
+        if (!(speed_scale_af0 > limit_344)) limit_344 = speed_scale_af0;   // 009F4DE3
+        const std::int32_t group = units.unit_formation_group_0284(index);
+        if (group < 0) return;
+        const std::size_t leader = units.formation_leader_0014(group);
+        const std::int32_t count = units.formation_member_count(group);
+        // 0070D140: min of the records' +30h, 9999999.0f seed (00CFD6F4).
+        float slot_min = 9999999.0f;
+        // 0070DA00 / 0070D0F0: min of the members' class+500h, the same seed.
+        float ceiling = 9999999.0f;
+        // 0070E3C0: max of 0082E850 over the ship members other than the leader,
+        // seeded 100.0f (00CE3D08).
+        float group_turn = 100.0f;
+        for (std::int32_t i = 0; i < count; ++i) {
+            const std::size_t member = units.formation_member_unit(group, i);
+            if (member == static_cast<std::size_t>(-1) || member >= controllers.size()) continue;
+            const float slot = controllers[member].member_speed_30;
+            if (slot_min > slot) slot_min = slot;
+            const float max_speed = units.unit_class_max_speed_0500(member);
+            if (ceiling > max_speed) ceiling = max_speed;
+            if (member != leader && units.unit_is_kind_of(member, 6)) {
+                const float r = class_turn_radius_0082e850(member);
+                if (!(group_turn > r)) group_turn = r;
+            }
+        }
+        const float reference = units.throttle_ceiling_inputs(index).reference_speed; // 0080FC30
+        const float own_turn = class_turn_radius_0082e850(index);
+        if (leader == index) {
+            // 009F4E13..009F4F05, 00778890's arm.
+            const float g = (slot_min > ceiling) ? ceiling : slot_min;
+            const float ratio = static_cast<float>(static_cast<double>(g) / reference);
+            if (limit_344 > ratio) limit_344 = ratio;
+            const float r = static_cast<float>(static_cast<double>(own_turn) /
+                (static_cast<double>(group_turn) * 1.2000000476837158));   // 00CEC160
+            if (0.75f > r) {                                    // 00CEE07C
+                limit_348 = 0.75f;
+            } else {
+                limit_348 = (r > 1.0f) ? 1.0f : r;
+            }
+            return;
+        }
+        // 009F4F1D..009F50B5, 007788B0's arm. 00863780(1) on unit+6DCh is the
+        // weapon side effect the gunnery host owns (recorded by the caller). The
+        // brain+3ADh arm (009F4F8C) needs the station request 009DA3B0 stores,
+        // which this process records; brain+3ADh keeps 009F145E's clear, so the
+        // clamped (ceiling + 6.70421028) / reference term is not applied. LABELLED.
+        const float a = static_cast<float>(static_cast<double>(group_turn) * 1.25 /
+                                           static_cast<double>(own_turn));   // 00CF87C0
+        const float b = static_cast<float>(static_cast<double>(own_turn) / 200.0); // 00CE4D70
+        float m = (a > b) ? b : a;                                          // 009F5075
+        if (m < 1.0f) m = 1.0f;                                             // 00415690
+        if (m > 1.25f) m = 1.25f;                                           // 00CF29A8
+        limit_348 = m;
     }
 
     float unit_length_9c8(std::size_t index) const {
@@ -1064,11 +1144,14 @@ public:
         return owner_.units.throttle_ceiling_inputs(index_).reference_speed;
     }
     void publish_member_speed_0070d100(std::uint32_t, float speed) override {
-        // 0070D100 stores into this unit's own member record at +30h. Nothing in
-        // this process reads group+504h or record+30h yet, so the value is
-        // recorded rather than stored.
-        static_cast<void>(speed);
-        owner_.record("ShipAiFollow::publish_member_speed", 0x0070d100u);
+        // 0070D100 stores into this unit's own member record at +30h, which
+        // 0070D140 reduces for the leader's ceiling (packet cc9_ship_formation_speed).
+        if (!kShipFormationSpeedBound || index_ >= owner_.controllers.size()) {
+            owner_.record("ShipAiFollow::publish_member_speed", 0x0070d100u);
+            return;
+        }
+        owner_.controllers[index_].member_speed_30 = speed;
+        owner_.done("ShipAiFollow::publish_member_speed", 0x0070d100u);
     }
 
 private:
@@ -5038,7 +5121,13 @@ public:
         // the routine's ONLY exit is the tail call at 009F50C6 with
         // ECX = brain+8h = blk, taken whether or not brain+0B38h skipped the
         // body (009F4DAF), so 009F3F80 runs on every step either way.
-        owner_.record("ShipAi::throttle_ceiling", 0x009f4da0u);
+        if (kShipFormationSpeedBound) {
+            // Packet cc9_ship_formation_speed: the body runs inside the drive, at
+            // the point its two fields are read (formation_throttle_ceiling_009f4da0).
+            owner_.done("ShipAi::throttle_ceiling", 0x009f4da0u);
+        } else {
+            owner_.record("ShipAi::throttle_ceiling", 0x009f4da0u);
+        }
         owner_.drive_order_ring_009f3f80(index_, ctl_, row_, seconds);
     }
 
@@ -5530,7 +5619,27 @@ void GameShipAiHost::Impl::drive_order_ring_009f3f80(std::size_t index, Controll
         done("ShipAiObstacle::throttle_ceiling_344", 0x009eef0au);
     } else {
         ctl.obstacle.throttle_limit_344 = 1.0f;
-        record("ShipAiObstacle::throttle_ceiling_344", 0x009f4dc7u);
+        if (!kShipFormationSpeedBound) {
+            record("ShipAiObstacle::throttle_ceiling_344", 0x009f4dc7u);
+        }
+    }
+    if (kShipFormationSpeedBound) {
+        // Packet cc9_ship_formation_speed: 009F4DA0 ran one chain slot earlier and
+        // rewrote both fields; 009F4DC7 is its min against brain+0AF0h.
+        formation_throttle_ceiling_009f4da0(index, ctl, ctl.obstacle.throttle_limit_344,
+                                            ctl.obstacle.rudder_limit_348);
+        done("ShipAiObstacle::throttle_ceiling_344", 0x009f4dc7u);
+        ++row.formation_ceiling_steps;
+        if (ctl.obstacle.throttle_limit_344 < 1.0f) ++row.formation_limit_344_below_1;
+        row.formation_limit_344_min = std::min(row.formation_limit_344_min,
+                                               ctl.obstacle.throttle_limit_344);
+        row.formation_limit_348_min = std::min(row.formation_limit_348_min,
+                                               ctl.obstacle.rudder_limit_348);
+        row.formation_limit_348_max = std::max(row.formation_limit_348_max,
+                                               ctl.obstacle.rudder_limit_348);
+        const std::int32_t fg = units.unit_formation_group_0284(index);
+        row.formation_role = fg < 0 ? "none"
+            : (units.formation_leader_0014(fg) == index ? "leader" : "follower");
     }
     ObstacleBinding obstacle(*this, index);
     obstacle.set_direction(ctl.blk.direction);
@@ -6222,6 +6331,16 @@ void GameShipAiHost::report() {
             static_cast<double>(row.traffic_weight_max), row.avoid_active_passes,
             static_cast<double>(row.avoid_strength_max), row.ring_scan_winner_changes,
             row.traffic_first_entity.empty() ? "-" : row.traffic_first_entity.c_str());
+    }
+    // Packet cc9_ship_formation_speed: 009F4DA0's outputs for every ship that ran it.
+    for (const GameShipAiRow& row : host.rows) {
+        if (row.formation_ceiling_steps == 0) continue;
+        host.log.notef("    formation %-14s role=%s steps=%llu limit344_min=%.4f below1=%llu "
+            "limit348=[%.4f, %.4f]", row.unit.c_str(),
+            row.formation_role.empty() ? "-" : row.formation_role.c_str(),
+            row.formation_ceiling_steps, static_cast<double>(row.formation_limit_344_min),
+            row.formation_limit_344_below_1, static_cast<double>(row.formation_limit_348_min),
+            static_cast<double>(row.formation_limit_348_max));
     }
     host.log.notef("summary mission ship ai command completion events=%llu callbacks=%llu "
         "end_commands=%llu queue_advances=%llu",

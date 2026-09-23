@@ -572,6 +572,10 @@ public:
     bool unit_is_formation_follower_007788b0(std::size_t index) const noexcept;
     // group+4F8h.
     std::int32_t formation_member_count(std::int32_t group) const noexcept;
+    // Packet cc9_ship_formation_speed: the unit record slot names,
+    // [group+18h + slot*34h], as a unit index; SIZE_MAX for an empty record or
+    // an out-of-range slot. The walks 0070D140, 0070DA00 and 0070E3C0 read it.
+    std::size_t formation_member_unit(std::int32_t group, std::int32_t slot) const noexcept;
     // 0077F940 BSP_UnitGroup_JoinOrMerge reduced to the arm a runtime join takes:
     // create the group around the leader when it has none (0070DB20), then append
     // the follower (0070EF30). Answers true when the membership changed.
