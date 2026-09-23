@@ -32,19 +32,39 @@ object at `unit+6DCh` and attaches it to the unit's tick element `unit+310h` thr
 
 ## 2. What the host owned, and therefore lost
 
+### 2a. The simulation effects, which matter more than the reporting
+
+This was not only a census defect. Rebuilding the host re-ran the load-time seeding over units
+that were already fighting:
+
+- **`build_guns` ran `state.health = state.max_health` over every unit, every time.** Every
+  living unit was fully healed once per batch - 12 times in USN04's 4800 mission frames. A ship
+  therefore never had to carry its accumulated damage, and the mission's controlled carrier
+  survived a mission it should have lost. Section 6 measures this: `Lexington-class01` took 6291
+  of 8000 and lived unguarded, takes the full 8000 and sinks guarded.
+- **`attach_passes` re-primed the throttle accumulator, the category state, the bridge countdown
+  and the fire cache** of every unit, which is the load-time seed for the two-second weapon
+  director think.
+- **The ship-AI host's raw `const GameGunneryHost*` dangled for one line per batch**, between
+  the `make_unique` that destroyed the old host and the `set_ship_ai` on the next line that
+  rebound it.
+
+### 2b. What the census lost
+
 Everything in `GameGunnerySummary` (`bomb_drops`, `queued_hits`, `hit_records`, `deaths`,
-`kill_credits`, `total_damage`, `first_hit`), every in-flight projectile, swimming torpedo and
-falling bomb, every queued hit, `clock_seconds`, `step_index`, and the whole `unit_state` vector.
+`kill_credits`, `total_damage`, `first_hit`), the `bomb_impacts` vector, every in-flight
+projectile, swimming torpedo and falling bomb, every queued hit, `clock_seconds`, `step_index`,
+and the whole `unit_state` vector.
 
 `first_hit` and the `t=` of every `torpedo trace` line are **host-relative**, not mission time,
-because they come off `Impl::clock_seconds`, which started again at zero with each new host.
+because they come off `Impl::clock_seconds`, which started again at zero with each new host. The
+right way to compare a pre-fix `first_hit` with a post-fix one is to add the host-construction
+time to the old value: on USN04 at 4800 frames that is 13.35 + 106.55 = 119.90, the post-fix
+figure exactly.
 
-Two further consequences that are simulation, not reporting:
-
-- `build_guns` ran `state.health = state.max_health` over **every** unit each time, so every
-  living unit was fully healed once per batch. In USN04 that is 12 heals in 4800 mission frames.
-- `attach_passes` re-primed the throttle accumulator, the category state, the bridge countdown
-  and the fire cache of every unit, which is the load-time seed.
+By contrast `summary mission dive-bomb task` and `summary mission world` live on the units host,
+which survives, and were always mission totals. That asymmetry is what made the artefact look
+harmless, exactly as the units host's own `joins=25` did in the coordinator case.
 
 ## 3. Confirmation from existing logs (no run needed)
 
