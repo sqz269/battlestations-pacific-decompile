@@ -414,4 +414,38 @@ void ship_ai_firepower_range_profile_0095f080(ShipAiFirepowerQuery query,
                                               bool prefer_long_range,
                                               ShipAiFirepowerHost& host);
 
+// ---------------------------------------------------------------------------
+// Packet cc9_ship_firepower, docs/SHIP_AI_FIREPOWER.md: three of the mount
+// predicates 0095EB40 calls, as pure rules over the gun's state.
+// ---------------------------------------------------------------------------
+struct GunPlatformArcs;
+
+// 00729F10, BSP_Gun_IsOperational, body 00729F10-00729F36 read whole:
+// [[gun+3F0h]+720h] == 0 && [gun+3B8h] == 0 && [gun+5Dh] == 0 (three bytes).
+bool ship_ai_gun_is_operational_00729f10(bool unit_fire_blocked_720,
+                                         bool gun_disabled_3b8,
+                                         bool gun_torn_down_5d) noexcept;
+
+// 00727D70, __thiscall(gun, float horizon) -> int, RET 4, read whole: the
+// number of the first [gun+448h] floats at [gun+414h] that are <= horizon
+// (FCOMI with the horizon in ST0; a timer above it is skipped). `available` is
+// how many timers the caller actually has; entries past it do not count.
+int ship_ai_gun_ready_rounds_00727d70(const float* barrel_timers, int barrel_count,
+                                      int available, float horizon) noexcept;
+
+// 0085B7D0 past its first two arms (Function 8 -> true, range beyond the
+// class's +60h -> false), which the caller tests. `function` is
+// [[gun+3F4h]+80h]; `muzzle_speed` is the projectile class's +50h.
+struct ShipAiGunBearInputs {
+    int function = 0;
+    float bearing = 0.0f;
+    float muzzle_speed = 0.0f;
+    float range = 0.0f;
+};
+inline constexpr float kShipAiBearTolerance = 0.05235988f;   // 00D0CBA0, 3 degrees
+inline constexpr float kShipAiBearSnapQuarterPi = 0.7853982f; // 00E0B588
+inline constexpr double kShipAiBearSnapScale = 0.5;           // 00D7A280
+bool ship_ai_gun_can_bear_0085b7d0(const ShipAiGunBearInputs& in,
+                                   const GunPlatformArcs& arcs) noexcept;
+
 }  // namespace bsp
