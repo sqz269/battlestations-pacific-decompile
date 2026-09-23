@@ -169,3 +169,16 @@ Binding the climb costs an aircraft. `deaths` 8 -> 9, `entity_impacts` 46 -> 60,
 escorts' AA. The image climbs too, so this is faithfulness rather than regression - but the aircraft
 the second attack run was meant for may not survive to fly it, and that is worth knowing before the
 `009C86EE` re-attack edge is judged.
+
+## Correction from docs/DIVE_BOMB_GOAWAY_TURN.md (2026-09-22, packet `cc9_goaway_turn`)
+
+* Section (b)'s bank clamp `clamp(2 * +28h * +18h, 00CE3814, 00D05EA4)` has its bounds the other
+  way round: `00D05EA4` = -1.2 is the **low** bound, tested first at `009C4DBC`, and `00CE3814` =
+  +1.2 the high one at `009C4DD8`.
+* Section (b)'s "then `0042E740`/`0099B630`/`009FABE0` for the speed side" is wrong: no speed is
+  commanded. `009C4E2C` stores `tuning+674h` (`Pilot/AutoStrafeAngle/Angle_GoAway`) to
+  `(approach+1Ch)+40h`, and `009FABE0` writes a unit direction vector built from the heading and
+  `0099B630`'s commanded pitch to `(approach+1Ch)+68h..70h`.
+* Section (b) omits the enter. `009C4950` (goaway vtable slot `+4h`, no Ghidra function) seeds
+  `+18h` (side), `+24h = 15.0` and `+20h` (the standoff, `2 * approach+B4h` and more). The host had
+  left the goaway's `+20h` at zero, which `009C7F00`'s completion rule also reads.
