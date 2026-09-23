@@ -1,0 +1,88 @@
+{
+ "packet": "cc9_dogfight_task",
+ "calls": [
+  {
+   "address": "009A9851",
+   "native": "009A94E0",
+   "function": "009A9810",
+   "note": "state objects"
+  },
+  {
+   "address": "009A9874",
+   "native": "009F9980",
+   "function": "009A9810",
+   "note": "step 9 before step 6"
+  },
+  {
+   "address": "009A987F",
+   "native": "007B8AD0",
+   "function": "009A9810",
+   "note": "step 6 flight-leader test"
+  },
+  {
+   "address": "009A9576",
+   "native": "009C2980",
+   "function": "009A94E0",
+   "note": "follow +54Ch"
+  },
+  {
+   "address": "009A9591",
+   "native": "009C2980",
+   "function": "009A94E0",
+   "note": "prepare +5E4h"
+  },
+  {
+   "address": "009A955B",
+   "native": "009C2CA0",
+   "function": "009A94E0",
+   "note": "moveto +510h"
+  },
+  {
+   "address": "009A95CA",
+   "native": "009A84E0",
+   "function": "009A94E0",
+   "note": "maneuver +6A4h"
+  },
+  {
+   "address": "009A95DB",
+   "native": "009A70E0",
+   "function": "009A94E0",
+   "note": "attackrun +6E4h"
+  },
+  {
+   "address": "009A9637",
+   "native": "009A6A60",
+   "function": "009A94E0",
+   "note": "state names"
+  },
+  {
+   "address": "009AB1DB",
+   "native": "009AAC70",
+   "function": "009AB1C0",
+   "kind": "no_ghidra_function"
+  },
+  {
+   "address": "009AB1EA",
+   "native": "009AAFA0",
+   "function": "009AB1C0",
+   "kind": "no_ghidra_function"
+  }
+ ],
+ "no_ghidra_function": [
+  {
+   "start": "009AB1C0",
+   "end_inclusive": "009AB213",
+   "evidence": "ghidra proto 009AB1C0 finds no function; RET 4 at 009AB211; INT3 from 009AB214; referenced from vtable 00D1F9B0 slot +64h"
+  }
+ ],
+ "ledger_names_added": [
+  {
+   "address": "009AAFA0",
+   "name": "BSP_BotTaskDogfight_UpdateTransitions_Provisional"
+  },
+  {
+   "address": "009AB1C0",
+   "name": "BSP_BotTaskDogfight_TaskArm_Provisional"
+  }
+ ]
+}

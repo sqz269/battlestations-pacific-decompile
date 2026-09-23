@@ -17,6 +17,7 @@
 #include "bsp/plane_angular_velocity.hpp"
 #include "bsp/plane_control_rate.hpp"
 #include "bsp/pilot_plan_slots.hpp"
+#include "bsp/dogfight_task.hpp"
 #include "bsp/plane_attitude_angles.hpp"
 #include "bsp/plane_ai_control.hpp"
 #include "bsp/unit_rudder.hpp"
@@ -363,6 +364,14 @@ struct GameUnitSlot {
     unsigned int attack_command_class{0};
     bool dive_bomb_task_installed{false};
     bsp::DiveBombState dive_bomb_state{bsp::DiveBombState::kNone};
+    // Packet cc9_dogfight_task: the dogfight task (kind 2), installed when
+    // 007EEC50 chose class 00E08F58. docs/DOGFIGHT_TASK.md.
+    bool dogfight_task_installed{false};
+    bsp::DogfightState dogfight_state{bsp::DogfightState::kNone};
+    int df_state_ticks[bsp::kDogfightStateCount]{};
+    int df_transitions{0};
+    int df_within_attack_dist_ticks{0};
+    float df_min_target_range{-1.0f};
     int dive_bomb_state_ticks[10]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     int dive_bomb_arm_ticks{0};
     int dive_bomb_transitions{0};
@@ -2540,6 +2549,10 @@ struct GameUnitsHost::Impl {
     // The pitch mode 009FB800 writes (cmd+2D0h = 2) at the three 009FBA50 seams
     // that left it out. Packet cc9_pitch_callers, docs/PITCH_COMMAND_CALLERS.md.
     static constexpr bool kPitchCommandCallersBound = true;
+    // The dogfight task's skeleton (packet cc9_dogfight_task): install, the
+    // 009AAFA0 unengaged arm (moveto leader / follow wing), the generic follow
+    // tick, and a labelled moveto stand-in. docs/DOGFIGHT_TASK.md.
+    static constexpr bool kDogfightTaskBound = true;
     // Diagnostic period for the `follow trace` row below; 0 compiles it out.
     // Packet cc9_follow_speed ran it at 25 (docs/PLANE_FOLLOW_SPEED.md section 5).
     static constexpr int kFollowTraceEvery = 0;
@@ -6447,6 +6460,96 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                     }
 
+                    // 009AB1C0, the dogfight task's per-tick arm (primary vtable
+                    // 00D1F9B0 slot +64h). Bound: install on class 00E08F58, the
+                    // 009AAFA0 unengaged arm, and the state tick through the
+                    // generic follow tick 009C1FD0 or a labelled moveto stand-in.
+                    // NOT bound: 009AAC70 (target and the +4C8h latch), the
+                    // engaged arm of 009AAFA0, and every state past follow.
+                    // docs/DOGFIGHT_TASK.md.
+                    void run_dogfight_task_arm_009ab1c0() {
+                        // Install trigger. The image builds the kind-2 task through
+                        // 0099A170 from the class 007EEC50 chose (00E08F58). A
+                        // scene-issued `dogfight` order reaches this host's
+                        // director as the resolved command token and never sets
+                        // attack_command_class, so the token stands in for the
+                        // class. SUBSTITUTION, labelled; run G1 showed the class
+                        // test alone never fires in USN04.
+                        if (unit_.attack_command_class != bsp::kDogfightCommandClass &&
+                            unit_.row.command != "dogfight") {
+                            return;
+                        }
+                        const bool leader =
+                            owner_.unit_is_flight_leader_007b8ad0(unit_.process_index);
+                        const bsp::DogfightState was = unit_.dogfight_state;
+                        if (!unit_.dogfight_task_installed) {
+                            unit_.dogfight_task_installed = true;
+                        }
+                        // 009AAFA0 unengaged arm. The engaged arm needs 009AAC70's
+                        // latch, which this host does not compute, so the task
+                        // stays on the moveto/follow pair.
+                        unit_.dogfight_state = bsp::dogfight_unengaged_state_009aafa0(leader);
+                        if (unit_.dogfight_state != was) {
+                            ++unit_.df_transitions;
+                            owner_.log.notef("  dogfight %-12s %s -> %s",
+                                unit_.row.name.c_str(),
+                                bsp::dogfight_state_name(was),
+                                bsp::dogfight_state_name(unit_.dogfight_state));
+                        }
+                        ++unit_.df_state_ticks[static_cast<int>(unit_.dogfight_state)];
+
+                        if (unit_.dogfight_state == bsp::DogfightState::kFollow) {
+                            // The generic follow state, tick 009C1FD0: station
+                            // point, then the fly-to law, as the dive-bomb follow
+                            // tick does.
+                            bsp::PlaneFormationStation station;
+                            const GameUnitSlot* fl = nullptr;
+                            owner_.place_wing_member_on_station_007f23a0(
+                                unit_, false, &station, &fl);
+                            if (owner_.kPlaneFollowLawEnabled && station.produced &&
+                                fl != nullptr) {
+                                owner_.run_follow_law_009bfee0_009bee30(unit_, station, *fl);
+                            }
+                            owner_.record("BotTaskDogfight::follow", 0x009c1fd0u);
+                            return;
+                        }
+
+                        // moveto: STAND-IN for 009C18C0 with the dogfight cruise
+                        // profile (009AAF30) and speed slot 009C1BC0, both unread.
+                        if (unit_.command_target_plus_one == 0) return;
+                        const std::size_t ti = unit_.command_target_plus_one - 1;
+                        if (ti >= owner_.slots.size()) return;
+                        bsp::DogfightMoveToInputs din;
+                        for (int i = 0; i < 3; ++i) {
+                            din.own_pos[i] = unit_.motion.position[i];
+                            din.target_pos[i] = owner_.slots[ti]->motion.position[i];
+                        }
+                        float attack_dist = 2000.0f;
+                        if (owner_.lua.plane_globals_loaded()) {
+                            const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
+                            din.cruising_alt = g.pilot_dogfight_cruising_alt;
+                            din.min_distance = g.pilot_follow_followed_point_dist;
+                            attack_dist = g.pilot_dogfight_attack_dist;
+                        }
+                        din.class_climb_angle_1e4 = unit_.plane_climb_angle_1e4;
+                        const bsp::DogfightMoveToCommand c = bsp::dogfight_moveto_standin(din);
+                        unit_.plan_heading_2c0 = c.heading;
+                        unit_.plan_heading_2c0_written = true;
+                        unit_.plan_heading_mode_2cc = 2;
+                        unit_.plane_commanded_altitude = din.cruising_alt;
+                        unit_.plane_commanded_pitch = c.pitch;
+                        unit_.plan_state.pitch_target_2bc = c.pitch;
+                        unit_.plan_state.pitch_mode_2d0 = 2;
+                        if (unit_.df_min_target_range < 0.0f ||
+                            c.horizontal_range < unit_.df_min_target_range) {
+                            unit_.df_min_target_range = c.horizontal_range;
+                        }
+                        if (c.horizontal_range < attack_dist) {
+                            ++unit_.df_within_attack_dist_ticks;
+                        }
+                        owner_.record("BotTaskDogfight::moveto_standin", 0x009c18c0u);
+                    }
+
                     void run_dive_bomb_task_arm_009c8790(float dt) {
                         // 0099A170 builds a task from the class 007EEC50
                         // chose, so the only correct test is that the class IS
@@ -9462,6 +9565,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // sub-object updates are contracts.
                             run_torpedo_task_arm_009d4850(elapsed);
                             run_dive_bomb_task_arm_009c8790(elapsed);
+                            if constexpr (GameUnitsHost::Impl::kDogfightTaskBound) {
+                                run_dogfight_task_arm_009ab1c0();
+                            }
 
                             if (plan_yaw_0099d300()) {
                                 ++owner_.summary.pilot_yaw_plans;
@@ -11895,6 +12001,32 @@ void GameUnitsHost::report() {
                         static_cast<double>(slot->db_flyabove_cross_track),
                         static_cast<double>(slot->plane_turn_circle_radius));
                 }
+                }
+            }
+            {
+                // Packet cc9_dogfight_task.
+                std::size_t df_aircraft = 0;
+                int df_moveto = 0, df_follow = 0, df_near = 0;
+                for (const auto& slot : host.slots) {
+                    if (!slot->dogfight_task_installed) continue;
+                    ++df_aircraft;
+                    df_moveto += slot->df_state_ticks[static_cast<int>(bsp::DogfightState::kMoveTo)];
+                    df_follow += slot->df_state_ticks[static_cast<int>(bsp::DogfightState::kFollow)];
+                    df_near += slot->df_within_attack_dist_ticks;
+                    host.log.notef("  dogfight %-12s moveto=%d follow=%d transitions=%d "
+                        "min_target_range=%.1f within_attack_dist_ticks=%d",
+                        slot->row.name.c_str(),
+                        slot->df_state_ticks[static_cast<int>(bsp::DogfightState::kMoveTo)],
+                        slot->df_state_ticks[static_cast<int>(bsp::DogfightState::kFollow)],
+                        slot->df_transitions,
+                        static_cast<double>(slot->df_min_target_range),
+                        slot->df_within_attack_dist_ticks);
+                }
+                if (df_aircraft > 0) {
+                    host.log.notef("summary mission dogfight task: aircraft=%zu "
+                        "moveto_ticks=%d follow_ticks=%d within_attack_dist_ticks=%d "
+                        "(engaged states not bound)",
+                        df_aircraft, df_moveto, df_follow, df_near);
                 }
             }
             if (tasked > 0) {
