@@ -242,3 +242,119 @@ and 009DD540 (236443) on USN04 and 009F0100's non-empty body (one per step), and
 moved ship row traces to section 6's turns or to 009D8160 node blocks, both read and
 reconstructed. The gaps it leaves are the records listed under "Substitutions left", above all the
 two node clips (a node never blocks an arc probe) and 009F0100's body.
+
+## 4. The node clips, the clearance's neighbour services and 009F0100 (packet cc9_neighbour_clips)
+
+2026-09-23. Names are hypotheses. One switch, `kShipNeighbourClipsBound` in
+`src/game_hosts_ship_ai.cpp`, on top of section 3's two. Reconstructions are in
+`src/ship_ai_neighbour_clips.cpp` (semantic; new C++ interfaces, not ABI replacements).
+
+### Read
+
+| routine | what it does | inputs and constants |
+| --- | --- | --- |
+| 009D8A30 (body 009D8A30-009D8B88) | the avoid-box point closest to a point: both local coordinates clamped into [-half, +half]; with +68h set, the centre | node +44h..+60h |
+| 009D8860 (009D8860-009D8A2C) | the corner extreme along a direction; with +68h set, the centre | node +44h..+60h |
+| 009DD010 (009DD010-009DD530) | clips an arc against the box. False with +68h or +69h set, when the closest point (009D8A30) is outside the circle, or when corners 0, 2, 3 and 0 again all lie strictly inside (corner 1 is never tested; the listing loads corner 0 twice at 009DD2F8 and 009DD358). Otherwise each edge is cut by the circle (004F3BA0) and every crossing's bearing, pi/2 - atan2(dz, dx) wrapped into [0, 2pi) (00CE3830, 00CE3828 as doubles), narrows the end bearing when it lies strictly inside the swept delta, captured once per edge (009DD3DE) | two callers: the sector scan's arc probe (009EBE36) and the clearance sweep (009EFDBD) |
+| 009D8210 (009D8210-009D84D2) | one box edge against a ray: false with +68h or +69h set, both ends behind, both ends at or past the range, or both on one side; else the crossing distance replaces the range when 0 < t < range | - |
+| 009DD540 (009DD540-009DD9BA) | clips a ray against the box: false with no owner, a gone owner or +68h; four 009D8860 rejections (the box wholly behind, wholly beyond the range, wholly on either side of the ray line; the perpendiculars are (dz, -dx) and (-dz, dx), built with -0.0f at 00D7A208); then the four edges through 009D8210, OR-ed | the sector scan's straight probe (009EB8E2) |
+| 009D8010 (009D8010-009D80B4) | the pass-side gate: false with no or a gone owner; +7Ch -= dt; +68h set clears +88h; if this ship leads its group (00778890) and the observed ship is in that group (unit+284h equal), +7Ch = max(+7Ch, 0.5) (00CE3800, 00415550) and +88h is cleared; true when +68h is clear and +7Ch < 0 | node +7Ch starts at 0.0 (009E537B) |
+| 009D8C60 (009D8C60-009D8CDA) | side 0 clears +88h and +75h. Sides 1 and 2, with a non-null unit and owner, build a message (009D66B0) for (owner, side) and route it to the unit through 0077C2A0. It writes no node field | - |
+| 009F0100 (009F0100 to the exclusive end 009F0ACE) | mode 0 and \|0092D730\| < 1.0: clears +88h/+75h on every gated node. Otherwise, when any node is due, it takes the commanded heading blk+324h's direction; within 5 degrees (00CEDF5C) of the hull heading it measures from the pose, otherwise from the turn centre off the shoulder the turn swings (blk+18Ch or +194h plus blk+3CCh along the perpendicular). Each due node is cleared, or sent a pass side 1 or 2 through 009D8C60, from its along/lateral position (limits blk+3E4h, +200.0 behind (00CE4D70), blk+32Ch + settings+1C8h ahead, the box half beam + settings+1CCh aside, own width unit+9CCh) or, far behind, from the distance to the shoulder against blk+3CCh -/+ settings+1CCh. Every processed node's +7Ch is reset to 0.9 (00CE3860) | runs at 009F4D10's order tail |
+
+**009F0100's body is longer than Ghidra's function.** Ghidra's body ends at 009F0A17 (the RET);
+the loop jumps to three tail blocks 009F0A1A..009F0ACE (the inner-circle post, the outer-circle
+branch and its post), which lie outside it. The true exclusive end is 009F0ACE (INT3 padding
+follows at 009F0ACE).
+
+**The pass side is a message.** 009F0100 is the producer of node+88h, but only through a message:
+009D8C60 posts it and the brain's vtable slot 009F3E30 (00D21B10) handles it, finding the node for
+the sender (009DA690) and running 009D8CE0, which writes +88h at 009D912F. The message route 0077C2A0
+and the handler are unbound, so +88h stays 0 and 009EF350 stays inert. Each post is recorded as
+`ShipAiNeighbour::pass_side_message_0077c2a0` and counted (`pass_posts=`).
+
+### The clearance and the danger level
+
+The clearance 009EF910 (`bsp::ship_ai_refresh_turn_clearance_009ef910`, already reconstructed) now
+sees the consumers' count and nodes: the owner filters (+14h, +5Eh, party +54h against the three
+009EC770 answers), 009DD010 on the hull sweep (the last blocking node wins; the outcome +370h becomes
+blocked-moving or blocked-stopped by the node's 0092D730 speed against 2.0), and, when nothing
+blocks, 009D8860 twice and 009D8A30 for the clearance +37Ch. The danger level blk+0A84h follows
++37Ch / unit+9CCh through the ramp at 009F41AB, and feeds the throttle ceiling 009EC7C0 and the
+turn-assist load (009F4332). The free-bearing query 009DC2E0 is section 7's, not the clearance's; it
+stays unread.
+
+### Substitutions left
+
+- The pass-side message (0077C2A0) and its handler 009F3E30 / 009D8CE0: recorded, not delivered.
+- 009DCEB0, 009D7AF0 (009EF350's crossing arm): unread, and unreachable while +88h stays 0.
+- 009DC2E0, section 7's free-bearing query: unread.
+- Precision: the reconstructions round every intermediate to float; the listings keep a few sums
+  (the squared distances, the ray crossing) in x87 extended precision before the store.
+
+### Predictions, written before the pairs
+
+Sides: **off** (`kShipNeighbourClipsBound` false, section 3's state) and **on**. Same tree,
+`BSP_GUNNERY_RNG_STREAMS=1`.
+
+1. **Sector scan**: the straight probe now also blocks through 009DD540's edge crossings, and the
+   arc probe through 009DD010, so sector marks rise on the ships that already had node blocks
+   (Yorktown, Northampton-class03, Fletcher-class08 on USN04) and appear on a few more of the
+   screen. USN01 had none; a few may appear on Enterprise and SaltLakeCity.
+2. **Clearance and danger**: the clearance +37Ch falls below its sentinel on ships whose sweep
+   meets a node, so the danger level leaves 0 on some USN04 ships (the column is 0.000 everywhere
+   off), and the throttle ceiling drops on them. Blocked outcomes appear (`clearance_hits=`).
+3. **009F0100**: posts on most USN04 ships (an 800-frame probe: 13 of 18); no row moves from it,
+   because the posts are not delivered and every clear writes a +88h that is already 0.
+4. **Moved rows**: live pair changes, total ship path, separation turns (section 6 reads the same
+   list but the tracks move), plane rows coupled to the ships' tracks. Station requests and plan
+   requests stay flat unless a leader's track moves.
+5. **Deaths and damage**: may move with the tracks; no direction predicted. Ship deaths: none on
+   either side.
+6. **Unimplemented calls** fall toward the list side's totals: the clip records (about 710000 on
+   USN04), 009F0100's record (one per step) and the clearance's neighbour records go, and the pass
+   posts come in (a few thousand).
+7. **Flat**: the mission load, the settings rows, everything before the first node forms.
+
+### Results (2026-09-23)
+
+Logs `local\clip2_{off,on}_usn04.log` and `local\clip2_{off,on}_usn01.log`, each side its own copy
+of the same tree's build, `BSP_GUNNERY_RNG_STREAMS=1`. A first pair without the danger counters
+(`local\clip_*`) matches the second on every other line.
+
+| row, USN04 | off | on |
+| --- | --- | --- |
+| sector marks | 1751 | 7332 (node blocks on 8 ships, 5 off; Northampton-class03 3043, Fletcher-class08 2584) |
+| clearance node hits (sweeps a node blocked) | 0 | Northampton-class03 283, Fletcher-class08 114, Fletcher-class03 45 |
+| danger above 0 (steps; max) | none | 5 ships: Northampton-class03 1959, Fletcher-class08 713, Yorktown 682, Fletcher-class03 534, York-class02 137; all reach 1.000 |
+| 009F0100 bodies / pass-side posts | record | posts on 15 of 18 ships; 2478 posts |
+| live rudder/throttle pair changes | 29988 | 33582 |
+| total ship path | 48245.88 m | 47853.34 m |
+| plan seeds / accepts | 482 / 43562 | 525 / 43433 |
+| station rows, zone rows | - | flat |
+| ship deaths | none | none |
+| plane deaths | 12 | 11 (units 35 and 42 no longer die; 36 does) |
+
+USN01: sector marks 0 to 27 (all Enterprise), no clearance hit, no danger, 2 ships post (116);
+every other row is flat, deaths included.
+
+Against the predictions: sector marks rose on the five ships that already had node blocks and appeared on
+three more (predicted); the danger level left 0 on five USN04 ships and stayed 0 on USN01 (predicted:
+"some USN04 ships"); 009F0100 posted on 15 of 18 (predicted: most) and moved no row; station rows stayed
+flat (predicted), plan seeds moved with the tracks; the kill set shifted on USN04 and not on USN01.
+
+**Unimplemented calls** (sum of the UNIMPLEMENTED table):
+
+| mission | off | on |
+| --- | --- | --- |
+| USN04 | 3925072 | 3135486 |
+| USN01 | 2742985 | 2525598 |
+
+The off side is above section 3's "on" (3744378) because main gained other records in between; the
+fall is the two clip records, 009F0100's record and the clearance's neighbour records. The pass-side
+posts come in (2478 and 116). The only neighbour-related record left in the table is the clearance's
+`path_fade_00778890` (already there, not this packet's).
+
+**Landed:** `kShipNeighbourClipsBound` ON. Every moved ship row traces to the bound reads: node
+blocks through 009DD540 / 009DD010 on ships that already held neighbours, and the clearance's
+node-driven danger on the five ships it reports.

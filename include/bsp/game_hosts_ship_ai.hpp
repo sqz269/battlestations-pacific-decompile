@@ -255,6 +255,12 @@ struct GameShipAiRow {
     unsigned long long separation_turns{0};      // 009DEBB9 applied a turn
     float separation_max_turn{0.0f};             // |turn|, radians
     unsigned long long traffic_passes{0};        // 009EF350 over a non-empty list
+    // Packet cc9_neighbour_clips.
+    unsigned long long neighbour_pass_runs{0};   // 009F0100 bodies that processed a node
+    unsigned long long neighbour_pass_posts{0};  // pass-side messages 009D8C60 would route
+    unsigned long long clearance_node_hits{0};   // 009EF910 sweeps a node blocked
+    unsigned long long danger_steps{0};          // middle runs ending with blk+0A84h > 0
+    float danger_max{0.0f};                      // largest blk+0A84h
     std::uint32_t travel_layer_min{0xFFFFFFFFu};// nav+30Ch range
     std::uint32_t travel_layer_max{0};
     // Packet cc9_ship_torpedo_response.

@@ -66,6 +66,7 @@
 #include "bsp/ship_ai_neighbour_frame.hpp"
 #include "bsp/ship_ai_obstacle_owner.hpp"
 #include "bsp/ship_ai_obstacle_point.hpp"
+#include "bsp/ship_ai_neighbour_clips.hpp"
 #include "bsp/native_vector2_math.hpp"
 #include "bsp/ship_ai_navigation.hpp"
 #include "bsp/ship_ai_navigation_arm_tail.hpp"
@@ -229,6 +230,13 @@ inline constexpr bool kShipNeighbourAvoidanceBound = true;
 // null-model band 009DE2F0 writes for the own hull (max 50, min -10), so two
 // surface ships overlap. False: the image's behaviour for an absent model.
 inline constexpr bool kShipNeighbourNullModelBandSubstituted = true;
+// Packet cc9_neighbour_clips, docs/SHIP_NEIGHBOUR_AVOIDANCE.md section 4. True
+// (with kShipNeighbourAvoidanceBound): the sector scan's node clips 009DD010 /
+// 009DD540 (with 009D8210), the clearance 009EF910's neighbour services (count,
+// owner filters, 009DD010, 009D8860, 009D8A30, 0092D730) and 009F0100's body
+// run over the consumers' list. False: the records and the clearance's zero
+// count, as before.
+inline constexpr bool kShipNeighbourClipsBound = true;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
@@ -389,6 +397,7 @@ struct NeighbourNodeStore {
     bsp::ShipAiObstacleNode node{};
     bsp::ShipAiNeighbourNodeMotion motion{};
     std::size_t unit{0};
+    bsp::ShipAiNeighbourPassState pass{};  // node+7Ch / +75h, packet cc9_neighbour_clips
 };
 static_assert(std::is_standard_layout_v<NeighbourNodeStore>);
 
@@ -3998,16 +4007,78 @@ public:
         bsp::unit_set_heading_target_00811960(state, desired_heading, binding);
         owner_.done("ShipAiOrder::set_heading_target", 0x00811960u);
     }
-    void tail_009f0100(float) override {
+    void tail_009f0100(float dt) override {
         // 009F0100: both arms walk the neighbour list at blk+608h over the count
         // at blk+604h (009F0163 JLE 009F09FF, 009F01BF JLE 009F09FF), after
         // nothing but a speed read (0092D730). With no neighbours it stores
-        // nothing. The non-empty body (009F01CB..009F09F9) is unread.
+        // nothing. Packet cc9_neighbour_clips read the body (009F01CB..009F0ACE,
+        // bsp/ship_ai_neighbour_clips.hpp).
         if (kShipAiOrderTailBound && ctl_.nav_block.neighbour_count_604 < 1) {
             owner_.done("ShipAiOrder::tail_009f0100", 0x009f0100u);
             return;
         }
-        owner_.record("ShipAiOrder::tail_009f0100", 0x009f0100u);
+        if (!kShipNeighbourClipsBound) {
+            owner_.record("ShipAiOrder::tail_009f0100", 0x009f0100u);
+            return;
+        }
+        struct PassHost final : bsp::ShipAiOrderTailPassHost {
+            GameShipAiHost::Impl& owner;
+            GameShipAiHost::Impl::Controller& ctl;
+            std::size_t index;
+            GameShipAiRow& row;
+            PassHost(GameShipAiHost::Impl& o, GameShipAiHost::Impl::Controller& c,
+                     std::size_t i, GameShipAiRow& r)
+                : owner(o), ctl(c), index(i), row(r) {}
+            int count_604() override { return ctl.nav_block.neighbour_count_604; }
+            bsp::ShipAiObstacleNode& node_608(int i) override {
+                return *ctl.neighbours[static_cast<std::size_t>(i)];
+            }
+            bsp::ShipAiNeighbourPassState& pass_state(int i) override {
+                return NeighbourList::store(node_608(i)).pass;
+            }
+            bool owner_gone_5e(int i) override {
+                bsp::SceneNodeFlags flags;
+                const void* observed = node_608(i).owner;
+                return observed != nullptr
+                    && owner.units.read_scene_node_flags(observed, flags) && flags.destroyed;
+            }
+            bool unit_leads_owner_group(int i) override {
+                // 00778890: unit+284h's group record names this unit at +14h;
+                // then unit+284h == [node+14h]+284h (009D805F..009D806E).
+                const std::int32_t group = owner.units.unit_formation_group_0284(index);
+                if (group < 0 || owner.units.formation_leader_0014(group) != index) return false;
+                const std::size_t other = NeighbourList::store(node_608(i)).unit;
+                return owner.units.unit_formation_group_0284(other) == group;
+            }
+            void post_pass_side_009d8c60(int, int) override {
+                // 009D66B0 builds the (observed owner, side) message and
+                // 0077C2A0 routes it to this unit; its handler is the brain
+                // vtable slot 009F3E30 (00D21B10), which reaches 009D8CE0 and
+                // node+88h. Neither the message nor the handler is bound.
+                ++row.neighbour_pass_posts;
+                owner.record("ShipAiNeighbour::pass_side_message_0077c2a0", 0x0077c2a0u);
+            }
+        } host(owner_, ctl_, index_, owner_.rows[index_]);
+        const bsp::GameplayTuningSettings& settings = owner_.neighbour_settings();
+        bsp::ShipAiOrderTailPassInputs in;
+        in.mode_35c = static_cast<int>(ctl_.blk.direction);
+        in.body_speed = owner_.units.unit_forward_speed_0092d730(index_);
+        in.heading = owner_.units.unit_heading_radians(index_);
+        in.heading_target_324 = ctl_.blk.heading_target_324;
+        in.pose_184 = ctl_.hull_geometry.position_184;
+        in.forward_1ac = ctl_.hull_geometry.forward_1ac;
+        in.port_18c = ctl_.hull_geometry.shoulder_18c;
+        in.starboard_194 = ctl_.hull_geometry.shoulder_194;
+        in.remaining_32c = ctl_.blk.distance_32c;
+        in.turn_radius_3cc = ctl_.nav_block.turn_circle_cruise_3cc;
+        in.hull_scale_3e4 = ctl_.nav_block.hull_scale_3e4;
+        in.corner_reach_add_1c8 = settings.ship_avoidance_nearby_ship_next_corner_reach_dist_add_on;
+        in.line_check_1cc = settings.ship_avoidance_nearby_ship_move_path_line_check_threshold;
+        in.own_width_9cc = owner_.units.unit_half_width_09cc(index_);
+        const bsp::ShipAiOrderTailPassResult result = bsp::ship_ai_order_tail_neighbour_pass_009f0100(
+            in, dt, host, application_camera_axes_crt());
+        owner_.done("ShipAiOrder::tail_009f0100", 0x009f0100u);
+        if (result.processed > 0) ++owner_.rows[index_].neighbour_pass_runs;
     }
     void tail_009ef350() override {
         // Packet cc9_ship_neighbour_list, docs/SHIP_NEIGHBOUR_AVOIDANCE.md
@@ -4279,11 +4350,22 @@ public:
         owner_.done("ShipAiSectorScan::point_in_near_box_009d80c0", 0x009d80c0u);
         return bsp::ship_ai_obstacle_point_in_near_box_009d80c0(node, point);
     }
-    bool clip_ray_against_node_009dd540(const bsp::ShipAiObstacleNode&,
-                                        const std::array<float, 2>&,
-                                        const std::array<float, 2>&, float&) override {
-        owner_.record("ShipAiSectorScan::clip_ray_009dd540", 0x009dd540u);
-        return false;
+    bool clip_ray_against_node_009dd540(const bsp::ShipAiObstacleNode& node,
+                                        const std::array<float, 2>& origin,
+                                        const std::array<float, 2>& direction,
+                                        float& range) override {
+        if (!kShipNeighbourClipsBound) {
+            owner_.record("ShipAiSectorScan::clip_ray_009dd540", 0x009dd540u);
+            return false;
+        }
+        owner_.done("ShipAiSectorScan::clip_ray_009dd540", 0x009dd540u);
+        return bsp::ship_ai_obstacle_clip_ray_009dd540(node, owner_gone(node.owner), origin,
+                                                       direction, range);
+    }
+    bool owner_gone(const void* observed_owner) const {
+        bsp::SceneNodeFlags flags;
+        return observed_owner != nullptr
+            && owner_.units.read_scene_node_flags(observed_owner, flags) && flags.destroyed;
     }
     bool clip_arc_against_avoid_zones_00415970(const std::array<float, 2>& center,
                                                float radius, float start,
@@ -4292,11 +4374,16 @@ public:
         owner_.done("ShipAiSectorScan::clip_arc_zones_00415970", 0x00415970u);
         return owner_.zones.search_arc(list, center, radius, start, end);
     }
-    bool clip_arc_against_node_009dd010(const bsp::ShipAiObstacleNode&,
-                                        const std::array<float, 2>&, float, float,
-                                        float&) override {
-        owner_.record("ShipAiSectorScan::clip_arc_node_009dd010", 0x009dd010u);
-        return false;
+    bool clip_arc_against_node_009dd010(const bsp::ShipAiObstacleNode& node,
+                                        const std::array<float, 2>& centre, float radius,
+                                        float start, float& end) override {
+        if (!kShipNeighbourClipsBound) {
+            owner_.record("ShipAiSectorScan::clip_arc_node_009dd010", 0x009dd010u);
+            return false;
+        }
+        owner_.done("ShipAiSectorScan::clip_arc_node_009dd010", 0x009dd010u);
+        return bsp::ship_ai_obstacle_clip_arc_009dd010(node, centre, radius, start, end,
+                                                       application_camera_axes_crt());
     }
     void raise_node_lifetime_78(bsp::ShipAiObstacleNode& node, float value) override {
         // 009EBEF7, an inlined compare and store on the blocking node. Reached
@@ -4838,41 +4925,89 @@ public:
         owner_.done("ShipAiClearance::static_zone_clearance_00415d70", 0x00415d70u);
         return owner_.zones.search_clearance(list, {x, z}, radius, {ax, az}, {bx, bz});
     }
+    // Packet cc9_neighbour_clips (kShipNeighbourClipsBound): blk+604h / +608h are
+    // the consumers' view (publish_neighbour_view); off, the zero count as before.
+    unsigned long long node_hits{0};
     int neighbour_count_604() override {
         owner_.done("ShipAiClearance::neighbour_count_604", 0x009efd5bu);
-        return 0;
+        if (!kShipNeighbourClipsBound) return 0;
+        return owner_.controllers[index_].nav_block.neighbour_count_604;
     }
-    bool neighbour_owner_present_14(int) override {
-        owner_.record("ShipAiClearance::neighbour_owner_14", 0x009efd80u);
-        return false;
+    const bsp::ShipAiObstacleNode& node(int i) const {
+        return *owner_.controllers[index_].neighbours[static_cast<std::size_t>(i)];
     }
-    bool neighbour_owner_gone_5e(int) override {
-        owner_.record("ShipAiClearance::neighbour_owner_5e", 0x009efd8du);
-        return true;
+    bool neighbour_owner_present_14(int i) override {
+        if (!kShipNeighbourClipsBound) {
+            owner_.record("ShipAiClearance::neighbour_owner_14", 0x009efd80u);
+            return false;
+        }
+        return node(i).owner != nullptr;
     }
-    int neighbour_owner_category_54(int) override {
-        owner_.record("ShipAiClearance::neighbour_owner_54", 0x009efd9du);
-        return -1;
+    bool neighbour_owner_gone_5e(int i) override {
+        if (!kShipNeighbourClipsBound) {
+            owner_.record("ShipAiClearance::neighbour_owner_5e", 0x009efd8du);
+            return true;
+        }
+        bsp::SceneNodeFlags flags;
+        return owner_.units.read_scene_node_flags(node(i).owner, flags) && flags.destroyed;
     }
-    bool neighbour_blocks_sweep_009dd010(int, float, float, float, float, float) override {
-        owner_.record("ShipAiClearance::neighbour_blocks_sweep_009dd010", 0x009dd010u);
-        return false;
+    int neighbour_owner_category_54(int i) override {
+        if (!kShipNeighbourClipsBound) {
+            owner_.record("ShipAiClearance::neighbour_owner_54", 0x009efd9du);
+            return -1;
+        }
+        return owner_.units.unit_side_0054(NeighbourList::store(
+            const_cast<bsp::ShipAiObstacleNode&>(node(i))).unit);
     }
-    void neighbour_support_point_009d8860(int, float, float, float& out_x,
+    bool neighbour_blocks_sweep_009dd010(int i, float pivot_x, float pivot_z, float radius,
+                                         float sweep_from, float sweep_to) override {
+        if (!kShipNeighbourClipsBound) {
+            owner_.record("ShipAiClearance::neighbour_blocks_sweep_009dd010", 0x009dd010u);
+            return false;
+        }
+        owner_.done("ShipAiClearance::neighbour_blocks_sweep_009dd010", 0x009dd010u);
+        // 009EFDBD passes its own end-bearing slot, which it does not read back.
+        float end = sweep_to;
+        const bool hit = bsp::ship_ai_obstacle_clip_arc_009dd010(node(i), {pivot_x, pivot_z},
+                                                                 radius, sweep_from, end,
+                                                                 application_camera_axes_crt());
+        if (hit) ++node_hits;
+        return hit;
+    }
+    void neighbour_support_point_009d8860(int i, float dir_x, float dir_z, float& out_x,
                                           float& out_z) override {
-        owner_.record("ShipAiClearance::neighbour_support_009d8860", 0x009d8860u);
-        out_x = 0.0f;
-        out_z = 0.0f;
+        if (!kShipNeighbourClipsBound) {
+            owner_.record("ShipAiClearance::neighbour_support_009d8860", 0x009d8860u);
+            out_x = 0.0f;
+            out_z = 0.0f;
+            return;
+        }
+        owner_.done("ShipAiClearance::neighbour_support_009d8860", 0x009d8860u);
+        const auto p = bsp::ship_ai_obstacle_support_point_009d8860(node(i), {dir_x, dir_z});
+        out_x = p[0];
+        out_z = p[1];
     }
-    void neighbour_closest_point_009d8a30(int, float, float, float& out_x,
+    void neighbour_closest_point_009d8a30(int i, float x, float z, float& out_x,
                                           float& out_z) override {
-        owner_.record("ShipAiClearance::neighbour_closest_009d8a30", 0x009d8a30u);
-        out_x = 0.0f;
-        out_z = 0.0f;
+        if (!kShipNeighbourClipsBound) {
+            owner_.record("ShipAiClearance::neighbour_closest_009d8a30", 0x009d8a30u);
+            out_x = 0.0f;
+            out_z = 0.0f;
+            return;
+        }
+        owner_.done("ShipAiClearance::neighbour_closest_009d8a30", 0x009d8a30u);
+        const auto p = bsp::ship_ai_obstacle_closest_point_009d8a30(node(i), {x, z});
+        out_x = p[0];
+        out_z = p[1];
     }
-    float neighbour_speed_0092d730(int) override {
-        owner_.record("ShipAiClearance::neighbour_speed_0092d730", 0x009eff7fu);
-        return 0.0f;
+    float neighbour_speed_0092d730(int i) override {
+        if (!kShipNeighbourClipsBound) {
+            owner_.record("ShipAiClearance::neighbour_speed_0092d730", 0x009eff7fu);
+            return 0.0f;
+        }
+        owner_.done("ShipAiClearance::neighbour_speed_0092d730", 0x009eff7fu);
+        return owner_.units.unit_forward_speed_0092d730(NeighbourList::store(
+            const_cast<bsp::ShipAiObstacleNode&>(node(i))).unit);
     }
     bool path_fade_applies_00778890() override {
         // 009F0000 / 009F0019: the group-leader query and the vtable identity
@@ -6236,6 +6371,7 @@ public:
         owner_.done("ShipAi::refresh_turn_clearance_009ef910", 0x009ef910u);
         ++row_.clearance_refreshes;
         ++owner_.summary.clearance_refreshes;
+        if (clearance.node_hits != 0) ++row_.clearance_node_hits;
         row_.clearance_37c = ctl_.clearance.clearance_37c;
     }
     void tail_009da8d0(float) override { owner_.record("ShipAi::tail_009da8d0", 0x009da8d0u); }
@@ -6784,6 +6920,8 @@ void GameShipAiHost::Impl::drive_order_ring_009f3f80(std::size_t index, Controll
     ++row.middle_runs;
     ++summary.middle_runs;
     row.danger_a84 = ctl.obstacle.danger_a84;
+    row.danger_max = std::max(row.danger_max, ctl.obstacle.danger_a84);
+    if (ctl.obstacle.danger_a84 > 0.0f) ++row.danger_steps;
     row.throttle_limit_344 = ctl.obstacle.throttle_limit_344;
     row.turn_assist_load_102c = units.turn_assist_load_102c(index);
     row.rudder_law_calls += obstacle.calls();
@@ -7513,12 +7651,16 @@ void GameShipAiHost::report() {
         if (row.neighbour_walks != 0) {
             host.log.notef("    neighbour %-16s walks=%llu candidates=%llu admitted=%llu "
                 "expired=%llu max=%d list_steps=%llu node_steps=%llu collapsed=%llu "
-                "sector_blocks=%llu separation_turns=%llu separation_max=%.3f traffic=%llu",
+                "sector_blocks=%llu separation_turns=%llu separation_max=%.3f traffic=%llu "
+                "pass_runs=%llu pass_posts=%llu clearance_hits=%llu danger_steps=%llu "
+                "danger_max=%.3f",
                 row.unit.c_str(), row.neighbour_walks, row.neighbour_candidates,
                 row.neighbour_admitted, row.neighbour_expired, row.neighbour_max,
                 row.neighbour_list_steps, row.neighbour_node_steps, row.neighbour_collapsed,
                 row.sector_node_blocks, row.separation_turns,
-                static_cast<double>(row.separation_max_turn), row.traffic_passes);
+                static_cast<double>(row.separation_max_turn), row.traffic_passes,
+                row.neighbour_pass_runs, row.neighbour_pass_posts, row.clearance_node_hits,
+                row.danger_steps, static_cast<double>(row.danger_max));
         }
         if (row.station_requests != 0 || row.station_arm_runs != 0) {
             host.log.notef("    station %-16s requests=%llu arm_runs=%llu throttle39c=[%.4f, %.4f] "
