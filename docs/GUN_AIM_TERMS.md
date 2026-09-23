@@ -160,3 +160,95 @@ predictions:
 - fire-tick overshoot falls with the damping, which should raise fighter hits;
 - each fighter uses two more shared-stream draws per fine-aim tick, so option-off rows shift
   through the coupling.
+
+## 7. The wiring (packet `cc9_fighter_aim_wiring`)
+
+This is applied in the units host's fine aim, `df_fine_aim_009f9fc0` and its call in
+`df_gun_tick_009fc7c0`, behind `kFighterGunLeadBound`. The new sub-switch is
+`kFighterAimTermsBound`.
+- **Distortion.** On a fine-aim tick, after `(e_h, e_v) = (x/d, y/d)`, the fine aim calls
+  `fighter_aim_distortion_009fa7e0(unit, dt, IsKindOf(13h), add)` and adds `add` to the angles.
+- **Damping.** When the previous tick's fine aim ran (`+4Ah`), each axis takes
+  `min(magnitude, gun_aim_damped_cap_009f9fc0(e, prev, dt, Spd, Accel))`.
+- **Saved angles.** When the fine aim runs, the angles it used are saved as `prev`, as at
+  `009FCE39`/`009FCE44`. The flag is then "the fine aim ran this tick" (`009FCE2D`).
+- **The fire branch's re-aim.** `009FCDB6`-`009FCE01` adds +0.25, calls `009F9FC0` a second
+  time and clears the flag at `009FCDE9`. It runs only when `007B96D0` BSP_Unit_TargetFinderBusy
+  answers true (`unit+C50h` non-null and `007DEDB0` true). The host's gun tick passes
+  `finder_busy = false` (`DogfightGunInputs`), so that branch never runs here. The flag therefore
+  follows the image exactly under that existing substitution. It is not a new one.
+- **Census.** The `fighter gun lead` line now also prints `distortion_ticks` and `damped_ticks`.
+
+### Predictions, written before the pair
+
+E2 9000, RNG option on both sides, `kFighterAimTermsBound` off against on, same tree
+(main `7d4095eaa` plus this wiring).
+- **distortion_ticks** equals **fine_aim_ticks** for every fighter. **damped_ticks** is a large
+  share of them, because the fine aim runs on consecutive ticks while a target stays in the cone.
+- **Fighter hits and bursts:** within ±25% of the control. V1b had 50 hits and 16 bursts.
+  - The damping trims the stick while the error closes, which should reduce the overshoot and
+    raise the time on target.
+  - The distortion adds a jitter of about half a degree that works the other way.
+  - Direction: hits up slightly.
+- **Trigger ticks:** within ±15%.
+- **Val deaths to fighters:** unchanged, or plus or minus 1.
+- **Kate and Lexington rows:** flat. The fighters' new draws are on their own keys under the
+  option, and Kates are not fighter targets before their runs. Any Kate or Lexington movement
+  would come from a changed Val kill.
+
+### The pair
+
+`localC_9000.log` (sub-switch off) against `localT_9000.log` (on). E2 9000, RNG option on
+both sides, same tree.
+
+| quantity | off | on |
+| --- | --- | --- |
+| fine-aim ticks, all fighters | 87 | 315 |
+| distortion / damped ticks | 0 / 0 | 315 / 311 |
+| fighter bursts | 5 | 10 |
+| fighter fire ticks | 147 | 276 |
+| category 0 (fighter) shots / hits | 875 / 32 | 1646 / 71 |
+| Val deaths to fighters | 2 (Val #3.1, #3.1\|.-3) | 2 (Val #3.1\|.-2, #3.1\|.-4) |
+| Kates shot down by fighters | 0 | 2 (Kate #8.1\|.-2, #8.1\|.-3, by Lexington-class01_sqn01) |
+| category 10 hits / Yorktown damage taken | 8 / 1883 | 4 / 982 |
+| deaths / total damage | 34 / 9216.2 | 33 / 8242.4 |
+
+**Against the predictions:**
+- distortion_ticks equals fine_aim_ticks for every fighter. damped_ticks is one less per
+  engagement, because the first fine-aim tick of an engagement has no previous tick. **Held.**
+- The direction held for fighter hits and bursts, but **the magnitude did not.** Hits rose 122%
+  and bursts doubled, against the ±25% predicted. Fire ticks rose 88%, against ±15%.
+- Val deaths to fighters stayed at 2, but they are different Vals. **Held** within ±1.
+- **The Kate rows are not flat, and that prediction failed.** Lexington-class01_sqn01's leader
+  went from 0 fine-aim ticks to 146 and shot down two Kates of #8.1. So one torpedo fewer
+  reaches Yorktown.
+
+**The read explains the size.** The fine aim runs only while the lead error sits inside the
+strafe cone (`009FCCAB`). The damped cap slows the stick as the error closes, so the aircraft
+stops overshooting out of the cone. The fine aim then keeps running, 87 to 315 ticks. Firing
+follows the fine aim, so bursts, fire ticks and hits follow it. The distortion is only half a
+degree and does not offset that. The one host term that could inflate the effect,
+`finder_busy = false`, predates this packet and is the same on both sides.
+
+**Decision:** `kFighterAimTermsBound` lands ON.
+
+## 8. Barrel count: what the host can reach
+
+- **The node table is readable.** `src/native_resource_hierarchy_parser.cpp` reconstructs
+  `00B7F100` (Hierarchy) and `00B7EB90` (Item). `include/bsp/structured_hierarchy.hpp` carries
+  each node's `parent`, `name`, `resources`, matrix and bounds. `src/installed_model_probe` and
+  `src/structured_resource_probe.cpp` already open installed `.mmod` files through the host's
+  structured reader. `MMOD_FORMAT_NOTES.md` in this installation describes the same Hierarchy
+  and Item chunks.
+- **The device has no model.** `deviceclasses.lua` in this installation has no `Model` or `Mesh`
+  key, so a gun's model cannot be reached from its device row.
+- **The producer queries a group, not the node list.** `007325A0` builds the string `"fire"` and
+  asks "the model" through `00718870`, flags 0 and 1. It then copies that group's element list,
+  12-byte points (`docs/GUN_MOUNT_POSITIONS.md` section 4).
+- **What is missing:**
+  1. which model `007325A0` queries, which is the class loader's model source;
+  2. `00718870`, the named-group lookup, and the layout of a group's element list. This is
+     probably one of the structured resource payloads next to `GroupParams`, but it is unread.
+
+  With those two reads, the count is `gun_muzzle_count_0072ab80(elements)` and a flatten field.
+  **Not reachable with the current loaders. No code.**
