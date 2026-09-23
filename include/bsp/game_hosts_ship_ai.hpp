@@ -261,6 +261,12 @@ struct GameShipAiRow {
     unsigned long long clearance_node_hits{0};   // 009EF910 sweeps a node blocked
     unsigned long long danger_steps{0};          // middle runs ending with blk+0A84h > 0
     float danger_max{0.0f};                      // largest blk+0A84h
+    // Packet cc9_pass_side_message.
+    unsigned long long pass_side_delivered{0};   // 009D8CE0 calls from delivered messages
+    unsigned long long pass_side_changes{0};     // deliveries that changed node+88h
+    unsigned long long pass_side_negotiated{0};  // deliveries ending with node+8Ch != 0
+    unsigned long long traffic_writes{0};        // 009EF350 wrote blk+324h/+33Ch/+354h
+    float traffic_max_turn{0.0f};                // |blk+324h change|, radians
     std::uint32_t travel_layer_min{0xFFFFFFFFu};// nav+30Ch range
     std::uint32_t travel_layer_max{0};
     // Packet cc9_ship_torpedo_response.
