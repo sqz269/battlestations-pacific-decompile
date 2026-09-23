@@ -220,6 +220,23 @@ std::uint32_t GameAvoidZoneRuntime::containing(const std::array<float, 2>& p, st
         static_cast<std::int32_t>(layer));
     return hit ? impl_->groups.at(hit.group_index).handles.at(hit.zone_index) : 0;
 }
+const AvoidZoneTable& GameAvoidZoneRuntime::table() const {
+    impl_->require_ready();
+    return impl_->table;
+}
+AvoidZoneClearanceGroupView GameAvoidZoneRuntime::native_group(
+    const AvoidZoneLayerGroup& group) const {
+    impl_->require_ready();
+    const auto& groups = impl_->table.groups;
+    for (std::size_t i = 0; i < groups.size(); ++i) {
+        if (&groups[i] == &group) {
+            const auto& native = impl_->groups.at(i).native;
+            return AvoidZoneClearanceGroupView{native.data(),
+                static_cast<std::uint32_t>(native.size())};
+        }
+    }
+    throw std::logic_error("Avoid-zone group is not in this manager's table");
+}
 std::uint32_t GameAvoidZoneRuntime::group_for_layer(std::uint32_t layer) const {
     impl_->require_ready(); return static_cast<std::uint32_t>(
         avoid_zone_group_for_layer_004120d0(impl_->table, static_cast<std::int32_t>(layer)) + 1);
