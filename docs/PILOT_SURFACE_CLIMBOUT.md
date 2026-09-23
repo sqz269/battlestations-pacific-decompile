@@ -108,3 +108,54 @@ the gunnery draws share. So every later gunnery draw shifts, and the re-baseline
 any earlier ones for that reason alone. With the option on the draws are keyed per unit. The
 pair above therefore isolates the squadron removal, but its modes differ from
 `local\dT_9000.log`'s, whose draws came from the units-host generator.
+
+## 5. The pair
+
+USN04, 9000 mission frames, RNG option on both sides, on this tree (main `fd70f01dd` plus this
+packet, with the draws moved).
+- Control: `local\cC_9000.log`, with `kSquadronRemovesDeadBound` off.
+- First treatment: `local\cT_9000.log`, switch on, before the seeding fix.
+- Second treatment: `local\cT2_9000.log`, switch on, with the seeding fix `94f22374b`.
+
+**The first treatment showed a second host artefact.** Removing a plane changes the squadron's
+live count. The host's first-step station seeding keys its "applied" flags by live seat, and it
+resets them all when the count changes. So every removal re-seeded, and teleported, every
+survivor onto the new leader's station. A diagnostic run (`local\cD_9000.log`, diagnostic not
+kept) logged 82 such once-placements. One of them moved D3A Val #3.1|.-2 from 403 m to 41 m. In
+that treatment the halvings rose from 6461 to 10515. The fix erases the removed seat's flag, the
+same compaction as the member array.
+
+| quantity | control | treatment (fixed) |
+| --- | --- | --- |
+| live aircraft pinned under the surface | D3A Val #7.1\|.-2 at 421 s | none |
+| negative halvings | 6461 | 5064 |
+| category 1 shots / hits | 3482 / 209 | 2997 / 211 |
+| deaths | 34 | 34 |
+| total damage | 8391.4 | 8483.2 |
+| queued hits | 397 | 389 |
+| plane water contacts | 11 | 12 |
+| depth kills | 2 | 1 |
+
+- **The pinned member is gone.** In the control, D3A Val #7.1|.-2 was placed from 3.68 m to
+  -28.70 m in one second, at a vertical speed of -0.08 m/s. It was on the station of its dead
+  leader, D3A Val #7.1, which died at 403.08 s. The depth kill took it at 421.62 s, credited to
+  no one.
+- In the treatment it leads what is left of its wing. It flies, and Northampton-class03 shoots
+  it down at 423.27 s. No `surface probe` line shows a pinned live aircraft.
+- **The prediction held.** Halvings fell, and they are below the 10.9k of the earlier trees.
+- Category 1 shots fell by 485, and hits are level.
+- Deaths are unchanged. 31 unit rows move: the squadron-mates of every dead leader and their
+  targets.
+- The one remaining depth kill, Lexington-class01_sqn01|.-3, is a live fighter flying below -30 m
+  under its own pilot commands. That is the image's rule.
+
+## 6. Decisions
+
+- **`kSquadronRemovesDeadBound`: landed, default true,** with the seeding compaction.
+- **The death-mode draws are on the shared stream,** commit `182917488`. They are measured only
+  through the option-off re-baseline below, as briefed.
+- **Not landed: a climb-out.** The image has none in the read (section 1).
+- **Still a substitution: the per-tick station placement.** The host places members on their
+  stations each tick in place of the unread follow law `009BFEE0`/`009BEE30`. A leader change
+  still moves a member onto its new station in one step, now onto a live leader. Binding that
+  law is the open item.
