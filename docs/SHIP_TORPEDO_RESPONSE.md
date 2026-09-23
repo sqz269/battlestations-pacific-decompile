@@ -246,3 +246,9 @@ Lexington at 182.86 s to a dive-bomb hit. Main's own reference leaves it at 15 o
 switch alone leaves it at 66 or 84. This is a shared-generator coupling flip on a knife edge, not
 a torpedo-response behaviour. docs/GAME_EXECUTABLE.md, "Mission reference baselines, 2026-09-23
 (after station keeping, and with the torpedo response)", has the rows.
+
+**Update, packet cc9_heading_target_sections.** `kShipTorpedoResponseImageTerms` (on) replaces the
+liveness and timer-seed substitutions of section 2 with the image's terms. Once only swimming
+rounds count, the heading row becomes an equivalence. docs/HEADING_TARGET_SECTIONS.md reads
+009DE5B0's sections 3, 4, 6 and 7, which are inert in this host behind 009ECA20, 009F0D20 and the
+unread 009DC2E0.

@@ -167,6 +167,16 @@ inline constexpr bool kShipTorpedoResponseBound = true;
 inline constexpr bool kShipTurnRadiusSitesBound = true;
 // settings+1ECh / +1F0h, TorpedoAvoidance.CollectTimer: this installation's
 // shipglobals.lua line 279, { 1.5, 2 }. The settings object is not loaded here.
+// Packet cc9_heading_target_sections (docs/HEADING_TARGET_SECTIONS.md). True, with
+// kShipTorpedoResponseBound: (1) the walk's candidate test is the image's: slot38
+// 008561F0 is the record's active byte +458h (set once released, 006E1331) and slot2C
+// 00855F00 answers non-zero only in the water (2 when height < 2 * swim depth, else
+// the underwater flag +354h), which the host's `swimming` projects; (2) the brain
+// constructor's seven stream-1 draws (009F12CD..009F13F0) are made for every built
+// controller when the draw source binds, in the constructor's order, keeping B48h and
+// B44h. False: any live round is a candidate and the two timer draws happen on the
+// ship's first re-plan, as the torpedo-response packet landed it.
+inline constexpr bool kShipTorpedoResponseImageTerms = true;
 inline constexpr float kTorpedoCollectTimer1 = 1.5f;
 inline constexpr float kTorpedoCollectTimer2 = 2.0f;
 // Packet cc9_station_keeping, docs/STATION_KEEPING.md. True: the follow update's
@@ -808,6 +818,29 @@ struct GameShipAiHost::Impl {
         Impl& owner_;
         std::size_t index_;
     };
+    // 009F12CD..009F13F0, the brain constructor 009F1160's seven stream-1 draws, in
+    // order: B3C = U(1, 2.0 [00CE3958]); B40 = -U(0, B3C); B48 = -U(0, 1);
+    // B50 = -U(0, 1); B58 = -U(0, 2); B44 = U(+1ECh, +1F0h); B4C = U(+190h, +194h)
+    // (ShipAvoidance.CollectTimer, shipglobals.lua line 243, { 1, 2 }). Only B44/B48
+    // have a host consumer; the other five are drawn for the stream's order.
+    void seed_brain_draws_009f1160() {
+        for (std::size_t index = 0; index < controllers.size(); ++index) {
+            Controller& ctl = controllers[index];
+            if (!ctl.nav_block_built || ctl.torpedo_timer.seeded) continue;
+            TorpedoDraw draw(*this, index);
+            const float b3c = draw.uniform_00bd2f10(1.0f, 2.0f);        // 009F12CD
+            static_cast<void>(draw.uniform_00bd2f10(0.0f, b3c));        // 009F12F1, B40
+            ctl.torpedo_timer.countdown_b48 = -draw.uniform_00bd2f10(0.0f, 1.0f);   // 009F1330
+            static_cast<void>(draw.uniform_00bd2f10(0.0f, 1.0f));       // 009F1360, B50
+            static_cast<void>(draw.uniform_00bd2f10(0.0f, 2.0f));       // 009F138C, B58
+            ctl.torpedo_timer.period_b44
+                = draw.uniform_00bd2f10(kTorpedoCollectTimer1, kTorpedoCollectTimer2); // 009F13BE
+            static_cast<void>(draw.uniform_00bd2f10(1.0f, 2.0f));       // 009F13F0, B4C
+            ctl.torpedo_timer.seeded = true;
+            ++brain_seed_draws;
+        }
+    }
+    unsigned long long brain_seed_draws{0};
     // 009DA1D0, whole: not a torpedo boat, not deeper than -15, blk+3ECh set
     // and the director's torpedoAvoidance +240h set.
     bool torpedo_gate_009da1d0(std::size_t index, const Controller& ctl) const {
@@ -825,6 +858,8 @@ struct GameShipAiHost::Impl {
                                float elapsed) {
         TorpedoDraw draw(*this, index);
         if (!ctl.torpedo_timer.seeded) {
+            // With kShipTorpedoResponseImageTerms the constructor draws were made at
+            // bind time (seed_brain_draws_009f1160); this is the fallback.
             // 009F1316..009F1330 and 009F139E..009F13BE, in the constructor's
             // order. The host makes these two of the constructor's seven draws,
             // on the first re-plan rather than at construction. SUBSTITUTION.
@@ -851,6 +886,8 @@ struct GameShipAiHost::Impl {
         const int side = units.unit_side_0054(index);
         for (const GameGunneryHost::LiveTorpedo& t : live_torpedoes()) {
             if (t.owner_unit == index + 1) continue;    // entity+4F8h != self
+            // 009F16A0..: slot38 (+458h active) and slot2C (in the water).
+            if (kShipTorpedoResponseImageTerms && !t.swimming) continue;
             const bsp::ShipAiTorpedoCandidate candidate = torpedo_candidate(t);
             if (!bsp::ship_ai_torpedo_admits(x, z, vx, vz, length, horizon, candidate)) continue;
             ++row.torpedo_admits;
@@ -6419,6 +6456,11 @@ void GameShipAiHost::set_ai_drive(std::size_t unit_index, float throttle, float 
 void GameShipAiHost::bind_gunnery(GameGunneryHost* gunnery) noexcept {
     impl_->gunnery = gunnery;
     impl_->gunnery_draws = gunnery;
+    if (kShipTorpedoResponseBound && kShipTorpedoResponseImageTerms && gunnery != nullptr) {
+        impl_->seed_brain_draws_009f1160();
+        impl_->log.notef("ship ai brain constructor draws: %llu controllers seeded (009F1160's "
+            "seven stream-1 draws, made when the draw source binds)", impl_->brain_seed_draws);
+    }
     // Packet cc9_target_release: the dead-target facts need the gunnery rows.
     if (kShipAiTargetReleaseBound) {
         impl_->units.commands().bind_command_target_facts(
