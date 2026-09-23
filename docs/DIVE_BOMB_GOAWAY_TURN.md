@@ -288,3 +288,16 @@ only one or two ticks in `flyabove`.
 * The first-entry `+28h`/`+2Ch` from the task allocation; `007B5BE0`'s target extent; the
   `009FD570` obstacle list (the aircraft starts next to its target ship); the `007F0280` probe.
 * `009C4E27`-`009C4E58`: the approach's `+1Ch` object (auto-strafe angle and direction).
+
+## Correction from docs/DIVE_BOMB_REATTACK.md (2026-09-22, packet `cc9_goaway_reattack`)
+
+* Section 6's arm period, "inferred from the counts, not read", is now read. `BSP_PilotBot_Tick`
+  gate 6 (`0099AD21`-`0099AD29`, `[00D1F39C]` = 0.09f) thinks only once the accumulated interval
+  reaches 0.09 s, and passes that interval on as `dt`. At 0.05 s frames the goaway tick runs every
+  second frame with `dt = 0.10`, and the host feeds the same accumulator. Section 5's `dt = 0.05`
+  assumption was wrong: a re-roll's bank weave is 45 arm ticks, not 90, and a 15 s countdown is 150
+  arm ticks, not 300.
+* Section 6 calls the three `#7.1` Vals "still turning away from the target they were facing" at
+  the end of the run. Only the first half is established: their goaway counts (146, 58, 131) are
+  exactly the arm ticks from their goaway entry to the end of the run. The heading at the end was not
+  traced.
