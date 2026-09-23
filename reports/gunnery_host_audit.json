@@ -1,0 +1,121 @@
+{
+  "packet": "cc9_gunnery_host",
+  "date": "2026-09-22",
+  "scope": "Every host path that can add units to a running mission, audited for a construction or reset of GameGunneryHost, or a re-run over EXISTING units of build_guns / attach_passes / state.health = state.max_health / the throttle, category, bridge-countdown and fire-cache seeds / any other per-unit seed. Host source audit; no native call sites are cited, so the report carries no address/native rows.",
+  "base": "main 1cc9d3dea (fix f144e2b36 merged in 1f68fb63e)",
+  "paths": [
+    {
+      "path": "create_units, initial scene pass",
+      "file": "src/game_hosts_mission_frame.cpp",
+      "line": 1406,
+      "chain": "load_scene_contents step -> release_units() (1368) -> new GameUnitsHost (1397) -> create_units (1406) -> gunnery guard src/game_hosts_units.cpp:4001",
+      "touches_host": "constructs it, once: host.gunnery is null on a fresh units host",
+      "existing_units_retouched": false,
+      "verdict": "correct: one host per mission"
+    },
+    {
+      "path": "create_units, air-ops squadron launch",
+      "file": "src/game_hosts_script_orders.cpp",
+      "line": 405,
+      "chain": "air-ops launch -> create_units(batch) -> src/game_hosts_units.cpp:4006 register_new_units_00864bd0 -> build_guns(first) + attach_passes(first)",
+      "touches_host": "no construction since f144e2b36; registers the new units on the existing host",
+      "existing_units_retouched": true,
+      "retouched_what": "the ordnance mask of every unit (build_guns re-stored units.store_unit_ordnance from index 0), which puts back the kind 2Bh torpedo bit release_ordnance_drop clears at src/game_hosts_gunnery.cpp:3467",
+      "verdict": "FOUND AND FIXED: the fourth per-batch re-seed; build_guns now stores masks for the new units only (BSP_GUNNERY_RESTORE_ALL_ORDNANCE=1 restores the old store)",
+      "measurement": {
+        "pair": "USN04 --frames 9200 --mission-frames 9000, same binary, BSP_GUNNERY_RESTORE_ALL_ORDNANCE unset vs =1",
+        "logs": [
+          "local/ord_new_usn04_9000.log",
+          "local/ord_all_usn04_9000.log"
+        ],
+        "ordnance_rearms": {
+          "fixed": 144,
+          "old_store": 12
+        },
+        "unchanged": "torpedo drops 12, total_damage 17543.1, deaths 13, queued_hits 174, bomb_drops 30, per-unit table 0 of 57 rows differ",
+        "changed": "blocked_arm_009d49a0 32862 -> 20274; spent B5N approach replans ~100 -> ~205 and scan runs ~11 -> ~25 under the old store",
+        "null_check": "USN04 4500 frames on the fixed build: ordnance_rearms=0, identical to local/ref_usn04.log except the run-varying avoidance refills counter"
+      }
+    },
+    {
+      "path": "create_units, SpawnNew / GenerateObject queue (the single-unit creation path)",
+      "file": "src/game_hosts_script_orders.cpp",
+      "line": 535,
+      "chain": "create_unit_from_scene_record_0046db4b (492) -> create_units(batch of 1, or 1 + wings) -> same guard as the air-ops launch",
+      "touches_host": "same as the air-ops launch",
+      "existing_units_retouched": true,
+      "retouched_what": "same ordnance-mask re-store; fixed by the same change",
+      "verdict": "FIXED by the same change; not reached by USN01 or USN04 in their frame budgets (the source says so at 508-510)"
+    },
+    {
+      "path": "GameCommandsHost::register_units (end of every create_units)",
+      "file": "src/game_hosts_commands.cpp",
+      "line": 1099,
+      "chain": "create_units src/game_hosts_units.cpp:3945, with every slot, every batch",
+      "touches_host": "no",
+      "existing_units_retouched": false,
+      "retouched_what": "replaces the unit table (index, name, id, position snapshot); directors and navigator_params are resize()d since cc8_ship_drive, so existing state is kept",
+      "verdict": "clean"
+    },
+    {
+      "path": "GameShipAiHost::register_units",
+      "file": "src/game_hosts_mission_frame.cpp",
+      "line": 1456,
+      "chain": "load step only; its body (src/game_hosts_ship_ai.cpp:5160) clears and re-assigns controllers and rows over all units",
+      "touches_host": "no; set_ship_ai (1457) binds the gunnery host once",
+      "existing_units_retouched": false,
+      "verdict": "clean: called once per mission. Would be a full rebuild if ever called per batch; units spawned later get no ship-AI controller (a coverage question, not a re-seed)"
+    },
+    {
+      "path": "resolve_plane_squadron_members",
+      "file": "src/game_hosts_script_orders.cpp",
+      "line": 814,
+      "chain": "create_units tail src/game_hosts_units.cpp:3958 (only_unresolved) and the per-frame air-ops update (462, when the unit count moved)",
+      "touches_host": "no",
+      "existing_units_retouched": false,
+      "retouched_what": "re-derives squadron member indices by name from the unit table; units are never removed, so it recomputes the same answer",
+      "verdict": "clean (idempotent re-derivation, not a seed)"
+    },
+    {
+      "path": "AI coordinator",
+      "file": "src/game_hosts_units.cpp",
+      "line": 4026,
+      "chain": "create_units tail, guarded by host.ai == nullptr (cc8_ship_follow)",
+      "touches_host": "no",
+      "existing_units_retouched": false,
+      "verdict": "clean since cc8_ship_follow; the comment at src/game_hosts_script_orders.cpp:373-376 still describes the pre-guard per-batch rebuild and is stale"
+    },
+    {
+      "path": "Mission reload",
+      "file": "src/game_hosts_mission.cpp",
+      "line": 1637,
+      "chain": "frame_host.reset() and a new GameMissionFrameHost; inside a frame host, load_scene_contents calls release_units() (src/game_hosts_mission_frame.cpp:1368) before the new units host",
+      "touches_host": "destroys it with its units host and builds a new one with the new units",
+      "existing_units_retouched": false,
+      "verdict": "correct: a new mission's units are new, so a fresh host is the per-mission contract"
+    },
+    {
+      "path": "Checkpoint",
+      "file": "src/game_hosts_mission.cpp",
+      "line": 938,
+      "chain": "checkpoint_differs (007f8d60) and write_checkpoint (00437c70) are unimplemented stubs; no checkpoint restore exists in the host",
+      "touches_host": "no",
+      "existing_units_retouched": false,
+      "verdict": "no path"
+    },
+    {
+      "path": "GameUnitsHost destructor",
+      "file": "src/game_hosts_units.cpp",
+      "line": 3399,
+      "chain": "host.gunnery.reset() at teardown",
+      "touches_host": "destroys it at teardown only",
+      "existing_units_retouched": false,
+      "verdict": "clean"
+    }
+  ],
+  "fix": {
+    "file": "src/game_hosts_gunnery.cpp",
+    "function": "GameGunneryHost::Impl::build_guns",
+    "change": "store_unit_ordnance only for [first_unit, count); env switch BSP_GUNNERY_RESTORE_ALL_ORDNANCE=1 restores the old all-units store"
+  }
+}

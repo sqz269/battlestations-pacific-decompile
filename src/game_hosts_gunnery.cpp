@@ -14,6 +14,7 @@
 #include <cmath>
 #include <cstdarg>
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <set>
 #include <string>
@@ -229,6 +230,11 @@ struct GameGunneryHost::Impl {
     // The units host only ever appends, so [0, built_units) is settled.
     std::size_t built_units{0};
     void refresh_build_summary();
+    // Packet cc9_gunnery_host: already-built units whose stored ordnance mask a
+    // later batch found different from the recomputed aggregate, which only a
+    // torpedo drop's kind 2Bh clear can cause. Counted in both modes of
+    // restore_all_ordnance_enabled() below; re-stored only when it is on.
+    unsigned long long ordnance_rearms{0};
 
     void run_gunnery_pass(std::size_t index, float dt);
     void refresh_command_targets();
@@ -500,6 +506,24 @@ void GameGunneryHost::Impl::build_rank_table() {
     done("Gunnery::build_target_rank_table_00727bd0", 0x00727bd0u);
 }
 
+namespace {
+
+// _dupenv_s rather than getenv, which is a /W4 /WX error under MSVC; the same
+// form game_hosts_ai.cpp's ai_weight_model_enabled uses. Off unless set to 1.
+bool restore_all_ordnance_enabled() {
+    static const bool enabled = [] {
+        char* text = nullptr;
+        std::size_t bytes = 0;
+        if (_dupenv_s(&text, &bytes, "BSP_GUNNERY_RESTORE_ALL_ORDNANCE") != 0) return false;
+        const bool on = text != nullptr && text[0] == '1';
+        std::free(text);
+        return on;
+    }();
+    return enabled;
+}
+
+}  // namespace
+
 void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
     const std::size_t count = units.count();
     if (first_unit >= count) return;
@@ -756,15 +780,37 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
     // answer sets, since the family asks "does any slot carry kind N".
     // docs/ORDNANCE_KIND_IDENTITY.md. Stored at load, not at report time,
     // because the mission script issues its orders during luaStageInit.
-    // Recomputed over the whole gun list rather than the new range, because the
-    // mask is an aggregate: this is a re-store of the same value for a unit an
-    // earlier batch built, since `guns` only ever gained rows since then.
+    // Packet cc9_gunnery_host: stored for the NEW units only. This used to
+    // re-store every unit from 0 on the reasoning that an earlier unit's
+    // aggregate cannot change because `guns` only gains rows for new units. The
+    // aggregate cannot, but the stored mask can: release_ordnance_drop clears a
+    // torpedo bomber's kind 2Bh bit when it drops (packet cc8_torpedo_breakoff),
+    // and the next spawn batch put the bit back, re-arming every spent bomber -
+    // the fourth instance of a per-batch pass re-seeding units already in play,
+    // after the health, the directors and the coordinator. USN04 at 9000
+    // mission frames drops 12 torpedoes and then creates 12 more batches.
+    // BSP_GUNNERY_RESTORE_ALL_ORDNANCE=1 restores the old store for a
+    // same-binary pair; docs/GUNNERY_HOST_LIFETIME.md section 8.
     {
         std::vector<std::uint64_t> masks(count, 0u);
         for (const GameGunRow& gun : guns) {
             if (gun.unit_index < masks.size()) masks[gun.unit_index] |= gun.ordnance.mask;
         }
-        for (std::size_t i = 0; i < count; ++i) units.store_unit_ordnance(i, masks[i]);
+        unsigned long long rearms = 0;
+        for (std::size_t i = 0; i < first_unit && i < count; ++i) {
+            if (units.unit_ordnance(i) != masks[i]) ++rearms;
+        }
+        ordnance_rearms += rearms;
+        const bool restore_all = restore_all_ordnance_enabled();
+        if (rearms != 0) {
+            log.notef("gunnery: spawn batch at unit %zu finds %llu already-built unit(s) whose "
+                "ordnance mask a drop cleared; %s", first_unit, rearms,
+                restore_all ? "RE-STORED (BSP_GUNNERY_RESTORE_ALL_ORDNANCE=1, the pre-fix "
+                              "behaviour)" : "left cleared");
+        }
+        for (std::size_t i = restore_all ? 0 : first_unit; i < count; ++i) {
+            units.store_unit_ordnance(i, masks[i]);
+        }
     }
 
     // 00956C20: the twelve category lists at unit+394h, the all-guns list at
@@ -3651,6 +3697,9 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery torpedo_loadout_cleared=%llu "
             "(drops that cleared the owner's kind 2Bh bit, so approach+132h goes false)",
             s.torpedo_loadout_cleared);
+        host.log.notef("summary mission gunnery ordnance_rearms=%llu mode=%s (already-built "
+            "units a later spawn batch found with a drop-cleared mask; packet cc9_gunnery_host)",
+            host.ordnance_rearms, restore_all_ordnance_enabled() ? "restore_all" : "new_only");
         // TRACE, packet cc8_torpedo_swim item 1: a traced round still in the
         // list at mission end took no exit at all, which is its own answer.
         for (const GameProjectileRow& row : host.shots) {

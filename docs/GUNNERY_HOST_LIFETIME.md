@@ -325,3 +325,83 @@ evidence about *this* change (those are a different binary in another worktree, 
 controlled pair shows much smaller column movement), and my interim reading that the first hit
 came 2.4 s earlier because a vanished round now lands - it is the same hit at the same time,
 relabelled.
+
+## 8. The other unit-creation paths (packet cc9_gunnery_host)
+
+2026-09-22, on main `1cc9d3dea`. The fix in section 4 covered the `create_units` batch path. This
+section audits every other path that can add units to a running mission. For each one it asks
+whether the path constructs or resets the gunnery host. It also asks whether the path re-runs any
+per-unit seed over units that already exist. The machine-readable table is
+`reports/gunnery_host_audit.json`. This is a host-source audit, and no native routine's contract
+was in doubt, so no Ghidra reads were needed.
+
+| path | call chain | host | existing units re-touched | verdict |
+| --- | --- | --- | --- | --- |
+| initial scene pass | `game_hosts_mission_frame.cpp:1368` `release_units`, `:1397` new units host, `:1406` `create_units`, guard at `game_hosts_units.cpp:4001` | built once | no | correct |
+| air-ops squadron launch | `game_hosts_script_orders.cpp:405` `create_units`, `game_hosts_units.cpp:4006` `register_new_units_00864bd0` | kept | **yes: every unit's ordnance mask** | **fixed here** |
+| `SpawnNew` / `GenerateObject`, the single-unit path | `game_hosts_script_orders.cpp:492` `create_unit_from_scene_record_0046db4b`, `:535` `create_units` | kept | same mask re-store | fixed by the same change, and not reached by USN01 or USN04 |
+| commands host `register_units` | `game_hosts_units.cpp:3945` hands every slot over on every batch, `game_hosts_commands.cpp:1099` | no | no: directors and speed blocks are `resize`d since `cc8_ship_drive` | clean |
+| ship-AI `register_units` | `game_hosts_mission_frame.cpp:1456`, load step only | binds once at `:1457` | no | clean, but see below |
+| squadron member resolve | `game_hosts_units.cpp:3958` and the per-frame air-ops update at `game_hosts_script_orders.cpp:462` | no | re-derives member indices by name, and gets the same answer because units are never removed | clean |
+| AI coordinator | `game_hosts_units.cpp:4026`, guarded | no | no | clean since `cc8_ship_follow` |
+| mission reload | `game_hosts_mission.cpp:1637` new frame host, then `release_units` | destroyed together with its units | not applicable: the units are new | correct per-mission contract |
+| checkpoint | `game_hosts_mission.cpp:938` and `:943` are unimplemented stubs | no | no | no path exists |
+
+### The fourth re-seed: the ordnance mask
+
+`build_guns` ended by re-storing every unit's ordnance mask, starting at index 0. The comment
+said this was harmless: an earlier unit's aggregate cannot change, because `guns` only gains rows
+for new units. The aggregate indeed cannot change, but the stored mask can. `release_ordnance_drop`
+clears the dropping bomber's kind 2Bh torpedo bit (packet `cc8_torpedo_breakoff`), and the next
+spawn batch put the bit back. So every spent torpedo bomber was re-armed at the next batch. It is
+the same class of defect as the health, the directors and the coordinator. The unit table's
+consumers of that bit include the approach-arm guard at `game_hosts_units.cpp:7610` and the
+`007B93F0` binding at `:5091`.
+
+The fix stores masks for the new units only. It still counts, but leaves alone, any
+already-built unit whose stored mask differs from the recomputed aggregate. Setting
+`BSP_GUNNERY_RESTORE_ALL_ORDNANCE=1` restores the old store, so both behaviours run from one
+binary. `summary mission gunnery ordnance_rearms=N mode=...` reports the count.
+
+**Which missions reach it.** At 4500 or 4800 frames USN04 creates all twelve of its later batches
+before its first torpedo drop, so it cannot reach the path. Its reference row on the fixed build
+reads `ordnance_rearms=0` and matches `local\ref_usn04.log` on every simulation line. USN04 at
+9000 frames drops 12 torpedoes and then creates 12 more batches, and that is the run measured.
+
+**The same-binary pair**, USN04 with `--frames 9200 --press-start-frame 30 --menu-select USN04
+--mission-frames 9000 --mission-frame-seconds 0.05`, differing only in the environment variable:
+
+| | fixed (`local\ord_new_usn04_9000.log`) | old store (`local\ord_all_usn04_9000.log`) |
+| --- | --- | --- |
+| `ordnance_rearms` | 144: each of 12 batches finds the same 12 spent bombers and leaves them | 12: the first batch after the drops re-arms all 12 |
+| torpedo `drops` / `loadout_cleared` | 12 / 12 | 12 / 12 |
+| `total_damage` / `deaths` / `queued_hits` | 17543.1 / 13 / 174 | 17543.1 / 13 / 174 |
+| `bomb_drops` / dive-bomb `releases` | 30 / 30 | 30 / 30 |
+| per-unit table, 57 rows | | 0 rows differ |
+| torpedo task `blocked_arm_009d49a0` | 32862 | 20274 |
+| approach `replans`, per spent B5N | 95 to 124 | 200 to 228 |
+| scan `runs`, per spent B5N | 10 to 13 | 24 to 27 |
+
+So the re-arm was live but did not reach combat in this window. A re-armed bomber passes the
+approach-arm guard again, so it re-plans and re-scans about twice as often. It never releases a
+second torpedo, and not one hit, sinking or damage figure moves. The effect is behavioural churn
+in 12 spent aircraft, and the fix removes it. Whether a longer run would convert that churn into
+a second drop is not measured. `release_ordnance_drop` itself does not test the
+mask; only the task gates do.
+
+**One counter varies between runs.** `ship avoidance search refills` differs between two runs
+with identical parameters on which this path never fires. The fixed build's 4500-frame run reads
+257 and the reference reads 265, and everything else matches. The 557 against 539 in the pair
+therefore belongs to that variation, not to this change.
+
+### What the audit leaves open
+
+- **Spawned units get no ship-AI controller.** The ship-AI host's `register_units` clears and
+  re-assigns its controllers over the unit count at load, and nothing calls it again. That is
+  correct as far as re-seeding goes, but a ship created by `SpawnNew` mid-mission has no
+  controller row. It is a coverage question for the ship-AI packets, not a re-seed.
+- **A stale comment.** `game_hosts_script_orders.cpp:373-376` still says `create_units`
+  constructs a fresh coordinator on each batch, which stopped being true with `cc8_ship_follow`.
+  That file is outside this packet's lease.
+- **One path is unmeasured.** The `SpawnNew` path is fixed by construction but not reached by
+  either reference mission, as its own comment at `:508` already says.
