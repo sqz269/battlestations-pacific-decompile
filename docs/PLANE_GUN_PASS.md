@@ -167,3 +167,12 @@ nested inside them, so those runs are superseded. Logs:
   bursts, rounds, hits and kills.
 * **Not read:** `unit->vtable[1FCh](gunFire)` at `007CE98D`, the weapon-group enable byte's
   producer, and `007B9740` (009AAA80's "no" arm).
+
+## Correction, 2026-09-23 (packet cc9_plane_flight_natives)
+
+Section 6 said the head-on count "is itself suspect" and pointed at the forward-row substitute
+for `vtable[34h]`. That is **wrong**.
+* `vtable[34h]` is `007BBB70`, `unit+AC8h`, the world velocity.
+* Classifying by velocity gives the same counts: 195/183/169 in run A1, 213/197/181 in A1T.
+* The head-on passes are real: carrier fighters meeting incoming Vals.
+* The stall's cause is still open. See `docs/PLANE_FLIGHT_NATIVES.md` section 6.

@@ -415,6 +415,7 @@ struct GameUnitSlot {
     int pg_trigger_ticks{0};
     int pg_trigger_rises{0};
     int df_head_on_ticks{0};
+    int pc_air_brake_overrides{0};
     float df_head_on_throttle_min{1.0f};
     int nf_hits{0};
     int nf_attackrun_weaves{0};
@@ -989,6 +990,7 @@ struct GameUnitSlot {
     float plane_pitch_spd{0.0f};
     // desc+18Ch TravelSpeed, the airspeed 007C6340 seeds a plane with.
     float plane_travel_speed{0.0f};
+    float plane_bomb_delay_1f4{1.0f};   // class+1F4h BombDelay
     // desc+164h Accel, desc+208h GlideRate, desc+1D4h DragPitchRatio and
     // desc+1DCh AirBrakeDrag: the four authored fields the thrust 007D9050 and
     // the drag 007D9140 are built from. docs/PLANE_POSE_THROTTLE_ALTITUDE.md.
@@ -2680,6 +2682,15 @@ struct GameUnitsHost::Impl {
     // SetTriggerHeld (007CE9A0-007CE9F4). docs/PLANE_GUN_PASS.md.
     static constexpr bool kDogfightEarlyEdgeBound = true;
     static constexpr bool kPlaneGunfireBound = true;
+    // Packet cc9_plane_flight_natives. docs/PLANE_FLIGHT_NATIVES.md.
+    // The aim tick's head-on test reads vtable[34h] = 007BBB70, unit+AC8h, the
+    // world linear velocity, for both aircraft (not the forward rows).
+    static constexpr bool kDogfightHeadOnVelocityBound = true;
+    // 007CE9FD's release-issue predicates: session mode, +C3Ah, +5Dh, BombDelay.
+    static constexpr bool kPlaneFixedStepPredicatesBound = true;
+    // 007DA710 (free-flight arm, read) and 007BB920's air-brake override.
+    static constexpr bool kPlaneControlRateLawBound = true;
+    static constexpr bool kPlaneCommitCommandBound = true;
     // 007B4ED0 wiring (the head-on arm and the maneuver tail's full throttle).
     // OFF, measured: run F1 drowned Yorktown-class01_sqn02 and its .-2 at |v| 51
     // after one maneuver tick left the throttle slot active in mode 0. The image
@@ -4109,6 +4120,7 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
             slot->plane_max_spd = lua_row.max_spd;
             slot->plane_pitch_spd = lua_row.pitch_spd;
             slot->plane_travel_speed = lua_row.travel_speed;
+            slot->plane_bomb_delay_1f4 = host.lua.read_vehicle_class_number(row.type_id, "BombDelay", 1.0f);   // class+1F4h BombDelay, 007D2318
             slot->plane_accel = lua_row.accel;
             slot->plane_glide_rate = lua_row.glide_rate;
             slot->plane_drag_pitch_ratio = lua_row.drag_pitch_ratio;
@@ -7195,6 +7207,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             ai.local_z = unit_.df_local_ec[2];
                             // vt[34h] on both units; the forward rows stand in.
                             ai.opposing = mo[8] * mt[8] + mo[9] * mt[9] + mo[10] * mt[10] < 0.0f;
+                            if constexpr (GameUnitsHost::Impl::kDogfightHeadOnVelocityBound) {
+                                // 007BBB70 copies unit+AC8h..AD0h, the world linear
+                                // velocity (docs/PLANE_FOLLOW_HOLD_ARM.md: ctl+18h).
+                                const float* vo = unit_.plane_world_velocity;
+                                const float* vt = tgt.plane_world_velocity;
+                                ai.opposing = vo[0] * vt[0] + vo[1] * vt[1] + vo[2] * vt[2] < 0.0f;
+                            }
                             // (approach+1Ch)+48h: last tick's fire flag from 009FC7C0.
                             unit_.df_dc = 0.0f;    // 009A76E0: approach+DCh = 0
                             unit_.df_e0 = 1.0f;    // approach+E0h = 1.0
@@ -9467,17 +9486,37 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         bsp::PlaneReleaseIssueStageInputs in;
                         // 007CEA02. The host has no app-state singleton, so the
                         // stage is never suppressed by a pause.
-                        owner_.log.unimplemented("App::state_1fe4", "007cea02");
+                        if constexpr (GameUnitsHost::Impl::kPlaneFixedStepPredicatesBound) {
+                            // game+1FE4h is the session mode, 0 for none
+                            // (docs/GAME_SESSION_POLLS.md); this process runs
+                            // single player, so 0 is the value, not a stand-in.
+                            owner_.done("App::state_1fe4", 0x007cea02u);
+                        } else {
+                            owner_.log.unimplemented("App::state_1fe4", "007cea02");
+                        }
                         in.app_state_1fe4 = 0;
                         // 007CEA0F: the same unit+9E0h the airborne
                         // accumulator is gated on, which the plane binding
                         // already reads.
                         in.blocked_9e0 = unit_.plane_airborne_frozen_9e0;
                         // 007CEA1C and 007CEA29. contract: unread.
-                        owner_.log.unimplemented("Plane::issue_block_c3a", "007cea1c");
-                        owner_.log.unimplemented("Unit::issue_block_5d", "007cea29");
-                        in.blocked_c3a = false;
-                        in.blocked_5d = false;
+                        if constexpr (GameUnitsHost::Impl::kPlaneFixedStepPredicatesBound) {
+                            // unit+C3Ah: its only run-time writer is the plane
+                            // state-message arm 007D1314 (after unit+C39h, then
+                            // vtable[70h](1)); the constructor zeroes it at
+                            // 007D0136 and 007B84D0's setter has no caller. This
+                            // host delivers no plane state message, so clear is
+                            // exact here. unit+5Dh is the scene byte `simulate`.
+                            in.blocked_c3a = false;
+                            in.blocked_5d = unit_.state != nullptr && unit_.state->simulate != 0;
+                            owner_.done("Plane::issue_block_c3a", 0x007cea1cu);
+                            owner_.done("Unit::issue_block_5d", 0x007cea29u);
+                        } else {
+                            owner_.log.unimplemented("Plane::issue_block_c3a", "007cea1c");
+                            owner_.log.unimplemented("Unit::issue_block_5d", "007cea29");
+                            in.blocked_c3a = false;
+                            in.blocked_5d = false;
+                        }
                         in.control_mode_900 = unit_.plane_control_mode_900;
                         in.interval_timer_c28 = unit_.torpedo_issue_interval_c28;
                         in.step_seconds = dt;
@@ -9493,9 +9532,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         in.interval_draw = bsp::kIssueIntervalLow_00ce3860;
                         // 007CEAB8 FMUL [class+1F4h]. SUBSTITUTION: the class
                         // descriptor field is unread, so the scale is 1.
-                        owner_.log.unimplemented("PlaneClass::issue_interval_1f4",
-                                                 "007ceab8");
-                        in.class_interval_scale_1f4 = 1.0f;
+                        if constexpr (GameUnitsHost::Impl::kPlaneFixedStepPredicatesBound) {
+                            // class+1F4h is BombDelay (007D2318; plane_class_fields).
+                            in.class_interval_scale_1f4 = unit_.plane_bomb_delay_1f4;
+                            owner_.done("PlaneClass::issue_interval_1f4", 0x007ceab8u);
+                        } else {
+                            owner_.log.unimplemented("PlaneClass::issue_interval_1f4",
+                                                     "007ceab8");
+                            in.class_interval_scale_1f4 = 1.0f;
+                        }
 
                         const bsp::PlaneReleaseIssueStageResult r =
                             bsp::plane_release_issue_stage_007ce9fd(in);
@@ -10439,6 +10484,24 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         if (!unit_.pilot_command_pending_a14) {
                             return;
                         }
+                        if constexpr (GameUnitsHost::Impl::kPlaneCommitCommandBound) {
+                            // 007BB923: unit+61h has no writer (GameUnitsHost::
+                            // unit_flag_0061), so the gate is open.
+                            // 007BB932-007BB954: outside flight states 7/6/4/5 the
+                            // air brake command is forced to 1.0 (00D7A24C).
+                            const int m = unit_.plane_control_mode_900;
+                            if (m != 7 && m != 6 && m != 4 && m != 5) {
+                                unit_.pilot_command_block[bsp::kPilotCmdAirBrake] = 1.0f;
+                                ++unit_.pc_air_brake_overrides;
+                            }
+                            // 007BB95C-007BB97A: IsKindOf(17h) with PilotFires
+                            // (unit+C24h) clear forces throttle 1.0. PilotFires is
+                            // authored per weapon group and not loaded here, so a
+                            // kamikaze-capable plane's override stays a contract.
+                            if (bsp::unit_is_kind_of(unit_.class_id, 0x17)) {
+                                owner_.log.unimplemented("Plane::pilot_fires_c24", "007bb969");
+                            }
+                        }
                         // 007BB6E0, one axis at a time, into the live block.
                         unit_.plane_live_controls[0] = bsp::pilot_quantize_control_axis_007bb6e0(
                             unit_.pilot_command_block[bsp::kPilotCmdYaw]);
@@ -10452,7 +10515,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.pilot_command_block[bsp::kPilotCmdAirBrake]);
                         unit_.pilot_command_pending_a14 = false;   // 007BB990
                         ++owner_.summary.pilot_commits;
-                        owner_.record("Plane::commit_pilot_command", 0x007bb920u);
+                        if constexpr (GameUnitsHost::Impl::kPlaneCommitCommandBound) {
+                            owner_.done("Plane::commit_pilot_command", 0x007bb920u);
+                        } else {
+                            owner_.record("Plane::commit_pilot_command", 0x007bb920u);
+                        }
                     }
 
                     // 007C1900's three attitude angles, from the live pose.
@@ -10977,7 +11044,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.plane_body_angular[axis] =
                                 bsp::plane_control_axis_step_007da710(factors, in, true, step);
                         }
-                        owner_.record("PlaneFlight::control_rate_law", 0x007da710u);
+                        if constexpr (GameUnitsHost::Impl::kPlaneControlRateLawBound) {
+                            // The free-flight arm (controller mode 0, flag 1) is
+                            // read in full: docs/PLANE_CONTROL_RATE_LAW.md and
+                            // docs/PLANE_CONTROL_TARGETS.md. Only the ground arm
+                            // (007DA542) is unread, and this host never runs it.
+                            owner_.done("PlaneFlight::control_rate_law", 0x007da710u);
+                        } else {
+                            owner_.record("PlaneFlight::control_rate_law", 0x007da710u);
+                        }
                     }
 
                     void ground_roll_007cbfa0(float) override {
