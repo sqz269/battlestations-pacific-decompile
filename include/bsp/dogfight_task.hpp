@@ -278,4 +278,67 @@ DogfightSteer dogfight_maneuver_standin(const float own_pos[3], const float aim[
                                         float ceiling_210, float class_climb_angle) noexcept;
 
 
+// ===========================================================================
+// The task's gun controller, packet cc9_dogfight_gun. docs/DOGFIGHT_GUN.md.
+// ===========================================================================
+//
+// approach+1Ch is task+314h (009F9980), a plain object built by 009FAAD0 and
+// ticked by 009FC7C0(sub, dt) from BSP_PilotBot_Update at 00999979, after the
+// task arm and only while unit+C24h is set (00999962). Fields used here:
+//   +28h search arm (-1.0 each tick end), +2Ch 0.4 (00CE7804), +30h =
+//   ShootDistance + 650.0 (00D1F3A0, double), +34h ShootDistance, +38h =
+//   max(AimDistortAngle1 * 3.0, 0.08) (0099C864), +3Ch 0 (ctor), +40h the
+//   strafe cone a state writes (zeroed each tick end), +44h the range,
+//   +48h fire, +49h steer, +4Bh burst on, +4Ch hold timer, +50h burst timer,
+//   +5Ch lead point, +68h desired direction (own forward when unset),
+//   +74h the auto-selected target (007B96F0 -> [unit+C50h] 007E2090).
+//
+// The fire decision, read from the pseudocode and checked on the listing for
+// the two gates (007BA760: unit+C3Ah or +5Dh set blocks; 007B96D0: unit+C50h
+// non-null and 007DEDB0 true re-aims instead):
+//   d = |lead - own| > 1 and d < max(+30h, +34h + 200.0 (00CE4D70));
+//   envelope = +4Ch > 0, or (lateral < d * +38h and 1 < z < +34h and
+//              (lateral > +3Ch (/ 1.8, 00D049A8, with an auto target) or
+//               lateral > 2 * +0Ch * +08h * d));
+//   steer (009F9FC0) when (1 - cos(lead, +68h)) < +40h and +4Ch <= 0;
+//   fire when envelope && !007BA760 && !007B96D0 && (+4Bh || +50h < 0):
+//   +48h = 1 and task+2E0h (= plan+2DCh, the gunFire request) = 1.
+// Bursts: +50h -= dt every tick; with +4Bh clear, +50h < 0 and a fire this
+// tick, +4Bh = 1 and +50h = U(row+234h, row+238h) (AimShootTime, {4.5, 3.0});
+// with +4Bh set and +50h < 0, +4Bh = 0 and +50h = U(row+23Ch, row+240h)
+// (AimShootDelayTime, {1.6, 0.7}).
+struct DogfightGunState {
+    bool fire_48 = false;
+    bool burst_4b = false;
+    float burst_timer_50 = 0.0f;
+    float hold_4c = 0.0f;
+    int bursts = 0;         // census: rising edges of +4Bh
+    int fire_ticks = 0;     // census
+};
+struct DogfightGunInputs {
+    bool has_target = false;     // +74h (a finder substitute in this host)
+    float lead_local[3] = {0.0f, 0.0f, 0.0f};  // the lead point in the unit frame
+    float shoot_distance = 850.0f;   // +34h
+    float search_range_30 = 1500.0f; // +30h
+    float lateral_cap_38 = 0.09f;    // +38h
+    float dont_shoot_3c = 0.0f;      // +3Ch
+    bool unit_disabled = false;      // 007BA760
+    bool finder_busy = false;        // 007B96D0
+    float burst_draw = 3.75f;        // U(3.0, 4.5) at its midpoint
+    float delay_draw = 1.15f;        // U(0.7, 1.6) at its midpoint
+    float dt = 0.0f;
+};
+// Returns true when this tick raises the gunFire request.
+bool dogfight_gun_tick_009fc7c0(DogfightGunState& st, const DogfightGunInputs& in) noexcept;
+
+// 007B4ED0(plan, f): throttle slot +278h = clamp(f, 0, 1) and air-brake slot
+// +2A8h = clamp(-f, 0, 1), both active (+27Ch, +2ACh = 1), speed mode +2D8h = 0.
+// The aim tick's head-on arm and the maneuver tick's tail (f = 1.0 at
+// 009A9270) both write this shape.
+struct DogfightThrottle {
+    float throttle = 0.0f;
+    float air_brake = 0.0f;
+};
+DogfightThrottle dogfight_throttle_007b4ed0(float f) noexcept;
+
 }  // namespace bsp

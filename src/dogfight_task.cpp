@@ -263,4 +263,65 @@ DogfightSteer dogfight_maneuver_standin(const float own_pos[3], const float aim[
     return s;
 }
 
+// ---------------------------------------------------------------------------
+// The gun controller, packet cc9_dogfight_gun. docs/DOGFIGHT_GUN.md.
+// ---------------------------------------------------------------------------
+
+bool dogfight_gun_tick_009fc7c0(DogfightGunState& st, const DogfightGunInputs& in) noexcept {
+    st.burst_timer_50 -= in.dt;                        // 009FC7C9
+    if (st.hold_4c >= 0.0f) st.hold_4c -= in.dt;       // 009FC7D0
+    st.fire_48 = false;
+    bool fired = false;
+    if (in.has_target) {
+        const float x = in.lead_local[0], y = in.lead_local[1], z = in.lead_local[2];
+        const float d = static_cast<float>(std::sqrt(static_cast<double>(x) * x +
+                                                     static_cast<double>(y) * y +
+                                                     static_cast<double>(z) * z));
+        const float far_limit = in.search_range_30 > in.shoot_distance + 200.0f
+            ? in.search_range_30 : in.shoot_distance + 200.0f;
+        if (d > 1.0f && far_limit > d) {
+            const float lateral = static_cast<float>(
+                std::sqrt(static_cast<double>(x) * x + static_cast<double>(y) * y));
+            bool envelope = false;
+            if (st.hold_4c > 0.0f) {
+                envelope = true;
+            } else if (!(d * in.lateral_cap_38 <= lateral) && !(z <= 1.0f) &&
+                       !(in.shoot_distance <= z)) {
+                // With an auto target the don't-shoot radius is divided by 1.8.
+                const float area = in.dont_shoot_3c / 1.8f;
+                envelope = area < lateral;  // +0Ch is 0 from the ctor: the second arm is lateral > 0
+            }
+            if (envelope && !in.unit_disabled && !in.finder_busy &&
+                (st.burst_4b || st.burst_timer_50 < 0.0f)) {
+                st.fire_48 = true;
+                fired = true;
+                ++st.fire_ticks;
+            }
+        }
+    }
+    // 009FCE4F-009FCED9: the burst clock.
+    if (!st.burst_4b) {
+        if (st.burst_timer_50 < 0.0f && st.fire_48) {
+            st.burst_4b = true;
+            ++st.bursts;
+            st.burst_timer_50 = in.burst_draw;
+        }
+    } else if (st.burst_timer_50 < 0.0f) {
+        st.burst_4b = false;
+        st.burst_timer_50 = in.delay_draw;
+    }
+    return fired;
+}
+
+DogfightThrottle dogfight_throttle_007b4ed0(float f) noexcept {
+    DogfightThrottle t;
+    float brake = -0.0f - f;                           // 00D7A208 is -0.0f
+    if (0.0f > brake) brake = 0.0f; else if (brake > 1.0f) brake = 1.0f;
+    float thr = f;
+    if (0.0f > thr) thr = 0.0f; else if (thr > 1.0f) thr = 1.0f;
+    t.throttle = thr;
+    t.air_brake = brake;
+    return t;
+}
+
 }  // namespace bsp

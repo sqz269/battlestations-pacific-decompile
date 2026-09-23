@@ -393,6 +393,7 @@ struct GameUnitSlot {
     int df_reselects{0};
     int df_target_changes{0};
     int df_gun_window_ticks{0};
+    bsp::DogfightGunState df_gun{};         // task+314h, packet cc9_dogfight_gun
     int dive_bomb_state_ticks[10]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     int dive_bomb_arm_ticks{0};
     int dive_bomb_transitions{0};
@@ -2632,6 +2633,16 @@ struct GameUnitsHost::Impl {
     // 009AAFA0, the aim state, and labelled maneuver/avoid stand-ins.
     // docs/DOGFIGHT_ENGAGED.md.
     static constexpr bool kDogfightEngagedBound = true;
+    // Packet cc9_dogfight_gun: the task gun controller 009FC7C0 (fire decision
+    // and burst clock, census only: the gunFire consumer is not established),
+    // the head-on and maneuver throttle 007B4ED0. docs/DOGFIGHT_GUN.md.
+    static constexpr bool kDogfightGunBound = true;
+    // 007B4ED0 wiring (the head-on arm and the maneuver tail's full throttle).
+    // OFF, measured: run F1 drowned Yorktown-class01_sqn02 and its .-2 at |v| 51
+    // after one maneuver tick left the throttle slot active in mode 0. The image
+    // re-seeds the command block every think (0099B4E8); this host does not, so
+    // the write outlives the state. docs/DOGFIGHT_GUN.md section 6.
+    static constexpr bool kDogfightThrottleBound = false;
     // Diagnostic period for the `follow trace` row below; 0 compiles it out.
     // Packet cc9_follow_speed ran it at 25 (docs/PLANE_FOLLOW_SPEED.md section 5).
     static constexpr int kFollowTraceEvery = 0;
@@ -6721,7 +6732,54 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.plan_state.pitch_mode_2d0 = 2;
                     }
 
+                    // 00999979: BSP_PilotBot_Update ticks the task gun controller
+                    // 009FC7C0 (task+314h) after the task arm, while unit+C24h is
+                    // set. Census only (packet cc9_dogfight_gun).
                     void run_dogfight_task_arm_009ab1c0(float dt) {
+                        df_arm_body_009ab1c0(dt);
+                        if constexpr (GameUnitsHost::Impl::kDogfightGunBound) {
+                            if (unit_.dogfight_task_installed) df_gun_tick_009fc7c0(dt);
+                        }
+                    }
+
+                    void df_gun_tick_009fc7c0(float dt) {
+                        bsp::DogfightGunInputs gi;
+                        gi.dt = dt;
+                        gi.shoot_distance = unit_.df_row.aim_shoot_distance;
+                        gi.search_range_30 = unit_.df_row.aim_shoot_distance + 650.0f;
+                        const GameUnitSlot* tgt = nullptr;
+                        if (unit_.df_target_plus_one != 0 &&
+                            unit_.df_target_plus_one - 1 < owner_.slots.size()) {
+                            tgt = owner_.slots[unit_.df_target_plus_one - 1].get();
+                        }
+                        // SUBSTITUTION, labelled: +74h comes from [unit+C50h]'s
+                        // finder 007E2090 (unread); the task's own target stands in,
+                        // unled (the target's vt[48h] prediction is not modelled).
+                        if (tgt != nullptr && df_slot_live(*tgt)) {
+                            gi.has_target = true;
+                            float p[3];
+                            for (int i = 0; i < 3; ++i) p[i] = tgt->motion.position[i];
+                            df_local(p, gi.lead_local);
+                        }
+                        const bool was_burst = unit_.df_gun.burst_4b;
+                        bsp::dogfight_gun_tick_009fc7c0(unit_.df_gun, gi);
+                        if (unit_.df_gun.burst_4b && !was_burst) {
+                            const double d = std::sqrt(
+                                static_cast<double>(gi.lead_local[0]) * gi.lead_local[0] +
+                                static_cast<double>(gi.lead_local[1]) * gi.lead_local[1] +
+                                static_cast<double>(gi.lead_local[2]) * gi.lead_local[2]);
+                            owner_.log.notef("  fighter gun burst %-12s target=%s d=%.1f "
+                                "lateral=%.2f state=%s",
+                                unit_.row.name.c_str(),
+                                tgt != nullptr ? tgt->row.name.c_str() : "-", d,
+                                std::sqrt(static_cast<double>(gi.lead_local[0]) * gi.lead_local[0] +
+                                          static_cast<double>(gi.lead_local[1]) * gi.lead_local[1]),
+                                bsp::dogfight_state_name(unit_.dogfight_state));
+                        }
+                        owner_.record("BotTaskGun::tick", 0x009fc7c0u);
+                    }
+
+                    void df_arm_body_009ab1c0(float dt) {
                         // Install trigger. The image builds the kind-2 task through
                         // 0099A170 from the class 007EEC50 chose (00E08F58). A
                         // scene-issued `dogfight` order reaches this host's
@@ -6844,7 +6902,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             ai.local_z = unit_.df_local_ec[2];
                             // vt[34h] on both units; the forward rows stand in.
                             ai.opposing = mo[8] * mt[8] + mo[9] * mt[9] + mo[10] * mt[10] < 0.0f;
-                            ai.gun_locked_48 = false;  // the gun controller is unread
+                            // (approach+1Ch)+48h: last tick's fire flag from 009FC7C0.
+                            ai.gun_locked_48 = GameUnitsHost::Impl::kDogfightGunBound &&
+                                               unit_.df_gun.fire_48;
                             {
                                 const auto& v = tgt.motion.linear_velocity;
                                 ai.target_speed = static_cast<float>(std::sqrt(
@@ -6864,11 +6924,20 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             df_steer(h, p, unit_.df_aim[1]);
                             if (c.speed_from_target) {
                                 unit_.plane_desired_speed_2b4 = c.desired_speed;
+                                unit_.plane_air_brake_mode_2d8 = 1;
+                            } else if constexpr (GameUnitsHost::Impl::kDogfightThrottleBound) {
+                                // 007B4ED0: direct throttle, speed mode +2D8h = 0.
+                                const bsp::DogfightThrottle th =
+                                    bsp::dogfight_throttle_007b4ed0(c.head_on_fraction);
+                                unit_.plan_slots[bsp::kPilotSlotThrottle].desired = th.throttle;
+                                unit_.plan_slots[bsp::kPilotSlotThrottle].active = 1;
+                                unit_.plan_slots[bsp::kPilotSlotAirBrake].desired = th.air_brake;
+                                unit_.plan_slots[bsp::kPilotSlotAirBrake].active = 1;
+                                unit_.plane_air_brake_mode_2d8 = 0;
                             } else {
-                                // 007B4ED0 is unread; its fraction of MaxSpd stands in.
                                 unit_.plane_desired_speed_2b4 = c.head_on_fraction * unit_.plane_max_spd;
+                                unit_.plane_air_brake_mode_2d8 = 1;
                             }
-                            unit_.plane_air_brake_mode_2d8 = 1;
                             if (unit_.df_distance_d4 < unit_.df_row.aim_shoot_distance &&
                                 ai.tan_len < 0.25f) {
                                 ++unit_.df_gun_window_ticks;
@@ -6907,6 +6976,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 unit_.df_row.aim_shoot_distance, ceiling,
                                 unit_.plane_climb_angle_1e4);
                             df_steer(s.heading, s.pitch, unit_.df_aim[1]);
+                            if constexpr (GameUnitsHost::Impl::kDogfightThrottleBound) {
+                                if (unit_.dogfight_state == bsp::DogfightState::kManeuver) {
+                                    // 009A9270: +278h = 1.0, +2A8h = 0, both active, +2D8h = 0.
+                                    const bsp::DogfightThrottle th =
+                                        bsp::dogfight_throttle_007b4ed0(1.0f);
+                                    unit_.plan_slots[bsp::kPilotSlotThrottle].desired = th.throttle;
+                                    unit_.plan_slots[bsp::kPilotSlotThrottle].active = 1;
+                                    unit_.plan_slots[bsp::kPilotSlotAirBrake].desired = th.air_brake;
+                                    unit_.plan_slots[bsp::kPilotSlotAirBrake].active = 1;
+                                    unit_.plane_air_brake_mode_2d8 = 0;
+                                }
+                            }
                             owner_.record("BotStateDogfightManeuver::standin", 0x009a8b20u);
                             return;
                         }
@@ -12440,6 +12521,21 @@ void GameUnitsHost::report() {
                              slot->df_target_plus_one - 1 < host.slots.size())
                                 ? host.slots[slot->df_target_plus_one - 1]->row.name.c_str()
                                 : "-");
+                    }
+                }
+                {
+                    int bursts = 0, fire_ticks = 0;
+                    for (const auto& slot : host.slots) {
+                        if (!slot->dogfight_task_installed) continue;
+                        bursts += slot->df_gun.bursts;
+                        fire_ticks += slot->df_gun.fire_ticks;
+                        host.log.notef("  fighter gun %-12s bursts=%d fire_ticks=%d",
+                            slot->row.name.c_str(), slot->df_gun.bursts, slot->df_gun.fire_ticks);
+                    }
+                    if (df_aircraft > 0) {
+                        host.log.notef("summary mission fighter gun: bursts=%d fire_ticks=%d "
+                            "rounds=0 (the gunFire consumer is not established; "
+                            "docs/DOGFIGHT_GUN.md)", bursts, fire_ticks);
                     }
                 }
                 if (df_aircraft > 0) {
