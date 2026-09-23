@@ -9052,3 +9052,50 @@ bomb columns fall by one on USN04 (18 -> 17); which bomber lost its release was 
 ### Ship-AI standoffs as the durable measurement (2026-09-23, integrator note)
 
 The gunnery, difficulty and ship-AI landings of 2026-09-23 each moved the mission totals, and the rows above were re-taken after them. For the ship AI the durable measurement is the standoff per ship, predicted by the offline replay of the standoff scan and matched exactly on USN04 after the own-curve target landing: Northampton-class01/02 2250 m, Fletcher-class01/02/04 1450 m, Fletcher-class03 1550 m, York-class01/02 1850 m, each ending at the 300 m seed once its target is dead (docs/SHIP_AI_OWN_CURVE.md, docs/SHIP_AI_RING_QUERY.md). Heading-change counts are tie-break driven once slot ratings saturate at the 880 cap and are not a stable reference.
+
+## Mission reference baselines, 2026-09-23 (after the AA lead landings)
+
+Packet `cc9_aa_lead`. The rows above predate four gunnery switches, all default true
+(`docs/AA_LEAD.md`):
+- `kPlaneGunfireHooked`: a plane's forward guns fire on its latched trigger;
+- `kGunInterceptBound`: ship AA leads with `00901C20`'s intercept;
+- `kDualPurposeSecondAmmoBound`: a dual-purpose mount fires its Flak record at aircraft;
+- `kAaGunnerErrorBound`: the AA gunner halves a negative vertical.
+
+The binary is built from `635e7b27b`: main `3412839fd` plus this packet. Runs are from the
+worktree root **without** `BSP_GUNNERY_RNG_STREAMS`, with the same command lines as the section
+above and `--game-root` pointing at the installation.
+
+| mission | frames | damage | deaths | queued_hits | bomb_drops | bomb_impacts | torpedo drops | first_hit | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 mission | **18057.9** | **18** | **253** | 17 | 17 | 13 | **118.15 s** | `local\base2_usn04.log` |
+| USN01 | 3000 mission | 4467.9 | 5 | **125** | 0 | 0 | 5 | 53.65 s | `local\base2_usn01.log` |
+
+- **USN04 deaths fall from 27 to 18.** The intercept halves the ship AA's hits per shot. The
+  option-on pair for that switch alone moved deaths 24 to 19 (`docs/AA_LEAD.md` section 5).
+- **USN04 hits rise from 243 to 253** although fewer aircraft die. The dual-purpose mounts' Flak
+  rounds now hit aircraft: 840 such rounds were fired here.
+- **The first hit moves from 110.95 s to 118.15 s.** The halving pair moved it the same way.
+- **USN01** keeps its damage and deaths. It gains 10 hits and fires 49 dual-purpose Flak rounds;
+  the extra hits were not traced row by row.
+- The fighter hook fires 34 rounds in USN04 and none in USN01, where no fighter trigger is held.
+
+**USN04 at 9000 mission frames** (`local\base2_e9000.log`):
+
+| quantity | value |
+| --- | --- |
+| torpedo drops | 16, `water_entry_breakups=0` |
+| bomb drops / bomb impacts | 29 / 29 |
+| projectiles created / entity impacts / water contacts / expired | 20694 / 1198 / 4914 / 14422 |
+| `queued_hits` / deaths / damage | 1494 / 32 / 23318.0 |
+
+- `queued_hits` goes 306 to 1494 while damage rises only 21324.9 to 23318.0. Most of the new hits
+  have no damage. D3A Val #1.1|.-4 touches the water at about 225 s and, with nothing killing it
+  first, stays a live AA target on the surface. The mounts that fire on it aim below the horizontal,
+  which accounts for most of the 291712 halvings, and their rounds likely strike the friendly hulls
+  around it. The 007DCDD0 water surface law is still a host contract, so **do not read this
+  `queued_hits` as AA accuracy** (`docs/AA_LEAD.md` section 7).
+- Seven launches between 10:54 and 11:06, one of them a short probe, died with 0xC0000005 during D3D device creation,
+  right after `online_manager_initialize`. At the time three runs from another worktree held the
+  machine, started outside the launcher's slots. The run succeeded once only two others were
+  running. Those logs are under `local\stale\`.
