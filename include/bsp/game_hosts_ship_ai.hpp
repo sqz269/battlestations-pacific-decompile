@@ -236,6 +236,16 @@ struct GameShipAiRow {
     std::string formation_role;    // "leader", "follower" or "none" at the last step
     // Packet cc9_station_keeping: the arm 009EDA28 and 009F4DA0's +3ADh arm.
     unsigned long long station_arm_runs{0};
+    // Packet cc9_ship_torpedo_response.
+    unsigned long long torpedo_scans{0};        // 009F163F walks
+    unsigned long long torpedo_admits{0};       // 009F0AD0 calls
+    unsigned long long torpedo_tracks_built{0}; // 009EACA0 constructions
+    std::size_t torpedo_tracks_max{0};
+    unsigned long long torpedo_gate_open{0};    // 009DA1D0 true over a track
+    unsigned long long torpedo_vector_steps{0}; // 009E04E0 left a non-zero vector
+    unsigned long long torpedo_overrides{0};    // 009DE932 replaced blk+324h
+    float torpedo_override_max_turn{0.0f};      // |wrap(new - old)|, radians
+    float torpedo_first_override_s{-1.0f};
     unsigned long long station_requests{0};
     float station_throttle_min{1.0e9f};
     float station_throttle_max{-1.0e9f};
@@ -409,7 +419,7 @@ public:
     // category gun lists at unit+398h. GameGunneryHost::set_ship_ai calls this,
     // so the two hosts are wired wherever that already is. It must outlive this
     // host.
-    void bind_gunnery(const GameGunneryHost* gunnery) noexcept;
+    void bind_gunnery(GameGunneryHost* gunnery) noexcept;
 
     // One controller per created instance, in creation order. Called once,
     // after the instantiate pass and after the authored commands were issued.
