@@ -8859,3 +8859,60 @@ A longer run of the same mission used to report *less*. At 4800 against 9000 mis
 the fixed binary: `bomb_drops` 23 -> 30, `bomb_impacts` 20 -> 30, `queued_hits` 143 -> 171,
 `deaths` 14 -> 15, `total_damage` 14607.3 -> 15447.8, and `first_hit` **119.90 s in both**, the
 same event. Unguarded the same comparison ran backwards on every column.
+
+## Mission reference baselines, 2026-09-22 (re-baselined on merged main)
+
+Packet `cc9_gunnery_host`. **The 2026-09-19 rows above did not come from merged main.** They were
+taken at 14:41 and 14:49 on that day from the `cc8_gunnery_host` tree at base `3e7625be0` with the
+host fix still uncommitted. Main then took `d5332f391` (torpedo release), `a27df9779` (dive
+aim), `2e7e9fd3a` (torpedo aim lead) and the three `cc8-follow-enter` merges before the fix
+itself landed in `1f68fb63e`. Those logs carry no commit id, so the binary is identified by the
+tree, the times and the host-build count: one host build and 12 `spawn batch registered` lines.
+
+These rows are from a binary built from main `1cc9d3dea` source (worktree HEAD `35a48af20`, which
+adds only a doc commit), run from the worktree root:
+
+```
+./tools/run_game.ps1 -Log local\ref_usn01.log -- --frames 3200 --press-start-frame 30 --menu-select USN01 --mission-frames 3000 --mission-frame-seconds 0.05
+./tools/run_game.ps1 -Log local\ref_usn04.log -- --frames 4700 --press-start-frame 30 --menu-select USN04 --mission-frames 4500 --mission-frame-seconds 0.05
+```
+
+| mission | frames | damage | deaths | queued_hits | bomb_drops | bomb_impacts | torpedo drops | first_hit | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 mission | **13961.8** | 8 | **100** | 18 | 18 | **10** | **121.95 s** | `local\ref_usn04.log` |
+| USN01 | 3000 mission | 2914.7 | 1 | 38 | 0 | 0 | 5 | 62.55 s | `local\ref_usn01.log` |
+
+Full USN04 row: `queued_hits=100 dispatched=100 hit_records=100 hull=71 part=0 fires=0 floods=0
+attributions=100 deaths=8 kill_credits=8 total_damage=13961.8 first_hit=121.95 s`, with
+`torpedo_loadout_cleared=10` and `summary mission dive-bomb task: aircraft=15 releases=18`.
+Bolded cells moved. The worktree paths are `J:\PROG\battlestations-pacific-decompile-cc9-gunnery-host\local\`.
+
+**USN01 is unchanged** from the 2026-09-19 row.
+
+**Against the 2026-09-19 USN04 row**, `total_damage` goes 10022.4 -> 13961.8, `queued_hits` 90 -> 100,
+torpedo `drops` 12 -> 10, and `first_hit` 119.90 -> 121.95 s. `deaths` stays 8, and both bomb
+columns stay 18. **None of these deltas is the host fix**, because the old row was already taken
+on a guarded binary. They come from the six merges listed above. They were not bisected, so no
+single commit is credited here; the torpedo columns and `first_hit` point at the torpedo-release
+and torpedo-aim-lead merges. The per-unit table shows eight flips behind the constant
+`deaths=8`, and every one is an aircraft. No ship sinks in either run. Four earlier deaths
+disappear: `B5N Kate #4.1`, `B5N Kate #8.1`, `B5N Kate #8.1|.-3` and `D3A Val #1.1|.-2`. Two of the
+old torpedo-bomber deaths were credited to their own wingmates, `#4.1` to `#4.1|.-3` and `#8.1` to
+`#8.1|.-3`, and neither of those kills recurs. Four new deaths appear: `movieval|.-3`, `B5N Kate
+#2.1`, `B5N Kate #4.1|.-2` and `B5N Kate #6.1`. `Lexington-class01` ends at 2025 of 8000,
+`Yorktown-class01` at 4550 and `Fletcher-class02`/`-04` at about 1350.
+
+**The merges after the fix moved nothing.** The predecessor re-ran both references at 15:31 and
+15:38 on a binary built at 15:27, which already contained the fix but not `20287966b`
+(hull aim) or the two `cc8-follow-attack` merges. Against those logs
+(`...-cc8-gunnery-host\local\rb_usn01.log` and `rb_usn04.log`) these runs have the same line
+counts, 22738 and 47381. They differ only on environment lines: module path, thread ids, the
+FMOD call count and one message-pump count. That fits `34c8c67b8` landing the hull-aim offset
+switched off.
+
+The same packet then fixed a fourth per-batch re-seed, the ordnance-mask re-store in
+`build_guns` (`docs/GUNNERY_HOST_LIFETIME.md` section 8). It cannot reach these two references,
+because USN04 creates every later batch before its first torpedo drop. The fixed build's USN04
+run (`local\ord_new_usn04_4500.log`) reads `ordnance_rearms=0` and reproduces the row above on
+every simulation line. The one exception is `ship avoidance search refills`, which reads 257
+against 265, and that counter also varies between runs with identical parameters.
