@@ -417,3 +417,98 @@ Judge E2 against section 8's pre-registered predictions, and in this order:
    packet did **not** write one, because `009C3DA0` and `009C6270` are outside its lease and
    AGENTS.md puts Ghidra writes behind the lease. It is owed.
 4. **Phase A `009C0251`-`009C0EE0`** and the **`009C1552` subtree**, both still untouched.
+
+## 11. E2 read (packet cc9_follow_package)
+
+Inputs, read-only, in the `cc8-follow-attack` tree: `local/E1_digest.txt`, `local/E2_digest.txt` and
+`local/E2_fed_noplace_9000.log` (9000 mission frames, same reduction as E1). Every figure below was
+re-read from the digests and checked against the log's own rows; none is inherited.
+
+**Verdict: E2 is a FAIL, not the null.** The package (feed `control_mode_370` from
+`slot.db_attack_mode_370` and turn dive-bomb follow placement off) must not land. Both changes stay
+reverted in main.
+
+| rule | E1 (pinned, placement on) | E2 (fed, placement off) |
+| --- | --- | --- |
+| 1. null? | nothing enters `follow` | not the null: all 8 wing members of the four `D3A Val` squadrons reach `flyabove` via `follow>flyabove` at `rng` 2070-2079; the other 8 wing members (`movieval` and the three late squadrons) never leave `follow` and drown there |
+| 2. water contacts | 16 | **24** |
+| 3. releases (`summary mission dive-bomb task`) | 30 | **20** |
+| 4. `D3A Val #3.1\|.-2` / `#7.1\|.-2` transitions | 7 / 13 | **23 / 12** |
+
+**Rule 2 in detail.** E2's contact set contains all sixteen of E1's units plus eight more:
+`movieval|.-3`, `D3A Val #3.1|.-3`, and both wing members of the three late squadrons
+(`Yorktown-class01_sqn08`, `Zuiho-class01_sqn09`, `Yorktown-class01_sqn13`). No member drowns
+**in the fly-over**: the fly-over altitude rows end with `err last` 62-690 m and no contact. The
+drownings are in two other places.
+
+* **In `follow`, eight members, none of which ever left it.** `movieval|.-2` also drowned in E1, but
+  in `done` after 950 ticks; in E2 it drowns in `follow` after 349. The other seven are new.
+
+  | unit | follow ticks | spawn seed m/s | ownY at n=1 m | cmdalt at n=1 m | |v| at contact m/s | range closed m (leader) |
+  | --- | --- | --- | --- | --- | --- | --- |
+  | movieval\|.-2 | 349 | 66.67 | 675.0 | 710.0 | 47.19 | 330 (10842) |
+  | movieval\|.-3 | 509 | 66.67 | 725.0 | 725.4 | 51.63 | 1158 (10842) |
+  | Yorktown-class01_sqn08\|.-2 | 330 | 69.44 | 150.1 | 160.1 | 57.86 | 1087 (3984) |
+  | Yorktown-class01_sqn08\|.-3 | 307 | 69.44 | 150.1 | 160.1 | 57.64 | 971 (3984) |
+  | Zuiho-class01_sqn09\|.-2 | 215 | 66.67 | 125.0 | 160.0 | 46.81 | -87 (2615) |
+  | Zuiho-class01_sqn09\|.-3 | 291 | 66.67 | 175.0 | 175.3 | 47.53 | 189 (2615) |
+  | Yorktown-class01_sqn13\|.-2 | 333 | 69.44 | 150.1 | 160.1 | 57.88 | 1097 (3190) |
+  | Yorktown-class01_sqn13\|.-3 | 307 | 69.44 | 150.1 | 160.1 | 57.66 | 974 (3190) |
+
+  Seed is the `plane spawn` row's `seed` magnitude; `ownY`/`cmdalt` are the `follow law` row at
+  `n=1`; range closed is the `ordered` row at mission end, with the squadron leader's figure in
+  brackets. Every member drowns 11-20 m/s **below** its own spawn seed, and every member closes about a
+  third or less of its leader's range. The members are lagging their leaders and sinking while the
+  law commands a climb or a hold. The one mid-flight sample in the log says the same:
+  `movieval|.-3 n=401 R=776.3 ... cmdalt=1160.7 ownY=492.3 spd=103.88`: 776 m behind the station,
+  233 m below its spawn height, commanded 668 m above where it is.
+
+  **What the log cannot show.** The brief asked for altitude and speed over each member's last
+  ~100 ticks. The log has no per-tick plane rows for units in `follow`; the `follow law` row prints
+  at `n=1` and `n=401` only (39 rows in the whole run). The descent profile is therefore bounded by
+  the two samples and the contact row, not traced. A re-run that wants it needs a per-tick follow
+  row for these eight units.
+
+* **On entering `done`, two members, at dive speed.** `D3A Val #3.1|.-2` (`aimdive -> done` at
+  tick 2402, alt 326.9) and `#7.1|.-2` (`aimglide -> done` at tick 2872, alt 236.9) each log their
+  water contact on the very next line at alt -18.01 and -35.77, |v| 139.61 and 133.82, with
+  `done ... ticks=1 placed=1`. A one-tick fall of 273-345 m is not flight; it is `done`'s own
+  placement (still on in E2) moving the member. `#7.1`'s leader had already drowned (log line
+  64733, before the member's `done` at 78477). This is the `done` defect of section 9, reached
+  faster, not a fly-over drowning.
+
+**Rule 4.** `#3.1|.-2` went from 7 transitions to 23 (`goaway=1025`, `turndown=115`, `aimdive=102`)
+and `#7.1|.-2` from 13 to 12 (`goaway=1330`). Neither is in the 4-7 range. Two further members,
+`#1.1|.-3` and `#5.1|.-3`, cycle 18 and 13 times, spend 2442 and 1753 ticks in `goaway`, and release
+nothing. The limit cycle is not cured; it spreads.
+
+**Against section 8's falsifiers.** Section 7's falsifier ("any dive-bomb wing member that still
+flies into the water in E2") fires, but not in the form it was written for: no member drowns in
+the fly-over, so the velocity-left-behind-by-the-teleport story is neither confirmed nor refuted by
+the fly-over. The pin falsifier does not fire: releases fall from 30 to 20 and contacts rise from 16
+to 24.
+
+**Decision.** Do not land the package. The eight follow-only drownings are the direct symptom of
+section 10 item 0: this host's follow law commands heading and pitch and **no speed**, so a member
+that must fly its own track bleeds speed from its seed, falls behind, and sinks. The next step is
+the HOLD arm read (`docs/PLANE_FOLLOW_HOLD_ARM.md`), and specifically its speed command, before any
+further placement-off experiment.
+
+**Where the "no speed" of section 8 actually is, checked in this packet.** The host's fly-to
+binding (`run_follow_law_009bfee0_009bee30`) does compute the image's speed and store it in
+`plane_desired_speed_2b4`; that write has been in the tree since `6fe098150`, so E2's binary had
+it. What it does not do is the image's next two stores:
+
+```
+009BFD0F  FSTP float ptr [EBX+2B4h]     ; desired speed          <- host writes this
+009BFD15  MOV  byte ptr [EBX+2B0h],0                            <- host does not
+009BFD1C  MOV  dword ptr [EBX+2D8h],1   ; speed-demand mode      <- host does not
+```
+
+The host's `0099D300` throttle rule (`pilot_plan_throttle_0099d300`) enters its demand arm only
+when `+2D8h` is 1, or when the flight state is 5; an airborne plane is in state 7. A wing member
+that constructs straight into `follow` never flies a state that raises `+2D8h`, so its desired
+speed is computed and never read. "Commands no speed" is true of the host, but the gap in the fly-to
+arm is two missing stores, not an unread law. It is not fixed here: the brief forbids wiring
+the follow seams without a same-binary control run, and the HOLD arm, which a member on station
+takes instead, is still the larger unread piece.
