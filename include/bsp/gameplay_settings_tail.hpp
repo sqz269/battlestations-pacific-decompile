@@ -100,6 +100,25 @@ struct WeaponHitAccuracyTableHost {
 void load_weapon_hit_accuracy_profile_00836f80(WeaponHitAccuracyProfile& profile,
                                                WeaponHitAccuracyTableHost& host);
 
+// Packet cc9_hit_accuracy, docs/WEAPON_HIT_ACCURACY.md.
+// 008383D0, __thiscall(this=profile, float target_length, float t) -> ST0, RET 8,
+// body 008383D0-0083851E read whole. The size weight is
+// w = 00419010(x0=+0h, y0=1.0, x1=+4h, y1=0.0, x=target_length), clamped. The
+// range fraction t picks bucket i = clamp(floor(10t) - 1, 0, 8) through
+// _ftol(t * -10.0) (00D0A198) and d = 10t - (i+1) (00CE3DC0 = 10.0), with
+// A = 1 - d and B = d clamped to [0, 1]; t <= 0.1 (00D7A3A0) is bucket 0 alone and
+// t >= 1.0 (00D7A24C) bucket 9 alone. Bucket k therefore sits at t = (k+1)/10.
+// Result = w * (small[i]*A + small[i+1]*B) + (1 - w) * (large[i]*A + large[i+1]*B).
+float weapon_hit_accuracy_sample_008383d0(const WeaponHitAccuracyProfile& profile,
+                                          float target_length, float t) noexcept;
+
+// 008386F0, __thiscall(this=settings, int function, float target_length, float t),
+// RET 0Ch, read whole: function 2/3/4/6 -> +240h (Artillery), 1/5 -> +298h (AA),
+// 7 -> +2F0h (Torpedo), 8/9 -> +348h (DepthCharge), else FLD1 (1.0f).
+// `profiles` is the four sub-objects in that order.
+float weapon_hit_accuracy_008386f0(const WeaponHitAccuracyProfile profiles[4], int function,
+                                   float target_length, float t) noexcept;
+
 // ---------------------------------------------------------------------------
 // The nine string reads of 0083B5E0
 // ---------------------------------------------------------------------------

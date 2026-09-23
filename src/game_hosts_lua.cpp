@@ -527,6 +527,79 @@ private:
 
 }  // namespace
 
+namespace {
+// Packet cc9_hit_accuracy. 00836F80's reads, over ShipGlobals.WeaponHitAccuracy[cat]
+// (00B67800 field, 00B67720 element, 00B66270 number): an absent key or element
+// leaves the current value, as the native code does.
+class WeaponHitAccuracyLuaTable final : public bsp::WeaponHitAccuracyTableHost {
+public:
+    WeaponHitAccuracyLuaTable(lua_State* state, int table) : state_(state), table_(table) {}
+    float read_number(const char* key, int element, float current) override {
+        const int top = ::lua_gettop(state_);
+        lua_getfield(state_, table_, key);
+        float value = current;
+        if (lua_type(state_, -1) == LUA_TTABLE) {
+            lua_rawgeti(state_, -1, element);
+            if (lua_type(state_, -1) == LUA_TNUMBER) {
+                value = static_cast<float>(lua_tonumber(state_, -1));
+            }
+        }
+        ::lua_settop(state_, top);
+        return value;
+    }
+private:
+    lua_State* state_;
+    int table_;
+};
+}  // namespace
+
+// 0083C795..0083C919: WeaponHitAccuracy (00D0B344), then Artillery (00CE5454) into
+// +240h, AA (00CFA420) into +298h, Torpedo (00CE544C) into +2F0h and DepthCharge
+// (00CFA700) into +348h, each through 00836F80, over the 00836EF0 defaults.
+void GameMissionLuaHost::load_weapon_hit_accuracy_0083c795() {
+    static const char* const kCategories[4] = {"Artillery", "AA", "Torpedo", "DepthCharge"};
+    for (bsp::WeaponHitAccuracyProfile& profile : weapon_hit_accuracy_) {
+        bsp::apply_weapon_hit_accuracy_defaults_00836ef0(profile);
+    }
+    const int top = ::lua_gettop(state_);
+    lua_getfield(state_, LUA_GLOBALSINDEX, kShipGlobalsGlobal);
+    if (lua_type(state_, -1) == LUA_TTABLE) {
+        lua_getfield(state_, -1, "WeaponHitAccuracy");
+        if (lua_type(state_, -1) == LUA_TTABLE) {
+            const int parent = ::lua_gettop(state_);
+            for (int c = 0; c < 4; ++c) {
+                lua_getfield(state_, parent, kCategories[c]);
+                if (lua_type(state_, -1) == LUA_TTABLE) {
+                    WeaponHitAccuracyLuaTable table(state_, ::lua_gettop(state_));
+                    bsp::load_weapon_hit_accuracy_profile_00836f80(weapon_hit_accuracy_[c], table);
+                }
+                ::lua_settop(state_, parent);
+            }
+            weapon_hit_accuracy_loaded_ = true;
+        }
+    }
+    ::lua_settop(state_, top);
+    for (int c = 0; c < 4; ++c) {
+        const bsp::WeaponHitAccuracyProfile& p = weapon_hit_accuracy_[c];
+        log_.notef("weapon hit accuracy %s sizes=%.0f/%.0f small=%.2f..%.2f large=%.2f..%.2f",
+            kCategories[c], p.small_target_size, p.large_target_size,
+            p.small_target_accuracy[0], p.small_target_accuracy[9],
+            p.large_target_accuracy[0], p.large_target_accuracy[9]);
+    }
+    if (weapon_hit_accuracy_loaded_) {
+        log_.implemented("GameSettings::load_weapon_hit_accuracy", "0083c795");
+    } else {
+        log_.unimplemented("GameSettings::load_weapon_hit_accuracy", "0083c795");
+    }
+}
+
+bool GameMissionLuaHost::read_weapon_hit_accuracy(
+    bsp::WeaponHitAccuracyProfile (&out)[4]) const noexcept {
+    if (!weapon_hit_accuracy_loaded_) return false;
+    for (int c = 0; c < 4; ++c) out[c] = weapon_hit_accuracy_[c];
+    return true;
+}
+
 bool GameMissionLuaHost::load_ship_globals_0083b6e6() {
     if (state_ == nullptr) {
         log_.unimplemented("GameSettings::run_ship_globals_script", "00b69d40");
@@ -561,6 +634,7 @@ bool GameMissionLuaHost::load_ship_globals_0083b6e6() {
         avoid_all_ship_collision_ = kAvoidAllShipCollisionLoaderDefault;
         avoid_all_ship_collision_loaded_ = true;
         log_.implemented("GameSettings::load_avoid_all_ship_collision", "0083bcd5");
+        load_weapon_hit_accuracy_0083c795();
     }
     log_.notef("gameplay settings: %s run through 00885110 (the owner's own runner 00b69d40 "
         "at 0083b6e6 is a record), chunk ok=%d, `%s` is %s", kShipGlobalsScriptPath,

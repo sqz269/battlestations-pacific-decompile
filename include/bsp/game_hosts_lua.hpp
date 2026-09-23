@@ -31,6 +31,7 @@
 #include <string>
 #include <vector>
 
+#include "bsp/gameplay_settings_tail.hpp"
 #include "bsp/air_operations.hpp"
 #include "bsp/lua_spawn_new.hpp"
 #include "bsp/mission_load_hosts.hpp"
@@ -362,6 +363,11 @@ public:
     void set_avoid_all_ship_collision_008d0852(bool value);
     // Stored +194,+1D4,+1D8,+214,+218 snapshot from the represented load.
     bool read_avoidance_tuning(std::array<float, 5>& values) const noexcept;
+    // Packet cc9_hit_accuracy: the four WeaponHitAccuracy sub-objects at
+    // settings+240h/+298h/+2F0h/+348h as 0083C795..0083C919 fills them. False
+    // until ShipGlobals ran; the caller then keeps the 00836EF0 defaults.
+    bool read_weapon_hit_accuracy(bsp::WeaponHitAccuracyProfile (&out)[4]) const noexcept;
+    void load_weapon_hit_accuracy_0083c795();
 
     // 0083ce56..0083d10d of 0083b5e0, driven by the reconstruction in
     // bsp/unit_rudder_curve.hpp over the live `ShipGlobals["Navigator"]` table.
@@ -670,6 +676,8 @@ private:
     bool avoid_all_ship_collision_loaded_{};
     std::array<float, 5> avoidance_tuning_{};
     bool avoidance_tuning_loaded_{};
+    bsp::WeaponHitAccuracyProfile weapon_hit_accuracy_[4]{};
+    bool weapon_hit_accuracy_loaded_{};
     // Packet cc8_spawn_new_route. DAT_00F876A4, the world clock the drain
     // compares against manager+0Ch, accumulated from the mission frame's step
     // because this process has no world clock object of its own.

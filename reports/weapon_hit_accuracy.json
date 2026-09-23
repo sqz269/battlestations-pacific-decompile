@@ -1,0 +1,54 @@
+{
+  "packet": "cc9_hit_accuracy",
+  "doc": "docs/WEAPON_HIT_ACCURACY.md",
+  "status": "getter and loader bound behind kWeaponHitAccuracyBound; USN04 measured; standoff reproduced by an offline replay of the scan on dumped curves",
+  "abi_compatible": false,
+  "game_validated": false,
+  "routines": [
+    {"address": "008386F0", "native": "008386F0", "name": "BSP_GameSettings_WeaponHitAccuracy", "role": "function 2/3/4/6 -> +240h, 1/5 -> +298h, 7 -> +2F0h, 8/9 -> +348h, else 1.0; RET 0Ch"},
+    {"address": "008383D0", "native": "008383D0", "name": "BSP_WeaponHitAccuracy_Sample", "role": "size weight by 00419010, bucket i = clamp(floor(10t)-1, 0, 8), linear blend; RET 8"},
+    {"address": "00419010", "native": "00419010", "name": "BSP_Math_InterpolateClamped", "role": "(x0, y0, x1, y1, x), RET 14h"},
+    {"address": "00836EF0", "native": "00836EF0", "name": "(profile defaults)", "role": "100, 200, all 0.5"},
+    {"address": "00836F80", "native": "00836F80", "name": "(profile filler)", "role": "eleven keys, element [1] and [2]; bsp::load_weapon_hit_accuracy_profile_00836f80"},
+    {"address": "006EB060", "native": "006EB060", "name": "BSP_Weapon_HitProbabilityForRange", "role": "the only caller of 008386F0"},
+    {"address": "0085AB50", "native": "0085AB50", "name": "BSP_TurningGun_FilterHeadingToTraverse", "role": "lazy grow of the class platform vector (005471B0), then 007F6190 on array[index]"}
+  ],
+  "call_sites": [
+    {"address": "00838720", "native": "008383D0", "function": "008386F0", "note": "Artillery, ECX = settings+240h"},
+    {"address": "0083874A", "native": "008383D0", "function": "008386F0", "note": "AA, ECX = settings+298h"},
+    {"address": "0083876F", "native": "008383D0", "function": "008386F0", "note": "Torpedo, ECX = settings+2F0h"},
+    {"address": "00838799", "native": "008383D0", "function": "008386F0", "note": "DepthCharge, ECX = settings+348h"},
+    {"address": "008383F9", "native": "00419010", "function": "008383D0", "note": "the size weight"},
+    {"address": "0085AB75", "native": "005471B0", "function": "0085AB50", "note": "grow to index+1 when the index is past the count"},
+    {"address": "0085AB91", "native": "007F6190", "function": "0085AB50", "note": "the snap on the platform"}
+  ],
+  "field_accesses": [
+    {"address": "0083842F", "function": "008383D0", "note": "FLD double [00D7A3A0] = 0.1"},
+    {"address": "00838463", "function": "008383D0", "note": "FLD double [00D0A198] = -10.0 then _ftol 00BF7420"},
+    {"address": "00838485", "function": "008383D0", "note": "FMUL double [00CE3DC0] = 10.0"},
+    {"address": "009E8171", "function": "009E7FC0", "note": "ring block +40h = 1 (ebp+12BCh)"},
+    {"address": "009E8178", "function": "009E7FC0", "note": "ring block +41h = 1 (ebp+12BDh)"},
+    {"address": "009F29CA", "function": "009F1BC0", "note": "target block nested+1238h: +40h = 0"},
+    {"address": "009F29D1", "function": "009F1BC0", "note": "target block: +41h = 0"},
+    {"address": "009F2ECB", "function": "009F1BC0", "note": "own block nested+127Ch: +40h = 0"},
+    {"address": "009F2ED2", "function": "009F1BC0", "note": "own block: +41h = 1"},
+    {"address": "009E634F", "function": "009E6240", "note": "avoidance: +40h = 1 only"}
+  ],
+  "authored": {"file": "scripts/datatables/shipglobals.lua", "lines": {"WeaponHitAccuracy": 148, "Artillery": 150, "AA": 164, "Torpedo": 178, "DepthCharge": 192}},
+  "validation": {
+    "build": "./scripts/build.ps1 Win32 Release, both ctests passed (switch on and off, and the two temporary diagnostic builds)",
+    "runs": {
+      "usn04_control": {"log": "local/ha_ctl_usn04.log", "queued_hits": 92, "damage": 14733.9, "deaths": 9, "unimplemented_calls": 9607363,
+                        "standoff": {"Northampton": 950, "York": 950, "Fletcher-class04": 200}},
+      "usn04_treatment": {"log": "local/ha_trt_usn04.log", "queued_hits": 98, "damage": 14695.8, "deaths": 9, "unimplemented_calls": 8456131,
+                          "standoff": {"Northampton": 1050, "York": 350, "Fletcher-class04": 50}, "lexington_sunk_s": 223.81},
+      "diagnostic_curves": ["local/ha_dgC_usn04.log", "local/ha_dgT_usn04.log", "local/standoff_replay.py"]
+    },
+    "prediction": "Northamptons 1450 m (wrong; measured 1050 m)"
+  },
+  "open": [
+    "host defect: approach_curve_target is the own unit's rating without the bias, not the target unit's (009F2FB1, block nested+1238h)",
+    "heading-change increase attributed to the new standoff geometry and per-mount reweighting, not ablated"
+  ],
+  "no_ghidra_function": []
+}
