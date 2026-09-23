@@ -238,3 +238,28 @@ unchanged. The one death that flips is **Mav2, which now survives**: SaltLakeCit
   moving-target Mavs, which would settle the moving-target release range. The pitch selector's
   2.5/1.5 at `009D1E1D`/`009D1E27` has no census line of its own, so its share of the change is
   not separated here.
+
+## 8. Landed (packet `cc9_torpedo_kind_land`, 2026-09-22)
+
+The integrator decided to land step 2, which supersedes the step 2 decision in section 7. The
+probe fired for exactly the predicted units at exactly the image's factor. The miss was in this
+doc's downstream release-range model. The binding is the one section 7 records.
+
+**The pair.** On this tree at main `9b77ca812` plus the binding, USN01 with the control's exact
+parameters (`local\kind_usn01_land.log`) reproduces `local\kind_usn01_step2.log` on all 22784
+lines. No simulation line differs. USN04 is untouched, because no Kate is kind 10h or 16h (section
+6.3 measured it identical). **The USN01 step 2 run is the reference from here on.**
+
+**Measured reference values, not a fit.** These are the numbers the landed binding produces, as
+section 6.3 read them.
+
+| Mav | target | `F14` / `range_90` at aim tick 151 | `F0C` scaled with it | release range, step 1 -> landed | ratio |
+| --- | --- | --- | --- | --- | --- |
+| Mav1 | Dunlap, moving | 631.3 / 701.4 = 0.9000 | 1.2771 | 434.6 -> 469.7 m | 1.0808 |
+| Mav2 | Northampton, stationary | 725.4 / 806.0 = 0.9000 | 1.4340 | 433.0 -> 481.3 m | 1.1115 |
+| Mav3 | Northampton, stationary | 729.4 / 810.5 = 0.9000 | 1.4407 | 436.9 -> 485.7 m | 1.1117 |
+| Mav4 | SaltLakeCity, moving | 620.7 / 689.7 = 0.9000 | 1.2595 | 433.1 -> 460.5 m | 1.0633 |
+| Mav5 | SaltLakeCity, moving | 630.5 / 700.6 = 0.8999 | 1.2759 | 437.8 -> 473.8 m | 1.0822 |
+
+USN01's landed summary: `torpedo_drop drops=5`, `queued_hits=35`, `total_damage=2892.0`,
+`deaths=0`. Mav2 survives with 16 hp.

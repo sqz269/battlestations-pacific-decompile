@@ -8330,7 +8330,18 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             const GameUnitSlot* const t = aim_target();
                             return t != nullptr && bsp::unit_is_kind_of(t->class_id, query);
                         }
-                        bool unit_is_kind_vtable5c(int) override { return false; }
+                        // Packet cc9_torpedo_kind: the own-unit probe,
+                        // [[state+4]+4] = the aircraft, at 009D175F/009D176E
+                        // (the 0.9 tighten of range and time to target) and
+                        // 009D1E08/009D1E17 (the 2.5/1.5 pitch denominator),
+                        // kinds 10h MPlaneBomber and 16h MLargeReconPlane. It
+                        // was `return false`, so neither use ever fired. Only
+                        // USN01's five H6K Mavis (LargeReconPlane) reach it;
+                        // USN04's Kates are TorpedoBomber and are untouched.
+                        // docs/TORPEDO_KIND_PROBE.md sections 6-8.
+                        bool unit_is_kind_vtable5c(int query) override {
+                            return bsp::unit_is_kind_of(s_.class_id, query);
+                        }
                         bool has_target_cc() override {
                             return aim_target() != nullptr;
                         }
