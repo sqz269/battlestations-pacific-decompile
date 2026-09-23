@@ -1093,6 +1093,9 @@ bool hull_aim_target_samples_hull(const GameUnitSlot& target) {
 // 10% of it: 23 releases, 50%: 16, 100%: 8) and not with its height, so it
 // stays OFF. With it on, `hull_aim draw` and `hull_aim inrange` lines print.
 constexpr bool kHullAimOffsetEnabled = false;
+// Packet cc9_hull_turndown: the per-tick turndown/aimdive/aimglide trace in
+// update_dive_bomb_approach. Diagnostic only; off in the default build.
+constexpr bool kHullAimTrace = false;
 
 // Packet cc9_hull_axis, diagnostic only. The drawn body-frame offset, the
 // world point, the target origin and heading, and the world point resolved
@@ -1676,6 +1679,34 @@ struct GameUnitsHost::Impl {
                 (w2 <= bsp::dive_bomb_constant::kDistanceEpsilonSq)
                     ? 0.0f : static_cast<float>(std::sqrt(w2));
         }
+        // Packet cc9_hull_turndown, diagnostic only: one line per tick of the
+        // turndown, aimdive and aimglide, every quantity relative to the fed
+        // aim point `tp` so the offset itself cancels between builds. The
+        // commands are the ones the state ticks wrote on the previous tick.
+        if (kHullAimTrace &&
+            (slot.dive_bomb_state == bsp::DiveBombState::kTurnDown ||
+             slot.dive_bomb_state == bsp::DiveBombState::kAimDive ||
+             slot.dive_bomb_state == bsp::DiveBombState::kAimGlide)) {
+            log.notef("hull_trace %s t=%d st=%x rel=(%.2f %.2f %.2f) "
+                      "vel=(%.2f %.2f %.2f) hdg=%.4f pitch=%.4f bank=%.4f "
+                      "cmd_pitch=%.4f bank_tgt=%.4f hdg_tgt=%.4f "
+                      "ccip_rel=(%.2f %.2f) rng=%.2f latch=%d err=%.2f "
+                      "ccip_d=%.2f brg_c0=%.4f brg_18=%.4f abort=%d rel_n=%d",
+                      slot.row.name.c_str(), slot.dive_bomb_arm_ticks,
+                      static_cast<unsigned>(slot.dive_bomb_state),
+                      slot.motion.position[0] - tp[0], slot.motion.position[1] - tp[1],
+                      slot.motion.position[2] - tp[2],
+                      slot.plane_world_velocity[0], slot.plane_world_velocity[1],
+                      slot.plane_world_velocity[2], slot.plane_heading_c6c,
+                      slot.plane_pitch_angle_c64, slot.plane_bank_angle_c68,
+                      slot.plane_commanded_pitch, slot.plan_state.bank_target_2c4,
+                      slot.plan_heading_2c0,
+                      slot.db_run_in_origin[0] - tp[0], slot.db_run_in_origin[2] - tp[2],
+                      slot.db_planar_bc, slot.db_in_range_d0 ? 1 : 0,
+                      slot.db_aim_error_last, slot.db_impact_planar_5c,
+                      slot.db_bearing_c0, slot.db_impact_bearing_18,
+                      slot.db_abort_fires, slot.dive_bomb_releases);
+        }
     }
 
     bsp::DiveBombTransitionInputs dive_bomb_transition_inputs(GameUnitSlot& slot) {
@@ -1891,6 +1922,10 @@ struct GameUnitsHost::Impl {
                     target_p[0] = tgt.motion.position[0];
                     target_p[1] = tgt.motion.position[1];
                     target_p[2] = tgt.motion.position[2];
+                    // 009C6342: the fly-over lead point starts from approach->vtable[0],
+                    // the fed aim point (the origin while kHullAimOffsetEnabled is
+                    // false). Packet cc9_hull_turndown.
+                    hull_aim_world_point(slot, tgt, ti + 1, target_p);
                     // 009FA2E0 reaches vtable[34h] on the object at
                     // approach+44h, else approach+48h; a plane slot carries its
                     // world velocity separately from the rigid body.
@@ -2051,7 +2086,16 @@ struct GameUnitsHost::Impl {
         float target_y = slot.motion.position[1];
         if (slot.command_target_plus_one != 0) {
             const std::size_t ti = slot.command_target_plus_one - 1;
-            if (ti < slots.size()) target_y = slots[ti]->motion.position[1];
+            if (ti < slots.size()) {
+                // 009C59CD: the aimdive height [ESP+14h] is unit+100h less
+                // approach->vtable[0].out[1], the fed aim point. Packet
+                // cc9_hull_turndown.
+                float hp[3] = {slots[ti]->motion.position[0],
+                               slots[ti]->motion.position[1],
+                               slots[ti]->motion.position[2]};
+                hull_aim_world_point(slot, *slots[ti], ti + 1, hp);
+                target_y = hp[1];
+            }
         }
         e.height_above_target = slot.motion.position[1] - target_y;
         e.dive_altitude_a8 = slot.db_dive_alt_a8;
@@ -2222,7 +2266,16 @@ struct GameUnitsHost::Impl {
             float target_y = slot.motion.position[1];
             if (slot.command_target_plus_one != 0) {
                 const std::size_t ti = slot.command_target_plus_one - 1;
-                if (ti < slots.size()) target_y = slots[ti]->motion.position[1];
+                if (ti < slots.size()) {
+                    // 009C5278: the aimglide height is taken to approach->vtable[0],
+                    // the fed aim point (the origin while kHullAimOffsetEnabled is
+                    // false). Packet cc9_hull_turndown.
+                    float hp[3] = {slots[ti]->motion.position[0],
+                                   slots[ti]->motion.position[1],
+                                   slots[ti]->motion.position[2]};
+                    hull_aim_world_point(slot, *slots[ti], ti + 1, hp);
+                    target_y = hp[1];
+                }
             }
             in.height_above_aim_point = slot.motion.position[1] - target_y;
         }
