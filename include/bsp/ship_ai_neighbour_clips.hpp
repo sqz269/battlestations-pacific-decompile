@@ -78,7 +78,12 @@ bool ship_ai_obstacle_clip_ray_009dd540(const ShipAiObstacleNode& node, bool own
 // does not carry. 009E537B seeds +7Ch with 0.0f; +75h is 0 from 009E536A.
 struct ShipAiNeighbourPassState {
     float timer_7c{0.0f};  // node+7Ch
-    bool flag_75{false};   // node+75h
+    bool flag_75{false};   // node+75h, "pass bearing valid" (009DCFDE, 009D9135)
+    // Packet cc9_pass_side_message. 009E536D / 009E5373 zero +8Ch and +74h.
+    bool flag_74{false};        // node+74h, the traffic pass's "candidate" byte
+    float distance2_6c{0.0f};   // node+6Ch, squared distance to the pass corner (009DCF71)
+    float bearing_70{0.0f};     // node+70h, bearing to pass it (009DCFC7, 009DCFD6)
+    int negotiated_8c{0};       // node+8Ch, 009D8CE0's 1/2 verdict (009D90B9, 009D9118)
 };
 
 // 009D8010, `bool __thiscall(node)(void* unit, float dt)`, RET 8, body
@@ -143,5 +148,82 @@ struct ShipAiOrderTailPassResult {
 ShipAiOrderTailPassResult ship_ai_order_tail_neighbour_pass_009f0100(
     const ShipAiOrderTailPassInputs& in, float dt, ShipAiOrderTailPassHost& host,
     const CameraAxesCrtAccess& crt);
+
+// ---------------------------------------------------------------------------
+// Packet cc9_pass_side_message, docs/SHIP_NEIGHBOUR_AVOIDANCE.md section 5.
+// ---------------------------------------------------------------------------
+
+// 009D7AF0, `float* __thiscall(node)(float* out, const float* point, int)`,
+// RET 0Ch, body 009D7AF0-009D8000. The third argument is not read: the side is
+// the node's own +88h (009D7B0E). With +68h set, the centre. Otherwise the
+// corner to steer at to pass the box on that side, chosen from the point's
+// local beam coordinate b and forward coordinate f (see the .cpp table).
+std::array<float, 2> ship_ai_obstacle_pass_corner_009d7af0(
+    const ShipAiObstacleNode& node, const std::array<float, 2>& point) noexcept;
+
+// 009DCEB0, `void __thiscall(node)(const float* pose, const float* dir)`, RET 8,
+// body 009DCEB0-009DD00C. Clears +74h/+75h; when the box's corner extreme along
+// `dir` is not behind the pose (dir.(S - pose) >= 0), takes 009D7AF0's corner,
+// stores its squared distance at +6Ch and, beyond 225.0 (00CF8EB0, 15 m),
+// its bearing pi/2 - atan2(dz, dx) (wrapped into [0, 2pi)) minus 5 degrees for
+// side 1 or plus 5 degrees otherwise (00CEDF5C) at +70h, and sets +74h/+75h.
+void ship_ai_neighbour_pass_bearing_009dceb0(const ShipAiObstacleNode& node,
+                                             ShipAiNeighbourPassState& pass,
+                                             const std::array<float, 2>& pose,
+                                             const std::array<float, 2>& dir);
+
+// The published order slot unit+0A98h+54h*[unit+0B40h] fields 009D8CE0 reads.
+struct ShipAiOrderSlotView {
+    float distance_40{0.0f};   // +40h, the distance to the waypoint
+    float heading_44{0.0f};    // +44h, the heading target
+    float remaining_48{0.0f};  // +48h, the remaining path length
+};
+
+// 009D8CE0, `void __thiscall(n1)(int side, node* n2)`, RET 8, body
+// 009D8CE0-009D9141. n1 is the receiving ship's node for the other ship; n2 the
+// other ship's node for the receiver (may be null). With no n2, side 0, a side
+// equal to n2+88h, n2+88h zero or n2's owner +5Dh set: +8Ch = 0 (009D9118).
+// Otherwise the two published tracks are intersected; |denominator| <= 0.001
+// (00D7A23C) leaves +8Ch alone; else +8Ch becomes 0, 1 or 2 by the ranges to
+// the crossing (constants 2.5 00CE3DE0, 400.0 00CFD710, 4.0 00D7A328,
+// 1.8 00D049A8, 100.0 00CE3D08, 0.5 00D7A280), and when +8Ch is 2 the side
+// taken is n2's. Always: n1+88h = side, n1+75h = 1 (009D912F, 009D9135).
+void ship_ai_predict_track_crossing_009d8ce0(
+    ShipAiObstacleNode& n1, ShipAiNeighbourPassState& p1, int side,
+    const ShipAiObstacleNode* n2, bool n2_owner_torn_down_5d,
+    const ShipAiOrderSlotView& n1_owner_slot, const ShipAiOrderSlotView& n2_owner_slot,
+    float n1_owner_length_9c8, float n2_owner_length_9c8, float n2_owner_width_9cc);
+
+struct ShipAiTrafficPassHost {
+    virtual ~ShipAiTrafficPassHost() = default;
+    virtual int count_604() = 0;
+    virtual ShipAiObstacleNode& node_608(int index) = 0;
+    virtual ShipAiNeighbourPassState& pass_state(int index) = 0;
+    virtual bool owner_gone_5e(int index) = 0;
+    virtual int owner_party_54(int index) = 0;
+    virtual float unit_heading_vtable50() = 0;
+};
+
+struct ShipAiTrafficPassInputs {
+    bool party_accepted[3]{};             // 009EF35E..009EF3B2, the 009F0EA0 filter
+    int mode_35c{0};                      // blk+35Ch, 2 = astern
+    std::array<float, 2> pose_184{};
+    std::array<float, 2> forward_1ac{};
+};
+
+struct ShipAiTrafficPassResult {
+    int side1{0};          // nodes with a pass bearing on side 1
+    int side2{0};          // on side 2
+    bool wrote{false};     // blk+324h / +33Ch / +354h written
+    float turn{0.0f};      // blk+324h's change, wrapped
+};
+
+// 009EF350, `void __fastcall(blk)`, body 009EF350-009EF90C. See
+// bsp/ship_ai_neighbour_clips.cpp and docs/SHIP_NEIGHBOUR_AVOIDANCE.md
+// section 5. Constants: 3.14f (00CF0AA8), 0.01 (00D7A358), 1e8f (00D21A90),
+// 3.0f (00CE3854), pi (00D7A264).
+ShipAiTrafficPassResult ship_ai_traffic_pass_009ef350(
+    const ShipAiTrafficPassInputs& in, float& heading_target_324, float& clearance_33c,
+    float& hold_354, ShipAiTrafficPassHost& host);
 
 } // namespace bsp
