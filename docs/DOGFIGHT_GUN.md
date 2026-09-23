@@ -179,3 +179,15 @@ now visible per fighter.
 * The host needs a per-think re-seed of the plan slots (`0099B450` / `0099B4E8`) before
   `007B4ED0` can be wired.
 * `009F9FC0` (the aim assist) and `009FA7E0` (the distortion) are unread.
+
+## Correction, 2026-09-23 (packet cc9_plane_gunfire)
+
+* Section 6's explanation of run F1 is **wrong**. It said a one-tick maneuver write of
+  `+2D8h = 0` outlived the state because the host did not re-seed the command block. The host
+  now re-seeds `+2B4h`, `+2B0h` and `+2D8h` every think (`kPilotPlanReseedBound`), and with the
+  throttle wiring on top (run T1) the same two fighters still drown at the same speeds. The
+  likely cause is the head-on throttle cut in aim. That is untested. See
+  `docs/PLANE_GUNFIRE.md` section 6.
+* Section 2's "no weapon reader" still holds after a wider search: the latched block
+  `+BB0h`-`+BCAh`, the command buffer and the gun vtable slot `+1DCh`. See
+  `docs/PLANE_GUNFIRE.md` section 2.

@@ -394,6 +394,15 @@ struct GameUnitSlot {
     int df_target_changes{0};
     int df_gun_window_ticks{0};
     bsp::DogfightGunState df_gun{};         // task+314h, packet cc9_dogfight_gun
+    // unit+C50h (packet cc9_plane_gunfire): the enemy-aircraft list +50h, the
+    // refresh clock +7Ch and the finder clock +84h (U(0,P)+P at midpoints),
+    // and the finder's cached choice +B0h.
+    std::vector<std::size_t> nb_enemy_50;
+    float nb_clock_7c{4.5f};
+    float nb_clock_84{3.0f};
+    std::size_t nb_found_plus_one{0};
+    int nb_refreshes{0};
+    int nb_scans{0};
     int dive_bomb_state_ticks[10]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     int dive_bomb_arm_ticks{0};
     int dive_bomb_transitions{0};
@@ -2636,7 +2645,13 @@ struct GameUnitsHost::Impl {
     // Packet cc9_dogfight_gun: the task gun controller 009FC7C0 (fire decision
     // and burst clock, census only: the gunFire consumer is not established),
     // the head-on and maneuver throttle 007B4ED0. docs/DOGFIGHT_GUN.md.
+    // Packet cc9_plane_gunfire: 0099B450's per-think re-seed of plan+2B4h,
+    // +2B0h and +2D8h. docs/PLANE_GUNFIRE.md.
+    static constexpr bool kPilotPlanReseedBound = true;
     static constexpr bool kDogfightGunBound = true;
+    // Packet cc9_plane_gunfire: the unit+C50h enemy-aircraft list (007E11D0,
+    // 3 s refresh) and its finder 007E2090/007DEEC0 as the gun's +74h target.
+    static constexpr bool kPlaneFinderBound = true;
     // 007B4ED0 wiring (the head-on arm and the maneuver tail's full throttle).
     // OFF, measured: run F1 drowned Yorktown-class01_sqn02 and its .-2 at |v| 51
     // after one maneuver tick left the throttle slot active in mode 0. The image
@@ -6771,6 +6786,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             for (int i = 0; i < 3; ++i) p[i] = tgt->motion.position[i];
                             df_local(p, gi.lead_local);
                         }
+                        if constexpr (GameUnitsHost::Impl::kPlaneFinderBound) {
+                            gi.has_target = false;
+                            tgt = df_finder_007e2090(dt, gi);
+                        }
                         const bool was_burst = unit_.df_gun.burst_4b;
                         bsp::dogfight_gun_tick_009fc7c0(unit_.df_gun, gi);
                         if (unit_.df_gun.burst_4b && !was_burst) {
@@ -6787,6 +6806,101 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 bsp::dogfight_state_name(unit_.dogfight_state));
                         }
                         owner_.record("BotTaskGun::tick", 0x009fc7c0u);
+                    }
+
+                    // 007E2010 (the C50h object's update) and 007E11D0 (its
+                    // refresh), then 007E2090 with the gun's arguments from
+                    // 009FC90E: cone max(+2Ch 0.4, 1.25 * +40h), +38h, +30h,
+                    // +34h * 0.3, threshold +28h (-1.0), no squadron filter, no
+                    // noise. The object's own tick cadence is not read; the
+                    // think interval stands in. Labelled.
+                    const GameUnitSlot* df_finder_007e2090(float dt, bsp::DogfightGunInputs& gi) {
+                        unit_.nb_clock_7c += dt;
+                        unit_.nb_clock_84 += dt;
+                        const bsp::PlaneNeighbourRadii r = bsp::plane_neighbour_radii_007e11d0(3.0f);
+                        auto dist2 = [&](const GameUnitSlot& o) {
+                            const double dx = static_cast<double>(o.motion.position[0]) - unit_.motion.position[0];
+                            const double dy = static_cast<double>(o.motion.position[1]) - unit_.motion.position[1];
+                            const double dz = static_cast<double>(o.motion.position[2]) - unit_.motion.position[2];
+                            return dx * dx + dy * dy + dz * dz;
+                        };
+                        if (unit_.nb_clock_7c >= 3.0f) {  // 007E204D
+                            ++unit_.nb_refreshes;
+                            const double lim = static_cast<double>(r.enemy_plane) * r.enemy_plane;
+                            auto& v = unit_.nb_enemy_50;
+                            for (std::size_t k = 0; k < v.size();) {   // the drop pass
+                                if (v[k] >= owner_.slots.size() || dist2(*owner_.slots[v[k]]) >= lim) {
+                                    v[k] = v.back();
+                                    v.pop_back();
+                                } else {
+                                    ++k;
+                                }
+                            }
+                            for (std::size_t j = 0; j < owner_.slots.size(); ++j) {  // the add pass
+                                if (j == unit_.process_index) continue;
+                                const GameUnitSlot& o = *owner_.slots[j];
+                                if (!df_slot_live(o)) continue;
+                                if (!bsp::unit_is_kind_of(o.class_id, 0x0F)) continue;
+                                if (o.row.party == unit_.row.party) continue;
+                                if (!(dist2(o) < lim)) continue;
+                                bool listed = false;
+                                for (const std::size_t e : v) listed = listed || e == j;
+                                if (!listed) v.push_back(j);
+                            }
+                            unit_.nb_clock_7c -= 3.0f;
+                        }
+                        const GameUnitSlot* found = nullptr;
+                        if (unit_.nb_found_plus_one != 0 &&
+                            unit_.nb_found_plus_one - 1 < owner_.slots.size()) {
+                            found = owner_.slots[unit_.nb_found_plus_one - 1].get();
+                        }
+                        if (unit_.nb_clock_84 > 2.0f) {  // 007E2099: +84h <= +8Ch returns the cache
+                            unit_.nb_clock_84 -= 2.0f;
+                            ++unit_.nb_scans;
+                            bsp::PlaneFinderParams fp;
+                            float angle_strafe = 0.0f;
+                            if (unit_.dogfight_state == bsp::DogfightState::kAim &&
+                                owner_.lua.plane_globals_loaded()) {
+                                angle_strafe = owner_.lua.plane_globals()
+                                    .pilot_auto_strafe_angle_angle_strafe;
+                            }
+                            fp.cone_b8 = (0.4f > angle_strafe * 1.25f) ? 0.4f : angle_strafe * 1.25f;
+                            fp.inner_c0 = gi.lateral_cap_38;
+                            fp.range_bc = gi.search_range_30;
+                            fp.near_c4 = static_cast<float>(gi.shoot_distance * 0.30000001192092896);
+                            float best = -1.0f;   // +28h
+                            std::size_t pick = bsp::kPlaneSquadronNoUnit;
+                            for (const std::size_t e : unit_.nb_enemy_50) {
+                                if (e >= owner_.slots.size()) continue;
+                                const GameUnitSlot& o = *owner_.slots[e];
+                                if (!df_slot_live(o)) continue;
+                                float loc[3];
+                                float p[3] = {o.motion.position[0], o.motion.position[1],
+                                              o.motion.position[2]};
+                                df_local(p, loc);
+                                const double hx = static_cast<double>(p[0]) - unit_.motion.position[0];
+                                const double hz = static_cast<double>(p[2]) - unit_.motion.position[2];
+                                const float s = bsp::plane_finder_score_007deec0(
+                                    fp, loc, p[1] - unit_.motion.position[1],
+                                    static_cast<float>(std::sqrt(hx * hx + hz * hz)));
+                                if (best < s) {
+                                    best = s;
+                                    pick = e;
+                                }
+                            }
+                            unit_.nb_found_plus_one = pick == bsp::kPlaneSquadronNoUnit ? 0 : pick + 1;
+                            found = pick == bsp::kPlaneSquadronNoUnit ? nullptr
+                                                                        : owner_.slots[pick].get();
+                        }
+                        // 009FC922: a live result becomes +74h.
+                        if (found != nullptr && df_slot_live(*found)) {
+                            gi.has_target = true;
+                            float p[3] = {found->motion.position[0], found->motion.position[1],
+                                          found->motion.position[2]};
+                            df_local(p, gi.lead_local);
+                            return found;
+                        }
+                        return nullptr;
                     }
 
                     void df_arm_body_009ab1c0(float dt) {
@@ -10032,6 +10146,23 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // pitch floor from ratcheting.
                             bsp::pilot_reset_plan_0099b450(unit_.plan_state,
                                 unit_.plan_slots, live);
+                            // Packet cc9_plane_gunfire: the rest of 0099B450's tail
+                            // (0099B4E8-0099B580) for the fields this host keeps on
+                            // the slot. +2B4h = [plan+2F4h]+190h (0099B503/0099B511),
+                            // which 007D2406 stores as TravelSpeed * tuning+334h
+                            // NewTravelSpeedMul; +2B0h = 0 (0099B53C, byte); +2D8h =
+                            // 1 (0099B542, dword). Without it a state's speed write
+                            // outlived the state (run F1, docs/DOGFIGHT_GUN.md 6).
+                            if constexpr (GameUnitsHost::Impl::kPilotPlanReseedBound) {
+                                float mul = 1.6f;
+                                if (owner_.lua.plane_globals_loaded()) {
+                                    mul = owner_.lua.plane_globals()
+                                        .dynamics_spd_multipliers_new_travel_speed_mul;
+                                }
+                                unit_.plane_desired_speed_2b4 = unit_.plane_travel_speed * mul;
+                                unit_.plane_trg_speed_corr_off_2b0 = 0;
+                                unit_.plane_air_brake_mode_2d8 = 1;
+                            }
                             // cmd+2CCh is ONE word in the image and two fields
                             // here: PilotPlanState::heading_mode_2cc, which the
                             // reset above sets to 1 for 0099B548, and
@@ -12539,8 +12670,10 @@ void GameUnitsHost::report() {
                         if (!slot->dogfight_task_installed) continue;
                         bursts += slot->df_gun.bursts;
                         fire_ticks += slot->df_gun.fire_ticks;
-                        host.log.notef("  fighter gun %-12s bursts=%d fire_ticks=%d",
-                            slot->row.name.c_str(), slot->df_gun.bursts, slot->df_gun.fire_ticks);
+                        host.log.notef("  fighter gun %-12s bursts=%d fire_ticks=%d "
+                            "c50_refreshes=%d finder_scans=%d enemy_list=%zu",
+                            slot->row.name.c_str(), slot->df_gun.bursts, slot->df_gun.fire_ticks,
+                            slot->nb_refreshes, slot->nb_scans, slot->nb_enemy_50.size());
                     }
                     if (df_aircraft > 0) {
                         host.log.notef("summary mission fighter gun: bursts=%d fire_ticks=%d "

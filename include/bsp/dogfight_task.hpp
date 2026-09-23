@@ -341,4 +341,51 @@ struct DogfightThrottle {
 };
 DogfightThrottle dogfight_throttle_007b4ed0(float f) noexcept;
 
+// ===========================================================================
+// The unit+C50h neighbour object and its finder, packet cc9_plane_gunfire.
+// docs/PLANE_GUNFIRE.md section 3.
+// ===========================================================================
+//
+// 007D621F stores unit+C50h = 007E1E20(unit), a 0xCC-byte object, for a plane
+// when [[00E188A8]+1FE4h] is 0 or 1 and unit+54h is not the local player's
+// ([[00E188A8]+5FCh]+908h). It keeps three lists: +30h/+34h (everything near,
+// the probe 007F0280's), +50h/+54h (enemy aircraft, the finder's) and
+// +70h/+74h (friendly aircraft). Its update 007E2010 (vtable 00D06B88 +0Ch,
+// no Ghidra function) adds dt to three clocks +7Ch/+80h/+84h and, when +7Ch >=
+// +88h (3.0, 00CE3854), calls the refresh 007E11D0 and subtracts 3.0.
+// The clocks start at U(0, P) + P for P = 3.0, 1.0 (+80h) and 2.0 (+84h).
+//
+// 007E11D0: R = (+88h + 3.0 (00D7A2B0)) * 180.0 (00CE3D20, double) = 1080;
+// enemy radius max(R, 1200.0 (00CFD714)); friendly radius R, floored at 500
+// (00CE3840 / 00CE397C). It drops list members at or beyond their radius, then
+// walks the world list ([[00E188A8]+19CCh]+58h) for units other than the owner
+// that answer vtable[5Ch](6) or (0Fh), not already listed, within the enemy
+// radius: an aircraft (0Fh) of another side (+54h) goes to +50h; one of the
+// same side within the friendly radius goes to +70h; anything within R also
+// goes to +30h.
+struct PlaneNeighbourRadii {
+    float enemy_plane = 1200.0f;
+    float friendly_plane = 1080.0f;
+    float near_any = 1080.0f;
+};
+PlaneNeighbourRadii plane_neighbour_radii_007e11d0(float refresh_period_88) noexcept;
+
+// 007DEEC0(obj, candidate), the finder's score, with the parameters 007E2090
+// stored: +B8h cone (tangent), +BCh range, +C0h inner-cone scale, +C4h near
+// ramp. local = the candidate in the owner's frame. 0 outside 1 < z < +BCh or
+// outside the cone; else
+//   inner = min(+C0h * 0.75 (00CEC9D8), +B8h * 0.5 (00D7A280))
+//   ramp  = z <= +C4h ? interp(1, 0, +C4h, 1, z) : interp(+BCh, 0.4, +C4h, 1, z)
+//   score = interp(+B8h^2, 0, inner^2, 1, tan^2) * ramp
+// and, for a candidate above the owner (dy > 0), times
+// interp(0.3, 1.0, 2.0, 0.2, dy / max(1, horizontal)) (00CE69C8, 00CE3958, 00CE54A0).
+struct PlaneFinderParams {
+    float cone_b8 = 0.4f;
+    float range_bc = 1500.0f;
+    float inner_c0 = 0.09f;
+    float near_c4 = 255.0f;
+};
+float plane_finder_score_007deec0(const PlaneFinderParams& p, const float local[3],
+                                  float dy_above, float horizontal) noexcept;
+
 }  // namespace bsp

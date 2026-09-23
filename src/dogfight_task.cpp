@@ -324,4 +324,42 @@ DogfightThrottle dogfight_throttle_007b4ed0(float f) noexcept {
     return t;
 }
 
+// ---------------------------------------------------------------------------
+// unit+C50h, packet cc9_plane_gunfire. docs/PLANE_GUNFIRE.md section 3.
+// ---------------------------------------------------------------------------
+
+PlaneNeighbourRadii plane_neighbour_radii_007e11d0(float refresh_period_88) noexcept {
+    PlaneNeighbourRadii r;
+    const float base = static_cast<float>((static_cast<double>(refresh_period_88) + 3.0) * 180.0);
+    r.near_any = base;
+    r.enemy_plane = (base <= 1200.0f) ? 1200.0f : base;
+    r.friendly_plane = (static_cast<double>(base) <= 500.0) ? 500.0f : base;
+    return r;
+}
+
+float plane_finder_score_007deec0(const PlaneFinderParams& p, const float local[3],
+                                  float dy_above, float horizontal) noexcept {
+    const float z = local[2];
+    if (!(1.0f < z) || !(z < p.range_bc)) return 0.0f;
+    const float tx = local[0] / z;
+    const float ty = local[1] / z;
+    const float tan2 = tx * tx + ty * ty;
+    if (!(tan2 < p.cone_b8 * p.cone_b8)) return 0.0f;
+    float inner = static_cast<float>(p.inner_c0 * 0.75);
+    const float half = static_cast<float>(p.cone_b8 * 0.5);
+    if (half < inner) inner = half;
+    float ramp;
+    if (z <= p.near_c4) {
+        ramp = interp_00419010(1.0f, 0.0f, p.near_c4, 1.0f, z);
+    } else {
+        ramp = interp_00419010(p.range_bc, 0.4f, p.near_c4, 1.0f, z);
+    }
+    float s = interp_00419010(p.cone_b8 * p.cone_b8, 0.0f, inner * inner, 1.0f, tan2) * ramp;
+    if (0.0f < dy_above) {
+        const float h = (horizontal < 1.0f) ? 1.0f : horizontal;
+        s = interp_00419010(0.3f, 1.0f, 2.0f, 0.2f, dy_above / h) * s;
+    }
+    return s;
+}
+
 }  // namespace bsp
