@@ -61,7 +61,9 @@ The host's fly-to rule already computes both, as `altitude_error` and `command_d
 * `009BFC21` in `009BEE30`, the fly-to arm;
 * `009A78BB` in `009A76E0`;
 * `009CAC2D` in `009CA870`;
-* `007B4D3D` in `007B48E0`.
+* `007B4D3D` in `007B4980`-`007B4D7F`. This routine has no Ghidra function: `ghidra proto
+  007B4D3D` finds none, and Ghidra's `007B48E0` ends at `007B497E` with INT3 at `007B497F`. It is
+  referenced only from `.rdata 00D057C4`. The census tool labels this call `007B48E0`.
 
 The last three are unnamed and their bodies were not read.
 
@@ -113,8 +115,56 @@ Control A' was already running when this section was written.
 
 ## 5. Runs
 
-(Filled in after the runs.)
+All runs use USN04 with `--frames 9200 --press-start-frame 30 --menu-select USN04
+--mission-frames 9000 --mission-frame-seconds 0.05`, each from its own copied binary.
+
+| run | configuration | binary | log | releases | water contacts | `#3.1\|.-2` / `#7.1\|.-2` transitions | `follow law` rows |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| A' | main | `local\binA2` | `local\A2_default.log` | 30 | 16 | 7 / 13 | 0 |
+| B2 | main + pitch | `local\binB2` | `local\B2_default_pitch.log` | 30 | 16 | 7 / 13 | 0 |
+| D | E2 configuration, no stores, no pitch (packet `cc9_follow_speed`) | `local\binD` | `local\D_e2cfg_nostores.log` | 20 | 24 | 23 / 12 | 39 |
+| C2 | E2 configuration + stores + pitch, trace every 25 ticks | `local\binC2` | `local\C2_e2cfg_pitch.log` | 28 | 16 | 12 / 14 | 48 |
+
+* **A' equals A.** The digest is identical to `local\A_default_nostores_digest.txt`, so the two
+  packets merged since then are neutral on USN04.
+* **B2 equals A'.** The digest, all 84 `summary mission` rows (refills excluded) and every
+  `follow law`, `water contact`, `release census`, `db aim exit` and `divebomb` row are
+  identical. The landing build's `.text` is byte-identical to `local\binB2`. Prediction B2 holds.
+* **C2 against D:**
+  1. **No member drowns in `follow`.** The six late-squadron members survive to the end of the
+     mission (`arm_ticks` 809/779/689, equal to their leaders'). The `movieval` pair now
+     attacks and releases 2 bombs each. Over all 699 trace rows the pitch command is
+     continuous: 153 rows at 0.00, the rest small, and none pinned at +0.698 or -1.047.
+     Speed does not collapse, but it is not held near the seed either. The late members climb
+     at 0.28-0.31 rad, which is `desc+1E4h`'s regime, at 38-40 m/s against a 66.7 m/s seed,
+     trailing a leader that climbs faster. Prediction 1 holds for the stall and misses its
+     50 m/s threshold.
+  2. **Releases rise from 20 to 28.** Every `D3A Val` member and both `movieval` members
+     release 2. The only member that releases nothing is `#3.1|.-2`. Prediction 2 holds.
+  3. **Water contacts fall from 24 to 16, and the set of units equals A's exactly.** Twelve are
+     the `done` descents and torpedo aircraft of E1. `#7.1|.-2` drowns in `done` at 69.02 m/s,
+     not by the one-tick placement snap. `#3.1|.-2` is the exception. It enters the dive,
+     leaves `aimdive` for `goaway` at 166 m without releasing (aim error -91.2 m against the
+     25 m gate), and drowns 24 ticks later at 124.5 m/s. Prediction 3 missed on the snap: that
+     path is not reached, because the members no longer arrive at `done` the way E2's did.
+  4. **Transitions:** `#3.1|.-2` 12 (D 23, A' 7) and `#7.1|.-2` 14 (D 12, A' 13; its leader
+     `#7.1` also has 14). Every other wing member shows 4.
 
 ## 6. Decision
 
-(Filled in after the runs.)
+* **The pitch binding lands**, `kPlaneFollowFlyToPitch = true`. B2 is identical to A', and
+  the image's routine replaces a stand-in that ran bang-bang.
+* **The E2 configuration does not land.** C2 against A' passes section 8's first criterion:
+  the water-contact set is the same 16 units. It fails the other two. Releases are 28 against
+  30. The transitions are 12 and 14 against the 4-7 range, though A' itself has 13 for
+  `#7.1|.-2`. Both E2 edits are reverted again. The trace row stays compiled out.
+* **What the members still lack.** It is no longer anything in `follow`. Two pieces remain:
+  1. `#3.1|.-2`'s dive. Its aim error is outside the release gate, and it cannot pull out of a
+     166 m breakoff. That is the aimdive and goaway arms, owned this round by
+     `cc9_aimdive_response` and `cc9_goaway_turn`.
+  2. The late members' climb rate. They hold `desc+1E4h`-limited climbs at about 40 m/s,
+     behind a leader climbing to cruise.
+  The HOLD arm rule is **not** the missing piece yet. It applies only within 100 m of the
+  station, and these members are climbing to it.
+* The fourth caller of `009F9ED0` (`007B4980`) and the callers `009A76E0` and `009CA870` still
+  use whatever their own states do; none of them was touched.

@@ -2492,6 +2492,11 @@ struct GameUnitsHost::Impl {
     // speed-demand arm, so the follow law's desired speed was never read.
     // Packet cc9_follow_speed, docs/PLANE_FOLLOW_SPEED.md.
     static constexpr bool kPlaneFollowFlyToSpeedStores = true;
+    // The fly-to arm's pitch through 009F9ED0 (packet cc9_follow_pitch) rather
+    // than the 009FB800 substitute, which this binding fed the commanded
+    // altitude as its dimensionless `reference` and so ran bang-bang at the
+    // +0.698 / -1.047 caps. docs/PLANE_FOLLOW_PITCH.md.
+    static constexpr bool kPlaneFollowFlyToPitch = true;
     // Diagnostic period for the `follow trace` row below; 0 compiles it out.
     // Packet cc9_follow_speed ran it at 25 (docs/PLANE_FOLLOW_SPEED.md section 5).
     static constexpr int kFollowTraceEvery = 0;
@@ -2864,8 +2869,20 @@ struct GameUnitsHost::Impl {
         pin.class_climb_angle = unit.plane_climb_angle_1ec;
         pin.class_drop_angle = unit.plane_drop_angle;
         unit.plane_commanded_altitude = cmd.commanded_altitude;
-        unit.plane_commanded_pitch = bsp::pitch_command_009fb800(pin);
-        unit.plan_state.pitch_target_2bc = unit.plane_commanded_pitch;
+        if constexpr (kPlaneFollowFlyToPitch) {
+            // 009BFC03-009BFC21 CALL 009F9ED0(cmdAlt - ownY, max(dist,
+            // FollowedPointDist)), read in packet cc9_follow_pitch: the
+            // elevation angle of the steer altitude, capped at the class's
+            // sustainable climb desc+1E4h, stored to plan+2BCh with the pitch
+            // mode plan+2D0h = 2 (009F9F68 / 009F9F70). docs/PLANE_FOLLOW_PITCH.md.
+            unit.plane_commanded_pitch = bsp::pitch_command_to_point_009f9ed0(
+                cmd.altitude_error, cmd.command_distance, unit.plane_climb_angle_1e4);
+            unit.plan_state.pitch_target_2bc = unit.plane_commanded_pitch;
+            unit.plan_state.pitch_mode_2d0 = 2;
+        } else {
+            unit.plane_commanded_pitch = bsp::pitch_command_009fb800(pin);
+            unit.plan_state.pitch_target_2bc = unit.plane_commanded_pitch;
+        }
 
         // 009BFD0F-009BFD1C.
         unit.plane_desired_speed_2b4 = cmd.desired_speed_2b4;

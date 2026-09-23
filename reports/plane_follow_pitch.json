@@ -1,0 +1,82 @@
+{
+ "packet": "cc9_follow_pitch",
+ "calls": [
+  {
+   "address": "009BFC21",
+   "native": "009F9ED0",
+   "function": "009BEE30",
+   "note": "fly-to arm; args cmdAlt-ownY, max(dist, block+00h)"
+  },
+  {
+   "address": "009A78BB",
+   "native": "009F9ED0",
+   "function": "009A76E0",
+   "note": "not read"
+  },
+  {
+   "address": "009CAC2D",
+   "native": "009F9ED0",
+   "function": "009CA870",
+   "note": "not read"
+  },
+  {
+   "address": "007B4D3D",
+   "native": "009F9ED0",
+   "function": "007B4980",
+   "note": "routine 007B4980-007B4D7F has no Ghidra function (ghidra proto 007B4D3D: none; Ghidra's 007B48E0 body ends 007B497E, INT3 at 007B497F); one .rdata reference 00D057C4; not read",
+   "kind": "no_ghidra_function"
+  },
+  {
+   "address": "009F9EDB",
+   "native": "00BF701A",
+   "function": "009F9ED0",
+   "note": "_CIatan2, x87 arguments ST1=distance ST0=altitude_error"
+  }
+ ],
+ "stores": [
+  {
+   "site": "009F9F68",
+   "field": "plan+2BCh",
+   "width": "float"
+  },
+  {
+   "site": "009F9F70",
+   "field": "plan+2D0h",
+   "width": "dword",
+   "value": 2
+  }
+ ],
+ "constants": [
+  {
+   "load": "009F9EE8",
+   "address": "00CE3830",
+   "width": "double",
+   "value": 1.5707963705062866
+  },
+  {
+   "load": "009F9EFA",
+   "address": "00CE3828",
+   "width": "double",
+   "value": 6.2831854820251465
+  },
+  {
+   "load": "009F9F10",
+   "address": "00CE3D28",
+   "width": "double",
+   "value": 3.1415927410125732
+  }
+ ],
+ "ledger_names_added": [
+  {
+   "address": "009F9ED0",
+   "name": "BSP_PilotBot_CommandPitchToPoint_Provisional"
+  }
+ ],
+ "no_ghidra_function": [
+  {
+   "start": "007B4980",
+   "end_inclusive": "007B4D7F",
+   "evidence": "INT3 at 007B497F before; SUB ESP,54h prologue; RET 4 at 007B4D7D, then thunk_FUN_007b45f0 at 007B4D80; ghidra proto 007B4D3D returns no function; census tool labels it 007B48E0"
+  }
+ ]
+}

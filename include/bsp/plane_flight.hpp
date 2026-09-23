@@ -263,6 +263,29 @@ float quantize_control_axis_007bb6e0(float value);
 float heading_command_009f9e40(float target_x, float target_z, float unit_x, float unit_z);
 
 // ---------------------------------------------------------------------------
+// 009F9ED0: the pitch command toward a point, packet cc9_follow_pitch.
+// __thiscall(this, float altitude_error, float distance), RET 8, body
+// 009F9ED0-009F9F7C. docs/PLANE_FOLLOW_PITCH.md.
+//
+//   009F9ED0/009F9ED5  FLD distance, FLD altitude_error -> ST1 = d, ST0 = a
+//   009F9EDB  CALL 00BF701A (_CIatan2, x87 arguments)  -> atan2(d, a)
+//   009F9EE8  t = double [00CE3830] (pi/2) - that, stored as a float
+//   009F9EF8  0 > t:  t += double [00CE3828] (2pi), stored as a float
+//   009F9F24  t > double [00CE3D28] (pi): t -= 2pi, stored as a float
+//   009F9F41  cap = [[this]+8]+1E4h, the class's steepest sustainable climb
+//             (007C4BC5: 007D98F0 at LevelFlight * StallSpd)
+//   009F9F59  result = cap > t ? t : cap          ; an UPPER cap only
+//   009F9F68  plan+2BCh = result; 009F9F70 plan+2D0h = 2 (the planner's
+//             pitch arm 0099E490 then runs toward it)
+//
+// For d > 0 this is the elevation angle atan(a / d) of a point `a` metres
+// above at horizontal distance `d`, capped at the climb the class can hold.
+// Returns the value stored at plan+2BCh; the caller writes the mode.
+// ---------------------------------------------------------------------------
+float pitch_command_to_point_009f9ed0(float altitude_error, float distance,
+                                      float class_climb_angle_1e4);
+
+// ---------------------------------------------------------------------------
 // 009FB800: the pitch command from an altitude error. Returns the signed pitch
 // demand written to command+2BCh; mode command+2D0h is always the literal 2.
 //

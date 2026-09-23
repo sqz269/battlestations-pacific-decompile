@@ -528,3 +528,21 @@ decision. In short:
   class climb angle, 0.698 rad, while speed decays from about 67 to 20 m/s. Then they fall.
 * So section 11's "the law commands no speed" was true of the host, but it is not what drowns
   the members. The E2 configuration stays reverted. The next read is `009F9ED0`.
+
+## 13. The fly-to pitch through 009F9ED0 (packet cc9_follow_pitch, 2026-09-22)
+
+`docs/PLANE_FOLLOW_PITCH.md` has the read, the runs and the decision.
+
+* `009F9ED0` is `min(pi/2 - atan2(dist, altErr), desc+1E4h)`: the elevation angle of the
+  steer altitude over at least `FollowedPointDist`, capped at the class's sustainable climb.
+  It is stored to `plan+2BCh` with the pitch mode `plan+2D0h = 2`. The host's stand-in fed
+  `009FB800` an altitude as its dimensionless `reference`, which made it bang-bang, and never
+  wrote the mode.
+* Bound behind `kPlaneFollowFlyToPitch = true`. On the default configuration it is identical
+  to main (A' and B2).
+* In the E2 configuration (C2) no member drowns in `follow` any more. Releases go from 20 to
+  28 and water contacts from 24 to 16, the same 16 units as the pinned baseline. The E2
+  configuration still does not land, because releases are 28 against 30 and `#3.1|.-2` /
+  `#7.1|.-2` cycle 12 / 14 times. What remains is `#3.1|.-2`'s dive: an aim error outside the
+  gate, then a 166 m breakoff it cannot pull out of. That belongs to the aimdive and goaway
+  arms.
