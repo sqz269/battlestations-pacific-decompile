@@ -81,4 +81,41 @@ DiveBombAimDiveTail dive_bomb_aimdive_tail_009c5db8(
     return out;
 }
 
+float tuning_min_control_multiplier_007e41df(float control_range_min,
+                                             float control_range_max,
+                                             float stall_range_max,
+                                             float level_flight) noexcept {
+    namespace k = flyabove_speed_constant;
+    // 007E413B-007E415D: min + (max - min) * 0.85, stored float.
+    const float lerp = static_cast<float>(
+        static_cast<double>(control_range_min) +
+        (static_cast<double>(control_range_max) - control_range_min) * k::kControlRangeLerp);
+    const float stall = static_cast<float>(stall_range_max * k::kStallRangeScale);  // 007E416D
+    const float level = static_cast<float>(level_flight * k::kLevelFlightScale);    // 007E417D
+    float m = (lerp > stall) ? lerp : stall;      // 007E4189-007E4197
+    m = (m > level) ? m : level;                  // 007E41A7-007E41B1, JA keeps m
+    return (m > level_flight) ? level_flight : m; // 007E41CB-007E41D5
+}
+
+float plane_min_control_speed_007c4810(float tuning_28c, float stall_spd_184) noexcept {
+    // 007C4819 FLD [EAX+28Ch], 007C481F FMUL [ESI+184h], 007C4826 FSTP float.
+    return static_cast<float>(static_cast<double>(tuning_28c) * stall_spd_184);
+}
+
+float dive_bomb_flyabove_desired_speed_009c6f97(float approach_a4,
+                                                float min_control_speed,
+                                                float slot_entry_108) noexcept {
+    // 009C6FA8-009C6FC5: (double)approach+A4h - 007C4810, stored float.
+    const float margin = static_cast<float>(
+        static_cast<double>(approach_a4) - static_cast<double>(min_control_speed));
+    double d;
+    if (slot_entry_108 > 0.0f) {                 // 009C6FC2 COMISS, 009C6FC9 JBE
+        d = static_cast<double>(slot_entry_108) * flyabove_speed_constant::kPositiveGain;
+    } else {
+        d = static_cast<double>(margin) * slot_entry_108;   // 009C6FDB
+    }
+    // 009C6FE1 FADD approach+A4h, 009C6FFB FSTP float.
+    return static_cast<float>(d + approach_a4);
+}
+
 }  // namespace bsp

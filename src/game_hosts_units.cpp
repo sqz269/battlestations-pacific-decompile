@@ -1113,6 +1113,12 @@ constexpr bool kHullAimTrace = false;
 // the tail holds MinPowerCtrl 0.2 and MaxBrakeCtrl 0.5 through the dive and
 // the aircraft arrives slow and shallow. docs/AIMDIVE_RESPONSE.md section 4.
 constexpr bool kAimDiveTailBound = false;
+// Packet cc9_flyover_speed: the flyabove desired-speed arm 009C6F97-009C6FFB,
+// and approach+50h fed with the aim point's height. docs/FLYOVER_SPEED.md.
+// ON: USN04 moves only through the approach+50h feed on the two Yorktown
+// squadrons (local/v1 = local/v4, the height-only run); the speed arm itself
+// moves no census line there.
+constexpr bool kFlyoverSpeedBound = true;
 
 // Packet cc9_hull_axis, diagnostic only. The drawn body-frame offset, the
 // world point, the target origin and heading, and the world point resolved
@@ -1541,6 +1547,10 @@ struct GameUnitsHost::Impl {
                             slots[ti]->motion.position[2]};
         hull_aim_world_point(slot, *slots[ti], ti + 1, tp_hull, &log);
         const float* const tp = tp_hull;
+        // Packet cc9_flyover_speed: approach+50h is sub+20h, the aim point's
+        // height that 009FADA0 stores at 009FAEF5 every tick. The enter-time
+        // zero near 009C4F00 stands for the ticks before the first update.
+        if (kFlyoverSpeedBound) slot.db_aim_point_height_50 = tp[1];
         // 009C7B4F-009C7B80: the planar distance, components 0 and 2 only.
         const double dx = static_cast<double>(tp[0]) -
                           static_cast<double>(slot.motion.position[0]);
@@ -7474,6 +7484,41 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 unit_.plan_state.pitch_mode_2d0 = 2;
                             }
                             unit_.db_fa_pitch_last = unit_.plane_commanded_pitch;
+                        }
+                        // Packet cc9_flyover_speed: 009C6F97-009C6FFB, the
+                        // desired-speed arm, which follows the altitude arm in
+                        // the image. docs/FLYOVER_SPEED.md.
+                        if (kFlyoverSpeedBound) {
+                            float min_speed = 0.0f;
+                            if (owner_.lua.plane_globals_loaded()) {
+                                const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
+                                // tuning+28Ch, derived at 007E413B-007E41DF.
+                                const float m28c = bsp::tuning_min_control_multiplier_007e41df(
+                                    g.dynamics_spd_multipliers_control_range_min,
+                                    g.dynamics_spd_multipliers_control_range_max,
+                                    g.dynamics_spd_multipliers_stall_range_max,
+                                    g.dynamics_spd_multipliers_level_flight);
+                                // 009C6FB0 CALL 007C4810 on approach+8h, the class.
+                                min_speed = bsp::plane_min_control_speed_007c4810(
+                                    m28c, unit_.plane_stall_spd);
+                            }
+                            // The frame slot entry-108: 009C6AD9 zeroes it every
+                            // tick and only the 007F0280 avoidance arm
+                            // (009C6B75, 009C6BB4) overwrites it. 007F0280 is
+                            // unbound in this host, its outputs stay zero, and
+                            // |0| > 0.05 fails, so the slot is the 0.0 the
+                            // image leaves when no unit is in the near field.
+                            const float slot_entry_108 = 0.0f;
+                            unit_.plane_desired_speed_2b4 =
+                                bsp::dive_bomb_flyabove_desired_speed_009c6f97(
+                                    static_cast<float>(
+                                        bsp::dive_bomb_constant::kApproachDriftScaleA4) *
+                                        unit_.plane_max_spd,   // approach+A4h, 009C3F16
+                                    min_speed,
+                                    slot_entry_108);
+                            unit_.plane_trg_speed_corr_off_2b0 = 0;   // 009C6FEA
+                            unit_.plane_air_brake_mode_2d8 = 1;       // 009C6FF1
+                            ++unit_.plane_speed_commands;
                         }
                         // --------------------------------------------------
                         // 009C64EE-009C6DEF, the heading arm. Packet

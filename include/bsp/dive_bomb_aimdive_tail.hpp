@@ -66,4 +66,40 @@ struct DiveBombAimDiveTail {
 DiveBombAimDiveTail dive_bomb_aimdive_tail_009c5db8(
     const DiveBombAimDiveTailInputs& in) noexcept;
 
+// ---------------------------------------------------------------------------
+// Packet cc9_flyover_speed. The flyabove tick's desired-speed arm,
+// 009C6F97-009C6FFB, and the two routines it reaches. docs/FLYOVER_SPEED.md.
+//
+//   cmd+2B4h = approach+A4h + d,  cmd+2B0h = 0,  cmd+2D8h = 1
+//   d = s > 0 ? s * 40.0 : (approach+A4h - 007C4810(class)) * s
+//
+// s is the frame slot entry-108 ([ESP+2Ch] at depth 152). 009C6AD9 zeroes it
+// every tick; 009C6BB4/009C6BC4 overwrite it with the near-field avoidance
+// term only when |007F0280's output [ESP+68h]| > 0.05 (00D7A270, 009C6B75).
+// ---------------------------------------------------------------------------
+namespace flyabove_speed_constant {
+inline constexpr double kPositiveGain = 40.0;               // 00D7A378, 009C6FCF
+// 007E4160-007E41DF, the tuning singleton's derived +28Ch.
+inline constexpr double kControlRangeLerp = 0.8500000238418579;  // 00CF0B58
+inline constexpr double kStallRangeScale = 1.25;                 // 00CF87C0
+inline constexpr double kLevelFlightScale = 0.8999999761581421;  // 00D7A390
+}  // namespace flyabove_speed_constant
+
+// 007E413B-007E41DF: tuning+28Ch =
+// min(LevelFlight, max(lerp(ControlRangeMin, ControlRangeMax, 0.85),
+//                      StallRangeMax * 1.25, LevelFlight * 0.9)).
+float tuning_min_control_multiplier_007e41df(float control_range_min,
+                                             float control_range_max,
+                                             float stall_range_max,
+                                             float level_flight) noexcept;
+
+// 007C4810, __thiscall(class descriptor) -> float in ST0, no stack arguments
+// (RET with no immediate): tuning+28Ch * class+184h StallSpd, rounded to float.
+float plane_min_control_speed_007c4810(float tuning_28c, float stall_spd_184) noexcept;
+
+// 009C6F97-009C6FFB.
+float dive_bomb_flyabove_desired_speed_009c6f97(float approach_a4,
+                                                float min_control_speed,
+                                                float slot_entry_108) noexcept;
+
 }  // namespace bsp

@@ -155,3 +155,13 @@ rudder on the point. This host has never flown it that way with a sane pitch com
 
 **Next read:** pair the fly-over's [ESP+2Ch] with an ESP-anchored sweep of 009C62B0-009C6FB9, and
 bind the desired speed. Then rerun this four-run table.
+
+## Correction from docs/FLYOVER_SPEED.md (2026-09-22, packet cc9_flyover_speed)
+
+Section 2 says 009C6AD9 and 009C6BB4 "sit inside the heading arm's argument windows", which implies
+they might be argument pushes. They are not. An ESP sweep anchored on the epilogue (true depth 152
+before 009C7062 `POP EDI`) puts all three writers, 009C6453, 009C6AD9 and 009C6BB4/009C6BC4, at
+depth 152. They all write frame slot entry-108, the slot the speed arm reads at 009C6FB9.
+009C6AD9 zeroes it on every tick. Only the 007F0280 near-field avoidance arm overwrites it, so the
+speed arm's frame slot is 0.0 without a neighbour. The desired speed is then 0.95 x MaxSpd in speed
+mode. It is now bound, and it is not the term that saturates the aimdive's pitch command.
