@@ -381,6 +381,12 @@ struct GameUnitSlot {
     // The approach fields 009C7A80 and the seed 009C3EA0 produce, mirrored so
     // the arm, the two release rules and the census read one set.
     float db_dive_alt_a8{0.0f};      // approach+A8h, the release floor
+    // Packet cc9_difficulty. pilot_skill_index is unit+390h and the pilot bot's
+    // bot+34h (0095CCCC's default 1; 009565A0 / 007B8AE0 set it). The approach
+    // captures it once, at 009F9D22, as its PilotBot row: db_skill_row_14 is
+    // approach+14h held as the row index rather than the row's address.
+    int pilot_skill_index{1};
+    int db_skill_row_14{1};
     float db_begin_alt_ac{0.0f};     // approach+ACh = ctl+398h, BeginAltRange/1
     float db_alt_span_b0{0.0f};      // approach+B0h = BeginAltRange/2 - /1
     float db_attack_dist_b4{0.0f};   // approach+B4h, the moveto speed argument
@@ -1518,6 +1524,54 @@ struct GameUnitsHost::Impl {
     // hasznalja" - bombing without the wingover, it uses ReleaseAlt times this.
     static constexpr float kDiveBombNewReleaseMul = 0.6f;       // row+4Ch, ->+40h
 
+    // Packet cc9_difficulty. The six PilotBot rows the approach can capture,
+    // the dive-bomb fields only, named as include/bsp/robot_config.hpp's
+    // PilotBotParameters names them. SUBSTITUTION, labelled: the rows are
+    // PilotBotConfig.levels[0..5] (00F8A30C + 0Ch), which 00901610 fills from
+    // robots.lua. This process cannot build the context 004DC6A0 hands that
+    // reader (src/game_hosts_mission_frame.cpp records the step), so the values
+    // are this installation's scripts/datatables/robots.lua PilotBot blocks,
+    // copied by line: Stun :1259-1273, SPNormal :568-582, SPVeteran :707-721,
+    // MPNormal :845-859, MPVeteran :983-997, Elite :1121-1135. The level index
+    // is 00901610's (register_robot_config_009013d0's table): Stun 0,
+    // SPNormal 1, SPVeteran 2, MPNormal 3, MPVeteran 4, Elite 5.
+    struct PilotDiveBombRow {
+        float release_alt_1_044;
+        float release_alt_2_048;
+        float new_release_mul_04c;
+        float max_power_ctrl_050;
+        float min_power_ctrl_054;
+        float max_brake_ctrl_058;
+        float min_brake_ctrl_05c;
+        float aim_pitch_ratio_060;
+        float aim_prec_dist_068;
+        float aim_prec_mul_06c;
+        float aim_prec_pull_plus_070;
+        float aim_prec_pull_minus_074;
+    };
+    static constexpr PilotDiveBombRow kPilotDiveBombRows[6] = {
+        {350.0f, 450.0f, 0.6f, 0.6f, 0.1f, 0.5f, 0.0f, 3.0f, 150.0f, 0.75f, 0.03f, 0.06f},   // Stun
+        {350.0f, 450.0f, 0.6f, 0.7f, 0.2f, 0.5f, 0.0f, 3.0f, 70.0f, 0.3f, 0.018f, 0.025f},   // SPNormal
+        {250.0f, 300.0f, 0.6f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},        // SPVeteran
+        {250.0f, 300.0f, 0.6f, 0.85f, 0.5f, 0.25f, 0.0f, 3.0f, 50.0f, 0.24f, 0.014f, 0.018f}, // MPNormal
+        {250.0f, 300.0f, 0.6f, 1.0f, 0.8f, 0.1f, 0.0f, 3.0f, 20.0f, 0.20f, 0.012f, 0.016f},  // MPVeteran
+        {250.0f, 300.0f, 0.6f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},        // Elite
+    };
+    static_assert(kPilotDiveBombRows[1].release_alt_1_044 == kDiveBombReleaseAlt1
+                  && kPilotDiveBombRows[1].aim_prec_dist_068 == kDiveBombAimPrecDist
+                  && kPilotDiveBombRows[1].aim_prec_mul_06c == kDiveBombAimPrecMul
+                  && kPilotDiveBombRows[1].aim_prec_pull_plus_070 == kDiveBombAimPrecPullPlus
+                  && kPilotDiveBombRows[1].aim_prec_pull_minus_074 == kDiveBombAimPrecPullMinus
+                  && kPilotDiveBombRows[1].new_release_mul_04c == kDiveBombNewReleaseMul,
+                  "row 1 is the SPNormal row the host used before the binding");
+    // The captured row. Switch off: SPNormal, the old behaviour. An index
+    // outside 0..5 would read past the native's array; the host takes row 1.
+    static const PilotDiveBombRow& dive_bomb_row(const GameUnitSlot& slot) noexcept {
+        const int i = slot.db_skill_row_14;
+        if (!kSkillLevelBound || i < 0 || i > 5) return kPilotDiveBombRows[1];
+        return kPilotDiveBombRows[i];
+    }
+
     // 007C1DB0: the device list at unit+48h, summing 006E3500 over every device
     // whose vtable[+5Ch] answers 25h. The gunnery host owns that list; the
     // count here is the aircraft's bomb platforms, one round each, minus what
@@ -2338,7 +2392,7 @@ struct GameUnitsHost::Impl {
             in.height_above_aim_point = slot.motion.position[1] - target_y;
         }
         in.glide_release_ceiling =
-            kDiveBombNewReleaseMul * slot.db_dive_alt_a8;
+            dive_bomb_row(slot).new_release_mul_04c * slot.db_dive_alt_a8;
         // CORRECTED: both of these were slot.db_planar_bc, one quantity standing
         // in for two different ones, which made 009C56C2's gate `0 < 120` and
         // 009C5704's lead `range * (1 - cos)`, never negative - so the salvo at
@@ -4580,6 +4634,26 @@ bsp::CruiseSpeedSetting GameUnitsHost::commanded_speed(std::size_t unit_index) c
     return impl_->commands.commanded_speed(unit_index);
 }
 
+void GameUnitsHost::set_skill_level_007b8ae0(std::size_t unit_index, int level) {
+    Impl& host = *impl_;
+    if (unit_index >= host.slots.size()) return;
+    host.slots[unit_index]->pilot_skill_index = level;
+    // 007ECF80: a squadron forwards the call to every member's vtable[128h].
+    // process_index is the slot index (see where slots are appended).
+    const bsp::PlaneSquadronHostRecord* const sqn =
+        bsp::plane_squadron_registry().find_by_member_unit(unit_index);
+    if (sqn == nullptr) return;
+    for (const std::size_t member : sqn->member_units) {
+        if (member == bsp::kPlaneSquadronNoUnit || member >= host.slots.size()) continue;
+        host.slots[member]->pilot_skill_index = level;
+    }
+}
+
+int GameUnitsHost::skill_level(std::size_t unit_index) const {
+    const Impl& host = *impl_;
+    return unit_index < host.slots.size() ? host.slots[unit_index]->pilot_skill_index : 1;
+}
+
 float GameUnitsHost::mission_clock() const noexcept {
     return impl_->summary.simulated_seconds;
 }
@@ -6602,8 +6676,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // between the two, which is the uniform draw.
                             // The difficulty index is unmodelled, so SPNormal is
                             // picked and named, as the torpedo profile does.
+                            // BOUND, packet cc9_difficulty: 009F9D22 captures
+                            // the row once, from the pilot bot's index.
+                            unit_.db_skill_row_14 = unit_.pilot_skill_index;
+                            const GameUnitsHost::Impl::PilotDiveBombRow& db_row =
+                                GameUnitsHost::Impl::dive_bomb_row(unit_);
                             unit_.db_dive_alt_a8 =
-                                GameUnitsHost::Impl::kDiveBombReleaseAlt1;   // Uniform low, 009C3F23
+                                db_row.release_alt_1_044;   // Uniform low, 009C3F23
                             // The aimdive interpolation endpoints, the same row:
                             // dive_bomb_aim_prec_dist_068 and _mul_06c. The
                             // row's comments name them exactly: "tavolrol
@@ -6613,8 +6692,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // accuracy multiplier, smaller is better. So the
                             // 25-metre gate at 00CE3880 measures an authored
                             // miss, and this is where it comes from.
-                            unit_.db_lead_high_5c = GameUnitsHost::Impl::kDiveBombAimPrecDist;
-                            unit_.db_gain_high_60 = GameUnitsHost::Impl::kDiveBombAimPrecMul;
+                            unit_.db_lead_high_5c = db_row.aim_prec_dist_068;
+                            unit_.db_gain_high_60 = db_row.aim_prec_mul_06c;
                             // approach+B8h == task+4B0h. 009C3F1C seeds it from
                             // Random * (approach+8h)->+268h, unread here, and
                             // 009C8A5E clamps it every tick to
@@ -7753,7 +7832,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             ain.alt_span_b0 = unit_.db_alt_span_b0;
                             ain.release_altitude_a8 = unit_.db_dive_alt_a8;
                             ain.new_release_mul_40 =
-                                GameUnitsHost::Impl::kDiveBombNewReleaseMul;
+                                GameUnitsHost::Impl::dive_bomb_row(unit_).new_release_mul_04c;
                             // A at 009C63A6 is the planar distance to the aim
                             // point, the same quantity 009C7A80 keeps in
                             // approach+BCh; the flyabove recomputes it locally.
@@ -8007,9 +8086,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // PullMinus. Same substitution class as the two the aim
                         // error already uses, and from the same row.
                         in.pitch_gain_positive_64 =
-                            GameUnitsHost::Impl::kDiveBombAimPrecPullPlus;
+                            GameUnitsHost::Impl::dive_bomb_row(unit_).aim_prec_pull_plus_070;
                         in.pitch_gain_negative_68 =
-                            GameUnitsHost::Impl::kDiveBombAimPrecPullMinus;
+                            GameUnitsHost::Impl::dive_bomb_row(unit_).aim_prec_pull_minus_074;
                         const bsp::DiveBombAimDiveSteerResult r =
                             bsp::dive_bomb_aimdive_steer_009c5c9f(in);
                         ++unit_.db_aimdive_steer_ticks;
@@ -8075,11 +8154,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // row (the one kDiveBombAimPrecPullPlus comes from):
                             // DiveBombMaxPowerCtrl 0.7, MinPowerCtrl 0.2,
                             // MaxBrakeCtrl 0.5, MinBrakeCtrl 0.0, AimPitchRatio 3.0.
-                            tin.max_power_44 = 0.7f;
-                            tin.min_power_48 = 0.2f;
-                            tin.max_brake_4c = 0.5f;
-                            tin.min_brake_50 = 0.0f;
-                            tin.aim_pitch_ratio_54 = 3.0f;
+                            // Packet cc9_difficulty: the captured row's.
+                            const GameUnitsHost::Impl::PilotDiveBombRow& trow =
+                                GameUnitsHost::Impl::dive_bomb_row(unit_);
+                            tin.max_power_44 = trow.max_power_ctrl_050;
+                            tin.min_power_48 = trow.min_power_ctrl_054;
+                            tin.max_brake_4c = trow.max_brake_ctrl_058;
+                            tin.min_brake_50 = trow.min_brake_ctrl_05c;
+                            tin.aim_pitch_ratio_54 = trow.aim_pitch_ratio_060;
                             const bsp::DiveBombAimDiveTail tail =
                                 bsp::dive_bomb_aimdive_tail_009c5db8(tin);
                             // 009C5E5D, 009C5E3F, 009C5E63 (+2D4h = 0).

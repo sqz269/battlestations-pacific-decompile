@@ -4,6 +4,7 @@
 
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_mission_frame.hpp"
+#include "bsp/game_hosts_script_orders.hpp"
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_frontend.hpp"
@@ -930,10 +931,24 @@ public:
         owner_.log.implemented("MissionStart::reset_mission_stats", "00626930");
     }
     bool main_menu_flag_5c() override { return false; }        // screen+5Ch
-    std::int32_t chosen_difficulty() override { return 0; }    // game+6B0h
+    // game+6B0h, read at 0058BF52 when the record's difficulty is 3.
+    // SUBSTITUTION, labelled, packet cc9_difficulty: this host loads no player
+    // profile (007FDB20 is unimplemented), so the value is the one that reset
+    // leaves, 1 (007FDFE2 / 007FE01B, docs/GAME_PROFILE_RESET.md). A loaded
+    // profile would put its own SelectedDifficulty (profile+60h) here instead,
+    // and the briefing's play action 0051B7B0 would overwrite it with the
+    // player's pick. Switch off: the old 0.
+    std::int32_t chosen_difficulty() override { return kSkillLevelBound ? 1 : 0; }
+    // game+6ACh, stored at 0058BF37 (the record's own value) or 0058BF58 (the
+    // player's). GetDifficulty's reader in the script host reads it back.
     void set_effective_difficulty(std::int32_t value) override {
-        static_cast<void>(value);
-        owner_.log.unimplemented("MissionStart::set_effective_difficulty", "0058bf58");
+        if (!kSkillLevelBound) {
+            owner_.log.unimplemented("MissionStart::set_effective_difficulty", "0058bf58");
+            return;
+        }
+        set_game_effective_difficulty_6ac(value);
+        owner_.log.notef("MissionStart::set_effective_difficulty game+6ACh=%d", value);
+        owner_.log.implemented("MissionStart::set_effective_difficulty", "0058bf58");
     }
     bool checkpoint_differs(const MissionRecordData& record) override {
         static_cast<void>(record);

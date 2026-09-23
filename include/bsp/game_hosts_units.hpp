@@ -263,6 +263,13 @@ public:
     void store_commanded_speed_00890e6f(std::size_t unit_index, float speed);
     bsp::CruiseSpeedSetting commanded_speed(std::size_t unit_index) const;
 
+    // Packet cc9_difficulty. SetSkillLevel's leaf, unit->vtable[128h]: 009565A0
+    // stores unit+390h and 007B8AE0 sets the pilot bot's index (bot+34h). The
+    // host keeps one index per slot and applies it to every live member of the
+    // slot's plane squadron, 007ECF80's fan-out. Default 1, 0095CCCC.
+    void set_skill_level_007b8ae0(std::size_t unit_index, int level);
+    int skill_level(std::size_t unit_index) const;
+
     // Milestone 2m. 00836920's stage ladder over every unit's weapon director,
     // once per fixed simulation step: the pre-pass, the `stop` arm and the idle
     // tail that re-issues a default command.

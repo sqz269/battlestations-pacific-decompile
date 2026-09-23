@@ -8916,3 +8916,77 @@ because USN04 creates every later batch before its first torpedo drop. The fixed
 run (`local\ord_new_usn04_4500.log`) reads `ordnance_rearms=0` and reproduces the row above on
 every simulation line. The one exception is `ship avoidance search refills`, which reads 257
 against 265, and that counter also varies between runs with identical parameters.
+
+## Mission reference baselines, 2026-09-23 (difficulty 1)
+
+Packet `cc9_difficulty` (`docs/GAME_DIFFICULTY.md`). The host now plays the image's fresh-session
+difficulty. That is 1, the 007FDB20 profile-reset value selected at 0058BF58 because both
+references have a record difficulty of 3. Before, the host played 0. `GetDifficulty` now returns 1, so the
+scripts take their difficulty-1 arms. These rows supersede the 2026-09-22 rows.
+
+The binary is built from `e050a353c` on `agent/cc9-difficulty` (base `891bf426f`)
+(`kSkillLevelBound = true`). It ran from that worktree's root with the reference parameters:
+
+```
+./tools/run_game.ps1 -Exe build\win32\treat\bsp_game.exe -Log local\diff_trt_usn01.log -- --frames 3200 --press-start-frame 30 --menu-select USN01 --mission-frames 3000 --mission-frame-seconds 0.05
+./tools/run_game.ps1 -Exe build\win32\treat\bsp_game.exe -Log local\diff_trt_usn04.log -- --frames 4700 --press-start-frame 30 --menu-select USN04 --mission-frames 4500 --mission-frame-seconds 0.05
+```
+
+| mission | frames | damage | deaths | queued_hits | bomb_drops | bomb_impacts | torpedo drops | first_hit | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 mission | **16025.3** | **8** | **116** | **18** | **18** | **13** | **123.30 s** | `local\diff_trt_usn04.log` |
+| USN01 | 3000 mission | 2892.0 | 0 | 35 | 0 | 0 | 5 | 62.55 s | `local\diff_trt_usn01.log` |
+
+Full USN04 row: `queued_hits=116 dispatched=116 hit_records=116 hull=72 attributions=116 deaths=8
+kill_credits=8 total_damage=16025.3 first_hit=123.30 s`, `torpedo_loadout_cleared=13`,
+`dive-bomb task: aircraft=19 releases=18`, `torpedo task: aircraft=16 releases=13`.
+
+**Two separate deltas against the 2026-09-22 rows.** The same tree with the switch off
+(`local\diff_ctl_usn01.log`, `local\diff_ctl_usn04.log`) separates them.
+
+1. **Main's drift since `1cc9d3dea`, with no difficulty involved.** The control reads:
+   - USN01: 2892.0 damage, 35 hits and 0 deaths, against 2914.7, 38 and 1.
+   - USN04: 13655.6 damage, 89 hits, 7 deaths, 16 bomb drops and 10 torpedo drops, against
+     13961.8, 100, 8, 18 and 10.
+
+   These come from the merges between `1cc9d3dea` and `891bf426f`. They were not bisected here.
+2. **The difficulty, control against treatment.**
+   - **USN01 does not move.** Its difficulty-1 arms set ship skills, TorpedoEnable and
+     RepairEnable. The host reads none of them. Only the binding's own log lines differ.
+   - **USN04 moves through the phase-1 spawn schedule only** (`usn_19_coralus.lua:2649-2735`).
+     - Each of the eight bomber groups flies 4 aircraft instead of 3, with two A6M Zero escorts.
+     - Dive-bomb aircraft go from 15 to 19. Releases go from 16 to 18: the new `D3A Val #1.1|.-4` makes two.
+     - Torpedo aircraft go from 12 to 16. Drops go from 10 to 13: one fourth aircraft each in
+       `#2.1`, `#4.1` and `#8.1`.
+     - No SetSkillLevel reaches a phase-1 Japanese plane, and SpawnNew seeds `Skill` = 1
+       (009420A0). So every Val still flies PilotBot SPNormal.
+     - Deaths go from 7 to 8. Three control deaths no longer happen: `Kate #4.1|.-2`,
+       `Val #1.1|.-3` and `movieval|.-3`. Four new deaths appear: `Kate #4.1|.-4`, `Kate #6.1`,
+       `Val #1.1|.-2` and **Lexington-class01, sunk at 220.36 s**. Four deaths are common to both
+       runs, at times shifted by 1 to 4 s.
+     - The sinking is credited to the US escort York-class02, which is an open finding
+       (`docs/GAME_DIFFICULTY.md` section 6).
+
+**E-run re-anchor (USN04, 9000 mission frames, same binary).**
+
+```
+./tools/run_game.ps1 -Exe build\win32\treat\bsp_game.exe -Log local\diff_trt_usn04_e9000.log -- --frames 9200 --press-start-frame 30 --menu-select USN04 --mission-frames 9000 --mission-frame-seconds 0.05
+```
+
+`total_damage=19109.5 deaths=15 queued_hits=191 bomb_drops=26 torpedo drops=16`, with
+`dive-bomb task: aircraft=19 releases=26` and `MissionPhase=2` at the end. Phase 1 completes
+inside 450 s. Lexington sinks at 220.36 s here as well, yet `MissionFailedRan` stays nil. Every
+death inside the first 225 s has the same time as in the 4500-frame run.
+
+| dive group | releases per aircraft |
+| --- | --- |
+| `D3A Val #1.1` (Lex, wave 1) | 2, 2, 2, 2 |
+| `D3A Val #3.1` (Town, wave 1) | 1, 1, 1, 1 |
+| `D3A Val #5.1` (Lex, wave 2) | 2, 2, 2, 2 |
+| `D3A Val #7.1` (Town, wave 2) | 0, 0, 0, 0 |
+| `movieval` | 2, 2, 2 |
+
+There are 12 `plane water contact` lines. Eight are dive bombers: `D3A Val #1.1`, `#1.1|.-2`,
+`#1.1|.-4`, `#5.1`, `#5.1|.-2`, `#5.1|.-4`, `movieval` and `movieval|.-2`, all at |v| 68.3 to
+69.2. The other four are US aircraft: `Yorktown-class01_sqn02`, `|.-2`, `|.-3` and
+`Lexington-class01_sqn01|.-2`, all at about |v| 82.5.
