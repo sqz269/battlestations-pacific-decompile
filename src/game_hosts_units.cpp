@@ -13,6 +13,7 @@
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/plane_flight.hpp"
 #include "bsp/plane_death_modes.hpp"
+#include "bsp/gun_aim_terms.hpp"
 #include "bsp/plane_pose_commit.hpp"
 #include "bsp/plane_advance_pose.hpp"
 #include "bsp/plane_angular_velocity.hpp"
@@ -412,6 +413,10 @@ struct GameUnitSlot {
     int gl_lead_ticks{0};
     int gl_arc_ticks{0};
     int gl_fine_aim_ticks{0};
+    // Packet cc9_fighter_aim_wiring: fine-aim ticks that added 009FA7E0's
+    // distortion, and ticks whose sticks took 009F9FC0's damped cap.
+    int gl_aim_distortion_ticks{0};
+    int gl_aim_damped_ticks{0};
     double gl_shift_sum{0.0};
     float gl_shift_max{0.0f};
     float gl_muzzle{0.0f};
@@ -2866,6 +2871,9 @@ struct GameUnitsHost::Impl {
     // Before: the target's current position, unled. ON, measured (E2 9000 L0/L1b):
     // fighter hits 16 -> 66, two Vals shot down before their dive, releases 5 -> 2.
     static constexpr bool kFighterGunLeadBound = true;
+    // Packet cc9_fighter_aim_wiring (docs/GUN_AIM_TERMS.md): the fine aim's
+    // distortion 009FA7E0 and 009F9FC0's gun+4Ah damped cap, under the lead.
+    static constexpr bool kFighterAimTermsBound = true;
     std::uint32_t db_release_rng{0x9E3779B9u};
     std::map<std::uint64_t, std::uint32_t> db_release_rng_by_key;
     static bool release_rng_streams_enabled() {
@@ -7555,40 +7563,84 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // SUBSTITUTIONS, labelled: the distortion 009FA7E0 (+20h/+24h
                     // added at 009FCD41-009FCD8A) is taken as 0, unread; the
                     // damping (only while gun+4Ah, whose setter is unread) is off.
-                    void df_fine_aim_009f9fc0(const bsp::DogfightGunInputs& gi) {
-                        if (!gi.has_target) return;
+                    // Packet cc9_fighter_aim_wiring: the dogfight gun's +4Ah (the
+                    // fine aim ran on the last tick, stored at 009FCE2D) and the
+                    // angles saved at 009FCE39/009FCE44 (+54h/+58h) when it ran.
+                    struct AimTermsState {
+                        bool ran_4a{false};
+                        float prev[2]{0.0f, 0.0f};
+                    };
+                    AimTermsState& aim_terms_state() {
+                        static std::map<const void*, AimTermsState> states;
+                        return states[&unit_];
+                    }
+                    bool df_fine_aim_009f9fc0(const bsp::DogfightGunInputs& gi) {
+                        if (!gi.has_target) return false;
                         const float x = gi.lead_local[0], y = gi.lead_local[1], z = gi.lead_local[2];
                         const float d = static_cast<float>(std::sqrt(static_cast<double>(x) * x +
                             static_cast<double>(y) * y + static_cast<double>(z) * z));
                         const float far_limit = gi.search_range_30 > gi.shoot_distance + 200.0f
                             ? gi.search_range_30 : gi.shoot_distance + 200.0f;
-                        if (!(d > 1.0f) || !(far_limit > d)) return;   // 009FCB3D, 009FCB6A
+                        if (!(d > 1.0f) || !(far_limit > d)) return false;   // 009FCB3D, 009FCB6A
                         float strafe = 0.0f;
                         if (unit_.dogfight_state == bsp::DogfightState::kAim &&
                             owner_.lua.plane_globals_loaded()) {
                             strafe = owner_.lua.plane_globals().pilot_auto_strafe_angle_angle_strafe;
                         }
                         const float cone = 1.0f - z / d;
-                        if (!(strafe > cone)) return;              // 009FCCAB
-                        if (unit_.df_gun.hold_4c > 0.0f) return;   // 009FCCB4
-                        const float e_h = x / d, e_v = y / d;
-                        auto stick = [](float e, float spd, float accel) {
+                        if (!(strafe > cone)) return false;              // 009FCCAB
+                        if (unit_.df_gun.hold_4c > 0.0f) return false;   // 009FCCB4
+                        float e_h = x / d, e_v = y / d;
+                        AimTermsState& terms = aim_terms_state();
+                        // 009FCCD7: 009FA7E0 on gun+4h, then 009FCCDC-009FCD8A add its
+                        // output, divided by FighterAimMulVersusAI for a fighter owner.
+                        if constexpr (GameUnitsHost::Impl::kFighterAimTermsBound) {
+                            GameGunneryHost* const gun_host = owner_.gunnery.get();
+                            if (gun_host != nullptr) {
+                                float add[2] = {0.0f, 0.0f};
+                                gun_host->fighter_aim_distortion_009fa7e0(
+                                    owner_.index_of_slot(unit_), gi.dt,
+                                    bsp::unit_is_kind_of(unit_.class_id, 0x13), add);
+                                e_h += add[0];
+                                e_v += add[1];
+                                ++unit_.gl_aim_distortion_ticks;
+                            }
+                        }
+                        // 009FA0E0-009FA197: with +4Ah set, each axis is also
+                        // capped at 0.35 * t / (Spd / Accel), t the time the error
+                        // closes in at its current rate (bsp::gun_aim_damped_cap).
+                        const bool damp = GameUnitsHost::Impl::kFighterAimTermsBound
+                            && terms.ran_4a;
+                        const float dt_now = gi.dt;
+                        auto stick = [damp, dt_now](float e, float prev, float spd, float accel) {
                             const float ratio = accel != 0.0f ? spd / accel : 0.0f;
                             const float den = ratio * spd;
                             float m = den != 0.0f ? std::fabs(8.0f * e) / den : 1.0f;
                             if (m > 1.0f) m = 1.0f;
+                            if (damp) {
+                                const float cap = bsp::gun_aim_damped_cap_009f9fc0(
+                                    e, prev, dt_now, spd, accel);
+                                if (cap < m) m = cap;
+                            }
                             const float sgn = e < 0.0f ? -1.0f : (e > 0.0f ? 1.0f : 0.0f);
                             return sgn * m;
                         };
                         ++unit_.gl_fine_aim_ticks;
+                        if (damp) ++unit_.gl_aim_damped_ticks;
                         unit_.plan_slots[bsp::kPilotSlotPitch].desired =
-                            stick(e_v, unit_.plane_class.pitch_spd, unit_.plane_class.pitch_accel);
+                            stick(e_v, terms.prev[1], unit_.plane_class.pitch_spd,
+                                  unit_.plane_class.pitch_accel);
                         unit_.plan_slots[bsp::kPilotSlotPitch].active = 1;
                         unit_.plan_state.pitch_mode_2d0 = 0;
                         unit_.plan_slots[bsp::kPilotSlotYaw].desired =
-                            stick(e_h, unit_.plane_class.yaw_spd, unit_.plane_class.yaw_accel);
+                            stick(e_h, terms.prev[0], unit_.plane_class.yaw_spd,
+                                  unit_.plane_class.yaw_accel);
                         unit_.plan_slots[bsp::kPilotSlotYaw].active = 1;
                         unit_.gl_yaw_mode_2d4_zero = true;
+                        // 009FCE39 / 009FCE44: the angles 009F9FC0 was given.
+                        terms.prev[0] = e_h;
+                        terms.prev[1] = e_v;
+                        return true;
                     }
 
                     void df_gun_tick_009fc7c0(float dt) {
@@ -7623,7 +7675,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const bool was_burst = unit_.df_gun.burst_4b;
                         bsp::dogfight_gun_tick_009fc7c0(unit_.df_gun, gi);
                         if constexpr (GameUnitsHost::Impl::kFighterGunLeadBound) {
-                            df_fine_aim_009f9fc0(gi);
+                            const bool ran = df_fine_aim_009f9fc0(gi);
+                            // 009FCE2D: +4Ah = "the fine aim ran this tick".
+                            // SUBSTITUTION, labelled: the fire branch's re-aim
+                            // (009FCDB6-009FCE01, which clears it at 009FCDE9 and
+                            // adds 0.25 before a second 009F9FC0) is not modelled,
+                            // so the flag is never cleared by it.
+                            if constexpr (GameUnitsHost::Impl::kFighterAimTermsBound) {
+                                aim_terms_state().ran_4a = ran;
+                            }
                         }
                         if constexpr (GameUnitsHost::Impl::kPlaneGunfireBound) {
                             // task+2E0h = plan+2DCh -> cmd+16h -> unit+9FAh (007BB8BF,
@@ -14110,9 +14170,11 @@ void GameUnitsHost::report() {
                             slot->df_early_asks, slot->df_head_on_ticks,
                             static_cast<double>(slot->df_head_on_throttle_min));
                         host.log.notef("  fighter gun lead %-12s lead_ticks=%d arc_ticks=%d "
-                            "fine_aim_ticks=%d shift_mean=%.1f shift_max=%.1f muzzle=%.1f",
+                            "fine_aim_ticks=%d distortion_ticks=%d damped_ticks=%d "
+                            "shift_mean=%.1f shift_max=%.1f muzzle=%.1f",
                             slot->row.name.c_str(), slot->gl_lead_ticks, slot->gl_arc_ticks,
-                            slot->gl_fine_aim_ticks,
+                            slot->gl_fine_aim_ticks, slot->gl_aim_distortion_ticks,
+                            slot->gl_aim_damped_ticks,
                             slot->gl_lead_ticks ? slot->gl_shift_sum / slot->gl_lead_ticks : 0.0,
                             static_cast<double>(slot->gl_shift_max),
                             static_cast<double>(slot->gl_muzzle));
