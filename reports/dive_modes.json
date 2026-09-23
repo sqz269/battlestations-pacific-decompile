@@ -1,0 +1,71 @@
+{
+ "packet": "cc9_dive_modes",
+ "calls": [
+  {
+   "address": "009A955B",
+   "native": "009C2CA0",
+   "function": "009A94E0",
+   "note": "dogfight moveto ctor, ranges 500/100/1000"
+  },
+  {
+   "address": "009C2CC9",
+   "native": "009C2AC0",
+   "function": "009C2CA0",
+   "note": "base moveto ctor; +30h/+34h/+38h stores at 009C2B17/009C2B22/009C2B41"
+  },
+  {
+   "address": "009C6D6F",
+   "native": "00438B10",
+   "function": "009C62B0",
+   "note": "fly-over slew delta"
+  },
+  {
+   "address": "009C6DC8",
+   "native": "00438AA0",
+   "function": "009C62B0",
+   "note": "fly-over commanded heading"
+  }
+ ],
+ "raw_listing_transfers": [
+  {
+   "address": "009AE8F7",
+   "target": "009BDE80",
+   "function": "009AE8A0",
+   "evidence": "CALL rel32 from disk bytes; 009AE8A0 (a task arm: task+3F8h approach, ranges from task+4A0h/+4A4h into the moveto at task+4D0h) has no Ghidra function"
+  }
+ ],
+ "sites": [
+  {
+   "address": "009C63FE",
+   "evidence": "fly-over base+44h = 3 s lead bearing (wrap(pi/2 - atan2))"
+  },
+  {
+   "address": "009C6D54",
+   "evidence": "A = 00438AA0(base+44h, base+20h offset); heading = C + clamp(wrap(A - C), +-base+34h)"
+  },
+  {
+   "address": "007DA732",
+   "evidence": "roll target base = unit+838h + unit+BB8h (EDI = ctl+8h); no plane-unit writer of +838h found (disp32 census: 006D1CF7-006D5CB9 AirField, 0085456F SubmarineClass, 007CE47F-007CE555 are [unit+310h+838h] = unit+B48h)"
+  },
+  {
+   "address": "009C5D2C",
+   "evidence": "roll band: wide 0.5 on [ESP+18h] (009C5AF1 impact bearing) while [ESP+5Ch] > 0 and |bank| [ESP+20h] < 60 deg, else 0.4 on [ESP+24h] (009C5AA3)"
+  }
+ ],
+ "rel32_callers_009BDE80": [
+  "007B7C7F",
+  "009A2B47",
+  "009A671A",
+  "009AE8F7",
+  "009B8BA7",
+  "009C8825",
+  "009CD1AF",
+  "009D48CF"
+ ],
+ "no_ghidra_function": [
+  {
+   "start": "009AE8A0",
+   "evidence": "ghidra proto --brief finds no function at 009AE8A0; the call site 009AE8F7 is in no Ghidra function"
+  }
+ ]
+}

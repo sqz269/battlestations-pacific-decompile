@@ -757,6 +757,7 @@ struct GameUnitSlot {
     float db_glide_lead_last{0.0f};
     float db_glide_ratio_last{0.0f};  // aimglide [ESP+24h], cc9_dive_throttle
     float db_glide_pitch_last{0.0f};  // aimglide cmd+2BCh, cc9_aimglide_pitch
+    float df_moveto_cmd_alt_last{0.0f};  // cc9_dive_modes, generic moveto
     int db_glide_yaw_ticks{0};        // aimglide yaw arm ticks, cc9_aimglide_pitch
     float db_glide_lead_min{0.0f};      // the most negative lead seen
     float db_glide_bearing_min{-1.0f};
@@ -1889,7 +1890,7 @@ struct GameUnitsHost::Impl {
                       "cmd_pitch=%.4f bank_tgt=%.4f hdg_tgt=%.4f "
                       "ccip_rel=(%.2f %.2f) rng=%.2f latch=%d err=%.2f "
                       "ccip_d=%.2f brg_c0=%.4f brg_18=%.4f abort=%d rel_n=%d "
-                      "yaw=%.3f thr=%.3f brk=%.3f",
+                      "yaw=%.3f thr=%.3f brk=%.3f roll=%.3f aimhdg=%.4f live_roll=%.3f",
                       slot.row.name.c_str(), slot.dive_bomb_arm_ticks,
                       static_cast<unsigned>(slot.dive_bomb_state),
                       slot.motion.position[0] - tp[0], slot.motion.position[1] - tp[1],
@@ -1906,7 +1907,10 @@ struct GameUnitsHost::Impl {
                       slot.db_abort_fires, slot.dive_bomb_releases,
                       slot.plan_slots[bsp::kPilotSlotYaw].desired,
                       slot.plan_slots[bsp::kPilotSlotThrottle].desired,
-                      slot.plan_slots[bsp::kPilotSlotAirBrake].desired);
+                      slot.plan_slots[bsp::kPilotSlotAirBrake].desired,
+                      static_cast<double>(slot.db_aimdive_roll_last),
+                      static_cast<double>(slot.db_aim_heading_last),
+                      static_cast<double>(slot.plane_live_controls[2]));
         }
     }
 
@@ -2219,6 +2223,25 @@ struct GameUnitsHost::Impl {
             // which the transition rule already models by taking `ready` first.
             in.flyabove_leave_792 = bsp::dive_bomb_flyabove_leave_009c66e3(
                 lead_bearing_error, span, slot.db_attack_dist_b4);
+            // Packet cc9_dive_modes, diagnostic only: the fly-over's roll-in
+            // inputs per tick, to tell 009C67B0's two arms apart.
+            if (kHullAimTrace && slot.dive_bomb_state == bsp::DiveBombState::kFlyAbove) {
+                const double own_v = std::sqrt(
+                    static_cast<double>(slot.plane_world_velocity[0]) * slot.plane_world_velocity[0] +
+                    static_cast<double>(slot.plane_world_velocity[2]) * slot.plane_world_velocity[2]);
+                log.notef("fa_trace %s t=%d h=%.1f rng=%.1f lead_R=%.1f lead_brg=%.4f hdg=%.4f "
+                          "brg_err=%.4f span=%.1f thr=%.1f v_planar=%.2f tv=(%.2f %.2f) "
+                          "can_dive=%d ready=%d leave=%d",
+                          slot.row.name.c_str(), slot.dive_bomb_arm_ticks,
+                          static_cast<double>(height_above), static_cast<double>(slot.db_planar_bc),
+                          static_cast<double>(lead_range), static_cast<double>(lead_bearing),
+                          static_cast<double>(slot.plane_heading_c6c),
+                          static_cast<double>(lead_bearing_error),
+                          static_cast<double>(span.span), static_cast<double>(span.threshold),
+                          own_v, static_cast<double>(target_v[0]), static_cast<double>(target_v[2]),
+                          in.flyabove_can_dive_790 ? 1 : 0, in.flyabove_ready_791 ? 1 : 0,
+                          in.flyabove_leave_792 ? 1 : 0);
+            }
         }
         in.flyabove_turn_side_798 = 0;
         in.aimdive_alive_74d = slot.db_aim_alive_19;
@@ -2731,6 +2754,12 @@ struct GameUnitsHost::Impl {
     // (009BECD0 / 007EF2C0 / 009BE3E0), and PilotFires (unit+C24h, 007CD930)
     // loaded from the authored Platforms[].PilotFires. docs/DOGFIGHT_MOVETO.md.
     static constexpr bool kDogfightMovetoSpeedBound = true;
+    // Packet cc9_dive_modes: the dogfight moveto runs the generic 009C18C0
+    // glide with its fixed ranges (500, 100, 1000) instead of the stand-in.
+    // OFF, measured (docs/DIVE_MODES.md 5): with the throttle fix the leader holds
+    // 1475 m / 82.2 m/s (was 1547 m / 34 m/s), but on main alone (local/G_9000.log)
+    // it moves 46 dive-bomb rows through the fighters, not yet explained.
+    static constexpr bool kDogfightMovetoGenericBound = false;
     static constexpr bool kPilotFiresBound = true;
     // Packet cc9_throttle_slot: a per-think trace of the throttle slot for the
     // Yorktown flight (dogfight) and D3A Val #1.1 (dive-bomb). Diagnostic, off.
@@ -7552,10 +7581,60 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.plan_heading_2c0 = c.heading;
                         unit_.plan_heading_2c0_written = true;
                         unit_.plan_heading_mode_2cc = 2;
+                        if constexpr (GameUnitsHost::Impl::kDogfightMovetoGenericBound) {
+                            // Packet cc9_dive_modes: the image runs the GENERIC
+                            // move-to tick 009C18C0 here. The dogfight moveto is
+                            // 009C2CA0 (vtable 00D20B24: +Ch 009C18C0, +1Ch
+                            // 009C1BC0), built once at 009A955B with the ranges
+                            // +30h = 500.0 (00CE397C), +34h = 100.0 (00CE3D08),
+                            // +38h = 1000.0 (00CE3804); the dogfight arm 009AB1C0
+                            // never calls 009BDE80, so they stay fixed. Steps 3-5
+                            // as the dive-bomb tick runs them; the heading stays
+                            // 009F9E40 toward the target, as above.
+                            bsp::MoveToGlideInputs gin;
+                            gin.near_range_30 = 500.0f;
+                            gin.far_range_34 = 100.0f;
+                            gin.speed_range_38 = 1000.0f;
+                            gin.target_world_y = din.target_pos[1];
+                            gin.unit_world_y = unit_.motion.position[1];
+                            gin.planar_distance = c.horizontal_range;
+                            const bsp::MoveToGlideCommand g = bsp::move_to_glide_009c18c0(gin);
+                            bsp::PlaneCruiseAltitudeInputs cin;
+                            cin.base_altitude = g.base;
+                            cin.range_low = g.range_low;
+                            cin.range_high = g.range_high;
+                            cin.scale = g.scale;
+                            cin.class_gain = static_cast<float>(
+                                std::tan(static_cast<double>(unit_.plane_drop_angle)));
+                            cin.has_squadron = false;
+                            if (owner_.lua.plane_globals_loaded()) {
+                                cin.ceiling = owner_.lua.plane_globals().dynamics_ceiling;
+                            }
+                            const bsp::PlaneCruiseAltitudeResult ca =
+                                bsp::cruise_altitude_command_009fba50(cin);
+                            bsp::PlanePitchCommandInputs pin;
+                            pin.desired_altitude = ca.clamped_altitude;
+                            pin.reference = ca.pitch_reference;
+                            pin.unit_world_y = unit_.motion.position[1];
+                            pin.ceiling = cin.ceiling;
+                            if (owner_.lua.plane_globals_loaded()) {
+                                const bsp::GameTuningBlock& gt = owner_.lua.plane_globals();
+                                pin.climb_dist = gt.pilot_general_climb_dist;
+                                pin.drop_dist = gt.pilot_general_drop_dist;
+                            }
+                            pin.class_climb_angle = unit_.plane_climb_angle_1ec;
+                            pin.class_drop_angle = unit_.plane_drop_angle;
+                            unit_.plane_commanded_altitude = ca.clamped_altitude;
+                            unit_.plane_commanded_pitch = bsp::pitch_command_009fb800(pin);
+                            unit_.plan_state.pitch_target_2bc = unit_.plane_commanded_pitch;
+                            unit_.plan_state.pitch_mode_2d0 = 2;
+                            unit_.df_moveto_cmd_alt_last = ca.clamped_altitude;
+                        } else {
                         unit_.plane_commanded_altitude = din.cruising_alt;
                         unit_.plane_commanded_pitch = c.pitch;
                         unit_.plan_state.pitch_target_2bc = c.pitch;
                         unit_.plan_state.pitch_mode_2d0 = 2;
+                        }
                         if (unit_.df_min_target_range < 0.0f ||
                             c.horizontal_range < unit_.df_min_target_range) {
                             unit_.df_min_target_range = c.horizontal_range;
