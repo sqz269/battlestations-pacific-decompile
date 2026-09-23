@@ -81,6 +81,11 @@ inline constexpr bool kShipFirepowerBound = true;
 // answer is 008386F0/008383D0 over the four WeaponHitAccuracy sub-objects loaded
 // from ShipGlobals. False: the 00836EF0 default's small curve at int(10t).
 inline constexpr bool kWeaponHitAccuracyBound = true;
+// Packet cc9_target_curve, docs/SHIP_AI_TARGET_CURVE.md. True: 009F2FB1's curve
+// is the TARGET unit's rating of this ship, over the block 009F28FA..009F29D8
+// fills at nested+1238h from this ship's own fields. False: the old curve,
+// this ship's own rating without the long-range bias.
+inline constexpr bool kShipAiTargetCurveBound = true;
 namespace {
 
 bool has_ship_navigation_class(int kind) noexcept {
@@ -2473,6 +2478,64 @@ private:
     // the zero it is born with. The curve rules around the answer are the
     // image's; the answer itself is only as good as FirepowerBinding, whose
     // device list is empty in this process.
+    // Packet cc9_target_curve. 009F28FA..009F29D8 fill the block at nested+1238h
+    // from THIS ship (owner+0AA8h), because the target's rating is of this ship:
+    //   +1238h range         nested+11E0h, then 0095F080 steps it (009F2995)
+    //   +123Ch length        [unit+9C8h] (009F294B), the unit radius, which has
+    //                        no producer in the image (docs/GAME_EXECUTABLE.md);
+    //                        LABELLED: 0, so the small-target curve weighs 1
+    //   +1240h damage cap    [unit+370h] health (009F2931)
+    //   +1244h armour        [[unit+538h]+4Ch] Armour (009F2906)
+    //   +1248h torpedo armr  [unit+538h]->vtable[24h]() (009F2920) = 009635D0,
+    //                        FLD [class+6B4h] UnderwaterArmour
+    //   +124Ch bearing       nested+11DCh (009F299B); unused with +40h clear
+    //   +1250h window        20.0f (00CE3930, 009F2985)
+    //   +1254h horizon       30.0f (00CE38C8, 009F29A1)
+    //   +1258h threshold     [[unit+538h]+6B8h] DamageThreshold (009F2963)
+    //   +125Ch word 9        5.0f (00CE3850, 009F2969), never read
+    //   +1270h word 14       0.0f (009F29D8), never read
+    //   +1274h..+1277h gates BL = 1 (009F2733 MOV EBX,1; EBX is callee-saved over
+    //                        the calls up to 009F29B2), all four categories
+    //   +1278h, +1279h       0, 0 (009F29CA, 009F29D1): no bearing test, whole
+    //                        barrel counts
+    bsp::ShipAiFirepowerQuery target_query_1238h() const {
+        bsp::ShipAiFirepowerQuery q{};
+        q.window_seconds = 20.0f;
+        q.ready_horizon_seconds = 30.0f;
+        q.target_length = 0.0f;
+        q.damage_cap = 0.0f;
+        int type_id = -1;
+        if (owner_.gunnery != nullptr) {
+            const std::vector<GameGunneryUnitRow>& rows = owner_.gunnery->unit_rows();
+            if (index_ < rows.size()) {
+                q.damage_cap = rows[index_].health;
+                type_id = rows[index_].type_id;
+            }
+        }
+        float armour = 0.0f;              // loader default 0 (0087CCBF)
+        float underwater = 0.0f;          // loader default 0 (00831D7C)
+        float threshold = 100.0f;         // loader default 100 (00831DC4)
+        if (owner_.settings_owner != nullptr && type_id >= 0) {
+            // The live VehicleClass rows, the table 00960230 reads the class from.
+            armour = owner_.settings_owner->read_vehicle_class_number(type_id, "Armour", armour);
+            underwater = owner_.settings_owner->read_vehicle_class_number(type_id,
+                "UnderwaterArmour", underwater);
+            threshold = owner_.settings_owner->read_vehicle_class_number(type_id,
+                "DamageThreshold", threshold);
+        }
+        q.armour = armour;
+        q.armour_torpedo = underwater;
+        q.damage_threshold = threshold;
+        q.unused_word9 = 5.0f;
+        q.allow_machine_gun = 1;
+        q.allow_artillery = 1;
+        q.allow_torpedo = 1;
+        q.allow_depth_charge = 1;
+        q.require_bearing = 0;
+        q.use_ready_rounds = 0;
+        return q;
+    }
+
     void refresh_approach_curves(bool has_target) {
         owner_.ensure_approach_curves(ctl_);
 
@@ -2514,7 +2577,21 @@ private:
             // 009F2F3C, target->vtable[5Ch](5): no such probe in this process,
             // so the presence of a target stands in for it.
             owner_.record("ShipAiApproach::curve_target_kind_005c", 0x009f2f3cu);
-            if (has_target) {
+            const std::uint32_t target_handle = ctl_.goal_vector.raw_target_0b20;
+            if (has_target && kShipAiTargetCurveBound && target_handle != 0u
+                && target_handle - 1u < owner_.units.count()) {
+                // 009F29E0..009F29FE: the target is [owner+0B20h] when it answers
+                // vtable[5Ch](5); the one-based handle names the unit. Its rating
+                // of THIS ship, over the nested+1238h block.
+                const std::size_t target = static_cast<std::size_t>(target_handle - 1u);
+                bsp::ShipAiFirepowerQuery them = target_query_1238h();
+                FirepowerBinding target_firepower(owner_, target);
+                bsp::ship_ai_firepower_range_profile_0095f080(them,
+                    ctl_.approach_curve_target.samples, false, target_firepower);
+                owner_.done("ShipAiApproach::curve_target_block_1238", 0x009f28fau);
+                owner_.done("ShipAiApproach::curve_refresh_target_0095f080", 0x009f2fb1u);
+                ++owner_.summary.approach_curve_refreshes;
+            } else if (has_target) {
                 bsp::ship_ai_firepower_range_profile_0095f080(query,
                     ctl_.approach_curve_target.samples, false, firepower);
                 owner_.done("ShipAiApproach::curve_refresh_target_0095f080", 0x009f2fb1u);

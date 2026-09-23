@@ -1,0 +1,48 @@
+{
+  "packet": "cc9_target_curve",
+  "doc": "docs/SHIP_AI_TARGET_CURVE.md",
+  "status": "target curve bound behind kShipAiTargetCurveBound; USN04 and USN01 measured; every standoff matches the replay",
+  "abi_compatible": false,
+  "game_validated": false,
+  "routines": [
+    {"address": "009F1BC0", "native": "009F1BC0", "name": "BSP_ShipAi_ApproachFrameState", "role": "fills nested+1238h from this ship (009F28FA..009F29D8) and runs 0095F080 on the target at 009F2FB1"},
+    {"address": "009635D0", "native": "009635D0", "name": "BSP_ShipClass_GetUnderwaterArmour", "role": "ship class vtable 00D1ACC4 +24h: FLD [class+6B4h]"},
+    {"address": "0095F080", "native": "0095F080", "name": "BSP_Unit_BuildWeaponDamageRangeProfile", "role": "the 60-sample profile; prefer_long_range 0 for the target"},
+    {"address": "009E71A5", "native": "009E71A5", "name": "(standoff scan, inside 009E6E80)", "role": "max(1, secondary) * nested+1284h / primary * interp(primary/peak)"}
+  ],
+  "call_sites": [
+    {"address": "009F2FB1", "native": "0095F080", "function": "009F1BC0", "note": "the target curve, this = [owner+0B20h], block nested+1238h"},
+    {"address": "009F2F11", "native": "0095F080", "function": "009F1BC0", "note": "the own curve, for comparison"}
+  ],
+  "field_accesses": [
+    {"address": "009F2906", "function": "009F1BC0", "note": "FLD [class+4Ch] Armour -> +1244h"},
+    {"address": "009F2920", "function": "009F1BC0", "note": "CALL [class vtable+24h] UnderwaterArmour -> +1248h"},
+    {"address": "009F2931", "function": "009F1BC0", "note": "FLD [unit+370h] health -> +1240h"},
+    {"address": "009F294B", "function": "009F1BC0", "note": "FLD [unit+9C8h] radius -> +123Ch"},
+    {"address": "009F2963", "function": "009F1BC0", "note": "FLD [class+6B8h] DamageThreshold -> +1258h"},
+    {"address": "009F2733", "function": "009F1BC0", "note": "MOV EBX,1, the gate byte"},
+    {"address": "009F29B2", "function": "009F1BC0", "note": "gates +1274h..+1277h = BL"},
+    {"address": "009F29CA", "function": "009F1BC0", "note": "+1278h (require_bearing) = 0"},
+    {"address": "009F29D1", "function": "009F1BC0", "note": "+1279h (use_ready_rounds) = 0"},
+    {"address": "009F29E0", "function": "009F1BC0", "note": "EDI = [owner+0B20h], the target"}
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1 Win32 Release, both ctests passed (switch on and off, two diagnostic builds, one pinned ablation)",
+    "env": "BSP_GUNNERY_RNG_STREAMS=1 on every run",
+    "runs": {
+      "usn04_control": {"log": "local/tc_ctl_usn04.log", "queued_hits": 104, "damage": 14648.4,
+                        "standoffs": [1050, 1050, 200, 200, 200, 50, 350, 350], "heading_changes": [7, 110, 25, 61, 63, 68, 116, 38]},
+      "usn04_treatment": {"log": "local/tc_trt_usn04.log", "equals": "control on every standoff, heading, hit and per-unit row",
+                          "curve_target_nonzero": 0, "rerun_with_counter_fix": "local/tc_trt2_usn04.log", "unimplemented_calls": 8451934},
+      "usn01": {"logs": ["local/tc_ctl_usn01.log", "local/tc_trt_usn01.log"], "note": "identical; no approach curve"},
+      "replay": {"logs": ["local/tc_dg2_usn04.log"], "tool": "local/standoff_replay.py", "standoffs": [1050, 1050, 200, 200, 200, 50, 350, 350]},
+      "pinned_ablation": {"log": "local/tc_pin_usn04.log", "heading_changes": [7, 110, 25, 61, 63, 68, 80, 50]}
+    }
+  },
+  "game_executable_note": "2026-09-23: the mission reference rows will be re-taken by the gunnery worker after cc9_gun_ballistics; the durable ship-AI measurement is the standoff per ship: USN04 Northampton-class01/02 1050 m, Fletcher-class01..03 200 m, Fletcher-class04 50 m, York-class01/02 350 m (docs/SHIP_AI_TARGET_CURVE.md).",
+  "open": [
+    "own curve still uses the no-target constants where the image reads the target's +370h, +A0h, +4Ch, vtable[24h], +6B8h (009F2A26..009F2A77)",
+    "unit+9C8h radius has no producer; target length 0"
+  ],
+  "no_ghidra_function": []
+}
