@@ -126,3 +126,16 @@ The open question is whether this host's aimdive attitude response matches the i
 That is the pitch gains at approach+64h/+68h, the plane's roll and yaw response, and why the
 fly-over leaves the point 72 to 270 m to the side at turndown entry. That is a separate packet,
 outside the hull-aim region.
+
+## Correction from docs/AIMDIVE_RESPONSE.md (2026-09-22, packet cc9_aimdive_response)
+
+Section 3 describes the aimdive loop as this host flies it, as though that were the image's loop.
+It is not the whole of it. After the roll, the image also writes three commands (009C5DB8-009C6080)
+that this host did not write:
+- a yaw toward the aim point in the aircraft's own frame, x / |z| x 8.0;
+- a throttle capped from 0.7 down to 0.2 on |pitch command|, and 0.05 below the release floor;
+- an air brake of at least 0 to 0.5 on |pitch command|, and 1.0 below the floor.
+
+So the traced dives ran at full power with no brake and no rudder. The image has no guard on the
+singular bearing at the pass, so that part of section 3 stands. Binding the tail does not restore
+releases (23 -> 4), for the reason docs/AIMDIVE_RESPONSE.md section 4 gives.

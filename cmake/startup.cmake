@@ -1451,3 +1451,4 @@ cmake_language(DEFER CALL target_sources bsp_core PRIVATE src/native_session_mes
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/ship_ai_wake_trail.cpp)
 
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/plane_follow_hold.cpp)
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_game PRIVATE src/dive_bomb_aimdive_tail.cpp)

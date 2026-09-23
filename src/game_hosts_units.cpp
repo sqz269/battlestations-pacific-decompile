@@ -20,6 +20,7 @@
 #include "bsp/plane_attitude_angles.hpp"
 #include "bsp/plane_ai_control.hpp"
 #include "bsp/unit_rudder.hpp"
+#include "bsp/dive_bomb_aimdive_tail.hpp"
 #include "bsp/dive_bomb_task.hpp"
 #include "bsp/move_to_glide.hpp"
 #include "bsp/torpedo_aim_tick.hpp"
@@ -1105,6 +1106,13 @@ constexpr bool kHullAimOffsetEnabled = false;
 // Packet cc9_hull_turndown: the per-tick turndown/aimdive/aimglide trace in
 // update_dive_bomb_approach. Diagnostic only; off in the default build.
 constexpr bool kHullAimTrace = false;
+// Packet cc9_aimdive_response: the aimdive tick's yaw, throttle and air-brake
+// tail 009C5DB8-009C6080 (include/bsp/dive_bomb_aimdive_tail.hpp), read whole.
+// OFF: bound, USN04 releases fell 23 -> 4 with the hull switch off
+// (local/boff_usn04.log). The host's aim error saturates the pitch command, so
+// the tail holds MinPowerCtrl 0.2 and MaxBrakeCtrl 0.5 through the dive and
+// the aircraft arrives slow and shallow. docs/AIMDIVE_RESPONSE.md section 4.
+constexpr bool kAimDiveTailBound = false;
 
 // Packet cc9_hull_axis, diagnostic only. The drawn body-frame offset, the
 // world point, the target origin and heading, and the world point resolved
@@ -1700,7 +1708,8 @@ struct GameUnitsHost::Impl {
                       "vel=(%.2f %.2f %.2f) hdg=%.4f pitch=%.4f bank=%.4f "
                       "cmd_pitch=%.4f bank_tgt=%.4f hdg_tgt=%.4f "
                       "ccip_rel=(%.2f %.2f) rng=%.2f latch=%d err=%.2f "
-                      "ccip_d=%.2f brg_c0=%.4f brg_18=%.4f abort=%d rel_n=%d",
+                      "ccip_d=%.2f brg_c0=%.4f brg_18=%.4f abort=%d rel_n=%d "
+                      "yaw=%.3f thr=%.3f brk=%.3f",
                       slot.row.name.c_str(), slot.dive_bomb_arm_ticks,
                       static_cast<unsigned>(slot.dive_bomb_state),
                       slot.motion.position[0] - tp[0], slot.motion.position[1] - tp[1],
@@ -1714,7 +1723,10 @@ struct GameUnitsHost::Impl {
                       slot.db_planar_bc, slot.db_in_range_d0 ? 1 : 0,
                       slot.db_aim_error_last, slot.db_impact_planar_5c,
                       slot.db_bearing_c0, slot.db_impact_bearing_18,
-                      slot.db_abort_fires, slot.dive_bomb_releases);
+                      slot.db_abort_fires, slot.dive_bomb_releases,
+                      slot.plan_slots[bsp::kPilotSlotYaw].desired,
+                      slot.plan_slots[bsp::kPilotSlotThrottle].desired,
+                      slot.plan_slots[bsp::kPilotSlotAirBrake].desired);
         }
     }
 
@@ -7648,6 +7660,69 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.plan_heading_2c0_written = false;
                         // 009C6080: cmd+2D8h = 0, the air-brake mode.
                         unit_.plane_air_brake_mode_2d8 = 0;
+                        // Packet cc9_aimdive_response: 009C5DB8-009C6080, the
+                        // yaw, throttle and air-brake commands that follow the
+                        // roll. docs/AIMDIVE_RESPONSE.md.
+                        if (kAimDiveTailBound &&
+                            unit_.command_target_plus_one != 0 &&
+                            unit_.command_target_plus_one - 1 < owner_.slots.size()) {
+                            const std::size_t ti = unit_.command_target_plus_one - 1;
+                            // 009C5DF1: approach->vtable[0], the fed aim point.
+                            float ap[3] = {owner_.slots[ti]->motion.position[0],
+                                           owner_.slots[ti]->motion.position[1],
+                                           owner_.slots[ti]->motion.position[2]};
+                            hull_aim_world_point(unit_, *owner_.slots[ti], ti + 1, ap);
+                            // 009C5DE0 00B63D50 then 009C5E01 004142E0: the
+                            // orthogonal scaled inverse of the pose at +CCh,
+                            // i.e. (p - t) . row_j / |row_j|^2.
+                            const bsp::CameraMatrix& m = unit_.world;
+                            const double dx = static_cast<double>(ap[0]) - m[12];
+                            const double dy = static_cast<double>(ap[1]) - m[13];
+                            const double dz = static_cast<double>(ap[2]) - m[14];
+                            const double r0 = static_cast<double>(m[0]) * m[0] +
+                                static_cast<double>(m[1]) * m[1] + static_cast<double>(m[2]) * m[2];
+                            const double r2 = static_cast<double>(m[8]) * m[8] +
+                                static_cast<double>(m[9]) * m[9] + static_cast<double>(m[10]) * m[10];
+                            bsp::DiveBombAimDiveTailInputs tin;
+                            tin.aim_local_x = static_cast<float>(
+                                (dx * m[0] + dy * m[1] + dz * m[2]) / r0);
+                            tin.aim_local_z = static_cast<float>(
+                                (dx * m[8] + dy * m[9] + dz * m[10]) / r2);
+                            tin.pitch_c64 = unit_.plane_pitch_angle_c64;
+                            tin.bank_c68 = unit_.plane_bank_angle_c68;
+                            // unit->vtable[38h]: the same live-velocity length
+                            // the torpedo seam's unit_speed_vtable38 returns.
+                            const double vx = unit_.motion.linear_velocity.x;
+                            const double vy = unit_.motion.linear_velocity.y;
+                            const double vz = unit_.motion.linear_velocity.z;
+                            tin.speed_vtable38 = static_cast<float>(
+                                std::sqrt(vx * vx + vy * vy + vz * vz));
+                            tin.pitch_spd_1ac = unit_.plane_pitch_spd;   // class+1ACh
+                            // [ESP+14h], 009C59D6: unit+100h less the aim point y.
+                            tin.height_above_aim_14 = unit_.motion.position[1] - ap[1];
+                            tin.release_alt_a8 = unit_.db_dive_alt_a8;
+                            tin.pitch_command = r.pitch_29c;
+                            // This installation's robots.lua, PilotBot SPNormal
+                            // row (the one kDiveBombAimPrecPullPlus comes from):
+                            // DiveBombMaxPowerCtrl 0.7, MinPowerCtrl 0.2,
+                            // MaxBrakeCtrl 0.5, MinBrakeCtrl 0.0, AimPitchRatio 3.0.
+                            tin.max_power_44 = 0.7f;
+                            tin.min_power_48 = 0.2f;
+                            tin.max_brake_4c = 0.5f;
+                            tin.min_brake_50 = 0.0f;
+                            tin.aim_pitch_ratio_54 = 3.0f;
+                            const bsp::DiveBombAimDiveTail tail =
+                                bsp::dive_bomb_aimdive_tail_009c5db8(tin);
+                            // 009C5E5D, 009C5E3F, 009C5E63 (+2D4h = 0).
+                            unit_.plan_slots[bsp::kPilotSlotYaw].desired = tail.yaw_284;
+                            unit_.plan_slots[bsp::kPilotSlotYaw].active = 1;
+                            // 009C605F/009C5F37 and 009C606A.
+                            unit_.plan_slots[bsp::kPilotSlotThrottle].desired = tail.throttle_278;
+                            unit_.plan_slots[bsp::kPilotSlotThrottle].active = 1;
+                            // 009C6071, 009C6079.
+                            unit_.plan_slots[bsp::kPilotSlotAirBrake].desired = tail.air_brake_2a8;
+                            unit_.plan_slots[bsp::kPilotSlotAirBrake].active = 1;
+                        }
                     }
 
                     void run_dive_bomb_turndown_tick_009c44f0() {
