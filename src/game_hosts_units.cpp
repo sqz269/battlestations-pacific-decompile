@@ -1891,6 +1891,10 @@ struct GameUnitsHost::Impl {
                     target_p[0] = tgt.motion.position[0];
                     target_p[1] = tgt.motion.position[1];
                     target_p[2] = tgt.motion.position[2];
+                    // 009C6342: the fly-over lead point starts from approach->vtable[0],
+                    // the fed aim point (the origin while kHullAimOffsetEnabled is
+                    // false). Packet cc9_hull_turndown.
+                    hull_aim_world_point(slot, tgt, ti + 1, target_p);
                     // 009FA2E0 reaches vtable[34h] on the object at
                     // approach+44h, else approach+48h; a plane slot carries its
                     // world velocity separately from the rigid body.
@@ -2051,7 +2055,16 @@ struct GameUnitsHost::Impl {
         float target_y = slot.motion.position[1];
         if (slot.command_target_plus_one != 0) {
             const std::size_t ti = slot.command_target_plus_one - 1;
-            if (ti < slots.size()) target_y = slots[ti]->motion.position[1];
+            if (ti < slots.size()) {
+                // 009C59CD: the aimdive height [ESP+14h] is unit+100h less
+                // approach->vtable[0].out[1], the fed aim point. Packet
+                // cc9_hull_turndown.
+                float hp[3] = {slots[ti]->motion.position[0],
+                               slots[ti]->motion.position[1],
+                               slots[ti]->motion.position[2]};
+                hull_aim_world_point(slot, *slots[ti], ti + 1, hp);
+                target_y = hp[1];
+            }
         }
         e.height_above_target = slot.motion.position[1] - target_y;
         e.dive_altitude_a8 = slot.db_dive_alt_a8;
@@ -2222,7 +2235,16 @@ struct GameUnitsHost::Impl {
             float target_y = slot.motion.position[1];
             if (slot.command_target_plus_one != 0) {
                 const std::size_t ti = slot.command_target_plus_one - 1;
-                if (ti < slots.size()) target_y = slots[ti]->motion.position[1];
+                if (ti < slots.size()) {
+                    // 009C5278: the aimglide height is taken to approach->vtable[0],
+                    // the fed aim point (the origin while kHullAimOffsetEnabled is
+                    // false). Packet cc9_hull_turndown.
+                    float hp[3] = {slots[ti]->motion.position[0],
+                                   slots[ti]->motion.position[1],
+                                   slots[ti]->motion.position[2]};
+                    hull_aim_world_point(slot, *slots[ti], ti + 1, hp);
+                    target_y = hp[1];
+                }
             }
             in.height_above_aim_point = slot.motion.position[1] - target_y;
         }
