@@ -164,3 +164,15 @@ and is explained per ship. The idle after it is the host's reconstructed idle ta
 - In the control on this base, the kill credit for Lexington goes to Fletcher-class01, which
   is friendly fire. Worth a gunnery look independently of this packet.
 - The arm's building-to-moveto conversion is not issued.
+
+## 8. Corrections, 2026-09-23 (packet cc9_ai_retask)
+
+- Section 5's decision said the idle after the release "is the host's reconstructed idle tail",
+  and prediction 2 was judged against an AI coordinator re-task. The idle tail is right, but its
+  input was wrong. In the image a released escort that is still a formation follower (unit+284h)
+  gets `follow` on its leader at 00836E0D..00836E3D. The host answered 007788B0 false because
+  every unit-table re-registration after the joins cleared the pair, so it issued `stop`. The
+  coordinator never re-tasks a ship follower while its group is in MOVETOATTACK. See
+  docs/AI_RETASK.md.
+- Section 5's "Lexington afloat, 141.9 HP" holds only inside the 4500-frame window, which ends
+  at 225 s. At the E2 parameters the same control sinks Lexington at 225.81 s.
