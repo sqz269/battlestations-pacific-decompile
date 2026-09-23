@@ -9,6 +9,21 @@ death-mode choice), `007BBFA0` (`vtable[194h]`, BSP_Plane_StartNamedEffect), `00
 Packet `cc9_plane_death_modes`, 2026-09-23. Ghidra was read, not written. All names are
 hypotheses. Nothing here is ABI-compatible or game-validated.
 
+## 0. What this changes in the E2 reference
+
+**Dead torpedo bombers have been scoring hits in every USN04 reference.** In
+`local\wC_9000.log` (this tree before this packet, USN04, 9000 mission frames, option on),
+12 of 48 releases come from B5N Kates that the gunnery host had killed 1.2 to 6.2 s earlier.
+- Yorktown-class01's 4599 damage matches the four Kate #4.1 torpedoes (1150 each).
+- The Lexington sinking at 225.8 s is credited to B5N Kate #6.1, which died at 213.61 s and
+  released at 219.80 s.
+- The Fletcher-class01 sinking at 255.5 s is credited to B5N Kate #6.1|.-3, which died at
+  222.61 s and released at 226.90 s.
+
+The `635e7b27b` reference has the same pattern, 12 of 45 releases. The image refuses every one
+of those releases (section 1, step 6). Any E2 ship-damage or sinking figure taken before this
+packet includes them.
+
 ## 1. The chain, from the listing
 
 1. **Health reaches zero.** `00877B90` writes `unit+370h`, and on every change except in net mode 2
@@ -133,10 +148,9 @@ places:
 - The MaxExplosionNum budget is taken as met.
 - Removal means the aircraft leaves the motion step. The scene node is not torn down.
 
-**Not done in this packet:**
-- The torpedo and bomb spawns at `src/game_hosts_units.cpp` 1541-1560 and 2580-2595 bypass the
-  release stage. They still need the dead-aircraft refusal, pending the lead's hunk arbitration.
-  Until that lands, the `C3Ah` gate stops only the stage's own issue.
+- **At the torpedo and bomb spawn sites.** These bypass the release stage, and the lead assigned
+  them to this packet. A release from an aircraft the gunnery host has dead is refused and logged
+  as `dead release refused`. This is the same switch.
 
 ## 4. Predictions, written before any run
 
@@ -147,10 +161,13 @@ USN04 with the RNG option on, switch off against switch on, same tree.
   - Delayed explosions are removed 0.6 to 1.8 s after the death.
   - Power-lost aircraft glide at zero throttle and reach the water sooner. Water contacts rise
     from 8, and every contact is a dead aircraft.
-- **Releases from dead aircraft.** They stay at 12 at 9000 until the spawn-site refusal lands.
-  Once it lands they go to 0, and torpedo drops go 16 to 4 at 9000. Then Yorktown takes 0 torpedo
-  damage instead of 4599, Lexington and Fletcher-class01 survive, and deaths fall by 2 before
-  the consequences of the surviving ships' AA.
+- **Releases from dead aircraft, the headline.**
+  - At 9000: 12 torpedo releases are refused, and torpedo drops go 16 to 4.
+  - Yorktown-class01 takes no torpedo damage instead of 4599.
+  - Lexington-class01 is not sunk at 225.8 s, and Fletcher-class01 is not sunk at 255.5 s.
+  - Ship deaths fall by 2. Because those two ships keep firing, aircraft deaths may rise.
+  - At 4500, the older-tree log `local\l4_4500.log` has 9 of 30 releases from dead Kates. Expect
+    about 9 refusals, torpedo drops falling by as many, and Yorktown's 4599 gone.
 - **AA rounds and halvings on dead aircraft:** 0 before and after.
 - **Hits by entity.** Category 10 hits fall by the dead aircraft's torpedoes once the refusal lands.
   With the stage gate alone, only rows downstream of the removed and power-lost aircraft's paths

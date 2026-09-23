@@ -1567,7 +1567,18 @@ struct GameUnitsHost::Impl {
             // spawn 0072F830 the gunnery host already implements.
             if (gunnery != nullptr) {
                 const std::size_t index = index_of_slot(slot);
-                if (index < slots.size() && gunnery->release_ordnance_drop(index)) {
+                // Packet cc9_plane_death_modes: a dead aircraft releases
+                // nothing. 007D1314 sets unit+C3Ah when the death message is
+                // handled, and the release stage refuses at 007CEA1C (C3Ah) and
+                // 007CEA29 (+5Dh). This spawn bypasses that stage, so the
+                // refusal is applied here, on the gunnery host's death.
+                if (kPlaneDeathModesBound && index < slots.size()
+                    && gunnery->unit_dead(index)) {
+                    ++summary.dead_releases_refused;
+                    log.notef("dead release refused: unit=%s torpedo (007CEA1C / "
+                        "007CEA29, packet cc9_plane_death_modes)", slot.row.name.c_str());
+                    done("Plane::issue_block_c3a", 0x007cea1cu);
+                } else if (index < slots.size() && gunnery->release_ordnance_drop(index)) {
                     ++slot.torpedo_drops_spawned;
                 }
             }
@@ -2595,6 +2606,15 @@ struct GameUnitsHost::Impl {
         if (gunnery == nullptr) return;
         const std::size_t index = index_of_slot(slot);
         if (index >= slots.size()) return;
+        // Packet cc9_plane_death_modes: the same dead-aircraft refusal as the
+        // torpedo spawn (007D1314 sets unit+C3Ah; 007CEA1C / 007CEA29 refuse).
+        if (kPlaneDeathModesBound && gunnery->unit_dead(index)) {
+            summary.dead_releases_refused += static_cast<unsigned long long>(rounds);
+            log.notef("dead release refused: unit=%s bombs=%d (007CEA1C / 007CEA29, "
+                "packet cc9_plane_death_modes)", slot.row.name.c_str(), rounds);
+            done("Plane::issue_block_c3a", 0x007cea1cu);
+            return;
+        }
         for (int i = 0; i < rounds; ++i) {
             // Packet cc8_dive_aim item 2, edited under the integrator's hunk
             // arbitration of 2026-09-19: db_impact_fall_time is 009C7D71's tf
@@ -13189,6 +13209,21 @@ void GameUnitsHost::report() {
         host.summary.plane_steps, host.summary.plane_arm_free_flight,
         host.summary.plane_arm_ground_roll, host.summary.plane_arm_surface,
         host.summary.plane_arm_none);
+    {
+        // Packet cc9_plane_death_modes.
+        std::size_t modes[6] = {0, 0, 0, 0, 0, 0};
+        std::size_t removed = 0;
+        for (const auto& slot : host.slots) {
+            ++modes[static_cast<int>(slot->plane_death_mode)];
+            if (slot->plane_death_removed) ++removed;
+        }
+        host.log.notef("summary mission plane death modes: explosion=%zu delayed=%zu "
+            "powerlost=%zu spin=%zu removed=%zu dead_releases_refused=%llu bound=%d "
+            "(007CA8A0 / 007CAF10 / 007CEA1C, packet cc9_plane_death_modes)",
+            modes[1], modes[2], modes[3], modes[4] + modes[5], removed,
+            host.summary.dead_releases_refused,
+            GameUnitsHost::Impl::kPlaneDeathModesBound ? 1 : 0);
+    }
     host.log.notef("summary mission plane motion: distance_moved=%.2f m "
         "pose_right_reference=%llu pose_collapsed=%llu "
         "pose_rotations=%llu heading_change=%.3f rad thinks=%llu commits=%llu yaw_plans=%llu",

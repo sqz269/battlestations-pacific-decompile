@@ -163,6 +163,8 @@ struct GameUnitsSummary {
     unsigned long long plane_arm_ground_roll{0};
     unsigned long long plane_arm_surface{0};
     unsigned long long plane_arm_none{0};
+    // Packet cc9_plane_death_modes: releases refused because the aircraft was dead.
+    unsigned long long dead_releases_refused{0};
     // Metres of forward travel summed over every free-flight step; zero means
     // the arm ran but the plane did not move.
     double plane_distance_moved{0.0};
