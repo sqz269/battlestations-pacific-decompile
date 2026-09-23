@@ -406,6 +406,16 @@ struct GameUnitSlot {
     int nb_scans{0};
     // Packet cc9_near_field_probe census.
     int nf_calls{0};
+    // Packet cc9_plane_gun_pass.
+    float df_dc{0.0f};                 // approach+DCh
+    float df_e0{1.0f};                 // approach+E0h
+    int df_early_edges{0};
+    int df_early_asks{0};
+    bool plane_gun_fire_bc9{false};    // unit+BC9h, the latched gunFire
+    int pg_trigger_ticks{0};
+    int pg_trigger_rises{0};
+    int df_head_on_ticks{0};
+    float df_head_on_throttle_min{1.0f};
     int nf_hits{0};
     int nf_attackrun_weaves{0};
     float nf_attackrun_max_offset{0.0f};
@@ -2665,6 +2675,11 @@ struct GameUnitsHost::Impl {
     // Packet cc9_near_field_probe: 007F0280 at the dive-bomb attack run
     // (009C42B8) and the fly-over speed slot (009C6B3A). docs/NEAR_FIELD_PROBE.md.
     static constexpr bool kNearFieldProbeBound = true;
+    // Packet cc9_plane_gun_pass: 009AAA80's early maneuver -> aim edge, and the
+    // latched gunFire (unit+BC9h) the plane's fixed step hands to every gun's
+    // SetTriggerHeld (007CE9A0-007CE9F4). docs/PLANE_GUN_PASS.md.
+    static constexpr bool kDogfightEarlyEdgeBound = true;
+    static constexpr bool kPlaneGunfireBound = true;
     // 007B4ED0 wiring (the head-on arm and the maneuver tail's full throttle).
     // OFF, measured: run F1 drowned Yorktown-class01_sqn02 and its .-2 at |v| 51
     // after one maneuver tick left the throttle slot active in mode 0. The image
@@ -6805,6 +6820,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         const bool was_burst = unit_.df_gun.burst_4b;
                         bsp::dogfight_gun_tick_009fc7c0(unit_.df_gun, gi);
+                        if constexpr (GameUnitsHost::Impl::kPlaneGunfireBound) {
+                            // task+2E0h = plan+2DCh -> cmd+16h -> unit+9FAh (007BB8BF,
+                            // forced 0 when unit+5Dh is set) -> +BC9h (007B97B4).
+                            const bool f = unit_.df_gun.fire_48 && df_slot_live(unit_);
+                            if (f && !unit_.plane_gun_fire_bc9) ++unit_.pg_trigger_rises;
+                            if (f) ++unit_.pg_trigger_ticks;
+                            unit_.plane_gun_fire_bc9 = f;
+                        }
                         if (unit_.df_gun.burst_4b && !was_burst) {
                             const double d = std::sqrt(
                                 static_cast<double>(gi.lead_local[0]) * gi.lead_local[0] +
@@ -6876,6 +6899,103 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         return r;
                     }
 
+                    // 007E2090 proper: +84h <= +8Ch (2.0) returns the cached +B0h;
+                    // otherwise subtract 2.0 and rescan +50h with these arguments.
+                    // One cache and one clock for every caller (the gun, 009AAA80).
+                    const GameUnitSlot* df_finder_scan_007e2090(
+                            const bsp::PlaneFinderParams& fp, float threshold,
+                            const bsp::PlaneSquadronHostRecord* squadron, float noise_mid) {
+                        const GameUnitSlot* found = nullptr;
+                        if (unit_.nb_found_plus_one != 0 &&
+                            unit_.nb_found_plus_one - 1 < owner_.slots.size()) {
+                            found = owner_.slots[unit_.nb_found_plus_one - 1].get();
+                        }
+                        if (!(unit_.nb_clock_84 > 2.0f)) return found;
+                        unit_.nb_clock_84 -= 2.0f;
+                        ++unit_.nb_scans;
+                        float best = threshold;
+                        std::size_t pick = bsp::kPlaneSquadronNoUnit;
+                        for (const std::size_t e : unit_.nb_enemy_50) {
+                            if (e >= owner_.slots.size()) continue;
+                            const GameUnitSlot& o = *owner_.slots[e];
+                            if (!df_slot_live(o)) continue;
+                            if (squadron != nullptr &&   // candidate+9D4h == squadron
+                                bsp::plane_squadron_registry().find_by_member_unit(e) != squadron) {
+                                continue;
+                            }
+                            float loc[3];
+                            float p[3] = {o.motion.position[0], o.motion.position[1],
+                                          o.motion.position[2]};
+                            df_local(p, loc);
+                            const double hx = static_cast<double>(p[0]) - unit_.motion.position[0];
+                            const double hz = static_cast<double>(p[2]) - unit_.motion.position[2];
+                            float s = bsp::plane_finder_score_007deec0(
+                                fp, loc, p[1] - unit_.motion.position[1],
+                                static_cast<float>(std::sqrt(hx * hx + hz * hz)));
+                            if (0.0f < s && noise_mid > 0.0f) s += noise_mid;  // U(0, noise)
+                            if (best < s) {
+                                best = s;
+                                pick = e;
+                            }
+                        }
+                        unit_.nb_found_plus_one = pick == bsp::kPlaneSquadronNoUnit ? 0 : pick + 1;
+                        return pick == bsp::kPlaneSquadronNoUnit ? nullptr : owner_.slots[pick].get();
+                    }
+
+                    // 009AAA80, read from the listing (packet cc9_plane_gun_pass):
+                    // approach+DCh > 0.0 and +E0h < 1.0, else 007B9740 and false;
+                    // 007B96F0(+DCh, row+220h, task+344h, row+20Ch, +E0h, task+4C4h,
+                    // 0.05 noise); a found target below the unit is taken; one above
+                    // is taken when atan(dy / max(1, h)) < interp(007C4830 = 1.6 *
+                    // StallSpd, 0, 007C47F0 = LevelFlight * StallSpd, 1.6, speed).
+                    // Either way 009A7650 retargets and the task goes to aim.
+                    bool df_early_edge_009aaa80() {
+                        if (!(unit_.df_dc > 0.0f) || !(unit_.df_e0 < 1.0f)) return false;
+                        ++unit_.df_early_asks;
+                        const bsp::PlaneSquadronHostRecord* tsq = nullptr;
+                        if (unit_.command_target_plus_one != 0) {
+                            tsq = bsp::plane_squadron_registry().find_by_member_unit(
+                                unit_.command_target_plus_one - 1);
+                        }
+                        bsp::PlaneFinderParams fp;
+                        fp.cone_b8 = unit_.df_dc;
+                        fp.inner_c0 = 0.03f;                               // row+220h, SPNormal
+                        fp.range_bc = unit_.df_row.aim_shoot_distance + 650.0f;  // task+344h
+                        fp.near_c4 = unit_.df_row.follow_dist;             // row+20Ch
+                        // 00CE7638 = 0.05, the U(0, 0.05) draw at its midpoint.
+                        const GameUnitSlot* f = df_finder_scan_007e2090(fp, unit_.df_e0, tsq, 0.025f);
+                        if (f == nullptr) return false;
+                        const double dx = static_cast<double>(f->motion.position[0]) - unit_.motion.position[0];
+                        const double dy = static_cast<double>(f->motion.position[1]) - unit_.motion.position[1];
+                        const double dz = static_cast<double>(f->motion.position[2]) - unit_.motion.position[2];
+                        bool take = !(dy > 0.0);   // 009AABC9: dy <= 0 takes it at once
+                        if (!take) {
+                            const float stall = unit_.plane_stall_spd > 0.0f ? unit_.plane_stall_spd : 17.5f;
+                            float lf = 1.8f, sr = 1.6f;
+                            if (owner_.lua.plane_globals_loaded()) {
+                                lf = owner_.lua.plane_globals().dynamics_spd_multipliers_level_flight;
+                            }
+                            const double v2 = static_cast<double>(unit_.plane_world_velocity[0]) * unit_.plane_world_velocity[0] +
+                                static_cast<double>(unit_.plane_world_velocity[1]) * unit_.plane_world_velocity[1] +
+                                static_cast<double>(unit_.plane_world_velocity[2]) * unit_.plane_world_velocity[2];
+                            const float limit = bsp::dive_bomb_interpolate_clamped_00419010(
+                                sr * stall, 0.0f, lf * stall, 1.6f, static_cast<float>(std::sqrt(v2)));
+                            double h = std::sqrt(dx * dx + dz * dz);
+                            if (h < 1.0) h = 1.0;
+                            take = std::atan(dy / h) < limit;
+                        }
+                        if (!take) return false;
+                        for (std::size_t j = 0; j < owner_.slots.size(); ++j) {
+                            if (owner_.slots[j].get() == f) {
+                                if (unit_.df_target_plus_one != j + 1) ++unit_.df_target_changes;
+                                unit_.df_target_plus_one = j + 1;   // 009A7650
+                                break;
+                            }
+                        }
+                        ++unit_.df_early_edges;
+                        return true;
+                    }
+
                     const GameUnitSlot* df_finder_007e2090(float dt, bsp::DogfightGunInputs& gi) {
                         unit_.nb_clock_7c += dt;
                         unit_.nb_clock_84 += dt;
@@ -6916,9 +7036,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.nb_found_plus_one - 1 < owner_.slots.size()) {
                             found = owner_.slots[unit_.nb_found_plus_one - 1].get();
                         }
-                        if (unit_.nb_clock_84 > 2.0f) {  // 007E2099: +84h <= +8Ch returns the cache
-                            unit_.nb_clock_84 -= 2.0f;
-                            ++unit_.nb_scans;
+                        {
                             bsp::PlaneFinderParams fp;
                             float angle_strafe = 0.0f;
                             if (unit_.dogfight_state == bsp::DogfightState::kAim &&
@@ -6930,29 +7048,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             fp.inner_c0 = gi.lateral_cap_38;
                             fp.range_bc = gi.search_range_30;
                             fp.near_c4 = static_cast<float>(gi.shoot_distance * 0.30000001192092896);
-                            float best = -1.0f;   // +28h
-                            std::size_t pick = bsp::kPlaneSquadronNoUnit;
-                            for (const std::size_t e : unit_.nb_enemy_50) {
-                                if (e >= owner_.slots.size()) continue;
-                                const GameUnitSlot& o = *owner_.slots[e];
-                                if (!df_slot_live(o)) continue;
-                                float loc[3];
-                                float p[3] = {o.motion.position[0], o.motion.position[1],
-                                              o.motion.position[2]};
-                                df_local(p, loc);
-                                const double hx = static_cast<double>(p[0]) - unit_.motion.position[0];
-                                const double hz = static_cast<double>(p[2]) - unit_.motion.position[2];
-                                const float s = bsp::plane_finder_score_007deec0(
-                                    fp, loc, p[1] - unit_.motion.position[1],
-                                    static_cast<float>(std::sqrt(hx * hx + hz * hz)));
-                                if (best < s) {
-                                    best = s;
-                                    pick = e;
-                                }
-                            }
-                            unit_.nb_found_plus_one = pick == bsp::kPlaneSquadronNoUnit ? 0 : pick + 1;
-                            found = pick == bsp::kPlaneSquadronNoUnit ? nullptr
-                                                                        : owner_.slots[pick].get();
+                            found = df_finder_scan_007e2090(fp, -1.0f, nullptr, 0.0f);  // +28h
                         }
                         // 009FC922: a live result becomes +74h.
                         if (found != nullptr && df_slot_live(*found)) {
@@ -7013,6 +7109,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // 009A9270) and 007B96F0's search is unread, so false
                             // drops maneuver's early edge to aim.
                             ti.aaa80 = false;
+                            if constexpr (GameUnitsHost::Impl::kDogfightEarlyEdgeBound) {
+                                // 009AB047: only asked off aim, with ENG and a non-zero mode.
+                                if (unit_.dogfight_state != bsp::DogfightState::kAim &&
+                                    unit_.dogfight_state != bsp::DogfightState::kPrepare &&
+                                    unit_.dogfight_state != bsp::DogfightState::kMoveTo &&
+                                    unit_.dogfight_state != bsp::DogfightState::kFollow &&
+                                    bsp::dogfight_engaged_009aafa0(unit_.df_latch_d0, 1,
+                                                                   unit_.df_target_squadron)) {
+                                    ti.aaa80 = df_early_edge_009aaa80();
+                                }
+                            }
                             ti.aim_too_close_6a0 = unit_.df_aim_state.too_close_24;
                             ti.aim_bored_98f0 =
                                 unit_.df_aim_state.bored_18 > unit_.df_aim_state.bored_limit_1c;
@@ -7089,6 +7196,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // vt[34h] on both units; the forward rows stand in.
                             ai.opposing = mo[8] * mt[8] + mo[9] * mt[9] + mo[10] * mt[10] < 0.0f;
                             // (approach+1Ch)+48h: last tick's fire flag from 009FC7C0.
+                            unit_.df_dc = 0.0f;    // 009A76E0: approach+DCh = 0
+                            unit_.df_e0 = 1.0f;    // approach+E0h = 1.0
                             ai.gun_locked_48 = GameUnitsHost::Impl::kDogfightGunBound &&
                                                unit_.df_gun.fire_48;
                             {
@@ -7108,6 +7217,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 unit_.df_aim[1] - unit_.motion.position[1], d,
                                 unit_.plane_climb_angle_1e4);
                             df_steer(h, p, unit_.df_aim[1]);
+                            if (!c.speed_from_target) {
+                                ++unit_.df_head_on_ticks;
+                                if (c.head_on_fraction < unit_.df_head_on_throttle_min) {
+                                    unit_.df_head_on_throttle_min = c.head_on_fraction;
+                                }
+                            }
                             if (c.speed_from_target) {
                                 unit_.plane_desired_speed_2b4 = c.desired_speed;
                                 unit_.plane_air_brake_mode_2d8 = 1;
@@ -7173,6 +7288,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     unit_.plan_slots[bsp::kPilotSlotAirBrake].active = 1;
                                     unit_.plane_air_brake_mode_2d8 = 0;
                                 }
+                            }
+                            if (unit_.dogfight_state == bsp::DogfightState::kManeuver) {
+                                unit_.df_dc = 1.5f;   // 009A9270 tail: 00CE380C
+                                unit_.df_e0 = 0.1f;   // 00D7A2F0
                             }
                             owner_.record("BotStateDogfightManeuver::standin", 0x009a8b20u);
                             return;
@@ -11863,6 +11982,13 @@ void GameUnitsHost::transform_by_unit_matrix_004142e0(std::size_t index, float i
     out_z = result[2];
 }
 
+// Packet cc9_plane_gun_pass: unit+BC9h, the latched gunFire the plane's fixed
+// step hands to each enabled gun's SetTriggerHeld (007CE9A0-007CE9F4).
+bool GameUnitsHost::plane_gun_trigger_bc9(std::size_t index) const {
+    if (index >= impl_->slots.size()) return false;
+    return impl_->slots[index]->plane_gun_fire_bc9;
+}
+
 int GameUnitsHost::unit_side_0054(std::size_t index) const {
     if (index >= impl_->slots.size()) return -1;
     // unit+54h is the party the scene record authored, which milestone 2h's
@@ -12795,9 +12921,14 @@ void GameUnitsHost::report() {
                         bursts += slot->df_gun.bursts;
                         fire_ticks += slot->df_gun.fire_ticks;
                         host.log.notef("  fighter gun %-12s bursts=%d fire_ticks=%d "
-                            "c50_refreshes=%d finder_scans=%d enemy_list=%zu",
+                            "c50_refreshes=%d finder_scans=%d enemy_list=%zu trigger_ticks=%d "
+                            "trigger_rises=%d early_edges=%d early_asks=%d head_on_ticks=%d "
+                            "head_on_throttle_min=%.3f",
                             slot->row.name.c_str(), slot->df_gun.bursts, slot->df_gun.fire_ticks,
-                            slot->nb_refreshes, slot->nb_scans, slot->nb_enemy_50.size());
+                            slot->nb_refreshes, slot->nb_scans, slot->nb_enemy_50.size(),
+                            slot->pg_trigger_ticks, slot->pg_trigger_rises, slot->df_early_edges,
+                            slot->df_early_asks, slot->df_head_on_ticks,
+                            static_cast<double>(slot->df_head_on_throttle_min));
                     }
                     if (df_aircraft > 0) {
                         host.log.notef("summary mission fighter gun: bursts=%d fire_ticks=%d "

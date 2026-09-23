@@ -225,3 +225,14 @@ empty at mission end. Prediction 2, that bursts would rise, was wrong: the forwa
 4. **The finder lands** (`kPlaneFinderBound = true`): neutral. It gives the gun its image
    target source, and it is ready for `009AAA80` and the probe once `007C4830` (the elevation
    test) and the `+30h` list are read and bound.
+
+## Correction, 2026-09-23 (packet cc9_plane_gun_pass)
+
+Section 2's "no weapon reader" of `gunFire` is **wrong**.
+* The plane's fixed step `007CE040` reads it as `[ESI+8B9h]` with `ESI = unit+310h`, which is
+  `unit+BC9h` (`007CE974`), right after the latch `007B9770` (`007CE96F`).
+* It hands it to `SetTriggerHeld` (`vtable[1E8h]`) of every gun part (`IsKindOf 20h`) whose
+  weapon group is enabled (`007CE995`-`007CE9FB`).
+* The literal `C9 0B 00 00` scan could not see an `ESI+8B9h` displacement.
+* The forward guns are the `MRFSGun` class. The `006EC640` lead is the catapult. See
+  `docs/PLANE_GUN_PASS.md`.
