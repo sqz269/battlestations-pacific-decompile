@@ -493,3 +493,22 @@ section 10 item 0: this host's follow law commands heading and pitch and **no sp
 that must fly its own track bleeds speed from its seed, falls behind, and sinks. The next step is
 the HOLD arm read (`docs/PLANE_FOLLOW_HOLD_ARM.md`), and specifically its speed command, before any
 further placement-off experiment.
+
+**Where the "no speed" of section 8 actually is, checked in this packet.** The host's fly-to
+binding (`run_follow_law_009bfee0_009bee30`) does compute the image's speed and store it in
+`plane_desired_speed_2b4`; that write has been in the tree since `6fe098150`, so E2's binary had
+it. What it does not do is the image's next two stores:
+
+```
+009BFD0F  FSTP float ptr [EBX+2B4h]     ; desired speed          <- host writes this
+009BFD15  MOV  byte ptr [EBX+2B0h],0                            <- host does not
+009BFD1C  MOV  dword ptr [EBX+2D8h],1   ; speed-demand mode      <- host does not
+```
+
+The host's `0099D300` throttle rule (`pilot_plan_throttle_0099d300`) enters its demand arm only
+when `+2D8h` is 1, or when the flight state is 5; an airborne plane is in state 7. A wing member
+that constructs straight into `follow` never flies a state that raises `+2D8h`, so its desired
+speed is computed and never read. "Commands no speed" is true of the host, but the gap in the fly-to
+arm is two missing stores, not an unread law. It is not fixed here: the brief forbids wiring
+the follow seams without a same-binary control run, and the HOLD arm, which a member on station
+takes instead, is still the larger unread piece.
