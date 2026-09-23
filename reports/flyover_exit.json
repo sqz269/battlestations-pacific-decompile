@@ -1,0 +1,27 @@
+{
+  "packet": "cc9_flyover_exit",
+  "doc": "docs/FLYOVER_EXIT.md",
+  "scope": "Read of the fly-over's lead point, heading arm and exit, and of 007F0280's activity on USN04. No binding; the probe's accumulator is unread.",
+  "abi_compatible": false,
+  "game_validated": false,
+  "routines": [
+    {"address": "009FA2E0", "native": "009FA2E0", "name": "BSP_BotApproachTargetRef_GetTargetVelocity", "role": "the target's world velocity via vtable+34h on sub+14h, else sub+18h; zero seed without a target"},
+    {"address": "009C62B0", "native": "009C62B0", "name": "BSP_BotStateDiveBombFlyAbove_Tick", "role": "lead point, heading arm, dead band, roll-in and can-dive flags"},
+    {"address": "007F0280", "native": "007F0280", "name": "BSP_Bot_NearFieldUnitAvoidanceProbe", "role": "near-field box; live on USN04 for formation pairs; accumulator 007F06AF-007F0A96 unread"},
+    {"address": "009C4220", "native": "009C4220", "name": "(attackrun tick)", "role": "lateral offset = -probe * 30 deg at 009C42BD-009C42D3"}
+  ],
+  "call_sites": [
+    {"address": "009C62E8", "native": "009FA2E0", "function": "009C62B0", "note": "target velocity for the 3 s lead"},
+    {"address": "009C641C", "native": "00438B10", "function": "009C62B0", "note": "the wrapped lead-bearing error"},
+    {"address": "009C6342", "native": "00D20C48+vtable00", "function": "009C62B0", "note": "aim point for the lead point"},
+    {"address": "009C62CF", "native": "unit+vtable34", "function": "009C62B0", "note": "own velocity"},
+    {"address": "009C6B3A", "native": "007F0280", "function": "009C62B0", "note": "the fly-over's probe call"},
+    {"address": "009C42B8", "native": "007F0280", "function": "009C4220", "note": "the attackrun's probe call"}
+  ],
+  "measurement": {
+    "log": "local/v0_usn04.log (control of docs/FLYOVER_SPEED.md)",
+    "script": "local/box.py",
+    "finding": "during turndown, same-flight pairs are inside the 80 x 60 x 120 m box on up to 53 of ~100 ticks (Lexington flights, 62-74 m separation); the image's probe would be non-zero"
+  },
+  "validation": {"build": "not rebuilt; no source change", "runs": "none; no bounded term to bind"}
+}
