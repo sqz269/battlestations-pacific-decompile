@@ -19,6 +19,7 @@
 #include "bsp/ship_ai_search_storage.hpp"
 #include "bsp/session_participant_pools.hpp"
 
+#include <algorithm>
 #include <array>
 #include <cmath>
 #include <deque>
@@ -40,6 +41,8 @@
 #include "bsp/ship_ai_formation.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/recon_sensor_pass.hpp"
+#include "bsp/gamepad_force_events.hpp"
+#include "bsp/unit_gunnery_pass.hpp"
 #include "bsp/projectile_kinds.hpp"
 #include "bsp/gun_aiming.hpp"
 #include "bsp/gun_gravity_arc.hpp"
@@ -100,6 +103,13 @@ inline constexpr bool kShipAiRingQueryBound = true;
 // it (0081106E): 2 * max(zmax, -zmin) of the model bounds, or class+A0h Length
 // without them. False: 0.
 inline constexpr bool kUnitRadiusBound = true;
+// Packet cc9_ship_traffic, docs/SHIP_AI_TRAFFIC.md. True: 009E9190 walks the
+// side's contact list (the gunnery host's [recon+DE8h] stand-in), inserts every
+// kind-5 contact other than the target that lies within its own longest weapon
+// range plus 200 (009E92D5), keeps it while within that range plus 300
+// (009E6170), rates its weapons against this ship through 0095EB40 (009E6240)
+// and steers away by the weighted sum. False: no candidates, as before.
+inline constexpr bool kShipAiTrafficBound = true;
 namespace {
 
 bool has_ship_navigation_class(int kind) noexcept {
@@ -478,6 +488,17 @@ struct GameShipAiHost::Impl {
         bsp::ShipAiAttackMoveRingSlot approach_ring[bsp::kAttackMoveRingSlotCount]{};
         bsp::ShipAiApproachSlotScore approach_scores[bsp::kShipAiApproachSlotCount]{};
         bool approach_ring_built{false};
+        // Packet cc9_ship_traffic: the list at nested+14A0h, one 124h-byte record
+        // per entry (009E8360). Only the fields with a reader are kept.
+        struct TrafficRecord {
+            std::size_t unit{0};           // +14h, the observed entity
+            float timer_108{-1.0f};        // +108h, 00D7A260
+            float dir_10c[3]{0.0f, 0.0f, 0.0f}; // +10Ch..+114h
+            float heading_118{0.0f};       // +118h
+            float distance_11c{0.0f};      // +11Ch
+            float weight_120{1.0f};        // +120h, 00D7A24C
+        };
+        std::vector<TrafficRecord> traffic;
         // Packet cc8_ship_ai_approach_curves: the two 60-sample range curves at
         // nested+12C0h and nested+13B0h, cleared by 00954940 at 009E55C3 and
         // 009E55CE. The first is the own unit's expected damage against the
@@ -573,6 +594,47 @@ struct GameShipAiHost::Impl {
     // unit+9C8h for a unit index, the full hull length 0081106E writes (model
     // bounds, or class Length without them): the units host already produces it
     // (docs/UNIT_HULL_EXTENTS.md, GameUnitsHost::unit_hull_length_09c8).
+    // The nested+1238h block that describes ship `index` as a target, as
+    // 009F1BC0 fills it (009F293F..009F29D1). Shared by the target curve and
+    // the traffic advance 009E6240.
+    bsp::ShipAiFirepowerQuery target_block_1238h(std::size_t index) const {
+        bsp::ShipAiFirepowerQuery q{};
+        q.window_seconds = 20.0f;
+        q.ready_horizon_seconds = 30.0f;
+        // +123Ch, [unit+9C8h] of THIS ship (009F294B).
+        q.target_length = kUnitRadiusBound ? unit_length_9c8(index) : 0.0f;
+        q.damage_cap = 0.0f;
+        int type_id = -1;
+        if (gunnery != nullptr) {
+            const std::vector<GameGunneryUnitRow>& unit_rows = gunnery->unit_rows();
+            if (index < unit_rows.size()) {
+                q.damage_cap = unit_rows[index].health;
+                type_id = unit_rows[index].type_id;
+            }
+        }
+        float armour = 0.0f;              // loader default 0 (0087CCBF)
+        float underwater = 0.0f;          // loader default 0 (00831D7C)
+        float threshold = 100.0f;         // loader default 100 (00831DC4)
+        if (settings_owner != nullptr && type_id >= 0) {
+            armour = settings_owner->read_vehicle_class_number(type_id, "Armour", armour);
+            underwater = settings_owner->read_vehicle_class_number(type_id,
+                "UnderwaterArmour", underwater);
+            threshold = settings_owner->read_vehicle_class_number(type_id,
+                "DamageThreshold", threshold);
+        }
+        q.armour = armour;
+        q.armour_torpedo = underwater;
+        q.damage_threshold = threshold;
+        q.unused_word9 = 5.0f;
+        q.allow_machine_gun = 1;
+        q.allow_artillery = 1;
+        q.allow_torpedo = 1;
+        q.allow_depth_charge = 1;
+        q.require_bearing = 0;   // 009F29CA
+        q.use_ready_rounds = 0;  // 009F29D1
+        return q;
+    }
+
     float unit_length_9c8(std::size_t index) const {
         return units.unit_hull_length_09c8(index);
     }
@@ -2230,26 +2292,64 @@ private:
 class AvoidBinding final : public bsp::ShipAiApproachAvoidHost {
 public:
     AvoidBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
-                 std::size_t index)
-        : owner_(owner), ctl_(ctl), index_(index) {}
+                 GameShipAiRow& row, std::size_t index)
+        : owner_(owner), ctl_(ctl), row_(row), index_(index) {}
     float random_stream1_00bd2f10(float low, float) override {
         owner_.record("ShipAiApproach::avoid_random_00bd2f10", 0x00bd2f10u);
         return low;
     }
     int candidate_count_008053c0() override {
-        // 009E9220, the entity list at [unit+54h]+0DE8h. construct_world
-        // 004DE610 is a load record here, so the list does not exist.
-        owner_.record("ShipAiApproach::candidate_count_008053c0", 0x008053c0u);
-        return 0;
+        // 009E9220, the side's contact list [008053C0(unit+54h)+0DE8h]. There is
+        // no recon slot object in this process; the stand-in is the one the
+        // gunnery host's recon sweep uses (include/bsp/game_hosts_gunnery.hpp):
+        // enemy side, rule (b)'s four bytes, not dead, a ship or plane base, and
+        // a published recon level other than none. LABELLED SUBSTITUTION.
+        contacts_.clear();
+        if (!kShipAiTrafficBound || owner_.gunnery == nullptr) {
+            owner_.record("ShipAiApproach::candidate_count_008053c0", 0x008053c0u);
+            return 0;
+        }
+        const std::vector<GameGunneryUnitRow>& rows = owner_.gunnery->unit_rows();
+        const bsp::ReconSensorPassState& recon = owner_.gunnery->recon_sensor_pass_state();
+        const int own_side = owner_.units.unit_side_0054(index_);
+        const std::size_t count = owner_.units.count();
+        for (std::size_t i = 0; i < count; ++i) {
+            if (i == index_ || owner_.units.unit_side_0054(i) == own_side) continue;
+            if (!owner_.units.unit_alive_and_visible(i)) continue;
+            if (i < rows.size() && rows[i].sunk) continue;
+            if (!owner_.units.unit_is_kind_of(i, bsp::kUnitGunneryKindShipBase)
+                && !owner_.units.unit_is_kind_of(i, bsp::kUnitGunneryKindPlaneBase)) {
+                continue;
+            }
+            if (recon.level(own_side, i) == bsp::ReconDetectionLevel::none) continue;
+            contacts_.push_back(i);
+        }
+        owner_.done("ShipAiApproach::candidate_count_008053c0", 0x008053c0u);
+        return static_cast<int>(contacts_.size());
     }
-    std::uint32_t candidate_at(int) override { return 0u; }
-    bool candidate_is_kind_vtable_005c(std::uint32_t) override { return false; }
+    std::uint32_t candidate_at(int i) override {
+        if (i < 0 || static_cast<std::size_t>(i) >= contacts_.size()) return 0u;
+        return static_cast<std::uint32_t>(contacts_[static_cast<std::size_t>(i)] + 1u);
+    }
+    bool candidate_is_kind_vtable_005c(std::uint32_t handle) override {
+        // 009E9253, candidate->vtable[5Ch](5), the same test 009F29EC applies to
+        // the target.
+        return handle != 0u && handle - 1u < owner_.units.count()
+            && owner_.units.unit_is_kind_of(handle - 1u, 5);
+    }
     std::uint32_t brain_target_0b20() override { return ctl_.goal_vector.raw_target_0b20; }
     void refresh_pose_00414db0(std::uint32_t) override {}
-    bsp::ShipAiApproachPoint entity_world_position(std::uint32_t) override {
-        return bsp::ShipAiApproachPoint{};
+    bsp::ShipAiApproachPoint entity_world_position(std::uint32_t handle) override {
+        bsp::ShipAiApproachPoint out{};
+        if (handle == 0u || handle - 1u >= owner_.units.count()) return out;
+        owner_.units.unit_position_00fc(handle - 1u, out.x, out.y, out.z);
+        return out;
     }
-    float entity_speed_0494(std::uint32_t) override { return 0.0f; }
+    // [entity+494h] (009E92CF): the entity's longest weapon range, which
+    // 00956C20 writes (docs/GUNNERY_TABLES.md), not a speed.
+    float entity_speed_0494(std::uint32_t handle) override {
+        return handle == 0u ? 0.0f : weapon_range_0494(handle - 1u);
+    }
     bsp::ShipAiApproachPoint unit_world_position() override {
         float x = 0.0f, y = 0.0f, z = 0.0f;
         owner_.units.unit_position_00fc(index_, x, y, z);
@@ -2260,20 +2360,94 @@ public:
         owner_.done("ShipAiApproach::avoid_unit_position", 0x009e93f3u);
         return out;
     }
-    void insert_traffic_record(std::uint32_t) override {
-        owner_.record("ShipAiApproach::insert_traffic_record_009e8360", 0x009e8360u);
+    void insert_traffic_record(std::uint32_t handle) override {
+        if (handle == 0u || handle - 1u >= owner_.units.count()) return;
+        GameShipAiHost::Impl::Controller::TrafficRecord rec{};
+        rec.unit = handle - 1u;
+        ctl_.traffic.push_back(rec); // 009E8360, then the splice at the end
+        owner_.done("ShipAiApproach::insert_traffic_record_009e8360", 0x009e8360u);
+        ++row_.traffic_inserts;
+        if (row_.traffic_first_entity.empty() && owner_.gunnery != nullptr
+            && rec.unit < owner_.gunnery->unit_rows().size()) {
+            row_.traffic_first_entity = owner_.gunnery->unit_rows()[rec.unit].name;
+        }
+        row_.traffic_max_records = std::max(row_.traffic_max_records,
+                                            static_cast<int>(ctl_.traffic.size()));
     }
-    int traffic_record_count() override { return 0; }
-    bool traffic_record_active_009e6170(int, const bsp::ShipAiApproachPoint&,
-                                        float) override {
-        return false;
+    int traffic_record_count() override { return static_cast<int>(ctl_.traffic.size()); }
+    std::uint32_t traffic_record_entity(int r) override {
+        return static_cast<std::uint32_t>(ctl_.traffic[static_cast<std::size_t>(r)].unit + 1u);
     }
-    void erase_traffic_record(int) override {}
-    void advance_traffic_record_009e6240(int, float,
-                                         const bsp::ShipAiApproachPoint&) override {}
-    float traffic_record_weight_0120(int) override { return 0.0f; }
-    bsp::ShipAiApproachPoint traffic_record_direction_010c(int) override {
-        return bsp::ShipAiApproachPoint{};
+    bool traffic_record_active_009e6170(int r, const bsp::ShipAiApproachPoint& unit_pos,
+                                        float range) override {
+        const std::size_t e = ctl_.traffic[static_cast<std::size_t>(r)].unit;
+        if (!entity_live(e)) return false;
+        float x = 0.0f, y = 0.0f, z = 0.0f;
+        owner_.units.unit_position_00fc(e, x, y, z);
+        // 009E6170: float differences, the x87 sum against (+494h + range)^2.
+        const float dx = unit_pos.x - x;
+        const float dz = unit_pos.z - z;
+        const float reach = weapon_range_0494(e) + range;
+        return static_cast<double>(dx) * dx + 0.0 * 0.0 + static_cast<double>(dz) * dz
+            < static_cast<double>(reach) * reach;
+    }
+    void erase_traffic_record(int r) override {
+        ctl_.traffic.erase(ctl_.traffic.begin() + r);
+        ++row_.traffic_erases;
+    }
+    void advance_traffic_record_009e6240(int r, float seconds,
+                                         const bsp::ShipAiApproachPoint& unit_pos) override {
+        GameShipAiHost::Impl::Controller::TrafficRecord& rec =
+            ctl_.traffic[static_cast<std::size_t>(r)];
+        if (!entity_live(rec.unit)) return;
+        rec.timer_108 = rec.timer_108 - seconds;
+        if (!(rec.timer_108 < 0.0f)) return;
+        float x = 0.0f, y = 0.0f, z = 0.0f;
+        owner_.units.unit_position_00fc(rec.unit, x, y, z);
+        rec.dir_10c[0] = unit_pos.x - x;
+        rec.dir_10c[1] = 0.0f;           // the y difference is overwritten with 0
+        rec.dir_10c[2] = unit_pos.z - z;
+        const float length = bsp::force_event_vector_length_0042b2f0(
+            std::array<float, 3>{rec.dir_10c[0], rec.dir_10c[1], rec.dir_10c[2]});
+        rec.distance_11c = length;
+        rec.dir_10c[0] = rec.dir_10c[0] / length;
+        rec.dir_10c[1] = rec.dir_10c[1] / length;
+        rec.dir_10c[2] = rec.dir_10c[2] / length;
+        rec.heading_118 = bsp::ship_ai_approach_heading_from_delta(rec.dir_10c[0],
+                                                                   rec.dir_10c[2]);
+        // nested+1238h, this ship as the target, with 009E9190's +41h and word
+        // 7 (009E942B/009E9432) and 009E6240's words 5 and 0 and +40h.
+        bsp::ShipAiFirepowerQuery q = owner_.target_block_1238h(index_);
+        q.use_ready_rounds = 1;
+        q.ready_horizon_seconds = bsp::kApproachAvoidReadyHorizon;
+        q.bearing = rec.heading_118;   // 009E634C
+        q.require_bearing = 1;         // 009E634F
+        q.range = rec.distance_11c;    // 009E6359
+        FirepowerBinding firepower(owner_, rec.unit); // ECX = [record+14h]
+        const bsp::ShipAiFirepowerResult result =
+            bsp::ship_ai_firepower_rating_0095eb40(q, firepower);
+        float weight = result.total;
+        if (weight < 1.0f) weight = 1.0f; // 009E6367..009E639B, 00D7A24C
+        rec.weight_120 = weight;
+        // 009E63A6, 00BD2F10(1, 2.0, 3.0): the approach's stream-1 stand-in
+        // returns the low bound, as for the pass timer. LABELLED.
+        owner_.record("ShipAiApproach::traffic_random_00bd2f10", 0x009e63a6u);
+        rec.timer_108 = 2.0f;
+        owner_.done("ShipAiApproach::advance_traffic_record_009e6240", 0x009e6240u);
+        ++row_.traffic_refreshes;
+        row_.traffic_weight_max = std::max(row_.traffic_weight_max, weight);
+    }
+    float traffic_record_weight_0120(int r) override {
+        return ctl_.traffic[static_cast<std::size_t>(r)].weight_120;
+    }
+    bsp::ShipAiApproachPoint traffic_record_direction_010c(int r) override {
+        const GameShipAiHost::Impl::Controller::TrafficRecord& rec =
+            ctl_.traffic[static_cast<std::size_t>(r)];
+        bsp::ShipAiApproachPoint out{};
+        out.x = rec.dir_10c[0];
+        out.y = rec.dir_10c[1];
+        out.z = rec.dir_10c[2];
+        return out;
     }
     float vector_length_0042b2f0(const bsp::ShipAiApproachPoint& v) override {
         return bsp::length_2d_00414c60(std::array<float, 2>{v.x, v.z});
@@ -2284,9 +2458,27 @@ public:
     float tune_avoid_span_0c() override { return owner_.tune.avoid_span; } // tune+0Ch
 
 private:
+    // 009E6170 / 009E6240's live test: +5Ch set, +5Dh / +60h / +5Eh clear, which
+    // unit_alive_and_visible answers; a unit the gunnery host sank is gone.
+    bool entity_live(std::size_t e) const {
+        if (e >= owner_.units.count() || !owner_.units.unit_alive_and_visible(e)) return false;
+        if (owner_.gunnery != nullptr) {
+            const std::vector<GameGunneryUnitRow>& rows = owner_.gunnery->unit_rows();
+            if (e < rows.size() && rows[e].sunk) return false;
+        }
+        return true;
+    }
+    float weapon_range_0494(std::size_t e) const {
+        if (owner_.gunnery == nullptr) return 0.0f;
+        const std::vector<GameGunneryUnitRow>& rows = owner_.gunnery->unit_rows();
+        return e < rows.size() ? rows[e].any_weapon_max_range : 0.0f;
+    }
+
     GameShipAiHost::Impl& owner_;
     GameShipAiHost::Impl::Controller& ctl_;
+    GameShipAiRow& row_;
     std::size_t index_;
+    std::vector<std::size_t> contacts_;
 };
 
 // 009E76D0.
@@ -2466,10 +2658,17 @@ public:
         ++owner_.summary.standoff_choices;
     }
     void refresh_avoidance_009e9190(float seconds) override {
-        AvoidBinding avoid(owner_, ctl_, index_);
+        AvoidBinding avoid(owner_, ctl_, row_, index_);
         bsp::ship_ai_approach_refresh_avoidance_009e9190(ctl_.approach, ctl_.approach_ring,
             ctl_.approach_scores, seconds, avoid);
         owner_.done("ShipAiApproach::refresh_avoidance", 0x009e9190u);
+        // Packet cc9_ship_traffic: whether the pass left a nonzero avoid term.
+        float strongest = 0.0f;
+        for (int i = 0; i < bsp::kShipAiApproachSlotCount; ++i) {
+            strongest = std::max(strongest, ctl_.approach_scores[i].avoid_3c);
+        }
+        if (strongest > 0.0f) ++row_.avoid_active_passes;
+        row_.avoid_strength_max = std::max(row_.avoid_strength_max, strongest);
     }
     void score_evade_009e74d0(float seconds) override {
         EvadeBinding evade(owner_, index_);
@@ -2484,6 +2683,9 @@ public:
         const int winner = bsp::ship_ai_approach_select_slot_009e76d0(ctl_.approach,
             ctl_.approach_ring, ctl_.approach_scores, seconds, select);
         owner_.done("ShipAiApproach::select_slot", 0x009e76d0u);
+        if (row_.ring_scan_winner_first >= 0 && winner != row_.ring_scan_winner_last) {
+            ++row_.ring_scan_winner_changes;
+        }
         if (row_.ring_scan_winner_first < 0) row_.ring_scan_winner_first = winner;
         row_.ring_scan_winner_last = winner;
         // 009E7BE0's five-word sum over the whole ring, so the census can say
@@ -2580,42 +2782,7 @@ private:
     }
 
     bsp::ShipAiFirepowerQuery target_query_1238h() const {
-        bsp::ShipAiFirepowerQuery q{};
-        q.window_seconds = 20.0f;
-        q.ready_horizon_seconds = 30.0f;
-        // +123Ch, [unit+9C8h] of THIS ship (009F294B).
-        q.target_length = kUnitRadiusBound ? owner_.unit_length_9c8(index_) : 0.0f;
-        q.damage_cap = 0.0f;
-        int type_id = -1;
-        if (owner_.gunnery != nullptr) {
-            const std::vector<GameGunneryUnitRow>& rows = owner_.gunnery->unit_rows();
-            if (index_ < rows.size()) {
-                q.damage_cap = rows[index_].health;
-                type_id = rows[index_].type_id;
-            }
-        }
-        float armour = 0.0f;              // loader default 0 (0087CCBF)
-        float underwater = 0.0f;          // loader default 0 (00831D7C)
-        float threshold = 100.0f;         // loader default 100 (00831DC4)
-        if (owner_.settings_owner != nullptr && type_id >= 0) {
-            // The live VehicleClass rows, the table 00960230 reads the class from.
-            armour = owner_.settings_owner->read_vehicle_class_number(type_id, "Armour", armour);
-            underwater = owner_.settings_owner->read_vehicle_class_number(type_id,
-                "UnderwaterArmour", underwater);
-            threshold = owner_.settings_owner->read_vehicle_class_number(type_id,
-                "DamageThreshold", threshold);
-        }
-        q.armour = armour;
-        q.armour_torpedo = underwater;
-        q.damage_threshold = threshold;
-        q.unused_word9 = 5.0f;
-        q.allow_machine_gun = 1;
-        q.allow_artillery = 1;
-        q.allow_torpedo = 1;
-        q.allow_depth_charge = 1;
-        q.require_bearing = 0;
-        q.use_ready_rounds = 0;
-        return q;
+        return owner_.target_block_1238h(index_);
     }
 
     void refresh_approach_curves(bool has_target) {
@@ -5957,6 +6124,15 @@ void GameShipAiHost::report() {
             static_cast<double>(row.ring_word_bearing_34),
             static_cast<double>(row.ring_word_evade_38),
             static_cast<double>(row.ring_word_avoid_3c));
+        // Packet cc9_ship_traffic.
+        host.log.notef("    traffic %-16s inserts=%llu erases=%llu refreshes=%llu "
+            "max_records=%d weight_max=%.2f avoid_passes=%llu avoid_max=%.4f "
+            "winner_changes=%llu first=%s",
+            row.unit.c_str(), row.traffic_inserts, row.traffic_erases,
+            row.traffic_refreshes, row.traffic_max_records,
+            static_cast<double>(row.traffic_weight_max), row.avoid_active_passes,
+            static_cast<double>(row.avoid_strength_max), row.ring_scan_winner_changes,
+            row.traffic_first_entity.empty() ? "-" : row.traffic_first_entity.c_str());
     }
     host.log.notef("summary mission ship ai command completion events=%llu callbacks=%llu "
         "end_commands=%llu queue_advances=%llu",

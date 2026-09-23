@@ -114,3 +114,17 @@ USN01, 3200/3000 frames: the logs match line for line, apart from one platform m
 - The traffic records that would let 009E9190 reach 009E6240.
 - The four allow bytes at [0080E160(unit)+220h..+223h] still have no producer; the host forces
   them to 1.
+
+## 6. Corrections, 2026-09-23 (packet cc9_ship_traffic)
+
+- Section 5 said the four allow bytes at [0080E160(unit)+220h..+223h] have no producer. That is
+  wrong. The command-controller constructor 00720180 stores 1 into all four
+  (007202FD..00720312). The base message apply 0071C1E0 rewrites them from sub-kinds 3 to 6,
+  which the Lua bindings ArtilleryEnable (0089C590) and TorpedoEnable (0089C8F0), and two
+  unnamed ones, send. The host's forced 1 is the constructor default. docs/SHIP_AI_TRAFFIC.md
+  section 6.
+- Section 5's open item on scans 127 to 141 is answered: the held target was D3A Val #1.1. It
+  died at 156.20 s, just before scan 127, and a target with health 0 zeroes the output cap. It
+  was not armour.
+- Section 2's statement that the traffic-record count is always 0 held for the host before this
+  packet. The records are now bound; see docs/SHIP_AI_TRAFFIC.md.

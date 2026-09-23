@@ -213,6 +213,17 @@ struct GameShipAiRow {
     float ring_word_bearing_34{0.0f};        // +34h, 009E74D0
     float ring_word_evade_38{0.0f};          // +38h, 009E74D0
     float ring_word_avoid_3c{0.0f};          // +3Ch, 009E9190
+    // Packet cc9_ship_traffic: the traffic records at nested+14A0h that 009E9190
+    // inserts (009E935D), advances (009E950F) and erases (009E9588).
+    unsigned long long traffic_inserts{0};
+    unsigned long long traffic_erases{0};
+    unsigned long long traffic_refreshes{0};   // 009E6240 bodies past the countdown
+    int traffic_max_records{0};
+    float traffic_weight_max{0.0f};            // record+120h after a refresh
+    unsigned long long avoid_active_passes{0}; // 009E9190 passes with strength > 0
+    float avoid_strength_max{0.0f};
+    std::string traffic_first_entity;          // the first unit ever inserted
+    unsigned long long ring_scan_winner_changes{0};
     unsigned long long heading_changes{0};   // nested+120Ch differed from before
     // Packet cc8_ship_ai_approach_slot_scorers: the three gates 009E7FC0 passes
     // before it scores a slot, as the host last answered them.
