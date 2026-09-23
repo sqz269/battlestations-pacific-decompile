@@ -1,0 +1,355 @@
+{
+  "packet": "cc10_messages109110",
+  "status": "eight_complete_normal_bodies_two_profiles_strict_win32_original_compared",
+  "scope": {
+    "new_native_bodies": 8,
+    "new_body_bytes": 354,
+    "source_interfaces": true,
+    "binary_abi_compatible": false,
+    "game_validated": false,
+    "new_library_ports": 0,
+    "full_factory_bound": false
+  },
+  "evidence": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00761a80",
+        "length": 102,
+        "hex": "8bc15333dbc740040300000089580889580cc700682cd000c640106d8b15a888e1008b8aec1800003bcb7c1183f9077f0c8b8c8acc180000894814eb03895814f30f10053c8bcf006689581888581a88581cc7400401000000f30f114020c7005034d0005bc3",
+        "sha256": "80cb423710ae9701ba16a7640637eed09b08c744fb7799b502b697267367411a"
+      },
+      {
+        "address": "00761af0",
+        "length": 7,
+        "hex": "c7017449ce00c3",
+        "sha256": "31bc58007f5ef6ea6bc460bc85f54f0a4068ff66642fd1d413a9ddf3c7158514"
+      },
+      {
+        "address": "00761b00",
+        "length": 37,
+        "hex": "8b44240483f86d741483f862740f83f849740a83f846740533c0c20400b801000000c20400",
+        "sha256": "2d9769dccf1bee36d6a644171de6bc79c012fba88f9bce92430e699ee063a0e8"
+      },
+      {
+        "address": "00761b30",
+        "length": 31,
+        "hex": "f644240401568bf1c7067449ce00740956e8664a490083c4048bc65ec20400",
+        "sha256": "281c52c5c6dd484e3f59b16a64fc85280e5e59b750a23739ca3f506dc36f7da1"
+      },
+      {
+        "address": "00761b50",
+        "length": 102,
+        "hex": "8bc15333dbc740040300000089580889580cc700682cd000c640106e8b15a888e1008b8aec1800003bcb7c1183f9077f0c8b8c8acc180000894814eb03895814f30f10053c8bcf006689581888581a88581cc7400401000000f30f114020c7006434d0005bc3",
+        "sha256": "c4f4b304bb1f7fe7a375fe2f14b03f73c3d92c97bae76760dbb30e38f899dbf4"
+      },
+      {
+        "address": "00761bc0",
+        "length": 7,
+        "hex": "c7017449ce00c3",
+        "sha256": "31bc58007f5ef6ea6bc460bc85f54f0a4068ff66642fd1d413a9ddf3c7158514"
+      },
+      {
+        "address": "00761bd0",
+        "length": 37,
+        "hex": "8b44240483f86e741483f862740f83f849740a83f846740533c0c20400b801000000c20400",
+        "sha256": "b88154615cbd5190ec337b5c948edad3f93fe323c10915b2f379712818d0209a"
+      },
+      {
+        "address": "00761c00",
+        "length": 31,
+        "hex": "f644240401568bf1c7067449ce00740956e89649490083c4048bc65ec20400",
+        "sha256": "7fa9e307efbcb5dcf3c8d3ab30add01e05c5d6da3aa2fcb1980c1637f858d0ae"
+      },
+      {
+        "address": "00d03450",
+        "length": 40,
+        "hex": "301b7600202f6d0050156d00001b7600c0994400001c7600202f6d0050156d00d01b7600c0994400",
+        "sha256": "7c08ee7c6c10fc4f64830784e132bef9bba1337b0a9365ab205e3a288a2b23f2"
+      },
+      {
+        "address": "00cf8b3c",
+        "length": 4,
+        "hex": "00008043",
+        "sha256": "c65c6602640bff581e75467aa3d034c2cb7487f01511ad9eb50ea0b8d087ac15"
+      },
+      {
+        "address": "0076a448",
+        "length": 8,
+        "hex": "b28f7600d28f7600",
+        "sha256": "aac3ad02fbcf090f1dedde605fc610e3644bcd24e1bbdb7e08eb558a61a238c0"
+      },
+      {
+        "address": "00768fb2",
+        "length": 64,
+        "hex": "6a24e862d8480083c40485c00f84daf5ffff8bc8e8b58affff8bf0e9a91200006a24e842d8480083c40485c00f84baf5ffff8bc8e8658bffff8bf0e989120000",
+        "sha256": "17a621d53d4048f42e93ac73193ec0969eb32d4bb4adf59eef988834c16695b8"
+      }
+    ],
+    "historical_support_pe_hash_verified": true,
+    "relocations": 1335,
+    "new_body_bytes": 354
+  },
+  "routines": [
+    {
+      "address": "00761a80",
+      "last_instruction": "00761ae5",
+      "last_byte_inclusive": "00761ae5",
+      "end_exclusive": "00761ae6",
+      "length": 102,
+      "coverage": "complete",
+      "hex": "8bc15333dbc740040300000089580889580cc700682cd000c640106d8b15a888e1008b8aec1800003bcb7c1183f9077f0c8b8c8acc180000894814eb03895814f30f10053c8bcf006689581888581a88581cc7400401000000f30f114020c7005034d0005bc3",
+      "role": "construct",
+      "type": 109
+    },
+    {
+      "address": "00761af0",
+      "last_instruction": "00761af6",
+      "last_byte_inclusive": "00761af6",
+      "end_exclusive": "00761af7",
+      "length": 7,
+      "coverage": "complete",
+      "hex": "c7017449ce00c3",
+      "role": "destroy",
+      "type": 109
+    },
+    {
+      "address": "00761b00",
+      "last_instruction": "00761b22",
+      "last_byte_inclusive": "00761b24",
+      "end_exclusive": "00761b25",
+      "length": 37,
+      "coverage": "complete",
+      "hex": "8b44240483f86d741483f862740f83f849740a83f846740533c0c20400b801000000c20400",
+      "role": "predicate",
+      "type": 109
+    },
+    {
+      "address": "00761b30",
+      "last_instruction": "00761b4c",
+      "last_byte_inclusive": "00761b4e",
+      "end_exclusive": "00761b4f",
+      "length": 31,
+      "coverage": "complete",
+      "hex": "f644240401568bf1c7067449ce00740956e8664a490083c4048bc65ec20400",
+      "role": "scalar_delete",
+      "type": 109
+    },
+    {
+      "address": "00761b50",
+      "last_instruction": "00761bb5",
+      "last_byte_inclusive": "00761bb5",
+      "end_exclusive": "00761bb6",
+      "length": 102,
+      "coverage": "complete",
+      "hex": "8bc15333dbc740040300000089580889580cc700682cd000c640106e8b15a888e1008b8aec1800003bcb7c1183f9077f0c8b8c8acc180000894814eb03895814f30f10053c8bcf006689581888581a88581cc7400401000000f30f114020c7006434d0005bc3",
+      "role": "construct",
+      "type": 110
+    },
+    {
+      "address": "00761bc0",
+      "last_instruction": "00761bc6",
+      "last_byte_inclusive": "00761bc6",
+      "end_exclusive": "00761bc7",
+      "length": 7,
+      "coverage": "complete",
+      "hex": "c7017449ce00c3",
+      "role": "destroy",
+      "type": 110
+    },
+    {
+      "address": "00761bd0",
+      "last_instruction": "00761bf2",
+      "last_byte_inclusive": "00761bf4",
+      "end_exclusive": "00761bf5",
+      "length": 37,
+      "coverage": "complete",
+      "hex": "8b44240483f86e741483f862740f83f849740a83f846740533c0c20400b801000000c20400",
+      "role": "predicate",
+      "type": 110
+    },
+    {
+      "address": "00761c00",
+      "last_instruction": "00761c1c",
+      "last_byte_inclusive": "00761c1e",
+      "end_exclusive": "00761c1f",
+      "length": 31,
+      "coverage": "complete",
+      "hex": "f644240401568bf1c7067449ce00740956e89649490083c4048bc65ec20400",
+      "role": "scalar_delete",
+      "type": 110
+    }
+  ],
+  "profiles": [
+    {
+      "type": 109,
+      "address": "00d03450",
+      "allocation_bytes": 36,
+      "slots": [
+        "00761b30",
+        "006d2f20",
+        "006d1550",
+        "00761b00",
+        "004499c0"
+      ]
+    },
+    {
+      "type": 110,
+      "address": "00d03464",
+      "allocation_bytes": 36,
+      "slots": [
+        "00761c00",
+        "006d2f20",
+        "006d1550",
+        "00761bd0",
+        "004499c0"
+      ]
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00761b41",
+      "native": "00bf65ac",
+      "function": "00761b30",
+      "contract": "Existing CRT free provider, only flags bit0; root stamped before call; captured ESI returned.",
+      "stack_cleanup": "00761b46 ADD ESP,4; one argument"
+    },
+    {
+      "address": "00761c11",
+      "native": "00bf65ac",
+      "function": "00761c00",
+      "contract": "Existing CRT free provider, only flags bit0; root stamped before call; captured ESI returned.",
+      "stack_cleanup": "00761c16 ADD ESP,4; one argument"
+    }
+  ],
+  "reused_providers": [
+    {
+      "entry": "0075b430",
+      "source": "construct_native_session_message_0075b430",
+      "native_call": false,
+      "contract": "Inspected body; inline base stores and signed owner capture reused by source."
+    },
+    {
+      "entry": "006d2f20",
+      "source": "write_native_session_scalar98_006d2f20",
+      "contract": "Existing complete scalar writer; same adapter identity, no new contract."
+    },
+    {
+      "entry": "006d1550",
+      "source": "read_native_session_scalar98_006d1550",
+      "contract": "Existing complete scalar reader; same adapter identity, no new contract."
+    },
+    {
+      "entry": "004499c0",
+      "source": "native_session_message_always_true_004499c0",
+      "contract": "Inspected body returns true."
+    },
+    {
+      "entry": "00bf65ac",
+      "source": "singleton_lifetime_free",
+      "contract": "Inspected existing CRT service; no new library port."
+    }
+  ],
+  "raw_factory_edges_without_ghidra_ownership": [
+    {
+      "site": "00768fc6",
+      "target": "00761a80",
+      "factory_entry": "00768fb2",
+      "allocation_size": 36,
+      "ghidra_containing_function": null
+    },
+    {
+      "site": "00768fe6",
+      "target": "00761b50",
+      "factory_entry": "00768fd2",
+      "allocation_size": 36,
+      "ghidra_containing_function": null
+    }
+  ],
+  "ghidra": {
+    "worker_read_only": true,
+    "initial_missing_definitions": [
+      "00761b00",
+      "00761b30",
+      "00761bd0",
+      "00761c00"
+    ],
+    "integrator_definition_status": "defined_saved_by_primary; exact live bounds reverified",
+    "owned_call_rows_verified": true,
+    "definition_receipt": "reports/native_session_messages109110_cc10_definitions.json",
+    "definition_commit": "5ff6f4f9e",
+    "call_rows_checked": 2,
+    "call_rows_failed": 0,
+    "all_eight_normal_bodies_listing_gaps": 0,
+    "prior_comments_artifact": "local/cc10_messages109110/comments-before.json"
+  },
+  "checklist": {
+    "callee_before_contract": "Inspected base0075b430,free00bf65ac,always_true004499c0 and both shared scalar bodies; providers unchanged.",
+    "boundary_before_attribution": "Factory calls have no live parent, retained separately; scalar calls require exact newly defined bodies.",
+    "all_sites_before_contract": "Both constructor xref sets contain only their one factory edge; both complete scalar bodies/free sites inspected; existing shared contracts unchanged.",
+    "producer_before_layout": "Both constructor producers and existing scalar/header types inspected; aliases reuse authoritative storage.",
+    "partial_projection": "None: eight normal bodies complete; factory is evidence-only and explicitly unimplemented.",
+    "runtime_claims": "No gameplay/runtime reachability claim; fixture is isolated native/source comparison.",
+    "argument_counts": "RET constructors/ordinary cleanup; RET4 predicate/scalar and codec; free ADD ESP4; factory allocation ADD ESP4.",
+    "register_provenance": "Constructor EAX capture, EBX zero plus saved restore; scalar ESI capture/saved restore and EAX result checked across every instruction.",
+    "lease_scope": "Eight reconstructed routine addresses only; existing consumed providers unleased.",
+    "call_evidence": "Two exact address/native/function rows; two raw factory edges separately unowned."
+  },
+  "validation": {
+    "build": "passed",
+    "ctest": "passed",
+    "differential": "passed",
+    "fresh_live_pe_bytes": 470,
+    "fixture_new_pairs": 836,
+    "historical_support_pe_hash_verified": true,
+    "core_library_build": "passed",
+    "fixture_total_pairs": 50763,
+    "fixture_matching_bytes": 47991805,
+    "fixture_new_matching_bytes": 120456,
+    "inherited_source_only_cleanup_faults": 5,
+    "fixture_receipt": {
+      "exe_sha256": "184B96523173BD71EF58141655E95566EA0780623ADF29BE4F2BD3E9484303CA",
+      "exit": 0,
+      "library_sha256": "E65F3300DDBFD9754B021C7DFA23E3CE10B1CEFE0F1822754E5DB71BC9BCD9B2",
+      "flags": "/std:c++17 /O2 /MD /W4 /WX /fp:strict /MANIFEST:EMBED",
+      "utc": "2026-09-23T23:38:46.2311128Z"
+    },
+    "fixture_command": "./local/cc10_messages109110/run_probe.ps1 -OutputDirectory local/cc10_messages109110/fixture",
+    "build_log": "local/cc10-messages109110-build.log",
+    "fixture_run_log": "local/cc10_messages109110/fixture/run.log",
+    "fixture_merged_rerun": "Copy probe.cpp, original.inc, run_probe.ps1 to local/cc10_messages109110 in integration checkout, then run with a fresh OutputDirectory. Uses include and build/win32/Release/bsp_core.lib, bsp_lua511.lib, bsp_zlib121.lib.",
+    "ctest_passed": 2,
+    "ctest_failed": 0,
+    "ctest_names": [
+      "reconstructed_math",
+      "tool_tests"
+    ],
+    "build_command": "./scripts/build.ps1",
+    "diff_check": "passed"
+  },
+  "limits": [
+    "No full binary ABI, original CRT/FH3, allocation-failure or malformed-input proof.",
+    "No full factory, networking, startup or gameplay implementation.",
+    "No game run; source context lifetimes and retained padding documented.",
+    "Shared codec arithmetic is reused; unmasked FP exceptions, DAZ/FTZ/precision, arbitrary aliases and concurrency not proved."
+  ],
+  "source_hashes": {
+    "include/bsp/native_session_message_tags_109_110.hpp": "c7ba167ccc510098f9cec96fa679afd2e18aecdae2cade0e37dfc7e3a4e74ae1",
+    "src/native_session_message_tags_109_110.cpp": "354acef50b445ea32ab0a9d1f12fd891a36e219b58759b562bf8a4a4bd9b7df5"
+  },
+  "local_evidence_hashes": {
+    "local\\cc10_messages109110\\probe.cpp": "d0330ff85c58d5c3957aa3ba2d0779cf1ce8172bc9115e1b51a1c2cad8077d07",
+    "local\\cc10_messages109110\\original.inc": "3442ceb6120f893999d9a6dd4cd5fce7096523d81abf1217a405c567dcea942a",
+    "local\\cc10_messages109110\\run_probe.ps1": "850e911432929dbf78024568abacebe9fa2932622556926eef3caefdfe8b80db",
+    "local\\cc10_messages109110\\prepare.py": "87f919c7422b19ad57dec8861d73a5a4c3bfa0649638a27918f6def29c9f615d",
+    "local\\cc10_messages109110\\native.json": "959744dab980a38f539f8d90bf5feb64a8a2175ee42ef96bc5b06d3074263ec2",
+    "local\\cc10_messages109110\\fixture\\run.log": "c8914d0bade722ed7a562771ef2abc1bc1263d32f3f48321a6664077308bdb49",
+    "local\\cc10_messages109110\\fixture\\build.log": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf",
+    "local\\cc10_messages109110\\fixture\\result.json": "eab1e25f25265ced8f8d1ba2c4fb469de603c20ca927c2399bb063558611baa3",
+    "local\\cc10-messages109110-build.log": "bf631cb6704778a743622b08e16362b786fd9260fc46264cdc09d5ed6739d21f",
+    "local/cc10_messages109110/comments-before.json": "831fe2e70af791b1966cf55c5472f1cc0fe331311fae87fc4228ad254571d07c"
+  }
+}
