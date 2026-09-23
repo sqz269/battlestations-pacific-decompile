@@ -1,0 +1,45 @@
+{
+  "packet": "cc9_flyover_speed",
+  "doc": "docs/FLYOVER_SPEED.md",
+  "source": "include/bsp/dive_bomb_aimdive_tail.hpp, src/dive_bomb_aimdive_tail.cpp, src/game_hosts_units.cpp (flyabove tick and update_dive_bomb_approach, behind kFlyoverSpeedBound)",
+  "scope": "ESP-anchored pairing of the flyabove frame slot [ESP+2Ch]; the desired-speed arm 009C6F97-009C6FFB and its callee 007C4810 bound as pure rules; approach+50h fed with the aim point height.",
+  "abi_compatible": false,
+  "game_validated": false,
+  "reconstructed": [
+    {"address": "009C62B0", "native": "009C62B0", "name": "BSP_BotStateDiveBombFlyAbove_Tick", "range": "009C6F97-009C6FFB", "rule": "dive_bomb_flyabove_desired_speed_009c6f97"},
+    {"address": "007C4810", "native": "007C4810", "name": "BSP_PlaneClass_MinControlSpeed", "range": "007C4810-007C482D", "rule": "plane_min_control_speed_007c4810"},
+    {"address": "007E413B", "native": "007E413B", "name": "(inline in the tuning loader)", "range": "007E413B-007E41DF", "rule": "tuning_min_control_multiplier_007e41df"}
+  ],
+  "esp_anchor": {
+    "epilogue": "009C7062 POP EDI .. 009C7066 ADD ESP,88h: depth before POP EDI = 88h + 4 saved registers = 152",
+    "unsubtracted_cleanups": [
+      {"address": "009C62CF", "native": "unit+vtable34", "cleanup": 4},
+      {"address": "009C6342", "native": "00D20C48+vtable00", "cleanup": 4},
+      {"address": "009C647B", "native": "indirect", "cleanup": 4},
+      {"address": "009C64EC", "native": "indirect", "cleanup": 4},
+      {"address": "009C6705", "native": "indirect", "cleanup": 4},
+      {"address": "009C6B3A", "native": "007F0280", "function": "009C62B0", "cleanup": 24, "note": "RET 18h at 007F0B1F"}
+    ],
+    "slot": "entry-108 = [ESP+2Ch] at depth 152; 009C6453, 009C6AD9 and 009C6BB4/009C6BC4 all write it at depth 152, the read is 009C6FB9 at depth 152"
+  },
+  "call_sites": [
+    {"address": "009C6FB0", "native": "007C4810", "function": "009C62B0", "note": "the minimum controllable speed of the class at approach+8h"},
+    {"address": "009C641C", "native": "00438B10", "function": "009C62B0", "note": "the wrapped lead-bearing error folded into the slot at 009C6453 (overwritten at 009C6AD9)"},
+    {"address": "007C4814", "native": "0042E740", "function": "007C4810", "note": "the tuning singleton"}
+  ],
+  "constants": [
+    {"address": "00D7A378", "width": "double", "value": 40.0, "use": "009C6FCF, positive slot gain"},
+    {"address": "00D7A270", "width": "double", "value": 0.05, "use": "009C6B3F, avoidance threshold on |[ESP+68h]|"},
+    {"address": "00CEC160", "width": "double", "value": 1.2, "use": "009C6BAE, avoidance term scale"},
+    {"address": "00CE3D10", "width": "double", "value": 0.2, "use": "009C6BBE, avoidance term offset"},
+    {"address": "00CF0B58", "width": "double", "value": 0.85, "use": "007E4155, ControlRange lerp"},
+    {"address": "00CF87C0", "width": "double", "value": 1.25, "use": "007E4167, StallRangeMax scale"},
+    {"address": "00D7A390", "width": "double", "value": 0.9, "use": "007E4177, LevelFlight scale"}
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1",
+    "target": "MSVC Win32 Release /W4 /WX",
+    "build_passed": true,
+    "existing_ctests_passed": 2
+  }
+}
