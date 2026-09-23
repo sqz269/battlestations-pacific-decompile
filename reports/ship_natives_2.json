@@ -1,0 +1,50 @@
+{
+  "packet": "cc9_ship_natives_2",
+  "doc": "docs/SHIP_NATIVES_2.md",
+  "status": "leader order key = leader class weight; director generic arrival, stage-2 skip and follow arm bound (plus 00465080 naming its object); standoff scan scale = held target health or 10000",
+  "abi_compatible": false,
+  "game_validated": false,
+  "routines": [
+    {"address": "009FFD70", "native": "009FFD70", "name": "BSP_Entity_AiClassWeight", "role": "MOV ECX,[ECX+0C4h]; JMP 009FDF30"},
+    {"address": "009FDF30", "native": "009FDF30", "name": "BSP_Ai_ClassWeightForClassId", "role": "class id to tuning float, FLD1 default at 009FDFED"},
+    {"address": "00836920", "native": "00836920", "name": "BSP_WeaponDirector_Step", "role": "arrival 008369A0..00836A7C, stage skip 00836A85, follow arm 00836ADC..00836B40"},
+    {"address": "009F1BC0", "native": "009F1BC0", "name": "BSP_ShipAi_ApproachFrameState", "role": "009F2A44 stores [target+370h] to nested+1284h, 009F2AA9 10000.0 with no target"}
+  ],
+  "call_sites": [
+    {"address": "00A2EB97", "native": "009FFD70", "function": "00A2E720", "note": "key of group A's leader"},
+    {"address": "00A2EBA2", "native": "009FFD70", "function": "00A2E720", "note": "key of group B's leader; JA 00A2EE13 skips when A > B"},
+    {"address": "00A10D8B", "native": "009FFD70", "function": "00A10D50", "note": "merge leader test"},
+    {"address": "00A10D96", "native": "009FFD70", "function": "00A10D50", "note": "merge leader test"},
+    {"address": "00836A07", "native": "00521EA0", "function": "00836920", "note": "resolve the last queued command's target"},
+    {"address": "00836A7C", "native": "0071D810", "function": "00836920", "note": "arrival stage 2"},
+    {"address": "00836B0F", "native": "00521EA0", "function": "00836920", "note": "follow arm: the command's target"},
+    {"address": "00836B3B", "native": "0071D810", "function": "00836920", "note": "follow arm stage 2"},
+    {"address": "00836E32", "native": "00465080", "function": "00836920", "note": "idle tail builds the follow target on the leader"}
+  ],
+  "field_accesses": [
+    {"address": "009FFD70", "function": "009FFD70", "note": "[entity+0C4h], the class id"},
+    {"address": "00836A6C", "function": "00836920", "note": "FLD double [00D09FE8] 4000000.0"},
+    {"address": "00836A81", "function": "00836920", "note": "CMP [ESI+48h],2 then JE 00836DC9"},
+    {"address": "00836AE9", "function": "00836920", "note": "CMP [unit+284h],0"},
+    {"address": "009F2A44", "function": "009F1BC0", "note": "FLD [target+370h]"}
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1 Win32 Release, both ctests passed; control, one build per item, all three",
+    "env": "BSP_GUNNERY_RNG_STREAMS=1 on every run",
+    "predictions": "local/n_predictions.txt; items 2 and 3 held; item 1's merge counters held but the enemy group leader change was not foreseen",
+    "runs": {
+      "usn04_control": {"log": "local/n_ctl_usn04.log", "hits": 240, "damage": 18379.1, "deaths": 26, "lexington": "sunk 221.81 s"},
+      "usn04_item1": {"log": "local/n_t1_usn04.log", "hits": 255, "damage": 19269.2, "deaths": 25, "lexington": "afloat", "first_difference": "Val group #3 leader D3A Val #3.1|.-2 -> D3A Val #3.1; movetoattack dist 8289.1 -> 8229.9"},
+      "usn04_item2": {"log": "local/n_t2_usn04.log", "note": "ship-AI, impact and death rows identical; six Yorktown-group follows ended at fixed step 2 after their move into Lexington's column"},
+      "usn04_item3": {"log": "local/n_t3_usn04.log", "note": "identical except the method table"},
+      "usn04_all": {"log": "local/n_all2_usn04.log", "note": "equals item 1"},
+      "usn01": {"logs": ["local/n_ctl_usn01.log", "local/n_all_usn01.log"], "note": "ship-AI, impact and death rows identical; 118 hits, 4467.9 damage, 5 deaths both"},
+      "unimplemented_calls": {"control": 6808418, "all": 6161959, "fall": 646459}
+    }
+  },
+  "no_ghidra_function": [],
+  "open": [
+    "override arm 00836D67 unreachable until director+188h/+18Ch has a writer (00835C92)",
+    "Lexington's fate is sensitive to an enemy group's leader identity"
+  ]
+}

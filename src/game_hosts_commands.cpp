@@ -44,6 +44,14 @@ namespace {
 // 00836E90). False: the pair is cleared by every later spawn, as before.
 constexpr bool kAiRetaskBound = true;
 
+// Packet cc9_ship_natives_2, docs/SHIP_NATIVES_2.md. True: 00836920's per-command
+// arms the host only recorded run: the generic arrival 008369A0..00836A81, the
+// stage-2 skip 00836A85, and the `follow` arm 00836ADC..00836B40. The `stop`
+// arm was already bound, `attackmove` by packet cc9_target_release, `moveonpath`
+// by packet cc8_ship_moveonpath, and the override arm 00836D67 cannot fire here
+// because nothing writes director+188h. False: the record, as before.
+constexpr bool kDirectorCommandArmsBound = true;
+
 // [00e188a8]+1fe4h. The single-player value, which is what every other host in
 // this executable already reports for the same field.
 constexpr int kSessionModeSinglePlayer = 1;
@@ -1468,9 +1476,19 @@ public:
         static_cast<void>(range);
         target_ = bsp::SceneCommandTarget{};
         if (object != 0) {
+            // 00465080 builds a kind-1 descriptor naming `object`, the one-based
+            // handle its callers pass: the unit itself for `cruise` / `stop`
+            // (00836E6C, 00836E84) and the formation leader for `follow`
+            // (00836E28..00836E32). Packet cc9_ship_natives_2: this used to name
+            // the unit on every arm, so a follow order targeted its own follower,
+            // which the follow arm 00836B23 reads and ends.
+            const GameCommandUnit* named = &chain_.unit;
+            if (kDirectorCommandArmsBound && object - 1u < chain_.owner.units.size()) {
+                named = &chain_.owner.units[object - 1u];
+            }
             target_.kind = 1;
-            target_.object = &chain_.unit;
-            target_.object_id = chain_.unit.object_id;
+            target_.object = const_cast<GameCommandUnit*>(named);
+            target_.object_id = named->object_id;
         }
         chain_.owner.done("WeaponDirector::make_command_target", 0x00465080u);
         return object;
@@ -1940,7 +1958,9 @@ GameDirectorStepOutcome GameCommandsHost::director_step_00836920(std::size_t uni
             "`attackmove` and `moveonpath` arms 00836adc..00836d66 are read in "
             "docs/UNIT_COMMANDED_SPEED.md and projected nowhere, so they are records");
     }
-    host.record("WeaponDirector::step_command_arms", 0x00836adcu);
+    if (!kDirectorCommandArmsBound) {
+        host.record("WeaponDirector::step_command_arms", 0x00836adcu);
+    }
 
     GameDirector& director = host.directors[unit_index];
     GameCommandRow row;
@@ -1968,6 +1988,43 @@ GameDirectorStepOutcome GameCommandsHost::director_step_00836920(std::size_t uni
     outcome.prepass_flag = bsp::weapon_director_step_prepass_00836941(state, stage);
     host.done("WeaponDirector::step_prepass", 0x00836941u);
     state.primary_stage = director.stage;
+
+    // Packet cc9_ship_natives_2: 008369A0..00836A81, the generic arrival. With
+    // more than one command queued (CMP EDI,EBP; JLE), the stage below 1, the head
+    // command's category (vtable[0Ch]) neither 1 nor 2 and the LAST queued
+    // command's 1 or 2, the head ends once the unit is within 2000 of that last
+    // command's target: 00427EB0 on both, x and z, the sum stored to float at
+    // 00836A64 and compared against the double 4000000.0 at 00D09FE8.
+    if (kDirectorCommandArmsBound && host.target_facts != nullptr) {
+        const int count = host.command_count(director);
+        if (count > 1 && director.stage < 1) {
+            const bsp::EntityOrderCommandClass* head = host.class_of(director.slot_command[0]);
+            const bsp::EntityOrderCommandClass* last =
+                host.class_of(director.slot_command[count - 1]);
+            const int head_category = head != nullptr ? head->category : -1;
+            const int last_category = last != nullptr ? last->category : -1;
+            if (bsp::command_arrival_gate_open(count, director.stage, head_category,
+                                               last_category)) {
+                const std::uint32_t target =
+                    resolve_command_target_00521ea0(director.slot_target[count - 1]);
+                GameCommandTargetFacts tf{};
+                GameCommandTargetFacts uf{};
+                if (target != 0u && host.target_facts->command_target_facts(target - 1u, tf)
+                    && host.target_facts->command_target_facts(unit_index, uf)) {
+                    const float dx = uf.position_x - tf.position_x;
+                    const float dz = uf.position_z - tf.position_z;
+                    const float squared = static_cast<float>(
+                        static_cast<double>(dz) * dz + static_cast<double>(dx) * dx);
+                    if (bsp::kCommandArrivalRadiusSquared > static_cast<double>(squared)) {
+                        stage.director_raise_primary_stage_0071d810(2); // 00836A7C
+                        state.primary_stage = director.stage;
+                        outcome.arrival_raised = true;
+                    }
+                }
+            }
+        }
+        host.done("WeaponDirector::generic_arrival", 0x00836a6cu);
+    }
     // 00836962..00836985. The prepass is the only arm that can end a running
     // `moveonpath` short of arrival: it raises the stage when the filled-slot
     // count is above one, or when the unit is the controlled one.
@@ -1981,7 +2038,31 @@ GameDirectorStepOutcome GameCommandsHost::director_step_00836920(std::size_t uni
 
     // Packet cc9_target_release: the `attackmove` arm, 00836B45..00836BEB, when
     // slot 0 holds the attackmove command object (00836B45 CMP EAX,0E08F78h).
-    if (host.target_facts != nullptr && director.slot_command[0] == bsp::kCommandAttackMove) {
+    // 00836A81 CMP [ESI+48h],2; JE 00836DC9: a finished stage skips every arm.
+    const bool arms_run = !kDirectorCommandArmsBound || director.stage != 2;
+    if (arms_run && kDirectorCommandArmsBound
+        && director.slot_command[0] == bsp::kCommandedSpeedFollowObject) {
+        // 00836ADC..00836B40, the `follow` arm. unit+284h and 007788D0 are the
+        // pair the units host publishes (set_unit_formation): a follower's group
+        // has a leader that is not the unit. A unit with no published pair is
+        // either in no group or leads its own, and both end the command.
+        const GameCommandUnit& unit = host.units[unit_index];
+        bsp::WeaponDirectorFollowArmInputs in;
+        in.has_group = unit.formation_follower;
+        in.leader = unit.formation_follower
+            ? static_cast<std::uint32_t>(unit.formation_leader + 1u) : 0u;
+        in.unit = static_cast<std::uint32_t>(unit_index + 1u);
+        in.command_target = resolve_command_target_00521ea0(director.slot_target[0]);
+        in.filled_command_slots = host.command_count(director);
+        if (bsp::weapon_director_follow_arm_00836adc(in)) {
+            stage.director_raise_primary_stage_0071d810(2); // 00836B3B
+            state.primary_stage = director.stage;
+            outcome.follow_arm_raised = true;
+        }
+        host.done("WeaponDirector::follow_arm", 0x00836adcu);
+    }
+    if (arms_run && host.target_facts != nullptr
+        && director.slot_command[0] == bsp::kCommandAttackMove) {
         bool raise = false;
         const char* why = "";
         // 00836B50..00836B5C: 00521EA0 on director+58h, the slot-0 descriptor.

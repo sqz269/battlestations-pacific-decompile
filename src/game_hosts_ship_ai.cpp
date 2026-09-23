@@ -116,6 +116,11 @@ inline constexpr bool kShipAiTrafficBound = true;
 // and 00836920's attackmove arm (00836BC2, 0043F080) ends the command at stage 2.
 // False: the dead unit keeps answering live, and the arm stays a record.
 inline constexpr bool kShipAiTargetReleaseBound = true;
+// Packet cc9_ship_natives_2, docs/SHIP_NATIVES_2.md. True: the 119-step standoff
+// scan's scale is nested+1284h as 009F1BC0 fills it, [target+370h] (the held
+// target's health, 009F2A44) or 10000.0f with no target (009F2AA9). False: the
+// no-target constant on both arms.
+inline constexpr bool kApproachScanScaleBound = true;
 namespace {
 
 bool has_ship_navigation_class(int kind) noexcept {
@@ -307,6 +312,8 @@ struct GameShipAiHost::Impl {
             out.live_0043f080 = owner_.units.unit_alive_and_visible(index)
                 && !owner_.unit_dead(index);
             out.side_0054 = owner_.units.unit_side_0054(index);
+            float y = 0.0f;
+            owner_.units.unit_position_00fc(index, out.position_x, y, out.position_z);
             return true;
         }
     private:
@@ -2295,10 +2302,17 @@ public:
         // nested+1284h is word 2 of the own unit's firepower query block at
         // nested+127Ch: the per-shot damage cap. 009F2A44 loads it from
         // [target+370h] and 009F2AA9 stores the 10000.0f at 00CE3D64 when there
-        // is no target. [target+370h] has no producer in this process, so the
-        // no-target constant stands in on both arms. LABELLED SUBSTITUTION.
-        owner_.record("ShipAiApproach::scan_scale_1284_target_0370", 0x009f2a44u);
-        return 10000.0f;
+        // is no target. Packet cc9_ship_natives_2: the same fill the own curve and
+        // the ring use (fill_target_block_127ch), the gunnery host's health.
+        if (!kApproachScanScaleBound) {
+            owner_.record("ShipAiApproach::scan_scale_1284_target_0370", 0x009f2a44u);
+            return 10000.0f;
+        }
+        bsp::ShipAiFirepowerQuery q{};
+        q.damage_cap = 10000.0f;          // 009F2AA9, 00CE3D64
+        owner_.fill_target_block_127ch(ctl_, q);
+        owner_.done("ShipAiApproach::scan_scale_1284_target_0370", 0x009f2a44u);
+        return q.damage_cap;
     }
     float unit_turn_radius_00811a30(float rudder) override {
         return owner_.units.unit_class_turn_circle_radius_0082e960(index_, rudder);

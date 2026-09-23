@@ -534,3 +534,13 @@ do. `009FFE59` tests `[[00E188A8]+61Ch]`; when set, `009FFE62` calls `004BCA50` 
 `CMP EAX,3` / `JA` returns true above game mode 3, while modes 0 to 3 return true only for party
 slot 0 and slot 4. The `009FFE84` arm tests `[ecx+1FE4h]` and answers `slot != 0`. Measured: on
 every mission party 0 gets a brain and parties 1 and 2 get none, although all three carry units.
+
+## Correction appended by cc9_ship_natives_2 (2026-09-23)
+
+The host table row for `group_leader_order_key` calls 009FFD70 "an adjustor thunk: `ECX =
+entity+C4h`". That is wrong. 009FFD70 is `MOV ECX,dword ptr [ECX+0C4h]; JMP 009FDF30`: it
+**loads** the entity's class id from +C4h, and does not add an offset to `this`.
+009FDF30 BSP_Ai_ClassWeightForClassId then FLDs that class's float weight from the tuning
+block, or FLD1 when the class has no row. So the key is the group leader's class weight
+(BSP_Entity_AiClassWeight), and its contract is now read. The callers pass the first node of the
+group's +5640h list, the leader (00A2EB6D..00A2EB95). docs/SHIP_NATIVES_2.md.

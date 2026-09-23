@@ -124,6 +124,10 @@ struct GameCommandTargetFacts {
     bool flag_05e{false};            // byte +5Eh, 00836B80
     bool live_0043f080{false};       // +5Ch set, +5Dh / +60h / +5Eh clear, 00836BC2
     int side_0054{0};                // +54h, 00836B89 / 00836BCB
+    // Packet cc9_ship_natives_2: 00427EB0's world position, x and z, which the
+    // generic arrival 00836A12 / 00836A2A reads for the target and the unit.
+    float position_x{0.0f};
+    float position_z{0.0f};
 };
 class GameCommandTargetFactsSource {
 public:
@@ -138,6 +142,8 @@ struct GameDirectorStepOutcome {
     bool prepass_flag{false};     // the local flag at [ESP+0Bh], 00836941
     bool stop_arm_raised{false};  // 00836a8b raised the primary stage to 2
     bool attackmove_arm_raised{false}; // 00836bb6 / 00836be6, packet cc9_target_release
+    bool arrival_raised{false};        // 00836a7c, packet cc9_ship_natives_2
+    bool follow_arm_raised{false};     // 00836b3b, packet cc9_ship_natives_2
     bsp::DirectorDefaultCommand reissued{bsp::DirectorDefaultCommand::None};
 };
 
