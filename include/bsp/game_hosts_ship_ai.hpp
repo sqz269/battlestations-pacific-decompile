@@ -242,6 +242,19 @@ struct GameShipAiRow {
     unsigned long long zone_escape_turns{0};    // 009DE8CD applied a turn
     float zone_escape_max_turn{0.0f};           // |turn|, radians
     float zone_escape_first_s{-1.0f};
+    // Packet cc9_ship_neighbour_list (docs/SHIP_NEIGHBOUR_AVOIDANCE.md).
+    unsigned long long neighbour_walks{0};       // 009F1856 ran (B50h due)
+    unsigned long long neighbour_candidates{0};  // 009F0D20 calls
+    unsigned long long neighbour_admitted{0};    // calls that appended a node
+    unsigned long long neighbour_expired{0};     // nodes 009F0EA0 destroyed
+    unsigned long long neighbour_node_steps{0};  // nodes both boxes refreshed
+    unsigned long long neighbour_collapsed{0};   // node-steps ending with +68h set
+    std::int32_t neighbour_max{0};               // largest blk+604h
+    unsigned long long neighbour_list_steps{0};  // frame refreshes with a node
+    unsigned long long sector_node_blocks{0};    // 009EB660 scans a node blocked
+    unsigned long long separation_turns{0};      // 009DEBB9 applied a turn
+    float separation_max_turn{0.0f};             // |turn|, radians
+    unsigned long long traffic_passes{0};        // 009EF350 over a non-empty list
     std::uint32_t travel_layer_min{0xFFFFFFFFu};// nav+30Ch range
     std::uint32_t travel_layer_max{0};
     // Packet cc9_ship_torpedo_response.

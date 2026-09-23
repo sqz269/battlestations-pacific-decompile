@@ -367,6 +367,10 @@ public:
     void set_avoid_all_ship_collision_008d0852(bool value);
     // Stored +194,+1D4,+1D8,+214,+218 snapshot from the represented load.
     bool read_avoidance_tuning(std::array<float, 5>& values) const noexcept;
+    // Packet cc9_ship_neighbour_list: the ShipAvoidance block settings+190h..+1D8h,
+    // nineteen floats in offset order ((offset - 190h) / 4), read with the same
+    // getters and loader defaults 0083B7AD..0083BCB8 use. False until loaded.
+    bool read_ship_avoidance_block(std::array<float, 19>& values) const noexcept;
     // Packet cc9_plane_death_modes. A global two-number table such as
     // planepartclasses.lua's ExplosionExplosionDelay = {0.6, 1.8}, which
     // 004A9BD0 reads into [00E18710]/[00E1870C]. False when the global is
@@ -685,6 +689,8 @@ private:
     bool avoid_all_ship_collision_loaded_{};
     std::array<float, 5> avoidance_tuning_{};
     bool avoidance_tuning_loaded_{};
+    std::array<float, 19> ship_avoidance_block_{};
+    bool ship_avoidance_block_loaded_{};
     bsp::WeaponHitAccuracyProfile weapon_hit_accuracy_[4]{};
     bool weapon_hit_accuracy_loaded_{};
     // Packet cc8_spawn_new_route. DAT_00F876A4, the world clock the drain

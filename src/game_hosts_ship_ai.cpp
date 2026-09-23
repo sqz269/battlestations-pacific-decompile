@@ -25,7 +25,10 @@
 #include <deque>
 #include <cstdio>
 #include <cstring>
+#include <map>
 #include <memory>
+#include <new>
+#include <type_traits>
 #include <string>
 #include <stdexcept>
 #include <vector>
@@ -58,6 +61,12 @@
 #include "bsp/ship_ai_ring_scan.hpp"
 #include "bsp/ship_ai_clearance_profile.hpp"
 #include "bsp/ship_ai_nav_block_ctor.hpp"
+#include "bsp/ship_ai_neighbour_admission.hpp"
+#include "bsp/ship_ai_neighbour_candidates.hpp"
+#include "bsp/ship_ai_neighbour_frame.hpp"
+#include "bsp/ship_ai_obstacle_owner.hpp"
+#include "bsp/ship_ai_obstacle_point.hpp"
+#include "bsp/native_vector2_math.hpp"
 #include "bsp/ship_ai_navigation.hpp"
 #include "bsp/ship_ai_navigation_arm_tail.hpp"
 #include "bsp/ship_ai_path_follower.hpp"
@@ -201,6 +210,27 @@ inline constexpr float kTorpedoCollectTimer2 = 2.0f;
 // the enable for a follower. False: the request is recorded, 007788B0 answers
 // false and neither arm runs, as before.
 inline constexpr bool kShipStationKeepingBound = true;
+// Packet cc9_ship_neighbour_list, docs/SHIP_NEIGHBOUR_AVOIDANCE.md sections 2-4.
+// True: the brain pre-pass timer B50h/B4Ch (009F15CC) runs the candidate walk
+// 009F1856 over world list 6 into the appender 009F0D20, and the controller
+// step's slot 14 runs the frame refresh 009F0EA0 with both box refreshes
+// (009EAE20, 009EAFC0) over the 128-slot list. False: the empty list and the
+// old ageing pass, as before.
+inline constexpr bool kShipNeighbourListBound = true;
+// True: the consumers see that list (blk+604h / +608h): the sector scan 009EB660,
+// 009DE5B0 section 6, the traffic pass 009EF350 and the clearance count. False:
+// they are handed an empty list and a zero count, so the list lands alone.
+inline constexpr bool kShipNeighbourAvoidanceBound = true;
+// SUBSTITUTION, packet cc9_ship_neighbour_list. 009EAFC0 reads the observed
+// hull's model (vtable+20h, 006D1E30 = unit+360h) and copies its world Y bounds
+// through 0098A8E0. This process builds no model for any unit, so the node
+// keeps its -1000 seed (009E5380), fails the vertical overlap at 009EB03C and
+// collapses every frame. True: an absent model gives the observed hull the same
+// null-model band 009DE2F0 writes for the own hull (max 50, min -10), so two
+// surface ships overlap. False: the image's behaviour for an absent model.
+inline constexpr bool kShipNeighbourNullModelBandSubstituted = true;
+inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
+inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
 
 bool has_ship_navigation_class(int kind) noexcept {
@@ -351,6 +381,50 @@ const char* direction_name(int direction) noexcept {
     }
 }
 
+// Packet cc9_ship_neighbour_list: one 90h node 009F0D20 allocates, as this host
+// holds it. `node` comes first so the frame refresh's node pointer is the
+// store's address. `motion` carries the node fields +40h, +64h, +80h and +84h
+// the box refreshes own; `unit` is the observed unit's index.
+struct NeighbourNodeStore {
+    bsp::ShipAiObstacleNode node{};
+    bsp::ShipAiNeighbourNodeMotion motion{};
+    std::size_t unit{0};
+};
+static_assert(std::is_standard_layout_v<NeighbourNodeStore>);
+
+// blk+604h and the inline 128-slot array at blk+608h. The backing is heap
+// allocated once so its address is stable across controller moves.
+struct NeighbourList {
+    using Slots = std::array<bsp::ShipAiObstacleNode*, bsp::kShipAiNeighbourListCapacity>;
+    std::unique_ptr<Slots> slots{std::make_unique<Slots>()};
+    std::int32_t count{0};
+    NeighbourList() = default;
+    NeighbourList(const NeighbourList&) = delete;
+    NeighbourList& operator=(const NeighbourList&) = delete;
+    NeighbourList(NeighbourList&& other) noexcept
+        : slots(std::move(other.slots)), count(other.count) { other.count = 0; }
+    NeighbourList& operator=(NeighbourList&& other) noexcept {
+        if (this != &other) {
+            release();
+            slots = std::move(other.slots);
+            count = other.count;
+            other.count = 0;
+        }
+        return *this;
+    }
+    ~NeighbourList() { release(); }
+    void release() noexcept {
+        if (!slots) return;
+        for (std::int32_t i = 0; i < count; ++i) {
+            delete reinterpret_cast<NeighbourNodeStore*>((*slots)[static_cast<std::size_t>(i)]);
+        }
+        count = 0;
+    }
+    static NeighbourNodeStore& store(bsp::ShipAiObstacleNode& node) noexcept {
+        return *reinterpret_cast<NeighbourNodeStore*>(&node);
+    }
+};
+
 }  // namespace
 
 // ---------------------------------------------------------------------------
@@ -431,6 +505,23 @@ struct GameShipAiHost::Impl {
             throw std::logic_error("Ship avoidance tuning has no established producer");
         return values;
     }
+    // Packet cc9_ship_neighbour_list: the settings singleton 00424C40 as the
+    // neighbour routines read it. Only the ShipAvoidance block +190h..+1D8h is
+    // filled (from the stored load, 0083B7AD..0083BCB8); nothing else is read
+    // through this object.
+    const bsp::GameplayTuningSettings& neighbour_settings() {
+        if (!neighbour_settings_loaded) {
+            std::array<float, 19> block;
+            if (!settings_owner || !settings_owner->read_ship_avoidance_block(block))
+                throw std::logic_error("Ship avoidance block has no established producer");
+            std::memcpy(reinterpret_cast<std::byte*>(&neighbour_settings_storage) + 0x190,
+                        block.data(), sizeof block);
+            neighbour_settings_loaded = true;
+        }
+        return neighbour_settings_storage;
+    }
+    bsp::GameplayTuningSettings neighbour_settings_storage{};
+    bool neighbour_settings_loaded{false};
     bsp::ShipAiPathSearchTurnRamp path_turn_ramp{};
     bool path_turn_ramp_loaded{};
     const bsp::SessionParticipantPools* session_participants{};
@@ -636,6 +727,14 @@ struct GameShipAiHost::Impl {
         // process. The ageing pass 009F0EA0 runs over it anyway.
         std::vector<bsp::ShipAiObstacleNode*> neighbours;
         std::vector<bsp::ShipAiObstacleNode*> neighbours_expired;
+        // Packet cc9_ship_neighbour_list (kShipNeighbourListBound): the list
+        // 009F0D20 fills, and brain+0B50h / +0B4Ch, the pre-pass timer 009F15CC
+        // runs the candidate walk on. `neighbours` above is then the consumers'
+        // view of it: the live slots with kShipNeighbourAvoidanceBound, else empty.
+        NeighbourList neighbour_list;
+        float neighbour_countdown_b50{0.0f};
+        float neighbour_period_b4c{1.0f};
+        bool neighbour_timer_seeded{false};
         // Milestone 2r: the 60-slot approach ring at nested+30h and the 60
         // score records the four scorers fill. 009E5530's second pass builds
         // the ring once, when the attackmove sub-state object is constructed.
@@ -860,11 +959,12 @@ struct GameShipAiHost::Impl {
             const float b3c = draw.uniform_00bd2f10(1.0f, 2.0f);        // 009F12CD
             static_cast<void>(draw.uniform_00bd2f10(0.0f, b3c));        // 009F12F1, B40
             ctl.torpedo_timer.countdown_b48 = -draw.uniform_00bd2f10(0.0f, 1.0f);   // 009F1330
-            static_cast<void>(draw.uniform_00bd2f10(0.0f, 1.0f));       // 009F1360, B50
+            ctl.neighbour_countdown_b50 = -draw.uniform_00bd2f10(0.0f, 1.0f); // 009F1360, B50
             static_cast<void>(draw.uniform_00bd2f10(0.0f, 2.0f));       // 009F138C, B58
             ctl.torpedo_timer.period_b44
                 = draw.uniform_00bd2f10(kTorpedoCollectTimer1, kTorpedoCollectTimer2); // 009F13BE
-            static_cast<void>(draw.uniform_00bd2f10(1.0f, 2.0f));       // 009F13F0, B4C
+            ctl.neighbour_period_b4c = draw.uniform_00bd2f10(1.0f, 2.0f);     // 009F13F0, B4C
+            ctl.neighbour_timer_seeded = true;
             ctl.torpedo_timer.seeded = true;
             ++brain_seed_draws;
         }
@@ -928,10 +1028,13 @@ struct GameShipAiHost::Impl {
         row.torpedo_tracks_max = std::max(row.torpedo_tracks_max, ctl.torpedo_tracks.size());
     }
     // 009DE5B6..009DE5E5, then sections 3 and 4 (kShipAvoidZoneEscapeBound), then
-    // 009DE8F1..009DE96C. Sections 6 and 7 stay records (docs/HEADING_TARGET_SECTIONS.md).
+    // 009DE8F1..009DE96C, then section 6 over the consumers' neighbour view
+    // (packet cc9_ship_neighbour_list). Section 7 stays a record
+    // (docs/HEADING_TARGET_SECTIONS.md).
     void torpedo_override_009de8f1(std::size_t index, Controller& ctl, GameShipAiRow& row) {
         const float signed_speed = units.unit_forward_speed_0092d730(index);
         if (!(std::fabs(signed_speed) > 1.0f)) return;  // 009DE5DE
+        const float entry_target = ctl.blk.heading_target_324;  // 009DE5F1
         if (kShipAvoidZoneEscapeBound && ctl.nav_block.flag_160) {
             // 009DE67D..009DE6D7, section 3.
             const bool reverse = (signed_speed < 0.0f)
@@ -965,22 +1068,91 @@ struct GameShipAiHost::Impl {
                 }
             }
         }
-        if (!kShipTorpedoResponseBound) return;
-        const bool gate = torpedo_gate_009da1d0(index, ctl);
-        const bsp::ShipAiArmFinalOverride o = bsp::ship_ai_arm_final_avoidance_override_009de8f1(
-            gate, ctl.throttle_profile.hold_354, ctl.throttle_profile.avoid_x_34c,
-            ctl.throttle_profile.avoid_z_350, ctl.blk.direction);
-        if (!o.applied) return;
-        double turn = static_cast<double>(o.heading_target) - ctl.blk.heading_target_324;
-        while (turn > 3.141592653589793) turn -= 6.283185307179586;
-        while (turn < -3.141592653589793) turn += 6.283185307179586;
-        ctl.blk.heading_target_324 = o.heading_target;
-        ++row.torpedo_overrides;
-        row.torpedo_override_max_turn = std::max(row.torpedo_override_max_turn,
-                                                 static_cast<float>(std::fabs(turn)));
-        if (row.torpedo_first_override_s < 0.0f) {
-            row.torpedo_first_override_s = static_cast<float>(steps) * 0.05f;
+        if (kShipTorpedoResponseBound) {
+            const bool gate = torpedo_gate_009da1d0(index, ctl);
+            const bsp::ShipAiArmFinalOverride o =
+                bsp::ship_ai_arm_final_avoidance_override_009de8f1(
+                    gate, ctl.throttle_profile.hold_354, ctl.throttle_profile.avoid_x_34c,
+                    ctl.throttle_profile.avoid_z_350, ctl.blk.direction);
+            if (o.applied) {
+                double turn = static_cast<double>(o.heading_target) - ctl.blk.heading_target_324;
+                while (turn > 3.141592653589793) turn -= 6.283185307179586;
+                while (turn < -3.141592653589793) turn += 6.283185307179586;
+                ctl.blk.heading_target_324 = o.heading_target;
+                ++row.torpedo_overrides;
+                row.torpedo_override_max_turn = std::max(row.torpedo_override_max_turn,
+                                                         static_cast<float>(std::fabs(turn)));
+                if (row.torpedo_first_override_s < 0.0f) {
+                    row.torpedo_first_override_s = static_cast<float>(steps) * 0.05f;
+                }
+            }
         }
+        traffic_separation_009de96c(index, ctl, row, entry_target, signed_speed);
+    }
+
+    // 009DE96C..009DEE07, section 6: the push away from every live neighbour's
+    // near-box centre, turned by 009DEBB9. blk+604h is the consumers' count
+    // (publish_neighbour_view), zero unless kShipNeighbourAvoidanceBound.
+    void traffic_separation_009de96c(std::size_t index, Controller& ctl, GameShipAiRow& row,
+                                     float entry_target, float signed_speed) {
+        if (!(ctl.nav_block.neighbour_count_604 > 0)) return;  // 009DE96C
+        struct Source final : bsp::ShipAiArmFinalNeighbourSource {
+            Impl& impl;
+            Controller& ctl;
+            bsp::ShipAiArmFinalNeighbour view{};
+            Source(Impl& i, Controller& c) : impl(i), ctl(c) {}
+            const bsp::ShipAiArmFinalNeighbour& neighbour_608(int i) override {
+                bsp::ShipAiObstacleNode& node = *ctl.neighbours[static_cast<std::size_t>(i)];
+                view = {};
+                view.has_unit = node.owner != nullptr;          // 009DEA52
+                view.lifetime_78 = node.lifetime_78;            // 009DEA5D
+                view.centre_x_20 = node.near_box_x;             // 009DEAB6
+                view.centre_z_24 = node.near_box_z;             // 009DEAC1
+                if (node.owner != nullptr) {
+                    bsp::SceneNodeFlags flags;
+                    if (impl.units.read_scene_node_flags(node.owner, flags)) {
+                        view.unit_flag_5c = flags.active;       // 009DEA6F
+                        view.unit_flag_5d = flags.torn_down;    // 009DEA79
+                        view.unit_gone_5e = flags.destroyed;    // 009DEA8D
+                    }
+                    const std::size_t unit = NeighbourList::store(node).unit;
+                    bool pending = false;
+                    impl.units.unit_pending_destroy_0060(unit, pending);
+                    view.unit_flag_60 = pending;                // 009DEA83
+                    view.unit_hull_radius_9c8 = impl.units.unit_hull_length_09c8(unit);
+                }
+                return view;
+            }
+        } source(*this, ctl);
+        bsp::ShipAiArmFinalStepState state{};
+        state.pose_x_184 = ctl.hull_geometry.position_184[0];
+        state.pose_z_188 = ctl.hull_geometry.position_184[1];
+        state.goal_x_174 = ctl.hull_geometry.bow_174[0];
+        state.goal_z_178 = ctl.hull_geometry.bow_174[1];
+        state.neighbour_count_604 = ctl.nav_block.neighbour_count_604;
+        bsp::ShipAiArmFinalStepTuning tuning{};
+        tuning.hull_radius_9c8 = units.unit_hull_length_09c8(index);
+        const float class_speed = units.unit_class_max_speed_0500(index);  // 009DE99A
+        const std::array<float, 2> push = bsp::ship_ai_arm_final_separation_vector_009de96c(
+            state, tuning, signed_speed, class_speed, source);
+        // Section 3's heading and latch, as 009DE67D..009DE6D7 leave them.
+        const bool reverse = (signed_speed < 0.0f)
+            ? (ctl.blk.direction == bsp::ShipAiThrottleDirection::Ahead)
+            : (ctl.blk.direction == bsp::ShipAiThrottleDirection::Astern);
+        float heading = units.unit_heading_radians(index);
+        if (ctl.blk.direction == bsp::ShipAiThrottleDirection::Astern) {
+            heading = bsp::wrapped_angle_add_00438aa0(heading, 3.14159265f);   // 00D7A264
+        }
+        const bsp::ShipAiArmFinalSeparationTurn separation =
+            bsp::ship_ai_arm_final_separation_turn_009debb9(
+                push[0], push[1], heading, ctl.blk.heading_target_324, entry_target,
+                ctl.nav.turn_window_3d0, ctl.nav.side_304, reverse);
+        if (!separation.applied) return;
+        ctl.blk.heading_target_324 =
+            bsp::wrapped_angle_add_00438aa0(ctl.blk.heading_target_324, separation.turn);  // 009DEE01
+        ++row.separation_turns;
+        row.separation_max_turn = std::max(row.separation_max_turn,
+                                           std::fabs(separation.turn));
     }
 
     // 009F4DA0 on blk+344h / +348h (brain+34Ch / +350h). docs/SHIP_FORMATION_SPEED.md.
@@ -3838,6 +4010,25 @@ public:
         owner_.record("ShipAiOrder::tail_009f0100", 0x009f0100u);
     }
     void tail_009ef350() override {
+        // Packet cc9_ship_neighbour_list, docs/SHIP_NEIGHBOUR_AVOIDANCE.md
+        // section 2. 009EF350 does nothing with blk+604h = 0 (009EF359). Over a
+        // list it clears node+75h/+74h (009EF3EA, 009EF3F0), bytes this host
+        // does not carry, and only a node whose pass side +88h is non-zero
+        // (009EF3F6) reaches 009DCEB0 and the turn that writes blk+324h, +33Ch
+        // and +354h. +88h is 0 from 009E5364; its only non-zero writer is
+        // 009D912F, reached through 009F3E30, a brain vtable slot (00D21B10)
+        // with no identified caller. With every +88h zero the pass is whole.
+        if (kShipNeighbourAvoidanceBound) {
+            bool crossing = false;
+            for (const bsp::ShipAiObstacleNode* node : ctl_.neighbours) {
+                if (node->pass_side_88 != 0) crossing = true;
+            }
+            if (!crossing) {
+                if (!ctl_.neighbours.empty()) ++owner_.rows[index_].traffic_passes;
+                owner_.done("ShipAiOrder::tail_009ef350", 0x009ef350u);
+                return;
+            }
+        }
         owner_.record("ShipAiOrder::tail_009ef350", 0x009ef350u);
     }
     void tail_009ef910(float) override {
@@ -4077,15 +4268,16 @@ public:
         owner_.done("ShipAiSectorScan::zone_segment_crossing_004158e0", 0x004158e0u);
         return owner_.zones.search_segment(list, from, toward, hit);
     }
-    bool point_in_avoid_box_009d8160(const bsp::ShipAiObstacleNode&,
-                                     const std::array<float, 2>&) override {
-        owner_.record("ShipAiSectorScan::point_in_avoid_box_009d8160", 0x009d8160u);
-        return false;
+    bool point_in_avoid_box_009d8160(const bsp::ShipAiObstacleNode& node,
+                                     const std::array<float, 2>& point) override {
+        // Packet cc9_ship_neighbour_list: reached only with a node in the list.
+        owner_.done("ShipAiSectorScan::point_in_avoid_box_009d8160", 0x009d8160u);
+        return bsp::ship_ai_obstacle_point_in_avoid_box_009d8160(node, point);
     }
-    bool point_in_near_box_009d80c0(const bsp::ShipAiObstacleNode&,
-                                    const std::array<float, 2>&) override {
-        owner_.record("ShipAiSectorScan::point_in_near_box_009d80c0", 0x009d80c0u);
-        return false;
+    bool point_in_near_box_009d80c0(const bsp::ShipAiObstacleNode& node,
+                                    const std::array<float, 2>& point) override {
+        owner_.done("ShipAiSectorScan::point_in_near_box_009d80c0", 0x009d80c0u);
+        return bsp::ship_ai_obstacle_point_in_near_box_009d80c0(node, point);
     }
     bool clip_ray_against_node_009dd540(const bsp::ShipAiObstacleNode&,
                                         const std::array<float, 2>&,
@@ -4110,7 +4302,7 @@ public:
         // 009EBEF7, an inlined compare and store on the blocking node. Reached
         // only when a node blocks, which needs a neighbour list.
         if (value > node.lifetime_78) node.lifetime_78 = value;
-        owner_.record("ShipAiSectorScan::raise_node_lifetime_78", 0x009ebef7u);
+        owner_.done("ShipAiSectorScan::raise_node_lifetime_78", 0x009ebef7u);
     }
     bool avoid_zone_free_bearing_009dc2e0(bsp::ShipAiSectorFreeBearingQuery&) override {
         owner_.record("ShipAiSectorScan::free_bearing_009dc2e0", 0x009dc2e0u);
@@ -4190,6 +4382,7 @@ public:
                 // a blocking neighbour. An empty list reaches no such call.
                 if (result.blocking_node >= 0) {
                     owner.done("ShipAiSectors::passing_corner_009d84e0", 0x009d84e0u);
+                    ++owner.rows[index].sector_node_blocks;
                 }
                 ctl.obstacle.sector[static_cast<std::size_t>(sector)].blocked
                     = result.blocked;
@@ -5047,6 +5240,358 @@ private:
     std::size_t index_;
 };
 
+// ---------------------------------------------------------------------------
+// Packet cc9_ship_neighbour_list, docs/SHIP_NEIGHBOUR_AVOIDANCE.md sections 2-4:
+// the hosts of the candidate walk 009F1856, the appender 009F0D20 and the frame
+// refresh 009F0EA0 with its two box refreshes 009EAE20 / 009EAFC0.
+//
+// Borrowed-field stand-ins. The native routines read unit fields in place; this
+// host keeps one record per unit index, refreshed on every lookup, so each
+// reference the reconstructions hold stays valid for the binding's lifetime.
+// The class token at unit+538h is the unit's own identity: this host has no
+// per-class object, and every class query below resolves through the unit.
+class NeighbourUnitFields {
+public:
+    struct Fields {
+        std::uint8_t pose_valid_c8{0};
+        float x_fc{0.0f};
+        float y_100{0.0f};
+        float z_104{0.0f};
+        float length_9c8{0.0f};
+        float beam_9cc{0.0f};
+        float class_speed_500{0.0f};
+        std::int32_t party_54{0};
+        // unit+6B8h, DummyObjectID. 0095CDBE / 0095CDE9 store -1 in the unit
+        // constructor; its only writers 00953250 / 00953A80 have no caller in
+        // the image and no installed script names DummyObjectID.
+        std::int32_t dummy_6b8{-1};
+        const void* class_538{nullptr};
+    };
+
+    explicit NeighbourUnitFields(GameUnitsHost& units) : units_(units) {}
+
+    std::size_t index_of(const void* identity) const {
+        const std::size_t count = units_.count();
+        for (std::size_t i = 0; i < count; ++i) {
+            if (units_.unit_identity(i) == identity) return i;
+        }
+        throw std::logic_error("neighbour candidate is not a unit of this host");
+    }
+    Fields& of(std::size_t index) {
+        Fields& f = cache_[index];
+        f.pose_valid_c8 = units_.unit_pose_valid_00c8(index) ? 1u : 0u;
+        units_.unit_position_00fc(index, f.x_fc, f.y_100, f.z_104);
+        f.length_9c8 = units_.unit_hull_length_09c8(index);
+        f.beam_9cc = units_.unit_half_width_09cc(index);
+        f.class_speed_500 = units_.unit_class_max_speed_0500(index);
+        f.party_54 = units_.unit_side_0054(index);
+        f.class_538 = units_.unit_identity(index);
+        return f;
+    }
+    Fields& of(const void* identity) { return of(index_of(identity)); }
+
+private:
+    GameUnitsHost& units_;
+    std::map<std::size_t, Fields> cache_;
+};
+
+// 00812090, the unit vtable+34h: the body axis times 0092D730. SUBSTITUTION, the
+// same one the torpedo walk makes: the hull's heading direction stands in for
+// the body axis unit+94h..+9Ch, which is level for a ship.
+std::array<float, 3> neighbour_world_velocity(GameUnitsHost& units, std::size_t index) {
+    const float heading = units.unit_heading_radians(index);
+    const float speed = units.unit_forward_speed_0092d730(index);
+    return {static_cast<float>(std::sin(static_cast<double>(heading))) * speed, 0.0f,
+            static_cast<float>(std::cos(static_cast<double>(heading))) * speed};
+}
+
+class NeighbourAdmissionBinding final : public bsp::ShipAiNeighbourAdmissionHost {
+public:
+    NeighbourAdmissionBinding(GameShipAiHost::Impl& owner, NeighbourUnitFields& fields)
+        : owner_(owner), fields_(fields) {}
+
+    bsp::ShipAiNeighbourAdmissionUnitView unit_view(const void* unit) override {
+        NeighbourUnitFields::Fields& f = fields_.of(unit);
+        return {f.party_54, f.class_538, f.dummy_6b8};
+    }
+    bool unit_is_kind_vtable5c(const void* unit, int query) override {
+        owner_.done("ShipAiNeighbour::unit_is_kind_vtable5c", 0x009f0d6cu);
+        return owner_.units.unit_is_kind_of(fields_.index_of(unit), query);
+    }
+    bool class_is_kind_vtable18(const void* actual_class, int query) override {
+        owner_.done("ShipAiNeighbour::class_is_kind_vtable18", 0x00827f70u);
+        return owner_.units.unit_is_kind_of(fields_.index_of(actual_class), query);
+    }
+    std::uint8_t big_landing_ship_808(const void*) override {
+        // class+808h, BigLandingShip. This host does not hold the byte (the same
+        // boundary game_hosts_ai.cpp labels for 00827F70); read as 0.
+        owner_.record("ShipAiNeighbour::big_landing_ship_808", 0x00827f95u);
+        return 0;
+    }
+    const float& neighbour_memory_194_00424c40() override {
+        return owner_.neighbour_settings().ship_avoidance_collect_timer_2;
+    }
+    void* allocate_node_00bf681b(std::size_t) override {
+        return ::operator new(sizeof(NeighbourNodeStore));
+    }
+    bsp::ShipAiObstacleNode* construct_node_009e52e0(void* allocation,
+        const void* observed_owner, const void*, float lifetime) override {
+        auto* store = new (allocation) NeighbourNodeStore{};
+        store->unit = fields_.index_of(observed_owner);
+        bsp::ship_ai_obstacle_owner_initialize_projection_009e52e0(
+            store->node, store->motion, observed_owner, lifetime);
+        owner_.done("ShipAiNeighbour::construct_node_009e52e0", 0x009e52e0u);
+        return &store->node;
+    }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    NeighbourUnitFields& fields_;
+};
+
+class NeighbourWalkBinding final : public bsp::ShipAiNeighbourCandidateHost {
+public:
+    NeighbourWalkBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
+                         GameShipAiRow& row, std::size_t index)
+        : owner_(owner), ctl_(ctl), row_(row), index_(index), fields_(owner.units),
+          self_(owner.units.unit_identity(index)) {}
+
+    const void* current_self_aa8() const override { return self_; }
+    bsp::ShipAiNeighbourUnitFields unit_fields(const void* unit) const override {
+        NeighbourUnitFields::Fields& f = fields_.of(unit);
+        return {f.pose_valid_c8, f.x_fc, f.y_100, f.z_104, f.length_9c8};
+    }
+    const void* unit_class_538(const void* unit) const override {
+        return fields_.of(unit).class_538;
+    }
+    const volatile float& class_field_500(const void* captured_class) const override {
+        return fields_.of(captured_class).class_speed_500;
+    }
+    const void* world_list6_head_64() const override {
+        return owner_.units.world_list_head(6);
+    }
+    std::int32_t world_list6_count_60() const override {
+        return static_cast<std::int32_t>(owner_.units.world_list_size(6));
+    }
+    const void* node_payload_08(const void* node) const override {
+        return GameUnitsHost::world_list_node_unit(node);
+    }
+    const void* node_next_04(const void* node) const override {
+        return GameUnitsHost::world_list_node_next(node);
+    }
+    void refresh_pose_00414db0(const void*) override {
+        // The pose cache is always valid in this host (milestone 2h), so the
+        // walk never reaches this call; a record if it ever does.
+        owner_.record("ShipAiNeighbour::refresh_pose_00414db0", 0x00414db0u);
+    }
+    const bsp::GameplayTuningSettings& settings_00424c40() override {
+        return owner_.neighbour_settings();
+    }
+    void admit_009f0d20(const void* candidate) override {
+        const std::int32_t before = ctl_.neighbour_list.count;
+        NeighbourAdmissionBinding admission(owner_, fields_);
+        const bsp::ShipAiNeighbourAdmissionView view{&ctl_, self_, ctl_.neighbour_list.count,
+                                                      ctl_.neighbour_list.slots->data()};
+        bsp::ship_ai_neighbour_admit_009f0d20(view, candidate, admission);
+        owner_.done("ShipAi::neighbour_list_add_009f0d20", 0x009f0d20u);
+        ++row_.neighbour_candidates;
+        if (ctl_.neighbour_list.count > before) ++row_.neighbour_admitted;
+        row_.neighbour_max = std::max(row_.neighbour_max, ctl_.neighbour_list.count);
+    }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    GameShipAiHost::Impl::Controller& ctl_;
+    GameShipAiRow& row_;
+    std::size_t index_;
+    mutable NeighbourUnitFields fields_;
+    const void* self_;
+};
+
+// 009EAE20's host, re-targeted per node by the frame binding.
+class NeighbourNearBoxBinding final : public bsp::ShipAiNeighbourNearBoxHost {
+public:
+    explicit NeighbourNearBoxBinding(GameShipAiHost::Impl& owner) : owner_(owner) {}
+    void target(std::size_t unit) { unit_ = unit; }
+
+    float observed_heading_vtable50() override {
+        return owner_.units.unit_heading_radians(unit_);
+    }
+    float observed_body_axis_speed_0092d730() override {
+        return owner_.units.unit_forward_speed_0092d730(unit_);
+    }
+    float settings_pos_speed_corrig_1a8() override {
+        return owner_.neighbour_settings().ship_avoidance_nearby_ship_pos_speed_corrig;
+    }
+    float observed_hull_length_09c8() override {
+        return owner_.units.unit_hull_length_09c8(unit_);
+    }
+    float observed_hull_beam_09cc() override {
+        return owner_.units.unit_half_width_09cc(unit_);
+    }
+    bool observed_pose_valid_00c8() override {
+        return owner_.units.unit_pose_valid_00c8(unit_);
+    }
+    void refresh_observed_pose_00414db0() override {
+        owner_.record("ShipAiNeighbour::refresh_observed_pose_00414db0", 0x00414db0u);
+    }
+    std::array<float, 2> observed_world_position_xz_00fc() override {
+        float x = 0.0f, y = 0.0f, z = 0.0f;
+        owner_.units.unit_position_00fc(unit_, x, y, z);
+        return {x, z};
+    }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    std::size_t unit_{0};
+};
+
+// 009EAFC0's host, re-targeted per node by the frame binding.
+class NeighbourAvoidBoxBinding final : public bsp::ShipAiNeighbourAvoidBoxHost {
+public:
+    explicit NeighbourAvoidBoxBinding(GameShipAiHost::Impl& owner) : owner_(owner) {}
+    void target(std::size_t unit) { unit_ = unit; }
+
+    const void* observed_model_vtable20() override {
+        // 006D1E30, unit+360h: no unit of this process carries a model, the same
+        // boundary the hull geometry binding states. See
+        // kShipNeighbourNullModelBandSubstituted.
+        if (!kShipNeighbourNullModelBandSubstituted) return nullptr;
+        return &band_;
+    }
+    void observed_world_bounds_0098a8e0(const void* model, std::array<float, 3>& minimum,
+                                        std::array<float, 3>& maximum) override {
+        const auto& bounds = *static_cast<const bsp::HitQueryBounds*>(model);
+        bsp::HitQueryPoint lo{}, hi{};
+        bsp::ship_ai_hull_copy_bounds_0098a8e0(bounds, lo, hi);
+        owner_.done("ShipAiNeighbour::world_bounds_0098a8e0", 0x0098a8e0u);
+        minimum = {lo.x, lo.y, lo.z};
+        maximum = {hi.x, hi.y, hi.z};
+    }
+    bsp::ShipAiNeighbourAvoidSettings settings_ship_avoidance_180() override {
+        const bsp::GameplayTuningSettings& s = owner_.neighbour_settings();
+        bsp::ShipAiNeighbourAvoidSettings out;
+        out.arrive_time_min_1a0 = s.ship_avoidance_nearby_ship_arrive_time_min;
+        out.arrive_dist_min_1a4 = s.ship_avoidance_nearby_ship_arrive_dist_min;
+        out.est_pos_dist_limit_mul_1ac = s.ship_avoidance_nearby_ship_est_pos_dist_limit_mul;
+        out.est_pos_min_ship_length_1b0 = s.ship_avoidance_nearby_ship_est_pos_min_ship_length;
+        out.est_pos_ship_length_limit_mul_1b4 =
+            s.ship_avoidance_nearby_ship_est_pos_ship_length_limit_mul;
+        out.est_pos_ship_spd_mul_1bc = s.ship_avoidance_nearby_ship_est_pos_ship_spd_mul;
+        out.est_pos_size_dec_mul_1c0 = s.ship_avoidance_nearby_ship_est_pos_size_dec_mul;
+        out.est_pos_size_dec_min_1c4 = s.ship_avoidance_nearby_ship_est_pos_size_dec_min;
+        out.go_away_spd_add_1d0 = s.ship_avoidance_nearby_ship_go_away_spd_add;
+        return out;
+    }
+    float reciprocal_length_00419260(const std::array<float, 2>& delta) override {
+        return bsp::native_vector2_reciprocal_length_00419260(delta.data(),
+                                                             &application_camera_axes_crt());
+    }
+    std::array<float, 3> observed_velocity_vtable34() override {
+        return neighbour_world_velocity(owner_.units, unit_);
+    }
+    float observed_body_axis_speed_0092d730() override {
+        return owner_.units.unit_forward_speed_0092d730(unit_);
+    }
+    float observed_reference_speed_0080fc30() override {
+        return owner_.units.throttle_ceiling_inputs(unit_).reference_speed;
+    }
+    float observed_hull_length_09c8() override {
+        return owner_.units.unit_hull_length_09c8(unit_);
+    }
+    float observed_command_yaw_rate_00811940() override {
+        owner_.done("ShipAiNeighbour::command_yaw_rate_00811940", 0x00811940u);
+        return owner_.units.unit_current_yaw_rate_00811940(unit_);
+    }
+    std::array<float, 2> heading_to_direction_006bc0c0(float heading) override {
+        return bsp::heading_to_direction_006bc0c0(heading);
+    }
+
+private:
+    GameShipAiHost::Impl& owner_;
+    std::size_t unit_{0};
+    bsp::HitQueryBounds band_{{0.0f, kShipNeighbourNullModelMinY, 0.0f},
+                              {0.0f, kShipNeighbourNullModelMaxY, 0.0f}};
+};
+
+class NeighbourFrameBinding final : public bsp::ShipAiNeighbourFrameHost {
+public:
+    NeighbourFrameBinding(GameShipAiHost::Impl& owner, std::size_t index)
+        : owner_(owner), index_(index), fields_(owner.units), near_(owner), avoid_(owner) {}
+
+    bsp::ShipAiNeighbourFrameUnitView self_unit_3fc() override {
+        NeighbourUnitFields::Fields& f = fields_.of(index_);
+        return {f.class_538, f.pose_valid_c8, f.x_fc, f.z_104, f.class_538, f.length_9c8,
+                f.beam_9cc};
+    }
+    const float& class_top_speed_500(const void* actual_class) override {
+        return fields_.of(actual_class).class_speed_500;
+    }
+    bsp::ShipAiNeighbourFrameSettingsView settings_00424c40() override {
+        side_filter_04_ = owner_.avoid_all_ship_collision() ? 1u : 0u;
+        return {side_filter_04_,
+                owner_.neighbour_settings().ship_avoidance_nearby_ship_my_min_spd_ratio};
+    }
+    void refresh_pose_00414db0(const void*) override {
+        owner_.record("ShipAiNeighbour::refresh_pose_00414db0", 0x00414db0u);
+    }
+    std::array<float, 3> world_velocity_vtable34(const void* unit) override {
+        return neighbour_world_velocity(owner_.units, fields_.index_of(unit));
+    }
+    std::uint8_t owner_gone_5e(const void* observed_owner) override {
+        bsp::SceneNodeFlags flags;
+        if (!owner_.units.read_scene_node_flags(observed_owner, flags)) return 0;
+        return flags.destroyed ? 1u : 0u;
+    }
+    std::int32_t owner_party_54(const void* observed_owner) override {
+        return owner_.units.unit_side_0054(fields_.index_of(observed_owner));
+    }
+    std::uint8_t director_side_filter_241_0080e160(const void* unit) override {
+        GameDirectorAvoidance director;
+        if (!owner_.units.director_avoidance(fields_.index_of(unit), director))
+            throw std::logic_error("Ship neighbour refresh has no live director");
+        owner_.done("ShipAiNeighbour::director_ship_241_0080e160", 0x0080e160u);
+        return director.ship ? 1u : 0u;
+    }
+    bsp::ShipAiNeighbourFrameNodeBindings node_bindings(bsp::ShipAiObstacleNode& node) override {
+        NeighbourNodeStore& store = NeighbourList::store(node);
+        near_.target(store.unit);
+        avoid_.target(store.unit);
+        ++node_steps;
+        return {store.motion, near_, avoid_};
+    }
+    void destroy_node_0064a610(bsp::ShipAiObstacleNode& node) override {
+        NeighbourList::store(node).~NeighbourNodeStore();
+        ++expired;
+    }
+    void free_node_00bf65ac(bsp::ShipAiObstacleNode* node) override {
+        ::operator delete(&NeighbourList::store(*node));
+    }
+
+    unsigned long long node_steps{0};
+    unsigned long long expired{0};
+
+private:
+    GameShipAiHost::Impl& owner_;
+    std::size_t index_;
+    NeighbourUnitFields fields_;
+    NeighbourNearBoxBinding near_;
+    NeighbourAvoidBoxBinding avoid_;
+    std::uint8_t side_filter_04_{0};
+};
+
+// The consumers' view of the list (kShipNeighbourAvoidanceBound): `neighbours`
+// and blk+604h as the sector scan, 009DE5B0 section 6 and 009EF350 read them.
+void publish_neighbour_view(GameShipAiHost::Impl::Controller& ctl) {
+    ctl.neighbours.clear();
+    if (kShipNeighbourAvoidanceBound) {
+        for (std::int32_t i = 0; i < ctl.neighbour_list.count; ++i) {
+            ctl.neighbours.push_back((*ctl.neighbour_list.slots)[static_cast<std::size_t>(i)]);
+        }
+    }
+    ctl.nav_block.neighbour_count_604 = static_cast<int>(ctl.neighbours.size());
+}
+
 class ControllerBinding final : public bsp::ShipAiControllerHost {
 public:
     ControllerBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
@@ -5098,6 +5643,19 @@ public:
             owner_.done("ShipAi::replan_prepare_threat_scan", 0x009f158au);
         } else {
             owner_.record("ShipAi::replan_prepare_threat_scan", 0x009f158au);
+        }
+        if (kShipNeighbourListBound && ctl_.neighbour_timer_seeded) {
+            // 009F15CC..009F15FD, the second countdown (B50h, period B4Ch), on
+            // the same accumulated delta as the torpedo one; then 009F1856..
+            // 009F1A43, the walk over world list 6 into 009F0D20. Neither draws.
+            const bool due = bsp::ship_ai_neighbour_timer_due_009f15cc(
+                ctl_.neighbour_countdown_b50, ctl_.neighbour_period_b4c, elapsed);
+            if (due) {
+                NeighbourWalkBinding walk(owner_, ctl_, row_, index_);
+                bsp::ship_ai_walk_neighbour_candidates_009f1856(true, walk);
+                owner_.done("ShipAi::neighbour_walk_009f1856", 0x009f1856u);
+                ++row_.neighbour_walks;
+            }
         }
         const auto request = bsp::ship_ai_avoidance_request_prepass_009f1b7b(
             owner_.avoid_all_ship_collision());
@@ -5342,6 +5900,29 @@ public:
         owner_.done("ShipAi::refresh_avoid_zone_searchers", 0x009da6e0u);
     }
     void step_009f0ea0(float seconds) override {
+        if (kShipNeighbourListBound) {
+            // 009F51E4: 009F0EA0 over blk+604h / +608h, with 009EAE20 and
+            // 009EAFC0 per live node, then the consumers' view.
+            NeighbourFrameBinding frame(owner_, index_);
+            const bsp::ShipAiNeighbourFrameView view{
+                ctl_.neighbour_list.slots->data(), ctl_.neighbour_list.count,
+                ctl_.avoidance.side_filter_3f8, ctl_.hull_geometry.max_y_1bc,
+                ctl_.hull_geometry.min_y_1c0};
+            const bool had_nodes = ctl_.neighbour_list.count > 0;
+            const bsp::ShipAiNeighbourRefreshResult refresh
+                = bsp::ship_ai_neighbour_frame_refresh_009f0ea0(view, seconds, frame,
+                                                                application_camera_axes_crt());
+            owner_.done("ShipAi::neighbour_frame_refresh_009f0ea0", 0x009f0ea0u);
+            if (had_nodes) ++row_.neighbour_list_steps;
+            row_.neighbour_expired += frame.expired;
+            row_.neighbour_node_steps += frame.node_steps;
+            for (std::int32_t i = 0; i < refresh.survivors; ++i) {
+                if ((*ctl_.neighbour_list.slots)[static_cast<std::size_t>(i)]->no_pose_68)
+                    ++row_.neighbour_collapsed;
+            }
+            publish_neighbour_view(ctl_);
+            return;
+        }
         // 009F51E4, chain slot 14, one slot before the sector refresh, so the
         // list the scan walks is aged and compacted first. Packet
         // cc_ai_sector_scan projected the pass; it runs here over the list this
@@ -6928,6 +7509,16 @@ void GameShipAiHost::report() {
                 row.torpedo_vector_steps, row.torpedo_overrides,
                 static_cast<double>(row.torpedo_override_max_turn),
                 static_cast<double>(row.torpedo_first_override_s));
+        }
+        if (row.neighbour_walks != 0) {
+            host.log.notef("    neighbour %-16s walks=%llu candidates=%llu admitted=%llu "
+                "expired=%llu max=%d list_steps=%llu node_steps=%llu collapsed=%llu "
+                "sector_blocks=%llu separation_turns=%llu separation_max=%.3f traffic=%llu",
+                row.unit.c_str(), row.neighbour_walks, row.neighbour_candidates,
+                row.neighbour_admitted, row.neighbour_expired, row.neighbour_max,
+                row.neighbour_list_steps, row.neighbour_node_steps, row.neighbour_collapsed,
+                row.sector_node_blocks, row.separation_turns,
+                static_cast<double>(row.separation_max_turn), row.traffic_passes);
         }
         if (row.station_requests != 0 || row.station_arm_runs != 0) {
             host.log.notef("    station %-16s requests=%llu arm_runs=%llu throttle39c=[%.4f, %.4f] "
