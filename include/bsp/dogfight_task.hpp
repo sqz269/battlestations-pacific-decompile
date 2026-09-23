@@ -388,4 +388,41 @@ struct PlaneFinderParams {
 float plane_finder_score_007deec0(const PlaneFinderParams& p, const float local[3],
                                   float dy_above, float horizontal) noexcept;
 
+// ===========================================================================
+// The dogfight moveto's speed slot, packet cc9_dogfight_moveto.
+// docs/DOGFIGHT_MOVETO.md.
+// ===========================================================================
+//
+// 009C1BC0 (vtable 00D20B24 +1Ch, `__thiscall(state, float sep)`, RET 4):
+//   plan+2B4h = 009BECD0(MaxSpd = classBlock+188h, 007C47F0() = LevelFlight *
+//   StallSpd, sep); plan+2B0h = 0 (byte); plan+2D8h = 1 (dword).
+// 009BECD0 (`__thiscall(state, a, b, sep)`, RET 0Ch), from the listing:
+//   k = interp(WaitDist1 (tuning+5CCh, 3000), 0, WaitDist2 (+5D0h, 5000), 0.5, sep)
+//   with a squadron (approach+0Ch) and a class (approach+8h):
+//       m = max(k, 007EF2C0(squadron));  return b + (a - b) * m
+//   otherwise return a.
+// 007EF2C0 (`__fastcall(squadron)`): 1.0 when +3CCh <= 1 or +3E4h (the
+//   formation shape) is 0; else min(1.0, the smallest non-negative
+//   member+9C4h[step] over members 1..count-1), where 007CDCE7 publishes
+//   007BCC20(member): -1.0 when dead, squadronless, formation index 0 or
+//   pilotless; 0.0 when unit+72Ch's vtable[38h] is false; else 00999AE0(pilot),
+//   the first task whose vtable[34h] is false answering vtable[4Ch]. For the
+//   dogfight task (00D1F9B0: +34h = 0099B700 `XOR AL,AL`, +4Ch = 009A9C60)
+//   that is 009BE3E0(follow) while the task is in follow, else -1.0.
+// 009BE3E0 (the follow state's wait value):
+//   1.0 when state+85h is set;
+//   ang  = |wrap(heading(member - station) - leader heading)|   (007B4E90, 00438B10)
+//   v    = interp(DontWaitForHdgDiff (+3ACh, 50 deg), 0, WaitForHdgDiff (+3B0h, 100 deg), 1, ang)
+//   if v < 1: v = min(1, v + interp(GoodPositionDist (+398h, 100), 1,
+//                                   NearbyDist (+3B4h, 200), 0, |member - station|, y = 0))
+float dogfight_moveto_speed_009becd0(float max_spd, float level_flight_speed, float sep,
+                                     float wait_dist_1, float wait_dist_2,
+                                     bool has_squadron_and_class, float wingmen_007ef2c0) noexcept;
+float follow_wait_value_009be3e0(bool in_position_85, const float member_minus_station[3],
+                                 float leader_heading, float dont_wait_hdg, float wait_hdg,
+                                 float good_position_dist, float nearby_dist) noexcept;
+// 007EF2C0 over the member values in +3D0h order (index 0, the leader, is skipped).
+float squadron_wingmen_value_007ef2c0(const float* member_values, int count,
+                                      int formation_shape_3e4) noexcept;
+
 }  // namespace bsp

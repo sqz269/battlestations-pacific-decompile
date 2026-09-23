@@ -362,4 +362,52 @@ float plane_finder_score_007deec0(const PlaneFinderParams& p, const float local[
     return s;
 }
 
+// ---------------------------------------------------------------------------
+// The dogfight moveto's speed slot, packet cc9_dogfight_moveto.
+// ---------------------------------------------------------------------------
+
+float dogfight_moveto_speed_009becd0(float max_spd, float level_flight_speed, float sep,
+                                     float wait_dist_1, float wait_dist_2,
+                                     bool has_squadron_and_class, float wingmen_007ef2c0) noexcept {
+    if (!has_squadron_and_class) return max_spd;                  // 009BED72
+    const float k = interp_00419010(wait_dist_1, 0.0f, wait_dist_2, 0.5f, sep);  // 009BED0F
+    const float m = (k > wingmen_007ef2c0) ? k : wingmen_007ef2c0;  // 009BED35-009BED4C
+    return (max_spd - level_flight_speed) * m + level_flight_speed;  // 009BED4C-009BED66
+}
+
+float follow_wait_value_009be3e0(bool in_position_85, const float member_minus_station[3],
+                                 float leader_heading, float dont_wait_hdg, float wait_hdg,
+                                 float good_position_dist, float nearby_dist) noexcept {
+    if (in_position_85) return 1.0f;
+    const float x = member_minus_station[0];
+    const float z = member_minus_station[2];
+    // 007B4E90: pi/2 - atan2(z, x), wrapped into [0, 2pi).
+    double hdg = 1.5707963267948966 - std::atan2(static_cast<double>(z), static_cast<double>(x));
+    if (hdg < 0.0) hdg += 6.283185307179586;
+    double d = hdg - leader_heading;
+    while (d > 3.141592653589793) d -= 6.283185307179586;
+    while (d < -3.141592653589793) d += 6.283185307179586;
+    const float ang = static_cast<float>(d < 0.0 ? -d : d);
+    float v = interp_00419010(dont_wait_hdg, 0.0f, wait_hdg, 1.0f, ang);
+    if (v < 1.0f) {
+        const float h = static_cast<float>(std::sqrt(static_cast<double>(x) * x +
+                                                     static_cast<double>(z) * z));
+        v = v + interp_00419010(good_position_dist, 1.0f, nearby_dist, 0.0f, h);
+        if (v > 1.0f) v = 1.0f;
+    }
+    return v;
+}
+
+float squadron_wingmen_value_007ef2c0(const float* member_values, int count,
+                                      int formation_shape_3e4) noexcept {
+    if (count <= 1 || formation_shape_3e4 == 0) return 1.0f;       // 007EF2CA, 007EF2D6
+    float best = 1.0f;                                             // 007EF2DF
+    for (int i = 1; i < count; ++i) {
+        const float v = member_values[i];
+        if (v < 0.0f) continue;                                    // COMISS / JC
+        if (!(v > best)) best = v;                                 // FCOMIP / JA
+    }
+    return best;
+}
+
 }  // namespace bsp

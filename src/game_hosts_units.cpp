@@ -416,6 +416,14 @@ struct GameUnitSlot {
     int pg_trigger_rises{0};
     int df_head_on_ticks{0};
     int pc_air_brake_overrides{0};
+    // Packet cc9_dogfight_moveto.
+    float df_station_world[3]{0.0f, 0.0f, 0.0f};   // follow state +30h..38h
+    bool df_station_valid{false};
+    float df_leader_heading{0.0f};                 // followed unit vtable[50h]
+    bool plane_pilot_fires_c24{true};              // unit+C24h PilotFires
+    int df_moveto_speed_commands{0};
+    float df_moveto_speed_min{1.0e9f};
+    float df_moveto_speed_max{0.0f};
     float df_head_on_throttle_min{1.0f};
     int nf_hits{0};
     int nf_attackrun_weaves{0};
@@ -2691,6 +2699,11 @@ struct GameUnitsHost::Impl {
     // 007DA710 (free-flight arm, read) and 007BB920's air-brake override.
     static constexpr bool kPlaneControlRateLawBound = true;
     static constexpr bool kPlaneCommitCommandBound = true;
+    // Packet cc9_dogfight_moveto: the dogfight moveto's speed slot 009C1BC0
+    // (009BECD0 / 007EF2C0 / 009BE3E0), and PilotFires (unit+C24h, 007CD930)
+    // loaded from the authored Platforms[].PilotFires. docs/DOGFIGHT_MOVETO.md.
+    static constexpr bool kDogfightMovetoSpeedBound = true;
+    static constexpr bool kPilotFiresBound = true;
     // 007B4ED0 wiring (the head-on arm and the maneuver tail's full throttle).
     // OFF, measured: run F1 drowned Yorktown-class01_sqn02 and its .-2 at |v| 51
     // after one maneuver tick left the throttle slot active in mode 0. The image
@@ -2935,6 +2948,43 @@ struct GameUnitsHost::Impl {
     // comes from the PlaneGlobals mirror and the stall speed from the unit's own
     // vehicle-class row, which src/game_hosts_lua.cpp loads and the free-flight
     // arm already reads at 007DB760. docs/BOT_SPEED_CLASS_ROWS.md.
+    // Packet cc9_dogfight_moveto: VehicleClass[id].BSPPilotFires = 1 when any
+    // platform with at least one gun authors PilotFires = true, else 0.
+    bool pilot_fires_flattened{false};
+    void ensure_pilot_fires_flattened() {
+        if (pilot_fires_flattened) return;
+        pilot_fires_flattened = true;
+        static const char chunk[] =
+            "if type(VehicleClass) == 'table' then\n"
+            "  for id, row in pairs(VehicleClass) do\n"
+            "    if type(row) == 'table' then\n"
+            "      local pf = 0\n"
+            "      if type(row.Platforms) == 'table' then\n"
+            "        for k = 1, 64 do\n"
+            "          local p = row.Platforms[k]\n"
+            "          if type(p) == 'table' and type(p.Gun) == 'table'\n"
+            "             and type(p.Gun[1]) == 'number' and p.PilotFires == true then\n"
+            "            pf = 1\n"
+            "          end\n"
+            "        end\n"
+            "      end\n"
+            "      row.BSPPilotFires = pf\n"
+            "    end\n"
+            "  end\n"
+            "end\n";
+        if (lua.luaL_loadbuffer(chunk, static_cast<int>(sizeof(chunk) - 1), "bsp_pilot_fires") != 0) {
+            log.note("pilot fires: flatten chunk did not compile; PilotFires stays true");
+            lua.lua_settop(-2);
+            return;
+        }
+        if (lua.lua_pcall(0, 0, 0) != 0) {
+            log.note("pilot fires: flatten chunk failed; PilotFires stays true");
+            lua.lua_settop(-2);
+            return;
+        }
+        done("Plane::compute_pilot_fires_007cd930", 0x007cd930u);
+    }
+
     float bot_desired_speed_007c47f0(const GameUnitSlot& slot) const {
         float level_flight = 1.8f;                    // tuning+24Ch
         if (lua.plane_globals_loaded()) {
@@ -4120,6 +4170,15 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
             slot->plane_max_spd = lua_row.max_spd;
             slot->plane_pitch_spd = lua_row.pitch_spd;
             slot->plane_travel_speed = lua_row.travel_speed;
+            if constexpr (Impl::kPilotFiresBound) {
+                // 007CD930 (from BSP_Plane_ReadPropertyBag): unit+C24h = any gun
+                // whose platform ([class+94h][gun+38Ch]) has PilotFires set. The
+                // authored table is VehicleClass[id].Platforms[k].PilotFires with
+                // the platform's guns in .Gun; flattened once per class.
+                host.ensure_pilot_fires_flattened();
+                slot->plane_pilot_fires_c24 =
+                    host.lua.read_vehicle_class_number(row.type_id, "BSPPilotFires", 1.0f) != 0.0f;
+            }
             slot->plane_bomb_delay_1f4 = host.lua.read_vehicle_class_number(row.type_id, "BombDelay", 1.0f);   // class+1F4h BombDelay, 007D2318
             slot->plane_accel = lua_row.accel;
             slot->plane_glide_rate = lua_row.glide_rate;
@@ -6803,7 +6862,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     void run_dogfight_task_arm_009ab1c0(float dt) {
                         df_arm_body_009ab1c0(dt);
                         if constexpr (GameUnitsHost::Impl::kDogfightGunBound) {
-                            if (unit_.dogfight_task_installed) df_gun_tick_009fc7c0(dt);
+                            // 00999962: the gun controller ticks only while unit+C24h.
+                            if (unit_.dogfight_task_installed &&
+                                (!GameUnitsHost::Impl::kPilotFiresBound ||
+                                 unit_.plane_pilot_fires_c24)) {
+                                df_gun_tick_009fc7c0(dt);
+                            }
                         }
                     }
 
@@ -7073,6 +7137,63 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         return nullptr;
                     }
 
+                    // 009C1BC0 with 009BECD0, 007EF2C0 and 009BE3E0 (packet
+                    // cc9_dogfight_moveto). `sep` is the moveto target's planar
+                    // range, the argument 009C18C0 passes (009C198A-009C1999).
+                    void df_moveto_speed_009c1bc0(float sep) {
+                        float w1 = 3000.0f, w2 = 5000.0f;
+                        float dont_wait = 0.87266463f, wait = 1.7453293f, good = 100.0f, nearby = 200.0f;
+                        if (owner_.lua.plane_globals_loaded()) {
+                            const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
+                            w1 = g.pilot_general_wingmen_wait_dist_1;
+                            w2 = g.pilot_general_wingmen_wait_dist_2;
+                            dont_wait = g.pilot_follow_dont_wait_for_hdg_diff;
+                            wait = g.pilot_follow_wait_for_hdg_diff;
+                            good = g.pilot_follow_good_position_dist;
+                            nearby = g.pilot_follow_nearby_dist;
+                        }
+                        const bsp::PlaneSquadronHostRecord* sq =
+                            bsp::plane_squadron_registry().find_by_member_unit(unit_.process_index);
+                        float wingmen = 1.0f;
+                        if (sq != nullptr) {
+                            std::vector<float> values;
+                            for (const std::size_t m : sq->member_units) {
+                                float v = -1.0f;   // 007BCC20: dead, leader, no pilot
+                                if (m != bsp::kPlaneSquadronNoUnit && m < owner_.slots.size() &&
+                                    m != unit_.process_index) {
+                                    const GameUnitSlot& o = *owner_.slots[m];
+                                    // 00999AE0 -> 009A9C60: the follow state's value
+                                    // while the member's dogfight task is in follow.
+                                    if (df_slot_live(o) && o.dogfight_task_installed &&
+                                        o.dogfight_state == bsp::DogfightState::kFollow &&
+                                        o.df_station_valid) {
+                                        const float d[3] = {
+                                            o.motion.position[0] - o.df_station_world[0],
+                                            o.motion.position[1] - o.df_station_world[1],
+                                            o.motion.position[2] - o.df_station_world[2]};
+                                        // state+85h is not modelled: taken as clear.
+                                        v = bsp::follow_wait_value_009be3e0(
+                                            false, d, o.df_leader_heading, dont_wait, wait, good, nearby);
+                                    }
+                                }
+                                values.push_back(v);
+                            }
+                            wingmen = bsp::squadron_wingmen_value_007ef2c0(
+                                values.data(), static_cast<int>(values.size()),
+                                sq->formation_shape_3e4);
+                        }
+                        const float speed = bsp::dogfight_moveto_speed_009becd0(
+                            unit_.plane_max_spd, owner_.bot_desired_speed_007c47f0(unit_), sep,
+                            w1, w2, sq != nullptr, wingmen);
+                        unit_.plane_desired_speed_2b4 = speed;       // 009C1C07
+                        unit_.plane_trg_speed_corr_off_2b0 = 0;      // 009C1C0D, byte
+                        unit_.plane_air_brake_mode_2d8 = 1;          // 009C1C14, dword
+                        ++unit_.df_moveto_speed_commands;
+                        if (speed < unit_.df_moveto_speed_min) unit_.df_moveto_speed_min = speed;
+                        if (speed > unit_.df_moveto_speed_max) unit_.df_moveto_speed_max = speed;
+                        owner_.done("BotStateMoveTo::dogfight_speed_009c1bc0", 0x009c1bc0u);
+                    }
+
                     void df_arm_body_009ab1c0(float dt) {
                         // Install trigger. The image builds the kind-2 task through
                         // 0099A170 from the class 007EEC50 chose (00E08F58). A
@@ -7189,6 +7310,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             if (owner_.kPlaneFollowLawEnabled && station.produced &&
                                 fl != nullptr) {
                                 owner_.run_follow_law_009bfee0_009bee30(unit_, station, *fl);
+                            }
+                            unit_.df_station_valid = station.produced && fl != nullptr;
+                            if (unit_.df_station_valid) {
+                                for (int i = 0; i < 3; ++i) unit_.df_station_world[i] = station.world[i];
+                                unit_.df_leader_heading = fl->plane_heading_c6c;
                             }
                             owner_.record("BotTaskDogfight::follow", 0x009c1fd0u);
                             return;
@@ -7346,6 +7472,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                         if (c.horizontal_range < attack_dist) {
                             ++unit_.df_within_attack_dist_ticks;
+                        }
+                        if constexpr (GameUnitsHost::Impl::kDogfightMovetoSpeedBound) {
+                            df_moveto_speed_009c1bc0(c.horizontal_range);
                         }
                         owner_.record("BotTaskDogfight::moveto_standin", 0x009c18c0u);
                     }
@@ -10499,7 +10628,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // authored per weapon group and not loaded here, so a
                             // kamikaze-capable plane's override stays a contract.
                             if (bsp::unit_is_kind_of(unit_.class_id, 0x17)) {
-                                owner_.log.unimplemented("Plane::pilot_fires_c24", "007bb969");
+                                if constexpr (GameUnitsHost::Impl::kPilotFiresBound) {
+                                    if (!unit_.plane_pilot_fires_c24) {   // 007BB969
+                                        unit_.pilot_command_block[bsp::kPilotCmdThrottle] = 1.0f;
+                                    }
+                                } else {
+                                    owner_.log.unimplemented("Plane::pilot_fires_c24", "007bb969");
+                                }
                             }
                         }
                         // 007BB6E0, one axis at a time, into the live block.
@@ -13004,6 +13139,11 @@ void GameUnitsHost::report() {
                             slot->pg_trigger_ticks, slot->pg_trigger_rises, slot->df_early_edges,
                             slot->df_early_asks, slot->df_head_on_ticks,
                             static_cast<double>(slot->df_head_on_throttle_min));
+                        host.log.notef("  dogfight moveto %-12s speed_commands=%d speed=[%.1f %.1f] pilot_fires=%d",
+                            slot->row.name.c_str(), slot->df_moveto_speed_commands,
+                            static_cast<double>(slot->df_moveto_speed_commands ? slot->df_moveto_speed_min : 0.0f),
+                            static_cast<double>(slot->df_moveto_speed_max),
+                            slot->plane_pilot_fires_c24 ? 1 : 0);
                     }
                     if (df_aircraft > 0) {
                         host.log.notef("summary mission fighter gun: bursts=%d fire_ticks=%d "
