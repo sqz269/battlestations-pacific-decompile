@@ -1,0 +1,78 @@
+{
+ "packet": "cc9_dogfight_moveto",
+ "calls": [
+  {
+   "address": "009C1BD7",
+   "native": "007C47F0",
+   "function": "009C1BC0",
+   "note": "LevelFlight * StallSpd"
+  },
+  {
+   "address": "009C1C02",
+   "native": "009BECD0",
+   "function": "009C1BC0",
+   "note": "blend"
+  },
+  {
+   "address": "009BED0F",
+   "native": "00419010",
+   "function": "009BECD0",
+   "note": "WaitDist ramp"
+  },
+  {
+   "address": "009BED2A",
+   "native": "007EF2C0",
+   "function": "009BECD0",
+   "note": "wingmen value"
+  },
+  {
+   "address": "007CDCE7",
+   "native": "007BCC20",
+   "function": "007CDC70",
+   "note": "publish member+9C4h"
+  }
+ ],
+ "raw_listing_transfers": [
+  {
+   "address": "007BCC6A",
+   "target": "00999AE0",
+   "function": "007BCC20",
+   "evidence": "tail JMP"
+  },
+  {
+   "address": "009A9C70",
+   "target": "009BE3E0",
+   "function": "009A9C60",
+   "evidence": "tail JMP; 009A9C60 has no Ghidra function"
+  }
+ ],
+ "no_ghidra_function": [
+  {
+   "start": "009A9C60",
+   "end_inclusive": "009A9C79",
+   "evidence": "ghidra proto --brief finds no function; dogfight task vtable 00D1F9B0 +4Ch; JMP 0099B720 at 009A9C75 (5 bytes)"
+  }
+ ],
+ "ledger_names_added": [
+  {
+   "address": "007EF2C0",
+   "name": "BSP_Squadron_WingmenWaitValue"
+  },
+  {
+   "address": "007BCC20",
+   "name": "BSP_Plane_FormationWaitValue"
+  },
+  {
+   "address": "00999AE0",
+   "name": "BSP_PilotBot_FirstTaskWaitValue"
+  },
+  {
+   "address": "009BE3E0",
+   "name": "BSP_BotStateFollow_WaitValue"
+  },
+  {
+   "address": "007B4E90",
+   "name": "BSP_Vector3_CompassHeading"
+  }
+ ]
+}
