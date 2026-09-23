@@ -444,6 +444,9 @@ public:
         float in_z, float& out_x, float& out_y, float& out_z) const;
     // unit+54h, the side word 009f14db / 009f14e4 compare and 009e2588 copies.
     int unit_side_0054(std::size_t index) const;
+    // unit+BC9h, the latched gunFire (packet cc9_plane_gun_pass). The gunnery
+    // host's plane-gun hook reads it; docs/PLANE_GUN_PASS.md.
+    bool plane_gun_trigger_bc9(std::size_t index) const;
     // 0071df70's two inputs on the unit's own director, forwarded.
     float director_target_hold_0040(std::size_t index) const;
     int director_leading_slot_categories_0071df83(std::size_t index, int* out,

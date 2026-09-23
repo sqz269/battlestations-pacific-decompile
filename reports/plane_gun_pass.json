@@ -1,0 +1,112 @@
+{
+ "packet": "cc9_plane_gun_pass",
+ "calls": [
+  {
+   "address": "007CE96F",
+   "native": "007B9770",
+   "function": "007CE040",
+   "note": "latch the control block: unit+BC9h = gunFire"
+  },
+  {
+   "address": "007CE9D0",
+   "native": "005471B0",
+   "function": "007CE040",
+   "note": "grow the weapon-group array"
+  },
+  {
+   "address": "006EC8AD",
+   "native": "006EC640",
+   "function": "006EC860",
+   "note": "catapult construction"
+  },
+  {
+   "address": "009AAB16",
+   "native": "007B96F0",
+   "function": "009AAA80",
+   "note": "the finder with the early-edge arguments"
+  },
+  {
+   "address": "009AAB4B",
+   "native": "007C47F0",
+   "function": "009AAA80",
+   "note": "LevelFlight * StallSpd"
+  },
+  {
+   "address": "009AAB5E",
+   "native": "007C4830",
+   "function": "009AAA80",
+   "note": "StallRangeMax * StallSpd"
+  },
+  {
+   "address": "009AAB67",
+   "native": "00419010",
+   "function": "009AAA80",
+   "note": "elevation limit ramp"
+  },
+  {
+   "address": "009AAC1C",
+   "native": "00BF8490",
+   "function": "009AAA80",
+   "note": "atan(dy / max(1, h))"
+  },
+  {
+   "address": "009AAC3A",
+   "native": "009A7650",
+   "function": "009AAA80",
+   "note": "retarget, target above"
+  },
+  {
+   "address": "009AAC50",
+   "native": "009A7650",
+   "function": "009AAA80",
+   "note": "retarget, target below"
+  },
+  {
+   "address": "009AAC63",
+   "native": "007B9740",
+   "function": "009AAA80",
+   "note": "gate closed"
+  }
+ ],
+ "raw_listing_transfers": [
+  {
+   "address": "006EC00C",
+   "target": "00727E30",
+   "function": "006EBFF0",
+   "evidence": "disasm-raw; 006EBFF0 has no Ghidra function"
+  },
+  {
+   "address": "008034A0",
+   "target": "vtable[1E8h] (0072D2C0 for MRFSGun)",
+   "function": "00803480",
+   "evidence": "disasm-raw; CALL EDX after MOV EDX,[EDX+1E8h]; 00803480 has no Ghidra function"
+  },
+  {
+   "address": "007CE9F4",
+   "target": "vtable[1E8h] = 0072D2C0 BSP_Gun_SetTriggerHeld",
+   "function": "007CE040",
+   "evidence": "indirect CALL EDX after MOV EDX,[EDX+1E8h] at 007CE9EB"
+  }
+ ],
+ "no_ghidra_function": [
+  {
+   "start": "00803480",
+   "end_inclusive": "008034A6",
+   "evidence": "ghidra proto --brief finds no function; MRFSGun vtable 00CFE548 slot +164h; RET 4 at 008034A4"
+  }
+ ],
+ "ledger_names_added": [
+  {
+   "address": "006EC640",
+   "name": "BSP_MCatapult_Construct"
+  },
+  {
+   "address": "007C4830",
+   "name": "BSP_PlaneClass_StallRangeSpeed"
+  },
+  {
+   "address": "009AAA80",
+   "name": "BSP_BotTaskDogfight_EarlyAimEdge"
+  }
+ ]
+}
