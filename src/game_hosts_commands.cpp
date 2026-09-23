@@ -138,6 +138,8 @@ struct GameCommandsHost::Impl {
     GameHostLog& log;
     std::vector<GameCommandUnit> units;
     std::vector<GameDirector> directors;
+    // Packet cc9_target_release.
+    const GameCommandTargetFactsSource* target_facts{nullptr};
     // Milestone 2m. One navigator parameter block per unit, the 0081f283
     // allocation at *(unit+73Ch). Only the commanded-speed pair at +24h / +28h
     // has a recovered producer, and it is the pair the director's stage reset
@@ -1897,6 +1899,11 @@ GameCommandCompletion GameCommandsHost::end_command_0071e430(std::size_t unit_in
     return out;
 }
 
+void GameCommandsHost::bind_command_target_facts(
+    const GameCommandTargetFactsSource* source) noexcept {
+    impl_->target_facts = source;
+}
+
 GameDirectorStepOutcome GameCommandsHost::director_step_00836920(std::size_t unit_index,
     bool player_controlled, float mission_clock, const bsp::UnitOrderRing& ring,
     float heading_radians) {
@@ -1951,6 +1958,52 @@ GameDirectorStepOutcome GameCommandsHost::director_step_00836920(std::size_t uni
     host.done("WeaponDirector::stop_arm", 0x00836a8bu);
     state.primary_stage = director.stage;
     host.life_emit(unit_index, "stop arm 00836a8b", mission_clock, director);
+
+    // Packet cc9_target_release: the `attackmove` arm, 00836B45..00836BEB, when
+    // slot 0 holds the attackmove command object (00836B45 CMP EAX,0E08F78h).
+    if (host.target_facts != nullptr && director.slot_command[0] == bsp::kCommandAttackMove) {
+        bool raise = false;
+        const char* why = "";
+        // 00836B50..00836B5C: 00521EA0 on director+58h, the slot-0 descriptor.
+        const std::uint32_t target = resolve_command_target_00521ea0(director.slot_target[0]);
+        GameCommandTargetFacts facts{};
+        GameCommandTargetFacts own{};
+        if (target == 0u || !host.target_facts->command_target_facts(target - 1u, facts)) {
+            raise = true;                                  // 00836B5C JE 00836BB2
+            why = "target gone";
+        } else if (facts.nav_point_41) {
+            // 00836B6B JNZ 00836D67: nothing.
+        } else if (facts.command_building_1c) {
+            // 00836B80..00836BAD: +5Eh set or the session's own side converts the
+            // command to `moveto` (00465080, 0071ECF0) and then raises stage 2.
+            // The conversion is not issued here, so the branch stays a record.
+            // LABELLED: no building target reaches this arm in the measured runs.
+            host.record("WeaponDirector::attackmove_arm_building_moveto_00836b95", 0x00836b95u);
+        } else if (!facts.live_0043f080) {
+            raise = true;                                  // 00836BC9 JE 00836BB2
+            why = "target not live (0043f080)";
+        } else if (host.target_facts->command_target_facts(unit_index, own)) {
+            // 00836BCB..00836BDC: 005457C0(ECX = [director+24Ch], target+54h),
+            // `unit+54h != side && side != 2`, false raises stage 2.
+            const bool hostile = own.side_0054 != facts.side_0054 && facts.side_0054 != 2;
+            if (!hostile) {
+                raise = true;
+                why = "target not hostile (005457c0)";
+            }
+        }
+        host.done("WeaponDirector::attackmove_arm", 0x00836b45u);
+        if (raise) {
+            outcome.attackmove_arm_raised = true;
+            const std::size_t before = static_cast<std::size_t>(host.command_count(director));
+            stage.director_raise_primary_stage_0071d810(2); // 00836BB6 / 00836BE6
+            state.primary_stage = director.stage;
+            host.log.notef("attackmove arm 00836b45: unit=%zu \"%s\" target=%u %s at %.2f s; "
+                "stage 2, queue %zu -> %d", unit_index, host.units[unit_index].name.c_str(),
+                target, why, static_cast<double>(mission_clock), before,
+                host.command_count(director));
+        }
+        host.life_emit(unit_index, "attackmove arm 00836b45", mission_clock, director);
+    }
 
     outcome.reissued = bsp::weapon_director_idle_reissue_00836dc9(state,
         outcome.prepass_flag, stage.post_reset, stage);

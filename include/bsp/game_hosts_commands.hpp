@@ -115,10 +115,29 @@ struct GameCommandRow {
 
 // Milestone 2m. What 00836920's stage spine did to one director in one fixed
 // simulation step. Every field is the answer of a recovered test.
+// Packet cc9_target_release. What 00836920's `attackmove` arm (00836B45..
+// 00836BEB) reads off the command's target entity. The commands host has no
+// route to the unit table, so the owner of that knowledge publishes it.
+struct GameCommandTargetFacts {
+    bool nav_point_41{false};        // vtable[5Ch](41h), 00836B63
+    bool command_building_1c{false}; // vtable[5Ch](1Ch), 00836B76
+    bool flag_05e{false};            // byte +5Eh, 00836B80
+    bool live_0043f080{false};       // +5Ch set, +5Dh / +60h / +5Eh clear, 00836BC2
+    int side_0054{0};                // +54h, 00836B89 / 00836BCB
+};
+class GameCommandTargetFactsSource {
+public:
+    virtual ~GameCommandTargetFactsSource() = default;
+    // False when the unit index names nothing; out is then unspecified.
+    virtual bool command_target_facts(std::size_t unit_index,
+                                      GameCommandTargetFacts& out) const = 0;
+};
+
 struct GameDirectorStepOutcome {
     bool ran{false};
     bool prepass_flag{false};     // the local flag at [ESP+0Bh], 00836941
     bool stop_arm_raised{false};  // 00836a8b raised the primary stage to 2
+    bool attackmove_arm_raised{false}; // 00836bb6 / 00836be6, packet cc9_target_release
     bsp::DirectorDefaultCommand reissued{bsp::DirectorDefaultCommand::None};
 };
 
@@ -294,6 +313,10 @@ public:
     void store_commanded_speed_00890e6f(std::size_t unit_index, float requested,
         float mission_clock);
     bsp::CruiseSpeedSetting commanded_speed(std::size_t unit_index) const;
+
+    // Packet cc9_target_release: the source 00836B45's arm reads its target
+    // facts from. Null (the default) leaves the arm a record, as before.
+    void bind_command_target_facts(const GameCommandTargetFactsSource* source) noexcept;
 
     // Milestone 2m. 00836920's stage spine for one unit, once per fixed
     // simulation step: the pre-pass 00836941, the `stop` arm 00836a8b and the

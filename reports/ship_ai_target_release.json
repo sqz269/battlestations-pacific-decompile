@@ -1,0 +1,50 @@
+{
+  "packet": "cc9_target_release",
+  "doc": "docs/SHIP_AI_TARGET_RELEASE.md",
+  "status": "director attackmove arm 00836B45 bound behind kShipAiTargetReleaseBound through a target-facts source; a dead unit fails 0043F080 and reads +5Dh; all eight USN04 escorts release D3A Val #1.1 one fixed step after its death",
+  "abi_compatible": false,
+  "game_validated": false,
+  "routines": [
+    {"address": "009F1420", "native": "009F1420", "name": "BSP_ShipAi_BrainPrePass", "role": "009F1480 stores [brain+0B20h] from the goal record +14h (loaded 009F1478)"},
+    {"address": "009F1160", "native": "009F1160", "name": "BSP_ShipAi_BrainRecordConstruct", "role": "009F1271 zeroes [brain+0B20h]"},
+    {"address": "00521EA0", "native": "00521EA0", "name": "BSP_CommandTarget_ResolveObject", "role": "cached object at +4h, else the id at +2h through the handle tables 00F89A0C/00F89A60"},
+    {"address": "00836920", "native": "00836920", "name": "weapon director step", "role": "attackmove arm 00836B45..00836BEB: null, 41h, 1Ch, 0043F080, 005457C0 tests; stage 2 through 0071D810"},
+    {"address": "009F3240", "native": "009F3240", "name": "attackmove approach step", "role": "009F3277 target+5Dh set takes the hold arm 009E00A0 and skips the nested update"}
+  ],
+  "call_sites": [
+    {"address": "009F146B", "native": "0071EB60", "function": "009F1420", "note": "active command descriptor"},
+    {"address": "009F1473", "native": "009E2FB0", "function": "009F1420", "note": "latch the resolved target onto the goal record"},
+    {"address": "00836B53", "native": "00521EA0", "function": "00836920", "note": "resolve slot 0's target (director+58h)"},
+    {"address": "00836BA0", "native": "00465080", "function": "00836920", "note": "build the moveto record for a building target"},
+    {"address": "00836BAD", "native": "0071ECF0", "function": "00836920", "note": "issue the moveto"},
+    {"address": "00836BB6", "native": "0071D810", "function": "00836920", "note": "stage 2"},
+    {"address": "00836BC2", "native": "0043F080", "function": "00836920", "note": "the four-byte live test"},
+    {"address": "00836BD5", "native": "005457C0", "function": "00836920", "note": "still hostile"},
+    {"address": "00836BE6", "native": "0071D810", "function": "00836920", "note": "stage 2 for a non-hostile target"}
+  ],
+  "field_accesses": [
+    {"address": "009F1271", "function": "009F1160", "note": "MOV [ESI+0B20h],EBX, constructor zero"},
+    {"address": "009F1480", "function": "009F1420", "note": "MOV [EDI+0B20h],ESI, ESI = [EDI+0B0Ch]"},
+    {"address": "00836B45", "function": "00836920", "note": "CMP EAX,0E08F78h, the attackmove object"},
+    {"address": "00836B80", "function": "00836920", "note": "CMP byte [EDI+5Eh],0"},
+    {"address": "00836BCB", "function": "00836920", "note": "MOV EDX,[EDI+54h], the target side"},
+    {"address": "009F3277", "function": "009F3240", "note": "target+5Dh, the hold arm"}
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1 Win32 Release, both ctests passed; control and treatment builds",
+    "env": "BSP_GUNNERY_RNG_STREAMS=1 on every run",
+    "predictions": "local/rl_predictions.txt, written before the runs; 1, 3, 4, 5, 6 held; 2 (AI re-tasks within seconds) was wrong",
+    "runs": {
+      "usn04_control": {"log": "local/rl_ctl_usn04.log", "val_death": "162.71 s", "standoff_choices": 402, "last_standoffs": 300, "heading_changes": [25, 139, 76, 99, 97, 95, 31, 138], "queued_hits": 253, "damage": 18515.8, "deaths": 24, "lexington": "sunk 185.81 s, credited to Fletcher-class01"},
+      "usn04_treatment": {"log": "local/rl_trt_usn04.log", "released": "all eight escorts at 162.76 s, target not live (0043f080)", "standoff_choices": 153, "last_standoffs": [2250, 2250, 1450, 1450, 1550, 1450, 1850, 1850], "heading_changes": [9, 135, 47, 57, 9, 51, 30, 17], "queued_hits": 241, "damage": 18217.5, "deaths": 24, "lexington": "afloat, 141.9 HP", "end_states": "stop=8 attackmove=0"},
+      "usn01": {"logs": ["local/rl_ctl_usn01.log", "local/rl_trt_usn01.log"], "note": "identical except the arm's own record (23328 calls, no release)"}
+    }
+  },
+  "no_ghidra_function": [],
+  "open": [
+    "the AI coordinator issues no new attackmove after the release in the host; whether the image re-tasks released escorts is unverified",
+    "control on this base credits Lexington's sinking to Fletcher-class01 (friendly fire)",
+    "the building-to-moveto conversion (00465080, 0071ECF0) is a record",
+    "plane positions against the 1100 m traffic keep radius not checked"
+  ]
+}

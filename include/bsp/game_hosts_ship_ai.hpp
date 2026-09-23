@@ -224,6 +224,9 @@ struct GameShipAiRow {
     float avoid_strength_max{0.0f};
     std::string traffic_first_entity;          // the first unit ever inserted
     unsigned long long ring_scan_winner_changes{0};
+    // Packet cc9_target_release: 009F3240 steps that took the hold arm because
+    // the held target is torn down (+5Dh).
+    unsigned long long target_retired_holds{0};
     unsigned long long heading_changes{0};   // nested+120Ch differed from before
     // Packet cc8_ship_ai_approach_slot_scorers: the three gates 009E7FC0 passes
     // before it scores a slot, as the host last answered them.
