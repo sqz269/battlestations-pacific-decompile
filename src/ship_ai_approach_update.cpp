@@ -867,7 +867,16 @@ void ship_ai_approach_refresh_avoidance_009e9190(ShipAiApproachState& state,
                   static_cast<double>(distance_sq))) {
                 continue;
             }
-            host.insert_traffic_record(candidate); // 009E9342..009E9397
+            // 009E92EF..009E933B, the duplicate walk, then 009E9342..009E9397.
+            bool held = false;
+            for (int r = 0; r < host.traffic_record_count(); ++r) {
+                if (host.traffic_record_entity(r) == candidate) {
+                    held = true;
+                    break;
+                }
+            }
+            if (held) continue;
+            host.insert_traffic_record(candidate);
         }
     }
 
@@ -875,9 +884,13 @@ void ship_ai_approach_refresh_avoidance_009e9190(ShipAiApproachState& state,
     // 00F87574, which is zero on disk. 009E942B and 009E9432 also write the
     // byte at nested+1279h and the float at nested+1254h; neither has a reader
     // in this packet, so neither is a member of ShipAiApproachState.
+    // Packet cc9_ship_traffic: 009E942B and 009E9432 are the block's +41h byte
+    // and word 7 (kApproachAvoidReadyHorizon); the host's advance applies them.
+    // The walk runs from the list head forward (009E943A..009E9441), and an
+    // erase continues with the next node (009E9579..009E95B0).
     ShipAiApproachPoint accumulator{0.0f, 0.0f, 0.0f};
     const ShipAiApproachPoint unit_pos = host.unit_world_position();
-    for (int record = host.traffic_record_count() - 1; record >= 0; --record) {
+    for (int record = 0; record < host.traffic_record_count();) {
         if (!host.traffic_record_active_009e6170(record, unit_pos,
                                                  kApproachAvoidProbeRange)) {
             host.erase_traffic_record(record); // 009E9588
@@ -886,12 +899,15 @@ void ship_ai_approach_refresh_avoidance_009e9190(ShipAiApproachState& state,
         host.advance_traffic_record_009e6240(record, seconds, unit_pos); // 009E950F
         const float weight = host.traffic_record_weight_0120(record);
         const ShipAiApproachPoint dir = host.traffic_record_direction_010c(record);
-        accumulator.x = static_cast<float>(static_cast<double>(accumulator.x) +
-                                           static_cast<double>(weight) * dir.x);
-        accumulator.y = static_cast<float>(static_cast<double>(accumulator.y) +
-                                           static_cast<double>(weight) * dir.y);
-        accumulator.z = static_cast<float>(static_cast<double>(accumulator.z) +
-                                           static_cast<double>(weight) * dir.z);
+        // 009E9522..009E954C: each product is stored to float first, then
+        // 009E9550..009E9570 add it to the float accumulator.
+        const float px = static_cast<float>(static_cast<double>(weight) * dir.x);
+        const float py = static_cast<float>(static_cast<double>(dir.y) * weight);
+        const float pz = static_cast<float>(static_cast<double>(weight) * dir.z);
+        accumulator.x = static_cast<float>(static_cast<double>(px) + accumulator.x);
+        accumulator.y = static_cast<float>(static_cast<double>(py) + accumulator.y);
+        accumulator.z = static_cast<float>(static_cast<double>(pz) + accumulator.z);
+        ++record;
     }
 
     // 009E95B5..009E966A.

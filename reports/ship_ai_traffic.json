@@ -1,0 +1,58 @@
+{
+  "packet": "cc9_ship_traffic",
+  "doc": "docs/SHIP_AI_TRAFFIC.md",
+  "status": "traffic records bound behind kShipAiTrafficBound: contacts within weapon range + 200 inserted every refresh, kept within + 300, rated through 0095EB40 against this ship, summed into the avoid slot term",
+  "abi_compatible": false,
+  "game_validated": false,
+  "routines": [
+    {"address": "009E9190", "native": "009E9190", "name": "BSP_ShipAi_ApproachRefreshAvoidance", "role": "producer and consumer: timer, contact walk, insert, live test, advance, weighted sum, slot avoid term"},
+    {"address": "009E8360", "native": "009E8360", "name": "BSP_ShipAi_TrafficRecord_Construct", "role": "124h-byte record: +14h entity, +108h = -1.0, +120h = 1.0"},
+    {"address": "009E6170", "native": "009E6170", "name": "BSP_ShipAi_TrafficRecord_IsActive", "role": "live and within ([entity+494h] + range)^2"},
+    {"address": "009E6240", "native": "009E6240", "name": "BSP_ShipAi_ApproachRefreshTargetFirepower", "role": "record refresh: direction, distance, heading, contact's rating of this ship floored to 1.0"},
+    {"address": "008053C0", "native": "008053C0", "name": "BSP_Recon_EnsureSlot", "role": "the side slot whose +0DE8h list is the contact list"},
+    {"address": "00720180", "native": "00720180", "name": "BSP_CommandControllerBase_Construct", "role": "defaults the four allow bytes +220h..+223h to 1"}
+  ],
+  "call_sites": [
+    {"address": "009E9209", "native": "00BD2F10", "function": "009E9190", "note": "refresh timer 2.0..3.0"},
+    {"address": "009E9220", "native": "008053C0", "function": "009E9190", "note": "ECX = [unit+54h], then [EAX+0DE8h]"},
+    {"address": "009E935D", "native": "009E8360", "function": "009E9190", "note": "construct the record for the candidate"},
+    {"address": "009E94C4", "native": "009E6170", "function": "009E9190", "note": "live test with 300.0"},
+    {"address": "009E950F", "native": "009E6240", "function": "009E9190", "note": "advance with &nested+1238h"},
+    {"address": "009E83C4", "native": "00694A60", "function": "009E8360", "note": "observer pair on the entity"},
+    {"address": "009E839E", "native": "00954940", "function": "009E8360", "note": "clear the range curve at +18h"}
+  ],
+  "field_accesses": [
+    {"address": "009E92CF", "function": "009E9190", "note": "FLD [entity+494h], longest weapon range"},
+    {"address": "009E92D5", "function": "009E9190", "note": "FADD qword [00CE4D70] 200.0"},
+    {"address": "009E932A", "function": "009E9190", "note": "CMP [record+14h], entity: duplicate skip"},
+    {"address": "009E942B", "function": "009E9190", "note": "MOV byte [nested+1279h], 1 (block +41h)"},
+    {"address": "009E9432", "function": "009E9190", "note": "MOVSS [nested+1254h], 30.0 from 00CE38C8 (block word 7)"},
+    {"address": "009E9492", "function": "009E9190", "note": "FLD [00CE3AE8] 300.0"},
+    {"address": "009E9514", "function": "009E9190", "note": "FLD [record+120h], the weight"},
+    {"address": "009E83D5", "function": "009E8360", "note": "+108h = [00D7A260] -1.0"},
+    {"address": "009E83E6", "function": "009E8360", "note": "+120h = [00D7A24C] 1.0"},
+    {"address": "009F29CA", "function": "009F1BC0", "note": "block +40h cleared every frame fill"},
+    {"address": "007202FD", "function": "00720180", "note": "MOV byte [ESI+220h], 1"}
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1 Win32 Release, both ctests passed; control, treatment and two diagnostic builds",
+    "env": "BSP_GUNNERY_RNG_STREAMS=1 on every run",
+    "predictions": "local/tr_predictions.txt, written before the runs; all six held",
+    "runs": {
+      "usn04_control": {"log": "local/tr_ctl_usn04.log", "heading_changes": [18, 116, 28, 71, 63, 69, 33, 43], "queued_hits": 103, "damage": 15656.2, "deaths": 9, "lexington": "afloat, 141.9 HP"},
+      "usn04_treatment": {"log": "local/tr_trt_usn04.log", "heading_changes": [18, 116, 31, 71, 65, 69, 33, 43], "queued_hits": 103, "damage": 15656.2, "deaths": 9, "lexington": "afloat, 141.9 HP",
+                          "traffic": "18 inserts, 5 erases, max 14 records per ship; every weight 1.0; avoid max 0.0232-0.0323"},
+      "usn04_diagnostic": {"logs": ["local/tr_dgc_usn04.log", "local/tr_dgt_usn04.log"], "tool": "local/tr_cmp.py",
+                           "avoid_decided_scans": [0, 0, 20, 1, 9, 1, 0, 0], "winner_changes_ctl": [18, 9, 11, 14, 16, 19, 11, 19], "winner_changes_trt": [18, 9, 14, 14, 18, 19, 11, 19],
+                           "attribution": "per ship, scans whose winner differs from the control == scans where removing avoid_3c changes the argmax; per ship, largest control gap < smallest avoid term: F01 0.0067 < 0.0127, F02 0.0005 < 0.0177, F03 0.0130 < 0.0254, F04 0.00003 < 0.0186"},
+      "usn01": {"logs": ["local/tr_ctl_usn01.log", "local/tr_trt_usn01.log"], "note": "identical except one platform message count"}
+    }
+  },
+  "no_ghidra_function": [],
+  "open": [
+    "every aircraft rates below 1.0 against every ship, so all weights are the floor; image agreement unchecked",
+    "all eight ships insert the same 18 contacts and erase 5; plane positions not checked against the 1100 m keep radius",
+    "whether the image releases a dead target from [brain+0B20h] sooner than the host",
+    "both 00BD2F10 timers take the low bound 2.0"
+  ]
+}

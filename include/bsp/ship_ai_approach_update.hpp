@@ -196,7 +196,10 @@ inline constexpr float kApproachAvoidRefreshLow = 2.0f;   // 00CE3958, 009E9200
 inline constexpr float kApproachAvoidRefreshHigh = 3.0f;  // 00CE3854, 009E91EE
 inline constexpr double kApproachAvoidSpeedPad = 200.0;   // 00CE4D70, 009E92D5
 inline constexpr float kApproachAvoidProbeRange = 300.0f; // 00CE3AE8, 009E9492
-inline constexpr float kApproachAvoidSeed = 30.0f;        // 00CE38C8, 009E941D
+// 009E941D..009E9432: the float 30.0 stored at nested+1254h, word 7 (the ready
+// horizon) of the nested+1238h block, beside the byte nested+1279h = 1 (+41h, use
+// ready rounds). Packet cc9_ship_traffic; the name "seed" was a misreading.
+inline constexpr float kApproachAvoidReadyHorizon = 30.0f; // 00CE38C8, 009E941D
 inline constexpr double kApproachQuarterTurn = 1.5707963705062866; // 00CE3830
 inline constexpr double kApproachFullTurn = 6.2831854820251465;    // 00CE3828
 inline constexpr float kApproachHalfTurn = 3.1415927410125732f;    // 00D7A264
@@ -605,23 +608,38 @@ struct ShipAiApproachAvoidHost {
     // pose byte at +0C8h is clear.
     virtual void refresh_pose_00414db0(std::uint32_t entity) = 0;
     // 009E9295..009E92CF, the candidate's world x/z at +0FCh/+104h and its
-    // speed at +494h; 009E93F3, the unit's own world position.
+    // longest weapon range at +494h (00956C20, not a speed; packet cc9_ship_traffic);
+    // 009E93F3, the unit's own world position.
     virtual ShipAiApproachPoint entity_world_position(std::uint32_t entity) = 0;
     virtual float entity_speed_0494(std::uint32_t entity) = 0;
     virtual ShipAiApproachPoint unit_world_position() = 0;
     // 009E9342 and 009E935D, operator new(0x124) then 009E8360(record)(entity),
-    // spliced into the list at nested+14A0h by 009E7F60 and 009E8DC0. Bodies
-    // unread: contract unread.
+    // spliced at the END of the list at nested+14A0h (009E9366..009E9397, the
+    // node goes before the sentinel [list+4]). 009E8360: vtable 00CEDDA0, +4h..
+    // +0Ch = 0, +10h = 1, +14h = the entity (observer pair 00694A60), the range
+    // curve at +18h cleared by 00954940, +108h = -1.0f (00D7A260) so the first
+    // advance refreshes at once, +120h = 1.0f (00D7A24C). Packet cc9_ship_traffic.
     virtual void insert_traffic_record(std::uint32_t entity) = 0;
     virtual int traffic_record_count() = 0;
+    // 009E92EF..009E933B: the insert walks the list first and skips an entity
+    // some record already holds at +14h (CMP [node_value+14h], EBP at 009E932A).
+    virtual std::uint32_t traffic_record_entity(int record) = 0;
     // 009E94C4, 009E6170 with ECX = record and the unit position plus 300.0f;
-    // false erases the record (009E9588..009E9598). Body unread.
+    // false erases the record (009E9588..009E9598). 009E6170: true when the
+    // entity at +14h is live (+5Ch set, +5Dh/+60h/+5Eh clear) and its planar
+    // distance squared (dx*dx + 0*0 + dz*dz) is below (entity+494h + range)^2,
+    // the entity's longest weapon range plus 300.
     virtual bool traffic_record_active_009e6170(int record,
                                                 const ShipAiApproachPoint& unit_pos,
                                                 float range) = 0;
     virtual void erase_traffic_record(int record) = 0;
     // 009E950F, 009E6240 with ECX = record and (seconds, unit position,
-    // &nested+1238h). Body unread: contract unread.
+    // &nested+1238h). Same live test as 009E6170; then +108h -= seconds and, when
+    // it drops below 0, +10Ch..+114h = unit - entity with y zeroed, +11Ch its
+    // length (0042B2F0), the direction normalised by it, +118h its compass
+    // heading (007B4E90), block word 5 = that heading, +40h = 1, word 0 = the
+    // distance, +120h = 0095EB40(ECX = entity, block) floored to 1.0f (below 1.0
+    // takes 00D7A24C), and +108h = 00BD2F10(1, 2.0, 3.0). Packet cc9_ship_traffic.
     virtual void advance_traffic_record_009e6240(int record, float seconds,
                                                  const ShipAiApproachPoint& unit_pos) = 0;
     // 009E9514..009E9542, the record's weight at +120h and its direction at
