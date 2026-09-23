@@ -26,6 +26,7 @@
 #include "bsp/entity_command_arms.hpp"
 #include "bsp/weapon_director.hpp"
 #include "bsp/ship_ai_path_cursor.hpp"
+#include <algorithm>
 #include <array>
 #include <cmath>
 
@@ -36,6 +37,12 @@
 
 namespace bsp::game {
 namespace {
+
+// Packet cc9_ai_retask, docs/AI_RETASK.md. True: a re-registration of the unit
+// table keeps each existing unit's formation pair (unit+284h, 007788B0 /
+// 007788D0), so a released escort's idle tail issues `follow` (00836E0D..
+// 00836E90). False: the pair is cleared by every later spawn, as before.
+constexpr bool kAiRetaskBound = true;
 
 // [00e188a8]+1fe4h. The single-player value, which is what every other host in
 // this executable already reports for the same field.
@@ -1100,6 +1107,19 @@ void GameCommandsHost::set_unit_formation(std::size_t index, bool follower,
 
 void GameCommandsHost::register_units(std::vector<GameCommandUnit> units) {
     Impl& host = *impl_;
+    // Packet cc9_ai_retask, docs/AI_RETASK.md. unit+284h, the group 007788B0 and
+    // 007788D0 read, is per-unit state that creating ANOTHER unit does not touch
+    // in the image. The rows arriving here carry the defaults, so a re-registration
+    // after a formation join used to clear every follower's pair, and 00836920's
+    // idle tail then issued `stop` instead of `follow`.
+    if (kAiRetaskBound) {
+        const std::size_t kept_rows = std::min(host.units.size(), units.size());
+        for (std::size_t i = 0; i < kept_rows; ++i) {
+            if (!host.units[i].formation_follower || units[i].formation_follower) continue;
+            units[i].formation_follower = host.units[i].formation_follower;
+            units[i].formation_leader = host.units[i].formation_leader;
+        }
+    }
     host.units = std::move(units);
     // Packet cc8_ship_drive. This is called again for every batch of units the
     // mission creates - GameScriptOrdersHost calls create_units at its two

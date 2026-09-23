@@ -1,0 +1,40 @@
+{
+  "packet": "cc9_ai_retask",
+  "doc": "docs/AI_RETASK.md",
+  "status": "the image re-tasks a released escort with `follow` on its formation leader through 00836920's idle tail; the host lost the follower pair at unit-table re-registration; kAiRetaskBound keeps it",
+  "abi_compatible": false,
+  "game_validated": false,
+  "routines": [
+    {"address": "00A182C0", "native": "00A182C0", "name": "BSP_AiParties_Think", "role": "eight party slots; parties 0 and 4 enabled in modes 0-3 (009FFE50)"},
+    {"address": "00A181A0", "native": "00A181A0", "name": "BSP_AiPartyBrain_Think", "role": "claims groups for planners and ticks them; no idle-member order"},
+    {"address": "00836920", "native": "00836920", "name": "weapon director step", "role": "idle tail 00836E0D..00836E90: a formation follower gets `follow` (00E08F60) on its leader"},
+    {"address": "007788B0", "native": "007788B0", "name": "BSP_Unit_IsFormationFollower", "role": "g = [unit+284h]; g && [g+14h] != unit"},
+    {"address": "0070E4C0", "native": "0070E4C0", "name": "BSP_UnitGroup_DetachMember", "role": "one of the only clears of unit+284h; not reached from the order issue"}
+  ],
+  "call_sites": [
+    {"address": "00836E13", "native": "007788B0", "function": "00836920", "note": "is the unit a formation follower"},
+    {"address": "00836E28", "native": "007788D0", "function": "00836920", "note": "the leader"},
+    {"address": "00836E32", "native": "00465080", "function": "00836920", "note": "command target on the leader"}
+  ],
+  "field_accesses": [
+    {"address": "007788B0", "function": "007788B0", "note": "MOV EAX,[ECX+284h], the unit group"},
+    {"address": "00836E38", "function": "00836920", "note": "PUSH 0E08F60, the follow command object"},
+    {"address": "0070E55A", "function": "0070E4C0", "note": "MOV [reg+284h],0, the detach"},
+    {"address": "00521EA3", "function": "00521EA0", "note": "kind byte 0 returns null: a position attackmove ends at the first director step"}
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1 Win32 Release, both ctests passed; control and treatment builds",
+    "env": "BSP_GUNNERY_RNG_STREAMS=1 on every run",
+    "predictions": "local/rt_predictions.txt, written before the runs; all five held",
+    "runs": {
+      "usn04": {"logs": ["local/rt_ctl_usn04.log", "local/rt_trt_usn04.log"], "first_ship_ai_difference": "step 3260, stop -> follow on all eight escorts", "queued_hits": [241, 240], "damage": [18217.5, 18379.1], "deaths": [24, 26], "lexington": ["afloat 141.9 HP at the 225 s end", "sunk 221.81 s, credited to York-class02"]},
+      "e2": {"logs": ["local/rt_ctl_e2.log", "local/rt_trt_e2.log"], "queued_hits": [310, 329], "damage": [20182.2, 22682.2], "deaths": [35, 36], "lexington": ["sunk 225.81 s", "sunk 221.81 s"]},
+      "ai_rows": "every `summary mission ai` line and the close-attack and promotion counts identical in both pairs"
+    }
+  },
+  "no_ghidra_function": [],
+  "open": [
+    "which gun fired the category 6 blasts (bullet classes 15 and 31) onto Lexington, and whether the image lets a friendly blast damage its own side",
+    "the part of Lexington's final 142 HP that has no impact line"
+  ]
+}
