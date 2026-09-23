@@ -5,6 +5,7 @@
 
 #include <cmath>
 
+#include "bsp/dive_bomb_task.hpp"  // dive_bomb_interpolate_clamped_00419010
 #include "bsp/plane_flight.hpp"   // heading_command_009f9e40, pitch_command_to_point_009f9ed0
 
 namespace bsp {
@@ -44,6 +45,222 @@ DogfightMoveToCommand dogfight_moveto_standin(const DogfightMoveToInputs& in) no
     out.pitch = pitch_command_to_point_009f9ed0(in.cruising_alt - in.own_pos[1], distance,
                                                 in.class_climb_angle_1e4);
     return out;
+}
+
+// ---------------------------------------------------------------------------
+// The engaged half, packet cc9_dogfight_engaged. docs/DOGFIGHT_ENGAGED.md.
+// ---------------------------------------------------------------------------
+
+namespace {
+float interp_00419010(float x0, float y0, float x1, float y1, float x) noexcept {
+    return dive_bomb_interpolate_clamped_00419010(x0, y0, x1, y1, x);
+}
+}  // namespace
+
+float dogfight_range_score_009aa630(float distance, float shoot_distance) noexcept {
+    // 009AA7C7-009AA877. R = ShootDistance * (double)0.8f; DC C9 at 009AA7E4 is
+    // FMUL ST(1),ST, so R is what 009AA7ED stores.
+    const float r = static_cast<float>(shoot_distance * 0.800000011920929);
+    if (r > distance) {
+        return interp_00419010(100.0f, 0.5f, r * 0.8f, 1.0f, distance);
+    }
+    return interp_00419010(static_cast<float>(r * 1.2000000476837158), 1.0f,
+                           static_cast<float>(r * 3.0), 0.25f, distance);
+}
+
+float dogfight_angle_score_009aa630(const float local[3]) noexcept {
+    // 009AA884-009AA914.
+    const float z = (1.0f > local[2]) ? 1.0f : local[2];
+    const float tx = local[0] / z;
+    const float ty = local[1] / z;
+    const float t = static_cast<float>(std::sqrt(static_cast<double>(tx) * tx +
+                                                 static_cast<double>(ty) * ty));
+    return interp_00419010(0.25f, 1.0f, 1.5f, 0.2f, t);
+}
+
+float dogfight_target_score_009aa630(const DogfightCandidate& c, float shoot_distance,
+                                     float noncurrent_draw) noexcept {
+    const float behind = (c.local[2] < 0.0f) ? 0.1f : 1.0f;  // 009AA7E6, 00D7A2F0
+    float s = dogfight_range_score_009aa630(c.distance, shoot_distance) * behind;
+    s = dogfight_angle_score_009aa630(c.local) * s;
+    for (int i = 0; i < c.wingmates_on_it; ++i) {
+        s = static_cast<float>(s * 0.699999988079071);  // 009AA958, 00CEFFA0
+    }
+    if (!c.is_current_target) s *= noncurrent_draw;     // 009AA984
+    return s;
+}
+
+bool dogfight_needs_reselect_009aac70(bool target_live, float timer_after_dt,
+                                      float previous_distance,
+                                      float shoot_distance) noexcept {
+    if (!target_live) return true;
+    // 009AACE9-009AAD0E: FCOMIP / JBE, then COMISS 0 > timer.
+    const double limit = static_cast<double>(shoot_distance) + 200.0;
+    return static_cast<double>(previous_distance) > limit && timer_after_dt < 0.0f;
+}
+
+DogfightLatch dogfight_latch_009aac70(bool has_target, float distance,
+                                      float attack_dist, float ratio_24,
+                                      bool was_latched,
+                                      float min_muzzle_speed) noexcept {
+    DogfightLatch out;
+    if (!has_target) return out;
+    const float hysteresis = was_latched ? 150.0f : 0.0f;  // 00CE3808
+    if (!(attack_dist * ratio_24 + hysteresis > distance)) return out;  // 009AADCC
+    out.latched = true;
+    const double t = static_cast<double>(distance) / min_muzzle_speed;  // 009AADE3
+    const float tf = static_cast<float>(t);
+    if (0.0f > tf) {
+        out.time_to_target = 0.0f;
+    } else {
+        out.time_to_target = (tf > 30.0) ? 30.0f : tf;  // 00CE7630 / 00CE38C8
+    }
+    return out;
+}
+
+void dogfight_off_axis_009aac70(const float local[3], float out_xy[2]) noexcept {
+    const float z = (1.0f > local[2]) ? 1.0f : local[2];  // 009AAEC6 FLD1 / FCOMI
+    out_xy[0] = local[0] / z;
+    out_xy[1] = local[1] / z;
+}
+
+namespace {
+DogfightState unengaged(bool leader) noexcept {
+    return leader ? DogfightState::kMoveTo : DogfightState::kFollow;
+}
+DogfightTransition engage_entry_009a9d90(const DogfightTransitionInputs& in) noexcept {
+    DogfightTransition t;
+    if (in.squadron_mode_370 == 0) {
+        t.next = DogfightState::kPrepare;
+    } else if (in.latch_4c8) {
+        t.next = DogfightState::kManeuver;
+        t.reset_maneuver_6bc_6d8 = true;
+    } else {
+        t.next = DogfightState::kAttackRun;
+    }
+    return t;
+}
+}  // namespace
+
+DogfightTransition dogfight_transition_009aafa0(const DogfightTransitionInputs& in) noexcept {
+    DogfightTransition t;
+    t.next = in.current;
+    const bool eng = dogfight_engaged_009aafa0(in.latch_4c8, in.squadron_mode_370,
+                                               in.target_squadron_4c4);
+    if (in.current == DogfightState::kMoveTo || in.current == DogfightState::kFollow ||
+        in.current == DogfightState::kNone) {
+        // 009AB16D. kNone is this host's pre-install value; the image's
+        // constructor leaves +310h on moveto or follow.
+        if (eng) return engage_entry_009a9d90(in);
+        t.next = unengaged(in.is_flight_leader);
+        return t;
+    }
+    if (!eng) {  // 009AAFE8
+        t.next = unengaged(in.is_flight_leader);
+        return t;
+    }
+    if (in.squadron_mode_370 == 0) {  // 009AB00D
+        t.next = DogfightState::kPrepare;
+        return t;
+    }
+    if (in.current == DogfightState::kPrepare) return engage_entry_009a9d90(in);  // 009AB030
+    if (in.current != DogfightState::kAim && in.aaa80) {  // 009AB047
+        t.next = DogfightState::kAim;
+        return t;
+    }
+    switch (in.current) {
+    case DogfightState::kAttackRun:  // 009AB066
+        if (in.latch_4c8) {
+            t.next = DogfightState::kManeuver;
+            t.reset_maneuver_6bc_6d8 = true;
+        }
+        break;
+    case DogfightState::kAim:  // 009AB0A0
+        if (in.aim_too_close_6a0) {
+            t.next = in.avoid_pick_turn ? DogfightState::kAvoidTurn
+                                        : DogfightState::kAvoidRoll;
+        } else if (in.aim_bored_98f0) {
+            t.next = DogfightState::kManeuver;
+            t.maneuver_from_aim_8560 = true;
+        }
+        break;
+    case DogfightState::kManeuver:  // 009AB0EC
+        if (in.maneuver_on_target_9bd0) t.next = DogfightState::kAim;
+        break;
+    case DogfightState::kAvoidRoll:  // 009AB113
+    case DogfightState::kAvoidTurn:  // 009AB142
+        if (0.0f > in.avoid_timer) {
+            t.next = DogfightState::kManeuver;
+            t.maneuver_from_avoid_86f0 = true;
+        }
+        break;
+    default:
+        break;
+    }
+    return t;
+}
+
+bool dogfight_on_target_009a9bd0(float local_z, float tan_x, float tan_y) noexcept {
+    if (!(local_z > 1.0f)) return false;
+    const double sq = static_cast<double>(tan_y) * tan_y + static_cast<double>(tan_x) * tan_x;
+    const float len = (sq <= 1e-10) ? 0.0f : static_cast<float>(std::sqrt(sq));
+    return 0.800000011920929 > static_cast<double>(len);  // 009A9C38 FCOMIP / JBE
+}
+
+DogfightAimState dogfight_aim_enter_009a75c0(const DogfightPilotRow& row, float ratio_24,
+                                             float draw_boring, float draw_close) noexcept {
+    DogfightAimState st;
+    st.bored_limit_1c = draw_boring * row.boring_time;               // 009A75F3
+    st.too_close_20 = draw_close * row.follow_dist * ratio_24;       // 009A7629/35
+    return st;
+}
+
+DogfightAimCommand dogfight_aim_tick_009a76e0(DogfightAimState& st, const DogfightAimInputs& in,
+                                              const DogfightPilotRow& row) noexcept {
+    st.head_on_25 = in.local_z > 1.0f && in.opposing;
+    if (st.head_on_25 && in.distance < st.too_close_20) st.too_close_24 = true;
+    float rate = 0.0f;
+    if (in.gun_locked_48) {
+        rate = -4.0f;  // 00CF1430
+    } else if (in.distance < row.aim_shoot_distance) {
+        rate = interp_00419010(0.25f, -1.0f, 2.0f, 2.0f, in.tan_len);
+    }
+    st.bored_18 = rate * in.dt + st.bored_18;
+    if (st.bored_18 < 0.0f) st.bored_18 = 0.0f;
+    DogfightAimCommand c;
+    if (!st.head_on_25) {
+        c.speed_from_target = true;
+        c.desired_speed = (in.distance - row.follow_dist) + in.target_speed;
+    } else {
+        c.head_on_fraction = interp_00419010(st.too_close_20, 0.3f, row.aim_shoot_distance,
+                                             1.0f, in.distance);
+    }
+    return c;
+}
+
+float dogfight_maneuver_pursuit_range_009a8560(float shoot_distance, float draw) noexcept {
+    return draw * shoot_distance;
+}
+
+float dogfight_avoid_timer_009a7de0(float avoid_time, float draw) noexcept {
+    return draw * avoid_time;
+}
+
+DogfightSteer dogfight_maneuver_standin(const float own_pos[3], const float aim[3],
+                                        float horizontal_range, float shoot_distance,
+                                        float ceiling_210, float class_climb_angle) noexcept {
+    DogfightSteer s;
+    s.heading = heading_command_009f9e40(aim[0], aim[2], own_pos[0], own_pos[2]);
+    float a = aim[1] - own_pos[1];
+    float d = horizontal_range;
+    if (!(d <= static_cast<float>(shoot_distance * 3.0))) {
+        a = ceiling_210 - (own_pos[1] + 50.0f);
+        if (static_cast<double>(a) > 300.0) a = 300.0f;
+        d = 500.0f;
+    }
+    if (d < 1.0f) d = 1.0f;
+    s.pitch = pitch_command_to_point_009f9ed0(a, d, class_climb_angle);
+    return s;
 }
 
 }  // namespace bsp

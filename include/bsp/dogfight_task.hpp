@@ -75,4 +75,207 @@ struct DogfightMoveToCommand {
 };
 DogfightMoveToCommand dogfight_moveto_standin(const DogfightMoveToInputs& in) noexcept;
 
+// ===========================================================================
+// The engaged half, packet cc9_dogfight_engaged. docs/DOGFIGHT_ENGAGED.md.
+// Reconstructed and build-tested; each rule names its addresses. Names are
+// hypotheses, not recovered symbols.
+// ===========================================================================
+
+// The pilot robots row the approach reads through approach+14h
+// (= 00F8A30C + level * 248h + 0Ch, so row+N here is robot_config.hpp's
+// suffix N+0Ch). SUBSTITUTION, labelled, as the dive-bomb binding does: the
+// PilotBot registry is out of this host's reach, so the values are this
+// installation's scripts/datatables/robots.lua SPNormal pilot row (lines
+// 554-692).
+struct DogfightPilotRow {
+    float aim_shoot_distance = 850.0f;       // row+230h, aim_shoot_distance_23c
+    float follow_dist = 300.0f;              // row+20Ch, dogfight_follow_dist_218
+    float boring_time = 18.0f;               // row+210h, dogfight_boring_time_21c
+    float avoid_time = 2.5f;                 // row+214h, dogfight_avoid_time_220
+    float maneuver_change_time = 15.0f;      // row+21Ch, dogfight_maneuver_change_time_228
+};
+
+// 009AA630 (called only from 009AAC70), one candidate's score. The target
+// squadron is approach+CCh (= task+4C4h); its members are +3D0h[0..4] in
+// order, the scan stops at the first null, and a member counts only when it is
+// live (+5Ch set, +5Dh/+5Eh/+60h clear) and inside the map (0071C4F0). With
+// fewer than two members (+3CCh < 2) 009AA630 takes +3D0h[0] unscored.
+//   local = the candidate in the shooter's frame (004142E0 with unit+110h),
+//           z forward.
+//   R = ShootDistance * 0.8 (00CE3D40, double)
+//   range = d < R ? interp(100, 0.5, 0.8R, 1.0, d)          (00CE3D08, 00CE3800)
+//                 : interp(1.2R, 1.0, 3R, 0.25, d)          (00CEC160, 00D7A2B0, 00CE3868)
+//   behind = local.z < 0 ? 0.1 : 1.0                        (00D7A2F0)
+//   angle = interp(0.25, 1.0, 1.5, 0.2, |(x, y) / max(z, 1)|) (00CE3868, 00CE380C, 00CE54A0)
+//   score = angle * range * behind * 0.7^wingmates           (00CEFFA0, double)
+// where `wingmates` counts own-squadron members other than self whose current
+// pilot target (007BBC10: [unit+DF4h]+98h+[00F876B8]*1Ch) is the candidate.
+// A candidate that is not the current target (approach+B4h) is multiplied by
+// 00BD2F10(0.8, 1.0) (00CE74F8); the caller supplies that draw. The highest
+// score strictly above 0 wins; none wins -> +3D0h[0].
+struct DogfightCandidate {
+    float local[3] = {0.0f, 0.0f, 0.0f};
+    float distance = 0.0f;        // 3-D, 0042B2F0
+    int wingmates_on_it = 0;
+    bool is_current_target = false;
+};
+float dogfight_range_score_009aa630(float distance, float shoot_distance) noexcept;
+float dogfight_angle_score_009aa630(const float local[3]) noexcept;
+float dogfight_target_score_009aa630(const DogfightCandidate& c, float shoot_distance,
+                                     float noncurrent_draw) noexcept;
+
+// 009AAC70, the approach update (approach = task+3F8h), in its order:
+//   009AAC76  no target squadron (+CCh == 0): latch +D0h = 0, +D4h = 9999.0
+//             (00CE4C04) and return.
+//   009AAC9D  timer +E4h -= dt; +E8h += dt.
+//   009AAD10  009AA630 re-selects when the target (+B4h) is null or not live,
+//             or when the timer went negative AND the PREVIOUS distance +D4h
+//             exceeds ShootDistance + 200.0 (00CE4D70, double). 009AA630 re-arms
+//             the timer to 00BD2F10(1.0, 3.0) (00CE3854).
+//   009AAD60  +D4h = |aim - own| (3-D); 009AAD78 +D8h = the same with y = 0.
+//   009AAD83  with a target: latched = d < AttackDist(tuning+644h) *
+//             approach+24h + (was latched ? 150.0 (00CE3808) : 0), a STRICT
+//             compare (FCOMIP/JBE). Latched: +70h = clamp(d / 007C2610(), 0,
+//             30.0) (00CE7630 double / 00CE38C8), 007C2610 being the smallest
+//             muzzle speed ([desc+34h]+50h) over the unit's kind-21h parts.
+//             Not latched or no target: +D0h = 0, +70h = 0.
+//   009AAE35  009FADA0 (the target reference), then +ECh..+F4h = the aim point
+//             in the shooter's frame and +F8h/+FCh = x/max(z,1), y/max(z,1).
+bool dogfight_needs_reselect_009aac70(bool target_live, float timer_after_dt,
+                                      float previous_distance,
+                                      float shoot_distance) noexcept;
+struct DogfightLatch {
+    bool latched = false;         // approach+D0h = task+4C8h
+    float time_to_target = 0.0f;  // approach+70h
+};
+DogfightLatch dogfight_latch_009aac70(bool has_target, float distance,
+                                      float attack_dist, float ratio_24,
+                                      bool was_latched,
+                                      float min_muzzle_speed) noexcept;
+// +F8h/+FCh: the off-axis tangents, divided by max(z, 1.0) (00D7A24C).
+void dogfight_off_axis_009aac70(const float local[3], float out_xy[2]) noexcept;
+
+// 009AAFA0, the transitions, read from the LISTING (009AAFA0-009AB1B8, RET 4).
+// ENG = +4C8h || (squadron+370h == 2 && +4C4h != 0). squadron+370h is
+// [task+404h]+370h, the SQUADRON's attack mode (unit+9D4h), not the unit's.
+//   moveto/follow: ENG -> 009A9D90; else 007B8AD0 ? moveto : follow.
+//   other, !ENG:   007B8AD0 ? moveto : follow.
+//   other, ENG:    mode 0 -> prepare.
+//                  prepare -> 009A9D90 (009AB030-009AB03C; the earlier doc
+//                  missed this edge).
+//                  not aim and 009AAA80 true -> aim.
+//                  attackrun: +4C8h -> maneuver, zeroing +6BCh (dword) and
+//                             +6D8h (float) first.
+//                  aim: +6A0h (aim+24h) -> 009A9970's avoid pick;
+//                       else 009A98F0 (aim+18h > aim+1Ch) -> 009A8560 on the
+//                       maneuver object, then maneuver.
+//                  maneuver: 009A9BD0 -> aim.
+//                  avoid_roll/avoid_turn: timer +720h/+748h < 0 -> 009A86F0 on
+//                             the maneuver object, then maneuver.
+// 009A9D90, the engage entry: mode 0 -> prepare; else +4C8h -> maneuver
+// (zeroing +6BCh/+6D8h) else attackrun.
+// 009A9D50 switches only on a change: old->vtable[8], then new->vtable[4].
+struct DogfightTransitionInputs {
+    DogfightState current = DogfightState::kNone;
+    bool latch_4c8 = false;
+    int squadron_mode_370 = 0;
+    bool target_squadron_4c4 = false;
+    bool is_flight_leader = false;
+    bool aaa80 = false;             // 009AAA80's result
+    bool aim_too_close_6a0 = false; // aim+24h
+    bool aim_bored_98f0 = false;    // 009A98F0
+    bool maneuver_on_target_9bd0 = false;  // 009A9BD0
+    float avoid_timer = 0.0f;       // +720h or +748h for the current avoid state
+    bool avoid_pick_turn = false;   // 009A9970's draw chose avoid_turn
+};
+struct DogfightTransition {
+    DogfightState next = DogfightState::kNone;
+    bool reset_maneuver_6bc_6d8 = false;  // attackrun -> maneuver, 009A9D90
+    bool maneuver_from_aim_8560 = false;  // 009A8560 before the switch
+    bool maneuver_from_avoid_86f0 = false; // 009A86F0 before the switch
+};
+DogfightTransition dogfight_transition_009aafa0(const DogfightTransitionInputs& in) noexcept;
+
+// 009A9BD0 (maneuver -> aim): approach+F4h (local z) > 1.0 and
+// |(+F8h, +FCh)| < 0.8 (00CE3D40, double); a squared length at or below
+// 00CE3820 (1e-10, double) counts as 0.
+bool dogfight_on_target_009a9bd0(float local_z, float tan_x, float tan_y) noexcept;
+
+// 009A75C0 (aim enter, no Ghidra function; 009A75C0-009A7641, RET):
+//   aim+18h = 0; aim+1Ch = 00BD2F10(0.8, 1.4) * BoringTime   (00CE74F8, 00D06874)
+//   aim+20h = 00BD2F10(0.5, 0.8) * FollowDist * approach+24h (00CE3800, 00CE74F8)
+//   aim+24h = aim+25h = 0.
+struct DogfightAimState {
+    float bored_18 = 0.0f;
+    float bored_limit_1c = 0.0f;
+    float too_close_20 = 0.0f;
+    bool too_close_24 = false;
+    bool head_on_25 = false;
+};
+DogfightAimState dogfight_aim_enter_009a75c0(const DogfightPilotRow& row, float ratio_24,
+                                             float draw_boring, float draw_close) noexcept;
+
+// 009A76E0 (aim tick, 009A76E0-009A79B5), with a target:
+//   aim+25h = local z > 1.0 && dot(own vt[34h], target vt[34h]) < 0 (head-on).
+//   head-on && d(+D4h) < aim+20h -> aim+24h = 1 (sticky until the next enter).
+//   rate = the gun controller's +48h byte ? -4.0 (00CF1430)
+//        : d < ShootDistance ? interp(0.25, -1.0, 2.0, 2.0, |(+F8h,+FCh)|) : 0
+//   aim+18h = max(0, aim+18h + rate * dt).
+//   heading 009F9E40 to the aim point (approach vt[0] = approach+48h);
+//   pitch 009F9ED0(aimY - ownY, approach+D8h).
+//   not head-on: plan+2B0h = 1, +2D8h = 1, +2B4h = (d - FollowDist) + target
+//                vt[38h] (its speed).
+//   head-on: 007B4ED0(interp(aim+20h, 0.3, ShootDistance, 1.0, d)), unread.
+//   gun controller (approach+1Ch)+40h = tuning+678h Angle_Strafe; approach+DCh
+//   = 0; approach+E0h = 1.0; a target-squadron plane at gun+74h that is not
+//   the current target becomes the target (009A7650).
+struct DogfightAimInputs {
+    float distance = 0.0f;       // approach+D4h
+    float tan_len = 0.0f;        // |(+F8h, +FCh)|
+    float local_z = 0.0f;        // approach+F4h
+    bool opposing = false;       // the dot product < 0
+    bool gun_locked_48 = false;  // (approach+1Ch)+48h
+    float target_speed = 0.0f;
+    float dt = 0.0f;
+};
+struct DogfightAimCommand {
+    bool speed_from_target = false;  // plan+2B0h/+2D8h = 1
+    float desired_speed = 0.0f;      // plan+2B4h when speed_from_target
+    float head_on_fraction = 0.0f;   // 007B4ED0's argument otherwise
+};
+DogfightAimCommand dogfight_aim_tick_009a76e0(DogfightAimState& st, const DogfightAimInputs& in,
+                                              const DogfightPilotRow& row) noexcept;
+
+// 009A8560 (aim -> maneuver): maneuver+18h = 0; maneuver+34h =
+// 00BD2F10(0.3, 1.1) * ShootDistance (00CE69C8, 00CE6448).
+float dogfight_maneuver_pursuit_range_009a8560(float shoot_distance, float draw) noexcept;
+
+// 009A7DE0 / 009A8020 (avoid enters, no Ghidra functions): the timer +18h =
+// 00BD2F10(0.75, 1.5) * AvoidTime (00CEE07C, 00CE380C); the ticks (009A7E80,
+// 009A80E0) call 009A7A50(dt) first. 009A9970 picks avoid_turn when
+// 00BD2F10(0, wRoll + wTurn) > wRoll, the weights being the two states'
+// vtable+1Ch slots 009A7F70 and 009A83B0.
+float dogfight_avoid_timer_009a7de0(float avoid_time, float draw) noexcept;
+
+// STAND-IN, labelled: the maneuver tick 009A8B20 (009A8B20-009A92D4) is a
+// three-sub-mode machine (+18h: 0 heading servo, 1 roll to the bank +1Ch,
+// 2) that is only partly read. What stands in is its mode-0 arm, which the
+// read part shows: heading mode 2 at the bearing to the target and pitch mode
+// 2 toward the point `+20h` metres up over `+24h` metres, where +20h = aimY -
+// ownY and +24h = approach+D8h while d <= 3 * ShootDistance
+// (00D7A2B0, double), else +20h = min(Dynamics/Ceiling (tuning+210h) - (ownY +
+// 50.0 (00CE3938, double)), 300) (00CE3CA8 double / 00CE3AE8) over +24h = 500
+// (00CE397C).
+// Avoid STAND-IN, labelled: the avoid ticks are unread past their first call;
+// the stand-in holds the heading 90 degrees off the target bearing, turning
+// the way the unit already banks, level, until the timer runs out.
+struct DogfightSteer {
+    float heading = 0.0f;
+    float pitch = 0.0f;
+};
+DogfightSteer dogfight_maneuver_standin(const float own_pos[3], const float aim[3],
+                                        float horizontal_range, float shoot_distance,
+                                        float ceiling_210, float class_climb_angle) noexcept;
+
+
 }  // namespace bsp
