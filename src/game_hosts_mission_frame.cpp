@@ -1102,6 +1102,10 @@ struct GameSceneMarkerSeed {
 // function at its +9Ch as read from the shipped image; a class with no row is
 // one whose creator installs its vtable through a factory the scan does not
 // follow, and those are the unit classes the unit host already owns.
+// Packet cc9_mission_end. Disjoint from the unit ids (index + 1) and below the
+// script entities' kScriptEntityIdBase (100000) in src/game_hosts_script_orders.cpp.
+constexpr int kSceneMarkerIdBase = 50000;
+
 std::vector<GameSceneMarkerSeed> collect_scene_markers(
     const std::vector<GameSceneEntityRecord>& entities, int first_id) {
     std::vector<GameSceneMarkerSeed> markers;
@@ -1428,8 +1432,16 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
                 // carries an attach there has a `thisTable` slot too. Without
                 // these rows `FindEntity("EscapePoint")` resolved the name to
                 // nothing and usn_2_java's phase-2 distance test raised.
+                // Packet cc9_mission_end: the markers number from a base of their
+                // own. They used to take the ids right after the scene's units,
+                // which are exactly the ids a SpawnNew or air-ops unit takes later
+                // (unit id = index + 1). On USN04 CarrierPath1-3 and IJNRetreat
+                // shared keys 22-26 with the first spawned squadron, so its attach
+                // overwrote CarrierPath1's `thisTable` slot and a FindEntity on
+                // the others resolved to a plane. The image numbers every entity
+                // from one handle counter, so the two never meet there.
                 markers = collect_scene_markers(host.scene_contents->entities(),
-                    static_cast<int>(host.units->count()) + 1);
+                    kSceneMarkerIdBase);
                 for (const GameSceneMarkerSeed& marker : markers) {
                     entities.push_back(GameMissionLuaHost::SceneEntity{marker.name,
                         marker.id, -1, marker.findable});

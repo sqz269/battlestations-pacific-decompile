@@ -1,0 +1,161 @@
+{
+  "packet": "cc9_mission_end",
+  "doc": "docs/MISSION_END.md",
+  "status": "dialog registry bound, wing-member self tables seeded, marker ids made disjoint, mission end recorded behind kMissionEndBound",
+  "abi_compatible": false,
+  "game_validated": false,
+  "routines": [
+    {
+      "address": "008CB730",
+      "native": "008CB730",
+      "name": "BSP_LuaBinding_GetActDialogIDs",
+      "role": "array table of the active dialog ids, pushed even when empty"
+    },
+    {
+      "address": "00450750",
+      "native": "00450750",
+      "name": "BSP_DialogRegistry_CollectActiveIds",
+      "role": "ECX dialog owner; walks the map (head +20h), appends node+0Ch keys; RET 4"
+    },
+    {
+      "address": "008B0540",
+      "native": "008B0540",
+      "name": "BSP_LuaBinding_StartDialog",
+      "role": "00451A90 on [game+21E4h] with the id"
+    },
+    {
+      "address": "008B0940",
+      "native": "008B0940",
+      "name": "BSP_LuaBinding_KillDialog",
+      "role": "004514A0 on [game+21E4h] with the id"
+    },
+    {
+      "address": "008B0C10",
+      "native": "008B0C10",
+      "name": "BSP_LuaBinding_MissionNarrative",
+      "role": "enqueues (text, callback, args) through 00734870; display and completion not read"
+    },
+    {
+      "address": "008B01B0",
+      "native": "008B01B0",
+      "name": "EndScene binding",
+      "role": "failed single-player record: raises the restart prompt (00531B00, slot 4, kind 1) and returns; completed or multiplayer: BSP_Game_EndScene 004D7970"
+    },
+    {
+      "address": "007F4580",
+      "native": "007F4580",
+      "name": "BSP_PlaneSquadron_AttachLuaSelfAndSpawnPlanes",
+      "role": "the squadron's slot 39: its own attach (0077E830 at 007F45A7), then the wing planes"
+    },
+    {
+      "address": "007CDF20",
+      "native": "007CDF20",
+      "name": "(plane classes' slot-39 attach override)",
+      "role": "calls 0077E830 at 007CDF24"
+    },
+    {
+      "address": "00925F20",
+      "native": "00925F20",
+      "name": "BSP_SEntity_InitAll",
+      "role": "dispatches vtable +9Ch on each node of 00F899CC at 00926054"
+    },
+    {
+      "address": "00928A00",
+      "native": "00928A00",
+      "name": "BSP_MissionEntity_CreateLuaSelfTable",
+      "role": "the self table: ID, Dead, Ptr"
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "008CB834",
+      "native": "00450750",
+      "function": "008CB730",
+      "note": "ECX = [[00E188A8]+21E4h]"
+    },
+    {
+      "address": "008B0688",
+      "native": "00451A90",
+      "function": "008B0540",
+      "note": "ECX = [game+21E4h]"
+    },
+    {
+      "address": "008B0A5F",
+      "native": "004514A0",
+      "function": "008B0940",
+      "note": "ECX = [game+21E4h]"
+    },
+    {
+      "address": "007F45A7",
+      "native": "0077E830",
+      "function": "007F4580",
+      "note": "the squadron's own attach"
+    },
+    {
+      "address": "007CDF24",
+      "native": "0077E830",
+      "function": "007CDF20",
+      "note": "plane attach override reaches the unit attach"
+    },
+    {
+      "address": "0077E834",
+      "native": "00928A00",
+      "function": "0077E830",
+      "note": "the base attach"
+    }
+  ],
+  "field_accesses": [
+    {
+      "address": "008CB825",
+      "function": "008CB730",
+      "note": "MOV ECX,[EDX+21E4h], the dialog owner"
+    },
+    {
+      "address": "0092604E",
+      "function": "00925F20",
+      "note": "MOV EAX,[EDX+9Ch]; CALL EAX at 00926054"
+    }
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1 Win32 Release, both ctests passed (treatment and stashed-base control)",
+    "runs": {
+      "usn04_4500_control": {
+        "log": "local/end_ctl_usn04.log",
+        "damage": 15970.7,
+        "deaths": 9,
+        "script_errors": 1,
+        "dead_published": 6,
+        "wing_tables": 0
+      },
+      "usn04_4500_treatment": {
+        "log": "local/end_trt2_usn04.log",
+        "damage": 15970.7,
+        "deaths": 9,
+        "script_errors": 0,
+        "dead_published": 9,
+        "wing_tables": 40,
+        "dialogs": {
+          "start": 1,
+          "kill": 1,
+          "ids": [
+            "INTRO"
+          ]
+        },
+        "mission_end": {
+          "status": "failed",
+          "at_s": 222.06,
+          "text": "Game Over",
+          "entity": "Lexington-class01"
+        }
+      }
+    },
+    "worktree": "J:/PROG/battlestations-pacific-decompile-cc9-difficulty"
+  },
+  "no_ghidra_function": [],
+  "open": [
+    "MissionNarrative display and completion (00734870 queue reader) unread: EndScene and its restart prompt never reached",
+    "whether the slot-4 prompt (menu+188h) pauses the simulation",
+    "dialog playback absent: a started dialog never completes (missions that poll GetActDialogIDs)",
+    "00925F20 reaching the wing planes created in 007F4580 is inferred"
+  ]
+}

@@ -46,6 +46,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <map>
 #include <string>
 #include <vector>
 
@@ -119,6 +120,12 @@ void set_game_effective_difficulty_6ac(std::int32_t value) noexcept;
 // flush does in the image (009273A0 -> vtable[74h] 00926390 -> vtable[7Ch] ->
 // 00929B60 -> 00929800). False: the old behaviour, `Dead` stays false.
 inline constexpr bool kEntityDeadBound = true;
+
+// Packet cc9_mission_end, docs/MISSION_END.md. True: the dialog registry that
+// StartDialog / KillDialog / GetActDialogIDs share (the case-insensitive map at
+// [game+21E4h]+1Ch), and the census row for the script's mission end. False:
+// the three bindings stay host records and no row is written.
+inline constexpr bool kMissionEndBound = true;
 
 class GameHostLog;
 class GameUnitsHost;
@@ -249,6 +256,9 @@ public:
     // Packet cc9_entity_dead. 00929800's two Lua writes for every unit whose
     // death is new since the last call; see the .cpp.
     void publish_unit_deaths_00929800();
+    // Packet cc9_mission_end: stamps the frame `Mission.EndMission` first reads
+    // true, with the fail/complete status and the objectives at that moment.
+    void observe_mission_end();
     const GameScriptTimerSummary& timers() const noexcept { return timers_; }
     const GameBlackoutSummary& blackout() const noexcept { return blackout_summary_; }
 
@@ -474,6 +484,23 @@ private:
     GameHostLog& log_;
     GameUnitsHost& units_;
     std::vector<bool> dead_published_;   // per unit index, 00929800 has run
+    // Packet cc9_mission_end. [game+21E4h]+1Ch: the active dialogs, keyed by id,
+    // compared without case (docs/PANEL_SEQUENCE.md). The value is the start time.
+    struct DialogKeyLess {
+        bool operator()(const std::string& a, const std::string& b) const noexcept;
+    };
+    std::map<std::string, float, DialogKeyLess> active_dialogs_;
+    struct MissionEndRecord {
+        bool seen{false};
+        float at_seconds{0.0f};
+        std::string status;          // Mission.MissionStatus: failed / completed / unset
+        std::string fail_text;       // Mission.MissionEndParams.Text
+        std::string fail_entity;     // Mission.MissionEndParams.Ent
+        std::vector<std::string> objectives;  // level:num=Active/Success
+    } mission_end_;
+    unsigned long long dialog_starts_{0};
+    unsigned long long dialog_kills_{0};
+    unsigned long long dialog_queries_{0};
     // 008A4C90's tally. `calls` counts what the scripts asked for; the two
     // `resolved` counters say whether the Lua argument path actually reached a
     // unit and a target, which was the open question the wiring settles.

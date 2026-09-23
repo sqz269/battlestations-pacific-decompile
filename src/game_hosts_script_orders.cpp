@@ -28,7 +28,9 @@ extern "C" {
 #include "lua.h"
 }
 
+#include <cctype>
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
 
 namespace bsp::game {
@@ -109,6 +111,15 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // value and nothing else in the shipped scripts assigns it. The body is
     // already reconstructed in src/lua_binding_core.cpp.
     {"SetParty", 0x008a8930u},
+    // Packet cc9_mission_end: the dialog registry at [game+21E4h]+1Ch.
+    // StartDialog 008B0540 inserts through 00451A90 (008B0688), KillDialog
+    // 008B0940 erases through 004514A0 (008B0A5F), and GetActDialogIDs 008CB730
+    // collects the keys through 00450750 (008CB834) into a new array table
+    // 1..n, pushed even when empty. luaClearDialogs' callback does
+    // `pairs(GetActDialogIDs())`, so the old nil raised every pass.
+    {"StartDialog", 0x008b0540u},
+    {"KillDialog", 0x008b0940u},
+    {"GetActDialogIDs", 0x008cb730u},
 };
 
 // The id the first script entity takes. The created scene instances number from 1
@@ -1595,6 +1606,38 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
     } else if (std::strcmp(binding->name, "Scoring_SetFinalScoringFunctionName") == 0) {
         SetThinkCoreHost core(*this);
         results = bsp::lua_binding_scoring_set_final_scoring_function_name(*this, core);
+    } else if (kMissionEndBound && std::strcmp(binding->name, "StartDialog") == 0) {
+        // Argument 1 the id (008B0660); argument 2 the dialog table, which the
+        // panel sequence plays (render and audio side, not modelled). The id is
+        // registered until KillDialog: nothing here plays a dialog to its end.
+        const std::string id = get_string(0);
+        if (!id.empty()) active_dialogs_[id] = mission_clock_;
+        ++dialog_starts_;
+        log_.notef("  StartDialog(\"%s\") active=%zu (008B0540 -> 00451A90)", id.c_str(),
+            active_dialogs_.size());
+        results = 0;
+    } else if (kMissionEndBound && std::strcmp(binding->name, "KillDialog") == 0) {
+        const std::string id = get_string(0);
+        active_dialogs_.erase(id);
+        ++dialog_kills_;
+        log_.notef("  KillDialog(\"%s\") active=%zu (008B0940 -> 004514A0)", id.c_str(),
+            active_dialogs_.size());
+        results = 0;
+    } else if (kMissionEndBound && std::strcmp(binding->name, "GetActDialogIDs") == 0) {
+        // 008CB807 BSP_LuaObject_NewTable, then 00B672F0(i + 1, key) per entry
+        // in map order; the table is the one result.
+        ++dialog_queries_;
+        if (state_ != nullptr) {
+            lua_createtable(state_, static_cast<int>(active_dialogs_.size()), 0);
+            int n = 0;
+            for (const auto& dialog : active_dialogs_) {
+                lua_pushstring(state_, dialog.first.c_str());
+                lua_rawseti(state_, -2, ++n);
+            }
+            results = 1;
+        } else {
+            results = 0;
+        }
     } else if (std::strcmp(binding->name, "Blackout") == 0) {
         // 008D142F..008D1612 reads the frame; the marshalling stays here and the
         // decode, the arm and the immediate step are src/mission_blackout.cpp.
@@ -2282,7 +2325,18 @@ void GameScriptOrdersHost::publish_unit_deaths_00929800() {
         std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat,
             static_cast<int>(index + 1));
         lua_getfield(L, -1, key);
+        // Packet cc9_mission_end: only the unit's own slot. Its `Ptr` is the
+        // unit id as light userdata (game_hosts_lua.cpp's 00928A00 seed); a
+        // marker slot that shared the key before the marker ids moved had
+        // its own, and c8883c235 wrote `Dead` into two of those.
+        bool own_slot = false;
         if (lua_istable(L, -1)) {
+            lua_getfield(L, -1, "Ptr");
+            own_slot = lua_touserdata(L, -1)
+                == reinterpret_cast<void*>(static_cast<std::uintptr_t>(index + 1));
+            lua_settop(L, lua_gettop(L) - 1);
+        }
+        if (own_slot) {
             const GameUnitRow* const row = units_.unit_row(index);
             const std::string unit_name = row != nullptr ? row->name : std::string();
             lua_pushboolean(L, 1);
@@ -2298,9 +2352,104 @@ void GameScriptOrdersHost::publish_unit_deaths_00929800() {
     log_.implemented("MissionEntity::on_killed_lua_00929800", "00929800");
 }
 
+bool GameScriptOrdersHost::DialogKeyLess::operator()(const std::string& a,
+    const std::string& b) const noexcept {
+    const std::size_t n = a.size() < b.size() ? a.size() : b.size();
+    for (std::size_t i = 0; i < n; ++i) {
+        const int ca = std::tolower(static_cast<unsigned char>(a[i]));
+        const int cb = std::tolower(static_cast<unsigned char>(b[i]));
+        if (ca != cb) return ca < cb;
+    }
+    return a.size() < b.size();
+}
+
+namespace {
+std::string lua_field_text(lua_State* L, int index, const char* field) {
+    lua_getfield(L, index, field);
+    std::string out;
+    const int type = lua_type(L, -1);
+    if (type == LUA_TSTRING || type == LUA_TNUMBER) out = lua_tostring(L, -1);
+    else if (type == LUA_TBOOLEAN) out = lua_toboolean(L, -1) ? "true" : "false";
+    else if (type == LUA_TNIL) out = "nil";
+    else out = lua_typename(L, type);
+    lua_settop(L, lua_gettop(L) - 1);
+    return out;
+}
+}  // namespace
+
+void GameScriptOrdersHost::observe_mission_end() {
+    if (!kMissionEndBound || mission_end_.seen || machine_state_ == nullptr) return;
+    lua_State* const L = machine_state_;
+    lua_getfield(L, LUA_GLOBALSINDEX, "Mission");
+    if (!lua_istable(L, -1)) {
+        lua_settop(L, lua_gettop(L) - 1);
+        return;
+    }
+    const int mission = lua_gettop(L);
+    lua_getfield(L, mission, "EndMission");
+    const bool ended = lua_toboolean(L, -1) != 0;
+    lua_settop(L, mission);
+    if (!ended) {
+        lua_settop(L, mission - 1);
+        return;
+    }
+    mission_end_.seen = true;
+    mission_end_.at_seconds = mission_clock_;   // the frame whose thinks set it
+    const std::string status = lua_field_text(L, mission, "MissionStatus");
+    mission_end_.status = status == "false" ? "failed" : status == "true" ? "completed" : status;
+    // commandhelpers.lua defines luaMissionFailedNew twice; the later one (:10360)
+    // is the one that runs, and its luaInitMissionEnd (:13643) fills
+    // Mission.MissionEndParams. The earlier one's MissionFailParams is the fallback.
+    lua_getfield(L, mission, "MissionEndParams");
+    if (!lua_istable(L, -1)) {
+        lua_settop(L, mission);
+        lua_getfield(L, mission, "MissionFailParams");
+    }
+    if (lua_istable(L, -1)) {
+        const int params = lua_gettop(L);
+        mission_end_.fail_text = lua_field_text(L, params, "Text");
+        lua_getfield(L, params, "Ent");
+        if (lua_istable(L, -1)) {
+            const std::string id = lua_field_text(L, lua_gettop(L), "ID");
+            const int n = std::atoi(id.c_str());
+            mission_end_.fail_entity = n > 0 ? name_of(reinterpret_cast<void*>(
+                static_cast<std::uintptr_t>(n))) : id;
+        }
+    }
+    lua_settop(L, mission);
+    lua_getfield(L, mission, "Objectives");
+    if (lua_istable(L, -1)) {
+        const int objectives = lua_gettop(L);
+        lua_pushnil(L);
+        while (lua_next(L, objectives) != 0) {
+            if (lua_type(L, -2) == LUA_TSTRING && lua_istable(L, -1)) {
+                const std::string level = lua_tostring(L, -2);
+                const int list = lua_gettop(L);
+                lua_pushnil(L);
+                while (lua_next(L, list) != 0) {
+                    if (lua_type(L, -2) == LUA_TNUMBER && lua_istable(L, -1)) {
+                        const int num = static_cast<int>(lua_tonumber(L, -2));
+                        const int obj = lua_gettop(L);
+                        mission_end_.objectives.push_back(level + ":" + std::to_string(num)
+                            + " Active=" + lua_field_text(L, obj, "Active")
+                            + " Success=" + lua_field_text(L, obj, "Success"));
+                    }
+                    lua_settop(L, lua_gettop(L) - 1);   // the value; the key stays
+                }
+            }
+            lua_settop(L, lua_gettop(L) - 1);
+        }
+    }
+    lua_settop(L, mission - 1);
+    log_.notef("mission end: EndMission=true at %.2f s status=%s text=\"%s\" entity=\"%s\"",
+        static_cast<double>(mission_end_.at_seconds), mission_end_.status.c_str(),
+        mission_end_.fail_text.c_str(), mission_end_.fail_entity.c_str());
+}
+
 void GameScriptOrdersHost::run_script_timers(float step) {
     run_air_ops_update_006cdc70(step);
     if (machine_state_ == nullptr) return;
+    observe_mission_end();
     publish_unit_deaths_00929800();
     if (script_entities_.empty()) {
         run_blackout_update(step);
@@ -2352,6 +2501,25 @@ void GameScriptOrdersHost::run_script_timers(float step) {
 }
 
 void GameScriptOrdersHost::report() {
+    if (kMissionEndBound) {
+        // Packet cc9_mission_end. docs/MISSION_END.md: the image's end of a failed
+        // single-player mission is EndScene 008B01B0 raising the restart prompt,
+        // reached through the narrative callback this host does not fire.
+        log_.notef("summary mission dialogs starts=%llu kills=%llu queries=%llu active_at_end=%zu",
+            dialog_starts_, dialog_kills_, dialog_queries_, active_dialogs_.size());
+        if (mission_end_.seen) {
+            log_.notef("summary mission end: %s at %.2f s (Mission.EndMission) text=\"%s\" "
+                "entity=\"%s\" objectives=%zu; EndScene 008B01B0 not reached (the narrative "
+                "callback is render-side)", mission_end_.status.c_str(),
+                static_cast<double>(mission_end_.at_seconds), mission_end_.fail_text.c_str(),
+                mission_end_.fail_entity.c_str(), mission_end_.objectives.size());
+            for (const std::string& objective : mission_end_.objectives) {
+                log_.notef("  objective %s", objective.c_str());
+            }
+        } else {
+            log_.notef("summary mission end: none (Mission.EndMission never true)");
+        }
+    }
     // Packet cc8_airops_launch_tick.
     log_.notef("summary air ops tick slot_ticks=%llu refills_3_4_to_5=%llu "
         "releases_006c65b0=%llu slots_holding_a_squadron=%zu squadrons_created=%zu",

@@ -2128,6 +2128,7 @@ void GameMissionLuaHost::fulfil_spawn_request_009483d0(bsp::SpawnNewRequest& req
             entry->wing_count_present = member.wing_count > 0;
             entry->wing_count_raw = member.wing_count;
         }
+        const std::size_t units_before = script_orders_->units().count();
         const std::uint32_t entity
             = script_orders_->create_unit_from_scene_record_0046db4b(record);
         if (bsp::game::SceneSpawnPoolEntry* entry
@@ -2140,6 +2141,7 @@ void GameMissionLuaHost::fulfil_spawn_request_009483d0(bsp::SpawnNewRequest& req
                                             member.type_class_id)) {
             break;
         }
+        attach_wing_member_tables(units_before, entity, member.type_class_id);
         made.push_back(entity);
         if (summary_.spawn_new_units + made.size() <= 16) {
             log_.notef("  spawn queue 0094c490: serial %u member %zu \"%s\" type %d "
@@ -2241,14 +2243,15 @@ void GameMissionLuaHost::report_spawn_queue() {
     if (summary_.spawn_new_calls == 0 && summary_.spawn_new_rejected == 0) return;
     log_.notef("summary SpawnNew 0094c480 calls=%llu rejected=%llu queued=%llu "
         "attempts=%llu fulfilled=%llu requeued=%llu units=%llu callbacks=%llu "
-        "callback_missing=%llu still_queued=%zu interval=%.3f clock=%.1f",
+        "callback_missing=%llu still_queued=%zu interval=%.3f clock=%.1f "
+        "wing_member_tables=%llu",
         summary_.spawn_new_calls, summary_.spawn_new_rejected,
         summary_.spawn_new_queued, summary_.spawn_new_attempts,
         summary_.spawn_new_fulfilled, summary_.spawn_new_requeued,
         summary_.spawn_new_units, summary_.spawn_new_callbacks,
         summary_.spawn_new_callback_missing, bsp::spawn_request_queue().size(),
         static_cast<double>(spawn_attempt_delay_),
-        static_cast<double>(spawn_world_clock_));
+        static_cast<double>(spawn_world_clock_), summary_.wing_member_tables);
 }
 
 std::uint32_t GameMissionLuaHost::create_squadron(const bsp::AirOpsSquadronRequest& request) {
@@ -2258,6 +2261,7 @@ std::uint32_t GameMissionLuaHost::create_squadron(const bsp::AirOpsSquadronReque
     if (script_orders_ == nullptr) return 0u;
     std::string name;
     std::int32_t wing = 0;
+    const std::size_t units_before = script_orders_->units().count();
     const std::uint32_t entity = script_orders_->create_air_ops_squadron_006c5050(
         request.type, request.wing_count, request.equipment, request.home_base, name,
         wing);
@@ -2269,8 +2273,32 @@ std::uint32_t GameMissionLuaHost::create_squadron(const bsp::AirOpsSquadronReque
             name.c_str(), entity);
         return 0u;
     }
+    attach_wing_member_tables(units_before, entity, static_cast<int>(request.type));
     ++summary_.air_ops_squadrons_created;
     return entity;
+}
+
+// Packet cc9_mission_end, docs/MISSION_END.md item 2. In the image each plane of a
+// squadron is an entity of its own class (MPlaneDiveBomber, MPlaneTorpedoBomber,
+// ...), whose vtable slot 39 (+9Ch) is the attach override 007CDF20 -> 0077E830 ->
+// 00928A00. The squadron's own slot 39, 007F4580, spawns the planes, and the
+// pending-entity pass 00925F20 dispatches +9Ch on each new node at 00926054. So
+// every wing member carries a `thisTable` slot. The host attached only the
+// squadron's leader unit. This gives each other unit the creator just made its
+// slot, keyed by its own unit id (index + 1), as the leader's is.
+void GameMissionLuaHost::attach_wing_member_tables(std::size_t units_before,
+    std::uint32_t leader_entity, int class_index) {
+    if (script_orders_ == nullptr) return;
+    const GameUnitsHost& units = script_orders_->units();
+    for (std::size_t index = units_before; index < units.count(); ++index) {
+        const std::uint32_t id = static_cast<std::uint32_t>(index + 1);
+        if (id == leader_entity) continue;
+        const GameUnitRow* const row = units.unit_row(index);
+        if (row == nullptr) continue;
+        if (attach_created_entity_00928a00(static_cast<int>(id), row->name, class_index)) {
+            ++summary_.wing_member_tables;
+        }
+    }
 }
 
 bool GameMissionLuaHost::attach_created_entity_00928a00(int entity_id,
