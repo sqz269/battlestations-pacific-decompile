@@ -1,0 +1,24 @@
+{
+ "packet": "cc9_fighter_gun_lead",
+ "calls": [
+  {"address": "009FC94C", "native": "0042B2F0", "function": "009FC7C0", "note": "pass 1: d1 = |target pos - own pos|"},
+  {"address": "009FC964", "native": "007C2610", "function": "009FC7C0", "note": "pass 1: muzzle speed, t1 = d1 / it"},
+  {"address": "009FC9AF", "native": "0042B2F0", "function": "009FC7C0", "note": "pass 2: d2 = |+5Ch - own pos|"},
+  {"address": "009FC9C7", "native": "007C2610", "function": "009FC7C0", "note": "pass 2: muzzle speed, t2 = d2 / it"},
+  {"address": "009FC857", "native": "0042D7E0", "function": "009FC7C0", "note": "+68h = world matrix +20h (forward row) when +68h is zero"},
+  {"address": "009FCB25", "native": "0042B2F0", "function": "009FC7C0", "note": "d = |+5Ch - own pos|, stored to [ESP+14h] and +44h"},
+  {"address": "009FCCD7", "native": "009FA7E0", "function": "009FC7C0", "note": "fine-aim distortion on gun+4 (not read; host takes 0)"},
+  {"address": "009FCDA1", "native": "009F9FC0", "function": "009FC7C0", "note": "fine aim sticks from (x/d, y/d) plus distortion"},
+  {"address": "009547B6", "native": "0042B2F0", "function": "00954650", "note": "w = |acc_perp|"},
+  {"address": "009547F0", "native": "004F9B30", "function": "00954650", "note": "axis = d x n"},
+  {"address": "009548B3", "native": "00952340", "function": "00954650", "note": "rotate P about the centre through -rate*t"}
+ ],
+ "sites": [
+  {"address": "009FC96D", "evidence": "MOV EAX,[EDI+48h]: pass-1 prediction through the target's vtable[48h], called at 009FC984"},
+  {"address": "009FC9D0", "evidence": "MOV EDX,[EBX+48h]: pass-2 prediction, called at 009FC9E7"},
+  {"address": "009FCCAB", "evidence": "JBE skips the fine aim unless +40h > 1 - cos (the cone term at [ESP+1Ch])"},
+  {"address": "009FCCB4", "evidence": "JB skips the fine aim while +4Ch > 0"},
+  {"address": "009FA248", "evidence": "MOV [EAX+2D4h],ESI with EAX = task+4 (plan) and ESI = 0"},
+  {"address": "0099E756", "evidence": "MOV ECX,[ESI+2D4h]; TEST; JNE 0099E81A: the yaw arm runs only while plan+2D4h is non-zero"}
+ ]
+}
