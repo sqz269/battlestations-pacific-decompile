@@ -8924,7 +8924,7 @@ difficulty. That is 1, the 007FDB20 profile-reset value selected at 0058BF58 bec
 references have a record difficulty of 3. Before, the host played 0. `GetDifficulty` now returns 1, so the
 scripts take their difficulty-1 arms. These rows supersede the 2026-09-22 rows.
 
-The binary is built from `891bf426f` plus the packet's commit on `agent/cc9-difficulty`
+The binary is built from `e050a353c` on `agent/cc9-difficulty` (base `891bf426f`)
 (`kSkillLevelBound = true`). It ran from that worktree's root with the reference parameters:
 
 ```

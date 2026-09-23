@@ -113,7 +113,7 @@ of two groups.
 
 ## 5. Runs
 
-Both binaries were built from `891bf426f` plus this packet's diff. The control is the same tree
+Both binaries were built from `e050a353c` (base `891bf426f`). The control is the same tree
 with `kSkillLevelBound = false`. Binaries: `build\win32\ctl\` and `build\win32\treat\`. The runs
 were made from the worktree root, `J:\PROG\battlestations-pacific-decompile-cc9-difficulty`:
 
