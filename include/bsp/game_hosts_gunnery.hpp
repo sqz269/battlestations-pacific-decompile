@@ -550,27 +550,6 @@ public:
     void fixed_step(float step_seconds);
 
     const std::vector<GameGunRow>& guns() const noexcept;
-    // Packet cc9_ship_torpedo_response: every live round of a class with a
-    // WaterTravelSpeed (an MTorpedo), for the ship AI's world torpedo walk
-    // (world+21Ch/+220h, 00856360's registrar). Heading is atan2(vx, vz), the
-    // units host's pose convention, standing in for record+46Ch: a host round
-    // runs straight on its launch heading. SUBSTITUTION, labelled.
-    struct LiveTorpedo {
-        unsigned long long serial{0};
-        std::size_t owner_unit{0};    // one based
-        int owner_side{0};
-        float position[3]{};
-        float velocity[3]{};
-        float swim_seconds{0.0f};
-        bool swimming{false};
-        float water_travel_speed{0.0f};
-    };
-    std::vector<LiveTorpedo> live_torpedoes() const;
-    // Packet cc9_ship_torpedo_response: 00BD2F10 on stream 1 for the ship AI's
-    // torpedo draws (009F0AD0, 009F1316..009F13BE). Default: the shared
-    // generator every gunnery draw uses, in call order. BSP_GUNNERY_RNG_STREAMS=1:
-    // its own generator keyed by (unit), a measurement substitution.
-    float ship_ai_draw(std::size_t unit_index, float low, float high);
     // Packet cc8_ship_ai_firepower_inputs: the gun indices 00956C20 put in one
     // unit's category list, in insertion order. The ship AI's firepower host
     // walks these where the image walks the list at unit+398h + category*0Ch.
@@ -634,6 +613,28 @@ public:
     void report();
 
     struct Impl;
+
+    // Packet cc9_ship_torpedo_response: every live round of a class with a
+    // WaterTravelSpeed (an MTorpedo), for the ship AI's world torpedo walk
+    // (world+21Ch/+220h, 00856360's registrar). Heading is atan2(vx, vz), the
+    // units host's pose convention, standing in for record+46Ch: a host round
+    // runs straight on its launch heading. SUBSTITUTION, labelled.
+    struct LiveTorpedo {
+        unsigned long long serial{0};
+        std::size_t owner_unit{0};    // one based
+        int owner_side{0};
+        float position[3]{};
+        float velocity[3]{};
+        float swim_seconds{0.0f};
+        bool swimming{false};
+        float water_travel_speed{0.0f};
+    };
+    std::vector<LiveTorpedo> live_torpedoes() const;
+    // Packet cc9_ship_torpedo_response: 00BD2F10 on stream 1 for the ship AI's
+    // torpedo draws (009F0AD0, 009F1316..009F13BE). Default: the shared
+    // generator every gunnery draw uses, in call order. BSP_GUNNERY_RNG_STREAMS=1:
+    // its own generator keyed by (unit), a measurement substitution.
+    float ship_ai_draw(std::size_t unit_index, float low, float high);
 
 private:
     std::unique_ptr<Impl> impl_;
