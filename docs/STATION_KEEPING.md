@@ -173,3 +173,13 @@ USN04: the second-pair treatment died at the renderer init request at 12:26 (0xC
 session rdp-tcp#0 active), before any ship AI ran. Its control on another slot ran normally. Per
 the standing instruction it was not retried. The first USN04 pair (the inert build) ran 10248
 station requests on each side and no arm runs.
+A 120-frame probe of the treatment binary at 12:30 died the same way, after
+`online_manager_initialize`, so launches stopped there.
+
+**Missing: the USN04 4700/4500 pair with the bound follower test.** It would decide whether the
+catch-up allowance (limit s, up to 1.25) and the in-station arm hold on a mission with more
+followers. USN04 publishes about 10,200 station requests, against 1,200 on USN01. The rows to read
+are: arm runs per follower; limit344 ranges; whether any follower reverses or stops once it is in
+station, since the arm can command astern (Dunlap's arm command reached -5.01 on USN01);
+Lexington's 0.947 leader limit; and the gunnery and death tables by entity. Rerun it from
+`build/win32/skC` and `build/win32/skT2`.
