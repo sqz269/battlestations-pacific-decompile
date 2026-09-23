@@ -123,7 +123,8 @@ and it sets `member+520h = 1` (`009BF0B8`), `plan+270h = leader` (`009BF0C4`), c
 `[00F87574..7C]` into `ctl+24h..2Ch` (BSS, zero at load; writers not checked), and calls
 `007D9C10 BSP_PlaneFlightController_RefreshBodyFrame`. So a member of a human-led formation
 that is within 13.4 m of its station and matched in attitude and speed is snapped to the
-leader's velocity and stops commanding. For an AI leader the byte is clear and this never runs.
+leader's velocity and stops commanding. If the provisional reading of the byte holds, this never
+runs for an AI leader.
 On every other path `009BF0F3` clears `plan+270h`.
 
 ## 5. The sight correction, `009BF0EB`-`009BF295`
@@ -310,7 +311,7 @@ member, gated by the same `+85h`.
 1. The image's follow is two controllers switched by a 100 m / 60 degree gate. The host has
    one, the fly-to binding, running at all ranges, and it drops the fly-to arm's `plan+2D8h = 1`
    so no speed reaches the throttle. A member that is on station in the host is flown by a law
-   the image never applies on station, with no throttle command at all.
+   the image never applies on station, and the follow law issues no throttle command.
 2. The cheapest faithful step is the two missing fly-to stores (`009BFD15`, `009BFD1C`).
    The larger step is the hold arm, which additionally needs the rate inputs listed above.
    Either needs a same-binary control run before it lands.
