@@ -256,6 +256,7 @@ struct GameMissionLuaSummary {
     unsigned long long spawn_new_fulfilled{0};   // records that reached +C0h = 1
     unsigned long long spawn_new_requeued{0};    // 009478B0 pushes
     unsigned long long spawn_new_units{0};       // entities appended at +CCh
+    unsigned long long wing_member_tables{0};    // cc9_mission_end, 00928A00 per wing plane
     unsigned long long spawn_new_callbacks{0};   // named globals actually called
     unsigned long long spawn_new_callback_missing{0};
     std::vector<GameMissionNativeCall> natives; // distinct, in first-call order
@@ -586,6 +587,10 @@ public:
     // One more slot in the table 00928A00 filled at load, for a unit that did not
     // exist then. The native's own 00925F20 walk reaches every entity as it is
     // created, so a mid-mission unit gets its slot the same way.
+    // Packet cc9_mission_end: the `thisTable` slot of every other unit the creator
+    // just made (the squadron's wing members), keyed by unit id.
+    void attach_wing_member_tables(std::size_t units_before, std::uint32_t leader_entity,
+        int class_index);
     bool attach_created_entity_00928a00(int entity_id, const std::string& name,
         int class_index);
     void note_created_script(std::string name);

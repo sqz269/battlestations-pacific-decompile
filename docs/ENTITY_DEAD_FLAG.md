@@ -189,3 +189,22 @@ Lexington dies at 220.31 s, again credited to York-class02.
   (commandhelpers.lua:8459) raises `bad argument #1 to 'pairs'`, and luaMissionFailedNew's own
   timetable call fails at mission frame 4450. The fail text, narrative and camera never run.
 - **The mission end.** The host does not end the mission on `EndMission`.
+
+## 7. Corrections, 2026-09-23 (packet `cc9_mission_end`, `docs/MISSION_END.md`)
+
+* **Two of the six "published" flips in the 4500-frame run were not units.** In this host the scene
+  markers were numbered straight after the scene's units, at ids 22-26 on USN04 (CarrierPath1-4 and
+  IJNRetreat). Those are the ids the first spawned squadron takes. So `thisTable["23"]` and
+  `["24"]` were CarrierPath2's and CarrierPath3's slots, and the lines for `D3A Val #1.1|.-2` and
+  `|.-3` wrote `Dead = true` onto those two path markers. **No wing member had a slot of its own**,
+  Val or Kate: the three "missing" Kates were the rule, not the exception. Fixed there: the markers
+  number from their own base, every wing member gets its slot, and the publisher checks the slot's
+  `Ptr` before writing.
+* **The fail narrative does run.** `commandhelpers.lua` defines `luaMissionFailedNew` twice, and
+  the live one is the second (:10360). Section 3's list followed the first. The live one runs
+  `luaInitMissionEnd` (:13643), which includes `luaClearDialogs`. That only schedules the
+  callback that raises `pairs(nil)` 0.01 s later, through `luaDelay`. The function itself then
+  runs to its end: `luaObj_FailedAll(true)`, `Blackout(true, "", false, 0.25)` and
+  `MissionNarrative("missionglobals.obj_fail", "luaMissionEnd_CamOnEnt")`. What never runs is the
+  narrative's completion callback (the camera, then FadeAway and `EndScene`), because the host
+  records MissionNarrative without playing it. See docs/MISSION_END.md section 3.
