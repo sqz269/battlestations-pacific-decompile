@@ -142,3 +142,20 @@ Worktree root `J:\PROG\battlestations-pacific-decompile-cc9-difficulty`, base `d
   count at `+98h`), it grows the vector to index+1 through 005471B0, then calls 007F6190 on
   `array[index]`. For an authored platform that is exactly the host's use of `gun.arcs`, so there
   is no gap.
+
+## 6. Correction, 2026-09-23 (packet `cc9_target_curve`, `docs/SHIP_AI_TARGET_CURVE.md`)
+
+* **The heading-change rise was not the closer standoffs.** Section 3 said the rise followed the new
+  stand-off geometry, and called that inferred. An ablation with the profile loaded and every
+  standoff pinned back to its pre-profile figure gives:
+  - Northampton-class02: 110, the same as unpinned.
+  - York-class01: 80 against 116 unpinned.
+  - York-class02: 50 against 38 unpinned.
+
+  So the geometry explains little of it. The per-mount reweighting of the ring scores, and the
+  gunnery state the counts are coupled to, carry most of it.
+  - The pre-profile figures (12, 57, 4) came from an older main without RNG streams, so the
+    comparison across that column is itself only indicative.
+* **Section 3's "target curve" description still holds for its binary,** and cc9_target_curve now
+  binds the image's construction. On USN04 that yields the same standoffs, because no aircraft's
+  rear gun penetrates a ship's armour.
