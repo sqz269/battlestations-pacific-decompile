@@ -1,0 +1,182 @@
+{
+  "packet": "cc9_entity_dead",
+  "doc": "docs/ENTITY_DEAD_FLAG.md",
+  "status": "bound behind kEntityDeadBound (default true); USN04 4500 and 9000 frames measured against a switch-off control",
+  "abi_compatible": false,
+  "game_validated": false,
+  "routines": [
+    {
+      "address": "00929800",
+      "native": "00929800",
+      "name": "BSP_MissionEntity_PublishLuaDead",
+      "role": "self table Dead = true, KillReason = 00E0CF04[+70h]; think message and deregistration when +1D8h"
+    },
+    {
+      "address": "00929B60",
+      "native": "00929B60",
+      "name": "BSP_MissionEntity_OnKilledLua",
+      "role": "vtable +7Ch base: 00927F60, 00928100, 00929800, JMP 00923040"
+    },
+    {
+      "address": "0077D270",
+      "native": "0077D270",
+      "name": "BSP_UnitInstance_OnKilledLua",
+      "role": "vtable +7Ch unit override: LastBanto when cause 1, then 00929B60"
+    },
+    {
+      "address": "006FD8B0",
+      "native": "006FD8B0",
+      "name": "BSP_Ship_OnKilledLua",
+      "role": "ship vtable 00CFBA80 +7Ch, tail JMP 0077D270"
+    },
+    {
+      "address": "00926390",
+      "native": "00926390",
+      "name": "BSP_MissionEntity_OnDestroyedHook",
+      "role": "vtable +74h: +5Dh = +60h = 1, 00925C90, JMP [vtable+7Ch]"
+    },
+    {
+      "address": "009273A0",
+      "native": "009273A0",
+      "name": "BSP_EntityEventQueues_FlushPending",
+      "role": "dispatches vtable +74h over the destroy list 00F899A8 at 0092747F"
+    },
+    {
+      "address": "00926C80",
+      "native": "00926C80",
+      "name": "BSP_MissionEntity_Destroy",
+      "role": "+60h, +70h = 1 (or parent's), queue on 00F899A8"
+    },
+    {
+      "address": "0077D1A0",
+      "native": "0077D1A0",
+      "name": "BSP_UnitInstance_DestroyAndBroadcast",
+      "role": "unit vtable +70h, destroy message 4Eh then the base"
+    },
+    {
+      "address": "00958A30",
+      "native": "00958A30",
+      "name": "(health <= 0 death test)",
+      "role": "calls vtable[70h](1) at 00958DBE"
+    },
+    {
+      "address": "0084EC10",
+      "native": "0084EC10",
+      "name": "FUN_0084ec10",
+      "role": "message handler: vtable +7Ch on a torn-down entity, else vtable +70h(1)"
+    },
+    {
+      "address": "00928A00",
+      "native": "00928A00",
+      "name": "BSP_MissionEntity_CreateLuaSelfTable",
+      "role": "seeds ID, Dead = false, Ptr"
+    }
+  ],
+  "call_sites": [
+    {
+      "address": "00929B71",
+      "native": "00929800",
+      "function": "00929B60",
+      "note": "ECX = ESI = entity"
+    },
+    {
+      "address": "00929B63",
+      "native": "00927F60",
+      "function": "00929B60",
+      "note": "scoring notify first"
+    },
+    {
+      "address": "0077D3CA",
+      "native": "00929B60",
+      "function": "0077D270",
+      "note": "the unit override reaches the base"
+    }
+  ],
+  "tail_jumps": [
+    {
+      "address": "006FD99F",
+      "jump_target": "0077D270",
+      "function": "006FD8B0",
+      "note": "JMP, ship override to the unit override"
+    },
+    {
+      "address": "009263AE",
+      "jump_target": "vtable+7Ch",
+      "function": "00926390",
+      "note": "MOV EDX,[EAX+7Ch]; JMP EDX"
+    }
+  ],
+  "field_accesses": [
+    {
+      "address": "0092981F",
+      "function": "00929800",
+      "note": "MOV EAX,[ESI+178h], self table present"
+    },
+    {
+      "address": "00929896",
+      "function": "00929800",
+      "note": "Dead = true (SetBoolean, 1)"
+    },
+    {
+      "address": "009298C2",
+      "function": "00929800",
+      "note": "MOV EAX,[ESI+70h], cause index into 00E0CF04"
+    },
+    {
+      "address": "009298DB",
+      "function": "00929800",
+      "note": "CMP [ESI+1D8h],EBX, think registration"
+    },
+    {
+      "address": "0092747F",
+      "function": "009273A0",
+      "note": "vtable[+74h] dispatch over the destroy list"
+    }
+  ],
+  "validation": {
+    "build": "./scripts/build.ps1 Win32 Release, both ctests passed, switch on and off",
+    "runs": {
+      "usn04_4500_control": {
+        "log": "local/dead_ctl_usn04.log",
+        "damage": 16020.1,
+        "deaths": 9,
+        "end_mission": null,
+        "phase": 1
+      },
+      "usn04_4500_treatment": {
+        "log": "local/dead_trt_usn04.log",
+        "damage": 16020.1,
+        "deaths": 9,
+        "dead_published": 6,
+        "end_mission": true,
+        "phase": 1,
+        "lexington_dead_s": 220.31,
+        "mission_failed_frame": 4441
+      },
+      "usn04_9000_control": {
+        "log": "local/dead_ctl_usn04_e9000.log",
+        "damage": 19087.5,
+        "deaths": 17,
+        "phase": 2
+      },
+      "usn04_9000_treatment": {
+        "log": "local/dead_trt_usn04_e9000.log",
+        "damage": 19087.5,
+        "deaths": 17,
+        "dead_published": 7,
+        "end_mission": true,
+        "phase": 1,
+        "timetable_failures": 76
+      }
+    },
+    "worktree": "J:/PROG/battlestations-pacific-decompile-cc9-difficulty"
+  },
+  "no_ghidra_function": [],
+  "open": [
+    "GetActDialogIDs 008CB730 unimplemented: luaClearDialogs throws; luaMissionFailedNew never shows the fail narrative",
+    "three Kate wing members have no thisTable entry in the host",
+    "plane water-contact destroy path not read, not bound",
+    "friendly fire: class-31 flak blasts (0084BAD0) and direct impacts damage own-side ships; for cc9_aa_targeting",
+    "host has no mission end on EndMission"
+  ]
+}

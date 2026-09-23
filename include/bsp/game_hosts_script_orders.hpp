@@ -113,6 +113,13 @@ inline constexpr bool kSkillLevelBound = true;
 std::int32_t game_effective_difficulty_6ac() noexcept;
 void set_game_effective_difficulty_6ac(std::int32_t value) noexcept;
 
+// Packet cc9_entity_dead, docs/ENTITY_DEAD_FLAG.md. True: a unit whose damage
+// death the gunnery host has recorded gets `thisTable[id].Dead = true` and
+// `KillReason = "harm"` before the next script think, as the destroy-list
+// flush does in the image (009273A0 -> vtable[74h] 00926390 -> vtable[7Ch] ->
+// 00929B60 -> 00929800). False: the old behaviour, `Dead` stays false.
+inline constexpr bool kEntityDeadBound = true;
+
 class GameHostLog;
 class GameUnitsHost;
 struct GameSceneEntityRecord;
@@ -239,6 +246,9 @@ public:
     // been dispatched the pass is a no-op, exactly as the native walk is with an
     // empty list.
     void run_script_timers(float step);
+    // Packet cc9_entity_dead. 00929800's two Lua writes for every unit whose
+    // death is new since the last call; see the .cpp.
+    void publish_unit_deaths_00929800();
     const GameScriptTimerSummary& timers() const noexcept { return timers_; }
     const GameBlackoutSummary& blackout() const noexcept { return blackout_summary_; }
 
@@ -463,6 +473,7 @@ private:
 
     GameHostLog& log_;
     GameUnitsHost& units_;
+    std::vector<bool> dead_published_;   // per unit index, 00929800 has run
     // 008A4C90's tally. `calls` counts what the scripts asked for; the two
     // `resolved` counters say whether the Lua argument path actually reached a
     // unit and a target, which was the open question the wiring settles.

@@ -55,6 +55,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "bsp/game_hosts_commands.hpp"
@@ -269,6 +270,13 @@ public:
     // slot's plane squadron, 007ECF80's fan-out. Default 1, 0095CCCC.
     void set_skill_level_007b8ae0(std::size_t unit_index, int level);
     int skill_level(std::size_t unit_index) const;
+
+    // Packet cc9_entity_dead. The units whose damage death has happened: a
+    // health <= 0 hit reaches vtable[70h] (0077D1A0 -> 00926C80, cause 1), which
+    // queues the unit on the destroy list 00F899A8. The gunnery host owns the
+    // death (its kill_unit funnel), so this reads its per-unit rows. Each entry
+    // is (unit index, the mission clock of the death).
+    std::vector<std::pair<std::size_t, float>> destroyed_units() const;
 
     // Milestone 2m. 00836920's stage ladder over every unit's weapon director,
     // once per fixed simulation step: the pre-pass, the `stop` arm and the idle
