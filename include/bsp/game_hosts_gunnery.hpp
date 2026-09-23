@@ -609,6 +609,13 @@ public:
     // the class 21h test, and each row's V0 is its first ammunition record's.
     // Packet cc9_plane_death_modes, for docs/FIGHTER_GUNFIRE_RATE.md section 3.
     float min_fixed_gun_muzzle_speed_007c2610(std::size_t unit_index) const noexcept;
+    // Packet cc9_pilot_surface_climbout: a death-mode draw for the units host,
+    // 00BD2F10(stream, low, high). Stream 1 is the shared generator the gunnery
+    // draws also use (007CA914, the mode choice); stream 0 is its own generator
+    // (007BBFA0's ExplosionExplosionDelay draw, 007BCABB's engine-fire delay).
+    // Under BSP_GUNNERY_RNG_STREAMS=1, a MEASUREMENT option, each (stream, unit)
+    // key gets its own deterministic generator instead.
+    float death_mode_draw_00bd2f10(int stream, std::size_t unit_index, float low, float high);
     const GameGunnerySummary& summary() const noexcept;
 
     // docs/RECON_SLOT_LISTS.md rule (c). This host owns the one
