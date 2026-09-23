@@ -77,6 +77,10 @@ namespace bsp::game {
 // host keeps (barrel timers, arcs, the refined projectile sub-type, the Bullets
 // row's blast minimum). False: the earlier placeholders.
 inline constexpr bool kShipFirepowerBound = true;
+// Packet cc9_hit_accuracy, docs/WEAPON_HIT_ACCURACY.md. True: 006EB060's profile
+// answer is 008386F0/008383D0 over the four WeaponHitAccuracy sub-objects loaded
+// from ShipGlobals. False: the 00836EF0 default's small curve at int(10t).
+inline constexpr bool kWeaponHitAccuracyBound = true;
 namespace {
 
 bool has_ship_navigation_class(int kind) noexcept {
@@ -254,6 +258,11 @@ struct GameShipAiHost::Impl {
         if (!settings_owner || !settings_owner->read_avoid_all_ship_collision(value))
             throw std::logic_error("Ship avoidance settings have no established producer");
         return value;
+    }
+    // settings+240h..+39Fh, or the 00836EF0 defaults when ShipGlobals did not load.
+    void weapon_hit_accuracy(bsp::WeaponHitAccuracyProfile (&out)[4]) const {
+        if (settings_owner && settings_owner->read_weapon_hit_accuracy(out)) return;
+        for (int c = 0; c < 4; ++c) bsp::apply_weapon_hit_accuracy_defaults_00836ef0(out[c]);
     }
     std::array<float, 5> avoidance_tuning() const {
         std::array<float, 5> values;
@@ -1711,7 +1720,6 @@ public:
                                  float range,
                                  float target_length) override {
         (void)projectile_class;
-        (void)target_length;
         const bsp::ShipAiFirepowerProjectileClass& p = last_projectile_;
         if (p.max_range <= range) return 0.0f; // 006EB067, FCOMI then JBE
         const int sub = p.sub_type;
@@ -1728,8 +1736,21 @@ public:
             }
             return 1.0f;
         }
-        owner_.record("ShipAiFirepower::hit_accuracy_profile_008386f0", 0x008386f0u);
         const float fraction = range / p.max_range;
+        if (kWeaponHitAccuracyBound) {
+            // 006EB078..006EB0C2: the function code 008386F0 takes, from the same
+            // switch on the class's +8h: 4-7 -> 3, 0Ah -> 7, 0Bh/13h -> 8,
+            // 1/2/3/10h -> 1. `target_length` is b[1]; t = range / [p+60h].
+            int function = 1;
+            if (sub >= 4 && sub <= 7) function = 3;
+            else if (sub == 0x0A) function = 7;
+            else if (sub == 0x0B || sub == 0x13) function = 8;
+            bsp::WeaponHitAccuracyProfile profiles[4];
+            owner_.weapon_hit_accuracy(profiles);
+            owner_.done("ShipAiFirepower::hit_accuracy_profile_008386f0", 0x008386f0u);
+            return bsp::weapon_hit_accuracy_008386f0(profiles, function, target_length, fraction);
+        }
+        owner_.record("ShipAiFirepower::hit_accuracy_profile_008386f0", 0x008386f0u);
         int bucket = static_cast<int>(fraction * 10.0f);
         if (bucket < 0) bucket = 0;
         if (bucket > bsp::kWeaponHitAccuracyBucketCount - 1) {

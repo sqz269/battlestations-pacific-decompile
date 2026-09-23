@@ -166,3 +166,16 @@ profile.
   bounds check in `0085AB50` itself is not modelled.
 * No correction to docs/SHIP_AI_BEARING_RATING.md. One to docs/SHIP_AI_FIREPOWER_INPUTS.md is
   appended there.
+
+## 6. Correction, 2026-09-23 (packet `cc9_hit_accuracy`, `docs/WEAPON_HIT_ACCURACY.md`)
+
+* **The standoff mechanism is restated.** Section 4 read the 1450 m to 950 m move as the
+  `max(1, them(x))` floor responding to a halved hit probability. The curves, dumped and replayed
+  in docs/WEAPON_HIT_ACCURACY.md section 3, show something simpler. In this host the standoff is
+  the **peak of the ship's own curve**, because `approach_curve_target` is built from the same
+  unit and query as the own curve (a host defect; the image rates the target). The hit-probability
+  level moves that peak by moving where the rating sits on its cap
+  (`b[2]·max(1, b[6]/5)`): capped over a long span at 1.0, below the cap at 0.5.
+* **The ablation attribution stands.** The standoff move was still the sub-type term. With the
+  authored profile loaded, the Northamptons settle at 1050 m, the Yorks at 350 m and
+  Fletcher-class04 at 50 m.

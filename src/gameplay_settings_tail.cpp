@@ -3,6 +3,8 @@
 // docs/GAMEPLAY_SETTINGS_TAIL.md for the evidence behind every value here.
 #include "bsp/gameplay_settings_tail.hpp"
 
+#include "bsp/dive_bomb_task.hpp"
+
 namespace bsp {
 
 // The eleven keys in the order 00836F80 pushes them: 00D0A17C, then 00D0A160
@@ -83,6 +85,61 @@ float repair_damage_divisor(int task_priority, int step_priority, float settings
     // 0093C187 and 0093C277: the modifier multiplies the divisor. The caller
     // passes 1.0f when the gate at 0093C151..0093C165 fails.
     return base * difficulty_modifier;
+}
+
+
+float weapon_hit_accuracy_sample_008383d0(const WeaponHitAccuracyProfile& profile,
+                                          float target_length, float t) noexcept {
+    // 008383F9: the size weight, 1.0 at the small reference size, 0.0 at the large.
+    const float w = dive_bomb_interpolate_clamped_00419010(profile.small_target_size, 1.0f,
+        profile.large_target_size, 0.0f, target_length);
+    int i = 0;
+    float a = 1.0f;   // [ESP+4]
+    float b = 0.0f;   // [ESP+10h]
+    if (!(0.100000001490116 < static_cast<double>(t))) {        // 0083842F FCOMIP, JC
+        i = 0;
+        a = 1.0f;
+        b = 0.0f;
+    } else if (t >= 1.0f) {                                      // 00838447 COMISS, JC
+        i = 8;
+        a = 0.0f;
+        b = 1.0f;
+    } else {
+        // 00838463..00838480: _ftol truncates toward zero, so -(int)(-10t) is floor(10t)
+        // for t > 0; ECX = -1 - EAX, clamped to [0, 8].
+        const int trunc = static_cast<int>(static_cast<double>(t) * -10.0);
+        i = -1 - trunc;
+        if (i < 0) i = 0;
+        if (i > 8) i = 8;
+        // 00838485..00838496: d = t * 10.0 - (i + 1), float-stored.
+        const float d = static_cast<float>(static_cast<double>(t) * 10.0 - static_cast<double>(i + 1));
+        if (0.0f > d) {            // 008384A0 FCOMIP, JBE not taken
+            b = 0.0f;
+        } else if (d > 1.0f) {     // 0083851A COMISS, JBE not taken
+            b = 1.0f;
+        } else {
+            b = d;
+        }
+        a = 1.0f - b;              // 008384AF FSUB
+    }
+    const float large = profile.large_target_accuracy[i] * a
+                        + profile.large_target_accuracy[i + 1] * b;   // 008384B7..008384D3
+    const float small = profile.small_target_accuracy[i] * a
+                        + profile.small_target_accuracy[i + 1] * b;
+    return small * w + large * (1.0f - w);
+}
+
+float weapon_hit_accuracy_008386f0(const WeaponHitAccuracyProfile profiles[4], int function,
+                                   float target_length, float t) noexcept {
+    int slot = -1;
+    switch (function) {
+    case 2: case 3: case 4: case 6: slot = 0; break;   // 00838713 ADD ECX,240h
+    case 1: case 5: slot = 1; break;                   // 0083873D ADD ECX,298h
+    case 7: slot = 2; break;                           // 00838762 ADD ECX,2F0h
+    case 8: case 9: slot = 3; break;                   // 0083878C ADD ECX,348h
+    default: return 1.0f;                              // 008387A1 FLD1
+    }
+    return weapon_hit_accuracy_sample_008383d0(profiles[slot], target_length, t);
 }
 
 }  // namespace bsp
