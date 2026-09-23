@@ -59,6 +59,25 @@ float quantize_control_axis_007bb6e0(float value) {
     return static_cast<float>(q - 0x80) / kPlaneControlQuantSteps;
 }
 
+float pitch_command_to_point_009f9ed0(float altitude_error, float distance,
+                                      float class_climb_angle_1e4) {
+    // Doubles [00CE3830] pi/2, [00CE3828] 2pi, [00CE3D28] pi (float-rounded pi
+    // widened, as the image stores them).
+    const double half_pi = 1.5707963705062866;
+    const double two_pi = 6.2831854820251465;
+    const double pi = 3.1415927410125732;
+    float t = static_cast<float>(
+        half_pi - std::atan2(static_cast<double>(distance),
+                             static_cast<double>(altitude_error)));   // 009F9EE8
+    if (0.0 > static_cast<double>(t)) {
+        t = static_cast<float>(static_cast<double>(t) + two_pi);        // 009F9F02
+    }
+    if (static_cast<double>(t) > pi) {
+        t = static_cast<float>(static_cast<double>(t) - two_pi);        // 009F9F2A
+    }
+    return (class_climb_angle_1e4 > t) ? t : class_climb_angle_1e4;     // 009F9F59
+}
+
 float heading_command_009f9e40(float target_x, float target_z, float unit_x, float unit_z) {
     // 009F9E5D..009F9EA5. The x87 order is FLD dz, FLD dx, CALL atan2, so the
     // library sees y = dz and x = dx.
