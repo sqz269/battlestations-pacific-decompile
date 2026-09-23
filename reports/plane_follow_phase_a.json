@@ -1,0 +1,107 @@
+{
+ "packet": "cc9_follow_phase_a",
+ "phase_a_calls": [
+  {
+   "address": "009C0291",
+   "native": "00BF7030",
+   "function": "009BFEE0",
+   "callee_name": "LIBCRT sqrt (x87)"
+  },
+  {
+   "address": "009C0481",
+   "native": "0042CF10",
+   "function": "009BFEE0",
+   "callee_name": "BSP_Geometry_AsinClamped"
+  },
+  {
+   "address": "009C0492",
+   "native": "00415510",
+   "function": "009BFEE0",
+   "callee_name": "BSP_Math_MinFloatByRef"
+  },
+  {
+   "address": "009C05DB",
+   "native": "0042CF10",
+   "function": "009BFEE0",
+   "callee_name": "BSP_Geometry_AsinClamped"
+  },
+  {
+   "address": "009C064A",
+   "native": "0042BE90",
+   "function": "009BFEE0",
+   "callee_name": "BSP_Math_AbsFloatByRef_Provisional"
+  },
+  {
+   "address": "009C065F",
+   "native": "0042CF10",
+   "function": "009BFEE0",
+   "callee_name": "BSP_Geometry_AsinClamped"
+  },
+  {
+   "address": "009C0719",
+   "native": "0042CF10",
+   "function": "009BFEE0",
+   "callee_name": "BSP_Geometry_AsinClamped"
+  },
+  {
+   "address": "009C077C",
+   "native": "0042BE90",
+   "function": "009BFEE0",
+   "callee_name": "BSP_Math_AbsFloatByRef_Provisional"
+  },
+  {
+   "address": "009C0791",
+   "native": "0042CF10",
+   "function": "009BFEE0",
+   "callee_name": "BSP_Geometry_AsinClamped"
+  },
+  {
+   "address": "009C0A9D",
+   "native": "0042CF10",
+   "function": "009BFEE0",
+   "callee_name": "BSP_Geometry_AsinClamped"
+  },
+  {
+   "address": "009C0BAC",
+   "native": "0042BE90",
+   "function": "009BFEE0",
+   "callee_name": "BSP_Math_AbsFloatByRef_Provisional"
+  },
+  {
+   "address": "009C0D19",
+   "native": "0042BE90",
+   "function": "009BFEE0",
+   "callee_name": "BSP_Math_AbsFloatByRef_Provisional"
+  },
+  {
+   "address": "009C0D3C",
+   "native": "0042CF10",
+   "function": "009BFEE0",
+   "callee_name": "BSP_Geometry_AsinClamped"
+  },
+  {
+   "address": "009C0EC2",
+   "native": "00415510",
+   "function": "009BFEE0",
+   "callee_name": "BSP_Math_MinFloatByRef"
+  }
+ ],
+ "guards": [
+  {
+   "site": "009C08C7",
+   "test": "|base+24h + base+0Ch| > 0.05 * base+28h",
+   "taken": "009C0ECB bit-8 regime"
+  },
+  {
+   "site": "009C0B96",
+   "test": "0 > base+28h",
+   "taken": "009C0ECB bit-8 regime"
+  },
+  {
+   "site": "009C0BC1",
+   "test": "|base+24h + base+0Ch| > 0.05 * base+28h (00D7A270 double 0.05)",
+   "taken": "009C0ECB bit-8 regime"
+  }
+ ],
+ "no_ghidra_function": []
+}
