@@ -22,6 +22,7 @@
 #include "bsp/unit_rudder.hpp"
 #include "bsp/dive_bomb_aimdive_tail.hpp"
 #include "bsp/dive_bomb_task.hpp"
+#include "bsp/dive_bomb_goaway_turn.hpp"
 #include "bsp/move_to_glide.hpp"
 #include "bsp/torpedo_aim_tick.hpp"
 #include "bsp/torpedo_goaway_tick.hpp"
@@ -529,6 +530,23 @@ struct GameUnitSlot {
     // state, not the aimglide's, and conflating them made goaway finish on its
     // first tick.
     float db_goaway_travel_20{0.0f};
+    // Packet cc9_goaway_turn: the goaway state's own +18h..+2Ch, persisting
+    // across entries as the native object does (the enter 009C4950 rewrites
+    // +18h/+20h/+24h only). docs/DIVE_BOMB_GOAWAY_TURN.md.
+    bsp::DiveBombGoAwayTurnState db_goaway_turn{};
+    int db_goaway_enters{0};
+    int db_goaway_flag0_ticks{0};       // ticks that reached 009C4CBA
+    int db_goaway_countdown_ticks{0};   // 009C4A86 ran
+    int db_goaway_rerolls{0};           // 009C4CF1 arm ran
+    int db_goaway_first_reroll_tick{-1};
+    int db_goaway_bank_ticks{0};        // 009C4DAF arm
+    int db_goaway_heading_ticks{0};     // 009C4E05 arm
+    int db_goaway_first_heading_tick{-1};
+    int db_goaway_side_writes{0};       // 009FD570 changed +18h
+    float db_goaway_bank_min{0.0f};
+    float db_goaway_bank_max{0.0f};
+    float db_goaway_heading_last{0.0f};
+    float db_goaway_heading_err_max{0.0f};  // |heading - own heading|, heading arm
     int db_flyabove_heading_writes{0};
     float db_flyabove_heading_last{0.0f};
     // Packet cc8_dive_flyover: flyabove+1Ch, the roll-in LATCH of 009C6919, and
@@ -6753,7 +6771,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             run_dive_bomb_aimglide_tick_009c5180();
                         }
                         if (ctx.current == bsp::DiveBombState::kGoAway) {
-                            run_dive_bomb_goaway_tick_009c4a40();
+                            // 009C4950, the goaway vtable 00D20CA0 slot +4h.
+                            // Packet cc9_goaway_turn.
+                            if (before != bsp::DiveBombState::kGoAway) {
+                                run_dive_bomb_goaway_enter_009c4950();
+                            }
+                            run_dive_bomb_goaway_tick_009c4a40(dt);
                         }
                         // 009C7240 / 009C7270. kDone and kPrepare share one
                         // vtable, 00D20D28, installed twice in 009C73A0, so they
@@ -7212,7 +7235,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // `aimdive` -> `goaway` one tick -> water contact at
                     // -1.12 m: the pull-out edge fired, the state changed and
                     // nothing happened. docs/DIVE_BOMB_TASK.md.
-                    void run_dive_bomb_goaway_tick_009c4a40() {
+                    void run_dive_bomb_goaway_tick_009c4a40(float dt) {
                         bsp::DiveBombGoAwayInputs in;
                         in.altitude = unit_.motion.position[1];   // [EDI+100h]
                         // (approach+8h)->+1ECh, which this host already carries
@@ -7264,28 +7287,195 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // this, because mode 1 passes the gate at 0099E3BF.
                         unit_.plan_state.pitch_target_2bc = r.pitch_target_2bc;
                         unit_.plan_state.pitch_mode_2d0 = r.pitch_mode_2d0;
-                        // 009C4BFE/009C4C06: wings level through the servo, the
-                        // mode-1 arm at 0099E26E, which rolls the aircraft
-                        // upright out of the inverted dive.
-                        //
-                        // 009C4BEF's JZ does put this pair on the nose-down side
-                        // only (r.wrote_bank_heading carries the test), but the
-                        // pair is NOT gated here, deliberately. The flag-0 path
-                        // is not command-free: it falls through 009C4CBA to the
-                        // timer block and then splits at 009C4DAD into a bank arm
-                        // (009C4DAF-009C4DF6: cmd+2C4h = clamp(2 * state+28h *
-                        // state+18h) with cmd+2CCh = 1) or a heading arm
-                        // (009C4E05-009C4E1D: 009C47D0 fills state+1Ch, then
-                        // cmd+2C0h = state+1Ch with cmd+2CCh = 2). Both need the
-                        // +24h/+28h/+2Ch timers and 009C47D0, which this packet
-                        // does not bind. Gating the pair off without them would
-                        // leave the goaway with no lateral command at all, which
-                        // is further from the image than the wings-level the host
-                        // writes now. docs/DIVE_BOMB_GOAWAY.md section 2.
-                        unit_.plan_state.bank_target_2c4 = r.bank_target_2c4;
-                        unit_.plan_heading_mode_2cc = r.heading_mode_2cc;
-                        unit_.plan_heading_2c0_written = false;
-                        unit_.plane_air_brake_mode_2d8 = r.air_brake_mode_2d8;
+                        // Packet cc9_goaway_turn. 009C4A6D-009C4ACD, the timers.
+                        // They run on every tick, on both sides of the nose-down
+                        // split, and ahead of the climb in the image; the climb
+                        // reads none of their fields, so running them here
+                        // changes nothing about it.
+                        bsp::DiveBombGoAwayTurnState& gt = unit_.db_goaway_turn;
+                        {
+                            bsp::DiveBombGoAwayTimerInputs tin;
+                            tin.dt = dt;                                    // [ESP+18h]
+                            tin.planar_distance_bc = unit_.db_planar_bc;    // 009C4A6D
+                            // approach+C4h is seeded 3600.0 (00CFDEB0) at 009C3FD2
+                            // and 009C8A74 and only ever advanced `+= dt` at
+                            // 009C7A8C. This host does not carry the clock; its
+                            // floor already answers the one test that reads it
+                            // (009C4AA4, 1.0 > C4h), which is false.
+                            tin.approach_clock_c4 = 3600.0f;
+                            const bsp::DiveBombGoAwayTimerReport tr =
+                                bsp::dive_bomb_goaway_timers_009c4a6d(tin, gt);
+                            if (tr.counted_down) ++unit_.db_goaway_countdown_ticks;
+                        }
+                        // 009C4BD8/009C4BEF `JZ 009C4CBA`: the nose-down byte picks
+                        // the side. `wrote_bank_heading` is now consumed, because
+                        // the flag-0 side below writes its own lateral command.
+                        if (r.wrote_bank_heading) {
+                            // 009C4BFE/009C4C06: wings level through the servo, the
+                            // mode-1 arm at 0099E26E, which rolls the aircraft
+                            // upright out of the inverted dive. The throttle and
+                            // air-brake shaping 009C4C0C-009C4CA7 on this side is
+                            // not modelled: this host keeps no +278h/+2A8h slots.
+                            unit_.plan_state.bank_target_2c4 = r.bank_target_2c4;
+                            unit_.plan_heading_mode_2cc = r.heading_mode_2cc;
+                            unit_.plan_heading_2c0_written = false;
+                            unit_.plane_air_brake_mode_2d8 = r.air_brake_mode_2d8;
+                            return;
+                        }
+                        // 009C4CBA-009C4CE7: full throttle (+278h = 1.0, +27Ch = 1),
+                        // no air brake (+2A8h = 0, +2ACh = 1), +2D8h = 0. Only the
+                        // last has a slot here.
+                        ++unit_.db_goaway_flag0_ticks;
+                        unit_.plane_air_brake_mode_2d8 = 0;  // 009C4CE7
+                        {
+                            // 009C4CF1-009C4D9A, the re-roll.
+                            bsp::DiveBombGoAwayRerollInputs rin;
+                            rin.altitude = unit_.motion.position[1];  // 009C4D54
+                            // 00BD2F10 UniformFloatRange(3, 6) at 009C4D13 and
+                            // (12, 15) at 009C4D33: the low end, as this host pins
+                            // every draw (random_between).
+                            rin.window_draw = bsp::dive_bomb_goaway_turn::kBankWindowLo;
+                            rin.countdown_draw = bsp::dive_bomb_goaway_turn::kCountdownLo;
+                            if (bsp::dive_bomb_goaway_reroll_009c4cf1(rin, gt)) {
+                                ++unit_.db_goaway_rerolls;
+                                if (unit_.db_goaway_first_reroll_tick < 0) {
+                                    unit_.db_goaway_first_reroll_tick =
+                                        unit_.dive_bomb_arm_ticks;
+                                }
+                            }
+                        }
+                        // 009C4DAD, the split. 009C47D0 is called only on the
+                        // heading arm (009C4E09), so +1Ch and 009FD570's side
+                        // write-back move only there.
+                        bsp::DiveBombGoAwayTurnCommand tc =
+                            bsp::dive_bomb_goaway_turn_split_009c4dad(gt, gt.heading_1c);
+                        if (tc.bank_arm) {
+                            // 009C4DF0/009C4DF6: the planner's mode-1 arm servos to
+                            // the task's bank target.
+                            unit_.plan_state.bank_target_2c4 = tc.bank_target_2c4;
+                            unit_.plan_heading_mode_2cc = tc.heading_mode_2cc;
+                            unit_.plan_heading_2c0_written = false;
+                            if (unit_.db_goaway_bank_ticks == 0 ||
+                                tc.bank_target_2c4 < unit_.db_goaway_bank_min) {
+                                unit_.db_goaway_bank_min = tc.bank_target_2c4;
+                            }
+                            if (unit_.db_goaway_bank_ticks == 0 ||
+                                tc.bank_target_2c4 > unit_.db_goaway_bank_max) {
+                                unit_.db_goaway_bank_max = tc.bank_target_2c4;
+                            }
+                            ++unit_.db_goaway_bank_ticks;
+                            return;
+                        }
+                        gt.heading_1c = goaway_turn_heading_009c47d0(gt);  // 009C493C
+                        tc.heading_2c0 = gt.heading_1c;
+                        // 009C4E17/009C4E1D: the heading and mode 2, which the
+                        // planner's heading term reads at 0099DEB8.
+                        unit_.plan_heading_2c0 = tc.heading_2c0;
+                        unit_.plan_heading_2c0_written = true;
+                        unit_.plan_heading_mode_2cc = tc.heading_mode_2cc;
+                        if (unit_.db_goaway_first_heading_tick < 0) {
+                            unit_.db_goaway_first_heading_tick = unit_.dive_bomb_arm_ticks;
+                        }
+                        ++unit_.db_goaway_heading_ticks;
+                        unit_.db_goaway_heading_last = tc.heading_2c0;
+                        {
+                            const float err = std::fabs(bsp::wrapped_angle_subtract_00438b10(
+                                tc.heading_2c0, unit_.plane_heading_c6c));
+                            if (err > unit_.db_goaway_heading_err_max) {
+                                unit_.db_goaway_heading_err_max = err;
+                            }
+                        }
+                        // 009C4E27-009C4E58, NOT MODELLED, and not a speed command:
+                        // 0042E740()+674h (`Pilot/AutoStrafeAngle/Angle_GoAway`) is
+                        // stored to (approach+1Ch)+40h, then
+                        // 009FABE0(approach+1Ch; +1Ch, 0099B630(cmd)) writes the
+                        // normalised (cos, tan(pitch), sin) of the compass heading
+                        // to (approach+1Ch)+68h..70h. 0099B630 returns cmd+2BCh
+                        // while cmd+2D0h is set (it is, 009C4BE8). This host models
+                        // no approach+1Ch object.
+                    }
+
+                    // 009C47D0, `void __thiscall(goaway state)`, no stack argument,
+                    // plain RET; its only caller is 009C4E09. It is 009D0C10, the
+                    // torpedo break-off geometry, with the goaway's own fields and
+                    // literals: standoff +20h (not +24h), side +18h (not +2Ch),
+                    // range approach+BCh (not +90h), 009FD570's arg6 FLD1 (not the
+                    // 0.8 at 00CE74F8), 007F0280 mode 1 (not 0) and half-extents
+                    // 80/50/100, and the store to +1Ch (not +18h). Every
+                    // instruction after the 009FD570 call is the same, so
+                    // torpedo_goaway_heading_009d0c10 is reused as it stands.
+                    // docs/DIVE_BOMB_GOAWAY_TURN.md section 1.
+                    float goaway_turn_heading_009c47d0(bsp::DiveBombGoAwayTurnState& gt) {
+                        if (unit_.command_target_plus_one == 0) return gt.heading_1c;
+                        const std::size_t ti = unit_.command_target_plus_one - 1;
+                        if (ti >= owner_.slots.size()) return gt.heading_1c;
+                        const GameUnitSlot& tgt = *owner_.slots[ti];
+                        bsp::FlyToSolverInputs fin;
+                        // arg1, approach->vtable[0](): the fed aim point, the same
+                        // feed 009C6342's fly-over uses (the target's origin while
+                        // kHullAimOffsetEnabled is false).
+                        float p[3] = {tgt.motion.position[0], tgt.motion.position[1],
+                                      tgt.motion.position[2]};
+                        hull_aim_world_point(unit_, tgt, ti + 1, p);
+                        for (int i = 0; i < 3; ++i) {
+                            fin.point[i] = p[i];
+                            fin.unit_position[i] = unit_.motion.position[i];
+                            // unit->vtable[34h]: the same velocity HYPOTHESIS the
+                            // torpedo break-off feed states.
+                            fin.unit_lead_vector[i] = unit_.plane_world_velocity[i];
+                        }
+                        fin.standoff = gt.standoff_20;        // arg3, [ESI+20h]
+                        fin.range = unit_.db_planar_bc;       // arg5, approach+BCh
+                        fin.offset_scale = bsp::dive_bomb_goaway_turn::kFlyToOffsetScale;
+                        // HOLE, stated: the solver's own obstacle cache (ECX is the
+                        // goaway state; +0Ch..+14h zeroed at 009C74D0-009C74E8) is
+                        // rebuilt from GGame+19CCh's unit list, which this host
+                        // does not expose. Unlike the torpedo's open-water break
+                        // off, this aircraft starts next to its target, so the
+                        // target itself may be an obstacle the image steers round.
+                        fin.obstacles = nullptr;
+                        fin.obstacle_count = 0;
+                        fin.world_edge.near_edge = false;
+                        const bsp::FlyToSolverResult fr =
+                            bsp::fly_to_point_heading_009fd570(fin, gt.side_18);
+                        if (fr.side != gt.side_18) ++unit_.db_goaway_side_writes;
+                        gt.side_18 = fr.side;  // arg4 IN AND OUT, 009FDC48
+                        bsp::TorpedoGoAwayGeometryInputs geo;
+                        geo.unit_heading_c6c = unit_.plane_heading_c6c;  // vtable[50h]
+                        geo.break_off_bearing = fr.heading;
+                        // 007F0280 mode 1 over unit+C50h's entity list with
+                        // half-extents 80/50/100: HOLE, the same zero every
+                        // dive-bomb and torpedo caller in this host stands in with.
+                        // Exact over open sea; a hole when a formation mate is
+                        // inside the box. docs/BOT_PROBE_007F0280.md.
+                        return bsp::torpedo_goaway_heading_009d0c10(geo);
+                    }
+
+                    // 009C4950, the goaway enter (vtable 00D20CA0 slot +4h). Ghidra
+                    // has no function here; body 009C4950-009C4A3C, plain RET.
+                    void run_dive_bomb_goaway_enter_009c4950() {
+                        bsp::DiveBombGoAwayEnterInputs in;
+                        in.attack_distance_b4 = unit_.db_attack_dist_b4;  // 009C4990
+                        // 007B5BE0's target extent needs the target's +444h/+448h,
+                        // which this host does not model; the torpedo enter
+                        // 009D0D90 reports the same hole.
+                        in.has_extent_target = false;
+                        // 00BD2F10 UniformFloatRange(1.0, 1.25): the low end.
+                        in.standoff_jitter = bsp::dive_bomb_goaway_turn::kStandoffJitterLo;
+                        // [00F876B0] is the mission step counter, +1 per step. This
+                        // host has none; the aircraft's own arm tick count also
+                        // advances once per step, so its parity is the step's
+                        // parity up to one per-aircraft constant. STAND-IN.
+                        in.step_odd = (unit_.dive_bomb_arm_ticks & 1) != 0;
+                        // ctl+369h and [00E17BF2]: false, as 009C7F00's feed has them.
+                        in.control_flag_369 = false;
+                        in.global_e17bf2 = false;
+                        bsp::dive_bomb_goaway_enter_009c4950(in, unit_.db_goaway_turn);
+                        // 009C7F00 completes against this same +20h, which the host
+                        // had left at zero since the field was split from the
+                        // aimglide's.
+                        unit_.db_goaway_travel_20 = unit_.db_goaway_turn.standoff_20;
+                        ++unit_.db_goaway_enters;
                     }
 
                     // 009C7240 and 009C7270, the dive-bomb done/prepare state.
@@ -11412,6 +11602,30 @@ void GameUnitsHost::report() {
                         static_cast<double>(slot->db_goaway_deficit_last),
                         slot->db_goaway_complete_ticks,
                         static_cast<double>(slot->db_goaway_travel_20));
+                    // Packet cc9_goaway_turn: the evasive turn's arms.
+                    const bsp::DiveBombGoAwayTurnState& gt = slot->db_goaway_turn;
+                    host.log.notef("  divebomb %-12s goaway turn 009C4DAD: "
+                        "enters=%d flag0=%d countdown=%d rerolls=%d "
+                        "first_reroll=%d bank=%d heading=%d first_heading=%d "
+                        "side_writes=%d | bank min=%.3f max=%.3f rad | "
+                        "heading last=%.4f err_max=%.4f rad | side=%.1f "
+                        "standoff=%.1f countdown=%.2f clock=%.2f window=%.2f",
+                        slot->row.name.c_str(), slot->db_goaway_enters,
+                        slot->db_goaway_flag0_ticks,
+                        slot->db_goaway_countdown_ticks, slot->db_goaway_rerolls,
+                        slot->db_goaway_first_reroll_tick,
+                        slot->db_goaway_bank_ticks, slot->db_goaway_heading_ticks,
+                        slot->db_goaway_first_heading_tick,
+                        slot->db_goaway_side_writes,
+                        static_cast<double>(slot->db_goaway_bank_min),
+                        static_cast<double>(slot->db_goaway_bank_max),
+                        static_cast<double>(slot->db_goaway_heading_last),
+                        static_cast<double>(slot->db_goaway_heading_err_max),
+                        static_cast<double>(gt.side_18),
+                        static_cast<double>(gt.standoff_20),
+                        static_cast<double>(gt.countdown_24),
+                        static_cast<double>(gt.clock_28),
+                        static_cast<double>(gt.window_2c));
                 }
                 host.log.notef("  divebomb %-12s gate 009C7C31: "
                     "approach+BCh=%.1f m approach+B8h=%.1f m latch_D0h=%d "
