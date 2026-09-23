@@ -1,0 +1,115 @@
+{
+ "packet": "cc9_throttle_slot",
+ "calls": [
+  {
+   "address": "009998D2",
+   "native": "0099B450",
+   "function": "009998A0",
+   "note": "per-think plan seed: throttle cur=des=unit+9F0h, active=0"
+  },
+  {
+   "address": "00999907",
+   "native": "0099D300",
+   "function": "009998A0",
+   "note": "plan controls; stack argument [frame+4] is the think dt"
+  },
+  {
+   "address": "0099DB9E",
+   "native": "00419010",
+   "function": "0099D300",
+   "note": "throttle demand interp(-6.94,-2,6.94,2,error)"
+  },
+  {
+   "address": "0099DBF4",
+   "native": "00415690",
+   "function": "0099D300",
+   "note": "demand clamp"
+  },
+  {
+   "address": "007CA611",
+   "native": "00956EE0",
+   "function": "007CA5F0",
+   "note": "gunFire base effect toggle, then the class+238h/+23Ch effect array"
+  }
+ ],
+ "sites": [
+  {
+   "address": "0099D4EE",
+   "evidence": "[frame+4] = (1/max(unit+340h*0.4 (00CE65D0 double),1)) * dt"
+  },
+  {
+   "address": "0099D79F",
+   "evidence": "plan+2D8h != 0 jumps to 0099D8C1, skipping the mode-0 pending computation 0099D7CB-0099D87E"
+  },
+  {
+   "address": "0099DBBF",
+   "evidence": "fmul dword [esp+6Ch]: increment times [frame+4]"
+  },
+  {
+   "address": "0099B542",
+   "evidence": "0099B450 seed: plan+2D8h = 1 every think (speed mode default)"
+  },
+  {
+   "address": "009C605F",
+   "evidence": "aimdive writes throttle +278h, active +27Ch (009C606A); air brake +2A8h/+2ACh at 009C6071/009C6079; mode 0 at 009C6080"
+  }
+ ],
+ "ledger_names_added": [
+  {
+   "address": "00956EE0",
+   "name": "BSP_Plane_SetGunFireEffect",
+   "status": "provisional"
+  },
+  {
+   "address": "007CA5F0",
+   "name": "BSP_Plane_SetGunFireEffects",
+   "status": "provisional"
+  }
+ ],
+ "runs": {
+  "params": "--frames 9200 --press-start-frame 30 --menu-select USN04 --mission-frames 9000 --mission-frame-seconds 0.05",
+  "S0": {
+   "log": "local/S0_9000.log",
+   "fix": false,
+   "bomb_drops": 29,
+   "kill_credits": 15,
+   "water_contacts": 8,
+   "mission_end": "failed 228.06 s"
+  },
+  "S1": {
+   "log": "local/S1_9000.log",
+   "fix": true,
+   "bomb_drops": 0,
+   "kill_credits": 18,
+   "water_contacts": 19,
+   "mission_end": "none"
+  },
+  "S1T": {
+   "log": "local/S1T_9000.log",
+   "fix": true,
+   "dogfight_throttle": true,
+   "bomb_drops": 0,
+   "kill_credits": 17,
+   "water_contacts": 21,
+   "mission_end": "none",
+   "yorktown_leader_and_2_water_v": [
+    105.66,
+    100.49
+   ]
+  },
+  "S1A": {
+   "log": "local/S1A_9000.log",
+   "fix": true,
+   "aimdive_tail": true,
+   "bomb_drops": 0,
+   "kill_credits": 19,
+   "water_contacts": 19,
+   "mission_end": "failed 342.04 s"
+  }
+ },
+ "decision": {
+  "kPilotThrottleSlotBound": false,
+  "kDogfightThrottleBound": false,
+  "reason": "fix is image-faithful but removes the frozen 1.0 throttle the host's dives relied on; aimdive tail (kAimDiveTailBound off) and goaway 009C4C0C-009C4CA7 write no throttle in the host; USN04 drops 29 -> 0"
+ }
+}

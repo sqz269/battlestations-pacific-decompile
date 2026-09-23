@@ -1024,6 +1024,7 @@ struct GameUnitSlot {
     // docs/PLANE_FOLLOW_SPEED.md.
     std::uint8_t plane_trg_speed_corr_off_2b0{0};
     float plane_throttle_last{1.0f};
+    float plane_think_dt{0.0f};   // 0099D300's argument, packet cc9_throttle_slot
     int plane_speed_commands{0};
     // desc+1E4h and desc+1ECh, the two 007C4850 derives with the 007D98F0
     // climb-angle solver at 007C4BE9 and 007C4C14. desc+1ECh is the climb arm's
@@ -2704,11 +2705,27 @@ struct GameUnitsHost::Impl {
     // loaded from the authored Platforms[].PilotFires. docs/DOGFIGHT_MOVETO.md.
     static constexpr bool kDogfightMovetoSpeedBound = true;
     static constexpr bool kPilotFiresBound = true;
+    // Packet cc9_throttle_slot: a per-think trace of the throttle slot for the
+    // Yorktown flight (dogfight) and D3A Val #1.1 (dive-bomb). Diagnostic, off.
+    static constexpr bool kThrottleSlotTrace = false;
+    // Packet cc9_throttle_slot: 0099D300's speed-hold multiplier is dt in speed
+    // mode (not the slot's pending distance). docs/PILOT_THROTTLE_SLOT.md.
+    // OFF, measured: USN04 bomb drops 29 -> 0 (local/S0_9000.log vs
+    // local/S1_9000.log). The speed hold now works in flyabove and turndown and
+    // cuts the throttle to 0.001; aimdive (kAimDiveTailBound off) and goaway
+    // (009C4C0C-009C4CA7 unmodelled) write no throttle in this host, so the Val
+    // dives unpowered at 53 m/s instead of 134. Binding the aimdive tail too
+    // (local/S1A_9000.log) still drops nothing. Bind those writers first.
+    static constexpr bool kPilotThrottleSlotBound = false;
     // 007B4ED0 wiring (the head-on arm and the maneuver tail's full throttle).
     // OFF, measured: run F1 drowned Yorktown-class01_sqn02 and its .-2 at |v| 51
     // after one maneuver tick left the throttle slot active in mode 0. The image
     // re-seeds the command block every think (0099B4E8); this host does not, so
     // the write outlives the state. docs/DOGFIGHT_GUN.md section 6.
+    // Packet cc9_throttle_slot corrects that cause: the stall was the speed-hold
+    // multiplier (kPilotThrottleSlotBound). With both on (local/S1T_9000.log) the
+    // pair no longer stalls but still reaches the water at |v| 100-106, in aim,
+    // chasing Vals that the same switch sends gliding into the sea. Still OFF.
     static constexpr bool kDogfightThrottleBound = false;
     // Diagnostic period for the `follow trace` row below; 0 compiles it out.
     // Packet cc9_follow_speed ran it at 25 (docs/PLANE_FOLLOW_SPEED.md section 5).
@@ -10590,6 +10607,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 run_dogfight_task_arm_009ab1c0(elapsed);
                             }
 
+                            unit_.plane_think_dt = elapsed;   // 0099D300's argument
                             if (plan_yaw_0099d300()) {
                                 ++owner_.summary.pilot_yaw_plans;
                             }
@@ -10998,6 +11016,25 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             const float pend = th.active != 0
                                 ? th.desired - th.current : 0.0f;
                             tin.pending = pend < 0.0f ? -pend : pend;
+                            if constexpr (GameUnitsHost::Impl::kPilotThrottleSlotBound) {
+                                // Packet cc9_throttle_slot. 0099DBBF multiplies the
+                                // demand increment by the argument slot [frame+4].
+                                // With +2D8h != 0, 0099D79F jumps to 0099D8C1 and
+                                // that slot still holds 0099D4EE's dt / dtScale,
+                                // dtScale = max(unit+340h (CheatTurbo) * 0.4, 1.0)
+                                // (00CE65D0), which is 1.0 here. Only mode 0
+                                // reaches 0099D7CB-0099D87E, where the slot becomes
+                                // max(|throttle pending|, |air-brake pending|).
+                                if (unit_.plane_air_brake_mode_2d8 != 0) {
+                                    tin.pending = unit_.plane_think_dt;
+                                } else {
+                                    const bsp::PilotPlanSlot& ab =
+                                        unit_.plan_slots[bsp::kPilotSlotAirBrake];
+                                    float pb = ab.active != 0 ? ab.desired - ab.current : 0.0f;
+                                    if (pb < 0.0f) pb = -pb;
+                                    if (pb > tin.pending) tin.pending = pb;
+                                }
+                            }
                             // Both inputs of 0099DAC8's correction - unit+B1Ch
                             // and the vector at unit+AE0h - have no displacement
                             // writer anywhere in the image, so the term is taken
@@ -11006,6 +11043,39 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             tin.dead_band_skips = false;
                             const bsp::PilotBotThrottleResult tr =
                                 bsp::pilot_plan_throttle_0099d300(tin);
+                            if constexpr (GameUnitsHost::Impl::kThrottleSlotTrace) {
+                                // Packet cc9_throttle_slot: one line per think for
+                                // the Yorktown flight while its dogfight task runs.
+                                if (unit_.dogfight_task_installed &&
+                                    unit_.row.name.rfind("Yorktown-class01_sqn02", 0) == 0) {
+                                    owner_.log.notef("throttle_trace %s st=%s mode=%d want=%.2f "
+                                        "slot=(cur %.3f des %.3f act %d) pend=%.3f out=%.3f wrote=%d v=%.2f y=%.1f",
+                                        unit_.row.name.c_str(),
+                                        bsp::dogfight_state_name(unit_.dogfight_state),
+                                        unit_.plane_air_brake_mode_2d8,
+                                        static_cast<double>(unit_.plane_desired_speed_2b4),
+                                        static_cast<double>(th.current), static_cast<double>(th.desired),
+                                        th.active ? 1 : 0, static_cast<double>(tin.pending),
+                                        static_cast<double>(tr.throttle_desired), tr.wrote_throttle ? 1 : 0,
+                                        static_cast<double>(tin.measured_speed),
+                                        static_cast<double>(unit_.motion.position[1]));
+                                }
+                            }
+                            if constexpr (GameUnitsHost::Impl::kThrottleSlotTrace) {
+                                if (unit_.dive_bomb_task_installed &&
+                                    unit_.row.name == "D3A Val #1.1") {
+                                    owner_.log.notef("val_trace st=%d mode=%d want=%.2f "
+                                        "slot=(cur %.3f des %.3f act %d) pend=%.3f out=%.3f wrote=%d v=%.2f y=%.1f",
+                                        static_cast<int>(unit_.dive_bomb_state),
+                                        unit_.plane_air_brake_mode_2d8,
+                                        static_cast<double>(unit_.plane_desired_speed_2b4),
+                                        static_cast<double>(th.current), static_cast<double>(th.desired),
+                                        th.active ? 1 : 0, static_cast<double>(tin.pending),
+                                        static_cast<double>(tr.throttle_desired), tr.wrote_throttle ? 1 : 0,
+                                        static_cast<double>(tin.measured_speed),
+                                        static_cast<double>(unit_.motion.position[1]));
+                                }
+                            }
                             if (tr.wrote_throttle) {
                                 unit_.plan_slots[bsp::kPilotSlotThrottle].desired =
                                     tr.throttle_desired;
