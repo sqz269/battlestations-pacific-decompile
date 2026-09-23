@@ -188,3 +188,14 @@ first tick where a relative input differs is the input still bound to an absolut
 
 `docs/HANDOFF_HULL_AIM_POINT.md` (f) calls (ii) "the strongest candidate". It is measured clean,
 and a correction section is appended there.
+
+## Correction from docs/HULL_AIM_TURNDOWN.md (2026-09-22, packet cc9_hull_turndown)
+
+* Section 3 says 009C40A0 "has no Ghidra function". That is wrong: it is a defined function named
+  `dive_bomb_approach_aim_point_009c40a0`. This packet's lookup index was stale. The
+  `no_ghidra_function` row in `reports/hull_aim_axis.json` is wrong for the same reason.
+* Section 5 calls the surviving candidate "a host-side sensitivity that is not yet localised". It
+  is now localised. The builds leave the fly-over within a few metres and milliradians of each other
+  relative to their own aim points. The aimdive amplifies that at the first pass of the predicted
+  impact, through the roll input that steers on the bearing from the impact to the aim point. The
+  three sites this doc listed as unfed are fed as of commit `4341d8f55`.

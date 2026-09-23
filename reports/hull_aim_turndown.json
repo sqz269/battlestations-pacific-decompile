@@ -1,0 +1,33 @@
+{
+  "packet": "cc9_hull_turndown",
+  "doc": "docs/HULL_AIM_TURNDOWN.md",
+  "source": "src/game_hosts_units.cpp (hull-aim region, the three vtable[0] feeds, the kHullAimTrace print)",
+  "scope": "Feed the three unfed vtable[0] reads; read the image's producers of approach+4Ch/+50h/+54h; per-tick turndown/aimdive trace of control vs live to localise the release loss. No new reconstruction.",
+  "abi_compatible": false,
+  "game_validated": false,
+  "producer_read": [
+    {"address": "009C40A0", "native": "009C40A0", "name": "dive_bomb_approach_aim_point_009c40a0", "role": "approach vtable 00D20C48 slot 0; copies approach+4Ch/+50h/+54h (float) to out[0..2]"},
+    {"address": "009FADA0", "native": "009FADA0", "name": "BSP_BotApproachTargetRef_Update", "role": "per-tick writer: 009FAEEA/009FAEF5/009FAF00 MOVSS dword to sub+1Ch/+20h/+24h (= approach+4Ch..54h) of 004142E0(sub+28h, target+CCh); no velocity or time term"},
+    {"address": "009FB200", "native": "009FB200", "name": "BSP_BotApproachTargetRef_Construct", "role": "construction writer: 009FB32A-009FB346 FLD/FSTP float target+FCh/100h/104h (the origin) into sub+1Ch..24h, then 009FB364 CALL 009FADA0 with dt = 0.0 when target vtable+5Ch answers true; with no target 009FB395-009FB3A1 store the 00F87574 seed (loader zero-fill)"},
+    {"address": "009C7A80", "native": "009C7A80", "name": "BSP_BotTaskDiveBombApproach_Update", "role": "whole listing 009C7A80-009C7E9C filtered: no store to +4Ch/+50h/+54h; its only producer call is 009C7A9F"},
+    {"address": "009FA2E0", "native": "009FA2E0", "name": "FUN_009fa2e0", "role": "target velocity getter (vtable+34h on sub+14h else sub+18h), read by the fly-over only; not a writer of the aim point"}
+  ],
+  "call_sites": [
+    {"address": "009C7A9F", "native": "009FADA0", "function": "009C7A80", "note": "the approach tick's first act"},
+    {"address": "009FB364", "native": "009FADA0", "function": "009FB200", "note": "constructor, dt = 0.0 (009FB35C FLDZ)"},
+    {"address": "009FB357", "native": "009FB190", "function": "009FB200", "note": "arms the aiming reference before the first update"},
+    {"address": "009FAEDF", "native": "004142E0", "function": "009FADA0", "note": "target world matrix x body offset"},
+    {"address": "009C6342", "native": "00D20C48+vtable00", "function": "009C62B0", "note": "fly-over lead point; now fed"},
+    {"address": "009C59CD", "native": "00D20C48+vtable00", "function": "009C58D0", "note": "aimdive height; now fed"},
+    {"address": "009C5278", "native": "00D20C48+vtable00", "function": "009C5180", "note": "aimglide height; now fed"}
+  ],
+  "no_writer_found_in": ["009FAF90", "009FB010", "009FB0F0", "009FB120", "009FB190", "009FB3C0", "009C71E0", "007B3DB0", "007B3DC0", "007B3DD0", "007B3DE0", "007B3DF0", "007B45E0", "009C3EA0"],
+  "writer_census_coverage": "partial: the approach vtable 00D20C48 slots, the approach constructor, the approach tick and the sub-object methods 009FA260-009FB3C0. A whole-image disp8 census of +4Ch/+50h/+54h stores against an approach base was not run.",
+  "validation": {
+    "build": "./scripts/build.ps1",
+    "target": "MSVC Win32 Release /W4 /WX",
+    "build_passed": true,
+    "existing_ctests_passed": 2,
+    "neutrality": "local/feedoff_usn04.log vs local/cc9/hullaxis_logs/hullaxis_off_usn04.log: 3742 census lines identical; one added line ordnance_rearms from main"
+  }
+}

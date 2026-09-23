@@ -1093,6 +1093,9 @@ bool hull_aim_target_samples_hull(const GameUnitSlot& target) {
 // 10% of it: 23 releases, 50%: 16, 100%: 8) and not with its height, so it
 // stays OFF. With it on, `hull_aim draw` and `hull_aim inrange` lines print.
 constexpr bool kHullAimOffsetEnabled = false;
+// Packet cc9_hull_turndown: the per-tick turndown/aimdive/aimglide trace in
+// update_dive_bomb_approach. Diagnostic only; off in the default build.
+constexpr bool kHullAimTrace = false;
 
 // Packet cc9_hull_axis, diagnostic only. The drawn body-frame offset, the
 // world point, the target origin and heading, and the world point resolved
@@ -1675,6 +1678,34 @@ struct GameUnitsHost::Impl {
             slot.db_impact_throw_14 =
                 (w2 <= bsp::dive_bomb_constant::kDistanceEpsilonSq)
                     ? 0.0f : static_cast<float>(std::sqrt(w2));
+        }
+        // Packet cc9_hull_turndown, diagnostic only: one line per tick of the
+        // turndown, aimdive and aimglide, every quantity relative to the fed
+        // aim point `tp` so the offset itself cancels between builds. The
+        // commands are the ones the state ticks wrote on the previous tick.
+        if (kHullAimTrace &&
+            (slot.dive_bomb_state == bsp::DiveBombState::kTurnDown ||
+             slot.dive_bomb_state == bsp::DiveBombState::kAimDive ||
+             slot.dive_bomb_state == bsp::DiveBombState::kAimGlide)) {
+            log.notef("hull_trace %s t=%d st=%x rel=(%.2f %.2f %.2f) "
+                      "vel=(%.2f %.2f %.2f) hdg=%.4f pitch=%.4f bank=%.4f "
+                      "cmd_pitch=%.4f bank_tgt=%.4f hdg_tgt=%.4f "
+                      "ccip_rel=(%.2f %.2f) rng=%.2f latch=%d err=%.2f "
+                      "ccip_d=%.2f brg_c0=%.4f brg_18=%.4f abort=%d rel_n=%d",
+                      slot.row.name.c_str(), slot.dive_bomb_arm_ticks,
+                      static_cast<unsigned>(slot.dive_bomb_state),
+                      slot.motion.position[0] - tp[0], slot.motion.position[1] - tp[1],
+                      slot.motion.position[2] - tp[2],
+                      slot.plane_world_velocity[0], slot.plane_world_velocity[1],
+                      slot.plane_world_velocity[2], slot.plane_heading_c6c,
+                      slot.plane_pitch_angle_c64, slot.plane_bank_angle_c68,
+                      slot.plane_commanded_pitch, slot.plan_state.bank_target_2c4,
+                      slot.plan_heading_2c0,
+                      slot.db_run_in_origin[0] - tp[0], slot.db_run_in_origin[2] - tp[2],
+                      slot.db_planar_bc, slot.db_in_range_d0 ? 1 : 0,
+                      slot.db_aim_error_last, slot.db_impact_planar_5c,
+                      slot.db_bearing_c0, slot.db_impact_bearing_18,
+                      slot.db_abort_fires, slot.dive_bomb_releases);
         }
     }
 
