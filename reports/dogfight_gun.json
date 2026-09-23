@@ -1,0 +1,160 @@
+{
+ "packet": "cc9_dogfight_gun",
+ "calls": [
+  {
+   "address": "00999979",
+   "native": "009FC7C0",
+   "function": "009998A0",
+   "note": "gun tick, ECX = task+314h, gated on unit+C24h at 00999962"
+  },
+  {
+   "address": "009FAAFD",
+   "native": "009FA620",
+   "function": "009FAAD0",
+   "note": "distortion init on gun+4h"
+  },
+  {
+   "address": "009FC90E",
+   "native": "007B96F0",
+   "function": "009FC7C0",
+   "note": "auto target search into +74h"
+  },
+  {
+   "address": "009FC922",
+   "native": "0043F080",
+   "function": "009FC7C0",
+   "note": "target alive and visible"
+  },
+  {
+   "address": "009FC964",
+   "native": "007C2610",
+   "function": "009FC7C0",
+   "note": "lead flight time, first pass"
+  },
+  {
+   "address": "009FC9C7",
+   "native": "007C2610",
+   "function": "009FC7C0",
+   "note": "lead flight time, second pass"
+  },
+  {
+   "address": "009FCCD7",
+   "native": "009FA7E0",
+   "function": "009FC7C0",
+   "note": "aim distortion update"
+  },
+  {
+   "address": "009FCDA1",
+   "native": "009F9FC0",
+   "function": "009FC7C0",
+   "note": "steer toward the lead point"
+  },
+  {
+   "address": "009FCDBC",
+   "native": "007BA760",
+   "function": "009FC7C0",
+   "note": "fire blocked"
+  },
+  {
+   "address": "009FCDC7",
+   "native": "007B96D0",
+   "function": "009FC7C0",
+   "note": "finder busy: re-aim +0.25 instead of firing"
+  },
+  {
+   "address": "009FCDFC",
+   "native": "009F9FC0",
+   "function": "009FC7C0",
+   "note": "re-aim"
+  },
+  {
+   "address": "009FCE7C",
+   "native": "0099C210",
+   "function": "009FC7C0",
+   "note": "robots row: AimShootDelayTime"
+  },
+  {
+   "address": "009FCEAC",
+   "native": "0099C210",
+   "function": "009FC7C0",
+   "note": "robots row: AimShootTime"
+  },
+  {
+   "address": "009FCED1",
+   "native": "00BD2F10",
+   "function": "009FC7C0",
+   "note": "burst or gap draw"
+  },
+  {
+   "address": "009A747C",
+   "native": "009FABE0",
+   "function": "009A71E0",
+   "note": "attackrun sets the gun direction"
+  },
+  {
+   "address": "007B9731",
+   "native": "007E2090",
+   "function": "007B96F0",
+   "note": "forward to the unit+C50h finder"
+  },
+  {
+   "address": "007B96DA",
+   "native": "007DEDB0",
+   "function": "007B96D0",
+   "note": "finder busy test"
+  },
+  {
+   "address": "009BED0F",
+   "native": "00419010",
+   "function": "009BECD0",
+   "note": "separation blend"
+  },
+  {
+   "address": "009BED2A",
+   "native": "007EF2C0",
+   "function": "009BECD0",
+   "note": "squadron term"
+  },
+  {
+   "address": "0099B0A0",
+   "native": "0099BEE0",
+   "function": "0099ACD0",
+   "note": "plan byte copy with ECX = plan owner + 4"
+  }
+ ],
+ "ledger_names_added": [
+  {
+   "address": "009FC7C0",
+   "name": "BSP_BotTaskGun_Tick"
+  },
+  {
+   "address": "009FAAD0",
+   "name": "BSP_BotTaskGun_Construct"
+  },
+  {
+   "address": "007BA760",
+   "name": "BSP_Unit_GunFireBlocked"
+  },
+  {
+   "address": "007B96D0",
+   "name": "BSP_Unit_TargetFinderBusy"
+  },
+  {
+   "address": "007B96F0",
+   "name": "BSP_Unit_FindGunTarget"
+  },
+  {
+   "address": "007B4ED0",
+   "name": "BSP_PilotPlan_SetDirectThrottle"
+  },
+  {
+   "address": "009BECD0",
+   "name": "BSP_BotState_BlendDesiredSpeed"
+  },
+  {
+   "address": "0099C210",
+   "name": "BSP_BotTask_PilotRobotsRow"
+  }
+ ],
+ "no_ghidra_function": []
+}

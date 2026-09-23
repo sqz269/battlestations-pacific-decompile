@@ -312,3 +312,14 @@ predicted. The frame numbers are the log's frame counter.
 4. `007B4ED0`, the head-on speed.
 5. `009BECD0`, the moveto speed shaping.
 6. The `00BD2F10` draws, which the host fixes at their midpoints.
+
+## Correction, 2026-09-23 (packet cc9_dogfight_gun)
+
+* Section 2, **"The gun"**: the gun controller *is* a task sub-object. `approach+1Ch` is
+  `task+314h` (`009F9980`), built by `009FAAD0` and ticked by `009FC7C0` from
+  `BSP_PilotBot_Update` (`00999979`) after the task arm. What remains outside the task, and
+  unread, is the consumer of its fire request (`plan+2DCh` -> `unit+9FAh` `gunFire`). See
+  `docs/DOGFIGHT_GUN.md`.
+* `007B4ED0` is read: a direct throttle, `plan+278h = clamp(f, 0, 1)` and
+  `plan+2A8h = clamp(-f, 0, 1)` with speed mode 0. Wiring it drowned two fighters in this host
+  (`docs/DOGFIGHT_GUN.md` section 6), so the head-on stand-in stays.
