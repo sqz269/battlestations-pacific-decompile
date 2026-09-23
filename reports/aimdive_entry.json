@@ -1,0 +1,74 @@
+{
+ "packet": "cc9_aimdive_entry",
+ "calls": [
+  {
+   "address": "009C5935",
+   "native": "009C4F80",
+   "function": "009C58D0",
+   "note": "aim heading -> base+10h"
+  },
+  {
+   "address": "009C5AA3",
+   "native": "00438B10",
+   "function": "009C58D0",
+   "note": "e_air = wrap(aim heading - bearing(aim - unit)) -> base+24h"
+  },
+  {
+   "address": "009C5AF1",
+   "native": "00438B10",
+   "function": "009C58D0",
+   "note": "e_imp = wrap(aim heading - bearing(aim - impact)) -> base+18h"
+  },
+  {
+   "address": "009C5BB1",
+   "native": "00438AA0",
+   "function": "009C58D0",
+   "note": "dead call: args (aim heading base+10h, pi); result popped at 009C5BBA"
+  },
+  {
+   "address": "009C5C49",
+   "native": "00419010",
+   "function": "009C58D0",
+   "note": "L = (A8h+100, 0, ACh+50h, row+5Ch, H)"
+  },
+  {
+   "address": "009C5C92",
+   "native": "00419010",
+   "function": "009C58D0",
+   "note": "M = (A8h+100, 1, ACh+50h, row+60h, H)"
+  }
+ ],
+ "sites": [
+  {
+   "address": "009C5BAA",
+   "evidence": "FLD [ESP+18h] after 009C5BA3 SUB ESP,8 = base+10h (aim heading)"
+  },
+  {
+   "address": "009C5BBA",
+   "evidence": "FSTP ST(0) pops the 00438AA0 result (reached by 009C5BB6 JMP)"
+  },
+  {
+   "address": "009C5B3E",
+   "evidence": "abort: 0.3H+150 > planar range, with D4h+50h > H and pitch > -60 deg [00D20338]"
+  }
+ ],
+ "runs": {
+  "P0": {
+   "log": "local/P0_9000.log",
+   "drops": 32
+  },
+  "P1": {
+   "log": "local/P1_9000.log",
+   "drops": 1
+  },
+  "Q0": {
+   "log": "local/Q0_9000.log",
+   "drops": 16
+  },
+  "Q1": {
+   "log": "local/Q1_9000.log",
+   "drops": 11
+  }
+ },
+ "decision": "no divergence; entry swing is the image law; misread flip binding removed before commit"
+}
