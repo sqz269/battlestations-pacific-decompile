@@ -1,0 +1,280 @@
+{
+  "packet": "cc10_original_sampler_v3_preparation",
+  "status": "source_and_compiled_preparation_reviewed_no_runtime",
+  "original_attempts_total": 2,
+  "new_original_launches": 0,
+  "helper_outer_fixture_invocations": 0,
+  "attach_calls": 0,
+  "profile_or_copy_log_actions": false,
+  "admission_consumed": false,
+  "allow_original_launch": false,
+  "primary_verification": {
+    "index_sha256": "7ffc423aabf1d72824a261abbd8ff975d8bb2db5a3e0a82bcec5629b203c3689",
+    "indexed_files_verified": 56,
+    "prior_rows_verified": 987,
+    "original_v3_40_file_freeze_verified": true,
+    "body_proof": [
+      {
+        "mode": "writer",
+        "section_size": 6709,
+        "linked_rva": 91616,
+        "linked_end_rva": 98325,
+        "linked_sha256": "8ed936241b836db8148e81e4a6a0886214bb6dbc2dda4b86a97794c2abcf065e",
+        "masked_nonrelocated_sha256": "7894e6ea13d68014f7d4aafa1a3dbd72b748a5aba809a7a15ec7d4390bdd4087"
+      },
+      {
+        "mode": "guard",
+        "section_size": 10219,
+        "linked_rva": 60720,
+        "linked_end_rva": 70939,
+        "linked_sha256": "a629a265344e7af61847d2a42c12c94f3838d33ed9573c39438645aec839f671",
+        "masked_nonrelocated_sha256": "3b142ea9b94be490c398e25412db64f5d93ce908efab46e4aa2209fcb43c7605"
+      }
+    ],
+    "event_loop_bytes_verified": 26504,
+    "main_continue_state_before_allocating_diagnostics": true,
+    "cleanup_pending_store": "Source ordering reviewed; dead after continuation, optimized store elided",
+    "controller_AST_equal_except_rebuilt_pins": true,
+    "writer_equal_tested_source_and_masked_body": true,
+    "pinned_disk_providers_verified": 7,
+    "controller_roles": 24,
+    "unavailable_roles": [
+      "copy_overlay",
+      "copy_drift_observation"
+    ],
+    "disabled_review_rejection_verified": true,
+    "outer_profile_imported": false,
+    "original_or_helper_launches": 0,
+    "limits": [
+      "No runtime invocation for scalar-ordering correction.",
+      "Original guard/runtime and missing fresh-state admission limits remain as frozen revision01."
+    ]
+  },
+  "review": [
+    "Complete new guard/generator/build/compiled-inspector source and original helper/controller deltas reviewed",
+    "Guard borrows current module registry; exact original xlive172B/five HIGHLOW fixups, five system bodies, current three-hop IAT, native/WOW64 frames and original caller locals required",
+    "Pending primary pre-entry first-chance record, mapped PE/stack ownership, initial20/current40 and full armed entry32 checked; guard reads cannot substitute disk evidence for live state",
+    "Writer source and masked6709B body equal accepted benign fixture; normal and cleanup preserve actual returned current page protection",
+    "Root found diagnostic allocation before pending-state update; immutable revision01 preserved and r2 fixes scalar state/counters before formatting. Exact26504B linked event loop and three true ContinueDebugEvent imports independently verified",
+    "Cleanup source store correctly precedes formatting but optimizer elides dead pending state; no emitted cleanup store claimed",
+    "Controller24-role bindings independently verified;22 bound and2 fresh-state roles unavailable, disabled review and incomplete bindings rejected before outer/profile imports",
+    "Both frozen indexes and987 prior rows verified; no process/helper invocation or original-runtime equivalence claimed"
+  ],
+  "revision01": {
+    "packet": "cc10_original_dispatcher_v3_prep",
+    "status": "built_offline_review_only_no_launch",
+    "allow_original_launch": false,
+    "helper_or_wrapper_invocations": 0,
+    "original_launches": 0,
+    "original_attempts_unchanged": 2,
+    "attach_calls": 0,
+    "profile_inventory_or_backup": false,
+    "private_log_observation": false,
+    "overlay_refreshed": false,
+    "admission_or_consumption": false,
+    "tracked_changes": false,
+    "strict_build": "/W4 /WX /O2 /MD x64, embedded asInvoker manifest",
+    "roles": [
+      {
+        "path": "local\\original_sampler_dispatcher_v3_cc10\\original_capture_v3.cpp",
+        "sha256": "4237695a13de2b4b67781a64e9c546700d1ab6dd93826b47554a9f9c13499029",
+        "bytes": 42633
+      },
+      {
+        "path": "local\\original_sampler_dispatcher_v3_cc10\\original_closehandle_guard.hpp",
+        "sha256": "92eed9a4e6bb070c5bd05b28b33a8921063baa91823ecc393bf2bc29ff76bacc",
+        "bytes": 11249
+      },
+      {
+        "path": "local\\original_sampler_dispatcher_v3_cc10\\entry_writer.hpp",
+        "sha256": "2e7968e2a1f701103cbc409b9e14e6975fd8bc5c9a17e94e11ca4a2205608d88",
+        "bytes": 5675
+      },
+      {
+        "path": "local\\original_sampler_dispatcher_v3_cc10\\capture_session_v3.py",
+        "sha256": "f996285641c66b48c5e44cfe8414bb555e7c97bf3cfb604d60f3b5cb88e13f38",
+        "bytes": 21635
+      },
+      {
+        "path": "local\\original_sampler_dispatcher_v3_cc10\\original_guard_expected.hpp",
+        "sha256": "ca16e0afb9ba09629f7a25f34b87a26880553b3b5dc509f8aac60d6bb0cef3ba",
+        "bytes": 4685
+      },
+      {
+        "path": "local\\original_sampler_dispatcher_v3_cc10\\original_guard_expected.json",
+        "sha256": "4164afd52432238944a9f76975336539e595cf5ebfa23abb256c3d0e8369fbcf",
+        "bytes": 4564
+      },
+      {
+        "path": "local\\original_sampler_dispatcher_v3_cc10\\original_capture_expected.hpp",
+        "sha256": "ecfb3adeeb45bb82700c0fddcc587c923aa0ecf3bb3ddfb57ba15648e1a2f2a5",
+        "bytes": 25582
+      },
+      {
+        "path": "local\\original_sampler_dispatcher_v3_cc10\\exception_policy.hpp",
+        "sha256": "b01ec5b46ee0480fc37f45696ab164b56032bf10200cf0c7490712084a2d7a58",
+        "bytes": 5878
+      },
+      {
+        "path": "local\\original_sampler_dispatcher_v3_cc10\\prepare_original_guard.py",
+        "sha256": "06a72a66abc0aeb8f6c93543efb5a2a6b1f85b2bd16b5e8383b32fb4e88d5e3f",
+        "bytes": 5401
+      },
+      {
+        "path": "local\\original_sampler_dispatcher_v3_cc10\\original-capture-probe-v3.exe",
+        "sha256": "80f0568a1f3b82ee76a45555cd1f30f6dd481555a8ef3ca03d40f7cfdd374c9b",
+        "bytes": 208384
+      },
+      {
+        "path": "local\\original_sampler_dispatcher_v3_cc10\\helper_manifest.xml",
+        "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df",
+        "bytes": 381
+      },
+      {
+        "path": "local\\original_sampler_dispatcher_v3_cc10\\build.ps1",
+        "sha256": "8c38cc11d80c0454f5559ce8fd414ee77172e8366b6ece00953283e7d104425e",
+        "bytes": 946
+      },
+      {
+        "path": "local\\original_sampler_dispatcher_v3_cc10\\source_delta.patch",
+        "sha256": "22480837480a1a5ac5a2dadaff5cbac6219ba5a1866c84d9a1f7e02484d9073c",
+        "bytes": 67018
+      },
+      {
+        "path": "local\\original_sampler_dispatcher_v3_cc10\\compiled_bodies.json",
+        "sha256": "367a85450d35b6631f41e5ab88b137be0fa469ab2dc10b559c0f99da96b1c5d8",
+        "bytes": 91603
+      },
+      {
+        "path": "local\\original_sampler_dispatcher_v3_cc10\\offline_wiring_checks.json",
+        "sha256": "d04c5e85ffcc0c14a24da06b64b7f52893b1ef60cf1cc4688f3baa8bc577e75e",
+        "bytes": 541
+      },
+      {
+        "path": "local\\original_sampler_dispatcher_v3_cc10\\offline_historical_check.json",
+        "sha256": "d72c505f221d795f4c8d53b0717c1f6f4e1bdc1e0fabe5e7f57deafc33fb3a65",
+        "bytes": 3687
+      },
+      {
+        "path": "local\\original_sampler_dispatcher_v3_cc10\\offline_review01\\review_template.json",
+        "sha256": "8a634c8657d1f292df99892ce9283b3010ec64b700c1151b86b0da5eb641b98c",
+        "bytes": 7621
+      },
+      {
+        "path": "local\\original_sampler_dispatcher_v3_cc10\\README.md",
+        "sha256": "0c57ca2d7f8528cc1b9464032bd8fe23f2b2f858fdc7c65cea2fb703adb05e5a",
+        "bytes": 8934
+      }
+    ],
+    "compiled_bodies": [
+      {
+        "mode": "writer",
+        "linked_rva": 91616,
+        "linked_end_rva": 98325,
+        "section_size": 6709,
+        "linked_sha256": "c0806ae1c9f25ace10baa0f6c0d9031a715fddb868c64402ea8440962dc88846",
+        "masked_nonrelocated_sha256": "7894e6ea13d68014f7d4aafa1a3dbd72b748a5aba809a7a15ec7d4390bdd4087",
+        "unique_nonrelocated_byte_match": true,
+        "runtime_function": {
+          "begin": 91616,
+          "end": 98325,
+          "unwind": 184936
+        }
+      },
+      {
+        "mode": "guard",
+        "linked_rva": 60720,
+        "linked_end_rva": 70939,
+        "section_size": 10219,
+        "linked_sha256": "3851d84d60317e48de766dcbe97413ea6e93ffa4527421c56c197fdcbb0d62e7",
+        "masked_nonrelocated_sha256": "3b142ea9b94be490c398e25412db64f5d93ce908efab46e4aa2209fcb43c7605",
+        "unique_nonrelocated_byte_match": true,
+        "runtime_function": {
+          "begin": 60720,
+          "end": 70939,
+          "unwind": 189780
+        }
+      }
+    ],
+    "controller": {
+      "roles": 24,
+      "concrete_roles": 22,
+      "unavailable_roles": [
+        "copy_overlay",
+        "copy_drift_observation"
+      ],
+      "default_mode": "offline-review",
+      "complete_bindings_reject": true,
+      "disabled_review_reject": true,
+      "unique_consumption_scopes": [
+        "v1",
+        "v2",
+        "v3"
+      ]
+    },
+    "offline": {
+      "supported_historical": 11,
+      "unavailable": 10,
+      "overall": "UNAVAILABLE_NOT_ADMITTED"
+    },
+    "prior_files_verified": 947,
+    "limitations": [
+      "Original-specific guard has no runtime proof; unavailable live reads cannot be filled from disk or fixtures.",
+      "Fresh current log observation/overlay and separate review are required before any admission-consuming preparation.",
+      "Prior benign proof is limited to its fixtures and captured state; original continuation/API result/sampler input remain unknown.",
+      "Pending-false/incomplete transaction/error paths retain source-only coverage.",
+      "Linked body identity is not recursive EH/provider closure."
+    ],
+    "diagnostic": "preparation_diagnostic01.json retains delimiter/argparse preparation failure; no helper or profile operation occurred"
+  },
+  "accepted_revision2": {
+    "packet": "cc10_original_dispatcher_v3r2_order",
+    "status": "frozen_source_compiled_correction_only",
+    "revision01_root": "local\\original_sampler_dispatcher_v3_cc10",
+    "revision01_index_sha256": "387de728c243940ae4d8c6a6e6e70aff059b119c4fcd18e868a29a728d8e4b03",
+    "minimal_delta_path": "local\\original_sampler_dispatcher_v3r2_cc10\\minimal_review_increment.patch",
+    "minimal_delta_sha256": "c248b91960a17ee923ad6a4fd7da015ee171fd00fe9b89d5e51fadea532b8f2d",
+    "helper_sha256": "db9b7918516245b1e373ea28af68b830cc1f8295be95f2e054ca5156bce5af0b",
+    "source_sha256": "4658aeecbd1917b72ffdbda8852079b38e190253212774f5f4f467b078f85d04",
+    "controller_sha256": "a7b20cc7c8f07ba60c55d549c03679f5fb61379dc3b50b67031e3595c5a238fb",
+    "original_launches": 0,
+    "original_attempts_unchanged": 2,
+    "helper_outer_fixture_invocations": 0,
+    "profile_log_overlay_actions": 0,
+    "admission_or_consumption": false,
+    "strict_build": true,
+    "embedded_manifest_sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df",
+    "offline_template": "local\\original_sampler_dispatcher_v3r2_cc10\\offline_review_r2\\review_template.json",
+    "allow_original_launch": false,
+    "main_compiled_order": {
+      "call_rva": 116125,
+      "pending_clear_rva": 116142,
+      "pending_special_clear_rva": 116147,
+      "counter_increment_rvas": [
+        116178,
+        116185
+      ],
+      "first_formatting_call_rva": 116234
+    },
+    "cleanup_compiled_limit": "Source clears pending before diagnostics; compiler elides dead assignment because no subsequent read. No emitted store claimed.",
+    "guard_writer_sources_and_nonrelocated_bodies_unchanged": true,
+    "total_prior_files_verified": 987,
+    "limits": [
+      "No runtime invocation for scalar-ordering correction.",
+      "Original guard/runtime and missing fresh-state admission limits remain as frozen revision01."
+    ]
+  },
+  "limits": [
+    "Original guard and continuation have no runtime proof",
+    "Fresh private-copy observation and proposed overlay are separate subsequent work; neither frozen controller admits them yet",
+    "No original CloseHandle result, sampler input/source0, complete architectural preservation or gameplay validation",
+    "Individual linked body identities do not establish recursive EH/provider closure",
+    "Unexercised writer error paths retain source-only coverage"
+  ],
+  "archive": {
+    "path": "local/cc10-platform-evidence/original-sampler-v3-preparation.zip",
+    "sha256": "502084adeb0bef7acef5dd655bdd918f592786c1906084b9a0e9f1d8ada1222c",
+    "files": 101,
+    "valid": true
+  }
+}
