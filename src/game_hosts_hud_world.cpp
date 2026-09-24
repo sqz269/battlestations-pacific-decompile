@@ -14,6 +14,7 @@
 #include "bsp/hud_minimap.hpp"
 #include "bsp/hud_screens.hpp"
 #include "bsp/hud_updates.hpp"
+#include "bsp/mission_camera.hpp"
 #include "bsp/native_camera_plane_transform.hpp"
 #include "bsp/pose_refresh.hpp"
 
@@ -294,8 +295,18 @@ public:
         // none, so the executable supplies the controlled unit's own forward row
         // and records the refresh. The heading is then atan2(fwd.x, fwd.z),
         // which is the convention the trajectory dump already prints.
-        owner_.record("HudMinimap::refresh_renderer_basis", 0x00b6db70u);
         owner_.done("HudMinimap::atan2", 0x00bf701au);
+        bsp::MissionCameraPublication& node = bsp::mission_camera_publication();
+        if (kMissionCameraBound && node.ready) {
+            // 005C17A7: 00B6DB70 on the Operator node, then its world +110h and
+            // +118h, the forward row's x and z (docs/MISSION_CAMERA.md).
+            bsp::refresh_camera_world_00b6db70(node.state.transform);
+            owner_.done("HudMinimap::refresh_renderer_basis", 0x00b6db70u);
+            y_component = node.state.transform.world[8];
+            x_component = node.state.transform.world[10];
+            return;
+        }
+        owner_.record("HudMinimap::refresh_renderer_basis", 0x00b6db70u);
         y_component = 0.0f;
         x_component = 1.0f;
         if (owner_.units == nullptr || !owner_.units->controlled_bound()) return;
@@ -728,6 +739,18 @@ public:
         // has no camera, so **the projection is an executable-side stand-in**: a
         // fixed top-down orthographic camera over the mission's own unit bounds,
         // with +x to the right and +z up the screen.
+        bsp::MissionCameraPublication& node = bsp::mission_camera_publication();
+        if (kMissionCameraBound && node.ready) {
+            // 0043A697..0043A6AF: 00B70490 on [game+19FCh], the Operator node the
+            // ShipCaptain mover publishes into, then 00B62D10 with its matrix.
+            const bsp::CameraMatrix& view_projection =
+                bsp::get_camera_view_projection_00b70490(node.state);
+            owner_.done("HudMarkers::view_projection_matrix", 0x00b70490u);
+            const float source[4] = {world[0], world[1], world[2], 1.0f};
+            bsp::transform_native_vector4_00b62d10(source, out_clip, view_projection.data());
+            owner_.done("HudMarkers::transform_vec4", 0x00b62d10u);
+            return;
+        }
         owner_.record("HudMarkers::view_projection_matrix", 0x00b70490u);
         const float half = owner_.summary.camera_half_extent;
         const float cx = 0.5f * (owner_.summary.bounds_min[0] + owner_.summary.bounds_max[0]);
