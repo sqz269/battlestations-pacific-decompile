@@ -400,7 +400,7 @@
       "address": "00cc23be",
       "native": "00bf6b43",
       "function": "00cc23b9",
-      "kind": "no_ghidra_function",
+      "kind": "tail_jump",
       "native_instruction_kind": "tail_jump",
       "note": "Predefinition verifier compatibility only. Actual instruction remains tail_jump; switch kind after root definition."
     },
@@ -429,29 +429,12 @@
       "address": "00cc2333",
       "native": "00bf6b43",
       "function": "00cc232e",
-      "kind": "no_ghidra_function",
+      "kind": "tail_jump",
       "native_instruction_kind": "tail_jump",
       "note": "Predefinition verifier compatibility only. Actual instruction remains tail_jump; switch kind after root definition."
     }
   ],
-  "no_ghidra_function": [
-    {
-      "address": "00cc23b9",
-      "end_inclusive": "00cc23c2",
-      "last_instruction_address": "00cc23be",
-      "last_instruction_length": 5,
-      "native_instruction_kind": "tail_jump",
-      "coverage": "ten-byte MOV EAX,FuncInfo/JMP BF6B43 boundary only"
-    },
-    {
-      "address": "00cc232e",
-      "end_inclusive": "00cc2337",
-      "last_instruction_address": "00cc2333",
-      "last_instruction_length": 5,
-      "native_instruction_kind": "tail_jump",
-      "coverage": "ten-byte MOV EAX,FuncInfo/JMP BF6B43 boundary only"
-    }
-  ],
+  "no_ghidra_function": [],
   "listing_repairs": [
     {
       "containing_function": "00b82ed0",
@@ -636,5 +619,40 @@
     "size": 285364,
     "files": 54,
     "note": "Pre-repair evidence and report_before_archive_receipt avoid circular hash; all eight preceding packet archives unchanged."
+  },
+  "worker_no_ghidra_function": [
+    {
+      "address": "00cc23b9",
+      "end_inclusive": "00cc23c2",
+      "last_instruction_address": "00cc23be",
+      "last_instruction_length": 5,
+      "native_instruction_kind": "tail_jump",
+      "coverage": "ten-byte MOV EAX,FuncInfo/JMP BF6B43 boundary only"
+    },
+    {
+      "address": "00cc232e",
+      "end_inclusive": "00cc2337",
+      "last_instruction_address": "00cc2333",
+      "last_instruction_length": 5,
+      "native_instruction_kind": "tail_jump",
+      "coverage": "ten-byte MOV EAX,FuncInfo/JMP BF6B43 boundary only"
+    }
+  ],
+  "primary_repair": {
+    "flow": "reports/cc10_scene_resource_flow.json",
+    "definitions": "reports/cc10_scene_resource_definitions.json",
+    "returning_free_gaps_repaired": 3,
+    "final_instructions": {
+      "00b82ed0": 60,
+      "00b83410": 11,
+      "00cc23ae": 5
+    },
+    "final_call_gaps": 0,
+    "complete_handler_bodies": [
+      "00cc23b9..00cc23c2",
+      "00cc232e..00cc2337"
+    ],
+    "callee_no_return_changed": false,
+    "historical_evidence": "Frozen worker archive preserves pre-repair listings and report; current handler call rows now verify containment."
   }
 }

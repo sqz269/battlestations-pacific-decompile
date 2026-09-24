@@ -1,0 +1,64 @@
+{
+  "packet": "cc10_scene_resource_integration",
+  "worker_commit": "d9c409d6b8c36224a4a779b68bcc3b52b4dd15a3",
+  "integration": "62e67ad27",
+  "archive": {
+    "path": "local/cc10-platform-evidence/raw-scene-resource-storage.zip",
+    "sha256": "fa53b17892d55f8749edb88d547d5f0e72fbc207a316d531e392d48b3feb5833",
+    "files": 59,
+    "valid": true
+  },
+  "worker_archive_sha256": "d989b85db55805c8b173e40c95e9322586ec4146e3ad0e504c316bf48364ed51",
+  "review": [
+    "Entire actual3Ch header/source and complete three native normal listings",
+    "Raw name8/C self-header/write/callback schedule; genuine shared pool, registry14 and ambient98h",
+    "Original mutable name argument overwritten with actual ambient allocation; state3 current-cell free boundary",
+    "Postconstruction metadata admission precedes setter, carries no native credit, and explicitly retains completed raw creator on admission failure",
+    "Captured creator current imported decrement distinct from mutable requested argument; exact captured-owner+4 companion required at zero",
+    "Destructor captures ambient then clears current10 after callback, preserves surviving borrowed backlink, drains actual vector/list and native name phase",
+    "Late lowbyte scalar flags, explicit flags0/1 and zero-terminal retirement without post-free payload reads"
+  ],
+  "validation": {
+    "normal_native_bytes": 461,
+    "normal_and_compiler_boundary_bytes": 552,
+    "EH_metadata_bytes": 128,
+    "actual_profile_bytes": 8,
+    "live_equals_installed": true,
+    "original_source_pairs": 2,
+    "original_calls_shared_with_genuine_source_providers": true,
+    "source_only_allocation_metadata_failure_and_canonical_terminal_checks": true,
+    "direct_and_tail_call_rows": 22,
+    "explicit_indirect_rows": 4,
+    "strict_win32_build": true,
+    "worker_ctests": 3,
+    "integrated_ctests": 3,
+    "build_log_sha256": "cf886be66e94ea90512c98d51a5ebb0dba6e753bf6cea524007c88adf5f0f8c5",
+    "new_tracked_tests": 0,
+    "native_ABI_FH3_SEH": false,
+    "application_bound": false,
+    "game_validated": false
+  },
+  "ghidra": {
+    "flow": "reports/cc10_scene_resource_flow.json",
+    "definitions": "reports/cc10_scene_resource_definitions.json",
+    "returning_free_gaps_repaired": 3,
+    "final_instructions": {
+      "00b82ed0": 60,
+      "00b83410": 11,
+      "00cc23ae": 5
+    },
+    "final_call_gaps": 0,
+    "complete_handler_bodies": [
+      "00cc23b9..00cc23c2",
+      "00cc232e..00cc2337"
+    ],
+    "callee_no_return_changed": false,
+    "historical_evidence": "Frozen worker archive preserves pre-repair listings and report; current handler call rows now verify containment."
+  },
+  "boundaries": [
+    "Original comparisons do not execute native zero-count virtual dispatch or FH3/SEH failures",
+    "Stable caller frame preimages, acquired record and canonical metadata are explicit source contracts",
+    "Source C++ cleanup does not establish native exception ABI; no synthetic rollback or fault recovery",
+    "Outer GUI scene fields, raw attachment/registry insertion and application graph remain separate"
+  ]
+}
