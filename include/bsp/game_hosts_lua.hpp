@@ -404,6 +404,14 @@ public:
     // run. False leaves the output untouched.
     bool read_auto_thrust_0083cc2c(ShipAiAutoThrustSettings& out);
 
+    // Packet cc9_unit_instance_step11. The EngineSoundSmoothRate of the four
+    // engine-sound records 0083B5E0 fills at settings+5BCh + i*24h + 8h
+    // (008405D5), off `ShipGlobals["Sounds"][name]` for name = Ship, TBoat,
+    // Submarine, Plane (jump table 00842954). An absent key keeps the 0.2f
+    // default 00B66330 is handed (00CE54A0). False when `Sounds` or a record
+    // table is missing; `out` then keeps what it held.
+    bool read_engine_sound_smooth_rates_0083b5e0(float (&out)[4]);
+
     // Read the recovered0083D492..0083D575 fragment on this actual Lua state.
     // Parent lookup errors return false with text; caller must reject the load.
     // Successful reads include the native per-field non-number fallbacks.
