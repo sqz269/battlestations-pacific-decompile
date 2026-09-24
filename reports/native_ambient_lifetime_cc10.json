@@ -1,0 +1,283 @@
+{
+  "packet": "cc10_raw_ambient_lifetime",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "baseline_main": "637850c66dfb24c41a6aaa58fc5024264d57ab10",
+  "source": "src/native_ambient_lifetime.cpp",
+  "header": "include/bsp/native_ambient_lifetime.hpp",
+  "documentation": "docs/NATIVE_AMBIENT_LIFETIME_CC10.md",
+  "status": "complete_raw_ambient_lifetime_and_separate_canonical_companion_strict_win32_focused_checked",
+  "functions": [
+    {
+      "address": "00b7c450",
+      "end_inclusive": "00b7c4b2",
+      "end_exclusive": "00b7c4b3",
+      "final_instruction": "00b7c4b2",
+      "final_instruction_length": 1,
+      "byte_span": 99,
+      "coverage": "complete normal body and explicit source cleanup projection",
+      "cpp_symbol": "bsp::destroy_native_ambient_00b7c450",
+      "original_abi": "ECX actual98h owner; RET"
+    },
+    {
+      "address": "00b7c7e0",
+      "end_inclusive": "00b7c7fd",
+      "end_exclusive": "00b7c7fe",
+      "final_instruction": "00b7c7fb",
+      "final_instruction_length": 3,
+      "byte_span": 30,
+      "coverage": "complete scalar wrapper",
+      "cpp_symbol": "bsp::delete_native_ambient_00b7c7e0",
+      "original_abi": "ECX actual98h owner; stack flags; EAX original identity; RET4"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00b7c450",
+      "address": "00b7c47d",
+      "native": "00b7bc70",
+      "contract": "existing actual12B valid nonnegative array count0, no scene-key dereference"
+    },
+    {
+      "function": "00b7c450",
+      "address": "00b7c485",
+      "native": "00bf6989",
+      "contract": "free current begin, genuine returning CRT seam"
+    },
+    {
+      "function": "00b7c450",
+      "address": "00b7c49d",
+      "native": "00bd30f0",
+      "kind": "no_ghidra_function",
+      "contract": "raw proved post-free call after D5C104; Ghidra body truncated atB7C489"
+    },
+    {
+      "function": "00b7c7e0",
+      "address": "00b7c7e3",
+      "native": "00b7c450",
+      "contract": "whole raw ambient body before late low-byte flags"
+    },
+    {
+      "function": "00b7c7e0",
+      "address": "00b7c7f0",
+      "native": "00bf65ac",
+      "contract": "actual owner free iff lateflags&1"
+    },
+    {
+      "function": "00cc1eb0",
+      "address": "00cc1eb3",
+      "native": "00aa6e10",
+      "kind": "tail_jump",
+      "contract": "existing native handler cleanup; this=[ebp-10], no array retry"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00b7c48a",
+      "end_inclusive": "00b7c4b2",
+      "end_exclusive": "00b7c4b3",
+      "final_instruction": "00b7c4b2",
+      "final_instruction_length": 1,
+      "byte_span": 41,
+      "reason": "actual returning-free fallthrough, containing body truncated atB7C489; root may repair after lease release"
+    }
+  ],
+  "native_chain_evidence": [
+    {
+      "function": "00bd30e0",
+      "address": "00bd30eb",
+      "native": "actual_owner+vtable04",
+      "contract": "fresh current profile deleting slot, flags1, no decrement"
+    }
+  ],
+  "unwind": {
+    "handler": "00cc1eb8",
+    "descriptor": "00dfaf90",
+    "magic": "19930522",
+    "max_state": 1,
+    "map": "00dfaf88",
+    "entries": [
+      {
+        "state": 0,
+        "previous": -1,
+        "action": "00cc1eb0"
+      }
+    ],
+    "source": "existing AA6E10 one-shot base cleanup, disarmed before normal D5C104",
+    "native_fh3_equivalent": false
+  },
+  "storage": {
+    "size": 152,
+    "array": "actual12B +08 pointer/+0C signedcount/+10 signedcapacity; validnonnegative/count<=capacity; zero path only",
+    "keys": "opaque borrowed identities, never dereferenced or released",
+    "schedule": "B7BC70(0), currentbegin reread, sharedCRTfree, D5C104, BD30F0->CEB130",
+    "preserved": "begin/capacity and allpayload/count words exceptarray.count andprofile; callback changes to surviving fields retained",
+    "flags": "volatile low byte read ONLY after destructor, actual-cell aliases supported source ABI"
+  },
+  "companion": {
+    "class": "NativeAmbientReference",
+    "native_admission_call": false,
+    "registry": "same application NativeRenderActualOwnerRegistry, actual+04 atomic, no secondcount",
+    "profile": "currentD62F3C, borrowed current first2 tokensBD30E0/B7C7E0",
+    "binding": "no native stores/retain, duplicates refuse unchanged",
+    "terminal": "countalreadyzero,current0BD30E0->freshcurrent4B7C7E0(flags1)",
+    "explicit": "no counttest/decrement; flags0 and1 retiremetadata; nonzero count supported",
+    "retirement": "registryexacthostmap erase; destructorphaseonly; no deadstorage/countread",
+    "failure": "one-shot retirement after entereddestruction failure; partialpayload/physicalstorage remainscallerowned; terminalnoexcept terminates",
+    "quiescence": "caller keepscontext/metadata/profilesstable and preventsreuseuntilretirement"
+  },
+  "verification": {
+    "strict_build": "./scripts/build.ps1",
+    "ctests": "2/2 reconstructed_math,tool_tests",
+    "byte_evidence": [
+      {
+        "address": "00b7c450",
+        "length": 99,
+        "sha256": "26ff80c903ed4292f4e2e6c5b4a023e7d11e4aa7ac07503236389b48834f4883",
+        "live_equals_installed": true
+      },
+      {
+        "address": "00b7c7e0",
+        "length": 30,
+        "sha256": "9830cb764a01ecbef9a68adad7da99271d01295db7a1105baf5c495b3637ddf5",
+        "live_equals_installed": true
+      },
+      {
+        "address": "00cc1eb0",
+        "length": 18,
+        "sha256": "733cd4afcbe767d954a1cf0a9e575611a1c921878fd5eacf7e03dc782d0b9980",
+        "live_equals_installed": true
+      },
+      {
+        "address": "00dfaf88",
+        "length": 44,
+        "sha256": "965fd883c147abf85dc57006fe527cf526e1062ec5abbec5ba0f79890536bee2",
+        "live_equals_installed": true
+      },
+      {
+        "address": "00d62f3c",
+        "length": 8,
+        "sha256": "7bacc5f18d9a5956f264df3a40fc32d557d509f11fc24507f75f9f112ffbd04d",
+        "live_equals_installed": true
+      }
+    ],
+    "probe_pairs": 2,
+    "probe_source": "local/output/cc10_ambient_lifetime_probe.cpp",
+    "probe_build_command": "cl /nologo /MD /EHsc /std:c++20 /O2 /Gy /W4 /WX /fp:strict /I include /I local\\output /Fo:local\\output\\ /Fe:local\\output\\cc10_ambient_lifetime_probe.exe local\\output\\cc10_ambient_lifetime_probe.cpp build\\win32\\Release\\bsp_core.lib build\\win32\\Release\\bsp_lua511.lib build\\win32\\Release\\bsp_zlib121.lib /link /OPT:REF /MANIFEST:EMBED user32.lib d3d9.lib advapi32.lib shell32.lib",
+    "assertions": "NDEBUG not defined; compile-time #ifdef NDEBUG rejection",
+    "exit_code": 0,
+    "comparisons": [
+      "exact98B postdestruction/preownerfree snapshots",
+      "real array free followed by survivingbegin/capacity/scalar callback writes",
+      "late actualstack/source borrowed flags1->0; flags1 ownerfree",
+      "oldprofileD62F3C andarray.count0 atarrayfree; finalCEB130 beforeownerfree",
+      "canonical byteunchanged binding andduplicate refusal",
+      "nonzero refs7 andflagsaliasactualarray.count3->0 leavesallocation; unchangedbegin/capacity",
+      "nonzero refs9 flags1 andrefs1terminal/current0/current4 retirement",
+      "metadata destructor/registry retirement after freedstorage"
+    ],
+    "shared_callee_boundary": "original copied99/30B uses shared genuine source B7BC70/BD30F0; source compiled directly with only singleton_lifetime_free rebound to same actualfree+mutation seam; no productioncallbackAPI. Canonical sourcechecks disable instrumentation. No native unwind tested.",
+    "alias_limit": "source count-alias check does not assert original-stack/owner alias ABI",
+    "call_verifier": "6 direct/tail rows checked,0 failed; B7C49D raw fragment checks real callee only, containing body/listing requires root repair; BD30EB indirect skipped"
+  },
+  "prior_records": {
+    "00b7c450": {
+      "address": "00b7c450",
+      "name": "destroy_system_ambient_00b7c450",
+      "source": "src/system_lighting_owners.cpp",
+      "status": "typed_owner_or_canonical_storage_integrated_strict_win32_build_and_focused_evidence_checked",
+      "original_abi": "ECX owner; RET0",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/SYSTEM_OWNER_INTEGRATION.md; reports/system_owner_integration_audit.json",
+      "remaining": "New typed C++ interface; native whole-owner ABI, camera/world/directional-light construction and gameplay remain.",
+      "native_end_exclusive": "00b7c4b3",
+      "kind": "function"
+    },
+    "00b7c7e0": {
+      "address": "00b7c7e0",
+      "name": "delete_system_ambient_00b7c7e0",
+      "source": "src/system_lighting_owners.cpp",
+      "status": "typed_owner_or_canonical_storage_integrated_strict_win32_build_and_focused_evidence_checked",
+      "original_abi": "ECX owner; stack flags; EAX original owner; RET4",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/SYSTEM_OWNER_INTEGRATION.md; reports/system_owner_integration_audit.json",
+      "remaining": "New typed C++ interface; native whole-owner ABI, camera/world/directional-light construction and gameplay remain.",
+      "native_end_exclusive": "00b7c7fe",
+      "kind": "function"
+    }
+  },
+  "limits": [
+    "Actual completed98h owner/live+04 atomic, correctCRTallocation/arraydomain; no malformed signedarray support.",
+    "No enlarged ConcreteSystemAmbientLight or fakeSceneResource view;12B borrowedarrayhelper only.",
+    "Same actual registry/profile/provider identity and externalquiescence; arbitraryderivedprofiles require real binding, no fallback.",
+    "No raw3Ch scene-resource/28h registry/lightingview or applicationgraphclosure, nativeFH3/SEH/CRTfault/outerABI/gameplay promise."
+  ],
+  "ghidra_mutations": false,
+  "application_bound": false,
+  "abi_compatible": false,
+  "game_validated": false,
+  "frozen_evidence": [
+    {
+      "path": "local/cc10_ambient_lifetime_build.log",
+      "bytes": 2973,
+      "sha256": "930f348fe78e845161ced9a080ad1f6b1fa73e43a88b81861e35b0dd028021f5"
+    },
+    {
+      "path": "local/output/cc10_ambient_lifetime_probe.cpp",
+      "bytes": 6838,
+      "sha256": "27e8ee5ebf7203d255ae8081aaeb211a40d1c196c9804da1bc4c0481f79718ce"
+    },
+    {
+      "path": "local/output/cc10_ambient_lifetime_probe.cmd",
+      "bytes": 605,
+      "sha256": "a376e80e11b8ecc05c45ab953d3b7d81df9996207245ad9626faf9d897d4697a"
+    },
+    {
+      "path": "local/output/cc10_ambient_lifetime_probe.log",
+      "bytes": 422,
+      "sha256": "8780fcc91b4ccb69e531d99fceb590065e799d77e925f4f9f4aec03b35f33dfb"
+    },
+    {
+      "path": "local/output/cc10_ambient_lifetime_bytes.hpp",
+      "bytes": 737,
+      "sha256": "bc9865c478d81cec4b88b8f704927ae3546a3ad859e6798e0b2969ce791d25cf"
+    },
+    {
+      "path": "local/output/cc10_ambient_lifetime/byte_evidence.json",
+      "bytes": 884,
+      "sha256": "f8a7f3427a1d9b61a1567b3ec398c10aa9785e4c2e4ba61b277bf50a8ee5a4a7"
+    },
+    {
+      "path": "local/output/cc10_ambient_lifetime/00b7c450.txt",
+      "bytes": 1345,
+      "sha256": "1b98f82978d960c81299030ce8837c1bd4aabb61777570dfac980eeac768fb1d"
+    },
+    {
+      "path": "local/output/cc10_ambient_lifetime/00b7c7e0.txt",
+      "bytes": 1316,
+      "sha256": "211aca982c95dd4acb7a53ee2747cc7811038645785180eadf31eb655f4254ff"
+    },
+    {
+      "path": "local/output/cc10_ambient_lifetime/00b7bc70.txt",
+      "bytes": 1774,
+      "sha256": "c9a2eabfe01bcd19f2311e8772a9b70ac7ec76a4263d4119067f82c745c74db0"
+    },
+    {
+      "path": "local/output/cc10_ambient_lifetime/00b7c48a_disk.txt",
+      "bytes": 377,
+      "sha256": "34b6879c9f44d1a9ff06c7286506350bc8ac6a1a15afabcb73f09c51290aa53f"
+    },
+    {
+      "path": "local/output/cc10_ambient_lifetime/00cc1eb0_disk.txt",
+      "bytes": 193,
+      "sha256": "85cfae604416492bedd750044b7ad30998bbc9e24c77a34235eb96798754f422"
+    },
+    {
+      "path": "local/output/cc10_ambient_lifetime_calls.log",
+      "bytes": 291,
+      "sha256": "6f09ee7c753afbb9190a3f49b31b87a978709a7900f89779ac772bfc2766ba64"
+    }
+  ]
+}
