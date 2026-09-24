@@ -1,0 +1,135 @@
+{
+  "packet": "cc10_render_tail_integration",
+  "worker_commit": "41ff3ee74e66cd2e3930a8f71e5adbfb2534ee7e",
+  "integration": "1601167e102c5ff6da134525308ca4af3833d745",
+  "archive": {
+    "path": "local/cc10-platform-evidence/renderer-tail-and-callers.zip",
+    "sha256": "8e2a321645cad9ec4839845039ed06540f953769477bc32dc3fab492fdae45e5",
+    "files": 50,
+    "valid": true
+  },
+  "coverage": {
+    "normal_start": "00b12c9a",
+    "normal_end_exclusive": "00b13010",
+    "normal_bytes": 886,
+    "normal_instructions": 214,
+    "observed_epilogue_bytes": 25,
+    "epilogue_implemented_as_original_ABI": false
+  },
+  "review": [
+    "Full source/header: distinct actual post20 blocks and borrowed parameter addresses; predecessor identity/phase preserved",
+    "Wave six parameter rows retain source/receiver/current-cell order and actual frame attachment",
+    "Clear-targets mask400 deliberately persists; saved register restore sites observed without fabricated caller values",
+    "Focus tail uses genuine B50010/B4ECC0 providers and rereads current flag/owners at the native sites",
+    "Four callers have identical byte8C, byte8D, DWORD58 stack-word shape; corrected two reversed documentation rows without changing API/implementation"
+  ],
+  "caller_correction": {
+    "caller_blocks": [
+      {
+        "tag": "world",
+        "start": "004df39e",
+        "end_exclusive": "004df3c0",
+        "size": 34,
+        "sha256": "a3f6a8f00e380d30172ea2a73b450e5d60a9c3a58b66dd1e2bf0e11bce293099",
+        "live_equals_pe": true
+      },
+      {
+        "tag": "vehicle",
+        "start": "0050458d",
+        "end_exclusive": "005045ae",
+        "size": 33,
+        "sha256": "5e45062a410ef7724013de77d528c61475d7e4dacda8e860ca8178ca33a1bd7b",
+        "live_equals_pe": true
+      },
+      {
+        "tag": "unitlib",
+        "start": "0067f28e",
+        "end_exclusive": "0067f2af",
+        "size": 33,
+        "sha256": "a65975bfc6ea02df590ac0d3e8ab1f9f08dd466e57e6997436c4bedfe03cd82d",
+        "live_equals_pe": true
+      },
+      {
+        "tag": "settings",
+        "start": "008d60cc",
+        "end_exclusive": "008d60eb",
+        "size": 31,
+        "sha256": "b5577152be1137dfba11f9801453a557fc01c62c56e79f10660996d9f59185ce",
+        "live_equals_pe": true
+      }
+    ],
+    "native_calls": [
+      {
+        "address": "004df3bb",
+        "native": "00b107f0",
+        "function": "004de610"
+      },
+      {
+        "address": "005045a9",
+        "native": "00b107f0",
+        "function": "00504130"
+      },
+      {
+        "address": "0067f2aa",
+        "native": "00b107f0",
+        "function": "0067f080"
+      },
+      {
+        "address": "008d60e6",
+        "native": "00b107f0",
+        "function": "008d5b50"
+      }
+    ],
+    "argument_words": [
+      "zero-extended byte8C",
+      "zero-extended byte8D",
+      "DWORD58"
+    ],
+    "explanation": "right-to-left PUSH order: DWORD first,byte8D second,byte8C last. At callee entry ESP4 isbyte8C,ESP8 isbyte8D,ESP0C isDWORD58.",
+    "affected_claims": [
+      {
+        "path": "include/bsp/native_render_resource_init.hpp",
+        "lines": "8-9",
+        "claim": "callers disagree about wordszero/two"
+      },
+      {
+        "path": "docs/NATIVE_RENDER_RESOURCE_INIT_CC10.md",
+        "lines": "28-30,34,37",
+        "claim": "disagreement prose and reversedworld/settings rows"
+      },
+      {
+        "path": "reports/native_render_resource_init_cc10.json",
+        "lines": "88,106",
+        "claim": "two host_steps meaning strings reverseworld/settings words0/2"
+      }
+    ],
+    "unchanged": "raw anonymous word_00/word_04/word_08 structure and all stage implementations",
+    "other_hits": "continuationdoc/report only cite calleraddresses; optionsdoc/report already use8C/8D/58 correctly; Lua/stop reports onlyrecordnativecall/rawinstructions; sixsessionreports matchSHA substrings only"
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "existing_ctests": 3,
+    "build_log_sha256": "9428ebbb158bb959769e84aa62c6a5dfbf2fe43095bb5d901adc270edb7c2924",
+    "native_tail_calls_checked": 40,
+    "native_entry_calls_checked": 10,
+    "new_tracked_tests": 0,
+    "new_tail_probe": false,
+    "composed_initializer_run": false,
+    "native_ABI_FH3_SEH": false,
+    "game_validated": false
+  },
+  "composition_audit": {
+    "artifact": "local/render_init_composition_handoff.md",
+    "sha256": "825dfa67a2b00cd3a8d8cc612b9da6f9763bd6f732d6de0cfc907d937754f33b",
+    "actual_service_producer": "Existing RenderResourcesGraph constructs actual6ACh B14A10 owner; normal startup remains gated",
+    "arguments": "Capture three scalar cells in each caller load order; retain attempt lifetime and read current F8D39C after capture",
+    "next_packet": "Canonical pass admission for eight service-visible identities using existing actual-count bridge",
+    "remaining_limits": [
+      "Retained full application context/attempt bundle and invocation are absent",
+      "Top-level holder/surface/runtime-texture terminals still require same-domain reconciliation",
+      "Fresh distortion uninitialized34/38/3C cleanup preimage is not established",
+      "Bloom four-DWORD borrow430..43F exceeds nominal43Ch allocation; actual backing/consumer safety unresolved",
+      "Flag1C4 is set early and does not certify completion or permit replay after partial failure"
+    ]
+  }
+}

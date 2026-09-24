@@ -5,8 +5,9 @@
 
 namespace bsp {
 
-// Original B107F0 stack words, in increasing address order. Callers disagree
-// about words zero/two; retain all three without assigning guessed meanings.
+// Original B107F0 stack words, in increasing address order. All four observed
+// direct callers pass byte8C, byte8D, DWORD58 in that order (settings-relative
+// cells, or globals F88A0C/F88A0D/F889D8). Keep the anonymous word API.
 // This storage models the native argument cells and must outlive continuation.
 struct NativeRenderResourceInitArguments {
     std::uint32_t word_00;

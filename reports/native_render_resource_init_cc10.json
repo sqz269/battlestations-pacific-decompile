@@ -85,7 +85,7 @@
       "address": "004df3bb",
       "native": "00b107f0",
       "function": "004de610",
-      "meaning": "ECX current F8D39C; stacked word0=DWORD F889D8, word1=byte F88A0D, word2=byte F88A0C; callee RET0C"
+      "meaning": "ECX current F8D39C; stacked word0=zero-extended byte F88A0C, word1=zero-extended byte F88A0D, word2=DWORD F889D8; callee RET0C"
     },
     {
       "address": "005045a9",
@@ -103,7 +103,7 @@
       "address": "008d60e6",
       "native": "00b107f0",
       "function": "008d5b50",
-      "meaning": "ECX current F8D39C; word0=settings+58 DWORD, word1=settings+8D byte, word2=settings+8C byte; callee RET0C"
+      "meaning": "ECX current F8D39C; word0=zero-extended settings+8C byte, word1=zero-extended settings+8D byte, word2=settings+58 DWORD; callee RET0C"
     },
     {
       "address": "00b10832",

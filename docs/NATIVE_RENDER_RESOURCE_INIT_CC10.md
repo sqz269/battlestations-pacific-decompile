@@ -25,16 +25,17 @@ was not a defined function during recovery: inclusive range
 
 ## Inputs and producer evidence
 
-The three input cells deliberately have address-order names. Native callers
-do not agree about the first and third inputs. Each uses current `F8D39C`
-as ECX; the native callee pops 12 bytes.
+The three input cells deliberately have address-order names. All four observed
+direct callers pass the same shape in increasing callee-stack address order:
+zero-extended byte8C, zero-extended byte8D, then DWORD58. Each loads current
+`F8D39C` as ECX; the native callee pops 12 bytes. The source API remains anonymous.
 
 | Call site / containing function | word 0 | word 1 | word 2 |
 | --- | --- | --- | --- |
-| `4DF3BB` / `4DE610` | DWORD `F889D8` | zero-extended byte `F88A0D` | zero-extended byte `F88A0C` |
+| `4DF3BB` / `4DE610` | zero-extended byte `F88A0C` | zero-extended byte `F88A0D` | DWORD `F889D8` |
 | `5045A9` / `504130` | zero-extended byte `F88A0C` | zero-extended byte `F88A0D` | DWORD `F889D8` |
 | `67F2AA` / `67F080` | zero-extended byte `F88A0C` | zero-extended byte `F88A0D` | DWORD `F889D8` |
-| `8D60E6` / `8D5B50` | settings ESI `+58` DWORD | settings `+8D` byte | settings `+8C` byte |
+| `8D60E6` / `8D5B50` | zero-extended settings ESI `+8C` byte | zero-extended settings `+8D` byte | settings `+58` DWORD |
 
 The covered stage loads only the low byte of word 1 at `B1080B`, before its
 first flag sample. The source borrows the three argument cells and retains
