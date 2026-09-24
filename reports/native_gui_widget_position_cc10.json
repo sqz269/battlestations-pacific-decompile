@@ -1,0 +1,38 @@
+{
+  "packet": "cc10_gui_widget_position",
+  "status": "complete_raw_normal_source_pending_dependency_build",
+  "source": "src/native_gui_widget_position.cpp",
+  "documentation": "docs/NATIVE_GUI_WIDGET_POSITION_CC10.md",
+  "address": "00aa7dc0",
+  "native_bytes": {
+    "start": "00aa7dc0",
+    "end_inclusive": "00aa7df3",
+    "size": 52,
+    "sha256": "f08ce3a12b8117702fc3591aa5e03a427f86b46691b79e3ec66042b85b9c2b0f",
+    "live_pe_equal": true
+  },
+  "original_abi": "ECX actual widget, stacked xyz pointer, RET4; explicit C++ scratch/bindings change ABI",
+  "host_steps": [
+    {
+      "address": "00aa7de4",
+      "native": "00aa7220",
+      "function": "00aa7dc0",
+      "contract": "raw transform after all three writes; explicit actual virtual dispatch"
+    },
+    {
+      "address": "00aa7deb",
+      "native": "00aa70e0",
+      "function": "00aa7dc0",
+      "contract": "raw bounds on current widget after transform returns"
+    }
+  ],
+  "no_ghidra_function": [],
+  "validation": {
+    "build": "pending dependency integration",
+    "differential": false,
+    "new_tests": 0,
+    "native_ABI": false,
+    "application_or_game": false
+  },
+  "limits": "Complete normal caller body, within exact raw transform/bounds provider contracts. Coordinate bits snapshot before any stores. No early capture of later model/global/bounds state. Explicit actual dispatch remains required; no fallback or cleanup/exception promise."
+}
