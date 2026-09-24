@@ -120,3 +120,7 @@ count, pool indices and untouched +E4/+E8 are checked separately. This does not
 test populated owners, nonnull nodes, native exceptions, ABI substitution or
 gameplay. Build, existing checks, strict compile, call verifier and probe results
 are recorded in the report; local evidence is ignored and supplied for archive.
+
+## Primary integration and listing repairs
+
+Published fbb20ad69 in main d936682ba with the strict Win32 build and all three existing CTests passing. The primary defined exact handler CB7421..CB742A under the write lock. Call-site override repairs decoded the missing cleanup tails; their stored function bodies still needed a separate exact recreation. That recreation preserved names/comments and now covers AA7F50..AA7F66 and A9B740..A9B787, with 10 and 27 instructions respectively and no remaining gaps. The project was saved and all affected exports refreshed. The original partial-repair records remain as history, alongside the final definition records. See reports/cc10_gui_widget_function_definitions.json and reports/cc10_raw_lifetimes_integration.json. These metadata repairs do not extend runtime, populated-child or exception evidence.

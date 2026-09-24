@@ -323,8 +323,9 @@
       "native": "00bf6b43",
       "function": "00cb7421",
       "contract": "MOV EAX,DEDCA0 then JMP FH3 dispatcher",
-      "kind": "no_ghidra_function",
-      "branch_kind": "tail_jump"
+      "kind": "tail_jump",
+      "branch_kind": "tail_jump",
+      "primary_definition": "reports/cc10_gui_widget_function_definitions.json"
     }
   ],
   "dependency_contract": {
@@ -379,7 +380,9 @@
       "last_instruction_length": 5,
       "bytes": 10,
       "proposed_name": "BSP_GuiWidgetBase_ExceptionHandler",
-      "action": "primary define under lock; then change handler call-row kind from no_ghidra_function to tail_jump"
+      "action": "primary define under lock; then change handler call-row kind from no_ghidra_function to tail_jump",
+      "status": "resolved_by_primary_exact_locked_definition_saved_exported",
+      "record": "reports/cc10_gui_widget_function_definitions.json"
     }
   ],
   "listing_gaps": [
@@ -389,7 +392,11 @@
       "verified_end_inclusive": "00aa7f66",
       "last_instruction": "00aa7f66",
       "last_instruction_length": 1,
-      "gap": "AA7F62..AA7F66 after false noreturn free"
+      "gap": "AA7F62..AA7F66 after false noreturn free",
+      "status": "resolved_by_locked_call_override_repair_then_exact_body_recreation",
+      "remaining_gaps": 0,
+      "repair_record": "reports/cc10_gui_widget_flow_repair.json",
+      "body_record": "reports/cc10_gui_widget_function_definitions.json"
     },
     {
       "entry": "00a9b740",
@@ -400,7 +407,11 @@
       "gaps": [
         "A9B768..A9B772",
         "A9B77C..A9B787"
-      ]
+      ],
+      "status": "resolved_by_locked_call_override_repair_then_exact_body_recreation",
+      "remaining_gaps": 0,
+      "repair_record": "reports/cc10_gui_widget_flow_repair.json",
+      "body_record": "reports/cc10_gui_widget_function_definitions.json"
     }
   ],
   "fh3": {
@@ -611,5 +622,12 @@
     "local/gui_widget_lifetime_probe.log": "9080f07f9f297991f64d70998a53112bc2167006c7e53c4c9a7b1738463628eb",
     "local/gui_widget_lifetime_probe.exe": "504a720bb2dee9ac1cc9db9ec7c8d9d297ccfbc6c5f86fccef95d7304cf7c1f4",
     "local/native_gui_widget_lifetime_strict.obj": "363d9c21484eb277f3a9b2eb5ececa860e57f70f3b6497a2bcbde4ac2823e32c"
+  },
+  "primary_integration": {
+    "worker_commit": "fbb20ad69e2166d6d7613afb8e35dfb9a1c3b8e2",
+    "published_revision": "d936682ba712892a9db0a299647d1006edaf8a79",
+    "build": "strict MSVC Win32;3 existing CTests passed",
+    "note": "Initial call-override repair decoded tails but did not extend stored bodies. Separate exact recreation restored AA7F50..AA7F66 and A9B740..A9B787, preserving names/comments. Current listings have10/27 instructions and zero gaps; all affected exports refreshed. No callee no-return flags changed.",
+    "receipt": "reports/cc10_raw_lifetimes_integration.json"
   }
 }

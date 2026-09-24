@@ -1,0 +1,82 @@
+{
+  "packet": "cc10_raw_lifetimes_integration",
+  "status": "partial_native_dependencies_published_with_bounded_runtime_evidence",
+  "combined_source_revision": "d936682ba712892a9db0a299647d1006edaf8a79",
+  "packets": [
+    {
+      "commit": "569d66c76627fefe0e68e07c3d78e4d02dd6bc3d",
+      "report": "reports/native_bright_pass_lifetime_cc10.json",
+      "coverage": "complete B101A0 wrapper; build/static checked"
+    },
+    {
+      "commit": "db2c5379c",
+      "report": "reports/native_render_pass_companion_cc10.json",
+      "coverage": "host canonical pass companion; one real-D3D bright lifecycle checked, other six profiles static/build only"
+    },
+    {
+      "commit": "6fe4b3d75",
+      "report": "reports/native_lua_field_defaults_cc10.json",
+      "coverage": "complete raw BD61C0 normal body;18 native/source pairs with shared callee bindings"
+    },
+    {
+      "commit": "fbb20ad69e2166d6d7613afb8e35dfb9a1c3b8e2",
+      "report": "reports/native_gui_widget_lifetime_cc10.json",
+      "coverage": "complete AA9730/AA8320 normal schedules with explicit raw dispatch/library boundaries; one fresh actual page-prefix comparison"
+    },
+    {
+      "commit": "58d73250503b296c29b64a73e60d06d7ce0f995a",
+      "report": "reports/native_render_resource_init_continuation_cc10.json",
+      "coverage": "B107F0 normal fragment [B109BC,B11599) static/build only;7 setter and3 getter native/source cases"
+    }
+  ],
+  "validation": {
+    "build": "strict MSVC Win32",
+    "ctests": "3 passed,0 failed at each source integration",
+    "integration_log": "local/cc10-integrate-gui-lifetime-render-continuation.log"
+  },
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "function_definitions": "reports/cc10_gui_widget_function_definitions.json",
+    "callsite_repair_history": "reports/cc10_gui_widget_flow_repair.json",
+    "final_cleanup_bodies": {
+      "00aa7f50": {
+        "end_inclusive": "00aa7f66",
+        "instructions": 10,
+        "gaps": 0
+      },
+      "00a9b740": {
+        "end_inclusive": "00a9b787",
+        "instructions": 27,
+        "gaps": 0
+      }
+    },
+    "handler": "00cb7421..00cb742a",
+    "saved": true,
+    "exports_refreshed": true,
+    "callee_flags_changed": false
+  },
+  "ignored_local_evidence_archives": [
+    {
+      "path": "local/cc10-platform-evidence/gui-widget-lifetime.zip",
+      "sha256": "8bbafd1925a6b35f72c2b29101b77af77d52e5115b41980ff2212b4ad47e3dcf",
+      "valid": true,
+      "files": 37,
+      "source_worktree": "J:\\PROG\\battlestations-pacific-decompile-cc10-gui-widget-lifetime"
+    },
+    {
+      "path": "local/cc10-platform-evidence/renderer-resource-continuation.zip",
+      "sha256": "d6179058530e668ec0a4e0a43a51952a7346f11f6f1dc5d3cb1895cc9be9defe",
+      "valid": true,
+      "files": 20,
+      "source_worktree": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-resource-continuation"
+    }
+  ],
+  "runtime_boundary": "The earlier 35a065629 60-frame startup success is separately recorded in reports/cc10_lua_gui_renderer_integration.json. This newer integration has not been application-run. New raw initialization/lifetime modules remain outside application activation dispatch; no gameplay proof.",
+  "remaining_dependencies": [
+    "B11599 onward resource configuration/construction and full initialization admission",
+    "remaining service-visible holder/surface/texture canonical registration",
+    "raw GUI child/timed and remove-all bindings for populated owners",
+    "raw Lua typed-value reader/default dispatch and full page continuation"
+  ]
+}

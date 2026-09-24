@@ -50,6 +50,165 @@
     "program": "battlestationspacific.exe",
     "message": "Program saved successfully"
    }
+  },
+  {
+   "recreate": "00aa7f50",
+   "previous": "Function: BSP_GuiTimedEntryArray_DestroyStorage at 00aa7f50\nSignature: undefined BSP_GuiTimedEntryArray_DestroyStorage(void)\nEntry: 00aa7f50\nBody: 00aa7f50 - 00aa7f61",
+   "plate": "[BSP reconstruction 00aa7f50]\nCC10 raw lifetime: 23 bytes through 00aa7f66 inclusive. ECX header; RET. complete existing raw-provider alias. Actual AA9390/AC6600 storage and canonical node refcounts, no logical GUI cast. Existing raw container aliases; required raw child/timed virtual dispatch and A9BD50 library binding. Full normal schedule plus reviewed source C++ EH states, not native FH3/SEH. Strict Win32, call verifier and one empty/null-node original/source page-prefix teardown comparison; populated owners/game unproved. docs/NATIVE_GUI_WIDGET_LIFETIME_CC10.md; reports/native_gui_widget_lifetime_cc10.json. Descriptive names are hypotheses."
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00aa7f50"
+   },
+   "result": {
+    "success": true,
+    "address": "00aa7f50",
+    "deleted_function": "BSP_GuiTimedEntryArray_DestroyStorage",
+    "body_size": 18,
+    "message": "Function 'BSP_GuiTimedEntryArray_DestroyStorage' deleted at 00aa7f50"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00aa7f50",
+    "end_address": "00aa7f67"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00aa7f50",
+    "end_address": "00aa7f66",
+    "bytes_disassembled": 23,
+    "message": "Successfully disassembled 23 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00aa7f50",
+    "disassemble_first": false,
+    "name": "BSP_GuiTimedEntryArray_DestroyStorage"
+   },
+   "result": {
+    "success": true,
+    "address": "00aa7f50",
+    "function_name": "BSP_GuiTimedEntryArray_DestroyStorage",
+    "entry_point": "00aa7f50",
+    "body_size": 23,
+    "message": "Function created successfully at 00aa7f50",
+    "warnings": [
+     "Function name 'BSP_GuiTimedEntryArray_DestroyStorage' \u2014 main part 'GuiTimedEntryArray_DestroyStorage' is not PascalCase. Expected: GuitimedentryarrayDestroystorage",
+     "Function name 'BSP_GuiTimedEntryArray_DestroyStorage' \u2014 main part 'GuiTimedEntryArray_DestroyStorage' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiTimedEntryArray_DestroyStorage' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "00aa7f50",
+    "comment": "[BSP reconstruction 00aa7f50]\nCC10 raw lifetime: 23 bytes through 00aa7f66 inclusive. ECX header; RET. complete existing raw-provider alias. Actual AA9390/AC6600 storage and canonical node refcounts, no logical GUI cast. Existing raw container aliases; required raw child/timed virtual dispatch and A9BD50 library binding. Full normal schedule plus reviewed source C++ EH states, not native FH3/SEH. Strict Win32, call verifier and one empty/null-node original/source page-prefix teardown comparison; populated owners/game unproved. docs/NATIVE_GUI_WIDGET_LIFETIME_CC10.md; reports/native_gui_widget_lifetime_cc10.json. Descriptive names are hypotheses."
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 00aa7f50",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "00aa7f50",
+   "end": "00aa7f67",
+   "name": "BSP_GuiTimedEntryArray_DestroyStorage",
+   "after": "Function: BSP_GuiTimedEntryArray_DestroyStorage at 00aa7f50\nSignature: undefined BSP_GuiTimedEntryArray_DestroyStorage(void)\nEntry: 00aa7f50\nBody: 00aa7f50 - 00aa7f66"
+  },
+  {
+   "recreate": "00a9b740",
+   "previous": "Function: BSP_GuiWidgetChildList_DestroyStorage at 00a9b740\nSignature: undefined BSP_GuiWidgetChildList_DestroyStorage(void)\nEntry: 00a9b740\nBody: 00a9b740 - 00a9b77b",
+   "plate": "[BSP reconstruction 00a9b740]\nCC10 raw lifetime: 72 bytes through 00a9b787 inclusive. ECX list; RET. complete existing raw-provider alias. Actual AA9390/AC6600 storage and canonical node refcounts, no logical GUI cast. Existing raw container aliases; required raw child/timed virtual dispatch and A9BD50 library binding. Full normal schedule plus reviewed source C++ EH states, not native FH3/SEH. Strict Win32, call verifier and one empty/null-node original/source page-prefix teardown comparison; populated owners/game unproved. docs/NATIVE_GUI_WIDGET_LIFETIME_CC10.md; reports/native_gui_widget_lifetime_cc10.json. Descriptive names are hypotheses."
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00a9b740"
+   },
+   "result": {
+    "success": true,
+    "address": "00a9b740",
+    "deleted_function": "BSP_GuiWidgetChildList_DestroyStorage",
+    "body_size": 49,
+    "message": "Function 'BSP_GuiWidgetChildList_DestroyStorage' deleted at 00a9b740"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a9b740",
+    "end_address": "00a9b788"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a9b740",
+    "end_address": "00a9b787",
+    "bytes_disassembled": 72,
+    "message": "Successfully disassembled 72 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a9b740",
+    "disassemble_first": false,
+    "name": "BSP_GuiWidgetChildList_DestroyStorage"
+   },
+   "result": {
+    "success": true,
+    "address": "00a9b740",
+    "function_name": "BSP_GuiWidgetChildList_DestroyStorage",
+    "entry_point": "00a9b740",
+    "body_size": 72,
+    "message": "Function created successfully at 00a9b740",
+    "warnings": [
+     "Function name 'BSP_GuiWidgetChildList_DestroyStorage' \u2014 main part 'GuiWidgetChildList_DestroyStorage' is not PascalCase. Expected: GuiwidgetchildlistDestroystorage",
+     "Function name 'BSP_GuiWidgetChildList_DestroyStorage' \u2014 main part 'GuiWidgetChildList_DestroyStorage' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_GuiWidgetChildList_DestroyStorage' does not start with a recognized verb. First word 'Gui' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "00a9b740",
+    "comment": "[BSP reconstruction 00a9b740]\nCC10 raw lifetime: 72 bytes through 00a9b787 inclusive. ECX list; RET. complete existing raw-provider alias. Actual AA9390/AC6600 storage and canonical node refcounts, no logical GUI cast. Existing raw container aliases; required raw child/timed virtual dispatch and A9BD50 library binding. Full normal schedule plus reviewed source C++ EH states, not native FH3/SEH. Strict Win32, call verifier and one empty/null-node original/source page-prefix teardown comparison; populated owners/game unproved. docs/NATIVE_GUI_WIDGET_LIFETIME_CC10.md; reports/native_gui_widget_lifetime_cc10.json. Descriptive names are hypotheses."
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 00a9b740",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "00a9b740",
+   "end": "00a9b788",
+   "name": "BSP_GuiWidgetChildList_DestroyStorage",
+   "after": "Function: BSP_GuiWidgetChildList_DestroyStorage at 00a9b740\nSignature: undefined BSP_GuiWidgetChildList_DestroyStorage(void)\nEntry: 00a9b740\nBody: 00a9b740 - 00a9b787"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
   }
  ]
 }
