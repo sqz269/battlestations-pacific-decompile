@@ -1,0 +1,55 @@
+{
+  "packet": "application_render_resource_providers_integration",
+  "worker_commit": "676820dd9327f1fc880802f91288f3bbb65e0e12",
+  "integration": "967110e7e",
+  "frozen_report": "reports/native_application_render_resource_providers_cc10.json",
+  "archive": {
+    "path": "local/cc10-platform-evidence/application-render-resource-providers.zip",
+    "sha256": "bb5c6368b859d3a173e33f1b3f6c4beb01dd460a5858aec44235de134b37506f",
+    "files": 42,
+    "valid": true
+  },
+  "review": [
+    "Complete source delta, borrowed view and documentation reviewed",
+    "Exactly one process copy of loader-zero108D4BC/108D4C0 shared by native factories; cumulative bytes survive deletion",
+    "Actual Windows increment export retained in current volatile process cell; existing CameraGraph decrement domain reused",
+    "Stable runtime/target/depth/getter/holder context references share actual renderer, device, synchronization, recreation, pools, strings and owner registry",
+    "Lifetime direct-terminal domain retained but unbound; borrowed ready-phase API introduces no producer or B107F0 call",
+    "Current application fixture used genuine raw D3D providers and complete native retirement; fullmaterial/pass composition, bloom fourth-word backing and distortion preimages remain separate"
+  ],
+  "validation": {
+    "live_PE_blocks": 5,
+    "direct_call_rows": 4,
+    "strict_win32_build": true,
+    "worker_ctests": 3,
+    "current_application_objects": 69,
+    "source_application_provider_exercise": true,
+    "texture_cumulative": [
+      0,
+      8192
+    ],
+    "surface_cumulative": [
+      0,
+      8192,
+      16384
+    ],
+    "native_tracking_and_lists_restored": true,
+    "canonical_registry_unchanged": true,
+    "cumulative_totals_preserved": true,
+    "direct_terminal_unbound": true,
+    "singleton_drain": true,
+    "final_device_api_com_counts": [
+      0,
+      0
+    ],
+    "frames_presented": 2,
+    "presents_skipped": 1,
+    "process_exit": 0,
+    "full_B107F0_executed": false,
+    "integrated_ctests": 3,
+    "integrated_build_log_sha256": "74c4fa652f0dbda23cb93202b87a8d40f7f098df1cc2828f1f19fba1ba25e62d",
+    "new_tracked_tests": 0,
+    "full_native_ABI_FH3_SEH": false,
+    "gameplay_validated": false
+  }
+}
