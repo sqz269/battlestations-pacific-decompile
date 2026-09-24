@@ -61,20 +61,7 @@
       "final_instruction": "00cc22dd",
       "final_instruction_length": 5,
       "byte_span": 10,
-      "coverage": "compiler boundary only; not a Ghidra function; native FH3 not reconstructed",
-      "last_instruction_address": "00cc22dd",
-      "last_instruction_length": 5
-    }
-  ],
-  "no_ghidra_function": [
-    {
-      "address": "00cc22d8",
-      "end_exclusive": "00cc22e2",
-      "end_inclusive": "00cc22e1",
-      "final_instruction": "00cc22dd",
-      "final_instruction_length": 5,
-      "byte_span": 10,
-      "coverage": "compiler boundary only; not a Ghidra function; native FH3 not reconstructed",
+      "coverage": "compiler boundary defined through CC22E1 by integrator; native FH3 remains unreconstructed",
       "last_instruction_address": "00cc22dd",
       "last_instruction_length": 5
     }
@@ -175,7 +162,7 @@
       "function": "00cc22d8",
       "address": "00cc22dd",
       "native": "00bf6b43",
-      "kind": "no_ghidra_function",
+      "kind": "tail_jump",
       "native_instruction": "JMP 00bf6b43",
       "contract": "raw18B compiler boundary evidence; MOV EAX,DFB554 then native FH3 entry; not implemented"
     }
@@ -228,7 +215,7 @@
         "live_equals_installed": true
       }
     ],
-    "call_verifier": "16 native rows checked,0 failed; CC22DD raw missing-function row validates BF6B43 callee only, exact bytes/range separately proved",
+    "call_verifier": "16 native transfer rows check actual live instructions/functions after root definition of CC22D8",
     "probe": {
       "source": "local/output/cc10_registry_adapters_probe.cpp",
       "command": "cl /nologo /MD /EHsc /std:c++20 /O2 /Gy /W4 /WX /fp:strict /I include /I local\\output /Fo:local\\output\\ /Fe:local\\output\\cc10_registry_adapters_probe.exe local\\output\\cc10_registry_adapters_probe.cpp build\\win32\\Release\\bsp_core.lib build\\win32\\Release\\bsp_lua511.lib build\\win32\\Release\\bsp_zlib121.lib /link /OPT:REF /MANIFEST:EMBED user32.lib d3d9.lib advapi32.lib shell32.lib",
@@ -254,7 +241,9 @@
     "No custom container/CRTport or logicalSceneNodeRegistry; listcheckedsize doesnotallocate/link nodes.",
     "No fullB83700/B83E50/registration/sceneattachment/AC59A0 or nativeABI/gameclaim."
   ],
-  "ghidra_mutations": false,
+  "ghidra_mutations": [
+    "Integrator defined CC22D8..CC22E1; saved descriptive names/evidence; reports/cc10_scene_registry_adapters_definitions.json"
+  ],
   "abi_compatible": false,
   "application_bound": false,
   "game_validated": false,
@@ -380,5 +369,20 @@
       "sha256": "13721c3a581c99af0cbaacb15517f09d34fed94c6d6dc12ba5db2cb386cff454"
     }
   ],
-  "prior_records": "Existing names and broader host-registry fragments retained; these three adapter bodies had no prior reconstruction entry."
+  "prior_records": "Existing names and broader host-registry fragments retained; these three adapter bodies had no prior reconstruction entry.",
+  "worker_no_ghidra_function": [
+    {
+      "address": "00cc22d8",
+      "end_exclusive": "00cc22e2",
+      "end_inclusive": "00cc22e1",
+      "final_instruction": "00cc22dd",
+      "final_instruction_length": 5,
+      "byte_span": 10,
+      "coverage": "compiler boundary only; not a Ghidra function; native FH3 not reconstructed",
+      "last_instruction_address": "00cc22dd",
+      "last_instruction_length": 5
+    }
+  ],
+  "no_ghidra_function": [],
+  "worker_ghidra_mutations": false
 }

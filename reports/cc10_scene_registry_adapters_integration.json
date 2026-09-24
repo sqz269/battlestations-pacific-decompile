@@ -1,0 +1,42 @@
+{
+  "packet": "cc10_scene_registry_adapters_integration",
+  "worker_commit": "f2fc6477a33271a5ba19aabd8e9b9484c494ac83",
+  "integration": "9040f7ce1",
+  "archive": {
+    "path": "local/cc10-platform-evidence/scene-registry-mutation-adapters.zip",
+    "sha256": "be3403b8e31154a6a520ff8882d7afb0b9441165813947d4c4477ff10ed9f190",
+    "files": 37,
+    "valid": true
+  },
+  "review": [
+    "Complete header/source, three full native bodies and both compiler boundaries reviewed",
+    "Resize captured count/begin/repeatedsize/end survive returning CRT; shrink uses same inline pair as result",
+    "Assign snapshots pair second/first before handler, retains separate erase output, reloads current count only after erase and final handler",
+    "Each nested argument written in native push order; genuine service read at reached site; disjoint stable caller preimages required",
+    "B82D30 captured increment/count unsigned wrapping comparison; normal path leaves scratch untouched",
+    "Overflow exact16B text/raw408720, arm cleanup only after success, owning raw411700/D69260 source transport; no allocated-node rollback",
+    "CC22D8 native MOV EAX,DFB554 then JMPBF6B43; maxstate1 mapDFB54C cleanupCC22D0"
+  ],
+  "validation": {
+    "strict_win32_build": true,
+    "integrated_ctests": 3,
+    "integrated_build_log_sha256": "dc6010d2b91af42c50e5b84d86c82c89aeb3d2eb195d3f7e483f8829901145a2",
+    "new_tracked_tests": 0,
+    "native_ABI_FH3_SEH": false,
+    "gameplay_validated": false,
+    "worker_ctests": 2,
+    "owned_body_bytes": 425,
+    "compiler_bytes": 18,
+    "text_bytes": 17,
+    "live_equals_installed": true,
+    "static_transfer_rows": 16,
+    "focused_original_source_outer_sequence": true,
+    "source_only_overflow_check": true,
+    "application_bound": false
+  },
+  "boundaries": [
+    "Original outer bodies share genuine reconstructed inner vector and allocator/free services",
+    "Native CRT diagnostics/private stack aliases/FH3 not executed",
+    "Full registry registration and scene attachment remain separate"
+  ]
+}
