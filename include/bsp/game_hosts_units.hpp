@@ -333,9 +333,15 @@ public:
         std::uint32_t command_object, const char* status);
     GameCommandCompletion end_command_0071e430(std::size_t index,
         std::uint32_t command_object, bool terminal);
-    // unit+184h, the player-controlled byte 009f3df3 and 009f5e06 read. In this
-    // process the byte is the unit 004c0890 bound.
+    // unit+184h, the player-controlled byte 009f3df3 and 009f5e06 read. With
+    // kPlayerRoleBookkeepingBound it is the image's byte: set only by a role-1
+    // take the 4Bh arm of 00780120 accepts (00780214). Otherwise the stand-in:
+    // the unit 004c0890 bound.
     bool unit_player_controlled_0184(std::size_t index) const;
+    // SetRoleAvailable's owner->vtable[148h] = 0077F360 -> 00927D20 on one
+    // unit: the permission words unit+188h + role*4 for every mask bit.
+    void set_role_availability_00927d20(std::size_t index, std::uint32_t mask,
+                                        std::int32_t value);
     // Canonical current assignments, native unit+1ACh..+1CCh: 00928630
     // explicitly initializes all nine to 8 (unassigned). Separate from the
     // +188h policy table. No assignment receiver is represented yet; selecting

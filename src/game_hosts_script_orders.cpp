@@ -1461,6 +1461,13 @@ int GameScriptOrdersHost::game_effective_game_mode() {
 
 void GameScriptOrdersHost::role_owner_set_role_available(void* owner, int role, int value) {
     static_cast<void>(owner);
+    // owner->vtable[148h] = 0077F360 -> 00927D20 (packet
+    // cc9_player_role_bookkeeping): the units host writes the permission words
+    // when kPlayerRoleBookkeepingBound is on, and ignores the call otherwise.
+    if (row_ != nullptr && row_->unit_index < units_.count()) {
+        units_.set_role_availability_00927d20(row_->unit_index,
+            static_cast<std::uint32_t>(role), value);
+    }
     log_.unimplemented("RoleOwner::set_role_available", "008aba51");
     if (row_ != nullptr) {
         row_->role = role;
