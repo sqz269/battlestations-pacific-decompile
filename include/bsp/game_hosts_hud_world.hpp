@@ -113,6 +113,30 @@ inline constexpr bool kHudBaseUpdateScreensBound = true;
 // records that answer "no alert". OFF keeps the record.
 inline constexpr bool kHudWarningScreenBound = true;
 
+// Packet cc9_screen_49h (docs/SHIP_SCREEN_UPDATE.md section 17). ON runs
+// screen 49h's update 0067BF00, which picks the unit the screen follows
+// (+8h), in place of the FrontEndScreen::update record. Screen 29h's unit
+// and the controlled unit's target are records answering none.
+inline constexpr bool kHudFollowScreenBound = true;
+
+// Packet cc9_screen_46h, part 1 (docs/SHIP_SCREEN_UPDATE.md section 18). ON
+// runs screen 46h's update 0064D610 in place of the FrontEndScreen::update
+// record: the gates and the order input, with 0064A400, 0064B870 and screen
+// 2Eh's 005484F0 as records. OFF keeps the one record.
+inline constexpr bool kHudShipViewScreenBound = true;
+
+// Part 2 of the same packet (section 19): 0064B870, the integrated throttle
+// and rudder controls. The input manager fields and the player-role test are
+// records; the role transfer and the order send are records never reached
+// without input. OFF keeps the part-1 record.
+inline constexpr bool kHudShipViewControlsBound = true;
+
+// Section 21: 0064B870's 00927F30 role test reads the units host's role table
+// (unit+1ACh, the table the 27h role take and the BSP_PLAYER_HELM option
+// write) in place of the fixed "role 0 held, role 1 not" substitution. OFF
+// keeps the substitution and its record.
+inline constexpr bool kHudShipViewRoleTableBound = true;
+
 inline constexpr bool kHudShipScreenGaugesBound = true;
 
 class GameHostLog;

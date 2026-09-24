@@ -159,6 +159,11 @@ public:
     void update_ship_screen_0064dd30(float seconds, bool active);
     // Packet cc9_screen_50h: screen 50h's update 00683020.
     void update_warning_screen_00683020(float seconds);
+    // Packet cc9_screen_49h: screen 49h's update 0067BF00.
+    void update_follow_screen_0067bf00();
+    // Packet cc9_screen_46h: screen 46h's update 0064D610. `wanted` is the
+    // screen's +4h as the registry holds it.
+    void update_ship_view_screen_0064d610(float seconds, bool wanted);
 
     // One summary line for the run log.
     void report();

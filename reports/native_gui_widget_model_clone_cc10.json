@@ -1,0 +1,245 @@
+{
+  "packet": "cc10_gui_widget_model_clone",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "baseline_main": "9638aab09",
+  "source": "src/native_gui_widget_model_clone.cpp",
+  "status": "complete_supported_normal_raw_storage_build_and_original_source_composed_check",
+  "functions": [
+    {
+      "address": "00b752b0",
+      "end_inclusive": "00b753f1",
+      "end_exclusive": "00b753f2",
+      "final_instruction": "00b753ef",
+      "final_instruction_length": 3,
+      "byte_span": 322,
+      "original_abi": "ECX actual source Model; stack flags,parent; EAX actual destination; RET8",
+      "coverage": "complete normal raw actual destination clone, flags26/3E,parent0 only"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00b752b0",
+      "address": "00b752d1",
+      "native": "00b74d00",
+      "contract": "allocate same actual01090054 pool188h slot"
+    },
+    {
+      "function": "00b752b0",
+      "address": "00b752ea",
+      "native": "00b6d800",
+      "contract": "borrow current actual source54 header after allocation"
+    },
+    {
+      "function": "00b752b0",
+      "address": "00b752f2",
+      "native": "00b75030",
+      "contract": "same-slot raw constructor with borrowed header and actual raw name pool"
+    },
+    {
+      "function": "00b752b0",
+      "address": "00b75312",
+      "native": "00b6f150",
+      "contract": "existing actual-owner complete supported flags26/3E,parent0 base fragment"
+    },
+    {
+      "function": "00b752b0",
+      "address": "00b7532f",
+      "native": "current_geometry+vtable10",
+      "contract": "current source180 AFTER base callbacks; current D62D60+10 B742A0; flags26 shares,3E clones streams"
+    },
+    {
+      "function": "00b752b0",
+      "address": "00b7534e",
+      "native": "00b75170",
+      "contract": "current source17C then178 x87 reads; publish/retain geometry before releasing old"
+    },
+    {
+      "function": "00b752b0",
+      "address": "00b75357",
+      "native": "captured_IAT_00ce2220",
+      "contract": "captured InterlockedDecrement on mesh creator+04"
+    },
+    {
+      "function": "00b752b0",
+      "address": "00b75363",
+      "native": "captured_mesh+vtable00",
+      "contract": "current mesh virtual0 only after creator decrement reaches zero"
+    },
+    {
+      "function": "00b752b0",
+      "address": "00b75383",
+      "native": "IAT_00ce221c",
+      "contract": "publish current source174 before incrementing its actual+04"
+    },
+    {
+      "function": "00b752b0",
+      "address": "00b75391",
+      "native": "captured_IAT_00ce2220",
+      "contract": "decrement captured old destination174"
+    },
+    {
+      "function": "00b752b0",
+      "address": "00b7539d",
+      "native": "captured_old174+vtable00",
+      "contract": "current old174 virtual0 on zero, before current pose x87 tail"
+    }
+  ],
+  "eh_boundary": {
+    "handler": "00cc1c78",
+    "descriptor": "00dfac7c",
+    "unwind_map": "00dfac74",
+    "state0_to_minus1": "00cc1c70 (8B) -> B748C0 -> existing same-pool B74750",
+    "native_disarm": "00b7530a before B6F150",
+    "source_scope": "only preparation and raw construction return slot; completed host registration/base/mesh/tail failures preserve live owner/creators",
+    "funclet_ported": false
+  },
+  "provider_identity": {
+    "allocation_constructor": "actual NativeModelPool/NativeModelOwner; exact same188h slot; current+54 borrowed; raw B75030 overload only",
+    "lifecycle": "existing NativeInstanceGeometryAccess prepare/retire_failed/bind callbacks, transactional host bookkeeping preserving native bytes/counts",
+    "base_association_tail": "existing actual NativeModelOwner fragments, no logical GuiWidgetOwnerRuntime factory",
+    "geometry": "actual GuiNativeGeometryOwners canonical Mesh; current D62D60+10 B742A0; explicit3E services only for reached geometry",
+    "flags_domain": [
+      "26",
+      "3e"
+    ],
+    "parent": 0
+  },
+  "verification": {
+    "strict_build": "./scripts/build.ps1",
+    "strict_build_log": "local/cc10_model_clone_build.log",
+    "ctests": "reconstructed_math and tool_tests:2/2 pass",
+    "live_equals_installed_pe": true,
+    "native_byte_proof": [
+      {
+        "address": "00b752b0",
+        "bytes": 322,
+        "sha256": "c59f13ef71e9ddc4451cbbb1d8013bc99794480da398ae29943c07e0bb3cbae7"
+      },
+      {
+        "address": "00cc1c70",
+        "bytes": 8,
+        "sha256": "972cddecdb9d22b20f78f56a6eef8dcd49338d51fa7c61d969438080a8c9fe8b"
+      }
+    ],
+    "focused_probe": "local/output/cc10_model_clone_probe.cpp",
+    "probe_command_file": "local/output/cc10_model_clone_probe.cmd",
+    "probe_build_command": "cl /nologo /MD /EHsc /std:c++20 /O2 /Gy /W4 /WX /fp:strict /I include /I local\\output /Fo:local\\output\\ /Fe:local\\output\\cc10_model_clone_probe.exe local\\output\\cc10_model_clone_probe.cpp build\\win32\\Release\\bsp_core.lib build\\win32\\Release\\bsp_lua511.lib build\\win32\\Release\\bsp_zlib121.lib /link /OPT:REF /MANIFEST:EMBED /BASE:0x10000000 /DYNAMICBASE:NO user32.lib d3d9.lib advapi32.lib shell32.lib",
+    "probe_assertions": "NDEBUG is not defined; #ifdef NDEBUG compile-time rejection; all assert checks active",
+    "probe_exit_code": 0,
+    "original_source_pairs": 4,
+    "compared_bytes_per_pair": 388,
+    "normalizations": [
+      "destination54 name data pointer at58",
+      "destination geometry identity at180 (presence retained)"
+    ],
+    "probe_result": "flags26/3E x null/callback-published actual empty mesh; byte equality, x87 status and SNaN quieting, header identity/name data, opaque preimages,+184,actual creator counts; source-only constructor-mode rejection returns same slot, completed host registration failure retention, late geometry failure retention",
+    "original_binding_boundary": "Full322B original body. Direct callees rebound to same existing actual-source providers; constructor bridge creates only actual host companions. Known geometry10 load pair bound to existing B742A0 provider, preserving original current180/ECX/flags/parent call order. IAT atomics bind current Windows. No original deep provider, dynamic profile or native EH differential claim. Positive mesh has no streams/sections/materials.",
+    "outer_abi_compatible": false,
+    "application_bound": false,
+    "game_validated": false,
+    "call_verifier": "5 direct call rows checked,0 failed;6 indirect call sites inspected in exact listing"
+  },
+  "limits": [
+    "Normal flags26/3E,parent0, live actual Model/Mesh profiles and canonical owners only; unknown derived dispatch requires a real provider.",
+    "Caller-owned188h slot preimages and persistent raw-name pool/constants; no semantic constructor or logical widget substitution.",
+    "Host metadata and actual creator publications are one-shot, not resumable. Later failures are not rolled back.",
+    "Null allocation access violation, arbitrary changed imports, original CRT/FH3/SEH identity, complete native machine-state/outer ABI, application and game behavior are excluded.",
+    "Raw-node materialization and canonical terminal noexcept boundaries remain those of existing actual providers.",
+    "No AA9520, AC6040 or GUI orchestration implementation in this packet."
+  ],
+  "ghidra_mutations": false,
+  "annotation_handoff": "Primary may append raw actual-destination composition evidence to current Model clone annotation, preserving prior logical/fragment evidence; no worker Ghidra writes.",
+  "frozen_evidence": [
+    {
+      "path": "include/bsp/native_gui_widget_model_clone.hpp",
+      "bytes": 2539,
+      "sha256": "36e1a035e9b1785450cb83314b91e457a89e3b4fb14d0945b3d0f866fb655fd7"
+    },
+    {
+      "path": "src/native_gui_widget_model_clone.cpp",
+      "bytes": 5679,
+      "sha256": "142b07987b5624d6f36a53c77d544b4c4844b22579cdf75ea353c7a34be58dc5"
+    },
+    {
+      "path": "docs/NATIVE_GUI_WIDGET_MODEL_CLONE_CC10.md",
+      "bytes": 6558,
+      "sha256": "b89945be350e5c98bdc9c6dac8396522265a564efdfee74029d7b09f9370882a"
+    },
+    {
+      "path": "local/cc10_model_clone_build.log",
+      "bytes": 2973,
+      "sha256": "df22a1d53b6e4534abdca23f1025724914f5ef3c3f2efd3a91787eea93be3c5b"
+    },
+    {
+      "path": "local/cc10_model_clone_live_bytes.txt",
+      "bytes": 1561,
+      "sha256": "6b5ef19ff8263980ac1cc882d84eead727525183e1db5d2eb0b4ee848da141de"
+    },
+    {
+      "path": "local/cc10_model_clone_listing_part1.txt",
+      "bytes": 2601,
+      "sha256": "6aecca5261aec79180c80f65e2666aa3fe36a3049ab723ac1fb4457d99ed27dd"
+    },
+    {
+      "path": "local/cc10_model_clone_listing_part2.txt",
+      "bytes": 1636,
+      "sha256": "85bdd66e4b9424eebbee7cac4666537a75f5ab79c694bcc3886d0825c385582a"
+    },
+    {
+      "path": "local/cc10_model_clone_listing_end.txt",
+      "bytes": 164,
+      "sha256": "59d75674b13f0358a274053195074845bf8cb52db4ce8201386e3582a02dcef6"
+    },
+    {
+      "path": "local/cc10_model_clone_cleanup_listing.txt",
+      "bytes": 71,
+      "sha256": "c9c0ceba517bad249cf5f79c226e28460dc5642741d43d1aa5b6ba73d480bc95"
+    },
+    {
+      "path": "local/cc10_model_clone_eh_table.txt",
+      "bytes": 215,
+      "sha256": "21d48fd6a0e4a3f044d761871cb33bf5ad8fdb500495f262d518a23e8312805c"
+    },
+    {
+      "path": "local/output/cc10_model_clone_bytes.py",
+      "bytes": 1500,
+      "sha256": "267f682d2f1f8fd5d059f6d9fc57cbbc95aac0206cf07c6b023202418b8ce0fa"
+    },
+    {
+      "path": "local/output/cc10_model_clone_bytes.hpp",
+      "bytes": 1753,
+      "sha256": "62b2e23fe00503c01b2aa75359a6f8740db4a9062985392c0c0ae421c8ca8c7d"
+    },
+    {
+      "path": "local/output/cc10_model_clone_byte_proof.json",
+      "bytes": 283,
+      "sha256": "a641efd2717f85dedef84badfcd524701dbc6b0ccbc6e29e62236f18ef02c181"
+    },
+    {
+      "path": "local/output/cc10_model_clone_probe.cpp",
+      "bytes": 21219,
+      "sha256": "b5aea876b2ab3998ddba4576aa9c8b254cc21da46c5cff42428a2e65064ef34c"
+    },
+    {
+      "path": "local/output/cc10_model_clone_probe.cmd",
+      "bytes": 633,
+      "sha256": "b1a92ba19bf7d2fca1af56d1f1339b64fc6133692b8fc2a5288c4657e10b50b4"
+    },
+    {
+      "path": "local/output/cc10_model_clone_probe.exe",
+      "bytes": 308224,
+      "sha256": "d3923b68711ecd8c064ce6cc07c7b35023a3f744dbd0a0039cc2cf091fe7aa5f"
+    },
+    {
+      "path": "local/output/cc10_model_clone_probe.log",
+      "bytes": 378,
+      "sha256": "7fdcb778d4d64009435d088bbe726e98894796546313343f439182300c989d5e"
+    },
+    {
+      "path": "local/output/cc10_model_clone_calls.log",
+      "bytes": 560,
+      "sha256": "cf21fba57804e095191ce8d35d2428b7cc223834aabdfd2d8158a2c49d74c78b"
+    }
+  ]
+}

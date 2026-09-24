@@ -194,6 +194,10 @@ public:
     // so a screen's own update virtual can reach its widgets. Null when the slot
     // is not registered or never loaded that page.
     GuiLayoutPage* in_game_page(int slot, const std::string& page_name);
+    // Packet cc9_screen_49h: a registered HUD screen's applied byte +5h.
+    bool in_game_screen_applied(int slot);
+    // Packet cc9_screen_46h: the slot holds a registered HUD screen.
+    bool in_game_screen_registered(int slot);
     // The sprite bridge and page owner. The HUD's two world screens draw through
     // it, and it is this object's for the whole run.
     GameFrontendHost& frontend() const noexcept;

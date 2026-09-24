@@ -1,0 +1,75 @@
+{
+  "packet": "cc10_gui_widget_load_hooks",
+  "source": "src/native_gui_widget_load_hooks.cpp",
+  "status": "complete_raw_normal_static_build_checked",
+  "functions": [
+    {
+      "address": "00a9ac00",
+      "name": "native_gui_widget_base_post_construct_00a9ac00",
+      "size": 1,
+      "end_inclusive": "00a9ac00",
+      "last_instruction": "00a9ac00",
+      "last_instruction_size": 1,
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00aa6a30",
+      "name": "set_native_gui_widget_active_00aa6a30",
+      "size": 13,
+      "end_inclusive": "00aa6a3c",
+      "last_instruction": "00aa6a3a",
+      "last_instruction_size": 3,
+      "sha256": "883886cf703f5015ca95d8a065443298c0f80d52de67595c3b2e140f3d169361",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00aa7170",
+      "name": "native_gui_widget_loaded_00aa7170",
+      "size": 20,
+      "end_inclusive": "00aa7183",
+      "last_instruction": "00aa717f",
+      "last_instruction_size": 5,
+      "sha256": "f7c24fc654467119cda65294ba1c9d33869716f0cd2e5256febddde1078d46b9",
+      "live_pe_equal": true
+    }
+  ],
+  "original_abi": {
+    "00a9ac00": "ECX widget; RET0",
+    "00aa6a30": "ECX widget; low byte of stacked DWORD; RET4",
+    "00aa7170": "ECX widget; virtual60(0), tail JMP AA70E0"
+  },
+  "native_calls": [
+    {
+      "address": "00aa717a",
+      "native": "current_widget_profile_slot60",
+      "function": "00aa7170"
+    },
+    {
+      "address": "00aa717f",
+      "native": "00aa70e0",
+      "function": "00aa7170",
+      "kind": "tail_jump"
+    }
+  ],
+  "contract": [
+    "A9AC00 genuine one-byte RET only for that target",
+    "AA6A30 preserves every active low-byte value, no bool normalization",
+    "AA7170 captures same widget identity and current virtual60 target, then passes0",
+    "Unknown derived targets require actual bound implementation; no fallback",
+    "After normal callback, full existing raw AA70E0 reads current fields; its distinct scratch and half requirements preserved"
+  ],
+  "validation": {
+    "strict_win32_build": true,
+    "existing_ctests_passed": 3,
+    "build_log_sha256": "4f3e3eaf97c3301d340315993e571d08ea98a66b32fa0804565240508f32d3d7",
+    "new_tracked_tests": 0,
+    "wrapper_runtime_tested": false,
+    "native_outer_ABI": false,
+    "game_validated": false
+  },
+  "boundaries": [
+    "static/build wrapper evidence only; earlier bounds differential belongs to callee",
+    "explicit source dispatch/scratch ABI and normal returning valid raw-storage domain; no app wiring"
+  ]
+}
