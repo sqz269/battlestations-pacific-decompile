@@ -1,0 +1,253 @@
+{
+  "packet": "cc10_scene_registration_gates",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "baseline_main": "fb98fe17a",
+  "source": "src/native_scene_registration_gates.cpp",
+  "header": "include/bsp/native_scene_registration_gates.hpp",
+  "documentation": "docs/NATIVE_SCENE_REGISTRATION_GATES_CC10.md",
+  "status": "complete_raw_storage_gates_strict_win32_focused_original_source_and_explicit_type_bindings_checked",
+  "functions": [
+    {
+      "address": "00b83d50",
+      "end_exclusive": "00b83d8e",
+      "end_inclusive": "00b83d8d",
+      "final_instruction": "00b83d8b",
+      "final_instruction_length": 3,
+      "byte_span": 62,
+      "cpp_symbol": "bsp::register_native_scene_node_if_light_00b83d50",
+      "original_abi": "ECX actual3Ch resource, stack actual node, RET4",
+      "coverage": "complete normal body with explicit actual provider and valid reached-storage domain"
+    },
+    {
+      "address": "00b83ec0",
+      "end_exclusive": "00b83ef3",
+      "end_inclusive": "00b83ef2",
+      "final_instruction": "00b83ef0",
+      "final_instruction_length": 3,
+      "byte_span": 51,
+      "cpp_symbol": "bsp::unregister_native_scene_node_if_light_00b83ec0",
+      "original_abi": "ECX actual3Ch resource, stack actual node, RET4",
+      "coverage": "complete normal body with explicit actual provider and valid reached-storage domain"
+    },
+    {
+      "address": "00b7aa70",
+      "end_exclusive": "00b7aa76",
+      "end_inclusive": "00b7aa75",
+      "final_instruction": "00b7aa75",
+      "final_instruction_length": 1,
+      "byte_span": 6,
+      "cpp_symbol": "bsp::current_native_light_type_token_00b7aa70",
+      "original_abi": "no arguments, EAX current DWORD0109018C, RET",
+      "coverage": "complete normal body with explicit actual provider and valid reached-storage domain"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00b83d50",
+      "address": "00b83d5e",
+      "native": "00b7aa70",
+      "contract": "capture actual node/profile before current0109018C read"
+    },
+    {
+      "function": "00b83d50",
+      "address": "00b83d69",
+      "native": "captured_profile+vtable0c",
+      "contract": "load CURRENT slot0C after getter; genuine predicate; branch on AL only"
+    },
+    {
+      "function": "00b83d50",
+      "address": "00b83d80",
+      "native": "00b83700",
+      "contract": "captured resource+14; true-only captured node store to incoming key word; caller12B output preimages and retained Acquired"
+    },
+    {
+      "function": "00b83ec0",
+      "address": "00b83ecb",
+      "native": "00b7aa70",
+      "contract": "capture actual node/profile before current0109018C read"
+    },
+    {
+      "function": "00b83ec0",
+      "address": "00b83ed6",
+      "native": "captured_profile+vtable0c",
+      "contract": "load CURRENT captured slot0C after getter; genuine predicate; branch on AL only"
+    },
+    {
+      "function": "00b83ec0",
+      "address": "00b83ee8",
+      "native": "00b83e50",
+      "contract": "captured resource+14; actual incoming word restored to captured borrowed key"
+    }
+  ],
+  "no_ghidra_function": [],
+  "context": {
+    "actual_domains": "actual3Ch resource+14 actual28h registry; borrowed actual node pointer keys, no companion metadata or ownership operations",
+    "frames": "caller12B insert output preimages+volatile incoming node/key word+nested registry frame; erase incoming volatile node/key+nested EraseKeyFrame; disjoint fresh persistent Acquired only changed on reached insertion",
+    "ordering": "captured node/profile -> CURRENT0109018C -> CURRENT captured profile0C -> AL -> key/output arg setup -> captured incoming node overwrite -> captured resource14 registry",
+    "known_predicates": "actual initialized/current LightTypeBootstrap B6F570/B7C580/B7C6D0 and CameraTypeBootstrap B71CE0; SAME actual token domain; no initialization/cached IDs",
+    "additional_dispatch": "required pure actual-table resolution and genuine current target binding returning uint8 AL, no unknown-profile or target fallback",
+    "failure": "preserve real nested registry mutation/acquisition schedule, no rollback or count changes"
+  },
+  "verification": {
+    "strict_build": "./scripts/build.ps1",
+    "ctests": "2/2 reconstructed_math,tool_tests",
+    "byte_evidence": [
+      {
+        "address": "00b83d50",
+        "length": 62,
+        "sha256": "22235637ca06a01993cf9c467cc9e94a53a5c5215511846c1596ac150f0b40c6",
+        "live_equals_installed": true
+      },
+      {
+        "address": "00b83ec0",
+        "length": 51,
+        "sha256": "22577f18aff4d96e27316d9bbeeb2045782c114341e41151b22ceb3186df5246",
+        "live_equals_installed": true
+      },
+      {
+        "address": "00b7aa70",
+        "length": 6,
+        "sha256": "c4ba79732e951d238c97e9f695553228d33bdb4095d6e6f561135eb76e512514",
+        "live_equals_installed": true
+      }
+    ],
+    "call_verifier": "4 direct call rows checked,0 failed;2 indirect current predicate sites retained and assembly inspected, not direct-callee verified",
+    "probe": {
+      "source": "local/output/cc10_registration_gates_probe.cpp",
+      "command": "cl /nologo /MD /EHsc /std:c++20 /O2 /Gy /W4 /WX /fp:strict /I include /I local\\output /Fo:local\\output\\ /Fe:local\\output\\cc10_registration_gates_probe.exe local\\output\\cc10_registration_gates_probe.cpp build\\win32\\Release\\bsp_core.lib build\\win32\\Release\\bsp_lua511.lib build\\win32\\Release\\bsp_zlib121.lib /link /OPT:REF /MANIFEST:EMBED user32.lib d3d9.lib advapi32.lib shell32.lib",
+      "assertions": "NDEBUG absent; compile-time #ifdef NDEBUG rejection; no /DNDEBUG",
+      "exit_code": 0,
+      "comparison_pairs": 1,
+      "checks": [
+        "actual3Ch prefix with genuine28h registry constructor and borrowed raw node keys",
+        "current token and genuine camera/directional predicates with AL-only result; false has nonzero upper bits",
+        "predicate callback mutates actual incoming argument, node profile and current token; true restores captured node, false preserves callback argument mutation",
+        "native12B output padding E5 retained; insert byte1 and exact owner/node pair",
+        "same genuine allocator/free and B83700/B83E50 source providers, borrowed insertion/removal",
+        "resource/node actual counts and type counter untouched",
+        "source known-numeric camera target route uses actual initialized descriptors"
+      ],
+      "shared_boundary": "copied original119B gates/getter relocated to genuine shared source current predicates and B83700/B83E50 providers; derived predicate adapter returns their real AL plus arbitrary upper register bits. Raw3C storage with constructed registry, not whole original3C constructor/lifetime.",
+      "not_tested": "original nested registry machine bodies or original predicate machine bodies; native CRT/FH3/fault/private-frame ABI, arbitrary corrupt state, full camera/light/scene lifecycle/application/gameplay"
+    }
+  },
+  "prior_records": "Existing logical scene_attachment.cpp fragments/names retained; these complete raw function records add an independent actual-storage interface.",
+  "limits": [
+    "Known numeric profiles require supplied current actual table; camera/light bootstrap providers must share actual initialized node/root/light cells.",
+    "Required additional actual profile and predicate bindings, no automatic admission, defaultcallback, logical owner or host resource casts.",
+    "Native context/frame projection excludes arbitrary private-stack aliases and native ABI/FH3 equivalence.",
+    "No whole B6D890/virtual50/54/node18/destructor/outer24 lifetime or AC59A0 claim."
+  ],
+  "ghidra_mutations": false,
+  "abi_compatible": false,
+  "application_bound": false,
+  "game_validated": false,
+  "frozen_evidence": [
+    {
+      "path": "local/output/cc10_registration_gates_bytes.hpp",
+      "bytes": 735,
+      "sha256": "218fe7fc8b06b98058f30d6e48cfad8d61f33dc3e020d285fabed642c7870fef"
+    },
+    {
+      "path": "local/output/cc10_registration_gates_calls.log",
+      "bytes": 250,
+      "sha256": "c549bde80ea0f0009b415b89dd41f05513d1d2edcb7adffc78e96bd46d7ec49b"
+    },
+    {
+      "path": "local/output/cc10_registration_gates_capture.py",
+      "bytes": 2011,
+      "sha256": "e5faa62a5c50a16b072bef85aab667ccec2d6af384b6b3dda75886efa9304666"
+    },
+    {
+      "path": "local/output/cc10_registration_gates_ledger.py",
+      "bytes": 1493,
+      "sha256": "46e114149e9ca93cffa7deddf94c4ef2737b00c4ab0a444e63b457596b9605e8"
+    },
+    {
+      "path": "local/output/cc10_registration_gates_probe.cmd",
+      "bytes": 611,
+      "sha256": "b617904b27401c7f35af789fa1ce3478474218eb707bb7a1e44c0122e30e6aee"
+    },
+    {
+      "path": "local/output/cc10_registration_gates_probe.cpp",
+      "bytes": 12411,
+      "sha256": "a6f3ba0b45f5bb579e1edd9b6ea55f64cdb7001d3c2ff9724b3339faff5dea50"
+    },
+    {
+      "path": "local/output/cc10_registration_gates_probe.log",
+      "bytes": 312,
+      "sha256": "42fc6a1b52e72d613310df93659be5a5e9892d9a50b301c318b619d4afc2f0a4"
+    },
+    {
+      "path": "local/output/cc10_registration_gates_report.py",
+      "bytes": 6216,
+      "sha256": "69a9ca7348443e348a5cf65837abf70d672dbe0e910b13a650c9d2f0179e7c0d"
+    },
+    {
+      "path": "local/output/cc10_registration_gates/00b7aa70_assembly.txt",
+      "bytes": 864,
+      "sha256": "f9266fe79b224754dd28d0528cc960c93f5b3ce1378ffdbde5862198a83b60ce"
+    },
+    {
+      "path": "local/output/cc10_registration_gates/00b7aa70_bytes.txt",
+      "bytes": 37,
+      "sha256": "5d0cf6064f764ca7638d03de7fdafaddb0e08b16d19ea1dd49ae448919a264ce"
+    },
+    {
+      "path": "local/output/cc10_registration_gates/00b7aa70_proto.txt",
+      "bytes": 419,
+      "sha256": "eb868414d49657cf06ac221827d3af6aea71f8a8dec6e1652007c9d60f198391"
+    },
+    {
+      "path": "local/output/cc10_registration_gates/00b83d50_assembly.txt",
+      "bytes": 1439,
+      "sha256": "11969c0f25b28aadc661963f0f06f757f5736eb893235745fb2cb24a606dc896"
+    },
+    {
+      "path": "local/output/cc10_registration_gates/00b83d50_bytes.txt",
+      "bytes": 300,
+      "sha256": "c42d77bf8b81cdd10524fd439fb353a3fb0b8ceade62ec96fab2972f51c22bc6"
+    },
+    {
+      "path": "local/output/cc10_registration_gates/00b83d50_proto.txt",
+      "bytes": 432,
+      "sha256": "66828db1edf3c1aac21538977fd5778e196b158239b4d75f7a2ac494363a8ef5"
+    },
+    {
+      "path": "local/output/cc10_registration_gates/00b83ec0_assembly.txt",
+      "bytes": 1335,
+      "sha256": "06a03813bb69a29f7d5f8f6b86007f4f0a55c0e35e39c34469cf6d8f04e5a328"
+    },
+    {
+      "path": "local/output/cc10_registration_gates/00b83ec0_bytes.txt",
+      "bytes": 256,
+      "sha256": "5aac556fba34f6a678269da9b6e2ebf6febda5b585f62c61bb1f0279cc0de923"
+    },
+    {
+      "path": "local/output/cc10_registration_gates/00b83ec0_proto.txt",
+      "bytes": 438,
+      "sha256": "2ee80637ee4eb7ed042de838141cfcb9124ef17acd154f7ef5541f2a1e48e286"
+    },
+    {
+      "path": "local/output/cc10_registration_gates/byte_evidence.json",
+      "bytes": 532,
+      "sha256": "970c41638329d33c31d5ccf759d43ef3ad4fe46942960924c8ca302b71790ef8"
+    },
+    {
+      "path": "local/output/cc10_registration_gates/program.txt",
+      "bytes": 40,
+      "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+    },
+    {
+      "path": "local/cc10_registration_gates_build.log",
+      "bytes": 2621,
+      "sha256": "a04759a51b11ea8fdc6f94dc3af2b965c9a14ed51697af983e91a328240402b7"
+    },
+    {
+      "path": "local/cc10_raw_scene_attachment_readiness.md",
+      "bytes": 11065,
+      "sha256": "625c3254f6787c178bbeee8b6fd190dd1e0b9db91280ff67c2a364a2e23be373"
+    }
+  ]
+}
