@@ -417,6 +417,14 @@ struct GameUnitSlot {
     // dt instead (SUBSTITUTION, labelled; zero on the first tick of a target).
     std::size_t gl_target_plus_one{0};
     float gl_prev_target_v[3]{0.0f, 0.0f, 0.0f};
+    // Packet cc9_plane_substitution_sweep: 007CEE05-007CEE5B per fixed step,
+    // unit+648h = (position - previous position) / dt, unit+654h = (+648h -
+    // +6BCh) / dt with +6BCh the previous step's +648h. Zero until two steps
+    // have run.
+    float fd_prev_pos[3]{0.0f, 0.0f, 0.0f};
+    float fd_vel_648[3]{0.0f, 0.0f, 0.0f};
+    float fd_accel_654[3]{0.0f, 0.0f, 0.0f};
+    int fd_steps{0};
     // 009FA248: plan+2D4h = 0 from the fine aim 009F9FC0. 0099E756 then skips
     // the planner's yaw arm 0099E81A. Reset by the planner, as 0099B450 seeds 1.
     bool gl_yaw_mode_2d4_zero{false};
@@ -1108,6 +1116,10 @@ struct GameUnitSlot {
     // pilot+25Ch, reset to 1.0 by 009A17EF, lowered by the vehicle and
     // terrain arms, read by 0099BF30's throttle arm.
     float av_throttle_25c{1.0f};
+    // unit+BC4h, the yaw-target gain: 1.0 from 007D6167, max-latched by
+    // 0099BB00 from the terrain arm, relaxed toward 1.0 by the rate law.
+    float plane_yaw_gain_bc4{1.0f};
+    int yaw_gain_raises{0};
     // The unit+C50h object's +30h list (007E11D0: kinds 6 and 0Fh within R)
     // with its own copy of the +7Ch clock; the finder keeps +50h separately.
     std::vector<std::size_t> nb_near_30;
@@ -2869,6 +2881,13 @@ struct GameUnitsHost::Impl {
     // the controlled unit (0067BB50), and unit+184h set only by an accepted
     // role-1 take. Before: unit+184h was "the unit 004c0890 bound".
     static constexpr bool kPlayerRoleBookkeepingBound = true;
+    // Packet cc9_plane_substitution_sweep (docs/PLANE_SUBSTITUTION_SWEEP.md):
+    // the torpedo done/prepare tick's 009D1500 answer (was 0), unit+BC4h's yaw
+    // gain from the terrain arm (was held at 1.0), and the fighter lead's
+    // target acceleration from the fixed-step difference (was the gun tick's).
+    static constexpr bool kTorpedoArmTimeToTargetBound = true;
+    static constexpr bool kPlaneYawGainBc4Bound = true;
+    static constexpr bool kFighterLeadAccel654Bound = false;
     // game+18ECh, the local player's slot: 0 in this single-player host.
     static constexpr std::int32_t kLocalPlayerSlot = 0;
     std::size_t role_screen_unit_plus_one{0};   // page 27h's tracked unit, +30h
@@ -3469,8 +3488,11 @@ struct GameUnitsHost::Impl {
         // 009D4865, copied at 009C8855 / 009D48FF, 0FFh at 00999944 before
         // the task arm); no literal store clears a bit of +4C4h or +49Ch, so
         // the mask stays 0FFh through the dive and torpedo tasks. The
-        // squadron's +3A4h has no host producer: taken as set. SUBSTITUTION,
-        // labelled.
+        // squadron's +3A4h is 0FFh from its constructor: 007F2CA2 passes
+        // ECX = squadron+37Ch to 007F2BD0, whose 007F2C13 stores [ECX+28h] =
+        // 0FFh. Only the SquadronEnable*Avoidance bindings (0089FE50 and
+        // siblings) change it, and no USN04 script calls them. Confirmed, not
+        // a substitution (docs/PLANE_SUBSTITUTION_SWEEP.md).
         if constexpr (kPilotGunfireAvoidanceBound) {
             if (!free_flight) {
                 u.ga_timer_3e8 = -1.0f;                            // 009A193F [00D7A260]
@@ -4972,8 +4994,10 @@ void GameUnitsHost::Impl::vehicle_avoidance_007df4f0(GameUnitSlot& u, float dt) 
     // 007DF5E0-007DF959: the own frame M. When speed > 10 ([00CE38B8]) and
     // |unit+B04h| / speed > 0.1 (double [00D7A3A0]) the image builds it from
     // normalize(velocity + unit+B04h); otherwise it is the inverse pose
-    // unit+110h. unit+B04h has no host producer; with it zero the inverse pose
-    // is always the frame. SUBSTITUTION, labelled.
+    // unit+110h. unit+B04h has no literal writer in the image (a store census
+    // over every FSTP/MOVSS/MOV/MOVUPS form finds only this reader, 007DF62D),
+    // so it stays at its zeroed allocation and the inverse pose is the frame.
+    // Confirmed, with the usual block-copy caveat.
     const AvoidBox ob = avoid_box(u);
     const float hx = static_cast<float>(
         1.2000000476837158 * ((-ob.mn[0] < ob.mx[0]) ? ob.mx[0] : -ob.mn[0]));   // double [00CEC160]
@@ -5183,8 +5207,18 @@ static void terrain_shape_band_0099cab0(GameUnitsHost::Impl& host, GameUnitSlot&
             range_test = true;
         } else {
             if (static_cast<double>(m) > 0.4) {                      // 0099CD07 double [00CE65D0]
-                // 0099BB00: unit+BC4h = max(unit+BC4h, 2 (m - 0.4) sin|bank| + 1).
-                // No host consumer of the plane's +BC4h: not modelled, labelled.
+                // 0099BB00: unit+BC4h = max(unit+BC4h, 2 (m - 0.4) sin|bank| + 1),
+                // with the unfolded |bank| from unit+C68h.
+                if constexpr (GameUnitsHost::Impl::kPlaneYawGainBc4Bound) {
+                    const float ab = std::fabs(u.plane_bank_angle_c68);
+                    const float v = static_cast<float>(
+                        2.0 * static_cast<double>(static_cast<float>(
+                            (static_cast<double>(m) - 0.4) * std::sin(ab))) + 1.0);
+                    if (!(u.plane_yaw_gain_bc4 > v)) {
+                        u.plane_yaw_gain_bc4 = v;
+                        ++u.yaw_gain_raises;
+                    }
+                }
             }
             r = static_cast<float>(r * 0.7);                         // double [00CEFFA0]
         }
@@ -5253,8 +5287,9 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
     const float stall = u.plane_stall_spd > 0.0f ? u.plane_stall_spd : 17.5f;
     const float v_stall = stall_range * stall;                       // 007C4830
     const float v_look = speed > v_stall ? speed : v_stall;
-    // unit+C7Ch: the elevation of the vector at unit+AC8h (007C1CA8); the
-    // world velocity's elevation, the flight-path angle, stands in. Labelled.
+    // unit+C7Ch: the elevation of the vector at unit+AC8h (007C1CA8), and
+    // unit+AC8h is the world velocity vtable[34h] 007BBB70 returns
+    // (docs/FIGHTER_GUN_LEAD.md). So the velocity's elevation is the term.
     const double horiz = std::sqrt(static_cast<double>(v_world[0]) * v_world[0] +
                                    static_cast<double>(v_world[2]) * v_world[2]);
     const float pitch = speed > 1.0f
@@ -8589,8 +8624,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         float time_to_target_009d1500(void*) override {
                             // 009D2A44-009D2A52 recomputes the same metric
                             // inline: planar distance over the reference speed.
-                            record("BotApproachTorpedo::time_to_target", "009d1500");
-                            return 0.0f;
+                            // Packet cc9_plane_substitution_sweep: the aim
+                            // tick's reconstruction of 009D1500 over the same
+                            // approach state, where 0 stood in before.
+                            if constexpr (GameUnitsHost::Impl::kTorpedoArmTimeToTargetBound) {
+                                return bsp::torpedo_time_to_target_009d1500(
+                                    slot_.torpedo_approach);
+                            } else {
+                                record("BotApproachTorpedo::time_to_target", "009d1500");
+                                return 0.0f;
+                            }
                         }
                         float bearing_error_to_target(void*, void*) override {
                             return (slot_.attack_hdg_err_last < 0.0f)
@@ -9144,7 +9187,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                       tgt.motion.position[2]};
                         const std::size_t ti = tgt.process_index;
                         float acc[3] = {0.0f, 0.0f, 0.0f};
-                        if (unit_.gl_target_plus_one == ti + 1 && dt > 0.0f) {
+                        if constexpr (GameUnitsHost::Impl::kFighterLeadAccel654Bound) {
+                            // 00954650's arc arm reads the target's unit+654h.
+                            for (int i = 0; i < 3; ++i) acc[i] = tgt.fd_accel_654[i];
+                        } else if (unit_.gl_target_plus_one == ti + 1 && dt > 0.0f) {
                             for (int i = 0; i < 3; ++i)
                                 acc[i] = (tgt.plane_world_velocity[i] - unit_.gl_prev_target_v[i]) / dt;
                         }
@@ -13823,10 +13869,30 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             factors.b = g.dynamics_rotation_factors_b;
                             factors.c = g.dynamics_rotation_factors_c;
                         }
+                        bsp::PlaneControlTargets gained = targets;
+                        if constexpr (GameUnitsHost::Impl::kPlaneYawGainBc4Bound) {
+                            // 007DA926-007DA95F: the yaw target is YawSpd x the
+                            // latched yaw x unit+BC4h x the mode factor, with
+                            // BC4h read before this step's relax. 007DA967-
+                            // 007DA9E3: when BC4h != 1.0 and dt > 0 it moves
+                            // toward 1.0 by 0.5 x dt (double [00D7A280]),
+                            // clamped at 1.0 from either side.
+                            float& g = unit_.plane_yaw_gain_bc4;
+                            gained.target[1] = targets.target[1] * g;
+                            if (g != 1.0f && step > 0.0f) {
+                                if (g > 1.0f) {
+                                    const float r = static_cast<float>(g - step * 0.5);
+                                    g = 1.0f > r ? 1.0f : r;
+                                } else {
+                                    const float r = static_cast<float>(step * 0.5 + g);
+                                    g = r > 1.0f ? 1.0f : r;
+                                }
+                            }
+                        }
                         for (int axis = 0; axis < 3; ++axis) {
                             bsp::PlaneControlAxisState in;
                             in.current = unit_.plane_body_angular[axis];
-                            in.target = targets.target[axis];
+                            in.target = gained.target[axis];
                             in.accel = targets.accel[axis];
                             unit_.plane_body_angular[axis] =
                                 bsp::plane_control_axis_step_007da710(factors, in, true, step);
@@ -13912,6 +13978,23 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                 } plane_calls(host, slot);
                 const bsp::PlaneMotionArm arm =
                     bsp::run_plane_fixed_step_007ce040(plane_calls, step_seconds);
+                if constexpr (Impl::kFighterLeadAccel654Bound) {
+                    if (step_seconds > 0.0f) {
+                        const double idt = 1.0 / static_cast<double>(step_seconds);
+                        for (int i = 0; i < 3; ++i) {
+                            const float v = static_cast<float>(
+                                (static_cast<double>(slot.motion.position[i]) -
+                                 slot.fd_prev_pos[i]) * idt);                  // +648h
+                            slot.fd_accel_654[i] = slot.fd_steps >= 2
+                                ? static_cast<float>((static_cast<double>(v) -
+                                                      slot.fd_vel_648[i]) * idt)
+                                : 0.0f;                                        // +654h
+                            slot.fd_vel_648[i] = v;                            // -> +6BCh
+                            slot.fd_prev_pos[i] = slot.motion.position[i];
+                        }
+                        ++slot.fd_steps;
+                    }
+                }
                 if (arm == bsp::PlaneMotionArm::None) ++host.summary.plane_arm_none;
                 ++host.summary.plane_steps;
                 host.done("UnitMotion::plane_fixed_step_007ce040", 0x007ce040u);
@@ -15973,6 +16056,14 @@ void GameUnitsHost::report() {
                                     sl->row.name.c_str(), roles, perms,
                                     sl->role_player_0184 ? 1 : 0);
                             }
+                        }
+                        {
+                            long long raises = 0;
+                            for (const auto& sl : host.slots) raises += sl->yaw_gain_raises;
+                            host.log.notef("summary mission plane yaw gain bc4 raises=%lld "
+                                "bound=%d (0099BB00 -> 007DA92C, packet "
+                                "cc9_plane_substitution_sweep)", raises,
+                                Impl::kPlaneYawGainBc4Bound ? 1 : 0);
                         }
                         host.log.notef("summary mission terrain avoidance ticks=%lld bands=%lld "
                             "throttle=%lld dive_ticks=%lld water_ticks=%lld (0099F1C0/0099CAB0, "
