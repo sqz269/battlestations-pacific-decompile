@@ -265,3 +265,17 @@ off then on, USN04 4500, 2560x1440.
   repair_menu, repair_order_route, warning_pulse or repair_mode_panel appears.
 - **Total.** The unimplemented total rises by 18,316.
 - **Summary lines.** All identical, since no widget changes.
+
+**The part 2 pair.** `local\p2_off_usn04.log` against `local\p2_on_usn04.log`.
+
+| row | OFF | ON |
+| --- | ---: | ---: |
+| unimplemented total | 2,203,853 | 2,222,169 (+18,316; predicted +18,316) |
+| update_remainder at 0064E415 | 9,158 | none |
+| update_remainder at 0064F665 | none | 9,158 |
+| class_repair_flag | none | 9,158 |
+| other_screen_00545360 | none | 9,158 |
+
+- **No gated body ran.** None of the order, unit-write or menu records appears.
+- **Summary lines.** All 157 are identical.
+- **Result.** Every prediction holds. **`kHudShipScreenControlsBound` flips ON.**
