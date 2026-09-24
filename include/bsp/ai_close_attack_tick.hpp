@@ -131,6 +131,20 @@ struct AiCloseAttackTickResult {
     std::uint32_t candidates_scored{0};
 };
 
+// Packet cc9_group_composition (docs/PLANNER_GROUP_COMPOSITION.md): the
+// no-candidate arm 00A14A78-00A14D4C as the image forms it. r = the own
+// group's population ([command+4]+5644h, FILD) x 160.0 (double [00D22C90]),
+// raised to 400.0 (double [00CE3D90] test, float [00CFD710]); a member whose
+// planar distance to the centre is above r (00A14BE3) is sent through 00A02020
+// to 0.4 x its own +FCh pose + 0.6 x the centre (doubles [00CE65D0] and
+// [00CEFF98], 00A14CC1-00A14D48); a member inside r gets nothing. Before: every
+// candidate-less member was sent at the centre itself.
+inline constexpr bool kCloseAttackFallbackOffsetBound = true;
+inline constexpr double kCloseFallbackRadiusPerMember = 160.0;   // [00D22C90]
+inline constexpr double kCloseFallbackRadiusFloor = 400.0;       // [00CE3D90]
+inline constexpr double kCloseFallbackOwnWeight = 0.4;           // [00CE65D0]
+inline constexpr double kCloseFallbackCentreWeight = 0.6;        // [00CEFF98]
+
 // 00A13B60, __thiscall(command)(float radius, const float* point,
 // AiGroup* targetGroup, int flag). `point` is the centre the candidates are
 // collected around and `flag` was not traced past its store.
