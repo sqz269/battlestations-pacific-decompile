@@ -1,0 +1,693 @@
+{
+  "packet": "cc10_point_light_storage_lifetime",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "baseline_main": "eb01dd234",
+  "source": "src/native_point_light_storage_lifetime.cpp",
+  "header": "include/bsp/native_point_light_storage_lifetime.hpp",
+  "documentation": "docs/NATIVE_POINT_LIGHT_STORAGE_LIFETIME_CC10.md",
+  "status": "complete_raw_point_construction_lifetime_and_same_count_canonical_bridge_strict_win32_genuine_provider_checked",
+  "functions": [
+    {
+      "address": "00b7c710",
+      "end_exclusive": "00b7c73d",
+      "end_inclusive": "00b7c73c",
+      "final_instruction": "00b7c73a",
+      "final_instruction_length": 3,
+      "byte_span": 45,
+      "instruction_count": 13,
+      "cpp_symbol": "bsp::construct_native_point_light_raw_00b7c710",
+      "original_abi": "ECX actual200h owner, stacked raw8B name header; EAX same identity; RET4",
+      "coverage": "complete normal body in actual-storage valid descriptor/provider domain; no native exception transport"
+    },
+    {
+      "address": "00b7c770",
+      "end_exclusive": "00b7c7e0",
+      "end_inclusive": "00b7c7df",
+      "final_instruction": "00b7c7df",
+      "final_instruction_length": 1,
+      "byte_span": 112,
+      "instruction_count": 31,
+      "cpp_symbol": "bsp::destroy_native_point_light_storage_00b7c770",
+      "original_abi": "ECX actual200h point owner; RET",
+      "coverage": "complete normal body in actual-storage valid descriptor/provider domain; no native exception transport"
+    },
+    {
+      "address": "00b7c850",
+      "end_exclusive": "00b7c870",
+      "end_inclusive": "00b7c86f",
+      "final_instruction": "00b7c86d",
+      "final_instruction_length": 3,
+      "byte_span": 32,
+      "instruction_count": 11,
+      "cpp_symbol": "bsp::delete_native_point_light_storage_00b7c850",
+      "original_abi": "ECX actual200h owner, stacked flags; EAX original identity; RET4",
+      "coverage": "complete normal body in actual-storage valid descriptor/provider domain; no native exception transport"
+    },
+    {
+      "address": "005a1610",
+      "end_exclusive": "005a1627",
+      "end_inclusive": "005a1626",
+      "final_instruction": "005a1626",
+      "final_instruction_length": 1,
+      "byte_span": 23,
+      "instruction_count": 10,
+      "cpp_symbol": "bsp::destroy_native_point_light_array_storage_005a1610",
+      "original_abi": "ECX actual12B backlink descriptor; RET",
+      "coverage": "complete normal body in actual-storage valid descriptor/provider domain; no native exception transport"
+    }
+  ],
+  "compiler_boundaries": [
+    {
+      "address": "00cc1ef0",
+      "end_exclusive": "00cc1ef8",
+      "end_inclusive": "00cc1ef7",
+      "final_instruction": "00cc1ef3",
+      "final_instruction_length": 5,
+      "byte_span": 8,
+      "role": "state0 Light cleanup",
+      "coverage": "boundary-only evidence and source cleanup schedule, not native compiler-handler implementation"
+    },
+    {
+      "address": "00cc1ef8",
+      "end_exclusive": "00cc1f06",
+      "end_inclusive": "00cc1f05",
+      "final_instruction": "00cc1f01",
+      "final_instruction_length": 5,
+      "byte_span": 14,
+      "role": "state1 actual1E0 array cleanup",
+      "coverage": "boundary-only evidence and source cleanup schedule, not native compiler-handler implementation"
+    },
+    {
+      "address": "00cc1f06",
+      "end_exclusive": "00cc1f10",
+      "end_inclusive": "00cc1f0f",
+      "final_instruction": "00cc1f0b",
+      "final_instruction_length": 5,
+      "byte_span": 10,
+      "role": "undefined raw FH3 descriptorDFAFF8 handler",
+      "coverage": "boundary-only evidence and source cleanup schedule, not native compiler-handler implementation"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00cc1f06",
+      "end_exclusive": "00cc1f10",
+      "end_inclusive": "00cc1f0f",
+      "final_instruction": "00cc1f0b",
+      "final_instruction_length": 5,
+      "byte_span": 10,
+      "role": "undefined raw FH3 descriptorDFAFF8 handler",
+      "coverage": "boundary-only evidence and source cleanup schedule, not native compiler-handler implementation"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00b7c710",
+      "address": "00b7c718",
+      "native": "00b7c4c0",
+      "contract": "genuine rawB7C4C0 on SAME actual200h slot, captured raw name/current constants; base establishes atomic04"
+    },
+    {
+      "function": "00b7c770",
+      "address": "00b7c79c",
+      "native": "00b7c160",
+      "contract": "same actual+1E0 binding, current reverse begin/unsigned count/node removal; no reference changes"
+    },
+    {
+      "function": "00b7c770",
+      "address": "00b7c7b0",
+      "native": "0059fce0",
+      "contract": "state1 consumed to0 BEFORE valid59FCE0 count0 path; source factors inline sequence into5A1610 helper"
+    },
+    {
+      "function": "00b7c770",
+      "address": "00b7c7b8",
+      "native": "00bf6989",
+      "contract": "CURRENT begin after resize, SAME runtime genuine free; stale begin/capacity preserved"
+    },
+    {
+      "function": "00b7c770",
+      "address": "00b7c7ca",
+      "native": "00b7c5b0",
+      "contract": "state0 consumed to-1 BEFORE genuine raw Light; host backlink metadata retired while payload/count live"
+    },
+    {
+      "function": "00b7c850",
+      "address": "00b7c853",
+      "native": "00b7c770",
+      "contract": "complete raw point destructor, no added scalar entry profile stamp"
+    },
+    {
+      "function": "00b7c850",
+      "address": "00b7c865",
+      "native": "00b7b1d0",
+      "contract": "CURRENT flags lowbyte bit0 after destructor; real0109011C pool/current1FC and captured same200h identity"
+    },
+    {
+      "function": "005a1610",
+      "address": "005a1615",
+      "native": "0059fce0",
+      "contract": "genuine count0 resize path only, valid nonnegative descriptor; no container growth needed"
+    },
+    {
+      "function": "005a1610",
+      "address": "005a161d",
+      "native": "00bf6989",
+      "contract": "capture CURRENT begin after resize, genuine sharedCRT free through matching allocation runtime"
+    },
+    {
+      "function": "00cc1ef0",
+      "address": "00cc1ef3",
+      "native": "00b7c5b0",
+      "contract": "state0 cleanup tail to raw Light using actual saved owner",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc1ef8",
+      "address": "00cc1f01",
+      "native": "005a1610",
+      "contract": "state1 cleanup tail with actual owner+1E0 descriptor",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc1f06",
+      "address": "00cc1f0b",
+      "native": "00bf6b43",
+      "contract": "raw handler loadsDFAFF8 then commonFH3; bytes/evidence only, no source transport",
+      "kind": "no_ghidra_function",
+      "actual_transfer": "tail_jump"
+    }
+  ],
+  "byte_evidence": [
+    {
+      "address": "00b7c710",
+      "bytes": 45,
+      "end_exclusive": "00b7c73d",
+      "end_inclusive": "00b7c73c",
+      "role": "proposed raw constructor",
+      "live_equals_installed": true,
+      "sha256": "797372ea5fa34bf91b5279f05dff37736fb9a4059623afe077970cd811a82080",
+      "instructions": 13,
+      "final_instruction": "00b7c73a",
+      "final_instruction_length": 3,
+      "calls": [
+        {
+          "address": "00b7c718",
+          "target": "0xb7c4c0",
+          "kind": "call"
+        }
+      ]
+    },
+    {
+      "address": "00b7c770",
+      "bytes": 112,
+      "end_exclusive": "00b7c7e0",
+      "end_inclusive": "00b7c7df",
+      "role": "proposed raw destructor",
+      "live_equals_installed": true,
+      "sha256": "b750829eece3e7bcdee28c9281dc242a1b95b5da1b41da0a113a1742208d2ef4",
+      "instructions": 31,
+      "final_instruction": "00b7c7df",
+      "final_instruction_length": 1,
+      "calls": [
+        {
+          "address": "00b7c79c",
+          "target": "0xb7c160",
+          "kind": "call"
+        },
+        {
+          "address": "00b7c7b0",
+          "target": "0x59fce0",
+          "kind": "call"
+        },
+        {
+          "address": "00b7c7b8",
+          "target": "0xbf6989",
+          "kind": "call"
+        },
+        {
+          "address": "00b7c7ca",
+          "target": "0xb7c5b0",
+          "kind": "call"
+        }
+      ]
+    },
+    {
+      "address": "00b7c850",
+      "bytes": 32,
+      "end_exclusive": "00b7c870",
+      "end_inclusive": "00b7c86f",
+      "role": "proposed raw scalar",
+      "live_equals_installed": true,
+      "sha256": "fc9042a91ff9f990eb18f95228c488090ad5b82395d42f6f59ba8cb0164e226d",
+      "instructions": 11,
+      "final_instruction": "00b7c86d",
+      "final_instruction_length": 3,
+      "calls": [
+        {
+          "address": "00b7c853",
+          "target": "0xb7c770",
+          "kind": "call"
+        },
+        {
+          "address": "00b7c865",
+          "target": "0xb7b1d0",
+          "kind": "call"
+        }
+      ]
+    },
+    {
+      "address": "005a1610",
+      "bytes": 23,
+      "end_exclusive": "005a1627",
+      "end_inclusive": "005a1626",
+      "role": "proposed array cleanup",
+      "live_equals_installed": true,
+      "sha256": "077204cdd36782060cbdca67c7d568110f4f1f2fd0b9197400b6a86baa229a59",
+      "instructions": 10,
+      "final_instruction": "005a1626",
+      "final_instruction_length": 1,
+      "calls": [
+        {
+          "address": "005a1615",
+          "target": "0x59fce0",
+          "kind": "call"
+        },
+        {
+          "address": "005a161d",
+          "target": "0xbf6989",
+          "kind": "call"
+        }
+      ]
+    },
+    {
+      "address": "00b7c160",
+      "bytes": 58,
+      "end_exclusive": "00b7c19a",
+      "end_inclusive": "00b7c199",
+      "role": "existing actual backlink provider",
+      "live_equals_installed": true,
+      "sha256": "2abd7c1a49a382aedd0ada85fdf0c20022c12c44e2e3b882fb1b2e1a839c92dc",
+      "instructions": 20,
+      "final_instruction": "00b7c199",
+      "final_instruction_length": 1,
+      "calls": [
+        {
+          "address": "00b7c17a",
+          "target": "0xb6f3c0",
+          "kind": "call"
+        },
+        {
+          "address": "00b7c192",
+          "target": "0x59fce0",
+          "kind": "call"
+        }
+      ]
+    },
+    {
+      "address": "0059fce0",
+      "bytes": 80,
+      "end_exclusive": "0059fd30",
+      "end_inclusive": "0059fd2f",
+      "role": "resize0 dependency valid domain only",
+      "live_equals_installed": true,
+      "sha256": "70fda56d92aa22fbd38fb6b50c99210e2fff34f228b79849eb7bd421870ea8bc",
+      "instructions": 31,
+      "final_instruction": "0059fd2d",
+      "final_instruction_length": 3,
+      "calls": [
+        {
+          "address": "0059fcee",
+          "target": "0x59e5e0",
+          "kind": "call"
+        }
+      ]
+    },
+    {
+      "address": "00b7b1d0",
+      "bytes": 88,
+      "end_exclusive": "00b7b228",
+      "end_inclusive": "00b7b227",
+      "role": "existing actual200h pool return",
+      "live_equals_installed": true,
+      "sha256": "bfa670d63e28a3bde2c39b2434e8210d55e8aa00cc51b205edfde606f1a9dd10",
+      "instructions": 27,
+      "final_instruction": "00b7b225",
+      "final_instruction_length": 3,
+      "calls": [
+        {
+          "address": "00b7b1d9",
+          "target": "dword ptr [0xce2218]",
+          "kind": "call"
+        },
+        {
+          "address": "00b7b21c",
+          "target": "dword ptr [0xce2210]",
+          "kind": "call"
+        }
+      ]
+    },
+    {
+      "address": "00cc1ef0",
+      "bytes": 8,
+      "end_exclusive": "00cc1ef8",
+      "end_inclusive": "00cc1ef7",
+      "role": "EH state0 cleanup boundary",
+      "live_equals_installed": true,
+      "sha256": "bbb5b8f62685cf2026eb761e2100445e81a9761103f094ef6373e379074ef6e4",
+      "instructions": 2,
+      "final_instruction": "00cc1ef3",
+      "final_instruction_length": 5,
+      "calls": [
+        {
+          "address": "00cc1ef3",
+          "target": "0xb7c5b0",
+          "kind": "jmp"
+        }
+      ]
+    },
+    {
+      "address": "00cc1ef8",
+      "bytes": 14,
+      "end_exclusive": "00cc1f06",
+      "end_inclusive": "00cc1f05",
+      "role": "EH state1 cleanup boundary",
+      "live_equals_installed": true,
+      "sha256": "053f545e79df401e293f556212fdb9da588edcceaf4496d1513fac0b3535c7f8",
+      "instructions": 3,
+      "final_instruction": "00cc1f01",
+      "final_instruction_length": 5,
+      "calls": [
+        {
+          "address": "00cc1f01",
+          "target": "0x5a1610",
+          "kind": "jmp"
+        }
+      ]
+    },
+    {
+      "address": "00cc1f06",
+      "bytes": 10,
+      "end_exclusive": "00cc1f10",
+      "end_inclusive": "00cc1f0f",
+      "role": "raw FH3 boundary",
+      "live_equals_installed": true,
+      "sha256": "9b97a8cb2f520663337171a4f36732c340ac295d430b50bf35f4c2deee1ff488",
+      "instructions": 2,
+      "final_instruction": "00cc1f0b",
+      "final_instruction_length": 5,
+      "calls": [
+        {
+          "address": "00cc1f0b",
+          "target": "0xbf6b43",
+          "kind": "jmp"
+        }
+      ],
+      "no_ghidra_function": true
+    },
+    {
+      "address": "00dfafe8",
+      "bytes": 52,
+      "end_exclusive": "00dfb01c",
+      "end_inclusive": "00dfb01b",
+      "role": "EH map and descriptor",
+      "live_equals_installed": true,
+      "sha256": "08e183cc6e64df3ffb444472855c6ef6acb0852be6cb1520de2f14cd25cea73d"
+    },
+    {
+      "address": "00d63008",
+      "bytes": 16,
+      "end_exclusive": "00d63018",
+      "end_inclusive": "00d63017",
+      "role": "actual point profile prefix",
+      "live_equals_installed": true,
+      "sha256": "f3929828169b1c6b5daf5cc7b7111cf557fd1183a88e90560de7abbfe63d37e2"
+    }
+  ],
+  "native_eh": {
+    "map": "00dfafe8",
+    "descriptor": "00dfaff8",
+    "magic": "19930522",
+    "maxstate": 2,
+    "unwind_map": [
+      {
+        "state": 0,
+        "next_state": -1,
+        "cleanup": "00cc1ef0"
+      },
+      {
+        "state": 1,
+        "next_state": 0,
+        "cleanup": "00cc1ef8"
+      }
+    ],
+    "normal_order": "D63008 stamp,state1,B7C160,state0 before59FCE0/free,state-1 beforeB7C5B0",
+    "source_boundary": "consume cleanup before call, persistent nested rawLight acquisition; second cleanup exception terminates; no native FH3/SEH/private frame"
+  },
+  "ghidra_status": {
+    "005a1610": "primary repaired/saved/exported complete23B/10instructions before this implementation; fresh final live listing includes5A1622 ADDESP4,5A1625 POPESI,5A1626 RET; no remaining worker repair request",
+    "00cc1f06": "undefined raw10B handler, inclusiveendCC1F0F/finalJMPCC1F0B length5; primary definition after worker release",
+    "worker_mutations": false
+  },
+  "storage_contract": {
+    "construction": "rawB7C4C0/B6F5A0 creates actual174h prefix/atomic04/name;12B scene178 materialized preserving bytes; existing initializer creates actual1E0 descriptor; preserve1EC..1FB andpool1FC",
+    "reverse_links": "caller-owned persistent NativePointLightLinksBinding already registered for SAME identity/actual1E0 in matching point-links allocation runtime; no companion addresses in arrays",
+    "pool": "genuine NativePointLightPool0109011C200h slots/current1FC;32slots/slab4044h,freeindices4000h,count4040h; not camera45Ch/directional1F0h",
+    "admission": "pure SAME slab/slot range/modulus/free-index validation BEFORE atomic/registry access, wrong/returned pool slot rejection; then actualcount>0/currentD63008/BD30E0/B7C850; no stores/retain",
+    "terminal": "canonical observedactual+4zero/current0BD30E0 -> fresh current4B7C850 flags1; explicit positivecount flags0/1 supported",
+    "retirement": "backlink metadata unbind after reverse cleanup while count0/payload live BEFORE Light/poolreturn; canonical map unbind after normal/failure metadata-only, no payload reads; external binding persists on pre-boundary failure",
+    "failure": "fresh frame/acquisition, no retry/rollback; caller keeps unresolved credits/backing/slot/acquired; canonical retirement does not prove cleanup or free"
+  },
+  "verification": {
+    "build_command": "./scripts/build.ps1",
+    "build_log": "local/output/cc10_point_light_storage_build.log",
+    "build": "strict MSVC Win32 Release and2 configured existing CTests pass",
+    "call_verifier": "12 rows checked,0 failed:11 direct/tail instruction checks and1 rawCC1F06 callee-only boundary",
+    "focused_probe": {
+      "source": "local/output/cc10_point_light_storage_probe.cpp",
+      "command_file": "local/output/cc10_point_light_storage_probe.cmd",
+      "log": "local/output/cc10_point_light_storage_probe.log",
+      "compile_and_link_command": "cl /nologo /MD /EHsc /std:c++20 /O2 /Gy /W4 /WX /fp:strict /I include /I local\\output /Fo:local\\output\\ /Fe:local\\output\\cc10_point_light_storage_probe.exe local\\output\\cc10_point_light_storage_probe.cpp build\\win32\\Release\\bsp_core.lib build\\win32\\Release\\bsp_lua511.lib build\\win32\\Release\\bsp_zlib121.lib /link /OPT:REF /MANIFEST:EMBED user32.lib d3d9.lib advapi32.lib shell32.lib",
+      "assertions": "NDEBUG absent, no /DNDEBUG, compile-time #ifdef NDEBUG rejection",
+      "exit_code": 0,
+      "comparison_pairs": 3,
+      "pairs": "direct23B array cleanup plus two constructor/destructor/scalar compositions flags0 andcallback-lateflags1",
+      "checks": [
+        "real200h pool/raw45B constructor through genuine rawLight/name/current cells; atomic04/scene178/backlinks1E0 lifetimes and preserved preimages/1FC",
+        "reciprocal actual node/light links with duplicates; first-equal removals and real reverse backing disposal",
+        "genuine rawLight/node tail with actual3Ch resource/ambient canonical owners; current begin/back/count and captured import behavior shared with published provider",
+        "normalized full512B flags0 result; flags1 real pool free-count increase and no returned-payload reads",
+        "byte-unchanged canonical admission/duplicate refusal, actual observedzero and explicit positivecount flags0 retirement",
+        "wrong-pool refusal with unchanged512B owner, empty owner registry and existing backlink association intact",
+        "source-only missing-current-Light-gate failure: consumed cleanup, retired metadata, retained credits/slot for genuine disposition"
+      ],
+      "body_extent_vs_execution": {
+        "live_pe_body_bytes": 212,
+        "replaced_virtual_instruction_sites": [],
+        "relocations": "9 direct CALL operands in four bodies; original scalar invokes copied112B point destructor, copied45B constructor invokes genuine rawLight provider",
+        "shared_boundaries": "rawLight constructor/body, actualB7C160, valid count0 resize/free, point200h pool, nested rawnode/resource/name/type providers; original-side Light bridge performs same declared pre-Light backlink metadata unbind",
+        "not_independently_compared": "nested provider machine code, native exception transport, arbitrary shadow-zero/derived terminal graph, private stack aliases, full application/game behavior"
+      },
+      "no_tracked_tests": true
+    }
+  },
+  "limits": [
+    "Actual live200h storage and descriptors, matching point-link allocation provenance, same canonical registry/import domain and explicit current slots required.",
+    "Quiescence throughout backlink/canonical retirement; source metadata steps are not native ownership actions.",
+    "Direct scalar genuine-pool provenance remains caller precondition; canonical admission additionally validates allocated membership before count binding.",
+    "RawLight nullshadow or genuine release leaving nonzero count closes; reachedzero shadow requires existing family-aware real provider, no invented companion.",
+    "No legacy PointLightOwner/SceneAttachmentRuntime or host SceneResource terminal substitution; no native FH3/SEH/private ABI/application/gameplay claim."
+  ],
+  "ghidra_mutations": false,
+  "abi_compatible": false,
+  "application_bound": false,
+  "game_validated": false,
+  "frozen_evidence": [
+    {
+      "path": "local/output/cc10_point_light_storage_build.log",
+      "bytes": 2486,
+      "sha256": "3b50d7dcb05b52d0bbd9aed42e8349f6f76ef29c2ab880870961a3dc57835146"
+    },
+    {
+      "path": "local/output/cc10_point_light_storage_bytes.hpp",
+      "bytes": 1182,
+      "sha256": "1993dbc90b802f29fec43784acc19eb438941b57a3db4a273371819e1d9f75d3"
+    },
+    {
+      "path": "local/output/cc10_point_light_storage_calls.log",
+      "bytes": 214,
+      "sha256": "6bba24b0c3c5572eebcc3a4546581006429c8766865d9d8dc009a2c5d95e1b2c"
+    },
+    {
+      "path": "local/output/cc10_point_light_storage_capture.py",
+      "bytes": 3050,
+      "sha256": "9b4bfc6017215e335722463118ac7ada06e227e1fb206c950523630f2091b37e"
+    },
+    {
+      "path": "local/output/cc10_point_light_storage_index.log",
+      "bytes": 142,
+      "sha256": "7cb1281018d4ac06c3914856932a8e884a21f1884dcdba2d5a0525ad02a04a93"
+    },
+    {
+      "path": "local/output/cc10_point_light_storage_ledger.log",
+      "bytes": 432,
+      "sha256": "c618d4a2509db86236fecc9f3a0fcc2f1247aab8b77c766a1c50fd50578edcbf"
+    },
+    {
+      "path": "local/output/cc10_point_light_storage_ledger.py",
+      "bytes": 2618,
+      "sha256": "281a4e9274957965adf240c19c64b3641f7934dd8eec4c80ec8af6afd1542374"
+    },
+    {
+      "path": "local/output/cc10_point_light_storage_probe.cmd",
+      "bytes": 624,
+      "sha256": "5a8f8e6637f55f837f93977322e6b588872544abc9460d62aea4ea8a6ad4eb3c"
+    },
+    {
+      "path": "local/output/cc10_point_light_storage_probe.cpp",
+      "bytes": 21748,
+      "sha256": "eca118199a206000c81c73ff258cdcdc5169c57fc85713a61a20251080f9ea75"
+    },
+    {
+      "path": "local/output/cc10_point_light_storage_probe.log",
+      "bytes": 454,
+      "sha256": "dc6a0cfcb566833e19f51387868e6b1a49a4e32805a90578f9428aa8572fedc8"
+    },
+    {
+      "path": "local/output/cc10_point_light_storage_report.py",
+      "bytes": 9223,
+      "sha256": "23e16e80a762976b2afaeb53936e1cb147ff8fbc97421bb24586019dafe5e5db"
+    },
+    {
+      "path": "local/output/cc10_point_light_storage/0059fce0_bytes.txt",
+      "bytes": 385,
+      "sha256": "c46f863b7506e568d49237310abb5e02c6c8a15254e24b9876ab1d87b286d3e5"
+    },
+    {
+      "path": "local/output/cc10_point_light_storage/0059fce0_live_0.txt",
+      "bytes": 913,
+      "sha256": "2b53ef4ac425a2bb1d080feaaa60207b4083a530152c0dc0ee57b5e192ede090"
+    },
+    {
+      "path": "local/output/cc10_point_light_storage/005a1610_bytes.txt",
+      "bytes": 118,
+      "sha256": "2b419f1ba1537864f6d8ebdd5b7fc1987d0ca564c74c333af672ef6f87bf4707"
+    },
+    {
+      "path": "local/output/cc10_point_light_storage/005a1610_complete_disk.txt",
+      "bytes": 295,
+      "sha256": "9ee43e3f42a20f6c6ea1daf2e2695b6fa572dacd772a7481c00080918e0ea2e0"
+    },
+    {
+      "path": "local/output/cc10_point_light_storage/005a1610_live_0.txt",
+      "bytes": 239,
+      "sha256": "95c0a0044cf1283273f264b0002e9940bd9132d59875b89cc246f3a6df476f14"
+    },
+    {
+      "path": "local/output/cc10_point_light_storage/00b7b1d0_bytes.txt",
+      "bytes": 430,
+      "sha256": "2ad32622615e384de2d4e5581c7f3217a215a9004367ef30e835b5fc7fc2d22c"
+    },
+    {
+      "path": "local/output/cc10_point_light_storage/00b7b1d0_live_0.txt",
+      "bytes": 888,
+      "sha256": "cfc3a4e7b90338c2ab083f8d75fb1c00d43db7beac26148620c4cbabdee669ac"
+    },
+    {
+      "path": "local/output/cc10_point_light_storage/00b7c160_bytes.txt",
+      "bytes": 284,
+      "sha256": "0d5bb5e17123b19a7f4ad3bb1da6945549ae44df819c6d0211094e7166914495"
+    },
+    {
+      "path": "local/output/cc10_point_light_storage/00b7c160_live_0.txt",
+      "bytes": 557,
+      "sha256": "d6a313ec9e56fd076df119144fcc727eb416a1e23bbdddcbdf34a9346babb60e"
+    },
+    {
+      "path": "local/output/cc10_point_light_storage/00b7c710_bytes.txt",
+      "bytes": 219,
+      "sha256": "9f601fda2fcf34ffcdd34348c1ec817059b3261408ca461844c29af74214bca9"
+    },
+    {
+      "path": "local/output/cc10_point_light_storage/00b7c710_live_0.txt",
+      "bytes": 397,
+      "sha256": "6704315451de095aa8df35b3ae318cb0c6d6d6b796c0eab4fb247f5f339240da"
+    },
+    {
+      "path": "local/output/cc10_point_light_storage/00b7c770_bytes.txt",
+      "bytes": 539,
+      "sha256": "8f41450fd8933e7b6e41732f099917d7ea9a3aa53b048b4898e50221434ef514"
+    },
+    {
+      "path": "local/output/cc10_point_light_storage/00b7c770_live_0.txt",
+      "bytes": 900,
+      "sha256": "513052bed928b88b77d8be1a41aa1afc613abe44c7722d86da1775212f4e1c96"
+    },
+    {
+      "path": "local/output/cc10_point_light_storage/00b7c850_bytes.txt",
+      "bytes": 154,
+      "sha256": "6c240be1aced381238db48347f4dadd4bf8580509c94c9e7f9350d3da5b6ddbc"
+    },
+    {
+      "path": "local/output/cc10_point_light_storage/00b7c850_live_0.txt",
+      "bytes": 284,
+      "sha256": "00a06e3e57d876d5ed25f6aae84361fb1baa21795669cd8f59eeb3b1ea7faae0"
+    },
+    {
+      "path": "local/output/cc10_point_light_storage/00cc1ef0_bytes.txt",
+      "bytes": 45,
+      "sha256": "0c62b8062909c2b907fffefbaaa2a1abccbdea881d411df824f6b77554abaa7b"
+    },
+    {
+      "path": "local/output/cc10_point_light_storage/00cc1ef0_live_0.txt",
+      "bytes": 71,
+      "sha256": "a2e889e225b1d1d002b94e47fc8b70cd63f83c339f202c507b2d89ff026e0d9d"
+    },
+    {
+      "path": "local/output/cc10_point_light_storage/00cc1ef8_bytes.txt",
+      "bytes": 69,
+      "sha256": "3eb65eae2041435a389aca933d95556c271b2b29bceb81b0ff1dd24f313244ad"
+    },
+    {
+      "path": "local/output/cc10_point_light_storage/00cc1ef8_live_0.txt",
+      "bytes": 97,
+      "sha256": "353d233906b29c4cae58be63c6d1f1a0788a8e5566532d826bcd83b96c533d92"
+    },
+    {
+      "path": "local/output/cc10_point_light_storage/00cc1f06_bytes.txt",
+      "bytes": 53,
+      "sha256": "bf3f17a31648c65292334ab96dc2156b70ebf05a8bd29612b65ddd32d64d093f"
+    },
+    {
+      "path": "local/output/cc10_point_light_storage/00cc1f06_disk.txt",
+      "bytes": 110,
+      "sha256": "80d4da9040cbfb4ac5cef9bc024f08bac2b1e968b018b45b0e9989825a7d15c2"
+    },
+    {
+      "path": "local/output/cc10_point_light_storage/00d63008_bytes.txt",
+      "bytes": 77,
+      "sha256": "39375d6c31c2fb9a8433422508527d97a17fb9ed82aa40801ddcbbb5486ba3ce"
+    },
+    {
+      "path": "local/output/cc10_point_light_storage/00dfafe8_bytes.txt",
+      "bytes": 260,
+      "sha256": "bedb2368fb86e46bc68678b6a9b39ed340feb308e52d729fbd4564d72f2cb33d"
+    },
+    {
+      "path": "local/output/cc10_point_light_storage/eh_boundaries_disk.txt",
+      "bytes": 302,
+      "sha256": "bc3673deeb7403bbe19620d6c5bf059906b1f9fbed13a43a3d8002f4e2140a7e"
+    },
+    {
+      "path": "local/output/cc10_point_light_storage/evidence.json",
+      "bytes": 7126,
+      "sha256": "6b8029a29b0a4c358852b147a9fb18588f70e3ea90e7253c9712c11954356b08"
+    },
+    {
+      "path": "local/output/cc10_point_light_storage/program.txt",
+      "bytes": 40,
+      "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+    }
+  ]
+}
