@@ -28,8 +28,13 @@ to zero and reset cursor+20h. The native branch reloads text data/length after
 resize and has a conditional `memcpy` from the shared empty string. A valid
 zero-length `NativeString` has null data, so that branch does no copy. The C++
 projection retains the conditional zero-length copy. The required input service
-must call the application's current `GameInputActions::update(0.0f)` or the
-equivalent current `004BEC00`/`00A92C40` binding. It cannot be an empty method.
+has one method for the lazy `004BEC00` getter and one for `00A92C40`. The latter
+receives exactly the returned raw owner handle and `+0.0f`; neither method can
+be empty. The application can implement them with its existing
+`get_native_input_action_owner_004bec00` and
+`update_native_input_action_owner_00a92c40` contexts. A canonical C++ owner
+type is not established by those raw functions, so the handle stays borrowed
+and opaque.
 If that service or string storage throws, earlier stores and queue clearing
 remain; the later text/cursor reset has not happened.
 
@@ -45,7 +50,7 @@ These caller-specific listbox and screen operations are not part of `00A966E0`.
 The future frontend bridge must supply the actual screen owner's
 `TextInputCallbacks` instance and the other field references from that same
 owner, the application's persistent `PlatformTextInput`, its
-current string storage and input-action services, and the selected row returned
+current string storage and both current input-action services, and the selected row returned
 by the real listbox. The existing `MenuUpdateBinding` still lacks the enabled
 owner callback and queued-event dispatch; activating input without that owner
 would strand events. This packet supplies the activation contract, not a fake

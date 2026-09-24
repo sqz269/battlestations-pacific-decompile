@@ -41,6 +41,11 @@
     "game_runtime": false,
     "ghidra_writes": false
   },
+  "input_call_contract": {
+    "getter": "TextEditorActivationInput::get_input_action_owner_004bec00 resolves the current lazy raw singleton and returns its borrowed handle",
+    "update": "TextEditorActivationInput::update_input_action_owner_00a92c40 receives exactly that handle and +0.0f; no combined refresh or substitute owner",
+    "canonical_type": "No C++ owner type proven for the native 0x24-byte raw input-action owner; contract uses void* handle"
+  },
   "limitations": [
     "No actual frontend TextInputCallbacks owner or menu dispatch is constructed in this packet.",
     "The required input service must bind the current game action owner; an empty implementation is not equivalent."

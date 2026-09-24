@@ -10,7 +10,8 @@ void set_text_editor_active_00a966e0(TextEditorActivationBindings& bindings,
     owner.callbacks.enabled = enabled;
     owner.selected_row_24 = selected_row;
     bindings.platform.enable_00a965a0(enabled);
-    bindings.input.refresh_current_actions_zero();
+    void* const input_owner = bindings.input.get_input_action_owner_004bec00();
+    bindings.input.update_input_action_owner_00a92c40(input_owner, 0.0f);
 
     if (!enabled) return;
     owner.editable_18.resize_0041dd40(bindings.strings, 0, false);

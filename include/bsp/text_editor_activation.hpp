@@ -16,12 +16,15 @@ struct TextEditorActivationOwner {
     void*& selected_row_24;
 };
 
-// Required concrete input-action refresh. Native 00A966E0 calls 004BEC00
-// followed by 00A92C40 with +0.0f. A frontend bridge must use its current
-// GameInputActions owner; an empty implementation changes observable state.
+// Two required native calls, in order: lazy 004BEC00 singleton getter, then
+// 00A92C40 update of exactly that returned raw owner with +0.0f. No native
+// C++ owner type is established; the borrowed handle keeps their identity.
+// A frontend bridge must bind its current input-action publication and tick.
 struct TextEditorActivationInput {
     virtual ~TextEditorActivationInput() = default;
-    virtual void refresh_current_actions_zero() = 0;
+    virtual void* get_input_action_owner_004bec00() = 0;
+    virtual void update_input_action_owner_00a92c40(void* actual_owner,
+        float seconds) = 0;
 };
 
 struct TextEditorActivationBindings {
