@@ -184,6 +184,34 @@
     "prior_values_record": "local/ghidra-annotations-20260924T003508Z.json",
     "sha256": "cc5e9f37b72da306efb35517df3028b67bebd13a2742d4bce33fd50850988400",
     "project_saved": true,
-    "exports_refreshed": true
+    "exports_refreshed": true,
+    "text_activation": {
+      "address": "00a966e0",
+      "name": "BSP_TextEditor_SetActive",
+      "prior_values_record": "local/ghidra-annotations-20260924T003852Z.json",
+      "sha256": "388721e1ad179ae834d8e7e242e5af3914c37668a3544ab6409fd1f066ec06ed",
+      "saved_and_export_refreshed": true
+    }
+  },
+  "later_integrated_build": {
+    "revision": "ac0d34f6f46ccbf41ee13fdf4364b7cbfa413c6b",
+    "ctest_passed": 3,
+    "ctest_failed": 0,
+    "log": "local/cc10-platform-receipt-integrate.log",
+    "log_sha256": "a3424bb4d6ebb922969b4936548c73bc4d0df635445587154fd49060a1623723",
+    "six_runtime_covered_source_files_unchanged": true,
+    "runtime_was_not_repeated_for_unbound_text_activation_provider": true
+  },
+  "text_editor_activation_followup": {
+    "commits": [
+      "a298bf51519adc2395fb2eba9d525264d661d08e",
+      "7e5eb7d2a6500ace765464e023990ef90e8e1cac"
+    ],
+    "source": "src/text_editor_activation.cpp",
+    "report": "reports/text_editor_activation_cc10.json",
+    "direct_calls_checked": 6,
+    "failed": 0,
+    "frontend_bound": false,
+    "getter_and_update_are_separate_call_sites": true
   }
 }

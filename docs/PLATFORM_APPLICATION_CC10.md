@@ -28,6 +28,11 @@ unbound; this change does not claim functioning text editing or clipboard paste.
 Older offset-labelled fields in Win32PlatformFields remain constructor
 projection data, not independent text-queue producers or consumers.
 
+The follow-up TEXT_EDITOR_ACTIVATION_CC10.md now reconstructs A966E0 over
+borrowed actual owner fields and that same queue. Its input getter and update
+are separate call-site contracts, passing the exact returned owner with zero.
+It is build/call checked; connecting the actual frontend owner remains open.
+
 The online placeholder now follows the window's device/cache sequence. Native
 BECEE0 performs those operations, then power initialization at BED223, before
 returning to 73DC27; the online constructor is later at 73DC7C. The parent-PID
