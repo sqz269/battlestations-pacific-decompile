@@ -89,6 +89,8 @@ struct GameHudHost::Impl {
     bool warning_widgets_bound{false};
     std::map<int, GuiLayoutWidget*> warning_widgets;
     GuiLayoutWidget* warning_widget(bsp::WarningWidget widget);
+    // Packet cc9_screen_49h.
+    bsp::FollowScreen49State follow_screen{};
     void bind_mission_camera_0064da40();
     void step_mission_camera(float seconds);
     bool camera_target_view(bsp::ShipCaptainTargetView& out);
@@ -879,6 +881,7 @@ void GameHudHost::detach_world_2k() noexcept {
     impl.warning_screen = bsp::WarningScreenState{};
     impl.warning_widgets.clear();
     impl.warning_widgets_bound = false;
+    impl.follow_screen = bsp::FollowScreen49State{};
     bsp::clear_mission_camera();
     impl.unit_request_pending = false;
     impl.unit_request_applied = false;
@@ -1306,6 +1309,54 @@ private:
     GameHudHost::Impl& owner_;
 };
 }  // namespace
+
+namespace {
+// bsp::FollowScreen49Host over this process's HUD.
+class FollowScreen49Binding final : public bsp::FollowScreen49Host {
+public:
+    explicit FollowScreen49Binding(GameHudHost::Impl& owner) : owner_(owner) {}
+    bool screen_29h_applied() override { return owner_.menu.in_game_screen_applied(0x29); }
+    std::size_t screen_29h_unit() override {
+        // SUBSTITUTION: screen 29h's +4Ch is stored by its own update
+        // (005272E5, from 00526A40), which is not bound; it reads null.
+        owner_.record("HudFollowScreen::screen_29h_unit", 0x0067bf44u);
+        return 0;
+    }
+    std::size_t controlled_unit() override {
+        if (owner_.units == nullptr || !owner_.units->controlled_bound()) return 0;
+        return owner_.units->controlled_index() + 1;
+    }
+    std::size_t controlled_target_00927880() override {
+        // SUBSTITUTION: 00927880 goes through the unit's vtable +114h and
+        // that object's +18h, neither read; it answers none.
+        owner_.record("HudFollowScreen::controlled_target", 0x00927880u);
+        return 0;
+    }
+    bool is_kind_of(std::size_t unit, int class_id) override {
+        return owner_.units != nullptr && unit != 0
+            && owner_.units->unit_is_kind_of(unit - 1, class_id);
+    }
+    bool alive_and_visible(std::size_t unit) override {
+        return owner_.units != nullptr && unit != 0
+            && owner_.units->unit_alive_and_visible(unit - 1);
+    }
+    bool leader_3d0_alive(std::size_t unit) override {
+        static_cast<void>(unit);
+        owner_.record("HudFollowScreen::leader_3d0", 0x0067bfafu);
+        return false;
+    }
+
+private:
+    GameHudHost::Impl& owner_;
+};
+}  // namespace
+
+void GameHudHost::update_follow_screen_0067bf00() {
+    Impl& impl = *impl_;
+    FollowScreen49Binding binding(impl);
+    bsp::follow_screen_update_0067bf00(impl.follow_screen, binding);
+    impl.done("HudFollowScreen::update", 0x0067bf00u);
+}
 
 void GameHudHost::update_warning_screen_00683020(float seconds) {
     Impl& impl = *impl_;
