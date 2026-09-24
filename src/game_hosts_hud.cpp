@@ -7,6 +7,7 @@
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/mission_camera.hpp"
 #include "bsp/hud_ship_screen.hpp"
+#include "bsp/hud_warning_screen.hpp"
 #include "bsp/game_hosts_frontend.hpp"
 #include "bsp/gui_layout_loader.hpp"
 #include "bsp/ocean_height.hpp"
@@ -83,6 +84,11 @@ struct GameHudHost::Impl {
     bool ship_screen_widgets_bound{false};
     std::map<int, GuiLayoutWidget*> ship_screen_widgets;
     GuiLayoutWidget* ship_screen_widget(bsp::ShipScreenWidget widget);
+    // Packet cc9_screen_50h: screen 50h's fields and its widgets.
+    bsp::WarningScreenState warning_screen{};
+    bool warning_widgets_bound{false};
+    std::map<int, GuiLayoutWidget*> warning_widgets;
+    GuiLayoutWidget* warning_widget(bsp::WarningWidget widget);
     void bind_mission_camera_0064da40();
     void step_mission_camera(float seconds);
     bool camera_target_view(bsp::ShipCaptainTargetView& out);
@@ -870,6 +876,9 @@ void GameHudHost::detach_world_2k() noexcept {
     impl.ship_screen = bsp::ShipScreenState{};
     impl.ship_screen_widgets.clear();
     impl.ship_screen_widgets_bound = false;
+    impl.warning_screen = bsp::WarningScreenState{};
+    impl.warning_widgets.clear();
+    impl.warning_widgets_bound = false;
     bsp::clear_mission_camera();
     impl.unit_request_pending = false;
     impl.unit_request_applied = false;
@@ -1193,6 +1202,116 @@ void GameHudHost::update_ship_screen_0064dd30(float seconds, bool active) {
     ShipScreenBinding binding(impl);
     bsp::ship_screen_update_0064dd30(impl.ship_screen, binding, seconds);
     impl.done("HudShipScreen::update", 0x0064dd30u);
+}
+
+GuiLayoutWidget* GameHudHost::Impl::warning_widget(bsp::WarningWidget widget) {
+    if (!warning_widgets_bound) {
+        warning_widgets_bound = true;
+        // 006823C0's lookups on GUI_Warning.
+        static const std::pair<int, const char*> kNames[] = {
+            {0x50, "warning_text"}, {0x54, "warning_1_Icon"}, {0x58, "warning_2_Icon"},
+            {0x68, "first_Group"}};
+        GuiLayoutPage* page = menu.in_game_page(0x50, "GUI_Warning");
+        for (const auto& entry : kNames) {
+            warning_widgets[entry.first] = page != nullptr && page->root
+                ? bsp::find_descendant_by_name(*page->root, entry.second) : nullptr;
+        }
+    }
+    auto it = warning_widgets.find(static_cast<int>(widget));
+    return it != warning_widgets.end() ? it->second : nullptr;
+}
+
+namespace {
+// bsp::WarningScreenHost over this process's HUD.
+class WarningScreenBinding final : public bsp::WarningScreenHost {
+public:
+    explicit WarningScreenBinding(GameHudHost::Impl& owner) : owner_(owner) {}
+    std::size_t controlled_unit() override {
+        if (owner_.units == nullptr || !owner_.units->controlled_bound()) return 0;
+        return owner_.units->controlled_index() + 1;
+    }
+    bool controlled_flag_5d() override {
+        return owner_.units->unit_flag_005d(owner_.units->controlled_index());
+    }
+    bool controlled_is_kind_of(int class_id) override {
+        return owner_.units->unit_is_kind_of(owner_.units->controlled_index(), class_id);
+    }
+    bool plane_stall_007c6e10() override {
+        // SUBSTITUTION: 007C6E10 on the plane's [unit+3D0h] is unread here;
+        // reached only when the controlled unit is a plane.
+        owner_.record("HudWarningScreen::plane_stall", 0x007c6e10u);
+        return false;
+    }
+    bool ship_shallow_1011() override {
+        // SUBSTITUTION: unit+1011h is the latched kind-8 physics contact
+        // (the grounding edge 008255B0 rotates from +1010h,
+        // docs/UNIT_INSTANCE_UPDATE.md); this host has no terrain contacts,
+        // so the latch reads clear.
+        owner_.record("HudWarningScreen::contact_latch_1011", 0x006830a5u);
+        return false;
+    }
+    float submarine_127c() override {
+        // SUBSTITUTION: unit+127Ch (the submarine's oxygen) is not modelled;
+        // reached only for a submarine.
+        owner_.record("HudWarningScreen::submarine_oxygen", 0x006830e6u);
+        return 1.0f;
+    }
+    bool submarine_below_00852860() override {
+        owner_.record("HudWarningScreen::submarine_below", 0x00852860u);
+        return false;
+    }
+    bool pose_current_c8() override {
+        // The host's pose is always current, so 00414DB0 has nothing to refresh.
+        return true;
+    }
+    void refresh_pose_00414db0() override {}
+    bool near_world_edge_00681f40() override {
+        // SUBSTITUTION: GGame+711Ch..+7130h, the world bounds 00681F40 tests,
+        // are unmodelled (as in the units host's fly-to solver).
+        owner_.record("HudWarningScreen::world_edge", 0x00681f40u);
+        return false;
+    }
+    void set_visible(bsp::WarningWidget widget, bool visible) override {
+        GuiLayoutWidget* w = owner_.warning_widget(widget);
+        if (w == nullptr) return;
+        owner_.menu.frontend().set_widget_visible(*w, visible);
+    }
+    void set_alpha(bsp::WarningWidget widget, float alpha) override {
+        GuiLayoutWidget* w = owner_.warning_widget(widget);
+        if (w == nullptr) return;
+        owner_.menu.frontend().set_widget_color(*w, w->color[0], w->color[1], w->color[2], alpha);
+    }
+    void sound_stop(int alert, bool flag) override {
+        static_cast<void>(alert);
+        static_cast<void>(flag);
+        owner_.record("HudWarningScreen::sound_stop", 0x006831b5u);
+    }
+    bool sound_finished(int alert) override {
+        static_cast<void>(alert);
+        owner_.record("HudWarningScreen::sound_finished", 0x0068321du);
+        return false;
+    }
+    void sound_release(int alert) override {
+        static_cast<void>(alert);
+        owner_.record("HudWarningScreen::sound_release", 0x0068322fu);
+    }
+    void show_alert(bsp::WarningScreenState& screen, int alert) override {
+        static_cast<void>(screen);
+        static const std::uint32_t kShow[4] = {0x00682ed0u, 0x00682cb0u, 0x00682d60u,
+                                               0x00682e10u};
+        owner_.record("HudWarningScreen::show_alert", kShow[alert & 3]);
+    }
+
+private:
+    GameHudHost::Impl& owner_;
+};
+}  // namespace
+
+void GameHudHost::update_warning_screen_00683020(float seconds) {
+    Impl& impl = *impl_;
+    WarningScreenBinding binding(impl);
+    bsp::warning_screen_update_00683020(impl.warning_screen, binding, seconds);
+    impl.done("HudWarningScreen::update", 0x00683020u);
 }
 
 void GameHudHost::update_markers_screen_006435d0(float seconds) {

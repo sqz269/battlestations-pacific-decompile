@@ -544,3 +544,82 @@ it calls `0077C470` (`BSP_UnitInstance_SendRoleTransfer`, a session message 4Bh)
 
 It also moves an observer pair through 006952A0 and 00694A60. Under the brief's rule this screen
 waits for the lead's decision.
+
+## 16. Screen 50h, the warning screen: 00683020
+
+Packet `cc9_screen_50h` (worker cc9-platform2, 2026-09-23). Ghidra has no function at 00683020.
+The start and exclusive end are **00683020..006832E9**: the `RET 4` at 006832E6 is followed by
+padding, and the jump table sits at 006832EC. The routine was read from the disk listing
+(`disasm-raw`). The screen is `BSP_HudWarningScreen_Register`'s (00682740, GUI_Warning). Its layout
+006823C0 binds first_Group (+68h), warning_text (+50h), warning_1_Icon (+54h) and
+warning_2_Icon (+58h).
+
+**The four alerts.** Each has a flag at +28h+i, a hold at +8h+4i and a pulse phase at +18h+4i.
+
+| i | test (controlled unit, alive: byte +5Dh clear) | show routine | text |
+| --- | --- | --- | --- |
+| 0 | IsKindOf(18h) and `007C6E10([unit+3D0h]) != 0` | 00682ED0 | `ingame.warning_stall` |
+| 1 | IsKindOf(8), `0.2 > unit+127Ch` (00CE3D10) and `00852860(unit)` | 00682CB0 | `ingame.warning_o2` |
+| 2 | IsKindOf(6) and byte unit+1011h | 00682D60 | `ingame.warning_shallowwater` |
+| 3 | `00681F40(game, &unit+FCh, 0.0)`, after 00414DB0 when byte +C8h is clear | 00682E10 | `ingame.warning_exitezone` |
+
+A test that holds sets the flag and hold = 1.0. If the flag was clear, it also zeroes the phase.
+
+**The rest of the update:**
+- 00683181: when +74h (last frame's unit) is set and differs from the controlled unit, every
+  alert is cleared and its sound gets virtual +8(1).
+- 006831C2: with +2Ch clear (the register clears it), first_Group is hidden and the three
+  warning widgets get alpha 1.0.
+- 00683205..006832D3, per alert:
+  - A tracked sound whose +Ch reports finished is released.
+  - An active alert's hold drops by dt.
+  - The first alert, in index order, whose hold is still non-negative is shown through the jump
+    table at 006832EC. Every other active alert stops its sound (+8(0)) and clears its flag.
+- 006832DF: +74h = the controlled unit.
+
+Each show routine advances its phase by +78h (the stored dt) and shows first_Group. It sets the
+text and pulses warning_text and warning_2_Icon at `(sin(phase * 2pi) + 1) * 0.5 * [00CEFFA0] +
+[00CE3DC8]`. It starts the alert's sound through 00682800, and the stall alert also triggers an
+award-tracker hint. The show routines are records here. They are reached only when an alert
+fires, so this update binds no gameplay write.
+
+**Substitutions and records:**
+
+| record | address | stands for |
+| --- | --- | --- |
+| `HudWarningScreen::contact_latch_1011` | 006830A5 | unit+1011h, the kind-8 contact latch that 008255B0 rotates from +1010h (docs/UNIT_INSTANCE_UPDATE.md). The host has no terrain contacts, so it reads clear. |
+| `HudWarningScreen::world_edge` | 00681F40 | GGame+711Ch..+7130h, the world bounds, which are unmodelled; it reads "not near" |
+| `plane_stall`, `submarine_oxygen`, `submarine_below` | 007C6E10, 006830E6, 00852860 | plane and submarine terms |
+| `show_alert`, `sound_*` | the show routines, 006831B5, 0068321D, 0068322F | reached only after an alert fires |
+
+The host's pose is always current, so the +C8h test answers "current" and 00414DB0 is not called.
+
+**Switch.** `kHudWarningScreenBound`. OFF keeps the `FrontEndScreen::update` record for slot 50h.
+
+**Predictions, written before the pair.** One tree with every earlier switch on, the switch off
+then on, USN04 4500 as before. The controlled unit is the Lexington, a ship.
+- `FrontEndScreen::update` falls by 9,158, from 54,961 to 45,803.
+- `HudWarningScreen::update` appears as done with 9,158 calls.
+- `contact_latch_1011` and `world_edge` appear with 9,158 calls each. No plane, submarine, sound or
+  `show_alert` row appears.
+- The unimplemented total rises by 9,158.
+- Every gameplay line is identical. The sprite `quads` may fall if the host drew first_Group,
+  which the update now hides each frame. The alpha writes change no count.
+
+**The pair.** `local\p6_off_usn04.log` against `local\p6_on_usn04.log`, one tree, back buffer
+2560x1440.
+
+| row | OFF | ON |
+| --- | ---: | ---: |
+| unimplemented total | 2,239,419 | 2,248,577 (+9,158; predicted +9,158) |
+| FrontEndScreen::update | 54,961 | 45,803 |
+| HudWarningScreen::update | none | 9,158 done |
+| contact_latch_1011, world_edge | none | 9,158 each |
+
+- **Rows not added:** no plane, submarine, sound or `show_alert` row.
+- **Summary lines.** 156 of 157 are identical, and every gameplay line is among them. The sprite
+  `quads` did not move.
+- **The miss.** The text bridge line's `widgets` goes from 9,339 to 9,338. warning_text sits under
+  first_Group, which the update now hides each frame as the image does, so the host no longer draws
+  it as authored. I had not predicted a text line would move.
+- **Result.** Every row prediction holds. **`kHudWarningScreenBound` flips ON.**

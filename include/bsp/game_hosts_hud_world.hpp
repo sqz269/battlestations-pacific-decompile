@@ -106,6 +106,13 @@ inline constexpr bool kHudShipScreenDamageBound = true;
 // the FrontEndScreen::update record.
 inline constexpr bool kHudBaseUpdateScreensBound = true;
 
+// Packet cc9_screen_50h (docs/SHIP_SCREEN_UPDATE.md section 16). ON runs
+// screen 50h's update 00683020 (the four warnings: stall, oxygen, shallow
+// water, exit zone) through bsp::warning_screen_update_00683020 in place of
+// the FrontEndScreen::update record. The alert inputs the host lacks are
+// records that answer "no alert". OFF keeps the record.
+inline constexpr bool kHudWarningScreenBound = true;
+
 inline constexpr bool kHudShipScreenGaugesBound = true;
 
 class GameHostLog;
