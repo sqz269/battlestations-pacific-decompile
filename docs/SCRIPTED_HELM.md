@@ -112,3 +112,185 @@ does" would do nothing. Making the carrier move by helm needs one of these:
   would need replacing with the 4Bh role bookkeeping. That is a host fidelity change to the
   reference, not a harness scenario, and it touches the controlled-unit and cruise-arm code.
 - **The scripted helm.** It is only possible as scenario (a).
+
+## 6. The role bookkeeping, bound (packet cc9_player_role_bookkeeping)
+
+### 6.1 What is bound
+
+The switch is `kPlayerRoleBookkeepingBound`, in `src/game_hosts_units.cpp`.
+
+**Permission words.**
+- unit+188h + role*4 starts at 9 for every role, from 00928630's `vtable[148h](1FFh, 9)`.
+- SetRoleAvailable (008AB850, session mode 0, 008ABA51) now reaches `vtable[148h]` = 0077F360 ->
+  00927D20. That writes the word for every mask bit.
+- A kind-2 unit whose role is held and is closed to PLAYER_AI (8) gets a 4Bh release naming the
+  holder.
+
+**The 4Bh arm of 00780120 (msg+20h == 0, msg+30h == 0).**
+- take 1:
+  - mask bit 2 with 0059BBD0(unit, 1, slot) sets **unit+184h = 1** (00780214);
+  - each mask bit's role is taken through `vtable[154h]` = 0077F480 -> 009281C0 when the holder is
+    8 or AI-held and the permission is 9 or the slot.
+- take 0:
+  - mask bit 1 with role 0 held by the slot clears +184h (00780235);
+  - each role the slot holds goes back to 8.
+- 009281C0 clears +184h when role 0 is given 8.
+
+**HUD page 27h's update, 0067BB50.** It is slot 20h of vtable 00CF7A38, constructor 0068A8A0, a
+page INTF_CAPTAIN and the other unit interfaces open.
+- It tracks the controlled unit, 00E188D8, at +30h and releases role 0 on a previous unit.
+- For a kind-2 unit, it then takes role 0 with 0077C470(unit, 1, 1) when the player lacks it and
+  0059BBD0(unit, 0, slot) passes.
+
+**unit+184h**, read by 009F3DF3 (cruise forcing), 009E11C8 (cruise arm 2) and 009F5E06 (auto-target
+suppression), is now the unit's own byte. It is no longer "the unit 004C0890 bound".
+
+**Stand-ins, labelled in the source.**
+- The local slot game+18ECh is 0.
+- Every other slot is AI-held for 00927F10.
+- 0077C470's route delivers to the unit at once.
+- The page's shown byte +4h is taken as set while a unit is controlled, and the page runs once
+  per fixed step.
+- Not modelled:
+  - the player record's unit rebinding (007802A0-0078030A);
+  - 0080E290 on a kind-6 release;
+  - 00927D20's per-player `vtable[2Ch]` tail;
+  - 0077F360's and 0077F480's kind-5 suppress byte.
+
+### 6.2 Predictions, written before the runs
+
+The pairs run the switch OFF (the current reference) against ON, from the same tree, with
+`BSP_GUNNERY_RNG_STREAMS=1`.
+
+**The OFF side is the current reference** (VU0, section 5 of docs/ATTACKER_EVASION.md):
+- E2: 35 deaths, 469 hit records, first hit 98.85 s;
+- the Lexington moved 100.51 m;
+- ship AI ai_owned=20 of 21;
+- auto-target chose=0;
+- no mission end.
+
+**The Lexington under ON.**
+- Roles: it holds role 0 = 0 (the player's captain seat) and every other role = 8. Its permission
+  words read 9,8,9,9,8,8,8,8,8 (captain, machine gun and flak open). **+184h = 0.**
+- It is no longer forced into cruise. Its director holds the script's
+  `NavigatorMoveOnPath(CarrierPath1, PATH_FM_CIRCLE)` (usn_19_coralus.lua line 515), which the AI
+  drives.
+- Speed: about the Yorktown's 16.66 m/s on the same kind of order (its logged target_speed),
+  between 12 and 17.1 m/s (reference_speed 17.105).
+- Track: along CarrierPath1, not the spawn point. Displacement by 225 s is 2.5-3.9 km. The E2
+  `moved` row, a displacement, is 1-7.7 km depending on how far round the circle it gets.
+- Ship AI ai_owned rises from 20 to 21.
+- **Torpedo response stays closed.** Cruise arm 3 stores 00521E70(unit, 0) into blk+3ECh, and with
+  role 0 held by the (human) slot 0 that is 0. So the Lexington still asks for no torpedo
+  avoidance, now from arm 3 rather than arm 2.
+
+**Auto-target.**
+- 009F5E06 no longer suppresses the Lexington, so its director may choose targets.
+- Prediction: chose 0-50. The row is also held down by the other gates, which stayed 0 for
+  every other ship.
+
+**Kates and Vals.**
+- In the reference both torpedo flights that reached aim target the Yorktown, not the Lexington.
+- Aim-entry ranges and releases (0 / 0) are unmoved except through path coupling.
+
+**Escorts.** Those keeping station on the Lexington now follow a moving leader. The ship AI's
+station_keeping and replan counts move.
+
+**AA.**
+- The carrier moves under the attack, so path coupling moves the hits.
+- E2 deaths 28-42 (35 reference), hit records 380-560.
+- No ordnance release, as before.
+
+**Other missions.**
+- **USN04 4500:** the same Lexington change. Deaths 20-32 (26 reference), and moved 1-3.9 km at
+  225 s.
+- **USN01 3000:** the controlled unit is Airfield2, a non-ship on an unresolved dispatch. Its role
+  0 may be taken, but no reader in this host reacts to it. Rows are flat: 5 deaths, 2 torpedo
+  drops, first hit 55.65 s.
+
+**Mission end:** none in all three.
+
+### 6.3 The pairs, measured
+
+The runs used same-tree binaries `local\rk0b` (switch off) and `local\rk1b` (on), with
+`BSP_GUNNERY_RNG_STREAMS=1`.
+
+**A first pass (`local\RK*`) exposed a second stand-in.** The director step (00836920) and the
+cruise step (009E11C8) took "is the controlled unit" from their own `is_controlled` call rather
+than from `unit_player_controlled_0184`. With the switch on, cruise arm 2 therefore still ran
+(914 calls). Both now read the unit's byte through `player_flag_0184`, and the `RB*` pairs below
+are from that tree.
+
+**The OFF side:**
+- RB0 matches RK0 on every summary row. It is the current main's reference (E2: 461 hit records,
+  35 deaths).
+- The moved row is the stationary carrier of section 1: 100.51 m.
+
+| row | E2 off | E2 on | USN04 4500 off | USN04 4500 on | USN01 off | USN01 on | prediction | verdict |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Lexington +184h / roles held / open | - | 0 / 0,8x8 / 9,8,9,9,8x5 | - | same | - | Airfield2 role 0 taken | as written | held |
+| controlled unit moved | 100.51 m | **6880.79 m** | 100.51 m | **3424.02 m** | 0.00 | 0.00 | 1-7.7 km / 2.5-3.9 km / flat | held |
+| total path (all units) | 91025 | 135988 | 46762 | 68949 | 12212 | 12212 | - | - |
+| ship AI ai_owned | 20 | 21 | - | 21 | - | - | 21 | held |
+| cruise arm 2 (009E11E8) calls / cruise steps | 235 / 31 | 0 / 647 | - | 0 / 401 | - | - | arm 3 instead of arm 2 | held |
+| auto-target scans / chose | 9020 / 0 | 9471 / 0 | 4520 / 0 | 4746 / 0 | 9211 / 0 | 9362 / 0 | chose 0-50 | held |
+| hit records | 461 | **584** | 367 | 474 | 135 | 135 | E2 380-560 | **missed**: above |
+| Japanese deaths | 35 | 35 | 27 | 27 | 5 | 5 | 28-42 / 20-32 / 5 | held |
+| damage | 7700.0 | 7720.9 | 5940.0 | 6252.5 | 2250.0 | 2250.0 | - | - |
+| fighter hits (E2) | 64 | 80 | - | - | - | - | coupled | - |
+| releases (torpedo / bomb) | 0 / 0 | 0 / 0 | 0 / 0 | 0 / 0 | 2 / 0 | 2 / 0 | unmoved | held |
+| plane water contacts | 15 | 15 | 11 | 13 | 3 | 3 | - | - |
+| first hit | 98.85 s | 99.05 s | 98.85 s | 99.05 s | 55.65 s | 55.65 s | - | - |
+| mission end | none | none | none | none | none | none | none | held |
+
+**Reading.**
+- **The carrier sails its path.** It covers 3.4 km by 225 s and 6.9 km (displacement) by 450 s,
+  about 15 m/s along CarrierPath1. That is the Yorktown's order speed.
+- **The torpedo gate stays closed for it, now through arm 3.** Cruise arm 2 no longer runs, and
+  the step takes arm 3. The Lexington's own slot, role 0, is slot 0, a human, so 00521E70 answers
+  0 and blk+3ECh is 0. The host never took its "owner roles unavailable" record.
+- **The Kates now reach aim on a moving carrier.**
+  - On E2, Kate #2.1 .-4 and #6.1 .-2/.-3 enter aim against the Lexington at 314-422 m, with
+    target_speed 15.4-16.2 m/s.
+  - In the off run no Kate aims at the Lexington: all five aim entries target the Yorktown.
+  - No Kate releases in either run; the release gap is upstream.
+- **Hits and fighter hits rise.**
+  - Hit records rise 461 to 584 on E2 and 367 to 474 on USN04. The carrier and its escorts now move
+    under the attack, and the Lexington's own director is no longer suppressed.
+  - Deaths are unmoved, so the extra hits land on surviving aircraft.
+  - The per-kill split is RNG-coupled and is not attributed.
+- **USN01 is flat** apart from Airfield2's auto-target scans. Its role 0 is taken, and no reader
+  here acts on it.
+
+**Switch state landed: `kPlayerRoleBookkeepingBound` ON.**
+
+### 6.4 Reference rows with the role bookkeeping (for docs/GAME_EXECUTABLE.md)
+
+This section is written here because docs/GAME_EXECUTABLE.md is leased to
+`cc9_surface_gunnery_reference`. It is to be appended there as a dated section.
+
+> **Mission reference baselines, 2026-09-24 (after the player role bookkeeping).**
+>
+> The binary is `local\rk1b`, built from agent/cc9-dogfight-engaged on main 35a065629. It is the
+> packet cc9_player_role_bookkeeping tree, with `kPlayerRoleBookkeepingBound` ON and every other
+> switch in its landed state. The runs used `BSP_GUNNERY_RNG_STREAMS=1`.
+>
+> **Every idle-player row before this section carried a host artefact:** the controlled Lexington
+> stood still (100.51 m) because the host read "controlled unit" as unit+184h. In the image
+> +184h needs an accepted role-1 take, which USN04's script never allows. So the image's carrier
+> follows its CarrierPath1 under the AI (docs/SCRIPTED_HELM.md section 6,
+> docs/CONTROLLED_UNIT_HELM.md correction).
+
+| mission | frames | damage | deaths | queued_hits | torpedo drops | bomb drops | plane water contacts | first_hit | controlled moved | mission end | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 mission | 6252.5 | 27 | 474 | 0 | 0 | 13 | 99.05 s | 3424.02 m | none | `local\RB1_usn04.log` |
+| USN01 | 3000 mission | 2250.0 | 5 | 135 | 2 | 0 | 3 | 55.65 s | 0.00 (Airfield2) | none | `local\RB1_usn01.log` |
+| USN04 (E2) | 9000 mission | 7720.9 | 35 | 584 | 0 | 0 | 15 | 99.05 s | 6880.79 m | none | `local\RB1_9000.log` |
+
+The same-tree OFF rows are `local\RB0_*`:
+
+| mission | damage | deaths | queued_hits | controlled moved |
+| --- | --- | --- | --- | --- |
+| USN04 4500 | 5940.0 | 27 | 367 | 100.51 m |
+| USN01 3000 | 2250.0 | 5 | 135 | 0.00 |
+| E2 9000 | 7700.0 | 35 | 461 | 100.51 m |

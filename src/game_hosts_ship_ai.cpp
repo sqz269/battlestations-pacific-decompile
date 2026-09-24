@@ -1383,8 +1383,9 @@ public:
         return command;
     }
     bool unit_player_controlled_0184() override {
-        // 009F3DF3, [ai+0B00h]+184h. The executable's own byte is the controlled
-        // unit 004C0890 bound, which is what unit+184h names.
+        // 009F3DF3, [ai+0B00h]+184h: set only by an accepted role-1 take
+        // (00780214), with GameUnitsHost's role bookkeeping on; the controlled
+        // unit 004C0890 bound when it is off (docs/SCRIPTED_HELM.md section 6).
         owner_.done("ShipAi::unit_player_controlled", 0x009f3df3u);
         return owner_.units.unit_player_controlled_0184(index_);
     }
