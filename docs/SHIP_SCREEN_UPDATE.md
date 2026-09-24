@@ -774,3 +774,63 @@ record.
 - **Rows not added:** no `role_transfer`, `issue_order`, `unit_1130` or `game_19c4` row.
 - **Total.** The unimplemented total rises by 18,316.
 - **Summary lines.** All identical, and the controlled unit's motion is unchanged.
+
+**The part 2 pair.** `local\p9_off_usn04.log` against `local\p9_on_usn04.log`, one tree, 2560x1440.
+
+| row | OFF | ON |
+| --- | ---: | ---: |
+| unimplemented total | 2,276,053 | 2,294,369 (+18,316; predicted +18,316) |
+| integrated_controls (record) | 9,158 | none |
+| integrated_controls_0064b870 | none | 9,158 done |
+| control_inputs | none | 9,158 |
+| local_player_role | none | 18,316 |
+
+- No `role_transfer`, `issue_order`, `unit_1130` or `game_19c4` row appears.
+- **Summary lines.** All 157 are identical.
+- **Result.** Every prediction holds. **`kHudShipViewControlsBound` flips ON.**
+
+## 20. Handoff (cc9-platform2, 2026-09-23)
+
+**Landed on agent/cc9-platform2**, each switch ON by its own USN04 pair:
+
+| switch | code | what it runs |
+| --- | --- | --- |
+| `kHudShipScreenDamageBound` | 0064F665..0064FD24 | 45h's damage panel |
+| `kHudShipScreenGaugesBound` | 0064FD24..006500C1 | 45h's direction icon and digit gauges |
+| `kHudBaseUpdateScreensBound` | 004F75C0 | slots 26h, 2Eh and 3Eh, a bare `RET 4` |
+| `kHudWarningScreenBound` | 00683020 | 50h's four warnings |
+| `kHudFollowScreenBound` | 0067BF00 | 49h's follow pick |
+| `kHudShipViewScreenBound` | 0064D610 | 46h's top-level flow |
+| `kHudShipViewControlsBound` | 0064B870 | 46h's integrated controls |
+
+The screen code for 49h, 50h and 46h is in `src/hud_warning_screen.cpp`.
+
+**What is left of the in-mission screens:**
+- **27h, 0067BB50..0067BC59.** It calls 0077C470 (SendRoleTransfer) with no input gate (section
+  15). It waits for the lead's decision.
+- **46h part 3, `HudShipView::view_input` (0064A400).**
+  - Screen 26h's 0051F330 runs 0051EF00 (the view-action handling, 0051E7E0, 0051EAA0/0051E6E0
+    and widget +20h) and 0051F050. 0051F050 integrates the camera mover's yaw (+384h) and pitch
+    (0051E650) from input axes +1584h/+15B4h, and handles action 75h and the controlled unit's
+    vtable +C8h.
+  - With 46h's +20h set, 0064A400 also runs screen 2Eh's 005454B0, which stores three floats at
+    2Eh+48h..+50h and forwards two to screen 4Dh's 00637620 when game+19C4h is clear.
+  - The camera mover is the mission camera's (`docs/MISSION_CAMERA.md`). Read how its tick
+    already applies yaw before binding a second writer.
+- **46h part 4, `HudShipView::screen_2eh_005484f0`.** 005484F0 is 3.3 KB of screen 2Eh: seven
+  input actions, 004C5090 holds, two interface requests (`BSP_FrontEndManager_PushInterfaceRequest`)
+  and a session route. Read it whole; expect input-gated order and UI-mode writes.
+- **29h, 00527260** (continues past 0052735C) with 00526A40, its large worker. 29h's +4Ch is what
+  49h's `screen_29h_unit` record stands for.
+- **44h, 00649860..0064A24C**, the HudRoot update. `src/hud_root_rows.cpp` reconstructs part of it,
+  but its host is not bound.
+
+**Method notes:**
+- Build each pair from one tree: build OFF, copy `bsp_game.exe` and `xlive_stub.dll` to
+  `local\bin\<name>`, flip the switch, build ON, copy again. Pass `-Exe local\bin\<name>\bsp_game.exe`
+  to `tools/run_game.ps1`, so both runs can queue at once while the tree moves on.
+- `local\w\unimpl.py <off.log> <on.log>` (worker tree, not committed) prints the unimplemented
+  total, every row that changed and every summary line that moved.
+  `PlatformLoopCallbacks::pretranslate` moves between any two runs; it counts window messages.
+- Ghidra has no function at 00683020, 0067BF00 or 0064D610. Read those from `disasm-raw`, and
+  take their ends from the RET and padding.

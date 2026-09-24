@@ -129,7 +129,7 @@ inline constexpr bool kHudShipViewScreenBound = true;
 // and rudder controls. The input manager fields and the player-role test are
 // records; the role transfer and the order send are records never reached
 // without input. OFF keeps the part-1 record.
-inline constexpr bool kHudShipViewControlsBound = false;
+inline constexpr bool kHudShipViewControlsBound = true;
 
 inline constexpr bool kHudShipScreenGaugesBound = true;
 
