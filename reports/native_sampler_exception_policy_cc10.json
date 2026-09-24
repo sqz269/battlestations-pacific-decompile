@@ -1,0 +1,50 @@
+{
+  "packet": "cc10_sampler_exception_policy",
+  "status": "compiled_original_helper_and_owned_benign_TLS_policy_protocol_verified",
+  "original_launches": 0,
+  "original_attaches": 0,
+  "policy_sha256": "b01ec5b46ee0480fc37f45696ab164b56032bf10200cf0c7490712084a2d7a58",
+  "prepared_original_helper_sha256": "fd1fd17d6a112318fda2ef5930ef77ee724e6a038b6af5f803e55295d1f1bab8",
+  "prepared_original_helper_source_sha256": "bdca0c7cf8f36a356dac208f529fcded5b9972ee1b1cdf7408d65efb24b44a22",
+  "worker_index_sha256": "340866d8ca110ef5f10bd0a4fe0a8810ed303287c2ed5e2ec30e827284290917",
+  "worker_artifacts": 109,
+  "primary_review": [
+    "Complete shared policy/diagnostics header and all original-helper differences from reviewed run01 source inspected",
+    "Fixture target TLS changes and helper protocol/owned-job changes inspected",
+    "All109 frozen source/build/fixture artifact hashes independently verified",
+    "Handled preentry first chance reaches fixture handler, original entry/hardware protocol and exit0; unhandled reaches second chance and owned closure125",
+    "Existing original admission/profile guard/job/capture lifecycle remains inherited; new controller is separate work"
+  ],
+  "policy": {
+    "unowned_first_chance": "DBG_EXCEPTION_NOT_HANDLED",
+    "second_chance": "diagnostic owned-process closure",
+    "owned_markers": "strict entry/marker/primary-thread/stage/DR validation",
+    "diagnostics": "exception fields, native/WOW64 requested contexts, bounded stack/code, current mapped regions and loaded-module records; explicit read errors"
+  },
+  "fixture": {
+    "handled_pid": 79336,
+    "handled_tid": 76288,
+    "handled_exit": 0,
+    "handled_entry_and_two_hardware_checks": true,
+    "unhandled_exit": 125,
+    "unhandled_second_chance_observed": true,
+    "all_inner_outer_jobs_empty": true,
+    "original_helper_executed": false
+  },
+  "limits": [
+    "Raw requested CONTEXT buffers, bounded code/stack memory and current module regions are observations, not a caller trace.",
+    "No full XSTATE/architectural equivalence, linked-record/pointer-parameter traversal, native unwind, or exception-cause proof.",
+    "Fixture current mapped module paths are queried but fixture helper does not duplicate original LOAD_DLL hash registry; production diagnostics reuse the existing current hashed records.",
+    "Only prescribed TLS C0000008 handled/unhandled cases exercised; other unowned debug notifications, extra-thread exceptions, and native64 dispatcher path remain untested."
+  ],
+  "source_semantics": "https://learn.microsoft.com/en-us/windows/win32/api/debugapi/nf-debugapi-continuedebugevent",
+  "native_architectural_equivalence": false,
+  "sampler_captured": false,
+  "game_validated": false,
+  "archive": {
+    "path": "local/cc10-platform-evidence/sampler-exception-policy.zip",
+    "sha256": "29cd5574afd14f60dc58078f0391f4f2370140f7ab9779f3f49afd8403ae0d3c",
+    "files": 112,
+    "valid": true
+  }
+}
