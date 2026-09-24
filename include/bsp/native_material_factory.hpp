@@ -30,6 +30,12 @@ struct NativeMaterialFactoryAcquired {
 NativeMaterialStorage* create_native_material_from_effect_cache_00535320(
     NativeString&, NativeMaterialSlotPool&, NativeRenderActualOwners&,
     NativeMaterialEffectCacheContext&, NativeMaterialFactoryAcquired&);
+// Same numeric engine over an actual initialized8h header. Capture the header
+// identity on entry, preserving its current fields through the genuine loader.
+// No NativeString lifetime is introduced over caller-owned DWORD scratch.
+NativeMaterialStorage* create_native_material_from_effect_cache_00535320(
+    const void* actual_effect_name, NativeMaterialSlotPool&, NativeRenderActualOwners&,
+    NativeMaterialEffectCacheContext&, NativeMaterialFactoryAcquired&);
 
 // Original ECX=actual8h effect-name header, EAX=material, RET. Capture the
 // current F8D394 renderer once and invoke its CURRENT callable virtual+48

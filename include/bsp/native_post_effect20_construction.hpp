@@ -13,6 +13,16 @@ namespace bsp {
 class ActualNativeStringPoolStorage;
 struct NativeTracelineRenderAccess;
 
+// Immutable view metadata over three live, initialized, contiguous caller
+// DWORDs: current name-header pointer, count/allocation/height, optional size
+// receiver. Native writes only words[1]; callbacks may change current inputs.
+// Backing remains stable through this call and its synchronous source unwind;
+// metadata/context/diagnostics and unexposed private/nested stacks are disjoint.
+// No aggregate lifetime is introduced over the caller's heterogeneous scratch.
+struct NativePostEffect20ArgumentView {
+    volatile std::uint32_t* const words;
+};
+
 // One application's existing canonical domains. All references and publication
 // cells remain stable through every surviving child and host view. The GUI owner
 // domain is used only for its non-retaining declaration registration/reuse path;
@@ -116,6 +126,8 @@ public:
 private:
     friend void* construct_native_post_effect20_00b4e470(void*, std::size_t,
         NativeString&, std::uint32_t, const void*, NativePostEffect20ConstructionBlock&);
+    friend void* construct_native_post_effect20_00b4e470(void*, std::size_t,
+        const NativePostEffect20ArgumentView&, NativePostEffect20ConstructionBlock&);
     enum Slot : std::size_t { mesh, section, material, stream, model, camera, owner, slot_count };
     void validate() const;
     void settle() noexcept;
@@ -123,7 +135,7 @@ private:
     void retired(Slot, RenderCommandReference&) noexcept;
     void string_cleanup(NativeString&);
     void return_captured_string(void*, std::uint32_t);
-    void unwind(int&, void*&, void*&, void*&, std::uint32_t&);
+    void unwind(int&, void*&, void*&, volatile std::uint32_t&, std::uint32_t&);
     static void retire_mesh(void*, NativeMeshReference&) noexcept;
     static void retire_section(void*, NativeMeshSectionReference&) noexcept;
     static void retire_material(void*, NativeMaterialReference&) noexcept;
@@ -167,6 +179,19 @@ private:
 void* construct_native_post_effect20_00b4e470(void* actual_allocation,
     std::size_t allocation_bytes, NativeString& actual_effect_name,
     std::uint32_t vertex_count, const void* optional_size_input,
+    NativePostEffect20ConstructionBlock&);
+
+// Same existing engine with actual current incoming cells instead of entry
+// snapshots: count E4A5/E5F0; name E5D4/E6E1; allocation writes E640/E6D4/E741/
+// E7C3; optional receiver E75B/E76E; height E774 then CURRENT reload E77D.
+// EH states4/7/10/11 read CURRENT words[1] and leave its stale value intact.
+// Every reached cleanup cell must identify the valid corresponding allocation.
+// Typed entry forwards private cells; raw input headers need no NativeString.
+// Existing logical model/camera companions and private scratch/providers remain
+// unchanged: this interface does NOT admit a new actual45Ch/24h graph, source0,
+// full initializer, native FH3/SEH or unknown dimension/profile dispatch.
+void* construct_native_post_effect20_00b4e470(void* actual_allocation,
+    std::size_t allocation_bytes, const NativePostEffect20ArgumentView&,
     NativePostEffect20ConstructionBlock&);
 
 } // namespace bsp

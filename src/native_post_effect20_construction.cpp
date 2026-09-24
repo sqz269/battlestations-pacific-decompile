@@ -88,10 +88,11 @@ NativeCameraOwner& current_camera(void* actual, NativePostEffect20ConstructionCo
 // B3CD20/B3CD10, each MOV EAX,[ECX+offset]; RET (four bytes).
 Word surface_height_00b3cd20(const void* actual) noexcept { return word(actual, 0x20); }
 Word surface_width_00b3cd10(const void* actual) noexcept { return word(actual, 0x1c); }
-Word surface_dimension(const void* actual, NativePostEffect20ConstructionContext& context, bool height) {
+Word surface_dimension(const void* actual, Word captured_profile,
+    NativePostEffect20ConstructionContext& context, bool height) {
     const Word slot = height ? 0x20u : 0x1cu;
     const Word callee = height ? 0x00b3cd20u : 0x00b3cd10u;
-    require(word(actual) == 0x00d619a0u && word(context.surface_profile_00d619a0, slot) == callee,
+    require(captured_profile == 0x00d619a0u && word(context.surface_profile_00d619a0, slot) == callee,
         "optional post-effect size input requires its current D619A0 dimension slot");
     return height ? surface_height_00b3cd20(actual) : surface_width_00b3cd10(actual);
 }
@@ -248,7 +249,7 @@ void NativePostEffect20ConstructionBlock::return_captured_string(void* data, Wor
     return_native_string_pool_00bd1510(pool, data, bytes, raw.actual_small_returns_disabled_01090aa4);
 }
 void NativePostEffect20ConstructionBlock::unwind(int& state, void*& frame_raw, void*& mesh_raw,
-    void*& late_raw, Word& mask) {
+    volatile Word& allocation_argument, Word& mask) {
     // DF86D4/DF86F8: transition before action; a second C++ cleanup failure
     // continues the remaining schedule without replaying a consumed action.
     // This explicit source policy propagates the newest cleanup exception;
@@ -264,29 +265,36 @@ void NativePostEffect20ConstructionBlock::unwind(int& state, void*& frame_raw, v
             case 2: string_cleanup(declaration_name_); break;
             case 3: return_native_mesh_slot_00b72f70(std::exchange(mesh_raw, nullptr)); break;
             case 4: {
-                void* raw = std::exchange(late_raw, nullptr);
+                void* raw = pointer(allocation_argument); // CBFB53: CURRENT [EH EBP+8]
                 model_owner_.reset(); acquired_.model_owner = nullptr;
                 return_native_model_slot_00b748c0(raw); break;
             }
             case 5: case 6:
                 if (mask & 1u) { mask &= ~1u; string_cleanup(model_name_); } break;
             case 7: {
-                void* raw = std::exchange(late_raw, nullptr);
+                void* raw = pointer(allocation_argument); // CBFB74: CURRENT [EH EBP+8]
                 camera_owner_.reset(); acquired_.camera_owner = nullptr;
                 return_native_camera_slot_00b71350(raw); break;
             }
             case 8: case 9:
                 if (mask & 2u) { mask &= ~2u; string_cleanup(camera_name_); } break;
-            case 10: case 11: singleton_lifetime_free(std::exchange(late_raw, nullptr)); break;
+            case 10: case 11: singleton_lifetime_free(pointer(allocation_argument)); break;
             default: std::terminate();
             }
-        } catch (...) { unwind(state, frame_raw, mesh_raw, late_raw, mask); throw; }
+        } catch (...) { unwind(state, frame_raw, mesh_raw, allocation_argument, mask); throw; }
     }
 }
 
 void* construct_native_post_effect20_00b4e470(void* actual, std::size_t allocation_bytes,
     NativeString& effect_name, Word vertex_count, const void* optional_size_input,
     NativePostEffect20ConstructionBlock& block) {
+    volatile Word words[3]{bits(&effect_name),vertex_count,bits(optional_size_input)};
+    const NativePostEffect20ArgumentView arguments{words};
+    return construct_native_post_effect20_00b4e470(actual,allocation_bytes,arguments,block);
+}
+
+void* construct_native_post_effect20_00b4e470(void* actual, std::size_t allocation_bytes,
+    const NativePostEffect20ArgumentView& arguments, NativePostEffect20ConstructionBlock& block) {
     require(block.phase_ == NativePostEffect20ConstructionBlock::Phase::prepared && actual &&
         !(bits(actual) & 3u) && allocation_bytes >= 0x20u,
         "post-effect constructor requires prepared storage and an aligned actual 20h allocation");
@@ -299,15 +307,15 @@ void* construct_native_post_effect20_00b4e470(void* actual, std::size_t allocati
     Word mask = 0;
     void* frame_raw = nullptr;
     void* mesh_raw = nullptr;
-    void* late_raw = nullptr;
     auto set_state = [&](int next) noexcept { state = next; acquired.native_state = next; };
     try {
         put(actual, 0, 0x00ceb130u); // B4E493
         new (pointer(bits(actual) + 4u)) std::atomic<std::int32_t>(1); // B4E49E, sole initial count write
+        const Word initial_count = arguments.words[1]; // B4E4A5 before derived profile/clears
+        set_state(0); // B4E4AB
         put(actual, 0, 0x00d61ec0u); // B4E4AF
         put(actual, 0x0c, 0); put(actual, 0x10, 0); put(actual, 0x14, 0);
-        put(actual, 0x1c, vertex_count);
-        set_state(0);
+        put(actual, 0x1c, initial_count);
         frame_raw = allocate(0x40); // B4E4C1, raw CRT allocation identity
         set_state(1);
         auto* frame = frame_raw ? construct_native_frame_target_owner_00b1fbb0(frame_raw) : nullptr;
@@ -361,6 +369,7 @@ void* construct_native_post_effect20_00b4e470(void* actual, std::size_t allocati
         release_registered<NativeLogicalVertexReference>(stream, c.destruction.actual_decrement_00ce2220,
             c, 0x00d61d6cu, c.streams.actual_logical_profile_00d61d6c, 0x00b4bf10u);
 
+        const void* const effect_name = pointer(arguments.words[0]); // B4E5D4
         NativeMaterialStorage* material = create_native_material_from_effect_cache_00535320(effect_name,
             c.materials.material_slots, c.destruction.actual_owners,
             c.material_effects, *block.material_factory_); // B4E5D8
@@ -381,6 +390,7 @@ void* construct_native_post_effect20_00b4e470(void* actual, std::size_t allocati
             NativeMeshSectionCompanionDisposal{&block, &NativePostEffect20ConstructionBlock::retire_section});
         acquired.section_reference = &*block.section_reference_;
         block.bind(NativePostEffect20ConstructionBlock::section, section, *block.section_reference_);
+        const Word vertex_count = arguments.words[1]; // B4E5F0, captured for all three stores
         // B4E5FE..618: preserve write order and every original DWORD input.
         put(section, 0x0c, 0); put(section, 0x10, vertex_count); put(section, 0x14, 0);
         put(section, 0x08, vertex_count == 3u ? 4u : 5u);
@@ -389,11 +399,12 @@ void* construct_native_post_effect20_00b4e470(void* actual, std::size_t allocati
         rebuild_native_mesh_section_vertex_layout_00b865a0(*section, c.destruction.actual_owners, mesh, c.layouts);
         append_native_mesh_draw_section_00b73c60(*mesh, section);
 
-        late_raw = allocate_native_model_slot_00b74eb0();
+        void* const model_raw = allocate_native_model_slot_00b74eb0();
+        arguments.words[1] = bits(model_raw); // B4E640; normal callee keeps captured allocation
         set_state(4);
         void* model = nullptr;
-        if (late_raw) {
-            block.model_owner_.emplace(late_raw, NativeModelPool::slot_bytes, c.models);
+        if (model_raw) {
+            block.model_owner_.emplace(model_raw, NativeModelPool::slot_bytes, c.models);
             acquired.model_owner = &*block.model_owner_;
             construct_native_string_cstring_0041e870(&block.model_name_, c.model_name_00d61ee4, c.raw_strings);
             mask |= 1u; set_state(5);
@@ -427,13 +438,15 @@ void* construct_native_post_effect20_00b4e470(void* actual, std::size_t allocati
         }
         set_native_model_geometry_00b75170(current_model(current_model_actual, c), 0, mesh, scalar_178, scalar_17c);
 
-        late_raw = allocate_native_camera_slot_00b71930();
+        void* const camera_raw = allocate_native_camera_slot_00b71930();
+        arguments.words[1] = bits(camera_raw); // B4E6D4
         set_state(7);
         void* camera = nullptr;
-        if (late_raw) {
-            block.camera_owner_.emplace(late_raw, NativeCameraPool::slot_bytes, c.cameras, std::move(block.camera_scene_));
+        if (camera_raw) {
+            block.camera_owner_.emplace(camera_raw, NativeCameraPool::slot_bytes, c.cameras, std::move(block.camera_scene_));
             acquired.camera_owner = &*block.camera_owner_;
-            prefix_native_string_header_0043c130(&block.camera_name_, c.camera_prefix_00d61ed0, &effect_name, c.raw_strings);
+            const void* const current_name = pointer(arguments.words[0]); // B4E6E1, independently current
+            prefix_native_string_header_0043c130(&block.camera_name_, c.camera_prefix_00d61ed0, current_name, c.raw_strings);
             mask |= 2u; set_state(8);
             camera = construct_native_camera_00b71a80(*block.camera_owner_, &block.camera_name_,
                 c.node_constants, std::move(block.viewport_admissions_[0]));
@@ -449,16 +462,22 @@ void* construct_native_post_effect20_00b4e470(void* actual, std::size_t allocati
         }
         if (mask & 2u) block.string_cleanup(block.camera_name_); // native normal route does not clear bit2
 
-        late_raw = allocate(0x34);
+        void* const viewport_raw = allocate(0x34);
+        arguments.words[1] = bits(viewport_raw); // B4E741
         set_state(10);
-        NativeViewportOwner* viewport = late_raw ? initialize_native_viewport_owner_00b1f850(late_raw, c.cameras.viewport) : nullptr;
+        NativeViewportOwner* viewport = viewport_raw ? initialize_native_viewport_owner_00b1f850(viewport_raw, c.cameras.viewport) : nullptr;
+        const void* const first_size_input = pointer(arguments.words[2]); // B4E75B, before state0
         set_state(0);
         acquired.viewport_creator = viewport;
         if (viewport) c.viewports.constructed(block.viewport_admissions_[1], *viewport);
-        if (optional_size_input) {
-            const Word height = surface_dimension(optional_size_input, c, true);
-            const Word width = surface_dimension(optional_size_input, c, false); // fresh current profile and slot
-            const Word dimensions[2]{width, height};
+        if (first_size_input) {
+            const Word height = surface_dimension(first_size_input, word(first_size_input), c, true);
+            const void* const second_size_input = pointer(arguments.words[2]); // B4E76E
+            const Word second_profile = word(second_size_input); // B4E772 before height overwrite
+            arguments.words[1] = height; // B4E774; current slot1C is loaded only afterward
+            const Word width = surface_dimension(second_size_input, second_profile, c, false);
+            const Word current_height = arguments.words[1]; // B4E77D after width getter
+            const Word dimensions[2]{width, current_height};
             require(viewport != nullptr, "native post-effect viewport dimensions require successful allocation");
             set_native_viewport_dimensions_00b1f940(*viewport, dimensions);
         }
@@ -475,10 +494,11 @@ void* construct_native_post_effect20_00b4e470(void* actual, std::size_t allocati
             }
         }
 
-        late_raw = allocate(0x28);
+        void* const draw_raw = allocate(0x28);
+        arguments.words[1] = bits(draw_raw); // B4E7C3
         set_state(11);
         void* draw = nullptr;
-        if (late_raw) {
+        if (draw_raw) {
             float visibility, leading;
             void* current_draw_model;
             void* current_draw_camera;
@@ -494,7 +514,7 @@ void* construct_native_post_effect20_00b4e470(void* actual, std::size_t allocati
                 fldz
                 fstp dword ptr leading
             }
-            draw = construct_native_post_effect_draw_record_00b51bd0(late_raw, &c.draw_entries,
+            draw = construct_native_post_effect_draw_record_00b51bd0(draw_raw, &c.draw_entries,
                 leading, section, mesh, current_draw_model, current_draw_camera, visibility);
         }
         put(actual, 0x18, bits(draw)); // B4E7F5
@@ -522,7 +542,7 @@ void* construct_native_post_effect20_00b4e470(void* actual, std::size_t allocati
         return actual;
     } catch (...) {
         try {
-            if (!acquired.native_completed) block.unwind(state, frame_raw, mesh_raw, late_raw, mask);
+            if (!acquired.native_completed) block.unwind(state, frame_raw, mesh_raw, arguments.words[1], mask);
         } catch (...) { block.settle(); throw; }
         block.settle();
         throw;
