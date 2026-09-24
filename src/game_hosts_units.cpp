@@ -425,6 +425,20 @@ struct GameUnitSlot {
     float fd_vel_648[3]{0.0f, 0.0f, 0.0f};
     float fd_accel_654[3]{0.0f, 0.0f, 0.0f};
     int fd_steps{0};
+    // DIAGNOSTIC, packet cc9_fighter_accel_friendly_fire: per fighter, the
+    // target's +654h against the gun tick's own velocity difference.
+    double ga_a654_sum{0.0}, ga_aold_sum{0.0}, ga_dt_sum{0.0}, ga_sep_sum{0.0};
+    float ga_a654_max{0.0f}, ga_aold_max{0.0f};
+    int ga_acc_n{0}, ga_arc_654{0}, ga_arc_old{0};
+    // Packet cc9_fighter_accel_friendly_fire: the unit+C50h object's +70h
+    // friendly-aircraft list (007E11D0) with its own copy of the +7Ch clock,
+    // the +80h re-check clock (period +90h = 1.0) and the cached +C8h answer
+    // of 007DEDB0.
+    std::vector<std::size_t> nb_friend_70;
+    float nb_clock_70{4.5f};
+    float nb_clock_80{1.5f};
+    bool nb_busy_c8{false};
+    int ff_busy_ticks{0}, ff_checks{0};
     // 009FA248: plan+2D4h = 0 from the fine aim 009F9FC0. 0099E756 then skips
     // the planner's yaw arm 0099E81A. Reset by the planner, as 0099B450 seeds 1.
     bool gl_yaw_mode_2d4_zero{false};
@@ -2887,7 +2901,14 @@ struct GameUnitsHost::Impl {
     // target acceleration from the fixed-step difference (was the gun tick's).
     static constexpr bool kTorpedoArmTimeToTargetBound = true;
     static constexpr bool kPlaneYawGainBc4Bound = true;
-    static constexpr bool kFighterLeadAccel654Bound = false;
+    static constexpr bool kFighterLeadAccel654Bound = true;
+    // Packet cc9_fighter_accel_friendly_fire (docs/FIGHTER_GUN_LEAD.md 5):
+    // 007B96D0 -> 007DEDB0, the fighter gun's friendly-in-line hold. The
+    // answer feeds DogfightGunInputs::finder_busy at the fighter gun call site.
+    static constexpr bool kFighterFriendlyInLineBound = true;
+    // DIAGNOSTIC: every kFighterAccelTraceEvery lead ticks one line per
+    // fighter comparing the two accelerations; 0 = off in the landed build.
+    static constexpr int kFighterAccelTraceEvery = 0;
     // game+18ECh, the local player's slot: 0 in this single-player host.
     static constexpr std::int32_t kLocalPlayerSlot = 0;
     std::size_t role_screen_unit_plus_one{0};   // page 27h's tracked unit, +30h
@@ -3464,6 +3485,7 @@ struct GameUnitsHost::Impl {
         return true;
     }
     void vehicle_avoidance_007df4f0(GameUnitSlot& u, float dt);
+    bool friendly_in_line_007b96d0(GameUnitSlot& u, float dt);
     void terrain_avoidance_0099f1c0(GameUnitSlot& u, float dt);
     float avoid_surface_height(float x, float z);
     static bool avoid_in_dive(const GameUnitSlot& u);
@@ -5678,6 +5700,78 @@ void GameUnitsHost::Impl::player_helm_issue_0064b870(GameUnitSlot& slot) {
     ++helm_issues;
     // 0064BB19: a held role 1 is released when game+19C4h is set; that byte
     // has no host producer and is taken clear. Labelled.
+}
+
+// ---------------------------------------------------------------------------
+// Packet cc9_fighter_accel_friendly_fire (docs/FIGHTER_GUN_LEAD.md section 5)
+// ---------------------------------------------------------------------------
+
+// 007B96D0 (body 007B96D0-007B96EB): unit+C50h != 0 && 007DEDB0(unit+C50h).
+// 007DEDB0 (__fastcall(neighbours)): while +80h <= +90h (1.0, 007E1EFF) it
+// returns the cached +C8h; otherwise it clears +C8h, takes +90h off +80h and
+// walks the +70h friendly list: a live (+5Eh clear) aircraft (IsKindOf 0Fh)
+// whose position, in the owner's frame (00414E10 on [[this+4]+28h]), has
+// z > 1.0 ([00D7A24C]) and x*x + y*y < +94h = 400.0 ([00CFD710], 007E1F13)
+// sets +C8h. The +80h clock advances by dt in 007E2010. Its start
+// U(0, 1) + 1.0 is taken at its midpoint 1.5, and the +70h list refresh runs
+// on its own copy of the 3 s +7Ch clock at the think interval. Labelled.
+bool GameUnitsHost::Impl::friendly_in_line_007b96d0(GameUnitSlot& u, float dt) {
+    const bsp::PlaneNeighbourRadii radii = bsp::plane_neighbour_radii_007e11d0(3.0f);
+    const float* p0 = u.world.data() + 12;
+    auto dist2 = [&](const GameUnitSlot& o) {
+        const double dx = static_cast<double>(o.world[12]) - p0[0];
+        const double dy = static_cast<double>(o.world[13]) - p0[1];
+        const double dz = static_cast<double>(o.world[14]) - p0[2];
+        return dx * dx + dy * dy + dz * dz;
+    };
+    auto in_world = [](const GameUnitSlot& o) {
+        return o.state != nullptr && o.state->active != 0 && o.scene_destroyed_005e == 0 &&
+               o.scene_pending_destroy_0060 == 0;
+    };
+    u.nb_clock_70 += dt;
+    if (u.nb_clock_70 >= 3.0f) {                                     // 007E204D
+        // 007E11D0: drop +70h members at or beyond the friendly radius, then
+        // add same-party aircraft within it.
+        const double lim = static_cast<double>(radii.friendly_plane) * radii.friendly_plane;
+        auto& v = u.nb_friend_70;
+        for (std::size_t k = 0; k < v.size();) {
+            if (v[k] >= slots.size() || !in_world(*slots[v[k]]) || dist2(*slots[v[k]]) >= lim) {
+                v[k] = v.back();
+                v.pop_back();
+            } else {
+                ++k;
+            }
+        }
+        for (std::size_t j = 0; j < slots.size(); ++j) {
+            const GameUnitSlot& o = *slots[j];
+            if (&o == &u || !in_world(o)) continue;
+            if (!bsp::unit_is_kind_of(o.class_id, 0x0F)) continue;
+            if (o.row.party != u.row.party) continue;
+            if (!(dist2(o) < lim)) continue;
+            bool listed = false;
+            for (const std::size_t e : v) listed = listed || e == j;
+            if (!listed) v.push_back(j);
+        }
+        u.nb_clock_70 -= 3.0f;
+    }
+    u.nb_clock_80 += dt;                                             // 007E2010
+    if (u.nb_clock_80 <= 1.0f) return u.nb_busy_c8;                  // 007DEDC4
+    u.nb_busy_c8 = false;
+    u.nb_clock_80 -= 1.0f;
+    ++u.ff_checks;
+    for (const std::size_t idx : u.nb_friend_70) {
+        if (idx >= slots.size()) continue;
+        const GameUnitSlot& o = *slots[idx];
+        if (!bsp::unit_is_kind_of(o.class_id, 0x0F)) continue;       // 007DEE0C
+        if (o.scene_destroyed_005e != 0) continue;                   // 007DEE16 +5Eh
+        float l[3];
+        follow_to_body(u, o.world.data() + 12, false, l);            // 004142E0
+        if (l[2] > 1.0f && l[0] * l[0] + l[1] * l[1] < 400.0f) {
+            u.nb_busy_c8 = true;
+            break;
+        }
+    }
+    return u.nb_busy_c8;
 }
 
 // ---------------------------------------------------------------------------
@@ -9193,6 +9287,54 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         } else if (unit_.gl_target_plus_one == ti + 1 && dt > 0.0f) {
                             for (int i = 0; i < 3; ++i)
                                 acc[i] = (tgt.plane_world_velocity[i] - unit_.gl_prev_target_v[i]) / dt;
+                        }
+                        if constexpr (GameUnitsHost::Impl::kFighterAccelTraceEvery > 0) {
+                            float aold[3] = {0.0f, 0.0f, 0.0f};
+                            if (unit_.gl_target_plus_one == ti + 1 && dt > 0.0f) {
+                                for (int i = 0; i < 3; ++i)
+                                    aold[i] = (tgt.plane_world_velocity[i] -
+                                               unit_.gl_prev_target_v[i]) / dt;
+                            }
+                            auto mag = [](const float v[3]) {
+                                return static_cast<float>(std::sqrt(
+                                    static_cast<double>(v[0]) * v[0] +
+                                    static_cast<double>(v[1]) * v[1] +
+                                    static_cast<double>(v[2]) * v[2]));
+                            };
+                            const float m654 = mag(tgt.fd_accel_654), mold = mag(aold);
+                            const float* own0 = unit_.motion.position;
+                            const float d0 = static_cast<float>(std::sqrt(
+                                static_cast<double>(p[0] - own0[0]) * (p[0] - own0[0]) +
+                                static_cast<double>(p[1] - own0[1]) * (p[1] - own0[1]) +
+                                static_cast<double>(p[2] - own0[2]) * (p[2] - own0[2])));
+                            const float mz = owner_.gunnery
+                                ? owner_.gunnery->min_fixed_gun_muzzle_speed_007c2610(unit_.process_index)
+                                : FLT_MAX;
+                            float l1[3], l2[3];
+                            const bool arc654 = df_predict_00954650(tgt, tgt.fd_accel_654, d0 / mz, l1);
+                            const bool arcold = df_predict_00954650(tgt, aold, d0 / mz, l2);
+                            const double sep = std::sqrt(
+                                static_cast<double>(l1[0] - l2[0]) * (l1[0] - l2[0]) +
+                                static_cast<double>(l1[1] - l2[1]) * (l1[1] - l2[1]) +
+                                static_cast<double>(l1[2] - l2[2]) * (l1[2] - l2[2]));
+                            unit_.ga_a654_sum += m654;
+                            unit_.ga_aold_sum += mold;
+                            unit_.ga_dt_sum += dt;
+                            unit_.ga_sep_sum += sep;
+                            if (m654 > unit_.ga_a654_max) unit_.ga_a654_max = m654;
+                            if (mold > unit_.ga_aold_max) unit_.ga_aold_max = mold;
+                            ++unit_.ga_acc_n;
+                            if (arc654) ++unit_.ga_arc_654;
+                            if (arcold) ++unit_.ga_arc_old;
+                            if ((unit_.ga_acc_n % GameUnitsHost::Impl::kFighterAccelTraceEvery) == 0) {
+                                owner_.log.notef("accel trace t=%.2f %s -> %s dt=%.3f |a654|=%.2f "
+                                    "|aold|=%.2f arc654=%d arcold=%d lead_sep=%.2f m range=%.0f",
+                                    static_cast<double>(owner_.summary.simulated_seconds),
+                                    unit_.row.name.c_str(), tgt.row.name.c_str(),
+                                    static_cast<double>(dt), static_cast<double>(m654),
+                                    static_cast<double>(mold), arc654 ? 1 : 0, arcold ? 1 : 0,
+                                    sep, static_cast<double>(d0));
+                            }
                         }
                         unit_.gl_target_plus_one = ti + 1;
                         for (int i = 0; i < 3; ++i) unit_.gl_prev_target_v[i] = tgt.plane_world_velocity[i];
@@ -15975,6 +16117,21 @@ void GameUnitsHost::report() {
                             slot->pg_trigger_ticks, slot->pg_trigger_rises, slot->df_early_edges,
                             slot->df_early_asks, slot->df_head_on_ticks,
                             static_cast<double>(slot->df_head_on_throttle_min));
+                        if constexpr (Impl::kFighterFriendlyInLineBound) {
+                            host.log.notef("  fighter friendly-in-line %-12s checks=%d busy_ticks=%d "
+                                "friends=%zu (007B96D0 -> 007DEDB0)", slot->row.name.c_str(),
+                                slot->ff_checks, slot->ff_busy_ticks, slot->nb_friend_70.size());
+                        }
+                        if constexpr (Impl::kFighterAccelTraceEvery > 0) {
+                            const int n = slot->ga_acc_n > 0 ? slot->ga_acc_n : 1;
+                            host.log.notef("  fighter accel %-12s ticks=%d mean_dt=%.3f "
+                                "mean|a654|=%.2f max|a654|=%.2f mean|aold|=%.2f max|aold|=%.2f "
+                                "arc654=%d arcold=%d mean_lead_sep=%.2f", slot->row.name.c_str(),
+                                slot->ga_acc_n, slot->ga_dt_sum / n, slot->ga_a654_sum / n,
+                                static_cast<double>(slot->ga_a654_max), slot->ga_aold_sum / n,
+                                static_cast<double>(slot->ga_aold_max), slot->ga_arc_654,
+                                slot->ga_arc_old, slot->ga_sep_sum / n);
+                        }
                         host.log.notef("  fighter gun lead %-12s lead_ticks=%d arc_ticks=%d "
                             "fine_aim_ticks=%d distortion_ticks=%d damped_ticks=%d "
                             "shift_mean=%.1f shift_max=%.1f muzzle=%.1f",

@@ -87,3 +87,41 @@ This pair cannot tell which.
 - `kPlaneYawGainBc4Bound` ON: its read is complete, and it is inert on E2.
 - `kFighterLeadAccel654Bound` **OFF**, for the reason above. Its next step is a trace of |unit+654h|
   per step against the gun-tick difference on the sqn01 flight.
+
+## 4. The acceleration term, traced (packet cc9_fighter_accel_friendly_fire)
+
+**The trace.** `kFighterAccelTraceEvery` is a diagnostic, 0 in the landed build. `local\FAT1_9000.log`
+is the SA configuration with it at 20. On every lead tick it computes both accelerations: the
+target's per-fixed-step +654h, and the gun tick's own velocity difference. It then runs 00954650
+on each and compares the two lead points. The trace does not perturb the run: FAT1 equals SA on
+every headline row.
+
+| fighter | lead ticks | mean gun-tick dt | mean / max \|a654\| | mean / max \|aold\| | arc arm, a654 / aold | mean lead-point separation |
+| --- | --- | --- | --- | --- | --- | --- |
+| Lexington sqn01 | 354 | 0.100 s | 4.74 / 22.57 | 4.66 / 22.52 | 252 / 249 | 0.07 m |
+| sqn01 .-2 | 378 | 0.100 s | 2.45 / 19.83 | 2.39 / 19.73 | 195 / 194 | 0.05 m |
+| sqn01 .-3 | 378 | 0.100 s | 5.14 / 22.13 | 5.03 / 21.94 | 270 / 270 | 0.08 m |
+| Yorktown sqn02 .-3 | 180 | 0.100 s | 1.92 / 5.53 | 1.88 / 5.52 | 102 / 99 | 0.08 m |
+
+The sampled lines are 3-11 cm apart at 780-920 m range.
+
+**Mechanism.**
+- The term is a real lead change that the read supports, and it is tiny.
+- It is not a units or timing mismatch:
+  - +648h and +654h are per 0.05 s step, and the gun tick differences over 0.1 s;
+  - the magnitudes agree within 2%;
+  - the arc arm is taken on the same ticks.
+- It is not a term the image zeroes: 00954650's arc arm reads +654h whenever the target turns.
+- **Divergence explains the 72% fire-tick move** (129 to 222, and 358 with the hold also on).
+  A centimetre-scale change of the aim point flips one envelope or burst-clock decision. After
+  that, the engagement and every later burst diverge. It is the same kind of coupling as the
+  shared random stream (memory: shared-rng-stream-couples-pairs), not an error in the term.
+
+**One caveat stays.** The image's +648h/+6BCh are filled by a snapshot that no store census finds:
+the difference block 007CED7E-007CEE5B only reads the previous-position and previous-velocity
+fields. A block copy is the likely writer. The host takes the previous values as the previous
+fixed step's, which is what the read implies.
+
+**Switch state: `kFighterLeadAccel654Bound` ON,** with this corrected read. The consequence to know:
+the E2 reference now carries SA-like fighter rows, including a friendly-fire loss of sqn01 .-3 to
+its own leader, which the image's own hold does not prevent (docs/FIGHTER_GUN_LEAD.md 5.2).

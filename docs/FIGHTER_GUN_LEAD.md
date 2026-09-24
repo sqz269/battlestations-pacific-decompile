@@ -201,3 +201,98 @@ independent ship-side bug is implicated. That supports flipping kPlannerRangeInt
 one open point is which of the two causes in step 4 removes K0's second ship order. Settling it
 needs a diagnostic, default-off trace of 00A1CB80's per-candidate score (base, range, objective,
 sticky) for the ship group at about 190 s. It is not needed for the flip.
+
+## 5. The friendly-in-line hold, 007B96D0 -> 007DEDB0 (packet cc9_fighter_accel_friendly_fire)
+
+**The image has a protection the host lacked.** Step 6 of 009FC7C0 (docs/DOGFIGHT_GUN.md) fires only
+when `!007B96D0(unit)`. When 007B96D0 is true, it re-aims at +0.25 through 009F9FC0 instead.
+
+- **007B96D0** (body 007B96D0-007B96EB) is `unit+C50h != 0 && 007DEDB0(unit+C50h)`.
+- **007DEDB0**, `__fastcall(neighbours)`, read whole from the listing:
+  - While `+80h <= +90h` it returns the cached byte `+C8h`.
+  - Otherwise it clears `+C8h`, subtracts `+90h` from `+80h`, and walks the `+70h` list: the
+    same-party aircraft within the friendly radius that 007E11D0 keeps (docs/PLANE_GUNFIRE.md 3).
+  - For each live entry (IsKindOf 0Fh, `+5Eh` clear), it transforms the friendly's position
+    into the owner's frame. The frame is 00414E10 on `[[this+4]+28h]`, applied by 004142E0 at
+    007DEE49.
+  - It sets `+C8h` when `z > 1.0` ([00D7A24C], 007DEE54) and `x*x + y*y < +94h`.
+- **Constants.** `+94h = 400.0` ([00CFD710], stored only by the constructor at 007E1F13), so the
+  test is a **20 m radius cylinder ahead of the nose, at any range**. `+90h = 1.0` (007E1EFF),
+  so the answer is re-evaluated once per second. The `+80h` clock starts at `U(0, 1) + 1.0`
+  (007E1FD2-007E1FF2) and advances in 007E2010.
+- **Consequence.** A fighter with a friendly anywhere ahead of it inside 20 m of its nose line holds
+  fire for up to a second. It does not test the target, the range or the gun's reach.
+
+**The host.**
+- `DogfightGunInputs::finder_busy` already carries the input. Nothing set it, so the host always
+  fired.
+- `GameUnitsHost::Impl::friendly_in_line_007b96d0` now keeps the `+70h` list (007E11D0's
+  same-party arm, 3 s refresh on its own clock copy), the 1 s re-check and the cached answer, all
+  behind `kFighterFriendlyInLineBound`.
+- **Stand-ins:** the clock start is taken at its midpoint 1.5, and the object's tick cadence is
+  taken as the gun tick's.
+
+**The call site is in the fighter aim hunk (cc9-gunnery-host's), as a request.**
+Immediately before `bsp::dogfight_gun_tick_009fc7c0(unit_.df_gun, gi);`:
+
+```
+if constexpr (GameUnitsHost::Impl::kFighterFriendlyInLineBound) {
+    gi.finder_busy = owner_.friendly_in_line_007b96d0(unit_, dt);
+    if (gi.finder_busy) ++unit_.ff_busy_ticks;
+}
+```
+
+The re-aim at +0.25 that 009FCDB6-009FCE01 performs instead of firing stays the open substitution
+already labelled at that site.
+
+**Would the image have fired the SA burst?**
+- SA's friendly-fire kill at 107.90 s was Lexington-class01_sqn01 .-3 hit by its own flight leader.
+- A wingman ahead of the leader within 20 m of its nose line is exactly what 007DEDB0 tests.
+- If .-3 sat in that cylinder at the leader's re-check, the image held the burst. Section 5.2
+  measures whether it did.
+
+**The damage path.** It was not read in this packet. The gunnery host's projectile sweep is
+cc9-gunnery-host's. Whether the image's round-versus-aircraft hit filters by side is left open, so
+the hold above is the only protection this packet establishes.
+
+### 5.1 Predictions, written before the pair
+
+The pair is E2 9000 with `kFighterFriendlyInLineBound` off (F0) against on (F1), with the
+acceleration term in its landed OFF state, from the same tree and with
+`BSP_GUNNERY_RNG_STREAMS=1`. The call-site line is applied locally for the pair.
+
+- **Busy ticks.** Above 0 for US fighter flights that fly in formation: 5-200 per flight. The US
+  fighters are the only aircraft whose gun controller runs in E2.
+- **Fighter fire.** Fire ticks fall from 129 by 0-40%, and hits from 80 by a similar share.
+- **Friendly-fire kills.** None in F0 (there were none in S0) and none in F1.
+- **Deaths and hits.** Japanese deaths 28-42, and AA hit records within +-15%, both RNG-coupled.
+- **Releases** 0/0, and no mission end.
+
+### 5.2 The pairs, measured
+
+The runs are E2 9000 with `BSP_GUNNERY_RNG_STREAMS=1` and the call-site line applied locally.
+Every log's module directory was checked.
+
+| row | FF0: hold off, accel off | FF1: hold on, accel off | FFA: hold on, accel on | SA: hold off, accel on (sweep) |
+| --- | --- | --- | --- | --- |
+| hold busy ticks (sqn01 leader / .-3 / sqn02 leader / sqn02 .-2) | - | 0 / 110 / 870 / 1130 | 30 / 120 / 970 / 1040 | - |
+| fighter fire ticks / bursts | 129 / 8 | 129 / 8 | 358 / 14 | 222 / 10 |
+| fighter hits | 80 | 80 | 133 | 101 |
+| hit records / deaths | 549 / 35 | 549 / 35 | 569 / 36 | 553 / 37 |
+| US fighter deaths | 0 | 0 | 1 (sqn01 .-3, credited to its leader, 116.05 s) | 2 (sqn01 .-3 to its leader at 107.90 s; the leader to movieval .-2) |
+| Lexington moved | 6905.23 m | 6905.23 m | 6780.57 m | 6517.06 m |
+
+**FF1 equals FF0 on every headline row.** The hold is active, but no busy tick coincides with a
+firing envelope. The sqn02 flight holds most, and in these runs it never fires. So the prediction
+"fire ticks fall 0-40%" held at 0, and none of the other rows moved.
+
+**The hold does not prevent the SA friendly-fire kill.** With the acceleration term on (FFA), the
+same wingman dies to the same leader. At the time, the leader was firing at movieval .-3 at
+372.7 m. The image's test is a 20 m cylinder about the nose line, answered once per second, so a
+wingman crossing the line inside a cached "clear" second is not protected. On this evidence the
+image fires that burst too. Which round geometry puts the wingman in the stream was not traced.
+
+**Switch states landed:**
+- `kFighterFriendlyInLineBound` ON: the predicate and its list are bound here.
+- The call-site line is the request above, so the hold is inert until cc9-gunnery-host applies it.
+  When applied, it is row-neutral on E2 (FF1 = FF0).
