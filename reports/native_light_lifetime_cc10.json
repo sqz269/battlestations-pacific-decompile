@@ -77,18 +77,6 @@
       "coverage": "boundary-only raw evidence; source cleanup scheduling, no native compiler handler implementation"
     }
   ],
-  "no_ghidra_function": [
-    {
-      "address": "00cc1ee6",
-      "end_exclusive": "00cc1ef0",
-      "end_inclusive": "00cc1eef",
-      "final_instruction": "00cc1eeb",
-      "final_instruction_length": 5,
-      "byte_span": 10,
-      "role": "raw FH3 handler descriptorDFAFC4",
-      "coverage": "boundary-only raw evidence; source cleanup scheduling, no native compiler handler implementation"
-    }
-  ],
   "host_steps": [
     {
       "function": "00b7c5b0",
@@ -182,9 +170,10 @@
       "function": "00cc1ee6",
       "address": "00cc1eeb",
       "native": "00bf6b43",
-      "kind": "no_ghidra_function",
+      "kind": "tail_jump",
       "actual_transfer": "JMP",
-      "contract": "raw FH3 handler descriptorDFAFC4"
+      "contract": "raw FH3 handler descriptorDFAFC4",
+      "undefined_at_worker_freeze": true
     }
   ],
   "prior_reconstruction_records": [
@@ -224,7 +213,8 @@
       "address": "00b7c1c0",
       "was": "Ghidra inclusiveend00b7c1d1,7 instructions, free treated as noreturn",
       "is": "exact23B ends exclusive00b7c1d7/inclusive00b7c1d6,10 instructions; ADDESP4 at1D2,POPESI at1D5,RET at1D6",
-      "evidence": "complete disasm-raw and live/installedPE23B match; returning continuation exercised; root owns eventual flow/body repair"
+      "evidence": "complete disasm-raw and live/installedPE23B match; returning continuation exercised; root owns eventual flow/body repair",
+      "primary_resolution": "Explicit tail-end00b7c1d7 cleared call override/disassembled5B; initial storedbody remained truncated. Recreated exact23B body preserving prior annotations; final live10instructions/0gaps. Callee no-return unchanged."
     }
   ],
   "context": {
@@ -309,7 +299,7 @@
         "live_equals_installed": true
       }
     ],
-    "call_verifier": "11 rows checked, 0 failed: 10 direct/tail instruction rows and 1 undefined-handler callee-only row; 4 indirect import/current0 rows retained and assembly inspected",
+    "call_verifier": "After primary handler definition:11 direct/tail instruction rows checked,0 failed;4 indirect rows separately retained",
     "probe": {
       "source": "local/output/cc10_raw_light_lifetime_probe.cpp",
       "command": "cl /nologo /MD /EHsc /std:c++20 /O2 /Gy /W4 /WX /fp:strict /I include /I local\\output /Fo:local\\output\\ /Fe:local\\output\\cc10_raw_light_lifetime_probe.exe local\\output\\cc10_raw_light_lifetime_probe.cpp build\\win32\\Release\\bsp_core.lib build\\win32\\Release\\bsp_lua511.lib build\\win32\\Release\\bsp_zlib121.lib /link /OPT:REF /MANIFEST:EMBED user32.lib d3d9.lib advapi32.lib shell32.lib",
@@ -340,7 +330,8 @@
       },
       "shared_boundary": "genuine sharedsource B83EC0/resize/free/B6F440/directionalpool andnestedresource/ambient/name/type providers; nestedoriginalmachinecode andnativeexceptiontransport not compared",
       "not_tested": "shadow nonzero/zero original paths, originalnestedcallees/nativeFH3SEH/privateABI, fullpoint/camera/shadowterminalgraph, application/AC59A0/gameplay"
-    }
+    },
+    "call_verifier_at_worker_freeze": "11 rows checked, 0 failed: 10 direct/tail instruction rows and 1 undefined-handler callee-only row; 4 indirect import/current0 rows retained and assembly inspected"
   },
   "limits": [
     "SAME actualregistry/currentimportcells andinitializedtype/name/tree contexts; stablepreimagedframes/acquisitions, freshdiagnostics, realpoolprovenance andquiescentretirement.",
@@ -504,5 +495,28 @@
       "bytes": 40,
       "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
     }
-  ]
+  ],
+  "no_ghidra_function_at_worker_freeze": [
+    {
+      "address": "00cc1ee6",
+      "end_exclusive": "00cc1ef0",
+      "end_inclusive": "00cc1eef",
+      "final_instruction": "00cc1eeb",
+      "final_instruction_length": 5,
+      "byte_span": 10,
+      "role": "raw FH3 handler descriptorDFAFC4",
+      "coverage": "boundary-only raw evidence; source cleanup scheduling, no native compiler handler implementation"
+    }
+  ],
+  "primary_metadata_closure": {
+    "definitions": "reports/cc10_light_lifetime_definitions.json",
+    "flow": "reports/cc10_light_lifetime_flow.json",
+    "handler": "00cc1ee6",
+    "handler_bytes": 10,
+    "array_cleanup": "00b7c1c0",
+    "array_cleanup_bytes": 23,
+    "final_live_instructions": 10,
+    "final_gaps": 0,
+    "callee_noreturn_changed": false
+  }
 }

@@ -1,0 +1,89 @@
+{
+  "packet": "cc10_light_lifetime_integration",
+  "worker_commit": "45a6312019657ef6cf431761a76ca3db611b3d05",
+  "integration": "1f5b8e4fde1aac2cf68520965eda52382726c9f8",
+  "archive": {
+    "path": "local/cc10-platform-evidence/light-lifetime.zip",
+    "sha256": "aef14cd0007d4cd106c55eb02b3bd16942ba148a5b6c464708844f2f404e08e6",
+    "files": 41,
+    "valid": true
+  },
+  "review": [
+    "Complete raw Light/directional source/header/native schedules reviewed",
+    "One captured currentdecrement epoch reused across all scenes and shadow; signed initial/current loop tests",
+    "Current back selected separately before and after genuine type gate; current count reread after zero terminal",
+    "Actual rawnode constructor establishes atomic04; array-only12B trivial lifetime started with full preimage preserved before typed cleanup",
+    "State consumed before array/base cleanup, same raw node frames/acquisitions, no invented rollback or missing-credit cleanup",
+    "Directional scalar rereads lowbyte flags after Light and returns same actual1F0 poolslot; no dead-slot read",
+    "Separate canonical companion binds same actual+4 without credit, validates current0/fresh4; metadata retirement on source failure is not native completion",
+    "Shadow174 family508h is distinct from nonrefcounted2Ch depth target; no fabricated terminal companion"
+  ],
+  "validation": {
+    "normal_body_bytes": 311,
+    "compiler_boundary_bytes": 32,
+    "descriptor_bytes": 52,
+    "live_equals_installed": true,
+    "direct_tail_rows": 11,
+    "indirect_rows_explicit": 4,
+    "strict_win32_build": true,
+    "worker_ctests": 2,
+    "integrated_ctests": 3,
+    "build_log_sha256": "6a4bc60e160593d9076f0c8af9f9b73e98f406b3ee45e5adc03794996ccc4c2a",
+    "comparison_pairs": 3,
+    "new_tracked_tests": 0,
+    "shadow_nonzero_or_zero_path_exercised": false,
+    "native_ABI_FH3_SEH": false,
+    "full_terminal_graph_closed": false,
+    "application_bound": false,
+    "game_validated": false
+  },
+  "probe": {
+    "source": "local/output/cc10_raw_light_lifetime_probe.cpp",
+    "command": "cl /nologo /MD /EHsc /std:c++20 /O2 /Gy /W4 /WX /fp:strict /I include /I local\\output /Fo:local\\output\\ /Fe:local\\output\\cc10_raw_light_lifetime_probe.exe local\\output\\cc10_raw_light_lifetime_probe.cpp build\\win32\\Release\\bsp_core.lib build\\win32\\Release\\bsp_lua511.lib build\\win32\\Release\\bsp_zlib121.lib /link /OPT:REF /MANIFEST:EMBED user32.lib d3d9.lib advapi32.lib shell32.lib",
+    "assertions": "NDEBUG not defined; compile-time #ifdef NDEBUG rejection; no /DNDEBUG",
+    "exit_code": 0,
+    "comparison_pairs": 3,
+    "pair_breakdown": "one23B array-helper pair, two Light/directional composition pairs flags0 andcallback-lateflags1",
+    "checks": [
+      "real DirectionalLightPool allocation/rawB7C6B0 constructor creates actualatomic04; descriptor lifetime established with unchanged12B, actualnamepool/consts",
+      "genuineB7C020 retains/registers three actual3Ch resources with initialized realtypecells andcanonicalambient/resource providers",
+      "first B83EC0 actual-nodefree callback replacesCURRENTbegin/back andIATcell; both following scene decrements use originalcapturedservice",
+      "genuine resource-zero terminal callback changesCURRENT17C; postterminaldecrement/loop seesnewcount; skippedcallbackcredits explicitly retained/disposed",
+      "normalized whole496B flags0 postbody result; flags1 realpoolfreestack increments, no returnedpayload read",
+      "source samecountcanonical observedzero/flags1 andexplicitpositivecountflags0, duplicate rejection/admission byteunchanged",
+      "source-only missing-currentgatetarget diagnostic consumesarray/node cleanup once, retainscredits/backing/pool slot for explicit genuine disposition"
+    ],
+    "body_extent_vs_execution": {
+      "live_pe_body_bytes": 311,
+      "replaced_dispatch_range": "[00b7c620,00b7c628)",
+      "replaced_byte_count": 8,
+      "original_instructions": "MOV EDX,[EDI]; MOV EAX,[EDX]; MOV ECX,EDI; CALL EAX",
+      "replacement": "MOV ECX,EDI; CALL genuine canonical resource bridge; NOP",
+      "reason": "numericD63168 tableaddress occupied by reconstructedexecutable, mappinguntouched",
+      "bridge_checks": "capturedEDI, existingactualregistrycanonical, SAMEactual+4 observedzero, realresourcecurrentprofile/current0/freshcurrent4 terminal",
+      "independent_native_dispatch_comparison": false,
+      "shadow_zero_exercised": false,
+      "other_relocations": "directcalls andcapturedCE2220 operand useexplicitgenuineproviders; remaininginstructionstreamretained"
+    },
+    "shared_boundary": "genuine sharedsource B83EC0/resize/free/B6F440/directionalpool andnestedresource/ambient/name/type providers; nestedoriginalmachinecode andnativeexceptiontransport not compared",
+    "not_tested": "shadow nonzero/zero original paths, originalnestedcallees/nativeFH3SEH/privateABI, fullpoint/camera/shadowterminalgraph, application/AC59A0/gameplay"
+  },
+  "limits": [
+    "SAME actualregistry/currentimportcells andinitializedtype/name/tree contexts; stablepreimagedframes/acquisitions, freshdiagnostics, realpoolprovenance andquiescentretirement.",
+    "Atgate-return selectedback mustremainvalid; nonnegative descriptor domain, noinvalidparameterstub orSceneResource hostview.",
+    "Returnedzero requires SAMEactualcountzero for canonicaldispatch; arbitrarycount-changing decrement continuations excluded.",
+    "No fabricatedshadowcompanion/defaulttarget; reachedzero-shadow requires genuinefamilybinding not supplied.",
+    "Source cleanup only, no nativeEHABI/game/application admission; adjacenttypedpoint/camera/baseLight terminalgraphs remainseparate."
+  ],
+  "metadata_closure": {
+    "definitions": "reports/cc10_light_lifetime_definitions.json",
+    "flow": "reports/cc10_light_lifetime_flow.json",
+    "handler": "00cc1ee6",
+    "handler_bytes": 10,
+    "array_cleanup": "00b7c1c0",
+    "array_cleanup_bytes": 23,
+    "final_live_instructions": 10,
+    "final_gaps": 0,
+    "callee_noreturn_changed": false
+  }
+}
