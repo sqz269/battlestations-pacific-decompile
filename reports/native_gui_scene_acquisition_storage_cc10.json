@@ -1,0 +1,1421 @@
+{
+  "packet": "cc10_gui_scene_acquisition_storage",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "baseline_main": "2ef1bf74a",
+  "source": "src/native_gui_scene_acquisition_storage.cpp",
+  "header": "include/bsp/native_gui_scene_acquisition_storage.hpp",
+  "documentation": "docs/NATIVE_GUI_SCENE_ACQUISITION_STORAGE_CC10.md",
+  "status": "complete_raw_gui_scene_acquisition_strict_win32_genuine_provider_original_source_composition_checked",
+  "functions": [
+    {
+      "address": "00ac59a0",
+      "end_exclusive": "00ac5f5b",
+      "end_inclusive": "00ac5f5a",
+      "final_instruction": "00ac5f5a",
+      "final_instruction_length": 1,
+      "instructions": 379,
+      "byte_span": 1467,
+      "cpp_symbol": "bsp::acquire_native_gui_scene_storage_00ac59a0",
+      "original_abi": "ECX actual124h page; RET; no result",
+      "coverage": "complete normal valid-domain body; all14 source cleanup states projected, native FH3 excluded"
+    }
+  ],
+  "compiler_boundaries": [
+    {
+      "address": "00cb88e0",
+      "end_exclusive": "00cb88ee",
+      "end_inclusive": "00cb88ed",
+      "byte_span": 14,
+      "final_instruction": "00cb88ed",
+      "final_instruction_length": 1,
+      "instructions": 5,
+      "coverage": "compiler boundary evidence and source cleanup-state projection only; no native handler/FH3 implementation",
+      "stored_body_end_inclusive": "00cb88eb",
+      "repair_required": true
+    },
+    {
+      "address": "00cb88ee",
+      "end_exclusive": "00cb88f9",
+      "end_inclusive": "00cb88f8",
+      "byte_span": 11,
+      "final_instruction": "00cb88f4",
+      "final_instruction_length": 5,
+      "instructions": 2,
+      "coverage": "compiler boundary evidence and source cleanup-state projection only; no native handler/FH3 implementation",
+      "stored_body_end_inclusive": "00cb88f8",
+      "repair_required": false
+    },
+    {
+      "address": "00cb88f9",
+      "end_exclusive": "00cb891b",
+      "end_inclusive": "00cb891a",
+      "byte_span": 34,
+      "final_instruction": "00cb891a",
+      "final_instruction_length": 1,
+      "instructions": 7,
+      "coverage": "compiler boundary evidence and source cleanup-state projection only; no native handler/FH3 implementation",
+      "stored_body_end_inclusive": "00cb891a",
+      "repair_required": false
+    },
+    {
+      "address": "00cb891b",
+      "end_exclusive": "00cb893a",
+      "end_inclusive": "00cb8939",
+      "byte_span": 31,
+      "final_instruction": "00cb8939",
+      "final_instruction_length": 1,
+      "instructions": 7,
+      "coverage": "compiler boundary evidence and source cleanup-state projection only; no native handler/FH3 implementation",
+      "stored_body_end_inclusive": "00cb8939",
+      "repair_required": false
+    },
+    {
+      "address": "00cb893a",
+      "end_exclusive": "00cb8948",
+      "end_inclusive": "00cb8947",
+      "byte_span": 14,
+      "final_instruction": "00cb8947",
+      "final_instruction_length": 1,
+      "instructions": 5,
+      "coverage": "compiler boundary evidence and source cleanup-state projection only; no native handler/FH3 implementation",
+      "stored_body_end_inclusive": "00cb8945",
+      "repair_required": true
+    },
+    {
+      "address": "00cb8948",
+      "end_exclusive": "00cb8967",
+      "end_inclusive": "00cb8966",
+      "byte_span": 31,
+      "final_instruction": "00cb8966",
+      "final_instruction_length": 1,
+      "instructions": 7,
+      "coverage": "compiler boundary evidence and source cleanup-state projection only; no native handler/FH3 implementation",
+      "stored_body_end_inclusive": "00cb8966",
+      "repair_required": false
+    },
+    {
+      "address": "00cb8967",
+      "end_exclusive": "00cb8975",
+      "end_inclusive": "00cb8974",
+      "byte_span": 14,
+      "final_instruction": "00cb8974",
+      "final_instruction_length": 1,
+      "instructions": 5,
+      "coverage": "compiler boundary evidence and source cleanup-state projection only; no native handler/FH3 implementation",
+      "stored_body_end_inclusive": "00cb8972",
+      "repair_required": true
+    },
+    {
+      "address": "00cb8975",
+      "end_exclusive": "00cb8983",
+      "end_inclusive": "00cb8982",
+      "byte_span": 14,
+      "final_instruction": "00cb8982",
+      "final_instruction_length": 1,
+      "instructions": 5,
+      "coverage": "compiler boundary evidence and source cleanup-state projection only; no native handler/FH3 implementation",
+      "stored_body_end_inclusive": "00cb8980",
+      "repair_required": true
+    },
+    {
+      "address": "00cb8983",
+      "end_exclusive": "00cb898e",
+      "end_inclusive": "00cb898d",
+      "byte_span": 11,
+      "final_instruction": "00cb8989",
+      "final_instruction_length": 5,
+      "instructions": 2,
+      "coverage": "compiler boundary evidence and source cleanup-state projection only; no native handler/FH3 implementation",
+      "stored_body_end_inclusive": "00cb898d",
+      "repair_required": false
+    },
+    {
+      "address": "00cb898e",
+      "end_exclusive": "00cb89ad",
+      "end_inclusive": "00cb89ac",
+      "byte_span": 31,
+      "final_instruction": "00cb89ac",
+      "final_instruction_length": 1,
+      "instructions": 7,
+      "coverage": "compiler boundary evidence and source cleanup-state projection only; no native handler/FH3 implementation",
+      "stored_body_end_inclusive": "00cb89ac",
+      "repair_required": false
+    },
+    {
+      "address": "00cb89ad",
+      "end_exclusive": "00cb89b7",
+      "end_inclusive": "00cb89b6",
+      "byte_span": 10,
+      "final_instruction": "00cb89b2",
+      "final_instruction_length": 5,
+      "instructions": 2,
+      "coverage": "compiler boundary evidence and source cleanup-state projection only; no native handler/FH3 implementation",
+      "stored_body_end_inclusive": null,
+      "repair_required": true
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00cb89ad",
+      "end_exclusive": "00cb89b7",
+      "end_inclusive": "00cb89b6",
+      "byte_span": 10,
+      "final_instruction": "00cb89b2",
+      "final_instruction_length": 5,
+      "instructions": 2,
+      "coverage": "compiler boundary evidence and source cleanup-state projection only; no native handler/FH3 implementation",
+      "stored_body_end_inclusive": null,
+      "repair_required": true
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00ac59a0",
+      "address": "00ac59c5",
+      "native": "004c12b0",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac59d3",
+      "native": "00aa3280",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac59fd",
+      "native": "dword ptr [0xce221c]",
+      "kind": "indirect_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5a23",
+      "native": "00bf681b",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5a43",
+      "native": "00b724e0",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5a64",
+      "native": "00b71930",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5a88",
+      "native": "0041e870",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5aa7",
+      "native": "004261a0",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5abf",
+      "native": "00b71a80",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5af4",
+      "native": "00419cc0",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5afb",
+      "native": "00bd1510",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5b26",
+      "native": "00419cc0",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5b2d",
+      "native": "00bd1510",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5b32",
+      "native": "004c12b0",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5b48",
+      "native": "00aa5070",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5b55",
+      "native": "00bf681b",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5b7b",
+      "native": "0041e870",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5b96",
+      "native": "00b83c50",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5bd5",
+      "native": "00419cc0",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5bdc",
+      "native": "00bd1510",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5be8",
+      "native": "00b723f0",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5bf1",
+      "native": "dword ptr [0xce2220]",
+      "kind": "indirect_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5c01",
+      "native": "eax",
+      "kind": "indirect_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5c0c",
+      "native": "00b6d890",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5c15",
+      "native": "00b6fe10",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5c35",
+      "native": "00b6fe50",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5c3c",
+      "native": "00bf681b",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5c59",
+      "native": "00b1f850",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5c72",
+      "native": "00b71990",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5c7b",
+      "native": "dword ptr [0xce2220]",
+      "kind": "indirect_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5c8b",
+      "native": "eax",
+      "kind": "indirect_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5c92",
+      "native": "00bf681b",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5caf",
+      "native": "00b84e50",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5ccd",
+      "native": "00b84d00",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5cda",
+      "native": "00b84d40",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5ce2",
+      "native": "00b71940",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5ceb",
+      "native": "dword ptr [0xce2220]",
+      "kind": "indirect_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5cfb",
+      "native": "eax",
+      "kind": "indirect_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5d02",
+      "native": "00b7bd40",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5d25",
+      "native": "0041e870",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5d40",
+      "native": "00b7c6b0",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5d6e",
+      "native": "00419cc0",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5d75",
+      "native": "00bd1510",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5e00",
+      "native": "edx",
+      "kind": "indirect_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5e44",
+      "native": "004b62e0",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5e52",
+      "native": "00b6d890",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5e8b",
+      "native": "00b7af20",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5eb7",
+      "native": "00b6fe10",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5eca",
+      "native": "00b6fe50",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5ee6",
+      "native": "004c12b0",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5eed",
+      "native": "00aa52a0",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5f1b",
+      "native": "00bf7030",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5f28",
+      "native": "00bf7420",
+      "kind": "direct_call"
+    },
+    {
+      "function": "00ac59a0",
+      "address": "00ac5f3f",
+      "native": "00b8e6c0",
+      "kind": "direct_call"
+    }
+  ],
+  "compiler_steps": [
+    {
+      "function": "00cb88e0",
+      "address": "00cb88e7",
+      "native": "00bf65ac",
+      "kind": "direct_call",
+      "instruction": "call"
+    },
+    {
+      "function": "00cb88ee",
+      "address": "00cb88f4",
+      "native": "00b71350",
+      "kind": "tail_jump",
+      "instruction": "jmp"
+    },
+    {
+      "function": "00cb88f9",
+      "address": "00cb8915",
+      "native": "0041dd20",
+      "kind": "tail_jump",
+      "instruction": "jmp"
+    },
+    {
+      "function": "00cb891b",
+      "address": "00cb8934",
+      "native": "0041dd20",
+      "kind": "tail_jump",
+      "instruction": "jmp"
+    },
+    {
+      "function": "00cb893a",
+      "address": "00cb8941",
+      "native": "00bf65ac",
+      "kind": "direct_call",
+      "instruction": "call"
+    },
+    {
+      "function": "00cb8948",
+      "address": "00cb8961",
+      "native": "0041dd20",
+      "kind": "tail_jump",
+      "instruction": "jmp"
+    },
+    {
+      "function": "00cb8967",
+      "address": "00cb896e",
+      "native": "00bf65ac",
+      "kind": "direct_call",
+      "instruction": "call"
+    },
+    {
+      "function": "00cb8975",
+      "address": "00cb897c",
+      "native": "00bf65ac",
+      "kind": "direct_call",
+      "instruction": "call"
+    },
+    {
+      "function": "00cb8983",
+      "address": "00cb8989",
+      "native": "00b7b610",
+      "kind": "tail_jump",
+      "instruction": "jmp"
+    },
+    {
+      "function": "00cb898e",
+      "address": "00cb89a7",
+      "native": "0041dd20",
+      "kind": "tail_jump",
+      "instruction": "jmp"
+    },
+    {
+      "function": "00cb89ad",
+      "address": "00cb89b2",
+      "native": "00bf6b43",
+      "kind": "no_ghidra_function",
+      "instruction": "jmp"
+    }
+  ],
+  "byte_evidence": [
+    {
+      "address": "00ac59a0",
+      "bytes": 1467,
+      "end_exclusive": "00ac5f5b",
+      "end_inclusive": "00ac5f5a",
+      "role": "full acquisition",
+      "live_equals_installed": true,
+      "sha256": "32e2d414fd096ed6ee22575e69c6c19500e4fb417b810df55445ffee352b9d3b",
+      "pe_raw_bytes": 1467,
+      "pe_zero_fill_bytes": 0,
+      "instructions": 379,
+      "final_instruction": "00ac5f5a",
+      "final_instruction_length": 1,
+      "calls": [
+        {
+          "address": "00ac59c5",
+          "target": "0x4c12b0",
+          "kind": "call"
+        },
+        {
+          "address": "00ac59d3",
+          "target": "0xaa3280",
+          "kind": "call"
+        },
+        {
+          "address": "00ac59fd",
+          "target": "dword ptr [0xce221c]",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5a23",
+          "target": "0xbf681b",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5a43",
+          "target": "0xb724e0",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5a48",
+          "target": "0xac5a4c",
+          "kind": "jmp"
+        },
+        {
+          "address": "00ac5a64",
+          "target": "0xb71930",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5a88",
+          "target": "0x41e870",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5aa7",
+          "target": "0x4261a0",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5abf",
+          "target": "0xb71a80",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5ac6",
+          "target": "0xac5aca",
+          "kind": "jmp"
+        },
+        {
+          "address": "00ac5af4",
+          "target": "0x419cc0",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5afb",
+          "target": "0xbd1510",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5b26",
+          "target": "0x419cc0",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5b2d",
+          "target": "0xbd1510",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5b32",
+          "target": "0x4c12b0",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5b48",
+          "target": "0xaa5070",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5b55",
+          "target": "0xbf681b",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5b7b",
+          "target": "0x41e870",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5b96",
+          "target": "0xb83c50",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5ba1",
+          "target": "0xac5baf",
+          "kind": "jmp"
+        },
+        {
+          "address": "00ac5bd5",
+          "target": "0x419cc0",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5bdc",
+          "target": "0xbd1510",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5be8",
+          "target": "0xb723f0",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5bf1",
+          "target": "dword ptr [0xce2220]",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5c01",
+          "target": "eax",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5c0c",
+          "target": "0xb6d890",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5c15",
+          "target": "0xb6fe10",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5c35",
+          "target": "0xb6fe50",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5c3c",
+          "target": "0xbf681b",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5c59",
+          "target": "0xb1f850",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5c60",
+          "target": "0xac5c64",
+          "kind": "jmp"
+        },
+        {
+          "address": "00ac5c72",
+          "target": "0xb71990",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5c7b",
+          "target": "dword ptr [0xce2220]",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5c8b",
+          "target": "eax",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5c92",
+          "target": "0xbf681b",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5caf",
+          "target": "0xb84e50",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5cb6",
+          "target": "0xac5cba",
+          "kind": "jmp"
+        },
+        {
+          "address": "00ac5ccd",
+          "target": "0xb84d00",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5cda",
+          "target": "0xb84d40",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5ce2",
+          "target": "0xb71940",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5ceb",
+          "target": "dword ptr [0xce2220]",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5cfb",
+          "target": "eax",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5d02",
+          "target": "0xb7bd40",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5d25",
+          "target": "0x41e870",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5d40",
+          "target": "0xb7c6b0",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5d47",
+          "target": "0xac5d4b",
+          "kind": "jmp"
+        },
+        {
+          "address": "00ac5d6e",
+          "target": "0x419cc0",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5d75",
+          "target": "0xbd1510",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5e00",
+          "target": "edx",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5e44",
+          "target": "0x4b62e0",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5e52",
+          "target": "0xb6d890",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5e8b",
+          "target": "0xb7af20",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5eb7",
+          "target": "0xb6fe10",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5eca",
+          "target": "0xb6fe50",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5ee6",
+          "target": "0x4c12b0",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5eed",
+          "target": "0xaa52a0",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5f1b",
+          "target": "0xbf7030",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5f28",
+          "target": "0xbf7420",
+          "kind": "call"
+        },
+        {
+          "address": "00ac5f3f",
+          "target": "0xb8e6c0",
+          "kind": "call"
+        }
+      ]
+    },
+    {
+      "address": "00b8e6c0",
+      "bytes": 44,
+      "end_exclusive": "00b8e6ec",
+      "end_inclusive": "00b8e6eb",
+      "role": "bounds leaf",
+      "live_equals_installed": true,
+      "sha256": "3bb56c6b14df31456875b5daa3acbafff934cde0cc7429f5df8275dbbbfcbecf",
+      "pe_raw_bytes": 44,
+      "pe_zero_fill_bytes": 0,
+      "instructions": 12,
+      "final_instruction": "00b8e6e9",
+      "final_instruction_length": 3,
+      "calls": []
+    },
+    {
+      "address": "00cb88e0",
+      "bytes": 221,
+      "end_exclusive": "00cb89bd",
+      "end_inclusive": "00cb89bc",
+      "role": "compiler cleanup/handler cluster",
+      "live_equals_installed": true,
+      "sha256": "41cc4563088e0cfb28462bb46cdb7b76941b13f8b0b571bbe0bd2f3cec985dd9",
+      "pe_raw_bytes": 221,
+      "pe_zero_fill_bytes": 0,
+      "instructions": 60,
+      "final_instruction": "00cb89bc",
+      "final_instruction_length": 1,
+      "calls": [
+        {
+          "address": "00cb88e7",
+          "target": "0xbf65ac",
+          "kind": "call"
+        },
+        {
+          "address": "00cb88f4",
+          "target": "0xb71350",
+          "kind": "jmp"
+        },
+        {
+          "address": "00cb8915",
+          "target": "0x41dd20",
+          "kind": "jmp"
+        },
+        {
+          "address": "00cb8934",
+          "target": "0x41dd20",
+          "kind": "jmp"
+        },
+        {
+          "address": "00cb8941",
+          "target": "0xbf65ac",
+          "kind": "call"
+        },
+        {
+          "address": "00cb8961",
+          "target": "0x41dd20",
+          "kind": "jmp"
+        },
+        {
+          "address": "00cb896e",
+          "target": "0xbf65ac",
+          "kind": "call"
+        },
+        {
+          "address": "00cb897c",
+          "target": "0xbf65ac",
+          "kind": "call"
+        },
+        {
+          "address": "00cb8989",
+          "target": "0xb7b610",
+          "kind": "jmp"
+        },
+        {
+          "address": "00cb89a7",
+          "target": "0x41dd20",
+          "kind": "jmp"
+        },
+        {
+          "address": "00cb89b2",
+          "target": "0xbf6b43",
+          "kind": "jmp"
+        }
+      ]
+    },
+    {
+      "address": "00def8d4",
+      "bytes": 148,
+      "end_exclusive": "00def968",
+      "end_inclusive": "00def967",
+      "role": "EH descriptor and fourteen-state map",
+      "live_equals_installed": true,
+      "sha256": "3af038f8366c7c873c4cd068e761da6686242f9c34df2d995a7941f479afb3da",
+      "pe_raw_bytes": 148,
+      "pe_zero_fill_bytes": 0
+    },
+    {
+      "address": "00d62fb0",
+      "bytes": 88,
+      "end_exclusive": "00d63008",
+      "end_inclusive": "00d63007",
+      "role": "directional current profile",
+      "live_equals_installed": true,
+      "sha256": "5c19d790cca2b53be4e07cf235ba96b20f1bb9ef33260057dc8ca064276b7799",
+      "pe_raw_bytes": 88,
+      "pe_zero_fill_bytes": 0
+    },
+    {
+      "address": "00d62cf0",
+      "bytes": 88,
+      "end_exclusive": "00d62d48",
+      "end_inclusive": "00d62d47",
+      "role": "camera current profile",
+      "live_equals_installed": true,
+      "sha256": "e28974468ad5614f4a554cfb6707393f56398b4eeca19834623fb06eb322c3de",
+      "pe_raw_bytes": 88,
+      "pe_zero_fill_bytes": 0
+    },
+    {
+      "address": "00d634f8",
+      "bytes": 88,
+      "end_exclusive": "00d63550",
+      "end_inclusive": "00d6354f",
+      "role": "Group current profile",
+      "live_equals_installed": true,
+      "sha256": "f59b0caec65eb336d74bd451a0fce1696b1e4a0c2d1ffd1db44dbb2e39ba2721",
+      "pe_raw_bytes": 88,
+      "pe_zero_fill_bytes": 0
+    },
+    {
+      "address": "00d7a308",
+      "bytes": 8,
+      "end_exclusive": "00d7a310",
+      "end_inclusive": "00d7a30f",
+      "role": "actual radius double",
+      "live_equals_installed": true,
+      "sha256": "3f710ac088db33363087de2b9a657541fe5447821debaa9fe5cbd538eb1a5f29",
+      "pe_raw_bytes": 8,
+      "pe_zero_fill_bytes": 0
+    },
+    {
+      "address": "00ce3800",
+      "bytes": 4,
+      "end_exclusive": "00ce3804",
+      "end_inclusive": "00ce3803",
+      "role": "actual half",
+      "live_equals_installed": true,
+      "sha256": "d99e58435243d9fef9c88273b8d553b4fba4d0baf8009d29eae74fa99e0d9f57",
+      "pe_raw_bytes": 4,
+      "pe_zero_fill_bytes": 0
+    },
+    {
+      "address": "00d7a24c",
+      "bytes": 4,
+      "end_exclusive": "00d7a250",
+      "end_inclusive": "00d7a24f",
+      "role": "actual one",
+      "live_equals_installed": true,
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "pe_raw_bytes": 4,
+      "pe_zero_fill_bytes": 0
+    },
+    {
+      "address": "0109eea4",
+      "bytes": 4,
+      "end_exclusive": "0109eea8",
+      "end_inclusive": "0109eea7",
+      "role": "CRT conversion selector",
+      "live_equals_installed": true,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "pe_raw_bytes": 0,
+      "pe_zero_fill_bytes": 4
+    },
+    {
+      "address": "0109dd78",
+      "bytes": 4,
+      "end_exclusive": "0109dd7c",
+      "end_inclusive": "0109dd7b",
+      "role": "CRT sqrt dispatch selector",
+      "live_equals_installed": true,
+      "sha256": "df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119",
+      "pe_raw_bytes": 0,
+      "pe_zero_fill_bytes": 4
+    }
+  ],
+  "counts": {
+    "normal_body_bytes": 1467,
+    "normal_instructions": 379,
+    "direct_calls": 46,
+    "indirect_calls": 8,
+    "compiler_function_bytes": 215,
+    "captured_compiler_cluster": 221,
+    "trailing_int3_not_claimed": 6
+  },
+  "source_contract": {
+    "storage": "Actual124h page; actual24h outer/24h store/3Ch resource/45Ch camera/1F0h directional/18Ch preexisting Group; no raw-to-logical projection",
+    "frame": "32 live initialized volatile DWORDs F10..8F; shared live outer aliases, captured EBX mask separate; persistent provider preimages/current inputs. Cross-provider private stack coincidence/saved regs/return gaps excluded.",
+    "domains": "SAME canonical actual+4 registry/current increment+decrement alias cells/string/node scene+tree+world/live-one domains; actual camera/directional pools, initialized renderer, required genuine reached targets and persistent recursive diagnostics",
+    "admission": "Separate post-native-frontier same-count host metadata; no credit/native stores. Directional178 byte-preserving12B descriptor lifetime preparation after temporary cleanup; no obsolete logical tail.",
+    "host_failure": "Own admissions bypass native cleanup and retain state/credits. Nested resource ambient-admission failure already consumes registry/name/base cleanup in established provider; outer records consumed prefix and retains state7/raw3Ch allocation/live GuiLights header/mask/ambient creator without further cleanup.",
+    "native_failure": "Consume outer state before one-shot current allocation/header return; preserve completed owners/publications/residual credits. Second cleanup exception terminates; native FH3/SEH excluded.",
+    "radius": "Existing x87 sqrt/truncate kernels; half/FLD double -> xyz stores -> sqrt -> float spill/reload -> truncate -> CURRENT4C -> CVTSI2SS -> radius -> existing shared raw bounds kernel"
+  },
+  "eh_states": [
+    {
+      "state": 0,
+      "previous": -1,
+      "handler": "00cb88e0"
+    },
+    {
+      "state": 1,
+      "previous": -1,
+      "handler": "00cb88ee"
+    },
+    {
+      "state": 2,
+      "previous": 1,
+      "handler": "00cb88f9"
+    },
+    {
+      "state": 3,
+      "previous": 2,
+      "handler": "00cb891b"
+    },
+    {
+      "state": 4,
+      "previous": -1,
+      "handler": "00cb88f9"
+    },
+    {
+      "state": 5,
+      "previous": 4,
+      "handler": "00cb891b"
+    },
+    {
+      "state": 6,
+      "previous": -1,
+      "handler": "00cb893a"
+    },
+    {
+      "state": 7,
+      "previous": 6,
+      "handler": "00cb8948"
+    },
+    {
+      "state": 8,
+      "previous": -1,
+      "handler": "00cb8948"
+    },
+    {
+      "state": 9,
+      "previous": -1,
+      "handler": "00cb8967"
+    },
+    {
+      "state": 10,
+      "previous": -1,
+      "handler": "00cb8975"
+    },
+    {
+      "state": 11,
+      "previous": -1,
+      "handler": "00cb8983"
+    },
+    {
+      "state": 12,
+      "previous": 11,
+      "handler": "00cb898e"
+    },
+    {
+      "state": 13,
+      "previous": -1,
+      "handler": "00cb898e"
+    }
+  ],
+  "verification": {
+    "strict_build": "scripts/build.ps1 MSVC Win32 passed; both configured existing CTests passed",
+    "build_log": "local\\output\\cc10_gui_scene_acquisition_storage\\build-current.log",
+    "call_verifier": "PASS:57 direct/compiler transfer rows;0 failed;eight indirect CALL operands independently decoded;CB89AD raw handler containment explicitly unavailable",
+    "probe_source": [
+      "local\\output\\cc10_gui_scene_acquisition_storage\\probe_setup.hpp",
+      "local\\output\\cc10_gui_scene_acquisition_storage\\probe.hpp",
+      "local\\output\\cc10_gui_scene_acquisition_storage\\probe_startup.hpp",
+      "local\\output\\cc10_gui_scene_acquisition_storage\\application-gui-acquisition-probe.cpp"
+    ],
+    "exact_response_file": "local\\output\\cc10_gui_scene_acquisition_storage\\probe.rsp",
+    "exact_build_command": "local\\output\\cc10_gui_scene_acquisition_storage\\probe.cmd",
+    "pre_run_identity_receipt": "local\\output\\cc10_gui_scene_acquisition_storage\\pre_run_identity_receipt.json",
+    "assertions": "NDEBUG absent and compile-time rejection present; final active assertions log+ExitProcess116 to avoid modal UI",
+    "probe_result": "PASS copied-original/source full-new and reuse, real renderer/HAL/camera pool, actual graph/identity/count/list relationships and explicit same-count retirement; signed-zero half/x87 radius; ordinary app drain and final COM device/api0/0",
+    "run_log": "local\\output\\cc10_gui_scene_acquisition_storage\\run08.log",
+    "launcher": "local\\output\\cc10_gui_scene_acquisition_storage\\launcher08.log",
+    "exit_code": 0,
+    "owned_processes_closed": true,
+    "tracked_tests_added": false,
+    "original_boundary": {
+      "full_extent": 1467,
+      "copied_direct_calls": 46,
+      "import_constant_operand_relocations": 9,
+      "current34_replaced": {
+        "address": "00ac5d85",
+        "end_exclusive": "00ac5d8a",
+        "bytes": 5,
+        "description": "Bridge executes original current profile/current34 loads at capture point, returns exact genuine B6E870 adapter; replaced original instructions not independently compared"
+      },
+      "zero_sites_unexercised": [
+        "00ac5c01",
+        "00ac5c8b",
+        "00ac5cfb"
+      ],
+      "shared_callees": "All direct callees use genuine source providers; provider frames disjoint from original outer private stack. Original-side canonical admission/preparation occurs immediately after successful constructor bridge and before temporary cleanup; no admission-failure comparison.",
+      "unexercised": "Native/null allocation branches, current0 zero arms, source cleanup states/host-admission failure, mutated callback inputs, private stack/FH3 transport not dynamically compared"
+    },
+    "comparison": {
+      "kind": "scalar projection plus independent actual-identity/cardinality/relationship assertions; not whole-object byte equality",
+      "registry_pointer_fields_excluded": {
+        "resource+1C": "registry+08 list sentinel",
+        "resource+28": "registry+14 vector begin",
+        "resource+2C": "registry+18 vector end",
+        "resource+30": "registry+1C vector capacity end"
+      },
+      "registry_scalar_fields_compared": [
+        "resource+20 registry list count",
+        "resource+34 registry mask",
+        "resource+38 registry active value"
+      ],
+      "identity_assertions": [
+        "page EC/F0 raw scene/store camera+18 identities",
+        "scene current1C raw resource",
+        "camera/light A4 equals actual outer24h",
+        "camera170 and light178/back/count1 reference same actual3Ch resource",
+        "scene0C head light and light3C successor camera",
+        "registry canonical reference_count address equals actual+4 for scene/camera/resource/light",
+        "viewport180/fog184 identities equal creator results",
+        "all four graph companions and ambient companion retire; Group explicit scalar retires; scene reuse count2 then creator releases"
+      ],
+      "projected_word_offsets": {
+        "page": [
+          "F4",
+          "FC",
+          "108",
+          "10C",
+          "110",
+          "114",
+          "118",
+          "11C"
+        ],
+        "scene": [
+          "00",
+          "04",
+          "10",
+          "20"
+        ],
+        "resource": [
+          "00",
+          "04",
+          "08",
+          "20",
+          "34",
+          "38"
+        ],
+        "camera": [
+          "00",
+          "04",
+          "188",
+          "18C",
+          "190",
+          "1D0",
+          "1D4",
+          "1D8",
+          "2EC",
+          "2F0"
+        ],
+        "directional": [
+          "00",
+          "04",
+          "17C",
+          "180",
+          "1E0",
+          "1E4",
+          "1E8"
+        ],
+        "viewport": [
+          "00",
+          "04",
+          "0C",
+          "10",
+          "14",
+          "18",
+          "1C"
+        ],
+        "fog": [
+          "00",
+          "04",
+          "08",
+          "0C",
+          "10",
+          "14",
+          "68",
+          "78",
+          "90"
+        ],
+        "ambient": [
+          "00",
+          "04",
+          "1C",
+          "20",
+          "24",
+          "28"
+        ],
+        "Group": [
+          "00",
+          "04",
+          "08",
+          "0C",
+          "10",
+          "14",
+          "138"
+        ],
+        "outer_backing": [
+          "F14",
+          "F40",
+          "F44",
+          "F48",
+          "F4C"
+        ]
+      },
+      "fixture_domains": "Production actual canonical registry/renderer/HAL/camera pool and VFS strings; fixture-initialized same-token type descriptors/guards with genuine bootstrap predicates; isolated genuine weak/directional/Group pools and constructed88h GUI manager, no application weak publication mutation; no later-startup admission claim",
+      "count_trace": "current genuine InterlockedIncrement/Decrement return values compared in order; no fake counts"
+    },
+    "attempts": [
+      {
+        "attempt": 1,
+        "launcher": "local/output/cc10_gui_scene_acquisition_storage/launcher.log",
+        "run_log": "local/output/cc10_gui_scene_acquisition_storage/run.log",
+        "exit_code": -1,
+        "outcome": "Initial fixture asserted wrong scene-root offsets (+14/+9C); modal assertion stopped only the two validated owned processes. No comparison conclusion.",
+        "frames": 1,
+        "exact_command": "./tools/run_game.ps1 -Exe local\\output\\cc10_gui_scene_acquisition_storage/application-gui-acquisition-probe.exe -XLiveDll build/win32/Release/xlive_stub.dll -Log local\\output\\cc10_gui_scene_acquisition_storage\\run.log -- --frames 1",
+        "failed_binary_preserved": false
+      },
+      {
+        "attempt": 2,
+        "launcher": "local/output/cc10_gui_scene_acquisition_storage/launcher02.log",
+        "run_log": "local/output/cc10_gui_scene_acquisition_storage/run02.log",
+        "exit_code": 116,
+        "outcome": "Same wrong fixture assertion; active assertion changed to ExitProcess116, but relative diagnostic path was unavailable after application cwd changed.",
+        "frames": 1,
+        "exact_command": "./tools/run_game.ps1 -Exe local\\output\\cc10_gui_scene_acquisition_storage/application-gui-acquisition-probe.exe -XLiveDll build/win32/Release/xlive_stub.dll -Log local\\output\\cc10_gui_scene_acquisition_storage\\run02.log -- --frames 1",
+        "failed_binary_preserved": false
+      },
+      {
+        "attempt": 3,
+        "launcher": "local/output/cc10_gui_scene_acquisition_storage/launcher03.log",
+        "run_log": "local/output/cc10_gui_scene_acquisition_storage/run03.log",
+        "exit_code": 116,
+        "outcome": "Same fixture assertion captured at absolute local path; ExitProcess116. Correct root fields are scene+0C and node+3C.",
+        "frames": 1,
+        "exact_command": "./tools/run_game.ps1 -Exe local\\output\\cc10_gui_scene_acquisition_storage/application-gui-acquisition-probe.exe -XLiveDll build/win32/Release/xlive_stub.dll -Log local\\output\\cc10_gui_scene_acquisition_storage\\run03.log -- --frames 1",
+        "failed_binary_preserved": false
+      },
+      {
+        "attempt": 4,
+        "launcher": "local/output/cc10_gui_scene_acquisition_storage/launcher04.log",
+        "run_log": "local/output/cc10_gui_scene_acquisition_storage/run04.log",
+        "exit_code": -1073740791,
+        "outcome": "Fixture root assertion corrected. Original full-new/reuse/disposition succeeded, source terminated due mixed Acquired header/old core library layout; invalid mixed-build evidence.",
+        "frames": 1,
+        "exact_command": "./tools/run_game.ps1 -Exe local\\output\\cc10_gui_scene_acquisition_storage/application-gui-acquisition-probe.exe -XLiveDll build/win32/Release/xlive_stub.dll -Log local\\output\\cc10_gui_scene_acquisition_storage\\run04.log -- --frames 1",
+        "failed_binary_preserved": false
+      },
+      {
+        "attempt": 5,
+        "launcher": "local/output/cc10_gui_scene_acquisition_storage/launcher05.log",
+        "run_log": "local/output/cc10_gui_scene_acquisition_storage/run05.log",
+        "exit_code": -1073740791,
+        "outcome": "Added bounded progress logging; reproduced mixed-layout source termination after original graph disposition. No source/native mismatch claim.",
+        "frames": 1,
+        "exact_command": "./tools/run_game.ps1 -Exe local\\output\\cc10_gui_scene_acquisition_storage/application-gui-acquisition-probe.exe -XLiveDll build/win32/Release/xlive_stub.dll -Log local\\output\\cc10_gui_scene_acquisition_storage\\run05.log -- --frames 1",
+        "failed_binary_preserved": false
+      },
+      {
+        "attempt": 6,
+        "launcher": "local/output/cc10_gui_scene_acquisition_storage/launcher06.log",
+        "run_log": "local/output/cc10_gui_scene_acquisition_storage/run06.log",
+        "exit_code": 117,
+        "outcome": "Added local terminate capture; ExitProcess117. Confirmed mixed Acquired header/library layout. Earlier inputs/executables were not retained; logs remain.",
+        "frames": 1,
+        "exact_command": "./tools/run_game.ps1 -Exe local\\output\\cc10_gui_scene_acquisition_storage/application-gui-acquisition-probe.exe -XLiveDll build/win32/Release/xlive_stub.dll -Log local\\output\\cc10_gui_scene_acquisition_storage\\run06.log -- --frames 1",
+        "failed_binary_preserved": false
+      },
+      {
+        "attempt": 7,
+        "launcher": "local/output/cc10_gui_scene_acquisition_storage/launcher07.log",
+        "run_log": "local/output/cc10_gui_scene_acquisition_storage/run07.log",
+        "exit_code": 113,
+        "outcome": "Rebuilt source/core library and relinked against current layout. Both paths and graph disposition completed; projection mistakenly compared resource+1C/+30 raw registry addresses. ExitProcess113, not a behavioral mismatch.",
+        "frames": 1,
+        "exact_command": "./tools/run_game.ps1 -Exe local\\output\\cc10_gui_scene_acquisition_storage/application-gui-acquisition-probe.exe -XLiveDll build/win32/Release/xlive_stub.dll -Log local\\output\\cc10_gui_scene_acquisition_storage\\run07.log -- --frames 1",
+        "failed_binary_preserved": false
+      },
+      {
+        "attempt": 8,
+        "launcher": "local/output/cc10_gui_scene_acquisition_storage/launcher08.log",
+        "run_log": "local/output/cc10_gui_scene_acquisition_storage/run08.log",
+        "exit_code": 0,
+        "outcome": "Excluded raw registry addresses from scalar projection, retaining identity/count/relationship assertions; used two ordinary app frames. Full-new/reuse pair, graph retirement and ordinary COM0/0 drain passed, exit0.",
+        "frames": 2,
+        "exact_command": "./tools/run_game.ps1 -Exe local\\output\\cc10_gui_scene_acquisition_storage/application-gui-acquisition-probe.exe -XLiveDll build/win32/Release/xlive_stub.dll -Log local\\output\\cc10_gui_scene_acquisition_storage\\run08.log -- --frames 2",
+        "failed_binary_preserved": null
+      }
+    ]
+  },
+  "evidence_directory": "local/output/cc10_gui_scene_acquisition_storage",
+  "frozen_readiness_archive": "local/output/cc10_gui_scene_acquisition_readiness/evidence.zip",
+  "ghidra_mutations": false,
+  "abi_compatible": false,
+  "application_bound": false,
+  "game_validated": false,
+  "limits": [
+    "Complete source normal body is not a claim every instruction/branch was exercised.",
+    "Actual provider composition on the reconstructed production renderer is a focused fixture, not automatic application graph admission or original game validation.",
+    "Fixture weak owners use their own genuine weak pool and SingletonLifetimeDomain with exact mutex dispatcher; same actual+4 graph registry is the application registry.",
+    "Normal zero arms and exception/host-admission failure schedules remain static/provider-bound evidence.",
+    "Legacy typed graphs remain unchanged; no missing provider stub, default success, native FH3 or private ABI claim."
+  ]
+}
