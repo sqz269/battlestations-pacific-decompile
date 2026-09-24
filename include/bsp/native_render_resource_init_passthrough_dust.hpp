@@ -20,12 +20,14 @@ struct NativeRenderResourceInitPassthroughDustContext {
 // parameter bytes and predecessor states survive dependent stages/callbacks.
 // Their existing explicit external-quiescence contracts govern reset/destruction.
 struct NativeRenderResourceInitPassthroughDustState final {
-    enum class Phase { fresh, preparing, running, awaiting_b120b9_continuation, failed };
+    enum class Phase { fresh, preparing, running, awaiting_b120b9_continuation,
+        post658_running, awaiting_later_continuation, failed };
     NativeRenderResourceInitPassthroughDustState() = default;
     NativeRenderResourceInitPassthroughDustState(const NativeRenderResourceInitPassthroughDustState&) = delete;
     NativeRenderResourceInitPassthroughDustState& operator=(const NativeRenderResourceInitPassthroughDustState&) = delete;
     Phase phase{Phase::fresh};
     NativeRenderResourceInitDistortionState* previous{};
+    const void* post658_identity{}; // One-use successor; no resource credit.
     const NativeRenderResourceInitPassthroughDustContext* context_identity{};
     NativeRenderResourceInitEntryState* entry_identity{};
     const volatile NativeRenderResourceInitArguments* argument_cells_identity{};
