@@ -168,6 +168,10 @@ public:
     // 004c43c0 for the application frame's own edge test at 00737ae7 and for
     // the press-start poll at 0067d2dd.
     bool input_action_pressed(int action);
+    // 004C5090 (held: current +28h set and +24h above zero) and 00535EE0
+    // (released: not held now, held with time before) over the same records.
+    bool input_action_held(int action);
+    bool input_action_released(int action);
 
     const GameMenuSummary& summary() const noexcept;
     // Milestone 2e. Null when --menu-select named nothing.

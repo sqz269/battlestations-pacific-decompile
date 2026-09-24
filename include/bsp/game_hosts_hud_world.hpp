@@ -82,6 +82,12 @@ inline constexpr bool kMissionFovBound = true;
 // 0064A9F0); the other blocks are records. OFF keeps the one record.
 inline constexpr bool kHudShipScreenUpdateBound = true;
 
+// Part 2 of the same packet (docs/SHIP_SCREEN_UPDATE.md section 10): the
+// control flow from 0064E415 to 0064F665, the turn-to-camera and repair-menu
+// gates over the menu host's action records. Their bodies are records never
+// reached without input. OFF keeps the part-1 tail record.
+inline constexpr bool kHudShipScreenControlsBound = true;
+
 class GameHostLog;
 class GameFrontendHost;
 class GameMenuHost;

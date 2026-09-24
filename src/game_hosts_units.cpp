@@ -281,6 +281,9 @@ struct GameUnitSlot {
         bsp::publish_scene_observer_tables_00925d44(observer_prefix);
         //00928713..00928748: current assignments, not the +188h policy table.
         for (std::int32_t& role : current_roles_01ac) role = bsp::kUnitRoleTableFill;
+        // 00928630 calls instance->vtable[148h](1FFh, 9) after +180h = 9: every
+        // role opens to PLAYER_ANY (docs/UNIT_INSTANCE_LAYOUT.md).
+        for (std::int32_t& p : role_permission_0188) p = 9;
     }
 
     GameUnitRow row;
@@ -297,6 +300,11 @@ struct GameUnitSlot {
     // This unit owns the canonical current roles for every process consumer.
     // Actual 4Bh receive-side assignment and its side effects remain pending.
     std::int32_t current_roles_01ac[bsp::kUnitRoleTableEntries];
+    // Packet cc9_player_role_bookkeeping (docs/SCRIPTED_HELM.md): the
+    // permission words unit+188h + role*4 (00927D20) and unit+184h, which only
+    // an accepted role-1 take sets (00780214).
+    std::int32_t role_permission_0188[bsp::kUnitRoleTableEntries];
+    bool role_player_0184{false};
 
     // Only constructor-established cells used by 00953CC0 / 0095DC40.
     // The role and gate members of the pure routine's view are not owners.
@@ -2735,6 +2743,10 @@ struct GameUnitsHost::Impl {
         return controlled_bound && controlled_index < slots.size()
             && slots[controlled_index].get() == &slot;
     }
+    // unit+184h as the director step (00836978/00836AAD/00836E45) and cruise
+    // (009E11C8) read it: the unit's own byte under kPlayerRoleBookkeepingBound
+    // (declared further down), else the controlled-unit stand-in.
+    bool player_flag_0184(const GameUnitSlot& slot) const;
 
     // The +CCh pose block and the motion state are two views of the same rows;
     // the motion path writes them, the pose refresh reads them.
@@ -2851,6 +2863,19 @@ struct GameUnitsHost::Impl {
     // pilot+25Ch throttle arm. Before: neither arm ran.
     static constexpr bool kPilotVehicleAvoidanceBound = true;
     static constexpr bool kPilotTerrainAvoidanceBound = true;
+    // Packet cc9_player_role_bookkeeping (docs/SCRIPTED_HELM.md section 2):
+    // the permission words from SetRoleAvailable (0077F360 -> 00927D20), the
+    // 4Bh role arm of 00780120 with 0059BBD0, HUD page 27h's role-0 take on
+    // the controlled unit (0067BB50), and unit+184h set only by an accepted
+    // role-1 take. Before: unit+184h was "the unit 004c0890 bound".
+    static constexpr bool kPlayerRoleBookkeepingBound = true;
+    // game+18ECh, the local player's slot: 0 in this single-player host.
+    static constexpr std::int32_t kLocalPlayerSlot = 0;
+    std::size_t role_screen_unit_plus_one{0};   // page 27h's tracked unit, +30h
+    int role_takes{0}, role_releases{0}, role_refusals{0}, role_permission_writes{0};
+    void role_message_4b_00780162(std::size_t index, std::uint32_t mask,
+                                  std::int32_t player_slot, int take);
+    void role_screen_update_0067bb50();
     static constexpr bool kPilotAvoidanceUpdateBound = kPilotGunfireAvoidanceBound ||
         kPilotVehicleAvoidanceBound || kPilotTerrainAvoidanceBound;
     // DIAGNOSTIC, packet cc9_wing_achieved_speed: every kWingTraceEvery motion
@@ -5421,6 +5446,105 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
 }
 
 // ---------------------------------------------------------------------------
+// Packet cc9_player_role_bookkeeping (docs/SCRIPTED_HELM.md section 2)
+// ---------------------------------------------------------------------------
+
+// 00780120's 4Bh arm (00780162-007803D9) with msg+20h == 0 and msg+30h == 0,
+// the shape 0077C470 and 00927D20 send: mask at +24h, slot at +28h, take at +2Ch.
+void GameUnitsHost::Impl::role_message_4b_00780162(std::size_t index, std::uint32_t mask,
+                                                   std::int32_t player_slot, int take) {
+    if (index >= slots.size()) return;
+    GameUnitSlot& u = *slots[index];
+    // 00927F10 on a slot other than 8: in this single-player host every slot
+    // but the local player's is AI-held. SUBSTITUTION, labelled.
+    auto ai_held = [](std::int32_t s) { return s != kLocalPlayerSlot; };
+    // 0059BBD0(unit, role, slot): unit+188h + role*4 == 9 || == slot.
+    auto open_to = [&](int role, std::int32_t s) {
+        return u.role_permission_0188[role] == 9 || u.role_permission_0188[role] == s;
+    };
+    // 009281C0 through vtable[154h] = 0077F480: role 0 given 8 clears +184h.
+    auto set_role = [&](int role, std::int32_t s) {
+        if (role == 0 && s == 8) u.role_player_0184 = false;   // 009281D6
+        u.current_roles_01ac[role] = s;                         // 009281E2
+    };
+    if (take == 1) {
+        if ((mask & 2u) != 0 && open_to(1, player_slot)) {     // 007801FE-00780214
+            u.role_player_0184 = true;
+        }
+    } else if ((mask & 1u) != 0 && u.current_roles_01ac[0] == player_slot) {
+        u.role_player_0184 = false;                             // 00780235
+        // 0080E290 for a kind-6 unit follows (0078023B): not read, recorded.
+        record("RoleMessage::kind6_release_0080e290", 0x0080e290u);
+    }
+    std::uint32_t bit = 1;
+    for (int i = 0; i < bsp::kUnitRoleTableEntries; ++i, bit <<= 1) {
+        if ((mask & bit) == 0) continue;
+        const std::int32_t holder = u.current_roles_01ac[i];
+        if (take == 1) {
+            // Role 0 also rebinds the player record's unit (+4Ch) and routes a
+            // 1FFh release for a different live unit (007802A0-0078030A): the
+            // host keeps its controlled unit through 004C0890 instead. Labelled.
+            if ((holder == 8 || ai_held(holder)) && open_to(i, player_slot)) {
+                set_role(i, player_slot);                       // 0078037C vtable[154h]
+                ++role_takes;
+            } else {
+                ++role_refusals;
+            }
+        } else if (holder == player_slot) {
+            set_role(i, 8);
+            ++role_releases;
+        }
+    }
+    done("Session::entity_role_message_4b", 0x00780162u);
+}
+
+// 0067BB50, slot 20h of HUD page 27h (vtable 00CF7A38, constructor
+// 0068A8A0), which the player's unit interfaces open (INTF_CAPTAIN and the
+// rest, docs/IN_MISSION_INTERFACE_MANAGER.md). Its page byte +4h is taken as
+// set while a unit is controlled, and it runs once per fixed step here
+// instead of per frame. Both labelled.
+bool GameUnitsHost::Impl::player_flag_0184(const GameUnitSlot& slot) const {
+    if constexpr (kPlayerRoleBookkeepingBound) {
+        return slot.role_player_0184;
+    } else {
+        return is_controlled(slot);
+    }
+}
+
+void GameUnitsHost::Impl::role_screen_update_0067bb50() {
+    const std::size_t controlled_plus_one =
+        (controlled_bound && controlled_index < slots.size()) ? controlled_index + 1 : 0;
+    auto holds = [&](std::size_t plus_one, int role) {   // 00927F30(unit, role)
+        return plus_one != 0 &&
+               slots[plus_one - 1]->current_roles_01ac[role] == kLocalPlayerSlot;
+    };
+    auto send = [&](std::size_t plus_one, std::uint32_t mask, int take) {   // 0077C470
+        // 0077C470's gate: game+5D4h > 0Ch (in mission) and session mode 0.
+        role_message_4b_00780162(plus_one - 1, mask, kLocalPlayerSlot, take);
+    };
+    if (controlled_plus_one == 0 ||
+        !bsp::unit_is_kind_of(slots[controlled_plus_one - 1]->class_id, 2)) {
+        if (role_screen_unit_plus_one != 0) {                    // 0067BB8F
+            send(role_screen_unit_plus_one, 1u, 0);
+            role_screen_unit_plus_one = 0;
+        }
+        return;
+    }
+    if (role_screen_unit_plus_one != controlled_plus_one && role_screen_unit_plus_one != 0 &&
+        holds(role_screen_unit_plus_one, 0)) {
+        send(role_screen_unit_plus_one, 1u, 0);                  // 0067BC21
+    }
+    role_screen_unit_plus_one = controlled_plus_one;
+    // 0067BBE0: game+18ECh in [0, 7]; page byte +4h set (labelled).
+    if (holds(controlled_plus_one, 0)) return;
+    GameUnitSlot& c = *slots[controlled_plus_one - 1];
+    if (!(c.role_permission_0188[0] == 9 || c.role_permission_0188[0] == kLocalPlayerSlot)) {
+        return;                                                  // 0059BBD0(0, slot)
+    }
+    send(controlled_plus_one, 1u, 1);                            // 0067BC0B
+}
+
+// ---------------------------------------------------------------------------
 // Impl helpers
 // ---------------------------------------------------------------------------
 
@@ -6418,7 +6542,7 @@ void GameUnitsHost::run_director_steps_00836920() {
         if (!slot.state->active) continue;
         const float heading = host.pose_heading_radians(slot);
         const GameDirectorStepOutcome outcome = host.commands.director_step_00836920(
-            index, host.is_controlled(slot), host.summary.simulated_seconds, slot.ring,
+            index, host.player_flag_0184(slot), host.summary.simulated_seconds, slot.ring,
             heading);
         // Packet cc8_ship_moveonpath, edited under the integrator's hunk
         // arbitration of 2026-09-19. 00836BF0-00836D66 is the `moveonpath` arm
@@ -6522,6 +6646,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
     }
     ++host.summary.motion_steps;
     host.summary.simulated_seconds += step_seconds;
+    if constexpr (Impl::kPlayerRoleBookkeepingBound) {
+        host.role_screen_update_0067bb50();
+    }
     if constexpr (bsp::kPlaneSquadronLeaveOnDeathBound) {
         host.squadron_leave_on_death_007bcaa0();
     }
@@ -13902,7 +14029,35 @@ GameCommandCompletion GameUnitsHost::end_command_0071e430(std::size_t index,
 
 bool GameUnitsHost::unit_player_controlled_0184(std::size_t index) const {
     const Impl& host = *impl_;
-    return host.controlled_bound && host.controlled_index == index;
+    if constexpr (Impl::kPlayerRoleBookkeepingBound) {
+        return index < host.slots.size() && host.slots[index]->role_player_0184;
+    } else {
+        return host.controlled_bound && host.controlled_index == index;
+    }
+}
+
+void GameUnitsHost::set_role_availability_00927d20(std::size_t index, std::uint32_t mask,
+                                                   std::int32_t value) {
+    Impl& host = *impl_;
+    if (!Impl::kPlayerRoleBookkeepingBound || index >= host.slots.size()) return;
+    GameUnitSlot& slot = *host.slots[index];
+    // 00927D20: for each of the nine role bits, unit+188h + i*4 = value. A
+    // kind-2 unit whose role is held (not 8) and is now closed to everyone but
+    // the AI (value 8) routes a 4Bh release (take 0) naming the holder. The
+    // route is delivered locally at once in single player (labelled).
+    std::uint32_t bit = 1;
+    for (int i = 0; i < bsp::kUnitRoleTableEntries; ++i, bit <<= 1) {
+        if ((mask & bit) == 0) continue;
+        slot.role_permission_0188[i] = value;
+        ++host.role_permission_writes;
+        const std::int32_t holder = slot.current_roles_01ac[i];
+        if (bsp::unit_is_kind_of(slot.class_id, 2) && holder != 8 && value == 8) {
+            host.role_message_4b_00780162(index, bit, holder, 0);
+        }
+    }
+    // 00927DE1..: a value naming one player (not 8, not 9) also calls
+    // unit->vtable[2Ch] on that player's record; 0077F360's tail sets a
+    // message-suppress byte for kind-5 units. Neither is modelled (labelled).
 }
 
 bool GameUnitsHost::unit_current_role_slot(std::size_t index, std::int32_t role_index,
@@ -14329,7 +14484,7 @@ bool GameUnitsHost::run_cruise_state_step_009e1170(std::size_t index,
     if (index >= host.slots.size()) return false;
     GameUnitSlot& slot = *host.slots[index];
     bsp::CruiseOrderedValues ordered{};
-    return host.commands.cruise_step(index, host.is_controlled(slot),
+    return host.commands.cruise_step(index, host.player_flag_0184(slot),
         unit_forward_speed_0092d730(index),
         bsp::unit_reference_speed_0080fc30(slot.motion.max_speed,
             bsp::kUnitReferenceSpeedUnscaled),
@@ -14344,7 +14499,7 @@ bool GameUnitsHost::run_cruise_state_step_009e1170(std::size_t index,
     if (index >= host.slots.size()) return false;
     GameUnitSlot& slot = *host.slots[index];
     bsp::CruiseOrderedValues ordered{};
-    return host.commands.cruise_step(index, host.is_controlled(slot),
+    return host.commands.cruise_step(index, host.player_flag_0184(slot),
         unit_forward_speed_0092d730(index),
         bsp::unit_reference_speed_0080fc30(slot.motion.max_speed,
             bsp::kUnitReferenceSpeedUnscaled),
@@ -15674,6 +15829,32 @@ void GameUnitsHost::report() {
                             "ship_ticks=%lld bands=%lld throttle=%lld dive_ticks=%lld "
                             "(007DF4F0, packet cc9_pilot_vehicle_terrain_avoidance)",
                             vp, vs, vb, vt, vd);
+                        if constexpr (Impl::kPlayerRoleBookkeepingBound) {
+                            host.log.notef("summary mission player roles takes=%d releases=%d "
+                                "refusals=%d permission_writes=%d (00780162/00927D20/0067BB50, "
+                                "packet cc9_player_role_bookkeeping)", host.role_takes,
+                                host.role_releases, host.role_refusals,
+                                host.role_permission_writes);
+                            for (const auto& sl : host.slots) {
+                                bool any = sl->role_player_0184;
+                                for (int i = 0; i < bsp::kUnitRoleTableEntries; ++i) {
+                                    any = any || sl->current_roles_01ac[i] != 8 ||
+                                          sl->role_permission_0188[i] != 9;
+                                }
+                                if (!any) continue;
+                                char roles[64] = {}, perms[64] = {};
+                                int ro = 0, po = 0;
+                                for (int i = 0; i < bsp::kUnitRoleTableEntries; ++i) {
+                                    ro += std::snprintf(roles + ro, sizeof(roles) - ro, "%d",
+                                                        sl->current_roles_01ac[i]);
+                                    po += std::snprintf(perms + po, sizeof(perms) - po, "%d",
+                                                        sl->role_permission_0188[i]);
+                                }
+                                host.log.notef("  player roles %-24s held=%s open=%s +184h=%d",
+                                    sl->row.name.c_str(), roles, perms,
+                                    sl->role_player_0184 ? 1 : 0);
+                            }
+                        }
                         host.log.notef("summary mission terrain avoidance ticks=%lld bands=%lld "
                             "throttle=%lld dive_ticks=%lld water_ticks=%lld (0099F1C0/0099CAB0, "
                             "packet cc9_pilot_vehicle_terrain_avoidance)", tt, tb, tth, td, tw);

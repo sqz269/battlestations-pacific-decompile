@@ -1735,6 +1735,21 @@ bool GameMenuHost::input_action_pressed(int action) {
     return action_pressed_this_frame_004c43c0(host.press_action);
 }
 
+// The executable's action table holds one record, press-start 4Eh. Every other
+// index is a record nothing starts, so both rules answer false for it.
+bool GameMenuHost::input_action_held(int action) {
+    Impl& host = *impl_;
+    if (action != kPressStartInputAction) return false;
+    return host.press_action.current_down && host.press_action.current_hold > 0.0f;
+}
+
+bool GameMenuHost::input_action_released(int action) {
+    Impl& host = *impl_;
+    if (action != kPressStartInputAction) return false;
+    const bool held_now = host.press_action.current_down && host.press_action.current_hold > 0.0f;
+    return !held_now && host.press_action.previous_down && host.press_action.previous_hold > 0.0f;
+}
+
 void GameMenuHost::frame(float raw_delta, unsigned long long frame_index) {
     Impl& host = *impl_;
     host.pumped_this_frame = false;
