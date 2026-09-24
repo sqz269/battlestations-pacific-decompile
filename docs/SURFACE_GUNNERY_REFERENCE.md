@@ -112,3 +112,16 @@ Logs `local/uC_usn02.log` (OFF) and `local/uT_usn02.log` (ON), USN02 9000, same 
   the slot's `pilot_skill_index` (0 Stun .. 5 Elite). Every E2 Kate carries index 1, so the E2
   rows are identical **by construction**: the selected row is the SPNormal row the host named
   before, value for value. USN02 has no aircraft.
+
+## 7. The landed-state reference (2026-09-24)
+
+This is re-taken on `cf2bab541`: main with `330b81cdc` (`kPlayerRoleBookkeepingBound`) merged and
+`kArtilleryAimPointBound` ON, option off. Log: `local/sR2_usn02.log`.
+- Damage 69856.9, 18 deaths (5 Allied, 13 IJN), 556 queued hits and 1181 shots.
+- Rounds: 272 hit a unit and 894 fell in the water.
+- The mission **fails at 188.16 s** on Exeter's sinking (187.36 s, credited to Haguro).
+- Some kill credits fall on ships of the same side: Perth to Encounter, and Haguro and Jintsu to
+  Tokitsukaze. That is the last-attacker credit; it was not examined here.
+
+docs/GAME_EXECUTABLE.md carries this row as the current USN02 reference, below the
+role-bookkeeping section.
