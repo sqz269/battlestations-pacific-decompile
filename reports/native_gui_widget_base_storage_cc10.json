@@ -1,0 +1,95 @@
+{
+  "packet": "cc10_gui_widget_base_storage",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_gui_widget_base_storage.cpp",
+  "no_ghidra_function": [],
+  "functions": [
+    {
+      "address": "00aa9390",
+      "name": "construct_native_gui_widget_base_00aa9390",
+      "native_end_exclusive": "00aa9514",
+      "original_abi": "ECX fresh raw widget; stack DWORD type; EAX receiver; RET4",
+      "status": "complete_normal_raw_storage_native_source_compared_source_unwind_checked"
+    },
+    {
+      "address": "00a9b720",
+      "name": "allocate_native_gui_widget_list_sentinel_00a9b720",
+      "native_end_exclusive": "00a9b73a",
+      "original_abi": "Unused ECX; EAX 0Ch allocated sentinel; RET",
+      "status": "complete_normal_reuses_identical_existing_allocator_helper"
+    },
+    {
+      "address": "00aa6e10",
+      "name": "destroy_native_gui_ref_base_00aa6e10",
+      "native_end_exclusive": "00aa6e1b",
+      "original_abi": "ECX receiver; stamp D5C104; tail BD30F0; RET via target",
+      "status": "complete_assembly_leaf_source_unwind_checked"
+    }
+  ],
+  "verified_native_bytes": [
+    {
+      "address": "00aa9390",
+      "size": 388,
+      "sha256": "42d9ee1432699517267e0978fed8b44f28dcdb1faac4e3be12d3f127ae06bbbc",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00a9b720",
+      "size": 26,
+      "sha256": "d8ff1f4c4662eb126d2ba2a1ba828255fd30877fb9b166e5f6949cd4ad91e7c4",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00aa6e10",
+      "size": 11,
+      "sha256": "62b271d2007c7623d67b3b74b9c82e30af5c04bf35c3f0b839931b225fe6ab6b",
+      "live_disk_equal": true
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00aa9446",
+      "native": "00a9b720",
+      "function": "00aa9390",
+      "contract": "Allocate list before second shared word read and +68 publication"
+    },
+    {
+      "address": "00a9b722",
+      "native": "00bf681b",
+      "function": "00a9b720",
+      "contract": "Allocate 0Ch; caller ADD ESP,4"
+    },
+    {
+      "address": "00aa6e16",
+      "native": "00bd30f0",
+      "function": "00aa6e10",
+      "kind": "tail_jump",
+      "contract": "Destroy base profile without decrement/free"
+    }
+  ],
+  "unwind": {
+    "handler": "00cb73b8",
+    "info": "00dedc28",
+    "map": "00dedc20",
+    "state0_next": -1,
+    "state0_action": "00cb73b0",
+    "cleanup": "00aa6e10",
+    "native_fh3_equivalence": false
+  },
+  "validation": {
+    "win32_build": true,
+    "existing_checks_passed": 3,
+    "native_source_normal_cases": 3,
+    "source_allocation_failure_case": true,
+    "comparison": "124h poisoned raw caller region and pre-allocation snapshot; independent +68 addresses normalized only; 0Ch sentinel self-links and poison payload",
+    "fixture": "local/cc10_widget_probe.cpp",
+    "fixture_log": "local/cc10-widget-probe.log",
+    "build_log": "local/cc10-gui-widget-base-build.log",
+    "fixture_exe_sha256": "b7d659189eb2e9a5dc2ed2762f12126b3e568a7184e750382890793cccf67aef"
+  },
+  "original_abi_compatible": false,
+  "full_widget_lifetime_complete": false,
+  "application_bound": false,
+  "game_validated": false
+}
