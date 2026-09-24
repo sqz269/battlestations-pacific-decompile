@@ -9484,6 +9484,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             tgt = df_finder_007e2090(dt, gi);
                         }
                         const bool was_burst = unit_.df_gun.burst_4b;
+                        if constexpr (GameUnitsHost::Impl::kFighterFriendlyInLineBound) {
+                            gi.finder_busy = owner_.friendly_in_line_007b96d0(unit_, dt);
+                            if (gi.finder_busy) ++unit_.ff_busy_ticks;
+                        }
                         bsp::dogfight_gun_tick_009fc7c0(unit_.df_gun, gi);
                         if constexpr (GameUnitsHost::Impl::kFighterGunLeadBound) {
                             const bool ran = df_fine_aim_009f9fc0(gi);
