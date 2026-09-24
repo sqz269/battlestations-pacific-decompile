@@ -93,7 +93,7 @@ inline constexpr bool kHudShipScreenControlsBound = true;
 // and the four circles. The repair task, the settings failure descriptors and
 // the device list are records that answer "no data". OFF keeps the part-2
 // tail record at 0064F665.
-inline constexpr bool kHudShipScreenDamageBound = false;
+inline constexpr bool kHudShipScreenDamageBound = true;
 
 // Part 4 of the same packet (section 13): 0064FD24..006500C1, ship_dir_Icon
 // through 0064AAD0, the +128h/+12Ch spring and the digit gauges 0043B370.

@@ -385,6 +385,23 @@ surface ship.
   circles are Sections with no texture, and the Hl fade to alpha 0 changes no quad count, because
   the bridge does not cull by alpha.
 
+**The part 3 pair.** `local\p3_off_usn04.log` against `local\p3_on_usn04.log` (worker tree), built
+from one tree on main 528a673ea plus this branch, back buffer 2560x1440.
+
+| row | OFF | ON |
+| --- | ---: | ---: |
+| unimplemented total | 2,221,102 | 2,248,576 (+27,474; predicted +27,474) |
+| update_remainder at 0064F665 | 9,158 | none |
+| update_remainder at 0064FD24 | none | 9,158 |
+| repair_task, settings_failure_descriptors, device_list | none | 9,158 each |
+
+- **Rows not added:** none of `submarine_circle_terms`, `circle_quad` or `circle_progress` appears.
+- **Summary lines.** 156 of 157 are identical, and every gameplay line is among them. The sprite
+  line's `quads` goes from 185 to 184, inside the predicted one or two.
+- `PlatformLoopCallbacks::pretranslate` moves (18 to 23), as it did in the part 2 pair; it counts
+  window messages.
+- **Result.** Every prediction holds. **`kHudShipScreenDamageBound` flips ON.**
+
 ## 13. Part 4: the direction spring and the digit gauges, 0064FD24..006500C1
 
 **Corrections to section 11.** The +7Ch gauge has three sources, tested in order: with +105h the
