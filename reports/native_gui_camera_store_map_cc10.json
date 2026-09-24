@@ -1,0 +1,686 @@
+{
+  "packet": "cc10_gui_camera_store_map",
+  "status": "complete_raw_normal_strict_win32_original_source_composition_checked",
+  "documentation": "docs/NATIVE_GUI_CAMERA_STORE_MAP_CC10.md",
+  "source": "src/native_gui_camera_store_map.cpp",
+  "original_executable_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "dependency_base_commit": "783990c2e84e1b7421152fff1074a662826154f0",
+  "native_bytes": [
+    {
+      "address": "00aa3280",
+      "size": 274,
+      "end_inclusive": "00aa3391",
+      "last_instruction_address": "00aa338f",
+      "last_instruction_length": 3,
+      "last_instruction": "ret 4",
+      "sha256": "249a140183efd7fcd5bf732f8441f902883f2c9dd5f22370f01289b3b8be2171",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00aa5070",
+      "size": 224,
+      "end_inclusive": "00aa514f",
+      "last_instruction_address": "00aa514d",
+      "last_instruction_length": 3,
+      "last_instruction": "ret 0xc",
+      "sha256": "cf7110497cdf9405f767d9a81ac4843a471d2ab96b696aa9b6e5f461dad8edfd",
+      "live_pe_equal": true
+    },
+    {
+      "address": "004bda70",
+      "size": 99,
+      "end_inclusive": "004bdad2",
+      "last_instruction_address": "004bdad2",
+      "last_instruction_length": 1,
+      "last_instruction": "ret ",
+      "sha256": "728fab530f75032c1f93e379e48544cda329fe044fcd1a63ee4bf9b75297cc95",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00aa4960",
+      "size": 122,
+      "end_inclusive": "00aa49d9",
+      "last_instruction_address": "00aa49d7",
+      "last_instruction_length": 3,
+      "last_instruction": "ret 8",
+      "sha256": "a95bf104ecc17dd66ec73a3b3d1c5d2045bdae442d393a0789132594b5c8a145",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00aa41b0",
+      "size": 492,
+      "end_inclusive": "00aa439b",
+      "last_instruction_address": "00aa4399",
+      "last_instruction_length": 3,
+      "last_instruction": "ret 0x10",
+      "sha256": "a999c74e1ae68de8da47a3dd9bb043b678a6a24368f07e7617ce5aa6f1b93d0e",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00aa2960",
+      "size": 63,
+      "end_inclusive": "00aa299e",
+      "last_instruction_address": "00aa299c",
+      "last_instruction_length": 3,
+      "last_instruction": "ret 0x14",
+      "sha256": "cf81ec69a44a5db48781633d9da0502a311afb318c0ea85a543537bbf51e3f68",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00aa1080",
+      "size": 82,
+      "end_inclusive": "00aa10d1",
+      "last_instruction_address": "00aa10cf",
+      "last_instruction_length": 3,
+      "last_instruction": "ret 4",
+      "sha256": "2f89359fd0d0c768ce8a145086e6eccc83741c05575d6849e3db233447831059",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00aa2180",
+      "size": 78,
+      "end_inclusive": "00aa21cd",
+      "last_instruction_address": "00aa21cb",
+      "last_instruction_length": 3,
+      "last_instruction": "ret 4",
+      "sha256": "bfe2e0ce417eeb6e69580063c88eafeae8dc1059708aa6a157813eaac4fe6cca",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00cb7080",
+      "size": 8,
+      "end_inclusive": "00cb7087",
+      "sha256": "8db4bde595aab14dbfde59a33f932543952da8625d58fc3e5185dc53b399530e",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00cb7088",
+      "size": 10,
+      "end_inclusive": "00cb7091",
+      "sha256": "99c2f1591e94d473751bbcff8c749d3609db3d69dec94cec20f655a2784b12f7",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00ded778",
+      "size": 40,
+      "end_inclusive": "00ded79f",
+      "sha256": "602328f58d957d424b4684515eb9a956bdbd889ee22e80458041060586e156e7",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00b6d800",
+      "size": 4,
+      "end_inclusive": "00b6d803",
+      "sha256": "eaca16f71d7de67d82e0033e59fb22d163e2d6b7dd0cf0a6bcb8a72b37063339",
+      "live_pe_equal": true
+    },
+    {
+      "address": "004254b0",
+      "size": 1,
+      "end_inclusive": "004254b0",
+      "sha256": "ae3f4619b0413d70d3004b9131c3752153074e45725be13b9a148978895e359e",
+      "live_pe_equal": true
+    }
+  ],
+  "native_byte_totals": {
+    "owned_normal_bodies": 1434,
+    "owned_eh_boundary": 18,
+    "metadata": 40,
+    "existing_getter_and_diagnostic": 5
+  },
+  "routines": [
+    {
+      "address": "00aa3280",
+      "name": "find_native_gui_camera_store_00aa3280",
+      "source": "src/native_gui_camera_store_map.cpp",
+      "coverage": "complete raw normal body; existing physical tree and host exception transport reused",
+      "original_abi": "ECX actual manager, stack descriptor pointer captured before traversal, EAX raw store or0, RET4",
+      "end_inclusive": "00aa3391",
+      "last_instruction_address": "00aa338f",
+      "last_instruction_length": 3
+    },
+    {
+      "address": "00aa5070",
+      "name": "create_native_gui_camera_store_00aa5070",
+      "source": "src/native_gui_camera_store_map.cpp",
+      "coverage": "complete raw normal body; existing physical tree and host exception transport reused",
+      "original_abi": "ECX manager captured before allocator; three stack arguments camera,scene,descriptor; EAX raw24h store; RET0C",
+      "end_inclusive": "00aa514f",
+      "last_instruction_address": "00aa514d",
+      "last_instruction_length": 3
+    },
+    {
+      "address": "004bda70",
+      "name": "advance_native_gui_camera_store_iterator_004bda70",
+      "source": "src/native_gui_camera_store_map.cpp",
+      "coverage": "complete raw normal body; existing physical tree and host exception transport reused",
+      "original_abi": "ECX actual iterator; RET; returning invalid-parameter service retained",
+      "end_inclusive": "004bdad2",
+      "last_instruction_address": "004bdad2",
+      "last_instruction_length": 1
+    },
+    {
+      "address": "00aa4960",
+      "name": "insert_native_gui_camera_store_00aa4960",
+      "source": "src/native_gui_camera_store_map.cpp",
+      "coverage": "complete raw normal body; existing physical tree and host exception transport reused",
+      "original_abi": "ECX tree, stack output and pair, EAX output, RET8",
+      "end_inclusive": "00aa49d9",
+      "last_instruction_address": "00aa49d7",
+      "last_instruction_length": 3
+    },
+    {
+      "address": "00aa41b0",
+      "name": "link_native_gui_camera_store_tree_node_00aa41b0",
+      "source": "src/native_gui_camera_store_map.cpp",
+      "coverage": "complete raw normal body; existing physical tree and host exception transport reused",
+      "original_abi": "ECX tree; stack output,low-byte insert-left,parent,pair; EAX output; RET10",
+      "end_inclusive": "00aa439b",
+      "last_instruction_address": "00aa4399",
+      "last_instruction_length": 3
+    },
+    {
+      "address": "00aa2960",
+      "name": "allocate_native_gui_camera_store_tree_node_00aa2960",
+      "source": "src/native_gui_camera_store_map.cpp",
+      "coverage": "complete raw normal body; existing physical tree and host exception transport reused",
+      "original_abi": "stack left,parent,right,pair,low-byte color; EAX raw18h node; RET14",
+      "end_inclusive": "00aa299e",
+      "last_instruction_address": "00aa299c",
+      "last_instruction_length": 3
+    },
+    {
+      "address": "00aa1080",
+      "name": "rotate_native_gui_camera_store_right_00aa1080",
+      "source": "src/native_gui_camera_store_map.cpp",
+      "coverage": "complete raw normal body; existing physical tree and host exception transport reused",
+      "original_abi": "ECX actual tree; stack pivot; RET4",
+      "end_inclusive": "00aa10d1",
+      "last_instruction_address": "00aa10cf",
+      "last_instruction_length": 3
+    },
+    {
+      "address": "00aa2180",
+      "name": "rotate_native_gui_camera_store_left_00aa2180",
+      "source": "src/native_gui_camera_store_map.cpp",
+      "coverage": "complete raw normal body; existing physical tree and host exception transport reused",
+      "original_abi": "ECX actual tree; stack pivot; RET4",
+      "end_inclusive": "00aa21cd",
+      "last_instruction_address": "00aa21cb",
+      "last_instruction_length": 3
+    },
+    {
+      "address": "00cb7080",
+      "coverage": "native compiler frame/FH3 boundary only; not a source implementation",
+      "end_inclusive": "00cb7087",
+      "last_instruction_address": "00cb7083",
+      "last_instruction_length": 5,
+      "size": 8
+    },
+    {
+      "address": "00cb7088",
+      "coverage": "native compiler frame/FH3 boundary only; not a source implementation",
+      "end_inclusive": "00cb7091",
+      "last_instruction_address": "00cb708d",
+      "last_instruction_length": 5,
+      "size": 10
+    }
+  ],
+  "calls": [
+    {
+      "address": "00aa32ac",
+      "native": "00bf6713",
+      "function": "00aa3280",
+      "kind": "call"
+    },
+    {
+      "address": "00aa32bd",
+      "native": "00bf6713",
+      "function": "00aa3280",
+      "kind": "call"
+    },
+    {
+      "address": "00aa32c7",
+      "native": "00bf6713",
+      "function": "00aa3280",
+      "kind": "call"
+    },
+    {
+      "address": "00aa331a",
+      "native": "004bda70",
+      "function": "00aa3280",
+      "kind": "call"
+    },
+    {
+      "address": "00aa3335",
+      "native": "00bf6713",
+      "function": "00aa3280",
+      "kind": "call"
+    },
+    {
+      "address": "00aa3340",
+      "native": "00b6d800",
+      "function": "00aa3280",
+      "kind": "call"
+    },
+    {
+      "address": "00aa3358",
+      "native": "00bf6713",
+      "function": "00aa3280",
+      "kind": "call"
+    },
+    {
+      "address": "00aa3367",
+      "native": "004254b0",
+      "function": "00aa3280",
+      "kind": "call"
+    },
+    {
+      "address": "00aa3374",
+      "native": "00bf6713",
+      "function": "00aa3280",
+      "kind": "call"
+    },
+    {
+      "address": "00aa5079",
+      "native": "00bf681b",
+      "function": "00aa5070",
+      "kind": "call"
+    },
+    {
+      "address": "00aa511e",
+      "native": "00aa4960",
+      "function": "00aa5070",
+      "kind": "call"
+    },
+    {
+      "address": "00aa5126",
+      "native": "00b6d800",
+      "function": "00aa5070",
+      "kind": "call"
+    },
+    {
+      "address": "00aa513e",
+      "native": "004254b0",
+      "function": "00aa5070",
+      "kind": "call"
+    },
+    {
+      "address": "004bda78",
+      "native": "00bf6713",
+      "function": "004bda70",
+      "kind": "call"
+    },
+    {
+      "address": "004bda87",
+      "native": "00bf6713",
+      "function": "004bda70",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00aa49b9",
+      "native": "00aa41b0",
+      "function": "00aa4960",
+      "kind": "call"
+    },
+    {
+      "address": "00aa41f3",
+      "native": "00408720",
+      "function": "00aa41b0",
+      "kind": "call"
+    },
+    {
+      "address": "00aa4205",
+      "native": "00411700",
+      "function": "00aa41b0",
+      "kind": "call"
+    },
+    {
+      "address": "00aa421c",
+      "native": "00bf6885",
+      "function": "00aa41b0",
+      "kind": "call"
+    },
+    {
+      "address": "00aa4234",
+      "native": "00aa2960",
+      "function": "00aa41b0",
+      "kind": "call"
+    },
+    {
+      "address": "00aa42c5",
+      "native": "00aa2180",
+      "function": "00aa41b0",
+      "kind": "call"
+    },
+    {
+      "address": "00aa42e3",
+      "native": "00aa1080",
+      "function": "00aa41b0",
+      "kind": "call"
+    },
+    {
+      "address": "00aa4311",
+      "native": "00aa1080",
+      "function": "00aa41b0",
+      "kind": "call"
+    },
+    {
+      "address": "00aa2962",
+      "native": "00bf681b",
+      "function": "00aa2960",
+      "kind": "call"
+    },
+    {
+      "address": "00cb7083",
+      "native": "004072d0",
+      "function": "00cb7080",
+      "kind": "tail_jump",
+      "native_instruction_kind": "tail_jump"
+    },
+    {
+      "address": "00cb708d",
+      "native": "00bf6b43",
+      "function": "00cb7088",
+      "kind": "no_ghidra_function",
+      "native_instruction_kind": "tail_jump",
+      "note": "Predefinition verifier compatibility only: actual instruction is JMP. Root receipt must change kind to tail_jump after defining CB7088."
+    }
+  ],
+  "provider_equivalence": [
+    {
+      "actual": "00aa1080",
+      "existing": "00869810",
+      "size": 82,
+      "identical_after_only_listed_relocations": true,
+      "differences": []
+    },
+    {
+      "actual": "00aa2180",
+      "existing": "0086a2f0",
+      "size": 78,
+      "identical_after_only_listed_relocations": true,
+      "differences": []
+    },
+    {
+      "actual": "004bda70",
+      "existing": "00869a20",
+      "size": 99,
+      "identical_after_only_listed_relocations": true,
+      "differences": [
+        {
+          "offset": 8,
+          "kind": "call",
+          "actual_target": "0xbf6713",
+          "existing_target": "0xbf6713"
+        },
+        {
+          "offset": 23,
+          "kind": "jmp",
+          "actual_target": "0xbf6713",
+          "existing_target": "0xbf6713"
+        }
+      ]
+    },
+    {
+      "actual": "00aa2960",
+      "existing": "0086ab70",
+      "size": 63,
+      "identical_after_only_listed_relocations": true,
+      "differences": [
+        {
+          "offset": 2,
+          "kind": "call",
+          "actual_target": "0xbf681b",
+          "existing_target": "0xbf681b"
+        }
+      ]
+    },
+    {
+      "actual": "00aa41b0",
+      "existing": "0086ebe0",
+      "size": 492,
+      "identical_after_only_listed_relocations": true,
+      "differences": [
+        {
+          "offset": 8,
+          "kind": "handler_push",
+          "actual_target": "0xcb7088",
+          "existing_target": "0xc95c08"
+        },
+        {
+          "offset": 67,
+          "kind": "call",
+          "actual_target": "0x408720",
+          "existing_target": "0x408720"
+        },
+        {
+          "offset": 85,
+          "kind": "call",
+          "actual_target": "0x411700",
+          "existing_target": "0x411700"
+        },
+        {
+          "offset": 108,
+          "kind": "call",
+          "actual_target": "0xbf6885",
+          "existing_target": "0xbf6885"
+        },
+        {
+          "offset": 132,
+          "kind": "call",
+          "actual_target": "0xaa2960",
+          "existing_target": "0x86ab70"
+        },
+        {
+          "offset": 277,
+          "kind": "call",
+          "actual_target": "0xaa2180",
+          "existing_target": "0x86a2f0"
+        },
+        {
+          "offset": 307,
+          "kind": "call",
+          "actual_target": "0xaa1080",
+          "existing_target": "0x869810"
+        },
+        {
+          "offset": 353,
+          "kind": "call",
+          "actual_target": "0xaa1080",
+          "existing_target": "0x869810"
+        }
+      ]
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00cb7088",
+      "end_inclusive": "00cb7091",
+      "last_instruction_address": "00cb708d",
+      "last_instruction_length": 5,
+      "native_instruction_kind": "tail_jump",
+      "coverage": "ten-byte FH3 boundary; MOV EAX,DED780 then JMP BF6B43; worker made no listing changes"
+    }
+  ],
+  "manager": {
+    "acquire": "get_native_gui_manager_004c12b0(NativePlatformFocusOwnersContext&) already raw; same actual publication F8BC5C and singleton manager1090AA0,88h allocation",
+    "layout": "manager+8 raw0Ch tree: opaque allocator+0 preserved; head at manager+C, unsigned count manager+10; page vector separately manager+14",
+    "constructor": "existing AA5D70 selects D5BFCC, allocates AA2920 raw18h sentinel, sets nil+15=1, links head parent/left/right to itself, count0. No logical GuiCameraStoreMap."
+  },
+  "layouts": {
+    "tree_node": "18h: left0,parent4,right8,key FLOAT BITS C,unowned raw store pointer10,color14,nil15,padding16/17 preserved",
+    "iterator": "8h owner0,node4; can reuse NativeIntPointerTree18Iterator",
+    "pair": "8h float-key bits0,actual store pointer4; same NativeIntPointerTree18Pair representation, key operations must reinterpret float bits only in new AA4960 compare driver",
+    "insert_result": "0Ch iterator owner0,node4,inserted byte8,padding9..B preserved; AA4960 publishes byte8 then owner0 then node4",
+    "store": "24h descriptor flags0,near4,far8,scaleC,priority10,renderorder14; camera raw node18,scene raw1C,visible count20. Existing GuiCameraStore layout is physical but its map/creation function remains logical."
+  },
+  "lookup": {
+    "address": "00aa3280",
+    "range": "[00aa3280,00aa3392)",
+    "abi": "ECX actual manager, stack descriptor pointer captured before traversal, EAX raw store or0, RET4",
+    "comparison": "capture node+10 store; integer word0 first; four FLD descriptor then FLD store/FUCOMIP/FSTP/LAHF TEST44 comparisons at4,8,C,14; +10 priority omitted; ordered equal including +/-0 passes, any NaN fails; signalling NaN and x87 control/status behavior must remain x87",
+    "iteration": "begin=head.left; iterator owner tree; validate current sentinel at native sites; existing4BDA70/869A20 preserves returning invalid handler and parent climb. First matching traversal node wins; do not tree-search render order.",
+    "match_tail": "reread store from node10, current camera18, B6D800 returns camera+54 header; load current header+4 data with F8BC60 fallback; revalidate/current store load before RET-only4254B0; revalidate and reread node10 once more as return",
+    "scratch": "entry S: own12-byte locals S-C tree header pointer; S-8/S-4 actual iterator owner/node; initialized by body, original iterator mutations retained"
+  },
+  "create": {
+    "address": "00aa5070",
+    "range": "[00aa5070,00aa5150)",
+    "abi": "ECX manager captured before allocator; three stack arguments camera,scene,descriptor; EAX raw24h store; RET0C",
+    "allocation": "exact BF681B24h source CRT/singleton_lifetime_allocate; no custom pool or host logical owner. Null allocation is followed by descriptor writes through null, not successful null return.",
+    "defaults": "MOVSS current D7A2F0 then write flags0 and near; current CE3804 then far; current D7A24C then scale; write priority0/renderorder+0; no camera/scene/count until copied descriptor",
+    "argument_readpoints": [
+      "AA50C7 captures current descriptor pointer AFTER allocation/defaults",
+      "AA50D2 captures current scene stack word between FLD descriptor4 and FSTP store4",
+      "AA50F2 captures current camera stack word between FLD descriptor14 and FSTP store14"
+    ],
+    "copy": "DWORD flags; x87 FLD/FSTP4,8,C; DWORDpriority10; x87FLD/FSTP14. Then scene1C before camera18 before visiblecount20=0. Never snapshot/assign the whole descriptor.",
+    "key": "AA5106 MOVSS rereads original descriptor+14 AFTER all store writes; this raw key may differ from quieted stored14 for sNaN or aliasing. Pair is keybits + pointer to allocated store.",
+    "scratch": "entry S, post-register ESP B=S-1C: local pair B+8/B+C (S-14/S-10); output B+10..B+1B (S-C..S-1). AA4960 arg2 at B-4 is overwritten with raw key only for nonempty tree; output padding bytes remain caller preimage.",
+    "failure": "No EH/rollback/retain/release in AA5070. Tree insertion failure leaves allocated store; preserve acquired allocation visibility if exposing host diagnostics without adding cleanup. Camera/scene identity/creator obligations stay with caller. No new canonical companion."
+  },
+  "insert": {
+    "address": "00aa4960",
+    "range": "[00aa4960,00aa49da)",
+    "abi": "ECX tree, stack output and pair, EAX output, RET8",
+    "compare": "Nonempty only: MOVSS pair.key once, overwrite its original caller stack argument word with raw float bits; FLD that slot once and keep extended value across descent. Each node FLD node+C; FCOMIP node vs cached incoming; JBE routes less/equal/UNORDERED right, strictly greater node routes left. Empty tree skips preallocation key read.",
+    "alias": "Captured pair address survives search; AA2960 rereads raw pair key/value AFTER allocation. A changed pair can produce node data different from placement key. High three bytes of insert-left scratch word remain preimage; only low byte tested by linker.",
+    "output": "After AA41B0 writes local iterator, load returned owner then node; publish inserted byte8=1, owner0,node4 in exact order. Result padding9..B untouched."
+  },
+  "eh": {
+    "handler": "00cb7088",
+    "range": "[00cb7088,00cb7092)",
+    "end_inclusive": "00cb7091",
+    "last_instruction_address": "00cb708d",
+    "last_instruction_length": 5,
+    "native_instruction_kind": "tail_jump",
+    "target": "00bf6b43",
+    "no_ghidra_function": true,
+    "descriptor": "00ded780",
+    "unwind_map": "00ded778",
+    "max_state": 1,
+    "state0": "next -1; CB7080 LEA ECX,[EBP-50]; JMP4072D0; full8B endsCB7087",
+    "scope": "Only AA41B0 count>=1FFFFFFE length-error construction path; native string assignment/logic error and source exception transport already supplied by 86EBE0 provider. No extra tree/store rollback."
+  },
+  "providers": {
+    "rotation_and_iteration": "native_int_pointer_tree18_leaves.hpp actual byte-identical naked leaves; no new engine",
+    "allocate_and_link": "native_effect_handle_acquisition.hpp raw86AB70/86EBE0; exact aliases. Float-key bits copied as original DWORDs; no signed comparison in these reused operations.",
+    "existing_tree_cleanup": "AA22C0 subtree/free and AA5260 full tree cleanup are raw in native_platform_focus_owners.cpp; they free nodes, not store/camera/scene payloads.",
+    "name_and_diagnostic": "Existing native_node_name_00b6d800 same actual+54 header;4254B0 verified single C3 RET, yet caller argument/header/current-store reads remain. Invalid service BF6713 maps to existing source CRT _invalid_parameter_noinfo.",
+    "page_registry": "Existing register_native_gui_page_00aa52a0 actual manager+14 pointer vector, distinct from camera store tree; never replace with logical GuiCameraStoreMap.",
+    "lifetime_boundary": "AA4B30 removal/store ownership still logical. Populated raw store/camera/scene teardown is not supplied by these manager helpers or tree destructor. AC59A0 remains a separate orchestration packet."
+  },
+  "scratch_contract": {
+    "ownership": "Caller-owned initialized preimages and stable actual addresses; acquired diagnostics fresh and disjoint. No saved-register/return-address/private-stack ABI equivalence claim.",
+    "find": {
+      "size": 12,
+      "words": "tree0, iterator owner4/node8; exact native algorithm updates"
+    },
+    "insert": {
+      "size": 20,
+      "live_ranges": [
+        "00..07",
+        "0C..13"
+      ],
+      "excluded_gap": "08..0B native return address",
+      "sites": [
+        "AA4972 captures pair argument10; AA4978 writes local0 LOW BYTE only",
+        "AA4982 overwrites same argument10 with raw key, only nonempty tree; AA4988 FLD caches it",
+        "AA4997/AA49A0 write local0 LOW BYTE; AA49AD reads full word, linker consumes only low byte",
+        "AA49B4 passes actual local0 address to linker; linker stores local node4 before owner0",
+        "AA49C0 reads CURRENT output argument0C; AA49C4/C6 capture returned owner/node",
+        "AA49CB/CE/D0 publish result byte8 then owner0 then node4; pad9..B untouched"
+      ]
+    },
+    "create": {
+      "size": 64,
+      "post_save_esp": "frame+14",
+      "sites": [
+        "AA50C7 current descriptor argument3C; AA50D2 current scene argument38; AA50F2 current camera argument34",
+        "AA50DC pair.store20 between descriptor8 FLD/FSTP; AA5106 rereads raw original descriptor14",
+        "AA510F writes nested pair argument10=&pair1C; AA5114 output argument0C=&result24; AA5118 pair.key1C",
+        "AA511E nested call preserves actual pair/result and argument identities",
+        "AA5126 name call and AA513E diagnostic reuse dead nested private stack after insert returns"
+      ],
+      "post_create_live_ranges": [
+        "1C..2F",
+        "34..3F"
+      ],
+      "excluded": "00..13 retains source insertion frontier; native later calls overwrite04 with return address and08/0C/10 with outgoing format/store/name. Saved-register gap14..1B and return gap30..33 also excluded."
+    },
+    "frontier_validation": "Compare full meaningful insert frame at standalone AA4960 return; post-AA5070 compare still-live outer pair/result/current arguments only. No source writes added to imitate dead private stack."
+  },
+  "corrections": [
+    {
+      "was": "STL_xlen_throw_00aa41b0 name suggests a throw-only body",
+      "is": "complete492-byte allocation/link/rebalance body with initial length guard",
+      "evidence": "full pinned body and exact 86EBE0 equivalence; old library label retained pending root naming review"
+    },
+    {
+      "was": "private nested stack bytes could be treated as live post-create outputs",
+      "is": "different return frontiers for insertion and create",
+      "evidence": "AA5126/AA5137..AA513E call/argument stores reuse nested frame; standalone original/source insertion comparison checks its own live frontier"
+    }
+  ],
+  "validation": {
+    "strict_build": "scripts/build.ps1 MSVC Win32 Release /W4 /WX /fp:strict",
+    "ctests_passed": 3,
+    "build_log": "local/cc10_gui_camera_store_map/build.log",
+    "focused_probe": {
+      "file": "local/cc10_gui_camera_store_map/probe.cpp",
+      "result": "PASS original/source real CRT/tree composition: 6 creates plus direct insert frontier, equal/unordered routing, x87 sNaN store/node bits, late argument/pair/output mutations, actual frame/result padding, full node topology and 3 lookup/FPU pairs",
+      "flags": "/MD /W4 /WX /O2 /fp:strict /EHsc /link /MANIFEST:EMBED",
+      "composition": "Original copied complete eight routine bodies plus actual name getter/RET diagnostic;27 call/data relocations. Real source CRT allocation observed through probe-only malloc IAT; raw AA5D70 manager construction and AA5260 node cleanup. Native AA5070 called on heap-backed64K private probe stack.",
+      "cases": "Six creates with +0,-0,qNaN,+1,sNaN,-1; allocation callbacks mutate actual camera/scene/descriptor cells, later raw pair and current result pointer. Seventh standalone insertion checks argument-key overwrite and final result pointer reread. Compare six store payloads, seven nodes/head/topology, live frame/result padding, x87 status and three lookup results.",
+      "boundaries": "Actual camera-name storage prefixes and opaque scene borrowed pointers only; no whole camera/scene lifecycle. Normal valid-count tree domain only; native FH3/length error path not dynamically exercised. No game/process modification."
+    },
+    "no_new_tracked_tests": true,
+    "ghidra_mutated": false,
+    "game_validated": false,
+    "original_binary_abi": false,
+    "exclusions": [
+      "native FH3/SEH",
+      "malformed or concurrent tree mutation",
+      "full populated-store AA4B30 destruction",
+      "application manager publication and raw AC59A0 orchestration",
+      "gameplay"
+    ],
+    "call_rows_verified": 26,
+    "call_rows_failed": 0,
+    "call_verifier_boundary": "CB708D callee and live/PE bytes verified; containment/listing skipped because CB7088 is not yet defined. Native instruction kind remains tail_jump independently of predefinition verifier kind.",
+    "prior_evidence_archives_unchanged": {
+      "local/cc10_field_values_evidence.zip": "a749dbf4656596e6a4e0c11ecb320a02bfe62dcba5fa3654c2744aa2a3022153",
+      "local/cc10_widget_transform_evidence.zip": "0d90499f71be2a3cc99ad732deaa8a71a5b55546da4dbaa7ee708c364bae45f8",
+      "local/cc10_widget_property_prefix_evidence.zip": "181ebe9358fe2d7ea6832b8051a0b3fd6f830a0360f3ef390626403ba7cbfcdf",
+      "local/cc10_gui_page_default_evidence.zip": "a224fc79f56861715059ff9717fcdad40893be00d26697a230b64ceafced5c8b",
+      "local/cc10_gui_group_pool_evidence.zip": "c7aa87452ab19400fe950d3a4c3a4a146c94715f4080f463dc2de1740df37853",
+      "local/cc10_gui_group_factory_evidence.zip": "d22d364ce3b5cf7833d8ad1998cd5c14cbf792abc34634e2df1421949e42f34f"
+    }
+  },
+  "source_hashes": {
+    "include/bsp/native_gui_camera_store_map.hpp": "a35517b8f526deafefb342eea16f5161aa085310e2a0091d8ea54385c0882d51",
+    "src/native_gui_camera_store_map.cpp": "42652dafe61302f3b1c7a06e34615e0a964a26228cfb39858e742e1d31632e55",
+    "docs/NATIVE_GUI_CAMERA_STORE_MAP_CC10.md": "c23681ba48961d54a0a8923089035f3a6253a976b4d073129099a294d2455482"
+  },
+  "dependency_source_hashes": {
+    "include/bsp/native_int_pointer_tree18_leaves.hpp": "e35523bfdd5d89aa9f6eb1bfd6ce9e80c2af18cfe70ee7aa7d5d9428f0e13dd1",
+    "src/native_int_pointer_tree18_leaves.cpp": "e63ae28aa2af9087720aea5f0981599313ada1508e16d90f19bc6a45223cf816",
+    "include/bsp/detail/native_tree_insert_storage.hpp": "d81a56bb12fd2361803c101d9e407c64fd660b6704eb3c008d29f0fa32e3e427",
+    "src/native_effect_handle_acquisition.cpp": "3b7794d963c4885bbb818bd15d5592c487157863183e0f3db692d089893cef4a",
+    "src/native_platform_focus_owners.cpp": "efff43cee498b710d53d4b2380e4ae89791dc578371d35b2be29327b0fedfe73",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62"
+  },
+  "compiled_artifacts": {
+    "build/win32/bsp_core.dir/Release/native_gui_camera_store_map.obj": "b03a9a535f9897fa618a5d3449696adb0fbef26082f8f0d9272718fbd64095b1",
+    "build/win32/Release/bsp_core.lib": "fad8dc364159bc819dced8a0a45dc912cca2b1146258e789ef3e8e4bb113e4d2",
+    "local/cc10_gui_camera_store_map/gui_camera_store_probe.exe": "b198152682efcdb8ca9faa1fdd934b5f6e9ce2aa021015ee17a17859f967b453"
+  },
+  "evidence_archive": {
+    "path": "local\\cc10_gui_camera_store_map_evidence.zip",
+    "sha256": "625a751eab1f2416e7b0fa5876b921106cf0a246c0b8ca5ce97ca3e9d1586c54",
+    "size": 270742,
+    "files": 54,
+    "note": "Archive includes report_before_archive_receipt to avoid circular hashes; prior six archives unchanged."
+  }
+}
