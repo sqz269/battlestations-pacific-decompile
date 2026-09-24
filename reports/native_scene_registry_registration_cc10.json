@@ -1,0 +1,635 @@
+{
+  "packet": "cc10_scene_registry_registration",
+  "status": "complete_raw_normal_storage_valid_nested_domain_strict_win32_original_source_checked",
+  "source": "src/native_scene_registry_registration.cpp",
+  "documentation": "docs/NATIVE_SCENE_REGISTRY_REGISTRATION_CC10.md",
+  "dependency_base_commit": "9040f7ce1171c6d815bd16a9892f461c8c912154",
+  "original_executable_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "native_bytes": [
+    {
+      "address": "00b83700",
+      "size": 1247,
+      "end_inclusive": "00b83bde",
+      "sha256": "1b26071679a7e57d754a31d4be8f688b14953c155cba5f1d6e3c75d981ae4db3",
+      "live_pe_equal": true,
+      "existing_dependency": false,
+      "last_instruction_address": "00b83bdc",
+      "last_instruction_length": 3,
+      "last_instruction": "ret 8"
+    },
+    {
+      "address": "00b83e50",
+      "size": 106,
+      "end_inclusive": "00b83eb9",
+      "sha256": "20bf883be6c0971198548fdc6e190b7d12813b66b4b1f1b5136b17514b992bf2",
+      "live_pe_equal": true,
+      "existing_dependency": false,
+      "last_instruction_address": "00b83eb7",
+      "last_instruction_length": 3,
+      "last_instruction": "ret 4"
+    },
+    {
+      "address": "00b83d90",
+      "size": 178,
+      "end_inclusive": "00b83e41",
+      "sha256": "6bd698c2a1312267fd60fa1a7d50bf407091b9fd6fc3dad80fe639f65508906f",
+      "live_pe_equal": true,
+      "existing_dependency": false,
+      "last_instruction_address": "00b83e3f",
+      "last_instruction_length": 3,
+      "last_instruction": "ret 0x14"
+    },
+    {
+      "address": "00b83be0",
+      "size": 98,
+      "end_inclusive": "00b83c41",
+      "sha256": "c448e825b5160d8b895c02f12b8c91a175027eb093205b644412e388337bb321",
+      "live_pe_equal": true,
+      "existing_dependency": false,
+      "last_instruction_address": "00b83c41",
+      "last_instruction_length": 1,
+      "last_instruction": "ret "
+    },
+    {
+      "address": "00c03dbe",
+      "size": 26,
+      "end_inclusive": "00c03dd7",
+      "sha256": "df118cb443457c43b726d48a154e976a2f74a99615211a703e2cc5b1932dfbfe",
+      "live_pe_equal": true,
+      "existing_dependency": true,
+      "last_instruction_address": "00c03dd7",
+      "last_instruction_length": 1,
+      "last_instruction": "ret "
+    }
+  ],
+  "routines": [
+    {
+      "address": "00b83700",
+      "name": "insert_native_scene_registry_00b83700",
+      "source": "src/native_scene_registry_registration.cpp",
+      "coverage": "complete raw normal body; own returning guards preserved; nested query/erase/count valid-domain restriction explicit",
+      "original_abi": "ECX actual28h registry; stack output and key-source pointers; EAX current output; RET8",
+      "end_inclusive": "00b83bde",
+      "last_instruction_address": "00b83bdc",
+      "last_instruction_length": 3
+    },
+    {
+      "address": "00b83e50",
+      "name": "erase_native_scene_registry_key_00b83e50",
+      "source": "src/native_scene_registry_registration.cpp",
+      "coverage": "complete raw normal body; own returning guards preserved; nested query/erase/count valid-domain restriction explicit",
+      "original_abi": "ECX actual28h registry; stack key-source pointer reused as counter; EAX current counter; RET4",
+      "end_inclusive": "00b83eb9",
+      "last_instruction_address": "00b83eb7",
+      "last_instruction_length": 3
+    },
+    {
+      "address": "00b83d90",
+      "name": "erase_native_scene_registry_range_00b83d90",
+      "source": "src/native_scene_registry_registration.cpp",
+      "coverage": "complete raw normal body; own returning guards preserved; nested query/erase/count valid-domain restriction explicit",
+      "original_abi": "ECX actual28h registry; stack output/first pair/last pair; EAX output; RET14h",
+      "end_inclusive": "00b83e41",
+      "last_instruction_address": "00b83e3f",
+      "last_instruction_length": 3
+    },
+    {
+      "address": "00b83be0",
+      "name": "clear_native_scene_registry_00b83be0",
+      "source": "src/native_scene_registry_registration.cpp",
+      "coverage": "complete raw normal body; own returning guards preserved; nested query/erase/count valid-domain restriction explicit",
+      "original_abi": "ECX actual28h registry; RET",
+      "end_inclusive": "00b83c41",
+      "last_instruction_address": "00b83c41",
+      "last_instruction_length": 1
+    }
+  ],
+  "calls": [
+    {
+      "address": "00b83773",
+      "native": "00b83490",
+      "function": "00b83700",
+      "kind": "call"
+    },
+    {
+      "address": "00b837ac",
+      "native": "00bf6713",
+      "function": "00b83700",
+      "kind": "call"
+    },
+    {
+      "address": "00b837bd",
+      "native": "00bf6713",
+      "function": "00b83700",
+      "kind": "call"
+    },
+    {
+      "address": "00b837dc",
+      "native": "00bf6713",
+      "function": "00b83700",
+      "kind": "call"
+    },
+    {
+      "address": "00b837f9",
+      "native": "00bf6713",
+      "function": "00b83700",
+      "kind": "call"
+    },
+    {
+      "address": "00b83803",
+      "native": "00bf6713",
+      "function": "00b83700",
+      "kind": "call"
+    },
+    {
+      "address": "00b83817",
+      "native": "00c03dbe",
+      "function": "00b83700",
+      "kind": "call"
+    },
+    {
+      "address": "00b8384d",
+      "native": "00bf6713",
+      "function": "00b83700",
+      "kind": "call"
+    },
+    {
+      "address": "00b83874",
+      "native": "00bf6713",
+      "function": "00b83700",
+      "kind": "call"
+    },
+    {
+      "address": "00b83884",
+      "native": "00bf6713",
+      "function": "00b83700",
+      "kind": "call"
+    },
+    {
+      "address": "00b838b3",
+      "native": "00bf6713",
+      "function": "00b83700",
+      "kind": "call"
+    },
+    {
+      "address": "00b838d3",
+      "native": "00bf6713",
+      "function": "00b83700",
+      "kind": "call"
+    },
+    {
+      "address": "00b838fe",
+      "native": "00b82d30",
+      "function": "00b83700",
+      "kind": "call",
+      "normal_entry_reachability": "unreachable: B838F3 CMP EBX,EBX; B838F5 MOV preserves flags; B838F8 JZ B83903"
+    },
+    {
+      "address": "00b83932",
+      "native": "00bf6713",
+      "function": "00b83700",
+      "kind": "call"
+    },
+    {
+      "address": "00b8395f",
+      "native": "00bf6713",
+      "function": "00b83700",
+      "kind": "call"
+    },
+    {
+      "address": "00b8399a",
+      "native": "00bf6713",
+      "function": "00b83700",
+      "kind": "call"
+    },
+    {
+      "address": "00b839be",
+      "native": "00bf6713",
+      "function": "00b83700",
+      "kind": "call"
+    },
+    {
+      "address": "00b839e3",
+      "native": "00bf6713",
+      "function": "00b83700",
+      "kind": "call"
+    },
+    {
+      "address": "00b83a1d",
+      "native": "00c03dbe",
+      "function": "00b83700",
+      "kind": "call"
+    },
+    {
+      "address": "00b83a66",
+      "native": "00bf6713",
+      "function": "00b83700",
+      "kind": "call"
+    },
+    {
+      "address": "00b83a7d",
+      "native": "00bf6713",
+      "function": "00b83700",
+      "kind": "call"
+    },
+    {
+      "address": "00b83aa3",
+      "native": "00bf6713",
+      "function": "00b83700",
+      "kind": "call"
+    },
+    {
+      "address": "00b83ab9",
+      "native": "00bf6713",
+      "function": "00b83700",
+      "kind": "call"
+    },
+    {
+      "address": "00b83aca",
+      "native": "00bf6713",
+      "function": "00b83700",
+      "kind": "call"
+    },
+    {
+      "address": "00b83ad8",
+      "native": "00bf6713",
+      "function": "00b83700",
+      "kind": "call"
+    },
+    {
+      "address": "00b83aed",
+      "native": "00bf6713",
+      "function": "00b83700",
+      "kind": "call"
+    },
+    {
+      "address": "00b83b06",
+      "native": "00bf6713",
+      "function": "00b83700",
+      "kind": "call"
+    },
+    {
+      "address": "00b83b21",
+      "native": "00b823b0",
+      "function": "00b83700",
+      "kind": "call"
+    },
+    {
+      "address": "00b83b2e",
+      "native": "00b82d30",
+      "function": "00b83700",
+      "kind": "call"
+    },
+    {
+      "address": "00b83b42",
+      "native": "00bf6713",
+      "function": "00b83700",
+      "kind": "call"
+    },
+    {
+      "address": "00b83b53",
+      "native": "00bf6713",
+      "function": "00b83700",
+      "kind": "call"
+    },
+    {
+      "address": "00b83b73",
+      "native": "00bf6713",
+      "function": "00b83700",
+      "kind": "call"
+    },
+    {
+      "address": "00b83b91",
+      "native": "00bf6713",
+      "function": "00b83700",
+      "kind": "call"
+    },
+    {
+      "address": "00b83e65",
+      "native": "00b82650",
+      "function": "00b83e50",
+      "kind": "call"
+    },
+    {
+      "address": "00b83e90",
+      "native": "00b820b0",
+      "function": "00b83e50",
+      "kind": "call"
+    },
+    {
+      "address": "00b83ea7",
+      "native": "00b83d90",
+      "function": "00b83e50",
+      "kind": "call"
+    },
+    {
+      "address": "00b83dad",
+      "native": "00bf6713",
+      "function": "00b83d90",
+      "kind": "call"
+    },
+    {
+      "address": "00b83dc9",
+      "native": "00bf6713",
+      "function": "00b83d90",
+      "kind": "call"
+    },
+    {
+      "address": "00b83dd8",
+      "native": "00b83be0",
+      "function": "00b83d90",
+      "kind": "call"
+    },
+    {
+      "address": "00b83dfd",
+      "native": "00bf6713",
+      "function": "00b83d90",
+      "kind": "call"
+    },
+    {
+      "address": "00b83e0e",
+      "native": "00bf6713",
+      "function": "00b83d90",
+      "kind": "call"
+    },
+    {
+      "address": "00b83e18",
+      "native": "00bf6713",
+      "function": "00b83d90",
+      "kind": "call"
+    },
+    {
+      "address": "00b83e2a",
+      "native": "00b827c0",
+      "function": "00b83d90",
+      "kind": "call"
+    },
+    {
+      "address": "00b83c07",
+      "native": "00bf65ac",
+      "function": "00b83be0",
+      "kind": "call"
+    },
+    {
+      "address": "00b83c2c",
+      "native": "00b83560",
+      "function": "00b83be0",
+      "kind": "call"
+    }
+  ],
+  "no_ghidra_function": [],
+  "compiler_boundaries": {
+    "owned": "none: no local EH registration/cleanup in these four bodies",
+    "nested": "B82D30 and vector source C++ transport as documented by existing raw providers; no native FH3/SEH/private-frame compatibility"
+  },
+  "listing_evidence": {
+    "clear": "B83BE0 complete98B/37instructions/0gaps; existing B83C07 free continuation ADD ESP4 atB83C0C verified; no worker repair",
+    "insert_alignment": "B8389D..9F LEA ECX,[ECX] skipped by B8389B JMP B838A0; no missing reached free tail",
+    "ghidra_mutated": false
+  },
+  "domain": {
+    "actual": "28h registry; actual3Ch resource embeds at+14h; list at+4, vector+10, mask+20, active+24",
+    "nodes": "actual0Ch next0,previous4,borrowed key8",
+    "iterators": "actual8B owner=registry+4 and node",
+    "ownership": "no pointed-object retain/release, canonical owner admission, host SceneNodeRegistry, SceneResource projection or attachment virtual50 closure",
+    "valid_nested_domain": "B82650/B827C0/B820B0 require valid accessible iterators/ranges/boundaries; their native invalid-parameter continuation remains excluded and source invalid_argument is not equivalent",
+    "own_guards": "current required genuine returning BF6713 service; continuing callbacks must preserve every later reached accessible word/finite range; no async mutation",
+    "frames": "initialized stable caller-owned exposed local/argument cells; metadata disjoint; nested adapter frames disjoint from vector/backing storage; no native saved-register/return/EH gap or arbitrary transient helper-stack alias claim"
+  },
+  "insert_contract": {
+    "local_size": 48,
+    "locals": [
+      {
+        "index": 0,
+        "native_esp": "+10",
+        "write_sites": [
+          "00b83714"
+        ],
+        "meaning": "current saved registry"
+      },
+      {
+        "index": 1,
+        "native_esp": "+14",
+        "write_sites": [
+          "00b8379a",
+          "00b83a77"
+        ],
+        "meaning": "split index then owner"
+      },
+      {
+        "index": 2,
+        "native_esp": "+18",
+        "write_sites": [
+          "00b837c2",
+          "00b8394d",
+          "00b839f8",
+          "00b83a86"
+        ],
+        "meaning": "current owner scratch, conditional reload after handlers"
+      },
+      {
+        "index": 4,
+        "native_esp": "+20",
+        "write_sites": [
+          "00b83866"
+        ],
+        "meaning": "split captured owner"
+      },
+      {
+        "index": 5,
+        "native_esp": "+24",
+        "write_sites": [
+          "00b8386a",
+          "00b8387e",
+          "00b83b1d",
+          "00b83b4d"
+        ],
+        "meaning": "node then next, successor then inserted node"
+      },
+      {
+        "index": 7,
+        "native_esp": "+2C",
+        "write_sites": [
+          "00b8386e"
+        ],
+        "meaning": "captured sentinel"
+      },
+      {
+        "index": 9,
+        "native_esp": "+34",
+        "write_sites": [
+          "00b83941"
+        ],
+        "meaning": "current head"
+      },
+      {
+        "index": 11,
+        "native_esp": "+3C",
+        "write_sites": [
+          "00b83983"
+        ],
+        "meaning": "current head for boundary scan"
+      }
+    ],
+    "opaque_untouched": [
+      3,
+      6,
+      8,
+      10
+    ],
+    "arguments": "current output/key pointers nativeESP+44/+48; nested resize/count scratch preimages retained",
+    "ordering": [
+      "count captured before active; split before duplicate",
+      "growth pair stores zero0,head4,owner0 then current mask+2 count",
+      "componentwise split splice and boundary repairs retain current/captured schedule",
+      "current key pointer/value reloaded through lookup",
+      "B83B21 actual node allocation BEFORE B83B2E checked size growth",
+      "has-owner comparison before link stores",
+      "current inserted node scratch/current output; write owner,node,one inserted byte only"
+    ],
+    "failure": "fresh caller Acquired retains completed raw node immediately after allocation before checked size; throwing size growth leaves unlinked allocation and earlier bucket/count mutations; no cleanup/rollback/destructor invented"
+  },
+  "erase_clear_contract": {
+    "clear": "reset head next, reload current head previous, compare first before count0; next capture before free/current head comparison after; current sentinel pair; assign9 preserving capacity then mask1/active1; preserve callback count mutation",
+    "range": "capture first owner/initial first; current first/last arguments at native points; whole range current saved receiver clear; loop captures next before nested entry output overwrites SAME first owner/node argument cells; current final result",
+    "key": "capture query range3,2,1,0 then overwrite original key argument count0; count actual cell; reread range0 after count, keep other three captured; range output aliases same array; current final counter read AFTER free/clear"
+  },
+  "dependencies": {
+    "raw": [
+      "00b823b0",
+      "00b83490",
+      "00b83560",
+      "00b82d30",
+      "00b82650",
+      "00b827c0",
+      "00b820b0"
+    ],
+    "required": "NativeSceneRegistryRegistrationContext borrows MutationBindings with same actual current allocator/free/B82DD0/BF6713 slots and actual16B CE38F8 message",
+    "arithmetic": "C03DBE positive divisor1F31D signed quotientEAX/remainderEDX; exact wrapping hash in source, no CRT port",
+    "unmodified": "no changes to raw adapters/leaves, NativeGuiSceneOwner, SceneAttachmentRuntime, SceneNodeRegistry or B6/B7 functions"
+  },
+  "validation": {
+    "strict_build": "scripts/build.ps1 MSVC Win32 Release /W4 /WX /fp:strict",
+    "ctests_passed": 3,
+    "probe": {
+      "source": "local\\cc10_scene_registry_registration\\probe.cpp",
+      "result": "PASS original/source raw registration:36borrowed identities, duplicate pre-split, boundary9to17 growth, allocator reentry/current output, genuine returning own CRT guard, range/key clear, free-time count/current counter and retained capacity; source-only allocated-node length-failure prefix; native FH3/private nested stack excluded",
+      "flags": "/MD /O2 /W4 /WX /fp:strict /link /MANIFEST:EMBED",
+      "byte_pins": [
+        {
+          "address": "00b83700",
+          "size": 1247,
+          "sha256": "1b26071679a7e57d754a31d4be8f688b14953c155cba5f1d6e3c75d981ae4db3",
+          "live_pe_equal": true
+        },
+        {
+          "address": "00b83e50",
+          "size": 106,
+          "sha256": "20bf883be6c0971198548fdc6e190b7d12813b66b4b1f1b5136b17514b992bf2",
+          "live_pe_equal": true
+        },
+        {
+          "address": "00b83d90",
+          "size": 178,
+          "sha256": "6bd698c2a1312267fd60fa1a7d50bf407091b9fd6fc3dad80fe639f65508906f",
+          "live_pe_equal": true
+        },
+        {
+          "address": "00b83be0",
+          "size": 98,
+          "sha256": "c448e825b5160d8b895c02f12b8c91a175027eb093205b644412e388337bb321",
+          "live_pe_equal": true
+        },
+        {
+          "address": "00b82650",
+          "size": 361,
+          "sha256": "b5a017170ce42f30a14baabf65e7d4b31a63d65e9ff9216625a8f553a4e2202b",
+          "live_pe_equal": true
+        },
+        {
+          "address": "00b827c0",
+          "size": 308,
+          "sha256": "9f96ded1953c1e6bda8f837e56c16621d3b611604c3a560f0921f119fd1e4c49",
+          "live_pe_equal": true
+        },
+        {
+          "address": "00b820b0",
+          "size": 70,
+          "sha256": "e3ba2c2283f690a25f58f1a7f731280483244cb8983ac8aef5cac2a4e12893cd",
+          "live_pe_equal": true
+        },
+        {
+          "address": "00b823b0",
+          "size": 51,
+          "sha256": "5181d9bcd37ed6c4336012414e7725bb5bba8dc156eda7bf3ef43b7b15bc2109",
+          "live_pe_equal": true
+        },
+        {
+          "address": "00c03dbe",
+          "size": 26,
+          "sha256": "df118cb443457c43b726d48a154e976a2f74a99615211a703e2cc5b1932dfbfe",
+          "live_pe_equal": true
+        },
+        {
+          "address": "00ce38f8",
+          "size": 16,
+          "sha256": "750c956e3fb0f9dec0d3ffdc4371b2412282f67bc88f6a3cba6ef1969ee97ec3",
+          "live_pe_equal": true
+        }
+      ],
+      "composition": "nine copied original bodies: four packet bodies, three query/erase/count leaves, actual node allocation leaf, C03DBE; external calls relocated to genuine raw adapters/current allocator/free/source CRT bindings",
+      "comparisons": "one actual-registry sequence with36stable borrowed identity addresses: duplicate pre-split, split movement, boundary9to17 growth, allocator reentry/current output and key-argument mutation, real returning own CRT repair, key partial erase/whole range clear, free-time current count/key-counter mutation, full30h outer local preimage parity and output padding, retained capacity",
+      "failure_probe": "source-only actual owning list-length exception after completed allocation; unlinked node and previous count mutation retained, then explicit genuine free/disposition",
+      "excluded": "native FH3/fault unwind or exception identity; nested adapters private stack alias parity; invalid nested query continuation; whole scene attachment/gameplay"
+    },
+    "ghidra_mutated": false,
+    "original_binary_abi": false,
+    "game_validated": false,
+    "new_tracked_tests": false,
+    "unique_owned_code_bytes": 1629,
+    "external_library_code_bytes": 26,
+    "direct_call_rows": 45,
+    "call_rows_checked": 45,
+    "call_rows_failed": 0,
+    "prior_evidence_archives_unchanged": {
+      "local/cc10_field_values_evidence.zip": "a749dbf4656596e6a4e0c11ecb320a02bfe62dcba5fa3654c2744aa2a3022153",
+      "local/cc10_widget_transform_evidence.zip": "0d90499f71be2a3cc99ad732deaa8a71a5b55546da4dbaa7ee708c364bae45f8",
+      "local/cc10_widget_property_prefix_evidence.zip": "181ebe9358fe2d7ea6832b8051a0b3fd6f830a0360f3ef390626403ba7cbfcdf",
+      "local/cc10_gui_page_default_evidence.zip": "a224fc79f56861715059ff9717fcdad40893be00d26697a230b64ceafced5c8b",
+      "local/cc10_gui_group_pool_evidence.zip": "c7aa87452ab19400fe950d3a4c3a4a146c94715f4080f463dc2de1740df37853",
+      "local/cc10_gui_group_factory_evidence.zip": "d22d364ce3b5cf7833d8ad1998cd5c14cbf792abc34634e2df1421949e42f34f",
+      "local/cc10_gui_camera_store_map_evidence.zip": "625a751eab1f2416e7b0fa5876b921106cf0a246c0b8ca5ce97ca3e9d1586c54",
+      "local/cc10_scene_registry_storage_evidence.zip": "7219d8cbbdab960d3d2b49076f79b13854aa582faa0edb23c8a7fc286cebd6a9",
+      "local/cc10_scene_resource_storage_evidence.zip": "d989b85db55805c8b173e40c95e9322586ec4146e3ad0e504c316bf48364ed51",
+      "local/cc10_gui_scene_fields_evidence.zip": "8158076968340fd863b7e86018def420eabcae87ab0939f90085d79a1751a1af",
+      "local/cc10_scene_registry_vector_mutation_evidence.zip": "90b9d70c3b735e1274c2c0d2e333f5e88e860aee7155ea9ac6ef18e105aaed6b"
+    },
+    "call_verifier_boundary": "All45physical directcall rows checked, including proved unreachable increment0 call. No missing function or handler boundary."
+  },
+  "source_hashes": {
+    "include/bsp/native_scene_registry_registration.hpp": "072d97ec21f69eaaa66d90c623521cf5385fe806d5de11c640bc8abfbe325426",
+    "src/native_scene_registry_registration.cpp": "4e754b3048f74e8a614c64b5547ef03f821c07d7a1995d7213ff9a041d8df051",
+    "docs/NATIVE_SCENE_REGISTRY_REGISTRATION_CC10.md": "6b4f2dc8642414c35d2ae5dce2a850961fa4f518e2f5f8c44c39e7412881b583"
+  },
+  "dependency_hashes": {
+    "include/bsp/native_scene_registry_mutation_adapters.hpp": "5f06192f78dfb132d9c29525a4637ca89cb1651650a1cbe7bed75a9838614c50",
+    "src/native_scene_registry_mutation_adapters.cpp": "4ef44b836c9453067b55d4db86016e42f54bd8112930c38173cb2f08892eda66",
+    "include/bsp/native_scene_registry_query_erase_leaves.hpp": "51addac5142e9ae56d4f01cdae4b6d295bc95e8af9fc9b3d7b0aed725170eb43",
+    "src/native_scene_registry_query_erase_leaves.cpp": "6aa373c08b27687bae752bce6baf62c2087d7db0f739523c31a6f190b3c09b31",
+    "src/native_scene_registry_storage.cpp": "11b1adc42b73e22bc656fc2f06187f511196601d1eaf8d86546388dd489476be",
+    "src/native_scene_registry_storage_leaves.cpp": "e2dabdb9cf6779e9896260a5e89d3caae09462bd0ff81fc8e41e953b29cbbab7",
+    "src/native_scene_registry_vector_mutation.cpp": "090185ffb1949ea298ecb84921f0d8abf8875653027a2758fce9e3bcaf152b21"
+  },
+  "compiled_artifacts": {
+    "build/win32/bsp_core.dir/Release/native_scene_registry_registration.obj": "3525f3472ba24b9c30c623e1b723399ead218f3798e6b626554adef2ee9ef151",
+    "build/win32/Release/bsp_core.lib": "8eb82e528a015927e5bbd4ad8bfc7b52635e6112a17fae8f2c627b40bf2c1ea4",
+    "local\\cc10_scene_registry_registration\\scene_registry_registration_probe.exe": "95e1f1e7c75f253beceddc62cfada319a437ff57613c983a1f1cd318346663f7"
+  },
+  "evidence_archive": {
+    "path": "local\\cc10_scene_registry_registration_evidence.zip",
+    "sha256": "663ec13309abdaf992b22c321c66817230852066d76e5ccd0b663c3a783e05cf",
+    "size": 115279,
+    "files": 39,
+    "note": "Report snapshot before archive receipt avoids circular hash; eleven prior archives unchanged."
+  }
+}
