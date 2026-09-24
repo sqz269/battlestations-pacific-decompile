@@ -1,8 +1,27 @@
 #pragma once
 #include "bsp/native_render_resources_construction.hpp"
 #include "bsp/native_render_service_texture_lifetime.hpp"
+#include "bsp/native_render_texture_surface_owner.hpp"
 
 namespace bsp {
+// Optional borrowed admission for service-facing raw surface/holder/runtime2D
+// owners. Every reached unbound identity must be a completed genuine producer
+// result, with its live native +04 and valid cleanup fields/pool metadata, from
+// these SAME renderer/publication, surface/texture pools, strings and support
+// domains. A profile token alone is not proof of storage or lifetime. Holders
+// and their nested direct owners must satisfy the existing B4E410 contract;
+// nested owners reached by its raw deleters must remain unbound. Do not add
+// companions to nested raw resources merely to use this domain. This context
+// does not authorize raw deletion of a subtree with a bound nested companion.
+// Keep this domain, all providers and canonical companions stable through
+// terminal return and external quiescence. Registry lookup is pure and must
+// not race binding/retirement. A bound identity ALWAYS retires its companion.
+struct NativeRenderResourcesDirectTerminalDomain {
+    NativeRenderActualOwnerRegistry& actual_owners;
+    NativeRenderTextureSurfaceOwnerContext& holders;
+    const volatile std::uint32_t* actual_holder_profile_00d61eb8;
+};
+
 // Borrow the same raw publication, strings, canonical texture/helper registry,
 // frame surfaces and cockpit companions as construction. All reached nonnull
 // fields must already have their native lifetimes, including +70, which B14A10
@@ -14,6 +33,9 @@ struct NativeRenderResourcesLifetimeContext {
     NativeFrameTargetOwnerContext& frame_targets;
     NativeRenderResourcesConstructionAcquired& construction;
     const volatile std::uint32_t* actual_frame_table_00d5e600;
+    // Absent preserves the existing canonical-only nonframe/noncockpit path.
+    // No raw owner is admitted by default; reaching an unbound one then fails.
+    NativeRenderResourcesDirectTerminalDomain* direct_terminals{};
 };
 
 // Complete B0F6E0..B0FBF8: ECX service, RET. Call B52270 on current+34,

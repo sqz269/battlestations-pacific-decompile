@@ -1,0 +1,935 @@
+{
+  "packet": "cc10_render_resource_terminal_dispatch",
+  "base_commit": "739d662228e2702e29d038e6b08d8e17727236da",
+  "status": "strict_win32_build_existing_tests_live_pe_and_one_focused_source_terminal_lifecycle_checked",
+  "source_files": [
+    "include/bsp/native_render_resources_lifetime.hpp",
+    "src/native_render_resources_lifetime.cpp"
+  ],
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "no_ghidra_function": [],
+  "new_native_body": false,
+  "owned_native_entries": [
+    "00b0f6e0",
+    "00b14f60"
+  ],
+  "native_calls": [
+    {
+      "address": "00b0f6e9",
+      "native": "00b52270",
+      "function": "00b0f6e0",
+      "scope": "existing body/provider evidence, no new callee implementation"
+    },
+    {
+      "address": "00b14f8e",
+      "native": "00b0f6e0",
+      "function": "00b14f60",
+      "scope": "existing body/provider evidence, no new callee implementation"
+    },
+    {
+      "address": "00b15013",
+      "native": "00432050",
+      "function": "00b14f60",
+      "scope": "existing body/provider evidence, no new callee implementation"
+    },
+    {
+      "address": "00b1501c",
+      "native": "00bf65ac",
+      "function": "00b14f60",
+      "scope": "existing body/provider evidence, no new callee implementation"
+    },
+    {
+      "address": "00b15038",
+      "native": "00b14500",
+      "function": "00b14f60",
+      "scope": "existing body/provider evidence, no new callee implementation"
+    },
+    {
+      "address": "00b15058",
+      "native": "00419cc0",
+      "function": "00b14f60",
+      "scope": "existing body/provider evidence, no new callee implementation"
+    },
+    {
+      "address": "00b1505f",
+      "native": "00bd1510",
+      "function": "00b14f60",
+      "scope": "existing body/provider evidence, no new callee implementation"
+    },
+    {
+      "address": "00b1506e",
+      "native": "00b0f0c0",
+      "function": "00b14f60",
+      "scope": "existing body/provider evidence, no new callee implementation"
+    },
+    {
+      "address": "00b3f5b3",
+      "native": "00b3f4e0",
+      "function": "00b3f5b0",
+      "scope": "existing body/provider evidence, no new callee implementation"
+    },
+    {
+      "address": "00b3f5c5",
+      "native": "00b3d860",
+      "function": "00b3f5b0",
+      "scope": "existing body/provider evidence, no new callee implementation"
+    },
+    {
+      "address": "00b4e413",
+      "native": "00b4e140",
+      "function": "00b4e410",
+      "scope": "existing body/provider evidence, no new callee implementation"
+    },
+    {
+      "address": "00b4e420",
+      "native": "00bf65ac",
+      "function": "00b4e410",
+      "scope": "existing body/provider evidence, no new callee implementation"
+    },
+    {
+      "address": "00b3f593",
+      "native": "00b3f2e0",
+      "function": "00b3f590",
+      "scope": "existing body/provider evidence, no new callee implementation"
+    },
+    {
+      "address": "00b3f5a5",
+      "native": "00b3d8d0",
+      "function": "00b3f590",
+      "scope": "existing body/provider evidence, no new callee implementation"
+    }
+  ],
+  "indirect_call_sites": [
+    {
+      "site": "00b0f701",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f70d",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f720",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f72c",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f73f",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f74b",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f75b",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f767",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f777",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f783",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f793",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f79f",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f7b2",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f7be",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f7d4",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f7e0",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f7f6",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f802",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f818",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f824",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f837",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f843",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f853",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f85f",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f86f",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f87b",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f88b",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f897",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f8a7",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f8b3",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f8c3",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f8cf",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f8df",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f8eb",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f8fe",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f90a",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f920",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f92c",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f942",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f94e",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f964",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f970",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f983",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f98f",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f99f",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f9ab",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f9be",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f9ca",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f9dd",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f9e9",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0f9f9",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0fa05",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0fa15",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0fa21",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0fa31",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0fa3d",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0fa4d",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0fa59",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0fa6c",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0fa78",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0fa8b",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0fa97",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0faa7",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0fab3",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0fac3",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0facf",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0fae2",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0faee",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0fb01",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0fb0d",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0fb20",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0fb2c",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0fb42",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0fb4e",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0fb64",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0fb70",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0fb86",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0fb92",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0fba5",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0fbb1",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0fbc1",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0fbcd",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0fbdd",
+      "instruction": "call ebp",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b0fbe9",
+      "instruction": "call eax",
+      "function": "00b0f6e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b14fa6",
+      "instruction": "call ebp",
+      "function": "00b14f60",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b14fb2",
+      "instruction": "call eax",
+      "function": "00b14f60",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b14fc5",
+      "instruction": "call ebp",
+      "function": "00b14f60",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b14fd1",
+      "instruction": "call eax",
+      "function": "00b14f60",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b14fe4",
+      "instruction": "call ebp",
+      "function": "00b14f60",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00b14ff0",
+      "instruction": "call eax",
+      "function": "00b14f60",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    },
+    {
+      "site": "00bd30eb",
+      "instruction": "call edx",
+      "function": "00bd30e0",
+      "verification": "complete live bytes match PE; not represented as a direct call edge"
+    }
+  ],
+  "live_pe_blocks": [
+    {
+      "scope": "release",
+      "start": "00b0f6e0",
+      "end_inclusive": "00b0fbf8",
+      "end_exclusive": "00b0fbf9",
+      "bytes": 1305,
+      "sha256": "c984babdef3c4d0de1a029f4a699aa1a653e856c70374f7d2ff191031f28d0db",
+      "live_equals_installed_pe": true,
+      "instructions": 561,
+      "last_instruction": "00b0fbf8",
+      "last_instruction_bytes": 1,
+      "last_instruction_text": "ret"
+    },
+    {
+      "scope": "destroy",
+      "start": "00b14f60",
+      "end_inclusive": "00b15085",
+      "end_exclusive": "00b15086",
+      "bytes": 294,
+      "sha256": "79ab901371bdc493916d8cf5400f4e214b34326f83d0f17e6f3b692f321ef19f",
+      "live_equals_installed_pe": true,
+      "instructions": 99,
+      "last_instruction": "00b15085",
+      "last_instruction_bytes": 1,
+      "last_instruction_text": "ret"
+    },
+    {
+      "scope": "invoker",
+      "start": "00bd30e0",
+      "end_inclusive": "00bd30ed",
+      "end_exclusive": "00bd30ee",
+      "bytes": 14,
+      "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01",
+      "live_equals_installed_pe": true,
+      "instructions": 7,
+      "last_instruction": "00bd30ed",
+      "last_instruction_bytes": 1,
+      "last_instruction_text": "ret"
+    },
+    {
+      "scope": "surface_delete",
+      "start": "00b3f5b0",
+      "end_inclusive": "00b3f5cf",
+      "end_exclusive": "00b3f5d0",
+      "bytes": 32,
+      "sha256": "3a970588c8a7be01b82e0400585f1b864d92d2ca2bed1208b99c2951b3b0a782",
+      "live_equals_installed_pe": true,
+      "instructions": 11,
+      "last_instruction": "00b3f5cd",
+      "last_instruction_bytes": 3,
+      "last_instruction_text": "ret 4"
+    },
+    {
+      "scope": "holder_delete",
+      "start": "00b4e410",
+      "end_inclusive": "00b4e42d",
+      "end_exclusive": "00b4e42e",
+      "bytes": 30,
+      "sha256": "5d4ec2804d01d9e31adcd231e95d2e2090cea189f6cc9a37411e3f7c5d38e125",
+      "live_equals_installed_pe": true,
+      "instructions": 11,
+      "last_instruction": "00b4e42b",
+      "last_instruction_bytes": 3,
+      "last_instruction_text": "ret 4"
+    },
+    {
+      "scope": "texture_delete",
+      "start": "00b3f590",
+      "end_inclusive": "00b3f5af",
+      "end_exclusive": "00b3f5b0",
+      "bytes": 32,
+      "sha256": "2e62a897b6bb3512a36acb99d45b672123c7501e32931239889c03f032db8465",
+      "live_equals_installed_pe": true,
+      "instructions": 11,
+      "last_instruction": "00b3f5ad",
+      "last_instruction_bytes": 3,
+      "last_instruction_text": "ret 4"
+    },
+    {
+      "scope": "surface_table",
+      "start": "00d619a0",
+      "end_inclusive": "00d619a7",
+      "end_exclusive": "00d619a8",
+      "bytes": 8,
+      "sha256": "f1ea2292b0c84c8590d34d6b31259ffc91038b22763e5d7a6e8997112db89f46",
+      "live_equals_installed_pe": true,
+      "words": [
+        "00bd30e0",
+        "00b3f5b0"
+      ]
+    },
+    {
+      "scope": "holder_table",
+      "start": "00d61eb8",
+      "end_inclusive": "00d61ebf",
+      "end_exclusive": "00d61ec0",
+      "bytes": 8,
+      "sha256": "748f495ebdc100cb57fc8f1613483da0a753f30c67d4260bc8515f23d327a1d1",
+      "live_equals_installed_pe": true,
+      "words": [
+        "00bd30e0",
+        "00b4e410"
+      ]
+    },
+    {
+      "scope": "texture_table",
+      "start": "00d61948",
+      "end_inclusive": "00d6194f",
+      "end_exclusive": "00d61950",
+      "bytes": 8,
+      "sha256": "3431d3730534188dda9ee513276a0445b8464b88e87aa76a3b7d5608bc045c5c",
+      "live_equals_installed_pe": true,
+      "words": [
+        "00bd30e0",
+        "00b3f590"
+      ]
+    }
+  ],
+  "contract": {
+    "domain": "optional borrowed NativeRenderResourcesDirectTerminalDomain; no app graph expansion",
+    "actual_lifetime": "complete genuine producers in the SAME registry/renderer/pools/strings/support domain; raw profile alone never proves storage or cleanup preimage",
+    "identity_checks": [
+      "concrete registry is textures.actual_owners",
+      "texture/getter/render-target/frame share exact surface context",
+      "texture notification and surface use same actual string storage",
+      "texture notification and surface share actual renderer publication cell",
+      "holder and service share decrement import cell",
+      "surface and 2D current table pointers match"
+    ],
+    "dispatch": "pure canonical lookup first, exact actual+4 atomic, zero callback once and return without reading retired native bytes; missing binding allows only three raw families with current0 and fresh profile/+4",
+    "nested": "existing raw nested deleters require unbound nested owners where terminal zero can be reached; no blanket registration or raw bypass of bound subtree",
+    "absence": "domain absent keeps original canonical nonframe/noncockpit behavior; unbound owner throws; unknown profiles keep existing failure",
+    "counts": "no new count, retain, decrement, registry binding or native store",
+    "reentrancy": "lookup pure, no registry lock across terminal callback; external synchronization excludes concurrent binding/retirement; returning parent-field writes still overwritten and later fields reloaded",
+    "failure": "no rollback or replay; count already zero and parent remains uncleared if terminal throws; unchanged native source cleanup projection",
+    "refreshed_family_guard": "one refreshed native profile read selects original table and expected scalar; captured +4 must equal that family scalar before dispatch; no surface/holder/texture cross-family substitution"
+  },
+  "providers": [
+    {
+      "profile": "00d619a0",
+      "producer": "B2A7C0/B3FD80 -> B3F630, actual 38h surface slot/34h payload",
+      "service_fields": [
+        "50",
+        "58",
+        "5C"
+      ],
+      "deleter": "00b3f5b0",
+      "context": "frame_targets.actual_surface_context",
+      "pool": "actual surface0108DB00"
+    },
+    {
+      "profile": "00d61eb8",
+      "producer": "B107F0 actual18h allocations -> B4E020 with completed real texture/surface children",
+      "service_fields": [
+        "4C",
+        "38",
+        "3C",
+        "44",
+        "48",
+        "40"
+      ],
+      "deleter": "00b4e410",
+      "context": "direct_terminals.holders",
+      "pool": "actual shared CRT allocation/free"
+    },
+    {
+      "profile": "00d61948",
+      "producer": "B2A070 -> B3F7B0 actual54h texture slot/50h payload; loaded same-profile owners use existing canonical companion",
+      "service_fields": [
+        "54",
+        "668 loaded"
+      ],
+      "deleter": "00b3f590",
+      "context": "holders.textures.construction.owners or existing NativeTextureLoadOwners companion",
+      "pool": "actual texture2D0108DB38, preserved ID+50"
+    }
+  ],
+  "schedule": {
+    "release": "B0F6E9 current34 auxiliary release; B0F6EE capture50 before B0F6F1 one CE2220 epoch; 42 native visits/current clears; repeated1D4; final1C4 only after success;67C untouched",
+    "destroy": "B14F8E full release returns, B14F93 capture34 before fresh B14F96 CE2220 for34/668/0C; other destruction and unwind unchanged",
+    "terminal": "zero decrement -> current slot0 -> BD30E0 fresh profile/deleting+4 ->flags1 -> clear parent only after callback returns"
+  },
+  "checks": {
+    "strict_build": {
+      "passed": true,
+      "exit_code": 0,
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release /MD /W4 /WX",
+      "existing_ctests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "tests_failed": 0
+    },
+    "report_calls": {
+      "passed": true,
+      "exit_code": 0,
+      "checked": 14,
+      "failed": 0
+    },
+    "live_pe": {
+      "passed": true,
+      "blocks": 9,
+      "direct_rows": 14,
+      "indirect_rows": 91
+    },
+    "focused_source_probe": {
+      "passed": true,
+      "new_ignored_probes": 1,
+      "original_native_differential": false,
+      "actual_D3D9": true,
+      "canonical_provider": "existing NativeTextureLoadOwners, no fake companion; genuine runtime producer handed to completed-creator admission",
+      "fixture": "explicit sparse service/helper only; no constructor/initializer/parent destructor execution",
+      "checks": [
+        "real surface raw delete",
+        "real holder with real nested texture/surface cleanup",
+        "raw runtime2D nonfinal then final parent references",
+        "existing canonical D61948 companion wins and retires/unbinds",
+        "five parent decrements retain captured epoch",
+        "two nested holder decrements capture replaced current epoch",
+        "parent50 callback replacement overwritten",
+        "registry/native renderer lists empty; tracking baseline restored",
+        "final device/API references zero"
+      ],
+      "exit_code": 0,
+      "compiler": "MSVC Win32 /MD /W4 /WX /fp:strict /link /MANIFEST:EMBED"
+    },
+    "new_tracked_tests": 0
+  },
+  "limits": [
+    "No full initializer/application composition or invocation",
+    "No native ABI/FH3/SEH/private-stack/concurrency/game proof",
+    "New B14F60 direct branches statically composed only; focused lifecycle calls B0F6E0",
+    "Bound nested-owner subtrees are outside existing raw provider contract",
+    "Distortion+34/+38/+3C preimage and bloom+430..43F backing remain unresolved",
+    "No new ledger or Ghidra annotation; existing function names retained"
+  ],
+  "evidence": {
+    "listing": "local/render_resource_terminal_dispatch_listing.txt",
+    "native_order": "local/render_resource_terminal_dispatch_order.json",
+    "boundaries": "local/render_resource_terminal_dispatch_boundaries.json",
+    "build": "local/render_resource_terminal_dispatch_build.txt",
+    "call_verification": "local/render_resource_terminal_dispatch_calls.txt",
+    "probe_directory": "local/render_resource_terminal_dispatch_probe",
+    "existing_parent_evidence": "reports/native_application_render_resources_r94.json"
+  },
+  "hashes": {
+    "include/bsp/native_render_resources_lifetime.hpp": "7603c20cd0728dac0e39f4c0a21ec4a943dc3bdc4f9f7c9765a0e6f4b5daa113",
+    "src/native_render_resources_lifetime.cpp": "97596da44f2e3061c1b8a7c9465a2c304bd485db570c4cc9c5907773375f05e4",
+    "docs/NATIVE_RENDER_RESOURCE_TERMINAL_DISPATCH_CC10.md": "8e7f10b25eecac52ac7410358627e09101b9ac12db3599f71c3f7c9a8288413a",
+    "src/native_render_context.cpp": "147a8df39f7a028b5b19bda7a8ef9632fc2b0df8df00ac7fad3f59ee48ca87f9",
+    "src/native_texture_loading_cache.cpp": "708020170abaf5a9bc22f522843dd766a97e67617f4716227d852fdd1a63e03c",
+    "src/native_texture_2d_owner.cpp": "8824e7624fec3faa637aa8ce1a90a7e8eba15b8a203253ccf00e9aafdae54ada",
+    "src/native_surface_owner.cpp": "01b33cf76b7e6b642bd41f4edeea5685568123671e5d89a4cbf92dc73a348a45",
+    "src/native_render_texture_surface_owner.cpp": "c997043a8760583251f8951f69781251556bf336e63a801d252191f86c679c78",
+    "src/native_runtime_texture_creation.cpp": "af44cb3574468dbd5d39241c61fb6a3c4154ea20167b951958d9a0660a665beb",
+    "src/native_render_resources_surfaces.cpp": "24aee52fa0cd5d1fccf6143d5a04ece86d7eafb49442bcdc657cf33d10997761",
+    "src/game_native_renderer_resources.inc": "f790721d2622f0dcbcebefc071e6950b0013eee06fa56735a243fadeaf75a236",
+    "local/render_resource_terminal_dispatch_listing.txt": "f808a93932f1040a39d199ded677dac111bc3fae539236e7921697795f9f067b",
+    "local/render_resource_terminal_dispatch_order.json": "a3029c871881694dac78a69433bcb699c5c50aef0af0587589df16802757040e",
+    "local/render_resource_terminal_dispatch_boundaries.json": "f4240b4bc3620219c71cf6022d76b80698f8310f271d1f72e93b341ca8756ef7",
+    "local/render_resource_terminal_dispatch_build.txt": "5aaaccb5a91eb589dc033f649eebd1088081d6e5c283d8d466fbcd46daa4002f",
+    "local/render_resource_terminal_dispatch_calls.txt": "b245f6f481e5af96cd7ce3815a854ccadb78f43cef81e05c3040bbf0446704a6",
+    "local/render_resource_terminal_dispatch_probe/build.txt": "2656e89b7991a1e89a445f6bf51c883e592fcd6dcf7c126e0a49fd4ef45dfecb",
+    "local/render_resource_terminal_dispatch_probe/game_objects.rsp": "3541d51a67ae163a424e45b3acd3f80dd31d820f14d98da119ff485d38db0928",
+    "local/render_resource_terminal_dispatch_probe/prepare.py": "2a617280b992ea02376fed554ab52013d002f8926da0582865a555a2cf04f42e",
+    "local/render_resource_terminal_dispatch_probe/probe.cmd": "f73c9ece65c9e7fec722c6f58a021cccd2767de5c930bfa7f9d574be6bdf0d88",
+    "local/render_resource_terminal_dispatch_probe/probe.cpp": "75f0f0c650aafc3c79c7a3ab44915ddfa4a571058c0e673a6413d23a042cf2d7",
+    "local/render_resource_terminal_dispatch_probe/resource_terminal_probe.exe": "58aa9770a206813bc30c934e2a1160a8ebe4c2cb0ee69f67684824879fd708a5",
+    "local/render_resource_terminal_dispatch_probe/run.log": "9c216efe005886fa1e459ab4a184a121ec4e01f33c1b755001f8a1442915fb75",
+    "local/render_resource_terminal_dispatch_probe/run.txt": "c93e8418a878953ddb9fda9e0e2d81b7e66f6b5c49cd41062f6a413cb881ab67",
+    "local/render_resource_terminal_dispatch_release_bytes.txt": "3fc66301be836ff42bce96719755c7efd5fec3463ccdea5824e2e242aadd4a92",
+    "local/render_resource_terminal_dispatch_destroy_bytes.txt": "c1181997a8e4645238389b15b7afdc843a18f37634a966b976030015885a973f",
+    "local/render_resource_terminal_dispatch_invoker_bytes.txt": "1d70d9d639234f376753c69e736b613bbef917a14ca52c5d82dc737141237953",
+    "local/render_resource_terminal_dispatch_surface_delete_bytes.txt": "d56a97df4455391919ad9326a36c8d9434ae4a6acd26e7252e6fa0a55c60c15b",
+    "local/render_resource_terminal_dispatch_holder_delete_bytes.txt": "c0d728c65f7668c595b1cdf7c97a94f8eef15a9c6bd3773ebe4f3a2c97406e7e",
+    "local/render_resource_terminal_dispatch_texture_delete_bytes.txt": "d3779d3a900cb9615f92478d568e49e3ef6d116a19bdb739b55322e9ee80403e",
+    "local/render_resource_terminal_dispatch_surface_table_bytes.txt": "794ace23aa77436d7638226734ebd62addc61dcbb3659005e8f0aeba163b0635",
+    "local/render_resource_terminal_dispatch_holder_table_bytes.txt": "d256eab781bdee86270aaa94e9e1c532fe447cebc8d597cbec8c1489d28dd1c4",
+    "local/render_resource_terminal_dispatch_texture_table_bytes.txt": "0b57394cbbe8288c0208ff852dbe11d83ebb90475452e8a3a1ea258375562380"
+  }
+}
