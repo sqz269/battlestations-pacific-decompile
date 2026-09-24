@@ -102,7 +102,7 @@ struct HudRootUpdateState {
     std::uint32_t ticker_queue_count{0}; // (+B4h - +B0h) / 10h
     std::uint16_t pending_unit_handle{0}; // +78h, a unit handle or 0
     bool pending_group_request{false}; // +20h, cleared once 006485A0 has run
-    std::uint32_t selector_widget{0};  // +40h, shown every frame
+    std::uint32_t selector_widget{0};  // +40h, ClosedUnitHUD_Group (006463E0 at 00646AAE), shown every frame
     std::uint32_t weapon_info_field{0};// +C2h, written from 00644CC0/00644C20
     bool closed_hud_flag{false};       // +1Ch, read by the toggle test
 };
