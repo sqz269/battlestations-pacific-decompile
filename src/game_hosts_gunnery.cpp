@@ -141,7 +141,7 @@ constexpr bool kShipPlatformAttachmentBound = true;
 //    the static-geometry half (spatial query, flags 44h) is not modelled,
 //    since nothing static stands between ships at sea. OFF: always clear.
 //    docs/SHIP_PLATFORM_ATTACHMENT.md.
-constexpr bool kAaLineOfFireBound = false;
+constexpr bool kAaLineOfFireBound = true;
 
 // 00901C20 BSP_GunBot_InterceptSolution, the time-of-flight half, as a pure rule.
 // rel = target position - shooter position; vel = target velocity - shooter
