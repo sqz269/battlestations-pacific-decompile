@@ -1,0 +1,508 @@
+{
+  "packet": "cc10_raw_light_lifetime",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "baseline_main": "dff2dc5001e7153180c95f138b5a3b013285c7f9",
+  "source": "src/native_light_lifetime.cpp",
+  "header": "include/bsp/native_light_lifetime.hpp",
+  "documentation": "docs/NATIVE_LIGHT_LIFETIME_CC10.md",
+  "status": "complete_actual_light_body_and_directional_terminal_strict_win32_genuine_provider_composition_checked",
+  "functions": [
+    {
+      "address": "00b7c5b0",
+      "end_exclusive": "00b7c6aa",
+      "end_inclusive": "00b7c6a9",
+      "final_instruction": "00b7c6a9",
+      "final_instruction_length": 1,
+      "byte_span": 250,
+      "instruction_count": 74,
+      "cpp_symbol": "bsp::destroy_native_light_storage_00b7c5b0",
+      "original_abi": "ECX actual light; RET",
+      "coverage": "complete normal body in actual-storage valid descriptor/provider domain; explicit source cleanup projection, no native transport"
+    },
+    {
+      "address": "00b7c1c0",
+      "end_exclusive": "00b7c1d7",
+      "end_inclusive": "00b7c1d6",
+      "final_instruction": "00b7c1d6",
+      "final_instruction_length": 1,
+      "byte_span": 23,
+      "instruction_count": 10,
+      "cpp_symbol": "bsp::destroy_native_light_scene_array_00b7c1c0",
+      "original_abi": "ECX actual12B pointer-only descriptor; RET",
+      "coverage": "complete normal body in actual-storage valid descriptor/provider domain; explicit source cleanup projection, no native transport"
+    },
+    {
+      "address": "00b7c820",
+      "end_exclusive": "00b7c846",
+      "end_inclusive": "00b7c845",
+      "final_instruction": "00b7c843",
+      "final_instruction_length": 3,
+      "byte_span": 38,
+      "instruction_count": 12,
+      "cpp_symbol": "bsp::delete_native_directional_light_storage_00b7c820",
+      "original_abi": "ECX actual1F0 directional slot, stacked flags; EAX original identity; RET4",
+      "coverage": "complete normal body in actual-storage valid descriptor/provider domain; explicit source cleanup projection, no native transport"
+    }
+  ],
+  "compiler_boundaries": [
+    {
+      "address": "00cc1ed0",
+      "end_exclusive": "00cc1ed8",
+      "end_inclusive": "00cc1ed7",
+      "final_instruction": "00cc1ed3",
+      "final_instruction_length": 5,
+      "byte_span": 8,
+      "role": "state0 node-base cleanup",
+      "coverage": "boundary-only raw evidence; source cleanup scheduling, no native compiler handler implementation"
+    },
+    {
+      "address": "00cc1ed8",
+      "end_exclusive": "00cc1ee6",
+      "end_inclusive": "00cc1ee5",
+      "final_instruction": "00cc1ee1",
+      "final_instruction_length": 5,
+      "byte_span": 14,
+      "role": "state1 array178 cleanup",
+      "coverage": "boundary-only raw evidence; source cleanup scheduling, no native compiler handler implementation"
+    },
+    {
+      "address": "00cc1ee6",
+      "end_exclusive": "00cc1ef0",
+      "end_inclusive": "00cc1eef",
+      "final_instruction": "00cc1eeb",
+      "final_instruction_length": 5,
+      "byte_span": 10,
+      "role": "raw FH3 handler descriptorDFAFC4",
+      "coverage": "boundary-only raw evidence; source cleanup scheduling, no native compiler handler implementation"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00cc1ee6",
+      "end_exclusive": "00cc1ef0",
+      "end_inclusive": "00cc1eef",
+      "final_instruction": "00cc1eeb",
+      "final_instruction_length": 5,
+      "byte_span": 10,
+      "role": "raw FH3 handler descriptorDFAFC4",
+      "coverage": "boundary-only raw evidence; source cleanup scheduling, no native compiler handler implementation"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00b7c5b0",
+      "address": "00b7c601",
+      "native": "00b83ec0",
+      "contract": "first current count/begin back scene, actual light argument; genuine raw type gate/registration"
+    },
+    {
+      "function": "00b7c5b0",
+      "address": "00b7c61a",
+      "native": "captured_00ce2220_epoch",
+      "contract": "fresh current count/begin after gate, captured scene+4; service captured once atB7C5DD"
+    },
+    {
+      "function": "00b7c5b0",
+      "address": "00b7c626",
+      "native": "captured_scene_profile+vtable00",
+      "contract": "only returnedzero with sameactual+4 zero; genuine actual3Ch canonical current0"
+    },
+    {
+      "function": "00b7c5b0",
+      "address": "00b7c652",
+      "native": "captured_00ce2220_epoch",
+      "contract": "captured current shadow174+4; same decrement as scene loop"
+    },
+    {
+      "function": "00b7c5b0",
+      "address": "00b7c65e",
+      "native": "captured_shadow_profile+vtable00",
+      "contract": "required explicit genuine family-aware zero binding/SAME canonical count, no default or invented shadow companion"
+    },
+    {
+      "function": "00b7c5b0",
+      "address": "00b7c679",
+      "native": "00b7bc70",
+      "contract": "state1 consumed before resize0; valid nonnegative pointer-only descriptor"
+    },
+    {
+      "function": "00b7c5b0",
+      "address": "00b7c681",
+      "native": "00bf6989",
+      "contract": "current begin afterresize, genuine sharedCRT free; stale begin/capacity retained"
+    },
+    {
+      "function": "00b7c5b0",
+      "address": "00b7c693",
+      "native": "00b6f440",
+      "contract": "state0 consumed before genuine raw node-base call, persistent unchanged frame/acquisition"
+    },
+    {
+      "function": "00b7c1c0",
+      "address": "00b7c1c5",
+      "native": "00b7bc70",
+      "contract": "resize0 over sameactual12B; count0 path no reserve/no SceneResource dereference"
+    },
+    {
+      "function": "00b7c1c0",
+      "address": "00b7c1cd",
+      "native": "00bf6989",
+      "contract": "fresh begin captured afterresize, returning free then ADDESP4/POPESI/RET"
+    },
+    {
+      "function": "00b7c820",
+      "address": "00b7c829",
+      "native": "00b7c5b0",
+      "contract": "D62FB0 stamp followed by full raw Light body"
+    },
+    {
+      "function": "00b7c820",
+      "address": "00b7c83b",
+      "native": "00b7b2f0",
+      "contract": "late CURRENT flags lowbyte bit0; same actual01090154 pool/raw1F0 slot andlive1EC slabID"
+    },
+    {
+      "function": "00cc1ed0",
+      "address": "00cc1ed3",
+      "native": "00b6f440",
+      "kind": "tail_jump",
+      "actual_transfer": "JMP",
+      "contract": "state0 node-base cleanup"
+    },
+    {
+      "function": "00cc1ed8",
+      "address": "00cc1ee1",
+      "native": "00b7c1c0",
+      "kind": "tail_jump",
+      "actual_transfer": "JMP",
+      "contract": "state1 array178 cleanup"
+    },
+    {
+      "function": "00cc1ee6",
+      "address": "00cc1eeb",
+      "native": "00bf6b43",
+      "kind": "no_ghidra_function",
+      "actual_transfer": "JMP",
+      "contract": "raw FH3 handler descriptorDFAFC4"
+    }
+  ],
+  "prior_reconstruction_records": [
+    {
+      "address": "00b7c5b0",
+      "name": "destroy_native_light_00b7c5b0",
+      "source": "src/directional_light_owner.cpp",
+      "status": "typed_implementation_integrated_strict_win32_build_native_host_fixtures_and_installed_draw_checked",
+      "original_abi": "ECX light; RET",
+      "native_end_exclusive": "00b7c6aa",
+      "evidence": "docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json",
+      "abi_compatible": false,
+      "game_validated": false,
+      "remaining": "Full nonnull shadow construction/update, native nonempty ownership/EH execution, full process startup and gameplay remain.",
+      "kind": "function"
+    },
+    {
+      "address": "00b7c820",
+      "name": "delete_native_directional_light_00b7c820",
+      "source": "src/directional_light_owner.cpp",
+      "status": "typed_implementation_integrated_strict_win32_build_native_host_fixtures_and_installed_draw_checked",
+      "original_abi": "ECX light; stack flags; EAX original raw address; RET4",
+      "native_end_exclusive": "00b7c846",
+      "evidence": "docs/NATIVE_LIGHT_CHAIN_INTEGRATION.md; reports/native_light_chain_integration_audit.json; docs/DIRECTIONAL_LIGHT_REFERENCE.md; reports/directional_light_reference.json",
+      "abi_compatible": false,
+      "game_validated": false,
+      "remaining": "Full nonnull shadow construction/update, native nonempty ownership/EH execution, full process startup and gameplay remain.",
+      "kind": "function",
+      "companion_source": "src/directional_light_reference.cpp",
+      "companion_cpp_symbol": "DirectionalLightReference::release_zero_references",
+      "companion_integration_status": "strict_win32_build_and_focused_host_lifetime_fixture_passed",
+      "companion_integration_scope": "Canonical borrowed actual04 count and GeneratedModelNodeLifetime; real directional/light/node table dispatch; shared virtual18 child/point-light release; B7C820(1) before lifetime unbind and mandatory companion disposal. Factory composes original1F0 pool/string/predicates/shadow resolver with no extra reference. Original destructor implementation unchanged; no new native machine-code execution or game validation claim."
+    }
+  ],
+  "corrections": [
+    {
+      "address": "00b7c1c0",
+      "was": "Ghidra inclusiveend00b7c1d1,7 instructions, free treated as noreturn",
+      "is": "exact23B ends exclusive00b7c1d7/inclusive00b7c1d6,10 instructions; ADDESP4 at1D2,POPESI at1D5,RET at1D6",
+      "evidence": "complete disasm-raw and live/installedPE23B match; returning continuation exercised; root owns eventual flow/body repair"
+    }
+  ],
+  "context": {
+    "layout": "actual174h node prefix plus shadow174, borrowed scene descriptor178/17C/180; directional actual1F0 slot/slabID1EC",
+    "cpp_lifetimes": "rawB7C6B0->B7C4C0->B6F5A0 materialize_raw_node starts NativeNodeStorage/atomic04; descriptor assembly tail alone is not claimed typed. Cleanup snapshots12B, placementcreates trivial SystemAmbientBacklinks and restores all12B before typed resize; earlier typed attachment fixture explicitly does same. No legacy owner/tail introduced.",
+    "decrement_epoch": "currentCE2220 captured atB7C5DD after initial17C signedtest operand, before state1; SAME captured pointer for every scene andshadow, even if importcell changes",
+    "scene_loop": "first freshcount/begin back feeds B83EC0; freshcount/begin back AFTER gate feedsdecrement; atzero genuinecanonical SAME+4/current0; rereadcurrentcount afterterminal, subtract1 onlyifnonzero, thenfreshsignedpositive test",
+    "shadow": "current174 capturedafterloop, SAMEepoch decrement; atzero capturedcurrentprofile/puretable/current0/explicitgenuinefamilydispatch/SAMEcanonicalzero; clear174aftercallback. Null/still-nonzero directlyadmitted; zero requiresexternalgenuinebinding andunexercised",
+    "array": "nonnegative count/capacity valid descriptor; resize0 cannotreserve/dereference SceneResource, thenCURRENTbegin/free; preservepointer/capacity; source normal body shares equivalentB7C1C0sequence butnative hasdirectresize/free calls",
+    "node": "reuse unchanged rawB6F440 Context/Frame/Acquired, SAME registry/import/type/string/tree domains, no legacycallbacksinstalled",
+    "canonical": "separate raw directional RenderCommandReference, SAMEactualatomic+4/registry, currentD62FB0/BD30E0 thenfreshcurrent4B7C820/flags1; no nativewrites/credits; explicitnonzero flags0 andlateflags1; exactlyonce metadataretirement without deadslot access",
+    "failure": "nativecleanup states consumed beforecalls; source unwind array thennode once, secondexceptionterminate. Canonicalmetadata retirement onfailure doesNOTassertnative success/poolreturn; retainunresolvedcredits/rawbacking/frames for disposition. Scalarstamp precedes contextdiagnostic as native prefix; notpre-native refusal.",
+    "eh": {
+      "descriptor": "00dfafc4",
+      "magic": "19930522",
+      "max_state": 2,
+      "map": "00dfafb4",
+      "entries": [
+        [
+          -1,
+          "00cc1ed0"
+        ],
+        [
+          0,
+          "00cc1ed8"
+        ]
+      ]
+    },
+    "shadow_provider_boundary": "actual508h D5B5D8/BD30E0/A8FCD0 orbaseD5B574/A8E160; existingA8DEC0 still uses typedcamera viewport/root providers, no sameactualshadow canonical companion supplied. Nonrefcounted2Ch depthtarget is excluded."
+  },
+  "verification": {
+    "strict_build": "./scripts/build.ps1",
+    "ctests": "2/2 reconstructed_math,tool_tests",
+    "byte_evidence": [
+      {
+        "address": "00b7c5b0",
+        "length": 250,
+        "end_exclusive": "00b7c6aa",
+        "sha256": "95a691f454ad48080287c465311ac9f3f8804dd59f5d80efd0e2290a790bd493",
+        "live_equals_installed": true
+      },
+      {
+        "address": "00b7c1c0",
+        "length": 23,
+        "end_exclusive": "00b7c1d7",
+        "sha256": "e1e3fd626b588ca48f4b26924e7b1ba875ec28f62e81f1ce342266bf315cb710",
+        "live_equals_installed": true
+      },
+      {
+        "address": "00b7c820",
+        "length": 38,
+        "end_exclusive": "00b7c846",
+        "sha256": "099213d5eb398f6e49bf9f547ea384473c56e2dd6f2ea5ae7363bf41670c5153",
+        "live_equals_installed": true
+      },
+      {
+        "address": "00cc1ed0",
+        "length": 8,
+        "end_exclusive": "00cc1ed8",
+        "sha256": "73aa2bb92172d764abafe24584134df4453d0eb737e559415cc842a5c320e5f9",
+        "live_equals_installed": true
+      },
+      {
+        "address": "00cc1ed8",
+        "length": 14,
+        "end_exclusive": "00cc1ee6",
+        "sha256": "ce9c99dac2a491ca453c326bb7ce2cacda9d21ee2a1d495974a231e6e89fb15f",
+        "live_equals_installed": true
+      },
+      {
+        "address": "00cc1ee6",
+        "length": 10,
+        "end_exclusive": "00cc1ef0",
+        "sha256": "aa701866771c767e6496f736f1e5b4a85687525d7bd1d718b9ff09983a073d8e",
+        "live_equals_installed": true
+      },
+      {
+        "address": "00dfafb4",
+        "length": 52,
+        "end_exclusive": "00dfafe8",
+        "sha256": "06600fdf3e922693d3f060e0e1c19e52b114d00e3e24123eb236513e5fb93a8d",
+        "live_equals_installed": true
+      }
+    ],
+    "call_verifier": "11 rows checked, 0 failed: 10 direct/tail instruction rows and 1 undefined-handler callee-only row; 4 indirect import/current0 rows retained and assembly inspected",
+    "probe": {
+      "source": "local/output/cc10_raw_light_lifetime_probe.cpp",
+      "command": "cl /nologo /MD /EHsc /std:c++20 /O2 /Gy /W4 /WX /fp:strict /I include /I local\\output /Fo:local\\output\\ /Fe:local\\output\\cc10_raw_light_lifetime_probe.exe local\\output\\cc10_raw_light_lifetime_probe.cpp build\\win32\\Release\\bsp_core.lib build\\win32\\Release\\bsp_lua511.lib build\\win32\\Release\\bsp_zlib121.lib /link /OPT:REF /MANIFEST:EMBED user32.lib d3d9.lib advapi32.lib shell32.lib",
+      "assertions": "NDEBUG not defined; compile-time #ifdef NDEBUG rejection; no /DNDEBUG",
+      "exit_code": 0,
+      "comparison_pairs": 3,
+      "pair_breakdown": "one23B array-helper pair, two Light/directional composition pairs flags0 andcallback-lateflags1",
+      "checks": [
+        "real DirectionalLightPool allocation/rawB7C6B0 constructor creates actualatomic04; descriptor lifetime established with unchanged12B, actualnamepool/consts",
+        "genuineB7C020 retains/registers three actual3Ch resources with initialized realtypecells andcanonicalambient/resource providers",
+        "first B83EC0 actual-nodefree callback replacesCURRENTbegin/back andIATcell; both following scene decrements use originalcapturedservice",
+        "genuine resource-zero terminal callback changesCURRENT17C; postterminaldecrement/loop seesnewcount; skippedcallbackcredits explicitly retained/disposed",
+        "normalized whole496B flags0 postbody result; flags1 realpoolfreestack increments, no returnedpayload read",
+        "source samecountcanonical observedzero/flags1 andexplicitpositivecountflags0, duplicate rejection/admission byteunchanged",
+        "source-only missing-currentgatetarget diagnostic consumesarray/node cleanup once, retainscredits/backing/pool slot for explicit genuine disposition"
+      ],
+      "body_extent_vs_execution": {
+        "live_pe_body_bytes": 311,
+        "replaced_dispatch_range": "[00b7c620,00b7c628)",
+        "replaced_byte_count": 8,
+        "original_instructions": "MOV EDX,[EDI]; MOV EAX,[EDX]; MOV ECX,EDI; CALL EAX",
+        "replacement": "MOV ECX,EDI; CALL genuine canonical resource bridge; NOP",
+        "reason": "numericD63168 tableaddress occupied by reconstructedexecutable, mappinguntouched",
+        "bridge_checks": "capturedEDI, existingactualregistrycanonical, SAMEactual+4 observedzero, realresourcecurrentprofile/current0/freshcurrent4 terminal",
+        "independent_native_dispatch_comparison": false,
+        "shadow_zero_exercised": false,
+        "other_relocations": "directcalls andcapturedCE2220 operand useexplicitgenuineproviders; remaininginstructionstreamretained"
+      },
+      "shared_boundary": "genuine sharedsource B83EC0/resize/free/B6F440/directionalpool andnestedresource/ambient/name/type providers; nestedoriginalmachinecode andnativeexceptiontransport not compared",
+      "not_tested": "shadow nonzero/zero original paths, originalnestedcallees/nativeFH3SEH/privateABI, fullpoint/camera/shadowterminalgraph, application/AC59A0/gameplay"
+    }
+  },
+  "limits": [
+    "SAME actualregistry/currentimportcells andinitializedtype/name/tree contexts; stablepreimagedframes/acquisitions, freshdiagnostics, realpoolprovenance andquiescentretirement.",
+    "Atgate-return selectedback mustremainvalid; nonnegative descriptor domain, noinvalidparameterstub orSceneResource hostview.",
+    "Returnedzero requires SAMEactualcountzero for canonicaldispatch; arbitrarycount-changing decrement continuations excluded.",
+    "No fabricatedshadowcompanion/defaulttarget; reachedzero-shadow requires genuinefamilybinding not supplied.",
+    "Source cleanup only, no nativeEHABI/game/application admission; adjacenttypedpoint/camera/baseLight terminalgraphs remainseparate."
+  ],
+  "ghidra_mutations": false,
+  "abi_compatible": false,
+  "application_bound": false,
+  "game_validated": false,
+  "frozen_evidence": [
+    {
+      "path": "local/output/cc10_raw_light_lifetime_build.log",
+      "bytes": 2686,
+      "sha256": "6c713cebcdf47a4f976ff49b7a5d67335271918be93793e6b3ea309e978b67c1"
+    },
+    {
+      "path": "local/output/cc10_raw_light_lifetime_bytes.hpp",
+      "bytes": 1693,
+      "sha256": "f5dbedad568f0ce7238c2fc5807c34717d2a82f4cdc96e3d5ac949a1823cfe46"
+    },
+    {
+      "path": "local/output/cc10_raw_light_lifetime_calls.log",
+      "bytes": 545,
+      "sha256": "2bc14e704aaf9897f7e9f163dce0a814869064b041162cbc4a6521fc77f380c5"
+    },
+    {
+      "path": "local/output/cc10_raw_light_lifetime_capture.py",
+      "bytes": 2295,
+      "sha256": "4175e91dcc008274882bf9ab33861df2e60174ff7fa9a10a9e8df4cd834301cf"
+    },
+    {
+      "path": "local/output/cc10_raw_light_lifetime_ledger.py",
+      "bytes": 2902,
+      "sha256": "a71ebdd738503116da75213d95e03195fa7b1b1d777ef6bdfe7d7dd7a6cf1ab3"
+    },
+    {
+      "path": "local/output/cc10_raw_light_lifetime_probe.cmd",
+      "bytes": 615,
+      "sha256": "5c5c34c101025d41ff29afdf414d3cb19f231f8e410ab2ab8c92339a927405e7"
+    },
+    {
+      "path": "local/output/cc10_raw_light_lifetime_probe.cpp",
+      "bytes": 18710,
+      "sha256": "5a538936afaece688fe36640fdde447c34d9ae45d3f81945bf1aa2c71596ff05"
+    },
+    {
+      "path": "local/output/cc10_raw_light_lifetime_probe.log",
+      "bytes": 377,
+      "sha256": "24c8a37f0548a08360996430dc556968e6ac0d2a492a8d5cc18043da480c1549"
+    },
+    {
+      "path": "local/output/cc10_raw_light_lifetime_report.py",
+      "bytes": 11074,
+      "sha256": "40059002b167085bcc9c595843f530e7ec077375e9bec61964efb82dc290d920"
+    },
+    {
+      "path": "local/output/cc10_raw_light_lifetime/00b7c1c0_assembly.txt",
+      "bytes": 295,
+      "sha256": "15694c5c115835053dfa84bcf740ed57f3d2670fe96b7d2b325026af7b381bc3"
+    },
+    {
+      "path": "local/output/cc10_raw_light_lifetime/00b7c1c0_bytes.txt",
+      "bytes": 118,
+      "sha256": "17da70bac241715313d01dbe332ceb4fb8e302c362711859005a4a12f3a3fe1c"
+    },
+    {
+      "path": "local/output/cc10_raw_light_lifetime/00b7c1c0_proto.txt",
+      "bytes": 368,
+      "sha256": "af2f7b97d04b0fd399119956f5120b3aa5701579d6a751298b81558b9d8e75a8"
+    },
+    {
+      "path": "local/output/cc10_raw_light_lifetime/00b7c5b0_assembly.txt",
+      "bytes": 3107,
+      "sha256": "c8ee84e8669aae38e406dcd988427b36bcfa13ce59adbf8de7f8456c0e81fced"
+    },
+    {
+      "path": "local/output/cc10_raw_light_lifetime/00b7c5b0_bytes.txt",
+      "bytes": 1208,
+      "sha256": "5176e6ed45fdf8bbac0df9478874b3ce37d94685ba4fd3cf7b6d77a403407a56"
+    },
+    {
+      "path": "local/output/cc10_raw_light_lifetime/00b7c5b0_proto.txt",
+      "bytes": 386,
+      "sha256": "90ad3fc41917afaf7eee4026905676241e05db95b87b0b54e085767d38c2062f"
+    },
+    {
+      "path": "local/output/cc10_raw_light_lifetime/00b7c820_assembly.txt",
+      "bytes": 1218,
+      "sha256": "d234fb540e11660b7926bed07a2ef3254b3609dd83d6dbc05d76a924382befe7"
+    },
+    {
+      "path": "local/output/cc10_raw_light_lifetime/00b7c820_bytes.txt",
+      "bytes": 191,
+      "sha256": "07a781d597ee700ace4fe59f0c921c503e5afb646a3c791d86ae9854c419b743"
+    },
+    {
+      "path": "local/output/cc10_raw_light_lifetime/00b7c820_proto.txt",
+      "bytes": 450,
+      "sha256": "20f36f662910585b4cb1a36f29214dc6824a775341e1200f00832b3fe60c5419"
+    },
+    {
+      "path": "local/output/cc10_raw_light_lifetime/00cc1ed0_assembly.txt",
+      "bytes": 140,
+      "sha256": "b2351446379355e6065cfc6c223b9dcbcac82736675992bc1f9f35129acc81d1"
+    },
+    {
+      "path": "local/output/cc10_raw_light_lifetime/00cc1ed0_bytes.txt",
+      "bytes": 45,
+      "sha256": "61c999981b480374007a3cbd9153687ac9a454a506bf54fcbaaf754ff585955a"
+    },
+    {
+      "path": "local/output/cc10_raw_light_lifetime/00cc1ed0_proto.txt",
+      "bytes": 377,
+      "sha256": "b937fdbc009c8dee801fefc383a1cfd9a164ac1e6301b0482e140f27461d360d"
+    },
+    {
+      "path": "local/output/cc10_raw_light_lifetime/00cc1ed8_assembly.txt",
+      "bytes": 166,
+      "sha256": "5c4d24bbac3abb0496afcc6eb7fe65f1c7dbb5d64fefa1ddb19f60314dec3b86"
+    },
+    {
+      "path": "local/output/cc10_raw_light_lifetime/00cc1ed8_bytes.txt",
+      "bytes": 69,
+      "sha256": "56b27e87f9b090a834623fb63e985bc0fa895bb98d6ef61d19459b143809d1cc"
+    },
+    {
+      "path": "local/output/cc10_raw_light_lifetime/00cc1ed8_proto.txt",
+      "bytes": 377,
+      "sha256": "ee6db9c8e4d406555f4635f6c7b40d9f30e3adec62e02efdd415fd25c6483cbd"
+    },
+    {
+      "path": "local/output/cc10_raw_light_lifetime/00cc1ee6_assembly.txt",
+      "bytes": 110,
+      "sha256": "b24254c6034ef9eb7ce7ccc610f5c0918e7e52fee47976fbe6664dcd8121b244"
+    },
+    {
+      "path": "local/output/cc10_raw_light_lifetime/00cc1ee6_bytes.txt",
+      "bytes": 53,
+      "sha256": "f9eb1a8e87ba9bb3c0abd81d5f88fae674505e41c6ee1ce6e36845ae8927c266"
+    },
+    {
+      "path": "local/output/cc10_raw_light_lifetime/00cc1ee6_proto.txt",
+      "bytes": 128,
+      "sha256": "274dde3a9cb20fdbfdb4df89cb264282410b8eeb60faf204952a74ed1ece3368"
+    },
+    {
+      "path": "local/output/cc10_raw_light_lifetime/00dfafb4_bytes.txt",
+      "bytes": 260,
+      "sha256": "edcdf0a3259ecdc5eef91033652dfec37db9aeab9ecfcb327f46312584d5d9c9"
+    },
+    {
+      "path": "local/output/cc10_raw_light_lifetime/byte_evidence.json",
+      "bytes": 1475,
+      "sha256": "e7dfe2ca649b6301a1622699844240f452689e55aada6612065f2927bbec2a78"
+    },
+    {
+      "path": "local/output/cc10_raw_light_lifetime/program.txt",
+      "bytes": 40,
+      "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+    }
+  ]
+}
