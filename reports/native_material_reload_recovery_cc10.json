@@ -19,19 +19,103 @@
     }
   ],
   "host_steps": [
-    {"address": "00b469c8", "native": "00b172d0", "function": "00b469a0", "contract": "Get current B8 name header for diagnostic"},
-    {"address": "00b469df", "native": "004254b0", "function": "00b469a0", "contract": "Bare-RET diagnostic"},
-    {"address": "00b469e9", "native": "00b41b10", "function": "00b469a0", "contract": "Release derived owners"},
-    {"address": "00b469f0", "native": "00b187a0", "function": "00b469a0", "contract": "Release base owners"},
-    {"address": "00b469f7", "native": "00b172d0", "function": "00b469a0", "contract": "Reread current B8 name header"},
-    {"address": "00b469ff", "native": "00b46950", "function": "00b469a0", "contract": "Load named variants on same effect"},
-    {"address": "00b46a0a", "native": "00b41b10", "function": "00b469a0", "contract": "On false result, release derived owners again"},
-    {"address": "00b46a11", "native": "00b187a0", "function": "00b469a0", "contract": "On false result, release base owners again"},
-    {"address": "00b46a1f", "native": "0041e870", "function": "00b469a0", "contract": "Build fallback name from D61C88 literal"},
-    {"address": "00b46a33", "native": "00b46950", "function": "00b469a0", "contract": "Load fallback on same effect and ignore result"},
-    {"address": "00b46a53", "native": "00419cc0", "function": "00b469a0", "contract": "Acquire same pooled string service"},
-    {"address": "00b46a5a", "native": "00bd1510", "function": "00b469a0", "contract": "Return fallback temporary string block"}
+    {
+      "address": "00b469c8",
+      "native": "00b172d0",
+      "function": "00b469a0",
+      "contract": "Get current B8 name header for diagnostic"
+    },
+    {
+      "address": "00b469df",
+      "native": "004254b0",
+      "function": "00b469a0",
+      "contract": "Bare-RET diagnostic"
+    },
+    {
+      "address": "00b469e9",
+      "native": "00b41b10",
+      "function": "00b469a0",
+      "contract": "Release derived owners"
+    },
+    {
+      "address": "00b469f0",
+      "native": "00b187a0",
+      "function": "00b469a0",
+      "contract": "Release base owners"
+    },
+    {
+      "address": "00b469f7",
+      "native": "00b172d0",
+      "function": "00b469a0",
+      "contract": "Reread current B8 name header"
+    },
+    {
+      "address": "00b469ff",
+      "native": "00b46950",
+      "function": "00b469a0",
+      "contract": "Load named variants on same effect"
+    },
+    {
+      "address": "00b46a0a",
+      "native": "00b41b10",
+      "function": "00b469a0",
+      "contract": "On false result, release derived owners again"
+    },
+    {
+      "address": "00b46a11",
+      "native": "00b187a0",
+      "function": "00b469a0",
+      "contract": "On false result, release base owners again"
+    },
+    {
+      "address": "00b46a1f",
+      "native": "0041e870",
+      "function": "00b469a0",
+      "contract": "Build fallback name from D61C88 literal"
+    },
+    {
+      "address": "00b46a33",
+      "native": "00b46950",
+      "function": "00b469a0",
+      "contract": "Load fallback on same effect and ignore result"
+    },
+    {
+      "address": "00b46a53",
+      "native": "00419cc0",
+      "function": "00b469a0",
+      "contract": "Acquire same pooled string service"
+    },
+    {
+      "address": "00b46a5a",
+      "native": "00bd1510",
+      "function": "00b469a0",
+      "contract": "Return fallback temporary string block"
+    }
   ],
   "producer": "Current B45EE0 LoadFrame.acquire allocates 110h NativeShaderDescriptorStorage and installs NativeShaderDescriptorCallableBinding before publishing effect+C4; current B41B10 uses that callable table. Numeric D61A44 has no current terminal context and is rejected.",
-  "validation": "./scripts/build.ps1 passed MSVC Win32 and both existing CTests. Focused 32-bit probe linked built bsp_core, admitted a descriptor through current B46950, checked disabled reload preserved all 178h effect bytes, then exercised failed reload and same-effect fallback with controlled reader/compiler children and the original D61C88 PE literal: four reads, one null build, old/failed bindings retired, final binding live until explicit cleanup; numeric-profile guard rejected. Successful probe exit 0; fixed RO band reservation was unavailable on a separate launch. No real HLSL or game validation."
+  "validation": "./scripts/build.ps1 passed MSVC Win32 and both existing CTests. Focused 32-bit probe linked built bsp_core, admitted a descriptor through current B46950, checked disabled reload preserved all 178h effect bytes, then exercised failed reload and same-effect fallback with controlled reader/compiler children and the original D61C88 PE literal: four reads, one null build, old/failed bindings retired, final binding live until explicit cleanup; numeric-profile guard rejected. Successful probe exit 0; fixed RO band reservation was unavailable on a separate launch. No real HLSL or game validation.",
+  "primary_integration": {
+    "worker_commit": "01cc4b4fe",
+    "published_main": "68140316b",
+    "build_log": "local/cc10-material-reload-integrate.log",
+    "ctest_passed": 3,
+    "ctest_failed": 0,
+    "call_rows_checked": 12,
+    "call_rows_failed": 0,
+    "review": "Full recovered header/source and original body; current LoadFrame.acquire installs same descriptor callable binding before publication",
+    "evidence_archive": {
+      "path": "local/cc10-platform-evidence/material-reload.zip",
+      "sha256": "145f5180c131b840a0944b565637834fd1102cef9844fc98b8881f0040251ac5",
+      "valid": true
+    },
+    "no_ghidra_function": [],
+    "ghidra_annotations": {
+      "name_preserved": "BSP_MaterialEffect_Reload",
+      "evidence_updated_and_saved": true,
+      "previous_values": "local/ghidra-annotations-20260924T012644Z.json",
+      "exports_refreshed": [
+        "00b469a0"
+      ]
+    }
+  }
 }
