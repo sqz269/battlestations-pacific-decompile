@@ -1,0 +1,233 @@
+{
+  "packet": "cc10_gui_widget_property_prefix",
+  "status": "partial_projection_build_and_focused_original_source_checked",
+  "address": "00aaa710",
+  "coverage": "partial_projection: [00aaa710,00aaabd6); excludes [00aaabd6,00aaaece] inclusive",
+  "source": "src/native_gui_widget_property_prefix.cpp",
+  "documentation": "docs/NATIVE_GUI_WIDGET_PROPERTY_PREFIX_CC10.md",
+  "original_abi": "ECX widget, stack visitor; full RET4. Explicit source scratch/dispatch/context changes ABI.",
+  "end_inclusive": "00aaabd5",
+  "end_exclusive": "00aaabd6",
+  "last_instruction": "00aaabd3 FSTP float ptr [EBP]",
+  "last_instruction_length": 3,
+  "native_bytes": {
+    "address": "00aaa710",
+    "size": 1222,
+    "sha256": "4679298a99e305a6c80306a1bc286ccdae9a1b5b329b2471920749585f73c0d5",
+    "live_pe_equal": true
+  },
+  "evidence_bytes": [
+    {
+      "address": "00aaa710",
+      "size": 640,
+      "sha256": "9b62b6eefa5d3d3c5cecdce3e437cfc1933605eefc959bac61e56d4bad9e5a45",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00aaa990",
+      "size": 582,
+      "sha256": "980c97d9284be5125db316f3940e9f93c5512e3b8f9fd0a31c434930241b4498",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00cb7571",
+      "size": 10,
+      "sha256": "7d5d4329bfeaa0c7295232372900119fcf55e1efb1ff970c2e3a0cb120666b9b",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00d5c118",
+      "size": 8,
+      "sha256": "ad45a04a1822ef46fca4311bd2c72f76e36169d25e3e4345d61c74bd5b2f6987",
+      "live_pe_equal": true
+    }
+  ],
+  "original_executable_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "host_steps": [
+    {
+      "address": "00aaab22",
+      "native": "00bf7fbf",
+      "function": "00aaa710",
+      "contract": "cdecl current nonnull header.data and Left; ADDESP8; external current CRT"
+    },
+    {
+      "address": "00aaab48",
+      "native": "00425850",
+      "function": "00aaa710",
+      "contract": "ECX actual current local header, stack Right; AL bool, RET4"
+    },
+    {
+      "address": "00aaab81",
+      "native": "00419cc0",
+      "function": "00aaa710",
+      "contract": "No arguments; current raw pool getter, EAX; RET leaves three release args"
+    },
+    {
+      "address": "00aaab88",
+      "native": "00bd1510",
+      "function": "00aaa710",
+      "contract": "ECX current pool, captured data/length+1/unused1; RET0C"
+    },
+    {
+      "address": "00aaa795",
+      "native": "current_visitor+vtable0c",
+      "function": "00aaa710",
+      "contract": "Pos: required exact current target, actual visitor and three actual 8-byte argument pairs; normally BD68D0 RET18, not hardcoded"
+    },
+    {
+      "address": "00aaa7ee",
+      "native": "current_visitor+vtable0c",
+      "function": "00aaa710",
+      "contract": "Size: required exact current target, actual visitor and three actual 8-byte argument pairs; normally BD68D0 RET18, not hardcoded"
+    },
+    {
+      "address": "00aaa847",
+      "native": "current_visitor+vtable0c",
+      "function": "00aaa710",
+      "contract": "Pivot: required exact current target, actual visitor and three actual 8-byte argument pairs; normally BD68D0 RET18, not hardcoded"
+    },
+    {
+      "address": "00aaa8a5",
+      "native": "current_visitor+vtable0c",
+      "function": "00aaa710",
+      "contract": "Scale: required exact current target, actual visitor and three actual 8-byte argument pairs; normally BD68D0 RET18, not hardcoded"
+    },
+    {
+      "address": "00aaa8f0",
+      "native": "current_visitor+vtable0c",
+      "function": "00aaa710",
+      "contract": "Rotate: required exact current target, actual visitor and three actual 8-byte argument pairs; normally BD68D0 RET18, not hardcoded"
+    },
+    {
+      "address": "00aaa973",
+      "native": "current_visitor+vtable0c",
+      "function": "00aaa710",
+      "contract": "Color: required exact current target, actual visitor and three actual 8-byte argument pairs; normally BD68D0 RET18, not hardcoded"
+    },
+    {
+      "address": "00aaa9fb",
+      "native": "current_visitor+vtable0c",
+      "function": "00aaa710",
+      "contract": "LowColor: required exact current target, actual visitor and three actual 8-byte argument pairs; normally BD68D0 RET18, not hardcoded"
+    },
+    {
+      "address": "00aaaa7a",
+      "native": "current_visitor+vtable0c",
+      "function": "00aaa710",
+      "contract": "HighColor: required exact current target, actual visitor and three actual 8-byte argument pairs; normally BD68D0 RET18, not hardcoded"
+    },
+    {
+      "address": "00aaaac4",
+      "native": "current_visitor+vtable0c",
+      "function": "00aaa710",
+      "contract": "BlendFactor: required exact current target, actual visitor and three actual 8-byte argument pairs; normally BD68D0 RET18, not hardcoded"
+    },
+    {
+      "address": "00aaab12",
+      "native": "current_visitor+vtable0c",
+      "function": "00aaa710",
+      "contract": "WideScreenAlign: required exact current target, actual visitor and three actual 8-byte argument pairs; normally BD68D0 RET18, not hardcoded"
+    },
+    {
+      "address": "00cb7576",
+      "native": "00bf6b43",
+      "function": "00cb7571",
+      "kind": "no_ghidra_function",
+      "contract": "Boundary only: MOV EAX,DEDDEC then tail JMP CxxFrameHandler3; raw bytes verified; no worker definition or implementation"
+    }
+  ],
+  "limits": "Partial [AAA710,AAABD6) only; excludes [AAABD6,AAAECE] inclusive. Required actual current-target dispatch and borrowed globals/literals/pool; new C++ scratch/bindings ABI excludes saved registers, return addresses, CRT argument reuse, FH3/SEH and escaping exceptions. Existing Lua/CRT/pool callees remain provider boundaries; no logical projection or game integration.",
+  "no_ghidra_function": [
+    {
+      "address": "00cb7571",
+      "end_inclusive": "00cb757a",
+      "end_exclusive": "00cb757b",
+      "last_instruction": "00cb7576 JMP 00bf6b43",
+      "last_instruction_address": "00cb7576",
+      "last_instruction_length": 5,
+      "size": 10,
+      "coverage": "unimplemented FH3 boundary only",
+      "descriptor": "00deddec",
+      "unwind_map": "00deddd4",
+      "prefix_state": "state0 -> CB7550 -> actual local string cleanup; state -1 before normal release"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Older logical descriptor mapping for LowColor/HighColor/WideScreenAlign",
+      "is": "LowColor D5C214, HighColor D5C208, WideScreenAlign D5C1EC with actual local native string header",
+      "evidence": "original operands AAA9E9,AAAA68,AAAAF9; live/PE key strings"
+    },
+    {
+      "was": "Potential fixed visitor0C or deduplicated white initialization",
+      "is": "Fresh profile and slot each read; recheck white after LowColor callback",
+      "evidence": "ten current target loads; AAA8F2 and AAA9FD guard tests"
+    }
+  ],
+  "validation": {
+    "strict_build": "scripts/build.ps1: MSVC Win32 Release /W4 /WX /fp:strict",
+    "ctests_passed": 3,
+    "original_source_pairs": 8,
+    "probe": "local/cc10_widget_property_prefix/widget_property_probe.exe",
+    "probe_contract": "Copied1222B prefix with original x87/SSE and branches; actual data relocations, four callee bridges and synthetic normal epilogue. Genuine raw Lua/reader/pool; callback profile switch, lazy white reset, Left/Right/unknown/empty, platform publication, late X, two rounding modes, full allocated locals with pointer normalization, ref/pool drain.",
+    "indirect_instruction_context_rows": 10,
+    "game_validated": false,
+    "ghidra_mutated": false,
+    "helper_launcher": "Argument-count defect fixed before successful run; all helper processes stopped before rebuild.",
+    "executable_sha256": "c5e2638837f9a7a1af7aad799c1e21a67bc900bd5ef8f16ad3d4b60dfd27b277",
+    "report_call_rows_checked": 5,
+    "report_call_row_failures": 0,
+    "prior_packet_archives_unchanged": {
+      "local/cc10_field_values_evidence.zip": "a749dbf4656596e6a4e0c11ecb320a02bfe62dcba5fa3654c2744aa2a3022153",
+      "local/cc10_widget_transform_evidence.zip": "0d90499f71be2a3cc99ad732deaa8a71a5b55546da4dbaa7ee708c364bae45f8"
+    }
+  },
+  "compiled_source": {
+    "src/native_gui_widget_property_prefix.cpp": "d26db5468d7eb00b21ff02556493b05bfc7a0440717c687e65afed281598d6fa",
+    "include/bsp/native_gui_widget_property_prefix.hpp": "d5e7d38924d3ac0442c2ec9470057bf7144b0b055ce3e199eee1280e85067f65",
+    "src/native_lua_reader_fields.cpp": "cabae403d2d8cf84ba83d216cb5bd143a96757fdd52803dd1a38a1ab5d2407c9",
+    "src/native_lua_field_values.cpp": "442dfc1a28c0b5e02dcdfcc2f9b65a7081691f9b32e5b0cbb3185d547e497a11",
+    "src/native_lua_field_defaults.cpp": "838cc852833db6c0d82af9b47ffcf34dd3873f8a3e07fb92e3bdae91a456b8e3",
+    "src/native_string_compare.cpp": "35634c0ef48044d79dd58c6aecfc854da34b5f0739e0de367ce5040cdef97718",
+    "src/native_string.cpp": "31c513e0d7a4902cf188d75d6feb59b4ab288dd07fd767b4427fc8759e23bf43",
+    "build/win32/Release/bsp_core.lib": "ac863decfe4192941991c1f80fd3ad5f9afe3ad0c90aacbbb9849eaf542e07bd"
+  },
+  "local_files": {
+    "local/cc10_widget_property_prefix/assemble_probe.py": "8ba64ba4bc791452664948ee458c92aaddb44da29ef4784c67ca5e4b7ba433b6",
+    "local/cc10_widget_property_prefix/build.log": "c8ddb66d2657b2e87ed47cf8d45c4fe731dbe7e4f88bc25121eb40464d56e900",
+    "local/cc10_widget_property_prefix/bytes_00aaa710.txt": "24ca2f0842b08cb307b5a219cc575dca9e41599bbc0b532be6f89ebe1f8c1288",
+    "local/cc10_widget_property_prefix/bytes_00aaa990.txt": "cba1027d091e7e2e3c32b2c8a1d34c0b3980231c91022058bceba397a1abc7d6",
+    "local/cc10_widget_property_prefix/bytes_00cb7571.txt": "3ee4ae30ad78e3abd0b7f52dd28eed613d3d10a22e1daa9920313ab86ecd0294",
+    "local/cc10_widget_property_prefix/bytes_00d5c118.txt": "8aa18ba854a2c3a5e506217af7a81f85ccff49571c547616c0354ff0822ff02a",
+    "local/cc10_widget_property_prefix/commit-message.txt": "dfca33061689772b54f8120e4b566917ebd5ef2bb2d84afcbb592ab575f6869b",
+    "local/cc10_widget_property_prefix/dependencies.json": "99efefb7794963d6ac0c1ec5bf2428c6c62f48aaede175f837f897fdec983f94",
+    "local/cc10_widget_property_prefix/finalize.py": "3f9e67970ed4255485596784ccfae3e9be741d7a97cf00e035c47d3fbd473edf",
+    "local/cc10_widget_property_prefix/game_objects.rsp": "d4c381c2905325f1468651d4acb350b1214835eea3be24176e1b2a543d0827f0",
+    "local/cc10_widget_property_prefix/host.log": "de569c520f8471b3bce6abcc6a3c64a71a09f9430e31e0112edeaab2ffaf7388",
+    "local/cc10_widget_property_prefix/instruction_context.json": "24f34ac7b86e32346f2c89e1d93601a142acff5548830972a505b01e736dfb76",
+    "local/cc10_widget_property_prefix/launcher.log": "c93e8418a878953ddb9fda9e0e2d81b7e66f6b5c49cd41062f6a413cb881ab67",
+    "local/cc10_widget_property_prefix/ledger.json": "51052ef79ac70002333fabcd509e8480d1723507c9be88d0afd1789b9a07ac25",
+    "local/cc10_widget_property_prefix/name_ledger.log": "5e3ed94b830a3d6c49ed82136d0d9bf695dedb3b42671de933071eb9b0b20ecc",
+    "local/cc10_widget_property_prefix/native_bytes.hpp": "0e84c5115ff531f3b9bcb615ad702a185a2269586aedeb877da890730c8ee9be",
+    "local/cc10_widget_property_prefix/original_assembly.txt": "52588eb0df711148a4d7864eaa0a576af48ac9178435b9551cf976a5f6e779c1",
+    "local/cc10_widget_property_prefix/pins.json": "536e7db8ae83076887fefe755aee77728eb55ca9ca7263ed71bd04be86335f56",
+    "local/cc10_widget_property_prefix/prepare.py": "c040ce8d35bade6c8aa445d747529595cc3721e280e3cb20362387850030d2ad",
+    "local/cc10_widget_property_prefix/probe.cmd": "463909e851557d649dbdb4aa5f8f33f08af169e3557ef9a6d5daf24cd4ddd001",
+    "local/cc10_widget_property_prefix/probe.cpp": "a8b5fc87277c983973146a919c597d2de76c47fc8a9eab90dc0c8737d7489149",
+    "local/cc10_widget_property_prefix/probe.map": "617dd58405fbe4e85a9be86398fb4e18616f255f0a43caa9a6c315de2eca96fe",
+    "local/cc10_widget_property_prefix/probe.obj": "d67468f563adca863bb7382c8abd66e753149c23bed7b2f38a047c8c92292fa1",
+    "local/cc10_widget_property_prefix/probe_body.txt": "db245dae7728d96badcf697093d6a305f0b321666d07ba54b324d5a9c9c4484c",
+    "local/cc10_widget_property_prefix/probe_build.log": "7383fe8703dbeb1ac31b66fea3fe96b4ff41b5acde8fa73becdb8c5aaa478372",
+    "local/cc10_widget_property_prefix/report.py": "c2430638b4bc4c1402fd145aec2a7cbbbae2e9343db37554a4f3ecd808edcbc0",
+    "local/cc10_widget_property_prefix/report_calls.log": "3a4f516cd35b0cf552fb44ed9b10537573962cc7144937d7a5893c84a4f7859f",
+    "local/cc10_widget_property_prefix/run.log": "45285e8e30ce6f111d090debd9f4b6ed5a87e91bfda6f8d1be4449981fb0c89e",
+    "local/cc10_widget_property_prefix/stop_helper.log": "5a6ac343d1e172f13e87b0d33205f83cb9742647fa59fd81cf770beabe3d91dd",
+    "local/cc10_widget_property_prefix/widget_property_probe.exe": "c5e2638837f9a7a1af7aad799c1e21a67bc900bd5ef8f16ad3d4b60dfd27b277"
+  },
+  "local_archive": {
+    "path": "local/cc10_widget_property_prefix_evidence.zip",
+    "sha256": "181ebe9358fe2d7ea6832b8051a0b3fd6f830a0360f3ef390626403ba7cbfcdf",
+    "valid": true,
+    "files": 30
+  }
+}
