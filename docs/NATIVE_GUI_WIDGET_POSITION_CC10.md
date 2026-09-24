@@ -25,3 +25,7 @@ required. Exceptions/unmasked faults, native ABI and application/gameplay
 equivalence are not established. Validation and exact call/byte evidence are
 recorded in `reports/native_gui_widget_position_cc10.json`; the wrapper has
 static/build coverage only. No new tests are needed for this small composition.
+
+The wrapper and both raw dependencies were integrated at `a4b0982dc`.
+Strict MSVC Win32 Release and all three existing CTests passed. The two
+callee probes establish their stated coverage, not wrapper runtime behavior.

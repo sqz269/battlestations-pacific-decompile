@@ -1,0 +1,64 @@
+{
+  "packet": "cc10_gui_transform_dof_integration",
+  "integration_commit": "a4b0982dcfce5994a0d4d45c3a07180f42f74748",
+  "root_position_commit": "b3a95b0c1",
+  "worker_commits": {
+    "widget_transform": "93b0848fb83a4dbd1d3b6a3f10e6e51ccc62a6c6",
+    "widget_bounds": "069ab2cff1563a9b09d76a4842538ef9a5b1eba5",
+    "renderer_dof": "4ceab0274a58284ab48c81262d9bd30239e59261"
+  },
+  "review": [
+    "full new source and public headers",
+    "minimal predecessor renderer state extension",
+    "DOF opening live listing and exact constructor/name disarm order",
+    "complete native position listing with three loads before writes",
+    "actual bounds raw provider chain and x87 opcode distinction",
+    "transform full scratch and genuine captured-vtable/current-receiver/late-slot aliases",
+    "worker byte/call/build/probe evidence"
+  ],
+  "validation": {
+    "combined_build": "strict MSVC Win32 Release",
+    "existing_ctests_passed": 3,
+    "bounds_original_source_pairs": 168,
+    "transform_original_source_pairs": 6,
+    "position_runtime": false,
+    "composed_dof_runtime": false,
+    "new_tracked_tests": 0,
+    "native_ABI_FH3": false,
+    "application_run": false,
+    "game_validated": false
+  },
+  "archives": [
+    {
+      "path": "local/cc10-platform-evidence/gui-widget-transform.zip",
+      "sha256": "0d90499f71be2a3cc99ad732deaa8a71a5b55546da4dbaa7ee708c364bae45f8",
+      "files": 22,
+      "valid": true
+    },
+    {
+      "path": "local/cc10-platform-evidence/gui-widget-bounds.zip",
+      "sha256": "71e9b91bd590d9837483e74c0a0da4313bba66edd281801dce04481376607c54",
+      "files": 13,
+      "valid": true
+    },
+    {
+      "path": "local/cc10-platform-evidence/renderer-resource-dof.zip",
+      "sha256": "5baa288244bcb887c83c506b83a75c61049ab2fbd26deb527b156fce1e2869a3",
+      "files": 13,
+      "valid": true
+    },
+    {
+      "path": "local/cc10-platform-evidence/gui-widget-position.zip",
+      "sha256": "df84a2981251a36607b91a10a9ee73dff7cea17172d5e7ff7df136b4021c1c8b",
+      "files": 10,
+      "valid": true
+    }
+  ],
+  "build_log_sha256": "e761938372f9c24e8a259a6c5efa83932f323d1f604ef0f209f5af6d686fc988",
+  "boundaries": [
+    "AA7220 requires actual generic virtual38 target/current-receiver binding; known B6DB10 fixture does not validate every installed target",
+    "AA7DC0 complete normal caller static/build checked; both callee contracts remain required",
+    "B107F0 source now reaches B11D7E; full service initialization/release and ordinary game application wiring remain incomplete",
+    "DOF post20 supplies its own genuine canonical companion; no blanket registration or invented resource credits"
+  ]
+}

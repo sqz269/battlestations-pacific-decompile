@@ -1,6 +1,6 @@
 {
   "packet": "cc10_gui_widget_position",
-  "status": "complete_raw_normal_source_pending_dependency_build",
+  "status": "complete_raw_normal_source_build_checked",
   "source": "src/native_gui_widget_position.cpp",
   "documentation": "docs/NATIVE_GUI_WIDGET_POSITION_CC10.md",
   "address": "00aa7dc0",
@@ -28,11 +28,19 @@
   ],
   "no_ghidra_function": [],
   "validation": {
-    "build": "pending dependency integration",
+    "build": "Combined strict scripts/build.ps1 MSVC Win32 Release;3 existing CTests passed",
     "differential": false,
     "new_tests": 0,
     "native_ABI": false,
-    "application_or_game": false
+    "application_or_game": false,
+    "integration_commit": "a4b0982dcfce5994a0d4d45c3a07180f42f74748",
+    "build_log_sha256": "e761938372f9c24e8a259a6c5efa83932f323d1f604ef0f209f5af6d686fc988"
   },
-  "limits": "Complete normal caller body, within exact raw transform/bounds provider contracts. Coordinate bits snapshot before any stores. No early capture of later model/global/bounds state. Explicit actual dispatch remains required; no fallback or cleanup/exception promise."
+  "limits": "Complete normal caller body, within exact raw transform/bounds provider contracts. Coordinate bits snapshot before any stores. No early capture of later model/global/bounds state. Explicit actual dispatch remains required; no fallback or cleanup/exception promise.",
+  "local_archive": {
+    "path": "local/cc10-platform-evidence/gui-widget-position.zip",
+    "sha256": "df84a2981251a36607b91a10a9ee73dff7cea17172d5e7ff7df136b4021c1c8b",
+    "files": 10,
+    "valid": true
+  }
 }
