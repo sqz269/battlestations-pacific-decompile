@@ -145,3 +145,36 @@ dies within a third of a second of the first hit.
   predicate on real mount positions, or by a game-validated reference.
 - No switch changed in this packet. The `BSP_DEATH_TABLE` diagnostic stays as a labelled,
   default-off measurement aid and changes no term.
+
+## 5. Second set, on the lead's narrowed landings (predictions written before the runs)
+
+The lead adjusted the packet: drop B, keep A and C, and add E (`kShipPassSideMessageBound` OFF,
+the pass-side message and traffic pass, `446cbdd80`) and F (`kShipRudderGateStoreBound` OFF,
+`3cc43e303`). Main moved again after sections 2-4. So all four are rebuilt on this branch at
+`b61c82767` (main `44a2ac359`), E2 9000, with `BSP_GUNNERY_RNG_STREAMS=1` and
+`BSP_DEATH_TABLE=1`. The binaries are `local\yA`, `local\yC`, `local\yE` and `local\yF`.
+
+Predictions:
+- **A and C:** as sections 2-3: 0 torpedo and 0 bomb drops, 37 deaths. Kates die at a median of
+  700-750 m from the nearest ship; C moves the Kate #4.1 squadron onto Northampton-class03.
+- **E (traffic pass off):** 0-2 torpedo drops, 0 bomb drops, 35-38 deaths. The traffic pass
+  steers ships away from neighbours, which changes spacing and headings, but the light-AA salvo
+  that decides every Kate kill in sections 3-4 does not depend on it. Kate death ranges stay
+  within 100 m of A's.
+- **F (rudder-gate store off):** as E: 0-2 torpedo drops, 0 bomb drops, 35-38 deaths.
+- **Time from aim entry.** Kate aim entry is 2192-2199 m (docs/KATE_RELEASE_CONDITION.md). The
+  approach is at about 75 m/s, so a Kate dying at 700-750 m dies about 19-20 s after aim entry.
+  Vals die before or at dive entry in all four runs.
+
+**Status, 2026-09-23 18:15: the second set is blocked by the session.**
+- Runs A, E and F all died at mission frame 1412-1450, at 18:14. The log shows
+  `present failed hr=0x88760868` (device lost), then exit 0xC0000005.
+- Run C died at renderer initialisation.
+- `query session` shows the user's session 1 as `Disc`.
+- A 120-frame probe then failed at device creation (`device_hr=0x80004005`). Following the
+  renderer-init rule, nothing more was launched.
+- The partial logs (`local/y*_9000.log`) carry no drops, deaths or summary, and nothing is
+  concluded from them.
+- The first set (sections 2-4, on main `710d3fc9b`) is complete and stands. It has A and C: in
+  both, no ordnance and 37 deaths.
+- E and F still need their first runs. They need an active session.
