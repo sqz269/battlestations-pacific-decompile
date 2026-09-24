@@ -218,8 +218,23 @@ public:
         // The 25h arm's hand-off on interface+78h is 0064D590, which stores
         // the unit in screen 45h's +184h (0064D598..0064D5EC).
         if (manager_offset == 0x78 && owner_.units != nullptr && owner_.units->controlled_bound()) {
+            const std::size_t unit = owner_.units->controlled_index();
+            // 0064D598..0064D5B7: a different unit sets +188h (and stops the
+            // timed entries of four widgets through 00AA8B80(2), which this
+            // host never starts).
+            if (!owner_.ship_screen.has_unit || owner_.ship_screen_unit != unit) {
+                owner_.ship_screen.unit_changed_188 = true;
+            }
             owner_.ship_screen.has_unit = true;
-            owner_.ship_screen_unit = owner_.units->controlled_index();
+            owner_.ship_screen_unit = unit;
+            // 0064D5E3: with the screen applied, 0064AE20 sets the gauge
+            // flags +104h..+107h from the unit's class (Lua VehicleClass
+            // NoRepairGUI, class+C8h, 00818300, 0059CB90, 00852350) and the
+            // recon and torpedo icons. SUBSTITUTION: not bound, so the flags
+            // keep the enter's clear values and only the speed gauge runs.
+            if (kHudShipScreenGaugesBound) {
+                owner_.record("HudShipScreen::apply_unit_0064ae20", 0x0064ae20u);
+            }
         }
     }
     int hud_root_screen_query() override {
@@ -902,7 +917,12 @@ GuiLayoutWidget* GameHudHost::Impl::ship_screen_widget(bsp::ShipScreenWidget wid
         static const std::pair<int, const char*> kNames[] = {
             {0x48, "ship_stick_Icon"}, {0xF8, "ship_relation_Icon"},
             {0x18C, "VillanasFelso_Icon"}, {0x190, "VillanasAlso_Icon"},
-            {0x194, "VillanasBal_Icon"}, {0x198, "VillanasJobb_Icon"}};
+            {0x194, "VillanasBal_Icon"}, {0x198, "VillanasJobb_Icon"},
+            // Parts 3 and 4 (packet cc9_ship_screen_parts34).
+            {0x50, "ship_dir_Icon"}, {0xC4, "Icon_3_Icon"}, {0xD4, "Icon_5_Icon"},
+            {0xD8, "Hl_1_Icon"}, {0xDC, "Hl_2_Icon"}, {0xE0, "Hl_3_Icon"},
+            {0xE4, "Hl_4_Icon"}, {0xE8, "circle_1_Section"}, {0xEC, "circle_2_Section"},
+            {0xF0, "circle_3_Section"}, {0xF4, "circle_4_Section"}};
         static const char* const kPages[] = {
             "GUI_ship", "GUI_repair", "GUI_ship_effects", "GUI_ship_damage"};
         for (const auto& entry : kNames) {
@@ -1051,6 +1071,115 @@ public:
     void remainder_from_0064f665(float dt) override {
         static_cast<void>(dt);
         owner_.record("HudShipScreen::update_remainder", 0x0064f665u);
+    }
+    // Part 3, packet cc9_ship_screen_parts34.
+    bool damage_bound() override { return kHudShipScreenDamageBound; }
+    void color(bsp::ShipScreenWidget widget, float out[4]) override {
+        // Virtual +54h copies the Color property.
+        GuiLayoutWidget* w = owner_.ship_screen_widget(widget);
+        for (int i = 0; i < 4; ++i) out[i] = w != nullptr ? w->color[i] : 0.0f;
+    }
+    void set_color(bsp::ShipScreenWidget widget, const float rgba[4]) override {
+        GuiLayoutWidget* w = owner_.ship_screen_widget(widget);
+        if (w == nullptr) return;
+        owner_.menu.frontend().set_widget_color(*w, rgba[0], rgba[1], rgba[2], rgba[3]);
+    }
+    bsp::ShipRepairTaskTerms controlled_repair_task() override {
+        // SUBSTITUTION: the repair task at unit+A20h (priority +24h, the two
+        // timers +34h/+38h, their divisors unit+A5Ch/+A60h and 0093A3F0's
+        // EngineJam record) has no producer in this host
+        // (docs/UNIT_FIRE_AND_REPAIR.md; its constructor is unread). Every
+        // term reads zero: +150h = -1 and the three task circles hide.
+        owner_.record("HudShipScreen::repair_task", 0x0064f6bdu);
+        return {};
+    }
+    float settings_engine_jam_seconds() override {
+        // SUBSTITUTION: GameSettings+3E4h, the failure descriptor vector, is
+        // not loaded by this host; the loop finds no EngineJam and answers 0.
+        owner_.record("HudShipScreen::settings_failure_descriptors", 0x0064f8e7u);
+        return 0.0f;
+    }
+    float settings_4c4() override {
+        // Recorded with controlled_float_125c, the submarine arm's other term.
+        return 0.0f;
+    }
+    float controlled_float_125c() override {
+        // SUBSTITUTION: unit+125Ch and GameSettings+4C4h, the submarine
+        // circle's terms, are not modelled.
+        owner_.record("HudShipScreen::submarine_circle_terms", 0x0064f7ebu);
+        return 0.0f;
+    }
+    int controlled_device_count() override {
+        // SUBSTITUTION: the device list unit+48h with the damage fields
+        // +36Ch/+370h/+378h is not modelled; the list reads empty.
+        owner_.record("HudShipScreen::device_list", 0x0064fbecu);
+        return 0;
+    }
+    bsp::ShipDeviceTerms controlled_device(int index) override {
+        static_cast<void>(index);
+        return {};
+    }
+    void circle_progress(bsp::ShipScreenWidget widget, float ratio, bool snap) override {
+        static_cast<void>(widget);
+        static_cast<void>(ratio);
+        // 00ABE6E0 on a Section, or 00AA8B00(2)'s timed entry: the bridge
+        // draws neither.
+        if (snap) {
+            owner_.record("HudShipScreen::circle_quad", 0x00abe6e0u);
+        } else {
+            owner_.record("HudShipScreen::circle_progress", 0x00aa8b00u);
+        }
+    }
+    // Part 4.
+    bool gauges_bound() override { return kHudShipScreenGaugesBound; }
+    void remainder_from_0064fd24(float dt) override {
+        static_cast<void>(dt);
+        owner_.record("HudShipScreen::update_remainder", 0x0064fd24u);
+    }
+    float unit_ordered_rudder() override {
+        const GameUnitRow* row =
+            owner_.units != nullptr ? owner_.units->unit_row(owner_.ship_screen_unit) : nullptr;
+        return row != nullptr ? row->ordered_rudder : 0.0f;       // unit+984h
+    }
+    void dir_clock_step(bsp::ShipScreenState& screen) override {
+        static_cast<void>(screen);
+        // SUBSTITUTION: the step runs only when the platform clock (01090AB0
+        // +14h, milliseconds) passes the static 00E19808 + 21h; that clock is
+        // not reachable from the HUD host. +124h and +12Ch have no reader in
+        // the screen's code (a disp32 scan of 124h finds only the enter and
+        // this block), so the step is recorded and not applied.
+        owner_.record("HudShipScreen::dir_clock_step", 0x0064fdd4u);
+    }
+    float unit_forward_speed() override {
+        // 0092D730 on [unit+1018h], reconstructed.
+        return owner_.units != nullptr
+            ? owner_.units->unit_forward_speed_0092d730(owner_.ship_screen_unit) : 0.0f;
+    }
+    int unit_int_638() override {
+        owner_.record("HudShipScreen::gauge_source_638", 0x0064fff9u);
+        return 0;
+    }
+    float unit_float_1124() override {
+        owner_.record("HudShipScreen::gauge_source_class_790", 0x00650019u);
+        return 0.0f;
+    }
+    int unit_class_int_790() override { return 0; }
+    int unit_device_count_00852300() override {
+        owner_.record("HudShipScreen::gauge_source_00852300", 0x00852300u);
+        return 0;
+    }
+    int unit_torpedo_stock_00815850() override {
+        owner_.record("HudShipScreen::gauge_source_00815850", 0x00815850u);
+        return 0;
+    }
+    void gauge_digit(int gauge, int digit, float magnitude) override {
+        static_cast<void>(gauge);
+        static_cast<void>(digit);
+        static_cast<void>(magnitude);
+        // 0043ABA0 rewrites the digit icon's vertex UVs through its vertex
+        // stream (+A0h, lock +10h, unlock +14h); the sprite bridge draws a
+        // widget's first authored state only.
+        owner_.record("HudShipScreen::gauge_digit_uv", 0x0043aba0u);
     }
 
 private:
