@@ -1124,7 +1124,7 @@ struct GameStartupHost::InputServices {
     // Source storage initialized from the verified image words. Mutable settings
     // producers are still required; these cells are not snapshots of settings_view_.
     NativeInputDeviceSdk sdk;
-    XInputLibrary xinput;
+    XInputLibrary& xinput;
     bool rumble_00e12f2c{true};
     // Source binding to the OS CPU+OS SSE2 capability service. The original CRT
     // initializer C27B7C calls __get_sse2_info, then writes this mode DWORD.
@@ -1153,7 +1153,7 @@ struct GameStartupHost::InputServices {
     GameInputRuntime core;
 
     explicit InputServices(GameStartupHost& app)
-        : xinput(selected_xinput_path(app.options_.xinput_dll)),
+        : xinput(*app.xinput_library_),
           core({{crt_string_storage(), sdk, xinput, tables, g_active_platform,
               app.require_frame_clock_context(),
               {one_00d7a24c, negative_zero_00d7a208, mouse_scale_00e12fb0,
@@ -1321,6 +1321,7 @@ GameStartupHost::~GameStartupHost() {
     native_renderer_.reset(); // all COM consumers closed; native owner already drained
     release_platform_window();
     delete window_host_;
+    xinput_library_.reset();
     delete vfs_;
     delete random_threads_;
 }
@@ -1568,6 +1569,10 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     vfs_->phase2(vfs_state);
 
     // Phase 3, platform, window and save storage (0073d8c0-0073d988).
+    // The native image imports XInputEnable before WinMain. Keep the selected
+    // source SDK alive before any CreateWindow activation messages, then lend
+    // that same module to InputServices when native input startup is reached.
+    xinput_library_ = std::make_unique<XInputLibrary>(selected_xinput_path(options_.xinput_dll));
     construct_win32_platform_00becda0(platform_, nullptr);
     log_.implemented("Phase 3 construct_win32_platform", "00becda0");
     set_active_platform_state(&platform_, &platform_text_);
