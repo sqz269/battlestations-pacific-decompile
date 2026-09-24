@@ -175,6 +175,13 @@ constexpr bool kShipSectionPointsBound = true;
 //    (the node transforms are identity on the hulls read), with no per-element
 //    AABB tree (007238E0 unread). OFF: the class hull box.
 constexpr bool kShellHullHitTestBound = true;
+//  * kKillCreditDamageGateBound: 0077CE60 writes the attribution block (the
+//    +2C4h attacker the kill credit 0091BDA0 names) only for a live victim and
+//    only when the hit's damage, 00470510 for a hull segment or 00470740 when
+//    record+34h is -1, is above 0.0 (0077CE8E-0077CEBE, [00D7A218]). The host
+//    wrote it on every hit, so a zero-damage hit could take the credit. OFF:
+//    every hit. Packet cc9_kill_credit, docs/KILL_CREDIT.md.
+constexpr bool kKillCreditDamageGateBound = true;
 
 // 00901C20 BSP_GunBot_InterceptSolution, the time-of-flight half, as a pure rule.
 // rel = target position - shooter position; vel = target velocity - shooter
@@ -499,6 +506,7 @@ struct GameGunneryHost::Impl {
     std::map<std::size_t, ArtilleryAimPoint> artillery_aim_by_gun;
     unsigned long long artillery_aim_points{0};
     unsigned long long shell_mesh_hits{0};
+    unsigned long long summary_zero_damage_attributions_skipped{0};   // packet cc9_kill_credit
     // 006DF6D7-006DF7B5 then 006DF7BB-006DF7E7: the body point on the target,
     // refreshed every TargetPointRefreshTime, carried to world by its pose.
     // robots.lua ArtilleryGunnerBot, by skill 0 Stun .. 5 Elite:
@@ -4420,6 +4428,9 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
     if (summary.first_hit_seconds < 0.0f) summary.first_hit_seconds = clock_seconds;
 
     // 0077CE60, step 7 of 009239A0: the attribution block on the victim.
+    const bool attribute = !kKillCreditDamageGateBound
+        || (hit.hull_damage_base + hit.part_damage_base) > 0.0f;   // 0077CEB7 COMISS / JBE
+    if (!attribute) ++summary_zero_damage_attributions_skipped;
     bsp::KillAttributionSource source;
     source.ordnance_kind = gun.category;
     source.ordnance_category = bsp::kill_credit_ordnance_category_00779a00(gun.category);
@@ -4433,9 +4444,11 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
     attacker.type_id = unit_state[shooter].row.type_id;
     attacker.is_ship = true;
     bsp::KillAttributionKamikaze kamikaze;
-    target.attribution = bsp::kill_attribution_0077ce60(target.attribution, true, source,
-        attacker, kamikaze, true);
-    target.last_attacker = shooter + 1;
+    if (attribute) {
+        target.attribution = bsp::kill_attribution_0077ce60(target.attribution, true, source,
+            attacker, kamikaze, true);
+        target.last_attacker = shooter + 1;
+    }
     ++summary.attributions;
     done("Hit::attribution_0077ce60", 0x0077ce60u);
 
@@ -5331,6 +5344,9 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery artillery aim points drawn=%llu bound=%d "
             "(006DF520 step 4 / 00816650, packet cc9_surface_gunnery_reference)",
             host.artillery_aim_points, kArtilleryAimPointBound ? 1 : 0);
+        host.log.notef("summary mission gunnery kill credit zero-damage hits not attributed=%llu bound=%d "
+            "(0077CEB7, packet cc9_kill_credit)", host.summary_zero_damage_attributions_skipped,
+            kKillCreditDamageGateBound ? 1 : 0);
         host.log.notef("summary mission gunnery ship sections picked=%llu bound=%d; shell mesh hits=%llu "
             "bound=%d (00816650 / 0081F980; 00724510 -> 00723AA0, packet cc9_hull_sections)",
             host.artillery_section_points, kShipSectionPointsBound ? 1 : 0, host.shell_mesh_hits,
