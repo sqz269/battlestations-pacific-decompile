@@ -1,0 +1,246 @@
+{
+  "packet": "cc10_sampler_run02_exception_chain",
+  "status": "read_only_frozen_evidence_chain_reviewed",
+  "parent_capture_report": "reports/native_sampler_original_capture_run02_cc10.json",
+  "worker_index_sha256": "115e675fd12f54d45c46c6bf3bb85a8310d3fd22845dce9733b2e9686444822a",
+  "worker_indexed_files": 59,
+  "worker_report_sha256": "cf2f3a36ce9d94ad5cead9a5d91bbf5d90f38d07f1bea52adca02b2a152651e6",
+  "observed_x86": {
+    "contexts_and_stack_windows_identical": true,
+    "eip": "77879C7C NtClose+0C RET4",
+    "esp": "0162F420",
+    "ntclose_return": "75B1E1D7 CloseHandle+57",
+    "ntclose_argument": "00400000",
+    "ebp": "0162F434",
+    "saved_caller_ebp": "0162F548",
+    "closehandle_return": "6AE1C270 xlive+17C270",
+    "closehandle_argument": "00400000",
+    "captured_xlive_size_local": "00E2F000",
+    "captured_xlive_old_protection_local": "00000002",
+    "next_xlive_return_not_captured": true
+  },
+  "matching_disk_chain": {
+    "xlive_body_rva": "17C1F0..17C29C",
+    "bytes": 172,
+    "path": [
+      "GetModuleHandleA(NULL) saves same module local",
+      "Read module PE SizeOfImage",
+      "VirtualProtect(module,size,40h,&old_protection); result not branched on",
+      "CloseHandle(same saved module)"
+    ],
+    "import_identities": [
+      {
+        "dll": "KERNEL32.dll",
+        "iat_rva": 5099628,
+        "module": "xlive",
+        "name": "GetModuleHandleA",
+        "proof": "disk import identity; live IAT contents were not captured",
+        "recorded_base_iat_va": 1796722796
+      },
+      {
+        "dll": "KERNEL32.dll",
+        "iat_rva": 5099736,
+        "module": "xlive",
+        "name": "CloseHandle",
+        "proof": "disk import identity; live IAT contents were not captured",
+        "recorded_base_iat_va": 1796722904
+      },
+      {
+        "dll": "KERNEL32.dll",
+        "iat_rva": 5099868,
+        "module": "xlive",
+        "name": "VirtualProtect",
+        "proof": "disk import identity; live IAT contents were not captured",
+        "recorded_base_iat_va": 1796723036
+      },
+      {
+        "dll": "ntdll.dll",
+        "iat_rva": 2674716,
+        "module": "kernelbase32",
+        "name": "NtClose",
+        "proof": "disk import identity; live IAT contents were not captured",
+        "recorded_base_iat_va": 1975898140
+      },
+      {
+        "dll": "ntdll.dll",
+        "iat_rva": 2674804,
+        "module": "kernelbase32",
+        "name": "SbSelectProcedure",
+        "proof": "disk import identity; live IAT contents were not captured",
+        "recorded_base_iat_va": 1975898228
+      },
+      {
+        "dll": "ntdll.dll",
+        "iat_rva": 243968,
+        "module": "wow64",
+        "name": "RtlCaptureContext",
+        "proof": "disk import identity; live IAT contents were not captured",
+        "recorded_base_iat_va": 140710902872320
+      },
+      {
+        "dll": "ntdll.dll",
+        "iat_rva": 243976,
+        "module": "wow64",
+        "name": "RtlLookupFunctionEntry",
+        "proof": "disk import identity; live IAT contents were not captured",
+        "recorded_base_iat_va": 140710902872328
+      },
+      {
+        "dll": "ntdll.dll",
+        "iat_rva": 243984,
+        "module": "wow64",
+        "name": "RtlVirtualUnwind",
+        "proof": "disk import identity; live IAT contents were not captured",
+        "recorded_base_iat_va": 140710902872336
+      },
+      {
+        "dll": "ntdll.dll",
+        "iat_rva": 243992,
+        "module": "wow64",
+        "name": "NtRaiseException",
+        "proof": "disk import identity; live IAT contents were not captured",
+        "recorded_base_iat_va": 140710902872344
+      }
+    ],
+    "xlive_live_code_or_IAT_not_captured": true
+  },
+  "first_native": {
+    "rip": "7FF9CFC64EBA KiRaiseUserExceptionDispatcher+3A",
+    "rsp": "AE610",
+    "unwind_stack_allocation": "C8",
+    "saved_status_at_rsp_plus_C0": "C0000008",
+    "return_at_rsp_plus_C8": "777F1F42 wow64cpu exact syscall-thunk CALL return",
+    "continuation": "MOV EAX,[RSP+C0]; ADD RSP,C8; RET",
+    "actual_continued_API_result_or_GetLastError_observed": false
+  },
+  "second_native": {
+    "record_address": "00000000CFC64EBA",
+    "record_address_MEM_FREE": true,
+    "native_rip": "7FF9CF5E7401 wow64+7401",
+    "static_helper": "RtlCaptureContext/RtlLookupFunctionEntry/RtlVirtualUnwind/NtRaiseException",
+    "wrapper_return": "7FF9CF5E6EA1",
+    "next_required_return_outside_captured_window": true,
+    "conversion_inference": "Matching caller loads32-bit local input+0C into EAX and stores64-bit RAX to output+10; consistent with low32 exception address, but conversion input/handler trace not captured"
+  },
+  "live_code_comparisons": [
+    {
+      "bytes": 32,
+      "event": 0,
+      "label": "exception_code",
+      "module": "ntdll64",
+      "raw_different_offsets": [],
+      "raw_disk_equal": true,
+      "relocated_different_offsets": [],
+      "relocated_disk_equal": true,
+      "rva": 1461946
+    },
+    {
+      "bytes": 32,
+      "event": 0,
+      "label": "wow64_code",
+      "module": "ntdll32",
+      "raw_different_offsets": [
+        12,
+        13,
+        28,
+        29
+      ],
+      "raw_disk_equal": false,
+      "relocated_different_offsets": [],
+      "relocated_disk_equal": true,
+      "rva": 498812
+    },
+    {
+      "bytes": 32,
+      "event": 0,
+      "label": "native_code",
+      "module": "ntdll64",
+      "raw_different_offsets": [],
+      "raw_disk_equal": true,
+      "relocated_different_offsets": [],
+      "relocated_disk_equal": true,
+      "rva": 1461946
+    },
+    {
+      "bytes": 32,
+      "event": 1,
+      "label": "wow64_code",
+      "module": "ntdll32",
+      "raw_different_offsets": [
+        12,
+        13,
+        28,
+        29
+      ],
+      "raw_disk_equal": false,
+      "relocated_different_offsets": [],
+      "relocated_disk_equal": true,
+      "rva": 498812
+    },
+    {
+      "bytes": 32,
+      "event": 1,
+      "label": "native_code",
+      "module": "wow64",
+      "raw_different_offsets": [],
+      "raw_disk_equal": true,
+      "relocated_different_offsets": [],
+      "relocated_disk_equal": true,
+      "rva": 29697
+    }
+  ],
+  "review": [
+    "Complete xlive172B, NtClose16B, CloseHandle111B and native dispatcher73B schedules reviewed",
+    "Primary independently decoded both raw WOW64 contexts/stack windows, concrete return slots/arguments/size/protection locals, first native context/status/return and C8 unwind encoding",
+    "Second wrapper and conversion/load/store/call frontiers inspected; bounded native steps do not establish complete unwind",
+    "All59 indexed byte lengths/hashes verified; five nonempty captured code windows match relocated matching-disk bytes",
+    "Microsoft primary CloseHandle/GetModuleHandleA contracts checked; resumed BOOL/error still requires isolated fixture"
+  ],
+  "inferences": [
+    "Xlive VirtualProtect is a supported explanation for initial entry20h versus later40h, not a uniquely traced writer; captured old protection2 refers to first module page",
+    "The local WOW64 conversion is consistent with the second raw low32 address; precise narrowing path remains unobserved"
+  ],
+  "no_actions": {
+    "new_original_launch": true,
+    "attach": true,
+    "original_or_private_copy_edit": true,
+    "overlay_refresh": true,
+    "profile_restore": true,
+    "helper_or_policy_edit": true,
+    "ghidra_mutation": true
+  },
+  "limits": [
+    "No live xlive caller instruction/IAT or VirtualProtect call/result captured",
+    "No complete native unwind, full XSTATE or full exception conversion trace",
+    "No future sampler/compiler frame exists in these pre-entry windows; source0 remains unknown",
+    "A new isolated benign API fixture is authorized separately; this audit does not change original execution policy or authorize another original attempt",
+    "No successful original startup, sampler capture or gameplay proof"
+  ],
+  "documentation": {
+    "accessed": "2026-09-24",
+    "sources": [
+      {
+        "title": "CloseHandle function",
+        "url": "https://learn.microsoft.com/en-us/windows/win32/api/handleapi/nf-handleapi-closehandle",
+        "bounded_paraphrase": "Failure returns zero; GetLastError provides extended information. Invalid or pseudo handles cause an exception when the application runs under a debugger."
+      },
+      {
+        "title": "GetModuleHandleA function",
+        "url": "https://learn.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-getmodulehandlea",
+        "bounded_paraphrase": "A NULL name requests the calling executable's module handle. This API does not increment the module reference count."
+      },
+      {
+        "title": "Debugger Exception Handling",
+        "url": "https://learn.microsoft.com/en-us/windows/win32/debug/debugger-exception-handling",
+        "bounded_paraphrase": "First chance precedes the process handler search. Last chance follows failure to find a handler; declining to handle that event causes termination. A handled disposition restores machine state and resumes execution."
+      }
+    ],
+    "limits": "These API contracts do not establish the result of resuming the actual run02 event. That requires the separately approved isolated fixture."
+  },
+  "archive": {
+    "path": "local/cc10-platform-evidence/original-sampler-run02-exception-chain.zip",
+    "sha256": "d9c6d20868fa3d58304321cab0071f2b1994c5d0be1d5f45f10af553bd6eaef1",
+    "files": 61,
+    "valid": true
+  }
+}
