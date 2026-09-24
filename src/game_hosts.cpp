@@ -2,6 +2,8 @@
 // and docs/GAME_EXECUTABLE.md. No native behaviour is invented here: whatever is not
 // reconstructed is routed through GameHostLog::unimplemented with its native call site.
 #include "bsp/game_hosts.hpp"
+#include "bsp/platform_control_messages.hpp"
+#include "bsp/platform_text_messages.hpp"
 #include "bsp/game_native_lua_globals.hpp"
 #include "bsp/game_native_lua_services.hpp"
 #include "bsp/game_native_renderer_application.hpp"
@@ -93,6 +95,7 @@ double input_image_double(std::uint64_t bits) noexcept {
 // BED3B0 separately reads window-extra offset zero for the resize receiver.
 // The application binds both to its projection, preserving their distinct roles.
 Win32PlatformState* volatile g_active_platform = nullptr;
+PlatformTextInput* g_active_platform_text = nullptr;
 
 // Window title and class name, the temporary string 00becee0 receives as argument 2.
 const char kWindowName[] = "Battlestations Pacific";
@@ -139,8 +142,9 @@ const CameraAxesCrtAccess& application_camera_axes_crt() noexcept {
     return application_axes_crt;
 }
 
-void set_active_platform_state(Win32PlatformState* state) noexcept {
+void set_active_platform_state(Win32PlatformState* state, PlatformTextInput* text) noexcept {
     g_active_platform = state;
+    g_active_platform_text = state ? text : nullptr;
 }
 
 LRESULT CALLBACK game_window_procedure(HWND window, UINT message, WPARAM wparam,
@@ -164,8 +168,18 @@ LRESULT CALLBACK game_window_procedure(HWND window, UINT message, WPARAM wparam,
         }
     } host;
     LRESULT result;
+    if (g_active_platform && handle_platform_control_message_00bed3b0_fragment(
+            win32_platform_control_message_imports(), *g_active_platform,
+            window, message, wparam, lparam, result))
+        return result;
     if (g_active_platform && handle_platform_focus_message_00bed3b0_fragment(host,
             *g_active_platform, window, message, wparam, lparam, result))
+        return result;
+    // Native text arms use the explicit platform receiver, not window-extra
+    // state. This owner persists across messages; enabling/dispatch belongs to
+    // the actual text editor, whose frontend binding remains incomplete.
+    if (g_active_platform_text && handle_platform_text_message_00bed3b0_fragment(
+            *g_active_platform_text, window, message, wparam, lparam, result))
         return result;
     // docs/WINDOW_CLOSE.md step 1: WM_CLOSE records a pending close at platform+180h and
     // returns zero. It does not set the loop exit byte +181h.
@@ -617,9 +631,9 @@ bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
 // ---------------------------------------------------------------------------
 
 void GameWindowHost::stop_existing_window(Win32PlatformState& state) {
-    // Platform vtable +8. The native teardown is not reconstructed; the milestone never
-    // reaches this path because it configures the window once.
-    log_.unimplemented("PlatformWindowHost::stop_existing_window", "00becda0+vtable08");
+    // Slot +8 is recovered BEBF70. Its saved power-policy producer and native
+    // normal-shutdown restore schedule are not yet bound in this application.
+    log_.unimplemented("PlatformWindowHost::stop_existing_window", "00bebf70");
     static_cast<void>(state);
 }
 
@@ -864,7 +878,6 @@ bool GameFrameHost::exit_requested() {
 void GameFrameHost::request_loop_exit() {
     log_.implemented("ApplicationFrameHost::request_loop_exit", "0109cf04+181");
     platform_.exit_requested = true;
-    loop_.exit_requested = true;
 }
 
 void GameFrameHost::tick_vfs_providers() {
@@ -1557,7 +1570,7 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     // Phase 3, platform, window and save storage (0073d8c0-0073d988).
     construct_win32_platform_00becda0(platform_, nullptr);
     log_.implemented("Phase 3 construct_win32_platform", "00becda0");
-    set_active_platform_state(&platform_);
+    set_active_platform_state(&platform_, &platform_text_);
 
     GameSaveStorageHost save_storage(log_);
     if (initialize_save_storage_00beb2c0(save_storage, save_roots_)) {
@@ -1749,12 +1762,8 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         log_.note("window creation failed");
     }
 
-    // Native online owner follows window creation and precedes device setup.
-    // Its real source/SDK services exist, but this application still lacks the
-    // shared raw lifetime and IPC owner composition. Keep its publication null.
-    log_.unimplemented("Phase 5 online_manager_initialize", "0073dc7c");
-
-    // Device creation after window/online. The separate 0073DD12 site calls
+    // Device creation is inside BECEE0, before it returns to 0073DC27 and
+    // before the online constructor at 0073DC7C. The separate 0073DD12 calls
     // material preloading (0073BF80), whose application composition is pending.
     native_renderer_->bind_platform_services(sound_->platform.load_events(),
         reinterpret_cast<const volatile std::uint32_t*>(&sound_->online_00f8abe8), &sound_->device_adapter,sound_->xlive);
@@ -1765,6 +1774,9 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         // Its actual cache joins the same manager as the renderer and is
         // retired by the manager's current-profile scalar-deletion dispatch.
         native_renderer_->initialize_window_render_entry_cache();
+        // BED223..BED276 is recovered, but production policy mutation awaits
+        // the native restore/lifetime schedule; BECE30 only enables screensaver.
+        log_.unimplemented("PlatformWindowHost::initialize_power_policy", "00bed223");
         summary_.device_result = device_->creation_result();
         summary_.back_buffer_width = device_->parameters().BackBufferWidth;
         summary_.back_buffer_height = device_->parameters().BackBufferHeight;
@@ -1775,6 +1787,10 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
             device_api->Release();
         }
     }
+    // Native online construction follows the complete BECEE0 window/device/
+    // cache/power sequence. The parent-process named-pipe peer and application
+    // IPC owner composition remain unresolved. Keep its publication null.
+    log_.unimplemented("Phase 5 online_manager_initialize", "0073dc7c");
     log_.unimplemented("Phase 4 renderer_resources", "00b14a10");
     input_ = std::make_unique<InputServices>(*this);
     input_runtime_ = &input_->core;
@@ -1909,7 +1925,6 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     summary_.screenshot_path = options_.screenshot_path;
     summary_.screenshot_frame = options_.screenshot_frame;
 
-    loop_.frames_enabled = platform_.frames_enabled;
     frame_host_ = new GameFrameHost(log_, require_frame_clock_context(), platform_, loop_, game_state_, profiler_,
         menu_, *vfs_);
     std::function<void(IDirect3DDevice9&)> capture;
