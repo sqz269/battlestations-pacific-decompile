@@ -131,6 +131,12 @@ inline constexpr bool kHudShipViewScreenBound = true;
 // without input. OFF keeps the part-1 record.
 inline constexpr bool kHudShipViewControlsBound = true;
 
+// Section 21: 0064B870's 00927F30 role test reads the units host's role table
+// (unit+1ACh, the table the 27h role take and the BSP_PLAYER_HELM option
+// write) in place of the fixed "role 0 held, role 1 not" substitution. OFF
+// keeps the substitution and its record.
+inline constexpr bool kHudShipViewRoleTableBound = true;
+
 inline constexpr bool kHudShipScreenGaugesBound = true;
 
 class GameHostLog;
