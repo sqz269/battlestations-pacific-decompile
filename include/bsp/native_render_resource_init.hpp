@@ -29,13 +29,17 @@ struct NativeRenderResourceInitEntryContext {
 // record; keep the service, argument cells and contexts alive across continuation.
 struct NativeRenderResourceInitEntryState final {
     enum class Phase { fresh, running, already_initialized_returned,
-        awaiting_b109bc_continuation, failed };
+        awaiting_b109bc_continuation, continuation_running,
+        awaiting_later_continuation, failed };
     NativeRenderResourceInitEntryState() = default;
     NativeRenderResourceInitEntryState(const NativeRenderResourceInitEntryState&) = delete;
     NativeRenderResourceInitEntryState& operator=(const NativeRenderResourceInitEntryState&) = delete;
     Phase phase{Phase::fresh};
     void* service{};
     const volatile NativeRenderResourceInitArguments* argument_cells{};
+    // A later stage claims this record once. Host metadata only; no ownership
+    // or completion implication. The original entry snapshots remain intact.
+    const void* continuation_identity{};
     std::uint32_t native_site{};
     int unwind_state{-1};
     // EDI and ESP+20 identities at the frontier. The old frame can be freed;
