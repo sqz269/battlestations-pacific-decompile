@@ -262,7 +262,7 @@ set by 008D4596 to 00CE7D20 = 0.6981317 (`src/game_settings.cpp`).
 **The result.** The in-mission fov is FOVs.Ship in radians times the scale. With zoom 0.0 that is
 0.5235988, 30 degrees, in place of the constructor's 40.
 
-**Bound under `kMissionCameraBound`.** It is set each camera tick through
+**Bound under its own switch `kMissionFovBound`, which needs `kMissionCameraBound` on as well.** It is set each camera tick through
 `global_config_fov_0087ec0f`, `pipe_sight_fov_scale_0064e2d6` and `mission_fov_004dc940`. The keys
 come from `read_global_fov_ship_0087d7b0` and `read_pipe_sight_params_0083b5e0`.
 
@@ -293,32 +293,29 @@ the group stands for 006374B0's 25 widget hides.
 
 ## 11. Predictions for the part 3 pair, written before it
 
-The pair is one tree on main `5e5d20a33`: OFF has both switches off, ON has
-`kMissionCameraBound` and `kHudMarkerPoolsBound` on. Both use `BSP_GUNNERY_RNG_STREAMS=1`. This
+The pair is one tree on main `5e5d20a33`: OFF has `kMissionFovBound` and
+`kHudMarkerPoolsBound` off, ON has both on. Both legs have `kMissionCameraBound` on, and this pair runs after
+the camera pair of section 6. Both use `BSP_GUNNERY_RNG_STREAMS=1`. This
 section's predictions extend section 6.
 
-- **Rows that leave UNIMPLEMENTED** (as done rows):
-  - `HudMarkers::view_projection_matrix` 00B70490, about 73,264.
-  - `HudMinimap::refresh_renderer_basis` 00B6DB70, about 18,320.
-  - `HudMarkers::reset_marker_pool` 00640620, 18,316.
-- **Rows added:**
-  - `MissionCamera::collision_ray` 0098B370, about 5 per camera tick, near 22,500 UNIMPLEMENTED.
-  - `MissionCamera::phase_draw`: 3 UNIMPLEMENTED.
-  - Done rows: `MissionCamera::update`, `publish_pose`, `pipe_sight_fov` (one per tick each),
-    `ocean_height` (10 per tick) and `bind_ship_view` (1).
-- **Total.** The unimplemented total falls by about 73,264 + 18,320 + 18,316 - 22,503 = 87,397.
+- **Row that leaves UNIMPLEMENTED:** `HudMarkers::reset_marker_pool` 00640620, 18,316, as a done
+  row.
+- **Row added:** `MissionCamera::pipe_sight_fov` 004DC940, done, one per camera tick.
+- **Total.** The unimplemented total falls by 18,316.
+- **Flat rows.** Every camera row of section 6 is flat, because both legs have the camera on.
 - **HUD lines that move:**
-  - The mission-markers summary (`on_screen`, `collapsed`), now under a 30-degree perspective
-    camera behind the ship.
-  - The minimap's rotation and heading.
-  - `widgets` stays at the number placed in one frame (1 in the previous runs).
+  - The mission-markers summary (`on_screen`, `collapsed`). The fov is 30 degrees against 40, and
+    unplaced markers are now hidden.
+  - The minimap is unchanged: its heading reads only the camera's forward row, which the fov does
+    not touch.
 - **Gameplay lines expected identical:** every gameplay summary line.
 
 ## 12. The part 3 pair: not run yet
 
 At 18:17 and 18:23 PDT on 2026-09-23 the 120-frame probe (`local\cam_probe120b.log`,
 `local\cam_probe120c.log`) still died with `device_created=0 device_hr=0x80004005`, and
-`query session` from this shell still showed session 1 as Disc. Both switches are landed OFF.
+`query session` from this shell still showed session 1 as Disc. All three switches are landed OFF: `kMissionCameraBound`, `kMissionFovBound` and `kHudMarkerPoolsBound`.
 
-The two builds for the pair are ready in this tree: `build\on` has both switches on and
-`build\win32\Release` has both off.
+The pairs are built at run time from this tree:
+1. The camera pair: `kMissionCameraBound` off, then on.
+2. This pair: camera on, with `kMissionFovBound` and `kHudMarkerPoolsBound` off, then on.
