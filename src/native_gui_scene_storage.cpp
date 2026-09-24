@@ -110,6 +110,12 @@ private:
 void* construct_native_gui_scene_storage_00b724e0(void* owner,
     NativeGuiSceneConstructFrame& frame, NativeGuiSceneStorageContext& context,
     NativeGuiSceneConstructAcquired& acquired) {
+    return construct_native_gui_scene_storage_00b724e0(owner,frame.name_argument,context,acquired);
+}
+
+void* construct_native_gui_scene_storage_00b724e0(void* owner,
+    const volatile Word& name_argument, NativeGuiSceneStorageContext& context,
+    NativeGuiSceneConstructAcquired& acquired) {
     if (acquired.started) throw std::invalid_argument("GUI scene constructor requires fresh diagnostics");
     establish_storage(owner);
     acquired.started = true;
@@ -124,7 +130,7 @@ void* construct_native_gui_scene_storage_00b724e0(void* owner,
         state = acquired.native_eh_state = 0; // B72513
         write(header, 0, 0);
         write(header, 4, 0);
-        const void* const source = reinterpret_cast<const void*>(frame.name_argument); // B7251C
+        const void* const source = reinterpret_cast<const void*>(name_argument); // B7251C
         const bool self = header == source;
         state = acquired.native_eh_state = 1; // B72522
         acquired.name_initialized = true;

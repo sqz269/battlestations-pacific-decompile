@@ -1,0 +1,641 @@
+{
+  "packet": "cc10_gui_scene_argument_view",
+  "status": "complete_shared_body_raw_word_overload_strict_build_original_source_pair_checked",
+  "owned_files": [
+    "include/bsp/native_gui_scene_storage.hpp",
+    "src/native_gui_scene_storage.cpp",
+    "docs/NATIVE_GUI_SCENE_ARGUMENT_VIEW_CC10.md",
+    "reports/native_gui_scene_argument_view_cc10.json"
+  ],
+  "native": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00b724e0",
+        "end_exclusive": "00b72576",
+        "end_inclusive": "00b72575",
+        "length": 150,
+        "kind": "function",
+        "hex": "6aff68731bcc0064a1000000005064892500000000515355568bf15789742410e88b2fdbff33ed8d7e10c706482dd600896e0c896c241c892f896f048b5c24243bfbc644241c01896e1c896e2074238b036a01508bcfe805b88aff392b74138b0f8b53048b4704515250e83151080083c40cf30f10054ca2d7008b4c24145ff30f1146188bc65e5d5b64890d0000000083c410c20400",
+        "sha256": "33b5c181c44dc6490fe80b44a02003bfeffe05a7d7684b9b71007e090e912427",
+        "live_pe_equal": true,
+        "instructions": [
+          {
+            "address": "00b724e0",
+            "size": 2,
+            "hex": "6aff",
+            "text": "push -1"
+          },
+          {
+            "address": "00b724e2",
+            "size": 5,
+            "hex": "68731bcc00",
+            "text": "push 0xcc1b73"
+          },
+          {
+            "address": "00b724e7",
+            "size": 6,
+            "hex": "64a100000000",
+            "text": "mov eax, dword ptr fs:[0]"
+          },
+          {
+            "address": "00b724ed",
+            "size": 1,
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b724ee",
+            "size": 7,
+            "hex": "64892500000000",
+            "text": "mov dword ptr fs:[0], esp"
+          },
+          {
+            "address": "00b724f5",
+            "size": 1,
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "00b724f6",
+            "size": 1,
+            "hex": "53",
+            "text": "push ebx"
+          },
+          {
+            "address": "00b724f7",
+            "size": 1,
+            "hex": "55",
+            "text": "push ebp"
+          },
+          {
+            "address": "00b724f8",
+            "size": 1,
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "address": "00b724f9",
+            "size": 2,
+            "hex": "8bf1",
+            "text": "mov esi, ecx"
+          },
+          {
+            "address": "00b724fb",
+            "size": 1,
+            "hex": "57",
+            "text": "push edi"
+          },
+          {
+            "address": "00b724fc",
+            "size": 4,
+            "hex": "89742410",
+            "text": "mov dword ptr [esp + 0x10], esi"
+          },
+          {
+            "address": "00b72500",
+            "size": 5,
+            "hex": "e88b2fdbff",
+            "text": "call 0x925490"
+          },
+          {
+            "address": "00b72505",
+            "size": 2,
+            "hex": "33ed",
+            "text": "xor ebp, ebp"
+          },
+          {
+            "address": "00b72507",
+            "size": 3,
+            "hex": "8d7e10",
+            "text": "lea edi, [esi + 0x10]"
+          },
+          {
+            "address": "00b7250a",
+            "size": 6,
+            "hex": "c706482dd600",
+            "text": "mov dword ptr [esi], 0xd62d48"
+          },
+          {
+            "address": "00b72510",
+            "size": 3,
+            "hex": "896e0c",
+            "text": "mov dword ptr [esi + 0xc], ebp"
+          },
+          {
+            "address": "00b72513",
+            "size": 4,
+            "hex": "896c241c",
+            "text": "mov dword ptr [esp + 0x1c], ebp"
+          },
+          {
+            "address": "00b72517",
+            "size": 2,
+            "hex": "892f",
+            "text": "mov dword ptr [edi], ebp"
+          },
+          {
+            "address": "00b72519",
+            "size": 3,
+            "hex": "896f04",
+            "text": "mov dword ptr [edi + 4], ebp"
+          },
+          {
+            "address": "00b7251c",
+            "size": 4,
+            "hex": "8b5c2424",
+            "text": "mov ebx, dword ptr [esp + 0x24]"
+          },
+          {
+            "address": "00b72520",
+            "size": 2,
+            "hex": "3bfb",
+            "text": "cmp edi, ebx"
+          },
+          {
+            "address": "00b72522",
+            "size": 5,
+            "hex": "c644241c01",
+            "text": "mov byte ptr [esp + 0x1c], 1"
+          },
+          {
+            "address": "00b72527",
+            "size": 3,
+            "hex": "896e1c",
+            "text": "mov dword ptr [esi + 0x1c], ebp"
+          },
+          {
+            "address": "00b7252a",
+            "size": 3,
+            "hex": "896e20",
+            "text": "mov dword ptr [esi + 0x20], ebp"
+          },
+          {
+            "address": "00b7252d",
+            "size": 2,
+            "hex": "7423",
+            "text": "je 0xb72552"
+          },
+          {
+            "address": "00b7252f",
+            "size": 2,
+            "hex": "8b03",
+            "text": "mov eax, dword ptr [ebx]"
+          },
+          {
+            "address": "00b72531",
+            "size": 2,
+            "hex": "6a01",
+            "text": "push 1"
+          },
+          {
+            "address": "00b72533",
+            "size": 1,
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b72534",
+            "size": 2,
+            "hex": "8bcf",
+            "text": "mov ecx, edi"
+          },
+          {
+            "address": "00b72536",
+            "size": 5,
+            "hex": "e805b88aff",
+            "text": "call 0x41dd40"
+          },
+          {
+            "address": "00b7253b",
+            "size": 2,
+            "hex": "392b",
+            "text": "cmp dword ptr [ebx], ebp"
+          },
+          {
+            "address": "00b7253d",
+            "size": 2,
+            "hex": "7413",
+            "text": "je 0xb72552"
+          },
+          {
+            "address": "00b7253f",
+            "size": 2,
+            "hex": "8b0f",
+            "text": "mov ecx, dword ptr [edi]"
+          },
+          {
+            "address": "00b72541",
+            "size": 3,
+            "hex": "8b5304",
+            "text": "mov edx, dword ptr [ebx + 4]"
+          },
+          {
+            "address": "00b72544",
+            "size": 3,
+            "hex": "8b4704",
+            "text": "mov eax, dword ptr [edi + 4]"
+          },
+          {
+            "address": "00b72547",
+            "size": 1,
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "address": "00b72548",
+            "size": 1,
+            "hex": "52",
+            "text": "push edx"
+          },
+          {
+            "address": "00b72549",
+            "size": 1,
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "address": "00b7254a",
+            "size": 5,
+            "hex": "e831510800",
+            "text": "call 0xbf7680"
+          },
+          {
+            "address": "00b7254f",
+            "size": 3,
+            "hex": "83c40c",
+            "text": "add esp, 0xc"
+          },
+          {
+            "address": "00b72552",
+            "size": 8,
+            "hex": "f30f10054ca2d700",
+            "text": "movss xmm0, dword ptr [0xd7a24c]"
+          },
+          {
+            "address": "00b7255a",
+            "size": 4,
+            "hex": "8b4c2414",
+            "text": "mov ecx, dword ptr [esp + 0x14]"
+          },
+          {
+            "address": "00b7255e",
+            "size": 1,
+            "hex": "5f",
+            "text": "pop edi"
+          },
+          {
+            "address": "00b7255f",
+            "size": 5,
+            "hex": "f30f114618",
+            "text": "movss dword ptr [esi + 0x18], xmm0"
+          },
+          {
+            "address": "00b72564",
+            "size": 2,
+            "hex": "8bc6",
+            "text": "mov eax, esi"
+          },
+          {
+            "address": "00b72566",
+            "size": 1,
+            "hex": "5e",
+            "text": "pop esi"
+          },
+          {
+            "address": "00b72567",
+            "size": 1,
+            "hex": "5d",
+            "text": "pop ebp"
+          },
+          {
+            "address": "00b72568",
+            "size": 1,
+            "hex": "5b",
+            "text": "pop ebx"
+          },
+          {
+            "address": "00b72569",
+            "size": 7,
+            "hex": "64890d00000000",
+            "text": "mov dword ptr fs:[0], ecx"
+          },
+          {
+            "address": "00b72570",
+            "size": 3,
+            "hex": "83c410",
+            "text": "add esp, 0x10"
+          },
+          {
+            "address": "00b72573",
+            "size": 3,
+            "hex": "c20400",
+            "text": "ret 4"
+          }
+        ],
+        "last_instruction": {
+          "address": "00b72573",
+          "size": 3,
+          "hex": "c20400",
+          "text": "ret 4"
+        }
+      },
+      {
+        "address": "00cc1b60",
+        "end_exclusive": "00cc1b68",
+        "end_inclusive": "00cc1b67",
+        "length": 8,
+        "kind": "funclet",
+        "hex": "8b4df0e9d839c6ff",
+        "sha256": "2c6dd4336ae701e0e87dcf3d95c5b914a8ed7599ec59dddd96b4b91ec5bfd9ca",
+        "live_pe_equal": true,
+        "instructions": [
+          {
+            "address": "00cc1b60",
+            "size": 3,
+            "hex": "8b4df0",
+            "text": "mov ecx, dword ptr [ebp - 0x10]"
+          },
+          {
+            "address": "00cc1b63",
+            "size": 5,
+            "hex": "e9d839c6ff",
+            "text": "jmp 0x925540"
+          }
+        ],
+        "last_instruction": {
+          "address": "00cc1b63",
+          "size": 5,
+          "hex": "e9d839c6ff",
+          "text": "jmp 0x925540"
+        }
+      },
+      {
+        "address": "00cc1b68",
+        "end_exclusive": "00cc1b73",
+        "end_inclusive": "00cc1b72",
+        "length": 11,
+        "kind": "funclet",
+        "hex": "8b4df083c110e9adc175ff",
+        "sha256": "8e804da312bffd294b1193af76a9c0887af15a3283bc20b0f17be5dd2ba38a14",
+        "live_pe_equal": true,
+        "instructions": [
+          {
+            "address": "00cc1b68",
+            "size": 3,
+            "hex": "8b4df0",
+            "text": "mov ecx, dword ptr [ebp - 0x10]"
+          },
+          {
+            "address": "00cc1b6b",
+            "size": 3,
+            "hex": "83c110",
+            "text": "add ecx, 0x10"
+          },
+          {
+            "address": "00cc1b6e",
+            "size": 5,
+            "hex": "e9adc175ff",
+            "text": "jmp 0x41dd20"
+          }
+        ],
+        "last_instruction": {
+          "address": "00cc1b6e",
+          "size": 5,
+          "hex": "e9adc175ff",
+          "text": "jmp 0x41dd20"
+        }
+      },
+      {
+        "address": "00cc1b73",
+        "end_exclusive": "00cc1b7d",
+        "end_inclusive": "00cc1b7c",
+        "length": 10,
+        "kind": "handler",
+        "hex": "b808abdf00e9c64ff3ff",
+        "sha256": "f0956f8fd25c214fa0d1cd475f4c610826182aad3002736bed817e5f9e8f80a9",
+        "live_pe_equal": true,
+        "instructions": [
+          {
+            "address": "00cc1b73",
+            "size": 5,
+            "hex": "b808abdf00",
+            "text": "mov eax, 0xdfab08"
+          },
+          {
+            "address": "00cc1b78",
+            "size": 5,
+            "hex": "e9c64ff3ff",
+            "text": "jmp 0xbf6b43"
+          }
+        ],
+        "last_instruction": {
+          "address": "00cc1b78",
+          "size": 5,
+          "hex": "e9c64ff3ff",
+          "text": "jmp 0xbf6b43"
+        }
+      },
+      {
+        "address": "00dfaaf8",
+        "end_exclusive": "00dfab2c",
+        "end_inclusive": "00dfab2b",
+        "length": 52,
+        "kind": "data",
+        "hex": "ffffffff601bcc0000000000681bcc002205931902000000f8aadf00000000000000000000000000000000000000000001000000",
+        "sha256": "6b0a98532b2b18320cf9484a305fdfe0f79380a91416024d28bcfe7dd289249c",
+        "live_pe_equal": true
+      }
+    ]
+  },
+  "calls": [
+    {
+      "address": "00b72500",
+      "function": "00b724e0",
+      "native": "00925490",
+      "kind": "call",
+      "instruction": "call 0x925490"
+    },
+    {
+      "address": "00b72536",
+      "function": "00b724e0",
+      "native": "0041dd40",
+      "kind": "call",
+      "instruction": "call 0x41dd40"
+    },
+    {
+      "address": "00b7254a",
+      "function": "00b724e0",
+      "native": "00bf7680",
+      "kind": "call",
+      "instruction": "call 0xbf7680"
+    },
+    {
+      "address": "00cc1b63",
+      "function": "00cc1b60",
+      "native": "00925540",
+      "kind": "tail_jump",
+      "instruction": "jmp 0x925540"
+    },
+    {
+      "address": "00cc1b6e",
+      "function": "00cc1b68",
+      "native": "0041dd20",
+      "kind": "tail_jump",
+      "instruction": "jmp 0x41dd20"
+    },
+    {
+      "address": "00cc1b78",
+      "function": "00cc1b73",
+      "native": "00bf6b43",
+      "kind": "tail_jump",
+      "instruction": "jmp 0xbf6b43"
+    }
+  ],
+  "functions": [
+    {
+      "address": "00b724e0",
+      "length": 150,
+      "source": "src/native_gui_scene_storage.cpp",
+      "original_abi": "ECX actual24h; stacked actual8h name-header pointer; EAX self; RET4 at B72573 length3",
+      "coverage": "same complete raw constructor, new borrowed argument-word interface only"
+    }
+  ],
+  "no_ghidra_function": [],
+  "cleanup": {
+    "descriptor": "00dfab08",
+    "unwind_map": "00dfaaf8",
+    "states": [
+      {
+        "state": 0,
+        "next": -1,
+        "action": "00cc1b60",
+        "schedule": "captured owner [EH EBP-10h] ->925540"
+      },
+      {
+        "state": 1,
+        "next": 0,
+        "action": "00cc1b68",
+        "schedule": "captured owner+10h ->41DD20"
+      }
+    ],
+    "handler": "00cc1b73",
+    "transport": "existing source C++ consume-before-call projection; native FH3/SEH not exercised"
+  },
+  "contract": {
+    "raw_argument": "borrowed live initialized const-volatile DWORD; frame wrapper forwards member by reference without a read",
+    "capture": "current incoming word after weak construction and destination-name zero stores, B7251C",
+    "later_reads": "captured header identity; current length/data after resize; independent current MOVSS one cell",
+    "storage": "existing exact24h preimage-preserving lifetime preparation; no new aggregate over caller scratch",
+    "providers": "existing SAME weak domain, actual string pool, registry and current scalar/import providers",
+    "excluded_aliases": "metadata/context/acquired and storage-lifetime transition; unexposed private stacks, saved-register/return gaps; asynchronous mutation",
+    "native_abi_replacement": false
+  },
+  "validation": {
+    "strict_win32": true,
+    "ctests_passed": 3,
+    "build_log": "local\\cc10_gui_scene_argument_view\\build.log",
+    "source_sha256": {
+      "include/bsp/native_gui_scene_storage.hpp": "d816b2f0bcf0e0b47b895c3d999335b6f8253a66f1ae63055563578b6544407b",
+      "src/native_gui_scene_storage.cpp": "c291544fa92b127f2e94c28b6072dc5a0ee6325e1e315e934e7b4567734e2935"
+    },
+    "compiled_checks": "local\\cc10_gui_scene_argument_view\\compiled_checks.json",
+    "probe_link_inputs": "local\\cc10_gui_scene_argument_view\\probe_inputs.json",
+    "probe_sha256": "824220becba26733de95cec1b145e3c763b9d146ddad74120b7a472ec86831c5",
+    "copied_original_matches_live_pe": true,
+    "original_source_pairs": 1,
+    "whole_owner_bytes": 36,
+    "normalized_fields": [
+      "+8 weak-handle identity",
+      "+14 name-data identity"
+    ],
+    "run_log": "PASS source constructor150B: raw argument word, adjacent actual header/canaries, current name-length MOVSS, genuine weak/name construction and retirement/drain\nPASS original constructor150B: raw argument word, adjacent actual header/canaries, current name-length MOVSS, genuine weak/name construction and retirement/drain\nPASS one original/source24h pair, normalized weak/name pointer identities only; no native EH/application claim\n",
+    "probe": "one raw incoming word adjacent to two actual header DWORDs and three canaries; nonempty MARS; live one cell aliases owner name length, final MOVSS observes bits4; genuine weak/name lifecycle and retirement",
+    "original_relocations": [
+      "three rel32 calls to genuine weak/resize and memmove adapters",
+      "one D7A24C operand to current owner name-length cell",
+      "unreached FH3 handler immediate to fail-fast trap"
+    ],
+    "original_argument_scope": "copied original receives a real stacked pointer value to the same two-word header shape; only source borrows external actual input cell; no incoming-cell callback mutation or original external-cell address equivalence claim",
+    "original_indirect_instructions": "none in this normal body",
+    "new_tracked_tests": 0,
+    "application_run": false,
+    "native_game_run": false,
+    "manifest_embedded": true,
+    "runtime": "MD",
+    "project_libraries": 3,
+    "unproved": [
+      "native FH3/SEH or binary replacement ABI",
+      "allocation failure and exceptional unwind",
+      "full initializer/post20/source0 admission",
+      "callback mutation of incoming argument cell"
+    ],
+    "post_effect_argument_readiness": {
+      "local/cc10_post_effect_argument_readiness/collect.py": "32803cc5939dd5d14bcb01463ec71b7a737a97bc8cd27ece6bd3488a531723ba",
+      "local/cc10_post_effect_argument_readiness/evidence.json": "81760d77f60daff5c29739c9bdebc01d085d2af23ba8719431952b8704c3c462",
+      "local/cc10_post_effect_argument_readiness/README.md": "7881c1f9283ca7079c025def0a90a9686913de8d1489b7153208f2f7fd88ff69"
+    },
+    "prior_evidence_archives_unchanged": {
+      "local/cc10_field_values_evidence.zip": "a749dbf4656596e6a4e0c11ecb320a02bfe62dcba5fa3654c2744aa2a3022153",
+      "local/cc10_widget_transform_evidence.zip": "0d90499f71be2a3cc99ad732deaa8a71a5b55546da4dbaa7ee708c364bae45f8",
+      "local/cc10_widget_property_prefix_evidence.zip": "181ebe9358fe2d7ea6832b8051a0b3fd6f830a0360f3ef390626403ba7cbfcdf",
+      "local/cc10_gui_page_default_evidence.zip": "a224fc79f56861715059ff9717fcdad40893be00d26697a230b64ceafced5c8b",
+      "local/cc10_gui_group_pool_evidence.zip": "c7aa87452ab19400fe950d3a4c3a4a146c94715f4080f463dc2de1740df37853",
+      "local/cc10_gui_group_factory_evidence.zip": "d22d364ce3b5cf7833d8ad1998cd5c14cbf792abc34634e2df1421949e42f34f",
+      "local/cc10_gui_camera_store_map_evidence.zip": "625a751eab1f2416e7b0fa5876b921106cf0a246c0b8ca5ce97ca3e9d1586c54",
+      "local/cc10_scene_registry_storage_evidence.zip": "7219d8cbbdab960d3d2b49076f79b13854aa582faa0edb23c8a7fc286cebd6a9",
+      "local/cc10_scene_resource_storage_evidence.zip": "d989b85db55805c8b173e40c95e9322586ec4146e3ad0e504c316bf48364ed51",
+      "local/cc10_gui_scene_fields_evidence.zip": "8158076968340fd863b7e86018def420eabcae87ab0939f90085d79a1751a1af",
+      "local/cc10_scene_registry_vector_mutation_evidence.zip": "90b9d70c3b735e1274c2c0d2e333f5e88e860aee7155ea9ac6ef18e105aaed6b",
+      "local/cc10_scene_registry_registration_evidence.zip": "663ec13309abdaf992b22c321c66817230852066d76e5ccd0b663c3a783e05cf",
+      "local/cc10_node_scene_attachment_evidence.zip": "c45c8248fe0434426648b48b7c8e473f94b057f5ff1098088c34762dbc3d8f04",
+      "local/cc10_node_tree_retirement_evidence.zip": "b9720c00ba0e29c222ae2d41fb5fd2820e305039c673e61cea0ee22d3a2a2e13",
+      "local/cc10_node_base_destruction_evidence.zip": "2f4f970317032085f851a2331dd3e4bf6f02b3722e5e44a668153000e2b13dbf",
+      "local/cc10_camera_storage_lifetime_evidence.zip": "9eb1ac2cbde243e6c4d2d1d10fca263eda2e43aed2527964986875f2217c3936",
+      "local/cc10_camera_raw_world_edit_evidence.zip": "f80fd83057ef325506bbe1d0a06046e765dd8e32b2f10148c67d497af0971d9c",
+      "local/cc10_camera_pose_storage_evidence.zip": "d294c281a6475c33b4b779d9857e2a7f06b75948df45618c12b70112649bfeac",
+      "local/cc10_camera_storage_construct_evidence.zip": "ebf1bca43bf5bbe75beae65ec707845a2219d745bda58fd91588455278fbf357",
+      "local/cc10_distortion_storage_lifetime_evidence.zip": "71843fd98d2d4bb1e13633393487fc99617c1456458cd2354139c57a2d1a286c",
+      "local/cc10_render_texture_surface_argument_view_evidence.zip": "0754170a6ce2d6042e644beef0a62f82e07c8642afe3a6315c18fb967493034e"
+    },
+    "report_call_check": "reports/native_gui_scene_argument_view_cc10.json: 6 call rows checked, 0 failed",
+    "read_only_proposal_call_check": "local/cc10_post_effect_argument_readiness/evidence.json: 47 call rows checked, 0 failed; 17 indirect inventory rows separately pinned",
+    "frozen_archive": "local\\cc10_gui_scene_argument_view_evidence.zip",
+    "manifest": "local\\cc10_gui_scene_argument_view\\manifest.json",
+    "input_hash_scope": "three current project libraries, actual constructor object, exact probe source/native array/build command; executable/listing/source hashes separately pinned; no whole toolchain or OS identity claim"
+  },
+  "frozen_initializer_readiness": {
+    "local/cc10_distortion_initializer_storage_readiness/evidence.json": "4ff2b2271c0d83d781e951774d6325446e8719d2019f3dacd9d70072600eda3c",
+    "local/cc10_distortion_initializer_storage_readiness/prepare.py": "0b020409cd5ebd577ca20f2eaebdbfb409c08c51e7d6ba674a1e766088d44634",
+    "local/cc10_distortion_initializer_storage_readiness/README.md": "7d0e525fc0117134101dc35bdd52454c654004e8033a2d26f294795a8c84382b"
+  },
+  "provenance": {
+    "revision": "57bc61a8587819cb21acafbf35cf19ae1b69e496",
+    "utc": "2026-09-24T12:55:34.887040+00:00"
+  },
+  "prior_reconstruction_record_preserved": {
+    "address": "00b724e0",
+    "end_exclusive": "00b72576",
+    "end_inclusive": "00b72575",
+    "final_instruction": "00b72573",
+    "final_instruction_length": 3,
+    "byte_span": 150,
+    "instruction_count": 52,
+    "cpp_symbol": "bsp::construct_native_gui_scene_storage_00b724e0",
+    "original_abi": "ECX actual24h, stacked raw name pointer; EAX self; RET4",
+    "coverage": "complete normal actual24h storage body; explicit source cleanup projection and genuine provider domain",
+    "name": "construct_native_gui_scene_storage_00b724e0",
+    "source": "src/native_gui_scene_storage.cpp",
+    "status": "complete_actual_outer24_scene_storage_strict_win32_genuine_provider_composition_checked",
+    "documentation": "docs/NATIVE_GUI_SCENE_STORAGE_CC10.md",
+    "evidence": "reports/native_gui_scene_storage_cc10.json;346bodybytes+58compilerboundarybytes+100EHmapdescriptorbytes live==PE. StrictMSVCWin32+2CTest;15callrows0failed (2rawhandlercallee-only),2indirectretained. Two original/source compositions using genuine weak/name/3Chresource/tree/physicalpointproviders, declared8Bcurrent0 bridge; canonical zero/explicitnonzero flags0, unchanged admission, source-only preparedcapacityfailure/disposition. Exact command has NDEBUG rejection and MANIFEST:EMBED. Prior typedowner records preserved.",
+    "abi_compatible": false,
+    "application_bound": false,
+    "game_validated": false,
+    "uncertainty": "Full normal actual24h source body; private actual storage lifetime establishes atomic04 and restores preimage beforeweak. SAMEregistry/currentimports/treebindings required. Native eight-byte current0 dispatch is replaced by genuine canonicalbridge in probe, not independently compared. Source cleanup state projection only, no nativeFH3/SEH/privateABI/application/AC59A0 or full attached camera/light terminal graph.",
+    "kind": "function"
+  }
+}

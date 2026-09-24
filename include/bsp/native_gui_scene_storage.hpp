@@ -53,6 +53,15 @@ struct NativeGuiSceneLifetimeAcquired {
 void* construct_native_gui_scene_storage_00b724e0(void* actual_scene,
     NativeGuiSceneConstructFrame&, NativeGuiSceneStorageContext&,
     NativeGuiSceneConstructAcquired&);
+// Same body borrowing the actual initialized caller DWORD directly. The frame
+// overload forwards its member by reference without reading it. Capture this
+// CURRENT word only after weak construction and destination-name zero stores;
+// later resize/copy reads use the captured source-header identity. No frame
+// aggregate lifetime is introduced over caller scratch. Context/acquired and
+// excluded private-stack/storage-lifetime alias domains are unchanged.
+void* construct_native_gui_scene_storage_00b724e0(void* actual_scene,
+    const volatile std::uint32_t& name_argument, NativeGuiSceneStorageContext&,
+    NativeGuiSceneConstructAcquired&);
 // B72430[166]: captured resource/current decrement/current0, clear1C AFTER
 // callback, current root loop, captured name data/size across actual pool getter,
 // weak base. Name cleanup consumed before getter; weak consumed before call.
