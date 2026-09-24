@@ -825,6 +825,12 @@ public:
                 screen != nullptr && screen->flags != nullptr && screen->flags->active);
             return;
         }
+        // Packet cc9_screen_26h_2eh: these three slots' update virtual is the
+        // base 004F75C0 itself, `RET 4`, so the call does nothing.
+        if (kHudBaseUpdateScreensBound && (slot == 0x26 || slot == 0x2e || slot == 0x3e)) {
+            owner_.log.implemented("FrontEndScreen::base_update", "004f75c0");
+            return;
+        }
         owner_.log.unimplemented("FrontEndScreen::update", "004f75c0");
     }
 
