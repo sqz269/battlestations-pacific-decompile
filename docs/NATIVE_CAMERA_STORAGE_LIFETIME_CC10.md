@@ -1,0 +1,54 @@
+# Raw camera storage lifetime
+
+Addresses: `00B71F10`, `00B71FE0`, `00B71990`, `00605FD0`; compiler boundaries `00CC1B20`, `00CC1B28`, `00CC1B36`.
+
+`native_camera_storage_lifetime.hpp/.cpp` supplies complete raw storage bodies over the actual camera payload. It reuses genuine raw node-base destruction, the camera pool and concrete viewport/fog deleting leaves. Retained438 remains a polymorphic factory product with required family-aware terminal dispatch. Source interfaces differ from the native ABI; no application binding, logical-owner conversion or full camera-construction claim is added.
+
+| Routine | Native extent, exclusive end | Original ABI | Coverage |
+| --- | --- | --- | --- |
+| B71F10 | B71F10–B71FD2, 194 B | ECX camera, no stack arguments, RET | Complete with required raw providers |
+| B71FE0 | B71FE0–B72000, 32 B | ECX camera, flags word, EAX original slot, RET4 | Complete; late flags and same pool |
+| B71990 | B71990–B719D1, 65 B | ECX camera, incoming viewport word, RET4 | Complete for genuine viewport family |
+| 605FD0 | 605FD0–605FF9, 41 B | ECX actual pointer cell, no stack arguments, RET | Complete with required retained-owner family |
+
+The four bodies total 332 B. No x87 or SSE instructions occur. Their complete live bytes match the original PE, as do the 32 compiler bytes and borrowed profile/FH3 data. All 17 call/tail rows are recorded; six direct rows are mechanically verified and eleven indirect sites remain explicit.
+
+## Actual domains and lifetime providers
+
+The node prefix is the original 174h storage. Camera viewport180, fog184 and retained438 contain actual owner identities; no `SystemFogState+8` projection is stored into raw fog184. Physical camera pool slots are 45Ch, including the original slab index at458h; payload extent is458h. The existing `NativeCameraPool` supplies the same actual108FFB0 pool and B711E0 return, with no ordinary-free substitute or second pool/list.
+
+The context borrows the node-base context, camera pool, current CE221C/CE2220 cells, current original tables and retained438 dispatch. Pure admission checks require the **same scene/tree canonical registry and same current import cells** before native work. Direct destruction rejects reused `Acquired` metadata before its started flag or any native store. These host checks are outside the admitted native input domain.
+
+Viewport is a real 34h `NativeViewportOwner`, D5E5F8, with a live `volatile long` at+4. Fog is a real 94h `SystemFogOwner`, D63180, with the same count representation. Their counts are not reinterpreted as atomics and no `RenderCommandReference` metadata is fabricated for them. After a genuine zero result, the binding verifies observed actual+4 zero, reads current profile/current0 and requires BD30E0. Real `invoke_native_ref_counted_delete_00bd30e0` reloads the profile; a fresh current4 lookup must select B1F8F0 or B84F70, respectively. Those genuine concrete deleting leaves retire/free the actual allocation with flags1. They perform no extra decrement. Existing generic retain/release helpers are deliberately not used here because they choose their own decrement rather than accepting the camera's captured one.
+
+The current438 producer is B7A98F's captured resource-instance array entry, published at B7A9C2 and retained at B7A9D2. B891A0 fills that array from a selected factory's virtual4 result; default, item-selected and group factories differ. This does **not** prove a single node family, allocation extent, atomic representation or permission to inspect node170/hierarchy. The required retained interface therefore has pure current-profile lookup and an exact reached current0 invocation that explicitly admits its concrete family, extent, allocation and same actual+4 observed zero. It never decrements again. Null and nonterminal438 paths need no terminal-family assumption; unbound zero families remain an explicit boundary. There is no generic fallback or legacy retained-owner release substitute.
+
+## Captured and current values
+
+B71990 reads the incoming argument word once, before capturing old180. Equal identities return. Otherwise it publishes incoming, calls current CE221C on captured incoming+4, then calls **current CE2220** on captured old+4. An increment callback may replace the incoming argument cell, published slot or decrement cell; the captured incoming and old owners remain unchanged. Zero uses the old owner's current profile/current0. There is no final slot clear or rollback.
+
+B71F10 stamps D62CF0, captures current180 at B71F36, then captures CE2220 once at B71F3C, before state1. It uses that same function for all normal180,184,438 releases, even if a callback changes the import cell. Each field's owner is captured when reached, and its slot is cleared **after** the terminal, even when a callback replaced that slot. Captured438 precedes state0 consumption at B71F92. State-1 is consumed before raw B6F440 at B71FBA. Raw base destruction retains its own current import schedule, separate from the camera's captured epoch.
+
+605FD0 captures its actual pointer cell once, skips null without reading the import or storing, otherwise loads **fresh current CE2220**, decrements captured owner+4, invokes current0 on zero, and clears the original cell after the terminal. This is the native438 unwind action, so normal and exception cleanup intentionally have different import schedules.
+
+B71FE0 calls the complete destructor and only then loads the low byte of the caller-owned flags word. Bit0 invokes B711E0 on the same actual pool. The original address is returned without any payload read after pool return. Setter arguments, pointer cells and flags may be callback-mutable initialized storage. Native saved-register/return slots, private-stack offsets and fault-time aliases are not part of these source interfaces.
+
+## Compiler boundary and canonical metadata
+
+CC1B20[8] loads saved [EBP-10] and tail-jumps B6F440 at CC1B23. CC1B28[14] loads that owner+438 and tail-jumps605FD0 at CC1B31. CC1B36[10] loads DFAAA0 and tail-jumps BF6B43 at CC1B3B. DFAAA0 has maxstate2/mapDFAA90: state0 -> -1/CC1B20; state1 -> 0/CC1B28; no try blocks; EHflags1. All three already exist in Ghidra and require no missing-function definition or flow repair.
+
+Source ordinary C++ cleanup consumes each state before its action. It neither retries viewport/fog nor rolls back completed stores. A second cleanup exception terminates. The frame embeds a distinct initialized node-base frame; fresh disjoint acquired metadata retains the captured decrement epoch, last scheduled outer call site, member cleanup progress, native state and nested base acquisitions. Keep these objects through failure disposition. Native FH3/SEH and CRT exception identity are evidence boundaries, not emulated handlers.
+
+The optional `NativeCameraStorageReference` is postconstruction metadata. Its input must already have the live atomic+4 established by raw node construction **and satisfy the full B71A80 camera-construction precondition**. It checks aligned physical45Ch extent, the same actual pool's slab index/slot geometry/free-index membership, live count, fresh diagnostics and current camera0/4. It then binds the same actual owner in the node context's canonical registry, without a native store, lifetime replacement or extra credit. This is not conversion of `NativeCameraOwner` or `NativeCameraReference`.
+
+At canonical zero it requires observed actual zero/current0 BD30E0; genuine BD30E0 reloads the profile and fresh current4 must select B71FE0. Scalar deletion retires metadata on normal return or source exception, keeping acquisitions for explicit disposition. Metadata retirement alone does not prove native destruction/pool-return completion. Context, companion and prepared frame/acquired outlive retirement; external synchronization excludes pool reuse before unbinding. The existing noexcept canonical boundary terminates on a propagated source failure. **The focused fixture does not exercise this companion or prove its construction precondition.**
+
+## Focused comparison and limits
+
+The ignored fixture copies all four original bodies and compares one sequence against the source. It uses a real camera pool, raw B6F5A0 prefix construction, explicit initialized camera-tail preimages, actual B1F850 viewport construction with the genuine current renderer-parameter provider, and real B84E50 fog construction. The renderer binding uses a real hidden-window D3D9 HAL device and its actual parameter region. No fake COM device, terminal or allocation is used. The manually initialized camera tail is a bounded destructor fixture, **not full B71A80 construction or canonical camera admission**.
+
+The copied original stream changes only three direct-call displacements (B71FBA -> raw base provider, B71FE3 -> copied B71F10, B71FF5 -> genuine same-pool return bridge) and four absolute import operands (B71F3C, B719AD, B719BB,605FDE). The original virtual-call instructions and camera profile stamp are unchanged. Occupied fixed-address mappings were left untouched. For original execution only, viewport/fog owner profile words are relocated from D5E5F8/D63180 to caller-owned equivalent tables, whose slot0 targets the genuine BD30E0/current4 bridge; slot4 remains the original B1F8F0/B84F70 value. Source execution retains original numeric owner profiles and BD30E0 slot0 in the borrowed tables. The bridge verifies the exact relocated family/zero/target, invokes genuine BD30E0, reloads current profile/current4 and dispatches the same real deleting leaves. This explicit data/code relocation is a fixture mechanism, not a production fallback.
+
+An actual increment callback replaces the original native setter stack word/source argument cell and changes current CE2220. During destruction the first genuine decrement replaces CE2220 again, yet fog and438 retain the original captured epoch. A scalar callback changes the native/source flags cell from bit0clear to bit0set, proving late pool return. A separate605FD0 call in the same sequence uses the fresh epoch. The test compares all458h payload DWORDs before physical return (normalizing the name pointer), exact count/import traces, cleared fields and actual pool free count. It never reads returned-slot payloads. Retained438 is a real constructed identity kept nonterminal; its zero-family branch, source exception cleanup, native FH3, full constructor and companion admission are unexercised.
+
+Strict MSVC Win32 build and all three existing CTests pass. The focused comparison passes with `/MD /O2 /fp:strict /MANIFEST:EMBED`; no tracked tests were added. Report hashes pin source, dependencies, compiler artifacts, original bytes and all 15 prior archives. Worker Ghidra use remains read-only. No game validation, binary replacement ABI or complete arbitrary factory/terminal graph is claimed.
