@@ -54,6 +54,13 @@ namespace bsp::game {
 // keeps the records.
 inline constexpr bool kHudPresentationTopBound = true;
 
+// Packet cc9_mission_camera (docs/MISSION_CAMERA.md). ON creates the ShipCaptain
+// camera mover when the 25h arm hands its ship view the unit (0064DA40), ticks
+// it (00432ED0) and publishes its pose into the Operator node, which the
+// markers' 00B70490 and the minimap's 00B6DB70 then read in place of the
+// top-down stand-in. OFF keeps the stand-in and the two records.
+inline constexpr bool kMissionCameraBound = false;
+
 class GameHostLog;
 class GameFrontendHost;
 class GameMenuHost;
