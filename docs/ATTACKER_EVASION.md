@@ -546,3 +546,5 @@ coupling on the shared random stream. Fighter hits are unmoved, because the figh
 follow the listing at every term read, with the labelled stand-ins of 6.3. The terrain arm's
 behaviour over islands waits on the avoid-zone layer and ground height, which this host replaces
 with the sea.
+
+**Re-run on merged main, 2026-09-23.** After merging main 90bd82542 and a clean 120-frame probe, the pair was re-run as `local\VU0_9000.log` and `local\VU1_9000.log`. It matches V0 and V1 on every row above. Both switches stay ON.
