@@ -2849,6 +2849,13 @@ struct GameUnitsHost::Impl {
     // terms, the kill that takes the aircraft out of the world, and the release
     // refusal of a dead aircraft (007CEA1C). docs/PLANE_DEATH_MODES.md.
     static constexpr bool kPlaneDeathModesBound = true;
+    // Packet cc9_plane_death_flags: the destroy that 007D0B80's tail calls
+    // (007D12FC, vtable[70h](1) = 0077D1A0 -> 00926C80) sets unit+60h at
+    // 00926CD5, and the destroy-list flush's 00926390 sets unit+5Dh and +60h at
+    // 0092639B/0092639E. Every liveness gate (00A2DDE0's eviction, 0043F080)
+    // then reads the aircraft as gone. OFF: a dead aircraft keeps both bytes
+    // clear. docs/PLANE_DEATH_MODES.md section 6.
+    static constexpr bool kPlaneDeathFlagsBound = true;
     // Packet cc9_pilot_surface_climbout: a dead plane leaves its squadron
     // (007BCAA0 -> 007F3970), so no member is placed on a dead leader's station.
     // docs/PILOT_SURFACE_CLIMBOUT.md.
@@ -5733,6 +5740,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         slot.plane_death_c36 = flags.spinning_c36;
                         slot.plane_death_c3a = true;
                         slot.plane_death_seconds = host.summary.simulated_seconds;
+                        // Packet cc9_plane_death_flags. The C3Ah tail's destroy sets
+                        // +60h at once (00926CD5); this host has no 009273A0 flush,
+                        // so 00926390's +5Dh store is taken in the same step, as the
+                        // squadron removal below already is.
+                        if constexpr (GameUnitsHost::Impl::kPlaneDeathFlagsBound) {
+                            if (slot.scene_flags_available && slot.state != nullptr) {
+                                slot.scene_pending_destroy_0060 = 1;   // 00926CD5
+                                slot.state->simulate = 1;              // 0092639B
+                                host.done("MissionEntity::on_destroyed_00926390", 0x00926390u);
+                            }
+                        }
                         host.log.notef("plane death mode: unit=%s t=%.2f draw=%.4f mode=%s "
                             "c10=%.2f (007CA8A0 -> 007BBFA0 -> 007D0B80, packet "
                             "cc9_plane_death_modes)", slot.row.name.c_str(),
@@ -14020,9 +14038,12 @@ void GameUnitsHost::report() {
         // Packet cc9_plane_death_modes.
         std::size_t modes[6] = {0, 0, 0, 0, 0, 0};
         std::size_t removed = 0;
+        std::size_t flagged = 0;
         for (const auto& slot : host.slots) {
             ++modes[static_cast<int>(slot->plane_death_mode)];
             if (slot->plane_death_removed) ++removed;
+            if (slot->plane_death_mode != bsp::PlaneDeathMode::None && slot->state != nullptr
+                && slot->state->simulate != 0 && slot->scene_pending_destroy_0060 != 0) ++flagged;
         }
         host.log.notef("summary mission plane death modes: explosion=%zu delayed=%zu "
             "powerlost=%zu spin=%zu removed=%zu dead_releases_refused=%llu bound=%d "
@@ -14030,6 +14051,9 @@ void GameUnitsHost::report() {
             modes[1], modes[2], modes[3], modes[4] + modes[5], removed,
             host.summary.dead_releases_refused,
             GameUnitsHost::Impl::kPlaneDeathModesBound ? 1 : 0);
+        host.log.notef("summary mission plane death flags: dead_with_5d_60=%zu bound=%d "
+            "(00926C80 / 00926390, packet cc9_plane_death_flags)", flagged,
+            GameUnitsHost::Impl::kPlaneDeathFlagsBound ? 1 : 0);
     }
     host.log.notef("summary mission plane motion: distance_moved=%.2f m "
         "pose_right_reference=%llu pose_collapsed=%llu "
