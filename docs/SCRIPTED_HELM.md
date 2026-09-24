@@ -414,3 +414,11 @@ reference.
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | USN04 (E2) | 9000 mission | **scripted helm, throttle 1.0** (`BSP_PLAYER_HELM=1.0,0`, main 5c126f14d + cc9_scripted_helm_option) | 8848.9 | 35 | 492 | 2 | 0 | 15 | 98.70 s | 7689.92 m | none | `local\H1_9000.log` |
 | USN04 (E2) | 9000 mission | the same binary, option unset (the idle reference on that tree) | 7720.9 | 35 | 549 | 0 | 0 | 15 | 99.05 s | 6905.23 m | none | `local\HO_9000.log` |
+
+### 6.6 Entry point for the HUD pump (2026-09-24)
+
+`GameUnitsHost::role_screen_update_0067bb50()` is now public, so the HUD owner can call page
+27h's slot 20h once per pump, as the image does (twice per mission frame,
+docs/SHIP_SCREEN_UPDATE.md section 21). The switch `kRoleScreenFixedStepCall` defaults to true and keeps
+today's once-per-fixed-step call. With the default, no code path changes and no row moves, so no
+pair was run. Set it to false only once the pump calls the entry point.

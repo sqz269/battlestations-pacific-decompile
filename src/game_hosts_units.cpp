@@ -404,6 +404,24 @@ struct GameUnitSlot {
     float df_maneuver_range_34{0.0f};       // task+6D8h
     float df_avoid_timer{0.0f};             // task+720h / +748h
     float df_avoid_sign{1.0f};
+    // Packet cc9_dogfight_maneuver_bodies (docs/DOGFIGHT_MANEUVER_BODIES.md).
+    // The maneuver state task+6A4h: +18h mode, +1Ch bank, +20h/+24h heading
+    // vector, +28h/+2Ch re-aim period and countdown, +30h pitch, +38h timer,
+    // +3Ch pursue latch (+34h is df_maneuver_range_34).
+    int mv_mode_18{0};
+    float mv_bank_1c{0.0f};
+    float mv_vec_20{0.0f}, mv_vec_24{1.0f};
+    float mv_period_28{1.0f};
+    float mv_count_2c{-0.5f};
+    float mv_pitch_30{0.0f};
+    float mv_timer_38{0.0f};
+    bool mv_latch_3c{false};
+    // The two avoid states (+708h / +730h): +1Ch rate or bank, +20h, +24h latch.
+    float av_1c{0.0f};
+    float av_20{0.0f};
+    bool av_latch_24{false};
+    int mv_mode_ticks[3]{0, 0, 0};
+    int mv_enters{0}, mv_expires{0}, av_latched_ticks{0}, av_turn_picks{0}, av_roll_picks{0};
     int df_latch_sets{0};
     int df_latched_ticks{0};
     int df_reselects{0};
@@ -2895,6 +2913,12 @@ struct GameUnitsHost::Impl {
     // the controlled unit (0067BB50), and unit+184h set only by an accepted
     // role-1 take. Before: unit+184h was "the unit 004c0890 bound".
     static constexpr bool kPlayerRoleBookkeepingBound = true;
+    // Where 0067BB50 runs: true keeps the once-per-fixed-step call before the
+    // unit loop; false leaves it to the HUD pump through the public
+    // GameUnitsHost::role_screen_update_0067bb50 (twice per mission frame,
+    // docs/SHIP_SCREEN_UPDATE.md 21). Default true: no row moves until the
+    // pump path is wired.
+    static constexpr bool kRoleScreenFixedStepCall = true;
     // Packet cc9_plane_substitution_sweep (docs/PLANE_SUBSTITUTION_SWEEP.md):
     // the torpedo done/prepare tick's 009D1500 answer (was 0), unit+BC4h's yaw
     // gain from the terrain arm (was held at 1.0), and the fighter lead's
@@ -2906,6 +2930,17 @@ struct GameUnitsHost::Impl {
     // 007B96D0 -> 007DEDB0, the fighter gun's friendly-in-line hold. The
     // answer feeds DogfightGunInputs::finder_busy at the fighter gun call site.
     static constexpr bool kFighterFriendlyInLineBound = true;
+    // Packet cc9_dogfight_maneuver_bodies (docs/DOGFIGHT_MANEUVER_BODIES.md):
+    // the maneuver enter/tick/expire 009A87F0/009A8B20/009A86F0 with 009A85B0;
+    // the avoid enters, 009A7A50 and both avoid ticks; 009A9970's roll/turn
+    // choice with the weights 009A7F70/009A83B0; and 0099DE8A's gate, the yaw
+    // base term only on heading mode 2. Draws at their midpoints, as every
+    // other dogfight draw in this host.
+    static constexpr bool kDogfightManeuverBodyBound = true;
+    static constexpr bool kDogfightAvoidBodiesBound = true;
+    static constexpr bool kDogfightAvoidPickBound = true;
+    static constexpr bool kPlannerYawBaseModeGateBound = false;
+    unsigned long long planner_yaw_base_zeroed{0};
     // DIAGNOSTIC: every kFighterAccelTraceEvery lead ticks one line per
     // fighter comparing the two accelerations; 0 = off in the landed build.
     static constexpr int kFighterAccelTraceEvery = 0;
@@ -6877,7 +6912,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
     ++host.summary.motion_steps;
     host.summary.simulated_seconds += step_seconds;
     if constexpr (Impl::kPlayerRoleBookkeepingBound) {
-        host.role_screen_update_0067bb50();
+        if constexpr (Impl::kRoleScreenFixedStepCall) {
+            host.role_screen_update_0067bb50();
+        }
         host.player_helm_prepare_0064b870();
     }
     if constexpr (bsp::kPlaneSquadronLeaveOnDeathBound) {
@@ -9174,6 +9211,384 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         owner_.record("BotTaskDogfight::select_target", 0x009aa630u);
                     }
 
+                    // ------------------------------------------------------------
+                    // Packet cc9_dogfight_maneuver_bodies. Every 00BD2F10 draw is
+                    // taken at its midpoint (the convention of this binding). The
+                    // aim point is the target origin, unit+9B4h is the height above
+                    // the water surface, the map-bounds test 0071C4F0 answers false,
+                    // and the T+9C0h / 007B9140 clause of 009A85B0 is skipped: all
+                    // labelled.
+                    static float df_ip(float x0, float y0, float x1, float y1, float x) {
+                        return bsp::dive_bomb_interpolate_clamped_00419010(x0, y0, x1, y1, x);
+                    }
+                    static float df_absf(float v) { return v > 0.0f ? v : -0.0f - v; }
+                    static float df_heading_of(float x, float z) {        // pi/2 - atan2(z, x)
+                        double hh = 1.5707963705062866 -
+                            std::atan2(static_cast<double>(z), static_cast<double>(x));
+                        if (0.0 > hh) hh += 6.2831854820251465;
+                        return static_cast<float>(hh);
+                    }
+                    float df_h9b4() const {
+                        const float* p = unit_.motion.position;
+                        return p[1] - owner_.avoid_surface_height(p[0], p[2]);
+                    }
+                    const GameUnitSlot* df_target_slot() const {
+                        if (unit_.df_target_plus_one == 0 ||
+                            unit_.df_target_plus_one - 1 >= owner_.slots.size()) return nullptr;
+                        return owner_.slots[unit_.df_target_plus_one - 1].get();
+                    }
+                    // 007BBC10(T, U): the target's pilot target is us. The host
+                    // holds it as T's dogfight target or its commanded target.
+                    bool df_pilot_targets_us(const GameUnitSlot& t) const {
+                        const std::size_t me = unit_.process_index + 1;
+                        return (t.dogfight_task_installed && t.df_target_plus_one == me) ||
+                               t.command_target_plus_one == me;
+                    }
+                    // 009A85B0(want_cone).
+                    bool df_threat_009a85b0(bool want_cone) {
+                        const GameUnitSlot* t = df_target_slot();
+                        if (t == nullptr || !df_pilot_targets_us(*t)) return false;
+                        if (!want_cone) return true;
+                        float v[3];
+                        GameUnitsHost::Impl::follow_to_body(*t, unit_.motion.position, false, v);
+                        if (!(v[2] > 10.0f)) return false;                          // 009A8671
+                        if (!(unit_.df_row.aim_shoot_distance * 1.5 > v[2])) return false;
+                        const double a = v[0] / v[2], b = v[1] / v[2];
+                        return std::sqrt(a * a + b * b) < 1.0;                      // 009A86C6
+                    }
+                    // 009A8560: mode 0, range U(0.3, 1.1) x ShootDistance (0.7 mid).
+                    void df_maneuver_arm_009a8560() {
+                        unit_.mv_mode_18 = 0;
+                        unit_.df_maneuver_range_34 = bsp::dogfight_maneuver_pursuit_range_009a8560(
+                            unit_.df_row.aim_shoot_distance, 0.7f);
+                    }
+                    // 009A86F0.
+                    void df_maneuver_expire_009a86f0() {
+                        ++unit_.mv_expires;
+                        unit_.mv_mode_18 = 0;
+                        float r = 0.5f;                                              // U(0, 1)
+                        const GameUnitSlot* t = df_target_slot();
+                        if (t != nullptr && df_pilot_targets_us(*t)) r = r + r;     // 009A8763
+                        const float c = unit_.df_row.turn_after_chance;             // row+218h
+                        if (c > r) {
+                            // approach+24h is the 1.0 floor, as elsewhere in this binding.
+                            unit_.df_maneuver_range_34 = unit_.df_row.follow_dist * 1.0f *
+                                df_ip(0.0f, 0.25f, 0.4f, -0.1f, c - r);             // 009A87CA
+                        } else {
+                            df_maneuver_arm_009a8560();                             // 009A87DF
+                        }
+                    }
+                    // 009A87F0.
+                    void df_maneuver_enter_009a87f0(float ceiling) {
+                        ++unit_.mv_enters;
+                        unit_.mv_latch_3c = false;
+                        const GameUnitSlot* t = df_target_slot();
+                        const float* u = unit_.motion.position;
+                        float base;
+                        if (t == nullptr) {
+                            base = unit_.plane_heading_c6c;                         // 0074E260
+                        } else if (df_threat_009a85b0(true)) {
+                            const float* tp = t->motion.position;
+                            // bearing to the target, plus U(-0.5, 0.5) = 0
+                            base = df_heading_of(tp[0] - u[0], tp[2] - u[2]);
+                        } else {
+                            const float* tp = t->motion.position;
+                            base = df_heading_of(u[0] - tp[0], u[2] - tp[2]);      // away
+                        }
+                        const float hh = bsp::wrapped_angle_add_00438aa0(base, 0.0f);  // + U(-0.8, 0.8) = 0
+                        double a = 1.5707963705062866 - hh;
+                        if (0.0 > a) a += 6.2831854820251465;
+                        unit_.mv_vec_20 = static_cast<float>(std::cos(a));
+                        unit_.mv_vec_24 = static_cast<float>(std::sin(a));
+                        const float hi = df_ip(100.0f, 0.0f, 500.0f, unit_.plane_climb_angle_1ec,
+                                               ceiling - u[1]);                     // 009A8A6A
+                        const float lo = df_ip(200.0f, 0.0f, 600.0f, -0.0f - unit_.plane_drop_angle,
+                                               df_h9b4());                          // 009A8AB5
+                        unit_.mv_pitch_30 = (lo + hi) * 0.5f;                       // U(lo, hi)
+                        unit_.mv_timer_38 = 1.05f * unit_.df_row.maneuver_change_time;   // U(0.8, 1.3)
+                    }
+                    // 009A8B20.
+                    void df_maneuver_tick_009a8b20(float dt, float ceiling) {
+                        const float t0 = unit_.mv_timer_38 - dt;
+                        unit_.mv_timer_38 = t0;
+                        if (0.0f > t0) {                                            // 009A8B3B
+                            df_maneuver_expire_009a86f0();
+                            df_maneuver_enter_009a87f0(ceiling);
+                        }
+                        const bool out = false;                                     // 0071C4F0, labelled
+                        const float* u = unit_.motion.position;
+                        if (unit_.mv_latch_3c || unit_.df_distance_d4 > unit_.df_maneuver_range_34 || out) {
+                            const float tt = unit_.mv_count_2c;
+                            bool recompute;
+                            if (dt < tt) {
+                                unit_.mv_count_2c = tt - dt;
+                                recompute = !(unit_.mv_latch_3c && !out);
+                            } else {
+                                unit_.mv_count_2c = tt + (unit_.mv_period_28 - dt);
+                                recompute = !(unit_.mv_mode_18 == 2 && unit_.mv_latch_3c && !out);
+                            }
+                            if (recompute) {
+                                const float dx = unit_.df_aim[0] - u[0];
+                                const float dy = unit_.df_aim[1] - u[1];
+                                const float dz = unit_.df_aim[2] - u[2];
+                                float yv, xv;
+                                if (unit_.df_horizontal_d8 > unit_.df_row.aim_shoot_distance * 3.0 && !out) {
+                                    float c = static_cast<float>(ceiling - (u[1] + 50.0));
+                                    if (c > 300.0) c = 300.0f;
+                                    yv = c;
+                                    xv = 500.0f;
+                                } else {
+                                    yv = dy;
+                                    xv = unit_.df_horizontal_d8;
+                                }
+                                unit_.mv_pitch_30 = df_heading_of(yv, xv);          // 009A8D1D-009A8D58
+                                unit_.mv_vec_20 = dx;
+                                unit_.mv_vec_24 = dz;
+                            }
+                            unit_.mv_latch_3c = true;
+                            unit_.df_maneuver_range_34 = 0.0f;
+                            unit_.mv_timer_38 = out ? 16.0f : 10.0f;
+                        }
+                        // 009A8D9A: the plan+268h bit-2 decay never runs here
+                        // (+268h is only ever stored as 0). Labelled.
+                        const float hdg = df_heading_of(unit_.mv_vec_20, unit_.mv_vec_24);
+                        const float err = bsp::wrapped_angle_subtract_00438b10(
+                            unit_.plane_heading_c6c, hdg);
+                        const float aerr = df_absf(err);
+                        if (unit_.mv_mode_18 == 0) {
+                            if (0.8726646 > aerr) {                                 // 009A8E42
+                                unit_.plan_heading_2c0 = hdg;
+                                unit_.plan_heading_2c0_written = true;
+                                unit_.plan_heading_mode_2cc = 2;
+                                unit_.plan_state.pitch_target_2bc = unit_.mv_pitch_30;
+                                unit_.plan_state.pitch_mode_2d0 = 2;
+                            } else if (2.1816616f > aerr) {                         // 009A8F00
+                                unit_.mv_mode_18 = 1;
+                                unit_.mv_bank_1c = err > 0.0f ? 1.3f : -1.3f;
+                            } else {
+                                const float hgt = static_cast<float>(u[1] - df_h9b4());
+                                const float a1 = df_ip(400.0f, 0.2f, 900.0f, 1.45f, hgt);
+                                const float spd = static_cast<float>(std::sqrt(
+                                    static_cast<double>(unit_.plane_world_velocity[0]) * unit_.plane_world_velocity[0] +
+                                    static_cast<double>(unit_.plane_world_velocity[1]) * unit_.plane_world_velocity[1] +
+                                    static_cast<double>(unit_.plane_world_velocity[2]) * unit_.plane_world_velocity[2]));
+                                const float lfs = owner_.bot_desired_speed_007c47f0(unit_);
+                                const float ratio = lfs > 0.0f ? spd / lfs : 0.0f;
+                                const float a2 = df_ip(1.0f, 1.45f, 1.8f, 0.2f, ratio);
+                                const float lo = a1 > a2 ? a1 : a2;
+                                unit_.mv_mode_18 = 1;
+                                const float hi = df_ip(300.0f, 1.5f, 700.0f, 2.0f, hgt);
+                                const float r = (lo + hi) * 0.5f;                   // U(lo, hi)
+                                unit_.mv_bank_1c = 0.0f > err ? -0.0f - r : r;
+                            }
+                        }
+                        if (unit_.mv_mode_18 == 1) {
+                            const float d = bsp::wrapped_angle_subtract_00438b10(
+                                unit_.plane_bank_angle_c68, unit_.mv_bank_1c);
+                            if (0.4363323 > d) {                                    // signed, 009A8ECC
+                                unit_.mv_mode_18 = 2;
+                                const float m = df_absf(unit_.mv_bank_1c);
+                                unit_.mv_bank_1c = (0.5 > m - 1.5) ? 1.0f : -1.0f;
+                            } else {
+                                unit_.plan_state.bank_target_2c4 = unit_.mv_bank_1c;
+                                unit_.plan_heading_mode_2cc = 1;
+                                unit_.plan_state.pitch_target_2bc = unit_.mv_pitch_30;
+                                unit_.plan_state.pitch_mode_2d0 = 2;
+                            }
+                        }
+                        if (unit_.mv_mode_18 == 2) {
+                            unit_.plan_slots[bsp::kPilotSlotPitch].desired = 1.0f;
+                            unit_.plan_slots[bsp::kPilotSlotPitch].active = 1;
+                            unit_.plan_state.pitch_mode_2d0 = 0;
+                            if (unit_.mv_bank_1c >= 0.0f) {
+                                unit_.plan_heading_mode_2cc = 1;
+                                unit_.plan_state.bank_target_2c4 =
+                                    unit_.plane_bank_angle_c68 > 0.0f ? 1.5f : -1.5f;
+                                if (0.5235988f > aerr) unit_.mv_mode_18 = 0;
+                            } else {
+                                const float bb = df_absf(unit_.plane_bank_angle_c68);
+                                unit_.plan_heading_mode_2cc = 1;
+                                unit_.plan_state.bank_target_2c4 =
+                                    1.5707963705062866 > bb ? 0.0f : 3.1415927f;
+                                if (1.0471976f > aerr) {
+                                    const float e2 = df_absf(bsp::wrapped_angle_subtract_00438b10(
+                                        unit_.plane_pitch_angle_c64, unit_.mv_pitch_30));
+                                    if (0.5235988f > e2) unit_.mv_mode_18 = 0;
+                                }
+                            }
+                        }
+                        ++unit_.mv_mode_ticks[unit_.mv_mode_18 < 0 ? 0 :
+                                              (unit_.mv_mode_18 > 2 ? 2 : unit_.mv_mode_18)];
+                        // 009A9270-009A92CE: throttle 1.0 and air brake 0 (both
+                        // active) and +2D8h = 0 are kept behind the existing
+                        // kDogfightThrottleBound, which is OFF; the gate values:
+                        if constexpr (GameUnitsHost::Impl::kDogfightThrottleBound) {
+                            unit_.plan_slots[bsp::kPilotSlotThrottle].desired = 1.0f;
+                            unit_.plan_slots[bsp::kPilotSlotThrottle].active = 1;
+                            unit_.plan_slots[bsp::kPilotSlotAirBrake].desired = 0.0f;
+                            unit_.plan_slots[bsp::kPilotSlotAirBrake].active = 1;
+                            unit_.plane_air_brake_mode_2d8 = 0;
+                        }
+                        unit_.df_dc = 1.5f;                                         // 00CE380C
+                        unit_.df_e0 = 0.1f;                                         // 00D7A2F0
+                    }
+                    // 009A7DE0 / 009A8020 (the timer is set by the caller).
+                    void df_avoid_enter(bool turn) {
+                        unit_.av_latch_24 = false;
+                        unit_.av_20 = 0.0f;
+                        const bool right = unit_.plane_bank_angle_c68 > 0.0f;
+                        if (!turn) {
+                            unit_.av_1c = right ? 0.9f : -0.9f;                     // U(0.8, 1.0)
+                        } else {
+                            unit_.av_20 = 0.875f;                                   // U(0.75, 1.0)
+                            unit_.av_1c = right ? 1.4835299f : -1.4835299f;        // U(70, 100 deg)
+                        }
+                    }
+                    // 009A7A50, shared by both avoid ticks.
+                    void df_avoid_common_009a7a50(float dt) {
+                        const float t = unit_.df_avoid_timer - dt;
+                        unit_.df_avoid_timer = t;
+                        if (t > 0.0f) {
+                            bool end = false;
+                            const float ax = df_absf(unit_.df_local_ec[0]);
+                            const float ay = df_absf(unit_.df_local_ec[1]);
+                            const float m = ax > ay ? ax : ay;
+                            const float q = unit_.df_local_ec[2] / m;
+                            if (0.10000000149011612 > q) {
+                                end = true;
+                            } else {
+                                const GameUnitSlot* tg = df_target_slot();
+                                if (tg != nullptr) {
+                                    // 009A7B98: the target's full inverse transform
+                                    // applied to (own - target), as the listing does.
+                                    const float d[3] = {
+                                        unit_.motion.position[0] - tg->motion.position[0],
+                                        unit_.motion.position[1] - tg->motion.position[1],
+                                        unit_.motion.position[2] - tg->motion.position[2]};
+                                    float l[3];
+                                    GameUnitsHost::Impl::follow_to_body(*tg, d, false, l);
+                                    float ratio = l[2];
+                                    if (static_cast<double>(l[2]) > 0.10000000149011612) {
+                                        const float bx = df_absf(l[0]), by = df_absf(l[1]);
+                                        const float mm = bx > by ? bx : by;
+                                        ratio = static_cast<float>(static_cast<double>(l[2]) / mm);
+                                    }
+                                    if (0.10000000149011612 > ratio) end = true;
+                                }
+                            }
+                            if (end) unit_.df_avoid_timer = -0.1f;                 // 009A7C3C
+                        }
+                        const float r = df_ip(-0.2617994f, 1.0f, -0.7853982f, -1.0f,
+                                              unit_.plane_pitch_angle_c64);          // 009A7C7A
+                        if constexpr (GameUnitsHost::Impl::kDogfightThrottleBound) {
+                            auto cl = [](float v) { return 0.0f > v ? 0.0f : (v > 1.0f ? 1.0f : v); };
+                            unit_.plan_slots[bsp::kPilotSlotThrottle].desired = cl(r);
+                            unit_.plan_slots[bsp::kPilotSlotThrottle].active = 1;
+                            unit_.plan_slots[bsp::kPilotSlotAirBrake].desired = cl(-0.0f - r);
+                            unit_.plan_slots[bsp::kPilotSlotAirBrake].active = 1;
+                            unit_.plane_air_brake_mode_2d8 = 0;
+                        }
+                        static_cast<void>(r);
+                        if (!unit_.av_latch_24) {
+                            const GameUnitSlot* tg = df_target_slot();
+                            unit_.av_latch_24 = tg == nullptr ? true : (-5.0f > unit_.df_local_ec[2]);
+                            if (!unit_.av_latch_24) {
+                                unit_.df_dc = 0.0f;
+                                unit_.df_e0 = 1.0f;
+                                return;
+                            }
+                        }
+                        unit_.df_dc = 1.0f;
+                        unit_.df_e0 = 0.5f;
+                        if (unit_.df_avoid_timer > 2.0f) unit_.df_avoid_timer = 1.5f;  // U(1, 2)
+                    }
+                    static float df_neg_sgn(float v) { return v < 0.0f ? 1.0f : (v > 0.0f ? -1.0f : 0.0f); }
+                    // 009A7E80.
+                    void df_avoid_roll_tick_009a7e80(float dt) {
+                        df_avoid_common_009a7a50(dt);
+                        unit_.plan_slots[bsp::kPilotSlotRoll].desired = unit_.av_1c;
+                        unit_.plan_slots[bsp::kPilotSlotRoll].active = 1;
+                        unit_.plan_heading_mode_2cc = 0;
+                        if (unit_.av_latch_24) {
+                            ++unit_.av_latched_ticks;
+                            unit_.plan_state.pitch_target_2bc = 0.5f;
+                            unit_.plan_state.pitch_mode_2d0 = 2;
+                            return;
+                        }
+                        unit_.plan_slots[bsp::kPilotSlotYaw].desired = df_neg_sgn(unit_.df_tan_f8[0]);
+                        unit_.plan_slots[bsp::kPilotSlotYaw].active = 1;
+                        unit_.gl_yaw_mode_2d4_zero = true;                           // +2D4h = 0
+                        unit_.plan_slots[bsp::kPilotSlotPitch].desired = df_neg_sgn(unit_.df_tan_f8[1]);
+                        unit_.plan_slots[bsp::kPilotSlotPitch].active = 1;
+                        unit_.plan_state.pitch_mode_2d0 = 0;
+                    }
+                    // 009A80E0.
+                    void df_avoid_turn_tick_009a80e0(float dt) {
+                        df_avoid_common_009a7a50(dt);
+                        if (!unit_.av_latch_24) {
+                            const float x = unit_.df_tan_f8[0], y = unit_.df_tan_f8[1];
+                            unit_.plan_slots[bsp::kPilotSlotPitch].active = 1;
+                            float roll;
+                            if (0.3f > y) {
+                                unit_.plan_slots[bsp::kPilotSlotPitch].desired = 1.0f;
+                                unit_.plan_state.pitch_mode_2d0 = 0;
+                                if (0.0f > y) {
+                                    roll = df_ip(0.8f, 1.0f, -0.8f, -1.0f, x / y);
+                                } else {
+                                    float dv = y;
+                                    if (0.0010000000474974513 > y) dv = 0.001f;
+                                    roll = df_ip(0.01f, -1.0f, -0.01f, 1.0f, x / dv);
+                                }
+                            } else {
+                                unit_.plan_slots[bsp::kPilotSlotPitch].desired = -1.0f;
+                                unit_.plan_state.pitch_mode_2d0 = 0;
+                                roll = df_ip(0.5f, 1.0f, -0.5f, -1.0f, x / y);
+                            }
+                            unit_.plan_slots[bsp::kPilotSlotRoll].desired = roll;
+                            unit_.plan_slots[bsp::kPilotSlotRoll].active = 1;
+                            unit_.plan_heading_mode_2cc = 0;
+                            return;
+                        }
+                        ++unit_.av_latched_ticks;
+                        // (A+8)+1E4h taken as the class climb angle +1E4h; the
+                        // mode-2 write is overwritten by +2D0h = 0 below.
+                        unit_.plan_state.pitch_target_2bc = unit_.plane_climb_angle_1e4;
+                        if (static_cast<double>(unit_.av_20) > 0.10000000149011612) {
+                            unit_.av_20 = static_cast<float>(unit_.av_20 - dt * 0.5);
+                        }
+                        const float b1 = static_cast<float>((1.0 - dt) * unit_.av_1c);
+                        unit_.av_1c = b1;
+                        unit_.plan_state.bank_target_2c4 = b1;
+                        unit_.plan_heading_mode_2cc = 1;
+                        const float ab = df_absf(unit_.plane_bank_angle_c68);
+                        unit_.plan_slots[bsp::kPilotSlotPitch].desired =
+                            df_ip(0.3490659f, 0.1f, 0.8726646f, unit_.av_20, ab);
+                        unit_.plan_slots[bsp::kPilotSlotPitch].active = 1;
+                        unit_.plan_state.pitch_mode_2d0 = 0;
+                    }
+                    // 009A7F70.
+                    float df_avoid_roll_weight_009a7f70() const {
+                        const float p = df_ip(-0.6981317f, 0.0f, 0.17453294f, 1.0f,
+                                              unit_.plane_pitch_angle_c64);
+                        const float hh = df_ip(100.0f, 0.2f, 300.0f, 1.0f, df_h9b4());
+                        return hh * p;
+                    }
+                    // 009A83B0.
+                    float df_avoid_turn_weight_009a83b0() const {
+                        const float hh = df_ip(100.0f, 0.0f, 300.0f, 1.0f, df_h9b4());
+                        float b = unit_.plane_bank_angle_c68;
+                        if (static_cast<double>(b) > 3.1415927410125732) {
+                            b = static_cast<float>(b - 6.2831854820251465);
+                        } else if (-3.1415927410125732 > static_cast<double>(b)) {
+                            b = static_cast<float>(b + 6.2831854820251465);
+                        }
+                        b = df_absf(b);
+                        float d = static_cast<float>(1.5707963705062866 - b);
+                        d = df_absf(d);
+                        const float a = df_ip(0.6981317f, 1.0f, 1.2217306f, 0.4f, d);
+                        return a * hh;
+                    }
+
                     void df_steer(float heading, float pitch, float altitude) {
                         unit_.plan_heading_2c0 = heading;
                         unit_.plan_heading_2c0_written = true;
@@ -9859,12 +10274,22 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             ti.maneuver_on_target_9bd0 = bsp::dogfight_on_target_009a9bd0(
                                 unit_.df_local_ec[2], unit_.df_tan_f8[0], unit_.df_tan_f8[1]);
                             ti.avoid_timer = unit_.df_avoid_timer;
-                            // 009A9970: the weights 009A7F70/009A83B0 are only
-                            // partly read; avoid_roll stands in. Labelled.
+                            // 009A9970: roll weight 009A7F70 against turn weight
+                            // 009A83B0 and r = 00BD2F10(0, wt + wr); roll when
+                            // wr >= r. The draw is taken at its midpoint, so roll
+                            // when wr >= (wr + wt) / 2. Before the switch the host
+                            // always took roll.
                             ti.avoid_pick_turn = false;
+                            if constexpr (GameUnitsHost::Impl::kDogfightAvoidPickBound) {
+                                const float wr = df_avoid_roll_weight_009a7f70();
+                                const float wt = df_avoid_turn_weight_009a83b0();
+                                const float sum = wt + wr;
+                                ti.avoid_pick_turn = !(wr >= sum * 0.5f);
+                            }
                             const bsp::DogfightTransition tr = bsp::dogfight_transition_009aafa0(ti);
                             unit_.dogfight_state = tr.next;
                             if (tr.maneuver_from_aim_8560) {
+                                unit_.mv_mode_18 = 0;   // 009A8567
                                 // 009A8560, draw 00BD2F10(0.3, 1.1) at its midpoint.
                                 unit_.df_maneuver_range_34 = bsp::dogfight_maneuver_pursuit_range_009a8560(
                                     unit_.df_row.aim_shoot_distance, 0.7f);
@@ -9882,6 +10307,23 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                         unit_.df_row.avoid_time, 1.125f);
                                     unit_.df_avoid_sign =
                                         unit_.plane_bank_angle_c68 > 0.0f ? 1.0f : -1.0f;
+                                    if constexpr (GameUnitsHost::Impl::kDogfightAvoidBodiesBound) {
+                                        df_avoid_enter(unit_.dogfight_state ==
+                                                       bsp::DogfightState::kAvoidTurn);
+                                    }
+                                    if (unit_.dogfight_state == bsp::DogfightState::kAvoidTurn) {
+                                        ++unit_.av_turn_picks;
+                                    } else {
+                                        ++unit_.av_roll_picks;
+                                    }
+                                } else if (unit_.dogfight_state == bsp::DogfightState::kManeuver) {
+                                    if constexpr (GameUnitsHost::Impl::kDogfightManeuverBodyBound) {
+                                        // 009AAFA0 runs 009A86F0 before the switch
+                                        // on avoid -> maneuver; then vtable[1] is
+                                        // 009A87F0.
+                                        if (tr.maneuver_from_avoid_86f0) df_maneuver_expire_009a86f0();
+                                        df_maneuver_enter_009a87f0(ceiling);
+                                    }
                                 }
                             }
                         } else {
@@ -9995,6 +10437,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
 
                         if (unit_.dogfight_state == bsp::DogfightState::kAvoidRoll ||
                             unit_.dogfight_state == bsp::DogfightState::kAvoidTurn) {
+                            if constexpr (GameUnitsHost::Impl::kDogfightAvoidBodiesBound) {
+                                if (unit_.dogfight_state == bsp::DogfightState::kAvoidRoll) {
+                                    df_avoid_roll_tick_009a7e80(dt);
+                                } else {
+                                    df_avoid_turn_tick_009a80e0(dt);
+                                }
+                                owner_.done("BotStateDogfightAvoid::tick", 0x009a7e80u);
+                                return;
+                            }
                             // STAND-IN, labelled: 009A7E80/009A80E0 call 009A7A50(dt)
                             // and are unread past it; the timer runs down here and
                             // the heading is held 90 degrees off the target bearing.
@@ -10016,6 +10467,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         if (unit_.dogfight_state == bsp::DogfightState::kManeuver ||
                             unit_.dogfight_state == bsp::DogfightState::kAttackRun ||
                             unit_.dogfight_state == bsp::DogfightState::kPrepare) {
+                            if constexpr (GameUnitsHost::Impl::kDogfightManeuverBodyBound) {
+                                if (unit_.dogfight_state == bsp::DogfightState::kManeuver) {
+                                    df_maneuver_tick_009a8b20(dt, ceiling);
+                                    owner_.done("BotStateDogfightManeuver::tick", 0x009a8b20u);
+                                    return;
+                                }
+                            }
                             // STAND-IN, labelled: 009A8B20's mode-0 arm (attackrun
                             // and prepare are unreachable while the mode is 1).
                             const bsp::DogfightSteer s = bsp::dogfight_maneuver_standin(
@@ -13577,6 +14035,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
 
                         bsp::PilotBotYawScratch scratch;
                         scratch.base_num = bsp::yaw_base_numerator_0099de8a(term);
+                        if constexpr (GameUnitsHost::Impl::kPlannerYawBaseModeGateBound) {
+                            // 0099DE8A CMP ECX,2: the heading-hold base term is
+                            // computed only when plan+2CCh == 2 on entry; any
+                            // other mode leaves it 0 (docs/PILOT_BOT_PLAN_CONTROLS.md,
+                            // docs/DOGFIGHT_MANEUVER_BODIES.md 2.4). Before the
+                            // switch the host steered toward the target bearing.
+                            if (unit_.plan_heading_mode_2cc != 2) {
+                                scratch.base_num = 0.0f;
+                                ++owner_.planner_yaw_base_zeroed;
+                            }
+                        }
                         scratch.base_gain =
                             bsp::yaw_base_gain_0099dffb(tuning, frame.abs_bank);
                         scratch.turn_num = 0.0f;
@@ -14380,6 +14849,12 @@ bool GameUnitsHost::unit_player_controlled_0184(std::size_t index) const {
         return index < host.slots.size() && host.slots[index]->role_player_0184;
     } else {
         return host.controlled_bound && host.controlled_index == index;
+    }
+}
+
+void GameUnitsHost::role_screen_update_0067bb50() {
+    if constexpr (Impl::kPlayerRoleBookkeepingBound) {
+        impl_->role_screen_update_0067bb50();
     }
 }
 
@@ -16079,6 +16554,13 @@ void GameUnitsHost::report() {
                              slot->df_target_plus_one - 1 < host.slots.size())
                                 ? host.slots[slot->df_target_plus_one - 1]->row.name.c_str()
                                 : "-");
+                        host.log.notef("  dogfight bodies %-12s mv_enters=%d mv_expires=%d "
+                            "mv_mode_ticks=%d/%d/%d avoid_roll=%d avoid_turn=%d "
+                            "avoid_latched_ticks=%d (packet cc9_dogfight_maneuver_bodies)",
+                            slot->row.name.c_str(), slot->mv_enters, slot->mv_expires,
+                            slot->mv_mode_ticks[0], slot->mv_mode_ticks[1],
+                            slot->mv_mode_ticks[2], slot->av_roll_picks, slot->av_turn_picks,
+                            slot->av_latched_ticks);
                     }
                 }
                 {
@@ -16239,6 +16721,10 @@ void GameUnitsHost::report() {
                                 "cc9_plane_substitution_sweep)", raises,
                                 Impl::kPlaneYawGainBc4Bound ? 1 : 0);
                         }
+                        host.log.notef("summary mission planner yaw base zeroed_ticks=%llu "
+                            "gate=%d (0099DE8A on +2CCh != 2, packet cc9_dogfight_maneuver_bodies)",
+                            host.planner_yaw_base_zeroed,
+                            Impl::kPlannerYawBaseModeGateBound ? 1 : 0);
                         host.log.notef("summary mission terrain avoidance ticks=%lld bands=%lld "
                             "throttle=%lld dive_ticks=%lld water_ticks=%lld (0099F1C0/0099CAB0, "
                             "packet cc9_pilot_vehicle_terrain_avoidance)", tt, tb, tth, td, tw);

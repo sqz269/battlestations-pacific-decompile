@@ -93,6 +93,7 @@ struct DogfightPilotRow {
     float boring_time = 18.0f;               // row+210h, dogfight_boring_time_21c
     float avoid_time = 2.5f;                 // row+214h, dogfight_avoid_time_220
     float maneuver_change_time = 15.0f;      // row+21Ch, dogfight_maneuver_change_time_228
+    float turn_after_chance = 1.0f;          // row+218h, DogfightTurnAfterChance (robots.lua 679)
 };
 
 // 009AA630 (called only from 009AAC70), one candidate's score. The target

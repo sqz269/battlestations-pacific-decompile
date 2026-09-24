@@ -342,6 +342,11 @@ public:
     // unit: the permission words unit+188h + role*4 for every mask bit.
     void set_role_availability_00927d20(std::size_t index, std::uint32_t mask,
                                         std::int32_t value);
+    // 0067BB50, HUD page 27h's slot 20h (the role-0 take on the controlled
+    // unit), for the HUD pump to call once per pump as the image does. While
+    // GameUnitsHost::Impl::kRoleScreenFixedStepCall is true the units host
+    // still calls it once per fixed step itself (docs/SCRIPTED_HELM.md 6.6).
+    void role_screen_update_0067bb50();
     // Canonical current assignments, native unit+1ACh..+1CCh: 00928630
     // explicitly initializes all nine to 8 (unassigned). Separate from the
     // +188h policy table. No assignment receiver is represented yet; selecting
