@@ -1,0 +1,231 @@
+{
+  "packet": "cc10_node_root_propagation",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "baseline_main": "def01379c9e9d94e3ccb12106377dc4cca659220",
+  "source": "src/native_node_root_propagation.cpp",
+  "header": "include/bsp/native_node_root_propagation.hpp",
+  "documentation": "docs/NATIVE_NODE_ROOT_PROPAGATION_CC10.md",
+  "status": "complete_raw_root_propagation_strict_win32_genuine_attachment_original_source_checked",
+  "functions": [
+    {
+      "address": "00b6d890",
+      "end_exclusive": "00b6d934",
+      "end_inclusive": "00b6d933",
+      "final_instruction": "00b6d931",
+      "final_instruction_length": 3,
+      "byte_span": 164,
+      "instruction_count": 60,
+      "cpp_symbol": "bsp::propagate_native_node_root_storage_00b6d890",
+      "original_abi": "ECX actual node, stacked requested actual outer24h scene, RET4",
+      "coverage": "complete normal actual root propagation with explicit current virtual50 bindings"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00b6d890",
+      "address": "00b6d8b7",
+      "native": "00b72220",
+      "contract": "captured old actual root, current parent null; no logical root-list"
+    },
+    {
+      "function": "00b6d890",
+      "address": "00b6d8d0",
+      "native": "00b721f0",
+      "contract": "captured requested actual outer24h prepend before current node170 test"
+    },
+    {
+      "function": "00b6d890",
+      "address": "00b6d8ec",
+      "native": "00b72110",
+      "contract": "captured current A4/profile/slot50 address precede getter; opaque actual resource identity"
+    },
+    {
+      "function": "00b6d890",
+      "address": "00b6d8f6",
+      "native": "captured_node_profile+vtable50",
+      "contract": "read CURRENT captured slot after getter, actual self/resource/recursion0"
+    },
+    {
+      "function": "00b6d890",
+      "address": "00b6d914",
+      "native": "captured_node_profile+vtable50",
+      "contract": "current node profile, capturedparent current170, current50, actual self/resource/recursion0"
+    },
+    {
+      "function": "00b6d890",
+      "address": "00b6d923",
+      "native": "00b6d890",
+      "contract": "direct actual child recursion with original requested root; reread current next3C afterward"
+    }
+  ],
+  "no_ghidra_function": [],
+  "prior_reconstruction_records": [
+    {
+      "address": "00b6d890",
+      "name": "clear_native_raw_node_root_00b6d890_null",
+      "source": "src/platform_renderer_activation.cpp",
+      "status": "bounded_source_provider_strict_win32_build_and_native_control_fixture_passed",
+      "coverage": "partial_requested_root_null_only",
+      "original_abi": "ECX node; stack root=0; RET4; preserves EBX ESI on covered path",
+      "native_end_exclusive": "00b6d934",
+      "abi_compatible": false,
+      "game_validated": false,
+      "production_activation_validated": false,
+      "evidence": "docs/PLATFORM_RENDERER_ACTIVATION_CC10.md; reports/platform_renderer_activation_cc10.json. Current live/disk body verified; native/source control and raw-storage fixture with explicit date/reload/material spies. Required leaves B469A0/B3FA90/B19000 and actual B107F0 production graph remain external. Existing names and typed scene providers preserved. Source is not a native ABI replacement.",
+      "covered_ranges": [
+        "00b6d890..00b6d8c6",
+        "00b6d916..00b6d934"
+      ],
+      "excluded_range": "00b6d8c6..00b6d916",
+      "range_convention": "end-exclusive",
+      "kind": "fragment"
+    },
+    {
+      "address": "00b6d890",
+      "name": "propagate_native_node_root_00b6d890",
+      "source": "src/native_node_destruction.cpp",
+      "status": "typed_native_storage_or_lifetime_integrated_strict_win32_build_and_bounded_native_host_checks_passed",
+      "original_abi": "ECX node; stack requested root; RET4",
+      "native_end_exclusive": "00b6d934",
+      "abi_compatible": false,
+      "game_validated": false,
+      "evidence": "docs/NATIVE_LIGHT_OWNER_INTEGRATION.md; reports/native_light_owner_integration_audit.json",
+      "remaining": "Required actual node type predicate, complete physical owner lifecycle and game validation remain. Nonnull reparenting is outside the null-parent fragment.",
+      "kind": "function"
+    }
+  ],
+  "context": {
+    "actual_fields": "actual outer24 identity in nodeA4, actual node in outer0C, actual3Ch resource in outer1C/node170; no host companion pointers",
+    "capture": "request captured before first node read; no root frame; actual attachment binding owns its persistent frames/acquired",
+    "root_path": "capture currentA4 then actual profile/slot50 address before genuineB72110, read CURRENT target after getter",
+    "parent_path": "capture parent atB6D8C6; current nodeprofile atB6D904, capturedparent170 atB6D906, current50 atB6D90C",
+    "recursion": "equalA4/nonzero parent returns including no descendants; otherwise CURRENT firstchild after attachment and CURRENT next3C after direct recursion using original request",
+    "providers": "existing raw B72220/B721F0/B72110 plus SAME NativeNodeSceneChildDispatch pure actual-table lookup/exact target invocation, actual self recursion0; no unknown default",
+    "failure": "preserve already completed root/list stores and persistent callee diagnostics; no additional retain/admission/rollback/destructor installation"
+  },
+  "verification": {
+    "strict_build": "./scripts/build.ps1",
+    "ctests": "2/2 reconstructed_math,tool_tests",
+    "byte_evidence": [
+      {
+        "address": "00b6d890",
+        "length": 164,
+        "sha256": "516179fbacd42b170c285388abc621ee25354af3d078620ac960fdee21c6aa05",
+        "live_equals_installed": true
+      }
+    ],
+    "call_verifier": "4 direct call rows checked,0 failed;2 indirect current50 sites retained and assembly inspected, not direct-callee verified",
+    "probe": {
+      "source": "local/output/cc10_root_propagation_probe.cpp",
+      "command": "cl /nologo /MD /EHsc /std:c++20 /O2 /Gy /W4 /WX /fp:strict /I include /I local\\output /Fo:local\\output\\ /Fe:local\\output\\cc10_root_propagation_probe.exe local\\output\\cc10_root_propagation_probe.cpp build\\win32\\Release\\bsp_core.lib build\\win32\\Release\\bsp_lua511.lib build\\win32\\Release\\bsp_zlib121.lib /link /OPT:REF /MANIFEST:EMBED user32.lib d3d9.lib advapi32.lib shell32.lib",
+      "assertions": "NDEBUG absent; compile-time #ifdef NDEBUG rejection; no /DNDEBUG",
+      "exit_code": 0,
+      "comparison_pairs": 1,
+      "checks": [
+        "actual24 root/list identity and full actual174h node-prefix snapshots",
+        "genuine B83C50 actual3Ch resources, same-count canonical references and real ambient owners; empty raw-name branch",
+        "shared genuine B6ED80/B6EE10 attachments with initialized current camera predicates and actual imported increments/decrements",
+        "root resource captured before import callback changes outer1C",
+        "CURRENT firstchild after root attachment, CURRENT next after child direct recursion",
+        "original requested root survives callback incoming argument mutation; parent-derived resource comes from capturedparent170",
+        "equal-root nonzero-parent early return skips descendants, null-root unlink/clear has no attachment call",
+        "resource credits established/removed by genuine bodies, real resource/ambient canonical terminals retire without count fabrication"
+      ],
+      "shared_boundary": "copied original164B root body calls genuine shared source B72220/B721F0/B72110 and B6ED80; exact current profile50 targets use explicit relocation bridges. Nested machine code and native private frame ABI are not compared.",
+      "not_tested": "original nested helper/attachment/predicate bodies, native CRT/FH3/fault ABI, full outer/camera construction, node/light destruction graph, application/gameplay"
+    }
+  },
+  "limits": [
+    "Pure actual-profile resolution and genuine exact-target dispatch with persistent initialized source frames/Acquired are required.",
+    "Actual resource/camera type cells must belong to same context/import/owner domain; no logical SceneAttachmentRuntime fallback.",
+    "No private-stack/saved-register/nativeABI/FH3 compatibility; raw B6D890 is not installed into legacy destructor graph.",
+    "Full actual outer24, node/light terminal ownership and AC59A0 remain separate."
+  ],
+  "ghidra_mutations": false,
+  "abi_compatible": false,
+  "application_bound": false,
+  "game_validated": false,
+  "frozen_evidence": [
+    {
+      "path": "local/output/cc10_root_propagation_bytes.hpp",
+      "bytes": 863,
+      "sha256": "14c03014db4c060f65e64aa5e84aee914b3e9691c0a7548d6f820b43f243a373"
+    },
+    {
+      "path": "local/output/cc10_root_propagation_calls.log",
+      "bytes": 257,
+      "sha256": "605425cf981d645795c511d3a805a1bb2ba08271cd8cb31281fb6a2d6edee205"
+    },
+    {
+      "path": "local/output/cc10_root_propagation_capture.py",
+      "bytes": 1750,
+      "sha256": "abd0ad122aed64c5238be5483938a34cf50c6df9173a58a54f8e8d67529bea85"
+    },
+    {
+      "path": "local/output/cc10_root_propagation_ledger.py",
+      "bytes": 1523,
+      "sha256": "8bd48689242e99370e6cd41736ad5fb8f4d04fefc3c2a26e8bfcfa655d4ad181"
+    },
+    {
+      "path": "local/output/cc10_root_propagation_probe.cmd",
+      "bytes": 605,
+      "sha256": "edcd88e5e30821f6ced5aae944393f0b699937d123a1ea823aebef0d1182a0b8"
+    },
+    {
+      "path": "local/output/cc10_root_propagation_probe.cpp",
+      "bytes": 12765,
+      "sha256": "2215adf972f050949f9eafc3402a24ea85533a18c03c2c9410af35edf2a95d2c"
+    },
+    {
+      "path": "local/output/cc10_root_propagation_probe.log",
+      "bytes": 336,
+      "sha256": "3d5e6bb3529adac15e5d1804032d2f27671491971ace30d4ca1a4b5b9eef6337"
+    },
+    {
+      "path": "local/output/cc10_root_propagation_report.py",
+      "bytes": 6028,
+      "sha256": "a3dc5c1b065ff6bcbff8b9ff96cbe45db68332b2bc96186e651b4061eb7aa568"
+    },
+    {
+      "path": "local/output/cc10_root_propagation/00b6d890_assembly.txt",
+      "bytes": 2802,
+      "sha256": "12bfd812059f931deb278a4942c37e3da83a5b0317a056bf91b916943417f524"
+    },
+    {
+      "path": "local/output/cc10_root_propagation/00b6d890_bytes.txt",
+      "bytes": 799,
+      "sha256": "bc44c5de2f5743087c099497d317309ddc354d48b983bea682b24bbb4def6ea9"
+    },
+    {
+      "path": "local/output/cc10_root_propagation/00b6d890_proto.txt",
+      "bytes": 437,
+      "sha256": "9336695418e9e37b91e420ecfeb950926790afdd1eefc94ea5aa0088597e2828"
+    },
+    {
+      "path": "local/output/cc10_root_propagation/byte_evidence.json",
+      "bytes": 164,
+      "sha256": "326a1c4c371e9648b2f9fb327110a60680b958f4f6783a38c0ca64c5a62b605c"
+    },
+    {
+      "path": "local/output/cc10_root_propagation/program.txt",
+      "bytes": 40,
+      "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+    },
+    {
+      "path": "local/cc10_root_propagation_build.log",
+      "bytes": 3519,
+      "sha256": "fdb70fdd9746613e178e2eed774452c046295e8c78cfa42cc612f704bac021d5"
+    },
+    {
+      "path": "local/cc10_raw_root_propagation_readiness.md",
+      "bytes": 4046,
+      "sha256": "1bb274a69c2cb88ae28e51c22535e7dbcfde570c03ae907582d77cd3ccc165c0"
+    },
+    {
+      "path": "local/cc10_raw_outer_scene_readiness.md",
+      "bytes": 6858,
+      "sha256": "10d78bd3a39dd990ac06993bf1acda8b7b4ee4e2e50785584baf9a897e96b0c8"
+    }
+  ]
+}
