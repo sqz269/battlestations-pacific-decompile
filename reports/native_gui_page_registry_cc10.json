@@ -26,6 +26,40 @@
     {"function": "00aa31f0", "address": "00aa3276", "slot": "+04", "profile_example": "00d5be38 -> 00aa38f0", "contract": "reload current vtable and scalar-delete with flag 1"}
   ],
   "producer": ["00aa5d70 constructs manager+14 empty raw vector", "00ac6600 constructs raw 124h page with signed applied priority at +fc"],
+  "helper_equivalence": {
+    "method": "read-only live Ghidra inclusive-body byte comparison; normalize only relative CALL displacement bytes; inspect all differing CALL targets and provider bodies",
+    "checked_insert": {"gui": "004d3b70-004d3bf8", "existing": "00bd08d0-00bd0958", "bytes_each": 137, "different_bytes": 14, "all_differences_in_five_call_operands": true, "callee_mapping": ["00bf6713 to same validation target (four calls)", "004d1b20 to 00bd0700 (one call)"]},
+    "insert_count": {"gui": "004d1b20-004d1cd3", "existing": "00bd0700-00bd08b3", "bytes_each": 436, "different_bytes": 22, "all_differences_in_twelve_call_operands": true, "growth": "max(count+1, capacity+capacity/2) within 0x3fffffff; copy prefix/value/tail, free old, publish begin/capacity/end", "in_place": "both middle-insert branches preserve raw DWORD moves"},
+    "provider_pairs": [
+      {"gui": "004cedc0", "existing": "00bd0590", "bytes_each": 105, "difference": "three CALL displacements and different FH3 handler pointer; same length-error message and throwing behavior"},
+      {"gui": "004b85f0", "existing": "00bcfeb0", "bytes_each": 85, "difference": "only three CALL displacements; same count*4 overflow check and 00bf681b allocation"},
+      {"gui": "004c8d20", "existing": "00bd0500", "bytes_each": 48, "difference": "only CALL displacement; same nonzero-range memmove_s"},
+      {"gui": "004cb100", "existing": "00bd0560", "bytes_each": 46, "difference": "byte-identical DWORD fill"},
+      {"gui": "004c2f30", "existing": "00bd0160", "bytes_each": 30, "difference": "byte-identical forward DWORD assignment"},
+      {"gui": "004c2f50", "existing": "00bd0180", "bytes_each": 47, "difference": "only CALL displacement; same backward memmove_s"},
+      {"gui": "00bf65ac", "existing": "00bf65ac", "difference": "same free target"}
+    ],
+    "source_modules": ["src/native_singleton_vector_registration_wrappers.cpp", "src/native_singleton_vector_insert_count.cpp", "src/native_singleton_vector_leaves.cpp", "src/native_singleton_vector_allocation.cpp"],
+    "limits": "source CRT allocation/new-handler, invalid handler, FH3/SEH and exception RTTI are not original identities"
+  },
+  "helper_call_rows": [
+    {"function": "004d3b70", "address": "004d3bc0", "native": "004d1b20", "contract": "GUI checked insert delegates count-one insertion"},
+    {"function": "00bd08d0", "address": "00bd0920", "native": "00bd0700", "contract": "existing checked insert delegates count-one insertion"},
+    {"function": "004d1b20", "address": "004d1b69", "native": "004cedc0", "contract": "GUI length overflow"},
+    {"function": "00bd0700", "address": "00bd0749", "native": "00bd0590", "contract": "existing length overflow"},
+    {"function": "004d1b20", "address": "004d1bcb", "native": "004b85f0", "contract": "GUI count*4 allocation"},
+    {"function": "00bd0700", "address": "00bd07ab", "native": "00bcfeb0", "contract": "existing count*4 allocation"},
+    {"function": "004d1b20", "address": "004d1bde", "native": "004c8d20", "contract": "GUI copy prefix"},
+    {"function": "00bd0700", "address": "00bd07be", "native": "00bd0500", "contract": "existing copy prefix"},
+    {"function": "004d1b20", "address": "004d1bec", "native": "004cb100", "contract": "GUI insert captured value"},
+    {"function": "00bd0700", "address": "00bd07cc", "native": "00bd0560", "contract": "existing insert captured value"},
+    {"function": "004d1b20", "address": "004d1c1c", "native": "00bf65ac", "contract": "GUI free old vector before publication"},
+    {"function": "00bd0700", "address": "00bd07fc", "native": "00bf65ac", "contract": "existing free old vector before publication"},
+    {"function": "004d1b20", "address": "004d1c92", "native": "004c2f30", "contract": "GUI in-place forward DWORD assignment"},
+    {"function": "00bd0700", "address": "00bd0872", "native": "00bd0160", "contract": "existing in-place forward DWORD assignment"},
+    {"function": "004d1b20", "address": "004d1cb3", "native": "004c2f50", "contract": "GUI in-place backward move"},
+    {"function": "00bd0700", "address": "00bd0893", "native": "00bd0180", "contract": "existing in-place backward move"}
+  ],
   "reference_contract": "00aa31f0 directly removes and destroys; it does not decrement page+4. Caller 00518250 separates refcount-one destroy and InterlockedDecrement paths.",
   "build": "scripts/build.ps1 MSVC Win32 succeeded; 3/3 CTests passed",
   "fixture": "one ignored local MSVC Win32 source-only probe linked bsp_core.lib: signed priority, stable equals, same-pointer reposition, unchanged page+4, vector removal before virtual20 and current virtual04 after profile change; passed",
