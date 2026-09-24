@@ -873,3 +873,14 @@ switch on, `kHudShipViewRoleTableBound` off then on, USN04 4500, no BSP_PLAYER_H
   role-1 test at 0064B9C5 and 0064BB1E therefore still answers false, and no branch changes.
 - **Total.** The unimplemented total falls by 18,316.
 - **Summary lines.** All identical.
+
+**The pair.** `local\p10_off_usn04.log` against `local\p10_on_usn04.log`, one tree, 2560x1440.
+
+| row | OFF | ON |
+| --- | ---: | ---: |
+| unimplemented total | 2,371,778 | 2,353,462 (-18,316; predicted -18,316) |
+| HudShipView::local_player_role | 18,316 | none |
+
+- No other row moves.
+- **Summary lines.** All 160 are identical.
+- **Result.** Every prediction holds. **`kHudShipViewRoleTableBound` flips ON.**

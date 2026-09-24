@@ -135,7 +135,7 @@ inline constexpr bool kHudShipViewControlsBound = true;
 // (unit+1ACh, the table the 27h role take and the BSP_PLAYER_HELM option
 // write) in place of the fixed "role 0 held, role 1 not" substitution. OFF
 // keeps the substitution and its record.
-inline constexpr bool kHudShipViewRoleTableBound = false;
+inline constexpr bool kHudShipViewRoleTableBound = true;
 
 inline constexpr bool kHudShipScreenGaugesBound = true;
 
