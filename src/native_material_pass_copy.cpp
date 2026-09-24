@@ -1,6 +1,8 @@
 #include "bsp/native_material_pass_copy.hpp"
 #include "bsp/singleton_lifetime.hpp"
+#include "bsp/native_string_pool_storage.hpp"
 #include <cstring>
+#include <exception>
 #include <new>
 #include <stdexcept>
 
@@ -153,28 +155,70 @@ void copy_native_material_pass_00b455c0(NativeMaterialPassStorage& destination,
     }
     set_native_material_pass_effect_00b172b0(destination.base.root, source.base.root.borrowed_effect_14);
 }
+namespace {
+template<class Construct>
+void build_secondary(NativeMaterialEffectStorage& effect, NativeMaterialPassCopyAccess& copy,
+    NativeMaterialSecondaryPassRegistration registration, Construct construct,
+    NativeMaterialSecondaryPassFrame* frame) {
+    for (std::uint32_t i = 0; i < effect.secondary_100.size(); ++i) {
+        if (i == 0 && effect.passes_c8[0]) {
+            if (frame) frame->native_site = 0x00b45e39;
+            void* const raw = copy.lifetime.pool.allocate_slot_00b41210();
+            if (frame) { frame->raw_slot = raw; frame->native_site = 0x00b45e4c; }
+            auto* pass = raw ? construct(raw) : nullptr;
+            auto* const source = static_cast<const NativeMaterialPassStorage*>(effect.passes_c8[0]);
+            if (frame) frame->captured_source = source;
+            effect.secondary_100[0] = pass;
+            if (frame) { frame->published = true; frame->native_site = 0x00b45e6c; }
+            if (!pass || !source) throw std::logic_error("secondary pass requires live allocation and primary after construction");
+            registration.bind_pass(registration.context, *pass);
+            if (frame) frame->registered = true;
+            copy_native_material_pass_00b455c0(*pass, *source, copy);
+            if (frame) frame->native_site = 0x00b45e7a;
+            set_native_material_render_state_00b5ec40(effect.secondary_100[0], 0xf, 0);
+            if (frame) frame->native_site = 0x00b45e89;
+            set_native_material_render_state_00b5ec40(effect.secondary_100[0], 0x1b, 1);
+            if (frame) frame->native_site = 0x00b45e98;
+            set_native_material_render_state_00b5ec40(effect.secondary_100[0], 0x13, 5);
+            if (frame) frame->native_site = 0x00b45ea7;
+            set_native_material_render_state_00b5ec40(effect.secondary_100[0], 0x14, 6);
+            static_cast<NativeMaterialPassStorage*>(effect.secondary_100[0])->base.root.word_08 = 1;
+        } else effect.secondary_100[i] = nullptr;
+        if (frame) frame->secondary_slots_written = i + 1u;
+    }
+}
+} // namespace
 void build_native_material_secondary_pass_00b45e00(NativeMaterialEffectStorage& effect,
     NativeMaterialPassConstructionAccess& construction, NativeMaterialPassCopyAccess& copy,
     NativeMaterialSecondaryPassRegistration registration) {
     if (&construction.lifetime != &copy.lifetime || !registration.bind_pass)
         throw std::invalid_argument("secondary pass requires one canonical lifetime and pass registration");
-    for (std::uint32_t i = 0; i < effect.secondary_100.size(); ++i) {
-        if (i == 0 && effect.passes_c8[0]) {
-            void* const raw = copy.lifetime.pool.allocate_slot_00b41210();
-            NativeMaterialPassStorage* pass;
-            try { pass = raw ? initialize_native_material_pass_00b44b10(raw, construction) : nullptr; }
-            catch (...) { if (raw) copy.lifetime.pool.return_slot_00b40a40(raw); throw; }
-            auto* const source = static_cast<const NativeMaterialPassStorage*>(effect.passes_c8[0]);
-            effect.secondary_100[0] = pass;
-            if (!pass || !source) throw std::logic_error("secondary pass requires live allocation and primary after construction");
-            registration.bind_pass(registration.context, *pass);
-            copy_native_material_pass_00b455c0(*pass, *source, copy);
-            set_native_material_render_state_00b5ec40(effect.secondary_100[0], 0xf, 0);
-            set_native_material_render_state_00b5ec40(effect.secondary_100[0], 0x1b, 1);
-            set_native_material_render_state_00b5ec40(effect.secondary_100[0], 0x13, 5);
-            set_native_material_render_state_00b5ec40(effect.secondary_100[0], 0x14, 6);
-            static_cast<NativeMaterialPassStorage*>(effect.secondary_100[0])->base.root.word_08 = 1;
-        } else effect.secondary_100[i] = nullptr;
-    }
+    build_secondary(effect, copy, registration, [&](void* raw) {
+        try { return initialize_native_material_pass_00b44b10(raw, construction); }
+        catch (...) { copy.lifetime.pool.return_slot_00b40a40(raw); throw; }
+    }, nullptr);
+}
+NativeMaterialSecondaryPassFrame::~NativeMaterialSecondaryPassFrame() {
+    if (phase == Phase::running || phase == Phase::failed) std::terminate();
+}
+void build_native_material_secondary_pass_00b45e00(NativeMaterialEffectStorage& effect,
+    NativeMaterialProgramNumericRendererDomain& domain, NativeMaterialPassCopyAccess& copy,
+    NativeMaterialSecondaryPassRegistration registration, NativeMaterialSecondaryPassFrame& frame) {
+    using Phase = NativeMaterialSecondaryPassFrame::Phase;
+    if (frame.phase != Phase::fresh || &domain.construction.lifetime != &copy.lifetime
+        || &domain.construction.lifetime.strings != &domain.textures.strings
+        || &domain.textures.strings != &domain.textures.textures.strings
+        || static_cast<const volatile void*>(&domain.construction.current_renderer_00f8d394)
+            != static_cast<const volatile void*>(&domain.textures.textures.current_renderer_00f8d394)
+        || !registration.bind_pass)
+        throw std::invalid_argument("numeric secondary pass requires fresh frame and shared actual domains");
+    frame.phase = Phase::running;
+    try {
+        build_secondary(effect, copy, registration, [&](void* raw) {
+            return initialize_native_compiler_pass_00b44b10(raw, domain.construction,
+                domain.textures, domain.renderer_profile_00d5f0a8, frame.constructor);
+        }, &frame);
+        frame.phase = Phase::complete;
+    } catch (...) { frame.phase = Phase::failed; throw; }
 }
 } // namespace bsp

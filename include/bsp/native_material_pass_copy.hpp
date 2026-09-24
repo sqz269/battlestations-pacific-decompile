@@ -1,6 +1,7 @@
 #pragma once
 #include "bsp/native_material_pass_owner.hpp"
 #include "bsp/native_material_effect_owner.hpp"
+#include "bsp/native_material_compiler_providers.hpp"
 
 namespace bsp {
 // Original ECX destination12-byte header, stack source header; EAX destination,
@@ -57,4 +58,33 @@ struct NativeMaterialSecondaryPassRegistration {
 void build_native_material_secondary_pass_00b45e00(NativeMaterialEffectStorage&,
     NativeMaterialPassConstructionAccess&, NativeMaterialPassCopyAccess&,
     NativeMaterialSecondaryPassRegistration);
+
+// Borrow the SAME pass lifetime, canonical state registration, current renderer
+// cell and actual texture-cache domain used by the compiler/application. These
+// providers and the original numeric table must outlive every retained load.
+// No pool, registry, renderer or native owner is created by this domain.
+struct NativeMaterialProgramNumericRendererDomain {
+    NativeMaterialPassConstructionAccess& construction;
+    NativeTextureCacheContext& textures;
+    const volatile std::uint32_t* renderer_profile_00d5f0a8;
+};
+struct NativeMaterialSecondaryPassFrame final {
+    enum class Phase { fresh, running, complete, failed };
+    Phase phase{Phase::fresh};
+    std::uint32_t native_site{}, secondary_slots_written{};
+    void* raw_slot{};
+    NativeMaterialCompilerPassConstructionFrame constructor;
+    const NativeMaterialPassStorage* captured_source{};
+    bool published{}, registered{};
+    ~NativeMaterialSecondaryPassFrame();
+};
+// Numeric-domain B45E00 uses the existing full B44B10 texture-cache provider.
+// Unlike the legacy constructor's unwind, its failed constructor retains the
+// actual raw slot, base/state owners, temporary and texture acquisition. The
+// caller must retain this one-shot frame; no catch returns the slot or invents
+// cleanup. Running/failed frame destruction terminates. A completed frame is
+// metadata only; the published pass remains in the canonical owner domain.
+void build_native_material_secondary_pass_00b45e00(NativeMaterialEffectStorage&,
+    NativeMaterialProgramNumericRendererDomain&, NativeMaterialPassCopyAccess&,
+    NativeMaterialSecondaryPassRegistration, NativeMaterialSecondaryPassFrame&);
 } // namespace bsp
