@@ -1,0 +1,180 @@
+{
+  "packet": "cc10_camera_raw_world_edit_integration",
+  "worker_commit": "9969f79219b9427b387ac5a2aff154909d83091f",
+  "integration": "d854f83c0884feec34e00c94d22e1704acbf6881",
+  "archive": {
+    "path": "local/cc10-platform-evidence/camera-raw-world-edit.zip",
+    "sha256": "bb3c7295cbd0d6169c77da1bff6c264cc40bb4bf0213227baeaa1fbc93fcfc94",
+    "files": 54,
+    "valid": true
+  },
+  "worker_report": "reports/native_camera_raw_world_edit_cc10.json",
+  "review": [
+    "Full four-body source/header/native listings reviewed; current parent/cache, argument capture and current3C/40 schedules retained",
+    "Explicit initialized live DWORD backing and disjoint immutable pointer views; native nested direction overlap is derive+74h, no overlapping aggregate lifetimes",
+    "Derive cache flags are reread after genuine inverse/copy; raw world setter applies final flags2 after current40",
+    "Direction naked core preserves x87 load/store/add spill sequence and independently retests current bit2",
+    "Genuine B6DBE0/B6DBC0 dispatch; declared harness mutation after genuine3C tests late parent/profile reads without claiming recovered mutation behavior",
+    "Native return/saved-register/private gaps excluded; dead derive scratch not claimed as final wrapper output"
+  ],
+  "validation": {
+    "normal_bytes": 408,
+    "live_equals_installed": true,
+    "direct_call_rows": 13,
+    "indirect_rows_retained": 2,
+    "strict_win32_build": true,
+    "worker_ctests": 3,
+    "integrated_ctests": 3,
+    "focused_original_source_pairs": 5,
+    "compiled_x87_order_verified": true,
+    "new_tracked_tests": 0,
+    "build_log_sha256": "cbcd499eaa613eea88a2f6a40011f70664fd176cb39098ca689a853eac84e519",
+    "ghidra_flow_or_definition_required": false,
+    "full_camera_constructor": false,
+    "camera_companion_admission": false,
+    "provider_throw_path_exercised": false,
+    "native_ABI_FH3_SEH": false,
+    "application_bound": false,
+    "game_validated": false
+  },
+  "probe_boundary": {
+    "source": "local\\cc10_camera_raw_world_edit\\probe.cpp",
+    "build_log": "local\\cc10_camera_raw_world_edit\\probe_build.log",
+    "run_log": "local\\cc10_camera_raw_world_edit\\probe.log",
+    "command": "local\\cc10_camera_raw_world_edit\\probe.cmd",
+    "pairs": 5,
+    "result": "pass",
+    "normal_bytes": 408,
+    "patched_original_operands": [
+      {
+        "call_site": "00b6e7fe",
+        "operand_start": "00b6e7ff",
+        "size": 4,
+        "callee": "00b6db70"
+      },
+      {
+        "call_site": "00b6e80d",
+        "operand_start": "00b6e80e",
+        "size": 4,
+        "callee": "00b63b30"
+      },
+      {
+        "call_site": "00b6e816",
+        "operand_start": "00b6e817",
+        "size": 4,
+        "callee": "004134f0"
+      },
+      {
+        "call_site": "00b6e82e",
+        "operand_start": "00b6e82f",
+        "size": 4,
+        "callee": "00413920"
+      },
+      {
+        "call_site": "00b6e83a",
+        "operand_start": "00b6e83b",
+        "size": 4,
+        "callee": "004134f0"
+      },
+      {
+        "call_site": "00b6e855",
+        "operand_start": "00b6e856",
+        "size": 4,
+        "callee": "004134f0"
+      },
+      {
+        "call_site": "00b6e87e",
+        "operand_start": "00b6e87f",
+        "size": 4,
+        "callee": "004134f0"
+      },
+      {
+        "call_site": "00b6e896",
+        "operand_start": "00b6e897",
+        "size": 4,
+        "callee": "00b6e7e0"
+      },
+      {
+        "call_site": "00b6e89d",
+        "operand_start": "00b6e89e",
+        "size": 4,
+        "callee": "00b6da30"
+      },
+      {
+        "call_site": "00b7066c",
+        "operand_start": "00b7066d",
+        "size": 4,
+        "callee": "00b6db70"
+      },
+      {
+        "call_site": "00b7069d",
+        "operand_start": "00b7069e",
+        "size": 4,
+        "callee": "00b6db70"
+      },
+      {
+        "call_site": "00b71472",
+        "operand_start": "00b71473",
+        "size": 4,
+        "callee": "00b6e870"
+      },
+      {
+        "call_site": "00b71479",
+        "operand_start": "00b7147a",
+        "size": 4,
+        "callee": "00b70660"
+      }
+    ],
+    "indirect_instructions_changed": false,
+    "profile_data_relocation": "Original actual+0 words reference fixture-owned tables with exact provider bridges; source pure resolver maps those same current identities to borrowed native target tables",
+    "genuine_providers": "Raw B6F5A0 node constructor, actual string pool, raw matrix/world/descendant providers; genuine B6DBE0/B6DBC0 current notification closures",
+    "callback_mutation": "Declared harness injection AFTER genuine initial3C changes actual parent and current profile; later40 executes genuine B6DBC0. This is provider-contract perturbation, not recovered mutation behavior of B6DBC0.",
+    "compared": "Whole initialized node payloads with normalized actual identities, genuine callback trace, masked x87 status, live callee scratch only",
+    "fixture_repair": "Initial missing continuing-bounds profile resolver rejected; supplied genuine current profile service; final five pairs pass with no packet source change",
+    "excluded": [
+      "Full B71A80 constructor and companion admission",
+      "Native faults/FH3 identity",
+      "Source provider-throw path",
+      "Asynchronous mutation",
+      "Native saved/private stack aliases"
+    ]
+  },
+  "scratch": {
+    "representation": "One live initialized volatile DWORD backing; disjoint immutable pointer-view metadata; no overlapping aggregate lifetimes",
+    "derive": {
+      "dwords": 32,
+      "inverse_byte_offset": 0,
+      "local_byte_offset": 64,
+      "native_entry_esp_offsets": [
+        -128,
+        -64
+      ]
+    },
+    "direction": {
+      "dwords": 6,
+      "position_byte_offset": 0,
+      "target_byte_offset": 12,
+      "native_entry_esp_offsets": [
+        -24,
+        -12
+      ]
+    },
+    "outer_b71460": {
+      "derive_from_entry_esp": -148,
+      "direction_from_entry_esp": -32,
+      "direction_from_derive": 116,
+      "final_output_limit": "Direction scratch remains comparable; earlier derive private scratch is dead and is not compared at outer return"
+    },
+    "excluded": "Native saved registers, return/pushed argument gaps and other private stack cells; no asynchronous mutation"
+  },
+  "dispatch": {
+    "required": "NativeNodeBaseWorldDispatch, pure current profile lookup and exact reached actual current3C/current40 invocation",
+    "genuine_observed_providers": [
+      "00b6dbc0",
+      "00b6dbe0"
+    ],
+    "fallback": false,
+    "logical_hierarchy": false,
+    "failure": "No native EH or invented rollback; reached source provider failure preserves completed prefix"
+  }
+}
