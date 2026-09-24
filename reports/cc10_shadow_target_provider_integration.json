@@ -1,0 +1,82 @@
+{
+  "packet": "cc10_shadow_target_provider_integration",
+  "worker_commit": "0760c4dc781c1249e83617a890f22c0dc74cddd9",
+  "integration": "0eb8a63cd1509e8c337208ca4a7eba1451e80d01",
+  "archive": {
+    "path": "local/cc10-platform-evidence/shadow-target-application-provider.zip",
+    "sha256": "f7ca5b30271e307945edb56a57befe1e5c61a00da3fced5ccae07af8f1758181",
+    "files": 35,
+    "valid": true
+  },
+  "review": [
+    "All source/header deltas, new retained graph and documentation reviewed",
+    "Single process F8BBF0 loader-zero cell and current genuine Windows enter/leave cells; no per-application reset",
+    "Shadow graph borrows exact resource providers/renderer/manager/current profiles and is destroyed before resources",
+    "Singleton binding published only after stable graph and duplicate checks; no native singleton registration or target construction",
+    "Ready-only accessor returns same context; service direct-terminal gate unchanged",
+    "All operation phases participate in existing pre-drain/process-retention guard; post-drain checks publication and complete records",
+    "Graph destruction does not access already-deleted GameSingletonHost",
+    "Actual accessor probe uses70 unchanged production application objects; separate source validation failure ends through actual startup _Exit guard"
+  ],
+  "validation": {
+    "frozen_indexed_evidence": 26,
+    "live_PE_cells": 3,
+    "new_native_bodies": 0,
+    "new_native_call_rows": 0,
+    "strict_win32_build": true,
+    "worker_ctests": 3,
+    "integrated_ctests": 3,
+    "build_log_sha256": "bde724cd80fc4c0cf32603ca60f3e1d6efafac8180d591fb1668dc3305e49465",
+    "normal": {
+      "exit_code": 0,
+      "stable_ready_accessor": true,
+      "canonical_cells": true,
+      "no_borrowed_accessor_native_effects": true,
+      "real_textures": 2,
+      "surface_reference_counts": [
+        2,
+        2
+      ],
+      "real_singleton_dispatch": true,
+      "publication_cleared": true,
+      "completed_record": true,
+      "lock_balanced": true,
+      "post_drain_accessor_rejected": true,
+      "service_direct_gate_remains_null": true,
+      "final_COM_device_api": [
+        0,
+        0
+      ]
+    },
+    "failure": {
+      "exit_code": 1,
+      "trigger": "source binding-validation at reached null current EnterCriticalSection cell",
+      "diagnostic_stage": "00a8a867",
+      "raw_allocation_retained": true,
+      "profile": "00d5b554",
+      "section_captured": true,
+      "section_entered": false,
+      "section_incremented": false,
+      "publication_null": true,
+      "record_failed": true,
+      "application_retention": true,
+      "actual_startup_Exit_guard": true,
+      "native_drain_or_CRT_cleanup_claim": false
+    },
+    "current_application_objects": 70,
+    "production_object_replacements": 0,
+    "new_tracked_tests": 0,
+    "production_target_invocation": false,
+    "native_ABI_FH3_SEH": false,
+    "native_failure_cleanup_proved": false,
+    "full_B107F0_executed": false,
+    "game_validated": false
+  },
+  "boundaries": [
+    "No 73D410/B107F0 or production target invocation; accessor/provider composition only",
+    "Final D5B5E8 completed-owner domain required for ordinary drain; partial base profiles remain unsupported",
+    "Failed records/providers/raw allocation/locks retain lifetime; no retry, settlement or cleanup fabrication",
+    "Null-import failure is source binding-validation, not original FH3/SEH/fault transport",
+    "No native ABI, whole initializer, shadow drawing, cold compiler/source-zero residue, bloom extent or distortion preimage claim"
+  ]
+}
