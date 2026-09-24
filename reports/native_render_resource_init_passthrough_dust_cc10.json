@@ -1,0 +1,354 @@
+{
+  "packet": "cc10_render_init_passthrough_dust",
+  "base_commit": "198f537c3db9bbf72ac3e694787f2fed94bc3f7c",
+  "status": "partial_projection_B107F0_B11EF4_to_B120B9",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "source_files": [
+    "include/bsp/native_render_resource_init_passthrough_dust.hpp",
+    "src/native_render_resource_init_passthrough_dust.cpp"
+  ],
+  "small_extension": {
+    "header": "include/bsp/native_render_resource_init_distortion.hpp",
+    "change": "one-use successor identity and phases only"
+  },
+  "no_ghidra_function": [],
+  "routines": [
+    {
+      "address": "00b107f0",
+      "name": "continue_native_render_resource_init_00b11ef4_fragment",
+      "status": "partial_projection",
+      "coverage": "ONLY [00B11EF4,00B120B9), 453 bytes",
+      "start": "00b11ef4",
+      "end_inclusive": "00b120b8",
+      "end_exclusive": "00b120b9",
+      "size": 453,
+      "last_instruction": "00b120b4",
+      "last_instruction_size": 5,
+      "last_instruction_text": "CALL 00B52860",
+      "next_instruction": "00B120B9 PUSH20; next post allocation excluded",
+      "original_abi": "containing ECX service, three borrowed DWORD argument cells, eventual RET0C; no argument cell read or native return here",
+      "source_abi": "same distortion predecessor/original continuation context, persistent stage context and independent post20/dust24 blocks",
+      "preserved_ghidra_name": "BSP_RenderResources_InitializeMembers_PartialEntry",
+      "complete_init": false,
+      "destruction_admitted": false,
+      "runtime_tested": false
+    }
+  ],
+  "live_pe_byte_blocks": [
+    {
+      "start": "00b11ef4",
+      "end_exclusive": "00b120b9",
+      "size": 453,
+      "sha256": "8fd8b5d1374f2c8e499b80d8aef7e1833be2021207ecedaf27932fc37e8627b6",
+      "live_equals_disk": true,
+      "scope": "complete new caller fragment"
+    },
+    {
+      "start": "00b18ac0",
+      "end_exclusive": "00b18ae0",
+      "size": 32,
+      "sha256": "11976fc583a1437582393b5c2aff6f696d8ce3a7f99fef873fd511c9532eba16",
+      "live_equals_disk": true,
+      "scope": "complete existing array wrapper"
+    },
+    {
+      "start": "00d5e2e4",
+      "end_exclusive": "00d5e33c",
+      "size": 88,
+      "sha256": "509f86079308517891798de46e2f5d2868a8697b8c099655d31ec5d83e78b5da",
+      "live_equals_disk": true,
+      "scope": "original AA/displacement/effect literal region"
+    },
+    {
+      "start": "00d5e430",
+      "end_exclusive": "00d5e448",
+      "size": 24,
+      "sha256": "6956ae7f8cf67f00ef013fa0559fadea312a7d791e63ea986df95b41da0ebd29",
+      "live_equals_disk": true,
+      "scope": "original scene-color literal"
+    },
+    {
+      "start": "00d620ac",
+      "end_exclusive": "00d620be",
+      "size": 18,
+      "sha256": "b08766afc5d6ce3093c2ff6757eb7b4af26edc45edbf1744ddee54544c6fe6f5",
+      "live_equals_disk": true,
+      "scope": "original dust literal"
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "00b11ef6",
+      "native": "00bf681b",
+      "function": "00b107f0",
+      "source": "singleton_lifetime_allocate"
+    },
+    {
+      "address": "00b11f1f",
+      "native": "0041e870",
+      "function": "00b107f0",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b11f3f",
+      "native": "00b4e470",
+      "function": "00b107f0",
+      "source": "construct_native_post_effect20_00b4e470"
+    },
+    {
+      "address": "00b11f7a",
+      "native": "00419cc0",
+      "function": "00b107f0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b11f81",
+      "native": "00bd1510",
+      "function": "00b107f0",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b11f8f",
+      "native": "0041e870",
+      "function": "00b107f0",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b11fae",
+      "native": "00b4cba0",
+      "function": "00b107f0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b11fb5",
+      "native": "00b18b00",
+      "function": "00b107f0",
+      "source": "register_native_material_float2_00b18b00"
+    },
+    {
+      "address": "00b11fd4",
+      "native": "00419cc0",
+      "function": "00b107f0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b11fdb",
+      "native": "00bd1510",
+      "function": "00b107f0",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b11fe9",
+      "native": "0041e870",
+      "function": "00b107f0",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b1200b",
+      "native": "00b4cba0",
+      "function": "00b107f0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b12012",
+      "native": "00b18b00",
+      "function": "00b107f0",
+      "source": "register_native_material_float2_00b18b00"
+    },
+    {
+      "address": "00b12034",
+      "native": "00419cc0",
+      "function": "00b107f0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b1203b",
+      "native": "00bd1510",
+      "function": "00b107f0",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b12049",
+      "native": "0041e870",
+      "function": "00b107f0",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b1206d",
+      "native": "00b4cba0",
+      "function": "00b107f0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b12074",
+      "native": "00b18ac0",
+      "function": "00b107f0",
+      "source": "existing exact B18AC0 expansion: B17E10 count4*9/matrix0"
+    },
+    {
+      "address": "00b12093",
+      "native": "00419cc0",
+      "function": "00b107f0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b1209a",
+      "native": "00bd1510",
+      "function": "00b107f0",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b120ac",
+      "native": "00b4e2b0",
+      "function": "00b107f0",
+      "source": "assign_native_post_effect_frame_00b4e2b0"
+    },
+    {
+      "address": "00b120b4",
+      "native": "00b52860",
+      "function": "00b107f0",
+      "source": "initialize_native_post_effect_dust_00b52860"
+    },
+    {
+      "address": "00b18ad8",
+      "native": "00b17e10",
+      "function": "00b18ac0",
+      "source": "register_native_material_parameter_00b17e10",
+      "scope": "supporting existing full32-byte wrapper"
+    }
+  ],
+  "parameters": [
+    {
+      "literal": "00d5e430",
+      "text": "cSceneColorSampleOffset",
+      "source": "service+04",
+      "words": 2,
+      "matrix": 0,
+      "native_registration": "00b18b00",
+      "state": 59,
+      "order": "current+650 before source address"
+    },
+    {
+      "literal": "00d5e2f8",
+      "text": "cDisplacementSampleOffset",
+      "source": "service+194",
+      "words": 2,
+      "matrix": 0,
+      "native_registration": "00b18b00",
+      "state": 60,
+      "order": "current+650 before source address; EBX becomes source; EDI becomesFFFFFFFF after registration"
+    },
+    {
+      "literal": "00d5e2e4",
+      "text": "cAASampleOffsets",
+      "source": "service+F4 through+183",
+      "vectors": 9,
+      "words": 36,
+      "matrix": 0,
+      "native_registration": "00b18ac0",
+      "state": 61,
+      "order": "EBP becomes source BEFORE current+650 load"
+    }
+  ],
+  "effect": {
+    "literal": "00d5e314",
+    "text": "Passtrough.mshd",
+    "actual_bytes": 32,
+    "vertex_count": 3,
+    "optional_input": null,
+    "mask": "20h",
+    "allocation_state": 56,
+    "constructor_state": 57,
+    "publication": "service+650 BEFORE disarm; no old-owner release"
+  },
+  "dust": {
+    "callee": "00b52860",
+    "current_receiver": "service+34, loaded only after B4E2B0 returns",
+    "extent": 204,
+    "producer": "B14EC1 PUSHCCh; B14EC6 allocation; B14EDD B52550; B14EF0 publish actual result/null to service+34",
+    "literal": "00d620ac",
+    "text": "oldfilm_dust.mshd",
+    "child": "independent B4E840 actual24h,count2,null,existing canonical companion",
+    "ordering": "capture receiver+3C texture before current receiver+68/material; slot0; existing ordered stores; no release of old+68",
+    "producer_evidence": [
+      "local/render_init_passthrough_dust_cc_verified.json"
+    ]
+  },
+  "frontier": {
+    "native_pc": "00b120b9",
+    "ESI": "same service",
+    "EBX": "service+194",
+    "EBP": "service+F4",
+    "EDI": "FFFFFFFF",
+    "ESP14": "raw+650 post20 allocation",
+    "ESP10_mask": 0,
+    "EH_state": -1,
+    "other_spills": "original dimensions, half/aligned dimensions retained unchanged",
+    "argument_cells": "same original three borrowed cells, none read",
+    "native_machine_stack": false
+  },
+  "lifetime": {
+    "retained": "own post20 block/four raw names, distinct dust block/post24 construction context and acquisitions, entire same predecessor chain",
+    "canonical": "reuse existing raw B4E470/B4E840 companions; no generic pass duplicate or blanket nested registration",
+    "source_borrow": "actual service+04,+194,+F4 remain alive for parameter records; raw names are returned normally and remain stale diagnostic headers",
+    "service34": "existing CCh owner and current texture domains; no new outer owner registration or service-wide lifetime admission"
+  },
+  "failure": {
+    "native_FH3_reproduced": false,
+    "source": "retain sites, masks, publications and all child acquisitions; existing provider failure policy authoritative; no caller rollback/free or retry"
+  },
+  "checks": {
+    "listing": {
+      "complete_instructions": 117,
+      "caller_calls": 22,
+      "supporting_calls": 1,
+      "live_file": "local/render_init_passthrough_dust_listing.txt",
+      "all_bytes_match_pe": true
+    },
+    "build": {
+      "command": "./scripts/build.ps1",
+      "status": "passed",
+      "result": "MSVC Win32 Release MultiThreadedDLL /MD",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "log": "local/render_init_passthrough_dust_build.txt"
+    },
+    "report_calls": {
+      "command": "python tools/verify_report_calls.py reports/native_render_resource_init_passthrough_dust_cc10.json",
+      "status": "passed",
+      "numeric_checked": 23,
+      "caller_rows": 22,
+      "supporting_rows": 1,
+      "failed": 0,
+      "log": "local/render_init_passthrough_dust_calls.txt"
+    },
+    "new_tracked_tests": 0,
+    "new_probes": 0,
+    "composed_runtime_tested": false
+  },
+  "ordering": [
+    "Allocate20h, EDI and ESP14 become raw result, state56; nonnull name build then mask20, state57 and full B4E470(count3,null).",
+    "Test mask20 BEFORE publish service+650 actual result/null; disarm AFTER publication; capture name data, clear mask, current length+1/pool/gate return.",
+    "Each parameter has a distinct raw name header and fresh current+650/material read; preserve receiver/source order in parameter table.",
+    "Second parameter sets EBX=service194 before material access; after registration capture name data THEN EDI=FFFFFFFF, disarm, current name return.",
+    "Third parameter sets EBP=serviceF4 BEFORE current+650; exact B18AC0 count9 expands36 words/matrix0 to real B17E10.",
+    "Capture current+1D4 BEFORE current+650; full B4E2B0 publishes/retains incoming frame before captured predecessor release.",
+    "Only after frame assignment returns capture current service+34 and run existing complete B52860 with actual CCh receiver contract."
+  ],
+  "artifact_sha256": {
+    "include/bsp/native_render_resource_init_passthrough_dust.hpp": "32ecb377997264e9651ae44e1bce5c77e652624c71c9b78dac6928e5ca9c476e",
+    "src/native_render_resource_init_passthrough_dust.cpp": "8fa46932195245da810085fc204d39020bd3ef125eba363987be2be373a94d11",
+    "include/bsp/native_render_resource_init_distortion.hpp": "3e7187f0e8a90816466e67af2a9b282de047a96dd125450165305f8bc764bde0",
+    "docs/NATIVE_RENDER_RESOURCE_INIT_PASSTHROUGH_DUST_CC10.md": "0bcc51bd0ac69e2d570bdc32e05ed63bd23bc94858afb72c9560aa46f9cc2926",
+    "local/render_init_passthrough_dust_listing.txt": "663ea636d1123fc23dda4b7485f9e831cd6eb82090b9ac3e153b3e90ced2f547",
+    "local/render_init_passthrough_dust_build.txt": "c4f36b342c003ce50a707eb6ab39caa8fbd7c15041cd1e9a56617561c8d9ef55",
+    "local/render_init_passthrough_dust_calls.txt": "b283c65f983223c8ed761e56082fe4ea4c62d490b66b8e61a25874c2108e390e"
+  }
+}
