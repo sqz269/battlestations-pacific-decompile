@@ -1,0 +1,129 @@
+{
+  "packet": "cc10_closehandle_dispatcher_fixture",
+  "status": "isolated_benign_continuation_checked",
+  "original_attempts_total": 2,
+  "new_original_launches": 0,
+  "attach_calls": 0,
+  "benign_targets": 8,
+  "cases": [
+    {
+      "run": "fixture_run01",
+      "case": "baseline",
+      "wrapper_exit": 0,
+      "outer_closed": true,
+      "target_exit": 0,
+      "api_result": 0,
+      "last_error": 6
+    },
+    {
+      "run": "fixture_run01",
+      "case": "forward",
+      "wrapper_exit": 1,
+      "outer_closed": true,
+      "target_exit": 125,
+      "continued": 0,
+      "second_chance_closed": true,
+      "inner_closed": true
+    },
+    {
+      "run": "fixture_run01",
+      "case": "candidate",
+      "wrapper_exit": 1,
+      "outer_closed": true,
+      "target_exit": 125,
+      "continued": 0,
+      "second_chance_closed": true,
+      "inner_closed": true
+    },
+    {
+      "run": "fixture_run01",
+      "case": "unhandled_control",
+      "wrapper_exit": 1,
+      "outer_closed": true,
+      "target_exit": 125,
+      "continued": 0,
+      "second_chance_closed": true,
+      "inner_closed": true
+    },
+    {
+      "run": "fixture_run02",
+      "case": "baseline",
+      "wrapper_exit": 0,
+      "outer_closed": true,
+      "target_exit": 0,
+      "api_result": 0,
+      "last_error": 6
+    },
+    {
+      "run": "fixture_run02",
+      "case": "forward",
+      "wrapper_exit": 1,
+      "outer_closed": true,
+      "target_exit": 125,
+      "continued": 0,
+      "second_chance_closed": true,
+      "inner_closed": true
+    },
+    {
+      "run": "fixture_run02",
+      "case": "candidate",
+      "wrapper_exit": 0,
+      "outer_closed": true,
+      "target_exit": 0,
+      "continued": 1,
+      "second_chance_closed": false,
+      "inner_closed": true,
+      "api_result": 0,
+      "last_error": 6,
+      "pid": 89752,
+      "tid": 24564,
+      "entry_code_restored": true,
+      "debug_registers_restored": true,
+      "guard_context_code_writes": 0
+    },
+    {
+      "run": "fixture_run02",
+      "case": "unhandled_control",
+      "wrapper_exit": 1,
+      "outer_closed": true,
+      "target_exit": 125,
+      "continued": 0,
+      "second_chance_closed": true,
+      "inner_closed": true
+    }
+  ],
+  "mechanism": "Real pre-entry TLS CloseHandle(GetModuleHandleA(NULL)); exact first-chance native dispatcher context/system byte/current import/frame predicates select at most one DBG_CONTINUE. Unchanged general exception policy forwards other first chances and closes second chances.",
+  "guard": {
+    "source_sha256": "fa8cf377691e7d0d2988939d0e18981f725a731e3019a87cd032e38039f4945b",
+    "helper_sha256": "3135f1a70ed9232e4f6d95f2ed885ca752b0a0046bca48fab3798cdab1c06e46",
+    "linked_rva": 24736,
+    "linked_bytes": 6488,
+    "linked_sha256": "bd825ba0fc939acd03bb76c4aa9f5132cd8f9d3d255d311f86f1270ed06e62bf",
+    "relocation_count": 182,
+    "direct_code_context_write_and_continue_calls": false,
+    "system_bodies": 5,
+    "current_import_chain": "fixture -> kernel32 CloseHandle thunk -> KernelBase CloseHandle -> x86 NtClose"
+  },
+  "review": [
+    "Complete fixture guard/target/helper delta/runner/outer wrapper/preparation/build reviewed",
+    "Primary independently verified156 indexed artifacts and634 frozen ancestor rows",
+    "Retained outer function exact source equality and shared policy byte equality verified",
+    "Reviewed COFF/PE decoder independently repeated without its writes;6488B unique nonrelocated match and exact runtime-function extent",
+    "Eight outer and six inner own-child closures verified; no detach, forbidden module or loaded-module hash error",
+    "Successful raw contexts/current imports/five full relocated live system bodies and entry/DR restorations independently checked"
+  ],
+  "limits": [
+    "Benign target equality is observed BOOL0/error6 and copied canary data, not full architectural or XSTATE preservation",
+    "Undebugged baselines have no loaded-module journal; six debug cases contain no original/xlive module",
+    "Original call continuation/API result, source0 sampler entry, native compiler execution and gameplay remain unproved",
+    "Run01 candidate deliberately rejected an unmodeled kernel32 thunk; run02 pins that exact6B thunk and complete three-hop import chain",
+    "No original-specific helper/policy, copied game, options/profile or stale log overlay was changed by this packet",
+    "Existing original20<-40 entry protection restoration needs separate source/protocol review before another original attempt"
+  ],
+  "archive": {
+    "path": "local/cc10-platform-evidence/closehandle-dispatcher-fixture.zip",
+    "sha256": "a79a02fd1f1887b822c871053fd30354738dbc710796011a227a4723ba600890",
+    "files": 158,
+    "valid": true
+  }
+}
