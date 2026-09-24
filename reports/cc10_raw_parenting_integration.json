@@ -1,0 +1,56 @@
+{
+  "packet": "cc10_raw_parenting_integration",
+  "worker_commit": "283736493482bbd70fb01ebfd15ff97d4a779e92",
+  "integration": "c451ff349f9a49df1b9073ce59c37df377364631",
+  "archive": {
+    "path": "local/cc10-platform-evidence/raw-node-parenting.zip",
+    "sha256": "b59c7a4580d14428529d1ee0fbd9b23443f7eb6c9f119672c862fc558ca76a85",
+    "files": 45,
+    "valid": true
+  },
+  "worker_report": "reports/native_node_parenting_storage_cc10.json",
+  "review": [
+    "Complete header/source and all six native schedules reviewed; exact persistent argument/local and current table/target read points retained",
+    "Only groupB8F4F0 seeds entry PUSH ECX local; ordinaryB6D7B0 does not",
+    "Captured parent/attachment survive callbacks; prepend and SetParent each invoke their native current40 notification",
+    "Native A0 publication before guarded registration intentionally preserves equality no-append path",
+    "Live12B pointer-only descriptor lifetime and genuine allocator/free provenance; no logical group layout or ownership admission",
+    "59E5E0 normalized95B clone ofB7B390 and B7BED0 exact103B clone ofB7B620 justify existing provider reuse",
+    "Fresh acquisitions rejected before native stores; no rollback or invented credits; failures preserve diagnostics"
+  ],
+  "validation": {
+    "normal_bytes": 664,
+    "instructions": 241,
+    "live_equals_installed": true,
+    "direct_call_rows": 17,
+    "indirect_rows_retained": 6,
+    "strict_win32_build": true,
+    "worker_ctests": 2,
+    "integrated_ctests": 3,
+    "focused_original_source_sequence": true,
+    "new_tracked_tests": 0,
+    "build_log_sha256": "4c7958a3c673961e33e2671124dd2aee4e6a2914edd146710cc9bcf4a838ba02",
+    "ghidra_flow_repair_required": false,
+    "full_group_constructor_or_terminal": false,
+    "nonnull_scene_terminal_exercised": false,
+    "native_ABI_FH3_SEH": false,
+    "application_bound": false,
+    "game_validated": false
+  },
+  "probe_boundary": {
+    "live_pe_body_bytes": 664,
+    "instruction_count": 241,
+    "replaced_instruction_sites": [],
+    "relocations": "17 direct rel32 operands relocated to copied packet bodies or explicit genuine source bridges; all native virtual-load/call instructions retained",
+    "profile_boundary": "fixture tables at host addresses with exact genuine callable providers; source resolver validates those actual numeric fixture table/target identities; original D62C88/D634F8 numeric tables untouched and not claimed executed",
+    "derived_mutation_boundary": "instrumented concrete provider wrappers perform controlled input/successor mutations around genuine providers; no default production callback",
+    "shared_callees": "B6D940,B8F4C0,B6D890,B6D850,B6DA30,B7B620,BF55BE/BF6989 and raw B6ED80/B6DBE0/B6DBC0 plus real type predicates; their original machine code not independently compared"
+  },
+  "limits": [
+    "No logical owner or scene-resource casts used as a native object view; pointer-only helper key types never dereference host SceneResource.",
+    "Fresh persistent diagnostics and caller preimages; failure retains published prefixes and nested acquisitions; no rollback/extra credits.",
+    "Current callback-mutated storage/tables/arguments must remain accessible; type getter is borrowed live0109032C, no invented token.",
+    "Full normal bodies in explicit valid array/provider domain; source C++ failure transport distinct from native CRT/FH3/SEH.",
+    "Existing requested-null-only destructor interface preserved separately; no legacy destructor installation or full application admission."
+  ]
+}

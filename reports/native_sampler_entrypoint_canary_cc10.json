@@ -1,0 +1,75 @@
+{
+  "packet": "cc10_sampler_entrypoint_canary",
+  "status": "owned_PE_entry_rendezvous_and_two_hardware_stops_passed_original_capture_pending",
+  "archive": {
+    "path": "local/cc10-platform-evidence/sampler-entrypoint-canary.zip",
+    "sha256": "d52612347965efbe3fb7323d071841c63c0a53a2301f7c84b15642c5411b87d1",
+    "files": 29,
+    "valid": true
+  },
+  "indexed_artifacts": 28,
+  "artifact_index_sha256": "b71336dcbd119bac1f8530b9d479cdc375d937eceb24778d3d1c662c6c2d2ef6",
+  "worker_report_sha256": "ec77b6d0afa62619811f6ed2ca6c5de8f12257e02fd9ecb544c6a7f745633064",
+  "primary_review": [
+    "Reviewed complete helper delta from the already reviewed source-rendezvous helper and exact success event/result/context audit",
+    "Verified all28 indexed artifacts and every prior primary evidence archive",
+    "One own-child entry byte E8 to CC to E8 with full32-byte readback and original page protection restored before original CALL executes",
+    "Exact entry event and EIP rewind, true primary-thread DR execution slots and two marker events verified",
+    "Eight stack DWORDs,242 routine bytes and target before/after copies agree; both debug-register views restored; target/helper exit0 and own process handle signaled",
+    "Requested raw contexts show only intended PC/debug-register changes plus documented EFLAGS reserved bit1 representation; no full architectural or XSTATE claim"
+  ],
+  "worker_evidence": {
+    "status": "owned PE-entry rendezvous plus two hardware marker preservation checks passed",
+    "scope": "one approved owned target run; no original executable/process/installation involved",
+    "run_result": "local/sampler_entrypoint_canary_cc10/run01/result.json",
+    "run_events": "local/sampler_entrypoint_canary_cc10/run01/events.jsonl",
+    "context_change_audit": "local/sampler_entrypoint_canary_cc10/context_change_audit.json",
+    "original_canary_target_sha256": "3c53b3f5a48483e9f01b5e6ad98b341c0dcb9797745f6e9092c2232d6abebe2d",
+    "target_contains_source_rendezvous": false,
+    "entry_va": "0x100015b0",
+    "entry_memory_change": "E8 -> CC -> E8, one byte of own live image; full 32 entry bytes verified before/after; no target disk writes",
+    "page_protection": "original 0x20 -> temporary 0x40 -> original 0x20; each write flushed and exact readback verified",
+    "entry_exception": "0x4000001f at 100015B0, EIP=100015B1; rewound to100015B0 before original CALL",
+    "context_api": "explicit WOW64_CONTEXT_ALL and AMD64 CONTEXT_ALL snapshots; writes use only WOW64_CONTEXT_CONTROL (one EIP rewind) or debug-register subset",
+    "observed_rewind_changes": [
+      "WOW64 EIP / native RIP decremented by one at verified entry",
+      "EFLAGS reserved readback bit1:0x246->0x244; no other requested raw context bytes changed"
+    ],
+    "observed_debug_write_changes": "DR0/DR1/DR6/DR7 only, plus EFLAGS reserved representation bit1 on reached restores; native-context debug writes were idempotent after WOW64 writes",
+    "context_limit": "No full architectural-state equivalence claim; no unrequested XSTATE/AVX or uninstrumented original-game equivalence proof",
+    "pid": 80128,
+    "tid": 53752,
+    "P": "0x1afe04",
+    "hardware_markers": [
+      "0x10001284",
+      "0x100012cd"
+    ],
+    "captured_words": 8,
+    "target_word": "[P-0x30]=0x91abcdef",
+    "canary_code_bytes": 242,
+    "target_before_stops_and_after_match": true,
+    "both_debug_register_views_restored": true,
+    "actual_child_exit": 0,
+    "actual_helper_exit": 0,
+    "owned_process_handle_final_wait": 0,
+    "actual_elapsed_seconds": 0.07459530000051018,
+    "lifecycle": "DEBUG_ONLY_THIS_PROCESS|CREATE_NO_WINDOW, exact own process/thread/image, no attach, no live-child detach, 28s watchdog/30s event-loop bound",
+    "previous_canary_index_sha256": "f67a564075586821852deb8de25afb1b5549c1cc44afa2d325ca783ebfc3e626",
+    "previous84_artifacts_verified_unchanged": true,
+    "next_step": "read-only original child arming and preservation proposal; no original helper expansion or launch authorized"
+  },
+  "validation": {
+    "original_game_launch_or_attach": false,
+    "new_reconstructed_functions": 0,
+    "compiler_activation": false,
+    "full_architectural_state_equivalence": false,
+    "timeout_fault_injection": false,
+    "game_validated": false
+  },
+  "limits": [
+    "The target has no source rendezvous, but it is still an owned canary, not the original executable",
+    "No sampler source0 input was captured from B3BFF9/B3C018; the canary value is not a seed for the game",
+    "Timeout/error cleanup reviewed but not separately fault-injected",
+    "Original helper, private working copy and product-settings preservation need their own evidence"
+  ]
+}

@@ -1,0 +1,13 @@
+# Sampler capture entry rendezvous (CC10)
+
+A private debugger successfully armed the original owned canary through a transient breakpoint at its PE entry point. It restored the original instruction before execution, then observed both hardware markers with unchanged stack words and routine bytes. This removes the source-authored rendezvous requirement from the earlier [capture canary](NATIVE_SAMPLER_CAPTURE_CANARY_CC10.md); original-game capture remains pending.
+
+The target executable is unchanged and contains no source rendezvous. During its CREATE_PROCESS event, the helper verifies 32 entry bytes at `100015B0`, writes one `CC` over the first `E8`, restores the original page protection and flushes the instruction cache. At the exact WOW64 breakpoint event with `EIP=100015B1`, it restores `E8`, verifies all 32 bytes and protection `20h`, flushes again and rewinds EIP. True hardware execution slots are installed only after this observed entry event.
+
+The run reached markers `10001284` and `100012CD` on PID80128/TID53752 with `P=001AFE04`. Eight DWORDs at `[P-40h,P-20h)`, all242 routine bytes and the target's own before/after copies matched. Both requested debug-register views were restored; the child and helper exited0 and the owned process handle was signaled. The canary word `91ABCDEF` is test data, not an original-game sampler input.
+
+Requested WOW64_CONTEXT_ALL and native CONTEXT_ALL bytes were recorded around every context write. The entry rewind changed EIP/RIP and the reserved EFLAGS bit1 representation (`246h` to `244h`); debug writes changed DR0/DR1/DR6/DR7 plus that reserved representation on reached restores. This does not establish full architectural, unrequested XSTATE/AVX or original-game state equivalence.
+
+The helper creates only its own child, verifies image/PID/TID, uses no attach operation or shared debugger service, and never detaches a live child. A28-second owned-handle watchdog bounds the30-second debug loop. Failure cleanup restores any outstanding entry patch and debug registers, then terminates only the owned child. Timeout/error paths were reviewed but not separately fault-injected.
+
+The [primary report](../reports/native_sampler_entrypoint_canary_cc10.json) pins28 artifacts plus their index, including full contexts, helper source, unchanged target, events and result. The earlier84 artifacts remain unchanged. An original-specific helper, working-copy identity and real Documents product-settings preservation are separate requirements. Neither this run nor the [compiler entry audit](NATIVE_SAMPLER_COMPILER_ENTRY_CC10.md) supplies the missing original first source0 word or activates the compiler.
