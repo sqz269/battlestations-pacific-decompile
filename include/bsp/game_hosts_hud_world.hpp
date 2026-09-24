@@ -123,7 +123,7 @@ inline constexpr bool kHudFollowScreenBound = true;
 // runs screen 46h's update 0064D610 in place of the FrontEndScreen::update
 // record: the gates and the order input, with 0064A400, 0064B870 and screen
 // 2Eh's 005484F0 as records. OFF keeps the one record.
-inline constexpr bool kHudShipViewScreenBound = false;
+inline constexpr bool kHudShipViewScreenBound = true;
 
 inline constexpr bool kHudShipScreenGaugesBound = true;
 

@@ -715,3 +715,16 @@ then on, USN04 4500.
   `order_route_*` row appears.
 - The unimplemented total rises by about 2 x 9,158 = 18,316.
 - Every summary line is identical.
+
+**The part 1 pair.** `local\p8_off_usn04.log` against `local\p8_on_usn04.log`, one tree, 2560x1440.
+
+| row | OFF | ON |
+| --- | ---: | ---: |
+| unimplemented total | 2,257,737 | 2,276,053 (+18,316; predicted about +18,316) |
+| FrontEndScreen::update | 36,643 | 27,485 |
+| HudShipView::update | none | 9,158 done |
+| view_input, integrated_controls, screen_2eh_005484f0 | none | 9,158 each |
+
+- No order-route or unit-virtual row appears.
+- **Summary lines.** All 157 are identical.
+- **Result.** Every prediction holds. **`kHudShipViewScreenBound` flips ON.**
