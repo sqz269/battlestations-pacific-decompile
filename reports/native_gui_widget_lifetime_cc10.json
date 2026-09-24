@@ -1,0 +1,633 @@
+{
+  "schema_version": 1,
+  "packet": "cc10_gui_widget_lifetime",
+  "status": "complete_raw_normal_schedule_required_bindings_source_cpp_unwind",
+  "source": "src/native_gui_widget_lifetime.cpp",
+  "header": "include/bsp/native_gui_widget_lifetime.hpp",
+  "documentation": "docs/NATIVE_GUI_WIDGET_LIFETIME_CC10.md",
+  "abi_compatible": false,
+  "game_validated": false,
+  "native_eh_executed": false,
+  "raw_derived_child_types_supplied": false,
+  "routines": [
+    {
+      "entry": "00aa9730",
+      "native_end_inclusive": "00aa99b8",
+      "native_bytes": 649,
+      "cpp_symbol": "destroy_native_gui_widget_base_00aa9730",
+      "coverage": "complete normal schedule; required current child04/timed0 and A9BD50 bindings",
+      "original_abi": "ECX raw widget; RET"
+    },
+    {
+      "entry": "00aa8320",
+      "native_end_inclusive": "00aa8396",
+      "native_bytes": 119,
+      "cpp_symbol": "release_native_gui_widget_scene_00aa8320",
+      "coverage": "complete normal schedule; required non-base current20/0C bindings",
+      "original_abi": "ECX raw widget; RET"
+    },
+    {
+      "entry": "00aa6f30",
+      "native_end_inclusive": "00aa6f8e",
+      "native_bytes": 95,
+      "cpp_symbol": "reserve_native_gui_timed_pointers_00aa6f30",
+      "coverage": "complete existing raw-provider alias",
+      "original_abi": "ECX header; signed capacity stack; RET4"
+    },
+    {
+      "entry": "00aa77b0",
+      "native_end_inclusive": "00aa77ff",
+      "native_bytes": 80,
+      "cpp_symbol": "resize_native_gui_timed_pointers_00aa77b0",
+      "coverage": "complete existing raw-provider alias",
+      "original_abi": "ECX header; signed count stack; RET4"
+    },
+    {
+      "entry": "00aa7f50",
+      "native_end_inclusive": "00aa7f66",
+      "native_bytes": 23,
+      "cpp_symbol": "destroy_native_gui_timed_pointers_00aa7f50",
+      "coverage": "complete existing raw-provider alias",
+      "original_abi": "ECX header; RET"
+    },
+    {
+      "entry": "00a9b740",
+      "native_end_inclusive": "00a9b787",
+      "native_bytes": 72,
+      "cpp_symbol": "destroy_native_gui_widget_list_00a9b740",
+      "coverage": "complete existing raw-provider alias",
+      "original_abi": "ECX list; RET"
+    },
+    {
+      "entry": "00a9bce0",
+      "native_end_inclusive": "00a9bce4",
+      "native_bytes": 5,
+      "cpp_symbol": "destroy_native_gui_widget_list_thunk_00a9bce0",
+      "coverage": "complete tail alias",
+      "original_abi": "ECX list; tail JMP"
+    },
+    {
+      "entry": "00a9e070",
+      "native_end_inclusive": "00a9e097",
+      "native_bytes": 40,
+      "cpp_symbol": "native_gui_widget_is_kind_of_00a9e070",
+      "coverage": "complete AL result; upper result bits not exposed",
+      "original_abi": "descriptor stack; AL bool; RET4"
+    },
+    {
+      "entry": "00ab6a30",
+      "native_end_inclusive": "00ab6a35",
+      "native_bytes": 6,
+      "cpp_symbol": "native_gui_text_descriptor_00ab6a30",
+      "coverage": "complete borrowed actual cell getter",
+      "original_abi": "EAX descriptor; RET"
+    },
+    {
+      "entry": "00ab73b0",
+      "native_end_inclusive": "00ab73cd",
+      "native_bytes": 30,
+      "cpp_symbol": "release_native_gui_text_glyph_00ab73b0",
+      "coverage": "complete raw188 slot release",
+      "original_abi": "ECX raw Text; RET"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00aa9760",
+      "native": "00aa8320",
+      "function": "00aa9730",
+      "contract": "direct scene pass after D5C130"
+    },
+    {
+      "address": "00aa977a",
+      "native": "00bf6713",
+      "function": "00aa9730",
+      "contract": "null list receiver check"
+    },
+    {
+      "address": "00aa9784",
+      "native": "00bf6713",
+      "function": "00aa9730",
+      "contract": "current first cannot equal current sentinel"
+    },
+    {
+      "address": "00aa9797",
+      "native": "child+vtable04",
+      "function": "00aa9730",
+      "contract": "current child scalar delete flags1; reload actual head/count; child self-detaches"
+    },
+    {
+      "address": "00aa97b9",
+      "native": "00b6e680",
+      "function": "00aa9730",
+      "contract": "current main node, null parent"
+    },
+    {
+      "address": "00aa97c2",
+      "native": "00b6d890",
+      "function": "00aa9730",
+      "contract": "reload current main node, null root"
+    },
+    {
+      "address": "00aa97d2",
+      "native": "00b6d940",
+      "function": "00aa9730",
+      "contract": "captured parent current node; reload own current node"
+    },
+    {
+      "address": "00aa97df",
+      "native": "00a9bd50",
+      "function": "00aa9730",
+      "contract": "captured parent+64, address of captured raw widget pointer; required complete library binding"
+    },
+    {
+      "address": "00aa97ee",
+      "native": "00b6dfa0",
+      "function": "00aa9730",
+      "contract": "release replacement current main node; clear4C after callback"
+    },
+    {
+      "address": "00aa9825",
+      "native": "00aa6f30",
+      "function": "00aa9730",
+      "contract": "reserve live timed header to next_count"
+    },
+    {
+      "address": "00aa986e",
+      "native": "entry+vtable00",
+      "function": "00aa9730",
+      "contract": "current timed entry scalar flags1; clear captured cell after callback"
+    },
+    {
+      "address": "00aa98a3",
+      "native": "00bf55be",
+      "function": "00aa9730",
+      "contract": "negative capacity cleanup grows one four-byte slot"
+    },
+    {
+      "address": "00aa98e4",
+      "native": "00bf6989",
+      "function": "00aa9730",
+      "contract": "free current old data before replacement publication"
+    },
+    {
+      "address": "00aa994c",
+      "native": "00bf6989",
+      "function": "00aa9730",
+      "contract": "free current resized-to-zero data; leave pointer/capacity stale"
+    },
+    {
+      "address": "00aa9973",
+      "native": "00bf65ac",
+      "function": "00aa9730",
+      "contract": "free list node with next captured, no payload delete"
+    },
+    {
+      "address": "00aa9986",
+      "native": "00bf65ac",
+      "function": "00aa9730",
+      "contract": "free current sentinel; then clear68"
+    },
+    {
+      "address": "00aa99a1",
+      "native": "00bd30f0",
+      "function": "00aa9730",
+      "contract": "after state-1 and D5C104; publishCEB130"
+    },
+    {
+      "address": "00aa8337",
+      "native": "00bf6713",
+      "function": "00aa8320",
+      "contract": "unreachable self-iterator owner mismatch"
+    },
+    {
+      "address": "00aa8345",
+      "native": "00bf6713",
+      "function": "00aa8320",
+      "contract": "cursor/current-end check"
+    },
+    {
+      "address": "00aa8352",
+      "native": "child+vtable20",
+      "function": "00aa8320",
+      "contract": "current child scene dispatch; cursor next read after callback"
+    },
+    {
+      "address": "00aa8359",
+      "native": "00bf6713",
+      "function": "00aa8320",
+      "contract": "post-callback cursor/current-end check"
+    },
+    {
+      "address": "00aa8368",
+      "native": "00ab6a30",
+      "function": "00aa8320",
+      "contract": "getter after capture of widget current0C cell address"
+    },
+    {
+      "address": "00aa8372",
+      "native": "widget+vtable0C",
+      "function": "00aa8320",
+      "contract": "target loaded after getter; actual descriptor argument"
+    },
+    {
+      "address": "00aa837b",
+      "native": "00ab73b0",
+      "function": "00aa8320",
+      "contract": "only true AL type query"
+    },
+    {
+      "address": "00aa8387",
+      "native": "00b6dfa0",
+      "function": "00aa8320",
+      "contract": "main node then clear4C"
+    },
+    {
+      "address": "00aa6f50",
+      "native": "00bf55be",
+      "function": "00aa6f30",
+      "contract": "wrapped capacity*4 allocation"
+    },
+    {
+      "address": "00aa6f7c",
+      "native": "00bf6989",
+      "function": "00aa6f30",
+      "contract": "free current old data"
+    },
+    {
+      "address": "00aa77be",
+      "native": "00aa6f30",
+      "function": "00aa77b0",
+      "contract": "signed capacity gate"
+    },
+    {
+      "address": "00aa7f55",
+      "native": "00aa77b0",
+      "function": "00aa7f50",
+      "contract": "resize0"
+    },
+    {
+      "address": "00aa7f5d",
+      "native": "00bf6989",
+      "function": "00aa7f50",
+      "contract": "free current data; repaired RET tail"
+    },
+    {
+      "address": "00a9b763",
+      "native": "00bf65ac",
+      "function": "00a9b740",
+      "contract": "free current list node"
+    },
+    {
+      "address": "00a9b777",
+      "native": "00bf65ac",
+      "function": "00a9b740",
+      "contract": "free current sentinel"
+    },
+    {
+      "address": "00ab73bd",
+      "native": "00b6dfa0",
+      "function": "00ab73b0",
+      "contract": "captured current188 then clear188"
+    },
+    {
+      "address": "00a9bce0",
+      "native": "00a9b740",
+      "function": "00a9bce0",
+      "contract": "same list receiver",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb7403",
+      "native": "00aa6e10",
+      "function": "00cb7400",
+      "contract": "state0 saved widget",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb740e",
+      "native": "00a9bce0",
+      "function": "00cb7408",
+      "contract": "state1 saved widget+64",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb741c",
+      "native": "00aa7f50",
+      "function": "00cb7413",
+      "contract": "state2 saved widget+88",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb7426",
+      "native": "00bf6b43",
+      "function": "00cb7421",
+      "contract": "MOV EAX,DEDCA0 then JMP FH3 dispatcher",
+      "kind": "tail_jump",
+      "branch_kind": "tail_jump",
+      "primary_definition": "reports/cc10_gui_widget_function_definitions.json"
+    }
+  ],
+  "dependency_contract": {
+    "entry": "00a9bd50",
+    "end_inclusive": "00a9bdeb",
+    "coverage": "read-only full156B contract; REQUIRED external library binding, no new STL implementation",
+    "capture_order": "original list+4 sentinel, stack *value cell, sentinel.next; fixed original end; current head checks; previous/next stores then free then decrement current count",
+    "calls": [
+      {
+        "address": "00a9bd78",
+        "native": "00bf6713",
+        "function": "00a9bd50",
+        "coverage": "dependency_only"
+      },
+      {
+        "address": "00a9bd85",
+        "native": "00bf6713",
+        "function": "00a9bd50",
+        "coverage": "dependency_only"
+      },
+      {
+        "address": "00a9bd8f",
+        "native": "00bf6713",
+        "function": "00a9bd50",
+        "coverage": "dependency_only"
+      },
+      {
+        "address": "00a9bda6",
+        "native": "00bf6713",
+        "function": "00a9bd50",
+        "coverage": "dependency_only"
+      },
+      {
+        "address": "00a9bdc0",
+        "native": "00bf65ac",
+        "function": "00a9bd50",
+        "coverage": "dependency_only"
+      },
+      {
+        "address": "00a9bdd9",
+        "native": "00bf6713",
+        "function": "00a9bd50",
+        "coverage": "dependency_only"
+      }
+    ]
+  },
+  "no_ghidra_function": [
+    {
+      "entry": "00cb7421",
+      "end_inclusive": "00cb742a",
+      "last_instruction": "00cb7426",
+      "last_instruction_length": 5,
+      "bytes": 10,
+      "proposed_name": "BSP_GuiWidgetBase_ExceptionHandler",
+      "action": "primary define under lock; then change handler call-row kind from no_ghidra_function to tail_jump",
+      "status": "resolved_by_primary_exact_locked_definition_saved_exported",
+      "record": "reports/cc10_gui_widget_function_definitions.json"
+    }
+  ],
+  "listing_gaps": [
+    {
+      "entry": "00aa7f50",
+      "stored_end": "00aa7f61",
+      "verified_end_inclusive": "00aa7f66",
+      "last_instruction": "00aa7f66",
+      "last_instruction_length": 1,
+      "gap": "AA7F62..AA7F66 after false noreturn free",
+      "status": "resolved_by_locked_call_override_repair_then_exact_body_recreation",
+      "remaining_gaps": 0,
+      "repair_record": "reports/cc10_gui_widget_flow_repair.json",
+      "body_record": "reports/cc10_gui_widget_function_definitions.json"
+    },
+    {
+      "entry": "00a9b740",
+      "stored_end": "00a9b77b",
+      "verified_end_inclusive": "00a9b787",
+      "last_instruction": "00a9b787",
+      "last_instruction_length": 1,
+      "gaps": [
+        "A9B768..A9B772",
+        "A9B77C..A9B787"
+      ],
+      "status": "resolved_by_locked_call_override_repair_then_exact_body_recreation",
+      "remaining_gaps": 0,
+      "repair_record": "reports/cc10_gui_widget_flow_repair.json",
+      "body_record": "reports/cc10_gui_widget_function_definitions.json"
+    }
+  ],
+  "fh3": {
+    "handler": "00cb7421",
+    "metadata": "00dedca0",
+    "magic": "19930522",
+    "max_state": 3,
+    "unwind_map": "00dedc88",
+    "try_count": 0,
+    "states": [
+      {
+        "state": 2,
+        "next": 1,
+        "action": "00cb7413",
+        "target": "00aa7f50",
+        "receiver": "saved widget+88"
+      },
+      {
+        "state": 1,
+        "next": 0,
+        "action": "00cb7408",
+        "target": "00a9bce0",
+        "receiver": "saved widget+64"
+      },
+      {
+        "state": 0,
+        "next": -1,
+        "action": "00cb7400",
+        "target": "00aa6e10",
+        "receiver": "saved widget"
+      }
+    ],
+    "publication_sites": [
+      "00aa9758 state2",
+      "00aa9895 state1",
+      "00aa9993 state-1"
+    ],
+    "source_cleanup": "remaining backing/list/base only; second escaping cleanup exception terminates; no native SEH proof"
+  },
+  "source_boundaries": [
+    "Actual current tables/type cells borrowed; no code-pointer numeric dispatch",
+    "Raw child04 scalar implementations and pools are required; child self-detach supplies loop progress",
+    "Non-base child20/class0C and timed-entry current0 require actual same-owner bindings",
+    "A9BD50 complete MSVC list remove-all binding required; no logical GUI list cast",
+    "Nonnull nodes require existing actual NativeNodeDestructionRuntime attachments and same refcount/transform storage",
+    "Caller destroys completed page name before base cleanup and returns original slot after all obligations; prefix frame unchanged",
+    "Native fault/concurrency/reentrant header lifetime validity are preconditions, not repaired storage",
+    "Normal and C++ exception schedules reconstructed; native FH3/SEH/game execution not established"
+  ],
+  "aliases": [
+    {
+      "entry": "00aa6f30",
+      "provider": "00b22d10",
+      "comparison": "all95 bytes equal with directCALL target canonicalization"
+    },
+    {
+      "entry": "00aa77b0",
+      "provider": "00b22cc0",
+      "comparison": "all80 bytes equal except equivalent reserveCALL relocation"
+    },
+    {
+      "entry": "00aa7f50",
+      "provider": "00b27f50",
+      "comparison": "all23 bytes equal except equivalent resizeCALL and same freeCALL relocations"
+    },
+    {
+      "entry": "00a9b740",
+      "provider": "004c5940",
+      "comparison": "all72 bytes equal with directCALL target canonicalization"
+    }
+  ],
+  "native_pins": [
+    {
+      "entry": "00aa9730",
+      "end_inclusive": "00aa99b8",
+      "bytes": 649,
+      "live_and_installed_pe_equal": true,
+      "sha256": "1c898155d152bf421f0a0890a6db8ae9191a6c96387bded7a20c552f75caec49"
+    },
+    {
+      "entry": "00aa8320",
+      "end_inclusive": "00aa8396",
+      "bytes": 119,
+      "live_and_installed_pe_equal": true,
+      "sha256": "2cda1520a47eba334ad9d13e2e4af62874fb7600ec0cdc15fd14fcdc200d1b76"
+    },
+    {
+      "entry": "00a9e070",
+      "end_inclusive": "00a9e097",
+      "bytes": 40,
+      "live_and_installed_pe_equal": true,
+      "sha256": "bc3a96b58b8bef74e1559a4ce18c0489419aeb7e89ac0b8bca6ec719adec2c3e"
+    },
+    {
+      "entry": "00ab6a30",
+      "end_inclusive": "00ab6a35",
+      "bytes": 6,
+      "live_and_installed_pe_equal": true,
+      "sha256": "e19040f7161ffff8f27d9e45d8534429826a6380f81f9c2e59fc9b9ef0df4573"
+    },
+    {
+      "entry": "00ab73b0",
+      "end_inclusive": "00ab73cd",
+      "bytes": 30,
+      "live_and_installed_pe_equal": true,
+      "sha256": "44e3cec97b87f7f1aa84d9866bc593e6ab479a3de7dedd095b8832695c4b7a34"
+    },
+    {
+      "entry": "00aa6f30",
+      "end_inclusive": "00aa6f8e",
+      "bytes": 95,
+      "live_and_installed_pe_equal": true,
+      "sha256": "57c7128f20941881087d988bc30f30248a413d4b3b563d54984b803cbd50c8fb"
+    },
+    {
+      "entry": "00aa77b0",
+      "end_inclusive": "00aa77ff",
+      "bytes": 80,
+      "live_and_installed_pe_equal": true,
+      "sha256": "b22161dacbc5c6a088b6443745d60716bf226c0a1c7a0f27e5f4fe2909912270"
+    },
+    {
+      "entry": "00aa7f50",
+      "end_inclusive": "00aa7f66",
+      "bytes": 23,
+      "live_and_installed_pe_equal": true,
+      "sha256": "6459a353ba7076b532c123ce38296ed3079d1bac760e33d95bc62b3958a229fb"
+    },
+    {
+      "entry": "00a9b740",
+      "end_inclusive": "00a9b787",
+      "bytes": 72,
+      "live_and_installed_pe_equal": true,
+      "sha256": "3de89d05dd466a4e1e536ad082853c18b82fcc163fd69d7a1e88f8a8dc5eb9a6"
+    },
+    {
+      "entry": "00a9bce0",
+      "end_inclusive": "00a9bce4",
+      "bytes": 5,
+      "live_and_installed_pe_equal": true,
+      "sha256": "f20391c1ec10cb06eb3ed532411fcc84ac1b08ec60b307f1f8a5af2fe8080ab0"
+    },
+    {
+      "entry": "00cb7421",
+      "end_inclusive": "00cb742a",
+      "bytes": 10,
+      "live_and_installed_pe_equal": true,
+      "sha256": "4e45b42ee5727980559e1bdc0a81b9a41f2ab312b2a37def4a9e4497a26c4fa7"
+    }
+  ],
+  "inline_cleanup_distinction": "AA9906..AA991F loops on the sign of wrapping count*4 BYTE OFFSET after increment, unlike AA77B0 element-index comparison. Source preserves the inline branch explicitly; generic resize0 is used only for actual AA7F50 helper/EH.",
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "log": "local/gui_widget_lifetime_build_final.log",
+      "result": "passed",
+      "existing_tests": {
+        "reconstructed_math": "passed",
+        "tool_tests": "passed"
+      },
+      "initial_attempt": {
+        "log": "local/gui_widget_lifetime_build.log",
+        "result": "CMake concurrent regeneration failed after source registration was corrected during active build; stable retry and final build passed"
+      },
+      "retry_log": "local/gui_widget_lifetime_build_retry.log"
+    },
+    "report_calls": {
+      "command": "python tools/verify_report_calls.py reports/native_gui_widget_lifetime_cc10.json",
+      "log": "local/gui_widget_lifetime_call_verification.log",
+      "result": "passed",
+      "direct_rows_checked": 40,
+      "failed": 0,
+      "indirect_rows": 4
+    },
+    "strict_and_probe": {
+      "runner": "local/run_gui_widget_lifetime_probe.cmd",
+      "source": "local/gui_widget_lifetime_probe.cpp",
+      "log": "local/gui_widget_lifetime_probe.log",
+      "result": "passed",
+      "cases": 1,
+      "native_executed": "entire AA9730+AA8320+A9E070+AB6A30 normal fresh-prefix path; real source allocation/free/ref-base bridges",
+      "domain": "real raw AC6600 prefix constructed twice using canonical page/string pools; empty children/timed and null node; source caller destroys name before base",
+      "comparison": "128h postimage with independent stale name pointer/slot ID normalized; +04,metadata,E4/E8 separately checked",
+      "not_proved": [
+        "populated children/entries",
+        "nonnull node release",
+        "native constructor/destructor EH",
+        "ABI or gameplay"
+      ],
+      "compiler": "/std:c++17 /EHsc /O2 /MD /W4 /WX",
+      "linker": "/MANIFEST:EMBED",
+      "repeated_after_final_source_change": true
+    }
+  },
+  "sha256": {
+    "src/native_gui_widget_lifetime.cpp": "f5f10d603694dfbb354b92bc4627dfc0fd687724fc51d49de5c51f53c813c3b6",
+    "include/bsp/native_gui_widget_lifetime.hpp": "f9fe331e898de066b05cde5aba9bae1bb5e0dfccdceedb9cb8c85a286be3d286",
+    "docs/NATIVE_GUI_WIDGET_LIFETIME_CC10.md": "f3e030b0135b92a580ada8566c6f65ef297d8e8c3fd132384396e1958687e627",
+    "local/check_gui_widget_lifetime_pins.py": "e60f656f9e3885895d87b5b9b07d4523159683cca6c1ea45f398aa6b07e9de66",
+    "local/gui_widget_lifetime_native_bytes.hpp": "d98e575a1872fc40e60d45b228738a21a286ac9945727f53641062b4e1fadf6e",
+    "local/gui_widget_lifetime_pins.json": "2e04bf9f87206a2adb24e624f0414002f304f44c2bcfce6dfc44b356b29ff03e",
+    "local/gui_widget_lifetime_probe.cpp": "e001aa53d0318e06bbaa6db18a99c102b2d973205fc8999c34d5452208f09aa4",
+    "local/run_gui_widget_lifetime_probe.cmd": "3ad6b7afb7da49a735d55510562837593d9dd726f5624800744a5ef77147042b",
+    "local/gui_widget_lifetime_build.log": "fe760b1ed71216f0a80da590ce8a274ca48d49f30aa1aff3ebcfaa3a00f39dfe",
+    "local/gui_widget_lifetime_build_retry.log": "0be91d50c31782dd7eaece86afcd0241c469680d697dbc77d24581e78e201611",
+    "local/gui_widget_lifetime_build_final.log": "a7d1753660def026cd8cf1e36d33ada8e4c2f7e0023187ce82617ff70e2cb887",
+    "local/gui_widget_lifetime_call_verification.log": "fe2bfe9809b798a134dc1e5288e0568ea55f4bc233798361a03ea0c80307048c",
+    "local/gui_widget_lifetime_probe.log": "9080f07f9f297991f64d70998a53112bc2167006c7e53c4c9a7b1738463628eb",
+    "local/gui_widget_lifetime_probe.exe": "504a720bb2dee9ac1cc9db9ec7c8d9d297ccfbc6c5f86fccef95d7304cf7c1f4",
+    "local/native_gui_widget_lifetime_strict.obj": "363d9c21484eb277f3a9b2eb5ececa860e57f70f3b6497a2bcbde4ac2823e32c"
+  },
+  "primary_integration": {
+    "worker_commit": "fbb20ad69e2166d6d7613afb8e35dfb9a1c3b8e2",
+    "published_revision": "d936682ba712892a9db0a299647d1006edaf8a79",
+    "build": "strict MSVC Win32;3 existing CTests passed",
+    "note": "Initial call-override repair decoded tails but did not extend stored bodies. Separate exact recreation restored AA7F50..AA7F66 and A9B740..A9B787, preserving names/comments. Current listings have10/27 instructions and zero gaps; all affected exports refreshed. No callee no-return flags changed.",
+    "receipt": "reports/cc10_raw_lifetimes_integration.json"
+  }
+}

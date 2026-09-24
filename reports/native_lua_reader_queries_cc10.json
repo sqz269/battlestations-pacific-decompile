@@ -1,0 +1,244 @@
+{
+  "packet": "cc10_lua_reader_queries",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_lua_reader_queries.cpp",
+  "status": "complete_normal_raw_storage_native_source_compared",
+  "functions": [
+    {
+      "address": "00bd5eb0",
+      "end_inclusive": "00bd5f4f",
+      "final_instruction": "00bd5f4d",
+      "final_instruction_length": 3,
+      "byte_span": 160,
+      "name": "BSP_LuaReader_HasKey",
+      "original_abi": "ECX reader; stacked tag/bits; bool AL; RET8",
+      "coverage": "complete successful normal path; invalid vector and native FH3 excluded"
+    },
+    {
+      "address": "00bd5f50",
+      "end_inclusive": "00bd60fd",
+      "final_instruction": "00bd60fb",
+      "final_instruction_length": 3,
+      "byte_span": 430,
+      "name": "BSP_LuaReader_EnumerateKeys",
+      "original_abi": "ECX reader; stacked output; RET4",
+      "coverage": "complete successful normal path with <=250 supported keys; native FH3 and invalid vector excluded"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00bd5ed6",
+      "function": "00bd5eb0",
+      "native": "00bf6713",
+      "contract": "invalid vector domain excluded"
+    },
+    {
+      "address": "00bd5eee",
+      "function": "00bd5eb0",
+      "native": "00bf6713",
+      "contract": "invalid vector domain excluded"
+    },
+    {
+      "address": "00bd5efb",
+      "function": "00bd5eb0",
+      "native": "00bf6713",
+      "contract": "invalid vector domain excluded"
+    },
+    {
+      "address": "00bd5f10",
+      "function": "00bd5eb0",
+      "native": "00bd5790",
+      "contract": "raw lookup into fresh scratch"
+    },
+    {
+      "address": "00bd5f1f",
+      "function": "00bd5eb0",
+      "native": "00b65fb0",
+      "contract": "nil predicate"
+    },
+    {
+      "address": "00bd5f35",
+      "function": "00bd5eb0",
+      "native": "00b67700",
+      "contract": "destroy lookup result after bool selection"
+    },
+    {
+      "address": "00bd5f7e",
+      "function": "00bd5f50",
+      "native": "00b65f50",
+      "contract": "construct table"
+    },
+    {
+      "address": "00bd5f8b",
+      "function": "00bd5f50",
+      "native": "00b65f50",
+      "contract": "construct key"
+    },
+    {
+      "address": "00bd5f9d",
+      "function": "00bd5f50",
+      "native": "00b65f50",
+      "contract": "construct value"
+    },
+    {
+      "address": "00bd5fb2",
+      "function": "00bd5f50",
+      "native": "00bf6713",
+      "contract": "invalid vector domain excluded"
+    },
+    {
+      "address": "00bd5fc8",
+      "function": "00bd5f50",
+      "native": "00bf6713",
+      "contract": "invalid vector domain excluded"
+    },
+    {
+      "address": "00bd5fd5",
+      "function": "00bd5f50",
+      "native": "00bf6713",
+      "contract": "invalid vector domain excluded"
+    },
+    {
+      "address": "00bd5fdf",
+      "function": "00bd5f50",
+      "native": "00b67690",
+      "contract": "assign current raw table"
+    },
+    {
+      "address": "00bd5ff2",
+      "function": "00bd5f50",
+      "native": "00b67080",
+      "contract": "first raw key/value"
+    },
+    {
+      "address": "00bd6000",
+      "function": "00bd5f50",
+      "native": "00b66420",
+      "contract": "stacked key end predicate; ECX ignored"
+    },
+    {
+      "address": "00bd6014",
+      "function": "00bd5f50",
+      "native": "00b660a0",
+      "contract": "exact string predicate"
+    },
+    {
+      "address": "00bd6021",
+      "function": "00bd5f50",
+      "native": "00b662b0",
+      "contract": "borrow string pointer"
+    },
+    {
+      "address": "00bd6037",
+      "function": "00bd5f50",
+      "native": "00b66a60",
+      "contract": "float32 integer-number predicate"
+    },
+    {
+      "address": "00bd6044",
+      "function": "00bd5f50",
+      "native": "00b66290",
+      "contract": "integer accessor with live mode"
+    },
+    {
+      "address": "00bd605a",
+      "function": "00bd5f50",
+      "native": "00b66050",
+      "contract": "exact number predicate"
+    },
+    {
+      "address": "00bd6067",
+      "function": "00bd5f50",
+      "native": "00b66270",
+      "contract": "float32 number accessor"
+    },
+    {
+      "address": "00bd60a2",
+      "function": "00bd5f50",
+      "native": "00b67190",
+      "contract": "next raw key/value"
+    },
+    {
+      "address": "00bd60b0",
+      "function": "00bd5f50",
+      "native": "00b66420",
+      "contract": "stacked key end predicate; ECX ignored"
+    },
+    {
+      "address": "00bd60c5",
+      "function": "00bd5f50",
+      "native": "00b67700",
+      "contract": "destroy value"
+    },
+    {
+      "address": "00bd60d3",
+      "function": "00bd5f50",
+      "native": "00b67700",
+      "contract": "destroy key"
+    },
+    {
+      "address": "00bd60e4",
+      "function": "00bd5f50",
+      "native": "00b67700",
+      "contract": "destroy table"
+    }
+  ],
+  "no_ghidra_function": [],
+  "layout": {
+    "reader": "existing NativeLuaReaderStorage 20B; noncopying current_raw borrow",
+    "key_record_bytes": 8,
+    "key_count_offset": 2000,
+    "key_output_bytes": 2004,
+    "key_capacity": 250,
+    "scratch_object_bytes": 20,
+    "scratch_objects": 3,
+    "untouched": "all unused output records; scratch opaque0C and padding11..13"
+  },
+  "behavior": {
+    "has_key": "BD5790 lookup; !B65FB0; destroy scratch after bool computed. Unsupported tag returns true from unbound result. Float index uses existing CVTTSS2SI truncation/invalid sentinel.",
+    "enumerate": "Count zero before table/key/value construction; assign borrowed current table; iterate until key unbound. STRING then integer-number then NUMBER. Record tag then payload then increment count. Unsupported keys still advance. Destroy value/key/table.",
+    "numeric": "Exact numeric strings remain borrowed strings. Number predicate narrows float32 and compares CVTTSS2SI result; selected integer accessor rereads live CRT mode by const bool reference. Remaining numbers use x87 float32 spill/reload/spill.",
+    "callback": "No direct query callback. HasKey raw lookup retains real Lua __index behavior; no substitute/no-op callback. Callers supply stable actual raw owner/interpreter/table and scratch addresses."
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "existing_ctests_passed": 2,
+    "call_rows_verified": true,
+    "focused_probe": "local/output/cc10_query_probe.cpp (ignored)",
+    "focused_probe_result": "PASS: 4 original/source enumeration pairs (empty, mixed keys with both CRT modes, exactly250 supported keys); all2004 output bytes and60 scratch bytes equal. Seven HasKey pairs compare bool, full20 scratch bytes, actual Lua top,50 slot counts/high-water and active reader reference. Real __index callback twice observes scratch still unbound and reader reference present.",
+    "probe_link": "Rerun passed against this worktrees complete fresh MSVC Win32 Release bsp_core/bsp_lua511/bsp_zlib121 libraries; /MD /W4 /WX /fp:strict /MANIFEST:EMBED",
+    "native_bytes_equal_installed_pe": true,
+    "original_ranges": [
+      {
+        "address": "00bd5eb0",
+        "bytes": 160,
+        "sha256": "f2212fdb19afa6960bb6a1c92108cc1d59a8d11bc443b2d7f3862cf3570c64ab"
+      },
+      {
+        "address": "00bd5f50",
+        "bytes": 430,
+        "sha256": "baa98cf02aab23f00833941153ac63fcd42e934efd8022c9e2749477e5fae890"
+      }
+    ],
+    "native_fh3_verified": false,
+    "application_bound": false,
+    "abi_compatible": false,
+    "game_validated": false,
+    "call_rows_checked": 26,
+    "scratch_preimage": "ABI bridges seed fresh original stack scratch with A7 for enumeration and C3 for lookup, matching source caller scratch; opaque/padding retained rather than zeroed",
+    "build_log": "local/cc10_lua_reader_queries_build.log (ignored)",
+    "probe_exe_sha256": "dc240b0bfbe5e611e7bbb72e87799dc32ba3493082cfc320e352c1393d768abc",
+    "probe_build_command": "cl /nologo /MD /EHsc /std:c++20 /O2 /Gy /W4 /WX /fp:strict /I include /I local\\output /I build\\win32\\_deps\\lua511-src\\src /Fo:local\\output\\ /Fe:local\\output\\cc10_query_probe.exe local\\output\\cc10_query_probe.cpp build\\win32\\Release\\bsp_core.lib build\\win32\\Release\\bsp_lua511.lib build\\win32\\Release\\bsp_zlib121.lib /link /OPT:REF /MANIFEST:EMBED user32.lib d3d9.lib advapi32.lib shell32.lib",
+    "probe_assertions": "NDEBUG not defined: probe has #ifdef NDEBUG / #error guard, compile and run succeeded",
+    "probe_source_sha256": "7d88c303c1d74a75f9a85732a67e9e97f8ee689cc619eff4b8b17e1d40125b2e"
+  },
+  "limits": [
+    "Requires nonempty stable reader, successful raw Lua operations and valid owner50-slot/5-reference capacity. Caller scratch/output/reader/owner storage must not alias.",
+    "Native has no key-count guard. Source matches writes only within declared <=250 supported-key domain; no clamp or overflow promise.",
+    "Caller owns fresh scratch preimages, avoiding fabricated zero opaque/padding values. Borrowed strings require Lua table/string lifetime.",
+    "Original-body differential relocates direct calls to existing raw reconstructed primitives and actual Lua5.1.1; native FH3 handlers were not executed. No native CRT invalid-parameter, exception cleanup, error/longjmp unwind, unmasked FP-trap, application, ABI, or game parity claim."
+  ],
+  "ghidra_mutations": false,
+  "annotation_handoff": "Existing descriptive names retained. Primary may append raw-storage/output/scratch evidence to BD5EB0 and BD5F50 comments under write lock, preserving prior comments; worker performed no Ghidra mutation."
+}

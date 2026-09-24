@@ -1,0 +1,58 @@
+{
+  "packet": "cc10_lua_fields_post_integration",
+  "integration_commit": "4539e852bf0d244f781dceb7d7e516eff920331f",
+  "root_wrapper_commit": "5d0f48386",
+  "worker_commits": {
+    "lua_field_values": "0b371299ba82ab5b2bebe00ea85b4fda3749e789",
+    "lua_reader_queries": "a7642c2232bd22cffa08cba05a2ccb4c4f3a6c44",
+    "renderer_resource_post": "c6da7d71d1ad5c739fce5774801930b8a4fdc5e6"
+  },
+  "review": [
+    "full new source and public interfaces",
+    "prior renderer state extension diff",
+    "selected live renderer listing and all wrapper listing",
+    "query full-byte/ref tracking probe comparisons with NDEBUG compile guard",
+    "field value ordering, scratch and x87 operations",
+    "worker exact call rows, livePE boundaries, build and probe reports"
+  ],
+  "validation": {
+    "combined_build": "strict MSVC Win32 Release",
+    "ctests_passed": 3,
+    "lua_field_value_pairs": 25,
+    "lua_query_pairs": 11,
+    "raw_wrapper_runtime": false,
+    "composed_renderer_runtime": false,
+    "application_run": false,
+    "native_ABI_FH3": false,
+    "game_validated": false
+  },
+  "archives": [
+    {
+      "path": "local/cc10-platform-evidence/lua-field-values.zip",
+      "sha256": "a749dbf4656596e6a4e0c11ecb320a02bfe62dcba5fa3654c2744aa2a3022153",
+      "valid": true,
+      "files": 30
+    },
+    {
+      "path": "local/cc10-platform-evidence/lua-reader-queries.zip",
+      "sha256": "a6856418b831bbc63c193f65a7e8030da44f08f58dd32b0b151aceb7a2615079",
+      "valid": true,
+      "files": 13
+    },
+    {
+      "path": "local/cc10-platform-evidence/renderer-resource-post.zip",
+      "sha256": "2c4a6eff0744608d05fef7f34f3beb91bb6242ee8ff70a4f64856cc5471bc029",
+      "valid": true,
+      "files": 12
+    },
+    {
+      "path": "local/cc10-platform-evidence/lua-reader-fields.zip",
+      "sha256": "c2836936b5f9e4050e87c71c16f775564fe2622ff62e8691cb9f0a5fdb43bff8",
+      "valid": true,
+      "files": 12
+    }
+  ],
+  "handler_definitions": "reports/cc10_lua_reader_field_function_definitions.json",
+  "build_log_sha256": "ab353251e8576537d2ea9c17bda223ee114a4a7cbd5dd5521336f1fcf8cb52c3",
+  "frontier": "B107F0 normal source now reaches B118AF. Later initializer stages, genuine lifetime registrations, full cleanup and application dispatch remain incomplete."
+}

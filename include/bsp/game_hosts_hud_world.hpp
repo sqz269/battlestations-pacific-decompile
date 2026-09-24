@@ -75,6 +75,19 @@ inline constexpr bool kHudMarkerPoolsBound = true;
 // camera pair and the FOV pair can be measured separately.
 inline constexpr bool kMissionFovBound = true;
 
+// Packet cc9_ship_screen_update (docs/SHIP_SCREEN_UPDATE.md). ON runs screen
+// 45h's update 0064DD30 through bsp::ship_screen_update_0064dd30 in place of
+// the FrontEndScreen::update record: part 1 binds the relation icon
+// (0064A960), the flash icons (0064ABD0) and the throttle stick (+44h,
+// 0064A9F0); the other blocks are records. OFF keeps the one record.
+inline constexpr bool kHudShipScreenUpdateBound = true;
+
+// Part 2 of the same packet (docs/SHIP_SCREEN_UPDATE.md section 10): the
+// control flow from 0064E415 to 0064F665, the turn-to-camera and repair-menu
+// gates over the menu host's action records. Their bodies are records never
+// reached without input. OFF keeps the part-1 tail record.
+inline constexpr bool kHudShipScreenControlsBound = true;
+
 class GameHostLog;
 class GameFrontendHost;
 class GameMenuHost;

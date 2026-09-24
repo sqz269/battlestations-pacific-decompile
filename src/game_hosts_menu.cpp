@@ -13,6 +13,7 @@
 #include "bsp/game_hosts_singletons.hpp"
 #include "bsp/game_hosts_frontend.hpp"
 #include "bsp/game_hosts_hud.hpp"
+#include "bsp/game_hosts_hud_world.hpp"
 #include "bsp/game_hosts_mission.hpp"
 #include "bsp/gui_layout_loader.hpp"
 #include "bsp/input_tick.hpp"
@@ -816,6 +817,12 @@ public:
         }
         if (owner_.hud != nullptr && slot == 0x4d) {
             owner_.hud->update_markers_screen_006435d0(seconds);
+            return;
+        }
+        // Packet cc9_ship_screen_update: screen 45h's 0064DD30.
+        if (kHudShipScreenUpdateBound && owner_.hud != nullptr && slot == 0x45) {
+            owner_.hud->update_ship_screen_0064dd30(seconds,
+                screen != nullptr && screen->flags != nullptr && screen->flags->active);
             return;
         }
         owner_.log.unimplemented("FrontEndScreen::update", "004f75c0");
@@ -1726,6 +1733,21 @@ bool GameMenuHost::input_action_pressed(int action) {
     Impl& host = *impl_;
     if (action != kPressStartInputAction) return false;
     return action_pressed_this_frame_004c43c0(host.press_action);
+}
+
+// The executable's action table holds one record, press-start 4Eh. Every other
+// index is a record nothing starts, so both rules answer false for it.
+bool GameMenuHost::input_action_held(int action) {
+    Impl& host = *impl_;
+    if (action != kPressStartInputAction) return false;
+    return host.press_action.current_down && host.press_action.current_hold > 0.0f;
+}
+
+bool GameMenuHost::input_action_released(int action) {
+    Impl& host = *impl_;
+    if (action != kPressStartInputAction) return false;
+    const bool held_now = host.press_action.current_down && host.press_action.current_hold > 0.0f;
+    return !held_now && host.press_action.previous_down && host.press_action.previous_hold > 0.0f;
 }
 
 void GameMenuHost::frame(float raw_delta, unsigned long long frame_index) {

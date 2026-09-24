@@ -106,3 +106,17 @@ Runs: a 120-frame probe at 12:36 died at the renderer init request (0xC0000005 a
 wait for the environment:
 - the station-keeping USN04 4700/4500 pair from `build/win32/skC` / `build/win32/skT2`;
 - the torpedo-boat switch, which needs a pair built from this tree with it off and on.
+
+## Correction, 2026-09-24 (packet cc9_player_role_bookkeeping)
+
+The Answer's premise is wrong: the Lexington is not "player-controlled" in the +184h sense.
+
+- **The +184h premise.** unit+184h is set only when a player takes role 1 (00780214, through
+  0059BBD0 on the role-1 permission). On USN04 that role stays PLAYER_AI (usn_19_coralus.lua lines
+  458-459), so +184h is 0. The Lexington is not forced into cruise, and it sails its authored
+  `CarrierPath1` under the AI. It does not sit still: `target_speed=0.00` and `target_moved=0.0 m`
+  were host artefacts (docs/CONTROLLED_UNIT_HELM.md, correction of 2026-09-24).
+- **The torpedo response is still off for it,** by a different arm.
+  - Its captain role 0 is held by the human slot 0, which HUD page 27h (0067BB50) takes.
+  - So cruise arm 3 stores 00521E70(unit, 0) = 0 into blk+3ECh, and 009DA1D0 stays closed.
+  - The "why it is off" list above holds for a ship whose helm the player holds, not for this one.

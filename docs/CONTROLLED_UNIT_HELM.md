@@ -92,3 +92,23 @@ host produces.
 
 None. Runs were still blocked (probe failures at 12:30 and 12:36). The owed runs keep their order:
 the station-keeping USN04 pair, then the torpedo-boat switch pair. This packet adds no pair.
+
+## Correction, 2026-09-24 (packets cc9_scripted_helm and cc9_player_role_bookkeeping)
+
+**The Answer above is wrong for USN04.** The image does not stop the idle player's Lexington.
+
+- **unit+184h means the player holds role 1, not role 0.** 00780214 sets it on a role-1 take
+  (`[msg+24h] & 2`) that passes `0059BBD0(unit, 1, slot)`. 0059BBD0 checks the role-1 permission
+  word unit+18Ch: it must be 9 or the slot. A store census over every MOV form finds no other
+  setter. Step 2 above misread the mask bit as role 0, and 009281C0's Ghidra comment repeats the
+  error.
+- **The Lexington's role 1 is AI-only on USN04.** usn_19_coralus.lua lines 458-459 open only the
+  captain, machine-gun and flak roles to PLAYER_ANY, and EROLF_PILOT (role 1) stays PLAYER_AI (8).
+  So +184h is never set. 009F3DF3 does not force the carrier into cruise, and its director keeps
+  the script's `NavigatorMoveOnPath(CarrierPath1, PATH_FM_CIRCLE)` (line 515), which the AI drives.
+- **What the player does get.** HUD page 27h (0067BB50) takes the captain role, role 0, on the
+  controlled unit. That closes the ship's own torpedo request through cruise arm 3's
+  00521E70(unit, 0) store, not through arm 2.
+- **The host now does this** behind `kPlayerRoleBookkeepingBound` (docs/SCRIPTED_HELM.md
+  section 6). The stationary carrier in the idle references before it (100.51 m in 449.96 s) was a
+  host artefact of reading "the controlled unit" as +184h.
