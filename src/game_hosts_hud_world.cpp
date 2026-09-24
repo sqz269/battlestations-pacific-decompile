@@ -29,6 +29,12 @@ void format_address(std::uint32_t address, char (&out)[16]) {
     std::snprintf(out, sizeof(out), "%08lx", static_cast<unsigned long>(address));
 }
 
+// Packet cc9_hud_minimap_bind (docs/UNIMPLEMENTED_AUDIT.md). ON answers the
+// minimap walk's vtable +B8h (005C1675) with the body the unit's class installs
+// and runs 005BE110's map find as done; OFF keeps the records under 0043F080 and
+// 005BE110 with the old constant true.
+constexpr bool kHudMinimapUnitGateBound = true;
+
 // The registry slots of the two screens, from docs/IN_GAME_INTERFACE_SCREEN_SETS.md.
 constexpr int kMinimapScreenSlot = 0x35;
 constexpr int kMarkersScreenSlot = 0x4D;
@@ -207,18 +213,53 @@ public:
     }
 
     bool unit_shows_on_minimap(void* unit) override {
-        // 005C1675, the unit vtable +B8h with no arguments. reports/hud_minimap.json
-        // resolves the slot to 0043F080; the four-byte gate above has already
-        // passed for every unit that reaches here, so the answer is true. The
-        // slot's identity is the packet's reading and is marked uncertain.
-        static_cast<void>(unit);
-        owner_.record("HudMinimap::unit_shows_on_minimap", 0x0043f080u);
+        // 005C1675, the unit vtable +B8h with no arguments.
+        if (!kHudMinimapUnitGateBound) {
+            // Before the law: a record under the gate's address, answering true.
+            static_cast<void>(unit);
+            owner_.record("HudMinimap::unit_shows_on_minimap", 0x0043f080u);
+            return true;
+        }
+        // The law: the body the unit's most-derived class installs at +B8h
+        // (bsp::hud_minimap_unit_shows_body, surveyed over all 88 kind bodies).
+        const int class_id = owner_.units != nullptr
+            ? owner_.units->unit_class_id(owner_.index_of(unit)) : -1;
+        switch (bsp::hud_minimap_unit_shows_body(class_id)) {
+        case bsp::HudMinimapUnitShows::Always:
+            owner_.done("HudMinimap::unit_shows_on_minimap", bsp::kHudMinimapShowsAlwaysBody);
+            return true;
+        case bsp::HudMinimapUnitShows::Never:
+            owner_.done("HudMinimap::unit_shows_on_minimap(fort)",
+                bsp::hud_minimap_unit_shows_address(class_id));
+            return false;
+        case bsp::HudMinimapUnitShows::PlayerQuery:
+            // SUBSTITUTION: 0074DDF0 asks 008DDF00 on the local player's object at
+            // [[00E188A8]+[..+18ECh]*4+21A4h], which is not reconstructed. The
+            // answer stays the pre-law true.
+            owner_.record("HudMinimap::land_vehicle_player_query",
+                bsp::kHudMinimapShowsLandVehicleQuery);
+            return true;
+        case bsp::HudMinimapUnitShows::NotAUnit:
+            break;
+        }
+        // Unreachable in the image: the walk tested IsKindOf(5) at 005C165D first.
+        owner_.record("HudMinimap::unit_shows_on_minimap(unclassified)", 0x005c1675u);
         return true;
     }
 
     void* find_icon_entry(void* unit) override {
-        // 005C170A -> 005BE110, the lookup in the map at screen +F8h.
-        owner_.record("HudMinimap::find_icon_entry", 0x005be110u);
+        // 005C170A -> 005BE110 on the map at screen+F8h, keyed by the unit
+        // pointer; 005BCC00 then compares the result with end(). 005BE110 is
+        // MSVC's std::map::find (lower bound down the _Tree from [map+4]+4 with
+        // the key at node+0Ch and the nil byte at node+15h, then end() unless
+        // the key is not below the found node's). The host's icon map is the
+        // stand-in for the container, keyed by unit index, which is injective
+        // over the same units, so the same find is the law.
+        if (kHudMinimapUnitGateBound) {
+            owner_.done("HudMinimap::find_icon_entry", 0x005be110u);
+        } else {
+            owner_.record("HudMinimap::find_icon_entry", 0x005be110u);
+        }
         auto found = owner_.icons.find(owner_.index_of(unit));
         return found != owner_.icons.end() ? found->second : nullptr;
     }

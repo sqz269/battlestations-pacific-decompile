@@ -1,4 +1,5 @@
 #include "bsp/hud_minimap.hpp"
+#include "bsp/unit_kind_query.hpp"
 
 #include <cmath>
 
@@ -190,6 +191,38 @@ int hud_minimap_place_unit_icons_005c154e(int team_index, HudMinimapHost& host,
         ++placed;
     }
     return placed;
+}
+
+// 005C1675 -> vtable +B8h. The class lists are the image's vtables read at +B8h
+// for every class whose kind body accepts 5 (see the header).
+HudMinimapUnitShows hud_minimap_unit_shows_body(int class_id) noexcept {
+    if (!unit_is_kind_of(class_id, 5)) return HudMinimapUnitShows::NotAUnit;
+    switch (class_id) {
+    case 0x1B: // MLandFort, vtable 00CFF3F8
+    case 0x1C: // MCommandBuilding, vtable 00CFB028
+    case 0x35: // vtable 00CFCD60
+        return HudMinimapUnitShows::Never;
+    case 0x19: // MLandVehicle, vtable 00CFFDE0
+        return HudMinimapUnitShows::PlayerQuery;
+    default:
+        break;
+    }
+    if ((class_id >= 0x05 && class_id <= 0x17) || class_id == 0x45 || class_id == 0x46) {
+        return HudMinimapUnitShows::Always;
+    }
+    // A class that accepts 5 outside the surveyed set would be a table change.
+    return HudMinimapUnitShows::NotAUnit;
+}
+
+std::uint32_t hud_minimap_unit_shows_address(int class_id) noexcept {
+    switch (hud_minimap_unit_shows_body(class_id)) {
+    case HudMinimapUnitShows::Always: return kHudMinimapShowsAlwaysBody;
+    case HudMinimapUnitShows::Never:
+        return class_id == 0x35 ? kHudMinimapShowsClass35Body : kHudMinimapShowsFortBody;
+    case HudMinimapUnitShows::PlayerQuery: return kHudMinimapShowsLandVehicleBody;
+    case HudMinimapUnitShows::NotAUnit: break;
+    }
+    return 0;
 }
 
 } // namespace bsp
