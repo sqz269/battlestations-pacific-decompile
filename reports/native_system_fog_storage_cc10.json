@@ -1,0 +1,222 @@
+{
+  "packet": "cc10_system_fog_storage",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "baseline_main": "84b1117e0",
+  "source": "src/system_fog_owner.cpp",
+  "header": "include/bsp/system_fog_owner.hpp",
+  "documentation": "docs/NATIVE_SYSTEM_FOG_STORAGE_CC10.md",
+  "status": "complete_raw_system_fog_constructor_and_camera_setter_strict_win32_original_source_checked",
+  "functions": [
+    {
+      "address": "00b84e50",
+      "end_exclusive": "00b84f61",
+      "end_inclusive": "00b84f60",
+      "final_instruction": "00b84f60",
+      "final_instruction_length": 1,
+      "instructions": 52,
+      "byte_span": 273,
+      "cpp_symbol": "bsp::initialize_system_fog_owner_00b84e50",
+      "original_abi": "ECX actual94h storage; EAX same identity; RET",
+      "coverage": "complete normal body in actual94h valid lifetime/current binding domain; source ABI, no native exception claim",
+      "overload": "void*,const NativeSystemFogConstants&"
+    },
+    {
+      "address": "00b71940",
+      "end_exclusive": "00b71981",
+      "end_inclusive": "00b71980",
+      "final_instruction": "00b7197e",
+      "final_instruction_length": 3,
+      "instructions": 24,
+      "byte_span": 65,
+      "cpp_symbol": "bsp::set_native_camera_fog_storage_00b71940",
+      "original_abi": "ECX actualcamera,stack incoming owner word; RET4",
+      "coverage": "complete normal body in actual94h valid lifetime/current binding domain; source ABI, no native exception claim"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00b71940",
+      "address": "00b7195d",
+      "native": "dword ptr [0xce221c]",
+      "kind": "indirect_call",
+      "contract": "CURRENT increment after publishing captured incoming; actual04"
+    },
+    {
+      "function": "00b71940",
+      "address": "00b7196b",
+      "native": "dword ptr [0xce2220]",
+      "kind": "indirect_call",
+      "contract": "FRESH CURRENT decrement after increment callback on capturedold04"
+    },
+    {
+      "function": "00b71940",
+      "address": "00b7197b",
+      "native": "EAX",
+      "kind": "indirect_call",
+      "contract": "capturedold CURRENT profile/current0 on observedzero; bound BD30E0 then fresh4 B84F70"
+    }
+  ],
+  "byte_evidence": [
+    {
+      "address": "00b84e50",
+      "bytes": 273,
+      "end_exclusive": "00b84f61",
+      "end_inclusive": "00b84f60",
+      "final_instruction": "00b84f60",
+      "final_instruction_length": 1,
+      "instructions": 52,
+      "live_equals_installed": true,
+      "sha256": "a9e64942e3cb6ac462d76d57d9f6a9fc05b26e0293bb85fb5c68b0ebb179146e",
+      "calls": []
+    },
+    {
+      "address": "00b71940",
+      "bytes": 65,
+      "end_exclusive": "00b71981",
+      "end_inclusive": "00b71980",
+      "final_instruction": "00b7197e",
+      "final_instruction_length": 3,
+      "instructions": 24,
+      "live_equals_installed": true,
+      "sha256": "e82b1456d329bfd6aaeacef079638bc8ab2d27074d1e5ad2f631ed4d91fe8932",
+      "calls": [
+        {
+          "address": "00b7195d",
+          "target": "dword ptr [0xce221c]",
+          "kind": "call"
+        },
+        {
+          "address": "00b7196b",
+          "target": "dword ptr [0xce2220]",
+          "kind": "call"
+        },
+        {
+          "address": "00b7197b",
+          "target": "eax",
+          "kind": "call"
+        }
+      ]
+    },
+    {
+      "address": "00b84f70",
+      "bytes": 36,
+      "role": "existing genuine scalar terminal",
+      "external_reuse": true,
+      "live_equals_installed": true,
+      "sha256": "56c38cc2fe1d196d74e1158832dc6a89589cae98e2fdfea39c564bd04319fb90",
+      "hex": "568bf1c7068031d600e872e10400f644240801740956e82116070083c4048bc65ec20400"
+    },
+    {
+      "address": "00d63180",
+      "bytes": 12,
+      "role": "current0/current4 and live scalar70",
+      "external_reuse": true,
+      "live_equals_installed": true,
+      "sha256": "f5e03aaffe1885d65cb7642a3015c5fda8b46f5a3de1bd54a88f8766ef8b215d",
+      "hex": "e030bd00704fb80000c0da45"
+    },
+    {
+      "address": "00ce386c",
+      "bytes": 4,
+      "role": "live scalar6C/74",
+      "external_reuse": true,
+      "live_equals_installed": true,
+      "sha256": "531ad685bf4dd31ed89c6b99e76c2b9451d6a6d04d82de7d4b1a73217f55e551",
+      "hex": "00004843"
+    },
+    {
+      "address": "00ce7804",
+      "bytes": 4,
+      "role": "live scalar68/78",
+      "external_reuse": true,
+      "live_equals_installed": true,
+      "sha256": "e0fb2d87992a9fc79e7729163ad2aea5efbf14806711292c8c46e873bac1a253",
+      "hex": "cdcccc3e"
+    },
+    {
+      "address": "00ce77dc",
+      "bytes": 32,
+      "role": "live90/8C/88/84/7C range",
+      "external_reuse": true,
+      "live_equals_installed": true,
+      "sha256": "99a09164a31e27086a31938e431cd1128c711d866e58be863e7cd766caad79a8",
+      "hex": "52b87e3f00000cc3000048c3ec51783f6f81043ed8f0743e76e05c3e0000f0c2"
+    },
+    {
+      "address": "00ce3950",
+      "bytes": 4,
+      "role": "live scalar80",
+      "external_reuse": true,
+      "live_equals_installed": true,
+      "sha256": "be0509d0f49ca3a633ca83e11c8d460987acd18e2d32834592a2631fb28f0b0b",
+      "hex": "00004844"
+    }
+  ],
+  "live_constants": [
+    "00ce386c",
+    "00d63188",
+    "00ce7804",
+    "00ce77f8",
+    "00ce3950",
+    "00ce77e8",
+    "00ce77e4",
+    "00ce77e0",
+    "00ce77dc"
+  ],
+  "source_contract": {
+    "lifetime": "actual94h SystemFogOwner, full preimage snapshot/restore around placement; live volatilelong04; no atomic or canonical registry",
+    "constructor": "single complete MOVSS/native store engine; raw overload9borrowed currentcells, metadata-only pointerarray; legacy overload installedconstants through same engine",
+    "setter": "capture incoming before old184; identity return; publish capturedincoming then CURRENT increment then CURRENT decrement(capturedold); callback184 changes survive",
+    "zero": "SAME live observedcount0,current D63180/current0BD30E0, existingBD30E0 freshly capturesprofile/current4B84F70 flags1; genuine scalar/free; no postfree payload read",
+    "imports": "nonnull callable genuine current bindings required at each reached call; no eager caching/validation; null is unmasked native fault, not source exception",
+    "failure": "no local native EH; source provider/callback failures retain published pointer and completed credits; caller owns backing/unresolved credits/disposition"
+  },
+  "verification": {
+    "strict_build": "scripts/build.ps1 MSVC Win32 passed;2 configured existing CTests passed; baseline84b1117e0",
+    "build_log": "local/output/cc10_system_fog_storage_build.log",
+    "call_verifier": "standard verifier recognizes/skips3 indirect rows,0 direct checks/0 failures; all3 CALL operands separately decoded from pinned live==PE bytes and matched exact site/operand",
+    "probe": "local/output/cc10_system_fog_storage_probe.cpp",
+    "probe_command": "local/output/cc10_system_fog_storage_probe.cmd",
+    "exact_compile_command": "cl /nologo /MD /EHsc /std:c++20 /O2 /Gy /W4 /WX /fp:strict /I include /I local\\output /Fo:local\\output\\ /Fe:local\\output\\cc10_system_fog_storage_probe.exe local\\output\\cc10_system_fog_storage_probe.cpp build\\win32\\Release\\bsp_core.lib build\\win32\\Release\\bsp_lua511.lib build\\win32\\Release\\bsp_zlib121.lib /link /OPT:REF /MANIFEST:EMBED user32.lib d3d9.lib advapi32.lib shell32.lib",
+    "probe_log": "local/output/cc10_system_fog_storage_probe.log",
+    "assertions": "NDEBUG absent;compile-time #error rejects NDEBUG",
+    "result": "PASS full148B constructor installed/aliased nine currentcells, sNaN/-0/opaque64B; setter capturedinput/old with callback184 change and current decrement replacement, zero/nonzero counts, realallocation/terminal; sourceidentity noimports and missingcurrent0/fresh4 failureprefix",
+    "original_boundary": "338B full live/PE extents; constructor9 absolute DWORD operands relocated (36B);setter2 IAT operands relocated(8B);original8B B71975..B7197C current0 sequence replaced with shared genuine source family bridge preserving capturedESI asECX. Those virtual loads/call/scalarcallee not independently compared",
+    "tracked_tests_added": false
+  },
+  "evidence_directory": "local/output/cc10_system_fog_storage",
+  "ghidra_mutations": false,
+  "abi_compatible": false,
+  "application_bound": false,
+  "game_validated": false,
+  "limits": [
+    "No legacy CameraState/FogState slot projection or fabricated owner/secondcount/registry.",
+    "Real94h lifetime/matching CRT allocation,valid reached storage/current callbacks and quiescence required.",
+    "B84F70/BD30E0 external reuse,not new implementation; unknown current targets rejected.",
+    "No source exception rollback, native FH3/SEH/private ABI/application/fullAC59A0/game claim."
+  ],
+  "indirect_call_operands": [
+    {
+      "address": "00b7195d",
+      "native": "dword ptr [0xce221c]",
+      "instruction_bytes": "ff151c22ce00",
+      "live_pe_backed": true,
+      "operand_verified": true
+    },
+    {
+      "address": "00b7196b",
+      "native": "dword ptr [0xce2220]",
+      "instruction_bytes": "ff152022ce00",
+      "live_pe_backed": true,
+      "operand_verified": true
+    },
+    {
+      "address": "00b7197b",
+      "native": "eax",
+      "instruction_bytes": "ffd0",
+      "live_pe_backed": true,
+      "operand_verified": true
+    }
+  ]
+}
