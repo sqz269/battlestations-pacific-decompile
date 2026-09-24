@@ -188,9 +188,10 @@
       "native": "00bf65ac",
       "actual_mnemonic": "CALL",
       "contract": "genuine CRT free of captured factory after LOW flags test and base stamp; no postfree reads",
-      "kind": "no_ghidra_function",
-      "kind_after_definition": "call",
-      "missing_containment_note": "fresh undefined body; full raw live/PE listing pins actual mnemonic; primary later definition"
+      "kind": "call",
+      "missing_containment_note": "fresh undefined body; full raw live/PE listing pins actual mnemonic; primary later definition",
+      "historical_kind": "no_ghidra_function",
+      "primary_definition_verified": true
     },
     {
       "function": "00bbc7a0",
@@ -198,9 +199,10 @@
       "native": "00bf65ac",
       "actual_mnemonic": "CALL",
       "contract": "genuine CRT free of captured factory after LOW flags test and base stamp; no postfree reads",
-      "kind": "no_ghidra_function",
-      "kind_after_definition": "call",
-      "missing_containment_note": "fresh undefined body; full raw live/PE listing pins actual mnemonic; primary later definition"
+      "kind": "call",
+      "missing_containment_note": "fresh undefined body; full raw live/PE listing pins actual mnemonic; primary later definition",
+      "historical_kind": "no_ghidra_function",
+      "primary_definition_verified": true
     },
     {
       "function": "00cc4b50",
@@ -215,10 +217,11 @@
       "address": "00cc4b5d",
       "native": "00bf6b43",
       "actual_mnemonic": "JMP",
-      "kind": "no_ghidra_function",
+      "kind": "tail_jump",
       "contract": "original FH3 dispatcher evidence only; source C++ exception transport is separate",
-      "kind_after_definition": "tail_jump",
-      "missing_containment_note": "fresh undefined body; full raw live/PE listing pins actual mnemonic; primary later definition"
+      "missing_containment_note": "fresh undefined body; full raw live/PE listing pins actual mnemonic; primary later definition",
+      "historical_kind": "no_ghidra_function",
+      "primary_definition_verified": true
     },
     {
       "function": "00cc4b90",
@@ -233,48 +236,11 @@
       "address": "00cc4b9d",
       "native": "00bf6b43",
       "actual_mnemonic": "JMP",
-      "kind": "no_ghidra_function",
+      "kind": "tail_jump",
       "contract": "original FH3 dispatcher evidence only; source C++ exception transport is separate",
-      "kind_after_definition": "tail_jump",
-      "missing_containment_note": "fresh undefined body; full raw live/PE listing pins actual mnemonic; primary later definition"
-    }
-  ],
-  "no_ghidra_function": [
-    {
-      "address": "00bbc650",
-      "name": "undefined scalar body",
-      "end_inclusive": "00bbc66e",
-      "end_exclusive": "00bbc66f",
-      "last_instruction_address": "00bbc66c",
-      "last_instruction_length": 3,
-      "evidence": "complete live/PE-equal body, fresh proto undefined; primary later definition"
-    },
-    {
-      "address": "00bbc7a0",
-      "name": "undefined scalar body",
-      "end_inclusive": "00bbc7be",
-      "end_exclusive": "00bbc7bf",
-      "last_instruction_address": "00bbc7bc",
-      "last_instruction_length": 3,
-      "evidence": "complete live/PE-equal body, fresh proto undefined; primary later definition"
-    },
-    {
-      "address": "00cc4b58",
-      "name": "undefined FH3 dispatcher",
-      "end_inclusive": "00cc4b61",
-      "end_exclusive": "00cc4b62",
-      "last_instruction_address": "00cc4b5d",
-      "last_instruction_length": 5,
-      "evidence": "complete live/PE-equal body, fresh proto undefined; primary later definition"
-    },
-    {
-      "address": "00cc4b98",
-      "name": "undefined FH3 dispatcher",
-      "end_inclusive": "00cc4ba1",
-      "end_exclusive": "00cc4ba2",
-      "last_instruction_address": "00cc4b9d",
-      "last_instruction_length": 5,
-      "evidence": "complete live/PE-equal body, fresh proto undefined; primary later definition"
+      "missing_containment_note": "fresh undefined body; full raw live/PE listing pins actual mnemonic; primary later definition",
+      "historical_kind": "no_ghidra_function",
+      "primary_definition_verified": true
     }
   ],
   "eh": [
@@ -405,5 +371,54 @@
     "no factory count, retain, metadata wrapper or automatic unregister",
     "required same actual raw manager/pool/publications and real manager deletion binding",
     "no application/game validation or procedural startup activation"
-  ]
+  ],
+  "historical_worker_missing_functions": [
+    {
+      "address": "00bbc650",
+      "name": "undefined scalar body",
+      "end_inclusive": "00bbc66e",
+      "end_exclusive": "00bbc66f",
+      "last_instruction_address": "00bbc66c",
+      "last_instruction_length": 3,
+      "evidence": "complete live/PE-equal body, fresh proto undefined; primary later definition"
+    },
+    {
+      "address": "00bbc7a0",
+      "name": "undefined scalar body",
+      "end_inclusive": "00bbc7be",
+      "end_exclusive": "00bbc7bf",
+      "last_instruction_address": "00bbc7bc",
+      "last_instruction_length": 3,
+      "evidence": "complete live/PE-equal body, fresh proto undefined; primary later definition"
+    },
+    {
+      "address": "00cc4b58",
+      "name": "undefined FH3 dispatcher",
+      "end_inclusive": "00cc4b61",
+      "end_exclusive": "00cc4b62",
+      "last_instruction_address": "00cc4b5d",
+      "last_instruction_length": 5,
+      "evidence": "complete live/PE-equal body, fresh proto undefined; primary later definition"
+    },
+    {
+      "address": "00cc4b98",
+      "name": "undefined FH3 dispatcher",
+      "end_inclusive": "00cc4ba1",
+      "end_exclusive": "00cc4ba2",
+      "last_instruction_address": "00cc4b9d",
+      "last_instruction_length": 5,
+      "evidence": "complete live/PE-equal body, fresh proto undefined; primary later definition"
+    }
+  ],
+  "no_ghidra_function": [],
+  "primary_integration": {
+    "definition_record": "reports/cc10_procedural_factory_definitions.json",
+    "defined_bodies": {
+      "00bbc650": 31,
+      "00bbc7a0": 31,
+      "00cc4b58": 10,
+      "00cc4b98": 10
+    },
+    "worker_evidence_unchanged": true
+  }
 }

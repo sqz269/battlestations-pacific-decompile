@@ -1,0 +1,57 @@
+{
+  "packet": "cc10_material_raw_header_hot_integration",
+  "worker_commit": "85ed5f66090a5a48750de3082d2f92e1987b78e7",
+  "integration": "e85f92e21512ddef29f0b8482a6b8900cd2279f3",
+  "worker_report": "reports/native_material_raw_header_hot_cc10.json",
+  "primary_verification": {
+    "worker_commit": "85ed5f66090a5a48750de3082d2f92e1987b78e7",
+    "archive_sha256": "f92217d232ae09b84455c88ca28722d848afcc00c6c89619e25fd02ca985ca45",
+    "archive_files": 53,
+    "manifest_files_verified": 52,
+    "current_runtime_inputs": 10,
+    "tracked_sources_compared_worker_git_and_root": 22,
+    "historical_CL_inputs": 5,
+    "prior_archives_verified": 23,
+    "readiness_files_verified": 3,
+    "normal_native_bytes": 124,
+    "native_instruction_count": 43,
+    "metadata_only": true,
+    "review": [
+      "Complete fixture and diff against historical CL fixture reviewed, including genuine pool/owner/cache/renderer/D3D9 disposal",
+      "Two initialized DWORD header cells and surrounding canaries remain unchanged; no NativeString overlay",
+      "Genuine base effect creator plus borrowed cache row and real HAL texture; actual raw overload linked",
+      "Canonical material then borrowed row removal then effect and texture creator disposal; all pools/COM/processes closed",
+      "No copied original execution: byte verification and source composition are separate evidence"
+    ],
+    "limits": [
+      "source composition only, not copied-original execution or native drop-in ABI proof",
+      "no cold effect/program/source0 path, B4E470, distortion initializer, or full renderer/application/gameplay admission",
+      "no failure/bind rejection/current callback mutation/EH or native FH3 transport exercise",
+      "raw incoming header is disjoint from owner/cache/metadata; no private native stack alias compatibility claim",
+      "current imports/profile mutation and terminal branches not reached inside the temporary effect-release point remain prior source/provider contracts"
+    ]
+  },
+  "validation": {
+    "metadata_only_integration": true,
+    "worker_strict_win32_ctests": 3,
+    "root_build_not_repeated_for_metadata_only_change": true,
+    "root_direct_call_rows_passed": 2,
+    "indirect_calls_reviewed": 3,
+    "source_composition_real_D3D9_HAL": true,
+    "copied_original_executed": false,
+    "game_validated": false
+  },
+  "limits": [
+    "source composition only, not copied-original execution or native drop-in ABI proof",
+    "no cold effect/program/source0 path, B4E470, distortion initializer, or full renderer/application/gameplay admission",
+    "no failure/bind rejection/current callback mutation/EH or native FH3 transport exercise",
+    "raw incoming header is disjoint from owner/cache/metadata; no private native stack alias compatibility claim",
+    "current imports/profile mutation and terminal branches not reached inside the temporary effect-release point remain prior source/provider contracts"
+  ],
+  "archive": {
+    "path": "local/cc10-platform-evidence/material-raw-header-hot.zip",
+    "sha256": "5bc45237e79eb1b9736f2c4052c0ff563f3febf5808451f2b216f03d68af5a6c",
+    "files": 58,
+    "valid": true
+  }
+}

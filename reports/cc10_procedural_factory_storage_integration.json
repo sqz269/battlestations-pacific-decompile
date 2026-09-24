@@ -1,0 +1,67 @@
+{
+  "packet": "cc10_procedural_factory_storage_integration",
+  "worker_commit": "abb5d4d7f01cf9ab9992cc38daf4d0d016788425",
+  "integration": "f43803a4a92a9522a217f1578d8d5f6c1074222d",
+  "worker_report": "reports/native_procedural_factory_storage_cc10.json",
+  "primary_verification": {
+    "worker_commit": "abb5d4d7f01cf9ab9992cc38daf4d0d016788425",
+    "archive_sha256": "41cf2cfdae63d75cbe0687ef58809c848563531abbd485106e3be1edda8dd54f",
+    "archive_files": 65,
+    "manifest_files_verified": 64,
+    "current_exact_identities_verified": 15,
+    "normal_bytes": 235,
+    "compiler_bytes": 36,
+    "review": [
+      "Complete 86-line header and 122-line source plus all five native normal bodies and compiler cleanup boundaries reviewed",
+      "Only actual four-byte factory profile, current incoming name and returned registry/profile/target read order; borrowed registry values",
+      "Scalar flags low byte captured before base stamp/free; no payload access after real CRT free",
+      "Complete focused fixture copies all235 normal bytes, preserves original indirect instructions and uses genuine manager/registry/insertion/string-pool/CRT providers",
+      "Selected normal stores and relationships compared; source-only injected failure after real getter uses CURRENT EH cleanup receiver and preserves registration state",
+      "No owner count, native EH, application/global initializer or table construction admission"
+    ],
+    "limits": [
+      "native FH3/SEH/private stack/volatile register or hardware fault behavior unclaimed",
+      "no BBC460/BBC890/BBC8E0 or table construction/destruction/global composition",
+      "no34h resource storage/canonical lifetime admission",
+      "no factory count, retain, metadata wrapper or automatic unregister",
+      "required same actual raw manager/pool/publications and real manager deletion binding",
+      "no application/game validation or procedural startup activation"
+    ]
+  },
+  "validation": {
+    "normal_bytes": 235,
+    "compiler_bytes": 36,
+    "strict_win32_build": true,
+    "integrated_ctests": 3,
+    "full_containment_transfer_rows_passed": 10,
+    "qualified_indirect_rows": 2,
+    "copied_original_source_comparison": true,
+    "source_only_failure_separate": true,
+    "tracked_tests_added": false,
+    "game_validated": false
+  },
+  "ghidra": {
+    "definition_record": "reports/cc10_procedural_factory_definitions.json",
+    "defined_bodies": {
+      "00bbc650": 31,
+      "00bbc7a0": 31,
+      "00cc4b58": 10,
+      "00cc4b98": 10
+    },
+    "worker_evidence_unchanged": true
+  },
+  "limits": [
+    "native FH3/SEH/private stack/volatile register or hardware fault behavior unclaimed",
+    "no BBC460/BBC890/BBC8E0 or table construction/destruction/global composition",
+    "no34h resource storage/canonical lifetime admission",
+    "no factory count, retain, metadata wrapper or automatic unregister",
+    "required same actual raw manager/pool/publications and real manager deletion binding",
+    "no application/game validation or procedural startup activation"
+  ],
+  "archive": {
+    "path": "local/cc10-platform-evidence/procedural-factory-storage.zip",
+    "sha256": "6a310c6ffca4c6470bc4a82a384c3e564b54619fb9333bcdf94bfb64e2a4bedc",
+    "files": 72,
+    "valid": true
+  }
+}
