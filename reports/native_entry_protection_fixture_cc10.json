@@ -1,0 +1,328 @@
+{
+  "packet": "cc10_entry_protection_fixture",
+  "status": "four_isolated_current_protection_outcomes_checked",
+  "original_attempts_total": 2,
+  "new_original_launches": 0,
+  "attach_calls": 0,
+  "benign_targets": 4,
+  "primary_verification": {
+    "index_sha256": "d6ac940a49efdaf5b73712583a5bbdd4b5a5a84e82e463befe94934b4bdf67dd",
+    "indexed_files_verified": 151,
+    "prior_files_verified": 796,
+    "executed_inputs_verified": 27,
+    "writes_verified": 8,
+    "writer_context_pairs_identical": 8,
+    "guard_readback_pairs_identical": 2,
+    "linked_writer_bytes_each": 6709,
+    "linked_writer_variants": 3,
+    "all_three_masked_writer_bodies_equal": true,
+    "linked_guard_bytes": 8434,
+    "cases": [
+      {
+        "case": "unchanged20",
+        "protection": "0x20",
+        "normal_protocol_passed": true,
+        "actual_child_exit": 0,
+        "confirmed_continuations": 0,
+        "owned_processes_closed": true
+      },
+      {
+        "case": "accepted40",
+        "protection": "0x40",
+        "normal_protocol_passed": true,
+        "actual_child_exit": 0,
+        "confirmed_continuations": 1,
+        "owned_processes_closed": true
+      },
+      {
+        "case": "forwarding_cleanup40",
+        "protection": "0x40",
+        "normal_protocol_passed": false,
+        "actual_child_exit": 125,
+        "confirmed_continuations": 0,
+        "owned_processes_closed": true
+      },
+      {
+        "case": "later20_rejection",
+        "protection": "0x20",
+        "normal_protocol_passed": false,
+        "actual_child_exit": 125,
+        "confirmed_continuations": 1,
+        "owned_processes_closed": true
+      }
+    ]
+  },
+  "mechanism": "Owned pending debug-event byte writer verifies32-byte preimage/image ownership, acquires40 protection, records returned prior protection, writes owned byte and flushes, restores the returned prior protection on success or write/flush failure. Incomplete transactions forbid resume and cleanup retry. Confirmed continuation is recorded only after successful ContinueDebugEvent.",
+  "review": [
+    "Complete writer/guard/target/helper delta/runner/outer/preparation/build and final diagnostic increments reviewed",
+    "151 indexed files,796 ancestor rows and27 executed input identities independently verified",
+    "Each6709B linked writer uniquely matches its COFF body and runtime extent; all3 masked bodies equal.8434B linked guard independently matched",
+    "Eight successful byte transactions preserve their current20/40 protection and have matching context reads; two guard context pairs identical",
+    "Positive paths restore entry and hardware debug state; rejected paths perform no EIP rewind or debug-register installation",
+    "Four finite one-shot cases have both inner and outer process closures; no original/xlive module or original launch"
+  ],
+  "cases": [
+    {
+      "name": "unchanged20",
+      "expected_outcome_verified": true,
+      "actual_child_exit": 0,
+      "helper_exit": 0,
+      "outer_closed": true,
+      "inner_active": 0,
+      "confirmed_continues": 0,
+      "entry_restored": true,
+      "stage": 4,
+      "markers": [
+        "at_first_marker",
+        "after_target_copy"
+      ],
+      "writer_context_comparisons": [
+        {
+          "before_line": 6,
+          "after_line": 8,
+          "wow64_equal": true,
+          "native_equal": true
+        },
+        {
+          "before_line": 102,
+          "after_line": 104,
+          "wow64_equal": true,
+          "native_equal": true
+        }
+      ],
+      "guard_comparisons": [],
+      "error": ""
+    },
+    {
+      "name": "accepted40",
+      "expected_outcome_verified": true,
+      "actual_child_exit": 0,
+      "helper_exit": 0,
+      "outer_closed": true,
+      "inner_active": 0,
+      "confirmed_continues": 1,
+      "entry_restored": true,
+      "stage": 4,
+      "markers": [
+        "at_first_marker",
+        "after_target_copy"
+      ],
+      "writer_context_comparisons": [
+        {
+          "before_line": 6,
+          "after_line": 8,
+          "wow64_equal": true,
+          "native_equal": true
+        },
+        {
+          "before_line": 128,
+          "after_line": 130,
+          "wow64_equal": true,
+          "native_equal": true
+        }
+      ],
+      "guard_comparisons": [
+        {
+          "line": 106,
+          "entry32_equal": true,
+          "native_equal": true,
+          "wow64_equal": true,
+          "before_protection": 64,
+          "after_protection": 64
+        }
+      ],
+      "error": ""
+    },
+    {
+      "name": "forwarding_cleanup40",
+      "expected_outcome_verified": true,
+      "actual_child_exit": 125,
+      "helper_exit": 1,
+      "outer_closed": true,
+      "inner_active": 0,
+      "confirmed_continues": 0,
+      "entry_restored": true,
+      "stage": 10,
+      "markers": [],
+      "writer_context_comparisons": [
+        {
+          "before_line": 6,
+          "after_line": 8,
+          "wow64_equal": true,
+          "native_equal": true
+        },
+        {
+          "before_line": 115,
+          "after_line": 117,
+          "wow64_equal": true,
+          "native_equal": true
+        }
+      ],
+      "guard_comparisons": [],
+      "error": "unhandled second-chance exception; owned process closure required"
+    },
+    {
+      "name": "later20_rejection",
+      "expected_outcome_verified": true,
+      "actual_child_exit": 125,
+      "helper_exit": 1,
+      "outer_closed": true,
+      "inner_active": 0,
+      "confirmed_continues": 1,
+      "entry_restored": true,
+      "stage": 10,
+      "markers": [],
+      "writer_context_comparisons": [
+        {
+          "before_line": 6,
+          "after_line": 8,
+          "wow64_equal": true,
+          "native_equal": true
+        },
+        {
+          "before_line": 128,
+          "after_line": 130,
+          "wow64_equal": true,
+          "native_equal": true
+        }
+      ],
+      "guard_comparisons": [
+        {
+          "line": 106,
+          "entry32_equal": true,
+          "native_equal": true,
+          "wow64_equal": true,
+          "before_protection": 64,
+          "after_protection": 64
+        }
+      ],
+      "error": "entry current protection violates confirmed-path admission (Win32 0)"
+    }
+  ],
+  "writer_linked_range": {
+    "begin_rva": 64176,
+    "end_rva": 70885,
+    "bytes": 6709,
+    "all_three_nonrelocated_bodies_identical": true
+  },
+  "roles": [
+    {
+      "path": "local\\entry_protection_fixture_cc10\\fixture.cpp",
+      "sha256": "a7f4d3c890bd52f98027c326e7aae981c9a9634f94d46114b5531e3419f3442e",
+      "bytes": 7324
+    },
+    {
+      "path": "local\\entry_protection_fixture_cc10\\fixture_capture.cpp",
+      "sha256": "9cb2941e5268bb97d78997c458189aed5a05fca692f98db6cd89f6b202c7b1f5",
+      "bytes": 30152
+    },
+    {
+      "path": "local\\entry_protection_fixture_cc10\\fixture_guard.hpp",
+      "sha256": "ca340969cb735365a765cd2ac7b10888f0d6f4024d54d243a6641a3c538a55e4",
+      "bytes": 10468
+    },
+    {
+      "path": "local\\entry_protection_fixture_cc10\\entry_writer.hpp",
+      "sha256": "2e7968e2a1f701103cbc409b9e14e6975fd8bc5c9a17e94e11ca4a2205608d88",
+      "bytes": 5675
+    },
+    {
+      "path": "local\\entry_protection_fixture_cc10\\exception_policy.hpp",
+      "sha256": "b01ec5b46ee0480fc37f45696ab164b56032bf10200cf0c7490712084a2d7a58",
+      "bytes": 5878
+    },
+    {
+      "path": "local\\entry_protection_fixture_cc10\\build.ps1",
+      "sha256": "2f2bc9e996a26d787cdc4ead19409f9299370e452affb8b25476cc1d9591b575",
+      "bytes": 1823
+    },
+    {
+      "path": "local\\entry_protection_fixture_cc10\\prepare_fixtures.py",
+      "sha256": "fe91a27fffa48bfd5d184c705847f51832055b6f1b815e42ef3faf127903a65e",
+      "bytes": 5863
+    },
+    {
+      "path": "local\\entry_protection_fixture_cc10\\outer_job.py",
+      "sha256": "191324cd61830de08c0bb3c934020984197373eb45ac20942ba6e098a5e9d980",
+      "bytes": 5257
+    },
+    {
+      "path": "local\\entry_protection_fixture_cc10\\run_fixture.py",
+      "sha256": "8e3542ecc70d4ff3f474752210ab1df3c3a41f706ea31786461f76603fb1350e",
+      "bytes": 6749
+    },
+    {
+      "path": "local\\entry_protection_fixture_cc10\\fixture_delta.patch",
+      "sha256": "8c36ba7290da08b79cb2caa422d400723dbe03a8968ad969af507268cbd28c1c",
+      "bytes": 43908
+    },
+    {
+      "path": "local\\entry_protection_fixture_cc10\\compiled_guard.json",
+      "sha256": "7ae01d5122c0be6312e9cf6e13aff2a53c8b15f05ecd6cbaf0c60264c86bcbb0",
+      "bytes": 36505
+    },
+    {
+      "path": "local\\entry_protection_fixture_cc10\\compiled_writers.json",
+      "sha256": "230e525a40bc0fc599264b70d053ee04888e281bc11bf5528266e2a21cd4a880",
+      "bytes": 120132
+    },
+    {
+      "path": "local\\entry_protection_fixture_cc10\\case_analysis.json",
+      "sha256": "b20960e1b2d2598173f9bed2645f4efd0dada16019e33bf17b2aa3bfbe2747ab",
+      "bytes": 76887
+    },
+    {
+      "path": "local\\entry_protection_fixture_cc10\\preservation_verification.json",
+      "sha256": "79583ce11fb522400f76d83deff7726fbd0f367af0506d63d1f33adcbd0fa069",
+      "bytes": 2885
+    },
+    {
+      "path": "local\\entry_protection_fixture_cc10\\README.md",
+      "sha256": "054c9e0c97c9e9eace76a043d46248cb240a7c6ba24cf0ee858c675458c88a6d",
+      "bytes": 6814
+    },
+    {
+      "path": "local\\entry_protection_fixture_cc10\\entry-accepted-fixture.exe",
+      "sha256": "7b2638558612faa9495458c493c6a6c7e21986db9edcbc1383f151efb380ac84",
+      "bytes": 10752
+    },
+    {
+      "path": "local\\entry_protection_fixture_cc10\\entry-accepted-probe.exe",
+      "sha256": "c03b6f992dae1225d6b4020fc3573c666d59e9ee23873019dfb47baeaac28a17",
+      "bytes": 143360
+    },
+    {
+      "path": "local\\entry_protection_fixture_cc10\\entry-later-fixture.exe",
+      "sha256": "aeada8dceb0e7ba1b5379a3ff4535c9d4e18c5374af08870229e5cead3d9771b",
+      "bytes": 10752
+    },
+    {
+      "path": "local\\entry_protection_fixture_cc10\\entry-later-probe.exe",
+      "sha256": "6d2e768f63dd4254e7c9233f0d74d0160b6b2ec8fca1bf166a7feebf38e13bee",
+      "bytes": 143360
+    },
+    {
+      "path": "local\\entry_protection_fixture_cc10\\entry-plain-fixture.exe",
+      "sha256": "e14f93337626d11ad55e79f775dbd7badb30e2fd0bb4ff20e2448da29cca8cd6",
+      "bytes": 10752
+    },
+    {
+      "path": "local\\entry_protection_fixture_cc10\\entry-plain-probe.exe",
+      "sha256": "d86fa37aff19c11709d02b7fb2806499281c5c4ab75c2ac6673a3369cb0d419f",
+      "bytes": 143360
+    }
+  ],
+  "limits": [
+    "Unused already-original cleanup final label is ambiguous; preceding event must distinguish read-only verification; source frozen after run, no relabel/rerun.",
+    "Pending-false, mismatch and incomplete transaction branches were not dynamically exercised; source-reviewed only.",
+    "No original-game continuation or full architectural state equivalence claimed.",
+    "No full recursive EH/provider closure claim from individual compiled body extents."
+  ],
+  "original_application": "The two earlier original attempts remain closed/inconclusive. This packet changes no original helper or copied-game/profile/log/overlay state; original-specific v3 source preparation is separate.",
+  "archive": {
+    "path": "local/cc10-platform-evidence/entry-protection-fixture.zip",
+    "sha256": "fba59d84534443c0fbb520e1dacc724c51b5a1b7080e97111aa017642312153e",
+    "files": 174,
+    "valid": true
+  }
+}

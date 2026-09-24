@@ -1,0 +1,144 @@
+{
+  "packet": "cc10_render_texture_surface_argument_view_integration",
+  "worker_commit": "471587d8fa7e2defb9ca6844f8eece3bb9c24d38",
+  "integration": "57bc61a8587819cb21acafbf35cf19ae1b69e496",
+  "worker_report": "reports/native_render_texture_surface_argument_view_cc10.json",
+  "frozen_evidence": {
+    "worker_commit": "471587d8fa7e2defb9ca6844f8eece3bb9c24d38",
+    "archive_sha256": "0754170a6ce2d6042e644beef0a62f82e07c8642afe3a6315c18fb967493034e",
+    "archive_files": 33,
+    "manifest_files_verified": 32,
+    "current_exact_probe_inputs_verified": 75,
+    "source_sha256": {
+      "include/bsp/native_render_texture_surface_owner.hpp": "4fa7ed6fe55603a975d419e77e217ea41c560bbbd416a0b3c94167362fec6ad3",
+      "src/native_render_texture_surface_owner.cpp": "14866f6d45ea660e6b43b995809fb1ad197b3d038cb92eb141b923349e2dbeb7"
+    },
+    "normal_code_bytes": 283,
+    "compiler_code_bytes": 18,
+    "descriptor_bytes": 44,
+    "source_review": "Complete header/shared typed-raw body, native read schedule, compiled load offsets, full fixture and providers reviewed before integration",
+    "limits": [
+      "native FH3/SEH and binary replacement ABI",
+      "allocation failures and exceptions",
+      "full renderer construction/application/gameplay",
+      "post20/initializer admission/source0 sampler preimages",
+      "all unsupported resource profiles"
+    ]
+  },
+  "review": [
+    "Full source/header/shared engine, complete283B native body and18B compiler boundaries reviewed",
+    "Typed heterogeneous argument addresses and raw six-current-DWORD view share one engine; no aggregate cast over raw stack cells",
+    "Compiled mode BYTE and format/height captures, initial width, mode-before-texture publication, current external/multisample/width and final current texture schedule reviewed",
+    "Complete focused harness/provider setup, mutation boundary and exact75 input hashes verified; whole18h owner compared with only three resource identities normalized",
+    "Genuine hidden-window D3D9 HAL and resource cleanup reached ordinary device/API0/0; initialized1D94h renderer field fixture does not establish full renderer construction"
+  ],
+  "validation": {
+    "strict_win32_build": true,
+    "integrated_ctests": 3,
+    "direct_tail_rows_passed": 3,
+    "indirect_rows_separately_reviewed": 7,
+    "original_source_pairs": 1,
+    "tracked_tests_added": false,
+    "game_validated": false
+  },
+  "ghidra": {
+    "definition": "reports/cc10_render_texture_argument_function_definition.json",
+    "handler": "00cbfab8",
+    "bytes": 10,
+    "end_exclusive": "00cbfac2",
+    "last_instruction": "00cbfabd JMP5",
+    "original_names_and_comments_preserved": true
+  },
+  "probe": {
+    "strict_win32": true,
+    "ctests_passed": 3,
+    "build_log": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-field-values\\local\\cc10_render_texture_surface_argument_view\\build.log",
+    "compiled_checks": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-field-values\\local\\cc10_render_texture_surface_argument_view\\compiled_checks.json",
+    "source_sha256": {
+      "include/bsp/native_render_texture_surface_owner.hpp": "4fa7ed6fe55603a975d419e77e217ea41c560bbbd416a0b3c94167362fec6ad3",
+      "src/native_render_texture_surface_owner.cpp": "14866f6d45ea660e6b43b995809fb1ad197b3d038cb92eb141b923349e2dbeb7"
+    },
+    "probe_source_sha256": "793c2ea21fa53a9ab18c673dd6c4776b485b0fb0c726f27e1ad8c1bda7c33ffb",
+    "probe_sha256": "776c6873be253c9803dca3f2743c333540cc15035e3bcc94b1b850269da9b8db",
+    "probe_link_inputs": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-field-values\\local\\cc10_render_texture_surface_argument_view\\probe_inputs.json",
+    "original_source_pairs": 1,
+    "lanes": 2,
+    "child_exit": 0,
+    "run_log": "REAL_D3D9 adapters=3 CreateDevice=00000000\nPASS original late argument mutation: initial64x32, target32x32, current external null, current multisample0, captured format22/height32/mode1; whole18h parity and genuine retirement\nPASS source late argument mutation: initial64x32, target32x32, current external null, current multisample0, captured format22/height32/mode1; whole18h parity and genuine retirement\nBEFORE_DRAIN manager=0726C8E0 count=2 support=07282EF8 profile=00d62b64\nobserver runtime after raw singleton drain: dispatch_owner=null lock_owner=null alias=retained\nsingleton lifetime drained: registered_slots=2 effect_publication=null manager_publication=null factory_publication=null factory_alias=00000000 storage=raw14h/raw10h/raw8h\nFINAL_REFS device=0 api=0\nRESULT PASS one real-D3D copied-original/source argument-mutation pair; device=0 api=0. No failure/EH/gameplay proof.\n",
+    "launch_log": "CHILD_EXIT 0\n",
+    "new_tracked_tests": 0,
+    "whole_owner_bytes": 24,
+    "normalized_fields": [
+      "+8 texture identity",
+      "+C primary surface identity",
+      "+10 alternate surface identity"
+    ],
+    "harness_mutation": "after genuine Win32 cache increment: width64->32,height32->17,format22->113,multisampleFFFFFFFF->0,modeABCD0001->0,real external pointer->0",
+    "expected": "texture64x32; newly created target32x32 format22; captured mode1; no stale external retain; real cleanup/drain and device/API0/0",
+    "renderer_fixture": "explicit zeroed actual1D94h field region with real D3D9 HAL/device and genuine resource domains; not full B32410 constructor or application startup",
+    "original_relocations": [
+      "B4E0EE rel32 to genuine target adapter",
+      "two F8D394 absolute publication operands",
+      "one CE221C and one CE2220 IAT operand",
+      "unreached CBFAB8 immediate to fail-fast trap"
+    ],
+    "original_indirect_instructions_unchanged": true,
+    "original_argument_wrapper": "naked wrapper pushes 6 actual words, exposes their real ESP before calling copied bytes; no final dead stack comparison",
+    "current_objects": 70,
+    "current_project_libraries": 3,
+    "manifest_embedded": true,
+    "runtime": "MD",
+    "application_run": false,
+    "owned_processes_closed": true,
+    "copied_original_bytes_equal_live_pe": true,
+    "unused_copied_legacy_fixture_bodies": [
+      "B4E140",
+      "B4E410"
+    ],
+    "call_verifier": {
+      "checked": 3,
+      "passed": 2,
+      "expected_missing_handler_failure": "00cbfabd in no Ghidra function; root must define 00cbfab8[10]",
+      "log": "local/cc10_render_texture_surface_argument_view/report_calls.log"
+    },
+    "prior_evidence_archives_unchanged": {
+      "local/cc10_field_values_evidence.zip": "a749dbf4656596e6a4e0c11ecb320a02bfe62dcba5fa3654c2744aa2a3022153",
+      "local/cc10_widget_transform_evidence.zip": "0d90499f71be2a3cc99ad732deaa8a71a5b55546da4dbaa7ee708c364bae45f8",
+      "local/cc10_widget_property_prefix_evidence.zip": "181ebe9358fe2d7ea6832b8051a0b3fd6f830a0360f3ef390626403ba7cbfcdf",
+      "local/cc10_gui_page_default_evidence.zip": "a224fc79f56861715059ff9717fcdad40893be00d26697a230b64ceafced5c8b",
+      "local/cc10_gui_group_pool_evidence.zip": "c7aa87452ab19400fe950d3a4c3a4a146c94715f4080f463dc2de1740df37853",
+      "local/cc10_gui_group_factory_evidence.zip": "d22d364ce3b5cf7833d8ad1998cd5c14cbf792abc34634e2df1421949e42f34f",
+      "local/cc10_gui_camera_store_map_evidence.zip": "625a751eab1f2416e7b0fa5876b921106cf0a246c0b8ca5ce97ca3e9d1586c54",
+      "local/cc10_scene_registry_storage_evidence.zip": "7219d8cbbdab960d3d2b49076f79b13854aa582faa0edb23c8a7fc286cebd6a9",
+      "local/cc10_scene_resource_storage_evidence.zip": "d989b85db55805c8b173e40c95e9322586ec4146e3ad0e504c316bf48364ed51",
+      "local/cc10_gui_scene_fields_evidence.zip": "8158076968340fd863b7e86018def420eabcae87ab0939f90085d79a1751a1af",
+      "local/cc10_scene_registry_vector_mutation_evidence.zip": "90b9d70c3b735e1274c2c0d2e333f5e88e860aee7155ea9ac6ef18e105aaed6b",
+      "local/cc10_scene_registry_registration_evidence.zip": "663ec13309abdaf992b22c321c66817230852066d76e5ccd0b663c3a783e05cf",
+      "local/cc10_node_scene_attachment_evidence.zip": "c45c8248fe0434426648b48b7c8e473f94b057f5ff1098088c34762dbc3d8f04",
+      "local/cc10_node_tree_retirement_evidence.zip": "b9720c00ba0e29c222ae2d41fb5fd2820e305039c673e61cea0ee22d3a2a2e13",
+      "local/cc10_node_base_destruction_evidence.zip": "2f4f970317032085f851a2331dd3e4bf6f02b3722e5e44a668153000e2b13dbf",
+      "local/cc10_camera_storage_lifetime_evidence.zip": "9eb1ac2cbde243e6c4d2d1d10fca263eda2e43aed2527964986875f2217c3936",
+      "local/cc10_camera_raw_world_edit_evidence.zip": "f80fd83057ef325506bbe1d0a06046e765dd8e32b2f10148c67d497af0971d9c",
+      "local/cc10_camera_pose_storage_evidence.zip": "d294c281a6475c33b4b779d9857e2a7f06b75948df45618c12b70112649bfeac",
+      "local/cc10_camera_storage_construct_evidence.zip": "ebf1bca43bf5bbe75beae65ec707845a2219d745bda58fd91588455278fbf357",
+      "local/cc10_distortion_storage_lifetime_evidence.zip": "71843fd98d2d4bb1e13633393487fc99617c1456458cd2354139c57a2d1a286c"
+    },
+    "frozen_archive": "local\\cc10_render_texture_surface_argument_view_evidence.zip",
+    "manifest": "local\\cc10_render_texture_surface_argument_view\\manifest.json",
+    "input_hash_scope": "probe_inputs.json pins original scaffold2, current exact70 project objects and3 project libraries; source/binary/object/listing hashes are separate report/manifest entries, no whole toolchain/OS identity claim"
+  },
+  "limits": [
+    "native FH3/SEH and binary replacement ABI",
+    "allocation failures and exceptions",
+    "full renderer construction/application/gameplay",
+    "post20/initializer admission/source0 sampler preimages",
+    "all unsupported resource profiles"
+  ],
+  "readiness": "Frozen distortion initializer readiness is included for future planning; the826-row map and full initializer are not approved by this integration.",
+  "archive": {
+    "path": "local/cc10-platform-evidence/render-texture-surface-argument-view.zip",
+    "sha256": "d032611a06d6864af2b100e0fa6f302e020c8c09ef30cbba22dd19f360c2bb34",
+    "files": 39,
+    "valid": true
+  }
+}
