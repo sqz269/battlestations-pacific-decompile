@@ -809,18 +809,17 @@ The screen code for 49h, 50h and 46h is in `src/hud_warning_screen.cpp`.
 - **27h, 0067BB50..0067BC59.** Already reconstructed as `GameUnitsHost::Impl::role_screen_update_0067bb50`
   (kPlayerRoleBookkeepingBound, docs/SCRIPTED_HELM.md section 6.1). The pump keeps its record
   (section 21).
-- **46h part 3, `HudShipView::view_input` (0064A400).**
-  - Screen 26h's 0051F330 runs 0051EF00 (the view-action handling, 0051E7E0, 0051EAA0/0051E6E0
-    and widget +20h) and 0051F050. 0051F050 integrates the camera mover's yaw (+384h) and pitch
-    (0051E650) from input axes +1584h/+15B4h, and handles action 75h and the controlled unit's
-    vtable +C8h.
-  - With 46h's +20h set, 0064A400 also runs screen 2Eh's 005454B0, which stores three floats at
-    2Eh+48h..+50h and forwards two to screen 4Dh's 00637620 when game+19C4h is clear.
-  - The camera mover is the mission camera's (`docs/MISSION_CAMERA.md`). Read how its tick
-    already applies yaw before binding a second writer.
+- **46h part 3** is bound (section 22).
 - **46h part 4, `HudShipView::screen_2eh_005484f0`.** 005484F0 is 3.3 KB of screen 2Eh: seven
   input actions, 004C5090 holds, two interface requests (`BSP_FrontEndManager_PushInterfaceRequest`)
-  and a session route. Read it whole; expect input-gated order and UI-mode writes.
+  and a session route. Read it whole; expect input-gated order and UI-mode writes. Its first gates:
+  - 2Eh's +40h, +24h and [+20h]+14h must all be non-null. The host builds none of them, because
+    2Eh's layout 00546A20 is not run.
+  - A controlled unit must exist, and it must hold role 0 (00927F30).
+
+  Then the one-shot bytes +108h and +109h (0051E7E0, 006502C0, the mover's +388h/+384h from
+  +10Ch/+110h). Read the gate producers first: if the gates fail in the image as well, the whole
+  routine is a no-op here.
 - **29h, 00527260** (continues past 0052735C) with 00526A40, its large worker. 29h's +4Ch is what
   49h's `screen_29h_unit` record stands for.
 - **44h, 00649860..0064A24C**, the HudRoot update. `src/hud_root_rows.cpp` reconstructs part of it,
