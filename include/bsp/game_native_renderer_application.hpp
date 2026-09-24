@@ -26,6 +26,7 @@ struct NativeShaderDescriptorStorage;
 struct NativeShaderDescriptorReadContext;
 class NativeShaderDescriptorReadOperation;
 struct NativeGameGridContext;
+class NativeShadowDepthTargetContext;
 }
 namespace bsp::game {
 struct GameNativeMaterialCompilerOwners;
@@ -109,6 +110,12 @@ public:
     // failed attempts may require process retention. Does not call B107F0 or
     // admit raw owners into the service's optional direct-terminal domain.
     GameNativeRenderResourceProviders render_resource_providers();
+    // Ready-only borrowed context over the canonical F8BBF0/current imports
+    // and this application's actual producers and singleton deletion binding.
+    // Does not allocate/construct a target. Callers supply genuine storage and
+    // complete the final D5B5E8 owner before normal drain; partial base profiles
+    // remain unsupported. Failed operation records force process retention.
+    NativeShadowDepthTargetContext& shadow_depth_target_context();
     const NativeRenderResourcesConstructionAcquired& render_resources_construction() const noexcept;
     bool requires_process_retention() const noexcept;
     void drain_singletons();
