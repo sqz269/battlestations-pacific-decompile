@@ -1,0 +1,44 @@
+{
+  "packet": "cc10_sampler_compiler_entry_integration",
+  "worker_commit": "47562f4bebea7f06b7873a53b87b2f41dd07d1f2",
+  "integration": "ad1114a93b9fad1905aa3e5c92b06280f7c68ad4",
+  "archive": {
+    "path": "local/cc10-platform-evidence/sampler-compiler-entry.zip",
+    "sha256": "3296c13d329253d553d62978014b80cf5709ac2a7d9aa4098d0b4e6302db9dfd",
+    "files": 24,
+    "valid": true
+  },
+  "review": [
+    "Complete documentation/report and exact stack mapping reviewed",
+    "B5F9C8 upstream PUSH EBX writes P-30h but intervening current COM/import/terminal calls prevent final-value inference",
+    "Primary inspected producer save/restore and compiler intervening calls/entry sites",
+    "Original B3BFF9 ESP-30h or B3C018 ESP-28h capture must record frame and builder/pass/descriptor identities",
+    "Second sampler call shares same physical word and known/unknown state; empty first root establishes nothing",
+    "Disk kernel32 bytes are conditional disk evidence only, not original-process import identity"
+  ],
+  "validation": {
+    "live_PE_equal_bytes": 5089,
+    "complete_bodies": 6,
+    "distinct_direct_call_rows": 6,
+    "explicit_indirect_unverified_rows": 3,
+    "indexed_artifacts": 21,
+    "source_changes": false,
+    "native_probe": false,
+    "original_process_launched_or_attached": false,
+    "build_rerun": false,
+    "build_reason": "Documentation/report only; source unchanged from integrated Win32/3CTest build at083ca87ed",
+    "new_tests": 0,
+    "stack_word_resolved": false,
+    "compiler_admitted": false,
+    "game_validated": false
+  },
+  "limits": [
+    "saved EBX is a proved intermediate write, not the final entry word after COM/current calls",
+    "disk import leaves do not establish live original-process IAT identity or COM stack effects",
+    "same-slot transfer requires SAME original compiler frame and exact R98 known/unknown schedule",
+    "first root empty does not establish initial residue; no transfer across unrelated compiler invocations",
+    "no fabricated zero, masking, relocated return PC or source C++ stack substitute",
+    "capturing one actual invocation does not establish a portable constant for all invocations",
+    "no full compiler/B107F0/runtime/ABI/FH3 or bloom-tail change claim"
+  ]
+}
