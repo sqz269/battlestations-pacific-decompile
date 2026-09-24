@@ -1092,8 +1092,31 @@ struct GameUnitSlot {
     float ga_timer_3e8{0.0f};
     float ga_rest_3ec{0.0f};
     bool ga_flag_26c_4{false};
-    bool ga_band_valid[3]{false, false, false};
-    float ga_band[3][2]{{0.0f, 0.0f}, {0.0f, 0.0f}, {0.0f, 0.0f}};
+    // Packet cc9_pilot_vehicle_terrain_avoidance: each set as 0099B790 keeps
+    // it, up to 24 merged [lo, hi] pairs from set+4h with the count at set+C4h
+    // (pilot+C8h/+190h/+258h), because three arms now insert into the sets.
+    int ga_band_n[3]{0, 0, 0};
+    float ga_band[3][24][2]{};
+    // pilot+25Ch, reset to 1.0 by 009A17EF, lowered by the vehicle and
+    // terrain arms, read by 0099BF30's throttle arm.
+    float av_throttle_25c{1.0f};
+    // The unit+C50h object's +30h list (007E11D0: kinds 6 and 0Fh within R)
+    // with its own copy of the +7Ch clock; the finder keeps +50h separately.
+    std::vector<std::size_t> nb_near_30;
+    float nb_clock_30{4.5f};
+    // Counters (diagnostic census only).
+    int va_plane_ticks{0};
+    int va_ship_ticks{0};
+    int va_bands{0};
+    int va_throttle_sets{0};
+    int va_dive_ticks{0};
+    int tr_ticks{0};
+    int tr_bands{0};
+    int tr_throttle_sets{0};
+    int tr_dive_ticks{0};
+    int tr_water_ticks{0};
+    float tr_min_margin{1.0e9f};
+    float tr_toggle_3f0{0.0f};
     int ga_detect_ticks{0};
     int ga_flagged_ticks{0};
     int ga_repairs{0};
@@ -2819,8 +2842,17 @@ struct GameUnitsHost::Impl {
     // arm (0099EC40 with its timers and exemptions, bands through 0099B790)
     // and 0099BF30's band repair of the published roll/pitch/yaw command.
     // Before: none of the three ran. The vehicle (0099B670) and terrain
-    // (0099F1C0) arms of 009A17D0 stay unbound.
+    // (0099F1C0) arms of 009A17D0 are the two switches below.
     static constexpr bool kPilotGunfireAvoidanceBound = true;
+    // Packet cc9_pilot_vehicle_terrain_avoidance (docs/ATTACKER_EVASION.md
+    // section 6): 009A17D0's vehicle arm 0099B670 -> 007DF4F0 over the
+    // unit+C50h object's +30h list, and its terrain arm 0099F1C0 with
+    // 0099CAB0, both inserting through the merged 0099B790 sets; 0099BF30's
+    // pilot+25Ch throttle arm. Before: neither arm ran.
+    static constexpr bool kPilotVehicleAvoidanceBound = true;
+    static constexpr bool kPilotTerrainAvoidanceBound = true;
+    static constexpr bool kPilotAvoidanceUpdateBound = kPilotGunfireAvoidanceBound ||
+        kPilotVehicleAvoidanceBound || kPilotTerrainAvoidanceBound;
     // DIAGNOSTIC, packet cc9_wing_achieved_speed: every kWingTraceEvery motion
     // steps, one line per member of the squadron named kWingTraceSquadron.
     // Off (0) in the landed build.
@@ -3316,30 +3348,72 @@ struct GameUnitsHost::Impl {
     // that order and with the station 009BFD70 produced, which
     // is the tick's own order (section 2 of
     // docs/PLANE_FOLLOW_LAW.md).
-    // 0099B790 on an empty set: clamp (lo <= -1 -> [00CFBC84] -5.0, hi >= 1 ->
-    // [00CE3850] 5.0) and store the one band.
+    // 0099B790 (body 0099B790-0099B935): clamp (lo <= -1 -> [00CFBC84] -5.0,
+    // hi >= 1 -> [00CE3850] 5.0), then merge with every pair it overlaps, the
+    // running union widening as the walk goes; the union replaces the first
+    // overlapped pair and the others are removed by moving the last pairs in.
+    // With no overlap it appends while fewer than 24 (18h) pairs are held.
     static void ga_insert_0099b790(GameUnitSlot& u, int set, float lo, float hi) {
         if (lo <= -1.0f) lo = -5.0f;
         if (1.0f <= hi) hi = 5.0f;
-        u.ga_band[set][0] = lo;
-        u.ga_band[set][1] = hi;
-        u.ga_band_valid[set] = true;
+        auto& b = u.ga_band[set];
+        int& n = u.ga_band_n[set];
+        int hit[24];
+        int nh = 0;
+        for (int i = 0; i < n; ++i) {
+            if (lo < b[i][0]) {
+                if (b[i][0] <= hi) {
+                    if (hi < b[i][1]) hi = b[i][1];
+                    hit[nh++] = i;
+                }
+            } else if (lo <= b[i][1]) {
+                lo = b[i][0];
+                if (hi < b[i][1]) hi = b[i][1];
+                hit[nh++] = i;
+            }
+        }
+        if (nh > 0) {
+            b[hit[0]][0] = lo;
+            b[hit[0]][1] = hi;
+            // Removing the other overlapped pairs: set order does not change
+            // what 0099B940 finds, because the held pairs are disjoint.
+            for (int k = nh - 1; k >= 1; --k) {
+                const int i = hit[k];
+                b[i][0] = b[n - 1][0];
+                b[i][1] = b[n - 1][1];
+                --n;
+            }
+            return;
+        }
+        if (n < 24) {
+            b[n][0] = lo;
+            b[n][1] = hi;
+            ++n;
+        }
     }
-    // 0099B940: true keeps (possibly moved to the nearer band edge), false when
-    // the value lies in a band covering all of [-1, 1].
+    // 0099B940: true keeps (possibly moved to the nearer edge of the first
+    // pair holding it), false when that pair covers all of [-1, 1].
     static bool ga_band_search_0099b940(const GameUnitSlot& u, int set, float& v) {
-        if (!u.ga_band_valid[set]) return true;
-        const float lo = u.ga_band[set][0], hi = u.ga_band[set][1];
-        if (v <= lo || hi <= v) return true;
-        if (lo < -1.0f && 1.0f < hi) return false;
-        v = (hi - v < v - lo) ? hi : lo;
+        const auto& b = u.ga_band[set];
+        for (int i = 0; i < u.ga_band_n[set]; ++i) {
+            const float lo = b[i][0], hi = b[i][1];
+            if (v <= lo || hi <= v) continue;
+            if (lo < -1.0f && 1.0f < hi) return false;
+            v = (hi - v < v - lo) ? hi : lo;
+            return true;
+        }
         return true;
     }
+    void vehicle_avoidance_007df4f0(GameUnitSlot& u, float dt);
+    void terrain_avoidance_0099f1c0(GameUnitSlot& u, float dt);
+    float avoid_surface_height(float x, float z);
+    static bool avoid_in_dive(const GameUnitSlot& u);
 
     // 009A17D0's gunfire arm and 0099EC40, for one plane, per think.
     void gunfire_avoidance_009a17d0(GameUnitSlot& u, float dt) {
         u.ga_flag_26c_4 = false;                                   // 009A17E7
-        for (bool& b : u.ga_band_valid) b = false;                 // +C8h/+190h/+258h
+        u.av_throttle_25c = 1.0f;                                  // 009A17EF [00D7A24C]
+        for (int& n : u.ga_band_n) n = 0;                          // +C8h/+190h/+258h
         // 009A17F8: an AI plane (+520h clear), live (+5Dh clear), in free
         // flight (+72Ch vtable[38h], mode 7) or mode 6, whose party is not the
         // local player's ([[00E188A8]+5FCh]+908h; the controlled unit's party
@@ -3350,19 +3424,33 @@ struct GameUnitsHost::Impl {
         if (!free_flight && u.plane_control_mode_900 != 6) return;
         if (!(controlled_bound && controlled_index < slots.size())) return;
         if (slots[controlled_index]->row.party == u.row.party) return;
-        if (!free_flight) {
-            u.ga_timer_3e8 = -1.0f;                                // 009A183C
-            return;
+        // 009A1865/009A194F/009A1972: +2E4h bits 4, 2, 1 and the squadron's
+        // +3A4h bits. +2E4h is the task's per-tick mask (0FFh at 009C87A3 /
+        // 009D4865, copied at 009C8855 / 009D48FF, 0FFh at 00999944 before
+        // the task arm); no literal store clears a bit of +4C4h or +49Ch, so
+        // the mask stays 0FFh through the dive and torpedo tasks. The
+        // squadron's +3A4h has no host producer: taken as set. SUBSTITUTION,
+        // labelled.
+        if constexpr (kPilotGunfireAvoidanceBound) {
+            if (!free_flight) {
+                u.ga_timer_3e8 = -1.0f;                            // 009A193F [00D7A260]
+            } else {
+                if (u.ga_rest_3ec <= u.ga_timer_3e8) u.ga_timer_3e8 -= dt;  // 009A18A8
+                if (u.ga_timer_3e8 > 0.0f || u.ga_timer_3e8 < u.ga_rest_3ec) {
+                    gunfire_detect_0099ec40(u);
+                }
+                if (!u.ga_flag_26c_4 && u.ga_timer_3e8 > 0.0f) {   // 009A190F
+                    u.ga_timer_3e8 = -0.0f - u.ga_timer_3e8;
+                }
+            }
         }
-        if (u.ga_rest_3ec <= u.ga_timer_3e8) u.ga_timer_3e8 -= dt;  // 009A1851
-        // 009A1865: +2E4h bit 4 and the squadron's +3A4h bit 4. SUBSTITUTION,
-        // labelled: neither enable byte has a host producer; taken as set.
-        if (u.ga_timer_3e8 > 0.0f || u.ga_timer_3e8 < u.ga_rest_3ec) {
-            gunfire_detect_0099ec40(u);
+        if constexpr (kPilotVehicleAvoidanceBound) {
+            vehicle_avoidance_007df4f0(u, dt);                     // 009A196D -> 0099B670
         }
-        if (!u.ga_flag_26c_4 && u.ga_timer_3e8 > 0.0f) {           // 009A18B4
-            u.ga_timer_3e8 = -0.0f - u.ga_timer_3e8;
+        if constexpr (kPilotTerrainAvoidanceBound) {
+            terrain_avoidance_0099f1c0(u, dt);                     // 009A1990
         }
+        // 009A1995: pilot+260h = 0; it has no host producer.
     }
 
     void gunfire_detect_0099ec40(GameUnitSlot& u) {
@@ -3457,9 +3545,8 @@ struct GameUnitsHost::Impl {
     }
 
     // 0099BF30 BSP_PilotBot_RepairCommandBands over 0099BC00's six-dword
-    // buffer, in its order (kPilotCmdYaw 0, Pitch 1, Roll 2). The +258h
-    // throttle arm is left out: only the gunfire arm is bound and it never
-    // lowers +258h below 1.0.
+    // buffer, in its order (kPilotCmdYaw 0, Pitch 1, Roll 2), then the
+    // bot+258h (pilot+25Ch) throttle arm.
     void gunfire_repair_0099bf30(GameUnitSlot& u) {
         const bool free_flight = u.plane_control_mode_900 == 7;   // +72Ch vtable[38h]
         float* c = u.pilot_command_block;
@@ -3491,6 +3578,19 @@ struct GameUnitsHost::Impl {
             if (c[bsp::kPilotCmdRoll] != v) {
                 c[bsp::kPilotCmdRoll] = v;
                 ++u.ga_repairs;
+            }
+        }
+        // 0099C130-0099C1FF: the pilot+25Ch throttle arm (bot+258h, bot =
+        // pilot+4h). Below 1.0: when not positive, throttle 0.01 ([00D7A238])
+        // and air brake max(cmd[4], -limit); otherwise throttle min(cmd[3],
+        // limit). Inert at 1.0, which is all the gunfire arm leaves.
+        if (u.av_throttle_25c < 1.0f) {
+            const float lim = u.av_throttle_25c;
+            if (lim <= 0.0f) {
+                c[bsp::kPilotCmdThrottle] = 0.01f;
+                if (c[bsp::kPilotCmdAirBrake] <= -lim) c[bsp::kPilotCmdAirBrake] = -lim;
+            } else if (!(c[bsp::kPilotCmdThrottle] < lim)) {
+                c[bsp::kPilotCmdThrottle] = lim;
             }
         }
         // 007D7A40 after a changed pitch or yaw: unread, not modelled.
@@ -4703,6 +4803,622 @@ private:
 };
 
 }  // namespace
+
+// ---------------------------------------------------------------------------
+// Packet cc9_pilot_vehicle_terrain_avoidance (docs/ATTACKER_EVASION.md 6):
+// 009A17D0's vehicle arm 007DF4F0 and terrain arm 0099F1C0.
+// ---------------------------------------------------------------------------
+
+namespace {
+
+struct AvoidBox {
+    float mn[3];
+    float mx[3];
+};
+
+// class+50h's local box at +28h..+3Ch (min xyz, then max xyz). This host has
+// no model box (UnitHullExtentClassInputs.model_local_box stays null), so the
+// class Width/Height/Length (+A4h/+A8h/+A0h) stand in as a box symmetric about
+// the origin. SUBSTITUTION, labelled.
+AvoidBox avoid_box(const GameUnitSlot& s) {
+    const float hx = 0.5f * s.class_width_00a4;
+    const float hy = 0.5f * s.motion_class.hull_height;
+    const float hz = 0.5f * s.motion_class.hull_length;
+    return AvoidBox{{-hx, -hy, -hz}, {hx, hy, hz}};
+}
+
+// class+500h, 007C4CDC-007C4D78: the largest of max(-min, max) over x, y, z.
+float avoid_radius_500(const GameUnitSlot& s) {
+    const AvoidBox b = avoid_box(s);
+    float r = 0.0f;
+    for (int i = 0; i < 3; ++i) {
+        const float e = (-b.mn[i] < b.mx[i]) ? b.mx[i] : -b.mn[i];
+        if (r < e) r = e;
+    }
+    return r;
+}
+
+// vtable[34h], the world velocity.
+void avoid_velocity(const GameUnitSlot& s, float out[3]) {
+    if (bsp::unit_is_kind_of(s.class_id, 0x0F)) {
+        out[0] = s.plane_world_velocity[0];
+        out[1] = s.plane_world_velocity[1];
+        out[2] = s.plane_world_velocity[2];
+    } else {
+        out[0] = s.motion.linear_velocity.x;
+        out[1] = s.motion.linear_velocity.y;
+        out[2] = s.motion.linear_velocity.z;
+    }
+}
+
+float avoid_len(const float v[3]) {   // 0042B2F0
+    return static_cast<float>(std::sqrt(static_cast<double>(v[0]) * v[0] +
+                                        static_cast<double>(v[1]) * v[1] +
+                                        static_cast<double>(v[2]) * v[2]));
+}
+
+float avoid_interp(float x0, float y0, float x1, float y1, float x) {   // 00419010
+    return bsp::dive_bomb_interpolate_clamped_00419010(x0, y0, x1, y1, x);
+}
+
+}  // namespace
+
+bool GameUnitsHost::Impl::avoid_in_dive(const GameUnitSlot& u) {
+    using S = bsp::DiveBombState;
+    const S s = u.dive_bomb_state;
+    return s == S::kAimDive || s == S::kAimGlide || s == S::kFlyAbove || s == S::kTurnDown;
+}
+
+// The water surface stands in for the two heights this host lacks: the
+// avoid-zone layer at squadron+34Ch (0041BC20) and, subtracted from the
+// altitude, the height above ground at unit+9B4h. SUBSTITUTION, labelled.
+float GameUnitsHost::Impl::avoid_surface_height(float x, float z) {
+    OceanFieldBinding sea(*this);
+    return bsp::ocean_water_height_0078cf20(x, z, sea);
+}
+
+// 0099B670 -> 007DF4F0 (__thiscall(neighbours = unit+C50h, pilot), RET 4,
+// body 007DF4F0-007E073E), for one plane per think. The unit+C50h object is
+// built for AI planes not of the local player's party (007D621F), which
+// 009A17D0's own gate already requires.
+void GameUnitsHost::Impl::vehicle_avoidance_007df4f0(GameUnitSlot& u, float dt) {
+    // 007E2010 / 007E11D0: the +30h list, refreshed when the +7Ch clock
+    // reaches +88h = 3.0: members at or beyond R = 1080 are dropped, then
+    // every world entity answering IsKindOf(6) or (0Fh) within R and not yet
+    // listed is appended. The object's tick cadence stands in as the think
+    // interval, and "in the world list" is a slot with a live state object
+    // not marked destroyed (wrecks stay listed, as the refresh has no death
+    // test). Labelled, as for kPlaneFinderBound.
+    const bsp::PlaneNeighbourRadii radii = bsp::plane_neighbour_radii_007e11d0(3.0f);
+    const float* p0 = u.world.data() + 12;                          // unit+FCh..+104h
+    auto dist2 = [&](const GameUnitSlot& o) {
+        const double dx = static_cast<double>(o.world[12]) - p0[0];
+        const double dy = static_cast<double>(o.world[13]) - p0[1];
+        const double dz = static_cast<double>(o.world[14]) - p0[2];
+        return dx * dx + dy * dy + dz * dz;
+    };
+    auto in_world = [](const GameUnitSlot& o) {
+        return o.state != nullptr && o.state->active != 0 && o.scene_destroyed_005e == 0 &&
+               o.scene_pending_destroy_0060 == 0;
+    };
+    u.nb_clock_30 += dt;
+    if (u.nb_clock_30 >= 3.0f) {
+        const double lim = static_cast<double>(radii.near_any) * radii.near_any;
+        auto& v = u.nb_near_30;
+        for (std::size_t k = 0; k < v.size();) {
+            if (v[k] >= slots.size() || !in_world(*slots[v[k]]) || dist2(*slots[v[k]]) >= lim) {
+                v[k] = v.back();
+                v.pop_back();
+            } else {
+                ++k;
+            }
+        }
+        for (std::size_t j = 0; j < slots.size(); ++j) {
+            const GameUnitSlot& o = *slots[j];
+            if (&o == &u || !in_world(o)) continue;
+            if (!bsp::unit_is_kind_of(o.class_id, 0x06) && !bsp::unit_is_kind_of(o.class_id, 0x0F)) {
+                continue;
+            }
+            if (!(dist2(o) < lim)) continue;
+            bool listed = false;
+            for (const std::size_t e : v) listed = listed || e == j;
+            if (!listed) v.push_back(j);
+        }
+        u.nb_clock_30 -= 3.0f;
+    }
+    if (u.nb_near_30.empty()) return;                               // 007DF53B this+34h
+
+    const bool free_flight = u.plane_control_mode_900 == 7;
+    // 007DF5E0-007DF959: the own frame M. When speed > 10 ([00CE38B8]) and
+    // |unit+B04h| / speed > 0.1 (double [00D7A3A0]) the image builds it from
+    // normalize(velocity + unit+B04h); otherwise it is the inverse pose
+    // unit+110h. unit+B04h has no host producer; with it zero the inverse pose
+    // is always the frame. SUBSTITUTION, labelled.
+    const AvoidBox ob = avoid_box(u);
+    const float hx = static_cast<float>(
+        1.2000000476837158 * ((-ob.mn[0] < ob.mx[0]) ? ob.mx[0] : -ob.mn[0]));   // double [00CEC160]
+    const float hy = static_cast<float>(
+        1.5 * ((-ob.mn[1] < ob.mx[1]) ? ob.mx[1] : -ob.mn[1]));                  // double [00CE3D78]
+    const float own_r = avoid_radius_500(u);
+    float v0[3];
+    avoid_velocity(u, v0);
+    const float own_speed = avoid_len(v0);                          // vtable[38h], labelled
+    // desc+1ACh PitchSpd; a class without one keeps DEG(30), labelled.
+    const float pitch_spd = u.plane_pitch_spd > 0.0f ? u.plane_pitch_spd : 0.5235988f;
+    const float h9b4 = p0[1] - avoid_surface_height(p0[0], p0[2]);  // unit+9B4h, labelled
+    const bool dive = avoid_in_dive(u);
+    bool plane_hit = false, ship_hit = false;
+
+    // 007DF96C: the list walk. pilot+260h (skipped at 007DF990) has no host
+    // producer and 009A1995 clears it every tick, so nothing is skipped.
+    const std::vector<std::size_t> list = u.nb_near_30;
+    for (const std::size_t idx : list) {
+        if (idx >= slots.size()) continue;
+        const GameUnitSlot& o = *slots[idx];
+        if (&o == &u) continue;
+        const float* p1 = o.world.data() + 12;
+        float v1[3];
+        avoid_velocity(o, v1);
+        if (bsp::unit_is_kind_of(o.class_id, 0x0F)) {
+            // 007DF99C-007DFE85, an aircraft.
+            float lp[3], lv[3];
+            follow_to_body(u, p1, false, lp);                       // 004142E0
+            const float rv[3] = {v1[0] - v0[0], v1[1] - v0[1], v1[2] - v0[2]};
+            follow_to_body(u, rv, true, lv);                        // 0042D0D0
+            const float dot = static_cast<float>(static_cast<double>(lp[0]) * lv[0] +
+                                                 static_cast<double>(lp[1]) * lv[1] +
+                                                 static_cast<double>(lp[2]) * lv[2]);
+            if (!(dot < 0.0f)) continue;                            // 007DFAB6, closing only
+            const float d = avoid_len(lp);
+            const float rr = avoid_radius_500(o) + own_r;           // class+500h twice
+            float s = avoid_len(lv);
+            s = s < 2.0f ? 2.0f : (s > 80.0f ? 80.0f : s);         // 00415620 [00CE3958] [00CE5444]
+            if (d > rr) {
+                if (9.999999747378752e-05 > s) continue;            // double [00D7A268]
+                if ((static_cast<double>(d) - rr) / s > 5.0) continue;   // double [00D7A370]
+            }
+            float c[3] = {lp[0], lp[1], lp[2]};
+            float dca = d, t = 0.0f;
+            if (d > rr) {                                           // 007DFBA9
+                t = static_cast<float>(-(static_cast<double>(dot) / (static_cast<double>(s) * s)));
+                for (int i = 0; i < 3; ++i) c[i] = lp[i] + t * lv[i];
+                dca = avoid_len(c);
+            }
+            float w = avoid_interp(0.8f, 1.25f, 1.6f, 0.0f, dca / rr) *   // [00CE74F8] [00CF29A8] [00D06BB4]
+                      avoid_interp(0.5f, 1.6f, 5.0f, 0.0f, t);            // [00CE3800] [00CE3850]
+            if (0.0f > lp[2]) w = static_cast<float>(w - 0.5);            // double [00D7A280]
+            if (!(w > 0.0f)) continue;
+            if (rr > dca) dca = rr;
+            for (float& e : c) e /= dca;
+            const float xlo = c[0] - w, xhi = c[0] + w, ylo = c[1] - w, yhi = c[1] + w;
+            if (xlo > 0.0f || 0.0f > xhi || (!(0.0f < ylo) && !(yhi < 0.0f))) {
+                ga_insert_0099b790(u, 0, xlo, xhi);                 // 007DFD75, pilot+4h
+                ++u.va_bands;
+                plane_hit = true;
+            }
+            if (ylo > 0.0f || 0.0f > yhi || (!(0.0f < xlo) && !(xhi < 0.0f))) {
+                ga_insert_0099b790(u, 1, ylo, yhi);                 // 007DFDC4, pilot+CCh
+                ++u.va_bands;
+                plane_hit = true;
+            }
+            // 007DFDD3-007DFE7F: both bands reach into the central +/-0.3
+            // ([00D06888]/[00CE69C8]), closing under 35 ([00CE4D90]), ahead,
+            // within 2 s: pilot+25Ch = interp(3, 1, 15, -1, s), a plain store.
+            if (xhi > -0.3f && 0.3f > xlo && yhi > -0.3f && 0.3f > ylo && 35.0f > s &&
+                lp[2] > 0.0f && 2.0f > t) {
+                u.av_throttle_25c = avoid_interp(3.0f, 1.0f, 15.0f, -1.0f, s);
+                ++u.va_throttle_sets;
+            }
+            continue;
+        }
+        // 007DFE8A-007E070B, any other listed entity (the ships).
+        const float dx[3] = {p1[0] - p0[0], p1[1] - p0[1], p1[2] - p0[2]};
+        const float dv[3] = {v0[0] - v1[0], v0[1] - v1[1], v0[2] - v1[2]};
+        const float clos = static_cast<float>(static_cast<double>(dv[0]) * dx[0] +
+                                              static_cast<double>(dv[1]) * dx[1] +
+                                              static_cast<double>(dv[2]) * dx[2]);
+        if (!(clos > 0.0f)) continue;                               // 007DFF68
+        const AvoidBox b = avoid_box(o);
+        if (static_cast<double>(h9b4) >
+            static_cast<double>(b.mx[1] - b.mn[1]) + 5.0) {         // 007DFF74-007DFF92
+            continue;
+        }
+        // 00816410: the point where the ray from the ship's origin toward P0
+        // leaves its box; |P1 - Q| is that ray's length.
+        float q[3];
+        follow_to_body(o, p0, false, q);
+        const float bx = (-b.mn[0] < b.mx[0]) ? b.mx[0] : -b.mn[0];
+        const float bz = (-b.mn[2] < b.mx[2]) ? b.mx[2] : -b.mn[2];
+        const float ax = std::fabs(q[0]), ay = std::fabs(q[1]), az = std::fabs(q[2]);
+        float kq = 1.0f;
+        if (bx < ax && bx / ax <= 1.0f) kq = bx / ax;
+        if (!(ay <= b.mx[1])) {
+            const float ky = b.mx[1] / ay;
+            if (ky <= kq) kq = ky;
+        }
+        if (bz < az && bz / az <= kq) kq = bz / az;
+        const float surf = kq * avoid_len(q);
+        float gap = static_cast<float>(static_cast<double>(avoid_len(dx)) -
+                                       (static_cast<double>(own_r) + 5.0));   // 007DFFB7
+        gap = static_cast<float>(static_cast<double>(gap) - surf);        // 007E0010
+        if (1.0f > gap) gap = 1.0f;                                   // 007E001C
+        const float rel = avoid_len(dv);
+        const float tc = static_cast<float>(static_cast<double>(gap) / (rel > 1.0f ? rel : 1.0f));
+        if (static_cast<double>(tc) > 1.5 / pitch_spd) continue;     // 007E0080 double [00CE3D78]
+        float l[3];
+        follow_to_body(u, p1, false, l);                              // 00414D10
+        auto dead = [](float v, float h) {                            // 007E00B5-007E012E
+            if (v > h) return v - h;
+            if (-h > v) return v + h;
+            return 0.0f;
+        };
+        l[0] = dead(l[0], hx);
+        l[1] = dead(l[1], hy);
+        const float* om = o.world.data();
+        float rgt[3], upv[3], fwd[3], vo[3];
+        follow_to_body(u, om + 0, true, rgt);                         // 0042D7E0 rows, 0042D0D0
+        follow_to_body(u, om + 4, true, upv);
+        follow_to_body(u, om + 8, true, fwd);
+        follow_to_body(u, v1, true, vo);
+        const float kk0 = static_cast<float>(static_cast<double>(tc) * 1.25);   // double [00CF87C0]
+        const float kk = kk0 < 0.7f ? 0.7f : (kk0 > 2.0f ? 2.0f : kk0);          // [00CE3E18] [00CE3958]
+        float cmax[2], cmin[2];
+        for (int i = 0; i < 2; ++i) {
+            cmax[i] = kk * (b.mx[2] * fwd[i] + b.mx[1] * upv[i] + b.mx[0] * rgt[i]);
+            cmin[i] = kk * (b.mn[2] * fwd[i] + b.mn[1] * upv[i] + b.mn[0] * rgt[i]);
+        }
+        float zz = static_cast<float>(0.5 / pitch_spd * gap);         // double [00D7A280]
+        if (u.plane_control_mode_900 == 6) {
+            zz = static_cast<float>(zz / 1.399999976158142);          // double [00D045F0]
+        }
+        float xlo = (vo[0] + l[0] + cmax[0]) / zz, xhi = (l[0] + cmin[0]) / zz;
+        if (xlo > xhi) std::swap(xlo, xhi);
+        float ylo = (vo[1] + l[1] + cmax[1]) / zz, yhi = (l[1] + cmin[1]) / zz;
+        if (ylo > yhi) std::swap(ylo, yhi);
+        if (-1.1f > xlo) xlo = -1.1f;                                 // [00D06BB0]
+        if (xhi > 1.1f) xhi = 1.1f;                                   // [00CE6448]
+        if (-1.1f > ylo) ylo = -1.1f;
+        if (yhi > 1.1f) yhi = 1.1f;
+        if (u.plane_control_mode_900 == 6 && 0.0f > xlo && xhi > 0.0f) {   // 007E05A0
+            if (xlo > -0.2f) xlo = -0.2f;                             // double [00D06BA8]
+            if (0.2f > xhi) xhi = 0.2f;                               // double [00CE3D10]
+            u.av_throttle_25c = avoid_interp(3.0f, 1.0f, 8.0f, -1.0f, own_speed);   // [00CE3918]
+            ++u.va_throttle_sets;
+        }
+        if (xhi > -1.0f && 1.0f > xlo && 0.0f > ylo && yhi > 0.0f) {
+            ga_insert_0099b790(u, 0, xlo, xhi);                       // 007E0693
+            ++u.va_bands;
+            ship_hit = true;
+        }
+        if (free_flight && yhi > -1.0f && 1.0f > ylo && 0.0f > xlo && xhi > 0.0f) {
+            ga_insert_0099b790(u, 1, ylo, yhi);                       // 007E0706
+            ++u.va_bands;
+            ship_hit = true;
+        }
+    }
+    if (plane_hit) ++u.va_plane_ticks;
+    if (ship_hit) ++u.va_ship_ticks;
+    if ((plane_hit || ship_hit) && dive) ++u.va_dive_ticks;
+}
+
+// 0099CAB0, __thiscall(pilot, pass, lo, hi, dLo, dHi, R, bankF), RET 1Ch,
+// body 0099CAB0-0099D03B: shapes one blocked run of the terrain fan into a
+// band and inserts it into pilot+4h + pass * C8h.
+static void terrain_shape_band_0099cab0(GameUnitsHost::Impl& host, GameUnitSlot& u, int pass,
+                                        float lo, float hi, float dlo, float dhi, float r,
+                                        float bank_f, float level_flight_speed, float speed) {
+    if (!(lo < hi)) return;                                          // 0099CABC
+    // 0099CAD4-0099CB19; pilot+264h = 0.12 ([00CE81A8]), stored by 0099D300
+    // at 0099EB95 every think.
+    const float g = pass == 0 ? avoid_interp(0.12f, 0.0f, 0.35f, 1.0f, bank_f)   // [00CF6560]
+                              : avoid_interp(1.3f, 1.0f, 1.7f, 0.0f, bank_f);   // [00CEB4B4] [00D1F3C4]
+    if (1.0f > g) {
+        lo = static_cast<float>((static_cast<double>(lo) - 1.1) * g + 1.1);     // double [00CE3DF0]
+        hi = static_cast<float>((static_cast<double>(hi) + 1.1) * g - 1.1);
+        if (!(lo < hi)) return;                                      // 0099CB67
+    }
+    const float ratio = dlo / dhi;                                   // 0099CB6D-0099CBB8
+    if (static_cast<double>(ratio) > 1.8) {                          // double [00D049A8]
+        dlo = static_cast<float>(dhi * 1.8);
+    } else if (0.56f > ratio) {                                      // [00D1F3C0]
+        dhi = static_cast<float>(dlo / 0.56);                        // double [00D1F3B8]
+    }
+    const bool covers = !(0.0f < lo) && !(hi < 0.0f);
+    float m = 0.0f;
+    bool range_test = false;
+    if (covers) {
+        m = (hi > -lo) ? -lo : hi;
+        if (pass == 1) {
+            if (m > 0.3f) {                                          // 0099CC11 [00CE69C8]
+                const float tgt = avoid_interp(0.3f,
+                    static_cast<float>(u.plane_max_spd * 1.8), 0.7f,
+                    static_cast<float>(level_flight_speed + 20.0), m);   // [00CE3E18], double [00CE3D88]
+                const float diff = static_cast<float>(static_cast<double>(tgt) - speed);
+                if (30.0 > diff) {                                   // double [00CE7630]
+                    const float tl = avoid_interp(-20.0f, -1.0f, 30.0f, 1.0f, diff);
+                    if (tl < u.av_throttle_25c) u.av_throttle_25c = tl;   // 00415510 min
+                    ++u.tr_throttle_sets;
+                }
+            }
+            range_test = true;
+        } else {
+            if (static_cast<double>(m) > 0.4) {                      // 0099CD07 double [00CE65D0]
+                // 0099BB00: unit+BC4h = max(unit+BC4h, 2 (m - 0.4) sin|bank| + 1).
+                // No host consumer of the plane's +BC4h: not modelled, labelled.
+            }
+            r = static_cast<float>(r * 0.7);                         // double [00CEFFA0]
+        }
+    } else {
+        if (pass == 1) range_test = true;
+        else r = static_cast<float>(r * 0.7);
+    }
+    if (range_test) {                                                // 0099CDC9
+        if (dlo > r && dhi > r) return;
+        r = static_cast<float>(r * 1.1);
+    }
+    const float base = covers ? avoid_interp(0.0f, 0.3f, 0.08f, 0.5f, m) : 0.3f;   // [00D05B50] [00CE3800]
+    const float den = (200.0 > r) ? r : 200.0f;                      // double [00CE4D70]
+    if (lo > -1.0f) {                                                // 0099CD96
+        const float e = dhi / den - base;                            // dHi for both edges
+        if (0.0f > e) {
+            lo = covers ? avoid_interp(0.0f, 0.001f, 0.1f, 1.1f, m) * e + lo : lo - 0.001f;
+        } else {
+            lo = e * e + lo;
+        }
+    }
+    if (1.0f > hi) {                                                 // 0099CEE5
+        const float e = dhi / den - base;
+        if (0.0f > e) {
+            hi = covers ? hi - avoid_interp(0.0f, 0.001f, 0.1f, 1.1f, m) * e : hi + 0.001f;
+        } else {
+            hi = hi - e * e;
+        }
+    }
+    if (!(lo < hi)) return;                                          // 0099D016
+    host.ga_insert_0099b790(u, pass, lo, hi);                        // 0099D025
+    ++u.tr_bands;
+}
+
+// 0099F1C0 (body 0099F1C0-009A17CB), __thiscall(pilot), for one plane per think.
+void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt*/) {
+    if (u.plane_control_mode_900 != 7) {
+        // 009A1420, branch A (unit+900h == 6, on the water): a +-30 degree
+        // heading probe through 00903BC0 at y = 0.1. This host has no ground
+        // model; with the water surface standing in for the ground both probe
+        // ends are clear, and branch A returns at its first test (009A14xx),
+        // before any band or +25Ch write. SUBSTITUTION, labelled.
+        ++u.tr_water_ticks;
+        return;
+    }
+    // 0099F1F3-0099F20D: the squadron (unit+9D4h) and its avoid-zone layer
+    // ctl+34Ch. The layer's cell size layer+0Ch is the scene's first avoid-zone
+    // layer's 100 m (docs/TORPEDO_RUN_IN_PATH.md), and its height is the water
+    // surface. SUBSTITUTION, labelled.
+    if (bsp::plane_squadron_registry().find_by_member_unit(u.process_index) == nullptr) return;
+    const float cell = 100.0f;                                       // min(layer+0Ch, 120.0)
+
+    const float pitch_spd = u.plane_pitch_spd > 0.0f ? u.plane_pitch_spd : 0.5235988f;
+    float look_t = static_cast<float>(1.5 / pitch_spd);              // double [00CE3D78]
+    if (3.0 > look_t) look_t = 3.0f;                                 // double [00D7A2B0]
+    const float w_width = u.class_width_00a4;                        // cls+A4h
+    float sa = static_cast<float>(w_width / 5.0);                    // double [00D7A370]
+    bool inverted = false;
+    float v_world[3];
+    avoid_velocity(u, v_world);
+    const float speed = avoid_len(v_world);                          // vtable[204h] stand-in, labelled
+    float stall_range = 1.6f;                                        // tuning+230h StallRangeMax
+    if (lua.plane_globals_loaded()) {
+        stall_range = lua.plane_globals().dynamics_spd_multipliers_stall_range_max;
+    }
+    const float stall = u.plane_stall_spd > 0.0f ? u.plane_stall_spd : 17.5f;
+    const float v_stall = stall_range * stall;                       // 007C4830
+    const float v_look = speed > v_stall ? speed : v_stall;
+    // unit+C7Ch: the elevation of the vector at unit+AC8h (007C1CA8); the
+    // world velocity's elevation, the flight-path angle, stands in. Labelled.
+    const double horiz = std::sqrt(static_cast<double>(v_world[0]) * v_world[0] +
+                                   static_cast<double>(v_world[2]) * v_world[2]);
+    const float pitch = speed > 1.0f
+        ? static_cast<float>(std::atan2(static_cast<double>(v_world[1]), horiz))
+        : u.plane_pitch_angle_c64;
+    const float bank = u.plane_bank_angle_c68;
+    float bank_f = std::fabs(bank);
+    if (static_cast<double>(bank_f) > 1.5707963705062866) {          // double [00CE3830]
+        bank_f = static_cast<float>(3.1415927410125732 - bank_f);   // double [00CE3D28]
+        inverted = true;
+        sa = static_cast<float>(sa * 8.0);                           // double [00CE3DB0]
+    } else {
+        sa = avoid_interp(0.1f, 1.0f, 1.2f, 8.0f, bank_f) * sa;      // [00D7A2F0] [00CE3814] [00CE3918]
+    }
+    if (pitch < 0.0f) sa = static_cast<float>(sa - w_width * pitch * 4.0);   // double [00D7A328]
+    const float* p_now = u.world.data() + 12;
+    const float h9b4 = p_now[1] - avoid_surface_height(p_now[0], p_now[2]);   // unit+9B4h, labelled
+    sa = avoid_interp(80.0f, 0.0f, 460.0f, w_width + w_width, h9b4) + sa;     // [00CE5444] [00D1F404]
+    const float* fr = u.world.data() + 8;                            // forward row
+    const float fwd_speed = v_world[0] * fr[0] + v_world[1] * fr[1] + v_world[2] * fr[2];   // 007D99C0
+    const float max_spd = u.plane_max_spd;                           // cls+188h
+    sa = avoid_interp(static_cast<float>(max_spd * 1.4), 0.0f,       // double [00D045F0]
+                      static_cast<float>(2.5 * max_spd),             // double [00CE3DE0]
+                      static_cast<float>(w_width * 3.0), fwd_speed) + sa;
+    if (!(sa > 10.0f)) sa = 10.0f;                                   // [00CE38B8]
+    const double look_d = static_cast<double>(v_look * look_t);      // 0099F470, a double
+
+    float p0[3]{}, a[3]{}, mid[3]{}, b[3]{};
+    float c0 = 0.1f;
+    float r = 0.0f;
+    const float* m = u.world.data();
+    const bool dive = avoid_in_dive(u);
+    const int bands_before = u.tr_bands;
+    const float level_flight = bot_desired_speed_007c47f0(u);        // 007C47F0
+    for (int pass = 0; pass < 2; ++pass) {
+        if (pass == 0) {                                             // 0099F4A3-0099FAAF
+            const float l[3] = {-m[0], -m[1], -m[2]};                // -row0
+            float f[3] = {m[8], m[9], m[10]};
+            const float sin_b = std::sin(bank);
+            const float cos_p = std::cos(pitch);
+            const float m_turn = avoid_interp(-0.15f, 0.0f, 0.2f, 2.5f, -pitch);   // [00CF87CC] [00CE54A0] [00CF87C8]
+            const float c = m_turn * sin_b * cos_p * u.plane_class.slide_ratio * u.plane_class.yaw_spd;
+            for (int i = 0; i < 3; ++i) f[i] = c * l[i] + f[i];      // 0099F62F's normalize is discarded
+            r = static_cast<float>(avoid_interp(0.3f, 0.6f, 1.2f, 1.2f, bank_f) * look_d);   // [00CE69C8] [00CE3D30] [00CE3814]
+            for (int i = 0; i < 3; ++i) p0[i] = static_cast<float>(p_now[i] - f[i] * 10.0);   // double [00CE3DC0]
+            for (int i = 0; i < 3; ++i) {
+                a[i] = static_cast<float>(r * (f[i] + l[i]) * 0.8) + p0[i];   // double [00CE3D40]
+                mid[i] = f[i] * r + p0[i];
+                b[i] = static_cast<float>(r * (f[i] - l[i]) * 0.8) + p0[i];
+            }
+            const float h0 = avoid_surface_height(p0[0], p0[2]);
+            c0 = static_cast<float>(p0[1] - (h0 + 10.0));
+            if (0.1 > c0) c0 = 0.1f;                                 // double [00D7A3A0]
+        } else {                                                     // 0099FAB4-0099FF49
+            float f[3] = {m[8], m[9], m[10]};
+            float up[3];
+            for (int i = 0; i < 3; ++i) up[i] = static_cast<float>(m[4 + i] * 1.25);   // double [00CF87C0]
+            if (inverted) {
+                const float k = static_cast<float>(std::cos(bank_f) * std::cos(pitch) * 0.15);   // double [00CE6618]
+                for (int i = 0; i < 3; ++i) f[i] = k * up[i] + f[i];
+            } else if (pitch < 0.0f) {
+                const float wa = avoid_interp(10.0f, 0.0f, 50.0f, 1.0f, h9b4);   // [00CEB4D4]
+                const float wb = avoid_interp(-0.4f, 0.0f, -0.15f, 1.0f, pitch); // [00D1F400]
+                const float w = wb * wa;
+                if (w > 0.0f) f[1] = static_cast<float>((1.0 - w) * f[1]);
+            }
+            r = static_cast<float>(look_d * 1.1);                    // double [00CE3DF0]
+            for (int i = 0; i < 3; ++i) {
+                a[i] = static_cast<float>(r * (f[i] - up[i]) * 0.75) + p0[i];   // double [00CEC9D8]
+                mid[i] = f[i] * r + p0[i];
+                b[i] = static_cast<float>((f[i] + up[i]) * r * 0.75) + p0[i];
+            }
+        }
+        // 0099FF50-009A01BA: extent over x and z, N steps.
+        float ext = 0.0f;
+        const float* pts[3] = {a, mid, b};
+        for (const float* q : pts) {
+            const float ex = std::fabs(p0[0] - q[0]), ez = std::fabs(p0[2] - q[2]);
+            const float e = ex > ez ? ex : ez;
+            if (e > ext) ext = e;
+        }
+        const int n_steps = static_cast<int>(ext / cell) + 1;
+        const float n_f = static_cast<float>(n_steps);
+        const float ds = 1.0f / n_f;
+        float s = ds > 1.0f ? 1.0f : ds;
+        auto len_from_p0 = [&](const float x[3]) {
+            const double dx = static_cast<double>(x[0]) - p0[0];
+            const double dy = static_cast<double>(x[1]) - p0[1];
+            const double dz = static_cast<double>(x[2]) - p0[2];
+            const double d2 = dy * dy + dx * dx + dz * dz;
+            return d2 > 1e-10 ? static_cast<float>(std::sqrt(d2)) : 0.0f;   // double [00CE3820]
+        };
+        auto clearance = [&](const float x[3]) {
+            return x[1] - (avoid_surface_height(x[0], x[2]) + sa);   // 009A0677
+        };
+        for (int j = 1; j <= n_steps; ++j) {
+            const float t = static_cast<float>(j) / n_f;
+            float e1[3], cc[3], cme[3];
+            for (int i = 0; i < 3; ++i) {
+                const float q = mid[i] + (a[i] - mid[i]) * s;
+                e1[i] = p0[i] + t * (q - p0[i]);
+                cc[i] = p0[i] + t * (mid[i] - p0[i]);
+                cme[i] = cc[i] - e1[i];
+            }
+            float lo = -1.1f;                                        // [00D06BB0]
+            int state = 0;
+            float dlo = 0.0f, dhi = 0.0f, c_prev = 0.0f, c = 0.0f;
+            bool blocked = false;
+            float smp[3]{};
+            const float ax = std::fabs(cme[0]), az = std::fabs(cme[2]);
+            const float span = static_cast<float>((ax > az ? ax : az) * 1.2);   // double [00CEC160]
+            const int n2 = static_cast<int>(span / cell) + 1;
+            const float n2f = static_cast<float>(n2);
+            for (int k = 0; k <= n2; ++k) {                          // E (-1) -> C (0)
+                const float fk = static_cast<float>(k) / n2f;
+                for (int i = 0; i < 3; ++i) smp[i] = e1[i] + fk * cme[i];
+                c = clearance(smp);
+                blocked = 0.0f > c;
+                if (state == 0) {
+                    state = blocked ? -1 : 1;
+                    if (blocked) dlo = c0 / (c0 - c) * len_from_p0(smp);
+                } else if (state > 0) {
+                    if (blocked) {
+                        const float rr = c_prev / (c_prev - c);
+                        lo = static_cast<float>(fk + ((rr - 1.0) / n2f - 1.0));
+                        const float fx = lo + 1.0f;
+                        float x[3];
+                        for (int i = 0; i < 3; ++i) x[i] = fx * cme[i] + e1[i];
+                        dlo = len_from_p0(x);
+                        state = -1;
+                    }
+                } else if (!blocked) {
+                    const float rr = c_prev / (c_prev - c);
+                    const float hi = static_cast<float>(fk + ((rr - 1.0) / n2f - 1.0));
+                    const float fx = hi + 1.0f;
+                    float x[3];
+                    for (int i = 0; i < 3; ++i) x[i] = cme[i] * fx + e1[i];
+                    dhi = len_from_p0(x);
+                    terrain_shape_band_0099cab0(*this, u, pass, lo, hi, dlo, dhi, r, bank_f,
+                                                level_flight, speed);   // 009A0AE0
+                    state = 1;
+                }
+                c_prev = c;
+            }
+            float e2[3], c2[3], emc[3];
+            for (int i = 0; i < 3; ++i) {
+                const float q2 = mid[i] + s * (b[i] - mid[i]);
+                e2[i] = p0[i] + (q2 - p0[i]) * t;
+                c2[i] = p0[i] + (mid[i] - p0[i]) * t;
+                emc[i] = e2[i] - c2[i];
+            }
+            for (int k = 1; k <= n2; ++k) {                          // C (0) -> E' (+1)
+                const float fk = static_cast<float>(k) / n2f;
+                for (int i = 0; i < 3; ++i) smp[i] = fk * emc[i] + c2[i];
+                c = clearance(smp);
+                blocked = 0.0f > c;
+                if (state > 0) {
+                    if (blocked) {
+                        const float rr = c_prev / (c_prev - c);
+                        lo = static_cast<float>(fk + (rr - 1.0) / n2f);
+                        float x[3];
+                        for (int i = 0; i < 3; ++i) x[i] = e2[i] + (1.0f - lo) * (c2[i] - e2[i]);
+                        dlo = len_from_p0(x);
+                        state = -1;
+                    }
+                } else if (!blocked) {
+                    const float rr = c_prev / (c_prev - c);
+                    const float hi = static_cast<float>(fk + (rr - 1.0) / n2f);
+                    float x[3];
+                    for (int i = 0; i < 3; ++i) x[i] = e2[i] + (1.0f - hi) * (c2[i] - e2[i]);
+                    dhi = len_from_p0(x);
+                    terrain_shape_band_0099cab0(*this, u, pass, lo, hi, dlo, dhi, r, bank_f,
+                                                level_flight, speed);   // 009A1240
+                    state = 1;
+                }
+                c_prev = c;
+            }
+            if (blocked) {                                           // 009A1296-009A138E
+                dhi = c0 / (c0 - c) * len_from_p0(smp);
+                terrain_shape_band_0099cab0(*this, u, pass, lo, 1.1f, dlo, dhi, r, bank_f,
+                                            level_flight, speed);
+            }
+            s = s + ds;                                              // 009A13AC
+            if (s > 1.0f) s = 1.0f;
+        }
+    }
+    if (u.tr_bands > bands_before) {
+        ++u.tr_ticks;
+        if (h9b4 < u.tr_min_margin) u.tr_min_margin = h9b4;
+        if (dive) {
+            ++u.tr_dive_ticks;
+            if (u.tr_dive_ticks <= 3) {
+                log.notef("terrain avoid in dive: unit=%s state=0x%X alt=%.1f pitch=%.3f "
+                          "speed=%.1f sa=%.1f pitch_bands=%d first=[%.3f,%.3f] thr=%.3f",
+                          u.row.name.c_str(), static_cast<unsigned>(u.dive_bomb_state),
+                          static_cast<double>(h9b4), static_cast<double>(pitch),
+                          static_cast<double>(speed), static_cast<double>(sa), u.ga_band_n[1],
+                          u.ga_band_n[1] > 0 ? static_cast<double>(u.ga_band[1][0][0]) : 0.0,
+                          u.ga_band_n[1] > 0 ? static_cast<double>(u.ga_band[1][0][1]) : 0.0,
+                          static_cast<double>(u.av_throttle_25c));
+            }
+        }
+    }
+}
 
 // ---------------------------------------------------------------------------
 // Impl helpers
@@ -12232,7 +12948,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 run_dogfight_task_arm_009ab1c0(elapsed);
                             }
 
-                            if constexpr (GameUnitsHost::Impl::kPilotGunfireAvoidanceBound) {
+                            if constexpr (GameUnitsHost::Impl::kPilotAvoidanceUpdateBound) {
                                 // 009A17D0, before 0099D300.
                                 owner_.gunfire_avoidance_009a17d0(unit_, elapsed);
                             }
@@ -12245,7 +12961,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             bsp::pilot_evaluate_plan_slots_0099bc00(
                                 unit_.plan_slots, unit_.pilot_command_block,
                                 bsp::kPilotSlewRate, elapsed);
-                            if constexpr (GameUnitsHost::Impl::kPilotGunfireAvoidanceBound) {
+                            if constexpr (GameUnitsHost::Impl::kPilotAvoidanceUpdateBound) {
                                 owner_.gunfire_repair_0099bf30(unit_);   // 0099BF30
                             }
                             // 007B8C90: the block is published and the byte set.
@@ -14935,6 +15651,32 @@ void GameUnitsHost::report() {
                         host.log.notef("summary mission gunfire avoidance detect=%lld flagged=%lld "
                             "exempt=%lld repairs=%lld (009A17D0/0099EC40/0099BF30, packet "
                             "cc9_gunfire_avoidance)", gd, gf, ge, gr);
+                    }
+                    {
+                        long long vp = 0, vs = 0, vb = 0, vt = 0, vd = 0;
+                        long long tt = 0, tb = 0, tth = 0, td = 0, tw = 0;
+                        for (const auto& sl : host.slots) {
+                            vp += sl->va_plane_ticks; vs += sl->va_ship_ticks; vb += sl->va_bands;
+                            vt += sl->va_throttle_sets; vd += sl->va_dive_ticks;
+                            tt += sl->tr_ticks; tb += sl->tr_bands; tth += sl->tr_throttle_sets;
+                            td += sl->tr_dive_ticks; tw += sl->tr_water_ticks;
+                            if (sl->va_plane_ticks + sl->va_ship_ticks + sl->tr_ticks > 0) {
+                                host.log.notef("  vehicle/terrain avoid %-20s plane=%d ship=%d "
+                                    "bands=%d thr=%d dive=%d | terrain=%d bands=%d thr=%d "
+                                    "dive=%d water=%d min_margin=%.1f", sl->row.name.c_str(),
+                                    sl->va_plane_ticks, sl->va_ship_ticks, sl->va_bands,
+                                    sl->va_throttle_sets, sl->va_dive_ticks, sl->tr_ticks,
+                                    sl->tr_bands, sl->tr_throttle_sets, sl->tr_dive_ticks,
+                                    sl->tr_water_ticks, static_cast<double>(sl->tr_min_margin));
+                            }
+                        }
+                        host.log.notef("summary mission vehicle avoidance plane_ticks=%lld "
+                            "ship_ticks=%lld bands=%lld throttle=%lld dive_ticks=%lld "
+                            "(007DF4F0, packet cc9_pilot_vehicle_terrain_avoidance)",
+                            vp, vs, vb, vt, vd);
+                        host.log.notef("summary mission terrain avoidance ticks=%lld bands=%lld "
+                            "throttle=%lld dive_ticks=%lld water_ticks=%lld (0099F1C0/0099CAB0, "
+                            "packet cc9_pilot_vehicle_terrain_avoidance)", tt, tb, tth, td, tw);
                     }
                     host.log.notef("summary mission plane squadron leaves=%d promotions=%d "
                         "(007BCAA0 -> 007F3970 at death, packet cc9_val_squadron_registry)",
