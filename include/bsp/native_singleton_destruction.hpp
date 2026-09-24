@@ -6,6 +6,8 @@
 namespace bsp {
 struct NativeGameClassCleanupContext;
 struct NativeProfileHintsOwnerContext;
+struct NativePlatformFocusOwnersContext;
+struct NativeGuiMediaFocusLifetimeContext;
 struct NativeResourceRegistryDeleteBindings;
 struct NativeResourceManagerContext;
 struct NativeResourceExtraParserContexts;
@@ -49,6 +51,8 @@ namespace game { class GameSoundRuntime; }
 // device and surface storage through its complete destruction schedule.
 // D68CBC/D68CC0 use the same raw render-entry cache context as publication.
 // D5E5F4 executes and destroys its actual render queue with shared providers.
+// D24D94/D5BFCC use the raw media/GUI scalar deleters and their original
+// publication cells. GUI page virtual calls remain a required provider domain.
 // Other admitted objects carry these recovered slot-zero profiles: CE3818,
 // D0DA64, D5E594, D5E59C, D5B44C, D5B460, D5B478, D58F78, D24138,
 // D2413C, D5B5F4, D5B5F8, D5B72C, D5B630, D68200, D68CF8, D68D04 or
@@ -193,6 +197,13 @@ struct NativeSingletonDeletionBindings {
     // CE3A44 is the actual50h profile-hints owner. Retain its publication
     // binding and concrete allocation services through the shared drain.
     NativeProfileHintsOwnerContext* native_profile_hints{};
+    // D24D94 -> A4C620. Borrow the SAME F8AEF8 publication as construction;
+    // delete the popped owner even if the current publication has changed.
+    NativePlatformFocusOwnersContext* native_media{};
+    // D5BFCC -> AA6540. Raw pages require current virtual20/04 providers;
+    // retain those providers, strings and actual F8BC5C cell through drain.
+    // This does not admit projected GuiLayoutPage or frontend manager storage.
+    NativeGuiMediaFocusLifetimeContext* native_gui{};
 };
 static_assert(offsetof(NativeSingletonDeletionBindings, mpkg_factory) == 88);
 static_assert(offsetof(NativeSingletonDeletionBindings, resource_manager) == 92);
@@ -213,7 +224,9 @@ static_assert(offsetof(NativeSingletonDeletionBindings, native_online) == 148);
 static_assert(offsetof(NativeSingletonDeletionBindings, game_resource_parsers) == 152);
 static_assert(offsetof(NativeSingletonDeletionBindings, game_classes) == 156);
 static_assert(offsetof(NativeSingletonDeletionBindings, native_profile_hints) == 160);
-static_assert(sizeof(NativeSingletonDeletionBindings) == 164);
+static_assert(offsetof(NativeSingletonDeletionBindings, native_media) == 164);
+static_assert(offsetof(NativeSingletonDeletionBindings, native_gui) == 168);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 172);
 
 // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX
 // owner, RET; new EDX reference to stable bindings above. Pop before deleting

@@ -1,0 +1,37 @@
+{
+  "packet": "cc10_gui_media_delete_dispatch",
+  "status": "source_dispatch_bound_build_and_focused_shared_drain_passed",
+  "native": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "new_native_bodies": 0,
+    "lifetime_provider_commit": "a4f03c84107303ec11d8383b751672e9d4c5bfc9"
+  },
+  "profile_table": [
+    {"profile": "00d24d94", "slot_offset": 0, "target": "00a4c620", "live_bytes": "20 c6 a4 00", "binding": "native_media"},
+    {"profile": "00d5bfcc", "slot_offset": 0, "target": "00aa6540", "live_bytes": "40 65 aa 00", "binding": "native_gui"}
+  ],
+  "source_files": ["include/bsp/native_singleton_destruction.hpp", "src/native_singleton_destruction.cpp"],
+  "contract": [
+    "Preserve popped owner and scalar flags even when current publication changes",
+    "Separate required media and GUI contexts; media does not require a dummy page provider",
+    "GUI current page virtual20 and virtual04 remain required external providers",
+    "Keep all borrowed publications/resources/strings/pages alive through shared drain",
+    "Missing context keeps existing explicit logic_error"
+  ],
+  "validation": {
+    "build_log": "local/cc10-activation-prerequisites-build.log",
+    "msvc_win32": true,
+    "ctest_passed": 3,
+    "ctest_failed": 0,
+    "probe_source": "local/cc10_gui_media_dispatch_probe.cpp",
+    "probe_build_log": "local/cc10-gui-media-dispatch-probe-build.log",
+    "probe_log": "local/cc10-gui-media-dispatch-probe.log",
+    "probe_passed": true,
+    "checks": ["real getter registration and cache hits", "reverse shared singleton drain", "populated page reload between virtual20 and virtual04", "captured owner retained across changed publication", "both publications cleared"],
+    "probe_scope": "Source composition with explicit page test providers; not original/source comparison or game GUI proof"
+  },
+  "production_owner_creation": false,
+  "application_wm_activate": false,
+  "next": "docs/GUI_OWNER_COMPOSITION_CC10.md"
+}

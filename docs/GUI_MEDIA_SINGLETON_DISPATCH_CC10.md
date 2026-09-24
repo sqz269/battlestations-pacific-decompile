@@ -1,0 +1,11 @@
+# GUI and media singleton deletion bindings
+
+This connects the existing raw singleton drain to the GUI/media lifetime bodies published in `a4f03c841`. It is a source composition change, not a new native body or application GUI admission.
+
+Live Ghidra reads in `C:/Users/sqz269/bsp.gpr`, `/battlestationspacific.exe`, confirmed profile `00D24D94` slot zero is `00A4C620` (`20 C6 A4 00`) and profile `00D5BFCC` slot zero is `00AA6540` (`40 65 AA 00`). `delete_current_profile` now selects those existing scalar deleters when the required borrowed context is present. Missing bindings retain the explicit contract failure. The dispatcher passes its popped owner and flags; it does not replace that owner with the current publication.
+
+`NativeSingletonDeletionBindings::native_media` borrows the original media publication context. The separate `native_gui` binding also requires the string-pool context and both current page virtual providers. Media deletion therefore needs no dummy GUI page provider. Both fields append after the existing bindings, preserving every previous field offset. GUI storage and page pointers must be actual admitted raw owners; `GuiLayoutPage` and the frontend's projected manager are not compatible inputs.
+
+Validation: `scripts/build.ps1` passed the strict MSVC Win32 build and all three existing CTests. One focused local probe creates both owners through their real getters, checks repeated getters register only two owners, and drains them through the actual shared manager. Its populated GUI page provider checks reverse owner order, changes the GUI publication, replaces the vector's page during virtual20, and observes the replacement at virtual04 with flags1. Both publications finish null. This is a source integration check with explicit page test providers, not a native page producer or an original/source comparison. The underlying lifetime comparison remains documented in `NATIVE_GUI_MEDIA_FOCUS_LIFETIME_CC10.md`.
+
+The application still needs the one-owner frontend composition, actual page/resource admission and movie provider described in `GUI_OWNER_COMPOSITION_CC10.md`. No raw GUI or media owner is newly created by production startup here. The full `WM_ACTIVATE` adapter remains unbound until its dependencies are ready.
