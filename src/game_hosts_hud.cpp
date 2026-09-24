@@ -231,9 +231,19 @@ public:
         return false;
     }
     bool input_action_pressed(int action) override {
-        static_cast<void>(action);
-        owner_.record("InGameInterfaceUpdate::input_action_pressed", 0x004c43c0u);
-        return false;
+        if (!kHudPresentationTopBound) {
+            static_cast<void>(action);
+            owner_.record("InGameInterfaceUpdate::input_action_pressed", 0x004c43c0u);
+            return false;
+        }
+        // 004C43C0 through the menu host's action records, the same route the
+        // application frame's 00737AE7 test takes (GameFrameHost). The only
+        // record the executable drives is the press-start action 4Eh; every
+        // other index is a record 00A92370 zeroes each frame and nothing starts,
+        // which is the state of an action no device reports, so the rising-edge
+        // test answers false for it.
+        owner_.done("InGameInterfaceUpdate::input_action_pressed", 0x004c43c0u);
+        return owner_.menu.input_action_pressed(action);
     }
     bool modifier_key_allows_back_out() override { return false; }
     bool session_flag_19c4() override { return false; }

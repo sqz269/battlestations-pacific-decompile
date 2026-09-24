@@ -47,6 +47,13 @@
 
 namespace bsp::game {
 
+// Packet cc9_hud_presentation_top (docs/HUD_PRESENTATION_TOP.md). ON binds three
+// of the eight largest HUD rows: 004C43C0's edge test in the in-game interface
+// update, 00B62D10 in the markers' clip-space projection (on the stand-in
+// camera matrix), and 00432650's two global-config reads in the minimap. OFF
+// keeps the records.
+inline constexpr bool kHudPresentationTopBound = true;
+
 class GameHostLog;
 class GameFrontendHost;
 class GameMenuHost;

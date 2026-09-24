@@ -14,6 +14,7 @@
 #include "bsp/hud_minimap.hpp"
 #include "bsp/hud_screens.hpp"
 #include "bsp/hud_updates.hpp"
+#include "bsp/native_camera_plane_transform.hpp"
 #include "bsp/pose_refresh.hpp"
 
 #include <cmath>
@@ -138,13 +139,24 @@ public:
     float minimap_range() override {
         // 005C157E -> 00432650, then +6Ch. The global config singleton is not
         // built here; the value is the one 0087D7B0 would have written.
-        owner_.record("HudMinimap::global_config", 0x00432650u);
+        global_config_read();
         return owner_.summary.minimap_range;
     }
     float visibility_range() override {
         // 005C158A -> 00432650, then +70h.
-        owner_.record("HudMinimap::global_config", 0x00432650u);
+        global_config_read();
         return owner_.summary.visibility_range;
+    }
+    // 00432650 returns the global config object; its +6Ch/+70h are the two
+    // Globals["Minimap"] values 0087D7B0 writes. When those were read from the
+    // installed globals.lua, the host's two cells stand in for the object's two
+    // fields and the getter plus field read is done; otherwise it is a record.
+    void global_config_read() {
+        if (kHudPresentationTopBound && owner_.summary.range_from_data) {
+            owner_.done("HudMinimap::global_config", 0x00432650u);
+        } else {
+            owner_.record("HudMinimap::global_config", 0x00432650u);
+        }
     }
 
     void refresh_pose(void* unit) override {
@@ -717,14 +729,34 @@ public:
         // fixed top-down orthographic camera over the mission's own unit bounds,
         // with +x to the right and +z up the screen.
         owner_.record("HudMarkers::view_projection_matrix", 0x00b70490u);
-        owner_.record("HudMarkers::transform_vec4", 0x00b62d10u);
         const float half = owner_.summary.camera_half_extent;
         const float cx = 0.5f * (owner_.summary.bounds_min[0] + owner_.summary.bounds_max[0]);
         const float cz = 0.5f * (owner_.summary.bounds_min[2] + owner_.summary.bounds_max[2]);
-        out_clip[0] = half > 0.0f ? (world[0] - cx) / half : 0.0f;
-        out_clip[1] = half > 0.0f ? (world[2] - cz) / half : 0.0f;
-        out_clip[2] = 0.5f;
-        out_clip[3] = 1.0f;
+        if (!kHudPresentationTopBound) {
+            owner_.record("HudMarkers::transform_vec4", 0x00b62d10u);
+            out_clip[0] = half > 0.0f ? (world[0] - cx) / half : 0.0f;
+            out_clip[1] = half > 0.0f ? (world[2] - cz) / half : 0.0f;
+            out_clip[2] = 0.5f;
+            out_clip[3] = 1.0f;
+            return;
+        }
+        // SUBSTITUTION: the stand-in camera as the row-vector matrix 00B70490
+        // would return (00B62D10 computes v * M, translation in row 3): x and z
+        // map onto clip x and y about the bounds centre, depth 0.5, w 1.
+        float matrix[16] = {};
+        if (half > 0.0f) {
+            const float inv = 1.0f / half;
+            matrix[0] = inv;          // x -> clip x
+            matrix[9] = inv;          // z -> clip y
+            matrix[12] = -cx * inv;
+            matrix[13] = -cz * inv;
+        }
+        matrix[14] = 0.5f;
+        matrix[15] = 1.0f;
+        const float source[4] = {world[0], world[1], world[2], 1.0f};
+        // 0043A6AF -> 00B62D10, the recovered transform with its x87 schedule.
+        bsp::transform_native_vector4_00b62d10(source, out_clip, matrix);
+        owner_.done("HudMarkers::transform_vec4", 0x00b62d10u);
     }
     const char* unit_class_name(void* unit) override {
         owner_.record("HudMarkers::unit_class_name", 0x00803dc0u);
