@@ -1,0 +1,432 @@
+{
+  "packet": "cc10_sampler_compiler_entry",
+  "base_commit": "0760c4dc781c1249e83617a890f22c0dc74cddd9",
+  "status": "read_only_stack_relationship_and_capture_contract_verified_first_source0_word_unresolved",
+  "source_changes": false,
+  "ghidra_mutations": false,
+  "new_unique_functions": 0,
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "binary": {
+    "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "live_PE_bodies": [
+    {
+      "address": "00b3b3c0",
+      "end_inclusive": "00b3c390",
+      "length": 4049,
+      "sha256": "190350a4fbf442dd6820d2b5caad70f55f4f9b2eb1be3bbb97c5b944a1ed0757",
+      "live_PE_equal": true,
+      "last_instruction": {
+        "address": "00b3c38e",
+        "length": 3,
+        "text": "ret 0xc"
+      }
+    },
+    {
+      "address": "00b3b280",
+      "end_inclusive": "00b3b3b1",
+      "length": 306,
+      "sha256": "cdf241047d8ec93b39fa9058ac6b15b71c386832dfb4170b2dc7c0fcce6e28d9",
+      "last_instruction": {
+        "address": "00b3b3af",
+        "length": 3,
+        "text": "ret 8"
+      },
+      "live_PE_equal": true
+    },
+    {
+      "address": "00b5f100",
+      "end_inclusive": "00b5f150",
+      "length": 81,
+      "sha256": "43f1eca0b14a4a2a70304c466e895e6c9c63794db89fa31beadd817cd955bd70",
+      "last_instruction": {
+        "address": "00b5f14e",
+        "length": 3,
+        "text": "ret 8"
+      },
+      "live_PE_equal": true
+    },
+    {
+      "address": "00b5f9b0",
+      "end_inclusive": "00b5faef",
+      "length": 320,
+      "sha256": "201cd1f024b0d9199951bf6243a7a11eab3344e7a28e6553cd6d615d6738fd28",
+      "last_instruction": {
+        "address": "00b5faed",
+        "length": 3,
+        "text": "ret 4"
+      },
+      "live_PE_equal": true
+    },
+    {
+      "address": "00b5f080",
+      "end_inclusive": "00b5f0ba",
+      "length": 59,
+      "sha256": "d3185d1aecdc4a500f2116dcf0f1f81dcb95ef6cfcc1b70a8c9af9c5d6d55fc6",
+      "last_instruction": {
+        "address": "00b5f0b8",
+        "length": 3,
+        "text": "ret 4"
+      },
+      "live_PE_equal": true
+    },
+    {
+      "address": "00b3c3a0",
+      "end_inclusive": "00b3c4b1",
+      "length": 274,
+      "sha256": "48dbcaa41b64278d8beee1f846d8d9cb64f53eb8f9dbb2914f5d9dee7ababafe",
+      "last_instruction": {
+        "address": "00b3c4af",
+        "length": 3,
+        "text": "ret 0x1c"
+      },
+      "live_PE_equal": true
+    }
+  ],
+  "total_live_PE_bytes": 5089,
+  "stack": {
+    "Q": "B3C3A0 steady ESP after saved EBX/ESI/EDI",
+    "T": "B3B3C0 entry ESP=Q-0x10",
+    "P": "B3B3C0 steady ESP=T-0xdc=Q-0xec",
+    "B": "nonempty B3B280 loop steady ESP=P-0x20",
+    "word": "B-0x10=P-0x30=Q-0x11c",
+    "capture_B3BFF9": "[ESP-0x30] before argument pushes, after all preceding calls",
+    "capture_B3C018": "[ESP-0x28], with [ESP]=pass and [ESP+4]=root descriptor, ECX=builder",
+    "capture_B3C024": "[ESP-0x28], same physical word, [ESP]=same pass, [ESP+4]=current mode descriptor, ECX=same builder"
+  },
+  "known_upstream_write": {
+    "site": "00b5f9c8",
+    "instruction": "PUSH EBX",
+    "called_at": "00b3bfb6",
+    "slot": "P-0x30",
+    "scope": "Saved caller EBX remains protected until B5F9B0 returns; not established as final sampler entry word"
+  },
+  "later_clobber_boundaries": [
+    {
+      "site": "00b3bfd7",
+      "target": "COM-pixel-shader-vtable+8",
+      "scope": "current COM Release after owner construction; external stack writes at P-48 unresolved"
+    },
+    {
+      "site": "00b3bfde",
+      "target": "00b5f080",
+      "scope": "setter direct stack only reaches P-20; calls current increment/decrement and may current-old-owner virtual0"
+    },
+    {
+      "site": "00b3bfe7",
+      "target": "IAT[00ce2220]",
+      "scope": "current decrement; current target not live-proven by disk kernel32 inspection"
+    },
+    {
+      "site": "00b3bff7",
+      "target": "current-pixel-owner-vtable0",
+      "scope": "conditional zero-result terminal; preserve unless exact no-zero domain proven"
+    }
+  ],
+  "second_call_transfer": "First normal-return epilogue and B3C01D..B3C024 introduce no write to P-48. Transfer SAME scratch word plus R98 known/unknown state; do not reset knowledge or share it between unrelated compile invocations.",
+  "capture_contract": "Original-frame capture after preceding real callbacks, before first reference, with exact native stack origin and compiler/builder/pass/descriptor identities. A C++ compiler-private stack read or relocated probe adapter residue is not original producer proof.",
+  "capture_identities": [
+    "original process/thread",
+    "original executable image/base and matching code bytes",
+    "compiler original P and physical P-30h address",
+    "same builder",
+    "actual pass",
+    "current root/mode descriptor",
+    "exact four bytes and breakpoint timing before any observer stack effects"
+  ],
+  "disk_import_evidence": {
+    "path": "C:\\Windows\\SysWOW64\\kernel32.dll",
+    "sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+    "machine": "014c",
+    "scope": "disk implementation only; current process IAT target/live implementation not captured by this read-only packet",
+    "exports": [
+      {
+        "name": "InterlockedDecrement",
+        "rva": "00031ab0",
+        "forwarder": null,
+        "bytes": "8bff558bec8b4d0883c8fff00fc101485dc20400",
+        "instructions": [
+          {
+            "address": "10031ab0",
+            "hex": "8bff",
+            "text": "mov edi, edi"
+          },
+          {
+            "address": "10031ab2",
+            "hex": "55",
+            "text": "push ebp"
+          },
+          {
+            "address": "10031ab3",
+            "hex": "8bec",
+            "text": "mov ebp, esp"
+          },
+          {
+            "address": "10031ab5",
+            "hex": "8b4d08",
+            "text": "mov ecx, dword ptr [ebp + 8]"
+          },
+          {
+            "address": "10031ab8",
+            "hex": "83c8ff",
+            "text": "or eax, 0xffffffff"
+          },
+          {
+            "address": "10031abb",
+            "hex": "f00fc101",
+            "text": "lock xadd dword ptr [ecx], eax"
+          },
+          {
+            "address": "10031abf",
+            "hex": "48",
+            "text": "dec eax"
+          },
+          {
+            "address": "10031ac0",
+            "hex": "5d",
+            "text": "pop ebp"
+          },
+          {
+            "address": "10031ac1",
+            "hex": "c20400",
+            "text": "ret 4"
+          }
+        ]
+      },
+      {
+        "name": "InterlockedIncrement",
+        "rva": "00031af0",
+        "forwarder": null,
+        "bytes": "8bff558bec8b4d0833c040f00fc101405dc20400",
+        "instructions": [
+          {
+            "address": "10031af0",
+            "hex": "8bff",
+            "text": "mov edi, edi"
+          },
+          {
+            "address": "10031af2",
+            "hex": "55",
+            "text": "push ebp"
+          },
+          {
+            "address": "10031af3",
+            "hex": "8bec",
+            "text": "mov ebp, esp"
+          },
+          {
+            "address": "10031af5",
+            "hex": "8b4d08",
+            "text": "mov ecx, dword ptr [ebp + 8]"
+          },
+          {
+            "address": "10031af8",
+            "hex": "33c0",
+            "text": "xor eax, eax"
+          },
+          {
+            "address": "10031afa",
+            "hex": "40",
+            "text": "inc eax"
+          },
+          {
+            "address": "10031afb",
+            "hex": "f00fc101",
+            "text": "lock xadd dword ptr [ecx], eax"
+          },
+          {
+            "address": "10031aff",
+            "hex": "40",
+            "text": "inc eax"
+          },
+          {
+            "address": "10031b00",
+            "hex": "5d",
+            "text": "pop ebp"
+          },
+          {
+            "address": "10031b01",
+            "hex": "c20400",
+            "text": "ret 4"
+          }
+        ]
+      }
+    ]
+  },
+  "native_calls": [
+    {
+      "function": "00b3c3a0",
+      "address": "00b3c47b",
+      "native": "00b3b3c0"
+    },
+    {
+      "function": "00b3b3c0",
+      "address": "00b3bfb6",
+      "native": "00b5f9b0"
+    },
+    {
+      "function": "00b3b3c0",
+      "address": "00b3bfde",
+      "native": "00b5f080"
+    },
+    {
+      "function": "00b3b3c0",
+      "address": "00b3c018",
+      "native": "00b3b280"
+    },
+    {
+      "function": "00b3b3c0",
+      "address": "00b3c024",
+      "native": "00b3b280"
+    },
+    {
+      "function": "00b3b280",
+      "address": "00b3b328",
+      "native": "00b5f100"
+    },
+    {
+      "function": "00b3b3c0",
+      "address": "00b3bfd7",
+      "native": "COM-pixel-shader-vtable+8",
+      "scope": "current COM Release after owner construction; external stack writes at P-48 unresolved"
+    },
+    {
+      "function": "00b3b3c0",
+      "address": "00b3bfe7",
+      "native": "IAT[00ce2220]",
+      "scope": "current decrement; current target not live-proven by disk kernel32 inspection"
+    },
+    {
+      "function": "00b3b3c0",
+      "address": "00b3bff7",
+      "native": "current-pixel-owner-vtable0",
+      "scope": "conditional zero-result terminal; preserve unless exact no-zero domain proven"
+    }
+  ],
+  "validation": {
+    "distinct_direct_call_rows": 6,
+    "indirect_rows_not_verified": 3,
+    "build": "not rerun: documentation/report only, no C++ mutation",
+    "new_native_probe": false,
+    "original_process_launched_attached_or_stopped": false,
+    "source_initializer_activation": false
+  },
+  "limits": [
+    "saved EBX is a proved intermediate write, not the final entry word after COM/current calls",
+    "disk import leaves do not establish live original-process IAT identity or COM stack effects",
+    "same-slot transfer requires SAME original compiler frame and exact R98 known/unknown schedule",
+    "first root empty does not establish initial residue; no transfer across unrelated compiler invocations",
+    "no fabricated zero, masking, relocated return PC or source C++ stack substitute",
+    "capturing one actual invocation does not establish a portable constant for all invocations",
+    "no full compiler/B107F0/runtime/ABI/FH3 or bloom-tail change claim"
+  ],
+  "evidence": [
+    {
+      "path": "local/sampler_compiler_entry_evidence.py",
+      "bytes": 3123,
+      "sha256": "e379904bfb33290d91e5a3ae7079b61e076573bf0cb28e2d0f8b296c0599ceb4"
+    },
+    {
+      "path": "local/sampler_compiler_entry_verify_calls.txt",
+      "bytes": 328,
+      "sha256": "2aae933f325886b2c0d0f02e00317d330931d235ab9c082e2291859dba542f85"
+    },
+    {
+      "path": "local/sampler_entry_readiness_compiler_listing.txt",
+      "bytes": 44833,
+      "sha256": "f4a0cb886e4f3d63a7f23855f52a8708abbb0206cc39a05b9c59d5bc42872a78"
+    },
+    {
+      "path": "local/sampler_entry_readiness_compiler_live.txt",
+      "bytes": 8516,
+      "sha256": "93e7ac078fbbb22856efce334976ac7b95a326c27ec1970a2cfce386c87ac36d"
+    },
+    {
+      "path": "local/sampler_entry_readiness_compiler_live_full.txt",
+      "bytes": 19498,
+      "sha256": "e99cfac2946b74a87db1324b70cebe103e802644b10df59ead905fbcdccd1fb1"
+    },
+    {
+      "path": "local/sampler_entry_readiness_handoff.json",
+      "bytes": 4774,
+      "sha256": "3cabb5130d3f869bbe0ec759893194c96336ab37bc9948d38ec060ef66b3bc5e"
+    },
+    {
+      "path": "local/sampler_entry_readiness_handoff.py",
+      "bytes": 3973,
+      "sha256": "7832769a3a0012f51ee32eac1c7a826815d1ed1bd8118cae0700be6cd3e8f2e6"
+    },
+    {
+      "path": "local/sampler_entry_readiness_kernel32_disk.json",
+      "bytes": 2957,
+      "sha256": "da606cdee3459493ac56f5ce8a7fe1d976dbbd42d6a1a8e9fa761337ee2eb803"
+    },
+    {
+      "path": "local/sampler_entry_readiness_pixel_constructor_listing.txt",
+      "bytes": 3690,
+      "sha256": "9b1960881a847fc93fe1ed960226159035af443beaee6cbe2db45c7e116695a8"
+    },
+    {
+      "path": "local/sampler_entry_readiness_pixel_constructor_live.txt",
+      "bytes": 1540,
+      "sha256": "5c6b9e5d7204e4256226daa00a0dc75e0f796e5bd8ef79b8d44d27c15722cf56"
+    },
+    {
+      "path": "local/sampler_entry_readiness_pixel_setter_listing.txt",
+      "bytes": 774,
+      "sha256": "8826aab9cf4bbf4b0ca7b8e382e8866359895f7035eb237d08d6fe41008c29d9"
+    },
+    {
+      "path": "local/sampler_entry_readiness_pixel_setter_live.txt",
+      "bytes": 288,
+      "sha256": "d5ec015af788da49c5e775365268d2f814916999c97d274b03835475e40101ac"
+    },
+    {
+      "path": "local/sampler_entry_readiness_program_listing.txt",
+      "bytes": 2462,
+      "sha256": "3f47eb4e7ae155d8eac8172bef09f1892a2594bc100b854405e4db707e340187"
+    },
+    {
+      "path": "local/sampler_entry_readiness_program_live.txt",
+      "bytes": 1330,
+      "sha256": "c09751cce35240529647ae992b3707ea7bb54f8a516933ce2c5c94ad81edc37d"
+    },
+    {
+      "path": "local/sampler_entry_readiness_reference_listing.txt",
+      "bytes": 1034,
+      "sha256": "4e918da80983812ddbeda6de8dd2d3969d446ed585a28ac4ad3715b4fd48f333"
+    },
+    {
+      "path": "local/sampler_entry_readiness_reference_live.txt",
+      "bytes": 402,
+      "sha256": "f1735c86b36f670a2e1b6bc3000ae96c6ea0ce396677dd6945171b567b8f719a"
+    },
+    {
+      "path": "local/sampler_entry_readiness_sampler_listing.txt",
+      "bytes": 3702,
+      "sha256": "49b318e7b395a2e53281c28c4b7f21d78934ed800f32e23fca139f5ec28e6ae9"
+    },
+    {
+      "path": "local/sampler_entry_readiness_sampler_live.txt",
+      "bytes": 1484,
+      "sha256": "53a9cf1ec4c78287e0074161572a84a1f49e04b554c9121535109690de9961ae"
+    },
+    {
+      "path": "local/sampler_entry_readiness_verified_blocks.json",
+      "bytes": 1561,
+      "sha256": "59f07a7a40bb040564c6ce2b067369b27a74dab3eee974dcd29803850e91e336"
+    },
+    {
+      "path": "local/sampler_entry_readiness_verify.py",
+      "bytes": 1380,
+      "sha256": "fe4471fc5587c4a4dd6be1c23caff1343fc541dcf4dc932f02447702db86d570"
+    },
+    {
+      "path": "local/sampler_entry_readiness_verify_calls.txt",
+      "bytes": 320,
+      "sha256": "f6e6eddcd17fe75d7f1a1f904dbbdd4ef8c9e614a61db9e6236ee513d41899f9"
+    }
+  ]
+}
