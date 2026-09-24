@@ -125,3 +125,120 @@ This is re-taken on `cf2bab541`: main with `330b81cdc` (`kPlayerRoleBookkeepingB
 
 docs/GAME_EXECUTABLE.md carries this row as the current USN02 reference, below the
 role-bookkeeping section.
+
+## 8. The hull sections and the shell hull test (packet cc9_hull_sections)
+
+### 8.1 Where the sections come from
+
+- **Loader.** `0081F980` fills `unit+A68h` (magazine), `+A78h` (fuel tank) and `+A88h` (engine
+  room), each a point plus a validity byte (+Ch), which it clears first (0082042C-00820488).
+  - It walks the ship model instance's GeomMesh list (`[[unit+360h]+160h]+3Ch`). For each
+    element (stride 2Ch) it checks the element kind at `+4`: kind 8 goes to +A68h (00820566),
+    kind 5 to +A88h (008205D7) and kind 6 to +A78h (00820648). The last matching element wins.
+  - The point is `00723030(element)`: the midpoint of `element+20h[0]` and `element+24h[0]`, the
+    root of the element's min/max box arrays (docs/HIT_HULL_SEGMENT.md correction).
+- **Data.** Section elements are authored in each ship model's `GeomMesh` resource. Every
+  USN02 class carries all three, except class 289, which has no engine room. The classes hold
+  2337 to 10808 triangles.
+- **Draw.** `00816650` keeps a section only while its weight is positive, its byte is set, and
+  `0093A570` does not list it as destroyed (ids 5, 8 and 6). It then picks by the running sums
+  of EngineRoomWeight, MagazineWeight and FueltankWeight.
+  - The chance and weights come from the gunner's skill row (robots.lua ArtilleryGunnerBot),
+    for example SPNormal 0.2 / 1.0 / 0.1 / 0.1 and SPVeteran 1.0 / 0.5 / 1.0 / 1.0.
+  - The roll is drawn only when the chance is positive (00816659).
+- **Binding.** `kShipSectionPointsBound`.
+  - **Labelled:** the element box is taken as its triangles' box in model space (the producer of
+    `element+20h`/`+24h` is unread), and no section is ever destroyed.
+
+### 8.2 The shell hull test
+
+- **Chain.** `00724510` passes the segment in the collision node's space to `00723E90`.
+  `00723D60` then tests every element in turn, shortening the far end on each hit, and
+  `00723AA0` walks each element's triangle list. So the hit is the closest triangle of the
+  ship's GeomMesh (docs/HIT_HULL_SEGMENT.md section 1a).
+- **Binding.** `kShellHullHitTestBound`. For a ship target, the segment in the ship's frame is
+  tested against every GeomMesh triangle (Möller-Trumbore), and the closest hit wins. The broad
+  phase is the mesh bounds, posed.
+- **Labelled:**
+  - model space with identity nodes (the hull nodes in the models read sit at the origin);
+  - no per-element AABB tree (007238E0 unread; this is a speed difference only);
+  - planes keep the class box.
+
+### 8.3 Why shots fell 28 % in the aim-point pair
+
+The trigger, not a CanFire conjunct.
+- In `local/uC_usn02.log` against `local/uT_usn02.log`, `trigger_rises` goes from 552 to 985
+  and the angle steps from 165465 to 133992. `fire_messages` falls from 235345 to 191219 with
+  them.
+- 006DF520 step 12 arms the trigger only while the gun is within 0.1 degree of both commanded
+  angles (006DEE40). Step 4 replaces the body point every 5 s, at once. So each new point moves
+  the commanded angles, the turret slews at its rotation speed, and the trigger drops until it
+  settles.
+- This is the image's rule applied to the image's aim point. It is not a host term.
+
+### 8.4 Predictions (written before the runs)
+
+Pair: USN02 9000, option on. OFF is both new switches off (`local\hC`, aim point ON); ON is both
+on (`local\hT`).
+- **Hits.** Hits per round fall from about 25 % to 15-22 %: the mesh is thinner than the box at
+  bow, stern and above the deck. Category 3 and 6 hits fall 10-30 %.
+- **Section picks.** SPVeteran (Allied cruisers) always go to a section when one exists. SPNormal
+  (IJN) do so 20 % of the time. Section points sit inside the hull, so rounds aimed at them hit
+  the mesh about as often as hull-box points do.
+- **Damage per hit:** unchanged. Sections change where the round lands, not its damage class, and
+  part damage is not modelled.
+- **Sinkings** later by 10-40 s on average. Exeter (169.46 s in the aim-point pair) survives
+  longer, and the mission end (173.31 s) moves later or does not happen in 9000 frames.
+- **Torpedo rows flat** in launches. Torpedo hits may move with the ship positions.
+- **USN04 4500 check** (AA only, same binaries): category 0, 1 and 5 rows identical in shots.
+  Category 6 dual-purpose hits against aircraft identical, since the mesh test is for ships
+  only. The only rounds that can change are those that strike a ship.
+
+### 8.5 The USN02 pair (option on)
+
+Logs `local/hC_usn02.log` (OFF) and `local/hT_usn02.log` (ON). Both binaries include main
+`330b81cdc` and later, so the OFF side differs from section 5's uC/uT runs: its mission fails at
+396.03 s, not 173.31 s.
+
+| row | OFF | ON | prediction | held? |
+| --- | --- | --- | --- | --- |
+| hits per round | 340 / 1324 = 25.7 % | 369 / 1203 = 30.7 % | falls to 15-22 % | **no**: rose |
+| category 2 / 3 / 6 hits | 179 / 293 / 197 | 206 / 367 / 174 | categories 3 and 6 down 10-30 % | **no** (3 up 25 %, 6 down 12 %) |
+| shots | 1324 | 1203 | - | - |
+| section picks / mesh hits | 0 / 0 | 627 / 369 | - | - |
+| category 7 launches / hits | 341 / 18 | 346 / 16 | launches flat | yes |
+| deaths | 21 | 20 | - | - |
+| mission end | failed at 396.03 s | **none** | later or none | yes |
+
+- **Sinking flips:**
+  - DeRuyter (144.70 s), Perth (202.81 s), Jupiter (237.11 s) and Asagumo (261.16 s) now sink.
+  - Houston, Alden and John1 (all 395.73 s by Asagumo on the OFF side), John3 and Exeter now
+    survive.
+  - Houston's survival is why the mission does not fail.
+- **Why the hit prediction failed.** The mesh is not thinner where it matters: the model's
+  triangles include the superstructure, turrets and masts, and the mesh bounds are taller than
+  the class box. The section points are inside the hull, at the model's engine room, magazine
+  and fuel tank. So rounds aimed at them land on the mesh at least as often as rounds aimed at
+  the hull-box points did.
+
+### 8.6 The USN04 check and the decision
+
+- **USN04 4500** (`local/hC_4500.log` against `local/hT_4500.log`, option on): 2 of 726 gun rows
+  differ, both category 5. Their hits go from 75 to 79, from two shell mesh hits on a friendly
+  hull. Categories 0, 1 and 6 are identical in shots and hits. Deaths are 27 on both sides and
+  damage 6154.8 on both. The AA rows are flat, as predicted.
+- **Decision: `kShipSectionPointsBound` and `kShellHullHitTestBound` land ON.** The sections are
+  the image's GeomMesh section elements, and the hit test is the image's triangle test, both on
+  this installation's models. The labelled substitutions are those of sections 8.1 and 8.2.
+
+### 8.7 The landed-state USN02 reference (2026-09-24)
+
+`local\hT` (all switches landed), reference parameters, option off. Log: `local/sR3_usn02.log`.
+
+| damage | deaths | queued hits | shots | rounds hitting a unit / water / expired | section picks | mesh hits | first hit | mission end |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 67754.4 | 17 (3 Allied, 14 IJN) | 975 | 1527 | 470 / 1009 / 359 | 599 | 470 | 37.85 s | none |
+
+- **Sunk, Allied:** Witte (39.20 s), Kortenaer (98.25 s) and Electra (136.90 s).
+- **Sunk, IJN:** eleven destroyers, and Jintsu (177.76 s) and Haguro (290.40 s).
+- Houston and Exeter survive, so the mission does not fail in 9000 frames.

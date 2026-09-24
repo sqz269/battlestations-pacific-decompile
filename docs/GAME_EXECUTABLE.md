@@ -9415,3 +9415,16 @@ This row was taken **before** `kArtilleryAimPointBound`. With it landed, the opt
 the mission at 173.31 s on Exeter's sinking (`usn_2_java.lua:521`), and hits per round rise from
 13 % to 25 %. So the landed-state reference has to be re-taken at the next re-baseline.
 Details: docs/SURFACE_GUNNERY_REFERENCE.md.
+
+## USN02 surface gunnery reference, 2026-09-24 (after the hull sections and the shell mesh test)
+
+**This row supersedes the USN02 rows above.** Build `local\hT`: main after `330b81cdc`, with
+`kArtilleryAimPointBound`, `kShipSectionPointsBound` and `kShellHullHitTestBound` ON. Reference
+parameters, `BSP_GUNNERY_RNG_STREAMS` unset. Log: `local\sR3_usn02.log`.
+
+| damage | deaths | queued hits | shots | rounds hitting a unit / water / expired | first hit | mission end |
+| --- | --- | --- | --- | --- | --- | --- |
+| 67754.4 | 17 (3 Allied, 14 IJN) | 975 | 1527 | 470 / 1009 / 359 | 37.85 s | none |
+
+Houston and Exeter survive, so the mission does not fail. Details:
+docs/SURFACE_GUNNERY_REFERENCE.md section 8.

@@ -7,6 +7,7 @@
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/gun_aim_terms.hpp"
 #include "bsp/gun_fire_points.hpp"
+#include "bsp/geom_mesh_resource.hpp"
 #include "bsp/gun_mount_positions.hpp"
 
 #include <array>
@@ -156,6 +157,24 @@ constexpr bool kAaLineOfFireBound = true;
 //    toward bot+84h is not modelled; a target change re-draws at once. OFF:
 //    the target origin raised by Height. docs/SURFACE_GUNNERY_REFERENCE.md.
 constexpr bool kArtilleryAimPointBound = true;
+//  * kShipSectionPointsBound: the artillery draw 00816650 can pick the target's
+//    engine room (kind 5), fuel tank (6) or magazine (8). 0081F980 fills
+//    unit+A88h / +A78h / +A68h from the ship model's GeomMesh elements of those
+//    kinds (00820566 / 008205D7 / 00820648; the last element of a kind wins),
+//    each point being 00723030's centre of the element's root box. The draw
+//    takes them with the gunner's skill row: SectionTargetChance and the three
+//    weights (robots.lua ArtilleryGunnerBot). Labelled: the element box is
+//    taken as its triangles' bounding box in model space; no section is ever
+//    destroyed (0093A570's list stays empty). OFF: the hull box every time.
+constexpr bool kShipSectionPointsBound = true;
+//  * kShellHullHitTestBound: a round's segment against a SHIP is tested against
+//    the triangles of the ship model's GeomMesh elements (00724510 ->
+//    00723E90 -> 00723D60 -> 00723AA0: closest hit over the elements' triangle
+//    lists, in the geometry node's space), with the model's mesh bounds as the
+//    broad phase. Labelled: every GeomMesh triangle is tested in model space
+//    (the node transforms are identity on the hulls read), with no per-element
+//    AABB tree (007238E0 unread). OFF: the class hull box.
+constexpr bool kShellHullHitTestBound = true;
 
 // 00901C20 BSP_GunBot_InterceptSolution, the time-of-flight half, as a pure rule.
 // rel = target position - shooter position; vel = target velocity - shooter
@@ -479,10 +498,22 @@ struct GameGunneryHost::Impl {
     };
     std::map<std::size_t, ArtilleryAimPoint> artillery_aim_by_gun;
     unsigned long long artillery_aim_points{0};
+    unsigned long long shell_mesh_hits{0};
     // 006DF6D7-006DF7B5 then 006DF7BB-006DF7E7: the body point on the target,
     // refreshed every TargetPointRefreshTime, carried to world by its pose.
+    // robots.lua ArtilleryGunnerBot, by skill 0 Stun .. 5 Elite:
+    // {SectionTargetChance, EngineRoomWeight, MagazineWeight, FueltankWeight}
+    static constexpr float kArtillerySectionRows[6][4] = {
+        {0.0f, 1.0f, 0.1f, 0.1f},   // Stun
+        {0.2f, 1.0f, 0.1f, 0.1f},   // SPNormal
+        {1.0f, 0.5f, 1.0f, 1.0f},   // SPVeteran
+        {0.5f, 1.0f, 0.8f, 0.8f},   // MPNormal
+        {0.8f, 1.0f, 1.0f, 1.0f},   // MPVeteran
+        {1.0f, 0.5f, 1.0f, 1.0f},   // Elite
+    };
+    unsigned long long artillery_section_points{0};
     void artillery_aim_point(std::size_t gun_index, std::size_t target, float dt,
-                             float out[3]) {
+                             float out[3], std::size_t owner = static_cast<std::size_t>(-1)) {
         ArtilleryAimPoint& st = artillery_aim_by_gun[gun_index];
         if (st.target != target) { st.target = target; st.timer_b4 = -1.0f; }
         st.timer_b4 -= dt;
@@ -494,13 +525,43 @@ struct GameGunneryHost::Impl {
             hull.width = t.hull_width;
             hull.height = t.hull_height;
             bsp::ShipLeadRandomDraws draws;
-            draws.section_roll = draw(Draw::aim_point, gun_index, 0, 0.0f, 1.0f);   // 0081667C
-            draws.box_x = draw(Draw::aim_point, gun_index, 0, -0.6f, 0.6f);         // 00816883
-            draws.box_y = draw(Draw::aim_point, gun_index, 0, 0.0f, 0.6f);          // 008168A0
-            draws.box_z = draw(Draw::aim_point, gun_index, 0, -0.6f, 0.6f);         // 008168D5
-            const bsp::ShipLeadSections sections{};
+            bsp::ShipLeadSections sections{};
+            float row[4] = {0.0f, 0.0f, 0.0f, 0.0f};
+            bool sections_live = false;
+            if (kShipSectionPointsBound && owner != static_cast<std::size_t>(-1)) {
+                int level = units.skill_level(owner);
+                if (level < 0 || level > 5) level = 1;
+                for (int k = 0; k < 4; ++k) row[k] = kArtillerySectionRows[level][k];
+                const ShipModelSlots& model = ship_model_slots(t.row.type_id);
+                sections.engine_room.present = model.section_present[0];
+                sections.engine_room.point = model.section_point[0];
+                sections.magazine.present = model.section_present[1];
+                sections.magazine.point = model.section_point[1];
+                sections.fuel_tank.present = model.section_present[2];
+                sections.fuel_tank.point = model.section_point[2];
+                sections_live = true;
+            }
+            // 0081667C: the roll is drawn only when the chance is positive
+            // (00816659 skips the draw otherwise).
+            if (row[0] > 0.0f) {
+                draws.section_roll = draw(Draw::aim_point, gun_index, 0, 0.0f, 1.0f);
+            }
+            float total = 0.0f;
+            if (sections_live && row[0] > draws.section_roll) {
+                total = (sections.engine_room.present ? row[1] : 0.0f)
+                    + (sections.magazine.present ? row[2] : 0.0f)
+                    + (sections.fuel_tank.present ? row[3] : 0.0f);
+            }
+            if (total > 1e-4f) {
+                draws.pick = draw(Draw::aim_point, gun_index, 0, 0.0f, total - 1e-4f);  // 00816796
+                ++artillery_section_points;
+            } else {
+                draws.box_x = draw(Draw::aim_point, gun_index, 0, -0.6f, 0.6f);     // 00816883
+                draws.box_y = draw(Draw::aim_point, gun_index, 0, 0.0f, 0.6f);      // 008168A0
+                draws.box_z = draw(Draw::aim_point, gun_index, 0, -0.6f, 0.6f);     // 008168D5
+            }
             st.body = bsp::ship_lead_point_00816650(sections, hull, {0.6f, 0.6f, 0.6f},
-                {0.0f, 0.0f, 0.0f}, 0.0f, 0.0f, 0.0f, 0.0f, draws, false, false, false);
+                {0.0f, 0.0f, 0.0f}, row[0], row[1], row[2], row[3], draws, true, true, true);
             ++artillery_aim_points;
             done("Ship::lead_point_00816650", 0x00816650u);
         }
@@ -649,6 +710,13 @@ struct GameGunneryHost::Impl {
         long long logged_unit{-1};   // the one unit whose mounts are logged
         bool has_box{false};         // the model's BoundingBox, model frame
         std::array<float, 6> box{};
+        // Packet cc9_hull_sections: the GeomMesh triangles and the three
+        // section points, engine room (5), magazine (8), fuel tank (6).
+        bool has_mesh{false};
+        std::vector<std::array<float, 3>> tris;   // three vertices per triangle
+        std::array<float, 6> mesh_box{};
+        bool section_present[3]{false, false, false};
+        std::array<float, 3> section_point[3]{};
     };
     std::map<int, ShipModelSlots> ship_slots_by_class;
     // 0072F6E0's per-gun cache: (gun, target) -> clear.
@@ -718,6 +786,15 @@ struct GameGunneryHost::Impl {
     unsigned long long mounts_from_model{0};
     unsigned long long mounts_missing{0};
     ShipModelSlots& ship_model_slots(int type_id);
+    // The ship's model mesh for the shell hit test, when bound and loaded.
+    const ShipModelSlots* ship_mesh_of(std::size_t index) {
+        if (!kShellHullHitTestBound || index >= unit_state.size()) return nullptr;
+        if (!units.unit_is_kind_of(index, bsp::kUnitGunneryKindShipBase)) return nullptr;
+        const int type_id = unit_state[index].row.type_id;
+        if (type_id < 0) return nullptr;
+        const ShipModelSlots& model = ship_model_slots(type_id);
+        return model.has_mesh ? &model : nullptr;
+    }
     // The gun's firing point: its mount carried to world by the ship pose when
     // bound and known, otherwise the unit origin raised by the class Height.
     void gun_muzzle_point(const GameGunRow& gun, const UnitState& state,
@@ -938,6 +1015,65 @@ GameGunneryHost::Impl::ship_model_slots(int type_id) {
         entry.loaded = true;
     }
     if (!bytes.empty()) entry.has_box = bsp::read_mmod_bounding_box(bytes, entry.box);
+    if (!bytes.empty()) {
+        std::vector<bsp::GeomMeshResourcePayload> meshes;
+        std::string mesh_error;
+        bsp::read_mmod_geom_meshes(bytes, meshes, mesh_error);
+        float lo[3] = {1e30f, 1e30f, 1e30f}, hi[3] = {-1e30f, -1e30f, -1e30f};
+        for (const bsp::GeomMeshResourcePayload& mesh : meshes) {
+            const auto vert = [&](std::uint16_t i, std::array<float, 3>& out) {
+                if (i >= mesh.vertices.size()) return false;
+                out = mesh.vertices[i];
+                return true;
+            };
+            for (const bsp::GeomMeshTriangle& t : mesh.triangles) {
+                std::array<float, 3> a, b, c;
+                if (!vert(t.v0, a) || !vert(t.v1, b) || !vert(t.v2, c)) continue;
+                entry.tris.push_back(a);
+                entry.tris.push_back(b);
+                entry.tris.push_back(c);
+                for (const auto& v : {a, b, c}) {
+                    for (int k = 0; k < 3; ++k) {
+                        lo[k] = std::min(lo[k], v[k]);
+                        hi[k] = std::max(hi[k], v[k]);
+                    }
+                }
+            }
+            // 0081F980: engine room 5 -> slot 0, magazine 8 -> slot 1, fuel 6 -> slot 2.
+            for (const bsp::GeomMeshElement& el : mesh.elements) {
+                const int slot = el.kind == 5 ? 0 : el.kind == 8 ? 1 : el.kind == 6 ? 2 : -1;
+                if (slot < 0) continue;
+                float elo[3] = {1e30f, 1e30f, 1e30f}, ehi[3] = {-1e30f, -1e30f, -1e30f};
+                bool any = false;
+                for (std::uint16_t ord : el.triangle_ordinals) {
+                    if (ord >= mesh.triangles.size()) continue;
+                    const bsp::GeomMeshTriangle& t = mesh.triangles[ord];
+                    for (std::uint16_t vi : {t.v0, t.v1, t.v2}) {
+                        if (vi >= mesh.vertices.size()) continue;
+                        any = true;
+                        for (int k = 0; k < 3; ++k) {
+                            elo[k] = std::min(elo[k], mesh.vertices[vi][k]);
+                            ehi[k] = std::max(ehi[k], mesh.vertices[vi][k]);
+                        }
+                    }
+                }
+                if (!any) continue;
+                entry.section_present[slot] = true;   // the last element of a kind wins
+                for (int k = 0; k < 3; ++k) {
+                    entry.section_point[slot][k] = (elo[k] + ehi[k]) * 0.5f;   // 00723030
+                }
+            }
+        }
+        if (!entry.tris.empty()) {
+            entry.has_mesh = true;
+            for (int k = 0; k < 3; ++k) { entry.mesh_box[k] = lo[k]; entry.mesh_box[k + 3] = hi[k]; }
+        }
+        log.notef("gunnery: vehicle class %d geom meshes=%zu triangles=%zu sections engine=%d "
+            "magazine=%d fuel=%d%s%s (0081F980 / 00723030)", type_id, meshes.size(),
+            entry.tris.size() / 3, entry.section_present[0] ? 1 : 0,
+            entry.section_present[1] ? 1 : 0, entry.section_present[2] ? 1 : 0,
+            mesh_error.empty() ? "" : " error: ", mesh_error.c_str());
+    }
     std::size_t slots = 0;
     for (const bsp::GunFirePointItem& item : entry.items) {
         if (item.name == "slot") ++slots;
@@ -2929,7 +3065,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             float theirs[3];
             if (kArtilleryAimPointBound && artillery_bot_aims(gun.category, target)
                 && units.unit_is_kind_of(target, bsp::kUnitGunneryKindShipBase)) {
-                artillery_aim_point(g, target, dt, theirs);
+                artillery_aim_point(g, target, dt, theirs, owner_unit);
             } else {
                 unit_aim_point(target, theirs);
             }
@@ -3481,6 +3617,20 @@ bool SegmentBinding::box_of(std::size_t index, float centre[3], float half[3]) c
     const GameGunneryHost::Impl::UnitState& state = owner_.unit_state[index];
     float right[3], up[3], forward[3], origin[3];
     owner_.unit_pose(index, right, up, forward, origin);
+    if (const auto* model = owner_.ship_mesh_of(index)) {
+        // Packet cc9_hull_sections: the mesh bounds, posed, as the broad phase.
+        float c[3], e[3];
+        for (int k = 0; k < 3; ++k) {
+            c[k] = (model->mesh_box[k] + model->mesh_box[k + 3]) * 0.5f;
+            e[k] = (model->mesh_box[k + 3] - model->mesh_box[k]) * 0.5f;
+        }
+        for (int i = 0; i < 3; ++i) {
+            centre[i] = origin[i] + right[i] * c[0] + up[i] * c[1] + forward[i] * c[2];
+            half[i] = std::fabs(right[i]) * e[0] + std::fabs(up[i]) * e[1]
+                + std::fabs(forward[i]) * e[2];
+        }
+        return true;
+    }
     const float extents[3] = {state.hull_width * 0.5f, state.hull_height * 0.5f,
         state.hull_length * 0.5f};
     if (extents[0] <= 0.0f || extents[2] <= 0.0f) return false;
@@ -3501,6 +3651,55 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
     // The hull box in its own frame: a slab test along the three pose rows.
     float right[3], up[3], forward[3], origin[3];
     owner_.unit_pose(index, right, up, forward, origin);
+    if (const auto* model = owner_.ship_mesh_of(index)) {
+        // 00723E90 / 00723D60 / 00723AA0: the segment in the ship's frame
+        // against every GeomMesh triangle; the closest hit wins.
+        const float* ax[3] = {right, up, forward};
+        const float wf[3] = {from.x, from.y, from.z};
+        const float wt[3] = {to.x, to.y, to.z};
+        float o[3], d[3];
+        for (int i = 0; i < 3; ++i) {
+            o[i] = (wf[0] - origin[0]) * ax[i][0] + (wf[1] - origin[1]) * ax[i][1]
+                + (wf[2] - origin[2]) * ax[i][2];
+            d[i] = (wt[0] - wf[0]) * ax[i][0] + (wt[1] - wf[1]) * ax[i][1]
+                + (wt[2] - wf[2]) * ax[i][2];
+        }
+        float best = 2.0f;
+        const auto& tri = model->tris;
+        for (std::size_t n = 0; n + 2 < tri.size(); n += 3) {
+            const auto& a = tri[n];
+            const auto& b = tri[n + 1];
+            const auto& c = tri[n + 2];
+            const float e1[3] = {b[0] - a[0], b[1] - a[1], b[2] - a[2]};
+            const float e2[3] = {c[0] - a[0], c[1] - a[1], c[2] - a[2]};
+            const float p[3] = {d[1] * e2[2] - d[2] * e2[1], d[2] * e2[0] - d[0] * e2[2],
+                d[0] * e2[1] - d[1] * e2[0]};
+            const float det = e1[0] * p[0] + e1[1] * p[1] + e1[2] * p[2];
+            if (std::fabs(det) < 1e-12f) continue;
+            const float inv = 1.0f / det;
+            const float s0[3] = {o[0] - a[0], o[1] - a[1], o[2] - a[2]};
+            const float u = (s0[0] * p[0] + s0[1] * p[1] + s0[2] * p[2]) * inv;
+            if (u < 0.0f || u > 1.0f) continue;
+            const float q[3] = {s0[1] * e1[2] - s0[2] * e1[1], s0[2] * e1[0] - s0[0] * e1[2],
+                s0[0] * e1[1] - s0[1] * e1[0]};
+            const float v = (d[0] * q[0] + d[1] * q[1] + d[2] * q[2]) * inv;
+            if (v < 0.0f || u + v > 1.0f) continue;
+            const float t = (e2[0] * q[0] + e2[1] * q[1] + e2[2] * q[2]) * inv;
+            if (t >= 0.0f && t <= 1.0f && t < best) best = t;
+        }
+        if (best > 1.0f) return false;
+        bsp::HitQueryPoint point;
+        point.x = wf[0] + (wt[0] - wf[0]) * best;
+        point.y = wf[1] + (wt[1] - wf[1]) * best;
+        point.z = wf[2] + (wt[2] - wf[2]) * best;
+        bsp::shape_hit_fill_0087fec0(record, point, entity);
+        record.shape_kind = 0x0A;
+        record.hull_segment = kDirectHitHullSegment;
+        bsp::hit_record_set_entity_00470370(record, entity);
+        hit_unit = index + 1;
+        ++owner_.shell_mesh_hits;
+        return true;
+    }
     const GameGunneryHost::Impl::UnitState& state = owner_.unit_state[index];
     const float extents[3] = {state.hull_width * 0.5f, state.hull_height * 0.5f,
         state.hull_length * 0.5f};
@@ -5132,6 +5331,10 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery artillery aim points drawn=%llu bound=%d "
             "(006DF520 step 4 / 00816650, packet cc9_surface_gunnery_reference)",
             host.artillery_aim_points, kArtilleryAimPointBound ? 1 : 0);
+        host.log.notef("summary mission gunnery ship sections picked=%llu bound=%d; shell mesh hits=%llu "
+            "bound=%d (00816650 / 0081F980; 00724510 -> 00723AA0, packet cc9_hull_sections)",
+            host.artillery_section_points, kShipSectionPointsBound ? 1 : 0, host.shell_mesh_hits,
+            kShellHullHitTestBound ? 1 : 0);
         host.log.notef("summary mission gunnery aa line of fire queries=%llu blocked=%llu "
             "refusals=%llu bound=%d (0072F6E0/0072CDD0/0098B130, packet cc9_ship_platform_attachment)",
             host.line_of_fire_queries, host.line_of_fire_blocked, host.line_of_fire_refusals,
