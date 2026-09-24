@@ -1,0 +1,104 @@
+{
+  "packet": "cc10_scene_pair_transfer_leaves",
+  "status": "native_raw_leaves_strict_win32_and_focused_original_source_checked",
+  "source": "src/native_scene_registry_storage_leaves.cpp",
+  "header": "include/bsp/native_scene_registry_storage_leaves.hpp",
+  "documentation": "docs/NATIVE_SCENE_REGISTRY_PAIR_TRANSFER_CC10.md",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "native_evidence": {
+    "binary": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "binary_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "blocks": [
+      {
+        "address": "00b821c0",
+        "length": 44,
+        "sha256": "b1fd2d696770390c5c8300ab494b66faf73583a21b8432cca21af50e5c518a13",
+        "live_equals_installed": true
+      },
+      {
+        "address": "00b82b80",
+        "length": 50,
+        "sha256": "5a95eca353fe61c3f8dde52f81a927b9fb3e3cda7c19337cf75979159ca1206d",
+        "live_equals_installed": true
+      }
+    ]
+  },
+  "functions": [
+    {
+      "address": "00b821c0",
+      "end_exclusive": "00b821ec",
+      "bytes": 44,
+      "name": "copy_native_scene_registry_iterators_00b821c0",
+      "original_abi": "ECX first,EDX last; destination then3unused stackwords; EAX advanced destination; RET10h atB821E9 length3"
+    },
+    {
+      "address": "00b82b80",
+      "end_exclusive": "00b82bb2",
+      "bytes": 50,
+      "name": "fill_native_scene_registry_iterators_end_00b82b80",
+      "original_abi": "ECX scratch preimage,EDX overwritten; destination,count,pair-source stackwords; EAX captured destination+count*8; RET0Ch atB82BAF length3"
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "00b82ba4",
+      "native": "00b82570",
+      "function": "00b82b80",
+      "kind": "call"
+    }
+  ],
+  "contract": [
+    "Actual8B pairs and native32-bit pointer arithmetic",
+    "Component0 store precedes component1 load; forward overlap deliberately not memmove",
+    "Null current destination skips source memory reads but still advances",
+    "Empty range/count performs no source dereference",
+    "Fill wrapper retains original scratch lowbyte clear and both stacked pair-pointer reads; existing actualB82570 receives exact outgoing words"
+  ],
+  "validation": {
+    "strict_win32_build": true,
+    "ctests": 3,
+    "build_log_sha256": "2bf183d5350ededfd4fdf99d1566ced54d5f26ca0f6a0e812b54cc8604c8692d",
+    "probe": "local/cc10_pair_transfer/probe.cpp",
+    "probe_passed": true,
+    "original_source_comparison": true,
+    "original_fill_shared_dependency": "Actual existing B82570, one relocated CALL",
+    "active_assertions": true,
+    "embedded_manifest": true,
+    "new_tracked_tests": 0,
+    "call_rows": 1,
+    "abi_compatible": false,
+    "application_bound": false,
+    "game_validated": false
+  },
+  "limits": [
+    "Caller valid finite reachable range and accessible reached words",
+    "No asynchronous mutation, full private caller frame aliases, native fault handling or full binary ABI proof",
+    "Raw vector growth/erase, full registry insertion and application scene attachment remain separate"
+  ],
+  "archive": {
+    "path": "local/cc10-platform-evidence/scene-registry-pair-transfer.zip",
+    "sha256": "979d2f80b26b839a072afccdd7b408e9ebe8b70361b7948b6c9dcb815ff9f198",
+    "files": 17,
+    "valid": true
+  },
+  "hashes": {
+    "local/cc10_pair_transfer/00b821c0_assembly.txt": "23c414506873d8d23de49b08fce76da8cafeebc333fa6a350f403aba6cf3f55f",
+    "local/cc10_pair_transfer/00b821c0_bytes.txt": "3e963df0ecac89ab0fffeb0a666bab9baae9322ad6f64036e64cf0b1898841e8",
+    "local/cc10_pair_transfer/00b82b80_assembly.txt": "dd91ff691adde122a3b649ca4491705152fdf3a6aeb849c92a63426b15aa5921",
+    "local/cc10_pair_transfer/00b82b80_bytes.txt": "508693fab9e9f8cdc36814e41a5db6841cf2801a1b2b765f1bad3e1ffb367684",
+    "local/cc10_pair_transfer/bytes.hpp": "f31d31cb170d7f2ba28d47f834486dd8516621a4e5164a7a9412210f2aae91bf",
+    "local/cc10_pair_transfer/byte_evidence.json": "468af58e11e2ca148895c5f9e2f2e8193bc4c149d62ad341e95dce733c5a068b",
+    "local/cc10_pair_transfer/capture.py": "a060f92fe2d4bb4f78102a3acf4849e09a08d89cf20b68f5525c41785f809b63",
+    "local/cc10_pair_transfer/close.py": "925309d0bbed0e4f4f9faed0d8cedbddbc333ede9a650d45847bd3de52d2ec58",
+    "local/cc10_pair_transfer/pair_transfer_probe.exe": "0be6e7e38ba51394114c9dfe85d6066a15c967cff2aa1d84085ca12596daf9e4",
+    "local/cc10_pair_transfer/probe.cmd": "430e6c85a966767ad4f4f46da939cd4764925521dd00e6e128fdd45fea5d207c",
+    "local/cc10_pair_transfer/probe.cpp": "d0a5e0424b0bcab09242969e47f7f7a3984a0a94771fcf58255c3a3d72ea3ff5",
+    "local/cc10_pair_transfer/probe.log": "eb740ed5b6eb69c8691ec14958f4039a9146d57662a0b370b56dc8625550e566",
+    "local/cc10_pair_transfer/probe.obj": "c5e9cde70d7789f5dcd69cb8026655330c9b94a5ceb90035db8afea52c97d042",
+    "local/cc10_pair_transfer_build.log": "2bf183d5350ededfd4fdf99d1566ced54d5f26ca0f6a0e812b54cc8604c8692d",
+    "include/bsp/native_scene_registry_storage_leaves.hpp": "1068e10078ac41a362c738a2e24ff452ac09d7bfe9665bf58ca07e96723b8365",
+    "src/native_scene_registry_storage_leaves.cpp": "e2dabdb9cf6779e9896260a5e89d3caae09462bd0ff81fc8e41e953b29cbbab7",
+    "docs/NATIVE_SCENE_REGISTRY_PAIR_TRANSFER_CC10.md": "6ab6e2c5f7472390194fb09391ecc02a0f68480cfd97ad41190eb2d458de5287"
+  }
+}

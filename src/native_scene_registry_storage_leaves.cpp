@@ -80,4 +80,57 @@ __declspec(naked) void __fastcall fill_native_scene_registry_iterators_00b82570(
         ret 10h // 00b82599
     }
 }
+__declspec(naked) void* __fastcall copy_native_scene_registry_iterators_00b821c0(
+    const void*, const void*, void*, std::uint32_t, std::uint32_t,
+    std::uint32_t) noexcept {
+    __asm {
+        cmp ecx, edx // 00b821c0
+        mov eax, dword ptr [esp + 4] // 00b821c2
+        jz done // 00b821c6
+        push esi // 00b821c8
+        lea esp, [esp] // 00b821c9: alignment no-op
+    loop_pair:
+        test eax, eax // 00b821d0
+        jz advance // 00b821d2
+        mov esi, dword ptr [ecx] // 00b821d4
+        mov dword ptr [eax], esi // 00b821d6
+        mov esi, dword ptr [ecx + 4] // 00b821d8
+        mov dword ptr [eax + 4], esi // 00b821db
+    advance:
+        add ecx, 8 // 00b821de
+        add eax, 8 // 00b821e1
+        cmp ecx, edx // 00b821e4
+        jnz loop_pair // 00b821e6
+        pop esi // 00b821e8
+    done:
+        ret 10h // 00b821e9
+    }
+}
+
+__declspec(naked) void* __fastcall fill_native_scene_registry_iterators_end_00b82b80(
+    std::uint32_t, void*, void*, std::uint32_t, const void*) noexcept {
+    __asm {
+        push ecx // 00b82b80
+        mov edx, dword ptr [esp + 10h] // 00b82b81
+        push esi // 00b82b85
+        mov esi, dword ptr [esp + 10h] // 00b82b86
+        push edi // 00b82b8a
+        mov edi, dword ptr [esp + 10h] // 00b82b8b
+        mov byte ptr [esp + 8], 0 // 00b82b8f
+        mov eax, dword ptr [esp + 8] // 00b82b94
+        push eax // 00b82b98
+        mov eax, dword ptr [esp + 1ch] // 00b82b99
+        push edx // 00b82b9d
+        push ecx // 00b82b9e
+        push eax // 00b82b9f
+        mov edx, esi // 00b82ba0
+        mov ecx, edi // 00b82ba2
+        call fill_native_scene_registry_iterators_00b82570 // 00b82ba4
+        lea eax, [edi + esi*8] // 00b82ba9
+        pop edi // 00b82bac
+        pop esi // 00b82bad
+        pop ecx // 00b82bae
+        ret 0ch // 00b82baf
+    }
+}
 } // namespace bsp

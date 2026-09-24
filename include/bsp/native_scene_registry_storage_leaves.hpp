@@ -40,6 +40,27 @@ void __fastcall fill_native_scene_registry_iterators_00b82570(
     std::uint32_t unused_slot2, std::uint32_t unused_slot3,
     std::uint32_t unused_slot4) noexcept;
 
+// Complete B821C0..B821EB[44]. Original ECX first, EDX last, four stack
+// slots, RET10h; EAX is the advanced destination. Only the first stacked
+// destination is read. Walk the half-open range in wrapping 8-byte steps;
+// for each nonnull destination copy the first DWORD before reading the second.
+// Overlap therefore has forward, componentwise semantics, not memmove semantics.
+// A null current destination skips both source reads but still advances.
+// The caller supplies a finite reachable range and accessible reached words.
+void* __fastcall copy_native_scene_registry_iterators_00b821c0(
+    const void* first, const void* last, void* destination,
+    std::uint32_t unused_slot2, std::uint32_t unused_slot3,
+    std::uint32_t unused_slot4) noexcept;
+
+// Complete B82B80..B82BB1[50]. Original ECX supplies the scratch preimage;
+// EDX is overwritten. Three stack words are destination, count, pair source;
+// RET Ch, EAX is captured destination + captured count*8, wrapping at 32 bits.
+// This wrapper preserves the native scratch/argument load schedule and calls
+// the actual B82570 provider above. No allocation, count credit or host record.
+void* __fastcall fill_native_scene_registry_iterators_end_00b82b80(
+    std::uint32_t incoming_ecx, void* unused_edx, void* destination,
+    std::uint32_t count, const void* pair_source) noexcept;
+
 // Raw Ch nodes use next+0, previous+4, borrowed key+8; iterator pairs are two
 // DWORDs. Existing SceneNodeRegistry has private typed Entry/Iterator records
 // and a different owner layout; these leaves never cast its owner or initialize
