@@ -1,0 +1,190 @@
+{
+  "packet": "cc10_camera_storage_lifetime_integration",
+  "worker_commit": "67b412d835826dead018dcc062f52ef9612a82bf",
+  "integration": "30f5a8e6b691c5b8711b712bb329eeebc44dd713",
+  "archive": {
+    "path": "local/cc10-platform-evidence/camera-storage-lifetime.zip",
+    "sha256": "6e11bf0624e2ee97d2fdd14237411b573d51593239aa3682510c4a6197affa57",
+    "files": 52,
+    "valid": true
+  },
+  "review": [
+    "Full header/source and four native schedules reviewed, final fresh-acquired admission guard accepted",
+    "Pure SAME registry/current import-cell checks before native work",
+    "Setter captures incoming before old180, publishes before current increment/current olddecrement; captured inputs survive mutation",
+    "Normal destructor captures180 before oneCE2220 epoch for180/184/438; each field reloaded when reached and cleared after terminal",
+    "Viewport34h/fog94h keep real volatile-long counts, observedzero/current0 then genuineBD30E0/fresh4 deleting leaves; no invented atomic companions",
+    "438 is a polymorphic factory result, required family/extent/actualzero provider without node or atomic assumptions",
+    "Cleanup states consumed before fresh605FD0/rawnodebase; normal captured epoch differs from fresh cleanup",
+    "Late flags lowbyte invokes same actual45Ch camera pool return, no returned-slot read",
+    "Optional sameactual camera companion reviewed but unexercised: fullB71A80 construction remains a production precondition"
+  ],
+  "validation": {
+    "normal_bytes": 332,
+    "compiler_boundary_bytes": 32,
+    "profile_descriptor_bytes": 156,
+    "live_equals_installed": true,
+    "direct_tail_rows": 6,
+    "indirect_rows_explicit": 11,
+    "strict_win32_build": true,
+    "worker_ctests": 3,
+    "integrated_ctests": 3,
+    "build_log_sha256": "b5fa64bd2a8760c011aff30aab75ad85c195fbfae40872f033f43065fbb9dd39",
+    "focused_original_source_sequence": true,
+    "new_tracked_tests": 0,
+    "full_camera_constructor_proven": false,
+    "canonical_camera_admission_exercised": false,
+    "retained438_zero_exercised": false,
+    "source_unwind_exercised": false,
+    "native_ABI_FH3_SEH": false,
+    "application_bound": false,
+    "game_validated": false
+  },
+  "contracts": {
+    "actual_camera": "458h payload in genuine physical45Ch camera pool slot, native slab index+458; live node atomic+4 established by genuine construction",
+    "same_domain": "pure pre-native identity guard on SAME scene/tree canonical registry and current CE221C/CE2220 cells; direct destructor rejects reused Acquired before native stores",
+    "volatile_counts": "viewport34h and fog94h contain actual volatile long+4, no fabricated atomic/RenderCommandReference; family providers verify observed zero then current0 and freshcurrent4",
+    "retained438": "polymorphic selected-factory output; required exact family/extent/allocation/currentcountzero binding, no automatic node or legacy type claim; null/nonterminal directly admitted",
+    "producer_evidence": {
+      "publication": "00b7a98f loads captured matchedinstance array identity;00b7a9c2 publishes438;00b7a9d2 retains",
+      "source": "src/native_resource_postprocess_full.cpp camera_phase; src/native_resource_graph_builder.cpp build_node selectsfactoryvirtual4 then storesactualarraycell",
+      "limit": "does not prove one concrete family/profile/extent"
+    },
+    "schedule": "incomingreadoncebeforeold; publish then currentinc/currentdec; destructor180 capture before oneepoch, current184/438 withsameepoch;438capture beforeconsume0; nodebase beforelateflags;605FD0fresh epoch/clearafterterminal",
+    "frames": "caller initialized address-stable args/flags/pointercell; persistent separate raw node frame; fresh disjoint acquired/memberprogress/epoch/last scheduled outercall; native private saved-register/return gaps excluded",
+    "companion": "optional postconstruction SAME liveatomic+4 and realpoolslot membership/free-index proof; SAME rawregistry; no retain/nativewrites/legacy conversion; requires FULLB71A80 precondition, unexercised by bounded fixture",
+    "companion_retirement": "current0BD30E0 and freshcurrent4B71FE0; scalar retires metadata on success or sourcefailure, preservesdiagnostics; no payload access afterpoolreturn; externalquiescence excludesreuse untilunbind",
+    "limitations": [
+      "fullB71A80 construction and companion admission not validated",
+      "retained438 terminal family branch not exercised; unbound zero families unsupported",
+      "source exception/nativeFH3 paths not exercised",
+      "legacy raw3Ch-incompatible terminal paths not admitted",
+      "no game or original binary ABI claim"
+    ]
+  },
+  "probe": {
+    "source": "local\\cc10_camera_storage_lifetime\\probe.cpp",
+    "compile_log": "local\\cc10_camera_storage_lifetime\\compile.log",
+    "run_log": "local\\cc10_camera_storage_lifetime\\run.log",
+    "result": "PASS",
+    "compiler": "/MD /O2 /fp:strict /link /MANIFEST:EMBED /DELAYLOAD:d3d9.dll; Win32 MSVC",
+    "original_bodies": "allfour332B copied; no nativeexceptions; direct/IAT operand rebasing only",
+    "relocation": {
+      "direct_call_displacements": [
+        {
+          "site": "00b71fba",
+          "target": "genuine rawB6F440 source bridge"
+        },
+        {
+          "site": "00b71fe3",
+          "target": "copiedB71F10"
+        },
+        {
+          "site": "00b71ff5",
+          "target": "genuine same108FFB0 poolreturn bridge"
+        }
+      ],
+      "absolute_import_operands": [
+        {
+          "site": "00b71f3c",
+          "operand_offset": 2,
+          "target": "decrement_slot"
+        },
+        {
+          "site": "00b719ad",
+          "operand_offset": 2,
+          "target": "increment_slot"
+        },
+        {
+          "site": "00b719bb",
+          "operand_offset": 2,
+          "target": "decrement_slot"
+        },
+        {
+          "site": "00605fde",
+          "operand_offset": 2,
+          "target": "decrement_slot"
+        }
+      ],
+      "changed_operand_width": 4,
+      "virtual_instructions_changed": false,
+      "camera_profile_stamp_changed": false,
+      "original_data_changes": "only original viewport/fog owner profile words D5E5F8/D63180 relocated to caller-owned family tables; table0 actualbridge address; table4 originalB1F8F0/B84F70 targets",
+      "source_data": "original numeric viewport/fog profiles; borrowed familytables containoriginalBD30E0 zero target; current4 original values",
+      "provider_boundary": "originalbridge verifies relocatedfamily/current0 and SAMEvolatilelong+4zero; genuine BD30E0 reloads profile and fixture concrete fresh4 invokes same deleting leaf; sourceproduction familydispatch performs corresponding originalnumeric lookup",
+      "occupied_ranges": "no overwrite: initialization rejected occupied fixed ranges; finalfixture requires no fixed mappings"
+    },
+    "cases": [
+      "actual setterincomingstack/sourcecell mutation aftercapture, fresholddecrement aftercurrentinc",
+      "normal captureddecrement stayssame forviewport/fog/438 afterfirstcallback changescell",
+      "realviewport/fog currentzero/4 deletion withno extra count",
+      "realrawnodeprefix inrealcamera pool, explicitinitializedtail andmembercells",
+      "all458hpayloadDWORDs beforepoolreturn, normalizingonlynamepointer;exactcount/importtraces",
+      "late original/sourceLOWBYTE flags callback causesgenuine poolreturn; no postreturnpayloadread",
+      "standalone605FD0 freshdecrement andoriginalcellclear; constructed438identitykeptnonterminal"
+    ],
+    "genuine_providers": "realB6F5A0/rawB6F440,stringpool,camerapool,B1F850 viewport/B84E50fog, real hiddenwindowD3D9HAL+actualrendererparameterbinding; no fakeCOM/noopterminal",
+    "not_proven": [
+      "fullB71A80",
+      "camera canonical companion admission",
+      "retained438 zero-family dispatch",
+      "source unwind/nativeFH3",
+      "gameplay"
+    ]
+  },
+  "compiler_boundaries": {
+    "handler": "00cc1b36",
+    "descriptor": "00dfaaa0",
+    "descriptor_bytes": 36,
+    "max_state": 2,
+    "unwind_map": "00dfaa90",
+    "unwind_map_bytes": 16,
+    "states": [
+      {
+        "state": 0,
+        "next": -1,
+        "target": "00cc1b20"
+      },
+      {
+        "state": 1,
+        "next": 0,
+        "target": "00cc1b28"
+      }
+    ],
+    "try_blocks": 0,
+    "eh_flags": 1,
+    "existing_bodies": [
+      {
+        "address": "00cc1b20",
+        "size": 8,
+        "end_inclusive": "00cc1b27",
+        "sha256": "cb83acd9e7edafbc5ce653de99983fd29b944509a2d2edff03ad0def54b1b728",
+        "live_pe_equal": true,
+        "last_instruction_address": "00cc1b23",
+        "last_instruction_length": 5,
+        "last_instruction": "jmp 0xb6f440"
+      },
+      {
+        "address": "00cc1b28",
+        "size": 14,
+        "end_inclusive": "00cc1b35",
+        "sha256": "9ea6f7971c11a95b1591f65abbf17d73e756d8fa173531dd3685bf44ec753405",
+        "live_pe_equal": true,
+        "last_instruction_address": "00cc1b31",
+        "last_instruction_length": 5,
+        "last_instruction": "jmp 0x605fd0"
+      },
+      {
+        "address": "00cc1b36",
+        "size": 10,
+        "end_inclusive": "00cc1b3f",
+        "sha256": "b059d48734174a694a7cffb408295a539e6d00cef5a5114559c1d45204a8711e",
+        "live_pe_equal": true,
+        "last_instruction_address": "00cc1b3b",
+        "last_instruction_length": 5,
+        "last_instruction": "jmp 0xbf6b43"
+      }
+    ],
+    "source_projection": "consume each state before action; remaining438 uses fresh605FD0 then base; viewport/fog never replayed; nested acquired persists; second C++ cleanup failure terminates; no nativeFH3/SEH or private-stack ABI"
+  }
+}
