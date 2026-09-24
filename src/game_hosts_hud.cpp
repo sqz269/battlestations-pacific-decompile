@@ -4,6 +4,11 @@
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_hud_world.hpp"
+#include "bsp/game_hosts_lua.hpp"
+#include "bsp/mission_camera.hpp"
+#include "bsp/ocean_height.hpp"
+#include "bsp/ocean_wave_field.hpp"
+#include "bsp/ship_class_fields.hpp"
 #include "bsp/game_hosts_menu.hpp"
 #include "bsp/game_hosts_units.hpp"
 
@@ -22,6 +27,25 @@ void format_address(std::uint32_t address, char (&out)[16]) {
     std::snprintf(out, sizeof(out), "%08lx", static_cast<unsigned long>(address));
 }
 
+// The ocean the camera's probes sample: 0078CF20 over the same flat wave field
+// the unit host runs (amplitude +24h 0.0f, no coverage regions;
+// src/game_hosts_units.cpp OceanFieldBinding).
+class CameraOceanField final : public bsp::OceanHeightHost {
+public:
+    float wave_height_0078c890(float x, float z) override {
+        bsp::OceanWaveFieldState field;
+        field.flat_f9 = false;
+        field.inv_tile_b4 = static_cast<float>(1.0 / 100.0);
+        field.amplitude_24 = 0.0f;
+        const bsp::OceanWaveGridView zero_grid{};
+        return bsp::ocean_wave_field_sample_0078c890(field, zero_grid, x, z);
+    }
+    float coverage_mask_00b9cf50(float x, float z) override {
+        static const std::vector<bsp::OceanCoverageRegion> kNoRegions;
+        return bsp::ocean_coverage_mask_00b9cf50(kNoRegions, x, z);
+    }
+};
+
 }  // namespace
 
 // ---------------------------------------------------------------------------
@@ -33,6 +57,19 @@ struct GameHudHost::Impl {
 
     GameHostLog& log;
     GameMenuHost& menu;
+    // Packet cc9_mission_camera: the ShipCaptain mover 0064DA40 creates for the
+    // 25h arm's ship view, and what it reads off its unit.
+    GameMissionLuaHost* lua{nullptr};
+    bool camera_bound{false};
+    std::size_t camera_unit{0};
+    std::uint64_t camera_last_frame{~0ull};
+    bsp::ShipCaptainCamera camera{};
+    bsp::ShipCameraSettings camera_settings{};
+    bsp::ShipClassCameraFields camera_class{};
+    float camera_class_length{0.0f};
+    void bind_mission_camera_0064da40();
+    void step_mission_camera(float seconds);
+    bool camera_target_view(bsp::ShipCaptainTargetView& out);
     GameHudSummary summary;
     InGameInterfaceManager manager{};
     InMissionInterfaceUpdateState update_state{};
@@ -158,8 +195,10 @@ public:
         }
     }
     void screen_receive_unit(std::uint16_t manager_offset) override {
-        static_cast<void>(manager_offset);
         owner_.record("InGameInterface::screen_receive_unit", 0x0068ad07u);
+        // The 25h arm's hand-off on interface+7Ch is 0064DA40, the ship view
+        // that creates the ShipCaptain camera mover (docs/MISSION_CAMERA.md).
+        if (kMissionCameraBound && manager_offset == 0x7C) owner_.bind_mission_camera_0064da40();
     }
     int hud_root_screen_query() override {
         owner_.record("InGameInterface::hud_root_screen_query", 0x00644230u);
@@ -649,9 +688,116 @@ void GameHudHost::apply_pending_interface_0068aca0() {
     }
 }
 
+bool GameHudHost::Impl::camera_target_view(bsp::ShipCaptainTargetView& out) {
+    if (units == nullptr) return false;
+    float right[3], up[3], forward[3], translation[3];
+    if (!units->unit_pose(camera_unit, right, up, forward, translation)) return false;
+    out.world = {right[0], right[1], right[2], 0.0f, up[0], up[1], up[2], 0.0f,
+        forward[0], forward[1], forward[2], 0.0f,
+        translation[0], translation[1], translation[2], 1.0f};
+    const GameUnitRow* row = units->unit_row(camera_unit);
+    out.throttle = row != nullptr ? row->throttle : 0.0f;        // unit+980h
+    out.rudder = row != nullptr ? row->ordered_rudder : 0.0f;    // unit+984h
+    out.gate_5d = units->unit_flag_005d(camera_unit);
+    out.min_height = camera_class.min_height;
+    out.distance_front = camera_class.distance_front;
+    out.distance_side = camera_class.distance_side;
+    out.distance_vertical = camera_class.distance_vertical;
+    out.length = camera_class_length;
+    return true;
+}
+
+void GameHudHost::Impl::bind_mission_camera_0064da40() {
+    if (units == nullptr || !units->controlled_bound()) return;
+    const std::size_t index = units->controlled_index();
+    const GameUnitRow* row = units->unit_row(index);
+    // The settings block (00424C40, ShipGlobals["ShipCamera"]) and the class
+    // camera keys (00831E0D) come from the live Lua state.
+    bool settings_read = false;
+    bool class_read = false;
+    bsp::ShipClassCameraInputs inputs{};
+    inputs.captain_camera_global = 10.0f;   // 00CE38B8
+    if (lua != nullptr) {
+        settings_read = lua->read_ship_camera_settings_0083b5e0(camera_settings);
+        if (row != nullptr) class_read = lua->read_ship_class_camera_00831e0d(row->type_id, inputs);
+    }
+    if (!settings_read) record("MissionCamera::ship_camera_settings", 0x0083b5e0u);
+    if (!class_read) record("MissionCamera::class_camera_keys", 0x00831e0du);
+    camera_class = bsp::ship_class_camera_00831e0d(inputs);
+    camera_class_length = inputs.base_length;
+    if (!camera_bound) {
+        bsp::construct_ship_captain_0064b650(camera);
+        // The three 00BD2F10 phase draws of 00432750, not taken (see
+        // bsp::construct_ship_captain_0064b650).
+        for (int i = 0; i < 3; ++i) record("MissionCamera::phase_draw", 0x00bd2f10u);
+    }
+    camera_unit = index;
+    bsp::ShipCaptainTargetView view{};
+    camera_target_view(view);
+    bsp::bind_ship_captain_0064da40(camera, view, camera_settings);
+    camera_bound = true;
+    done("MissionCamera::bind_ship_view", 0x0064da40u);
+    log.notef("mission camera: ShipCaptain mover bound to \"%s\" (0064da40): ShipCamera "
+        "ZoomOffset %.3f LengthMult %.3f angles [%.1f, %.1f] deg; class CameraDistance front "
+        "%.1f side %.1f vertical %.1f, CameraMinHeight %.1f, Length %.1f; yaw %.4f pitch %.4f",
+        row != nullptr ? row->name.c_str() : "?",
+        static_cast<double>(camera_settings.zoom_offset),
+        static_cast<double>(camera_settings.length_mult),
+        static_cast<double>(camera_settings.min_angle_deg),
+        static_cast<double>(camera_settings.max_angle_deg),
+        static_cast<double>(camera_class.distance_front),
+        static_cast<double>(camera_class.distance_side),
+        static_cast<double>(camera_class.distance_vertical),
+        static_cast<double>(camera_class.min_height),
+        static_cast<double>(camera_class_length),
+        static_cast<double>(camera.yaw_384), static_cast<double>(camera.pitch_388));
+}
+
+namespace {
+class CameraOcean final : public bsp::MissionCameraOcean {
+public:
+    explicit CameraOcean(GameHostLog& log) : log_(log) {}
+    bool present() override { return true; }   // [game+19F0h], the ocean owner
+    float water_height(float x, float z) override;
+private:
+    GameHostLog& log_;
+};
+}  // namespace
+
+void GameHudHost::Impl::step_mission_camera(float seconds) {
+    if (!kMissionCameraBound || !camera_bound) return;
+    // The mover is a world entity ticked by the world update before the
+    // interface runs. SUBSTITUTION: this host ticks it once per in-game
+    // interface frame, at the first screen update of that frame, with the
+    // screen's own delta.
+    if (camera_last_frame == summary.update_frames) return;
+    camera_last_frame = summary.update_frames;
+    bsp::ShipCaptainTargetView view{};
+    if (!camera_target_view(view)) return;
+    CameraOcean ocean(log);
+    bsp::CameraMatrix16 world{};
+    const bool published =
+        bsp::update_ship_captain_00432ed0(camera, view, camera_settings, ocean, seconds, world);
+    done("MissionCamera::update", 0x00432ed0u);
+    // 0042F4DC, once per probe: the ray against the target's collision.
+    for (int i = 0; i < 5; ++i) record("MissionCamera::collision_ray", 0x0098b370u);
+    if (!published) return;
+    done("MissionCamera::publish_pose", 0x004329d0u);
+    bsp::publish_mission_camera(world, bsp::MissionCameraProjection{});
+}
+
+namespace {
+float CameraOcean::water_height(float x, float z) {
+    CameraOceanField field;
+    log_.implemented("MissionCamera::ocean_height", "0078cf20");
+    return bsp::ocean_water_height_0078cf20(x, z, field);
+}
+}  // namespace
+
 void GameHudHost::attach_world_2k(GameUnitsHost& units, GameMissionLuaHost& lua) {
     Impl& impl = *impl_;
     impl.units = &units;
+    impl.lua = &lua;
     if (!impl.minimap) impl.minimap = std::make_unique<GameHudMinimapHost>(impl.log, impl.menu);
     if (!impl.markers) impl.markers = std::make_unique<GameHudMarkersHost>(impl.log, impl.menu);
     impl.minimap->attach_world(units, lua);
@@ -661,6 +807,10 @@ void GameHudHost::attach_world_2k(GameUnitsHost& units, GameMissionLuaHost& lua)
 void GameHudHost::detach_world_2k() noexcept {
     Impl& impl = *impl_;
     impl.units = nullptr;
+    impl.lua = nullptr;
+    impl.camera_bound = false;
+    impl.camera_last_frame = ~0ull;
+    bsp::clear_mission_camera();
     impl.unit_request_pending = false;
     impl.unit_request_applied = false;
     impl.unit_interface_id = 0;
@@ -692,6 +842,7 @@ void GameHudHost::request_scene_interface_for_unit_004cc460() {
 
 void GameHudHost::update_minimap_screen_005c0f20(float seconds) {
     Impl& impl = *impl_;
+    impl.step_mission_camera(seconds);
     if (!impl.minimap) {
         impl.record("HudMinimap::update", 0x005c0f20u);
         return;
@@ -701,6 +852,7 @@ void GameHudHost::update_minimap_screen_005c0f20(float seconds) {
 
 void GameHudHost::update_markers_screen_006435d0(float seconds) {
     Impl& impl = *impl_;
+    impl.step_mission_camera(seconds);
     if (!impl.markers) {
         impl.record("HudMarkers::update", 0x006435d0u);
         return;
