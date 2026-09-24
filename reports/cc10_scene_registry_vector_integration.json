@@ -1,0 +1,51 @@
+{
+  "packet": "cc10_scene_registry_vector_integration",
+  "worker_commit": "55ca380cd2ddf82a50ea07de0832207d37b40f13",
+  "integration": "005e28b10",
+  "archive": {
+    "path": "local/cc10-platform-evidence/scene-registry-vector-mutation.zip",
+    "sha256": "6d6d47c5723b50354f99e32dfc3cfa34373ac607737017a179d3e28385acade3",
+    "files": 50,
+    "valid": true
+  },
+  "review": [
+    "Complete header/source, five bodies and FH3 metadata reviewed",
+    "Pair second/first snapshot and captured begin precede current-cell reads; count0 still snapshots pair",
+    "Genuine allocator/current count/current position/low-byte scratch writes retained",
+    "Free callback sees captured old buffer/size/count; publication reloads CURRENT work argument after free",
+    "Both in-place paths preserve argument-cell rewrites and component copy/store ordering",
+    "Erase captures owner before returning CRT guard; only nonempty compaction reloads current owner; publishes end before current output position then owner",
+    "Growth C++ catch frees current work argument; shared native rethrow remains bounded evidence, not native EH implementation"
+  ],
+  "validation": {
+    "owned_code_bytes": 828,
+    "metadata_bytes": 140,
+    "reused_transfer_bytes": 138,
+    "live_equals_installed": true,
+    "static_transfer_rows": 17,
+    "focused_original_source_sequence": true,
+    "genuine_allocator_free_and_returning_CRT_services": true,
+    "strict_win32_build": true,
+    "worker_ctests": 3,
+    "integrated_ctests": 3,
+    "build_log_sha256": "bc3125d1a13e9a78ee79da4cf961c1110354bcc5bbee345c0aa63e15f6b7a8f0",
+    "new_tracked_tests": 0,
+    "native_ABI_FH3_SEH": false,
+    "application_bound": false,
+    "game_validated": false
+  },
+  "ghidra": {
+    "flow": "reports/cc10_scene_registry_vector_flow.json",
+    "definitions": "reports/cc10_scene_registry_vector_definitions.json",
+    "parent_instructions": 225,
+    "catch_instructions": 7,
+    "remaining_call_gaps": 0,
+    "callee_noreturn_attributes_changed": false
+  },
+  "boundaries": [
+    "Shared B83143 suffix is already within B83137, not nine additional owned bytes",
+    "Count0 and lengtherror have static evidence, not claimed dynamic probe coverage",
+    "Pointer-high-byte differences in growth position comparison normalized; original/source low-byte effects checked",
+    "Registry registration and outer scene attachment remain separate"
+  ]
+}

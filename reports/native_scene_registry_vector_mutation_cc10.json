@@ -226,9 +226,10 @@
     {
       "address": "00b83147",
       "native": "00bf6885",
-      "function": "00b83143",
-      "kind": "no_ghidra_function",
-      "native_instruction_kind": "call"
+      "function": "00b83137",
+      "kind": "call",
+      "native_instruction_kind": "call",
+      "native_entry": "00b83143"
     },
     {
       "address": "00b8316e",
@@ -283,24 +284,8 @@
       "address": "00cc2345",
       "native": "00bf6b43",
       "function": "00cc2340",
-      "kind": "no_ghidra_function",
+      "kind": "tail_jump",
       "native_instruction_kind": "tail_jump"
-    }
-  ],
-  "no_ghidra_function": [
-    {
-      "address": "00b83143",
-      "end_inclusive": "00b8314b",
-      "last_instruction_address": "00b83147",
-      "last_instruction_length": 5,
-      "coverage": "9-byte catch rethrow suffix shared with B83137; not extra disjoint code"
-    },
-    {
-      "address": "00cc2340",
-      "end_inclusive": "00cc2349",
-      "last_instruction_address": "00cc2345",
-      "last_instruction_length": 5,
-      "coverage": "10-byte native FH3 handler; evidence only, root definition pending"
     }
   ],
   "compiler_boundaries": [
@@ -310,8 +295,9 @@
       "last_instruction_address": "00b83147",
       "last_instruction_length": 5,
       "native_extent": 21,
-      "current_ghidra_end": "00b8313f",
-      "coverage": "growth catch: current EBP+14 free then shared rethrow; source C++ catch projection"
+      "current_ghidra_end": "00b8314b",
+      "coverage": "growth catch: current EBP+14 free then shared rethrow; source C++ catch projection",
+      "worker_ghidra_end": "00b8313f"
     },
     {
       "address": "00b83143",
@@ -319,7 +305,9 @@
       "last_instruction_address": "00b83147",
       "last_instruction_length": 5,
       "native_extent": 9,
-      "coverage": "in-place catch: rethrow only, shared suffix with B83137"
+      "coverage": "in-place catch: rethrow only, shared suffix with B83137",
+      "containing_function": "00b83137",
+      "independent_function": false
     },
     {
       "address": "00cc2340",
@@ -381,7 +369,8 @@
       "disk_instructions": [
         "00b8310f ADD ESP,4 [3B]"
       ],
-      "required": "clear returning-free CALL_RETURN override, disassemble gap, preserve full B82FD0 normal body"
+      "required": "clear returning-free CALL_RETURN override, disassemble gap, preserve full B82FD0 normal body",
+      "integrator_status": "applied; see reports/cc10_scene_registry_vector_flow.json and definitions receipt"
     },
     {
       "call_site": "00b8313b",
@@ -394,7 +383,8 @@
         "00b83145 PUSH 0 [2B]",
         "00b83147 CALL BF6885 [5B]"
       ],
-      "required": "clear returning-free CALL_RETURN override; extend catch through B8314B; retain shared B83143 suffix rather than assuming disjoint function ranges"
+      "required": "clear returning-free CALL_RETURN override; extend catch through B8314B; retain shared B83143 suffix rather than assuming disjoint function ranges",
+      "integrator_status": "applied; see reports/cc10_scene_registry_vector_flow.json and definitions receipt"
     }
   ],
   "storage_contract": {
@@ -464,7 +454,7 @@
       "limited_comparison": "growth low-byte-zero position word compares low byte only because upper pointer address bits depend on actual allocation location; current work/current count/local upper bytes and live storage compared",
       "excluded": "native FH3/SEH fault unwind, source library exception identity, whole registry graph/gameplay; count0/lengtherror branches have static body evidence, not claimed probe coverage"
     },
-    "ghidra_mutated": false,
+    "ghidra_mutated": true,
     "original_binary_abi": false,
     "game_validated": false,
     "new_tracked_tests": false,
@@ -485,7 +475,8 @@
       "local/cc10_scene_resource_storage_evidence.zip": "d989b85db55805c8b173e40c95e9322586ec4146e3ad0e504c316bf48364ed51",
       "local/cc10_gui_scene_fields_evidence.zip": "8158076968340fd863b7e86018def420eabcae87ab0939f90085d79a1751a1af"
     },
-    "call_verifier_boundary": "B83147 and CC2345 lack live functions; verifier checks real callee starts, raw byte evidence checks instruction targets. Root repairs/defines after release; native instruction kinds retained separately."
+    "call_verifier_boundary": "All17 rows now check live instruction and containing function. B83147 belongs to complete B83137; B83143 remains shared entry, not an overlapping function.",
+    "worker_ghidra_mutated": false
   },
   "source_hashes": {
     "include/bsp/native_scene_registry_vector_mutation.hpp": "10249b9e1fb9c487c9de87ef149531ffde9529f8c96ad235a60ffa64e40fa9d9",
@@ -509,5 +500,40 @@
     "size": 91509,
     "files": 42,
     "note": "Report snapshot before archive receipt avoids circular hash; ten prior archives unchanged."
+  },
+  "worker_no_ghidra_function": [
+    {
+      "address": "00b83143",
+      "end_inclusive": "00b8314b",
+      "last_instruction_address": "00b83147",
+      "last_instruction_length": 5,
+      "coverage": "9-byte catch rethrow suffix shared with B83137; not extra disjoint code"
+    },
+    {
+      "address": "00cc2340",
+      "end_inclusive": "00cc2349",
+      "last_instruction_address": "00cc2345",
+      "last_instruction_length": 5,
+      "coverage": "10-byte native FH3 handler; evidence only, root definition pending"
+    }
+  ],
+  "no_ghidra_function": [],
+  "shared_entries": [
+    {
+      "address": "00b83143",
+      "containing_function": "00b83137",
+      "end_inclusive": "00b8314b",
+      "native_extent": 9,
+      "independent_function": false,
+      "note": "Shared rethrow suffix in complete21B catch; no overlapping function created."
+    }
+  ],
+  "integrator_repairs": {
+    "flow": "reports/cc10_scene_registry_vector_flow.json",
+    "definitions": "reports/cc10_scene_registry_vector_definitions.json",
+    "parent_instructions": 225,
+    "catch_instructions": 7,
+    "remaining_call_gaps": 0,
+    "callee_noreturn_attributes_changed": false
   }
 }
