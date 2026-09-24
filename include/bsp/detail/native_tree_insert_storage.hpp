@@ -140,35 +140,9 @@ void decrement_tree_iterator(void* iterator, Invalid invalid) {
     Access::word(iterator, 4) = ancestor;
 }
 
-template<class Access, class Allocate, class RotateLeft, class RotateRight, class ThrowLength>
-void* link_tree_node(void* tree, void* output, std::uint8_t insert_left,
-    void* parent_node, const void* pair, std::uint32_t count_limit,
-    Allocate allocate, RotateLeft rotate_left, RotateRight rotate_right, ThrowLength throw_length) {
-    if (Access::count(tree) >= count_limit) {
-        throw_length();
-    }
-    auto* const allocated_head = Access::head(tree);
-    auto* const node = allocate(
-        allocated_head, parent_node, allocated_head, pair, 0);
-    auto* const current_head = Access::head(tree);
-    Access::count(tree) = Access::count(tree) + 1u;
-    if (parent_node == current_head) {
-        Access::parent(current_head) = node;
-        Access::left(Access::head(tree)) = node;
-        Access::right(Access::head(tree)) = node;
-    } else if (insert_left != 0) {
-        Access::left(parent_node) = node;
-        auto* const current = Access::head(tree);
-        if (parent_node == Access::left(current)) {
-            Access::left(current) = node;
-        }
-    } else {
-        Access::right(parent_node) = node;
-        auto* const current = Access::head(tree);
-        if (parent_node == Access::right(current)) {
-            Access::right(current) = node;
-        }
-    }
+// Existing repair block only. Caller retains allocation/link/output read points.
+template<class Access, class RotateLeft, class RotateRight>
+void rebalance_linked_tree_node(void* tree, void* node, RotateLeft rotate_left, RotateRight rotate_right) {
     auto* repair = node;
     while (Access::color(Access::parent(repair)) == 0) {
         auto* const direct_parent = Access::parent(repair);
@@ -208,6 +182,38 @@ void* link_tree_node(void* tree, void* output, std::uint8_t insert_left,
         }
     }
     Access::color(Access::parent(Access::head(tree))) = 1;
+}
+
+template<class Access, class Allocate, class RotateLeft, class RotateRight, class ThrowLength>
+void* link_tree_node(void* tree, void* output, std::uint8_t insert_left,
+    void* parent_node, const void* pair, std::uint32_t count_limit,
+    Allocate allocate, RotateLeft rotate_left, RotateRight rotate_right, ThrowLength throw_length) {
+    if (Access::count(tree) >= count_limit) {
+        throw_length();
+    }
+    auto* const allocated_head = Access::head(tree);
+    auto* const node = allocate(
+        allocated_head, parent_node, allocated_head, pair, 0);
+    auto* const current_head = Access::head(tree);
+    Access::count(tree) = Access::count(tree) + 1u;
+    if (parent_node == current_head) {
+        Access::parent(current_head) = node;
+        Access::left(Access::head(tree)) = node;
+        Access::right(Access::head(tree)) = node;
+    } else if (insert_left != 0) {
+        Access::left(parent_node) = node;
+        auto* const current = Access::head(tree);
+        if (parent_node == Access::left(current)) {
+            Access::left(current) = node;
+        }
+    } else {
+        Access::right(parent_node) = node;
+        auto* const current = Access::head(tree);
+        if (parent_node == Access::right(current)) {
+            Access::right(current) = node;
+        }
+    }
+    rebalance_linked_tree_node<Access>(tree, node, rotate_left, rotate_right);
     Access::word(output, 4) = node;
     Access::word(output, 0) = tree;
     return output;
