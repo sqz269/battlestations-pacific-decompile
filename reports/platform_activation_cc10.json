@@ -1,0 +1,497 @@
+{
+  "packet": "cc10_platform_activate",
+  "status": "partial_projection_original_source_library_fixture_and_strict_win32_build_checked",
+  "source": "src/platform_activation.cpp",
+  "header": "include/bsp/platform_activation.hpp",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "ghidra_worker_mutations": false,
+  "functions": [
+    {
+      "address": "00bed3f3",
+      "parent": "00bed3b0",
+      "name": "handle_platform_activation_message_00bed3b0_fragment",
+      "coverage": "partial: complete WM_ACTIVATE BED3F3..BED507; shared prefixBED3B0..BED3F2 and defaultBED669..BED67D; other armsBED508..BED668/BED67E..BED761 excluded",
+      "original_abi": "Five explicit stack slots, RET14h; typed source is not native ABI"
+    },
+    {
+      "address": "00a7a480",
+      "coverage": "complete",
+      "name": "pause_sound_manager_00a7a480",
+      "original_abi": "ECX owner, RET"
+    },
+    {
+      "address": "00a7a4a0",
+      "coverage": "complete",
+      "name": "resume_sound_manager_00a7a4a0",
+      "original_abi": "ECX owner, RET"
+    },
+    {
+      "address": "00aa4a21",
+      "parent": "00aa49e0",
+      "name": "cc10_gui_tree_fixed_whole_range",
+      "coverage": "partial_projection: AA4A21..AA4A5E effects for AA5260 valid nonconcurrent fixed arguments; arbitrary-range AA4A60..AA4AA8 and returning validation inputs excluded",
+      "source": "src/native_platform_focus_owners.cpp"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00bed3c5",
+      "native": "IAT:00ce2374:GetWindowLongA",
+      "function": "00bed3b0",
+      "contract": "Capture window-extra state"
+    },
+    {
+      "address": "00bed3fa",
+      "native": "00c2f172",
+      "function": "00bed3b0",
+      "contract": "XInputEnable false"
+    },
+    {
+      "address": "00bed45f",
+      "native": "00c2f172",
+      "function": "00bed3b0",
+      "contract": "XInputEnable true"
+    },
+    {
+      "address": "00bed41b",
+      "native": "IAT:00ce2324:SetWindowPos",
+      "function": "00bed3b0",
+      "contract": "Demote fullscreen window"
+    },
+    {
+      "address": "00bed47e",
+      "native": "IAT:00ce2324:SetWindowPos",
+      "function": "00bed3b0",
+      "contract": "Promote fullscreen window"
+    },
+    {
+      "address": "00bed427",
+      "native": "00a7a480",
+      "function": "00bed3b0",
+      "contract": "Pause current sound owner"
+    },
+    {
+      "address": "00bed4a0",
+      "native": "00a7a4a0",
+      "function": "00bed3b0",
+      "contract": "Resume current sound owner"
+    },
+    {
+      "address": "00bed42e",
+      "native": "004c1710",
+      "function": "00bed3b0",
+      "contract": "No-argument media getter"
+    },
+    {
+      "address": "00bed4a7",
+      "native": "004c1710",
+      "function": "00bed3b0",
+      "contract": "No-argument media getter"
+    },
+    {
+      "address": "00bed435",
+      "native": "00a4c2d0",
+      "function": "00bed3b0",
+      "contract": "RET4 no-op after getter, pause1"
+    },
+    {
+      "address": "00bed4ae",
+      "native": "00a4c2d0",
+      "function": "00bed3b0",
+      "contract": "RET4 no-op after getter, pause0"
+    },
+    {
+      "address": "00bed43c",
+      "native": "004c12b0",
+      "function": "00bed3b0",
+      "contract": "No-argument GUI getter"
+    },
+    {
+      "address": "00bed48e",
+      "native": "004c12b0",
+      "function": "00bed3b0",
+      "contract": "No-argument GUI getter"
+    },
+    {
+      "address": "00bed443",
+      "native": "00aa33a0",
+      "function": "00bed3b0",
+      "contract": "Pause GUI movie descendants, fullDWORD1"
+    },
+    {
+      "address": "00bed495",
+      "native": "00aa33a0",
+      "function": "00bed3b0",
+      "contract": "Resume GUI movie descendants, fullDWORD0"
+    },
+    {
+      "address": "00bed4b9",
+      "native": "00b24fb0",
+      "function": "00bed3b0",
+      "contract": "External body read; ECX=currentF8D394; no renderer implementation here"
+    },
+    {
+      "address": "00bed4c6",
+      "native": "IAT:00ce2318:SetForegroundWindow",
+      "function": "00bed3b0",
+      "contract": "Separate active receiver HWND"
+    },
+    {
+      "address": "00bed4d0",
+      "native": "IAT:00ce2314:SetFocus",
+      "function": "00bed3b0",
+      "contract": "Reload active HWND after foreground callback"
+    },
+    {
+      "address": "00bed4ee",
+      "native": "00b0d1e0",
+      "function": "00bed3b0",
+      "contract": "Captured nonnull currentF8D39C after active fullscreen"
+    },
+    {
+      "address": "00bed450",
+      "native": "IAT:00ce22fc:DefWindowProcA",
+      "function": "00bed3b0",
+      "contract": "Inactive return"
+    },
+    {
+      "address": "00bed4fb",
+      "native": "IAT:00ce22fc:DefWindowProcA",
+      "function": "00bed3b0",
+      "contract": "Active refresh return"
+    },
+    {
+      "address": "00bed671",
+      "native": "IAT:00ce22fc:DefWindowProcA",
+      "function": "00bed3b0",
+      "contract": "Active common return"
+    },
+    {
+      "address": "00a7a48f",
+      "native": "00a7a3f0",
+      "function": "00a7a480",
+      "contract": "Store flag50=1 before dirtyFFFF"
+    },
+    {
+      "address": "00a7a4af",
+      "native": "00a7a3f0",
+      "function": "00a7a4a0",
+      "contract": "Store flag50=0 before dirtyFFFF"
+    }
+  ],
+  "fresh_bytes": [
+    {
+      "address": "00bed3b0",
+      "bytes": 946,
+      "sha256": "134ba7f6b542be3bcfdf1cc716506cacbd3b3aada3e48a349a0256201f5555e7",
+      "live_equals_installed_pe": true,
+      "equals_historical_receipt": false
+    },
+    {
+      "address": "00aa33a0",
+      "bytes": 90,
+      "sha256": "6bee79bafcc24742716d2c5b39965d6999fb5cf70aecfa20e38911594020d098",
+      "live_equals_installed_pe": true,
+      "equals_historical_receipt": true
+    },
+    {
+      "address": "00aa8e40",
+      "bytes": 116,
+      "sha256": "d9ebcb123ba55fff61a655f2629475acbe4798dc9549752af0faf020cc885a4b",
+      "live_equals_installed_pe": true,
+      "equals_historical_receipt": true
+    },
+    {
+      "address": "00aac8a0",
+      "bytes": 25,
+      "sha256": "5ebfc5c33614aaf720301d003984d8778bfa4a31fabb3ec23b57fc4032181ee2",
+      "live_equals_installed_pe": true,
+      "equals_historical_receipt": true
+    },
+    {
+      "address": "00a9e110",
+      "bytes": 4,
+      "sha256": "e6001fd7c43d35f244e418688ebe47d7777d15c557f62267ef4f2fb6c3bf7a74",
+      "live_equals_installed_pe": true,
+      "equals_historical_receipt": true
+    },
+    {
+      "address": "00a4cb60",
+      "bytes": 42,
+      "sha256": "4e6156698b6baae3f3ef4d6be60cf716dfa50a990a3b0330f99310459c7ab136",
+      "live_equals_installed_pe": true,
+      "equals_historical_receipt": true
+    },
+    {
+      "address": "00a7a3f0",
+      "bytes": 68,
+      "sha256": "3da8a7a364949f83ddadd4d2da1c1d12feffea537e21ded6bae0658f14cbe9ce",
+      "live_equals_installed_pe": true,
+      "equals_historical_receipt": true
+    },
+    {
+      "address": "00a7a480",
+      "bytes": 21,
+      "sha256": "27ddec7d5ac0a037f1c79582c773008299f139dcfdfca0eba0c587ad1b5bced5",
+      "live_equals_installed_pe": true,
+      "equals_historical_receipt": true
+    },
+    {
+      "address": "00a7a4a0",
+      "bytes": 21,
+      "sha256": "003d782bb8ea9f28eadb991c93c8fa29348a147f5ebfaec31c2aa7b6055002fc",
+      "live_equals_installed_pe": true,
+      "equals_historical_receipt": true
+    },
+    {
+      "address": "004c12b0",
+      "bytes": 192,
+      "sha256": "7d2554e9a125d67a8f18cc6a652e6914189ce00982f3c08f2f1dc9b72a892a6a",
+      "live_equals_installed_pe": true,
+      "equals_historical_receipt": true
+    },
+    {
+      "address": "004c1710",
+      "bytes": 189,
+      "sha256": "4fb2c903043171089b79293dacbcea00fe6651c6f10e148705c88fabe71a661c",
+      "live_equals_installed_pe": true,
+      "equals_historical_receipt": true
+    },
+    {
+      "address": "00aa5d70",
+      "bytes": 169,
+      "sha256": "5343e5b7be77fa95c33c97a324bf886dcdc1563604656dd2949c5deb574ef2ff",
+      "live_equals_installed_pe": true,
+      "equals_historical_receipt": true
+    },
+    {
+      "address": "00aa2820",
+      "bytes": 26,
+      "sha256": "6c773e1a884f5800a43d116a58e664a355a56f73aa957e29f409ff65bd3af01b",
+      "live_equals_installed_pe": true,
+      "equals_historical_receipt": true
+    },
+    {
+      "address": "00aa2920",
+      "bytes": 55,
+      "sha256": "39db00ace271389eceed0b4e7edc00526489169701825ea0765b44db0874a07f",
+      "live_equals_installed_pe": true,
+      "equals_historical_receipt": true
+    },
+    {
+      "address": "00a4c5a0",
+      "bytes": 96,
+      "sha256": "e4c5cddeca0d6fd90c23ddb53644fe77aea98a46913a12d38d593d860031fb27",
+      "live_equals_installed_pe": true,
+      "equals_historical_receipt": true
+    },
+    {
+      "address": "00a4c4a0",
+      "bytes": 26,
+      "sha256": "4f5ec5212d3f41ce28e21ea92e56b17f7acf82baf8afb16c7fe8afbb5ec3b470",
+      "live_equals_installed_pe": true,
+      "equals_historical_receipt": true
+    },
+    {
+      "address": "00a4c2d0",
+      "bytes": 3,
+      "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99",
+      "live_equals_installed_pe": true,
+      "equals_historical_receipt": true
+    },
+    {
+      "address": "00aa0ff0",
+      "bytes": 17,
+      "sha256": "3ca44671ba89ce480f95b4660ff0b1b7ad6604ec6a6aa7c30f51e542352cdc78",
+      "live_equals_installed_pe": true,
+      "equals_historical_receipt": true
+    },
+    {
+      "address": "00a4c3f0",
+      "bytes": 17,
+      "sha256": "f14f2886f29226df66705e82c8c96b0923058d09bc7985d1139b0efb451dcad6",
+      "live_equals_installed_pe": true,
+      "equals_historical_receipt": true
+    },
+    {
+      "address": "0041da80",
+      "bytes": 41,
+      "sha256": "6da47eb4546ed6edfd547bfb7cc08840ea3f31b89f985f07267f5b4b3e74fb21",
+      "live_equals_installed_pe": true,
+      "equals_historical_receipt": true
+    },
+    {
+      "address": "004c8020",
+      "bytes": 42,
+      "sha256": "07a104985ea3b2ae4c533aaa62b43bf238e5e4df4c531817abbd6ace06664d6d",
+      "live_equals_installed_pe": true,
+      "equals_historical_receipt": true
+    },
+    {
+      "address": "00aa5260",
+      "bytes": 52,
+      "sha256": "dda1305817b6feecff88b12b11d25d2c3ff240537802edb1347aff297cf8e20d",
+      "live_equals_installed_pe": true,
+      "equals_historical_receipt": true
+    },
+    {
+      "address": "00aa22c0",
+      "bytes": 53,
+      "sha256": "a1f16cf639671d4bd799c952015594e3d896207e8f94580c63dc279717b87c7e",
+      "live_equals_installed_pe": true,
+      "equals_historical_receipt": true
+    }
+  ],
+  "recovered_modules": [
+    {
+      "module": "native_window_focus_dispatch",
+      "source_commit": "9f62a71ac",
+      "source_unchanged": true,
+      "body_count": 8
+    },
+    {
+      "module": "native_platform_focus_owners",
+      "source_commit": "f9e68cc13",
+      "source_unchanged": true,
+      "body_count": 14
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Media pause described as a store",
+      "is": "A4C2D0 exactly RET4, no reads or stores; preserve preceding getter",
+      "evidence": "Fresh three-byte body c20400 and BED42C..BED435/BED4A5..BED4AE"
+    },
+    {
+      "was": "Decompiler passes pause to getter",
+      "is": "4C1710/4C12B0 have no arguments; pause remains for consumer",
+      "evidence": "Getter RET; next A4C2D0/AA33A0 RET4"
+    }
+  ],
+  "fixture": {
+    "path": "local/cc10_platform_activate/activation_probe.cpp",
+    "original_source_pairs": 24,
+    "ignored_message_case": 1,
+    "passed": true,
+    "native_original_bytes": 946,
+    "instrumentation": "Original body relocated; imported/provider call targets, global operands and message jump table rebound to recording providers",
+    "compile_attempts": 2,
+    "original_external_providers_executed": false,
+    "real_window": false,
+    "historical_provider_fixtures_rerun": false,
+    "actual_core_library_linked": true,
+    "actual_library_original_source_pairs": 24,
+    "actual_library_ignored_message_case": 1,
+    "actual_library_log": "local/cc10_platform_activate/library_fixture.log"
+  },
+  "call_report_checks": {
+    "native_window_focus_dispatch": {
+      "rows": 15,
+      "failed": 0
+    },
+    "native_platform_focus_owners": {
+      "rows": 22,
+      "failed": 0
+    },
+    "platform_activation_cc10": {
+      "rows": 16,
+      "failed": 0,
+      "import_rows_not_parsed_by_checker": 8,
+      "import_evidence": "Fresh exact IAT instructions plus original/source argument and order fixture"
+    }
+  },
+  "build": {
+    "status": "passed",
+    "command": "./scripts/build.ps1",
+    "log": "local/cc10_platform_activate_build3.log",
+    "attempts": [
+      {
+        "result": "configure_failure",
+        "cause": "Initial source registration was not deferred; corrected to repository CMake convention"
+      },
+      {
+        "result": "library_link_failure",
+        "cause": "LNK1104 missing texture_atlas.obj; no source compiler error; retry in progress"
+      },
+      {
+        "result": "passed",
+        "log": "local/cc10_platform_activate_build2.log",
+        "ctest_passed": 2
+      },
+      {
+        "result": "passed",
+        "log": "local/cc10_platform_activate_build3.log",
+        "ctest_passed": 3,
+        "note": "After fresh verify-seeds enabled native math differential"
+      }
+    ],
+    "ctest_passed": 3,
+    "ctest_failed": 0,
+    "ctest_names": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "native_seed_matches": 8
+  },
+  "artifacts": [
+    {
+      "path": "include/bsp/platform_activation.hpp",
+      "bytes": 2631,
+      "sha256": "5e6d6a9d12bfc238cbd7b71ffd044417508dfc1acc9f147305d4983c505008dd"
+    },
+    {
+      "path": "src/platform_activation.cpp",
+      "bytes": 2599,
+      "sha256": "2c1517eb3d5c53a8e21813d6415e3a996941ae3587b0e6ebceb03c5c940829fd"
+    },
+    {
+      "path": "local/cc10_platform_activate/activation_probe.cpp",
+      "bytes": 9840,
+      "sha256": "1dec00ec2d52bc8a2e8c477faea1a30eaf6a21915bc9660ac6114e9eedc21ab0"
+    },
+    {
+      "path": "local/cc10_platform_activate/activation_probe.exe",
+      "bytes": 33792,
+      "sha256": "ef6388b2944f03a01acdee45d30385573775bad6b524ac94b4965e73136c9dba"
+    },
+    {
+      "path": "local/cc10_platform_activate/activation_library_probe.exe",
+      "bytes": 33792,
+      "sha256": "7db5a9aa949bfbd93916a5557a439ad173e740ffe413c869e57367467d398227"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 69244186,
+      "sha256": "3271facb6c5f216fcd78793f5817c778579dd9294fc5fd42a3a67c4d155b36c1"
+    },
+    {
+      "path": "build/win32/Release/bsp_game.exe",
+      "bytes": 3413504,
+      "sha256": "cbb137a2bfdeb3bdde0536276b0b649d829d6fa866ab5e7dc8bab7cd7e3f0eeb"
+    },
+    {
+      "path": "local/cc10_platform_activate_build3.log",
+      "bytes": 2811,
+      "sha256": "aab7db4a7fb3f63aa0518e242b9b3e99472f4426c04f6aa5f502103b91f9c926"
+    }
+  ],
+  "limits": [
+    "No complete BED3B0 ABI/FH3 reconstruction",
+    "No application binding or real-window activation run by worker",
+    "B24FB0 and B0D1E0 remain external renderer contracts",
+    "Raw GUI/movie providers require canonical current producer identities; no detached empty owner claim",
+    "Raw sound provider cannot consume semantic SoundSystemOwner; use typed adapters",
+    "Historical provider fixture evidence is preserved, not current rerun"
+  ],
+  "recovered_compile": {
+    "passed": true,
+    "command": "local/cc10_platform_activate/compile_recovered.cmd",
+    "flags": "MSVC Win32 /MD /EHsc /O2 /Gy /W4 /WX",
+    "source_modules": [
+      "native_window_focus_dispatch",
+      "native_platform_focus_owners"
+    ]
+  }
+}
