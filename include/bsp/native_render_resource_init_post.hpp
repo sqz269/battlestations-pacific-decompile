@@ -9,12 +9,14 @@ namespace bsp {
 // Keep this state, its predecessor, original entry/argument cells and the SAME
 // continuation context alive and immovable through all later stages.
 struct NativeRenderResourceInitPostState final {
-    enum class Phase { fresh, running, awaiting_b118af_continuation, failed };
+    enum class Phase { fresh, running, awaiting_b118af_continuation,
+        dof_running, awaiting_later_continuation, failed };
     NativeRenderResourceInitPostState() = default;
     NativeRenderResourceInitPostState(const NativeRenderResourceInitPostState&) = delete;
     NativeRenderResourceInitPostState& operator=(const NativeRenderResourceInitPostState&) = delete;
     Phase phase{Phase::fresh};
     NativeRenderResourceInitContinuationState* previous{};
+    const void* dof_identity{}; // One-use later-stage claim; no resource credit.
     std::uint32_t native_site{};
     int native_state{-1};
     std::array<NativeString,7> names;
