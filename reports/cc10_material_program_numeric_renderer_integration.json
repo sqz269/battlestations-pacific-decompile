@@ -1,0 +1,63 @@
+{
+  "packet": "cc10_material_program_numeric_renderer_integration",
+  "worker_commit": "1318128793fafe5361090da232e8bd056443ef9d",
+  "integration": "f1de6ab4a",
+  "archive": {
+    "path": "local/cc10-platform-evidence/material-program-numeric-renderer.zip",
+    "sha256": "98c51767f82cc34f7889edc5cf8e353651cff3d8207e6ae11c1c43c78bb54b85",
+    "files": 40,
+    "valid": true
+  },
+  "review": [
+    "Complete four-file source/header delta and documentation reviewed; native B45E00 fullbody and B5F160 current-renderer call sequence inspected",
+    "Explicit borrowed numeric domain shares construction/copy lifetime, strings and current renderer cells; no new canonical registry or owner",
+    "One retained secondary frame per each program LoadFrame; diagnostics accessible for either load, live failed frames cannot be discarded",
+    "Actual B44B10 constructor retains raw slot/base/states/string/texture on failure; numeric catch never returns slot or substitutes native unwind",
+    "B45E00 rereads primary after constructor, captures before secondary publication/registration; setters and final root08 reread current secondary",
+    "Legacy callable constructor still returns raw slot only through its existing unwind branch",
+    "B5F160 performs original six conditional removals before current renderer/profile/+104 reads; numeric B1FF50 returns actual+1B18 and livebyte3D controls9A/B5 removal",
+    "Current application success/failure logs inspected; normal real resource retirement and diagnostic process exit kept distinct"
+  ],
+  "validation": {
+    "strict_win32_build": true,
+    "worker_ctests": 3,
+    "integrated_ctests": 3,
+    "build_log_sha256": "f4701add7b83644a29ad836dd59aead3bd7b3638d4cf4d9dbb0f2ce06c3c4763",
+    "live_PE_blocks": 9,
+    "static_direct_call_rows": 55,
+    "indirect_rows_separately_supported_by_original_profile_words": 2,
+    "frozen_indexed_evidence": 30,
+    "current_application_objects": 70,
+    "actual_B407A0_B44B10_B45E00_and_white_texture": true,
+    "secondary_slots": 14,
+    "live_caps_byte": 1,
+    "canonical_retirement_and_actual_pool_returns": true,
+    "success_application_drain": true,
+    "success_device_api_COM_counts": [
+      0,
+      0
+    ],
+    "success_exit": 0,
+    "reached_source_binding_failure": "B44BA8 state1; raw slot/base/states/string/texturechild retained; no secondary publication",
+    "failure_free_slots": [
+      31,
+      30
+    ],
+    "failure_exit": "Explicit ExitProcess(0); no failed-frame destruction or CRT cleanup",
+    "new_tracked_tests": 0,
+    "full_B45EE0_B46950_executed": false,
+    "cold_compiler_cache_executed": false,
+    "full_B107F0_executed": false,
+    "native_ABI_FH3_SEH": false,
+    "game_validated": false
+  },
+  "boundaries": [
+    "existing callable renderer path preserved when optional numeric domain absent",
+    "per-load B45EE0 integration is static/build checked; direct provider leaf exercise does not execute full B46950/B45EE0/cold compiler",
+    "registration/cache backing domain and all caller storage must survive retained operations; no new registry or blanket binding",
+    "failed actual constructor remains unresolved and must remain retained; no original FH3/SEH/ABI transport claim",
+    "installed descriptor first source0 sampler B-16 preimage and procedural runtime remain separate",
+    "actual F8BBF0 shadow target publication/policy owner remains separate; no guessed boolean cell",
+    "bloom fourth-DWORD usable backing and distortion cleanup preimages remain unresolved; no B107F0 activation"
+  ]
+}
