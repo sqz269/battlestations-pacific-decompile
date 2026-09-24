@@ -3244,65 +3244,6 @@
       "native": "00bf6b43"
     }
   ],
-  "call_gaps": [
-    {
-      "function": "00cbfb38",
-      "call": "00cbfb3c",
-      "current_live_end_inclusive": "00cbfb40",
-      "required_end_exclusive": "00cbfb43",
-      "continuations": [
-        {
-          "address": "00cbfb41",
-          "length": 1,
-          "instruction": "pop ecx"
-        },
-        {
-          "address": "00cbfb42",
-          "length": 1,
-          "instruction": "ret"
-        }
-      ],
-      "root_repair": "clear returning-free CALL_RETURN override, then recreate if needed"
-    },
-    {
-      "function": "00cbfb95",
-      "call": "00cbfb99",
-      "current_live_end_inclusive": "00cbfb9d",
-      "required_end_exclusive": "00cbfba0",
-      "continuations": [
-        {
-          "address": "00cbfb9e",
-          "length": 1,
-          "instruction": "pop ecx"
-        },
-        {
-          "address": "00cbfb9f",
-          "length": 1,
-          "instruction": "ret"
-        }
-      ],
-      "root_repair": "clear returning-free CALL_RETURN override, then recreate if needed"
-    },
-    {
-      "function": "00cbfba0",
-      "call": "00cbfba4",
-      "current_live_end_inclusive": "00cbfba8",
-      "required_end_exclusive": "00cbfbab",
-      "continuations": [
-        {
-          "address": "00cbfba9",
-          "length": 1,
-          "instruction": "pop ecx"
-        },
-        {
-          "address": "00cbfbaa",
-          "length": 1,
-          "instruction": "ret"
-        }
-      ],
-      "root_repair": "clear returning-free CALL_RETURN override, then recreate if needed"
-    }
-  ],
   "no_ghidra_function": [],
   "functions": [
     {
@@ -3611,5 +3552,77 @@
       "evidence": "CL numeric native material/cache admission: refreshed four existing ordinary bodies1353B and seventeen compiler supports154B, 457 instruction owners,61 direct and6 indirect transfers with saved Ghidra/disk bytes equal. B18D60/B407A0 use actual B319B0 texture cache, preserving serial schedule, fallback reference transfer and unwritten C8..137. B2EBB0 retains per-call constructor texture and program frames; raw allocation unwind only, no completed-effect rollback. 535320 uses actual B318B0 effect cache and B18780/B18900 material allocation/construction with normal temporary effect release. Metadata-only GuiNativeGeometryOwners admission preserves completed creator and unbound companion on bind failure. Three missing handlers and CBD760 returning-free tail repaired; original comments preserved, no byte clear or global no-return changes. Focused fixture uses real RTX5090 D3D9 texture, actual error.tga cache, constructed base-effect cache owner, actual material pools and normal/failing registration. Cold program/descriptor path, original full-parent execution, native FH3/ABI equivalence and game validation remain unproven. Complete 124B. ECX actual8h name; EAX pooled material; RET. Source create_native_material_from_effect_cache_00535320.",
       "kind": "function"
     }
-  ]
+  ],
+  "historical_worker_call_gaps": [
+    {
+      "function": "00cbfb38",
+      "call": "00cbfb3c",
+      "current_live_end_inclusive": "00cbfb40",
+      "required_end_exclusive": "00cbfb43",
+      "continuations": [
+        {
+          "address": "00cbfb41",
+          "length": 1,
+          "instruction": "pop ecx"
+        },
+        {
+          "address": "00cbfb42",
+          "length": 1,
+          "instruction": "ret"
+        }
+      ],
+      "root_repair": "clear returning-free CALL_RETURN override, then recreate if needed"
+    },
+    {
+      "function": "00cbfb95",
+      "call": "00cbfb99",
+      "current_live_end_inclusive": "00cbfb9d",
+      "required_end_exclusive": "00cbfba0",
+      "continuations": [
+        {
+          "address": "00cbfb9e",
+          "length": 1,
+          "instruction": "pop ecx"
+        },
+        {
+          "address": "00cbfb9f",
+          "length": 1,
+          "instruction": "ret"
+        }
+      ],
+      "root_repair": "clear returning-free CALL_RETURN override, then recreate if needed"
+    },
+    {
+      "function": "00cbfba0",
+      "call": "00cbfba4",
+      "current_live_end_inclusive": "00cbfba8",
+      "required_end_exclusive": "00cbfbab",
+      "continuations": [
+        {
+          "address": "00cbfba9",
+          "length": 1,
+          "instruction": "pop ecx"
+        },
+        {
+          "address": "00cbfbaa",
+          "length": 1,
+          "instruction": "ret"
+        }
+      ],
+      "root_repair": "clear returning-free CALL_RETURN override, then recreate if needed"
+    }
+  ],
+  "call_gaps": [],
+  "primary_repairs": {
+    "flow_record": "reports/cc10_post_argument_flow_repairs.json",
+    "definition_record": "reports/cc10_post_argument_function_definitions.json",
+    "complete_bodies": {
+      "00cbfb38": 11,
+      "00cbfb95": 11,
+      "00cbfba0": 11
+    },
+    "callee_noreturn_unchanged": true,
+    "fresh_final_pop_ret_listings_checked": true,
+    "worker_archive_unchanged": true
+  }
 }

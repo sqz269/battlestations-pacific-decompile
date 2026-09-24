@@ -64,10 +64,14 @@ not native FH3/SEH equivalence.
 
 The report includes all ten B4E470 funclets and CBFBAB handler, plus 535320's
 C6C240 raw-slot return and C6C248 handler. Three returning-free listings remain
-truncated in Ghidra: CBFB38 needs CBFB41 POP ECX/CBFB42 RET; CBFB95 needs
-CBFB9E POP ECX/CBFB9F RET; CBFBA0 needs CBFBA9 POP ECX/CBFBAA RET. Exact
-disk/live continuations and containing functions are recorded for the primary
-to repair after release. The worker did not mutate Ghidra.
+truncated in the frozen worker snapshot: CBFB38 needed CBFB41 POP ECX/CBFB42 RET;
+CBFB95 needed CBFB9E POP ECX/CBFB9F RET; CBFBA0 needed CBFBA9 POP ECX/CBFBAA RET.
+After release, the primary cleared the returning-free flow overrides and
+recreated all three complete 11-byte bodies. Fresh listings include each final
+POP/RET, and all 47 direct/tail checks pass. The free callee's annotation was
+unchanged. Prior annotations and the frozen worker evidence are preserved in
+`reports/cc10_post_argument_flow_repairs.json` and
+`reports/cc10_post_argument_function_definitions.json`.
 
 All 1,249 code bytes and 176 descriptor/map bytes match live Ghidra and installed
 PE bytes. The 64 transfer inventory contains 47 verified direct/tail rows and 17

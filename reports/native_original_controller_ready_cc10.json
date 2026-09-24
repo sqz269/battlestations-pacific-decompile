@@ -1,0 +1,76 @@
+{
+  "packet": "cc10_original_controller_ready",
+  "status": "reviewed_one_prepare_only_pass_no_original_child",
+  "primary_verification": {
+    "index_sha256": "c96bf7ad5cc5bf0b4306e13482af44dbdcaa43893617304b480d70c3b66bd766",
+    "indexed_files_verified": 35,
+    "prior_rows_verified": 1050,
+    "all_current_bound_roles_verified": 24,
+    "helper_direct_frozen_r2": true,
+    "controller_delta_matches_frozen_r2": true,
+    "unchanged_protocol_functions": 13,
+    "main_change_only_offline_reporting": true,
+    "exact_overlay_and_provenance_verified": true,
+    "prepare_receipts_consistent": true,
+    "original_attempts_total": 2,
+    "new_original_launches": 0,
+    "root_verification_invocations": 0,
+    "limits": [
+      "No original guard, continuation or sampler runtime proof",
+      "Profile unchanged conclusion derives from frozen reviewed dry-run receipts; reads retain access-time limit",
+      "Preparation copy verification uses metadata/identity and EXE/xlive/log hashes; preceding full stream observation separately reviewed"
+    ]
+  },
+  "worker_report": {
+    "packet": "cc10_original_v3_ready",
+    "status": "one_prepare_only_pass_frozen",
+    "controller_sha256": "1e5706747672373d3523efe7c8efa20d4af982a4f8aa6cea14384f03d5e0d456",
+    "minimal_delta_sha256": "5bf0738fed41d99846f45d62f156e460c8c4c74aa6b4ee7804a2b8d3e3565bcf",
+    "overlay_sha256": "9a6e841d79e29344f6877a22715b6a19d45f9d4491daa33b7a14d4b1ca545c1a",
+    "run_path": "local\\original_sampler_capture_cc10\\controller_v3_runs\\v3_prepare01",
+    "run_report_sha256": "3218d3446ce8755e5afe4fa6053dca4b46eb8445d99eca4af7eb6cb7f07fc831",
+    "helper_journal_sha256": "adf9647a080b44c8f46a307af324d7ef2a3ff79216be0455edceb785f1d2b443",
+    "outer_lifecycle_sha256": "2a150a80ac9b7dd47c9e31884efe2b503bf7b57588ec71c3a670d4cbaf00dba8",
+    "profile_dry_run_sha256": "fce4b0ac0aff0e02991b3b91e3e34ddcc9678b89738b2942840573459a920069",
+    "disabled_template_sha256": "fd904694179539c04df93e8a8c881ffe27fa7f8fa0b630bcd266f43f197e9763",
+    "helper_path": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\original_sampler_dispatcher_v3r2_cc10\\original-capture-probe-v3.exe",
+    "helper_sha256": "db9b7918516245b1e373ea28af68b830cc1f8295be95f2e054ca5156bce5af0b",
+    "helper_rebuilt_or_copied": false,
+    "prepare_attempts": 1,
+    "original_launches": 0,
+    "original_attempts_unchanged": 2,
+    "allow_original_launch": false,
+    "admission_or_consumption": false,
+    "execution_profile_backup": false,
+    "live_profile_restore": false,
+    "profile_dry_run_local_scratch": true,
+    "outer_active_descendants": 0,
+    "outer_wrapper_exit": 0,
+    "artifact_roles": 24,
+    "prior_files_verified": 1050,
+    "limits": [
+      "Preparation only; no original guard/continuation/sampler runtime proof.",
+      "Profile reads retain documented access-time boundary.",
+      "Immediate preparation copy check used metadata/identity plus EXE/xlive/log hashes; accepted preceding fresh packet hashed every stream."
+    ]
+  },
+  "review": [
+    "Full controller delta and overlay reviewed; AST confirms all13 other functions and all main execution statements unchanged",
+    "All35 indexed artifacts,1050 prior rows and24 currently bound roles independently verified",
+    "Helper directly bound to frozen r2 binary; accepted exact log row and fresh observation provenance only",
+    "Journal has exactly adapter/preparation_only/result; zero continuation or entry transactions; child259 is unused sentinel",
+    "Owned job receipts record wrapper0/allclosed; scratch profile restore only and live data unchanged",
+    "Disabled template retained; separate root receipt required for any actual attempt"
+  ],
+  "limits": [
+    "No original guard, continuation or sampler runtime proof",
+    "Profile unchanged conclusion derives from frozen reviewed dry-run receipts; reads retain access-time limit",
+    "Preparation copy verification uses metadata/identity and EXE/xlive/log hashes; preceding full stream observation separately reviewed"
+  ],
+  "archive": {
+    "path": "local/cc10-platform-evidence/original-controller-ready.zip",
+    "sha256": "f6506418b5134b667717f3ed2114510bbf945cfc709ef566d835473304420c51",
+    "files": 39,
+    "valid": true
+  }
+}

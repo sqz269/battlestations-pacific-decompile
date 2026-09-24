@@ -1,0 +1,253 @@
+{
+ "events": [
+  {
+   "recreate": "00cbfb38",
+   "previous": "Function: Unwind@00cbfb38 at 00cbfb38\nSignature: undefined Unwind@00cbfb38(void)\nEntry: 00cbfb38\nBody: 00cbfb38 - 00cbfb40",
+   "plate": "[BSP reconstruction 00cbfb38]\nCC10 existing compiler boundary, exact current caller-cell evidence; no nativeFH3 implementation. docs/NATIVE_POST_EFFECT_ARGUMENT_VIEW_CC10.md; reports/native_post_effect_argument_view_cc10.json"
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00cbfb38"
+   },
+   "result": {
+    "success": true,
+    "address": "00cbfb38",
+    "deleted_function": "Unwind@00cbfb38",
+    "body_size": 9,
+    "message": "Function 'Unwind@00cbfb38' deleted at 00cbfb38"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00cbfb38",
+    "end_address": "00cbfb43"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00cbfb38",
+    "end_address": "00cbfb42",
+    "bytes_disassembled": 11,
+    "message": "Successfully disassembled 11 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00cbfb38",
+    "disassemble_first": false,
+    "name": "Unwind@00cbfb38"
+   },
+   "result": {
+    "success": true,
+    "address": "00cbfb38",
+    "function_name": "Unwind@00cbfb38",
+    "entry_point": "00cbfb38",
+    "body_size": 11,
+    "message": "Function created successfully at 00cbfb38",
+    "warnings": [
+     "Function name 'Unwind@00cbfb38' \u2014 main part 'Unwind@00cbfb38' is not PascalCase. Expected: Unwind@00cbfb38",
+     "Function name 'Unwind@00cbfb38' does not start with a recognized verb. First word 'Unwind@00cbfb38' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "00cbfb38",
+    "comment": "[BSP reconstruction 00cbfb38]\nCC10 existing compiler boundary, exact current caller-cell evidence; no nativeFH3 implementation. docs/NATIVE_POST_EFFECT_ARGUMENT_VIEW_CC10.md; reports/native_post_effect_argument_view_cc10.json"
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 00cbfb38",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "00cbfb38",
+   "end": "00cbfb43",
+   "name": "Unwind@00cbfb38",
+   "after": "Function: Unwind@00cbfb38 at 00cbfb38\nSignature: undefined Unwind@00cbfb38(void)\nEntry: 00cbfb38\nBody: 00cbfb38 - 00cbfb42"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "recreate": "00cbfb95",
+   "previous": "Function: Unwind@00cbfb95 at 00cbfb95\nSignature: undefined Unwind@00cbfb95(void)\nEntry: 00cbfb95\nBody: 00cbfb95 - 00cbfb9d",
+   "plate": "[BSP reconstruction 00cbfb95]\nCC10 existing compiler boundary, exact current caller-cell evidence; no nativeFH3 implementation. docs/NATIVE_POST_EFFECT_ARGUMENT_VIEW_CC10.md; reports/native_post_effect_argument_view_cc10.json"
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00cbfb95"
+   },
+   "result": {
+    "success": true,
+    "address": "00cbfb95",
+    "deleted_function": "Unwind@00cbfb95",
+    "body_size": 9,
+    "message": "Function 'Unwind@00cbfb95' deleted at 00cbfb95"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00cbfb95",
+    "end_address": "00cbfba0"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00cbfb95",
+    "end_address": "00cbfb9f",
+    "bytes_disassembled": 11,
+    "message": "Successfully disassembled 11 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00cbfb95",
+    "disassemble_first": false,
+    "name": "Unwind@00cbfb95"
+   },
+   "result": {
+    "success": true,
+    "address": "00cbfb95",
+    "function_name": "Unwind@00cbfb95",
+    "entry_point": "00cbfb95",
+    "body_size": 11,
+    "message": "Function created successfully at 00cbfb95",
+    "warnings": [
+     "Function name 'Unwind@00cbfb95' \u2014 main part 'Unwind@00cbfb95' is not PascalCase. Expected: Unwind@00cbfb95",
+     "Function name 'Unwind@00cbfb95' does not start with a recognized verb. First word 'Unwind@00cbfb95' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "00cbfb95",
+    "comment": "[BSP reconstruction 00cbfb95]\nCC10 existing compiler boundary, exact current caller-cell evidence; no nativeFH3 implementation. docs/NATIVE_POST_EFFECT_ARGUMENT_VIEW_CC10.md; reports/native_post_effect_argument_view_cc10.json"
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 00cbfb95",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "00cbfb95",
+   "end": "00cbfba0",
+   "name": "Unwind@00cbfb95",
+   "after": "Function: Unwind@00cbfb95 at 00cbfb95\nSignature: undefined Unwind@00cbfb95(void)\nEntry: 00cbfb95\nBody: 00cbfb95 - 00cbfb9f"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "recreate": "00cbfba0",
+   "previous": "Function: Unwind@00cbfba0 at 00cbfba0\nSignature: undefined Unwind@00cbfba0(void)\nEntry: 00cbfba0\nBody: 00cbfba0 - 00cbfba8",
+   "plate": "[BSP reconstruction 00cbfba0]\nCC10 existing compiler boundary, exact current caller-cell evidence; no nativeFH3 implementation. docs/NATIVE_POST_EFFECT_ARGUMENT_VIEW_CC10.md; reports/native_post_effect_argument_view_cc10.json"
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00cbfba0"
+   },
+   "result": {
+    "success": true,
+    "address": "00cbfba0",
+    "deleted_function": "Unwind@00cbfba0",
+    "body_size": 9,
+    "message": "Function 'Unwind@00cbfba0' deleted at 00cbfba0"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00cbfba0",
+    "end_address": "00cbfbab"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00cbfba0",
+    "end_address": "00cbfbaa",
+    "bytes_disassembled": 11,
+    "message": "Successfully disassembled 11 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00cbfba0",
+    "disassemble_first": false,
+    "name": "Unwind@00cbfba0"
+   },
+   "result": {
+    "success": true,
+    "address": "00cbfba0",
+    "function_name": "Unwind@00cbfba0",
+    "entry_point": "00cbfba0",
+    "body_size": 11,
+    "message": "Function created successfully at 00cbfba0",
+    "warnings": [
+     "Function name 'Unwind@00cbfba0' \u2014 main part 'Unwind@00cbfba0' is not PascalCase. Expected: Unwind@00cbfba0",
+     "Function name 'Unwind@00cbfba0' does not start with a recognized verb. First word 'Unwind@00cbfba0' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "00cbfba0",
+    "comment": "[BSP reconstruction 00cbfba0]\nCC10 existing compiler boundary, exact current caller-cell evidence; no nativeFH3 implementation. docs/NATIVE_POST_EFFECT_ARGUMENT_VIEW_CC10.md; reports/native_post_effect_argument_view_cc10.json"
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 00cbfba0",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "00cbfba0",
+   "end": "00cbfbab",
+   "name": "Unwind@00cbfba0",
+   "after": "Function: Unwind@00cbfba0 at 00cbfba0\nSignature: undefined Unwind@00cbfba0(void)\nEntry: 00cbfba0\nBody: 00cbfba0 - 00cbfbaa"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

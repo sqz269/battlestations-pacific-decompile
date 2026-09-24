@@ -1,0 +1,83 @@
+{
+  "packet": "cc10_post_effect_argument_view_integration",
+  "worker_commit": "0d5bbe1453f7a836f4715ca6383d140a6afff1fd",
+  "integration": "4133ba6fe7f9aac81209abe5f1680b7a631ab499",
+  "worker_report": "reports/native_post_effect_argument_view_cc10.json",
+  "frozen_evidence": {
+    "worker_commit": "0d5bbe1453f7a836f4715ca6383d140a6afff1fd",
+    "archive_sha256": "df95be9b3469c09684e9a0463af73f49900dbda6de6de8304197e711e7ed7acf",
+    "archive_files": 35,
+    "manifest_files_verified": 34,
+    "current_compiled_objects_verified": 2,
+    "compiled_instruction_tokens_verified": 36,
+    "prior_archives_unchanged": 22,
+    "source_sha256": {
+      "include/bsp/native_post_effect20_construction.hpp": "4f3efc1f53f20e737bb580495dc3b9e2c5a6720bac4a3762addb5be926c8d13b",
+      "src/native_post_effect20_construction.cpp": "53c307887f27775220c6f2178cd0c5ccc79edccfbde6175a8925640c491cc1f8",
+      "include/bsp/native_material_factory.hpp": "2cf4933dc2d616674b501ff1786c95c47f3251cf7dd4deda649ca95bba0a3563",
+      "src/native_material_factory.cpp": "6ef1b9855e65cec8e69a1d51001733adef2073d8ed08650fff0115307ec71bcd"
+    },
+    "normal_bytes": 1098,
+    "compiler_bytes": 151,
+    "descriptor_bytes": 176,
+    "root_review": [
+      "Full four-file source diff and full native974B/124B bodies reviewed",
+      "Current argument capture/write schedule and current-cell cleanup preserved; second receiver/profile precede height write and late slot read follows",
+      "Compiled optional chain and complete model/camera/CRT cleanup paths inspected; no caller-cell clear",
+      "Prior CL genuine constructed base-effect hot-cache evidence preserved; no new runtime fixture or full composition admitted"
+    ],
+    "limits": [
+      "Existing logical model/camera companions and provider graph; no actual45Ch/24h graph conversion",
+      "Original caller34/38/3C preimages remain required; no zero initialization or capability-failure admission",
+      "Source0 B3B280/B5F100 upper-byte knowledge and cold material path remain unadmitted",
+      "No B107F0 activation, generic renderer/COM substitutes or unknown-profile success",
+      "Source ABI/private stack and native FH3/SEH transport not reproduced",
+      "No copied-original/source execution, callback-mutation fixture, cold descriptor/program loading or full post20/initializer run for this packet"
+    ]
+  },
+  "validation": {
+    "normal_bytes": 1098,
+    "compiler_bytes": 151,
+    "descriptor_bytes": 176,
+    "strict_win32_build": true,
+    "integrated_ctests": 3,
+    "direct_tail_rows_passed": 47,
+    "indirect_rows_inventoried": 17,
+    "scoped_compiled_checks": 36,
+    "runtime_fixture": false,
+    "tracked_tests_added": false,
+    "game_validated": false
+  },
+  "review": [
+    "Full four-file source diff and full native974B/124B bodies reviewed",
+    "Current argument capture/write schedule and current-cell cleanup preserved; second receiver/profile precede height write and late slot read follows",
+    "Compiled optional chain and complete model/camera/CRT cleanup paths inspected; no caller-cell clear",
+    "Prior CL genuine constructed base-effect hot-cache evidence preserved; no new runtime fixture or full composition admitted"
+  ],
+  "ghidra": {
+    "flow_record": "reports/cc10_post_argument_flow_repairs.json",
+    "definition_record": "reports/cc10_post_argument_function_definitions.json",
+    "complete_bodies": {
+      "00cbfb38": 11,
+      "00cbfb95": 11,
+      "00cbfba0": 11
+    },
+    "callee_noreturn_unchanged": true,
+    "fresh_final_pop_ret_listings_checked": true,
+    "worker_archive_unchanged": true
+  },
+  "limits": [
+    "Existing logical model/camera companions and provider graph; no actual45Ch/24h graph conversion",
+    "Original caller34/38/3C preimages remain required; no zero initialization or capability-failure admission",
+    "Source0 B3B280/B5F100 upper-byte knowledge and cold material path remain unadmitted",
+    "No B107F0 activation, generic renderer/COM substitutes or unknown-profile success",
+    "Source ABI/private stack and native FH3/SEH transport not reproduced",
+    "No copied-original/source execution, callback-mutation fixture, cold descriptor/program loading or full post20/initializer run for this packet"
+  ],
+  "archive": {
+    "path": "local/cc10-platform-evidence/post-effect-argument-view.zip",
+    "sha256": "3eb3f6d6869e0e675ba428631931cde7e8fbecf5629109036b78444f024da5d9",
+    "files": 44,
+    "valid": true
+  }
+}
