@@ -1,0 +1,530 @@
+{
+  "packet": "cc10_render_pass_admission",
+  "base_commit": "abfe67af8b4b9250e6dcd0a99264401c3490e98b",
+  "status": "source_only_canonical_pass_admission_strict_win32_build_checked",
+  "native_entry_reconstructed": false,
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "ownership": "file-only packet; B107F0/native targets read-only external; no address/name/ledger changes",
+  "source_files": [
+    "include/bsp/native_render_resource_init_continuation.hpp",
+    "src/native_render_resource_init_continuation.cpp",
+    "include/bsp/native_render_resource_init_second_bloom.hpp",
+    "src/native_render_resource_init_second_bloom.cpp"
+  ],
+  "no_ghidra_function": [],
+  "native_calls": [
+    {
+      "address": "00b10bd6",
+      "native": "00bf681b",
+      "function": "00b107f0",
+      "scope": "existing caller evidence; external root-owned native address"
+    },
+    {
+      "address": "00b10c20",
+      "native": "00b540b0",
+      "function": "00b107f0",
+      "scope": "existing caller evidence; external root-owned native address"
+    },
+    {
+      "address": "00b10c27",
+      "native": "00bf681b",
+      "function": "00b107f0",
+      "scope": "existing caller evidence; external root-owned native address"
+    },
+    {
+      "address": "00b10c70",
+      "native": "00b4d170",
+      "function": "00b107f0",
+      "scope": "existing caller evidence; external root-owned native address"
+    },
+    {
+      "address": "00b10c77",
+      "native": "00b4cb10",
+      "function": "00b107f0",
+      "scope": "existing caller evidence; external root-owned native address"
+    },
+    {
+      "address": "00b10c88",
+      "native": "00b542d0",
+      "function": "00b107f0",
+      "scope": "existing caller evidence; external root-owned native address"
+    },
+    {
+      "address": "00b10e5f",
+      "native": "00bf681b",
+      "function": "00b107f0",
+      "scope": "existing caller evidence; external root-owned native address"
+    },
+    {
+      "address": "00b10eb0",
+      "native": "00b4d170",
+      "function": "00b107f0",
+      "scope": "existing caller evidence; external root-owned native address"
+    },
+    {
+      "address": "00b10eb9",
+      "native": "00b544f0",
+      "function": "00b107f0",
+      "scope": "existing caller evidence; external root-owned native address"
+    },
+    {
+      "address": "00b10ec3",
+      "native": "00bf681b",
+      "function": "00b107f0",
+      "scope": "existing caller evidence; external root-owned native address"
+    },
+    {
+      "address": "00b10f17",
+      "native": "00b4d170",
+      "function": "00b107f0",
+      "scope": "existing caller evidence; external root-owned native address"
+    },
+    {
+      "address": "00b10f20",
+      "native": "00b546f0",
+      "function": "00b107f0",
+      "scope": "existing caller evidence; external root-owned native address"
+    },
+    {
+      "address": "00b10f2a",
+      "native": "00bf681b",
+      "function": "00b107f0",
+      "scope": "existing caller evidence; external root-owned native address"
+    },
+    {
+      "address": "00b10f47",
+      "native": "00b50d40",
+      "function": "00b107f0",
+      "scope": "existing caller evidence; external root-owned native address"
+    },
+    {
+      "address": "00b10f5d",
+      "native": "00b4d170",
+      "function": "00b107f0",
+      "scope": "existing caller evidence; external root-owned native address"
+    },
+    {
+      "address": "00b10f66",
+      "native": "00b51090",
+      "function": "00b107f0",
+      "scope": "existing caller evidence; external root-owned native address"
+    },
+    {
+      "address": "00b10f70",
+      "native": "00bf681b",
+      "function": "00b107f0",
+      "scope": "existing caller evidence; external root-owned native address"
+    },
+    {
+      "address": "00b10fa5",
+      "native": "00b4d170",
+      "function": "00b107f0",
+      "scope": "existing caller evidence; external root-owned native address"
+    },
+    {
+      "address": "00b10fae",
+      "native": "00b54940",
+      "function": "00b107f0",
+      "scope": "existing caller evidence; external root-owned native address"
+    },
+    {
+      "address": "00b10fb8",
+      "native": "00bf681b",
+      "function": "00b107f0",
+      "scope": "existing caller evidence; external root-owned native address"
+    },
+    {
+      "address": "00b10fd5",
+      "native": "00b54e70",
+      "function": "00b107f0",
+      "scope": "existing caller evidence; external root-owned native address"
+    },
+    {
+      "address": "00b11013",
+      "native": "00b4d170",
+      "function": "00b107f0",
+      "scope": "existing caller evidence; external root-owned native address"
+    },
+    {
+      "address": "00b1101c",
+      "native": "00b54f90",
+      "function": "00b107f0",
+      "scope": "existing caller evidence; external root-owned native address"
+    },
+    {
+      "address": "00b11dea",
+      "native": "00bf681b",
+      "function": "00b107f0",
+      "scope": "existing caller evidence; external root-owned native address"
+    },
+    {
+      "address": "00b11e07",
+      "native": "00b54e70",
+      "function": "00b107f0",
+      "scope": "existing caller evidence; external root-owned native address"
+    },
+    {
+      "address": "00b11e32",
+      "native": "00b4d170",
+      "function": "00b107f0",
+      "scope": "existing caller evidence; external root-owned native address"
+    },
+    {
+      "address": "00b11e3b",
+      "native": "00b54f90",
+      "function": "00b107f0",
+      "scope": "existing caller evidence; external root-owned native address"
+    },
+    {
+      "address": "00b10123",
+      "native": "00b0f5e0",
+      "function": "00b10120",
+      "scope": "existing canonical deleting provider support; no new body"
+    },
+    {
+      "address": "00b10130",
+      "native": "00bf65ac",
+      "function": "00b10120",
+      "scope": "existing canonical deleting provider support; no new body"
+    },
+    {
+      "address": "00b10143",
+      "native": "00b0f5e0",
+      "function": "00b10140",
+      "scope": "existing canonical deleting provider support; no new body"
+    },
+    {
+      "address": "00b10150",
+      "native": "00bf65ac",
+      "function": "00b10140",
+      "scope": "existing canonical deleting provider support; no new body"
+    },
+    {
+      "address": "00b10163",
+      "native": "00b0f5e0",
+      "function": "00b10160",
+      "scope": "existing canonical deleting provider support; no new body"
+    },
+    {
+      "address": "00b10170",
+      "native": "00bf65ac",
+      "function": "00b10160",
+      "scope": "existing canonical deleting provider support; no new body"
+    },
+    {
+      "address": "00b10183",
+      "native": "00b0f5e0",
+      "function": "00b10180",
+      "scope": "existing canonical deleting provider support; no new body"
+    },
+    {
+      "address": "00b10190",
+      "native": "00bf65ac",
+      "function": "00b10180",
+      "scope": "existing canonical deleting provider support; no new body"
+    },
+    {
+      "address": "00b101a3",
+      "native": "00b0f5e0",
+      "function": "00b101a0",
+      "scope": "existing canonical deleting provider support; no new body"
+    },
+    {
+      "address": "00b101b0",
+      "native": "00bf65ac",
+      "function": "00b101a0",
+      "scope": "existing canonical deleting provider support; no new body"
+    },
+    {
+      "address": "00b50fe3",
+      "native": "00b50dd0",
+      "function": "00b50fe0",
+      "scope": "existing canonical deleting provider support; no new body"
+    },
+    {
+      "address": "00b50ff0",
+      "native": "00bf65ac",
+      "function": "00b50fe0",
+      "scope": "existing canonical deleting provider support; no new body"
+    },
+    {
+      "address": "00b54f73",
+      "native": "00b54ea0",
+      "function": "00b54f70",
+      "scope": "existing canonical deleting provider support; no new body"
+    },
+    {
+      "address": "00b54f80",
+      "native": "00bf65ac",
+      "function": "00b54f70",
+      "scope": "existing canonical deleting provider support; no new body"
+    }
+  ],
+  "live_pe_byte_blocks": [
+    {
+      "scope": "inline_first",
+      "start": "00b10bd4",
+      "end_inclusive": "00b10c8c",
+      "end_exclusive": "00b10c8d",
+      "size": 185,
+      "sha256": "cc783db771ad82f16b0a8bb02a9779dcfb7c7b769177699feffa649a3895eefe",
+      "live_equals_pe": true,
+      "instructions": 63,
+      "last_instruction": "00b10c88",
+      "last_instruction_size": 5,
+      "new_native_reconstruction": false
+    },
+    {
+      "scope": "inline_downscale",
+      "start": "00b10e5a",
+      "end_inclusive": "00b10f24",
+      "end_exclusive": "00b10f25",
+      "size": 203,
+      "sha256": "06ea0b15edf676023383d008fda78e21f407f04f14946404b1a9da6051d7b26d",
+      "live_equals_pe": true,
+      "instructions": 66,
+      "last_instruction": "00b10f20",
+      "last_instruction_size": 5,
+      "new_native_reconstruction": false
+    },
+    {
+      "scope": "luminance_caller",
+      "start": "00b10f25",
+      "end_inclusive": "00b10f6a",
+      "end_exclusive": "00b10f6b",
+      "size": 70,
+      "sha256": "c6fcd895d45d3ee3c73b87eaaf8e2ffd35b2f3d41e8d76b8f91199e4c0f472ff",
+      "live_equals_pe": true,
+      "instructions": 18,
+      "last_instruction": "00b10f66",
+      "last_instruction_size": 5,
+      "new_native_reconstruction": false
+    },
+    {
+      "scope": "inline_bright",
+      "start": "00b10f6b",
+      "end_inclusive": "00b10fb2",
+      "end_exclusive": "00b10fb3",
+      "size": 72,
+      "sha256": "929551171e1f1c6b99dec3895de31ff11977d5ab5227696d4a44885548b5fb91",
+      "live_equals_pe": true,
+      "instructions": 22,
+      "last_instruction": "00b10fae",
+      "last_instruction_size": 5,
+      "new_native_reconstruction": false
+    },
+    {
+      "scope": "first_bloom",
+      "start": "00b10fb3",
+      "end_inclusive": "00b11020",
+      "end_exclusive": "00b11021",
+      "size": 110,
+      "sha256": "cec0ecc4a7b89bcf7402819551fcd6f90453dea6bd1086bafd2fe4d2041547ca",
+      "live_equals_pe": true,
+      "instructions": 34,
+      "last_instruction": "00b1101c",
+      "last_instruction_size": 5,
+      "new_native_reconstruction": false
+    },
+    {
+      "scope": "second_bloom",
+      "start": "00b11de5",
+      "end_inclusive": "00b11e3f",
+      "end_exclusive": "00b11e40",
+      "size": 91,
+      "sha256": "351180e82adb0421abcf7df0dcca6591e9085adc36f40cb7852f1b80eb6f263e",
+      "live_equals_pe": true,
+      "instructions": 26,
+      "last_instruction": "00b11e3b",
+      "last_instruction_size": 5,
+      "new_native_reconstruction": false
+    },
+    {
+      "scope": "luminance_ctor",
+      "start": "00b50d40",
+      "end_inclusive": "00b50dc7",
+      "end_exclusive": "00b50dc8",
+      "size": 136,
+      "sha256": "3e7c21f6243d8361f2e19efab0772cd4dee774fcfd3a6ef6955c3f8d99e7d58f",
+      "live_equals_pe": true,
+      "instructions": 25,
+      "last_instruction": "00b50dc7",
+      "last_instruction_size": 1,
+      "new_native_reconstruction": false
+    },
+    {
+      "scope": "bloom_ctor",
+      "start": "00b54e70",
+      "end_inclusive": "00b54e99",
+      "end_exclusive": "00b54e9a",
+      "size": 42,
+      "sha256": "403335112e3417859b6bd9ac8bde1165bcc12987030a34821f41d211054ab959",
+      "live_equals_pe": true,
+      "instructions": 12,
+      "last_instruction": "00b54e99",
+      "last_instruction_size": 1,
+      "new_native_reconstruction": false
+    }
+  ],
+  "admissions": [
+    {
+      "field": "service+60",
+      "profile": "00d5e164",
+      "bytes": 32,
+      "producer_cleanup_proof": "inline+8/+C",
+      "native_publication_site": "00b10c1d",
+      "existing_initializer": "00b540b0",
+      "existing_terminal": "00b10120",
+      "source_metadata_order": "after source/dimension captures; EBP0 already retained"
+    },
+    {
+      "field": "service+64",
+      "profile": "00d5e178",
+      "bytes": 32,
+      "producer_cleanup_proof": "inline+8/+C",
+      "native_publication_site": "00b10c5b",
+      "existing_initializer": "00b542d0",
+      "existing_terminal": "00b10140",
+      "source_metadata_order": "after word00 read; before external50/current60 callback reads"
+    },
+    {
+      "field": "service+18",
+      "profile": "00d5e18c",
+      "bytes": 544,
+      "producer_cleanup_proof": "inline+8/+C",
+      "native_publication_site": "00b10e8b",
+      "existing_initializer": "00b544f0",
+      "existing_terminal": "00b10160",
+      "source_metadata_order": "after captured current64; before publication/dimension shifts"
+    },
+    {
+      "field": "service+1C",
+      "profile": "00d5e1a0",
+      "bytes": 144,
+      "producer_cleanup_proof": "inline+8/+C",
+      "native_publication_site": "00b10eee",
+      "existing_initializer": "00b546f0",
+      "existing_terminal": "00b10180",
+      "source_metadata_order": "after inline constructor; before publication/dimension shifts"
+    },
+    {
+      "field": "service+20",
+      "profile": "00d61fe0",
+      "bytes": 592,
+      "producer_cleanup_proof": "B50D40 all derived/base cleanup slots",
+      "native_publication_site": "00b10f5a",
+      "existing_initializer": "00b51090",
+      "existing_terminal": "00b50fe0",
+      "source_metadata_order": "after captured current18; before EH disarm/publication"
+    },
+    {
+      "field": "service+24",
+      "profile": "00d5e1b4",
+      "bytes": 548,
+      "producer_cleanup_proof": "inline+8/+C",
+      "native_publication_site": "00b10fa2",
+      "existing_initializer": "00b54940",
+      "existing_terminal": "00b101a0",
+      "source_metadata_order": "after captured current18; before publication/getter"
+    },
+    {
+      "field": "service+28",
+      "profile": "00d62150",
+      "bytes": 1084,
+      "producer_cleanup_proof": "B54E70 all derived/base cleanup slots",
+      "native_publication_site": "00b10fe4",
+      "existing_initializer": "00b54f90",
+      "existing_terminal": "00b54f70",
+      "source_metadata_order": "after CE3854 source x87 copy dischargedST0; before publication"
+    },
+    {
+      "field": "service+2C",
+      "profile": "00d62150",
+      "bytes": 1084,
+      "producer_cleanup_proof": "independent B54E70 all derived/base cleanup slots",
+      "native_publication_site": "00b11e2f",
+      "existing_initializer": "00b54f90",
+      "existing_terminal": "00b54f70",
+      "source_metadata_order": "after complete FLD1/FSTP/dimension/current1C captures; before EH disarm/publication"
+    }
+  ],
+  "contract": {
+    "bridge": "existing NativeRenderPassReference,one exact actual+04 atomic and same NativeRenderActualOwnerRegistry",
+    "domain": "required continuation pass_companions.effects is SAME effects_lifetime; registry is SAME canonical post owner domain; context identity retained through second bloom",
+    "counts_and_bytes": "binding adds no native write,allocation,retain,release or field initialization; registry metadata may allocate",
+    "retention": "seven independent optional references in continuation plus one distinct second-bloom reference; keep contexts/states/blocks through native retirement then external quiescence",
+    "failures": "binding_started plus raw owner retained; failed emplace leaves native owner unmodified/unpublished; successful binding survives initializer failure/callbacks; no caller rollback/free/retry",
+    "null": "no binding on null allocation; native null publication and later provider preconditions preserved",
+    "replacement": "subsequent current parent reads remain live; a callback replacement needs its own valid canonical identity",
+    "no_duplicates": "no new post20/post24 companions; no nested holder/surface/texture registration"
+  },
+  "cleanup_slot_proof": {
+    "base": "five inline producers establish profile,count1,+8=0,+C=0; base and bright release only+8/+C",
+    "luminance": "B50D40 initializes+8,+C,+210,+214..23C,+244,+248 before binding; these cover all B50DD0/base released slots",
+    "bloom": "B54E70 initializes+8,+C,+18,+1C,+20,+24 before binding; these cover B54EA0/base released slots"
+  },
+  "checks": {
+    "live_pe": {
+      "passed": true,
+      "blocks": 8,
+      "caller_rows": 27,
+      "supporting_rows": 14,
+      "listing": "local/render_pass_admission_listing.txt",
+      "producer_context": "local/render_pass_admission_producers.json",
+      "publication_context": "local/render_pass_admission_publications.json"
+    },
+    "build": {
+      "command": "./scripts/build.ps1",
+      "status": "passed",
+      "result": "MSVC Win32 Release /MD /W4 /WX",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "log": "local/render_pass_admission_build.txt"
+    },
+    "report_calls": {
+      "command": "python tools/verify_report_calls.py reports/native_render_pass_admission_cc10.json",
+      "status": "passed",
+      "numeric_checked": 41,
+      "caller_rows": 27,
+      "supporting_rows": 14,
+      "failed": 0,
+      "log": "local/render_pass_admission_calls.txt"
+    },
+    "new_tracked_tests": 0,
+    "new_probes": 0,
+    "existing_bridge_evidence": "reports/native_render_pass_companion_cc10.json: actual-D3D bright/count/duplicate/retirement fixture only",
+    "new_staged_wiring_runtime_tested": false
+  },
+  "limits": [
+    "No full initializer/application invocation/native ABI/FH3/SEH/private-stack or game claim",
+    "Top-level direct holder/surface/runtime-texture terminal admission remains separate; no blanket registry change",
+    "Existing distortion valid cleanup-preimage and bloom430..43F extent limits unchanged",
+    "Original callee/provider contracts and stage evidence boundaries remain authoritative"
+  ],
+  "artifact_sha256": {
+    "include/bsp/native_render_resource_init_continuation.hpp": "ad449067d0d63c68178b392c52212d7b5dabcbb43b2eb7ec44d98c3120d1925c",
+    "src/native_render_resource_init_continuation.cpp": "1425549edb33d4782640ab8213bcb716b59d0d1fc2c8583b8e1a31ad1ebc4d3a",
+    "include/bsp/native_render_resource_init_second_bloom.hpp": "825e64c3601a5b62f36232c53eb848e84f9fe8a7004aeeb405fda452cdd7fd1e",
+    "src/native_render_resource_init_second_bloom.cpp": "8ec94f469d2679f4237d371a596ee3226e764ec922c8822f62373ad23cc106bf",
+    "docs/NATIVE_RENDER_PASS_ADMISSION_CC10.md": "660c2730440ce3eb895144ee024cc9b8dd46603e27f46ad4c851dff520fa034f",
+    "local/render_pass_admission_listing.txt": "bf499b07effb33bd2d4fc76a6f79cfdad5784a40b51218c0e2068f7f64f9f701",
+    "local/render_pass_admission_producers.json": "790afa8ac64347056ae3e0f298d40f50c42b66c60f7e5a56cc3a4185d16900eb",
+    "local/render_pass_admission_publications.json": "2751476d829d50d781b2d2879244a68e1a6db22586958f1e11ad0b147e175b9e",
+    "local/render_pass_admission_build.txt": "6a04e23b7ad6352c0d6070069362a9ca514377242a6a84bfe937ed0912936b0b",
+    "local/render_pass_admission_calls.txt": "385090fcdb59a43685afcd2a2744bc5bd6326e05f8def68b1e6cf88e1e75a724"
+  },
+  "reused_provider_sha256": {
+    "include/bsp/native_render_pass_companion.hpp": "7a71186b4c33139094d378fa889b842d55e784909d954b090b375b0e52e258dd",
+    "src/native_render_pass_companion.cpp": "c139970146fcdb89985e06319c950274b3da55668e7b3e3e2598cad520fde9e5",
+    "src/native_render_effect_lifetime.cpp": "96ab5f0a86e3955a9651725033c1a7eec3146255672652d8cc532620de25a576",
+    "src/native_luminance_owner.cpp": "c7cd83baf4a0a75fa83d0ef0ddc0501793d271a4279e0f8952e5283ec888a57a",
+    "src/native_bright_pass_lifetime.cpp": "928c14ae6197c43723a8e99264fe430c40efc7eda64ef729c5db65ff30298884"
+  }
+}

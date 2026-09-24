@@ -31,6 +31,12 @@ struct NativeRenderResourceInitSecondBloomState final {
     void* captured_input_pass{};
     NativeBloomInitializationArguments arguments{};
     NativeBloomInitializationBlock bloom;
+    // Distinct service+2C canonical metadata, bound after B54E70 and the
+    // complete FLD1/FSTP capture sequence, BEFORE publication/initialization.
+    // Constructor-owned cleanup slots are native zeros; no additional stores
+    // or credits are added. Keep a bound reference through terminal retirement.
+    std::optional<NativeRenderPassReference> bloom_reference;
+    bool bloom_binding_started{};
 };
 
 // NORMAL-PATH FRAGMENT [B11D7E,B11E40). Claims the exact DOF frontier once,
@@ -40,7 +46,7 @@ struct NativeRenderResourceInitSecondBloomState final {
 // Original ECX service/three DWORD arguments/eventual RET0C remain represented
 // by the SAME entry/context chain; this fragment reads no argument cell and
 // executes no native return. Stop BEFORE distortion allocation at B11E40.
-// No extra registry/count, caller rollback/free, full teardown, native FH3/SEH,
+// Same canonical registry/count, no caller rollback/free, full teardown, native FH3/SEH,
 // machine-stack alias, arbitrary profile or gameplay admission.
 void continue_native_render_resource_init_00b11d7e_fragment(
     NativeRenderResourceInitDofState&, NativeRenderResourceInitContinuationContext&,

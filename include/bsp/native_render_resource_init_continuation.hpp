@@ -1,4 +1,6 @@
 #pragma once
+#include "bsp/native_render_pass_companion.hpp"
+#include <optional>
 #include "bsp/native_render_resource_init.hpp"
 #include "bsp/native_bloom_initializer.hpp"
 #include "bsp/native_bright_pass_initializer.hpp"
@@ -27,6 +29,9 @@ struct NativeRenderResourceInitContinuationContext {
     NativeBrightPassInitializationContext& bright;
     NativeBloomInitializationContext& bloom;
     NativeRenderEffectLifetimeContext& effects_lifetime;
+    // Same actual owner registry/effects domain. Stable through final native
+    // pass release and external quiescence; binding adds no native credit.
+    NativeRenderPassCompanionContext& pass_companions;
     const volatile std::uint32_t* actual_texture_profile_00d61948;
     const volatile std::uint32_t& actual_00ce6650;
     const volatile std::uint32_t& actual_00ce3854;
@@ -54,6 +59,7 @@ struct NativeRenderResourceInitContinuationState final {
     // The same context object and original entry remain alive through every
     // dependent stage. Identities are host metadata, never resource credits.
     const NativeRenderResourceInitContinuationContext* context_identity{};
+    const NativeRenderPassCompanionContext* pass_companions_identity{};
     const void* post_identity{};
     std::uint32_t native_site{};
     int native_state{-1};
@@ -72,6 +78,14 @@ struct NativeRenderResourceInitContinuationState final {
     NativeTextureSurfaceGetterAcquired half_surface;
     // +60,+64,+18,+1C,+20,+24,+28, in native creation order.
     std::array<void*,7> raw_passes{};
+    // Canonical metadata for these service-visible owners only. Native
+    // constructors establish all cleanup pointers before binding; every
+    // nonnull owner is bound BEFORE publication/initializer callbacks. Keep
+    // bound companions until native terminal retirement, then quiescence.
+    // A failed emplace retains its completed raw owner without caller cleanup.
+    std::array<std::optional<NativeRenderPassReference>,7> pass_references;
+    std::array<bool,7> pass_binding_started{},pass_published{};
+    std::array<std::uint32_t,7> pass_binding_publication_sites{};
     std::array<NativeRenderPassInitializationBlock,4> passes;
     NativeLuminanceInitializationBlock luminance;
     NativeBrightPassInitializationBlock bright;

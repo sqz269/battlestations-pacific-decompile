@@ -53,6 +53,7 @@ void continue_native_render_resource_init_00b11d7e_fragment(Previous& previous,C
        post->native_site!=0x00b11d7eu || post->native_state!=-1 || !continuation ||
        continuation->phase!=Continuation::Phase::awaiting_later_continuation ||
        continuation->post_identity!=post || continuation->context_identity!=&c ||
+       continuation->pass_companions_identity!=&c.pass_companions ||
        continuation->native_site!=0x00b11d7eu || continuation->native_state!=-1 || continuation->temporary_mask_esp10 ||
        !entry || entry->phase!=NativeRenderResourceInitEntryState::Phase::awaiting_later_continuation ||
        entry->native_site!=0x00b11d7eu || entry->unwind_state!=-1 || entry->continuation_identity!=continuation ||
@@ -113,6 +114,13 @@ void continue_native_render_resource_init_00b11d7e_fragment(Previous& previous,C
         }
         continuation->edi_bits=height;continuation->ebp_bits=width;
         a.captured_input_pass=input_pass;a.arguments={nullptr,width,height,0x71,parameter};
+        if(a.returned_bloom) {
+            a.bloom_binding_started=true;
+            // Host metadata after genuine cleanup-slot construction and the
+            // complete x87/input capture block; no metadata call while ST0 lives.
+            // On failure retain the unpublished raw owner and prepared block.
+            a.bloom_reference.emplace(a.returned_bloom,c.pass_companions);
+        }
         set_state(a,-1);put(service,0x2c,bits(a.returned_bloom));a.bloom_published=true;
         site(a,0xb11e32,-1);
         a.arguments.input_holder=native_shadow_texture_holder_00b4d170(a.captured_input_pass);
