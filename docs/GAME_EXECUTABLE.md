@@ -9403,7 +9403,7 @@ Reference parameters, `BSP_GUNNERY_RNG_STREAMS` unset. Log: `local\sR2_usn02.log
 - **The mission fails on Exeter's sinking** (`usn_2_java.lua:521`).
 - **Kill credit goes across the same side:**
   - Perth to Encounter;
-  - Haguro, Jintsu and Tokitsukaze's own loss chain;
+  - Haguro and Jintsu to Tokitsukaze;
   - Amatsukaze to Hatsukaze.
 
   The kill-credit listener records the last attacker, so some kills are credited to a ship of
