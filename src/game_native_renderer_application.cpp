@@ -79,6 +79,7 @@
 #include "bsp/game_native_renderer_application.hpp"
 #include "bsp/game_native_renderer_scalars.hpp"
 #include "bsp/game_native_render_resource_providers.hpp"
+#include "bsp/native_shadow_depth_target_owner.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/game_native_lua_services.hpp"
 #include "bsp/game_native_vertex_declarations.hpp"
@@ -133,6 +134,7 @@ NativeVertexDeclarationLoadingContext application_declaration_loading(
 #include "game_native_renderer_descriptors.inc"
 #include "game_native_renderer_compiler_owners.inc"
 #include "game_native_renderer_resources.inc"
+#include "game_native_renderer_shadow.inc"
 #include "game_native_renderer_frame.inc"
 } // namespace
 
@@ -179,6 +181,7 @@ struct GameNativeRendererApplication::Impl {
     DescriptorGraph descriptors;
     CompilerOwnersGraph compiler_owners;
     RenderResourcesGraph resources;
+    ShadowTargetGraph shadow;
     std::unique_ptr<FrameGraph> frames;
     Phase phase{Phase::prepared};
     IDirect3D9* retained_api{};
@@ -216,16 +219,20 @@ struct GameNativeRendererApplication::Impl {
           descriptors(vfs.strings,services,definitions),
           compiler_owners(owners,profiles,vfs,raw,*host.native_deletion_bindings().resource_support,
               renderer,system_publication,devices.d3dx),
-          resources(graph,devices,cameras,texture_loading,host,raw,vfs,owners) {
+          resources(graph,devices,cameras,texture_loading,host,raw,vfs,owners),
+          shadow(graph,resources,host,renderer) {
         auto& deletion=host.native_deletion_bindings();
         check(!deletion.renderer_owner && !deletion.renderer_lua_owner,"renderer lifetime already bound");
         check(!deletion.render_entry_cache,"render-entry cache lifetime already bound");
         check(!deletion.render_resources,"render-resource lifetime already bound");
+        check(!deletion.shadow_depth_target && !shadow.process.shadow_target_publication_00f8bbf0(),
+            "shadow target lifetime already bound");
         bind_native_renderer_control_worker_process_context(control);
         deletion.renderer_owner=&graph.destructor;
         deletion.renderer_lua_owner=&lua;
         deletion.render_entry_cache=&entry_cache;
         deletion.render_resources=&resources.lifetime;
+        deletion.shadow_depth_target=&shadow.context;
     }
     ~Impl() {
         if(phase!=Phase::prepared && phase!=Phase::drained) std::terminate();
@@ -294,6 +301,10 @@ NativeRenderResourcesLifetimeContext& GameNativeRendererApplication::render_reso
 GameNativeRenderResourceProviders GameNativeRendererApplication::render_resource_providers() {
     check(impl_->phase==Impl::Phase::ready,"render resource providers require the ready application renderer");
     return impl_->resources.borrowed_providers();
+}
+NativeShadowDepthTargetContext& GameNativeRendererApplication::shadow_depth_target_context() {
+    check(impl_->phase==Impl::Phase::ready,"shadow target context requires the ready application renderer");
+    return impl_->shadow.context;
 }
 const NativeRenderResourcesConstructionAcquired& GameNativeRendererApplication::render_resources_construction() const noexcept {
     return impl_->resources.acquired;
@@ -438,7 +449,7 @@ const D3DPRESENT_PARAMETERS& GameNativeRendererApplication::presentation() const
 bool GameNativeRendererApplication::requires_process_retention() const noexcept {
     const auto phase=impl_->phase;
     return (phase!=Impl::Phase::prepared && phase!=Impl::Phase::ready && phase!=Impl::Phase::drained)
-        || !impl_->shaders.quiescent();
+        || !impl_->shaders.quiescent() || !impl_->shadow.quiescent();
 }
 void GameNativeRendererApplication::drain_singletons() {
     check(!requires_process_retention(),"incomplete native renderer cannot be drained");
@@ -448,7 +459,9 @@ void GameNativeRendererApplication::drain_singletons() {
     catch(...) {impl_->phase=Impl::Phase::failed;throw;}
 }
 void GameNativeRendererApplication::after_native_drain() {
-    auto& p=*impl_;if(p.phase==Impl::Phase::drained || p.phase==Impl::Phase::prepared)return;
+    auto& p=*impl_;if(p.phase==Impl::Phase::drained)return;
+    p.shadow.after_native_drain();
+    if(p.phase==Impl::Phase::prepared)return;
     check(!p.renderer && !p.lua_publication && !p.system_publication && !p.definitions,"native renderer children survived drain");
     check(!p.entry_cache_publication,"native render-entry cache survived drain");
     check(!p.frames || !p.frames->queue,"native render queue survived drain");

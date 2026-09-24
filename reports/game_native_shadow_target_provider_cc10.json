@@ -1,0 +1,269 @@
+{
+  "packet": "cc10_shadow_target_provider",
+  "base_commit": "980f9d0bc31a790d58647aed328cccea17fe85a1",
+  "status": "source_provider_composition_strict_build_and_current_application_normal_drain_and_retention_guard_probes_pass",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "functions": [],
+  "native_calls": [],
+  "native_call_scope": "No new native function body or call-site claim; existing owner implementation and its transfer evidence remain in native_shadow_depth_target_owner_cc10.json.",
+  "binary": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "live_PE_cells": [
+    {
+      "address": "00f8bbf0",
+      "size": 4,
+      "live_PE_equal": true,
+      "hex": "00000000",
+      "section": ".data",
+      "section_rva": "00a08000",
+      "offset_in_section": "183bf0",
+      "virtual_size": "297edc",
+      "raw_size": "10000",
+      "raw_backed": false,
+      "loader_zero": true,
+      "import_entry": null,
+      "live_path": "local/shadow_target_provider_f8bbf0_live.txt"
+    },
+    {
+      "address": "00ce2210",
+      "size": 4,
+      "live_PE_equal": true,
+      "hex": "8856a000",
+      "section": ".rdata",
+      "section_rva": "008e2000",
+      "offset_in_section": "210",
+      "virtual_size": "125b24",
+      "raw_size": "126000",
+      "raw_backed": true,
+      "loader_zero": false,
+      "import_entry": {
+        "dll": "KERNEL32.dll",
+        "name": "LeaveCriticalSection"
+      },
+      "live_path": "local/shadow_target_provider_ce2210_live.txt"
+    },
+    {
+      "address": "00ce2218",
+      "size": 4,
+      "live_PE_equal": true,
+      "hex": "b856a000",
+      "section": ".rdata",
+      "section_rva": "008e2000",
+      "offset_in_section": "218",
+      "virtual_size": "125b24",
+      "raw_size": "126000",
+      "raw_backed": true,
+      "loader_zero": false,
+      "import_entry": {
+        "dll": "KERNEL32.dll",
+        "name": "EnterCriticalSection"
+      },
+      "live_path": "local/shadow_target_provider_ce2218_live.txt"
+    }
+  ],
+  "source_providers": {
+    "process": "one existing GameNativeRendererScalarProcess",
+    "publication": "one loader-zero F8BBF0; never reset by accessor or application construction",
+    "imports": "one current mutable cell each for actual EnterCriticalSection/LeaveCriticalSection exports; exact borrowed references",
+    "renderer": "same Impl.renderer F8D394",
+    "manager": "same canonical process 01090AA0 through GameSingletonHost accessor",
+    "resources": "same RenderResourcesGraph runtime_textures, texture_surfaces, lifetime, direct_terminals and registry",
+    "binding": "existing NativeSingletonDeletionBindings.shadow_depth_target assigned only after complete graph construction and duplicate-binding guards",
+    "retention": "scan all context-owned operation phases before startup drain/CRT through existing requires_process_retention/_Exit guard",
+    "destruction": "shadow graph declared after resources, destroyed before resources; no GameSingletonHost dereference during graph destruction"
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "new_tracked_tests": false,
+    "current_application_objects": 70,
+    "production_object_replacements": 0,
+    "current_libraries": 3,
+    "probe_flags": "/MD /fp:strict /W4 /WX /O2 /link /MANIFEST:EMBED",
+    "manifest": "asInvoker",
+    "launcher": "tools/run_game.ps1",
+    "normal": {
+      "exit_code": 0,
+      "stable_ready_accessor": true,
+      "canonical_cells": true,
+      "no_borrowed_accessor_native_effects": true,
+      "real_textures": 2,
+      "surface_reference_counts": [
+        2,
+        2
+      ],
+      "real_singleton_dispatch": true,
+      "publication_cleared": true,
+      "completed_record": true,
+      "lock_balanced": true,
+      "post_drain_accessor_rejected": true,
+      "service_direct_gate_remains_null": true,
+      "final_COM_device_api": [
+        0,
+        0
+      ]
+    },
+    "failure": {
+      "exit_code": 1,
+      "trigger": "source binding-validation at reached null current EnterCriticalSection cell",
+      "diagnostic_stage": "00a8a867",
+      "raw_allocation_retained": true,
+      "profile": "00d5b554",
+      "section_captured": true,
+      "section_entered": false,
+      "section_incremented": false,
+      "publication_null": true,
+      "record_failed": true,
+      "application_retention": true,
+      "actual_startup_Exit_guard": true,
+      "native_drain_or_CRT_cleanup_claim": false
+    }
+  },
+  "limits": [
+    "No 73D410/B107F0 or production target invocation; accessor/provider composition only",
+    "Final D5B5E8 completed-owner domain required for ordinary drain; partial base profiles remain unsupported",
+    "Failed records/providers/raw allocation/locks retain lifetime; no retry, settlement or cleanup fabrication",
+    "Null-import failure is source binding-validation, not original FH3/SEH/fault transport",
+    "No native ABI, whole initializer, shadow drawing, cold compiler/source-zero residue, bloom extent or distortion preimage claim"
+  ],
+  "evidence": [
+    {
+      "path": "local/build_shadow_target_provider_probe.ps1",
+      "bytes": 2241,
+      "sha256": "5c7d4f5ff553d5888383c43a6e4014548b58d9bdd4944e99e6f32c92a4ee0ecd"
+    },
+    {
+      "path": "local/prepare_shadow_target_provider_probe.py",
+      "bytes": 5593,
+      "sha256": "7dde67c1470e8a5919f9f10616529fe6849bd4bd3a534366619d2902f2a75977"
+    },
+    {
+      "path": "local/shadow_target_provider_build.txt",
+      "bytes": 2917,
+      "sha256": "2c4bdde4686000f476e17613c6e7090f5012567ceb5dfc3a7752d41b7f4f2f8f"
+    },
+    {
+      "path": "local/shadow_target_provider_ce2210_live.txt",
+      "bytes": 29,
+      "sha256": "9c7a8c8d73114bbf9ba79c4dc3b4aa970a607e7da87395bf02fb3dbc6e1ad134"
+    },
+    {
+      "path": "local/shadow_target_provider_ce2218_live.txt",
+      "bytes": 29,
+      "sha256": "ee5099081c36f9c261ece4cb33d2bd0aaf07633d77eae228411563b1be9b0bfc"
+    },
+    {
+      "path": "local/shadow_target_provider_cells.py",
+      "bytes": 2305,
+      "sha256": "3b3b2ecd20ac1f28569e1192c65272c90219c6240d07473ffdd8d4912d34b2fd"
+    },
+    {
+      "path": "local/shadow_target_provider_evidence.py",
+      "bytes": 5053,
+      "sha256": "0c0c99f36c6db820acc51a0b0bd1d109b5c9263c2774c5c36d27ebcf47e3b893"
+    },
+    {
+      "path": "local/shadow_target_provider_f8bbf0_live.txt",
+      "bytes": 29,
+      "sha256": "ed8ecc51724f45c1b39d66f60dcfd7e7d1ac88f52ede38a6899d1fa31d012e4e"
+    },
+    {
+      "path": "local/shadow_target_provider_native_cells.json",
+      "bytes": 1678,
+      "sha256": "ca9793de66cea2a123623e846b150938b2c525255650517154e4307405f79072"
+    },
+    {
+      "path": "local/shadow_target_provider_probe/adaptation_sources.json",
+      "bytes": 663,
+      "sha256": "3a049c9d63d64ed068607100994402b7b7c95e3825c35ce17860c805b7aaaff0"
+    },
+    {
+      "path": "local/shadow_target_provider_probe/application-objects.json",
+      "bytes": 16537,
+      "sha256": "f9b3afee0555c957b47f55ea21d568b1938a1db80b0c1f2c5c71103ae6b76f13"
+    },
+    {
+      "path": "local/shadow_target_provider_probe/application-shadow-provider-probe.cpp",
+      "bytes": 30834,
+      "sha256": "fa75525edd1c9f5acf28ffbf8c8e00b44702f05cd2a0d7738f38d0b66f076636"
+    },
+    {
+      "path": "local/shadow_target_provider_probe/application-shadow-provider-probe.exe",
+      "bytes": 3493888,
+      "sha256": "e61d6c47b82764b311f3acb13413bd7789a779737af39ce6a53ea965c62fc3e5"
+    },
+    {
+      "path": "local/shadow_target_provider_probe/application-shadow-provider-probe.obj",
+      "bytes": 385137,
+      "sha256": "ca282118513087ccc6c2ba3ca2dff8b432bd08c35dd7172510b6d72487508ea9"
+    },
+    {
+      "path": "local/shadow_target_provider_probe/compile.log",
+      "bytes": 15515,
+      "sha256": "a76ede6e7181098739126a791d67451ab0b5e53f6367315bb5399df27afaa0fc"
+    },
+    {
+      "path": "local/shadow_target_provider_probe/dependencies.json",
+      "bytes": 65887,
+      "sha256": "2e0c2aff98c0015e3fae361a75718172bf5271f933ffb57573b352647721a51c"
+    },
+    {
+      "path": "local/shadow_target_provider_probe/embedded-manifest.xml",
+      "bytes": 381,
+      "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df"
+    },
+    {
+      "path": "local/shadow_target_provider_probe/failure-launcher.txt",
+      "bytes": 151,
+      "sha256": "a06c51021c73db8b48285034c8d1f082273511c4368b89b3b30784b66e0d74b4"
+    },
+    {
+      "path": "local/shadow_target_provider_probe/failure.log",
+      "bytes": 25078,
+      "sha256": "23554c6b090fba1a3e77e3b64462a6661a461aa54c8d4f71e3fc585f3521b3e7"
+    },
+    {
+      "path": "local/shadow_target_provider_probe/launcher.txt",
+      "bytes": 344,
+      "sha256": "d8ab91f40cdbf6651d1176bb8b950b2b1dc86ab255c6d7d642e108360ac6f7a9"
+    },
+    {
+      "path": "local/shadow_target_provider_probe/libraries.json",
+      "bytes": 710,
+      "sha256": "ee981a0fcfaf152b55729db4523c220b165564bc47c7a5fa6a4da6eb68c764a1"
+    },
+    {
+      "path": "local/shadow_target_provider_probe/probe.map",
+      "bytes": 5966704,
+      "sha256": "22317d0a79b9e90f85cb8703ae3278568ee6f728dad4c02f27773c8ee3e4a4a4"
+    },
+    {
+      "path": "local/shadow_target_provider_probe/run.log",
+      "bytes": 49170,
+      "sha256": "4d0b5e94a3cecc6b3256d0d6e09ff734288d1780c2f20d076687ecdf20f933e9"
+    },
+    {
+      "path": "local/shadow_target_provider_probe/shadow_target_provider_probe_startup.hpp",
+      "bytes": 11527,
+      "sha256": "2a7efd7b94039830ab7344d07137191bf8709296c14bca6224254c1424af96db"
+    },
+    {
+      "path": "local/shadow_target_provider_probe/toolchain.json",
+      "bytes": 1608,
+      "sha256": "64dc8aff1ae9b13e6d4518480f333410256213ab2b761ce0fe270c87fb9f8ab7"
+    },
+    {
+      "path": "local/shadow_target_provider_verify_calls.txt",
+      "bytes": 85,
+      "sha256": "a96df79f80c8c31ab1a6cd56a44ba98f0982877f8515d4a731b8cf8a4d3fb990"
+    }
+  ]
+}

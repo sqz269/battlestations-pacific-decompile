@@ -17,10 +17,20 @@ GameNativeRendererAtomicImport resolve_increment() {
     std::memcpy(&result,&address,sizeof(result));
     return result;
 }
+GameNativeRendererSectionImport resolve_section(const char* name) {
+    const auto address=GetProcAddress(GetModuleHandleW(L"kernel32.dll"),name);
+    if(!address)throw std::runtime_error("missing actual critical-section import");
+    GameNativeRendererSectionImport result;
+    static_assert(sizeof(result)==sizeof(address));
+    std::memcpy(&result,&address,sizeof(result));
+    return result;
+}
 } // namespace
 
 GameNativeRendererScalarProcess::GameNativeRendererScalarProcess()
-    :increment_iat_00ce221c_(resolve_increment()) {}
+    :increment_iat_00ce221c_(resolve_increment()),
+      enter_iat_00ce2218_(resolve_section("EnterCriticalSection")),
+      leave_iat_00ce2210_(resolve_section("LeaveCriticalSection")) {}
 
 GameNativeRendererScalarProcess& game_native_renderer_scalar_process() {
     static GameNativeRendererScalarProcess process;
@@ -45,6 +55,19 @@ GameNativeRendererScalarProcess::surface_allocation_bytes_0108d4c0() noexcept {
 GameNativeRendererAtomicImport volatile&
 GameNativeRendererScalarProcess::increment_iat_00ce221c() noexcept {
     return increment_iat_00ce221c_;
+}
+
+void* volatile&
+GameNativeRendererScalarProcess::shadow_target_publication_00f8bbf0() noexcept {
+    return shadow_target_publication_00f8bbf0_;
+}
+GameNativeRendererSectionImport volatile&
+GameNativeRendererScalarProcess::enter_iat_00ce2218() noexcept {
+    return enter_iat_00ce2218_;
+}
+GameNativeRendererSectionImport volatile&
+GameNativeRendererScalarProcess::leave_iat_00ce2210() noexcept {
+    return leave_iat_00ce2210_;
 }
 
 std::uint32_t&
