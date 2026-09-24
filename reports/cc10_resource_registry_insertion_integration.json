@@ -1,0 +1,132 @@
+{
+  "packet": "cc10_resource_registry_insertion_integration",
+  "worker_commit": "053a2967b3b7f90c104d1d24cdde340de56f08df",
+  "integration": "2e2223fadc59b68a932893750a96ed6d1ed7ac9e",
+  "worker_report": "reports/native_resource_registry_insertion_cc10.json",
+  "frozen_evidence": {
+    "worker_commit": "053a2967b3b7f90c104d1d24cdde340de56f08df",
+    "archive_sha256": "b10702a0e66d0af8408a446c01d0f474c7d8bc0e3f3c5b7ed6ef6d1e05f9fd0e",
+    "archive_files": 89,
+    "manifest_files_verified": 88,
+    "current_exact_identities_verified": 16,
+    "normal_bytes": 1627,
+    "compiler_bytes": 36,
+    "source_review": [
+      "Complete header/source, original1598B family plus29B temporary cleanup and36B compiler boundaries reviewed",
+      "Shared pure rebalance extraction reviewed in full; old caller remaining text unchanged",
+      "Full standalone fixture and final doc/report reviewed; original internal calls remain copied native bodies and reached external boundaries use genuine providers",
+      "Normal full-tree comparison normalizes node/head/name identities by key; exact incoming-hint mutation/output alias, late current factory/left/output and preserved inserted padding checked",
+      "Source-only overflow and pre-allocation failure cleanup clearly separate from native execution"
+    ],
+    "identity_scope": "Sixteen recorded source/header/shared helper/staged LF/probe/core object and three linked library identities; not complete compiler/OS identity",
+    "limits": [
+      "no original private ABI/FH3/SEH or arbitrary hardware fault cleanup",
+      "no B107F0/BBC/global factory activation or canonical source owner lifetime admission",
+      "no application/game validation",
+      "caller supplies valid actual storage/lifetimes, shared current raw pool cells and nonnull genuine returning validation",
+      "source cleanup failure while unwinding terminates; no native double-exception equivalence",
+      "provider completion/failure prefixes and outstanding credits survive; no invented rollback"
+    ]
+  },
+  "validation": {
+    "normal_bytes": 1627,
+    "compiler_bytes": 36,
+    "strict_win32_build": true,
+    "integrated_ctests": 3,
+    "direct_tail_full_containment_rows_passed": 51,
+    "focused_original_source_composition": true,
+    "source_only_failures_separate": true,
+    "tracked_tests_added": false,
+    "game_validated": false
+  },
+  "review": [
+    "Complete header/source, original1598B family plus29B temporary cleanup and36B compiler boundaries reviewed",
+    "Shared pure rebalance extraction reviewed in full; old caller remaining text unchanged",
+    "Full standalone fixture and final doc/report reviewed; original internal calls remain copied native bodies and reached external boundaries use genuine providers",
+    "Normal full-tree comparison normalizes node/head/name identities by key; exact incoming-hint mutation/output alias, late current factory/left/output and preserved inserted padding checked",
+    "Source-only overflow and pre-allocation failure cleanup clearly separate from native execution"
+  ],
+  "ghidra": {
+    "definition_record": "reports/cc10_registry_insertion_function_definitions.json",
+    "defined_10byte_handlers": [
+      "00cbc6f8",
+      "00cbc718"
+    ],
+    "prior_name_00b1ada0": "STL_xlen_throw_00b1ada0",
+    "new_name_00b1ada0": "BSP_ResourceRegistry_LinkNodeAndRebalance",
+    "worker_evidence_unchanged": true
+  },
+  "probe": {
+    "strict_build_command": "./scripts/build.ps1",
+    "strict_build_log": "local\\output\\cc10_resource_registry_insertion\\build01.log",
+    "strict_msvc_win32": true,
+    "configured_ctests": {
+      "count": 2,
+      "passed": 2,
+      "names": [
+        "reconstructed_math",
+        "tool_tests"
+      ]
+    },
+    "probe_source": "local\\output\\cc10_resource_registry_insertion\\probe.cpp",
+    "probe_command_file": "local\\output\\cc10_resource_registry_insertion\\probe.cmd",
+    "probe_flags": "/MD /EHsc /std:c++20 /O2 /Gy /W4 /WX /fp:strict /link /OPT:REF /MANIFEST:EMBED",
+    "NDEBUG_defined": false,
+    "NDEBUG_compile_time_rejection": true,
+    "attempts": [
+      {
+        "id": "probe01",
+        "outcome": "compile failed before execution",
+        "reason": "two inline-ASM thunks used multiple instructions on one line",
+        "source": "local\\output\\cc10_resource_registry_insertion\\probe01.cpp",
+        "log": "local\\output\\cc10_resource_registry_insertion\\probe01.log"
+      },
+      {
+        "id": "probe02",
+        "outcome": "compile and runtime PASS",
+        "changes": "fixture ASM newline syntax and pre-run relocation offsets corrected; production source unchanged",
+        "log": "local\\output\\cc10_resource_registry_insertion\\probe02.log"
+      }
+    ],
+    "composition": "all six copied original normal bodies; internal normal calls remain copies; genuine external registry/string/CRT/tree/node providers; three observed provider boundaries still invoke genuine implementations",
+    "shared_provider_boundaries": [
+      "actual B1B6E0 construction and B1B5F0 disposal",
+      "B1AD10/B1ACA0 allocation/name constructor",
+      "B19B90/B19D60 lookup",
+      "B19640/B19830 rotations",
+      "B19530/B1AB40/B19890 iterators",
+      "443D00/_stricmp, raw41DD40, memmove,419CC0/BD1510",
+      "genuine CRT allocation/free and actual string pool"
+    ],
+    "normal_assertions": [
+      "normalized whole tree topology/head relationships/cardinality/key contents/borrowedvalues/colors",
+      "case-insensitive duplicate registration keeps borrowed factory and count",
+      "SAME incoming hint cursor at genuine decrement/increment and aliasing output",
+      "pair/result alias preserves upper3 output flag bytes",
+      "late factory read after actual allocation; late link lowbyte/output change after real node allocation",
+      "direct29B cleanup leaves header unchanged"
+    ],
+    "normalization_exclusions": "separately allocated node/head/name pointers mapped to key identities; no full-byte equality, allocation padding, saved registers/private stacks or source EH metadata comparison",
+    "source_only": [
+      "unsigned size-limit genuine SBO/owning length-error transport cleanup; no node allocation/count mutation",
+      "provider throws before allocation after value temp state0; current temp cleanup completes with no rollback"
+    ],
+    "native_EH_exercised": false,
+    "application_or_original_game_launched": false,
+    "new_tracked_tests": false
+  },
+  "limits": [
+    "no original private ABI/FH3/SEH or arbitrary hardware fault cleanup",
+    "no B107F0/BBC/global factory activation or canonical source owner lifetime admission",
+    "no application/game validation",
+    "caller supplies valid actual storage/lifetimes, shared current raw pool cells and nonnull genuine returning validation",
+    "source cleanup failure while unwinding terminates; no native double-exception equivalence",
+    "provider completion/failure prefixes and outstanding credits survive; no invented rollback"
+  ],
+  "archive": {
+    "path": "local/cc10-platform-evidence/resource-registry-insertion.zip",
+    "sha256": "05d65726a9e645ea9717bc4eb9b2d950ba7c5041c1cb16a2a4632b1538cb0ff5",
+    "files": 97,
+    "valid": true
+  }
+}

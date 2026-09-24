@@ -509,9 +509,11 @@
       "native": "00bf6b43",
       "actual_mnemonic": "JMP",
       "contract": "compiler transport evidence only; no native FH3 implementation",
-      "kind": "no_ghidra_function",
+      "kind": "tail_jump",
       "kind_after_definition": "tail_jump",
-      "missing_containment_note": "fresh undefined compiler dispatcher; raw live/PE JMP decoded; root changes kind after defining"
+      "missing_containment_note": "fresh undefined compiler dispatcher; raw live/PE JMP decoded; root changes kind after defining",
+      "historical_kind": "no_ghidra_function",
+      "primary_definition_verified": true
     },
     {
       "function": "00cbc710",
@@ -527,29 +529,11 @@
       "native": "00bf6b43",
       "actual_mnemonic": "JMP",
       "contract": "compiler transport evidence only; no native FH3 implementation",
-      "kind": "no_ghidra_function",
+      "kind": "tail_jump",
       "kind_after_definition": "tail_jump",
-      "missing_containment_note": "fresh undefined compiler dispatcher; raw live/PE JMP decoded; root changes kind after defining"
-    }
-  ],
-  "no_ghidra_function": [
-    {
-      "address": "00cbc6f8",
-      "name": "undefined FH3 dispatcher",
-      "end_inclusive": "00cbc701",
-      "end_exclusive": "00cbc702",
-      "last_instruction_address": "00cbc6fd",
-      "last_instruction_length": 5,
-      "evidence": "fresh proto undefined; complete10B live/PE MOV descriptor then JMP BF6B43"
-    },
-    {
-      "address": "00cbc718",
-      "name": "undefined FH3 dispatcher",
-      "end_inclusive": "00cbc721",
-      "end_exclusive": "00cbc722",
-      "last_instruction_address": "00cbc71d",
-      "last_instruction_length": 5,
-      "evidence": "fresh proto undefined; complete10B live/PE MOV descriptor then JMP BF6B43"
+      "missing_containment_note": "fresh undefined compiler dispatcher; raw live/PE JMP decoded; root changes kind after defining",
+      "historical_kind": "no_ghidra_function",
+      "primary_definition_verified": true
     }
   ],
   "eh": {
@@ -687,5 +671,36 @@
     "caller supplies valid actual storage/lifetimes, shared current raw pool cells and nonnull genuine returning validation",
     "source cleanup failure while unwinding terminates; no native double-exception equivalence",
     "provider completion/failure prefixes and outstanding credits survive; no invented rollback"
-  ]
+  ],
+  "historical_worker_missing_functions": [
+    {
+      "address": "00cbc6f8",
+      "name": "undefined FH3 dispatcher",
+      "end_inclusive": "00cbc701",
+      "end_exclusive": "00cbc702",
+      "last_instruction_address": "00cbc6fd",
+      "last_instruction_length": 5,
+      "evidence": "fresh proto undefined; complete10B live/PE MOV descriptor then JMP BF6B43"
+    },
+    {
+      "address": "00cbc718",
+      "name": "undefined FH3 dispatcher",
+      "end_inclusive": "00cbc721",
+      "end_exclusive": "00cbc722",
+      "last_instruction_address": "00cbc71d",
+      "last_instruction_length": 5,
+      "evidence": "fresh proto undefined; complete10B live/PE MOV descriptor then JMP BF6B43"
+    }
+  ],
+  "no_ghidra_function": [],
+  "primary_integration": {
+    "definition_record": "reports/cc10_registry_insertion_function_definitions.json",
+    "defined_10byte_handlers": [
+      "00cbc6f8",
+      "00cbc718"
+    ],
+    "prior_name_00b1ada0": "STL_xlen_throw_00b1ada0",
+    "new_name_00b1ada0": "BSP_ResourceRegistry_LinkNodeAndRebalance",
+    "worker_evidence_unchanged": true
+  }
 }

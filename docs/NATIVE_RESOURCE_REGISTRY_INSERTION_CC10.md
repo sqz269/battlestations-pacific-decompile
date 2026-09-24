@@ -15,10 +15,12 @@ terminal graph into the application.
 | B1AF90 | B1B0A4 | 276 | ECX tree; output12B/pair; RET8 |
 | B19DD0 | B19DED | 29 | ECX current raw string header; RET |
 
-The current Ghidra label `STL_xlen_throw_00b1ada0` is preserved, but is misleading:
+The former Ghidra label `STL_xlen_throw_00b1ada0` was misleading:
 the complete function includes node allocation at B1AE24, current count increase
 at B1AE33, linking, rebalance and output publication. Only its size-limit branch
-throws. Naming remains the primary integrator's later operation.
+throws. Primary integration renamed it `BSP_ResourceRegistry_LinkNodeAndRebalance`,
+preserving its prior annotation. This is a descriptive hypothesis, not a recovered
+symbol.
 
 The actual 10h registry is profile0, preserved4, head8, countC. Its tree subobject
 at +4 is opaque0/head4/count8. Actual 1Ch nodes contain left/parent/right0/4/8,
@@ -108,8 +110,11 @@ transport composes 411700/copy/destruction and host C++ throw. No original priva
 exception ABI is claimed. DF4A4C has maxState1, map DF4A44: state0 -> -1/CBC710,
 no try map, flags1; its EBP-18 cleanup tail targets B19DD0. Each dispatcher loads
 its descriptor and tail-jumps to BF6B43. Fresh queries show CBC6F8 and CBC718 are
-undefined; exact inclusive ends and last five-byte JMPs are recorded for later
-primary definitions. No Ghidra mutation was performed.
+undefined in the worker snapshot. The primary subsequently defined both complete
+10-byte bodies through inclusive CBC701 and CBC721 and verified their final
+five-byte jumps. All 51 transfer rows now pass full containing-function checks;
+the prior missing-function notes remain historical evidence. Definition receipts
+are in `reports/cc10_registry_insertion_function_definitions.json`.
 
 The required providers are raw B1AD10/B1ACA0/B19530/B1AB40 node leaves;
 B19640/B19830/B19890 tree leaves; B19B90/B19D60 cache lookup; 443D00/BF7FBF host
