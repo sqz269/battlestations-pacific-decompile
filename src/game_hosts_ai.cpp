@@ -141,6 +141,11 @@ namespace {
 // docs/VAL_SQUADRON_REGISTRY.md section 6.1) lost all torpedo drops, 8 -> 0, through an
 // untraced Yorktown order split at 122 s.
 constexpr bool kPlannerRangeInterpBound = false;
+// DIAGNOSTIC, packet cc9_yorktown_order_split: past the 20-line cap, every
+// kAiMovetoDiagEvery-th MOVETOATTACK tick is still logged with the target
+// group's leader, so the 00A12A90 collect-distance promotion can be timed.
+// Off (0) in the landed build.
+constexpr int kAiMovetoDiagEvery = 0;
 
 // Packet cc9_ship_natives_2, docs/SHIP_NATIVES_2.md. True: 009FFD70
 // BSP_Entity_AiClassWeight (ECX = [leader+0C4h], JMP 009FDF30) is the group
@@ -1017,6 +1022,28 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
                            combatant_facts(g->members.front())) ? 1 : 0),
                 g == nullptr ? std::size_t{0} : g->members.size());
         }
+        if constexpr (kAiMovetoDiagEvery > 0) {
+            if (cmd->type == bsp::AiCommandType::MoveToAttack) {
+                ++diag_moveto_ticks;
+                if ((diag_moveto_ticks % kAiMovetoDiagEvery) == 0) {
+                    Group* g = group_at(cmd->owner_group);
+                    Group* tg = group_at(cmd->target_group);
+                    float own[3] = {0.0f, 0.0f, 0.0f};
+                    float tgt[3] = {0.0f, 0.0f, 0.0f};
+                    if (g != nullptr) tick_leader_point(g, own);
+                    if (tg != nullptr) tick_leader_point(tg, tgt);
+                    log.notef("  ai diag2 movetoattack leader=%s target=%s dist=%.1f "
+                        "tgt=(%.0f %.0f %.0f)",
+                        (g == nullptr || g->members.empty())
+                            ? "" : unit_name(g->members.front()).c_str(),
+                        (tg == nullptr || tg->members.empty())
+                            ? "" : unit_name(proxy(tg->members.front())).c_str(),
+                        static_cast<double>(tick_horizontal_distance(own, tgt)),
+                        static_cast<double>(tgt[0]), static_cast<double>(tgt[1]),
+                        static_cast<double>(tgt[2]));
+                }
+            }
+        }
         const bsp::AiCommandTickResult tick = bsp::ai_command_tick_vt000c(*this, *cmd);
         // 00A15490 and 00A15500 both end in 00A13B60, with the target group's
         // leader point and 1.5f for CLOSEATTACK and the own group's and 1.0f
@@ -1689,6 +1716,7 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
     int diag_member_lines{0};
     int diag_order_lines{0};
     int diag_moveto_lines{0};
+    long long diag_moveto_ticks{0};
     // Packet cc8_ship_follow: what 0077C8D0's first question now answers.
     int diag_follow_lines{0};
     unsigned long long formation_requests_seen{0};

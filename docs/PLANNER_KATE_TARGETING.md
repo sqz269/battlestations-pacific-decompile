@@ -193,3 +193,71 @@ Lexington-class01_sqn01.
   3). The group base weight 00A0F970 is also still substituted by population.
 
 **Held OFF (2026-09-23):** the flip is held, because its E2 pair (R1, docs/VAL_SQUADRON_REGISTRY.md section 6.1) lost all torpedo drops, 8 to 0, through an untraced Yorktown order split at 122 s.
+
+## Yorktown's order split (packet cc9_yorktown_order_split)
+
+**What the R0/R1 logs show.** R0 is `local\V1b_9000.log`; R1 is `local\R1_9000.log`.
+- In R0, Yorktown-class01's 24 km movetopos at 121.80 s is
+  `cmdlife ... issue ai_command_tick/moveto`, immediately after
+  `ai command promote group members=18 leader=Lexington-class01 groupable=1 dist=2974.5 collect=3000.0`.
+- That is 00A12A90's MOVETOATTACK-to-CLOSEATTACK promotion for the 18-ship US group. The group
+  holds one order, attack the one-member movieval group, and it promotes when the two groups'
+  leader points close inside CloseAttack/CollectDist, 3000 m. The promotion re-orders every
+  member, Yorktown 24 km away included.
+- R1 never promotes.
+- Both logs' capped movetoattack diagnostics agree to the digit up to their 20th line (dist
+  7206.9 m, at about 63 s).
+
+So the split is WHEN the target group's leader point, movieval's lead aircraft, comes within
+3000 m of the Lexington. It is not a different pick: the group's only `order_attack` is identical
+in both runs. The time series that separates the two is in the pair below; it logs every 20th
+MOVETOATTACK tick past the cap (`kAiMovetoDiagEvery`, off in the landed build).
+
+**Predictions for the pair on current main** (D0 range factor OFF, D1 ON; E2 9000, stream option).
+Written before the runs, from R1 and A1:
+
+| row | D0 (expected = A1) | D1 prediction |
+| --- | --- | --- |
+| fighter group's first order | Val #3.1's group | Val #1.1's group |
+| US group promotion to CLOSEATTACK (collect 3000 m) | yes, near 120 s, as R0 | absent or later, as R1 |
+| Yorktown 24 km movetopos | present | absent |
+| torpedo drops | 4 | 0-4 (R1 lost all 8) |
+| ship goal replans | A1's | lower (R1 212 -> 42) |
+| Kate deaths | 16 | 16 ± 2 |
+| Lexington | alive | alive |
+
+**Measured (D0 = range factor OFF, D1 = ON, on main 3cd8be502).** The diagnostic samples every 20th
+MOVETOATTACK tick of the US group, which is led by the Lexington.
+
+| t (s) | D0 target leader, dist | D1 target leader, dist |
+| --- | --- | --- |
+| 60.95 | D3A Val #1.1, 7206.9 m | D3A Val #1.1, 7206.9 m |
+| 119.05 | D3A Val #1.1, 3161.9 m | D3A Val #1.1, 4149.9 m (dead since 99.40 s) |
+| 121.80 | promote at 2974.5 m; Yorktown gets `ai_command_tick/moveto` | - |
+| 178.65-425.95 | - | D3A Val #1.1, frozen at (-13433, -1, -8861), 4118.6 m |
+
+- **D0 reproduces R0:** promotion at 121.80 s, goal replans 212, command-target units 56.
+- **D1 reproduces R1:** no promotion, 42 replans, 47 units, 0 torpedo drops (D0: 1).
+- The fighters' first order is Val #3.1's group in D0 and Val #1.1's group in D1, as predicted.
+- The Lexington survives both. Kate deaths are 16 in both.
+
+**The cause.**
+1. The target group's leader point is its first member, D3A Val #1.1.
+2. In D1 the range factor sends the fighters onto Val #1.1, which is shot down at 99.40 s.
+3. The dead Val stays the target group's first member for the rest of the run. 00A2DDE0
+   (`evict_invalid_members`) drops a member only when its gate bytes fail, and the host's plane
+   death raises none of them. `unit_flags` reads `state->active`, `simulate` (+5Dh),
+   `scene_destroyed_005e` and `+60h`, and a dead plane in this host keeps all four as live.
+4. In the image the death flush 009273A0 runs 00926390, which sets +5Dh and +60h on the plane
+   (`docs/ENTITY_DEAD_FLAG.md`). So the plane leaves the group at the next 00A2DDE0 pass, and the
+   next live member becomes the leader point.
+5. The US group therefore waits forever on a wreck 4.1 km out, never reaches the 3000 m collect
+   distance, and never re-orders its members.
+
+**So the split is not the image's weighting. It is a host artefact that the range factor's new
+pick exposes.** kPlannerRangeInterpBound stays OFF (2026-09-24). It can be flipped once a plane's
+death raises +5Dh/+60h as 00926390 does. That is in the plane-death hunk, which is not this
+packet's. The same freeze appears in D0 too, from 289.85 s, on the dead Kate #4.1 at 23921.1 m.
+
+Whether the image's promotion really re-orders a carrier 24 km away belongs to the ship side and
+was not examined.
