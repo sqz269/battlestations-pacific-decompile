@@ -1,10 +1,26 @@
 #include "bsp/game_native_renderer_scalars.hpp"
+#include <Windows.h>
+#include <cstring>
+#include <stdexcept>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Game native renderer scalar process requires MSVC Win32.
 #endif
 
 namespace bsp::game {
+namespace {
+GameNativeRendererAtomicImport resolve_increment() {
+    const auto address=GetProcAddress(GetModuleHandleW(L"kernel32.dll"),"InterlockedIncrement");
+    if(!address)throw std::runtime_error("missing actual InterlockedIncrement export");
+    GameNativeRendererAtomicImport result;
+    static_assert(sizeof(result)==sizeof(address));
+    std::memcpy(&result,&address,sizeof(result));
+    return result;
+}
+} // namespace
+
+GameNativeRendererScalarProcess::GameNativeRendererScalarProcess()
+    :increment_iat_00ce221c_(resolve_increment()) {}
 
 GameNativeRendererScalarProcess& game_native_renderer_scalar_process() {
     static GameNativeRendererScalarProcess process;
@@ -14,6 +30,21 @@ GameNativeRendererScalarProcess& game_native_renderer_scalar_process() {
 NativeRendererSynchronizationGlobals&
 GameNativeRendererScalarProcess::synchronization_0108d6dc() noexcept {
     return synchronization_0108d6dc_;
+}
+
+volatile std::uint32_t&
+GameNativeRendererScalarProcess::texture_allocation_bytes_0108d4bc() noexcept {
+    return texture_allocation_bytes_0108d4bc_;
+}
+
+volatile std::uint32_t&
+GameNativeRendererScalarProcess::surface_allocation_bytes_0108d4c0() noexcept {
+    return surface_allocation_bytes_0108d4c0_;
+}
+
+GameNativeRendererAtomicImport volatile&
+GameNativeRendererScalarProcess::increment_iat_00ce221c() noexcept {
+    return increment_iat_00ce221c_;
 }
 
 std::uint32_t&

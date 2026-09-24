@@ -30,6 +30,7 @@ struct NativeGameGridContext;
 namespace bsp::game {
 struct GameNativeMaterialCompilerOwners;
 struct GameNativeMaterialCompilerSources;
+struct GameNativeRenderResourceProviders;
 class GameSingletonHost;
 class GameVfsHost;
 class GameNativeReadOnlyData;
@@ -103,6 +104,11 @@ public:
     // still gated on that B107F0 integration; this is the shared provider API.
     void* construct_render_resources();
     NativeRenderResourcesLifetimeContext& render_resources_lifetime() noexcept;
+    // Ready-phase borrowed raw factory contexts, retained by this application.
+    // Caller retains each acquired frame and disposes survivors before drain;
+    // failed attempts may require process retention. Does not call B107F0 or
+    // admit raw owners into the service's optional direct-terminal domain.
+    GameNativeRenderResourceProviders render_resource_providers();
     const NativeRenderResourcesConstructionAcquired& render_resources_construction() const noexcept;
     bool requires_process_retention() const noexcept;
     void drain_singletons();
