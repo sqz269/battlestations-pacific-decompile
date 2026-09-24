@@ -825,6 +825,11 @@ public:
                 screen != nullptr && screen->flags != nullptr && screen->flags->active);
             return;
         }
+        // Packet cc9_screen_49h: screen 49h's 0067BF00.
+        if (kHudFollowScreenBound && owner_.hud != nullptr && slot == 0x49) {
+            owner_.hud->update_follow_screen_0067bf00();
+            return;
+        }
         // Packet cc9_screen_50h: screen 50h's 00683020.
         if (kHudWarningScreenBound && owner_.hud != nullptr && slot == 0x50) {
             owner_.hud->update_warning_screen_00683020(seconds);
@@ -1631,6 +1636,11 @@ bool GameMenuHost::in_game_page_has_child(int slot, const std::string& widget_na
         }
     }
     return false;
+}
+
+bool GameMenuHost::in_game_screen_applied(int slot) {
+    Impl::MenuScreen* screen = impl_->screen_at(slot);
+    return screen != nullptr && screen->flags != nullptr && screen->flags->active;
 }
 
 GuiLayoutPage* GameMenuHost::in_game_page(int slot, const std::string& page_name) {

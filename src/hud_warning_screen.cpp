@@ -78,4 +78,33 @@ void warning_screen_update_00683020(WarningScreenState& screen, WarningScreenHos
     screen.last_unit_74 = unit;                                       // 006832DF
 }
 
+void follow_screen_update_0067bf00(FollowScreen49State& screen, FollowScreen49Host& host) {
+    constexpr int kKindTargetable = 2;                                // 0067BF38 PUSH 2
+    screen.unit_08 = 0;                                               // 0067BF06
+    if (!host.screen_29h_applied()) return;                          // 0067BF09..0067BF17
+    // 0067BF1D..0067BF42: the controlled unit's target, when it answers
+    // IsKindOf(2).
+    std::size_t target = 0;
+    const std::size_t controlled = host.controlled_unit();
+    if (controlled != 0) {
+        target = host.controlled_target_00927880();
+        if (target != 0 && !host.is_kind_of(target, kKindTargetable)) target = 0;
+    }
+    // 0067BF44..0067BF75: screen 29h's unit when it is alive and visible and
+    // is not the controlled unit, else the target.
+    std::size_t pick = host.screen_29h_unit();
+    if (pick == 0 || !host.alive_and_visible(pick) || pick == controlled) pick = target;
+    screen.unit_08 = pick;                                            // 0067BF75
+    if (controlled == pick) screen.unit_08 = 0;                       // 0067BF78..0067BF81
+    // 0067BF84..0067BFC2: the pick must be alive and visible; a plane also
+    // needs a live [unit+3D0h].
+    if (screen.unit_08 == 0) return;
+    if (!host.alive_and_visible(screen.unit_08)) {
+        screen.unit_08 = 0;
+        return;
+    }
+    if (!host.is_kind_of(screen.unit_08, kKindPlane)) return;         // 0067BFA4 PUSH 18h
+    if (!host.leader_3d0_alive(screen.unit_08)) screen.unit_08 = 0;   // 0067BFAF..0067BFC2
+}
+
 }  // namespace bsp

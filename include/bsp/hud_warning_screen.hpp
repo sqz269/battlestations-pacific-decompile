@@ -63,4 +63,30 @@ struct WarningScreenHost {
 void warning_screen_update_00683020(WarningScreenState& screen, WarningScreenHost& host,
                                     float dt);
 
+// Screen 49h's update 0067BF00 (vtable 00CF6D68 +20h, __thiscall(screen, float
+// dt), RET 4; no Ghidra function, start 0067BF00, exclusive end 0067BFCA).
+// Packet cc9_screen_49h, docs/SHIP_SCREEN_UPDATE.md section 17. It writes one
+// field, +8h, the unit the screen follows; nothing else. Units are index + 1,
+// 0 for none.
+struct FollowScreen49State {
+    std::size_t unit_08{0};        // +8h
+};
+
+struct FollowScreen49Host {
+    virtual ~FollowScreen49Host() = default;
+    virtual bool screen_29h_applied() = 0;            // [[00E198C4]+CCh]+5h
+    virtual std::size_t screen_29h_unit() = 0;        // [[00E198C4]+CCh]+4Ch
+    virtual std::size_t controlled_unit() = 0;        // 00E188D8
+    // 00927880(controlled): vtable +114h, then that object's +18h.
+    virtual std::size_t controlled_target_00927880() = 0;
+    virtual bool is_kind_of(std::size_t unit, int class_id) = 0;   // vtable +5Ch
+    // The four bytes 0043F080 tests: +5Ch set, +5Dh, +60h and +5Eh clear.
+    virtual bool alive_and_visible(std::size_t unit) = 0;
+    // [unit+3D0h] non-null and 0043F080 on it (planes only).
+    virtual bool leader_3d0_alive(std::size_t unit) = 0;
+};
+
+// 0067BF00.
+void follow_screen_update_0067bf00(FollowScreen49State& screen, FollowScreen49Host& host);
+
 }  // namespace bsp

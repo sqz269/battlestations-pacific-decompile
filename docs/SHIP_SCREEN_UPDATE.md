@@ -623,3 +623,57 @@ then on, USN04 4500 as before. The controlled unit is the Lexington, a ship.
   first_Group, which the update now hides each frame as the image does, so the host no longer draws
   it as authored. I had not predicted a text line would move.
 - **Result.** Every row prediction holds. **`kHudWarningScreenBound` flips ON.**
+
+## 17. Screen 49h, the follow-unit pick: 0067BF00
+
+Packet `cc9_screen_49h` (worker cc9-platform2, 2026-09-23). Ghidra has no function at 0067BF00.
+The start and exclusive end are **0067BF00..0067BFCA**: `RET 4` at 0067BFC7, then INT3 padding.
+The routine was read from the disk listing. vtable 00CF6D68 +20h, `__thiscall(screen, float dt)`
+with dt unused.
+
+**What it does.** It writes one field, +8h, and draws nothing:
+1. +8h = 0. Stop unless screen 29h ([00E198C4]+CCh) is applied (+5h).
+2. The target is `00927880(controlled)`, which goes through the unit's vtable +114h and that
+   object's +18h. It is kept only when it answers IsKindOf(2).
+3. The pick is screen 29h's unit (+4Ch) when it is alive and visible (the 0043F080 bytes) and is
+   not the controlled unit; otherwise the target.
+4. +8h = the pick, then 0 when it equals the controlled unit.
+5. A non-null +8h must be alive and visible. A plane (IsKindOf(18h)) also needs a live
+   `[unit+3D0h]` (0043F080 on it).
+
+**Substitutions and records:**
+
+| record | address | stands for |
+| --- | --- | --- |
+| `HudFollowScreen::screen_29h_unit` | 0067BF44 | screen 29h's +4Ch, stored by 29h's own update (005272E5, from 00526A40), which is not bound; it reads null |
+| `HudFollowScreen::controlled_target` | 00927880 | the two unread virtuals; it answers none |
+| `HudFollowScreen::leader_3d0` | 0067BFAF | a plane pick's +3D0h |
+
+Screen 29h's applied byte comes from the registry through the new
+`GameMenuHost::in_game_screen_applied`.
+
+**Switch.** `kHudFollowScreenBound`. OFF keeps the `FrontEndScreen::update` record for slot 49h.
+
+**Predictions, written before the pair.** One tree with every earlier switch on, the switch off
+then on, USN04 4500.
+- 49h is also in the early 20h pumps, so it runs about 9,160 times. `FrontEndScreen::update`
+  falls by that count, and `HudFollowScreen::update` appears as done with it.
+- `screen_29h_unit` appears once per pump in which 29h is applied (up to 9,160).
+  `controlled_target` appears once per pump that has a controlled unit (about 9,158).
+  `leader_3d0` does not appear.
+- The unimplemented total rises by about 9,158, the two records less the moved update.
+- Every summary line is identical, because +8h is not drawn by this update.
+
+**The pair.** `local\p7_off_usn04.log` against `local\p7_on_usn04.log`, one tree, 2560x1440.
+
+| row | OFF | ON |
+| --- | ---: | ---: |
+| unimplemented total | 2,248,577 | 2,257,737 (+9,160; predicted about +9,158) |
+| FrontEndScreen::update | 45,803 | 36,643 |
+| HudFollowScreen::update | none | 9,160 done |
+| screen_29h_unit, controlled_target | none | 9,160 each |
+
+- A controlled unit exists in every 49h pump, the early 20h ones included, so `controlled_target`
+  counts 9,160, not the 9,158 I estimated. `leader_3d0` does not appear.
+- **Summary lines.** All 157 are identical.
+- **Result.** Every prediction holds. **`kHudFollowScreenBound` flips ON.**
