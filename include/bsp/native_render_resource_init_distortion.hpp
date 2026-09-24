@@ -21,12 +21,14 @@ struct NativeRenderResourceInitDistortionContext {
 // callbacks. Existing explicit quiescence is required before child reset or
 // destruction. Neither a diagnostic pointer nor an engaged optional is a credit.
 struct NativeRenderResourceInitDistortionState final {
-    enum class Phase { fresh, preparing, running, awaiting_b11ef4_continuation, failed };
+    enum class Phase { fresh, preparing, running, awaiting_b11ef4_continuation,
+        passthrough_dust_running, awaiting_later_continuation, failed };
     NativeRenderResourceInitDistortionState() = default;
     NativeRenderResourceInitDistortionState(const NativeRenderResourceInitDistortionState&) = delete;
     NativeRenderResourceInitDistortionState& operator=(const NativeRenderResourceInitDistortionState&) = delete;
     Phase phase{Phase::fresh};
     NativeRenderResourceInitSecondBloomState* previous{};
+    const void* passthrough_dust_identity{}; // One-use successor, no resource credit.
     const NativeRenderResourceInitDistortionContext* context_identity{};
     NativeRenderResourceInitEntryState* entry_identity{};
     const volatile NativeRenderResourceInitArguments* argument_cells_identity{};
