@@ -9297,3 +9297,53 @@ saved as `local\rbB`. All switches are in their landed states. Runs are from the
   are the headline change. Which landing removes them is the next thing to bisect, and the pairs
   in `docs/GUN_BARREL_COUNT.md` (drops 3 to 4 in E2) point away from the barrel count.
 - **No mission end in 9000 frames,** as before.
+
+### The same rows as the `cc9_rebaseline_3` reference, with unimplemented totals (2026-09-23)
+
+**These rows are the `cc9_rebaseline_3` reference, and they supersede the combined-state section.**
+The rows above were taken on `14a06fe19`. Its `src`, `include` and `cmake` trees are identical to
+main `416b17faa` (`git diff --stat 14a06fe19 416b17faa -- src include cmake` is empty). So the
+`local\rbB` runs are the rows packet `cc9_rebaseline_3` asks for, and they were not run twice.
+
+Landed since the combined state, in the lead's grouping:
+- the flak proximity burst;
+- the plane follow law and the follow catch-up terms;
+- the moveto speed blend;
+- the ship neighbour pipeline: the list, the clips, the pass-side message and the rudder-gate store;
+- the gun barrel count and the plane death flags;
+- the squadron leave at death;
+- the fighter aim terms and the world-velocity AA lead;
+- the HUD minimap gate.
+
+The commit list is in the section above.
+
+**Unimplemented host calls** are the sum of `UNIMPLEMENTED calls=` over the end-of-run table.
+Rows are distinct host records.
+
+| mission | rows now | calls now | rows combined state | calls combined state |
+| --- | --- | --- | --- | --- |
+| USN04 4500 | 516 | 2,828,457 | 518 | 3,291,746 |
+| USN01 3000 | 455 | 1,852,443 | 459 | 2,610,279 |
+| USN04 (E2) 9000 | 526 | 5,435,442 | 530 | 6,435,558 |
+
+**Per row against the combined state, attributed where my own pairs measured the term:**
+- **USN04 4500.** Deaths go from 11 to 26 and hits from 148 to 371. This is mostly unsplit. The
+  measured shares are:
+  - the flak burst: category 6 hits 96 to 199 and category 5 hits 17 to 62, with deaths 19 to 19
+    in its pair;
+  - the barrel count: category 1 rounds x1.9, with deaths 22 to 21 in its pair.
+
+  Neither pair moves deaths by more than one, so the rise to 26 belongs to the unsplit landings.
+  Torpedo drops fall from 4 to 0, unsplit.
+- **USN01 3000.** Damage and deaths are flat. Drops fall from 3 to 2 and the first hit moves from
+  63.65 to 55.65 s. Unsplit; no pair of mine ran USN01.
+- **E2 9000.** Drops fall from 8 torpedoes and 10 bombs to none. The RNG-option pairs narrow it:
+  - The barrel-count ON side on main `02a946689` (`local/bT_9000.log`) still had 4 torpedo drops.
+  - The death-flags OFF side on main `ef9c27415` (`local/fl0_9000.log`) had 0.
+  - Between those two mains the landings are the moveto speed blend (`11d4864f0`), the
+    pass-side message and traffic pass (`446cbdd80`), the rudder-gate store (`3cc43e303`) and the
+    read-only Yorktown order-split trace.
+  - So the loss of E2's releases is one of the first three, not the barrel count, the flak burst
+    or the death flags. The death flags left drops at 0 to 0.
+  - Deaths go from 30 to 37. The flak burst (35 to 37), barrel count (37 to 37) and death flags
+    (35 to 37) pairs each account for at most two.
