@@ -2,6 +2,7 @@
 
 #include "bsp/system_fog_constants.hpp"
 #include "bsp/system_fog_slot.hpp"
+#include "bsp/native_texture_surface_getter.hpp"
 
 #include <cstddef>
 #include <cstdint>
@@ -29,6 +30,55 @@ inline constexpr std::uint32_t kSystemFogOwnerBaseVtable = 0x00ceb130;
 // projection. The constructor does NOT define those four float4 records.
 // Supplied initialized backing preimages support deterministic in-place use.
 SystemFogOwner* initialize_system_fog_owner_00b84e50(void* storage) noexcept;
+
+// Actual nine live cells read by B84E50[273], in original MOVSS order. The
+// first two are captured before destination stores; CE7804 is captured once
+// for both68/78. Remaining cells are read between the native field stores.
+// Cells may alias accessible destination storage; metadata/private scratch may
+// not. No float conversion, cached defaults or initial zeroed backing.
+struct NativeSystemFogConstants {
+    const volatile std::uint32_t& scalar_6c_74_00ce386c;
+    const volatile std::uint32_t& scalar_70_00d63188;
+    const volatile std::uint32_t& scalar_68_78_00ce7804;
+    const volatile std::uint32_t& scalar_7c_00ce77f8;
+    const volatile std::uint32_t& scalar_80_00ce3950;
+    const volatile std::uint32_t& scalar_84_00ce77e8;
+    const volatile std::uint32_t& scalar_88_00ce77e4;
+    const volatile std::uint32_t& scalar_8c_00ce77e0;
+    const volatile std::uint32_t& scalar_90_00ce77dc;
+};
+// Same actual94h lifetime and one store engine as the legacy overload. Snapshot
+// and restore ALL allocation bytes around placement construction, then perform
+// the complete native schedule. Preserves28..67 exactly. No allocation/callback,
+// ownership admission, native EH or implicit raw-storage cleanup is introduced.
+SystemFogOwner* initialize_system_fog_owner_00b84e50(
+    void* storage, const NativeSystemFogConstants&) noexcept;
+
+struct NativeSystemFogStorageContext {
+    NativeTextureSurfaceReferenceIncrement const volatile& increment_00ce221c;
+    NativeTextureSurfaceReferenceIncrement const volatile& decrement_00ce2220;
+    const volatile std::uint32_t* actual_profile_00d63180;
+};
+// B71940[65], actual camera receiver/current stacked argument word. Capture
+// incoming BEFORE old184; identity return. Publish captured incoming, CURRENT
+// increment, CURRENT decrement on capturedold. Zero uses capturedold/current0
+// BD30E0 then fresh current4 B84F70/flags1. Each reached CURRENT import cell
+// must hold a nonnull callable genuine binding. Null is an unmasked native
+// fault, not a source exception; no eager validation/cache of both imports.
+// Actual old/new must be live94h owners constructed above, same genuine CRT
+// allocation/volatile-long04 domain. No atomic/registry/extra credit or host
+// CameraState/FogState slot projection. Callback-written184 is left untouched.
+void set_native_camera_fog_storage_00b71940(void* actual_camera,
+    const volatile std::uint32_t& incoming_argument, NativeSystemFogStorageContext&);
+// Genuine family terminal for a separately performed decrement. Requires SAME
+// captured live owner/count already0; no decrement or implicit admission. Exact
+// numeric profile/current targets only; reject missing/changed bindings. The
+// borrowed table must remain valid through dispatch; no raw reads after free.
+void invoke_native_system_fog_zero(SystemFogOwner*, NativeSystemFogStorageContext&);
+// Current-import/provider failures retain native stores and prior credits; no
+// rollback is added. Callers retain backing/outstanding ownership for disposition.
+// No concurrent mutation, arbitrary derived profile, native FH3/private ABI or
+// full camera/application/game admission follows from these source interfaces.
 
 // Real singleton_lifetime_allocate/free host CRT boundary: request native94h,
 // allocate sizeof(SystemFogOwner), then run the same in-place initializer.
