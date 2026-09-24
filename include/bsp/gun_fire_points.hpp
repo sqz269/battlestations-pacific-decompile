@@ -57,4 +57,20 @@ struct GunFireMuzzleList {
 GunFireMuzzleList gun_fire_muzzle_offsets_007325a0(
     const std::vector<GunFirePointItem>& items);
 
+// 0095F500's slot pass (0095FA33-0095FEA9), for the platform whose Lua key is
+// `key` (the platform vector is indexed by the key, 00961B69). It takes
+// ("slot", key) through 00718000, skips a group with fewer than three points,
+// and builds the frame it copies to platform+4Ch: translation = p0
+// (0095FBF3-0095FC13), row 2 = p2 - p0 (0095FC67-0095FC98), row 1 =
+// (p2 - p0) x (p1 - p0) (0095FD4E-0095FDD8), then 0085DC80. Rows are left
+// unnormalised here; only the translation is consumed by this host.
+// docs/SHIP_PLATFORM_ATTACHMENT.md.
+struct GunPlatformSlotFrame {
+    std::array<float, 3> origin{};    // row 3, ship-model space
+    std::array<float, 3> forward{};   // row 2 before 0085DC80
+    std::array<float, 3> up{};        // row 1 before 0085DC80
+};
+bool gun_platform_slot_frame_0095f500(const std::vector<GunFirePointItem>& items,
+    int key, GunPlatformSlotFrame& frame);
+
 } // namespace bsp

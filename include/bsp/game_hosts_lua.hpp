@@ -338,6 +338,11 @@ public:
     // Used for the device row's `Mesh` model path. docs/GUN_BARREL_COUNT.md.
     std::string read_device_class_string(int index, const char* key);
 
+    // `VehicleClass[index][key]` as a string; "" when absent. Used for the ship
+    // row's `Mesh`, whose "slot" point groups 0095F500 turns into the platform
+    // frames. docs/SHIP_PLATFORM_ATTACHMENT.md.
+    std::string read_vehicle_class_string(int index, const char* key);
+
     // The whole of a mounted resource through the VFS the scripts are read
     // from (mode 2, the script read mode); false when it does not open.
     bool read_resource_file(const std::string& path, std::vector<std::uint8_t>& bytes);

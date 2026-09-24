@@ -102,6 +102,24 @@ const GunFirePointItem* find_named_point_group_00718870(
     return found;
 }
 
+bool gun_platform_slot_frame_0095f500(const std::vector<GunFirePointItem>& items,
+    int key, GunPlatformSlotFrame& frame) {
+    static const std::string kSlot("slot");  // 00CEB728, length 4
+    if (key < 0) return false;
+    const GunFirePointItem* item = find_named_point_group_00718870(items, kSlot,
+        static_cast<std::uint32_t>(key));
+    if (item == nullptr || item->points.size() < 3) return false;
+    const auto& p0 = item->points[0];
+    const auto& p1 = item->points[1];
+    const auto& p2 = item->points[2];
+    const float a[3] = {p1[0] - p0[0], p1[1] - p0[1], p1[2] - p0[2]};
+    const float b[3] = {p2[0] - p0[0], p2[1] - p0[1], p2[2] - p0[2]};
+    frame.origin = p0;
+    frame.forward = {b[0], b[1], b[2]};
+    frame.up = {b[1] * a[2] - b[2] * a[1], b[2] * a[0] - b[0] * a[2], b[0] * a[1] - b[1] * a[0]};
+    return true;
+}
+
 GunFireMuzzleList gun_fire_muzzle_offsets_007325a0(
     const std::vector<GunFirePointItem>& items) {
     GunFireMuzzleList out;
