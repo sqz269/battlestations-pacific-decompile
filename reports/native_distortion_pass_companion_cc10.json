@@ -1,0 +1,45 @@
+{
+  "packet": "cc10_distortion_pass_companion",
+  "kind": "host-only canonical lifetime bridge extension; no new native function claim",
+  "source": "src/native_render_pass_companion.cpp",
+  "profile": "00d61f1c",
+  "current_virtual0": "00bd30e0",
+  "current_terminal": "00b4f540",
+  "profile_bytes_equal_live_ghidra_and_pe": true,
+  "profile_bytes_sha256": "979fc3047765a16d3d3cbff9689d30d9f7d2a9eb8cb1adc19c9a595fa09cdc9a",
+  "contract": [
+    "same canonical registry and actual +4 atomic; no retain or raw writes at binding",
+    "explicit distortion lifetime context with same effects object",
+    "current virtual0 then fresh current deleting slot; flags1; no second decrement",
+    "valid +34/+38/+3C cleanup preimage required independently of constructor, registration or false initializer result",
+    "scene publication borrowed by reference from the same persistent initializer block; do not reuse after terminal"
+  ],
+  "validation": {
+    "strict_win32_build": true,
+    "existing_ctests_passed": 3,
+    "build_log_sha256": "b1555f7e6fc8ce4f5e4f09798ed8b1a766e3bea78c01963b7ad7b00f17139ecd",
+    "probe_exit": 0,
+    "probe": "local/cc10_distortion_companion/probe.cpp",
+    "probe_source_sha256": "816f12062b231d3c96d9e8e224d5dd81ca1fb36578d4cbbeb2befe9d4d2048c6",
+    "probe_exe_sha256": "5a1344bbfcb7a4889832cfddad3442a907c7e6688cfdaedec77a48a2c84df9bb",
+    "probe_log_sha256": "b0b0bd064a958173b8330722395788d2bbd1f1faaac8e7483f9d94f2516321d2",
+    "real_D3D9": true,
+    "distortion_lifecycle_cases": 1,
+    "prior_bright_regression_cases": 1,
+    "full_binding_bytes_checked": 620,
+    "final_device_refs": 0,
+    "final_api_refs": 0,
+    "new_tracked_tests": 0
+  },
+  "boundaries": [
+    "explicit valid null camera/scene fixture preimage is not native allocator behavior",
+    "no populated camera/scene, full initializer, native wrapper differential, arbitrary profiles, native ABI/FH3/SEH or game claim",
+    "existing noexcept terminal failure policy unchanged; host metadata must remain alive and stable"
+  ],
+  "local_archive": {
+    "path": "local/cc10-platform-evidence/distortion-pass-companion.zip",
+    "sha256": "d26e1e11b497282056b2f3ad5cff80a965d1482b572bfeefbafb82f6d05740ff",
+    "files": 13,
+    "valid": true
+  }
+}

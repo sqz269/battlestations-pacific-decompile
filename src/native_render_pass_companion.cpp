@@ -1,5 +1,6 @@
 #include "bsp/native_render_pass_companion.hpp"
 #include "bsp/native_bright_pass_lifetime.hpp"
+#include "bsp/native_distortion_lifetime.hpp"
 #include "bsp/native_luminance_owner.hpp"
 #include <exception>
 #include <new>
@@ -8,16 +9,20 @@
 namespace bsp {
 namespace {
 using Word = std::uint32_t;
-constexpr std::array<Word, 7> profiles{
+constexpr std::array<Word, 8> profiles{
     0x00d5e164u, 0x00d5e178u, 0x00d5e18cu, 0x00d5e1a0u,
-    0x00d5e1b4u, 0x00d61fe0u, 0x00d62150u};
-constexpr std::array<Word, 7> terminals{
+    0x00d5e1b4u, 0x00d61fe0u, 0x00d62150u, 0x00d61f1cu};
+constexpr std::array<Word, 8> terminals{
     0x00b10120u, 0x00b10140u, 0x00b10160u, 0x00b10180u,
-    0x00b101a0u, 0x00b50fe0u, 0x00b54f70u};
+    0x00b101a0u, 0x00b50fe0u, 0x00b54f70u, 0x00b4f540u};
 std::size_t current_profile(void* owner, NativeRenderPassCompanionContext& c) {
     const Word current = *static_cast<const volatile Word*>(owner);
     for (std::size_t i = 0; i < profiles.size(); ++i) {
-        if (current == profiles[i] && c.profiles[i]) return i;
+        if (current == profiles[i] && c.profiles[i]) {
+            if (i == 7 && (!c.distortion || &c.distortion->effects != &c.effects))
+                throw std::invalid_argument("distortion pass requires its same-domain lifetime context");
+            return i;
+        }
     }
     throw std::invalid_argument("render pass has no admitted current profile");
 }
@@ -44,7 +49,8 @@ std::atomic<std::int32_t>& binding_count(void* owner, NativeRenderPassCompanionC
         throw std::invalid_argument("render pass binding requires a live actual count");
     return count;
 }
-void delete_current(void* owner, std::size_t index, NativeRenderEffectLifetimeContext& c) {
+void delete_current(void* owner, std::size_t index, NativeRenderPassCompanionContext& context) {
+    auto& c = context.effects;
     switch (index) {
     case 0: (void)delete_native_depth_downscale_pass_00b10120(owner, 1, c); break;
     case 1: (void)delete_native_particle_blend_pass_00b10140(owner, 1, c); break;
@@ -53,6 +59,7 @@ void delete_current(void* owner, std::size_t index, NativeRenderEffectLifetimeCo
     case 4: (void)delete_native_bright_pass_00b101a0(owner, 1, c); break;
     case 5: (void)delete_native_luminance_owner_00b50fe0(owner, 1, c); break;
     case 6: (void)delete_native_bloom_owner_00b54f70(owner, 1, c); break;
+    case 7: (void)delete_native_distortion_owner_00b4f540(owner, 1, *context.distortion); break;
     default: std::terminate();
     }
 }
@@ -73,7 +80,7 @@ void NativeRenderPassReference::release_zero_references() noexcept {
     try {
         const auto terminal = current_terminal(identity_, context_);
         phase_ = Phase::destroying;
-        delete_current(identity_, terminal, context_.effects);
+        delete_current(identity_, terminal, context_);
         phase_ = Phase::retired;
         context_.registry.unbind(identity_, *this);
         // No access to the retired native allocation or its counter follows.

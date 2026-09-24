@@ -7,6 +7,7 @@
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/mission_camera.hpp"
 #include "bsp/hud_ship_screen.hpp"
+#include "bsp/hud_warning_screen.hpp"
 #include "bsp/game_hosts_frontend.hpp"
 #include "bsp/gui_layout_loader.hpp"
 #include "bsp/ocean_height.hpp"
@@ -83,6 +84,11 @@ struct GameHudHost::Impl {
     bool ship_screen_widgets_bound{false};
     std::map<int, GuiLayoutWidget*> ship_screen_widgets;
     GuiLayoutWidget* ship_screen_widget(bsp::ShipScreenWidget widget);
+    // Packet cc9_screen_50h: screen 50h's fields and its widgets.
+    bsp::WarningScreenState warning_screen{};
+    bool warning_widgets_bound{false};
+    std::map<int, GuiLayoutWidget*> warning_widgets;
+    GuiLayoutWidget* warning_widget(bsp::WarningWidget widget);
     void bind_mission_camera_0064da40();
     void step_mission_camera(float seconds);
     bool camera_target_view(bsp::ShipCaptainTargetView& out);
@@ -218,8 +224,23 @@ public:
         // The 25h arm's hand-off on interface+78h is 0064D590, which stores
         // the unit in screen 45h's +184h (0064D598..0064D5EC).
         if (manager_offset == 0x78 && owner_.units != nullptr && owner_.units->controlled_bound()) {
+            const std::size_t unit = owner_.units->controlled_index();
+            // 0064D598..0064D5B7: a different unit sets +188h (and stops the
+            // timed entries of four widgets through 00AA8B80(2), which this
+            // host never starts).
+            if (!owner_.ship_screen.has_unit || owner_.ship_screen_unit != unit) {
+                owner_.ship_screen.unit_changed_188 = true;
+            }
             owner_.ship_screen.has_unit = true;
-            owner_.ship_screen_unit = owner_.units->controlled_index();
+            owner_.ship_screen_unit = unit;
+            // 0064D5E3: with the screen applied, 0064AE20 sets the gauge
+            // flags +104h..+107h from the unit's class (Lua VehicleClass
+            // NoRepairGUI, class+C8h, 00818300, 0059CB90, 00852350) and the
+            // recon and torpedo icons. SUBSTITUTION: not bound, so the flags
+            // keep the enter's clear values and only the speed gauge runs.
+            if (kHudShipScreenGaugesBound) {
+                owner_.record("HudShipScreen::apply_unit_0064ae20", 0x0064ae20u);
+            }
         }
     }
     int hud_root_screen_query() override {
@@ -855,6 +876,9 @@ void GameHudHost::detach_world_2k() noexcept {
     impl.ship_screen = bsp::ShipScreenState{};
     impl.ship_screen_widgets.clear();
     impl.ship_screen_widgets_bound = false;
+    impl.warning_screen = bsp::WarningScreenState{};
+    impl.warning_widgets.clear();
+    impl.warning_widgets_bound = false;
     bsp::clear_mission_camera();
     impl.unit_request_pending = false;
     impl.unit_request_applied = false;
@@ -902,7 +926,12 @@ GuiLayoutWidget* GameHudHost::Impl::ship_screen_widget(bsp::ShipScreenWidget wid
         static const std::pair<int, const char*> kNames[] = {
             {0x48, "ship_stick_Icon"}, {0xF8, "ship_relation_Icon"},
             {0x18C, "VillanasFelso_Icon"}, {0x190, "VillanasAlso_Icon"},
-            {0x194, "VillanasBal_Icon"}, {0x198, "VillanasJobb_Icon"}};
+            {0x194, "VillanasBal_Icon"}, {0x198, "VillanasJobb_Icon"},
+            // Parts 3 and 4 (packet cc9_ship_screen_parts34).
+            {0x50, "ship_dir_Icon"}, {0xC4, "Icon_3_Icon"}, {0xD4, "Icon_5_Icon"},
+            {0xD8, "Hl_1_Icon"}, {0xDC, "Hl_2_Icon"}, {0xE0, "Hl_3_Icon"},
+            {0xE4, "Hl_4_Icon"}, {0xE8, "circle_1_Section"}, {0xEC, "circle_2_Section"},
+            {0xF0, "circle_3_Section"}, {0xF4, "circle_4_Section"}};
         static const char* const kPages[] = {
             "GUI_ship", "GUI_repair", "GUI_ship_effects", "GUI_ship_damage"};
         for (const auto& entry : kNames) {
@@ -1052,6 +1081,115 @@ public:
         static_cast<void>(dt);
         owner_.record("HudShipScreen::update_remainder", 0x0064f665u);
     }
+    // Part 3, packet cc9_ship_screen_parts34.
+    bool damage_bound() override { return kHudShipScreenDamageBound; }
+    void color(bsp::ShipScreenWidget widget, float out[4]) override {
+        // Virtual +54h copies the Color property.
+        GuiLayoutWidget* w = owner_.ship_screen_widget(widget);
+        for (int i = 0; i < 4; ++i) out[i] = w != nullptr ? w->color[i] : 0.0f;
+    }
+    void set_color(bsp::ShipScreenWidget widget, const float rgba[4]) override {
+        GuiLayoutWidget* w = owner_.ship_screen_widget(widget);
+        if (w == nullptr) return;
+        owner_.menu.frontend().set_widget_color(*w, rgba[0], rgba[1], rgba[2], rgba[3]);
+    }
+    bsp::ShipRepairTaskTerms controlled_repair_task() override {
+        // SUBSTITUTION: the repair task at unit+A20h (priority +24h, the two
+        // timers +34h/+38h, their divisors unit+A5Ch/+A60h and 0093A3F0's
+        // EngineJam record) has no producer in this host
+        // (docs/UNIT_FIRE_AND_REPAIR.md; its constructor is unread). Every
+        // term reads zero: +150h = -1 and the three task circles hide.
+        owner_.record("HudShipScreen::repair_task", 0x0064f6bdu);
+        return {};
+    }
+    float settings_engine_jam_seconds() override {
+        // SUBSTITUTION: GameSettings+3E4h, the failure descriptor vector, is
+        // not loaded by this host; the loop finds no EngineJam and answers 0.
+        owner_.record("HudShipScreen::settings_failure_descriptors", 0x0064f8e7u);
+        return 0.0f;
+    }
+    float settings_4c4() override {
+        // Recorded with controlled_float_125c, the submarine arm's other term.
+        return 0.0f;
+    }
+    float controlled_float_125c() override {
+        // SUBSTITUTION: unit+125Ch and GameSettings+4C4h, the submarine
+        // circle's terms, are not modelled.
+        owner_.record("HudShipScreen::submarine_circle_terms", 0x0064f7ebu);
+        return 0.0f;
+    }
+    int controlled_device_count() override {
+        // SUBSTITUTION: the device list unit+48h with the damage fields
+        // +36Ch/+370h/+378h is not modelled; the list reads empty.
+        owner_.record("HudShipScreen::device_list", 0x0064fbecu);
+        return 0;
+    }
+    bsp::ShipDeviceTerms controlled_device(int index) override {
+        static_cast<void>(index);
+        return {};
+    }
+    void circle_progress(bsp::ShipScreenWidget widget, float ratio, bool snap) override {
+        static_cast<void>(widget);
+        static_cast<void>(ratio);
+        // 00ABE6E0 on a Section, or 00AA8B00(2)'s timed entry: the bridge
+        // draws neither.
+        if (snap) {
+            owner_.record("HudShipScreen::circle_quad", 0x00abe6e0u);
+        } else {
+            owner_.record("HudShipScreen::circle_progress", 0x00aa8b00u);
+        }
+    }
+    // Part 4.
+    bool gauges_bound() override { return kHudShipScreenGaugesBound; }
+    void remainder_from_0064fd24(float dt) override {
+        static_cast<void>(dt);
+        owner_.record("HudShipScreen::update_remainder", 0x0064fd24u);
+    }
+    float unit_ordered_rudder() override {
+        const GameUnitRow* row =
+            owner_.units != nullptr ? owner_.units->unit_row(owner_.ship_screen_unit) : nullptr;
+        return row != nullptr ? row->ordered_rudder : 0.0f;       // unit+984h
+    }
+    void dir_clock_step(bsp::ShipScreenState& screen) override {
+        static_cast<void>(screen);
+        // SUBSTITUTION: the step runs only when the platform clock (01090AB0
+        // +14h, milliseconds) passes the static 00E19808 + 21h; that clock is
+        // not reachable from the HUD host. +124h and +12Ch have no reader in
+        // the screen's code (a disp32 scan of 124h finds only the enter and
+        // this block), so the step is recorded and not applied.
+        owner_.record("HudShipScreen::dir_clock_step", 0x0064fdd4u);
+    }
+    float unit_forward_speed() override {
+        // 0092D730 on [unit+1018h], reconstructed.
+        return owner_.units != nullptr
+            ? owner_.units->unit_forward_speed_0092d730(owner_.ship_screen_unit) : 0.0f;
+    }
+    int unit_int_638() override {
+        owner_.record("HudShipScreen::gauge_source_638", 0x0064fff9u);
+        return 0;
+    }
+    float unit_float_1124() override {
+        owner_.record("HudShipScreen::gauge_source_class_790", 0x00650019u);
+        return 0.0f;
+    }
+    int unit_class_int_790() override { return 0; }
+    int unit_device_count_00852300() override {
+        owner_.record("HudShipScreen::gauge_source_00852300", 0x00852300u);
+        return 0;
+    }
+    int unit_torpedo_stock_00815850() override {
+        owner_.record("HudShipScreen::gauge_source_00815850", 0x00815850u);
+        return 0;
+    }
+    void gauge_digit(int gauge, int digit, float magnitude) override {
+        static_cast<void>(gauge);
+        static_cast<void>(digit);
+        static_cast<void>(magnitude);
+        // 0043ABA0 rewrites the digit icon's vertex UVs through its vertex
+        // stream (+A0h, lock +10h, unlock +14h); the sprite bridge draws a
+        // widget's first authored state only.
+        owner_.record("HudShipScreen::gauge_digit_uv", 0x0043aba0u);
+    }
 
 private:
     GameHudHost::Impl& owner_;
@@ -1064,6 +1202,116 @@ void GameHudHost::update_ship_screen_0064dd30(float seconds, bool active) {
     ShipScreenBinding binding(impl);
     bsp::ship_screen_update_0064dd30(impl.ship_screen, binding, seconds);
     impl.done("HudShipScreen::update", 0x0064dd30u);
+}
+
+GuiLayoutWidget* GameHudHost::Impl::warning_widget(bsp::WarningWidget widget) {
+    if (!warning_widgets_bound) {
+        warning_widgets_bound = true;
+        // 006823C0's lookups on GUI_Warning.
+        static const std::pair<int, const char*> kNames[] = {
+            {0x50, "warning_text"}, {0x54, "warning_1_Icon"}, {0x58, "warning_2_Icon"},
+            {0x68, "first_Group"}};
+        GuiLayoutPage* page = menu.in_game_page(0x50, "GUI_Warning");
+        for (const auto& entry : kNames) {
+            warning_widgets[entry.first] = page != nullptr && page->root
+                ? bsp::find_descendant_by_name(*page->root, entry.second) : nullptr;
+        }
+    }
+    auto it = warning_widgets.find(static_cast<int>(widget));
+    return it != warning_widgets.end() ? it->second : nullptr;
+}
+
+namespace {
+// bsp::WarningScreenHost over this process's HUD.
+class WarningScreenBinding final : public bsp::WarningScreenHost {
+public:
+    explicit WarningScreenBinding(GameHudHost::Impl& owner) : owner_(owner) {}
+    std::size_t controlled_unit() override {
+        if (owner_.units == nullptr || !owner_.units->controlled_bound()) return 0;
+        return owner_.units->controlled_index() + 1;
+    }
+    bool controlled_flag_5d() override {
+        return owner_.units->unit_flag_005d(owner_.units->controlled_index());
+    }
+    bool controlled_is_kind_of(int class_id) override {
+        return owner_.units->unit_is_kind_of(owner_.units->controlled_index(), class_id);
+    }
+    bool plane_stall_007c6e10() override {
+        // SUBSTITUTION: 007C6E10 on the plane's [unit+3D0h] is unread here;
+        // reached only when the controlled unit is a plane.
+        owner_.record("HudWarningScreen::plane_stall", 0x007c6e10u);
+        return false;
+    }
+    bool ship_shallow_1011() override {
+        // SUBSTITUTION: unit+1011h is the latched kind-8 physics contact
+        // (the grounding edge 008255B0 rotates from +1010h,
+        // docs/UNIT_INSTANCE_UPDATE.md); this host has no terrain contacts,
+        // so the latch reads clear.
+        owner_.record("HudWarningScreen::contact_latch_1011", 0x006830a5u);
+        return false;
+    }
+    float submarine_127c() override {
+        // SUBSTITUTION: unit+127Ch (the submarine's oxygen) is not modelled;
+        // reached only for a submarine.
+        owner_.record("HudWarningScreen::submarine_oxygen", 0x006830e6u);
+        return 1.0f;
+    }
+    bool submarine_below_00852860() override {
+        owner_.record("HudWarningScreen::submarine_below", 0x00852860u);
+        return false;
+    }
+    bool pose_current_c8() override {
+        // The host's pose is always current, so 00414DB0 has nothing to refresh.
+        return true;
+    }
+    void refresh_pose_00414db0() override {}
+    bool near_world_edge_00681f40() override {
+        // SUBSTITUTION: GGame+711Ch..+7130h, the world bounds 00681F40 tests,
+        // are unmodelled (as in the units host's fly-to solver).
+        owner_.record("HudWarningScreen::world_edge", 0x00681f40u);
+        return false;
+    }
+    void set_visible(bsp::WarningWidget widget, bool visible) override {
+        GuiLayoutWidget* w = owner_.warning_widget(widget);
+        if (w == nullptr) return;
+        owner_.menu.frontend().set_widget_visible(*w, visible);
+    }
+    void set_alpha(bsp::WarningWidget widget, float alpha) override {
+        GuiLayoutWidget* w = owner_.warning_widget(widget);
+        if (w == nullptr) return;
+        owner_.menu.frontend().set_widget_color(*w, w->color[0], w->color[1], w->color[2], alpha);
+    }
+    void sound_stop(int alert, bool flag) override {
+        static_cast<void>(alert);
+        static_cast<void>(flag);
+        owner_.record("HudWarningScreen::sound_stop", 0x006831b5u);
+    }
+    bool sound_finished(int alert) override {
+        static_cast<void>(alert);
+        owner_.record("HudWarningScreen::sound_finished", 0x0068321du);
+        return false;
+    }
+    void sound_release(int alert) override {
+        static_cast<void>(alert);
+        owner_.record("HudWarningScreen::sound_release", 0x0068322fu);
+    }
+    void show_alert(bsp::WarningScreenState& screen, int alert) override {
+        static_cast<void>(screen);
+        static const std::uint32_t kShow[4] = {0x00682ed0u, 0x00682cb0u, 0x00682d60u,
+                                               0x00682e10u};
+        owner_.record("HudWarningScreen::show_alert", kShow[alert & 3]);
+    }
+
+private:
+    GameHudHost::Impl& owner_;
+};
+}  // namespace
+
+void GameHudHost::update_warning_screen_00683020(float seconds) {
+    Impl& impl = *impl_;
+    WarningScreenBinding binding(impl);
+    bsp::warning_screen_update_00683020(impl.warning_screen, binding, seconds);
+    impl.done("HudWarningScreen::update", 0x00683020u);
 }
 
 void GameHudHost::update_markers_screen_006435d0(float seconds) {

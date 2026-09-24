@@ -1,0 +1,233 @@
+{
+  "packet": "cc10_render_init_distortion",
+  "base_commit": "91243a334d8e2a127497064999fd7dbe97053ce1",
+  "status": "partial_projection_B107F0_B11E40_to_B11EF4",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "source_files": [
+    "include/bsp/native_render_resource_init_distortion.hpp",
+    "src/native_render_resource_init_distortion.cpp"
+  ],
+  "small_extension": {
+    "header": "include/bsp/native_render_resource_init_second_bloom.hpp",
+    "change": "one-use distortion identity and next-stage phases only"
+  },
+  "no_ghidra_function": [],
+  "routines": [
+    {
+      "address": "00b107f0",
+      "name": "continue_native_render_resource_init_00b11e40_fragment",
+      "status": "partial_projection",
+      "coverage": "ONLY [00B11E40,00B11EF4), 180 bytes",
+      "start": "00b11e40",
+      "end_inclusive": "00b11ef3",
+      "end_exclusive": "00b11ef4",
+      "size": 180,
+      "last_instruction": "00b11eef",
+      "last_instruction_size": 5,
+      "last_instruction_text": "CALL 00B0FC10",
+      "next_instruction": "00B11EF4 PUSH 20h; next post allocation excluded",
+      "original_abi": "containing ECX actual service; three borrowed DWORD argument cells; eventual B13026 RET0C; no native return here",
+      "source_abi": "same second-bloom predecessor, original continuation context and persistent distortion stage context/state",
+      "preserved_ghidra_name": "BSP_RenderResources_InitializeMembers_PartialEntry",
+      "complete_init": false,
+      "destruction_admitted": false,
+      "runtime_tested": false
+    }
+  ],
+  "live_pe_byte_blocks": [
+    {
+      "start": "00b11e40",
+      "end_exclusive": "00b11ef4",
+      "size": 180,
+      "sha256": "f5551df85e217b6d516ee9400d69b85cb39642b72739a37c3f906579c1826efb",
+      "live_equals_disk": true,
+      "scope": "complete new caller fragment"
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "00b11e45",
+      "native": "00bf681b",
+      "function": "00b107f0",
+      "source": "singleton_lifetime_allocate"
+    },
+    {
+      "address": "00b11e62",
+      "native": "00b4f0c0",
+      "function": "00b107f0",
+      "source": "construct_native_distortion_owner_00b4f0c0"
+    },
+    {
+      "address": "00b11e79",
+      "native": "00b4f560",
+      "function": "00b107f0",
+      "source": "initialize_native_distortion_00b4f560"
+    },
+    {
+      "address": "00b11e8d",
+      "native": "[00ce2220]",
+      "function": "00b107f0",
+      "instruction_operand": "dword ptr [0x00ce2220]",
+      "source": "current actual decrement import after current+30 capture"
+    },
+    {
+      "address": "00b11e9d",
+      "native": "current captured owner virtual0",
+      "function": "00b107f0",
+      "instruction_operand": "EAX",
+      "resolved_native": "00bd30e0",
+      "source": "actual registry resolve_actual(captured owner).release_zero_references",
+      "evidence": "profile and slot0 loaded only after decrement returned zero; canonical companion revalidates admitted current profile/deleting slot"
+    },
+    {
+      "address": "00b11ea8",
+      "native": "00bf681b",
+      "function": "00b107f0",
+      "source": "singleton_lifetime_allocate"
+    },
+    {
+      "address": "00b11ec5",
+      "native": "00b1fbb0",
+      "function": "00b107f0",
+      "source": "construct_native_frame_target_owner_00b1fbb0"
+    },
+    {
+      "address": "00b11eef",
+      "native": "00b0fc10",
+      "function": "00b107f0",
+      "source": "resize_native_render_resources_depth_00b0fc10"
+    }
+  ],
+  "ordering": [
+    "Allocate26C, retain ESP14, state54, conditional constructor; capture constructor result for initializer.",
+    "Bind canonical metadata only under actual valid cleanup-preimage contract before publish+30/init; no native store or count change.",
+    "Disarm, publish+30; initialize CAPTURED result with inherited EBP width/EDI height; do not reload receiver.",
+    "True result skips +30 read. False captures current+30 into EDI; null skips decrement AND clear.",
+    "Capture current CE2220 after captured owner; returned zero controls current captured-owner profile/slot0 lookup and canonical dispatch.",
+    "Clear current parent+30 only after normal nonnull release return, overwriting any callback replacement.",
+    "Allocate40, retain ESP14, state55, conditional frame constructor.",
+    "Freshly read original third argument, read original height, publish+1C8, read original width, disarm then B0FC10."
+  ],
+  "frontier": {
+    "native_pc": "00b11ef4",
+    "ESI": "same service",
+    "EBX": "FFFFFFFF",
+    "EBP": "half aligned width",
+    "EDI": "halfheight on init true; captured current service+30 bits on false, possibly null or retired",
+    "ESP14": "raw 40h depth frame allocation",
+    "ESP10_mask": 0,
+    "EH_state": -1,
+    "argument_cells": "same original three borrowed cells; word08 freshly read atB11ECE",
+    "native_machine_stack": false,
+    "phase": "awaiting_b11ef4_continuation",
+    "predecessor_phases": "all awaiting_later_continuation",
+    "ESP20": "half aligned width",
+    "ESP58": "aligned width",
+    "ESP24": "aligned height",
+    "ESP18_1C": "original dimensions",
+    "ESP1D8": "half aligned height"
+  },
+  "lifetime": {
+    "bridge_dependency": "root-owned NativeRenderPassCompanionContext::distortion and D61F1C/B4F540 extension",
+    "retained": "actual distortion block, canonical pass companion, live referenced scene publication, lifetime context, depth acquisition and predecessor chain",
+    "admission": "actual unwritten+34/+38/+3C cleanup preimage already valid before publication/initializer whenever release is possible; this packet does not initialize those bytes",
+    "replacement": "false captured current+30 can differ; resolve its own existing canonical registry companion/context only at zero",
+    "nested": "existing direct holders/surfaces/textures; no blanket registry or second count"
+  },
+  "failure": {
+    "native_FH3_reproduced": false,
+    "source": "retain all current publications, site/state, metadata and child acquisition diagnostics; fail predecessor chain; no caller rollback/free/reset"
+  },
+  "checks": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "status": "passed",
+      "result": "MSVC Win32 Release MultiThreadedDLL /MD",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "log": "local/render_init_distortion_build.txt"
+    },
+    "report_calls": {
+      "command": "python tools/verify_report_calls.py reports/native_render_resource_init_distortion_cc10.json",
+      "status": "passed",
+      "numeric_checked": 6,
+      "failed": 0,
+      "indirect_rows": 2,
+      "indirect_mechanically_checked": false,
+      "log": "local/render_init_distortion_calls.txt"
+    },
+    "bytes_and_listing": {
+      "status": "passed",
+      "complete_instructions": 53,
+      "calls": 8,
+      "indirect_operands": [
+        "dword ptr [0xce2220]",
+        "eax"
+      ],
+      "live_listing": "local/render_init_distortion_listing.txt",
+      "boundary_evidence": "local/render_init_distortion_next_boundaries.json",
+      "byte_check": "local/render_init_distortion_byte_check.json"
+    },
+    "new_tracked_tests": 0,
+    "new_probes": 0,
+    "composed_runtime_tested": false
+  },
+  "bridge_dependency": {
+    "implementation_commit": "8e1f6f19b",
+    "integration_commit": "91243a334",
+    "report": "reports/native_distortion_pass_companion_cc10.json",
+    "probe_boundary": "root bridge lifecycle fixture only; no composed initializer/capability-failure runtime claim here"
+  },
+  "provider_contracts": [
+    {
+      "callees": [
+        "BF681B",
+        "B4F0C0"
+      ],
+      "contract": "actual26Ch CRT allocation; ECX/EAX/RET0 constructor reads CF4848 then CE3958 then D1F3C4 in existing native order; no writes to+34/+38/+3C"
+    },
+    {
+      "callees": [
+        "B4F560"
+      ],
+      "contract": "complete2664-byte initializer; captured constructor result as ECX, halfwidth/halfheight stack, AL/RET8; existing block owns admissions/scene publication and failure state"
+    },
+    {
+      "callees": [
+        "CE2220",
+        "captured current owner virtual0"
+      ],
+      "contract": "current import after captured current+30; decrement actual+04; zero return resolves that exact canonical owner; its current profile/virtual0 then BD30E0 deleting-slot reload; normal nonnull return followed by parent clear"
+    },
+    {
+      "callees": [
+        "BF681B",
+        "B1FBB0"
+      ],
+      "contract": "actual40h CRT frame allocation and existing ECX/EAX/RET0 constructor; no new companion required for direct frame lifetime"
+    },
+    {
+      "callees": [
+        "B0FC10"
+      ],
+      "contract": "complete104-byte depth routine; ECX same service, original width,height,third word; RET0C; current+1C8/renderer94/B2A9A0/retain/reload/import ordering and persistent factory acquisition"
+    }
+  ],
+  "artifact_sha256": {
+    "include/bsp/native_render_resource_init_distortion.hpp": "acd685cd4ba9ca7b6f805871b02b577aa4c0186f1ce21446f4349c9779fb72e1",
+    "src/native_render_resource_init_distortion.cpp": "f0a00c9956045a3e3b6e964356cb5ead6aaf4166ccaa0effa954c68c926c828a",
+    "include/bsp/native_render_resource_init_second_bloom.hpp": "1ef7cf44cef2d66f83abdeef96f02c7614926bcb28b9d0dfbd7f6f7fa566af21",
+    "docs/NATIVE_RENDER_RESOURCE_INIT_DISTORTION_CC10.md": "9b6cb39f540bbe50db00c527355e0fcc09acc5a8ed56a72ec23989f21556e495",
+    "local/render_init_distortion_build.txt": "77824ffd33fc8ae4834f2116852a64eba3c715a13536cd031d76a4cd2f4dba47",
+    "local/render_init_distortion_calls.txt": "4f8ed8becad0cb15ae6c0c4973c27e962558ccc697d7880612f8e86b38c83eba",
+    "local/render_init_distortion_listing.txt": "81894b0bf517d6e5ebe0e2b78906434869e1076fe689434cfc639862249e3a1c",
+    "local/render_init_distortion_byte_check.json": "9baadf6d446cec8f238e6053a43f9fc73d45a21fe76a64916d2643d67800f194"
+  }
+}

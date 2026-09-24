@@ -157,6 +157,8 @@ public:
     // Packet cc9_ship_screen_update: screen 45h's update 0064DD30. `active`
     // is the screen's applied byte +5h as the registry holds it.
     void update_ship_screen_0064dd30(float seconds, bool active);
+    // Packet cc9_screen_50h: screen 50h's update 00683020.
+    void update_warning_screen_00683020(float seconds);
 
     // One summary line for the run log.
     void report();

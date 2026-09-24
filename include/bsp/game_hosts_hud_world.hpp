@@ -88,6 +88,33 @@ inline constexpr bool kHudShipScreenUpdateBound = true;
 // reached without input. OFF keeps the part-1 tail record.
 inline constexpr bool kHudShipScreenControlsBound = true;
 
+// Packet cc9_ship_screen_parts34, part 3 (docs/SHIP_SCREEN_UPDATE.md section
+// 12): the damage panel 0064F665..0064FD24, Icon_3/Icon_5, the Hl_1..4 fade
+// and the four circles. The repair task, the settings failure descriptors and
+// the device list are records that answer "no data". OFF keeps the part-2
+// tail record at 0064F665.
+inline constexpr bool kHudShipScreenDamageBound = true;
+
+// Part 4 of the same packet (section 13): 0064FD24..006500C1, ship_dir_Icon
+// through 0064AAD0, the +128h/+12Ch spring and the digit gauges 0043B370.
+// The digit texture rolls (0043ABA0) and the clock-gated step are records.
+// OFF keeps one record at 0064FD24.
+// Packet cc9_screen_26h_2eh (docs/SHIP_SCREEN_UPDATE.md section 14). Slots
+// 26h, 2Eh and 3Eh keep FrontEndScreen's base update in their vtables (+20h
+// holds 004F75C0 at 00CEC9D0, 00CEDF54 and 00CF4564), a bare RET 4. ON logs
+// the pump's call on those slots as the done base update; OFF keeps them under
+// the FrontEndScreen::update record.
+inline constexpr bool kHudBaseUpdateScreensBound = true;
+
+// Packet cc9_screen_50h (docs/SHIP_SCREEN_UPDATE.md section 16). ON runs
+// screen 50h's update 00683020 (the four warnings: stall, oxygen, shallow
+// water, exit zone) through bsp::warning_screen_update_00683020 in place of
+// the FrontEndScreen::update record. The alert inputs the host lacks are
+// records that answer "no alert". OFF keeps the record.
+inline constexpr bool kHudWarningScreenBound = true;
+
+inline constexpr bool kHudShipScreenGaugesBound = true;
+
 class GameHostLog;
 class GameFrontendHost;
 class GameMenuHost;

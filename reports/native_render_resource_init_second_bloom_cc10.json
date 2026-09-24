@@ -1,0 +1,289 @@
+{
+  "packet": "cc10_render_init_second_bloom",
+  "base_commit": "a4b0982dcfce5994a0d4d45c3a07180f42f74748",
+  "status": "partial_projection_B107F0_B11D7E_to_B11E40",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "source_files": [
+    "include/bsp/native_render_resource_init_second_bloom.hpp",
+    "src/native_render_resource_init_second_bloom.cpp"
+  ],
+  "small_extension": {
+    "header": "include/bsp/native_render_resource_init_dof.hpp",
+    "change": "second_bloom_running and awaiting_later_continuation phases; one-use second_bloom_identity only"
+  },
+  "no_ghidra_function": [],
+  "routines": [
+    {
+      "address": "00b107f0",
+      "name": "continue_native_render_resource_init_00b11d7e_fragment",
+      "status": "partial_projection",
+      "coverage": "ONLY [00B11D7E,00B11E40), 194 bytes",
+      "start": "00b11d7e",
+      "end_inclusive": "00b11e3f",
+      "end_exclusive": "00b11e40",
+      "size": 194,
+      "last_instruction": "00b11e3b",
+      "last_instruction_size": 5,
+      "last_instruction_text": "CALL 00B54F90",
+      "next_instruction": "00B11E40 PUSH 26Ch; distortion allocation not executed",
+      "original_abi": "containing ECX actual service; three DWORD stack cells; eventual RET0C atB13026; fragment executes no native return",
+      "source_abi": "retained DOF predecessor, SAME original continuation context and independent persistent second-bloom attempt",
+      "preserved_ghidra_name": "BSP_RenderResources_InitializeMembers_PartialEntry",
+      "excluded": [
+        "earlier [B107F0,B11D7E) belongs to published packets",
+        "remaining [B11E40,B13029) not executed here"
+      ],
+      "complete_init": false,
+      "destruction_admitted": false,
+      "runtime_tested": false
+    }
+  ],
+  "live_pe_byte_blocks": [
+    {
+      "start": "00b11d7e",
+      "end_exclusive": "00b11e40",
+      "size": 194,
+      "sha256": "079a6739ecbdd8ab83bc15b3c22ff3ed5b31d551388132eaad94f3b3b286adbd",
+      "live_equals_disk": true,
+      "scope": "new caller fragment"
+    },
+    {
+      "start": "00d5f1d4",
+      "end_exclusive": "00d5f1d8",
+      "size": 4,
+      "sha256": "a7930b3bbd9f5a77ad91ff6b573189dc421f85e3a7e87893a3e5f7b1a5dd7c80",
+      "live_equals_disk": true,
+      "scope": "original D5F0A8 slot12C"
+    },
+    {
+      "start": "00b20090",
+      "end_exclusive": "00b20097",
+      "size": 7,
+      "sha256": "082c6ae3eb2f4dbd995e6b580dfaef1897cd9592b0d7cc56337a144be8aea76e",
+      "live_equals_disk": true,
+      "scope": "existing complete borrowed depth getter"
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "00b11d80",
+      "native": "00bf681b",
+      "function": "00b107f0",
+      "source": "singleton_lifetime_allocate"
+    },
+    {
+      "address": "00b11d9d",
+      "native": "00b1fbb0",
+      "function": "00b107f0",
+      "source": "construct_native_frame_target_owner_00b1fbb0"
+    },
+    {
+      "address": "00b11db6",
+      "native": "00b4cb20",
+      "function": "00b107f0",
+      "source": "native_render_holder_primary_00b4cb20"
+    },
+    {
+      "address": "00b11dc4",
+      "native": "00b1fab0",
+      "function": "00b107f0",
+      "source": "set_native_frame_target_color_00b1fab0"
+    },
+    {
+      "address": "00b11dd7",
+      "native": "00d5f0a8+vtable12c",
+      "function": "00b107f0",
+      "instruction_operand": "EAX",
+      "resolved_native": "00b20090",
+      "source": "get_native_renderer_current_depth_surface_00b20090",
+      "evidence": "current renderer/profile guard; live native slot12C bytes; exact CALL EAX listing; complete seven-byte getter"
+    },
+    {
+      "address": "00b11de0",
+      "native": "00b1fb00",
+      "function": "00b107f0",
+      "source": "set_native_frame_target_depth_00b1fb00"
+    },
+    {
+      "address": "00b11dea",
+      "native": "00bf681b",
+      "function": "00b107f0",
+      "source": "singleton_lifetime_allocate"
+    },
+    {
+      "address": "00b11e07",
+      "native": "00b54e70",
+      "function": "00b107f0",
+      "source": "construct_native_bloom_owner_00b54e70"
+    },
+    {
+      "address": "00b11e32",
+      "native": "00b4d170",
+      "function": "00b107f0",
+      "source": "native_shadow_texture_holder_00b4d170"
+    },
+    {
+      "address": "00b11e3b",
+      "native": "00b54f90",
+      "function": "00b107f0",
+      "source": "initialize_native_bloom_00b54f90"
+    }
+  ],
+  "provider_contracts": [
+    {
+      "callees": [
+        "BF681B",
+        "B1FBB0"
+      ],
+      "contract": "shared CRT actual40h allocation (caller ADDESP4); existing actual frame constructor ECX/EAX/RET0 preserves native D5E600/count/ordered fields"
+    },
+    {
+      "callees": [
+        "B4CB20",
+        "B1FAB0"
+      ],
+      "contract": "borrow current captured+44 holder primary surface; reload current service+1CC; full frame color0 provider, RET8, publish/retain incoming before captured old release"
+    },
+    {
+      "callees": [
+        "D5F0A8+12C/B20090",
+        "B1FB00"
+      ],
+      "contract": "read current renderer after color assignment; guard original current profile and slot12C=B20090; borrowed renderer+198C getter; reload service+1CC; actual frame depth provider RET4"
+    },
+    {
+      "callees": [
+        "BF681B",
+        "B54E70"
+      ],
+      "contract": "shared CRT actual43Ch allocation; existing bloom constructor ECX/EAX/RET0 establishes actual D62150/count/fields; no whole allocation clear or extra count"
+    },
+    {
+      "callees": [
+        "B4D170",
+        "B54F90"
+      ],
+      "contract": "capture current service+1C before+2C publication; getter borrows its+0C holder; reload current service+2C and call existing initializer with holder,halfwidth,halfheight,71h,3F800000h; RET14h"
+    }
+  ],
+  "x87": {
+    "native_sequence": [
+      "B11E10 FLD1",
+      "B11E12 load halfheight from ESP1D8 into EDI",
+      "B11E19 load halfwidth from ESP20 into EBP",
+      "B11E1E capture current service+1C",
+      "B11E21 FSTP float ptr[ESP]"
+    ],
+    "source": "single inline-assembly region uses FLD1, both retained DWORD dimension reads, current actual service+1C read, then FSTP DWORD temporary; no call while ST0 is live",
+    "emitted_object": "build/win32/bsp_core.dir/Release/native_render_resource_init_second_bloom.obj",
+    "emitted_evidence": "local/render_init_second_bloom_object_disasm.txt",
+    "emitted_sequence_offsets": [
+      "000003FA FLD1",
+      "000003FF height read",
+      "00000407 width read",
+      "0000040F current service+1C read",
+      "00000415 FSTP DWORD"
+    ],
+    "parameter_bits": "3F800000 under admitted normal x87 stack; no machine-stack alias or native ABI claim"
+  },
+  "ordering": [
+    "Prepare a distinct NativeBloomInitializationBlock in existing c.bloom; do not reuse the first bloom state at service+28.",
+    "Allocate40h then update retained ESP14; state52; construct only for nonnull raw allocation.",
+    "Capture current service+44 atB11DA6 BEFORE disarming/publishing actual frame result or null at service+1CC.",
+    "Get primary surface from the captured holder, then reload current+1CC for color0 assignment.",
+    "After color assignment read current renderer/profile12C; get current depth and reload current+1CC for depth assignment.",
+    "Allocate43Ch then update ESP14; state53; construct only for nonnull raw allocation.",
+    "FLD1, read halfheight/halfwidth, capture current+1C, FSTP. Update retained EDI/EBP meanings.",
+    "Disarm atB11E28 and publish actual bloom result/null into+2C BEFORE B4D170 on captured input pass.",
+    "Reload current+2C for the independent real bloom initializer; retain all nested child frames on return/failure."
+  ],
+  "frontier": {
+    "native_pc": "00b11e40",
+    "second_bloom_phase": "awaiting_b11e40_continuation",
+    "predecessor_phases": "all awaiting_later_continuation",
+    "ESI": "same service",
+    "EBX": "FFFFFFFF",
+    "EBP": "half aligned width, replacing prior service+A0 meaning",
+    "EDI": "half aligned height, replacing prior raw+74 meaning",
+    "ESP14": "raw second-bloom allocation",
+    "ESP20": "half aligned width",
+    "ESP58": "aligned width",
+    "ESP24": "aligned height",
+    "ESP18_1C": "original dimensions",
+    "ESP1D8": "half aligned height",
+    "ESP10_mask": 0,
+    "EH_state": -1,
+    "argument_cells": "same original three borrowed cells; none read",
+    "native_machine_stack": false
+  },
+  "lifetime": {
+    "retained": "independent bloom construction block, frame/bloom allocation/result/publication receipts, current captures, argument packet and entire predecessor chain",
+    "frame": "actual D5E600 frame+1CC retains its existing direct frame lifetime; no registry bridge added",
+    "bloom": "new D62150 service-visible+2C needs another stable canonical pass companion before service release; existing NativeRenderPassReference supports the profile but is not wired here",
+    "nested": "existing direct holder/surface/texture lifetime paths and nested post20 companions remain authoritative; no blanket registration",
+    "capacity_boundary": "existing bloom+430 borrowed float4 spans through+43F despite43Ch allocation; preserve descriptor/provider boundary without enlarging allocation or claiming later consumer safety"
+  },
+  "failure": {
+    "source": "all five stage records fail together; preserve actual publications, current site/state and all provider preparation/acquisition records; rethrow",
+    "native_FH3_reproduced": false,
+    "no_automatic": [
+      "caller rollback",
+      "retry",
+      "raw free",
+      "metadata unbind",
+      "child reset/destruction"
+    ]
+  },
+  "checks": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "status": "passed",
+      "result": "MSVC Win32 Release, MultiThreadedDLL /MD",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "log": "local/render_init_second_bloom_build.txt"
+    },
+    "report_calls": {
+      "command": "python tools/verify_report_calls.py reports/native_render_resource_init_second_bloom_cc10.json",
+      "status": "passed",
+      "numeric_checked": 9,
+      "failed": 0,
+      "indirect_rows": 1,
+      "indirect_mechanically_checked": false,
+      "log": "local/render_init_second_bloom_calls.txt"
+    },
+    "emitted_x87": "FLD1/load/load/current-input-load/FSTP confirmed; no intervening CALL",
+    "new_tests": 0,
+    "composed_runtime_tested": false,
+    "game_runtime_tested": false,
+    "diff_check": "passed"
+  },
+  "limitations": [
+    "Static source composition, object inspection and build only; no composed production execution",
+    "No full initialization/teardown, native ABI/FH3/SEH/private-stack-alias or gameplay proof",
+    "Retains existing provider actual-profile/import/capacity/lifetime preconditions",
+    "Excluded distortion allocation/preimage/canonical-lifetime issue is not solved by this packet",
+    "Existing math differential tests and earlier leaf probes do not establish composed frame/bloom behavior"
+  ],
+  "evidence_files": {
+    "render_init_second_bloom_live_bytes.txt": "fb67f94d8892469eb76913a01d4d4e8f67999c7cf7a2255b7ad6aa97ee65d279",
+    "render_init_second_bloom_boundary.json": "1b1e22890aef5a0399b524e8a33cd9726681b84928f6aaec60f0b726e5f4d0b8",
+    "render_init_second_bloom_slot12c_bytes.txt": "8662f2f28f3bed898b088097fc25ff67265afbd93653d072b595744f96563f1c",
+    "render_init_second_bloom_depth_getter_bytes.txt": "713047e0c0704c06d68b9a0331308e1aa2cc22eff52bcc28b3aa9d09d2dd5372",
+    "render_init_second_bloom_build.txt": "a96010cdc090e8373a48ec65ae41bbd0800a3064c27668ce8b8212fac704ae62",
+    "render_init_second_bloom_object_disasm.txt": "a694f0c2f6918757a598575874fdbb6ed45501999a0ae36a425f965d87a2d99e",
+    "render_init_second_bloom_calls.txt": "ad6761d829312c95568cd5e5a6338275fab7578309b6dd7612c0e094cff9c29e"
+  },
+  "source_sha256": {
+    "include/bsp/native_render_resource_init_second_bloom.hpp": "fc64b12da8a735b0c481ce41f171252c3f22483f37c2eea9c4f8ef4ce889a689",
+    "src/native_render_resource_init_second_bloom.cpp": "c65992476f6ceb408f98cf7430a39e334c61a80d674e5a99ae2942849d94895a",
+    "include/bsp/native_render_resource_init_dof.hpp": "7ef9651970597315420cad9d593c594f119b59bccbbc851af25bfea79673527c"
+  }
+}
