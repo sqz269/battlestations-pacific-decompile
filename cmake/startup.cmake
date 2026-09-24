@@ -728,6 +728,7 @@ cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_cor
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_gui_text_model_clone.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_gui_widget_lifetime.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_gui_widget_position.cpp)
+cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_gui_widget_property_prefix.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_gui_widget_transform.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_input_action_contexts.cpp)
 cmake_language(DEFER DIRECTORY "${CMAKE_SOURCE_DIR}" CALL target_sources bsp_core PRIVATE src/native_input_action_deadline_map.cpp)
