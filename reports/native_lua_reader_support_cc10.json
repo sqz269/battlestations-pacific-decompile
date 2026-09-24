@@ -1,0 +1,109 @@
+{
+  "packet": "cc10_native_lua_reader_support",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "functions": [
+    {
+      "address": "00b66fa0",
+      "name": "copy_construct_native_lua_object_00b66fa0",
+      "native_end_exclusive": "00b66ff5",
+      "original_abi": "ECX fresh destination, stacked source pointer, EAX destination, RET4"
+    },
+    {
+      "address": "00bd5790",
+      "name": "lookup_native_lua_reader_child_00bd5790",
+      "native_end_exclusive": "00bd585c",
+      "original_abi": "ECX fresh output, EDX parent, stacked tag/value DWORDs, EAX output, RET8"
+    }
+  ],
+  "native_bytes": [
+    {
+      "address": "00b66fa0",
+      "bytes": 85,
+      "sha256": "7d619c9c7f70906c9921844836ac57a8481ed1e7c33748323624d9a75d8825cc",
+      "live_disk_equal": true
+    },
+    {
+      "address": "00bd5790",
+      "bytes": 204,
+      "sha256": "9bd56cfb009217957706c62f2f29f521692038c3d1158b18fd152d16aa4395ba",
+      "live_disk_equal": true
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00bd57bd",
+      "native": "00b65f50",
+      "function": "00bd5790",
+      "contract": "Construct output before tag dispatch"
+    },
+    {
+      "address": "00bd57e2",
+      "native": "00b67800",
+      "function": "00bd5790",
+      "contract": "Tag0 name lookup"
+    },
+    {
+      "address": "00bd5802",
+      "native": "00b67720",
+      "function": "00bd5790",
+      "contract": "Tag1 integer lookup"
+    },
+    {
+      "address": "00bd5824",
+      "native": "00b67720",
+      "function": "00bd5790",
+      "contract": "Tag2 CVTTSS2SI then integer lookup"
+    },
+    {
+      "address": "00bd5834",
+      "native": "00b67690",
+      "function": "00bd5790",
+      "contract": "Assign returned temporary to output"
+    },
+    {
+      "address": "00bd5841",
+      "native": "00b67700",
+      "function": "00bd5790",
+      "contract": "Destroy temporary after switching EH state0"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00cc59a1",
+      "end_inclusive": "00cc59aa",
+      "end_exclusive": "00cc59ab",
+      "last_instruction": "CC59A6 JMP BF6B43,5bytes",
+      "defined_by_primary": "reports/cc10_lua_renderer_function_definitions.json",
+      "still_undefined": false
+    }
+  ],
+  "eh": {
+    "handler": "00cc59a1",
+    "descriptor": "00dffbdc",
+    "map": "00dffbbc",
+    "states": 4,
+    "actions": [
+      "00cc5970",
+      "00cc5989",
+      "00cc5991",
+      "00cc5999"
+    ],
+    "native_fh3_verified": false
+  },
+  "validation": {
+    "win32_build": true,
+    "existing_checks_passed": 3,
+    "copy_native_source_pairs": 4,
+    "actual_lua_lookup_native_source_pairs": 8,
+    "probe": "local/cc10_lua_reader_probe.cpp",
+    "probe_log": "local/cc10-lua-reader-probe.log",
+    "build_log": "local/cc10-lua-reader-support-build.log",
+    "probe_exe_sha256": "27363fcd8c61be239a5256caaa25e9d4975f9f395ef8f3bfae415d262101d05e",
+    "native_lookup_rebound_calls": "six direct calls to same production actual object primitives; no native primitive/FH3 execution claim"
+  },
+  "reader_container_implemented": false,
+  "application_bound": false,
+  "abi_compatible": false,
+  "game_validated": false
+}
