@@ -836,6 +836,11 @@ public:
             owner_.hud->update_follow_screen_0067bf00();
             return;
         }
+        // Packet cc9_screen_29h: screen 29h's 00527260, the unit pick.
+        if (kHudUnitPickScreenBound && owner_.hud != nullptr && slot == 0x29) {
+            owner_.hud->update_unit_pick_screen_00527260(seconds);
+            return;
+        }
         // Packet cc9_screen_44h: screen 44h's 00649860, the HUD root.
         if (kHudRootScreenBound && owner_.hud != nullptr && slot == 0x44) {
             owner_.hud->update_hud_root_screen_00649860(seconds);

@@ -9,6 +9,10 @@
 #include "bsp/hud_ship_screen.hpp"
 #include "bsp/hud_warning_screen.hpp"
 #include "bsp/hud_updates.hpp"
+#include "bsp/hud_markers_runtime.hpp"
+#include "bsp/camera_transform.hpp"
+#include "bsp/native_camera_plane_transform.hpp"
+#include "bsp/game_hosts_script_orders.hpp"
 #include "bsp/game_hosts_frontend.hpp"
 #include "bsp/gui_layout_loader.hpp"
 #include "bsp/ocean_height.hpp"
@@ -102,6 +106,11 @@ struct GameHudHost::Impl {
     bool hud_root_widgets_bound{false};
     GuiLayoutWidget* hud_root_closed_group{nullptr};
     GuiLayoutWidget* hud_root_closed_group_widget();
+    // Screen 29h, the unit pick (00527260, 00526A40).
+    bsp::UnitPickScreenState unit_pick{};
+    bool lock_radius_read{false};
+    std::vector<float> lock_radius;
+    const std::vector<float>& lock_radius_multipliers();
     void bind_mission_camera_0064da40();
     void step_mission_camera(float seconds);
     bool camera_target_view(bsp::ShipCaptainTargetView& out);
@@ -1335,8 +1344,9 @@ public:
     explicit FollowScreen49Binding(GameHudHost::Impl& owner) : owner_(owner) {}
     bool screen_29h_applied() override { return owner_.menu.in_game_screen_applied(0x29); }
     std::size_t screen_29h_unit() override {
-        // SUBSTITUTION: screen 29h's +4Ch is stored by its own update
-        // (005272E5, from 00526A40), which is not bound; it reads null.
+        // Screen 29h's +4Ch, stored by its update (005272E5, from 00526A40).
+        if (kHudUnitPickScreenBound) return owner_.unit_pick.pick_4c;
+        // SUBSTITUTION with 29h unbound: it reads null.
         owner_.record("HudFollowScreen::screen_29h_unit", 0x0067bf44u);
         return 0;
     }
@@ -1772,6 +1782,248 @@ void GameHudHost::update_hud_root_screen_00649860(float seconds) {
     HudRootUpdateBinding binding(impl);
     bsp::hud_root_screen_update(impl.hud_root, binding, seconds);
     impl.done("HudRootScreen::update", 0x00649860u);
+}
+
+namespace {
+// bsp::UnitPickHost over this process's HUD, for screen 29h (00527260 and
+// 00526A40). Units are index + 1. The lock branches, which send orders, move
+// roles or take control, are records that perform nothing; each is reached
+// only after an input flag.
+class UnitPickBinding final : public bsp::UnitPickHost {
+public:
+    explicit UnitPickBinding(GameHudHost::Impl& owner) : owner_(owner) {}
+
+    float lock_zoom_modifier_5c() override {
+        // Reached only below full zoom; the binoculars zoom stays 1.0 here.
+        owner_.record("UnitPickScreen::lock_zoom_modifier", 0x00526a8eu);
+        return 0.8f;  // 0087DDF7's default, 3F4CCCCDh
+    }
+    float interpolate_clamped_00419010(float, float) override {
+        owner_.record("UnitPickScreen::interpolate_clamped", 0x00419010u);
+        return 1.0f;
+    }
+    bool game_19c4() override {
+        // SUBSTITUTION: game+19C4h is not modelled (as for screens 44h and 46h).
+        // The first query of an update is 00526A40's (00526B05); the later
+        // ones are 00527260's own (005273C5 onwards).
+        const bool pick = game_19c4_queries_++ == 0;
+        owner_.record(pick ? "UnitPickScreen::game_19c4_pick" : "UnitPickScreen::game_19c4",
+                      pick ? 0x00526b05u : 0x005273c5u);
+        return false;
+    }
+    std::size_t spectated_unit_005a1310() override {
+        owner_.record("UnitPickScreen::spectated_unit", 0x005a1310u);
+        return 0;
+    }
+    std::size_t firing_unit_004b4b00() override {
+        // 004B4B00: the controlled unit when it is kind 5, its [+3D0h] when it
+        // is kind 18h, else none.
+        const std::size_t c = controlled_unit();
+        if (c == 0) return 0;
+        if (is_kind_of(c, 5)) return c;
+        if (is_kind_of(c, 0x18)) {
+            owner_.record("UnitPickScreen::squadron_first_member", 0x004b4b35u);
+            return 0;
+        }
+        return 0;
+    }
+    bool is_kind_of(std::size_t unit, int class_id) override {
+        return unit != 0 && owner_.units->unit_is_kind_of(unit - 1, class_id);
+    }
+    int unit_slot_1b4(std::size_t) override {
+        owner_.record("UnitPickScreen::unit_slot_1b4", 0x00526b36u);
+        return -1;
+    }
+    bool slot_auto_engage_00927f10(int) override {
+        owner_.record("UnitPickScreen::slot_auto_engage", 0x00927f10u);
+        return false;
+    }
+    void camera_basis(float position[3], float forward[3]) override {
+        bsp::MissionCameraPublication& node = bsp::mission_camera_publication();
+        if (!(kMissionCameraBound && node.ready)) {
+            owner_.record("UnitPickScreen::camera_basis", 0x00526b71u);
+            for (int i = 0; i < 3; ++i) position[i] = forward[i] = 0.0f;
+            return;
+        }
+        // 00526B77/00526BBA: 00B6DB70 when the world-valid bit 2 is clear,
+        // then +110h..+118h (row 2) and +120h..+128h (row 3) of the world.
+        if ((node.state.transform.valid_flags & 2u) == 0) {
+            bsp::refresh_camera_world_00b6db70(node.state.transform);
+        }
+        const bsp::CameraMatrix& world = node.state.transform.world;
+        for (int i = 0; i < 3; ++i) {
+            forward[i] = world[8 + i];
+            position[i] = world[12 + i];
+        }
+    }
+    bool ray_pick_009043a0(const float*, const float*, std::size_t, std::size_t& hit) override {
+        // SUBSTITUTION: the spatial index ([00E188A8]+19CCh, 0098ADD0) is not
+        // built, so the segment query reports no hit.
+        owner_.record("UnitPickScreen::segment_query", 0x009043a0u);
+        hit = 0;
+        return false;
+    }
+    std::size_t ray_hit_branch(bsp::UnitPickScreenState&, std::size_t) override {
+        owner_.record("UnitPickScreen::ray_hit_branch", 0x00526c74u);
+        return 0;
+    }
+    bool game_1fe4() override { return false; }  // single player: no session
+    int game_difficulty_6ac() override { return game_effective_difficulty_6ac(); }
+    float lock_radius_multiplier(int index) override {
+        const std::vector<float>& m = owner_.lock_radius_multipliers();
+        if (index < 0 || static_cast<std::size_t>(index) >= m.size()) {
+            // No config vector: the image would fault in 00BF6713. Radius 0
+            // picks nothing.
+            owner_.record("UnitPickScreen::lock_radius_multiplier", 0x00526dd7u);
+            return 0.0f;
+        }
+        return m[static_cast<std::size_t>(index)];
+    }
+    std::size_t list_size(bsp::UnitPickList list) override {
+        if (list == bsp::UnitPickList::Kind35) {
+            // SUBSTITUTION: game+19BCh, 004C3CB0's second-walk list of kind-35h
+            // and grey-arrow units (team record +DE8h), is not built: empty.
+            owner_.record("UnitPickScreen::kind35_list", 0x004c3e99u);
+            return 0;
+        }
+        // SUBSTITUTION: game+1974h is 004C3CB0's first walk over the local team
+        // record's +DDCh list, which this process does not fill. The stand-in
+        // walks the created units with that walk's own filter: the local
+        // party, +5Ch set with +5Dh/+60h/+5Eh clear, and not kind 2Ah.
+        owner_.record("UnitPickScreen::team_unit_list", 0x004c3cb0u);
+        team_.clear();
+        const std::size_t c = controlled_unit();
+        if (c == 0) return 0;
+        const GameUnitRow* self = owner_.units->unit_row(c - 1);
+        if (self == nullptr) return 0;
+        const std::size_t count = owner_.units->units().size();
+        for (std::size_t i = 0; i < count; ++i) {
+            const GameUnitRow* row = owner_.units->unit_row(i);
+            if (row == nullptr || row->party != self->party) continue;
+            if (!owner_.units->unit_alive_and_visible(i)) continue;
+            if (owner_.units->unit_is_kind_of(i, 0x2a)) continue;
+            team_.push_back(i + 1);
+        }
+        return team_.size();
+    }
+    std::size_t list_unit(bsp::UnitPickList, std::size_t i) override {
+        return i < team_.size() ? team_[i] : 0;
+    }
+    int member_count_3cc(std::size_t) override { return 0; }
+    std::size_t member_3d0(std::size_t, int) override {
+        // SUBSTITUTION: squadron members (+3D0h, count +3CCh) are not exposed.
+        owner_.record("UnitPickScreen::squadron_members", 0x00526e58u);
+        return 0;
+    }
+    bool grey_arrow_contains_008ddf90(std::size_t) override {
+        // SUBSTITUTION: no entity set is built at game+21A4h
+        // (docs/AI_SQUADRON_SERVED.md), so nothing is a grey-arrow member.
+        owner_.record("UnitPickScreen::grey_arrow_set", 0x008ddf90u);
+        return false;
+    }
+    bool flag_5d(std::size_t unit) override {
+        return owner_.units->unit_flag_005d(unit - 1);
+    }
+    void unit_position(std::size_t unit, float out[3]) override {
+        const GameUnitRow* row = owner_.units->unit_row(unit - 1);
+        for (int i = 0; i < 3; ++i) out[i] = row != nullptr ? row->position[i] : 0.0f;
+    }
+    void intercept_point_00901c20(std::size_t, std::size_t, float out[3]) override {
+        owner_.record("UnitPickScreen::gunbot_intercept", 0x00901c20u);
+        for (int i = 0; i < 3; ++i) out[i] = 0.0f;
+    }
+    unsigned project_0043a660(const float point[3], float& x, float& y) override {
+        bsp::MissionCameraPublication& node = bsp::mission_camera_publication();
+        if (!(kMissionCameraBound && node.ready)) {
+            owner_.record("UnitPickScreen::project", 0x0043a660u);
+            return 0;
+        }
+        // 0043A697..0043A6AF: 00B70490 then 00B62D10, then the mode-1 map.
+        const bsp::CameraMatrix& vp = bsp::get_camera_view_projection_00b70490(node.state);
+        const float source[4] = {point[0], point[1], point[2], 1.0f};
+        float clip[4];
+        bsp::transform_native_vector4_00b62d10(source, clip, vp.data());
+        // SUBSTITUTION: mode 1 multiplies y by the GUI extent height
+        // (00AA1FE0()+4h), which reaches the markers host only; 1.0 is the
+        // value its 4/3 law gives (docs/HUD_PRESENTATION_TOP.md row 2).
+        owner_.record("UnitPickScreen::gui_extent", 0x00aa1fe0u);
+        const bsp::HudMarkerScreenProjection p = bsp::camera_project_world_to_screen_0043a660(
+            clip[0], clip[1], clip[2], clip[3], bsp::HudMarkerProjectMode::ViewportAspect, true,
+            1.0f, 1.0f);
+        x = p.screen_x;
+        y = p.screen_y;
+        return p.clip_mask;
+    }
+    bool ray_hit_filter_005220c0(std::size_t) override {
+        owner_.record("UnitPickScreen::ray_hit_filter", 0x005220c0u);
+        return true;
+    }
+    bool alive_and_visible(std::size_t unit) override {
+        return owner_.units->unit_alive_and_visible(unit - 1);
+    }
+
+    float binoculars_zoom() override { return owner_.binoculars.zoom_38; }  // 26h+38h
+    std::size_t controlled_unit() override {
+        if (owner_.units == nullptr || !owner_.units->controlled_bound()) return 0;
+        return owner_.units->controlled_index() + 1;
+    }
+    std::size_t owner_140(std::size_t) override {
+        // Unit vtable +140h (the scene payload 0064A0EB also asks for), unread.
+        owner_.record("UnitPickScreen::owner_140", 0x0052731cu);
+        return 0;
+    }
+    bool team_record_19() override {
+        // [game+18CCh+slot*4]+19h, the local player record's byte: unread.
+        owner_.record("UnitPickScreen::team_record_19", 0x0052733cu);
+        return false;
+    }
+    bool byte_e0e350() override {
+        owner_.record("UnitPickScreen::byte_e0e350", 0x005273cfu);
+        return false;
+    }
+    int interface_id() override { return owner_.summary.applied_interface_id; }
+    bool action_byte(int, int) override {
+        // The action records' device state ([record+2Ch]+0Bh/+10h): no device
+        // drives an in-mission action here. Recorded once per update.
+        return false;
+    }
+    bool input_pressed(int action) override { return owner_.menu.input_action_pressed(action); }
+    void reset_c0_00525170() override {
+        owner_.record("UnitPickScreen::reset_c0", 0x00525170u);
+    }
+    bool lock_branch(bsp::UnitPickScreenState&, std::uint32_t address) override {
+        owner_.record("UnitPickScreen::lock_branch", address);
+        return true;
+    }
+    void tail_sound_00a7e490() override {
+        owner_.record("UnitPickScreen::tail_sound", 0x00a7e490u);
+    }
+
+private:
+    GameHudHost::Impl& owner_;
+    std::vector<std::size_t> team_;
+    int game_19c4_queries_{0};
+};
+}  // namespace
+
+const std::vector<float>& GameHudHost::Impl::lock_radius_multipliers() {
+    if (!lock_radius_read) {
+        lock_radius_read = true;
+        if (lua == nullptr || !lua->read_lock_radius_multipliers_0087dc85(lock_radius)) {
+            lock_radius.clear();
+        }
+    }
+    return lock_radius;
+}
+
+void GameHudHost::update_unit_pick_screen_00527260(float seconds) {
+    Impl& impl = *impl_;
+    // 00527419..005275D5 read the action records' device bytes directly
+    // (CEh, CFh, D0h's neighbours D1h/D3h/D4h/D5h); one record per update.
+    impl.record("UnitPickScreen::input_record_bytes", 0x00527419u);
+    UnitPickBinding binding(impl);
+    bsp::unit_pick_screen_update_00527260(impl.unit_pick, binding, seconds);
+    impl.done("UnitPickScreen::update", 0x00527260u);
 }
 
 void GameHudHost::update_markers_screen_006435d0(float seconds) {

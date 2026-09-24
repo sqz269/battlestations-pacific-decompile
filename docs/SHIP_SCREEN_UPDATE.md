@@ -1064,3 +1064,182 @@ plus this branch, back buffer 2560x1440.
 - **Summary lines.** All 161 are identical. The show call on ClosedUnitHUD_Group moved no bridge
   line.
 - **Result.** Every prediction holds. **`kHudRootScreenBound` flips ON.**
+
+## 24. Screen 29h, the unit pick: 00527260 and 00526A40 (cc9-platform3, 2026-09-24)
+
+Packet `cc9_screen_29h`. Read from the listings. Ghidra has no function at 00527260: its body
+follows 00526A40's padding.
+
+| routine | start, exclusive end | ABI |
+| --- | --- | --- |
+| 00527260 | 00527260..00527BE0: INT3 before the start; the RET 4 at 00527BDD is followed directly by FUN_00527BE0 | `__thiscall(screen, float dt)`, vtable 00CECCF8 +20h |
+| 00526A40 | 00526A40..00527256: RET 0Ch at 00527253, INT3 after | `__thiscall(screen, unit* exclude, bool* by_ray, float zoom)` |
+| 00522050 | 00522050..005220BD | `__thiscall(screen, const float3*)`, RET 4 |
+
+**What 29h is.** It is the unit-pick screen: the unit near the aim point that the player can
+order, take over or follow. Its strings are the ship section names `ingame.sections_magazine`,
+`_engine` and `_fuel`, and `Stearring`. The lock logic in its middle sends orders (0077C2A0,
+0077D600), moves roles (0077C470), and takes control of the pick (00647300, the HUD root's
+SetSpectatedUnit). It also plays a lock sound.
+
+**The pick, 00526A40:**
+1. +50h = 0, `*by_ray` = 0.
+2. Below full zoom, the zoom is scaled through 00419010 and GlobalConfig+5Ch
+   (LockRadiusZoomModifier).
+3. With game+19C4h set, the pick is 005A1310(0) on the screen at [00E198C4]+54h.
+4. Otherwise it takes the firing unit, 004B4B00: the controlled unit if kind 5, its +3D0h if
+   kind 18h. The plane-bot flag is the firing unit being kind 0Fh with slot 8 or an AI-held slot
+   (00927F10).
+5. A segment is cast from the camera node's position (game+19FCh, world row 3), 10000 along its
+   forward (row 2), through 009043A0.
+6. A hit with no plane-bot flag runs the hit branch, which starts from the hit unit.
+7. Without a pick from the ray, the lock radius is `r = LockRadiusMultipliers[difficulty] *
+   (0.03 / zoom)`. The index is 2 in a session (game+1FE4h), else game+6ACh. The radius is
+   squared as a float.
+8. It walks game+1974h, the local team's live units, then game+19BCh, the kind-35h and grey-arrow
+   units. A kind-18h entry contributes up to five members from +3D0h. A candidate must not be the
+   excluded unit, be alive (+5Dh clear), be kind 5, and be a grey-arrow member or neither kind
+   1Ah nor kind 19h. Its point is its position (+FCh), or 00901C20's intercept for a plane bot.
+   00522050 projects the point (0043A660, mode 1), and scores `(0.5-x)^2 + (0.5-y)^2` when all
+   three clip bits are set, else 1e10. The smallest score strictly under r^2 wins.
+9. After a ray hit, a kind-44h hit keeps a different pick only when 005220C0 accepts it.
+10. The pick is dropped unless 0043F080's four bytes pass.
+
+**The update, 00527260, with no input:**
+1. +D8h = 0 and [00E18DB7] = 1. The only other reader of that byte is
+   BSP_Session_RouteMessage, from the lock branches.
+2. +4Ch = 00526A40(controlled, &+B4h, 26h+38h). The observer pair on +18h follows it.
+3. +B0h is the pick, or its vtable +140h owner when it is not kind 19h.
+4. The local player record's +19h byte ends the update.
+5. +ECh counts down by dt to 0.
+6. It exits with no controlled unit, or while +ECh is not zero. With game+19C4h set and
+   [00E0E350] set, it returns without the tail. Interfaces 30h, 31h and 32h exit.
+7. The input flags come from the action records' device bytes, +0Bh and +10h of
+   `[[input+4]+30h*action+2Ch]` for actions CEh, CFh, D1h, D3h, D4h and D5h, plus 004C43C0(D0h).
+   Without game+19C4h, +B8h = 0.
+8. Each lock branch runs only under its flag. With none set, only 004B4B00 and 00523580 run,
+   and both only read.
+9. The tail: [00E18DB7] = 0, and the sound at 00A7E490 only if +D8h was set.
+
+So with no input, 29h writes only its own fields. It never writes gameplay state.
+
+**Records and substitutions:**
+
+| record | address | stands for |
+| --- | --- | --- |
+| `UnitPickScreen::input_record_bytes` | 00527419 | the direct device-byte reads, once per update; they answer clear |
+| `game_19c4_pick`, `game_19c4` | 00526B05, 005273C5 | game+19C4h, read clear |
+| `segment_query` | 009043A0 | the spatial index is not built; no hit |
+| `team_unit_list` | 004C3CB0 | game+1974h stand-in: the created units of the controlled unit's party, alive and visible, not kind 2Ah |
+| `kind35_list` | 004C3E99 | game+19BCh, empty |
+| `squadron_members` | 00526E58 | +3D0h members are not exposed |
+| `grey_arrow_set` | 008DDF90 | no set at game+21A4h |
+| `gui_extent` | 00AA1FE0 | mode 1's y scale; 1.0, as the markers host's 4/3 law gives |
+| `team_record_19` | 0052733C | the local player record's +19h, read clear |
+| `owner_140` | 0052731C | vtable +140h of a pick that is not kind 19h; answers none |
+| never reached | the ray-hit branch, the plane-bot arm, the lock branches, the zoom arm, the tail sound | |
+
+LockRadiusMultipliers is read from this installation's `scripts/datatables/globals.lua`
+(2024-07-13). The file gives 2.0, 1.8 and 1.5.
+
+**Switch.** `kHudUnitPickScreenBound`. ON also answers 49h's `screen_29h_unit` from +4Ch, in place
+of that record. OFF keeps both records.
+
+**Predictions, written before the pair.** One tree on 2c2496df2 with every earlier switch on,
+`kHudUnitPickScreenBound` off then on, USN04 4500, 2560x1440. 29h is pumped 9,160 times, as often
+as 49h.
+- **Rows that leave or fall:**
+  - `FrontEndScreen::update` falls from 18,325 to 9,165, leaving only slot 27h.
+  - `HudFollowScreen::screen_29h_unit` leaves (9,160).
+- **Rows added, one per call:**
+  - `UnitPickScreen::update`: done, 9,160.
+  - `input_record_bytes`, `game_19c4_pick`, `segment_query`, `team_unit_list`, `kind35_list`,
+    `team_record_19` and `game_19c4`: 9,160 each. 44h showed a controlled unit on every pump, so
+    no exit comes before the `game_19c4` query.
+- **Rows added per candidate.** Their counts depend on the team's size, so only their shape is
+  predicted:
+  - `grey_arrow_set`: once per team unit per call. It is at least 9,160, because the controlled
+    unit is walked too, and it falls as units die.
+  - `gui_extent`: once per candidate that passes the kind and alive filters.
+  - `squadron_members`: once per kind-18h team unit per call, if the stand-in list has any.
+  - `owner_140`: once per call with a pick. It is absent if nothing near the screen centre is in
+    range.
+- **Rows that may appear.** `camera_basis` or `project` can appear a few times, on pumps before
+  the mission camera first publishes.
+- **Rows not added.** None of these appears: `lock_branch`, `ray_hit_branch`, `tail_sound`,
+  `reset_c0`, `lock_radius_multiplier`, `gunbot_intercept`, `spectated_unit`,
+  `lock_zoom_modifier`, `byte_e0e350`.
+- **Log note.** The lock radius read logs 3 values.
+- **Summary lines.** All identical. 29h and 49h write only their own fields, and nothing in this
+  host reads 49h's +8h.
+
+**The pair.** `local\h2_off_usn04.log` against `local\h2_on_usn04.log`, one tree on 2c2496df2 plus
+this change, 2560x1440.
+
+| row | OFF | ON |
+| --- | ---: | ---: |
+| unimplemented total | 2,429,438 | 2,979,312 (+549,874) |
+| FrontEndScreen::update | 18,325 | 9,165 (predicted) |
+| HudFollowScreen::screen_29h_unit | 9,160 | none (predicted) |
+| UnitPickScreen::update | none | 9,160 done |
+| input_record_bytes, game_19c4_pick, game_19c4, segment_query, team_unit_list, kind35_list, team_record_19 | none | 9,160 each (predicted) |
+| grey_arrow_set | none | 256,262, about 28 team units per call |
+| gui_extent | none | 247,051, the candidates that pass the filters |
+| owner_140 | none | 707, the updates with a pick |
+| project, camera_basis | none | 51 and 3, before the camera first publishes |
+
+- **Rows not added.** No `squadron_members` row appears, so the stand-in team list holds no
+  kind-18h unit. None of the never-reached records appears.
+- **Summary lines.** All 161 are identical.
+- **The total.** It rises by 549,874. Nearly all of the rise is the two per-candidate records,
+  which follow the image's own per-candidate calls (008DDF90 and 00AA1FE0). That rise is the
+  price of naming them; the image makes the same calls. A grey-arrow set producer (game+21A4h),
+  and the GUI extent handed to the HUD host, would retire both rows.
+- **Result.** Every row prediction holds, and the per-candidate rows have the predicted shape.
+  **`kHudUnitPickScreenBound` flips ON.**
+
+## 25. Screen 2Eh's 005484F0: its gates pass in the image (cc9-platform3, 2026-09-24)
+
+Section 20 asked whether 005484F0's first gates fail in the image as they do here. **They pass.**
+005484F0 is therefore not a no-op, and it was not bound.
+
+**The body.** 005484F0..005491F4: the RET at 005491F3 is followed by INT3. Ghidra has a function
+here (FUN_005484F0).
+
+**The gate fields.** The screen's layout 00546A20 does not write them. The constructor 005472F0
+zeroes them:
+- +20h is an array of 18h-byte weapon-group entries, whose vtable is 00CEDDA0.
+- +24h is the array's count.
+- +40h is a unit, held through an observer pair at +2Ch.
+
+**Their writer, 00549260.** It is `__thiscall(screen 2Eh, unit group_unit, unit bound)`, RET 8.
+- It stores `bound` at +40h through the observer.
+- It resizes +20h through 005467B0, then appends the entry 005460A0 builds from `group_unit`
+  through 00546730. A kind-1Ch unit adds one entry for each 64h-byte record at +778h (count
+  +77Ch).
+- When the first entry's unit changed, it resets through 00548410 and runs the per-kind setup
+  (kind 6 onward).
+
+Its callers: `BSP_HudShipView_BindUnitCamera` 0064DA40, 00519B00, 005213D0, 00549430, 005494C0,
+00650210 and 0067C1A0. Every call passes ECX = [00E198C4]+50h, the 2Eh screen.
+
+**Why the gates pass.** 0064DA40 binds the controlled ship, which is the Lexington in USN04. That
+gives:
+- +40h non-null;
+- +24h at 1 or more;
+- [+20h]+14h, the ship.
+
+The role test 00927F30(ship, 0) then answers "held", as section 21 established for the 27h take.
+
+**What binding needs:**
+1. 00549260's group build. It belongs with 0064DA40, which `src/mission_camera.cpp` models;
+   cc9-platform owns that file and is on hold.
+2. The 2Eh group entry type, 005460A0 and 00546730.
+3. The 3.3 KB body itself, which makes these calls:
+   - 7 calls to 004C43C0 and 7 to 004C5090;
+   - two interface requests (004CC460);
+   - one order route (0077C2A0);
+   - three calls to 00803CE0 and four to 00927F30;
+   - 0051E7E0 and 006502C0, the one-shot bytes +108h/+109h.
+
+Expect input-gated orders and UI-mode writes. It is a packet of its own.

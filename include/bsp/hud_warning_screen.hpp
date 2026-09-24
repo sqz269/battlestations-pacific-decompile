@@ -12,6 +12,7 @@
 //   3 exit zone (00681F40 near the world edge)       00682E10 "ingame.warning_exitezone"
 
 #include <cstddef>
+#include <cstdint>
 
 namespace bsp {
 
@@ -212,5 +213,100 @@ struct ShipViewInputHost {
 // 0064A400 with 0051F330 = 0051EF00 then 0051F050's pose part.
 void ship_view_input_0064a400(BinocularsState& binoculars, ShipViewInputHost& host,
                               float dt);
+
+// Screen 29h, the unit pick (registry slot 41, vtable 00CECCF8, enter
+// 00521670): its update 00527260 (vtable +20h, __thiscall(screen, float dt),
+// RET 4; no Ghidra function starts there, Ghidra folds it after 00526A40;
+// start 00527260 with INT3 before it, exclusive end 00527BE0, where
+// FUN_00527BE0 follows the RET 4 at 00527BDD) and its worker 00526A40
+// (__thiscall(screen, unit* exclude, bool* by_ray, float zoom), RET 0Ch,
+// body 00526A40..00527256). Packet cc9_screen_29h,
+// docs/SHIP_SCREEN_UPDATE.md section 24. Units are index + 1, 0 for none.
+// A new C++ interface over the screen's fields; not ABI-compatible.
+struct UnitPickScreenState {
+    std::size_t exclude_hit_50{0}; // +50h, the ray hit of kind 1Eh (0 otherwise)
+    bool section_named_54{false};  // +54h points at a section name, not 00CE43EC ""
+    std::size_t pick_4c{0};        // +4Ch, the unit 00526A40 picked
+    std::size_t payload_b0{0};     // +B0h, the pick, or its vtable +140h owner
+    bool by_ray_b4{false};         // +B4h, set when the pick came from the ray
+    int countdown_b8{0};           // +B8h
+    bool sound_d8{false};          // +D8h, the tail's sound request
+    float timer_ec{0.0f};          // +ECh, counts down by dt, blocks the lock logic
+};
+
+// The two unit lists 00526A40 walks: the local team's live units
+// (game+1974h, 004C3CB0's first walk over team record +DDCh) and its
+// kind-35h and grey-arrow units (game+19BCh, the second walk's last list).
+enum class UnitPickList : int { TeamUnits = 0, Kind35 = 1 };
+
+struct UnitPickHost {
+    virtual ~UnitPickHost() = default;
+    // --- 00526A40 ---
+    virtual float lock_zoom_modifier_5c() = 0;          // [00432650()]+5Ch
+    // 00419010 BSP_Math_InterpolateClamped(1, 1, 0, 1/modifier, zoom).
+    virtual float interpolate_clamped_00419010(float inv_modifier, float zoom) = 0;
+    virtual bool game_19c4() = 0;                       // [00E188A8]+19C4h
+    virtual std::size_t spectated_unit_005a1310() = 0;  // [[00E198C4]+54h] 005A1310(0)
+    virtual std::size_t firing_unit_004b4b00() = 0;     // the controlled unit or its +3D0h
+    virtual bool is_kind_of(std::size_t unit, int class_id) = 0; // vtable +5Ch
+    virtual int unit_slot_1b4(std::size_t unit) = 0;    // unit+1B4h
+    virtual bool slot_auto_engage_00927f10(int slot) = 0;
+    // game+19FCh's camera node after 00B6DB70: position +120h..+128h and
+    // forward +110h..+118h.
+    virtual void camera_basis(float position[3], float forward[3]) = 0;
+    // 009043A0 on [game+19CCh]: the segment query; true with the hit unit.
+    virtual bool ray_pick_009043a0(const float from[3], const float to[3],
+                                   std::size_t ignore, std::size_t& hit) = 0;
+    // The hit branch 00526C74..00526DB2 (section name, geometry, kind 1Eh),
+    // reached only when the ray hits a unit and the firing unit is not a
+    // plane. It starts from the hit as the pick; returns the pick or 0.
+    virtual std::size_t ray_hit_branch(UnitPickScreenState& screen, std::size_t hit) = 0;
+    virtual bool game_1fe4() = 0;                       // [00E188A8]+1FE4h non-zero
+    virtual int game_difficulty_6ac() = 0;              // [00E188A8]+6ACh
+    virtual float lock_radius_multiplier(int index) = 0; // [00432650()]+40h[index]
+    virtual std::size_t list_size(UnitPickList list) = 0;
+    virtual std::size_t list_unit(UnitPickList list, std::size_t i) = 0; // node+8h, may be 0
+    virtual int member_count_3cc(std::size_t squadron) = 0;
+    virtual std::size_t member_3d0(std::size_t squadron, int i) = 0;
+    virtual bool grey_arrow_contains_008ddf90(std::size_t unit) = 0; // game+21A4h[slot]
+    virtual bool flag_5d(std::size_t unit) = 0;
+    // unit+FCh..+104h after the 00414DB0 refresh when +C8h is clear.
+    virtual void unit_position(std::size_t unit, float out[3]) = 0;
+    // The GunBot arm 00526EE8..00526F2C (a plane firing unit): 00901C20.
+    virtual void intercept_point_00901c20(std::size_t firing, std::size_t unit,
+                                          float out[3]) = 0;
+    // 0043A660(point, out, 1, 1) on the camera: the clip mask and screen xy.
+    virtual unsigned project_0043a660(const float point[3], float& x, float& y) = 0;
+    // The kind-44h filter at 005271CB (0052720C 005220C0), after a ray hit.
+    virtual bool ray_hit_filter_005220c0(std::size_t pick) = 0;
+    // The four bytes 0043F080 tests: +5Ch set, +5Dh, +60h and +5Eh clear.
+    virtual bool alive_and_visible(std::size_t unit) = 0;
+
+    // --- 00527260 ---
+    virtual float binoculars_zoom() = 0;          // [00E198C4]+4Ch (26h) +38h, else 1.0
+    virtual std::size_t controlled_unit() = 0;    // 00E188D8
+    virtual std::size_t owner_140(std::size_t unit) = 0; // vtable +140h
+    virtual bool team_record_19() = 0;            // [game+18CCh+[game+18ECh]*4]+19h
+    virtual bool byte_e0e350() = 0;               // [00E0E350]
+    virtual int interface_id() = 0;               // [00E198C4]+4h
+    // Byte +0Bh or +10h of [[input+4]+30h*action+2Ch], read directly.
+    virtual bool action_byte(int action, int byte_offset) = 0;
+    virtual bool input_pressed(int action) = 0;   // 004C43C0
+    virtual void reset_c0_00525170() = 0;
+    // The lock branches, each reached only after an input flag; the address
+    // is the branch's first instruction. True when the branch ran to 00527B74
+    // (it stores +D8h itself), false when its own gates sent it on.
+    virtual bool lock_branch(UnitPickScreenState& screen, std::uint32_t address) = 0;
+    virtual void tail_sound_00a7e490() = 0;       // 00527B86..00527BCB
+};
+
+// 00526A40. Returns the pick (index + 1) or 0.
+std::size_t unit_pick_00526a40(UnitPickScreenState& screen, UnitPickHost& host,
+                               std::size_t exclude, float zoom);
+
+// 00527260.
+void unit_pick_screen_update_00527260(UnitPickScreenState& screen, UnitPickHost& host,
+                                      float dt);
+
 
 }  // namespace bsp
