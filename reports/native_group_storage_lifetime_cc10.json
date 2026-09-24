@@ -1,0 +1,565 @@
+{
+  "packet": "cc10_group_storage_lifetime",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "baseline_main": "2b23bcaef",
+  "source": "src/native_group_storage_lifetime.cpp",
+  "header": "include/bsp/native_group_storage_lifetime.hpp",
+  "documentation": "docs/NATIVE_GROUP_STORAGE_LIFETIME_CC10.md",
+  "status": "complete_raw_group_lifetime_release_world_leaf_same_count_canonical_bridge_strict_win32_genuine_provider_checked",
+  "functions": [
+    {
+      "address": "00b8f680",
+      "end_exclusive": "00b8f6e6",
+      "end_inclusive": "00b8f6e5",
+      "final_instruction": "00b8f6e5",
+      "final_instruction_length": 1,
+      "byte_span": 102,
+      "cpp_symbol": "bsp::destroy_native_group_storage_00b8f680",
+      "original_abi": "ECX actual18Ch owner; RET",
+      "instruction_count": 29,
+      "coverage": "complete normal actual-storage body in valid borrowed-array/current-provider domain; source interface not native binary ABI"
+    },
+    {
+      "address": "00b8f8c0",
+      "end_exclusive": "00b8f8e0",
+      "end_inclusive": "00b8f8df",
+      "final_instruction": "00b8f8dd",
+      "final_instruction_length": 3,
+      "byte_span": 32,
+      "cpp_symbol": "bsp::delete_native_group_storage_00b8f8c0",
+      "original_abi": "ECX actual18Ch owner, stacked current flags; EAX same identity; RET4",
+      "instruction_count": 11,
+      "coverage": "complete normal actual-storage body in valid borrowed-array/current-provider domain; source interface not native binary ABI"
+    },
+    {
+      "address": "00b8eec0",
+      "end_exclusive": "00b8ef05",
+      "end_inclusive": "00b8ef04",
+      "final_instruction": "00b8ef00",
+      "final_instruction_length": 5,
+      "byte_span": 69,
+      "cpp_symbol": "bsp::release_native_group_storage_00b8eec0",
+      "original_abi": "ECX actual18Ch owner/no arguments; tail B6F310",
+      "instruction_count": 14,
+      "coverage": "complete normal actual-storage body in valid borrowed-array/current-provider domain; source interface not native binary ABI"
+    },
+    {
+      "address": "00b8e6b0",
+      "end_exclusive": "00b8e6b8",
+      "end_inclusive": "00b8e6b7",
+      "final_instruction": "00b8e6b7",
+      "final_instruction_length": 1,
+      "byte_span": 8,
+      "cpp_symbol": "bsp::invalidate_native_group_world_00b8e6b0",
+      "original_abi": "ECX actual18Ch owner; RET",
+      "instruction_count": 2,
+      "coverage": "complete normal actual-storage body in valid borrowed-array/current-provider domain; source interface not native binary ABI"
+    }
+  ],
+  "compiler_boundaries": [
+    {
+      "address": "00cc2af0",
+      "end_exclusive": "00cc2af8",
+      "end_inclusive": "00cc2af7",
+      "final_instruction": "00cc2af3",
+      "final_instruction_length": 5,
+      "byte_span": 8,
+      "role": "state0 actual saved-owner node cleanup",
+      "coverage": "boundary-only live/PE evidence and source cleanup schedule, no native compiler-handler implementation"
+    },
+    {
+      "address": "00cc2af8",
+      "end_exclusive": "00cc2b02",
+      "end_inclusive": "00cc2b01",
+      "final_instruction": "00cc2afd",
+      "final_instruction_length": 5,
+      "byte_span": 10,
+      "role": "undefined raw FH3 descriptorDFC1C0 handler",
+      "coverage": "boundary-only live/PE evidence and source cleanup schedule, no native compiler-handler implementation"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00cc2af8",
+      "end_exclusive": "00cc2b02",
+      "end_inclusive": "00cc2b01",
+      "final_instruction": "00cc2afd",
+      "final_instruction_length": 5,
+      "byte_span": 10,
+      "role": "undefined raw FH3 descriptorDFC1C0 handler",
+      "coverage": "boundary-only live/PE evidence and source cleanup schedule, no native compiler-handler implementation"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00b8f680",
+      "address": "00b8f6b6",
+      "native": "0059fce0",
+      "contract": "actual178 count0 resize; source reuses proven pointer-only B7C1C0 inline-equivalent schedule"
+    },
+    {
+      "function": "00b8f680",
+      "address": "00b8f6be",
+      "native": "00bf6989",
+      "contract": "CURRENT begin after resize; real singleton CRT free; stale begin/capacity preserved"
+    },
+    {
+      "function": "00b8f680",
+      "address": "00b8f6d0",
+      "native": "00b6f440",
+      "contract": "state0 consumed to-1 before genuine raw node destruction with persistent caller diagnostics"
+    },
+    {
+      "function": "00b8f8c0",
+      "address": "00b8f8c3",
+      "native": "00b8f680",
+      "contract": "complete raw Group destructor with no extra scalar entry stamp/count change"
+    },
+    {
+      "function": "00b8f8c0",
+      "address": "00b8f8d5",
+      "native": "00b8ed40",
+      "contract": "CURRENT low-byte flags bit0 after destruction; actual010902F4 same18Ch pool/current188"
+    },
+    {
+      "function": "00b8eec0",
+      "address": "00b8ef00",
+      "native": "00b6f310",
+      "contract": "clear CURRENT borrowed backs A0 before shared late44 gate/currentchild18/current0; tail may retire same owner",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc2af0",
+      "address": "00cc2af3",
+      "native": "00b6f440",
+      "contract": "state0 cleanup uses actual saved owner, boundary evidence only",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc2af8",
+      "address": "00cc2afd",
+      "native": "00bf6b43",
+      "contract": "raw handler loadsDFC1C0 then commonFH3; no source/native transport claim",
+      "kind": "no_ghidra_function",
+      "actual_transfer": "tail_jump"
+    }
+  ],
+  "byte_evidence": [
+    {
+      "address": "00b8f680",
+      "bytes": 102,
+      "end_exclusive": "00b8f6e6",
+      "end_inclusive": "00b8f6e5",
+      "role": "implemented raw destructor",
+      "live_equals_installed": true,
+      "sha256": "6684d19ff491a5a4cc0e27a08de6ef74b938a478b97def897c5ba61ebd0ac562",
+      "instructions": 29,
+      "final_instruction": "00b8f6e5",
+      "final_instruction_length": 1,
+      "calls": [
+        {
+          "address": "00b8f6b6",
+          "target": "0x59fce0",
+          "kind": "call"
+        },
+        {
+          "address": "00b8f6be",
+          "target": "0xbf6989",
+          "kind": "call"
+        },
+        {
+          "address": "00b8f6d0",
+          "target": "0xb6f440",
+          "kind": "call"
+        }
+      ]
+    },
+    {
+      "address": "00b8f8c0",
+      "bytes": 32,
+      "end_exclusive": "00b8f8e0",
+      "end_inclusive": "00b8f8df",
+      "role": "implemented scalar terminal",
+      "live_equals_installed": true,
+      "sha256": "0b3372729ddf58c38abf77fd87bc82a4717aee15de7e128c26877c6c8cab6d6f",
+      "instructions": 11,
+      "final_instruction": "00b8f8dd",
+      "final_instruction_length": 3,
+      "calls": [
+        {
+          "address": "00b8f8c3",
+          "target": "0xb8f680",
+          "kind": "call"
+        },
+        {
+          "address": "00b8f8d5",
+          "target": "0xb8ed40",
+          "kind": "call"
+        }
+      ]
+    },
+    {
+      "address": "00b8eec0",
+      "bytes": 69,
+      "end_exclusive": "00b8ef05",
+      "end_inclusive": "00b8ef04",
+      "role": "implemented current18 raw release",
+      "live_equals_installed": true,
+      "sha256": "9af51b3e18b2594c89b0f97c7dfdaccf1865273f3843a73ac0789192997370b6",
+      "instructions": 14,
+      "final_instruction": "00b8ef00",
+      "final_instruction_length": 5,
+      "calls": [
+        {
+          "address": "00b8ef00",
+          "target": "0xb6f310",
+          "kind": "jmp"
+        }
+      ]
+    },
+    {
+      "address": "00b8e6b0",
+      "bytes": 8,
+      "end_exclusive": "00b8e6b8",
+      "end_inclusive": "00b8e6b7",
+      "role": "implemented current40 raw dirty leaf",
+      "live_equals_installed": true,
+      "sha256": "fb5551afa8c2bfeb1a6963820213cf3a56e05be8142738d8ee6d19fe67bc4e07",
+      "instructions": 2,
+      "final_instruction": "00b8e6b7",
+      "final_instruction_length": 1,
+      "calls": []
+    },
+    {
+      "address": "00b8f5e0",
+      "bytes": 106,
+      "end_exclusive": "00b8f64a",
+      "end_inclusive": "00b8f649",
+      "role": "existing genuine raw-name constructor",
+      "live_equals_installed": true,
+      "sha256": "cfb05cb7bd93745c4ebc723cf9b5efc84bb10db1f07bacf4710a3057e441d705",
+      "instructions": 23,
+      "final_instruction": "00b8f647",
+      "final_instruction_length": 3,
+      "calls": [
+        {
+          "address": "00b8f5e8",
+          "target": "0xb6f5a0",
+          "kind": "call"
+        }
+      ]
+    },
+    {
+      "address": "00b8ed40",
+      "bytes": 108,
+      "end_exclusive": "00b8edac",
+      "end_inclusive": "00b8edab",
+      "role": "existing genuine18Ch pool return",
+      "live_equals_installed": true,
+      "sha256": "bfd4a2ab888cf7e9a84a9caadc934d8bac4ec5323a6cfcdc597b19c29aee67cd",
+      "instructions": 36,
+      "final_instruction": "00b8eda9",
+      "final_instruction_length": 3,
+      "calls": [
+        {
+          "address": "00b8ed4a",
+          "target": "dword ptr [0xce2218]",
+          "kind": "call"
+        },
+        {
+          "address": "00b8ed9f",
+          "target": "dword ptr [0xce2210]",
+          "kind": "call"
+        }
+      ]
+    },
+    {
+      "address": "0059fce0",
+      "bytes": 80,
+      "end_exclusive": "0059fd30",
+      "end_inclusive": "0059fd2f",
+      "role": "native resize",
+      "live_equals_installed": true,
+      "sha256": "70fda56d92aa22fbd38fb6b50c99210e2fff34f228b79849eb7bd421870ea8bc",
+      "instructions": 31,
+      "final_instruction": "0059fd2d",
+      "final_instruction_length": 3,
+      "calls": [
+        {
+          "address": "0059fcee",
+          "target": "0x59e5e0",
+          "kind": "call"
+        }
+      ]
+    },
+    {
+      "address": "00b7bc70",
+      "bytes": 80,
+      "end_exclusive": "00b7bcc0",
+      "end_inclusive": "00b7bcbf",
+      "role": "proven pointer-only source resize provider",
+      "live_equals_installed": true,
+      "sha256": "0913e64047831192604a6566eedf25024b09bc5b09abb6a7b8b4adfef2e2e500",
+      "instructions": 31,
+      "final_instruction": "00b7bcbd",
+      "final_instruction_length": 3,
+      "calls": [
+        {
+          "address": "00b7bc7e",
+          "target": "0xb7b390",
+          "kind": "call"
+        }
+      ]
+    },
+    {
+      "address": "0059e5e0",
+      "bytes": 95,
+      "end_exclusive": "0059e63f",
+      "end_inclusive": "0059e63e",
+      "role": "native resize reserve",
+      "live_equals_installed": true,
+      "sha256": "0063f4cc0b96bc438afd94e99aa22bf329ed3f43ab73f3c984671fca85f62ab4",
+      "instructions": 38,
+      "final_instruction": "0059e63c",
+      "final_instruction_length": 3,
+      "calls": [
+        {
+          "address": "0059e600",
+          "target": "0xbf55be",
+          "kind": "call"
+        },
+        {
+          "address": "0059e62c",
+          "target": "0xbf6989",
+          "kind": "call"
+        }
+      ]
+    },
+    {
+      "address": "00b7b390",
+      "bytes": 95,
+      "end_exclusive": "00b7b3ef",
+      "end_inclusive": "00b7b3ee",
+      "role": "source resize reserve",
+      "live_equals_installed": true,
+      "sha256": "f380ed67e3e98eabdc42af111b96857d41b4299c14f06aea33d012c210238cbf",
+      "instructions": 38,
+      "final_instruction": "00b7b3ec",
+      "final_instruction_length": 3,
+      "calls": [
+        {
+          "address": "00b7b3b0",
+          "target": "0xbf55be",
+          "kind": "call"
+        },
+        {
+          "address": "00b7b3dc",
+          "target": "0xbf6989",
+          "kind": "call"
+        }
+      ]
+    },
+    {
+      "address": "00b7c1c0",
+      "bytes": 23,
+      "end_exclusive": "00b7c1d7",
+      "end_inclusive": "00b7c1d6",
+      "role": "existing real pointer-only cleanup provider",
+      "live_equals_installed": true,
+      "sha256": "e1e3fd626b588ca48f4b26924e7b1ba875ec28f62e81f1ce342266bf315cb710",
+      "instructions": 10,
+      "final_instruction": "00b7c1d6",
+      "final_instruction_length": 1,
+      "calls": [
+        {
+          "address": "00b7c1c5",
+          "target": "0xb7bc70",
+          "kind": "call"
+        },
+        {
+          "address": "00b7c1cd",
+          "target": "0xbf6989",
+          "kind": "call"
+        }
+      ]
+    },
+    {
+      "address": "005a1610",
+      "bytes": 23,
+      "end_exclusive": "005a1627",
+      "end_inclusive": "005a1626",
+      "role": "exact native helper cleanup",
+      "live_equals_installed": true,
+      "sha256": "077204cdd36782060cbdca67c7d568110f4f1f2fd0b9197400b6a86baa229a59",
+      "instructions": 10,
+      "final_instruction": "005a1626",
+      "final_instruction_length": 1,
+      "calls": [
+        {
+          "address": "005a1615",
+          "target": "0x59fce0",
+          "kind": "call"
+        },
+        {
+          "address": "005a161d",
+          "target": "0xbf6989",
+          "kind": "call"
+        }
+      ]
+    },
+    {
+      "address": "00cc2af0",
+      "bytes": 8,
+      "end_exclusive": "00cc2af8",
+      "end_inclusive": "00cc2af7",
+      "role": "EH state0 node cleanup",
+      "live_equals_installed": true,
+      "sha256": "6fa9fe8c49e4c440c63fd60af01fbbd7367445c530257b568e4d7a9b784407b6",
+      "instructions": 2,
+      "final_instruction": "00cc2af3",
+      "final_instruction_length": 5,
+      "calls": [
+        {
+          "address": "00cc2af3",
+          "target": "0xb6f440",
+          "kind": "jmp"
+        }
+      ]
+    },
+    {
+      "address": "00cc2af8",
+      "bytes": 10,
+      "end_exclusive": "00cc2b02",
+      "end_inclusive": "00cc2b01",
+      "role": "undefined raw FH3 handler",
+      "live_equals_installed": true,
+      "sha256": "8508f239b2d2641b52154692628e9791df3c94c7789cc3fa6decca131040cbe7",
+      "instructions": 2,
+      "final_instruction": "00cc2afd",
+      "final_instruction_length": 5,
+      "calls": [
+        {
+          "address": "00cc2afd",
+          "target": "0xbf6b43",
+          "kind": "jmp"
+        }
+      ],
+      "no_ghidra_function": true
+    },
+    {
+      "address": "00dfc1b8",
+      "bytes": 44,
+      "end_exclusive": "00dfc1e4",
+      "end_inclusive": "00dfc1e3",
+      "role": "EH map/descriptor",
+      "live_equals_installed": true,
+      "sha256": "2bf9979579833c37ce518f2c2714b1ddeab1317961276367f875eb6d129b401f"
+    },
+    {
+      "address": "00d634f8",
+      "bytes": 88,
+      "end_exclusive": "00d63550",
+      "end_inclusive": "00d6354f",
+      "role": "actual Group profile",
+      "live_equals_installed": true,
+      "sha256": "f59b0caec65eb336d74bd451a0fce1696b1e4a0c2d1ffd1db44dbb2e39ba2721"
+    }
+  ],
+  "normalized_array_equivalence": [
+    {
+      "addresses": [
+        "0059fce0",
+        "00b7bc70"
+      ],
+      "bytes": 80,
+      "rel32_operand_offsets": [
+        15
+      ],
+      "left_targets": [
+        "0059e5e0"
+      ],
+      "right_targets": [
+        "00b7b390"
+      ],
+      "normalized_equal": true,
+      "normalized_sha256": "4e60f99674d9d2488deca45fa68ec72e5b3a93e4077d8d65b540d1d8eacb7d6b"
+    },
+    {
+      "addresses": [
+        "0059e5e0",
+        "00b7b390"
+      ],
+      "bytes": 95,
+      "rel32_operand_offsets": [
+        33,
+        77
+      ],
+      "left_targets": [
+        "00bf55be",
+        "00bf6989"
+      ],
+      "right_targets": [
+        "00bf55be",
+        "00bf6989"
+      ],
+      "normalized_equal": true,
+      "normalized_sha256": "1c564a5e55152124ad1cecd69ae2cea0d80558e3f015cc1f3fd3007ba493a1e4"
+    },
+    {
+      "addresses": [
+        "005a1610",
+        "00b7c1c0"
+      ],
+      "bytes": 23,
+      "rel32_operand_offsets": [
+        6,
+        14
+      ],
+      "left_targets": [
+        "0059fce0",
+        "00bf6989"
+      ],
+      "right_targets": [
+        "00b7bc70",
+        "00bf6989"
+      ],
+      "normalized_equal": true,
+      "normalized_sha256": "ded1e0eff8b03e0976a93a156a7c8108095c1e034b3fbda6ef156aeca18af2e9"
+    }
+  ],
+  "source_composition": {
+    "constructor": "existing genuine raw106B B8F5E0 overload, same actual18Ch slot and atomic04; no logical owner conversion",
+    "descriptor": "pure same-pool/duplicate/profile/count checks; registry insertion before noexcept byte-preserving end of actual20B tail lifetime and placement of actual12B pointer-only descriptor178; obsolete tail never accessed afterward",
+    "pool": "actual010902F4,18Ch slots,188 slab index,31C4 slab,32 slots,3180 free stack,31C0 count; same allocated-slot admission; no raw reads after return",
+    "ownership": "borrow SAME actual+4, same actual-owner registry and current increment/decrement domain; no new credit; zero/current0BD30E0 then fresh current4B8F8C0 flags1; explicit scalar flags0 allowed at positivecount",
+    "direct_vs_release": "B8F680 leaves borrowedA0 unchanged; B8EEC0 current back/count loop clears A0 before B6F310 late44 and current child18/current0",
+    "failure": "state0 raw node cleanup consumed before invocation, state-1 before normal raw node call; source C++ transport only; canonical map-only retirement never proves native cleanup/free; persistent acquisitions/backing and unresolved credits stay caller-owned"
+  },
+  "verification": {
+    "strict_build": "scripts/build.ps1 passed MSVC Win32; both configured existing CTests passed",
+    "build_log": "local/output/cc10_group_storage_build.log",
+    "call_verifier": "8 rows checked,0 failed:7 direct/tail instruction checks and1 rawCC2AF8 callee-only boundary",
+    "focused_probe": "local/output/cc10_group_storage_probe.cpp",
+    "probe_command": "local/output/cc10_group_storage_probe.cmd",
+    "exact_compile_command": "cl /nologo /MD /EHsc /std:c++20 /O2 /Gy /W4 /WX /fp:strict /I include /I local\\output /Fo:local\\output\\ /Fe:local\\output\\cc10_group_storage_probe.exe local\\output\\cc10_group_storage_probe.cpp build\\win32\\Release\\bsp_core.lib build\\win32\\Release\\bsp_lua511.lib build\\win32\\Release\\bsp_zlib121.lib /link /OPT:REF /MANIFEST:EMBED user32.lib d3d9.lib advapi32.lib shell32.lib",
+    "probe_log": "local/output/cc10_group_storage_probe.log",
+    "assertions": "NDEBUG absent; compile-time #error rejects defined NDEBUG",
+    "probe_result": "PASS copied-original/source211B composition: genuine18Ch pool/raw106B ctor/name, actual3Ch resources/raw scene/node/parenting/tree, full396B normalizedflags0, callback changes late currentflags1, realpoolreturn, duplicateborrowedback A0 order before child18/late44, repeatedrelease, exactworld40, unchangedwrongpool/duplicateadmission and explicitcanonicalpositivecountflags0",
+    "instruction_coverage": "211B live/PE extents; copied bodies alter only six rel32 operands (24B) at B8F6B6,B8F6BE,B8F6D0,B8F8C3,B8F8D5,B8EF00; exactworld8B unchanged. Callees/constructor/canonical dispatch are shared genuine source boundaries, not separately compared original callees",
+    "no_tracked_tests": true
+  },
+  "evidence_directory": "local/output/cc10_group_storage",
+  "ghidra_mutations": false,
+  "abi_compatible": false,
+  "application_bound": false,
+  "game_validated": false,
+  "limitations": [
+    "Valid accessible nonnegative borrowed arrays, genuine same-pool slots and quiescent registry; no invalid-memory/concurrent-mutation compatibility.",
+    "Source canonical admission/lifetime preparation is separate from native behavior; registered destruction routes through its reference.",
+    "No logical NativeGroupOwner/CameraTransform/SceneResource conversion or point allocation-registry reuse.",
+    "Reached child/derived dispatch requires genuine explicit providers and prepared persistent frames; no unknown-profile fallback.",
+    "Child fixture counts remain nonzero; actual Group and resource zero terminals exercised.",
+    "Source EH schedule reviewed, not native exceptional execution/FH3/SEH/private-stack/binary ABI/application/game proof."
+  ]
+}
