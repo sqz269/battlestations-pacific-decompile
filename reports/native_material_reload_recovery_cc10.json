@@ -1,0 +1,37 @@
+{
+  "packet": "cc10_material_reload_recovery",
+  "status": "complete_native_schedule_for_current_callable_descriptor_domain_build_and_focused_fixture_checked",
+  "source": "src/native_material_effect_reload.cpp",
+  "header": "include/bsp/native_material_effect_reload.hpp",
+  "document": "docs/NATIVE_MATERIAL_RELOAD_RECOVERY_CC10.md",
+  "historical_source_commit": "769bdc3e3b8254f95867b11e2546d629f2a564b6",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "ghidra_worker_mutations": false,
+  "functions": [
+    {
+      "address": "00b469a0",
+      "name": "reload_native_material_effect_00b469a0",
+      "coverage": "complete 207-byte schedule through B46A6E for current B45EE0-produced callable descriptors; unsupported raw D61A44 descriptor terminal",
+      "original_abi": "ECX actual 178h effect, no stack arguments, RET; native FH3 fallback string unwind is not source ABI",
+      "abi_compatible": false,
+      "game_validated": false
+    }
+  ],
+  "host_steps": [
+    {"address": "00b469c8", "native": "00b172d0", "function": "00b469a0", "contract": "Get current B8 name header for diagnostic"},
+    {"address": "00b469df", "native": "004254b0", "function": "00b469a0", "contract": "Bare-RET diagnostic"},
+    {"address": "00b469e9", "native": "00b41b10", "function": "00b469a0", "contract": "Release derived owners"},
+    {"address": "00b469f0", "native": "00b187a0", "function": "00b469a0", "contract": "Release base owners"},
+    {"address": "00b469f7", "native": "00b172d0", "function": "00b469a0", "contract": "Reread current B8 name header"},
+    {"address": "00b469ff", "native": "00b46950", "function": "00b469a0", "contract": "Load named variants on same effect"},
+    {"address": "00b46a0a", "native": "00b41b10", "function": "00b469a0", "contract": "On false result, release derived owners again"},
+    {"address": "00b46a11", "native": "00b187a0", "function": "00b469a0", "contract": "On false result, release base owners again"},
+    {"address": "00b46a1f", "native": "0041e870", "function": "00b469a0", "contract": "Build fallback name from D61C88 literal"},
+    {"address": "00b46a33", "native": "00b46950", "function": "00b469a0", "contract": "Load fallback on same effect and ignore result"},
+    {"address": "00b46a53", "native": "00419cc0", "function": "00b469a0", "contract": "Acquire same pooled string service"},
+    {"address": "00b46a5a", "native": "00bd1510", "function": "00b469a0", "contract": "Return fallback temporary string block"}
+  ],
+  "producer": "Current B45EE0 LoadFrame.acquire allocates 110h NativeShaderDescriptorStorage and installs NativeShaderDescriptorCallableBinding before publishing effect+C4; current B41B10 uses that callable table. Numeric D61A44 has no current terminal context and is rejected.",
+  "validation": "./scripts/build.ps1 passed MSVC Win32 and both existing CTests. Focused 32-bit probe linked built bsp_core, admitted a descriptor through current B46950, checked disabled reload preserved all 178h effect bytes, then exercised failed reload and same-effect fallback with controlled reader/compiler children and the original D61C88 PE literal: four reads, one null build, old/failed bindings retired, final binding live until explicit cleanup; numeric-profile guard rejected. Successful probe exit 0; fixed RO band reservation was unavailable on a separate launch. No real HLSL or game validation."
+}
