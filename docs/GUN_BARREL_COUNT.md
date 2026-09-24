@@ -192,7 +192,7 @@ torpedo drop, not 19 and 4. So the predictions are judged as ratios, OFF to ON.
   measured consequence is a quieter DP battery, a busier light-AA battery and aircraft that die
   2-3 s later on average. Deaths move 22 to 21 and 37 to 37, drops 1 to 1 and 3 to 4, and the
   Lexington takes no damage on either side.
-- **Aircraft-mounted devices are not established.** Nine devices have no `Mesh` in their row:
+- **Aircraft-mounted devices are not established** (closed in section 7.1: the image's count is 1). Nine devices have no `Mesh` in their row:
   54 (the Fletcher depth-charge launcher) and eight built only on aircraft: 80 and 95 (the US
   squadrons), 85 (B5N), 87 (D3A 500 kg bomb platform), 89, 98 and 101 (A6M), 93 (B5N and D3A).
   They build 315 guns in USN04, all on one record, and the host keeps 1. `007325A0` is reached
@@ -204,3 +204,68 @@ torpedo drop, not 19 and 4. So the predictions are judged as ratios, OFF to ON.
 - **Muzzle offsets.** Read and cached, not applied: section 2 lists what the projectile spawn needs.
 - **Torpedo tubes** read 3 to 5 barrels (devices 63, 65, 258). No ship torpedo fires in USN04, so
   the first mission with a ship torpedo attack is where this count shows.
+
+## 7. Read-only follow-up (packet `cc9_rebaseline_3`, 2026-09-23)
+
+### 7.1 The nine Mesh-less devices: the image's count is 1, which the host already uses
+
+- **The seven slots are all vtable offset +20h.** `007325A0` sits 20h into the gun-family vtables
+  that start at these addresses:
+  - `00CE4534`, written by `BSP_GunDescriptor_ConstructCommon` at `00442BB3` and by `00732F6F`;
+  - `00CE4560`, written by `BSP_ConstructBombPlatformClass` at `00442C58`;
+  - `00CE459C`, written by `BSP_ConstructMultibombPlatformClass` at `00442CE8`;
+  - `00CE4648`, written by `BSP_ConstructSingleTurningGunClass` at `00442EC8`;
+  - `00CE467C`, written by `BSP_ConstructDepthChargeLauncherClass` at `00442F58`;
+  - two more, near `00CE45E0` and `00CE4614`. The only reference found for these is the table read
+    at `0044333D` in `BSP_DeviceClass_ResolveFromLua`, so their constructors are not named here.
+  - So bomb platforms, multibomb platforms and the depth-charge launcher run the same bind as guns.
+- **The slot runs only when a model loaded.** `00879AA0` (BSP_DamageableClass_ActivateModelResource)
+  calls `00879590` and then tests `[class+50h]` at `00879AAD`. It calls `vtable[20h]` at
+  `00879AB5`-`00879ABA` only when that pointer is non-null.
+- **No `Mesh` means no model.** `0087CA80` stores the row's `Mesh` string into class+38h
+  (`0087CB49`-`0087CB8F`). `00879590` returns at once when class+38h is null (`008795AB`-`008795B4`)
+  or class+50h is already set (`008795BA`). So a row without `Mesh` never loads a model, and
+  `007325A0` never runs for it.
+- **The count.** class+98h stays empty, so `0072AB80` takes its null-begin branch (`0072ABA5`) and
+  answers 1. All nine devices get 1 in the image, and the host's fallback of 1 matches for every
+  one of them. Section 6's open item is closed.
+- **The `_enemy` model variant.** `00879590` also tries a variant with `_enemy` (`00D0DF08`)
+  inserted at the first dot, when its stacked flag is set and the name resolves. No
+  `models/devices` file in this installation has `_enemy` in its name, so the plain `Mesh` path the
+  host reads is the model the image loads.
+
+### 7.2 Applying the cached muzzle offsets: what the projectile spawn needs
+
+What the host already has, per gun:
+- the gun row: unit, `platform_key`, `platform_name`, the device class, the firing arcs, the rest
+  angles, the aim angles, `barrel_num` and `next_fire_barrel` (gun+44Ch);
+- the unit pose: right, up, forward and origin (`unit_pose`);
+- the offsets: `DeviceFirePoints::list.offsets`, class+98h, one per barrel in the mount node's
+  local space;
+- the rule: `gun_muzzle_world_position_00730762` and `gun_advance_barrel_index_007309ed` in
+  `include/bsp/gun_mount_positions.hpp`.
+
+What is missing, in dependency order:
+1. **The device model's node table.** The same `.mmod` holds a `Hierarchy` of `Item` nodes
+   (Parent, Name, Matrix). `parse_hierarchy_item_00b7eb90` already reads one item. The gun reader
+   would keep the items beside the offsets, in the same one-load-per-device cache.
+2. **The mount node pick.** Pick `"barrel"`, then `"base"`, then the model's first node, as
+   `0072E9E2`-`0072EE8F` do through `0071AD50`. `0071AD50` is unread, and a name match on the
+   parsed items is its stand-in.
+3. **Where the device model sits on the ship.** This is `[gun+360h]+160h`, the device instance's
+   model in the ship's scene. The ship-side attachment is **not in the Lua row**: a `Platforms[k]`
+   entry has `Name`, `Gun`, `Windows`, `RestAngles` and `MainPlatform`, and no position. It must
+   come from the ship model's hierarchy, keyed by a platform node, when the device instance is
+   created and parented. That creation and parenting is unread. It is the one hard dependency,
+   and it needs its own read of the unit-instance device attachment.
+4. **The turret's current pose.** The node's world matrix is ship world x platform attachment x
+   the device's local node chain, with the yaw and elevation drives applied to `base` and
+   `barrel`. Whether `barrel` carries the elevation is open (docs/GUN_MOUNT_POSITIONS.md section
+   10). The `[gun+3Ch]` slot 8Ch/94h override (recoil or animation) is optional.
+5. **The spawn.** `origin = TransformAffinePoint(offsets[gun+44Ch], node_world)`, then advance
+   gun+44Ch modulo gun+448h. In `run_gun_aim_and_fire` this replaces
+   `muzzle = origin + hull_height`, and the same point must feed the ballistic arc's
+   `h = aim.y - muzzle.y`.
+
+Until item 3 is read, the offsets can only be applied relative to the unit origin, which would
+be a placeholder of its own. So nothing is wired.
