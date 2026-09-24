@@ -1,7 +1,7 @@
 # The in-mission camera: what produces the matrix the HUD projects with
 
-Packet `cc9_mission_camera` (worker cc9-platform, 2026-09-23). **Part 1: the read.** The binding
-(`kMissionCameraBound`) is not written yet; section 5 says what it needs.
+Packet `cc9_mission_camera` (worker cc9-platform, 2026-09-23). Part 1 is the read (sections 1 to 3);
+part 2 is the full update, the binding and its predictions (sections 4 to 8).
 Addresses: 00B70490 00B6DB70 0043A660 004DE73F 00B71A80 004BC410 0042A920 0064DA40 0064B650
 00519290 00432ED0 0042DEF0 004329D0 0042DCD0 0042D5A0 0042C610 0042F0C0 0042ED50 00415510 00432650
 00651370 00651760 0068ACA0
@@ -89,74 +89,150 @@ rudder) into `interface+24h/+28h`.
 **`0042DEF0`** (`__thiscall(mover, float out[16])`, RET 4): when `+1BCh` (the node) and `+3ACh`
 (the target) are both set, it copies the 64 bytes at `mover+2F8h`. Otherwise it writes identity.
 
-## 4. The update, `00432ED0`
+## 4. The update, `00432ED0`, read in full
 
-This is the body the binding has to reconstruct. `__thiscall(mover, float dt)`, RET 4, body
-00432ED0..00433560, x87 throughout. Read so far, in order:
+`__thiscall(mover, float dt)`, RET 4, body 00432ED0..00433560. The reconstruction is
+`update_ship_captain_00432ed0` in `src/mission_camera.cpp`. Every FSTP to a dword is a float
+store there.
 
-1. **Countdown.** `+3E8h` counts down to zero.
-2. **Sway.** With a target at +3ACh, `t = min(2*dt, 1)`. `+3FCh` moves toward
-   `unit+984h * unit+980h * 3.0` (rudder times throttle times the double at 00D7A2B0) by `t`, and
-   `+3F8h` moves toward the new `+3FCh` by `t`.
-3. **Hook.** `0042DCD0(this, dt, +3F4h == 0)`, `__thiscall`, RET 8. The target pushed at 00432F93 is overwritten by the `FSTP [ESP]` at 00432F96, so the two arguments are the delta and the flag.
-4. **Death mode.** With a target and `+400h` clear: when `+3F4h` is 0 and the target's +5Dh byte
-   is set, `+3F4h` becomes 1. The yaw +384h is then re-based on the target's basis angles through
-   0042D2E0 and 00438AA0.
-5. **Pivot.** The pivot is the target's world X and Z (+FCh, +104h) and `class+548h` for height.
-6. **Orientation matrix at +2B8h.** In mode 0, 0042D5A0 builds it from the target's forward
-   (unit+ECh, +F4h) and the global vector at 00F8758C (meaning not read). Rotation Y by `-yaw` (00B646E0) is
-   multiplied in, and the pivot is offset by the sway `+3F8h` along the matrix's first row. In
-   mode 1 it is rotation Y by `-yaw` alone.
-7. **Pitch.** When `+388h` is below 0, rotation X by `-pitch` (00B64640) is multiplied in.
-8. **Offset (read to 00433411; the rest is not read yet).** The target's forward is normalised
-   with its Y dropped (0042B260). It is dotted with the orientation row taken at +2D8h and combined
-   with the global vector at 00F8758C..00F87594. Each term is then scaled:
+**What binding sets first.** `0064DA40` calls `00432E60(unit, 1)` before seeding.
+- It stores its second argument in **+3F4h = 1**, so a ship's camera runs in mode 1: yaw fixed in
+  the world, seeded from the heading.
+- 0042F650 sets the target and clears the focus fields +3C4h, +3D4h and +3D8h.
+- With +3E8h clear, `+3A4h = ZoomOffset * class Length`, and both sway fields are zeroed.
+- The yaw seed is `-0.0 - atan2(forward.x, forward.z)` (00521370's stack output, 005213AC).
 
-   | term | field | source |
-   | --- | --- | --- |
-   | the whole offset | settings+454h | `ShipCamera.LengthMult` |
-   | the front component | class+53Ch | `CameraDistanceFront` |
-   | the vertical component | class+544h | `CameraDistanceVertical` |
-   | the side component | class+540h | `CameraDistanceSide` |
+**The update, in order:**
+1. **Countdown.** +3E8h counts down.
+2. **Sway (00432F01..00432F81).** `t = min(2*dt, 1)`, 1 when NaN.
+   `+3FCh = a + (rudder*throttle*3.0 - a)*t`, with rudder at unit+984h and throttle at unit+980h.
+   `+3F8h = b + (+3FCh - b)*t`.
+3. **Gate `0042DCD0(dt, mode == 0)`.** It takes its early path, zeroing +3E0h and +3E4h, unless
+   +3D4h > 0. Only the focus request at vtable +11Ch (`0042EA40`) sets +3D4h. The host never makes
+   that request, so the focus branch 0042DD2E..0042DEE9 is not transcribed.
+4. **Death re-base, mode 0 only.** When unit+5Dh is set, the mode becomes 1 and the yaw is
+   re-based through 0042D2E0 and 00438AA0.
+5. **Pivot** `P = (unit.x, class CameraMinHeight, unit.z)`.
+6. **Orientation +2B8h.**
+   - Mode 0: 0042D5A0 writes row 2 = (forward.x, 0, forward.z) and row 1 = the world up vector
+     00F8758C. That vector is (0, 1, 0), copied from 00E0B68C by the static initializer 00CD2280.
+     0085DC80 then orthonormalises. Next comes `RotY(-yaw) * M` (00B646E0, 00413920), and the
+     pivot is moved by `-sway * row 0`.
+   - Mode 1: `M = RotY(-yaw)`.
+7. **Pitch below zero.** `M = RotX(-pitch) * M` (00B64640).
+8. **The offset (004331F6..0043345F).** R is row 2 of M. V is the normalised
+   (forward.x, 0, forward.z) (0042B260).
+   - Front = `V * (V.R)`.
+   - Up = `G * (R.G)`, with G the world up.
+   - Side = `R - (Up + Front)`.
+   - Scaling: Front by `CameraDistanceFront * LengthMult`, Up by
+     `CameraDistanceVertical * LengthMult`, Side by `LengthMult * CameraDistanceSide`.
+   - `Offset = (Side + Up) + Front`.
+   - `+3A4h = |(Offset.x*ZoomOffset, 0, ZoomOffset*Offset.z)|` (0042B2F0).
+9. **Position.** `C = P - Offset`.
+10. **Pitch at or above zero.** `M = RotX(-pitch) * M`.
+11. **Output.** Row 3 of M is C, and `+2F8h = M`, the vtable +120h matrix.
+12. **Zoom, `0042C610`.** +3A8h snaps to `+3A0h ? +3A4h : 0` when within 20000.0, and otherwise
+    steps 20000.0 toward it. Row 3 of M then moves by `normalise(row 2 with y floored at -0.1) * +3A8h`.
+13. **Publish, when +380h is set.** `+74h = M`, then `004329D0(dt)`:
+    - Its shake block needs +1C0h > 0.
+    - The phases +1E8h..+1F0h advance by +1DCh..+1E4h times dt.
+    - `0042F0C0` runs.
+    - 0042ED50 and 00414DB0 refresh the pose.
+    - `node->vtable[34h](mover+CCh)`, which is `00B71460` `BSP_Camera_SetWorldMatrix` on the
+      Operator camera.
 
-   The ship's `CameraMinHeight` (class+548h) is the pivot height. The final matrix at +2F8h is
-   built after 00433411 through 00B64640, 00413920, 004134F0 and 0042C610.
-   **Host state:** the host does not load these fields today. Neither
-   `load_gameplay_tuning_settings` nor the class loader's camera keys are called by the unit
-   host, so the binding must add both reads.
-9. **Tail.** `004329D0` runs the shake (+1C0h, decayed by +1CCh; GlobalConfig through 00432650),
-   the velocity integration (+1DCh..+1F0h), 0042F0C0 and 0042ED50. It then pushes the pose into
-   the node.
+**`0042F0C0`, keeping the camera out of the water.**
+- T is the local translation. B is the unit's position plus its up row times `max(h, 1)`, where h
+  is T's height above the unit along its up row.
+- It walks the five probes at 00E08088: (0,0,0), (-1,-1,0), (1,-1,0), (1,1,0), (-1,1,0). Each is
+  placed through the local rows.
+- The kind from vtable +128h is 2 (0042A8E0). When the water under a probe (0078CF20) is above
+  it and B is not below the water under B, the probe is lifted to that water height. Its x and z
+  become the midpoint with B.
+- A ray from B to the probe is then tested against the unit's collision (vtable +B0h, 0042E630,
+  0098B370). T accumulates each probe's correction.
 
-**Input.** No input read was found in the part read so far. The orbit keys would reach the mover
-through its other virtuals, which is where the binding must confirm that nothing reads the input
-host.
+**No input.** None of these routines reads input. Orbit input would reach the mover through other
+virtuals, which nothing in the host calls.
 
-## 5. What the binding still needs
+## 5. The binding
 
-1. **The rest of `00432ED0`** (00433236..0043355D) and the unread helpers `0042DCD0`, `0042D5A0`,
-   `0042C610`, `0042F0C0`, `0042ED50` and `00415510`, read instruction by instruction. The
-   already-recovered helpers are reused: 0042D2E0, 00438AA0, 0042B260, 0042B2F0, 00B646E0,
-   00B64640, 00413920, 004134F0 and 00414DB0.
-2. **The pieces of `004329D0`** that shape the pose: the shake and velocity terms. The global
-   config shake fields are read by 0087D7B0 (`CameraShake`), which the host does not load.
-3. **The node's projection in mission.** The constructor `00B71A80` defaults are:
+Switch `kMissionCameraBound` in `include/bsp/game_hosts_hud_world.hpp`.
 
-   | field | value | source |
-   | --- | --- | --- |
-   | fov +1C4h | 0.6981317 (40 degrees) | 00CE7D20 |
-   | aspect +1C8h | 4/3 | 00D5BD98 |
-   | near +1D4h | 1.0 | 00D7A24C |
-   | far +1D8h | 50000.0 | 00D0C5F8 |
+- **Create and bind.** `src/game_hosts_hud.cpp` binds the mover when the 25h arm hands
+  interface+7Ch the unit. `screen_receive_unit(7Ch)` stands for `0064DA40`.
+- **Tick.** It ticks once per in-game interface frame and publishes into the Operator node, a
+  `CameraState` held by `bsp::mission_camera_publication()`.
+- **The markers.** `project_clip_space` runs `get_camera_view_projection_00b70490` and
+  `transform_native_vector4_00b62d10` on that node.
+- **The minimap.** `renderer_basis` runs `refresh_camera_world_00b6db70` and reads world +110h and
+  +118h.
+- **Inputs from Lua:**
+  - ShipGlobals["ShipCamera"] ZoomOffset, LengthMult, MinCameraAngle and MaxCameraAngle through
+    `read_ship_camera_settings_0083b5e0`.
+  - VehicleClass[type] CameraDistanceFront, Side and Vertical, CameraMinHeight,
+    CaptainCameraHeight and Length through `read_ship_class_camera_00831e0d`, then
+    `ship_class_camera_00831e0d`'s fallbacks with 00CE38B8 = 10.0.
 
-   The mission-time writers of +1C4h/+1C8h still have to be found. The aspect ultimately comes from
-   the platform's +10h, which only `src/game_hosts.cpp` (cc10's lease) carries; that is a labelled
-   substitution of 4/3 at 640x480.
-4. **Host plumbing.** A `CameraState` owned by the HUD world host whose transform takes the mover's
-   pose each frame. The markers' `project_clip_space` and the minimap's `renderer_basis` then read
-   it through 00B6DB70 and 00B70490 in place of the top-down stand-in.
+  This installation authors ShipCamera as 1.25, 1.0, -89 and 89. The destroyer class authors 250,
+  150, 50 and 45. `vehicleclasses.lua` is the one locally modified datatable here.
+- **Records the ON side adds:**
+  - `MissionCamera::phase_draw` (00BD2F10), three times at bind.
+  - `MissionCamera::collision_ray` (0098B370), five per tick.
 
-## 6. No Ghidra function
+**Labelled substitutions.**
+
+| term | image | host |
+| --- | --- | --- |
+| phases +1E8h..+1F0h | three 00BD2F10 draws in 00432750 | not drawn: they would advance the shared stream the ship AI uses, and they never reach the pose |
+| ray against the unit's collision (0042F4A8..0042F503) | a hit replaces the probe | no collision shape is built for a unit, so there is no hit |
+| tick point | the world update ticks the mover as an entity | once per in-game interface frame, before the markers or minimap update, with that screen's delta |
+| fov +1C4h | 00B71A80's 40 degrees (00CE7D20). 004DCDF0 at world construction re-applies the current fov through 004DC940. The ship view's zoom path (0064E2EE) sets `FOVs.Ship (30) * [00F889B4] * zoom scale`. | 40 degrees. The FOVs table, 00F889B4 and the zoom path are not bound. |
+| aspect +1C8h | 004DCDF0 writes `[platform+10h]` | 4/3 (00D5BD98): the platform state reaches the HUD host only through `src/game_hosts.cpp`, which cc10 leases. It is 640/480 at this resolution. |
+| near +1D4h, far +1D8h | 1.0 (00B71A80); 20000.0 written by 004DCDF0 (00CE3CC0) | the same values |
+| node velocity +1B8h and previous position +1A4h | 004329D0's tail, for the sound listener | not modelled |
+| mover world | 00414DB0 on a world-root entity | the local matrix |
+
+## 6. Predictions, written before the pair
+
+The pair is one tree on main `576a8065a`, built twice differing only in `kMissionCameraBound`, with
+`BSP_GUNNERY_RNG_STREAMS=1`. The 25h interface is applied in the first mission frames, and from then
+on the node is ready.
+
+- **Rows that leave UNIMPLEMENTED** (as done rows, from the bind on):
+  - `HudMarkers::view_projection_matrix` (00B70490), about 73,264.
+  - `HudMinimap::refresh_renderer_basis` (00B6DB70), about 18,320.
+  - The few calls before the bind stay records.
+- **Rows added:**
+  - `MissionCamera::collision_ray`: about 5 x 4,500 = 22,500 UNIMPLEMENTED.
+  - `MissionCamera::phase_draw`: 3 UNIMPLEMENTED.
+  - Done rows: `MissionCamera::update` and `publish_pose` (about 4,500 each),
+    `MissionCamera::ocean_height` (about 45,000), `bind_ship_view` (1).
+- **Total.** The unimplemented total falls by about 73,264 + 18,320 - 22,503 = 69,081 from the OFF
+  side. The OFF side should be about 2,210,184, unless main moved.
+- **HUD lines that move:**
+  - The minimap's icon rotations and the heading, now the camera's forward instead of the ship's.
+  - The mission-markers summary (`on_screen`, `collapsed`, `widgets` and the corner bounds), now
+    under a perspective camera behind the ship.
+  - The minimap `placed` count only if a rotation takes an icon off the page.
+- **Gameplay lines expected identical:** every gameplay summary line. That covers damage, deaths,
+  queued hits, releases, mission end and the RNG-coupled rows, because no draw is taken.
+
+## 7. The pair: not run
+
+Both launches on 2026-09-23 died before the mission with
+`device_created=0 device_hr=0x80004005` (`local\cam_probe.log`, and the 120-frame probe
+`local\cam_probe120.log`).
+
+`query session` shows session 1 (the user's) **Disc**. This is the known disconnected-session state
+in which no run can create a device. Per the brief, launching stopped after the probe. The switch
+is **landed OFF**, and the build is tested both ways.
+
+**The missing pair:** USN04 4500, switch off and on, on this branch, once the session is connected
+again.
+
+## 8. No Ghidra function
 
 `ghidra proto` answers `?`. The bodies sit after INT3 padding that ends the previous function, whose
 body stops short of them:
@@ -165,3 +241,81 @@ body stops short of them:
 | --- | --- | --- |
 | 00432ED0 | 00433560 | ShipCaptain update, vtable 00CF5CE8 +DCh; previous function 00432E60 ends at 00432ECA |
 | 0042DEF0 | 0042DF7D | mover matrix getter, vtable +120h; previous function 0042DCD0 ends at 0042DEEB |
+
+## 9. Part 3: the in-mission FOV
+
+**Where it is set.** Screen 45h's update, `0064DD30`, is slot +20h of the screen vtable `00CF5E30`.
+The screen registers at interface+78h, and its enter virtual is 0064BB90. At
+0064DE92..0064DEAB it runs its pipe-sight block while two things hold: its unit (+184h) is set,
+and `ShipGlobals["PipeSightParams"].pipesight_enabled` (settings+44h) is true. This installation
+authors it true. The block ends at 0064E2C7..0064E2EE with `004DC940(1 - zoom_rate * [00E197F4], 1)`,
+where zoom_rate is settings+7Ch (0.5 here).
+
+**What 004DC940 does.** It stores the index in game+1A04h. When game+634h is clear it sets the
+Operator fov through 00B6FBB0 to `GlobalConfig+F4h[1] * [00F889B4] * scale`.
+
+**The stored value.** GlobalConfig+F8h is written by 0087D7B0 at 0087EC0F..0087EC2F as
+`Globals["FOVs"]["Ship"] * pi / 180 / [00F889B4]`. The FOV key is 00D0E2C8 and the Ship key is
+00CEB79C. This installation authors 30 in `globals.lua`. `[00F889B4]` is the settings block's +34h,
+set by 008D4596 to 00CE7D20 = 0.6981317 (`src/game_settings.cpp`).
+
+**The result.** The in-mission fov is FOVs.Ship in radians times the scale. With zoom 0.0 that is
+0.5235988, 30 degrees, in place of the constructor's 40.
+
+**Bound under its own switch `kMissionFovBound`, which needs `kMissionCameraBound` on as well.** It is set each camera tick through
+`global_config_fov_0087ec0f`, `pipe_sight_fov_scale_0064e2d6` and `mission_fov_004dc940`. The keys
+come from `read_global_fov_ship_0087d7b0` and `read_pipe_sight_params_0083b5e0`.
+
+**Substitution.** The zoom `[00E197F4]` grows only through the player's gun-fire adds at 0064DFDE
+(`zoom_heavy_add` 0.05 and so on), and those events are gunnery's. Without them the spring and drag
+at 0064E0E6..0064E2D0 leave it at its zero start, and the only subtraction, zoom_aa_add, is 0.0
+here. The host holds it at 0.0, so the scale is exactly 1.0. The rest of 0064DD30, about 9 KB,
+stays the `FrontEndScreen::update` record.
+
+## 10. Part 3: the marker pools, `00640620`
+
+**The image.** 006435D0 zeroes the pool-D cursor (+A0h) and makes the opening call. The closing
+call is at 00643D41. The routine does four things:
+- **Pool A** (+50h/+54h, cursor +7Ch): hides every entry past the cursor through 006374B0.
+- **Pools B and C** (cursors +80h, +84h): SetVisible(0) on their widgets.
+- **Pool D** (cursor +A0h): destroys its tail and shrinks the vector through 0063FFC0.
+- **Cursors:** zeroes those of A, B and C.
+
+**Bound under `kHudMarkerPoolsBound`.** The host's marker clones become pool A, taken in order
+through the cursor in place of the per-unit map. Both calls run the walk. B, C and D stay empty:
+the host builds no target callout, group label or owned object. Because the opening call hides
+every entry and the marker writer re-shows the ones it uses, **a marker the frame does not place
+is now hidden instead of left at its old position.**
+
+**Substitution.** Entries are taken, and re-shown, where the host places a marker. 0063D1E0, the
+image's writer, is not reconstructed. The host's entry is one cloned `sidemarker_Group`, so hiding
+the group stands for 006374B0's 25 widget hides.
+
+## 11. Predictions for the part 3 pair, written before it
+
+The pair is one tree on main `5e5d20a33`: OFF has `kMissionFovBound` and
+`kHudMarkerPoolsBound` off, ON has both on. Both legs have `kMissionCameraBound` on, and this pair runs after
+the camera pair of section 6. Both use `BSP_GUNNERY_RNG_STREAMS=1`. This
+section's predictions extend section 6.
+
+- **Row that leaves UNIMPLEMENTED:** `HudMarkers::reset_marker_pool` 00640620, 18,316, as a done
+  row.
+- **Row added:** `MissionCamera::pipe_sight_fov` 004DC940, done, one per camera tick.
+- **Total.** The unimplemented total falls by 18,316.
+- **Flat rows.** Every camera row of section 6 is flat, because both legs have the camera on.
+- **HUD lines that move:**
+  - The mission-markers summary (`on_screen`, `collapsed`). The fov is 30 degrees against 40, and
+    unplaced markers are now hidden.
+  - The minimap is unchanged: its heading reads only the camera's forward row, which the fov does
+    not touch.
+- **Gameplay lines expected identical:** every gameplay summary line.
+
+## 12. The part 3 pair: not run yet
+
+At 18:17 and 18:23 PDT on 2026-09-23 the 120-frame probe (`local\cam_probe120b.log`,
+`local\cam_probe120c.log`) still died with `device_created=0 device_hr=0x80004005`, and
+`query session` from this shell still showed session 1 as Disc. All three switches are landed OFF: `kMissionCameraBound`, `kMissionFovBound` and `kHudMarkerPoolsBound`.
+
+The pairs are built at run time from this tree:
+1. The camera pair: `kMissionCameraBound` off, then on.
+2. This pair: camera on, with `kMissionFovBound` and `kHudMarkerPoolsBound` off, then on.

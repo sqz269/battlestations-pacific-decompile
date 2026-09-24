@@ -1,0 +1,104 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00432ed0",
+    "end_address": "00433560"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00432ed0",
+    "end_address": "0043355f",
+    "bytes_disassembled": 1680,
+    "message": "Successfully disassembled 1680 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00432ed0",
+    "disassemble_first": false,
+    "name": "BSP_ShipCaptainCamera_Update"
+   },
+   "result": {
+    "success": true,
+    "address": "00432ed0",
+    "function_name": "BSP_ShipCaptainCamera_Update",
+    "entry_point": "00432ed0",
+    "body_size": 1680,
+    "message": "Function created successfully at 00432ed0",
+    "warnings": [
+     "Function name 'BSP_ShipCaptainCamera_Update' \u2014 main part 'ShipCaptainCamera_Update' is not PascalCase. Expected: ShipcaptaincameraUpdate",
+     "Function name 'BSP_ShipCaptainCamera_Update' \u2014 main part 'ShipCaptainCamera_Update' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_ShipCaptainCamera_Update' does not start with a recognized verb. First word 'Ship' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00432ed0",
+   "end": "00433560",
+   "name": "BSP_ShipCaptainCamera_Update",
+   "after": "Function: BSP_ShipCaptainCamera_Update at 00432ed0\nSignature: undefined BSP_ShipCaptainCamera_Update(void)\nEntry: 00432ed0\nBody: 00432ed0 - 0043355f"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0042def0",
+    "end_address": "0042df7d"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0042def0",
+    "end_address": "0042df7c",
+    "bytes_disassembled": 141,
+    "message": "Successfully disassembled 141 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0042def0",
+    "disassemble_first": false,
+    "name": "BSP_CameraMover_GetMatrix"
+   },
+   "result": {
+    "success": true,
+    "address": "0042def0",
+    "function_name": "BSP_CameraMover_GetMatrix",
+    "entry_point": "0042def0",
+    "body_size": 141,
+    "message": "Function created successfully at 0042def0",
+    "warnings": [
+     "Function name 'BSP_CameraMover_GetMatrix' \u2014 main part 'CameraMover_GetMatrix' is not PascalCase. Expected: CameramoverGetmatrix",
+     "Function name 'BSP_CameraMover_GetMatrix' \u2014 main part 'CameraMover_GetMatrix' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_CameraMover_GetMatrix' does not start with a recognized verb. First word 'Camera' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "0042def0",
+   "end": "0042df7d",
+   "name": "BSP_CameraMover_GetMatrix",
+   "after": "Function: BSP_CameraMover_GetMatrix at 0042def0\nSignature: undefined BSP_CameraMover_GetMatrix(void)\nEntry: 0042def0\nBody: 0042def0 - 0042df7c"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}

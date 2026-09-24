@@ -14,6 +14,7 @@
 #include "bsp/hud_minimap.hpp"
 #include "bsp/hud_screens.hpp"
 #include "bsp/hud_updates.hpp"
+#include "bsp/mission_camera.hpp"
 #include "bsp/native_camera_plane_transform.hpp"
 #include "bsp/pose_refresh.hpp"
 
@@ -294,8 +295,18 @@ public:
         // none, so the executable supplies the controlled unit's own forward row
         // and records the refresh. The heading is then atan2(fwd.x, fwd.z),
         // which is the convention the trajectory dump already prints.
-        owner_.record("HudMinimap::refresh_renderer_basis", 0x00b6db70u);
         owner_.done("HudMinimap::atan2", 0x00bf701au);
+        bsp::MissionCameraPublication& node = bsp::mission_camera_publication();
+        if (kMissionCameraBound && node.ready) {
+            // 005C17A7: 00B6DB70 on the Operator node, then its world +110h and
+            // +118h, the forward row's x and z (docs/MISSION_CAMERA.md).
+            bsp::refresh_camera_world_00b6db70(node.state.transform);
+            owner_.done("HudMinimap::refresh_renderer_basis", 0x00b6db70u);
+            y_component = node.state.transform.world[8];
+            x_component = node.state.transform.world[10];
+            return;
+        }
+        owner_.record("HudMinimap::refresh_renderer_basis", 0x00b6db70u);
         y_component = 0.0f;
         x_component = 1.0f;
         if (owner_.units == nullptr || !owner_.units->controlled_bound()) return;
@@ -582,6 +593,19 @@ struct GameHudMarkersHost::Impl {
     GuiLayoutWidget* sidemarker{nullptr};       // the authored template
     GuiLayoutWidget* type_icon{nullptr};        // its `type_Icon` child
     std::map<std::size_t, GuiLayoutWidget*> markers;
+    // The four pools of 00640620, screen 4Dh +4Ch..+A0h. Pool A holds the
+    // host's marker clones in acquisition order; B, C and D stay empty
+    // because the host builds none of their entries (the target callout,
+    // the group labels and the owned objects).
+    std::vector<GuiLayoutWidget*> pool_a;      // first +50h, last +54h
+    std::uint32_t pool_cursor_a{0};            // +7Ch
+    std::uint32_t pool_cursor_b{0};            // +80h
+    std::uint32_t pool_cursor_c{0};            // +84h
+    std::uint32_t pool_cursor_d{0};            // +A0h
+    std::size_t pool_b_size{0};
+    std::size_t pool_c_size{0};
+    std::size_t pool_d_size{0};
+    void reset_marker_pools_00640620();
 
     bsp::HudMarkersUpdateState state{};
     bsp::HudMarkerClipRect clip{};
@@ -728,6 +752,18 @@ public:
         // has no camera, so **the projection is an executable-side stand-in**: a
         // fixed top-down orthographic camera over the mission's own unit bounds,
         // with +x to the right and +z up the screen.
+        bsp::MissionCameraPublication& node = bsp::mission_camera_publication();
+        if (kMissionCameraBound && node.ready) {
+            // 0043A697..0043A6AF: 00B70490 on [game+19FCh], the Operator node the
+            // ShipCaptain mover publishes into, then 00B62D10 with its matrix.
+            const bsp::CameraMatrix& view_projection =
+                bsp::get_camera_view_projection_00b70490(node.state);
+            owner_.done("HudMarkers::view_projection_matrix", 0x00b70490u);
+            const float source[4] = {world[0], world[1], world[2], 1.0f};
+            bsp::transform_native_vector4_00b62d10(source, out_clip, view_projection.data());
+            owner_.done("HudMarkers::transform_vec4", 0x00b62d10u);
+            return;
+        }
         owner_.record("HudMarkers::view_projection_matrix", 0x00b70490u);
         const float half = owner_.summary.camera_half_extent;
         const float cx = 0.5f * (owner_.summary.bounds_min[0] + owner_.summary.bounds_max[0]);
@@ -848,6 +884,13 @@ public:
         return owner_.units != nullptr && owner_.units->controlled_bound() ? 1u : 0u;
     }
     void reset_marker_pool() override {
+        if (kHudMarkerPoolsBound) {
+            // 006436B9..006436C4: 006435D0 zeroes the pool-D cursor before the
+            // opening call, so the opening call tears pool D down completely.
+            owner_.pool_cursor_d = 0;
+            owner_.reset_marker_pools_00640620();
+            return;
+        }
         // 00640620, the four pools. This process owns no pool entry, so the
         // release walks nothing and the routine is a record.
         owner_.record("HudMarkers::reset_marker_pool", 0x00640620u);
@@ -1001,6 +1044,10 @@ public:
         // 00640D70 then 00640620: the target section callout and the closing
         // pool reset. The callout needs a target and a parts object.
         owner_.record("HudMarkers::target_section_callout", 0x00640d70u);
+        if (kHudMarkerPoolsBound) {
+            owner_.reset_marker_pools_00640620();   // 00643D41, the closing call
+            return;
+        }
         owner_.record("HudMarkers::reset_marker_pool", 0x00640620u);
     }
     float objective_detail_level() override {
@@ -1093,6 +1140,34 @@ void GameHudMarkersHost::Impl::place_marker(std::size_t index,
     }
     ++summary.markers_on_screen;
     GuiLayoutWidget* marker = nullptr;
+    if (kHudMarkerPoolsBound) {
+        // Pool A is taken in order through the frame cursor +7Ch; a cursor at
+        // the end grows the pool by one entry. SUBSTITUTION: the entry is taken
+        // where the host places the marker; 0063D1E0, whose acquisition point
+        // and re-show this stands for, is not reconstructed.
+        if (pool_cursor_a < pool_a.size()) {
+            marker = pool_a[pool_cursor_a];
+        } else {
+            char key[64];
+            std::snprintf(key, sizeof(key), "sidemarker_Group_%zu", pool_a.size());
+            marker = menu.frontend().clone_runtime_widget(page->name, *sidemarker, *page->root,
+                key);
+            if (marker == nullptr) return;
+            pool_a.push_back(marker);
+            ++summary.markers_created;
+            record("HudMarkers::set_unit_name_text", 0x00abbe50u);
+        }
+        ++pool_cursor_a;
+        menu.frontend().set_widget_visible(*marker, true);
+        static_cast<void>(index);
+        const float offset_x = type_icon->transform.position.x
+            - sidemarker->transform.pivot_x * sidemarker->transform.size.width;
+        const float offset_y = type_icon->transform.position.y
+            - sidemarker->transform.pivot_y * sidemarker->transform.size.height;
+        menu.frontend().set_widget_local_position(*marker, centre_x - offset_x,
+            centre_y - offset_y, sidemarker->transform.position.z);
+        return;
+    }
     auto found = markers.find(index);
     if (found != markers.end()) {
         marker = found->second;
@@ -1123,6 +1198,26 @@ void GameHudMarkersHost::Impl::place_marker(std::size_t index,
         - sidemarker->transform.pivot_y * sidemarker->transform.size.height;
     menu.frontend().set_widget_local_position(*marker, centre_x - offset_x,
         centre_y - offset_y, sidemarker->transform.position.z);
+}
+
+// 00640620, __fastcall(this = screen 4Dh), RET, body 00640620..0064079B.
+void GameHudMarkersHost::Impl::reset_marker_pools_00640620() {
+    // Pool A: every entry from the cursor to the end is hidden through 006374B0
+    // (24 widgets from entry+8h and the one at +68h). The host's entry is one
+    // cloned sidemarker_Group, so hiding the group hides what 006374B0 hides.
+    for (std::size_t i = pool_cursor_a; i < pool_a.size(); ++i) {
+        if (pool_a[i] != nullptr) menu.frontend().set_widget_visible(*pool_a[i], false);
+    }
+    // Pools B and C: SetVisible(0) on the entries' widgets; both are empty here.
+    for (std::size_t i = pool_cursor_b; i < pool_b_size; ++i) {}
+    for (std::size_t i = pool_cursor_c; i < pool_c_size; ++i) {}
+    // Pool D: destroy the tail through virtual 0 with 1, then 0063FFC0 shrinks
+    // the vector to the cursor.
+    if (pool_d_size > pool_cursor_d) pool_d_size = pool_cursor_d;
+    pool_cursor_a = 0;
+    pool_cursor_b = 0;
+    pool_cursor_c = 0;
+    done("HudMarkers::reset_marker_pool", 0x00640620u);
 }
 
 GameHudMarkersHost::GameHudMarkersHost(GameHostLog& log, GameMenuHost& menu)

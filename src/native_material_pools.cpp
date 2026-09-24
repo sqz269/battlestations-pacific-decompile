@@ -1,4 +1,5 @@
 #include "bsp/native_material_pools.hpp"
+#include "bsp/native_gui_layer_storage.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -19,6 +20,14 @@ static_assert(offsetof(NativeMaterialPoolStorage, slab_count_2c) == 0x2c);
 static_assert(offsetof(NativeMaterialPoolStorage, table_capacity_30) == 0x30);
 static_assert(offsetof(NativeMaterialPoolStorage, first_free_slab_34) == 0x34);
 static_assert(sizeof(NativeMaterialStorage) == NativeMaterialPool::object_bytes);
+static_assert(sizeof(NativeGuiLayerPoolStorage) == 0x38);
+static_assert(NativeGuiLayerPool::slot_bytes * NativeGuiLayerPool::slots_per_slab ==
+    NativeGuiLayerPool::free_indices_offset);
+static_assert(NativeGuiLayerPool::free_indices_offset +
+    NativeGuiLayerPool::slots_per_slab * sizeof(std::uint16_t) ==
+    NativeGuiLayerPool::free_count_offset);
+static_assert(NativeGuiLayerPool::free_count_offset + sizeof(std::uint32_t) ==
+    NativeGuiLayerPool::slab_bytes);
 constexpr std::uint32_t no_free_slab = 0xffffffffu;
 
 CRITICAL_SECTION* section(NativeMaterialPoolStorage& storage) noexcept {
@@ -314,4 +323,31 @@ int initialize_static_native_shader_state_list_pool_00cd7cc0(){
     canonical_shader_state_list_pool->initialize_00b623d0();return std::atexit(&destroy_static_native_shader_state_list_pool_00ce0d50);
 }
 void destroy_static_native_shader_state_list_pool_00ce0d50() noexcept{canonical_shader_state_list_pool->destroy_00b62500();}
+
+NativeGuiLayerPool::NativeGuiLayerPool(AllocatorListDomain& list,
+    NativeGuiLayerPoolStorage& storage) : allocator_list_(list), storage_(storage) {
+    list.bind_virtual0(storage.allocator_00,
+        {native_vtable, native_virtual0, this, &invoke_trim});
+}
+NativeGuiLayerPool::~NativeGuiLayerPool() {
+    allocator_list_.unbind_virtual0(storage_.allocator_00);
+}
+void NativeGuiLayerPool::initialize_00ac4d70() {
+    initialize_pool<NativeGuiLayerPool>(allocator_list_, storage_);
+}
+void* NativeGuiLayerPool::allocate_00ac4e50() {
+    return allocate_slot<NativeGuiLayerPool>(storage_);
+}
+void NativeGuiLayerPool::return_00ac47f0(void* slot) noexcept {
+    return_slot<NativeGuiLayerPool>(storage_, slot);
+}
+void NativeGuiLayerPool::trim_00ac4750() {
+    trim_empty_slabs<NativeGuiLayerPool>(storage_);
+}
+void NativeGuiLayerPool::destroy_00ac4670() {
+    destroy_pool<NativeGuiLayerPool>(allocator_list_, storage_);
+}
+void NativeGuiLayerPool::invoke_trim(void* context) {
+    static_cast<NativeGuiLayerPool*>(context)->trim_00ac4750();
+}
 } // namespace bsp

@@ -54,6 +54,27 @@ namespace bsp::game {
 // keeps the records.
 inline constexpr bool kHudPresentationTopBound = true;
 
+// Packet cc9_mission_camera (docs/MISSION_CAMERA.md). ON creates the ShipCaptain
+// camera mover when the 25h arm hands its ship view the unit (0064DA40), ticks
+// it (00432ED0) and publishes its pose into the Operator node, which the
+// markers' 00B70490 and the minimap's 00B6DB70 then read in place of the
+// top-down stand-in. OFF keeps the stand-in and the two records.
+inline constexpr bool kMissionCameraBound = false;
+
+// Packet cc9_mission_camera, part 3 (docs/MISSION_CAMERA.md section 10). ON
+// holds the marker widgets as the markers screen's pool A (entries taken in
+// order through the frame cursor +7Ch) and runs 00640620 over the four pools:
+// entries past a cursor are hidden, pool D's tail is released, the A/B/C
+// cursors are zeroed. OFF keeps the per-unit widget map and the two records.
+inline constexpr bool kHudMarkerPoolsBound = false;
+
+// Packet cc9_mission_camera, part 3 (docs/MISSION_CAMERA.md section 9). ON,
+// together with kMissionCameraBound, sets the Operator fov each camera tick the
+// way screen 45h's pipe-sight block does through 004DC940 (Globals.FOVs.Ship x
+// [00F889B4] x the zoom scale). OFF leaves the constructor's 40 degrees, so the
+// camera pair and the FOV pair can be measured separately.
+inline constexpr bool kMissionFovBound = false;
+
 class GameHostLog;
 class GameFrontendHost;
 class GameMenuHost;

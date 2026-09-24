@@ -1,0 +1,328 @@
+{
+  "packet": "cc10_material_texture_refresh",
+  "base_commit": "0b5881ca0",
+  "status": "normal_source_reconstructed_B1BC70_native_source_and_B19000_native_control_evidence",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "no_ghidra_function": [],
+  "source_files": [
+    "include/bsp/native_material_texture_refresh.hpp",
+    "src/native_material_texture_refresh.cpp"
+  ],
+  "routines": [
+    {
+      "address": "00b19000",
+      "name": "refresh_native_material_textures_00b19000",
+      "coverage": "complete_normal_source; native FH3/SEH and stack aliasing not implemented",
+      "original_abi": "ECX material; RET0; preserves EBP EBX ESI EDI",
+      "end_exclusive": "00b191ce",
+      "size": 462,
+      "sha256": "efac483a85ca420e0c670bd25547e6678b8ce87779d1490f34ab2211f4899c56",
+      "live_equals_disk": true
+    },
+    {
+      "address": "00b1bc70",
+      "name": "resolve_native_renderer_lua_string_00b1bc70",
+      "coverage": "complete_normal_source; native FH3/SEH and stack aliasing not implemented",
+      "original_abi": "ECX outer Lua owner; stacked fresh output/key; EAX output; RET8; preserves ESI",
+      "end_exclusive": "00b1bd1d",
+      "size": 173,
+      "sha256": "777f8f5afa7e2cc968c3bd63a00703134d7a6842e69693e90c62db6730385ef0",
+      "live_equals_disk": true
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b24df3",
+      "native": "00b19000",
+      "function": "00b24dd0",
+      "meaning": "Only observed B19000 caller: current effect row resource"
+    },
+    {
+      "address": "00b44c54",
+      "native": "00b1bc70",
+      "function": "00b44c00",
+      "meaning": "Other observed resolver caller: current F8D434, fresh output, binding name+8"
+    },
+    {
+      "address": "00b19071",
+      "native": "00b1bc70",
+      "function": "00b19000",
+      "meaning": "CURRENT Lua owner F8D434, fresh output, current material name"
+    },
+    {
+      "address": "00b1908a",
+      "native": "0041dd40",
+      "function": "00b19000",
+      "meaning": "Resize selected from resolved length; preserve1; RET8"
+    },
+    {
+      "address": "00b190c5",
+      "native": "0041dd40",
+      "function": "00b19000",
+      "meaning": "Resize selected from original name length; preserve1; RET8"
+    },
+    {
+      "address": "00b190dc",
+      "native": "00bf7680",
+      "function": "00b19000",
+      "meaning": "Reloaded destination/source/current length; ADD ESP0C"
+    },
+    {
+      "address": "00b190fb",
+      "native": "00b319b0",
+      "function": "00b19000",
+      "meaning": "CURRENT renderer+64; selected/zero; RET8; known D5F0A8 profile"
+    },
+    {
+      "address": "00b19122",
+      "native": "InterlockedIncrement@00ce221c",
+      "function": "00b19000",
+      "meaning": "Incoming actual+04 after publication"
+    },
+    {
+      "address": "00b19130",
+      "native": "InterlockedDecrement@00ce2220",
+      "function": "00b19000",
+      "meaning": "Captured old actual+04"
+    },
+    {
+      "address": "00b19140",
+      "native": "current_old_reference+vtable00",
+      "function": "00b19000",
+      "meaning": "Only after old reference reaches zero"
+    },
+    {
+      "address": "00b1914a",
+      "native": "InterlockedDecrement@00ce2220",
+      "function": "00b19000",
+      "meaning": "Returned incoming reference, including identity assignment"
+    },
+    {
+      "address": "00b1915a",
+      "native": "current_returned_reference+vtable00",
+      "function": "00b19000",
+      "meaning": "Only after returned reference reaches zero"
+    },
+    {
+      "address": "00b19176",
+      "native": "00419cc0",
+      "function": "00b19000",
+      "meaning": "Current actual pool before resolved-name return; no stack args consumed"
+    },
+    {
+      "address": "00b1917d",
+      "native": "00bd1510",
+      "function": "00b19000",
+      "meaning": "Resolved data/current length+1/unused1; RET0C"
+    },
+    {
+      "address": "00b1919d",
+      "native": "00419cc0",
+      "function": "00b19000",
+      "meaning": "Current actual pool before selected-name return; no stack args consumed"
+    },
+    {
+      "address": "00b191a4",
+      "native": "00bd1510",
+      "function": "00b19000",
+      "meaning": "Selected data/current length+1/unused1; RET0C"
+    },
+    {
+      "address": "00b1bc99",
+      "native": "00b67980",
+      "function": "00b1bc70",
+      "meaning": "Actual receiver+4 Lua owner, fresh globals; RET4"
+    },
+    {
+      "address": "00b1bcb2",
+      "native": "00b68100",
+      "function": "00b1bc70",
+      "meaning": "Native key.data C-string lookup; source same-frame protected adapter after identical capture"
+    },
+    {
+      "address": "00b1bcc0",
+      "native": "00b67700",
+      "function": "00b1bc70",
+      "meaning": "Destroy globals before nil/type predicate"
+    },
+    {
+      "address": "00b1bcc9",
+      "native": "00b65fb0",
+      "function": "00b1bc70",
+      "meaning": "Exact nil predicate"
+    },
+    {
+      "address": "00b1bcdd",
+      "native": "0041e870",
+      "function": "00b1bc70",
+      "meaning": "NIL: fresh output from zero-filled F8D438 C string"
+    },
+    {
+      "address": "00b1bcee",
+      "native": "00b685c0",
+      "function": "00b1bc70",
+      "meaning": "Nonnil: exact STRING or CE3A0C empty C string"
+    },
+    {
+      "address": "00b1bd04",
+      "native": "00b67700",
+      "function": "00b1bc70",
+      "meaning": "Destroy tracked result before EAX output return"
+    }
+  ],
+  "native_evidence": {
+    "pe_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "bodies": [
+      {
+        "start": "00b19000",
+        "end_exclusive": "00b191ce",
+        "size": 462,
+        "sha256": "efac483a85ca420e0c670bd25547e6678b8ce87779d1490f34ab2211f4899c56",
+        "live_equals_disk": true
+      },
+      {
+        "start": "00b1bc70",
+        "end_exclusive": "00b1bd1d",
+        "size": 173,
+        "sha256": "777f8f5afa7e2cc968c3bd63a00703134d7a6842e69693e90c62db6730385ef0",
+        "live_equals_disk": true
+      }
+    ],
+    "import_operands": {
+      "00ce221c": "InterlockedIncrement",
+      "00ce2220": "InterlockedDecrement"
+    },
+    "import_verification": "Installed PE import directory and live exact call operands"
+  },
+  "producers": [
+    {
+      "entry": "00b18d60",
+      "scope": "Existing actual C4h storage: eleven texture slots/count38, eleven8h names/count94 initialized"
+    },
+    {
+      "entry": "00b18fb0",
+      "scope": "Existing actual name writer; unsigned compare to sign-extended count; current-header copy"
+    },
+    {
+      "entry": "00b187a0",
+      "scope": "Existing current texture release loop/count reset; source inspected"
+    },
+    {
+      "entry": "00b1ba30",
+      "scope": "Existing actual4CCh renderer Lua owner, embedded4C8h Lua owner at+4"
+    },
+    {
+      "entry": "00b1bb90",
+      "scope": "Existing derived renderer Lua owner construction/publication"
+    }
+  ],
+  "literals": {
+    "00f8d438": {
+      "kind": "zero-filled native C string, not NativeString",
+      "observed_references": [
+        "00b1bcd6"
+      ],
+      "observed_writers": [],
+      "source_binding": "explicit borrowed CURRENT nil-fallback C-string bytes, never forced empty",
+      "runtime_immutable_proven": false
+    },
+    "00ce3a0c": {
+      "kind": "empty read-only C string",
+      "source_binding": "explicit borrowed non-string literal"
+    }
+  },
+  "canonical_binding": {
+    "cache": "GameNativeRendererApplication.texture_cache(); direct B319B0 numeric-profile dispatch, no host numeric vtable call",
+    "strings": "cache.strings ActualNativeStringPoolStorage, same actual pool as cache.textures.strings",
+    "current_renderer": "cache.textures.current_renderer_00f8d394 ref, capture at B190EA",
+    "current_lua": "existing volatile F8D434 publication, capture anew each row at B19061",
+    "actual_owners": "same canonical registry used by texture construction; actual atomic+04 only",
+    "profile": "D5F0A8+64 live bytes B0 19 B3 00 -> B319B0; reject unsupported current target",
+    "literals": "existing app-bound F8D438/CE3A0C C strings",
+    "operation": "fresh address-stable retained frame, no hidden owner/cache/mode flags"
+  },
+  "validation": {
+    "build": {
+      "command": "scripts/build.ps1",
+      "exit_code": 0,
+      "ctest_passed": 2,
+      "log": "local/cc10-material-refresh-build-final.log"
+    },
+    "call_verifier": {
+      "command": "python tools/verify_report_calls.py reports/native_material_texture_refresh_cc10.json",
+      "total_rows": 23,
+      "numeric_rows_checked": 18,
+      "failed": 0,
+      "known_indirect_target_rows": 1,
+      "unresolved_import_or_virtual_rows": 5,
+      "limits": "Indirect operands/profile bytes independently checked; checker does not validate those dispatch targets"
+    },
+    "new_committed_tests": 0,
+    "fixture": {
+      "source": "local/cc10_material_probe.cpp",
+      "preparation": "local/cc10_material_prepare.py",
+      "compile": "local/cc10_material_probe.cmd",
+      "log": "local/cc10-material-probe.log",
+      "compiler": "MSVC Win32 /MD /EHsc /std:c++20 /link /MANIFEST:EMBED",
+      "result": "PASS",
+      "original_source_b1bc70_cases": 8,
+      "b1bc70_domains": [
+        "real Lua5.1.1",
+        "actual BD1480 pool through ActualNativeStringPoolStorage",
+        "fresh dirty output header",
+        "stack/tracking cleanup",
+        "current mutable nonempty nil fallback and null key data"
+      ],
+      "original_only_b19000_cases": 3,
+      "b19000_observations": [
+        "publish then retain before old zero terminal",
+        "identity assignment only releases returned acquisition",
+        "null replacement releases old owner",
+        "empty selected name preserves old texture/count",
+        "current name count expands scan",
+        "current F8D434 reloaded after callback"
+      ],
+      "b19000_controlled_leaves": [
+        "renderer virtual64/cache acquisition",
+        "resource virtual0 terminal"
+      ],
+      "source_b19000_executed": false,
+      "source_sha256": "f71c82fde987e531a7e238732d6de66225f8a6d0584024cfb5dc12f037b5cd3c",
+      "library": "this worktree build/win32/Release/bsp_core.lib",
+      "binary_sha256": "ecb40c15920eba38bd709e788834f83e9506ec5bbb3d9d6acf04265f62f1fd7c"
+    }
+  },
+  "original_abi_compatible": false,
+  "source_b19000_cache_runtime_validated": false,
+  "game_validated": false,
+  "limits": [
+    "No B19000 source/full-cache execution claim from original-only control probe",
+    "No actual cold texture load, graphics or activation validation",
+    "Source uses same-frame protected Lua lookup, not native exception transport",
+    "Failed operation retains native temporary/child state; no replay, rollback or host cleanup schedule",
+    "Native count signedness/order preserved within existing eleven-slot storage; out-of-array index is a source error",
+    "No original native FH3/SEH, CRT or stack alias identity"
+  ],
+  "corrections": [],
+  "documentation": "docs/NATIVE_MATERIAL_TEXTURE_REFRESH_CC10.md",
+  "proposed_names": [
+    {
+      "address": "00b19000",
+      "was": "FUN_00b19000",
+      "name": "BSP_MaterialEffectBase_RefreshTextures",
+      "hypothesis": true
+    },
+    {
+      "address": "00b1bc70",
+      "was": "FUN_00b1bc70",
+      "name": "BSP_RendererLua_ResolveStringOverride",
+      "hypothesis": true
+    }
+  ],
+  "callsite_notes": {
+    "00b44c54": "Full bounded B44C00 body also read: binding-name lookup with caller-side Default fallback and resource virtual1C; no texture-only resolver assumption"
+  }
+}

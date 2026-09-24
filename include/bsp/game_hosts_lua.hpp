@@ -46,6 +46,8 @@ struct lua_State;
 namespace bsp {
 class VfsLocaleRuntime;
 struct ShipAiPathSearchTurnRamp;
+struct ShipCameraSettings;
+struct ShipClassCameraInputs;
 }
 
 namespace bsp::game {
@@ -336,6 +338,11 @@ public:
     // Used for the device row's `Mesh` model path. docs/GUN_BARREL_COUNT.md.
     std::string read_device_class_string(int index, const char* key);
 
+    // `VehicleClass[index][key]` as a string; "" when absent. Used for the ship
+    // row's `Mesh`, whose "slot" point groups 0095F500 turns into the platform
+    // frames. docs/SHIP_PLATFORM_ATTACHMENT.md.
+    std::string read_vehicle_class_string(int index, const char* key);
+
     // The whole of a mounted resource through the VFS the scripts are read
     // from (mode 2, the script read mode); false when it does not open.
     bool read_resource_file(const std::string& path, std::vector<std::uint8_t>& bytes);
@@ -411,6 +418,25 @@ public:
     // default 00B66330 is handed (00CE54A0). False when `Sounds` or a record
     // table is missing; `out` then keeps what it held.
     bool read_engine_sound_smooth_rates_0083b5e0(float (&out)[4]);
+
+    // Packet cc9_mission_camera. ShipGlobals["ShipCamera"], the four keys the
+    // ShipCaptain camera reads from 00424C40()+450h..+45Ch: ZoomOffset,
+    // LengthMult, MinCameraAngle, MaxCameraAngle. False when the table or a
+    // key is missing; `out` then keeps what it held.
+    bool read_ship_camera_settings_0083b5e0(ShipCameraSettings& out);
+    // VehicleClass[type_id]'s camera keys as 00831840 reads them at
+    // 00831E0D..00831FEC (CaptainCameraHeight, CameraDistanceFront,
+    // CameraDistanceSide, CameraDistanceVertical, CameraMinHeight) and its
+    // Length (class+A0h), each with its presence bit for the fallbacks
+    // ship_class_camera_00831e0d applies. False when the row is missing.
+    bool read_ship_class_camera_00831e0d(int type_id, ShipClassCameraInputs& out);
+    // Globals["FOVs"]["Ship"], the number 0087D7B0 reads at 0087EBE2..0087EC0A
+    // (globals.lua is run first when `Globals` is not yet a table). False when
+    // absent.
+    bool read_global_fov_ship_0087d7b0(double& degrees);
+    // ShipGlobals["PipeSightParams"] pipesight_enabled (settings+44h) and
+    // zoom_rate (settings+7Ch), the two keys screen 45h's FOV block reads.
+    bool read_pipe_sight_params_0083b5e0(bool& enabled, float& zoom_rate);
 
     // Read the recovered0083D492..0083D575 fragment on this actual Lua state.
     // Parent lookup errors return false with text; caller must reject the load.

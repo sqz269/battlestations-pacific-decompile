@@ -120,6 +120,28 @@ constexpr bool kFlakProximityBurstBound = true;
 //    absent or unreadable keeps the record count and is counted in the
 //    summary. Packet cc9_gun_barrel_count, docs/GUN_BARREL_COUNT.md.
 constexpr bool kGunBarrelCountBound = true;
+//  * kShipPlatformAttachmentBound: a ship gun fires from its own mount, the
+//    platform frame's origin p0 of the ship model's ("slot", platform key)
+//    group (0095F500's slot pass into platform+4Ch; 0072DD20 hands that frame
+//    to the device model's root node at 0072E9A1-0072E9AA), carried to world
+//    by the ship pose every tick. OFF: the unit origin raised by the class
+//    `Height` for every gun. Labelled: model +x = starboard, +y = up, +z =
+//    bow (from the port/starboard firing arcs); the device model's own node
+//    chain (base, barrel, yaw and elevation) and the per-barrel muzzle offsets
+//    are not applied; planes are not covered. docs/SHIP_PLATFORM_ATTACHMENT.md.
+constexpr bool kShipPlatformAttachmentBound = false;
+//  * kAaLineOfFireBound: an AA gun (weapon kinds 1, 5, 6; 00729560 installs the
+//    predicate at gun+42Ch) refuses a target when 0072CDD0 answers blocked:
+//    the segment from the gun (+5 m) to the target (+5 m, at least y = 5)
+//    first meets another unit - neither the firer nor the target (0098B130
+//    excludes both) - on the firer's own side (hit+54h == owner+54h). The
+//    answer is cached per target for the gun's life (0072F6E0; the cached
+//    record's expiry field has no reader found). Labelled: units are the
+//    host's oriented hull boxes (the image tests their AABB then 0085CDB0);
+//    the static-geometry half (spatial query, flags 44h) is not modelled,
+//    since nothing static stands between ships at sea. OFF: always clear.
+//    docs/SHIP_PLATFORM_ATTACHMENT.md.
+constexpr bool kAaLineOfFireBound = false;
 
 // 00901C20 BSP_GunBot_InterceptSolution, the time-of-flight half, as a pure rule.
 // rel = target position - shooter position; vel = target velocity - shooter
@@ -540,7 +562,109 @@ struct GameGunneryHost::Impl {
     unsigned long long barrel_guns_from_model{0};
     unsigned long long barrel_guns_changed{0};
     unsigned long long barrel_guns_fallback{0};
+    // DIAGNOSTIC, read-only, packet cc9_e2_zero_ordnance: with BSP_DEATH_TABLE
+    // set, every death prints one "death row" line (damaging hits by category,
+    // the killer and ranges). No gameplay term reads these fields.
+    struct DeathTableRow {
+        float first_damage{-1.0f};
+        int hits[12]{};
+        float damage[12]{};
+        int last_category{-1};
+        std::size_t last_gun{0};
+        bool last_blast{false};
+    };
+    std::map<std::size_t, DeathTableRow> death_table;
+    static bool death_table_enabled() {
+        static const bool on = [] {
+            char* text = nullptr;
+            std::size_t length = 0;
+            const bool set = _dupenv_s(&text, &length, "BSP_DEATH_TABLE") == 0
+                && text != nullptr && text[0] != '\0' && text[0] != '0';
+            std::free(text);
+            return set;
+        }();
+        return on;
+    }
     DeviceFirePoints& device_fire_points(int device);
+    // Packet cc9_ship_platform_attachment: the ship model's Aux items, one load
+    // per vehicle class.
+    struct ShipModelSlots {
+        bool loaded{false};
+        std::string mesh;
+        std::vector<bsp::GunFirePointItem> items;
+        long long logged_unit{-1};   // the one unit whose mounts are logged
+    };
+    std::map<int, ShipModelSlots> ship_slots_by_class;
+    // 0072F6E0's per-gun cache: (gun, target) -> clear.
+    std::map<std::pair<std::size_t, std::size_t>, bool> line_of_fire_cache;
+    unsigned long long line_of_fire_queries{0};
+    unsigned long long line_of_fire_blocked{0};
+    unsigned long long line_of_fire_refusals{0};
+    // 0072CDD0 with 0098B130: true when the raised segment's nearest unit hit
+    // (firer and target excluded) is on the firer's side.
+    bool line_of_fire_blocked_0072cdd0(std::size_t owner, std::size_t target,
+        const float muzzle[3]) const {
+        float target_pos[3];
+        {
+            float r[3], u[3], f[3];
+            unit_pose(target, r, u, f, target_pos);
+        }
+        const float from[3] = {muzzle[0], muzzle[1] + 5.0f, muzzle[2]};      // 00D7A370
+        const float to[3] = {target_pos[0], std::max(5.0f, target_pos[1] + 5.0f),  // 00CE3850
+            target_pos[2]};
+        const float dir[3] = {to[0] - from[0], to[1] - from[1], to[2] - from[2]};
+        float best = 2.0f;
+        std::size_t best_unit = static_cast<std::size_t>(-1);
+        for (std::size_t u = 0; u < unit_state.size(); ++u) {
+            if (u == owner || u == target || unit_state[u].dead) continue;
+            const UnitState& st = unit_state[u];
+            const float ext[3] = {st.hull_width * 0.5f, st.hull_height * 0.5f,
+                st.hull_length * 0.5f};
+            if (ext[0] <= 0.0f || ext[2] <= 0.0f) continue;
+            float r[3], up[3], f[3], o[3];
+            unit_pose(u, r, up, f, o);
+            // Segment in the unit's frame, then a slab test on the oriented box.
+            const float rel[3] = {from[0] - o[0], from[1] - o[1], from[2] - o[2]};
+            const float* axes[3] = {r, up, f};
+            float t0 = 0.0f, t1 = 1.0f;
+            bool hit = true;
+            for (int a = 0; a < 3 && hit; ++a) {
+                const float p = rel[0] * axes[a][0] + rel[1] * axes[a][1] + rel[2] * axes[a][2];
+                const float d = dir[0] * axes[a][0] + dir[1] * axes[a][1] + dir[2] * axes[a][2];
+                if (std::fabs(d) < 1e-9f) {
+                    if (p < -ext[a] || p > ext[a]) hit = false;
+                    continue;
+                }
+                float ta = (-ext[a] - p) / d, tb = (ext[a] - p) / d;
+                if (ta > tb) std::swap(ta, tb);
+                t0 = std::max(t0, ta);
+                t1 = std::min(t1, tb);
+                if (t0 > t1) hit = false;
+            }
+            if (hit && t0 < best) { best = t0; best_unit = u; }
+        }
+        return best_unit != static_cast<std::size_t>(-1)
+            && unit_state[best_unit].row.side == unit_state[owner].row.side;
+    }
+    unsigned long long mounts_from_model{0};
+    unsigned long long mounts_missing{0};
+    ShipModelSlots& ship_model_slots(int type_id);
+    // The gun's firing point: its mount carried to world by the ship pose when
+    // bound and known, otherwise the unit origin raised by the class Height.
+    void gun_muzzle_point(const GameGunRow& gun, const UnitState& state,
+        const float right[3], const float up[3], const float forward[3],
+        const float origin[3], float out[3]) const {
+        if (kShipPlatformAttachmentBound && gun.mount_known) {
+            for (int i = 0; i < 3; ++i) {
+                out[i] = origin[i] + right[i] * gun.mount_local[0]
+                    + up[i] * gun.mount_local[1] + forward[i] * gun.mount_local[2];
+            }
+            return;
+        }
+        out[0] = origin[0];
+        out[1] = origin[1] + state.hull_height;
+        out[2] = origin[2];
+    }
     // Set by run_projectiles around apply_hit / apply_impact_blast so a round's
     // own class (the second ammunition) prices its damage; -1 means the gun's.
     int round_bullet_class{-1};
@@ -726,6 +850,34 @@ struct GameGunneryHost::Impl {
 // weapon class's +50h and 007325A0 reads its "fire" Points items into class+98h.
 // This process opens the same path through the mounted VFS once per device and
 // keeps 007325A0's list; the barrel count is 0072AB80 on it.
+// Packet cc9_ship_platform_attachment. The vehicle class's `Mesh` is the ship
+// model whose ("slot", key) groups 0095F500 turns into platform frames. Read
+// once per class through the mounted VFS, as the device models are.
+GameGunneryHost::Impl::ShipModelSlots&
+GameGunneryHost::Impl::ship_model_slots(int type_id) {
+    auto found = ship_slots_by_class.find(type_id);
+    if (found != ship_slots_by_class.end()) return found->second;
+    ShipModelSlots& entry = ship_slots_by_class[type_id];
+    entry.mesh = lua.read_vehicle_class_string(type_id, "Mesh");
+    std::string error;
+    std::vector<std::uint8_t> bytes;
+    if (entry.mesh.empty()) {
+        error = "no Mesh string";
+    } else if (!lua.read_resource_file(entry.mesh, bytes)) {
+        error = "model did not open";
+    } else if (bsp::read_mmod_aux_point_items_0071b3e0(bytes, entry.items, error)) {
+        entry.loaded = true;
+    }
+    std::size_t slots = 0;
+    for (const bsp::GunFirePointItem& item : entry.items) {
+        if (item.name == "slot") ++slots;
+    }
+    log.notef("gunnery: vehicle class %d mesh=%s slot groups=%zu%s%s (0095F500)", type_id,
+        entry.mesh.empty() ? "-" : entry.mesh.c_str(), slots, entry.loaded ? "" : " not read: ",
+        entry.loaded ? "" : error.c_str());
+    return entry;
+}
+
 GameGunneryHost::Impl::DeviceFirePoints&
 GameGunneryHost::Impl::device_fire_points(int device) {
     auto found = fire_points_by_device.find(device);
@@ -1298,6 +1450,32 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
             gun.angles.target_horz = gun.rest_horz;
             gun.angles.target_vert = gun.rest_vert;
             gun.fire.barrel_timers.assign(static_cast<std::size_t>(gun.barrel_num), 0.0f);
+            if (kShipPlatformAttachmentBound
+                && units.unit_is_kind_of(i, bsp::kUnitGunneryKindShipBase)) {
+                ShipModelSlots& ship = ship_model_slots(type_id);
+                bsp::GunPlatformSlotFrame frame;
+                if (ship.loaded && bsp::gun_platform_slot_frame_0095f500(ship.items,
+                        gun.platform_key, frame)) {
+                    gun.mount_known = true;
+                    gun.mount_local[0] = frame.origin[0];
+                    gun.mount_local[1] = frame.origin[1];
+                    gun.mount_local[2] = frame.origin[2];
+                    ++mounts_from_model;
+                    if (ship.logged_unit < 0 || ship.logged_unit == static_cast<long long>(i)) {
+                        ship.logged_unit = static_cast<long long>(i);
+                        log.notef("gunnery: mount %s platform %d (%s) cat=%d local=(%.2f %.2f %.2f) "
+                            "forward=(%.2f %.2f %.2f) (0095F500 slot %d)", state.row.name.c_str(),
+                            gun.platform_key, gun.platform_name.c_str(), gun.category,
+                            static_cast<double>(frame.origin[0]), static_cast<double>(frame.origin[1]),
+                            static_cast<double>(frame.origin[2]), static_cast<double>(frame.forward[0]),
+                            static_cast<double>(frame.forward[1]), static_cast<double>(frame.forward[2]),
+                            gun.platform_key);
+                    }
+                    done("VehicleClass::bind_slot_frames_0095f500", 0x0095f500u);
+                } else {
+                    ++mounts_missing;
+                }
+            }
             guns.push_back(gun);
         }
     }
@@ -1860,7 +2038,8 @@ public:
             if constexpr (kAaFireWindowBound || kAaArmourBound) {
                 if (!observed.slot_accepts_target
                     && ((kAaFireWindowBound && last_refusal_ == AaRefusal::window)
-                        || (kAaArmourBound && last_refusal_ == AaRefusal::armour))) {
+                        || (kAaArmourBound && last_refusal_ == AaRefusal::armour)
+                        || (kAaLineOfFireBound && last_refusal_ == AaRefusal::line_of_fire))) {
                     in.slot_accepts_target = false;
                 }
             }
@@ -1896,7 +2075,7 @@ public:
     //  the gun's vtable[1D4h] = 0072F6E0, which answers 1 while gun+42Ch is zero
     //  and otherwise caches a line-of-fire predicate whose installer is unread;
     //  it stays true here.
-    enum class AaRefusal { none, window, armour };
+    enum class AaRefusal { none, window, armour, line_of_fire };
     AaRefusal last_refusal_{AaRefusal::none};
     void bind_aa_acceptance(const GameGunRow& row, std::size_t other,
                             bsp::GunneryGunInputs& in) {
@@ -1920,7 +2099,8 @@ public:
         owner_.unit_pose(unit_, right, up, forward, origin);
         float tr[3], tu[3], tf[3], target_pos[3];
         owner_.unit_pose(other, tr, tu, tf, target_pos);
-        const float muzzle[3] = {origin[0], origin[1] + state_.hull_height, origin[2]};
+        float muzzle[3];
+        owner_.gun_muzzle_point(row, state_, right, up, forward, origin, muzzle);
         const float d[3] = {target_pos[0] - muzzle[0], target_pos[1] - muzzle[1],
             target_pos[2] - muzzle[2]};
         const float len = length3(d);
@@ -1929,6 +2109,31 @@ public:
             ++owner_.aa_min_range_skips_by_gun[static_cast<std::size_t>(&row - owner_.guns.data())];
         }
         if (!in.slot_accepts_target) return;
+        // 008FBE00 / 008FBFC0 end with vtable[1D4h] = 00730A20 -> 0072F6E0, the
+        // line-of-fire decision 00729560 installs for kinds 1, 5 and 6.
+        auto line_of_fire_refuses = [&]() -> bool {
+            if constexpr (!kAaLineOfFireBound) return false;
+            if (kind != 1 && kind != 5 && kind != 6) return false;
+            const std::size_t g = static_cast<std::size_t>(&row - owner_.guns.data());
+            const auto key = std::make_pair(g, other);
+            auto cached = owner_.line_of_fire_cache.find(key);
+            bool clear;
+            if (cached != owner_.line_of_fire_cache.end()) {
+                clear = cached->second;
+            } else {
+                ++owner_.line_of_fire_queries;
+                clear = !owner_.line_of_fire_blocked_0072cdd0(unit_, other, muzzle);
+                if (!clear) ++owner_.line_of_fire_blocked;
+                owner_.line_of_fire_cache.emplace(key, clear);
+                owner_.done("Gun::target_shot_decision_0072f6e0", 0x0072f6e0u);
+            }
+            if (clear) return false;
+            in.slot_accepts_target = false;
+            last_refusal_ = AaRefusal::line_of_fire;
+            ++owner_.line_of_fire_refusals;
+            return true;
+        };
+        if (kind == 6) { line_of_fire_refuses(); return; }
         if (kind != 1 && kind != 5) return;
         if (kind == 1 && owner_.units.unit_is_kind_of(other, 4)) {      // 008FBE17
             const GameBulletClassRow* b = owner_.bullet(row.bullet_class);
@@ -1950,7 +2155,9 @@ public:
             in.slot_accepts_target = false;
             last_refusal_ = AaRefusal::window;
             ++owner_.aa_window_rejects;
+            return;
         }
+        line_of_fire_refuses();
     }
     bool target_is_plane(void* target) override {
         const std::size_t other = unit_of(target);
@@ -2644,7 +2851,8 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         // degenerates to the asin(g*R/v^2)/2 pre-estimate it replaced
         // (tools/gun_arc_pre_estimate_compare.py). Real per-gun origins need the model
         // node transforms, which this process does not yet build.
-        const float muzzle[3] = {origin[0], origin[1] + state.hull_height, origin[2]};
+        float muzzle[3];
+        gun_muzzle_point(gun, state, right, up, forward, origin, muzzle);
 
         bool arc_solved = true;
         if (have_target) {
@@ -3908,6 +4116,15 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
     done("Projectile::dispatch_queued_hit_009239a0", 0x009239a0u);
 
     const float applied = before - target.health;
+    if (death_table_enabled() && applied > 0.0f && gun.category >= 0 && gun.category < 12) {
+        DeathTableRow& dt = death_table[victim];
+        if (dt.first_damage < 0.0f) dt.first_damage = clock_seconds;
+        ++dt.hits[gun.category];
+        dt.damage[gun.category] += applied;
+        dt.last_category = gun.category;
+        dt.last_gun = gun_row;
+        dt.last_blast = blast_record != nullptr;
+    }
     if (aa_trace_matches(unit_state[shooter].row.name)) {
         log.notef("  aa hit applied t=%.2f gun=%zu class=%d base=%.1f applied=%.1f health=%.1f "
             "armour=%.1f", static_cast<double>(clock_seconds), gun_row, priced_class,
@@ -4070,6 +4287,43 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
     target.enabled = false;
     target.row.pass_enabled = false;
     ++summary.deaths;
+    if (death_table_enabled()) {
+        const DeathTableRow dt = death_table.count(victim) != 0 ? death_table[victim]
+                                                                : DeathTableRow{};
+        float at[3];
+        unit_aim_point(victim, at);
+        std::string killer = "-";
+        float killer_range = -1.0f;
+        if (target.last_attacker != 0) {
+            float kp[3];
+            unit_aim_point(target.last_attacker - 1, kp);
+            killer = unit_state[target.last_attacker - 1].row.name;
+            killer_range = std::sqrt((at[0] - kp[0]) * (at[0] - kp[0])
+                + (at[1] - kp[1]) * (at[1] - kp[1]) + (at[2] - kp[2]) * (at[2] - kp[2]));
+        }
+        std::string nearest = "-";
+        float nearest_range = -1.0f;
+        for (std::size_t u = 0; u < unit_state.size(); ++u) {
+            if (u == victim || unit_state[u].dead || unit_state[u].row.side == target.row.side)
+                continue;
+            if (!units.unit_is_kind_of(u, bsp::kUnitGunneryKindShipBase)) continue;
+            float up[3];
+            unit_aim_point(u, up);
+            const float dx = at[0] - up[0], dz = at[2] - up[2];
+            const float d = std::sqrt(dx * dx + dz * dz);
+            if (nearest_range < 0.0f || d < nearest_range) { nearest_range = d; nearest = unit_state[u].row.name; }
+        }
+        log.notef("death row: victim=%s t=%.2f alt=%.0f first_damage=%.2f killer=%s "
+            "killer_gun=%zu killer_cat=%d killer_blast=%d killer_range=%.0f nearest_ship=%s "
+            "nearest_horizontal=%.0f hits c0=%d c1=%d c5=%d c6=%d dmg c0=%.0f c1=%.0f c5=%.0f "
+            "c6=%.0f", target.row.name.c_str(), static_cast<double>(clock_seconds),
+            static_cast<double>(at[1]), static_cast<double>(dt.first_damage), killer.c_str(),
+            dt.last_gun, dt.last_category, dt.last_blast ? 1 : 0,
+            static_cast<double>(killer_range), nearest.c_str(),
+            static_cast<double>(nearest_range), dt.hits[0], dt.hits[1], dt.hits[5], dt.hits[6],
+            static_cast<double>(dt.damage[0]), static_cast<double>(dt.damage[1]),
+            static_cast<double>(dt.damage[5]), static_cast<double>(dt.damage[6]));
+    }
     done("Death::entity_kill_00926d90", 0x00926d90u);
     record("Death::unit_sink_008110f0", 0x008110f0u);
 
@@ -4800,6 +5054,14 @@ void GameGunneryHost::report() {
             "fallback=%llu devices=%zu bound=%d (007325A0/0072AB80, packet cc9_gun_barrel_count)",
             host.barrel_guns_from_model, host.barrel_guns_changed, host.barrel_guns_fallback,
             host.fire_points_by_device.size(), kGunBarrelCountBound ? 1 : 0);
+        host.log.notef("summary mission gunnery aa line of fire queries=%llu blocked=%llu "
+            "refusals=%llu bound=%d (0072F6E0/0072CDD0/0098B130, packet cc9_ship_platform_attachment)",
+            host.line_of_fire_queries, host.line_of_fire_blocked, host.line_of_fire_refusals,
+            kAaLineOfFireBound ? 1 : 0);
+        host.log.notef("summary mission gunnery ship mounts from model=%llu missing=%llu "
+            "classes=%zu bound=%d (0095F500 slot frames, packet cc9_ship_platform_attachment)",
+            host.mounts_from_model, host.mounts_missing, host.ship_slots_by_class.size(),
+            kShipPlatformAttachmentBound ? 1 : 0);
         for (const auto& [device, fp] : host.fire_points_by_device) {
             host.log.notef("summary mission gunnery barrel device=%d guns=%zu records=%d image=%d "
                 "loaded=%d mesh=%s", device, fp.guns, fp.records,

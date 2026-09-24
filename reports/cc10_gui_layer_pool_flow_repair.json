@@ -1,0 +1,76 @@
+{
+ "repairs": [
+  {
+   "function": "00ac4750",
+   "owner": "agent/cc10",
+   "when": "2026-09-24T01:58:26Z",
+   "decompile_lines_before": 35,
+   "gaps": [
+    {
+     "site": "00ac4771",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "00ac4776",
+     "gap_end_exclusive": "00ac47b0",
+     "bytes": 58,
+     "after_call": true,
+     "sha256": "3626c3153b2d9c975552037d76898238bde5d67ad6877c06d3ddc31820dff5de"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00ac4771",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "00ac4776",
+      "gap_end_exclusive": "00ac47b0",
+      "bytes": 58,
+      "after_call": true,
+      "sha256": "3626c3153b2d9c975552037d76898238bde5d67ad6877c06d3ddc31820dff5de"
+     },
+     "clear": "Success: Cleared flow override at 00ac4771 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 58 byte(s)"
+    }
+   ],
+   "decompile_lines_after": 49,
+   "gaps_remaining": 0
+  },
+  {
+   "function": "00ac4e50",
+   "owner": "agent/cc10",
+   "when": "2026-09-24T01:58:27Z",
+   "decompile_lines_before": 85,
+   "gaps": [
+    {
+     "site": "00ac4ee1",
+     "mnemonic": "CALL",
+     "operands": "0x00bf6989",
+     "gap_start": "00ac4ee6",
+     "gap_end_exclusive": "00ac4ee9",
+     "bytes": 3,
+     "after_call": true,
+     "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00ac4ee1",
+      "mnemonic": "CALL",
+      "operands": "0x00bf6989",
+      "gap_start": "00ac4ee6",
+      "gap_end_exclusive": "00ac4ee9",
+      "bytes": 3,
+      "after_call": true,
+      "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+     },
+     "clear": "Success: Cleared flow override at 00ac4ee1 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 3 byte(s)"
+    }
+   ],
+   "decompile_lines_after": 83,
+   "gaps_remaining": 0
+  }
+ ]
+}
