@@ -1,0 +1,50 @@
+{
+  "packet": "cc10_scene_registry_storage_integration",
+  "worker_commit": "f75eb65299a9f5fbf759227a2d9e0d6f2a1c5890",
+  "integration": "6e48234f688dde6d7267f0e3bf9dccf0dd827fe5",
+  "archive": {
+    "path": "local/cc10-platform-evidence/raw-scene-registry-storage.zip",
+    "sha256": "7219d8cbbdab960d3d2b49076f79b13854aa582faa0edb23c8a7fc286cebd6a9",
+    "files": 57,
+    "valid": true
+  },
+  "review": [
+    "Full source/header and specialized raw28h registry/vector/list contracts",
+    "Existing raw sentinel/fill leaves reused over actual allocations; no SceneNodeRegistry substitute",
+    "Exact allocator-byte and untouched padding, pair/head capture, low-byte current count argument overwrite",
+    "Current head reload after each free, actual vector reset order, no borrowed-key release",
+    "Required real length-error binding/no default; source bad_alloc and C++ catch are explicit transport boundaries",
+    "Focused original/source9bodies15relocations with actual allocator/free checks normalized storage and call order; source-only failure cleanup separately labeled"
+  ],
+  "validation": {
+    "normal_body_bytes": 523,
+    "compiler_boundary_bytes": 48,
+    "metadata_bytes": 128,
+    "native_call_rows": 19,
+    "strict_win32_build": true,
+    "existing_ctests": 3,
+    "build_log_sha256": "30f8cd28dd137ddf2928fda9da9cd32ce52ece63afd82f31ee68eb770cbd5322",
+    "source_hashes": {
+      "include/bsp/native_scene_registry_storage.hpp": "a35ca1dd01d61b9aceaebbbfecd025fe485dc7116211cdde0c9c544142cafabe",
+      "src/native_scene_registry_storage.cpp": "11b1adc42b73e22bc656fc2f06187f511196601d1eaf8d86546388dd489476be",
+      "docs/NATIVE_SCENE_REGISTRY_STORAGE_CC10.md": "7a5794c546df18df2d5bf189095ec17709a8ac3e5644d32ab21e089fe0bc85ed"
+    },
+    "new_tracked_tests": 0,
+    "native_ABI_FH3_SEH": false,
+    "application_bound": false,
+    "game_validated": false
+  },
+  "ghidra": {
+    "flow": "reports/cc10_scene_registry_flow.json",
+    "definitions": "reports/cc10_scene_registry_definitions.json",
+    "listing_repairs": "Four worker-listed free gaps repaired, then B829D0 recreated over72B; all three affected listings now have zero call gaps.",
+    "callee_no_return_changed": false,
+    "saved": true
+  },
+  "boundaries": [
+    "No whole scene-resource, scene attachment or GUI page acquisition admission",
+    "Original length/overflow exception paths not compared; real source length-error transport and explicit bad_alloc contract only",
+    "Reused fill is noexcept; source catch does not establish native SEH/access-fault cleanup",
+    "Caller scratch represents live algorithm cells, not original private EBP/return-address ABI"
+  ]
+}

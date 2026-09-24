@@ -364,9 +364,10 @@
       "address": "00cc2355",
       "native": "00bf6b43",
       "function": "00cc2350",
-      "kind": "no_ghidra_function",
+      "kind": "tail_jump",
       "native_instruction_kind": "tail_jump",
-      "note": "Verifier predefinition compatibility only; actual instruction is tail_jump. Root switches kind after definition."
+      "note": "Primary defined exact ten-byte handler; native JMP containment/listing now checked. Frozen worker archive retains predefinition marker.",
+      "primary_definition": "reports/cc10_scene_registry_definitions.json"
     },
     {
       "address": "00cc2376",
@@ -379,27 +380,13 @@
       "address": "00cc2380",
       "native": "00bf6b43",
       "function": "00cc237b",
-      "kind": "no_ghidra_function",
+      "kind": "tail_jump",
       "native_instruction_kind": "tail_jump",
-      "note": "Verifier predefinition compatibility only; actual instruction is tail_jump. Root switches kind after definition."
+      "note": "Primary defined exact ten-byte handler; native JMP containment/listing now checked. Frozen worker archive retains predefinition marker.",
+      "primary_definition": "reports/cc10_scene_registry_definitions.json"
     }
   ],
-  "no_ghidra_function": [
-    {
-      "address": "00cc2350",
-      "end_inclusive": "00cc2359",
-      "last_instruction_address": "00cc2355",
-      "last_instruction_length": 5,
-      "coverage": "MOV EAX,FuncInfo then JMP BF6B43; boundary only"
-    },
-    {
-      "address": "00cc237b",
-      "end_inclusive": "00cc2384",
-      "last_instruction_address": "00cc2380",
-      "last_instruction_length": 5,
-      "coverage": "MOV EAX,FuncInfo then JMP BF6B43; boundary only"
-    }
-  ],
+  "no_ghidra_function": [],
   "listing_repairs": [
     {
       "containing_function": "00b829d0",
@@ -580,5 +567,28 @@
     "size": 97970,
     "files": 57,
     "note": "Contains report_before_archive_receipt to avoid circular hash; all seven preceding packet archives unchanged."
+  },
+  "worker_undefined_boundaries": [
+    {
+      "address": "00cc2350",
+      "end_inclusive": "00cc2359",
+      "last_instruction_address": "00cc2355",
+      "last_instruction_length": 5,
+      "coverage": "MOV EAX,FuncInfo then JMP BF6B43; boundary only"
+    },
+    {
+      "address": "00cc237b",
+      "end_inclusive": "00cc2384",
+      "last_instruction_address": "00cc2380",
+      "last_instruction_length": 5,
+      "coverage": "MOV EAX,FuncInfo then JMP BF6B43; boundary only"
+    }
+  ],
+  "primary_listing_repair": {
+    "flow": "reports/cc10_scene_registry_flow.json",
+    "definitions": "reports/cc10_scene_registry_definitions.json",
+    "listing_repairs": "Four worker-listed free gaps repaired, then B829D0 recreated over72B; all three affected listings now have zero call gaps.",
+    "callee_no_return_changed": false,
+    "saved": true
   }
 }
