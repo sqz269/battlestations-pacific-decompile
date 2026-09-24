@@ -48,8 +48,8 @@
       "function": "00b7c450",
       "address": "00b7c49d",
       "native": "00bd30f0",
-      "kind": "no_ghidra_function",
-      "contract": "raw proved post-free call after D5C104; Ghidra body truncated atB7C489"
+      "kind": "call",
+      "contract": "Post-free D5C104 then actual BD30F0; primary repaired returning-free override and complete99B containing body."
     },
     {
       "function": "00b7c7e0",
@@ -71,17 +71,7 @@
       "contract": "existing native handler cleanup; this=[ebp-10], no array retry"
     }
   ],
-  "no_ghidra_function": [
-    {
-      "address": "00b7c48a",
-      "end_inclusive": "00b7c4b2",
-      "end_exclusive": "00b7c4b3",
-      "final_instruction": "00b7c4b2",
-      "final_instruction_length": 1,
-      "byte_span": 41,
-      "reason": "actual returning-free fallthrough, containing body truncated atB7C489; root may repair after lease release"
-    }
-  ],
+  "no_ghidra_function": [],
   "native_chain_evidence": [
     {
       "function": "00bd30e0",
@@ -178,7 +168,7 @@
     ],
     "shared_callee_boundary": "original copied99/30B uses shared genuine source B7BC70/BD30F0; source compiled directly with only singleton_lifetime_free rebound to same actualfree+mutation seam; no productioncallbackAPI. Canonical sourcechecks disable instrumentation. No native unwind tested.",
     "alias_limit": "source count-alias check does not assert original-stack/owner alias ABI",
-    "call_verifier": "6 direct/tail rows checked,0 failed; B7C49D raw fragment checks real callee only, containing body/listing requires root repair; BD30EB indirect skipped"
+    "call_verifier": "6 direct/tail rows checked,0 failed including repaired B7C49D containment/listing; BD30EB indirect remains explicitly skipped."
   },
   "prior_records": {
     "00b7c450": {
@@ -279,5 +269,23 @@
       "bytes": 291,
       "sha256": "6f09ee7c753afbb9190a3f49b31b87a978709a7900f89779ac772bfc2766ba64"
     }
-  ]
+  ],
+  "worker_function_gaps": [
+    {
+      "address": "00b7c48a",
+      "end_inclusive": "00b7c4b2",
+      "end_exclusive": "00b7c4b3",
+      "final_instruction": "00b7c4b2",
+      "final_instruction_length": 1,
+      "byte_span": 41,
+      "reason": "actual returning-free fallthrough, containing body truncated atB7C489; root may repair after lease release"
+    }
+  ],
+  "primary_repair": {
+    "flow": "reports/cc10_ambient_lifetime_flow.json",
+    "definitions": "reports/cc10_ambient_lifetime_definitions.json",
+    "complete_body": "00b7c450..00b7c4b2",
+    "handler": "00cc1eb8..00cc1ec1",
+    "historical_evidence": "Frozen worker archive retains original truncation and target-only marker."
+  }
 }

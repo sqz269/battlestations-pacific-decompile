@@ -1,0 +1,56 @@
+{
+  "packet": "cc10_ambient_lifetime_integration",
+  "worker_commit": "307bb0b66df28e29aad6f4e57db5c71baecc32b5",
+  "integration": "4f67be72b86c15f876543a3d87360326653dd867",
+  "archive": {
+    "path": "local/cc10-platform-evidence/raw-ambient-lifetime.zip",
+    "sha256": "ec501af32e4d9f1d2f85d2843bb1d92a4508c92d2cf1b4e13faf559b8ca327e9",
+    "files": 23,
+    "valid": true
+  },
+  "review": [
+    "Full source/header and complete native99B/30B listings",
+    "Actual98h owner, proven12B borrowed-key count0 array path, current begin reread and real CRT free",
+    "Post-free native disarm,D5C104,BD30F0 sequence; preserve stale begin/capacity and untouched payload",
+    "Current flags lowbyte read only after destructor; no added count operation",
+    "Separate same actual+4 canonical companion: unchanged admission/duplicate refusal, current0 then fresh4, explicit flags0/1 retirement, no postfree owner read"
+  ],
+  "validation": {
+    "native_body_bytes": 129,
+    "native_rows": 6,
+    "original_source_pairs": 2,
+    "shared_free_provider_seam": true,
+    "canonical_source_checks": true,
+    "strict_win32_build": true,
+    "worker_ctests": 2,
+    "integrated_ctests": 3,
+    "build_log_sha256": "1ef5093334ac02fa2ee49b14ee63f22ea1625e9e3fbbf9522b2de14ffe9fe2d8",
+    "new_tracked_tests": 0,
+    "native_ABI_FH3_SEH": false,
+    "application_bound": false,
+    "game_validated": false
+  },
+  "ghidra": {
+    "definitions": "reports/cc10_ambient_lifetime_definitions.json",
+    "flow": "reports/cc10_ambient_lifetime_flow.json",
+    "initial_recreate_error": "B7C7E0 automatically existed again before create; prior event preserved, actual complete body checked. B7C450 still truncated until call override repair then recreate.",
+    "final_b7c450_instructions": 29,
+    "final_call_gaps": 0,
+    "saved": true,
+    "callee_no_return_changed": false
+  },
+  "boundary_calls": [
+    {
+      "address": "00cc1ebd",
+      "native": "00bf6b43",
+      "function": "00cc1eb8",
+      "kind": "tail_jump"
+    }
+  ],
+  "boundaries": [
+    "Original scalar comparison shares genuine source array resize/ref-base and explicitly instrumented real-free seam",
+    "Canonical lifecycle is source-only; count-alias flags do not prove native private-stack alias ABI",
+    "Source exception projection does not establish native FH3/SEH fault identity",
+    "Raw scene resource, scene attachment and application ownership remain separate"
+  ]
+}
