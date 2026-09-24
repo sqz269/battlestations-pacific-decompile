@@ -427,5 +427,46 @@
   },
   "corrections": [],
   "documentation": "docs/PLATFORM_RENDERER_ACTIVATION_CC10.md",
-  "no_ghidra_function": []
+  "no_ghidra_function": [],
+  "primary_integration": {
+    "worker_commit": "7186dbbbc219e8db52f6d3743e6a85c3b55e9927",
+    "published_main": "0b5881ca0",
+    "build_log": "local/cc10-render-focus-integrate-retry.log",
+    "ctest_passed": 3,
+    "ctest_failed": 0,
+    "call_rows_checked": 20,
+    "call_rows_failed": 0,
+    "explicit_indirect_rows": 3,
+    "review": "Full hpp/cpp, captured-loop and reloaded-loop assembly, byte/body ranges and required leaf boundaries",
+    "new_names": {
+      "00b24fb0": "BSP_Renderer_ReloadChangedResources",
+      "00b22030": "BSP_EffectRegistry_ReloadNewerResources",
+      "00b21f70": "BSP_TextureRegistry_ReloadNewerResources",
+      "00b24dd0": "BSP_Renderer_RefreshMaterialTextures"
+    },
+    "old_ghidra_names": {
+      "00b24fb0": "FUN_00b24fb0",
+      "00b22030": "FUN_00b22030",
+      "00b21f70": "FUN_00b21f70",
+      "00b24dd0": "FUN_00b24dd0"
+    },
+    "evidence_archive": {
+      "path": "local/cc10-platform-evidence/renderer-focus.zip",
+      "sha256": "f243a6aff913156447b69e35638d938167a589096e66963ec94d673f2b835b06",
+      "valid": true
+    },
+    "game_runtime": "Not application-bound; no game validation claim",
+    "ghidra_annotations": {
+      "applied": 4,
+      "saved": true,
+      "previous_values": "local/ghidra-annotations-20260924T012051Z.json",
+      "exports_refreshed": [
+        "00b24fb0",
+        "00b22030",
+        "00b21f70",
+        "00b24dd0"
+      ],
+      "live_names_verified_after_export": true
+    }
+  }
 }
