@@ -1,0 +1,44 @@
+{
+  "packet": "cc10_camera_store_integration",
+  "worker_commit": "2238808ae7cb7c39c2592c2a286e7a16854efc24",
+  "integration": "df1909fb8501a20e272df37571d155db83b003bd",
+  "definition": "reports/cc10_camera_store_definition.json",
+  "archive": {
+    "path": "local/cc10-platform-evidence/gui-camera-store-map.zip",
+    "sha256": "625a751eab1f2416e7b0fa5876b921106cf0a246c0b8ca5ce97ca3e9d1586c54",
+    "files": 54,
+    "valid": true
+  },
+  "review": [
+    "Full source/header and explicit caller-owned frame contracts reviewed before worker freeze",
+    "Five exact existing raw-tree body aliases reuse real18h nodes and12B map, no parallel host map",
+    "AA3280 ordered x87 equality rejects unordered; priority10 ignored",
+    "AA4960 caches incoming float during descent, equal/unordered right; raw pair reread after allocation, current output pointer reread after linker",
+    "AA5070 preserves allocation preimages, late descriptor/camera/scene load schedule and sNaN quieted store versus later raw node key",
+    "Six create plus standalone insert and three lookup comparisons use complete original bodies and real CRT allocations; live outer and nested insertion return frontiers checked separately"
+  ],
+  "validation": {
+    "owned_normal_bytes": 1434,
+    "owned_eh_boundary_bytes": 18,
+    "metadata_bytes": 40,
+    "native_call_rows": 26,
+    "strict_win32_build": true,
+    "existing_ctests": 3,
+    "build_log_sha256": "9fe138357eb8b3934217ebcf66f0bfb0fa5e65397d3014d46e1eab1d8a480b39",
+    "new_tracked_tests": 0,
+    "source_hashes": {
+      "include/bsp/native_gui_camera_store_map.hpp": "a35517b8f526deafefb342eea16f5161aa085310e2a0091d8ea54385c0882d51",
+      "src/native_gui_camera_store_map.cpp": "42652dafe61302f3b1c7a06e34615e0a964a26228cfb39858e742e1d31632e55",
+      "docs/NATIVE_GUI_CAMERA_STORE_MAP_CC10.md": "c23681ba48961d54a0a8923089035f3a6253a976b4d073129099a294d2455482"
+    },
+    "native_ABI_FH3_SEH": false,
+    "application_bound": false,
+    "game_validated": false
+  },
+  "boundaries": [
+    "No camera or scene retain/release, implicit canonical admission, or failure rollback",
+    "AA5070 reuses dead nested private stack after insertion; byte parity only at documented live return frontiers",
+    "Native exception/length error paths and populated-store AA4B30 cleanup remain outside dynamic proof",
+    "Manager publication, raw AC59A0 composition and application/game validation remain open"
+  ]
+}

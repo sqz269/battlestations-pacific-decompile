@@ -382,9 +382,10 @@
       "address": "00cb708d",
       "native": "00bf6b43",
       "function": "00cb7088",
-      "kind": "no_ghidra_function",
+      "kind": "tail_jump",
       "native_instruction_kind": "tail_jump",
-      "note": "Predefinition verifier compatibility only: actual instruction is JMP. Root receipt must change kind to tail_jump after defining CB7088."
+      "note": "Primary defined exact ten-byte handler; native JMP now checked for containment and listing. Historical predefinition marker preserved in frozen worker archive.",
+      "primary_definition": "reports/cc10_camera_store_definition.json"
     }
   ],
   "provider_equivalence": [
@@ -493,16 +494,7 @@
       ]
     }
   ],
-  "no_ghidra_function": [
-    {
-      "address": "00cb7088",
-      "end_inclusive": "00cb7091",
-      "last_instruction_address": "00cb708d",
-      "last_instruction_length": 5,
-      "native_instruction_kind": "tail_jump",
-      "coverage": "ten-byte FH3 boundary; MOV EAX,DED780 then JMP BF6B43; worker made no listing changes"
-    }
-  ],
+  "no_ghidra_function": [],
   "manager": {
     "acquire": "get_native_gui_manager_004c12b0(NativePlatformFocusOwnersContext&) already raw; same actual publication F8BC5C and singleton manager1090AA0,88h allocation",
     "layout": "manager+8 raw0Ch tree: opaque allocator+0 preserved; head at manager+C, unsigned count manager+10; page vector separately manager+14",
@@ -556,12 +548,13 @@
     "last_instruction_length": 5,
     "native_instruction_kind": "tail_jump",
     "target": "00bf6b43",
-    "no_ghidra_function": true,
+    "no_ghidra_function": false,
     "descriptor": "00ded780",
     "unwind_map": "00ded778",
     "max_state": 1,
     "state0": "next -1; CB7080 LEA ECX,[EBP-50]; JMP4072D0; full8B endsCB7087",
-    "scope": "Only AA41B0 count>=1FFFFFFE length-error construction path; native string assignment/logic error and source exception transport already supplied by 86EBE0 provider. No extra tree/store rollback."
+    "scope": "Only AA41B0 count>=1FFFFFFE length-error construction path; native string assignment/logic error and source exception transport already supplied by 86EBE0 provider. No extra tree/store rollback.",
+    "primary_definition": "reports/cc10_camera_store_definition.json"
   },
   "providers": {
     "rotation_and_iteration": "native_int_pointer_tree18_leaves.hpp actual byte-identical naked leaves; no new engine",
@@ -648,7 +641,7 @@
     ],
     "call_rows_verified": 26,
     "call_rows_failed": 0,
-    "call_verifier_boundary": "CB708D callee and live/PE bytes verified; containment/listing skipped because CB7088 is not yet defined. Native instruction kind remains tail_jump independently of predefinition verifier kind.",
+    "call_verifier_boundary": "Primary defined and saved exact CB7088..CB7092; CB708D native tail_jump now also checked against actual function containment/listing. Frozen worker archive preserves the historical predefinition marker.",
     "prior_evidence_archives_unchanged": {
       "local/cc10_field_values_evidence.zip": "a749dbf4656596e6a4e0c11ecb320a02bfe62dcba5fa3654c2744aa2a3022153",
       "local/cc10_widget_transform_evidence.zip": "0d90499f71be2a3cc99ad732deaa8a71a5b55546da4dbaa7ee708c364bae45f8",
@@ -682,5 +675,15 @@
     "size": 270742,
     "files": 54,
     "note": "Archive includes report_before_archive_receipt to avoid circular hashes; prior six archives unchanged."
-  }
+  },
+  "worker_undefined_boundaries": [
+    {
+      "address": "00cb7088",
+      "end_inclusive": "00cb7091",
+      "last_instruction_address": "00cb708d",
+      "last_instruction_length": 5,
+      "native_instruction_kind": "tail_jump",
+      "coverage": "ten-byte FH3 boundary; MOV EAX,DED780 then JMP BF6B43; worker made no listing changes"
+    }
+  ]
 }
