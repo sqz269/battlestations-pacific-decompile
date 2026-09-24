@@ -82,3 +82,70 @@ routes are kept as labelled records, and nothing sends a message.
 
 No code changed. The `FrontEndScreen::update` record is unchanged. No run: the desktop session is
 disconnected.
+
+## 5. What runs with no player input (read 2026-09-23, second pass)
+
+This pass reads Ghidra's decompile of 0064DD30, checked against the listing where x87 matters,
+together with the screen's enter (0064BB90) and its layout loader (0064C0F0).
+
+**The screen object's widgets**, from 0064C0F0's name lookups:
+
+| offset | widget |
+| --- | --- |
+| +34h, +38h, +3Ch, +40h | pages GUI_ship, GUI_repair, GUI_ship_effects, GUI_ship_damage |
+| +48h | ship_stick_Icon |
+| +50h | ship_dir_Icon |
+| +54h, +58h | ship_recon_Icon, ship_torpedo_Icon |
+| +60h..+74h | the speed, recon and torpedo digit pairs |
+| +90h..+A0h | repair_hl west, east, north, south, middle |
+| +A4h, +A8h | repair_ikons_periscope_Icon, repair_ikons_engine_Icon |
+| +ACh..+B8h | repair_warning west, east, north, south |
+| +C0h | repair_Text |
+| +C4h..+D4h | Icon_1..5 |
+| +D8h..+E4h | Hl_1..4 |
+| +E8h..+F4h | circle_1..4 |
+| +F8h | ship_relation_Icon |
+| +18Ch..+198h | the four Villanas flash icons, hidden at load |
+
+**No gameplay write runs with no input.** The enter virtual stores **+160h = -1.0** (0064BE44).
+- The turn-to-camera block writes unit+630h and routes the order only after action 98h is pressed,
+  or held with +160h at or above zero. The action is never driven, so +160h stays -1 and its else
+  arm, which also writes unit+630h, never runs.
+- The repair-order route needs action EFh (00535EE0) with a pick pending at +156h.
+- Repair mode (+157h) is entered only through the held-input path (004C5090).
+
+**What does run every frame:**
+- The relation-icon slide, while +119h is set.
+- The pipe-sight block. Its zoom and blur adds are gated on the fire input (0064DED7: 004BEC00's
+  record +1CB0h, held with time above zero). The blur spring (+15Ch, 00E197F0) and the zoom decay
+  run, and so do 00B0CF80 on the renderer (a record here) and 004DC940.
+- 0064A960, the relation icon. It is shown for a ship in a formation, with its state set by
+  whether the unit leads (007788D0).
+- 0064ABD0, the Villanas flashes: each alpha decays by `1 - dt*[00D7A328]`, and an icon is hidden
+  below [00D7A270].
+- The throttle stick. +44h eases toward `clamp((throttle + 0.5) / [00CE3D78], 0, 1)` (00415620),
+  in thirds (00D7A2B0), or snaps within [00D7A23C]. Then 0064A9F0 turns ship_stick_Icon through
+  its virtual +44h from a throttle map (00CE69D0, 00E08CAC, 00CF5C68, 00CF5C60).
+- The repair-status flags +BCh..+BFh:
+  - the fire or flood byte, unit+9E5h (0x48B == 2 for a submarine);
+  - any device with +5Dh set on the unit's device list +48h;
+  - 00939F80 and 00939F70 above [00D7A390].
+- Then 00545AC0 and 00644240, and the four repair warnings are hidden.
+- The analog repair selector reads six axes through 004C5070. These are input and answer zero
+  here.
+- The gauge tail: 00852300 and 00815850 on the unit through 0043B370.
+
+## 6. Plan
+
+The update is about 9 KB and calls about 20 helpers that have not been read: 00545AC0, 00644240,
+00545360, 0054E610, 0064A2F0, 0064A770, 0064AAD0, 007788D0, 0043B370, 004C5070, 004C5090,
+00535EE0, 005FC620, 00939F70/80, 0093A3F0, 00852300, 00815850 and the widget virtuals +34h, +44h,
++4Ch and +88h. It is bound in two stages behind `kHudShipScreenUpdateBound`.
+
+- **Stage A:** the top-level flow and every block listed above as running each frame. The input
+  queries are answered through the menu host's action records. The two 0077C2A0 routes, 00B0CF80
+  and the award tracker are labelled records.
+- **Stage B:** the repair-mode radial selector, the hint and Lua NoRepairGUI path, and the
+  level-3 set switch. All are control flow the input gates never open here.
+
+Each stage gets predictions and a USN04 pair.
