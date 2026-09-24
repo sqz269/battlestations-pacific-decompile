@@ -59,7 +59,7 @@ inline constexpr bool kHudPresentationTopBound = true;
 // it (00432ED0) and publishes its pose into the Operator node, which the
 // markers' 00B70490 and the minimap's 00B6DB70 then read in place of the
 // top-down stand-in. OFF keeps the stand-in and the two records.
-inline constexpr bool kMissionCameraBound = false;
+inline constexpr bool kMissionCameraBound = true;
 
 // Packet cc9_mission_camera, part 3 (docs/MISSION_CAMERA.md section 10). ON
 // holds the marker widgets as the markers screen's pool A (entries taken in
