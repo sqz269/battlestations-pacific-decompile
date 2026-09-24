@@ -1,0 +1,478 @@
+{
+  "packet": "cc10_gui_media_focus_lifetime",
+  "status": "complete_media_and_partial_gui_domain_build_and_original_library_fixture_checked",
+  "source": "src/native_gui_media_focus_lifetime.cpp",
+  "header": "include/bsp/native_gui_media_focus_lifetime.hpp",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "ghidra_worker_mutations": false,
+  "functions": [
+    {
+      "address": "00a4c510",
+      "name": "destroy_native_media_list_00a4c510",
+      "source": "src/native_gui_media_focus_lifetime.cpp",
+      "status": "source_strict_win32_and_bounded_original_library_fixture_checked",
+      "coverage": "complete",
+      "native_bytes": 72,
+      "original_abi": "ECX actual owner/header; RET, or scalar flags DWORD/RET4 with original receiver EAX. New context arguments are typed source interfaces.",
+      "evidence": "Descriptive role is a hypothesis. Native GUI/media lifetime CC10; current live/installed bytes, exact register/stack and FH3 data inspection. Strict Win32 build/3CTests and13original/source actual-library pairs pass; source-only state4 unwind check. GUI current page virtual20/04 remain external, typed source is not original FH3/SEH/ABI. docs/NATIVE_GUI_MEDIA_FOCUS_LIFETIME_CC10.md; reports/native_gui_media_focus_lifetime_cc10.json."
+    },
+    {
+      "address": "00a4c600",
+      "name": "destroy_native_media_manager_00a4c600",
+      "source": "src/native_gui_media_focus_lifetime.cpp",
+      "status": "source_strict_win32_and_bounded_original_library_fixture_checked",
+      "coverage": "complete",
+      "native_bytes": 29,
+      "original_abi": "ECX actual owner/header; RET, or scalar flags DWORD/RET4 with original receiver EAX. New context arguments are typed source interfaces.",
+      "evidence": "Descriptive role is a hypothesis. Native GUI/media lifetime CC10; current live/installed bytes, exact register/stack and FH3 data inspection. Strict Win32 build/3CTests and13original/source actual-library pairs pass; source-only state4 unwind check. GUI current page virtual20/04 remain external, typed source is not original FH3/SEH/ABI. docs/NATIVE_GUI_MEDIA_FOCUS_LIFETIME_CC10.md; reports/native_gui_media_focus_lifetime_cc10.json."
+    },
+    {
+      "address": "00a4c620",
+      "name": "scalar_delete_native_media_manager_00a4c620",
+      "source": "src/native_gui_media_focus_lifetime.cpp",
+      "status": "source_strict_win32_and_bounded_original_library_fixture_checked",
+      "coverage": "complete",
+      "native_bytes": 49,
+      "original_abi": "ECX actual owner/header; RET, or scalar flags DWORD/RET4 with original receiver EAX. New context arguments are typed source interfaces.",
+      "evidence": "Descriptive role is a hypothesis. Native GUI/media lifetime CC10; current live/installed bytes, exact register/stack and FH3 data inspection. Strict Win32 build/3CTests and13original/source actual-library pairs pass; source-only state4 unwind check. GUI current page virtual20/04 remain external, typed source is not original FH3/SEH/ABI. docs/NATIVE_GUI_MEDIA_FOCUS_LIFETIME_CC10.md; reports/native_gui_media_focus_lifetime_cc10.json."
+    },
+    {
+      "address": "00aa51d0",
+      "name": "clear_native_gui_string_list_00aa51d0",
+      "source": "src/native_gui_media_focus_lifetime.cpp",
+      "status": "source_strict_win32_and_bounded_original_library_fixture_checked",
+      "coverage": "complete",
+      "native_bytes": 83,
+      "original_abi": "ECX actual owner/header; RET, or scalar flags DWORD/RET4 with original receiver EAX. New context arguments are typed source interfaces.",
+      "evidence": "Descriptive role is a hypothesis. Native GUI/media lifetime CC10; current live/installed bytes, exact register/stack and FH3 data inspection. Strict Win32 build/3CTests and13original/source actual-library pairs pass; source-only state4 unwind check. GUI current page virtual20/04 remain external, typed source is not original FH3/SEH/ABI. docs/NATIVE_GUI_MEDIA_FOCUS_LIFETIME_CC10.md; reports/native_gui_media_focus_lifetime_cc10.json."
+    },
+    {
+      "address": "00aa5b20",
+      "name": "destroy_native_gui_string_list_00aa5b20",
+      "source": "src/native_gui_media_focus_lifetime.cpp",
+      "status": "source_strict_win32_and_bounded_original_library_fixture_checked",
+      "coverage": "complete",
+      "native_bytes": 29,
+      "original_abi": "ECX actual owner/header; RET, or scalar flags DWORD/RET4 with original receiver EAX. New context arguments are typed source interfaces.",
+      "evidence": "Descriptive role is a hypothesis. Native GUI/media lifetime CC10; current live/installed bytes, exact register/stack and FH3 data inspection. Strict Win32 build/3CTests and13original/source actual-library pairs pass; source-only state4 unwind check. GUI current page virtual20/04 remain external, typed source is not original FH3/SEH/ABI. docs/NATIVE_GUI_MEDIA_FOCUS_LIFETIME_CC10.md; reports/native_gui_media_focus_lifetime_cc10.json."
+    },
+    {
+      "address": "00aa6340",
+      "name": "destroy_native_gui_manager_00aa6340_fragment",
+      "source": "src/native_gui_media_focus_lifetime.cpp",
+      "status": "partial_projection_source_strict_win32_and_bounded_original_library_fixture_checked",
+      "coverage": "partial_projection: complete manager schedule and source C++ cleanup states; populated-page virtual20/04 bodies external",
+      "native_bytes": 354,
+      "original_abi": "ECX actual owner/header; RET, or scalar flags DWORD/RET4 with original receiver EAX. New context arguments are typed source interfaces.",
+      "evidence": "Descriptive role is a hypothesis. Native GUI/media lifetime CC10; current live/installed bytes, exact register/stack and FH3 data inspection. Strict Win32 build/3CTests and13original/source actual-library pairs pass; source-only state4 unwind check. GUI current page virtual20/04 remain external, typed source is not original FH3/SEH/ABI. docs/NATIVE_GUI_MEDIA_FOCUS_LIFETIME_CC10.md; reports/native_gui_media_focus_lifetime_cc10.json."
+    },
+    {
+      "address": "00aa6540",
+      "name": "scalar_delete_native_gui_manager_00aa6540_fragment",
+      "source": "src/native_gui_media_focus_lifetime.cpp",
+      "status": "partial_projection_source_strict_win32_and_bounded_original_library_fixture_checked",
+      "coverage": "partial_projection: complete scalar wrapper schedule; inherits GUI populated-page provider boundary",
+      "native_bytes": 30,
+      "original_abi": "ECX actual owner/header; RET, or scalar flags DWORD/RET4 with original receiver EAX. New context arguments are typed source interfaces.",
+      "evidence": "Descriptive role is a hypothesis. Native GUI/media lifetime CC10; current live/installed bytes, exact register/stack and FH3 data inspection. Strict Win32 build/3CTests and13original/source actual-library pairs pass; source-only state4 unwind check. GUI current page virtual20/04 remain external, typed source is not original FH3/SEH/ABI. docs/NATIVE_GUI_MEDIA_FOCUS_LIFETIME_CC10.md; reports/native_gui_media_focus_lifetime_cc10.json."
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00aa6340",
+      "address": "00aa637c",
+      "native": "00bf6713",
+      "contract": "Returning CRT validation; AA6392 unreachable CMP ESI,ESI"
+    },
+    {
+      "function": "00aa6340",
+      "address": "00aa6389",
+      "native": "00bf6713",
+      "contract": "Returning CRT validation; AA6392 unreachable CMP ESI,ESI"
+    },
+    {
+      "function": "00aa6340",
+      "address": "00aa6392",
+      "native": "00bf6713",
+      "contract": "Returning CRT validation; AA6392 unreachable CMP ESI,ESI"
+    },
+    {
+      "function": "00aa6340",
+      "address": "00aa63a0",
+      "native": "00bf6713",
+      "contract": "Returning CRT validation; AA6392 unreachable CMP ESI,ESI"
+    },
+    {
+      "function": "00aa6340",
+      "address": "00aa63b3",
+      "native": "00bf6713",
+      "contract": "Returning CRT validation; AA6392 unreachable CMP ESI,ESI"
+    },
+    {
+      "function": "00aa6340",
+      "address": "00aa63cc",
+      "native": "00bf6713",
+      "contract": "Returning CRT validation; AA6392 unreachable CMP ESI,ESI"
+    },
+    {
+      "function": "00aa6340",
+      "address": "00aa6402",
+      "native": "00aa51d0",
+      "contract": "Clear captured-owner list+34"
+    },
+    {
+      "function": "00aa6340",
+      "address": "00aa640b",
+      "native": "00bf65ac",
+      "contract": "Free current list sentinel"
+    },
+    {
+      "function": "00aa6340",
+      "address": "00aa6443",
+      "native": "00bf65ac",
+      "contract": "Free current nonnull vector allocation"
+    },
+    {
+      "function": "00aa6340",
+      "address": "00aa646b",
+      "native": "00aa49e0",
+      "contract": "Fixed valid whole-range tree call, five stack slots/RET14h"
+    },
+    {
+      "function": "00aa6340",
+      "address": "00aa6474",
+      "native": "00bf65ac",
+      "contract": "Free current tree sentinel"
+    },
+    {
+      "function": "00aa6340",
+      "address": "00aa63ac",
+      "native": "00aa6340+vtable20",
+      "contract": "Current page scene-release profile, ECX dereferenced captured cursor"
+    },
+    {
+      "function": "00aa6340",
+      "address": "00aa63c5",
+      "native": "00aa6340+vtable04",
+      "contract": "Reloaded nonnull page, flag1"
+    },
+    {
+      "function": "00aa6340",
+      "address": "00aa63e3",
+      "native": "IAT:00ce2220:InterlockedDecrement",
+      "contract": "Captured resource+28 atomic+4"
+    },
+    {
+      "function": "00aa6340",
+      "address": "00aa6426",
+      "native": "IAT:00ce2220:InterlockedDecrement",
+      "contract": "Captured resource+2C atomic+4"
+    },
+    {
+      "function": "00aa6340",
+      "address": "00aa63f3",
+      "native": "00aa6340+vtable00",
+      "contract": "Captured +28 current virtual0 after terminal decrement"
+    },
+    {
+      "function": "00aa6340",
+      "address": "00aa6436",
+      "native": "00aa6340+vtable00",
+      "contract": "Captured +2C current virtual0 after terminal decrement"
+    },
+    {
+      "function": "00aa6540",
+      "address": "00aa6543",
+      "native": "00aa6340",
+      "contract": "Destroy GUI before flags/free"
+    },
+    {
+      "function": "00aa6540",
+      "address": "00aa6550",
+      "native": "00bf65ac",
+      "contract": "Free original GUI receiver only if flag bit0"
+    },
+    {
+      "function": "00a4c510",
+      "address": "00a4c533",
+      "native": "00bf65ac",
+      "contract": "Free current list node after capturing next"
+    },
+    {
+      "function": "00a4c510",
+      "address": "00a4c547",
+      "native": "00bf65ac",
+      "contract": "Free current media sentinel"
+    },
+    {
+      "function": "00a4c600",
+      "address": "00a4c606",
+      "native": "00a4c510",
+      "contract": "Destroy original owner+4 list"
+    },
+    {
+      "function": "00a4c620",
+      "address": "00a4c626",
+      "native": "00a4c510",
+      "contract": "Inline nondeleting schedule begins at original owner+4"
+    },
+    {
+      "function": "00a4c620",
+      "address": "00a4c643",
+      "native": "00bf65ac",
+      "contract": "Free original media receiver only if bit0"
+    },
+    {
+      "function": "00aa51d0",
+      "address": "00aa5203",
+      "native": "00419cc0",
+      "contract": "No-argument actual string-pool getter; pending stack slots belong to return"
+    },
+    {
+      "function": "00aa51d0",
+      "address": "00aa520a",
+      "native": "00bd1510",
+      "contract": "Captured data,length+1,unused1; RET0Ch"
+    },
+    {
+      "function": "00aa51d0",
+      "address": "00aa5210",
+      "native": "00bf65ac",
+      "contract": "Free captured node after string return"
+    },
+    {
+      "function": "00aa5b20",
+      "address": "00aa5b23",
+      "native": "00aa51d0",
+      "contract": "Clear original header"
+    },
+    {
+      "function": "00aa5b20",
+      "address": "00aa5b2c",
+      "native": "00bf65ac",
+      "contract": "Free current sentinel then clear head"
+    }
+  ],
+  "fresh_spans": [
+    {
+      "address": "00aa6340",
+      "bytes": 354,
+      "sha256": "a9341ae1314197ed0425b76894dc66d7ce7f549b360a9de20835fd841dc84959",
+      "live_equals_installed_pe": true
+    },
+    {
+      "address": "00aa6540",
+      "bytes": 30,
+      "sha256": "1a8c42c2f9d5e9577ac91ad208b4dd8f537f66484e50b9c3cc261d79b1e60f49",
+      "live_equals_installed_pe": true
+    },
+    {
+      "address": "00a4c510",
+      "bytes": 72,
+      "sha256": "cfcf20b235b956deffa687caf41f276d0712d3dc3d0de82d4a4f274491acfea9",
+      "live_equals_installed_pe": true
+    },
+    {
+      "address": "00a4c600",
+      "bytes": 29,
+      "sha256": "f89e1fbd0457c56a8f7f29d646d968541fcaed9c759d7c96bb883209acd435ca",
+      "live_equals_installed_pe": true
+    },
+    {
+      "address": "00a4c620",
+      "bytes": 49,
+      "sha256": "a368b4af2f876e3a4ea5817c64229dcc3d4089df2b04044b1bfa2ea9aaddc884",
+      "live_equals_installed_pe": true
+    },
+    {
+      "address": "00aa51d0",
+      "bytes": 83,
+      "sha256": "b17cf2440da22fc59f6815a3e6ae7c6937b79f6efe62f87202e4303d696df529",
+      "live_equals_installed_pe": true
+    },
+    {
+      "address": "00aa5b20",
+      "bytes": 29,
+      "sha256": "78318706b90c195b8180ad1e76ad26f94362990cad2f197521f963f99dcb57ff",
+      "live_equals_installed_pe": true
+    },
+    {
+      "address": "00aa49e0",
+      "bytes": 201,
+      "sha256": "00a2688721c028c55a98f45b3aec32d4050fd186c4a079aeea3fa598afb0cd96",
+      "live_equals_installed_pe": true
+    },
+    {
+      "address": "00aa22c0",
+      "bytes": 53,
+      "sha256": "a1f16cf639671d4bd799c952015594e3d896207e8f94580c63dc279717b87c7e",
+      "live_equals_installed_pe": true
+    },
+    {
+      "address": "00dedb38",
+      "bytes": 76,
+      "sha256": "31d1b641c75a5b804db55114cad4aaee2de9d6ad4f1a0441967153b3b156dc77",
+      "live_equals_installed_pe": true
+    },
+    {
+      "address": "00cb7300",
+      "bytes": 62,
+      "sha256": "2cb8a1f37a32fc83b8d82a824441e2363b644bd902bbc6ce53887c8eb7d3cbb9",
+      "live_equals_installed_pe": true
+    }
+  ],
+  "primary_flow_repair": "reports/platform_flow_repair_cc10.json",
+  "corrections": [
+    {
+      "was": "AA6340 body endedAA640F",
+      "is": "Complete bodyAA6340..AA64A1",
+      "evidence": "Native RET atAA64A1; 146-byte cleanup tail retained"
+    },
+    {
+      "was": "A4C510 body endedA4C54B; AA5B20 endedAA5B30",
+      "is": "A4C510 endsA4C557; AA5B20 endsAA5B3C",
+      "evidence": "Returning frees followed by ADD ESP4/head clear and RET"
+    },
+    {
+      "was": "Decompiler returned free call EAX for scalar deletes",
+      "is": "Both wrappers return original ESI even when freed",
+      "evidence": "MOV EAX,ESI atAA6558/A4C64B"
+    }
+  ],
+  "cleanup_map": {
+    "descriptor": "00dedb38",
+    "map": "00dedb5c",
+    "states": [
+      {
+        "state": 0,
+        "funclet": "00cb7300",
+        "callee": "00aa0ff0",
+        "owner_offset": "00"
+      },
+      {
+        "state": 1,
+        "funclet": "00cb7308",
+        "callee": "00aa5260",
+        "owner_offset": "08"
+      },
+      {
+        "state": 2,
+        "funclet": "00cb7313",
+        "callee": "004c8020",
+        "owner_offset": "14"
+      },
+      {
+        "state": 3,
+        "funclet": "00cb731e",
+        "callee": "0041da80",
+        "owner_offset": "2c"
+      },
+      {
+        "state": 4,
+        "funclet": "00cb7329",
+        "callee": "00aa5b20",
+        "owner_offset": "34"
+      }
+    ],
+    "no_cleanup_for_offset28": true,
+    "normal_states": [
+      4,
+      3,
+      2,
+      0
+    ]
+  },
+  "build": {
+    "command": "./scripts/build.ps1",
+    "log": "local/cc10_gui_media_lifetime_build2.log",
+    "passed": true,
+    "ctest_passed": 3,
+    "ctest_failed": 0
+  },
+  "fixture": {
+    "path": "local/cc10_gui_media_lifetime/lifetime_probe.cpp",
+    "actual_core_library_linked": true,
+    "original_source_pairs": 13,
+    "source_only_state4_unwind_case": 1,
+    "passed": true,
+    "native_bodies_executed": [
+      "00a4c510",
+      "00a4c620",
+      "00aa6340",
+      "00aa6540",
+      "00aa51d0",
+      "00aa49e0",
+      "00aa22c0"
+    ],
+    "byte_checked_bodies_not_separately_original_executed": [
+      "00a4c600",
+      "00aa5b20"
+    ],
+    "imports_and_external_bridges": "Original free and CRT validation route to current CRT; string getter/return route to existing source providers; InterlockedDecrement uses real atomic primitive; page virtuals use explicit fixture callbacks. Existing internal relative calls remain unchanged in common relocated arena. Publication operands relocated.",
+    "observations": [
+      "Empty/populated media and GUI; flags0/1/100h",
+      "Real CRT free order and final bytes",
+      "Current publication replacement cleared",
+      "Page slot replaced between virtual20/04",
+      "Two returning CRT vector repairs preserve captured end",
+      "Source-only C++ page throw executes inspected state4 cleanup"
+    ],
+    "compile_attempts": 3,
+    "first_link_failure": "Missing advapi32 and shell32 libraries; corrected before execution",
+    "original_fh3_executed": false,
+    "real_page_destruction": false,
+    "terminal_resource_dispatch": false,
+    "source_string_pool_domain": "nonnull fast-path publication with large returns; no pool dereference, lazy creation, or small-ring return tested",
+    "production_binding": false
+  },
+  "artifacts": [
+    {
+      "path": "include/bsp/native_gui_media_focus_lifetime.hpp",
+      "bytes": 3213,
+      "sha256": "fed651ac9f3e7f0853c4754dd180dc68b1e6432afc9fe64a327caa59e8b81412"
+    },
+    {
+      "path": "src/native_gui_media_focus_lifetime.cpp",
+      "bytes": 6502,
+      "sha256": "06744c0d69116b56681e74ed0f92d97a0b3d583455b66ea2d458a1a0cea0c749"
+    },
+    {
+      "path": "local/cc10_gui_media_lifetime/lifetime_probe.cpp",
+      "bytes": 11610,
+      "sha256": "f3f783781d8fe6f90c3a8f2c455de1cd6971489790bc26d694dee8de28e4ed7f"
+    },
+    {
+      "path": "local/cc10_gui_media_lifetime/lifetime_probe.exe",
+      "bytes": 243200,
+      "sha256": "6fc5327dc80b7e134f69c8167f0021f7f61ac038e7bf86fd73ea12db518543f2"
+    },
+    {
+      "path": "local/cc10_gui_media_lifetime/fixture.log",
+      "bytes": 66,
+      "sha256": "dc5361f5ce8f364b994d55d506a53bdc3906183308b0a38dc8ce5758f6d62305"
+    },
+    {
+      "path": "build/win32/Release/bsp_core.lib",
+      "bytes": 69254004,
+      "sha256": "8c48fa9391dfd55d71a2dd765ea157f8b7d9f79ea962a111b6decb1ea822b277"
+    },
+    {
+      "path": "local/cc10_gui_media_lifetime_build2.log",
+      "bytes": 2722,
+      "sha256": "9879158808f43b694281d02bd3e0bfaacabfcef280576939a87806f09b5cae5c"
+    }
+  ],
+  "limits": [
+    "GUI populated-page virtual20/04 providers remain external; no combined retirement substitution",
+    "No actual production owner or binding created",
+    "New typed interface is not original register/FH3/SEH ABI",
+    "Original C++ exception unwinding not executed",
+    "No terminal resource dispatch, lazy pool construction failure, concurrent invalid storage or second cleanup failure proof"
+  ],
+  "call_report_check": {
+    "direct_rows": 23,
+    "failed": 0,
+    "indirect_rows_recorded_not_checked_by_tool": 6
+  }
+}
