@@ -43,6 +43,21 @@ NativeViewportRendererParameters parameters_from_live_renderer(
     return environment.renderer_access.parameters_00b1ff60(*captured);
 }
 
+struct RawParameters {
+    const volatile DWORD& width_0c;
+    const volatile DWORD& height_10;
+};
+RawParameters parameters_from_live_renderer(NativeViewportRawEnvironment& environment) {
+    void* const captured = environment.renderer_00f8d394;
+    if (!captured) throw std::invalid_argument("native viewport: actual renderer is unbound");
+    const auto profile = *static_cast<const volatile std::uint32_t*>(captured);
+    const auto* table = environment.renderer_access.resolve_profile(profile);
+    if (!table) throw std::invalid_argument("native viewport: actual renderer profile is unbound");
+    void* const result = environment.renderer_access.invoke_virtual30(table[0x30 / 4], captured);
+    const auto words = static_cast<const volatile DWORD*>(result);
+    return {words[3], words[4]};
+}
+
 void copy_two_words_forward(void* destination, const void* source) noexcept {
     __asm {
         mov ecx, destination
@@ -53,10 +68,8 @@ void copy_two_words_forward(void* destination, const void* source) noexcept {
         mov dword ptr [ecx + 4], eax
     }
 }
-} // namespace
-
-NativeViewportOwner* initialize_native_viewport_owner_00b1f850(
-    void* storage, NativeViewportEnvironment& environment) {
+template<class Environment>
+NativeViewportOwner* initialize_viewport(void* storage, Environment& environment) {
     if (!storage || (reinterpret_cast<std::uintptr_t>(storage) % alignof(NativeViewportOwner))) {
         throw std::invalid_argument("native viewport: missing or misaligned raw storage");
     }
@@ -69,7 +82,7 @@ NativeViewportOwner* initialize_native_viewport_owner_00b1f850(
     owner->native_vtable_00 = kNativeViewportBaseVtable;
     owner->references_04 = 1;
     owner->native_vtable_00 = kNativeViewportVtable;
-    auto& fields = owner->fields_08;
+    auto& fields = static_cast<volatile NativeViewportFields&>(owner->fields_08);
     fields.depth_min_bits = 0;
     const auto captured_one = environment.one_bits_00d7a24c;
     fields.x = 0;
@@ -87,6 +100,19 @@ NativeViewportOwner* initialize_native_viewport_owner_00b1f850(
         throw;
     }
     return owner;
+}
+} // namespace
+
+void* __fastcall native_renderer_parameters_00b1ff60(void* actual) noexcept {
+    return reinterpret_cast<void*>(reinterpret_cast<std::uintptr_t>(actual) + 0x1a14u);
+}
+NativeViewportOwner* initialize_native_viewport_owner_00b1f850(
+    void* storage, NativeViewportEnvironment& environment) {
+    return initialize_viewport(storage, environment);
+}
+NativeViewportOwner* initialize_native_viewport_owner_00b1f850(
+    void* storage, NativeViewportRawEnvironment& environment) {
+    return initialize_viewport(storage, environment);
 }
 
 NativeViewportOwner* allocate_native_viewport_owner(NativeViewportEnvironment& environment) {

@@ -1,0 +1,659 @@
+{
+  "packet": "cc10_camera_storage_construct",
+  "status": "complete_raw_camera_constructor_actual_renderer_provider_strict_win32_application_original_source_checked",
+  "source": "src/native_camera_storage_construct.cpp",
+  "documentation": "docs/NATIVE_CAMERA_STORAGE_CONSTRUCT_CC10.md",
+  "dependency_base_commit": "b03a671fd26db7eadd24d2ab753e523026508d17",
+  "original_executable_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "native_bytes": [
+    {
+      "address": "00b71a80",
+      "size": 604,
+      "end_inclusive": "00b71cdb",
+      "sha256": "3172b0daf4b067f4e778c300acaba758da790ecfe290f9733150baf87fcd533a",
+      "live_pe_equal": true,
+      "last_instruction_address": "00b71cd9",
+      "last_instruction_length": 3,
+      "last_instruction": "ret 4"
+    },
+    {
+      "address": "00cc1ad0",
+      "size": 8,
+      "end_inclusive": "00cc1ad7",
+      "sha256": "6aa8ff0b68e5a406a886cbaf1f31f22b0d0c2801e22c61d338f08962d910e226",
+      "live_pe_equal": true,
+      "last_instruction_address": "00cc1ad3",
+      "last_instruction_length": 5,
+      "last_instruction": "jmp 0xb6f440"
+    },
+    {
+      "address": "00cc1ad8",
+      "size": 11,
+      "end_inclusive": "00cc1ae2",
+      "sha256": "7611f570fcc66fccb0738c1301f39d96b3cc335679c18738c80915e68ef920cc",
+      "live_pe_equal": true,
+      "last_instruction_address": "00cc1ae2",
+      "last_instruction_length": 1,
+      "last_instruction": "ret "
+    },
+    {
+      "address": "00cc1ae3",
+      "size": 14,
+      "end_inclusive": "00cc1af0",
+      "sha256": "c4aa1e9582cf54d2039bf2bf476a797381e4845faaae398a93653a2b4c0fc04c",
+      "live_pe_equal": true,
+      "last_instruction_address": "00cc1aec",
+      "last_instruction_length": 5,
+      "last_instruction": "jmp 0x605fd0"
+    },
+    {
+      "address": "00cc1af1",
+      "size": 10,
+      "end_inclusive": "00cc1afa",
+      "sha256": "e539b3a8bdd4119235ee1d308c2d4a31dc3a8aaf7b54d38aabdd75c32eadd475",
+      "live_pe_equal": true,
+      "last_instruction_address": "00cc1af6",
+      "last_instruction_length": 5,
+      "last_instruction": "jmp 0xbf6b43"
+    },
+    {
+      "address": "00b1f850",
+      "size": 156,
+      "end_inclusive": "00b1f8eb",
+      "sha256": "3aa25fb6563a09536f3d044c52a14e1d2eb842fbbd90bbd12fa2a07a716757c6",
+      "live_pe_equal": true,
+      "last_instruction_address": "00b1f8eb",
+      "last_instruction_length": 1,
+      "last_instruction": "ret "
+    },
+    {
+      "address": "00b1ff60",
+      "size": 7,
+      "end_inclusive": "00b1ff66",
+      "sha256": "663abb9d44b91bd83ff606f17d955bbab34cf4ab310908bfe7fed9a3e97e4ee5",
+      "live_pe_equal": true,
+      "last_instruction_address": "00b1ff66",
+      "last_instruction_length": 1,
+      "last_instruction": "ret "
+    }
+  ],
+  "native_data": [
+    {
+      "address": "00dfaa38",
+      "size": 36,
+      "sha256": "7744bf9e7e5154dc0bdefaa2716311364db57c8626a9690269cbe0fd93496bcb",
+      "live_pe_equal": true,
+      "hex": "220593190300000020aadf00000000000000000000000000000000000000000001000000"
+    },
+    {
+      "address": "00dfaa20",
+      "size": 24,
+      "sha256": "8611cbaa27dad0b143d4dcadb14b72d59f394a4d1f7881bc43c93cb366f65452",
+      "live_pe_equal": true,
+      "hex": "ffffffffd01acc0000000000d81acc0000000000e31acc00"
+    },
+    {
+      "address": "00d62cf0",
+      "size": 88,
+      "sha256": "e28974468ad5614f4a554cfb6707393f56398b4eeca19834623fb06eb322c3de",
+      "live_pe_equal": true,
+      "hex": "e030bd00e01fb70060fbb600e01cb700f0f8b60070fbb60010f3b600b0d7b60080fbb600e00db70020d8b600d013b7000014b7006014b7003014b700c0dbb600e0dbb60000dcb600c0e8b60020dcb60080edb60010eeb600"
+    },
+    {
+      "address": "00d5f0a8",
+      "size": 52,
+      "sha256": "36b76a83e01a174a40af7461e00add227579a023524b4a4ae74cfe7ca4e05378",
+      "live_pe_equal": true,
+      "hex": "f039b300b0aeb2003014b20000b2b200b0f4b200a0f4b2005084b2006084b20010feb100207cb200f07cb20020feb10060ffb100"
+    },
+    {
+      "address": "00ce3d08",
+      "size": 4,
+      "sha256": "2238f30df488055daf5e8f362cf904e370011a172d20df193c1b7ae8e5db8e01",
+      "live_pe_equal": true,
+      "hex": "0000c842"
+    },
+    {
+      "address": "00ce7d20",
+      "size": 4,
+      "sha256": "c5bc52f5111b4a95d57edccb121dec6b28befe5580e5fe479e04910e0a344dd3",
+      "live_pe_equal": true,
+      "hex": "c3b8323f"
+    },
+    {
+      "address": "00d0c5f8",
+      "size": 4,
+      "sha256": "52066a26a37a31badc03cd3a0c8daffc3fe522911c050c84957aecc2e49543ea",
+      "live_pe_equal": true,
+      "hex": "00504347"
+    },
+    {
+      "address": "00d7a24c",
+      "size": 4,
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "live_pe_equal": true,
+      "hex": "0000803f"
+    },
+    {
+      "address": "00d5bd98",
+      "size": 4,
+      "sha256": "6f4cd532e8c154c45c348ae70bd34e9a5dffdb04411785cb9aa4d5f2ff1ce765",
+      "live_pe_equal": true,
+      "hex": "abaaaa3f"
+    },
+    {
+      "address": "00ce77fc",
+      "size": 4,
+      "sha256": "c36c2606ae26dfb7a6c61b3b7dd29931582302a8d695f198455710a61847fcb5",
+      "live_pe_equal": true,
+      "hex": "0060ea46"
+    },
+    {
+      "address": "00ce3c88",
+      "size": 4,
+      "sha256": "03a88c8867b3fbcfeefc3270af46afbeb74a27e12cad758e188154cb4aa923dc",
+      "live_pe_equal": true,
+      "hex": "00000044"
+    }
+  ],
+  "routines": [
+    {
+      "address": "00b71a80",
+      "coverage": "complete normal body",
+      "size": 604,
+      "end_inclusive": "00b71cdb"
+    },
+    {
+      "address": "00cc1ad0",
+      "coverage": "compiler boundary evidence; source cleanup projection",
+      "size": 8,
+      "end_inclusive": "00cc1ad7"
+    },
+    {
+      "address": "00cc1ad8",
+      "coverage": "compiler boundary evidence; source cleanup projection",
+      "size": 11,
+      "end_inclusive": "00cc1ae2"
+    },
+    {
+      "address": "00cc1ae3",
+      "coverage": "compiler boundary evidence; source cleanup projection",
+      "size": 14,
+      "end_inclusive": "00cc1af0"
+    },
+    {
+      "address": "00cc1af1",
+      "coverage": "compiler boundary evidence; source cleanup projection",
+      "size": 10,
+      "end_inclusive": "00cc1afa"
+    },
+    {
+      "address": "00b1f850",
+      "coverage": "complete normal body",
+      "size": 156,
+      "end_inclusive": "00b1f8eb"
+    },
+    {
+      "address": "00b1ff60",
+      "coverage": "complete normal body",
+      "size": 7,
+      "end_inclusive": "00b1ff66"
+    }
+  ],
+  "calls": [
+    {
+      "address": "00b71aa7",
+      "native": "00b6f5a0",
+      "function": "00b71a80",
+      "kind": "call",
+      "host": "construct_native_node_00b6f5a0 raw prefix"
+    },
+    {
+      "address": "00b71aba",
+      "native": "00bf681b",
+      "function": "00b71a80",
+      "kind": "call",
+      "host": "singleton_lifetime_allocate actual34h CRT new-handler boundary"
+    },
+    {
+      "address": "00b71ad1",
+      "native": "00b1f850",
+      "function": "00b71a80",
+      "kind": "call",
+      "host": "initialize_native_viewport_owner_00b1f850 raw overload, same engine"
+    },
+    {
+      "address": "00b71b0b",
+      "native": "00b659d0",
+      "function": "00b71a80",
+      "kind": "call",
+      "host": "construct_camera_plane_set_00b659d0 over actual live +2F4"
+    },
+    {
+      "address": "00b71b34",
+      "native": "00b1f920",
+      "function": "00b71a80",
+      "kind": "call",
+      "host": "set_native_viewport_origin_00b1f920"
+    },
+    {
+      "address": "00b71b46",
+      "native": "current_actual_renderer+vtable30",
+      "function": "00b71a80",
+      "kind": "indirect_call",
+      "host": "required pure profile resolver and genuine exact captured-target invoke_virtual30"
+    },
+    {
+      "address": "00b71b52",
+      "native": "current_actual_renderer+vtable30",
+      "function": "00b71a80",
+      "kind": "indirect_call",
+      "host": "required pure profile resolver and genuine exact captured-target invoke_virtual30"
+    },
+    {
+      "address": "00b71b6a",
+      "native": "00b1f940",
+      "function": "00b71a80",
+      "kind": "call",
+      "host": "set_native_viewport_dimensions_00b1f940"
+    },
+    {
+      "address": "00b71b7b",
+      "native": "00b1f750",
+      "function": "00b71a80",
+      "kind": "call",
+      "host": "set_native_viewport_min_depth_00b1f750"
+    },
+    {
+      "address": "00b71b8c",
+      "native": "00b1f760",
+      "function": "00b71a80",
+      "kind": "call",
+      "host": "set_native_viewport_max_depth_00b1f760"
+    },
+    {
+      "address": "00b71bcc",
+      "native": "00b700e0",
+      "function": "00b71a80",
+      "kind": "call",
+      "host": "set_native_camera_look_at_storage_00b700e0"
+    },
+    {
+      "address": "00cc1ad3",
+      "native": "00b6f440",
+      "function": "00cc1ad0",
+      "kind": "tail_jump",
+      "host": "destroy_native_raw_node_base_00b6f440"
+    },
+    {
+      "address": "00cc1adc",
+      "native": "00bf65ac",
+      "function": "00cc1ad8",
+      "kind": "call",
+      "host": "singleton_lifetime_free CURRENT incoming argument cell"
+    },
+    {
+      "address": "00cc1aec",
+      "native": "00605fd0",
+      "function": "00cc1ae3",
+      "kind": "tail_jump",
+      "host": "clear_native_camera_retained_storage_00605fd0 CURRENT438 and fresh import"
+    },
+    {
+      "address": "00cc1af6",
+      "native": "00bf6b43",
+      "function": "00cc1af1",
+      "kind": "tail_jump",
+      "host": "native FH3 transport evidence only; source C++ cleanup projection"
+    },
+    {
+      "address": "00b1f8bb",
+      "native": "current_actual_renderer+vtable30",
+      "function": "00b1f850",
+      "kind": "indirect_call",
+      "host": "required pure profile resolver and genuine exact captured-target invoke_virtual30"
+    },
+    {
+      "address": "00b1f8ce",
+      "native": "current_actual_renderer+vtable30",
+      "function": "00b1f850",
+      "kind": "indirect_call",
+      "host": "required pure profile resolver and genuine exact captured-target invoke_virtual30"
+    }
+  ],
+  "no_ghidra_function": [],
+  "ghidra_mutations": [],
+  "flow_corrections_needed": [],
+  "abi": {
+    "camera": "ECX actual camera, incoming actual name-header word, EAX same, RET4; explicit new C++ frame/context/diagnostics interface",
+    "viewport": "ECX actual34h storage, EAX same, RET; shared native body with new raw environment",
+    "getter": "ECX actual renderer, EAX actual+1A14, RET; compiled seven-byte equivalent"
+  },
+  "scratch": {
+    "entry": "E=original B71A80 entryESP",
+    "own_six_words": "E-24h..E-10h; origin/dimensions then target3/eye3",
+    "pushed_words": [
+      "E-40h eye argument",
+      "E-3Ch reused base-name/allocation-size/origin/dimensions/depth/target argument"
+    ],
+    "pose_entry": "E-44h; same published pose/world pointer views over live initialized DWORD backing",
+    "incoming": "E+4 name pointer captured before node; allocation result at B71AC2; byte2 B71C51, byte1 B71C55, byte0 B71C59; currentCE3C88 B71C5D; byte3 B71C85; currentwhole B71C89 ->190",
+    "lifetime": "immutable metadata disjoint; same initialized live DWORD backing, no overlapping aggregate frames",
+    "excluded": "native saved-register/return/EH gaps, private provider temporaries, asynchronous/fault-time observations"
+  },
+  "renderer": {
+    "actual_domain": "actual1D94h renderer, no D3D9StateCache cast in raw path",
+    "viewport": "fresh publication/profile/slot per call, width then height actual result reads",
+    "camera": "captured F8D394 once, current first table/30; second CURRENT table BEFORE first-result height; captured second table slot30 AFTER height; width after second call",
+    "resolver": "required pure integer/x87-neutral metadata lookup, no mutation/callback/allocation",
+    "invoker": "required exact genuine reached target and actual result; no fallback/dimensions/COM synthesis",
+    "getter": "B1FF60 exposes raw receiver+1A14, establishes no renderer lifetime"
+  },
+  "storage": {
+    "prefix": "genuine raw B6F5A0 creates actual174h prefix/live atomic+4",
+    "planes": "actual+2F4..437; aggregate/trivially-copyable implicit lifetime established by byte-preserving memcpy, no default initializer or overlapping tail object; source lifetime preparation outside native store schedule",
+    "viewport": "genuine34h allocation/new-handler/provider; padding21..33 preserved",
+    "fog": "only184=null; no fog construction/184 setter claim",
+    "pool": "same existing application45Ch physical pool slot, +458 slab index untouched",
+    "canonical": "postconstruction NativeCameraStorageReference borrowing same actual+4, pool identity and persistent lifetime context; no admission before complete constructor"
+  },
+  "exception_boundary": {
+    "descriptor": "00DFAA38",
+    "max_state": 3,
+    "unwind_map": "00DFAA20",
+    "states": [
+      [
+        -1,
+        "00CC1AD0 base"
+      ],
+      [
+        0,
+        "00CC1AD8 current argument free"
+      ],
+      [
+        0,
+        "00CC1AE3 current438 cleanup"
+      ]
+    ],
+    "try_blocks": 0,
+    "flags": 1,
+    "consume_before_call": true,
+    "state1": "free CURRENT original argument then raw base; child viewport owns its base unwind",
+    "state2": "raw605FD0 CURRENT438/fresh decrement then raw base; no viewport180 rollback",
+    "diagnostics": "retain actual allocation/result and completed-prefix/nested cleanup state for caller disposition",
+    "transport": "source C++ exceptions are not native FH3/SEH/CRT identity; cleanup failure terminates",
+    "null_allocation": "not admitted as success; native reaches unconditional viewport access"
+  },
+  "validation": {
+    "strict_build": "local/cc10_camera_storage_construct/build.log",
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "ctests_passed": 3,
+    "live_pe_bytes": 810,
+    "normal_bytes": 767,
+    "compiler_bytes": 43,
+    "compiled_checks": [
+      {
+        "check": "compiled constructor x87 depth spill sequence",
+        "sequence": [
+          "fldz",
+          "fstp",
+          "fld1",
+          "fstp"
+        ],
+        "pass": true
+      },
+      {
+        "check": "compiled B1FF60 exact same seven original bytes",
+        "address": "10127380",
+        "pass": true
+      },
+      {
+        "check": "all current production application objects except forwarding game_main, no replacements",
+        "count": 70,
+        "pass": true
+      },
+      {
+        "check": "compiled split renderer resolution/height/target order",
+        "sites": [
+          "1012aca0 current profile",
+          "1012aca3 resolver",
+          "1012acb3 result height",
+          "1012acb6 captured table slot30",
+          "1012acc9 invoke"
+        ],
+        "pass": true
+      },
+      {
+        "check": "compiled original argument byte/scalar schedule",
+        "sites": [
+          "1012ae5a byte2",
+          "1012ae5e byte1",
+          "1012ae62 byte0",
+          "1012ae68 current scalar",
+          "1012ae87 byte3",
+          "1012ae8b current DWORD",
+          "1012ae8d color store"
+        ],
+        "pass": true
+      }
+    ],
+    "prior_evidence_archives_unchanged": {
+      "local/cc10_field_values_evidence.zip": "a749dbf4656596e6a4e0c11ecb320a02bfe62dcba5fa3654c2744aa2a3022153",
+      "local/cc10_widget_transform_evidence.zip": "0d90499f71be2a3cc99ad732deaa8a71a5b55546da4dbaa7ee708c364bae45f8",
+      "local/cc10_widget_property_prefix_evidence.zip": "181ebe9358fe2d7ea6832b8051a0b3fd6f830a0360f3ef390626403ba7cbfcdf",
+      "local/cc10_gui_page_default_evidence.zip": "a224fc79f56861715059ff9717fcdad40893be00d26697a230b64ceafced5c8b",
+      "local/cc10_gui_group_pool_evidence.zip": "c7aa87452ab19400fe950d3a4c3a4a146c94715f4080f463dc2de1740df37853",
+      "local/cc10_gui_group_factory_evidence.zip": "d22d364ce3b5cf7833d8ad1998cd5c14cbf792abc34634e2df1421949e42f34f",
+      "local/cc10_gui_camera_store_map_evidence.zip": "625a751eab1f2416e7b0fa5876b921106cf0a246c0b8ca5ce97ca3e9d1586c54",
+      "local/cc10_scene_registry_storage_evidence.zip": "7219d8cbbdab960d3d2b49076f79b13854aa582faa0edb23c8a7fc286cebd6a9",
+      "local/cc10_scene_resource_storage_evidence.zip": "d989b85db55805c8b173e40c95e9322586ec4146e3ad0e504c316bf48364ed51",
+      "local/cc10_gui_scene_fields_evidence.zip": "8158076968340fd863b7e86018def420eabcae87ab0939f90085d79a1751a1af",
+      "local/cc10_scene_registry_vector_mutation_evidence.zip": "90b9d70c3b735e1274c2c0d2e333f5e88e860aee7155ea9ac6ef18e105aaed6b",
+      "local/cc10_scene_registry_registration_evidence.zip": "663ec13309abdaf992b22c321c66817230852066d76e5ccd0b663c3a783e05cf",
+      "local/cc10_node_scene_attachment_evidence.zip": "c45c8248fe0434426648b48b7c8e473f94b057f5ff1098088c34762dbc3d8f04",
+      "local/cc10_node_tree_retirement_evidence.zip": "b9720c00ba0e29c222ae2d41fb5fd2820e305039c673e61cea0ee22d3a2a2e13",
+      "local/cc10_node_base_destruction_evidence.zip": "2f4f970317032085f851a2331dd3e4bf6f02b3722e5e44a668153000e2b13dbf",
+      "local/cc10_camera_storage_lifetime_evidence.zip": "9eb1ac2cbde243e6c4d2d1d10fca263eda2e43aed2527964986875f2217c3936",
+      "local/cc10_camera_raw_world_edit_evidence.zip": "f80fd83057ef325506bbe1d0a06046e765dd8e32b2f10148c67d497af0971d9c",
+      "local/cc10_camera_pose_storage_evidence.zip": "d294c281a6475c33b4b779d9857e2a7f06b75948df45618c12b70112649bfeac"
+    },
+    "frozen_archive": "local/cc10_camera_storage_construct_evidence.zip",
+    "evidence_manifest": "local/cc10_camera_storage_construct/manifest.json"
+  },
+  "focused_probe": {
+    "path": "local/cc10_camera_storage_construct/camera_construct_probe.hpp",
+    "binary": "local/cc10_camera_storage_construct/application-camera-construct-probe.exe",
+    "normal_pairs": 2,
+    "source_failure_cases": 1,
+    "original_bodies": [
+      {
+        "address": "00B71A80",
+        "bytes": 604
+      },
+      {
+        "address": "00B1F850",
+        "bytes": 156
+      },
+      {
+        "address": "00B1FF60",
+        "bytes": 7
+      }
+    ],
+    "relocations": {
+      "calls": [
+        [
+          0,
+          39,
+          11990432
+        ],
+        [
+          0,
+          58,
+          12544027
+        ],
+        [
+          0,
+          81,
+          11663440
+        ],
+        [
+          0,
+          139,
+          11950544
+        ],
+        [
+          0,
+          180,
+          11663648
+        ],
+        [
+          0,
+          234,
+          11663680
+        ],
+        [
+          0,
+          251,
+          11663184
+        ],
+        [
+          0,
+          268,
+          11663200
+        ],
+        [
+          0,
+          332,
+          11993312
+        ]
+      ],
+      "data": [
+        [
+          0,
+          187,
+          16307092
+        ],
+        [
+          0,
+          357,
+          14131788
+        ],
+        [
+          0,
+          481,
+          13515912
+        ],
+        [
+          1,
+          61,
+          14131788
+        ],
+        [
+          1,
+          94,
+          16307092
+        ],
+        [
+          1,
+          117,
+          16307092
+        ]
+      ]
+    },
+    "indirect_instruction_stream_unchanged": true,
+    "renderer_data_relocation": "temporarily replace actual constructed renderer profile word with two fixture-owned copied tables, same genuine slot30 target; source resolver admits exactly these numeric identities. Restore actual profile and parameter width/height before application resumes; no occupied mapping/original table overwritten",
+    "mutations": "after genuine getters only: alternate profile, width/height, current one, incoming allocation/color argument. CE3C88 aliases same incoming word in second pair. Not claimed native B1FF60 behavior",
+    "dynamic_limits": "both alternative tables retain same B1FF60 target; profile mutation does not independently prove different-target lookup/selection. Native/source/compiled inspection separately pins ordering",
+    "compared": [
+      "whole initialized458h camera payload with actual identity normalization",
+      "initialized viewport words",
+      "own viewport padding21..33 against its captured preimage, not unrelated allocations",
+      "six live outer scratch words and incoming argument output",
+      "callback trace and masked x87 status"
+    ],
+    "canonical_retirement": "real application45Ch pool; full successful constructor; same actual atomic+4 registry binding; genuine Windows creator decrement to observed zero; raw camera and viewport terminal; actual pool return; canonical unbind",
+    "source_failure": "one source-only throw after third genuine getter; state2 current438/base cleanup verified, published viewport credit retained; later viewport release/failed-slot return explicit fixture disposition, not native rollback",
+    "crt_math": "genuine production application CameraAxesCrtAccess; default masked FNINIT cases; no unmasked fault/EH comparison",
+    "private_stack": "copied constructor uses real initialized Win32 stack backing; genuine raw pose callback uses separate live fixture stack and original explicit pointer views; native EH handlers not invoked",
+    "application": {
+      "kind": "existing application bootstrap/diagnostic fixture, not complete startup/gameplay",
+      "full_b32410_normal_constructor": true,
+      "actual_renderer_extent": "1D94h",
+      "real_d3d9_hal": true,
+      "windowed": false,
+      "hidden_window_claim": false,
+      "concrete_host_methods": 120,
+      "unimplemented_host_methods": 46,
+      "later_B107F0_B13010_activated": false,
+      "production_object_replacements": 0,
+      "production_application_objects": 70,
+      "current_libraries": 3,
+      "object_receipt": "local/cc10_camera_storage_construct/application-objects.json",
+      "library_receipt": "local/cc10_camera_storage_construct/libraries.json",
+      "all_current_vcxproj_objects_matched": true,
+      "adaptation_diff": "local/cc10_camera_storage_construct/application_adaptation.diff",
+      "main_diff": "exactly two lines against retained shadow fixture: include and wrapper type",
+      "launcher": "tools/run_game.ps1",
+      "run_log": "local/cc10_camera_storage_construct/run_final.log",
+      "exit_code": 0,
+      "reached_ordinary_drain": true,
+      "renderer_worker_joined": true,
+      "final_COM_device_api": [
+        0,
+        0
+      ]
+    },
+    "build_flags": "/std:c++20 /EHsc /MD /O2 /W4 /WX /fp:strict /link /MANIFEST:EMBED",
+    "embedded_manifest": "asInvoker",
+    "tracked_tests_added": false
+  },
+  "limits": [
+    "No full native startup, B107F0/B13010 activation, gameplay or binary drop-in ABI claim",
+    "State1 failure/current free, unmasked native fault/FH3 and private CRT transport not dynamically tested",
+    "No camera adoption into legacy NativeCameraOwner or SceneAttachmentRuntime",
+    "Fresh null-scene/no-children camera domain in terminal fixture; no attached hierarchy/438 polymorphic terminal graph claim",
+    "Native slots/frames/global bindings must outlive callbacks and explicit failure disposition"
+  ],
+  "source_hashes": {
+    "include/bsp/native_camera_storage_construct.hpp": "ce7ea330c1e8ec7e7b46f87039a812ec02d09b11b87cf842a6e8cbdc3ea9595d",
+    "src/native_camera_storage_construct.cpp": "459930ea0e793640c90e836dc40c396fb388e215f15793e27adf5420b6f7b96a",
+    "include/bsp/native_viewport_owner.hpp": "878ccc93c107e41a9fc70c478eaa4bfc5247a1feffdb79ce08ee35532729ea41",
+    "src/native_viewport_owner.cpp": "72ce4969fef98d67a14e3f6413d5328a81e5443e8426c82308230ca717468612",
+    "docs/NATIVE_CAMERA_STORAGE_CONSTRUCT_CC10.md": "c54a7e539f53b622f1784ffb04c88733d325ee5b9c6d9dcb137ee9d06947c028"
+  },
+  "dependency_hashes": {
+    "src/native_node_construction.cpp": "87a73019511d3575aa0887a4964a2a8703a5248106fdcff2eddfbb424918dd35",
+    "src/camera_plane_initialization.cpp": "29eaa8553756eab5debd5a7a33cdd6684468455e4d474a2a9a7f8b4a5b999982",
+    "src/native_camera_pose_storage.cpp": "a2e1e1be07bd7494463a5390fe54a789066f18a53dbfdfc35a9a72a4ebf02b5b",
+    "src/native_camera_storage_lifetime.cpp": "7b63f6e7f171545706274b3f4d95bd043018ff2824e8b94ad0825a31941c0c02",
+    "src/native_camera_pool.cpp": "15dafb3a90dcb2dd5dccea1147f2cd4e198f0cd760b8baad5e02e02876d772a3",
+    "src/game_native_renderer_application.cpp": "63aaf42154a88ac7730a49cf25b5ae92841d9957954121a9a5849e42117b7a23"
+  },
+  "artifact_hashes": {
+    "local/cc10_camera_storage_construct/prepare.py": "d734232aba4db46612bd81bd419cfc2e64ace9cbb1fcf531999e919df853d187",
+    "local/cc10_camera_storage_construct/evidence.json": "5686be3c995404e4c5764f66446ac020e123f97b197c578aa104d7a40c1e0241",
+    "local/cc10_camera_storage_construct/probe.rsp": "76ca71f6154ecfc471e53c0f814dc82b9fa8f80f154196bb5e88dab8530f9a15",
+    "local/cc10_camera_storage_construct/probe.cmd": "3efb3a4af6284258545c1cf69e3d83c5a005761b87d5b76672d38b114384def8",
+    "local/cc10_camera_storage_construct/probe_build.log": "9d328ead321b78c33367ab21bf0d4dd7cef3e6ae26e92839a09dde5691f77109",
+    "local/cc10_camera_storage_construct/application-camera-construct-probe.cpp": "10d5c1fccd1b195743531197bfb4eac941b89fc65f570158bfaf117ea2bdfe3c",
+    "local/cc10_camera_storage_construct/camera_construct_probe_startup.hpp": "9e0641acbb1bb62e3d1a61ec18f33e3a4b2fc808520b2a3fe41653ed4251d26d",
+    "local/cc10_camera_storage_construct/camera_construct_probe.hpp": "88eea7fc5ee7c669425e2f8a08e283e28e87662fa02c3d012375b092b9546e4d",
+    "local/cc10_camera_storage_construct/constructor_native_bytes.hpp": "54fe2f358789bba43e9fe8e915c4643fe94b42c76d262eab6779fa9f5c69554d",
+    "local/cc10_camera_storage_construct/probe_relocations.json": "9118172277c02e5a8a9a4a3e752b373907f44b33fa888249fa10243459feab82",
+    "local/cc10_camera_storage_construct/application_adaptation.diff": "b43d0c962c6a9e63d728663c1493e450d54255ef6fae75e24f5ced5321d13663",
+    "local/cc10_camera_storage_construct/application-objects.json": "fbfebe423584e4e45576b4861ce31f0590110d97c9203bdb7ed17c214d4abd8b",
+    "local/cc10_camera_storage_construct/application-objects-current.json": "582503965bea47d11233f23a5e7253060986bc2496ddd9cc5236472c85ee7f10",
+    "local/cc10_camera_storage_construct/libraries.json": "3e4aeb957e3624714478026bc5d7baa8767a5994905e28ac0401695cfcade628",
+    "local/cc10_camera_storage_construct/compiled_listing.txt": "8a5fd734e30ab8f94599efa22b22214324820f8d91391a88498ad375e59542b4",
+    "local/cc10_camera_storage_construct/compiled_checks.json": "15b34201f7f952f100d0a276fabfe600c548559aeb98c3e83e78180bfce28b70",
+    "local/cc10_camera_storage_construct/embedded-manifest.xml": "f5b529b0c4b61b61bbb7baddfa4fddb2ce9ef19a9ca1ff5e0c1213ca46735848",
+    "local/cc10_camera_storage_construct/build.log": "e01d7ccd5c7d7f4382a3fda0c1bd50289aa127ca6ecbb3badf46873e3f97c265",
+    "local/cc10_camera_storage_construct/run_final.log": "c24738cf6979a3786919286238f0a52d95245afcc42a7f2fe270892581a496cc",
+    "local/cc10_camera_storage_construct/launcher_final.log": "f86c65d73744cf58792ffc55393f6bb3ab36923c488fd00680ce72f7157d5d4d",
+    "local/cc10_camera_storage_construct/application-camera-construct-probe.exe": "1293ffb280964dbe072de8c6b6ad4f6488597371abf32a87664105cacf8843ab"
+  }
+}
