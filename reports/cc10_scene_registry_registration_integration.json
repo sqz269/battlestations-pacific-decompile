@@ -1,0 +1,58 @@
+{
+  "packet": "cc10_scene_registry_registration_integration",
+  "worker_commit": "607dd7e6e869d445da3d7bd65c2bdd3ea43cc25d",
+  "integration": "fb98fe17a",
+  "archive": {
+    "path": "local/cc10-platform-evidence/scene-registry-registration.zip",
+    "sha256": "842f6d39fdb6996f1bf5a23d313eb55220766a51368ad73453e6a0e9622e1143",
+    "files": 44,
+    "valid": true
+  },
+  "review": [
+    "Complete header/source, all four full native bodies and documentation reviewed",
+    "Actual28h registry is resource3Ch+14h; actual0Ch nodes borrow keys, no owner credits or host metadata",
+    "Count/active split before duplicate; mask/vector growth and all component pair stores retain current/captured order",
+    "Signed hash arithmetic, local30h preimages and current key/output cells retained through genuine returning guards",
+    "Physical B838FE increment0 is unreachable: CMP EBX,EBX then MOV/JZ; skipped3B alignment atB8389D is not missing reachable flow",
+    "Allocate B823B0 before checked B82D30 size increase; Acquired retains unlinked node and earlier writes on source length exception, no rollback",
+    "Success links before guard, rereads inserted node; final current output stores owner/node/one inserted byte, preserves padding",
+    "Clear resets current sentinel links/count before free; each next capture precedes free and current-head comparison; assign9 preserves capacity then mask1/active1",
+    "Range erase retains first owner/next across entry free but current last arguments/output; whole-list uses current saved registry and captured list",
+    "Key erase captures range3/2/1/0 then repurposes key argument as counter; reloads first owner after count and current counter after free callbacks",
+    "Nested equal-range/entry erase/count valid-iterator restriction remains explicit"
+  ],
+  "validation": {
+    "owned_code_bytes": 1629,
+    "external_arithmetic_bytes": 26,
+    "live_equals_installed": true,
+    "static_direct_call_rows": 45,
+    "focused_original_source_composition": true,
+    "copied_original_bodies": 9,
+    "borrowed_identity_count": 36,
+    "boundary_growth": [
+      9,
+      17
+    ],
+    "genuine_allocator_reentry_and_returning_CRT": true,
+    "source_only_allocated_node_length_failure": true,
+    "strict_win32_build": true,
+    "worker_ctests": 3,
+    "integrated_ctests": 3,
+    "build_log_sha256": "269f0f104c20403d6c1652de4b3ac3d2544dea214e6b219b6c688de4cb8f95e1",
+    "new_tracked_tests": 0,
+    "native_ABI_FH3_SEH": false,
+    "application_bound": false,
+    "game_validated": false
+  },
+  "ghidra": {
+    "new_flow_repair": false,
+    "existing_clear_instructions": 37,
+    "existing_clear_call_gaps": 0,
+    "names": "Preserved descriptive names, appended actual-storage evidence, saved project and refreshed exports"
+  },
+  "boundaries": [
+    "No native local EH frames in these four bodies; nested exception identity/FH3 is separate",
+    "Arbitrary nested helper/private stack aliases and invalid nested CRT continuation excluded",
+    "Type-gated registration and node/light attachment/destruction application composition remain separate"
+  ]
+}
