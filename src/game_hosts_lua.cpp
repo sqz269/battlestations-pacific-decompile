@@ -1115,6 +1115,58 @@ bool GameMissionLuaHost::read_ship_camera_settings_0083b5e0(bsp::ShipCameraSetti
     return true;
 }
 
+bool GameMissionLuaHost::read_global_fov_ship_0087d7b0(double& degrees) {
+    if (state_ == nullptr) return false;
+    const int top = ::lua_gettop(state_);
+    lua_getfield(state_, LUA_GLOBALSINDEX, kGlobalsGlobal);
+    const bool loaded = lua_type(state_, -1) == LUA_TTABLE;
+    ::lua_settop(state_, top);
+    if (!loaded) {
+        static_cast<void>(bsp::run_script_file(*this, kGlobalConfigScriptPath));
+    }
+    lua_getfield(state_, LUA_GLOBALSINDEX, kGlobalsGlobal);
+    bool read = false;
+    if (lua_type(state_, -1) == LUA_TTABLE) {
+        ::lua_getfield(state_, -1, "FOVs");
+        if (lua_type(state_, -1) == LUA_TTABLE) {
+            ::lua_getfield(state_, -1, "Ship");
+            if (lua_type(state_, -1) == LUA_TNUMBER) {
+                degrees = ::lua_tonumber(state_, -1);
+                read = true;
+            }
+        }
+    }
+    ::lua_settop(state_, top);
+    return read;
+}
+
+bool GameMissionLuaHost::read_pipe_sight_params_0083b5e0(bool& enabled, float& zoom_rate) {
+    if (state_ == nullptr) return false;
+    const int top = ::lua_gettop(state_);
+    lua_getfield(state_, LUA_GLOBALSINDEX, kShipGlobalsGlobal);
+    bool read = false;
+    if (lua_type(state_, -1) == LUA_TTABLE) {
+        ::lua_getfield(state_, -1, "PipeSightParams");
+        if (lua_type(state_, -1) == LUA_TTABLE) {
+            const int table = ::lua_gettop(state_);
+            ::lua_getfield(state_, table, "pipesight_enabled");
+            const bool has_enabled = lua_type(state_, -1) == LUA_TBOOLEAN;
+            const bool value = has_enabled && ::lua_toboolean(state_, -1) != 0;
+            ::lua_settop(state_, table);
+            ::lua_getfield(state_, table, "zoom_rate");
+            const bool has_rate = lua_type(state_, -1) == LUA_TNUMBER;
+            const float rate = has_rate ? static_cast<float>(::lua_tonumber(state_, -1)) : 0.0f;
+            if (has_enabled && has_rate) {
+                enabled = value;
+                zoom_rate = rate;
+                read = true;
+            }
+        }
+    }
+    ::lua_settop(state_, top);
+    return read;
+}
+
 bool GameMissionLuaHost::read_ship_class_camera_00831e0d(int type_id,
     bsp::ShipClassCameraInputs& out) {
     if (state_ == nullptr || type_id < 0) return false;

@@ -67,6 +67,13 @@ struct GameHudHost::Impl {
     bsp::ShipCameraSettings camera_settings{};
     bsp::ShipClassCameraFields camera_class{};
     float camera_class_length{0.0f};
+    // Screen 45h's pipe-sight FOV block (docs/MISSION_CAMERA.md section 9).
+    bool camera_fov_read{false};
+    double camera_fov_ship_degrees{0.0};
+    bool camera_pipe_sight_read{false};
+    bool camera_pipe_sight_enabled{false};
+    float camera_pipe_sight_zoom_rate{0.0f};
+    bsp::MissionCameraProjection camera_projection{};
     void bind_mission_camera_0064da40();
     void step_mission_camera(float seconds);
     bool camera_target_view(bsp::ShipCaptainTargetView& out);
@@ -723,6 +730,13 @@ void GameHudHost::Impl::bind_mission_camera_0064da40() {
     }
     if (!settings_read) record("MissionCamera::ship_camera_settings", 0x0083b5e0u);
     if (!class_read) record("MissionCamera::class_camera_keys", 0x00831e0du);
+    if (lua != nullptr) {
+        camera_fov_read = lua->read_global_fov_ship_0087d7b0(camera_fov_ship_degrees);
+        camera_pipe_sight_read = lua->read_pipe_sight_params_0083b5e0(
+            camera_pipe_sight_enabled, camera_pipe_sight_zoom_rate);
+    }
+    if (!camera_fov_read) record("MissionCamera::global_config_fovs", 0x0087d7b0u);
+    if (!camera_pipe_sight_read) record("MissionCamera::pipe_sight_params", 0x0083b5e0u);
     camera_class = bsp::ship_class_camera_00831e0d(inputs);
     camera_class_length = inputs.base_length;
     if (!camera_bound) {
@@ -783,7 +797,19 @@ void GameHudHost::Impl::step_mission_camera(float seconds) {
     for (int i = 0; i < 5; ++i) record("MissionCamera::collision_ray", 0x0098b370u);
     if (!published) return;
     done("MissionCamera::publish_pose", 0x004329d0u);
-    bsp::publish_mission_camera(world, bsp::MissionCameraProjection{});
+    // Screen 45h's update (0064DD30) sets the fov every frame while its unit is
+    // bound and pipe sight is enabled: 004DC940(1 - zoom_rate * [00E197F4], 1).
+    // SUBSTITUTION: [00E197F4], the pipe-sight zoom, grows only through the
+    // player's gun-fire adds at 0064DFDE (gunnery, not hooked here) and its
+    // spring and drag never move it off zero without them, so it is 0.0f.
+    if (camera_fov_read && camera_pipe_sight_read && camera_pipe_sight_enabled) {
+        const float stored = bsp::global_config_fov_0087ec0f(camera_fov_ship_degrees,
+            bsp::kFovDivisor00f889b4);
+        const float scale = bsp::pipe_sight_fov_scale_0064e2d6(camera_pipe_sight_zoom_rate, 0.0f);
+        camera_projection.fov = bsp::mission_fov_004dc940(stored, bsp::kFovDivisor00f889b4, scale);
+        done("MissionCamera::pipe_sight_fov", 0x004dc940u);
+    }
+    bsp::publish_mission_camera(world, camera_projection);
 }
 
 namespace {
