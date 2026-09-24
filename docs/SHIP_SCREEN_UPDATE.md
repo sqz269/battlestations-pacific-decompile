@@ -806,8 +806,9 @@ record.
 The screen code for 49h, 50h and 46h is in `src/hud_warning_screen.cpp`.
 
 **What is left of the in-mission screens:**
-- **27h, 0067BB50..0067BC59.** It calls 0077C470 (SendRoleTransfer) with no input gate (section
-  15). It waits for the lead's decision.
+- **27h, 0067BB50..0067BC59.** Already reconstructed as `GameUnitsHost::Impl::role_screen_update_0067bb50`
+  (kPlayerRoleBookkeepingBound, docs/SCRIPTED_HELM.md section 6.1). The pump keeps its record
+  (section 21).
 - **46h part 3, `HudShipView::view_input` (0064A400).**
   - Screen 26h's 0051F330 runs 0051EF00 (the view-action handling, 0051E7E0, 0051EAA0/0051E6E0
     and widget +20h) and 0051F050. 0051F050 integrates the camera mover's yaw (+384h) and pitch
@@ -834,3 +835,41 @@ The screen code for 49h, 50h and 46h is in `src/hud_warning_screen.cpp`.
   `PlatformLoopCallbacks::pretranslate` moves between any two runs; it counts window messages.
 - Ghidra has no function at 00683020, 0067BF00 or 0064D610. Read those from `disasm-raw`, and
   take their ends from the RET and padding.
+
+## 21. Screen 27h's pump call, and 0064B870's role test (cc9-platform2, 2026-09-23)
+
+**27h stays a record in the pump.** Its update 0067BB50 is already reconstructed as
+`GameUnitsHost::Impl::role_screen_update_0067bb50`, under `kPlayerRoleBookkeepingBound`. The units
+host calls it once per fixed step, before the unit loop. That member is private to
+`GameUnitsHost::Impl`, so the HUD pump cannot reach it. Calling it from the pump as well would run
+the role take a second time per step, and the pump runs twice per mission frame.
+
+What the plumbing needs is the owner's change in `src/game_hosts_units.cpp`:
+- a public `GameUnitsHost` entry point for the 27h update;
+- the fixed-step call removed, or gated off when the pump drives it.
+
+Then the pump's slot 27h can call it once per pump, as the image does. Until then
+`FrontEndScreen::update` keeps counting slot 27h, and the role take keeps its fixed-step cadence.
+
+**0064B870's role test.** `GameUnitsHost::unit_current_role_slot` reads `current_roles_01ac`. That
+is the table the 27h take and the BSP_PLAYER_HELM transfer write. So `00927F30(unit, role)`
+becomes "the holder is slot 0", the local player's game+18ECh in this single-player host. The
+switch is `kHudShipViewRoleTableBound`.
+- **With the helm option on,** role 1 is held. 0064B870's role-1 branch then runs the lever
+  integration from zero inputs and reaches `issue_order`, which is a record. The option's own
+  00816A40 issue stays the only one, and so does its transfer: the HUD's transfer needs an axis.
+- **The raw bodies**, start and exclusive end, each with INT3 before the start:
+  - 00683020..006832E9: the RET 4 is at 006832E6; alignment and the jump table at 006832EC
+    follow.
+  - 0067BF00..0067BFCA: the RET 4 is at 0067BFC7, and INT3 follows at 0067BFCA. So 0067BFCA
+    is exclusive.
+  - 0064D610..0064D731: the RET 4 is at 0064D72E, and INT3 follows.
+
+**Predictions, written before the pair.** One tree on main da8398163 plus this branch, every earlier
+switch on, `kHudShipViewRoleTableBound` off then on, USN04 4500, no BSP_PLAYER_HELM.
+- **Row that leaves:** `HudShipView::local_player_role`, 18,316.
+- **Rows added:** none.
+- **Why nothing else moves.** The 27h take gives the player role 0, and nothing gives role 1. The
+  role-1 test at 0064B9C5 and 0064BB1E therefore still answers false, and no branch changes.
+- **Total.** The unimplemented total falls by 18,316.
+- **Summary lines.** All identical.

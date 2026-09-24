@@ -1433,9 +1433,21 @@ public:
         return true;
     }
     bool local_player_role(int role) override {
-        // SUBSTITUTION: this host models no role table. The player holds role
-        // 0 and not role 1 until an input-started transfer
-        // (docs/CONTROLLED_UNIT_HELM.md section 6).
+        if (kHudShipViewRoleTableBound) {
+            // 00927F30(unit, role): the role's holder at unit+1ACh is the
+            // local player's slot, game+18ECh, 0 in this single-player host.
+            // The units host owns that table (the 27h take 0067BB50 and the
+            // BSP_PLAYER_HELM transfer write it). With role 1 held the branch
+            // below reaches issue_order, which is a record: the helm option's
+            // own 00816A40 issue stays the only one.
+            std::int32_t holder = -1;
+            return owner_.units != nullptr && owner_.units->controlled_bound()
+                && owner_.units->unit_current_role_slot(owner_.units->controlled_index(),
+                                                        role, holder)
+                && holder == 0;
+        }
+        // SUBSTITUTION: role 0 held, role 1 not, until an input-started
+        // transfer (docs/CONTROLLED_UNIT_HELM.md section 6).
         owner_.record("HudShipView::local_player_role", 0x00927f30u);
         return role == 0;
     }
