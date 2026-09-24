@@ -281,6 +281,9 @@ struct GameUnitSlot {
         bsp::publish_scene_observer_tables_00925d44(observer_prefix);
         //00928713..00928748: current assignments, not the +188h policy table.
         for (std::int32_t& role : current_roles_01ac) role = bsp::kUnitRoleTableFill;
+        // 00928630 calls instance->vtable[148h](1FFh, 9) after +180h = 9: every
+        // role opens to PLAYER_ANY (docs/UNIT_INSTANCE_LAYOUT.md).
+        for (std::int32_t& p : role_permission_0188) p = 9;
     }
 
     GameUnitRow row;
@@ -297,6 +300,11 @@ struct GameUnitSlot {
     // This unit owns the canonical current roles for every process consumer.
     // Actual 4Bh receive-side assignment and its side effects remain pending.
     std::int32_t current_roles_01ac[bsp::kUnitRoleTableEntries];
+    // Packet cc9_player_role_bookkeeping (docs/SCRIPTED_HELM.md): the
+    // permission words unit+188h + role*4 (00927D20) and unit+184h, which only
+    // an accepted role-1 take sets (00780214).
+    std::int32_t role_permission_0188[bsp::kUnitRoleTableEntries];
+    bool role_player_0184{false};
 
     // Only constructor-established cells used by 00953CC0 / 0095DC40.
     // The role and gate members of the pure routine's view are not owners.
@@ -409,6 +417,14 @@ struct GameUnitSlot {
     // dt instead (SUBSTITUTION, labelled; zero on the first tick of a target).
     std::size_t gl_target_plus_one{0};
     float gl_prev_target_v[3]{0.0f, 0.0f, 0.0f};
+    // Packet cc9_plane_substitution_sweep: 007CEE05-007CEE5B per fixed step,
+    // unit+648h = (position - previous position) / dt, unit+654h = (+648h -
+    // +6BCh) / dt with +6BCh the previous step's +648h. Zero until two steps
+    // have run.
+    float fd_prev_pos[3]{0.0f, 0.0f, 0.0f};
+    float fd_vel_648[3]{0.0f, 0.0f, 0.0f};
+    float fd_accel_654[3]{0.0f, 0.0f, 0.0f};
+    int fd_steps{0};
     // 009FA248: plan+2D4h = 0 from the fine aim 009F9FC0. 0099E756 then skips
     // the planner's yaw arm 0099E81A. Reset by the planner, as 0099B450 seeds 1.
     bool gl_yaw_mode_2d4_zero{false};
@@ -1100,6 +1116,10 @@ struct GameUnitSlot {
     // pilot+25Ch, reset to 1.0 by 009A17EF, lowered by the vehicle and
     // terrain arms, read by 0099BF30's throttle arm.
     float av_throttle_25c{1.0f};
+    // unit+BC4h, the yaw-target gain: 1.0 from 007D6167, max-latched by
+    // 0099BB00 from the terrain arm, relaxed toward 1.0 by the rate law.
+    float plane_yaw_gain_bc4{1.0f};
+    int yaw_gain_raises{0};
     // The unit+C50h object's +30h list (007E11D0: kinds 6 and 0Fh within R)
     // with its own copy of the +7Ch clock; the finder keeps +50h separately.
     std::vector<std::size_t> nb_near_30;
@@ -2735,6 +2755,10 @@ struct GameUnitsHost::Impl {
         return controlled_bound && controlled_index < slots.size()
             && slots[controlled_index].get() == &slot;
     }
+    // unit+184h as the director step (00836978/00836AAD/00836E45) and cruise
+    // (009E11C8) read it: the unit's own byte under kPlayerRoleBookkeepingBound
+    // (declared further down), else the controlled-unit stand-in.
+    bool player_flag_0184(const GameUnitSlot& slot) const;
 
     // The +CCh pose block and the motion state are two views of the same rows;
     // the motion path writes them, the pose refresh reads them.
@@ -2851,6 +2875,41 @@ struct GameUnitsHost::Impl {
     // pilot+25Ch throttle arm. Before: neither arm ran.
     static constexpr bool kPilotVehicleAvoidanceBound = true;
     static constexpr bool kPilotTerrainAvoidanceBound = true;
+    // Packet cc9_player_role_bookkeeping (docs/SCRIPTED_HELM.md section 2):
+    // the permission words from SetRoleAvailable (0077F360 -> 00927D20), the
+    // 4Bh role arm of 00780120 with 0059BBD0, HUD page 27h's role-0 take on
+    // the controlled unit (0067BB50), and unit+184h set only by an accepted
+    // role-1 take. Before: unit+184h was "the unit 004c0890 bound".
+    static constexpr bool kPlayerRoleBookkeepingBound = true;
+    // Packet cc9_plane_substitution_sweep (docs/PLANE_SUBSTITUTION_SWEEP.md):
+    // the torpedo done/prepare tick's 009D1500 answer (was 0), unit+BC4h's yaw
+    // gain from the terrain arm (was held at 1.0), and the fighter lead's
+    // target acceleration from the fixed-step difference (was the gun tick's).
+    static constexpr bool kTorpedoArmTimeToTargetBound = true;
+    static constexpr bool kPlaneYawGainBc4Bound = true;
+    static constexpr bool kFighterLeadAccel654Bound = false;
+    // game+18ECh, the local player's slot: 0 in this single-player host.
+    static constexpr std::int32_t kLocalPlayerSlot = 0;
+    std::size_t role_screen_unit_plus_one{0};   // page 27h's tracked unit, +30h
+    int role_takes{0}, role_releases{0}, role_refusals{0}, role_permission_writes{0};
+    void role_message_4b_00780162(std::size_t index, std::uint32_t mask,
+                                  std::int32_t player_slot, int take);
+    void role_screen_update_0067bb50();
+    // Packet cc9_scripted_helm_option (docs/SCRIPTED_HELM.md section 7): the
+    // harness option BSP_PLAYER_HELM=<throttle>[,<rudder>], default off. A
+    // MEASUREMENT SCENARIO, never a reference: it opens EROLF_PILOT on the
+    // controlled unit to PLAYER_ANY through 0077F360 as a script call would,
+    // performs 0064B870's role-1 transfer, and issues the helm every step.
+    bool helm_option_read{false};
+    bool helm_option_on{false};
+    float helm_throttle{0.0f}, helm_rudder{0.0f};
+    bool helm_opened{false};
+    float helm_lever_24{0.0f}, helm_lever_28{0.0f};   // HUD +24h thrust, +28h turn
+    int helm_transfers{0}, helm_issues{0};
+    void player_helm_prepare_0064b870();
+    void set_role_availability_00927d20_impl(std::size_t index, std::uint32_t mask,
+                                             std::int32_t value);
+    void player_helm_issue_0064b870(GameUnitSlot& slot);
     static constexpr bool kPilotAvoidanceUpdateBound = kPilotGunfireAvoidanceBound ||
         kPilotVehicleAvoidanceBound || kPilotTerrainAvoidanceBound;
     // DIAGNOSTIC, packet cc9_wing_achieved_speed: every kWingTraceEvery motion
@@ -3429,8 +3488,11 @@ struct GameUnitsHost::Impl {
         // 009D4865, copied at 009C8855 / 009D48FF, 0FFh at 00999944 before
         // the task arm); no literal store clears a bit of +4C4h or +49Ch, so
         // the mask stays 0FFh through the dive and torpedo tasks. The
-        // squadron's +3A4h has no host producer: taken as set. SUBSTITUTION,
-        // labelled.
+        // squadron's +3A4h is 0FFh from its constructor: 007F2CA2 passes
+        // ECX = squadron+37Ch to 007F2BD0, whose 007F2C13 stores [ECX+28h] =
+        // 0FFh. Only the SquadronEnable*Avoidance bindings (0089FE50 and
+        // siblings) change it, and no USN04 script calls them. Confirmed, not
+        // a substitution (docs/PLANE_SUBSTITUTION_SWEEP.md).
         if constexpr (kPilotGunfireAvoidanceBound) {
             if (!free_flight) {
                 u.ga_timer_3e8 = -1.0f;                            // 009A193F [00D7A260]
@@ -4932,8 +4994,10 @@ void GameUnitsHost::Impl::vehicle_avoidance_007df4f0(GameUnitSlot& u, float dt) 
     // 007DF5E0-007DF959: the own frame M. When speed > 10 ([00CE38B8]) and
     // |unit+B04h| / speed > 0.1 (double [00D7A3A0]) the image builds it from
     // normalize(velocity + unit+B04h); otherwise it is the inverse pose
-    // unit+110h. unit+B04h has no host producer; with it zero the inverse pose
-    // is always the frame. SUBSTITUTION, labelled.
+    // unit+110h. unit+B04h has no literal writer in the image (a store census
+    // over every FSTP/MOVSS/MOV/MOVUPS form finds only this reader, 007DF62D),
+    // so it stays at its zeroed allocation and the inverse pose is the frame.
+    // Confirmed, with the usual block-copy caveat.
     const AvoidBox ob = avoid_box(u);
     const float hx = static_cast<float>(
         1.2000000476837158 * ((-ob.mn[0] < ob.mx[0]) ? ob.mx[0] : -ob.mn[0]));   // double [00CEC160]
@@ -5143,8 +5207,18 @@ static void terrain_shape_band_0099cab0(GameUnitsHost::Impl& host, GameUnitSlot&
             range_test = true;
         } else {
             if (static_cast<double>(m) > 0.4) {                      // 0099CD07 double [00CE65D0]
-                // 0099BB00: unit+BC4h = max(unit+BC4h, 2 (m - 0.4) sin|bank| + 1).
-                // No host consumer of the plane's +BC4h: not modelled, labelled.
+                // 0099BB00: unit+BC4h = max(unit+BC4h, 2 (m - 0.4) sin|bank| + 1),
+                // with the unfolded |bank| from unit+C68h.
+                if constexpr (GameUnitsHost::Impl::kPlaneYawGainBc4Bound) {
+                    const float ab = std::fabs(u.plane_bank_angle_c68);
+                    const float v = static_cast<float>(
+                        2.0 * static_cast<double>(static_cast<float>(
+                            (static_cast<double>(m) - 0.4) * std::sin(ab))) + 1.0);
+                    if (!(u.plane_yaw_gain_bc4 > v)) {
+                        u.plane_yaw_gain_bc4 = v;
+                        ++u.yaw_gain_raises;
+                    }
+                }
             }
             r = static_cast<float>(r * 0.7);                         // double [00CEFFA0]
         }
@@ -5213,8 +5287,9 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
     const float stall = u.plane_stall_spd > 0.0f ? u.plane_stall_spd : 17.5f;
     const float v_stall = stall_range * stall;                       // 007C4830
     const float v_look = speed > v_stall ? speed : v_stall;
-    // unit+C7Ch: the elevation of the vector at unit+AC8h (007C1CA8); the
-    // world velocity's elevation, the flight-path angle, stands in. Labelled.
+    // unit+C7Ch: the elevation of the vector at unit+AC8h (007C1CA8), and
+    // unit+AC8h is the world velocity vtable[34h] 007BBB70 returns
+    // (docs/FIGHTER_GUN_LEAD.md). So the velocity's elevation is the term.
     const double horiz = std::sqrt(static_cast<double>(v_world[0]) * v_world[0] +
                                    static_cast<double>(v_world[2]) * v_world[2]);
     const float pitch = speed > 1.0f
@@ -5418,6 +5493,191 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
             }
         }
     }
+}
+
+// ---------------------------------------------------------------------------
+// Packet cc9_player_role_bookkeeping (docs/SCRIPTED_HELM.md section 2)
+// ---------------------------------------------------------------------------
+
+// 00780120's 4Bh arm (00780162-007803D9) with msg+20h == 0 and msg+30h == 0,
+// the shape 0077C470 and 00927D20 send: mask at +24h, slot at +28h, take at +2Ch.
+void GameUnitsHost::Impl::role_message_4b_00780162(std::size_t index, std::uint32_t mask,
+                                                   std::int32_t player_slot, int take) {
+    if (index >= slots.size()) return;
+    GameUnitSlot& u = *slots[index];
+    // 00927F10 on a slot other than 8: in this single-player host every slot
+    // but the local player's is AI-held. SUBSTITUTION, labelled.
+    auto ai_held = [](std::int32_t s) { return s != kLocalPlayerSlot; };
+    // 0059BBD0(unit, role, slot): unit+188h + role*4 == 9 || == slot.
+    auto open_to = [&](int role, std::int32_t s) {
+        return u.role_permission_0188[role] == 9 || u.role_permission_0188[role] == s;
+    };
+    // 009281C0 through vtable[154h] = 0077F480: role 0 given 8 clears +184h.
+    auto set_role = [&](int role, std::int32_t s) {
+        if (role == 0 && s == 8) u.role_player_0184 = false;   // 009281D6
+        u.current_roles_01ac[role] = s;                         // 009281E2
+    };
+    if (take == 1) {
+        if ((mask & 2u) != 0 && open_to(1, player_slot)) {     // 007801FE-00780214
+            u.role_player_0184 = true;
+        }
+    } else if ((mask & 1u) != 0 && u.current_roles_01ac[0] == player_slot) {
+        u.role_player_0184 = false;                             // 00780235
+        // 0080E290 for a kind-6 unit follows (0078023B): not read, recorded.
+        record("RoleMessage::kind6_release_0080e290", 0x0080e290u);
+    }
+    std::uint32_t bit = 1;
+    for (int i = 0; i < bsp::kUnitRoleTableEntries; ++i, bit <<= 1) {
+        if ((mask & bit) == 0) continue;
+        const std::int32_t holder = u.current_roles_01ac[i];
+        if (take == 1) {
+            // Role 0 also rebinds the player record's unit (+4Ch) and routes a
+            // 1FFh release for a different live unit (007802A0-0078030A): the
+            // host keeps its controlled unit through 004C0890 instead. Labelled.
+            if ((holder == 8 || ai_held(holder)) && open_to(i, player_slot)) {
+                set_role(i, player_slot);                       // 0078037C vtable[154h]
+                ++role_takes;
+            } else {
+                ++role_refusals;
+            }
+        } else if (holder == player_slot) {
+            set_role(i, 8);
+            ++role_releases;
+        }
+    }
+    done("Session::entity_role_message_4b", 0x00780162u);
+}
+
+// 0067BB50, slot 20h of HUD page 27h (vtable 00CF7A38, constructor
+// 0068A8A0), which the player's unit interfaces open (INTF_CAPTAIN and the
+// rest, docs/IN_MISSION_INTERFACE_MANAGER.md). Its page byte +4h is taken as
+// set while a unit is controlled, and it runs once per fixed step here
+// instead of per frame. Both labelled.
+bool GameUnitsHost::Impl::player_flag_0184(const GameUnitSlot& slot) const {
+    if constexpr (kPlayerRoleBookkeepingBound) {
+        return slot.role_player_0184;
+    } else {
+        return is_controlled(slot);
+    }
+}
+
+void GameUnitsHost::Impl::role_screen_update_0067bb50() {
+    const std::size_t controlled_plus_one =
+        (controlled_bound && controlled_index < slots.size()) ? controlled_index + 1 : 0;
+    auto holds = [&](std::size_t plus_one, int role) {   // 00927F30(unit, role)
+        return plus_one != 0 &&
+               slots[plus_one - 1]->current_roles_01ac[role] == kLocalPlayerSlot;
+    };
+    auto send = [&](std::size_t plus_one, std::uint32_t mask, int take) {   // 0077C470
+        // 0077C470's gate: game+5D4h > 0Ch (in mission) and session mode 0.
+        role_message_4b_00780162(plus_one - 1, mask, kLocalPlayerSlot, take);
+    };
+    if (controlled_plus_one == 0 ||
+        !bsp::unit_is_kind_of(slots[controlled_plus_one - 1]->class_id, 2)) {
+        if (role_screen_unit_plus_one != 0) {                    // 0067BB8F
+            send(role_screen_unit_plus_one, 1u, 0);
+            role_screen_unit_plus_one = 0;
+        }
+        return;
+    }
+    if (role_screen_unit_plus_one != controlled_plus_one && role_screen_unit_plus_one != 0 &&
+        holds(role_screen_unit_plus_one, 0)) {
+        send(role_screen_unit_plus_one, 1u, 0);                  // 0067BC21
+    }
+    role_screen_unit_plus_one = controlled_plus_one;
+    // 0067BBE0: game+18ECh in [0, 7]; page byte +4h set (labelled).
+    if (holds(controlled_plus_one, 0)) return;
+    GameUnitSlot& c = *slots[controlled_plus_one - 1];
+    if (!(c.role_permission_0188[0] == 9 || c.role_permission_0188[0] == kLocalPlayerSlot)) {
+        return;                                                  // 0059BBD0(0, slot)
+    }
+    send(controlled_plus_one, 1u, 1);                            // 0067BC0B
+}
+
+// ---------------------------------------------------------------------------
+// Packet cc9_scripted_helm_option (docs/SCRIPTED_HELM.md section 7)
+// ---------------------------------------------------------------------------
+
+// Once per fixed step, before the unit loop: read the option, open the pilot
+// role once, then 0064B870's transfer block (0064B97A-0064B9BD).
+void GameUnitsHost::Impl::player_helm_prepare_0064b870() {
+    if (!helm_option_read) {
+        helm_option_read = true;
+        char* text = nullptr;
+        std::size_t bytes = 0;
+        if (_dupenv_s(&text, &bytes, "BSP_PLAYER_HELM") == 0 && text != nullptr) {
+            float t = 0.0f, r = 0.0f;
+            const int n = sscanf_s(text, "%f,%f", &t, &r);
+            if (n >= 1) {
+                helm_option_on = true;
+                helm_throttle = t;
+                helm_rudder = n >= 2 ? r : 0.0f;
+                log.notef("scripted helm: BSP_PLAYER_HELM=%s -> throttle %.3f rudder %.3f. "
+                    "A MEASUREMENT SCENARIO: EROLF_PILOT is opened to PLAYER_ANY on the "
+                    "controlled unit through 0077F360, then 0064B870's role-1 transfer and "
+                    "per-frame helm issue run with these lever values", text,
+                    static_cast<double>(helm_throttle), static_cast<double>(helm_rudder));
+            }
+            std::free(text);
+        }
+    }
+    if (!helm_option_on) return;
+    if (!controlled_bound || controlled_index >= slots.size()) return;
+    GameUnitSlot& unit = *slots[controlled_index];
+    if (!helm_opened) {
+        // SetRoleAvailable(unit, EROLF_PILOT, PLAYER_ANY): 008ABA51 in session
+        // mode 0 calls vtable[148h] = 0077F360 -> 00927D20 with (2, 9). It runs
+        // at the first mission step, after the script's own init calls
+        // (usn_19_coralus.lua 458-459). Its kind-5 tail is not modelled.
+        set_role_availability_00927d20_impl(controlled_index, 2u, 9);
+        helm_opened = true;
+    }
+    auto holds = [&](int role) { return unit.current_roles_01ac[role] == kLocalPlayerSlot; };
+    // 0064B940-0064B97A: the thrust axis |a| > 0.1 (double [00D7A3A0]) or the
+    // held-control flag. The option's throttle stands in for the axis.
+    const bool axis = static_cast<double>(std::fabs(helm_throttle)) > 0.10000000149011612;
+    // unit+1130h has no host field; taken as 0 (0064B97D). Labelled.
+    if (axis && holds(0) && !holds(1)) {
+        role_message_4b_00780162(controlled_index, 2u, kLocalPlayerSlot, 1);   // 0064B9A6
+        helm_lever_28 = unit.ring.current_param_b;                            // 0064B9AE, +984h
+        helm_lever_24 = unit.ring.current_param_a;                            // 0064B9B7, +980h
+        ++helm_transfers;
+        log.notef("scripted helm transfer: 0077C470(\"%s\", 2, 1) -> role1=%d +184h=%d; "
+            "levers seeded from +980h %.4f / +984h %.4f", unit.row.name.c_str(),
+            unit.current_roles_01ac[1], unit.role_player_0184 ? 1 : 0,
+            static_cast<double>(helm_lever_24), static_cast<double>(helm_lever_28));
+    }
+}
+
+// 0064B9C0-0064BB16 for the controlled unit while the player holds role 1:
+// the levers, quantized by 0064BAB5/0064BAEE, issued through 00816A40, whose
+// single-player publication is 0080DAD0 (no 8Eh in session mode 0). Called
+// where the standing order is refilled, once per fixed step.
+void GameUnitsHost::Impl::player_helm_issue_0064b870(GameUnitSlot& slot) {
+    if (!controlled_bound || controlled_index >= slots.size() ||
+        slots[controlled_index].get() != &slot) {
+        return;
+    }
+    if (slot.current_roles_01ac[1] != kLocalPlayerSlot) return;   // 00927F30(unit, 1)
+    // The input integration (0064B9C6-0064BA90) moves the levers toward the
+    // held axes; the scripted helm sets them to the option's values instead,
+    // clamped to [-1, 1]; the bounds of 0064BA3C/0064BA67's clamp were not
+    // read. SUBSTITUTION, labelled.
+    helm_lever_24 = helm_throttle < -1.0f ? -1.0f : (helm_throttle > 1.0f ? 1.0f : helm_throttle);
+    helm_lever_28 = helm_rudder < -1.0f ? -1.0f : (helm_rudder > 1.0f ? 1.0f : helm_rudder);
+    // 0064BA97-0064BB12: floor(B / step + bias) * step, floor(4A + bias) / 4.
+    const double step = 0.16666667163372039794921875;              // [00CF5E60]
+    const double bias = 0.4900000095367431640625;                  // [00CF5E58]
+    const float bin = static_cast<float>(helm_lever_28 / step + bias);
+    const float turn = static_cast<float>(
+        static_cast<float>(std::floor(static_cast<double>(bin))) * step);
+    const float ain = static_cast<float>(helm_lever_24 * 4.0 + bias);   // [00D7A328]
+    const float thrust = static_cast<float>(
+        static_cast<float>(std::floor(static_cast<double>(ain))) * 0.25);   // [00D7A348]
+    issue_into_ring(slot, thrust, turn);                            // 00816A40, kind 0
+    ++helm_issues;
+    // 0064BB19: a held role 1 is released when game+19C4h is set; that byte
+    // has no host producer and is taken clear. Labelled.
 }
 
 // ---------------------------------------------------------------------------
@@ -6418,7 +6678,7 @@ void GameUnitsHost::run_director_steps_00836920() {
         if (!slot.state->active) continue;
         const float heading = host.pose_heading_radians(slot);
         const GameDirectorStepOutcome outcome = host.commands.director_step_00836920(
-            index, host.is_controlled(slot), host.summary.simulated_seconds, slot.ring,
+            index, host.player_flag_0184(slot), host.summary.simulated_seconds, slot.ring,
             heading);
         // Packet cc8_ship_moveonpath, edited under the integrator's hunk
         // arbitration of 2026-09-19. 00836BF0-00836D66 is the `moveonpath` arm
@@ -6522,6 +6782,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
     }
     ++host.summary.motion_steps;
     host.summary.simulated_seconds += step_seconds;
+    if constexpr (Impl::kPlayerRoleBookkeepingBound) {
+        host.role_screen_update_0067bb50();
+        host.player_helm_prepare_0064b870();
+    }
     if constexpr (bsp::kPlaneSquadronLeaveOnDeathBound) {
         host.squadron_leave_on_death_007bcaa0();
     }
@@ -8360,8 +8624,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         float time_to_target_009d1500(void*) override {
                             // 009D2A44-009D2A52 recomputes the same metric
                             // inline: planar distance over the reference speed.
-                            record("BotApproachTorpedo::time_to_target", "009d1500");
-                            return 0.0f;
+                            // Packet cc9_plane_substitution_sweep: the aim
+                            // tick's reconstruction of 009D1500 over the same
+                            // approach state, where 0 stood in before.
+                            if constexpr (GameUnitsHost::Impl::kTorpedoArmTimeToTargetBound) {
+                                return bsp::torpedo_time_to_target_009d1500(
+                                    slot_.torpedo_approach);
+                            } else {
+                                record("BotApproachTorpedo::time_to_target", "009d1500");
+                                return 0.0f;
+                            }
                         }
                         float bearing_error_to_target(void*, void*) override {
                             return (slot_.attack_hdg_err_last < 0.0f)
@@ -8915,7 +9187,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                       tgt.motion.position[2]};
                         const std::size_t ti = tgt.process_index;
                         float acc[3] = {0.0f, 0.0f, 0.0f};
-                        if (unit_.gl_target_plus_one == ti + 1 && dt > 0.0f) {
+                        if constexpr (GameUnitsHost::Impl::kFighterLeadAccel654Bound) {
+                            // 00954650's arc arm reads the target's unit+654h.
+                            for (int i = 0; i < 3; ++i) acc[i] = tgt.fd_accel_654[i];
+                        } else if (unit_.gl_target_plus_one == ti + 1 && dt > 0.0f) {
                             for (int i = 0; i < 3; ++i)
                                 acc[i] = (tgt.plane_world_velocity[i] - unit_.gl_prev_target_v[i]) / dt;
                         }
@@ -11692,10 +11967,27 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                           unit_.plane_max_spd,
                                           kTorpedoReferenceSpeedAuthored)
                                     : 1.0f;
+                            // Packet cc9_surface_gunnery_reference: the row
+                            // [[unit+DF4h]+34h] selects, by the slot's skill
+                            // index (0 Stun .. 5 Elite, luamw_init.lua), as the
+                            // dive task already does. docs/IJN_SKILL_ROWS.md s4.
+                            // {TorpReleaseAlt, DistNear, DistFar, DropCloserMul}
+                            static constexpr float kTorpRows[6][4] = {
+                                {12.0f, 350.0f, 600.0f, 0.7f},    // Stun
+                                {kTorpReleaseAltSPNormal, kTorpReleaseDistNearSPNormal,
+                                 kTorpReleaseDistFarSPNormal,
+                                 kTorpReleaseDropCloserMulSPNormal},  // SPNormal
+                                {5.0f, 800.0f, 1200.0f, 0.5f},    // SPVeteran
+                                {10.0f, 800.0f, 1200.0f, 0.7f},   // MPNormal
+                                {10.0f, 800.0f, 1200.0f, 0.6f},   // MPVeteran
+                                {5.0f, 800.0f, 1200.0f, 0.5f},    // Elite
+                            };
+                            const int torp_row = (kSkillLevelBound && unit_.pilot_skill_index >= 0
+                                && unit_.pilot_skill_index <= 5) ? unit_.pilot_skill_index : 1;
                             const bsp::TorpedoRunSpeeds seeded =
                                 bsp::torpedo_seed_run_speeds_009d0484(
-                                    kTorpReleaseDistNearSPNormal,
-                                    kTorpReleaseDistFarSPNormal, ratio_24h);
+                                    kTorpRows[torp_row][1],
+                                    kTorpRows[torp_row][2], ratio_24h);
                             ap.speed_early_80 = seeded.speed_early_80;
                             ap.speed_late_7c = seeded.speed_late_7c;
                             // 009D046A scales approach+78h by the row's
@@ -11705,7 +11997,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // 00D7A220, so the floor the aim tick reads is
                             // alt_floor_74 + alt_margin_78 and this is the
                             // margin half of it.
-                            ap.alt_margin_78 = kTorpReleaseAltSPNormal;
+                            ap.alt_margin_78 = kTorpRows[torp_row][0];
                             // 009D049D/009D04A0 seed approach+84h from the SAME
                             // robots row, one field further on (row+18h), as a
                             // bare FLD/FSTP with NO ratio.
@@ -11730,7 +12022,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // binding, which made both endpoints of the
                             // interpolation at 009D1FED equal and the release
                             // gate inert. docs/TORPEDO_RELEASE_GATE.md.
-                            ap.aspect_scale_84 = kTorpReleaseDropCloserMulSPNormal;
+                            ap.aspect_scale_84 = kTorpRows[torp_row][3];
                             // ctl+3D0h[0], the flight leader: the only task
                             // whose 0099B740 raises the shared attack mode.
                             bool lead_taken = false;
@@ -13594,10 +13886,30 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             factors.b = g.dynamics_rotation_factors_b;
                             factors.c = g.dynamics_rotation_factors_c;
                         }
+                        bsp::PlaneControlTargets gained = targets;
+                        if constexpr (GameUnitsHost::Impl::kPlaneYawGainBc4Bound) {
+                            // 007DA926-007DA95F: the yaw target is YawSpd x the
+                            // latched yaw x unit+BC4h x the mode factor, with
+                            // BC4h read before this step's relax. 007DA967-
+                            // 007DA9E3: when BC4h != 1.0 and dt > 0 it moves
+                            // toward 1.0 by 0.5 x dt (double [00D7A280]),
+                            // clamped at 1.0 from either side.
+                            float& g = unit_.plane_yaw_gain_bc4;
+                            gained.target[1] = targets.target[1] * g;
+                            if (g != 1.0f && step > 0.0f) {
+                                if (g > 1.0f) {
+                                    const float r = static_cast<float>(g - step * 0.5);
+                                    g = 1.0f > r ? 1.0f : r;
+                                } else {
+                                    const float r = static_cast<float>(step * 0.5 + g);
+                                    g = r > 1.0f ? 1.0f : r;
+                                }
+                            }
+                        }
                         for (int axis = 0; axis < 3; ++axis) {
                             bsp::PlaneControlAxisState in;
                             in.current = unit_.plane_body_angular[axis];
-                            in.target = targets.target[axis];
+                            in.target = gained.target[axis];
                             in.accel = targets.accel[axis];
                             unit_.plane_body_angular[axis] =
                                 bsp::plane_control_axis_step_007da710(factors, in, true, step);
@@ -13683,6 +13995,23 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                 } plane_calls(host, slot);
                 const bsp::PlaneMotionArm arm =
                     bsp::run_plane_fixed_step_007ce040(plane_calls, step_seconds);
+                if constexpr (Impl::kFighterLeadAccel654Bound) {
+                    if (step_seconds > 0.0f) {
+                        const double idt = 1.0 / static_cast<double>(step_seconds);
+                        for (int i = 0; i < 3; ++i) {
+                            const float v = static_cast<float>(
+                                (static_cast<double>(slot.motion.position[i]) -
+                                 slot.fd_prev_pos[i]) * idt);                  // +648h
+                            slot.fd_accel_654[i] = slot.fd_steps >= 2
+                                ? static_cast<float>((static_cast<double>(v) -
+                                                      slot.fd_vel_648[i]) * idt)
+                                : 0.0f;                                        // +654h
+                            slot.fd_vel_648[i] = v;                            // -> +6BCh
+                            slot.fd_prev_pos[i] = slot.motion.position[i];
+                        }
+                        ++slot.fd_steps;
+                    }
+                }
                 if (arm == bsp::PlaneMotionArm::None) ++host.summary.plane_arm_none;
                 ++host.summary.plane_steps;
                 host.done("UnitMotion::plane_fixed_step_007ce040", 0x007ce040u);
@@ -13705,6 +14034,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
         // otherwise only mark later slots predicted.
         if (slot.standing_order) {
             host.issue_into_ring(slot, slot.standing_throttle, slot.standing_rudder);
+        }
+        if constexpr (Impl::kPlayerRoleBookkeepingBound) {
+            if (host.helm_option_on) host.player_helm_issue_0064b870(slot);
         }
         // Milestone 2n: 009e1170's AI arm is no longer run from here. It is the
         // `cruise` state's vtable +0Ch, and 009f5186 calls it on a re-plan tick
@@ -13902,7 +14234,41 @@ GameCommandCompletion GameUnitsHost::end_command_0071e430(std::size_t index,
 
 bool GameUnitsHost::unit_player_controlled_0184(std::size_t index) const {
     const Impl& host = *impl_;
-    return host.controlled_bound && host.controlled_index == index;
+    if constexpr (Impl::kPlayerRoleBookkeepingBound) {
+        return index < host.slots.size() && host.slots[index]->role_player_0184;
+    } else {
+        return host.controlled_bound && host.controlled_index == index;
+    }
+}
+
+void GameUnitsHost::set_role_availability_00927d20(std::size_t index, std::uint32_t mask,
+                                                   std::int32_t value) {
+    impl_->set_role_availability_00927d20_impl(index, mask, value);
+}
+
+void GameUnitsHost::Impl::set_role_availability_00927d20_impl(std::size_t index,
+                                                              std::uint32_t mask,
+                                                              std::int32_t value) {
+    Impl& host = *this;
+    if (!Impl::kPlayerRoleBookkeepingBound || index >= host.slots.size()) return;
+    GameUnitSlot& slot = *host.slots[index];
+    // 00927D20: for each of the nine role bits, unit+188h + i*4 = value. A
+    // kind-2 unit whose role is held (not 8) and is now closed to everyone but
+    // the AI (value 8) routes a 4Bh release (take 0) naming the holder. The
+    // route is delivered locally at once in single player (labelled).
+    std::uint32_t bit = 1;
+    for (int i = 0; i < bsp::kUnitRoleTableEntries; ++i, bit <<= 1) {
+        if ((mask & bit) == 0) continue;
+        slot.role_permission_0188[i] = value;
+        ++host.role_permission_writes;
+        const std::int32_t holder = slot.current_roles_01ac[i];
+        if (bsp::unit_is_kind_of(slot.class_id, 2) && holder != 8 && value == 8) {
+            host.role_message_4b_00780162(index, bit, holder, 0);
+        }
+    }
+    // 00927DE1..: a value naming one player (not 8, not 9) also calls
+    // unit->vtable[2Ch] on that player's record; 0077F360's tail sets a
+    // message-suppress byte for kind-5 units. Neither is modelled (labelled).
 }
 
 bool GameUnitsHost::unit_current_role_slot(std::size_t index, std::int32_t role_index,
@@ -14329,7 +14695,7 @@ bool GameUnitsHost::run_cruise_state_step_009e1170(std::size_t index,
     if (index >= host.slots.size()) return false;
     GameUnitSlot& slot = *host.slots[index];
     bsp::CruiseOrderedValues ordered{};
-    return host.commands.cruise_step(index, host.is_controlled(slot),
+    return host.commands.cruise_step(index, host.player_flag_0184(slot),
         unit_forward_speed_0092d730(index),
         bsp::unit_reference_speed_0080fc30(slot.motion.max_speed,
             bsp::kUnitReferenceSpeedUnscaled),
@@ -14344,7 +14710,7 @@ bool GameUnitsHost::run_cruise_state_step_009e1170(std::size_t index,
     if (index >= host.slots.size()) return false;
     GameUnitSlot& slot = *host.slots[index];
     bsp::CruiseOrderedValues ordered{};
-    return host.commands.cruise_step(index, host.is_controlled(slot),
+    return host.commands.cruise_step(index, host.player_flag_0184(slot),
         unit_forward_speed_0092d730(index),
         bsp::unit_reference_speed_0080fc30(slot.motion.max_speed,
             bsp::kUnitReferenceSpeedUnscaled),
@@ -15674,6 +16040,48 @@ void GameUnitsHost::report() {
                             "ship_ticks=%lld bands=%lld throttle=%lld dive_ticks=%lld "
                             "(007DF4F0, packet cc9_pilot_vehicle_terrain_avoidance)",
                             vp, vs, vb, vt, vd);
+                        if constexpr (Impl::kPlayerRoleBookkeepingBound) {
+                            if (host.helm_option_on) {
+                                host.log.notef("summary mission scripted helm throttle=%.3f "
+                                    "rudder=%.3f transfers=%d issues=%d (BSP_PLAYER_HELM, packet "
+                                    "cc9_scripted_helm_option; a scenario, not a reference)",
+                                    static_cast<double>(host.helm_throttle),
+                                    static_cast<double>(host.helm_rudder), host.helm_transfers,
+                                    host.helm_issues);
+                            }
+                            host.log.notef("summary mission player roles takes=%d releases=%d "
+                                "refusals=%d permission_writes=%d (00780162/00927D20/0067BB50, "
+                                "packet cc9_player_role_bookkeeping)", host.role_takes,
+                                host.role_releases, host.role_refusals,
+                                host.role_permission_writes);
+                            for (const auto& sl : host.slots) {
+                                bool any = sl->role_player_0184;
+                                for (int i = 0; i < bsp::kUnitRoleTableEntries; ++i) {
+                                    any = any || sl->current_roles_01ac[i] != 8 ||
+                                          sl->role_permission_0188[i] != 9;
+                                }
+                                if (!any) continue;
+                                char roles[64] = {}, perms[64] = {};
+                                int ro = 0, po = 0;
+                                for (int i = 0; i < bsp::kUnitRoleTableEntries; ++i) {
+                                    ro += std::snprintf(roles + ro, sizeof(roles) - ro, "%d",
+                                                        sl->current_roles_01ac[i]);
+                                    po += std::snprintf(perms + po, sizeof(perms) - po, "%d",
+                                                        sl->role_permission_0188[i]);
+                                }
+                                host.log.notef("  player roles %-24s held=%s open=%s +184h=%d",
+                                    sl->row.name.c_str(), roles, perms,
+                                    sl->role_player_0184 ? 1 : 0);
+                            }
+                        }
+                        {
+                            long long raises = 0;
+                            for (const auto& sl : host.slots) raises += sl->yaw_gain_raises;
+                            host.log.notef("summary mission plane yaw gain bc4 raises=%lld "
+                                "bound=%d (0099BB00 -> 007DA92C, packet "
+                                "cc9_plane_substitution_sweep)", raises,
+                                Impl::kPlaneYawGainBc4Bound ? 1 : 0);
+                        }
                         host.log.notef("summary mission terrain avoidance ticks=%lld bands=%lld "
                             "throttle=%lld dive_ticks=%lld water_ticks=%lld (0099F1C0/0099CAB0, "
                             "packet cc9_pilot_vehicle_terrain_avoidance)", tt, tb, tth, td, tw);

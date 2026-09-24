@@ -1,0 +1,150 @@
+{
+  "packet": "cc10_lua_reader_fields",
+  "status": "complete_raw_normal_source_build_checked",
+  "source": "src/native_lua_reader_fields.cpp",
+  "documentation": "docs/NATIVE_LUA_READER_FIELDS_CC10.md",
+  "functions": [
+    "00bd6830",
+    "00bd68d0"
+  ],
+  "native_bytes": [
+    {
+      "start": "00bd6830",
+      "size": 159,
+      "sha256": "1c93c9b0a84240a28865897d65a914de4efd4a7d9d497dcd52d31ed27523ecf5",
+      "live_pe_equal": true
+    },
+    {
+      "start": "00bd68d0",
+      "size": 188,
+      "sha256": "5ac1397308b08e5c6450521669b1896ec4eeeccd5436596bd036a5296d7c5b0b",
+      "live_pe_equal": true
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00bd6855",
+      "native": "00bf6713",
+      "function": "00bd6830",
+      "contract": "excluded invalid-vector CRT boundary"
+    },
+    {
+      "address": "00bd686e",
+      "native": "00bf6713",
+      "function": "00bd6830",
+      "contract": "excluded invalid-vector CRT boundary"
+    },
+    {
+      "address": "00bd687c",
+      "native": "00bf6713",
+      "function": "00bd6830",
+      "contract": "excluded invalid-vector CRT boundary"
+    },
+    {
+      "address": "00bd6891",
+      "native": "00bd5790",
+      "function": "00bd6830",
+      "contract": "existing actual-storage provider"
+    },
+    {
+      "address": "00bd68a6",
+      "native": "00bd63b0",
+      "function": "00bd6830",
+      "contract": "existing actual-storage provider"
+    },
+    {
+      "address": "00bd68b7",
+      "native": "00b67700",
+      "function": "00bd6830",
+      "contract": "existing actual-storage provider"
+    },
+    {
+      "address": "00bd68f5",
+      "native": "00bf6713",
+      "function": "00bd68d0",
+      "contract": "excluded invalid-vector CRT boundary"
+    },
+    {
+      "address": "00bd690e",
+      "native": "00bf6713",
+      "function": "00bd68d0",
+      "contract": "excluded invalid-vector CRT boundary"
+    },
+    {
+      "address": "00bd691c",
+      "native": "00bf6713",
+      "function": "00bd68d0",
+      "contract": "excluded invalid-vector CRT boundary"
+    },
+    {
+      "address": "00bd6931",
+      "native": "00bd5790",
+      "function": "00bd68d0",
+      "contract": "existing actual-storage provider"
+    },
+    {
+      "address": "00bd6942",
+      "native": "00b65fb0",
+      "function": "00bd68d0",
+      "contract": "existing actual-storage provider"
+    },
+    {
+      "address": "00bd6956",
+      "native": "00bd61c0",
+      "function": "00bd68d0",
+      "contract": "existing actual-storage provider"
+    },
+    {
+      "address": "00bd6965",
+      "native": "00bd63b0",
+      "function": "00bd68d0",
+      "contract": "existing actual-storage provider"
+    },
+    {
+      "address": "00bd6976",
+      "native": "00b67700",
+      "function": "00bd68d0",
+      "contract": "existing actual-storage provider"
+    },
+    {
+      "address": "00cc5b1d",
+      "native": "00bf6b43",
+      "function": "00cc5b18",
+      "kind": "tail_jump",
+      "contract": "defined native FH3 thunk; unported"
+    },
+    {
+      "address": "00cc5b3d",
+      "native": "00bf6b43",
+      "function": "00cc5b38",
+      "kind": "tail_jump",
+      "contract": "defined native FH3 thunk; unported"
+    }
+  ],
+  "original_abi": "ECX reader, stacked by-value8B key/field and optional fallback pairs; RET10h/18h; no relied-on return value",
+  "successful_domain": "valid nonempty real reader/vector and stable caller-owned raw argument/scratch storage; existing Lua slot capacities and provider contracts",
+  "semantics": [
+    "capture actual vector back before lookup",
+    "ReadField always stores value, including nil",
+    "ReadFieldOrDefault selects default only for B65FB0 true, never merely unbound",
+    "release lookup temporary after successful store",
+    "retain opaque/padding bytes; no registry projection"
+  ],
+  "handler_definitions": "reports/cc10_lua_reader_field_function_definitions.json",
+  "validation": {
+    "build": "Combined strict scripts/build.ps1 MSVC Win32 Release; all3 existing CTests passed",
+    "new_tracked_tests": 0,
+    "differential": false,
+    "native_ABI_FH3": false,
+    "application_or_game": false,
+    "integration_commit": "4539e852bf0d244f781dceb7d7e516eff920331f",
+    "build_log_sha256": "ab353251e8576537d2ea9c17bda223ee114a4a7cbd5dd5521336f1fcf8cb52c3"
+  },
+  "limits": "Normal-path source only. Empty/corrupt vectors, original CRT invalid-parameter behavior, exceptions/nonlocal Lua transfer and FH3 cleanup, arbitrary native stack aliasing, binary ABI and gameplay excluded. Actual field/fallback pointers designate caller-owned equivalents of native by-value stack pairs; no implicit copying is introduced.",
+  "local_archive": {
+    "path": "local/cc10-platform-evidence/lua-reader-fields.zip",
+    "sha256": "c2836936b5f9e4050e87c71c16f775564fe2622ff62e8691cb9f0a5fdb43bff8",
+    "valid": true,
+    "files": 12
+  }
+}

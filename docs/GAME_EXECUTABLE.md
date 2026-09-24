@@ -9347,3 +9347,83 @@ Rows are distinct host records.
     or the death flags. The death flags left drops at 0 to 0.
   - Deaths go from 30 to 37. The flak burst (35 to 37), barrel count (37 to 37) and death flags
     (35 to 37) pairs each account for at most two.
+
+## Mission reference baselines, 2026-09-24 (after the player role bookkeeping)
+
+**These rows are the current reference.** They were written by cc9-dogfight-engaged in
+docs/SCRIPTED_HELM.md section 6.4 and pasted here by `cc9_surface_gunnery_reference`, which held
+this file's lease.
+
+The binary is `local\rk1b`, built from agent/cc9-dogfight-engaged on main 35a065629. It is the
+packet cc9_player_role_bookkeeping tree, with `kPlayerRoleBookkeepingBound` ON (main
+`330b81cdc`) and every other switch in its landed state. The runs used
+`BSP_GUNNERY_RNG_STREAMS=1`.
+
+**Every idle-player row before this section carried a host artefact.** The controlled Lexington
+stood still (100.51 m moved) because the host read "controlled unit" as unit+184h. In the image
++184h needs an accepted role-1 take, which USN04's script never allows. So the image's carrier
+follows its CarrierPath1 under the AI (docs/SCRIPTED_HELM.md section 6, and the correction in
+docs/CONTROLLED_UNIT_HELM.md).
+
+| mission | frames | damage | deaths | queued_hits | torpedo drops | bomb drops | plane water contacts | first_hit | controlled moved | mission end | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 mission | 6252.5 | 27 | 474 | 0 | 0 | 13 | 99.05 s | 3424.02 m | none | `local\RB1_usn04.log` |
+| USN01 | 3000 mission | 2250.0 | 5 | 135 | 2 | 0 | 3 | 55.65 s | 0.00 (Airfield2) | none | `local\RB1_usn01.log` |
+| USN04 (E2) | 9000 mission | 7720.9 | 35 | 584 | 0 | 0 | 15 | 99.05 s | 6880.79 m | none | `local\RB1_9000.log` |
+
+The same-tree OFF rows are `local\RB0_*`:
+
+| mission | damage | deaths | queued_hits | controlled moved |
+| --- | --- | --- | --- | --- |
+| USN04 4500 | 5940.0 | 27 | 367 | 100.51 m |
+| USN01 3000 | 2250.0 | 5 | 135 | 0.00 |
+| E2 9000 | 7700.0 | 35 | 461 | 100.51 m |
+
+## USN02 surface gunnery reference, 2026-09-23 (packet `cc9_surface_gunnery_reference`)
+
+USN02, "New - Battle of the Java Sea", 9000 mission frames (`--frames 9200 --press-start-frame 30
+--menu-select USN02 --mission-frames 9000 --mission-frame-seconds 0.05`), on main `c1ace01c4`,
+all switches landed, `BSP_GUNNERY_RNG_STREAMS` unset. Log: `local\sR_usn02.log`.
+
+| damage | deaths | queued hits | hull hits | shots | rounds hitting a unit / water / expired | first hit | mission end |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 63221.2 | 18 (5 Allied, 13 IJN) | 448 | 221 | 1576 | 222 / 1272 / 421 | 38.80 s | none |
+
+**Landed-state reference (the current USN02 row).** Build `cf2bab541`: main with
+`330b81cdc` (`kPlayerRoleBookkeepingBound` ON) merged, and `kArtilleryAimPointBound` ON.
+Reference parameters, `BSP_GUNNERY_RNG_STREAMS` unset. Log: `local\sR2_usn02.log`.
+
+| damage | deaths | queued hits | shots | rounds hitting a unit / water / expired | artillery aim points | first hit | mission end |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 69856.9 | 18 (5 Allied, 13 IJN) | 556 | 1181 | 272 / 894 / 313 | 1316 | 37.80 s | **failed at 188.16 s** ("Game Over") |
+
+- **Sunk, Allied:** Witte (39.20 s), Kortenaer (87.40 s), Electra (141.15 s), Exeter (187.36 s,
+  credited to Haguro) and Perth (189.96 s).
+- **Sunk, IJN:** Haguro, Jintsu and eleven destroyers.
+- **The mission fails on Exeter's sinking** (`usn_2_java.lua:521`).
+- **Kill credit goes across the same side:**
+  - Perth to Encounter;
+  - Haguro and Jintsu to Tokitsukaze;
+  - Amatsukaze to Hatsukaze.
+
+  The kill-credit listener records the last attacker, so some kills are credited to a ship of
+  the same side. This is not examined in this packet.
+
+The row below, taken first, is superseded.
+
+This row was taken **before** `kArtilleryAimPointBound`. With it landed, the option-on pair fails
+the mission at 173.31 s on Exeter's sinking (`usn_2_java.lua:521`), and hits per round rise from
+13 % to 25 %. So the landed-state reference has to be re-taken at the next re-baseline.
+Details: docs/SURFACE_GUNNERY_REFERENCE.md.
+
+## Alternate reference: scripted helm, throttle 1.0 (2026-09-24, packet cc9_scripted_helm_option)
+
+Copied by the integrator from docs/SCRIPTED_HELM.md section 7.3. `BSP_PLAYER_HELM=1.0,0` opens the helm role
+and drives the controlled carrier straight at full throttle; it is a labelled scenario row and never the
+reference. The same-binary unset row is the idle reference on that tree (main 5c126f14d); its hit records
+differ from the role-bookkeeping section by main drift (584 -> 549), not by the option.
+
+| mission | frames | scenario | damage | deaths | queued_hits | torpedo drops | bomb drops | plane water contacts | first_hit | controlled moved | mission end | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 (E2) | 9000 mission | **scripted helm, throttle 1.0** (`BSP_PLAYER_HELM=1.0,0`, main 5c126f14d + cc9_scripted_helm_option) | 8848.9 | 35 | 492 | 2 | 0 | 15 | 98.70 s | 7689.92 m | none | `local\H1_9000.log` |
+| USN04 (E2) | 9000 mission | the same binary, option unset (the idle reference on that tree) | 7720.9 | 35 | 549 | 0 | 0 | 15 | 99.05 s | 6905.23 m | none | `local\HO_9000.log` |

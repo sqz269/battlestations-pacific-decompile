@@ -1,0 +1,74 @@
+{
+  "packet": "cc10_gui_widget_property_interaction",
+  "address": "00aaa710",
+  "source": "src/native_gui_widget_property_interaction.cpp",
+  "status": "partial_projection_static_and_build_checked",
+  "start": "00aaabd6",
+  "end_exclusive": "00aaacd4",
+  "end_inclusive": "00aaacd3",
+  "last_instruction": "00aaaccf CALL00aa7220",
+  "last_instruction_length": 5,
+  "byte_size": 254,
+  "native_bytes_sha256": "891199a149b488f999b12b43e4c06cac9bc7a2951f9b90ddb8a983e8fd9117a7",
+  "live_pe_equal": true,
+  "composition_range": "[AAA710,AAACD4)1476B with existing prefix",
+  "original_abi": "containing ECX widget, stack visitor, eventual RET4; no native return at frontier; source scratch/context ABI",
+  "native_calls": [
+    {
+      "address": "00aaabdd",
+      "native": "eax",
+      "function": "00aaa710"
+    },
+    {
+      "address": "00aaac28",
+      "native": "eax",
+      "function": "00aaa710"
+    },
+    {
+      "address": "00aaac36",
+      "native": "edx",
+      "function": "00aaa710"
+    },
+    {
+      "address": "00aaac7c",
+      "native": "edx",
+      "function": "00aaa710"
+    },
+    {
+      "address": "00aaaccb",
+      "native": "eax",
+      "function": "00aaa710"
+    },
+    {
+      "address": "00aaaccf",
+      "native": "00aa7220",
+      "function": "00aaa710"
+    }
+  ],
+  "dispatch_contract": [
+    "current widget5C type1 skips Visible and widget34",
+    "Visible target/value byte and current widget34; real A9E110/AA8530 providers, explicit genuine derived bindings",
+    "current visitor0C each property with metadata store after slot load",
+    "MouseBlock true stores MouseHit1 and skips visitor call; otherwise default0 tag3 read",
+    "same raw scratch locals; meaningful low-byte boolean fallback payloads, native upper stack/return preimages excluded",
+    "full existing raw AA7220 always after interaction reads"
+  ],
+  "validation": {
+    "strict_win32_build": true,
+    "existing_ctests_passed": 3,
+    "build_log_sha256": "27055a6ec964dda4636e4d733777bc503f69e16a6edc9bfcc1c9f7025bc4d203",
+    "decoded_exact_call_sites": 6,
+    "direct_call_rows_expected": 1,
+    "new_tracked_tests": 0,
+    "stage_runtime_tested": false,
+    "composed_runtime_tested": false,
+    "native_ABI_FH3_SEH": false,
+    "game_validated": false
+  },
+  "handler": "reports/cc10_widget_property_handler_definition.json",
+  "boundaries": [
+    "remaining [AAACD4,AAAECE] child stage/epilogue excluded",
+    "native transient argument-area bookkeeping and upper boolean fallback bytes excluded",
+    "real returning derived visitor/widget bindings and valid retained actual storage required; no logical fallback"
+  ]
+}

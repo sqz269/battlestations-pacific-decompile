@@ -1,0 +1,187 @@
+{
+  "packet": "cc10_gui_widget_transform",
+  "status": "complete_raw_normal_body_build_and_focused_original_source_checked",
+  "address": "00aa7220",
+  "coverage": "complete normal body",
+  "source": "src/native_gui_widget_transform.cpp",
+  "documentation": "docs/NATIVE_GUI_WIDGET_TRANSFORM_CC10.md",
+  "original_abi": "ECX actual widget, RET; no native EH frame; explicit C++ context/scratch changes ABI",
+  "native_bytes": {
+    "address": "00aa7220",
+    "size": 583,
+    "sha256": "f219011d985624f1d43316fce088e885359fff01ef7155e7b27ef8271e9c0d2f",
+    "live_pe_equal": true
+  },
+  "end_inclusive": "00aa7466",
+  "end_exclusive": "00aa7467",
+  "last_instruction": "00aa7466 RET",
+  "last_instruction_length": 1,
+  "dependency_bytes": [
+    {
+      "address": "00b64780",
+      "size": 159,
+      "sha256": "0af68adacbc3e9cc638f6c18ca99d75462fc721c285da1ed80602503a6b73994",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00d7a24c",
+      "size": 4,
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00d7a208",
+      "size": 4,
+      "sha256": "6d58692645c9d1cfaf13541cbd258f86193ef63c2f1d38f6bbca9617372d7bd6",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00e12fc4",
+      "size": 4,
+      "sha256": "9a8208635e00348ab64aac2b759e76391fd47089e9a749bbcec770d9eb5c6421",
+      "live_pe_equal": true
+    }
+  ],
+  "no_ghidra_function": [],
+  "host_steps": [
+    {
+      "address": "00aa7423",
+      "native": "00b64780",
+      "function": "00aa7220",
+      "contract": "Current-global four-argument production provider; actual rotation destination, angle pointer, x87 FSIN/FCOS spills and late global loads; original ECX/EDX, RET/EAX destination"
+    },
+    {
+      "address": "00aa7442",
+      "native": "00413920",
+      "function": "00aa7220",
+      "contract": "Exact raw multiply: pivot left, first product destination, scale right; ECX left, stack destination/right, RET8/EAX destination"
+    },
+    {
+      "address": "00aa7449",
+      "native": "00413920",
+      "function": "00aa7220",
+      "contract": "Exact raw multiply: previous EAX left, second product destination, rotation right; RET8"
+    },
+    {
+      "address": "00aa7450",
+      "native": "00413920",
+      "function": "00aa7220",
+      "contract": "Exact raw multiply: previous EAX left, final destination, translation right; RET8"
+    },
+    {
+      "address": "00aa745c",
+      "native": "captured_vtable[0x38]",
+      "function": "00aa7220",
+      "contract": "Required actual dispatch binding: slot38 target loaded after current widget+4C receiver reload; ECX receiver, stack actual final matrix; native RET4"
+    }
+  ],
+  "storage": {
+    "bytes": 476,
+    "origin": "native ESP+8 after ESI/EDI saves",
+    "holes": [
+      "0C..0F",
+      "D0..D3",
+      "D8..DB"
+    ],
+    "matrices": {
+      "scale": "10",
+      "pivot": "50",
+      "translation": "90",
+      "final": "DC",
+      "second": "11C",
+      "rotation": "15C",
+      "first": "19C"
+    },
+    "spills": {
+      "angle": "00",
+      "pivot_x": "04",
+      "pivot_y": "08",
+      "position_y": "D4"
+    },
+    "preimage": "initialized caller-owned stable bytes; no blanket initialization"
+  },
+  "dispatch_order": [
+    {
+      "address": "00aa7255",
+      "action": "capture initial widget+4C node"
+    },
+    {
+      "address": "00aa72c2",
+      "action": "capture vtable from initial node"
+    },
+    {
+      "address": "00aa7455",
+      "action": "reload CURRENT widget+4C receiver after math providers"
+    },
+    {
+      "address": "00aa7459",
+      "action": "load CURRENT slot38 word from CAPTURED vtable"
+    }
+  ],
+  "validation": {
+    "build": "strict scripts/build.ps1 MSVC Win32 /W4 /WX /fp:strict; all3 existing CTests passed",
+    "probe": "6 original/source pairs, initialized native frame and actual raw node storage",
+    "probe_exit_code": 0,
+    "probe_compiler": "/MD /O2 /W4 /WX /fp:strict /MANIFEST:EMBED",
+    "new_tracked_tests": 0,
+    "scratch_bytes_compared": 476,
+    "rebound_direct_calls": 4,
+    "virtual_provider": "actual set_raw_local_matrix_00b6db10 through explicit probe callable targets; null profiles only in no-attachment/no-child fixture domain",
+    "coverage": [
+      "all scratch bytes including unwritten holes",
+      "callback matrix words and actual raw local-node setter effects",
+      "signed zero, denormal, NaN, masked x87 and MXCSR flags",
+      "nearest and down x87/SSE rounding",
+      "nondefault borrowed global values",
+      "actual widget/scratch alias changes final receiver while prior vtable remains captured",
+      "actual vtable/scratch alias changes slot38 after vtable capture"
+    ],
+    "callee_differential": false,
+    "native_ABI_SEH": false,
+    "unmasked_exceptions": false,
+    "application_or_game": false,
+    "executable_sha256": "7fff7f48ae4793fcc183fc30ee1fdbb73e4f9db0ba3a9099a8515c276d83931b",
+    "report_call_rows_checked": 4,
+    "report_call_row_failures": 0,
+    "prior_field_value_archive_unchanged": true
+  },
+  "limits": "Complete normal body over actual raw widget/scratch/global storage. Generic target dispatch is an explicit required binding with exact target/current receiver/matrix arguments; no logical GuiWidgetOwner, fallback, null guard or no-op. Existing exact raw multiplication and current-global rotation providers reused. No independent callee differential, fault compatibility, native ABI, application installation, game or visual claim.",
+  "compiled_source": {
+    "src/native_gui_widget_transform.cpp": "8f2bbaa84a9b44d90ce4ae89ccdc616118b7a358fb3be90220573ac3ef7eafad",
+    "include/bsp/native_gui_widget_transform.hpp": "7ce3ccf33392eeff3e603aa43edd941a94d5cdb23d655d70a722bdb60773354d",
+    "src/native_particle_axial_loading.cpp": "d90b8b4f6f760f376f7308a0aab722158074bc27c4befdf3873182a008cdeb5d",
+    "src/native_camera_matrix_math.cpp": "ca793757d2bb262ae48cf09a29be44462714da585b430db68c5b3e9262277fa0",
+    "src/native_node_raw_transform.cpp": "31a50a5e6e6efd27bb2d32851cc6836b6aabb1a924eefa384363e561deb4e257",
+    "build/win32/Release/bsp_core.lib": "54868b414a0b0d881adf882d4507228a385256a5ffc6d163d307a3fc82f83224"
+  },
+  "local_files": {
+    "local/cc10_widget_transform/build.log": "1dde1f8cfbf2237fec5149f23eb5257934253e45f4309a7c0e5845239cdc3775",
+    "local/cc10_widget_transform/bytes_00aa7220.txt": "3be75116160c0fd5198298e2280b97a5cf1eccd926cf28d62ac3b5127da5e728",
+    "local/cc10_widget_transform/bytes_00b64780.txt": "6c6784b4c29420db0750f5d5526be37922a2093cebf078336dbe8a35d5798b90",
+    "local/cc10_widget_transform/bytes_00d7a208.txt": "ba68cff97bdc11933009685d62b197e076c39e448f996361833d006885827a9d",
+    "local/cc10_widget_transform/bytes_00d7a24c.txt": "fd6f7a7d3874dfe569d075d61e99337d9cca002b06a4ebed7f03e974e26bdabc",
+    "local/cc10_widget_transform/bytes_00e12fc4.txt": "c3564d654bdebcfd0df5c660b62e556dcf56b01db7646be4f42f30b63f99a267",
+    "local/cc10_widget_transform/dependencies.json": "02382dd1b339f4aee6ac9fa0bad02f7ad002ae4f51591deb5bf2143df1b11482",
+    "local/cc10_widget_transform/finalize.py": "f822c241d363ccf95c80c47326f2d688efbaedc1e2ae716557037926e2c48213",
+    "local/cc10_widget_transform/ledger.json": "1d2d8901be2749927587bc439ba2d123a3d37962635b203dac9fc8779ea71372",
+    "local/cc10_widget_transform/native_bytes.hpp": "596d3e24c9c8f047ef6abca80f6b4669ae773ae8e907db5e8cf4330d6d02d326",
+    "local/cc10_widget_transform/original_assembly.txt": "ab5e08f50dc441a0bdf62f14dbce4b23974a35eb5d16380eb0d036f901ba6b37",
+    "local/cc10_widget_transform/pins.json": "9d67daf8da45155bac27a0562a87c3f017b539fe2df29df1f25fac93ad05f5ee",
+    "local/cc10_widget_transform/prepare.py": "c5ab6b3cc4423db33916ea808b2465822c746f22ff6ff8b858653e2abb39b7af",
+    "local/cc10_widget_transform/probe.cmd": "e9ecee608b7732d067ef48842de28cb42b72f58e0293ff40475d3a9b2135c352",
+    "local/cc10_widget_transform/probe.cpp": "0ada057fe09f10ba2e9ea0485ea9ceaa1f12f7893579c7911cf9e8c490728393",
+    "local/cc10_widget_transform/probe.map": "f6aed0451fada3e32a1f30b907142bd74ef706999b71ca3478cb79af1d6bbc2f",
+    "local/cc10_widget_transform/probe.obj": "f3e6c2d4a3a24b2bc9804ebab0e53f2e4397fdbc54b944e6df5e261b6a90e720",
+    "local/cc10_widget_transform/probe_build.log": "99ca390039cd61be5972f88b805af46cb74e17c464fb07d6f9f7f1eace52e803",
+    "local/cc10_widget_transform/report.py": "89351926e1a90e562975823f8fc3999f99fe55486eba6d7a9987db494d4a8b18",
+    "local/cc10_widget_transform/report_calls.log": "081378dc568de59c98089d83a1f9606d06470662eef1f7ef8658bf0c3b5e5f78",
+    "local/cc10_widget_transform/run.log": "3bb77954983b2e39f5841569c66c1a346ee01813cda64d4e0133844e5ccb76bc",
+    "local/cc10_widget_transform/widget_transform_probe.exe": "7fff7f48ae4793fcc183fc30ee1fdbb73e4f9db0ba3a9099a8515c276d83931b"
+  },
+  "local_archive": {
+    "path": "local/cc10_widget_transform_evidence.zip",
+    "sha256": "0d90499f71be2a3cc99ad732deaa8a71a5b55546da4dbaa7ee708c364bae45f8",
+    "valid": true,
+    "files": 22
+  }
+}

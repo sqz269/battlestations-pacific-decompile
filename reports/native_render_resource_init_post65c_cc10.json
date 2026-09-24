@@ -1,0 +1,625 @@
+{
+  "packet": "cc10_render_init_post65c",
+  "base_commit": "8e0cedbbecbc8c124cb935e28edbe3fcd96777a6",
+  "status": "partial_projection_B107F0_B124A1_to_B1297A",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "source_files": [
+    "include/bsp/native_render_resource_init_post65c.hpp",
+    "src/native_render_resource_init_post65c.cpp"
+  ],
+  "small_extension": {
+    "header": "include/bsp/native_render_resource_init_post658.hpp",
+    "change": "one-use post65c identity and phases only"
+  },
+  "no_ghidra_function": [],
+  "routines": [
+    {
+      "address": "00b107f0",
+      "name": "continue_native_render_resource_init_00b124a1_fragment",
+      "status": "partial_projection",
+      "coverage": "ONLY [00B124A1,00B1297A),1241 bytes",
+      "start": "00b124a1",
+      "end_inclusive": "00b12979",
+      "end_exclusive": "00b1297a",
+      "size": 1241,
+      "last_instruction": "00b12975",
+      "last_instruction_size": 5,
+      "last_instruction_text": "CALL 00B4E2B0",
+      "next_instruction": "00B1297A PUSH20; next+664 allocation excluded",
+      "original_abi": "containing ECX service,three borrowed DWORD argument cells,eventual RET0C; no argument read or native return here",
+      "source_abi": "same one-use post658 predecessor/original continuation context,independent retained post20 block and actual name views",
+      "preserved_ghidra_name": "BSP_RenderResources_InitializeMembers_PartialEntry",
+      "complete_init": false,
+      "destruction_admitted": false,
+      "runtime_tested": false
+    }
+  ],
+  "live_pe_byte_blocks": [
+    {
+      "start": "00b124a1",
+      "end_exclusive": "00b1297a",
+      "size": 1241,
+      "sha256": "a5cfc50e4ce95f106afc02cb79f2e2283fcfd699a5b931a1b99b0bc4fa724571",
+      "live_equals_disk": true,
+      "scope": "complete new caller fragment"
+    },
+    {
+      "start": "00d5e254",
+      "end_exclusive": "00d5e28c",
+      "size": 56,
+      "sha256": "88475272020ad6c95db9eed7040371908204fb9f2afb4fdd683144d49916631d",
+      "live_equals_disk": true,
+      "scope": "three original new literal views"
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "00b124a3",
+      "native": "00bf681b",
+      "function": "00b107f0",
+      "source": "singleton_lifetime_allocate"
+    },
+    {
+      "address": "00b124cc",
+      "native": "0041e870",
+      "function": "00b107f0",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b124ef",
+      "native": "00b4e470",
+      "function": "00b107f0",
+      "source": "construct_native_post_effect20_00b4e470"
+    },
+    {
+      "address": "00b12530",
+      "native": "00419cc0",
+      "function": "00b107f0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b12537",
+      "native": "00bd1510",
+      "function": "00b107f0",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b1254b",
+      "native": "00b4cba0",
+      "function": "00b107f0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b12552",
+      "native": "00b189f0",
+      "function": "00b107f0",
+      "source": "set_native_material_texture_unchecked_00b189f0"
+    },
+    {
+      "address": "00b12563",
+      "native": "0041e870",
+      "function": "00b107f0",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b12585",
+      "native": "00b4cba0",
+      "function": "00b107f0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b1258c",
+      "native": "00b18b00",
+      "function": "00b107f0",
+      "source": "register_native_material_float2_00b18b00"
+    },
+    {
+      "address": "00b125b1",
+      "native": "00419cc0",
+      "function": "00b107f0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b125b8",
+      "native": "00bd1510",
+      "function": "00b107f0",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b125c9",
+      "native": "0041e870",
+      "function": "00b107f0",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b125ee",
+      "native": "00b4cba0",
+      "function": "00b107f0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b125f5",
+      "native": "00b18b00",
+      "function": "00b107f0",
+      "source": "register_native_material_float2_00b18b00"
+    },
+    {
+      "address": "00b1261a",
+      "native": "00419cc0",
+      "function": "00b107f0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b12621",
+      "native": "00bd1510",
+      "function": "00b107f0",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b12632",
+      "native": "0041e870",
+      "function": "00b107f0",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b12659",
+      "native": "00b4cba0",
+      "function": "00b107f0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b12660",
+      "native": "00b18ac0",
+      "function": "00b107f0",
+      "source": "existing exact B18AC0 expansion:4*count words,matrix0"
+    },
+    {
+      "address": "00b12685",
+      "native": "00419cc0",
+      "function": "00b107f0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b1268c",
+      "native": "00bd1510",
+      "function": "00b107f0",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b1269d",
+      "native": "0041e870",
+      "function": "00b107f0",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b126c4",
+      "native": "00b4cba0",
+      "function": "00b107f0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b126cb",
+      "native": "00b18ac0",
+      "function": "00b107f0",
+      "source": "existing exact B18AC0 expansion:4*count words,matrix0"
+    },
+    {
+      "address": "00b126f0",
+      "native": "00419cc0",
+      "function": "00b107f0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b126f7",
+      "native": "00bd1510",
+      "function": "00b107f0",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b12708",
+      "native": "0041e870",
+      "function": "00b107f0",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b1272f",
+      "native": "00b4cba0",
+      "function": "00b107f0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b12736",
+      "native": "00b18ac0",
+      "function": "00b107f0",
+      "source": "existing exact B18AC0 expansion:4*count words,matrix0"
+    },
+    {
+      "address": "00b1275b",
+      "native": "00419cc0",
+      "function": "00b107f0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b12762",
+      "native": "00bd1510",
+      "function": "00b107f0",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b12773",
+      "native": "0041e870",
+      "function": "00b107f0",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b12792",
+      "native": "00b4cba0",
+      "function": "00b107f0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b12799",
+      "native": "00b18b20",
+      "function": "00b107f0",
+      "source": "register_native_material_float_00b18b20"
+    },
+    {
+      "address": "00b127be",
+      "native": "00419cc0",
+      "function": "00b107f0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b127c5",
+      "native": "00bd1510",
+      "function": "00b107f0",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b127d6",
+      "native": "0041e870",
+      "function": "00b107f0",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b127fb",
+      "native": "00b4cba0",
+      "function": "00b107f0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b12802",
+      "native": "00b18b00",
+      "function": "00b107f0",
+      "source": "register_native_material_float2_00b18b00"
+    },
+    {
+      "address": "00b12827",
+      "native": "00419cc0",
+      "function": "00b107f0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b1282e",
+      "native": "00bd1510",
+      "function": "00b107f0",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b1283f",
+      "native": "0041e870",
+      "function": "00b107f0",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b1285e",
+      "native": "00b4cba0",
+      "function": "00b107f0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b12865",
+      "native": "00b18b00",
+      "function": "00b107f0",
+      "source": "register_native_material_float2_00b18b00"
+    },
+    {
+      "address": "00b1288a",
+      "native": "00419cc0",
+      "function": "00b107f0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b12891",
+      "native": "00bd1510",
+      "function": "00b107f0",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b128a2",
+      "native": "0041e870",
+      "function": "00b107f0",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b128c7",
+      "native": "00b4cba0",
+      "function": "00b107f0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b128ce",
+      "native": "00b18b20",
+      "function": "00b107f0",
+      "source": "register_native_material_float_00b18b20"
+    },
+    {
+      "address": "00b128f3",
+      "native": "00419cc0",
+      "function": "00b107f0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b128fa",
+      "native": "00bd1510",
+      "function": "00b107f0",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b1290b",
+      "native": "0041e870",
+      "function": "00b107f0",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b12930",
+      "native": "00b4cba0",
+      "function": "00b107f0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b12937",
+      "native": "00b18b20",
+      "function": "00b107f0",
+      "source": "register_native_material_float_00b18b20"
+    },
+    {
+      "address": "00b1295c",
+      "native": "00419cc0",
+      "function": "00b107f0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b12963",
+      "native": "00bd1510",
+      "function": "00b107f0",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b12975",
+      "native": "00b4e2b0",
+      "function": "00b107f0",
+      "source": "assign_native_post_effect_frame_00b4e2b0"
+    },
+    {
+      "address": "00b18ad8",
+      "native": "00b17e10",
+      "function": "00b18ac0",
+      "source": "register_native_material_parameter_00b17e10",
+      "scope": "supporting existing complete32-byte wrapper"
+    }
+  ],
+  "parameters": [
+    {
+      "literal": "00d5e430",
+      "name": "cSceneColorSampleOffset",
+      "source": "service+04",
+      "words": 2,
+      "matrix": 0,
+      "state": 76,
+      "order": "source address BEFORE current+65C",
+      "registration_site": "00b1258c"
+    },
+    {
+      "literal": "00d5e2f8",
+      "name": "cDisplacementSampleOffset",
+      "source": "fresh service+194 LEA",
+      "words": 2,
+      "matrix": 0,
+      "state": 77,
+      "order": "current+65C BEFORE source address",
+      "registration_site": "00b125f5"
+    },
+    {
+      "literal": "00d5e2e4",
+      "name": "cAASampleOffsets",
+      "source": "fresh service+F4 LEA",
+      "words": 36,
+      "matrix": 0,
+      "state": 78,
+      "order": "current+65C BEFORE source address; vector_count9",
+      "registration_site": "00b12660"
+    },
+    {
+      "literal": "00d5e260",
+      "name": "cHParams",
+      "source": "service+628",
+      "words": 4,
+      "matrix": 0,
+      "state": 79,
+      "order": "source address BEFORE current+65C; vector_count1",
+      "registration_site": "00b126cb"
+    },
+    {
+      "literal": "00d5e254",
+      "name": "cVParams",
+      "source": "service+638",
+      "words": 4,
+      "matrix": 0,
+      "state": 80,
+      "order": "current+65C BEFORE source address; vector_count1",
+      "registration_site": "00b12736"
+    },
+    {
+      "literal": "00d5e2bc",
+      "name": "cLetterboxRatio",
+      "source": "inherited EBX bits (service+228)",
+      "words": 1,
+      "matrix": 0,
+      "state": 81,
+      "order": "current+65C BEFORE inherited EBX use",
+      "registration_site": "00b12799"
+    },
+    {
+      "literal": "00d5e2ac",
+      "name": "cNoiseOffset",
+      "source": "current(service+34)+08",
+      "words": 2,
+      "matrix": 0,
+      "state": 82,
+      "order": "current+34,ADD08,THEN current+65C",
+      "registration_site": "00b12802"
+    },
+    {
+      "literal": "00d5e2a0",
+      "name": "cNoiseScale",
+      "source": "inherited EBP bits (service+648)",
+      "words": 2,
+      "matrix": 0,
+      "state": 83,
+      "order": "current+65C BEFORE inherited EBP use",
+      "registration_site": "00b12865"
+    },
+    {
+      "literal": "00d5e294",
+      "name": "cFlicker",
+      "source": "current(service+34)+10",
+      "words": 1,
+      "matrix": 0,
+      "state": 84,
+      "order": "current+34,ADD10,THEN current+65C",
+      "registration_site": "00b128ce"
+    },
+    {
+      "literal": "00d5e28c",
+      "name": "cShake",
+      "source": "current(service+34)+14",
+      "words": 1,
+      "matrix": 0,
+      "state": 85,
+      "order": "current+34,ADD14,THEN current+65C",
+      "registration_site": "00b12937"
+    }
+  ],
+  "construction": {
+    "allocation_state": 73,
+    "constructor_state": 74,
+    "mask": "80h",
+    "actual_bytes": 32,
+    "vertex_count": 3,
+    "optional_input": null,
+    "join": "EDI=FFFFFFFF atB124F8 BEFORE mask80 test and publish+65C; disarm AFTER publication"
+  },
+  "literals": {
+    "00d5e26c": "Passtrough_OldFilm_Wave.mshd",
+    "00d5e260": "cHParams",
+    "00d5e254": "cVParams"
+  },
+  "ordering": [
+    "Allocate20h,EDI/ESP14 raw result,state73; conditional raw effect name,mask80,state74,B4E470(count3,null).",
+    "At join EDI=FFFFFFFF BEFORE mask80 test/+65C publication; disarm AFTER publication; exact current raw name return.",
+    "Capture current+67C BEFORE current+65C/material+14; complete unchecked B189F0 slot3.",
+    "Ten independent raw records preserve individual source/current-receiver orders; fresh LEAs194/F4,actual inherited EBX228 and EBP648 uses.",
+    "B18AC0 count9 for AA,count1 for H and V; exact4*count,matrix0 expansion.",
+    "Each current+34 backing owner captured independently; all three form+08/+10/+14 BEFORE current+65C.",
+    "Current+1D4 frame BEFORE current+65C; existing B4E2B0/current imports/actual frame lifetime."
+  ],
+  "frontier": {
+    "ESI": "same service",
+    "EBX": "same inherited service+228",
+    "EBP": "same inherited service+648",
+    "EDI": "FFFFFFFF",
+    "ESP14": "raw+65C",
+    "mask": 0,
+    "EH": -1,
+    "argument_cells": "same original3, none read",
+    "native_pc": "00b1297a",
+    "other_spills": "original/aligned/half dimensions unchanged",
+    "native_machine_stack": false
+  },
+  "lifetime": {
+    "retained": "one independent canonical B4E470 post20 block and11 raw names; actual source/material/captured+34-owner diagnostics; all previous contexts/args/source storage",
+    "canonical": "existing genuine B4E470 block; no duplicate generic companion,new registry/count or blanket nested registration",
+    "borrowed": "service sources and each captured current+34 owner remain alive through parameter borrows; no added owner credit",
+    "failure": "preserve all publications/raw names/masks/provider acquisitions and fail predecessor chain; no caller rollback/free/retry",
+    "full_service_lifetime_admitted": false
+  },
+  "checks": {
+    "bytes_listing": {
+      "passed": true,
+      "instructions": 293,
+      "caller_calls": 58,
+      "listing": "local/render_init_post65c_listing.txt",
+      "handoff": "local/render_init_post65c_handoff.json"
+    },
+    "build": {
+      "command": "./scripts/build.ps1",
+      "status": "passed",
+      "result": "MSVC Win32 Release MultiThreadedDLL /MD",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "log": "local/render_init_post65c_build.txt"
+    },
+    "report_calls": {
+      "command": "python tools/verify_report_calls.py reports/native_render_resource_init_post65c_cc10.json",
+      "status": "passed",
+      "numeric_checked": 59,
+      "caller_rows": 58,
+      "supporting_rows": 1,
+      "failed": 0,
+      "log": "local/render_init_post65c_calls.txt"
+    },
+    "new_tracked_tests": 0,
+    "new_probes": 0,
+    "composed_runtime_tested": false
+  },
+  "provider_contracts": [
+    {
+      "callee": "B4E470",
+      "contract": "existing full actual20h count3/null constructor and canonical block; stable raw effect name; no duplicate pass view"
+    },
+    {
+      "callee": "B4CBA0/B189F0",
+      "contract": "borrow captured current post+14 material; complete unchecked texture3 assignment in same actual-owner domain"
+    },
+    {
+      "callee": "B18B00/B18B20/B18AC0/B17E10",
+      "contract": "real2/1/36/4-word borrowed records,matrix0; exact existing B18AC0 count9/count1 expansion"
+    },
+    {
+      "callee": "B4E2B0",
+      "contract": "capture current incoming frame then current post; existing publish/retain-before-old-release,current imports and D5E600 lifetime"
+    },
+    {
+      "callee": "41E870/419CC0/BD1510",
+      "contract": "actual raw header construction and captured data/current length+1/current pool/manager/gate return; stale headers preserved"
+    }
+  ],
+  "artifact_sha256": {
+    "include/bsp/native_render_resource_init_post65c.hpp": "593736e66897a2373dccac3d415c96491c4c6a49038b25385068bd250554db6e",
+    "src/native_render_resource_init_post65c.cpp": "f8c5dd1f3a0a4b9d4008508098f5d9fee8de97c48da8bbaba13dc0e5b6e220c7",
+    "include/bsp/native_render_resource_init_post658.hpp": "7853e6a5d004d96f312eee6ab3d6622c5ab1eaa127246c51f1d9131895efffed",
+    "docs/NATIVE_RENDER_RESOURCE_INIT_POST65C_CC10.md": "585d8b774c57de13562ccb8c337b2ec4ac2d26c5d54a9fbb67a05c2700e2975b",
+    "local/render_init_post65c_listing.txt": "fe2a62dd3a01ed773943fa0c29d076e26ad5ac0ab87fa425a269f2f00d60c9e5",
+    "local/render_init_post65c_handoff.json": "90e61c97ba2f6081cd55fc2d31af13e9111dc1ce3112e75adae66e29c290a7f3",
+    "local/render_init_post65c_build.txt": "04ff7e3c174b6507ec8fc8a2222d8bffcd3d4ac66239ae65d60d608acc8c8c21",
+    "local/render_init_post65c_calls.txt": "cb42cdbb34298911b2e523b1c3cc15b25f0a7cb9dc7f184b83643f216483377c"
+  }
+}

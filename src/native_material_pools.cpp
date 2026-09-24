@@ -351,3 +351,46 @@ void NativeGuiLayerPool::invoke_trim(void* context) {
     static_cast<NativeGuiLayerPool*>(context)->trim_00ac4750();
 }
 } // namespace bsp
+
+// Group specialization only; the shared native pool engine above is unchanged.
+#include "bsp/native_gui_group_storage.hpp"
+namespace bsp {
+static_assert(sizeof(NativeGuiGroupPoolStorage)==0x38);
+static_assert(NativeGuiGroupPool::slot_bytes*NativeGuiGroupPool::slots_per_slab==
+    NativeGuiGroupPool::free_indices_offset);
+static_assert(NativeGuiGroupPool::free_indices_offset+2*NativeGuiGroupPool::slots_per_slab==
+    NativeGuiGroupPool::free_count_offset);
+static_assert(NativeGuiGroupPool::free_count_offset+4==NativeGuiGroupPool::slab_bytes);
+NativeGuiGroupPool::NativeGuiGroupPool(AllocatorListDomain& list,
+    NativeGuiGroupPoolStorage& storage) : allocator_list_(list),storage_(storage) {
+    list.bind_virtual0(storage.allocator_00,{native_vtable,native_virtual0,this,&invoke_trim});
+}
+NativeGuiGroupPool::~NativeGuiGroupPool() {
+    allocator_list_.unbind_virtual0(storage_.allocator_00);
+}
+void NativeGuiGroupPool::initialize_00ac7410() {
+    initialize_pool<NativeGuiGroupPool>(allocator_list_,storage_);
+}
+void* NativeGuiGroupPool::allocate_00ac7590() {
+    return allocate_slot<NativeGuiGroupPool>(storage_);
+}
+void NativeGuiGroupPool::return_00ac7260(void* slot) noexcept {
+    return_slot<NativeGuiGroupPool>(storage_,slot);
+}
+void NativeGuiGroupPool::trim_00ac74f0() {
+    trim_empty_slabs<NativeGuiGroupPool>(storage_);
+}
+void NativeGuiGroupPool::destroy_00ac71a0() {
+    destroy_pool<NativeGuiGroupPool>(allocator_list_,storage_);
+}
+void NativeGuiGroupPool::invoke_trim(void* context) {
+    static_cast<NativeGuiGroupPool*>(context)->trim_00ac74f0();
+}
+void* initialize_native_gui_group_slab_00ac6ff0(void* raw,std::uint32_t index) noexcept {
+    return initialize_slab<NativeGuiGroupPool>(raw,index);
+}
+void free_native_gui_group_pool_table_00ac70d0(void* header) noexcept {
+    void* const table=read<void*>(static_cast<const std::byte*>(header));
+    if (table) singleton_lifetime_free(table);
+}
+} // namespace bsp

@@ -1,0 +1,368 @@
+{
+  "packet": "cc10_gui_widget_child_links",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_gui_widget_child_links.cpp",
+  "status": "complete_normal_raw_storage_build_and_original_source_compared",
+  "functions": [
+    {
+      "address": "00aa2490",
+      "end_inclusive": "00aa2659",
+      "final_instruction": "00aa2659",
+      "final_instruction_length": 1,
+      "byte_span": 458,
+      "original_abi": "ECX actual8h NativeString; EAX type; RET0",
+      "coverage": "complete normal classifier, exact seventeen comparison order"
+    },
+    {
+      "address": "00aa83a0",
+      "end_inclusive": "00aa83ee",
+      "final_instruction": "00aa83ec",
+      "final_instruction_length": 3,
+      "byte_span": 79,
+      "original_abi": "ECX actual parent widget; stack child; RET4",
+      "coverage": "complete normal raw detach with actual canonical node companions"
+    },
+    {
+      "address": "00a9bd50",
+      "end_inclusive": "00a9bdeb",
+      "final_instruction": "00a9bde9",
+      "final_instruction_length": 3,
+      "byte_span": 156,
+      "original_abi": "ECX actual0Ch list; stack pointer to payload DWORD; RET4",
+      "coverage": "complete normal valid-list remove-all; native invalid parameter failure excluded"
+    },
+    {
+      "address": "00a9b790",
+      "end_inclusive": "00a9b7c2",
+      "final_instruction": "00a9b7c0",
+      "final_instruction_length": 3,
+      "byte_span": 51,
+      "original_abi": "unused ECX; stack next/previous/source-pointer-cell; EAX node; RET0C",
+      "coverage": "whole-body alias to existing8665F0; allocator projection boundary retained"
+    },
+    {
+      "address": "00a9d480",
+      "end_inclusive": "00a9d512",
+      "final_instruction": "00a9d510",
+      "final_instruction_length": 3,
+      "byte_span": 147,
+      "original_abi": "ECX actual0Ch list; stack increment; RET4",
+      "coverage": "whole-body alias to existing8675E0; existing host length-error transport, native EH handler excluded"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00aa2490",
+      "address": "00aa24a7",
+      "native": "004bcb80",
+      "contract": "existing actual8h raw reverse byte-set search; source pointer captured before call"
+    },
+    {
+      "function": "00aa2490",
+      "address": "00aa24b6",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp; exact native ASCII literals and order; no CRT port"
+    },
+    {
+      "function": "00aa2490",
+      "address": "00aa24cf",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp; exact native ASCII literals and order; no CRT port"
+    },
+    {
+      "function": "00aa2490",
+      "address": "00aa24e8",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp; exact native ASCII literals and order; no CRT port"
+    },
+    {
+      "function": "00aa2490",
+      "address": "00aa2501",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp; exact native ASCII literals and order; no CRT port"
+    },
+    {
+      "function": "00aa2490",
+      "address": "00aa251a",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp; exact native ASCII literals and order; no CRT port"
+    },
+    {
+      "function": "00aa2490",
+      "address": "00aa2533",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp; exact native ASCII literals and order; no CRT port"
+    },
+    {
+      "function": "00aa2490",
+      "address": "00aa254c",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp; exact native ASCII literals and order; no CRT port"
+    },
+    {
+      "function": "00aa2490",
+      "address": "00aa2565",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp; exact native ASCII literals and order; no CRT port"
+    },
+    {
+      "function": "00aa2490",
+      "address": "00aa257e",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp; exact native ASCII literals and order; no CRT port"
+    },
+    {
+      "function": "00aa2490",
+      "address": "00aa2597",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp; exact native ASCII literals and order; no CRT port"
+    },
+    {
+      "function": "00aa2490",
+      "address": "00aa25b0",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp; exact native ASCII literals and order; no CRT port"
+    },
+    {
+      "function": "00aa2490",
+      "address": "00aa25c9",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp; exact native ASCII literals and order; no CRT port"
+    },
+    {
+      "function": "00aa2490",
+      "address": "00aa25e2",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp; exact native ASCII literals and order; no CRT port"
+    },
+    {
+      "function": "00aa2490",
+      "address": "00aa25fb",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp; exact native ASCII literals and order; no CRT port"
+    },
+    {
+      "function": "00aa2490",
+      "address": "00aa2614",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp; exact native ASCII literals and order; no CRT port"
+    },
+    {
+      "function": "00aa2490",
+      "address": "00aa262d",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp; exact native ASCII literals and order; no CRT port"
+    },
+    {
+      "function": "00aa2490",
+      "address": "00aa2646",
+      "native": "00bf7fbf",
+      "contract": "current CRT _stricmp; exact native ASCII literals and order; no CRT port"
+    },
+    {
+      "function": "00aa83a0",
+      "address": "00aa83b7",
+      "native": "00b6e680",
+      "contract": "existing concrete requested-parent-null path; current child node"
+    },
+    {
+      "function": "00aa83a0",
+      "address": "00aa83c1",
+      "native": "00b6d890",
+      "contract": "reread child+4C after previous callbacks; request null root"
+    },
+    {
+      "function": "00aa83a0",
+      "address": "00aa83d1",
+      "native": "00b6d940",
+      "contract": "current parent node and current child node after root propagation"
+    },
+    {
+      "function": "00aa83a0",
+      "address": "00aa83de",
+      "native": "00a9bd50",
+      "contract": "current parent+64 list; captured child pointer cell"
+    },
+    {
+      "function": "00a9bd50",
+      "address": "00a9bd78",
+      "native": "00bf6713",
+      "contract": "impossible valid-reference iterator/list-base failure excluded"
+    },
+    {
+      "function": "00a9bd50",
+      "address": "00a9bd85",
+      "native": "00bf6713",
+      "contract": "impossible valid-reference iterator/list-base failure excluded"
+    },
+    {
+      "function": "00a9bd50",
+      "address": "00a9bd8f",
+      "native": "00bf6713",
+      "contract": "current-head checks use current CRT invalid parameter; native failure behavior excluded"
+    },
+    {
+      "function": "00a9bd50",
+      "address": "00a9bda6",
+      "native": "00bf6713",
+      "contract": "current-head checks use current CRT invalid parameter; native failure behavior excluded"
+    },
+    {
+      "function": "00a9bd50",
+      "address": "00a9bdd9",
+      "native": "00bf6713",
+      "contract": "current-head checks use current CRT invalid parameter; native failure behavior excluded"
+    },
+    {
+      "function": "00a9bd50",
+      "address": "00a9bdc0",
+      "native": "00bf65ac",
+      "contract": "existing singleton_lifetime_free; links written before free, current count decremented afterward"
+    },
+    {
+      "function": "00a9b790",
+      "address": "00a9b792",
+      "native": "00bf681b",
+      "contract": "existing8665F0 allocation path, no custom CRT/list implementation"
+    },
+    {
+      "function": "00a9d480",
+      "address": "00a9d4cc",
+      "native": "00408720",
+      "contract": "existing8675E0 legacy message and owning host length-error projection; no native EH identity"
+    },
+    {
+      "function": "00a9d480",
+      "address": "00a9d4e1",
+      "native": "00411700",
+      "contract": "existing8675E0 legacy message and owning host length-error projection; no native EH identity"
+    },
+    {
+      "function": "00a9d480",
+      "address": "00a9d4f8",
+      "native": "00bf6885",
+      "contract": "existing8675E0 legacy message and owning host length-error projection; no native EH identity"
+    }
+  ],
+  "no_ghidra_function": [],
+  "aliases": [
+    {
+      "address": "00a9b790",
+      "existing": "008665f0",
+      "whole_body_bytes": 51,
+      "equal_after_normalizing_dword_offsets": [
+        3
+      ],
+      "normalized_sha256": "57c3a10fa9e65695622c202059d491accfd78f1421284ea00c0a775eeabed74c",
+      "normalization": "REL32 direct calls only"
+    },
+    {
+      "address": "00a9d480",
+      "existing": "008675e0",
+      "whole_body_bytes": 147,
+      "equal_after_normalizing_dword_offsets": [
+        13,
+        77,
+        98,
+        121
+      ],
+      "normalized_sha256": "8ff3e225aff52cd38bb92fd8ab666dcfdcdecef632454bac5c62f3060ac128d3",
+      "normalization": "EH handler immediate plus REL32 direct calls; no native EH-handler equivalence claim"
+    }
+  ],
+  "raw_layout": {
+    "string": "8B length+0,data+4",
+    "widget": "node+4C,list+64,sentinel+68,count+6C,parent+70",
+    "list": "12B untouched_allocator+0,head+4,count+8",
+    "list_node": "12B next+0,previous+4,payload+8"
+  },
+  "source_providers": [
+    "reverse_find_native_string_bytes_004bcb80 (native_lua_script_overrides.cpp)",
+    "set_native_node_parent_null_00b6e680 / propagate_native_node_root_00b6d890 / unlink_native_node_child_00b6d940 (native_node_destruction.cpp)",
+    "SceneAttachmentRuntime::resolve_key -> existing canonical transform (scene_attachment.cpp)",
+    "create_effect_deletion_node_008665f0 / grow_effect_deletion_list_count_008675e0 (effect_deletion_queue.cpp)",
+    "singleton_lifetime_free (singleton_lifetime.cpp)"
+  ],
+  "read_order": [
+    "classifier captures data once before reverse search; counted underscore scan, then C-string comparisons",
+    "detach captures child identity; null child skips parent; initial node gate once; current child node after set-parent, current parent node after root propagation, then current child node before unlink",
+    "list removal captures initial sentinel before payload, then first node; payload captured once even if source cell aliases a node freed during traversal",
+    "matching node current previous->next is stored before reloading current next/previous for next->previous; free precedes current count decrement; child+70 cleared only after whole removal"
+  ],
+  "validation": {
+    "strict_win32_build": true,
+    "existing_ctests_passed": 2,
+    "build_log": "local/cc10_gui_widget_child_links_build.log (ignored)",
+    "direct_call_rows_verified": true,
+    "expected_direct_call_rows": 32,
+    "native_bytes_equal_installed_pe": true,
+    "original_ranges": [
+      {
+        "address": "00aa2490",
+        "bytes": 458,
+        "sha256": "6791bd5ad0db17abc38d5b4ec550396352321e20cef12e5ed5e73977b705cb23"
+      },
+      {
+        "address": "00aa83a0",
+        "bytes": 79,
+        "sha256": "9378e4a79c812822cbe0162a66a157889d51892a043dd33f46fcf4f1da316a3b"
+      },
+      {
+        "address": "00a9bd50",
+        "bytes": 156,
+        "sha256": "c04c78756a49ea60cbf317da23fb37ec1ce99c0c4d145f56af4245b6dfd348ea"
+      },
+      {
+        "address": "00a9b790",
+        "bytes": 51,
+        "sha256": "0914eb85848cff74186a178886783a4e960589ed820a68c9b8aba3a81cfa42a8"
+      },
+      {
+        "address": "00a9d480",
+        "bytes": 147,
+        "sha256": "4604a1ddcaef326515f9f04c0669f3904d44dac704b4c26ecbb23aa4fd8b39bd"
+      },
+      {
+        "address": "004bcb80",
+        "bytes": 120,
+        "sha256": "67a509a06f321bdd3896ea560fb586f490904711b06c890f219bf30f80b098c4"
+      },
+      {
+        "address": "008665f0",
+        "bytes": 51,
+        "sha256": "994114c3aa18969d9f6fcb73411652e2b921292038922e72ea8f7d641ef504f3"
+      },
+      {
+        "address": "008675e0",
+        "bytes": 147,
+        "sha256": "857627f7c124471ac22403de6f91c8c44688fd2746156ae7773fb1b4e8bc5133"
+      }
+    ],
+    "focused_probe": "local/output/cc10_child_links_probe.cpp (ignored)",
+    "probe_log": "local/output/cc10_child_links_probe.log (ignored)",
+    "probe_build_command": "cl /nologo /MD /EHsc /std:c++20 /O2 /Gy /W4 /WX /fp:strict /I include /I local\\output /Fo:local\\output\\ /Fe:local\\output\\cc10_child_links_probe.exe local\\output\\cc10_child_links_probe.cpp build\\win32\\Release\\bsp_core.lib build\\win32\\Release\\bsp_lua511.lib build\\win32\\Release\\bsp_zlib121.lib /link /OPT:REF /MANIFEST:EMBED user32.lib d3d9.lib advapi32.lib shell32.lib",
+    "probe_assertions": "NDEBUG compile-time rejection; explicit main return0; compile/run exit0",
+    "probe_source_sha256": "0bb4e356f149359cc981c9a0c63c097f6efc9d1a6aaaab91ba7eb9e721e3dfd0",
+    "probe_exe_sha256": "c457e9ee063a0bb1a46838c2c515d9c49df64312f4a9c4e6d2267011cd9a6e85",
+    "classifier_pairs": 43,
+    "detach_flow_pairs": 4,
+    "detach_compared_bytes_per_pair_before_ring_and_trace": 1960,
+    "aliased_target_remove_pairs": 1,
+    "node_create_pairs": 1,
+    "count_pairs": 4,
+    "probe_result": "PASS. Original five bodies plus original4BCB80; classifier CRT calls rebound to shared current CRT; detach node calls rebound to same existing actual-node providers. Exact raw widget/node bytes plus surviving ring payloads and callback trace match. Count includes unsigned wrap.",
+    "provider_boundary": "Does not compare the full original node provider bodies; tests wrapper callback/reread order over actual bound node storage. Original grow failure branch not executed; source aliases retain previously tested host EH behavior. Free order inspected in assembly/source, not a new CRT differential.",
+    "outer_abi_compatible": false,
+    "application_bound": false,
+    "game_validated": false
+  },
+  "limits": [
+    "Normal valid retained actual storage and finite circular lists, matching allocation/free domain and live canonical node bindings.",
+    "Source preserves actual headers/links/counts; no logical GUI owner, string_view conversion, replacement container or fabricated companion.",
+    "Classifier uses the current CRT; focused differential binds both to that CRT. Native CRT locale/high-byte implementation parity is not claimed. Borrowed empty/underscore contents and addresses must remain live.",
+    "Native invalid-parameter delivery, allocator failure behavior, FH3/SEH identity, full machine-state/outer binary ABI, application and game parity are excluded. Existing insertion length-error host projection remains explicit."
+  ],
+  "ghidra_mutations": false,
+  "annotation_handoff": "Primary may add raw provider evidence to existing five names/comments under write lock; retain logical-provider history and distinguish A9D480 normal count write from overflow branch."
+}

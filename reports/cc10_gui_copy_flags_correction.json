@@ -1,0 +1,55 @@
+{
+  "packet": "cc10_gui_copy_flags_correction",
+  "status": "verified_analysis_correction_only",
+  "function": "00aa9520",
+  "preserved_name": "BSP_GuiWidget_CopyConstruct",
+  "table": "00d5c0b8",
+  "bytes": 76,
+  "sha256": "47c0181aaf0d6571b65077b3c01ce8c2b61ca45492d53cfad9f59aee4eaaf1d7",
+  "live_pe_equal": true,
+  "values": [
+    62,
+    62,
+    62,
+    62,
+    62,
+    62,
+    62,
+    62,
+    62,
+    62,
+    62,
+    62,
+    62,
+    62,
+    62,
+    62,
+    62,
+    38,
+    38
+  ],
+  "correction": "The table contains clone FLAGS, not name pointers. Values for type0..16 are3E; type17..18 are26. Older Ghidra prose is stale.",
+  "read_order": [
+    "AA96E4 source+4C node",
+    "AA96E7 current source+60 type",
+    "AA96EA captured node profile",
+    "AA96EC flags[type]",
+    "AA96F3 profile+10",
+    "AA96F6 push flags",
+    "AA96FC call exact captured target"
+  ],
+  "implementation_change": false,
+  "existing_source_note": "gui_widget_copy.cpp already interprets flags; complete-looking logical GuiWidgetOwnerRuntime path is not a raw AA9520 implementation.",
+  "raw_dependencies_remaining": [
+    "raw B752B0 clone destination/derived path",
+    "raw AC59A0 page scene/camera-store orchestration",
+    "raw AA9520/AC6040 composition"
+  ],
+  "boundary": "Table/call analysis correction only. No new raw copy, native ABI/EH, build, runtime or game claim. Worker readiness archive is a bounded snapshot.",
+  "archive": {
+    "path": "local/cc10-platform-evidence/gui-copy-flags-readiness.zip",
+    "sha256": "0385cfc652d658acfaa18b341f84adccc4238386221f2d0b1b777a669429b6a1",
+    "files": 4,
+    "valid": true
+  }
+}

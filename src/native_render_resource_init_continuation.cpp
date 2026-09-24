@@ -232,7 +232,7 @@ void continue_native_render_resource_init_00b109bc_fragment(NativeRenderResource
     if(a.phase!=State::Phase::fresh || entry.phase!=NativeRenderResourceInitEntryState::Phase::awaiting_b109bc_continuation ||
        entry.native_site!=0x00b109bcu || entry.continuation_identity || !entry.argument_cells)
         throw std::logic_error("render-resource continuation requires an unconsumed B109BC entry");
-    a.entry=&entry;entry.continuation_identity=&a;a.phase=State::Phase::preparing;
+    a.entry=&entry;entry.continuation_identity=&a;a.context_identity=&c;a.phase=State::Phase::preparing;
     try {
         validate(c);prepare(c,a);
         a.phase=State::Phase::running;entry.phase=NativeRenderResourceInitEntryState::Phase::continuation_running;

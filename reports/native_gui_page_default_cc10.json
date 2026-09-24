@@ -1,0 +1,115 @@
+{
+  "packet": "cc10_gui_page_default",
+  "status": "complete_raw_normal_body_build_and_focused_original_source_checked",
+  "address": "00aa3840",
+  "coverage": "complete normal body",
+  "source": "src/native_gui_page_default.cpp",
+  "documentation": "docs/NATIVE_GUI_PAGE_DEFAULT_CC10.md",
+  "original_abi": "ECX fresh actual124h page storage, EAX same pointer, RET; explicit borrowed-scalar C++ bindings change ABI",
+  "native_bytes": {
+    "address": "00aa3840",
+    "size": 105,
+    "sha256": "f0fea1c9ce23ae7dda9cb0b98adea3598d29fa1f94bd690b70bca2c992ee288d",
+    "live_pe_equal": true
+  },
+  "scalar_bytes": [
+    {
+      "address": "00d7a2f0",
+      "size": 4,
+      "sha256": "fb360f7241a770dc32cade9a1d1273c92b13bd4959b1c130931312b7fe95e63f",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00ce3804",
+      "size": 4,
+      "sha256": "07883481b5c147464597d44401db095d88c2a6b049fbbcd7b278de98a5ceeb71",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00d7a24c",
+      "size": 4,
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "live_pe_equal": true
+    }
+  ],
+  "end_inclusive": "00aa38a8",
+  "end_exclusive": "00aa38a9",
+  "last_instruction": "00aa38a8 RET",
+  "last_instruction_length": 1,
+  "original_executable_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "no_ghidra_function": [],
+  "host_steps": [
+    {
+      "address": "00aa3845",
+      "native": "00aa9390",
+      "function": "00aa3840",
+      "contract": "ECX same actual page, stack literal type1, RET4/EAX page; genuine existing raw base including sentinel and source failure cleanup"
+    }
+  ],
+  "limits": "Complete AA3840 normal body only. Explicit C++ scalar bindings change native ABI. Real base provider owns its failure cleanup; no new allocation/publication/slot-return/EH or logical owner. AA6560/AA3BD0 and copyAC6040 remain outside implementation. No native FH3/SEH, full factory or game claim.",
+  "validation": {
+    "strict_build": "scripts/build.ps1 MSVC Win32 Release /W4 /WX /fp:strict",
+    "ctests_passed": 3,
+    "original_source_pairs": 3,
+    "probe": "local/cc10_gui_page_default/gui_page_default_probe.exe",
+    "executable_sha256": "32671cecf5f1ab0954f5700067908a52f9a74153c1097c4fc3228a192235956d",
+    "probe_contract": "Original105B with one callee and three scalar relocations. Genuine raw base/sentinel; raw sNaN/-0 bits, real read-before-stamp and read-after-store aliases, same return pointer and all128h bytes compared with only allocatedsentinelpointer normalized. No factory/callee-independent/EH/game claim.",
+    "prior_archives_unchanged": {
+      "local/cc10_field_values_evidence.zip": "a749dbf4656596e6a4e0c11ecb320a02bfe62dcba5fa3654c2744aa2a3022153",
+      "local/cc10_widget_transform_evidence.zip": "0d90499f71be2a3cc99ad732deaa8a71a5b55546da4dbaa7ee708c364bae45f8",
+      "local/cc10_widget_property_prefix_evidence.zip": "181ebe9358fe2d7ea6832b8051a0b3fd6f830a0360f3ef390626403ba7cbfcdf"
+    },
+    "ghidra_mutated": false,
+    "game_validated": false,
+    "report_call_rows_checked": 1,
+    "report_call_row_failures": 0
+  },
+  "read_only_factory_handoff": {
+    "local": "local/cc10_gui_page_default/factory_readiness.json",
+    "sha256": "9a13630186717533b16bcde3684f90d4823f1f82a37ad651359f203ba102fc90",
+    "rows": 18,
+    "implemented": false,
+    "required_pool_startup": "Existing page pool CD73D0 must have completed; wrapper does not perform registration",
+    "remaining_copy": "Type1 AA3BD0 optional-source branch calls raw AC6040; unresolved, cannot substitute GuiLayerImage copy",
+    "material_correction": "FactoryAA6560 is148B pure tail dispatch, Listbox wrapperAA64B0 is undefined132B. All selectors discard requestedECX. Icon/Progbar share poolF8BDA0 physicalstride13C even though Progbarrequests140; never malloc requested sizes as raw factory substitutes."
+  },
+  "compiled_source": {
+    "src/native_gui_page_default.cpp": "b82529fef35ad993535aa832f3cccb7dea0ee224e13d3dcecad5cc080f366a94",
+    "include/bsp/native_gui_page_default.hpp": "9ff585b8f10ef3cf6eda763e4060755a93f77d8838581b652b58de0949a3c3e5",
+    "src/native_gui_widget_base_storage.cpp": "4ddd5ab1ad4a2b8174d80caf70dba76afa648479e4e8637a56884f2b9db6354d",
+    "src/native_platform_focus_owners.cpp": "efff43cee498b710d53d4b2380e4ae89791dc578371d35b2be29327b0fedfe73",
+    "build/win32/Release/bsp_core.lib": "4d1146b43aa051cb4a570a23027a7677cb1b8b17168d1bb03afd3cf1b8a9633b"
+  },
+  "local_files": {
+    "local/cc10_gui_page_default/build.log": "1a69450c6311e2cd1baaa4d19f44355af9f4cb9f0f70b74f4f3f45de4bfd473e",
+    "local/cc10_gui_page_default/bytes_00aa3840.txt": "552ce04f1516a761ce60738700949bfe1ae76c80ffcc5cc2db7d1b5757d1de6b",
+    "local/cc10_gui_page_default/bytes_00ce3804.txt": "38e05cab8ba2c60eb189f1d6566482a6351c6886447f4bee8ca835293e02125e",
+    "local/cc10_gui_page_default/bytes_00d7a24c.txt": "fd6f7a7d3874dfe569d075d61e99337d9cca002b06a4ebed7f03e974e26bdabc",
+    "local/cc10_gui_page_default/bytes_00d7a2f0.txt": "33c45e1e755e33142a755697143f630459d2b3caea8de4f1fde287131ff9aa9c",
+    "local/cc10_gui_page_default/commit-message.txt": "01adf23783477fd7365e6006bcffa1d46114fa2254d0f13dea2eb5250f2d5afd",
+    "local/cc10_gui_page_default/dependencies.json": "27e5ab4579b2f6c8cc48cd4135ed0196287191a97e3b6c8d8c1b428a344d23c6",
+    "local/cc10_gui_page_default/factory_readiness.json": "9a13630186717533b16bcde3684f90d4823f1f82a37ad651359f203ba102fc90",
+    "local/cc10_gui_page_default/factory_readiness.py": "541ba6167da3b34111954a7a533aff561e8abf801894cf6b9c17de3e6fb93fc1",
+    "local/cc10_gui_page_default/gui_page_default_probe.exe": "32671cecf5f1ab0954f5700067908a52f9a74153c1097c4fc3228a192235956d",
+    "local/cc10_gui_page_default/ledger.json": "036d5e553edce691d69f0c461eef40102edac35b86c383e2e2382e8668d57fec",
+    "local/cc10_gui_page_default/name_ledger.log": "404b6748439e4ba7a842569bc7438d73f701d1bc7967fccc5f1bef8528b99a68",
+    "local/cc10_gui_page_default/native_bytes.hpp": "9baad350d39a3346c1ae9d89033beccb54a29b9720e9173e84f12b53d6ff4a48",
+    "local/cc10_gui_page_default/original_assembly.txt": "da919f709a44b76456be990cf9c9dd634b78d1219732f61a6fe0b5ea5afcc4cb",
+    "local/cc10_gui_page_default/pins.json": "61e00ab66b204a2666028d583045b6fce95532f9f6e345788a0759e60d2f1540",
+    "local/cc10_gui_page_default/prepare.py": "78c80d48956d7443137af13435124081d9c382efcd84a6fbbc37b5a67801ef47",
+    "local/cc10_gui_page_default/probe.cmd": "88931c3e497c343335c05e12582f48d0fac40a4848ba5552f7584caea3d7994e",
+    "local/cc10_gui_page_default/probe.cpp": "6ff5fa759b4cd98e7170e4e15c8acec9b990f9121391146dab84b92f851c7535",
+    "local/cc10_gui_page_default/probe.map": "3508a0a1fbb5cc57acaaaec6048812ac64878befd9fde93436b4b2e756ff817f",
+    "local/cc10_gui_page_default/probe.obj": "67dc5b2f163c50e01dcc470da8cc5fe0a9db8f30180a6ef7bfc1b28e859d7861",
+    "local/cc10_gui_page_default/probe_build.log": "149b1b861f1ebe744c6ed7a5ef38eb9abf3e9ebd393f94708e953501cae6287b",
+    "local/cc10_gui_page_default/report.py": "fec8f53346ccc7c055edcfb9032c2882ff9aac4d08280971f6364bdc0d6b8f04",
+    "local/cc10_gui_page_default/report_calls.log": "db18e8e70da2c45c227ddea680b791d08387c9b80f95ea3fcc63602c0111066c",
+    "local/cc10_gui_page_default/run.log": "8045a5f508a5e6526b2103b153dcf3ce1b8132eba720ec0a4d54039ccaecfbb2"
+  },
+  "local_archive": {
+    "path": "local/cc10_gui_page_default_evidence.zip",
+    "sha256": "a224fc79f56861715059ff9717fcdad40893be00d26697a230b64ceafced5c8b",
+    "valid": true,
+    "files": 24
+  }
+}

@@ -44,12 +44,17 @@ struct NativeRenderResourceInitContinuationContext {
 // companions. Existing child blocks require explicit external quiescence before
 // destruction/reset. Normal return here is another FRONTIER, not full init.
 struct NativeRenderResourceInitContinuationState final {
-    enum class Phase { fresh, preparing, running, awaiting_b11599_continuation, failed };
+    enum class Phase { fresh, preparing, running, awaiting_b11599_continuation,
+        post_running, awaiting_later_continuation, failed };
     NativeRenderResourceInitContinuationState() = default;
     NativeRenderResourceInitContinuationState(const NativeRenderResourceInitContinuationState&) = delete;
     NativeRenderResourceInitContinuationState& operator=(const NativeRenderResourceInitContinuationState&) = delete;
     Phase phase{Phase::fresh};
     NativeRenderResourceInitEntryState* entry{};
+    // The same context object and original entry remain alive through every
+    // dependent stage. Identities are host metadata, never resource credits.
+    const NativeRenderResourceInitContinuationContext* context_identity{};
+    const void* post_identity{};
     std::uint32_t native_site{};
     int native_state{-1};
     std::uint32_t temporary_mask_esp10{};

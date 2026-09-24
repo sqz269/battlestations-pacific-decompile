@@ -1,0 +1,132 @@
+{
+  "packet": "cc10_gui_widget_bounds",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_gui_widget_bounds.cpp",
+  "status": "complete_normal_raw_storage_build_and_original_source_compared",
+  "functions": [
+    {
+      "address": "00aa70e0",
+      "end_inclusive": "00aa716a",
+      "end_exclusive": "00aa716b",
+      "final_instruction": "00aa716a",
+      "final_instruction_length": 1,
+      "byte_span": 139,
+      "name": "BSP_GuiWidget_RefreshLocalBounds",
+      "original_abi": "ECX actual widget, RET0",
+      "coverage": "complete normal body; zero gate and enabled actual-storage path"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00aa70f3",
+      "function": "00aa70e0",
+      "native": "00b74640",
+      "contract": "actual model+180 geometry; stacked unused0, RET4; outer stacked0 remains"
+    },
+    {
+      "address": "00aa70fa",
+      "function": "00aa70e0",
+      "native": "00b732c0",
+      "contract": "current geometry+54 array[0]; stacked index0, RET4"
+    },
+    {
+      "address": "00aa7161",
+      "function": "00aa70e0",
+      "native": "00b855b0",
+      "contract": "ordered x87 float4 source loads and element+24/+28/+2C/+30 stores; RET4"
+    }
+  ],
+  "no_ghidra_function": [],
+  "existing_providers": {
+    "source": "src/gui_widget_owner.cpp",
+    "model_tail": "NativeModelTailStorage view at actual model+174; geometry at tail+0C",
+    "missing_function_providers": []
+  },
+  "ordering": {
+    "gate": "widget byte+74 zero returns before provider, dimension, half or scratch access",
+    "actual_chain": "widget+4C -> model+180 -> geometry+54 pointer array -> element0",
+    "native_half": "live double D7A280 read once after width load, retained on x87 stack; observed0.5",
+    "scratch_store_order": [
+      8,
+      0,
+      4,
+      12
+    ],
+    "comparison": "width and height reloaded into separate float32 spills; FCOMIP width,height; JBE selects height on tie/unordered; MOVSS spill selection",
+    "final_store": "existing B855B0 sequential x87 stores; actual widget/element alias preserved"
+  },
+  "critical_encodings": [
+    {
+      "address": "00aa710b",
+      "bytes": "dc c9",
+      "instruction": "FMUL ST(1),ST(0)",
+      "meaning": "width product in ST1; retain half ST0"
+    },
+    {
+      "address": "00aa711e",
+      "bytes": "d8 c9",
+      "instruction": "FMUL ST(0),ST(1)",
+      "meaning": "height product ST0; retain half ST1"
+    }
+  ],
+  "source_interface": {
+    "symbol": "refresh_native_gui_widget_local_bounds_00aa70e0",
+    "parameters": "void* actual_widget, GuiWidgetBounds& caller_scratch, const volatile double& actual_half_00d7a280",
+    "scratch_bytes": 16,
+    "scratch_domain": "distinct native-local-frame representation, no overlap with widget/model/geometry/element/livehalf; no initialization imposed"
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "existing_ctests_passed": 2,
+    "build_log": "local/cc10_gui_widget_bounds_build.log (ignored)",
+    "call_rows_verified": true,
+    "native_bytes_equal_installed_pe": true,
+    "original_ranges": [
+      {
+        "address": "00aa70e0",
+        "name": "refresh",
+        "bytes": 139,
+        "sha256": "499c4da1cafcc1e2becddc1ad772bd6f53b02a24d972a048b3739b5d00ed11a9"
+      },
+      {
+        "address": "00b74640",
+        "name": "geometry",
+        "bytes": 9,
+        "sha256": "b7ff20e1db5330d3267e90ab2878843cad302c39fc4734af86a8a8bf08b133f2"
+      },
+      {
+        "address": "00b732c0",
+        "name": "element",
+        "bytes": 13,
+        "sha256": "8dcf736751986acd75e000be99dc03d547d44ca694c404cd7e0d82d5302d3e00"
+      },
+      {
+        "address": "00b855b0",
+        "name": "store",
+        "bytes": 30,
+        "sha256": "a868a3552c9d409150b80913cc45797670df600a424d5afa652df46c867fed0f"
+      }
+    ],
+    "focused_probe": "local/output/cc10_bounds_probe.cpp (ignored)",
+    "probe_build_command": "cl /nologo /MD /EHsc /std:c++20 /O2 /Gy /W4 /WX /fp:strict /I include /I local\\output /Fo:local\\output\\ /Fe:local\\output\\cc10_bounds_probe.exe local\\output\\cc10_bounds_probe.cpp build\\win32\\Release\\bsp_core.lib build\\win32\\Release\\bsp_lua511.lib build\\win32\\Release\\bsp_zlib121.lib /link /OPT:REF /MANIFEST:EMBED user32.lib d3d9.lib advapi32.lib shell32.lib",
+    "probe_assertions": "NDEBUG compile-time #error guard; compile/run succeeded",
+    "probe_source_sha256": "2775e29a921a3460d802822bfc30c33953df58ea3a3fafc4cadc67f89f55c118",
+    "probe_exe_sha256": "76eb36138b42dab3da80c1a21b8ca40d7b83529c31ddf97b2266ee73f2d90a4d",
+    "probe_pairs": 168,
+    "probe_result": "PASS: complete original139B plus original9/13/30B providers, no primitive bridges. All actual context bytes, scratch16B, x87status and MXCSR equal. Three precision modes by four rounding modes; 12 arithmetic inputs plus element/widget alias and zero-gate invalidmodel. Covers ties/signedzero/NaNs/masked sNaN/infinities/subnormals/livehalf/overflow.",
+    "original_code_relocations": "three relative calls and absolute D7A280 address only",
+    "unmasked_fp_traps": false,
+    "abi_compatible": false,
+    "application_bound": false,
+    "game_validated": false,
+    "call_rows_checked": 3
+  },
+  "limits": [
+    "Requires actual valid current model tail, geometry array and element on enabled path; no null/invalid-pointer fallback.",
+    "Caller scratch is distinct from input/provider/output storage and live half, matching native automatic local frame. Widget and element may alias.",
+    "No C++ logical owner, native ABI/register/EFLAGS proof, unmasked FP trap transport, complete machine-state parity, application binding or game claim."
+  ],
+  "ghidra_mutations": false,
+  "annotation_handoff": "Primary may append raw-storage and DC C9 versus D8 C9 evidence to AA70E0 existing comment under write lock, retaining descriptive name and prior text."
+}

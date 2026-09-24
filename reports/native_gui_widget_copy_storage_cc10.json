@@ -1,0 +1,211 @@
+{
+  "packet": "cc10_gui_widget_copy_storage",
+  "source": "src/native_gui_widget_copy_storage.cpp",
+  "status": "complete_raw_normal_model26_3e_build_and_composition_checked",
+  "native_bytes": [
+    {
+      "address": "00aa9520",
+      "size": 515,
+      "end_exclusive": "00aa9723",
+      "last_instruction_address": "00aa9720",
+      "last_instruction_size": 3,
+      "instructions": 134,
+      "sha256": "d286e19bf58c656c37dc9f35efc50f7509dca35ab0243378c21af0c68e4f1cce",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00cb73f1",
+      "size": 10,
+      "end_exclusive": "00cb73fb",
+      "last_instruction_address": "00cb73f6",
+      "last_instruction_size": 5,
+      "instructions": 2,
+      "sha256": "9af036eff8229bbd2b0359d84e9a03295b45a609c417d8ae04800de16bb25a91",
+      "live_pe_equal": true
+    }
+  ],
+  "original_abi": "ECX destination, stacked source, EAX destination, RET4; new explicit C++ interface is not binary compatible",
+  "supported_domain": "current source4C actual canonical Model B752B0, flags26/3E,parent0; fresh nonoverlapping destination, live current type0..18 and profile/flag/context cells",
+  "native_calls": [
+    {
+      "address": "00aa95e3",
+      "native": "00a9b720",
+      "function": "00aa9520"
+    },
+    {
+      "address": "00aa96fc",
+      "native": "current_node+vtable10",
+      "function": "00aa9520"
+    },
+    {
+      "address": "00cb73f6",
+      "native": "00bf6b43",
+      "function": "00cb73f1",
+      "kind": "tail_jump"
+    }
+  ],
+  "ghidra_handler_definition": {
+    "events": [
+      {
+        "endpoint": "disassemble_bytes",
+        "body": {
+          "start_address": "00cb73f1",
+          "end_address": "00cb73fb"
+        },
+        "result": {
+          "success": true,
+          "start_address": "00cb73f1",
+          "end_address": "00cb73fa",
+          "bytes_disassembled": 10,
+          "message": "Successfully disassembled 10 byte(s)"
+        }
+      },
+      {
+        "endpoint": "create_function",
+        "body": {
+          "address": "00cb73f1",
+          "disassemble_first": false
+        },
+        "result": {
+          "success": true,
+          "address": "00cb73f1",
+          "function_name": "FUN_00cb73f1",
+          "entry_point": "00cb73f1",
+          "body_size": 10,
+          "message": "Function created successfully at 00cb73f1"
+        }
+      },
+      {
+        "defined": "00cb73f1",
+        "end": "00cb73fb",
+        "name": null,
+        "after": "Function: FUN_00cb73f1 at 00cb73f1\nSignature: undefined FUN_00cb73f1(void)\nEntry: 00cb73f1\nBody: 00cb73f1 - 00cb73fa"
+      },
+      {
+        "endpoint": "save_program",
+        "body": {},
+        "result": {
+          "success": true,
+          "program": "battlestationspacific.exe",
+          "message": "Program saved successfully"
+        }
+      }
+    ]
+  },
+  "failure_contract": {
+    "descriptor": "00dedc64",
+    "unwind_map": "00dedc4c",
+    "state0": "ref-base cleanup only",
+    "state2": "timed +88, list +64, ref-base; no whole widget or model rollback",
+    "model_acquired_creators": "preserved after completed model construction and later failure; caller owns explicit recovery"
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "existing_ctests": 3,
+    "build_log_sha256": "d5af906b12fe2c8795427e82e76a305244eb90495fdc0e48a9ce5c8b726031d0",
+    "new_tracked_tests": 0,
+    "focused_review": {
+      "review": "AA9520 bounded read-only source and original/source composition review",
+      "result": "no source correction requested; focused check passed",
+      "worker_frozen_commit": "9bd99e36201b3a64c0707b17e26e1f3e1d464748",
+      "tracked_edits": false,
+      "ghidra_mutations": false,
+      "owned_function_modified": false,
+      "native_bytes": [
+        {
+          "address": "00aa9520",
+          "bytes": 515,
+          "sha256": "d286e19bf58c656c37dc9f35efc50f7509dca35ab0243378c21af0c68e4f1cce"
+        },
+        {
+          "address": "00d5c0b8",
+          "bytes": 76,
+          "sha256": "47c0181aaf0d6571b65077b3c01ce8c2b61ca45492d53cfad9f59aee4eaaf1d7"
+        }
+      ],
+      "normal_pairs": 2,
+      "compared_widget_bytes": 236,
+      "compared_model_bytes": 388,
+      "normalizations": [
+        "widget+4C independently allocated model",
+        "widget+68 independently allocated circular sentinel",
+        "model+58 independently allocated name data",
+        "model+180 independently allocated geometry; presence retained"
+      ],
+      "flags_cases": [
+        "early type17/26 changes at allocation to late type3/3E",
+        "early type3/3E changes at allocation to late type17/26; null3E services proves reached26 route"
+      ],
+      "source_only_control": "early17 changes to late3, positive actual Mesh and no3E services: clone fails at B7532F; base state2 cleanup reaches CEB130, leaves widget4C zero and preserves acquired Model creator",
+      "observations": [
+        "all normalizedEC widget and184 model bytes match",
+        "current4C late model supplies raw name late-model",
+        "destination60 preserves early type while clone reads current60",
+        "sNaN conversion and x87 status, negative zero, subnormal, opaque EC tail/preimages",
+        "actual circular sentinel, empty timed header, sole Model creator transfer and final138 mask",
+        "positive actual Mesh clone, with no streams/sections/materials"
+      ],
+      "boundary": "Original515B body direct sentinel/current10 bound to same genuine actual-source providers. The two current virtual load instructions are replaced by binding to actual B752B0; original current4C/current60/actual19-word flags load retained. Probe instruments source sentinel alias entry to invoke real lower sentinel provider then mutate source; no product source changes. Full source AA9520 cpp compiled directly from root worktree. Shared B752B0 and deeper providers are not differentially executed as original native bodies. No original EH/ABI/game proof.",
+      "assertions": "NDEBUG compile-time rejection; no /DNDEBUG; active assert checks",
+      "build_command": "cl /nologo /MD /EHsc /std:c++20 /O2 /Gy /W4 /WX /fp:strict /I J:\\PROG\\battlestations-pacific-decompile-cc10\\include /I include /I local\\output /Fo:local\\output\\ /Fe:local\\output\\cc10_widget_copy_probe.exe local\\output\\cc10_widget_copy_probe.cpp J:\\PROG\\battlestations-pacific-decompile-cc10\\src\\native_gui_widget_copy_storage.cpp build\\win32\\Release\\bsp_core.lib build\\win32\\Release\\bsp_lua511.lib build\\win32\\Release\\bsp_zlib121.lib /link /OPT:REF /MANIFEST:EMBED /BASE:0x10000000 /DYNAMICBASE:NO user32.lib d3d9.lib advapi32.lib shell32.lib",
+      "exit_code": 0,
+      "artifacts": [
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_widget_copy_probe.cpp",
+          "bytes": 22041,
+          "sha256": "53dd5f4350482fdb1b23d0ed247e41a24beebe947ed576424d5c549417336b17"
+        },
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_widget_copy_probe.cmd",
+          "bytes": 775,
+          "sha256": "0396ec7d093ba22ba4dc3c447abb996b131cdc6383cd85e2de622243fbd081a8"
+        },
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_widget_copy_probe.exe",
+          "bytes": 311296,
+          "sha256": "b8b415f3b5a68e6c0a1eeac865732e63ef9f7efa98ad4b82a9dffc349d53d4cb"
+        },
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_widget_copy_probe.log",
+          "bytes": 512,
+          "sha256": "422a2bd3d0e03fd221049de74ea036174c1d1817cb54f43370756cf240bb1d61"
+        },
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_widget_copy_bytes.py",
+          "bytes": 1499,
+          "sha256": "c61b0110cd0299fe45e7820b6b78c9c7db58f3fb18a643577cf11c5f89e95cdd"
+        },
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_widget_copy_bytes.hpp",
+          "bytes": 3057,
+          "sha256": "61fd4dbc063cd2ad01cac7df0f965549b49e36613a0c3b603987fc4ad3d92d6e"
+        },
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_widget_copy_byte_proof.json",
+          "bytes": 284,
+          "sha256": "afe02f8d43542ec0425cc1541b68370d16fcd52cda843d279e2dad9086a2e02d"
+        },
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc10/include/bsp/native_gui_widget_copy_storage.hpp",
+          "bytes": 1724,
+          "sha256": "dd3d8b700a9dda51037bf2722a893402ebd2ae3d3358ad83fd3358325f57d307"
+        },
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc10/src/native_gui_widget_copy_storage.cpp",
+          "bytes": 5636,
+          "sha256": "66f5f04b8e71d79eba7e1791e57924a2679ef630fa4bffc80bb0f8b22d9367ae"
+        }
+      ]
+    },
+    "native_FH3_SEH_ABI": false,
+    "application_run": false,
+    "game_validated": false
+  },
+  "archive": {
+    "path": "local/cc10-platform-evidence/gui-widget-copy-storage.zip",
+    "sha256": "8c342fe8ceefc7e60d0b833e79baa58fbd3c0e3dc7a29a5d9354f58554db87e9",
+    "files": 20,
+    "valid": true
+  },
+  "evidence": "CC10 complete raw515B AA9520 normal source for actual Model B752B0 flags26/3E,parent0: individual x87 copies, real sentinel and current late source4C/type/flags, same canonical clone creator publication and current138 mask, exact unwritten bytes. Two full original/source composition pairs compare EC widget+184 model with limited allocated-identity normalization; allocation callback switches node/type, x87 sNaN/status and failure-state cleanup checked. Shared actual callees, not independent deep native behavior. Strict Win32+3CTests. CB73F1 defined; native FH3/ABI and application/game remain unproved. docs/NATIVE_GUI_WIDGET_COPY_STORAGE_CC10.md; reports/native_gui_widget_copy_storage_cc10.json."
+}
