@@ -3,6 +3,8 @@
 #include <exception>
 #include <new>
 #include <stdexcept>
+#include <type_traits>
+#include <cstring>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native distortion lifetime requires MSVC Win32.
@@ -22,7 +24,10 @@ void put(void* p,Word value) noexcept {*static_cast<volatile Word*>(p)=value;}
 void* pointer(Word bits) noexcept {return reinterpret_cast<void*>(bits);}
 std::int32_t signed_word(const volatile void* p) noexcept {return static_cast<std::int32_t>(word(p));}
 void require(bool value,const char* why) {if(!value)throw std::logic_error(why);}
-const volatile Word* table(void* child,NativeDistortionLifetimeContext& c) {
+using RawContext=NativeDistortionStorageLifetimeContext;
+using ClearAcquired=NativeDistortionStorageClearAcquired;
+using LifetimeAcquired=NativeDistortionStorageLifetimeAcquired;
+template<class Context> const volatile Word* table(void* child,Context& c) {
     switch(word(child)) {
     case 0xd61eb8:return c.effects.actual_holder_profile_00d61eb8;
     case 0xd61ec0:return c.effects.actual_post_effect_profile_00d61ec0;
@@ -31,7 +36,22 @@ const volatile Word* table(void* child,NativeDistortionLifetimeContext& c) {
     default:throw std::logic_error("distortion child has unsupported current profile");
     }
 }
-void release_zero(void* child,NativeDistortionLifetimeContext& c) {
+void release_scene(void* child,NativeDistortionLifetimeContext& c) {
+    auto* const scene=c.scene_owner_3c;
+    require(scene && &scene->storage==child && &scene->reference_count==static_cast<std::atomic<std::int32_t>*>(at(child,4)),
+        "distortion requires its canonical concrete scene companion");
+    scene->release_zero_references();
+}
+void release_scene(void* child,RawContext& c) {
+    auto& canonical=c.trees.owners.resolve_actual(child);
+    auto* const scene=dynamic_cast<NativeGuiSceneReference*>(&canonical);
+    require(scene && &scene->reference_count==static_cast<std::atomic<std::int32_t>*>(at(child,4)),
+        "raw distortion requires the same actual scene/count canonical companion");
+    scene->release_zero_references();
+}
+template<class Context> void release_zero(void* child,Context& c) {
+    if constexpr(std::is_same_v<Context,RawContext>)
+        require(word(at(child,4))==0,"raw distortion terminal requires observed current actual count zero");
     const volatile Word* first=table(child,c);
     require(first && first[0]==0xbd30e0,"distortion child requires actual BD30E0");
     const Word terminal=table(child,c)[1];
@@ -45,36 +65,106 @@ void release_zero(void* child,NativeDistortionLifetimeContext& c) {
             "distortion requires canonical post20 companion");
         post->release_zero_references();return;
     }
-    case 0xb72580: {
-        auto* const scene=c.scene_owner_3c;
-        require(scene && &scene->storage==child && &scene->reference_count==static_cast<std::atomic<std::int32_t>*>(at(child,4)),
-            "distortion requires its canonical concrete scene companion");
-        scene->release_zero_references();return;
-    }
+    case 0xb72580:release_scene(child,c);return;
     default:throw std::logic_error("distortion child has unsupported deleting slot");
     }
 }
-void release_slot(void* owner,Word offset,void* captured,NativeTextureSurfaceReferenceIncrement decrement,
-    NativeDistortionLifetimeContext& c) {
+template<class Context> void release_slot(void* owner,Word offset,void* captured,
+    NativeTextureSurfaceReferenceIncrement decrement,Context& c,ClearAcquired* a,
+    Word decrement_site,Word terminal_site) {
+    if(a){a->current_offset=offset;a->captured_child=captured;a->captured_decrement=decrement;}
     if(captured) {
-        if(decrement(static_cast<volatile long*>(at(captured,4)))==0)release_zero(captured,c);
+        if(a)a->active_call_site=decrement_site;
+        const long result=decrement(static_cast<volatile long*>(at(captured,4)));
+        if(a)a->decrement_result=result;
+        if(result==0){if(a)a->active_call_site=terminal_site;release_zero(captured,c);}
         put(at(owner,offset),0);
     }
+}
+void unlink_camera(void* camera,NativeDistortionLifetimeContext& c,ClearAcquired*) {
+    auto* const canonical=c.nodes.attachments.find_actual_node(reinterpret_cast<Word>(camera));
+    auto* const reference=dynamic_cast<NativeCameraReference*>(canonical);
+    require(reference && &reference->camera_owner().storage.node==camera,
+        "distortion requires its canonical concrete camera companion");
+    unlink_and_release_render_model_00b6dfa0(*reference);
+}
+void unlink_camera(void* camera,RawContext& c,ClearAcquired* a) {
+    unlink_native_node_tree_00b6dfa0(camera,c.trees,a->camera_unlink);
+}
+template<class Context> void clear_resources(void* owner,Context& c,ClearAcquired* a) {
+    for(Word offset:{0x10u,0x14u}) {
+        void* const captured=pointer(word(at(owner,offset)));
+        if(captured)release_slot(owner,offset,captured,c.effects.actual_decrement_00ce2220,c,a,0xb4ee8a,0xb4ee9a);
+    }
+    void* child=pointer(word(at(owner,0x18)));
+    const auto decrement=c.effects.actual_decrement_00ce2220;
+    const Word offsets[]={0x18,0x1c,0x20,0x38};
+    const Word calls[]={0xb4eebb,0xb4eedb,0xb4eefb,0xb4ef1b};
+    for(Word i=0;i!=4;++i) {
+        if(i)child=pointer(word(at(owner,offsets[i])));
+        release_slot(owner,offsets[i],child,decrement,c,a,calls[i],calls[i]+12);
+    }
+    void* const camera=pointer(word(at(owner,0x34)));
+    if(camera) {
+        if(a){a->current_offset=0x34;a->captured_child=camera;a->active_call_site=0xb4ef37;}
+        unlink_camera(camera,c,a);put(at(owner,0x34),0);
+    }
+    release_slot(owner,0x3c,pointer(word(at(owner,0x3c))),decrement,c,a,0xb4ef4e,0xb4ef5a);
+    release_slot(owner,0x240,pointer(word(at(owner,0x240))),decrement,c,a,0xb4ef71,0xb4ef7d);
+}
+void admit_context(RawContext& c) {
+    require(&c.effects.actual_post_effects==&c.trees.owners &&
+        &c.effects.actual_decrement_00ce2220==&c.trees.decrement_00ce2220,
+        "raw distortion requires the same actual-owner registry and decrement cell");
+}
+void prepare_record_lifetime(void* owner) noexcept {
+    static_assert(std::is_aggregate_v<NativeDistortionRecordArray>);
+    static_assert(std::is_trivially_copyable_v<NativeDistortionRecordArray>);
+    static_assert(sizeof(NativeDistortionRecordArray)==12);
+    unsigned char saved[sizeof(NativeDistortionRecordArray)];
+    std::memcpy(saved,at(owner,0x254),sizeof saved);
+    // memcpy implicitly creates the trivial header object while preserving
+    // every preimage byte; it introduces no native descriptor initialization.
+    std::memcpy(at(owner,0x254),saved,sizeof saved);
 }
 int cleanup_exception(unsigned long code) noexcept {
     if(code==0xe06d7363u)std::terminate();
     return EXCEPTION_CONTINUE_SEARCH;
 }
-void unwind_native_distortion(void* owner,NativeDistortionLifetimeContext& c,int state) noexcept {
+template<class Context> void unwind_native_distortion(void* owner,Context& c,int state,LifetimeAcquired* a) noexcept {
     __try {
-        if(state==1)destroy_native_distortion_records_00b4f0a0(*static_cast<NativeDistortionRecordArray*>(at(owner,0x254)));
+        if(a)a->cleanup_started=true;
+        if(state==1) {
+            if(a){a->native_eh_state=0;a->records_started=true;a->active_call_site=0xcbfc61;}
+            destroy_native_distortion_records_00b4f0a0(*static_cast<NativeDistortionRecordArray*>(at(owner,0x254)));
+            if(a)a->records_complete=true;
+        }
+        if(a){a->native_eh_state=-1;a->base_started=true;a->active_call_site=0xcbfc53;}
         destroy_native_render_effect_base_00b0f5e0(owner,c.effects);
+        if(a){a->base_complete=true;a->cleanup_complete=true;}
     } __except(cleanup_exception(GetExceptionCode())) {__assume(0);}
 }
-struct Cleanup {
-    void* owner;NativeDistortionLifetimeContext& context;int state{1};
-    ~Cleanup() noexcept {if(state>=0)unwind_native_distortion(owner,context,state);}
+template<class Context> struct Cleanup {
+    void* owner;Context& context;int state;LifetimeAcquired* acquired;
+    ~Cleanup() noexcept {if(state>=0)unwind_native_distortion(owner,context,state,acquired);}
 };
+template<class Context> void destroy_owner(void* owner,Context& c,LifetimeAcquired* a) {
+    put(owner,0xd61f1c);Cleanup<Context> cleanup{owner,c,1,a};
+    if(a){a->native_eh_state=1;a->active_call_site=0xb4f17c;a->clear.started=true;}
+    clear_resources(owner,c,a?&a->clear:nullptr);
+    if(a)a->clear.complete=true;
+    auto& records=*static_cast<NativeDistortionRecordArray*>(at(owner,0x254));cleanup.state=0;
+    if(a){a->native_eh_state=0;a->records_started=true;a->active_call_site=0xb4f190;}
+    resize_native_distortion_records_00b4ee20(records,0);
+    void* const backing=pointer(word(&records));
+    if(a)a->active_call_site=0xb4f198;
+    singleton_lifetime_free(backing);
+    if(a)a->records_complete=true;
+    cleanup.state=-1;
+    if(a){a->native_eh_state=-1;a->base_started=true;a->active_call_site=0xb4f1aa;}
+    destroy_native_render_effect_base_00b0f5e0(owner,c.effects);
+    if(a){a->base_complete=true;a->complete=true;}
+}
 } // namespace
 
 void reserve_native_distortion_records_00b4ed70(NativeDistortionRecordArray& records,std::int32_t requested) {
@@ -123,38 +213,34 @@ void* construct_native_distortion_owner_00b4f0c0(void* owner,const NativeDistort
     return owner;
 }
 void clear_native_distortion_resources_00b4ee70(void* owner,NativeDistortionLifetimeContext& c) {
-    for(Word offset:{0x10u,0x14u}) {
-        void* const captured=pointer(word(at(owner,offset)));
-        if(captured)release_slot(owner,offset,captured,c.effects.actual_decrement_00ce2220,c);
-    }
-    void* child=pointer(word(at(owner,0x18)));
-    const auto decrement=c.effects.actual_decrement_00ce2220;
-    for(Word offset:{0x18u,0x1cu,0x20u,0x38u}) {
-        if(offset!=0x18)child=pointer(word(at(owner,offset)));
-        release_slot(owner,offset,child,decrement,c);
-    }
-    void* const camera=pointer(word(at(owner,0x34)));
-    if(camera) {
-        auto* const canonical=c.nodes.attachments.find_actual_node(reinterpret_cast<Word>(camera));
-        auto* const reference=dynamic_cast<NativeCameraReference*>(canonical);
-        require(reference && &reference->camera_owner().storage.node==camera,
-            "distortion requires its canonical concrete camera companion");
-        unlink_and_release_render_model_00b6dfa0(*reference);put(at(owner,0x34),0);
-    }
-    release_slot(owner,0x3c,pointer(word(at(owner,0x3c))),decrement,c);
-    release_slot(owner,0x240,pointer(word(at(owner,0x240))),decrement,c);
+    clear_resources(owner,c,nullptr);
 }
 void destroy_native_distortion_owner_00b4f150(void* owner,NativeDistortionLifetimeContext& c) {
-    put(owner,0xd61f1c);Cleanup cleanup{owner,c};
-    clear_native_distortion_resources_00b4ee70(owner,c);
-    auto& records=*static_cast<NativeDistortionRecordArray*>(at(owner,0x254));cleanup.state=0;
-    resize_native_distortion_records_00b4ee20(records,0);
-    singleton_lifetime_free(pointer(word(&records)));
-    cleanup.state=-1;destroy_native_render_effect_base_00b0f5e0(owner,c.effects);
+    destroy_owner(owner,c,nullptr);
 }
 void* delete_native_distortion_owner_00b4f540(void* owner,Word flags,NativeDistortionLifetimeContext& c) {
     destroy_native_distortion_owner_00b4f150(owner,c);
     if(flags&1u)singleton_lifetime_free(owner);
     return owner;
+}
+void clear_native_distortion_resources_00b4ee70(void* owner,RawContext& c,ClearAcquired& a) {
+    require(!a.started && !a.camera_unlink.started,"raw distortion clear diagnostics must be fresh");
+    admit_context(c);a.started=true;
+    clear_resources(owner,c,&a);a.complete=true;
+}
+void destroy_native_distortion_owner_00b4f150(void* owner,RawContext& c,LifetimeAcquired& a) {
+    require(!a.started && !a.clear.started && !a.clear.camera_unlink.started,
+        "raw distortion destruction diagnostics must be fresh");
+    admit_context(c);prepare_record_lifetime(owner);a.started=true;destroy_owner(owner,c,&a);
+}
+void* delete_native_distortion_owner_00b4f540(void* owner,const volatile Word& flags,
+    RawContext& c,LifetimeAcquired& a) {
+    destroy_native_distortion_owner_00b4f150(owner,c,a);
+    a.complete=false;
+    if(*reinterpret_cast<const volatile std::uint8_t*>(&flags)&1u) {
+        a.active_call_site=0xb4f550;a.free_started=true;
+        singleton_lifetime_free(owner);a.free_complete=true;
+    }
+    a.complete=true;return owner;
 }
 } // namespace bsp
