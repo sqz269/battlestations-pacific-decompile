@@ -1,0 +1,49 @@
+{
+  "packet": "cc10_gui_group_identity_integration",
+  "worker_commit": "f520272bf32c5be1368648855d3dfcae46834d3d",
+  "integration": "4afbd2afb56aaf8abbb0cd5d18c506b7f1d1e647",
+  "final_built_head": "4afbd2afb56aaf8abbb0cd5d18c506b7f1d1e647",
+  "definition": "reports/cc10_gui_group_identity_definition.json",
+  "review": [
+    "full source/header and context/lifetime contracts",
+    "actual prefix+04 borrowed, no second count/store/retain; duplicate refusal preserves owner",
+    "current BD30E0 then fresh current scalar target AC73E0 flags1, no second decrement",
+    "explicit scalar deletion retires metadata for flags0/1 and entered failure; no post-return native access",
+    "caller guarantees same node/registry domain and external slot-reuse quiescence; no invented raw-domain field",
+    "six original/source40B current-lineage comparisons; true type values require startup publication",
+    "real Group source lifecycle with nested canonical children, late flags change, and actual F0-byte unchanged admission"
+  ],
+  "validation": {
+    "strict_win32_builds": true,
+    "existing_ctests_each": 3,
+    "main_moved_after_initial_build": true,
+    "post_build_main_changes": [
+      "include/bsp/game_hosts_hud_world.hpp",
+      "src/game_hosts_hud.cpp"
+    ],
+    "rebuilt_final_integrated_head": true,
+    "build_log_sha256": {
+      "local/cc10-integrate-group-identity.log": "00a63c6e864b52ea4f2fe5a28307ba39ee76dc99c05ed1a3ba74588b668472b4",
+      "local/cc10-group-identity-final-head-build.log": "00766772d4eec326a780a80d7cb8720905e3344f6953d016bcde108081489ed4"
+    },
+    "native_call_rows_checked": 2,
+    "new_tracked_tests": 0,
+    "lifecycle_probe_uses_source_providers": true,
+    "probe_model_node_payload": false,
+    "native_ABI_FH3_SEH": false,
+    "application_run": false,
+    "game_validated": false
+  },
+  "archive": {
+    "path": "local/cc10-platform-evidence/gui-group-identity.zip",
+    "sha256": "4fac54f53641ff54e16d9fd5f3e7eb0cb3efbbff2e9784976f18880c034b62de",
+    "files": 20,
+    "valid": true
+  },
+  "boundaries": [
+    "separate host admission only; AA12F0 has no registration call",
+    "all current other-derived and timed targets need genuine bindings",
+    "source-only lifecycle probe does not independently execute native destructor chain or certify node-domain correspondence",
+    "canonical Group availability does not install GUI factories into the application or complete the renderer initialization graph"
+  ]
+}
