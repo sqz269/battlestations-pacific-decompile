@@ -9,6 +9,10 @@ namespace bsp {
 // copies: preserve current x87 signaling-NaN/denormal/exception behavior. No
 // enclosing-owner notification, virtual dispatch or eager bounds recomputation.
 void set_native_gui_group_bounds_00b8e6c0(NativeGroupOwner&, const void* sphere);
+// Same kernel over actual raw Group storage, including the live node prefix.
+// Requires valid writable Group payload and four readable input words. No
+// legacy owner/tail overlay, lifetime change or metadata admission is performed.
+void set_native_gui_group_bounds_00b8e6c0(void* actual_group, const void* sphere);
 
 struct GuiGroupBoundsCrtAccess {
     const CameraAxesCrtAccess* sqrt;

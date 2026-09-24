@@ -1,0 +1,79 @@
+{
+  "packet": "cc10_raw_gui_leaf_receivers",
+  "status": "raw_receiver_overloads_strict_build_and_original_instruction_probe_passed",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "baseline_main": "78343bbde",
+  "functions": [
+    {
+      "address": "00b7af20",
+      "bytes": 30,
+      "end_exclusive": "00b7af3e",
+      "live_equals_installed": true,
+      "sha256": "2ce55a2b123acb0cf7e03714a533911646fec0a43b5773cd347365a5d28912c1"
+    },
+    {
+      "address": "004b62e0",
+      "bytes": 137,
+      "end_exclusive": "004b6369",
+      "live_equals_installed": true,
+      "sha256": "ee974dc03e08f036f8d9f35c5af7df5b89dd947b90f61e2d18281e96fa83979b"
+    },
+    {
+      "address": "00b8e6c0",
+      "bytes": 44,
+      "end_exclusive": "00b8e6ec",
+      "live_equals_installed": true,
+      "sha256": "3bb56c6b14df31456875b5daa3acbafff934cde0cc7429f5df8275dbbbfcbecf"
+    }
+  ],
+  "source_hashes": {
+    "include/bsp/lighting_configuration_apply.hpp": "4d1249c8f22fffbb9d62ae862756cb723baff0897b026c4034483ceb5b529e56",
+    "src/lighting_configuration_apply.cpp": "047080655a1b00a84b9a07a0d30905715eb4f4ecd03c32b636b04b9ee6cdd130",
+    "include/bsp/gui_group_bounds.hpp": "2de051ee41a6f13f70fa71580319a92b1ea708782551a55e01279bcaf7eeb932",
+    "src/gui_group_bounds.cpp": "390fff98406f8766d14674acd522666dad53ddccc351aef43c28edf4336bdc67",
+    "docs/NATIVE_GUI_RAW_LEAF_RECEIVERS_CC10.md": "6e4d1f3c2a8ca2858b2d2646130f0cfdbf504326e06e3386d935fe14b8e04d08"
+  },
+  "native_calls": [],
+  "implementation": [
+    "Raw ambient18 integer forward copy reuses shared copy helper using instruction accesses without C++ scalar/array overlays",
+    "Raw diffuse1A4 base copy and184 effective multiply share same helper with typed API; current1D8 x87 capture, first source load/spill and forward stores/reloads retained",
+    "Raw Group wrapper invokes unchanged44B kernel; legacy wrapper retains phase/identity checks",
+    "No native counts, profile binding, ownership admission, cleanup or whole receiver lifetime introduced"
+  ],
+  "validation": {
+    "normal_bytes": 211,
+    "live_equals_installed": true,
+    "strict_win32_build": true,
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "focused_probe": "local/cc10_raw_gui_leaf_receivers/probe.cpp",
+    "probe_command": "local/cc10_raw_gui_leaf_receivers/probe.cmd",
+    "probe_log": "local/cc10_raw_gui_leaf_receivers/probe.log",
+    "build_log": "local/cc10_raw_gui_leaf_receivers/build.log",
+    "copied_instruction_bytes": 211,
+    "relocations": 0,
+    "instruction_replacements": 0,
+    "comparison": "whole98h/1F0h/18Ch receiver bytes and complete x87 status after each leaf; forward overlap and signaling NaN under default masked control",
+    "new_tracked_tests": 0,
+    "first_probe_compile": "C4324 alignment padding only; explicit padding correction, failed log retained"
+  },
+  "limits": [
+    "Caller supplies valid aligned actual owner storage and readable input, no typed overlay or host-owner conversion",
+    "Native incoming-argument/private arithmetic-stack aliases excluded; outerGUI must independently satisfy these boundaries",
+    "Probe raw preimages do not establish full native owner construction/admission or fullAC59A0",
+    "Other rounding modes, unmasked faults, native ABI/SEH and gameplay not proved"
+  ],
+  "abi_compatible": false,
+  "application_bound": false,
+  "game_validated": false,
+  "archive": {
+    "path": "local/cc10-platform-evidence/gui-raw-leaf-receivers.zip",
+    "sha256": "723858173687f864e8325bd75dadc1ce45db75e269bd1595b0e88d140cc9b5fb",
+    "files": 26,
+    "valid": true
+  }
+}

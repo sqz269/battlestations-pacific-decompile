@@ -56,6 +56,14 @@ struct LightingConfigurationGlobals {
 };
 
 void set_lighting_ambient_00b7af20(LightingAmbientFields, const SystemLightingWords4&);
+// New raw-storage interfaces for the same native leaves. Require the actual
+// aligned ambient/light storage and four readable input words; input may
+// overlap the receiver. No std::array or NativeLightTailStorage lifetime is
+// required or started, and no count/profile/ownership change is introduced.
+// Native argument-slot/private arithmetic-scratch aliases and unmasked fault
+// transport are outside these C++ interfaces, as for the existing kernels.
+void set_lighting_ambient_00b7af20(void* actual_ambient, const void* value);
+void set_lighting_base_diffuse_004b62e0(void* actual_light, const void* value);
 void set_lighting_mode3_ambient_00b7af40(LightingAmbientFields, const SystemLightingWords4&);
 // Native performs no bounds check; the supported owner view requires index < 6.
 void set_lighting_ambient_cube_00b7af60(

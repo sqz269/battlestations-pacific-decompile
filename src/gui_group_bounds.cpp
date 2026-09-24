@@ -60,6 +60,9 @@ void set_native_gui_group_bounds_00b8e6c0(NativeGroupOwner& owner, const void* s
         throw std::invalid_argument("group bounds require the same live actual cGroup owner");
     write_group_bounds_kernel(&owner.storage.node, nullptr, sphere);
 }
+void set_native_gui_group_bounds_00b8e6c0(void* actual_group, const void* sphere) {
+    write_group_bounds_kernel(actual_group, nullptr, sphere);
+}
 float gui_screen_root_radius_00ac5f00(const volatile double& squared_radius,
     const GuiGroupBoundsCrtAccess& access) {
     if (!access.sqrt || !access.sqrt->dispatch_bypass_0109dd78 ||

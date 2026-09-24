@@ -13,9 +13,24 @@ std::uint32_t read_word(const std::uint32_t& word) noexcept {
 void write_word(std::uint32_t& word, std::uint32_t value) noexcept {
     static_cast<volatile std::uint32_t&>(word) = value;
 }
-void copy_words(std::uint32_t* output, const std::uint32_t* input, unsigned count) {
-    // Native load/store pairs, including overlapping input and output.
-    for (unsigned i = 0; i < count; ++i) write_word(output[i], read_word(input[i]));
+void copy_words(void* output, const void* input, unsigned count) {
+    // Native forward load/store pairs, also over raw owner representation.
+    // No C++ scalar/array object lifetime is imposed on the borrowed bytes.
+    __asm {
+        mov ecx, count
+        test ecx, ecx
+        jz copy_done
+        mov edx, input
+        mov eax, output
+    copy_next:
+        mov esi, dword ptr [edx]
+        mov dword ptr [eax], esi
+        add edx, 4
+        add eax, 4
+        dec ecx
+        jnz copy_next
+    copy_done:
+    }
 }
 bool guard_clear(const std::uint32_t& guard) noexcept {
     return (*reinterpret_cast<const volatile std::uint8_t*>(&guard) & 0x1u) == 0;
@@ -51,8 +66,8 @@ std::uint32_t cube_scale_and_one(const std::uint32_t& input,
     return result;
 }
 
-void multiply_four(std::uint32_t* output, const std::uint32_t* input,
-    std::uint32_t scale, const std::uint32_t* fourth_operand) {
+void multiply_four(void* output, const void* input,
+    std::uint32_t scale, const void* fourth_operand) {
     std::uint32_t products[4];
     // Same x87 stack ordering and per-channel float32 spills as the three
     // scaler leaves. Alpha multiplies scale * source; RGB starts source * scale.
@@ -86,6 +101,24 @@ void multiply_four(std::uint32_t* output, const std::uint32_t* input,
     }
 }
 
+void set_base_diffuse_words(void* output, void* base_output,
+    const void* scale_source, const void* input) {
+    std::uint32_t scale;
+    __asm {
+        mov eax, scale_source
+        fld dword ptr [eax]
+        mov eax, input
+        mov edx, [eax]
+        fstp dword ptr scale
+        mov eax, base_output
+        mov [eax], edx
+    }
+    const auto* const source_bytes = static_cast<const unsigned char*>(input);
+    copy_words(static_cast<unsigned char*>(base_output) + 4, source_bytes + 4, 3);
+    // Reload original input after all base stores, as native does.
+    multiply_four(output, input, scale, source_bytes + 12);
+}
+
 std::uint32_t ensure_half_color(LightingConfigurationGlobals globals,
     bool preload_half, bool capture_one) {
     const bool initialize = guard_clear(globals.half_guard_00e18b18);
@@ -113,6 +146,9 @@ void set_lighting_ambient_00b7af20(
     LightingAmbientFields owner, const SystemLightingWords4& value) {
     copy_words(owner.ambient_18.data(), value.data(), 4);
 }
+void set_lighting_ambient_00b7af20(void* actual_ambient, const void* value) {
+    copy_words(static_cast<unsigned char*>(actual_ambient) + 0x18, value, 4);
+}
 void set_lighting_mode3_ambient_00b7af40(
     LightingAmbientFields owner, const SystemLightingWords4& value) {
     copy_words(owner.ambient_mode3_28.data(), value.data(), 4);
@@ -123,22 +159,12 @@ void set_lighting_ambient_cube_00b7af60(
 }
 void set_lighting_base_diffuse_004b62e0(
     LightingDirectionalFields owner, const SystemLightingWords4& value) {
-    const auto* scale_source = &owner.diffuse_scale_1d8;
-    const auto* input = value.data();
-    std::uint32_t scale;
-    std::uint32_t first_word;
-    __asm {
-        mov eax, scale_source
-        fld dword ptr [eax]
-        mov eax, input
-        mov edx, [eax]
-        mov first_word, edx
-        fstp dword ptr scale
-    }
-    write_word(owner.base_diffuse_1a4[0], first_word);
-    copy_words(owner.base_diffuse_1a4.data() + 1, input + 1, 3);
-    // Reload original input after all base stores, as native does.
-    multiply_four(owner.diffuse_184.data(), input, scale, input + 3);
+    set_base_diffuse_words(owner.diffuse_184.data(), owner.base_diffuse_1a4.data(),
+        &owner.diffuse_scale_1d8, value.data());
+}
+void set_lighting_base_diffuse_004b62e0(void* actual_light, const void* value) {
+    auto* const bytes = static_cast<unsigned char*>(actual_light);
+    set_base_diffuse_words(bytes + 0x184, bytes + 0x1a4, bytes + 0x1d8, value);
 }
 void set_lighting_diffuse_scale_00b7af90(
     LightingDirectionalFields owner, std::uint32_t scale) {
