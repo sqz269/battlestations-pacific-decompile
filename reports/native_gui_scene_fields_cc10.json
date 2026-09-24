@@ -1,0 +1,163 @@
+{
+  "packet": "cc10_native_gui_scene_fields",
+  "status": "complete_raw_actual_fields_strict_win32_original_source_checked",
+  "source": "src/native_gui_scene_fields.cpp",
+  "documentation": "docs/NATIVE_GUI_SCENE_FIELDS_CC10.md",
+  "dependency_base_commit": "62e67ad274c08eff78be41e9bcdba8763ad2f7d7",
+  "original_executable_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "native_bytes": [
+    {
+      "address": "00b723f0",
+      "size": 59,
+      "end_inclusive": "00b7242a",
+      "last_instruction_address": "00b72428",
+      "last_instruction_length": 3,
+      "sha256": "5249a5da5eedbe3d779ac27354a588a94d926ab061cc14a88ca626a2ecb9af2b",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00b721f0",
+      "size": 33,
+      "end_inclusive": "00b72210",
+      "last_instruction_address": "00b7220e",
+      "last_instruction_length": 3,
+      "sha256": "374ac88ecab9457eda32abc61b2b72dbd6e113b85e9e7bd2273a55f3936352c7",
+      "live_pe_equal": true
+    }
+  ],
+  "routines": [
+    {
+      "address": "00b723f0",
+      "name": "set_native_gui_scene_resource_00b723f0",
+      "source": "src/native_gui_scene_fields.cpp",
+      "coverage": "complete actual-storage body; required genuine imported/canonical services for reached setter calls",
+      "original_abi": "ECX actual24h scene; stack actual resource pointer captured first; RET4",
+      "end_inclusive": "00b7242a",
+      "last_instruction_address": "00b72428",
+      "last_instruction_length": 3
+    },
+    {
+      "address": "00b721f0",
+      "name": "prepend_native_gui_scene_node_00b721f0",
+      "source": "src/native_gui_scene_fields.cpp",
+      "coverage": "complete actual-storage body; required genuine imported/canonical services for reached setter calls",
+      "original_abi": "ECX actual24h scene; stack actual node pointer; RET4",
+      "end_inclusive": "00b72210",
+      "last_instruction_address": "00b7220e",
+      "last_instruction_length": 3
+    }
+  ],
+  "calls": [
+    {
+      "address": "00b72407",
+      "native": "00ce221c+IAT",
+      "function": "00b723f0",
+      "kind": "indirect",
+      "instruction": "CALL dword ptr [00CE221C]",
+      "instruction_length": 6,
+      "contract": "read CURRENT import and increment CAPTURED requested+4"
+    },
+    {
+      "address": "00b72415",
+      "native": "00ce2220+IAT",
+      "function": "00b723f0",
+      "kind": "indirect",
+      "instruction": "CALL dword ptr [00CE2220]",
+      "instruction_length": 6,
+      "contract": "read CURRENT import AFTER increment callback, decrement CAPTURED old+4"
+    },
+    {
+      "address": "00b72425",
+      "native": "captured_old+vtable00",
+      "function": "00b723f0",
+      "kind": "indirect",
+      "instruction": "CALL EAX",
+      "instruction_length": 2,
+      "contract": "only prior decrement0; nativeB7241F/21 reload capturedold profile then current0; canonical source companion must share capturedold+4"
+    }
+  ],
+  "storage": {
+    "scene": "actual24h, only+C/+1C touched",
+    "resource": "actual resource identity with existing aligned atomic+4 and same canonical metadata; no host SceneResource dereference",
+    "node": "actual node prefix+3C/+40, including valid overlapping payloads",
+    "logical_boundary": "No reinterpretation of host CameraTransform/RenderNodeRootList cells; no changes to logical scene graph"
+  },
+  "ordered_effects": {
+    "setter": [
+      "B723F0 capture current requested argument before B723F5 old scene1C",
+      "B723F8 equal returns; B723FE publish requested before callbacks",
+      "B72407 current increment on capturedrequested+4",
+      "B72415 current decrement on capturedold+4 after previous callback",
+      "B72425 zero-only currentvirtual0; source validates companion borrows exactcapturedold+4; no final field write/rollback"
+    ],
+    "prepend": [
+      "B721F0 capture scene+C",
+      "B721F7 node+3C=capturedold",
+      "B721FA node+40=0",
+      "B72201 reread CURRENTscene+C",
+      "B72208 if currentheadnonnull head+40=node",
+      "B7220B scene+C=node"
+    ]
+  },
+  "dependencies": {
+    "context": "NativeGuiSceneFieldsContext borrows SAME NativeRenderActualOwnerRegistry and current CE221C/CE2220 slots; no default/admission/extra credits",
+    "unchanged": "existing raw B72110/B72220 are separate providers; this packet does not rewrite them",
+    "terminal": "existing genuine canonical companion for captured old actual identity; same+4 check before nonthrowing CURRENT0 dispatch"
+  },
+  "validation": {
+    "strict_build": "scripts/build.ps1 MSVC Win32 Release /W4 /WX /fp:strict",
+    "ctests_passed": 3,
+    "probe": {
+      "source": "local/cc10_gui_scene_fields/probe.cpp",
+      "result": "PASS original/source outer-scene leaves: real raw resource/canonical counts, current import and +1C callback mutation, captured requested/old, equal/null branches; normal and scene+C=node+40 alias prepend",
+      "flags": "/MD /O2 /W4 /WX /fp:strict /link /MANIFEST:EMBED",
+      "composition": "Two copied complete native bodies. Two IAT operand relocations; prepend bytes unchanged. Genuine raw3Ch resource constructors, actual raw pool/registry/ambient/setter and same-count canonical companions.",
+      "comparisons": "one original/source setter sequence with increment-time caller/current1C/decrement-import mutation plus equal/null branches; normal and scene+C=node+40 alias prepend",
+      "ownership": "three actual resource creators; explicit observed retained credits disposed through real canonical resource/ambient terminals",
+      "excluded": "original setter zero-count virtual dispatch not exercised; required genuine companion reused, no synthetic terminal callback"
+    },
+    "ghidra_mutated": false,
+    "original_binary_abi": false,
+    "game_validated": false,
+    "new_tracked_tests": false,
+    "indirect_rows": 3,
+    "static_direct_call_count": 0,
+    "call_rows_failed": 0,
+    "prior_evidence_archives_unchanged": {
+      "local/cc10_field_values_evidence.zip": "a749dbf4656596e6a4e0c11ecb320a02bfe62dcba5fa3654c2744aa2a3022153",
+      "local/cc10_widget_transform_evidence.zip": "0d90499f71be2a3cc99ad732deaa8a71a5b55546da4dbaa7ee708c364bae45f8",
+      "local/cc10_widget_property_prefix_evidence.zip": "181ebe9358fe2d7ea6832b8051a0b3fd6f830a0360f3ef390626403ba7cbfcdf",
+      "local/cc10_gui_page_default_evidence.zip": "a224fc79f56861715059ff9717fcdad40893be00d26697a230b64ceafced5c8b",
+      "local/cc10_gui_group_pool_evidence.zip": "c7aa87452ab19400fe950d3a4c3a4a146c94715f4080f463dc2de1740df37853",
+      "local/cc10_gui_group_factory_evidence.zip": "d22d364ce3b5cf7833d8ad1998cd5c14cbf792abc34634e2df1421949e42f34f",
+      "local/cc10_gui_camera_store_map_evidence.zip": "625a751eab1f2416e7b0fa5876b921106cf0a246c0b8ca5ce97ca3e9d1586c54",
+      "local/cc10_scene_registry_storage_evidence.zip": "7219d8cbbdab960d3d2b49076f79b13854aa582faa0edb23c8a7fc286cebd6a9",
+      "local/cc10_scene_resource_storage_evidence.zip": "d989b85db55805c8b173e40c95e9322586ec4146e3ad0e504c316bf48364ed51"
+    },
+    "call_verifier_boundary": "All3calls indirect, exact bytes/operands pinned; tool checks no directcall targets. Native currentvirtual0 not exercised in original probe."
+  },
+  "source_hashes": {
+    "include/bsp/native_gui_scene_fields.hpp": "120eba5c70bf3c8d99f38f16bb30d441f41669b084f772b16e1db72e0ac8e509",
+    "src/native_gui_scene_fields.cpp": "0d022ffcd72bac5c09963c0b038de9278d7a4f20ee7c8de0f8775c7793708384",
+    "docs/NATIVE_GUI_SCENE_FIELDS_CC10.md": "56ea2926d86483a999dfb9bd38e4b217be8f1a5239cc87e4aa72c63f4ef68336"
+  },
+  "dependency_hashes": {
+    "include/bsp/native_render_context.hpp": "1c8d834d50cbf8ee7f660e7803efe6bad43fe70bbe87fd5cdf3375f6e68ef56d",
+    "src/native_render_context.cpp": "147a8df39f7a028b5b19bda7a8ef9632fc2b0df8df00ac7fad3f59ee48ca87f9",
+    "src/native_scene_resource_storage.cpp": "9d838d9142b4c9b2a69c83483e83859d9bd40fd390698ba12dd014bdd6755a9b",
+    "src/native_scene_resource_ambient.cpp": "bd776181831a897d04011e7f9b0b284c404362516c2eab29efe28eb2573d2b75",
+    "src/native_ambient_lifetime.cpp": "930132ef5252acfcaf98843c1703d8ea5815e75b0e5cfd0bd5985ba695870507"
+  },
+  "compiled_artifacts": {
+    "build/win32/bsp_core.dir/Release/native_gui_scene_fields.obj": "10d620e1354fb77121769d37c272aea401595ea18764a400bd2606b8c9866fb9",
+    "build/win32/Release/bsp_core.lib": "701d342541ba7f611abde0f3fc872eba8d09c37dcf02dc138aef9ff73a63d58f",
+    "local/cc10_gui_scene_fields/gui_scene_fields_probe.exe": "632b33d8436a5070f78080759238b8a4f03d8e180106ee2ea5db37f6b9ad7452"
+  },
+  "evidence_archive": {
+    "path": "local\\cc10_gui_scene_fields_evidence.zip",
+    "sha256": "8158076968340fd863b7e86018def420eabcae87ab0939f90085d79a1751a1af",
+    "size": 247818,
+    "files": 29,
+    "note": "Report snapshot before archive receipt avoids circular hash;9priorarchives unchanged."
+  }
+}
