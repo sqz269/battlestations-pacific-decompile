@@ -1,0 +1,135 @@
+{
+  "packet": "cc10_gui_scene_argument_view_integration",
+  "worker_commit": "19f7efefef036e94824beacbc1547c5527a79324",
+  "integration": "554ec922924435560c68b09c46826b6bfaf10da0",
+  "worker_report": "reports/native_gui_scene_argument_view_cc10.json",
+  "frozen_evidence": {
+    "worker_commit": "19f7efefef036e94824beacbc1547c5527a79324",
+    "archive_sha256": "8c061ccbec187f7b3796187bd7369c95eeaddabf27d1122c3795f77be52abaf5",
+    "archive_files": 30,
+    "manifest_files_verified": 29,
+    "current_exact_probe_inputs_verified": 7,
+    "source_sha256": {
+      "include/bsp/native_gui_scene_storage.hpp": "d816b2f0bcf0e0b47b895c3d999335b6f8253a66f1ae63055563578b6544407b",
+      "src/native_gui_scene_storage.cpp": "c291544fa92b127f2e94c28b6072dc5a0ee6325e1e315e934e7b4567734e2935"
+    },
+    "normal_bytes": 150,
+    "compiler_bytes": 29,
+    "descriptor_bytes": 52,
+    "compiled_object_sha256": "9bd220ff7170b8adae6c46193c11b26b36ae7b5306e20d82d84880fbf3bb1e22",
+    "review": "Full source diff, complete native constructor, full focused fixture and doc/report, wrapper and raw-body compiled read schedule reviewed",
+    "argument_scope": "copied original receives a real stacked pointer value to the same two-word header shape; only source borrows external actual input cell; no incoming-cell callback mutation or original external-cell address equivalence claim",
+    "limits": [
+      "native FH3/SEH or binary replacement ABI",
+      "allocation failure and exceptional unwind",
+      "full initializer/post20/source0 admission",
+      "callback mutation of incoming argument cell"
+    ]
+  },
+  "validation": {
+    "normal_bytes": 150,
+    "compiler_bytes": 29,
+    "descriptor_bytes": 52,
+    "strict_win32_build": true,
+    "integrated_ctests": 3,
+    "direct_tail_rows_passed": 6,
+    "original_source_pairs": 1,
+    "tracked_tests_added": false,
+    "game_validated": false
+  },
+  "review": [
+    "Existing frame overload forwards its actual name member by reference without reading; raw overload shares the unchanged constructor body",
+    "Native and compiled argument capture follows weak construction and both name-zero stores; current name source/destination reads and final current scalar retained",
+    "Complete focused fixture uses actual24h scene, genuine isolated weak/name domains, live adjacent DWORD header/canaries and current scalar aliasing name length",
+    "Whole24h comparison normalizes only checked weak/name pointer identities; genuine scalar retirement, weak invalidation, pool/support drain pass",
+    "Original has its real stacked pointer value; external source borrowed-cell address equivalence and callback mutation are not fixture-proved",
+    "All30 archive entries,29 manifest files and7 current exact probe inputs independently verified; all21 prior archives unchanged",
+    "No Ghidra repair needed; all4 native/compiler bodies retain complete extents and all6 direct/tail rows pass"
+  ],
+  "probe": {
+    "strict_win32": true,
+    "ctests_passed": 3,
+    "build_log": "local\\cc10_gui_scene_argument_view\\build.log",
+    "source_sha256": {
+      "include/bsp/native_gui_scene_storage.hpp": "d816b2f0bcf0e0b47b895c3d999335b6f8253a66f1ae63055563578b6544407b",
+      "src/native_gui_scene_storage.cpp": "c291544fa92b127f2e94c28b6072dc5a0ee6325e1e315e934e7b4567734e2935"
+    },
+    "compiled_checks": "local\\cc10_gui_scene_argument_view\\compiled_checks.json",
+    "probe_link_inputs": "local\\cc10_gui_scene_argument_view\\probe_inputs.json",
+    "probe_sha256": "824220becba26733de95cec1b145e3c763b9d146ddad74120b7a472ec86831c5",
+    "copied_original_matches_live_pe": true,
+    "original_source_pairs": 1,
+    "whole_owner_bytes": 36,
+    "normalized_fields": [
+      "+8 weak-handle identity",
+      "+14 name-data identity"
+    ],
+    "run_log": "PASS source constructor150B: raw argument word, adjacent actual header/canaries, current name-length MOVSS, genuine weak/name construction and retirement/drain\nPASS original constructor150B: raw argument word, adjacent actual header/canaries, current name-length MOVSS, genuine weak/name construction and retirement/drain\nPASS one original/source24h pair, normalized weak/name pointer identities only; no native EH/application claim\n",
+    "probe": "one raw incoming word adjacent to two actual header DWORDs and three canaries; nonempty MARS; live one cell aliases owner name length, final MOVSS observes bits4; genuine weak/name lifecycle and retirement",
+    "original_relocations": [
+      "three rel32 calls to genuine weak/resize and memmove adapters",
+      "one D7A24C operand to current owner name-length cell",
+      "unreached FH3 handler immediate to fail-fast trap"
+    ],
+    "original_argument_scope": "copied original receives a real stacked pointer value to the same two-word header shape; only source borrows external actual input cell; no incoming-cell callback mutation or original external-cell address equivalence claim",
+    "original_indirect_instructions": "none in this normal body",
+    "new_tracked_tests": 0,
+    "application_run": false,
+    "native_game_run": false,
+    "manifest_embedded": true,
+    "runtime": "MD",
+    "project_libraries": 3,
+    "unproved": [
+      "native FH3/SEH or binary replacement ABI",
+      "allocation failure and exceptional unwind",
+      "full initializer/post20/source0 admission",
+      "callback mutation of incoming argument cell"
+    ],
+    "post_effect_argument_readiness": {
+      "local/cc10_post_effect_argument_readiness/collect.py": "32803cc5939dd5d14bcb01463ec71b7a737a97bc8cd27ece6bd3488a531723ba",
+      "local/cc10_post_effect_argument_readiness/evidence.json": "81760d77f60daff5c29739c9bdebc01d085d2af23ba8719431952b8704c3c462",
+      "local/cc10_post_effect_argument_readiness/README.md": "7881c1f9283ca7079c025def0a90a9686913de8d1489b7153208f2f7fd88ff69"
+    },
+    "prior_evidence_archives_unchanged": {
+      "local/cc10_field_values_evidence.zip": "a749dbf4656596e6a4e0c11ecb320a02bfe62dcba5fa3654c2744aa2a3022153",
+      "local/cc10_widget_transform_evidence.zip": "0d90499f71be2a3cc99ad732deaa8a71a5b55546da4dbaa7ee708c364bae45f8",
+      "local/cc10_widget_property_prefix_evidence.zip": "181ebe9358fe2d7ea6832b8051a0b3fd6f830a0360f3ef390626403ba7cbfcdf",
+      "local/cc10_gui_page_default_evidence.zip": "a224fc79f56861715059ff9717fcdad40893be00d26697a230b64ceafced5c8b",
+      "local/cc10_gui_group_pool_evidence.zip": "c7aa87452ab19400fe950d3a4c3a4a146c94715f4080f463dc2de1740df37853",
+      "local/cc10_gui_group_factory_evidence.zip": "d22d364ce3b5cf7833d8ad1998cd5c14cbf792abc34634e2df1421949e42f34f",
+      "local/cc10_gui_camera_store_map_evidence.zip": "625a751eab1f2416e7b0fa5876b921106cf0a246c0b8ca5ce97ca3e9d1586c54",
+      "local/cc10_scene_registry_storage_evidence.zip": "7219d8cbbdab960d3d2b49076f79b13854aa582faa0edb23c8a7fc286cebd6a9",
+      "local/cc10_scene_resource_storage_evidence.zip": "d989b85db55805c8b173e40c95e9322586ec4146e3ad0e504c316bf48364ed51",
+      "local/cc10_gui_scene_fields_evidence.zip": "8158076968340fd863b7e86018def420eabcae87ab0939f90085d79a1751a1af",
+      "local/cc10_scene_registry_vector_mutation_evidence.zip": "90b9d70c3b735e1274c2c0d2e333f5e88e860aee7155ea9ac6ef18e105aaed6b",
+      "local/cc10_scene_registry_registration_evidence.zip": "663ec13309abdaf992b22c321c66817230852066d76e5ccd0b663c3a783e05cf",
+      "local/cc10_node_scene_attachment_evidence.zip": "c45c8248fe0434426648b48b7c8e473f94b057f5ff1098088c34762dbc3d8f04",
+      "local/cc10_node_tree_retirement_evidence.zip": "b9720c00ba0e29c222ae2d41fb5fd2820e305039c673e61cea0ee22d3a2a2e13",
+      "local/cc10_node_base_destruction_evidence.zip": "2f4f970317032085f851a2331dd3e4bf6f02b3722e5e44a668153000e2b13dbf",
+      "local/cc10_camera_storage_lifetime_evidence.zip": "9eb1ac2cbde243e6c4d2d1d10fca263eda2e43aed2527964986875f2217c3936",
+      "local/cc10_camera_raw_world_edit_evidence.zip": "f80fd83057ef325506bbe1d0a06046e765dd8e32b2f10148c67d497af0971d9c",
+      "local/cc10_camera_pose_storage_evidence.zip": "d294c281a6475c33b4b779d9857e2a7f06b75948df45618c12b70112649bfeac",
+      "local/cc10_camera_storage_construct_evidence.zip": "ebf1bca43bf5bbe75beae65ec707845a2219d745bda58fd91588455278fbf357",
+      "local/cc10_distortion_storage_lifetime_evidence.zip": "71843fd98d2d4bb1e13633393487fc99617c1456458cd2354139c57a2d1a286c",
+      "local/cc10_render_texture_surface_argument_view_evidence.zip": "0754170a6ce2d6042e644beef0a62f82e07c8642afe3a6315c18fb967493034e"
+    },
+    "report_call_check": "reports/native_gui_scene_argument_view_cc10.json: 6 call rows checked, 0 failed",
+    "read_only_proposal_call_check": "local/cc10_post_effect_argument_readiness/evidence.json: 47 call rows checked, 0 failed; 17 indirect inventory rows separately pinned",
+    "frozen_archive": "local\\cc10_gui_scene_argument_view_evidence.zip",
+    "manifest": "local\\cc10_gui_scene_argument_view\\manifest.json",
+    "input_hash_scope": "three current project libraries, actual constructor object, exact probe source/native array/build command; executable/listing/source hashes separately pinned; no whole toolchain or OS identity claim"
+  },
+  "limits": [
+    "native FH3/SEH or binary replacement ABI",
+    "allocation failure and exceptional unwind",
+    "full initializer/post20/source0 admission",
+    "callback mutation of incoming argument cell"
+  ],
+  "readiness": "Frozen full-initializer and B4E470/535320 proposals included; this packet admits neither full post-effect composition nor initializer/source0.",
+  "archive": {
+    "path": "local/cc10-platform-evidence/gui-scene-argument-view.zip",
+    "sha256": "ad8ef60f1142feada9606b581bf50f25db207305683dc9185fc6528f75b4e6bc",
+    "files": 35,
+    "valid": true
+  }
+}

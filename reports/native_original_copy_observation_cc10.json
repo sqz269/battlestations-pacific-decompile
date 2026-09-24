@@ -1,0 +1,192 @@
+{
+  "packet": "cc10_original_copy_observation",
+  "status": "full_read_only_inventory_verified_exact_known_log_state",
+  "new_original_or_helper_launches": 0,
+  "original_attempts_total": 2,
+  "profile_actions": 0,
+  "copy_writes_commanded": 0,
+  "primary_verification": {
+    "index_sha256": "ca9ce300dcaab36fbc2288eb60caf2e7fc8a5c2acbddf3ae3a34fcbca86b33b8",
+    "indexed_files_verified": 7,
+    "prior_rows_verified": 1043,
+    "observed_manifest_files_verified": 67814,
+    "observed_streams_verified": 67819,
+    "observed_hashed_bytes": 57803339970,
+    "nonlog_manifest_rows_equal_baseline": 67813,
+    "original_process_snapshots_empty": 28,
+    "current_log_metadata_id_and_hash_rechecked": true,
+    "proposal_exact_provenance_verified": true,
+    "new_original_or_helper_launches": 0,
+    "root_review": "Full observer source and final documentation reviewed; independently compared full recorded manifest/streams with frozen baseline and exact run02 log, not a second full disk rehash",
+    "limits": [
+      "Sequential observation; no atomic snapshot or future-state guarantee",
+      "Process snapshots do not exclude a process between samples",
+      "Last-access/security-descriptor equivalence unclaimed",
+      "Existing frozen controller still disabled; accepted wiring and preparation are separate"
+    ]
+  },
+  "observed": {
+    "files": 67814,
+    "streams": 67819,
+    "bytes_hashed": 57803339970,
+    "other_records_equal_baseline": 67813,
+    "mismatches": 0,
+    "empty_process_snapshots": 28,
+    "started_ns": 1790254783611077000,
+    "ended_ns": 1790255051341912500,
+    "manifest_sha256": "76cb39d8ab787fe17b759bd5eb3c742b868d952d124d19767798fb01107337f9",
+    "log": {
+      "native": {
+        "after": {
+          "access_ns": 1790248352714395600,
+          "attributes": 32,
+          "bytes": 0,
+          "creation_ns": 1748812086735887100,
+          "file_index": 1407374893507724,
+          "file_index_high": 327680,
+          "file_index_low": 9954444,
+          "hardlinks": 1,
+          "volume_serial_dword": 314419654,
+          "write_ns": 1790248352714395600
+        },
+        "before": {
+          "access_ns": 1790248352714395600,
+          "attributes": 32,
+          "bytes": 0,
+          "creation_ns": 1748812086735887100,
+          "file_index": 1407374893507724,
+          "file_index_high": 327680,
+          "file_index_low": 9954444,
+          "hardlinks": 1,
+          "volume_serial_dword": 314419654,
+          "write_ns": 1790248352714395600
+        }
+      },
+      "row": {
+        "attributes": 32,
+        "bytes": 0,
+        "creation_ns": 1748812086735887100,
+        "file_id": 1407374893507724,
+        "hardlinks": 1,
+        "path": "bsp_debug.log",
+        "streams": [
+          {
+            "bytes": 0,
+            "name": "::$DATA",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ],
+        "volume": 16434406700183562694,
+        "write_ns": 1790248352714395600
+      }
+    },
+    "baseline_log": {
+      "attributes": 32,
+      "bytes": 3734657,
+      "creation_ns": 1748812086735887100,
+      "file_id": 1407374893507724,
+      "path": "bsp_debug.log",
+      "streams": [
+        {
+          "name": "::$DATA",
+          "sha256": "d5fd49d90b03d2e949201c0382e2909ad1e336e27864aa9a0294e25a557faee6"
+        }
+      ],
+      "volume": 16434406700183562694,
+      "write_ns": 1789799643745010400
+    }
+  },
+  "proposal": {
+    "admitted": false,
+    "allow_original_launch": false,
+    "baseline_manifest_sha256": "97233a0adc7ed7e71d42594262372306cf9ea3b87bc75f89897d9e66d92fff34",
+    "baseline_row": {
+      "attributes": 32,
+      "bytes": 3734657,
+      "creation_ns": 1748812086735887100,
+      "file_id": 1407374893507724,
+      "path": "bsp_debug.log",
+      "streams": [
+        {
+          "name": "::$DATA",
+          "sha256": "d5fd49d90b03d2e949201c0382e2909ad1e336e27864aa9a0294e25a557faee6"
+        }
+      ],
+      "volume": 16434406700183562694,
+      "write_ns": 1789799643745010400
+    },
+    "causal_attribution": null,
+    "game_root": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\original_sampler_capture_cc10\\game",
+    "native_file_identity": {
+      "after": {
+        "access_ns": 1790248352714395600,
+        "attributes": 32,
+        "bytes": 0,
+        "creation_ns": 1748812086735887100,
+        "file_index": 1407374893507724,
+        "file_index_high": 327680,
+        "file_index_low": 9954444,
+        "hardlinks": 1,
+        "volume_serial_dword": 314419654,
+        "write_ns": 1790248352714395600
+      },
+      "before": {
+        "access_ns": 1790248352714395600,
+        "attributes": 32,
+        "bytes": 0,
+        "creation_ns": 1748812086735887100,
+        "file_index": 1407374893507724,
+        "file_index_high": 327680,
+        "file_index_low": 9954444,
+        "hardlinks": 1,
+        "volume_serial_dword": 314419654,
+        "write_ns": 1790248352714395600
+      }
+    },
+    "observation_path": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\original_sampler_v3_fresh_copy_cc10\\fresh_observation.json",
+    "observation_sha256": "6dedad9b56899bcec14bc6c32636588a0d6f016218448365f63a99cd347d5ac2",
+    "previous_overlay_path": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\original_sampler_controller_v2_cc10\\private_copy_log_overlay.json",
+    "previous_overlay_sha256": "b6f4f0441fce2443dbb1a5d11321678b0aa9ab000531a347c1c519745e9e6ccd",
+    "proposed_current_row": {
+      "attributes": 32,
+      "bytes": 0,
+      "creation_ns": 1748812086735887100,
+      "file_id": 1407374893507724,
+      "hardlinks": 1,
+      "path": "bsp_debug.log",
+      "streams": [
+        {
+          "bytes": 0,
+          "name": "::$DATA",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "volume": 16434406700183562694,
+      "write_ns": 1790248352714395600
+    },
+    "relative_path": "bsp_debug.log",
+    "run02_drift_path": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\original_sampler_capture_cc10\\controller_v2_runs\\original_run02\\private_copy_drift.json",
+    "run02_drift_sha256": "b05f64482b004b7887413a0ebedc77f83b44915bcea9fa3910f12afdb4573eda",
+    "schema": "proposed-private-copy-one-log-overlay-v3",
+    "scope": "One exact known empty-log state only. Proposal requires root review; every future difference fails. No asset rebaseline or preparation authorization."
+  },
+  "root_disposition": "Exact one-log observation/proposal accepted for a separate controller revision and one prepare-only check. Frozen proposal stays unadmitted and frozen controllers unchanged; this receipt authorizes no original launch.",
+  "review": [
+    "Full observer source reviewed; read-only handles with reparse/hardlink rejection and before/after identity/non-access metadata",
+    "All recorded non-log file/stream rows independently compared to the immutable baseline; current log metadata/ID/hash independently rechecked",
+    "Four frozen provenance inputs and1043 prior artifacts verified; proposal links exact run02 log state without assigning cause",
+    "Future controller must bind exact reviewed row/observation and recheck current copy immediately; any later log or asset mismatch fails"
+  ],
+  "limits": [
+    "Sequential observation; no atomic snapshot or future-state guarantee",
+    "Process snapshots do not exclude a process between samples",
+    "Last-access/security-descriptor equivalence unclaimed",
+    "Existing frozen controller still disabled; accepted wiring and preparation are separate"
+  ],
+  "archive": {
+    "path": "local/cc10-platform-evidence/original-copy-fresh-observation.zip",
+    "sha256": "7c4d1ac5ab2ba67fb5d8b00eb5c3187896a387e0e3580fd8cb4f160baad6e604",
+    "files": 11,
+    "valid": true
+  }
+}
