@@ -94,6 +94,58 @@ float ship_screen_ease_stick_0064e358(float current, float throttle) noexcept {
                               current);                               // 0064E3E4..0064E3EC
 }
 
+void ship_screen_controls_0064e415(ShipScreenState& screen, ShipScreenHost& host, float dt) {
+    constexpr int kKindShip = 6;          // 0064E42B PUSH 6
+    constexpr int kActionTurn = 0x98;     // 0064E46E, 0064E482
+    constexpr int kActionRepair = 0xEF;   // 0064E616, 0064F317
+    bool repair_section = false;
+    if (host.controlled_present() && host.controlled_is_kind_of(kKindShip) &&
+        host.controlled_is_local_player()) {                          // 0064E415..0064E445
+        if (!host.controlled_is_kind_of(kKindSubmarine)) {            // 0064E456
+            if (host.input_pressed(kActionTurn) ||
+                (host.input_held(kActionTurn) && screen.turn_timer_160 >= 0.0f)) {
+                if (0.0f > screen.turn_timer_160) {                   // 0064E4B4
+                    screen.turn_timer_160 = dt;                       // 0064E4D2
+                    host.turn_to_camera_order();
+                } else {
+                    screen.turn_timer_160 = screen.turn_timer_160 + dt;   // 0064E562..0064E575
+                    if (screen.turn_timer_160 > 1.0f && host.turn_timer_expired_009539e0()) {
+                        screen.turn_timer_160 = -1.0f;                // 0064E598
+                    }
+                }
+            } else if (screen.turn_timer_160 >= 0.0f) {               // 0064E5A2..0064E5B1
+                screen.turn_timer_160 = -1.0f;
+                host.turn_to_camera_release();
+            }
+        }
+        // 0064E5C9..0064E5FB.
+        if (host.controlled_present() && host.controlled_is_kind_of(kKindShip) &&
+            host.controlled_class_repair()) {
+            repair_section = true;
+        }
+    }
+    if (repair_section && !screen.repair_mode_157) {                  // 0064E601
+        if (host.input_held(kActionRepair)) {                         // 0064E61F
+            // 0064E62C..0064F30C: hints, NoRepairGUI, the warning flags, the
+            // analog selector and the highlight text.
+            host.repair_menu_open(dt);
+        } else if (host.input_released(kActionRepair) && screen.pick_pending_156) {
+            host.repair_order_route();                                // 0064F311..0064F393
+        }
+        // 0064F39A: the warning pulse runs while any flag is set.
+        if (screen.warn_flags[0] || screen.warn_flags[2] || screen.warn_flags[1] ||
+            screen.warn_flags[3]) {
+            host.warning_pulse(dt);
+        }
+    }
+    if (screen.repair_mode_157) {                                     // 0064F496
+        host.repair_mode_panel(dt);
+    } else if (host.other_screen_gate()) {                            // 0064F633..0064F655
+        host.other_screen_00545360();                                 // 0064F65A
+    }
+    host.remainder_from_0064f665(dt);
+}
+
 void ship_screen_update_0064dd30(ShipScreenState& screen, ShipScreenHost& host, float dt) {
     if (screen.slide_pending_119) host.relation_slide_block();        // 0064DD5F
     host.pipe_sight_block(dt);                                        // 0064DE92
@@ -103,7 +155,11 @@ void ship_screen_update_0064dd30(ShipScreenState& screen, ShipScreenHost& host, 
     if (!screen.active_05 || !screen.has_unit) return;                // 0064E340..0064E352
     screen.stick_44 = ship_screen_ease_stick_0064e358(screen.stick_44, host.unit_throttle());
     ship_screen_stick_0064a9f0(host, kStickEaseArg);                  // 0064E410
-    host.remainder_from_0064e415(dt);                                 // 0064E415
+    if (!host.controls_bound()) {
+        host.remainder_from_0064e415(dt);
+        return;
+    }
+    ship_screen_controls_0064e415(screen, host, dt);                  // 0064E415
 }
 
 }  // namespace bsp

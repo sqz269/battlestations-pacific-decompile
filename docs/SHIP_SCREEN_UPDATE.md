@@ -218,3 +218,50 @@ and then on. All camera switches are on. USN04 4500, `BSP_GUNNERY_RNG_STREAMS=1`
   them as authored. This is the one prediction miss: I had said no summary line reads these
   widgets, and the bridge line counts them.
 - **Result.** Every row prediction holds. **`kHudShipScreenUpdateBound` flips ON.**
+
+## 10. Part 2: the controls, 0064E415..0064F665
+
+**The flow with no input.** The whole repair menu (0064E62C..0064F30C) sits behind **004C5090(EFh)
+held** at 0064E61F. That covers the hints, NoRepairGUI, the warning flags +BCh..+BFh, the analog
+selector over axes 104h/105h/11Ch/11Dh/126h/127h, and the highlight text. When the action is not
+held the code goes to 0064F311, where the repair route needs **00535EE0(EFh) released**. The
+warning pulse at 0064F39A runs only while a flag is set, and the flags are written only inside the
+menu. Repair mode (+157h) is entered only from the menu.
+
+`ship_screen_controls_0064e415` transcribes this flow:
+1. **The ship gate:** the controlled unit is present, is a ship (kind 6) and is the local player.
+2. **Turn-to-camera, for a non-submarine:**
+   - action 98h pressed, or held with +160h at or above zero: at +160h below zero it stores dt
+     and routes the order; otherwise +160h grows by dt and resets to -1 past 1.0 when 009539E0
+     agrees;
+   - otherwise, with +160h at or above zero, +160h = -1 and unit+630h = -1.
+3. **The repair gate:** a ship whose class `Repair` byte (+D0h) is set, and +157h clear. Then EFh
+   held opens the menu; else EFh released with a pick pending routes the order; then the pulse.
+4. **The tail:** with +157h set, the repair-mode panel. Otherwise, when the gate at 0064F633
+   passes, 00545360 on the screen at [00E198C4]+50h. That routine sets that screen's +D4h to 1 and
+   its +1Ch to 0.
+
+The input queries go through the menu host's action records (004C43C0, 004C5090, 00535EE0). Only
+press-start 4Eh is ever driven, so every body that sends an order, writes the unit or opens the
+menu is a named record that performs nothing and is never reached.
+
+**Substitutions:**
+- **The class `Repair` byte** (VehicleClass key, 00962E16) is not loaded. It reads clear and is
+  recorded. Both answers reach 0064F496 when nothing is pressed.
+- **The local-player test 00927F30** answers true for the controlled unit.
+- **The gate at 0064F633** reads [[00E198C4]+64h]+81h and +82h, which the host does not build.
+  They read clear, so 00545360 is reached and recorded.
+
+**Switch.** `kHudShipScreenControlsBound`. OFF keeps part 1's single tail record.
+
+**Predictions, written before the pair.** One tree with part 1 on, `kHudShipScreenControlsBound`
+off then on, USN04 4500, 2560x1440.
+- **Row that leaves:** `HudShipScreen::update_remainder` at 0064E415, 9,158.
+- **Rows added:**
+  - `HudShipScreen::update_remainder` at 0064F665: 9,158.
+  - `HudShipScreen::class_repair_flag`: 9,158.
+  - `HudShipScreen::other_screen_00545360`: 9,158.
+- **Rows not added:** none of turn_to_camera_order, turn_to_camera_release, turn_timer_expired,
+  repair_menu, repair_order_route, warning_pulse or repair_mode_panel appears.
+- **Total.** The unimplemented total rises by 18,316.
+- **Summary lines.** All identical, since no widget changes.
