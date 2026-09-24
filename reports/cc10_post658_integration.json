@@ -1,0 +1,48 @@
+{
+  "packet": "cc10_post658_integration",
+  "commit": "0daf7a1f41cc112f3507588cfea4c035bc88f5f5",
+  "integration": "8e0cedbbecbc8c124cb935e28edbe3fcd96777a6",
+  "range": "[00b120b9,00b124a1)",
+  "native_bytes": 1000,
+  "native_sha256": "970db6215f0e4b79197790b263c44efd4bc72fdbcf18d472fe8a1bac9dd5b5de",
+  "instructions": 244,
+  "verified_call_rows": 49,
+  "review": [
+    "complete new source/header and predecessor continuation diff",
+    "eight borrowed parameters retain exact source/receiver capture order",
+    "inherited EBX194/EBPF4 replaced only by letterbox228/noiseScale648",
+    "Shake reads current34, then current658, then adds14",
+    "EDI reset before publication and state disarm after publication",
+    "independent canonical post20 construction block retained"
+  ],
+  "validation": {
+    "strict_win32_build": true,
+    "existing_ctests": 3,
+    "build_log_sha256": "f17721aaa6dac8e8c8f32990518b343368eb7666ce825bbd3e794bfc89c1f3ad",
+    "new_tracked_tests": 0,
+    "stage_runtime": false,
+    "native_ABI_FH3_SEH": false,
+    "application_run": false,
+    "game_validated": false
+  },
+  "archive": {
+    "path": "local/cc10-platform-evidence/renderer-post658.zip",
+    "sha256": "baf74aacf82023e1d9c49c31d8ba7d39a9ea3db3496b72904486a7154ec99e4c",
+    "files": 10,
+    "valid": true
+  },
+  "frontier": {
+    "address": "00b124a1",
+    "EBX": "service+228",
+    "EBP": "service+648",
+    "EDI": "FFFFFFFF",
+    "ESP14": "raw post658",
+    "mask": 0,
+    "native_eh_state": -1
+  },
+  "boundaries": [
+    "current34 owners must outlive borrowed parameter records; diagnostics are not retains",
+    "raw name headers remain stale after cleanup",
+    "full initialization graph and application binding remain incomplete"
+  ]
+}
