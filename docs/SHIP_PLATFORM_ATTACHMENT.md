@@ -129,3 +129,83 @@ renderer-init rule, nothing more was launched.
 
 **Both switches are committed OFF.** The binaries for the pairs are built: `local\pN` (both off)
 and `local\pT2` (both on). They land by the pairs once the session is active.
+
+## 6. The attachment pair (2026-09-23)
+
+Binaries are rebuilt on the merged tree: `local\qN` has both switches OFF and `local\qA` has
+the attachment ON. The option is on for both. Logs: `local/qN_9000.log`, `local/qA_9000.log`,
+`local/qN_4500.log`, `local/qA_4500.log`.
+
+- **The mount check held.** The logged Yorktown mounts equal section 2's slot points to the
+  centimetre, for example platform 9 at (-0.88, 11.21, 122.00). All 450 ship guns in E2 found
+  their slot, and none was missing.
+
+| row | OFF | ON | prediction | held? |
+| --- | --- | --- | --- | --- |
+| E2 torpedo / bomb drops | 0 / 0 | 0 / 0 | unchanged | yes |
+| E2 deaths | 35 | 35 | ±2 | yes |
+| E2 category 1 shots / hits | 2789 / 119 | 2640 / 93 | hits ±10 % | **no**: -22 % |
+| E2 category 5 shots / hits | 96 / 73 | 125 / 115 | ±10 % | **no**: +58 % |
+| E2 category 6 shots / hits | 237 / 213 | 275 / 205 | ±10 % | yes (-4 %) |
+| E2 Kate nearest-ship median (min) | 693 m (485) | 687 m (368) | - | - |
+| USN04 4500 deaths | 27 | 27 | ±2 | yes |
+| USN04 4500 category 1 hits | 91 | 87 | ±10 % | yes (-4 %) |
+| USN04 4500 category 5 hits | 55 | 67 | ±10 % | **no**: +22 % |
+| USN04 4500 category 6 hits | 165 | 138 | ±10 % | **no**: -16 % |
+| category 0 (aircraft guns) | 729 / 64 | 729 / 64 | flat | yes |
+
+- **Why the hits move although the aim uses the same point the round leaves.**
+  - The mounts are now up to 125 m fore and aft of the ship's centre. A gun at the far end is up
+    to 250 m farther from a target than one at the near end.
+  - The range gate still tests from the unit's aim point, so an engaged gun can be at the edge
+    of its real reach. Flight time and the flak fuse distance then differ per mount.
+  - Deaths, drops and the Kate outcome do not move.
+- **Decision: `kShipPlatformAttachmentBound` lands ON.** The mount positions are the image's
+  platform frames, and the pair moves no outcome row. The hit moves are the consequence of
+  firing from the right place.
+
+## 7. The line-of-fire pair (2026-09-23)
+
+**First run: vacuous.** On the class hull box the test blocked nothing: 0 of 1083 decisions in
+E2 and 0 of 866 in USN04 4500 (`local/qT_*`). The box is `Height` tall, centred on the
+waterline, so its top stands 5-8 m up. A segment from a deck mount raised 5 m to an aircraft
+never comes down that low.
+
+**The fix.** The image tests each unit's AABB, which covers its whole model. The ship models'
+own `BoundingBox` chunks run much higher:
+- Yorktown -9.1 to 45.3 m;
+- Fletcher -4.3 to 29.4 m;
+- Northampton -6.6 to 45.9 m;
+- Lexington -10.2 to 59.3 m.
+
+The test now uses the unit's model `BoundingBox`, read in the same pass as the slots and
+oriented by the unit's pose (`read_mmod_bounding_box`). It falls back to the hull box when a
+class model does not read. **Labelled:** an oriented model box stands for the image's world
+AABB followed by the unread `0085CDB0`.
+
+Pair on the rebuilt tree: `local\rA` (attachment ON, line of fire OFF) against `local\rT`
+(both ON), option on. `rA_9000` equals `qA_9000` in every count, so the rebuild changed nothing
+else.
+
+| row | line of fire OFF | ON | prediction | held? |
+| --- | --- | --- | --- | --- |
+| E2 decisions / blocked | - | 1087 / 61 (5.6 %) | 5-20 % | yes |
+| E2 acceptance refusals | 0 | 115 | - | - |
+| E2 torpedo / bomb drops | 0 / 0 | 0 / 0 | 0-3 / 0-2 | yes |
+| E2 deaths | 35 | 35 | Kate deaths down 0-3 | yes (0) |
+| E2 category 1 shots / hits | 2640 / 93 | 2610 / 89 | - | - |
+| E2 category 6 shots / hits | 275 / 205 | 254 / 194 | - | - |
+| E2 category 5 hits | 115 | 113 | - | - |
+| USN04 4500 decisions / blocked | - | 870 / 61 (7.0 %) | 5-20 % | yes |
+| USN04 4500 category 1 hits | 87 | 83 (-4.6 %) | -5 to -20 % | at the edge, just short |
+| USN04 4500 category 6 hits | 138 | 126 (-8.7 %) | 0 to -15 % | yes |
+| USN04 4500 deaths | 27 | 27 | - | - |
+
+- **What it refuses.** About one (gun, target) pair in 16 to 18 is blocked by a friendly unit on
+  the line, and the decision holds for the gun's life. Dual-purpose and light-AA fire falls by
+  5-9 %.
+- **What it does not change.** No outcome moves: deaths, drops and the Kate death ranges are
+  unchanged. So this substitution was not what made the fleet's air defence total. The zero
+  ordnance stands with the image's line-of-fire rule in place.
+- **Decision: `kAaLineOfFireBound` lands ON**, on the model boxes.
+`rA_4500` also equals `qA_4500` in every count.

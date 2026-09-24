@@ -13,6 +13,7 @@
 #include "bsp/game_hosts_singletons.hpp"
 #include "bsp/game_hosts_frontend.hpp"
 #include "bsp/game_hosts_hud.hpp"
+#include "bsp/game_hosts_hud_world.hpp"
 #include "bsp/game_hosts_mission.hpp"
 #include "bsp/gui_layout_loader.hpp"
 #include "bsp/input_tick.hpp"
@@ -816,6 +817,12 @@ public:
         }
         if (owner_.hud != nullptr && slot == 0x4d) {
             owner_.hud->update_markers_screen_006435d0(seconds);
+            return;
+        }
+        // Packet cc9_ship_screen_update: screen 45h's 0064DD30.
+        if (kHudShipScreenUpdateBound && owner_.hud != nullptr && slot == 0x45) {
+            owner_.hud->update_ship_screen_0064dd30(seconds,
+                screen != nullptr && screen->flags != nullptr && screen->flags->active);
             return;
         }
         owner_.log.unimplemented("FrontEndScreen::update", "004f75c0");

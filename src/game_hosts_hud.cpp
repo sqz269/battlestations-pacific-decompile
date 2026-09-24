@@ -6,6 +6,9 @@
 #include "bsp/game_hosts_hud_world.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/mission_camera.hpp"
+#include "bsp/hud_ship_screen.hpp"
+#include "bsp/game_hosts_frontend.hpp"
+#include "bsp/gui_layout_loader.hpp"
 #include "bsp/ocean_height.hpp"
 #include "bsp/ocean_wave_field.hpp"
 #include "bsp/ship_class_fields.hpp"
@@ -74,6 +77,12 @@ struct GameHudHost::Impl {
     bool camera_pipe_sight_enabled{false};
     float camera_pipe_sight_zoom_rate{0.0f};
     bsp::MissionCameraProjection camera_projection{};
+    // Packet cc9_ship_screen_update: screen 45h's fields and its widgets.
+    bsp::ShipScreenState ship_screen{};
+    std::size_t ship_screen_unit{0};
+    bool ship_screen_widgets_bound{false};
+    std::map<int, GuiLayoutWidget*> ship_screen_widgets;
+    GuiLayoutWidget* ship_screen_widget(bsp::ShipScreenWidget widget);
     void bind_mission_camera_0064da40();
     void step_mission_camera(float seconds);
     bool camera_target_view(bsp::ShipCaptainTargetView& out);
@@ -206,6 +215,12 @@ public:
         // The 25h arm's hand-off on interface+7Ch is 0064DA40, the ship view
         // that creates the ShipCaptain camera mover (docs/MISSION_CAMERA.md).
         if (kMissionCameraBound && manager_offset == 0x7C) owner_.bind_mission_camera_0064da40();
+        // The 25h arm's hand-off on interface+78h is 0064D590, which stores
+        // the unit in screen 45h's +184h (0064D598..0064D5EC).
+        if (manager_offset == 0x78 && owner_.units != nullptr && owner_.units->controlled_bound()) {
+            owner_.ship_screen.has_unit = true;
+            owner_.ship_screen_unit = owner_.units->controlled_index();
+        }
     }
     int hud_root_screen_query() override {
         owner_.record("InGameInterface::hud_root_screen_query", 0x00644230u);
@@ -837,6 +852,9 @@ void GameHudHost::detach_world_2k() noexcept {
     impl.lua = nullptr;
     impl.camera_bound = false;
     impl.camera_last_frame = ~0ull;
+    impl.ship_screen = bsp::ShipScreenState{};
+    impl.ship_screen_widgets.clear();
+    impl.ship_screen_widgets_bound = false;
     bsp::clear_mission_camera();
     impl.unit_request_pending = false;
     impl.unit_request_applied = false;
@@ -875,6 +893,116 @@ void GameHudHost::update_minimap_screen_005c0f20(float seconds) {
         return;
     }
     impl.minimap->update_005c0f20(seconds);
+}
+
+GuiLayoutWidget* GameHudHost::Impl::ship_screen_widget(bsp::ShipScreenWidget widget) {
+    if (!ship_screen_widgets_bound) {
+        ship_screen_widgets_bound = true;
+        // 0064C0F0's lookups: the offset each named widget is stored at.
+        static const std::pair<int, const char*> kNames[] = {
+            {0x48, "ship_stick_Icon"}, {0xF8, "ship_relation_Icon"},
+            {0x18C, "VillanasFelso_Icon"}, {0x190, "VillanasAlso_Icon"},
+            {0x194, "VillanasBal_Icon"}, {0x198, "VillanasJobb_Icon"}};
+        static const char* const kPages[] = {
+            "GUI_ship", "GUI_repair", "GUI_ship_effects", "GUI_ship_damage"};
+        for (const auto& entry : kNames) {
+            GuiLayoutWidget* found = nullptr;
+            for (const char* page_name : kPages) {
+                GuiLayoutPage* page = menu.in_game_page(0x45, page_name);
+                if (page == nullptr || !page->root) continue;
+                found = bsp::find_descendant_by_name(*page->root, entry.second);
+                if (found != nullptr) break;
+            }
+            ship_screen_widgets[entry.first] = found;
+        }
+    }
+    auto it = ship_screen_widgets.find(static_cast<int>(widget));
+    return it != ship_screen_widgets.end() ? it->second : nullptr;
+}
+
+namespace {
+// bsp::ShipScreenHost over this process's HUD.
+class ShipScreenBinding final : public bsp::ShipScreenHost {
+public:
+    explicit ShipScreenBinding(GameHudHost::Impl& owner) : owner_(owner) {}
+    void set_visible(bsp::ShipScreenWidget widget, bool visible) override {
+        GuiLayoutWidget* w = owner_.ship_screen_widget(widget);
+        if (w == nullptr) return;
+        owner_.menu.frontend().set_widget_visible(*w, visible);
+    }
+    void set_rotation(bsp::ShipScreenWidget widget, float radians) override {
+        GuiLayoutWidget* w = owner_.ship_screen_widget(widget);
+        if (w == nullptr) return;
+        owner_.menu.frontend().set_widget_rotation(*w, radians);
+    }
+    float rotation(bsp::ShipScreenWidget widget) override {
+        GuiLayoutWidget* w = owner_.ship_screen_widget(widget);
+        return w != nullptr ? w->transform.rotate : 0.0f;
+    }
+    void set_alpha(bsp::ShipScreenWidget widget, float alpha) override {
+        // Virtual +4Ch (00AA6980) writes the alpha lane of the Color property.
+        GuiLayoutWidget* w = owner_.ship_screen_widget(widget);
+        if (w == nullptr) return;
+        owner_.menu.frontend().set_widget_color(*w, w->color[0], w->color[1], w->color[2], alpha);
+    }
+    void select_state(bsp::ShipScreenWidget widget, int state, int zero, float one) override {
+        static_cast<void>(widget);
+        static_cast<void>(state);
+        static_cast<void>(zero);
+        static_cast<void>(one);
+        // The icon state select, 00AB1710 (gui_icon.hpp); the bridge draws
+        // the first authored state only.
+        owner_.record("HudShipScreen::relation_select_state", 0x00ab1710u);
+    }
+    bool unit_is_kind_of(int class_id) override {
+        return owner_.units != nullptr
+            && owner_.units->unit_is_kind_of(owner_.ship_screen_unit, class_id);
+    }
+    bool unit_in_formation() override {
+        return owner_.units != nullptr
+            && owner_.units->unit_formation_group_0284(owner_.ship_screen_unit) >= 0;
+    }
+    bool unit_leads_formation() override {
+        if (owner_.units == nullptr) return false;
+        const std::int32_t group = owner_.units->unit_formation_group_0284(owner_.ship_screen_unit);
+        return owner_.units->formation_leader_0014(group) == owner_.ship_screen_unit;
+    }
+    float unit_throttle() override {
+        const GameUnitRow* row =
+            owner_.units != nullptr ? owner_.units->unit_row(owner_.ship_screen_unit) : nullptr;
+        return row != nullptr ? row->throttle : 0.0f;              // unit+980h
+    }
+    bool flash_view_mode_is_1() override {
+        // SUBSTITUTION: [[00E198C4]+4Ch]+30h is on an interface object this
+        // process does not build; the enable reads clear.
+        owner_.record("HudShipScreen::flash_view_mode", 0x0064e31au);
+        return false;
+    }
+    void relation_slide_block() override {
+        owner_.record("HudShipScreen::relation_slide", 0x0064dd6du);
+    }
+    void pipe_sight_block(float dt) override {
+        static_cast<void>(dt);
+        // With kMissionFovBound the fov this block sets through 004DC940 is
+        // applied by the mission camera's tick (docs/MISSION_CAMERA.md 9).
+        owner_.record("HudShipScreen::pipe_sight_block", 0x0064de92u);
+    }
+    void remainder_from_0064e415(float dt) override {
+        static_cast<void>(dt);
+        owner_.record("HudShipScreen::update_remainder", 0x0064e415u);
+    }
+
+private:
+    GameHudHost::Impl& owner_;
+};
+}  // namespace
+
+void GameHudHost::update_ship_screen_0064dd30(float seconds, bool active) {
+    Impl& impl = *impl_;
+    impl.ship_screen.active_05 = active;
+    ShipScreenBinding binding(impl);
+    bsp::ship_screen_update_0064dd30(impl.ship_screen, binding, seconds);
+    impl.done("HudShipScreen::update", 0x0064dd30u);
 }
 
 void GameHudHost::update_markers_screen_006435d0(float seconds) {

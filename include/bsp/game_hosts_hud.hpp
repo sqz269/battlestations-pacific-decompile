@@ -154,6 +154,9 @@ public:
     // for every screen the applied interface published into level 1.
     void update_minimap_screen_005c0f20(float seconds);
     void update_markers_screen_006435d0(float seconds);
+    // Packet cc9_ship_screen_update: screen 45h's update 0064DD30. `active`
+    // is the screen's applied byte +5h as the registry holds it.
+    void update_ship_screen_0064dd30(float seconds, bool active);
 
     // One summary line for the run log.
     void report();
