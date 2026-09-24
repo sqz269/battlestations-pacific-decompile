@@ -98,6 +98,7 @@ struct XInputLibrary::Impl {
     XInputGetStateFunction get{};
     using SetState = DWORD (WINAPI*)(DWORD, XINPUT_VIBRATION*);
     SetState set{};
+    XInputEnableFunction enable{};
     explicit Impl(const std::wstring& path) {
         if (!std::filesystem::path(path).is_absolute())
             throw std::invalid_argument("XInput DLL path must be absolute");
@@ -106,13 +107,16 @@ struct XInputLibrary::Impl {
             std::to_string(GetLastError()));
         auto get_address = GetProcAddress(module, MAKEINTRESOURCEA(2));
         auto set_address = GetProcAddress(module, MAKEINTRESOURCEA(3));
-        if (!get_address || !set_address) {
+        auto enable_address = GetProcAddress(module, MAKEINTRESOURCEA(5));
+        if (!get_address || !set_address || !enable_address) {
             FreeLibrary(module);
-            throw std::runtime_error("XInput DLL lacks imported ordinal2 or ordinal3");
+            throw std::runtime_error("XInput DLL lacks imported ordinal2, ordinal3, or ordinal5");
         }
-        static_assert(sizeof(get) == sizeof(get_address) && sizeof(set) == sizeof(set_address));
+        static_assert(sizeof(get) == sizeof(get_address) && sizeof(set) == sizeof(set_address)
+            && sizeof(enable) == sizeof(enable_address));
         std::memcpy(&get, &get_address, sizeof(get));
         std::memcpy(&set, &set_address, sizeof(set));
+        std::memcpy(&enable, &enable_address, sizeof(enable));
     }
     ~Impl() { FreeLibrary(module); }
 };
@@ -120,6 +124,7 @@ XInputLibrary::XInputLibrary(const std::wstring& path) : impl_(std::make_unique<
 XInputLibrary::~XInputLibrary() = default;
 DWORD XInputLibrary::get_state(DWORD user, XINPUT_STATE& state) { return impl_->get(user, &state); }
 DWORD XInputLibrary::set_state(DWORD user, XINPUT_VIBRATION& state) { return impl_->set(user, &state); }
+void XInputLibrary::enable(BOOL enabled) { impl_->enable(enabled); }
 XInputGetStateFunction XInputLibrary::get_state_function() const noexcept { return impl_->get; }
 
 XInputDevice::XInputDevice(std::uint32_t user, XInputApi& api, XInputDeviceGlobals& globals) noexcept
