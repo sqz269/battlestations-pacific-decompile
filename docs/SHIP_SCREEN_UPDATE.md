@@ -965,3 +965,102 @@ plus this branch, 2560x1440.
 - No toggle, raised-view or view-arm row appears.
 - **Summary lines.** All 160 are identical.
 - **Result.** Every prediction holds. **`kHudShipViewInputBound` flips ON.**
+
+## 23. Screen 44h, the HUD root: 00649860 (cc9-platform3, 2026-09-24)
+
+Packet `cc9_screen_44h`. `bsp::hud_root_screen_update` (`src/hud_updates.cpp`, from packet
+`hud_central_updates`, docs/HUD_CENTRAL_UPDATES.md) was checked against the listing
+00649860..0064A24C: the gate, the cadence, the clone pass, the tail and the toggle's kind-18h arm
+all match. Ghidra has a function here. What was missing is the host, and three producers.
+
+**Correction.** Field +40h is **ClosedUnitHUD_Group**, not a selector widget. 006463E0 stores it at
+00646AAE, from a lookup under Units_Group (+30h, 00646A3E) on the GUI_selector page (+28h,
+006469C3). The installed `interface/gui_selector.lua` authors it visible, so 0064A108's show every
+frame changes nothing drawn.
+
+**The producers.**
+- **+78h, the pending unit handle.** Its only literal-address writer is 0076CFD0 at 0076D021 (a
+  scan of every `[00E198C4]` load followed by a `+40h` load and a `+78h` store). 0076CFD0 receives
+  session message 4Dh, which 0076CF30 builds, and 0076CF30's one caller is 008AB3D0, Lua
+  `MW_MultiSelectUnit`. The receiver stores the handle only for the local player's slot. The
+  commit that follows, 00645600 (`BSP_InGameHudRoot_SetControlledUnit`), writes gameplay state,
+  but it is gated by a mission-script call, not by input. The host keeps that Lua native
+  unimplemented, and USN04 never calls it: `MissionLuaNative::MultiSelectUnit` has no row in
+  `p11_on_usn04.log`. So +78h stays 0, in the image as here, and the commit, the camera notify
+  and both interface requests are records never reached.
+- **+B0h..+B4h, the award ticker queue.** 00648AB0 pushes it. Its one caller is
+  `BSP_MissionScoring_GrantAward` (0090EDE0, at 0090EF93). The host's award grants do not reach
+  it, so the queue reads empty. That is a substitution, and it is recorded.
+- **game+61Fh and +620h, the suppression bytes.** They are the pause bytes: 004D95F0 (the pause
+  menu's "set paused") writes +61Fh, and 004D94F0 (tutorial hints) writes +620h. The host never
+  pauses. Both read clear, and that is recorded.
+
+**What runs with no input,** per call:
+1. The pause gate, then `+F4h` counts down. The body runs on every second call, starting with the
+   first, because the enter 006488D0 zeroes `+F4h` and 44h enters once per run.
+2. On a body call: both clone vectors are emptied. They are always empty here. Then, with a
+   controlled unit, 008E9AF0 fills the power-up vectors. The power-up manager is not built, so it
+   answers none and nothing is cloned.
+3. The award ticker: the timer is 0 and the queue is empty.
+4. +78h is 0.
+5. ClosedUnitHUD_Group is shown.
+6. The selection tuple 00644CC0/00644C20 is stored at +C2h. The selection poll 00644DB0 and the
+   unit rows 00648C20 run. All three are records in this part.
+7. The closed-HUD toggle, for a controlled unit that is not kind 9, 45h or 46h. First game+19C4h,
+   then action DFh through the menu host's action records. A ship never takes the kind-18h
+   `+379h` arm, so 00647080 is not reached.
+8. The group tail. The screen's +20h is never set here, and game+1FE4h is zero in single player.
+
+**Records and substitutions:**
+
+| record | address | stands for |
+| --- | --- | --- |
+| `HudRootScreen::game_pause_bytes` | 00649863 | game+61Fh/+620h, read clear |
+| `HudRootScreen::platform_row_inset` | 006499D9 | platform+0Dh, the widescreen byte; it only places the first power-up row |
+| `HudRootScreen::collect_powerups` | 008E9AF0 | the power-up manager [00F88C30], five empty vectors |
+| `HudRootScreen::award_ticker_queue` | 00649FE0 | the award queue, empty |
+| `HudRootScreen::selection_tuple` | 0064A114 | 00644CC0/00644C20; +C2h has no reader in this host |
+| `HudRootScreen::selection_poll` | 00644DB0 | the unit selection poll, actions 8Dh/8Ch/8Eh/8Fh |
+| `HudRootScreen::unit_rows` | 00648C20 | the unit rows: name, flag, payload, health, command icon |
+| `HudRootScreen::game_19c4` | 0064A179 | game+19C4h, read clear |
+| never reached | 008E62A0, 00AAB4C0, 00648060, 0064A018, 00645600, 004CC460, 0064A1E0, 00647080, 006485A0 | the clone bodies, the ticker step, the pending commit, the plane arm, the toggle, the group rebuild |
+
+**Switch.** `kHudRootScreenBound`. OFF keeps the `FrontEndScreen::update` record for slot 44h.
+00644DB0 and 00648C20 have bounded reconstructions (`src/hud_root_rows.cpp`), and they are left
+for their own sub-switches: 00648C20 writes the unit rows and can move the text and sprite lines.
+
+**Predictions, written before the pair.** One tree on main abfe67af8 plus this branch, with every
+earlier switch on. The switch is off, then on. USN04 4500, `BSP_GUNNERY_RNG_STREAMS=1`, back
+buffer 2560x1440. 44h is pumped 9,160 times, as often as 49h. Its body runs on 4,580 of them.
+- **Row that falls:** `FrontEndScreen::update`, from 27,485 to 18,325 (-9,160).
+- **Rows added:**
+  - `HudRootScreen::update`: done, 9,160.
+  - `game_pause_bytes`, `award_ticker_queue`, `selection_tuple`, `selection_poll` and
+    `unit_rows`: 9,160 each.
+  - `platform_row_inset`: 4,580.
+  - `collect_powerups`: 4,580, or up to 2 fewer if the two 20h-interface pumps have no
+    controlled unit.
+  - `game_19c4`: 9,160, or up to 2 fewer for the same reason.
+- **Rows not added:** none of the never-reached records above.
+- **Total.** The unimplemented total rises by about 54,960, with 6 fewer at most.
+- **Summary lines.** All are identical. One exception is possible: the frontend's show call marks
+  ClosedUnitHUD_Group as visibility-applied and invalidates the quads. If the bridge had not drawn
+  the GUI_selector page's children as authored, the sprite or text line could move.
+
+**The pair.** `local\h1_off_usn04.log` against `local\h1_on_usn04.log`, one tree on main abfe67af8
+plus this branch, back buffer 2560x1440.
+
+| row | OFF | ON |
+| --- | ---: | ---: |
+| unimplemented total | 2,374,478 | 2,429,438 (+54,960; predicted about +54,960) |
+| FrontEndScreen::update | 27,485 | 18,325 |
+| HudRootScreen::update | none | 9,160 done |
+| game_pause_bytes, award_ticker_queue, selection_tuple, selection_poll, unit_rows, game_19c4 | none | 9,160 each |
+| platform_row_inset, collect_powerups | none | 4,580 each |
+
+- **Rows not added.** No never-reached record appears.
+- **The two ranges.** `collect_powerups` and `game_19c4` took the top of their ranges, so a
+  controlled unit exists on every 44h pump, the two 20h-interface pumps included.
+- **Summary lines.** All 161 are identical. The show call on ClosedUnitHUD_Group moved no bridge
+  line.
+- **Result.** Every prediction holds. **`kHudRootScreenBound` flips ON.**

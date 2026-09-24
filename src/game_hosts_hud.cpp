@@ -8,6 +8,7 @@
 #include "bsp/mission_camera.hpp"
 #include "bsp/hud_ship_screen.hpp"
 #include "bsp/hud_warning_screen.hpp"
+#include "bsp/hud_updates.hpp"
 #include "bsp/game_hosts_frontend.hpp"
 #include "bsp/gui_layout_loader.hpp"
 #include "bsp/ocean_height.hpp"
@@ -95,6 +96,12 @@ struct GameHudHost::Impl {
     bool ship_view_has_unit{false};
     bsp::IntegratedControlsState ship_view_controls{};
     bsp::BinocularsState binoculars{};
+    // Screen 44h, the HUD root (00649860). The enter 006488D0 zeroes +F4h;
+    // the default state is that store, and the screen enters once per run.
+    bsp::HudRootUpdateState hud_root{};
+    bool hud_root_widgets_bound{false};
+    GuiLayoutWidget* hud_root_closed_group{nullptr};
+    GuiLayoutWidget* hud_root_closed_group_widget();
     void bind_mission_camera_0064da40();
     void step_mission_camera(float seconds);
     bool camera_target_view(bsp::ShipCaptainTargetView& out);
@@ -1581,6 +1588,190 @@ void GameHudHost::update_warning_screen_00683020(float seconds) {
     WarningScreenBinding binding(impl);
     bsp::warning_screen_update_00683020(impl.warning_screen, binding, seconds);
     impl.done("HudWarningScreen::update", 0x00683020u);
+}
+
+namespace {
+// bsp::HudRootUpdateHost over this process's HUD, for 00649860. One record per
+// input the host cannot source. Every body that writes the controlled unit,
+// pushes an interface request or toggles the closed HUD is a record that
+// performs nothing, and none of them is reached in USN04.
+class HudRootUpdateBinding final : public bsp::HudRootUpdateHost {
+public:
+    explicit HudRootUpdateBinding(GameHudHost::Impl& owner) : owner_(owner) {}
+
+    bool game_hud_suppressed() override {
+        // SUBSTITUTION: game+61Fh (004D95F0, the pause menu's "set paused") and
+        // game+620h (004D94F0, the tutorial hints' pause) are not modelled.
+        // The host never pauses, so both read clear.
+        owner_.record("HudRootScreen::game_pause_bytes", 0x00649863u);
+        return false;
+    }
+    bool platform_row_inset() override {
+        // SUBSTITUTION: platform 0109CF04+0Dh (the widescreen byte) does not
+        // reach the HUD host (docs/HUD_PRESENTATION_TOP.md row 2). It only
+        // places the first power-up row, and no row is placed here.
+        owner_.record("HudRootScreen::platform_row_inset", 0x006499d9u);
+        return false;
+    }
+    float mission_clock() override {
+        owner_.record("HudRootScreen::mission_clock", 0x00649c6bu);
+        return 0.0f;
+    }
+    bool controlled_unit_present() override {
+        return owner_.units != nullptr && owner_.units->controlled_bound();
+    }
+    // The clone vectors +104h and +114h: nothing is ever cloned here (the
+    // power-up collection is a record answering none), so both are empty and
+    // the destroy-and-erase loops at 006498AC..006499CC do nothing.
+    void release_icon_clones() override {}
+    void release_circle_clones() override {}
+    void collect_powerups() override {
+        // SUBSTITUTION: the power-up manager [00F88C30] is not built; 008E9AF0
+        // answers five empty vectors.
+        owner_.record("HudRootScreen::collect_powerups", 0x008e9af0u);
+    }
+    std::size_t untimed_entry_count() override { return 0; }
+    std::size_t timed_entry_count() override { return 0; }
+    float timed_entry_deadline(std::size_t) override { return 0.0f; }
+    bool untimed_entry_applies(std::size_t) override {
+        owner_.record("HudRootScreen::powerup_applies", 0x008e62a0u);
+        return false;
+    }
+    bool timed_entry_applies(std::size_t) override {
+        owner_.record("HudRootScreen::powerup_applies", 0x008e62a0u);
+        return false;
+    }
+    std::uint32_t clone_icon_template() override {
+        owner_.record("HudRootScreen::clone_template", 0x00aab4c0u);
+        return 0;
+    }
+    std::uint32_t clone_circle_template() override {
+        owner_.record("HudRootScreen::clone_template", 0x00aab4c0u);
+        return 0;
+    }
+    float icon_template_height() override { return 0.0f; }
+    void widget_set_resolved_position(std::uint32_t, const bsp::HudGuiPoint&) override {}
+    int local_team_index() override {
+        if (!controlled_unit_present()) return 0;
+        const GameUnitRow* row = owner_.units->unit_row(owner_.units->controlled_index());
+        return row != nullptr && row->party >= 0 && row->party <= 7 ? row->party : 0;
+    }
+    void icon_add_state_from_entry(std::uint32_t, std::size_t, bool) override {}
+    void widget_select_state(std::uint32_t) override {}
+    void circle_set_fill(std::uint32_t, float) override {}
+    float timed_entry_duration(std::size_t) override { return 1.0f; }
+
+    void advance_ticker() override {
+        owner_.record("HudRootScreen::advance_ticker", 0x00648060u);
+    }
+    // +78h's only writer is 0076CFD0, the receiver of session message 4Dh,
+    // which Lua MW_MultiSelectUnit (008AB3D0) sends. The host keeps that
+    // native unimplemented and USN04 never calls it, so the handle stays 0 and
+    // none of the following is reached.
+    bool pending_unit_selectable(std::uint16_t) override {
+        owner_.record("HudRootScreen::pending_unit_handle", 0x0064a018u);
+        return false;
+    }
+    bool pending_unit_allowed() override { return false; }
+    void commit_pending_unit() override {
+        // 00645600 sets the controlled unit: gameplay state, not performed.
+        owner_.record("HudRootScreen::commit_pending_unit", 0x00645600u);
+    }
+    bool interface_manager_idle() override { return false; }
+    void notify_camera_and_input() override {}
+    int controlled_unit_scene_payload() override { return 0; }
+    void push_interface_request(int, int) override {
+        owner_.record("HudRootScreen::push_interface_request", 0x004cc460u);
+    }
+
+    void widget_set_shown(std::uint32_t widget, bool shown) override {
+        if (widget != 0x40u) {
+            owner_.record("HudRootScreen::clone_set_shown", 0x00649aafu);
+            return;
+        }
+        // 0064A108: +40h is ClosedUnitHUD_Group (006463E0 stores it at
+        // 00646AAE, found under Units_Group on GUI_selector), shown through
+        // virtual +34h(1).
+        GuiLayoutWidget* w = owner_.hud_root_closed_group_widget();
+        if (w == nullptr) return;
+        owner_.menu.frontend().set_widget_visible(*w, shown);
+    }
+    std::uint32_t resolve_weapon_info(bool& needs_fallback) override {
+        // 00644CC0 (and its fallback 00644C20) look the controlled unit up in
+        // the primary and secondary lists 00648290 builds; neither the lists
+        // nor the lookups are bound here. +C2h has no reader in this host.
+        owner_.record("HudRootScreen::selection_tuple", 0x0064a114u);
+        needs_fallback = false;
+        return 0xFFFF0000u;
+    }
+    std::uint32_t resolve_weapon_info_fallback() override { return 0xFFFF0000u; }
+    void update_unit_rows(float) override {
+        // 00644DB0, the selection poll over actions 8Dh, 8Ch, 8Eh and 8Fh.
+        owner_.record("HudRootScreen::selection_poll", 0x00644db0u);
+    }
+    void update_medals() override {
+        // 00648C20, the unit rows (name, flag, payload, health, command).
+        owner_.record("HudRootScreen::unit_rows", 0x00648c20u);
+    }
+
+    bool controlled_unit_is_kind(int kind) override {
+        return owner_.units->unit_is_kind_of(owner_.units->controlled_index(), kind);
+    }
+    bool game_blocks_toggle() override {
+        // SUBSTITUTION: game+19C4h is not modelled (as for screen 46h); read clear.
+        owner_.record("HudRootScreen::game_19c4", 0x0064a179u);
+        return false;
+    }
+    bool input_action_pressed(int action) override {
+        return owner_.menu.input_action_pressed(action);
+    }
+    bool controlled_unit_flag_379() override {
+        // Reached only for a kind-18h (plane) controlled unit.
+        owner_.record("HudRootScreen::plane_flag_379", 0x0064a1e0u);
+        return false;
+    }
+    void toggle_closed_hud() override {
+        // 00647080 pushes interface requests 22h/23h: not performed.
+        owner_.record("HudRootScreen::toggle_closed_hud", 0x00647080u);
+    }
+    // +20h is the screen's own byte; nothing in this host sets it, and the
+    // tail then stops at game+1FE4h, which is zero in single player.
+    bool game_has_group_manager() override { return false; }
+    int controlled_unit_team() override { return local_team_index(); }
+    void rebuild_group_rows() override {
+        owner_.record("HudRootScreen::rebuild_group_rows", 0x006485a0u);
+    }
+
+private:
+    GameHudHost::Impl& owner_;
+};
+}  // namespace
+
+GuiLayoutWidget* GameHudHost::Impl::hud_root_closed_group_widget() {
+    if (!hud_root_widgets_bound) {
+        hud_root_widgets_bound = true;
+        GuiLayoutPage* page = menu.in_game_page(0x44, "GUI_selector");
+        hud_root_closed_group = page != nullptr && page->root
+            ? bsp::find_descendant_by_name(*page->root, "ClosedUnitHUD_Group") : nullptr;
+    }
+    return hud_root_closed_group;
+}
+
+void GameHudHost::update_hud_root_screen_00649860(float seconds) {
+    Impl& impl = *impl_;
+    // 00649FD7..00649FF5: with the ticker timer expired the award queue at
+    // +B0h..+B4h is read. SUBSTITUTION: 00648AB0, which
+    // BSP_MissionScoring_GrantAward (0090EDE0) calls to queue an award
+    // message, is not reached from this host's award grants, so the queue
+    // reads empty and the timer is never reloaded.
+    if (impl.hud_root.ticker_timer <= 0.0f) {
+        impl.record("HudRootScreen::award_ticker_queue", 0x00649fe0u);
+    }
+    impl.hud_root.ticker_queue_count = 0;
+    impl.hud_root.selector_widget = 0x40u;  // ClosedUnitHUD_Group's field
+    HudRootUpdateBinding binding(impl);
+    bsp::hud_root_screen_update(impl.hud_root, binding, seconds);
+    impl.done("HudRootScreen::update", 0x00649860u);
 }
 
 void GameHudHost::update_markers_screen_006435d0(float seconds) {

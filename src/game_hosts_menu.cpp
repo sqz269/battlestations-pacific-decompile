@@ -836,6 +836,11 @@ public:
             owner_.hud->update_follow_screen_0067bf00();
             return;
         }
+        // Packet cc9_screen_44h: screen 44h's 00649860, the HUD root.
+        if (kHudRootScreenBound && owner_.hud != nullptr && slot == 0x44) {
+            owner_.hud->update_hud_root_screen_00649860(seconds);
+            return;
+        }
         // Packet cc9_screen_50h: screen 50h's 00683020.
         if (kHudWarningScreenBound && owner_.hud != nullptr && slot == 0x50) {
             owner_.hud->update_warning_screen_00683020(seconds);
