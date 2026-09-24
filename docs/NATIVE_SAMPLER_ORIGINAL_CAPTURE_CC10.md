@@ -37,6 +37,14 @@ missing or new product files. No restore was needed or applied. Inventory-only
 access-time changes are excluded from write attribution. This backup is not
 whole Windows or XLive profile isolation.
 
+A later check of the private working copy found one change: its existing
+`bsp_debug.log` decreased from3,734,657 bytes to an empty stream. Its file
+identity, creation time and attributes stayed the same; write time changed.
+The other67,813 files matched retained metadata/identity, with no new or missing
+files. This is a separate observation from the unchanged scoped product folder;
+the responsible module is unknown. The original manifest remains frozen, and
+subsequent preparation admits only this exact single-file current state.
+
 The integration report `reports/native_sampler_original_capture_cc10.json`
 pins the helper, controller, backup guard and independently reverified244
 preparation,22 run and3 installed-module-audit artifacts. The ignored local

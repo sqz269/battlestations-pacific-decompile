@@ -3,7 +3,7 @@
   "status": "one_owned_original_attempt_closed_inconclusive",
   "original_launches": 1,
   "automatic_retry": false,
-  "original_installation_modified": false,
+  "original_installation_edits_by_capture_harness": false,
   "sampler_captured": false,
   "entry_rendezvous_reached": false,
   "hardware_markers_armed": false,
@@ -107,5 +107,26 @@
       "sha256": "13065644c1bc5d9c9befaa7d01793a52f4cf4fe985fa0acdb423a70290a8c783",
       "files": 3
     }
-  ]
+  ],
+  "later_private_copy_observation": {
+    "archive": {
+      "path": "local/cc10-platform-evidence/original-sampler-run01-private-log-drift.zip",
+      "sha256": "958dbd210aba8bd173635735aa9050a215f0503427551b8a98d86fe13976f0cb",
+      "files": 3,
+      "valid": true
+    },
+    "path": "bsp_debug.log",
+    "prior_bytes": 3734657,
+    "current_bytes": 0,
+    "current_unnamed_stream_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "same_file_identity_creation_attributes": true,
+    "write_time_changed": true,
+    "other_files_matching_retained_metadata_identity": 67813,
+    "new": [],
+    "missing": [],
+    "causal_attribution": null,
+    "original_manifest_preserved": true,
+    "approved_overlay": "Exact existing private log row only; every future difference fails",
+    "original_installation_scope": "No capture-harness edits to original installation; a complete post-run original-installation write audit was not performed"
+  }
 }
