@@ -1,0 +1,405 @@
+{
+  "packet": "cc10_lua_field_values",
+  "status": "complete_raw_normal_body_build_and_focused_original_source_checked",
+  "address": "00bd63b0",
+  "coverage": "complete normal body; native FH3 cleanup is an explicit boundary",
+  "source": "src/native_lua_field_values.cpp",
+  "documentation": "docs/NATIVE_LUA_FIELD_VALUES_CC10.md",
+  "original_abi": "ECX actual LuaObject, EDX actual8h field pair, RET; new context and scratch change source ABI",
+  "native_bytes": {
+    "start": "00bd63b0",
+    "end_inclusive": "00bd6826",
+    "size": 1143,
+    "sha256": "88247c185f60ea789594de85ce7e85b5577daa95d839cd2cfe49abb66e549a33",
+    "live_pe_equal": true
+  },
+  "host_steps": [
+    {
+      "address": "00bd63d7",
+      "native": "00b662b0",
+      "function": "00bd63b0",
+      "contract": "Current actual-object string conversion; borrowed pointer and numeric TValue mutation"
+    },
+    {
+      "address": "00bd63f9",
+      "native": "0041dd40",
+      "function": "00bd63b0",
+      "contract": "Resize actual header through canonical raw string pool, preserve false"
+    },
+    {
+      "address": "00bd640e",
+      "native": "00bf7680",
+      "function": "00bd63b0",
+      "contract": "Overlap-admitting byte copy using captured source and current header length/data"
+    },
+    {
+      "address": "00bd6432",
+      "native": "00b66290",
+      "function": "00bd63b0",
+      "contract": "Actual-object integer conversion with float32 spill and current SSE2/x87 mode"
+    },
+    {
+      "address": "00bd6455",
+      "native": "00b66270",
+      "function": "00bd63b0",
+      "contract": "Actual-object float32-rounded ST0 number, consumed with exact FSTP"
+    },
+    {
+      "address": "00bd647d",
+      "native": "00b66250",
+      "function": "00bd63b0",
+      "contract": "Current actual-object boolean, one byte result"
+    },
+    {
+      "address": "00bd649e",
+      "native": "00b66a60",
+      "function": "00bd63b0",
+      "contract": "Actual integer-number predicate before numeric resolver"
+    },
+    {
+      "address": "00bd64a9",
+      "native": "00b66290",
+      "function": "00bd63b0",
+      "contract": "Actual-object integer conversion with float32 spill and current SSE2/x87 mode"
+    },
+    {
+      "address": "00bd64b3",
+      "native": "[0109ced4]",
+      "function": "00bd63b0",
+      "contract": "Current actual callable cell; ECX integer"
+    },
+    {
+      "address": "00bd64d0",
+      "native": "00b661b0",
+      "function": "00bd63b0",
+      "contract": "Actual table predicate, including nonkind2 nonzero objects"
+    },
+    {
+      "address": "00bd64e2",
+      "native": "[0109ced8]",
+      "function": "00bd63b0",
+      "contract": "Current actual callable cell; ECX actual LuaObject"
+    },
+    {
+      "address": "00bd650f",
+      "native": "00b67720",
+      "function": "00bd63b0",
+      "contract": "Indexed actual Lua child at stable supplied scratch address and real tracking slots"
+    },
+    {
+      "address": "00bd652a",
+      "native": "00b67720",
+      "function": "00bd63b0",
+      "contract": "Indexed actual Lua child at stable supplied scratch address and real tracking slots"
+    },
+    {
+      "address": "00bd6542",
+      "native": "00b67720",
+      "function": "00bd63b0",
+      "contract": "Indexed actual Lua child at stable supplied scratch address and real tracking slots"
+    },
+    {
+      "address": "00bd6551",
+      "native": "00b66270",
+      "function": "00bd63b0",
+      "contract": "Actual-object float32-rounded ST0 number, consumed with exact FSTP"
+    },
+    {
+      "address": "00bd655c",
+      "native": "00b66270",
+      "function": "00bd63b0",
+      "contract": "Actual-object float32-rounded ST0 number, consumed with exact FSTP"
+    },
+    {
+      "address": "00bd6567",
+      "native": "00b66270",
+      "function": "00bd63b0",
+      "contract": "Actual-object float32-rounded ST0 number, consumed with exact FSTP"
+    },
+    {
+      "address": "00bd6593",
+      "native": "00b67700",
+      "function": "00bd63b0",
+      "contract": "Destroy current actual child and release tracked stack reference"
+    },
+    {
+      "address": "00bd65a4",
+      "native": "00b67700",
+      "function": "00bd63b0",
+      "contract": "Destroy current actual child and release tracked stack reference"
+    },
+    {
+      "address": "00bd65b8",
+      "native": "00b67700",
+      "function": "00bd63b0",
+      "contract": "Destroy current actual child and release tracked stack reference"
+    },
+    {
+      "address": "00bd65ce",
+      "native": "00b67720",
+      "function": "00bd63b0",
+      "contract": "Indexed actual Lua child at stable supplied scratch address and real tracking slots"
+    },
+    {
+      "address": "00bd65e5",
+      "native": "00b67720",
+      "function": "00bd63b0",
+      "contract": "Indexed actual Lua child at stable supplied scratch address and real tracking slots"
+    },
+    {
+      "address": "00bd65f4",
+      "native": "00b66270",
+      "function": "00bd63b0",
+      "contract": "Actual-object float32-rounded ST0 number, consumed with exact FSTP"
+    },
+    {
+      "address": "00bd65ff",
+      "native": "00b66270",
+      "function": "00bd63b0",
+      "contract": "Actual-object float32-rounded ST0 number, consumed with exact FSTP"
+    },
+    {
+      "address": "00bd6623",
+      "native": "00b67700",
+      "function": "00bd63b0",
+      "contract": "Destroy current actual child and release tracked stack reference"
+    },
+    {
+      "address": "00bd6637",
+      "native": "00b67700",
+      "function": "00bd63b0",
+      "contract": "Destroy current actual child and release tracked stack reference"
+    },
+    {
+      "address": "00bd665c",
+      "native": "00b67720",
+      "function": "00bd63b0",
+      "contract": "Indexed actual Lua child at stable supplied scratch address and real tracking slots"
+    },
+    {
+      "address": "00bd667d",
+      "native": "00b67720",
+      "function": "00bd63b0",
+      "contract": "Indexed actual Lua child at stable supplied scratch address and real tracking slots"
+    },
+    {
+      "address": "00bd668c",
+      "native": "00b66270",
+      "function": "00bd63b0",
+      "contract": "Actual-object float32-rounded ST0 number, consumed with exact FSTP"
+    },
+    {
+      "address": "00bd66a0",
+      "native": "00b67700",
+      "function": "00bd63b0",
+      "contract": "Destroy current actual child and release tracked stack reference"
+    },
+    {
+      "address": "00bd66be",
+      "native": "00b67700",
+      "function": "00bd63b0",
+      "contract": "Destroy current actual child and release tracked stack reference"
+    },
+    {
+      "address": "00bd66df",
+      "native": "00b67720",
+      "function": "00bd63b0",
+      "contract": "Indexed actual Lua child at stable supplied scratch address and real tracking slots"
+    },
+    {
+      "address": "00bd66f9",
+      "native": "00b67720",
+      "function": "00bd63b0",
+      "contract": "Indexed actual Lua child at stable supplied scratch address and real tracking slots"
+    },
+    {
+      "address": "00bd6711",
+      "native": "00b67720",
+      "function": "00bd63b0",
+      "contract": "Indexed actual Lua child at stable supplied scratch address and real tracking slots"
+    },
+    {
+      "address": "00bd672b",
+      "native": "00b67720",
+      "function": "00bd63b0",
+      "contract": "Indexed actual Lua child at stable supplied scratch address and real tracking slots"
+    },
+    {
+      "address": "00bd673a",
+      "native": "00b66270",
+      "function": "00bd63b0",
+      "contract": "Actual-object float32-rounded ST0 number, consumed with exact FSTP"
+    },
+    {
+      "address": "00bd6747",
+      "native": "00b66270",
+      "function": "00bd63b0",
+      "contract": "Actual-object float32-rounded ST0 number, consumed with exact FSTP"
+    },
+    {
+      "address": "00bd6752",
+      "native": "00b66270",
+      "function": "00bd63b0",
+      "contract": "Actual-object float32-rounded ST0 number, consumed with exact FSTP"
+    },
+    {
+      "address": "00bd675d",
+      "native": "00b66270",
+      "function": "00bd63b0",
+      "contract": "Actual-object float32-rounded ST0 number, consumed with exact FSTP"
+    },
+    {
+      "address": "00bd67b0",
+      "native": "00b67700",
+      "function": "00bd63b0",
+      "contract": "Destroy current actual child and release tracked stack reference"
+    },
+    {
+      "address": "00bd67c1",
+      "native": "00b67700",
+      "function": "00bd63b0",
+      "contract": "Destroy current actual child and release tracked stack reference"
+    },
+    {
+      "address": "00bd67d2",
+      "native": "00b67700",
+      "function": "00bd63b0",
+      "contract": "Destroy current actual child and release tracked stack reference"
+    },
+    {
+      "address": "00bd67e6",
+      "native": "00b67700",
+      "function": "00bd63b0",
+      "contract": "Destroy current actual child and release tracked stack reference"
+    },
+    {
+      "address": "00bd67f2",
+      "native": "00b662b0",
+      "function": "00bd63b0",
+      "contract": "Current actual-object string conversion; borrowed pointer and numeric TValue mutation"
+    },
+    {
+      "address": "00bd67f8",
+      "native": "00bf8417",
+      "function": "00bd63b0",
+      "contract": "Linked CRT strtol(text,nullptr,10), signed32 result bits"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00cc5af8",
+      "end_inclusive": "00cc5b01",
+      "end_exclusive": "00cc5b02",
+      "last_instruction": "00cc5afd JMP 00bf6b43",
+      "last_instruction_length": 5,
+      "coverage": "boundary only, unported native FH3 handler",
+      "still_undefined": true,
+      "native_bytes": {
+        "start": "00cc5af8",
+        "end_inclusive": "00cc5b01",
+        "size": 10,
+        "last_instruction": "00cc5afd",
+        "last_instruction_length": 5,
+        "sha256": "b1c20eaeb1d7bf1255705ebae99a8c75387c42d560963c3ff5a78e1702f11431",
+        "live_pe_equal": true
+      }
+    }
+  ],
+  "eh_boundary": {
+    "handler": "00cc5af8",
+    "descriptor": "00dffd2c",
+    "native_dispatch": "00bf6b43",
+    "reconstructed": false
+  },
+  "boundary_steps": [
+    {
+      "address": "00cc5afd",
+      "native": "00bf6b43",
+      "function": "00cc5af8",
+      "kind": "no_ghidra_function",
+      "transfer": "tail_jump",
+      "contract": "Unported native FH3 handler thunk; EAX descriptor DFFD2C"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Tag A described as ParsedFloat and logical strtof conversion",
+      "is": "Raw atol/strtol signed32 EAX bits copied through MOVSS",
+      "evidence": "BF8417 strtol(text,nullptr,10); BD67F8..BD680D EAX spill and MOVSS bit stores"
+    }
+  ],
+  "validation": {
+    "build": "strict scripts/build.ps1 MSVC Win32 /W4 /WX /fp:strict; all3 existing CTests passed",
+    "probe": "25 original/source pairs; real Lua and actual stack/ref slots",
+    "new_tracked_tests": 0,
+    "callee_differential": false,
+    "native_ABI_SEH": false,
+    "unmasked_exceptions": false,
+    "application_or_game": false,
+    "probe_exit_code": 0,
+    "executable_sha256": "b0370b6436629eb9dd0f024f0294ea30f997d9bfefee3d98a1fd3a1ef99dbee9",
+    "probe_compiler": "/MD /O2 /W4 /WX /fp:strict /MANIFEST:EMBED",
+    "rebound_direct_calls": 43,
+    "rebound_indirect_cells": [
+      "0109ced4",
+      "0109ced8"
+    ],
+    "report_call_rows_checked": 44,
+    "report_call_row_failures": 0,
+    "scratch_bytes_compared": 116,
+    "coverage": [
+      "all dispatch tags and unknown",
+      "actual canonical string pool and post-case drain",
+      "live native tracked references inside metatable lookup",
+      "reverse vector lookup order and row-major matrix",
+      "destination capture before resolvers, early matrix and late vectors",
+      "forward aliases in native spill region",
+      "masked x87 flags including signed zero, denormal and NaN values",
+      "integer SSE2/x87 mode provider",
+      "tagA signed32 parser result bits including overflow",
+      "numeric strings do not pass tag4 integer-number predicate"
+    ]
+  },
+  "limits": "Complete normal body using the SAME actual Lua stack/ref slots, raw string pool and current resolver cells. Initialized stable caller scratch preserves unwritten bytes, spill aliases and output order. Does not implement installed game resolver targets, native FH3 cleanup, protected Lua transport, rollback, original CRT fault/locale behavior, binary ABI or game integration.",
+  "compiled_source": {
+    "src/native_lua_field_values.cpp": "442dfc1a28c0b5e02dcdfcc2f9b65a7081691f9b32e5b0cbb3185d547e497a11",
+    "include/bsp/native_lua_field_values.hpp": "8ed428c5d8a9206381e6e1e6a20687e8d44c59f59d10abc8a2ef445e70ab0acb",
+    "build/win32/Release/bsp_core.lib": "756c87b9cd504aee5608f1592a3ed70de5c812fce499796d20c842999dc15213",
+    "build/win32/Release/bsp_lua511.lib": "312a40acde7fbb14e245a0f606bda72b9581554bc279aa705c476e161449d67b"
+  },
+  "local_files": {
+    "local/cc10_field_values/build.log": "4d8c85ad5cd16d368e59bb983d5215994556ccf756944c42ab46ebfb0e7a0eed",
+    "local/cc10_field_values/compile_probe.cmd": "5ac6861de9fb9122bb905ed631198bf4abe6c2902dfcd8047636ab4153e9c5eb",
+    "local/cc10_field_values/compile_probe.log": "3700fd737c73fe4b4a5ac3f719a87830c3362091adb42fce30e170fef38dc402",
+    "local/cc10_field_values/compile_production.cmd": "82b37ca03712698e81e355a4a978740b6615fb8db86b5e34a68a9c05207d9fff",
+    "local/cc10_field_values/compile_production.log": "e9ed250d3963a19b2cff3b14a756ab670e5d6f79be3037ca8cd65e68aa564b99",
+    "local/cc10_field_values/dependencies.json": "e37cc4dfa9a9f58e43cb0468acd722eb73d7d758865df7528615b4329c8d8acf",
+    "local/cc10_field_values/field_values_probe.exe": "b0370b6436629eb9dd0f024f0294ea30f997d9bfefee3d98a1fd3a1ef99dbee9",
+    "local/cc10_field_values/game_objects.rsp": "1d5d6a9f4d1961610e8dffe9c8e18848fe54d7214f17164d9ce37a6878b6892a",
+    "local/cc10_field_values/handler_bytes.txt": "c948de62aef2f4919b90899be4a0fa6a0d7034783b7e5beaf447c23be5a364c4",
+    "local/cc10_field_values/host.log": "de569c520f8471b3bce6abcc6a3c64a71a09f9430e31e0112edeaab2ffaf7388",
+    "local/cc10_field_values/ledger.json": "7089e6dd4330a984416e84ef677a6755ea236675b4beef734c6bd279e00c497f",
+    "local/cc10_field_values/live_bytes.txt": "aebc72529856ef3f75fefa918c95734034fd0bae58d4aec2cea7faa5cc185f48",
+    "local/cc10_field_values/name_ledger.log": "7a08d0ed310b2b2907eecc5c870288bbe44b38e333e5df2ced122c3e4a571efa",
+    "local/cc10_field_values/native_bytes.hpp": "a0f1e4dfad913f10490266c03c42716eb6f8d8c7e23f1dd08f90164b17b54c36",
+    "local/cc10_field_values/original_assembly.txt": "2f55637230d45145da5d1d7793837cc652ab2625a43d65a2f3f988e6fbf3963b",
+    "local/cc10_field_values/pins.json": "399789becb2492580cd6e87906ef27cd0634f3f17e2b82f2f61eccf12aa5546a",
+    "local/cc10_field_values/prepare.log": "48c1f14c27679ee52b5ce68eeea68eefc0194b030de1024856a09ec77cf269eb",
+    "local/cc10_field_values/probe.cmd": "befd1989c160619f937c7deb3457e9b37cfb1fcdcd1aba1e132b1f6351e570f6",
+    "local/cc10_field_values/probe.cpp": "174e83047f05f0324c764e5fab060329fc25f108ac0f700742de16ad3840f1ad",
+    "local/cc10_field_values/probe.map": "d2d7077e27c945d239af845a86391516017c51d0cc45c4efea215cb098386b4c",
+    "local/cc10_field_values/probe.obj": "3d4d8631c775bdd1fe6a048d714efcf7986229f16c5a218bf124d0937e52adf6",
+    "local/cc10_field_values/probe_body.txt": "b3053cab70998ca67cffe8828b22c6e6d7c893ded22cce97e2a3bf8fa03ca527",
+    "local/cc10_field_values/probe_build.log": "3700fd737c73fe4b4a5ac3f719a87830c3362091adb42fce30e170fef38dc402",
+    "local/cc10_field_values/probe_launcher.log": "c93e8418a878953ddb9fda9e0e2d81b7e66f6b5c49cd41062f6a413cb881ab67",
+    "local/cc10_field_values/production.obj": "0c5d64100daee5c10df233ca635c042d0f9922470d6be5cd50cbee74f4205afa",
+    "local/cc10_field_values/report_calls.log": "814a5333b560c10179f93ac0166c17d07f77da25a779cc5c702a36d9e5d0ae49",
+    "local/cc10_field_values/run.log": "3ba43792a82a48582f868061219f602646beed8dd34461024de81920e2469617"
+  },
+  "local_archive": {
+    "path": "local/cc10_field_values_evidence.zip",
+    "sha256": "a749dbf4656596e6a4e0c11ecb320a02bfe62dcba5fa3654c2744aa2a3022153",
+    "valid": true,
+    "files": 30
+  }
+}
