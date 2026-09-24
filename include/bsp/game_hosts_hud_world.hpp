@@ -141,7 +141,7 @@ inline constexpr bool kHudShipViewRoleTableBound = true;
 // screen's 0051EF00 and 0051F050 on the ShipCaptain mover. The input axes and
 // GlobalConfig+4 are records; with no input the mover's yaw and pitch are
 // rewritten with a zero step. OFF keeps the part-1 record.
-inline constexpr bool kHudShipViewInputBound = false;
+inline constexpr bool kHudShipViewInputBound = true;
 
 inline constexpr bool kHudShipScreenGaugesBound = true;
 

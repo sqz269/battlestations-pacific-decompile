@@ -932,3 +932,17 @@ sets +4h.
 - **Total.** The unimplemented total rises by 18,316.
 - **Summary lines.** All identical. The camera pose does not move, so the markers' and minimap's
   projections are unchanged. Tavcso_Model is a Model widget, which the sprite bridge does not draw.
+
+**The part 3 pair.** `local\p11_off_usn04.log` against `local\p11_on_usn04.log`, one tree on main
+plus this branch, 2560x1440.
+
+| row | OFF | ON |
+| --- | ---: | ---: |
+| unimplemented total | 2,355,466 | 2,373,782 (+18,316; predicted +18,316) |
+| view_input (record) | 9,158 | none |
+| view_input_0064a400 | none | 9,158 done |
+| view_input_terms, binoculars_lens_off, screen_2eh_005454b0 | none | 9,158 each |
+
+- No toggle, raised-view or view-arm row appears.
+- **Summary lines.** All 160 are identical.
+- **Result.** Every prediction holds. **`kHudShipViewInputBound` flips ON.**
