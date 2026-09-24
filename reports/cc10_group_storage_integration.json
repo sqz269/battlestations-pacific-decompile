@@ -1,0 +1,109 @@
+{
+  "packet": "cc10_group_storage_integration",
+  "worker_commit": "9a234881cc323a9db823bbc45e2c48ec11d86170",
+  "integration": "9a3f7d2be7b0673fa61790d70a89226b3f04aa2c",
+  "archive": {
+    "path": "local/cc10-platform-evidence/group-storage-lifetime.zip",
+    "sha256": "3ed74a96515776c646805d4f76ca15c73c0b665909c1620e141cffb26cc2542c",
+    "files": 51,
+    "valid": true
+  },
+  "worker_report": "reports/native_group_storage_lifetime_cc10.json",
+  "review": [
+    "Full header/source, four native bodies, final documentation and focused probe reviewed",
+    "Genuine raw106B constructor establishes actual node and trivial20B tail; separate pure same18Ch pool/duplicate/profile/count admission precedes registry insertion and noexcept12B preimage-preserving descriptor lifetime preparation",
+    "Destructor stamps actual Group, preserves borrowed A0, resizes0/currentbegin/free with documented full pointer-helper equivalence; state0 consumed before raw node destruction",
+    "Current18 clears captured borrowed backs before shared late44 gate/currentchild18/current0; tail may retire owner and no payload access follows; current40 only masks138",
+    "Sameactual+4 canonical current0/fresh4, positivecount flags0 and callback-mutated late flags1; actual188 samepool return; map-only metadata retirement after return or source failure"
+  ],
+  "validation": {
+    "normal_bytes": 211,
+    "compiler_boundary_bytes": 18,
+    "eh_data_bytes": 44,
+    "profile_bytes": 88,
+    "live_equals_installed": true,
+    "instruction_call_rows": 8,
+    "worker_raw_handler_callee_only_rows_preserved": 1,
+    "strict_win32_build": true,
+    "worker_ctests": 2,
+    "integrated_ctests": 3,
+    "focused_original_source_probe": true,
+    "new_tracked_tests": 0,
+    "build_log_sha256": "9cd5900aebdbfe2f2d13f7d794e4aa27988ff965f9aee0600e00dfe69adddf94",
+    "native_ABI_FH3_SEH": false,
+    "application_bound": false,
+    "game_validated": false
+  },
+  "primary_ghidra": {
+    "defined_handler": "00cc2af8..00cc2b02 exclusive",
+    "handler_bytes": 10,
+    "descriptor": "00dfc1c0",
+    "map": "00dfc1b8",
+    "map_states": [
+      "-1 ->00cc2af0"
+    ],
+    "worker_ghidra_mutations": false
+  },
+  "host_steps": [
+    {
+      "function": "00b8f680",
+      "address": "00b8f6b6",
+      "native": "0059fce0",
+      "contract": "actual178 count0 resize; source reuses proven pointer-only B7C1C0 inline-equivalent schedule"
+    },
+    {
+      "function": "00b8f680",
+      "address": "00b8f6be",
+      "native": "00bf6989",
+      "contract": "CURRENT begin after resize; real singleton CRT free; stale begin/capacity preserved"
+    },
+    {
+      "function": "00b8f680",
+      "address": "00b8f6d0",
+      "native": "00b6f440",
+      "contract": "state0 consumed to-1 before genuine raw node destruction with persistent caller diagnostics"
+    },
+    {
+      "function": "00b8f8c0",
+      "address": "00b8f8c3",
+      "native": "00b8f680",
+      "contract": "complete raw Group destructor with no extra scalar entry stamp/count change"
+    },
+    {
+      "function": "00b8f8c0",
+      "address": "00b8f8d5",
+      "native": "00b8ed40",
+      "contract": "CURRENT low-byte flags bit0 after destruction; actual010902F4 same18Ch pool/current188"
+    },
+    {
+      "function": "00b8eec0",
+      "address": "00b8ef00",
+      "native": "00b6f310",
+      "contract": "clear CURRENT borrowed backs A0 before shared late44 gate/currentchild18/current0; tail may retire same owner",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc2af0",
+      "address": "00cc2af3",
+      "native": "00b6f440",
+      "contract": "state0 cleanup uses actual saved owner, boundary evidence only",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc2af8",
+      "address": "00cc2afd",
+      "native": "00bf6b43",
+      "contract": "Primary defined complete10B handler; current MOV EAX,DFC1C0 and JMP BF6B43 verified; native FH3 transport unclaimed",
+      "kind": "tail_jump"
+    }
+  ],
+  "probe_boundary": "211B live/PE extents; copied bodies alter only six rel32 operands (24B) at B8F6B6,B8F6BE,B8F6D0,B8F8C3,B8F8D5,B8EF00; exactworld8B unchanged. Callees/constructor/canonical dispatch are shared genuine source boundaries, not separately compared original callees",
+  "limits": [
+    "Valid accessible nonnegative borrowed arrays, genuine same-pool slots and quiescent registry; no invalid-memory/concurrent-mutation compatibility.",
+    "Source canonical admission/lifetime preparation is separate from native behavior; registered destruction routes through its reference.",
+    "No logical NativeGroupOwner/CameraTransform/SceneResource conversion or point allocation-registry reuse.",
+    "Reached child/derived dispatch requires genuine explicit providers and prepared persistent frames; no unknown-profile fallback.",
+    "Child fixture counts remain nonzero; actual Group and resource zero terminals exercised.",
+    "Source EH schedule reviewed, not native exceptional execution/FH3/SEH/private-stack/binary ABI/application/game proof."
+  ]
+}
