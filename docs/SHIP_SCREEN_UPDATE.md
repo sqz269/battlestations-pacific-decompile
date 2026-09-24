@@ -279,3 +279,42 @@ off then on, USN04 4500, 2560x1440.
 - **No gated body ran.** None of the order, unit-write or menu records appears.
 - **Summary lines.** All 157 are identical.
 - **Result.** Every prediction holds. **`kHudShipScreenControlsBound` flips ON.**
+
+## 11. Handoff notes for parts 3 and 4 (read, not bound)
+
+**Where the work stands.** The tail from 0064F665 is the record `HudShipScreen::update_remainder`
+(0064F665), about 9,158 calls per USN04 run. Read from Ghidra's decompile; check the listing
+before binding.
+
+**Part 3, the damage panel.** It runs whenever the controlled unit exists, input or not.
+- **The Icon row.**
+  - Icon_5 (+D4h) is shown or hidden by IsKindOf(8), the submarine test.
+  - Icon_3 (+C4h) gets the opposite answer.
+- **The selected damage index** (+150h) comes from unit+A44h (dword 0x291):
+
+  | unit+A44h | 0 | 4 | 3 | 5 | 1 | 2 |
+  | --- | --- | --- | --- | --- | --- | --- |
+  | +150h | -1 | 0 | 1 | 2 | 2 | 3 |
+
+- **Hl_1..4** (+D8h..+E4h) fade: the widget's color is read through +54h and written through
+  +50h. The selected one's alpha grows by 2*dt up to 1; the others shrink by 2*dt down to 0.
+- **The circles** are shown only while a ratio is above 0.01 (00D7A238); a shown circle's
+  progress goes to a GUI timed entry (00AA8B00(2)) or, when +188h is set, to 00ABE6E0:
+  - **circle_3 (+F0h), engine jam, surface ship:** 0093A3F0 over the `EngineJam` entry of the
+    failure-descriptor vector at settings+3E8h (20h stride, name at +8h, seconds at +Ch).
+  - **circle_3, submarine:** (settings+4C4h - unit+125Ch) / settings+4C4h, with an upper bound at
+    00CED5D0.
+  - **circle_1 (+E8h), water:** 00939F80 (repair task +34h) over unit+A60h.
+  - **circle_2 (+ECh), fire:** 00939F70 (task +38h) over unit+A5Ch.
+  - **circle_4 (+F4h), worst device:** the largest (+36Ch - +370h)/+36Ch over the unit's
+    device list (+48h, next +44h). A device counts when it is kind 4, is not kind 0Fh, is kind
+    20h, has [+3F4h]+80h not equal to 1, and has byte +378h set.
+- **Host gaps.** The host has no repair task (fire and water seconds), device damage fractions or
+  failure descriptors, so the circles read zero and hide. unit+A44h also needs a producer read.
+
+**Part 4, the gauge tail** (0065005C..006500C1).
+- With +104h set: 0043B370 on +7Ch, with 00852300(unit, dt), the device count over +48h.
+- With +107h set: 0043B370 on +80h, with 00815850, which is +104Ch plus 00810E90.
+- Then +188h is cleared.
+- Still to read between 0064FB44 and 0065005C: the speed, recon and torpedo digit widgets
+  (+60h..+74h) and ship_dir_Icon (+50h).
