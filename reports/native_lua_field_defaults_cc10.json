@@ -1,0 +1,75 @@
+{
+  "packet": "cc10_lua_field_defaults",
+  "status": "complete_raw_source_build_and_focused_original_source_checked",
+  "address": "00bd61c0",
+  "source": "src/native_lua_field_defaults.cpp",
+  "documentation": "docs/NATIVE_LUA_FIELD_DEFAULTS_CC10.md",
+  "original_abi": "ECX field8 pair, stacked fallback8 pointer, RET4; return unspecified; new context changes source ABI",
+  "native_bytes": {
+    "start": "00bd61c0",
+    "size": 312,
+    "sha256": "f5ce6e965c2d86ab88c896c71f70a837a4d2a7f9798884be9bd744a538d02e64",
+    "live_pe_equal": true
+  },
+  "no_ghidra_function": [],
+  "host_steps": [
+    {
+      "address": "00bd61f4",
+      "native": "0041dd40",
+      "function": "00bd61c0",
+      "contract": "Resize actual header through current raw string pool, preserve false"
+    },
+    {
+      "address": "00bd6205",
+      "native": "00bf7680",
+      "function": "00bd61c0",
+      "contract": "Copy captured source to current data using current header length; admitted overlap; zero byte no access"
+    },
+    {
+      "address": "00bd62b3",
+      "native": "004134f0",
+      "function": "00bd61c0",
+      "kind": "tail_jump",
+      "contract": "Existing exact sequential x87 matrix copy"
+    }
+  ],
+  "validation": {
+    "build": "strict MSVC Win32;3 existing CTests passed",
+    "probe": "18 original/source raw default-store pairs",
+    "executable_sha256": "29e761de30922deea6f297474cc1c8f4a0f21a4a81a6756a393d53afa6fab704",
+    "probe_exit_code": 0,
+    "new_tracked_tests": 0,
+    "string_pool": "actual canonical raw publication and manager, drained after cases",
+    "rebound_native_branches": [
+      "0041dd40 to production actual-header resize",
+      "00bf7680 to admitted overlap copy",
+      "004134f0 to existing exact source matrix entry"
+    ],
+    "coverage": [
+      "tags0..A and unknown tags",
+      "fallback tag ignored",
+      "scalar and byte footprints",
+      "sequential forward overlap",
+      "masked x87 flags",
+      "pooled string/null defaults"
+    ],
+    "callee_differential": false,
+    "native_ABI_SEH": false,
+    "unmasked_exceptions": false,
+    "application_or_game": false
+  },
+  "local_files": {
+    "local/cc10_field_defaults/build.log": "1a825c6a076d6a6e653709cfdacef013d8b7cf14f9756aa4b6d310921c9785ec",
+    "local/cc10_field_defaults/pins.json": "51c27372087f7ddfeb147bd28f272cb4919d6a019f06e3090f503421e95777e9",
+    "local/cc10_field_defaults/probe.cpp": "d49a7aef727cf84dd387c14eae2b77c7cb5eb1568929ce2a29756fd6cdd33c5c",
+    "local/cc10_field_defaults/run.log": "15e80e782a60bf91fdba02371db97525edbcd0e3da96c9fd0eba062ef8611545",
+    "local/cc10-lua-field-defaults-build.log": "7c2114266ee5d4a710f468e17a9a0ccd80ea7aa8df6f53aa301a9a134774e527"
+  },
+  "local_archive": {
+    "path": "local/cc10-platform-evidence/lua-field-defaults.zip",
+    "sha256": "a1366be1508f95c7bf99248d8a3acc0cb7fcd446e4872f5b98d67fb5e9a9c88e",
+    "valid": true,
+    "files": 14
+  },
+  "limits": "Descriptive hypothesis, not a recovered symbol. Complete312B raw field-default dispatch, keyed only by field tag. 0 uses actual pool resize/current length copy;1/4 DWORD;3 byte;2/A x87;5/6 sequential x87 vectors;7 exact4134F0;8 sequential DWORDs with first source read before destination read;9/unknown no-op. Preserves aliases/current headers. Live/PE312B match; strict Win32/3CTests and18 original/source pairs pass, with native resize/copy/matrix branches rebound to same production primitives. No callee differential, unmasked faults, native ABI/SEH or game claim. reports/native_lua_field_defaults_cc10.json."
+}
