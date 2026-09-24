@@ -125,6 +125,12 @@ inline constexpr bool kHudFollowScreenBound = true;
 // 2Eh's 005484F0 as records. OFF keeps the one record.
 inline constexpr bool kHudShipViewScreenBound = true;
 
+// Part 2 of the same packet (section 19): 0064B870, the integrated throttle
+// and rudder controls. The input manager fields and the player-role test are
+// records; the role transfer and the order send are records never reached
+// without input. OFF keeps the part-1 record.
+inline constexpr bool kHudShipViewControlsBound = false;
+
 inline constexpr bool kHudShipScreenGaugesBound = true;
 
 class GameHostLog;

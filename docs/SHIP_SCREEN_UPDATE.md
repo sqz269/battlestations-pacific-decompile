@@ -728,3 +728,49 @@ then on, USN04 4500.
 - No order-route or unit-virtual row appears.
 - **Summary lines.** All 157 are identical.
 - **Result.** Every prediction holds. **`kHudShipViewScreenBound` flips ON.**
+
+## 19. Screen 46h part 2: the integrated controls 0064B870
+
+`bsp::integrated_controls_0064b870`, read from the listing. `__thiscall(screen 46h, float dt)`,
+RET 4, body 0064B870..0064BB48. The existing fragment `issue_hud_order_fragment_0064b870`
+(0064BA97..0064BB16) covers the order it sends.
+
+**The flow:**
+1. 0064B879: with byte [+1Ch]+6C8h set, it reads the input manager's turn axis +1BE4h, thrust
+   axis +1BB4h, the two binding queries 00A92050/00A92090 on +1B90h, and later the byte +1B91h.
+2. "Thrust moved":
+   - With 00A92050, it is "+30h clear". When +30h is set and +34h differs from the thrust axis,
+     +30h is cleared instead.
+   - Without it, it is |thrust| > 0.1 (00D7A3A0). The magnitude is `-0.0 - x` for x <= 0.
+3. 0064B96C..0064B9BD: when |turn| > 0.1 or the thrust moved, with [+1Ch]+1130h zero and the
+   player holding role 0 but not role 1, it calls `0077C470(unit, 2, 1)` for the transfer. It then
+   seeds +28h from unit+984h and +24h from unit+980h.
+4. 0064B9C5..0064BB12, only while the player holds role 1:
+   - +24h integrates the thrust axis: `+24h - thrust*dt` without a device query. With one, and
+     +1B91h set, it is `-thrust*0.5` for positive thrust, else `-0 - thrust`.
+   - It is clamped to [-0.5, 1] by 00415690.
+   - +28h = `+28h - turn*dt`, clamped to [-1, 1].
+   - The quantised order goes out through 00816A40.
+5. 0064BB19..0064BB3C: role 1 is given back (`0077C470(2, 0)`) while game+19C4h is set.
+
+**Substitutions and records:**
+- The +6C8h gate reads set. The unit constructor stores 1 at 0095CE29, and a disp32 scan finds no
+  other byte writer. No record.
+- `HudShipView::control_inputs` (004BEC00): the input manager fields read zero and clear.
+- `HudShipView::local_player_role` (00927F30): the host has no role table. It answers role 0 held
+  and role 1 not held (docs/CONTROLLED_UNIT_HELM.md section 6).
+- `role_transfer`, `issue_order`, `unit_1130` and `game_19c4` are reached only after input.
+
+**Switch.** `kHudShipViewControlsBound`. OFF keeps part 1's `HudShipView::integrated_controls`
+record.
+
+**Predictions, written before the pair.** Part 1 on, the switch off then on, USN04 4500.
+- **Row that leaves:** `HudShipView::integrated_controls` at 0064B870, 9,158.
+- **Rows added:**
+  - `HudShipView::integrated_controls_0064b870`: done, 9,158.
+  - `control_inputs`: 9,158.
+  - `local_player_role`: 18,316, from the role-1 tests at 0064B9C5 and 0064BB1E. The role-0 test
+    is short-circuited because no axis moves.
+- **Rows not added:** no `role_transfer`, `issue_order`, `unit_1130` or `game_19c4` row.
+- **Total.** The unimplemented total rises by 18,316.
+- **Summary lines.** All identical, and the controlled unit's motion is unchanged.

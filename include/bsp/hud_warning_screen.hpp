@@ -119,4 +119,40 @@ struct ShipViewScreen46Host {
 // 0064D610.
 void ship_view_update_0064d610(ShipViewScreen46Host& host, float dt);
 
+// Part 2: 0064B870, BSP_HudUnitOrder_UpdateIntegratedControls,
+// __thiscall(screen 46h, float dt), RET 4, body 0064B870..0064BB48.
+struct IntegratedControlsState {
+    float thrust_24{0.0f};        // +24h
+    float turn_28{0.0f};          // +28h
+    bool latched_30{false};       // +30h
+    float latch_34{0.0f};         // +34h
+};
+
+// The input manager fields the routine reads through 004BEC00.
+struct IntegratedControlsInputs {
+    float turn_1be4{0.0f};        // [input+4]+1BE4h
+    float thrust_1bb4{0.0f};      // [input+4]+1BB4h
+    bool query_a92050{false};     // 00A92050 on [input+4]+1B90h
+    bool query_a92090{false};     // 00A92090 on [input+4]+1B90h
+    bool byte_1b91{false};        // [input+4]+1B91h
+};
+
+struct IntegratedControlsHost {
+    virtual ~IntegratedControlsHost() = default;
+    virtual bool unit_byte_6c8() = 0;                 // [+1Ch]+6C8h
+    virtual IntegratedControlsInputs inputs() = 0;
+    virtual bool unit_1130_clear() = 0;               // [+1Ch]+1130h == 0
+    virtual bool local_player_role(int role) = 0;     // 00927F30(unit, role)
+    virtual void role_transfer_0077c470(int mask, int take) = 0;
+    virtual float unit_ordered_rudder() = 0;          // unit+984h
+    virtual float unit_throttle() = 0;                // unit+980h
+    // 0064BA97..0064BB12: the quantised order through 00816A40
+    // (bsp::issue_hud_order_fragment_0064b870).
+    virtual void issue_order(float thrust, float turn) = 0;
+    virtual bool game_19c4() = 0;                     // [00E188A8]+19C4h
+};
+
+void integrated_controls_0064b870(IntegratedControlsState& screen,
+                                  IntegratedControlsHost& host, float dt);
+
 }  // namespace bsp
