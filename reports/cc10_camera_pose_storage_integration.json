@@ -1,0 +1,260 @@
+{
+  "packet": "cc10_camera_pose_storage_integration",
+  "worker_commit": "50273e783e679a120d583809ac0937b82ac691f4",
+  "integration": "b03a671fd26db7eadd24d2ab753e523026508d17",
+  "archive": {
+    "path": "local/cc10-platform-evidence/camera-pose-storage.zip",
+    "sha256": "189853148c9e84d2145262a2ad89f9a8a8ab6bcfa3c4a75761494892bf5aec42",
+    "files": 55,
+    "valid": true
+  },
+  "worker_report": "reports/native_camera_pose_storage_cc10.json",
+  "review": [
+    "Full source/header, complete native schedules, final documentation and ignored five-pair probe reviewed",
+    "Same mutable incoming argument becomes world pointer before y/z; current34 lookup while z live requires integer-only x87-neutral resolver",
+    "Captured eye/current30 before mask, current target after callback, independent currentone read and captured table before inverse with34 target read after actual final argument write",
+    "Disjoint immutable pointer views over initialized live DWORD backing; physical nested overlaps preserved without overlapping aggregate lifetimes; dead scratch excluded",
+    "Builder mutable4word argument area/13locals, actual currenttarget after CRT and currentone after prior output; POPEDI physical stack-offset transition recovered",
+    "Genuine rawnode/world/inverse/vector/CRT providers with explicit post-provider harness mutations; no recovered-mutation or fullcamera claim"
+  ],
+  "validation": {
+    "normal_bytes": 1336,
+    "live_equals_installed": true,
+    "packet_direct_call_rows": 11,
+    "library_direct_call_rows": 1,
+    "indirect_rows_retained": 3,
+    "strict_win32_build": true,
+    "worker_ctests": 3,
+    "integrated_ctests": 3,
+    "focused_original_source_pairs": 5,
+    "compiled_floating_sse_sequence": 259,
+    "independent_physical_stack_references": 122,
+    "independent_mapping_review": {
+      "source_sha256": "a2e1e1be07bd7494463a5390fe54a789066f18a53dbfdfc35a9a72a4ebf02b5b",
+      "builder_bytes": 978,
+      "physical_stack_references_verified": 122,
+      "floating_sse_instruction_annotations_verified": 259,
+      "final_original_stack_delta": 0,
+      "scope": "Independent disk instruction/physical-frame mapping and floating mnemonic annotation check; not full operand, ABI or runtime proof"
+    },
+    "new_tracked_tests": 0,
+    "build_log_sha256": "79ce80887cefc7914bc9b3c49873083d12ab3d6fc5cba93071b77e2e9d3109e2",
+    "ghidra_flow_or_definition_required": false,
+    "full_camera_constructor": false,
+    "camera_companion_admission": false,
+    "native_ABI_FH3_SEH": false,
+    "application_bound": false,
+    "game_validated": false
+  },
+  "probe_boundary": {
+    "source": "local\\cc10_camera_pose_storage\\probe.cpp",
+    "build_log": "local\\cc10_camera_pose_storage\\probe_build.log",
+    "run_log": "local\\cc10_camera_pose_storage\\probe.log",
+    "command": "local\\cc10_camera_pose_storage\\probe.cmd",
+    "pairs": 5,
+    "result": "pass",
+    "packet_normal_bytes": 1336,
+    "copied_dependency": {
+      "address": "00b70660",
+      "bytes": 173
+    },
+    "direct_operand_relocations": [
+      {
+        "call_site": "00b71412",
+        "operand_start": "00b71413",
+        "size": 4,
+        "callee": "00b6dae0"
+      },
+      {
+        "call_site": "00b71419",
+        "operand_start": "00b7141a",
+        "size": 4,
+        "callee": "00b70660"
+      },
+      {
+        "call_site": "00b70141",
+        "operand_start": "00b70142",
+        "size": 4,
+        "callee": "00419440"
+      },
+      {
+        "call_site": "00b701cf",
+        "operand_start": "00b701d0",
+        "size": 4,
+        "callee": "00b63f10"
+      },
+      {
+        "call_site": "00b701dc",
+        "operand_start": "00b701dd",
+        "size": 4,
+        "callee": "00b63b30"
+      },
+      {
+        "call_site": "00b63f1d",
+        "operand_start": "00b63f1e",
+        "size": 4,
+        "callee": "00419440"
+      },
+      {
+        "call_site": "00b63fa7",
+        "operand_start": "00b63fa8",
+        "size": 4,
+        "callee": "00419440"
+      },
+      {
+        "call_site": "00b64120",
+        "operand_start": "00b64121",
+        "size": 4,
+        "callee": "004f9b30"
+      },
+      {
+        "call_site": "00b64129",
+        "operand_start": "00b6412a",
+        "size": 4,
+        "callee": "00419440"
+      },
+      {
+        "call_site": "00b64198",
+        "operand_start": "00b64199",
+        "size": 4,
+        "callee": "004f9b30"
+      },
+      {
+        "call_site": "00b641a1",
+        "operand_start": "00b641a2",
+        "size": 4,
+        "callee": "00419440"
+      },
+      {
+        "call_site": "00b7066c",
+        "operand_start": "00b7066d",
+        "size": 4,
+        "callee": "00b6db70"
+      },
+      {
+        "call_site": "00b7069d",
+        "operand_start": "00b7069e",
+        "size": 4,
+        "callee": "00b6db70"
+      }
+    ],
+    "data_operand_relocations": [
+      {
+        "instruction": "00b7016f",
+        "operand_start": "00b70173",
+        "size": 4,
+        "original_data": "00d7a24c"
+      },
+      {
+        "instruction": "00b64037",
+        "operand_start": "00b6403b",
+        "size": 4,
+        "original_data": "00d7a208"
+      },
+      {
+        "instruction": "00b64045",
+        "operand_start": "00b64047",
+        "size": 4,
+        "original_data": "00d62ba0"
+      },
+      {
+        "instruction": "00b64097",
+        "operand_start": "00b64099",
+        "size": 4,
+        "original_data": "00d7a3a0"
+      },
+      {
+        "instruction": "00b640c9",
+        "operand_start": "00b640cb",
+        "size": 4,
+        "original_data": "00d7a3a0"
+      },
+      {
+        "instruction": "00b640f5",
+        "operand_start": "00b640f7",
+        "size": 4,
+        "original_data": "00d7a3a0"
+      },
+      {
+        "instruction": "00b64232",
+        "operand_start": "00b64236",
+        "size": 4,
+        "original_data": "00d7a24c"
+      }
+    ],
+    "indirect_instructions_changed": false,
+    "genuine_providers": "Raw node/string pool, published world/matrix/length/cross and genuine legacy CRT/errno",
+    "profile_data_relocation": "Fixture-owned actual tables with exact genuine bridges; source resolves same current table identities to native targets",
+    "bridge_stack": "Original reached world provider switches to a separate live fixture stack while source provider writes explicit native scratch; no active host adapter stack is overwritten",
+    "cases": [
+      "Near-parallel finite builder",
+      "Output aliases actual4-word argument block; genuine CRT then declared current target/one mutation",
+      "Complete pose30/34 composition; genuine world then declared target/profile mutation",
+      "NaN pose; second genuine CRT event changes one after pose capture; builder late one verified",
+      "Actual position argument aliases source.x and is then overwritten with actual world pointer"
+    ],
+    "callback_mutation_limit": "Injected changes occur after genuine provider work and are not recovered game-provider mutation behavior",
+    "compared": "Normalized actual node/input identities, complete initialized node bytes, live builder/pose scratch, CRT/callback trace, errno, masked x87 status",
+    "fixture_correction": "Retained eye pointer normalized across distinct host frames after checking actual identity; no packet source change",
+    "excluded": [
+      "Full B71A80 construction/camera companion admission",
+      "Source throw paths",
+      "Asynchronous mutation",
+      "Unmasked native faults/FH3/private CRT record identity",
+      "Private saved/return/helper-stack aliases",
+      "Exhaustive near-parallel/geometric branch coverage"
+    ]
+  },
+  "scratch": {
+    "representation": "Disjoint immutable pointer metadata over already-live initialized volatile DWORD backing; no overlapping aggregates",
+    "builder": {
+      "local_words": 13,
+      "local_from_entry_esp": -52,
+      "argument_words": 4,
+      "arguments_from_entry_esp": 4,
+      "pop_edi_shift": 4,
+      "physical_reference_map": "local\\cc10_camera_pose_storage\\builder_frame_map.json"
+    },
+    "pose": {
+      "local_words": 39,
+      "locals_from_entry_esp": -156,
+      "reciprocal_word": 0,
+      "delta_word": 1,
+      "normalized_word": 4,
+      "view_word": 7,
+      "world_word": 23,
+      "position_argument_from_entry_esp": -172,
+      "builder_arguments_from_entry_esp": -184,
+      "builder_locals_from_entry_esp": -240,
+      "world_argument_from_entry_esp": -172
+    },
+    "position_wrapper": {
+      "base_argument_from_entry_esp": -8,
+      "direction_from_entry_esp": -32
+    },
+    "excluded": "Native saved registers/return gaps, unexposed nested length/cross/CRT private frames and dead nested scratch at later outer returns"
+  },
+  "dispatch": {
+    "required": "NativeCameraPoseDispatch exact30/34 plus inherited current world3C/40; pure integer-only x87-neutral profile resolution",
+    "real_camera_profile_00d62cf0": {
+      "30": "00b71400",
+      "34": "00b71460",
+      "3c": "00b6dbc0",
+      "40": "00b6dbe0"
+    },
+    "default_success": false,
+    "logical_hierarchy": false,
+    "persistent_frames": "Every reached invocation borrows prepared actual frames; pure metadata acquisition only",
+    "failure": "No native EH/rollback; source-interface CRT checks precede native work"
+  },
+  "crt": {
+    "reused": [
+      "camera_vector_length_00419440",
+      "camera_vector_cross_004f9b30",
+      "legacy_crt_87except_00c27489"
+    ],
+    "owning_runtime": "Same live0109DD78/E16BD0 cells and genuine thread errno accessor",
+    "inherited_limits": "Unexposed private helper frames and reserved FPIEEE-record initialization/host errno transport; no native fault/FH3/private-record identity claim"
+  },
+  "constructor_followup": "local/cc10_camera_pose_storage/constructor_handoff_after_pose.md"
+}

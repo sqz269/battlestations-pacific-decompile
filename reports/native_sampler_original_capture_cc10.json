@@ -1,0 +1,111 @@
+{
+  "packet": "cc10_original_sampler_capture_run01",
+  "status": "one_owned_original_attempt_closed_inconclusive",
+  "original_launches": 1,
+  "automatic_retry": false,
+  "original_installation_modified": false,
+  "sampler_captured": false,
+  "entry_rendezvous_reached": false,
+  "hardware_markers_armed": false,
+  "original_executable_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "helper_artifacts": {
+    "capture_session.py": "6b5c67ff6b218d661f5b2b4a1f689d7d2a28f77ec9292000540e8618b7c50e33",
+    "original-capture-probe.exe": "f4ec3900cad5cfc6155a81c83089693b8c3982d679c594378bcf6525b2312536",
+    "original_capture.cpp": "c65b889015c70e8260989dcf9097b7e08c13ea6c18d5936c5866ea4912becb4c",
+    "original_capture_expected.hpp": "ecfb3adeeb45bb82700c0fddcc587c923aa0ecf3bb3ddfb57ba15648e1a2f2a5",
+    "profile_guard.py": "c4b42b60dabf0a3cfae7746fab9c1f7ac82f8894970963a8e90fc55f840d6f04"
+  },
+  "review_receipt_sha256": "485f968593e435c27bf62a197174d08592030657e7b4c48ddd77101d1b8ebf3a",
+  "preparation": {
+    "independent_copy_files": 67814,
+    "ordinary_copy_verified": true,
+    "all_copied_streams_content_metadata_verified_by_retained_receipt": true,
+    "final_run_metadata_and_exe_xlive_hash_rechecked": true,
+    "owned_job_assignment_before_resume": true,
+    "benign_timeout_seconds": 45.0217257,
+    "benign_timeout_passed": true,
+    "full_windows_or_xlive_profile_isolation": false
+  },
+  "observed": {
+    "pid": 90508,
+    "tid": 81476,
+    "helper_exit": 1,
+    "child_exit": 125,
+    "inner_active_processes": 0,
+    "outer_active_processes": 0,
+    "owned_handle_wait": 0,
+    "live_child_detached": false,
+    "loaded_module_hashes": 50,
+    "module_hash_errors": 0,
+    "matched_copied_xlive": true,
+    "exception_code": "0xc0000008",
+    "first_chance": true,
+    "exception_address": "0x7ff9cfc64eba",
+    "module": "native ntdll.dll",
+    "module_sha256": "a74f7482085eab125ccc09152ab7e0b5994bcb13e1a7b29880bdbb24179ecb8b",
+    "exception_rva": "0x164eba",
+    "export": "KiRaiseUserExceptionDispatcher",
+    "export_offset": "0x3a",
+    "disk_instruction": "MOV EAX,[RSP+C0] immediately after CALL RtlRaiseException",
+    "causal_caller_or_handle_identified": false
+  },
+  "entry_cleanup": {
+    "byte_readback": "Cleanup implementation reads and compares the full expected 32-byte entry window after write_entry_byte; no cleanup_entry_failure was recorded. Readback bytes/success flag are not separately emitted, so the log is not a standalone raw readback snapshot.",
+    "cleanup_previous_protection": "0x40",
+    "flush_and_protection_restore_reported": true,
+    "initial_protection": "0x20",
+    "protection_readback": "Helper requires VirtualQueryEx protection equality after restoration.",
+    "restored_protection": "0x20",
+    "write_one_original_byte": true,
+    "writer_or_cause_of_protection_change": null
+  },
+  "profile": {
+    "scope": "Documents/Battlestations-Pacific product folder only",
+    "diff": {
+      "changed": [],
+      "missing": [],
+      "new": []
+    },
+    "restore_applied": false,
+    "access_only_inventory_effects_excluded_from_write_attribution": true,
+    "options_contents_unchanged": true
+  },
+  "review": [
+    "Pinned helper/controller/profile guard and complete source deltas reviewed before launch",
+    "Independent32 entry bytes and5089 audit-body bytes compared with copied installed PE before authorization",
+    "Suspended wrapper assigned to outer job before resume; helper inner job/own-handle fallback and bounded timeout independently exercised",
+    "All244 preparation,22 run and3 installed-module-audit artifact identities reverified at integration",
+    "Full run lifecycle, exception, module, entry-cleanup and scoped profile receipts reviewed; one attempt only"
+  ],
+  "limits": [
+    "No original entry-context preservation, marker stack value, CE2220 target, or sampler-input observation",
+    "Installed PE export/runtime-function identity establishes dispatcher neighborhood only; exception-site live bytes/context and causal caller were not captured",
+    "Entry cleanup implementation compares full32 bytes and protection with no logged cleanup failure, but emits no standalone raw post-cleanup readback",
+    "Initial entry protection20h, cleanup observed40h and restored20h; writer and cause unknown",
+    "Scoped product diff does not prove full Windows/XLive profile isolation",
+    "No universal sampler seed, compiler activation, successful startup, native ABI/FH3 or gameplay proof"
+  ],
+  "archive": {
+    "path": "local/cc10-platform-evidence/original-sampler-capture-run01.zip",
+    "sha256": "8b8e673926649d816a1086af0f4d15398466383a60ae752be7d4880f1ee1a474",
+    "files": 274,
+    "valid": true
+  },
+  "worker_indexes": [
+    {
+      "path": "local/original_sampler_capture_cc10/artifact_index.json",
+      "sha256": "9b798fbf01433f1753befdd4a0213ae8a728db3a74d14ad4a70599434a270f5b",
+      "files": 244
+    },
+    {
+      "path": "local/original_sampler_capture_cc10/original_run01/run_artifact_index.json",
+      "sha256": "8e0cbce4b050959876dda1616a13b7312ade9ebfcc5754f40e0880a5cf06ac17",
+      "files": 22
+    },
+    {
+      "path": "local/original_sampler_exception_audit_cc10/artifact_index.json",
+      "sha256": "13065644c1bc5d9c9befaa7d01793a52f4cf4fe985fa0acdb423a70290a8c783",
+      "files": 3
+    }
+  ]
+}
