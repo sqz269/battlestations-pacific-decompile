@@ -15,6 +15,7 @@
 #include "bsp/native_device_registry.hpp"
 #include "bsp/native_game_resource_factory.hpp"
 #include "bsp/native_shadow_job_lifetime.hpp"
+#include "bsp/native_shadow_depth_target_owner.hpp"
 #include "bsp/native_input_backend_owner.hpp"
 #include "bsp/native_physical_factory.hpp"
 #include "bsp/native_physical_stream_open.hpp"
@@ -68,6 +69,12 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
     const NativeSingletonDeletionBindings& bindings, std::uint32_t profile,
     std::uint32_t flags) {
     switch (profile) {
+    case 0x00d5b5e8:
+        if (bindings.shadow_depth_target != nullptr) {
+            delete_native_shadow_depth_target_00a900c0(owner, flags, *bindings.shadow_depth_target);
+            return;
+        }
+        break;
     case 0x00d24d94:
         if (bindings.native_media != nullptr) {
             scalar_delete_native_media_manager_00a4c620(owner, flags,

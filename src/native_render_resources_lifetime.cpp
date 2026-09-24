@@ -56,18 +56,20 @@ struct DirectTerminalTable {
     const volatile Word* words;
     Word deleting;
 };
-DirectTerminalTable direct_table(void* captured,NativeRenderResourcesLifetimeContext& c) {
+DirectTerminalTable direct_table(void* captured,NativeRenderResourcesLifetimeContext& c,
+    NativeRenderResourcesDirectTerminalDomain& domain) {
     const Word profile=word(captured);
     switch(profile) {
     case 0x00d619a0u:return {profile,c.frame_targets.actual_surface_profile_00d619a0,0x00b3f5b0u};
-    case 0x00d61eb8u:return {profile,c.direct_terminals->actual_holder_profile_00d61eb8,0x00b4e410u};
+    case 0x00d61eb8u:return {profile,domain.actual_holder_profile_00d61eb8,0x00b4e410u};
     case 0x00d61948u:return {profile,c.textures.actual_profile_00d61948,0x00b3f590u};
     default:throw std::logic_error("unsupported current render-resource direct terminal profile");
     }
 }
-void terminal(void* captured,NativeRenderResourcesLifetimeContext& c) {
-    if(c.direct_terminals) {
-        auto& domain=*c.direct_terminals;
+void terminal(void* captured,NativeRenderResourcesLifetimeContext& c,
+    NativeRenderResourcesDirectTerminalDomain* direct) {
+    if(direct) {
+        auto& domain=*direct;
         validate_direct_domain(domain,c);
         if(auto* reference=domain.actual_owners.find(captured)) {
             release_companion(captured,*reference);
@@ -75,11 +77,11 @@ void terminal(void* captured,NativeRenderResourcesLifetimeContext& c) {
         }
         const Word profile=word(captured);
         if(profile==0x00d619a0u || profile==0x00d61eb8u || profile==0x00d61948u) {
-            const auto current=direct_table(captured,c);
+            const auto current=direct_table(captured,c,domain);
             if(!current.words || current.words[0]!=0x00bd30e0u)
                 throw std::logic_error("unsupported current render-resource direct virtual0");
             // Native BD30E0 reloads the owner's profile and deleting +04 slot.
-            const auto refreshed=direct_table(captured,c);
+            const auto refreshed=direct_table(captured,c,domain);
             if(!refreshed.words)throw std::logic_error("unbound refreshed render-resource direct table");
             const Word deleting=refreshed.words[1];
             if(deleting!=refreshed.deleting)
@@ -116,7 +118,7 @@ void release(void* service,Word offset,void* captured,Decrement decrement,
     NativeRenderResourcesLifetimeContext& c) {
     if(!captured)return;
     if(!decrement)throw std::logic_error("render-resource current CE2220 import is unbound");
-    if(decrement(static_cast<volatile long*>(at(captured,4)))==0)terminal(captured,c);
+    if(decrement(static_cast<volatile long*>(at(captured,4)))==0)terminal(captured,c,c.direct_terminals);
     put(service,offset,0); // Overwrite any returning callback's parent-field write.
 }
 void unwind(void* service,int state,NativeRenderResourcesLifetimeContext& c) noexcept {
@@ -133,6 +135,12 @@ void unwind(void* service,int state,NativeRenderResourcesLifetimeContext& c) noe
 }
 } // namespace
 
+void dispatch_native_render_resource_zero_terminal(void* captured,
+    NativeRenderResourcesLifetimeContext& c,NativeRenderResourcesDirectTerminalDomain& domain) {
+    if(!captured || word(captured,4)!=0)
+        throw std::logic_error("shared native terminal requires an actual already-zero owner");
+    terminal(captured,c,&domain);
+}
 void release_native_render_resources_00b0f6e0(void* service,NativeRenderResourcesLifetimeContext& c) {
     release_native_render_service_texture_auxiliaries_00b52270(child(service,0x34),c.textures); // B0F6E9
     void* const first=child(service,0x50); // B0F6EE BEFORE current import capture.

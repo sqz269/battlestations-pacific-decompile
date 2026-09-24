@@ -38,6 +38,13 @@ struct NativeRenderResourcesLifetimeContext {
     NativeRenderResourcesDirectTerminalDomain* direct_terminals{};
 };
 
+// Shared source adapter for an ALREADY zero-count captured native owner.
+// Canonical lookup first; otherwise use this explicit proven direct domain.
+// Preserve current0/BD30E0/refreshed4 and profile-family validation. No count
+// decrement, parent-field write, registration or implicit domain installation.
+void dispatch_native_render_resource_zero_terminal(void* captured,
+    NativeRenderResourcesLifetimeContext&,NativeRenderResourcesDirectTerminalDomain&);
+
 // Complete B0F6E0..B0FBF8: ECX service, RET. Call B52270 on current+34,
 // capture+50 then one CE2220 epoch, release 42 fields in exact native order,
 // including two independent visits to +1D4; clear+1C4 only after all return.
