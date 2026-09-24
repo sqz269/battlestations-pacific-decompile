@@ -107,4 +107,80 @@ void follow_screen_update_0067bf00(FollowScreen49State& screen, FollowScreen49Ho
     if (!host.leader_3d0_alive(screen.unit_08)) screen.unit_08 = 0;   // 0067BFAF..0067BFC2
 }
 
+void integrated_controls_0064b870(IntegratedControlsState& screen,
+                                  IntegratedControlsHost& host, float dt) {
+    constexpr double kAxisDeadZone = 0.10000000149011612;             // 00D7A3A0
+    constexpr float kNegZero = -0.0f;                                 // 00D7A208
+    constexpr double kHalf = 0.5;                                     // 00D7A280
+    constexpr float kThrustLow = -0.5f;                               // 00CE69D0
+    constexpr float kOne = 1.0f;                                      // 00D7A24C
+    constexpr float kMinusOne = -1.0f;                                // 00D7A260
+    if (host.unit_byte_6c8()) {                                       // 0064B879
+        const IntegratedControlsInputs in = host.inputs();            // 0064B887..0064B8D6
+        const bool device = in.query_a92090 || in.query_a92050;       // [ESP+0Bh]
+        bool thrust_moved = false;                                    // CL
+        if (in.query_a92050) {                                        // 0064B8FF
+            if (!screen.latched_30) {
+                thrust_moved = true;                                  // 0064B946
+            } else if (screen.latch_34 != in.thrust_1bb4) {           // 0064B90F FUCOMIP
+                screen.latched_30 = false;                            // 0064B919
+            }
+        } else {
+            // 0064B91E..0064B944: |thrust| as (x > 0 ? x : -0 - x).
+            const float mag = in.thrust_1bb4 > 0.0f ? in.thrust_1bb4 : kNegZero - in.thrust_1bb4;
+            thrust_moved = static_cast<double>(mag) > kAxisDeadZone;
+        }
+        const float turn_mag = in.turn_1be4 > 0.0f ? in.turn_1be4 : kNegZero - in.turn_1be4;
+        // 0064B96C..0064B9BD: the transfer that gives the player role 1.
+        if ((static_cast<double>(turn_mag) > kAxisDeadZone || thrust_moved) &&
+            host.unit_1130_clear() && host.local_player_role(0) && !host.local_player_role(1)) {
+            host.role_transfer_0077c470(2, 1);                        // 0064B9A6
+            screen.turn_28 = host.unit_ordered_rudder();              // 0064B9AE
+            screen.thrust_24 = host.unit_throttle();                  // 0064B9B7
+        }
+        if (host.local_player_role(1)) {                              // 0064B9C5
+            if (!device) {
+                screen.thrust_24 = static_cast<float>(
+                    static_cast<double>(screen.thrust_24) -
+                    static_cast<double>(in.thrust_1bb4) * dt);        // 0064B9D9..0064B9E4
+            } else if (in.byte_1b91) {                                // 0064B9F0
+                if (0.0f < in.thrust_1bb4) {                          // 0064BA02 JC
+                    screen.thrust_24 = static_cast<float>(
+                        -static_cast<double>(in.thrust_1bb4) * kHalf);   // 0064BA1A
+                } else {
+                    screen.thrust_24 = kNegZero - in.thrust_1bb4;     // 0064BA07
+                }
+            }
+            // 0064BA29..0064BA92: 00415690 clamps +24h to [-0.5, 1] and
+            // +28h - turn*dt to [-1, 1].
+            if (kThrustLow > screen.thrust_24) screen.thrust_24 = kThrustLow;
+            else if (screen.thrust_24 > kOne) screen.thrust_24 = kOne;
+            screen.turn_28 = static_cast<float>(
+                static_cast<double>(screen.turn_28) - static_cast<double>(in.turn_1be4) * dt);
+            if (kMinusOne > screen.turn_28) screen.turn_28 = kMinusOne;
+            else if (screen.turn_28 > kOne) screen.turn_28 = kOne;
+            host.issue_order(screen.thrust_24, screen.turn_28);       // 0064BA97..0064BB12
+        }
+    }
+    // 0064BB19..0064BB3C: role 1 is given back while game+19C4h is set.
+    if (host.local_player_role(1) && host.game_19c4()) host.role_transfer_0077c470(2, 0);
+}
+
+void ship_view_update_0064d610(ShipViewScreen46Host& host, float dt) {
+    constexpr int kActionOrder = 0x95;                                // 0064D680 PUSH 95h
+    constexpr int kKind0C = 0x0C;                                     // 0064D6BB PUSH 0Ch
+    if (!host.wanted_04() || !host.has_unit_1c()) return;            // 0064D62B..0064D639
+    host.view_input_0064a400(dt);                                     // 0064D647
+    host.integrated_controls_0064b870(dt);                            // 0064D656
+    if (host.screen_2eh_present()) host.screen_2eh_005484f0();        // 0064D65B..0064D66D
+    // 0064D675: 00815850(unit), the torpedo stock; its result is discarded.
+    if (!host.input_pressed(kActionOrder)) return;                    // 0064D685
+    if (!host.unit_virtual_234() || !host.unit_local_player()) return;   // 0064D697..0064D6B1
+    if (host.unit_is_kind_of(kKind0C)) {                              // 0064D6BD
+        if (host.unit_00812960()) host.order_route_0077d600();        // 0064D6C6..0064D6EA
+    } else {
+        host.order_route_0077c2a0();                                  // 0064D701..0064D71A
+    }
+}
+
 }  // namespace bsp

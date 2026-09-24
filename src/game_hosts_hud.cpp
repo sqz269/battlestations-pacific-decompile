@@ -91,6 +91,9 @@ struct GameHudHost::Impl {
     GuiLayoutWidget* warning_widget(bsp::WarningWidget widget);
     // Packet cc9_screen_49h.
     bsp::FollowScreen49State follow_screen{};
+    // Packet cc9_screen_46h: screen 46h's +1Ch, stored by 0064DA40.
+    bool ship_view_has_unit{false};
+    bsp::IntegratedControlsState ship_view_controls{};
     void bind_mission_camera_0064da40();
     void step_mission_camera(float seconds);
     bool camera_target_view(bsp::ShipCaptainTargetView& out);
@@ -223,6 +226,10 @@ public:
         // The 25h arm's hand-off on interface+7Ch is 0064DA40, the ship view
         // that creates the ShipCaptain camera mover (docs/MISSION_CAMERA.md).
         if (kMissionCameraBound && manager_offset == 0x7C) owner_.bind_mission_camera_0064da40();
+        // 0064DA40 stores the unit at screen 46h's +1Ch.
+        if (manager_offset == 0x7C && owner_.units != nullptr && owner_.units->controlled_bound()) {
+            owner_.ship_view_has_unit = true;
+        }
         // The 25h arm's hand-off on interface+78h is 0064D590, which stores
         // the unit in screen 45h's +184h (0064D598..0064D5EC).
         if (manager_offset == 0x78 && owner_.units != nullptr && owner_.units->controlled_bound()) {
@@ -882,6 +889,8 @@ void GameHudHost::detach_world_2k() noexcept {
     impl.warning_widgets.clear();
     impl.warning_widgets_bound = false;
     impl.follow_screen = bsp::FollowScreen49State{};
+    impl.ship_view_has_unit = false;
+    impl.ship_view_controls = bsp::IntegratedControlsState{};
     bsp::clear_mission_camera();
     impl.unit_request_pending = false;
     impl.unit_request_applied = false;
@@ -1350,6 +1359,135 @@ private:
     GameHudHost::Impl& owner_;
 };
 }  // namespace
+
+namespace {
+// bsp::ShipViewScreen46Host over this process's HUD.
+class ShipViewScreen46Binding final : public bsp::ShipViewScreen46Host {
+public:
+    ShipViewScreen46Binding(GameHudHost::Impl& owner, bool wanted)
+        : owner_(owner), wanted_(wanted) {}
+    bool wanted_04() override { return wanted_; }
+    bool has_unit_1c() override { return owner_.ship_view_has_unit; }
+    void view_input_0064a400(float dt) override {
+        static_cast<void>(dt);
+        // Screen 26h's 0051F330 (0051EF00, 0051F050: the camera axes and
+        // the fire and view actions) and, with 46h's +20h set, screen 2Eh's
+        // 005454B0. Not bound.
+        owner_.record("HudShipView::view_input", 0x0064a400u);
+    }
+    void integrated_controls_0064b870(float dt) override;
+    bool screen_2eh_present() override {
+        // [00E198C4]+50h is slot 2Eh's screen, which the registry holds.
+        return owner_.menu.in_game_screen_registered(0x2e);
+    }
+    void screen_2eh_005484f0() override {
+        owner_.record("HudShipView::screen_2eh_005484f0", 0x005484f0u);
+    }
+    bool input_pressed(int action) override { return owner_.menu.input_action_pressed(action); }
+    bool unit_virtual_234() override {
+        owner_.record("HudShipView::unit_virtual_234", 0x0064d697u);
+        return false;
+    }
+    // 00927F30(unit, 0): the controlled unit is the local player's ship.
+    bool unit_local_player() override { return true; }
+    bool unit_is_kind_of(int class_id) override {
+        return owner_.units != nullptr && owner_.units->controlled_bound()
+            && owner_.units->unit_is_kind_of(owner_.units->controlled_index(), class_id);
+    }
+    bool unit_00812960() override {
+        owner_.record("HudShipView::unit_00812960", 0x00812960u);
+        return false;
+    }
+    void order_route_0077d600() override {
+        owner_.record("HudShipView::order_route_0077d600", 0x0077d600u);
+    }
+    void order_route_0077c2a0() override {
+        owner_.record("HudShipView::order_route_0077c2a0", 0x0077c2a0u);
+    }
+
+private:
+    GameHudHost::Impl& owner_;
+    bool wanted_;
+};
+}  // namespace
+
+namespace {
+// bsp::IntegratedControlsHost over this process's HUD.
+class IntegratedControlsBinding final : public bsp::IntegratedControlsHost {
+public:
+    explicit IntegratedControlsBinding(GameHudHost::Impl& owner) : owner_(owner) {}
+    bool unit_byte_6c8() override {
+        // The unit constructor stores 1 at 0095CE29 and a disp32 scan finds no
+        // other byte writer of +6C8h, so the gate reads set.
+        return true;
+    }
+    bsp::IntegratedControlsInputs inputs() override {
+        // SUBSTITUTION: the input manager (004BEC00) axes +1BE4h/+1BB4h, the
+        // two binding queries on +1B90h and the byte +1B91h are not modelled;
+        // no in-mission input is driven, so they read zero and clear.
+        owner_.record("HudShipView::control_inputs", 0x004bec00u);
+        return {};
+    }
+    bool unit_1130_clear() override {
+        owner_.record("HudShipView::unit_1130", 0x0064b97du);
+        return true;
+    }
+    bool local_player_role(int role) override {
+        // SUBSTITUTION: this host models no role table. The player holds role
+        // 0 and not role 1 until an input-started transfer
+        // (docs/CONTROLLED_UNIT_HELM.md section 6).
+        owner_.record("HudShipView::local_player_role", 0x00927f30u);
+        return role == 0;
+    }
+    void role_transfer_0077c470(int mask, int take) override {
+        static_cast<void>(mask);
+        static_cast<void>(take);
+        owner_.record("HudShipView::role_transfer", 0x0077c470u);
+    }
+    float unit_ordered_rudder() override {
+        const GameUnitRow* row = controlled_row();
+        return row != nullptr ? row->ordered_rudder : 0.0f;
+    }
+    float unit_throttle() override {
+        const GameUnitRow* row = controlled_row();
+        return row != nullptr ? row->throttle : 0.0f;
+    }
+    void issue_order(float thrust, float turn) override {
+        static_cast<void>(thrust);
+        static_cast<void>(turn);
+        owner_.record("HudShipView::issue_order", 0x00816a40u);
+    }
+    bool game_19c4() override {
+        owner_.record("HudShipView::game_19c4", 0x0064bb2cu);
+        return false;
+    }
+
+private:
+    const GameUnitRow* controlled_row() const {
+        if (owner_.units == nullptr || !owner_.units->controlled_bound()) return nullptr;
+        return owner_.units->unit_row(owner_.units->controlled_index());
+    }
+    GameHudHost::Impl& owner_;
+};
+
+void ShipViewScreen46Binding::integrated_controls_0064b870(float dt) {
+    if (!kHudShipViewControlsBound) {
+        // BSP_HudUnitOrder_UpdateIntegratedControls, not bound.
+        owner_.record("HudShipView::integrated_controls", 0x0064b870u);
+        return;
+    }
+    IntegratedControlsBinding binding(owner_);
+    bsp::integrated_controls_0064b870(owner_.ship_view_controls, binding, dt);
+    owner_.done("HudShipView::integrated_controls_0064b870", 0x0064b870u);
+}
+}  // namespace
+
+void GameHudHost::update_ship_view_screen_0064d610(float seconds, bool wanted) {
+    Impl& impl = *impl_;
+    ShipViewScreen46Binding binding(impl, wanted);
+    bsp::ship_view_update_0064d610(binding, seconds);
+    impl.done("HudShipView::update", 0x0064d610u);
+}
 
 void GameHudHost::update_follow_screen_0067bf00() {
     Impl& impl = *impl_;
