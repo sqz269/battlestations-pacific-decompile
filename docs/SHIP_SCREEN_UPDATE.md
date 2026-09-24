@@ -149,3 +149,53 @@ The update is about 9 KB and calls about 20 helpers that have not been read: 005
   level-3 set switch. All are control flow the input gates never open here.
 
 Each stage gets predictions and a USN04 pair.
+
+## 7. Part 1: the relation icon, the flashes and the throttle stick
+
+**The code.** `bsp::ship_screen_update_0064dd30` in `src/hud_ship_screen.cpp` runs the top-level
+order of 0064DD30:
+1. The +119h slide gate. The enter clears +119h (0064BE70), and only 0064A902 sets it.
+2. The pipe-sight block, as a record.
+3. `0064A960`, the relation icon: shown for a non-submarine in a formation. Its state select
+   (+88h) is 1 unless the unit leads.
+4. The flash enable +1ACh, then `0064ABD0`: each intensity decays by `1 - dt*4.0`, below 0.05 its
+   icon is hidden, otherwise alpha is `min(v, 1)` and the icon is shown.
+5. The +5h and +184h gates.
+6. +44h eased toward `clamp((throttle + 0.5)/1.5, 0, 1)`: one third of the gap, or a snap within
+   0.001. The enter seeds it with -1.0 (0064BD7C).
+7. `0064A9F0(0.1)` turns ship_stick_Icon through +44h. The throttle maps to an angle: -1.178 below
+   -0.5, 2.356 above 1, otherwise 2.356*t for positive t and 2.356*t for negative t (as 1.178*t
+   doubled). The angle is eased by 0.1 from the widget's current +48h rotation.
+8. The rest of the update, from 0064E415, as a record.
+
+**The host.** The pump calls it for slot 45h when `kHudShipScreenUpdateBound` is on. The unit comes
+from the 25h arm's hand-off on interface+78h (0064D590 stores +184h). The widgets are found by the
+names 0064C0F0 looks up. Visibility, rotation and alpha go through the frontend.
+
+**Records and substitutions:**
+- **The relation icon's state select** (00AB1710) is a record: the bridge draws an icon's first
+  authored state only.
+- **The flash enable** `[[00E198C4]+4Ch]+30h` sits on an interface object this process does not
+  build. It reads clear and is recorded, so the four flashes are zeroed and hidden each frame.
+- **The pipe-sight block and the remainder** are records. The fov that the pipe-sight block sets
+  is already applied by the mission camera tick.
+
+## 8. Part 1 predictions, written before the pair
+
+**Setup.** One tree on main 536f11bee plus this branch, built with `kHudShipScreenUpdateBound` off
+and then on. All camera switches are on. USN04 4500, `BSP_GUNNERY_RNG_STREAMS=1`, back buffer
+2560x1440.
+
+- **Row that leaves:** `FrontEndScreen::update` falls by the screen-45h pumps, about 9,158.
+- **Rows added:**
+  - `HudShipScreen::update`: done, about 9,158.
+  - `HudShipScreen::pipe_sight_block` and `HudShipScreen::flash_view_mode`: about 9,158
+    UNIMPLEMENTED each.
+  - `HudShipScreen::update_remainder`: about 9,158 UNIMPLEMENTED, once the screen is applied and
+    has its unit.
+  - `HudShipScreen::relation_select_state`: about 9,158 UNIMPLEMENTED if the player's ship sits in a
+    formation, otherwise absent.
+- **Total.** The unimplemented total **rises**, by about +18,316, or about +27,474 with the
+  formation row. One family record becomes three or four block records: the update itself is now
+  done, and what it still lacks is named.
+- **Summary lines.** All identical. No summary line reads these widgets.
