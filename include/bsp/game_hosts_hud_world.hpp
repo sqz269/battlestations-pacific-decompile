@@ -119,6 +119,12 @@ inline constexpr bool kHudWarningScreenBound = true;
 // and the controlled unit's target are records answering none.
 inline constexpr bool kHudFollowScreenBound = true;
 
+// Packet cc9_screen_46h, part 1 (docs/SHIP_SCREEN_UPDATE.md section 18). ON
+// runs screen 46h's update 0064D610 in place of the FrontEndScreen::update
+// record: the gates and the order input, with 0064A400, 0064B870 and screen
+// 2Eh's 005484F0 as records. OFF keeps the one record.
+inline constexpr bool kHudShipViewScreenBound = false;
+
 inline constexpr bool kHudShipScreenGaugesBound = true;
 
 class GameHostLog;

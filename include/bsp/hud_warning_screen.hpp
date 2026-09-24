@@ -89,4 +89,34 @@ struct FollowScreen49Host {
 // 0067BF00.
 void follow_screen_update_0067bf00(FollowScreen49State& screen, FollowScreen49Host& host);
 
+// Screen 46h's update 0064D610 (vtable 00CF7978 +20h, __thiscall(screen, float
+// dt), RET 4; no Ghidra function, start 0064D610, exclusive end 0064D731).
+// The ship view: 0064DA40 stores its unit at +1Ch. Packet cc9_screen_46h,
+// docs/SHIP_SCREEN_UPDATE.md section 18. Part 1 binds the top-level flow; the
+// three callees are host records.
+struct ShipViewScreen46Host {
+    virtual ~ShipViewScreen46Host() = default;
+    virtual bool wanted_04() = 0;                     // the screen's +4h
+    virtual bool has_unit_1c() = 0;                   // +1Ch non-null
+    // 0064A400(dt): screen 26h's 0051F330 and screen 2Eh's 005454B0.
+    virtual void view_input_0064a400(float dt) = 0;
+    // 0064B870(dt): the integrated throttle and rudder controls.
+    virtual void integrated_controls_0064b870(float dt) = 0;
+    virtual bool screen_2eh_present() = 0;            // [00E198C4] and its +50h
+    virtual void screen_2eh_005484f0() = 0;           // on [00E198C4]+50h
+    virtual bool input_pressed(int action) = 0;       // 004C43C0
+    virtual bool unit_virtual_234() = 0;              // [+1Ch] vtable +234h(0)
+    virtual bool unit_local_player() = 0;             // 00927F30(unit, 0)
+    virtual bool unit_is_kind_of(int class_id) = 0;   // vtable +5Ch
+    // 0064D6C3..0064D6EA: 00812960(unit), then message 00465080 routed by
+    // 0077D600; 0064D701..0064D71A: 0064A820's message routed by 0077C2A0(2).
+    // Records; reached only on input action 95h.
+    virtual bool unit_00812960() = 0;
+    virtual void order_route_0077d600() = 0;
+    virtual void order_route_0077c2a0() = 0;
+};
+
+// 0064D610.
+void ship_view_update_0064d610(ShipViewScreen46Host& host, float dt);
+
 }  // namespace bsp

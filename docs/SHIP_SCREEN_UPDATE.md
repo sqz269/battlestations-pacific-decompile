@@ -677,3 +677,41 @@ then on, USN04 4500.
   counts 9,160, not the 9,158 I estimated. `leader_3d0` does not appear.
 - **Summary lines.** All 157 are identical.
 - **Result.** Every prediction holds. **`kHudFollowScreenBound` flips ON.**
+
+## 18. Screen 46h, the ship view: 0064D610 (part 1)
+
+Packet `cc9_screen_46h` (worker cc9-platform2, 2026-09-23). Ghidra has no function at 0064D610.
+The start and exclusive end are **0064D610..0064D731** (two `RET 4` exits, the last at 0064D72E).
+The routine was read from the disk listing. vtable 00CF7978 +20h, `__thiscall(screen, float dt)`,
+SEH frame. The 25h arm's hand-off on interface+7Ch, 0064DA40, stores the unit at +1Ch.
+
+**The flow:**
+1. 0064D62B..0064D639: stop unless +4h (the wanted byte) is set and +1Ch is non-null.
+2. 0064D647: 0064A400(dt). It calls screen 26h's 0051F330: 0051EF00 and 0051F050 read the camera
+   axes and the view and fire actions, and move the camera mover. With 46h's +20h set, it also
+   calls screen 2Eh's 005454B0, which stores three floats and forwards two to screen 4Dh's
+   00637620.
+3. 0064D656: 0064B870(dt), `BSP_HudUnitOrder_UpdateIntegratedControls`.
+4. 0064D65B..0064D66D: screen 2Eh's 005484F0 (3.3 KB: input actions, interface requests and a
+   session route), when [00E198C4]+50h exists.
+5. 0064D675: 00815850(unit), whose result is discarded.
+6. 0064D680..0064D71A: on input action 95h pressed, with the unit's vtable +234h(0) and the
+   local-player test 00927F30, an order is routed. A kind-0Ch unit goes through 00812960, 00465080
+   and 0077D600; any other through 0064A820 and `0077C2A0(msg, 2, 0)`. Input-gated, so these are
+   records never reached.
+
+**Part 1 binds the flow above.** Steps 2 to 4 are the records `HudShipView::view_input`,
+`integrated_controls` and `screen_2eh_005484f0`. Each is a later part. The +4h byte comes from the
+registry, and the +1Ch presence comes from the host's 0x7C hand-off.
+
+**Switch.** `kHudShipViewScreenBound`. OFF keeps the `FrontEndScreen::update` record for slot 46h.
+
+**Predictions, written before the pair.** One tree with every earlier switch on, the switch off
+then on, USN04 4500.
+- `FrontEndScreen::update` falls by about 9,158. `HudShipView::update` appears as done with the
+  same count.
+- `view_input`, `integrated_controls` and `screen_2eh_005484f0` appear with that count each, in
+  every pump where +4h is set and the unit is bound. No `unit_virtual_234`, `unit_00812960` or
+  `order_route_*` row appears.
+- The unimplemented total rises by about 2 x 9,158 = 18,316.
+- Every summary line is identical.
