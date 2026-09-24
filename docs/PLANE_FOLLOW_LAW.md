@@ -1011,3 +1011,24 @@ wing no longer runs away ahead of a 35 m/s leader, and the leader flies its Trav
 command. The trailing gaps that remain (on the fly-to arm at MaxSpd, behind a leader also at
 MaxSpd) are the image's own law, not a divergence. The diagnostic trace stays in the source,
 off (`kWingTraceEvery = 0`).
+
+### 16.5 The member-placement query, read (packet cc9_yorktown_order_split)
+
+00999AE0 asks each member's first task with vtable[34h] false for vtable[4Ch]. Both tasks' +34h
+is 0099B700 (`XOR AL,AL`). The two +4Ch bodies have no Ghidra function
+(`reports/yorktown_order_split.json`):
+
+| task | vtable slot +4Ch | body | follow state | prepare state |
+| --- | --- | --- | --- | --- |
+| dive-bomb | 00D20E18+4Ch | 009C8260-009C828C | +52Ch -> JMP 009BE3E0 | +5C4h -> JMP 009BE3E0 |
+| torpedo | 00D213C8+4Ch | 009D4970-009D499C | +580h -> JMP 009BE3E0 | +740h -> JMP 009BE3E0 |
+
+Any other state jumps to 0099B720, which is `FLD [00D7A260]` = -1.0f; RET.
+
+**Change.** The section 16.2 substitution (torpedo follow only) is replaced by this form, inside
+`kMovetoSpeedBlendBound`: torpedo or dive-bomb follow or prepare answers 009BE3E0, and anything
+else answers -1.
+
+**No pair was run for it.** In E2 no aircraft enters prepare (`prepare_entries=0`) and no Val
+spends a tick in the dive follow state (`follow>attackrun@0`), so the added states are never
+reached there.

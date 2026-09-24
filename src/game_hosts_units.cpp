@@ -3312,14 +3312,22 @@ struct GameUnitsHost::Impl {
                 if (m != bsp::kPlaneSquadronNoUnit && m < slots.size() &&
                     m != unit.process_index) {
                     const GameUnitSlot& o = *slots[m];
-                    // 00999AE0: the first task answering vtable[4Ch]. For a
-                    // member in the follow state that is 009BE3E0 over its
-                    // station; any other state answers -1 (as the dogfight
-                    // task's 009A9C60 does). SUBSTITUTION, labelled: the torpedo
-                    // and dive tasks' own vtable[4Ch] bodies are unread.
+                    // 00999AE0: the first task answering vtable[4Ch]. The
+                    // dive-bomb task's is 009C8260 and the torpedo task's
+                    // 009D4970 (vtables 00D20E18 / 00D213C8, slot +4Ch; both
+                    // +34h are 0099B700 XOR AL,AL): when task+310h is the
+                    // follow state (+52Ch / +580h) or the prepare state
+                    // (+5C4h / +740h) they tail-jump to 009BE3E0 on it, else
+                    // to 0099B720, which returns [00D7A260] = -1.0f. The
+                    // follow-state values come from the follow law's last
+                    // tick (docs/PLANE_FOLLOW_LAW.md section 16).
+                    const bool answers =
+                        o.torpedo_state == bsp::TorpedoState::kFollow ||
+                        o.torpedo_state == bsp::TorpedoState::kPrepare ||
+                        o.dive_bomb_state == bsp::DiveBombState::kFollow ||
+                        o.dive_bomb_state == bsp::DiveBombState::kPrepare;
                     const bool following =
-                        o.torpedo_state == bsp::TorpedoState::kFollow &&
-                        o.fw_step + 2 >= summary.motion_steps;
+                        answers && o.fw_step + 2 >= summary.motion_steps;
                     if (following) {
                         const float d[3] = {o.motion.position[0] - o.fw_station[0],
                                             o.motion.position[1] - o.fw_station[1],

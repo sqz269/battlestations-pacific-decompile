@@ -1,0 +1,15 @@
+{
+ "packet": "cc9_yorktown_order_split",
+ "calls": [
+  {"address": "009C8272", "native": "009BE3E0", "kind": "no_ghidra_function", "role": "tail jump when task+310h is the follow state +52Ch", "evidence": "JMP 0x9BE3E0 at 009C8272 in the dive-bomb task's vtable[4Ch] body (vtable 00D20E18 slot +4Ch = 009C8260)"},
+  {"address": "009C8281", "native": "009BE3E0", "kind": "no_ghidra_function", "role": "tail jump when task+310h is the prepare state +5C4h", "evidence": "JMP 0x9BE3E0 at 009C8281"},
+  {"address": "009C8288", "native": "0099B720", "kind": "no_ghidra_function", "role": "tail jump otherwise; 0099B720 is FLD [00D7A260] = -1.0f; RET", "evidence": "JMP 0x99B720 at 009C8288"},
+  {"address": "009D4982", "native": "009BE3E0", "kind": "no_ghidra_function", "role": "tail jump when task+310h is the follow state +580h", "evidence": "JMP 0x9BE3E0 at 009D4982 in the torpedo task's vtable[4Ch] body (vtable 00D213C8 slot +4Ch = 009D4970)"},
+  {"address": "009D4991", "native": "009BE3E0", "kind": "no_ghidra_function", "role": "tail jump when task+310h is the prepare state +740h", "evidence": "JMP 0x9BE3E0 at 009D4991"},
+  {"address": "009D4998", "native": "0099B720", "kind": "no_ghidra_function", "role": "tail jump otherwise", "evidence": "JMP 0x99B720 at 009D4998"}
+ ],
+ "no_ghidra_function": [
+  {"address": "009C8260", "end_inclusive": "009C828C", "end_exclusive": "009C828D", "name": "BSP_BotTaskDiveBomb_MemberPlacementValue", "evidence": "INT3 at 009C825F and 009C828D; ghidra proto 009c8260 --brief reports no function; last instruction JMP rel32 at 009C8288 (5 bytes)."},
+  {"address": "009D4970", "end_inclusive": "009D499C", "end_exclusive": "009D499D", "name": "BSP_BotTaskTorpedo_MemberPlacementValue", "evidence": "INT3 at 009D496F and 009D499D; ghidra proto 009d4970 --brief reports no function; last instruction JMP rel32 at 009D4998 (5 bytes)."}
+ ]
+}
