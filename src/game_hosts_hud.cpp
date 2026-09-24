@@ -802,7 +802,8 @@ void GameHudHost::Impl::step_mission_camera(float seconds) {
     // SUBSTITUTION: [00E197F4], the pipe-sight zoom, grows only through the
     // player's gun-fire adds at 0064DFDE (gunnery, not hooked here) and its
     // spring and drag never move it off zero without them, so it is 0.0f.
-    if (camera_fov_read && camera_pipe_sight_read && camera_pipe_sight_enabled) {
+    if (kMissionFovBound && camera_fov_read && camera_pipe_sight_read &&
+        camera_pipe_sight_enabled) {
         const float stored = bsp::global_config_fov_0087ec0f(camera_fov_ship_degrees,
             bsp::kFovDivisor00f889b4);
         const float scale = bsp::pipe_sight_fov_scale_0064e2d6(camera_pipe_sight_zoom_rate, 0.0f);
