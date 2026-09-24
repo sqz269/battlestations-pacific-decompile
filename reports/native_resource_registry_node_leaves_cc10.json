@@ -191,8 +191,9 @@
       "native": "00bf6885",
       "actual_mnemonic": "CALL",
       "contract": "source C++ rethrow only; native FH3 transport unclaimed",
-      "kind": "no_ghidra_function",
-      "missing_containment_note": "fresh saved body absent here; complete live/PE bytes independently decoded; primary future repair/definition"
+      "kind": "call",
+      "historical_missing_containment_note": "fresh saved body absent here; complete live/PE bytes independently decoded; primary future repair/definition",
+      "primary_definition_record": "reports/cc10_resource_registry_node_function_definition.json"
     },
     {
       "function": "00cbc6d0",
@@ -207,9 +208,10 @@
       "native": "00bf6b43",
       "actual_mnemonic": "JMP",
       "contract": "native compiler transport boundary only; source does not implement FH3",
-      "kind": "no_ghidra_function",
-      "missing_containment_note": "fresh saved body absent here; complete live/PE bytes independently decoded; primary future repair/definition",
-      "kind_after_definition": "tail_jump"
+      "kind": "tail_jump",
+      "kind_after_definition": "tail_jump",
+      "historical_missing_containment_note": "fresh saved body absent here; complete live/PE bytes independently decoded; primary future repair/definition",
+      "primary_definition_record": "reports/cc10_resource_registry_node_function_definition.json"
     }
   ],
   "no_ghidra_function": [
@@ -332,5 +334,11 @@
     "no factory-value ownership/count/admission",
     "no insertion/registration/BBC global/startup/gameplay claim",
     "B1ADA0 misleading existing label preserved; primary later correction separate"
-  ]
+  ],
+  "primary_containment_repair": {
+    "catch": "00b1ad82[21] through00b1ad96",
+    "dispatcher": "00cbc6e1[10] through00cbc6ea",
+    "callee_noreturn_unchanged": true,
+    "frozen_worker_snapshot_preserved": true
+  }
 }

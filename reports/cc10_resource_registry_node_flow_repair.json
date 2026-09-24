@@ -1,0 +1,54 @@
+{
+ "repairs": [
+  {
+   "function": "00b1ad82",
+   "owner": "agent/cc10",
+   "when": "2026-09-24T12:45:15Z",
+   "decompile_lines_before": 10,
+   "gaps": [
+    {
+     "site": "00b1ad86",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "00b1ad8b",
+     "gap_end_exclusive": "00b1ad97",
+     "bytes": 12,
+     "after_call": true,
+     "sha256": "09e4fdb92d59f5525b0a32ebfb89bdcbbbbe45c246106f5d5ecc73c8c02bfa02"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00b1ad86",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "00b1ad8b",
+      "gap_end_exclusive": "00b1ad97",
+      "bytes": 12,
+      "after_call": true,
+      "sha256": "09e4fdb92d59f5525b0a32ebfb89bdcbbbbe45c246106f5d5ecc73c8c02bfa02"
+     },
+     "clear": "Success: Cleared flow override at 00b1ad86 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 12 byte(s)"
+    },
+    {
+     "explicit_tail_call": "00b1ad86",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00b1ad86 (was: NONE, now: NONE)"
+     }
+    }
+   ],
+   "explicit_tail_end_exclusive": "00b1ad97",
+   "explicit_tail_terminator": "cxx_rethrow_00bf6885",
+   "explicit_body_sha256": "f3f6a40a97729b1cacd6e5edd238b62ca71bed8328e6ab612b8732da22f05a24",
+   "body_before": "Function: Catch_All@00b1ad82 at 00b1ad82\nSignature: undefined Catch_All@00b1ad82(void)\nEntry: 00b1ad82\nBody: 00b1ad82 - 00b1ad8a",
+   "decompile_lines_after": 11,
+   "gaps_remaining": 1,
+   "body_after": "Function: Catch_All@00b1ad82 at 00b1ad82\nSignature: undefined Catch_All@00b1ad82(void)\nEntry: 00b1ad82\nBody: 00b1ad82 - 00b1ad8a",
+   "stored_body_tail_complete": false,
+   "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+  }
+ ]
+}

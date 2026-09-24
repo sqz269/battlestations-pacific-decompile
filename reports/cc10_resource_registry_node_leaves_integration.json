@@ -1,0 +1,118 @@
+{
+  "packet": "cc10_resource_registry_node_leaves_integration",
+  "worker_commit": "9ab89f602c4c32505ba5e540f2836efc09cdc823",
+  "integration": "3c5bcde1886b1f91fbcf400fc0059e51ceb027dd",
+  "worker_report": "reports/native_resource_registry_node_leaves_cc10.json",
+  "frozen_evidence": {
+    "worker_commit": "9ab89f602c4c32505ba5e540f2836efc09cdc823",
+    "archive_sha256": "7543051b68385af8f9ad1a8079d27911750c51165761d3688df959bcb9337694",
+    "archive_files": 58,
+    "manifest_files_verified": 57,
+    "current_frozen_identities_verified": 12,
+    "normal_bytes": 404,
+    "compiler_bytes": 48,
+    "source_review": "Full header/source and all four native bodies plus compiler boundaries reviewed; complete ignored fixture and final doc/report reviewed",
+    "identity_scope": "Twelve recorded source/header/core library/production object/probe identities; not a complete compiler/OS or all linked-library identity claim",
+    "limits": [
+      "source interfaces are not original binary/private-frame ABI",
+      "native FH3/SEH/hardware-fault behavior unclaimed",
+      "host current provider transports remain explicit",
+      "partial-name storage is not automatically rolled back",
+      "no factory-value ownership/count/admission",
+      "no insertion/registration/BBC global/startup/gameplay claim",
+      "B1ADA0 misleading existing label preserved; primary later correction separate"
+    ]
+  },
+  "validation": {
+    "normal_bytes": 404,
+    "compiler_boundary_bytes": 48,
+    "strict_win32_build": true,
+    "integrated_ctests": 3,
+    "direct_tail_rows_full_containment_passed": 12,
+    "tracked_tests_added": false,
+    "native_FH3_ABI": false,
+    "game_validated": false
+  },
+  "review": [
+    "Full header/source, complete normal and compiler bodies, focused fixture and final doc/report reviewed",
+    "Actual1Ch links/name/value/color/nil/padding and8B iterator storage; no logical registry adaptation or borrowed-value ownership",
+    "Iterator comparison preserves current left-node high24 and equality AL; decrement preserves intermediate publication/current rereads and returning validation tails",
+    "Constructor captures link/pair inputs before native stores; current source/destination name cells and late color BYTE preserved with raw MOV access",
+    "Allocation occurs before incoming reads; explicit nested argument/local views preserve capture/PUSH order and current cleanup cells; captured allocation returned independently",
+    "Placement delete is verified RET-only401130; catch frees current allocation cell then source-rethrows without invented partial-name cleanup",
+    "404B copied-original/source normal composition checks28B nodes normalizing only checked name pointer, actual name/padding/links, self-header and iterator sequence; genuine provider boundaries and real node/name disposal",
+    "Source-only completed-resize failure verifies projected free/rethrow and explicit residual-name disposition; native EH never executed",
+    "Frozen58-file archive,57 manifest files and12 recorded identities independently verified; Git source equality normalizes CRLF only"
+  ],
+  "ghidra": {
+    "flow": "reports/cc10_resource_registry_node_flow_repair.json",
+    "definition": "reports/cc10_resource_registry_node_function_definition.json",
+    "repaired_catch": "00b1ad82..00b1ad97 exclusive,21B",
+    "defined_dispatcher": "00cbc6e1..00cbc6eb exclusive,10B",
+    "callee_noreturn_unchanged": true,
+    "current_report_missing_rows_corrected": [
+      "00b1ad92 CALL",
+      "00cbc6e6 tail_jump"
+    ],
+    "frozen_worker_report_preserved": true
+  },
+  "probe": {
+    "build_command": "./scripts/build.ps1",
+    "build": "PASS MSVC Win32 Release and2 configured CTests",
+    "build_attempts": [
+      {
+        "log": "build01.log",
+        "result": "compile failure: offset is a reserved inline-asm operand token; fixed by byte_offset parameter name"
+      },
+      {
+        "log": "build02.log",
+        "result": "PASS strict build and reconstructed_math/tool_tests"
+      }
+    ],
+    "probe_command": "cmd /c local\\output\\cc10_resource_registry_node_leaves\\probe.cmd",
+    "probe_compiler_flags": "/nologo /MD /EHsc /std:c++20 /O2 /Gy /W4 /WX /fp:strict",
+    "probe_link_flags": "/link /OPT:REF /MANIFEST:EMBED user32.lib d3d9.lib advapi32.lib shell32.lib",
+    "assertions": "NDEBUG not defined; compile-time #error if defined; assert remains active",
+    "probe_attempts": [
+      {
+        "log": "probe01.log",
+        "result": "first compile/run PASS, exit0"
+      }
+    ],
+    "native_body_extent": 404,
+    "normal_composition": "copied four complete bodies, six CALL and two JMP displacement bindings; wrapper-to-constructor composition remains copied native",
+    "shared_boundaries": [
+      "genuine singleton_lifetime_allocate; adapter mutates actual incoming words and fills preimage after real allocation",
+      "genuine raw41DD40/name pool; adapter mutates current source/color after completed resize",
+      "native BF7680 replaced by same overlap-compatible host memmove effect",
+      "genuine host CRT returning invalid-parameter service with installed test handler"
+    ],
+    "source_binding": "production source included unchanged under two provider-name redirects; strict production library separately built with direct genuine providers",
+    "comparison": "allocated-node28B equality with ONLY checked name-data pointer+10 normalized; independent length/content/links/borrowedvalue/color/nil/padding checks; real actual B1A260 disposal; direct self-header and iterator high24/AL/current-tail sequence",
+    "source_only_failure": "post-real-resize test-boundary runtime_error; state1 placement reads/no-op, current node free/rethrow, explicit caller residual-name disposal",
+    "unexercised": [
+      "native compiler handlers/FH3",
+      "null allocation and initial allocator failure",
+      "empty-name/zero-copy branches",
+      "all arbitrary callback aliases/validation paths"
+    ],
+    "new_tracked_tests": false,
+    "application_or_original_game_run": false,
+    "transfer_verification": "PASS12 rows;10 full saved-function/listing checks plus2 callee-only checks at explicitly missing containment, both independently decoded live/PE"
+  },
+  "limits": [
+    "source interfaces are not original binary/private-frame ABI",
+    "native FH3/SEH/hardware-fault behavior unclaimed",
+    "host current provider transports remain explicit",
+    "partial-name storage is not automatically rolled back",
+    "no factory-value ownership/count/admission",
+    "no insertion/registration/BBC global/startup/gameplay claim",
+    "B1ADA0 misleading existing label preserved; primary later correction separate"
+  ],
+  "archive": {
+    "path": "local/cc10-platform-evidence/resource-registry-node-leaves.zip",
+    "sha256": "4c83dbcbb3870b14d57d5535a6285fab832fd5b35fa32f73f935e070ee09ea2e",
+    "files": 66,
+    "valid": true
+  }
+}
