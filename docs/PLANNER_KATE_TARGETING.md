@@ -261,3 +261,48 @@ packet's. The same freeze appears in D0 too, from 289.85 s, on the dead Kate #4.
 
 Whether the image's promotion really re-orders a carrier 24 km away belongs to the ship side and
 was not examined.
+
+## Range-factor retry after the plane death flags (packet cc9_group_composition, 2026-09-24)
+
+Main 416b17faa raises +5Dh/+60h at a plane's death (kPlaneDeathFlagsBound), so 00A2DDE0 now
+evicts dead planes. The pair is H0 (kPlannerRangeInterpBound OFF) against H1 (ON) on the merged
+tree, E2 9000, stream option on, with the MOVETOATTACK distance diagnostic on in both. The
+predictions below were written from D0/D1 before the runs.
+
+| row | H0 prediction | H1 prediction |
+| --- | --- | --- |
+| fighter group's first order | Val #3.1's group | Val #1.1's group |
+| target group's leader point after Val #1.1's death | - | moves to the next live member, no longer frozen at 4118.6 m |
+| US group promotion (collect 3000 m) | near 121.80 s | near 121.80 s (within ±20 s), as the next Val closes on the Lexington |
+| Yorktown fallback moveto | present (60% points) | present |
+| ship goal replans | about 230 | within ±30% of H0 (D1's 42 came from the never-promoted group) |
+| torpedo drops | about 1 | 0-3 |
+| Kate deaths | 16 | 16 ± 2 |
+| Lexington | alive | alive |
+
+**Measured (H0 = `local\H0_9000.log`, H1 = `local\H1_9000.log`).**
+
+| row | H0 | H1 | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| fighter group's first order | Val #3.1's group | Val #1.1's group | as predicted | held |
+| target leader point, 119.05 s | Val #1.1 | Val #1.1\|.-2 (the next live member; Val #1.1 is dead and evicted) | moves on | held |
+| US group promotion | 121.75 s (2974.5 m) | 125.75 s (2790.3 m), again at 194.05 s (2927.4 m) | ±20 s | held |
+| US ship group's orders | movieval (4.15 s), Val #7.1 (159.1 s) | movieval, Kate #6.1 (159.1 s), Val #5.1 (219.75 s), Val #7.1 (238.3 s) | - | - |
+| Yorktown fallback movetos | 12 | 24 | present | held |
+| ship goal replans | 139 | 282 | within ±30% | **missed**: doubled |
+| torpedo drops / Kate deaths | 0 / 16 | 0 / 16 | 0-3 / 16 ± 2 | held |
+| fighter hits | 34 | 47 | - | - |
+| damage | 7700.0 | 7700.0 | - | - |
+| Lexington | alive | alive | alive | held |
+
+**Explained.**
+- **The frozen leader point is gone.** With the death flags, the target group moves on to the
+  next live Val, and the US group promotes 4 s after H0 instead of never.
+- **The replans doubled because the range factor re-weights the ship group's own picks.** From
+  159.1 s it chooses Kate #6.1's group and then Val #5.1's before settling on Val #7.1's (H0 goes
+  straight to Val #7.1). Each new order re-enters MOVETOATTACK and promotes again (194.05 s), and
+  each re-orders the fleet.
+- That is the image's range law acting on its own terms. The torpedo losses R1 showed came from
+  the frozen point and do not recur.
+
+**kPlannerRangeInterpBound: ON (2026-09-24).**
