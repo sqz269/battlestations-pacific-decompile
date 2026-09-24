@@ -25,7 +25,7 @@ Word word(const volatile void* p) noexcept {
     return result;
 }
 void put(void* p,Word value) noexcept { *static_cast<volatile Word*>(p)=value; }
-std::uint8_t byte(const void* p) noexcept { return *static_cast<const volatile std::uint8_t*>(p); }
+std::uint8_t byte(const volatile void* p) noexcept { return *static_cast<const volatile std::uint8_t*>(p); }
 Word table_word(const volatile Word* table,Word offset) noexcept { return table[offset/4]; }
 NativeTexture2DOwnerContext& owners(NativeRenderTextureSurfaceOwnerContext& c) noexcept {
     return c.textures.construction.owners;
@@ -69,20 +69,29 @@ struct ConstructionPhase {
             acquired.phase=NativeRenderTextureSurfaceOwnerAcquired::Phase::failed;
     }
 };
-} // namespace
+// Addresses only: the typed path borrows its real heterogeneous members;
+// the raw path borrows actual DWORD elements. Neither fabricates object
+// lifetimes or reads argument values while preparing this metadata.
+struct ConstructorArguments {
+    const volatile void* width;
+    const volatile void* height;
+    const volatile void* format;
+    const volatile void* multisample;
+    const volatile void* mode;
+    const volatile void* external;
+};
 
-void* construct_native_render_texture_surface_owner_00b4e020(void* owner,
-    const volatile NativeRenderTextureSurfaceOwnerArguments& args,
+void* construct(void* owner,const ConstructorArguments& args,
     NativeRenderTextureSurfaceOwnerContext& c,NativeRenderTextureSurfaceOwnerAcquired& a) {
     if(a.phase!=NativeRenderTextureSurfaceOwnerAcquired::Phase::fresh)
         throw std::invalid_argument("render texture surface owner frame must be fresh");
     a.phase=NativeRenderTextureSurfaceOwnerAcquired::Phase::running;a.owner=owner;
     ConstructionPhase phase{a};BaseCleanup cleanup{owner,a.unwind_state};
     put(owner,0x00ceb130);::new(at(owner,4)) std::atomic<std::int32_t>(1);
-    const auto mode=static_cast<std::uint8_t>(args.mode);
-    const Word format=args.format,height=args.height;
+    const auto mode=byte(args.mode);
+    const Word format=word(args.format),height=word(args.height);
     *static_cast<volatile std::uint8_t*>(at(owner,0x14))=mode;
-    const Word initial_width=args.width;
+    const Word initial_width=word(args.width);
     put(owner,0x00d61eb8);put(at(owner,8),0);put(at(owner,0xc),0);put(at(owner,0x10),0);
     void* const first_renderer=const_cast<void*>(owners(c).renderer_notification.actual_renderer_00f8d394);
     const Word renderer_profile=word(first_renderer);__assume(renderer_profile==0x00d5f0a8);
@@ -95,7 +104,7 @@ void* construct_native_render_texture_surface_owner_00b4e020(void* owner,
     if(!separate)put(at(owner,0xc),reinterpret_cast<Word>(level));
     else {
         put(at(owner,0x10),reinterpret_cast<Word>(level));
-        auto* const external=args.external_surface;
+        auto* const external=static_cast<NativeSurfaceOwnerStorage*>(pointer(word(args.external)));
         if(external) {
             void* const old=pointer(word(at(owner,0xc)));
             if(old!=external) {
@@ -105,7 +114,7 @@ void* construct_native_render_texture_surface_owner_00b4e020(void* owner,
                     release_at_zero(old,c);
             }
         } else {
-            const Word multisample=args.multisample,width=args.width;
+            const Word multisample=word(args.multisample),width=word(args.width);
             void* const renderer=const_cast<void*>(owners(c).renderer_notification.actual_renderer_00f8d394);
             auto* const target=create_native_renderer_render_target_00b2a7c0(renderer,width,height,format,multisample,c.render_targets,a.target_creation);
             put(at(owner,0xc),reinterpret_cast<Word>(target));
@@ -116,6 +125,22 @@ void* construct_native_render_texture_surface_owner_00b4e020(void* owner,
     require_texture_method(current_texture,0x54,0x00b3d640,c);
     native_texture_noop_00b3d640(current_texture,nullptr,a.zero_vector);
     a.unwind_state=-1;a.phase=NativeRenderTextureSurfaceOwnerAcquired::Phase::complete;return owner;
+}
+} // namespace
+
+void* construct_native_render_texture_surface_owner_00b4e020(void* owner,
+    const volatile NativeRenderTextureSurfaceOwnerArguments& args,
+    NativeRenderTextureSurfaceOwnerContext& c,NativeRenderTextureSurfaceOwnerAcquired& a) {
+    const ConstructorArguments view{&args.width,&args.height,&args.format,
+        &args.multisample,&args.mode,&args.external_surface};
+    return construct(owner,view,c,a);
+}
+void* construct_native_render_texture_surface_owner_00b4e020(void* owner,
+    const NativeRenderTextureSurfaceOwnerArgumentView& args,
+    NativeRenderTextureSurfaceOwnerContext& c,NativeRenderTextureSurfaceOwnerAcquired& a) {
+    const ConstructorArguments view{args.words,args.words+1,args.words+2,
+        args.words+3,args.words+4,args.words+5};
+    return construct(owner,view,c,a);
 }
 
 void destroy_native_render_texture_surface_owner_00b4e140(void* owner,
