@@ -1,0 +1,409 @@
+{
+  "packet": "cc10_procedural_factory_storage",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "baseline_main": "80f085765",
+  "source": "src/native_procedural_factory_storage.cpp",
+  "header": "include/bsp/native_procedural_factory_storage.hpp",
+  "documentation": "docs/NATIVE_PROCEDURAL_FACTORY_STORAGE_CC10.md",
+  "normal_bytes": 235,
+  "compiler_boundary_bytes": 36,
+  "status": "complete_normal_actual4B_strict_win32_focused_original_source_with_separate_source_cleanup_checked",
+  "functions": [
+    {
+      "address": "00bbc440",
+      "bytes": 7,
+      "end_exclusive": "00bbc447",
+      "end_inclusive": "00bbc446",
+      "sha256": "f354da7fac86e00657738b02d11cf534cf69583bccd0e9f61f9a6f177b4419f1",
+      "live_equals_PE": true,
+      "instructions": 2,
+      "last_instruction_address": "00bbc446",
+      "last_instruction_length": 1,
+      "live_equals_PE_and_frozen_readiness": true,
+      "byte_span": 7,
+      "cpp_symbol": "bsp::destroy_native_procedural_factory_base_00bbc440",
+      "original_abi": "ECX actual4B factory; RET, no semantic result",
+      "coverage": "complete normal source behavior in actual4B qualified storage/provider domain"
+    },
+    {
+      "address": "00bbc5f0",
+      "bytes": 83,
+      "end_exclusive": "00bbc643",
+      "end_inclusive": "00bbc642",
+      "sha256": "5719f8506a028dba5ccb810b0a0fa3e817bb092eea5d7f870734e28281a32517",
+      "live_equals_PE": true,
+      "instructions": 25,
+      "last_instruction_address": "00bbc640",
+      "last_instruction_length": 3,
+      "live_equals_PE_and_frozen_readiness": true,
+      "byte_span": 83,
+      "cpp_symbol": "bsp::construct_native_caustics_factory_00bbc5f0",
+      "original_abi": "ECX actual4B factory; current stacked raw-name pointer; RET4/EAX captured factory",
+      "coverage": "complete normal source behavior in actual4B qualified storage/provider domain"
+    },
+    {
+      "address": "00bbc740",
+      "bytes": 83,
+      "end_exclusive": "00bbc793",
+      "end_inclusive": "00bbc792",
+      "sha256": "53c256624f920fc34fb551aae67585503c789ffb7916d74e68993de8229d1e29",
+      "live_equals_PE": true,
+      "instructions": 25,
+      "last_instruction_address": "00bbc790",
+      "last_instruction_length": 3,
+      "live_equals_PE_and_frozen_readiness": true,
+      "byte_span": 83,
+      "cpp_symbol": "bsp::construct_native_shore_wave_factory_00bbc740",
+      "original_abi": "ECX actual4B factory; current stacked raw-name pointer; RET4/EAX captured factory",
+      "coverage": "complete normal source behavior in actual4B qualified storage/provider domain"
+    },
+    {
+      "address": "00bbc650",
+      "bytes": 31,
+      "end_exclusive": "00bbc66f",
+      "end_inclusive": "00bbc66e",
+      "sha256": "bc936ba5244fca0700a7010b79783fea843b750fa50f6d4463089ea7356228b9",
+      "live_equals_PE": true,
+      "instructions": 11,
+      "last_instruction_address": "00bbc66c",
+      "last_instruction_length": 3,
+      "live_equals_PE_and_frozen_readiness": true,
+      "byte_span": 31,
+      "cpp_symbol": "bsp::delete_native_caustics_factory_00bbc650",
+      "original_abi": "ECX actual4B factory; flags LOW BYTE test before stamp/free; RET4/EAX captured address",
+      "coverage": "complete normal source behavior in actual4B qualified storage/provider domain"
+    },
+    {
+      "address": "00bbc7a0",
+      "bytes": 31,
+      "end_exclusive": "00bbc7bf",
+      "end_inclusive": "00bbc7be",
+      "sha256": "214288707cefedc31e4e790075c7c8cdc7c3dba8f607f912fbd3cc7b6278c635",
+      "live_equals_PE": true,
+      "instructions": 11,
+      "last_instruction_address": "00bbc7bc",
+      "last_instruction_length": 3,
+      "live_equals_PE_and_frozen_readiness": true,
+      "byte_span": 31,
+      "cpp_symbol": "bsp::delete_native_shore_wave_factory_00bbc7a0",
+      "original_abi": "ECX actual4B factory; flags LOW BYTE test before stamp/free; RET4/EAX captured address",
+      "coverage": "complete normal source behavior in actual4B qualified storage/provider domain"
+    }
+  ],
+  "compiler_boundaries": [
+    {
+      "address": "00cc4b50",
+      "bytes": 8,
+      "end_exclusive": "00cc4b58",
+      "end_inclusive": "00cc4b57",
+      "sha256": "fd17c26f8de645dffd8fd733b8909a10a36925d066b67ed22a7f889d88ffdc71",
+      "live_equals_PE": true,
+      "instructions": 2,
+      "last_instruction_address": "00cc4b53",
+      "last_instruction_length": 5,
+      "live_equals_PE_and_frozen_readiness": true,
+      "byte_span": 8,
+      "coverage": "compiler boundary evidence/source cleanup projection only; no native FH3"
+    },
+    {
+      "address": "00cc4b58",
+      "bytes": 10,
+      "end_exclusive": "00cc4b62",
+      "end_inclusive": "00cc4b61",
+      "sha256": "fe2dc76a82bcb4636677f398b575b463c6d13abe6c6af5bcf073c5d469ed21e9",
+      "live_equals_PE": true,
+      "instructions": 2,
+      "last_instruction_address": "00cc4b5d",
+      "last_instruction_length": 5,
+      "live_equals_PE_and_frozen_readiness": true,
+      "byte_span": 10,
+      "coverage": "compiler boundary evidence/source cleanup projection only; no native FH3"
+    },
+    {
+      "address": "00cc4b90",
+      "bytes": 8,
+      "end_exclusive": "00cc4b98",
+      "end_inclusive": "00cc4b97",
+      "sha256": "9c8fef906259654fcae540922899883c1e2eafe197968af90a459bf7a36fcf24",
+      "live_equals_PE": true,
+      "instructions": 2,
+      "last_instruction_address": "00cc4b93",
+      "last_instruction_length": 5,
+      "live_equals_PE_and_frozen_readiness": true,
+      "byte_span": 8,
+      "coverage": "compiler boundary evidence/source cleanup projection only; no native FH3"
+    },
+    {
+      "address": "00cc4b98",
+      "bytes": 10,
+      "end_exclusive": "00cc4ba2",
+      "end_inclusive": "00cc4ba1",
+      "sha256": "c6feeb228a282e3128f19e4be87155cdb7b683b7b49ee7991388e34d4c108953",
+      "live_equals_PE": true,
+      "instructions": 2,
+      "last_instruction_address": "00cc4b9d",
+      "last_instruction_length": 5,
+      "live_equals_PE_and_frozen_readiness": true,
+      "byte_span": 10,
+      "coverage": "compiler boundary evidence/source cleanup projection only; no native FH3"
+    }
+  ],
+  "ordered_native_calls": [
+    {
+      "function": "00bbc5f0",
+      "address": "00bbc61b",
+      "native": "00b1b730",
+      "actual_mnemonic": "CALL",
+      "contract": "genuine current raw manager/registry getter; caller name read only AFTER return"
+    },
+    {
+      "function": "00bbc5f0",
+      "address": "00bbc62d",
+      "native": "00b1b3a0",
+      "actual_mnemonic": "CALL",
+      "kind": "indirect",
+      "native_operand": "EDX",
+      "contract": "CURRENT captured returned-registry profile+4; qualified verified D5E594/D5E59C targets only, genuine raw registration, factory/name argument order"
+    },
+    {
+      "function": "00bbc740",
+      "address": "00bbc76b",
+      "native": "00b1b730",
+      "actual_mnemonic": "CALL",
+      "contract": "genuine current raw manager/registry getter; caller name read only AFTER return"
+    },
+    {
+      "function": "00bbc740",
+      "address": "00bbc77d",
+      "native": "00b1b3a0",
+      "actual_mnemonic": "CALL",
+      "kind": "indirect",
+      "native_operand": "EDX",
+      "contract": "CURRENT captured returned-registry profile+4; qualified verified D5E594/D5E59C targets only, genuine raw registration, factory/name argument order"
+    },
+    {
+      "function": "00bbc650",
+      "address": "00bbc661",
+      "native": "00bf65ac",
+      "actual_mnemonic": "CALL",
+      "contract": "genuine CRT free of captured factory after LOW flags test and base stamp; no postfree reads",
+      "kind": "no_ghidra_function",
+      "kind_after_definition": "call",
+      "missing_containment_note": "fresh undefined body; full raw live/PE listing pins actual mnemonic; primary later definition"
+    },
+    {
+      "function": "00bbc7a0",
+      "address": "00bbc7b1",
+      "native": "00bf65ac",
+      "actual_mnemonic": "CALL",
+      "contract": "genuine CRT free of captured factory after LOW flags test and base stamp; no postfree reads",
+      "kind": "no_ghidra_function",
+      "kind_after_definition": "call",
+      "missing_containment_note": "fresh undefined body; full raw live/PE listing pins actual mnemonic; primary later definition"
+    },
+    {
+      "function": "00cc4b50",
+      "address": "00cc4b53",
+      "native": "00bbc440",
+      "actual_mnemonic": "JMP",
+      "kind": "tail_jump",
+      "contract": "CURRENT cleanup-self EBP-10; exact7B base profile stamp only"
+    },
+    {
+      "function": "00cc4b58",
+      "address": "00cc4b5d",
+      "native": "00bf6b43",
+      "actual_mnemonic": "JMP",
+      "kind": "no_ghidra_function",
+      "contract": "original FH3 dispatcher evidence only; source C++ exception transport is separate",
+      "kind_after_definition": "tail_jump",
+      "missing_containment_note": "fresh undefined body; full raw live/PE listing pins actual mnemonic; primary later definition"
+    },
+    {
+      "function": "00cc4b90",
+      "address": "00cc4b93",
+      "native": "00bbc440",
+      "actual_mnemonic": "JMP",
+      "kind": "tail_jump",
+      "contract": "CURRENT cleanup-self EBP-10; exact7B base profile stamp only"
+    },
+    {
+      "function": "00cc4b98",
+      "address": "00cc4b9d",
+      "native": "00bf6b43",
+      "actual_mnemonic": "JMP",
+      "kind": "no_ghidra_function",
+      "contract": "original FH3 dispatcher evidence only; source C++ exception transport is separate",
+      "kind_after_definition": "tail_jump",
+      "missing_containment_note": "fresh undefined body; full raw live/PE listing pins actual mnemonic; primary later definition"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00bbc650",
+      "name": "undefined scalar body",
+      "end_inclusive": "00bbc66e",
+      "end_exclusive": "00bbc66f",
+      "last_instruction_address": "00bbc66c",
+      "last_instruction_length": 3,
+      "evidence": "complete live/PE-equal body, fresh proto undefined; primary later definition"
+    },
+    {
+      "address": "00bbc7a0",
+      "name": "undefined scalar body",
+      "end_inclusive": "00bbc7be",
+      "end_exclusive": "00bbc7bf",
+      "last_instruction_address": "00bbc7bc",
+      "last_instruction_length": 3,
+      "evidence": "complete live/PE-equal body, fresh proto undefined; primary later definition"
+    },
+    {
+      "address": "00cc4b58",
+      "name": "undefined FH3 dispatcher",
+      "end_inclusive": "00cc4b61",
+      "end_exclusive": "00cc4b62",
+      "last_instruction_address": "00cc4b5d",
+      "last_instruction_length": 5,
+      "evidence": "complete live/PE-equal body, fresh proto undefined; primary later definition"
+    },
+    {
+      "address": "00cc4b98",
+      "name": "undefined FH3 dispatcher",
+      "end_inclusive": "00cc4ba1",
+      "end_exclusive": "00cc4ba2",
+      "last_instruction_address": "00cc4b9d",
+      "last_instruction_length": 5,
+      "evidence": "complete live/PE-equal body, fresh proto undefined; primary later definition"
+    }
+  ],
+  "eh": [
+    {
+      "function": "00bbc5f0",
+      "descriptor": "00dfe998",
+      "unwind_map": "00dfe990",
+      "max_state": 1,
+      "entry": {
+        "state": 0,
+        "previous": -1,
+        "handler": "00cc4b50"
+      },
+      "try_count": 0,
+      "flags": 1
+    },
+    {
+      "function": "00bbc740",
+      "descriptor": "00dfe9f0",
+      "unwind_map": "00dfe9e8",
+      "max_state": 1,
+      "entry": {
+        "state": 0,
+        "previous": -1,
+        "handler": "00cc4b90"
+      },
+      "try_count": 0,
+      "flags": 1
+    }
+  ],
+  "frame_contract": {
+    "payload": "actual4B live DWORD; no+4 count/companion/host wrapper",
+    "name": "mutable original entry S+4, captured AFTER genuine getter",
+    "cleanup_self": "S-10/EH EBP-10; PUSH ECX then MOV same captured factory; CURRENT read on cleanup",
+    "nested": "existing live registration frame; seed capturedfactory before capturedname; persistent actual insertion diagnostics",
+    "metadata": "disjoint immutable references over live caller cells; no aggregate overlays/private provider stack coincidence",
+    "diagnostics": "getter entered/normal return only, not internal getter unwind; captured return/name/profile/target and nested insertion plus current cleanupreceiver"
+  },
+  "dispatch": {
+    "registry_profiles": {
+      "00d5e594": {
+        "current_slot04": "00b1b3a0"
+      },
+      "00d5e59c": {
+        "current_slot04": "00b1b3a0"
+      }
+    },
+    "policy": "pure numeric profile resolution then CURRENT actual table+4; exact genuine target or explicit source diagnostic with documented source cleanup; no fallback",
+    "factory_profiles": {
+      "00bbc5f0": "00d64470",
+      "00bbc740": "00d644ac"
+    },
+    "base_stamp": "00d64468",
+    "ownership": "factory pointer borrowed by actualnode14, no retain/unregister; factory usable through lookups or quiescent before disposal; raw registry manager deletion bindings remain explicit caller obligation"
+  },
+  "failure": {
+    "native_state0_projection": "consume once, read CURRENT cleanup_self, exactBBC440 stamp, rethrow; no free, unregister or rollback",
+    "unsupported_binding": "outside qualified native domain; source diagnostic uses same source cleanup policy",
+    "getter": "established raw getter cleanup/publication contract reused unchanged, diagnostic entry/return does not invent private state",
+    "residuals": "preserve completed publication/tree mutation/name credits and caller factory allocation for explicit disposition"
+  },
+  "validation": {
+    "build_command": "./scripts/build.ps1",
+    "build_log": "local\\output\\cc10_procedural_factory_storage\\build01.log",
+    "strict_msvc_win32": true,
+    "configured_ctests": {
+      "passed": 2,
+      "count": 2,
+      "names": [
+        "reconstructed_math",
+        "tool_tests"
+      ]
+    },
+    "probe_source": "local\\output\\cc10_procedural_factory_storage\\probe.cpp",
+    "probe_command_file": "local\\output\\cc10_procedural_factory_storage\\probe.cmd",
+    "flags": "/MD /EHsc /std:c++20 /O2 /Gy /W4 /WX /fp:strict /link /OPT:REF /MANIFEST:EMBED",
+    "NDEBUG_defined": false,
+    "NDEBUG_compile_time_rejection": true,
+    "attempts": [
+      {
+        "id": "probe01",
+        "outcome": "compile and standalone runtime PASS, first attempt",
+        "log": "local\\output\\cc10_procedural_factory_storage\\probe01.log"
+      }
+    ],
+    "original_body_bytes_copied": 235,
+    "original_direct_call_relocations": [
+      "BBC61B getter",
+      "BBC76B getter",
+      "BBC661 free",
+      "BBC7B1 free"
+    ],
+    "indirect_instructions_replaced": 0,
+    "original_indirect_provider_binding": "actual numeric registry profile cells D5E594/D5E59C mapped with pinned values; B1B3A0 trampoline invokes genuine source registration with live prepared frames",
+    "shared_providers": [
+      "raw B1B730 getter/manager allocation/registration",
+      "full new raw B1B3A0 insertion family and underlying actual string/tree/CRT providers",
+      "actual registry destruction/scalars via genuine manager deletion bindings",
+      "actual string pool construction/return/destruction",
+      "genuine CRT free"
+    ],
+    "normal_checks": [
+      "name changed after genuine getter uses CURRENT caller cell",
+      "returned registry profile changed at real getter boundary read CURRENT before slot",
+      "publication cleared after getter but captured returned registry still used",
+      "actualnode14 equals raw4B factory identity; duplicate keeps prior borrowed value/cardinality",
+      "manager/registry drain does not dispose borrowed factories",
+      "flags0 retains caller backing; flags1 real free sees baseprofile; free callback changes currentflags and captured identity returns without dead read",
+      "direct7B stamp equality with adjacent untouched canary"
+    ],
+    "comparison_limit": "selected exact stores and relationships; no whole-tree byte/private-stack/register/EH equality; source and original allocations have separate identities",
+    "source_only_failure": "observed getter seam completes real getter, changes CURRENT EH-self then deliberately throws; verifies current cleanup receiver/base stamp, live original factory prefix and empty registry; not a genuine getter failure or original EH comparison",
+    "runtime_processes_closed": true,
+    "application_or_original_executable_launched": false,
+    "tracked_tests_added": false
+  },
+  "evidence": {
+    "directory": "local\\output\\cc10_procedural_factory_storage",
+    "native": "local\\output\\cc10_procedural_factory_storage\\evidence.json",
+    "readiness_archive": "local/output/cc10_resource_registry_lifetime_readiness_evidence.zip",
+    "readiness_archive_sha256": "c10bc394f704bb114fd662a4678306a42233707240d1698e0398e79e0eb00cb9",
+    "live_PE_readiness_equal": true
+  },
+  "limits": [
+    "native FH3/SEH/private stack/volatile register or hardware fault behavior unclaimed",
+    "no BBC460/BBC890/BBC8E0 or table construction/destruction/global composition",
+    "no34h resource storage/canonical lifetime admission",
+    "no factory count, retain, metadata wrapper or automatic unregister",
+    "required same actual raw manager/pool/publications and real manager deletion binding",
+    "no application/game validation or procedural startup activation"
+  ]
+}
