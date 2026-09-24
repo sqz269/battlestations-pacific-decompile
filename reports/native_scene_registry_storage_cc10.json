@@ -1,0 +1,584 @@
+{
+  "packet": "cc10_raw_scene_registry_storage",
+  "status": "complete_raw_supported_storage_strict_win32_original_source_checked",
+  "source": "src/native_scene_registry_storage.cpp",
+  "documentation": "docs/NATIVE_SCENE_REGISTRY_STORAGE_CC10.md",
+  "dependency_base_commit": "df1909fb8501a20e272df37571d155db83b003bd",
+  "original_executable_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "native_bytes": [
+    {
+      "address": "00b83600",
+      "size": 120,
+      "end_inclusive": "00b83677",
+      "sha256": "f4efd75bf52ae1a92a78027ee9625496e7fde3dd3b4317f0ddc2c21fdcec2086",
+      "live_pe_equal": true,
+      "last_instruction_address": "00b83675",
+      "last_instruction_length": 3,
+      "last_instruction": "ret 8"
+    },
+    {
+      "address": "00b83220",
+      "size": 150,
+      "end_inclusive": "00b832b5",
+      "sha256": "64df24a8b86ed4b2acfc7551554c837341828a3ff6947c76e2b4d26cd30222af",
+      "live_pe_equal": true,
+      "last_instruction_address": "00b832b3",
+      "last_instruction_length": 3,
+      "last_instruction": "ret 8"
+    },
+    {
+      "address": "00b832b6",
+      "size": 17,
+      "end_inclusive": "00b832c6",
+      "sha256": "422533746441a2bc5bb75c0768757beaaf2fce0c049e90ac3e9aeed845ab5a37",
+      "live_pe_equal": true,
+      "last_instruction_address": "00b832c2",
+      "last_instruction_length": 5,
+      "last_instruction": "call 0xbf6885"
+    },
+    {
+      "address": "00b81b90",
+      "size": 85,
+      "end_inclusive": "00b81be4",
+      "sha256": "432c3549227a354be518c01a9b30e2035df562f9b6ce0187fcecff46acf82f17",
+      "live_pe_equal": true,
+      "last_instruction_address": "00b81be0",
+      "last_instruction_length": 5,
+      "last_instruction": "call 0xbf6885"
+    },
+    {
+      "address": "00b829d0",
+      "size": 72,
+      "end_inclusive": "00b82a17",
+      "sha256": "72925adbe60b5350e4e0eb18145c24cbc96dd4fea0399f5b10b1094bb57fbd93",
+      "live_pe_equal": true,
+      "last_instruction_address": "00b82a17",
+      "last_instruction_length": 1,
+      "last_instruction": "ret "
+    },
+    {
+      "address": "00b82b40",
+      "size": 5,
+      "end_inclusive": "00b82b44",
+      "sha256": "802fcd9f71e8163e414d741c06fc3a6dface76964ddb19041b32f124b45d04b3",
+      "live_pe_equal": true,
+      "last_instruction_address": "00b82b40",
+      "last_instruction_length": 5,
+      "last_instruction": "jmp 0xb829d0"
+    },
+    {
+      "address": "00b82e90",
+      "size": 49,
+      "end_inclusive": "00b82ec0",
+      "sha256": "f6b137538b68c97a4679b19b97dbdfdcad42525022341cbc0028c1432b97bba6",
+      "live_pe_equal": true,
+      "last_instruction_address": "00b82ebc",
+      "last_instruction_length": 5,
+      "last_instruction": "jmp 0xb829d0"
+    },
+    {
+      "address": "00b82c60",
+      "size": 42,
+      "end_inclusive": "00b82c89",
+      "sha256": "8d13c52dc1d4573f338f63111c1241c98f8abc6fbe9585fc003d694dc706ccd0",
+      "live_pe_equal": true,
+      "last_instruction_address": "00b82c89",
+      "last_instruction_length": 1,
+      "last_instruction": "ret "
+    },
+    {
+      "address": "00cc2350",
+      "size": 10,
+      "end_inclusive": "00cc2359",
+      "sha256": "ef91adb0541e21469d523e6d37323bfd3e8ce981f09f53584e86203f90f7b166",
+      "live_pe_equal": true,
+      "last_instruction_address": "00cc2355",
+      "last_instruction_length": 5,
+      "last_instruction": "jmp 0xbf6b43"
+    },
+    {
+      "address": "00cc2370",
+      "size": 11,
+      "end_inclusive": "00cc237a",
+      "sha256": "5d6d899959d967c324257f68fcdb407f24a4b0bbca1941e78cf6361dd9aad005",
+      "live_pe_equal": true,
+      "last_instruction_address": "00cc2376",
+      "last_instruction_length": 5,
+      "last_instruction": "jmp 0xb82b40"
+    },
+    {
+      "address": "00cc237b",
+      "size": 10,
+      "end_inclusive": "00cc2384",
+      "sha256": "15795960625f91c4ae5a25b43fd4a0e3871647992d0e6983ced729c2f6b16dd8",
+      "live_pe_equal": true,
+      "last_instruction_address": "00cc2380",
+      "last_instruction_length": 5,
+      "last_instruction": "jmp 0xbf6b43"
+    },
+    {
+      "address": "00dfb66c",
+      "size": 88,
+      "end_inclusive": "00dfb6c3",
+      "sha256": "d26d416ccf86c8bc4d854ff2e006a679a93b7c51acfa9bd0054b82dcadac7414",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00dfb71c",
+      "size": 40,
+      "end_inclusive": "00dfb743",
+      "sha256": "b9089ca4a3a00054f0eef03f47aab366b0592cfa428f8fdff70959a67726db19",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00b82390",
+      "size": 26,
+      "end_inclusive": "00b823a9",
+      "sha256": "7883b91a95e6269894058ac80c1e9d433b0ea6c6e5f555b2d3500d9a6c6aee3b",
+      "live_pe_equal": true,
+      "coverage": "existing raw dependency; unchanged"
+    },
+    {
+      "address": "00b82570",
+      "size": 44,
+      "end_inclusive": "00b8259b",
+      "sha256": "56de3ef474a694b160932013acfa44dfaf6267ec644e5549b1dc294da50967eb",
+      "live_pe_equal": true,
+      "coverage": "existing raw dependency; unchanged"
+    }
+  ],
+  "routines": [
+    {
+      "address": "00b83600",
+      "end_inclusive": "00b83677",
+      "last_instruction_address": "00b83675",
+      "last_instruction_length": 3,
+      "name": "construct_native_scene_registry_00b83600",
+      "source": "src/native_scene_registry_storage.cpp",
+      "original_abi": "ECX registry28h; stack allocator-byte pointer,unused pointer; EAX same registry; RET8",
+      "coverage": "complete raw constructor and source C++ cleanup; private native frame/FH3 excluded"
+    },
+    {
+      "address": "00b83220",
+      "end_inclusive": "00b832b5",
+      "last_instruction_address": "00b832b3",
+      "last_instruction_length": 3,
+      "name": "construct_native_scene_registry_vector_00b83220",
+      "source": "src/native_scene_registry_storage.cpp",
+      "original_abi": "ECX vector10h; stack count,pair source; RET8",
+      "coverage": "complete raw normal driver; required nonreturning B82DD0 library binding; source catch projection only"
+    },
+    {
+      "address": "00b832b6",
+      "end_inclusive": "00b832c6",
+      "last_instruction_address": "00b832c2",
+      "last_instruction_length": 5,
+      "coverage": "native compiler-frame/exception boundary only; source cleanup expression does not implement native FH3"
+    },
+    {
+      "address": "00b81b90",
+      "end_inclusive": "00b81be4",
+      "last_instruction_address": "00b81be0",
+      "last_instruction_length": 5,
+      "name": "allocate_native_scene_registry_pairs_00b81b90",
+      "source": "src/native_scene_registry_storage.cpp",
+      "original_abi": "ECX count; EAX allocation; RET0 or native throw",
+      "coverage": "complete raw allocation and overflow decision; explicit source std::bad_alloc transport boundary"
+    },
+    {
+      "address": "00b829d0",
+      "end_inclusive": "00b82a17",
+      "last_instruction_address": "00b82a17",
+      "last_instruction_length": 1,
+      "name": "destroy_native_scene_registry_list_00b829d0",
+      "source": "src/native_scene_registry_storage.cpp",
+      "original_abi": "ECX list0Ch; RET0",
+      "coverage": "complete72-byte raw list free/reset body including omitted free continuations"
+    },
+    {
+      "address": "00b82b40",
+      "end_inclusive": "00b82b44",
+      "last_instruction_address": "00b82b40",
+      "last_instruction_length": 5,
+      "name": "destroy_native_scene_registry_list_00b82b40",
+      "source": "src/native_scene_registry_storage.cpp",
+      "original_abi": "ECX list0Ch; tail JMP B829D0",
+      "coverage": "complete five-byte tail alias"
+    },
+    {
+      "address": "00b82e90",
+      "end_inclusive": "00b82ec0",
+      "last_instruction_address": "00b82ebc",
+      "last_instruction_length": 5,
+      "name": "destroy_native_scene_registry_00b82e90",
+      "source": "src/native_scene_registry_storage.cpp",
+      "original_abi": "ECX registry28h; tail JMP B829D0 with registry+4",
+      "coverage": "complete49-byte raw vector free/reset and list tail"
+    },
+    {
+      "address": "00b82c60",
+      "end_inclusive": "00b82c89",
+      "last_instruction_address": "00b82c89",
+      "last_instruction_length": 1,
+      "name": "clear_native_scene_registry_vector_00b82c60",
+      "source": "src/native_scene_registry_storage.cpp",
+      "original_abi": "ECX vector10h; RET0",
+      "coverage": "complete42-byte raw vector free/reset body"
+    },
+    {
+      "address": "00cc2350",
+      "end_inclusive": "00cc2359",
+      "last_instruction_address": "00cc2355",
+      "last_instruction_length": 5,
+      "coverage": "native compiler-frame/exception boundary only; source cleanup expression does not implement native FH3"
+    },
+    {
+      "address": "00cc2370",
+      "end_inclusive": "00cc237a",
+      "last_instruction_address": "00cc2376",
+      "last_instruction_length": 5,
+      "coverage": "native compiler-frame/exception boundary only; source cleanup expression does not implement native FH3"
+    },
+    {
+      "address": "00cc237b",
+      "end_inclusive": "00cc2384",
+      "last_instruction_address": "00cc2380",
+      "last_instruction_length": 5,
+      "coverage": "native compiler-frame/exception boundary only; source cleanup expression does not implement native FH3"
+    }
+  ],
+  "calls": [
+    {
+      "address": "00b8362d",
+      "native": "00b82390",
+      "function": "00b83600",
+      "kind": "call",
+      "native_instruction_kind": "call"
+    },
+    {
+      "address": "00b83653",
+      "native": "00b83220",
+      "function": "00b83600",
+      "kind": "call",
+      "native_instruction_kind": "call"
+    },
+    {
+      "address": "00b83260",
+      "native": "00b82dd0",
+      "function": "00b83220",
+      "kind": "call",
+      "native_instruction_kind": "call"
+    },
+    {
+      "address": "00b83269",
+      "native": "00b81b90",
+      "function": "00b83220",
+      "kind": "call",
+      "native_instruction_kind": "call"
+    },
+    {
+      "address": "00b83298",
+      "native": "00b82570",
+      "function": "00b83220",
+      "kind": "call",
+      "native_instruction_kind": "call"
+    },
+    {
+      "address": "00b832b9",
+      "native": "00b82c60",
+      "function": "00b832b6",
+      "kind": "call",
+      "native_instruction_kind": "call"
+    },
+    {
+      "address": "00b832c2",
+      "native": "00bf6885",
+      "function": "00b832b6",
+      "kind": "call",
+      "native_instruction_kind": "call"
+    },
+    {
+      "address": "00b81ba1",
+      "native": "00bf681b",
+      "function": "00b81b90",
+      "kind": "call",
+      "native_instruction_kind": "call"
+    },
+    {
+      "address": "00b81bc9",
+      "native": "00bf6340",
+      "function": "00b81b90",
+      "kind": "call",
+      "native_instruction_kind": "call"
+    },
+    {
+      "address": "00b81be0",
+      "native": "00bf6885",
+      "function": "00b81b90",
+      "kind": "call",
+      "native_instruction_kind": "call"
+    },
+    {
+      "address": "00b829f3",
+      "native": "00bf65ac",
+      "function": "00b829d0",
+      "kind": "call",
+      "native_instruction_kind": "call"
+    },
+    {
+      "address": "00b82a07",
+      "native": "00bf65ac",
+      "function": "00b829d0",
+      "kind": "call",
+      "native_instruction_kind": "call"
+    },
+    {
+      "address": "00b82b40",
+      "native": "00b829d0",
+      "function": "00b82b40",
+      "kind": "tail_jump",
+      "native_instruction_kind": "tail_jump"
+    },
+    {
+      "address": "00b82e9b",
+      "native": "00bf65ac",
+      "function": "00b82e90",
+      "kind": "call",
+      "native_instruction_kind": "call"
+    },
+    {
+      "address": "00b82ebc",
+      "native": "00b829d0",
+      "function": "00b82e90",
+      "kind": "tail_jump",
+      "native_instruction_kind": "tail_jump"
+    },
+    {
+      "address": "00b82c6b",
+      "native": "00bf65ac",
+      "function": "00b82c60",
+      "kind": "call",
+      "native_instruction_kind": "call"
+    },
+    {
+      "address": "00cc2355",
+      "native": "00bf6b43",
+      "function": "00cc2350",
+      "kind": "no_ghidra_function",
+      "native_instruction_kind": "tail_jump",
+      "note": "Verifier predefinition compatibility only; actual instruction is tail_jump. Root switches kind after definition."
+    },
+    {
+      "address": "00cc2376",
+      "native": "00b82b40",
+      "function": "00cc2370",
+      "kind": "tail_jump",
+      "native_instruction_kind": "tail_jump"
+    },
+    {
+      "address": "00cc2380",
+      "native": "00bf6b43",
+      "function": "00cc237b",
+      "kind": "no_ghidra_function",
+      "native_instruction_kind": "tail_jump",
+      "note": "Verifier predefinition compatibility only; actual instruction is tail_jump. Root switches kind after definition."
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00cc2350",
+      "end_inclusive": "00cc2359",
+      "last_instruction_address": "00cc2355",
+      "last_instruction_length": 5,
+      "coverage": "MOV EAX,FuncInfo then JMP BF6B43; boundary only"
+    },
+    {
+      "address": "00cc237b",
+      "end_inclusive": "00cc2384",
+      "last_instruction_address": "00cc2380",
+      "last_instruction_length": 5,
+      "coverage": "MOV EAX,FuncInfo then JMP BF6B43; boundary only"
+    }
+  ],
+  "listing_repairs": [
+    {
+      "containing_function": "00b829d0",
+      "required_range_inclusive": [
+        "00b829d0",
+        "00b82a17"
+      ],
+      "missing_range_inclusive": [
+        "00b829f8",
+        "00b82a02"
+      ],
+      "instructions": [
+        "B829F8 ADD ESP,4 len3",
+        "B829FB CMP EDI,[ESI+4] len3",
+        "B829FE MOV EAX,EDI len2",
+        "B82A00 JNE B829F0 len2",
+        "B82A02 POP EDI len1"
+      ]
+    },
+    {
+      "containing_function": "00b829d0",
+      "required_range_inclusive": [
+        "00b829d0",
+        "00b82a17"
+      ],
+      "missing_range_inclusive": [
+        "00b82a0c",
+        "00b82a17"
+      ],
+      "instructions": [
+        "B82A0C ADD ESP,4 len3",
+        "B82A0F MOV [ESI+4],0 len7",
+        "B82A16 POP ESI len1",
+        "B82A17 RET len1"
+      ]
+    },
+    {
+      "containing_function": "00b82e90",
+      "required_range_inclusive": [
+        "00b82e90",
+        "00b82ec0"
+      ],
+      "missing_range_inclusive": [
+        "00b82ea0",
+        "00b82ea2"
+      ],
+      "instructions": [
+        "B82EA0 ADD ESP,4 len3"
+      ]
+    },
+    {
+      "containing_function": "00b82c60",
+      "required_range_inclusive": [
+        "00b82c60",
+        "00b82c89"
+      ],
+      "missing_range_inclusive": [
+        "00b82c70",
+        "00b82c72"
+      ],
+      "instructions": [
+        "B82C70 ADD ESP,4 len3"
+      ]
+    }
+  ],
+  "storage": {
+    "registry": "28h: allocator byte0; untouched1..3; embedded list4; vector10h; mask20/active24",
+    "list": "0Ch: opaque0,head4,count8; node0Ch next0,previous4,borrowed key8",
+    "vector": "10h: opaque0,begin4,end8,capacityC; eight-byte owner/node pairs",
+    "opaque_contract": "No invented initializer for registry padding, list/vector opaque words or sentinel key8; no owner arrays/key retains."
+  },
+  "read_write_contracts": {
+    "constructor": [
+      "B83618 captures first allocator pointer; B8361F reads byte then B83622 writes onlyregistry0",
+      "B8362D alloc sentinel; B83632 head8; B83637 countC0; B83642 capturescurrenthead",
+      "B83645/46 stage nested source/count9; B8364B writes pair.node then B8364F pair.owner",
+      "B83653 vector construction; only success B83661/64 mask20/active24=1"
+    ],
+    "vector": [
+      "B8323C captures count BEFORE B8324D/50/53 clear4/8/C",
+      "B83260 required length failure if count>1FFFFFFF; no success/no-op provider permitted",
+      "B83269 allocation; B83270 zero LOWBYTE current count cell; B83274/77 two separate current DWORDreads",
+      "B8327F writescapacity before B83282 CURRENTpair-pointer capture; B8328B/8E publishbegin/end",
+      "B83298 existing actual B82570 sequential overlapping pair fill; B832A0 finalend"
+    ],
+    "list_cleanup": [
+      "B829D3 captureshead; D6firstnode; D8head.next=self; DA reloadhead; DDhead.previous=self",
+      "B829E0 currenthead comparison BEFORE E3count=0",
+      "B829F0 capturesnext before F3free; B829FB comparesnext to CURRENThead afterfree",
+      "B82A03 reloadhead,07free,0Fclearhead"
+    ],
+    "vector_cleanup": [
+      "B82C63 reads currentbegin;6Bfree if nonnull;73/7A/81 zero4/8/C afterreturn",
+      "B82E93 currentregistryvectorbegin14;9Bfree;A3/AA/B1 zero14/18/1C;BCtail registry+4"
+    ]
+  },
+  "scratch": {
+    "vector_arguments": "actual caller-owned volatile countDWORD0/pairpointer4,8B; retain initialized preimages/current identity; scalarcount captured beforecallbacks; lowbytewrite doesnot erase upperbytes",
+    "constructor": "caller-owned source16B: actualpair0..7 then nestedargumentcells8..F; stable initialized storage; source layout only",
+    "excluded": "native saved-register/return/EH/private-stack byte aliases; CC2370 native [EBP-18] owner recovery maps explicit source input, no stack ABI claim"
+  },
+  "bindings": {
+    "allocator": "required CURRENT BF681B entry; genuine allocation/new-handler/throw contract; zero bytes allowed",
+    "free": "required CURRENT BF65AC entry matching the allocation domain; each call reloads the binding and retains current object/head reads",
+    "length_error": "required nonreturning genuine B82DD0 library transport; native message vector<T> too long including NUL, D69260 vtable,D83F98 ThrowInfo; no default/no-op",
+    "overflow": "B81B90 native BF6340 then D6923C/E03CC0; source std::bad_alloc explicitly different CRT exception identity"
+  },
+  "eh": {
+    "vector": {
+      "handler": "00cc2350",
+      "descriptor": "00dfb6a0",
+      "max_state": 2,
+      "unwind_map": "00dfb67c",
+      "states": "0 and1 -> -1, no actions",
+      "try_map": "00dfb68c",
+      "try_states": "low0/high0/catchhigh1",
+      "catch_info": "00dfb66c",
+      "catch": "00b832b6 loads [EBP-14],callsB82C60,rethrowsBF6885(0,0)"
+    },
+    "constructor": {
+      "handler": "00cc237b",
+      "descriptor": "00dfb724",
+      "max_state": 1,
+      "unwind_map": "00dfb71c",
+      "state0": "-1/actionCC2370; [EBP-18]+4 tailB82B40"
+    },
+    "source_boundary": "C++ cleanup/rethrow only. Existing B82570 is noexcept; vector source catch is not evidence of exercised/native FH3 access-fault/SEH handling. Constructor source allocation-failure cleanup separately exercised."
+  },
+  "validation": {
+    "strict_build": "scripts/build.ps1 MSVC Win32 Release /W4 /WX /fp:strict",
+    "ctests_passed": 3,
+    "probe": {
+      "source": "local/cc10_scene_registry_storage/probe.cpp",
+      "result": "PASS original/source real allocator registry/vector/list: untouched storage, late caller-cell/overlap, low-byte count, free-time current-head reload/reset; source-only allocation-failure cleanup and overflow transport",
+      "flags": "/MD /O2 /W4 /WX /fp:strict /link /MANIFEST:EMBED",
+      "native_composition": "Nine copied complete original bodies,15 direct/tail relocations; genuine source allocator/free calls with allocation preimage observation, no game modification",
+      "native_source_checks": "28h constructor,9actual8B pairs/sentinel, untouched storage, current caller lowbyte/count/pair mutation, overlapping fill, current-head mutation after free, vector reset order, zero allocation",
+      "source_only_checks": "vector-allocation failure releases sentinel without mask/active publication; overflow rejects before allocator",
+      "length_provider": "existing raw native_singleton_length_error_00bd0590 library transport, not a success seam; length failure not exercised in original composition"
+    },
+    "ghidra_mutated": false,
+    "new_tracked_tests": false,
+    "native_fh3_proven": false,
+    "original_binary_abi": false,
+    "game_validated": false,
+    "call_rows_verified": 19,
+    "call_rows_failed": 0,
+    "prior_evidence_archives_unchanged": {
+      "local/cc10_field_values_evidence.zip": "a749dbf4656596e6a4e0c11ecb320a02bfe62dcba5fa3654c2744aa2a3022153",
+      "local/cc10_widget_transform_evidence.zip": "0d90499f71be2a3cc99ad732deaa8a71a5b55546da4dbaa7ee708c364bae45f8",
+      "local/cc10_widget_property_prefix_evidence.zip": "181ebe9358fe2d7ea6832b8051a0b3fd6f830a0360f3ef390626403ba7cbfcdf",
+      "local/cc10_gui_page_default_evidence.zip": "a224fc79f56861715059ff9717fcdad40893be00d26697a230b64ceafced5c8b",
+      "local/cc10_gui_group_pool_evidence.zip": "c7aa87452ab19400fe950d3a4c3a4a146c94715f4080f463dc2de1740df37853",
+      "local/cc10_gui_group_factory_evidence.zip": "d22d364ce3b5cf7833d8ad1998cd5c14cbf792abc34634e2df1421949e42f34f",
+      "local/cc10_gui_camera_store_map_evidence.zip": "625a751eab1f2416e7b0fa5876b921106cf0a246c0b8ca5ce97ca3e9d1586c54"
+    },
+    "call_verifier_boundary": "CC2355/CC2380 callees checked; containment/listing skipped before root defines CC2350/CC237B. Actual tail_jump identity retained separately; exact live/PE bytes pinned."
+  },
+  "source_hashes": {
+    "include/bsp/native_scene_registry_storage.hpp": "a35ca1dd01d61b9aceaebbbfecd025fe485dc7116211cdde0c9c544142cafabe",
+    "src/native_scene_registry_storage.cpp": "11b1adc42b73e22bc656fc2f06187f511196601d1eaf8d86546388dd489476be",
+    "docs/NATIVE_SCENE_REGISTRY_STORAGE_CC10.md": "7a5794c546df18df2d5bf189095ec17709a8ac3e5644d32ab21e089fe0bc85ed"
+  },
+  "dependency_hashes": {
+    "include/bsp/native_scene_registry_storage_leaves.hpp": "5e2f67b2533fa78220c15b7abe02cb0e69bf76530a53ab9214807b994845e9da",
+    "src/native_scene_registry_storage_leaves.cpp": "49b15bea43c399ed05d50943b1f48ab2ff7309a3caaf3d13aed3f607c0b2fcaa",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+    "src/native_singleton_vector_allocation.cpp": "4771197c3f1ead7dd635637c849c60f8f525c4d482dcc4a33c8617922362e09e"
+  },
+  "compiled_artifacts": {
+    "build/win32/bsp_core.dir/Release/native_scene_registry_storage.obj": "dcc31da37d8b92e9ce4570c925cc4def7e4d44523cddecd139ea0f316c6cacc0",
+    "build/win32/Release/bsp_core.lib": "ce4b8b710acd15072334d3100f2bbb1cce38714e713dcf2cd777b807f9d1c680",
+    "local/cc10_scene_registry_storage/scene_registry_probe.exe": "9b545409c0ce1a7351b03f17d56c4e5a0eb03ca92d8babb5bd28a25696dbb1ba"
+  },
+  "evidence_archive": {
+    "path": "local\\cc10_scene_registry_storage_evidence.zip",
+    "sha256": "7219d8cbbdab960d3d2b49076f79b13854aa582faa0edb23c8a7fc286cebd6a9",
+    "size": 97970,
+    "files": 57,
+    "note": "Contains report_before_archive_receipt to avoid circular hash; all seven preceding packet archives unchanged."
+  }
+}
