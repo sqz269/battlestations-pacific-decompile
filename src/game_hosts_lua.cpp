@@ -31,6 +31,8 @@
 #include "bsp/ship_ai_settings_block.hpp"
 #include "bsp/game_ship_avoidance_tuning_lua.hpp"
 #include "bsp/gameplay_settings.hpp"
+#include "bsp/mission_camera.hpp"
+#include "bsp/ship_class_fields.hpp"
 #include "bsp/native_lua_objects.hpp"
 #include "bsp/lua_numeric.hpp"
 #include "bsp/vehicle_class_lua_load.hpp"
@@ -1074,6 +1076,79 @@ bool GameMissionLuaHost::read_auto_thrust_0083cc2c(bsp::ShipAiAutoThrustSettings
     ::lua_settop(state_, top);
     if (!complete) return false;
     out = settings;
+    return true;
+}
+
+bool GameMissionLuaHost::read_ship_camera_settings_0083b5e0(bsp::ShipCameraSettings& out) {
+    if (state_ == nullptr) return false;
+    const int top = ::lua_gettop(state_);
+    lua_getfield(state_, LUA_GLOBALSINDEX, kShipGlobalsGlobal);
+    if (lua_type(state_, -1) != LUA_TTABLE) {
+        ::lua_settop(state_, top);
+        return false;
+    }
+    ::lua_getfield(state_, -1, "ShipCamera");
+    if (lua_type(state_, -1) != LUA_TTABLE) {
+        ::lua_settop(state_, top);
+        return false;
+    }
+    const int table = ::lua_gettop(state_);
+    float values[4] = {};
+    static const char* const kKeys[4] = {
+        "ZoomOffset", "LengthMult", "MinCameraAngle", "MaxCameraAngle"};
+    bool complete = true;
+    for (int i = 0; i < 4; ++i) {
+        ::lua_getfield(state_, table, kKeys[i]);
+        if (lua_type(state_, -1) == LUA_TNUMBER) {
+            values[i] = static_cast<float>(::lua_tonumber(state_, -1));
+        } else {
+            complete = false;
+        }
+        ::lua_settop(state_, table);
+    }
+    ::lua_settop(state_, top);
+    if (!complete) return false;
+    out.zoom_offset = values[0];
+    out.length_mult = values[1];
+    out.min_angle_deg = values[2];
+    out.max_angle_deg = values[3];
+    return true;
+}
+
+bool GameMissionLuaHost::read_ship_class_camera_00831e0d(int type_id,
+    bsp::ShipClassCameraInputs& out) {
+    if (state_ == nullptr || type_id < 0) return false;
+    const int top = ::lua_gettop(state_);
+    ::lua_getfield(state_, LUA_GLOBALSINDEX, "VehicleClass");
+    if (::lua_type(state_, -1) != LUA_TTABLE) {
+        ::lua_settop(state_, top);
+        return false;
+    }
+    ::lua_pushinteger(state_, type_id);
+    ::lua_gettable(state_, -2);
+    if (::lua_type(state_, -1) != LUA_TTABLE) {
+        ::lua_settop(state_, top);
+        return false;
+    }
+    const int row = ::lua_gettop(state_);
+    const auto number = [&](const char* key, bool& present, float& value) {
+        ::lua_getfield(state_, row, key);
+        present = ::lua_type(state_, -1) == LUA_TNUMBER;
+        if (present) value = static_cast<float>(::lua_tonumber(state_, -1));
+        ::lua_settop(state_, row);
+    };
+    bsp::ShipClassCameraInputs in = out;
+    number("CaptainCameraHeight", in.has_captain_camera_height, in.captain_camera_height);
+    number("CameraDistanceFront", in.has_distance_front, in.distance_front);
+    number("CameraDistanceSide", in.has_distance_side, in.distance_side);
+    number("CameraDistanceVertical", in.has_distance_vertical, in.distance_vertical);
+    number("CameraMinHeight", in.has_min_height, in.min_height);
+    bool has_length = false;
+    float length = 0.0f;
+    number("Length", has_length, length);
+    in.base_length = has_length ? length : 0.0f;
+    ::lua_settop(state_, top);
+    out = in;
     return true;
 }
 

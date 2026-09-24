@@ -46,6 +46,8 @@ struct lua_State;
 namespace bsp {
 class VfsLocaleRuntime;
 struct ShipAiPathSearchTurnRamp;
+struct ShipCameraSettings;
+struct ShipClassCameraInputs;
 }
 
 namespace bsp::game {
@@ -411,6 +413,18 @@ public:
     // default 00B66330 is handed (00CE54A0). False when `Sounds` or a record
     // table is missing; `out` then keeps what it held.
     bool read_engine_sound_smooth_rates_0083b5e0(float (&out)[4]);
+
+    // Packet cc9_mission_camera. ShipGlobals["ShipCamera"], the four keys the
+    // ShipCaptain camera reads from 00424C40()+450h..+45Ch: ZoomOffset,
+    // LengthMult, MinCameraAngle, MaxCameraAngle. False when the table or a
+    // key is missing; `out` then keeps what it held.
+    bool read_ship_camera_settings_0083b5e0(ShipCameraSettings& out);
+    // VehicleClass[type_id]'s camera keys as 00831840 reads them at
+    // 00831E0D..00831FEC (CaptainCameraHeight, CameraDistanceFront,
+    // CameraDistanceSide, CameraDistanceVertical, CameraMinHeight) and its
+    // Length (class+A0h), each with its presence bit for the fallbacks
+    // ship_class_camera_00831e0d applies. False when the row is missing.
+    bool read_ship_class_camera_00831e0d(int type_id, ShipClassCameraInputs& out);
 
     // Read the recovered0083D492..0083D575 fragment on this actual Lua state.
     // Parent lookup errors return false with text; caller must reject the load.
