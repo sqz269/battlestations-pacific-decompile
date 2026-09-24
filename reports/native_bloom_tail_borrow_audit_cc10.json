@@ -1,0 +1,731 @@
+{
+  "packet": "cc10_bloom_tail_borrow_audit",
+  "base_commit": "ecbcdff0386ed4d55fc22775c9eaff621dd6f931",
+  "status": "read_only_consumer_and_installed_shader_evidence_confirmed_extra_allocation_extent_unproved",
+  "source_changes": false,
+  "lease_scope": "two evidence files only; no native addresses or source files",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "no_ghidra_function": [],
+  "native_calls": [
+    {
+      "address": "00b423d2",
+      "native": "00b17390",
+      "function": "00b42350"
+    },
+    {
+      "address": "00b42437",
+      "native": "00b5b870",
+      "function": "00b42350"
+    },
+    {
+      "address": "00b42442",
+      "native": "00b5b880",
+      "function": "00b42350"
+    },
+    {
+      "address": "00b425c7",
+      "native": "00bf7680",
+      "function": "00b42350"
+    },
+    {
+      "address": "00b42665",
+      "native": "00bf7680",
+      "function": "00b42350"
+    },
+    {
+      "address": "00b18ad8",
+      "native": "00b17e10",
+      "function": "00b18ac0"
+    },
+    {
+      "address": "00bf6826",
+      "native": "00c055b1",
+      "function": "00bf681b"
+    },
+    {
+      "address": "00bf6833",
+      "native": "00bf9f1a",
+      "function": "00bf681b"
+    },
+    {
+      "address": "00bf6856",
+      "native": "00bf6802",
+      "function": "00bf681b"
+    },
+    {
+      "address": "00bf6860",
+      "native": "00bf6ff5",
+      "function": "00bf681b"
+    },
+    {
+      "address": "00bf686a",
+      "native": "00bf63a6",
+      "function": "00bf681b"
+    },
+    {
+      "address": "00bf687f",
+      "native": "00bf6885",
+      "function": "00bf681b"
+    },
+    {
+      "address": "00bf9f3d",
+      "native": "00c05b68",
+      "function": "00bf9f1a"
+    },
+    {
+      "address": "00bf9f44",
+      "native": "00c059a8",
+      "function": "00bf9f1a"
+    },
+    {
+      "address": "00bf9f4e",
+      "native": "00bfba53",
+      "function": "00bf9f1a"
+    },
+    {
+      "address": "00bf9f73",
+      "native": "00bf9e56",
+      "function": "00bf9f1a"
+    },
+    {
+      "address": "00bf9fa6",
+      "native": "00c055b1",
+      "function": "00bf9f1a"
+    },
+    {
+      "address": "00bf9fb2",
+      "native": "00bffb8b",
+      "function": "00bf9f1a"
+    },
+    {
+      "address": "00bf9fb9",
+      "native": "00bffb8b",
+      "function": "00bf9f1a"
+    },
+    {
+      "address": "00bf9fc8",
+      "native": "00c055b1",
+      "function": "00bf9f1a"
+    },
+    {
+      "address": "00bf9fce",
+      "native": "00bffb8b",
+      "function": "00bf9f1a"
+    },
+    {
+      "address": "00c11976",
+      "native": "00bfbab2",
+      "function": "00c11964"
+    },
+    {
+      "address": "00c11985",
+      "native": "00bf65bb",
+      "function": "00c11964"
+    },
+    {
+      "address": "00c11991",
+      "native": "00bfbb61",
+      "function": "00c11964"
+    },
+    {
+      "address": "00c119a0",
+      "native": "00bf65bb",
+      "function": "00c11964"
+    },
+    {
+      "address": "00c119e2",
+      "native": "00c11964",
+      "function": "00c119bf"
+    },
+    {
+      "address": "00c119f6",
+      "native": "00c11cf5",
+      "function": "00c119bf"
+    },
+    {
+      "address": "00b552e2",
+      "native": "00b18ac0",
+      "function": "00b54f90"
+    },
+    {
+      "address": "00b552db",
+      "native": "00b4cba0",
+      "function": "00b54f90"
+    },
+    {
+      "address": "00b10fb8",
+      "native": "00bf681b",
+      "function": "00b107f0"
+    },
+    {
+      "address": "00b11dea",
+      "native": "00bf681b",
+      "function": "00b107f0"
+    }
+  ],
+  "live_PE_blocks": [
+    {
+      "tag": "consumer",
+      "start": "00b423c5",
+      "end_exclusive": "00b42694",
+      "end_inclusive": "00b42693",
+      "last_instruction": "00b4268d",
+      "last_instruction_bytes": 7,
+      "bytes": 719,
+      "sha256": "20583b2c078243bc89aaa86e0c34174758f4d9a48e00678a218e1828f6e232f9",
+      "live_equals_PE": true
+    },
+    {
+      "tag": "wrapper",
+      "start": "00b18ac0",
+      "end_exclusive": "00b18ae0",
+      "end_inclusive": "00b18adf",
+      "last_instruction": "00b18add",
+      "last_instruction_bytes": 3,
+      "bytes": 32,
+      "sha256": "11976fc583a1437582393b5c2aff6f696d8ce3a7f99fef873fd511c9532eba16",
+      "live_equals_PE": true
+    },
+    {
+      "tag": "new",
+      "start": "00bf681b",
+      "end_exclusive": "00bf6884",
+      "end_inclusive": "00bf6883",
+      "last_instruction": "00bf687f",
+      "last_instruction_bytes": 5,
+      "bytes": 105,
+      "sha256": "d5c7a9d6341492cef7ab7c27605308fee31e0cc40f32907febdef6eee917c2b1",
+      "live_equals_PE": true
+    },
+    {
+      "tag": "malloc",
+      "start": "00bf9f1a",
+      "end_exclusive": "00bf9fdd",
+      "end_inclusive": "00bf9fdc",
+      "last_instruction": "00bf9fdc",
+      "last_instruction_bytes": 1,
+      "bytes": 195,
+      "sha256": "89943c6ab4d47d638b1f5fc58698ee7bbe279eb7748d347edd54dd9819596e4f",
+      "live_equals_PE": true
+    },
+    {
+      "tag": "heap_select",
+      "start": "00c11964",
+      "end_exclusive": "00c119bf",
+      "end_inclusive": "00c119be",
+      "last_instruction": "00c119be",
+      "last_instruction_bytes": 1,
+      "bytes": 91,
+      "sha256": "870cf2c5f1b640d1a55dddf1f7672e96119a0e9e8d52a6a383dfc2e9003d9846",
+      "live_equals_PE": true
+    },
+    {
+      "tag": "heap_init",
+      "start": "00c119bf",
+      "end_exclusive": "00c11a19",
+      "end_inclusive": "00c11a18",
+      "last_instruction": "00c11a18",
+      "last_instruction_bytes": 1,
+      "bytes": 90,
+      "sha256": "e0a14655a5940f60065b0cbf483ba2ddcf7c7029d9fbc93b6fc28181d63087a8",
+      "live_equals_PE": true
+    },
+    {
+      "tag": "registration",
+      "start": "00b552cb",
+      "end_exclusive": "00b552e7",
+      "end_inclusive": "00b552e6",
+      "last_instruction": "00b552e2",
+      "last_instruction_bytes": 5,
+      "bytes": 28,
+      "sha256": "d43827974435057b921f9d1c5cd60c931fd07bde81251a9f62d3e4183dfff9a3",
+      "live_equals_PE": true
+    },
+    {
+      "tag": "pointer",
+      "start": "00b550e2",
+      "end_exclusive": "00b550e8",
+      "end_inclusive": "00b550e7",
+      "last_instruction": "00b550e2",
+      "last_instruction_bytes": 6,
+      "bytes": 6,
+      "sha256": "c96454c523df6498c5ebc3124958492987500db0e2abbc0ad373ae33f65ff8a4",
+      "live_equals_PE": true
+    },
+    {
+      "tag": "first_allocation",
+      "start": "00b10fb3",
+      "end_exclusive": "00b10fbd",
+      "end_inclusive": "00b10fbc",
+      "last_instruction": "00b10fb8",
+      "last_instruction_bytes": 5,
+      "bytes": 10,
+      "sha256": "26d400a7e4d226da06faff6d6f00eef34594140d7593bb0a6f09dbb24b421346",
+      "live_equals_PE": true
+    },
+    {
+      "tag": "second_allocation",
+      "start": "00b11de5",
+      "end_exclusive": "00b11def",
+      "end_inclusive": "00b11dee",
+      "last_instruction": "00b11dea",
+      "last_instruction_bytes": 5,
+      "bytes": 10,
+      "sha256": "2487b977c0286c8a49815a44be16e944d1aad3708ce5aeb1116b04fbf3ce10f2",
+      "live_equals_PE": true
+    }
+  ],
+  "conclusion": {
+    "registration": "B552E2 -> B18AC0 -> B17E10/B44D60 stores actual owner+430,count4,matrix0; source not read during registration",
+    "actual_consumer": "B42350 nonmatrix selected VS B425C7 / selected PS B42665 copies count*4 bytes via BF7680, no reflected shape clamp",
+    "installed_selection": "RM_NORMAL0 vertex variants both expose ordinary FLOAT cTextureOffset at register77/count1; pixel absent",
+    "CPU_span": "[owner+430,owner+440), includes fourthDWORD at+43C beyond43Ch request",
+    "GPU_span": "installed add o1.xy,c77,v1 usesxy; does not remove CPU read",
+    "allocator": "native heapmode1 and current source allocation pass43C unchanged; alternate16-rounding not unconditional; actual usable extent not established",
+    "execution": "no bloom registration/draw/consumer/out-of-request read performed by this audit"
+  },
+  "installed_shader": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\shaders.bin",
+    "size": 2250700,
+    "count": 1628,
+    "sha256": "dcc65686e26e0b7b4f4179b45b153aaa353696b0b1b08c32251fbc7c97c0ecf8",
+    "rows": [
+      {
+        "index": 1032,
+        "name": "blur5x50F3.vso",
+        "file_offset": 1293450,
+        "size": 228,
+        "sha256": "3988b9fb1e2f666ab54f538b9d8c9997f5c9d401ab5d94c46891e09752d1faf7",
+        "ctab_header": [
+          28,
+          87,
+          4294836992,
+          1,
+          28,
+          536875776,
+          80
+        ],
+        "constants": [
+          {
+            "name": "cTextureOffset",
+            "register_set": 2,
+            "register_index": 77,
+            "register_count": 1,
+            "type_class": 1,
+            "type": 3,
+            "rows": 1,
+            "columns": 2,
+            "elements": 1,
+            "struct_members": 0
+          }
+        ]
+      },
+      {
+        "index": 1033,
+        "name": "blur5x50F3.pso",
+        "file_offset": 1293700,
+        "size": 1156,
+        "sha256": "0e23592af737429677ca1e8b727750cdaa54013fb2a5ade0032b38e7e8a36f3a",
+        "ctab_header": [
+          28,
+          191,
+          4294902528,
+          3,
+          28,
+          536876288,
+          184
+        ],
+        "constants": [
+          {
+            "name": "SceneTexture",
+            "register_set": 3,
+            "register_index": 0,
+            "register_count": 1,
+            "type_class": 4,
+            "type": 12,
+            "rows": 1,
+            "columns": 1,
+            "elements": 1,
+            "struct_members": 0
+          },
+          {
+            "name": "cSampleOffsets",
+            "register_set": 2,
+            "register_index": 77,
+            "register_count": 12,
+            "type_class": 1,
+            "type": 3,
+            "rows": 1,
+            "columns": 2,
+            "elements": 16,
+            "struct_members": 0
+          },
+          {
+            "name": "cSampleWeights",
+            "register_set": 2,
+            "register_index": 89,
+            "register_count": 12,
+            "type_class": 1,
+            "type": 3,
+            "rows": 1,
+            "columns": 4,
+            "elements": 16,
+            "struct_members": 0
+          }
+        ]
+      },
+      {
+        "index": 1034,
+        "name": "blur5x50T3.vso",
+        "file_offset": 1294878,
+        "size": 228,
+        "sha256": "3988b9fb1e2f666ab54f538b9d8c9997f5c9d401ab5d94c46891e09752d1faf7",
+        "ctab_header": [
+          28,
+          87,
+          4294836992,
+          1,
+          28,
+          536875776,
+          80
+        ],
+        "constants": [
+          {
+            "name": "cTextureOffset",
+            "register_set": 2,
+            "register_index": 77,
+            "register_count": 1,
+            "type_class": 1,
+            "type": 3,
+            "rows": 1,
+            "columns": 2,
+            "elements": 1,
+            "struct_members": 0
+          }
+        ]
+      },
+      {
+        "index": 1035,
+        "name": "blur5x50T3.pso",
+        "file_offset": 1295128,
+        "size": 1156,
+        "sha256": "0e23592af737429677ca1e8b727750cdaa54013fb2a5ade0032b38e7e8a36f3a",
+        "ctab_header": [
+          28,
+          191,
+          4294902528,
+          3,
+          28,
+          536876288,
+          184
+        ],
+        "constants": [
+          {
+            "name": "SceneTexture",
+            "register_set": 3,
+            "register_index": 0,
+            "register_count": 1,
+            "type_class": 4,
+            "type": 12,
+            "rows": 1,
+            "columns": 1,
+            "elements": 1,
+            "struct_members": 0
+          },
+          {
+            "name": "cSampleOffsets",
+            "register_set": 2,
+            "register_index": 77,
+            "register_count": 12,
+            "type_class": 1,
+            "type": 3,
+            "rows": 1,
+            "columns": 2,
+            "elements": 16,
+            "struct_members": 0
+          },
+          {
+            "name": "cSampleWeights",
+            "register_set": 2,
+            "register_index": 89,
+            "register_count": 12,
+            "type_class": 1,
+            "type": 3,
+            "rows": 1,
+            "columns": 4,
+            "elements": 16,
+            "struct_members": 0
+          }
+        ]
+      }
+    ]
+  },
+  "independent_metadata_query": {
+    "metadata_only": true,
+    "python_pointer_bits": 64,
+    "dll": "C:\\Windows\\System32\\d3dx9_40.dll",
+    "dll_sha256": "8a9ea8bc06786d342af4e7d171abbe6640cf31d9d01afb86dbf63f26302077db",
+    "rows": [
+      {
+        "name": "bloom_tail_borrow_blur5x50F3.pso",
+        "constants": [
+          {
+            "name": "SceneTexture",
+            "RegisterSet": 3,
+            "RegisterIndex": 0,
+            "RegisterCount": 1,
+            "Class": 4,
+            "Type": 12,
+            "Rows": 1,
+            "Columns": 1,
+            "Elements": 1,
+            "Bytes": 4
+          },
+          {
+            "name": "cSampleOffsets",
+            "RegisterSet": 2,
+            "RegisterIndex": 77,
+            "RegisterCount": 12,
+            "Class": 1,
+            "Type": 3,
+            "Rows": 1,
+            "Columns": 2,
+            "Elements": 16,
+            "Bytes": 128
+          },
+          {
+            "name": "cSampleWeights",
+            "RegisterSet": 2,
+            "RegisterIndex": 89,
+            "RegisterCount": 12,
+            "Class": 1,
+            "Type": 3,
+            "Rows": 1,
+            "Columns": 4,
+            "Elements": 16,
+            "Bytes": 256
+          }
+        ]
+      },
+      {
+        "name": "bloom_tail_borrow_blur5x50F3.vso",
+        "constants": [
+          {
+            "name": "cTextureOffset",
+            "RegisterSet": 2,
+            "RegisterIndex": 77,
+            "RegisterCount": 1,
+            "Class": 1,
+            "Type": 3,
+            "Rows": 1,
+            "Columns": 2,
+            "Elements": 1,
+            "Bytes": 8
+          }
+        ]
+      },
+      {
+        "name": "bloom_tail_borrow_blur5x50T3.pso",
+        "constants": [
+          {
+            "name": "SceneTexture",
+            "RegisterSet": 3,
+            "RegisterIndex": 0,
+            "RegisterCount": 1,
+            "Class": 4,
+            "Type": 12,
+            "Rows": 1,
+            "Columns": 1,
+            "Elements": 1,
+            "Bytes": 4
+          },
+          {
+            "name": "cSampleOffsets",
+            "RegisterSet": 2,
+            "RegisterIndex": 77,
+            "RegisterCount": 12,
+            "Class": 1,
+            "Type": 3,
+            "Rows": 1,
+            "Columns": 2,
+            "Elements": 16,
+            "Bytes": 128
+          },
+          {
+            "name": "cSampleWeights",
+            "RegisterSet": 2,
+            "RegisterIndex": 89,
+            "RegisterCount": 12,
+            "Class": 1,
+            "Type": 3,
+            "Rows": 1,
+            "Columns": 4,
+            "Elements": 16,
+            "Bytes": 256
+          }
+        ]
+      },
+      {
+        "name": "bloom_tail_borrow_blur5x50T3.vso",
+        "constants": [
+          {
+            "name": "cTextureOffset",
+            "RegisterSet": 2,
+            "RegisterIndex": 77,
+            "RegisterCount": 1,
+            "Class": 1,
+            "Type": 3,
+            "Rows": 1,
+            "Columns": 2,
+            "Elements": 1,
+            "Bytes": 8
+          }
+        ]
+      }
+    ]
+  },
+  "actual_provider_chain": [
+    "src/native_bloom_initializer.cpp: actual child/material reload and register count4 matrix0",
+    "src/native_material_parameters.cpp: actual B17E10/B44D60 name lookup and borrowed record",
+    "src/native_compiled_shader_reflection.cpp: real D3DX ordinary FLOAT reflection when no system match",
+    "src/shader_system_registry.inc: recovered52 names, cTextureOffset absent",
+    "src/native_material_constant_build.cpp: actual full B42350 selected nonmatrix copies"
+  ],
+  "allocator": {
+    "original_new": "BF681B -> BF9F1A requested size unchanged",
+    "original_malloc": "mode109ED7C==1 calls HeapAlloc(heap109E1BC,0,max(size,1)); alternate fallback rounds(size+15)&~15",
+    "original_heap_select": "C11964 returns1 for platform2 with major>4; C119BF publishes atC119EA, only observed write xref",
+    "source": "singleton_lifetime_allocate uses std::malloc(host_bytes); both bloom allocations use43C/43C",
+    "SDK_source": "selected10.0.26100.0 malloc_base uses HeapAlloc actual_size; msize uses HeapSize; no bloom usable-size query",
+    "remaining": "no exact native/source allocation reported usable extent; no padding or enlarged object admitted"
+  },
+  "next_step": {
+    "smallest_independent_context": "retain actual application runtime texture/target/getter/holder contexts and bind the existing optional direct terminal domain",
+    "existing": "DestructionGraph actualtexture/surface/pools/renderer/sync; DeviceGraph recreation; CameraGraph actualdecrement",
+    "missing": [
+      "canonical cumulative accounting cells108D4BC/108D4C0 accessors",
+      "retained actual increment import binding for surface getter",
+      "address-stable construction/factory/getter/holder contexts and acquisition lifetime API"
+    ],
+    "scalar_evidence": [
+      {
+        "address": "0108d4bc",
+        "section": ".data",
+        "raw_backed": false,
+        "section_rva": "00a08000",
+        "raw_size": 65536,
+        "virtual_size": 2719452,
+        "zero_filled_by_PE_loader": true
+      },
+      {
+        "address": "0108d4c0",
+        "section": ".data",
+        "raw_backed": false,
+        "section_rva": "00a08000",
+        "raw_size": 65536,
+        "virtual_size": 2719452,
+        "zero_filled_by_PE_loader": true
+      }
+    ],
+    "larger_composition": "post20 full construction still needs retained actual material-effect cache/compiler and borrowed contexts/operation blocks; do not introduce those as dummy callbacks",
+    "alternative": "bounded native-mode1/source-Win32 allocator size query for unchanged43C requests, with no padding read; use only proven usable extent"
+  },
+  "checks": {
+    "live_PE": {
+      "passed": true,
+      "blocks": 10
+    },
+    "report_calls": {
+      "passed": true,
+      "checked": 31,
+      "failed": 0
+    },
+    "metadata_only": true,
+    "original_shader_CPU_consumer_executed": false,
+    "new_Cplusplus_probe": false,
+    "tracked_tests_added": 0,
+    "build": "not rerun: evidence-only packet, no C++ or build graph change"
+  },
+  "limits": [
+    "No allocator usable tail established",
+    "Metadata reflection used64-bit installedDLL, not original32-bit invocation; R100 is separately cited prior actualsource reflection evidence",
+    "No whole initializer/application/GPU/game/FH3/SEH/ABI claim",
+    "No shrink count/enlarge allocation/zero padding/derived preimage",
+    "Distortion cleanup preimages remain unresolved; unrelated normal provider work can advance"
+  ],
+  "hashes": {
+    "include/bsp/native_bloom_initializer.hpp": "d529803da55f15b3c4b258e2359acc1559be186bb6587cc2d1be866231f4f013",
+    "docs/NATIVE_BLOOM_INITIALIZER_R79.md": "364f22620d811e65ea834c59a35807741494b166b270dc07502ea7e31c8a57f9",
+    "src/native_bloom_initializer.cpp": "6b4ddf0169480fed8e17903242aa821dbd06fe55e2304311b8c5e98855fdaaf5",
+    "src/native_material_parameters.cpp": "b77dbb8ed134ae8d1f46f5eb331fc50b349ba6c80a2f21e38a95d6107bdf9f7b",
+    "src/native_material_constant_build.cpp": "f9eafa5e2cbcfd712262d2f3611cae11a5d8193ca6bce1f600639fb687fe491c",
+    "src/native_compiled_shader_reflection.cpp": "d31e54a05e4994e17b1e6c36d2eed6e5f36c6bd5663fcf0bafa972350c7c8944",
+    "src/native_system_constant_registry.cpp": "0584d7f716177f0c76a9ac8f0678074c0e2375a2ee3d1ba01b469219ab25de11",
+    "src/shader_system_registry.inc": "84b5c00d64b789455c0d964ca073fa255ded5c7205b11661d7b5894abcba2b0b",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+    "src/native_render_resource_init_continuation.cpp": "1425549edb33d4782640ab8213bcb716b59d0d1fc2c8583b8e1a31ad1ebc4d3a",
+    "src/native_render_resource_init_second_bloom.cpp": "8ec94f469d2679f4237d371a596ee3226e764ec922c8822f62373ad23cc106bf",
+    "include/bsp/game_native_renderer_scalars.hpp": "88025af462e56caa18f62c1f83e4e0c5a24efdc74025faeca2375cab9448083d",
+    "src/game_native_renderer_lifetime.inc": "52c78a5e8ae42a0e5934549487475752ad4714af76c95123c638681c86ec9507",
+    "src/game_native_renderer_device.inc": "46c1997ca951e55afe7f9400820552a11ef5f6e0100ddb5810d0a695a58507db",
+    "src/game_native_renderer_camera.inc": "77781cd84f49383f516f5f242f08a731392459a822f87ea84499960338b3e2c2",
+    "src/game_native_renderer_resources.inc": "f790721d2622f0dcbcebefc071e6950b0013eee06fa56735a243fadeaf75a236",
+    "docs/NATIVE_BLOOM_TAIL_BORROW_AUDIT_CC10.md": "45428ce9c45859e970e6f7ac94f2d90f7e83030572b65fc4be5c327c58dfa68e",
+    "local/bloom_tail_borrow_allocator_proto.txt": "768fad301665f3f376a8db98566ba54c3546dc64c03bd305514ce1971ec1a4aa",
+    "local/bloom_tail_borrow_blur5x5.shfx": "3d144eb8a73ade1b363f5e6ba9ad6460e877e13e1c41d2b199af3f5ad1114a3b",
+    "local/bloom_tail_borrow_blur5x50F3.pso": "0e23592af737429677ca1e8b727750cdaa54013fb2a5ade0032b38e7e8a36f3a",
+    "local/bloom_tail_borrow_blur5x50F3.pso.asm": "f53f70d201753c307ea01869cb2ba7d8ce933ab5a71b74f1708bea56726bd669",
+    "local/bloom_tail_borrow_blur5x50F3.vso": "3988b9fb1e2f666ab54f538b9d8c9997f5c9d401ab5d94c46891e09752d1faf7",
+    "local/bloom_tail_borrow_blur5x50F3.vso.asm": "7851726babed65abe1cb148cf7416dd1b8fab775eec9a0a420f054a874f6d5a2",
+    "local/bloom_tail_borrow_blur5x50T3.pso": "0e23592af737429677ca1e8b727750cdaa54013fb2a5ade0032b38e7e8a36f3a",
+    "local/bloom_tail_borrow_blur5x50T3.pso.asm": "f53f70d201753c307ea01869cb2ba7d8ce933ab5a71b74f1708bea56726bd669",
+    "local/bloom_tail_borrow_blur5x50T3.vso": "3988b9fb1e2f666ab54f538b9d8c9997f5c9d401ab5d94c46891e09752d1faf7",
+    "local/bloom_tail_borrow_blur5x50T3.vso.asm": "7851726babed65abe1cb148cf7416dd1b8fab775eec9a0a420f054a874f6d5a2",
+    "local/bloom_tail_borrow_boundaries.json": "96b5eeb3e925fafb2b6268ebfcd3cfbdca1a0309de0e4b8b5d555bf510230593",
+    "local/bloom_tail_borrow_boundaries_query.txt": "31c20c09dc465acf79a3eab074358db2276e08b57c69e66f2fedca49b7edc27b",
+    "local/bloom_tail_borrow_consumer.json": "d3d0836b88e4f1cbd0bbf3a890b2342c8aa36559ccc59d551ee1dc17e853e970",
+    "local/bloom_tail_borrow_consumer_bytes.txt": "c185b710c13372a9cd58a6d66bb29e58da638aad889d1d4fd2b531d134c76a14",
+    "local/bloom_tail_borrow_consumer_query.txt": "1e1d6553ee92b0bfac92e31777258f9d3c0e56ab272fe9039e4b099c0d201de3",
+    "local/bloom_tail_borrow_d3dx_reflection.json": "35451d83eebca5438270e9f5b49980bf51ff9672f8c6afad409a7376c7813534",
+    "local/bloom_tail_borrow_dx9_lua.inc": "7766adc9c116a9e396b3dd77e9d97b3ea6d55c84601cb2a5a49a64362605b11f",
+    "local/bloom_tail_borrow_evidence.py": "a53199609cb4b31e812968b1174f6ab663a170342db49204ab960d4f4ade7470",
+    "local/bloom_tail_borrow_first_allocation_bytes.txt": "798ca0b57569332f573cb7a232cc3c03ef6c8aae8c6bb522e5daf837ac51303b",
+    "local/bloom_tail_borrow_heap_init_bytes.txt": "d52ac2f633bcc08f48883a7bbd5e6cb7a24ea0e822bcb5e85ec70bc6b47faabc",
+    "local/bloom_tail_borrow_heap_mode_xrefs.txt": "f768340a50819c1b6086af3d10d57e0c98bf3d93b9228d6e542db176c725dc49",
+    "local/bloom_tail_borrow_heap_select_bytes.txt": "c8a3b043c58518c30293e1c305c06bc7de6f1b5a236ed2e52c3e4957bbc22bbc",
+    "local/bloom_tail_borrow_last_instructions.json": "a898e79649045245fc5b6a848b56f9f790924a3e4c3eb5df6e3fce92d9d99d7e",
+    "local/bloom_tail_borrow_last_instructions_query.txt": "b9298d8fceda872ec51edec97101ad3e2fca4d5a0a17aea901dc3fecdf2db9f8",
+    "local/bloom_tail_borrow_listing.txt": "c4437f5d00fe5c05bac6a91ec444193ec816b5d4d2a9d1426549784c70d14ade",
+    "local/bloom_tail_borrow_malloc_bytes.txt": "e3fcf45a80b05c002e69318f8f96d4e241a7dcf8844637993339e95801bfeb8b",
+    "local/bloom_tail_borrow_malloc_listing.txt": "22cf7747bc62d0ebd6c0aa0b0a71f2d77cfbe1475586549ccb9a5c831bf62ce0",
+    "local/bloom_tail_borrow_native_report.json": "af09b329fc32d92171ecdb04de913eb7b546e8c7a53b5fa975ad5346c154ec31",
+    "local/bloom_tail_borrow_new_bytes.txt": "bab7d372a9710c85622c87209be8c0af9b01d9d643be310651800c326c2d4693",
+    "local/bloom_tail_borrow_pixel_consumer.json": "3d63968e7588d7b5d239bbcda0c61367105a66f19cd26e8db3cb8d7cae4afabe",
+    "local/bloom_tail_borrow_pixel_consumer_query.txt": "c65c7e64d2cba78970298cfb46c7564d33844c98bf6a7d5871210dcf9cfb9eb4",
+    "local/bloom_tail_borrow_pointer_bytes.txt": "132e8c1a260cd8a423b9b2ae95a889eafe2383220bb18e9b8de8724266e09df3",
+    "local/bloom_tail_borrow_reflect.py": "0425d976b549490b1a3c55106919906135015f286482b6536baf22b3816c8b76",
+    "local/bloom_tail_borrow_registration.json": "dd902604cdedb1a578744f6c0d6640c107379792073de467f90847d14208dc44",
+    "local/bloom_tail_borrow_registration_bytes.txt": "c9850fc97523fffa1a4c4068f55bae791779032e3ebbbc89e372b8e3f7d24331",
+    "local/bloom_tail_borrow_registration_context.json": "709516729aa0c5e075e783312bcee56de4928ae58e061ff01dd4049b9336467c",
+    "local/bloom_tail_borrow_registration_context_query.txt": "29222e2be667ebdfb10660a477c053fb2975442beae124f885dad1a5bf3e323d",
+    "local/bloom_tail_borrow_registration_listing.txt": "3a27df94cab010ec8ae74c2f5f89189dd01d9c8ad7c8597ad92b07f970b61a22",
+    "local/bloom_tail_borrow_registration_query.txt": "71bcb05bdc76f6321ef9b2170bc530fdb2651b3c4cec10a4ef5af50e5def25c8",
+    "local/bloom_tail_borrow_report.py": "5a21c3b368f7b49802f55ccddfb339738fdd43525cdbd8893ccaa8dd7160e5b9",
+    "local/bloom_tail_borrow_second_allocation_bytes.txt": "458af23ff94075d018ef6ac315612b9391f96859578a144ea4ba4ffebf6b29d8",
+    "local/bloom_tail_borrow_shaders.json": "915d49c5c36a2c673190184295930a6b47b94ac61157d8ca55b9e130b30783fd",
+    "local/bloom_tail_borrow_surface_accounting_xrefs.txt": "8ef476f533b70a4179e8595e3496ee6b8d919e4ced6d2b7ff37ce3de98218a9b",
+    "local/bloom_tail_borrow_texture_accounting_xrefs.txt": "5ce42a3f966341d693c9d3ad53b98be7b6c26af630029f6e5c0caf8c3c4f154b",
+    "local/bloom_tail_borrow_wrapper_bytes.txt": "05d0ea22b7cf51d746bda004eeff746876a71854b5fb86476f3a1e95017512a9",
+    "local/bloom_tail_borrow_calls.txt": "94235852b78f304ea30e25c719ca5adb4c31cc322f8628f55755e411027a5c8b"
+  },
+  "external_hashes": {
+    "I:/SteamLibrary/steamapps/common/Battlestations Pacific/shaderfx/shaders.bin": "dcc65686e26e0b7b4f4179b45b153aaa353696b0b1b08c32251fbc7c97c0ecf8",
+    "I:/SteamLibrary/steamapps/common/Battlestations Pacific/shaderfx/postprocess/blur5x5.shfx": "3d144eb8a73ade1b363f5e6ba9ad6460e877e13e1c41d2b199af3f5ad1114a3b",
+    "I:/SteamLibrary/steamapps/common/Battlestations Pacific/shaderfx/dx9_lua.inc": "7766adc9c116a9e396b3dd77e9d97b3ea6d55c84601cb2a5a49a64362605b11f",
+    "C:/Windows/System32/d3dx9_40.dll": "8a9ea8bc06786d342af4e7d171abbe6640cf31d9d01afb86dbf63f26302077db",
+    "C:/Program Files (x86)/Windows Kits/10/Source/10.0.26100.0/ucrt/heap/malloc_base.cpp": "5e8799cca0bf2bb47e14f77f11fc1275db51d27c34c013ff1d929e2f1793d62b",
+    "C:/Program Files (x86)/Windows Kits/10/Source/10.0.26100.0/ucrt/heap/msize.cpp": "a5b659be4948364b5bbd825f96f8390487f90ce2463102610efca1966333796b"
+  }
+}
