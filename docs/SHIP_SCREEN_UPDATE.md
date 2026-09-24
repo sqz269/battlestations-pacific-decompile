@@ -605,3 +605,21 @@ then on, USN04 4500 as before. The controlled unit is the Lexington, a ship.
 - The unimplemented total rises by 9,158.
 - Every gameplay line is identical. The sprite `quads` may fall if the host drew first_Group,
   which the update now hides each frame. The alpha writes change no count.
+
+**The pair.** `local\p6_off_usn04.log` against `local\p6_on_usn04.log`, one tree, back buffer
+2560x1440.
+
+| row | OFF | ON |
+| --- | ---: | ---: |
+| unimplemented total | 2,239,419 | 2,248,577 (+9,158; predicted +9,158) |
+| FrontEndScreen::update | 54,961 | 45,803 |
+| HudWarningScreen::update | none | 9,158 done |
+| contact_latch_1011, world_edge | none | 9,158 each |
+
+- **Rows not added:** no plane, submarine, sound or `show_alert` row.
+- **Summary lines.** 156 of 157 are identical, and every gameplay line is among them. The sprite
+  `quads` did not move.
+- **The miss.** The text bridge line's `widgets` goes from 9,339 to 9,338. warning_text sits under
+  first_Group, which the update now hides each frame as the image does, so the host no longer draws
+  it as authored. I had not predicted a text line would move.
+- **Result.** Every row prediction holds. **`kHudWarningScreenBound` flips ON.**

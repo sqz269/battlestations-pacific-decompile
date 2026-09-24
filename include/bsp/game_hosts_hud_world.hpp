@@ -111,7 +111,7 @@ inline constexpr bool kHudBaseUpdateScreensBound = true;
 // water, exit zone) through bsp::warning_screen_update_00683020 in place of
 // the FrontEndScreen::update record. The alert inputs the host lacks are
 // records that answer "no alert". OFF keeps the record.
-inline constexpr bool kHudWarningScreenBound = false;
+inline constexpr bool kHudWarningScreenBound = true;
 
 inline constexpr bool kHudShipScreenGaugesBound = true;
 
