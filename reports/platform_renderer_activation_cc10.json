@@ -1,0 +1,431 @@
+{
+  "packet": "cc10_render_focus",
+  "status": "bounded_provider_build_and_original_source_fixture_passed_production_leaves_required",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "source_files": [
+    "include/bsp/platform_renderer_activation.hpp",
+    "src/platform_renderer_activation.cpp"
+  ],
+  "routines": [
+    {
+      "address": "00b24fb0",
+      "name": "refresh_native_renderer_activation_00b24fb0",
+      "coverage": "complete_control_for_known_current_slot_120_b24dd0",
+      "original_abi": "ECX renderer; RET0 or tail B21F70; preserves ESI",
+      "end_exclusive": "00b24fe1",
+      "size": 49,
+      "sha256": "9c76c5279b1c8f56e636ac90e813abcc241ce0fbdaba5fab88b11890f12c2364",
+      "live_equals_disk": true
+    },
+    {
+      "address": "00b22030",
+      "name": "refresh_native_effect_registry_dates_00b22030",
+      "coverage": "complete_scan_required_reload_leaf",
+      "original_abi": "ECX registry; RET0; preserves EBX EBP ESI EDI",
+      "end_exclusive": "00b220ce",
+      "size": 158,
+      "sha256": "af9a14cac8476cf14d8b3e505cd68bdb3ee89c526991c4627a8e0e8799696868",
+      "live_equals_disk": true
+    },
+    {
+      "address": "00b21f70",
+      "name": "refresh_native_texture_registry_dates_00b21f70",
+      "coverage": "complete_scan_required_reload_leaf",
+      "original_abi": "ECX registry; RET0; preserves EBX EBP ESI EDI",
+      "end_exclusive": "00b2200e",
+      "size": 158,
+      "sha256": "2b32f7da93910e8b2ab43693f6c5f7c9be271f55554b720f60ea7332c8a78fd9",
+      "live_equals_disk": true
+    },
+    {
+      "address": "00b24dd0",
+      "name": "refresh_native_renderer_material_textures_00b24dd0",
+      "coverage": "complete_scan_required_b19000_leaf",
+      "original_abi": "ECX renderer; RET0; preserves ESI EDI",
+      "end_exclusive": "00b24e11",
+      "size": 65,
+      "sha256": "546c5e92b87cea6a70b1ecf786b9a6f721a51ae8e4e043eef7ee854cb622152b",
+      "live_equals_disk": true
+    },
+    {
+      "address": "00b0d1e0",
+      "name": "refresh_native_render_service_focus_00b0d1e0",
+      "coverage": "complete_normal",
+      "original_abi": "ECX service; RET0 or tail B4ECC0; preserves ESI",
+      "end_exclusive": "00b0d210",
+      "size": 48,
+      "sha256": "3b93641761ec0e851377b790d142f46fc3dbeb28576e797885c7aec46a86bdc8",
+      "live_equals_disk": true
+    },
+    {
+      "address": "00b50010",
+      "name": "mark_native_render_batch_dirty_00b50010",
+      "coverage": "complete",
+      "original_abi": "ECX batch; RET0",
+      "end_exclusive": "00b50018",
+      "size": 8,
+      "sha256": "71bd6562ec5b219e4c097bab7df1b35cf52d770a9290438a2dcb18846dfc94ea",
+      "live_equals_disk": true
+    },
+    {
+      "address": "00b4ecc0",
+      "name": "invalidate_native_render_root_chain_00b4ecc0",
+      "coverage": "complete_normal_fixed_null_root_call",
+      "original_abi": "ECX owner; RET0; preserves ESI",
+      "end_exclusive": "00b4ecf2",
+      "size": 50,
+      "sha256": "ccab0fdf1384d2ca86cf870ceedf38afdab0022cafb9024780bc94b6862c1634",
+      "live_equals_disk": true
+    },
+    {
+      "address": "00b72220",
+      "name": "unlink_native_raw_root_node_00b72220",
+      "coverage": "complete_raw_domain",
+      "original_abi": "ECX root; stack node; RET4; preserves ESI",
+      "end_exclusive": "00b7224c",
+      "size": 44,
+      "sha256": "274ef579eddfc51bc5ebf2c90d6ca314c7e733d2e15e3314421ea272817db91f",
+      "live_equals_disk": true
+    },
+    {
+      "address": "00b6d890",
+      "name": "clear_native_raw_node_root_00b6d890_null",
+      "coverage": "partial_requested_root_null_only",
+      "original_abi": "ECX node; stack root=0; RET4; preserves EBX ESI on covered path",
+      "end_exclusive": "00b6d934",
+      "size": 164,
+      "sha256": "516179fbacd42b170c285388abc621ee25354af3d078620ac960fdee21c6aa05",
+      "live_equals_disk": true,
+      "included_ranges": [
+        "00b6d890..00b6d8c6",
+        "00b6d916..00b6d934"
+      ],
+      "excluded_range": "00b6d8c6..00b6d916",
+      "range_convention": "end-exclusive",
+      "other_existing_provider": "propagate_native_node_root_00b6d890 in src/native_node_destruction.cpp uses typed host views; not replaced"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00bed4b9",
+      "native": "00b24fb0",
+      "function": "00bed3b0",
+      "meaning": "WM_ACTIVATE renderer refresh; existing message provider owns scheduling"
+    },
+    {
+      "address": "00bed4ee",
+      "native": "00b0d1e0",
+      "function": "00bed3b0",
+      "meaning": "Current nonnull service after focus and fullscreen check"
+    },
+    {
+      "address": "00b24fc2",
+      "native": "00b22030",
+      "function": "00b24fb0",
+      "meaning": "Captured renderer+1A98 effects scan"
+    },
+    {
+      "address": "00b24fd1",
+      "native": "00b24dd0",
+      "function": "00b24fb0",
+      "meaning": "CURRENT receiver table+120; known table D5F0A8",
+      "indirect_evidence": "D5F1C8 bytes d0 4d b2 00; unknown source target explicitly rejected"
+    },
+    {
+      "address": "00b24fda",
+      "native": "00b21f70",
+      "function": "00b24fb0",
+      "meaning": "Captured renderer+1A74 textures scan",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00b2205d",
+      "native": "00bdd340",
+      "function": "00b22030",
+      "meaning": "CURRENT manager, output five words, actual row name header; callee RET8"
+    },
+    {
+      "address": "00b21f9d",
+      "native": "00bdd340",
+      "function": "00b21f70",
+      "meaning": "CURRENT manager, output five words, actual row name header; callee RET8"
+    },
+    {
+      "address": "00b220b8",
+      "native": "00b469a0",
+      "function": "00b22030",
+      "meaning": "CURRENT row resource/table+8; required actual leaf",
+      "indirect_evidence": "Effect table D61A00+8 bytes a0 69 b4 00; generic source dispatch receives actual current target"
+    },
+    {
+      "address": "00b21ff8",
+      "native": "00b3fa90",
+      "function": "00b21f70",
+      "meaning": "CURRENT row resource/table+8; required actual leaf",
+      "indirect_evidence": "Texture table D61948+8 bytes 90 fa b3 00; generic source dispatch receives actual current target"
+    },
+    {
+      "address": "00b24df3",
+      "native": "00b19000",
+      "function": "00b24dd0",
+      "meaning": "Current row material; required actual leaf"
+    },
+    {
+      "address": "00b0d1f3",
+      "native": "00b50010",
+      "function": "00b0d1e0",
+      "meaning": "Nonzero gate, captured nonnull +20"
+    },
+    {
+      "address": "00b0d209",
+      "native": "00b4ecc0",
+      "function": "00b0d1e0",
+      "meaning": "Rechecked gate, current nonnull +30",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00b4ecdb",
+      "native": "00b6d890",
+      "function": "00b4ecc0",
+      "meaning": "Current root head; explicitly stacked zero root"
+    },
+    {
+      "address": "00b6d8b7",
+      "native": "00b72220",
+      "function": "00b6d890",
+      "meaning": "Captured old root, actual node; only when no parent"
+    },
+    {
+      "address": "00b6d923",
+      "native": "00b6d890",
+      "function": "00b6d890",
+      "meaning": "Child recursion with same requested null root"
+    },
+    {
+      "address": "00b10832",
+      "native": "00b50010",
+      "function": "00b107f0",
+      "meaning": "Bounded existing service child use only; not producer coverage"
+    },
+    {
+      "address": "00b12ff6",
+      "native": "00b50010",
+      "function": "00b107f0",
+      "meaning": "Bounded existing service child use only; not producer coverage"
+    },
+    {
+      "address": "00b1300b",
+      "native": "00b4ecc0",
+      "function": "00b107f0",
+      "meaning": "Bounded existing service child use only; not producer coverage"
+    },
+    {
+      "address": "00b6dff0",
+      "native": "00b72220",
+      "function": "00b6dfa0",
+      "meaning": "Other existing raw unlink caller; no additional caller coverage"
+    },
+    {
+      "address": "00b6f4a6",
+      "native": "00b72220",
+      "function": "00b6f440",
+      "meaning": "Other existing raw unlink caller; no additional caller coverage"
+    }
+  ],
+  "native_evidence": {
+    "pe_path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "bodies": [
+      {
+        "start": "00b24fb0",
+        "end_exclusive": "00b24fe1",
+        "size": 49,
+        "sha256": "9c76c5279b1c8f56e636ac90e813abcc241ce0fbdaba5fab88b11890f12c2364",
+        "live_equals_disk": true
+      },
+      {
+        "start": "00b22030",
+        "end_exclusive": "00b220ce",
+        "size": 158,
+        "sha256": "af9a14cac8476cf14d8b3e505cd68bdb3ee89c526991c4627a8e0e8799696868",
+        "live_equals_disk": true
+      },
+      {
+        "start": "00b21f70",
+        "end_exclusive": "00b2200e",
+        "size": 158,
+        "sha256": "2b32f7da93910e8b2ab43693f6c5f7c9be271f55554b720f60ea7332c8a78fd9",
+        "live_equals_disk": true
+      },
+      {
+        "start": "00b24dd0",
+        "end_exclusive": "00b24e11",
+        "size": 65,
+        "sha256": "546c5e92b87cea6a70b1ecf786b9a6f721a51ae8e4e043eef7ee854cb622152b",
+        "live_equals_disk": true
+      },
+      {
+        "start": "00b0d1e0",
+        "end_exclusive": "00b0d210",
+        "size": 48,
+        "sha256": "3b93641761ec0e851377b790d142f46fc3dbeb28576e797885c7aec46a86bdc8",
+        "live_equals_disk": true
+      },
+      {
+        "start": "00b50010",
+        "end_exclusive": "00b50018",
+        "size": 8,
+        "sha256": "71bd6562ec5b219e4c097bab7df1b35cf52d770a9290438a2dcb18846dfc94ea",
+        "live_equals_disk": true
+      },
+      {
+        "start": "00b4ecc0",
+        "end_exclusive": "00b4ecf2",
+        "size": 50,
+        "sha256": "ccab0fdf1384d2ca86cf870ceedf38afdab0022cafb9024780bc94b6862c1634",
+        "live_equals_disk": true
+      },
+      {
+        "start": "00b72220",
+        "end_exclusive": "00b7224c",
+        "size": 44,
+        "sha256": "274ef579eddfc51bc5ebf2c90d6ca314c7e733d2e15e3314421ea272817db91f",
+        "live_equals_disk": true
+      },
+      {
+        "start": "00b6d890",
+        "end_exclusive": "00b6d934",
+        "size": 164,
+        "sha256": "516179fbacd42b170c285388abc621ee25354af3d078620ac960fdee21c6aa05",
+        "live_equals_disk": true
+      }
+    ]
+  },
+  "callsite_scope": {
+    "00b24fb0": [
+      "00bed4b9"
+    ],
+    "00b22030": [
+      "00b24fc2"
+    ],
+    "00b21f70": [
+      "00b24fda"
+    ],
+    "00b24dd0": [
+      "data at00d5f1c8"
+    ],
+    "00b0d1e0": [
+      "00bed4ee"
+    ],
+    "00b50010": [
+      "00b0d1f3",
+      "00b10832",
+      "00b12ff6"
+    ],
+    "00b4ecc0": [
+      "00b0d209",
+      "00b1300b"
+    ],
+    "00b72220": [
+      "00b6d8b7",
+      "00b6dff0",
+      "00b6f4a6"
+    ],
+    "00b6d890": "General callers not generalized; source projection only fixed null argument at B4ECDB and its recursive closure"
+  },
+  "canonical_binding": {
+    "renderer": "Captured actual GameNativeRendererApplication publication00F8D394 receiver, preserved across callbacks",
+    "modes": "game_native_shader_process().modes(), same reload_resources_0108d4bb cell",
+    "vfs": "actual volatile publication0109CEEC ref plus same NativeVfsDateRouteContext and NativeStringRawPoolContext; real BDD340 adapter implemented",
+    "service": "RenderResourcesGraph.base.actual_service_00f8d39c; no cast from RenderNodeRootList host view",
+    "resource_reload": "Required actual current virtual+8 dispatch; D61A00 -> B469A0; D61948 -> B3FA90",
+    "material_refresh": "Required actual B19000 on current resource; canonical texture cache and retained owners"
+  },
+  "remaining_dependencies": [
+    {
+      "entry": "00b469a0",
+      "end_exclusive": "00b46a6f",
+      "bytes": 207,
+      "status": "historical769bdc3e3 source inspected; requires missing actual_descriptor plus 3-argument release-owned-members API; independent primary-assigned worker adapting"
+    },
+    {
+      "entry": "00b19000",
+      "end_exclusive": "00b191ce",
+      "bytes": 462,
+      "status": "required current texture-cache and retained-owner material refresh, outside packet"
+    },
+    {
+      "entry": "00b3fa90",
+      "end_exclusive": "00b3fd7b",
+      "bytes": 747,
+      "status": "required real texture VFS/device recreation, outside packet"
+    },
+    {
+      "entry": "00b107f0",
+      "status": "actual service-child initialization producer remains unrecovered; B14A10 zero fields do not prove fullscreen resources"
+    }
+  ],
+  "validation": {
+    "build": {
+      "command": "scripts/build.ps1",
+      "exit_code": 0,
+      "ctest_passed": 2,
+      "log": "local/cc10-render-focus-build.log"
+    },
+    "native_fixture": {
+      "source": "local/cc10_renderer_focus_probe.cpp",
+      "prepare": "local/cc10_renderer_focus_prepare.py",
+      "compile": "local/cc10_renderer_focus_probe.cmd",
+      "log": "local/cc10-renderer-focus-probe.log",
+      "result": "PASS",
+      "compiler": "MSVC Win32 /MD /EHsc /std:c++20 /link /MANIFEST:EMBED",
+      "library": "this worktree build/win32/Release/bsp_core.lib",
+      "bodies": 9,
+      "bytes": 744,
+      "observations": [
+        "disabled gate with null receiver",
+        "four date calls, two reloads, two material callbacks",
+        "unsigned high-bit/fifth-word comparison and equal/older dates",
+        "current manager/resource/table reloads",
+        "gate changes mid-call do not cancel later phases",
+        "fixed date-loop end versus expanding material-loop end",
+        "four raw service branches; head/neighbor changes; recursive parented-null early return; own-link retention",
+        "unknown source slot target rejected"
+      ],
+      "controlled_leaves": [
+        "BDD340",
+        "resource virtual08",
+        "B19000"
+      ],
+      "real_resource_leaves_executed": false,
+      "source_sha256": "138f70a044c92fbdb45f14b06d583c7c156af78e9aeae9b829f207a93498b541",
+      "binary_sha256": "f0afd9eac75ce3c47d7162f5d8c050451e67c3944fd8ca887574f4e5c198772e"
+    },
+    "call_verifier": {
+      "command": "python tools/verify_report_calls.py reports/platform_renderer_activation_cc10.json",
+      "checked": 20,
+      "failed": 0,
+      "indirect_resolutions": 3,
+      "indirect_evidence": "live current vtable bytes checked separately; verifier does not prove indirect dispatch target"
+    }
+  },
+  "abi_compatible": false,
+  "game_validated": false,
+  "production_activation_validated": false,
+  "limits": [
+    "Explicit C++ interfaces; no native ABI or FH3/SEH claim",
+    "No real reload/compiler/device/VFS runtime claim from spies",
+    "No new host scheduling or resource producer",
+    "B24FB0 supported only current virtual120 B24DD0; unsupported targets throw",
+    "B6D890 only requested-root-null projection"
+  ],
+  "history": {
+    "raw_focus": "Relevant84c6fe880 module reviewed and raw behavior recovered after current-byte/layout check; no broad branch restore",
+    "material_reload": "769bdc3e3 reviewed only, numeric-descriptor guard retained as a required dependency"
+  },
+  "corrections": [],
+  "documentation": "docs/PLATFORM_RENDERER_ACTIVATION_CC10.md",
+  "no_ghidra_function": []
+}
