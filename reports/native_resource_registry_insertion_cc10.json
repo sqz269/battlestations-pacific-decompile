@@ -1,0 +1,691 @@
+{
+  "packet": "cc10_resource_registry_insertion",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "baseline_main": "fab1cd9f0",
+  "source": "src/native_resource_registry_insertion.cpp",
+  "header": "include/bsp/native_resource_registry_insertion.hpp",
+  "documentation": "docs/NATIVE_RESOURCE_REGISTRY_INSERTION_CC10.md",
+  "status": "complete_normal_raw1627B_strict_win32_focused_original_source_with_explicit_source_cleanup_checked",
+  "normal_bytes": 1627,
+  "compiler_boundary_bytes": 36,
+  "functions": [
+    {
+      "address": "00b1b3a0",
+      "bytes": 84,
+      "end_exclusive": "00b1b3f4",
+      "end_inclusive": "00b1b3f3",
+      "sha256": "4e975fe98e680ca49245f1706c7f56ab7932aba84a43237a8f07f8b46b33812c",
+      "live_equals_PE_and_frozen_readiness": true,
+      "instructions": 33,
+      "last_instruction": "00b1b3f1",
+      "last_instruction_length": 3,
+      "byte_span": 84,
+      "last_instruction_address": "00b1b3f1",
+      "cpp_symbol": "bsp::register_native_resource_factory_00b1b3a0",
+      "original_abi": "ECX actual10h registry; name/factory; RET8",
+      "coverage": "complete normal body with explicit valid storage/provider domain"
+    },
+    {
+      "address": "00b1b2b0",
+      "bytes": 238,
+      "end_exclusive": "00b1b39e",
+      "end_inclusive": "00b1b39d",
+      "sha256": "bb1a385206b68c740d1ecdb6f28d327667bbe9dc4ae8fc31189719487ce27d87",
+      "live_equals_PE_and_frozen_readiness": true,
+      "instructions": 86,
+      "last_instruction": "00b1b39b",
+      "last_instruction_length": 3,
+      "byte_span": 238,
+      "last_instruction_address": "00b1b39b",
+      "cpp_symbol": "bsp::find_or_insert_native_resource_registry_value_00b1b2b0",
+      "original_abi": "ECX actual tree; name; RET4/EAX actual node+14",
+      "coverage": "complete normal body with explicit valid storage/provider domain"
+    },
+    {
+      "address": "00b1b0b0",
+      "bytes": 508,
+      "end_exclusive": "00b1b2ac",
+      "end_inclusive": "00b1b2ab",
+      "sha256": "c0ef4e86ed3afd8f3392c6ee50b829507bb777f99dc0a498b811cf3ecbde0d95",
+      "live_equals_PE_and_frozen_readiness": true,
+      "instructions": 210,
+      "last_instruction": "00b1b2a9",
+      "last_instruction_length": 3,
+      "byte_span": 508,
+      "last_instruction_address": "00b1b2a9",
+      "cpp_symbol": "bsp::insert_native_resource_registry_hint_00b1b0b0",
+      "original_abi": "ECX actual tree; output/hint owner/hint node/pair; RET10/EAX output",
+      "coverage": "complete normal body with explicit valid storage/provider domain"
+    },
+    {
+      "address": "00b1ada0",
+      "bytes": 492,
+      "end_exclusive": "00b1af8c",
+      "end_inclusive": "00b1af8b",
+      "sha256": "a3ece59a15d6a89f76b63d61ff401b330866b61636dcd2dd1cbc60032770375a",
+      "live_equals_PE_and_frozen_readiness": true,
+      "instructions": 167,
+      "last_instruction": "00b1af89",
+      "last_instruction_length": 3,
+      "byte_span": 492,
+      "last_instruction_address": "00b1af89",
+      "cpp_symbol": "bsp::link_native_resource_registry_node_00b1ada0",
+      "original_abi": "ECX actual tree; output/left word/parent/pair; RET10/EAX output",
+      "coverage": "complete normal body with explicit valid storage/provider domain"
+    },
+    {
+      "address": "00b1af90",
+      "bytes": 276,
+      "end_exclusive": "00b1b0a4",
+      "end_inclusive": "00b1b0a3",
+      "sha256": "77efcb6b0564bcc6b2f587a33a93bc7be1c1f6f64e79d32d3ccc6ef52d10d317",
+      "live_equals_PE_and_frozen_readiness": true,
+      "instructions": 111,
+      "last_instruction": "00b1b0a1",
+      "last_instruction_length": 3,
+      "byte_span": 276,
+      "last_instruction_address": "00b1b0a1",
+      "cpp_symbol": "bsp::insert_native_resource_registry_pair_00b1af90",
+      "original_abi": "ECX actual tree; output12B/pair; RET8/EAX output",
+      "coverage": "complete normal body with explicit valid storage/provider domain"
+    },
+    {
+      "address": "00b19dd0",
+      "bytes": 29,
+      "end_exclusive": "00b19ded",
+      "end_inclusive": "00b19dec",
+      "sha256": "f1719bc3c4b18dcda618bedd9cf360e5fce124cc57102154fba23d654ab759a5",
+      "live_equals_PE_and_frozen_readiness": true,
+      "instructions": 12,
+      "last_instruction": "00b19dec",
+      "last_instruction_length": 1,
+      "byte_span": 29,
+      "last_instruction_address": "00b19dec",
+      "cpp_symbol": "bsp::destroy_native_resource_registry_temporary_00b19dd0",
+      "original_abi": "ECX current raw header; RET",
+      "coverage": "complete normal body with explicit valid storage/provider domain"
+    }
+  ],
+  "compiler_boundaries": [
+    {
+      "address": "00cbc6f0",
+      "bytes": 8,
+      "end_exclusive": "00cbc6f8",
+      "end_inclusive": "00cbc6f7",
+      "sha256": "4a307a930d026202e45fc50bc40a80c3ebfd243939bdd2dd08e672210f736db3",
+      "live_equals_PE_and_frozen_readiness": true,
+      "instructions": 2,
+      "last_instruction": "00cbc6f3",
+      "last_instruction_length": 5,
+      "byte_span": 8,
+      "last_instruction_address": "00cbc6f3",
+      "coverage": "compiler boundary evidence and explicit source cleanup projection, not native transport"
+    },
+    {
+      "address": "00cbc6f8",
+      "bytes": 10,
+      "end_exclusive": "00cbc702",
+      "end_inclusive": "00cbc701",
+      "sha256": "362c81a44f2a1d22beba5d582e9ad03bcdbd11608efd8eb5f9c333280d427ff5",
+      "live_equals_PE_and_frozen_readiness": true,
+      "instructions": 2,
+      "last_instruction": "00cbc6fd",
+      "last_instruction_length": 5,
+      "byte_span": 10,
+      "last_instruction_address": "00cbc6fd",
+      "coverage": "compiler boundary evidence and explicit source cleanup projection, not native transport"
+    },
+    {
+      "address": "00cbc710",
+      "bytes": 8,
+      "end_exclusive": "00cbc718",
+      "end_inclusive": "00cbc717",
+      "sha256": "effc099261bc602ade2b7b8972a45c5039ae566f8c504126c5d47cc804a54706",
+      "live_equals_PE_and_frozen_readiness": true,
+      "instructions": 2,
+      "last_instruction": "00cbc713",
+      "last_instruction_length": 5,
+      "byte_span": 8,
+      "last_instruction_address": "00cbc713",
+      "coverage": "compiler boundary evidence and explicit source cleanup projection, not native transport"
+    },
+    {
+      "address": "00cbc718",
+      "bytes": 10,
+      "end_exclusive": "00cbc722",
+      "end_inclusive": "00cbc721",
+      "sha256": "bce348088f9754536749c09564219187c66ca5a5f6a02d617f86c60183cc9fa9",
+      "live_equals_PE_and_frozen_readiness": true,
+      "instructions": 2,
+      "last_instruction": "00cbc71d",
+      "last_instruction_length": 5,
+      "byte_span": 10,
+      "last_instruction_address": "00cbc71d",
+      "coverage": "compiler boundary evidence and explicit source cleanup projection, not native transport"
+    }
+  ],
+  "ordered_native_calls": [
+    {
+      "function": "00b1b3a0",
+      "address": "00b1b3b4",
+      "native": "00b19d60",
+      "actual_mnemonic": "CALL",
+      "contract": "genuine raw actual-tree find/current output/returning validation"
+    },
+    {
+      "function": "00b1b3a0",
+      "address": "00b1b3bd",
+      "native": "00bf6713",
+      "actual_mnemonic": "CALL",
+      "contract": "required callable genuine returning CRT validation; no default"
+    },
+    {
+      "function": "00b1b3a0",
+      "address": "00b1b3d2",
+      "native": "00bf6713",
+      "actual_mnemonic": "CALL",
+      "contract": "required callable genuine returning CRT validation; no default"
+    },
+    {
+      "function": "00b1b3a0",
+      "address": "00b1b3e1",
+      "native": "00b1b2b0",
+      "actual_mnemonic": "CALL",
+      "contract": "new complete actual value insertion with current temporary header"
+    },
+    {
+      "function": "00b1b2b0",
+      "address": "00b1b2d2",
+      "native": "00b19b90",
+      "actual_mnemonic": "CALL",
+      "contract": "genuine current actual-tree lower bound"
+    },
+    {
+      "function": "00b1b2b0",
+      "address": "00b1b2dd",
+      "native": "00bf6713",
+      "actual_mnemonic": "CALL",
+      "contract": "required callable genuine returning CRT validation; no default"
+    },
+    {
+      "function": "00b1b2b0",
+      "address": "00b1b2ee",
+      "native": "00443d00",
+      "actual_mnemonic": "CALL",
+      "contract": "existing current raw-header comparator; host CRT boundary"
+    },
+    {
+      "function": "00b1b2b0",
+      "address": "00b1b30f",
+      "native": "0041dd40",
+      "actual_mnemonic": "CALL",
+      "contract": "existing genuine raw-header resize using same actual pool/context"
+    },
+    {
+      "function": "00b1b2b0",
+      "address": "00b1b326",
+      "native": "00bf7680",
+      "actual_mnemonic": "CALL",
+      "contract": "overlap-compatible host memmove; established zero-count host boundary"
+    },
+    {
+      "function": "00b1b2b0",
+      "address": "00b1b346",
+      "native": "00b1b0b0",
+      "actual_mnemonic": "CALL",
+      "contract": "new complete hint insertion using SAME incoming cursor cells"
+    },
+    {
+      "function": "00b1b2b0",
+      "address": "00b1b367",
+      "native": "00419cc0",
+      "actual_mnemonic": "CALL",
+      "contract": "existing genuine raw pool getter; current publications/manager"
+    },
+    {
+      "function": "00b1b2b0",
+      "address": "00b1b36e",
+      "native": "00bd1510",
+      "actual_mnemonic": "CALL",
+      "contract": "existing actual pool return; captured data/count, current gate"
+    },
+    {
+      "function": "00b1b2b0",
+      "address": "00b1b378",
+      "native": "00bf6713",
+      "actual_mnemonic": "CALL",
+      "contract": "required callable genuine returning CRT validation; no default"
+    },
+    {
+      "function": "00b1b2b0",
+      "address": "00b1b382",
+      "native": "00bf6713",
+      "actual_mnemonic": "CALL",
+      "contract": "required callable genuine returning CRT validation; no default"
+    },
+    {
+      "function": "00b1b0b0",
+      "address": "00b1b0cf",
+      "native": "00b1ada0",
+      "actual_mnemonic": "CALL",
+      "contract": "new complete late-input raw linking/rebalance"
+    },
+    {
+      "function": "00b1b0b0",
+      "address": "00b1b0f0",
+      "native": "00bf6713",
+      "actual_mnemonic": "CALL",
+      "contract": "required callable genuine returning CRT validation; no default"
+    },
+    {
+      "function": "00b1b0b0",
+      "address": "00b1b109",
+      "native": "00443d00",
+      "actual_mnemonic": "CALL",
+      "contract": "existing current raw-header comparator; host CRT boundary"
+    },
+    {
+      "function": "00b1b0b0",
+      "address": "00b1b121",
+      "native": "00b1ada0",
+      "actual_mnemonic": "CALL",
+      "contract": "new complete late-input raw linking/rebalance"
+    },
+    {
+      "function": "00b1b0b0",
+      "address": "00b1b13d",
+      "native": "00bf6713",
+      "actual_mnemonic": "CALL",
+      "contract": "required callable genuine returning CRT validation; no default"
+    },
+    {
+      "function": "00b1b0b0",
+      "address": "00b1b157",
+      "native": "00443d00",
+      "actual_mnemonic": "CALL",
+      "contract": "existing current raw-header comparator; host CRT boundary"
+    },
+    {
+      "function": "00b1b0b0",
+      "address": "00b1b175",
+      "native": "00b1ada0",
+      "actual_mnemonic": "CALL",
+      "contract": "new complete late-input raw linking/rebalance"
+    },
+    {
+      "function": "00b1b0b0",
+      "address": "00b1b18d",
+      "native": "00443d00",
+      "actual_mnemonic": "CALL",
+      "contract": "existing current raw-header comparator; host CRT boundary"
+    },
+    {
+      "function": "00b1b0b0",
+      "address": "00b1b1a2",
+      "native": "00b1ab40",
+      "actual_mnemonic": "CALL",
+      "contract": "genuine raw current iterator decrement; SAME incoming hint cells where reached"
+    },
+    {
+      "function": "00b1b0b0",
+      "address": "00b1b1b2",
+      "native": "00443d00",
+      "actual_mnemonic": "CALL",
+      "contract": "existing current raw-header comparator; host CRT boundary"
+    },
+    {
+      "function": "00b1b0b0",
+      "address": "00b1b1d3",
+      "native": "00b1ada0",
+      "actual_mnemonic": "CALL",
+      "contract": "new complete late-input raw linking/rebalance"
+    },
+    {
+      "function": "00b1b0b0",
+      "address": "00b1b1e8",
+      "native": "00b1ada0",
+      "actual_mnemonic": "CALL",
+      "contract": "new complete late-input raw linking/rebalance"
+    },
+    {
+      "function": "00b1b0b0",
+      "address": "00b1b200",
+      "native": "00443d00",
+      "actual_mnemonic": "CALL",
+      "contract": "existing current raw-header comparator; host CRT boundary"
+    },
+    {
+      "function": "00b1b0b0",
+      "address": "00b1b220",
+      "native": "00b19890",
+      "actual_mnemonic": "CALL",
+      "contract": "genuine raw current iterator increment; SAME incoming hint cells"
+    },
+    {
+      "function": "00b1b0b0",
+      "address": "00b1b22e",
+      "native": "00b19530",
+      "actual_mnemonic": "CALL",
+      "contract": "genuine exact high24/AL result; consume ONLY AL"
+    },
+    {
+      "function": "00b1b0b0",
+      "address": "00b1b242",
+      "native": "00443d00",
+      "actual_mnemonic": "CALL",
+      "contract": "existing current raw-header comparator; host CRT boundary"
+    },
+    {
+      "function": "00b1b0b0",
+      "address": "00b1b25f",
+      "native": "00b1ada0",
+      "actual_mnemonic": "CALL",
+      "contract": "new complete late-input raw linking/rebalance"
+    },
+    {
+      "function": "00b1b0b0",
+      "address": "00b1b274",
+      "native": "00b1ada0",
+      "actual_mnemonic": "CALL",
+      "contract": "new complete late-input raw linking/rebalance"
+    },
+    {
+      "function": "00b1b0b0",
+      "address": "00b1b28d",
+      "native": "00b1af90",
+      "actual_mnemonic": "CALL",
+      "contract": "new complete actual unique insertion/result12B"
+    },
+    {
+      "function": "00b1ada0",
+      "address": "00b1ade3",
+      "native": "00408720",
+      "actual_mnemonic": "CALL",
+      "contract": "genuine actual SBO counted assignment before state0 arm"
+    },
+    {
+      "function": "00b1ada0",
+      "address": "00b1adf5",
+      "native": "00411700",
+      "actual_mnemonic": "CALL",
+      "contract": "existing genuine native logic-error construction through owning host transport"
+    },
+    {
+      "function": "00b1ada0",
+      "address": "00b1ae0c",
+      "native": "00bf6885",
+      "actual_mnemonic": "CALL",
+      "contract": "new host C++ throw transport only; not native FH3/SEH ABI"
+    },
+    {
+      "function": "00b1ada0",
+      "address": "00b1ae24",
+      "native": "00b1ad10",
+      "actual_mnemonic": "CALL",
+      "contract": "genuine actual1Ch allocation/current constructor/partial-name failure domain"
+    },
+    {
+      "function": "00b1ada0",
+      "address": "00b1aeb5",
+      "native": "00b19830",
+      "actual_mnemonic": "CALL",
+      "contract": "existing actual left rotation"
+    },
+    {
+      "function": "00b1ada0",
+      "address": "00b1aed3",
+      "native": "00b19640",
+      "actual_mnemonic": "CALL",
+      "contract": "existing actual right rotation"
+    },
+    {
+      "function": "00b1ada0",
+      "address": "00b1af01",
+      "native": "00b19640",
+      "actual_mnemonic": "CALL",
+      "contract": "existing actual right rotation"
+    },
+    {
+      "function": "00b1af90",
+      "address": "00b1afd6",
+      "native": "00bf7fbf",
+      "actual_mnemonic": "CALL",
+      "contract": "existing current-header comparison with host _stricmp effect"
+    },
+    {
+      "function": "00b1af90",
+      "address": "00b1b018",
+      "native": "00b1ada0",
+      "actual_mnemonic": "CALL",
+      "contract": "new complete late-input raw linking/rebalance"
+    },
+    {
+      "function": "00b1af90",
+      "address": "00b1b03f",
+      "native": "00b1ab40",
+      "actual_mnemonic": "CALL",
+      "contract": "genuine raw current iterator decrement; SAME incoming hint cells where reached"
+    },
+    {
+      "function": "00b1af90",
+      "address": "00b1b04f",
+      "native": "00443d00",
+      "actual_mnemonic": "CALL",
+      "contract": "existing current raw-header comparator; host CRT boundary"
+    },
+    {
+      "function": "00b1af90",
+      "address": "00b1b066",
+      "native": "00b1ada0",
+      "actual_mnemonic": "CALL",
+      "contract": "new complete late-input raw linking/rebalance"
+    },
+    {
+      "function": "00b19dd0",
+      "address": "00b19de0",
+      "native": "00419cc0",
+      "actual_mnemonic": "CALL",
+      "contract": "existing genuine raw pool getter; current publications/manager"
+    },
+    {
+      "function": "00b19dd0",
+      "address": "00b19de7",
+      "native": "00bd1510",
+      "actual_mnemonic": "CALL",
+      "contract": "existing actual pool return; captured data/count, current gate"
+    },
+    {
+      "function": "00cbc6f0",
+      "address": "00cbc6f3",
+      "native": "004072d0",
+      "actual_mnemonic": "JMP",
+      "contract": "genuine completed actual SBO destruction; consumed state0",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cbc6f8",
+      "address": "00cbc6fd",
+      "native": "00bf6b43",
+      "actual_mnemonic": "JMP",
+      "contract": "compiler transport evidence only; no native FH3 implementation",
+      "kind": "no_ghidra_function",
+      "kind_after_definition": "tail_jump",
+      "missing_containment_note": "fresh undefined compiler dispatcher; raw live/PE JMP decoded; root changes kind after defining"
+    },
+    {
+      "function": "00cbc710",
+      "address": "00cbc713",
+      "native": "00b19dd0",
+      "actual_mnemonic": "JMP",
+      "contract": "new exact normalized29B alias of genuine raw41DD20; CURRENT header",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cbc718",
+      "address": "00cbc71d",
+      "native": "00bf6b43",
+      "actual_mnemonic": "JMP",
+      "contract": "compiler transport evidence only; no native FH3 implementation",
+      "kind": "no_ghidra_function",
+      "kind_after_definition": "tail_jump",
+      "missing_containment_note": "fresh undefined compiler dispatcher; raw live/PE JMP decoded; root changes kind after defining"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00cbc6f8",
+      "name": "undefined FH3 dispatcher",
+      "end_inclusive": "00cbc701",
+      "end_exclusive": "00cbc702",
+      "last_instruction_address": "00cbc6fd",
+      "last_instruction_length": 5,
+      "evidence": "fresh proto undefined; complete10B live/PE MOV descriptor then JMP BF6B43"
+    },
+    {
+      "address": "00cbc718",
+      "name": "undefined FH3 dispatcher",
+      "end_inclusive": "00cbc721",
+      "end_exclusive": "00cbc722",
+      "last_instruction_address": "00cbc71d",
+      "last_instruction_length": 5,
+      "evidence": "fresh proto undefined; complete10B live/PE MOV descriptor then JMP BF6B43"
+    }
+  ],
+  "eh": {
+    "length": {
+      "descriptor": "00df4a20",
+      "unwind_map": "00df4a18",
+      "max_state": 1,
+      "entries": [
+        {
+          "state": 0,
+          "previous": -1,
+          "handler": "00cbc6f0"
+        }
+      ],
+      "try_count": 0,
+      "flags": 1,
+      "source_effect": "arm only after408720 completed; completed SBO cleanup and genuine owning28h host length-error; source C++ throw only"
+    },
+    "temporary": {
+      "descriptor": "00df4a4c",
+      "unwind_map": "00df4a44",
+      "max_state": 1,
+      "entries": [
+        {
+          "state": 0,
+          "previous": -1,
+          "handler": "00cbc710"
+        }
+      ],
+      "try_count": 0,
+      "flags": 1,
+      "source_effect": "arm immediately before hint call; cleanup CURRENT header once on source propagation; normal disarm before getter uses captured data/current size instead; double exception terminates"
+    }
+  },
+  "layout": {
+    "registry": "10h profile0/opaque4/head8/countC; tree=registry+4",
+    "node": "1Ch links0/4/8,lengthC,data10,borrowedfactory14,color18,nil19,pad1A/B",
+    "caller_cells": "immutable references to genuinely live initialized DWORD cells or typed cursor/result objects; no aggregate overlay on reused raw scratch",
+    "physical_frame_map": "see documentation and frozen readiness; SAME incoming hint owner/node; direction fullDWORD upper preimage; result+8 BYTE only",
+    "private_stack_coincidence_excluded": true
+  },
+  "engine_reuse": {
+    "header": "include/bsp/detail/native_tree_insert_storage.hpp",
+    "change": "extract ONLY repair=node through finalrootblack block into rebalance_linked_tree_node<Access>; prior caller remaining text identical",
+    "proof": "local\\output\\cc10_resource_registry_insertion\\shared_helper_equivalence.json",
+    "temporary_alias": "B19DD0 and41DD20 whole29B/12instructions exactnormalized except2CALLrel32 operands",
+    "readiness_evidence_keys": [
+      "project",
+      "program",
+      "normal_bytes",
+      "readiness_only",
+      "ranges",
+      "normalized_cleanup_alias",
+      "normal_total_with_alias",
+      "compiler_boundary_bytes",
+      "worker_baseline",
+      "tracked_clean",
+      "eh",
+      "proposal",
+      "missing_function_boundaries",
+      "physical_frames",
+      "provider_source_hashes"
+    ]
+  },
+  "validation": {
+    "strict_build_command": "./scripts/build.ps1",
+    "strict_build_log": "local\\output\\cc10_resource_registry_insertion\\build01.log",
+    "strict_msvc_win32": true,
+    "configured_ctests": {
+      "count": 2,
+      "passed": 2,
+      "names": [
+        "reconstructed_math",
+        "tool_tests"
+      ]
+    },
+    "probe_source": "local\\output\\cc10_resource_registry_insertion\\probe.cpp",
+    "probe_command_file": "local\\output\\cc10_resource_registry_insertion\\probe.cmd",
+    "probe_flags": "/MD /EHsc /std:c++20 /O2 /Gy /W4 /WX /fp:strict /link /OPT:REF /MANIFEST:EMBED",
+    "NDEBUG_defined": false,
+    "NDEBUG_compile_time_rejection": true,
+    "attempts": [
+      {
+        "id": "probe01",
+        "outcome": "compile failed before execution",
+        "reason": "two inline-ASM thunks used multiple instructions on one line",
+        "source": "local\\output\\cc10_resource_registry_insertion\\probe01.cpp",
+        "log": "local\\output\\cc10_resource_registry_insertion\\probe01.log"
+      },
+      {
+        "id": "probe02",
+        "outcome": "compile and runtime PASS",
+        "changes": "fixture ASM newline syntax and pre-run relocation offsets corrected; production source unchanged",
+        "log": "local\\output\\cc10_resource_registry_insertion\\probe02.log"
+      }
+    ],
+    "composition": "all six copied original normal bodies; internal normal calls remain copies; genuine external registry/string/CRT/tree/node providers; three observed provider boundaries still invoke genuine implementations",
+    "shared_provider_boundaries": [
+      "actual B1B6E0 construction and B1B5F0 disposal",
+      "B1AD10/B1ACA0 allocation/name constructor",
+      "B19B90/B19D60 lookup",
+      "B19640/B19830 rotations",
+      "B19530/B1AB40/B19890 iterators",
+      "443D00/_stricmp, raw41DD40, memmove,419CC0/BD1510",
+      "genuine CRT allocation/free and actual string pool"
+    ],
+    "normal_assertions": [
+      "normalized whole tree topology/head relationships/cardinality/key contents/borrowedvalues/colors",
+      "case-insensitive duplicate registration keeps borrowed factory and count",
+      "SAME incoming hint cursor at genuine decrement/increment and aliasing output",
+      "pair/result alias preserves upper3 output flag bytes",
+      "late factory read after actual allocation; late link lowbyte/output change after real node allocation",
+      "direct29B cleanup leaves header unchanged"
+    ],
+    "normalization_exclusions": "separately allocated node/head/name pointers mapped to key identities; no full-byte equality, allocation padding, saved registers/private stacks or source EH metadata comparison",
+    "source_only": [
+      "unsigned size-limit genuine SBO/owning length-error transport cleanup; no node allocation/count mutation",
+      "provider throws before allocation after value temp state0; current temp cleanup completes with no rollback"
+    ],
+    "native_EH_exercised": false,
+    "application_or_original_game_launched": false,
+    "new_tracked_tests": false
+  },
+  "evidence": {
+    "directory": "local\\output\\cc10_resource_registry_insertion",
+    "native_ranges": "local\\output\\cc10_resource_registry_insertion\\native_evidence.json",
+    "readiness_archive": "local/output/cc10_resource_registry_insertion_readiness_evidence.zip",
+    "readiness_archive_sha256": "4b1f30029557df82e450ca171b8fd5e1d29a847e86ae4d18c4b7a5edf19e889c",
+    "fresh_live_PE_frozen_readiness_equal": true
+  },
+  "limits": [
+    "no original private ABI/FH3/SEH or arbitrary hardware fault cleanup",
+    "no B107F0/BBC/global factory activation or canonical source owner lifetime admission",
+    "no application/game validation",
+    "caller supplies valid actual storage/lifetimes, shared current raw pool cells and nonnull genuine returning validation",
+    "source cleanup failure while unwinding terminates; no native double-exception equivalence",
+    "provider completion/failure prefixes and outstanding credits survive; no invented rollback"
+  ]
+}
