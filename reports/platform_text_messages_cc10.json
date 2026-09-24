@@ -1,0 +1,63 @@
+{
+  "packet": "cc10_platform_text",
+  "status": "typed_win32_adapter_build_and_ctest_passed_application_binding_pending",
+  "game_rebuilt": true,
+  "source_files": [
+    "include/bsp/platform_text_messages.hpp",
+    "src/platform_text_messages.cpp",
+    "src/text_input.cpp"
+  ],
+  "native": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "function": "00bed3b0",
+    "original_abi": "Five stack arguments: explicit platform receiver, HWND, UINT, WPARAM, LPARAM; RET 14h. Typed adapter is not ABI compatible.",
+    "coverage": "partial: WM_KEYDOWN 00bed607..00bed67d and WM_CHAR 00bed6db..00bed6fe only; all other 00bed3b0 arms remain outside this adapter"
+  },
+  "routines": [
+    {
+      "address": "00bed607",
+      "function": "00bed3b0",
+      "coverage": "partial: covered 00bed607..00bed67d key arm; remaining 00bed3b0 body excluded",
+      "source": "src/platform_text_messages.cpp"
+    },
+    {
+      "address": "00bed6db",
+      "function": "00bed3b0",
+      "coverage": "partial: covered 00bed6db..00bed6fe character arm; remaining 00bed3b0 body excluded",
+      "source": "src/platform_text_messages.cpp"
+    }
+  ],
+  "calls": [
+    {
+      "address": "00bed664",
+      "function": "00bed3b0",
+      "native": "00bed370",
+      "purpose": "append into platform+174h existing text queue"
+    },
+    {
+      "address": "00bed671",
+      "function": "00bed3b0",
+      "indirect": "call dword ptr [0x00ce22fc]",
+      "iat_slot": "00ce22fc",
+      "import": ["USER32.dll", "DefWindowProcA"]
+    }
+  ],
+  "ownership": {
+    "producer": "PlatformTextInput::enqueue_message_00bed3b0_fragment",
+    "receiver": "00bed607 and 00bed6db load explicit platform argument from [ESP+14h] after four pushes; text arms do not use GetWindowLongA result in ESI",
+    "queue": "PlatformTextInput::queue",
+    "consumer": "dispatch_text_input_00a96f40_fragment must receive that exact queue and an actual enabled text owner",
+    "activation": "00583e36 enables screen+0Ch through 00a966e0; 00590eaf disables; current MenuUpdateBinding has no live owner dispatch"
+  },
+  "validation": {
+    "source_build": "scripts/build.ps1 exit 0; Win32 Release bsp_core and bsp_game built; reconstructed_math and tool_tests CTests passed 2/2",
+    "real_window": "pending primary integration",
+    "game_runtime": false,
+    "ghidra_writes": false
+  },
+  "limitations": [
+    "No frontend TextInputCallbacks owner is bound by this packet.",
+    "No native object ABI or full 00bed3b0 reconstruction is claimed."
+  ]
+}
