@@ -202,4 +202,39 @@ struct HudMinimapHost {
 int hud_minimap_place_unit_icons_005c154e(int team_index, HudMinimapHost& host,
                                           float depth) noexcept;
 
+// ---------------------------------------------------------------------------
+// 005C1675, the unit vtable +B8h the minimap walk calls with no arguments on
+// every unit that passed the four-byte gate and IsKindOf(5).
+//
+// Every class whose kind test accepts 5 (unit_kind_query.hpp's 88 bodies, each
+// read at its own vtable +5Ch and +B8h from the image on disk) resolves +B8h to
+// one of four bodies. All four are __thiscall(this) -> bool, RET 0.
+//   006D1FA0  MOV AL,1 / RET           classes 05..17h, 45h, 46h: every ship,
+//                                      submarine, plane, airfield and shipyard
+//   006F57D0  XOR AL,AL / RET          1Bh MLandFort, 1Ch MCommandBuilding
+//   007001E0  XOR AL,AL / RET          35h (no recovered name)
+//   0074DDF0  008DDF00(this) on [[00E188A8] + [..+18ECh]*4 + 21A4h]
+//                                      19h MLandVehicle, a per-player query
+// None of the first three bodies has a Ghidra function: each sits in INT3
+// padding after the previous function (006D1FA0..006D1FA3, 006F57D0..006F57D3,
+// 007001E0..007001E3, exclusive ends). The record the host used before this
+// law named 0043F080, which is the __fastcall four-byte gate, not the virtual.
+enum class HudMinimapUnitShows {
+    Always,        // 006D1FA0
+    Never,         // 006F57D0, 007001E0
+    PlayerQuery,   // 0074DDF0 -> 008DDF00, not reconstructed
+    NotAUnit,      // IsKindOf(5) is false: the walk never reaches +B8h
+};
+inline constexpr std::uint32_t kHudMinimapShowsAlwaysBody = 0x006D1FA0u;
+inline constexpr std::uint32_t kHudMinimapShowsFortBody = 0x006F57D0u;
+inline constexpr std::uint32_t kHudMinimapShowsClass35Body = 0x007001E0u;
+inline constexpr std::uint32_t kHudMinimapShowsLandVehicleBody = 0x0074DDF0u;
+inline constexpr std::uint32_t kHudMinimapShowsLandVehicleQuery = 0x008DDF00u;
+
+// Which +B8h body a most-derived class id (+C4h) installs.
+HudMinimapUnitShows hud_minimap_unit_shows_body(int class_id) noexcept;
+
+// The body's address, for records and provenance; 0 for NotAUnit.
+std::uint32_t hud_minimap_unit_shows_address(int class_id) noexcept;
+
 } // namespace bsp
