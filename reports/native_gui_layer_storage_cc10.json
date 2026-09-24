@@ -20,7 +20,10 @@
     {"address": "00ce0ad0", "name": "GameNativeGuiLayerPoolProcess::destroy_00ce0ad0", "coverage": "complete teardown thunk", "original_abi": "MOV ECX,F8BF50; JMP AC4670"}
   ],
   "listing_only": [
-    {"address": "00cd73d0", "inclusive_end": "00cd73e5", "function": "no Ghidra function", "producer": "PE initializer table 00CE3498", "body": "MOV ECX,F8BF50; CALL AC4D70; PUSH CE0AD0; CALL BF6FF5; POP ECX; RET"}
+    {"address": "00cd73d0", "inclusive_end": "00cd73e5", "exclusive_end": "00cd73e6", "final_instruction": "00cd73e5 RET, 1 byte", "function": "no Ghidra function", "producer": "PE initializer table 00CE3498", "body": "MOV ECX,F8BF50; CALL AC4D70; PUSH CE0AD0; CALL BF6FF5; POP ECX; RET"}
+  ],
+  "no_ghidra_function": [
+    {"start": "00cd73d0", "end_inclusive": "00cd73e5", "end_exclusive": "00cd73e6", "last_instruction": "00cd73e5 RET (1 byte)", "role": "PE-initializer-table-referenced F8BF50 pool constructor and CE0AD0 atexit registration; verified from disk .text bytes"}
   ],
   "host_steps": [
     {"address": "00aa3bee", "native": "00ac51a0", "function": "00aa3bd0", "contract": "Factory acquires one raw layer slot"},

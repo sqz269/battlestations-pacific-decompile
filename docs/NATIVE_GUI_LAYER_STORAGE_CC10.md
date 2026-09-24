@@ -6,7 +6,12 @@ initializer, `00AC4750` allocator-list trim, `00AC4D70` pool constructor,
 `00AC4670` pool destructor, and process-static pool `00F8BF50`.
 The listing-only CRT initializer is `00CD73D0..00CD73E5` inclusive;
 Ghidra has no function there. The PE initializer table at `00CE3498`
-points to it. `00CE0AD0` is the registered teardown thunk.
+points to it. Its final instruction is a one-byte `RET` at `00CD73E5`,
+so the end-exclusive address is `00CD73E6`. The report's
+`no_ghidra_function` list contains this sole undefined function;
+all nine other owned entry addresses were checked with live Ghidra
+`proto` and have function bodies. `00CE0AD0` is the registered teardown
+thunk.
 
 `00AC51A0` consists of `MOV ECX,00F8BF50; JMP 00AC4E50`. Its caller's
 `ECX=124h` size is overwritten. The wrapper takes no size argument:
@@ -48,3 +53,26 @@ suspect no-return interpretation. The existing fixed-pool trim template
 supplies the source behavior; no Ghidra flow repair or annotation was made
 by this worker. The code is a typed source counterpart, not a binary
 replacement for the native class pool.
+
+The template comparison was checked against each native body, not inferred
+from the other material pools. `00AC4E50` locks at `+0C`, publishes the
+new slab index at `+34` before allocating `2544h`, calls `00AC4070`,
+grows the pointer table by `capacity*2+2` when full, decrements the
+`+2540h` WORD free count and indexes the `+2500h` stack to select a
+`128h` slot. When that count reaches zero it scans forward for the next
+nonempty slab. Its raw listing continues at `00AC4EE6..00AC4EE9` after
+the old-table free, despite pseudocode's misleading early return.
+`00AC4070` writes count 32, free indices 31 down to 0, and the slab ID
+at each slot's `+124h`, leaving the payload untouched. `00AC47F0`
+locks, reads that live ID, divides the signed slot offset by `128h`,
+pushes the index onto the slab free stack, increments the WORD count,
+and lowers `+34` if needed; the template's integer division is equal
+on valid aligned slots. `00AC4750` frees only slabs whose count is 32,
+copies the last slab pointer into the removed position, decrements the
+count, rewrites all 32 hidden IDs if a different slab moved, then
+repeats that position. It finally resets `+34` and scans for the first
+slab with a nonzero free count. Ghidra pseudocode incorrectly returns
+at the free call; disk-byte disassembly proves the continuation
+`00AC4776..00AC47AF` and the scan through `00AC47EF`. The source
+template implements that continuation, while the original exceptional
+allocation and CRT unwind paths remain outside source parity.
