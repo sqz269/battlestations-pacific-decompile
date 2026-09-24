@@ -1,0 +1,384 @@
+{
+  "packet": "cc10_scene_registry_mutation_adapters",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "baseline_main": "005e28b106e645326af429804a5742813a8fcbd7",
+  "source": "src/native_scene_registry_mutation_adapters.cpp",
+  "header": "include/bsp/native_scene_registry_mutation_adapters.hpp",
+  "documentation": "docs/NATIVE_SCENE_REGISTRY_MUTATION_ADAPTERS_CC10.md",
+  "status": "complete_raw_outer_adapters_strict_win32_focused_original_source_and_explicit_exception_transport_checked",
+  "functions": [
+    {
+      "address": "00b83490",
+      "end_exclusive": "00b8353a",
+      "end_inclusive": "00b83539",
+      "final_instruction": "00b83537",
+      "final_instruction_length": 3,
+      "byte_span": 170,
+      "cpp_symbol": "bsp::resize_native_scene_registry_boundaries_00b83490",
+      "original_abi": "ECX actualvector; stacked count/inlinepair; RET12",
+      "coverage": "complete normal and returning-handler body"
+    },
+    {
+      "address": "00b83560",
+      "end_exclusive": "00b835cc",
+      "end_inclusive": "00b835cb",
+      "final_instruction": "00b835c9",
+      "final_instruction_length": 3,
+      "byte_span": 108,
+      "cpp_symbol": "bsp::assign_native_scene_registry_boundaries_00b83560",
+      "original_abi": "ECX actualvector; stacked count/pairpointer; RET8",
+      "coverage": "complete normal and returning-handler body"
+    },
+    {
+      "address": "00b82d30",
+      "end_exclusive": "00b82dc3",
+      "end_inclusive": "00b82dc2",
+      "final_instruction": "00b82dc0",
+      "final_instruction_length": 3,
+      "byte_span": 147,
+      "cpp_symbol": "bsp::grow_native_scene_registry_list_size_00b82d30",
+      "original_abi": "ECX embeddedlist; stacked increment capturedbeforecount; RET4",
+      "coverage": "complete checked arithmetic and raw exception-provider composition with explicit source transport"
+    }
+  ],
+  "compiler_boundaries": [
+    {
+      "address": "00cc22d0",
+      "end_exclusive": "00cc22d8",
+      "end_inclusive": "00cc22d7",
+      "final_instruction": "00cc22d3",
+      "final_instruction_length": 5,
+      "byte_span": 8,
+      "coverage": "compiler boundary only; source guard reuses existing4072D0",
+      "last_instruction_address": "00cc22d3",
+      "last_instruction_length": 5
+    },
+    {
+      "address": "00cc22d8",
+      "end_exclusive": "00cc22e2",
+      "end_inclusive": "00cc22e1",
+      "final_instruction": "00cc22dd",
+      "final_instruction_length": 5,
+      "byte_span": 10,
+      "coverage": "compiler boundary only; not a Ghidra function; native FH3 not reconstructed",
+      "last_instruction_address": "00cc22dd",
+      "last_instruction_length": 5
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00cc22d8",
+      "end_exclusive": "00cc22e2",
+      "end_inclusive": "00cc22e1",
+      "final_instruction": "00cc22dd",
+      "final_instruction_length": 5,
+      "byte_span": 10,
+      "coverage": "compiler boundary only; not a Ghidra function; native FH3 not reconstructed",
+      "last_instruction_address": "00cc22dd",
+      "last_instruction_length": 5
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00b82d30",
+      "address": "00b82d7c",
+      "native": "00408720",
+      "contract": "existing raw counted assignment, exact16B actualCE38F8 text, no cleanup armed before success"
+    },
+    {
+      "function": "00b82d30",
+      "address": "00b82d91",
+      "native": "00411700",
+      "contract": "existing raw logic-error constructor through owning NativeHardwareLayoutTreeLengthError; D69260 publication follows"
+    },
+    {
+      "function": "00b82d30",
+      "address": "00b82da8",
+      "native": "00bf6885",
+      "contract": "explicit existing owning source exception transport; not native D83F98/FH3 ABI"
+    },
+    {
+      "function": "00b83490",
+      "address": "00b834c8",
+      "native": "00bf6713",
+      "contract": "required current genuine returning validation service, preserve captured/current cells"
+    },
+    {
+      "function": "00b83490",
+      "address": "00b834d9",
+      "native": "00b82fd0",
+      "contract": "existing actual pair insertion, caller preimages and exact nested frame setup"
+    },
+    {
+      "function": "00b83490",
+      "address": "00b834fb",
+      "native": "00bf6713",
+      "contract": "required current genuine returning validation service, preserve captured/current cells"
+    },
+    {
+      "function": "00b83490",
+      "address": "00b83508",
+      "native": "00bf6713",
+      "contract": "required current genuine returning validation service, preserve captured/current cells"
+    },
+    {
+      "function": "00b83490",
+      "address": "00b8351e",
+      "native": "00bf6713",
+      "contract": "required current genuine returning validation service, preserve captured/current cells"
+    },
+    {
+      "function": "00b83490",
+      "address": "00b8352e",
+      "native": "00b82bf0",
+      "contract": "existing actual pair erase, inline pair result alias for resize/separate result for assign"
+    },
+    {
+      "function": "00b83560",
+      "address": "00b83580",
+      "native": "00bf6713",
+      "contract": "required current genuine returning validation service, preserve captured/current cells"
+    },
+    {
+      "function": "00b83560",
+      "address": "00b8358e",
+      "native": "00bf6713",
+      "contract": "required current genuine returning validation service, preserve captured/current cells"
+    },
+    {
+      "function": "00b83560",
+      "address": "00b8359e",
+      "native": "00b82bf0",
+      "contract": "existing actual pair erase, inline pair result alias for resize/separate result for assign"
+    },
+    {
+      "function": "00b83560",
+      "address": "00b835ac",
+      "native": "00bf6713",
+      "contract": "required current genuine returning validation service, preserve captured/current cells"
+    },
+    {
+      "function": "00b83560",
+      "address": "00b835bf",
+      "native": "00b82fd0",
+      "contract": "existing actual pair insertion, caller preimages and exact nested frame setup"
+    },
+    {
+      "function": "00cc22d0",
+      "address": "00cc22d3",
+      "native": "004072d0",
+      "kind": "tail_jump",
+      "contract": "verified compiler cleanup, existing rawSBO destruction via source guard only"
+    },
+    {
+      "function": "00cc22d8",
+      "address": "00cc22dd",
+      "native": "00bf6b43",
+      "kind": "no_ghidra_function",
+      "native_instruction": "JMP 00bf6b43",
+      "contract": "raw18B compiler boundary evidence; MOV EAX,DFB554 then native FH3 entry; not implemented"
+    }
+  ],
+  "context": {
+    "resize": "ResizeFrame60; captured count/begin/size/end; current inline pair pointer; shrink writes incoming pair1 then aliases samepair aseraseoutput",
+    "assign": "AssignFrame72; capture sourceword1 beforeword0; pair stores afterinitialcomparison beforehandler; separateeraseoutput; currentcount aftererase/validation",
+    "nested_frames": "existing InsertFrame28 and VectorEraseArguments20, initialized callerpreimages, pushes staged in native order; source/privateABI separate",
+    "list_growth": "ListGrowthScratch28; unsigned captured3FFFFFFF-count comparison and capturedcount+increment store; source uses borrowed exact16BCE38F8 text; no allocation/linking/rollback",
+    "exception": "408720 then armCompletedMessage; owning source NativeHardwareLayoutTreeLengthError reuses411700/D69260/411940/411780. Native CC22D8->DFB554 maxState1/unwindmapDFB54C{-1,CC22D0}, action4072D0 verified; no FH3/SEH/native throwABI"
+  },
+  "verification": {
+    "strict_build": "./scripts/build.ps1",
+    "ctests": "2/2 reconstructed_math,tool_tests",
+    "byte_evidence": [
+      {
+        "address": "00b83490",
+        "length": 170,
+        "sha256": "134008a558bbdd897dac7f097c081790ca3c23b58fdf4818811abf65fc0372ba",
+        "live_equals_installed": true
+      },
+      {
+        "address": "00b83560",
+        "length": 108,
+        "sha256": "1748d0a1dc8b3ea9f32732f9c6bd2808e0da3ef1fc6c7b08803da34de41c7409",
+        "live_equals_installed": true
+      },
+      {
+        "address": "00b82d30",
+        "length": 147,
+        "sha256": "204e3842172dc112536c0e6016162a6427d62f70ebcc1173c198ca02263439b1",
+        "live_equals_installed": true
+      },
+      {
+        "address": "00cc22d0",
+        "length": 8,
+        "sha256": "5d5d37fc63fd8abc5ef49776564d84fb0c995f9088d44d3a868ecdb5d52d965c",
+        "live_equals_installed": true
+      },
+      {
+        "address": "00cc22d8",
+        "length": 10,
+        "sha256": "3fc10cb3af2445c8917f2ece187ae91dec78e737b0cdf439d211cf6c7f6bd6e6",
+        "live_equals_installed": true
+      },
+      {
+        "address": "00ce38f8",
+        "length": 17,
+        "sha256": "137ba7b8130c7be0ea882fe7eb408a7dd1c2b6913a9577da91b84bbdd756734c",
+        "live_equals_installed": true
+      }
+    ],
+    "call_verifier": "16 native rows checked,0 failed; CC22DD raw missing-function row validates BF6B43 callee only, exact bytes/range separately proved",
+    "probe": {
+      "source": "local/output/cc10_registry_adapters_probe.cpp",
+      "command": "cl /nologo /MD /EHsc /std:c++20 /O2 /Gy /W4 /WX /fp:strict /I include /I local\\output /Fo:local\\output\\ /Fe:local\\output\\cc10_registry_adapters_probe.exe local\\output\\cc10_registry_adapters_probe.cpp build\\win32\\Release\\bsp_core.lib build\\win32\\Release\\bsp_lua511.lib build\\win32\\Release\\bsp_zlib121.lib /link /OPT:REF /MANIFEST:EMBED user32.lib d3d9.lib advapi32.lib shell32.lib",
+      "assertions": "NDEBUG absent; compile-time #ifdef NDEBUG rejection; no /DNDEBUG",
+      "exit_code": 0,
+      "comparison_pairs": 1,
+      "checks": [
+        "actual28 registry growth then shrink, fullallocatedvector content andcurrentarguments",
+        "allocator callback changes incoming request/pair after nestedpaircapture",
+        "shrink originalincomingpair reused asresult",
+        "assign returning handler repairsbegin/end, changescount, poisons sourcepointer andoverwritesoriginalpair while capturedlocalpairpersists",
+        "capturedend/currentbegin andlatecount observed",
+        "original/source normalB82D30 unsignedunderflow/wrap anduntouchedscratch",
+        "source-only overflow exactowningD69260 payload16B+NUL, countunchanged andrawSBOcleanup"
+      ],
+      "shared_boundary": "copied outer original bodies use genuine source B82FD0/B82BF0, rawconstructors and sharedactualallocator/free/returningvalidation services. Original normalB82D30 only; native overflow/FH3 not executed.",
+      "not_tested": "original vector internal machine code, original CRTdiagnostic/FH3/throw transport, arbitraryprivateframealiases, fullregistry/application/gameplay"
+    }
+  },
+  "limits": [
+    "Caller-preimage address-stable frames disjointfromactualvector/backing; incomingassignpair mayaliascurrentdata/callercells.",
+    "Genuine returning BF6713 and existing actual allocation/free/length-error bindings required; no default/no-op.",
+    "No custom container/CRTport or logicalSceneNodeRegistry; listcheckedsize doesnotallocate/link nodes.",
+    "No fullB83700/B83E50/registration/sceneattachment/AC59A0 or nativeABI/gameclaim."
+  ],
+  "ghidra_mutations": false,
+  "abi_compatible": false,
+  "application_bound": false,
+  "game_validated": false,
+  "frozen_evidence": [
+    {
+      "path": "local/cc10_registry_adapters_build.log",
+      "bytes": 2910,
+      "sha256": "f024598f873e472a2f774cb4f87ab7fbd6d41036e879909bae4db882c7abff45"
+    },
+    {
+      "path": "local/output/cc10_registry_adapters_bytes.hpp",
+      "bytes": 2396,
+      "sha256": "91dd99db1bf7a1fe19c16e763a5c6c88f0410ae37e79e8ec23da6579cb55a044"
+    },
+    {
+      "path": "local/output/cc10_registry_adapters_calls.log",
+      "bytes": 218,
+      "sha256": "3a35230ab1f23438c2e79ff8405b188382d7a83bc45ecfaed39367f662425fa7"
+    },
+    {
+      "path": "local/output/cc10_registry_adapters_capture.py",
+      "bytes": 2159,
+      "sha256": "606176548edb6ffb606a38f22fdd29677ee6c09de78a4e482de4c568acb7a8a6"
+    },
+    {
+      "path": "local/output/cc10_registry_adapters_ledger.py",
+      "bytes": 2615,
+      "sha256": "c6ac579434d6bfbc91c3f71f14f42b294ff6656dacd1bb71ce0f3e51329516f6"
+    },
+    {
+      "path": "local/output/cc10_registry_adapters_probe.cmd",
+      "bytes": 608,
+      "sha256": "b9a7f8d88eaf976054ab51d1a2339217e936035ae044312a6c834818951275fa"
+    },
+    {
+      "path": "local/output/cc10_registry_adapters_probe.cpp",
+      "bytes": 12527,
+      "sha256": "6558367758abe50f2d5dbb79e94962c2d364c1257a5d61daa9fbb7104f796fbe"
+    },
+    {
+      "path": "local/output/cc10_registry_adapters_probe.log",
+      "bytes": 278,
+      "sha256": "fd891f6ed117443dab2cd33c26f0759e44671c0bcd676f991030a92fad2de207"
+    },
+    {
+      "path": "local/output/cc10_registry_adapters_probe_prebuild.log",
+      "bytes": 278,
+      "sha256": "fd891f6ed117443dab2cd33c26f0759e44671c0bcd676f991030a92fad2de207"
+    },
+    {
+      "path": "local/output/cc10_registry_adapters_report.py",
+      "bytes": 7136,
+      "sha256": "5c205f6aa109a33d59b5470140e2dab4c6fbdf45e85c4e637cf627328b3d3b9c"
+    },
+    {
+      "path": "local/output/cc10_registry_adapters/00b82d30_0.txt",
+      "bytes": 1799,
+      "sha256": "822714c1bfc81baf9fc04380b8ca79a2f354b2fc889f5b316a170692443cb903"
+    },
+    {
+      "path": "local/output/cc10_registry_adapters/00b82d30_bytes.txt",
+      "bytes": 718,
+      "sha256": "d682638c099dd96bb5a238c76b650796f6221138b8c308dd7722f2056053ab85"
+    },
+    {
+      "path": "local/output/cc10_registry_adapters/00b83490_0.txt",
+      "bytes": 2208,
+      "sha256": "00beb36c8978644fffd3324eb9c888694ac4aa4666d39e332045fe9fd35cc529"
+    },
+    {
+      "path": "local/output/cc10_registry_adapters/00b83490_55.txt",
+      "bytes": 1211,
+      "sha256": "01d108471d8b77d630f09366d43130ec6e40aeead2cfae1521e7d65aa40728d1"
+    },
+    {
+      "path": "local/output/cc10_registry_adapters/00b83490_bytes.txt",
+      "bytes": 823,
+      "sha256": "c54ddfe118de99d25a77263315c03d397698a912268c7ef70f1381637f920e9a"
+    },
+    {
+      "path": "local/output/cc10_registry_adapters/00b83560_0.txt",
+      "bytes": 1917,
+      "sha256": "5783f9bd18f3c6600b0567cf86f9c4d383c190205293767abf6d3f20e57aae10"
+    },
+    {
+      "path": "local/output/cc10_registry_adapters/00b83560_bytes.txt",
+      "bytes": 523,
+      "sha256": "c0022d7ced92fbe94c84c76b09a75e06222ef1b381e1c6d6bb4a835d81689504"
+    },
+    {
+      "path": "local/output/cc10_registry_adapters/00cc22d0_bytes.txt",
+      "bytes": 45,
+      "sha256": "5e9767613ce966f75f1e4ed10116638356bdd01c9f1436f6b09e8bc896afa73f"
+    },
+    {
+      "path": "local/output/cc10_registry_adapters/00cc22d8_bytes.txt",
+      "bytes": 53,
+      "sha256": "20a2dc76a526940f4876fa074abd7ab26083fe06e93f0ee603426392b32f1579"
+    },
+    {
+      "path": "local/output/cc10_registry_adapters/00ce38f8_bytes.txt",
+      "bytes": 94,
+      "sha256": "7a92eed1a5fa7ff4f9d96266a90abed1e318d65b0190bdb0ad82dfa68cb81de3"
+    },
+    {
+      "path": "local/output/cc10_registry_adapters/byte_evidence.json",
+      "bytes": 1063,
+      "sha256": "6be7e24db12123334efbd179c7e0a3c97865a3ded3c3b00e481985e46d71aee0"
+    },
+    {
+      "path": "local/output/cc10_registry_adapters/compiler_boundaries_disk.txt",
+      "bytes": 183,
+      "sha256": "4645c4a274f35ffeb272caa6b6159e5e4a785400eb00ef40e4b41b324c51ad97"
+    },
+    {
+      "path": "local/output/cc10_registry_adapters/compiler_boundaries_proto.txt",
+      "bytes": 505,
+      "sha256": "4b7fbf12b5dcd630be8c45495734be8d3002b5c479c0c2ca5b3898fadbeb2b82"
+    },
+    {
+      "path": "local/output/cc10_registry_adapters/eh_descriptor.txt",
+      "bytes": 199,
+      "sha256": "13721c3a581c99af0cbaacb15517f09d34fed94c6d6dc12ba5db2cb386cff454"
+    }
+  ],
+  "prior_records": "Existing names and broader host-registry fragments retained; these three adapter bodies had no prior reconstruction entry."
+}
