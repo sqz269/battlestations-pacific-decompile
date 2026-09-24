@@ -310,12 +310,53 @@ section's predictions extend section 6.
     not touch.
 - **Gameplay lines expected identical:** every gameplay summary line.
 
-## 12. The part 3 pair: not run yet
+## 12. The pairs, run 2026-09-23
 
-At 18:17 and 18:23 PDT on 2026-09-23 the 120-frame probe (`local\cam_probe120b.log`,
-`local\cam_probe120c.log`) still died with `device_created=0 device_hr=0x80004005`, and
-`query session` from this shell still showed session 1 as Disc. All three switches are landed OFF: `kMissionCameraBound`, `kMissionFovBound` and `kHudMarkerPoolsBound`.
+**Setup.** The desktop session came back and the 120-frame probe created a device
+(`local\probe_d.log`). Every leg below is built from this tree on main `2988f62d2`, with
+`BSP_GUNNERY_RNG_STREAMS=1` and the USN04 4500 parameters of section 5.
 
-The pairs are built at run time from this tree:
-1. The camera pair: `kMissionCameraBound` off, then on.
-2. This pair: camera on, with `kMissionFovBound` and `kHudMarkerPoolsBound` off, then on.
+**The back buffer is now 2560x1440, not 640x480.** The options follow the desktop. Both legs share
+this state, but the 4/3 aspect substitution (section 5) now differs from the platform's 16/9.
+
+**A row-key finding.** The host's call table keys a row by name and address and keeps the status of
+the row's first call. The minimap asks for the camera once before the ShipCaptain binds, so its
+record row absorbed every later done call. The first ON leg (`local\cam_on_usn04.log`) shows the
+00B6DB70 row flat for that reason alone. The done path now has its own row,
+`HudMinimap::refresh_camera_world`, and the ON legs were re-run.
+
+**The camera pair.** `local\cam_off_usn04.log` against `local\cam_on2_usn04.log`.
+
+| row | OFF | ON |
+| --- | ---: | ---: |
+| unimplemented total | 2,263,772 | **2,194,690** (-69,082; predicted about -69,081) |
+| HudMarkers::view_projection_matrix 00B70490 | 73,264 UNIMPLEMENTED | 73,264 done |
+| HudMinimap::refresh_renderer_basis 00B6DB70 | 18,320 UNIMPLEMENTED | 4 UNIMPLEMENTED (before the bind), plus 18,316 done as `refresh_camera_world` |
+| MissionCamera::collision_ray 0098B370 | | 22,495 UNIMPLEMENTED |
+| MissionCamera::phase_draw 00BD2F10 | | 3 UNIMPLEMENTED |
+| MissionCamera::update, publish_pose | | 4,499 done each |
+| MissionCamera::ocean_height 0078CF20 | | 44,990 done |
+| MissionCamera::bind_ship_view 0064DA40 | | 1 done |
+
+- **Summary lines.** Of the 155, only the mission-markers line moved, `collapsed` 1 to 0, as
+  predicted. Every gameplay line is identical.
+- **Bind log.** The camera bound to "Lexington-class01" with ShipCamera (1.25, 1.0, -89, 89) and the
+  class distances (250, 150, 50, 45; Length 250). Its yaw is -1.0123 and its pitch -0.1745.
+- **Result.** The pair matches. **`kMissionCameraBound` flips ON in its own commit.**
+
+**The FOV and marker-pools pair.** The OFF leg is the camera ON leg, `local\cam_on2_usn04.log`: the
+same binary with the FOV and pool switches off. The ON leg is `localp_on2_usn04.log`.
+
+| row | OFF | ON |
+| --- | ---: | ---: |
+| unimplemented total | 2,194,690 | **2,176,374** (-18,316; predicted -18,316) |
+| HudMarkers::reset_marker_pool 00640620 | 18,316 UNIMPLEMENTED | 18,316 done |
+| MissionCamera::pipe_sight_fov 004DC940 | | 4,499 done |
+
+- **Summary lines.** All 155 are identical, the markers line included. Section 11 had expected
+  `on_screen` or `collapsed` to move under the 30-degree fov; with one marker on screen in both
+  legs, neither did.
+- **Result.** The pair matches on every row. **`kMissionFovBound` and `kHudMarkerPoolsBound` flip ON
+  in their own commit.**
+
+The pretranslate callback count differs between identical runs, as in every earlier pair.
