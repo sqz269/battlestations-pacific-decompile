@@ -889,3 +889,146 @@ the follow.
 
 **Switch state landed: `kPlaneFollowCatchupBound` ON.** It carries the image's terms with no
 measured effect.
+
+## 16. Why the Kate wing opens: the leader's moveto speed (packet cc9_wing_achieved_speed)
+
+### 16.1 The per-tick cause
+
+A diagnostic trace, `kWingTraceEvery` (off in the landed build), logged Kate #4.1's leader and its
+three wingmen every 0.5 s. The logs are `local\WT_4000.log` and `local\WT2_1800.log`, both on the
+C1 tree.
+
+| t (s) | leader v (m/s) | leader cmd 2B4h | .-2 / .-3 / .-4 station distance (m) | arm (.-2/.-3/.-4) |
+| --- | --- | --- | --- | --- |
+| 27 | 61.3 | 35.0 | 3.2 / 3.1 / 3.3 | hold / hold / hold |
+| 29 | 41.6 | 35.0 | 41.9 / 45.5 / 76.3 | hold / hold / hold |
+| 30 | 36.0 | 35.0 | 65.7 / 70.5 / 118.4 | hold / hold / fly-to |
+| 32 | 33.9 | 35.0 | 100.2 / 115.5 / 185.2 | all fly-to |
+| 40 | 36.3 | 35.0 | 98.9 / 242.0 / 336.3 | hold / fly-to / fly-to |
+| 80 | 35.3 | 35.0 | 6.8 / 1405.7 / 1041.6 | hold / fly-to / fly-to |
+
+1. All four aircraft start on station at the spawn speed, 61 m/s.
+2. The leader's moveto commands 35 m/s, which is 007C47F0 = LevelFlight 1.8 x StallSpd 19.44. It
+   brakes from 61 to 33 m/s in 3 s.
+3. The hold arm's power law does not brake the members that hard: they are still at 45-57 m/s at
+   30 s. They overshoot past 100 m and flip to the fly-to arm.
+4. On the fly-to arm the command is the catch-up ramp (118-135 m/s), so they run at full throttle,
+   69-70 m/s, while the leader cruises at 35.
+5. The trace's leader-frame columns show .-3 and .-4 AHEAD of the leader: 42-116 m at 35-40 s,
+   1444 m and 1150 m at 80 s. They fly the leader's heading (2.25-2.40 rad against 2.37).
+6. The lead-pursuit carrot, the station pushed (D + 250) m along the track, stays ahead of them.
+   The alignment ramp's cosine (station behind, so dot < DEG(30)) keeps them on the catch-up
+   speed. They never turn back.
+
+So the "wing behind a fast leader" reading of section 15 was wrong in direction. The wing runs
+AWAY AHEAD of a leader that is too slow.
+
+### 16.2 The term: the moveto speed slot 009C1850
+
+```
+009C1856  eax = [state+4]                 the approach
+009C1859  ecx = [eax+0Ch]                 the squadron
+009C185C  a = [ecx+3A0h]
+009C186A  b = 007C47F0([eax+8])           LevelFlight x StallSpd
+009C1895  CALL 009BECD0(a, b, sep)        -> cmd+2B4h (009C189A), +2B0h = 0, +2D8h = 1
+```
+
+**squadron+3A0h** is written from the squadron class's desc+190h at 007F201A-007F202A (in
+007F1FE0), at 007ED596-007ED5AE (007ED590) and at 007ED5F4-007ED5FA (007ED5D0, called from
+0099ACD0 BSP_PilotBot_Tick). desc+190h is TravelSpeed x tuning+334h NewTravelSpeedMul (1.6 in this
+installation's planeglobals.lua, whose comment says it makes the travel speed the maximum speed),
+per `include/bsp/plane_class_fields.hpp`. For a Kate that is 61.11 x 1.6 = 97.8 m/s.
+
+**009BECD0** is already read and reconstructed for the dogfight
+(`bsp::dogfight_moveto_speed_009becd0`, `include/bsp/dogfight_task.hpp`):
+`b + (a - b) x max(interp(WingmenWaitDist1 -> 0, WingmenWaitDist2 -> 0.5, sep), 007EF2C0(wingmen))`.
+
+So in the image the leader is commanded 97.8 m/s, which is effectively MaxSpd. It slows toward
+35 m/s only when the wingmen value 009BE3E0 says a member is badly placed AHEAD, or out of heading,
+and then only inside WaitDist2. **The host's torpedo and dive moveto used b alone.** This is the
+divergence.
+
+`kMovetoSpeedBlendBound` binds 009C1850 at both moveto ticks. The members' 009BE3E0 values come
+from the follow state the law now records per tick.
+
+**Substitutions, labelled in the code:**
+- The torpedo and dive tasks' own vtable[4Ch] bodies (00999AE0's answer) are unread. A member in
+  the follow state answers 009BE3E0 and any other state answers -1, as the dogfight task's
+  009A9C60 does.
+- The squadron's class is the member's own class.
+- The dive moveto's separation is approach+BCh.
+
+### 16.3 Predictions for the pair, written before it
+
+The pair is A0 (switch off) against A1 (on), E2 9000 with the stream option. A diagnostic
+1800-frame trace with the switch on (`local\WT3_1800.log`) shows the leader at 70-81 m/s and the
+wing trailing at stable gaps of 180-350 m and 590-660 m. The members are all on the fly-to arm at
+MaxSpd and do not run away.
+
+| row | A0 (expected = C1) | A1 prediction |
+| --- | --- | --- |
+| Kate leader moveto speed | 35 m/s | 70-80 m/s (commanded 97.8) |
+| Kate #4.1 pairwise at census tick 400 / 900 | growing, 0-2 about 1476 m by tick 1600 | stable, all pairs 150-800 m |
+| hold / fly-to ticks | 8201 / 18442 | hold down (2000-6000), fly-to 15000-30000 |
+| Kate attack timing | as C1 | aim entry 30-70 s earlier; each wave reaches its target in about half the time |
+| torpedo drops | 8 | 8 ± 4: earlier runs meet a different AA and fighter picture |
+| Kate deaths | 16 | 16 ± 3 |
+| fighter hits | 32 | ±50%: the fighters meet the Kates at different times |
+| Vals | as C1 | flat: Val leaders spend 0 ticks in moveto |
+| Lexington | alive | alive |
+
+### 16.4 The pair, measured (A0 against A1)
+
+Both runs are E2 9000 with `BSP_GUNNERY_RNG_STREAMS=1`, on main d7c639279 plus this packet.
+
+**A0 does not reproduce C1.** Main moved between the two, so A0 is the reference: 6 torpedoes,
+6 bombs, 44 fighter hits, damage 11328.7, the Lexington alive.
+
+| row | A0 (off) | A1 (on) | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| Kate leader moveto speed | 35 m/s | 70-81 m/s (trace WT3) | 70-80 | held |
+| Kate #4.1 pairwise at census tick 400 | 95-341 m | 137-440 m, stable in the trace (no run-away) | 150-800 m | held (one pair at 137 m) |
+| hold / fly-to ticks | 8286 / 12747 | 5161 / 25592 | hold 2000-6000, fly-to 15000-30000 | held |
+| Kate #4.1 / #8.1 leader aim entry | 144.20 / 237.90 s | 107.90 / 193.40 s | 30-70 s earlier | held (36 s and 44 s) |
+| torpedo drops | 6 | 4 | 8 ± 4 in the control's terms | held (-2) |
+| Kate deaths | 16 | 16 | 16 ± 3 | held |
+| fighter hits | 44 | 18 | ±50% | **missed** (-59%) |
+| bomb drops (aircraft) | 6 (#3.1\|.-3, #3.1\|.-4, #7.1\|.-2) | 2 (#7.1\|.-3) | flat | **missed** |
+| deaths (all) | 38 | 37 | - | - |
+| damage | 11328.7 | 8260.0 | - | - |
+| Lexington | alive | alive | alive | held |
+
+**What moved.**
+- **The torpedo waves arrive 36-44 s earlier and meet a different AA picture.** Kate #4.1's leader
+  is shot down by Northampton-class03 at 123.30 s, 733.5 m out and before its release (A0: it
+  released at 446.7 m at 164.20 s). Only one of its wingmen releases, at 371.0 m.
+- **The Val and fighter rows move through the same coupling.** The Val leaders spend 0 ticks in
+  moveto, so no Val's own law changed. Their paths change because the fighters and the AA are
+  elsewhere when the Kates arrive earlier.
+
+**Switch state landed: `kMovetoSpeedBlendBound` ON.** It carries the image's 009C1850 form: the
+wing no longer runs away ahead of a 35 m/s leader, and the leader flies its TravelSpeed x 1.6
+command. The trailing gaps that remain (on the fly-to arm at MaxSpd, behind a leader also at
+MaxSpd) are the image's own law, not a divergence. The diagnostic trace stays in the source,
+off (`kWingTraceEvery = 0`).
+
+### 16.5 The member-placement query, read (packet cc9_yorktown_order_split)
+
+00999AE0 asks each member's first task with vtable[34h] false for vtable[4Ch]. Both tasks' +34h
+is 0099B700 (`XOR AL,AL`). The two +4Ch bodies have no Ghidra function
+(`reports/yorktown_order_split.json`):
+
+| task | vtable slot +4Ch | body | follow state | prepare state |
+| --- | --- | --- | --- | --- |
+| dive-bomb | 00D20E18+4Ch | 009C8260-009C828C | +52Ch -> JMP 009BE3E0 | +5C4h -> JMP 009BE3E0 |
+| torpedo | 00D213C8+4Ch | 009D4970-009D499C | +580h -> JMP 009BE3E0 | +740h -> JMP 009BE3E0 |
+
+Any other state jumps to 0099B720, which is `FLD [00D7A260]` = -1.0f; RET.
+
+**Change.** The section 16.2 substitution (torpedo follow only) is replaced by this form, inside
+`kMovetoSpeedBlendBound`: torpedo or dive-bomb follow or prepare answers 009BE3E0, and anything
+else answers -1.
+
+**No pair was run for it.** In E2 no aircraft enters prepare (`prepare_entries=0`) and no Val
+spends a tick in the dive follow state (`follow>attackrun@0`), so the added states are never
+reached there.

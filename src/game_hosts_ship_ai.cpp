@@ -199,6 +199,11 @@ inline constexpr bool kShipAvoidZoneEscapeBound = true;
 // gets 009ECA20's travel layer. False: the plan block's own zone_layer, as before.
 // Landed ON after the USN01 3000 pair (docs/SHIP_NEIGHBOUR_AVOIDANCE.md section 1).
 inline constexpr bool kShipPlannerTravelLayerBound = true;
+// Packet cc9_free_bearing_query, docs/SHIP_NEIGHBOUR_AVOIDANCE.md section 6. True:
+// 009F4D10's -1.0f store at 009F4D27 into blk+33Ch, so the drive's rudder clamp
+// gate at 009F4511 (blk+33Ch < 0) is open except on ticks where the traffic pass
+// wrote a distance. False: the store is dropped and the gate stays shut.
+inline constexpr bool kShipRudderGateStoreBound = true;
 inline constexpr float kTorpedoCollectTimer1 = 1.5f;
 inline constexpr float kTorpedoCollectTimer2 = 2.0f;
 // Packet cc9_station_keeping, docs/STATION_KEEPING.md. True: the follow update's
@@ -237,6 +242,15 @@ inline constexpr bool kShipNeighbourNullModelBandSubstituted = true;
 // run over the consumers' list. False: the records and the clearance's zero
 // count, as before.
 inline constexpr bool kShipNeighbourClipsBound = true;
+// Packet cc9_pass_side_message, docs/SHIP_NEIGHBOUR_AVOIDANCE.md section 5. True:
+// 009D8C60's kind-8Fh message (009D66B0: +1Ch the observed ship's id, +20h the
+// side) is routed as 0077C2A0 routes it in a local session: back to the posting
+// ship itself, queued, and drained by the session pump 00778450 at fixed-step
+// row 9, which runs before the world entity tick that steps the AI, so it lands
+// at the start of the next step. 00780670 -> 00780120 -> 0077FE80 ->
+// vtable[164h] 00821E80's 8Fh arm (00822294) -> the ai's vtable[28h] 009F3E30 ->
+// 009D8CE0, which writes node+88h. False: the post is a record, as before.
+inline constexpr bool kShipPassSideMessageBound = true;
 inline constexpr float kShipNeighbourNullModelMaxY = 50.0f;
 inline constexpr float kShipNeighbourNullModelMinY = -10.0f;
 namespace {
@@ -456,6 +470,7 @@ struct GameShipAiHost::Impl {
     bool layer_timing_loaded{false};
     // Packet cc9_ship_torpedo_response: the same host, for its stream-1 draw.
     GameGunneryHost* gunnery_draws{nullptr};
+    unsigned long long traffic_trace_lines{0};
     std::vector<GameGunneryHost::LiveTorpedo> live_torpedo_cache;
     unsigned long long live_torpedo_cache_step{~0ull};
 
@@ -531,6 +546,17 @@ struct GameShipAiHost::Impl {
     }
     bsp::GameplayTuningSettings neighbour_settings_storage{};
     bool neighbour_settings_loaded{false};
+    // Packet cc9_pass_side_message: the loopback queue at session+24Ch, as far as
+    // the kind-8Fh pass-side messages go. `sender` is both the router's entity
+    // and the addressee (msg+18h = sender+174h); `other` is msg+1Ch resolved.
+    struct PassSideMessage {
+        std::size_t sender{0};
+        std::size_t other{0};
+        int side{0};
+    };
+    std::vector<PassSideMessage> pass_side_queue;
+    // 00778450 -> ... -> 009F3E30 -> 009D8CE0 for every queued message, in order.
+    void deliver_pass_side_messages();
     bsp::ShipAiPathSearchTurnRamp path_turn_ramp{};
     bool path_turn_ramp_loaded{};
     const bsp::SessionParticipantPools* session_participants{};
@@ -4050,13 +4076,17 @@ public:
                 const std::size_t other = NeighbourList::store(node_608(i)).unit;
                 return owner.units.unit_formation_group_0284(other) == group;
             }
-            void post_pass_side_009d8c60(int, int) override {
+            void post_pass_side_009d8c60(int i, int side) override {
                 // 009D66B0 builds the (observed owner, side) message and
-                // 0077C2A0 routes it to this unit; its handler is the brain
-                // vtable slot 009F3E30 (00D21B10), which reaches 009D8CE0 and
-                // node+88h. Neither the message nor the handler is bound.
+                // 0077C2A0 routes it back to this unit (kShipPassSideMessageBound).
                 ++row.neighbour_pass_posts;
-                owner.record("ShipAiNeighbour::pass_side_message_0077c2a0", 0x0077c2a0u);
+                if (!kShipPassSideMessageBound) {
+                    owner.record("ShipAiNeighbour::pass_side_message_0077c2a0", 0x0077c2a0u);
+                    return;
+                }
+                owner.done("ShipAiNeighbour::pass_side_message_0077c2a0", 0x0077c2a0u);
+                owner.pass_side_queue.push_back(
+                    {index, NeighbourList::store(node_608(i)).unit, side});
             }
         } host(owner_, ctl_, index_, owner_.rows[index_]);
         const bsp::GameplayTuningSettings& settings = owner_.neighbour_settings();
@@ -4089,18 +4119,91 @@ public:
         // and +354h. +88h is 0 from 009E5364; its only non-zero writer is
         // 009D912F, reached through 009F3E30, a brain vtable slot (00D21B10)
         // with no identified caller. With every +88h zero the pass is whole.
-        if (kShipNeighbourAvoidanceBound) {
-            bool crossing = false;
-            for (const bsp::ShipAiObstacleNode* node : ctl_.neighbours) {
-                if (node->pass_side_88 != 0) crossing = true;
+        if (!kShipNeighbourAvoidanceBound) {
+            owner_.record("ShipAiOrder::tail_009ef350", 0x009ef350u);
+            return;
+        }
+        // Packet cc9_pass_side_message: the whole pass, 009DCEB0 and 009D7AF0.
+        struct TrafficHost final : bsp::ShipAiTrafficPassHost {
+            GameShipAiHost::Impl& owner;
+            GameShipAiHost::Impl::Controller& ctl;
+            std::size_t index;
+            TrafficHost(GameShipAiHost::Impl& o, GameShipAiHost::Impl::Controller& c,
+                        std::size_t i) : owner(o), ctl(c), index(i) {}
+            int count_604() override { return ctl.nav_block.neighbour_count_604; }
+            bsp::ShipAiObstacleNode& node_608(int i) override {
+                return *ctl.neighbours[static_cast<std::size_t>(i)];
             }
-            if (!crossing) {
-                if (!ctl_.neighbours.empty()) ++owner_.rows[index_].traffic_passes;
-                owner_.done("ShipAiOrder::tail_009ef350", 0x009ef350u);
-                return;
+            bsp::ShipAiNeighbourPassState& pass_state(int i) override {
+                return NeighbourList::store(node_608(i)).pass;
+            }
+            bool owner_gone_5e(int i) override {
+                bsp::SceneNodeFlags flags;
+                return owner.units.read_scene_node_flags(node_608(i).owner, flags)
+                    && flags.destroyed;
+            }
+            int owner_party_54(int i) override {
+                return owner.units.unit_side_0054(NeighbourList::store(node_608(i)).unit);
+            }
+            float unit_heading_vtable50() override {
+                return owner.units.unit_heading_radians(index);
+            }
+        } host(owner_, ctl_, index_);
+        bsp::ShipAiTrafficPassInputs in;
+        // 009EF35E..009EF3B2: the same three-way filter 009F0EA0 applies.
+        const int filter = ctl_.avoidance.side_filter_3f8;
+        GameDirectorAvoidance director;
+        const bool director_ship = owner_.units.director_avoidance(index_, director)
+            && director.ship;
+        const bool all_ships = owner_.avoid_all_ship_collision();
+        for (int party = 0; party < 3; ++party) {
+            in.party_accepted[party] = filter >= 0 && director_ship && all_ships
+                && (party == 3 || filter == 3 || party == filter);
+        }
+        in.mode_35c = static_cast<int>(ctl_.blk.direction);
+        in.pose_184 = ctl_.hull_geometry.position_184;
+        in.forward_1ac = ctl_.hull_geometry.forward_1ac;
+        // blk+33Ch is ctl_.obstacle.published_33c, which 009F4514 reads. 009F4D27's
+        // -1.0f store before this call is not bound in this host (the publish
+        // result's blk_33c is dropped), so the field is never negative and the
+        // rudder clamp it gates stays shut on either side of this switch.
+        const float target_before = ctl_.blk.heading_target_324;
+        const bsp::ShipAiTrafficPassResult result = bsp::ship_ai_traffic_pass_009ef350(
+            in, ctl_.blk.heading_target_324, ctl_.obstacle.published_33c, ctl_.blk.clamp_354,
+            host);
+        // Packet cc9_free_bearing_query: a trace of the large turns (INSTRUMENTATION).
+        if (result.wrote && std::fabs(result.turn) > 2.0f && owner_.traffic_trace_lines < 40) {
+            ++owner_.traffic_trace_lines;
+            owner_.log.notef("  traffic trace step=%llu unit=%s heading=%.4f target_before=%.4f "
+                "target_after=%.4f turn=%.4f side1=%d side2=%d dist=%.1f mode=%d",
+                owner_.steps, owner_.rows[index_].unit.c_str(),
+                static_cast<double>(owner_.units.unit_heading_radians(index_)),
+                static_cast<double>(target_before),
+                static_cast<double>(ctl_.blk.heading_target_324),
+                static_cast<double>(result.turn), result.side1, result.side2,
+                static_cast<double>(ctl_.obstacle.published_33c), in.mode_35c);
+            for (int i = 0; i < host.count_604(); ++i) {
+                const auto& pass = host.pass_state(i);
+                if (!pass.flag_74) continue;
+                auto& node = host.node_608(i);
+                owner_.log.notef("    node %d owner=%s side=%d bearing=%.4f dist2=%.1f",
+                    i, owner_.rows[NeighbourList::store(node).unit].unit.c_str(),
+                    node.pass_side_88,
+                    static_cast<double>(pass.bearing_70), static_cast<double>(pass.distance2_6c));
             }
         }
-        owner_.record("ShipAiOrder::tail_009ef350", 0x009ef350u);
+        if (result.wrote && ctl_.throttle_profile.hold_354 < ctl_.blk.clamp_354) {
+            // blk+354h is projected twice in this host (see section 4 of
+            // docs/HEADING_TARGET_SECTIONS.md): keep the throttle profile's copy.
+            ctl_.throttle_profile.hold_354 = ctl_.blk.clamp_354;
+        }
+        owner_.done("ShipAiOrder::tail_009ef350", 0x009ef350u);
+        GameShipAiRow& row = owner_.rows[index_];
+        if (!ctl_.neighbours.empty()) ++row.traffic_passes;
+        if (result.wrote) {
+            ++row.traffic_writes;
+            row.traffic_max_turn = std::max(row.traffic_max_turn, std::fabs(result.turn));
+        }
     }
     void tail_009ef910(float) override {
         owner_.record("ShipAiOrder::tail_009ef910", 0x009ef910u);
@@ -6316,6 +6419,10 @@ public:
         return false;
     }
     void publish_009f4d10(float seconds) override {
+        // Packet cc9_free_bearing_query: 009F4D27 MOVSS [ESI+33Ch], XMM0 with
+        // XMM0 = [00D7A260] = -1.0f, the routine's first store, before 009EF350
+        // may overwrite it with the nearest traffic distance.
+        if (kShipRudderGateStoreBound) ctl_.obstacle.published_33c = -1.0f;
         PublishBinding publish(owner_, ctl_, index_);
         const bsp::ShipAiPublishResult result = bsp::ship_ai_publish_order_009f4d10(
             ctl_.blk.heading_target_324, ctl_.blk.distance_32c, ctl_.blk.distance_330,
@@ -6914,6 +7021,7 @@ void GameShipAiHost::Impl::drive_order_ring_009f3f80(std::size_t index, Controll
     ObstacleBinding obstacle(*this, index);
     obstacle.set_direction(ctl.blk.direction);
     const float rudder_before = ctl.blk.desired_rudder;
+    if (ctl.obstacle.published_33c < 0.0f) ++row.rudder_gate_open;
     bsp::ship_ai_drive_order_ring_middle_009f40ca(ctl.blk, ctl.obstacle, frame, settings,
                                                   ceiling, obstacle);
     done("ShipAi::drive_order_ring_body", 0x009f40cau);
@@ -7148,10 +7256,63 @@ void GameShipAiHost::register_units(GameMissionLuaHost& lua, std::int32_t sessio
         "generic command/director owners remain separate", host.summary.nav_blocks, count);
 }
 
+void GameShipAiHost::Impl::deliver_pass_side_messages() {
+    std::vector<PassSideMessage> due;
+    due.swap(pass_side_queue);
+    auto find = [&](std::size_t observer, std::size_t observed) -> NeighbourNodeStore* {
+        // 009DA690: the first node of blk+608h whose +14h is the observed unit.
+        const NeighbourList& list = controllers[observer].neighbour_list;
+        const void* identity = units.unit_identity(observed);
+        for (std::int32_t i = 0; i < list.count; ++i) {
+            bsp::ShipAiObstacleNode* node = (*list.slots)[static_cast<std::size_t>(i)];
+            if (node->owner == identity) return &NeighbourList::store(*node);
+        }
+        return nullptr;
+    };
+    auto slot = [&](std::size_t unit) {
+        const auto& order = controllers[unit].order;
+        const auto& record = order.slots[1 - order.index];  // unit+A98h+54h*[unit+B40h]
+        return bsp::ShipAiOrderSlotView{record.distance_40, record.heading_44,
+                                        record.distance_48};
+    };
+    for (const PassSideMessage& m : due) {
+        // 00780670: the addressee (msg+18h, the sender) must resolve; this host
+        // takes an inactive unit as unresolved and drops the message.
+        if (!units.unit_active(m.sender)) continue;
+        done("ShipAiNeighbour::pass_side_deliver_00821e80", 0x00822294u);
+        // 00822298: 00521E30 resolves msg+1Ch, 00815010 keeps a kind-6 unit.
+        if (m.other >= controllers.size() || !units.unit_is_kind_of(m.other, 6)) continue;
+        // 009F3E30: this ship's node for the other, then the other ship's ai
+        // (unit+740h) and its node for this ship.
+        NeighbourNodeStore* n1 = find(m.sender, m.other);
+        if (n1 == nullptr) continue;
+        if (!controllers[m.other].nav_block_built) continue;
+        NeighbourNodeStore* n2 = find(m.other, m.sender);
+        bool torn_down = false;
+        if (n2 != nullptr) {
+            bsp::SceneNodeFlags flags;
+            torn_down = units.read_scene_node_flags(n2->node.owner, flags) && flags.torn_down;
+        }
+        const int before = n1->node.pass_side_88;
+        bsp::ship_ai_predict_track_crossing_009d8ce0(
+            n1->node, n1->pass, m.side, n2 != nullptr ? &n2->node : nullptr, torn_down,
+            slot(m.other), slot(m.sender), units.unit_hull_length_09c8(m.other),
+            units.unit_hull_length_09c8(m.sender), units.unit_half_width_09cc(m.sender));
+        done("ShipAi::predict_track_crossing_009d8ce0", 0x009d8ce0u);
+        GameShipAiRow& row = rows[m.sender];
+        ++row.pass_side_delivered;
+        if (n1->pass.negotiated_8c != 0) ++row.pass_side_negotiated;
+        if (n1->node.pass_side_88 != before) ++row.pass_side_changes;
+    }
+}
+
 void GameShipAiHost::controller_step(float seconds) {
     Impl& host = *impl_;
     if (host.controllers.empty()) return;
     ++host.steps;
+    // The session pump (fixed-step row 9) drains last step's queue before the
+    // world entity tick runs the controllers (packet cc9_pass_side_message).
+    if (kShipPassSideMessageBound) host.deliver_pass_side_messages();
     for (std::size_t index = 0; index < host.controllers.size(); ++index) {
         Impl::Controller& ctl = host.controllers[index];
         GameShipAiRow& row = host.rows[index];
@@ -7633,11 +7794,15 @@ void GameShipAiHost::report() {
             static_cast<double>(row.formation_limit_348_max));
         if (row.layer_selections != 0) {
             host.log.notef("    zone %-16s selections=%llu inside=%llu escape_turns=%llu max_turn=%.3f "
-                "first=%.2f s travel_layer=[%u, %u]", row.unit.c_str(), row.layer_selections,
+                "first=%.2f s travel_layer=[%u, %u] rudder_gate_open=%llu free_bearing=%llu/%llu "
+                "fb_max_turn=%.3f traffic_max_turn=%.3f", row.unit.c_str(), row.layer_selections,
                 row.zone_inside_steps, row.zone_escape_turns,
                 static_cast<double>(row.zone_escape_max_turn),
                 static_cast<double>(row.zone_escape_first_s),
-                row.travel_layer_min, row.travel_layer_max);
+                row.travel_layer_min, row.travel_layer_max, row.rudder_gate_open,
+                row.free_bearing_accepts, row.free_bearing_queries,
+                static_cast<double>(row.free_bearing_max_turn),
+                static_cast<double>(row.traffic_max_turn));
         }
         if (row.torpedo_admits != 0 || row.torpedo_overrides != 0) {
             host.log.notef("    torpedo %-16s scans=%llu admits=%llu tracks_built=%llu tracks_max=%zu "
@@ -7653,14 +7818,17 @@ void GameShipAiHost::report() {
                 "expired=%llu max=%d list_steps=%llu node_steps=%llu collapsed=%llu "
                 "sector_blocks=%llu separation_turns=%llu separation_max=%.3f traffic=%llu "
                 "pass_runs=%llu pass_posts=%llu clearance_hits=%llu danger_steps=%llu "
-                "danger_max=%.3f",
+                "danger_max=%.3f delivered=%llu side_changes=%llu negotiated=%llu "
+                "traffic_writes=%llu traffic_max=%.3f",
                 row.unit.c_str(), row.neighbour_walks, row.neighbour_candidates,
                 row.neighbour_admitted, row.neighbour_expired, row.neighbour_max,
                 row.neighbour_list_steps, row.neighbour_node_steps, row.neighbour_collapsed,
                 row.sector_node_blocks, row.separation_turns,
                 static_cast<double>(row.separation_max_turn), row.traffic_passes,
                 row.neighbour_pass_runs, row.neighbour_pass_posts, row.clearance_node_hits,
-                row.danger_steps, static_cast<double>(row.danger_max));
+                row.danger_steps, static_cast<double>(row.danger_max),
+                row.pass_side_delivered, row.pass_side_changes, row.pass_side_negotiated,
+                row.traffic_writes, static_cast<double>(row.traffic_max_turn));
         }
         if (row.station_requests != 0 || row.station_arm_runs != 0) {
             host.log.notef("    station %-16s requests=%llu arm_runs=%llu throttle39c=[%.4f, %.4f] "
