@@ -1,0 +1,217 @@
+{
+  "packet": "cc10_material_raw_header_hot",
+  "status": "current_source_raw_header_hot_cache_fixture_passed",
+  "owned_files": [
+    "docs/NATIVE_MATERIAL_RAW_HEADER_HOT_CC10.md",
+    "reports/native_material_raw_header_hot_cc10.json"
+  ],
+  "source_changes": false,
+  "native": {
+    "address": "00535320",
+    "length": 124,
+    "end_exclusive": "0053539c",
+    "end_inclusive": "0053539b",
+    "last_instruction": {
+      "address": "0053539b",
+      "length": 1,
+      "bytes": "c3",
+      "text": "ret"
+    },
+    "original_abi": "ECX actual 8-byte counted-string header; EAX material; plain RET",
+    "live_pe_equal": true,
+    "evidence": "local\\cc10_material_raw_header_hot_probe\\native_evidence.json"
+  },
+  "functions": [
+    {
+      "address": "00535320",
+      "name": "BSP_Material_CreateForEffectName",
+      "source": "src/native_material_factory.cpp",
+      "coverage": "existing shared typed/raw numeric cache engine unchanged; one raw-header hot path exercised"
+    }
+  ],
+  "calls": [
+    {
+      "address": "00535345",
+      "function": "00535320",
+      "kind": "indirect_call",
+      "instruction": "call eax",
+      "indirect": "eax"
+    },
+    {
+      "address": "0053534e",
+      "function": "00535320",
+      "kind": "call",
+      "instruction": "call 0xb18780",
+      "native": "00b18780"
+    },
+    {
+      "address": "00535364",
+      "function": "00535320",
+      "kind": "call",
+      "instruction": "call 0xb18900",
+      "native": "00b18900"
+    },
+    {
+      "address": "00535377",
+      "function": "00535320",
+      "kind": "indirect_call",
+      "instruction": "call dword ptr [0xce2220]",
+      "indirect": "dword ptr [0xce2220]"
+    },
+    {
+      "address": "00535387",
+      "function": "00535320",
+      "kind": "indirect_call",
+      "instruction": "call eax",
+      "indirect": "eax"
+    }
+  ],
+  "no_ghidra_function": [],
+  "fixture": {
+    "source": "local\\cc10_material_raw_header_hot_probe\\probe.cpp",
+    "compile_command": "local\\cc10_material_raw_header_hot_probe\\compile.cmd",
+    "scaffold_diff": "local\\cc10_material_raw_header_hot_probe\\scaffold.diff",
+    "original_source_differential": false,
+    "cases": 1,
+    "input": "two initialized live DWORD header cells {9, pointer to TeSt.ShFx}; adjacent 13579BDF/2468ACE0 canaries, no NativeString aggregate over the cells; all four words and input text unchanged",
+    "renderer": "aligned 1B90h field fixture with D5F0A8 profile, real D3D9 device+1A10, initialized actual19F4 critical section, actual texture/effect cache headers; not a full B32410 renderer constructor or application bootstrap",
+    "device": "real windowed64x64 D3D9 HAL, software vertex processing plus FPU_PRESERVE; NVIDIA GeForce RTX5090 vendor10DE/device2B85; CreateTexture4x4 A8R8G8B8 MANAGED",
+    "effect": "genuine B18D60 C4 base effect, D5E534, own actual4 count and serialFFFFFFFF->0; constructor hot-acquires genuine error.tga texture, preserves unwritten poison fields, sets dirtyB4=0",
+    "cache": "real D5F074 effect registry+1A98, actual 2Ch row and alias list appended through B301A0; test.shfx row borrows the base effect without retaining it; mixed-case input hits it",
+    "material": "genuine B18780 physical material pool and B18900 construction; D5E520 actual material+7C equals the constructed effect; actual creator count1, effect count2, texture count2; dirtyB4 becomes1",
+    "metadata": "same Owners registry and GuiNativeGeometryOwners canonical material creator admission; no extra native credit",
+    "hot_only": "cache acquired phase complete and loader.phase not_started; cold program/cache resolver operations throw if reached, null cold VFS/loader bindings are never admitted as success",
+    "retirement": "genuine canonical material retirement returns its pool slot; remove borrowed effect record/alias/string storage before releasing effect creator; base-effect terminal releases texture credit; texture creator terminal removes actual cache row; all initialized pools/allocator list and string pool drain; COM device/API final0/0",
+    "excluded_scaffold": "unused mesh/read/VFS setup remains inherited; no primitive upload, model/camera/scene construction, source0, descriptor/program loading, or B4E470 call"
+  },
+  "validation": {
+    "strict_win32": true,
+    "ctests_passed": 3,
+    "build_log": "local\\cc10_material_raw_header_hot_probe\\build.log",
+    "compile_log": "local\\cc10_material_raw_header_hot_probe\\compile.log",
+    "run_log": "local\\cc10_material_raw_header_hot_probe\\run.log",
+    "run_exit": 0,
+    "assertions_active": true,
+    "runtime": "MD",
+    "fp": "strict",
+    "warnings": "W4 WX",
+    "manifest_embedded": true,
+    "project_libraries": 3,
+    "linked_raw_overload": "0001:0000d5d0       ?create_native_material_from_effect_cache_00535320@bsp@@YAPAUNativeMaterialStorage@1@PBXAAVNativeMaterialSlotPool@1@AAVNativeRenderActualOwners@1@AAUNativeMaterialEffectCacheContext@1@AAUNativeMaterialFactoryAcquired@1@@Z 1000e5d0 f   bsp_core:native_material_factory.obj",
+    "input_manifest": "local\\cc10_material_raw_header_hot_probe\\inputs.json",
+    "source_sha256": {
+      "src/native_material_factory.cpp": "6ef1b9855e65cec8e69a1d51001733adef2073d8ed08650fff0115307ec71bcd",
+      "include/bsp/native_material_factory.hpp": "2cf4933dc2d616674b501ff1786c95c47f3251cf7dd4deda649ca95bba0a3563",
+      "src/native_material_effect_cache.cpp": "d881c76ca80e2b61142ebaeeea281c941499bc8c3273e42afb3b05d285289e98",
+      "include/bsp/native_material_effect_cache.hpp": "3fe74fa562bf64176c898ea86048ed1d618df04afcb5401fa16dca54cbe914b8",
+      "src/native_material_effect_owner.cpp": "1a19bafced64bda09691cdbd0d7254ce000afb976144fb1cb01936377d16698b",
+      "include/bsp/native_material_effect_owner.hpp": "197df420b08345803c36b5ef20cfaa725ccfa02c8ccc4a3fbfb76adada7bdedf",
+      "src/native_material_owner.cpp": "349fad1d983e763d4f53e24e99b2b4dcfe104cbf6e246b902b8346ed3e8fe1fc",
+      "include/bsp/native_material_owner.hpp": "e4583162e05d346f05f6f26fd6e9f4ac49368ffa8ccd1fa0939731f1134b0320",
+      "src/native_material_pools.cpp": "dae9c549cfc295d680184d7a51d0d073c310bf6bd00553d31be5fd81f530f13f",
+      "include/bsp/native_material_pools.hpp": "1d2c422a4739356a86962b785335e54f93760374e38e673003404f4475806715",
+      "src/gui_native_geometry.cpp": "1b957f0aa970eec806bd09389aaa4f21157a64013a3a5c721a0065a0a7e5f0bf",
+      "include/bsp/gui_native_geometry.hpp": "132f61a4e1f2b7cd09d16b4bae2e5c5cd223805d0fcf7592560f46737a6286cf",
+      "src/native_texture_loading_cache.cpp": "708020170abaf5a9bc22f522843dd766a97e67617f4716227d852fdd1a63e03c",
+      "include/bsp/native_texture_loading_cache.hpp": "dc142e19b3565df24bd6a88b7e495a56c9c1e47dd67512824e34ca1b2f63773d",
+      "src/native_texture_2d_owner.cpp": "8824e7624fec3faa637aa8ce1a90a7e8eba15b8a203253ccf00e9aafdae54ada",
+      "include/bsp/native_texture_2d_owner.hpp": "9a4db4ac7413f02d69fe2d7b62709e01b1dfa12a4452483cb34b26e10a1958fc",
+      "src/native_string_pool_storage.cpp": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+      "include/bsp/native_string_pool_storage.hpp": "87bafd2bbbd9247782815a3d1fea04ae778039c4a85fef65cfb27874cf5b7b7d",
+      "src/game_native_data_bootstrap.cpp": "3a892cfd77dac2babc9d6aaccf4a027c5cd2ec64c0abd842c2a84808520d2b8c",
+      "include/bsp/game_native_data_bootstrap.hpp": "13e7a4a85d6096f3f0b4be04fce0d065d5e196c4119d914ae2af268026c7642a",
+      "src/game_native_readonly_data.cpp": "55688df26b39e814f7c8d004fc2b39e23ded7d95f1a9cddf06ba9255cc028278",
+      "include/bsp/game_native_readonly_data.hpp": "25d3b143cee0f4d6630fc0792a6f07a77fac143f9f07b24a60eb76112ff11981"
+    },
+    "inputs_unchanged_after_run": true,
+    "owned_processes_remaining": 0,
+    "closure": "local\\cc10_material_raw_header_hot_probe\\process_closure.json",
+    "new_tracked_tests": 0,
+    "application_run": false,
+    "original_game_run": false,
+    "original_instruction_execution": false,
+    "fresh_native_bytes": 124,
+    "direct_rows": 2,
+    "indirect_inventory_rows": 3,
+    "prior_23_archives_unchanged": {
+      "local/cc10_field_values_evidence.zip": "a749dbf4656596e6a4e0c11ecb320a02bfe62dcba5fa3654c2744aa2a3022153",
+      "local/cc10_widget_transform_evidence.zip": "0d90499f71be2a3cc99ad732deaa8a71a5b55546da4dbaa7ee708c364bae45f8",
+      "local/cc10_widget_property_prefix_evidence.zip": "181ebe9358fe2d7ea6832b8051a0b3fd6f830a0360f3ef390626403ba7cbfcdf",
+      "local/cc10_gui_page_default_evidence.zip": "a224fc79f56861715059ff9717fcdad40893be00d26697a230b64ceafced5c8b",
+      "local/cc10_gui_group_pool_evidence.zip": "c7aa87452ab19400fe950d3a4c3a4a146c94715f4080f463dc2de1740df37853",
+      "local/cc10_gui_group_factory_evidence.zip": "d22d364ce3b5cf7833d8ad1998cd5c14cbf792abc34634e2df1421949e42f34f",
+      "local/cc10_gui_camera_store_map_evidence.zip": "625a751eab1f2416e7b0fa5876b921106cf0a246c0b8ca5ce97ca3e9d1586c54",
+      "local/cc10_scene_registry_storage_evidence.zip": "7219d8cbbdab960d3d2b49076f79b13854aa582faa0edb23c8a7fc286cebd6a9",
+      "local/cc10_scene_resource_storage_evidence.zip": "d989b85db55805c8b173e40c95e9322586ec4146e3ad0e504c316bf48364ed51",
+      "local/cc10_gui_scene_fields_evidence.zip": "8158076968340fd863b7e86018def420eabcae87ab0939f90085d79a1751a1af",
+      "local/cc10_scene_registry_vector_mutation_evidence.zip": "90b9d70c3b735e1274c2c0d2e333f5e88e860aee7155ea9ac6ef18e105aaed6b",
+      "local/cc10_scene_registry_registration_evidence.zip": "663ec13309abdaf992b22c321c66817230852066d76e5ccd0b663c3a783e05cf",
+      "local/cc10_node_scene_attachment_evidence.zip": "c45c8248fe0434426648b48b7c8e473f94b057f5ff1098088c34762dbc3d8f04",
+      "local/cc10_node_tree_retirement_evidence.zip": "b9720c00ba0e29c222ae2d41fb5fd2820e305039c673e61cea0ee22d3a2a2e13",
+      "local/cc10_node_base_destruction_evidence.zip": "2f4f970317032085f851a2331dd3e4bf6f02b3722e5e44a668153000e2b13dbf",
+      "local/cc10_camera_storage_lifetime_evidence.zip": "9eb1ac2cbde243e6c4d2d1d10fca263eda2e43aed2527964986875f2217c3936",
+      "local/cc10_camera_raw_world_edit_evidence.zip": "f80fd83057ef325506bbe1d0a06046e765dd8e32b2f10148c67d497af0971d9c",
+      "local/cc10_camera_pose_storage_evidence.zip": "d294c281a6475c33b4b779d9857e2a7f06b75948df45618c12b70112649bfeac",
+      "local/cc10_camera_storage_construct_evidence.zip": "ebf1bca43bf5bbe75beae65ec707845a2219d745bda58fd91588455278fbf357",
+      "local/cc10_distortion_storage_lifetime_evidence.zip": "71843fd98d2d4bb1e13633393487fc99617c1456458cd2354139c57a2d1a286c",
+      "local/cc10_render_texture_surface_argument_view_evidence.zip": "0754170a6ce2d6042e644beef0a62f82e07c8642afe3a6315c18fb967493034e",
+      "local/cc10_gui_scene_argument_view_evidence.zip": "8c061ccbec187f7b3796187bd7369c95eeaddabf27d1122c3795f77be52abaf5",
+      "local/cc10_post_effect_argument_view_evidence.zip": "df95be9b3469c09684e9a0463af73f49900dbda6de6de8304197e711e7ed7acf"
+    },
+    "frozen_hot_readiness": {
+      "local/cc10_post_effect_hot_cache_readiness/collect.py": "b65deb53acb10c0ee6ac8f40a76b9caff20551e5b080aa45ecb54366024637d1",
+      "local/cc10_post_effect_hot_cache_readiness/evidence.json": "c47f0084fe9d04d1e847d401c570215df65f6c2a8f87b81a83a83ae98973db35",
+      "local/cc10_post_effect_hot_cache_readiness/README.md": "183173c54f98bb2d316419fbed20e393a24d6c87168845e68982e14166fc227a"
+    },
+    "report_calls": {
+      "log": "local\\cc10_material_raw_header_hot_probe\\report_calls.log",
+      "checked": 2,
+      "failed": 0
+    },
+    "index": "bsp.py index --if-stale rebuilt:64082functions/133882calls/33117datarefs/98segments",
+    "native_instruction_count": 43,
+    "frozen_archive": "local/cc10_material_raw_header_hot_evidence.zip",
+    "manifest": "local/cc10_material_raw_header_hot_probe/manifest.json",
+    "archive_index": "local/cc10_material_raw_header_hot_probe/archive_index.json",
+    "frozen_inputs_note": "manifest pins archived files; inputs.json additionally pins current three linked libraries without duplicating them into archive"
+  },
+  "limits": [
+    "source composition only, not copied-original execution or native drop-in ABI proof",
+    "no cold effect/program/source0 path, B4E470, distortion initializer, or full renderer/application/gameplay admission",
+    "no failure/bind rejection/current callback mutation/EH or native FH3 transport exercise",
+    "raw incoming header is disjoint from owner/cache/metadata; no private native stack alias compatibility claim",
+    "current imports/profile mutation and terminal branches not reached inside the temporary effect-release point remain prior source/provider contracts"
+  ],
+  "provenance": {
+    "baseline": "2e2223fadc59b68a932893750a96ed6d1ed7ac9e",
+    "utc": "2026-09-24T13:46:06.492275+00:00",
+    "historical_fixture": [
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch4-20260910/local/native_material_cache_admission_cl/registered/probe.cpp",
+        "size": 32190,
+        "sha256": "c2788ae8596ad553583d468c780b3d03043337ea33a5371bc09271b37a486384"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch4-20260910/local/native_material_cache_admission_cl/registered/probe.log",
+        "size": 722,
+        "sha256": "fc311e4dbc312a46cf0d9764492be5fd091e16921dd8adc26d6491fff0b81ba4"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch4-20260910/local/native_material_cache_admission_cl/registered/child_probe.log",
+        "size": 681,
+        "sha256": "1d48fd65b80af1b978d5374c6f628d06753b9e76fb1a7d478e913b4adb94ef5b"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch4-20260910/local/native_material_cache_admission_cl/registered/compile.cmd",
+        "size": 727,
+        "sha256": "ca2ed65fbff05f98812f129f30545db47045226cbeff9ca1527c8403b51c51ed"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-orch4-20260910/local/native_material_cache_admission_cl/registered/source_manifest.json",
+        "size": 290684,
+        "sha256": "a47740b536bc7de2f5436df68dce153215a4a0ade20e49ac6864a913ab309e8d"
+      }
+    ]
+  },
+  "ledger_scope": "only 00535320 name/reconstruction evidence appended; separate callable-renderer reconstruction and all existing CL/interface evidence retained"
+}
