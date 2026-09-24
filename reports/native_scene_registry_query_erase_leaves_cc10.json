@@ -1,0 +1,373 @@
+{
+  "packet": "cc10_scene_registry_query_erase_leaves",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "baseline_main": "62e67ad274c08eff78be41e9bcdba8763ad2f7d7",
+  "source": "src/native_scene_registry_query_erase_leaves.cpp",
+  "header": "include/bsp/native_scene_registry_query_erase_leaves.hpp",
+  "documentation": "docs/NATIVE_SCENE_REGISTRY_QUERY_ERASE_LEAVES_CC10.md",
+  "status": "complete_raw_query_single_erase_count_strict_win32_and_focused_original_source_checked",
+  "functions": [
+    {
+      "address": "00b82650",
+      "end_exclusive": "00b827b9",
+      "end_inclusive": "00b827b8",
+      "final_instruction": "00b827b6",
+      "final_instruction_length": 3,
+      "byte_span": 361,
+      "coverage": "complete normal body in explicit valid iterator and actual storage domain",
+      "cpp_symbol": "bsp::equal_range_native_scene_registry_00b82650",
+      "original_abi": "ECX actual28 registry; stack output/key; EAX output; RET8"
+    },
+    {
+      "address": "00b827c0",
+      "end_exclusive": "00b828f4",
+      "end_inclusive": "00b828f3",
+      "final_instruction": "00b828f1",
+      "final_instruction_length": 3,
+      "byte_span": 308,
+      "coverage": "complete normal body in explicit valid iterator and actual storage domain",
+      "cpp_symbol": "bsp::erase_native_scene_registry_entry_00b827c0",
+      "original_abi": "ECX actual28 registry; stack output/owner/node; EAX output; RET12"
+    },
+    {
+      "address": "00b820b0",
+      "end_exclusive": "00b820f6",
+      "end_inclusive": "00b820f5",
+      "final_instruction": "00b820f5",
+      "final_instruction_length": 1,
+      "byte_span": 70,
+      "coverage": "complete normal body in explicit valid iterator and actual storage domain",
+      "cpp_symbol": "bsp::count_native_scene_registry_range_00b820b0",
+      "original_abi": "cdecl stacked first/last iterator pairs,count pointer,unused tag; RET"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00b820b0",
+      "address": "00b820ce",
+      "native": "00bf6713",
+      "contract": "excluded native CRT invalid-parameter path; detected source domain violation rejects with invalid_argument"
+    },
+    {
+      "function": "00b820b0",
+      "address": "00b820de",
+      "native": "00bf6713",
+      "contract": "excluded native CRT invalid-parameter path; detected source domain violation rejects with invalid_argument"
+    },
+    {
+      "function": "00b820b0",
+      "address": "00b820e8",
+      "native": "00bf6713",
+      "contract": "excluded native CRT invalid-parameter path; detected source domain violation rejects with invalid_argument"
+    },
+    {
+      "function": "00b82650",
+      "address": "00b8266b",
+      "native": "00c03dbe",
+      "contract": "read-only original signed EAX quotient/EDX remainder; exact caller arithmetic projection with reached positive divisor"
+    },
+    {
+      "function": "00b82650",
+      "address": "00b826b1",
+      "native": "00bf6713",
+      "contract": "excluded native CRT invalid-parameter path; detected source domain violation rejects with invalid_argument"
+    },
+    {
+      "function": "00b82650",
+      "address": "00b826c4",
+      "native": "00bf6713",
+      "contract": "excluded native CRT invalid-parameter path; detected source domain violation rejects with invalid_argument"
+    },
+    {
+      "function": "00b82650",
+      "address": "00b826e3",
+      "native": "00bf6713",
+      "contract": "excluded native CRT invalid-parameter path; detected source domain violation rejects with invalid_argument"
+    },
+    {
+      "function": "00b82650",
+      "address": "00b826f9",
+      "native": "00bf6713",
+      "contract": "excluded native CRT invalid-parameter path; detected source domain violation rejects with invalid_argument"
+    },
+    {
+      "function": "00b82650",
+      "address": "00b82703",
+      "native": "00bf6713",
+      "contract": "excluded native CRT invalid-parameter path; detected source domain violation rejects with invalid_argument"
+    },
+    {
+      "function": "00b82650",
+      "address": "00b82718",
+      "native": "00bf6713",
+      "contract": "excluded native CRT invalid-parameter path; detected source domain violation rejects with invalid_argument"
+    },
+    {
+      "function": "00b82650",
+      "address": "00b82738",
+      "native": "00bf6713",
+      "contract": "excluded native CRT invalid-parameter path; detected source domain violation rejects with invalid_argument"
+    },
+    {
+      "function": "00b82650",
+      "address": "00b8274b",
+      "native": "00bf6713",
+      "contract": "excluded native CRT invalid-parameter path; detected source domain violation rejects with invalid_argument"
+    },
+    {
+      "function": "00b82650",
+      "address": "00b82760",
+      "native": "00bf6713",
+      "contract": "excluded native CRT invalid-parameter path; detected source domain violation rejects with invalid_argument"
+    },
+    {
+      "function": "00b82650",
+      "address": "00b82773",
+      "native": "00bf6713",
+      "contract": "excluded native CRT invalid-parameter path; detected source domain violation rejects with invalid_argument"
+    },
+    {
+      "function": "00b827c0",
+      "address": "00b827ce",
+      "native": "00bf6713",
+      "contract": "excluded native CRT invalid-parameter path; detected source domain violation rejects with invalid_argument"
+    },
+    {
+      "function": "00b827c0",
+      "address": "00b827dc",
+      "native": "00bf6713",
+      "contract": "excluded native CRT invalid-parameter path; detected source domain violation rejects with invalid_argument"
+    },
+    {
+      "function": "00b827c0",
+      "address": "00b827ef",
+      "native": "00c03dbe",
+      "contract": "read-only original signed EAX quotient/EDX remainder; exact caller arithmetic projection with reached positive divisor"
+    },
+    {
+      "function": "00b827c0",
+      "address": "00b82835",
+      "native": "00bf6713",
+      "contract": "excluded native CRT invalid-parameter path; detected source domain violation rejects with invalid_argument"
+    },
+    {
+      "function": "00b827c0",
+      "address": "00b82855",
+      "native": "00bf6713",
+      "contract": "excluded native CRT invalid-parameter path; detected source domain violation rejects with invalid_argument"
+    },
+    {
+      "function": "00b827c0",
+      "address": "00b82868",
+      "native": "00bf6713",
+      "contract": "excluded native CRT invalid-parameter path; detected source domain violation rejects with invalid_argument"
+    },
+    {
+      "function": "00b827c0",
+      "address": "00b8286d",
+      "native": "00bf6713",
+      "contract": "excluded native CRT invalid-parameter path; detected source domain violation rejects with invalid_argument"
+    },
+    {
+      "function": "00b827c0",
+      "address": "00b82877",
+      "native": "00bf6713",
+      "contract": "excluded native CRT invalid-parameter path; detected source domain violation rejects with invalid_argument"
+    },
+    {
+      "function": "00b827c0",
+      "address": "00b82892",
+      "native": "00bf6713",
+      "contract": "excluded native CRT invalid-parameter path; detected source domain violation rejects with invalid_argument"
+    },
+    {
+      "function": "00b827c0",
+      "address": "00b828be",
+      "native": "00bf6713",
+      "contract": "excluded native CRT invalid-parameter path; detected source domain violation rejects with invalid_argument"
+    },
+    {
+      "function": "00b827c0",
+      "address": "00b828d8",
+      "native": "00bf65ac",
+      "contract": "genuine actual allocation-domain free; current live count/output reads follow callback"
+    }
+  ],
+  "context": {
+    "storage": "actual28 registry, actual0Ch entries, actual8B iterator pairs; keys are borrowed DWORD identities, never host companions",
+    "frames": "borrowed EqualRangeArguments8, EqualRangeScratch12 with opaque0/4 and conditional first8, EraseArguments12, CountArguments24; initialized caller preimages; source ABI",
+    "erase": "current boundary reads and node argument reload after owner store; captured owner and next across real free; CURRENT wrapping count decrement then CURRENT output; no dead entry access",
+    "lookup": "signed quotient/remainder hash; unsigned key comparisons; lower node-key first, upper caller-key first; current key pointer each comparison; exact found/absent output order",
+    "count": "native capture order, current last-owner each loop, current wrapping counter increment BEFORE next link",
+    "failure": "valid-iterator domain excludes native CRT invalid-parameter and native EH/ABI; source checks reject; reached throwing free leaves preceding writes without rollback"
+  },
+  "verification": {
+    "strict_build": "./scripts/build.ps1",
+    "ctests": "2/2 reconstructed_math,tool_tests",
+    "byte_evidence": [
+      {
+        "address": "00b82650",
+        "length": 361,
+        "sha256": "b5a017170ce42f30a14baabf65e7d4b31a63d65e9ff9216625a8f553a4e2202b",
+        "live_equals_installed": true
+      },
+      {
+        "address": "00b827c0",
+        "length": 308,
+        "sha256": "9f96ded1953c1e6bda8f837e56c16621d3b611604c3a560f0921f119fd1e4c49",
+        "live_equals_installed": true
+      },
+      {
+        "address": "00b820b0",
+        "length": 70,
+        "sha256": "e3ba2c2283f690a25f58f1a7f731280483244cb8983ac8aef5cac2a4e12893cd",
+        "live_equals_installed": true
+      },
+      {
+        "address": "00c03dbe",
+        "length": 26,
+        "sha256": "df118cb443457c43b726d48a154e976a2f74a99615211a703e2cc5b1932dfbfe",
+        "live_equals_installed": true
+      }
+    ],
+    "call_verifier": "25 direct call rows checked,0 failed; native CRT calls explicitly outside valid domain",
+    "probe": {
+      "source": "local/output/cc10_registry_query_erase_probe.cpp",
+      "command": "cl /nologo /MD /EHsc /std:c++20 /O2 /Gy /W4 /WX /fp:strict /I include /I local\\output /Fo:local\\output\\ /Fe:local\\output\\cc10_registry_query_erase_probe.exe local\\output\\cc10_registry_query_erase_probe.cpp build\\win32\\Release\\bsp_core.lib build\\win32\\Release\\bsp_lua511.lib build\\win32\\Release\\bsp_zlib121.lib /link /OPT:REF /MANIFEST:EMBED user32.lib d3d9.lib advapi32.lib shell32.lib",
+      "assertions": "NDEBUG not defined; compile-time #ifdef NDEBUG rejection; command has no /DNDEBUG",
+      "exit_code": 0,
+      "comparison_pairs": 1,
+      "checks": [
+        "found and two distinct absent paths, all12 scratch bytes and return/output identity",
+        "actual allocated borrowed keys with negative signed hash",
+        "three repeated backward bucket boundaries",
+        "counter wrapping and preserved unused tag",
+        "genuine entry free callback changes current count/output/owner/node cells",
+        "captured owner/next persist; no dead raw entry read",
+        "normalized all28 registry bytes,72 boundary bytes,36 surviving-node bytes,outputs,argument/callback observations"
+      ],
+      "shared_boundary": "existing raw B83600/B823B0 providers and matching host allocator/free/final raw destructor; copied original owns lookup/count/erase and copied real C03DBE. Only BF65AC rebound to genuine free plus controlled mutation; excluded CRT checks trap. No host SceneNodeRegistry.",
+      "initial_fixture_correction": "initial64KiB arena did not supply enough bucket2 addresses; enlarged ignored arena to2MiB only and retained failed assertion log",
+      "not_tested": "native debug CRT continuation, private saved-register/stack ABI, exception transport, full registration or application graph/gameplay"
+    }
+  },
+  "limits": [
+    "Valid actual pointers/iterators/boundaries and terminating walks; no asynchronous mutation.",
+    "No node dereference through borrowed keys, retain/release, host companion insertion, new container engine or generic CRT port.",
+    "Actual free binding must use the existing registry allocation domain; current argument/live storage survives the callback.",
+    "B82BF0/B82FD0/growth, full registration/scene attachment/AC59A0 remain outside this packet."
+  ],
+  "ghidra_mutations": false,
+  "abi_compatible": false,
+  "application_bound": false,
+  "game_validated": false,
+  "frozen_evidence": [
+    {
+      "path": "local/cc10_registry_query_erase_build.log",
+      "bytes": 3157,
+      "sha256": "cc5ef00282b0383622f73caf734da892adb8e39a8aefa648d664c9cfe3677f89"
+    },
+    {
+      "path": "local/output/cc10_registry_query_erase_bytes.hpp",
+      "bytes": 4004,
+      "sha256": "04dfde73828540e2dbece0689c16494b275987044f7a4be1fb99c5cb866cd22b"
+    },
+    {
+      "path": "local/output/cc10_registry_query_erase_capture.py",
+      "bytes": 1897,
+      "sha256": "6bfe1f219a5d2e42ca499a459039ed9b5711198d8ea6d0edfcc7b8669a603143"
+    },
+    {
+      "path": "local/output/cc10_registry_query_erase_probe.cmd",
+      "bytes": 617,
+      "sha256": "707b2f3d1224a6ac1346d984eed7bf67a96ff0402e16cbd57c5cecf8a19f53c5"
+    },
+    {
+      "path": "local/output/cc10_registry_query_erase_probe.cpp",
+      "bytes": 12155,
+      "sha256": "381c04a21a1c8158725ca5c00d016e985a4ac15585a64d676e64484dfd18212a"
+    },
+    {
+      "path": "local/output/cc10_registry_query_erase_probe.log",
+      "bytes": 279,
+      "sha256": "b91084eb6d438cafe0532b1f802b25b02ce07ee790dce93d86b652aaf948152e"
+    },
+    {
+      "path": "local/output/cc10_registry_query_erase_probe_prebuild.log",
+      "bytes": 172,
+      "sha256": "ae53ec1f79f06fc7570c102f0bd230fb51cef336167d3ceb4428b03683e41850"
+    },
+    {
+      "path": "local/output/cc10_registry_query_erase_report.py",
+      "bytes": 5986,
+      "sha256": "a86e3600627d6acbfac6d8200af70327893d7b0137c9ddffd02875e0e077d830"
+    },
+    {
+      "path": "local/output/cc10_registry_query_erase/00b820b0_0.txt",
+      "bytes": 1497,
+      "sha256": "6e088dc1638ec3e268b89f85457ef02e2a55ff01c0e581216278148a285e1c78"
+    },
+    {
+      "path": "local/output/cc10_registry_query_erase/00b820b0_bytes.txt",
+      "bytes": 345,
+      "sha256": "0183aa066303600a4684a0b72d98debe0f0f565b8b080af44bd4b3ddb85ca776"
+    },
+    {
+      "path": "local/output/cc10_registry_query_erase/00b82650_0.txt",
+      "bytes": 2776,
+      "sha256": "3925072b0f906c4d1e1a4f57d5f5fc479f52dc4e91210a8e6254dfab49961b50"
+    },
+    {
+      "path": "local/output/cc10_registry_query_erase/00b82650_70.txt",
+      "bytes": 2466,
+      "sha256": "cbbf3c5a760f2d9b76736bbca5193a4f7762f04ae98d4ceb60ea0f71aceab5cd"
+    },
+    {
+      "path": "local/output/cc10_registry_query_erase/00b82650_bytes.txt",
+      "bytes": 1743,
+      "sha256": "e5355d41dd6f46848a0ab4a2d17b6358d27c6675ffe2ce229385c6cf5b036e63"
+    },
+    {
+      "path": "local/output/cc10_registry_query_erase/00b827c0_0.txt",
+      "bytes": 2783,
+      "sha256": "1c186de5c55bca3396bd49d206e0ec395448b386791891f6176c91bf68cefbfe"
+    },
+    {
+      "path": "local/output/cc10_registry_query_erase/00b827c0_70.txt",
+      "bytes": 1832,
+      "sha256": "2648d6cf18dd3958e85c261211300f1d8bd5ec61941a983c473bb1a1fb90b8d1"
+    },
+    {
+      "path": "local/output/cc10_registry_query_erase/00b827c0_bytes.txt",
+      "bytes": 1492,
+      "sha256": "465ad75bec6ab8d5bd5438cca25ddfd16f61780e5f347aa6b651f94a05bd4e9d"
+    },
+    {
+      "path": "local/output/cc10_registry_query_erase/00c03dbe_0.txt",
+      "bytes": 663,
+      "sha256": "a45d98a6b5e6393cca803fadafe61c73459c3dbb7437af41b9d945419f2a9770"
+    },
+    {
+      "path": "local/output/cc10_registry_query_erase/00c03dbe_bytes.txt",
+      "bytes": 130,
+      "sha256": "386632edb31e5ce5217375254a352bdd108a42956fcb3cb07d520dda5c542594"
+    },
+    {
+      "path": "local/output/cc10_registry_query_erase/byte_evidence.json",
+      "bytes": 711,
+      "sha256": "e9bf605d7415a2d21fec1b78983f3f11b370308cb16caaf5c81b372d72ca9a5c"
+    },
+    {
+      "path": "local/output/cc10_registry_query_erase_calls.log",
+      "bytes": 92,
+      "sha256": "f3b35a4051b464579272d36887443b5a929e30a2ae59812f67658b89c73f4941"
+    },
+    {
+      "path": "local/output/cc10_registry_query_erase_ledger.py",
+      "bytes": 1896,
+      "sha256": "1890c88096c6867a5d6ece57f1c1593c68281567ccb8e5a1a05adbe7a32ab8ec"
+    }
+  ],
+  "prior_records": "No prior reconstruction record at these three addresses; existing names and broader typed registry fragments preserved."
+}
