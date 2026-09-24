@@ -293,7 +293,7 @@
       "last_instruction": "00cc5afd JMP 00bf6b43",
       "last_instruction_length": 5,
       "coverage": "boundary only, unported native FH3 handler",
-      "still_undefined": true,
+      "still_undefined": false,
       "native_bytes": {
         "start": "00cc5af8",
         "end_inclusive": "00cc5b01",
@@ -302,7 +302,8 @@
         "last_instruction_length": 5,
         "sha256": "b1c20eaeb1d7bf1255705ebae99a8c75387c42d560963c3ff5a78e1702f11431",
         "live_pe_equal": true
-      }
+      },
+      "primary_resolution": "Defined exact10B body under write lock and saved; reports/cc10_lua_reader_field_function_definitions.json"
     }
   ],
   "eh_boundary": {
@@ -316,7 +317,7 @@
       "address": "00cc5afd",
       "native": "00bf6b43",
       "function": "00cc5af8",
-      "kind": "no_ghidra_function",
+      "kind": "tail_jump",
       "transfer": "tail_jump",
       "contract": "Unported native FH3 handler thunk; EAX descriptor DFFD2C"
     }
@@ -401,5 +402,12 @@
     "sha256": "a749dbf4656596e6a4e0c11ecb320a02bfe62dcba5fa3654c2744aa2a3022153",
     "valid": true,
     "files": 30
-  }
+  },
+  "primary_archive": {
+    "path": "local/cc10-platform-evidence/lua-field-values.zip",
+    "sha256": "a749dbf4656596e6a4e0c11ecb320a02bfe62dcba5fa3654c2744aa2a3022153",
+    "valid": true,
+    "files": 30
+  },
+  "primary_handler_definition": "reports/cc10_lua_reader_field_function_definitions.json"
 }

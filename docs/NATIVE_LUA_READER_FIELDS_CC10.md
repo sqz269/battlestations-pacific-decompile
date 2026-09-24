@@ -33,3 +33,8 @@ transfers, native frame aliasing, binary ABI and gameplay remain unverified.
 Evidence and validation are recorded in
 `reports/native_lua_reader_fields_cc10.json`. No new tracked tests were
 added for this composition of existing raw providers.
+
+Primary integration `4539e852b` built these wrappers together with the raw
+BD63B0 dependency. Strict MSVC Win32 Release and all three existing CTests
+passed. The wrapper composition has static/build evidence only; the value
+and query differential probes do not constitute wrapper runtime coverage.

@@ -12,7 +12,7 @@ replacement or an implementation of the native exception handler.
 | Routine | Coverage | Evidence |
 |---|---|---|
 | BD63B0 | complete normal body | Stored Ghidra body ends at RET BD6826; all 1143 live bytes match PE |
-| CC5AF8 | boundary only, unported | No Ghidra function; 10 live/PE bytes through CC5B01 inclusive; last instruction is the 5-byte JMP at CC5AFD to BF6B43 |
+| CC5AF8 | boundary only, unported | Primary defined exact10B function under write lock and saved; live/PE bytes through CC5B01 inclusive; last instruction is the 5-byte JMP at CC5AFD to BF6B43 |
 
 The two callers establish the pair layout: BD6830 passes the address of its
 adjacent third/fourth stack arguments at BD6896, while BD68D0 passes the same

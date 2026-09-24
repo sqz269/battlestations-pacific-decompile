@@ -1,6 +1,6 @@
 {
   "packet": "cc10_lua_reader_fields",
-  "status": "complete_raw_normal_source_pending_dependency_build",
+  "status": "complete_raw_normal_source_build_checked",
   "source": "src/native_lua_reader_fields.cpp",
   "documentation": "docs/NATIVE_LUA_READER_FIELDS_CC10.md",
   "functions": [
@@ -132,11 +132,19 @@
   ],
   "handler_definitions": "reports/cc10_lua_reader_field_function_definitions.json",
   "validation": {
-    "build": "pending",
+    "build": "Combined strict scripts/build.ps1 MSVC Win32 Release; all3 existing CTests passed",
     "new_tracked_tests": 0,
     "differential": false,
     "native_ABI_FH3": false,
-    "application_or_game": false
+    "application_or_game": false,
+    "integration_commit": "4539e852bf0d244f781dceb7d7e516eff920331f",
+    "build_log_sha256": "ab353251e8576537d2ea9c17bda223ee114a4a7cbd5dd5521336f1fcf8cb52c3"
   },
-  "limits": "Normal-path source only. Empty/corrupt vectors, original CRT invalid-parameter behavior, exceptions/nonlocal Lua transfer and FH3 cleanup, arbitrary native stack aliasing, binary ABI and gameplay excluded. Actual field/fallback pointers designate caller-owned equivalents of native by-value stack pairs; no implicit copying is introduced."
+  "limits": "Normal-path source only. Empty/corrupt vectors, original CRT invalid-parameter behavior, exceptions/nonlocal Lua transfer and FH3 cleanup, arbitrary native stack aliasing, binary ABI and gameplay excluded. Actual field/fallback pointers designate caller-owned equivalents of native by-value stack pairs; no implicit copying is introduced.",
+  "local_archive": {
+    "path": "local/cc10-platform-evidence/lua-reader-fields.zip",
+    "sha256": "c2836936b5f9e4050e87c71c16f775564fe2622ff62e8691cb9f0a5fdb43bff8",
+    "valid": true,
+    "files": 12
+  }
 }
