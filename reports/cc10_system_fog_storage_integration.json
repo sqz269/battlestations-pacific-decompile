@@ -1,0 +1,91 @@
+{
+  "packet": "cc10_system_fog_storage_integration",
+  "worker_commit": "f2953b5b2057a9514240d1cab843c4243c71f36d",
+  "integration": "8c51f13619cf21e33f40066be805eb049514bb90",
+  "archive": {
+    "path": "local/cc10-platform-evidence/system-fog-storage.zip",
+    "sha256": "d107a52a0bec2eb0cad3e47346fd89285087a141d5c4bb67e7b1a1bb916d28c9",
+    "files": 42,
+    "valid": true
+  },
+  "worker_report": "reports/native_system_fog_storage_cc10.json",
+  "review": [
+    "Full raw interface/header/source, complete338B native schedules, final documentation and complete focused probe reviewed",
+    "Same actual94h lifetime with full preimage preservation and one shared native store engine; nine actual current constant cells passed through explicit pointer-array metadata, no assumed reference-member layout",
+    "MOVSS captures/readpoints/interleaved zero/profile/count stores preserved including destination-aliased constants and opaque28..67",
+    "Raw camera184 captures incoming before old, publishes then CURRENT increment/FRESH decrement; callback-mutated argument/slot do not replace captured identities",
+    "Observedzero requires same actual04/current0 BD30E0 then freshprofile/current4 B84F70; genuine leaf/free reused, no extra credits/registry/atomic",
+    "Reached imports require nonnull callable genuine bindings; null is unmasked native fault; source provider failures retain prefix and unresolved credits"
+  ],
+  "validation": {
+    "normal_bytes": 338,
+    "live_equals_installed": true,
+    "direct_call_rows": 0,
+    "indirect_rows_recognized_and_skipped": 3,
+    "indirect_CALL_operands_independently_pinned": 3,
+    "strict_win32_build": true,
+    "worker_ctests": 2,
+    "integrated_ctests": 3,
+    "focused_original_source_pairs": 4,
+    "source_only_identity_failure_checks": true,
+    "new_tracked_tests": 0,
+    "build_log_sha256": "d9d2d1ad35127f6cd351df08073648f6e4e96562550d1da6864936a8a896b337",
+    "ghidra_flow_or_definition_required": false,
+    "native_ABI_FH3_SEH": false,
+    "application_bound": false,
+    "game_validated": false
+  },
+  "host_steps": [
+    {
+      "function": "00b71940",
+      "address": "00b7195d",
+      "native": "dword ptr [0xce221c]",
+      "kind": "indirect_call",
+      "contract": "CURRENT increment after publishing captured incoming; actual04"
+    },
+    {
+      "function": "00b71940",
+      "address": "00b7196b",
+      "native": "dword ptr [0xce2220]",
+      "kind": "indirect_call",
+      "contract": "FRESH CURRENT decrement after increment callback on capturedold04"
+    },
+    {
+      "function": "00b71940",
+      "address": "00b7197b",
+      "native": "EAX",
+      "kind": "indirect_call",
+      "contract": "capturedold CURRENT profile/current0 on observedzero; bound BD30E0 then fresh4 B84F70"
+    }
+  ],
+  "indirect_call_operands": [
+    {
+      "address": "00b7195d",
+      "native": "dword ptr [0xce221c]",
+      "instruction_bytes": "ff151c22ce00",
+      "live_pe_backed": true,
+      "operand_verified": true
+    },
+    {
+      "address": "00b7196b",
+      "native": "dword ptr [0xce2220]",
+      "instruction_bytes": "ff152022ce00",
+      "live_pe_backed": true,
+      "operand_verified": true
+    },
+    {
+      "address": "00b7197b",
+      "native": "eax",
+      "instruction_bytes": "ffd0",
+      "live_pe_backed": true,
+      "operand_verified": true
+    }
+  ],
+  "probe_boundary": "338B full live/PE extents; constructor9 absolute DWORD operands relocated (36B);setter2 IAT operands relocated(8B);original8B B71975..B7197C current0 sequence replaced with shared genuine source family bridge preserving capturedESI asECX. Those virtual loads/call/scalarcallee not independently compared",
+  "limits": [
+    "No legacy CameraState/FogState slot projection or fabricated owner/secondcount/registry.",
+    "Real94h lifetime/matching CRT allocation,valid reached storage/current callbacks and quiescence required.",
+    "B84F70/BD30E0 external reuse,not new implementation; unknown current targets rejected.",
+    "No source exception rollback, native FH3/SEH/private ABI/application/fullAC59A0/game claim."
+  ]
+}
