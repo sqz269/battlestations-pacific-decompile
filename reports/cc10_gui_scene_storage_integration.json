@@ -1,0 +1,81 @@
+{
+  "packet": "cc10_gui_scene_storage_integration",
+  "worker_commit": "01bde780b1e1b904e3b4d64e647c72e61221725e",
+  "integration": "083ca87edc81017c5c34efafe0710a9b0aaa1213",
+  "archive": {
+    "path": "local/cc10-platform-evidence/gui-scene-storage.zip",
+    "sha256": "ae147735d470b0ce25e98d1c699fcaa1fb25a474dfa96b62e14c6ce7f32fb2c7",
+    "files": 45,
+    "valid": true
+  },
+  "review": [
+    "Complete actual24h source/header/native lifecycle reviewed",
+    "Actual atomic lifetime begun with placement construction, original full24h preimage restored before weak callback; no owning host root/name storage",
+    "Constructor current name/self-copy ordering and raw MOVSS preserved",
+    "Destructor captures resource before current decrement, clears after terminal, rereads current root for genuine raw tree retirement",
+    "Raw name/weak cleanup states consumed before genuine cleanup callbacks; no outer allocation free on constructor failure",
+    "Scalar flags lowbyte read after destructor; no payload read after genuine CRT free",
+    "Companion metadata borrows same actual+4 and existing registry; no retain on admission, duplicate refusal unchanged bytes, exact canonical current0/fresh4",
+    "Prepared tree acquisitions are persistent metadata only; source failure preserves completed native side effects and distinguishes retirement from successful destruction/free"
+  ],
+  "validation": {
+    "owned_normal_bytes": 346,
+    "compiler_boundary_bytes": 58,
+    "descriptor_bytes": 100,
+    "live_equals_installed": true,
+    "verified_direct_tail_rows": 15,
+    "indirect_rows_separate": 2,
+    "strict_win32_build": true,
+    "worker_ctests": 2,
+    "integrated_ctests": 3,
+    "build_log_sha256": "ac41d439ec39efacf588053f9b44e96b1c462daca1b72f7e11e7963dec85a6ad",
+    "comparison_pairs": 2,
+    "new_tracked_tests": 0,
+    "native_ABI_FH3_SEH": false,
+    "full_terminal_graph_closed": false,
+    "application_bound": false,
+    "game_validated": false
+  },
+  "probe_boundary": {
+    "source": "local/output/cc10_gui_scene_storage_probe.cpp",
+    "command": "cl /nologo /MD /EHsc /std:c++20 /O2 /Gy /W4 /WX /fp:strict /I include /I local\\output /Fo:local\\output\\ /Fe:local\\output\\cc10_gui_scene_storage_probe.exe local\\output\\cc10_gui_scene_storage_probe.cpp build\\win32\\Release\\bsp_core.lib build\\win32\\Release\\bsp_lua511.lib build\\win32\\Release\\bsp_zlib121.lib /link /OPT:REF /MANIFEST:EMBED user32.lib d3d9.lib advapi32.lib shell32.lib",
+    "assertions": "NDEBUG not defined; #ifdef NDEBUG compile-time rejection; no /DNDEBUG",
+    "exit_code": 0,
+    "comparison_pairs": 2,
+    "source_only_checks": [
+      "byte-unchanged canonical admission/duplicate refusal",
+      "actual zero -> current0/current4 flags1, no extra count",
+      "explicit positive-count flags0 payload destruction and metadata retirement",
+      "prepared acquisition capacity failure: prior real resource retirement persists, raw name/weak cleanup runs, canonical metadata retires without successful completion; live root/raw backing retained and explicitly disposed"
+    ],
+    "checks": [
+      "normalized full24h constructor bytes, pooled MARS name including terminator, onecell alias current owner name length",
+      "self-name branch and MOVSS raw sNaN bits7F800001",
+      "genuine weak pool/retained external weak handle survives owner retirement with nulltarget/count1",
+      "actual3Ch resource retained by genuine B723F0; creator transferred via real decrement; real resource/ambient canonical zero cleanup",
+      "physical point-light pool/companion, actualouter identity in A4 and genuine B6DFA0/B6F310 drain to terminal in scene-null/cleared-root domain",
+      "explicit outercount2 flags0; genuine import callback writes CURRENT scalar flags from0 to1 before finalread/free"
+    ],
+    "body_extent_vs_execution": {
+      "live_pe_body_bytes": 346,
+      "replaced_dispatch_range": "[00b72471,00b72479)",
+      "replaced_byte_count": 8,
+      "original_instructions": "MOV EDX,[EDI]; MOV EAX,[EDX]; MOV ECX,EDI; CALL EAX",
+      "replacement": "MOV ECX,EDI; CALL genuine canonical resource bridge; NOP",
+      "reason": "D63168 lies in reconstructed executable; occupied mapping left untouched",
+      "bridge_checks": "captured EDI identity -> existing same-registry canonical reference; actual+4 equality and observedzero; real canonical release validates current resource profile/current0 and fresh current4",
+      "independent_native_dispatch_comparison": false,
+      "other_relocations": "direct calls, current imported decrement operand and live-one operand bound to shared genuine providers; remaining instruction stream retained"
+    },
+    "shared_boundary": "weak/name pool/raw resource/ambient/tree/point terminal bodies are shared genuine source providers, not independently compared original descendants; exact8B current0 dispatch site replaced by declared same-count bridge",
+    "not_tested": "original nested bodies, original FH3/SEH exception transport/private stack/register ABI, full attached camera/light terminal graph, application/AC59A0/gameplay"
+  },
+  "limits": [
+    "Actual24h backing/contexts/frames/Acquired must remain stable and quiescent through destruction/retirement; no legacy owner conversion.",
+    "Nonempty roots need SAME actual registry and genuine reached current18/0 providers; present real point terminal probe admits scene-null/cleared-root only.",
+    "Source cleanup catches map actual native states but do not reproduce private FH3/SEH or CRT faults.",
+    "Companion exception retirement does not assert native destruction/free; persistent diagnostics and remaining credits require disposition.",
+    "No application binding, automatic admission/retain, full terminal graph, native ABI or AC59A0 admission."
+  ],
+  "definitions": "reports/cc10_gui_scene_storage_definitions.json"
+}

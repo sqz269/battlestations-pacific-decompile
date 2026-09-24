@@ -107,28 +107,6 @@
       "coverage": "boundary-only raw evidence; mapped source cleanup schedule, no native EH transport implementation"
     }
   ],
-  "no_ghidra_function": [
-    {
-      "address": "00cc1b53",
-      "end_exclusive": "00cc1b5d",
-      "end_inclusive": "00cc1b5c",
-      "final_instruction": "00cc1b58",
-      "final_instruction_length": 5,
-      "byte_span": 10,
-      "role": "destructor FH3 handler descriptorDFAAD4",
-      "coverage": "boundary-only raw evidence; mapped source cleanup schedule, no native EH transport implementation"
-    },
-    {
-      "address": "00cc1b73",
-      "end_exclusive": "00cc1b7d",
-      "end_inclusive": "00cc1b7c",
-      "final_instruction": "00cc1b78",
-      "final_instruction_length": 5,
-      "byte_span": 10,
-      "role": "constructor FH3 handler descriptorDFAB08",
-      "coverage": "boundary-only raw evidence; mapped source cleanup schedule, no native EH transport implementation"
-    }
-  ],
   "host_steps": [
     {
       "function": "00b724e0",
@@ -216,9 +194,10 @@
       "function": "00cc1b53",
       "address": "00cc1b58",
       "native": "00bf6b43",
-      "kind": "no_ghidra_function",
+      "kind": "tail_jump",
       "actual_transfer": "JMP",
-      "contract": "destructor FH3 handler descriptorDFAAD4"
+      "contract": "destructor FH3 handler descriptorDFAAD4",
+      "undefined_at_worker_freeze": true
     },
     {
       "function": "00cc1b60",
@@ -240,9 +219,10 @@
       "function": "00cc1b73",
       "address": "00cc1b78",
       "native": "00bf6b43",
-      "kind": "no_ghidra_function",
+      "kind": "tail_jump",
       "actual_transfer": "JMP",
-      "contract": "constructor FH3 handler descriptorDFAB08"
+      "contract": "constructor FH3 handler descriptorDFAB08",
+      "undefined_at_worker_freeze": true
     }
   ],
   "prior_reconstruction_records": [
@@ -426,7 +406,7 @@
         "live_equals_installed": true
       }
     ],
-    "call_verifier": "15 rows checked,0 failed:13 direct/tail instruction rows and2 raw undefined-handler callee-only rows;2 indirect import/current0 rows retained, assembly inspected",
+    "call_verifier": "After primary handler definitions:15 direct/tail instruction rows checked,0 failed;2 indirect rows separately retained",
     "probe": {
       "source": "local/output/cc10_gui_scene_storage_probe.cpp",
       "command": "cl /nologo /MD /EHsc /std:c++20 /O2 /Gy /W4 /WX /fp:strict /I include /I local\\output /Fo:local\\output\\ /Fe:local\\output\\cc10_gui_scene_storage_probe.exe local\\output\\cc10_gui_scene_storage_probe.cpp build\\win32\\Release\\bsp_core.lib build\\win32\\Release\\bsp_lua511.lib build\\win32\\Release\\bsp_zlib121.lib /link /OPT:REF /MANIFEST:EMBED user32.lib d3d9.lib advapi32.lib shell32.lib",
@@ -460,7 +440,8 @@
       },
       "shared_boundary": "weak/name pool/raw resource/ambient/tree/point terminal bodies are shared genuine source providers, not independently compared original descendants; exact8B current0 dispatch site replaced by declared same-count bridge",
       "not_tested": "original nested bodies, original FH3/SEH exception transport/private stack/register ABI, full attached camera/light terminal graph, application/AC59A0/gameplay"
-    }
+    },
+    "call_verifier_at_worker_freeze": "15 rows checked,0 failed:13 direct/tail instruction rows and2 raw undefined-handler callee-only rows;2 indirect import/current0 rows retained, assembly inspected"
   },
   "limits": [
     "Actual24h backing/contexts/frames/Acquired must remain stable and quiescent through destruction/retirement; no legacy owner conversion.",
@@ -649,5 +630,36 @@
       "bytes": 40,
       "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
     }
-  ]
+  ],
+  "no_ghidra_function_at_worker_freeze": [
+    {
+      "address": "00cc1b53",
+      "end_exclusive": "00cc1b5d",
+      "end_inclusive": "00cc1b5c",
+      "final_instruction": "00cc1b58",
+      "final_instruction_length": 5,
+      "byte_span": 10,
+      "role": "destructor FH3 handler descriptorDFAAD4",
+      "coverage": "boundary-only raw evidence; mapped source cleanup schedule, no native EH transport implementation"
+    },
+    {
+      "address": "00cc1b73",
+      "end_exclusive": "00cc1b7d",
+      "end_inclusive": "00cc1b7c",
+      "final_instruction": "00cc1b78",
+      "final_instruction_length": 5,
+      "byte_span": 10,
+      "role": "constructor FH3 handler descriptorDFAB08",
+      "coverage": "boundary-only raw evidence; mapped source cleanup schedule, no native EH transport implementation"
+    }
+  ],
+  "primary_metadata_closure": {
+    "definitions": "reports/cc10_gui_scene_storage_definitions.json",
+    "handlers": [
+      "00cc1b53",
+      "00cc1b73"
+    ],
+    "each_bytes": 10,
+    "native_behavior_changed": false
+  }
 }
