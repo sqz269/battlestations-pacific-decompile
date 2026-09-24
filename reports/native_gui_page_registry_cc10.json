@@ -1,0 +1,34 @@
+{
+  "packet": "cc10_gui_page_registry_raw",
+  "status": "source_recovered_valid_raw_vector_build_tested_unbound",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "ghidra_worker_mutations": 0,
+  "header": "include/bsp/native_gui_page_registry.hpp",
+  "source": "src/native_gui_page_registry.cpp",
+  "documentation": "docs/NATIVE_GUI_PAGE_REGISTRY_CC10.md",
+  "routines": [
+    {"address": "00aa30c0", "body_inclusive": "00aa30c0-00aa3138", "no_ghidra_function": false, "name": "remove_native_gui_page_pointer_00aa30c0", "coverage": "complete valid-raw-vector algorithm; original CRT invalid-handler/ABI not claimed", "original_abi": "ECX raw manager, stack page, RET4"},
+    {"address": "00aa52a0", "body_inclusive": "00aa52a0-00aa5383", "no_ghidra_function": false, "name": "register_native_gui_page_00aa52a0", "coverage": "complete valid-raw-vector algorithm with existing raw four-byte-slot insert adapter; original helper symbol/CRT/ABI not claimed", "original_abi": "ECX raw manager, stack page, RET4"},
+    {"address": "00aa31f0", "body_inclusive": "00aa31f0-00aa327e", "no_ghidra_function": false, "name": "remove_and_destroy_native_gui_page_00aa31f0", "coverage": "complete vector selection/removal schedule; actual current virtual20/04 dispatch requires explicit external provider", "original_abi": "ECX raw manager, stack page, RET4"}
+  ],
+  "host_steps": [
+    {"function": "00aa52a0", "address": "00aa52ae", "native": "00aa30c0", "contract": "remove first same page pointer before signed-priority scan"},
+    {"function": "00aa52a0", "address": "00aa5314", "native": "004d3b70", "contract": "raw middle insertion; existing same-layout BD08D0 adapter used in source"},
+    {"function": "00aa52a0", "address": "00aa5375", "native": "004d3b70", "contract": "raw append requiring growth; existing same-layout BD08D0 adapter used in source"},
+    {"function": "00aa30c0", "address": "00aa3126", "native": "00bf67a7", "contract": "shift following raw page pointers before reducing end"},
+    {"function": "00aa31f0", "address": "00aa3256", "native": "00bf67a7", "contract": "shift following raw page pointers before reducing end"},
+    {"function": "00aa5840", "address": "00aa5957", "native": "00aa52a0", "contract": "register a newly constructed actual page"},
+    {"function": "00ac59a0", "address": "00ac5eed", "native": "00aa52a0", "contract": "reposition an existing actual page when applied priority changes"}
+  ],
+  "indirect_steps": [
+    {"function": "00aa31f0", "address": "00aa326a", "slot": "+20", "profile_example": "00d5be38 -> 00aa8320", "contract": "call current page scene-node release after vector removal"},
+    {"function": "00aa31f0", "address": "00aa3276", "slot": "+04", "profile_example": "00d5be38 -> 00aa38f0", "contract": "reload current vtable and scalar-delete with flag 1"}
+  ],
+  "producer": ["00aa5d70 constructs manager+14 empty raw vector", "00ac6600 constructs raw 124h page with signed applied priority at +fc"],
+  "reference_contract": "00aa31f0 directly removes and destroys; it does not decrement page+4. Caller 00518250 separates refcount-one destroy and InterlockedDecrement paths.",
+  "build": "scripts/build.ps1 MSVC Win32 succeeded; 3/3 CTests passed",
+  "fixture": "one ignored local MSVC Win32 source-only probe linked bsp_core.lib: signed priority, stable equals, same-pointer reposition, unchanged page+4, vector removal before virtual20 and current virtual04 after profile change; passed",
+  "runtime": "not_reachable_from_application_unbound",
+  "limits": ["no typed GuiLayoutPage casts", "no raw page producer or GUI focus binding", "current virtual providers external", "source CRT/FH3/SEH and binary ABI not established", "callsite xrefs for 00aa31f0 are numerous and not individually modeled as release policy"]
+}
