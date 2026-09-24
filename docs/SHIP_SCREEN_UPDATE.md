@@ -318,3 +318,229 @@ before binding.
 - Then +188h is cleared.
 - Still to read between 0064FB44 and 0065005C: the speed, recon and torpedo digit widgets
   (+60h..+74h) and ship_dir_Icon (+50h).
+
+## 12. Part 3: the damage panel, 0064F665..0064FD24
+
+Packet `cc9_ship_screen_parts34` (worker cc9-platform2, 2026-09-23). Read from the listing of
+0064DD30; the decompile loses the stack arguments of every virtual call in this range.
+
+**Corrections to section 11.**
+- The panel reads the **controlled unit** (00E188D8, reloaded at 0064F62B and 0064F65F), not +184h.
+- The settings descriptor vector at GameSettings+3E4h has a **14h** stride (the `/14h` idiom
+  `IMUL 66666667h; SAR EDX,3` at 0064F904), not 20h. Its begin is +3E8h and its end +3ECh.
+- The EngineJam numerator 0093A3F0 reads the **task's** own active-failure vector (task+18h..+1Ch,
+  10h stride), and the panel divides it by the settings record's seconds.
+- Circle_1 divides task+34h by unit+A60h and circle_2 divides task+38h by unit+A5Ch. Both divisors
+  are loaded as floats (`FLD float ptr`), so docs/UNIT_FIRE_AND_REPAIR.md's "u32 cleared when the
+  timer expires" for task+3Ch/+40h is a float duration here.
+
+**The flow** (`bsp::ship_screen_damage_panel_0064f665`):
+1. 0064F665..0064F678: return unless the controlled unit exists and answers IsKindOf(6).
+2. 0064F67E..0064F6B5: Icon_5 (+D4h) visible for a submarine (IsKindOf(8)), Icon_3 (+C4h) otherwise.
+3. 0064F6B7..0064F71C: +150h from unit+A44h: 0 gives -1, 4 gives 0, 3 gives 1, 5 and 1 give 2,
+   2 gives 3. Any other value leaves +150h unchanged.
+4. 0064F726..0064F7C3: Hl_1..4 (+D8h..+E4h). The colour comes back through virtual +54h into a
+   stack quad and goes out through +50h. The selected highlight's alpha grows by `(dt+dt)` while
+   below 1.0 and is set to 1.0 otherwise, with no clamp after the add. The others shrink by
+   `(dt+dt)` while above zero and are set to zero otherwise.
+5. Circle_3 (+F0h). A submarine shows `(settings+4C4h - unit+125Ch) / settings+4C4h` when it is
+   above 0.01f and below 0.99 (00CED5D0). A surface ship shows `0093A3F0(unit+A20h) / seconds`,
+   where seconds belongs to the last settings descriptor named `EngineJam`, when above 0.01f.
+6. Circle_1 (+E8h): `00939F80(unit+A20h) / unit+A60h` above 0.01f.
+7. Circle_2 (+ECh): `00939F70(unit+A20h) / unit+A5Ch` above 0.01f.
+8. Circle_4 (+F4h): the largest `(+36Ch - +370h) / +36Ch` over the device list (+48h, next
+   +44h), counting a device that answers IsKindOf(4), not IsKindOf(0Fh), IsKindOf(20h), has
+   `[+3F4h]+80h != 1` and has byte +378h set. It is shown above 0.01f.
+9. A shown circle calls virtual +34h(1). With +188h set it calls 00ABE6E0(ratio, 0, 0, 1.0),
+   otherwise it gets 00AA8B00(widget, 2)'s timed entry and writes +0Ch = clamp(ratio, 0, 1) and
+   +10h = 1.0. A hidden circle calls +34h(0). Every compare is `JBE`, so a 0/0 ratio hides.
+
+**+188h.** 0064D590 sets it when the unit changes, and the update clears it at 006500C1. The host's
+hand-off now sets it the same way, and the tail clears it whenever the panel is bound.
+
+**Substitutions and records** (each answers the image's own "no data" value):
+
+| record | address | stands for |
+| --- | --- | --- |
+| `HudShipScreen::repair_task` | 0064F6BD | the repair task at unit+A20h: priority +24h, the timers +34h/+38h, the divisors unit+A5Ch/+A60h and 0093A3F0. Its constructor is unread and nothing in the host produces it. All read zero, so +150h = -1 and circles 1 to 3 hide. |
+| `HudShipScreen::settings_failure_descriptors` | 0064F8E7 | GameSettings+3E4h, not loaded; the loop finds no EngineJam and answers 0 |
+| `HudShipScreen::device_list` | 0064FBEC | the device list with +36Ch/+370h/+378h, not modelled; it reads empty |
+| `HudShipScreen::submarine_circle_terms` | 0064F7EB | unit+125Ch and GameSettings+4C4h (submarines only) |
+| `HudShipScreen::circle_quad`, `circle_progress` | 00ABE6E0, 00AA8B00 | a shown circle's progress; the bridge draws neither |
+
+**Switch.** `kHudShipScreenDamageBound`. OFF keeps part 2's tail record at 0064F665. ON runs the
+panel, then either part 4 or the record `HudShipScreen::update_remainder` at 0064FD24.
+
+**Predictions, written before the pair.** One tree, main 528a673ea plus this branch, with parts 1
+and 2 on, `kHudShipScreenGaugesBound` off, and `kHudShipScreenDamageBound` off then on. USN04 4500,
+`BSP_GUNNERY_RNG_STREAMS=1`, back buffer 2560x1440. The controlled unit is Lexington-class01, a
+surface ship.
+- **Row that leaves:** `HudShipScreen::update_remainder` at 0064F665, 9,158.
+- **Rows added:** `update_remainder` at 0064FD24, `repair_task`, `settings_failure_descriptors` and
+  `device_list`, 9,158 each.
+- **Rows not added:** `submarine_circle_terms`, `circle_quad` and `circle_progress`.
+- **Total.** The unimplemented total rises by 27,474 (three new records; the tail record moves).
+- **Summary lines.** Every gameplay line is identical. The text line is identical. The sprite
+  line's `quads` may move by one or two: Icon_5 is now hidden and Icon_3 shown each frame. The
+  circles are Sections with no texture, and the Hl fade to alpha 0 changes no quad count, because
+  the bridge does not cull by alpha.
+
+**The part 3 pair.** `local\p3_off_usn04.log` against `local\p3_on_usn04.log` (worker tree), built
+from one tree on main 528a673ea plus this branch, back buffer 2560x1440.
+
+| row | OFF | ON |
+| --- | ---: | ---: |
+| unimplemented total | 2,221,102 | 2,248,576 (+27,474; predicted +27,474) |
+| update_remainder at 0064F665 | 9,158 | none |
+| update_remainder at 0064FD24 | none | 9,158 |
+| repair_task, settings_failure_descriptors, device_list | none | 9,158 each |
+
+- **Rows not added:** none of `submarine_circle_terms`, `circle_quad` or `circle_progress` appears.
+- **Summary lines.** 156 of 157 are identical, and every gameplay line is among them. The sprite
+  line's `quads` goes from 185 to 184, inside the predicted one or two.
+- `PlatformLoopCallbacks::pretranslate` moves (18 to 23), as it did in the part 2 pair; it counts
+  window messages.
+- **Result.** Every prediction holds. **`kHudShipScreenDamageBound` flips ON.**
+
+## 13. Part 4: the direction spring and the digit gauges, 0064FD24..006500C1
+
+**Corrections to section 11.** The +7Ch gauge has three sources, tested in order: with +105h the
+int unit+638h; else with +106h zero when unit+1124h equals 0.0f, otherwise the int
+`[[unit+538h]+790h]`; else with +104h `00852300(unit)`. 00852300 is `int __fastcall(unit)`: it
+counts the devices on +48h that answer IsKindOf(25h) and virtual +210h(2Dh, 0). The dt it
+appears to take is 0043B370's second argument, pushed early. 00815850 is `int __fastcall(unit)`:
+`unit+104Ch`, plus `00810E90()` when that is not negative.
+
+**The flow** (`bsp::ship_screen_gauges_0064fd24`):
+1. 0064FD24..0064FD50: 00939F70 and 00939F80 on +184h's task; both results are popped, so they
+   have no effect.
+2. 0064FD52..0064FD6B: r = 0064AAD0(screen) with +184h set, else 0.
+3. 0064FD71..0064FDB5: when +128h differs from r (FUCOMIP; unordered counts as different),
+   `+12Ch += (+128h - r) * 4.0` and +128h = r.
+4. 0064FDBB..0064FF9D: when +12Ch is not 0.0f, a step gated on the platform clock: the clock
+   (01090AB0 vtable +14h, a counter/frequency pair scaled by 00CE47A0) must pass the static
+   00E19808 + 21h. The step then stores the clock in 00E19808, integrates +124h and decays +12Ch.
+5. 0064FFA3: stop without +184h.
+6. 0064FFB1..0064FFDE: the speed gauge +78h gets `0092D730([unit+1018h]) * 1.944`.
+7. 0064FFE3..00650088: the +7Ch gauge from the source above.
+8. 0065008D..006500BC: with +107h, the +80h gauge gets `00815850(unit)`.
+9. 006500C1: +188h = 0.
+
+**0064AAD0** is `float __thiscall(screen)`, RET. Ghidra's decompile gives the wrong return. The
+routine returns the float at [ESP] (0064ABC5), which is the normalised rudder r, not the angle.
+- `x = -unit+984h`, the ordered rudder.
+- With x > 0.05, `r = min((x - 0.05)/0.95, 1)`. With x < -0.05, `r = max((x + 0.05)/0.95, -1)`.
+  Otherwise r = 0.
+- With r nonzero, `s = (r > 0 ? 10 : -10) * pi / 180 + r * 0.29670598` (00CF5C70), else s = 0.
+- It sets ship_dir_Icon (+50h) to rotation `2*pi - s` through virtual +44h.
+
+**The gauge 0043B370** is `__thiscall(gauge, float value, float dt)`, RET 8. The gauge is
+0043DF90's 1Ch object: a vector of two digit icons, then +10h value, +14h rate and +18h primed.
+- q = 004396F0(value): the floor, plus 1 when the fraction's magnitude exceeds 0.5 (00CE3800 is
+  the float 0.5).
+- On the first call: +10h = q, 0043B2F0(q), +14h = 0, +18h = 1.
+- Afterwards: `k = clamp(dt * 4, 0, 1)`, `+14h = (k * ((q - +10h) - +14h) + +14h) * 0.875`,
+  `+10h += k * +14h`, 0043B2F0(+10h), +18h = 1.
+- 0043B2F0 calls 0043ABA0(i, digit_i, |v|) on each digit, then stores +10h = v and +18h = 0.
+- 0043ABA0 turns the value into decimal digits and rewrites the digit icon's vertex UVs through
+  the widget's vertex stream (+A0h, lock +10h, unlock +14h).
+
+**Substitutions and records:**
+
+| record | address | stands for |
+| --- | --- | --- |
+| `HudShipScreen::gauge_digit_uv` | 0043ABA0 | the digit UV roll; the bridge draws a widget's first authored state only |
+| `HudShipScreen::dir_clock_step` | 0064FDD4 | the clock-gated step. The HUD host has no platform clock. +124h and +12Ch have no other reader: a disp32 scan of 124h finds only the enter (0064BD9A) and this block. The step is recorded and not applied. |
+| `HudShipScreen::apply_unit_0064ae20` | 0064AE20 | the apply routine that sets +104h..+107h, the recon and torpedo icons and NoRepairGUI. It is not bound, so the flags keep the enter's clear values and only the speed gauge runs. Recorded once per hand-off. |
+| `gauge_source_638`, `gauge_source_class_790`, `gauge_source_00852300`, `gauge_source_00815850` | | the three +7Ch sources and the torpedo count; never reached while the flags are clear |
+
+The speed is `GameUnitsHost::unit_forward_speed_0092d730`, the reconstructed 0092D730, on the
+screen's unit. The host returns it as a float where the image leaves it on the x87 stack.
+
+**Switch.** `kHudShipScreenGaugesBound`. OFF keeps one record at 0064FD24.
+
+**Predictions, written before the pair.** One tree with parts 1 to 3 on, `kHudShipScreenGaugesBound`
+off then on, and the same run parameters as the part 3 pair.
+- **Row that leaves:** `HudShipScreen::update_remainder` at 0064FD24, 9,158.
+- **Rows added:** `gauge_digit_uv`, 18,316 (two digits of the speed gauge per frame), and
+  `apply_unit_0064ae20`, once per 45h hand-off (1 expected).
+- **Rows not added:** the four `gauge_source_*` rows. `dir_clock_step` is also expected to be
+  absent: the run's order is rudder 0.000, so r stays 0 and +12Ch stays 0.
+- **Total.** The unimplemented total rises by 9,159.
+- **Summary lines.** All identical. The ship_dir_Icon rotation (2*pi at r = 0) changes no quad
+  count, and the digit icons keep their authored UVs.
+
+**Coverage** (parts 3 and 4):
+
+| routine | C++ | coverage |
+| --- | --- | --- |
+| 0064DD30 block 0064F665..0064FD24 | `ship_screen_damage_panel_0064f665` | complete; the repair task, descriptors and device list are host records |
+| 0064DD30 block 0064FD24..006500C1 | `ship_screen_gauges_0064fd24` | partial: 0064FDD4..0064FF9D (the clock-gated step) is the record `dir_clock_step` |
+| 0064AAD0 | `ship_screen_dir_0064aad0` | complete |
+| 0043B370 with 0043B2F0 | `ship_screen_gauge_0043b370` | complete; 0043ABA0 is the record `gauge_digit_uv` |
+| 004396F0 | `ship_screen_gauge_round_004396f0` | complete |
+| 0064AE20, 0064B370, 0043ABA0 | none | read only |
+
+**The part 4 pair.** `local\p3_on_usn04.log` against `local\p4_on_usn04.log`, same tree.
+
+| row | OFF | ON |
+| --- | ---: | ---: |
+| unimplemented total | 2,248,576 | 2,257,735 (+9,159; predicted +9,159) |
+| update_remainder at 0064FD24 | 9,158 | none |
+| gauge_digit_uv | none | 18,316 |
+| apply_unit_0064ae20 | none | 1 |
+
+- **Rows not added:** no `gauge_source_*` row and no `dir_clock_step` row.
+- **Summary lines.** All 157 are identical.
+- **Result.** Every prediction holds. **`kHudShipScreenGaugesBound` flips ON.**
+
+## 14. Screens 26h, 2Eh and 3Eh: the base update
+
+Packet `cc9_screen_26h_2eh` (worker cc9-platform2, 2026-09-23).
+
+**Evidence.** Each registry slot's vtable is found through its enter virtual at +10h, and +20h is
+read from the image:
+
+| slot | vtable | +20h |
+| --- | --- | --- |
+| 26h | 00CEC9B0 | 004F75C0 |
+| 2Eh | 00CEDF34 | 004F75C0 |
+| 3Eh | 00CF4544 | 004F75C0 |
+
+004F75C0 (`BSP_FrontEndScreen_BaseUpdate`) is a bare `RET 4`, followed by INT3 padding. Every
+other slot of the 42 has its own update. So the pump's call on these three slots does nothing,
+and the host's `FrontEndScreen::update` record for them stands for no missing behaviour.
+
+**Binding.** `kHudBaseUpdateScreensBound`. ON logs the pump's call on slots 26h, 2Eh and 3Eh as
+the done row `FrontEndScreen::base_update` (004F75C0). OFF keeps them under the record.
+
+**Predictions, written before the pair.** One tree with parts 1 to 4 on, the switch off then on,
+USN04 4500 as before. 26h and 2Eh are in the 25h level-1 set; 3Eh is not.
+- `FrontEndScreen::update` falls by 18,316 (two slots x 9,158).
+- `FrontEndScreen::base_update` appears as done with 18,316 calls.
+- The unimplemented total falls by 18,316.
+- Every summary line is identical.
+
+**The pair.** `local\p5_off_usn04.log` against `local\p5_on_usn04.log`, one tree with parts 1 to 4
+on, back buffer 2560x1440.
+
+| row | OFF | ON |
+| --- | ---: | ---: |
+| unimplemented total | 2,257,735 | 2,239,419 (-18,316; predicted -18,316) |
+| FrontEndScreen::update | 73,277 | 54,961 |
+| FrontEndScreen::base_update | none | 18,316 done |
+
+- **Summary lines.** All 157 are identical.
+- **Result.** Every prediction holds. **`kHudBaseUpdateScreensBound` flips ON.** The OFF total
+  equals the part 4 ON total, so the switch-off build is neutral.
+
+## 15. Screen 27h's update writes gameplay state
+
+27h's update 0067BB50..0067BC59 (vtable 00CF7A38) was read and **not bound**. With no input gate
+it calls `0077C470` (`BSP_UnitInstance_SendRoleTransfer`, a session message 4Bh) on +30h's unit:
+- when +30h changes away from the controlled unit;
+- when the local player slot game+18ECh is 0..7, depending on the screen's +4h byte and 0059BBD0;
+- when no controlled unit exists.
+
+It also moves an observer pair through 006952A0 and 00694A60. Under the brief's rule this screen
+waits for the lead's decision.
