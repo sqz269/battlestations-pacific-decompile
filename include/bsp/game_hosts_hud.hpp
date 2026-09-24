@@ -164,6 +164,8 @@ public:
     // Packet cc9_screen_46h: screen 46h's update 0064D610. `wanted` is the
     // screen's +4h as the registry holds it.
     void update_ship_view_screen_0064d610(float seconds, bool wanted);
+    // Packet cc9_screen_44h: screen 44h's update 00649860, the HUD root.
+    void update_hud_root_screen_00649860(float seconds);
 
     // One summary line for the run log.
     void report();

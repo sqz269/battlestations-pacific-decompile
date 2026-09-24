@@ -145,6 +145,16 @@ inline constexpr bool kHudShipViewInputBound = true;
 
 inline constexpr bool kHudShipScreenGaugesBound = true;
 
+// Packet cc9_screen_44h (docs/SHIP_SCREEN_UPDATE.md section 23). ON runs
+// screen 44h's update 00649860, the HUD root, through
+// bsp::hud_root_screen_update in place of the FrontEndScreen::update record:
+// the pause gate, the every-other-call power-up clone pass, the award ticker,
+// the pending-unit commit, ClosedUnitHUD_Group's show, the closed-HUD toggle
+// and the group-change tail. The power-up manager, the award queue, the pause
+// bytes, the selection tuple (00644CC0), the selection poll (00644DB0) and the
+// unit rows (00648C20) are records. OFF keeps the record.
+inline constexpr bool kHudRootScreenBound = true;
+
 class GameHostLog;
 class GameFrontendHost;
 class GameMenuHost;
