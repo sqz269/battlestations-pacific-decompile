@@ -55,6 +55,8 @@ void validate(Context& c) {
        &c.luminance.holders!=&holders || &c.bright.holders!=&holders ||
        &c.bloom.textures.holders!=&holders || &c.effects_lifetime.texture_holders!=&holders ||
        &c.effects_lifetime.actual_post_effects!=&post.destruction.actual_owners ||
+       &c.pass_companions.effects!=&c.effects_lifetime ||
+       &c.pass_companions.registry!=&post.destruction.actual_owners ||
        &c.luminance.parameters!=&c.passes.parameters || &c.bright.parameters!=&c.passes.parameters ||
        &c.bloom.parameters!=&c.passes.parameters || &post.destruction.frame_targets!=&c.entry.frame_targets ||
        &holders.levels.surfaces!=&surfaces || &holders.render_targets.surfaces!=&surfaces ||
@@ -131,6 +133,14 @@ void* inline_pass(U size,U profile,std::size_t index,U allocation_site,State& a)
         put(raw,8,0);put(raw,0xc,0);put(raw,0,profile);
     }
     return raw;
+}
+void bind_pass(std::size_t index,void* owner,U publication,Context& c,State& a) {
+    if(!owner)return; // Preserve native null publication without a companion.
+    a.pass_binding_started[index]=true;a.pass_binding_publication_sites[index]=publication;
+    // Host metadata only. The true producer has already initialized every
+    // pointer its admitted destructor can release. No native field/count
+    // store, retain or fallback; emplace failure leaves the raw owner retained.
+    a.pass_references[index].emplace(owner,c.pass_companions);
 }
 void name(std::size_t index,const char* text,U address,Context& c,State& a) {
     site(a,address,a.native_state);
@@ -232,7 +242,8 @@ void continue_native_render_resource_init_00b109bc_fragment(NativeRenderResource
     if(a.phase!=State::Phase::fresh || entry.phase!=NativeRenderResourceInitEntryState::Phase::awaiting_b109bc_continuation ||
        entry.native_site!=0x00b109bcu || entry.continuation_identity || !entry.argument_cells)
         throw std::logic_error("render-resource continuation requires an unconsumed B109BC entry");
-    a.entry=&entry;entry.continuation_identity=&a;a.context_identity=&c;a.phase=State::Phase::preparing;
+    a.entry=&entry;entry.continuation_identity=&a;a.context_identity=&c;
+    a.pass_companions_identity=&c.pass_companions;a.phase=State::Phase::preparing;
     try {
         validate(c);prepare(c,a);
         a.phase=State::Phase::running;entry.phase=NativeRenderResourceInitEntryState::Phase::continuation_running;
@@ -272,11 +283,13 @@ void continue_native_render_resource_init_00b109bc_fragment(NativeRenderResource
         assign_shared(service,0x58,old58,incoming58,true,a.captured_increment_ebp,c,a,0xb10bb8,0xb10bc2,0xb10bd2);
         result=inline_pass(0x20,0x00d5e164,0,0xb10bd6,a);a.ebp_bits=0;
         const NativeDepthDownscalePassArguments depth_args{child(service,0x3c),quotient(entry.dimensions_esp18[0],2),quotient(entry.dimensions_esp18[1],2),0x73};
-        put(service,0x60,bits(result));site(a,0xb10c20,-1);
+        bind_pass(0,result,0xb10c1d,c,a);
+        put(service,0x60,bits(result));a.pass_published[0]=true;site(a,0xb10c20,-1);
         initialize_native_depth_downscale_pass_00b540b0(result,0x20,depth_args,a.passes[0]);
         result=inline_pass(0x20,0x00d5e178,1,0xb10c27,a);
         const U current_multisample=entry.argument_cells->word_00; // B10C50, after allocation.
-        put(service,0x64,bits(result));
+        bind_pass(1,result,0xb10c5b,c,a);
+        put(service,0x64,bits(result));a.pass_published[1]=true;
         NativeParticleBlendPassArguments particle{};
         particle.width=entry.dimensions_esp18[0];particle.height=entry.dimensions_esp18[1];
         particle.format=0x71;particle.multisample=current_multisample;particle.mode=1;
@@ -288,14 +301,16 @@ void continue_native_render_resource_init_00b109bc_fragment(NativeRenderResource
         initialize_native_particle_blend_pass_00b542d0(child(service,0x64),0x20,particle,a.passes[1]);
         post(0,c,a);parameter(0,c,a);post(1,c,a);parameter(1,c,a);
         result=inline_pass(0x220,0x00d5e18c,2,0xb10e5f,a);
-        input=child(service,0x64);put(service,0x18,bits(result));
+        input=child(service,0x64);bind_pass(2,result,0xb10e8b,c,a);
+        put(service,0x18,bits(result));a.pass_published[2]=true;
         a.quarter_height=quotient(entry.aligned_height_esp24,4);a.quarter_width=quotient(a.aligned_width_esp58,4);
         a.edi_bits=a.quarter_height;a.ebp_bits=a.quarter_width;
         site(a,0xb10eb0,-1);input=native_shadow_texture_holder_00b4d170(input);
         site(a,0xb10eb9,-1);
         initialize_native_downscale4x4_pass_00b544f0(child(service,0x18),0x220,
             {input,a.quarter_width,a.quarter_height,0x71},c.downscale,a.passes[2]);
-        result=inline_pass(0x90,0x00d5e1a0,3,0xb10ec3,a);put(service,0x1c,bits(result));
+        result=inline_pass(0x90,0x00d5e1a0,3,0xb10ec3,a);
+        bind_pass(3,result,0xb10eee,c,a);put(service,0x1c,bits(result));a.pass_published[3]=true;
         a.half_aligned_height_esp1d8=quotient(entry.aligned_height_esp24,2);
         a.spill_esp20=quotient(a.aligned_width_esp58,2);
         site(a,0xb10f17,-1);input=native_shadow_texture_holder_00b4d170(child(service,0x64));
@@ -304,18 +319,21 @@ void continue_native_render_resource_init_00b109bc_fragment(NativeRenderResource
             {input,a.spill_esp20,a.half_aligned_height_esp1d8,0x71},c.downscale,a.passes[3]);
         result=allocate(0x250,a,0xb10f2a);a.raw_passes[4]=result;a.spill_esp14=bits(result);
         site(a,0xb10f47,14);if(result)result=construct_native_luminance_owner_00b50d40(result,c.actual_00ce6650);
-        input=child(service,0x18);a.native_state=-1;put(service,0x20,bits(result));
+        input=child(service,0x18);bind_pass(4,result,0xb10f5a,c,a);
+        a.native_state=-1;put(service,0x20,bits(result));a.pass_published[4]=true;
         site(a,0xb10f5d,-1);input=native_shadow_texture_holder_00b4d170(input);
         site(a,0xb10f66,-1);initialize_native_luminance_00b51090(child(service,0x20),0x250,input,a.luminance);
         result=inline_pass(0x224,0x00d5e1b4,5,0xb10f70,a);
-        input=child(service,0x18);put(service,0x24,bits(result));
+        input=child(service,0x18);bind_pass(5,result,0xb10fa2,c,a);
+        put(service,0x24,bits(result));a.pass_published[5]=true;
         site(a,0xb10fa5,-1);input=native_shadow_texture_holder_00b4d170(input);
         site(a,0xb10fae,-1);initialize_native_bright_pass_00b54940(child(service,0x24),0x224,
             {input,a.quarter_width,a.quarter_height,0x15},a.bright);
         result=allocate(0x43c,a,0xb10fb8);a.raw_passes[6]=result;a.spill_esp14=bits(result);
         site(a,0xb10fd5,15);if(result)result=construct_native_bloom_owner_00b54e70(result);
         const U bloom_parameter=x87_float_copy(c.actual_00ce3854); // B10FDE before +28 publication.
-        put(service,0x28,bits(result));
+        bind_pass(6,result,0xb10fe4,c,a); // The source x87 copy has already discharged ST0.
+        put(service,0x28,bits(result));a.pass_published[6]=true;
         const U bloom_height=quotient(entry.aligned_height_esp24,8);
         input=child(service,0x24);const U bloom_width=quotient(a.aligned_width_esp58,8);
         site(a,0xb11013,-1);input=native_shadow_texture_holder_00b4d170(input);
