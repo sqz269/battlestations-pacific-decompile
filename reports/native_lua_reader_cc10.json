@@ -1,0 +1,52 @@
+{
+  "packet": "cc10_lua_reader",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_lua_reader.cpp",
+  "functions": [
+    {"address":"004425c0","end_inclusive":"00442628","name":"BSP_LuaReader_Construct","original_abi":"ECX reader, stacked by-value 14h root, EAX reader, RET14","source_contract":"caller-owned root consumed after actual raw copy"},
+    {"address":"00441a20","end_inclusive":"00441a68","name":"BSP_LuaReader_DestroyStackInstance","original_abi":"ECX reader, RET0","source_contract":"CE44FC, vector tidy, CE374C"},
+    {"address":"00441a70","end_inclusive":"00441acc","name":"BSP_LuaReader_Destruct","original_abi":"ECX reader, stacked deleting flags, RET4","source_contract":"bit0 delete only with matching global new"},
+    {"address":"00bd8e20","end_inclusive":"00bd8eb5","name":"BSP_LuaReader_EnterKey","original_abi":"ECX reader, stacked tag and bits, RET8","source_contract":"BD5790 lookup into caller-owned scratch, push, scratch destruction"},
+    {"address":"00bd7a20","end_inclusive":"00bd7a27","name":"BSP_LuaReader_LeaveKeyThunk","original_abi":"ECX reader, ADD ECX,4; tail jump BD7130","source_contract":"reader pop method"},
+    {"address":"00bd7130","end_inclusive":"00bd7176","name":"BSP_LuaObjectVector_PopBack","original_abi":"ECX vector proxy, RET0","source_contract":"null/empty no-op, destroy before end decrement"}
+  ],
+  "host_steps": [
+    {"address":"004425ff","function":"004425c0","native":"00442220","contract":"Push by-value root"},
+    {"address":"00442610","function":"004425c0","native":"00b67700","contract":"Destroy consumed root"},
+    {"address":"00441a4e","function":"00441a20","native":"00441210","contract":"Tidy vector before base profile"},
+    {"address":"00441a9e","function":"00441a70","native":"00441210","contract":"Tidy vector"},
+    {"address":"00441ab1","function":"00441a70","native":"00bf65ac","contract":"Free if deleting flags bit0"},
+    {"address":"00bd8e45","function":"00bd8e20","native":"00bf6713","contract":"Native invalid-bound path outside source domain"},
+    {"address":"00bd8e5b","function":"00bd8e20","native":"00bf6713","contract":"Native invalid-bound path outside source domain"},
+    {"address":"00bd8e68","function":"00bd8e20","native":"00bf6713","contract":"Native invalid-bound path outside source domain"},
+    {"address":"00bd8e7d","function":"00bd8e20","native":"00bd5790","contract":"Lookup child into stack scratch"},
+    {"address":"00bd8e8d","function":"00bd8e20","native":"00442220","contract":"Push scratch copy"},
+    {"address":"00bd8e9e","function":"00bd8e20","native":"00b67700","contract":"Destroy scratch after push"},
+    {"address":"00bd7a23","function":"00bd7a20","native":"00bd7130","kind":"tail_jump","contract":"Vector adjustor"},
+    {"address":"00bd7162","function":"00bd7130","native":"00b67700","contract":"Destroy back before decrement"},
+    {"address":"00441b9d","function":"00441b70","native":"00b66fa0","contract":"Native growth temporary copy"},
+    {"address":"00441c90","function":"00441b70","native":"00440230","contract":"Native growth old-prefix copy"},
+    {"address":"00441ca0","function":"00441b70","native":"00440cf0","contract":"Native growth insertion"},
+    {"address":"00441cbc","function":"00441b70","native":"00440230","contract":"Native growth suffix copy"},
+    {"address":"00441cf0","function":"00441b70","native":"00440d30","contract":"Native growth old-range teardown"},
+    {"address":"00441cf9","function":"00441b70","native":"00bf65ac","contract":"Native growth old buffer free"},
+    {"address":"00441e33","function":"00441b70","native":"00b67700","contract":"Native growth temporary teardown"}
+  ],
+  "no_ghidra_function": [],
+  "layout": {"reader_bytes":20,"profile":"+0","proxy_unwritten":"+4","release_vector":"+8,+c,+10","raw_value_bytes":20,"vendor":"MSVC 14.51.36231 /MD Release, _ITERATOR_DEBUG_LEVEL=0"},
+  "validation": {
+    "strict_win32_build":true,
+    "existing_ctests_passed":2,
+    "focused_probe":"local/output/cc10_reader_growth_probe.cpp (ignored)",
+    "probe_exe_sha256":"90399bb25a71b3e8dec51d4f9414d21ca040a567f203b66ef98efb6be2d485b0",
+    "original_growth_bytes":731,
+    "original_growth_sha256":"ae10412a365700f278bfc67f6ac941aa6e00ab01bf126e5497c7518c9ad4bc20",
+    "probe_result":"PASS: original 441B70 growth with original 440230/440CF0/440D30/440600/43F1C0 helper bodies; C++ bridges for allocation and actual reconstructed B66FA0/B67700. Five native/source checkpoints: construction, 1-to-2 capacity growth, pop, reader tidy, owner cleanup; actual Lua stack, active slot counts/addresses, indices and high-water match. Existing tracked parent retained throughout growth.",
+    "native_fh3_verified":false,
+    "application_bound":false,
+    "abi_compatible":false,
+    "game_validated":false
+  },
+  "limits":"Successful valid Lua 50-slot/5-ref domain, caller-owned initialized scratch and matching global-new deletion only. Vendor and native intermediate copy order differ. No STL exception, invalid-parameter, nonlocal Lua transfer, FH3, complete trace, or game parity claim."
+}
