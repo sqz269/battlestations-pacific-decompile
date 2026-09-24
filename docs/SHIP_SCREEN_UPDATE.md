@@ -521,6 +521,19 @@ USN04 4500 as before. 26h and 2Eh are in the 25h level-1 set; 3Eh is not.
 - The unimplemented total falls by 18,316.
 - Every summary line is identical.
 
+**The pair.** `local\p5_off_usn04.log` against `local\p5_on_usn04.log`, one tree with parts 1 to 4
+on, back buffer 2560x1440.
+
+| row | OFF | ON |
+| --- | ---: | ---: |
+| unimplemented total | 2,257,735 | 2,239,419 (-18,316; predicted -18,316) |
+| FrontEndScreen::update | 73,277 | 54,961 |
+| FrontEndScreen::base_update | none | 18,316 done |
+
+- **Summary lines.** All 157 are identical.
+- **Result.** Every prediction holds. **`kHudBaseUpdateScreensBound` flips ON.** The OFF total
+  equals the part 4 ON total, so the switch-off build is neutral.
+
 ## 15. Screen 27h's update writes gameplay state
 
 27h's update 0067BB50..0067BC59 (vtable 00CF7A38) was read and **not bound**. With no input gate

@@ -104,7 +104,7 @@ inline constexpr bool kHudShipScreenDamageBound = true;
 // holds 004F75C0 at 00CEC9D0, 00CEDF54 and 00CF4564), a bare RET 4. ON logs
 // the pump's call on those slots as the done base update; OFF keeps them under
 // the FrontEndScreen::update record.
-inline constexpr bool kHudBaseUpdateScreensBound = false;
+inline constexpr bool kHudBaseUpdateScreensBound = true;
 
 inline constexpr bool kHudShipScreenGaugesBound = true;
 
