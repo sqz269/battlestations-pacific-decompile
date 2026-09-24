@@ -18,13 +18,15 @@ struct NativeRenderResourceInitPost65cNames {
 // even if later callbacks replace the parent field. Captures add no credit.
 // Existing explicit external quiescence governs child reset/destruction.
 struct NativeRenderResourceInitPost65cState final {
-    enum class Phase { fresh, preparing, running, awaiting_b1297a_continuation, failed };
+    enum class Phase { fresh, preparing, running, awaiting_b1297a_continuation,
+        post664_running, awaiting_later_continuation, failed };
     NativeRenderResourceInitPost65cState() = default;
     NativeRenderResourceInitPost65cState(const NativeRenderResourceInitPost65cState&) = delete;
     NativeRenderResourceInitPost65cState& operator=(const NativeRenderResourceInitPost65cState&) = delete;
     Phase phase{Phase::fresh};
     NativeRenderResourceInitPost658State* previous{};
     const NativeRenderResourceInitPost65cNames* names_identity{};
+    const void* post664_identity{}; // One-use successor; retain this state through its dependents.
     NativeRenderResourceInitEntryState* entry_identity{};
     const volatile NativeRenderResourceInitArguments* argument_cells_identity{};
     std::uint32_t native_site{};
