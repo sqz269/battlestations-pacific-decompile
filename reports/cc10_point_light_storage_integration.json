@@ -1,0 +1,146 @@
+{
+  "packet": "cc10_point_light_storage_integration",
+  "worker_commit": "6699d298565f8f0c03e0527d9e8d8cfd1fb3b986",
+  "integration": "e1bca4349c633b09f47336859079ce558d76ea85",
+  "archive": {
+    "path": "local/cc10-platform-evidence/point-light-storage-lifetime.zip",
+    "sha256": "42a0260eeeec55df9cc5958dab8c3d76a1a6da525224ed93c848e43de8ddf1cc",
+    "files": 50,
+    "valid": true
+  },
+  "worker_report": "reports/native_point_light_storage_lifetime_cc10.json",
+  "review": [
+    "Full header/source, all four native schedules and derived EH boundaries reviewed",
+    "Raw45B name/current-constant constructor composes genuine rawLight; live atomic04, preimage-preserving scene178 and actual1E0 descriptor lifetimes; no logical owner",
+    "Current backlink unlink and second resize0/currentbegin/free; state0 before array cleanup and state-1 before Light",
+    "Explicit metadata unbind while count0/payload live BEFORE Light/pool; caller binding survives pre-boundary failure; no native call or credit invented",
+    "Same actual+4 canonical registry, current0/fresh4, flags0 positivecount entry and late flags1 exact200h pool return; no postreturn payload access",
+    "Added pure allocated same-pool membership/free-index guard before count/registry admission; wrong-pool rejection leaves owner/backlink binding unchanged"
+  ],
+  "validation": {
+    "normal_bytes": 212,
+    "compiler_boundary_bytes": 32,
+    "eh_data_bytes": 52,
+    "dependency_bytes": 226,
+    "profile_bytes": 16,
+    "live_equals_installed": true,
+    "instruction_call_rows": 12,
+    "worker_raw_handler_callee_only_rows_preserved": 1,
+    "strict_win32_build": true,
+    "worker_ctests": 2,
+    "integrated_ctests": 3,
+    "focused_original_source_pairs": 3,
+    "wrong_pool_admission_check": true,
+    "source_failure_disposition_check": true,
+    "new_tracked_tests": 0,
+    "build_log_sha256": "d0e75514df442bbd38d2b32f7ce7157b37db68a9abd1ee303cf9ddd6a3783213",
+    "arbitrary_shadow_zero_graph": false,
+    "native_ABI_FH3_SEH": false,
+    "application_bound": false,
+    "game_validated": false
+  },
+  "primary_ghidra": {
+    "defined_handler": "00cc1f06..00cc1f10 exclusive",
+    "handler_bytes": 10,
+    "descriptor": "00dfaff8",
+    "map": "00dfafe8",
+    "map_states": [
+      "-1 ->00cc1ef0",
+      "0 ->00cc1ef8"
+    ],
+    "array_flow_repair": "005a1610 stored extent recreated through005a1627;10 instructions/0gaps; CRT callee properties unchanged",
+    "worker_ghidra_mutations": false
+  },
+  "host_steps": [
+    {
+      "function": "00b7c710",
+      "address": "00b7c718",
+      "native": "00b7c4c0",
+      "contract": "genuine rawB7C4C0 on SAME actual200h slot, captured raw name/current constants; base establishes atomic04"
+    },
+    {
+      "function": "00b7c770",
+      "address": "00b7c79c",
+      "native": "00b7c160",
+      "contract": "same actual+1E0 binding, current reverse begin/unsigned count/node removal; no reference changes"
+    },
+    {
+      "function": "00b7c770",
+      "address": "00b7c7b0",
+      "native": "0059fce0",
+      "contract": "state1 consumed to0 BEFORE valid59FCE0 count0 path; source factors inline sequence into5A1610 helper"
+    },
+    {
+      "function": "00b7c770",
+      "address": "00b7c7b8",
+      "native": "00bf6989",
+      "contract": "CURRENT begin after resize, SAME runtime genuine free; stale begin/capacity preserved"
+    },
+    {
+      "function": "00b7c770",
+      "address": "00b7c7ca",
+      "native": "00b7c5b0",
+      "contract": "state0 consumed to-1 BEFORE genuine raw Light; host backlink metadata retired while payload/count live"
+    },
+    {
+      "function": "00b7c850",
+      "address": "00b7c853",
+      "native": "00b7c770",
+      "contract": "complete raw point destructor, no added scalar entry profile stamp"
+    },
+    {
+      "function": "00b7c850",
+      "address": "00b7c865",
+      "native": "00b7b1d0",
+      "contract": "CURRENT flags lowbyte bit0 after destructor; real0109011C pool/current1FC and captured same200h identity"
+    },
+    {
+      "function": "005a1610",
+      "address": "005a1615",
+      "native": "0059fce0",
+      "contract": "genuine count0 resize path only, valid nonnegative descriptor; no container growth needed"
+    },
+    {
+      "function": "005a1610",
+      "address": "005a161d",
+      "native": "00bf6989",
+      "contract": "capture CURRENT begin after resize, genuine sharedCRT free through matching allocation runtime"
+    },
+    {
+      "function": "00cc1ef0",
+      "address": "00cc1ef3",
+      "native": "00b7c5b0",
+      "contract": "state0 cleanup tail to raw Light using actual saved owner",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc1ef8",
+      "address": "00cc1f01",
+      "native": "005a1610",
+      "contract": "state1 cleanup tail with actual owner+1E0 descriptor",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00cc1f06",
+      "address": "00cc1f0b",
+      "native": "00bf6b43",
+      "contract": "Primary defined complete10B handler, current MOV EAX,DFAFF8 and JMP BF6B43 instruction verified; native FH3 transport remains unclaimed",
+      "kind": "tail_jump",
+      "actual_transfer": "tail_jump"
+    }
+  ],
+  "probe_boundary": {
+    "live_pe_body_bytes": 212,
+    "replaced_virtual_instruction_sites": [],
+    "relocations": "9 direct CALL operands in four bodies; original scalar invokes copied112B point destructor, copied45B constructor invokes genuine rawLight provider",
+    "shared_boundaries": "rawLight constructor/body, actualB7C160, valid count0 resize/free, point200h pool, nested rawnode/resource/name/type providers; original-side Light bridge performs same declared pre-Light backlink metadata unbind",
+    "not_independently_compared": "nested provider machine code, native exception transport, arbitrary shadow-zero/derived terminal graph, private stack aliases, full application/game behavior"
+  },
+  "limits": [
+    "Actual live200h storage and descriptors, matching point-link allocation provenance, same canonical registry/import domain and explicit current slots required.",
+    "Quiescence throughout backlink/canonical retirement; source metadata steps are not native ownership actions.",
+    "Direct scalar genuine-pool provenance remains caller precondition; canonical admission additionally validates allocated membership before count binding.",
+    "RawLight nullshadow or genuine release leaving nonzero count closes; reachedzero shadow requires existing family-aware real provider, no invented companion.",
+    "No legacy PointLightOwner/SceneAttachmentRuntime or host SceneResource terminal substitution; no native FH3/SEH/private ABI/application/gameplay claim."
+  ]
+}
