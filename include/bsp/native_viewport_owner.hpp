@@ -75,6 +75,27 @@ struct NativeViewportEnvironment {
     const volatile std::uint32_t& one_bits_00d7a24c;
 };
 
+// Raw actual-renderer domain. Lookup is pure metadata only and returns the
+// borrowed CURRENT table for the captured numeric profile; it preserves x87
+// state and performs no floating work, callback, allocation or native write.
+// Invocation must
+// execute the exact reached target on the actual receiver and return its
+// actual parameter region, without a D3D9StateCache or dimension projection.
+class NativeViewportRawRendererAccess {
+public:
+    virtual ~NativeViewportRawRendererAccess() = default;
+    virtual const volatile std::uint32_t* resolve_profile(std::uint32_t) const = 0;
+    virtual void* invoke_virtual30(std::uint32_t target, void* actual_renderer) = 0;
+};
+struct NativeViewportRawEnvironment {
+    void* const volatile& renderer_00f8d394;
+    NativeViewportRawRendererAccess& renderer_access;
+    const volatile std::uint32_t& one_bits_00d7a24c;
+};
+// Complete7B B1FF60: ECX actual renderer, EAX actual+1A14, RET. The caller
+// establishes the actual readable extent and admits the reached target.
+void* __fastcall native_renderer_parameters_00b1ff60(void* actual_renderer) noexcept;
+
 // New C++ ABI for native ECX=storage, EAX=same, RET. Requires aligned writable
 // raw storage without a live owner. Preserves allocation preimages at +20..33
 // until the successful final byte20=0. Initializes count1, origin0, sizes640/480,
@@ -83,6 +104,10 @@ struct NativeViewportEnvironment {
 // restores only base vtable, as native funclet00CBCCB0. No automatic free here.
 NativeViewportOwner* initialize_native_viewport_owner_00b1f850(
     void* storage, NativeViewportEnvironment&);
+// Same single constructor implementation and cleanup, with the raw current
+// publication/profile/target protocol and actual result+0C/+10 reads.
+NativeViewportOwner* initialize_native_viewport_owner_00b1f850(
+    void* storage, NativeViewportRawEnvironment&);
 // Shared ordinary CRT allocation, 34h bytes; no zero initialization. Frees the
 // allocation on constructor failure (the native caller's new-expression role).
 NativeViewportOwner* allocate_native_viewport_owner(NativeViewportEnvironment&);
