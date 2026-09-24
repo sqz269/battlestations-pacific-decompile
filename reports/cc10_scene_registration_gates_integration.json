@@ -1,0 +1,49 @@
+{
+  "packet": "cc10_scene_registration_gates_integration",
+  "worker_commit": "81e4e1460a8230fa7488aca5bf1f1e61757afbd1",
+  "integration": "b9a326090",
+  "archive": {
+    "path": "local/cc10-platform-evidence/scene-registration-gates.zip",
+    "sha256": "b5474950c0f32f8c83e03f0d327b7c21865826c1d8ff7f0823ec88134e956786",
+    "files": 30,
+    "valid": true
+  },
+  "review": [
+    "Complete header/source, three native bodies and documentation reviewed",
+    "Gates receive actual3Ch scene and borrow actualnode key; no reference operations or host SceneResource view",
+    "Capture incoming node/profile before CURRENT0109018C getter, then CURRENT captured-table0C and AL-only result",
+    "False preserves callback mutations and leaves Acquired/output untouched; true prepares nestedargs then overwrites incoming cell with captured node",
+    "Resource identity remains captured and nested registry is actual+14; same source providers and caller preimages retained",
+    "Known numeric profiles dispatch existing current bootstrap predicates; extra profiles/targets require pure resolver/genuine binding, no fallback",
+    "Camera and light providers must share actual current token domain; no cached token/initialization substitutes"
+  ],
+  "validation": {
+    "owned_bytes": 119,
+    "live_equals_installed": true,
+    "static_direct_call_rows": 4,
+    "indirect_predicate_sites_assembly_inspected": 2,
+    "focused_original_source_gate_sequence": true,
+    "shared_genuine_predicate_and_registry_boundary": true,
+    "AL_only_false_with_nonzero_upper_bits": true,
+    "callback_mutated_argument_profile_token": true,
+    "captured_node_restored_on_true": true,
+    "output_padding_preserved": true,
+    "actual_reference_counts_unchanged": true,
+    "source_known_camera_route": true,
+    "strict_win32_build": true,
+    "worker_ctests": 2,
+    "integrated_ctests": 3,
+    "build_log_sha256": "863b9bd18f6be2646e2e24faa600bbf908a0ffe41b0c32e838192a90bde019c9",
+    "new_tracked_tests": 0,
+    "native_ABI_FH3_SEH": false,
+    "full_scene_constructor_terminal_probed": false,
+    "application_bound": false,
+    "game_validated": false
+  },
+  "boundaries": [
+    "Known numeric profiles require supplied current actual table; camera/light bootstrap providers must share actual initialized node/root/light cells.",
+    "Required additional actual profile and predicate bindings, no automatic admission, defaultcallback, logical owner or host resource casts.",
+    "Native context/frame projection excludes arbitrary private-stack aliases and native ABI/FH3 equivalence.",
+    "No whole B6D890/virtual50/54/node18/destructor/outer24 lifetime or AC59A0 claim."
+  ]
+}
