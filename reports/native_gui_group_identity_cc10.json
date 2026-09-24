@@ -1,0 +1,212 @@
+{
+  "packet": "cc10_gui_group_identity",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "baseline_main": "86485b3f313bb08c7ca933d4f9f89d99677eae57",
+  "factory_dependency": "303b11107",
+  "source": "src/native_gui_group_identity.cpp",
+  "status": "complete_raw_query_and_separate_host_companion_build_and_focused_lifecycle_checked",
+  "functions": [
+    {
+      "address": "00ac6f70",
+      "end_inclusive": "00ac6f97",
+      "end_exclusive": "00ac6f98",
+      "final_instruction": "00ac6f95",
+      "final_instruction_length": 3,
+      "byte_span": 40,
+      "no_ghidra_function": true,
+      "original_abi": "incoming ECX ignored; stack uint32 descriptor; AL result; RET4",
+      "coverage": "complete three current-word lineage comparison, low-byte result only"
+    }
+  ],
+  "native_chain_evidence": [
+    {
+      "function": "00bd30e0",
+      "address": "00bd30eb",
+      "native": "actual_owner+vtable04",
+      "contract": "fresh current-profile deleting slot with flags1, no count decrement"
+    },
+    {
+      "function": "00ac73e0",
+      "address": "00ac73e9",
+      "native": "00aa9730",
+      "contract": "stampD5CB80 then whole raw base lifetime"
+    },
+    {
+      "function": "00ac73e0",
+      "address": "00ac73fb",
+      "native": "00ac7260",
+      "contract": "AFTER AA9730 current low flags byte bit0 selects same F8BFA0 slot return"
+    }
+  ],
+  "host_companion": {
+    "symbol": "bsp::NativeGuiGroupReference",
+    "native_call_site": null,
+    "admission": "separate host step after completed raw construction; native AA12F0 unchanged",
+    "count": "borrow existing actual+04 atomic, no retain/store/reset or second count",
+    "registry": "same NativeRenderActualOwnerRegistry used by actual retained owners and same canonical model companions",
+    "node_domain": "caller guarantee: lifetime.nodes.attachments resolves each actual+4C to the same actual model companion registered in this registry; no generic registry identity field exists in lifetime.nodes",
+    "zero_terminal": "bound and actual count0; current D5CB80[0] BD30E0; existing helper reloads profile and current[1] mustAC73E0; flags1",
+    "explicit_scalar": "no count test/decrement, no flags pre-read; real AC73E0 late low-byte read; retire/unbind after flags0 or1",
+    "retirement": "registry.unbind exact metadata erase only; destructor reads host phase only; borrowed base counter is not dereferenced after possible slot return",
+    "failure": "entered explicit destruction failure retires metadata and rethrows, leaving unreturned slot/partial state caller-owned; one-shot, no rollback/retry; terminal noexcept catches and terminates",
+    "quiescence": "companion/context stable through dispatch; external synchronization prevents native-slot reuse/admission before metadata retirement",
+    "other_dispatch": "Group current0C helper supplied; current20 AA8320 and current4 canonical explicit method can be bound by caller. Other derived/timed targets remain required real lifetime bindings."
+  },
+  "verification": {
+    "strict_build": "./scripts/build.ps1",
+    "build_log": "local/cc10_group_identity_build.log",
+    "ctests": "2/2:reconstructed_math,tool_tests",
+    "live_equals_installed_pe": true,
+    "native_byte_proof": [
+      {
+        "address": "00ac6f70",
+        "bytes": 40,
+        "sha256": "7db5d9179608b7dea01ce125376bc03fd56668608bb20fa15fd41825a252deab"
+      },
+      {
+        "address": "00bd30e0",
+        "bytes": 14,
+        "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01"
+      },
+      {
+        "address": "00ac73e0",
+        "bytes": 38,
+        "sha256": "5df2b9bc960c6b6bd37e46a6088797ab8e4af61538b5b3308a6fdca410277955"
+      },
+      {
+        "address": "00d5cb80",
+        "bytes": 44,
+        "sha256": "75e9c0a4ef2d825b9a44e8c2146b5cddae6698dbbae64c5d4acd728f4b81c01a"
+      }
+    ],
+    "probe": "local/output/cc10_group_identity_probe.cpp",
+    "probe_log": "local/output/cc10_group_identity_probe.log",
+    "probe_build_command": "cl /nologo /MD /EHsc /std:c++20 /O2 /Gy /W4 /WX /fp:strict /I include /I local\\output /Fo:local\\output\\ /Fe:local\\output\\cc10_group_identity_probe.exe local\\output\\cc10_group_identity_probe.cpp build\\win32\\Release\\bsp_core.lib build\\win32\\Release\\bsp_lua511.lib build\\win32\\Release\\bsp_zlib121.lib /link /OPT:REF /MANIFEST:EMBED user32.lib d3d9.lib advapi32.lib shell32.lib",
+    "assertions": "NDEBUG not defined; compile-time #ifdef NDEBUG rejection; all assert checks active",
+    "exit_code": 0,
+    "original_source_query_pairs": 6,
+    "lifecycle_flows": [
+      "actual count1 zero terminal/current virtual0/current4/flags1 pool return",
+      "explicit nonzero parent count5 with nested child count3: callback changes flags1 to flags0, child scalar deletion removes same parent list entry, both companions retire, parent slot remains caller-owned",
+      "explicit nonzero count7 flags1 pool return and canonical retirement"
+    ],
+    "binding_checked_bytes": 240,
+    "binding_checks": [
+      "no F0-byte change or retain",
+      "duplicate binding rejection preserves raw payload/count",
+      "same registry actual identity resolves its borrowed count companion"
+    ],
+    "post_return_checks": [
+      "retired()/registry lookup touch only metadata",
+      "companion destruction after pool return",
+      "returned actual pool slot immediately reallocated"
+    ],
+    "boundary": "Only AC6F70 executes original bytes. Lifecycle executes genuine source raw Group pool/default/destructor/base/list providers with caller-scripted real Group dispatch and explicit profile/lineage inputs; no model4C fixture, arbitrary derived/timed dispatch or native destructor/FH3 differential.",
+    "outer_abi_compatible": false,
+    "application_bound": false,
+    "game_validated": false,
+    "call_verifier": "2 direct chain rows checked,0failed; BD30EB indirect slot4 listing inspected"
+  },
+  "limits": [
+    "Actual completed Group/raw EC-in-F0 storage, original +04 atomic and persistent contexts/profile/lineage cells; raw constructor/pool startup remain explicit.",
+    "NativeGuiTextIdentityReference logical owner/deletion bindings are not reused; no raw-to-logical conversion or hidden registry.",
+    "Native AA12F0 receives no invented admission step; caller must bind separately before canonical exposure.",
+    "Raw node/registry identity across all reached models/callbacks is a caller contract, not newly fabricated storage metadata.",
+    "Unbound other derived/timed profiles, corrupt storage, native full EAX/FH3/SEH/outer ABI, application resource-graph closure and gameplay are unproved."
+  ],
+  "ghidra_mutations": false,
+  "annotation_handoff": "Primary may define AC6F70 exact40B after lease release; preserve old enclosing-candidate/Group annotations. Host companion must not be described as a call inside AA12F0.",
+  "frozen_evidence": [
+    {
+      "path": "include/bsp/native_gui_group_identity.hpp",
+      "bytes": 3680,
+      "sha256": "0433b1826ddbe5de9515d344aa0e7898c21ba8066c71e6e264488ad00f22a944"
+    },
+    {
+      "path": "src/native_gui_group_identity.cpp",
+      "bytes": 4261,
+      "sha256": "7c562ecc89b706df3ed39a05c444a921d737a67f5db3ca3cffb179859d4d744c"
+    },
+    {
+      "path": "docs/NATIVE_GUI_GROUP_IDENTITY_CC10.md",
+      "bytes": 6894,
+      "sha256": "e3816604edc6be4681a2455bdbddb55c7a4fec7357d9ee59fe187cdf87ef1abe"
+    },
+    {
+      "path": "local/cc10_group_identity_build.log",
+      "bytes": 2811,
+      "sha256": "26c258c8407f48bc3dfe6358714cc813747c176c8f3f8d7b17d486827806b21e"
+    },
+    {
+      "path": "local/cc10_group_companion_profile.txt",
+      "bytes": 45,
+      "sha256": "a0e6409b20df6e85c942ab16b6de0eee9ef11e0d164e6f07a4813538baa525c1"
+    },
+    {
+      "path": "local/cc10_group_companion_delete.txt",
+      "bytes": 324,
+      "sha256": "e7332659fd5036e3dd33b1892041d6e42e4ce42aa94f9c2c39f9da83578a3d4e"
+    },
+    {
+      "path": "local/cc10_group_companion_virtual0.txt",
+      "bytes": 187,
+      "sha256": "5f9a40b5b603584bc8c6c63b45a0281f0aad26ef6c9809e5e2499588ee1da50e"
+    },
+    {
+      "path": "local/cc10_group_companion_factory.txt",
+      "bytes": 1112,
+      "sha256": "2348324924092e5a03309b30b62b56ba01a4d0398a37eb33c7773dd14d8095a6"
+    },
+    {
+      "path": "local/cc10_group_companion_class_query.txt",
+      "bytes": 363,
+      "sha256": "bfad06c4409e74c01d882334d8014913a5a8f3befe700bcabc2f60d16fe5b3e4"
+    },
+    {
+      "path": "local/cc10_group_companion_lineage.txt",
+      "bytes": 77,
+      "sha256": "1e01b9febc51dfb858148502aec779c46a19994b0367eb56bf63fba7ab9b6049"
+    },
+    {
+      "path": "local/output/cc10_group_companion_bytes.py",
+      "bytes": 1568,
+      "sha256": "2e43a16eb7b15c20dbd5684f126443a0e19ecfc13e7f004c4d7b1cdf33905c32"
+    },
+    {
+      "path": "local/output/cc10_group_companion_bytes.hpp",
+      "bytes": 855,
+      "sha256": "3d60706d61bba2eb1596cf01eeeadf3c13f4bcff541ff03cf1b1fca29a32a29e"
+    },
+    {
+      "path": "local/output/cc10_group_companion_byte_proof.json",
+      "bytes": 561,
+      "sha256": "2e4fc74ffaf5a5c42735fdaeed4eec6cff865ed8e0ce6314b2a7db4c6af5f05f"
+    },
+    {
+      "path": "local/output/cc10_group_identity_probe.cpp",
+      "bytes": 8169,
+      "sha256": "ce3891e32931328cc876dff9ba14999d6c7564914afd09165c912c3ec0ce6fcf"
+    },
+    {
+      "path": "local/output/cc10_group_identity_probe.cmd",
+      "bytes": 607,
+      "sha256": "1a96d1d04d1af5b244499553ff63f6fd29b9dbaca5881998170c8ca3bdb7bd11"
+    },
+    {
+      "path": "local/output/cc10_group_identity_probe.exe",
+      "bytes": 236544,
+      "sha256": "1b5e33a60d9cc1f4af70b3304930eaf5f549b1b761ec6041c81a5564633887aa"
+    },
+    {
+      "path": "local/output/cc10_group_identity_probe.log",
+      "bytes": 466,
+      "sha256": "16b2bb5f8954b3a22e53ec7058babb272795e704f07c242b1affebe7b5208857"
+    },
+    {
+      "path": "local/output/cc10_group_identity_calls.log",
+      "bytes": 167,
+      "sha256": "7461a1ce6fdbb5573e99b1dcd73be73a6fb4e7cdb12aec957eb191181a9819b8"
+    }
+  ]
+}
