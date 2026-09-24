@@ -1,0 +1,90 @@
+{
+  "packet": "cc10_bright_pass_lifetime",
+  "status": "complete_source_wrapper_build_checked",
+  "address": "00b101a0",
+  "name": "delete_native_bright_pass_00b101a0",
+  "source": "src/native_bright_pass_lifetime.cpp",
+  "documentation": "docs/NATIVE_BRIGHT_PASS_LIFETIME_CC10.md",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "coverage": "complete 30-byte normal scalar deleting wrapper, including repaired post-free stack restoration",
+  "original_abi": "ECX owner, low byte of one stack flags word, EAX original owner, callee-preserved ESI, RET4",
+  "source_abi_compatible": false,
+  "native_bytes": {
+    "start": "00b101a0",
+    "end_inclusive": "00b101bd",
+    "end_exclusive": "00b101be",
+    "size": 30,
+    "sha256": "0698e7252f95cdc711ea307aa0a78202b199e29c3cd2f50985c864ddedd5c7ee",
+    "live_pe_equal": true
+  },
+  "profile_evidence": {
+    "profile": "00d5e1b4",
+    "bytes": 12,
+    "live_pe_equal": true,
+    "words": [
+      "00bd30e0",
+      "00b101a0",
+      "00b0d540"
+    ],
+    "deleting_slot_offset": 4
+  },
+  "producer_evidence": {
+    "function": "00b107f0",
+    "allocation_size_site": "00b10f6b",
+    "allocation_size": "0x224",
+    "profile_publication_site": "00b10f91",
+    "service_field_publication_site": "00b10fa2",
+    "service_field": "0x24",
+    "initializer": "00b54940",
+    "limits": "Producer and initializer establish the descriptive bright-pass role; this packet does not implement the initializer or constructor stage."
+  },
+  "host_steps": [
+    {
+      "address": "00b101a3",
+      "native": "00b0f5e0",
+      "function": "00b101a0",
+      "contract": "Reuse complete actual render-effect base destruction with the same canonical child lifetime context"
+    },
+    {
+      "address": "00b101b0",
+      "native": "00bf65ac",
+      "function": "00b101a0",
+      "contract": "CRT free only after successful destruction and only when flags bit zero is set"
+    },
+    {
+      "address": "00b10f70",
+      "native": "00bf681b",
+      "function": "00b107f0",
+      "contract": "Observed producer allocation, not implemented in this wrapper"
+    },
+    {
+      "address": "00b10fae",
+      "native": "00b54940",
+      "function": "00b107f0",
+      "contract": "Observed bright-pass initializer, not implemented in this wrapper"
+    }
+  ],
+  "no_ghidra_function": [],
+  "flow_repair": {
+    "record": "reports/cc10_bright_pass_flow_repair.json",
+    "site": "00b101b0",
+    "prior_override": "CALL_RETURN",
+    "current_override": "NONE",
+    "restored": "[00b101b5,00b101b8)",
+    "remaining_gaps": 0,
+    "callee_no_return_flag_changed": false,
+    "program_saved": true
+  },
+  "validation": {
+    "build": "strict MSVC Win32 scripts/build.ps1",
+    "ctests": "3 passed, 0 failed",
+    "log": "local/cc10-bright-pass-build.log",
+    "log_sha256": "542ed29e92c40e7f27538341a96f27e22f3c352869acf9c0b89678728748a8eb",
+    "new_tests": 0,
+    "wrapper_runtime_differential": false,
+    "application_wiring": false,
+    "game_validated": false
+  },
+  "limits": "Explicit C++ lifetime context changes ABI. No new owner/registry, native FH3/SEH proof, complete resource-init admission, actual application dispatch, or gameplay proof."
+}
