@@ -294,3 +294,123 @@ The same-tree OFF rows are `local\RB0_*`:
 | USN04 4500 | 5940.0 | 27 | 367 | 100.51 m |
 | USN01 3000 | 2250.0 | 5 | 135 | 0.00 |
 | E2 9000 | 7700.0 | 35 | 461 | 100.51 m |
+
+## 7. The scripted helm option (packet cc9_scripted_helm_option)
+
+### 7.1 The option
+
+**Syntax.** `BSP_PLAYER_HELM=<throttle>[,<rudder>]` is an environment variable, like
+`BSP_GUNNERY_RNG_STREAMS`. It is unset by default. It is not a command-line flag because the
+option parser lives in `src/game_hosts.cpp`, which this packet may not touch.
+
+**What it performs**, in `src/game_hosts_units.cpp` (`player_helm_prepare_0064b870` and
+`player_helm_issue_0064b870`). It needs `kPlayerRoleBookkeepingBound`.
+1. **Open the pilot role.** At the first fixed step with a controlled unit it calls
+   `SetRoleAvailable(unit, EROLF_PILOT, PLAYER_ANY)` exactly as the script binding does in
+   session mode 0: `vtable[148h]` = 0077F360 -> 00927D20 with (2, 9). Only unit+18Ch changes.
+2. **The role-1 transfer, every step, under 0064B870's conditions (0064B97A-0064B9BD).** The
+   conditions are:
+   - the thrust axis |a| > 0.1, where the option's throttle stands in for the axis;
+   - unit+1130h == 0, taken as 0 because it has no host field;
+   - the player holds role 0;
+   - the player does not hold role 1.
+
+   When they hold, it sends 0077C470(unit, 2, 1) into the bound 4Bh arm and seeds the HUD levers
+   +28h/+24h from unit+984h/+980h (ring+14Ch/+148h).
+3. **The helm, every step while the player holds role 1 (0064B9C0-0064BB16).**
+   - The levers take the option's values, clamped to [-1, 1]. This stands in for the input
+     integration, and the clamp bounds were not read.
+   - They are quantized as 0064BAB5/0064BAEE do (floor with bias 0.49; quarter thrust steps,
+     sixth turn steps).
+   - They are issued through 00816A40. Its single-player publication is 0080DAD0, the
+     authoritative slot and the unit+994h/+998h mirror. No 8Eh message is sent in session mode 0.
+   - The issue sits where the `--order` standing order is refilled: after the slot promotion,
+     once per fixed step instead of once per frame.
+   - game+19C4h, which would release role 1 at 0064BB19, is taken clear.
+
+### 7.2 Predictions, written before the pair
+
+The pair is E2 9000 with the option unset (HO) against `BSP_PLAYER_HELM=1.0,0` (H1), from the same
+binary, with `BSP_GUNNERY_RNG_STREAMS=1`.
+
+**Option unset: identical to the 330b81cdc rows** (RB1, 6.3):
+- 584 hit records, 35 deaths, 7720.9 damage;
+- the Lexington moved 6880.79 m;
+- auto-target scans 9471 / chose 0;
+- releases 0/0 and no mission end.
+
+**Option on, throttle 1.0, rudder 0.**
+- **Roles.**
+  - The Lexington's open words read 9,9,9,9,8x5 and it holds roles 0 and 1 (0,0,8x7).
+  - **+184h = 1** (one transfer).
+  - Every step issues (about 9000 issues).
+- **Cruise.**
+  - 009F3DF3 forces cruise.
+  - 009E1170 takes **arm 1** (the role-1 slot is human, not AI), which sets blk+3F5h. So
+    009F3F80 skips its ring write: the ring_gated_3f5 count is above 0 for the Lexington.
+  - Cruise arm 2 is not taken.
+- **Track.** A straight line on the spawn heading at full throttle, since rudder 0 holds the
+  heading. The Lexington holds about 17.1 m/s (reference_speed 17.105), against the scripted
+  path's 15 m/s. **Displacement is 3.6-3.9 km by 225 s and 7.0-7.7 km by 450 s**, larger than
+  the 6.88 km scripted run because the line does not circle back.
+- **Torpedo gate.** It stays closed: arm 1 stores blk+3ECh = 0.
+- **Auto-target.** 009F5E06 suppresses the Lexington again, so scans fall back toward 9020.
+- **Kates.** They aim at a faster, straight-running carrier:
+  - the aim entries on the Lexington change;
+  - 0-5 of them occur, each with target_speed of about 17 m/s;
+  - releases stay 0/0.
+- **Escorts.** They keep station on a leader that no longer circles, so the station requests move.
+- **AA.** Deaths are 28-42, hit records 450-650, coupled.
+- **Mission end:** none.
+
+### 7.3 The pair, measured
+
+The runs used the same binary `local\hl`, with the option unset (`local\HO_9000.log`) and with
+`BSP_PLAYER_HELM=1.0,0` (`local\H1_9000.log`). `BSP_GUNNERY_RNG_STREAMS=1` was set on both.
+
+**The unset side is identical to the tree without this packet.** `local\hbase` was built from the
+same merge (main 5c126f14d) with this packet's source removed, and its run `local\HB_9000.log`
+matches HO on every one of the 148 summary rows. Neither matches RB1 of 6.3, because main moved
+between the two:
+- hit records are 549 against RB1's 584;
+- the Lexington moved 6905.23 m against 6880.79 m;
+- the rest is equal: 35 deaths, 7720.9 damage, 0/0 releases.
+
+The prediction "identical to the 330b81cdc rows" missed on that drift, not on the option.
+
+| row | option unset (HO) | throttle 1.0, rudder 0 (H1) | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| Lexington roles held / open / +184h | 0,8x8 / 9,8,9,9,8x5 / 0 | **0,0,8x7 / 9,9,9,9,8x5 / 1** | as written | held |
+| transfers / issues | - | 1 / 9000 | 1 / about 9000 | held |
+| levers seeded from +980h / +984h | - | 0.8769 / 0.0000 | - | - |
+| cruise arm | arm 3 (647 cruise steps) | **arm 1 (009E13B4) 356 calls**, arm 2 none | arm 1 with blk+3F5h | held |
+| Lexington moved (450 s) | 6905.23 m | **7689.92 m** | 7.0-7.7 km | held |
+| Lexington speed seen by Kates | 15.3-16.2 m/s | **17.10 m/s** | about 17.1 | held |
+| auto-target scans | 9471 | 9020 | back toward 9020 | held |
+| Kate aim entries on the Lexington | 3 at 316-421 m | 3 at 334-352 m | 0-5 | held |
+| torpedo releases | 0 | **2** | 0 | **missed** |
+| bomb releases | 0 | 0 | 0 | held |
+| Japanese deaths | 35 | 35 | 28-42 | held |
+| hit records | 549 | 492 | 450-650 | held |
+| damage | 7720.9 | **8848.9** | - | a torpedo hit |
+| first hit | 99.05 s | 98.70 s | - | - |
+| plane water contacts | 15 | 15 | - | - |
+| mission end | none | none | none | held |
+
+**The two releases.**
+- Kate #6.1 .-3 dropped at 13 m and 73.8 m/s on the Lexington. The carrier ran 97.4 m during the
+  torpedo's run, and the closest approach was 69.7 m, a miss. The torpedo expired after 1852 m.
+- Kate #8.1 .-4 dropped on the Yorktown. The Yorktown's closest approach was 180.8 m, and the
+  torpedo struck the escort Fletcher-class05 at 9.55 s. That is the extra 1128 damage.
+- In the unset run these Kates reach aim but do not release. The faster straight carrier changes
+  their approach geometry enough to satisfy the release gate. It is one scenario row, not a
+  mechanism.
+
+**Alternate reference row, "scripted helm, throttle 1.0", for docs/GAME_EXECUTABLE.md.** That doc
+is leased to `cc9_surface_gunnery_reference`, so the lead routes this row. It is never the
+reference.
+
+| mission | frames | scenario | damage | deaths | queued_hits | torpedo drops | bomb drops | plane water contacts | first_hit | controlled moved | mission end | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 (E2) | 9000 mission | **scripted helm, throttle 1.0** (`BSP_PLAYER_HELM=1.0,0`, main 5c126f14d + cc9_scripted_helm_option) | 8848.9 | 35 | 492 | 2 | 0 | 15 | 98.70 s | 7689.92 m | none | `local\H1_9000.log` |
+| USN04 (E2) | 9000 mission | the same binary, option unset (the idle reference on that tree) | 7720.9 | 35 | 549 | 0 | 0 | 15 | 99.05 s | 6905.23 m | none | `local\HO_9000.log` |
