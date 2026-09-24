@@ -65,21 +65,6 @@
       "function": "00bec1a0"
     }
   ],
-  "no_ghidra_function": [
-    {
-      "address": "00beca00",
-      "end": "00beca29"
-    },
-    {
-      "address": "00bece30",
-      "end": "00bece6e"
-    },
-    {
-      "address": "007379da",
-      "end": "007379fc",
-      "kind": "missing continuation of007379a0"
-    }
-  ],
   "path_steps": [
     {
       "address": "008f8429",
@@ -134,56 +119,57 @@
     {
       "address": "00bece4d",
       "native": "00bec730",
-      "function": null,
+      "function": "00bece30",
       "operation": "destroy text queue",
-      "kind": "no_ghidra_function",
       "candidate_function": "00bece30",
-      "transfer": "CALL"
+      "transfer": "CALL",
+      "kind_at_worker_capture": "no_ghidra_function"
     },
     {
       "address": "00bece54",
       "native": "00be2b10",
-      "function": null,
+      "function": "00bece30",
       "operation": "window base cleanup",
-      "kind": "no_ghidra_function",
       "candidate_function": "00bece30",
-      "transfer": "CALL"
+      "transfer": "CALL",
+      "kind_at_worker_capture": "no_ghidra_function"
     },
     {
       "address": "00bece61",
       "native": "00bf65ac",
-      "function": null,
+      "function": "00bece30",
       "operation": "conditional scalar free",
-      "kind": "no_ghidra_function",
       "candidate_function": "00bece30",
-      "transfer": "CALL"
+      "transfer": "CALL",
+      "kind_at_worker_capture": "no_ghidra_function"
     },
     {
       "address": "00beca1d",
       "native": "00bec730",
-      "function": null,
+      "function": "00beca00",
       "operation": "destroy text queue",
-      "kind": "no_ghidra_function",
       "candidate_function": "00beca00",
-      "transfer": "CALL"
+      "transfer": "CALL",
+      "kind_at_worker_capture": "no_ghidra_function"
     },
     {
       "address": "00beca25",
       "native": "00be2b10",
-      "function": null,
+      "function": "00beca00",
       "operation": "tail-jump window base cleanup",
-      "kind": "no_ghidra_function",
       "candidate_function": "00beca00",
-      "transfer": "JMP"
+      "transfer": "JMP",
+      "kind_at_worker_capture": "no_ghidra_function",
+      "kind": "tail_jump"
     },
     {
       "address": "007379e7",
       "native": "00bea990",
-      "function": null,
+      "function": "007379a0",
       "operation": "application base cleanup after free",
-      "kind": "no_ghidra_function",
       "candidate_function": "007379a0",
-      "transfer": "CALL"
+      "transfer": "CALL",
+      "kind_at_worker_capture": "no_ghidra_function"
     },
     {
       "address": "00bea996",
@@ -195,18 +181,18 @@
     {
       "address": "00bece41",
       "native": "USER32!SystemParametersInfoA [00ce2340]",
-      "function": null,
+      "function": "00bece30",
       "operation": "enable screensaver(0x11,1,null,0)",
       "candidate_function": "00bece30",
-      "kind": "no_ghidra_function"
+      "kind_at_worker_capture": "no_ghidra_function"
     },
     {
       "address": "00beca11",
       "native": "USER32!SystemParametersInfoA [00ce2340]",
-      "function": null,
+      "function": "00beca00",
       "operation": "enable screensaver(0x11,1,null,0)",
       "candidate_function": "00beca00",
-      "kind": "no_ghidra_function"
+      "kind_at_worker_capture": "no_ghidra_function"
     }
   ],
   "bounded_global_reference_audit": {
@@ -3506,5 +3492,32 @@
     "build": "not needed: documentation/report only",
     "game_runtime": false,
     "power_or_screensaver_calls_executed": false
+  },
+  "no_ghidra_function_at_worker_capture": [
+    {
+      "address": "00beca00",
+      "end": "00beca29"
+    },
+    {
+      "address": "00bece30",
+      "end": "00bece6e"
+    },
+    {
+      "address": "007379da",
+      "end": "007379fc",
+      "kind": "missing continuation of007379a0"
+    }
+  ],
+  "no_ghidra_function": [],
+  "primary_analysis_followup": {
+    "record": "reports/platform_flow_repair_cc10.json",
+    "new_functions": [
+      "00beca00..00beca29",
+      "00bece30..00bece6e"
+    ],
+    "extended_function": "007379a0..007379fc",
+    "worker_capture_is_historical": true,
+    "call_rows": "Now use complete live containment and explicit tail_jump for BECA25",
+    "native_behavior_changed": false
   }
 }

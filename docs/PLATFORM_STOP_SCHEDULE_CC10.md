@@ -87,6 +87,13 @@ analysis or every transitive path through the lifetime manager.
 
 ## Remaining dependency and verification
 
+Primary analysis follow-up: reports/platform_flow_repair_cc10.json now records
+defined BECA00..BECA29 and BECE30..BECE6E bodies and repaired/extended
+7379A0..7379FC metadata. The worker's absent-body observations below remain
+capture-time evidence. Current call rows use actual containment; BECA25 is
+explicitly a tail jump. The updated checker passes all 14 direct transfer rows.
+This repairs analysis metadata without establishing a new power-restore path.
+
 The next bounded step is to identify any raw relative CALL/JMP or data-pointer
 users of the four unindexed getters, then follow only actual platform aliases
 to slot +8. The lifetime manager's slot-zero dispatch establishes how a retained

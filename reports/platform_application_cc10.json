@@ -1,0 +1,189 @@
+{
+  "packet": "cc10_platform_application",
+  "status": "control_text_bound_build_checked_and_real_game_messages_passed",
+  "tested_source_revision": "fe57f93c5876b5c16ccf2d5c4ef00cae047cd560",
+  "application_binding_commit": "bf238d1f57429b879e2af3a610626574b4353954",
+  "worker_commits": {
+    "control": "aec1e407ad7da6b0d57bd7520977347671edcc8d",
+    "text": "34c6df787d39587e500ffb17cc2712feaf2d1d4f",
+    "activation": "2ebe208f85d11b84e0b51efd26c74512cea3ab13",
+    "stop_schedule_audit": "463035a7a34e309c4b9b4abfc0b65ab7cbb9d01e"
+  },
+  "source_git_blobs": {
+    "src/game_hosts.cpp": "8e7ffa72b7ff8db04cd89972057b555df883ed19",
+    "include/bsp/game_hosts.hpp": "ebc843138b200c9b0eedf8a0fea9dc29c56b2d56",
+    "include/bsp/platform_window.hpp": "b4f5b75d1f0aad73e1dd372c809f02afa08565f0",
+    "src/platform_control_messages.cpp": "9640728a4bad33f23a99136595cc5dc3884fecab",
+    "src/platform_text_messages.cpp": "5c307dfb6570ba5baa55a5327de4573ef015034a",
+    "src/platform_activation.cpp": "934eb072ff7d5a3268e661bba9305718b22744c9"
+  },
+  "native": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "abi": "New typed application composition, not original 184h layout/register/FH3 ABI"
+  },
+  "changes": [
+    "Bind six control arms and WM_KEYDOWN/WM_CHAR adapters to game_window_procedure",
+    "Use one set of frames/exit/finished flags via PlatformLoopState base and reference",
+    "Keep one persistent explicit-platform text dependency, disabled until actual owner enables it",
+    "Correct native window device/cache/power order before online construction",
+    "Recover activation sequencing and historical GUI/media providers with evidence boundaries"
+  ],
+  "validation": {
+    "baseline": {
+      "revision": "e7aed9fc6962fd3e9b5acc24fc7b296a60829b93",
+      "frames": 60,
+      "presented": 59,
+      "skipped": 1,
+      "exit_code": 0
+    },
+    "build": {
+      "command": "./scripts/build.ps1",
+      "msvc_win32_release": true,
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "merged_build_log": "local/cc10-platform-integrate.log"
+    },
+    "control_fixture_recompiled_after_state_layout_change": {
+      "power_original_source_scenarios": 3,
+      "control_original_source_cases": 10,
+      "real_win32_window": true,
+      "isolated_thread_wm_quit": true,
+      "machine_power_apis_spied": true,
+      "passed": true
+    },
+    "activation_worker_fixture": {
+      "original_source_pairs": 24,
+      "ignored_message_cases": 1,
+      "passed": true,
+      "application_activation": false,
+      "historical_provider_fixtures_rerun": false
+    },
+    "report_call_checks": {
+      "control": 4,
+      "text": 1,
+      "activation": 16,
+      "focus_dispatch": 15,
+      "focus_owners": 22,
+      "failed": 0,
+      "indirect_import_rows": "Separately checked where stated; not counted as direct verifier checks"
+    },
+    "game_runtime": {
+      "pid": 71424,
+      "hwnd": 53548110,
+      "exe": "J:\\PROG\\battlestations-pacific-decompile-cc10\\build\\win32\\Release\\bsp_game.exe",
+      "exe_sha256": "fa744cd86f9ad42e4e17cf69f10a55ad8beaf63f6628e5480ee83090b8af769c",
+      "checks": {
+        "minimum_track_100x100": true,
+        "screensaver_command_result_1": true,
+        "pending_close_waits_while_frames_disabled": true,
+        "resumed_frame_consumes_close_and_exits": true,
+        "close_policy_reached": true,
+        "frame_limit_did_not_exit": true
+      },
+      "passed": true,
+      "wrapper_command": "./tools/run_game.ps1 -Log local/cc10-platform-merged.log",
+      "summary": "summary window_created=1 device_created=1 device_hr=0x00000000 back_buffer=640x480 frames_presented=49 presents_skipped=1 loop_finished=1 exit_code=0",
+      "exit_code": 0,
+      "scope": "Window message and frame-gating behavior; no gameplay or text-editing claim"
+    },
+    "first_game_diagnostic": {
+      "message_checks_passed": true,
+      "exit_code": 1,
+      "cause": "Deliberate close before --frames 1000000 made existing harness frame-count acceptance fail; repeated without frame target passed"
+    },
+    "probe_setup_corrections": [
+      "Copied original byte inputs before rerunning standalone fixture",
+      "Live CRT log denies sharing; target admitted by exact executable path/window and closed log checked after exit"
+    ]
+  },
+  "analysis_repairs": {
+    "record": "reports/platform_flow_repair_cc10.json",
+    "repaired_bodies": [
+      "00aa51d0",
+      "00aa6540",
+      "00a4c620",
+      "00aa6340",
+      "00a4c510",
+      "007379a0",
+      "00aa5b20"
+    ],
+    "new_defined_bodies": [
+      "00beca00",
+      "00bece30"
+    ],
+    "post_checks": "Zero listed call gaps; three main tail bodies and AA5B20 explicitly recreated to extend metadata; exports refreshed",
+    "global_no_return_changed": false
+  },
+  "local_evidence": [
+    {
+      "path": "local/cc10-platform-evidence/activation.zip",
+      "sha256": "a74ad38f0e158a81cd4181bf5c43162e1ead7a11dc5b93d78ce4e566d0314123",
+      "bytes": 149036
+    },
+    {
+      "path": "local/cc10-platform-evidence/control.zip",
+      "sha256": "2c9e78ab2cc7dce0f2e6d2a82cb07a8a38a9616d1e66f0cacd3fa5e09220b2ce",
+      "bytes": 49806
+    },
+    {
+      "path": "local/cc10_control_probe.cpp",
+      "sha256": "47a0cfc30d94d26b6bfffaa0ef5d0e1aece214074f2c4e64d1ea2f7029370108",
+      "bytes": 9906
+    },
+    {
+      "path": "local/cc10_control_probe.exe",
+      "sha256": "cd47847c313c75c013039a54ad728a891b74e28da942bf0d65322961ff86fcaa",
+      "bytes": 56320
+    },
+    {
+      "path": "local/cc10_control_probe.log",
+      "sha256": "f5bcd52cc1e06711e709452544f7d67b352c256c44ceb1bb6c8845aa8df27fa4",
+      "bytes": 407
+    },
+    {
+      "path": "local/cc10_platform_runtime.py",
+      "sha256": "9508eb4ecee345163923821157631b04f1d0d1849dc1324bb3f346e24fcce43b",
+      "bytes": 4521
+    },
+    {
+      "path": "local/cc10-platform-merged.log",
+      "sha256": "bb1665f4525f1184fdb17cdda841224a2632b3169539b4d5b65c7a33419d9d9c",
+      "bytes": 54941
+    },
+    {
+      "path": "local/cc10-platform-merged-runtime.json",
+      "sha256": "ad00bc725eb91219717f3979e597f554237b3f3b271087413a0ea31d4b8e1198",
+      "bytes": 527
+    },
+    {
+      "path": "local/cc10-platform-build.log",
+      "sha256": "61a155236c00e54d131e12d9c833cd90519cc980b299b104f6818a7fbee4438e",
+      "bytes": 4316
+    },
+    {
+      "path": "local/cc10-platform-integrate.log",
+      "sha256": "5d41a6f5dc93870225f4e58f259c160cb5d46c5f0d3149b98e3dec1ba05209d9",
+      "bytes": 1032
+    }
+  ],
+  "limits": [
+    "Production power producer/stop remain unbound pending native restoration scheduling",
+    "Application WM_ACTIVATE still needs canonical GUI/media and renderer focus composition",
+    "Actual frontend text-owner enable/dispatch and clipboard consumption remain unbound",
+    "Online parent-process pipe peer remains unresolved",
+    "No full native ABI, startup parity, or gameplay completion claim"
+  ],
+  "ghidra_annotations": {
+    "addresses": [
+      "00bebf70",
+      "00beca00",
+      "00bece30",
+      "00bed3b0"
+    ],
+    "prior_values_record": "local/ghidra-annotations-20260924T003508Z.json",
+    "sha256": "cc5e9f37b72da306efb35517df3028b67bebd13a2742d4bce33fd50850988400",
+    "project_saved": true,
+    "exports_refreshed": true
+  }
+}

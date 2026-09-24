@@ -48,3 +48,18 @@ Validation and publication revisions are recorded in
 reports/platform_application_cc10.json. Build, focused differential fixtures,
 real Windows message behavior and game runtime evidence are distinct scopes;
 none proves original ABI compatibility or full gameplay parity.
+
+At merged revision fe57f93c5, MSVC Win32 and all three CTests passed. The
+actual game window accepted the 100px minimum and returned 1 for exact F140.
+Entering the sizing loop held a pending close for one second; exiting it
+allowed the next frame to consume the close and finish. The unrestricted run
+presented 49 frames, skipped one Present, and exited with code 0. An earlier
+positive-frame-target run passed message checks but correctly failed the
+harness's unmet frame-count requirement after the deliberately early close.
+
+Seven bounded stored Ghidra bodies had returning-free discovery repaired and
+two platform destructors were defined from verified bytes. Complete body tails,
+zero remaining listed call gaps and refreshed exports are recorded separately
+in reports/platform_flow_repair_cc10.json. Existing names/comments were retained;
+the two new destructor names are descriptive hypotheses. These are analysis
+repairs, not additional executable lifetime bindings.

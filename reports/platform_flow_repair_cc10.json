@@ -1,0 +1,697 @@
+{
+ "repairs": [
+  {
+   "function": "00aa51d0",
+   "owner": "agent/cc10",
+   "when": "2026-09-24T00:29:03Z",
+   "decompile_lines_before": 29,
+   "gaps": [
+    {
+     "site": "00aa5210",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "00aa5215",
+     "gap_end_exclusive": "00aa5220",
+     "bytes": 11,
+     "after_call": true,
+     "sha256": "a024fc6dbe644d78dbeb7c6ef53455a2ad91d86b0017a5bcd118f04b7d5f1dea"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00aa5210",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "00aa5215",
+      "gap_end_exclusive": "00aa5220",
+      "bytes": 11,
+      "after_call": true,
+      "sha256": "a024fc6dbe644d78dbeb7c6ef53455a2ad91d86b0017a5bcd118f04b7d5f1dea"
+     },
+     "clear": "Success: Cleared flow override at 00aa5210 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 11 byte(s)"
+    }
+   ],
+   "decompile_lines_after": 32,
+   "gaps_remaining": 0
+  },
+  {
+   "function": "00aa6540",
+   "owner": "agent/cc10",
+   "when": "2026-09-24T00:29:04Z",
+   "decompile_lines_before": 14,
+   "gaps": [
+    {
+     "site": "00aa6550",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "00aa6555",
+     "gap_end_exclusive": "00aa6558",
+     "bytes": 3,
+     "after_call": true,
+     "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00aa6550",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "00aa6555",
+      "gap_end_exclusive": "00aa6558",
+      "bytes": 3,
+      "after_call": true,
+      "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+     },
+     "clear": "Success: Cleared flow override at 00aa6550 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 3 byte(s)"
+    }
+   ],
+   "decompile_lines_after": 11,
+   "gaps_remaining": 0
+  },
+  {
+   "function": "00a4c620",
+   "owner": "agent/cc10",
+   "when": "2026-09-24T00:29:04Z",
+   "decompile_lines_before": 16,
+   "gaps": [
+    {
+     "site": "00a4c643",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "00a4c648",
+     "gap_end_exclusive": "00a4c64b",
+     "bytes": 3,
+     "after_call": true,
+     "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00a4c643",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "00a4c648",
+      "gap_end_exclusive": "00a4c64b",
+      "bytes": 3,
+      "after_call": true,
+      "sha256": "268c54fe317c183f03f29b931f4606343f6824184bd185ed1eca129db5729a8d"
+     },
+     "clear": "Success: Cleared flow override at 00a4c643 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 3 byte(s)"
+    }
+   ],
+   "decompile_lines_after": 13,
+   "gaps_remaining": 0
+  },
+  {
+   "function": "00aa6340",
+   "owner": "agent/cc10",
+   "when": "2026-09-24T00:29:22Z",
+   "decompile_lines_before": 58,
+   "gaps": [
+    {
+     "site": "00aa640b",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "00aa6410",
+     "gap_end_exclusive": "00aa64a2",
+     "bytes": 146,
+     "after_call": true,
+     "sha256": "0c8890ffd20d6c863044ca108095fe99b56cf4c6ab2caa39cc7bd515883ef268"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00aa640b",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "00aa6410",
+      "gap_end_exclusive": "00aa64a2",
+      "bytes": 146,
+      "after_call": true,
+      "sha256": "0c8890ffd20d6c863044ca108095fe99b56cf4c6ab2caa39cc7bd515883ef268"
+     },
+     "clear": "Success: Cleared flow override at 00aa640b (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 146 byte(s)"
+    },
+    {
+     "explicit_tail_call": "00aa640b",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00aa640b (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00aa6443",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00aa6443 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00aa6474",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00aa6474 (was: NONE, now: NONE)"
+     }
+    }
+   ],
+   "explicit_tail_end_exclusive": "00aa64a2",
+   "explicit_tail_terminator": "ret",
+   "explicit_body_sha256": "a9341ae1314197ed0425b76894dc66d7ce7f549b360a9de20835fd841dc84959",
+   "body_before": "Function: FUN_00aa6340 at 00aa6340\nSignature: undefined FUN_00aa6340(void)\nEntry: 00aa6340\nBody: 00aa6340 - 00aa640f",
+   "decompile_lines_after": 84,
+   "gaps_remaining": 1,
+   "body_after": "Function: FUN_00aa6340 at 00aa6340\nSignature: undefined FUN_00aa6340(void)\nEntry: 00aa6340\nBody: 00aa6340 - 00aa640f",
+   "stored_body_tail_complete": false,
+   "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+  },
+  {
+   "function": "00a4c510",
+   "owner": "agent/cc10",
+   "when": "2026-09-24T00:29:30Z",
+   "decompile_lines_before": 20,
+   "gaps": [
+    {
+     "site": "00a4c533",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "00a4c538",
+     "gap_end_exclusive": "00a4c543",
+     "bytes": 11,
+     "after_call": true,
+     "sha256": "a1f1863e2d5796fca3831134d96a344e5253e5d8499f0bdff913c92a5bc02222"
+    },
+    {
+     "site": "00a4c547",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "00a4c54c",
+     "gap_end_exclusive": "00a4c558",
+     "bytes": 12,
+     "after_call": true,
+     "sha256": "8872b87a36837717d885348db68491466e6b4f0d9aec7545b4e1059e65fbcbe4"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00a4c533",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "00a4c538",
+      "gap_end_exclusive": "00a4c543",
+      "bytes": 11,
+      "after_call": true,
+      "sha256": "a1f1863e2d5796fca3831134d96a344e5253e5d8499f0bdff913c92a5bc02222"
+     },
+     "clear": "Success: Cleared flow override at 00a4c533 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 11 byte(s)"
+    },
+    {
+     "gap": {
+      "site": "00a4c547",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "00a4c54c",
+      "gap_end_exclusive": "00a4c558",
+      "bytes": 12,
+      "after_call": true,
+      "sha256": "8872b87a36837717d885348db68491466e6b4f0d9aec7545b4e1059e65fbcbe4"
+     },
+     "clear": "Success: Cleared flow override at 00a4c547 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 12 byte(s)"
+    },
+    {
+     "explicit_tail_call": "00a4c533",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00a4c533 (was: NONE, now: NONE)"
+     }
+    },
+    {
+     "explicit_tail_call": "00a4c547",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00a4c547 (was: NONE, now: NONE)"
+     }
+    }
+   ],
+   "explicit_tail_end_exclusive": "00a4c558",
+   "explicit_tail_terminator": "ret",
+   "explicit_body_sha256": "cfcf20b235b956deffa687caf41f276d0712d3dc3d0de82d4a4f274491acfea9",
+   "body_before": "Function: FUN_00a4c510 at 00a4c510\nSignature: undefined FUN_00a4c510(void)\nEntry: 00a4c510\nBody: 00a4c510 - 00a4c54b",
+   "decompile_lines_after": 24,
+   "gaps_remaining": 1,
+   "body_after": "Function: FUN_00a4c510 at 00a4c510\nSignature: undefined FUN_00a4c510(void)\nEntry: 00a4c510\nBody: 00a4c510 - 00a4c54b",
+   "stored_body_tail_complete": false,
+   "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+  },
+  {
+   "function": "007379a0",
+   "owner": "agent/cc10",
+   "when": "2026-09-24T00:29:39Z",
+   "decompile_lines_before": 21,
+   "gaps": [
+    {
+     "site": "007379d5",
+     "mnemonic": "CALL",
+     "operands": "0x00bf6989",
+     "gap_start": "007379da",
+     "gap_end_exclusive": "007379fd",
+     "bytes": 35,
+     "after_call": true,
+     "sha256": "0881285ade94c5ba3d9583ba506e3f46a189107225d73fad1ff8c5d319162392"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "007379d5",
+      "mnemonic": "CALL",
+      "operands": "0x00bf6989",
+      "gap_start": "007379da",
+      "gap_end_exclusive": "007379fd",
+      "bytes": 35,
+      "after_call": true,
+      "sha256": "0881285ade94c5ba3d9583ba506e3f46a189107225d73fad1ff8c5d319162392"
+     },
+     "clear": "Success: Cleared flow override at 007379d5 (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 35 byte(s)"
+    },
+    {
+     "explicit_tail_call": "007379d5",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 007379d5 (was: NONE, now: NONE)"
+     }
+    }
+   ],
+   "explicit_tail_end_exclusive": "007379fd",
+   "explicit_tail_terminator": "ret",
+   "explicit_body_sha256": "ef5b16ae5487c295eddb16bee693072e2f57ca13d59f437ca2b544ea90e38297",
+   "body_before": "Function: BSP_Application_Destruct at 007379a0\nSignature: undefined BSP_Application_Destruct(void)\nEntry: 007379a0\nBody: 007379a0 - 007379d9",
+   "decompile_lines_after": 24,
+   "gaps_remaining": 1,
+   "body_after": "Function: BSP_Application_Destruct at 007379a0\nSignature: undefined BSP_Application_Destruct(void)\nEntry: 007379a0\nBody: 007379a0 - 007379d9",
+   "stored_body_tail_complete": false,
+   "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+  },
+  {
+   "function": "00aa5b20",
+   "owner": "agent/cc10",
+   "when": "2026-09-24T00:31:12Z",
+   "decompile_lines_before": 9,
+   "gaps": [
+    {
+     "site": "00aa5b2c",
+     "mnemonic": "CALL",
+     "operands": "0x00bf65ac",
+     "gap_start": "00aa5b31",
+     "gap_end_exclusive": "00aa5b3d",
+     "bytes": 12,
+     "after_call": true,
+     "sha256": "8872b87a36837717d885348db68491466e6b4f0d9aec7545b4e1059e65fbcbe4"
+    }
+   ],
+   "events": [
+    {
+     "gap": {
+      "site": "00aa5b2c",
+      "mnemonic": "CALL",
+      "operands": "0x00bf65ac",
+      "gap_start": "00aa5b31",
+      "gap_end_exclusive": "00aa5b3d",
+      "bytes": 12,
+      "after_call": true,
+      "sha256": "8872b87a36837717d885348db68491466e6b4f0d9aec7545b4e1059e65fbcbe4"
+     },
+     "clear": "Success: Cleared flow override at 00aa5b2c (was: CALL_RETURN, now: NONE)",
+     "disassemble": "Successfully disassembled 12 byte(s)"
+    },
+    {
+     "explicit_tail_call": "00aa5b2c",
+     "clear": {
+      "status": "success",
+      "message": "Success: Cleared flow override at 00aa5b2c (was: NONE, now: NONE)"
+     }
+    }
+   ],
+   "explicit_tail_end_exclusive": "00aa5b3d",
+   "explicit_tail_terminator": "ret",
+   "explicit_body_sha256": "78318706b90c195b8180ad1e76ad26f94362990cad2f197521f963f99dcb57ff",
+   "body_before": "Function: FUN_00aa5b20 at 00aa5b20\nSignature: undefined FUN_00aa5b20(void)\nEntry: 00aa5b20\nBody: 00aa5b20 - 00aa5b30",
+   "decompile_lines_after": 10,
+   "gaps_remaining": 1,
+   "body_after": "Function: FUN_00aa5b20 at 00aa5b20\nSignature: undefined FUN_00aa5b20(void)\nEntry: 00aa5b20\nBody: 00aa5b20 - 00aa5b30",
+   "stored_body_tail_complete": false,
+   "body_extension_limit": "Explicit tail decoding/CRT overrides do not extend stored function-body metadata; the body still requires a separate supported repair."
+  }
+ ],
+ "events": [
+  {
+   "recreate": "00aa6340",
+   "previous": "Function: FUN_00aa6340 at 00aa6340\nSignature: undefined FUN_00aa6340(void)\nEntry: 00aa6340\nBody: 00aa6340 - 00aa640f",
+   "plate": null
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00aa6340"
+   },
+   "result": {
+    "success": true,
+    "address": "00aa6340",
+    "deleted_function": "FUN_00aa6340",
+    "body_size": 208,
+    "message": "Function 'FUN_00aa6340' deleted at 00aa6340"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00aa6340",
+    "end_address": "00aa64a2"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00aa6340",
+    "end_address": "00aa64a1",
+    "bytes_disassembled": 354,
+    "message": "Successfully disassembled 354 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00aa6340",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00aa6340",
+    "function_name": "FUN_00aa6340",
+    "entry_point": "00aa6340",
+    "body_size": 354,
+    "message": "Function created successfully at 00aa6340"
+   }
+  },
+  {
+   "defined": "00aa6340",
+   "end": "00aa64a2",
+   "name": null,
+   "after": "Function: FUN_00aa6340 at 00aa6340\nSignature: undefined FUN_00aa6340(void)\nEntry: 00aa6340\nBody: 00aa6340 - 00aa64a1"
+  },
+  {
+   "recreate": "00a4c510",
+   "previous": "Function: FUN_00a4c510 at 00a4c510\nSignature: undefined FUN_00a4c510(void)\nEntry: 00a4c510\nBody: 00a4c510 - 00a4c54b",
+   "plate": null
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00a4c510"
+   },
+   "result": {
+    "success": true,
+    "address": "00a4c510",
+    "deleted_function": "FUN_00a4c510",
+    "body_size": 49,
+    "message": "Function 'FUN_00a4c510' deleted at 00a4c510"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00a4c510",
+    "end_address": "00a4c558"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00a4c510",
+    "end_address": "00a4c557",
+    "bytes_disassembled": 72,
+    "message": "Successfully disassembled 72 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00a4c510",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00a4c510",
+    "function_name": "FUN_00a4c510",
+    "entry_point": "00a4c510",
+    "body_size": 72,
+    "message": "Function created successfully at 00a4c510"
+   }
+  },
+  {
+   "defined": "00a4c510",
+   "end": "00a4c558",
+   "name": null,
+   "after": "Function: FUN_00a4c510 at 00a4c510\nSignature: undefined FUN_00a4c510(void)\nEntry: 00a4c510\nBody: 00a4c510 - 00a4c557"
+  },
+  {
+   "recreate": "007379a0",
+   "previous": "Function: BSP_Application_Destruct at 007379a0\nSignature: undefined BSP_Application_Destruct(void)\nEntry: 007379a0\nBody: 007379a0 - 007379d9",
+   "plate": "[BSP reconstruction 007379a0]\nCalled on stack application after shutdown. Releases the dynamic reference array at this+08. Earlier decompilation was truncated by incorrect CRT free noreturn annotation."
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "007379a0"
+   },
+   "result": {
+    "success": true,
+    "address": "007379a0",
+    "deleted_function": "BSP_Application_Destruct",
+    "body_size": 58,
+    "message": "Function 'BSP_Application_Destruct' deleted at 007379a0"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "007379a0",
+    "end_address": "007379fd"
+   },
+   "result": {
+    "success": true,
+    "start_address": "007379a0",
+    "end_address": "007379fc",
+    "bytes_disassembled": 93,
+    "message": "Successfully disassembled 93 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "007379a0",
+    "disassemble_first": false,
+    "name": "BSP_Application_Destruct"
+   },
+   "result": {
+    "success": true,
+    "address": "007379a0",
+    "function_name": "BSP_Application_Destruct",
+    "entry_point": "007379a0",
+    "body_size": 93,
+    "message": "Function created successfully at 007379a0",
+    "warnings": [
+     "Function name 'BSP_Application_Destruct' \u2014 main part 'Application_Destruct' is not PascalCase. Expected: ApplicationDestruct",
+     "Function name 'BSP_Application_Destruct' \u2014 main part 'Application_Destruct' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_Application_Destruct' does not start with a recognized verb. First word 'Application_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "007379a0",
+    "comment": "[BSP reconstruction 007379a0]\nCalled on stack application after shutdown. Releases the dynamic reference array at this+08. Earlier decompilation was truncated by incorrect CRT free noreturn annotation."
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 007379a0",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "007379a0",
+   "end": "007379fd",
+   "name": "BSP_Application_Destruct",
+   "after": "Function: BSP_Application_Destruct at 007379a0\nSignature: undefined BSP_Application_Destruct(void)\nEntry: 007379a0\nBody: 007379a0 - 007379fc"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00beca00",
+    "end_address": "00beca2a"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00beca00",
+    "end_address": "00beca29",
+    "bytes_disassembled": 42,
+    "message": "Successfully disassembled 42 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00beca00",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00beca00",
+    "function_name": "FUN_00beca00",
+    "entry_point": "00beca00",
+    "body_size": 42,
+    "message": "Function created successfully at 00beca00"
+   }
+  },
+  {
+   "defined": "00beca00",
+   "end": "00beca2a",
+   "name": null,
+   "after": "Function: FUN_00beca00 at 00beca00\nSignature: undefined FUN_00beca00(void)\nEntry: 00beca00\nBody: 00beca00 - 00beca29"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00bece30",
+    "end_address": "00bece6f"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00bece30",
+    "end_address": "00bece6e",
+    "bytes_disassembled": 63,
+    "message": "Successfully disassembled 63 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00bece30",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00bece30",
+    "function_name": "FUN_00bece30",
+    "entry_point": "00bece30",
+    "body_size": 60,
+    "message": "Function created successfully at 00bece30"
+   }
+  },
+  {
+   "defined": "00bece30",
+   "end": "00bece6f",
+   "name": null,
+   "after": "Function: FUN_00bece30 at 00bece30\nSignature: undefined FUN_00bece30(void)\nEntry: 00bece30\nBody: 00bece30 - 00bece6e"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "recreate": "00aa5b20",
+   "previous": "Function: FUN_00aa5b20 at 00aa5b20\nSignature: undefined FUN_00aa5b20(void)\nEntry: 00aa5b20\nBody: 00aa5b20 - 00aa5b30",
+   "plate": null
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00aa5b20"
+   },
+   "result": {
+    "success": true,
+    "address": "00aa5b20",
+    "deleted_function": "FUN_00aa5b20",
+    "body_size": 17,
+    "message": "Function 'FUN_00aa5b20' deleted at 00aa5b20"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00aa5b20",
+    "end_address": "00aa5b3d"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00aa5b20",
+    "end_address": "00aa5b3c",
+    "bytes_disassembled": 29,
+    "message": "Successfully disassembled 29 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00aa5b20",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00aa5b20",
+    "function_name": "FUN_00aa5b20",
+    "entry_point": "00aa5b20",
+    "body_size": 29,
+    "message": "Function created successfully at 00aa5b20"
+   }
+  },
+  {
+   "defined": "00aa5b20",
+   "end": "00aa5b3d",
+   "name": null,
+   "after": "Function: FUN_00aa5b20 at 00aa5b20\nSignature: undefined FUN_00aa5b20(void)\nEntry: 00aa5b20\nBody: 00aa5b20 - 00aa5b3c"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
