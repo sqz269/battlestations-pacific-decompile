@@ -635,33 +635,33 @@
       "address": "00cb63a5",
       "native": "00bf6b43",
       "function": "00cb63a0",
-      "kind": "no_ghidra_function",
+      "kind": "tail_jump",
       "instruction": "jmp 0x00bf6b43",
-      "role": "observed EH handler only; verifier can check target but not current missing caller"
+      "role": "observed EH handler; primary defined exact10B caller, live tail target checked; no source EH transport"
     },
     {
       "address": "00cb63c5",
       "native": "00bf6b43",
       "function": "00cb63c0",
-      "kind": "no_ghidra_function",
+      "kind": "tail_jump",
       "instruction": "jmp 0x00bf6b43",
-      "role": "observed EH handler only; verifier can check target but not current missing caller"
+      "role": "observed EH handler; primary defined exact10B caller, live tail target checked; no source EH transport"
     },
     {
       "address": "00cb65ad",
       "native": "00bf6b43",
       "function": "00cb65a8",
-      "kind": "no_ghidra_function",
+      "kind": "tail_jump",
       "instruction": "jmp 0x00bf6b43",
-      "role": "observed EH handler only; verifier can check target but not current missing caller"
+      "role": "observed EH handler; primary defined exact10B caller, live tail target checked; no source EH transport"
     },
     {
       "address": "00cb65cd",
       "native": "00bf6b43",
       "function": "00cb65c8",
-      "kind": "no_ghidra_function",
+      "kind": "tail_jump",
       "instruction": "jmp 0x00bf6b43",
-      "role": "observed EH handler only; verifier can check target but not current missing caller"
+      "role": "observed EH handler; primary defined exact10B caller, live tail target checked; no source EH transport"
     },
     {
       "address": "0073dce5",
@@ -676,44 +676,7 @@
       "role": "observed actual constructor producer"
     }
   ],
-  "no_ghidra_function": [
-    {
-      "address": "00cb63a0",
-      "end_inclusive": "00cb63a9",
-      "bytes": 10,
-      "last_instruction": "00cb63a5",
-      "last_instruction_length": 5,
-      "evidence": "current live proto: No function found; exact native MOV EAX,FuncInfo / JMP BF6B43",
-      "scope": "observed compiler handler only"
-    },
-    {
-      "address": "00cb63c0",
-      "end_inclusive": "00cb63c9",
-      "bytes": 10,
-      "last_instruction": "00cb63c5",
-      "last_instruction_length": 5,
-      "evidence": "current live proto: No function found; exact native MOV EAX,FuncInfo / JMP BF6B43",
-      "scope": "observed compiler handler only"
-    },
-    {
-      "address": "00cb65a8",
-      "end_inclusive": "00cb65b1",
-      "bytes": 10,
-      "last_instruction": "00cb65ad",
-      "last_instruction_length": 5,
-      "evidence": "current live proto: No function found; exact native MOV EAX,FuncInfo / JMP BF6B43",
-      "scope": "observed compiler handler only"
-    },
-    {
-      "address": "00cb65c8",
-      "end_inclusive": "00cb65d1",
-      "bytes": 10,
-      "last_instruction": "00cb65cd",
-      "last_instruction_length": 5,
-      "evidence": "current live proto: No function found; exact native MOV EAX,FuncInfo / JMP BF6B43",
-      "scope": "observed compiler handler only"
-    }
-  ],
+  "no_ghidra_function": [],
   "observed_EH": [
     {
       "entry": "00cb63a0",
@@ -825,9 +788,10 @@
     "resumed_listing": "00a900d8",
     "last_instruction": "00a900db RET4 length3",
     "current_instruction_context": "No instruction at address 00a900d5 despite enclosing function extent",
-    "root_repair_pending": true,
+    "root_repair_pending": false,
     "worker_mutation": false,
-    "flow_property_query": "rejected: script execution disabled; exact raw error retained, no enable/mutation fallback"
+    "flow_property_query": "rejected: script execution disabled; exact raw error retained, no enable/mutation fallback",
+    "primary_repair": "reports/cc10_shadow_depth_target_flow.json; live11 instructions/0gaps"
   },
   "producer": {
     "function": "0073d410",
@@ -1185,5 +1149,51 @@
       "bytes": 45,
       "sha256": "794ace23aa77436d7638226734ebd62addc61dcbb3659005e8f0aeba163b0635"
     }
-  ]
+  ],
+  "no_ghidra_function_at_worker_freeze": [
+    {
+      "address": "00cb63a0",
+      "end_inclusive": "00cb63a9",
+      "bytes": 10,
+      "last_instruction": "00cb63a5",
+      "last_instruction_length": 5,
+      "evidence": "current live proto: No function found; exact native MOV EAX,FuncInfo / JMP BF6B43",
+      "scope": "observed compiler handler only"
+    },
+    {
+      "address": "00cb63c0",
+      "end_inclusive": "00cb63c9",
+      "bytes": 10,
+      "last_instruction": "00cb63c5",
+      "last_instruction_length": 5,
+      "evidence": "current live proto: No function found; exact native MOV EAX,FuncInfo / JMP BF6B43",
+      "scope": "observed compiler handler only"
+    },
+    {
+      "address": "00cb65a8",
+      "end_inclusive": "00cb65b1",
+      "bytes": 10,
+      "last_instruction": "00cb65ad",
+      "last_instruction_length": 5,
+      "evidence": "current live proto: No function found; exact native MOV EAX,FuncInfo / JMP BF6B43",
+      "scope": "observed compiler handler only"
+    },
+    {
+      "address": "00cb65c8",
+      "end_inclusive": "00cb65d1",
+      "bytes": 10,
+      "last_instruction": "00cb65cd",
+      "last_instruction_length": 5,
+      "evidence": "current live proto: No function found; exact native MOV EAX,FuncInfo / JMP BF6B43",
+      "scope": "observed compiler handler only"
+    }
+  ],
+  "primary_review": {
+    "report": "reports/cc10_shadow_depth_target_integration.json",
+    "definitions": "reports/cc10_shadow_depth_target_definitions.json",
+    "live_transfer_rows_checked": 24,
+    "missing_handler_target_only": 0,
+    "indirect_rows": 20,
+    "no_source_change": true
+  }
 }

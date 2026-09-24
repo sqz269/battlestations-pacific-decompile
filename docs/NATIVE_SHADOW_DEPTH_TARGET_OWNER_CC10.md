@@ -128,18 +128,21 @@ jump BF6B43. Their state0 funclets CB6390/CB63B0 tail412430 (reset the receiver'
 profile); state1 CB6398/CB63B8 tail411EE0 for the captured guard. Target
 constructor/destructor handlers CB65A8/CB65C8 use DEC82C/DEC858; their state0
 funclets CB65A0/CB65C0 tailA8A9D0. The six funclets are existing8-byte Ghidra
-functions. The four10-byte handler thunks currently have no function marker;
-the report gives inclusive ends and final5-byte JMP boundaries.
+functions. The four10-byte handler thunks had no function marker at worker
+freeze. Primary review defined their exact bodies; the report preserves the
+original missing-function observations and final5-byte JMP boundaries.
 
 These are observed original compiler cleanup paths. The new source retains
 partial state instead of pretending to execute these FH3 tables, guard
 transport, SEH or hardware-fault paths. It does not admit partially stamped
 base profiles to ordinary singleton drain.
 
-The A900C0 function extent includes its finalRET4, but its live listing still
-has a gap after CALL BF65AC at A900D0: native bytes A900D5..D7 are
-`83 C4 04` (ADD ESP,4), with listing resuming at A900D8. The worker left it
-unchanged for primary repair after lease release. The read-only flow-property
+At worker freeze the A900C0 extent included its finalRET4, but its listing
+had a gap after CALL BF65AC at A900D0: native bytes A900D5..D7 are
+`83 C4 04` (ADD ESP,4), with listing resuming at A900D8. Primary review
+cleared the call-site override and restored the instruction under the write
+lock; the live listing now has11 instructions and no gaps. The callee's
+no-return state was not changed. The read-only flow-property
 query was rejected because bridge script execution is disabled; its exact
 error is retained, without enabling scripts or changing callee no-return state.
 
@@ -164,11 +167,13 @@ dispatch clears its publication and completes its retained operation and lock
 record. Final device/API COM counts are0/0; two presents, one skipped, exit0.
 This demonstrates the scoped normal provider/lifetime path, not rendered shadows.
 
-The report contains26 live-PE blocks and44 transfer rows. The verifier checks20
-complete live caller/target transfers plus four missing-handler targets only;
-the20 indirect rows are explicitly separate. Root must update the four raw
-handler row kinds if later creating their Ghidra functions. Probe, build,
-native/EH/gap evidence and preparation inputs are SHA-indexed in the report.
+The report contains26 live-PE blocks and44 transfer rows. At worker freeze the
+verifier checked20 complete live caller/target transfers and four missing-handler
+targets only. After primary handler definition it checks all24 direct/tail
+transfers with no failures; the20 indirect rows remain explicitly separate.
+Probe, build, native/EH/gap evidence and preparation inputs are SHA-indexed.
+The integration receipt is `reports/cc10_shadow_depth_target_integration.json`;
+the flow repair and function definitions have separate linked records.
 
 Production app retention/publication/import wiring remains a separate step;
 this packet's fixture cell does not activate it. Cold material compiler/cache
