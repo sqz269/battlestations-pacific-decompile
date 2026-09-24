@@ -182,6 +182,11 @@ struct GameGunRow {
     bsp::GunRotationSpeeds speeds{};  // descriptor+88h/+8Ch
     bsp::GunFireRequestState fire{};  // +454h/+478h/+450h/+414h
     int barrel_num{1};                // +448h
+    // Packet cc9_ship_platform_attachment: the platform frame's origin in the
+    // ship model (0095F500 slot pass -> platform+4Ch -> 0072DD20 -> the device
+    // model's root node, 0072E9A1-0072E9AA). Valid when mount_known.
+    bool mount_known{false};
+    float mount_local[3]{0.0f, 0.0f, 0.0f};
     int next_fire_barrel{0};          // +44Ch
     float reload_time{0.0f};
     float barrel_delay_time{0.0f};
