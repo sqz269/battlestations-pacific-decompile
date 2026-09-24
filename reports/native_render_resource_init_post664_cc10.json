@@ -1,0 +1,450 @@
+{
+  "packet": "cc10_render_init_post664",
+  "base_commit": "0ded1cbf322ca98022a6893745b293079b07409b",
+  "status": "partial_projection_B107F0_B1297A_to_B12C9A",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "source_files": [
+    "include/bsp/native_render_resource_init_post664.hpp",
+    "src/native_render_resource_init_post664.cpp"
+  ],
+  "small_extension": {
+    "header": "include/bsp/native_render_resource_init_post65c.hpp",
+    "change": "one-use post664 identity and phases only"
+  },
+  "no_ghidra_function": [],
+  "routines": [
+    {
+      "address": "00b107f0",
+      "name": "continue_native_render_resource_init_00b1297a_fragment",
+      "status": "partial_projection",
+      "coverage": "ONLY [00B1297A,00B12C9A),800 bytes",
+      "start": "00b1297a",
+      "end_inclusive": "00b12c99",
+      "end_exclusive": "00b12c9a",
+      "size": 800,
+      "last_instruction": "00b12c95",
+      "last_instruction_size": 5,
+      "last_instruction_text": "CALL 00B4E2B0",
+      "next_instruction": "00B12C9A PUSH20; next allocation excluded",
+      "original_abi": "containing ECX service,three borrowed DWORD argument cells,eventual RET0C; no argument read or native return here",
+      "source_abi": "same one-use post65c predecessor/original continuation context,independent retained post20 block and actual name views",
+      "preserved_ghidra_name": "BSP_RenderResources_InitializeMembers_PartialEntry",
+      "complete_init": false,
+      "destruction_admitted": false,
+      "runtime_tested": false
+    }
+  ],
+  "live_pe_byte_blocks": [
+    {
+      "start": "00b1297a",
+      "end_exclusive": "00b12c9a",
+      "size": 800,
+      "sha256": "f3c8d2b5afee26f6cd3f04c8224d7ecff3757657e7fb113829f745cab70a7bcb",
+      "live_equals_disk": true,
+      "scope": "complete new caller fragment"
+    },
+    {
+      "start": "00d5e1fc",
+      "end_exclusive": "00d5e254",
+      "size": 88,
+      "sha256": "bbafaf195f5d4674ba9fcc50019db31386d20bdffaa39c60818ecf53808f3964",
+      "live_equals_disk": true,
+      "scope": "six original new literal views"
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "00b1297c",
+      "native": "00bf681b",
+      "function": "00b107f0",
+      "source": "singleton_lifetime_allocate"
+    },
+    {
+      "address": "00b129aa",
+      "native": "0041e870",
+      "function": "00b107f0",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b129c9",
+      "native": "00b4e470",
+      "function": "00b107f0",
+      "source": "construct_native_post_effect20_00b4e470"
+    },
+    {
+      "address": "00b12a09",
+      "native": "00419cc0",
+      "function": "00b107f0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b12a10",
+      "native": "00bd1510",
+      "function": "00b107f0",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b12a21",
+      "native": "0041e870",
+      "function": "00b107f0",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b12a46",
+      "native": "00b4cba0",
+      "function": "00b107f0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b12a4d",
+      "native": "00b18b00",
+      "function": "00b107f0",
+      "source": "register_native_material_float2_00b18b00"
+    },
+    {
+      "address": "00b12a72",
+      "native": "00419cc0",
+      "function": "00b107f0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b12a79",
+      "native": "00bd1510",
+      "function": "00b107f0",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b12a8a",
+      "native": "0041e870",
+      "function": "00b107f0",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b12aaf",
+      "native": "00b4cba0",
+      "function": "00b107f0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b12ab6",
+      "native": "00b18b20",
+      "function": "00b107f0",
+      "source": "register_native_material_float_00b18b20"
+    },
+    {
+      "address": "00b12adb",
+      "native": "00419cc0",
+      "function": "00b107f0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b12ae2",
+      "native": "00bd1510",
+      "function": "00b107f0",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b12af3",
+      "native": "0041e870",
+      "function": "00b107f0",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b12b18",
+      "native": "00b4cba0",
+      "function": "00b107f0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b12b1f",
+      "native": "00b18b20",
+      "function": "00b107f0",
+      "source": "register_native_material_float_00b18b20"
+    },
+    {
+      "address": "00b12b44",
+      "native": "00419cc0",
+      "function": "00b107f0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b12b4b",
+      "native": "00bd1510",
+      "function": "00b107f0",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b12b5c",
+      "native": "0041e870",
+      "function": "00b107f0",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b12b81",
+      "native": "00b4cba0",
+      "function": "00b107f0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b12b88",
+      "native": "00b18b20",
+      "function": "00b107f0",
+      "source": "register_native_material_float_00b18b20"
+    },
+    {
+      "address": "00b12bad",
+      "native": "00419cc0",
+      "function": "00b107f0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b12bb4",
+      "native": "00bd1510",
+      "function": "00b107f0",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b12bc5",
+      "native": "0041e870",
+      "function": "00b107f0",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b12bea",
+      "native": "00b4cba0",
+      "function": "00b107f0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b12bf1",
+      "native": "00b18b20",
+      "function": "00b107f0",
+      "source": "register_native_material_float_00b18b20"
+    },
+    {
+      "address": "00b12c16",
+      "native": "00419cc0",
+      "function": "00b107f0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b12c1d",
+      "native": "00bd1510",
+      "function": "00b107f0",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b12c2e",
+      "native": "0041e870",
+      "function": "00b107f0",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b12c50",
+      "native": "00b4cba0",
+      "function": "00b107f0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b12c57",
+      "native": "00b18b00",
+      "function": "00b107f0",
+      "source": "register_native_material_float2_00b18b00"
+    },
+    {
+      "address": "00b12c7c",
+      "native": "00419cc0",
+      "function": "00b107f0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b12c83",
+      "native": "00bd1510",
+      "function": "00b107f0",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b12c95",
+      "native": "00b4e2b0",
+      "function": "00b107f0",
+      "source": "assign_native_post_effect_frame_00b4e2b0"
+    }
+  ],
+  "parameters": [
+    {
+      "literal": "00d5e230",
+      "name": "cCameraVelocity",
+      "source": "service+1A8",
+      "words": 2,
+      "matrix": 0,
+      "state": 89,
+      "order": "source address BEFORE current+664",
+      "registration_site": "00b12a4d"
+    },
+    {
+      "literal": "00d5e220",
+      "name": "cCameraSpeed",
+      "source": "service+1B0",
+      "words": 1,
+      "matrix": 0,
+      "state": 90,
+      "order": "source address BEFORE current+664",
+      "registration_site": "00b12ab6"
+    },
+    {
+      "literal": "00d5e214",
+      "name": "cMinSpeed",
+      "source": "service+238",
+      "words": 1,
+      "matrix": 0,
+      "state": 91,
+      "order": "current+664 BEFORE source address",
+      "registration_site": "00b12b1f"
+    },
+    {
+      "literal": "00d5e208",
+      "name": "cMaxBlur",
+      "source": "service+240",
+      "words": 1,
+      "matrix": 0,
+      "state": 92,
+      "order": "source address BEFORE current+664",
+      "registration_site": "00b12b88"
+    },
+    {
+      "literal": "00d5e1fc",
+      "name": "cDivider",
+      "source": "service+23C",
+      "words": 1,
+      "matrix": 0,
+      "state": 93,
+      "order": "source address BEFORE current+664",
+      "registration_site": "00b12bf1"
+    },
+    {
+      "literal": "00d5e430",
+      "name": "cSceneColorSampleOffset",
+      "source": "service+04",
+      "words": 2,
+      "matrix": 0,
+      "state": 94,
+      "order": "current+664 BEFORE EBX=source",
+      "registration_site": "00b12c57"
+    }
+  ],
+  "construction": {
+    "allocation_state": 86,
+    "constructor_state": 87,
+    "mask": "100h DWORD,not low byte",
+    "actual_bytes": 32,
+    "vertex_count": 3,
+    "optional_input": null,
+    "registers": "EDI/ESP14 rawallocation; state86 then EBX=100h BEFORE constructor conditional; EBP=FFFFFFFF atjoin BEFORE DWORDmask test/publication; EDI remains raw",
+    "publication": "actual result/null to service664 atB129D9; disarm AFTER publication using EBP=-1; name data capture BEFORE mask100 clear"
+  },
+  "literals": {
+    "00d5e240": "fakemotionblur.mshd",
+    "00d5e230": "cCameraVelocity",
+    "00d5e220": "cCameraSpeed",
+    "00d5e214": "cMinSpeed",
+    "00d5e208": "cMaxBlur",
+    "00d5e1fc": "cDivider"
+  },
+  "ordering": [
+    "Allocate20h,EDI/ESP14 raw result,state86; EBX=100h before constructor conditional including null result.",
+    "Conditional raw effect name,DWORD mask100,state87,B4E470(count3,null).",
+    "At join EBP=FFFFFFFF BEFORE full DWORD mask100 test/+664 publication; EDI remains raw; disarm AFTER publication.",
+    "Effect name data capture BEFORE DWORD mask100 clear; current length+1/pool return without header repair.",
+    "Six independent raw borrowed scalar/float2 records preserve their individual source/current-receiver orders.",
+    "Last row captures current+664 BEFORE replacing EBX with service4; no texture/default insertion.",
+    "Current+1D4 frame BEFORE current+664; existing B4E2B0/current imports/actual frame lifetime."
+  ],
+  "frontier": {
+    "ESI": "same service",
+    "EBX": "service+04 fromB12C39",
+    "EBP": "FFFFFFFF",
+    "EDI": "raw+664 allocation",
+    "ESP14": "raw+664 allocation",
+    "mask": 0,
+    "EH": -1,
+    "argument_cells": "same original3,none read",
+    "native_pc": "00b12c9a",
+    "other_spills": "original/aligned/half dimensions unchanged",
+    "native_machine_stack": false
+  },
+  "lifetime": {
+    "retained": "independent genuine canonical B4E470 post20 block+7 raw names,real borrowed parameter/material/current-frame captures,original contexts/entry/argument chain",
+    "canonical": "existing genuine B4E470 block; no duplicate generic companion,new registry/count or blanket nested registration",
+    "borrowed": "service sources remain alive through parameter borrows; no added owner credit",
+    "failure": "preserve publications/raw names/masks/provider acquisitions and fail predecessor chain; no caller rollback/free/retry",
+    "full_service_lifetime_admitted": false
+  },
+  "checks": {
+    "bytes_listing": {
+      "passed": true,
+      "instructions": 187,
+      "caller_calls": 36,
+      "listing": "local/render_init_post664_listing.txt",
+      "handoff": "local/render_init_post664_handoff.json"
+    },
+    "build": {
+      "command": "./scripts/build.ps1",
+      "status": "passed",
+      "result": "MSVC Win32 Release MultiThreadedDLL /MD /W4 /WX",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "log": "local/render_init_post664_build.txt"
+    },
+    "report_calls": {
+      "command": "python tools/verify_report_calls.py reports/native_render_resource_init_post664_cc10.json",
+      "status": "passed",
+      "numeric_checked": 36,
+      "caller_rows": 36,
+      "supporting_rows": 0,
+      "failed": 0,
+      "log": "local/render_init_post664_calls.txt"
+    },
+    "new_tracked_tests": 0,
+    "new_probes": 0,
+    "composed_runtime_tested": false
+  },
+  "provider_contracts": [
+    {
+      "callee": "B4E470",
+      "contract": "existing full actual20h count3/null constructor and canonical block; stable raw effect name; no duplicate pass view"
+    },
+    {
+      "callee": "B4CBA0",
+      "contract": "borrow material at captured current post+14; independent current664 capture for every row"
+    },
+    {
+      "callee": "B18B00/B18B20",
+      "contract": "actual2/1-word borrowed records,matrix0,actual parameter pool/provider; no copied source or new default"
+    },
+    {
+      "callee": "B4E2B0",
+      "contract": "capture current incoming frame then current post; existing publish/retain-before-old-release,current imports and D5E600 lifetime"
+    },
+    {
+      "callee": "41E870/419CC0/BD1510",
+      "contract": "actual raw header construction and captured data/current length+1/current pool/manager/gate return; stale headers preserved"
+    }
+  ],
+  "artifact_sha256": {
+    "include/bsp/native_render_resource_init_post664.hpp": "bc6a1877c35d35a9c097f85d3d36fecf5c53c89dc504c3f4e4cb1f0e5b09a951",
+    "src/native_render_resource_init_post664.cpp": "da3ee5b2fd4ce192685314ef40e1bfa0ec3eccafec88d245342cafc87d19c7b3",
+    "include/bsp/native_render_resource_init_post65c.hpp": "be3d804b0b8ca609cd3aa525886b630975b2cd3719e88b75e6701f2dcb6bd416",
+    "docs/NATIVE_RENDER_RESOURCE_INIT_POST664_CC10.md": "5fa2a2f931b94ad1b4c42b419d61e5112c635e3df8e5e8a80c5e6ebcfb5cb6ed",
+    "local/render_init_post664_listing.txt": "2340d2df2bbb088262ed6cbfa6497447c2496772a3195cf9d56f1cf359b17be4",
+    "local/render_init_post664_handoff.json": "a0bea907d6bade15e28c446d46883734bcd80972adf5be919d3e17d7ddc6ee7b",
+    "local/render_init_post664_build.txt": "314c24bc328d334914ad71780a09906d7f504048e53fdabad99bbf22c697aaf8",
+    "local/render_init_post664_calls.txt": "3148a9fb43968e646993a6f9d5e4c0c7ba0cd605b284f5245fdc1d01fa1f69e5"
+  }
+}

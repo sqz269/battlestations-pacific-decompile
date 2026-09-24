@@ -1,0 +1,59 @@
+{
+  "packet": "cc10_group_factory_post664_integration",
+  "integration": "303b11107b68c7a6ba6f8b8fd11a409c4b0428f3",
+  "commits": {
+    "group_factory": "a71d327f5034d135ce2dc89eb6010b741339ca68",
+    "post664": "fe2c9d71b408ffc891ff7984be32e127cc950059"
+  },
+  "raw_widget_copy_dependency": "da8398163196b28a78acb43a93bf6df4ac2c7baa",
+  "review": [
+    "complete Group copy/factory/scalar-deletion source and header",
+    "late flags-byte read after base destruction, no payload access after slot return; compiled-order evidence",
+    "constructor failure returns captured widget slot without discarding acquired model diagnostics",
+    "CB6DF0 defined exact10B; postdefinition row kind corrected from missing-function marker to tail_jump, all9 live call rows now verify",
+    "complete renderer source/header/predecessor diff, critical native mask/register/scene source sites",
+    "six borrowed parameter orders; DWORDmask100, EBX100 before branch, EBP-1 before mask/publication, unchanged raw EDI, finalEBXservice4"
+  ],
+  "validation": {
+    "strict_win32_build": true,
+    "existing_ctests": 3,
+    "build_log_sha256": "576aa290b09b1f7115b5185e4c265530fddd620e18d24dc5163b485cd0a699e5",
+    "group_live_call_rows": 9,
+    "group_calls_log_sha256": "0422eaa05216382fe01a1f7e43818aeccd4dc3857d1d5316df3f5086db7bbe42",
+    "renderer_live_call_rows": 36,
+    "new_tracked_tests": 0,
+    "wrappers_runtime": false,
+    "renderer_runtime": false,
+    "native_ABI_FH3_SEH": false,
+    "application_run": false,
+    "game_validated": false
+  },
+  "archives": [
+    {
+      "path": "local/cc10-platform-evidence/gui-group-factory.zip",
+      "sha256": "d22d364ce3b5cf7833d8ad1998cd5c14cbf792abc34634e2df1421949e42f34f",
+      "files": 36,
+      "valid": true
+    },
+    {
+      "path": "local/cc10-platform-evidence/renderer-post664.zip",
+      "sha256": "f3227af42eb227c030deab28e7fc582616c33d046a53e35ed31aa1258a8430c3",
+      "files": 20,
+      "valid": true
+    }
+  ],
+  "frontier": {
+    "renderer": "00b12c9a",
+    "EBX": "service+04",
+    "EBP": "FFFFFFFF",
+    "EDI_ESP14": "raw post664",
+    "mask": 0,
+    "native_eh_state": -1
+  },
+  "boundaries": [
+    "Group raw construction and scalar deletion do not register a canonical companion; separate actual identity admission remains required",
+    "supported copies inherit raw AA9520 Model26/3E,parent0 and required lifetime bindings",
+    "report frozen in worker archive retains predefinition marker; current tracked report has corrected live tail-jump verification",
+    "Group startup/application factory binding and complete renderer graph/lifetime remain incomplete"
+  ]
+}

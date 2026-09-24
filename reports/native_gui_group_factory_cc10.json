@@ -1,0 +1,360 @@
+{
+  "packet": "cc10_gui_group_factory",
+  "status": "complete_raw_normal_supported_domains_strict_win32_compiled_order_checked",
+  "documentation": "docs/NATIVE_GUI_GROUP_FACTORY_CC10.md",
+  "source": "src/native_gui_group_factory.cpp",
+  "original_executable_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "native_bytes": [
+    {
+      "address": "00ac6fa0",
+      "size": 25,
+      "end_inclusive": "00ac6fb8",
+      "sha256": "0b6017b668b5967193a8b96fda544c0b5311f3b73b31cd14b897ba1b89d1fe99",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00aa12f0",
+      "size": 132,
+      "end_inclusive": "00aa1373",
+      "sha256": "a9edbd7a48814ab9c740f4dfa99efdb329c720802422276def792614e1005855",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00cb6de0",
+      "size": 8,
+      "end_inclusive": "00cb6de7",
+      "sha256": "d314c847c6c91f33f69423997b7a344d4c24455cf3ac652637e3b337adc2bb26",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00cb6de8",
+      "size": 8,
+      "end_inclusive": "00cb6def",
+      "sha256": "f332a066dfe70b06e3437e9e765a42af2aa398ea6cc16776202d59a73ca2763a",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00cb6df0",
+      "size": 10,
+      "end_inclusive": "00cb6df9",
+      "sha256": "cd022f2fd278ada411c4ff86360a985dd759b93710490b9326bdc47fed0574ce",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00ac73e0",
+      "size": 38,
+      "end_inclusive": "00ac7405",
+      "sha256": "5df2b9bc960c6b6bd37e46a6088797ab8e4af61538b5b3308a6fdca410277955",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00ded35c",
+      "size": 52,
+      "end_inclusive": "00ded38f",
+      "sha256": "6d414b06c710b6c68840d47ed1e150710dcd98f5f338346b9d2b2f47ac3b6f95",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00d5cb80",
+      "size": 8,
+      "end_inclusive": "00d5cb87",
+      "sha256": "da62dfb592f8a34f308853627b493f403e6e31aa40b29530d1ba69708e06c7a2",
+      "live_pe_equal": true
+    }
+  ],
+  "routines": [
+    {
+      "address": "00ac6fa0",
+      "name": "construct_native_gui_group_copy_00ac6fa0",
+      "source": "src/native_gui_group_factory.cpp",
+      "coverage": "complete normal body in supported actual base-copy/raw lifetime domains",
+      "original_abi": "ECX destination; stack source; EAX same; RET4",
+      "last_instruction_address": "00ac6fb6",
+      "last_instruction_length": 3,
+      "end_inclusive": "00ac6fb8"
+    },
+    {
+      "address": "00aa12f0",
+      "name": "create_native_gui_group_00aa12f0",
+      "source": "src/native_gui_group_factory.cpp",
+      "coverage": "complete normal body in supported actual base-copy/raw lifetime domains",
+      "original_abi": "ECX optional source; EAX actual slot or null; RET",
+      "last_instruction_address": "00aa1373",
+      "last_instruction_length": 1,
+      "end_inclusive": "00aa1373"
+    },
+    {
+      "address": "00ac73e0",
+      "name": "delete_native_gui_group_00ac73e0",
+      "source": "src/native_gui_group_factory.cpp",
+      "coverage": "complete normal body in supported actual base-copy/raw lifetime domains",
+      "original_abi": "ECX owner; stack flags DWORD read late as low byte; EAX saved owner; RET4",
+      "last_instruction_address": "00ac7403",
+      "last_instruction_length": 3,
+      "end_inclusive": "00ac7405"
+    },
+    {
+      "address": "00cb6de0",
+      "name": "compiler unwind boundary",
+      "coverage": "native compiler frame adapter unimplemented; host catch projects slot-return effect",
+      "original_abi": "Compiler EBP frame; ECX=[EBP-10]; tail AC73D0",
+      "end_inclusive": "00cb6de7",
+      "last_instruction_address": "00cb6de3",
+      "last_instruction_length": 5
+    },
+    {
+      "address": "00cb6de8",
+      "name": "compiler unwind boundary",
+      "coverage": "native compiler frame adapter unimplemented; host catch projects slot-return effect",
+      "original_abi": "Compiler EBP frame; ECX=[EBP-10]; tail AC73D0",
+      "end_inclusive": "00cb6def",
+      "last_instruction_address": "00cb6deb",
+      "last_instruction_length": 5
+    },
+    {
+      "address": "00cb6df0",
+      "name": "native FH3 handler boundary",
+      "coverage": "unimplemented native FH3 boundary",
+      "original_abi": "EAX=DED36C; tail BF6B43",
+      "end_inclusive": "00cb6df9",
+      "last_instruction_address": "00cb6df5",
+      "last_instruction_length": 5
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00ac6fa8",
+      "native": "00aa9520",
+      "function": "00ac6fa0",
+      "kind": "call"
+    },
+    {
+      "address": "00aa130e",
+      "native": "00ac76d0",
+      "function": "00aa12f0",
+      "kind": "call"
+    },
+    {
+      "address": "00aa132a",
+      "native": "00ac6fa0",
+      "function": "00aa12f0",
+      "kind": "call"
+    },
+    {
+      "address": "00aa134d",
+      "native": "00ac6f50",
+      "function": "00aa12f0",
+      "kind": "call"
+    },
+    {
+      "address": "00cb6de3",
+      "native": "00ac73d0",
+      "function": "00cb6de0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb6deb",
+      "native": "00ac73d0",
+      "function": "00cb6de8",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb6df5",
+      "native": "00bf6b43",
+      "function": "00cb6df0",
+      "kind": "tail_jump",
+      "native_instruction_kind": "tail_jump",
+      "primary_definition": "reports/cc10_gui_group_factory_definitions.json"
+    },
+    {
+      "address": "00ac73e9",
+      "native": "00aa9730",
+      "function": "00ac73e0",
+      "kind": "call"
+    },
+    {
+      "address": "00ac73fb",
+      "native": "00ac7260",
+      "function": "00ac73e0",
+      "kind": "call"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00cb6df0",
+      "end_inclusive": "00cb6df9",
+      "end_exclusive": "00cb6dfa",
+      "last_instruction_address": "00cb6df5",
+      "last_instruction_length": 5,
+      "last_instruction": "JMP 00bf6b43",
+      "coverage": "unimplemented native FH3 handler boundary"
+    }
+  ],
+  "contracts": {
+    "copy": {
+      "range": "[00ac6fa0,00ac6fb9)",
+      "native_abi": "ECX destination; stack source; EAX destination; RET4",
+      "last_instruction": {
+        "address": "00ac6fb6",
+        "length": 3,
+        "text": "RET4"
+      },
+      "readpoints": [
+        "AC6FA0 captures source DWORD from original ESP+4 before push ESI",
+        "AC6FA5 pushes captured source; AC6FA6 captures destination in ESI",
+        "AC6FA8 calls AA9520 with original ECX destination",
+        "AC6FAD stores Group profile D5CB80 only after AA9520 returns",
+        "AC6FB3 returns original destination; no derived fields/EH/allocation/registration"
+      ],
+      "dependency": "incoming complete construct_native_gui_widget_copy_00aa9520, supported actual Model26/3E,parent0 domain only"
+    },
+    "wrapper": {
+      "range": "[00aa12f0,00aa1374)",
+      "native_abi": "ECX optional source; EAX actual pool slot or null; RET",
+      "last_instruction": {
+        "address": "00aa1373",
+        "length": 1,
+        "text": "RET"
+      },
+      "readpoints": [
+        "AA1307 captures optional source in ESI BEFORE allocator",
+        "AA1309 sets request EC; AA130E calls AC76D0 fixed F8BFA0 pool selector",
+        "AA1315 stores allocation in frame local ESP+4, equivalent handler EBP-10",
+        "AA1319 tests saved source; nonnull chooses copy and state0 AA131D, null chooses default and state1 AA1341",
+        "Both branches test returned allocation before constructor; null returns zero",
+        "AA132A calls AC6FA0(actual slot,saved source); AA134D calls AC6F50(actual slot)",
+        "Normal success returns callee EAX without re-reading allocation local"
+      ],
+      "admission": "No source type/pool validation, output registry admission or retain/release. Fixed F8BFA0 EC payload/F0 physical stride, metadata EC; explicit canonical process startup required."
+    },
+    "eh": {
+      "handler": {
+        "address": "00cb6df0",
+        "end_inclusive": "00cb6df9",
+        "last_instruction_address": "00cb6df5",
+        "last_instruction_length": 5,
+        "no_ghidra_function": true
+      },
+      "funcinfo": "00ded36c",
+      "unwind_map": "00ded35c",
+      "magic": "19930522",
+      "max_state": 2,
+      "states": [
+        {
+          "state": 0,
+          "next": -1,
+          "funclet": "00cb6de0",
+          "callsite": "00cb6de3",
+          "target": "00ac73d0"
+        },
+        {
+          "state": 1,
+          "next": -1,
+          "funclet": "00cb6de8",
+          "callsite": "00cb6deb",
+          "target": "00ac73d0"
+        }
+      ],
+      "contract": "Both funclets load ECX=[EBP-10], tail to existing same-process return-failed-slot. Callee constructor performs its own partial cleanup first; wrapper only returns slot, never calls successful-payload destructor. Native FH3/SEH remains boundary."
+    },
+    "scalar_destructor": {
+      "range": "[00ac73e0,00ac7406)",
+      "native_abi": "ECX owner; stack flags DWORD read as byte; EAX same owner; RET4",
+      "last_instruction": {
+        "address": "00ac7403",
+        "length": 3,
+        "text": "RET4"
+      },
+      "schedule": [
+        "AC73E3 stamps D5CB80",
+        "AC73E9 calls existing raw AA9730 with same ECX",
+        "AC73EE reads caller flags byte AFTER base destructor callback effects",
+        "If bit0 then AC73FB calls AC7260 with fixed F8BFA0 pool and saved owner",
+        "Return original owner. No count decrement/test, registry retirement, payload zeroing or wrapper rollback."
+      ],
+      "ready": "Small separate provider using existing NativeGuiWidgetLifetimeContext and same actual pool; requires owned address/file assignment"
+    },
+    "lifetime": {
+      "existing": "Full raw AA9730 schedule exists in native_gui_widget_lifetime.cpp; required current-table, class query, child scene/deletion, timed deletion and actual node companions. A9BD50 raw list removal now exists in native_gui_widget_child_links.cpp.",
+      "gap": "No canonical raw Group RenderCommandReference companion/current-vtable terminal binding exists. NativeGuiTextIdentityReference depends on logical GuiWidgetOwner and is not reusable for raw Group.",
+      "admission": "NativeRenderActualOwnerRegistry supports one borrowed actual+04 companion with no native retain/write. If later consumer needs retained Group identity, caller must explicitly own/bind/retire a genuine Group companion tied to AC73E0 and actual count. Factory contains no admission call; do not manufacture one or assume admission is part of constructor failure cleanup.",
+      "explicit_delete": "Native scalar deletion flags1 may happen at nonzero +04. A future companion must permit explicit retirement and no storage access after return to pool."
+    }
+  },
+  "validation": {
+    "code_bytes": 221,
+    "data_bytes": 60,
+    "live_pe_equal": true,
+    "strict_build": "scripts/build.ps1 MSVC Win32 Release /W4 /WX /fp:strict",
+    "ghidra_mutated": false,
+    "game_validated": false,
+    "ctests_passed": 3,
+    "call_rows_verified": 9,
+    "compiled_order": {
+      "passed": true,
+      "tool": "MSVC dumpbin /DISASM /SYMBOLS /RELOCATIONS of strict-build Win32 Release object",
+      "object_sha256": "7056aaaf0667604ba5b9fae7ffd924326bece162432e1af38c9764c909e665fc",
+      "listing_sha256": "30c1cda2611a1dde8387fc273048bc4dde1757e3163e126ff098dd7749e6dca9",
+      "checks": [
+        "Group stamp follows actual base-copy call",
+        "Actual caller flags-address and byte load follow actual raw base-destructor call",
+        "No memory operand or payload access after actual pool return",
+        "Factory saves allocated slot before constructor; catch returns that saved slot then rethrows"
+      ],
+      "evidence": [
+        "00000011: E8 00 00 00 00     call        ?destroy_native_gui_widget_base_00aa9730@bsp@@YAXPAXAAUNativeGuiWidgetLifetimeContext@1@@Z",
+        "00000016: 8B 45 0C           mov         eax,dword ptr [ebp+0Ch]",
+        "0000001C: 8A 00              mov         al,byte ptr [eax]",
+        "00000031: E8 00 00 00 00     call        ?return_00ac7260@NativeGuiGroupPool@bsp@@QAEXPAX@Z",
+        "00000036: 8B C6              mov         eax,esi",
+        "00000011: E8 00 00 00 00     call        ?construct_native_gui_widget_copy_00aa9520@bsp@@YAPAXPAXPBXAAUNativeGuiWidgetCopyContext@1@AAUNativeGuiWidgetCopyAcquired@1@@Z",
+        "00000019: C7 06 80 CB D5 00  mov         dword ptr [esi],0D5CB80h",
+        "0000002B: E8 00 00 00 00     call        ?allocate_native_gui_group_slot_00ac76d0@bsp@@YAPAXXZ",
+        "00000032: 89 75 EC           mov         dword ptr [ebp-14h],esi",
+        "000000AA: FF 75 EC           push        dword ptr [ebp-14h]",
+        "000000B1: E8 00 00 00 00     call        ?return_native_gui_group_slot_00ac73d0@bsp@@YAXPAX@Z",
+        "000000C4: E8 00 00 00 00     call        __CxxThrowException@8"
+      ],
+      "limitations": "Function-relative offsets in new source ABI, not native ABI identity or FH3 equivalence. Caller source is a C++ by-value argument, not a borrowed pointer cell. No runtime probe added for these thin wrappers."
+    },
+    "no_new_tests": true,
+    "prior_archives_unchanged": {
+      "cc10_field_values_evidence.zip": "a749dbf4656596e6a4e0c11ecb320a02bfe62dcba5fa3654c2744aa2a3022153",
+      "cc10_widget_transform_evidence.zip": "0d90499f71be2a3cc99ad732deaa8a71a5b55546da4dbaa7ee708c364bae45f8",
+      "cc10_widget_property_prefix_evidence.zip": "181ebe9358fe2d7ea6832b8051a0b3fd6f830a0360f3ef390626403ba7cbfcdf",
+      "cc10_gui_page_default_evidence.zip": "a224fc79f56861715059ff9717fcdad40893be00d26697a230b64ceafced5c8b",
+      "cc10_gui_group_pool_evidence.zip": "c7aa87452ab19400fe950d3a4c3a4a146c94715f4080f463dc2de1740df37853"
+    }
+  },
+  "source_hashes": {
+    "include/bsp/native_gui_group_factory.hpp": "4966a4b47350e81f12fa8575c7f8afbcfb017b7d9e95a231db7b9f03e3aedb95",
+    "src/native_gui_group_factory.cpp": "f6f5f124a16de6878f770e6e499d165235136dfb97f4e64dc79e6095135552f2"
+  },
+  "boundaries": [
+    "Raw model clone supports actual Model26/3E parent0 only; no arbitrary virtual10 clone",
+    "Host constructor catch returns actual slot; base-copy acquired model obligations remain with caller",
+    "No canonical Group companion, registry admission or rollback added",
+    "Native FH3/SEH/binary ABI unproved; no application startup/publication or gameplay claim"
+  ],
+  "dependency_source_hashes": {
+    "include/bsp/native_gui_widget_copy_storage.hpp": "dd3d8b700a9dda51037bf2722a893402ebd2ae3d3358ad83fd3358325f57d307",
+    "src/native_gui_widget_copy_storage.cpp": "66f5f04b8e71d79eba7e1791e57924a2679ef630fa4bffc80bb0f8b22d9367ae",
+    "src/native_gui_widget_model_clone.cpp": "142b07987b5624d6f36a53c77d544b4c4844b22579cdf75ea353c7a34be58dc5",
+    "src/native_gui_widget_lifetime.cpp": "f5f10d603694dfbb354b92bc4627dfc0fd687724fc51d49de5c51f53c813c3b6",
+    "src/native_gui_group_storage.cpp": "4c4729f66671693189cadd2cc5e27310f6e09a9a86aee6d50b1c7570b4cd4ad2",
+    "src/native_material_pools.cpp": "dae9c549cfc295d680184d7a51d0d073c310bf6bd00553d31be5fd81f530f13f"
+  },
+  "compiled_artifacts": {
+    "build/win32/bsp_core.dir/Release/native_gui_group_factory.obj": "7056aaaf0667604ba5b9fae7ffd924326bece162432e1af38c9764c909e665fc",
+    "build/win32/Release/bsp_core.lib": "97a67667d907920d906f1bb3e6633626d379a19522c73aae34d34d409916cd3d"
+  },
+  "dependency_base_commit": "da8398163196b28a78acb43a93bf6df4ac2c7baa",
+  "evidence_archive": {
+    "path": "local/cc10_gui_group_factory_evidence.zip",
+    "sha256": "d22d364ce3b5cf7833d8ad1998cd5c14cbf792abc34634e2df1421949e42f34f",
+    "file_count": 36,
+    "zip_test_passed": true,
+    "manifest": "manifest.json",
+    "report_snapshot": "report_before_archive_receipt.json excludes this outer archive receipt"
+  }
+}
