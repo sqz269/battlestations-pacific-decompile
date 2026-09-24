@@ -14,6 +14,12 @@ struct NativeRenderTextureSurfaceOwnerArguments {
     NativeSurfaceOwnerStorage* external_surface;
 };
 static_assert(sizeof(NativeRenderTextureSurfaceOwnerArguments)==0x18);
+// Pure immutable metadata over six initialized live DWORD cells, in native
+// width/height/format/multisample/mode/external-pointer order. The actual cells
+// and their addresses survive all callbacks; no aggregate is placed over them.
+struct NativeRenderTextureSurfaceOwnerArgumentView {
+    const volatile std::uint32_t* const words;
+};
 struct NativeRenderTextureSurfaceOwnerContext {
     NativeRuntimeTextureCreationContext& textures;
     NativeTextureSurfaceGetterContext& levels;
@@ -40,6 +46,14 @@ struct NativeRenderTextureSurfaceOwnerAcquired {
 // Only refcounted base cleanup is armed; no partial-resource rollback is added.
 void* construct_native_render_texture_surface_owner_00b4e020(void* actual_owner,
     const volatile NativeRenderTextureSurfaceOwnerArguments&,
+    NativeRenderTextureSurfaceOwnerContext&,NativeRenderTextureSurfaceOwnerAcquired&);
+// Same shared body with actual caller argument cells. Read mode BYTE first,
+// then format/height, write owner14, then read initial width. After the genuine
+// texture/level callbacks, reread external; the separate-target path rereads
+// multisample then width, retaining the original height/format. View metadata
+// is disjoint from all mutable native storage. No argument snapshot is made.
+void* construct_native_render_texture_surface_owner_00b4e020(void* actual_owner,
+    const NativeRenderTextureSurfaceOwnerArgumentView&,
     NativeRenderTextureSurfaceOwnerContext&,NativeRenderTextureSurfaceOwnerAcquired&);
 
 // B4E140..B4E1E7: ECX owner, RET. StampD61EB8; capture the actual decrement
