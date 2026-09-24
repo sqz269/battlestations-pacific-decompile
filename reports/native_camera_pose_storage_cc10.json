@@ -1,0 +1,512 @@
+{
+  "packet": "cc10_camera_pose_storage",
+  "status": "complete_raw_pose_builder_required_dispatch_strict_win32_original_source_checked",
+  "source": "src/native_camera_pose_storage.cpp",
+  "documentation": "docs/NATIVE_CAMERA_POSE_STORAGE_CC10.md",
+  "dependency_base_commit": "2b23bcaefab423e20cc03d15a6e0e30a1fd1485a",
+  "original_executable_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "native_bytes": [
+    {
+      "address": "00b6dae0",
+      "size": 47,
+      "end_inclusive": "00b6db0e",
+      "sha256": "96278bc5b63b825371bebe833a96d710582f3964baec7ce888ddcbd944aa29b3",
+      "live_pe_equal": true,
+      "last_instruction_address": "00b6db0d",
+      "last_instruction_length": 2,
+      "last_instruction": "jmp eax"
+    },
+    {
+      "address": "00b71400",
+      "size": 34,
+      "end_inclusive": "00b71421",
+      "sha256": "9d6c251d4719dc2a48c42b5d5d1906bd235bcfbe361b7db279fa352bbea6319c",
+      "live_pe_equal": true,
+      "last_instruction_address": "00b7141f",
+      "last_instruction_length": 3,
+      "last_instruction": "ret 4"
+    },
+    {
+      "address": "00b700e0",
+      "size": 277,
+      "end_inclusive": "00b701f4",
+      "sha256": "db1361afdc313b0991b980485e2a7e14fed1e7bae802fdebcc937b635c59a546",
+      "live_pe_equal": true,
+      "last_instruction_address": "00b701f2",
+      "last_instruction_length": 3,
+      "last_instruction": "ret 8"
+    },
+    {
+      "address": "00b63f10",
+      "size": 978,
+      "end_inclusive": "00b642e1",
+      "sha256": "b3478ab1c0937f2e031b29a18b1388ce57de8ee788214297217e510d1b173617",
+      "live_pe_equal": true,
+      "last_instruction_address": "00b642df",
+      "last_instruction_length": 3,
+      "last_instruction": "ret 0x10"
+    }
+  ],
+  "dependency_bytes": [
+    {
+      "address": "00419440",
+      "size": 98,
+      "end_inclusive": "004194a1",
+      "sha256": "d5f5657abc11375962f710514119fcfe29745cb7bc22a7a54e7d2586fefe785f",
+      "live_pe_equal": true,
+      "last_instruction_address": "004194a1",
+      "last_instruction_length": 1,
+      "last_instruction": "ret "
+    },
+    {
+      "address": "004f9b30",
+      "size": 121,
+      "end_inclusive": "004f9ba8",
+      "sha256": "60415d786b08a9309b49e5bb9eaca5ae4dd83f04db3ea2551123fd5be2e7ef63",
+      "live_pe_equal": true,
+      "last_instruction_address": "004f9ba6",
+      "last_instruction_length": 3,
+      "last_instruction": "ret 4"
+    }
+  ],
+  "native_data": [
+    {
+      "address": "00d62cf0",
+      "size": 88,
+      "sha256": "e28974468ad5614f4a554cfb6707393f56398b4eeca19834623fb06eb322c3de",
+      "live_pe_equal": true,
+      "hex": "e030bd00e01fb70060fbb600e01cb700f0f8b60070fbb60010f3b600b0d7b60080fbb600e00db70020d8b600d013b7000014b7006014b7003014b700c0dbb600e0dbb60000dcb600c0e8b60020dcb60080edb60010eeb600"
+    },
+    {
+      "address": "00d7a208",
+      "size": 4,
+      "sha256": "6d58692645c9d1cfaf13541cbd258f86193ef63c2f1d38f6bbca9617372d7bd6",
+      "live_pe_equal": true,
+      "hex": "00000080"
+    },
+    {
+      "address": "00d62ba0",
+      "size": 8,
+      "sha256": "e2e8c359c118cf8437459913ad396f3dd134817c36c692d526e78ea5310c2165",
+      "live_pe_equal": true,
+      "hex": "2b8716d9cef7ef3f"
+    },
+    {
+      "address": "00d7a3a0",
+      "size": 8,
+      "sha256": "3e2a4d232d889625aa1c184b27588b7c6ebdfef18e01332502d986209f65b905",
+      "live_pe_equal": true,
+      "hex": "000000a09999b93f"
+    },
+    {
+      "address": "00d7a24c",
+      "size": 4,
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "live_pe_equal": true,
+      "hex": "0000803f"
+    }
+  ],
+  "routines": [
+    {
+      "address": "00b6dae0",
+      "coverage": "complete",
+      "implementation": "set_native_raw_world_position_00b6dae0",
+      "native_exception_handler": false
+    },
+    {
+      "address": "00b71400",
+      "coverage": "complete",
+      "implementation": "set_native_raw_camera_position_00b71400",
+      "native_exception_handler": false
+    },
+    {
+      "address": "00b700e0",
+      "coverage": "complete",
+      "implementation": "set_native_camera_look_at_storage_00b700e0",
+      "native_exception_handler": false
+    },
+    {
+      "address": "00b63f10",
+      "coverage": "complete",
+      "implementation": "build_native_camera_look_at_00b63f10",
+      "native_exception_handler": false
+    }
+  ],
+  "calls": [
+    {
+      "address": "00b6db0d",
+      "native": "captured_table+vtable34",
+      "function": "00b6dae0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00b71412",
+      "native": "00b6dae0",
+      "function": "00b71400",
+      "kind": "call"
+    },
+    {
+      "address": "00b71419",
+      "native": "00b70660",
+      "function": "00b71400",
+      "kind": "call"
+    },
+    {
+      "address": "00b70102",
+      "native": "current_actual+vtable30",
+      "function": "00b700e0",
+      "kind": "indirect_call"
+    },
+    {
+      "address": "00b70141",
+      "native": "00419440",
+      "function": "00b700e0",
+      "kind": "call"
+    },
+    {
+      "address": "00b701cf",
+      "native": "00b63f10",
+      "function": "00b700e0",
+      "kind": "call"
+    },
+    {
+      "address": "00b701dc",
+      "native": "00b63b30",
+      "function": "00b700e0",
+      "kind": "call"
+    },
+    {
+      "address": "00b701e7",
+      "native": "captured_table+vtable34",
+      "function": "00b700e0",
+      "kind": "indirect_call"
+    },
+    {
+      "address": "00b63f1d",
+      "native": "00419440",
+      "function": "00b63f10",
+      "kind": "call"
+    },
+    {
+      "address": "00b63fa7",
+      "native": "00419440",
+      "function": "00b63f10",
+      "kind": "call"
+    },
+    {
+      "address": "00b64120",
+      "native": "004f9b30",
+      "function": "00b63f10",
+      "kind": "call"
+    },
+    {
+      "address": "00b64129",
+      "native": "00419440",
+      "function": "00b63f10",
+      "kind": "call"
+    },
+    {
+      "address": "00b64198",
+      "native": "004f9b30",
+      "function": "00b63f10",
+      "kind": "call"
+    },
+    {
+      "address": "00b641a1",
+      "native": "00419440",
+      "function": "00b63f10",
+      "kind": "call"
+    }
+  ],
+  "library_dependency_calls": [
+    {
+      "address": "00419491",
+      "native": "00bf7030",
+      "function": "00419440",
+      "kind": "call"
+    }
+  ],
+  "no_ghidra_function": [],
+  "corrections": [],
+  "scratch": {
+    "representation": "Disjoint immutable pointer metadata over already-live initialized volatile DWORD backing; no overlapping aggregates",
+    "builder": {
+      "local_words": 13,
+      "local_from_entry_esp": -52,
+      "argument_words": 4,
+      "arguments_from_entry_esp": 4,
+      "pop_edi_shift": 4,
+      "physical_reference_map": "local\\cc10_camera_pose_storage\\builder_frame_map.json"
+    },
+    "pose": {
+      "local_words": 39,
+      "locals_from_entry_esp": -156,
+      "reciprocal_word": 0,
+      "delta_word": 1,
+      "normalized_word": 4,
+      "view_word": 7,
+      "world_word": 23,
+      "position_argument_from_entry_esp": -172,
+      "builder_arguments_from_entry_esp": -184,
+      "builder_locals_from_entry_esp": -240,
+      "world_argument_from_entry_esp": -172
+    },
+    "position_wrapper": {
+      "base_argument_from_entry_esp": -8,
+      "direction_from_entry_esp": -32
+    },
+    "excluded": "Native saved registers/return gaps, unexposed nested length/cross/CRT private frames and dead nested scratch at later outer returns"
+  },
+  "dispatch": {
+    "required": "NativeCameraPoseDispatch exact30/34 plus inherited current world3C/40; pure integer-only x87-neutral profile resolution",
+    "real_camera_profile_00d62cf0": {
+      "30": "00b71400",
+      "34": "00b71460",
+      "3c": "00b6dbc0",
+      "40": "00b6dbe0"
+    },
+    "default_success": false,
+    "logical_hierarchy": false,
+    "persistent_frames": "Every reached invocation borrows prepared actual frames; pure metadata acquisition only",
+    "failure": "No native EH/rollback; source-interface CRT checks precede native work"
+  },
+  "crt": {
+    "reused": [
+      "camera_vector_length_00419440",
+      "camera_vector_cross_004f9b30",
+      "legacy_crt_87except_00c27489"
+    ],
+    "owning_runtime": "Same live0109DD78/E16BD0 cells and genuine thread errno accessor",
+    "inherited_limits": "Unexposed private helper frames and reserved FPIEEE-record initialization/host errno transport; no native fault/FH3/private-record identity claim"
+  },
+  "validation": {
+    "strict_win32_build": "local\\cc10_camera_pose_storage\\build.log",
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "report_call_check": "local\\cc10_camera_pose_storage\\report_calls.log",
+    "compiled_listing": "local\\cc10_camera_pose_storage\\compiled_listing.txt",
+    "compiled_checks": [
+      {
+        "check": "capture34 helper own body contains no FP/SSE operations; borrowed resolver additionally requires x87 neutrality",
+        "pass_": true
+      },
+      {
+        "check": "builder floating/SSE sequence",
+        "instructions": 259,
+        "pass_": true
+      }
+    ],
+    "source_review_sha256": "a2e1e1be07bd7494463a5390fe54a789066f18a53dbfdfc35a9a72a4ebf02b5b",
+    "focused_probe": {
+      "source": "local\\cc10_camera_pose_storage\\probe.cpp",
+      "build_log": "local\\cc10_camera_pose_storage\\probe_build.log",
+      "run_log": "local\\cc10_camera_pose_storage\\probe.log",
+      "command": "local\\cc10_camera_pose_storage\\probe.cmd",
+      "pairs": 5,
+      "result": "pass",
+      "packet_normal_bytes": 1336,
+      "copied_dependency": {
+        "address": "00b70660",
+        "bytes": 173
+      },
+      "direct_operand_relocations": [
+        {
+          "call_site": "00b71412",
+          "operand_start": "00b71413",
+          "size": 4,
+          "callee": "00b6dae0"
+        },
+        {
+          "call_site": "00b71419",
+          "operand_start": "00b7141a",
+          "size": 4,
+          "callee": "00b70660"
+        },
+        {
+          "call_site": "00b70141",
+          "operand_start": "00b70142",
+          "size": 4,
+          "callee": "00419440"
+        },
+        {
+          "call_site": "00b701cf",
+          "operand_start": "00b701d0",
+          "size": 4,
+          "callee": "00b63f10"
+        },
+        {
+          "call_site": "00b701dc",
+          "operand_start": "00b701dd",
+          "size": 4,
+          "callee": "00b63b30"
+        },
+        {
+          "call_site": "00b63f1d",
+          "operand_start": "00b63f1e",
+          "size": 4,
+          "callee": "00419440"
+        },
+        {
+          "call_site": "00b63fa7",
+          "operand_start": "00b63fa8",
+          "size": 4,
+          "callee": "00419440"
+        },
+        {
+          "call_site": "00b64120",
+          "operand_start": "00b64121",
+          "size": 4,
+          "callee": "004f9b30"
+        },
+        {
+          "call_site": "00b64129",
+          "operand_start": "00b6412a",
+          "size": 4,
+          "callee": "00419440"
+        },
+        {
+          "call_site": "00b64198",
+          "operand_start": "00b64199",
+          "size": 4,
+          "callee": "004f9b30"
+        },
+        {
+          "call_site": "00b641a1",
+          "operand_start": "00b641a2",
+          "size": 4,
+          "callee": "00419440"
+        },
+        {
+          "call_site": "00b7066c",
+          "operand_start": "00b7066d",
+          "size": 4,
+          "callee": "00b6db70"
+        },
+        {
+          "call_site": "00b7069d",
+          "operand_start": "00b7069e",
+          "size": 4,
+          "callee": "00b6db70"
+        }
+      ],
+      "data_operand_relocations": [
+        {
+          "instruction": "00b7016f",
+          "operand_start": "00b70173",
+          "size": 4,
+          "original_data": "00d7a24c"
+        },
+        {
+          "instruction": "00b64037",
+          "operand_start": "00b6403b",
+          "size": 4,
+          "original_data": "00d7a208"
+        },
+        {
+          "instruction": "00b64045",
+          "operand_start": "00b64047",
+          "size": 4,
+          "original_data": "00d62ba0"
+        },
+        {
+          "instruction": "00b64097",
+          "operand_start": "00b64099",
+          "size": 4,
+          "original_data": "00d7a3a0"
+        },
+        {
+          "instruction": "00b640c9",
+          "operand_start": "00b640cb",
+          "size": 4,
+          "original_data": "00d7a3a0"
+        },
+        {
+          "instruction": "00b640f5",
+          "operand_start": "00b640f7",
+          "size": 4,
+          "original_data": "00d7a3a0"
+        },
+        {
+          "instruction": "00b64232",
+          "operand_start": "00b64236",
+          "size": 4,
+          "original_data": "00d7a24c"
+        }
+      ],
+      "indirect_instructions_changed": false,
+      "genuine_providers": "Raw node/string pool, published world/matrix/length/cross and genuine legacy CRT/errno",
+      "profile_data_relocation": "Fixture-owned actual tables with exact genuine bridges; source resolves same current table identities to native targets",
+      "bridge_stack": "Original reached world provider switches to a separate live fixture stack while source provider writes explicit native scratch; no active host adapter stack is overwritten",
+      "cases": [
+        "Near-parallel finite builder",
+        "Output aliases actual4-word argument block; genuine CRT then declared current target/one mutation",
+        "Complete pose30/34 composition; genuine world then declared target/profile mutation",
+        "NaN pose; second genuine CRT event changes one after pose capture; builder late one verified",
+        "Actual position argument aliases source.x and is then overwritten with actual world pointer"
+      ],
+      "callback_mutation_limit": "Injected changes occur after genuine provider work and are not recovered game-provider mutation behavior",
+      "compared": "Normalized actual node/input identities, complete initialized node bytes, live builder/pose scratch, CRT/callback trace, errno, masked x87 status",
+      "fixture_correction": "Retained eye pointer normalized across distinct host frames after checking actual identity; no packet source change",
+      "excluded": [
+        "Full B71A80 construction/camera companion admission",
+        "Source throw paths",
+        "Asynchronous mutation",
+        "Unmasked native faults/FH3/private CRT record identity",
+        "Private saved/return/helper-stack aliases",
+        "Exhaustive near-parallel/geometric branch coverage"
+      ],
+      "artifacts_sha256": {
+        "local\\cc10_camera_pose_storage\\probe.cpp": "6ac9cc2c050156deaec6c5478e7aa0dc4323947f11555a5f9d1fe6b588d6aeaa",
+        "local\\cc10_camera_pose_storage\\pose_native_bytes.hpp": "c4237e99fd0863820dc95feeb5c301f294e03c57bb27c50d875aae1e5cd78b20",
+        "local\\cc10_camera_pose_storage\\world_fixture.hpp": "b671e98750e8dcf5e19f645cc2fcb6e5a527ef8e8f9670b3654540c13dbd5947",
+        "local\\cc10_camera_pose_storage\\world_native_bytes.hpp": "9426194ec0436153c9c4d6d97a4f1692d113c8bbaf6ad58b9f450282a8c56986",
+        "local\\cc10_camera_pose_storage\\probe.cmd": "961fae47901a88cce1f0fb6fcc80310e8dc03141a9b261b3dbab4bad273fb833",
+        "local\\cc10_camera_pose_storage\\camera_pose_storage_probe.exe": "3f084cc60e15e541b4340d342adb03b7d01383216b1309aa169c6ca91446918d",
+        "local\\cc10_camera_pose_storage\\probe.map": "ed5c7317fdfb11f0977a480156ba5070d719233631ab4ebc393609474327a669",
+        "local\\cc10_camera_pose_storage\\compiled_listing.txt": "99a1fba6453f24e844f838c88da1fdd36b411f98cb66cf98a1ce746b268576dc",
+        "local\\cc10_camera_pose_storage\\probe.log": "ba4b8c6b6336b611a7b9ba38d65e0f6ec9472828bcf4bcf34e4a0ccf61db139b",
+        "local\\cc10_camera_pose_storage\\probe_build.log": "975a5f9b98b2440d64e3489d6f4bc8461bd3a591195bbef154ef68a887960e27"
+      }
+    },
+    "ghidra_mutated": false,
+    "game_validated": false,
+    "prior_evidence_archives_unchanged": {
+      "local/cc10_field_values_evidence.zip": "a749dbf4656596e6a4e0c11ecb320a02bfe62dcba5fa3654c2744aa2a3022153",
+      "local/cc10_widget_transform_evidence.zip": "0d90499f71be2a3cc99ad732deaa8a71a5b55546da4dbaa7ee708c364bae45f8",
+      "local/cc10_widget_property_prefix_evidence.zip": "181ebe9358fe2d7ea6832b8051a0b3fd6f830a0360f3ef390626403ba7cbfcdf",
+      "local/cc10_gui_page_default_evidence.zip": "a224fc79f56861715059ff9717fcdad40893be00d26697a230b64ceafced5c8b",
+      "local/cc10_gui_group_pool_evidence.zip": "c7aa87452ab19400fe950d3a4c3a4a146c94715f4080f463dc2de1740df37853",
+      "local/cc10_gui_group_factory_evidence.zip": "d22d364ce3b5cf7833d8ad1998cd5c14cbf792abc34634e2df1421949e42f34f",
+      "local/cc10_gui_camera_store_map_evidence.zip": "625a751eab1f2416e7b0fa5876b921106cf0a246c0b8ca5ce97ca3e9d1586c54",
+      "local/cc10_scene_registry_storage_evidence.zip": "7219d8cbbdab960d3d2b49076f79b13854aa582faa0edb23c8a7fc286cebd6a9",
+      "local/cc10_scene_resource_storage_evidence.zip": "d989b85db55805c8b173e40c95e9322586ec4146e3ad0e504c316bf48364ed51",
+      "local/cc10_gui_scene_fields_evidence.zip": "8158076968340fd863b7e86018def420eabcae87ab0939f90085d79a1751a1af",
+      "local/cc10_scene_registry_vector_mutation_evidence.zip": "90b9d70c3b735e1274c2c0d2e333f5e88e860aee7155ea9ac6ef18e105aaed6b",
+      "local/cc10_scene_registry_registration_evidence.zip": "663ec13309abdaf992b22c321c66817230852066d76e5ccd0b663c3a783e05cf",
+      "local/cc10_node_scene_attachment_evidence.zip": "c45c8248fe0434426648b48b7c8e473f94b057f5ff1098088c34762dbc3d8f04",
+      "local/cc10_node_tree_retirement_evidence.zip": "b9720c00ba0e29c222ae2d41fb5fd2820e305039c673e61cea0ee22d3a2a2e13",
+      "local/cc10_node_base_destruction_evidence.zip": "2f4f970317032085f851a2331dd3e4bf6f02b3722e5e44a668153000e2b13dbf",
+      "local/cc10_camera_storage_lifetime_evidence.zip": "9eb1ac2cbde243e6c4d2d1d10fca263eda2e43aed2527964986875f2217c3936",
+      "local/cc10_camera_raw_world_edit_evidence.zip": "f80fd83057ef325506bbe1d0a06046e765dd8e32b2f10148c67d497af0971d9c"
+    },
+    "frozen_archive": "local/cc10_camera_pose_storage_evidence.zip",
+    "evidence_manifest": "local/cc10_camera_pose_storage/manifest.json"
+  },
+  "source_hashes": {
+    "include/bsp/native_camera_pose_storage.hpp": "006b89f7b1f3453cc0d60d95da712e3c2c297a84eaaf520666ad3808b86000b1",
+    "src/native_camera_pose_storage.cpp": "a2e1e1be07bd7494463a5390fe54a789066f18a53dbfdfc35a9a72a4ebf02b5b",
+    "docs/NATIVE_CAMERA_POSE_STORAGE_CC10.md": "d8d7f0a53b6359f03bc347c1a58ee8dbbf6c8883e9647f836273d0b9921469d3"
+  },
+  "dependency_hashes": {
+    "src/native_camera_raw_world_edit.cpp": "204f91672c37425065ed5c26f10a8c134b9a7733654d29b6f10bfbe93a6b3912",
+    "src/native_camera_matrix_math.cpp": "ca793757d2bb262ae48cf09a29be44462714da585b430db68c5b3e9262277fa0",
+    "src/system_camera_axes.cpp": "2682460d77fd18e19909c946ddd58ed60e63234e441c2f5badafc2c2815f0415",
+    "src/legacy_crt_math.cpp": "a0c52ac41eaa456839d59a94b8d07b4202f57863186ee0a323767cbe03dc65ce",
+    "src/native_node_construction.cpp": "87a73019511d3575aa0887a4964a2a8703a5248106fdcff2eddfbb424918dd35"
+  },
+  "readiness_handoff": "local\\cc10_camera_pose_readiness\\README.md",
+  "constructor_followup_handoff": "local/cc10_camera_pose_storage/constructor_handoff_after_pose.md"
+}
