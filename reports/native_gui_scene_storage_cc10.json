@@ -1,0 +1,653 @@
+{
+  "packet": "cc10_gui_scene_storage",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "baseline_main": "bb1675758a2f3a099d06dea948ef719b754fbe5f",
+  "source": "src/native_gui_scene_storage.cpp",
+  "header": "include/bsp/native_gui_scene_storage.hpp",
+  "documentation": "docs/NATIVE_GUI_SCENE_STORAGE_CC10.md",
+  "status": "complete_actual_outer24_scene_storage_strict_win32_genuine_provider_composition_checked",
+  "functions": [
+    {
+      "address": "00b724e0",
+      "end_exclusive": "00b72576",
+      "end_inclusive": "00b72575",
+      "final_instruction": "00b72573",
+      "final_instruction_length": 3,
+      "byte_span": 150,
+      "instruction_count": 52,
+      "cpp_symbol": "bsp::construct_native_gui_scene_storage_00b724e0",
+      "original_abi": "ECX actual24h, stacked raw name pointer; EAX self; RET4",
+      "coverage": "complete normal actual24h storage body; explicit source cleanup projection and genuine provider domain"
+    },
+    {
+      "address": "00b72430",
+      "end_exclusive": "00b724d6",
+      "end_inclusive": "00b724d5",
+      "final_instruction": "00b724d5",
+      "final_instruction_length": 1,
+      "byte_span": 166,
+      "instruction_count": 52,
+      "cpp_symbol": "bsp::destroy_native_gui_scene_storage_00b72430",
+      "original_abi": "ECX actual24h; RET",
+      "coverage": "complete normal actual24h storage body; explicit source cleanup projection and genuine provider domain"
+    },
+    {
+      "address": "00b72580",
+      "end_exclusive": "00b7259e",
+      "end_inclusive": "00b7259d",
+      "final_instruction": "00b7259b",
+      "final_instruction_length": 3,
+      "byte_span": 30,
+      "instruction_count": 10,
+      "cpp_symbol": "bsp::delete_native_gui_scene_storage_00b72580",
+      "original_abi": "ECX actual24h, stacked flags; EAX original identity; RET4",
+      "coverage": "complete normal actual24h storage body; explicit source cleanup projection and genuine provider domain"
+    }
+  ],
+  "compiler_boundaries": [
+    {
+      "address": "00cc1b40",
+      "end_exclusive": "00cc1b48",
+      "end_inclusive": "00cc1b47",
+      "final_instruction": "00cc1b43",
+      "final_instruction_length": 5,
+      "byte_span": 8,
+      "role": "destructor weak cleanup",
+      "coverage": "boundary-only raw evidence; mapped source cleanup schedule, no native EH transport implementation"
+    },
+    {
+      "address": "00cc1b48",
+      "end_exclusive": "00cc1b53",
+      "end_inclusive": "00cc1b52",
+      "final_instruction": "00cc1b4e",
+      "final_instruction_length": 5,
+      "byte_span": 11,
+      "role": "destructor raw name cleanup",
+      "coverage": "boundary-only raw evidence; mapped source cleanup schedule, no native EH transport implementation"
+    },
+    {
+      "address": "00cc1b53",
+      "end_exclusive": "00cc1b5d",
+      "end_inclusive": "00cc1b5c",
+      "final_instruction": "00cc1b58",
+      "final_instruction_length": 5,
+      "byte_span": 10,
+      "role": "destructor FH3 handler descriptorDFAAD4",
+      "coverage": "boundary-only raw evidence; mapped source cleanup schedule, no native EH transport implementation"
+    },
+    {
+      "address": "00cc1b60",
+      "end_exclusive": "00cc1b68",
+      "end_inclusive": "00cc1b67",
+      "final_instruction": "00cc1b63",
+      "final_instruction_length": 5,
+      "byte_span": 8,
+      "role": "constructor weak cleanup",
+      "coverage": "boundary-only raw evidence; mapped source cleanup schedule, no native EH transport implementation"
+    },
+    {
+      "address": "00cc1b68",
+      "end_exclusive": "00cc1b73",
+      "end_inclusive": "00cc1b72",
+      "final_instruction": "00cc1b6e",
+      "final_instruction_length": 5,
+      "byte_span": 11,
+      "role": "constructor raw name cleanup",
+      "coverage": "boundary-only raw evidence; mapped source cleanup schedule, no native EH transport implementation"
+    },
+    {
+      "address": "00cc1b73",
+      "end_exclusive": "00cc1b7d",
+      "end_inclusive": "00cc1b7c",
+      "final_instruction": "00cc1b78",
+      "final_instruction_length": 5,
+      "byte_span": 10,
+      "role": "constructor FH3 handler descriptorDFAB08",
+      "coverage": "boundary-only raw evidence; mapped source cleanup schedule, no native EH transport implementation"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00cc1b53",
+      "end_exclusive": "00cc1b5d",
+      "end_inclusive": "00cc1b5c",
+      "final_instruction": "00cc1b58",
+      "final_instruction_length": 5,
+      "byte_span": 10,
+      "role": "destructor FH3 handler descriptorDFAAD4",
+      "coverage": "boundary-only raw evidence; mapped source cleanup schedule, no native EH transport implementation"
+    },
+    {
+      "address": "00cc1b73",
+      "end_exclusive": "00cc1b7d",
+      "end_inclusive": "00cc1b7c",
+      "final_instruction": "00cc1b78",
+      "final_instruction_length": 5,
+      "byte_span": 10,
+      "role": "constructor FH3 handler descriptorDFAB08",
+      "coverage": "boundary-only raw evidence; mapped source cleanup schedule, no native EH transport implementation"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00b724e0",
+      "address": "00b72500",
+      "native": "00925490",
+      "contract": "genuine actual weak base before current name-argument capture"
+    },
+    {
+      "function": "00b724e0",
+      "address": "00b72536",
+      "native": "0041dd40",
+      "contract": "raw header resize with captured source current length and preserve1"
+    },
+    {
+      "function": "00b724e0",
+      "address": "00b7254a",
+      "native": "00bf7680",
+      "contract": "current destination length/current source data/current destination data; cdecl three args ADDESP0C"
+    },
+    {
+      "function": "00b72430",
+      "address": "00b72467",
+      "native": "current_00ce2220_import",
+      "contract": "captured actualresource+4, current imported decrement"
+    },
+    {
+      "function": "00b72430",
+      "address": "00b72477",
+      "native": "captured_resource_profile+vtable00",
+      "contract": "only observedzero; same actual+4 canonical current0, before clear1C"
+    },
+    {
+      "function": "00b72430",
+      "address": "00b72489",
+      "native": "00b6dfa0",
+      "contract": "current actual root; same owners tree context, persistent fresh acquisition"
+    },
+    {
+      "function": "00b72430",
+      "address": "00b724aa",
+      "native": "00419cc0",
+      "contract": "captured name data and length+1 survive getter"
+    },
+    {
+      "function": "00b72430",
+      "address": "00b724b1",
+      "native": "00bd1510",
+      "contract": "actual pool, captured data/size, unused1; RET0C"
+    },
+    {
+      "function": "00b72430",
+      "address": "00b724c0",
+      "native": "00925540",
+      "contract": "same actual weak prefix after weak cleanup consumed"
+    },
+    {
+      "function": "00b72580",
+      "address": "00b72583",
+      "native": "00b72430",
+      "contract": "complete actual payload destruction before flags reread"
+    },
+    {
+      "function": "00b72580",
+      "address": "00b72590",
+      "native": "00bf65ac",
+      "contract": "current lowbyte flags bit0 -> genuine shared CRT free; no later owner read"
+    },
+    {
+      "function": "00cc1b40",
+      "address": "00cc1b43",
+      "native": "00925540",
+      "kind": "tail_jump",
+      "actual_transfer": "JMP",
+      "contract": "destructor weak cleanup"
+    },
+    {
+      "function": "00cc1b48",
+      "address": "00cc1b4e",
+      "native": "0041dd20",
+      "kind": "tail_jump",
+      "actual_transfer": "JMP",
+      "contract": "destructor raw name cleanup"
+    },
+    {
+      "function": "00cc1b53",
+      "address": "00cc1b58",
+      "native": "00bf6b43",
+      "kind": "no_ghidra_function",
+      "actual_transfer": "JMP",
+      "contract": "destructor FH3 handler descriptorDFAAD4"
+    },
+    {
+      "function": "00cc1b60",
+      "address": "00cc1b63",
+      "native": "00925540",
+      "kind": "tail_jump",
+      "actual_transfer": "JMP",
+      "contract": "constructor weak cleanup"
+    },
+    {
+      "function": "00cc1b68",
+      "address": "00cc1b6e",
+      "native": "0041dd20",
+      "kind": "tail_jump",
+      "actual_transfer": "JMP",
+      "contract": "constructor raw name cleanup"
+    },
+    {
+      "function": "00cc1b73",
+      "address": "00cc1b78",
+      "native": "00bf6b43",
+      "kind": "no_ghidra_function",
+      "actual_transfer": "JMP",
+      "contract": "constructor FH3 handler descriptorDFAB08"
+    }
+  ],
+  "prior_reconstruction_records": [
+    {
+      "address": "00b72430",
+      "name": "NativeGuiSceneOwner::release_zero_references",
+      "source": "src/gui_camera_store_owner.cpp",
+      "status": "existing_typed_owner_raw_name_domain_integrated_and_bounded_native_differential_checked",
+      "coverage": "Raw name/weak cleanup executed for empty/short/large names with null roots/lighting. Root/lighting and native FH3/SEH remain unproved.",
+      "abi_compatible": false,
+      "abi": "ECX scene/RET; source nonthrowing zero callback composes destructor and physical/companion retirement.",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Existing lighting release/root unlink schedule; name destruction now uses SAME configured raw or semantic pool, then existing weakbase. Root/lighting are host companion fields. ECX scene/RET; source nonthrowing zero callback composes destructor and physical/companion retirement. Raw name/weak cleanup executed for empty/short/large names with null roots/lighting. Root/lighting and native FH3/SEH remain unproved. R83 strict Win32/three CTests pass;874 selected live/PE bytes and16 direct calls checked. Four realD3D original/source format pairs, six HRESULT fixtures and six scene cases with names0/12/513 passed. Real raw-name/weak handle lifecycle, shared raw-manager mutex/string pool drain and finalAPI0. Scene root/lighting, nativeEH, process-static weak-pool startup, fullB4F560 and gameplay unproved. docs/NATIVE_DISTORTION_PROVIDERS_R83.md; reports/native_distortion_providers_r83.json.",
+      "native_end_exclusive": "00b724d6",
+      "original_abi": "ECX scene/RET; source nonthrowing zero callback composes destructor and physical/companion retirement.",
+      "game_validated": false,
+      "remaining": "Scene root/lighting paths and native pointer ABI; Native exceptions and raw getter failures during cleanup; Native weak getter/destructor differential behavior and concurrent publication replacement; Process-static weak-pool startup/exit and full B4F560 initialization; R82 early-failure fields, B107F0 application resource startup and gameplay",
+      "kind": "function"
+    },
+    {
+      "address": "00b724e0",
+      "name": "allocate_native_gui_scene_00b724e0",
+      "source": "src/gui_camera_store_owner.cpp",
+      "status": "existing_typed_owner_raw_name_domain_integrated_and_bounded_native_differential_checked",
+      "coverage": "Existing complete normal constructor extended to raw names; six original/source cases. Native exceptions and arbitrary callbacks unproved.",
+      "abi_compatible": false,
+      "abi": "ECX actual24h scene/stack NativeString pointer/EAX scene/RET4; source factory adds allocation and canonical companion.",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Same weakbase/profile/root/name/lighting/scalar sequence. Raw runtime name uses exact self guard, resize-preserve, then current header reload/copy; cleanup uses same domain. Semantic branch retained. ECX actual24h scene/stack NativeString pointer/EAX scene/RET4; source factory adds allocation and canonical companion. Existing complete normal constructor extended to raw names; six original/source cases. Native exceptions and arbitrary callbacks unproved. R83 strict Win32/three CTests pass;874 selected live/PE bytes and16 direct calls checked. Four realD3D original/source format pairs, six HRESULT fixtures and six scene cases with names0/12/513 passed. Real raw-name/weak handle lifecycle, shared raw-manager mutex/string pool drain and finalAPI0. Scene root/lighting, nativeEH, process-static weak-pool startup, fullB4F560 and gameplay unproved. docs/NATIVE_DISTORTION_PROVIDERS_R83.md; reports/native_distortion_providers_r83.json.",
+      "native_end_exclusive": "00b72576",
+      "original_abi": "ECX actual24h scene/stack NativeString pointer/EAX scene/RET4; source factory adds allocation and canonical companion.",
+      "game_validated": false,
+      "remaining": "Scene root/lighting paths and native pointer ABI; Native exceptions and raw getter failures during cleanup; Native weak getter/destructor differential behavior and concurrent publication replacement; Process-static weak-pool startup/exit and full B4F560 initialization; R82 early-failure fields, B107F0 application resource startup and gameplay",
+      "kind": "function"
+    },
+    {
+      "address": "00b724e0",
+      "name": "construct_native_gui_scene_00b724e0",
+      "source": "src/gui_camera_store_owner.cpp",
+      "status": "existing_complete_normal_body_exposed_in_place_strict_build_and_bounded_native_runtime_checked",
+      "coverage": "Existing150-byte normal scene constructor exposed over caller-owned raw24h; six original/source in-place scene/lifetime cases, null roots/lighting. Native exception equivalence unproved.",
+      "abi_compatible": false,
+      "abi": "ECX raw24h/stack NativeString pointer/EAX original/RET4; source returns its canonical companion and takes environment.",
+      "original_abi": "ECX raw24h/stack NativeString pointer/EAX original/RET4; source returns its canonical companion and takes environment.",
+      "native_end_exclusive": "00b72576",
+      "game_validated": false,
+      "remaining": "Full B4F560 post20/shader/material registration/camera/viewport-tail execution; Native entry ABI/FH3/SEH/private stack aliases and secondary cleanup failures; Early-false caller release with preimage34/38/3C; Process-static weak-pool startup and populated scene root/lighting behavior; B107F0 full resource startup/application/gameplay",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Same weakbase/profile/root/name/lighting/scalar sequence using current configured name domain. In-place entry never frees caller raw storage on construction failure; allocating wrapper delegates and owns that free. Companion heap allocation precedes weak-base entry. ECX raw24h/stack NativeString pointer/EAX original/RET4; source returns its canonical companion and takes environment. Existing150-byte normal scene constructor exposed over caller-owned raw24h; six original/source in-place scene/lifetime cases, null roots/lighting. Native exception equivalence unproved. R84 strict Win32/three CTests pass;3740 selected live/PE bytes and104 direct calls checked. Twelve original/source582-byte prefix cases and192 x87 pairs passed, real holders and finaldevice/API0. Six separate original/source in-place scene cases passed with retained weak handles. FullB4F560/posts/shader registration/camera tail/nativeEH/application/gameplay unproved. docs/NATIVE_DISTORTION_INITIALIZER_R84.md; reports/native_distortion_initializer_r84.json.",
+      "kind": "function"
+    },
+    {
+      "address": "00b72580",
+      "name": "NativeGuiSceneOwner::release_zero_references",
+      "source": "src/gui_camera_store_owner.cpp",
+      "status": "existing_flag1_scene_terminal_raw_name_domain_integrated_and_runtime_checked",
+      "coverage": "Flag1 composition only. Copied original scalar executes flags1; no source full scalar ABI or flags0 claim.",
+      "abi_compatible": false,
+      "abi": "ECX scene/stack flags/EAX original/RET4; source only composes flags1 zero-terminal path.",
+      "evidence": "Descriptive hypothesis, not a recovered symbol. Existing flag1 scene destructor/free terminal now accepts raw-name runtime; no flags0 source API added. Current stored native body has no flow gap. ECX scene/stack flags/EAX original/RET4; source only composes flags1 zero-terminal path. Flag1 composition only. Copied original scalar executes flags1; no source full scalar ABI or flags0 claim. R83 strict Win32/three CTests pass;874 selected live/PE bytes and16 direct calls checked. Four realD3D original/source format pairs, six HRESULT fixtures and six scene cases with names0/12/513 passed. Real raw-name/weak handle lifecycle, shared raw-manager mutex/string pool drain and finalAPI0. Scene root/lighting, nativeEH, process-static weak-pool startup, fullB4F560 and gameplay unproved. docs/NATIVE_DISTORTION_PROVIDERS_R83.md; reports/native_distortion_providers_r83.json.",
+      "native_end_exclusive": "00b7259e",
+      "original_abi": "ECX scene/stack flags/EAX original/RET4; source only composes flags1 zero-terminal path.",
+      "game_validated": false,
+      "remaining": "Scene root/lighting paths and native pointer ABI; Native exceptions and raw getter failures during cleanup; Native weak getter/destructor differential behavior and concurrent publication replacement; Process-static weak-pool startup/exit and full B4F560 initialization; R82 early-failure fields, B107F0 application resource startup and gameplay",
+      "kind": "fragment"
+    }
+  ],
+  "context": {
+    "layout": "actual24h profile00/atomic04/weak08/root0C/name10,14/scalar18/actual3Chresource1C/word20",
+    "storage_lifetime": "placement actual-only standard-layout/trivially-destructible storage; atomic4 count restored by relaxedstore, other20B copied; complete preimage before first weak call, no owning NativeString/logical fields",
+    "name": "CURRENT incoming cell captured after weak and header clears; source captured across resize, fresh length/destination length/source data/destination data; MOVSS liveone last",
+    "destructor": "capture1C/current decrement/observedzero canonicalcurrent0/clear1C afterreturn; CURRENT root loop then captured name pointer/length+1 across actual pool getter; no root read after retirement",
+    "root_acquisitions": "prepared persistent fresh array with used0; same registry and genuine current18/0 tree bindings; capacity exhaustion is host diagnostic with prior mutations retained",
+    "scalar": "CURRENT flags lowbyte after payload destruction; genuine existing singleton_lifetime_free; no owner reads afterfree",
+    "canonical": "separate admission, no native stores/retain/count; SAMEactual+4, duplicate refusal; zero current0BD30E0 then fresh current4B72580 flags1; separately explicit nonzero flags0/1; exactly-once metadata unbind, no dead-storage reads",
+    "failure": "constructor never frees destination; destructor cleanup schedule from real states; canonical source exception retirement is metadata only, backing/credits/acquisitions retained for disposition; noexcept canonical terminal terminates on escaped exception",
+    "eh": [
+      {
+        "descriptor": "00dfaad4",
+        "magic": "19930522",
+        "max_state": 2,
+        "map": "00dfaac4",
+        "entries": [
+          [
+            -1,
+            "00cc1b40"
+          ],
+          [
+            0,
+            "00cc1b48"
+          ]
+        ]
+      },
+      {
+        "descriptor": "00dfab08",
+        "magic": "19930522",
+        "max_state": 2,
+        "map": "00dfaaf8",
+        "entries": [
+          [
+            -1,
+            "00cc1b60"
+          ],
+          [
+            0,
+            "00cc1b68"
+          ]
+        ]
+      }
+    ]
+  },
+  "verification": {
+    "strict_build": "./scripts/build.ps1",
+    "ctests": "2/2 reconstructed_math,tool_tests",
+    "byte_evidence": [
+      {
+        "address": "00b724e0",
+        "length": 150,
+        "end_exclusive": "00b72576",
+        "sha256": "33b5c181c44dc6490fe80b44a02003bfeffe05a7d7684b9b71007e090e912427",
+        "live_equals_installed": true
+      },
+      {
+        "address": "00b72430",
+        "length": 166,
+        "end_exclusive": "00b724d6",
+        "sha256": "aac37afaa374e093fd9af0d2e6e86af80a426c106d856fcab6ec244ba862c657",
+        "live_equals_installed": true
+      },
+      {
+        "address": "00b72580",
+        "length": 30,
+        "end_exclusive": "00b7259e",
+        "sha256": "1510921a2036e5137f6d1244f6ad3917495670385637c489854378fe8e10b462",
+        "live_equals_installed": true
+      },
+      {
+        "address": "00cc1b40",
+        "length": 8,
+        "end_exclusive": "00cc1b48",
+        "sha256": "bf319bf271fcc86fad53209cfe013efb7710491138450b5134d7ca163e729228",
+        "live_equals_installed": true
+      },
+      {
+        "address": "00cc1b48",
+        "length": 11,
+        "end_exclusive": "00cc1b53",
+        "sha256": "3903d8042c4989a7b30a4673bf53398ee87d39f8a59788bd07a3569c37cd5462",
+        "live_equals_installed": true
+      },
+      {
+        "address": "00cc1b53",
+        "length": 10,
+        "end_exclusive": "00cc1b5d",
+        "sha256": "85292748e1cb5caac3d7a38d14353ca5fc2fc3bd2fc732bb6a8bbffcc5cacf39",
+        "live_equals_installed": true
+      },
+      {
+        "address": "00cc1b60",
+        "length": 8,
+        "end_exclusive": "00cc1b68",
+        "sha256": "2c6dd4336ae701e0e87dcf3d95c5b914a8ed7599ec59dddd96b4b91ec5bfd9ca",
+        "live_equals_installed": true
+      },
+      {
+        "address": "00cc1b68",
+        "length": 11,
+        "end_exclusive": "00cc1b73",
+        "sha256": "8e804da312bffd294b1193af76a9c0887af15a3283bc20b0f17be5dd2ba38a14",
+        "live_equals_installed": true
+      },
+      {
+        "address": "00cc1b73",
+        "length": 10,
+        "end_exclusive": "00cc1b7d",
+        "sha256": "f0956f8fd25c214fa0d1cd475f4c610826182aad3002736bed817e5f9e8f80a9",
+        "live_equals_installed": true
+      },
+      {
+        "address": "00dfaac4",
+        "length": 100,
+        "end_exclusive": "00dfab28",
+        "sha256": "f6d72b2d6ce8f818641e606a6449db14e0f49919bb248dae09ac8225c0aedec5",
+        "live_equals_installed": true
+      }
+    ],
+    "call_verifier": "15 rows checked,0 failed:13 direct/tail instruction rows and2 raw undefined-handler callee-only rows;2 indirect import/current0 rows retained, assembly inspected",
+    "probe": {
+      "source": "local/output/cc10_gui_scene_storage_probe.cpp",
+      "command": "cl /nologo /MD /EHsc /std:c++20 /O2 /Gy /W4 /WX /fp:strict /I include /I local\\output /Fo:local\\output\\ /Fe:local\\output\\cc10_gui_scene_storage_probe.exe local\\output\\cc10_gui_scene_storage_probe.cpp build\\win32\\Release\\bsp_core.lib build\\win32\\Release\\bsp_lua511.lib build\\win32\\Release\\bsp_zlib121.lib /link /OPT:REF /MANIFEST:EMBED user32.lib d3d9.lib advapi32.lib shell32.lib",
+      "assertions": "NDEBUG not defined; #ifdef NDEBUG compile-time rejection; no /DNDEBUG",
+      "exit_code": 0,
+      "comparison_pairs": 2,
+      "source_only_checks": [
+        "byte-unchanged canonical admission/duplicate refusal",
+        "actual zero -> current0/current4 flags1, no extra count",
+        "explicit positive-count flags0 payload destruction and metadata retirement",
+        "prepared acquisition capacity failure: prior real resource retirement persists, raw name/weak cleanup runs, canonical metadata retires without successful completion; live root/raw backing retained and explicitly disposed"
+      ],
+      "checks": [
+        "normalized full24h constructor bytes, pooled MARS name including terminator, onecell alias current owner name length",
+        "self-name branch and MOVSS raw sNaN bits7F800001",
+        "genuine weak pool/retained external weak handle survives owner retirement with nulltarget/count1",
+        "actual3Ch resource retained by genuine B723F0; creator transferred via real decrement; real resource/ambient canonical zero cleanup",
+        "physical point-light pool/companion, actualouter identity in A4 and genuine B6DFA0/B6F310 drain to terminal in scene-null/cleared-root domain",
+        "explicit outercount2 flags0; genuine import callback writes CURRENT scalar flags from0 to1 before finalread/free"
+      ],
+      "body_extent_vs_execution": {
+        "live_pe_body_bytes": 346,
+        "replaced_dispatch_range": "[00b72471,00b72479)",
+        "replaced_byte_count": 8,
+        "original_instructions": "MOV EDX,[EDI]; MOV EAX,[EDX]; MOV ECX,EDI; CALL EAX",
+        "replacement": "MOV ECX,EDI; CALL genuine canonical resource bridge; NOP",
+        "reason": "D63168 lies in reconstructed executable; occupied mapping left untouched",
+        "bridge_checks": "captured EDI identity -> existing same-registry canonical reference; actual+4 equality and observedzero; real canonical release validates current resource profile/current0 and fresh current4",
+        "independent_native_dispatch_comparison": false,
+        "other_relocations": "direct calls, current imported decrement operand and live-one operand bound to shared genuine providers; remaining instruction stream retained"
+      },
+      "shared_boundary": "weak/name pool/raw resource/ambient/tree/point terminal bodies are shared genuine source providers, not independently compared original descendants; exact8B current0 dispatch site replaced by declared same-count bridge",
+      "not_tested": "original nested bodies, original FH3/SEH exception transport/private stack/register ABI, full attached camera/light terminal graph, application/AC59A0/gameplay"
+    }
+  },
+  "limits": [
+    "Actual24h backing/contexts/frames/Acquired must remain stable and quiescent through destruction/retirement; no legacy owner conversion.",
+    "Nonempty roots need SAME actual registry and genuine reached current18/0 providers; present real point terminal probe admits scene-null/cleared-root only.",
+    "Source cleanup catches map actual native states but do not reproduce private FH3/SEH or CRT faults.",
+    "Companion exception retirement does not assert native destruction/free; persistent diagnostics and remaining credits require disposition.",
+    "No application binding, automatic admission/retain, full terminal graph, native ABI or AC59A0 admission."
+  ],
+  "ghidra_mutations": false,
+  "abi_compatible": false,
+  "application_bound": false,
+  "game_validated": false,
+  "frozen_evidence": [
+    {
+      "path": "local/output/cc10_gui_scene_storage_build.log",
+      "bytes": 2721,
+      "sha256": "52415224b86d8febde5f03d1961d1fea3731719bc73682a5f2b5657ba47e532a"
+    },
+    {
+      "path": "local/output/cc10_gui_scene_storage_bytes.hpp",
+      "bytes": 1869,
+      "sha256": "28a5ae25675fb06af10bb8839dc0b165194553596e8d148794fd1fcf37553d7f"
+    },
+    {
+      "path": "local/output/cc10_gui_scene_storage_calls.log",
+      "bytes": 505,
+      "sha256": "b9049f5c7dbe9d09a03a55047a6d6760094597d5c7b3b54af36e7c701a2ee9cc"
+    },
+    {
+      "path": "local/output/cc10_gui_scene_storage_capture.py",
+      "bytes": 2389,
+      "sha256": "18a3a9781b04b3e39275cb002e4ce0cfe571e16efe55feb616a5811b60db49be"
+    },
+    {
+      "path": "local/output/cc10_gui_scene_storage_ledger.py",
+      "bytes": 2819,
+      "sha256": "e6adaba0446f2d1a2fac80456bbece100eadec23fa6abbde9d46fc0909a2b411"
+    },
+    {
+      "path": "local/output/cc10_gui_scene_storage_probe.cmd",
+      "bytes": 610,
+      "sha256": "9688940dd5e3678066a68b1513f8a7a50379c5d09e6dd1823d2efab3a6c16419"
+    },
+    {
+      "path": "local/output/cc10_gui_scene_storage_probe.cpp",
+      "bytes": 18865,
+      "sha256": "690441e4438c9f70c4d792ea569e4cc22567c1c23305f6c218508bdcb59b1019"
+    },
+    {
+      "path": "local/output/cc10_gui_scene_storage_probe.log",
+      "bytes": 295,
+      "sha256": "a3194e102433cc84546b7c6d4b251272404226cc14f0fea0ae6a86538ff4c4fb"
+    },
+    {
+      "path": "local/output/cc10_gui_scene_storage_profiles.hpp",
+      "bytes": 746,
+      "sha256": "50cee1a96edf0f1dbbb3e3688b73052baaeafd1502f0da8559c9231654c31619"
+    },
+    {
+      "path": "local/output/cc10_gui_scene_storage_report.py",
+      "bytes": 10089,
+      "sha256": "1407a4a64f38a08013a465a1c3484b866efd03ba939f5e90c0ef956a0cbc1464"
+    },
+    {
+      "path": "local/output/cc10_gui_scene_storage/00b72430_assembly.txt",
+      "bytes": 2421,
+      "sha256": "250e262db2d262da2a7bacfe3afbd2c108950da2271a03ea1c122e506e75ff57"
+    },
+    {
+      "path": "local/output/cc10_gui_scene_storage/00b72430_bytes.txt",
+      "bytes": 807,
+      "sha256": "668328dfcb536bc58732916daa03732ac1c722f777a6ea20034d48ccca9e691d"
+    },
+    {
+      "path": "local/output/cc10_gui_scene_storage/00b72430_proto.txt",
+      "bytes": 406,
+      "sha256": "8830fef0d931857aaf507a26a827ede4b37e3e2e9ca0062309778ea7c1d495d0"
+    },
+    {
+      "path": "local/output/cc10_gui_scene_storage/00b724e0_assembly.txt",
+      "bytes": 2618,
+      "sha256": "70dc49f95ae74b414416ad3fa8a0db04331aea9cdc25f4dca32752d58ec2a27e"
+    },
+    {
+      "path": "local/output/cc10_gui_scene_storage/00b724e0_bytes.txt",
+      "bytes": 730,
+      "sha256": "43e9bbe992df3b5b66270a0de33a62fe23e5d6b4e6ba39917c3c02dabae0017f"
+    },
+    {
+      "path": "local/output/cc10_gui_scene_storage/00b724e0_proto.txt",
+      "bytes": 408,
+      "sha256": "a44509dfae731bc9d15964f326057c78220cecfe92ffd17ddd5b2aff2f1c09cb"
+    },
+    {
+      "path": "local/output/cc10_gui_scene_storage/00b72580_assembly.txt",
+      "bytes": 1216,
+      "sha256": "244eabcf35d7234b1ee1dc70d9b3adfb24d07f9894b90f8f8aaaedd3b6d703fa"
+    },
+    {
+      "path": "local/output/cc10_gui_scene_storage/00b72580_bytes.txt",
+      "bytes": 146,
+      "sha256": "467851e4225768c654e0b4aec3fee3d976e28c6664ede3c59908c1b133a9aca8"
+    },
+    {
+      "path": "local/output/cc10_gui_scene_storage/00b72580_proto.txt",
+      "bytes": 429,
+      "sha256": "95322a9b77ae5a94b4f50971bafb9a9fb3381895ac9ff6e2880e0aec67a95f92"
+    },
+    {
+      "path": "local/output/cc10_gui_scene_storage/00cc1b40_assembly.txt",
+      "bytes": 140,
+      "sha256": "380c5541951cbfeb5296e3c42a3285559a99776c2db2a19f2243e079720063bd"
+    },
+    {
+      "path": "local/output/cc10_gui_scene_storage/00cc1b40_bytes.txt",
+      "bytes": 45,
+      "sha256": "4a75e0a3750ad4682d5e42a40752e48167d41bb9d1c329b8a2664645e1e7ff57"
+    },
+    {
+      "path": "local/output/cc10_gui_scene_storage/00cc1b48_assembly.txt",
+      "bytes": 165,
+      "sha256": "98ffd52f60d9479f6d861352e80e99c7532ee91a54c676d8a08e9733af000a16"
+    },
+    {
+      "path": "local/output/cc10_gui_scene_storage/00cc1b48_bytes.txt",
+      "bytes": 57,
+      "sha256": "d606946134dfa161449025961094bb5f7d7279654d2c0c3c9b5891834f264bc0"
+    },
+    {
+      "path": "local/output/cc10_gui_scene_storage/00cc1b53_assembly.txt",
+      "bytes": 110,
+      "sha256": "6698d9331182a3e00ab587c1b30e688ff763deea1c66c57ebc8221fa7422c38c"
+    },
+    {
+      "path": "local/output/cc10_gui_scene_storage/00cc1b53_bytes.txt",
+      "bytes": 53,
+      "sha256": "8909fc5a59d5dffe3ee9548ee834c024da601f25c72db53175a791e3e82290c9"
+    },
+    {
+      "path": "local/output/cc10_gui_scene_storage/00cc1b60_assembly.txt",
+      "bytes": 140,
+      "sha256": "1d0e4a02e43eaf48f3133a79083cfb1a475dcebeb96c5f093de4a647e5fe2c48"
+    },
+    {
+      "path": "local/output/cc10_gui_scene_storage/00cc1b60_bytes.txt",
+      "bytes": 45,
+      "sha256": "23f1414cc53e942acef928b245ebd235d105293b3fb6dab5c032d472b4bb8d0d"
+    },
+    {
+      "path": "local/output/cc10_gui_scene_storage/00cc1b68_assembly.txt",
+      "bytes": 165,
+      "sha256": "017e792b754150e59e380c2fcc0991c78e836f4cbf3d6f8109631b55300d6a4c"
+    },
+    {
+      "path": "local/output/cc10_gui_scene_storage/00cc1b68_bytes.txt",
+      "bytes": 57,
+      "sha256": "0f305ee88cf1a281ea58f69489fe33faadd78b92d30fe2a2d49ab6f933efe28c"
+    },
+    {
+      "path": "local/output/cc10_gui_scene_storage/00cc1b73_assembly.txt",
+      "bytes": 110,
+      "sha256": "4a1bc1ca66b2af1a4030f34f136d703831be505decf4ddce0edcc2a80e015f0c"
+    },
+    {
+      "path": "local/output/cc10_gui_scene_storage/00cc1b73_bytes.txt",
+      "bytes": 53,
+      "sha256": "423ab6c65d9fbdeebed01019bba5eb7b037d41560bc78e88c70a6242b0d050ec"
+    },
+    {
+      "path": "local/output/cc10_gui_scene_storage/00dfaac4_bytes.txt",
+      "bytes": 491,
+      "sha256": "73d452c4b6909f97160b62aaa889ab9e1668a5a4288aa1ad59aa867e57c24fa6"
+    },
+    {
+      "path": "local/output/cc10_gui_scene_storage/byte_evidence.json",
+      "bytes": 2106,
+      "sha256": "e51ee5304786685563ad3db743a73a2db882ba9e16e15615167099b5f42b14cb"
+    },
+    {
+      "path": "local/output/cc10_gui_scene_storage/eh_protos.txt",
+      "bytes": 1764,
+      "sha256": "f3bd8e4a8f64ec90f3530c378b79dcde825c0a98ec819aadb999840b04adf061"
+    },
+    {
+      "path": "local/output/cc10_gui_scene_storage/program.txt",
+      "bytes": 40,
+      "sha256": "bc2184dc519354322297804695d599ade62ebe5b55a54ab2011cb0bdf82ec6a0"
+    }
+  ]
+}
