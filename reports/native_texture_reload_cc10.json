@@ -1,0 +1,404 @@
+{
+  "schema_version": 1,
+  "packet": "cc10_texture_reload",
+  "status": "complete_source_domain_win32_build_and_diagnostic_helper_differential_checked",
+  "addresses": [
+    "00b3fa90",
+    "00b3f5d0"
+  ],
+  "source": "src/native_texture_reload.cpp",
+  "header": "include/bsp/native_texture_reload.hpp",
+  "documentation": "docs/NATIVE_TEXTURE_RELOAD_CC10.md",
+  "original_abi_compatible": false,
+  "game_validated": false,
+  "native_differential_fixture": false,
+  "routines": [
+    {
+      "address": "00b3fa90",
+      "native_end_inclusive": "00b3fd7a",
+      "native_end_exclusive": "00b3fd7b",
+      "native_bytes": 747,
+      "coverage": "complete_source_control_flow_in_declared_provider_and_output_preimage_domain",
+      "cpp_symbol": "reload_native_texture_00b3fa90",
+      "original_abi": "ECX actual owner; RET; no semantic result",
+      "proposed_name": "BSP_D3D9Texture_ReloadFromCurrentVfs"
+    },
+    {
+      "address": "00b3f5d0",
+      "native_end_inclusive": "00b3f620",
+      "native_end_exclusive": "00b3f621",
+      "native_bytes": 81,
+      "coverage": "complete",
+      "cpp_symbol": "construct_native_texture_reload_diagnostic_00b3f5d0",
+      "original_abi": "ECX output; stack pointer-to-COM and name; EAX output; RET8",
+      "proposed_name": "BSP_TextureReloadDiagnostic_Construct"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00b3fac1",
+      "native": "0109ceec+vtable04",
+      "function": "00b3fa90",
+      "contract": "current manager open(name,2)"
+    },
+    {
+      "address": "00b3facc",
+      "native": "source+vtable18",
+      "function": "00b3fa90",
+      "contract": "current is-open"
+    },
+    {
+      "address": "00b3fadb",
+      "native": "source+vtable04",
+      "function": "00b3fa90",
+      "contract": "closed source direct deleting(flags=1), no decrement"
+    },
+    {
+      "address": "00b3faf0",
+      "native": "00bef750",
+      "function": "00b3fa90",
+      "contract": "convert source to temporary actual memory stream"
+    },
+    {
+      "address": "00b3fafb",
+      "native": "IAT00ce2220",
+      "function": "00b3fa90",
+      "contract": "InterlockedDecrement(source+4)"
+    },
+    {
+      "address": "00b3fb0b",
+      "native": "source+vtable00",
+      "function": "00b3fa90",
+      "contract": "zero-reference terminal"
+    },
+    {
+      "address": "00b3fb1b",
+      "native": "00b33e40",
+      "function": "00b3fa90",
+      "contract": "get original owner+8 name"
+    },
+    {
+      "address": "00b3fb25",
+      "native": "00b32250",
+      "function": "00b3fa90",
+      "contract": "captured renderer current slot6C; indirect resolved D5F0A8"
+    },
+    {
+      "address": "00b3fb2e",
+      "native": "00b27d40",
+      "function": "00b3fa90",
+      "contract": "fresh renderer unregister original raw owner"
+    },
+    {
+      "address": "00b3fb33",
+      "native": "00b3e730",
+      "function": "00b3fa90",
+      "contract": "actual shared support singleton"
+    },
+    {
+      "address": "00b3fb44",
+      "native": "00bef600",
+      "function": "00b3fa90",
+      "contract": "current memory slot30; low EAX"
+    },
+    {
+      "address": "00b3fb49",
+      "native": "00bef610",
+      "function": "00b3fa90",
+      "contract": "current memory backing data"
+    },
+    {
+      "address": "00b3fb4f",
+      "native": "00c2dfec",
+      "function": "00b3fa90",
+      "contract": "D3DX image info, ignored HRESULT"
+    },
+    {
+      "address": "00b3fba5",
+      "native": "00bf9440",
+      "function": "00b3fa90",
+      "contract": "detail.dds substring; ADD ESP,8 at FBAA"
+    },
+    {
+      "address": "00b3fbca",
+      "native": "00bf9440",
+      "function": "00b3fa90",
+      "contract": "noseart substring; ADD ESP,8 at FBCF"
+    },
+    {
+      "address": "00b3fbeb",
+      "native": "00bf9440",
+      "function": "00b3fa90",
+      "contract": "GUI units substring; ADD ESP,8 at FBF0"
+    },
+    {
+      "address": "00b3fc64",
+      "native": "COM+vtable08",
+      "function": "00b3fa90",
+      "contract": "captured current texture Release"
+    },
+    {
+      "address": "00b3fc72",
+      "native": "00b1fef0",
+      "function": "00b3fa90",
+      "contract": "fresh renderer borrowed device"
+    },
+    {
+      "address": "00b3fca3",
+      "native": "00bef600",
+      "function": "00b3fa90",
+      "contract": "current memory slot30 again"
+    },
+    {
+      "address": "00b3fca8",
+      "native": "00bef610",
+      "function": "00b3fa90",
+      "contract": "current memory data again"
+    },
+    {
+      "address": "00b3fcaf",
+      "native": "00c2dfe6",
+      "function": "00b3fa90",
+      "contract": "15 argument stdcall create; actual output owner+10"
+    },
+    {
+      "address": "00b3fcc1",
+      "native": "00bef600",
+      "function": "00b3fa90",
+      "contract": "nonnull output fresh current memory size"
+    },
+    {
+      "address": "00b3fcce",
+      "native": "COM+vtable34",
+      "function": "00b3fa90",
+      "contract": "current COM level count"
+    },
+    {
+      "address": "00b3fce1",
+      "native": "COM+vtable44",
+      "function": "00b3fa90",
+      "contract": "fresh current COM GetLevelDesc(0), ignored HRESULT"
+    },
+    {
+      "address": "00b3fd0d",
+      "native": "IAT00ce2220",
+      "function": "00b3fa90",
+      "contract": "InterlockedDecrement(memory+4)"
+    },
+    {
+      "address": "00b3fd1d",
+      "native": "memory+vtable00",
+      "function": "00b3fa90",
+      "contract": "current zero-reference terminal"
+    },
+    {
+      "address": "00b3fd33",
+      "native": "00b3f5d0",
+      "function": "00b3fa90",
+      "contract": "borrow fresh owner COM and copy original owner name"
+    },
+    {
+      "address": "00b3fd3c",
+      "native": "00b3e730",
+      "function": "00b3fa90",
+      "contract": "support with diagnostic EH state0"
+    },
+    {
+      "address": "00b3fd5e",
+      "native": "00419cc0",
+      "function": "00b3fa90",
+      "contract": "normal cleanup getter; state already -1"
+    },
+    {
+      "address": "00b3fd65",
+      "native": "00bd1510",
+      "function": "00b3fa90",
+      "contract": "captured diagnostic data/current length+1/unused1; RET0C"
+    }
+  ],
+  "helper_steps": [
+    {
+      "address": "00b3f5fc",
+      "native": "0041dd40",
+      "function": "00b3f5d0",
+      "contract": "resize freshly zeroed header, current source length, preserve1"
+    },
+    {
+      "address": "00b3f611",
+      "native": "00bf7680",
+      "function": "00b3f5d0",
+      "contract": "overlap-safe native CRT copy, current destination count; ADD ESP,0C at B3F616"
+    },
+    {
+      "address": "00cbef83",
+      "native": "00b3f4c0",
+      "function": "00cbef80",
+      "kind": "tail_jump",
+      "contract": "sole state0 diagnostic current-name unwind"
+    },
+    {
+      "address": "00cbef8d",
+      "native": "00bf6b43",
+      "function": "00cbef88",
+      "kind": "tail_jump",
+      "branch_kind": "tail_jump",
+      "contract": "Defined handler loads DF7868 and tail-jumps to actual CRT FH3; definition byte-verified under primary write lock."
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00cbef88",
+      "native_end_inclusive": "00cbef91",
+      "native_end_exclusive": "00cbef92",
+      "last_instruction_address": "00cbef8d",
+      "last_instruction_length": 5,
+      "bytes": 10,
+      "coverage": "raw_handler_thunk_evidence_only",
+      "instructions": [
+        "00cbef88 MOV EAX,00DF7868",
+        "00cbef8d JMP 00BF6B43"
+      ],
+      "proposed_name": "BSP_TextureReload_ExceptionHandler",
+      "definition_owner": "primary_only",
+      "worker_mutated_ghidra": false,
+      "defined_by_primary": "reports/cc10_gui_texture_function_definitions.json",
+      "still_undefined": false
+    }
+  ],
+  "eh": {
+    "handler": "00cbef88",
+    "descriptor": "00df7868",
+    "magic": "19930522",
+    "max_state": 1,
+    "unwind_map": "00df7860",
+    "unwind_map_rows": [
+      {
+        "state": 0,
+        "to_state": -1,
+        "action": "00cbef80"
+      }
+    ],
+    "try_blocks": 0,
+    "diagnostic_ebp_offset": "-54",
+    "arm_site": "00b3fd38",
+    "disarm_before_normal_release": "00b3fd48",
+    "source_or_memory_unwind": false
+  },
+  "identity": {
+    "producer": "00b3f930",
+    "owner_replaced": false,
+    "companion_replaced": false,
+    "extra_reference": false,
+    "retained_source_4c_modified": false,
+    "surface_cache_modified": false,
+    "requested_mips_3c_modified": false,
+    "flags_modified": false,
+    "cache_reinserted": false,
+    "renderer_array_reinserted": false
+  },
+  "output_preimages": {
+    "required": "Two distinct initialized caller-owned outputs, disjoint from owner/name/acquired/service storage. Fields left unwritten by failing providers use the supplied native stack preimage.",
+    "image_info_hresult_ignored": true,
+    "creation_hresult_ignored": true,
+    "level_desc_hresult_ignored": true,
+    "null_com_output": "skip all metadata updates; still release reload memory and construct/cleanup diagnostic",
+    "nonnull_com_output_on_failure": "normal metadata branch executes"
+  },
+  "source_domains": [
+    "Same existing NativeTextureLoadingContext and canonical NativeTextureLoadOwners owner domain.",
+    "Actual string pool publication and shared manager; existing noexcept release boundary applies.",
+    "Current numeric renderer D5F0A8 slot6C=B32250; current VFS/stream providers already supported by NativeVfsRuntimeBindings.",
+    "Invalid-open deleting profiles D691B0/BF5090, D642C0/BB8F90, D68DB0/BF1240, D64400/BBC3E0.",
+    "Real D3DX function pointers and COM owners; original numeric code words are never called.",
+    "Retained failed invocation forbids replay and does not roll back native stream or COM work."
+  ],
+  "differences_from_initial_load": [
+    "detail.dds substring rather than exact name match",
+    "D3DFMT_UNKNOWN without RGB conversion",
+    "one create attempt without retry",
+    "does not replace retained source or requested-mips field",
+    "does not create owner, companion, cache record or renderer registration"
+  ],
+  "validation": {
+    "repository_build": {
+      "command": "./scripts/build.ps1",
+      "log": "local/native_texture_reload_build.log",
+      "status": "passed",
+      "exit_code": 0,
+      "ctest": "2/2 reconstructed_math and tool_tests"
+    },
+    "callsite_report": {
+      "command": "python tools/verify_report_calls.py reports/native_texture_reload_cc10.json",
+      "status": "passed",
+      "checked": 24,
+      "failed": 0,
+      "log": "local/texture_reload_call_verification.log",
+      "limits": "10 symbolic indirect rows not automatically checked; four resolved indirect rows lack direct-call proof; the raw CBEF88 handler tail checks only that its callee exists."
+    },
+    "original_vs_source_reload_executed": false,
+    "real_reload_graph_executed": false,
+    "game_executed": false,
+    "diagnostic_helper_only": {
+      "source": "local/texture_reload_diagnostic_probe.cpp",
+      "runner": "local/run_texture_reload_diagnostic_probe.cmd",
+      "log": "local/texture_reload_diagnostic_probe.log",
+      "exit_code": 0,
+      "cases": 3,
+      "original_helper_bytes": 81,
+      "cases_checked": [
+        "empty name",
+        "populated name",
+        "destination-name alias"
+      ],
+      "providers": "Production resize and memmove bridges; actual constructed native string pool; current bsp_core helper.",
+      "compiler": "MSVC Win32 /MD /link /MANIFEST:EMBED",
+      "limits": "Original helper body executed with two bridged callees. Original string/CRT bodies and full reload not executed; opaque borrowed COM word is never dereferenced."
+    }
+  },
+  "remaining": [
+    "Full WM_ACTIVATE/application dispatch binding is separate.",
+    "No original B3FA90 differential execution or actual complete reload/cache/VFS/D3D execution. B3F5D0 helper-only original-body differential passed.",
+    "No arbitrary failed provider unwritten stack inference, concurrent mutation, null-owner/invalid-address emulation or native EH/SEH ABI proof.",
+    "Primary must define raw CBEF88 handler if accepting its ten-byte body; worker did not mutate Ghidra."
+  ],
+  "native_byte_pins": [
+    {
+      "address": "00b3fa90",
+      "bytes": 747,
+      "live_and_installed_pe_equal": true,
+      "sha256": "2040b2711596de753d0e87c2119184dc72ea843f173cc9fc7037efab5bee0b09"
+    },
+    {
+      "address": "00b3f5d0",
+      "bytes": 81,
+      "live_and_installed_pe_equal": true,
+      "sha256": "3aa9760e0b19f182c5ce3dbe7cd569b53b3f7c020bf3e3c22c7c5cfe4d2a1dcd"
+    }
+  ],
+  "sha256": {
+    "include/bsp/native_texture_reload.hpp": "20da193f90630fd3b15db9282d2c376760ed61a5891eeac2dd5213a0d4ec2f8e",
+    "src/native_texture_reload.cpp": "d8fbb28a3837e660d54eaefb1448b770d3bcd3fa69d117703097c5ba39b0b8c0",
+    "docs/NATIVE_TEXTURE_RELOAD_CC10.md": "d7e04cc1a5a8045846ac2656efebfb632f1a4a23622cb3aa97fabb1992fe76c6",
+    "local/native_texture_reload_build.log": "594d1e87fe0360e84ef9d6f33000ae901eeb276dd3fb0f47ff1fdf5a43f8083e",
+    "local/texture_reload_diagnostic_probe.cpp": "4cb251758c3eb4e0127c7d5d292b6fd4a3117a2881cefed6f802748d81b03a17",
+    "local/run_texture_reload_diagnostic_probe.cmd": "3e760cfdd2a7bbd71bb5a1301fbdffabf1ff8e5f029a39f648dc73cb8c4928c2",
+    "local/texture_reload_diagnostic_probe.exe": "f8457f138235df5cf04ff7448d86b37436ddf49bc6b4777dff576475b1d88f26",
+    "local/texture_reload_diagnostic_probe.log": "784c833e9eb29250f53cba97442f259841735230a68d0b2616f371ffa856426d",
+    "local/texture_reload_native_bytes.txt": "6c4636a43cd7fcad771f7780e21e47036176f1d14e8997b9dea5e6c97d26f5c3",
+    "local/texture_reload_diagnostic_native_bytes.txt": "91a64f1f6e6b4ce4b270b099297c49e3116d91b4fc45b8aabf5ac1dda65cc94f",
+    "local/check_texture_reload_pins.py": "42aba16e5c678fde58d29c72f20841ea0544d3122bd31c0c1da8efaa444b7311",
+    "local/texture_reload_native_pins.json": "d2810614bc373f89630c165d95ee6f58b64bdf2442b6ed708019e59f9db2dde3",
+    "build/win32/Release/bsp_core.lib": "ba94ca5bc1bb37b06b0c0fe3fc0c2f5088d9aecc27e7ca97cd7eb62223430218"
+  },
+  "primary_integration": {
+    "main_commit": "f155d3379c9125285133237d7cf52004d9578b08",
+    "win32_build": true,
+    "existing_checks_passed": 3,
+    "log": "local/cc10-integrate-gui-texture.log",
+    "function_definitions": "reports/cc10_gui_texture_function_definitions.json",
+    "flow_repair": "reports/cc10_gui_layer_pool_flow_repair.json",
+    "source_review": "Primary read complete new source and original texture reload/helper listings; GUI pool template and raw constructor evidence reviewed",
+    "application_bound": false,
+    "game_validated": false
+  }
+}

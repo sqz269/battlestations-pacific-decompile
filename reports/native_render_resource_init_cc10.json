@@ -1,0 +1,2993 @@
+{
+  "packet": "cc10_render_resource_init",
+  "base_commit": "699cb5e5e",
+  "status": "partial_projection_B107F0_entry_fragment_and_complete_B21F10_leaf",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "source_files": [
+    "include/bsp/native_render_resource_init.hpp",
+    "src/native_render_resource_init.cpp"
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "00b21f10",
+      "end_inclusive": "00b21f27",
+      "end_exclusive": "00b21f28",
+      "last_instruction": "00b21f25",
+      "last_instruction_size": 3,
+      "last_instruction_text": "RET 4",
+      "size": 24,
+      "status": "absent at worker recovery; primary owns any later definition"
+    }
+  ],
+  "routines": [
+    {
+      "address": "00b107f0",
+      "name": "begin_native_render_resource_init_00b107f0_fragment",
+      "status": "partial_projection",
+      "coverage": "ENTRY FRAGMENT [00B107F0,00B109BC) and existing-init return tail [00B13009,00B13029); remaining [00B109BC,00B13009) excluded",
+      "original_abi": "ECX actual service; three DWORD stack cells; RET0C; EBP/ESI preserved, fresh path also EBX/EDI; native FH3 frame",
+      "new_source_abi": true,
+      "complete_init": false,
+      "field70_initialized": false,
+      "destruction_admitted": false,
+      "covered_fragments": [
+        {
+          "start": "00b107f0",
+          "end_exclusive": "00b109bc",
+          "size": 460,
+          "sha256": "941697f1f9cde57fabb098ca0b8896a6d98a4b6f011299f1e101c641155f8ed7",
+          "live_equals_disk": true
+        },
+        {
+          "start": "00b13009",
+          "end_exclusive": "00b13029",
+          "size": 32,
+          "sha256": "2dbac6af11282c58cdee74a0a9a11c2e74cf6726fbccf835e296f39ecc61c568",
+          "live_equals_disk": true
+        }
+      ]
+    },
+    {
+      "address": "00b21f10",
+      "name": "copy_native_renderer_dimensions_00b21f10",
+      "coverage": "complete normal leaf; new C++ interface, no drop-in binary ABI claim",
+      "original_abi": "ECX renderer; one stacked output pointer; EAX output; RET4; clobbers ECX EDX EAX; no calls",
+      "bytes": {
+        "start": "00b21f10",
+        "end_exclusive": "00b21f28",
+        "size": 24,
+        "sha256": "4305c76490a0abf4f2f3c63193eb32b468dc3c01d001f79154162ab06d244ca2",
+        "live_equals_disk": true
+      }
+    }
+  ],
+  "observed_full_bodies_not_coverage_claims": [
+    {
+      "start": "00b107f0",
+      "end_exclusive": "00b13029",
+      "size": 10297,
+      "sha256": "b9faf0b255e8bca3eb711bf1186bb1f41533d9047853a753599b9f1abd805a14",
+      "live_equals_disk": true
+    },
+    {
+      "start": "00b21f10",
+      "end_exclusive": "00b21f28",
+      "size": 24,
+      "sha256": "4305c76490a0abf4f2f3c63193eb32b468dc3c01d001f79154162ab06d244ca2",
+      "live_equals_disk": true
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "004df3bb",
+      "native": "00b107f0",
+      "function": "004de610",
+      "meaning": "ECX current F8D39C; stacked word0=DWORD F889D8, word1=byte F88A0D, word2=byte F88A0C; callee RET0C"
+    },
+    {
+      "address": "005045a9",
+      "native": "00b107f0",
+      "function": "00504130",
+      "meaning": "ECX current F8D39C; word0=byte F88A0C, word1=byte F88A0D, word2=DWORD F889D8; callee RET0C"
+    },
+    {
+      "address": "0067f2aa",
+      "native": "00b107f0",
+      "function": "0067f080",
+      "meaning": "ECX current F8D39C; word0=byte F88A0C, word1=byte F88A0D, word2=DWORD F889D8; callee RET0C"
+    },
+    {
+      "address": "008d60e6",
+      "native": "00b107f0",
+      "function": "008d5b50",
+      "meaning": "ECX current F8D39C; word0=settings+58 DWORD, word1=settings+8D byte, word2=settings+8C byte; callee RET0C"
+    },
+    {
+      "address": "00b10832",
+      "native": "00b50010",
+      "function": "00b107f0",
+      "meaning": "Already-initialized path; current nullable service+20; RET0"
+    },
+    {
+      "address": "00b1085e",
+      "native": "InterlockedDecrement@00ce2220",
+      "function": "00b107f0",
+      "meaning": "Current IAT after capture of old service+1D4; actual old+04; stdcall RET4"
+    },
+    {
+      "address": "00b1086e",
+      "native": "captured_old_frame+vtable00",
+      "function": "00b107f0",
+      "meaning": "Only final-zero; current profile D5E600 resolves BD30E0 then refreshed B1FCF0 flags1"
+    },
+    {
+      "address": "00b10878",
+      "native": "00bf681b",
+      "function": "00b107f0",
+      "meaning": "Shared CRT allocation 40h; B1087D ADD ESP4"
+    },
+    {
+      "address": "00b10891",
+      "native": "00b1fbb0",
+      "function": "00b107f0",
+      "meaning": "Nullable allocation construction; ECX actual40h storage; EAX same; RET0"
+    },
+    {
+      "address": "00b108b9",
+      "native": "current_renderer+vtable128",
+      "function": "00b107f0",
+      "meaning": "Current F8D394 / D5F0A8 slot128 resolves B24DC0, stacked index0, RET4"
+    },
+    {
+      "address": "00b108c3",
+      "native": "00b1fab0",
+      "function": "00b107f0",
+      "meaning": "Reload service+1D4 after getter; stacked color slot0/incoming; RET8"
+    },
+    {
+      "address": "00b108d6",
+      "native": "current_renderer+vtable12c",
+      "function": "00b107f0",
+      "meaning": "Reload current F8D394 / D5F0A8 slot12C resolves B20090, RET0"
+    },
+    {
+      "address": "00b108df",
+      "native": "00b1fb00",
+      "function": "00b107f0",
+      "meaning": "Reload service+1D4 after getter; stacked depth surface; RET4"
+    },
+    {
+      "address": "00b1098c",
+      "native": "current_renderer+vtable80",
+      "function": "00b107f0",
+      "meaning": "Reload current F8D394 / D5F0A8 slot80 resolves complete B21F10, stacked two-DWORD output; RET4"
+    },
+    {
+      "address": "00b1300b",
+      "native": "00b4ecc0",
+      "function": "00b107f0",
+      "meaning": "Shared native tail: existing-entry current nullable service+30 after flag reload; RET0"
+    }
+  ],
+  "caller_instruction_receipts": {
+    "004df3bb": {
+      "address": "004df3bb",
+      "instruction": "CALL 0x00b107f0",
+      "context_before": [
+        "004df3b5: MOV ECX,dword ptr [0x00f8d39c]",
+        "004df3b4: PUSH ECX",
+        "004df3b3: PUSH EAX",
+        "004df3b2: PUSH EDX",
+        "004df3ab: MOVZX ECX,byte ptr [0x00f88a0c]",
+        "004df3a4: MOVZX EAX,byte ptr [0x00f88a0d]",
+        "004df39e: MOV EDX,dword ptr [0x00f889d8]",
+        "004df399: CALL 0x00b6d890"
+      ],
+      "context_after": [
+        "004df3c0: MOV ECX,dword ptr [ESI + 0x19f8]",
+        "004df3c6: XOR DL,DL",
+        "004df3c8: CALL 0x00a8fd30",
+        "004df3cd: MOV ECX,dword ptr [ESI + 0x19f8]",
+        "004df3d3: MOV EDI,EAX",
+        "004df3d5: PUSH EDI",
+        "004df3d6: CALL 0x00b7bdf0",
+        "004df3db: MOV EBX,dword ptr [0x00ce2220]"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "005045a9": {
+      "address": "005045a9",
+      "instruction": "CALL 0x00b107f0",
+      "context_before": [
+        "005045a8: PUSH EDX",
+        "005045a2: MOV ECX,dword ptr [0x00f8d39c]",
+        "005045a1: PUSH ECX",
+        "005045a0: PUSH EAX",
+        "00504599: MOVZX EDX,byte ptr [0x00f88a0c]",
+        "00504594: MOV EAX,[0x00f889d8]",
+        "0050458d: MOVZX ECX,byte ptr [0x00f88a0d]",
+        "0050458b: CALL EDX"
+      ],
+      "context_after": [
+        "005045ae: MOVSS XMM0,dword ptr [0x00d7a24c]",
+        "005045b6: MOVSS XMM2,dword ptr [0x00ce3800]",
+        "005045be: MOVSS XMM1,dword ptr [0x00ce3958]",
+        "005045c6: MOVSS XMM3,dword ptr [0x00ce69c8]",
+        "005045ce: MOV ECX,dword ptr [0x00f8d39c]",
+        "005045d4: MOVSS dword ptr [ESP + 0x90],XMM0",
+        "005045dd: MOVSS XMM0,dword ptr [0x00ce7638]",
+        "005045e5: LEA EAX,[ESP + 0x68]"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "0067f2aa": {
+      "address": "0067f2aa",
+      "instruction": "CALL 0x00b107f0",
+      "context_before": [
+        "0067f2a9: PUSH EDX",
+        "0067f2a3: MOV ECX,dword ptr [0x00f8d39c]",
+        "0067f2a2: PUSH ECX",
+        "0067f2a1: PUSH EAX",
+        "0067f29a: MOVZX EDX,byte ptr [0x00f88a0c]",
+        "0067f295: MOV EAX,[0x00f889d8]",
+        "0067f28e: MOVZX ECX,byte ptr [0x00f88a0d]",
+        "0067f28c: CALL EDX"
+      ],
+      "context_after": [
+        "0067f2af: MOVSS XMM0,dword ptr [0x00ce3d08]",
+        "0067f2b7: MOV ECX,dword ptr [0x00f8d39c]",
+        "0067f2bd: MOVSS dword ptr [ESP + 0x1c],XMM0",
+        "0067f2c3: MOVSS dword ptr [ESP + 0x24],XMM0",
+        "0067f2c9: MOVSS XMM0,dword ptr [0x00ce4bc4]",
+        "0067f2d1: LEA EAX,[ESP + 0x14]",
+        "0067f2d5: MOVSS dword ptr [ESP + 0x20],XMM0",
+        "0067f2db: XORPS XMM0,XMM0"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "008d60e6": {
+      "address": "008d60e6",
+      "instruction": "CALL 0x00b107f0",
+      "context_before": [
+        "008d60e0: MOV ECX,dword ptr [0x00f8d39c]",
+        "008d60df: PUSH ECX",
+        "008d60de: PUSH EAX",
+        "008d60dd: PUSH EDX",
+        "008d60d6: MOVZX ECX,byte ptr [ESI + 0x8c]",
+        "008d60cf: MOVZX EAX,byte ptr [ESI + 0x8d]",
+        "008d60cc: MOV EDX,dword ptr [ESI + 0x58]",
+        "008d60c7: CALL 0x00a4d46a"
+      ],
+      "context_after": [
+        "008d60eb: CMP dword ptr [0x00e198c4],0x0",
+        "008d60f2: JNZ 0x008d6100",
+        "008d60f4: CALL 0x004c12b0",
+        "008d60f9: MOV ECX,EAX",
+        "008d60fb: CALL 0x00aa4ef0",
+        "008d6100: MOV EDX,dword ptr [ESI + 0x90]",
+        "008d6106: MOV ECX,dword ptr [0x00f8d39c]",
+        "008d610c: PUSH EDX"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    }
+  },
+  "producer_evidence": [
+    {
+      "producer": "00b14a10",
+      "evidence": "Existing source constructor alloc40 at B14D72, constructsB1FBB0 atB14D89, publishes service+1D4, current colorB14DAC/B14DB6 then depthB14DC9/B14DD2. Leaves service+70 unwritten."
+    },
+    {
+      "producer": "00b2aeb0",
+      "source": "src/native_renderer_device_startup_actual.cpp",
+      "evidence": "Actual presentation+1A28 width/+1A2C height produced after current device setup arguments; exact same renderer raw storage, no new dimension owner."
+    },
+    {
+      "producer": "00b107f0 excluded continuation",
+      "evidence": "B109EE constructs first18h B4E020 from original dimensions, format15,0,0,null; B10A00 publishes+4C. Later B11555 B4E470 result first writes service+70 at B11563."
+    }
+  ],
+  "dispatch_bindings": {
+    "renderer_publication": "frame_targets.actual_surface_context.actual_renderer_00f8d394, same canonical current cell",
+    "renderer_profile": "current D5F0A8; slots80=B21F10,128=B24DC0,12C=B20090",
+    "frame_profile": "current D5E600; slot0=BD30E0 then refreshed slot4=B1FCF0",
+    "decrement": "borrow current actual CE2220 IAT cell; read after old frame capture",
+    "surfaces": "existing frame-target / actual surface owner context and reference counts",
+    "allocation": "shared singleton_lifetime_allocate/free CRT domain; no independent cache/allocator"
+  },
+  "frontier": {
+    "native_address": "00b109bc",
+    "before_instruction": "PUSH 18",
+    "phase": "awaiting_b109bc_continuation",
+    "native_eh_state": -1,
+    "retained": [
+      "actual service ESI",
+      "borrowed three argument-cell identities",
+      "old-frame EDI identity (possibly freed)",
+      "allocation ESP+20 identity",
+      "raw dimensions ESP+18/+1C",
+      "aligned height ESP+24",
+      "aligned width EAX, not yet spilled at B109BE",
+      "signed remainders ECX/EDX",
+      "last scalar low words XMM0..3"
+    ],
+    "known_registers": {
+      "EBP": "00000000",
+      "EBX": "ffffffff"
+    },
+    "not_retained": [
+      "native EFLAGS",
+      "upper XMM lanes",
+      "native stack aliases/FH3 registration"
+    ],
+    "initialization_success": false,
+    "field70_write": false,
+    "destruction_admission": false
+  },
+  "full_body_call_inventory": {
+    "scope": "READ-ONLY byte-verified instruction inventory, NOT implemented closure; covered bool marks only 11 implemented native call sites",
+    "count": 471,
+    "distinct_direct_targets": [
+      "00419cc0",
+      "0041e870",
+      "00b0fc10",
+      "00b189f0",
+      "00b18ac0",
+      "00b18b00",
+      "00b18b20",
+      "00b1fab0",
+      "00b1fb00",
+      "00b1fbb0",
+      "00b2a7c0",
+      "00b4cb10",
+      "00b4cb20",
+      "00b4cb70",
+      "00b4cba0",
+      "00b4d170",
+      "00b4e020",
+      "00b4e2b0",
+      "00b4e470",
+      "00b4ecc0",
+      "00b4f0c0",
+      "00b4f560",
+      "00b50010",
+      "00b50d40",
+      "00b51090",
+      "00b52860",
+      "00b540b0",
+      "00b542d0",
+      "00b544f0",
+      "00b546f0",
+      "00b54940",
+      "00b54cd0",
+      "00b54e70",
+      "00b54f90",
+      "00bd1510",
+      "00bf681b"
+    ],
+    "calls": [
+      {
+        "site": "00b10832",
+        "operand": "0xb50010",
+        "covered": true
+      },
+      {
+        "site": "00b1085e",
+        "operand": "dword ptr [0xce2220]",
+        "covered": true
+      },
+      {
+        "site": "00b1086e",
+        "operand": "eax",
+        "covered": true
+      },
+      {
+        "site": "00b10878",
+        "operand": "0xbf681b",
+        "covered": true
+      },
+      {
+        "site": "00b10891",
+        "operand": "0xb1fbb0",
+        "covered": true
+      },
+      {
+        "site": "00b108b9",
+        "operand": "eax",
+        "covered": true
+      },
+      {
+        "site": "00b108c3",
+        "operand": "0xb1fab0",
+        "covered": true
+      },
+      {
+        "site": "00b108d6",
+        "operand": "eax",
+        "covered": true
+      },
+      {
+        "site": "00b108df",
+        "operand": "0xb1fb00",
+        "covered": true
+      },
+      {
+        "site": "00b1098c",
+        "operand": "edx",
+        "covered": true
+      },
+      {
+        "site": "00b109c2",
+        "operand": "0xbf681b",
+        "covered": false
+      },
+      {
+        "site": "00b109ee",
+        "operand": "0xb4e020",
+        "covered": false
+      },
+      {
+        "site": "00b10a03",
+        "operand": "0xbf681b",
+        "covered": false
+      },
+      {
+        "site": "00b10a2f",
+        "operand": "0xb4e020",
+        "covered": false
+      },
+      {
+        "site": "00b10a44",
+        "operand": "0xbf681b",
+        "covered": false
+      },
+      {
+        "site": "00b10a70",
+        "operand": "0xb4e020",
+        "covered": false
+      },
+      {
+        "site": "00b10a9e",
+        "operand": "ebp",
+        "covered": false
+      },
+      {
+        "site": "00b10aa8",
+        "operand": "dword ptr [0xce2220]",
+        "covered": false
+      },
+      {
+        "site": "00b10ab8",
+        "operand": "eax",
+        "covered": false
+      },
+      {
+        "site": "00b10ad4",
+        "operand": "0xb2a7c0",
+        "covered": false
+      },
+      {
+        "site": "00b10ade",
+        "operand": "0xbf681b",
+        "covered": false
+      },
+      {
+        "site": "00b10b0e",
+        "operand": "0xb4e020",
+        "covered": false
+      },
+      {
+        "site": "00b10b23",
+        "operand": "0xbf681b",
+        "covered": false
+      },
+      {
+        "site": "00b10b53",
+        "operand": "0xb4e020",
+        "covered": false
+      },
+      {
+        "site": "00b10b8e",
+        "operand": "eax",
+        "covered": false
+      },
+      {
+        "site": "00b10b9e",
+        "operand": "eax",
+        "covered": false
+      },
+      {
+        "site": "00b10bb8",
+        "operand": "ebp",
+        "covered": false
+      },
+      {
+        "site": "00b10bc2",
+        "operand": "dword ptr [0xce2220]",
+        "covered": false
+      },
+      {
+        "site": "00b10bd2",
+        "operand": "eax",
+        "covered": false
+      },
+      {
+        "site": "00b10bd6",
+        "operand": "0xbf681b",
+        "covered": false
+      },
+      {
+        "site": "00b10c20",
+        "operand": "0xb540b0",
+        "covered": false
+      },
+      {
+        "site": "00b10c27",
+        "operand": "0xbf681b",
+        "covered": false
+      },
+      {
+        "site": "00b10c70",
+        "operand": "0xb4d170",
+        "covered": false
+      },
+      {
+        "site": "00b10c77",
+        "operand": "0xb4cb10",
+        "covered": false
+      },
+      {
+        "site": "00b10c88",
+        "operand": "0xb542d0",
+        "covered": false
+      },
+      {
+        "site": "00b10c8f",
+        "operand": "0xbf681b",
+        "covered": false
+      },
+      {
+        "site": "00b10cb5",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b10cd4",
+        "operand": "0xb4e470",
+        "covered": false
+      },
+      {
+        "site": "00b10d06",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b10d0d",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b10d1e",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b10d3d",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b10d44",
+        "operand": "0xb18b00",
+        "covered": false
+      },
+      {
+        "site": "00b10d69",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b10d70",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b10d77",
+        "operand": "0xbf681b",
+        "covered": false
+      },
+      {
+        "site": "00b10d9d",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b10dba",
+        "operand": "0xb4e470",
+        "covered": false
+      },
+      {
+        "site": "00b10dec",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b10df3",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b10e04",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b10e20",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b10e27",
+        "operand": "0xb18b00",
+        "covered": false
+      },
+      {
+        "site": "00b10e4e",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b10e55",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b10e5f",
+        "operand": "0xbf681b",
+        "covered": false
+      },
+      {
+        "site": "00b10eb0",
+        "operand": "0xb4d170",
+        "covered": false
+      },
+      {
+        "site": "00b10eb9",
+        "operand": "0xb544f0",
+        "covered": false
+      },
+      {
+        "site": "00b10ec3",
+        "operand": "0xbf681b",
+        "covered": false
+      },
+      {
+        "site": "00b10f17",
+        "operand": "0xb4d170",
+        "covered": false
+      },
+      {
+        "site": "00b10f20",
+        "operand": "0xb546f0",
+        "covered": false
+      },
+      {
+        "site": "00b10f2a",
+        "operand": "0xbf681b",
+        "covered": false
+      },
+      {
+        "site": "00b10f47",
+        "operand": "0xb50d40",
+        "covered": false
+      },
+      {
+        "site": "00b10f5d",
+        "operand": "0xb4d170",
+        "covered": false
+      },
+      {
+        "site": "00b10f66",
+        "operand": "0xb51090",
+        "covered": false
+      },
+      {
+        "site": "00b10f70",
+        "operand": "0xbf681b",
+        "covered": false
+      },
+      {
+        "site": "00b10fa5",
+        "operand": "0xb4d170",
+        "covered": false
+      },
+      {
+        "site": "00b10fae",
+        "operand": "0xb54940",
+        "covered": false
+      },
+      {
+        "site": "00b10fb8",
+        "operand": "0xbf681b",
+        "covered": false
+      },
+      {
+        "site": "00b10fd5",
+        "operand": "0xb54e70",
+        "covered": false
+      },
+      {
+        "site": "00b11013",
+        "operand": "0xb4d170",
+        "covered": false
+      },
+      {
+        "site": "00b1101c",
+        "operand": "0xb54f90",
+        "covered": false
+      },
+      {
+        "site": "00b11023",
+        "operand": "0xbf681b",
+        "covered": false
+      },
+      {
+        "site": "00b1104c",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b1106c",
+        "operand": "0xb4e470",
+        "covered": false
+      },
+      {
+        "site": "00b110a7",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b110ae",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b110b6",
+        "operand": "0xb4cb10",
+        "covered": false
+      },
+      {
+        "site": "00b110c4",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b110cb",
+        "operand": "0xb189f0",
+        "covered": false
+      },
+      {
+        "site": "00b110d3",
+        "operand": "0xb54cd0",
+        "covered": false
+      },
+      {
+        "site": "00b110da",
+        "operand": "0xb4cb10",
+        "covered": false
+      },
+      {
+        "site": "00b110e8",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b110ef",
+        "operand": "0xb189f0",
+        "covered": false
+      },
+      {
+        "site": "00b110fd",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b1111f",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b11126",
+        "operand": "0xb18b20",
+        "covered": false
+      },
+      {
+        "site": "00b11145",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b1114c",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b1115d",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b11182",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b11189",
+        "operand": "0xb18b20",
+        "covered": false
+      },
+      {
+        "site": "00b111ae",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b111b5",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b111c3",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b111e8",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b111ef",
+        "operand": "0xb18b00",
+        "covered": false
+      },
+      {
+        "site": "00b1120e",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b11215",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b11226",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b1124b",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b11252",
+        "operand": "0xb18b20",
+        "covered": false
+      },
+      {
+        "site": "00b11277",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b1127e",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b1128f",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b112b4",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b112bb",
+        "operand": "0xb18b20",
+        "covered": false
+      },
+      {
+        "site": "00b112e0",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b112e7",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b112f8",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b1131a",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b11321",
+        "operand": "0xb18b00",
+        "covered": false
+      },
+      {
+        "site": "00b11346",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b1134d",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b1135e",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b11383",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b1138a",
+        "operand": "0xb18b20",
+        "covered": false
+      },
+      {
+        "site": "00b113af",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b113b6",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b113c7",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b113ec",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b113f3",
+        "operand": "0xb18b20",
+        "covered": false
+      },
+      {
+        "site": "00b11418",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b1141f",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b11430",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b11455",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b1145c",
+        "operand": "0xb18b00",
+        "covered": false
+      },
+      {
+        "site": "00b11481",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b11488",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b11499",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b114be",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b114c5",
+        "operand": "0xb18b00",
+        "covered": false
+      },
+      {
+        "site": "00b114ea",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b114f1",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b114f9",
+        "operand": "0xb4cb20",
+        "covered": false
+      },
+      {
+        "site": "00b11505",
+        "operand": "0xb4cb70",
+        "covered": false
+      },
+      {
+        "site": "00b1150c",
+        "operand": "0xbf681b",
+        "covered": false
+      },
+      {
+        "site": "00b11535",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b11555",
+        "operand": "0xb4e470",
+        "covered": false
+      },
+      {
+        "site": "00b1158d",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b11594",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b1159c",
+        "operand": "0xb4d170",
+        "covered": false
+      },
+      {
+        "site": "00b115a3",
+        "operand": "0xb4cb10",
+        "covered": false
+      },
+      {
+        "site": "00b115ae",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b115b5",
+        "operand": "0xb189f0",
+        "covered": false
+      },
+      {
+        "site": "00b115bd",
+        "operand": "0xb54cd0",
+        "covered": false
+      },
+      {
+        "site": "00b115c4",
+        "operand": "0xb4cb10",
+        "covered": false
+      },
+      {
+        "site": "00b115cf",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b115d6",
+        "operand": "0xb189f0",
+        "covered": false
+      },
+      {
+        "site": "00b115e7",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b11609",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b11610",
+        "operand": "0xb18b20",
+        "covered": false
+      },
+      {
+        "site": "00b11635",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b1163c",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b1164d",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b1166f",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b11676",
+        "operand": "0xb18b20",
+        "covered": false
+      },
+      {
+        "site": "00b1169b",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b116a2",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b116b3",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b116d7",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b116de",
+        "operand": "0xb18b00",
+        "covered": false
+      },
+      {
+        "site": "00b11703",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b1170a",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b1171b",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b1173d",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b11744",
+        "operand": "0xb18b20",
+        "covered": false
+      },
+      {
+        "site": "00b11769",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b11770",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b11781",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b117a3",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b117aa",
+        "operand": "0xb18b20",
+        "covered": false
+      },
+      {
+        "site": "00b117cf",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b117d6",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b117e7",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b11803",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b1180a",
+        "operand": "0xb18b00",
+        "covered": false
+      },
+      {
+        "site": "00b1182f",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b11836",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b11847",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b11866",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b1186d",
+        "operand": "0xb18b00",
+        "covered": false
+      },
+      {
+        "site": "00b11892",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b11899",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b118a1",
+        "operand": "0xb4cb20",
+        "covered": false
+      },
+      {
+        "site": "00b118aa",
+        "operand": "0xb4cb70",
+        "covered": false
+      },
+      {
+        "site": "00b118b1",
+        "operand": "0xbf681b",
+        "covered": false
+      },
+      {
+        "site": "00b118da",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b118fa",
+        "operand": "0xb4e470",
+        "covered": false
+      },
+      {
+        "site": "00b11932",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b11939",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b11941",
+        "operand": "0xb4d170",
+        "covered": false
+      },
+      {
+        "site": "00b11948",
+        "operand": "0xb4cb10",
+        "covered": false
+      },
+      {
+        "site": "00b11953",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b1195a",
+        "operand": "0xb189f0",
+        "covered": false
+      },
+      {
+        "site": "00b11962",
+        "operand": "0xb54cd0",
+        "covered": false
+      },
+      {
+        "site": "00b11969",
+        "operand": "0xb4cb10",
+        "covered": false
+      },
+      {
+        "site": "00b11974",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b1197b",
+        "operand": "0xb189f0",
+        "covered": false
+      },
+      {
+        "site": "00b1198c",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b119ae",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b119b5",
+        "operand": "0xb18b20",
+        "covered": false
+      },
+      {
+        "site": "00b119da",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b119e1",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b119f2",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b11a14",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b11a1b",
+        "operand": "0xb18b20",
+        "covered": false
+      },
+      {
+        "site": "00b11a40",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b11a47",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b11a58",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b11a7c",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b11a83",
+        "operand": "0xb18b00",
+        "covered": false
+      },
+      {
+        "site": "00b11aa8",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b11aaf",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b11ac0",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b11ae2",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b11ae9",
+        "operand": "0xb18b20",
+        "covered": false
+      },
+      {
+        "site": "00b11b0e",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b11b15",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b11b26",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b11b48",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b11b4f",
+        "operand": "0xb18b20",
+        "covered": false
+      },
+      {
+        "site": "00b11b74",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b11b7b",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b11b8c",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b11bab",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b11bb2",
+        "operand": "0xb18b00",
+        "covered": false
+      },
+      {
+        "site": "00b11bd7",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b11bde",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b11bef",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b11c0b",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b11c12",
+        "operand": "0xb18b00",
+        "covered": false
+      },
+      {
+        "site": "00b11c37",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b11c3e",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b11c4f",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b11c71",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b11c78",
+        "operand": "0xb18b00",
+        "covered": false
+      },
+      {
+        "site": "00b11c9d",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b11ca4",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b11cb2",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b11cd3",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b11cda",
+        "operand": "0xb18ac0",
+        "covered": false
+      },
+      {
+        "site": "00b11cf9",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b11d00",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b11d11",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b11d35",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b11d3c",
+        "operand": "0xb18ac0",
+        "covered": false
+      },
+      {
+        "site": "00b11d61",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b11d68",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b11d70",
+        "operand": "0xb4cb20",
+        "covered": false
+      },
+      {
+        "site": "00b11d79",
+        "operand": "0xb4cb70",
+        "covered": false
+      },
+      {
+        "site": "00b11d80",
+        "operand": "0xbf681b",
+        "covered": false
+      },
+      {
+        "site": "00b11d9d",
+        "operand": "0xb1fbb0",
+        "covered": false
+      },
+      {
+        "site": "00b11db6",
+        "operand": "0xb4cb20",
+        "covered": false
+      },
+      {
+        "site": "00b11dc4",
+        "operand": "0xb1fab0",
+        "covered": false
+      },
+      {
+        "site": "00b11dd7",
+        "operand": "eax",
+        "covered": false
+      },
+      {
+        "site": "00b11de0",
+        "operand": "0xb1fb00",
+        "covered": false
+      },
+      {
+        "site": "00b11dea",
+        "operand": "0xbf681b",
+        "covered": false
+      },
+      {
+        "site": "00b11e07",
+        "operand": "0xb54e70",
+        "covered": false
+      },
+      {
+        "site": "00b11e32",
+        "operand": "0xb4d170",
+        "covered": false
+      },
+      {
+        "site": "00b11e3b",
+        "operand": "0xb54f90",
+        "covered": false
+      },
+      {
+        "site": "00b11e45",
+        "operand": "0xbf681b",
+        "covered": false
+      },
+      {
+        "site": "00b11e62",
+        "operand": "0xb4f0c0",
+        "covered": false
+      },
+      {
+        "site": "00b11e79",
+        "operand": "0xb4f560",
+        "covered": false
+      },
+      {
+        "site": "00b11e8d",
+        "operand": "dword ptr [0xce2220]",
+        "covered": false
+      },
+      {
+        "site": "00b11e9d",
+        "operand": "eax",
+        "covered": false
+      },
+      {
+        "site": "00b11ea8",
+        "operand": "0xbf681b",
+        "covered": false
+      },
+      {
+        "site": "00b11ec5",
+        "operand": "0xb1fbb0",
+        "covered": false
+      },
+      {
+        "site": "00b11eef",
+        "operand": "0xb0fc10",
+        "covered": false
+      },
+      {
+        "site": "00b11ef6",
+        "operand": "0xbf681b",
+        "covered": false
+      },
+      {
+        "site": "00b11f1f",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b11f3f",
+        "operand": "0xb4e470",
+        "covered": false
+      },
+      {
+        "site": "00b11f7a",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b11f81",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b11f8f",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b11fae",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b11fb5",
+        "operand": "0xb18b00",
+        "covered": false
+      },
+      {
+        "site": "00b11fd4",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b11fdb",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b11fe9",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b1200b",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b12012",
+        "operand": "0xb18b00",
+        "covered": false
+      },
+      {
+        "site": "00b12034",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b1203b",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b12049",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b1206d",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b12074",
+        "operand": "0xb18ac0",
+        "covered": false
+      },
+      {
+        "site": "00b12093",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b1209a",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b120ac",
+        "operand": "0xb4e2b0",
+        "covered": false
+      },
+      {
+        "site": "00b120b4",
+        "operand": "0xb52860",
+        "covered": false
+      },
+      {
+        "site": "00b120bb",
+        "operand": "0xbf681b",
+        "covered": false
+      },
+      {
+        "site": "00b120e1",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b120fe",
+        "operand": "0xb4e470",
+        "covered": false
+      },
+      {
+        "site": "00b12136",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b1213d",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b12151",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b12158",
+        "operand": "0xb189f0",
+        "covered": false
+      },
+      {
+        "site": "00b12166",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b12185",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b1218c",
+        "operand": "0xb18b00",
+        "covered": false
+      },
+      {
+        "site": "00b121ab",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b121b2",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b121c3",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b121e2",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b121e9",
+        "operand": "0xb18b00",
+        "covered": false
+      },
+      {
+        "site": "00b1220e",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b12215",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b12226",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b12247",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b1224e",
+        "operand": "0xb18ac0",
+        "covered": false
+      },
+      {
+        "site": "00b12273",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b1227a",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b1228b",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b122b0",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b122b7",
+        "operand": "0xb18b20",
+        "covered": false
+      },
+      {
+        "site": "00b122df",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b122e6",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b122f7",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b1231c",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b12323",
+        "operand": "0xb18b00",
+        "covered": false
+      },
+      {
+        "site": "00b12348",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b1234f",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b12360",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b12385",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b1238c",
+        "operand": "0xb18b00",
+        "covered": false
+      },
+      {
+        "site": "00b123b1",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b123b8",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b123c9",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b123ee",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b123f5",
+        "operand": "0xb18b20",
+        "covered": false
+      },
+      {
+        "site": "00b1241a",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b12421",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b12432",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b12457",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b1245e",
+        "operand": "0xb18b20",
+        "covered": false
+      },
+      {
+        "site": "00b12483",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b1248a",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b1249c",
+        "operand": "0xb4e2b0",
+        "covered": false
+      },
+      {
+        "site": "00b124a3",
+        "operand": "0xbf681b",
+        "covered": false
+      },
+      {
+        "site": "00b124cc",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b124ef",
+        "operand": "0xb4e470",
+        "covered": false
+      },
+      {
+        "site": "00b12530",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b12537",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b1254b",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b12552",
+        "operand": "0xb189f0",
+        "covered": false
+      },
+      {
+        "site": "00b12563",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b12585",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b1258c",
+        "operand": "0xb18b00",
+        "covered": false
+      },
+      {
+        "site": "00b125b1",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b125b8",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b125c9",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b125ee",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b125f5",
+        "operand": "0xb18b00",
+        "covered": false
+      },
+      {
+        "site": "00b1261a",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b12621",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b12632",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b12659",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b12660",
+        "operand": "0xb18ac0",
+        "covered": false
+      },
+      {
+        "site": "00b12685",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b1268c",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b1269d",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b126c4",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b126cb",
+        "operand": "0xb18ac0",
+        "covered": false
+      },
+      {
+        "site": "00b126f0",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b126f7",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b12708",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b1272f",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b12736",
+        "operand": "0xb18ac0",
+        "covered": false
+      },
+      {
+        "site": "00b1275b",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b12762",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b12773",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b12792",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b12799",
+        "operand": "0xb18b20",
+        "covered": false
+      },
+      {
+        "site": "00b127be",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b127c5",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b127d6",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b127fb",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b12802",
+        "operand": "0xb18b00",
+        "covered": false
+      },
+      {
+        "site": "00b12827",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b1282e",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b1283f",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b1285e",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b12865",
+        "operand": "0xb18b00",
+        "covered": false
+      },
+      {
+        "site": "00b1288a",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b12891",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b128a2",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b128c7",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b128ce",
+        "operand": "0xb18b20",
+        "covered": false
+      },
+      {
+        "site": "00b128f3",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b128fa",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b1290b",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b12930",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b12937",
+        "operand": "0xb18b20",
+        "covered": false
+      },
+      {
+        "site": "00b1295c",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b12963",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b12975",
+        "operand": "0xb4e2b0",
+        "covered": false
+      },
+      {
+        "site": "00b1297c",
+        "operand": "0xbf681b",
+        "covered": false
+      },
+      {
+        "site": "00b129aa",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b129c9",
+        "operand": "0xb4e470",
+        "covered": false
+      },
+      {
+        "site": "00b12a09",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b12a10",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b12a21",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b12a46",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b12a4d",
+        "operand": "0xb18b00",
+        "covered": false
+      },
+      {
+        "site": "00b12a72",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b12a79",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b12a8a",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b12aaf",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b12ab6",
+        "operand": "0xb18b20",
+        "covered": false
+      },
+      {
+        "site": "00b12adb",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b12ae2",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b12af3",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b12b18",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b12b1f",
+        "operand": "0xb18b20",
+        "covered": false
+      },
+      {
+        "site": "00b12b44",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b12b4b",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b12b5c",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b12b81",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b12b88",
+        "operand": "0xb18b20",
+        "covered": false
+      },
+      {
+        "site": "00b12bad",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b12bb4",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b12bc5",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b12bea",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b12bf1",
+        "operand": "0xb18b20",
+        "covered": false
+      },
+      {
+        "site": "00b12c16",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b12c1d",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b12c2e",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b12c50",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b12c57",
+        "operand": "0xb18b00",
+        "covered": false
+      },
+      {
+        "site": "00b12c7c",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b12c83",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b12c95",
+        "operand": "0xb4e2b0",
+        "covered": false
+      },
+      {
+        "site": "00b12c9c",
+        "operand": "0xbf681b",
+        "covered": false
+      },
+      {
+        "site": "00b12cc5",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b12ce8",
+        "operand": "0xb4e470",
+        "covered": false
+      },
+      {
+        "site": "00b12d29",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b12d30",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b12d41",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b12d60",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b12d67",
+        "operand": "0xb18b00",
+        "covered": false
+      },
+      {
+        "site": "00b12d8c",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b12d93",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b12da4",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b12dc9",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b12dd0",
+        "operand": "0xb18b00",
+        "covered": false
+      },
+      {
+        "site": "00b12df5",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b12dfc",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b12e0d",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b12e34",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b12e3b",
+        "operand": "0xb18ac0",
+        "covered": false
+      },
+      {
+        "site": "00b12e60",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b12e67",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b12e78",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b12e9f",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b12ea6",
+        "operand": "0xb18ac0",
+        "covered": false
+      },
+      {
+        "site": "00b12ecb",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b12ed2",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b12ee3",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b12f0a",
+        "operand": "0xb4cba0",
+        "covered": false
+      },
+      {
+        "site": "00b12f11",
+        "operand": "0xb18ac0",
+        "covered": false
+      },
+      {
+        "site": "00b12f36",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b12f3d",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b12f4f",
+        "operand": "0xb4e2b0",
+        "covered": false
+      },
+      {
+        "site": "00b12f56",
+        "operand": "0xbf681b",
+        "covered": false
+      },
+      {
+        "site": "00b12f84",
+        "operand": "0x41e870",
+        "covered": false
+      },
+      {
+        "site": "00b12fa3",
+        "operand": "0xb4e470",
+        "covered": false
+      },
+      {
+        "site": "00b12fda",
+        "operand": "0x419cc0",
+        "covered": false
+      },
+      {
+        "site": "00b12fe1",
+        "operand": "0xbd1510",
+        "covered": false
+      },
+      {
+        "site": "00b12ff6",
+        "operand": "0xb50010",
+        "covered": false
+      },
+      {
+        "site": "00b1300b",
+        "operand": "0xb4ecc0",
+        "covered": true
+      }
+    ]
+  },
+  "next_provider_mapping": [
+    {
+      "callee": "00b4e020",
+      "source": "include/bsp/native_render_texture_surface_owner.hpp",
+      "discovery": "Existing full18h owner constructor; next excluded B109EE call",
+      "composition_audited": false
+    },
+    {
+      "callee": "00b2a7c0",
+      "source": "include/bsp/native_render_resources_surfaces.hpp",
+      "discovery": "Existing current-device surface creation",
+      "composition_audited": false
+    },
+    {
+      "callee": "00b0fc10",
+      "source": "include/bsp/native_render_resources_surfaces.hpp",
+      "discovery": "Existing depth resize provider",
+      "composition_audited": false
+    },
+    {
+      "callee": "00b4e470",
+      "source": "include/bsp/native_post_effect20_construction.hpp",
+      "discovery": "Existing20h post-effect owner; later +70 producer",
+      "composition_audited": false
+    },
+    {
+      "callee": "00b540b0",
+      "source": "include/bsp/native_render_pass_initializers.hpp",
+      "discovery": "Existing pass provider",
+      "composition_audited": false
+    },
+    {
+      "callee": "00b542d0",
+      "source": "include/bsp/native_render_pass_initializers.hpp",
+      "discovery": "Existing pass provider",
+      "composition_audited": false
+    },
+    {
+      "callee": "00b544f0",
+      "source": "include/bsp/native_downscale_pass_initializers.hpp",
+      "discovery": "Existing downscale provider",
+      "composition_audited": false
+    },
+    {
+      "callee": "00b546f0",
+      "source": "include/bsp/native_downscale_pass_initializers.hpp",
+      "discovery": "Existing downscale provider",
+      "composition_audited": false
+    },
+    {
+      "callee": "00b54940",
+      "source": "include/bsp/native_bright_pass_initializer.hpp",
+      "discovery": "Existing bright-pass provider",
+      "composition_audited": false
+    },
+    {
+      "callee": "00b50d40",
+      "source": "include/bsp/native_luminance_owner.hpp",
+      "discovery": "Existing luminance owner constructor",
+      "composition_audited": false
+    },
+    {
+      "callee": "00b51090",
+      "source": "include/bsp/native_luminance_owner.hpp",
+      "discovery": "Existing luminance initialization",
+      "composition_audited": false
+    },
+    {
+      "callee": "00b54e70",
+      "source": "include/bsp/native_render_effect_lifetime.hpp",
+      "discovery": "Existing bloom owner construction",
+      "composition_audited": false
+    },
+    {
+      "callee": "00b54f90",
+      "source": "include/bsp/native_bloom_initializer.hpp",
+      "discovery": "Existing bloom initialization",
+      "composition_audited": false
+    },
+    {
+      "callee": "00b4f0c0",
+      "source": "include/bsp/native_distortion_lifetime.hpp",
+      "discovery": "Existing distortion owner construction",
+      "composition_audited": false
+    },
+    {
+      "callee": "00b4f560",
+      "source": "include/bsp/native_distortion_initializer.hpp",
+      "discovery": "Existing distortion initialization",
+      "composition_audited": false
+    },
+    {
+      "callee": "00b52860",
+      "source": "include/bsp/native_post_effect_dust_initializer.hpp",
+      "discovery": "Existing dust initialization",
+      "composition_audited": false
+    },
+    {
+      "callee": "00b4cb10",
+      "source": "include/bsp/native_particle_preparation.hpp",
+      "discovery": "Existing raw holder texture accessor",
+      "composition_audited": false
+    },
+    {
+      "callee": "00b4d170",
+      "source": "include/bsp/native_particle_preparation.hpp",
+      "discovery": "Existing raw shadow texture holder accessor",
+      "composition_audited": false
+    },
+    {
+      "callee": "00b4cb20",
+      "source": "include/bsp/native_render_pass_initializers.hpp",
+      "discovery": "Existing raw primary-surface accessor",
+      "composition_audited": false
+    },
+    {
+      "callee": "00b4cb70",
+      "source": "include/bsp/native_render_pass_initializers.hpp",
+      "discovery": "Existing frame-target color assignment",
+      "composition_audited": false
+    },
+    {
+      "callee": "00b4cba0",
+      "source": "include/bsp/native_render_resources_remap.hpp",
+      "discovery": "Existing material accessor",
+      "composition_audited": false
+    },
+    {
+      "callee": "00b189f0",
+      "source": "include/bsp/native_mesh_texture_field.hpp",
+      "discovery": "Existing unchecked actual-material texture assignment; canonical actual owners required",
+      "composition_audited": false
+    },
+    {
+      "callee": "00b18b00",
+      "source": "include/bsp/gui_text_material.hpp",
+      "discovery": "Existing float2 registration wrapper",
+      "composition_audited": false
+    },
+    {
+      "callee": "00b18b20",
+      "source": "include/bsp/gui_text_material.hpp",
+      "discovery": "Existing float1 registration wrapper",
+      "composition_audited": false
+    },
+    {
+      "callee": "00b18ac0",
+      "source": "src/native_render_pass_initializers.cpp",
+      "discovery": "Existing inline register_native_material_parameter projection; no separately named entry found",
+      "composition_audited": false
+    },
+    {
+      "callee": "00b4e2b0",
+      "source": null,
+      "discovery": "No matching source entry found by bounded case-insensitive address search; body not recovered here",
+      "composition_audited": false
+    },
+    {
+      "callee": "00b54cd0",
+      "source": null,
+      "discovery": "No matching source entry found by bounded case-insensitive address search; body not recovered here",
+      "composition_audited": false
+    }
+  ],
+  "checks": {
+    "strict_build": {
+      "command": "./scripts/build.ps1",
+      "result": "passed MSVC Win32 Release /W4 /WX /fp:strict",
+      "log": "local/cc10-init-build.txt"
+    },
+    "ctest": {
+      "result": "2/2 passed",
+      "tests": [
+        "reconstructed_math",
+        "tool_tests"
+      ]
+    },
+    "verify_seeds": {
+      "command": "python tools/ghidra_export.py verify-seeds",
+      "result": "8/8 match installed PE"
+    },
+    "report_calls": {
+      "command": "python tools/verify_report_calls.py reports/native_render_resource_init_cc10.json",
+      "numeric_checked": 10,
+      "failed": 0,
+      "indirect_explicit": 5
+    },
+    "focused_fixture": {
+      "result": "passed",
+      "exit_code": 0,
+      "source": "local/cc10_resource_probe.cpp",
+      "executable": "local/cc10_resource_probe.exe",
+      "fresh_original_source_cases": 10,
+      "existing_return_original_source_cases": 4,
+      "B21F10_overlap_original_source_cases": 5,
+      "build_flags": "/MD /O2 /W4 /WX /link /MANIFEST:EMBED",
+      "compile_command": "local/cc10_resource_probe_compile.cmd",
+      "link_command": "local/cc10_resource_probe_link.cmd",
+      "boundary": "Mapped original B107F0 control with explicit reused source leaf bindings; native frontier jump BEFORE B109BC records values, pops EDI/EBX and reaches original epilogue. No excluded child initialization executes. B21F10 uses unmodified mapped original24 bytes.",
+      "native_control_patches": [
+        "B10832/B1300B dirty/root providers",
+        "B10878 shared CRT allocation",
+        "B10891 existing frame constructor",
+        "B108C3/B108DF existing frame assignments",
+        "current F8D394 cell operands B108A2/B108CA/B1097B",
+        "CE2220 import operand B10860",
+        "D5E600/D5F0A8 fixture profiles",
+        "B109BC frontier jump"
+      ],
+      "observed_output": "PASS controlled original/source: fresh=10 existing=4 dimensions_overlap=5; real frame/surface refcounts; no device/full-init/FH3 claim",
+      "concrete_risks_checked": [
+        "final/nonfinal old-frame release ordering",
+        "decrement reentrancy replaces current renderer and parent1D4; subsequent clear/publish wins",
+        "actual surface reference counts with concrete frame constructor/setters/deleter",
+        "raw MOVSS payload and signed alignment edges",
+        "retained argument identities and replay rejection",
+        "unchanged service+70 frontier",
+        "all four nullable early-return combinations",
+        "B21F10 captures both source words before overlapping output stores"
+      ]
+    },
+    "diff_check": "passed"
+  },
+  "runtime_limits": {
+    "source_entry_fixture": true,
+    "source_dimensions_fixture": true,
+    "actual_D3D_device": false,
+    "production_application_binding": false,
+    "full_resource_graph_init": false,
+    "native_FH3_SEH_parity": false,
+    "application_or_game_validation": false,
+    "reused_leaf_native_differential": false
+  },
+  "corrections": [
+    {
+      "was": "Historical BM inventory lists many initialization leaves as unavailable",
+      "is": "Several complete source providers now exist; their B107F0 composition remains unimplemented",
+      "evidence": "Current provider mapping and exact excluded frontier above"
+    },
+    {
+      "was": "Potential interpretation that service+1C4 is sufficient full-initialization/destruction admission",
+      "is": "Native stores1 at B10904 before first excluded18h child allocation; +70 is first assigned only atB11563",
+      "evidence": "Current assembly B10904,B109BC,B11555,B11563"
+    }
+  ],
+  "artifact_hashes": {
+    "include/bsp/native_render_resource_init.hpp": "da8d229c4dd838a6dfc47422b9f1055fb863f8e573133dfe2f16d5185cca4144",
+    "src/native_render_resource_init.cpp": "c5b22da5d4b33a7db6f3fdd2429fcc7b8bd8638cf29e303b6ac002548b783350",
+    "local/cc10_resource_probe.cpp": "4879862669b5d76eb2ea07dcfe4f6c1ae3ad949dea2d8fc95036d39fa08a722b",
+    "local/cc10_resource_probe.exe": "8a2128b26ea8e235cab49bbcf7db1f46a7f0098a3e2104cf1a9aa11e38444bb8",
+    "local/cc10-init-build.txt": "01757828e892de998f55104bd06743189975f9745c37fc87bd0f92510813055c",
+    "local/cc10-init-00b107f0.bin": "b9faf0b255e8bca3eb711bf1186bb1f41533d9047853a753599b9f1abd805a14",
+    "local/cc10-init-00b21f10.bin": "4305c76490a0abf4f2f3c63193eb32b468dc3c01d001f79154162ab06d244ca2"
+  }
+}
