@@ -11692,10 +11692,27 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                           unit_.plane_max_spd,
                                           kTorpedoReferenceSpeedAuthored)
                                     : 1.0f;
+                            // Packet cc9_surface_gunnery_reference: the row
+                            // [[unit+DF4h]+34h] selects, by the slot's skill
+                            // index (0 Stun .. 5 Elite, luamw_init.lua), as the
+                            // dive task already does. docs/IJN_SKILL_ROWS.md s4.
+                            // {TorpReleaseAlt, DistNear, DistFar, DropCloserMul}
+                            static constexpr float kTorpRows[6][4] = {
+                                {12.0f, 350.0f, 600.0f, 0.7f},    // Stun
+                                {kTorpReleaseAltSPNormal, kTorpReleaseDistNearSPNormal,
+                                 kTorpReleaseDistFarSPNormal,
+                                 kTorpReleaseDropCloserMulSPNormal},  // SPNormal
+                                {5.0f, 800.0f, 1200.0f, 0.5f},    // SPVeteran
+                                {10.0f, 800.0f, 1200.0f, 0.7f},   // MPNormal
+                                {10.0f, 800.0f, 1200.0f, 0.6f},   // MPVeteran
+                                {5.0f, 800.0f, 1200.0f, 0.5f},    // Elite
+                            };
+                            const int torp_row = (kSkillLevelBound && unit_.pilot_skill_index >= 0
+                                && unit_.pilot_skill_index <= 5) ? unit_.pilot_skill_index : 1;
                             const bsp::TorpedoRunSpeeds seeded =
                                 bsp::torpedo_seed_run_speeds_009d0484(
-                                    kTorpReleaseDistNearSPNormal,
-                                    kTorpReleaseDistFarSPNormal, ratio_24h);
+                                    kTorpRows[torp_row][1],
+                                    kTorpRows[torp_row][2], ratio_24h);
                             ap.speed_early_80 = seeded.speed_early_80;
                             ap.speed_late_7c = seeded.speed_late_7c;
                             // 009D046A scales approach+78h by the row's
@@ -11705,7 +11722,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // 00D7A220, so the floor the aim tick reads is
                             // alt_floor_74 + alt_margin_78 and this is the
                             // margin half of it.
-                            ap.alt_margin_78 = kTorpReleaseAltSPNormal;
+                            ap.alt_margin_78 = kTorpRows[torp_row][0];
                             // 009D049D/009D04A0 seed approach+84h from the SAME
                             // robots row, one field further on (row+18h), as a
                             // bare FLD/FSTP with NO ratio.
@@ -11730,7 +11747,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // binding, which made both endpoints of the
                             // interpolation at 009D1FED equal and the release
                             // gate inert. docs/TORPEDO_RELEASE_GATE.md.
-                            ap.aspect_scale_84 = kTorpReleaseDropCloserMulSPNormal;
+                            ap.aspect_scale_84 = kTorpRows[torp_row][3];
                             // ctl+3D0h[0], the flight leader: the only task
                             // whose 0099B740 raises the shared attack mode.
                             bool lead_taken = false;

@@ -142,6 +142,20 @@ constexpr bool kShipPlatformAttachmentBound = true;
 //    since nothing static stands between ships at sea. OFF: always clear.
 //    docs/SHIP_PLATFORM_ATTACHMENT.md.
 constexpr bool kAaLineOfFireBound = true;
+//  * kArtilleryAimPointBound: the ArtilleryGunnerBot (006DF520, sub-types 2, 3,
+//    4, 9, and 6 against a non-plane) aims at a point ON its ship target, not
+//    at the target origin raised by the class Height. Step 4: when bot+B4h
+//    runs out it is reset to the skill row's TargetPointRefreshTime (row+14h,
+//    006DF71B) and target->vtable[100h] = 00816650 (the ship vtables) draws a
+//    body-frame point with the row's SectionTargetChance and section weights
+//    (row+18h..+24h, 006DF72B-006DF743) over a box of 0.6 (00CE3D30) about the
+//    origin (00F87574, zero). Step 5 carries it to world by the target's matrix
+//    (00414D10 with target+CCh). Labelled: the ship's engine-room, magazine
+//    and fuel-tank section points are not loaded, so the section path is
+//    unavailable and every draw takes the hull box; bot+90h's stepped offset
+//    toward bot+84h is not modelled; a target change re-draws at once. OFF:
+//    the target origin raised by Height. docs/SURFACE_GUNNERY_REFERENCE.md.
+constexpr bool kArtilleryAimPointBound = true;
 
 // 00901C20 BSP_GunBot_InterceptSolution, the time-of-flight half, as a pure rule.
 // rel = target position - shooter position; vel = target velocity - shooter
@@ -432,6 +446,7 @@ struct GameGunneryHost::Impl {
         death_mode = 8,       // 007CA914, the plane death-mode choice, key (unit, 0)
         death_delay = 9,      // 007BBFA0's ExplosionExplosionDelay (stream 0), key (unit, 0)
         aim_wander = 10,      // 009FA620 / 009FA7E0, the dogfight aim distortion, key (unit, 0)
+        aim_point = 11,       // 00816650's hull-box draws for the artillery bot, key (gun, 0)
     };
     unsigned long long next_projectile_serial{0};
     static bool rng_streams_enabled() {
@@ -456,6 +471,45 @@ struct GameGunneryHost::Impl {
         float countdown{0.0f};
     };
     std::map<std::size_t, AimErrorState> aim_error_by_gun;
+    // Packet cc9_surface_gunnery_reference: 006DF520 step 4's per-bot point.
+    struct ArtilleryAimPoint {
+        float timer_b4{-1.0f};
+        std::size_t target{static_cast<std::size_t>(-1)};
+        std::array<float, 3> body{};   // bot+A8h..+B0h
+    };
+    std::map<std::size_t, ArtilleryAimPoint> artillery_aim_by_gun;
+    unsigned long long artillery_aim_points{0};
+    // 006DF6D7-006DF7B5 then 006DF7BB-006DF7E7: the body point on the target,
+    // refreshed every TargetPointRefreshTime, carried to world by its pose.
+    void artillery_aim_point(std::size_t gun_index, std::size_t target, float dt,
+                             float out[3]) {
+        ArtilleryAimPoint& st = artillery_aim_by_gun[gun_index];
+        if (st.target != target) { st.target = target; st.timer_b4 = -1.0f; }
+        st.timer_b4 -= dt;
+        if (st.timer_b4 <= 0.0f) {
+            st.timer_b4 = 5.0f;   // TargetPointRefreshTime, 5 in every row of this installation
+            const UnitState& t = unit_state[target];
+            bsp::LeadAimHullExtents hull;
+            hull.length = t.hull_length;
+            hull.width = t.hull_width;
+            hull.height = t.hull_height;
+            bsp::ShipLeadRandomDraws draws;
+            draws.section_roll = draw(Draw::aim_point, gun_index, 0, 0.0f, 1.0f);   // 0081667C
+            draws.box_x = draw(Draw::aim_point, gun_index, 0, -0.6f, 0.6f);         // 00816883
+            draws.box_y = draw(Draw::aim_point, gun_index, 0, 0.0f, 0.6f);          // 008168A0
+            draws.box_z = draw(Draw::aim_point, gun_index, 0, -0.6f, 0.6f);         // 008168D5
+            const bsp::ShipLeadSections sections{};
+            st.body = bsp::ship_lead_point_00816650(sections, hull, {0.6f, 0.6f, 0.6f},
+                {0.0f, 0.0f, 0.0f}, 0.0f, 0.0f, 0.0f, 0.0f, draws, false, false, false);
+            ++artillery_aim_points;
+            done("Ship::lead_point_00816650", 0x00816650u);
+        }
+        float r[3], u[3], f[3], o[3];
+        unit_pose(target, r, u, f, o);
+        for (int i = 0; i < 3; ++i) {
+            out[i] = o[i] + r[i] * st.body[0] + u[i] * st.body[1] + f[i] * st.body[2];
+        }
+    }
     // 0072C6A0's slots, and 00729BC0's dispatch on the projectile kind of the
     // ammunition in use. A sub-type 6 gun answers a plane with its SECOND
     // ammunition entry (00729BC0's variant 1, +74h+7Ch), a Flak round that the
@@ -2873,7 +2927,12 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         bool arc_solved = true;
         if (have_target) {
             float theirs[3];
-            unit_aim_point(target, theirs);
+            if (kArtilleryAimPointBound && artillery_bot_aims(gun.category, target)
+                && units.unit_is_kind_of(target, bsp::kUnitGunneryKindShipBase)) {
+                artillery_aim_point(g, target, dt, theirs);
+            } else {
+                unit_aim_point(target, theirs);
+            }
             float velocity[3];
             unit_velocity(target, velocity);
             const std::array<float, 3> shooter{muzzle[0], muzzle[1], muzzle[2]};
@@ -5070,6 +5129,9 @@ void GameGunneryHost::report() {
             "fallback=%llu devices=%zu bound=%d (007325A0/0072AB80, packet cc9_gun_barrel_count)",
             host.barrel_guns_from_model, host.barrel_guns_changed, host.barrel_guns_fallback,
             host.fire_points_by_device.size(), kGunBarrelCountBound ? 1 : 0);
+        host.log.notef("summary mission gunnery artillery aim points drawn=%llu bound=%d "
+            "(006DF520 step 4 / 00816650, packet cc9_surface_gunnery_reference)",
+            host.artillery_aim_points, kArtilleryAimPointBound ? 1 : 0);
         host.log.notef("summary mission gunnery aa line of fire queries=%llu blocked=%llu "
             "refusals=%llu bound=%d (0072F6E0/0072CDD0/0098B130, packet cc9_ship_platform_attachment)",
             host.line_of_fire_queries, host.line_of_fire_blocked, host.line_of_fire_refusals,

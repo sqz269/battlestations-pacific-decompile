@@ -9347,3 +9347,18 @@ Rows are distinct host records.
     or the death flags. The death flags left drops at 0 to 0.
   - Deaths go from 30 to 37. The flak burst (35 to 37), barrel count (37 to 37) and death flags
     (35 to 37) pairs each account for at most two.
+
+## USN02 surface gunnery reference, 2026-09-23 (packet `cc9_surface_gunnery_reference`)
+
+USN02, "New - Battle of the Java Sea", 9000 mission frames (`--frames 9200 --press-start-frame 30
+--menu-select USN02 --mission-frames 9000 --mission-frame-seconds 0.05`), on main `c1ace01c4`,
+all switches landed, `BSP_GUNNERY_RNG_STREAMS` unset. Log: `local\sR_usn02.log`.
+
+| damage | deaths | queued hits | hull hits | shots | rounds hitting a unit / water / expired | first hit | mission end |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 63221.2 | 18 (5 Allied, 13 IJN) | 448 | 221 | 1576 | 222 / 1272 / 421 | 38.80 s | none |
+
+This row was taken **before** `kArtilleryAimPointBound`. With it landed, the option-on pair fails
+the mission at 173.31 s on Exeter's sinking (`usn_2_java.lua:521`), and hits per round rise from
+13 % to 25 %. So the landed-state reference has to be re-taken at the next re-baseline.
+Details: docs/SURFACE_GUNNERY_REFERENCE.md.
