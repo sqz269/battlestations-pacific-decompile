@@ -1,0 +1,2561 @@
+{
+  "packet": "cc10_render_resource_continuation",
+  "base_commit": "41d46cd1f",
+  "status": "partial_projection_B107F0_B109BC_to_B11599_and_two_complete_leaves",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "source_files": [
+    "include/bsp/native_render_resource_init_continuation.hpp",
+    "src/native_render_resource_init_continuation.cpp"
+  ],
+  "small_extension": "include/bsp/native_render_resource_init.hpp: phases and single continuation identity only",
+  "no_ghidra_function": [],
+  "routines": [
+    {
+      "address": "00b107f0",
+      "name": "continue_native_render_resource_init_00b109bc_fragment",
+      "status": "partial_projection",
+      "coverage": "ONLY [00B109BC,00B11599), 3037 bytes; last B11594 CALL BD1510 length5, final byteB11598",
+      "original_abi": "containing ECX actual service; three DWORD stack cells; native eventual RET0C; fragment has no return; native FH3",
+      "source_abi": "new C++ explicit retained entry, canonical context and persistent continuation state",
+      "complete_init": false,
+      "destruction_admitted": false,
+      "runtime_tested": false,
+      "excluded": [
+        "entry [00B107F0,00B109BC) belongs to published entry packet",
+        "remaining [00B11599,00B13029) not reconstructed here"
+      ],
+      "preserved_ghidra_name": "BSP_RenderResources_InitializeMembers_PartialEntry"
+    },
+    {
+      "address": "00b4e2b0",
+      "name": "assign_native_post_effect_frame_00b4e2b0",
+      "status": "complete_bounded_normal_body",
+      "start": "00b4e2b0",
+      "end_inclusive": "00b4e2ea",
+      "end_exclusive": "00b4e2eb",
+      "size": 59,
+      "last_instruction": "00b4e2e8",
+      "last_instruction_size": 3,
+      "last_instruction_text": "RET4",
+      "original_abi": "ECX actual post20; stack incoming frame; RET4; ESI preserved; native imported callees may clobber EAX ECX EDX flags",
+      "source_abi": "new C++ explicit actual post, frame, current imports and existing actual frame owner context",
+      "required_domain": "actual D5E600 frame profile [BD30E0,B1FCF0]; no guessed arbitrary vtable or separate refcount",
+      "all_callsites": 14,
+      "old_ghidra_name": "FUN_00b4e2b0"
+    },
+    {
+      "address": "00b54cd0",
+      "name": "native_bloom_output_holder_00b54cd0",
+      "status": "complete",
+      "start": "00b54cd0",
+      "end_inclusive": "00b54cd3",
+      "end_exclusive": "00b54cd4",
+      "size": 4,
+      "last_instruction": "00b54cd3",
+      "last_instruction_size": 1,
+      "last_instruction_text": "RET",
+      "original_abi": "ECX actual bloom; EAX borrowed holder+20; RET0; MOV/RET leave other registers and flags untouched",
+      "source_abi": "new C++ borrowed pointer; native register preservation is not claimed",
+      "all_callsites": 7,
+      "old_ghidra_name": "TRIV_body_00b54cd0"
+    }
+  ],
+  "live_pe_byte_blocks": [
+    {
+      "start": "00b109bc",
+      "end_exclusive": "00b11599",
+      "size": 3037,
+      "sha256": "073a23c615e0dec264d4dc2c73e8d67ead680aecf7b3aeab3c47705bc2106691",
+      "live_equals_disk": true
+    },
+    {
+      "start": "00b4e2b0",
+      "end_exclusive": "00b4e2eb",
+      "size": 59,
+      "sha256": "693f73fefb97d376ef6417ba3cfe243d6e052fba6fe1c4dc1e659231e00ee161",
+      "live_equals_disk": true
+    },
+    {
+      "start": "00b54cd0",
+      "end_exclusive": "00b54cd4",
+      "size": 4,
+      "sha256": "07ad3a50b1c271e07fb57fb47d2f0e77f3342d41bfa410990cb1320a45035fb2",
+      "live_equals_disk": true
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "00b109c2",
+      "function": "00b107f0",
+      "instruction_operand": "0xbf681b",
+      "native": "00bf681b",
+      "source": "singleton_lifetime_allocate"
+    },
+    {
+      "address": "00b109ee",
+      "function": "00b107f0",
+      "instruction_operand": "0xb4e020",
+      "native": "00b4e020",
+      "source": "construct_native_render_texture_surface_owner_00b4e020"
+    },
+    {
+      "address": "00b10a03",
+      "function": "00b107f0",
+      "instruction_operand": "0xbf681b",
+      "native": "00bf681b",
+      "source": "singleton_lifetime_allocate"
+    },
+    {
+      "address": "00b10a2f",
+      "function": "00b107f0",
+      "instruction_operand": "0xb4e020",
+      "native": "00b4e020",
+      "source": "construct_native_render_texture_surface_owner_00b4e020"
+    },
+    {
+      "address": "00b10a44",
+      "function": "00b107f0",
+      "instruction_operand": "0xbf681b",
+      "native": "00bf681b",
+      "source": "singleton_lifetime_allocate"
+    },
+    {
+      "address": "00b10a70",
+      "function": "00b107f0",
+      "instruction_operand": "0xb4e020",
+      "native": "00b4e020",
+      "source": "construct_native_render_texture_surface_owner_00b4e020"
+    },
+    {
+      "address": "00b10a9e",
+      "function": "00b107f0",
+      "instruction_operand": "ebp",
+      "native": "indirect: CE221C captured in EBP at B10A79",
+      "binding": "retain actual incoming+04"
+    },
+    {
+      "address": "00b10aa8",
+      "function": "00b107f0",
+      "instruction_operand": "dword ptr [0xce2220]",
+      "native": "indirect: current [CE2220]",
+      "binding": "release captured old holder+04"
+    },
+    {
+      "address": "00b10ab8",
+      "function": "00b107f0",
+      "instruction_operand": "eax",
+      "native": "indirect: old holder vtable+0",
+      "binding": "D61EB8/BD30E0 -> B4E410(flags1)"
+    },
+    {
+      "address": "00b10ad4",
+      "function": "00b107f0",
+      "instruction_operand": "0xb2a7c0",
+      "native": "00b2a7c0",
+      "source": "create_native_renderer_render_target_00b2a7c0"
+    },
+    {
+      "address": "00b10ade",
+      "function": "00b107f0",
+      "instruction_operand": "0xbf681b",
+      "native": "00bf681b",
+      "source": "singleton_lifetime_allocate"
+    },
+    {
+      "address": "00b10b0e",
+      "function": "00b107f0",
+      "instruction_operand": "0xb4e020",
+      "native": "00b4e020",
+      "source": "construct_native_render_texture_surface_owner_00b4e020"
+    },
+    {
+      "address": "00b10b23",
+      "function": "00b107f0",
+      "instruction_operand": "0xbf681b",
+      "native": "00bf681b",
+      "source": "singleton_lifetime_allocate"
+    },
+    {
+      "address": "00b10b53",
+      "function": "00b107f0",
+      "instruction_operand": "0xb4e020",
+      "native": "00b4e020",
+      "source": "construct_native_render_texture_surface_owner_00b4e020"
+    },
+    {
+      "address": "00b10b8e",
+      "function": "00b107f0",
+      "instruction_operand": "eax",
+      "native": "indirect: current renderer vtable+88",
+      "binding": "D5F0A8/B2A070"
+    },
+    {
+      "address": "00b10b9e",
+      "function": "00b107f0",
+      "instruction_operand": "eax",
+      "native": "indirect: current texture vtable+30",
+      "binding": "D61948/B3FD80"
+    },
+    {
+      "address": "00b10bb8",
+      "function": "00b107f0",
+      "instruction_operand": "ebp",
+      "native": "indirect: CE221C captured in EBP at B10A79",
+      "binding": "retain actual incoming+04"
+    },
+    {
+      "address": "00b10bc2",
+      "function": "00b107f0",
+      "instruction_operand": "dword ptr [0xce2220]",
+      "native": "indirect: current [CE2220]",
+      "binding": "release captured old surface+04"
+    },
+    {
+      "address": "00b10bd2",
+      "function": "00b107f0",
+      "instruction_operand": "eax",
+      "native": "indirect: old surface vtable+0",
+      "binding": "D619A0/BD30E0 -> B3F5B0(flags1)"
+    },
+    {
+      "address": "00b10bd6",
+      "function": "00b107f0",
+      "instruction_operand": "0xbf681b",
+      "native": "00bf681b",
+      "source": "singleton_lifetime_allocate"
+    },
+    {
+      "address": "00b10c20",
+      "function": "00b107f0",
+      "instruction_operand": "0xb540b0",
+      "native": "00b540b0",
+      "source": "initialize_native_depth_downscale_pass_00b540b0"
+    },
+    {
+      "address": "00b10c27",
+      "function": "00b107f0",
+      "instruction_operand": "0xbf681b",
+      "native": "00bf681b",
+      "source": "singleton_lifetime_allocate"
+    },
+    {
+      "address": "00b10c70",
+      "function": "00b107f0",
+      "instruction_operand": "0xb4d170",
+      "native": "00b4d170",
+      "source": "native_shadow_texture_holder_00b4d170"
+    },
+    {
+      "address": "00b10c77",
+      "function": "00b107f0",
+      "instruction_operand": "0xb4cb10",
+      "native": "00b4cb10",
+      "source": "native_shadow_holder_texture_00b4cb10"
+    },
+    {
+      "address": "00b10c88",
+      "function": "00b107f0",
+      "instruction_operand": "0xb542d0",
+      "native": "00b542d0",
+      "source": "initialize_native_particle_blend_pass_00b542d0"
+    },
+    {
+      "address": "00b10c8f",
+      "function": "00b107f0",
+      "instruction_operand": "0xbf681b",
+      "native": "00bf681b",
+      "source": "singleton_lifetime_allocate"
+    },
+    {
+      "address": "00b10cb5",
+      "function": "00b107f0",
+      "instruction_operand": "0x41e870",
+      "native": "0041e870",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b10cd4",
+      "function": "00b107f0",
+      "instruction_operand": "0xb4e470",
+      "native": "00b4e470",
+      "source": "construct_native_post_effect20_00b4e470"
+    },
+    {
+      "address": "00b10d06",
+      "function": "00b107f0",
+      "instruction_operand": "0x419cc0",
+      "native": "00419cc0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b10d0d",
+      "function": "00b107f0",
+      "instruction_operand": "0xbd1510",
+      "native": "00bd1510",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b10d1e",
+      "function": "00b107f0",
+      "instruction_operand": "0x41e870",
+      "native": "0041e870",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b10d3d",
+      "function": "00b107f0",
+      "instruction_operand": "0xb4cba0",
+      "native": "00b4cba0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b10d44",
+      "function": "00b107f0",
+      "instruction_operand": "0xb18b00",
+      "native": "00b18b00",
+      "source": "register_native_material_float2_00b18b00"
+    },
+    {
+      "address": "00b10d69",
+      "function": "00b107f0",
+      "instruction_operand": "0x419cc0",
+      "native": "00419cc0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b10d70",
+      "function": "00b107f0",
+      "instruction_operand": "0xbd1510",
+      "native": "00bd1510",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b10d77",
+      "function": "00b107f0",
+      "instruction_operand": "0xbf681b",
+      "native": "00bf681b",
+      "source": "singleton_lifetime_allocate"
+    },
+    {
+      "address": "00b10d9d",
+      "function": "00b107f0",
+      "instruction_operand": "0x41e870",
+      "native": "0041e870",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b10dba",
+      "function": "00b107f0",
+      "instruction_operand": "0xb4e470",
+      "native": "00b4e470",
+      "source": "construct_native_post_effect20_00b4e470"
+    },
+    {
+      "address": "00b10dec",
+      "function": "00b107f0",
+      "instruction_operand": "0x419cc0",
+      "native": "00419cc0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b10df3",
+      "function": "00b107f0",
+      "instruction_operand": "0xbd1510",
+      "native": "00bd1510",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b10e04",
+      "function": "00b107f0",
+      "instruction_operand": "0x41e870",
+      "native": "0041e870",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b10e20",
+      "function": "00b107f0",
+      "instruction_operand": "0xb4cba0",
+      "native": "00b4cba0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b10e27",
+      "function": "00b107f0",
+      "instruction_operand": "0xb18b00",
+      "native": "00b18b00",
+      "source": "register_native_material_float2_00b18b00"
+    },
+    {
+      "address": "00b10e4e",
+      "function": "00b107f0",
+      "instruction_operand": "0x419cc0",
+      "native": "00419cc0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b10e55",
+      "function": "00b107f0",
+      "instruction_operand": "0xbd1510",
+      "native": "00bd1510",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b10e5f",
+      "function": "00b107f0",
+      "instruction_operand": "0xbf681b",
+      "native": "00bf681b",
+      "source": "singleton_lifetime_allocate"
+    },
+    {
+      "address": "00b10eb0",
+      "function": "00b107f0",
+      "instruction_operand": "0xb4d170",
+      "native": "00b4d170",
+      "source": "native_shadow_texture_holder_00b4d170"
+    },
+    {
+      "address": "00b10eb9",
+      "function": "00b107f0",
+      "instruction_operand": "0xb544f0",
+      "native": "00b544f0",
+      "source": "initialize_native_downscale4x4_pass_00b544f0"
+    },
+    {
+      "address": "00b10ec3",
+      "function": "00b107f0",
+      "instruction_operand": "0xbf681b",
+      "native": "00bf681b",
+      "source": "singleton_lifetime_allocate"
+    },
+    {
+      "address": "00b10f17",
+      "function": "00b107f0",
+      "instruction_operand": "0xb4d170",
+      "native": "00b4d170",
+      "source": "native_shadow_texture_holder_00b4d170"
+    },
+    {
+      "address": "00b10f20",
+      "function": "00b107f0",
+      "instruction_operand": "0xb546f0",
+      "native": "00b546f0",
+      "source": "initialize_native_downscale2x2_pass_00b546f0"
+    },
+    {
+      "address": "00b10f2a",
+      "function": "00b107f0",
+      "instruction_operand": "0xbf681b",
+      "native": "00bf681b",
+      "source": "singleton_lifetime_allocate"
+    },
+    {
+      "address": "00b10f47",
+      "function": "00b107f0",
+      "instruction_operand": "0xb50d40",
+      "native": "00b50d40",
+      "source": "construct_native_luminance_owner_00b50d40"
+    },
+    {
+      "address": "00b10f5d",
+      "function": "00b107f0",
+      "instruction_operand": "0xb4d170",
+      "native": "00b4d170",
+      "source": "native_shadow_texture_holder_00b4d170"
+    },
+    {
+      "address": "00b10f66",
+      "function": "00b107f0",
+      "instruction_operand": "0xb51090",
+      "native": "00b51090",
+      "source": "initialize_native_luminance_00b51090"
+    },
+    {
+      "address": "00b10f70",
+      "function": "00b107f0",
+      "instruction_operand": "0xbf681b",
+      "native": "00bf681b",
+      "source": "singleton_lifetime_allocate"
+    },
+    {
+      "address": "00b10fa5",
+      "function": "00b107f0",
+      "instruction_operand": "0xb4d170",
+      "native": "00b4d170",
+      "source": "native_shadow_texture_holder_00b4d170"
+    },
+    {
+      "address": "00b10fae",
+      "function": "00b107f0",
+      "instruction_operand": "0xb54940",
+      "native": "00b54940",
+      "source": "initialize_native_bright_pass_00b54940"
+    },
+    {
+      "address": "00b10fb8",
+      "function": "00b107f0",
+      "instruction_operand": "0xbf681b",
+      "native": "00bf681b",
+      "source": "singleton_lifetime_allocate"
+    },
+    {
+      "address": "00b10fd5",
+      "function": "00b107f0",
+      "instruction_operand": "0xb54e70",
+      "native": "00b54e70",
+      "source": "construct_native_bloom_owner_00b54e70"
+    },
+    {
+      "address": "00b11013",
+      "function": "00b107f0",
+      "instruction_operand": "0xb4d170",
+      "native": "00b4d170",
+      "source": "native_shadow_texture_holder_00b4d170"
+    },
+    {
+      "address": "00b1101c",
+      "function": "00b107f0",
+      "instruction_operand": "0xb54f90",
+      "native": "00b54f90",
+      "source": "initialize_native_bloom_00b54f90"
+    },
+    {
+      "address": "00b11023",
+      "function": "00b107f0",
+      "instruction_operand": "0xbf681b",
+      "native": "00bf681b",
+      "source": "singleton_lifetime_allocate"
+    },
+    {
+      "address": "00b1104c",
+      "function": "00b107f0",
+      "instruction_operand": "0x41e870",
+      "native": "0041e870",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b1106c",
+      "function": "00b107f0",
+      "instruction_operand": "0xb4e470",
+      "native": "00b4e470",
+      "source": "construct_native_post_effect20_00b4e470"
+    },
+    {
+      "address": "00b110a7",
+      "function": "00b107f0",
+      "instruction_operand": "0x419cc0",
+      "native": "00419cc0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b110ae",
+      "function": "00b107f0",
+      "instruction_operand": "0xbd1510",
+      "native": "00bd1510",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b110b6",
+      "function": "00b107f0",
+      "instruction_operand": "0xb4cb10",
+      "native": "00b4cb10",
+      "source": "native_shadow_holder_texture_00b4cb10"
+    },
+    {
+      "address": "00b110c4",
+      "function": "00b107f0",
+      "instruction_operand": "0xb4cba0",
+      "native": "00b4cba0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b110cb",
+      "function": "00b107f0",
+      "instruction_operand": "0xb189f0",
+      "native": "00b189f0",
+      "source": "set_native_material_texture_unchecked_00b189f0"
+    },
+    {
+      "address": "00b110d3",
+      "function": "00b107f0",
+      "instruction_operand": "0xb54cd0",
+      "native": "00b54cd0",
+      "source": "native_bloom_output_holder_00b54cd0"
+    },
+    {
+      "address": "00b110da",
+      "function": "00b107f0",
+      "instruction_operand": "0xb4cb10",
+      "native": "00b4cb10",
+      "source": "native_shadow_holder_texture_00b4cb10"
+    },
+    {
+      "address": "00b110e8",
+      "function": "00b107f0",
+      "instruction_operand": "0xb4cba0",
+      "native": "00b4cba0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b110ef",
+      "function": "00b107f0",
+      "instruction_operand": "0xb189f0",
+      "native": "00b189f0",
+      "source": "set_native_material_texture_unchecked_00b189f0"
+    },
+    {
+      "address": "00b110fd",
+      "function": "00b107f0",
+      "instruction_operand": "0x41e870",
+      "native": "0041e870",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b1111f",
+      "function": "00b107f0",
+      "instruction_operand": "0xb4cba0",
+      "native": "00b4cba0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b11126",
+      "function": "00b107f0",
+      "instruction_operand": "0xb18b20",
+      "native": "00b18b20",
+      "source": "register_native_material_float_00b18b20"
+    },
+    {
+      "address": "00b11145",
+      "function": "00b107f0",
+      "instruction_operand": "0x419cc0",
+      "native": "00419cc0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b1114c",
+      "function": "00b107f0",
+      "instruction_operand": "0xbd1510",
+      "native": "00bd1510",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b1115d",
+      "function": "00b107f0",
+      "instruction_operand": "0x41e870",
+      "native": "0041e870",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b11182",
+      "function": "00b107f0",
+      "instruction_operand": "0xb4cba0",
+      "native": "00b4cba0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b11189",
+      "function": "00b107f0",
+      "instruction_operand": "0xb18b20",
+      "native": "00b18b20",
+      "source": "register_native_material_float_00b18b20"
+    },
+    {
+      "address": "00b111ae",
+      "function": "00b107f0",
+      "instruction_operand": "0x419cc0",
+      "native": "00419cc0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b111b5",
+      "function": "00b107f0",
+      "instruction_operand": "0xbd1510",
+      "native": "00bd1510",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b111c3",
+      "function": "00b107f0",
+      "instruction_operand": "0x41e870",
+      "native": "0041e870",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b111e8",
+      "function": "00b107f0",
+      "instruction_operand": "0xb4cba0",
+      "native": "00b4cba0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b111ef",
+      "function": "00b107f0",
+      "instruction_operand": "0xb18b00",
+      "native": "00b18b00",
+      "source": "register_native_material_float2_00b18b00"
+    },
+    {
+      "address": "00b1120e",
+      "function": "00b107f0",
+      "instruction_operand": "0x419cc0",
+      "native": "00419cc0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b11215",
+      "function": "00b107f0",
+      "instruction_operand": "0xbd1510",
+      "native": "00bd1510",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b11226",
+      "function": "00b107f0",
+      "instruction_operand": "0x41e870",
+      "native": "0041e870",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b1124b",
+      "function": "00b107f0",
+      "instruction_operand": "0xb4cba0",
+      "native": "00b4cba0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b11252",
+      "function": "00b107f0",
+      "instruction_operand": "0xb18b20",
+      "native": "00b18b20",
+      "source": "register_native_material_float_00b18b20"
+    },
+    {
+      "address": "00b11277",
+      "function": "00b107f0",
+      "instruction_operand": "0x419cc0",
+      "native": "00419cc0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b1127e",
+      "function": "00b107f0",
+      "instruction_operand": "0xbd1510",
+      "native": "00bd1510",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b1128f",
+      "function": "00b107f0",
+      "instruction_operand": "0x41e870",
+      "native": "0041e870",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b112b4",
+      "function": "00b107f0",
+      "instruction_operand": "0xb4cba0",
+      "native": "00b4cba0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b112bb",
+      "function": "00b107f0",
+      "instruction_operand": "0xb18b20",
+      "native": "00b18b20",
+      "source": "register_native_material_float_00b18b20"
+    },
+    {
+      "address": "00b112e0",
+      "function": "00b107f0",
+      "instruction_operand": "0x419cc0",
+      "native": "00419cc0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b112e7",
+      "function": "00b107f0",
+      "instruction_operand": "0xbd1510",
+      "native": "00bd1510",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b112f8",
+      "function": "00b107f0",
+      "instruction_operand": "0x41e870",
+      "native": "0041e870",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b1131a",
+      "function": "00b107f0",
+      "instruction_operand": "0xb4cba0",
+      "native": "00b4cba0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b11321",
+      "function": "00b107f0",
+      "instruction_operand": "0xb18b00",
+      "native": "00b18b00",
+      "source": "register_native_material_float2_00b18b00"
+    },
+    {
+      "address": "00b11346",
+      "function": "00b107f0",
+      "instruction_operand": "0x419cc0",
+      "native": "00419cc0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b1134d",
+      "function": "00b107f0",
+      "instruction_operand": "0xbd1510",
+      "native": "00bd1510",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b1135e",
+      "function": "00b107f0",
+      "instruction_operand": "0x41e870",
+      "native": "0041e870",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b11383",
+      "function": "00b107f0",
+      "instruction_operand": "0xb4cba0",
+      "native": "00b4cba0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b1138a",
+      "function": "00b107f0",
+      "instruction_operand": "0xb18b20",
+      "native": "00b18b20",
+      "source": "register_native_material_float_00b18b20"
+    },
+    {
+      "address": "00b113af",
+      "function": "00b107f0",
+      "instruction_operand": "0x419cc0",
+      "native": "00419cc0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b113b6",
+      "function": "00b107f0",
+      "instruction_operand": "0xbd1510",
+      "native": "00bd1510",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b113c7",
+      "function": "00b107f0",
+      "instruction_operand": "0x41e870",
+      "native": "0041e870",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b113ec",
+      "function": "00b107f0",
+      "instruction_operand": "0xb4cba0",
+      "native": "00b4cba0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b113f3",
+      "function": "00b107f0",
+      "instruction_operand": "0xb18b20",
+      "native": "00b18b20",
+      "source": "register_native_material_float_00b18b20"
+    },
+    {
+      "address": "00b11418",
+      "function": "00b107f0",
+      "instruction_operand": "0x419cc0",
+      "native": "00419cc0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b1141f",
+      "function": "00b107f0",
+      "instruction_operand": "0xbd1510",
+      "native": "00bd1510",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b11430",
+      "function": "00b107f0",
+      "instruction_operand": "0x41e870",
+      "native": "0041e870",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b11455",
+      "function": "00b107f0",
+      "instruction_operand": "0xb4cba0",
+      "native": "00b4cba0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b1145c",
+      "function": "00b107f0",
+      "instruction_operand": "0xb18b00",
+      "native": "00b18b00",
+      "source": "register_native_material_float2_00b18b00"
+    },
+    {
+      "address": "00b11481",
+      "function": "00b107f0",
+      "instruction_operand": "0x419cc0",
+      "native": "00419cc0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b11488",
+      "function": "00b107f0",
+      "instruction_operand": "0xbd1510",
+      "native": "00bd1510",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b11499",
+      "function": "00b107f0",
+      "instruction_operand": "0x41e870",
+      "native": "0041e870",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b114be",
+      "function": "00b107f0",
+      "instruction_operand": "0xb4cba0",
+      "native": "00b4cba0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b114c5",
+      "function": "00b107f0",
+      "instruction_operand": "0xb18b00",
+      "native": "00b18b00",
+      "source": "register_native_material_float2_00b18b00"
+    },
+    {
+      "address": "00b114ea",
+      "function": "00b107f0",
+      "instruction_operand": "0x419cc0",
+      "native": "00419cc0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b114f1",
+      "function": "00b107f0",
+      "instruction_operand": "0xbd1510",
+      "native": "00bd1510",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b114f9",
+      "function": "00b107f0",
+      "instruction_operand": "0xb4cb20",
+      "native": "00b4cb20",
+      "source": "native_render_holder_primary_00b4cb20"
+    },
+    {
+      "address": "00b11505",
+      "function": "00b107f0",
+      "instruction_operand": "0xb4cb70",
+      "native": "00b4cb70",
+      "source": "set_native_post_effect_color0_00b4cb70"
+    },
+    {
+      "address": "00b1150c",
+      "function": "00b107f0",
+      "instruction_operand": "0xbf681b",
+      "native": "00bf681b",
+      "source": "singleton_lifetime_allocate"
+    },
+    {
+      "address": "00b11535",
+      "function": "00b107f0",
+      "instruction_operand": "0x41e870",
+      "native": "0041e870",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b11555",
+      "function": "00b107f0",
+      "instruction_operand": "0xb4e470",
+      "native": "00b4e470",
+      "source": "construct_native_post_effect20_00b4e470"
+    },
+    {
+      "address": "00b1158d",
+      "function": "00b107f0",
+      "instruction_operand": "0x419cc0",
+      "native": "00419cc0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b11594",
+      "function": "00b107f0",
+      "instruction_operand": "0xbd1510",
+      "native": "00bd1510",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b4e2c7",
+      "function": "00b4e2b0",
+      "instruction_operand": "dword ptr [0xce221c]",
+      "native": "indirect: current [CE221C]",
+      "binding": "retain actual incoming+04"
+    },
+    {
+      "address": "00b4e2d5",
+      "function": "00b4e2b0",
+      "instruction_operand": "dword ptr [0xce2220]",
+      "native": "indirect: current [CE2220]",
+      "binding": "release captured old frame+04"
+    },
+    {
+      "address": "00b4e2e5",
+      "function": "00b4e2b0",
+      "instruction_operand": "eax",
+      "native": "indirect: old frame vtable+0",
+      "binding": "D5E600/BD30E0 -> B1FCF0(flags1)"
+    }
+  ],
+  "additional_leaf_callsite_rows": [
+    {
+      "address": "00b120ac",
+      "native": "00b4e2b0",
+      "function": "00b107f0",
+      "evidence": "leaf_callsite_receipts and common-push predecessor receipts"
+    },
+    {
+      "address": "00b1249c",
+      "native": "00b4e2b0",
+      "function": "00b107f0",
+      "evidence": "leaf_callsite_receipts and common-push predecessor receipts"
+    },
+    {
+      "address": "00b12975",
+      "native": "00b4e2b0",
+      "function": "00b107f0",
+      "evidence": "leaf_callsite_receipts and common-push predecessor receipts"
+    },
+    {
+      "address": "00b12c95",
+      "native": "00b4e2b0",
+      "function": "00b107f0",
+      "evidence": "leaf_callsite_receipts and common-push predecessor receipts"
+    },
+    {
+      "address": "00b12f4f",
+      "native": "00b4e2b0",
+      "function": "00b107f0",
+      "evidence": "leaf_callsite_receipts and common-push predecessor receipts"
+    },
+    {
+      "address": "00b1643a",
+      "native": "00b4e2b0",
+      "function": "00b156c0",
+      "evidence": "leaf_callsite_receipts and common-push predecessor receipts"
+    },
+    {
+      "address": "00b166b1",
+      "native": "00b4e2b0",
+      "function": "00b156c0",
+      "evidence": "leaf_callsite_receipts and common-push predecessor receipts"
+    },
+    {
+      "address": "00b1672e",
+      "native": "00b4e2b0",
+      "function": "00b156c0",
+      "evidence": "leaf_callsite_receipts and common-push predecessor receipts"
+    },
+    {
+      "address": "00b16884",
+      "native": "00b4e2b0",
+      "function": "00b156c0",
+      "evidence": "leaf_callsite_receipts and common-push predecessor receipts"
+    },
+    {
+      "address": "00b16901",
+      "native": "00b4e2b0",
+      "function": "00b156c0",
+      "evidence": "leaf_callsite_receipts and common-push predecessor receipts"
+    },
+    {
+      "address": "00b16ce2",
+      "native": "00b4e2b0",
+      "function": "00b156c0",
+      "evidence": "leaf_callsite_receipts and common-push predecessor receipts"
+    },
+    {
+      "address": "00b16d6f",
+      "native": "00b4e2b0",
+      "function": "00b156c0",
+      "evidence": "leaf_callsite_receipts and common-push predecessor receipts"
+    },
+    {
+      "address": "00b16e42",
+      "native": "00b4e2b0",
+      "function": "00b156c0",
+      "evidence": "leaf_callsite_receipts and common-push predecessor receipts"
+    },
+    {
+      "address": "00b16ec1",
+      "native": "00b4e2b0",
+      "function": "00b156c0",
+      "evidence": "leaf_callsite_receipts and common-push predecessor receipts"
+    },
+    {
+      "address": "00b115bd",
+      "native": "00b54cd0",
+      "function": "00b107f0",
+      "evidence": "leaf_callsite_receipts and common-push predecessor receipts"
+    },
+    {
+      "address": "00b11962",
+      "native": "00b54cd0",
+      "function": "00b107f0",
+      "evidence": "leaf_callsite_receipts and common-push predecessor receipts"
+    },
+    {
+      "address": "00b15be2",
+      "native": "00b54cd0",
+      "function": "00b156c0",
+      "evidence": "leaf_callsite_receipts and common-push predecessor receipts"
+    },
+    {
+      "address": "00b15bf3",
+      "native": "00b54cd0",
+      "function": "00b156c0",
+      "evidence": "leaf_callsite_receipts and common-push predecessor receipts"
+    },
+    {
+      "address": "00b16a95",
+      "native": "00b54cd0",
+      "function": "00b156c0",
+      "evidence": "leaf_callsite_receipts and common-push predecessor receipts"
+    },
+    {
+      "address": "00b16b13",
+      "native": "00b54cd0",
+      "function": "00b156c0",
+      "evidence": "leaf_callsite_receipts and common-push predecessor receipts"
+    }
+  ],
+  "leaf_callsite_receipts": {
+    "00b120ac": {
+      "address": "00b120ac",
+      "instruction": "CALL 0x00b4e2b0",
+      "context_before": [
+        "00b120ab: PUSH EDX",
+        "00b120a5: MOV ECX,dword ptr [ESI + 0x650]",
+        "00b1209f: MOV EDX,dword ptr [ESI + 0x1d4]",
+        "00b1209a: CALL 0x00bd1510",
+        "00b12098: MOV ECX,EAX",
+        "00b12093: CALL 0x00419cc0",
+        "00b12092: PUSH EAX",
+        "00b12091: PUSH ECX"
+      ],
+      "context_after": [
+        "00b120b1: MOV ECX,dword ptr [ESI + 0x34]",
+        "00b120b4: CALL 0x00b52860",
+        "00b120b9: PUSH 0x20",
+        "00b120bb: CALL 0x00bf681b",
+        "00b120c0: MOV EDI,EAX",
+        "00b120c2: ADD ESP,0x4",
+        "00b120c5: MOV dword ptr [ESP + 0x14],EDI",
+        "00b120c9: TEST EDI,EDI"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00b1249c": {
+      "address": "00b1249c",
+      "instruction": "CALL 0x00b4e2b0",
+      "context_before": [
+        "00b12496: MOV ECX,dword ptr [ESI + 0x658]",
+        "00b12495: PUSH ECX",
+        "00b1248f: MOV ECX,dword ptr [ESI + 0x1d4]",
+        "00b1248a: CALL 0x00bd1510",
+        "00b12488: MOV ECX,EAX",
+        "00b12483: CALL 0x00419cc0",
+        "00b12482: PUSH EAX",
+        "00b12481: PUSH ECX"
+      ],
+      "context_after": [
+        "00b124a1: PUSH 0x20",
+        "00b124a3: CALL 0x00bf681b",
+        "00b124a8: MOV EDI,EAX",
+        "00b124aa: ADD ESP,0x4",
+        "00b124ad: MOV dword ptr [ESP + 0x14],EDI",
+        "00b124b1: TEST EDI,EDI",
+        "00b124b3: MOV dword ptr [ESP + 0x27c],0x49",
+        "00b124be: JZ 0x00b124f6"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00b12975": {
+      "address": "00b12975",
+      "instruction": "CALL 0x00b4e2b0",
+      "context_before": [
+        "00b12974: PUSH EDX",
+        "00b1296e: MOV ECX,dword ptr [ESI + 0x65c]",
+        "00b12968: MOV EDX,dword ptr [ESI + 0x1d4]",
+        "00b12963: CALL 0x00bd1510",
+        "00b12961: MOV ECX,EAX",
+        "00b1295c: CALL 0x00419cc0",
+        "00b1295b: PUSH EAX",
+        "00b1295a: PUSH ECX"
+      ],
+      "context_after": [
+        "00b1297a: PUSH 0x20",
+        "00b1297c: CALL 0x00bf681b",
+        "00b12981: MOV EDI,EAX",
+        "00b12983: ADD ESP,0x4",
+        "00b12986: MOV dword ptr [ESP + 0x14],EDI",
+        "00b1298a: TEST EDI,EDI",
+        "00b1298c: MOV dword ptr [ESP + 0x27c],0x56",
+        "00b12997: MOV EBX,0x100"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00b12c95": {
+      "address": "00b12c95",
+      "instruction": "CALL 0x00b4e2b0",
+      "context_before": [
+        "00b12c94: PUSH EAX",
+        "00b12c8e: MOV ECX,dword ptr [ESI + 0x664]",
+        "00b12c88: MOV EAX,dword ptr [ESI + 0x1d4]",
+        "00b12c83: CALL 0x00bd1510",
+        "00b12c81: MOV ECX,EAX",
+        "00b12c7c: CALL 0x00419cc0",
+        "00b12c7b: PUSH EAX",
+        "00b12c7a: PUSH ECX"
+      ],
+      "context_after": [
+        "00b12c9a: PUSH 0x20",
+        "00b12c9c: CALL 0x00bf681b",
+        "00b12ca1: MOV EDI,EAX",
+        "00b12ca3: ADD ESP,0x4",
+        "00b12ca6: MOV dword ptr [ESP + 0x14],EDI",
+        "00b12caa: TEST EDI,EDI",
+        "00b12cac: MOV dword ptr [ESP + 0x27c],0x5f",
+        "00b12cb7: JZ 0x00b12cef"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00b12f4f": {
+      "address": "00b12f4f",
+      "instruction": "CALL 0x00b4e2b0",
+      "context_before": [
+        "00b12f49: MOV ECX,dword ptr [ESI + 0x654]",
+        "00b12f48: PUSH ECX",
+        "00b12f42: MOV ECX,dword ptr [ESI + 0x1d4]",
+        "00b12f3d: CALL 0x00bd1510",
+        "00b12f3b: MOV ECX,EAX",
+        "00b12f36: CALL 0x00419cc0",
+        "00b12f35: PUSH EAX",
+        "00b12f34: PUSH ECX"
+      ],
+      "context_after": [
+        "00b12f54: PUSH 0x20",
+        "00b12f56: CALL 0x00bf681b",
+        "00b12f5b: MOV EDI,EAX",
+        "00b12f5d: ADD ESP,0x4",
+        "00b12f60: MOV dword ptr [ESP + 0x14],EDI",
+        "00b12f64: TEST EDI,EDI",
+        "00b12f66: MOV dword ptr [ESP + 0x27c],0x67",
+        "00b12f71: MOV EBX,0x400"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00b1643a": {
+      "address": "00b1643a",
+      "instruction": "CALL 0x00b4e2b0",
+      "context_before": [
+        "00b16434: MOV ECX,dword ptr [ESI + 0x664]",
+        "00b16433: PUSH ECX",
+        "00b1642d: MOV ECX,dword ptr [ESI + 0x1cc]",
+        "00b16428: CALL 0x00b1fab0",
+        "00b16427: PUSH EBP",
+        "00b16426: PUSH EAX",
+        "00b16420: MOV ECX,dword ptr [ESI + 0x1cc]",
+        "00b1641b: CALL 0x00b4cb20"
+      ],
+      "context_after": [
+        "00b1643f: MOV ECX,dword ptr [ESI + 0x48]",
+        "00b16442: CALL 0x00b4cb10",
+        "00b16447: MOV ECX,dword ptr [ESI + 0x664]",
+        "00b1644d: PUSH EAX",
+        "00b1644e: PUSH EBP",
+        "00b1644f: CALL 0x00b4cba0",
+        "00b16454: MOV ECX,EAX",
+        "00b16456: CALL 0x00b189f0"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00b166b1": {
+      "address": "00b166b1",
+      "instruction": "CALL 0x00b4e2b0",
+      "context_before": [
+        "00b166ae: MOV ECX,dword ptr [ESI + 0x68]",
+        "00b166ad: PUSH ECX",
+        "00b166a7: MOV ECX,dword ptr [ESI + 0x1cc]",
+        "00b166a2: CALL 0x00b189f0",
+        "00b166a0: MOV ECX,EAX",
+        "00b1669b: CALL 0x00b4cba0",
+        "00b16699: PUSH 0x0",
+        "00b16698: PUSH EAX"
+      ],
+      "context_after": [
+        "00b166b6: MOV ECX,dword ptr [ESI + 0x68]",
+        "00b166b9: PUSH 0x0",
+        "00b166bb: CALL 0x00b4dcc0",
+        "00b166c0: PUSH 0x6",
+        "00b166c2: MOV ECX,EDI",
+        "00b166c4: CALL 0x00b1bf40",
+        "00b166c9: MOV ECX,EAX",
+        "00b166cb: CALL 0x00b6fe10"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00b1672e": {
+      "address": "00b1672e",
+      "instruction": "CALL 0x00b4e2b0",
+      "context_before": [
+        "00b1672d: PUSH EAX",
+        "00b1672a: MOV ECX,dword ptr [ESI + 0x6c]",
+        "00b16724: MOV EAX,dword ptr [ESI + 0x1cc]",
+        "00b1671f: CALL 0x00b189f0",
+        "00b1671d: MOV ECX,EAX",
+        "00b16718: CALL 0x00b4cba0",
+        "00b16716: PUSH 0x1",
+        "00b16715: PUSH EAX"
+      ],
+      "context_after": [
+        "00b16733: MOV ECX,dword ptr [ESI + 0x6c]",
+        "00b16736: PUSH 0x0",
+        "00b16738: CALL 0x00b4dcc0",
+        "00b1673d: MOV ECX,EDI",
+        "00b1673f: CALL 0x00b1bf40",
+        "00b16744: CMP dword ptr [EAX + 0x198],0x0",
+        "00b1674b: MOV ECX,EDI",
+        "00b1674d: JNZ 0x00b16753"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00b16884": {
+      "address": "00b16884",
+      "instruction": "CALL 0x00b4e2b0",
+      "context_before": [
+        "00b16883: PUSH EAX",
+        "00b16880: MOV ECX,dword ptr [ESI + 0x68]",
+        "00b1687a: MOV EAX,dword ptr [ESI + 0x1cc]",
+        "00b16875: CALL 0x00b189f0",
+        "00b16873: MOV ECX,EAX",
+        "00b1686e: CALL 0x00b4cba0",
+        "00b1686c: PUSH 0x0",
+        "00b1686b: PUSH EAX"
+      ],
+      "context_after": [
+        "00b16889: MOV ECX,dword ptr [ESI + 0x68]",
+        "00b1688c: PUSH 0x0",
+        "00b1688e: CALL 0x00b4dcc0",
+        "00b16893: PUSH 0x6",
+        "00b16895: MOV ECX,EDI",
+        "00b16897: CALL 0x00b1bf40",
+        "00b1689c: MOV ECX,EAX",
+        "00b1689e: CALL 0x00b6fe10"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00b16901": {
+      "address": "00b16901",
+      "instruction": "CALL 0x00b4e2b0",
+      "context_before": [
+        "00b16900: PUSH EDX",
+        "00b168fd: MOV ECX,dword ptr [ESI + 0x6c]",
+        "00b168f7: MOV EDX,dword ptr [ESI + 0x1cc]",
+        "00b168f2: CALL 0x00b189f0",
+        "00b168f0: MOV ECX,EAX",
+        "00b168eb: CALL 0x00b4cba0",
+        "00b168e9: PUSH 0x1",
+        "00b168e8: PUSH EAX"
+      ],
+      "context_after": [
+        "00b16906: MOV ECX,dword ptr [ESI + 0x6c]",
+        "00b16909: PUSH 0x0",
+        "00b1690b: CALL 0x00b4dcc0",
+        "00b16910: MOV ECX,EDI",
+        "00b16912: CALL 0x00b1bf40",
+        "00b16917: CMP dword ptr [EAX + 0x198],0x0",
+        "00b1691e: MOV ECX,EDI",
+        "00b16920: JNZ 0x00b16926"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00b16ce2": {
+      "address": "00b16ce2",
+      "instruction": "CALL 0x00b4e2b0",
+      "context_before": [
+        "00b16cdc: MOV ECX,dword ptr [ESI + 0x65c]",
+        "00b16cd6: JZ 0x00b16d69",
+        "00b16cd0: FSTP float ptr [ESI + 0x64c]",
+        "00b16ccf: PUSH ECX",
+        "00b16cc9: MOV ECX,dword ptr [ESI + 0x1d4]",
+        "00b16cc5: FDIVR double ptr [ESP + 0xc]",
+        "00b16cbe: CMP byte ptr [ESI + 0x21c],0x0",
+        "00b16cb8: FADD float ptr [0x00ce3978]"
+      ],
+      "context_after": [
+        "00b16ce7: MOV ECX,dword ptr [ESI + 0x4c]",
+        "00b16cea: CALL 0x00b4cb10",
+        "00b16cef: MOV ECX,dword ptr [ESI + 0x65c]",
+        "00b16cf5: PUSH EAX",
+        "00b16cf6: PUSH 0x0",
+        "00b16cf8: CALL 0x00b4cba0",
+        "00b16cfd: MOV ECX,EAX",
+        "00b16cff: CALL 0x00b189f0"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00b16d6f": {
+      "address": "00b16d6f",
+      "instruction": "CALL 0x00b4e2b0",
+      "context_before": [
+        "00b16d69: MOV ECX,dword ptr [ESI + 0x658]",
+        "00b16d64: JMP 0x00b16df1",
+        "00b16d5e: MOV ECX,dword ptr [ESI + 0x65c]",
+        "00b16d59: CALL 0x00b189f0",
+        "00b16d57: MOV ECX,EAX",
+        "00b16d52: CALL 0x00b4cba0",
+        "00b16d50: PUSH 0x2",
+        "00b16d4f: PUSH EAX"
+      ],
+      "context_after": [
+        "00b16d74: MOV ECX,dword ptr [ESI + 0x4c]",
+        "00b16d77: CALL 0x00b4cb10",
+        "00b16d7c: MOV ECX,dword ptr [ESI + 0x658]",
+        "00b16d82: PUSH EAX",
+        "00b16d83: PUSH 0x0",
+        "00b16d85: CALL 0x00b4cba0",
+        "00b16d8a: MOV ECX,EAX",
+        "00b16d8c: CALL 0x00b189f0"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00b16e42": {
+      "address": "00b16e42",
+      "instruction": "CALL 0x00b4e2b0",
+      "context_before": [
+        "00b16e3c: MOV ECX,dword ptr [ESI + 0x654]",
+        "00b16e3a: JZ 0x00b16ebb",
+        "00b16e39: PUSH ECX",
+        "00b16e33: MOV ECX,dword ptr [ESI + 0x1d4]",
+        "00b16e2c: CMP byte ptr [ESI + 0x21c],0x0",
+        "00b16e27: JMP 0x00b16f4a",
+        "00b16e22: CALL 0x00b529a0",
+        "00b16e21: PUSH EAX"
+      ],
+      "context_after": [
+        "00b16e47: MOV ECX,dword ptr [ESI + 0x4c]",
+        "00b16e4a: CALL 0x00b4cb10",
+        "00b16e4f: MOV ECX,dword ptr [ESI + 0x654]",
+        "00b16e55: PUSH EAX",
+        "00b16e56: PUSH 0x0",
+        "00b16e58: CALL 0x00b4cba0",
+        "00b16e5d: MOV ECX,EAX",
+        "00b16e5f: CALL 0x00b189f0"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00b16ec1": {
+      "address": "00b16ec1",
+      "instruction": "CALL 0x00b4e2b0",
+      "context_before": [
+        "00b16ebb: MOV ECX,dword ptr [ESI + 0x650]",
+        "00b16eb6: JMP 0x00b16f43",
+        "00b16eb0: MOV ECX,dword ptr [ESI + 0x654]",
+        "00b16eab: CALL 0x00b189f0",
+        "00b16ea9: MOV ECX,EAX",
+        "00b16ea4: CALL 0x00b4cba0",
+        "00b16ea2: PUSH 0x2",
+        "00b16ea1: PUSH EAX"
+      ],
+      "context_after": [
+        "00b16ec6: MOV ECX,dword ptr [ESI + 0x4c]",
+        "00b16ec9: CALL 0x00b4cb10",
+        "00b16ece: MOV ECX,dword ptr [ESI + 0x650]",
+        "00b16ed4: PUSH EAX",
+        "00b16ed5: PUSH 0x0",
+        "00b16ed7: CALL 0x00b4cba0",
+        "00b16edc: MOV ECX,EAX",
+        "00b16ede: CALL 0x00b189f0"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00b110d3": {
+      "address": "00b110d3",
+      "instruction": "CALL 0x00b54cd0",
+      "context_before": [
+        "00b110d0: MOV ECX,dword ptr [ESI + 0x28]",
+        "00b110cb: CALL 0x00b189f0",
+        "00b110c9: MOV ECX,EAX",
+        "00b110c4: CALL 0x00b4cba0",
+        "00b110c2: PUSH 0x0",
+        "00b110c1: PUSH EAX",
+        "00b110bb: MOV ECX,dword ptr [ESI + 0x80]",
+        "00b110b6: CALL 0x00b4cb10"
+      ],
+      "context_after": [
+        "00b110d8: MOV ECX,EAX",
+        "00b110da: CALL 0x00b4cb10",
+        "00b110df: MOV ECX,dword ptr [ESI + 0x80]",
+        "00b110e5: PUSH EAX",
+        "00b110e6: PUSH 0x1",
+        "00b110e8: CALL 0x00b4cba0",
+        "00b110ed: MOV ECX,EAX",
+        "00b110ef: CALL 0x00b189f0"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00b115bd": {
+      "address": "00b115bd",
+      "instruction": "CALL 0x00b54cd0",
+      "context_before": [
+        "00b115ba: MOV ECX,dword ptr [ESI + 0x28]",
+        "00b115b5: CALL 0x00b189f0",
+        "00b115b3: MOV ECX,EAX",
+        "00b115ae: CALL 0x00b4cba0",
+        "00b115ac: PUSH 0x0",
+        "00b115ab: PUSH EAX",
+        "00b115a8: MOV ECX,dword ptr [ESI + 0x70]",
+        "00b115a3: CALL 0x00b4cb10"
+      ],
+      "context_after": [
+        "00b115c2: MOV ECX,EAX",
+        "00b115c4: CALL 0x00b4cb10",
+        "00b115c9: MOV ECX,dword ptr [ESI + 0x70]",
+        "00b115cc: PUSH EAX",
+        "00b115cd: PUSH 0x1",
+        "00b115cf: CALL 0x00b4cba0",
+        "00b115d4: MOV ECX,EAX",
+        "00b115d6: CALL 0x00b189f0"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00b11962": {
+      "address": "00b11962",
+      "instruction": "CALL 0x00b54cd0",
+      "context_before": [
+        "00b1195f: MOV ECX,dword ptr [ESI + 0x28]",
+        "00b1195a: CALL 0x00b189f0",
+        "00b11958: MOV ECX,EAX",
+        "00b11953: CALL 0x00b4cba0",
+        "00b11951: PUSH 0x0",
+        "00b11950: PUSH EAX",
+        "00b1194d: MOV ECX,dword ptr [ESI + 0x74]",
+        "00b11948: CALL 0x00b4cb10"
+      ],
+      "context_after": [
+        "00b11967: MOV ECX,EAX",
+        "00b11969: CALL 0x00b4cb10",
+        "00b1196e: MOV ECX,dword ptr [ESI + 0x74]",
+        "00b11971: PUSH EAX",
+        "00b11972: PUSH 0x1",
+        "00b11974: CALL 0x00b4cba0",
+        "00b11979: MOV ECX,EAX",
+        "00b1197b: CALL 0x00b189f0"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00b15be2": {
+      "address": "00b15be2",
+      "instruction": "CALL 0x00b54cd0",
+      "context_before": [
+        "00b15bdf: MOV ECX,dword ptr [ESI + 0x2c]",
+        "00b15bd9: JZ 0x00b15d1d",
+        "00b15bd2: CMP byte ptr [ESI + 0x21a],0x0",
+        "00b15bcd: CALL 0x00b0eb10",
+        "00b15bcb: MOV ECX,ESI",
+        "00b15bca: PUSH EAX",
+        "00b15bc5: CALL 0x00b1bf40",
+        "00b15bbf: FSTP float ptr [ESI + 0x178]"
+      ],
+      "context_after": [
+        "00b15be7: MOV ECX,EAX",
+        "00b15be9: CALL 0x00b4cb10",
+        "00b15bee: MOV ECX,dword ptr [ESI + 0x2c]",
+        "00b15bf1: MOV EBP,EAX",
+        "00b15bf3: CALL 0x00b54cd0",
+        "00b15bf8: MOV ECX,EAX",
+        "00b15bfa: CALL 0x00b4cb10",
+        "00b15bff: MOV EDX,dword ptr [EAX]"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00b15bf3": {
+      "address": "00b15bf3",
+      "instruction": "CALL 0x00b54cd0",
+      "context_before": [
+        "00b15bf1: MOV EBP,EAX",
+        "00b15bee: MOV ECX,dword ptr [ESI + 0x2c]",
+        "00b15be9: CALL 0x00b4cb10",
+        "00b15be7: MOV ECX,EAX",
+        "00b15be2: CALL 0x00b54cd0",
+        "00b15bdf: MOV ECX,dword ptr [ESI + 0x2c]",
+        "00b15bd9: JZ 0x00b15d1d",
+        "00b15bd2: CMP byte ptr [ESI + 0x21a],0x0"
+      ],
+      "context_after": [
+        "00b15bf8: MOV ECX,EAX",
+        "00b15bfa: CALL 0x00b4cb10",
+        "00b15bff: MOV EDX,dword ptr [EAX]",
+        "00b15c01: MOV ECX,EAX",
+        "00b15c03: MOV EAX,dword ptr [EDX + 0x3c]",
+        "00b15c06: CALL EAX",
+        "00b15c08: TEST EAX,EAX",
+        "00b15c0a: MOV dword ptr [ESP + 0x2c],EAX"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00b16a95": {
+      "address": "00b16a95",
+      "instruction": "CALL 0x00b54cd0",
+      "context_before": [
+        "00b16a92: MOV ECX,dword ptr [ESI + 0x2c]",
+        "00b16a8d: CALL 0x00b189f0",
+        "00b16a8b: MOV ECX,EAX",
+        "00b16a86: CALL 0x00b4cba0",
+        "00b16a84: PUSH 0x2",
+        "00b16a83: PUSH EAX",
+        "00b16a80: MOV ECX,dword ptr [ESI + 0x74]",
+        "00b16a7b: CALL 0x00b4cb10"
+      ],
+      "context_after": [
+        "00b16a9a: MOV ECX,EAX",
+        "00b16a9c: CALL 0x00b4cb10",
+        "00b16aa1: MOV ECX,dword ptr [ESI + 0x74]",
+        "00b16aa4: PUSH EAX",
+        "00b16aa5: PUSH 0x3",
+        "00b16aa7: CALL 0x00b4cba0",
+        "00b16aac: MOV ECX,EAX",
+        "00b16aae: CALL 0x00b189f0"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    },
+    "00b16b13": {
+      "address": "00b16b13",
+      "instruction": "CALL 0x00b54cd0",
+      "context_before": [
+        "00b16b10: MOV ECX,dword ptr [ESI + 0x2c]",
+        "00b16b0b: CALL 0x00b189f0",
+        "00b16b09: MOV ECX,EAX",
+        "00b16b04: CALL 0x00b4cba0",
+        "00b16b02: PUSH 0x2",
+        "00b16b01: PUSH EAX",
+        "00b16afb: MOV ECX,dword ptr [ESI + 0x80]",
+        "00b16af6: CALL 0x00b4cb10"
+      ],
+      "context_after": [
+        "00b16b18: MOV ECX,EAX",
+        "00b16b1a: CALL 0x00b4cb10",
+        "00b16b1f: MOV ECX,dword ptr [ESI + 0x80]",
+        "00b16b25: PUSH EAX",
+        "00b16b26: PUSH 0x3",
+        "00b16b28: CALL 0x00b4cba0",
+        "00b16b2d: MOV ECX,EAX",
+        "00b16b2f: CALL 0x00b189f0"
+      ],
+      "mnemonic": "CALL",
+      "patterns_detected": [
+        "control_flow"
+      ]
+    }
+  },
+  "leaf_common_push_branch_receipts": {
+    "00b16ccf": {
+      "address": "00b16ccf",
+      "instruction": "PUSH ECX",
+      "context_before": [
+        "00b16cc9: MOV ECX,dword ptr [ESI + 0x1d4]",
+        "00b16cc5: FDIVR double ptr [ESP + 0xc]",
+        "00b16cbe: CMP byte ptr [ESI + 0x21c],0x0",
+        "00b16cb8: FADD float ptr [0x00ce3978]"
+      ],
+      "context_after": [
+        "00b16cd0: FSTP float ptr [ESI + 0x64c]",
+        "00b16cd6: JZ 0x00b16d69",
+        "00b16cdc: MOV ECX,dword ptr [ESI + 0x65c]",
+        "00b16ce2: CALL 0x00b4e2b0"
+      ],
+      "mnemonic": "PUSH",
+      "patterns_detected": [
+        "stack_operation"
+      ]
+    },
+    "00b16d69": {
+      "address": "00b16d69",
+      "instruction": "MOV ECX,dword ptr [ESI + 0x658]",
+      "context_before": [
+        "00b16d64: JMP 0x00b16df1",
+        "00b16d5e: MOV ECX,dword ptr [ESI + 0x65c]",
+        "00b16d59: CALL 0x00b189f0",
+        "00b16d57: MOV ECX,EAX"
+      ],
+      "context_after": [
+        "00b16d6f: CALL 0x00b4e2b0",
+        "00b16d74: MOV ECX,dword ptr [ESI + 0x4c]",
+        "00b16d77: CALL 0x00b4cb10",
+        "00b16d7c: MOV ECX,dword ptr [ESI + 0x658]"
+      ],
+      "mnemonic": "MOV",
+      "patterns_detected": [
+        "data_access"
+      ]
+    },
+    "00b16e39": {
+      "address": "00b16e39",
+      "instruction": "PUSH ECX",
+      "context_before": [
+        "00b16e33: MOV ECX,dword ptr [ESI + 0x1d4]",
+        "00b16e2c: CMP byte ptr [ESI + 0x21c],0x0",
+        "00b16e27: JMP 0x00b16f4a",
+        "00b16e22: CALL 0x00b529a0"
+      ],
+      "context_after": [
+        "00b16e3a: JZ 0x00b16ebb",
+        "00b16e3c: MOV ECX,dword ptr [ESI + 0x654]",
+        "00b16e42: CALL 0x00b4e2b0",
+        "00b16e47: MOV ECX,dword ptr [ESI + 0x4c]"
+      ],
+      "mnemonic": "PUSH",
+      "patterns_detected": [
+        "stack_operation"
+      ]
+    },
+    "00b16ebb": {
+      "address": "00b16ebb",
+      "instruction": "MOV ECX,dword ptr [ESI + 0x650]",
+      "context_before": [
+        "00b16eb6: JMP 0x00b16f43",
+        "00b16eb0: MOV ECX,dword ptr [ESI + 0x654]",
+        "00b16eab: CALL 0x00b189f0",
+        "00b16ea9: MOV ECX,EAX"
+      ],
+      "context_after": [
+        "00b16ec1: CALL 0x00b4e2b0",
+        "00b16ec6: MOV ECX,dword ptr [ESI + 0x4c]",
+        "00b16ec9: CALL 0x00b4cb10",
+        "00b16ece: MOV ECX,dword ptr [ESI + 0x650]"
+      ],
+      "mnemonic": "MOV",
+      "patterns_detected": [
+        "data_access"
+      ]
+    }
+  },
+  "B107F0_caller_evidence": {
+    "source_report": "reports/native_render_resource_init_cc10.json",
+    "all_four_sites": [
+      "004df3bb",
+      "005045a9",
+      "0067f2aa",
+      "008d60e6"
+    ],
+    "contract": "same original ECX service and three actual DWORD argument cells; entry state retained, no reinterpretation from one caller"
+  },
+  "provider_bindings": [
+    {
+      "callee": "00bf681b",
+      "source": "singleton_lifetime_allocate",
+      "header": "include/bsp/singleton_lifetime.hpp",
+      "native_abi_cleanup": "cdecl size; caller ADD ESP4",
+      "boundary": "borrow existing established provider; dependencies not reimplemented in this packet"
+    },
+    {
+      "callee": "0041e870",
+      "source": "construct_native_string_header_0041e870",
+      "header": "include/bsp/native_string.hpp",
+      "native_abi_cleanup": "ECX actual header; C string; RET4/EAX header",
+      "boundary": "borrow existing established provider; dependencies not reimplemented in this packet"
+    },
+    {
+      "callee": "00419cc0",
+      "source": "native_string_pool_get_or_create_00419cc0",
+      "header": "include/bsp/native_string_pool_owner.hpp",
+      "native_abi_cleanup": "no stacked arguments; EAX current pool",
+      "boundary": "borrow existing established provider; dependencies not reimplemented in this packet"
+    },
+    {
+      "callee": "00bd1510",
+      "source": "return_native_string_pool_00bd1510",
+      "header": "include/bsp/native_string_pool_storage.hpp",
+      "native_abi_cleanup": "ECX pool; data,size; RET8",
+      "boundary": "borrow existing established provider; dependencies not reimplemented in this packet"
+    },
+    {
+      "callee": "00b4e020",
+      "source": "construct_native_render_texture_surface_owner_00b4e020",
+      "header": "include/bsp/native_render_texture_surface_owner.hpp",
+      "native_abi_cleanup": "ECX actual18h; six DWORDs; RET18h/EAX owner",
+      "boundary": "borrow existing established provider; dependencies not reimplemented in this packet"
+    },
+    {
+      "callee": "00b2a7c0",
+      "source": "create_native_renderer_render_target_00b2a7c0",
+      "header": "include/bsp/native_render_resources_surfaces.hpp",
+      "native_abi_cleanup": "ECX current renderer; width,height,format,multisample; RET10h",
+      "boundary": "borrow existing established provider; dependencies not reimplemented in this packet"
+    },
+    {
+      "callee": "00b2a070",
+      "source": "create_native_runtime_texture_2d_00b2a070",
+      "header": "include/bsp/native_runtime_texture_creation.hpp",
+      "native_abi_cleanup": "ECX current renderer; width,height,levels,format,flags; RET14h",
+      "boundary": "borrow existing established provider; dependencies not reimplemented in this packet"
+    },
+    {
+      "callee": "00b3fd80",
+      "source": "get_native_texture_surface_00b3fd80",
+      "header": "include/bsp/native_texture_surface_getter.hpp",
+      "native_abi_cleanup": "ECX actual texture; level,unused; RET8",
+      "boundary": "borrow existing established provider; dependencies not reimplemented in this packet"
+    },
+    {
+      "callee": "00b540b0",
+      "source": "initialize_native_depth_downscale_pass_00b540b0",
+      "header": "include/bsp/native_render_pass_initializers.hpp",
+      "native_abi_cleanup": "ECX actual20h; four DWORDs; RET10h",
+      "boundary": "borrow existing established provider; dependencies not reimplemented in this packet"
+    },
+    {
+      "callee": "00b542d0",
+      "source": "initialize_native_particle_blend_pass_00b542d0",
+      "header": "include/bsp/native_render_pass_initializers.hpp",
+      "native_abi_cleanup": "ECX actual20h; nine DWORDs including unread first; RET24h",
+      "boundary": "borrow existing established provider; dependencies not reimplemented in this packet"
+    },
+    {
+      "callee": "00b4e470",
+      "source": "construct_native_post_effect20_00b4e470",
+      "header": "include/bsp/native_post_effect20_construction.hpp",
+      "native_abi_cleanup": "ECX actual20h; name,3,null; RET0Ch/EAX owner",
+      "boundary": "borrow existing established provider; dependencies not reimplemented in this packet"
+    },
+    {
+      "callee": "00b4d170",
+      "source": "native_shadow_texture_holder_00b4d170",
+      "header": "include/bsp/native_particle_preparation.hpp",
+      "native_abi_cleanup": "ECX pass; RET/EAX borrowed holder",
+      "boundary": "borrow existing established provider; dependencies not reimplemented in this packet"
+    },
+    {
+      "callee": "00b4cb10",
+      "source": "native_shadow_holder_texture_00b4cb10",
+      "header": "include/bsp/native_particle_preparation.hpp",
+      "native_abi_cleanup": "ECX holder; RET/EAX borrowed texture",
+      "boundary": "borrow existing established provider; dependencies not reimplemented in this packet"
+    },
+    {
+      "callee": "00b4cba0",
+      "source": "native_post_effect_material_00b4cba0",
+      "header": "include/bsp/native_render_resources_remap.hpp",
+      "native_abi_cleanup": "ECX post; RET/EAX borrowed material",
+      "boundary": "borrow existing established provider; dependencies not reimplemented in this packet"
+    },
+    {
+      "callee": "00b18b00",
+      "source": "register_native_material_float2_00b18b00",
+      "header": "include/bsp/gui_text_material.hpp",
+      "native_abi_cleanup": "ECX material; name,borrowed float2 pointer; RET8",
+      "boundary": "borrow existing established provider; dependencies not reimplemented in this packet"
+    },
+    {
+      "callee": "00b18b20",
+      "source": "register_native_material_float_00b18b20",
+      "header": "include/bsp/gui_text_material.hpp",
+      "native_abi_cleanup": "ECX material; name,borrowed float pointer; RET8",
+      "boundary": "borrow existing established provider; dependencies not reimplemented in this packet"
+    },
+    {
+      "callee": "00b189f0",
+      "source": "set_native_material_texture_unchecked_00b189f0",
+      "header": "include/bsp/native_mesh_texture_field.hpp",
+      "native_abi_cleanup": "ECX actual material; slot,texture; RET8",
+      "boundary": "borrow existing established provider; dependencies not reimplemented in this packet"
+    },
+    {
+      "callee": "00b544f0",
+      "source": "initialize_native_downscale4x4_pass_00b544f0",
+      "header": "include/bsp/native_downscale_pass_initializers.hpp",
+      "native_abi_cleanup": "ECX actual220h; holder,width,height,format; RET10h",
+      "boundary": "borrow existing established provider; dependencies not reimplemented in this packet"
+    },
+    {
+      "callee": "00b546f0",
+      "source": "initialize_native_downscale2x2_pass_00b546f0",
+      "header": "include/bsp/native_downscale_pass_initializers.hpp",
+      "native_abi_cleanup": "ECX actual90h; holder,width,height,format; RET10h",
+      "boundary": "borrow existing established provider; dependencies not reimplemented in this packet"
+    },
+    {
+      "callee": "00b50d40",
+      "source": "construct_native_luminance_owner_00b50d40",
+      "header": "include/bsp/native_luminance_owner.hpp",
+      "native_abi_cleanup": "ECX actual250h; reads CE6650; RET/EAX owner",
+      "boundary": "borrow existing established provider; dependencies not reimplemented in this packet"
+    },
+    {
+      "callee": "00b51090",
+      "source": "initialize_native_luminance_00b51090",
+      "header": "include/bsp/native_luminance_owner.hpp",
+      "native_abi_cleanup": "ECX actual250h; holder; RET4",
+      "boundary": "borrow existing established provider; dependencies not reimplemented in this packet"
+    },
+    {
+      "callee": "00b54940",
+      "source": "initialize_native_bright_pass_00b54940",
+      "header": "include/bsp/native_bright_pass_initializer.hpp",
+      "native_abi_cleanup": "ECX actual224h; holder,width,height,format; RET10h",
+      "boundary": "borrow existing established provider; dependencies not reimplemented in this packet"
+    },
+    {
+      "callee": "00b54e70",
+      "source": "construct_native_bloom_owner_00b54e70",
+      "header": "include/bsp/native_bloom_initializer.hpp",
+      "native_abi_cleanup": "ECX actual43Ch; RET/EAX owner",
+      "boundary": "borrow existing established provider; dependencies not reimplemented in this packet"
+    },
+    {
+      "callee": "00b54f90",
+      "source": "initialize_native_bloom_00b54f90",
+      "header": "include/bsp/native_bloom_initializer.hpp",
+      "native_abi_cleanup": "ECX actual43Ch; holder,width,height,format,float bits; RET14h",
+      "boundary": "borrow existing established provider; dependencies not reimplemented in this packet"
+    },
+    {
+      "callee": "00b54cd0",
+      "source": "native_bloom_output_holder_00b54cd0",
+      "header": "include/bsp/native_render_resource_init_continuation.hpp",
+      "native_abi_cleanup": "ECX bloom; RET/EAX borrowed holder+20",
+      "boundary": "borrow existing established provider; dependencies not reimplemented in this packet"
+    },
+    {
+      "callee": "00b4cb20",
+      "source": "native_render_holder_primary_00b4cb20",
+      "header": "include/bsp/native_render_pass_initializers.hpp",
+      "native_abi_cleanup": "ECX holder; RET/EAX borrowed primary surface",
+      "boundary": "borrow existing established provider; dependencies not reimplemented in this packet"
+    },
+    {
+      "callee": "00b4cb70",
+      "source": "set_native_post_effect_color0_00b4cb70",
+      "header": "include/bsp/native_render_pass_initializers.hpp",
+      "native_abi_cleanup": "ECX post; surface; RET4",
+      "boundary": "borrow existing established provider; dependencies not reimplemented in this packet"
+    }
+  ],
+  "producer_evidence": [
+    {
+      "site": "00b4e4ed",
+      "producer": "00b4e470",
+      "field": "actual post+08",
+      "evidence": "B1FBB0-produced actual40h frame; existing native_post_effect20_construction.cpp; setter releases that same count"
+    },
+    {
+      "site": "00b54e90",
+      "producer": "00b54e70",
+      "field": "actual bloom+20",
+      "evidence": "constructor zero; B54F90 existing texture prefix publishes third actual B4E020 holder at+20"
+    },
+    {
+      "site": "00b11db0",
+      "producer": "00b107f0 excluded later phase",
+      "field": "service+1CC",
+      "evidence": "B11D80 allocation40, B11D9D B1FBB0; B11DC4 color/B11DE0 depth; observed only"
+    },
+    {
+      "site": "00b11e2f",
+      "producer": "00b107f0 excluded later phase",
+      "field": "service+2C",
+      "evidence": "B11DEA alloc43C, B11E07 B54E70, B11E3B B54F90; observed only"
+    },
+    {
+      "site": "00b11563",
+      "producer": "00b11555 CALL B4E470",
+      "field": "service+70",
+      "evidence": "actual returned post pointer published including null allocation branch; not yet configured; no full initialization admission"
+    }
+  ],
+  "ordered_members": [
+    {
+      "fields": [
+        "4C",
+        "38",
+        "3C"
+      ],
+      "provider": "B4E020",
+      "dimensions": "retained original",
+      "format": "15",
+      "mode": 0
+    },
+    {
+      "fields": [
+        "40"
+      ],
+      "provider": "retain/release sharing current4C",
+      "ordering": "old40 captured before incoming4C; captured increment, fresh decrement"
+    },
+    {
+      "fields": [
+        "50"
+      ],
+      "provider": "B2A7C0",
+      "dimensions": "retained original",
+      "format": "71",
+      "multisample": "argument word00 read atB10ABA"
+    },
+    {
+      "fields": [
+        "44",
+        "48"
+      ],
+      "provider": "B4E020",
+      "mode": 1,
+      "external": "current50 reread after respective allocation"
+    },
+    {
+      "fields": [
+        "54",
+        "5C",
+        "58"
+      ],
+      "provider": "B2A070/B3FD80/share50",
+      "dimensions": "signed original/2",
+      "format": "71",
+      "levels": 1,
+      "flags": "10"
+    },
+    {
+      "fields": [
+        "60",
+        "64"
+      ],
+      "provider": "B540B0/B542D0",
+      "profiles": [
+        "00d5e164",
+        "00d5e178"
+      ],
+      "allocation_sizes": [
+        "20",
+        "20"
+      ],
+      "argument_reread": "word00 atB10C50 after allocation"
+    },
+    {
+      "fields": [
+        "68",
+        "6C"
+      ],
+      "provider": "B4E470",
+      "effect_name_indices": [
+        0,
+        1
+      ],
+      "mode": 3,
+      "explicit_material": null
+    },
+    {
+      "fields": [
+        "18",
+        "1C"
+      ],
+      "provider": "B544F0/B546F0",
+      "dimensions": "aligned/4 and aligned/2",
+      "profiles": [
+        "00d5e18c",
+        "00d5e1a0"
+      ],
+      "allocation_sizes": [
+        "220",
+        "90"
+      ]
+    },
+    {
+      "fields": [
+        "20",
+        "24",
+        "28"
+      ],
+      "provider": "B50D40/B51090; B54940; B54E70/B54F90",
+      "allocation_sizes": [
+        "250",
+        "224",
+        "43C"
+      ],
+      "current_constants": [
+        "00ce6650",
+        "00ce3854"
+      ]
+    },
+    {
+      "fields": [
+        "80"
+      ],
+      "provider": "B4E470/B189F0/B18B00/B18B20/B4CB70",
+      "effect_name_index": 2,
+      "texture_sources": [
+        "44 holder texture",
+        "28 third holder texture"
+      ],
+      "color_source": "4C primary surface"
+    },
+    {
+      "fields": [
+        "70"
+      ],
+      "provider": "B4E470 and current name pool return only",
+      "effect_name_index": 3,
+      "configuration_excluded": true
+    }
+  ],
+  "effect_literals": [
+    {
+      "address": "00d5e448",
+      "bytes_ascii": "dummy_passtrough.mshd"
+    },
+    {
+      "address": "00d5e41c",
+      "bytes_ascii": "blendparticles.mshd"
+    },
+    {
+      "address": "00d5e3fc",
+      "bytes_ascii": "pipesight.mshd"
+    },
+    {
+      "address": "00d5e360",
+      "bytes_ascii": "HDRFinalPass.mshd"
+    }
+  ],
+  "parameter_literals": [
+    {
+      "address": "00d5e430",
+      "bytes_ascii": "cSceneColorSampleOffset"
+    },
+    {
+      "address": "00d5e40c",
+      "bytes_ascii": "cSampleOffsets"
+    },
+    {
+      "address": "00d5e3f0",
+      "bytes_ascii": "cMiddleGray"
+    },
+    {
+      "address": "00d5e3e4",
+      "bytes_ascii": "cBloomScale"
+    },
+    {
+      "address": "00d5e3d0",
+      "bytes_ascii": "cBloomSampleOffset"
+    },
+    {
+      "address": "00d5e3c0",
+      "bytes_ascii": "cMinLuminance"
+    },
+    {
+      "address": "00d5e3b0",
+      "bytes_ascii": "cMaxLuminance"
+    },
+    {
+      "address": "00d5e430",
+      "bytes_ascii": "cSceneColorSampleOffset"
+    },
+    {
+      "address": "00d5e3a8",
+      "bytes_ascii": "cLolka"
+    },
+    {
+      "address": "00d5e3a0",
+      "bytes_ascii": "cBolka"
+    },
+    {
+      "address": "00d5e384",
+      "bytes_ascii": "cBlurredColorSampleOffset"
+    },
+    {
+      "address": "00d5e374",
+      "bytes_ascii": "cNewHDRParams"
+    }
+  ],
+  "parameter_pointer_sources": [
+    "service+04",
+    "service+04",
+    "service+8C",
+    "service+94",
+    "current bloom28+428",
+    "service+98",
+    "service+9C",
+    "service+04",
+    "service+250",
+    "service+254",
+    "service+18C",
+    "service+A0"
+  ],
+  "frontier": {
+    "native_pc": "00b11599",
+    "last_included": "00b11594 CALL BD1510 (5 bytes)",
+    "entry_phase": "awaiting_later_continuation",
+    "continuation_phase": "awaiting_b11599_continuation",
+    "ESI": "same service",
+    "EBX": "FFFFFFFF",
+    "EBP": "same service+A0",
+    "EDI_and_ESP14": "raw +70 allocation, possibly null",
+    "ESP20": "half aligned width sinceB10F13",
+    "ESP58": "aligned width",
+    "ESP24": "aligned height",
+    "ESP18_1C": "original dimensions",
+    "ESP1D8": "half aligned height",
+    "ESP10_mask": 0,
+    "EH_state": -1,
+    "retained": "original actual argument cells; all actual acquisitions, host companions, source addresses and names; host records are not native stack aliases",
+    "full_init": false,
+    "destruction_admitted": false,
+    "retry_admitted": false
+  },
+  "failure": {
+    "source": "marks entry/continuation failed, retains all actual publications and child frames; rethrows",
+    "native_FH3_reproduced": false,
+    "no_automatic": [
+      "rollback",
+      "destruction",
+      "unbinding",
+      "name return",
+      "retry"
+    ],
+    "FH3_descriptor": "00df3f34",
+    "magic": "19930522",
+    "max_state": 106,
+    "unwind_map": "00df3f58",
+    "handler": "00cbc1e1",
+    "inspected_state_records": [
+      {
+        "state": 0,
+        "to_state": -1,
+        "action": "00cbbca0"
+      },
+      {
+        "state": 1,
+        "to_state": -1,
+        "action": "00cbbcae"
+      },
+      {
+        "state": 2,
+        "to_state": -1,
+        "action": "00cbbcbc"
+      },
+      {
+        "state": 3,
+        "to_state": -1,
+        "action": "00cbbcca"
+      },
+      {
+        "state": 4,
+        "to_state": -1,
+        "action": "00cbbcd8"
+      },
+      {
+        "state": 5,
+        "to_state": -1,
+        "action": "00cbbce6"
+      },
+      {
+        "state": 6,
+        "to_state": -1,
+        "action": "00cbbcf4"
+      },
+      {
+        "state": 7,
+        "to_state": 6,
+        "action": "00cbbd02"
+      },
+      {
+        "state": 8,
+        "to_state": -1,
+        "action": "00cbbd02"
+      },
+      {
+        "state": 9,
+        "to_state": -1,
+        "action": "00cbbd24"
+      },
+      {
+        "state": 10,
+        "to_state": -1,
+        "action": "00cbbd2f"
+      },
+      {
+        "state": 11,
+        "to_state": 10,
+        "action": "00cbbd3d"
+      },
+      {
+        "state": 12,
+        "to_state": -1,
+        "action": "00cbbd3d"
+      },
+      {
+        "state": 13,
+        "to_state": -1,
+        "action": "00cbbd5f"
+      },
+      {
+        "state": 14,
+        "to_state": -1,
+        "action": "00cbbd6a"
+      },
+      {
+        "state": 15,
+        "to_state": -1,
+        "action": "00cbbd78"
+      },
+      {
+        "state": 16,
+        "to_state": -1,
+        "action": "00cbbd86"
+      },
+      {
+        "state": 17,
+        "to_state": 16,
+        "action": "00cbbd94"
+      },
+      {
+        "state": 18,
+        "to_state": -1,
+        "action": "00cbbd94"
+      },
+      {
+        "state": 19,
+        "to_state": -1,
+        "action": "00cbbdb6"
+      },
+      {
+        "state": 20,
+        "to_state": -1,
+        "action": "00cbbdc1"
+      },
+      {
+        "state": 21,
+        "to_state": -1,
+        "action": "00cbbdc9"
+      },
+      {
+        "state": 22,
+        "to_state": -1,
+        "action": "00cbbdd4"
+      },
+      {
+        "state": 23,
+        "to_state": -1,
+        "action": "00cbbddf"
+      },
+      {
+        "state": 24,
+        "to_state": -1,
+        "action": "00cbbdea"
+      },
+      {
+        "state": 25,
+        "to_state": -1,
+        "action": "00cbbdf5"
+      },
+      {
+        "state": 26,
+        "to_state": -1,
+        "action": "00cbbe00"
+      },
+      {
+        "state": 27,
+        "to_state": -1,
+        "action": "00cbbe0b"
+      },
+      {
+        "state": 28,
+        "to_state": -1,
+        "action": "00cbbe16"
+      },
+      {
+        "state": 29,
+        "to_state": -1,
+        "action": "00cbbe1e"
+      },
+      {
+        "state": 30,
+        "to_state": 29,
+        "action": "00cbbe2c"
+      }
+    ]
+  },
+  "canonical_registration_boundary": {
+    "required_service_members": [
+      "60",
+      "64",
+      "18",
+      "1C",
+      "20",
+      "24",
+      "28"
+    ],
+    "current_packet_registers_them": false,
+    "same_actual_count_required": true,
+    "nested_owners": "direct post/frame/holder destruction must retain its established ownership; blanket nested registry insertions leave stale metadata",
+    "separate_parent_work": "native_render_pass_companion host bridge published independently after this branch base; not consumed here"
+  },
+  "next_provider_mapping": [
+    {
+      "site": "00b11599",
+      "next": "load current service+64; B1159C B4D170 -> B115A3 B4CB10 -> B115AE B4CBA0 -> B115B5 B189F0",
+      "providers_exist": true,
+      "implemented_here": false
+    },
+    {
+      "range": "[00B11599,00B13009)",
+      "reference": "reports/native_render_resource_init_cc10.json:full_body_call_inventory and next_provider_mapping",
+      "composition_audited": false
+    },
+    {
+      "later_producers": [
+        "service+1CC real frame",
+        "service+2C second bloom",
+        "remaining post/shadow/buffer members"
+      ],
+      "full_init_and_lifetime": "requires later complete construction phases plus explicit canonical companion integration and native lifetime schedule"
+    }
+  ],
+  "checks": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "result": "passed Win32 Release after C++17 memcpy correction",
+      "ctest_passed": 2,
+      "ctest_failed": 0,
+      "log": "local/cc10-continuation-build-final.txt"
+    },
+    "controlled_leaf_probe": {
+      "result": "passed",
+      "B4E2B0_original_source_cases": 7,
+      "B54CD0_original_source_cases": 3,
+      "source": "local/cc10_continuation_probe.cpp",
+      "log": "local/cc10-continuation-probe-result.txt",
+      "compile": "/MD /W4 /WX /O2; /link /MANIFEST:EMBED /BASE:0x10000000 /DYNAMICBASE:NO",
+      "bindings": "only two native setter IAT operand addresses and fixed-profile deleting leaf endpoint instrumented; actual frame constructor/count/deleter; controlled COM Release",
+      "cases": [
+        "null/null",
+        "null/new",
+        "same identity",
+        "final old/null",
+        "nonfinal old/new",
+        "returning increment changes current decrement and parent",
+        "terminal actual-frame COM release changes parent again"
+      ],
+      "not_proven": [
+        "original destructor differential",
+        "composed continuation execution",
+        "production device or shader execution",
+        "game runtime",
+        "native FH3/ABI"
+      ]
+    },
+    "report_calls": {
+      "command": "python tools/verify_report_calls.py reports/native_render_resource_init_continuation_cc10.json",
+      "status": "passed",
+      "numeric_checked": 143,
+      "failed": 0,
+      "indirect_explicit": 11,
+      "log": "local/cc10-continuation-call-check.txt"
+    },
+    "verify_seeds": {
+      "command": "python tools/ghidra_export.py verify-seeds",
+      "matched": 8,
+      "failed": 0,
+      "whole_image_identity_claimed": false
+    },
+    "diff_check": "passed"
+  },
+  "runtime_limits": [
+    "B107F0 continuation build/static only; no production invocation",
+    "B4E2B0 canonical actual-frame profile domain only",
+    "ordinary FLD/FSTP conversion preserved; source adjacent pair does not prove native intervening-publication/unmasked floating exception ordering",
+    "native bloom four-float range430..43F exceeds nominal43C allocation; existing provider boundary retained, no capacity guarantee added",
+    "no machine-stack/register ABI compatibility, native FH3 cleanup, full-init success, teardown or game claim"
+  ],
+  "artifact_hashes": {
+    "local/cc10_continuation_probe.cpp": "57ca5e297cf08ee9da2f8fc8b9c127f651cb5b49440c6231e7ebcf69eb45888f",
+    "local/cc10_continuation_probe.exe": "0dc971f47572c24ec0d22f39d655d1fc1825c7a8e5d8361d01c614b22f59d0c3",
+    "local/cc10-continuation-probe-result.txt": "0a5640da200305bf6509d4e5801d89755db9f19dd32e1cae1e5e86490de248f7",
+    "local/cc10-continuation-build-final.txt": "254526bcaa0691c1085f8cdf3a69757b788c2ce84380b69b9593bc982a9262c5"
+  }
+}
