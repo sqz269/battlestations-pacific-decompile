@@ -14,6 +14,12 @@ NativeMaterialFactoryAcquired::~NativeMaterialFactoryAcquired() = default;
 NativeMaterialStorage* create_native_material_from_effect_cache_00535320(
     NativeString& name, NativeMaterialSlotPool& pool, NativeRenderActualOwners& owners,
     NativeMaterialEffectCacheContext& cache, NativeMaterialFactoryAcquired& a) {
+    return create_native_material_from_effect_cache_00535320(&name,pool,owners,cache,a);
+}
+
+NativeMaterialStorage* create_native_material_from_effect_cache_00535320(
+    const void* name, NativeMaterialSlotPool& pool, NativeRenderActualOwners& owners,
+    NativeMaterialEffectCacheContext& cache, NativeMaterialFactoryAcquired& a) {
     if (a.phase != NativeMaterialFactoryAcquired::Phase::empty || a.cache || a.effect || a.material ||
         a.raw_slot || a.companion || a.owner_record || a.registered ||
         &cache.effects.owners.actual_owners() != &owners)
@@ -25,7 +31,7 @@ NativeMaterialStorage* create_native_material_from_effect_cache_00535320(
     if (!renderer || *static_cast<const volatile std::uint32_t*>(renderer)!=0x00d5f0a8u ||
         !profile || profile[0x48/4]!=0x00b318b0u)
         throw std::logic_error("native material factory requires current renderer48 B318B0");
-    a.effect=load_native_renderer_material_effect_00b318b0(renderer,&name,cache,a.cache.get());
+    a.effect=load_native_renderer_material_effect_00b318b0(renderer,name,cache,a.cache.get());
     a.phase=NativeMaterialFactoryAcquired::Phase::allocation; a.native_site=0x0053534e;
     a.raw_slot=allocate_native_material_slot_00b18780(pool);
     if (a.raw_slot) {
