@@ -18,12 +18,14 @@ struct NativeRenderResourceInitPost658Names {
 // even if callbacks later replace +34. Diagnostics add no retain or credit.
 // Existing explicit quiescence is required before child reset/destruction.
 struct NativeRenderResourceInitPost658State final {
-    enum class Phase { fresh, preparing, running, awaiting_b124a1_continuation, failed };
+    enum class Phase { fresh, preparing, running, awaiting_b124a1_continuation,
+        post65c_running, awaiting_later_continuation, failed };
     NativeRenderResourceInitPost658State() = default;
     NativeRenderResourceInitPost658State(const NativeRenderResourceInitPost658State&) = delete;
     NativeRenderResourceInitPost658State& operator=(const NativeRenderResourceInitPost658State&) = delete;
     Phase phase{Phase::fresh};
     NativeRenderResourceInitPassthroughDustState* previous{};
+    const void* post65c_identity{}; // One-use successor; no ownership credit.
     const NativeRenderResourceInitPost658Names* names_identity{};
     NativeRenderResourceInitEntryState* entry_identity{};
     const volatile NativeRenderResourceInitArguments* argument_cells_identity{};
