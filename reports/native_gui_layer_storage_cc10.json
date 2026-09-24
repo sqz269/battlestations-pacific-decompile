@@ -1,0 +1,37 @@
+{
+  "packet": "cc10_gui_layer_storage",
+  "status": "process_static_pool_source_fixture_tested",
+  "source": "src/native_gui_layer_storage.cpp",
+  "template_source": "src/native_material_pools.cpp",
+  "header": "include/bsp/native_gui_layer_storage.hpp",
+  "document": "docs/NATIVE_GUI_LAYER_STORAGE_CC10.md",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "ghidra_worker_mutations": false,
+  "functions": [
+    {"address": "00ac51a0", "name": "allocate_native_gui_layer_slot_00ac51a0", "coverage": "complete two-instruction wrapper", "original_abi": "ECX caller size overwritten with F8BF50; tail JMP AC4E50; EAX raw slot"},
+    {"address": "00ac4c40", "name": "return_native_gui_layer_slot_00ac4c40", "coverage": "complete wrapper", "original_abi": "ECX raw slot; pushes one stack slot to AC47F0, RET"},
+    {"address": "00ac4e50", "name": "NativeGuiLayerPool::allocate_00ac4e50", "coverage": "complete source fixed-pool shape instantiated from existing provider", "original_abi": "ECX F8BF50 pool, EAX raw slot, RET"},
+    {"address": "00ac47f0", "name": "NativeGuiLayerPool::return_00ac47f0", "coverage": "complete source fixed-pool shape instantiated from existing provider", "original_abi": "ECX pool; raw slot on stack; RET4"},
+    {"address": "00ac4d70", "name": "NativeGuiLayerPool::initialize_00ac4d70", "coverage": "complete normal source constructor effects; native FH3 not reproduced", "original_abi": "ECX F8BF50 pool, EAX same pool, RET"},
+    {"address": "00ac4670", "name": "NativeGuiLayerPool::destroy_00ac4670", "coverage": "complete normal source teardown effects", "original_abi": "ECX F8BF50 pool, RET"},
+    {"address": "00ac4070", "name": "native GUI layer slab initialization via existing fixed-pool template", "coverage": "complete metadata initialization; 124h payload preserved", "original_abi": "ECX fresh 2544h slab; stack slab index; RET4"},
+    {"address": "00ac4750", "name": "NativeGuiLayerPool::trim_00ac4750", "coverage": "source fixed-pool trim template; Ghidra listing gap AC4776..AC47AF remains", "original_abi": "ECX pool; RET"},
+    {"address": "00ce0ad0", "name": "GameNativeGuiLayerPoolProcess::destroy_00ce0ad0", "coverage": "complete teardown thunk", "original_abi": "MOV ECX,F8BF50; JMP AC4670"}
+  ],
+  "listing_only": [
+    {"address": "00cd73d0", "inclusive_end": "00cd73e5", "function": "no Ghidra function", "producer": "PE initializer table 00CE3498", "body": "MOV ECX,F8BF50; CALL AC4D70; PUSH CE0AD0; CALL BF6FF5; POP ECX; RET"}
+  ],
+  "host_steps": [
+    {"address": "00aa3bee", "native": "00ac51a0", "function": "00aa3bd0", "contract": "Factory acquires one raw layer slot"},
+    {"address": "00aa5929", "native": "00ac51a0", "function": "00aa5840", "contract": "Page loader acquires one raw layer slot"},
+    {"address": "00aa3901", "native": "00ac4c40", "function": "00aa38f0", "contract": "Deleting destructor returns raw layer slot"},
+    {"address": "00ac4c46", "native": "00ac47f0", "function": "00ac4c40", "contract": "Return to the same F8BF50 pool"},
+    {"address": "00ac4e8d", "native": "00ac4070", "function": "00ac4e50", "contract": "Initialize 32-slot slab metadata"}
+  ],
+  "tail_jumps": [
+    {"address": "00ac51a5", "target": "00ac4e50", "function": "00ac51a0", "contract": "Pool acquire tail jump"},
+    {"address": "00ce0ad5", "target": "00ac4670", "function": "00ce0ad0", "contract": "Registered teardown tail jump"}
+  ],
+  "validation": "Strict MSVC Win32 build passed; build.ps1 CTest 2/2 passed; focused /MD raw allocation/lifetime probe passed with /MANIFEST:EMBED; verify_report_calls 5/5 passed. No game page or application startup integration, native ABI replacement, or gameplay validation."
+}
