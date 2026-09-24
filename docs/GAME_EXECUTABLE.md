@@ -9427,3 +9427,16 @@ differ from the role-bookkeeping section by main drift (584 -> 549), not by the 
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | USN04 (E2) | 9000 mission | **scripted helm, throttle 1.0** (`BSP_PLAYER_HELM=1.0,0`, main 5c126f14d + cc9_scripted_helm_option) | 8848.9 | 35 | 492 | 2 | 0 | 15 | 98.70 s | 7689.92 m | none | `local\H1_9000.log` |
 | USN04 (E2) | 9000 mission | the same binary, option unset (the idle reference on that tree) | 7720.9 | 35 | 549 | 0 | 0 | 15 | 99.05 s | 6905.23 m | none | `local\HO_9000.log` |
+
+## USN02 surface gunnery reference, 2026-09-24 (after the hull sections and the shell mesh test)
+
+**This row supersedes the USN02 rows above.** Build `local\hT`: main after `330b81cdc`, with
+`kArtilleryAimPointBound`, `kShipSectionPointsBound` and `kShellHullHitTestBound` ON. Reference
+parameters, `BSP_GUNNERY_RNG_STREAMS` unset. Log: `local\sR3_usn02.log`.
+
+| damage | deaths | queued hits | shots | rounds hitting a unit / water / expired | first hit | mission end |
+| --- | --- | --- | --- | --- | --- | --- |
+| 67754.4 | 17 (3 Allied, 14 IJN) | 975 | 1527 | 470 / 1009 / 359 | 37.85 s | none |
+
+Houston and Exeter survive, so the mission does not fail. Details:
+docs/SURFACE_GUNNERY_REFERENCE.md section 8.

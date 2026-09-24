@@ -1,5 +1,6 @@
 // The gun class's muzzle list from its device model. docs/GUN_BARREL_COUNT.md.
 #include "bsp/gun_fire_points.hpp"
+#include "bsp/geom_mesh_resource.hpp"
 #include "bsp/memory_stream.hpp"
 #include "bsp/structured_reader.hpp"
 #include <cstring>
@@ -125,6 +126,42 @@ bool read_mmod_bounding_box(const std::vector<std::uint8_t>& bytes,
         if (!section->close()) return false;
     }
     return found;
+}
+
+bool read_mmod_geom_meshes(const std::vector<std::uint8_t>& bytes,
+    std::vector<GeomMeshResourcePayload>& meshes, std::string& error) {
+    if (bytes.empty()) { error = "empty model"; return false; }
+    auto stream = std::make_shared<MemoryStream>(
+        memory_stream_from_complete_bytes(bytes.data(), bytes.size()));
+    StructuredReader reader(stream);
+    auto root = reader.read_root_00bea700();
+    if (!root || !tag_is(*root, "MMOD") || !root->read_control_00be9a40()) {
+        error = "no MMOD root"; return false;
+    }
+    while (root->has_remaining_00715bf0()) {
+        auto section = root->read_child_00bea680();
+        if (!section) { error = "bad root child"; return false; }
+        if (tag_is(*section, "Resource")) {
+            while (section->has_remaining_00715bf0()) {
+                auto entry = section->read_child_00bea680();
+                if (!entry) { error = "bad resource entry"; return false; }
+                if (tag_is(*entry, "GeomMesh")) {
+                    GeomMeshResourcePayload payload;
+                    if (!parse_geom_mesh_resource_00727310(*entry, payload, error)) return false;
+                    meshes.push_back(std::move(payload));
+                } else if (!entry->skip_00be9c40()) {
+                    error = "cannot skip resource entry"; return false;
+                }
+                if (entry->attached() && !entry->close()) {
+                    error = "cannot close resource entry"; return false;
+                }
+            }
+        } else if (!section->skip_00be9c40()) {
+            error = "cannot skip root child"; return false;
+        }
+        if (!section->close()) { error = "cannot close root child"; return false; }
+    }
+    return reader.error() == StructuredReaderError::none;
 }
 
 bool gun_platform_slot_frame_0095f500(const std::vector<GunFirePointItem>& items,

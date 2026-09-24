@@ -75,6 +75,12 @@ struct GunPlatformSlotFrame {
 bool read_mmod_bounding_box(const std::vector<std::uint8_t>& bytes,
     std::array<float, 6>& box);
 
+// Every `GeomMesh` entry of the model's Resource section, decoded by the
+// recovered parser 00727310 (include/bsp/geom_mesh_resource.hpp), in file
+// order. False on a malformed stream; payloads decoded before it are kept.
+bool read_mmod_geom_meshes(const std::vector<std::uint8_t>& bytes,
+    std::vector<struct GeomMeshResourcePayload>& meshes, std::string& error);
+
 bool gun_platform_slot_frame_0095f500(const std::vector<GunFirePointItem>& items,
     int key, GunPlatformSlotFrame& frame);
 
