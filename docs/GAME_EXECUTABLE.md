@@ -9415,3 +9415,15 @@ This row was taken **before** `kArtilleryAimPointBound`. With it landed, the opt
 the mission at 173.31 s on Exeter's sinking (`usn_2_java.lua:521`), and hits per round rise from
 13 % to 25 %. So the landed-state reference has to be re-taken at the next re-baseline.
 Details: docs/SURFACE_GUNNERY_REFERENCE.md.
+
+## Alternate reference: scripted helm, throttle 1.0 (2026-09-24, packet cc9_scripted_helm_option)
+
+Copied by the integrator from docs/SCRIPTED_HELM.md section 7.3. `BSP_PLAYER_HELM=1.0,0` opens the helm role
+and drives the controlled carrier straight at full throttle; it is a labelled scenario row and never the
+reference. The same-binary unset row is the idle reference on that tree (main 5c126f14d); its hit records
+differ from the role-bookkeeping section by main drift (584 -> 549), not by the option.
+
+| mission | frames | scenario | damage | deaths | queued_hits | torpedo drops | bomb drops | plane water contacts | first_hit | controlled moved | mission end | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 (E2) | 9000 mission | **scripted helm, throttle 1.0** (`BSP_PLAYER_HELM=1.0,0`, main 5c126f14d + cc9_scripted_helm_option) | 8848.9 | 35 | 492 | 2 | 0 | 15 | 98.70 s | 7689.92 m | none | `local\H1_9000.log` |
+| USN04 (E2) | 9000 mission | the same binary, option unset (the idle reference on that tree) | 7720.9 | 35 | 549 | 0 | 0 | 15 | 99.05 s | 6905.23 m | none | `local\HO_9000.log` |
