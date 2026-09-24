@@ -884,3 +884,51 @@ switch on, `kHudShipViewRoleTableBound` off then on, USN04 4500, no BSP_PLAYER_H
 - No other row moves.
 - **Summary lines.** All 160 are identical.
 - **Result.** Every prediction holds. **`kHudShipViewRoleTableBound` flips ON.**
+
+## 22. Screen 46h part 3: the view input 0064A400 (cc9-platform2, 2026-09-23)
+
+Read from the listings. Bodies, start and exclusive end (Ghidra functions exist for all four):
+
+| routine | body | what it is |
+| --- | --- | --- |
+| 0064A400 | 0064A400..0064A449 | calls 26h's 0051F330, then 2Eh's 005454B0 when 46h+20h is set |
+| 0051F330 | 0051F330..0051F360 | calls 0051EF00(dt), then `0051F050(26h+40h, &26h+24h, dt, 26h+38h)` |
+| 0051EF00 | 0051EF00..0051F035 | the binoculars raise, the lowered arm and the raised arm |
+| 0051F050 | 0051F050..0051F321 | the view axes into the mover, then action 75h and the view arm |
+
+**The mover is the mission camera's.** Screen 26h is the binoculars screen (0051ED60). 0064DA40
+hands it the new ShipCaptain mover through 0051E730, which sets 26h+40h. So 0051F050 writes the
+same mover `src/mission_camera.cpp` ticks:
+- **Yaw.** `+384h = 00438AA0(+384h, min(dt,0.5) * -1 * 26h+38h * axis(+1584h) * GlobalConfig+4)`.
+- **Pitch.** `0051E650(min(dt,0.5) * 0.5 * 26h+38h * axis(+15B4h) * GlobalConfig+4)`. It adds with
+  wrap into +388h, then clamps into [+3ECh, +3F0h].
+- **The axes.** Each is clamped to [-50, 50] (00CE4938/00CE3938).
+
+These are the image's only writes of yaw and pitch after the seed, on the pump's frame path. The
+mission camera tick reads them and writes the pose, so the view input is not a second pose
+writer. With the axes at zero, both steps are zero. The yaw is rewritten unchanged. The pitch
+also stays unchanged, because the seed (-10 degrees, 00CECA08) is inside this installation's
+-89..89 limits.
+
+**0051EF00 with no input.** +30h is 0 (the register), the raise axis is 0 and action E0h is not
+pressed. So it clears +34h/+35h, hides the Tavcso_Model widget (+20h), and calls 00452B80(0) on
+00E081A0. That routine stores the byte, calls 00B0D020 on the renderer object [00F8D39C], and
+sets +4h.
+
+**Records and substitutions:**
+- `HudShipView::view_input_terms` (0051F061): the input axes read zero. GlobalConfig+4 is unread
+  and reads 1.0; it only scales a zero axis.
+- `HudShipView::binoculars_lens_off` (00452B80): the renderer call is not modelled.
+- `HudShipView::screen_2eh_005454b0`: 2Eh+48h..+50h and 4Dh+44h/+48h have no reader in this host.
+- Never reached here: `binoculars_raise_toggle` (0051E7E0), `binoculars_raised_view` and
+  `binoculars_view_arm` (after action 75h).
+
+**Switch.** `kHudShipViewInputBound`. OFF keeps part 1's `HudShipView::view_input` record.
+
+**Predictions, written before the pair.** Every earlier switch on, the switch off then on, USN04 4500.
+- **Row that leaves:** `HudShipView::view_input`, 9,158.
+- **Rows added:** `view_input_0064a400` done, 9,158; `view_input_terms`, `binoculars_lens_off` and
+  `screen_2eh_005454b0`, 9,158 each. None of the toggle, raised-view or view-arm rows appears.
+- **Total.** The unimplemented total rises by 18,316.
+- **Summary lines.** All identical. The camera pose does not move, so the markers' and minimap's
+  projections are unchanged. Tavcso_Model is a Model widget, which the sprite bridge does not draw.

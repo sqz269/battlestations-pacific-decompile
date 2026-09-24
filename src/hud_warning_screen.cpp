@@ -1,5 +1,7 @@
 #include "bsp/hud_warning_screen.hpp"
 
+#include "bsp/unit_rudder.hpp"
+
 // Packet cc9_screen_50h. docs/SHIP_SCREEN_UPDATE.md section 16.
 
 namespace bsp {
@@ -164,6 +166,90 @@ void integrated_controls_0064b870(IntegratedControlsState& screen,
     }
     // 0064BB19..0064BB3C: role 1 is given back while game+19C4h is set.
     if (host.local_player_role(1) && host.game_19c4()) host.role_transfer_0077c470(2, 0);
+}
+
+namespace {
+
+// 0051F07F..0051F0A5 and 0051F0CF..0051F0F5: an axis clamped to [-50, 50].
+float clamp_view_axis(float axis) {
+    constexpr double kLow = -50.0;                                    // 00CE4938
+    constexpr double kHigh = 50.0;                                    // 00CE3938
+    if (kLow > static_cast<double>(axis)) return -50.0f;              // 00CECA0C
+    if (static_cast<double>(axis) > kHigh) return 50.0f;              // 00CEB4D4
+    return axis;
+}
+
+// 0051EF00, __thiscall(binoculars, float dt), RET 4.
+void binoculars_0051ef00(BinocularsState& screen, ShipViewInputHost& host,
+                         const BinocularsViewTerms& terms, float dt) {
+    constexpr float kRaiseBelow = -0.5f;                              // 00CE69D0
+    constexpr float kHalf = 0.5f;                                     // 00CE3800
+    constexpr int kActionRaise = 0xE0;                                // 0051EF5D
+    screen.flag_34 = false;                                           // 0051EF07
+    screen.flag_35 = false;                                           // 0051EF0B
+    bool toggle = false;
+    if (screen.mode_30 == 0 && kRaiseBelow > terms.raise_axis_15e4) {
+        toggle = true;                                                // 0051EF28 JA
+    } else if (screen.mode_30 == 1 && terms.raise_axis_15e4 > kHalf &&
+               screen.zoom_38 >= 1.0f) {
+        toggle = true;                                                // 0051EF55 JNC
+    } else {
+        toggle = host.input_pressed(kActionRaise);                    // 0051EF62
+    }
+    if (toggle) host.raise_toggle_0051e7e0(screen);                   // 0051EF6B..0051EFA6
+    if (!host.mover_present()) return;                                // 0051EFAB
+    if (screen.mode_30 == 1) {
+        host.raised_view(screen, dt);                                 // 0051EFB7..0051F011
+        return;
+    }
+    host.set_model_visible(false);                                    // 0051F016..0051F020
+    host.lens_effect_off_00452b80();                                  // 0051F030
+}
+
+// 0051F050, __fastcall(mover, flag* +24h, float dt, float zoom), RET 8.
+void binoculars_0051f050(BinocularsState& screen, ShipViewInputHost& host,
+                         const BinocularsViewTerms& terms, float dt) {
+    constexpr double kDtCap = 0.5;                                    // 00D7A280
+    constexpr float kDtCapF = 0.5f;                                   // 00CE3800
+    constexpr double kYawSign = -1.0;                                 // 00D7A250
+    constexpr int kActionView = 0x75;                                 // 0051F30B
+    if (!host.mover_present()) return;                                // 0051F05B
+    const float yaw_axis = clamp_view_axis(terms.yaw_axis_1584);
+    const float pitch_axis = clamp_view_axis(terms.pitch_axis_15b4);
+    const float step = static_cast<double>(dt) > kDtCap ? kDtCapF : dt;   // 0051F10B
+    const float yaw_delta = static_cast<float>(
+        static_cast<double>(step) * kYawSign * screen.zoom_38 * yaw_axis * terms.config_04);
+    host.set_mover_yaw(wrapped_angle_add_00438aa0(host.mover_yaw(), yaw_delta));   // 0051F159
+    const float pitch_delta = static_cast<float>(
+        static_cast<double>(step) * kDtCap * screen.zoom_38 * pitch_axis * terms.config_04);
+    // 0051E650: wrap, then clamp into [+3ECh, +3F0h].
+    float pitch = wrapped_angle_add_00438aa0(host.mover_pitch(), pitch_delta);
+    const float low = host.mover_min_pitch();
+    const float high = host.mover_max_pitch();
+    if (low > pitch) {
+        pitch = low;                                                  // 0051E694
+    } else if (pitch > high) {
+        pitch = high;                                                 // 0051E6BC
+    }
+    host.set_mover_pitch(pitch);
+    if (!screen.view_24) {                                            // 0051F1B7
+        if (host.input_pressed(kActionView)) screen.view_24 = true;   // 0051F305..0051F316
+        return;
+    }
+    host.view_arm(screen, dt);                                        // 0051F1C0..0051F2FA
+}
+
+}  // namespace
+
+void ship_view_input_0064a400(BinocularsState& binoculars, ShipViewInputHost& host,
+                              float dt) {
+    // 0064A410: 0051F330 on [00E198C4]+4Ch, screen 26h.
+    const BinocularsViewTerms terms = host.view_terms();
+    binoculars_0051ef00(binoculars, host, terms, dt);                 // 0051F33B
+    binoculars_0051f050(binoculars, host, terms, dt);                 // 0051F357
+    if (host.ship_view_mover_20()) {                                  // 0064A418
+        host.screen_2eh_005454b0(0.5f, 0.5f, binoculars.zoom_38);     // 0064A441
+    }
 }
 
 void ship_view_update_0064d610(ShipViewScreen46Host& host, float dt) {
