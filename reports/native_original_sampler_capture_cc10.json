@@ -1,0 +1,474 @@
+{
+  "packet": "cc10_original_sampler_capture",
+  "status": "one_original_invocation_captured_before_sampler_call_owned_jobs_closed",
+  "primary_verification": {
+    "index_sha256": "0d577852b958bd2e95b46661071029f115059c30be5d8a936e8d826ae4464027",
+    "indexed_files_verified": 69,
+    "prior_rows_verified": 1085,
+    "current_bound_roles_verified": 24,
+    "journal_events": 765,
+    "owned_debug_event_continue_pairs": 215,
+    "capture_scalar_context_stack_pairs": 2,
+    "copied_pe_equal_native_bodies": 12,
+    "loaded_module_events": 105,
+    "unique_module_disk_hashes_verified": 100,
+    "entry_context_pairs_identical": 2,
+    "debug_write_pairs_only_debug_fields_and_reserved_eflags_bit1_changed": 6,
+    "original_attempts_total": 3,
+    "owned_original_pid": 88436,
+    "original_exit": 126,
+    "sampler_call_executed": false,
+    "profile_nonaccess_rows_equal": 7,
+    "copy_manifest_rows_compared": 67814,
+    "copy_changed_paths": [
+      "bsp_debug.log",
+      "xlive_debug.log"
+    ],
+    "old_overlay_stale": true,
+    "capture": {
+      "P": 23259244,
+      "builder": 23259492,
+      "pass": 381216128,
+      "root_descriptor": 381160464,
+      "anonymous_word_address": 23259196,
+      "anonymous_word_bits": 23259492,
+      "caller_return": 11781248
+    },
+    "limits": [
+      "One original invocation only; observed anonymous-word/builder equality is not a general source-input or high-byte contract.",
+      "No sampler call/B5F100, full initializer, native teardown, source migration, or application correctness proof.",
+      "Original guard continuation does not capture CloseHandle BOOL/last-error or establish full architectural equivalence.",
+      "Full raw contexts preserve the recorded fields, without claiming full architectural state equivalence.",
+      "Extra threads remained uninstrumented; capture markers were primary-thread scoped.",
+      "No earlier COM Release target attribution from the current CE2220 provider.",
+      "Post-copy changes carry no writer attribution and authorize no restore or overlay refresh.",
+      "Primary independently compared recorded complete copy manifests; no second57GB disk rehash",
+      "Unchanged profile proof excludes access timestamps; root did not restore files",
+      "No first-stop raw builder+70 bytes in the bounded stack window; helper scalar read and second-stop raw stacked root agree"
+    ]
+  },
+  "worker_report": {
+    "additional_original_launches_in_this_attempt": 1,
+    "caller_evidence": {
+      "call_hex": "e840efffff",
+      "call_target": 11776960,
+      "captured_return": 11781248,
+      "matching_call_address": 11781243,
+      "method": "Captured x86 return cell plus matching captured CALL body; not a full native unwind."
+    },
+    "capture_values": [
+      {
+        "P": 23259244,
+        "anonymous_word_address": 23259196,
+        "anonymous_word_bits": 23259492,
+        "builder": 23259492,
+        "caller_return": 11781248,
+        "current_CE2220": 1980177072,
+        "eip": 11780089,
+        "esp": 23259244,
+        "pass": 381216128,
+        "root_descriptor": 381160464
+      },
+      {
+        "P": 23259244,
+        "anonymous_word_address": 23259196,
+        "anonymous_word_bits": 23259492,
+        "builder": 23259492,
+        "caller_return": 11781248,
+        "current_CE2220": 1980177072,
+        "eip": 11780120,
+        "esp": 23259236,
+        "pass": 381216128,
+        "root_descriptor": 381160464
+      }
+    ],
+    "captures": {
+      "bytes": 15024,
+      "path": "local/original_sampler_capture_cc10/controller_v3_runs/original_run03/derived/captures.json",
+      "sha256": "24ca3aa16d9af4d02e9aa3d166429a9f02a5354c9702e85ca0e5c32967b4fbdb"
+    },
+    "continue_events": 215,
+    "created": [
+      {
+        "journal_line": 2,
+        "record": {
+          "event": "created",
+          "flags": 134217730,
+          "image": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\original_sampler_capture_cc10\\game\\battlestationspacific.exe",
+          "native_machine": 34404,
+          "pid": 88436,
+          "process_machine": 332,
+          "tid": 73368
+        }
+      }
+    ],
+    "current_decrement_events": [
+      {
+        "journal_line": 620,
+        "record": {
+          "allocation_base": 1979973632,
+          "earlier_com_release_identity_claimed": false,
+          "event": "current_decrement_provider",
+          "file_index_high": 327680,
+          "file_index_low": 2881353,
+          "path": "C:\\Windows\\SysWOW64\\kernel32.dll",
+          "sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+          "target": 1980177072,
+          "target_bytes": "8bff558bec8b4d0883c8fff00fc101485dc20400cccccccccccccccccccccccc",
+          "volume": 3906787040
+        }
+      },
+      {
+        "journal_line": 649,
+        "record": {
+          "allocation_base": 1979973632,
+          "earlier_com_release_identity_claimed": false,
+          "event": "current_decrement_provider",
+          "file_index_high": 327680,
+          "file_index_low": 2881353,
+          "path": "C:\\Windows\\SysWOW64\\kernel32.dll",
+          "sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+          "target": 1980177072,
+          "target_bytes": "8bff558bec8b4d0883c8fff00fc101485dc20400cccccccccccccccccccccccc",
+          "volume": 3906787040
+        }
+      }
+    ],
+    "entry_admission": [
+      {
+        "journal_line": 262,
+        "record": {
+          "confirmed_special_continues": 1,
+          "event": "entry_admission",
+          "observed_protection": 64,
+          "required_protection": 64
+        }
+      }
+    ],
+    "entry_restored": [
+      {
+        "journal_line": 267,
+        "record": {
+          "event": "entry_restored",
+          "hex": "e89cae0100e916feffff558bec5151578d45f850ff150021ce006a016a006a00",
+          "protection": 64
+        }
+      }
+    ],
+    "entry_transactions": [
+      {
+        "journal_line": 8,
+        "record": {
+          "byte": 204,
+          "complete": 1,
+          "event": "entry_write_receipt",
+          "flush_error": 0,
+          "flush_ok": 1,
+          "hex": "cc9cae0100e916feffff558bec5151578d45f850ff150021ce006a016a006a00",
+          "operation": "arm",
+          "postimage_verified": 1,
+          "protection_confirmed": 1,
+          "queried_after": 32,
+          "queried_before": 32,
+          "query_error": 0,
+          "read_count": 32,
+          "read_error": 0,
+          "requested_restore": 32,
+          "restore_attempted": 1,
+          "restore_error": 0,
+          "restore_ok": 1,
+          "returned_at_restore": 64,
+          "returned_before": 32,
+          "temporary_acquired": 1,
+          "writable_error": 0,
+          "write_attempted": 1,
+          "write_error": 0,
+          "write_ok": 1,
+          "written": 1
+        }
+      },
+      {
+        "journal_line": 265,
+        "record": {
+          "byte": 232,
+          "complete": 1,
+          "event": "entry_write_receipt",
+          "flush_error": 0,
+          "flush_ok": 1,
+          "hex": "e89cae0100e916feffff558bec5151578d45f850ff150021ce006a016a006a00",
+          "operation": "normal_restore",
+          "postimage_verified": 1,
+          "protection_confirmed": 1,
+          "queried_after": 64,
+          "queried_before": 64,
+          "query_error": 0,
+          "read_count": 32,
+          "read_error": 0,
+          "requested_restore": 64,
+          "restore_attempted": 1,
+          "restore_error": 0,
+          "restore_ok": 1,
+          "returned_at_restore": 64,
+          "returned_before": 64,
+          "temporary_acquired": 1,
+          "writable_error": 0,
+          "write_attempted": 1,
+          "write_error": 0,
+          "write_ok": 1,
+          "written": 1
+        }
+      }
+    ],
+    "event_counts": {
+      "adapter": 1,
+      "additional_thread_uninstrumented": 48,
+      "after_entry_byte_transaction": 2,
+      "after_entry_eip_rewind": 1,
+      "after_entry_eip_rewind_control": 1,
+      "after_native_debug_context_write": 3,
+      "after_reached_external_calls": 1,
+      "after_wow64_debug_context_write": 3,
+      "at_original_entry": 1,
+      "before_entry_byte_transaction": 2,
+      "before_entry_eip_rewind": 1,
+      "before_native_debug_context_write": 3,
+      "before_sampler_call": 1,
+      "before_wow64_debug_context_write": 3,
+      "continue_debug_event": 215,
+      "created": 1,
+      "current_decrement_provider": 2,
+      "debug_event": 215,
+      "entry_admission": 1,
+      "entry_before_patch": 1,
+      "entry_restored": 1,
+      "entry_rewind_intent": 1,
+      "entry_write_before": 2,
+      "entry_write_receipt": 2,
+      "exception": 8,
+      "exception_bytes": 40,
+      "exception_forwarded_first_chance": 2,
+      "exception_native_context": 8,
+      "exception_record": 8,
+      "exception_region": 24,
+      "exception_wow64_context": 8,
+      "exit_process": 1,
+      "final_owned_handle": 1,
+      "first_capture_contexts": 1,
+      "first_native_slot_removed": 1,
+      "first_slot_removed": 1,
+      "installed_native_debug_registers": 1,
+      "installed_wow64_debug_registers": 1,
+      "live_native_body": 12,
+      "loaded_module": 105,
+      "native_loader": 1,
+      "original_continuation_pending_selection": 1,
+      "original_guard_accepted": 1,
+      "original_guard_body": 6,
+      "original_guard_current_imports": 1,
+      "original_guard_native_saved": 1,
+      "original_guard_native_saved_mapping": 1,
+      "original_guard_pe": 1,
+      "original_guard_wow64_frame_mapping": 1,
+      "original_guard_xlive_frame": 1,
+      "original_guard_xlive_local_mapping": 1,
+      "original_invalid_handle_continued": 1,
+      "owned_job_final": 1,
+      "restored_debug_registers": 1,
+      "restored_native_debug_registers": 1,
+      "result": 1,
+      "saved_debug_registers": 1,
+      "saved_native_debug_registers": 1,
+      "second_capture_contexts": 1,
+      "stop_before_sampler_call": 1,
+      "unloaded_module": 5,
+      "wow64_loader": 1
+    },
+    "forwarded_other_first_chance": 2,
+    "historical_confirmed_original_attempts": 3,
+    "journal_events": 765,
+    "limits": [
+      "One original invocation only; observed anonymous-word/builder equality is not a general source-input or high-byte contract.",
+      "No sampler call/B5F100, full initializer, native teardown, source migration, or application correctness proof.",
+      "Original guard continuation does not capture CloseHandle BOOL/last-error or establish full architectural equivalence.",
+      "Full raw contexts preserve the recorded fields, without claiming full architectural state equivalence.",
+      "Extra threads remained uninstrumented; capture markers were primary-thread scoped.",
+      "No earlier COM Release target attribution from the current CE2220 provider.",
+      "Post-copy changes carry no writer attribution and authorize no restore or overlay refresh."
+    ],
+    "module_identity_events": [
+      {
+        "journal_line": 4,
+        "record": {
+          "base": 4194304,
+          "event": "loaded_module",
+          "file_index_high": 393216,
+          "file_index_low": 9954440,
+          "hash_error": "",
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\original_sampler_capture_cc10\\game\\battlestationspacific.exe",
+          "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+          "volume": 314419654
+        }
+      },
+      {
+        "journal_line": 12,
+        "record": {
+          "base": 140710908002304,
+          "event": "loaded_module",
+          "file_index_high": 327680,
+          "file_index_low": 2883555,
+          "hash_error": "",
+          "path": "C:\\Windows\\System32\\ntdll.dll",
+          "sha256": "a74f7482085eab125ccc09152ab7e0b5994bcb13e1a7b29880bdbb24179ecb8b",
+          "volume": 3906787040
+        }
+      },
+      {
+        "journal_line": 15,
+        "record": {
+          "base": 2004877312,
+          "event": "loaded_module",
+          "file_index_high": 327680,
+          "file_index_low": 2883557,
+          "hash_error": "",
+          "path": "C:\\Windows\\SysWOW64\\ntdll.dll",
+          "sha256": "7e15bd30890e9bf93b47fc894a68b2445618ee7528eb39584a263b21e112f9df",
+          "volume": 3906787040
+        }
+      },
+      {
+        "journal_line": 45,
+        "record": {
+          "base": 2004811776,
+          "event": "loaded_module",
+          "file_index_high": 262144,
+          "file_index_low": 2897675,
+          "hash_error": "",
+          "path": "C:\\Windows\\System32\\wow64cpu.dll",
+          "sha256": "3441d4739e7500bf6820be3f02facf020d42664b38e754014e3a80e94e03718c",
+          "volume": 3906787040
+        }
+      },
+      {
+        "journal_line": 48,
+        "record": {
+          "base": 1979973632,
+          "event": "loaded_module",
+          "file_index_high": 327680,
+          "file_index_low": 2881353,
+          "hash_error": "",
+          "path": "C:\\Windows\\SysWOW64\\kernel32.dll",
+          "sha256": "bafd9e061964642802d62f1eb694e7e4af60de739a8df1a492f90006dc5680f3",
+          "volume": 3906787040
+        }
+      },
+      {
+        "journal_line": 51,
+        "record": {
+          "base": 1973223424,
+          "event": "loaded_module",
+          "file_index_high": 327680,
+          "file_index_low": 2881390,
+          "hash_error": "",
+          "path": "C:\\Windows\\SysWOW64\\KernelBase.dll",
+          "sha256": "85ad413ff860898f9e511f2e63c0e30f7aed1275fd1fd44fa90801211d328253",
+          "volume": 3906787040
+        }
+      },
+      {
+        "journal_line": 162,
+        "record": {
+          "base": 1791623168,
+          "event": "loaded_module",
+          "file_index_high": 196608,
+          "file_index_low": 9954475,
+          "hash_error": "",
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\original_sampler_capture_cc10\\game\\xlive.dll",
+          "sha256": "71b50b3e91b5e17603f1d8fd44f1fc1da53c305f191dd126fb5059e5d3c841b2",
+          "volume": 314419654
+        }
+      }
+    ],
+    "old_overlay_stale": true,
+    "original_run": "original_run03",
+    "outer_lifecycle": {
+      "bytes": 818,
+      "path": "local/original_sampler_capture_cc10/controller_v3_runs/original_run03/outer_lifecycle.json",
+      "sha256": "a061b0e0ad8d9603e1ece47d7b2b385ee50777c231239e986faf80605208d76a"
+    },
+    "owned_exit": {
+      "bytes": 657,
+      "path": "local/original_sampler_capture_cc10/controller_v3_runs/original_run03/owned_exit.json",
+      "sha256": "f5bc4ff9ab1f79dd828093ad8194b91c8f89740f01564172ed9cb8815042100a"
+    },
+    "post_copy_changed_paths": [
+      "bsp_debug.log",
+      "xlive_debug.log"
+    ],
+    "post_copy_drift": {
+      "bytes": 8186,
+      "path": "local/original_sampler_capture_cc10/controller_v3_runs/original_run03/private_copy_drift.json",
+      "sha256": "1c98fe8353ef2e6e4976800cbdb04bd6a9be0cb51edb04eecae8e33b496196ae"
+    },
+    "preserved_prior_indexed_rows": 1085,
+    "prior_artifacts": {
+      "bytes": 3644,
+      "path": "local/original_sampler_capture_cc10/controller_v3_runs/original_run03/prior_preservation_verification.json",
+      "sha256": "cce7883c8730b7c1f1ddcb86863fd7427ad266f1d33c7fea6699c38ad0983ac9"
+    },
+    "profile_plan_empty": true,
+    "profile_restore_plan": {
+      "bytes": 328,
+      "path": "local/original_sampler_capture_cc10/controller_v3_runs/original_run03/profile_backup/restore_plan.json",
+      "sha256": "4d4c6237ea767394eebf2a7a7b66989b653357f40d4533b6f88bc8c5d81c7131"
+    },
+    "restore_applied": false,
+    "result": {
+      "arm_transaction_complete": 1,
+      "automatic_retry": false,
+      "captured": true,
+      "cleanup_transaction_complete": 0,
+      "confirmed_invalid_handle": 1,
+      "created_child": true,
+      "elapsed_ms": 5015,
+      "error": "",
+      "event": "result",
+      "exit_code": 126,
+      "live_child_detached": false,
+      "mode": "execute-reviewed",
+      "normal_transaction_complete": 1,
+      "pass": true,
+      "pending_special_selection": 0,
+      "selected_invalid_handle": 1
+    },
+    "sampler_call_executed": false,
+    "second_chance_records": [],
+    "source_journal": {
+      "bytes": 265982,
+      "path": "local/original_sampler_capture_cc10/controller_v3_runs/original_run03/helper_events.jsonl",
+      "sha256": "e07c34b16bf92bfebe8613ca760597cc447979700448b7ba0003cc8bce278524"
+    },
+    "special_confirmed": 1,
+    "special_selected": 1,
+    "status": "captured_owned_lifecycle_closed",
+    "successful_continue_events": 215
+  },
+  "root_disposition": "Accepted as one-invocation physical input observation only. No source migration, original retry, profile restore, copy rebaseline or refreshed overlay is authorized. Old exact overlay is stale.",
+  "limits": [
+    "One original invocation only; observed anonymous-word/builder equality is not a general source-input or high-byte contract.",
+    "No sampler call/B5F100, full initializer, native teardown, source migration, or application correctness proof.",
+    "Original guard continuation does not capture CloseHandle BOOL/last-error or establish full architectural equivalence.",
+    "Full raw contexts preserve the recorded fields, without claiming full architectural state equivalence.",
+    "Extra threads remained uninstrumented; capture markers were primary-thread scoped.",
+    "No earlier COM Release target attribution from the current CE2220 provider.",
+    "Post-copy changes carry no writer attribution and authorize no restore or overlay refresh.",
+    "Primary independently compared recorded complete copy manifests; no second57GB disk rehash",
+    "Unchanged profile proof excludes access timestamps; root did not restore files",
+    "No first-stop raw builder+70 bytes in the bounded stack window; helper scalar read and second-stop raw stacked root agree"
+  ],
+  "archive": {
+    "path": "local/cc10-platform-evidence/original-sampler-run03.zip",
+    "sha256": "fb1e1a707e499cca0a9729b60cbade962e7715705d19be5ad43030173c3dec8e",
+    "files": 74,
+    "valid": true
+  }
+}
