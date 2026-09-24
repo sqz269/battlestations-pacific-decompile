@@ -199,3 +199,22 @@ and then on. All camera switches are on. USN04 4500, `BSP_GUNNERY_RNG_STREAMS=1`
   formation row. One family record becomes three or four block records: the update itself is now
   done, and what it still lacks is named.
 - **Summary lines.** All identical. No summary line reads these widgets.
+
+## 9. The part 1 pair
+
+`local\ss_off_usn04.log` against `local\ss_on_usn04.log`, back buffer 2560x1440.
+
+| row | OFF | ON |
+| --- | ---: | ---: |
+| unimplemented total | 2,176,379 | 2,203,853 (+27,474; predicted +27,474 with the formation row) |
+| FrontEndScreen::update | 82,435 | 73,277 (-9,158) |
+| HudShipScreen::update 0064DD30 | | 9,158 done |
+| pipe_sight_block, flash_view_mode, update_remainder, relation_select_state | | 9,158 UNIMPLEMENTED each |
+
+- **Summary lines.** 156 of 157 are identical, and every gameplay line is among them. The one that
+  moved is the sprite-bridge line: `quads` goes from 189 to 185.
+- **Why the bridge moved.** These are the four flash icons. The image hides them in its layout
+  load (0064D543..0064D576) and 0064ABD0 keeps them hidden each frame. The host's page had drawn
+  them as authored. This is the one prediction miss: I had said no summary line reads these
+  widgets, and the bridge line counts them.
+- **Result.** Every row prediction holds. **`kHudShipScreenUpdateBound` flips ON.**
