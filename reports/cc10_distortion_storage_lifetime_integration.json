@@ -1,0 +1,169 @@
+{
+  "packet": "cc10_distortion_storage_lifetime_integration",
+  "worker_commit": "7cc98482de7befda18f22aab04cb666bbc9307c1",
+  "integration": "2204f9f95ebc08ae9192229cc7401f809099c86c",
+  "worker_report": "reports/native_distortion_storage_lifetime_cc10.json",
+  "frozen_worker_evidence": {
+    "archive_sha256": "71843fd98d2d4bb1e13633393487fc99617c1456458cd2354139c57a2d1a286c",
+    "archive_files": 47,
+    "manifest_files_verified": 46,
+    "current_input_hashes_verified": 73,
+    "commit": "7cc98482de7befda18f22aab04cb666bbc9307c1"
+  },
+  "validation": {
+    "normal_bytes": 428,
+    "compiler_evidence_bytes": 32,
+    "live_equals_installed": true,
+    "direct_tail_rows": 10,
+    "indirect_rows_separately_reviewed": 14,
+    "strict_win32_build": true,
+    "integrated_ctests": 3,
+    "build_log_sha256": "9bba74ed560acf957680cb556ddb1ff11716d496fd6316021c566d036a2a341b",
+    "tracked_tests_added": false,
+    "native_ABI_FH3_SEH": false,
+    "complete_startup": false,
+    "game_validated": false
+  },
+  "review": [
+    "Complete source/header/native/EH schedules and full focused fixture/provider setup reviewed",
+    "Final documentation/report and original/source fixture limitations reviewed",
+    "Immutable worker archive and all manifest files independently verified; current exact probe inputs matched before integration",
+    "Existing legacy/raw shared engine preserves captured18 then retained decrement epoch through current camera unlink and late3C; canonical same04 counts and current0/fresh4 terminal checks",
+    "Record254 twelve-byte C++ lifetime starts preserving preimage bytes, after admission and before native stores",
+    "Compiled clear+0A5 capture18 precedes +0EB import; +1E8 unlink precedes +200 current3C; +23B retained decrement precedes +261 clear; scalar+10C base precedes +11F low-byte read",
+    "Two428B source/original pairs compare whole26Ch with stale record backing normalized; actual camera/scene/frame and camera pool return; callback A38/B34/B180/A3C and flags1->0",
+    "First two focused comparisons passed but app drain failed from incorrect fixture weak publication; isolated genuine weak domain fixed final ordinary COM0/0 drain",
+    "Final73 linked input hashes verified,70 application objects plus3 libraries; final and earlier binaries/logs retained"
+  ],
+  "ghidra_repairs": {
+    "record": "reports/cc10_gui_distortion_function_definition.json",
+    "defined_handlers": [
+      "00cbfc66"
+    ],
+    "new_handler_bytes": 10,
+    "callee_noreturn_unchanged": true
+  },
+  "focused_probe": {
+    "path": "local\\cc10_distortion_storage_lifetime\\probe.hpp",
+    "normal_pairs": 2,
+    "native_bytes": 428,
+    "tracked_tests_added": 0,
+    "genuine": "full rawB71A80 camera with actual application renderer/registry/45Ch pool and genuine CRT; rawB724E0 scene and B1FBB0 frame",
+    "weak_domain": "isolated genuine weak pool/allocator list/SingletonLifetimeDomain with real925430 exact registered-owner callback; explicit shutdown after scene retirement; NOT application-owned weak composition",
+    "compared": "whole26Ch owner output with only stale freed record pointer normalized; retirement/pool reuse; event traces/late flags",
+    "variation": "genuine frame decrementA then declared callback sets current importB, publishes actual scene3C, changes original flags1->0; trace A38/B34/B180/A3C",
+    "relocations": {
+      "rel32": [
+        {
+          "body": 0,
+          "offset": 199,
+          "target": 11984800
+        },
+        {
+          "body": 1,
+          "offset": 44,
+          "target": 11857520
+        },
+        {
+          "body": 1,
+          "offset": 64,
+          "target": 11857440
+        },
+        {
+          "body": 1,
+          "offset": 72,
+          "target": 12544393
+        },
+        {
+          "body": 1,
+          "offset": 90,
+          "target": 11597280
+        },
+        {
+          "body": 2,
+          "offset": 3,
+          "target": 11858256
+        },
+        {
+          "body": 2,
+          "offset": 16,
+          "target": 12543404
+        }
+      ],
+      "absolute_import_operands": [
+        {
+          "body": 0,
+          "offset": 28,
+          "target": 13509152
+        },
+        {
+          "body": 0,
+          "offset": 65,
+          "target": 13509152
+        }
+      ],
+      "indirect_instructions_unchanged": true,
+      "table_relocations": [
+        "original frame profile changed to 2-word copy with genuine BD30E0/current4 bridge; source keeps D5E600",
+        "original scene current0 table relocated after genuine decrement; bridge validates current0/fresh4, restores D62D48 for canonical admission; source keeps D62D48"
+      ],
+      "original_fh3_unexercised": true
+    },
+    "inherited_camera_provider": "frozen camera_construct_probe.hpp source construction only; genuine B1FF60 over relocated actual renderer table; restored before app resumes",
+    "source_vs_original": "original-only frame profile relocation; scene profile relocated after zero decrement then restored in genuine canonical bridge; source original numeric profiles; all indirect instructions unchanged",
+    "application_objects": 70,
+    "libraries": 3,
+    "link_receipt": "local\\cc10_distortion_storage_lifetime\\link_inputs.json",
+    "production_object_replacements": 0,
+    "application": "existing fullscreen HAL diagnostic bootstrap,120 concrete/46 unimplemented; B107F0/B13010 unactivated; no gameplay/full startup proof",
+    "attempts": [
+      {
+        "log": "run.log",
+        "frames": 1,
+        "comparison": "PASS",
+        "drain": "FAIL",
+        "exit": 1
+      },
+      {
+        "log": "run_final.log",
+        "frames": 2,
+        "comparison": "PASS",
+        "drain": "FAIL",
+        "exit": 1
+      },
+      {
+        "log": "run_bound.log",
+        "frames": 2,
+        "comparison": "PASS",
+        "drain": "PASS",
+        "exit": 0,
+        "final_com_device_api": [
+          0,
+          0
+        ]
+      }
+    ],
+    "failed_attempt_cause": "separate weak domain registered into application manager without GameSingletonHost deletion binding; changing frame count was insufficient; fixed only isolated fixture provider composition",
+    "final_binary_sha256": "197ae611c399863d297c27e2e595b879bf1ede6c800e16e9d63f098899e8c58e",
+    "failed_binary_sha256": "da83084d6d031e5d592613398252a502119a57774dd1712ebb29223f17bf4ae8"
+  },
+  "limits": [
+    "arbitrary heap/preinit contents not safe",
+    "B4F560 initializer not migrated",
+    "no B107F0 activation",
+    "native FH3/SEH/ABI unproved",
+    "holder/post20 nonnull branches not exercised by new comparison",
+    "no new application weak-domain admission"
+  ],
+  "dynamic_limits": [
+    "Both final flags are0; source/native scalar freebit1 automatic outer free unexercised, fixture explicitly frees afterward",
+    "Valid34/38/3C preimages supplied by fixture, not established by B4F0C0",
+    "No raw initializer, B107F0 or full startup admission; nonnull holder/post20 branches unexercised by new probe"
+  ],
+  "archive": {
+    "path": "local/cc10-platform-evidence/distortion-storage-lifetime.zip",
+    "sha256": "e8e908e3d0c7292590c9795d0a0d7e24d4727933be98b3ca35a64c6f78be720e",
+    "files": 56,
+    "valid": true
+  }
+}

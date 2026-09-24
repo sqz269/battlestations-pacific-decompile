@@ -1,0 +1,307 @@
+{
+  "packet": "cc10_gui_scene_acquisition_storage_integration",
+  "worker_commit": "5a1f2d6e649caa943af3065b2d743e3a18da22bc",
+  "integration": "ea47256a912122a4eceda6181ad5937d32035f8f",
+  "worker_report": "reports/native_gui_scene_acquisition_storage_cc10.json",
+  "frozen_worker_evidence": {
+    "archive_sha256": "49da115da74753fce14f81e1763e4554b7798ad03360b418d77549a5329ad7af",
+    "archive_files": 109,
+    "manifest_files_verified": 108,
+    "current_input_hashes_verified": 83,
+    "commit": "5a1f2d6e649caa943af3065b2d743e3a18da22bc"
+  },
+  "validation": {
+    "normal_bytes": 1467,
+    "compiler_evidence_bytes": 215,
+    "live_equals_installed": true,
+    "direct_tail_rows": 57,
+    "indirect_rows_separately_reviewed": 8,
+    "strict_win32_build": true,
+    "integrated_ctests": 3,
+    "build_log_sha256": "bfc1f7f6760e991563639269ce3b13b7dd3e89633e25567ad5eabf6053af35f2",
+    "tracked_tests_added": false,
+    "native_ABI_FH3_SEH": false,
+    "complete_startup": false,
+    "game_validated": false
+  },
+  "review": [
+    "Complete source/header/native/EH schedules and full focused fixture/provider setup reviewed",
+    "Final documentation/report and original/source fixture limitations reviewed",
+    "Immutable worker archive and all manifest files independently verified; current exact probe inputs matched before integration",
+    "Physical outer F10..8F backing, callback rereads/captured34, x87 argument stack timing and sphere F40/radius F14 preserved",
+    "Own admission failures bypass native cleanup; nested resource ambient admission already consumed its prefix and retains raw allocation/string/ambient credit",
+    "Byte-preserving directional178 descriptor lifetime occurs at the declared source frontier",
+    "New/reuse selected scalar/count comparison plus actual graph identity/backlink/list/retirement assertions; raw registry pointer fields excluded",
+    "Fixture type IDs/guards, weak/directional/Group pools and GUI manager are initialized isolated domains; production registry/renderer/HAL/camera pool/VFS strings are genuine",
+    "Eight attempt logs retained; overwritten earlier failed binaries are not claimed archived; final83-input receipt includes current header/source/object/corelib/response/exe"
+  ],
+  "ghidra_repairs": {
+    "record": "reports/cc10_gui_distortion_function_definition.json",
+    "defined_handlers": [
+      "00cb89ad"
+    ],
+    "new_handler_bytes": 10,
+    "callee_noreturn_unchanged": true,
+    "returning_free_funclets": [
+      "00cb88e0",
+      "00cb893a",
+      "00cb8967",
+      "00cb8975"
+    ],
+    "each_tail_bytes": 2,
+    "flow_record": "reports/cc10_gui_acquisition_flow_repair.json",
+    "body_recreated_preserving_prior_names_comments": true
+  },
+  "focused_probe": {
+    "strict_build": "scripts/build.ps1 MSVC Win32 passed; both configured existing CTests passed",
+    "build_log": "local\\output\\cc10_gui_scene_acquisition_storage\\build-current.log",
+    "call_verifier": "PASS:57 direct/compiler transfer rows;0 failed;eight indirect CALL operands independently decoded;CB89AD raw handler containment explicitly unavailable",
+    "probe_source": [
+      "local\\output\\cc10_gui_scene_acquisition_storage\\probe_setup.hpp",
+      "local\\output\\cc10_gui_scene_acquisition_storage\\probe.hpp",
+      "local\\output\\cc10_gui_scene_acquisition_storage\\probe_startup.hpp",
+      "local\\output\\cc10_gui_scene_acquisition_storage\\application-gui-acquisition-probe.cpp"
+    ],
+    "exact_response_file": "local\\output\\cc10_gui_scene_acquisition_storage\\probe.rsp",
+    "exact_build_command": "local\\output\\cc10_gui_scene_acquisition_storage\\probe.cmd",
+    "pre_run_identity_receipt": "local\\output\\cc10_gui_scene_acquisition_storage\\pre_run_identity_receipt.json",
+    "assertions": "NDEBUG absent and compile-time rejection present; final active assertions log+ExitProcess116 to avoid modal UI",
+    "probe_result": "PASS copied-original/source full-new and reuse, real renderer/HAL/camera pool, actual graph/identity/count/list relationships and explicit same-count retirement; signed-zero half/x87 radius; ordinary app drain and final COM device/api0/0",
+    "run_log": "local\\output\\cc10_gui_scene_acquisition_storage\\run08.log",
+    "launcher": "local\\output\\cc10_gui_scene_acquisition_storage\\launcher08.log",
+    "exit_code": 0,
+    "owned_processes_closed": true,
+    "tracked_tests_added": false,
+    "original_boundary": {
+      "full_extent": 1467,
+      "copied_direct_calls": 46,
+      "import_constant_operand_relocations": 9,
+      "current34_replaced": {
+        "address": "00ac5d85",
+        "end_exclusive": "00ac5d8a",
+        "bytes": 5,
+        "description": "Bridge executes original current profile/current34 loads at capture point, returns exact genuine B6E870 adapter; replaced original instructions not independently compared"
+      },
+      "zero_sites_unexercised": [
+        "00ac5c01",
+        "00ac5c8b",
+        "00ac5cfb"
+      ],
+      "shared_callees": "All direct callees use genuine source providers; provider frames disjoint from original outer private stack. Original-side canonical admission/preparation occurs immediately after successful constructor bridge and before temporary cleanup; no admission-failure comparison.",
+      "unexercised": "Native/null allocation branches, current0 zero arms, source cleanup states/host-admission failure, mutated callback inputs, private stack/FH3 transport not dynamically compared"
+    },
+    "comparison": {
+      "kind": "scalar projection plus independent actual-identity/cardinality/relationship assertions; not whole-object byte equality",
+      "registry_pointer_fields_excluded": {
+        "resource+1C": "registry+08 list sentinel",
+        "resource+28": "registry+14 vector begin",
+        "resource+2C": "registry+18 vector end",
+        "resource+30": "registry+1C vector capacity end"
+      },
+      "registry_scalar_fields_compared": [
+        "resource+20 registry list count",
+        "resource+34 registry mask",
+        "resource+38 registry active value"
+      ],
+      "identity_assertions": [
+        "page EC/F0 raw scene/store camera+18 identities",
+        "scene current1C raw resource",
+        "camera/light A4 equals actual outer24h",
+        "camera170 and light178/back/count1 reference same actual3Ch resource",
+        "scene0C head light and light3C successor camera",
+        "registry canonical reference_count address equals actual+4 for scene/camera/resource/light",
+        "viewport180/fog184 identities equal creator results",
+        "all four graph companions and ambient companion retire; Group explicit scalar retires; scene reuse count2 then creator releases"
+      ],
+      "projected_word_offsets": {
+        "page": [
+          "F4",
+          "FC",
+          "108",
+          "10C",
+          "110",
+          "114",
+          "118",
+          "11C"
+        ],
+        "scene": [
+          "00",
+          "04",
+          "10",
+          "20"
+        ],
+        "resource": [
+          "00",
+          "04",
+          "08",
+          "20",
+          "34",
+          "38"
+        ],
+        "camera": [
+          "00",
+          "04",
+          "188",
+          "18C",
+          "190",
+          "1D0",
+          "1D4",
+          "1D8",
+          "2EC",
+          "2F0"
+        ],
+        "directional": [
+          "00",
+          "04",
+          "17C",
+          "180",
+          "1E0",
+          "1E4",
+          "1E8"
+        ],
+        "viewport": [
+          "00",
+          "04",
+          "0C",
+          "10",
+          "14",
+          "18",
+          "1C"
+        ],
+        "fog": [
+          "00",
+          "04",
+          "08",
+          "0C",
+          "10",
+          "14",
+          "68",
+          "78",
+          "90"
+        ],
+        "ambient": [
+          "00",
+          "04",
+          "1C",
+          "20",
+          "24",
+          "28"
+        ],
+        "Group": [
+          "00",
+          "04",
+          "08",
+          "0C",
+          "10",
+          "14",
+          "138"
+        ],
+        "outer_backing": [
+          "F14",
+          "F40",
+          "F44",
+          "F48",
+          "F4C"
+        ]
+      },
+      "fixture_domains": "Production actual canonical registry/renderer/HAL/camera pool and VFS strings; fixture-initialized same-token type descriptors/guards with genuine bootstrap predicates; isolated genuine weak/directional/Group pools and constructed88h GUI manager, no application weak publication mutation; no later-startup admission claim",
+      "count_trace": "current genuine InterlockedIncrement/Decrement return values compared in order; no fake counts"
+    },
+    "attempts": [
+      {
+        "attempt": 1,
+        "launcher": "local/output/cc10_gui_scene_acquisition_storage/launcher.log",
+        "run_log": "local/output/cc10_gui_scene_acquisition_storage/run.log",
+        "exit_code": -1,
+        "outcome": "Initial fixture asserted wrong scene-root offsets (+14/+9C); modal assertion stopped only the two validated owned processes. No comparison conclusion.",
+        "frames": 1,
+        "exact_command": "./tools/run_game.ps1 -Exe local\\output\\cc10_gui_scene_acquisition_storage/application-gui-acquisition-probe.exe -XLiveDll build/win32/Release/xlive_stub.dll -Log local\\output\\cc10_gui_scene_acquisition_storage\\run.log -- --frames 1",
+        "failed_binary_preserved": false
+      },
+      {
+        "attempt": 2,
+        "launcher": "local/output/cc10_gui_scene_acquisition_storage/launcher02.log",
+        "run_log": "local/output/cc10_gui_scene_acquisition_storage/run02.log",
+        "exit_code": 116,
+        "outcome": "Same wrong fixture assertion; active assertion changed to ExitProcess116, but relative diagnostic path was unavailable after application cwd changed.",
+        "frames": 1,
+        "exact_command": "./tools/run_game.ps1 -Exe local\\output\\cc10_gui_scene_acquisition_storage/application-gui-acquisition-probe.exe -XLiveDll build/win32/Release/xlive_stub.dll -Log local\\output\\cc10_gui_scene_acquisition_storage\\run02.log -- --frames 1",
+        "failed_binary_preserved": false
+      },
+      {
+        "attempt": 3,
+        "launcher": "local/output/cc10_gui_scene_acquisition_storage/launcher03.log",
+        "run_log": "local/output/cc10_gui_scene_acquisition_storage/run03.log",
+        "exit_code": 116,
+        "outcome": "Same fixture assertion captured at absolute local path; ExitProcess116. Correct root fields are scene+0C and node+3C.",
+        "frames": 1,
+        "exact_command": "./tools/run_game.ps1 -Exe local\\output\\cc10_gui_scene_acquisition_storage/application-gui-acquisition-probe.exe -XLiveDll build/win32/Release/xlive_stub.dll -Log local\\output\\cc10_gui_scene_acquisition_storage\\run03.log -- --frames 1",
+        "failed_binary_preserved": false
+      },
+      {
+        "attempt": 4,
+        "launcher": "local/output/cc10_gui_scene_acquisition_storage/launcher04.log",
+        "run_log": "local/output/cc10_gui_scene_acquisition_storage/run04.log",
+        "exit_code": -1073740791,
+        "outcome": "Fixture root assertion corrected. Original full-new/reuse/disposition succeeded, source terminated due mixed Acquired header/old core library layout; invalid mixed-build evidence.",
+        "frames": 1,
+        "exact_command": "./tools/run_game.ps1 -Exe local\\output\\cc10_gui_scene_acquisition_storage/application-gui-acquisition-probe.exe -XLiveDll build/win32/Release/xlive_stub.dll -Log local\\output\\cc10_gui_scene_acquisition_storage\\run04.log -- --frames 1",
+        "failed_binary_preserved": false
+      },
+      {
+        "attempt": 5,
+        "launcher": "local/output/cc10_gui_scene_acquisition_storage/launcher05.log",
+        "run_log": "local/output/cc10_gui_scene_acquisition_storage/run05.log",
+        "exit_code": -1073740791,
+        "outcome": "Added bounded progress logging; reproduced mixed-layout source termination after original graph disposition. No source/native mismatch claim.",
+        "frames": 1,
+        "exact_command": "./tools/run_game.ps1 -Exe local\\output\\cc10_gui_scene_acquisition_storage/application-gui-acquisition-probe.exe -XLiveDll build/win32/Release/xlive_stub.dll -Log local\\output\\cc10_gui_scene_acquisition_storage\\run05.log -- --frames 1",
+        "failed_binary_preserved": false
+      },
+      {
+        "attempt": 6,
+        "launcher": "local/output/cc10_gui_scene_acquisition_storage/launcher06.log",
+        "run_log": "local/output/cc10_gui_scene_acquisition_storage/run06.log",
+        "exit_code": 117,
+        "outcome": "Added local terminate capture; ExitProcess117. Confirmed mixed Acquired header/library layout. Earlier inputs/executables were not retained; logs remain.",
+        "frames": 1,
+        "exact_command": "./tools/run_game.ps1 -Exe local\\output\\cc10_gui_scene_acquisition_storage/application-gui-acquisition-probe.exe -XLiveDll build/win32/Release/xlive_stub.dll -Log local\\output\\cc10_gui_scene_acquisition_storage\\run06.log -- --frames 1",
+        "failed_binary_preserved": false
+      },
+      {
+        "attempt": 7,
+        "launcher": "local/output/cc10_gui_scene_acquisition_storage/launcher07.log",
+        "run_log": "local/output/cc10_gui_scene_acquisition_storage/run07.log",
+        "exit_code": 113,
+        "outcome": "Rebuilt source/core library and relinked against current layout. Both paths and graph disposition completed; projection mistakenly compared resource+1C/+30 raw registry addresses. ExitProcess113, not a behavioral mismatch.",
+        "frames": 1,
+        "exact_command": "./tools/run_game.ps1 -Exe local\\output\\cc10_gui_scene_acquisition_storage/application-gui-acquisition-probe.exe -XLiveDll build/win32/Release/xlive_stub.dll -Log local\\output\\cc10_gui_scene_acquisition_storage\\run07.log -- --frames 1",
+        "failed_binary_preserved": false
+      },
+      {
+        "attempt": 8,
+        "launcher": "local/output/cc10_gui_scene_acquisition_storage/launcher08.log",
+        "run_log": "local/output/cc10_gui_scene_acquisition_storage/run08.log",
+        "exit_code": 0,
+        "outcome": "Excluded raw registry addresses from scalar projection, retaining identity/count/relationship assertions; used two ordinary app frames. Full-new/reuse pair, graph retirement and ordinary COM0/0 drain passed, exit0.",
+        "frames": 2,
+        "exact_command": "./tools/run_game.ps1 -Exe local\\output\\cc10_gui_scene_acquisition_storage/application-gui-acquisition-probe.exe -XLiveDll build/win32/Release/xlive_stub.dll -Log local\\output\\cc10_gui_scene_acquisition_storage\\run08.log -- --frames 2",
+        "failed_binary_preserved": null
+      }
+    ]
+  },
+  "limits": [
+    "Complete source normal body is not a claim every instruction/branch was exercised.",
+    "Actual provider composition on the reconstructed production renderer is a focused fixture, not automatic application graph admission or original game validation.",
+    "Fixture weak owners use their own genuine weak pool and SingletonLifetimeDomain with exact mutex dispatcher; same actual+4 graph registry is the application registry.",
+    "Normal zero arms and exception/host-admission failure schedules remain static/provider-bound evidence.",
+    "Legacy typed graphs remain unchanged; no missing provider stub, default success, native FH3 or private ABI claim."
+  ],
+  "report_correction": "CB89B2 kind changed from no_ghidra_function to tail_jump after definition; frozen worker snapshot retains historical state. All57 direct/compiler rows now pass.",
+  "archive": {
+    "path": "local/cc10-platform-evidence/gui-scene-acquisition-storage.zip",
+    "sha256": "8f207e6037fc6e61dcc05e590eaf6d346abd97f60bddcc1494074348490796e1",
+    "files": 120,
+    "valid": true
+  }
+}
