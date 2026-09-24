@@ -2726,6 +2726,34 @@ std::string GameMissionLuaHost::read_bullet_class_string(int index, const char* 
     return value;
 }
 
+std::string GameMissionLuaHost::read_device_class_string(int index, const char* key) {
+    // The DeviceClass companion of read_bullet_class_string. `Mesh` is the
+    // model the image loads into the weapon class's +50h, which 007325A0 reads
+    // for the "fire" Points items. docs/GUN_BARREL_COUNT.md.
+    std::string value;
+    if (state_ == nullptr || index < 0 || key == nullptr) return value;
+    const int top = ::lua_gettop(state_);
+    ::lua_getfield(state_, LUA_GLOBALSINDEX, "DeviceClass");
+    if (::lua_type(state_, -1) == LUA_TTABLE) {
+        ::lua_pushinteger(state_, index);
+        ::lua_gettable(state_, -2);
+        if (::lua_type(state_, -1) == LUA_TTABLE) {
+            ::lua_getfield(state_, -1, key);
+            if (::lua_type(state_, -1) == LUA_TSTRING) {
+                const char* text = lua_tolstring(state_, -1, nullptr);
+                if (text != nullptr) value = text;
+            }
+        }
+    }
+    ::lua_settop(state_, top);
+    return value;
+}
+
+bool GameMissionLuaHost::read_resource_file(const std::string& path,
+    std::vector<std::uint8_t>& bytes) {
+    return resources_ != nullptr && resources_->read_file(path, kScriptReadMode, bytes);
+}
+
 std::vector<bsp::LuaGlobalEntry> GameMissionLuaHost::lua_global_entries() {
     std::vector<bsp::LuaGlobalEntry> entries;
     if (state_ == nullptr) return entries;

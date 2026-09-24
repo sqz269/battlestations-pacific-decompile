@@ -44,6 +44,7 @@ struct IGameExplorer;
 #include "bsp/frame_clock.hpp"
 #include "bsp/platform_loop.hpp"
 #include "bsp/platform_window.hpp"
+#include "bsp/text_input.hpp"
 #include "bsp/random_threads.hpp"
 #include "bsp/winmain_startup.hpp"
 
@@ -647,7 +648,8 @@ private:
 
     RandomThreads* random_threads_{};
     Win32PlatformState platform_;
-    PlatformLoopState loop_;
+    PlatformLoopState& loop_{platform_};
+    PlatformTextInput platform_text_;
     ObjectHandleResolverSlots object_resolvers_;
     ApplicationFrameState frame_state_;
     FrameMarkerColor frame_color_;
@@ -680,16 +682,16 @@ private:
     bool constructed_{};
 };
 
-// The window procedure. Only the WM_CLOSE branch of the native handler 00bed3b0 is
-// recovered as a policy (docs/WINDOW_CLOSE.md): it records a pending close at platform
-// +180h and returns zero. Every other message goes to DefWindowProcA, because the
-// activation, resize, input and sizing-loop branches of 00bed3b0 are not reconstructed.
+// Application binding for recovered create/size/close, control and text arms of
+// BED3B0. Activation awaits its actual GUI/media/renderer owner composition.
+// Text capture remains disabled until the real text editor enables its owner.
 LRESULT CALLBACK game_window_procedure(HWND window, UINT message, WPARAM wparam,
     LPARAM lparam);
 
-// The platform object the window procedure writes its close request into. 00bed3b0 keeps
-// it in window-extra offset zero during WM_CREATE; the milestone uses one process-wide
-// binding instead, because the extra-bytes layout of the native object is not recovered.
-void set_active_platform_state(Win32PlatformState* state) noexcept;
+// The explicit BED3B0 platform argument and its persistent text dependency. This
+// differs from the window-extra receiver captured by some message arms; WM_CREATE
+// stores that receiver in extra offset zero. Passing null clears both bindings.
+void set_active_platform_state(Win32PlatformState* state,
+    PlatformTextInput* text = nullptr) noexcept;
 
 }  // namespace bsp::game

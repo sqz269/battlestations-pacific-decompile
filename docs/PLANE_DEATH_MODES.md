@@ -219,3 +219,93 @@ shots at 9000.
 
 **Deaths** go 30 to 27 at 9000. Lexington's survival accounts for one. The other two were not
 traced aircraft by aircraft.
+
+## 6. The death flags `+5Dh` and `+60h` (packet `cc9_plane_death_flags`)
+
+### 6.1 The image
+
+- **`+60h` at the destroy.** `007D0B80`'s tail (`007D12FC`) calls `vtable[70h](1)`, the unit's
+  `0077D1A0`, which reaches `00926C80` (BSP_MissionEntity_Destroy). Under the `009248D0` lock it
+  returns if `+60h` is already set (`00926CBF`). Otherwise it sets `+60h = 1` at `00926CD5`, sets
+  the cause `+70h` (1, or the parent's), and queues the entity on the destroy list.
+- **`+5Dh` at the flush.** `009273A0` dispatches `vtable[74h]` = `00926390` for every queued
+  entity. When `+5Dh` is clear it stores `AL = 1` to `+5Dh` (`0092639B`) and `+60h` (`0092639E`),
+  calls `00925C90`, and tail-jumps to `vtable[7Ch]`.
+- **The readers.** `00A2DDE0`, the AI group's eviction pass, keeps a member only while
+  `+5Ch` is set and `+5Dh`, `+5Eh` and `+60h` are clear (`00A2DE26`-`00A2DE3C`), and its party and
+  team still match. The same four-byte gate is `0043F080`, which the dogfight target test uses.
+  The release stage refuses on `+5Dh` alone (`007CEA29`).
+
+### 6.2 The host before this packet
+
+- The plane death sets `C3Ah` and removes the aircraft from its squadron, but it writes neither
+  byte. `GameAiHost::unit_flags` reads `state->active`, `state->simulate` (`+5Dh`),
+  `scene_destroyed_005e` and `scene_pending_destroy_0060`, so a dead aircraft passes the gate.
+- cc9-dogfight-engaged found the consequence: a dead aircraft stays a group's first member, the
+  group's leader point freezes on the wreck, and `00A12A90`'s promotion of the US group waits on
+  a distance that never closes.
+
+### 6.3 The binding (`kPlaneDeathFlagsBound`, default true)
+
+- In the plane-branch head, at the step the death mode is chosen and `C3Ah` is set, the host sets
+  `scene_pending_destroy_0060` (`00926CD5`) and `state->simulate` (`0092639B`).
+- **Substitution, labelled:** the host has no `009273A0` flush, so `+5Dh` is set in the same step
+  as `+60h`, not at the next flush. That is the same boundary the squadron removal already takes.
+- Only aircraft are covered. Ships keep their own path (`kShipAiTargetReleaseBound`).
+
+### 6.4 Predictions (written before the runs)
+
+E2 9000, same tree, `BSP_GUNNERY_RNG_STREAMS=1`, switch OFF (`local\fl0`) against ON
+(`local\fl1`). The OFF side is expected near `local/bC_9000.log` on the earlier tree: 37 deaths,
+3 drops, AI coordinator `evicted=10 destroyed=14 promotions=3`, the US group promoted at step 2436
+(121.80 s).
+
+- **Dead aircraft leave their AI groups.** `evicted` rises from about 10 to at least the number of
+  aircraft deaths in groups, 30 to 50. `destroyed` rises as whole groups empty.
+- **Promotion time.** Within 1 s of 121.80 s if the US group's target leader is alive at 121.8 s.
+  If it died earlier, the leader point moves to the next live member and the promotion moves by
+  seconds, either way. It does not disappear.
+- **Deaths** 37 within 34-40. **Torpedo drops** 3 within 2-5: a dead aircraft's release is already
+  refused through `C3Ah`, so the new `+5Dh` refusal adds nothing.
+- **Plane guns (category 0).** The dogfight target test (`0043F080`) now drops dead aircraft, so
+  fighters stop firing at wrecks. Category 0 shots may fall; hits on live targets should not.
+- **Ship AA.** Flat except through RNG coupling: the gunnery host already drops a dead target.
+- **Lexington** takes no damage on either side.
+
+### 6.5 Pair (E2 9000, OFF `local/fl0_9000.log`, ON `local/fl1_9000.log`)
+
+The OFF side sits on a newer main than `bC_9000`: 35 deaths and 0 drops, not 37 and 3.
+
+| term | OFF | ON | prediction | held? |
+| --- | --- | --- | --- | --- |
+| dead aircraft carrying `+5Dh`/`+60h` | 0 | 37 of 37 | all | yes |
+| AI members evicted | 10 | 44 | 30-50 | yes |
+| AI groups destroyed | 15 | 12 | rises | **no** |
+| AI members added | 177 | 153 | not predicted | - |
+| US group promotion (members 18) | 121.80 s | 121.80 s | within 1 s | yes |
+| third promotion (`Lexington-class01_sqn01`, 12 members) | 235.06 s | 192.06 s | not predicted | - |
+| deaths | 35 | 37 | 34-40 | yes |
+| torpedo drops | 0 | 0 | flat | yes |
+| category 0 shots / hits | 1111 / 34 | 1111 / 34 | may fall | flat |
+| categories 1, 5, 6 hits | 128, 88, 186 | 122, 78, 193 | flat (RNG-coupled) | yes |
+| Lexington damage | 0 | 0 | 0 | yes |
+
+- **The eviction works as the gate reads.** Every dead aircraft now fails `00A2DDE0`'s gate on the
+  next pass, which is why evictions rise by 34.
+- **Fewer groups destroyed, fewer members added.** Dead members now leave groups on their own, so
+  fewer groups empty in one go and fewer re-seeds follow. The mechanism is not traced beyond the
+  counters.
+- **The US group's promotion did not move.** This tree runs with the range factor off, the D0
+  state, where cc9-dogfight-engaged also saw the promotion at 121.80 s. The frozen-leader case they
+  found is in the range-factor-on run, which is their retry.
+- **The squadron-01 group's promotion comes 43 s earlier.** The likely cause is that it no longer
+  closes on a dead target leader, but its target group was not traced.
+- **The two extra deaths** are US fighters: `Yorktown-class01_sqn04` at 381.18 s (powerlost) and
+  `Lexington-class01_sqn01` at 424.47 s (delayed explosion). Both are late in the run, after the
+  earlier promotion changed their orders. Kate and Val deaths match one to one: Vals by a mean of
+  -0.5 s (one -11.0 s), Kates by -0.2 s.
+
+### 6.6 Decision
+
+`kPlaneDeathFlagsBound` lands ON. The bytes are the image's at the image's moment, apart from the
+flush being taken in the same step. Ships are not covered by this switch.
