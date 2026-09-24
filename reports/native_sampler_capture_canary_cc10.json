@@ -1,0 +1,134 @@
+{
+  "packet": "cc10_sampler_capture_canary",
+  "status": "owned_canary_two_hardware_stops_preserve_stack_and_code_original_capture_not_established",
+  "archive": {
+    "path": "local/cc10-platform-evidence/sampler-capture-canary.zip",
+    "sha256": "e20b0b08d046f5c2c72ad8fe45152023f820489c1a1476e4181abe5c221c99a0",
+    "files": 85,
+    "valid": true
+  },
+  "artifact_index_sha256": "f67a564075586821852deb8de25afb1b5549c1cc44afa2d325ca783ebfc3e626",
+  "worker_report_sha256": "ffda19cdf9c19b5696493b0fe221cf635ed4c8f204024cab8509b2cbfebb8c4c",
+  "indexed_artifacts": 84,
+  "primary_review": [
+    "Full x86 target and private Win32 helper context/event/control/lifecycle paths reviewed",
+    "CreateProcess only with owned child handle, exact image/PID/TID and WOW64/AMD64 verification; no attach or shared server mutation",
+    "Source-authored INT3 rendezvous precedes all canary writes; no target code/data writes by helper",
+    "True hardware single-step event code/DR6 slot status/DR7 execute controls and actual EIP verified at both markers",
+    "Same original P and eightDWORD stack preimage, before/after target copies, all242 routine bytes preserved",
+    "Saved WOW64 and native debug-register states restored, own child/helper exit0 and signaled process handle observed",
+    "Every loader-time/pybag failure preserved separately; enabled descriptors/readback/childexit alone were never counted as capture success"
+  ],
+  "worker_evidence": {
+    "scope": "owned Win32 canary only; no original game launch, attach, shared backend mutation, tracked edits or compiler activation",
+    "tracked_head": "47562f4bebea7f06b7873a53b87b2f41dd07d1f2",
+    "status": "narrow hardware execution capture and stack-preservation pass at source-owned post-loader rendezvous",
+    "passing_result": "local/sampler_capture_canary_cc10/rendezvous_variant/run01/result.json",
+    "passing_events": "local/sampler_capture_canary_cc10/rendezvous_variant/run01/events.jsonl",
+    "source": "local/sampler_capture_canary_cc10/rendezvous_variant/canary.cpp",
+    "helper": "local/sampler_capture_canary_cc10/rendezvous_variant/win32_canary.cpp",
+    "runs": [
+      {
+        "path": "local/sampler_capture_canary_cc10/run02/result.json",
+        "status": "fail",
+        "error": "AssertionError(('0x77918b88', '0x10001284'))",
+        "helper_exit": null,
+        "actual_exit": null
+      },
+      {
+        "path": "local/sampler_capture_canary_cc10/run03/result.json",
+        "status": "fail",
+        "error": "IndexError('list index out of range')",
+        "helper_exit": null,
+        "actual_exit": 125
+      },
+      {
+        "path": "local/sampler_capture_canary_cc10/run04/result.json",
+        "status": "fail",
+        "error": "AssertionError(('0x777f1f83', '0x10001284'))",
+        "helper_exit": null,
+        "actual_exit": 0
+      },
+      {
+        "path": "local/sampler_capture_canary_cc10/run05/result.json",
+        "status": "fail",
+        "error": "AssertionError(('0x777f1f83', '0x10001284'))",
+        "helper_exit": null,
+        "actual_exit": 0
+      },
+      {
+        "path": "local/sampler_capture_canary_cc10/win32_run01/result.json",
+        "status": "fail",
+        "error": "AssertionError({'event': 'result', 'pass': False, 'restored': False, 'detached_live_child': False, 'stage': 2, 'elapsed_ms': 47, 'exit_code': 0, 'error': 'all markers/restoration/exit required (Win32 0)'})",
+        "helper_exit": 1,
+        "actual_exit": null
+      },
+      {
+        "path": "local/sampler_capture_canary_cc10/win32_run02/result.json",
+        "status": "fail",
+        "error": "AssertionError({'event': 'result', 'pass': False, 'restored': False, 'detached_live_child': False, 'stage': 2, 'elapsed_ms': 31, 'exit_code': 0, 'error': 'all markers/restoration/exit required (Win32 0)'})",
+        "helper_exit": 1,
+        "actual_exit": null
+      },
+      {
+        "path": "local/sampler_capture_canary_cc10/rendezvous_variant/run01/result.json",
+        "status": "pass",
+        "error": null,
+        "helper_exit": 0,
+        "actual_exit": null
+      }
+    ],
+    "import_failure_without_child": "local/sampler_capture_canary_cc10/launch_run01.txt",
+    "created_pid": 10348,
+    "created_tid": 40728,
+    "P": "0x1afe04",
+    "target_word": "[P-0x30] = 0x91abcdef",
+    "verified_words": 8,
+    "code_bytes": 242,
+    "hardware_markers": [
+      "0x100012a4",
+      "0x100012ed"
+    ],
+    "hardware_exception": "0x4000001e WX86 single step; DR6 B0/B1 set respectively",
+    "wow64_dr7_at_markers": [
+      "0x5",
+      "0x4"
+    ],
+    "native_dr7_at_markers": [
+      "0x405",
+      "0x404"
+    ],
+    "both_context_debug_registers_restored": true,
+    "actual_child_exit": 0,
+    "actual_helper_exit": 0,
+    "source_rendezvous": "Source-authored CC C3 at 0x10001010 before any canary stack writes; no debugger code/data memory writes",
+    "backend_modes": "Pybag failed modes preserve saved effective processor changes; successful Win32 helper has no effective-processor selector, uses explicit WOW64_CONTEXT and AMD64 CONTEXT plus IsWow64Process2 identity",
+    "lifecycle": "Create-only DEBUG_ONLY_THIS_PROCESS|CREATE_NO_WINDOW; exact created PID/thread/image; 28-second own-child termination watchdog within 30-second event-loop bound; no live-child detach; normal observed process-handle wait 0 and exit 0",
+    "limitations": [
+      "Loader-time hardware descriptors and even both context DR readbacks did not produce a trap; their child exit 0 is not success. Cause is not established.",
+      "The successful source INT3 rendezvous is unavailable in the unmodified original executable and does not prove original arming.",
+      "No original source0 word, sampler execution, full compiler/runtime initializer, uninstrumented game behavior, or failure-path cleanup proof.",
+      "Timeout/error paths are designed and reviewed, not separately fault-injected as a new test."
+    ],
+    "references": [
+      "https://learn.microsoft.com/en-us/windows/win32/api/wow64apiset/nf-wow64apiset-wow64setthreadcontext",
+      "https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-setthreadcontext"
+    ]
+  },
+  "validation": {
+    "game_source_changes": false,
+    "new_reconstructed_functions": 0,
+    "original_game_launch_attach": false,
+    "compiler_activation": false,
+    "full_architectural_state_equivalence": false,
+    "timeout_fault_injection": false,
+    "native_game_ABI_proof": false,
+    "game_validated": false
+  },
+  "limitations": [
+    "The passing source rendezvous is owned test code and unavailable in unmodified original; original arming needs independent evidence",
+    "No first source0 word has been captured from B3BFF9/B3C018",
+    "Stack/code/debug-register restoration does not establish every architectural register or floating-state invariant; WOW64 EFLAGS readback representation changed514 to512 at debug-state restoration",
+    "Timeout/error disposal is implemented/reviewed but not separately fault-injected; observed successes and failed cases have their own logs"
+  ]
+}

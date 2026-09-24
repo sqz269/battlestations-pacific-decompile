@@ -1,0 +1,13 @@
+# Sampler stack capture canary (CC10)
+
+A private debugger captured two hardware execution stops in a source-owned x86 canary while preserving eight stack DWORDs and its242-byte routine. This validates one bounded observation method; it does not capture an original-game sampler input or admit the compiler.
+
+The target writes distinct words at `[P-40h,P-20h)`, including `91ABCDEF` at `P-30h`, without subsequent calls or pushes before the first NOP. It copies those words itself between the first and second NOP. The successful run reached both markers on the same PID10348/TID40728 with `P=001AFE04`. Both stopped reads, the target's before/after copies and all routine bytes matched. WX86 single-step events carried the corresponding DR6 status bits; the exact EIP, DR slot addresses, enable bits and execute/size controls were verified. Saved WOW64 and native debug-register contexts were restored. Both target and helper exited0 and the created process handle was signaled.
+
+The passing variant contains a source-authored `INT3; RET` rendezvous before any canary writes. It is distinct from the earlier target, whose loader-time hardware installations never produced both required stops. Those failed pybag and direct-Win32 attempts remain indexed; their cause is unresolved. Enabled breakpoint descriptors, debug-register readback and child exit0 alone were not treated as capture success.
+
+The private helper uses `CreateProcessW(DEBUG_ONLY_THIS_PROCESS|CREATE_NO_WINDOW)` and explicit WOW64 context APIs. It validates its created process, image and primary thread; it never attaches to an existing process, changes a shared debugger service, writes target code/data or detaches a live child. Its watchdog targets only that child handle after28 seconds, inside a30-second event-loop bound. Observed run logs distinguish restoration, normal exit and failure cleanup. Timeout paths were reviewed but not separately fault-injected.
+
+The [indexed report](../reports/native_sampler_capture_canary_cc10.json) pins84 artifacts, including passing and failed helper snapshots, complete disassembly, executables, event logs and results; the primary archive includes the index itself. This is stack/code and debug-register evidence, not full architectural-state equivalence, native game ABI or gameplay proof.
+
+The unmodified original has no source rendezvous. A separate arming and file/profile-preservation plan is still required before an original-child capture can be attempted. The [compiler entry audit](NATIVE_SAMPLER_COMPILER_ENTRY_CC10.md) remains unresolved at its first source0 word; no value from this canary is substituted for original input.
