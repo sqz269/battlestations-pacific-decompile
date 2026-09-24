@@ -1,0 +1,591 @@
+{
+  "packet": "cc10_native_node_base_destruction",
+  "status": "four_complete_raw_bodies_plus_requested_null_partial_projection_required_genuine_bindings_strict_win32_differential_checked",
+  "source": "src/native_node_base_destruction.cpp",
+  "documentation": "docs/NATIVE_NODE_BASE_DESTRUCTION_CC10.md",
+  "dependency_base_commit": "0eb8a63cd1509e8c337208ca4a7eba1451e80d01",
+  "original_executable_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "native_bytes": [
+    {
+      "address": "00b6f440",
+      "size": 297,
+      "end_inclusive": "00b6f568",
+      "sha256": "cfeb48c0b3dfa08412b09500b8c56534222189488695f4b0b0a370480a9c0fd8",
+      "live_pe_equal": true,
+      "existing_dependency": false,
+      "last_instruction_address": "00b6f568",
+      "last_instruction_length": 1,
+      "last_instruction": "ret "
+    },
+    {
+      "address": "00b6e680",
+      "size": 204,
+      "end_inclusive": "00b6e74b",
+      "sha256": "0ace75572038ce59733daa0a78d7f17a990fcc4a1bd8094caf55dc21e7436aa1",
+      "live_pe_equal": true,
+      "existing_dependency": false,
+      "last_instruction_address": "00b6e749",
+      "last_instruction_length": 3,
+      "last_instruction": "ret 4"
+    },
+    {
+      "address": "00b6d940",
+      "size": 64,
+      "end_inclusive": "00b6d97f",
+      "sha256": "b0335543971c1fb9de1b9f4c48f5b028e3befb783c28a44bf38e070df6e2942e",
+      "live_pe_equal": true,
+      "existing_dependency": false,
+      "last_instruction_address": "00b6d97d",
+      "last_instruction_length": 3,
+      "last_instruction": "ret 4"
+    },
+    {
+      "address": "00b6dbe0",
+      "size": 25,
+      "end_inclusive": "00b6dbf8",
+      "sha256": "dd48a01f78dcfc35f8948c8a6eaf0c1579f7db81a406e7b45dbc0b981fcb1008",
+      "live_pe_equal": true,
+      "existing_dependency": false,
+      "last_instruction_address": "00b6dbf8",
+      "last_instruction_length": 1,
+      "last_instruction": "ret "
+    },
+    {
+      "address": "00b6f3e0",
+      "size": 23,
+      "end_inclusive": "00b6f3f6",
+      "sha256": "e2a03d2a46a899ebc1effeef6f9282ab970f26569b9d8cb0aeb545b1c52e2518",
+      "live_pe_equal": true,
+      "existing_dependency": false,
+      "last_instruction_address": "00b6f3f6",
+      "last_instruction_length": 1,
+      "last_instruction": "ret "
+    },
+    {
+      "address": "00cc19e0",
+      "size": 8,
+      "end_inclusive": "00cc19e7",
+      "sha256": "f149f5fae6673a4fa7d074bc774e42446321765a951e6ce241f54b4fa44eeacc",
+      "live_pe_equal": true,
+      "existing_dependency": true,
+      "last_instruction_address": "00cc19e3",
+      "last_instruction_length": 5,
+      "last_instruction": "jmp 0xaa6e10"
+    },
+    {
+      "address": "00cc19e8",
+      "size": 11,
+      "end_inclusive": "00cc19f2",
+      "sha256": "de7157195d61185936ce7f293e94fcd51ee035ff1c242c996de5c29122b31e3e",
+      "live_pe_equal": true,
+      "existing_dependency": true,
+      "last_instruction_address": "00cc19ee",
+      "last_instruction_length": 5,
+      "last_instruction": "jmp 0x41dd20"
+    },
+    {
+      "address": "00cc19f3",
+      "size": 14,
+      "end_inclusive": "00cc1a00",
+      "sha256": "194dd2651accb00ac19c084f658c8f746a9fe02c67701280d2f1cf7d7aa1efee",
+      "live_pe_equal": true,
+      "existing_dependency": true,
+      "last_instruction_address": "00cc19fc",
+      "last_instruction_length": 5,
+      "last_instruction": "jmp 0xb6f3e0"
+    },
+    {
+      "address": "00cc1a01",
+      "size": 10,
+      "end_inclusive": "00cc1a0a",
+      "sha256": "e8e8217664d905d2eba99804ac0953ce596a9999ee2addd3f079c77e3334b83a",
+      "live_pe_equal": true,
+      "existing_dependency": true,
+      "last_instruction_address": "00cc1a06",
+      "last_instruction_length": 5,
+      "last_instruction": "jmp 0xbf6b43"
+    }
+  ],
+  "additional_dependency_constants": [
+    {
+      "address": "00b6dbc0",
+      "size": 25,
+      "sha256": "ff03f5e2a5c5c4450e8385ba9b6c671844c50e3c6de7f712550e6988134727f7",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00ce4970",
+      "size": 4,
+      "sha256": "ab4e8d057ab9af39d56883aa7165c05694e2f53e2541b0dd0051c3d6cef8b4b1",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00d7a24c",
+      "size": 4,
+      "sha256": "e00e5eb9444182f352323374ef4e08ebcb784725fdd4fd612d7730540b3e0c8c",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00ce4adc",
+      "size": 4,
+      "sha256": "f2fd9ea166402d72c9bc92a67f077d8e90813cafac7f60a270d899daacb8f7da",
+      "live_pe_equal": true
+    }
+  ],
+  "routines": [
+    {
+      "address": "00b6f440",
+      "name": "destroy_native_raw_node_base_00b6f440",
+      "coverage": "complete raw body with explicit genuine-provider and valid-memory/array domain",
+      "source": "src/native_node_base_destruction.cpp",
+      "original_abi": "ECX actual node; no stack arguments; RET",
+      "end_inclusive": "00b6f568",
+      "last_instruction_address": "00b6f568",
+      "last_instruction_length": 1
+    },
+    {
+      "address": "00b6e680",
+      "name": "set_native_raw_parent_null_00b6e680",
+      "coverage": "partial_projection: requested-null path only;145 of204B; excludes[B6E6B8,B6E6C0),[B6E6C5,B6E6F8)",
+      "source": "src/native_node_base_destruction.cpp",
+      "original_abi": "ECX actual node; stack requested parent; RET4; source admits requested null ONLY",
+      "end_inclusive": "00b6e74b",
+      "last_instruction_address": "00b6e749",
+      "last_instruction_length": 3,
+      "covered_ranges": [
+        [
+          "00b6e680",
+          "00b6e6b7"
+        ],
+        [
+          "00b6e6c0",
+          "00b6e6c4"
+        ],
+        [
+          "00b6e6f8",
+          "00b6e74b"
+        ]
+      ],
+      "excluded_ranges": [
+        [
+          "00b6e6b8",
+          "00b6e6bf"
+        ],
+        [
+          "00b6e6c5",
+          "00b6e6f7"
+        ]
+      ],
+      "covered_bytes": 145,
+      "excluded_bytes": 59
+    },
+    {
+      "address": "00b6d940",
+      "name": "unlink_native_raw_child_00b6d940",
+      "coverage": "complete raw body with explicit genuine-provider and valid-memory/array domain",
+      "source": "src/native_node_base_destruction.cpp",
+      "original_abi": "ECX parent; captured stack child; RET4",
+      "end_inclusive": "00b6d97f",
+      "last_instruction_address": "00b6d97d",
+      "last_instruction_length": 3
+    },
+    {
+      "address": "00b6dbe0",
+      "name": "notify_native_raw_world_00b6dbe0",
+      "coverage": "complete raw body with explicit genuine-provider and valid-memory/array domain",
+      "source": "src/native_node_base_destruction.cpp",
+      "original_abi": "ECX actual node; no stack arguments; current3C tail JMP or RET",
+      "end_inclusive": "00b6dbf8",
+      "last_instruction_address": "00b6dbf8",
+      "last_instruction_length": 1
+    },
+    {
+      "address": "00b6f3e0",
+      "name": "destroy_native_raw_point_light_array_00b6f3e0",
+      "coverage": "complete raw body with explicit genuine-provider and valid-memory/array domain",
+      "source": "src/native_node_base_destruction.cpp",
+      "original_abi": "ECX actual0Ch descriptor; no stack arguments; RET",
+      "end_inclusive": "00b6f3f6",
+      "last_instruction_address": "00b6f3f6",
+      "last_instruction_length": 1
+    }
+  ],
+  "calls": [
+    {
+      "address": "00b6f47a",
+      "native": "00b8f4c0",
+      "function": "00b6f440",
+      "kind": "call",
+      "binding": "published actual notification unregister; caller-owned initialized node argument cell address reaches byte-identical raw erase engine"
+    },
+    {
+      "address": "00b6f488",
+      "native": "00b6e680",
+      "function": "00b6f440",
+      "kind": "call",
+      "binding": "new requested-null projection ONLY; persistent distinct nested frame/acquired, no nonnull parent fallback"
+    },
+    {
+      "address": "00b6f4a6",
+      "native": "00b72220",
+      "function": "00b6f440",
+      "kind": "call",
+      "binding": "existing raw outer24 root unlink; actual node identity"
+    },
+    {
+      "address": "00b6f4bb",
+      "native": "00b6d890",
+      "function": "00b6f440",
+      "kind": "call",
+      "binding": "published full actual root propagation, exact current50 dispatch and prepared persistent attachment frames"
+    },
+    {
+      "address": "00b6f4d5",
+      "native": "dword ptr [0xce2220]",
+      "function": "00b6f440",
+      "kind": "indirect_call",
+      "binding": "genuine CURRENT CE2220 captured retained130+4 decrement, same cell as scene provider"
+    },
+    {
+      "address": "00b6f4e5",
+      "native": "eax",
+      "function": "00b6f440",
+      "kind": "indirect_call",
+      "binding": "required exact CURRENT0; source verifies canonical actual+4 address; provider verifies observed zero/current target/family and actual extent, genuine terminal, no later retained payload access"
+    },
+    {
+      "address": "00b6f4fe",
+      "native": "00b6ee10",
+      "function": "00b6f440",
+      "kind": "call",
+      "binding": "published actual scene removal; current scene captured after retained130 terminal and before second130 clear; recursion1 then scene cells"
+    },
+    {
+      "address": "00b6f511",
+      "native": "00b6ec70",
+      "function": "00b6f440",
+      "kind": "call",
+      "binding": "existing actual resize(0) valid count/capacity engine, no generic growth claim"
+    },
+    {
+      "address": "00b6f519",
+      "native": "00bf6989",
+      "function": "00b6f440",
+      "kind": "call",
+      "binding": "genuine SAME NativePointLightLinksRuntime owned backing free; CURRENT begin loaded after resize, leave descriptor stale"
+    },
+    {
+      "address": "00b6f536",
+      "native": "00419cc0",
+      "function": "00b6f440",
+      "kind": "call",
+      "binding": "existing raw current string pool getter; captured name data and current length+1 already acquired"
+    },
+    {
+      "address": "00b6f53d",
+      "native": "00bd1510",
+      "function": "00b6f440",
+      "kind": "call",
+      "binding": "existing genuine raw pool return of captured data/size and actual current return gate; original extra argument1 ignored by body"
+    },
+    {
+      "address": "00b6f552",
+      "native": "00bd30f0",
+      "function": "00b6f440",
+      "kind": "call",
+      "binding": "existing genuine raw refcounted base stamp after D5C104 store and state-1 consumption"
+    },
+    {
+      "address": "00b6e69b",
+      "native": "00b6d940",
+      "function": "00b6e680",
+      "kind": "call",
+      "binding": "new actual parent/child unlink leaf, current sibling/head loads"
+    },
+    {
+      "address": "00b6e6ab",
+      "native": "00b8f4c0",
+      "function": "00b6e680",
+      "kind": "call",
+      "binding": "published actual notification unregister; caller-owned initialized node argument cell address reaches byte-identical raw erase engine"
+    },
+    {
+      "address": "00b6e6bb",
+      "native": "00b6d890",
+      "function": "00b6e680",
+      "kind": "call",
+      "coverage": "excluded requested-nonnull dependency; original call evidence retained, no source invocation or provider claim"
+    },
+    {
+      "address": "00b6e6c7",
+      "native": "00b8e600",
+      "function": "00b6e680",
+      "kind": "call",
+      "coverage": "excluded requested-nonnull dependency; original call evidence retained, no source invocation or provider claim"
+    },
+    {
+      "address": "00b6e6d2",
+      "native": "eax",
+      "function": "00b6e680",
+      "kind": "indirect_call",
+      "coverage": "excluded requested-nonnull dependency; original call evidence retained, no source invocation or provider claim"
+    },
+    {
+      "address": "00b6e6e3",
+      "native": "00b6e010",
+      "function": "00b6e680",
+      "kind": "call",
+      "coverage": "excluded requested-nonnull dependency; original call evidence retained, no source invocation or provider claim"
+    },
+    {
+      "address": "00b6e6f4",
+      "native": "eax",
+      "function": "00b6e680",
+      "kind": "indirect_call",
+      "coverage": "excluded requested-nonnull dependency; original call evidence retained, no source invocation or provider claim"
+    },
+    {
+      "address": "00b6e710",
+      "native": "00b6d890",
+      "function": "00b6e680",
+      "kind": "call",
+      "binding": "published full actual root propagation, exact current50 dispatch and prepared persistent attachment frames"
+    },
+    {
+      "address": "00b6e717",
+      "native": "00b6d850",
+      "function": "00b6e680",
+      "kind": "call",
+      "binding": "published raw recursive unregister; prepared persistent caller frames, current children and next links"
+    },
+    {
+      "address": "00b6e738",
+      "native": "00b6da30",
+      "function": "00b6e680",
+      "kind": "call",
+      "binding": "existing raw descendant invalidation"
+    },
+    {
+      "address": "00b6e744",
+      "native": "eax",
+      "function": "00b6e680",
+      "kind": "indirect_call",
+      "binding": "pure current profile/current40 lookup AFTER flags and descendant work; required exact target callback on actual node"
+    },
+    {
+      "address": "00b6dbf6",
+      "native": "edx",
+      "function": "00b6dbe0",
+      "kind": "tail_jump",
+      "binding": "captured CURRENT A0, its CURRENT profile/current3C; required exact no-argument tail target"
+    },
+    {
+      "address": "00b6f3e5",
+      "native": "00b6ec70",
+      "function": "00b6f3e0",
+      "kind": "call",
+      "binding": "existing actual resize(0) valid count/capacity engine, no generic growth claim"
+    },
+    {
+      "address": "00b6f3ed",
+      "native": "00bf6989",
+      "function": "00b6f3e0",
+      "kind": "call",
+      "binding": "genuine SAME NativePointLightLinksRuntime owned backing free; CURRENT begin loaded after resize, leave descriptor stale"
+    },
+    {
+      "address": "00cc19e3",
+      "native": "00aa6e10",
+      "function": "00cc19e0",
+      "kind": "tail_jump",
+      "binding": "compiler state0 saved actual node -> genuine D5C104/base stamp source cleanup, not FH3 entry ABI"
+    },
+    {
+      "address": "00cc19ee",
+      "native": "0041dd20",
+      "function": "00cc19e8",
+      "kind": "tail_jump",
+      "binding": "compiler state1 saved actual node+54 -> captured CURRENT name/current length before getter; same raw pool"
+    },
+    {
+      "address": "00cc19fc",
+      "native": "00b6f3e0",
+      "function": "00cc19f3",
+      "kind": "tail_jump",
+      "binding": "compiler state2 saved actual node+164 -> new complete valid-array cleanup body"
+    },
+    {
+      "address": "00cc1a06",
+      "native": "00bf6b43",
+      "function": "00cc1a01",
+      "kind": "tail_jump",
+      "binding": "native FH3/error transport evidence only, no source handler emulation"
+    }
+  ],
+  "no_ghidra_function": [],
+  "compiler_boundaries": {
+    "handler": "00cc1a01",
+    "descriptor": "00dfa900",
+    "descriptor_bytes": 36,
+    "max_state": 3,
+    "unwind_map": "00dfa8e8",
+    "unwind_map_bytes": 24,
+    "states": [
+      {
+        "state": 0,
+        "next": -1,
+        "target": "00cc19e0"
+      },
+      {
+        "state": 1,
+        "next": 0,
+        "target": "00cc19e8"
+      },
+      {
+        "state": 2,
+        "next": 1,
+        "target": "00cc19f3"
+      }
+    ],
+    "try_blocks": 0,
+    "eh_flags": 1,
+    "existing_bodies": [
+      {
+        "address": "00cc19e0",
+        "size": 8,
+        "end_inclusive": "00cc19e7",
+        "sha256": "f149f5fae6673a4fa7d074bc774e42446321765a951e6ce241f54b4fa44eeacc",
+        "live_pe_equal": true,
+        "existing_dependency": true,
+        "last_instruction_address": "00cc19e3",
+        "last_instruction_length": 5,
+        "last_instruction": "jmp 0xaa6e10"
+      },
+      {
+        "address": "00cc19e8",
+        "size": 11,
+        "end_inclusive": "00cc19f2",
+        "sha256": "de7157195d61185936ce7f293e94fcd51ee035ff1c242c996de5c29122b31e3e",
+        "live_pe_equal": true,
+        "existing_dependency": true,
+        "last_instruction_address": "00cc19ee",
+        "last_instruction_length": 5,
+        "last_instruction": "jmp 0x41dd20"
+      },
+      {
+        "address": "00cc19f3",
+        "size": 14,
+        "end_inclusive": "00cc1a00",
+        "sha256": "194dd2651accb00ac19c084f658c8f746a9fe02c67701280d2f1cf7d7aa1efee",
+        "live_pe_equal": true,
+        "existing_dependency": true,
+        "last_instruction_address": "00cc19fc",
+        "last_instruction_length": 5,
+        "last_instruction": "jmp 0xb6f3e0"
+      },
+      {
+        "address": "00cc1a01",
+        "size": 10,
+        "end_inclusive": "00cc1a0a",
+        "sha256": "e8e8217664d905d2eba99804ac0953ce596a9999ee2addd3f079c77e3334b83a",
+        "live_pe_equal": true,
+        "existing_dependency": true,
+        "last_instruction_address": "00cc1a06",
+        "last_instruction_length": 5,
+        "last_instruction": "jmp 0xbf6b43"
+      }
+    ],
+    "source_projection": "consume each cleanup state BEFORE array/name/base action; native saved EBP-10/private stack identities excluded; second C++ cleanup exception terminates; native FH3/SEH and CRT identity untested"
+  },
+  "contracts": {
+    "actual_storage": "node174h; outer24h; resource3Ch; original12B array and8Bname; no enlarged host payload",
+    "same_domain": "pure pre-native admission checks address of SAME actual-owner registry and SAME current CE2220 pointer cell; fixture shares both; mismatch is source admission failure before native mutation",
+    "frames": "caller-owned initialized address-stable cells; distinct parent-null/recursive-unregister and scene-remove frames; recursion1 stored before scene word; original saved-register/return/private stack gaps excluded",
+    "acquired": "fresh disjoint metadata retaining active site, consumed EH state and nested cleanup/acquisition diagnostics; must survive disposition; no native credit/rollback",
+    "retained130": "family/extent-aware genuine current0 binding; SAME actual+4 canonical identity and provider-side observed-zero check; no node170/root policy applied to non-node resource",
+    "ordering": "capture child before A4clear; current child next; retained zero may replace scene; capture current170 before second130clear; consume cleanup states before calls; capture name data before state0/current size before getter; no post-terminal retained read",
+    "arrays": "valid nonoverflowing accessible descriptors with backing owned by SAME point-light runtime; resize0 then current begin free; stale pointer/capacity/entries retained",
+    "native_failures": "no rollback, companion admission, extra retain/release or hierarchy repair; source C++ cleanup is not nativeFH3",
+    "graph_limit": "no full derived camera/light terminal installation or raw3Ch -> legacy SceneResource/roots path; nonnull reparent outside scope"
+  },
+  "validation": {
+    "strict_win32_build": "local\\cc10_node_base_destruction\\build.log",
+    "existing_ctest": "3/3 passed: reconstructed_math,native_math_differential,tool_tests",
+    "report_call_check": "local\\cc10_node_base_destruction\\report_calls.log",
+    "probe": {
+      "source": "local\\cc10_node_base_destruction\\probe.cpp",
+      "compile_log": "local\\cc10_node_base_destruction\\compile.log",
+      "run_log": "local\\cc10_node_base_destruction\\run.log",
+      "result": "PASS",
+      "compiler": "/MD /O2 /fp:strict /link /MANIFEST:EMBED; Win32 MSVC",
+      "original_bodies": "five copied normal bodies613B, but only null-parent region executed; copied existing bounds25B; calls/IAT relocated to genuine actual source providers; native exception paths not invoked",
+      "cases": [
+        "actual raw node/resource construction and canonical resource/ambient zero",
+        "genuine retained130 terminal free callback replaces current scene170",
+        "matching parent/root/notification unlink and retained unmatched child credit",
+        "full node DWORD comparison with pointer normalization, raw resource counts",
+        "exact reached world40/3C concrete providers",
+        "real pooled name and owned array cleanup with native stale fields",
+        "standalone full B6F3E0 actual backing in same sequence"
+      ],
+      "providers": "genuine published raw root/scene/tree/pool/registry and canonical resource lifetime; pure exact current target bindings; resource retained130 explicitly3Ch with actualcountzero guard",
+      "boundary": "source composition, not whole original dependency/native FH3 or game validation; initialized borrowed type slots are not startup evidence"
+    },
+    "complete_owned_code_bytes": 409,
+    "partial_projection_bytes": 145,
+    "excluded_parent_bytes": 59,
+    "pinned_normal_bytes": 613,
+    "pinned_compiler_bytes": 43,
+    "ghidra_mutated": false,
+    "original_binary_abi": false,
+    "game_validated": false,
+    "new_tracked_tests": false,
+    "prior_evidence_archives_unchanged": {
+      "local/cc10_field_values_evidence.zip": "a749dbf4656596e6a4e0c11ecb320a02bfe62dcba5fa3654c2744aa2a3022153",
+      "local/cc10_widget_transform_evidence.zip": "0d90499f71be2a3cc99ad732deaa8a71a5b55546da4dbaa7ee708c364bae45f8",
+      "local/cc10_widget_property_prefix_evidence.zip": "181ebe9358fe2d7ea6832b8051a0b3fd6f830a0360f3ef390626403ba7cbfcdf",
+      "local/cc10_gui_page_default_evidence.zip": "a224fc79f56861715059ff9717fcdad40893be00d26697a230b64ceafced5c8b",
+      "local/cc10_gui_group_pool_evidence.zip": "c7aa87452ab19400fe950d3a4c3a4a146c94715f4080f463dc2de1740df37853",
+      "local/cc10_gui_group_factory_evidence.zip": "d22d364ce3b5cf7833d8ad1998cd5c14cbf792abc34634e2df1421949e42f34f",
+      "local/cc10_gui_camera_store_map_evidence.zip": "625a751eab1f2416e7b0fa5876b921106cf0a246c0b8ca5ce97ca3e9d1586c54",
+      "local/cc10_scene_registry_storage_evidence.zip": "7219d8cbbdab960d3d2b49076f79b13854aa582faa0edb23c8a7fc286cebd6a9",
+      "local/cc10_scene_resource_storage_evidence.zip": "d989b85db55805c8b173e40c95e9322586ec4146e3ad0e504c316bf48364ed51",
+      "local/cc10_gui_scene_fields_evidence.zip": "8158076968340fd863b7e86018def420eabcae87ab0939f90085d79a1751a1af",
+      "local/cc10_scene_registry_vector_mutation_evidence.zip": "90b9d70c3b735e1274c2c0d2e333f5e88e860aee7155ea9ac6ef18e105aaed6b",
+      "local/cc10_scene_registry_registration_evidence.zip": "663ec13309abdaf992b22c321c66817230852066d76e5ccd0b663c3a783e05cf",
+      "local/cc10_node_scene_attachment_evidence.zip": "c45c8248fe0434426648b48b7c8e473f94b057f5ff1098088c34762dbc3d8f04",
+      "local/cc10_node_tree_retirement_evidence.zip": "b9720c00ba0e29c222ae2d41fb5fd2820e305039c673e61cea0ee22d3a2a2e13"
+    }
+  },
+  "source_hashes": {
+    "include/bsp/native_node_base_destruction.hpp": "cd1f22aafdc481b9e54c23dda5634171ac654b570d8ad8757f843bca76883226",
+    "src/native_node_base_destruction.cpp": "21bb87a236d4888ba5ef0102f3747f4cc53d28462d587dfaa94c1e731a0f055e",
+    "docs/NATIVE_NODE_BASE_DESTRUCTION_CC10.md": "ce6e8b0ce6307de8eea4743086a9b17c526f248a55f10c06dce96ca1a70d90e6"
+  },
+  "dependency_hashes": {
+    "src/native_node_tree_retirement.cpp": "f58325714135577e4a2baefdefea81b45fd1d5bfaa912d83b02d38637466fbf5",
+    "src/native_node_scene_attachment.cpp": "baaeb437926eb685257868ab3ad4c428aa012ca71dc9378aac9a28245d4dfd6f",
+    "src/native_node_root_propagation.cpp": "302f09b2f12d426abd9266fd265532e44bb104827b00d3894744f6a37012d48b",
+    "src/native_node_raw_transform.cpp": "31a50a5e6e6efd27bb2d32851cc6836b6aabb1a924eefa384363e561deb4e257",
+    "src/native_node_destruction.cpp": "2ee6ba84e759958a8f160cb25ad210076203931d4ae4f2e9265529bff5c57269",
+    "src/native_node_construction.cpp": "87a73019511d3575aa0887a4964a2a8703a5248106fdcff2eddfbb424918dd35",
+    "src/native_point_light_links.cpp": "ba2ecb549d219cbdafc285fefaaf96a2fca462ecaadc0ef56c3879fbeb4e9d3c",
+    "src/native_scene_resource_storage.cpp": "9d838d9142b4c9b2a69c83483e83859d9bd40fd390698ba12dd014bdd6755a9b",
+    "src/native_scene_resource_ambient.cpp": "bd776181831a897d04011e7f9b0b284c404362516c2eab29efe28eb2573d2b75",
+    "src/native_string_pool_storage.cpp": "5cb79a6ce240205b3f1c81f1fbd6edd49cc1c05f8a20ee8dca8913f44c9095d5",
+    "src/platform_renderer_activation.cpp": "7d8a40fc9cc33ca5aaba9e21d73eea78236e02eeca7caa13a2c99d5c3c50a9fe"
+  },
+  "compiled_artifacts": {
+    "build/win32/bsp_core.dir/Release/native_node_base_destruction.obj": "c23cbd0a5ccb0e3618a4de7fc312c6f547b8af671bbbc3e3f37299ff918497cf",
+    "build/win32/Release/bsp_core.lib": "9561e11305e0e289823dc0b31c5e97cc6d8cb37aeec6663c80dd2ebaba5759f3",
+    "local\\cc10_node_base_destruction\\node_base_destruction_probe.exe": "b7359fbb64635beb4ed1ac1eb4edb5099296ee12d0e5178be969114b67454216"
+  },
+  "evidence_archive": {
+    "path": "local/cc10_node_base_destruction_evidence.zip",
+    "sha256": "2f4f970317032085f851a2331dd3e4bf6f02b3722e5e44a668153000e2b13dbf",
+    "size": 299321,
+    "file_count": 50,
+    "manifest": "local/cc10_node_base_destruction/manifest.json",
+    "frozen": true
+  }
+}
