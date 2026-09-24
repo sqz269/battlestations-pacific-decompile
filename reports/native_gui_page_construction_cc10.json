@@ -271,9 +271,10 @@
       "address": "00cb8a98",
       "native": "00bf6b43",
       "function": "00cb8a93",
-      "kind": "no_ghidra_function",
+      "kind": "tail_jump",
       "branch_kind": "tail_jump",
-      "contract": "handler MOV EAX,DEFA98; JMP CRT FH3"
+      "contract": "handler MOV EAX,DEFA98; JMP CRT FH3",
+      "primary_definition": "reports/cc10_gui_page_function_definitions.json"
     }
   ],
   "no_ghidra_function": [
@@ -285,7 +286,10 @@
       "last_instruction_address": "00cb8a98",
       "last_instruction_length": 5,
       "proposed_name": "BSP_GuiPageConstruction_ExceptionHandler",
-      "worker_mutated_ghidra": false
+      "worker_mutated_ghidra": false,
+      "status": "resolved_by_primary_locked_definition_saved_and_exported",
+      "definition_record": "reports/cc10_gui_page_function_definitions.json",
+      "current_name": "EHHandler_GuiPageConstruction_00cb8a93"
     }
   ],
   "corrections": [
@@ -466,5 +470,12 @@
     "local/gui_page_bind_native_bytes.txt": "4af2b659e0e12df7b0b58e81a1edc11eaa226ac30fe8f9108f9d6e794aec1eb9",
     "local/gui_page_native_pins.json": "557f20aa626825ead97dcf65990631d497fd305288ca6cab14305b515083f119",
     "build/win32/Release/bsp_core.lib": "0cc65fe11c82653a08492b4ffa2e8fad86034bc5075bd4ba7bba071f1cdd500f"
+  },
+  "primary_integration": {
+    "worker_commit": "bf070f370cc02103417ec2a6a0cb0cbe9ab2eaee",
+    "published_revision": "35a0656294378fc313a5fbe718dec774024cfef4",
+    "checks": "strict MSVC Win32 integration build; 3 existing CTests passed",
+    "receipt": "reports/cc10_lua_gui_renderer_integration.json",
+    "full_constructor_and_native_EH_parity": false
   }
 }

@@ -18,7 +18,8 @@
       "last_instruction_size": 3,
       "last_instruction_text": "RET 4",
       "size": 24,
-      "status": "absent at worker recovery; primary owns any later definition"
+      "status": "resolved_by_primary_locked_definition_saved_and_exported",
+      "definition_record": "reports/cc10_lua_renderer_function_definitions.json"
     }
   ],
   "routines": [
@@ -2989,5 +2990,12 @@
     "local/cc10-init-build.txt": "01757828e892de998f55104bd06743189975f9745c37fc87bd0f92510813055c",
     "local/cc10-init-00b107f0.bin": "b9faf0b255e8bca3eb711bf1186bb1f41533d9047853a753599b9f1abd805a14",
     "local/cc10-init-00b21f10.bin": "4305c76490a0abf4f2f3c63193eb32b468dc3c01d001f79154162ab06d244ca2"
+  },
+  "primary_integration": {
+    "worker_commit": "658df51ceb79ebe0a5839ec538043a1197121944",
+    "published_revision": "41d46cd1f",
+    "checks": "strict MSVC Win32 integration build; 3 existing CTests passed",
+    "receipt": "reports/cc10_lua_gui_renderer_integration.json",
+    "complete_initialization_and_destruction_admission": false
   }
 }

@@ -1,0 +1,100 @@
+{
+  "packet": "cc10_lua_gui_renderer_integration",
+  "status": "published_partial_native_dependencies_and_successful_finite_application_startup",
+  "reviewed_revision": "35a0656294378fc313a5fbe718dec774024cfef4",
+  "lua_reader_support": {
+    "commit": "218dbb304",
+    "report": "reports/native_lua_reader_support_cc10.json",
+    "coverage": "B66FA0 complete normal raw Lua object copy; BD5790 complete normal keyed child lookup; current Lua state and object trackers reused",
+    "focused_probe": "4 original/source raw copy pairs and 8 actual-Lua child lookup pairs passed",
+    "limits": "BD5790 native calls rebound to production Lua primitives; no original primitive differential or FH3/SEH parity"
+  },
+  "renderer_entry": {
+    "commit": "658df51ceb79ebe0a5839ec538043a1197121944",
+    "report": "reports/native_render_resource_init_cc10.json",
+    "coverage": "B107F0 [B107F0,B109BC) entry and [B13009,B13029) existing-initialization tail; complete B21F10 dimensions leaf",
+    "focused_probe": "10 fresh-entry, 4 existing-entry and 5 dimensions-overlap native/source cases passed",
+    "complete_initialization": false,
+    "destruction_admitted": false
+  },
+  "gui_page_prefix": {
+    "commit": "bf070f370cc02103417ec2a6a0cb0cbe9ab2eaee",
+    "report": "reports/native_gui_page_construction_cc10.json",
+    "coverage": "AC6600 [AC6600,AC6714) prefix and complete AA6720 scene-node binding",
+    "focused_probe": "2 normal native/source prefix comparisons with actual page/string pools and node producer",
+    "constructor_returns_complete_page": false,
+    "destructor_complete": false
+  },
+  "primary_ghidra_records": [
+    "reports/cc10_lua_renderer_function_definitions.json",
+    "reports/cc10_gui_page_function_definitions.json"
+  ],
+  "gui_handler_annotation_record": "local/ghidra-annotations-20260924T023339Z.json",
+  "integration_checks": {
+    "build": "strict MSVC Win32",
+    "ctests": "3 passed, 0 failed for each source integration",
+    "logs": [
+      "local/cc10-integrate-lua-render-init.log",
+      "local/cc10-integrate-gui-page.log"
+    ]
+  },
+  "finite_application_run": {
+    "revision": "35a0656294378fc313a5fbe718dec774024cfef4",
+    "exe_sha256": "1172b944b540e26a1e9ee349aefc313acf800d4b9fd5ea7e823aaddfd96597d1",
+    "wrapper": "./tools/run_game.ps1 -Log local/cc10-lua-gui-render-startup.log -- --frames 60",
+    "single_queued_invocation": true,
+    "slot": 0,
+    "exit_code": 0,
+    "log": "local/cc10-lua-gui-render-startup.log",
+    "log_sha256": "07eb93f2c0a2c248f6acc77fc59b7039e31cff3131aa537a33b4ad00230276ac",
+    "sound_line": "sound startup before window: enabled=1 classes=7 resources=1 resource_bytes=0 opens=0 closes=0 fmod_calls=132 fmod_errors=0 load_pretranslations=0 load_focus_calls=1",
+    "summary_line": "summary window_created=1 device_created=1 device_hr=0x00000000 back_buffer=2560x1440 frames_presented=59 presents_skipped=1 loop_finished=1 exit_code=0",
+    "limits": "Startup only; no press-start or mission selection. Existing frontend uses its established path; the new raw GUI page and renderer initialization stages remain unbound. No full-game, native ABI, audible playback or gameplay claim."
+  },
+  "audio_diagnostic": {
+    "commit": "f5f3912ed8e303735e539736ca2203bda7ec52b3",
+    "report": "reports/audio_startup_diagnostic_cc10.json",
+    "finding": "Earlier FMOD output-init failure did not reproduce in direct-DLL and fresh application runs; original cause remains unresolved and no audio code fix was made."
+  },
+  "ignored_local_evidence_archives": [
+    {
+      "path": "local/cc10-platform-evidence/renderer-resource-entry.zip",
+      "sha256": "15eb17785c922860500d93a654002ae77b3cabaafe47e2fac290e3f2601c1351",
+      "valid": true,
+      "files": 11,
+      "source_worktree": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-resource-init"
+    },
+    {
+      "path": "local/cc10-platform-evidence/gui-page-construction.zip",
+      "sha256": "7f8442e12b936664981deaaa8e6fc4a432ff3991bffd76acbeed45d09ab9d986",
+      "valid": true,
+      "files": 17,
+      "source_worktree": "J:\\PROG\\battlestations-pacific-decompile-cc10-gui-page-construction"
+    },
+    {
+      "path": "local/cc10-platform-evidence/audio-startup.zip",
+      "sha256": "94d8581de69bc24630f52cf4db299ad9ad35de396d61aa8d4e423366d6baad3a",
+      "valid": true,
+      "files": 8,
+      "source_worktree": "J:\\PROG\\battlestations-pacific-decompile-cc10-audio-startup"
+    },
+    {
+      "path": "local/cc10-platform-evidence/lua-reader-support.zip",
+      "sha256": "5ce805be7c8bc1e5f8fee6a1fcebb812db06423316c4ae5a2862c14ca121ca36",
+      "valid": true,
+      "files": 12,
+      "source_worktree": "J:\\PROG\\battlestations-pacific-decompile-cc10"
+    },
+    {
+      "path": "local/cc10-platform-evidence/gui-widget-base.zip",
+      "sha256": "dacf7be87149d38fca72065d74ab2bb43f20354a0bf4a3d0b04db23aebdeb236",
+      "valid": true,
+      "files": 13,
+      "source_worktree": "J:\\PROG\\battlestations-pacific-decompile-cc10"
+    }
+  ],
+  "application_binding_followups": [
+    "Complete raw GUI widget cleanup and actual Lua reader lifetime before full raw page admission",
+    "Continue B107F0 member construction and prove canonical owner lifetime/teardown before enabling activation callbacks"
+  ]
+}

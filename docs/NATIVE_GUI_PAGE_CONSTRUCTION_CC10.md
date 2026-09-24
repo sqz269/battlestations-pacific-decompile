@@ -120,3 +120,9 @@ does not execute or substitute for native page destruction.
 Build, static calls and bounded normal-prefix evidence do not establish full
 page construction, Lua/UI behavior, native destructor/FH3/SEH parity,
 application binding or gameplay.
+
+## Primary integration and handler definition
+
+Published worker bf070f370 in main 35a065629 after the strict Win32 integration build and all three existing CTests passed. The primary defined the exact ten-byte CB8A93 handler under the Ghidra write lock, saved the program, recorded the prior function state, applied the provisional name EHHandler_GuiPageConstruction_00cb8a93, and refreshed its export. The formerly unresolved CB8A98 call row now records the verified tail jump. This does not extend the AC6600 constructor prefix or establish exception-unwind parity.
+
+Primary evidence archives and the separate finite application startup result are recorded in reports/cc10_lua_gui_renderer_integration.json. That application run does not exercise these still-unbound raw stages.

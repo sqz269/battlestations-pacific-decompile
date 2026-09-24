@@ -156,3 +156,9 @@ branch combinations, argument-byte preservation, and overlapping B21F10
 input/output. Exact final build/probe outcomes are recorded in the report.
 It provides no full graph, application startup, native exception ABI, game
 or visual validation. No production application was launched for this packet.
+
+## Primary integration and dimensions leaf definition
+
+Published worker 658df51ce together with the raw Lua reader leaves in main 41d46cd1f after the strict Win32 integration build and all three existing CTests passed. The primary defined the exact 24-byte B21F10 dimensions leaf under the Ghidra write lock, saved the program, retained the mutation record in reports/cc10_lua_renderer_function_definitions.json, and refreshed the export. B107F0 remains the documented entry fragment and existing-initialization tail; +1C4 does not admit complete initialization or destruction.
+
+Primary evidence archives and the separate finite application startup result are recorded in reports/cc10_lua_gui_renderer_integration.json. That application run does not exercise these still-unbound raw stages.
