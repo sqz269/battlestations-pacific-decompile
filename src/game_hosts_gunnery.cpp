@@ -129,7 +129,7 @@ constexpr bool kGunBarrelCountBound = true;
 //    bow (from the port/starboard firing arcs); the device model's own node
 //    chain (base, barrel, yaw and elevation) and the per-barrel muzzle offsets
 //    are not applied; planes are not covered. docs/SHIP_PLATFORM_ATTACHMENT.md.
-constexpr bool kShipPlatformAttachmentBound = false;
+constexpr bool kShipPlatformAttachmentBound = true;
 //  * kAaLineOfFireBound: an AA gun (weapon kinds 1, 5, 6; 00729560 installs the
 //    predicate at gun+42Ch) refuses a target when 0072CDD0 answers blocked:
 //    the segment from the gun (+5 m) to the target (+5 m, at least y = 5)
@@ -137,11 +137,11 @@ constexpr bool kShipPlatformAttachmentBound = false;
 //    excludes both) - on the firer's own side (hit+54h == owner+54h). The
 //    answer is cached per target for the gun's life (0072F6E0; the cached
 //    record's expiry field has no reader found). Labelled: units are the
-//    host's oriented hull boxes (the image tests their AABB then 0085CDB0);
+//    unit model BoundingBox, oriented by its pose (the image tests the unit AABB then 0085CDB0);
 //    the static-geometry half (spatial query, flags 44h) is not modelled,
 //    since nothing static stands between ships at sea. OFF: always clear.
 //    docs/SHIP_PLATFORM_ATTACHMENT.md.
-constexpr bool kAaLineOfFireBound = false;
+constexpr bool kAaLineOfFireBound = true;
 
 // 00901C20 BSP_GunBot_InterceptSolution, the time-of-flight half, as a pure rule.
 // rel = target position - shooter position; vel = target velocity - shooter
@@ -593,6 +593,8 @@ struct GameGunneryHost::Impl {
         std::string mesh;
         std::vector<bsp::GunFirePointItem> items;
         long long logged_unit{-1};   // the one unit whose mounts are logged
+        bool has_box{false};         // the model's BoundingBox, model frame
+        std::array<float, 6> box{};
     };
     std::map<int, ShipModelSlots> ship_slots_by_class;
     // 0072F6E0's per-gun cache: (gun, target) -> clear.
@@ -603,7 +605,7 @@ struct GameGunneryHost::Impl {
     // 0072CDD0 with 0098B130: true when the raised segment's nearest unit hit
     // (firer and target excluded) is on the firer's side.
     bool line_of_fire_blocked_0072cdd0(std::size_t owner, std::size_t target,
-        const float muzzle[3]) const {
+        const float muzzle[3]) {
         float target_pos[3];
         {
             float r[3], u[3], f[3];
@@ -618,8 +620,20 @@ struct GameGunneryHost::Impl {
         for (std::size_t u = 0; u < unit_state.size(); ++u) {
             if (u == owner || u == target || unit_state[u].dead) continue;
             const UnitState& st = unit_state[u];
-            const float ext[3] = {st.hull_width * 0.5f, st.hull_height * 0.5f,
+            // The unit's box: its model's BoundingBox (masts and superstructure
+            // included) when the class model reads, else the class hull box.
+            float ctr[3] = {0.0f, 0.0f, 0.0f};
+            float ext[3] = {st.hull_width * 0.5f, st.hull_height * 0.5f,
                 st.hull_length * 0.5f};
+            if (st.row.type_id >= 0) {
+                const ShipModelSlots& model = ship_model_slots(st.row.type_id);
+                if (model.has_box) {
+                    for (int a = 0; a < 3; ++a) {
+                        ctr[a] = (model.box[a] + model.box[a + 3]) * 0.5f;
+                        ext[a] = (model.box[a + 3] - model.box[a]) * 0.5f;
+                    }
+                }
+            }
             if (ext[0] <= 0.0f || ext[2] <= 0.0f) continue;
             float r[3], up[3], f[3], o[3];
             unit_pose(u, r, up, f, o);
@@ -629,7 +643,8 @@ struct GameGunneryHost::Impl {
             float t0 = 0.0f, t1 = 1.0f;
             bool hit = true;
             for (int a = 0; a < 3 && hit; ++a) {
-                const float p = rel[0] * axes[a][0] + rel[1] * axes[a][1] + rel[2] * axes[a][2];
+                const float p = rel[0] * axes[a][0] + rel[1] * axes[a][1] + rel[2] * axes[a][2]
+                    - ctr[a];
                 const float d = dir[0] * axes[a][0] + dir[1] * axes[a][1] + dir[2] * axes[a][2];
                 if (std::fabs(d) < 1e-9f) {
                     if (p < -ext[a] || p > ext[a]) hit = false;
@@ -868,6 +883,7 @@ GameGunneryHost::Impl::ship_model_slots(int type_id) {
     } else if (bsp::read_mmod_aux_point_items_0071b3e0(bytes, entry.items, error)) {
         entry.loaded = true;
     }
+    if (!bytes.empty()) entry.has_box = bsp::read_mmod_bounding_box(bytes, entry.box);
     std::size_t slots = 0;
     for (const bsp::GunFirePointItem& item : entry.items) {
         if (item.name == "slot") ++slots;

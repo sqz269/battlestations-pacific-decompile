@@ -70,6 +70,11 @@ struct GunPlatformSlotFrame {
     std::array<float, 3> forward{};   // row 2 before 0085DC80
     std::array<float, 3> up{};        // row 1 before 0085DC80
 };
+// The model's top-level `BoundingBox` (6 floats, min xyz then max xyz), which
+// 00B7F430 stores at model+24h+28h. False when the model has none.
+bool read_mmod_bounding_box(const std::vector<std::uint8_t>& bytes,
+    std::array<float, 6>& box);
+
 bool gun_platform_slot_frame_0095f500(const std::vector<GunFirePointItem>& items,
     int key, GunPlatformSlotFrame& frame);
 
