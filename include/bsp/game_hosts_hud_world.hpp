@@ -86,7 +86,7 @@ inline constexpr bool kHudShipScreenUpdateBound = true;
 // control flow from 0064E415 to 0064F665, the turn-to-camera and repair-menu
 // gates over the menu host's action records. Their bodies are records never
 // reached without input. OFF keeps the part-1 tail record.
-inline constexpr bool kHudShipScreenControlsBound = false;
+inline constexpr bool kHudShipScreenControlsBound = true;
 
 class GameHostLog;
 class GameFrontendHost;
