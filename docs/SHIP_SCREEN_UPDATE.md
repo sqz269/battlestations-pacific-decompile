@@ -481,6 +481,19 @@ off then on, and the same run parameters as the part 3 pair.
 | 004396F0 | `ship_screen_gauge_round_004396f0` | complete |
 | 0064AE20, 0064B370, 0043ABA0 | none | read only |
 
+**The part 4 pair.** `local\p3_on_usn04.log` against `local\p4_on_usn04.log`, same tree.
+
+| row | OFF | ON |
+| --- | ---: | ---: |
+| unimplemented total | 2,248,576 | 2,257,735 (+9,159; predicted +9,159) |
+| update_remainder at 0064FD24 | 9,158 | none |
+| gauge_digit_uv | none | 18,316 |
+| apply_unit_0064ae20 | none | 1 |
+
+- **Rows not added:** no `gauge_source_*` row and no `dir_clock_step` row.
+- **Summary lines.** All 157 are identical.
+- **Result.** Every prediction holds. **`kHudShipScreenGaugesBound` flips ON.**
+
 ## 14. Screens 26h, 2Eh and 3Eh: the base update
 
 Packet `cc9_screen_26h_2eh` (worker cc9-platform2, 2026-09-23).

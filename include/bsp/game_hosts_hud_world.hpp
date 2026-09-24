@@ -106,7 +106,7 @@ inline constexpr bool kHudShipScreenDamageBound = true;
 // the FrontEndScreen::update record.
 inline constexpr bool kHudBaseUpdateScreensBound = false;
 
-inline constexpr bool kHudShipScreenGaugesBound = false;
+inline constexpr bool kHudShipScreenGaugesBound = true;
 
 class GameHostLog;
 class GameFrontendHost;
