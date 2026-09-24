@@ -1,0 +1,46 @@
+{
+  "packet": "cc10_scene_registry_query_erase_integration",
+  "worker_commit": "ddc92d898b6e3e37b58acd6069b931600fcc8d75",
+  "integration": "bd3f12bb4",
+  "archive": {
+    "path": "local/cc10-platform-evidence/scene-registry-query-erase.zip",
+    "sha256": "946f93eb404dd38b54da03e31acb18fc057cf5e21b4a4d8690d7a9d89df439ad",
+    "files": 33,
+    "valid": true
+  },
+  "review": [
+    "Entire raw28h/0Ch/8B header/source, three normal bodies and signed division helper listing",
+    "Signed quotient/remainder, wrapping hash, captured mask/current active, unsigned key comparisons",
+    "Equal-range current key/source order and scratch/output writes; exact success and two absence paths",
+    "Erase backward bucket repairs reread node argument after boundary owner store; captured owner/next survive real free callback",
+    "Post-free current count decrement then current output load, no freed-entry read",
+    "Range counter increments before current next traversal; wrapping current counter and current last-owner check",
+    "Valid iterator domain explicitly excludes returning native CRT invalid-parameter continuation; source rejects it"
+  ],
+  "validation": {
+    "owned_native_bytes": 739,
+    "read_only_division_bytes": 26,
+    "live_equals_installed": true,
+    "static_direct_call_rows": 25,
+    "original_source_pairs": 1,
+    "shared_genuine_allocation_and_free_seam": true,
+    "strict_win32_build": true,
+    "worker_ctests": 2,
+    "integrated_ctests": 3,
+    "build_log_sha256": "9d9adc6adc748db9ec260c0c28970c46f9d93014622b175bcf374b3cf98600b0",
+    "new_tracked_tests": 0,
+    "native_ABI_FH3_SEH": false,
+    "application_bound": false,
+    "game_validated": false
+  },
+  "ghidra": {
+    "existing_b827c0_free_continuation": "B828DD..B828F3 retained; final107listed instructions,0callgaps",
+    "new_body_repair_required": false,
+    "names": "Existing descriptive names retained with appended actual-storage evidence"
+  },
+  "boundaries": [
+    "Native CRT continuation, private caller frames and native fault transport excluded",
+    "Full vector growth/registry insertion/outer scene attachment remain separate",
+    "Original unreachable CRT checks trap in focused fixture; static call verification does not imply those branches executed"
+  ]
+}
