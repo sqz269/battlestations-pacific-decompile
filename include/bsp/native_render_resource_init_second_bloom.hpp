@@ -8,12 +8,14 @@ namespace bsp {
 // original argument cells and predecessor blocks remain alive through later
 // stages. Explicit existing child quiescence is required before reset/destruction.
 struct NativeRenderResourceInitSecondBloomState final {
-    enum class Phase { fresh, preparing, running, awaiting_b11e40_continuation, failed };
+    enum class Phase { fresh, preparing, running, awaiting_b11e40_continuation,
+        distortion_running, awaiting_later_continuation, failed };
     NativeRenderResourceInitSecondBloomState() = default;
     NativeRenderResourceInitSecondBloomState(const NativeRenderResourceInitSecondBloomState&) = delete;
     NativeRenderResourceInitSecondBloomState& operator=(const NativeRenderResourceInitSecondBloomState&) = delete;
     Phase phase{Phase::fresh};
     NativeRenderResourceInitDofState* previous{};
+    const void* distortion_identity{}; // One-use successor; no native ownership.
     std::uint32_t native_site{};
     int native_state{-1};
     void* raw_frame{};
