@@ -27,7 +27,75 @@ void put(void* owner,Word offset,Word value) noexcept {
     *static_cast<volatile Word*>(at(owner,offset))=value;
 }
 void* child(void* owner,Word offset) noexcept {return reinterpret_cast<void*>(word(owner,offset));}
+void release_companion(void* captured,RenderCommandReference& reference) {
+    auto* count=std::launder(reinterpret_cast<std::atomic<std::int32_t>*>(at(captured,4)));
+    if(&reference.reference_count!=count)
+        throw std::logic_error("render-resource child companion must borrow actual+04");
+    // The decrement already happened. Existing companions check current slot0
+    // and the refreshed deleting slot, retire and unbind without a second drop.
+    reference.release_zero_references();
+}
+void validate_direct_domain(NativeRenderResourcesDirectTerminalDomain& d,
+    NativeRenderResourcesLifetimeContext& c) {
+    auto& h=d.holders;
+    auto& t=h.textures.construction.owners;
+    auto& s=c.frame_targets.actual_surface_context;
+    if(&d.actual_owners!=&c.textures.actual_owners || &t.surfaces!=&s ||
+       &h.levels.surfaces!=&s || &h.render_targets.surfaces!=&s ||
+       !s.actual_string_pool_00419cc0.actual_storage() ||
+       t.renderer_notification.actual_native_string_pool!=s.actual_string_pool_00419cc0.actual_storage() ||
+       static_cast<const volatile void*>(&t.renderer_notification.actual_renderer_00f8d394)!=
+           static_cast<const volatile void*>(&s.actual_renderer_00f8d394) ||
+       &h.actual_decrement_00ce2220!=&c.textures.decrement_iat_00ce2220 ||
+       t.actual_surface_profile_00d619a0!=c.frame_targets.actual_surface_profile_00d619a0 ||
+       t.renderer_notification.accounting_tables.texture_2d_00d61948!=c.textures.actual_profile_00d61948)
+        throw std::logic_error("render-resource direct terminals require the same actual owner domain");
+}
+struct DirectTerminalTable {
+    Word profile;
+    const volatile Word* words;
+    Word deleting;
+};
+DirectTerminalTable direct_table(void* captured,NativeRenderResourcesLifetimeContext& c) {
+    const Word profile=word(captured);
+    switch(profile) {
+    case 0x00d619a0u:return {profile,c.frame_targets.actual_surface_profile_00d619a0,0x00b3f5b0u};
+    case 0x00d61eb8u:return {profile,c.direct_terminals->actual_holder_profile_00d61eb8,0x00b4e410u};
+    case 0x00d61948u:return {profile,c.textures.actual_profile_00d61948,0x00b3f590u};
+    default:throw std::logic_error("unsupported current render-resource direct terminal profile");
+    }
+}
 void terminal(void* captured,NativeRenderResourcesLifetimeContext& c) {
+    if(c.direct_terminals) {
+        auto& domain=*c.direct_terminals;
+        validate_direct_domain(domain,c);
+        if(auto* reference=domain.actual_owners.find(captured)) {
+            release_companion(captured,*reference);
+            return; // Never inspect native storage after its retirement/free.
+        }
+        const Word profile=word(captured);
+        if(profile==0x00d619a0u || profile==0x00d61eb8u || profile==0x00d61948u) {
+            const auto current=direct_table(captured,c);
+            if(!current.words || current.words[0]!=0x00bd30e0u)
+                throw std::logic_error("unsupported current render-resource direct virtual0");
+            // Native BD30E0 reloads the owner's profile and deleting +04 slot.
+            const auto refreshed=direct_table(captured,c);
+            if(!refreshed.words)throw std::logic_error("unbound refreshed render-resource direct table");
+            const Word deleting=refreshed.words[1];
+            if(deleting!=refreshed.deleting)
+                throw std::logic_error("refreshed render-resource deleting slot mismatches its profile");
+            switch(deleting) {
+            case 0x00b3f5b0u:
+                delete_native_surface_00b3f5b0(*static_cast<NativeSurfaceOwnerStorage*>(captured),1,
+                    c.frame_targets.actual_surface_context);return;
+            case 0x00b4e410u:
+                delete_native_render_texture_surface_owner_00b4e410(captured,1,domain.holders);return;
+            case 0x00b3f590u:
+                delete_native_texture_2d_00b3f590(captured,1,domain.holders.textures.construction.owners);return;
+            default:throw std::logic_error("unsupported refreshed render-resource direct deleting slot");
+            }
+        }
+    }
     if(word(captured)==0x00d5e600u) {
         const auto* table=c.actual_frame_table_00d5e600;
         if(!table || table[0]!=0x00bd30e0u || word(captured)!=0x00d5e600u || table[1]!=0x00b1fcf0u)
@@ -42,12 +110,7 @@ void terminal(void* captured,NativeRenderResourcesLifetimeContext& c) {
         if(!owner || &owner->storage!=captured || !reference)
             throw std::logic_error("render resources require their canonical cockpit companion");
     } else reference=&c.textures.actual_owners.resolve_actual(captured);
-    auto* count=std::launder(reinterpret_cast<std::atomic<std::int32_t>*>(at(captured,4)));
-    if(&reference->reference_count!=count)
-        throw std::logic_error("render-resource child companion must borrow actual+04");
-    // Existing companions check current slot0 and the refreshed deleting slot.
-    // The decrement already happened; never decrement a second time here.
-    reference->release_zero_references();
+    release_companion(captured,*reference);
 }
 void release(void* service,Word offset,void* captured,Decrement decrement,
     NativeRenderResourcesLifetimeContext& c) {
