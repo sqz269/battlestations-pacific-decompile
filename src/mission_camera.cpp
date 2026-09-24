@@ -352,4 +352,19 @@ void clear_mission_camera() noexcept {
     node.publishes = 0;
 }
 
+float global_config_fov_0087ec0f(double fovs_degrees, float divisor) noexcept {
+    // FMUL qword pi (00CE3D28), FDIV qword 180.0 (00CE3D20), FDIV dword divisor.
+    return static_cast<float>(fovs_degrees * kDegToRadPi / kDegToRadDen / divisor);
+}
+
+float pipe_sight_fov_scale_0064e2d6(float zoom_rate, float zoom_state) noexcept {
+    // FLD [settings+7Ch]; FMUL [00E197F4]; FLD1; FSUBRP.
+    return static_cast<float>(1.0 - static_cast<double>(zoom_rate) * zoom_state);
+}
+
+float mission_fov_004dc940(float stored, float divisor, float scale) noexcept {
+    // FLD [global+F4h+idx*4]; FMUL [00F889B4]; FMUL scale; FSTP.
+    return static_cast<float>(static_cast<double>(stored) * divisor * scale);
+}
+
 }  // namespace bsp

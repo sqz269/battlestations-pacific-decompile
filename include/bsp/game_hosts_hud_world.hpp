@@ -61,6 +61,13 @@ inline constexpr bool kHudPresentationTopBound = true;
 // top-down stand-in. OFF keeps the stand-in and the two records.
 inline constexpr bool kMissionCameraBound = false;
 
+// Packet cc9_mission_camera, part 3 (docs/MISSION_CAMERA.md section 10). ON
+// holds the marker widgets as the markers screen's pool A (entries taken in
+// order through the frame cursor +7Ch) and runs 00640620 over the four pools:
+// entries past a cursor are hidden, pool D's tail is released, the A/B/C
+// cursors are zeroed. OFF keeps the per-unit widget map and the two records.
+inline constexpr bool kHudMarkerPoolsBound = false;
+
 class GameHostLog;
 class GameFrontendHost;
 class GameMenuHost;

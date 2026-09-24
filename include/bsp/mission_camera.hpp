@@ -130,4 +130,19 @@ MissionCameraPublication& mission_camera_publication() noexcept;
 void publish_mission_camera(const CameraMatrix16& world, const MissionCameraProjection& projection);
 void clear_mission_camera() noexcept;
 
+// The in-mission FOV (packet cc9_mission_camera, part 3). Screen 45h's update
+// 0064DD30 (vtable 00CF5E30 +20h) runs, while its unit (+184h) is set and
+// ShipGlobals["PipeSightParams"].pipesight_enabled (settings+44h) is true, the
+// pipe-sight block 0064DEB1..0064E2F3, which ends in
+// 004DC940(1 - zoom_rate * zoom, 1). 004DC940 then sets the Operator fov to
+// GlobalConfig+F4h[1] * [00F889B4] * scale. GlobalConfig+F8h is loaded by
+// 0087D7B0 at 0087EC0F..0087EC2F as Globals["FOVs"]["Ship"] * pi / 180 / [00F889B4].
+inline constexpr float kFovDivisor00f889b4 = 0.6981317400932312f;  // 00CE7D20 via 008D4596
+// 0087EC0F..0087EC2F: the stored GlobalConfig FOV, float.
+float global_config_fov_0087ec0f(double fovs_degrees, float divisor) noexcept;
+// 0064E2D6..0064E2E3: the scale, float.
+float pipe_sight_fov_scale_0064e2d6(float zoom_rate, float zoom_state) noexcept;
+// 004DC9BC..004DC9CE: the fov handed to 00B6FBB0, float.
+float mission_fov_004dc940(float stored, float divisor, float scale) noexcept;
+
 } // namespace bsp
