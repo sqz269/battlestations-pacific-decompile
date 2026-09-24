@@ -80,7 +80,7 @@ inline constexpr bool kMissionFovBound = true;
 // the FrontEndScreen::update record: part 1 binds the relation icon
 // (0064A960), the flash icons (0064ABD0) and the throttle stick (+44h,
 // 0064A9F0); the other blocks are records. OFF keeps the one record.
-inline constexpr bool kHudShipScreenUpdateBound = false;
+inline constexpr bool kHudShipScreenUpdateBound = true;
 
 class GameHostLog;
 class GameFrontendHost;
