@@ -1077,6 +1077,42 @@ bool GameMissionLuaHost::read_auto_thrust_0083cc2c(bsp::ShipAiAutoThrustSettings
     return true;
 }
 
+bool GameMissionLuaHost::read_engine_sound_smooth_rates_0083b5e0(float (&out)[4]) {
+    // 0084041A..008405D5 of 0083B5E0: ShipGlobals["Sounds"], then one record
+    // table per index (0084043C jump table), EngineSoundSmoothRate (00D0A5F8)
+    // read through 00B66330 with the 0.2f default and stored at record+8h.
+    if (state_ == nullptr) return false;
+    static const char* const kRecordNames[4] = {"Ship", "TBoat", "Submarine", "Plane"};
+    const int top = ::lua_gettop(state_);
+    lua_getfield(state_, LUA_GLOBALSINDEX, kShipGlobalsGlobal);
+    if (lua_type(state_, -1) != LUA_TTABLE) {
+        ::lua_settop(state_, top);
+        return false;
+    }
+    ::lua_getfield(state_, -1, "Sounds");
+    if (lua_type(state_, -1) != LUA_TTABLE) {
+        ::lua_settop(state_, top);
+        return false;
+    }
+    const int sounds = ::lua_gettop(state_);
+    float rates[4] = {0.2f, 0.2f, 0.2f, 0.2f};
+    for (int i = 0; i < 4; ++i) {
+        ::lua_getfield(state_, sounds, kRecordNames[i]);
+        if (lua_type(state_, -1) != LUA_TTABLE) {
+            ::lua_settop(state_, top);
+            return false;
+        }
+        ::lua_getfield(state_, -1, "EngineSoundSmoothRate");
+        if (lua_type(state_, -1) == LUA_TNUMBER) {
+            rates[i] = static_cast<float>(::lua_tonumber(state_, -1));
+        }
+        ::lua_settop(state_, sounds);
+    }
+    ::lua_settop(state_, top);
+    for (int i = 0; i < 4; ++i) out[i] = rates[i];
+    return true;
+}
+
 bool GameMissionLuaHost::read_path_turn_ramp(ShipAiPathSearchTurnRamp& out,
     std::string& error) {
     if (state_ == nullptr) {

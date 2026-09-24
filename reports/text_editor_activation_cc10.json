@@ -1,0 +1,53 @@
+{
+  "packet": "cc10_text_editor_activation",
+  "status": "source_build_and_ctest_passed_frontend_binding_pending",
+  "game_rebuilt": true,
+  "source_files": [
+    "include/bsp/text_editor_activation.hpp",
+    "src/text_editor_activation.cpp"
+  ],
+  "native": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "address": "00a966e0",
+    "original_abi": "ECX existing text owner; stack enabled byte, selected-row/context DWORD; RET 8",
+    "coverage": "complete normal instruction schedule 00a966e0..00a96745; typed storage/input services exclude native object, allocator, singleton and SEH ABI"
+  },
+  "routines": [
+    {
+      "address": "00a966e0",
+      "coverage": "complete normal schedule; external 004bec00/00a92c40 and 0041dd40 dependencies required",
+      "source": "src/text_editor_activation.cpp"
+    }
+  ],
+  "calls": [
+    {"address": "00583e36", "function": "00583de0", "native": "00a966e0", "purpose": "enable main-menu owner with current selected row"},
+    {"address": "00590eaf", "function": "00590e60", "native": "00a966e0", "purpose": "disable main-menu owner and clear platform queue"},
+    {"address": "00a966f9", "function": "00a966e0", "native": "00a965a0", "purpose": "set platform input gate and clear the same queue"},
+    {"address": "00a96704", "function": "00a966e0", "native": "004bec00", "purpose": "get current input-action singleton"},
+    {"address": "00a9670b", "function": "00a966e0", "native": "00a92c40", "purpose": "update current input actions with zero seconds"},
+    {"address": "00a9671e", "function": "00a966e0", "native": "0041dd40", "purpose": "resize owner editable NativeString to zero only on enable"}
+  ],
+  "producer": {
+    "address": "00a97260",
+    "main_menu_construction": "005902e0 passes screen+0Ch at 0059031b",
+    "chat_construction": "005cfda0 also calls 00a97260",
+    "fields": "+04 disabled, +08..+1C native strings zeroed, +20 cursor and +24 context not initialized by constructor",
+    "lifetime": "borrowed from owning screen; main-menu destructor path 00590d60 -> 00590600, later subobject cleanup not established"
+  },
+  "validation": {
+    "source_build": "scripts/build.ps1 Win32 Release bsp_core and bsp_game; reconstructed_math and tool_tests CTests 2/2 passed",
+    "report_calls": "verify_report_calls.py checked 6 call rows with 0 failures",
+    "game_runtime": false,
+    "ghidra_writes": false
+  },
+  "input_call_contract": {
+    "getter": "TextEditorActivationInput::get_input_action_owner_004bec00 resolves the current lazy raw singleton and returns its borrowed handle",
+    "update": "TextEditorActivationInput::update_input_action_owner_00a92c40 receives exactly that handle and +0.0f; no combined refresh or substitute owner",
+    "canonical_type": "No C++ owner type proven for the native 0x24-byte raw input-action owner; contract uses void* handle"
+  },
+  "limitations": [
+    "No actual frontend TextInputCallbacks owner or menu dispatch is constructed in this packet.",
+    "The required input service must bind the current game action owner; an empty implementation is not equivalent."
+  ]
+}

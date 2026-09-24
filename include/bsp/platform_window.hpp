@@ -12,6 +12,7 @@
 #include <string>
 
 #include "bsp/frame_clock.hpp"
+#include "bsp/platform_loop.hpp"
 
 // Platform phase of cSkeletonAppMidway::Init (0073d410), covering the object
 // construction at 0073d899..0073d988 and the window configuration reached
@@ -30,7 +31,7 @@ namespace bsp {
 // Projection of the 0x184-byte object allocated at 0073d8d1 and constructed by
 // 00becda0. Only fields written by 00becda0 or 00becee0 appear; bytes whose
 // role is not recovered keep an offset-derived name.
-struct Win32PlatformFields {
+struct Win32PlatformFields : PlatformLoopState {
     const void* vtable{};        // +000, native &PTR_LAB_00d68cc4
     std::string name;            // +004 length / +008 data, native cNativeString
     bool fullscreen{};           // +00c
@@ -47,8 +48,7 @@ struct Win32PlatformFields {
     std::int32_t requested_height{}; // +038
     float desktop_aspect{};      // +03c
     bool byte_040{};             // +040, zeroed by 00becda0, role unrecovered
-    bool frames_enabled{};       // +042, gates the frame slot in 00bec1a0
-    bool loop_finished{};        // +043, set on loop exit by 00bec1a0
+    // Inherited loop cells are the same +42/+43/+181 state used by messages.
     bool byte_044{};             // +044, zeroed by 00becda0, role unrecovered
     void* application{};         // +048, the cSkeletonAppMidway object
     std::uint32_t power_scheme{};// +04c, GetActivePwrScheme output
@@ -57,7 +57,6 @@ struct Win32PlatformFields {
     void* text_queue{};          // +178, sentinel from 00bec710
     void* text_queue_tail{};     // +17c
     bool close_requested{};      // +180, set by WM_CLOSE in 00bed3b0
-    bool exit_requested{};       // +181, loop exit flag read by 00bec1a0
 };
 
 // Only the two cells consumed by BEC230 and B20C50 have native offsets here.

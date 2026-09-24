@@ -81,6 +81,7 @@
 #include "bsp/unit_order_record.hpp"
 #include "bsp/unit_rudder.hpp"
 #include "bsp/unit_rudder_curve.hpp"
+#include "bsp/unit_instance_step11.hpp"
 #include "bsp/unit_state_message.hpp"
 #include "bsp/approach_target_ref.hpp"
 #include "bsp/vehicle_class.hpp"
@@ -1137,6 +1138,8 @@ struct GameUnitSlot {
     bsp::UnitHullExtents hull_extents{};
     float class_width_00a4{};
     bsp::ShipClassFields fields{};
+    // Packet cc9_unit_instance_step11: the cells step 11 of 008255B0 owns.
+    bsp::UnitStep11State step11{};
     bsp::UnitOrderRing ring{};
     bsp::UnitOrderQueue queue{};
     bsp::UnitOrderRecordStorage scratch{};
@@ -1412,6 +1415,8 @@ struct GameUnitsHost::Impl {
     // freshly allocated settings object has, which is why the load runs first.
     bsp::UnitRudderCurveSettings rudder_curve{};
     bool rudder_curve_loaded{false};
+    // Packet cc9_unit_instance_step11: settings+5BCh + i*24h + 8h.
+    bsp::EngineSoundSmoothRates engine_sound_rates{};
     // Milestone 2p: the seven AutoThrust keys of the same singleton, which
     // 009EC7C0 reads at +6CCh..+6ECh. Loaded beside the turn multipliers.
     bsp::ShipAiAutoThrustSettings auto_thrust{};
@@ -3857,6 +3862,12 @@ public:
 // bsp::UnitInstanceHost, one method per native call site of 008255b0
 // ---------------------------------------------------------------------------
 
+// Packet cc9_unit_instance_step11 (docs/UNIT_INSTANCE_STEP11.md). ON runs
+// 00815AA0, 0081C050, 008252C0, 00956600 and 00834E90 (with its tails 00834820,
+// 00834CC0, 00834A70) against this host's units, which carry no scene nodes,
+// emitters or effect handles; OFF keeps the six records. 008227E0 stays a record.
+constexpr bool kUnitInstanceStep11Bound = true;
+
 class UnitInstanceBinding final : public bsp::UnitInstanceHost {
 public:
     UnitInstanceBinding(GameUnitsHost::Impl& owner, GameUnitSlot& slot)
@@ -3903,8 +3914,15 @@ public:
     // it publishes into the effect groups at unit+FFCh, and a created unit has
     // none: 006fe590, the instance the descriptor's vtable +28h allocates, is a
     // milestone 2h record and nothing fills those groups.
-    void sub_update_00815aa0(float) override {
-        owner_.record("UnitInstance::publish_effect_intensity", 0x00815aa0u);
+    void sub_update_00815aa0(float gate) override {
+        if (!kUnitInstanceStep11Bound || slot_.state == nullptr) {
+            owner_.record("UnitInstance::publish_effect_intensity", 0x00815aa0u);
+            return;
+        }
+        // Run whole against a unit with no effect groups (header of
+        // bsp/unit_instance_step11.hpp): only the latch at +9D0h moves.
+        bsp::run_effect_intensity_00815aa0(*slot_.state, slot_.step11, step11_inputs(), gate);
+        owner_.done("UnitInstance::publish_effect_intensity", 0x00815aa0u);
     }
     bsp::UnitAnchorPoint transform_bow_anchor() override {
         owner_.record("UnitInstance::transform_bow_anchor", 0x00413920u);
@@ -3935,7 +3953,13 @@ public:
         owner_.done("UnitInstance::controller_update", 0x0092be80u);
     }
     void sub_update_0081c050() override {
-        owner_.record("UnitInstance::sub_update_0081c050", 0x0081c050u);
+        if (!kUnitInstanceStep11Bound) {
+            owner_.record("UnitInstance::sub_update_0081c050", 0x0081c050u);
+            return;
+        }
+        // The finished-effect prune over +FFCh, which this host never fills.
+        bsp::run_prune_effects_0081c050();
+        owner_.done("UnitInstance::prune_finished_effects", 0x0081c050u);
     }
     bool is_controlled_unit() override { return owner_.is_controlled(slot_); }
     bool global_intensity_override() override { return false; }  // 00f87152
@@ -3959,20 +3983,56 @@ public:
     }
     // The three timed sub-updates of step 11. docs/UNIT_TIMED_SUBUPDATES.md
     // analyses them; packet cc_unit_subupdates owns their reconstruction.
-    void sub_update_008252c0(float) override {
-        owner_.record("UnitInstance::update_engine_audio", 0x008252c0u);
+    void sub_update_008252c0(float scaled_delta) override {
+        if (!kUnitInstanceStep11Bound) {
+            owner_.record("UnitInstance::update_engine_audio", 0x008252c0u);
+            return;
+        }
+        // The RPM smoother at +BC4h, with the authored smoothing rate; the
+        // emitters it would feed are not built.
+        bsp::run_engine_audio_008252c0(slot_.step11, step11_inputs(),
+            owner_.engine_sound_rates, scaled_delta);
+        owner_.done("UnitInstance::update_engine_audio", 0x008252c0u);
     }
-    void sub_update_00956600(float) override {
-        owner_.record("UnitInstance::update_unit_timers", 0x00956600u);
+    void sub_update_00956600(float scaled_delta) override {
+        if (!kUnitInstanceStep11Bound || slot_.state == nullptr) {
+            owner_.record("UnitInstance::update_unit_timers", 0x00956600u);
+            return;
+        }
+        bsp::run_unit_timers_00956600(*slot_.state, slot_.step11, step11_inputs(),
+            scaled_delta);
+        owner_.done("UnitInstance::update_unit_timers", 0x00956600u);
     }
-    void sub_update_00834e90(float) override {
-        owner_.record("UnitInstance::update_propellers", 0x00834e90u);
+    void sub_update_00834e90(float scaled_delta) override {
+        if (!kUnitInstanceStep11Bound) {
+            owner_.record("UnitInstance::update_propellers", 0x00834e90u);
+            return;
+        }
+        bsp::UnitStep11Inputs in = step11_inputs();
+        in.controller_speed = controller_time_value(); // 00834EB7, 0092D730
+        bsp::run_propellers_00834e90(slot_.step11, in, scaled_delta);
+        owner_.done("UnitInstance::update_propellers", 0x00834e90u);
+        owner_.done("UnitInstance::update_bow_wave", 0x00834820u);
+        owner_.done("UnitInstance::update_stern_wave", 0x00834cc0u);
+        owner_.done("UnitInstance::update_propeller_spray", 0x00834a70u);
     }
     void tick_part(std::size_t, float) override {
         owner_.record("UnitInstance::tick_part", 0x00815370u);
     }
 
 private:
+    // What the step-11 runners read off this unit (bsp/unit_instance_step11.hpp).
+    bsp::UnitStep11Inputs step11_inputs() const {
+        bsp::UnitStep11Inputs in{};
+        in.class_id = slot_.class_id;
+        in.gate_5d = slot_.state != nullptr && slot_.state->simulate != 0;
+        in.throttle = slot_.row.throttle; // +980h
+        in.steering = slot_.row.rudder;   // +984h
+        in.alternate_inputs = false;      // +61h, no writer (unit_flag_0061)
+        in.global_intensity_override = false; // 00f87152, as global_intensity_override()
+        return in;
+    }
+
     GameUnitsHost::Impl& owner_;
     GameUnitSlot& slot_;
 };
@@ -4652,6 +4712,21 @@ void GameUnitsHost::load_gameplay_settings_0083b5e0() {
         host.log.notef("auto thrust: ShipGlobals[\"Navigator\"][\"AutoThrust\"] is absent or "
             "incomplete, so 00424c40()+6cch..+6ech keeps the zeroes a fresh settings object "
             "has and 009ec7c0's five interpolation stages all run on zero endpoints");
+    }
+
+    // Packet cc9_unit_instance_step11: the engine-sound records 008252C0 reads.
+    if (host.lua.read_engine_sound_smooth_rates_0083b5e0(host.engine_sound_rates.rate)) {
+        host.engine_sound_rates.loaded = true;
+        host.done("GameSettings::load_engine_sound_records", 0x008405d5u);
+        host.log.notef("engine sound records loaded from ShipGlobals[\"Sounds\"]: "
+            "EngineSoundSmoothRate Ship %.3f TBoat %.3f Submarine %.3f Plane %.3f "
+            "(00424c40()+5c4h + i*24h, the rate 008252c0 steps +bc4h at)",
+            static_cast<double>(host.engine_sound_rates.rate[0]),
+            static_cast<double>(host.engine_sound_rates.rate[1]),
+            static_cast<double>(host.engine_sound_rates.rate[2]),
+            static_cast<double>(host.engine_sound_rates.rate[3]));
+    } else {
+        host.record("GameSettings::load_engine_sound_records", 0x008405d5u);
     }
 
     bsp::UnitRudderCurveSettings settings{};

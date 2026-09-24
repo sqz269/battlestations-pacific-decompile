@@ -1,0 +1,446 @@
+{
+  "packet": "cc10_platform_control",
+  "status": "complete_stop_and_partial_control_power_fragments_build_and_native_fixture_checked",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "source_files": [
+    "include/bsp/platform_control_messages.hpp",
+    "src/platform_control_messages.cpp"
+  ],
+  "routines": [
+    {
+      "address": "00bebf70",
+      "end": "00bebf94",
+      "coverage": "complete",
+      "source": "disable_platform_frames_and_post_quit_00bebf70",
+      "abi": "ECX=this, plain RET"
+    },
+    {
+      "address": "00bed223",
+      "end": "00bed276",
+      "coverage": "partial_projection",
+      "function": "00becee0",
+      "source": "initialize_platform_power_00bed223_fragment",
+      "excluded": "00becee0..00bed222 and00bed277..00bed289"
+    },
+    {
+      "address": "00bece41",
+      "end": "00bece46",
+      "coverage": "partial_projection",
+      "candidate_function": "00bece30",
+      "live_containing_function": null,
+      "source": "enable_platform_screensaver_00bece41_fragment",
+      "argument_setup": [
+        "00bece31..00bece36",
+        "00bece39..00bece3a"
+      ],
+      "excluded": "all destructor operations except SystemParametersInfoA call"
+    },
+    {
+      "address": "00bed5c1",
+      "end": "00bed5dc",
+      "message": "WM_PAINT",
+      "coverage": "partial_projection",
+      "function": "00bed3b0",
+      "source": "handle_platform_control_message_00bed3b0_fragment",
+      "arm_coverage": "complete",
+      "routine_excluded": [
+        "activation/create/size00bed3f3..00bed5c0",
+        "text00bed607..00bed668",
+        "close00bed6a0..00bed6b3",
+        "text00bed6db..00bed6fe"
+      ]
+    },
+    {
+      "address": "00bed67e",
+      "end": "00bed69f",
+      "message": "WM_GETMINMAXINFO",
+      "coverage": "partial_projection",
+      "function": "00bed3b0",
+      "source": "handle_platform_control_message_00bed3b0_fragment",
+      "arm_coverage": "complete",
+      "routine_excluded": [
+        "activation/create/size00bed3f3..00bed5c0",
+        "text00bed607..00bed668",
+        "close00bed6a0..00bed6b3",
+        "text00bed6db..00bed6fe"
+      ]
+    },
+    {
+      "address": "00bed6b4",
+      "end": "00bed6da",
+      "message": "WM_SETTINGCHANGE",
+      "coverage": "partial_projection",
+      "function": "00bed3b0",
+      "source": "handle_platform_control_message_00bed3b0_fragment",
+      "arm_coverage": "complete",
+      "routine_excluded": [
+        "activation/create/size00bed3f3..00bed5c0",
+        "text00bed607..00bed668",
+        "close00bed6a0..00bed6b3",
+        "text00bed6db..00bed6fe"
+      ]
+    },
+    {
+      "address": "00bed718",
+      "end": "00bed730",
+      "message": "WM_EXITSIZEMOVE",
+      "coverage": "partial_projection",
+      "function": "00bed3b0",
+      "source": "handle_platform_control_message_00bed3b0_fragment",
+      "arm_coverage": "complete",
+      "routine_excluded": [
+        "activation/create/size00bed3f3..00bed5c0",
+        "text00bed607..00bed668",
+        "close00bed6a0..00bed6b3",
+        "text00bed6db..00bed6fe"
+      ]
+    },
+    {
+      "address": "00bed731",
+      "end": "00bed749",
+      "message": "WM_ENTERSIZEMOVE",
+      "coverage": "partial_projection",
+      "function": "00bed3b0",
+      "source": "handle_platform_control_message_00bed3b0_fragment",
+      "arm_coverage": "complete",
+      "routine_excluded": [
+        "activation/create/size00bed3f3..00bed5c0",
+        "text00bed607..00bed668",
+        "close00bed6a0..00bed6b3",
+        "text00bed6db..00bed6fe"
+      ]
+    },
+    {
+      "address": "00bed74a",
+      "end": "00bed761",
+      "message": "WM_SYSCOMMAND",
+      "coverage": "partial_projection",
+      "function": "00bed3b0",
+      "source": "handle_platform_control_message_00bed3b0_fragment",
+      "arm_coverage": "complete",
+      "routine_excluded": [
+        "activation/create/size00bed3f3..00bed5c0",
+        "text00bed607..00bed668",
+        "close00bed6a0..00bed6b3",
+        "text00bed6db..00bed6fe"
+      ]
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00bebf82",
+      "native": "00c2ddd0",
+      "function": "00bebf70",
+      "operation": "SetActivePwrScheme(scheme,null,saved+50)"
+    },
+    {
+      "address": "00bebf8d",
+      "native": "USER32!PostQuitMessage [00ce234c]",
+      "function": "00bebf70",
+      "operation": "PostQuitMessage(0)",
+      "instruction": "ff154c23ce00",
+      "stack_arguments": 1
+    },
+    {
+      "address": "00bed22d",
+      "native": "00c2dddc",
+      "function": "00becee0",
+      "operation": "GetActivePwrScheme(&scheme+4c)"
+    },
+    {
+      "address": "00bed23d",
+      "native": "00c2ddd6",
+      "function": "00becee0",
+      "operation": "ReadPwrScheme(scheme,saved+50)"
+    },
+    {
+      "address": "00bed264",
+      "native": "00c2ddd0",
+      "function": "00becee0",
+      "operation": "SetActivePwrScheme(scheme,null,modified+e0)"
+    },
+    {
+      "address": "00bed271",
+      "native": "USER32!SystemParametersInfoA [00ce2340]",
+      "function": "00becee0",
+      "operation": "SystemParametersInfoA(0x11,0,null,0)",
+      "instruction": "ff154023ce00",
+      "stack_arguments": 4
+    },
+    {
+      "address": "00bece41",
+      "native": "USER32!SystemParametersInfoA [00ce2340]",
+      "function": null,
+      "operation": "SystemParametersInfoA(0x11,1,null,0)",
+      "candidate_function": "00bece30",
+      "kind": "no_ghidra_function",
+      "instruction": "ff154023ce00",
+      "stack_arguments": 4
+    },
+    {
+      "address": "00bed3c5",
+      "native": "USER32!GetWindowLongA [00ce2374]",
+      "function": "00bed3b0",
+      "operation": "GetWindowLongA(hwnd,0)",
+      "instruction": "ff157423ce00",
+      "stack_arguments": 2
+    },
+    {
+      "address": "00bed5ce",
+      "native": "USER32!DefWindowProcA [00ce22fc]",
+      "function": "00bed3b0",
+      "operation": "WM_PAINT default then return zero",
+      "instruction": "ff15fc22ce00",
+      "stack_arguments": 4
+    },
+    {
+      "address": "00bed671",
+      "native": "USER32!DefWindowProcA [00ce22fc]",
+      "function": "00bed3b0",
+      "operation": "shared fallback default",
+      "instruction": "ff15fc22ce00",
+      "stack_arguments": 4
+    },
+    {
+      "address": "00bed693",
+      "native": "USER32!DefWindowProcA [00ce22fc]",
+      "function": "00bed3b0",
+      "operation": "WM_GETMINMAXINFO default after stores",
+      "instruction": "ff15fc22ce00",
+      "stack_arguments": 4
+    },
+    {
+      "address": "00bed6ce",
+      "native": "USER32!DefWindowProcA [00ce22fc]",
+      "function": "00bed3b0",
+      "operation": "WM_SETTINGCHANGE default after flag",
+      "instruction": "ff15fc22ce00",
+      "stack_arguments": 4
+    },
+    {
+      "address": "00bed724",
+      "native": "USER32!DefWindowProcA [00ce22fc]",
+      "function": "00bed3b0",
+      "operation": "WM_EXITSIZEMOVE default after enable",
+      "instruction": "ff15fc22ce00",
+      "stack_arguments": 4
+    },
+    {
+      "address": "00bed73d",
+      "native": "USER32!DefWindowProcA [00ce22fc]",
+      "function": "00bed3b0",
+      "operation": "WM_ENTERSIZEMOVE default after disable",
+      "instruction": "ff15fc22ce00",
+      "stack_arguments": 4
+    }
+  ],
+  "native": {
+    "pe": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "pe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "spans": [
+      {
+        "address": "00bebf70",
+        "length": 37,
+        "sha256": "8144c2a4b84d01cd8b096ef0d27ddc41750be60e0af5cf6921bf4120ee80dab3"
+      },
+      {
+        "address": "00bed223",
+        "length": 84,
+        "sha256": "863ec5232f6baf90937353617552434cd81a5bfb1a1b1935047b9daebfaf9426"
+      },
+      {
+        "address": "00bed3b0",
+        "length": 1233,
+        "sha256": "fcbfdfc9283780fe7443e253e1f3a7b6ac071fe8aa5c9d7ae72fc8dcfc1d6562"
+      },
+      {
+        "address": "00bece30",
+        "length": 63,
+        "sha256": "e6747a00ac6cded472183cafa5a10f70c0d638e381ad1279f7dcdf3836949bdd"
+      }
+    ],
+    "live_checked_spans": [
+      {
+        "address": "00bebf70",
+        "length": 37,
+        "sha256": "8144c2a4b84d01cd8b096ef0d27ddc41750be60e0af5cf6921bf4120ee80dab3",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00bed223",
+        "length": 84,
+        "sha256": "863ec5232f6baf90937353617552434cd81a5bfb1a1b1935047b9daebfaf9426",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00bece30",
+        "length": 63,
+        "sha256": "e6747a00ac6cded472183cafa5a10f70c0d638e381ad1279f7dcdf3836949bdd",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00bed3b0",
+        "length": 67,
+        "sha256": "60efd6bdfad60d27f18cc9349762fa4f302feb034a95e5ba5434de7b9302f0d5",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00bed5c1",
+        "length": 28,
+        "sha256": "4c6c39d29f17483e354c79f221582332469c5bba80e59a68fd4a6afffcd8cf21",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00bed5dd",
+        "length": 42,
+        "sha256": "b92630d01884e6e243c75c5bfe9ef9cecf37b77b09e3b7ca09c1d3eaf8a39ba2",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00bed669",
+        "length": 21,
+        "sha256": "f11a3413e0743e999725d3fe605cdfbced935f0a5116acfd04329040ce747167",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00bed67e",
+        "length": 34,
+        "sha256": "f91a4a9829e4bbedb64ab370607aebe19ce07a23d442f52e49427307c7f2775b",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00bed6b4",
+        "length": 39,
+        "sha256": "7dccb0551d052e6dac6801d8771b3f76bb0c203ebf0aab3ea30cda532d99aedf",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00bed6ff",
+        "length": 99,
+        "sha256": "bb7c7c34351d2007712dd9fb372a78d11a7f14caa176fc51defe3fb1a8f5a205",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00bed764",
+        "length": 44,
+        "sha256": "06cf183fe209b98c9a6d5ae9d22818fac39c5591672db571996de29474d09eea",
+        "live_equals_pe": true
+      },
+      {
+        "address": "00bed790",
+        "length": 241,
+        "sha256": "462598f14e7df24facabc554e45ef12deb72122a8f4aed51d7345a16e0fdef24",
+        "live_equals_pe": true
+      }
+    ],
+    "iat_names": {
+      "00ce22e0": "GetActivePwrScheme",
+      "00ce22e4": "ReadPwrScheme",
+      "00ce22e8": "SetActivePwrScheme",
+      "00ce22fc": "DefWindowProcA",
+      "00ce2340": "SystemParametersInfoA",
+      "00ce234c": "PostQuitMessage",
+      "00ce2374": "GetWindowLongA"
+    }
+  },
+  "policy_layout": {
+    "size": "0x90",
+    "saved_native": "0x50",
+    "modified_native": "0xe0",
+    "scheme_native": "0x4c",
+    "video_timeout_ac_policy_offset": "0x38",
+    "video_timeout_dc_policy_offset": "0x3c",
+    "producer": "00bed223..00bed276",
+    "constructor_does_not_initialize": true
+  },
+  "corrections": [
+    {
+      "was": "GameWindowHost stop_existing_window described as unreconstructed teardown",
+      "evidence": "BEBF70..BEBF94",
+      "is": "BEBF70 restores saved power policy, clears frames and posts quit without DestroyWindow or exit request"
+    },
+    {
+      "was": "projection can finish platform setup before deferred renderer/cache/power tail",
+      "evidence": "73DC25 CALL,73DC2B ADD ESP2C,BED223..BED289,73DC7C CALL A40DF0",
+      "is": "native BECEE0 returns after renderer/cache/power; online constructor73DC7C follows"
+    },
+    {
+      "was": "nearby BECDA0 may be taken as enclosing BECE41",
+      "evidence": "bsp.py ghidra proto/disasm BECE30 returns no function; live bytes match PE prefix",
+      "is": "BECE30 has no live function; only raw byte-supported destructor API fragment"
+    }
+  ],
+  "bindings": [
+    "Primary integrates control-message arms and canonical platform loop flags.",
+    "Power producer and restoration remain unbound in production pending proof of native normal-shutdown scheduling.",
+    "Known BEBF70 caller is existing-window reconfiguration, not established normal exit."
+  ],
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "configuration": "MSVC Win32 Release",
+      "passed": true,
+      "ctest_passed": 2,
+      "log": "local/cc10-platform-control-build.log"
+    },
+    "call_report": {
+      "command": "python tools/verify_report_calls.py reports/platform_control_messages_cc10.json",
+      "checked_direct_calls": 4,
+      "failed": 0,
+      "import_rows": 10,
+      "import_evidence": "Exact imported IAT names and call operand bytes crosschecked independently; string-native rows intentionally skipped by verifier."
+    },
+    "focused_probe": {
+      "path": "local/cc10_control_probe.exe",
+      "passed": true,
+      "source": "local/cc10_control_probe.cpp",
+      "log": "local/cc10_control_probe.log",
+      "power_original_source_scenarios": 3,
+      "control_original_source_cases": 10,
+      "actual_win32_window": true,
+      "actual_isolated_thread_post_quit": true,
+      "stdout": [
+        "power: original/source 3 producer+stop scenarios; real isolated-thread WM_QUIT; OS power/screensaver APIs all spied",
+        "controls: 10 original/source cases including null extra early minmax, distinct receivers, exact syscommand, fallback and ignored paint result",
+        "real Win32 window: creation early-minmax, size-loop flags, SC_SCREENSAVE suppression, settingchange, 100px minimum, paint validation passed",
+        "PASS"
+      ]
+    },
+    "game_runtime": false,
+    "power_policy_os_mutation_in_probe": false,
+    "screensaver_os_mutation_in_probe": false,
+    "source_abi": "projected typed interface, not native platform object ABI",
+    "original_code_relocation": "BEBF70 full37bytes; BED223 power tail84bytes wrapped with preserved EBX/EBP/ESI/EDI; BED3B0 dispatcher1233bytes and absolute jump tables/IAT operands rebased; nonselected native arms not executed",
+    "artifacts": [
+      {
+        "path": "local/cc10_control_probe.cpp",
+        "sha256": "47a0cfc30d94d26b6bfffaa0ef5d0e1aece214074f2c4e64d1ea2f7029370108"
+      },
+      {
+        "path": "local/cc10_control_probe.exe",
+        "sha256": "1ee91e13f3386b5f487c0a117e4a68c899d55da562965ef6db02152b799b59a2"
+      },
+      {
+        "path": "local/cc10_control_probe.log",
+        "sha256": "f5bcd52cc1e06711e709452544f7d67b352c256c44ceb1bb6c8845aa8df27fa4"
+      },
+      {
+        "path": "include/bsp/platform_control_messages.hpp",
+        "sha256": "c83b63bff9f595e2c9728b1427a7744f4b3faaf4658af4d6072cc57eecd3adbb"
+      },
+      {
+        "path": "src/platform_control_messages.cpp",
+        "sha256": "0c2e72cef144af6fca77a65619444ee27754b981fc799cff3e0fc4aede4ff5a1"
+      }
+    ]
+  },
+  "limits": [
+    "No complete BED3B0 or BECEE0 reconstruction claim.",
+    "No complete deleting-destructor or native object ABI replacement claim.",
+    "No whole-game/activation/renderer proof from this packet.",
+    "Power producer deliberately preserves ignored read/set return values and screensaver destructor always enables rather than restoring old boolean.",
+    "No established native normal-exit BEBF70 call: production power binding deferred."
+  ]
+}

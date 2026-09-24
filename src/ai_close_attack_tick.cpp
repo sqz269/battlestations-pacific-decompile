@@ -145,10 +145,25 @@ AiCloseAttackTickResult ai_close_attack_tick_00a13b60(AiCloseAttackTickHost& hos
                 if (command_class == kAiSceneCommandAttackMove) ++result.attack_move_orders;
                 else ++result.set_target_orders;
             }
+        } else if (kCloseAttackFallbackOffsetBound) {
+            // 00A14A78-00A14D4C (docs/PLANNER_GROUP_COMPOSITION.md).
+            double r = static_cast<double>(member_count) * kCloseFallbackRadiusPerMember;
+            if (kCloseFallbackRadiusFloor > r) r = kCloseFallbackRadiusFloor;
+            const double dx = static_cast<double>(member_position[0]) - centre[0];
+            const double dz = static_cast<double>(member_position[2]) - centre[2];
+            const float d2 = static_cast<float>(dx * dx + dz * dz);   // 00A14BD3
+            const float r2 = static_cast<float>(r * r);               // 00A14AC2
+            if (d2 > r2) {                                            // 00A14BE3
+                float point[3];
+                for (int k = 0; k < 3; ++k) {
+                    point[k] = static_cast<float>(
+                        static_cast<double>(member_position[k]) * kCloseFallbackOwnWeight +
+                        static_cast<double>(centre[k]) * kCloseFallbackCentreWeight);
+                }
+                if (host.close_issue_moveto(member, point)) ++result.fallback_movetos;
+            }
         } else if (host.close_issue_moveto(member, centre)) {
-            // 00A14A78-00A14D4C builds an offset point and hands it to
-            // 00A02020. The offset itself was not traced, so the centre stands
-            // in for it; labelled substitution.
+            // The OFF path: the centre stands in for the offset point.
             ++result.fallback_movetos;
         }
     }
