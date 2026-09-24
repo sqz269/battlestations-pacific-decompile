@@ -932,6 +932,26 @@ sets +4h.
 - **Summary lines.** All identical. The camera pose does not move, so the markers' and minimap's
   projections are unchanged. Tavcso_Model is a Model widget, which the sprite bridge does not draw.
 
+**Who else writes +384h/+388h, and in what order.** `src/mission_camera.cpp` writes them in two
+places:
+- The bind seed, 0064DA40: yaw from the heading, pitch = -10 degrees.
+- The update's death re-base, 00432FC8..00433028: `yaw = 00438AA0(yaw, -0 - angle)`, in mode 0
+  only, when unit+5Dh is set. 0064DA40 binds a ship's mover in mode 1 (00432E60(unit, 1)), so that
+  write does not run for this camera.
+
+Everything else in the tick reads yaw and pitch. The host runs the tick once per interface frame,
+from the first of the 4Dh (markers) or 35h (minimap) updates. In the 25h set's order
+(`29h 49h 44h 27h 4Dh 45h 46h 26h 2Eh 35h 50h`) that is 4Dh, before 46h. So the view input's write
+reaches the pose on the next tick.
+
+In the image the mover ticks as a world entity. Whether that is before or after the interface pump
+is not established here, and with zero input the order changes nothing.
+
+**Request to cc9-platform (the camera's owner, on hold).** No change to the tick is needed for
+this binding. If the tick is ever moved to the world update, check it against the pump order above:
+a view-input step taken after the tick in the same frame would show one frame later. If the mode-0
+re-base is ever reached for a ship, it and 0051F050 both write +384h, the tick first.
+
 **The part 3 pair.** `local\p11_off_usn04.log` against `local\p11_on_usn04.log`, one tree on main
 plus this branch, 2560x1440.
 
