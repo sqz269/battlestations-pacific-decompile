@@ -1083,6 +1083,21 @@ struct GameUnitSlot {
     bool plane_death_removed{false};
     bool squadron_left_on_death{false};   // packet cc9_val_squadron_registry
     int db_done_law_ticks{0};             // packet cc9_plane_follow_law
+    // Packet cc9_gunfire_avoidance (docs/ATTACKER_EVASION.md section 5): the
+    // pilot's gunfire timers pilot+3E8h (avoid) and +3ECh (rest end), the
+    // flag plan+26Ch bit 4, and the three band sets pilot+4h (yaw, cmd[0]),
+    // +CCh (pitch, cmd[1]) and +194h (roll, cmd[2]), each one [lo, hi] because
+    // the gunfire arm is
+    // the only one bound and inserts once per think (0099B790 on an empty set).
+    float ga_timer_3e8{0.0f};
+    float ga_rest_3ec{0.0f};
+    bool ga_flag_26c_4{false};
+    bool ga_band_valid[3]{false, false, false};
+    float ga_band[3][2]{{0.0f, 0.0f}, {0.0f, 0.0f}, {0.0f, 0.0f}};
+    int ga_detect_ticks{0};
+    int ga_flagged_ticks{0};
+    int ga_repairs{0};
+    int ga_exempt_ticks{0};
     // Packet cc9_wing_achieved_speed, diagnostic: the last follow step's arm
     // (1 hold, 2 fly-to), station distance and the motion step it ran on.
     int fw_arm{0};
@@ -2799,6 +2814,13 @@ struct GameUnitsHost::Impl {
     // of position. Before: 007C47F0 alone, the leader always at LevelFlight x
     // StallSpd.
     static constexpr bool kMovetoSpeedBlendBound = true;
+    // Packet cc9_gunfire_avoidance (docs/ATTACKER_EVASION.md section 5): the
+    // firing list (007C74A0/007C75A0 on lastGunState +C35h), 009A17D0's gunfire
+    // arm (0099EC40 with its timers and exemptions, bands through 0099B790)
+    // and 0099BF30's band repair of the published roll/pitch/yaw command.
+    // Before: none of the three ran. The vehicle (0099B670) and terrain
+    // (0099F1C0) arms of 009A17D0 stay unbound.
+    static constexpr bool kPilotGunfireAvoidanceBound = true;
     // DIAGNOSTIC, packet cc9_wing_achieved_speed: every kWingTraceEvery motion
     // steps, one line per member of the squadron named kWingTraceSquadron.
     // Off (0) in the landed build.
@@ -3294,6 +3316,186 @@ struct GameUnitsHost::Impl {
     // that order and with the station 009BFD70 produced, which
     // is the tick's own order (section 2 of
     // docs/PLANE_FOLLOW_LAW.md).
+    // 0099B790 on an empty set: clamp (lo <= -1 -> [00CFBC84] -5.0, hi >= 1 ->
+    // [00CE3850] 5.0) and store the one band.
+    static void ga_insert_0099b790(GameUnitSlot& u, int set, float lo, float hi) {
+        if (lo <= -1.0f) lo = -5.0f;
+        if (1.0f <= hi) hi = 5.0f;
+        u.ga_band[set][0] = lo;
+        u.ga_band[set][1] = hi;
+        u.ga_band_valid[set] = true;
+    }
+    // 0099B940: true keeps (possibly moved to the nearer band edge), false when
+    // the value lies in a band covering all of [-1, 1].
+    static bool ga_band_search_0099b940(const GameUnitSlot& u, int set, float& v) {
+        if (!u.ga_band_valid[set]) return true;
+        const float lo = u.ga_band[set][0], hi = u.ga_band[set][1];
+        if (v <= lo || hi <= v) return true;
+        if (lo < -1.0f && 1.0f < hi) return false;
+        v = (hi - v < v - lo) ? hi : lo;
+        return true;
+    }
+
+    // 009A17D0's gunfire arm and 0099EC40, for one plane, per think.
+    void gunfire_avoidance_009a17d0(GameUnitSlot& u, float dt) {
+        u.ga_flag_26c_4 = false;                                   // 009A17E7
+        for (bool& b : u.ga_band_valid) b = false;                 // +C8h/+190h/+258h
+        // 009A17F8: an AI plane (+520h clear), live (+5Dh clear), in free
+        // flight (+72Ch vtable[38h], mode 7) or mode 6, whose party is not the
+        // local player's ([[00E188A8]+5FCh]+908h; the controlled unit's party
+        // stands in, labelled).
+        if (u.generic_suppress_520) return;
+        if (u.state == nullptr || u.state->simulate != 0) return;
+        const bool free_flight = u.plane_control_mode_900 == 7;
+        if (!free_flight && u.plane_control_mode_900 != 6) return;
+        if (!(controlled_bound && controlled_index < slots.size())) return;
+        if (slots[controlled_index]->row.party == u.row.party) return;
+        if (!free_flight) {
+            u.ga_timer_3e8 = -1.0f;                                // 009A183C
+            return;
+        }
+        if (u.ga_rest_3ec <= u.ga_timer_3e8) u.ga_timer_3e8 -= dt;  // 009A1851
+        // 009A1865: +2E4h bit 4 and the squadron's +3A4h bit 4. SUBSTITUTION,
+        // labelled: neither enable byte has a host producer; taken as set.
+        if (u.ga_timer_3e8 > 0.0f || u.ga_timer_3e8 < u.ga_rest_3ec) {
+            gunfire_detect_0099ec40(u);
+        }
+        if (!u.ga_flag_26c_4 && u.ga_timer_3e8 > 0.0f) {           // 009A18B4
+            u.ga_timer_3e8 = -0.0f - u.ga_timer_3e8;
+        }
+    }
+
+    void gunfire_detect_0099ec40(GameUnitSlot& u) {
+        ++u.ga_detect_ticks;
+        double acc_x = 0.0, acc_y = 0.0;                           // [ESP+0Ch]/[+10h]
+        const bsp::PlaneSquadronHostRecord* own_sq =
+            bsp::plane_squadron_registry().find_by_member_unit(u.process_index);
+        for (const auto& owned : slots) {
+            const GameUnitSlot& s = *owned;
+            // [00F87278]: planes whose lastGunState +C35h is set (007C74A0 /
+            // 007C75A0 from 007CC345). The host's gunFire byte +BC9h stands in
+            // for +C35h, labelled.
+            if (&s == &u || !s.plane_gun_fire_bc9) continue;
+            if (s.state == nullptr || s.state->simulate != 0) continue;
+            // 0099EC73: own squadron skipped (+9D4h).
+            if (own_sq != nullptr &&
+                bsp::plane_squadron_registry().find_by_member_unit(s.process_index) == own_sq) {
+                continue;
+            }
+            float l[3];
+            follow_to_body(s, u.motion.position, false, l);        // 004142E0, shooter +110h
+            if (!(1.0f < l[2]) || !(l[2] < 800.0f)) continue;       // [00D7A24C], double [00CE3948]
+            float v[3];
+            follow_to_body(s, u.plane_world_velocity, true, v);    // vtable[34h], 0042D0D0
+            auto band15 = [](double a) {                           // doubles [00CF3F20] 15, [00CE3D58] -15
+                if (a > 15.0) return a - 15.0;
+                if (a >= -15.0) return 0.0;
+                return a + 15.0;
+            };
+            const double fx = band15(static_cast<double>(l[0]) + v[0]);
+            const double fy = band15(static_cast<double>(l[1]) + v[1]);
+            const double rx = fx / l[2], ry = fy / l[2];
+            if (!(rx * rx + ry * ry < 0.014399999752640724)) continue;   // double [00D1F3F0]
+            u.ga_flag_26c_4 = true;                                // 0099EE11
+            // 0099EE1F-0099EF02: the point (0, 0, z) on the shooter's line,
+            // world (+CCh pose), minus the own world velocity, in the own frame.
+            const float* m = s.world.data();
+            float w[3];
+            for (int i = 0; i < 3; ++i) {
+                w[i] = static_cast<float>(m[12 + i] + static_cast<double>(l[2]) * m[8 + i]) -
+                       u.plane_world_velocity[i];
+            }
+            float o[3];
+            follow_to_body(u, w, false, o);
+            acc_x += o[0];
+            acc_y += o[1];
+        }
+        if (!u.ga_flag_26c_4) return;
+        ++u.ga_flagged_ticks;
+        if (u.ga_timer_3e8 <= 0.0f && u.ga_timer_3e8 != 0.0f) {      // 0099EF2D
+            float lo = 2.0f, hi = 3.0f, rlo = 5.0f, rhi = 8.0f;
+            if (lua.plane_globals_loaded()) {
+                const bsp::GameTuningBlock& g = lua.plane_globals();
+                lo = g.pilot_avoidance_gunfire_avoid_time_1;
+                hi = g.pilot_avoidance_gunfire_avoid_time_2;
+                rlo = g.pilot_avoidance_gunfire_wait_time_1;
+                rhi = g.pilot_avoidance_gunfire_wait_time_2;
+            }
+            u.ga_timer_3e8 = release_altitude_draw_00bd2f10(u.row.name + "#ga", lo, hi);
+            u.ga_rest_3ec = -release_altitude_draw_00bd2f10(u.row.name + "#gr", rlo, rhi);
+            // 0099EFA5-0099F038: a kind-13h plane scales both by its +DF4h
+            // factor. SUBSTITUTION, labelled: not modelled (no USN04 attacker is
+            // kind 13h in this host's class table).
+        }
+        // 0099F03C-0099F081: kinds 10h and 16h, and a squadron flight leader
+        // with 2+ members, take the 0099F197 arm (unit+840h = BomberVSGunfire).
+        const bool exempt = bsp::unit_is_kind_of(u.class_id, 0x10) ||
+            bsp::unit_is_kind_of(u.class_id, 0x16) ||
+            (unit_is_flight_leader_007b8ad0(u.process_index) && own_sq != nullptr &&
+             own_sq->live_count() > 1);
+        if (exempt) {
+            ++u.ga_exempt_ticks;
+            return;
+        }
+        // 0099F087 004F2F40: the 2-D threat sum normalised, then x 0.8
+        // (double [00CE3D40]).
+        const double len = std::sqrt(acc_x * acc_x + acc_y * acc_y);
+        double nx = 0.0, ny = 0.0;
+        if (len > 1e-10) { nx = acc_x / len; ny = acc_y / len; }
+        const float x = static_cast<float>(nx * 0.800000011920929);
+        const float y = static_cast<float>(ny * 0.800000011920929);
+        const float x8 = static_cast<float>(static_cast<double>(x) * 0.800000011920929);
+        if (x > 0.0f) {
+            ga_insert_0099b790(u, 0, -x, 0.8f);                    // 0099F0D3, +4h
+            ga_insert_0099b790(u, 2, -x8, 0.71f);                  // 0099F13A, +194h
+        } else {
+            ga_insert_0099b790(u, 0, -0.8f, -x);                   // 0099F10D
+            ga_insert_0099b790(u, 2, -0.71f, -x8);                 // 0099F13A
+        }
+        if (y > 0.0f) ga_insert_0099b790(u, 1, -y, 0.7f);          // 0099F172, +CCh
+        else ga_insert_0099b790(u, 1, -0.7f, -y);                  // 0099F18C
+    }
+
+    // 0099BF30 BSP_PilotBot_RepairCommandBands over 0099BC00's six-dword
+    // buffer, in its order (kPilotCmdYaw 0, Pitch 1, Roll 2). The +258h
+    // throttle arm is left out: only the gunfire arm is bound and it never
+    // lowers +258h below 1.0.
+    void gunfire_repair_0099bf30(GameUnitSlot& u) {
+        const bool free_flight = u.plane_control_mode_900 == 7;   // +72Ch vtable[38h]
+        float* c = u.pilot_command_block;
+        auto finish = [&](float& slot, float v) {
+            if (slot != v) {
+                slot = v < -1.0f ? -1.0f : (v > 1.0f ? 1.0f : v);
+                ++u.ga_repairs;
+            }
+        };
+        if (free_flight) {                                        // cmd[1], the bot+C8h set
+            float v = c[bsp::kPilotCmdPitch];
+            if (!ga_band_search_0099b940(u, 1, v)) {
+                const float ab = std::fabs(u.plane_bank_angle_c68);
+                v = ab <= 1.5707963705062866f ? 1.1f : -1.1f;      // [00CE3830], [00CE6448]/[00D06BB0]
+            }
+            finish(c[bsp::kPilotCmdPitch], v);
+        }
+        {                                                         // cmd[0], the bot+0 set
+            float v = c[bsp::kPilotCmdYaw];
+            if (!ga_band_search_0099b940(u, 0, v)) {
+                v = u.plane_bank_angle_c68 <= 0.0f ? -1.1f : 1.1f;
+            }
+            finish(c[bsp::kPilotCmdYaw], v);
+        }
+        if (free_flight) {                                        // cmd[2], the bot+190h set
+            float v = c[bsp::kPilotCmdRoll];
+            const float before = v;
+            if (!ga_band_search_0099b940(u, 2, v)) v = before < 0.0f ? -1.0f : 1.0f;  // 0099C129
+            if (c[bsp::kPilotCmdRoll] != v) {
+                c[bsp::kPilotCmdRoll] = v;
+                ++u.ga_repairs;
+            }
+        }
+        // 007D7A40 after a changed pitch or yaw: unread, not modelled.
+    }
+
     // 009C1850 BSP_BotStateMoveTo_SetDesiredSpeed's speed for a torpedo or
     // dive-bomb moveto: 009BECD0(squadron+3A0h, 007C47F0(), sep).
     float moveto_speed_009c1850(const GameUnitSlot& unit, float sep) {
@@ -12030,6 +12232,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 run_dogfight_task_arm_009ab1c0(elapsed);
                             }
 
+                            if constexpr (GameUnitsHost::Impl::kPilotGunfireAvoidanceBound) {
+                                // 009A17D0, before 0099D300.
+                                owner_.gunfire_avoidance_009a17d0(unit_, elapsed);
+                            }
                             unit_.plane_think_dt = elapsed;   // 0099D300's argument
                             if (plan_yaw_0099d300()) {
                                 ++owner_.summary.pilot_yaw_plans;
@@ -12039,7 +12245,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             bsp::pilot_evaluate_plan_slots_0099bc00(
                                 unit_.plan_slots, unit_.pilot_command_block,
                                 bsp::kPilotSlewRate, elapsed);
-                            // 0099BF30 would run here.
+                            if constexpr (GameUnitsHost::Impl::kPilotGunfireAvoidanceBound) {
+                                owner_.gunfire_repair_0099bf30(unit_);   // 0099BF30
+                            }
                             // 007B8C90: the block is published and the byte set.
                             unit_.pilot_command_pending_a14 = true;
                             ++owner_.summary.pilot_thinks;
@@ -14711,6 +14919,22 @@ void GameUnitsHost::report() {
                             "(009BEE30 arms, packet cc9_plane_follow_law)", host.follow_hold_ticks_,
                             host.follow_flyto_ticks_, host.follow_torpedo_follow_ticks_,
                             done_law, done_placed);
+                    }
+                    {
+                        long long gd = 0, gf = 0, gr = 0, ge = 0;
+                        for (const auto& sl : host.slots) {
+                            gd += sl->ga_detect_ticks; gf += sl->ga_flagged_ticks;
+                            gr += sl->ga_repairs; ge += sl->ga_exempt_ticks;
+                            if (sl->ga_flagged_ticks > 0) {
+                                host.log.notef("  gunfire avoid %-20s detect=%d flagged=%d "
+                                    "exempt=%d repairs=%d", sl->row.name.c_str(),
+                                    sl->ga_detect_ticks, sl->ga_flagged_ticks,
+                                    sl->ga_exempt_ticks, sl->ga_repairs);
+                            }
+                        }
+                        host.log.notef("summary mission gunfire avoidance detect=%lld flagged=%lld "
+                            "exempt=%lld repairs=%lld (009A17D0/0099EC40/0099BF30, packet "
+                            "cc9_gunfire_avoidance)", gd, gf, ge, gr);
                     }
                     host.log.notef("summary mission plane squadron leaves=%d promotions=%d "
                         "(007BCAA0 -> 007F3970 at death, packet cc9_val_squadron_registry)",
