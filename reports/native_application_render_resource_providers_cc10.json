@@ -1,0 +1,341 @@
+{
+  "packet": "cc10_render_resource_providers",
+  "base_commit": "0fe3da546ce854a2eadf5912d12199ad3ed1ae1c",
+  "status": "retained_actual_application_providers_build_tests_and_focused_source_runtime_pass",
+  "scope": "source provider composition; three canonical process cells; no B107F0 body or gate activation",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "no_ghidra_function": [],
+  "native_calls": [
+    {
+      "address": "00b4e0ee",
+      "native": "00b2a7c0",
+      "function": "00b4e020"
+    },
+    {
+      "address": "00b3fdec",
+      "native": "00b3ed40",
+      "function": "00b3fd80"
+    },
+    {
+      "address": "00b3fe16",
+      "native": "00b3f630",
+      "function": "00b3fd80"
+    },
+    {
+      "address": "00b3fe57",
+      "native": "00b3d9b0",
+      "function": "00b3fd80"
+    }
+  ],
+  "live_PE_blocks": [
+    {
+      "tag": "texture_accounting",
+      "start": "00b2a287",
+      "end_exclusive": "00b2a2ca",
+      "end_inclusive": "00b2a2c9",
+      "last_instruction": "00b2a2c6",
+      "last_instruction_bytes": 4,
+      "bytes": 67,
+      "sha256": "f1ed224f19a37c7227e6fe361d1f2aa4ff6e2ff00667c493c11f24e3bd75e071",
+      "live_equals_PE": true
+    },
+    {
+      "tag": "target_accounting",
+      "start": "00b2a924",
+      "end_exclusive": "00b2a976",
+      "end_inclusive": "00b2a975",
+      "last_instruction": "00b2a972",
+      "last_instruction_bytes": 4,
+      "bytes": 82,
+      "sha256": "077ef05cd799fc5544f1b1f6d6c29b612ef0fb292fced7bb961e54f6afb5505a",
+      "live_equals_PE": true
+    },
+    {
+      "tag": "depth_accounting",
+      "start": "00b2aafa",
+      "end_exclusive": "00b2ab49",
+      "end_inclusive": "00b2ab48",
+      "last_instruction": "00b2ab45",
+      "last_instruction_bytes": 4,
+      "bytes": 79,
+      "sha256": "e024237957bba8f0cd91544cc6d5bfde9e0ea594df73c12f363488d195ac4bcf",
+      "live_equals_PE": true
+    },
+    {
+      "tag": "holder",
+      "start": "00b4e020",
+      "end_exclusive": "00b4e13b",
+      "end_inclusive": "00b4e13a",
+      "last_instruction": "00b4e138",
+      "last_instruction_bytes": 3,
+      "bytes": 283,
+      "sha256": "6a3940103f1c09c452225132ea36554e8ff4a11a6d327b274067f7bf3df9fea0",
+      "live_equals_PE": true
+    },
+    {
+      "tag": "getter",
+      "start": "00b3fd80",
+      "end_exclusive": "00b3fe88",
+      "end_inclusive": "00b3fe87",
+      "last_instruction": "00b3fe85",
+      "last_instruction_bytes": 3,
+      "bytes": 264,
+      "sha256": "f8ea1ddd7076aaef1f1567bb1cb1672d01bfa01f25894d8869d09e8939a7c67d",
+      "live_equals_PE": true
+    }
+  ],
+  "process_scalars": [
+    {
+      "address": "0108d4bc",
+      "section": ".data",
+      "section_rva": "0xa08000",
+      "section_raw_size": "0x10000",
+      "section_virtual_size": "0x297edc",
+      "offset": "0x2854bc",
+      "loader_zero": true,
+      "raw_backed": false,
+      "source": "one persistent GameNativeRendererScalarProcess member"
+    },
+    {
+      "address": "0108d4c0",
+      "section": ".data",
+      "section_rva": "0xa08000",
+      "section_raw_size": "0x10000",
+      "section_virtual_size": "0x297edc",
+      "offset": "0x2854c0",
+      "loader_zero": true,
+      "raw_backed": false,
+      "source": "one persistent GameNativeRendererScalarProcess member"
+    }
+  ],
+  "imports": [
+    {
+      "address": "00ce221c",
+      "dll": "KERNEL32.dll",
+      "symbol": "InterlockedIncrement"
+    },
+    {
+      "address": "00ce2220",
+      "dll": "KERNEL32.dll",
+      "symbol": "InterlockedDecrement"
+    }
+  ],
+  "source_api": "GameNativeRendererApplication::render_resource_providers()",
+  "contexts": [
+    "NativeRuntimeTextureConstructionContext",
+    "NativeRuntimeTextureCreationContext",
+    "NativeRendererSurfaceFactoryContext",
+    "NativeTextureSurfaceGetterContext",
+    "NativeRenderTextureSurfaceOwnerContext",
+    "NativeRenderResourcesDirectTerminalDomain"
+  ],
+  "lifetime": {
+    "view": "borrowed references retained by ready application; caller keeps acquisition state and retires survivors before graph drain",
+    "direct_terminal_pointer": "null; producer admission and binding remain future work",
+    "canonical_registry": "same application NativeRenderActualOwnerRegistry",
+    "extra_credits": false,
+    "nested_registrations": false
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "existing_ctests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "new_tracked_tests": false,
+    "focused_probe": {
+      "result": "PASS",
+      "current_application_objects": 69,
+      "current_main_source": "src/game_main.cpp",
+      "launcher": "tools/run_game.ps1",
+      "texture_cumulative": [
+        0,
+        8192
+      ],
+      "surface_cumulative": [
+        0,
+        8192,
+        16384
+      ],
+      "getter": "same actual cached owner; one new credit released",
+      "retirement": "actual depth and holder creators decremented to zero; existing raw deleters; native lists/tracking restored; cumulative totals unchanged",
+      "registry_unchanged": true,
+      "direct_terminal_unbound": true,
+      "singleton_drain": true,
+      "final_device_api_com_counts": [
+        0,
+        0
+      ],
+      "frames_presented": 2,
+      "presents_skipped": 1,
+      "exit_code": 0
+    },
+    "report_calls": {
+      "checked": 4,
+      "failed": 0
+    }
+  },
+  "limitations": [
+    "no full B107F0 initializer execution or gate activation",
+    "no whole-game renderer or gameplay claim",
+    "source interface, not original ABI/FH3/SEH proof",
+    "failed producers retain existing acquisition diagnostics; no added rollback",
+    "direct terminal storage/preimage admission not inferred from profile identity",
+    "bloom fourth DWORD backing unresolved; no allocation enlarged",
+    "distortion unwritten cleanup preimage not invented"
+  ],
+  "binary": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "evidence": [
+    {
+      "path": "local/render_resource_providers_accounting.json",
+      "bytes": 3465,
+      "sha256": "a1339f5ccb4a6293448796f748e2a293d6a9d9e8a92e13652161d3333288fd37"
+    },
+    {
+      "path": "local/render_resource_providers_accounting_preimage.txt",
+      "bytes": 45,
+      "sha256": "fa90c879b8d8a172fa771c43027f545b669b35c971ada0efacef92fc698ef8e7"
+    },
+    {
+      "path": "local/render_resource_providers_accounting_query.txt",
+      "bytes": 112,
+      "sha256": "d587b7724afa18db023227ba1cf852e93223fe11c05e44da5c2a490dc286f8f3"
+    },
+    {
+      "path": "local/render_resource_providers_build.txt",
+      "bytes": 3472,
+      "sha256": "2f7aca5dcd2cc652db0108e4f830b255cc396419db1d2f16a100268f2aa6c3ba"
+    },
+    {
+      "path": "local/render_resource_providers_depth_accounting_bytes.txt",
+      "bytes": 381,
+      "sha256": "8088bc59baddb311ad430e61597d91384b7d4a284d5e3ac5cf419f2eb35ccf01"
+    },
+    {
+      "path": "local/render_resource_providers_evidence.py",
+      "bytes": 6275,
+      "sha256": "4a73847e07de17647315dd871f6b62171166e43d67426dccfe55cfe2901e796b"
+    },
+    {
+      "path": "local/render_resource_providers_getter_bytes.txt",
+      "bytes": 1277,
+      "sha256": "c97b1c8ca7443e3e33a0c91da1a42b533e9b5bafcf76435e29e5d4c59a2cfe18"
+    },
+    {
+      "path": "local/render_resource_providers_getter_opening.txt",
+      "bytes": 1068,
+      "sha256": "6c14a35d5343e957f88f80abf1622617dbf07d2211530e05c60d45e689b4820f"
+    },
+    {
+      "path": "local/render_resource_providers_holder_bytes.txt",
+      "bytes": 1366,
+      "sha256": "25299c15e494a144a43b180ccdf2d2d2e0cb726082e6c034420e3395cf57e58e"
+    },
+    {
+      "path": "local/render_resource_providers_imports.json",
+      "bytes": 215,
+      "sha256": "cf5d76922d11249e921a8ebe0c52a51cd9dbdb90af1d869466944dcb77903f17"
+    },
+    {
+      "path": "local/render_resource_providers_listing.txt",
+      "bytes": 7640,
+      "sha256": "00a9e9b578828cdeaf4fe7cbcae65e0b04ee401335b2bc9f7a84467276d96039"
+    },
+    {
+      "path": "local/render_resource_providers_probe/application-resource-providers-probe.cpp",
+      "bytes": 30322,
+      "sha256": "5c729e022c02093cd188fcd57e4a0a26095c8428a1c17cf82f13a27e3045c61a"
+    },
+    {
+      "path": "local/render_resource_providers_probe/resource_providers_probe_startup.hpp",
+      "bytes": 9718,
+      "sha256": "f70ee742356c2d1303962dfab30bc45cc087990ec9b8363d4bf01e2316e3391b"
+    },
+    {
+      "path": "local/render_resource_providers_probe/application-resource-providers-probe.exe",
+      "bytes": 3481088,
+      "sha256": "f9b17f6d333a95af886147b94b4e0e1ac9a3b963d426586f40ec219a5566f9e4"
+    },
+    {
+      "path": "local/render_resource_providers_probe/adaptation_sources.json",
+      "bytes": 666,
+      "sha256": "b92e8fe9ec59d8b45c8e8789b21e4d120f3b60879d4383206d189bc421a7ecc8"
+    },
+    {
+      "path": "local/render_resource_providers_probe/application-objects.json",
+      "bytes": 16292,
+      "sha256": "baffb3828f587df090ac839892e832b5bab48464bfe1d5f68de7b1f2ed184fdf"
+    },
+    {
+      "path": "local/render_resource_providers_probe/toolchain.json",
+      "bytes": 1608,
+      "sha256": "c728106f95d91017adc79e56089a7e91cda646acf9063f4d4e4b42b5669892f4"
+    },
+    {
+      "path": "local/render_resource_providers_probe/dependencies.json",
+      "bytes": 65246,
+      "sha256": "d05e71cd94214bf0abf1d13f17e6d9ad101822e78f99baf7607a06569b4af39f"
+    },
+    {
+      "path": "local/render_resource_providers_probe/compile.log",
+      "bytes": 15518,
+      "sha256": "b2b4c0ba8c638fd84d2a31a639af586a0bfdd3d81b5336678f42b24e94689466"
+    },
+    {
+      "path": "local/render_resource_providers_probe/compile_before_current_powrprof.log",
+      "bytes": 15837,
+      "sha256": "68fc5f85ec5e5abd4644c0fa4cd98622c250ae1385e78a51c46e77873cc6900a"
+    },
+    {
+      "path": "local/render_resource_providers_probe/launcher.txt",
+      "bytes": 347,
+      "sha256": "bb7ad3bb3706bcc85ae57397f75f321107a12c5278d052294e9312d8e823d7d3"
+    },
+    {
+      "path": "local/render_resource_providers_probe/run.log",
+      "bytes": 48859,
+      "sha256": "88315b4e0511e101d3d6f4ef7a6c2a74730788a89d544a63c92afb3a3db0e5d2"
+    },
+    {
+      "path": "local/render_resource_providers_surface_accounting_xrefs.txt",
+      "bytes": 398,
+      "sha256": "8ef476f533b70a4179e8595e3496ee6b8d919e4ced6d2b7ff37ce3de98218a9b"
+    },
+    {
+      "path": "local/render_resource_providers_target_accounting_bytes.txt",
+      "bytes": 406,
+      "sha256": "757899893e2a6e7502e877a38784131ca2a674da88468e41629326791f59603f"
+    },
+    {
+      "path": "local/render_resource_providers_texture_accounting_bytes.txt",
+      "bytes": 333,
+      "sha256": "11e6a5705a4facd3f5930e983f26e45117ca7c35a68b0d5138775491f733c459"
+    },
+    {
+      "path": "local/render_resource_providers_texture_accounting_xrefs.txt",
+      "bytes": 196,
+      "sha256": "5ce42a3f966341d693c9d3ad53b98be7b6c26af630029f6e5c0caf8c3c4f154b"
+    },
+    {
+      "path": "local/render_resource_providers_verify_calls.txt",
+      "bytes": 95,
+      "sha256": "e94fc7ad954d307a94698d34f8f70a878ffc7b4fb0d99704cd3c7afc29a32dae"
+    },
+    {
+      "path": "local/prepare_render_resource_providers_probe.py",
+      "bytes": 8730,
+      "sha256": "a283b1cd7781350ab9f52092a30ee0cbc220ed51fb54ba710cc59f2fce66ad07"
+    },
+    {
+      "path": "local/build_render_resource_providers_probe.ps1",
+      "bytes": 2250,
+      "sha256": "efacb89766dbbe976c6f3d519a3c19bb2a772cd901715342a4681d5afd3d19a3"
+    }
+  ]
+}

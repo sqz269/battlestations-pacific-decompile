@@ -12,9 +12,17 @@ struct RenderResourcesGraph {
  GuiNativeGeometryRegistration registration;
  std::optional<NativeRenderServiceTextureReference> texture_reference;
  NativeRenderResourcesLifetimeContext lifetime;
+ // No native allocation/attempt here. Every context borrows the established
+ // application domains and the process's canonical accounting cells.
+ NativeRuntimeTextureConstructionContext runtime_construction;
+ NativeRuntimeTextureCreationContext runtime_textures;
+ NativeRendererSurfaceFactoryContext surfaces;
+ NativeTextureSurfaceGetterContext texture_surfaces;
+ NativeRenderTextureSurfaceOwnerContext holders;
+ NativeRenderResourcesDirectTerminalDomain direct_terminals;
  bool attempted{};
 
- RenderResourcesGraph(DestructionGraph& g,CameraGraph& camera,TextureLoadingGraph& loading,
+ RenderResourcesGraph(DestructionGraph& g,DeviceGraph& devices,CameraGraph& camera,TextureLoadingGraph& loading,
      GameSingletonHost& host,NativeStringRawPoolContext& raw,GameNativeVfsRawServices& vfs,
      NativeRenderActualOwnerRegistry& owners)
   :base{host.manager_publication_01090aa0(),publication},
@@ -36,7 +44,21 @@ struct RenderResourcesGraph {
    texture_lifetime{owners,camera.decrement,g.profiles(0xd61948),g.profiles(0xd61ec8),g.profiles(0xd62074)},
    registration{owners,&owners,&NativeRenderActualOwnerRegistry::bind_callback,
        &NativeRenderActualOwnerRegistry::unbind_callback,&NativeRenderActualOwnerRegistry::find_callback},
-   lifetime{base,raw,texture_lifetime,g.frame,acquired,g.profiles(0xd5e600)} {}
+   lifetime{base,raw,texture_lifetime,g.frame,acquired,g.profiles(0xd5e600)},
+   runtime_construction{g.texture,g.profiles(0xd619e4)},
+   runtime_textures{runtime_construction,g.sync,&devices.recreation,
+       game_native_renderer_scalar_process().texture_allocation_bytes_0108d4bc(),
+       *reinterpret_cast<const volatile float*>(g.profiles(0xce3978)),
+       *reinterpret_cast<const volatile double*>(g.profiles(0xd57da0))},
+   surfaces{g.surface,g.sync,&devices.recreation,
+       game_native_renderer_scalar_process().surface_allocation_bytes_0108d4c0(),
+       runtime_textures.unsigned_dword_fix_00ce3978,runtime_textures.unsigned_counter_fix_00d57da0},
+   texture_surfaces{g.surface,game_native_renderer_scalar_process().increment_iat_00ce221c()},
+   holders{runtime_textures,texture_surfaces,surfaces,camera.decrement},
+   direct_terminals{owners,holders,g.profiles(0xd61eb8)} {}
+ GameNativeRenderResourceProviders borrowed_providers() noexcept {
+  return {runtime_textures,surfaces,texture_surfaces,holders,direct_terminals};
+ }
  void* construct() {
   check(!attempted,"render-resource constructor already attempted");attempted=true;
   void* owner=raw_allocate(0x6ac); // 73DEE4 operator_new; no blanket zero fill.

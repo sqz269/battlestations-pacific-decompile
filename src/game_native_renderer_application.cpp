@@ -78,6 +78,7 @@
 // Constructor, device startup, frame and destructor borrow one application graph.
 #include "bsp/game_native_renderer_application.hpp"
 #include "bsp/game_native_renderer_scalars.hpp"
+#include "bsp/game_native_render_resource_providers.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/game_native_lua_services.hpp"
 #include "bsp/game_native_vertex_declarations.hpp"
@@ -215,7 +216,7 @@ struct GameNativeRendererApplication::Impl {
           descriptors(vfs.strings,services,definitions),
           compiler_owners(owners,profiles,vfs,raw,*host.native_deletion_bindings().resource_support,
               renderer,system_publication,devices.d3dx),
-          resources(graph,cameras,texture_loading,host,raw,vfs,owners) {
+          resources(graph,devices,cameras,texture_loading,host,raw,vfs,owners) {
         auto& deletion=host.native_deletion_bindings();
         check(!deletion.renderer_owner && !deletion.renderer_lua_owner,"renderer lifetime already bound");
         check(!deletion.render_entry_cache,"render-entry cache lifetime already bound");
@@ -289,6 +290,10 @@ void* GameNativeRendererApplication::construct_render_resources() {
 }
 NativeRenderResourcesLifetimeContext& GameNativeRendererApplication::render_resources_lifetime() noexcept {
     return impl_->resources.lifetime;
+}
+GameNativeRenderResourceProviders GameNativeRendererApplication::render_resource_providers() {
+    check(impl_->phase==Impl::Phase::ready,"render resource providers require the ready application renderer");
+    return impl_->resources.borrowed_providers();
 }
 const NativeRenderResourcesConstructionAcquired& GameNativeRendererApplication::render_resources_construction() const noexcept {
     return impl_->resources.acquired;
