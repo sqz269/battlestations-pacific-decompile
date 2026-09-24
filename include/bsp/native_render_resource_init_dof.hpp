@@ -18,12 +18,14 @@ struct NativeRenderResourceInitDofNames {
 // survive every dependent stage. Explicit child quiescence is still required
 // before destroying/resetting this state, including failed preparation.
 struct NativeRenderResourceInitDofState final {
-    enum class Phase { fresh, preparing, running, awaiting_b11d7e_continuation, failed };
+    enum class Phase { fresh, preparing, running, awaiting_b11d7e_continuation,
+        second_bloom_running, awaiting_later_continuation, failed };
     NativeRenderResourceInitDofState() = default;
     NativeRenderResourceInitDofState(const NativeRenderResourceInitDofState&) = delete;
     NativeRenderResourceInitDofState& operator=(const NativeRenderResourceInitDofState&) = delete;
     Phase phase{Phase::fresh};
     NativeRenderResourceInitPostState* previous{};
+    const void* second_bloom_identity{}; // One-use claim; no ownership credit.
     std::uint32_t native_site{};
     int native_state{-1};
     std::uint32_t temporary_mask_esp10{};
