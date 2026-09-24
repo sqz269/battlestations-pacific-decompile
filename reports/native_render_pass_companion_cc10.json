@@ -1,0 +1,113 @@
+{
+  "packet": "cc10_render_pass_companion",
+  "status": "source_host_companion_build_and_focused_actual_D3D_lifetime_checked",
+  "source": "src/native_render_pass_companion.cpp",
+  "header": "include/bsp/native_render_pass_companion.hpp",
+  "documentation": "docs/NATIVE_RENDER_PASS_COMPANION_CC10.md",
+  "native_entry_reconstructed": false,
+  "no_ghidra_function": [],
+  "scope": "Canonical companion for seven completed service-visible pass profiles; same registry and actual+04 atomic",
+  "profiles": [
+    {
+      "profile": "00d5e164",
+      "slot0": "00bd30e0",
+      "deleting_slot": "00b10120",
+      "bytes": 8,
+      "sha256": "580626d5b83339854c6ca7bd9bca72a222f25758b6cace2ec94a2ab1729847c2",
+      "live_pe_equal": true
+    },
+    {
+      "profile": "00d5e178",
+      "slot0": "00bd30e0",
+      "deleting_slot": "00b10140",
+      "bytes": 8,
+      "sha256": "d7a59cc77dacab24d51d41f2d45706291ca7ff04a0aa00188897eb755d9ec21f",
+      "live_pe_equal": true
+    },
+    {
+      "profile": "00d5e18c",
+      "slot0": "00bd30e0",
+      "deleting_slot": "00b10160",
+      "bytes": 8,
+      "sha256": "86d2fa6d9f9b8e1b2c668937ac2efd63f6dc89a1a6397fd711bdd0aed33a298b",
+      "live_pe_equal": true
+    },
+    {
+      "profile": "00d5e1a0",
+      "slot0": "00bd30e0",
+      "deleting_slot": "00b10180",
+      "bytes": 8,
+      "sha256": "10177acb4916bc07506e2ca77dbca84c4ed182af8cce1607f2e8607e85fe2f6a",
+      "live_pe_equal": true
+    },
+    {
+      "profile": "00d5e1b4",
+      "slot0": "00bd30e0",
+      "deleting_slot": "00b101a0",
+      "bytes": 8,
+      "sha256": "77fe391b7c0d8cb0d7d8125764849f57608b8d4babf9e292a7c7149ea9d5dec6",
+      "live_pe_equal": true
+    },
+    {
+      "profile": "00d61fe0",
+      "slot0": "00bd30e0",
+      "deleting_slot": "00b50fe0",
+      "bytes": 8,
+      "sha256": "b512d29344154586948d9cd6849a58489d5ec303d9bb1d0eccb361d1c6f70ca4",
+      "live_pe_equal": true
+    },
+    {
+      "profile": "00d62150",
+      "slot0": "00bd30e0",
+      "deleting_slot": "00b54f70",
+      "bytes": 8,
+      "sha256": "34ff94563b256cae698c3983e512aad9fe1e84af3068780b9f0eb4fe2d0366d9",
+      "live_pe_equal": true
+    }
+  ],
+  "contract": {
+    "binding": "No raw bytes/count changes; metadata-only transactional registry bind, same registry as canonical post children",
+    "terminal": "Require count zero; current virtual0 BD30E0, reload current deleting slot, invoke recovered scalar with flags1; unbind after native free; no second decrement or later raw read",
+    "ownership": "Caller-owned stable companion/context remain alive until terminal retirement and external quiescence; raw deletion cannot be called independently once bound",
+    "failures": "Binding validation leaves native owner unchanged; unsupported/throwing terminal terminates through existing noexcept interface"
+  },
+  "validation": {
+    "build": "strict MSVC Win32 scripts/build.ps1; 3 CTests passed, 0 failed",
+    "focused_probe": "one actual-D3D bright-pass source companion lifecycle, /MD /W4 /WX and embedded manifest",
+    "proven": [
+      "same +04 atomic",
+      "all raw bytes and count unchanged at binding",
+      "duplicate binding rejection without retain",
+      "nonfinal canonical release preserves owner",
+      "final canonical release invokes full bright/base/holder lifetimes",
+      "canonical post/frame and D3D holder cleanup",
+      "registry empty and texture/surface tracking restored",
+      "device/API final references zero"
+    ],
+    "probe_exit_code": 0,
+    "native_original_differential": false,
+    "other_six_profiles_runtime_checked": false,
+    "full_initializer_or_graph_checked": false,
+    "application_bound": false,
+    "game_validated": false,
+    "new_tracked_tests": 0
+  },
+  "fixture_provenance": "Adapted R76 actual-domain fixture from local/evidence-r76/native-render-effect-lifetime-tested-r76.zip in the orch4-20260915 worktree; linked exclusively current cc10 build objects and libraries after regenerating response from current bsp_game.vcxproj; no copied native machine code executed.",
+  "local_files": {
+    "local/cc10_pass_companion/probe.cpp": "7413e7028eab6abe64cabc025654f3e4114680a07d1b592483c7d9e263950419",
+    "local/cc10_pass_companion/probe.cmd": "29d4110df438152827001b3e59ad72abacdaea2a81fdee0603ff007d81f64e28",
+    "local/cc10_pass_companion/game_objects.rsp": "ce8ab5c7ce6ee4b821756a825121ebe2f54442a4643a089e4b059f152b0d2740",
+    "local/cc10_pass_companion/pass_companion_probe.exe": "c50b8e3475c0119b61c5676b28f7aa7978e82b8ef143b1cef4ea3479a6fdbd61",
+    "local/cc10_pass_companion/build.log": "ca4d0a1f496f6cf3eb41792c3c2a7b86f8ca231c3cbc8b2755602f255d45ccd7",
+    "local/cc10_pass_companion/run.log": "352130b12f53451b51d792d0ba375262014d8a5b9974c8b2df13c86e84879e41",
+    "local/cc10_pass_companion/host.log": "d0447d1af2b74c16a778aec29e54425163ef9a00a78813a56ab406866dab9ef3",
+    "local/cc10-pass-companion-build.log": "f74ee83da52546c0fc26560617fcf41915e7b0b4d2faeb2a7658cda5f4ea4a9f"
+  },
+  "local_archive": {
+    "path": "local/cc10-platform-evidence/render-pass-companion.zip",
+    "sha256": "507af65e9fdb17894bd32a7be1b258e66e27f2b952813e982c8ef59e1b1eaf96",
+    "valid": true,
+    "files": 13
+  },
+  "limits": "No nested holder/texture/surface registration, initializer completion, activation binding, arbitrary profiles/concurrency, native ABI/FH3/SEH or gameplay proof."
+}
