@@ -1,0 +1,28 @@
+{
+  "packet": "cc10_second_bloom_integration",
+  "integration_commit": "e0f63163ca5240124c85b979068a9124fbf10e06",
+  "worker_commit": "f5badcb9d64ef8b7ee999f94e852931350cf724f",
+  "source_range": "00b11d7e..00b11e40 exclusive (194B)",
+  "review": [
+    "full source/header and predecessor state extension",
+    "current frame/surface/renderer depth target read order",
+    "FLD1 capture and FSTP ordering with no intervening call, emitted object reviewed",
+    "exact frontier EBP halfwidth / EDI halfheight / ESP14 second bloom allocation",
+    "9 direct call rows and separately guarded current slot12c target"
+  ],
+  "validation": {
+    "strict_win32_build": true,
+    "existing_ctests_passed": 3,
+    "build_log_sha256": "01797a75479d780fd1b955c7967a0769a669e3182ed19b0fa699e6e89161572d",
+    "native_bytes_sha256": "079a6739ecbdd8ab83bc15b3c22ff3ed5b31d551388132eaad94f3b3b286adbd",
+    "composed_runtime": false,
+    "game_validated": false
+  },
+  "archive": {
+    "path": "local/cc10-platform-evidence/renderer-resource-second-bloom.zip",
+    "sha256": "52abfe71b120106b9d9e524e07aeb2b735dc4bd96684037973b10aa8cd875239",
+    "files": 11,
+    "valid": true
+  },
+  "boundary": "Contiguous B107F0 reconstruction reaches B11E40; full initialization, full graph release and application binding remain incomplete."
+}

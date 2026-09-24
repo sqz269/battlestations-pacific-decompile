@@ -3,13 +3,18 @@
 #include <array>
 
 namespace bsp {
+struct NativeDistortionLifetimeContext;
 // Host metadata only. Use the SAME actual-owner registry as the effect's
 // canonical post-effect children. Profiles in order: D5E164, D5E178, D5E18C,
-// D5E1A0, D5E1B4, D61FE0, D62150; each view covers its current first two cells.
+// D5E1A0, D5E1B4, D61FE0, D62150, D61F1C; each view covers its first two cells.
 struct NativeRenderPassCompanionContext {
     NativeRenderActualOwnerRegistry& registry;
     NativeRenderEffectLifetimeContext& effects;
-    std::array<const volatile std::uint32_t*, 7> profiles;
+    std::array<const volatile std::uint32_t*, 8> profiles;
+    // Required only for the distortion profile. Its effects member must be
+    // this SAME effects object. The remaining camera/frame/scene and child
+    // lifetime contracts remain those of the existing raw distortion deleter.
+    NativeDistortionLifetimeContext* distortion{};
 };
 
 // Address-stable caller-owned companion for one completed service-visible
@@ -22,6 +27,10 @@ struct NativeRenderPassCompanionContext {
 // terminal path exclusively owns scalar deletion; do not also call a raw
 // deleter. After retired(), external quiescence permits companion destruction.
 // The native storage must support its current admitted profile at dispatch.
+// Distortion B4F0C0 leaves +34/+38/+3C untouched. Binding never initializes or
+// certifies them: terminal dispatch requires established, valid cleanup values,
+// including when B4F560 returns false before writing those fields. Constructor
+// completion, registration and a capability failure do not prove that contract.
 // Nested holders/surfaces/textures retain their existing direct lifetime paths;
 // this class does not register them or admit an incomplete resource graph.
 class NativeRenderPassReference final : public RenderCommandReference {
