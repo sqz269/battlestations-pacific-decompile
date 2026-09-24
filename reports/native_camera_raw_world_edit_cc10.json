@@ -1,0 +1,402 @@
+{
+  "packet": "cc10_camera_raw_world_edit",
+  "status": "complete_raw_bodies_required_current_dispatch_strict_win32_original_source_checked",
+  "source": "src/native_camera_raw_world_edit.cpp",
+  "documentation": "docs/NATIVE_CAMERA_RAW_WORLD_EDIT_CC10.md",
+  "dependency_base_commit": "30f5a8e6b691c5b8711b712bb329eeebc44dd713",
+  "original_executable_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "native_bytes": [
+    {
+      "address": "00b6e7e0",
+      "size": 131,
+      "end_inclusive": "00b6e862",
+      "sha256": "ef04978ad806c7bca370c1005a1b9d3d5021b82a9fbb65137c8cb58dc16b28fc",
+      "live_pe_equal": true,
+      "last_instruction_address": "00b6e862",
+      "last_instruction_length": 1,
+      "last_instruction": "ret "
+    },
+    {
+      "address": "00b6e870",
+      "size": 70,
+      "end_inclusive": "00b6e8b5",
+      "sha256": "b0a80c82f34b3c71bb2131075a423fa4306edb44ba482f8297eedb2973a5b5e1",
+      "live_pe_equal": true,
+      "last_instruction_address": "00b6e8b3",
+      "last_instruction_length": 3,
+      "last_instruction": "ret 4"
+    },
+    {
+      "address": "00b70660",
+      "size": 173,
+      "end_inclusive": "00b7070c",
+      "sha256": "26dc2b745d1ed57343483e1ec1b2e37bc3c0d06e504db9cf50cbc16a633fc783",
+      "live_pe_equal": true,
+      "last_instruction_address": "00b7070c",
+      "last_instruction_length": 1,
+      "last_instruction": "ret "
+    },
+    {
+      "address": "00b71460",
+      "size": 34,
+      "end_inclusive": "00b71481",
+      "sha256": "138e48f3a0542e5005f2316f167ad635a3aa8a93df38d634cf5cac436dc59bd9",
+      "live_pe_equal": true,
+      "last_instruction_address": "00b7147f",
+      "last_instruction_length": 3,
+      "last_instruction": "ret 4"
+    }
+  ],
+  "routines": [
+    {
+      "address": "00b6e7e0",
+      "coverage": "complete",
+      "implementation": "derive_native_camera_local_00b6e7e0",
+      "abi": "ECX actual; RET",
+      "native_exception_handler": false
+    },
+    {
+      "address": "00b6e870",
+      "coverage": "complete",
+      "implementation": "set_native_raw_world_matrix_00b6e870",
+      "abi": "ECX actual; RET4; stack source",
+      "native_exception_handler": false
+    },
+    {
+      "address": "00b70660",
+      "coverage": "complete",
+      "implementation": "refresh_native_raw_camera_direction_00b70660",
+      "abi": "ECX actual; RET",
+      "native_exception_handler": false
+    },
+    {
+      "address": "00b71460",
+      "coverage": "complete",
+      "implementation": "set_native_raw_camera_world_00b71460",
+      "abi": "ECX actual; RET4; stack source",
+      "native_exception_handler": false
+    }
+  ],
+  "calls": [
+    {
+      "address": "00b6e7fe",
+      "native": "00b6db70",
+      "function": "00b6e7e0",
+      "kind": "call"
+    },
+    {
+      "address": "00b6e80d",
+      "native": "00b63b30",
+      "function": "00b6e7e0",
+      "kind": "call"
+    },
+    {
+      "address": "00b6e816",
+      "native": "004134f0",
+      "function": "00b6e7e0",
+      "kind": "call"
+    },
+    {
+      "address": "00b6e82e",
+      "native": "00413920",
+      "function": "00b6e7e0",
+      "kind": "call"
+    },
+    {
+      "address": "00b6e83a",
+      "native": "004134f0",
+      "function": "00b6e7e0",
+      "kind": "call"
+    },
+    {
+      "address": "00b6e855",
+      "native": "004134f0",
+      "function": "00b6e7e0",
+      "kind": "call"
+    },
+    {
+      "address": "00b6e87e",
+      "native": "004134f0",
+      "function": "00b6e870",
+      "kind": "call"
+    },
+    {
+      "address": "00b6e892",
+      "native": "current_actual_a0+vtable3c",
+      "function": "00b6e870",
+      "kind": "indirect_call"
+    },
+    {
+      "address": "00b6e896",
+      "native": "00b6e7e0",
+      "function": "00b6e870",
+      "kind": "call"
+    },
+    {
+      "address": "00b6e89d",
+      "native": "00b6da30",
+      "function": "00b6e870",
+      "kind": "call"
+    },
+    {
+      "address": "00b6e8a9",
+      "native": "current_actual_node+vtable40",
+      "function": "00b6e870",
+      "kind": "indirect_call"
+    },
+    {
+      "address": "00b7066c",
+      "native": "00b6db70",
+      "function": "00b70660",
+      "kind": "call"
+    },
+    {
+      "address": "00b7069d",
+      "native": "00b6db70",
+      "function": "00b70660",
+      "kind": "call"
+    },
+    {
+      "address": "00b71472",
+      "native": "00b6e870",
+      "function": "00b71460",
+      "kind": "call"
+    },
+    {
+      "address": "00b71479",
+      "native": "00b70660",
+      "function": "00b71460",
+      "kind": "call"
+    }
+  ],
+  "no_ghidra_function": [],
+  "corrections": [],
+  "scratch": {
+    "representation": "One live initialized volatile DWORD backing; disjoint immutable pointer-view metadata; no overlapping aggregate lifetimes",
+    "derive": {
+      "dwords": 32,
+      "inverse_byte_offset": 0,
+      "local_byte_offset": 64,
+      "native_entry_esp_offsets": [
+        -128,
+        -64
+      ]
+    },
+    "direction": {
+      "dwords": 6,
+      "position_byte_offset": 0,
+      "target_byte_offset": 12,
+      "native_entry_esp_offsets": [
+        -24,
+        -12
+      ]
+    },
+    "outer_b71460": {
+      "derive_from_entry_esp": -148,
+      "direction_from_entry_esp": -32,
+      "direction_from_derive": 116,
+      "final_output_limit": "Direction scratch remains comparable; earlier derive private scratch is dead and is not compared at outer return"
+    },
+    "excluded": "Native saved registers, return/pushed argument gaps and other private stack cells; no asynchronous mutation"
+  },
+  "dispatch": {
+    "required": "NativeNodeBaseWorldDispatch, pure current profile lookup and exact reached actual current3C/current40 invocation",
+    "genuine_observed_providers": [
+      "00b6dbc0",
+      "00b6dbe0"
+    ],
+    "fallback": false,
+    "logical_hierarchy": false,
+    "failure": "No native EH or invented rollback; reached source provider failure preserves completed prefix"
+  },
+  "validation": {
+    "strict_win32_build": "local\\cc10_camera_raw_world_edit\\build.log",
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "report_call_check": "local\\cc10_camera_raw_world_edit\\report_calls.log",
+    "focused_probe": {
+      "source": "local\\cc10_camera_raw_world_edit\\probe.cpp",
+      "build_log": "local\\cc10_camera_raw_world_edit\\probe_build.log",
+      "run_log": "local\\cc10_camera_raw_world_edit\\probe.log",
+      "command": "local\\cc10_camera_raw_world_edit\\probe.cmd",
+      "pairs": 5,
+      "result": "pass",
+      "normal_bytes": 408,
+      "patched_original_operands": [
+        {
+          "call_site": "00b6e7fe",
+          "operand_start": "00b6e7ff",
+          "size": 4,
+          "callee": "00b6db70"
+        },
+        {
+          "call_site": "00b6e80d",
+          "operand_start": "00b6e80e",
+          "size": 4,
+          "callee": "00b63b30"
+        },
+        {
+          "call_site": "00b6e816",
+          "operand_start": "00b6e817",
+          "size": 4,
+          "callee": "004134f0"
+        },
+        {
+          "call_site": "00b6e82e",
+          "operand_start": "00b6e82f",
+          "size": 4,
+          "callee": "00413920"
+        },
+        {
+          "call_site": "00b6e83a",
+          "operand_start": "00b6e83b",
+          "size": 4,
+          "callee": "004134f0"
+        },
+        {
+          "call_site": "00b6e855",
+          "operand_start": "00b6e856",
+          "size": 4,
+          "callee": "004134f0"
+        },
+        {
+          "call_site": "00b6e87e",
+          "operand_start": "00b6e87f",
+          "size": 4,
+          "callee": "004134f0"
+        },
+        {
+          "call_site": "00b6e896",
+          "operand_start": "00b6e897",
+          "size": 4,
+          "callee": "00b6e7e0"
+        },
+        {
+          "call_site": "00b6e89d",
+          "operand_start": "00b6e89e",
+          "size": 4,
+          "callee": "00b6da30"
+        },
+        {
+          "call_site": "00b7066c",
+          "operand_start": "00b7066d",
+          "size": 4,
+          "callee": "00b6db70"
+        },
+        {
+          "call_site": "00b7069d",
+          "operand_start": "00b7069e",
+          "size": 4,
+          "callee": "00b6db70"
+        },
+        {
+          "call_site": "00b71472",
+          "operand_start": "00b71473",
+          "size": 4,
+          "callee": "00b6e870"
+        },
+        {
+          "call_site": "00b71479",
+          "operand_start": "00b7147a",
+          "size": 4,
+          "callee": "00b70660"
+        }
+      ],
+      "indirect_instructions_changed": false,
+      "profile_data_relocation": "Original actual+0 words reference fixture-owned tables with exact provider bridges; source pure resolver maps those same current identities to borrowed native target tables",
+      "genuine_providers": "Raw B6F5A0 node constructor, actual string pool, raw matrix/world/descendant providers; genuine B6DBE0/B6DBC0 current notification closures",
+      "callback_mutation": "Declared harness injection AFTER genuine initial3C changes actual parent and current profile; later40 executes genuine B6DBC0. This is provider-contract perturbation, not recovered mutation behavior of B6DBC0.",
+      "compared": "Whole initialized node payloads with normalized actual identities, genuine callback trace, masked x87 status, live callee scratch only",
+      "fixture_repair": "Initial missing continuing-bounds profile resolver rejected; supplied genuine current profile service; final five pairs pass with no packet source change",
+      "excluded": [
+        "Full B71A80 constructor and companion admission",
+        "Native faults/FH3 identity",
+        "Source provider-throw path",
+        "Asynchronous mutation",
+        "Native saved/private stack aliases"
+      ],
+      "artifacts_sha256": {
+        "local\\cc10_camera_raw_world_edit\\probe.cpp": "e8b5b7bc8b0c94b46605519317b892e3a381b85e68c9b5bb6ea2781c411718c9",
+        "local\\cc10_camera_raw_world_edit\\native_bytes.hpp": "9426194ec0436153c9c4d6d97a4f1692d113c8bbaf6ad58b9f450282a8c56986",
+        "local\\cc10_camera_raw_world_edit\\probe.cmd": "e45b574411df205f9e98b4c53f35178212d688fbcb541547a9a6bcd287b01c00",
+        "local\\cc10_camera_raw_world_edit\\camera_raw_world_edit_probe.exe": "821ba5c06ec488dfef34a9941057ff6169a5a71ff1e829f5e38036313edc5dbd",
+        "local\\cc10_camera_raw_world_edit\\probe.map": "c122340e6b52b980030e6c338168229a72dc5cca8961a0f2434c5af7bc5d9d02",
+        "local\\cc10_camera_raw_world_edit\\compiled_listing.txt": "ae764edb7f6b3e93f827160b9967fe542ec0cb7734438d761d3d77b3607bc8e0",
+        "local\\cc10_camera_raw_world_edit\\probe.log": "b78214e1caf0a75c306ebe5396330636d3a5b73838a5eea07d71d3d5b8998877",
+        "local\\cc10_camera_raw_world_edit\\probe_build.log": "8a83d721d6905965d22075cf899840e5b088b5392345eb74f1aaf2288aff8e6e"
+      }
+    },
+    "ghidra_mutated": false,
+    "game_validated": false,
+    "prior_evidence_archives_unchanged": {
+      "local/cc10_field_values_evidence.zip": "a749dbf4656596e6a4e0c11ecb320a02bfe62dcba5fa3654c2744aa2a3022153",
+      "local/cc10_widget_transform_evidence.zip": "0d90499f71be2a3cc99ad732deaa8a71a5b55546da4dbaa7ee708c364bae45f8",
+      "local/cc10_widget_property_prefix_evidence.zip": "181ebe9358fe2d7ea6832b8051a0b3fd6f830a0360f3ef390626403ba7cbfcdf",
+      "local/cc10_gui_page_default_evidence.zip": "a224fc79f56861715059ff9717fcdad40893be00d26697a230b64ceafced5c8b",
+      "local/cc10_gui_group_pool_evidence.zip": "c7aa87452ab19400fe950d3a4c3a4a146c94715f4080f463dc2de1740df37853",
+      "local/cc10_gui_group_factory_evidence.zip": "d22d364ce3b5cf7833d8ad1998cd5c14cbf792abc34634e2df1421949e42f34f",
+      "local/cc10_gui_camera_store_map_evidence.zip": "625a751eab1f2416e7b0fa5876b921106cf0a246c0b8ca5ce97ca3e9d1586c54",
+      "local/cc10_scene_registry_storage_evidence.zip": "7219d8cbbdab960d3d2b49076f79b13854aa582faa0edb23c8a7fc286cebd6a9",
+      "local/cc10_scene_resource_storage_evidence.zip": "d989b85db55805c8b173e40c95e9322586ec4146e3ad0e504c316bf48364ed51",
+      "local/cc10_gui_scene_fields_evidence.zip": "8158076968340fd863b7e86018def420eabcae87ab0939f90085d79a1751a1af",
+      "local/cc10_scene_registry_vector_mutation_evidence.zip": "90b9d70c3b735e1274c2c0d2e333f5e88e860aee7155ea9ac6ef18e105aaed6b",
+      "local/cc10_scene_registry_registration_evidence.zip": "663ec13309abdaf992b22c321c66817230852066d76e5ccd0b663c3a783e05cf",
+      "local/cc10_node_scene_attachment_evidence.zip": "c45c8248fe0434426648b48b7c8e473f94b057f5ff1098088c34762dbc3d8f04",
+      "local/cc10_node_tree_retirement_evidence.zip": "b9720c00ba0e29c222ae2d41fb5fd2820e305039c673e61cea0ee22d3a2a2e13",
+      "local/cc10_node_base_destruction_evidence.zip": "2f4f970317032085f851a2331dd3e4bf6f02b3722e5e44a668153000e2b13dbf",
+      "local/cc10_camera_storage_lifetime_evidence.zip": "9eb1ac2cbde243e6c4d2d1d10fca263eda2e43aed2527964986875f2217c3936"
+    },
+    "compiled_direction_order": {
+      "listing": "local\\cc10_camera_raw_world_edit\\compiled_listing.txt",
+      "x87_instruction_mnemonics_equal_original": [
+        "fld",
+        "fstp",
+        "fld",
+        "fstp",
+        "fld",
+        "fstp",
+        "fld",
+        "fstp",
+        "fld",
+        "fstp",
+        "fld",
+        "fstp",
+        "fld",
+        "fadd",
+        "fstp",
+        "fld",
+        "fadd",
+        "fstp",
+        "fld",
+        "fadd",
+        "fstp",
+        "fld",
+        "fstp",
+        "fld",
+        "fstp",
+        "fld",
+        "fstp"
+      ],
+      "current_lowbyte_bit2_tests": 2
+    },
+    "frozen_archive": "local/cc10_camera_raw_world_edit_evidence.zip",
+    "evidence_manifest": "local\\cc10_camera_raw_world_edit\\manifest.json"
+  },
+  "source_hashes": {
+    "include/bsp/native_camera_raw_world_edit.hpp": "a83ef36fff9c5d8e11bba684269f2ae3ee7cfb3bcd267c410a067c0bd31a7bc3",
+    "src/native_camera_raw_world_edit.cpp": "204f91672c37425065ed5c26f10a8c134b9a7733654d29b6f10bfbe93a6b3912",
+    "docs/NATIVE_CAMERA_RAW_WORLD_EDIT_CC10.md": "fd52da4b7e585016fcf134b89fe4460c333e9ffd04af05acc9c0a772ba789a2b"
+  },
+  "dependency_hashes": {
+    "src/native_camera_matrix_math.cpp": "ca793757d2bb262ae48cf09a29be44462714da585b430db68c5b3e9262277fa0",
+    "src/native_camera_matrix_copy.cpp": "31840777adef31ac0717e7bc4cb148ecd9aa45be8e5d2d52eb79f3c8a00a708d",
+    "src/native_camera_world.cpp": "ce38ae3bb4fa869751c746092097ab4be1cf7b8947ce2ed2342da687d645563a",
+    "src/native_node_raw_transform.cpp": "31a50a5e6e6efd27bb2d32851cc6836b6aabb1a924eefa384363e561deb4e257",
+    "src/native_node_base_destruction.cpp": "21bb87a236d4888ba5ef0102f3747f4cc53d28462d587dfaa94c1e731a0f055e",
+    "src/native_node_construction.cpp": "87a73019511d3575aa0887a4964a2a8703a5248106fdcff2eddfbb424918dd35"
+  },
+  "readiness_handoff": "local\\cc10_camera_constructor_readiness\\README.md"
+}
