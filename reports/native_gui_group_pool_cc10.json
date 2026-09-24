@@ -1,0 +1,616 @@
+{
+  "packet": "cc10_gui_group_pool",
+  "status": "complete_raw_normal_bodies_build_and_focused_original_source_real_pool_checked",
+  "coverage": "complete normal bodies for12 routines; CB8B0E unimplemented EH boundary only",
+  "documentation": "docs/NATIVE_GUI_GROUP_POOL_CC10.md",
+  "original_executable_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "native_bytes": [
+    {
+      "address": "00ac6f50",
+      "size": 20,
+      "end_inclusive": "00ac6f63",
+      "sha256": "107dcbb6dc4a04850cc742b6ec39766e55c3a3db37bfb969d47a439b7c3cc511",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00ac6ff0",
+      "size": 67,
+      "end_inclusive": "00ac7032",
+      "sha256": "bc0812c8243e57938c5b089464b5344e3f574da9fb0d12779c32957c9192e76e",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00ac70d0",
+      "size": 14,
+      "end_inclusive": "00ac70dd",
+      "sha256": "13bcedeaa5641208d42121dfd1807931ba6ea4c17dd67d71d9fde3c56dad0972",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00ac71a0",
+      "size": 138,
+      "end_inclusive": "00ac7229",
+      "sha256": "34a282db6b4a61c7a860fb73952edb4a11171e7c30b15741a34cee619c3ffa36",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00ac7260",
+      "size": 108,
+      "end_inclusive": "00ac72cb",
+      "sha256": "ae4f00c8eaf6e0c72ae0fb6819dcc4457f3c98f928928d121e66b145862706c8",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00ac73d0",
+      "size": 12,
+      "end_inclusive": "00ac73db",
+      "sha256": "def96dc15dd9fd4ed66126d9b2f8e6a5a94d5e34de533cce3d2c9b3ac964fc6e",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00ac7410",
+      "size": 211,
+      "end_inclusive": "00ac74e2",
+      "sha256": "39e2a7b1d22bb4b133f7a347e0582b231ac6b0425c5979e098d18d3eb4a567d4",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00ac74f0",
+      "size": 160,
+      "end_inclusive": "00ac758f",
+      "sha256": "712e71f44920bd67b5419d03e9fd72dd2202904688b6e0b43e3cf11819ba126d",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00ac7590",
+      "size": 316,
+      "end_inclusive": "00ac76cb",
+      "sha256": "d1b8356f3a7fc48c737290fdeceb724475f5827c583fcbc47bfba675a8f155ae",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00ac76d0",
+      "size": 10,
+      "end_inclusive": "00ac76d9",
+      "sha256": "7fef34c4a6365343bcd9d7a847a8c51b1de2e114ac3af9391934b3e4bb76c4d3",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00cd7440",
+      "size": 22,
+      "end_inclusive": "00cd7455",
+      "sha256": "0bbd7d52756ec66252fa7f9fe38a99cce8343ed64173f71383d65d9e6b710754",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00ce0ae0",
+      "size": 10,
+      "end_inclusive": "00ce0ae9",
+      "sha256": "b87476b80337fa6afb431c13599c781f38f540c015a82eb6bd2e4a40a8680075",
+      "live_pe_equal": true
+    },
+    {
+      "address": "00cb8b0e",
+      "size": 10,
+      "end_inclusive": "00cb8b17",
+      "sha256": "befa4d51e92aea7b4fc59bf1f2733f67a51d7e4bee06ba73c358856fcd63438b",
+      "live_pe_equal": true
+    }
+  ],
+  "total_native_bytes": 1098,
+  "shared_engine": {
+    "exact_prior_text_prefix": true,
+    "prior_text_sha256": "9691d74084ee2eb364ee58a02c10132e7d7f13c67cf1b05e1ad387bcc6d5ab2f",
+    "prior_lines": 353
+  },
+  "limits": "Complete normal raw Group/default and pool bodies through explicit C++ storage/lifetime interfaces. Shared engine unchanged; actual CRT/Win32 providers reused. Host structured cleanup and startup bookkeeping are not native FH3/SEH/binary ABI. No application startup installation, Group payload destructor, AA12F0 copy wrapper, AC6FA0 copy or full AA6560 factory claim.",
+  "routines": [
+    {
+      "address": "00ac6f50",
+      "name": "construct_native_gui_group_default_00ac6f50",
+      "source": "src/native_gui_group_default.cpp",
+      "coverage": "complete normal body",
+      "original_abi": "ECX actual group, EAX same, RET; raw AA9390(type2), then D5CB80 stamp",
+      "last_instruction_address": "00ac6f63",
+      "last_instruction_length": 1,
+      "end_inclusive": "00ac6f63"
+    },
+    {
+      "address": "00ac6ff0",
+      "name": "initialize_native_gui_group_slab_00ac6ff0",
+      "source": "src/native_material_pools.cpp",
+      "coverage": "complete normal body",
+      "original_abi": "ECX slab, stack index, EAX same, RET4; metadata-only initialize_slab<Group>",
+      "last_instruction_address": "00ac7030",
+      "last_instruction_length": 3,
+      "end_inclusive": "00ac7032"
+    },
+    {
+      "address": "00ac70d0",
+      "name": "free_native_gui_group_pool_table_00ac70d0",
+      "source": "src/native_material_pools.cpp",
+      "coverage": "complete normal body",
+      "original_abi": "ECX actual pointer header, RET; capture and free nonnull pointer, no clearing",
+      "last_instruction_address": "00ac70dd",
+      "last_instruction_length": 1,
+      "end_inclusive": "00ac70dd"
+    },
+    {
+      "address": "00ac71a0",
+      "name": "NativeGuiGroupPool::destroy_00ac71a0",
+      "source": "src/native_material_pools.cpp",
+      "coverage": "complete normal body",
+      "original_abi": "ECX pool, RET; destroy_pool<Group> full slab/table free, CS drain and actual allocator-list unlink",
+      "last_instruction_address": "00ac7229",
+      "last_instruction_length": 1,
+      "end_inclusive": "00ac7229"
+    },
+    {
+      "address": "00ac7260",
+      "name": "NativeGuiGroupPool::return_00ac7260",
+      "source": "src/native_material_pools.cpp",
+      "coverage": "complete normal body",
+      "original_abi": "ECX pool, stack slot, RET4; return_slot<Group> current hidden ID under real CS and signed F0 division",
+      "last_instruction_address": "00ac72c9",
+      "last_instruction_length": 3,
+      "end_inclusive": "00ac72cb"
+    },
+    {
+      "address": "00ac73d0",
+      "name": "return_native_gui_group_slot_00ac73d0",
+      "source": "src/native_gui_group_storage.cpp",
+      "coverage": "complete normal body",
+      "original_abi": "ECX slot, RET; select explicitly initialized same F8BFA0 pool, no payload teardown",
+      "last_instruction_address": "00ac73db",
+      "last_instruction_length": 1,
+      "end_inclusive": "00ac73db"
+    },
+    {
+      "address": "00ac7410",
+      "name": "NativeGuiGroupPool::initialize_00ac7410",
+      "source": "src/native_material_pools.cpp",
+      "coverage": "complete normal body",
+      "original_abi": "ECX pool/EAX same, RET; initialize_pool<Group> list,CS and capacity-before-allocation table schedule",
+      "last_instruction_address": "00ac74e2",
+      "last_instruction_length": 1,
+      "end_inclusive": "00ac74e2"
+    },
+    {
+      "address": "00ac74f0",
+      "name": "NativeGuiGroupPool::trim_00ac74f0",
+      "source": "src/native_material_pools.cpp",
+      "coverage": "complete normal body",
+      "original_abi": "ECX pool, RET; trim_empty_slabs<Group> no internal lock, all moved IDs repaired and first-free rescan",
+      "last_instruction_address": "00ac758f",
+      "last_instruction_length": 1,
+      "end_inclusive": "00ac758f"
+    },
+    {
+      "address": "00ac7590",
+      "name": "NativeGuiGroupPool::allocate_00ac7590",
+      "source": "src/native_material_pools.cpp",
+      "coverage": "complete normal body",
+      "original_abi": "ECX pool/EAX raw slot, RET; allocate_slot<Group> current fields, realCS, actual allocation and no added rollback/unlock",
+      "last_instruction_address": "00ac76cb",
+      "last_instruction_length": 1,
+      "end_inclusive": "00ac76cb"
+    },
+    {
+      "address": "00ac76d0",
+      "name": "allocate_native_gui_group_slot_00ac76d0",
+      "source": "src/native_gui_group_storage.cpp",
+      "coverage": "complete normal body",
+      "original_abi": "incoming ECX size ignored, select same initialized F8BFA0 pool then tail AC7590",
+      "last_instruction_address": "00ac76d5",
+      "last_instruction_length": 5,
+      "end_inclusive": "00ac76d9"
+    },
+    {
+      "address": "00cd7440",
+      "name": "GameNativeGuiGroupPoolProcess::initialize_once_00cd7440",
+      "source": "src/native_gui_group_storage.cpp",
+      "coverage": "complete normal body",
+      "original_abi": "No args; initialize F8BFA0 then real CRT atexitCE0AE0; EAX registration result, RET. Explicit host once bookkeeping outside raw storage",
+      "last_instruction_address": "00cd7455",
+      "last_instruction_length": 1,
+      "end_inclusive": "00cd7455"
+    },
+    {
+      "address": "00ce0ae0",
+      "name": "GameNativeGuiGroupPoolProcess::destroy_00ce0ae0",
+      "source": "src/native_gui_group_storage.cpp",
+      "coverage": "complete normal body",
+      "original_abi": "No args; select same actual F8BFA0 and tail AC71A0",
+      "last_instruction_address": "00ce0ae5",
+      "last_instruction_length": 5,
+      "end_inclusive": "00ce0ae9"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00ac6f55",
+      "native": "00aa9390",
+      "function": "00ac6f50",
+      "kind": "call",
+      "contract": "ECX same actual Group, stack type2, RET4; genuine raw base"
+    },
+    {
+      "address": "00ac70d7",
+      "native": "00bf6989",
+      "function": "00ac70d0",
+      "kind": "call",
+      "contract": "cdecl actual nonnull pointer; matching existing singleton_lifetime_free; native caller cleanup retained"
+    },
+    {
+      "address": "00ac71b8",
+      "native": "00bf65ac",
+      "function": "00ac71a0",
+      "kind": "call",
+      "contract": "cdecl actual slab; matching existing singleton_lifetime_free; return continuation required"
+    },
+    {
+      "address": "00ac71d0",
+      "native": "00bf6989",
+      "function": "00ac71a0",
+      "kind": "call",
+      "contract": "cdecl actual nonnull pointer; matching existing singleton_lifetime_free; native caller cleanup retained"
+    },
+    {
+      "address": "00ac71f7",
+      "native": "dword ptr [0xce2214]",
+      "function": "00ac71a0",
+      "kind": "call",
+      "contract": "Required genuine Win32 critical-section import with actual pool+C; source calls existing Windows API, no fake lock"
+    },
+    {
+      "address": "00ac726a",
+      "native": "dword ptr [0xce2218]",
+      "function": "00ac7260",
+      "kind": "call",
+      "contract": "Required genuine Win32 critical-section import with actual pool+C; source calls existing Windows API, no fake lock"
+    },
+    {
+      "address": "00ac72bf",
+      "native": "dword ptr [0xce2210]",
+      "function": "00ac7260",
+      "kind": "call",
+      "contract": "Required genuine Win32 critical-section import with actual pool+C; source calls existing Windows API, no fake lock"
+    },
+    {
+      "address": "00ac73d6",
+      "native": "00ac7260",
+      "function": "00ac73d0",
+      "kind": "call",
+      "contract": "ECX F8BFA0, stack actual failedslot, RET4"
+    },
+    {
+      "address": "00ac7462",
+      "native": "dword ptr [0xce220c]",
+      "function": "00ac7410",
+      "kind": "call",
+      "contract": "Required genuine Win32 critical-section import with actual pool+C; source calls existing Windows API, no fake lock"
+    },
+    {
+      "address": "00ac7492",
+      "native": "00bf55be",
+      "function": "00ac7410",
+      "kind": "call",
+      "contract": "cdecl byte count, existing CRT new-handler allocator; pointer-table capacity already published"
+    },
+    {
+      "address": "00ac74c4",
+      "native": "00bf6989",
+      "function": "00ac7410",
+      "kind": "call",
+      "contract": "cdecl actual nonnull pointer; matching existing singleton_lifetime_free; native caller cleanup retained"
+    },
+    {
+      "address": "00ac7511",
+      "native": "00bf65ac",
+      "function": "00ac74f0",
+      "kind": "call",
+      "contract": "cdecl actual slab; matching existing singleton_lifetime_free; return continuation required"
+    },
+    {
+      "address": "00ac759a",
+      "native": "dword ptr [0xce2218]",
+      "function": "00ac7590",
+      "kind": "call",
+      "contract": "Required genuine Win32 critical-section import with actual pool+C; source calls existing Windows API, no fake lock"
+    },
+    {
+      "address": "00ac75bb",
+      "native": "00bf681b",
+      "function": "00ac7590",
+      "kind": "call",
+      "contract": "cdecl1E44 slab size, existing CRT new-handler allocator"
+    },
+    {
+      "address": "00ac75cd",
+      "native": "00ac6ff0",
+      "function": "00ac7590",
+      "kind": "call",
+      "contract": "ECX actual new slab, stack current slab index, RET4/EAX same"
+    },
+    {
+      "address": "00ac75ef",
+      "native": "00bf55be",
+      "function": "00ac7590",
+      "kind": "call",
+      "contract": "cdecl byte count, existing CRT new-handler allocator; pointer-table capacity already published"
+    },
+    {
+      "address": "00ac7621",
+      "native": "00bf6989",
+      "function": "00ac7590",
+      "kind": "call",
+      "contract": "cdecl actual nonnull pointer; matching existing singleton_lifetime_free; native caller cleanup retained"
+    },
+    {
+      "address": "00ac76ab",
+      "native": "dword ptr [0xce2210]",
+      "function": "00ac7590",
+      "kind": "call",
+      "contract": "Required genuine Win32 critical-section import with actual pool+C; source calls existing Windows API, no fake lock"
+    },
+    {
+      "address": "00ac76bf",
+      "native": "dword ptr [0xce2210]",
+      "function": "00ac7590",
+      "kind": "call",
+      "contract": "Required genuine Win32 critical-section import with actual pool+C; source calls existing Windows API, no fake lock"
+    },
+    {
+      "address": "00ac76d5",
+      "native": "00ac7590",
+      "function": "00ac76d0",
+      "kind": "tail_jump",
+      "contract": "tail ECX same F8BFA0, incoming size discarded"
+    },
+    {
+      "address": "00cd7445",
+      "native": "00ac7410",
+      "function": "00cd7440",
+      "kind": "no_ghidra_function",
+      "contract": "ECX same F8BFA0 explicit constructor before registration"
+    },
+    {
+      "address": "00cd744f",
+      "native": "00bf6ff5",
+      "function": "00cd7440",
+      "kind": "no_ghidra_function",
+      "contract": "cdecl real atexit callbackCE0AE0; preserve result and initialized pool on failure"
+    },
+    {
+      "address": "00ce0ae5",
+      "native": "00ac71a0",
+      "function": "00ce0ae0",
+      "kind": "tail_jump",
+      "contract": "tail ECX same F8BFA0, no payload destructors"
+    },
+    {
+      "address": "00cb8b13",
+      "native": "00bf6b43",
+      "function": "00cb8b0e",
+      "kind": "no_ghidra_function",
+      "contract": "EH boundary only: EAX DEFB70; no worker native handler implementation"
+    },
+    {
+      "address": "00ac71ed",
+      "native": "captured_IAT_00ce2210_LeaveCriticalSection",
+      "function": "00ac71a0",
+      "kind": "indirect",
+      "contract": "EBX loaded atAC71E2 before positive-recursion loop; ECX not an argument, stdcall actualCS"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00cd7440",
+      "end_inclusive": "00cd7455",
+      "end_exclusive": "00cd7456",
+      "last_instruction_address": "00cd7455",
+      "last_instruction": "RET",
+      "last_instruction_length": 1,
+      "coverage": "complete normal source counterpart with host lifetime bookkeeping"
+    },
+    {
+      "address": "00cb8b0e",
+      "end_inclusive": "00cb8b17",
+      "end_exclusive": "00cb8b18",
+      "last_instruction_address": "00cb8b13",
+      "last_instruction": "JMP 00bf6b43",
+      "last_instruction_length": 5,
+      "coverage": "unimplemented native FH3 boundary",
+      "descriptor": "00defb70",
+      "unwind_map": "00defb58"
+    }
+  ],
+  "required_listing_repairs": [
+    {
+      "function": "00ac70d0",
+      "start": "00ac70dc",
+      "end_exclusive": "00ac70dd",
+      "end_inclusive": "00ac70dc",
+      "instructions": [
+        "00ac70dc: pop ecx"
+      ],
+      "reason": "Missing live instructions after actually returning free call; disk and full live bytes verified; root repair deferred until worker release"
+    },
+    {
+      "function": "00ac71a0",
+      "start": "00ac71bd",
+      "end_exclusive": "00ac71c8",
+      "end_inclusive": "00ac71c7",
+      "instructions": [
+        "00ac71bd: add esi, 1",
+        "00ac71c0: add esp, 4",
+        "00ac71c3: cmp esi, dword ptr [edi + 0x2c]",
+        "00ac71c6: jb 0xac71b1"
+      ],
+      "reason": "Missing live instructions after actually returning free call; disk and full live bytes verified; root repair deferred until worker release"
+    },
+    {
+      "function": "00ac71a0",
+      "start": "00ac71d5",
+      "end_exclusive": "00ac71d8",
+      "end_inclusive": "00ac71d7",
+      "instructions": [
+        "00ac71d5: add esp, 4"
+      ],
+      "reason": "Missing live instructions after actually returning free call; disk and full live bytes verified; root repair deferred until worker release"
+    },
+    {
+      "function": "00ac7410",
+      "start": "00ac74c9",
+      "end_exclusive": "00ac74cc",
+      "end_inclusive": "00ac74cb",
+      "instructions": [
+        "00ac74c9: add esp, 4"
+      ],
+      "reason": "Missing live instructions after actually returning free call; disk and full live bytes verified; root repair deferred until worker release"
+    },
+    {
+      "function": "00ac74f0",
+      "start": "00ac7516",
+      "end_exclusive": "00ac7550",
+      "end_inclusive": "00ac754f",
+      "instructions": [
+        "00ac7516: mov edx, dword ptr [esi + 0x28]",
+        "00ac7519: mov ecx, dword ptr [esi + 0x2c]",
+        "00ac751c: mov ecx, dword ptr [edx + ecx*4 - 4]",
+        "00ac7520: mov eax, edx",
+        "00ac7522: mov dword ptr [eax + edi*4], ecx",
+        "00ac7525: add dword ptr [esi + 0x2c], -1",
+        "00ac7529: add esp, 4",
+        "00ac752c: cmp edi, dword ptr [esi + 0x2c]",
+        "00ac752f: jae 0xac754d",
+        "00ac7531: mov edx, dword ptr [esi + 0x28]",
+        "00ac7534: mov eax, dword ptr [edx + edi*4]",
+        "00ac7537: add eax, 0xec",
+        "00ac753c: mov ecx, 0x20",
+        "00ac7541: mov dword ptr [eax], edi",
+        "00ac7543: add eax, 0xf0",
+        "00ac7548: sub ecx, 1",
+        "00ac754b: jne 0xac7541",
+        "00ac754d: sub edi, 1"
+      ],
+      "reason": "Missing live instructions after actually returning free call; disk and full live bytes verified; root repair deferred until worker release"
+    },
+    {
+      "function": "00ac7590",
+      "start": "00ac7626",
+      "end_exclusive": "00ac7629",
+      "end_inclusive": "00ac7628",
+      "instructions": [
+        "00ac7626: add esp, 4"
+      ],
+      "reason": "Missing live instructions after actually returning free call; disk and full live bytes verified; root repair deferred until worker release"
+    }
+  ],
+  "validation": {
+    "strict_build": "scripts/build.ps1 MSVC Win32 Release /W4 /WX /fp:strict",
+    "ctests_passed": 3,
+    "focused_probe": "local/cc10_gui_group_pool/gui_group_pool_probe.exe",
+    "executable_sha256": "5fc26493ec755efa4ce26d9f35c942d4b7138a2bbad406c5a2b7944ef4e86e87",
+    "original_source_phases": [
+      "entire1E44 slab preimage/metadata",
+      "null/nonnull actual pointer-table cleanup with unchanged header",
+      "real pool lifecycle33slabs/1025slots; minimum to exercise32to66 capacity growth;return/compaction/movedIDs/fullfree/realCS drain",
+      "actual Group default in real pool slot; genuine rawbase/sentinel; entireEC payload normalized only for sentinelpointer"
+    ],
+    "source_crt_exit": "Explicit CD7440, repeatcall idempotence, canonical selector/return/virtual0 trim and real CRT CE0AE0 unlink verified after main",
+    "indirect_live_instructions_checked": 8,
+    "failure_injection": false,
+    "ghidra_mutated": false,
+    "game_validated": false,
+    "prior_archives_unchanged": {
+      "local/cc10_field_values_evidence.zip": "a749dbf4656596e6a4e0c11ecb320a02bfe62dcba5fa3654c2744aa2a3022153",
+      "local/cc10_widget_transform_evidence.zip": "0d90499f71be2a3cc99ad732deaa8a71a5b55546da4dbaa7ee708c364bae45f8",
+      "local/cc10_widget_property_prefix_evidence.zip": "181ebe9358fe2d7ea6832b8051a0b3fd6f830a0360f3ef390626403ba7cbfcdf",
+      "local/cc10_gui_page_default_evidence.zip": "a224fc79f56861715059ff9717fcdad40893be00d26697a230b64ceafced5c8b"
+    },
+    "report_call_rows_checked": 17,
+    "report_call_row_failures": 0
+  },
+  "compiled_source": {
+    "include/bsp/native_gui_group_storage.hpp": "3bd8555c54d685ce14ce23f9d0f23168fa49b33e948577f59fdcdc14f15b0f3b",
+    "src/native_gui_group_storage.cpp": "4c4729f66671693189cadd2cc5e27310f6e09a9a86aee6d50b1c7570b4cd4ad2",
+    "include/bsp/native_gui_group_default.hpp": "b054e5bd554850d323e32e7bcded424911bfe087d9558f4844efcf2711288047",
+    "src/native_gui_group_default.cpp": "df6ba36d57a630662188b97637a35d5d15c1e094c1ccb24a847889d58ec6d6c8",
+    "src/native_material_pools.cpp": "dae9c549cfc295d680184d7a51d0d073c310bf6bd00553d31be5fd81f530f13f",
+    "src/native_gui_widget_base_storage.cpp": "4ddd5ab1ad4a2b8174d80caf70dba76afa648479e4e8637a56884f2b9db6354d",
+    "src/singleton_lifetime.cpp": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+    "src/allocator_list.cpp": "cdbf79e61ecda228f41e07832ab0e175bf812b4cb78f921043e83a3e63e60732",
+    "build/win32/Release/bsp_core.lib": "ca343fb1eadd46844cce1d4163449831010311567d74f8d32499a9318d03abd8"
+  },
+  "local_files": {
+    "local/cc10_gui_group_pool/add_ledgers.py": "ceb6cdab9f4a54f4e256320529962a1a5dbfae481bf80feb6e13054658b73267",
+    "local/cc10_gui_group_pool/build.log": "99a022e53feefdc422cb29c7e10aecff28299516dd0bbd582337c3715ba5d3d6",
+    "local/cc10_gui_group_pool/bytes_00ac6f50.txt": "27543b67d20074c54b774f03396328c16e813dc94fa38ed125e53b98d1fecafe",
+    "local/cc10_gui_group_pool/bytes_00ac6ff0.txt": "7083b8d06aef95e53f2e7a9c5492153b927c7b5463ac1295f15d172d42dfaf08",
+    "local/cc10_gui_group_pool/bytes_00ac70d0.txt": "a39d4c6c46c21c63f3167a187d47feec757f05ce673a097f9b0d90a439037682",
+    "local/cc10_gui_group_pool/bytes_00ac71a0.txt": "b8092915854893d6a2af15b1acedca271c0e54902f6c1178109fd2304d04fc6b",
+    "local/cc10_gui_group_pool/bytes_00ac7260.txt": "465873a26156a7511b1d2e02e98e93aa8e7e670778ed8ae758339d51f5f8df66",
+    "local/cc10_gui_group_pool/bytes_00ac73d0.txt": "bf3f61bfb14e3f0c71bdc21ee30cc591ef9e3a55f120170b236e75423ef854c7",
+    "local/cc10_gui_group_pool/bytes_00ac7410.txt": "7d92544514f6d2b2a617c8f98f2d2aee1ce757f35f709e9a7abd33d68a19353a",
+    "local/cc10_gui_group_pool/bytes_00ac74f0.txt": "959e1e5f3141120f307ebad12acd082117bd5f6272f05de4ddd1df0c1a0a52f4",
+    "local/cc10_gui_group_pool/bytes_00ac7590.txt": "a8ccbda974f53141f80041e1cad313d2a9d9154429290baa17adc2e5467bed90",
+    "local/cc10_gui_group_pool/bytes_00ac76d0.txt": "6db0f464b1d77ab327b0dbdb83bbb58612c004d1945859708a234fef27bee762",
+    "local/cc10_gui_group_pool/bytes_00cb8b0e.txt": "e274e717ecdb5b7163680961c029da5cc693c4fb15191ebf38c23c6191a93bfc",
+    "local/cc10_gui_group_pool/bytes_00cd7440.txt": "400b6f3485ab92388c4dfc9bcaf66c1cf3ed5fe6f3b223a5085c934a2f396593",
+    "local/cc10_gui_group_pool/bytes_00ce0ae0.txt": "7946d20a75b5aa36cae9b435c75b86ea2e5f46edcd40b24f7dca404630f2edb0",
+    "local/cc10_gui_group_pool/commit-message.txt": "9e8ea7f5d41a79560bf0c3bb79c6be6bef49ec6c4bb1a685fd25b859d5c24e12",
+    "local/cc10_gui_group_pool/crt_startup_pointer.txt": "353c1b59667ceff012231de03e9b05b1d85fa18dc31dcf6e6ece1df535c58daa",
+    "local/cc10_gui_group_pool/dependencies.json": "6387442050a38f24a600c1c49621a060fec602eaf5762468f27bb1de6ee4ecb2",
+    "local/cc10_gui_group_pool/eh_descriptor.txt": "13fa7b4892452fdeafa7d32f2149b9c00a0198ffe6e1b3e3cd6a2d90c04f9632",
+    "local/cc10_gui_group_pool/engine_unchanged.json": "a63d972ea6638b20f22cc3147e00ffcceefbe4beddab2c1a5db790a0531f80b6",
+    "local/cc10_gui_group_pool/gui_group_pool_probe.exe": "5fc26493ec755efa4ce26d9f35c942d4b7138a2bbad406c5a2b7944ef4e86e87",
+    "local/cc10_gui_group_pool/indirect_calls.json": "e021883964da2bc4897a625cb52af0b07fea474b567aaa6db49c15e063728e85",
+    "local/cc10_gui_group_pool/ledger_00ac6f50.json": "f5bb6f505c895afff2aee2b86c60f362ca0f0b61002352458f7c5b9fc390e281",
+    "local/cc10_gui_group_pool/ledger_00ac6ff0.json": "dcdce35685a01bae1db2b395227b7d80cbea8d619978d76c4d4e561cd643b785",
+    "local/cc10_gui_group_pool/ledger_00ac70d0.json": "32da635bc8411c7cb56565d06679a4b0d30dee8c607409c42280a4dc0192edac",
+    "local/cc10_gui_group_pool/ledger_00ac71a0.json": "1ee20095451504975b55389a740ac8104768b3ce1cc3fb9a7e7499959c3f2bed",
+    "local/cc10_gui_group_pool/ledger_00ac7260.json": "b6007fb6ce3e159eaec7a8cf24bb92dcb758860dd30e1473ad5b7ee74e57d51d",
+    "local/cc10_gui_group_pool/ledger_00ac73d0.json": "f63845d896b280551ea5eb0fcd28fd4e7050e60097c3944e495d92361c22dd3e",
+    "local/cc10_gui_group_pool/ledger_00ac7410.json": "3856e146bff0db6b1319b2795dd619b79748e23681ea5fa3e514dbc40d0d1d4b",
+    "local/cc10_gui_group_pool/ledger_00ac74f0.json": "61908f34537c958c59059547c6aa01e806d9e411d2307e2e1e3363050233270b",
+    "local/cc10_gui_group_pool/ledger_00ac7590.json": "b0c41436e2b119c227c39d9966da31658ce0abbf1c5912b2ed2e60e63dfc55f0",
+    "local/cc10_gui_group_pool/ledger_00ac76d0.json": "a9d674c3d1c0d1396cb72aa6dc8de00e83f2a99f64b3a7972f0b35fa20c76e51",
+    "local/cc10_gui_group_pool/ledger_00cd7440.json": "eaff4363507593ab26e3c6f1092e0ddbad9af76c4abffca2e693e742859b2d3e",
+    "local/cc10_gui_group_pool/ledger_00ce0ae0.json": "6aa4b5855c41b3125e14986cb066b7d14d5a93f69e3cb3e4ff20a0e087cbdf00",
+    "local/cc10_gui_group_pool/ledger_commands.log": "4fe27d6b58f382fe11ecafe0889342268fe8c4ae6461fe7d43a9be6be26567dc",
+    "local/cc10_gui_group_pool/listing_00ac6f50.txt": "108f3b90f49f5383d5a1afbd19a854dbb399605750e728f508a18c8a6b963ce0",
+    "local/cc10_gui_group_pool/listing_00ac6ff0.txt": "d06da3fa4362bdf141ac2ba6cfd499e32e190397262b1c68c9dbabf517aed348",
+    "local/cc10_gui_group_pool/listing_00ac70d0.txt": "ae35963ba578fca1337553c9b9765718a18f4843f4bcb02ead5dcde21eadf9e0",
+    "local/cc10_gui_group_pool/listing_00ac71a0.txt": "8d514a7f46611fc96499c34b2e806407a3f8850a1b1b473c8fd7ff74aa9a29ce",
+    "local/cc10_gui_group_pool/listing_00ac7260.txt": "4dc5cba1ac62632693b6460cfea1087b70e4ee13c158da3b143185a9602d242d",
+    "local/cc10_gui_group_pool/listing_00ac73d0.txt": "797f1f046822145d0bb02d209ee460ca66791a768cef157866b8ab01da6d7603",
+    "local/cc10_gui_group_pool/listing_00ac7410.txt": "4137bd985aea8fc368105f8c268d4531ef356fa3f25f7a1b92567e90aacf9d47",
+    "local/cc10_gui_group_pool/listing_00ac74f0.txt": "225ca5c0d6149aa940398c70a27fd6c1a29ee4266627a629271b4a14275ada7d",
+    "local/cc10_gui_group_pool/listing_00ac7590.txt": "e3312a541645fc7dd49f3c484b4282f67e5f2d1139d095bb80bc102bda2800c7",
+    "local/cc10_gui_group_pool/listing_00ac76d0.txt": "5e4a6563745e8a5d4ed5fedc664d2e8ad1da76940709ff06e9fd5d87fd21ec61",
+    "local/cc10_gui_group_pool/listing_00cb8b0e.txt": "893f5820b860ba838f444ccf4ad6f32336ddaed42c6ead123c459008135c3cb9",
+    "local/cc10_gui_group_pool/listing_00cd7440.txt": "3af0ce1245942f98c99103b7adbf3f3d5c51a1ce5dace679b277107fb58f7db1",
+    "local/cc10_gui_group_pool/listing_00ce0ae0.txt": "0bf907f5e25ccf35d7d7a7e1e016fce5745343105c71b7a84d52e6844d67d532",
+    "local/cc10_gui_group_pool/listing_gaps.json": "5cb02174d4f941d78e6cec4d0cdae65318a989f8e3f8e9de3246d134c4bc8cc4",
+    "local/cc10_gui_group_pool/names.json": "d1ddc91e78b82687aac43e8d5d22ef294e40d6e5ba3b16942b8de061f0599c5f",
+    "local/cc10_gui_group_pool/native_bytes.hpp": "5a4a7ef917a6e00e0b38e1d62253db110c0439a7373afdf3559fc0f3f0d59a14",
+    "local/cc10_gui_group_pool/pins.json": "30a4eca4a665a5a82abbe646f9932858ee88c95251d403da03c654c39f90b980",
+    "local/cc10_gui_group_pool/prepare.py": "b37d4a3b1a822bb049020cae106f85dadd7350a3b2797cf35d6ac8759957f28c",
+    "local/cc10_gui_group_pool/probe.cmd": "205ccebc74e1abb3b66fa6aff5025b7acae85b1fd704043559eb91b62e32cdc0",
+    "local/cc10_gui_group_pool/probe.cpp": "0cfec5d52aa6e53044cd0ee058977c8ac91cd6316735f6243a6ebf338708d098",
+    "local/cc10_gui_group_pool/probe.map": "9a52c9fce0a4d7d5eec643907c6512e0783e38093ff1b8c1898a892c8246f7d3",
+    "local/cc10_gui_group_pool/probe.obj": "d1b2b270d1b5b667d770399eaf3183ba75f5f0cb506606c627d373ddce94df72",
+    "local/cc10_gui_group_pool/probe_build.log": "e61f31e9edd2fea707c8148c5ee23018bee82dbf4fb1761d14e52cd1dd78d9f8",
+    "local/cc10_gui_group_pool/report.py": "86f1f73f1976118277b4a0f17d7b45a2fd8bb63f7a18c28aba189b4a705581e4",
+    "local/cc10_gui_group_pool/report_calls.log": "2977990f7f12e60ca2b58ba63546563504b682760fede63612310da59f96420b",
+    "local/cc10_gui_group_pool/run.log": "28fb5980beae1bb1916e6fe18d78c177a7686a5ea00d226af45f264c91d7c9b8",
+    "local/cc10_gui_group_pool/shared_engine_before.cpp": "9691d74084ee2eb364ee58a02c10132e7d7f13c67cf1b05e1ad387bcc6d5ab2f"
+  },
+  "local_archive": {
+    "path": "local/cc10_gui_group_pool_evidence.zip",
+    "sha256": "c7aa87452ab19400fe950d3a4c3a4a146c94715f4080f463dc2de1740df37853",
+    "valid": true,
+    "files": 62
+  }
+}
