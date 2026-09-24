@@ -6,6 +6,8 @@
 
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/gun_aim_terms.hpp"
+#include "bsp/gun_fire_points.hpp"
+#include "bsp/gun_mount_positions.hpp"
 
 #include <array>
 #include <limits>
@@ -110,6 +112,14 @@ constexpr bool kAaTargetWorldVelocityBound = true;
 //    along its track (0070C210, the radial blast). OFF: direct strikes only.
 //    Packet cc9_flak_proximity_burst.
 constexpr bool kFlakProximityBurstBound = true;
+//  * kGunBarrelCountBound: gun+448h, the barrel count, is 0072AB80 on the
+//    muzzle list 007325A0 builds from the device model (the row's `Mesh`,
+//    [class+50h]): ("fire", 0)'s whole Points list, else one first point per
+//    consecutive ("fire", k) Aux item from k = 1, floored to 1 (0072E71A).
+//    OFF: the number of `Bullet` records in the device row. A model that is
+//    absent or unreadable keeps the record count and is counted in the
+//    summary. Packet cc9_gun_barrel_count, docs/GUN_BARREL_COUNT.md.
+constexpr bool kGunBarrelCountBound = true;
 
 // 00901C20 BSP_GunBot_InterceptSolution, the time-of-flight half, as a pure rule.
 // rel = target position - shooter position; vel = target velocity - shooter
@@ -516,6 +526,21 @@ struct GameGunneryHost::Impl {
     unsigned long long water_depth_kills{0};   // packet cc9_water_surface_law
     unsigned long long flak_locks{0};           // packet cc9_flak_proximity_burst
     unsigned long long flak_bursts{0};
+    // Packet cc9_gun_barrel_count: the device model's muzzle list, one load
+    // per device class (the image does it once per weapon class, 007325A0).
+    struct DeviceFirePoints {
+        bool loaded{false};          // the model opened and parsed
+        std::string mesh;
+        std::size_t fire_items{0};
+        bsp::GunFireMuzzleList list; // class+98h..A0h
+        int records{-1};             // the OFF count, Bullet records
+        std::size_t guns{0};         // guns built on this device
+    };
+    std::map<int, DeviceFirePoints> fire_points_by_device;
+    unsigned long long barrel_guns_from_model{0};
+    unsigned long long barrel_guns_changed{0};
+    unsigned long long barrel_guns_fallback{0};
+    DeviceFirePoints& device_fire_points(int device);
     // Set by run_projectiles around apply_hit / apply_impact_blast so a round's
     // own class (the second ammunition) prices its damage; -1 means the gun's.
     int round_bullet_class{-1};
@@ -696,6 +721,45 @@ struct GameGunneryHost::Impl {
 // ---------------------------------------------------------------------------
 // The authored tables, flattened through the live Lua state
 // ---------------------------------------------------------------------------
+
+// Packet cc9_gun_barrel_count. The image loads the device row's `Mesh` into the
+// weapon class's +50h and 007325A0 reads its "fire" Points items into class+98h.
+// This process opens the same path through the mounted VFS once per device and
+// keeps 007325A0's list; the barrel count is 0072AB80 on it.
+GameGunneryHost::Impl::DeviceFirePoints&
+GameGunneryHost::Impl::device_fire_points(int device) {
+    auto found = fire_points_by_device.find(device);
+    if (found != fire_points_by_device.end()) return found->second;
+    DeviceFirePoints& entry = fire_points_by_device[device];
+    entry.mesh = lua.read_device_class_string(device, "Mesh");
+    std::string error;
+    if (entry.mesh.empty()) {
+        error = "no Mesh string";
+    } else {
+        std::vector<std::uint8_t> bytes;
+        std::vector<bsp::GunFirePointItem> items;
+        if (!lua.read_resource_file(entry.mesh, bytes)) {
+            error = "model did not open";
+        } else if (bsp::read_mmod_aux_point_items_0071b3e0(bytes, items, error)) {
+            entry.loaded = true;
+            for (const bsp::GunFirePointItem& item : items) {
+                if (item.name == "fire") ++entry.fire_items;
+            }
+            entry.list = bsp::gun_fire_muzzle_offsets_007325a0(items);
+        }
+    }
+    if (entry.loaded) {
+        log.notef("gunnery: device %d mesh=%s aux fire items=%zu index0=%d muzzles=%zu "
+            "barrels=%d%s (007325A0/0072AB80)", device, entry.mesh.c_str(), entry.fire_items,
+            entry.list.whole_index0 ? 1 : 0, entry.list.offsets.size(),
+            bsp::gun_muzzle_count_0072ab80(entry.list.offsets.size()),
+            entry.list.empty_item_stopped ? " stopped-at-empty-item" : "");
+    } else {
+        log.notef("gunnery: device %d mesh=%s barrel count not read from the model: %s",
+            device, entry.mesh.empty() ? "-" : entry.mesh.c_str(), error.c_str());
+    }
+    return entry;
+}
 
 void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_ids) {
     // The twelve `Function` spellings 007327B0 compares against, emitted from
@@ -990,6 +1054,21 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
             gun.speeds.horz = flat_scaled(type_id, make("hrs"), kMilliScale, 0.0f);
             gun.speeds.vert = flat_scaled(type_id, make("vrs"), kMilliScale, 0.0f);
             gun.barrel_num = std::max(1, flat(type_id, make("barrels"), 1));
+            if (kGunBarrelCountBound && gun.device_class >= 0) {
+                // 0072E71A: gun+448h = 0072AB80(class) on 007325A0's list.
+                DeviceFirePoints& fp = device_fire_points(gun.device_class);
+                fp.records = gun.barrel_num;
+                ++fp.guns;
+                if (fp.loaded) {
+                    const int image = bsp::gun_muzzle_count_0072ab80(fp.list.offsets.size());
+                    if (image != gun.barrel_num) ++barrel_guns_changed;
+                    gun.barrel_num = image;
+                    ++barrel_guns_from_model;
+                    done("GunClass::load_fire_node_muzzle_offsets_007325a0", 0x007325a0u);
+                } else {
+                    ++barrel_guns_fallback;
+                }
+            }
             gun.bullet_class = flat(type_id, make("bullet"), -1);
             gun.reload_time = flat_scaled(type_id, make("reload"), kMilliScale, 0.0f);
             gun.barrel_delay_time = flat_scaled(type_id, make("bdelay"), kMilliScale, 0.0f);
@@ -4717,6 +4796,16 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery flak proximity locks=%llu bursts=%llu bound=%d "
             "(0070C370, packet cc9_flak_proximity_burst)", host.flak_locks, host.flak_bursts,
             kFlakProximityBurstBound ? 1 : 0);
+        host.log.notef("summary mission gunnery barrel count from model guns=%llu changed=%llu "
+            "fallback=%llu devices=%zu bound=%d (007325A0/0072AB80, packet cc9_gun_barrel_count)",
+            host.barrel_guns_from_model, host.barrel_guns_changed, host.barrel_guns_fallback,
+            host.fire_points_by_device.size(), kGunBarrelCountBound ? 1 : 0);
+        for (const auto& [device, fp] : host.fire_points_by_device) {
+            host.log.notef("summary mission gunnery barrel device=%d guns=%zu records=%d image=%d "
+                "loaded=%d mesh=%s", device, fp.guns, fp.records,
+                fp.loaded ? bsp::gun_muzzle_count_0072ab80(fp.list.offsets.size()) : -1,
+                fp.loaded ? 1 : 0, fp.mesh.empty() ? "-" : fp.mesh.c_str());
+        }
         host.log.notef("summary mission aa acceptance bound=%d window_rejects=%llu "
             "armour_rejects=%llu min_range_skips=%llu (packet cc9_aa_targeting)",
             (kAaMinRangeBound ? 1 : 0) | (kAaFireWindowBound ? 2 : 0) | (kAaArmourBound ? 4 : 0),
@@ -4990,13 +5079,15 @@ void GameGunneryHost::report() {
         for (std::size_t g = 0; g < host.guns.size(); ++g) {
             const GameGunRow& gun = host.guns[g];
             host.log.notef("  gunrow %4zu %-24s plat %3d cat %2d assigns %6llu clears %6llu "
-                "shots %6llu rises %6llu refusals %7llu minrange_skips %5llu hits %4llu dealt %8.1f",
+                "shots %6llu rises %6llu refusals %7llu minrange_skips %5llu hits %4llu dealt %8.1f"
+                " dev %4d barrels %d",
                 g, gun.unit_name.c_str(), gun.platform_key, gun.category, gun.assigns,
                 gun.clears, gun.shots, gun.trigger_rises, gun.angle_refusals,
                 host.aa_min_range_skips_by_gun.count(g) != 0
                     ? host.aa_min_range_skips_by_gun.at(g) : 0ull,
                 host.hits_by_gun.count(g) != 0 ? host.hits_by_gun.at(g).first : 0ull,
-                host.hits_by_gun.count(g) != 0 ? host.hits_by_gun.at(g).second : 0.0);
+                host.hits_by_gun.count(g) != 0 ? host.hits_by_gun.at(g).second : 0.0,
+                gun.device_class, gun.barrel_num);
         }
     }
     host.log.note("  unit                 side  guns  cats                 range  nearest"
