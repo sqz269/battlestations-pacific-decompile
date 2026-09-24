@@ -1,0 +1,167 @@
+{
+ "events": [
+  {
+   "recreate": "00b829d0",
+   "previous": "Function: BSP_SceneRegistry_DestroyList at 00b829d0\nSignature: undefined BSP_SceneRegistry_DestroyList(void)\nEntry: 00b829d0\nBody: 00b829d0 - 00b82a0b",
+   "plate": "[BSP reconstruction 00b829d0]\nReset/drain borrowed-key links, free sentinel, then clear head. True normal body ends00B82A17 RET (exclusive00B82A18); current Ghidra body omits the post-free tail. Native[00b829d0,00b82a18): ECX embedded list; RET0. Evidence docs/SYSTEM_LIGHTING_OWNERS.md; reports/system_lighting_owners_audit.json. Canonical SceneNodeRegistry owns the same12-byte links, native-shaped list owner and eight-byte iterators read by system lighting. Its private resize helper covers reachable registry capacities9,17,33,... and clear/reuse; it is not a general vector or original allocator/EH ABI replacement. Storage review: docs/SCENE_REGISTRY_STORAGE_REVIEW.md; reports/scene_registry_storage_review.json.\nIntegration: docs/SYSTEM_OWNER_INTEGRATION.md; reports/system_owner_integration_audit.json"
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00b829d0"
+   },
+   "result": {
+    "success": true,
+    "address": "00b829d0",
+    "deleted_function": "BSP_SceneRegistry_DestroyList",
+    "body_size": 49,
+    "message": "Function 'BSP_SceneRegistry_DestroyList' deleted at 00b829d0"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b829d0",
+    "end_address": "00b82a18"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b829d0",
+    "end_address": "00b82a17",
+    "bytes_disassembled": 72,
+    "message": "Successfully disassembled 72 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b829d0",
+    "disassemble_first": false,
+    "name": "BSP_SceneRegistry_DestroyList"
+   },
+   "result": {
+    "success": true,
+    "address": "00b829d0",
+    "function_name": "BSP_SceneRegistry_DestroyList",
+    "entry_point": "00b829d0",
+    "body_size": 72,
+    "message": "Function created successfully at 00b829d0",
+    "warnings": [
+     "Function name 'BSP_SceneRegistry_DestroyList' \u2014 main part 'SceneRegistry_DestroyList' is not PascalCase. Expected: SceneregistryDestroylist",
+     "Function name 'BSP_SceneRegistry_DestroyList' \u2014 main part 'SceneRegistry_DestroyList' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_SceneRegistry_DestroyList' does not start with a recognized verb. First word 'Scene' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "00b829d0",
+    "comment": "[BSP reconstruction 00b829d0]\nReset/drain borrowed-key links, free sentinel, then clear head. True normal body ends00B82A17 RET (exclusive00B82A18); current Ghidra body omits the post-free tail. Native[00b829d0,00b82a18): ECX embedded list; RET0. Evidence docs/SYSTEM_LIGHTING_OWNERS.md; reports/system_lighting_owners_audit.json. Canonical SceneNodeRegistry owns the same12-byte links, native-shaped list owner and eight-byte iterators read by system lighting. Its private resize helper covers reachable registry capacities9,17,33,... and clear/reuse; it is not a general vector or original allocator/EH ABI replacement. Storage review: docs/SCENE_REGISTRY_STORAGE_REVIEW.md; reports/scene_registry_storage_review.json.\nIntegration: docs/SYSTEM_OWNER_INTEGRATION.md; reports/system_owner_integration_audit.json"
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 00b829d0",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "00b829d0",
+   "end": "00b82a18",
+   "name": "BSP_SceneRegistry_DestroyList",
+   "after": "Function: BSP_SceneRegistry_DestroyList at 00b829d0\nSignature: undefined BSP_SceneRegistry_DestroyList(void)\nEntry: 00b829d0\nBody: 00b829d0 - 00b82a17"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00cc2350",
+    "end_address": "00cc235a"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00cc2350",
+    "end_address": "00cc2359",
+    "bytes_disassembled": 10,
+    "message": "Successfully disassembled 10 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00cc2350",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00cc2350",
+    "function_name": "FUN_00cc2350",
+    "entry_point": "00cc2350",
+    "body_size": 10,
+    "message": "Function created successfully at 00cc2350"
+   }
+  },
+  {
+   "defined": "00cc2350",
+   "end": "00cc235a",
+   "name": null,
+   "after": "Function: FUN_00cc2350 at 00cc2350\nSignature: undefined FUN_00cc2350(void)\nEntry: 00cc2350\nBody: 00cc2350 - 00cc2359"
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00cc237b",
+    "end_address": "00cc2385"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00cc237b",
+    "end_address": "00cc2384",
+    "bytes_disassembled": 10,
+    "message": "Successfully disassembled 10 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00cc237b",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00cc237b",
+    "function_name": "FUN_00cc237b",
+    "entry_point": "00cc237b",
+    "body_size": 10,
+    "message": "Function created successfully at 00cc237b"
+   }
+  },
+  {
+   "defined": "00cc237b",
+   "end": "00cc2385",
+   "name": null,
+   "after": "Function: FUN_00cc237b at 00cc237b\nSignature: undefined FUN_00cc237b(void)\nEntry: 00cc237b\nBody: 00cc237b - 00cc2384"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
