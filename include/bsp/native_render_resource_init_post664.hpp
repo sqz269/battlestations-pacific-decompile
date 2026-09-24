@@ -19,13 +19,15 @@ struct NativeRenderResourceInitPost664Names {
 // backing storage alive through dependent stages/callbacks. Parameter captures
 // add no owner credit. Existing explicit external quiescence governs reset.
 struct NativeRenderResourceInitPost664State final {
-    enum class Phase { fresh, preparing, running, awaiting_b12c9a_continuation, failed };
+    enum class Phase { fresh, preparing, running, awaiting_b12c9a_continuation,
+        tail_running, normal_work_complete, failed };
     NativeRenderResourceInitPost664State() = default;
     NativeRenderResourceInitPost664State(const NativeRenderResourceInitPost664State&) = delete;
     NativeRenderResourceInitPost664State& operator=(const NativeRenderResourceInitPost664State&) = delete;
     Phase phase{Phase::fresh};
     NativeRenderResourceInitPost65cState* previous{};
     const NativeRenderResourceInitPost664Names* names_identity{};
+    const void* tail_identity{}; // One-use terminal normal-work fragment; retain all dependents.
     NativeRenderResourceInitEntryState* entry_identity{};
     const volatile NativeRenderResourceInitArguments* argument_cells_identity{};
     std::uint32_t native_site{};
