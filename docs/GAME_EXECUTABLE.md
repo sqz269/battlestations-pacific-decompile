@@ -9246,3 +9246,54 @@ keyed like `ship_ai_draw`. Runs are from the worktree root **without**
   - E2 damage 10165.8 to 9585.8, deaths 32 to 30 and bomb drops 8 to 10.
   - The first hit moves to 98.95 s.
 - **No mission end in 9000 frames,** as in the previous section.
+
+## Mission reference baselines, 2026-09-23 (after the flak burst, follow law, moveto blend, neighbour pipeline, barrel count and death flags)
+
+**These rows supersede the combined-state rows above** (`617f563db`, `local\rbF_*`).
+
+The binary is built from `14a06fe19`, which is main `ed1b14b5d` merged into `agent/cc9-aa-targeting`,
+saved as `local\rbB`. All switches are in their landed states. Runs are from the worktree root
+**without** `BSP_GUNNERY_RNG_STREAMS`.
+
+**Landed since `617f563db`, in merge order** (packet commits on main):
+- `aa23a79de`, `2225be472`, `04c3a227d`: the squadron leave at death and the planner range factor
+  (`cc9_val_squadron_registry`). The range factor was later held OFF on main, and it is OFF in this
+  build.
+- `09986bcb3`, `fd9a8b620`: the fighter aim distortion and stick damping (`cc9_gun_aim_terms`,
+  `cc9_fighter_aim_wiring`).
+- `3042e0cb0`: the ship neighbour list (`cc9_ship_neighbour_list`).
+- `3047ef235`: the wing follow law at every `009C1FD0` seam (`cc9_plane_follow_law`).
+- `f1fee731b`: AA lead on the plane's world velocity (`cc9_aa_lethality_audit`).
+- `227b0114c`: the neighbour node clips and `009F0100` (`cc9_neighbour_clips`).
+- `081f5726f`: the follow catch-up terms and hold steer point (`cc9_follow_catchup_speed`).
+- `cbb798af5`: the flak proximity burst (`cc9_flak_proximity_burst`).
+- `446cbdd80`: the pass-side message and traffic pass (`cc9_pass_side_message`).
+- `11d4864f0`: the torpedo and dive moveto speed blend (`cc9_wing_achieved_speed`).
+- `3cc43e303`: the `009F4D27` rudder-gate store (`cc9_free_bearing_query`).
+- `c4a1c5253`: the Yorktown order-split trace (`cc9_yorktown_order_split`), read-only.
+- `2713c3540`: the barrel count from the device model (`cc9_gun_barrel_count`).
+- `b9723b461`: a dead plane's `+5Dh`/`+60h` (`cc9_plane_death_flags`).
+- `1c9a89843`: the minimap unit gate and icon find (`cc9_unimplemented_audit`).
+
+| mission | frames | damage | deaths | queued_hits | bomb_drops | bomb_impacts | torpedo drops | plane water contacts | first_hit | AA shots | mission end | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 mission | **5886.8** | **26** | **371** | 0 | 0 | **0** | 7 | 99.80 s | 2803 | none | `local\rbB_usn04.log` |
+| USN01 | 3000 mission | 2250.0 | 5 | 129 | 0 | 0 | 2 | 0 | **55.65 s** | 356 | none | `local\rbB_usn01.log` |
+| USN04 (E2) | 9000 mission | 7709.8 | **37** | **508** | **0** | 0 | **0** | 15 | 99.80 s | 4046 | none | `local\rbB_e9000.log` |
+
+**Against the combined-state rows:**
+- USN04 4500: deaths 11 to 26, damage 2645.0 to 5886.8, queued hits 148 to 371, AA shots
+  1977 to 2803, torpedo drops 4 to 0. All 26 deaths are side 1, and no ship takes damage in
+  either row.
+- E2 9000: deaths 30 to 37 (35 side 1, 2 side 0). Bomb drops fall from 10 to 0 and torpedo drops
+  from 8 to 0, so **no ordnance reaches the fleet in E2 any more**. Ship damage taken falls from
+  2906 to 0.
+- USN01: deaths 5 to 5, torpedo drops 3 to 2, first hit 63.65 to 55.65 s.
+- Refused releases from dead aircraft: 7 at USN04 4500, 1 at USN01 and 7 at E2.
+- Death modes: USN04 4500 has 6 explosions, 11 delayed and 9 power-lost. E2 has 8, 16 and 13.
+- **The moves are not split among the landings.** The barrel count (twin and quad Bofors up to 2
+  and 4 barrels, DP mounts down to 1) and the flak burst raise AA lethality. The follow law, the
+  catch-up terms and the moveto blend change where the attack wings fly. The zero releases in E2
+  are the headline change. Which landing removes them is the next thing to bisect, and the pairs
+  in `docs/GUN_BARREL_COUNT.md` (drops 3 to 4 in E2) point away from the barrel count.
+- **No mission end in 9000 frames,** as before.
