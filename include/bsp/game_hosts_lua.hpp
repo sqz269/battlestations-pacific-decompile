@@ -332,6 +332,14 @@ public:
     // `Bullets[index][key]` as a string; "" when absent. Used for `Type`.
     std::string read_bullet_class_string(int index, const char* key);
 
+    // `DeviceClass[index][key]` as a string; "" when absent or not a string.
+    // Used for the device row's `Mesh` model path. docs/GUN_BARREL_COUNT.md.
+    std::string read_device_class_string(int index, const char* key);
+
+    // The whole of a mounted resource through the VFS the scripts are read
+    // from (mode 2, the script read mode); false when it does not open.
+    bool read_resource_file(const std::string& path, std::vector<std::uint8_t>& bytes);
+
     // Milestone 2j. The head of the gameplay settings loader 0083b5e0: it
     // formats `Scripts\datatables\ShipGlobals.lua` (the literal at 00d0b67c)
     // into a path at 0083b6c3, runs it through the Lua state owner's own runner
