@@ -241,3 +241,81 @@ body stops short of them:
 | --- | --- | --- |
 | 00432ED0 | 00433560 | ShipCaptain update, vtable 00CF5CE8 +DCh; previous function 00432E60 ends at 00432ECA |
 | 0042DEF0 | 0042DF7D | mover matrix getter, vtable +120h; previous function 0042DCD0 ends at 0042DEEB |
+
+## 9. Part 3: the in-mission FOV
+
+**Where it is set.** Screen 45h's update, `0064DD30`, is slot +20h of the screen vtable `00CF5E30`.
+The screen registers at interface+78h, and its enter virtual is 0064BB90. At
+0064DE92..0064DEAB it runs its pipe-sight block while two things hold: its unit (+184h) is set,
+and `ShipGlobals["PipeSightParams"].pipesight_enabled` (settings+44h) is true. This installation
+authors it true. The block ends at 0064E2C7..0064E2EE with `004DC940(1 - zoom_rate * [00E197F4], 1)`,
+where zoom_rate is settings+7Ch (0.5 here).
+
+**What 004DC940 does.** It stores the index in game+1A04h. When game+634h is clear it sets the
+Operator fov through 00B6FBB0 to `GlobalConfig+F4h[1] * [00F889B4] * scale`.
+
+**The stored value.** GlobalConfig+F8h is written by 0087D7B0 at 0087EC0F..0087EC2F as
+`Globals["FOVs"]["Ship"] * pi / 180 / [00F889B4]`. The FOV key is 00D0E2C8 and the Ship key is
+00CEB79C. This installation authors 30 in `globals.lua`. `[00F889B4]` is the settings block's +34h,
+set by 008D4596 to 00CE7D20 = 0.6981317 (`src/game_settings.cpp`).
+
+**The result.** The in-mission fov is FOVs.Ship in radians times the scale. With zoom 0.0 that is
+0.5235988, 30 degrees, in place of the constructor's 40.
+
+**Bound under its own switch `kMissionFovBound`, which needs `kMissionCameraBound` on as well.** It is set each camera tick through
+`global_config_fov_0087ec0f`, `pipe_sight_fov_scale_0064e2d6` and `mission_fov_004dc940`. The keys
+come from `read_global_fov_ship_0087d7b0` and `read_pipe_sight_params_0083b5e0`.
+
+**Substitution.** The zoom `[00E197F4]` grows only through the player's gun-fire adds at 0064DFDE
+(`zoom_heavy_add` 0.05 and so on), and those events are gunnery's. Without them the spring and drag
+at 0064E0E6..0064E2D0 leave it at its zero start, and the only subtraction, zoom_aa_add, is 0.0
+here. The host holds it at 0.0, so the scale is exactly 1.0. The rest of 0064DD30, about 9 KB,
+stays the `FrontEndScreen::update` record.
+
+## 10. Part 3: the marker pools, `00640620`
+
+**The image.** 006435D0 zeroes the pool-D cursor (+A0h) and makes the opening call. The closing
+call is at 00643D41. The routine does four things:
+- **Pool A** (+50h/+54h, cursor +7Ch): hides every entry past the cursor through 006374B0.
+- **Pools B and C** (cursors +80h, +84h): SetVisible(0) on their widgets.
+- **Pool D** (cursor +A0h): destroys its tail and shrinks the vector through 0063FFC0.
+- **Cursors:** zeroes those of A, B and C.
+
+**Bound under `kHudMarkerPoolsBound`.** The host's marker clones become pool A, taken in order
+through the cursor in place of the per-unit map. Both calls run the walk. B, C and D stay empty:
+the host builds no target callout, group label or owned object. Because the opening call hides
+every entry and the marker writer re-shows the ones it uses, **a marker the frame does not place
+is now hidden instead of left at its old position.**
+
+**Substitution.** Entries are taken, and re-shown, where the host places a marker. 0063D1E0, the
+image's writer, is not reconstructed. The host's entry is one cloned `sidemarker_Group`, so hiding
+the group stands for 006374B0's 25 widget hides.
+
+## 11. Predictions for the part 3 pair, written before it
+
+The pair is one tree on main `5e5d20a33`: OFF has `kMissionFovBound` and
+`kHudMarkerPoolsBound` off, ON has both on. Both legs have `kMissionCameraBound` on, and this pair runs after
+the camera pair of section 6. Both use `BSP_GUNNERY_RNG_STREAMS=1`. This
+section's predictions extend section 6.
+
+- **Row that leaves UNIMPLEMENTED:** `HudMarkers::reset_marker_pool` 00640620, 18,316, as a done
+  row.
+- **Row added:** `MissionCamera::pipe_sight_fov` 004DC940, done, one per camera tick.
+- **Total.** The unimplemented total falls by 18,316.
+- **Flat rows.** Every camera row of section 6 is flat, because both legs have the camera on.
+- **HUD lines that move:**
+  - The mission-markers summary (`on_screen`, `collapsed`). The fov is 30 degrees against 40, and
+    unplaced markers are now hidden.
+  - The minimap is unchanged: its heading reads only the camera's forward row, which the fov does
+    not touch.
+- **Gameplay lines expected identical:** every gameplay summary line.
+
+## 12. The part 3 pair: not run yet
+
+At 18:17 and 18:23 PDT on 2026-09-23 the 120-frame probe (`local\cam_probe120b.log`,
+`local\cam_probe120c.log`) still died with `device_created=0 device_hr=0x80004005`, and
+`query session` from this shell still showed session 1 as Disc. All three switches are landed OFF: `kMissionCameraBound`, `kMissionFovBound` and `kHudMarkerPoolsBound`.
+
+The pairs are built at run time from this tree:
+1. The camera pair: `kMissionCameraBound` off, then on.
+2. This pair: camera on, with `kMissionFovBound` and `kHudMarkerPoolsBound` off, then on.

@@ -8,10 +8,25 @@
     "lifetime_provider_commit": "a4f03c84107303ec11d8383b751672e9d4c5bfc9"
   },
   "profile_table": [
-    {"profile": "00d24d94", "slot_offset": 0, "target": "00a4c620", "live_bytes": "20 c6 a4 00", "binding": "native_media"},
-    {"profile": "00d5bfcc", "slot_offset": 0, "target": "00aa6540", "live_bytes": "40 65 aa 00", "binding": "native_gui"}
+    {
+      "profile": "00d24d94",
+      "slot_offset": 0,
+      "target": "00a4c620",
+      "live_bytes": "20 c6 a4 00",
+      "binding": "native_media"
+    },
+    {
+      "profile": "00d5bfcc",
+      "slot_offset": 0,
+      "target": "00aa6540",
+      "live_bytes": "40 65 aa 00",
+      "binding": "native_gui"
+    }
   ],
-  "source_files": ["include/bsp/native_singleton_destruction.hpp", "src/native_singleton_destruction.cpp"],
+  "source_files": [
+    "include/bsp/native_singleton_destruction.hpp",
+    "src/native_singleton_destruction.cpp"
+  ],
   "contract": [
     "Preserve popped owner and scalar flags even when current publication changes",
     "Separate required media and GUI contexts; media does not require a dummy page provider",
@@ -28,10 +43,25 @@
     "probe_build_log": "local/cc10-gui-media-dispatch-probe-build.log",
     "probe_log": "local/cc10-gui-media-dispatch-probe.log",
     "probe_passed": true,
-    "checks": ["real getter registration and cache hits", "reverse shared singleton drain", "populated page reload between virtual20 and virtual04", "captured owner retained across changed publication", "both publications cleared"],
+    "checks": [
+      "real getter registration and cache hits",
+      "reverse shared singleton drain",
+      "populated page reload between virtual20 and virtual04",
+      "captured owner retained across changed publication",
+      "both publications cleared"
+    ],
     "probe_scope": "Source composition with explicit page test providers; not original/source comparison or game GUI proof"
   },
   "production_owner_creation": false,
   "application_wm_activate": false,
-  "next": "docs/GUI_OWNER_COMPOSITION_CC10.md"
+  "next": "docs/GUI_OWNER_COMPOSITION_CC10.md",
+  "source_sha256": {
+    "include/bsp/native_singleton_destruction.hpp": "d7685fc7a6b47e54f7f27e23b1f09060cc8704703fc495bb02f0c1db10faf5ed",
+    "src/native_singleton_destruction.cpp": "30d867c4f4d1abe67e3daf5621bf7ce5e8f865233ce1d10f37c4cfd7145ccd76"
+  },
+  "evidence_archive": {
+    "path": "local/cc10-platform-evidence/activation-prerequisites.zip",
+    "sha256": "c5dffcf51b8e63a307db04777059259d15f15aed73bad937a0c08feb44b1599e",
+    "valid": true
+  }
 }

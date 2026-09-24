@@ -430,6 +430,13 @@ public:
     // Length (class+A0h), each with its presence bit for the fallbacks
     // ship_class_camera_00831e0d applies. False when the row is missing.
     bool read_ship_class_camera_00831e0d(int type_id, ShipClassCameraInputs& out);
+    // Globals["FOVs"]["Ship"], the number 0087D7B0 reads at 0087EBE2..0087EC0A
+    // (globals.lua is run first when `Globals` is not yet a table). False when
+    // absent.
+    bool read_global_fov_ship_0087d7b0(double& degrees);
+    // ShipGlobals["PipeSightParams"] pipesight_enabled (settings+44h) and
+    // zoom_rate (settings+7Ch), the two keys screen 45h's FOV block reads.
+    bool read_pipe_sight_params_0083b5e0(bool& enabled, float& zoom_rate);
 
     // Read the recovered0083D492..0083D575 fragment on this actual Lua state.
     // Parent lookup errors return false with text; caller must reject the load.

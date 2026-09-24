@@ -1,7 +1,10 @@
 {
   "packet": "cc10_platform_activation_app",
-  "status": "xinput_lifetime_prepared_build_checked_activation_not_bound",
-  "source_files": ["include/bsp/game_hosts.hpp", "src/game_hosts.cpp"],
+  "status": "xinput_import_and_lifetime_build_checked_runtime_stops_at_existing_audio_failure",
+  "source_files": [
+    "include/bsp/game_hosts.hpp",
+    "src/game_hosts.cpp"
+  ],
   "changes": [
     "Own the selected XInputLibrary before platform window construction",
     "InputServices borrows that exact same module instance",
@@ -13,8 +16,66 @@
     "msvc_win32": true,
     "ctest_passed": 3,
     "ctest_failed": 0,
-    "combined_xinput_import_runtime": "pending"
+    "combined_xinput_import_runtime": {
+      "wrapper": "./tools/run_game.ps1 -Log local/cc10-activation-prerequisites-runtime.log -- --frames 60",
+      "log": "local/cc10-activation-prerequisites-runtime.log",
+      "exe_sha256": "889d5af5bb486e4df0f4c9795b0b063cc41d8b2088eb28bc5328e051199b8895",
+      "exit_code": 1,
+      "window_created": false,
+      "frames_presented": 0,
+      "earliest_failure": {
+        "api": "_FMOD_EventSystem_Init@20",
+        "result": 61
+      },
+      "following_failure": {
+        "bank": "sound/gui/error.fsb",
+        "create_sound_result": 78,
+        "length_result": 37
+      },
+      "comparison_without_lifetime_change": {
+        "built_revision": "9dcca1289",
+        "exe_sha256": "634c1c7cf3912337eea51f187125888248f712f743aa2f9edb8e96c4c800ce18",
+        "log": "local/cc10-xinput-late-comparison.log",
+        "same_failures": true,
+        "exit_code": 1,
+        "window_created": false
+      },
+      "audio_services_running": [
+        "AudioEndpointBuilder",
+        "Audiosrv"
+      ],
+      "sound_device_pnp_query": "All returned devices Status OK, ConfigManagerErrorCode 0",
+      "interpretation": "Failure reproduced without lifetime change; underlying audio cause unresolved. Not successful window/game validation."
+    },
+    "combined_build_log": "local/cc10-activation-prerequisites-integrate.log"
   },
   "application_wm_activate": false,
-  "remaining": ["one GUI owner shared by early window and loaded frontend pages", "actual raw page/resource admission and movie provider", "renderer focus dependency binding"]
+  "remaining": [
+    "one GUI owner shared by early window and loaded frontend pages",
+    "actual raw page/resource admission and movie provider",
+    "renderer focus dependency binding"
+  ],
+  "tested_revision": "648081336",
+  "worker_import_commit": "9dcca1289",
+  "evidence_archives": [
+    {
+      "path": "local/cc10-platform-evidence/activation-prerequisites.zip",
+      "sha256": "c5dffcf51b8e63a307db04777059259d15f15aed73bad937a0c08feb44b1599e",
+      "valid": true
+    },
+    {
+      "path": "local/cc10-platform-evidence/gui-media-lifetime.zip",
+      "sha256": "78ef7ee0e46724a8671ffee7950b60941e544cae7488712bef265eeb5a68842e",
+      "valid": true
+    },
+    {
+      "path": "local/cc10-platform-evidence/xinput-enable.zip",
+      "sha256": "17d3471f41a69b2bbcd00845e17ea06bc18e6801f04b5d0da6d717b1ec6f3dfa",
+      "valid": true
+    }
+  ],
+  "source_sha256": {
+    "include/bsp/game_hosts.hpp": "7509cadaa4b0abfcf51527a45de6466fc32e860b7ca0a8f6ea11a04b22a8ca53",
+    "src/game_hosts.cpp": "d2e8f0ce881ee86fe8ee96aa16ec1b43712953a533f8521a0fb5d340403b81f7"
+  }
 }
