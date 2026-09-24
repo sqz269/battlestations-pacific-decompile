@@ -1,0 +1,402 @@
+{
+  "packet": "cc10_application_material_process",
+  "base_commit": "967110e7e0333758d93d80cabcbb6d8ca7b44a3e",
+  "status": "canonical_process_binding_strict_build_and_focused_application_CRT_lifecycle_pass",
+  "scope": "two existing native pool bindings/explicit startup and one process effect serial; no cold compiler/effect cache activation",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "no_ghidra_function": [],
+  "native_calls": [
+    {
+      "address": "00cd78d5",
+      "native": "00b17fa0",
+      "function": "00cd78d0"
+    },
+    {
+      "address": "00cd78df",
+      "native": "00bf6ff5",
+      "function": "00cd78d0"
+    },
+    {
+      "address": "00cd78f5",
+      "native": "00b18340",
+      "function": "00cd78f0"
+    },
+    {
+      "address": "00cd78ff",
+      "native": "00bf6ff5",
+      "function": "00cd78f0"
+    },
+    {
+      "address": "00ce0bf5",
+      "native": "00b180d0",
+      "function": "00ce0bf0",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00ce0c05",
+      "native": "00b18470",
+      "function": "00ce0c00",
+      "kind": "tail_jump"
+    }
+  ],
+  "live_PE_blocks": [
+    {
+      "tag": "material_startup",
+      "start": "00cd78d0",
+      "end_exclusive": "00cd78e6",
+      "end_inclusive": "00cd78e5",
+      "bytes": 22,
+      "sha256": "ff23e662430cca2b62d45a8cd0d6f5b5c1f73bfa6bb863a68b3c7b057489d458",
+      "live_equals_PE": true,
+      "kind": "code",
+      "last_instruction": "00cd78e5",
+      "last_instruction_bytes": 1
+    },
+    {
+      "tag": "parameter_startup",
+      "start": "00cd78f0",
+      "end_exclusive": "00cd7906",
+      "end_inclusive": "00cd7905",
+      "bytes": 22,
+      "sha256": "0a67d80c27eed694f3406350e04c1039a8c57c3b297ce516a472a7c6e91e8e4f",
+      "live_equals_PE": true,
+      "kind": "code",
+      "last_instruction": "00cd7905",
+      "last_instruction_bytes": 1
+    },
+    {
+      "tag": "material_exit",
+      "start": "00ce0bf0",
+      "end_exclusive": "00ce0bfa",
+      "end_inclusive": "00ce0bf9",
+      "bytes": 10,
+      "sha256": "c9419065c611f20f86db8926aee25fe7d3f513eb0124ae93845d4bb179338743",
+      "live_equals_PE": true,
+      "kind": "code",
+      "last_instruction": "00ce0bf5",
+      "last_instruction_bytes": 5
+    },
+    {
+      "tag": "parameter_exit",
+      "start": "00ce0c00",
+      "end_exclusive": "00ce0c0a",
+      "end_inclusive": "00ce0c09",
+      "bytes": 10,
+      "sha256": "87fa7317261a8d2b40be1e15eb0caaaf2d81d7251436ac472329bedd503e03e1",
+      "live_equals_PE": true,
+      "kind": "code",
+      "last_instruction": "00ce0c05",
+      "last_instruction_bytes": 5
+    },
+    {
+      "tag": "effect_serial_body",
+      "start": "00b18e60",
+      "end_exclusive": "00b18e81",
+      "end_inclusive": "00b18e80",
+      "bytes": 33,
+      "sha256": "caaa8ab3df79ad969209324745714d75d1b94d0b8c348cf941403dc144625dc4",
+      "live_equals_PE": true,
+      "kind": "code",
+      "last_instruction": "00b18e80",
+      "last_instruction_bytes": 1
+    },
+    {
+      "tag": "crt_order",
+      "start": "00ce34f0",
+      "end_exclusive": "00ce3508",
+      "end_inclusive": "00ce3507",
+      "bytes": 24,
+      "sha256": "5c5ebcf2017927840db396f3fa59a47e61f2bfa25a047f03f69a0fa4585fb6c6",
+      "live_equals_PE": true,
+      "kind": "CRT pointer data"
+    }
+  ],
+  "process_storage": [
+    {
+      "address": "00f8d3a8",
+      "bytes": 4,
+      "loader_zero": true,
+      "section": ".data",
+      "offset": "0x1853a8",
+      "raw_size": "0x10000",
+      "virtual_size": "0x297edc"
+    },
+    {
+      "address": "00f8d3ac",
+      "bytes": 56,
+      "loader_zero": true,
+      "section": ".data",
+      "offset": "0x1853ac",
+      "raw_size": "0x10000",
+      "virtual_size": "0x297edc"
+    },
+    {
+      "address": "00f8d3e4",
+      "bytes": 56,
+      "loader_zero": true,
+      "section": ".data",
+      "offset": "0x1853e4",
+      "raw_size": "0x10000",
+      "virtual_size": "0x297edc"
+    }
+  ],
+  "canonical_aliases": {
+    "material": "NativeMaterialPool / NativeMaterialSlotPool, F8D3AC",
+    "parameter": "NativeMaterialParameterPool / NativeMaterialParameterSlots, F8D3E4",
+    "effect_serial": "NativeMaterialEffectConstructionAccess.next_serial_00f8d3a8",
+    "shared_list": "existing GameNativePhysicalPoolProcess E188B4"
+  },
+  "startup_order": [
+    "CE34F4 CD78B0 existing",
+    "CE34F8 CD78D0 material",
+    "CE34FC CD78F0 parameter",
+    "CE3500 CD7910 separate unchanged",
+    "CE3504 CD7960 existing"
+  ],
+  "exit_order": [
+    "CE0C00 tail B18470 parameter",
+    "CE0BF0 tail B180D0 material",
+    "source process bookkeeping destruction"
+  ],
+  "lifetime": "process and allocator domain outlive native callbacks; all actual payload/queued/operation uses must retire before pool callbacks; callbacks free slabs not payloads; no reset or extra native destruction",
+  "validation": {
+    "strict_win32_build": true,
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "new_tracked_tests": false,
+    "focused_probe": {
+      "result": "PASS",
+      "current_application_objects": 70,
+      "launcher": "tools/run_game.ps1",
+      "native_pool_registrations": [
+        0,
+        0
+      ],
+      "canonical_aliases": true,
+      "shared_allocator_list": true,
+      "real_base_effect_and_material_retired": true,
+      "parameter_name_slot_returned": true,
+      "effect_serial": [
+        0,
+        1
+      ],
+      "repeat_startup_preserved_native_headers_and_serial": true,
+      "returned_slabs_before_CRT": [
+        1,
+        1
+      ],
+      "actual_reverse_callbacks_observed": true,
+      "observer_cleanup": false,
+      "application_singleton_drain": true,
+      "device_api_final_COM_counts": [
+        0,
+        0
+      ],
+      "exit_code": 0
+    },
+    "report_calls": {
+      "checked": 6,
+      "failed": 0
+    }
+  },
+  "installed_source0_examples": [
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\postprocess\\downscale_depth.shfx",
+      "bytes": 3300,
+      "sha256": "4ec6842550923fc3805772b97297eb32d25a935ed4a77d63e99b657128b0c3da",
+      "first_sampler_texture_source": "field absent; native constructor source14=0; first reference precedes sampler-state setter"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\postprocess\\downscale4x4.shfx",
+      "bytes": 2855,
+      "sha256": "c0ab8d74d6a9892a718e0aa7ea5bce005eb54e6cc7417de4fe081ce9b91bdb03",
+      "first_sampler_texture_source": "field absent; native constructor source14=0; first reference precedes sampler-state setter"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\postprocess\\dummy_passtrough.shfx",
+      "bytes": 1066,
+      "sha256": "3484c285ab78c37725f15b8364944391f1c1ec40b6f936fe9e0e406b765ef29e",
+      "first_sampler_texture_source": "field absent; native constructor source14=0; first reference precedes sampler-state setter"
+    },
+    {
+      "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\shaderfx\\postprocess\\blur5x5.shfx",
+      "bytes": 1264,
+      "sha256": "3d144eb8a73ade1b363f5e6ba9ad6460e877e13e1c41d2b199af3f5ad1114a3b",
+      "first_sampler_texture_source": "field absent; native constructor source14=0; first reference precedes sampler-state setter"
+    }
+  ],
+  "cold_composition_boundaries": [
+    "R100/R101 borrowed compiler owner/source contexts are available; invocation frames and descriptor/name storage remain caller-owned",
+    "first source0 B3B280 consumes unknown entry B-16 before state setter; cached bytecode does not skip B3C018/B3C024",
+    "F8BBF0 policy owner/publication and procedural sampler runtime remain separate",
+    "B45E00 numeric/cache constructor bridge and B5F160 numeric capabilities bridge are separately root-owned work",
+    "no full B107F0 activation, original ABI/FH3/SEH or gameplay proof",
+    "bloom fourth-DWORD backing and distortion cleanup preimages unchanged"
+  ],
+  "binary": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "evidence": [
+    {
+      "path": "local/application_material_process_build.txt",
+      "bytes": 2989,
+      "sha256": "a849d3318568d08ed92441b940791b26f67e742e5148b2c21ceabe918b9c89e7"
+    },
+    {
+      "path": "local/application_material_process_evidence.py",
+      "bytes": 5815,
+      "sha256": "3a66e88832db10f21451fae0e7b101f4645d6a12a57f8724db8a11bba5d4cd25"
+    },
+    {
+      "path": "local/application_material_process_listing.txt",
+      "bytes": 672,
+      "sha256": "5b30fdc4c2ffec577e6cc6d2ef63c586ca2f0fa5601b30244b4bac4f2d744816"
+    },
+    {
+      "path": "local/application_material_process_material_exit_bytes.txt",
+      "bytes": 53,
+      "sha256": "38b19ad0a0f6d5dc559362718d529c836feda7c00add72cb49b05def6cc7c888"
+    },
+    {
+      "path": "local/application_material_process_material_exit_listing.txt",
+      "bytes": 56,
+      "sha256": "6412a5bab226c0438cc00841f4974333cfe8bf1456170373d18dd072e459ba03"
+    },
+    {
+      "path": "local/application_material_process_parameter_exit_bytes.txt",
+      "bytes": 53,
+      "sha256": "9ad530c0c678a1aa8c5a806bfed79a67d56273b22bf06af6df81a97f22a699df"
+    },
+    {
+      "path": "local/application_material_process_parameter_exit_listing.txt",
+      "bytes": 56,
+      "sha256": "23ac1477ccc39069047c35267884c57d915e1464891c25854ab1b7b6b2b9b424"
+    },
+    {
+      "path": "local/application_material_process_probe/application-material-process-probe.cpp",
+      "bytes": 30943,
+      "sha256": "9b652372a4a1fbd7a2254fb3ba74560adf8856003dca288da07b434a63f05700"
+    },
+    {
+      "path": "local/application_material_process_probe/material_process_probe_startup.hpp",
+      "bytes": 11539,
+      "sha256": "8928c35fbe08aa6a037ec975f1252246644353fe9fd96dc8cd00b82b6ff9db34"
+    },
+    {
+      "path": "local/application_material_process_probe/application-material-process-probe.exe",
+      "bytes": 3478016,
+      "sha256": "aca1bdfe1a340d6aba9fcc43ce8846f3f590bda2a71dab4029a021b333590e06"
+    },
+    {
+      "path": "local/application_material_process_probe/adaptation_sources.json",
+      "bytes": 666,
+      "sha256": "319110c3f762051786f4c15b9f11a33335199810a90e59c0e4523ee9aaa12316"
+    },
+    {
+      "path": "local/application_material_process_probe/application-objects.json",
+      "bytes": 16537,
+      "sha256": "565e280eebfd52769bf0f0e9dbc28a6a1c26f1760a4e18fd2e9089d3a830fcff"
+    },
+    {
+      "path": "local/application_material_process_probe/toolchain.json",
+      "bytes": 1608,
+      "sha256": "70c8fa3c4874a84094e6c0400a33c6808701d28b3dceff84c9fef9c29e9cb29a"
+    },
+    {
+      "path": "local/application_material_process_probe/dependencies.json",
+      "bytes": 63639,
+      "sha256": "722f43dd19ed4b16dbaede94ab5fc1c61c70630a61d4c5411c70a616fe6db04b"
+    },
+    {
+      "path": "local/application_material_process_probe/compile.log",
+      "bytes": 15516,
+      "sha256": "27dc8bb83836cd1451a214631642a10cf07548a1ad9314844d2217e013b81964"
+    },
+    {
+      "path": "local/application_material_process_probe/compile_before_header_fix.log",
+      "bytes": 1363,
+      "sha256": "76c78ee4637ec17cf959b65355315fdb895b67b93d5928bdf6de022e61b97644"
+    },
+    {
+      "path": "local/application_material_process_probe/launcher.txt",
+      "bytes": 350,
+      "sha256": "13b3d7085c7695b0b7e30df38d6e6ddb921190420469ac57888c0123d5623bd7"
+    },
+    {
+      "path": "local/application_material_process_probe/run.log",
+      "bytes": 48979,
+      "sha256": "e5f1ae0d12a181b050e9f55b9a441138062463361f29147699f75497ee2ae08e"
+    },
+    {
+      "path": "local/application_material_process_probe/crt.log",
+      "bytes": 163,
+      "sha256": "1fb511dbf68306d0b6d904a03cb5724f23e158a21e445fb81bb0bf83084fd90b"
+    },
+    {
+      "path": "local/application_material_process_verify_calls.txt",
+      "bytes": 86,
+      "sha256": "89e495264adda2dac1697ca1a254cdd6f0f9505a53c2f7537e4edb18ae25e089"
+    },
+    {
+      "path": "local/material_effect_readiness_crt_order_bytes.txt",
+      "bytes": 122,
+      "sha256": "c2bcfbc071d75d46a0cf5bbed025b249f65e9b64b6f51061af516c97c0f77e04"
+    },
+    {
+      "path": "local/material_effect_readiness_effect_serial_body_bytes.txt",
+      "bytes": 171,
+      "sha256": "eee80ad146f8df0b8bf47f661f0c56c8bbf767b55f68c25100135e457366123a"
+    },
+    {
+      "path": "local/material_effect_readiness_effect_serial_bytes.txt",
+      "bytes": 29,
+      "sha256": "2b57a5fbc38543da21a4390f45cd980eab1c3ce68a45f406e134c7278688c607"
+    },
+    {
+      "path": "local/material_effect_readiness_effect_serial_listing.txt",
+      "bytes": 845,
+      "sha256": "cec64c607cc89bdb626e05489b21621dceaa91ccb70f28d38786aabc7f55af22"
+    },
+    {
+      "path": "local/material_effect_readiness_effect_serial_xrefs.txt",
+      "bytes": 117,
+      "sha256": "e97670ee8e5b17abf5ecc4d9035c1c3f7912131d9dfd25d22694f1c7a0b2d0af"
+    },
+    {
+      "path": "local/material_effect_readiness_material_startup_bytes.txt",
+      "bytes": 114,
+      "sha256": "712e36cdd225d9a4d81c794a4ad76e899b34034ccb18a644fd212daade3f1cdc"
+    },
+    {
+      "path": "local/material_effect_readiness_native.json",
+      "bytes": 3121,
+      "sha256": "9d043a9c80941d47054c81c05a5637a1fb27e4ae6718fc9627f82212d7eb4736"
+    },
+    {
+      "path": "local/material_effect_readiness_parameter_startup_bytes.txt",
+      "bytes": 114,
+      "sha256": "76ae3f399360f3044bd8395e682f7454c7da1bcbbbcb5b7d81fc4a06e4d99787"
+    },
+    {
+      "path": "local/material_effect_readiness_shadow_publication_xrefs.txt",
+      "bytes": 744,
+      "sha256": "b383ad10f1fd21a831578ccc77c189ea25a8c28fc5b6c58cdf57e88e8f3e9f43"
+    },
+    {
+      "path": "local/prepare_application_material_process_probe.py",
+      "bytes": 10470,
+      "sha256": "446dadf6c7b5557c489a8cbd16fe706ea65798cf22781750fa99ac4ab6ba8e58"
+    },
+    {
+      "path": "local/build_application_material_process_probe.ps1",
+      "bytes": 2249,
+      "sha256": "00ecbf8636adcbfba7356c17123fe55a015d24c2d976947a2af251af693d7b19"
+    }
+  ]
+}
