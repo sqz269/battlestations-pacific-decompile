@@ -1,0 +1,52 @@
+{
+  "packet": "cc10_node_scene_attachment_integration",
+  "worker_commit": "40cfea081df66290b6adc36d90d0d25d95b7fc5b",
+  "integration": "def01379c9e9d94e3ccb12106377dc4cca659220",
+  "archive": {
+    "path": "local/cc10-platform-evidence/node-scene-attachment.zip",
+    "sha256": "2154329078d6bd55134be7c8b115c34b93d37725c0d7e51792c7a9cb50277a04",
+    "files": 44,
+    "valid": true
+  },
+  "review": [
+    "Entire header/source and all four complete native bodies reviewed",
+    "Actual node170 and light178 descriptors contain actual3Ch identities; no logical SceneResource dereference",
+    "Captured/current scene reloads and publish-before-retain or clear-before-release match native callbacks",
+    "Light removal passes original argument cell to erase but unregisters/releases captured request",
+    "Current imports, late recursion LOWBYTE, exact captured profile target and fresh child-next are preserved",
+    "Shared dispatch permits actual self with recursion0 and child with recursion1; pure metadata lookup only",
+    "Canonical terminal validates same actual4 count and observed zero; no extra credit or synthetic rollback",
+    "B7B390 repaired returning-free listing independently reviewed before fixture freeze"
+  ],
+  "validation": {
+    "owned_bytes": 547,
+    "live_equals_installed": true,
+    "dependency_bytes": 198,
+    "direct_call_rows": 7,
+    "indirect_call_rows_explicit": 12,
+    "original_source_recursive_comparison": true,
+    "real_resource_registry_gate_array_providers": true,
+    "actual_zero_terminal_bridge": true,
+    "source_allocation_failure_retains_uncredited_append": true,
+    "strict_win32_build": true,
+    "worker_ctests": 3,
+    "integrated_ctests": 3,
+    "build_log_sha256": "14010e8590a262904ef0bf1547c9480833939529d9cc64144fb1fa0b196a2ff2",
+    "new_tracked_tests": 0,
+    "original_terminal_byte_proof": false,
+    "native_ABI_FH3_SEH": false,
+    "legacy_lifetime_graph_admitted": false,
+    "application_bound": false,
+    "game_validated": false
+  },
+  "boundaries": {
+    "actual": "node170 single actual3Ch resource; light178/17C/180 actual12B array; resource+4 only canonical count and +14 actual28h registry with0Ch nodes/8B pairs",
+    "opaque_array_pointer_type": "SystemAmbientBacklinks SceneResource* entries carry only actual32bit identity bits here; never dereferenced as host SceneResource",
+    "array": "accessible nonoverflowing spans, nonnegative valid count/capacity, successful disjoint actual CRT allocation and valid current descriptors; no wrapped/null allocator success or arbitrary descriptor/backing overlap",
+    "registry": "nested query/erase/count valid accessible iterator/range restriction remains; not whole invalid-state compatibility",
+    "terminal": "SAME actual owner registry; validate reference_count address equals captured scene+4; existing terminal is noexcept and requires genuine observed zero/current valid profile; arbitrary count-changing decrement continuations excluded",
+    "ownership": "no new canonical admission/count copy/credit beyond native operations; caller must preserve real ownership on any callback mutations",
+    "unsupported": "legacy logical SceneAttachmentRuntime/NativeNodeDestructionRuntime/NativeCameraReference scene cells and terminal paths; full raw node/light/outer destruction graph and arbitrary current child targets remain separate"
+  },
+  "fixture_boundaries": "native fault unwind/CRT exception identity, private native helper stacks, corrupt array/invalid nested registry states, arbitrary profiles, legacy lifetime closure and game execution"
+}
