@@ -1,0 +1,35 @@
+{
+  "packet": "cc10_visibility_distortion_integration",
+  "integration_commit": "91243a334d8e2a127497064999fd7dbe97053ce1",
+  "worker_visibility_commit": "4d1a9d4fa61bc771e6f9d5c558fb60af39be6cd9",
+  "root_bridge_commit": "8e1f6f19b",
+  "review": [
+    "complete raw visibility header/source",
+    "17 getter comparisons with arithmetic EFLAGS/MXCSR/x87 and 9 actual4516B storage/derived-callback trace pairs",
+    "base leaf COMISS/RET4 behavior and numeric-target dispatch without unknown fallback",
+    "GUI circular-list current head/next and ancestor/profile callback rereads",
+    "actual distortion atomic/registry context identity and constructor cleanup holes",
+    "one real Direct3D distortion lifecycle plus bright regression"
+  ],
+  "validation": {
+    "strict_win32_build": true,
+    "existing_ctests_passed": 3,
+    "build_log_sha256": "5f2ec6b79db1e60883c50d5f4ec5b0c1ba77688dad3a6547ebe4de3376aea23b",
+    "native_ABI_FH3": false,
+    "application_run": false,
+    "game_validated": false,
+    "new_tracked_tests": 0
+  },
+  "visibility_archive": {
+    "path": "local/cc10-platform-evidence/gui-widget-visibility.zip",
+    "sha256": "f0f8ff2d35db9d114aa8e64e9baa55f817b34f3c7529b85df5bdccc5079bd325",
+    "files": 13,
+    "valid": true
+  },
+  "distortion_report": "reports/native_distortion_pass_companion_cc10.json",
+  "boundaries": [
+    "Visibility normal retained list/callback domain only; native invalid-list CRT paths and upper stacked DWORD preimages excluded",
+    "Distortion binding requires independently valid +34/+38/+3C state; capability failure alone does not admit terminal cleanup",
+    "No complete GUI/renderer graph application binding or gameplay claim"
+  ]
+}
