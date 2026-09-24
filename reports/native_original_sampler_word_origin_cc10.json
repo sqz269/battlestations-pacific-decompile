@@ -1,0 +1,132 @@
+{
+  "packet": "cc10_original_sampler_word_origin_audit",
+  "status": "observed_invocation_input_origin_unresolved",
+  "primary_verification": {
+    "worker_index_sha256": "2a0e21e885d2bb7f9df1b487a609cf7539134ad0ff2b855e9bbb368eb1b5c720",
+    "worker_indexed_files_verified": 33,
+    "prior_indexed_rows_verified": 1154,
+    "journal_records": 765,
+    "captured_native_bodies_verified_at_both_stops": 6,
+    "current_disk_modules_hash_matched_to_capture": 3,
+    "disk_ranges_verified_without_live_execution_claim": 5,
+    "observation": {
+      "address": 23259196,
+      "bits": 23259492,
+      "equal_at_two_stops": true,
+      "little_endian": "64e96201",
+      "matches_builder_only_in_this_invocation": true,
+      "stops": [
+        "00B3BFF9",
+        "00B3C018"
+      ]
+    },
+    "review": [
+      "Complete AUDIT.md reviewed with physical stack arithmetic",
+      "Static B5F9C8 PUSH EBX can write W on that construction path; historical EBX and final writer unobserved",
+      "Between captured markers no W write; future B5F10B writes only low byte and B5F13C reads full DWORD, both unexecuted in run03",
+      "Conditional D3D9 helper PUSH EDI can write builder at W only if the unobserved COM path was taken; later callbacks may overwrite it",
+      "Conditional ntdll branch can overwrite W with zero; stale stack words do not prove active call frames or branch history",
+      "Disk ranges preserve preferred-base absolute operands and recorded runtime decode positions; no live D3D9/ntdll body claim"
+    ],
+    "conclusion": "One invocation input verified; final origin and general high bytes remain unresolved. No default, builder rule or new original launch justified.",
+    "limits": [
+      "earlier COM receiver/table/current target",
+      "relevant live D3D9/ntdll bodies at use",
+      "nested targets and taken branches",
+      "historical writes to the word through first stop",
+      "root descriptor sampler contents/source/stage",
+      "actual sampler or second sampler execution"
+    ]
+  },
+  "worker_report": {
+    "audit": {
+      "bytes": 8413,
+      "path": "local/original_sampler_word_origin_run03_cc10/AUDIT.md",
+      "sha256": "ca127f4b3a0bd782811b595bb1613b288f02ed5f65932ff14413a928313295db"
+    },
+    "conditional_candidate": {
+      "admitted_as_origin": false,
+      "conditional_target": "P-30h",
+      "direct_call_rva": "0007EBAE",
+      "earlier_COM_target_captured": false,
+      "helper_rva": "000489E4",
+      "later_nested_targets_or_writes_captured": false,
+      "module": "d3d9.dll",
+      "outer_rva": "0007EB90",
+      "push_edi_rva": "000489F0",
+      "relevant_live_D3D9_body_captured": false
+    },
+    "copy_or_profile_mutations": 0,
+    "current_import_limit": "Captured CE2220 at both stops proves the then-current provider only, not earlier COM Release or prior atomic epochs.",
+    "established_static_writer": {
+      "address": "00B5F9C8",
+      "earlier_value_observed": false,
+      "final_writer_proven": false,
+      "operation": "PUSH EBX",
+      "target": "P-30h"
+    },
+    "ghidra_mutations": 0,
+    "matching_disk_candidates": {
+      "bytes": 7798,
+      "path": "local/original_sampler_word_origin_run03_cc10/matching_disk_candidates.json",
+      "sha256": "c75bddddd8d01c1ae2f5a70257c3601b244d4e7c7bc83d74538c6fb90695ed1b"
+    },
+    "missing_evidence": [
+      "earlier COM receiver/table/current target",
+      "relevant live D3D9/ntdll bodies at use",
+      "nested targets and taken branches",
+      "historical writes to the word through first stop",
+      "root descriptor sampler contents/source/stage",
+      "actual sampler or second sampler execution"
+    ],
+    "native_bodies": {
+      "bytes": 3224,
+      "path": "local/original_sampler_word_origin_run03_cc10/native_body_evidence.json",
+      "sha256": "a29c61638b84aeb2ccecdb9177b303dd6227d7785e978b90b2b0ac3aa398fd7e"
+    },
+    "new_game_helper_or_probe_executions": 0,
+    "observed_word": {
+      "address": 23259196,
+      "bits": 23259492,
+      "equal_at_two_stops": true,
+      "little_endian": "64e96201",
+      "matches_builder_only_in_this_invocation": true,
+      "stops": [
+        "00B3BFF9",
+        "00B3C018"
+      ]
+    },
+    "packet": "cc10_sampler_word_origin_run03",
+    "physical_schedule": {
+      "bytes": 4105,
+      "path": "local/original_sampler_word_origin_run03_cc10/physical_schedule.json",
+      "sha256": "3fe68498c61d91a2b0dbad410218b39ac3f39dcf57220568ce04729ba0038f97"
+    },
+    "preservation": {
+      "bytes": 4746,
+      "path": "local/original_sampler_word_origin_run03_cc10/preservation_verification.json",
+      "sha256": "a2f85ef7d812526061eec560f75a5e577a8db1071a9a94db8879c5ce924750e5"
+    },
+    "preserved_prior_indexed_rows": 1154,
+    "process_attach": 0,
+    "restoration_or_rebaseline": 0,
+    "source_default_or_builder_rule_admitted": false,
+    "source_receipts": {
+      "bytes": 5366,
+      "path": "local/original_sampler_word_origin_run03_cc10/source_receipts.json",
+      "sha256": "d7a31331ae032473586614aa50dca7fa97efe1176a8bcfedca9f1eded4185d5c"
+    },
+    "status": "observed_invocation_input_origin_unresolved",
+    "tracked_source_changes": 0
+  },
+  "root_disposition": "Accepted only as a bounded negative result and conditional origin explanation. No source default/builder rule, original retry, restoration or rebaseline.",
+  "new_execution": false,
+  "source_changes": false,
+  "game_validated": false,
+  "archive": {
+    "path": "local/cc10-platform-evidence/original-sampler-word-origin.zip",
+    "sha256": "5f41e52a47c162810aef2d1bda3c3c11f77233453e7d57722ea1e7428f78fa73",
+    "files": 38,
+    "valid": true
+  }
+}
