@@ -2913,6 +2913,12 @@ struct GameUnitsHost::Impl {
     // the controlled unit (0067BB50), and unit+184h set only by an accepted
     // role-1 take. Before: unit+184h was "the unit 004c0890 bound".
     static constexpr bool kPlayerRoleBookkeepingBound = true;
+    // Where 0067BB50 runs: true keeps the once-per-fixed-step call before the
+    // unit loop; false leaves it to the HUD pump through the public
+    // GameUnitsHost::role_screen_update_0067bb50 (twice per mission frame,
+    // docs/SHIP_SCREEN_UPDATE.md 21). Default true: no row moves until the
+    // pump path is wired.
+    static constexpr bool kRoleScreenFixedStepCall = true;
     // Packet cc9_plane_substitution_sweep (docs/PLANE_SUBSTITUTION_SWEEP.md):
     // the torpedo done/prepare tick's 009D1500 answer (was 0), unit+BC4h's yaw
     // gain from the terrain arm (was held at 1.0), and the fighter lead's
@@ -6906,7 +6912,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
     ++host.summary.motion_steps;
     host.summary.simulated_seconds += step_seconds;
     if constexpr (Impl::kPlayerRoleBookkeepingBound) {
-        host.role_screen_update_0067bb50();
+        if constexpr (Impl::kRoleScreenFixedStepCall) {
+            host.role_screen_update_0067bb50();
+        }
         host.player_helm_prepare_0064b870();
     }
     if constexpr (bsp::kPlaneSquadronLeaveOnDeathBound) {
@@ -14841,6 +14849,12 @@ bool GameUnitsHost::unit_player_controlled_0184(std::size_t index) const {
         return index < host.slots.size() && host.slots[index]->role_player_0184;
     } else {
         return host.controlled_bound && host.controlled_index == index;
+    }
+}
+
+void GameUnitsHost::role_screen_update_0067bb50() {
+    if constexpr (Impl::kPlayerRoleBookkeepingBound) {
+        impl_->role_screen_update_0067bb50();
     }
 }
 
