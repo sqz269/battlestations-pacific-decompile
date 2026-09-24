@@ -1,0 +1,336 @@
+{
+  "packet": "cc10_resource_registry_node_leaves",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "baseline_main": "1ab49f01a999ed471cef8fa52f1b33ac665f4188",
+  "source": "src/native_resource_registry_node_leaves.cpp",
+  "header": "include/bsp/native_resource_registry_node_leaves.hpp",
+  "documentation": "docs/NATIVE_RESOURCE_REGISTRY_NODE_LEAVES_CC10.md",
+  "status": "complete_normal_raw404B_strict_win32_focused_original_source_and_explicit_source_cleanup_checked",
+  "normal_bytes": 404,
+  "compiler_boundary_bytes": 48,
+  "functions": [
+    {
+      "address": "00b19530",
+      "bytes": 41,
+      "end_exclusive": "00b19559",
+      "end_inclusive": "00b19558",
+      "sha256": "d25d5e0d69200016fe260ba01c309eee18adeb52c2159abaae59e58e989b7662",
+      "live_equals_PE_and_frozen_readiness": true,
+      "instructions": 18,
+      "last_instruction": "00b19556",
+      "last_instruction_length": 3,
+      "byte_span": 41,
+      "last_instruction_address": "00b19556",
+      "cpp_symbol": "bsp::compare_native_resource_registry_iterators_00b19530",
+      "original_abi": "ECX left8B iterator; stack right; RET4; EAX current left node high24 with AL equality",
+      "coverage": "complete normal body; explicit source interface and valid provider/storage domain"
+    },
+    {
+      "address": "00b1ab40",
+      "bytes": 137,
+      "end_exclusive": "00b1abc9",
+      "end_inclusive": "00b1abc8",
+      "sha256": "010d9f42abe11496e13586381bc7d19ca7cacb4c108d53770b8d25fcf97cc149",
+      "live_equals_PE_and_frozen_readiness": true,
+      "instructions": 48,
+      "last_instruction": "00b1abc8",
+      "last_instruction_length": 1,
+      "byte_span": 137,
+      "last_instruction_address": "00b1abc8",
+      "cpp_symbol": "bsp::decrement_native_resource_registry_iterator_00b1ab40",
+      "original_abi": "ECX mutable8B iterator; RET or returning BF6713 tail",
+      "coverage": "complete normal body; explicit source interface and valid provider/storage domain"
+    },
+    {
+      "address": "00b1aca0",
+      "bytes": 112,
+      "end_exclusive": "00b1ad10",
+      "end_inclusive": "00b1ad0f",
+      "sha256": "621bf0ac6ff1bf2c0933462f18a7c7e45cb94d598dafba1af933ba9c121860dc",
+      "live_equals_PE_and_frozen_readiness": true,
+      "instructions": 41,
+      "last_instruction": "00b1ad0d",
+      "last_instruction_length": 3,
+      "byte_span": 112,
+      "last_instruction_address": "00b1ad0d",
+      "cpp_symbol": "bsp::construct_native_resource_registry_node_00b1aca0",
+      "original_abi": "ECX actual1Ch node; stacked left,parent,right,pair,color; RET14/EAX captured node",
+      "coverage": "complete normal body; explicit source interface and valid provider/storage domain"
+    },
+    {
+      "address": "00b1ad10",
+      "bytes": 114,
+      "end_exclusive": "00b1ad82",
+      "end_inclusive": "00b1ad81",
+      "sha256": "90ed1e96c00aaaf7a40c3d027707675c3f2320f6b6f7c80193785d76e9ad111f",
+      "live_equals_PE_and_frozen_readiness": true,
+      "instructions": 43,
+      "last_instruction": "00b1ad7f",
+      "last_instruction_length": 3,
+      "byte_span": 114,
+      "last_instruction_address": "00b1ad7f",
+      "cpp_symbol": "bsp::allocate_native_resource_registry_node_00b1ad10",
+      "original_abi": "ECX unused; five stacked words; RET14/EAX captured allocation",
+      "coverage": "complete normal body; explicit source interface and valid provider/storage domain"
+    }
+  ],
+  "compiler_boundaries": [
+    {
+      "address": "00b1ad82",
+      "bytes": 21,
+      "end_exclusive": "00b1ad97",
+      "end_inclusive": "00b1ad96",
+      "sha256": "f3f6a40a97729b1cacd6e5edd238b62ca71bed8328e6ab612b8732da22f05a24",
+      "live_equals_PE_and_frozen_readiness": true,
+      "instructions": 7,
+      "last_instruction": "00b1ad92",
+      "last_instruction_length": 5,
+      "byte_span": 21,
+      "last_instruction_address": "00b1ad92",
+      "coverage": "compiler boundary evidence and source cleanup projection only; not native EH transport"
+    },
+    {
+      "address": "00cbc6d0",
+      "bytes": 17,
+      "end_exclusive": "00cbc6e1",
+      "end_inclusive": "00cbc6e0",
+      "sha256": "e04988268e9e283b44de46d98db943cd1409ae5fce9a12a3cd28c562bdd98129",
+      "live_equals_PE_and_frozen_readiness": true,
+      "instructions": 7,
+      "last_instruction": "00cbc6e0",
+      "last_instruction_length": 1,
+      "byte_span": 17,
+      "last_instruction_address": "00cbc6e0",
+      "coverage": "compiler boundary evidence and source cleanup projection only; not native EH transport"
+    },
+    {
+      "address": "00cbc6e1",
+      "bytes": 10,
+      "end_exclusive": "00cbc6eb",
+      "end_inclusive": "00cbc6ea",
+      "sha256": "d7de98eef8a49900dbc67d34d2d86c89297cfc7bb2f6d8e43fc5feb4d439f13c",
+      "live_equals_PE_and_frozen_readiness": true,
+      "instructions": 2,
+      "last_instruction": "00cbc6e6",
+      "last_instruction_length": 5,
+      "byte_span": 10,
+      "last_instruction_address": "00cbc6e6",
+      "coverage": "compiler boundary evidence and source cleanup projection only; not native EH transport"
+    }
+  ],
+  "steps": [
+    {
+      "function": "00b19530",
+      "address": "00b19542",
+      "native": "00bf6713",
+      "actual_mnemonic": "CALL",
+      "contract": "required genuine returning invalid-parameter provider; current iterator rereads and immediate invalid tails"
+    },
+    {
+      "function": "00b1ab40",
+      "address": "00b1ab48",
+      "native": "00bf6713",
+      "actual_mnemonic": "CALL",
+      "contract": "required genuine returning invalid-parameter provider; current iterator rereads and immediate invalid tails"
+    },
+    {
+      "function": "00b1ab40",
+      "address": "00b1ab63",
+      "native": "00bf6713",
+      "actual_mnemonic": "JMP",
+      "contract": "required genuine returning invalid-parameter provider; current iterator rereads and immediate invalid tails",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00b1ab40",
+      "address": "00b1abbf",
+      "native": "00bf6713",
+      "actual_mnemonic": "JMP",
+      "contract": "required genuine returning invalid-parameter provider; current iterator rereads and immediate invalid tails",
+      "kind": "tail_jump"
+    },
+    {
+      "function": "00b1aca0",
+      "address": "00b1acd9",
+      "native": "0041dd40",
+      "actual_mnemonic": "CALL",
+      "contract": "existing complete raw header resize through actual01090AA8/01090AA4/01090AA0 cells"
+    },
+    {
+      "function": "00b1aca0",
+      "address": "00b1acef",
+      "native": "00bf7680",
+      "actual_mnemonic": "CALL",
+      "contract": "overlap-compatible host memmove; established zero-count host boundary explicit"
+    },
+    {
+      "function": "00b1ad10",
+      "address": "00b1ad33",
+      "native": "00bf681b",
+      "actual_mnemonic": "CALL",
+      "contract": "existing genuine CRT allocation, exactly1Ch actual/host bytes"
+    },
+    {
+      "function": "00b1ad10",
+      "address": "00b1ad68",
+      "native": "00b1aca0",
+      "actual_mnemonic": "CALL",
+      "contract": "new complete raw node constructor with current nested argument cells"
+    },
+    {
+      "function": "00b1ad82",
+      "address": "00b1ad86",
+      "native": "00bf65ac",
+      "actual_mnemonic": "CALL",
+      "contract": "existing genuine CRT free of CURRENT cleanup cell, no name destructor"
+    },
+    {
+      "function": "00b1ad82",
+      "address": "00b1ad92",
+      "native": "00bf6885",
+      "actual_mnemonic": "CALL",
+      "contract": "source C++ rethrow only; native FH3 transport unclaimed",
+      "kind": "no_ghidra_function",
+      "missing_containment_note": "fresh saved body absent here; complete live/PE bytes independently decoded; primary future repair/definition"
+    },
+    {
+      "function": "00cbc6d0",
+      "address": "00cbc6d8",
+      "native": "00401130",
+      "actual_mnemonic": "CALL",
+      "contract": "verified existing RET-only placement-delete target; preserve both current volatile reads, no payload cleanup"
+    },
+    {
+      "function": "00cbc6e1",
+      "address": "00cbc6e6",
+      "native": "00bf6b43",
+      "actual_mnemonic": "JMP",
+      "contract": "native compiler transport boundary only; source does not implement FH3",
+      "kind": "no_ghidra_function",
+      "missing_containment_note": "fresh saved body absent here; complete live/PE bytes independently decoded; primary future repair/definition",
+      "kind_after_definition": "tail_jump"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00b1ad82",
+      "name": "existing catch with truncated saved body",
+      "defined_prefix_end_inclusive": "00b1ad8a",
+      "missing_range_start": "00b1ad8b",
+      "end_inclusive": "00b1ad96",
+      "end_exclusive": "00b1ad97",
+      "last_instruction_address": "00b1ad92",
+      "last_instruction_length": 5,
+      "evidence": "full21B live/PE-equal; saved9B stops after returning BF65AC; omitted ADD/PUSH/PUSH/rethrow"
+    },
+    {
+      "address": "00cbc6e1",
+      "name": "undefined FH3 dispatcher",
+      "end_inclusive": "00cbc6ea",
+      "end_exclusive": "00cbc6eb",
+      "last_instruction_address": "00cbc6e6",
+      "last_instruction_length": 5,
+      "evidence": "full10B live/PE-equal MOV EAX,DF49F4/JMP BF6B43"
+    }
+  ],
+  "eh": {
+    "descriptor": "00df49f4",
+    "unwind_map": "00df49dc",
+    "entries": [
+      {
+        "state": 0,
+        "previous": -1,
+        "handler": null
+      },
+      {
+        "state": 1,
+        "previous": 0,
+        "handler": "00cbc6d0"
+      },
+      {
+        "state": 2,
+        "previous": -1,
+        "handler": null
+      }
+    ],
+    "try_map": "00df49c8",
+    "try_low": 0,
+    "try_high": 1,
+    "catch_high": 2,
+    "catch_record": "00df49b8",
+    "catch_all_flags": "00000040",
+    "catch": "00b1ad82",
+    "source_effect": "state1 CURRENT EBP-14 then EBP-18 reads / verified RET-only401130; catch free CURRENT EBP-14 then C++ rethrow; no partial-name cleanup"
+  },
+  "layout": {
+    "node_bytes": 28,
+    "node": "links0/4/8,name_lengthC/name_data10,borrowed_factory14,color18,nil19,padding1A/1B preserved",
+    "iterator": "8B owner/node, existing typed pointer cells or initialized DWORD backing",
+    "views": "immutable reference metadata over live caller DWORD cells; no aggregate overlay on reused scratch; disjoint metadata/acquired; separate incoming/nested/cleanup sites"
+  },
+  "validation": {
+    "build_command": "./scripts/build.ps1",
+    "build": "PASS MSVC Win32 Release and2 configured CTests",
+    "build_attempts": [
+      {
+        "log": "build01.log",
+        "result": "compile failure: offset is a reserved inline-asm operand token; fixed by byte_offset parameter name"
+      },
+      {
+        "log": "build02.log",
+        "result": "PASS strict build and reconstructed_math/tool_tests"
+      }
+    ],
+    "probe_command": "cmd /c local\\output\\cc10_resource_registry_node_leaves\\probe.cmd",
+    "probe_compiler_flags": "/nologo /MD /EHsc /std:c++20 /O2 /Gy /W4 /WX /fp:strict",
+    "probe_link_flags": "/link /OPT:REF /MANIFEST:EMBED user32.lib d3d9.lib advapi32.lib shell32.lib",
+    "assertions": "NDEBUG not defined; compile-time #error if defined; assert remains active",
+    "probe_attempts": [
+      {
+        "log": "probe01.log",
+        "result": "first compile/run PASS, exit0"
+      }
+    ],
+    "native_body_extent": 404,
+    "normal_composition": "copied four complete bodies, six CALL and two JMP displacement bindings; wrapper-to-constructor composition remains copied native",
+    "shared_boundaries": [
+      "genuine singleton_lifetime_allocate; adapter mutates actual incoming words and fills preimage after real allocation",
+      "genuine raw41DD40/name pool; adapter mutates current source/color after completed resize",
+      "native BF7680 replaced by same overlap-compatible host memmove effect",
+      "genuine host CRT returning invalid-parameter service with installed test handler"
+    ],
+    "source_binding": "production source included unchanged under two provider-name redirects; strict production library separately built with direct genuine providers",
+    "comparison": "allocated-node28B equality with ONLY checked name-data pointer+10 normalized; independent length/content/links/borrowedvalue/color/nil/padding checks; real actual B1A260 disposal; direct self-header and iterator high24/AL/current-tail sequence",
+    "source_only_failure": "post-real-resize test-boundary runtime_error; state1 placement reads/no-op, current node free/rethrow, explicit caller residual-name disposal",
+    "unexercised": [
+      "native compiler handlers/FH3",
+      "null allocation and initial allocator failure",
+      "empty-name/zero-copy branches",
+      "all arbitrary callback aliases/validation paths"
+    ],
+    "new_tracked_tests": false,
+    "application_or_original_game_run": false,
+    "transfer_verification": "PASS12 rows;10 full saved-function/listing checks plus2 callee-only checks at explicitly missing containment, both independently decoded live/PE"
+  },
+  "evidence": {
+    "directory": "local/output/cc10_resource_registry_node_leaves",
+    "native": "native_evidence.json",
+    "source": "probe.cpp",
+    "command": "probe.cmd",
+    "output": "probe01.log",
+    "identity_receipt": "identity_receipt.json",
+    "readiness_archive": "local/output/cc10_procedural_globals_readiness_evidence.zip",
+    "readiness_archive_sha256": "04fe21149d6615bfd7eaba7b07c065cf5b1a1e09172fa53e80c390060c534868",
+    "archive": "local/output/cc10_resource_registry_node_leaves_evidence.zip"
+  },
+  "limits": [
+    "source interfaces are not original binary/private-frame ABI",
+    "native FH3/SEH/hardware-fault behavior unclaimed",
+    "host current provider transports remain explicit",
+    "partial-name storage is not automatically rolled back",
+    "no factory-value ownership/count/admission",
+    "no insertion/registration/BBC global/startup/gameplay claim",
+    "B1ADA0 misleading existing label preserved; primary later correction separate"
+  ]
+}
