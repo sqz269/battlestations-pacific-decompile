@@ -1,0 +1,250 @@
+{
+ "events": [
+  {
+   "recreate": "00b7c450",
+   "previous": "Function: BSP_AmbientLight_Destroy at 00b7c450\nSignature: undefined BSP_AmbientLight_Destroy(void)\nEntry: 00b7c450\nBody: 00b7c450 - 00b7c489",
+   "plate": "[BSP reconstruction 00b7c450]\nTrue body through00B7C4B3; resize borrowed scene array0, free; postfree vtablesD5C104 thenCEB130; pointer/capacity remain. Native[00b7c450,00b7c4b3): ECX owner; RET0. Evidence docs/SYSTEM_LIGHTING_OWNERS.md; reports/system_lighting_owners_audit.json. Concrete ambient/scene-resource ownership preserves actual allocation preimages, signed backlink operations, native pooled-name and reference-count lifetime. Ambient28..37 remains untouched; scene destruction does not remove surviving ambient backlinks. Outer scene slot is borrowed; weak-handle base and directional owner remain separate work.\nIntegration: docs/SYSTEM_OWNER_INTEGRATION.md; reports/system_owner_integration_audit.json"
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00b7c450"
+   },
+   "result": {
+    "success": true,
+    "address": "00b7c450",
+    "deleted_function": "BSP_AmbientLight_Destroy",
+    "body_size": 58,
+    "message": "Function 'BSP_AmbientLight_Destroy' deleted at 00b7c450"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b7c450",
+    "end_address": "00b7c4b3"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b7c450",
+    "end_address": "00b7c4b2",
+    "bytes_disassembled": 99,
+    "message": "Successfully disassembled 99 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b7c450",
+    "disassemble_first": false,
+    "name": "BSP_AmbientLight_Destroy"
+   },
+   "result": {
+    "success": true,
+    "address": "00b7c450",
+    "function_name": "BSP_AmbientLight_Destroy",
+    "entry_point": "00b7c450",
+    "body_size": 58,
+    "message": "Function created successfully at 00b7c450",
+    "warnings": [
+     "Function name 'BSP_AmbientLight_Destroy' \u2014 main part 'AmbientLight_Destroy' is not PascalCase. Expected: AmbientlightDestroy",
+     "Function name 'BSP_AmbientLight_Destroy' \u2014 main part 'AmbientLight_Destroy' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_AmbientLight_Destroy' does not start with a recognized verb. First word 'Ambient' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "00b7c450",
+    "comment": "[BSP reconstruction 00b7c450]\nTrue body through00B7C4B3; resize borrowed scene array0, free; postfree vtablesD5C104 thenCEB130; pointer/capacity remain. Native[00b7c450,00b7c4b3): ECX owner; RET0. Evidence docs/SYSTEM_LIGHTING_OWNERS.md; reports/system_lighting_owners_audit.json. Concrete ambient/scene-resource ownership preserves actual allocation preimages, signed backlink operations, native pooled-name and reference-count lifetime. Ambient28..37 remains untouched; scene destruction does not remove surviving ambient backlinks. Outer scene slot is borrowed; weak-handle base and directional owner remain separate work.\nIntegration: docs/SYSTEM_OWNER_INTEGRATION.md; reports/system_owner_integration_audit.json"
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 00b7c450",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "00b7c450",
+   "end": "00b7c4b3",
+   "name": "BSP_AmbientLight_Destroy",
+   "after": "Function: BSP_AmbientLight_Destroy at 00b7c450\nSignature: undefined BSP_AmbientLight_Destroy(void)\nEntry: 00b7c450\nBody: 00b7c450 - 00b7c489"
+  },
+  {
+   "recreate": "00b7c7e0",
+   "previous": "Function: BSP_AmbientLight_ScalarDeletingDestructor at 00b7c7e0\nSignature: undefined BSP_AmbientLight_ScalarDeletingDestructor(void)\nEntry: 00b7c7e0\nBody: 00b7c7e0 - 00b7c7fd",
+   "plate": "[BSP reconstruction 00b7c7e0]\nECX owner, stackflags RET4; runB7C450 thenCRTfree iff flags&1; EAX originalowner. Native[00b7c7e0,00b7c7fe): ECX owner; stack flags; EAX original owner; RET4. Evidence docs/SYSTEM_LIGHTING_OWNERS.md; reports/system_lighting_owners_audit.json. Concrete ambient/scene-resource ownership preserves actual allocation preimages, signed backlink operations, native pooled-name and reference-count lifetime. Ambient28..37 remains untouched; scene destruction does not remove surviving ambient backlinks. Outer scene slot is borrowed; weak-handle base and directional owner remain separate work.\nIntegration: docs/SYSTEM_OWNER_INTEGRATION.md; reports/system_owner_integration_audit.json"
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00b7c7e0"
+   },
+   "result": {
+    "success": true,
+    "address": "00b7c7e0",
+    "deleted_function": "BSP_AmbientLight_ScalarDeletingDestructor",
+    "body_size": 27,
+    "message": "Function 'BSP_AmbientLight_ScalarDeletingDestructor' deleted at 00b7c7e0"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b7c7e0",
+    "end_address": "00b7c7fe"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b7c7e0",
+    "end_address": "00b7c7fd",
+    "bytes_disassembled": 30,
+    "message": "Successfully disassembled 30 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b7c7e0",
+    "disassemble_first": false,
+    "name": "BSP_AmbientLight_ScalarDeletingDestructor"
+   },
+   "result": {
+    "error": "Function already exists at 00b7c7e0: BSP_AmbientLight_ScalarDeletingDestructor"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00cc1eb8",
+    "end_address": "00cc1ec2"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00cc1eb8",
+    "end_address": "00cc1ec1",
+    "bytes_disassembled": 10,
+    "message": "Successfully disassembled 10 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00cc1eb8",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "00cc1eb8",
+    "function_name": "FUN_00cc1eb8",
+    "entry_point": "00cc1eb8",
+    "body_size": 10,
+    "message": "Function created successfully at 00cc1eb8"
+   }
+  },
+  {
+   "defined": "00cc1eb8",
+   "end": "00cc1ec2",
+   "name": null,
+   "after": "Function: FUN_00cc1eb8 at 00cc1eb8\nSignature: undefined FUN_00cc1eb8(void)\nEntry: 00cc1eb8\nBody: 00cc1eb8 - 00cc1ec1"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  },
+  {
+   "recreate": "00b7c450",
+   "previous": "Function: BSP_AmbientLight_Destroy at 00b7c450\nSignature: undefined BSP_AmbientLight_Destroy(void)\nEntry: 00b7c450\nBody: 00b7c450 - 00b7c489",
+   "plate": "[BSP reconstruction 00b7c450]\nTrue body through00B7C4B3; resize borrowed scene array0, free; postfree vtablesD5C104 thenCEB130; pointer/capacity remain. Native[00b7c450,00b7c4b3): ECX owner; RET0. Evidence docs/SYSTEM_LIGHTING_OWNERS.md; reports/system_lighting_owners_audit.json. Concrete ambient/scene-resource ownership preserves actual allocation preimages, signed backlink operations, native pooled-name and reference-count lifetime. Ambient28..37 remains untouched; scene destruction does not remove surviving ambient backlinks. Outer scene slot is borrowed; weak-handle base and directional owner remain separate work.\nIntegration: docs/SYSTEM_OWNER_INTEGRATION.md; reports/system_owner_integration_audit.json"
+  },
+  {
+   "endpoint": "delete_function",
+   "body": {
+    "address": "00b7c450"
+   },
+   "result": {
+    "success": true,
+    "address": "00b7c450",
+    "deleted_function": "BSP_AmbientLight_Destroy",
+    "body_size": 58,
+    "message": "Function 'BSP_AmbientLight_Destroy' deleted at 00b7c450"
+   }
+  },
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00b7c450",
+    "end_address": "00b7c4b3"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00b7c450",
+    "end_address": "00b7c4b2",
+    "bytes_disassembled": 99,
+    "message": "Successfully disassembled 99 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00b7c450",
+    "disassemble_first": false,
+    "name": "BSP_AmbientLight_Destroy"
+   },
+   "result": {
+    "success": true,
+    "address": "00b7c450",
+    "function_name": "BSP_AmbientLight_Destroy",
+    "entry_point": "00b7c450",
+    "body_size": 99,
+    "message": "Function created successfully at 00b7c450",
+    "warnings": [
+     "Function name 'BSP_AmbientLight_Destroy' \u2014 main part 'AmbientLight_Destroy' is not PascalCase. Expected: AmbientlightDestroy",
+     "Function name 'BSP_AmbientLight_Destroy' \u2014 main part 'AmbientLight_Destroy' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_AmbientLight_Destroy' does not start with a recognized verb. First word 'Ambient' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "endpoint": "set_plate_comment",
+   "body": {
+    "address": "00b7c450",
+    "comment": "[BSP reconstruction 00b7c450]\nTrue body through00B7C4B3; resize borrowed scene array0, free; postfree vtablesD5C104 thenCEB130; pointer/capacity remain. Native[00b7c450,00b7c4b3): ECX owner; RET0. Evidence docs/SYSTEM_LIGHTING_OWNERS.md; reports/system_lighting_owners_audit.json. Concrete ambient/scene-resource ownership preserves actual allocation preimages, signed backlink operations, native pooled-name and reference-count lifetime. Ambient28..37 remains untouched; scene destruction does not remove surviving ambient backlinks. Outer scene slot is borrowed; weak-handle base and directional owner remain separate work.\nIntegration: docs/SYSTEM_OWNER_INTEGRATION.md; reports/system_owner_integration_audit.json"
+   },
+   "result": {
+    "status": "success",
+    "message": "Set plate comment for function at 00b7c450",
+    "warnings": [
+     "Plate comment missing Algorithm section",
+     "Plate comment missing Parameters section",
+     "Plate comment missing Returns section"
+    ]
+   }
+  },
+  {
+   "defined": "00b7c450",
+   "end": "00b7c4b3",
+   "name": "BSP_AmbientLight_Destroy",
+   "after": "Function: BSP_AmbientLight_Destroy at 00b7c450\nSignature: undefined BSP_AmbientLight_Destroy(void)\nEntry: 00b7c450\nBody: 00b7c450 - 00b7c4b2"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
