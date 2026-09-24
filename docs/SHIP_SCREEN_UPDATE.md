@@ -663,3 +663,17 @@ then on, USN04 4500.
   `leader_3d0` does not appear.
 - The unimplemented total rises by about 9,158, the two records less the moved update.
 - Every summary line is identical, because +8h is not drawn by this update.
+
+**The pair.** `local\p7_off_usn04.log` against `local\p7_on_usn04.log`, one tree, 2560x1440.
+
+| row | OFF | ON |
+| --- | ---: | ---: |
+| unimplemented total | 2,248,577 | 2,257,737 (+9,160; predicted about +9,158) |
+| FrontEndScreen::update | 45,803 | 36,643 |
+| HudFollowScreen::update | none | 9,160 done |
+| screen_29h_unit, controlled_target | none | 9,160 each |
+
+- A controlled unit exists in every 49h pump, the early 20h ones included, so `controlled_target`
+  counts 9,160, not the 9,158 I estimated. `leader_3d0` does not appear.
+- **Summary lines.** All 157 are identical.
+- **Result.** Every prediction holds. **`kHudFollowScreenBound` flips ON.**

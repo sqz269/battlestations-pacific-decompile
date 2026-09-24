@@ -117,7 +117,7 @@ inline constexpr bool kHudWarningScreenBound = true;
 // screen 49h's update 0067BF00, which picks the unit the screen follows
 // (+8h), in place of the FrontEndScreen::update record. Screen 29h's unit
 // and the controlled unit's target are records answering none.
-inline constexpr bool kHudFollowScreenBound = false;
+inline constexpr bool kHudFollowScreenBound = true;
 
 inline constexpr bool kHudShipScreenGaugesBound = true;
 
