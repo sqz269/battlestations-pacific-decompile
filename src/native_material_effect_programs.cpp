@@ -17,6 +17,12 @@ namespace {
 void require(bool condition, const char* message) {
     if (!condition) throw std::logic_error(message);
 }
+void require_numeric_domain(NativeMaterialEffectProgramsContext& context) {
+    require(!context.numeric_renderer
+        || (&context.numeric_renderer->construction == &context.pass_construction
+            && &context.numeric_renderer->construction.current_renderer_00f8d394 == &context.current_renderer_00f8d394),
+        "numeric programs require the same construction and current-renderer cells");
+}
 bool enabled(NativeMaterialPassBaseStorage& pass, std::uint32_t state) {
     require(pass.render_18 != nullptr, "native pass has no actual render-state owner");
     const auto& rows = pass.render_18->rows_08;
@@ -57,6 +63,7 @@ struct LoadFrame {
     NativeString stem, mode_name, key, shadow_name, shadow_literal;
     NativeString temporary, number, joined;
     NativeMaterialProgramChild child;
+    NativeMaterialSecondaryPassFrame secondary;
     std::uint32_t call_site{};
     std::uint32_t primary_written{};
     bool slots_initialized{};
@@ -88,7 +95,9 @@ struct LoadFrame {
     }
     bool live_locals() const noexcept {
         return stem.data() || mode_name.data() || key.data() || shadow_name.data()
-            || shadow_literal.data() || temporary.data() || number.data() || joined.data() || child;
+            || shadow_literal.data() || temporary.data() || number.data() || joined.data() || child
+            || secondary.phase == NativeMaterialSecondaryPassFrame::Phase::running
+            || secondary.phase == NativeMaterialSecondaryPassFrame::Phase::failed;
     }
 };
 NativeShaderDescriptorStorage& current_descriptor(NativeMaterialEffectStorage& effect) {
@@ -192,8 +201,12 @@ std::uint8_t load_native_material_effect_programs_00b45ee0(NativeMaterialEffectS
         release_string(frame.mode_name, context.strings);
     }
     frame.call_site = 0x00b463b6;
-    build_native_material_secondary_pass_00b45e00(effect, context.pass_construction,
-        context.pass_copy, context.pass_registration);
+    if (context.numeric_renderer)
+        build_native_material_secondary_pass_00b45e00(effect, *context.numeric_renderer,
+            context.pass_copy, context.pass_registration, frame.secondary);
+    else
+        build_native_material_secondary_pass_00b45e00(effect, context.pass_construction,
+            context.pass_copy, context.pass_registration);
     frame.slots_initialized = true;
     for (std::size_t i = 0; i != 14; ++i) {
         if (auto* pass = static_cast<NativeMaterialPassStorage*>(effect.passes_c8[i])) {
@@ -260,8 +273,9 @@ std::uint8_t load_native_material_effect_programs_00b45ee0(NativeMaterialEffectS
 }
 } // namespace
 
-void prune_native_material_pass_states_00b5f160(NativeMaterialPassBaseStorage& pass,
-    void* const volatile& current_renderer) {
+namespace {
+void prune_states(NativeMaterialPassBaseStorage& pass,
+    void* const volatile& current_renderer, NativeMaterialProgramNumericRendererDomain* domain) {
     if (!enabled(pass, 0x1b)) remove_group(pass, {0x13, 0x14, 0xab});
     if (!enabled(pass, 0xce)) remove_group(pass, {0xcf, 0xd0, 0xd1});
     if (!enabled(pass, 0x0f)) remove_group(pass, {0x19, 0x18});
@@ -269,18 +283,39 @@ void prune_native_material_pass_states_00b5f160(NativeMaterialPassBaseStorage& p
     if (!enabled(pass, 0x34)) remove_group(pass, {0x36, 0x37, 0x38, 0x39, 0x3a, 0x3b, 0x35});
     if (!enabled(pass, 0x1c)) remove_group(pass, {0x23, 0x8c});
     auto* renderer = current_renderer;
-    require(renderer != nullptr, "B5F160 requires current callable renderer+104");
-    const auto* table = *static_cast<const std::uintptr_t* const*>(renderer);
-    using Caps = const std::uint8_t* (__thiscall*)(void*);
-    const auto* caps = reinterpret_cast<Caps>(table[0x104 / 4])(renderer);
+    require(renderer != nullptr, "B5F160 requires the actual current renderer+104");
+    const std::uint8_t* caps;
+    if (domain) {
+        const auto current_table = *static_cast<const volatile std::uint32_t*>(renderer);
+        const auto target = domain->renderer_profile_00d5f0a8
+            ? domain->renderer_profile_00d5f0a8[0x104 / 4] : 0;
+        require(current_table == 0x00d5f0a8 && target == 0x00b1ff50,
+            "numeric B5F160 requires current D5F0A8/B1FF50 capabilities entry");
+        caps = static_cast<const std::uint8_t*>(get_native_compiler_renderer_capabilities_00b1ff50(renderer));
+    } else {
+        const auto* table = *static_cast<const std::uintptr_t* const*>(renderer);
+        using Caps = const std::uint8_t* (__thiscall*)(void*);
+        caps = reinterpret_cast<Caps>(table[0x104 / 4])(renderer);
+    }
     require(caps != nullptr, "renderer+104 must return actual readable capabilities");
     remove_native_material_render_state_00b5ee00(&pass, caps[0x3d] ? 0x9a : 0xb5);
     remove_group(pass, {0x80, 0x81, 0x82, 0x83, 0x89, 0x8e, 0x8d,
         0x92, 0x91, 0x93, 0x94, 0x8b, 0x8f});
 }
+} // namespace
+void prune_native_material_pass_states_00b5f160(NativeMaterialPassBaseStorage& pass,
+    void* const volatile& current_renderer) {
+    prune_states(pass, current_renderer, nullptr);
+}
+void prune_native_material_pass_states_00b5f160(NativeMaterialPassBaseStorage& pass,
+    NativeMaterialProgramNumericRendererDomain& domain) {
+    prune_states(pass, domain.construction.current_renderer_00f8d394, &domain);
+}
 void finalize_native_material_pass_00b5f6a0(NativeMaterialPassBaseStorage& pass,
     NativeMaterialEffectProgramsContext& context, NativeMaterialProgramChild& child) {
-    prune_native_material_pass_states_00b5f160(pass, context.current_renderer_00f8d394);
+    require_numeric_domain(context);
+    if (context.numeric_renderer) prune_native_material_pass_states_00b5f160(pass, *context.numeric_renderer);
+    else prune_native_material_pass_states_00b5f160(pass, context.current_renderer_00f8d394);
     auto* render = pass.render_18;
     auto* third = static_cast<NativeMaterialStateOwnerStorage*>(nullptr);
     auto* result = context.children.cache_render_00b26500(context.current_renderer_00f8d394, render, child);
@@ -358,6 +393,12 @@ std::uint32_t NativeMaterialEffectProgramOperation::primary_slots_written() cons
 NativeMaterialProgramChildFrame* NativeMaterialEffectProgramOperation::active_child() const noexcept {
     return impl_->loads[impl_->current].child.get();
 }
+const NativeMaterialSecondaryPassFrame* NativeMaterialEffectProgramOperation::secondary_pass_frame(
+    std::uint32_t load_index) const noexcept {
+    if (load_index >= impl_->loads.size()) return nullptr;
+    const auto& frame = impl_->loads[load_index].secondary;
+    return frame.phase == NativeMaterialSecondaryPassFrame::Phase::fresh ? nullptr : &frame;
+}
 std::uint8_t load_native_material_effect_variants_00b46950(NativeMaterialEffectStorage& effect,
     const void* name, NativeMaterialEffectProgramsContext& context, NativeMaterialEffectProgramOperation& operation) {
     auto& state = *operation.impl_;
@@ -368,6 +409,7 @@ std::uint8_t load_native_material_effect_variants_00b46950(NativeMaterialEffectS
         && &context.pass_copy.lifetime.strings == &context.strings
         && &context.pass_copy.lifetime.retained_owners == &context.lifetime.retained_owners,
         "native programs must share actual strings and canonical retained owners");
+    require_numeric_domain(context);
     const bool variants = context.load_variants_0108d6f0 != 0;
     state.phase = NativeMaterialEffectProgramPhase::first_load;
     try {

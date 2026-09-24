@@ -66,6 +66,10 @@ struct NativeMaterialEffectProgramsContext {
     void* const volatile& current_manager_00f8bbf0;
     void* const volatile& current_vfs_0109ceec;
     const volatile std::uint8_t& load_variants_0108d6f0;
+    // Optional trailing binding preserves the existing callable-renderer path.
+    // Numeric operation borrows this exact construction/current-renderer domain
+    // throughout both retained loads. It does not activate cold loading.
+    NativeMaterialProgramNumericRendererDomain* numeric_renderer{};
 };
 
 // Full B5F160, ECX actual pass, RET: six conditional render-state groups,
@@ -73,6 +77,11 @@ struct NativeMaterialEffectProgramsContext {
 // removals. Requires the actual renderer binding, not a copied caps snapshot.
 void prune_native_material_pass_states_00b5f160(NativeMaterialPassBaseStorage&,
     void* const volatile& current_renderer_00f8d394);
+// Same native removals; capture current renderer/profile/+104 only after the
+// six conditional groups. D5F0A8/B1FF50 selects the actual +1B18 getter, then
+// reads its live byte3D. Original table words are never called as host code.
+void prune_native_material_pass_states_00b5f160(NativeMaterialPassBaseStorage&,
+    NativeMaterialProgramNumericRendererDomain&);
 // B5F6A0, ECX pass, RET: prune then publish actual cache results18/1C/20,
 // reloading renderer and next input around each call. Required child state is
 // retained by the caller on error; successful earlier substitutions remain.
@@ -105,6 +114,9 @@ public:
     std::uint32_t active_call_site() const noexcept;
     std::uint32_t primary_slots_written() const noexcept;
     NativeMaterialProgramChildFrame* active_child() const noexcept;
+    // Index 0/1 selects the persistent frame for that B45EE0 invocation. Null
+    // means out of range or not reached; failed frames are never discarded.
+    const NativeMaterialSecondaryPassFrame* secondary_pass_frame(std::uint32_t load_index) const noexcept;
 private:
     struct Impl;
     std::unique_ptr<Impl> impl_;
