@@ -269,4 +269,218 @@ void ship_view_update_0064d610(ShipViewScreen46Host& host, float dt) {
     }
 }
 
+// ---------------------------------------------------------------------------
+// Screen 29h, the unit pick: 00526A40 and 00527260 (packet cc9_screen_29h,
+// docs/SHIP_SCREEN_UPDATE.md section 24). Read from the listings; the
+// decompile of 00526A40 hides the loop registers and the x87 stores.
+// ---------------------------------------------------------------------------
+
+namespace {
+
+constexpr float kPickZoomOne = 1.0f;                     // 00D7A24C
+constexpr double kPickModifierFloor = 0.10000000149011612; // 00D7A3A0 (double)
+constexpr float kPickModifierMin = 0.1f;                 // 00D7A2F0
+constexpr double kPickRayLength = 10000.0;               // 00CE4BD8 (double)
+constexpr double kPickRadiusBase = 0.029999999329447746; // 00CEB690 (double)
+constexpr double kPickScreenCentre = 0.5;                // 00D7A280 (double)
+constexpr float kPickOffScreen = 1.0e10f;                // 00CE4970
+constexpr int kKindUnit = 1;         // 00526E40 PUSH 1
+constexpr int kKindCommandable = 5;  // 00526EA9 PUSH 5
+constexpr int kKindPlaneBot = 0x0F;  // 00526B2C PUSH 0Fh
+constexpr int kKindSquadron = 0x18;  // 00526F33 PUSH 18h
+constexpr int kKindExcluded19 = 0x19; // 00526ED3 PUSH 19h
+constexpr int kKindExcluded1A = 0x1A; // 00526EC0 PUSH 1Ah
+constexpr int kKindPayloadSelf = 0x19; // 0052730A PUSH 19h
+constexpr int kSlotNone = 8;         // 00526B3C CMP EAX,8
+
+// 00522050, __thiscall(screen, const float3* point), RET 4: the squared
+// distance of the projected point from the screen centre, or 1e10 when
+// 0043A660 does not report all three clip bits.
+float pick_screen_distance_00522050(UnitPickHost& host, const float point[3]) {
+    float x = 0.0f;
+    float y = 0.0f;
+    if (host.project_0043a660(point, x, y) != 7u) return kPickOffScreen;
+    // 00522069..005220A7: both differences are stored as floats, the x one
+    // squared and stored, then y*y added in the x87 and stored.
+    const float dx = static_cast<float>(kPickScreenCentre - static_cast<double>(x));
+    const float dy = static_cast<float>(kPickScreenCentre - static_cast<double>(y));
+    const float dx2 = static_cast<float>(static_cast<double>(dx) * dx);
+    return static_cast<float>(static_cast<double>(dy) * dy + dx2);
+}
+
+}  // namespace
+
+std::size_t unit_pick_00526a40(UnitPickScreenState& screen, UnitPickHost& host,
+                               std::size_t exclude, float zoom) {
+    screen.exclude_hit_50 = 0;                                        // 00526A79
+    screen.by_ray_b4 = false;                                         // 00526A84
+    // 00526A6F..00526AF8: below full zoom the lock radius is widened.
+    if (kPickZoomOne > zoom) {
+        float modifier = host.lock_zoom_modifier_5c();
+        if (kPickModifierFloor > static_cast<double>(modifier)) modifier = kPickModifierMin;
+        const float inv = static_cast<float>(1.0 / static_cast<double>(modifier));
+        zoom = static_cast<float>(
+            static_cast<double>(host.interpolate_clamped_00419010(inv, zoom)) * zoom);
+    }
+    std::size_t pick = 0;
+    if (host.game_19c4()) {
+        pick = host.spectated_unit_005a1310();                        // 00527209
+    } else {
+        // 00526B12..00526B4D: a plane firing unit aims through its GunBot.
+        const std::size_t firing = host.firing_unit_004b4b00();
+        bool plane_bot = false;
+        if (firing != 0 && host.is_kind_of(firing, kKindPlaneBot)) {
+            const int slot = host.unit_slot_1b4(firing);
+            plane_bot = slot == kSlotNone || host.slot_auto_engage_00927f10(slot);
+        }
+        screen.section_named_54 = false;                              // 00526B5C
+        // 00526B64..00526C4A: the segment from the camera along its forward.
+        float from[3];
+        float forward[3];
+        host.camera_basis(from, forward);
+        float to[3];
+        for (int i = 0; i < 3; ++i) {
+            to[i] = static_cast<float>(static_cast<double>(forward[i]) * kPickRayLength + from[i]);
+        }
+        std::size_t hit = 0;
+        const bool hit_any = host.ray_pick_009043a0(from, to, firing, hit);
+        bool from_ray = false;
+        if (hit_any && !plane_bot && hit != 0) {
+            pick = host.ray_hit_branch(screen, hit);                  // 00526C74
+            from_ray = pick != 0;
+        }
+        if (from_ray) {
+            screen.by_ray_b4 = true;                                  // 005271C4 area
+        } else {
+            pick = 0;
+            // 00526DB7..00526E1F: the lock radius, squared.
+            const int index = host.game_1fe4() ? 2 : host.game_difficulty_6ac();
+            const float multiplier = host.lock_radius_multiplier(index);
+            const float radius = static_cast<float>(
+                static_cast<double>(multiplier) * (kPickRadiusBase / static_cast<double>(zoom)));
+            float best = static_cast<float>(static_cast<double>(radius) * radius);
+            // 00526E30..00526FE6 over game+1974h, then 00527003..005271B9
+            // over game+19BCh: a squadron contributes up to five members.
+            for (UnitPickList list : {UnitPickList::TeamUnits, UnitPickList::Kind35}) {
+                const std::size_t count = host.list_size(list);
+                for (std::size_t n = 0; n < count; ++n) {
+                    std::size_t unit = host.list_unit(list, n);
+                    std::size_t squadron = 0;
+                    if (unit == 0 || !host.is_kind_of(unit, kKindUnit)) {
+                        unit = 0;
+                    } else if (host.is_kind_of(unit, kKindSquadron)) {
+                        squadron = unit;
+                        unit = host.member_3d0(squadron, 0);
+                    }
+                    int k = 0;
+                    while (unit != 0) {
+                        const bool grey = host.grey_arrow_contains_008ddf90(unit);
+                        if (unit != exclude && !host.flag_5d(unit)
+                            && host.is_kind_of(unit, kKindCommandable)
+                            && (grey || (!host.is_kind_of(unit, kKindExcluded1A)
+                                         && !host.is_kind_of(unit, kKindExcluded19)))) {
+                            float point[3];
+                            if (plane_bot) {
+                                host.intercept_point_00901c20(firing, unit, point);
+                            } else {
+                                host.unit_position(unit, point);
+                            }
+                            const float distance = pick_screen_distance_00522050(host, point);
+                            if (best > distance) {                    // 00526F9C, strict
+                                best = distance;
+                                pick = unit;
+                            }
+                        }
+                        ++k;                                          // 00526FB7
+                        if (squadron == 0 || k >= host.member_count_3cc(squadron) || k > 4) break;
+                        unit = host.member_3d0(squadron, k);
+                    }
+                }
+            }
+        }
+        // 005271CB..005271F0: with a ray hit that is not the pick, a kind-44h
+        // hit keeps the pick only when 005220C0 accepts it.
+        if (pick != 0 && hit != 0 && pick != hit && host.is_kind_of(hit, 0x44)
+            && !host.ray_hit_filter_005220c0(pick)) {
+            pick = 0;
+        }
+    }
+    // 0052721A..0052723A.
+    if (pick != 0 && !host.alive_and_visible(pick)) pick = 0;
+    return pick;
+}
+
+void unit_pick_screen_update_00527260(UnitPickScreenState& screen, UnitPickHost& host,
+                                      float dt) {
+    screen.sound_d8 = false;                                          // 0052727B
+    // 00527282: [00E18DB7] = 1 until the exits; only BSP_Session_RouteMessage
+    // (0077C381) reads it, from the lock branches.
+    const float zoom = host.binoculars_zoom();                        // 00527292..005272B1
+    const std::size_t pick = unit_pick_00526a40(screen, host, host.controlled_unit(), zoom);
+    // 005272CE..005272EF: the observer pair on +18h follows +4Ch.
+    if (screen.pick_4c != pick) screen.pick_4c = pick;
+    screen.payload_b0 = 0;                                            // 005272F9
+    if (screen.pick_4c != 0) {
+        screen.payload_b0 = host.is_kind_of(screen.pick_4c, kKindPayloadSelf)
+            ? screen.pick_4c : host.owner_140(screen.pick_4c);
+    }
+    if (host.team_record_19()) return;                                // 00527340
+    // 0052735C..00527394: +ECh counts down to zero.
+    if (screen.timer_ec != 0.0f) {
+        const float t = static_cast<float>(static_cast<double>(screen.timer_ec) - dt);
+        screen.timer_ec = t;
+        if (0.0f > t) screen.timer_ec = 0.0f;
+    }
+    const std::size_t controlled = host.controlled_unit();
+    bool tail = true;
+    do {
+        if (controlled == 0 || screen.timer_ec != 0.0f) break;        // 005273A4, 005273B9
+        const bool g = host.game_19c4();
+        if (g && host.byte_e0e350()) { tail = false; break; }         // 005273D6
+        const bool on_payload = controlled == screen.payload_b0;      // 005273E3
+        if (!g) {
+            const int id = host.interface_id();
+            if (id == 0x32 || id == 0x31 || id == 0x30) break;        // 005273F7..0052740C
+        }
+        // 00527412..005275FA: the input flags. Action records are
+        // [input+4]+30h*action: CEh (+26A0h), CFh (+26D0h), D1h (+2730h),
+        // D3h (+2790h), D4h (+27C0h), D5h (+27F0h).
+        bool expired = false;
+        bool lock_held = false;                                       // [esp+10h]
+        if (!on_payload && host.action_byte(g ? 0xD5 : 0xCE, 0x10)) lock_held = true;
+        const bool take_pressed = !on_payload && !g && host.input_pressed(0xD0); // [esp+12h]
+        const bool cf_0b = host.action_byte(g ? 0xD1 : 0xCF, 0x0B);  // [esp+0Dh]
+        const bool cf_10 = host.action_byte(g ? 0xD1 : 0xCF, 0x10);  // [esp+0Eh]
+        const bool ce_0b = !g && host.action_byte(0xCE, 0x0B);        // [esp+11h]
+        const bool ce_10 = !on_payload && !g && host.action_byte(0xCE, 0x10); // [esp+0Fh]
+        bool d3 = false;                                              // BL from 0052759A
+        if (!on_payload && g) d3 = host.action_byte(0xD3, 0x0B) || host.action_byte(0xD3, 0x10);
+        if (g) {
+            if (host.action_byte(0xD4, 0x0B) || host.action_byte(0xD4, 0x10)) {
+                screen.countdown_b8 = 2;                              // 005275FC
+            } else if (!on_payload && screen.countdown_b8 > 0) {
+                screen.countdown_b8 -= 1;                             // 005275EC
+                expired = screen.countdown_b8 == 0;
+            }
+        } else {
+            screen.countdown_b8 = 0;                                  // 00527608
+        }
+        if (cf_0b || cf_10 || expired || ce_10) host.reset_c0_00525170(); // 0052762E
+        // 0052763A, 00527647: 004B4B00 and 00523580 read only.
+        // 0052764C..00527B6F: each branch tests its own gates and either runs
+        // to 00527B74 or falls through to the next test.
+        if (lock_held && host.lock_branch(screen, 0x00527659u)) break;
+        if (d3 && host.lock_branch(screen, 0x005277D1u)) break;
+        if (expired && host.lock_branch(screen, 0x00527905u)) break;
+        if (cf_0b && host.lock_branch(screen, 0x005279F9u)) break;
+        if (cf_10 && host.lock_branch(screen, 0x00527A7Cu)) break;
+        if (ce_0b) { host.lock_branch(screen, 0x00527B0Fu); break; }
+        if (ce_10) { host.lock_branch(screen, 0x00527B00u); break; }
+        if (take_pressed) host.lock_branch(screen, 0x00527B1Fu);
+    } while (false);
+    if (!tail) return;                                                // 00527BCD
+    // 00527B76..00527BCB.
+    if (screen.sound_d8) host.tail_sound_00a7e490();
+}
+
 }  // namespace bsp

@@ -980,6 +980,43 @@ bool GameMissionLuaHost::read_global_number_pair(const char* name, float& first,
     return ok;
 }
 
+bool GameMissionLuaHost::read_lock_radius_multipliers_0087dc85(std::vector<float>& out) {
+    out.clear();
+    if (state_ == nullptr) return false;
+    const int top = ::lua_gettop(state_);
+    lua_getfield(state_, LUA_GLOBALSINDEX, kGlobalsGlobal);
+    if (lua_type(state_, -1) != LUA_TTABLE) {
+        ::lua_settop(state_, top);
+        set_phase("global config");
+        bsp::run_script_file(*this, kGlobalConfigScriptPath);
+        lua_getfield(state_, LUA_GLOBALSINDEX, kGlobalsGlobal);
+    }
+    if (lua_type(state_, -1) == LUA_TTABLE) {
+        ::lua_getfield(state_, -1, "Difficulty");
+        if (lua_type(state_, -1) == LUA_TTABLE) {
+            ::lua_getfield(state_, -1, "HPMultipliers");
+            ::lua_getfield(state_, -2, "LockRadiusMultipliers");
+            // 0087DB08..0087DDB3: while HPMultipliers[index] is not nil, each
+            // of the four vectors takes its entry at that index.
+            if (lua_type(state_, -2) == LUA_TTABLE && lua_type(state_, -1) == LUA_TTABLE) {
+                for (int index = 1;; ++index) {
+                    ::lua_rawgeti(state_, -2, index);
+                    const bool present = lua_type(state_, -1) != LUA_TNIL;
+                    ::lua_pop(state_, 1);
+                    if (!present) break;
+                    ::lua_rawgeti(state_, -1, index);
+                    out.push_back(static_cast<float>(::lua_tonumber(state_, -1)));
+                    ::lua_pop(state_, 1);
+                }
+            }
+        }
+    }
+    ::lua_settop(state_, top);
+    log_.notef("lock radius: Globals[\"Difficulty\"][\"LockRadiusMultipliers\"] read %u "
+        "value(s) from %s", static_cast<unsigned>(out.size()), kGlobalConfigScriptPath);
+    return !out.empty();
+}
+
 bool GameMissionLuaHost::read_minimap_globals_0087d7b0(float& minimap_range,
     float& visibility_range) {
     if (state_ == nullptr) {

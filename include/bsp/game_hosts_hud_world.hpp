@@ -155,6 +155,15 @@ inline constexpr bool kHudShipScreenGaugesBound = true;
 // unit rows (00648C20) are records. OFF keeps the record.
 inline constexpr bool kHudRootScreenBound = true;
 
+// Packet cc9_screen_29h (docs/SHIP_SCREEN_UPDATE.md section 24). ON runs
+// screen 29h's update 00527260 and its pick 00526A40 in place of the
+// FrontEndScreen::update record, and answers screen 49h's read of 29h's +4Ch
+// from the pick. The spatial query, the unit lists' producers, the squadron
+// members, the grey-arrow set and the input device bytes are records; the
+// lock branches (orders, role moves, take control) are records never reached
+// without input. OFF keeps both records.
+inline constexpr bool kHudUnitPickScreenBound = true;
+
 class GameHostLog;
 class GameFrontendHost;
 class GameMenuHost;

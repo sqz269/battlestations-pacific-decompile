@@ -391,6 +391,12 @@ public:
     // 004A9BD0 reads into [00E18710]/[00E1870C]. False when the global is
     // absent or not a table of two numbers.
     bool read_global_number_pair(const char* name, float& first, float& second);
+    // Packet cc9_screen_29h: Globals["Difficulty"]["LockRadiusMultipliers"],
+    // which 0087D7B0 appends at 0087DC85..0087DCFD into the global config's
+    // vector at +3Ch (first +40h), one float per difficulty index from Lua
+    // index 1 while Difficulty's HPMultipliers has that index. Runs
+    // globals.lua when Globals is absent. False when nothing was read.
+    bool read_lock_radius_multipliers_0087dc85(std::vector<float>& out);
     // Packet cc9_hit_accuracy: the four WeaponHitAccuracy sub-objects at
     // settings+240h/+298h/+2F0h/+348h as 0083C795..0083C919 fills them. False
     // until ShipGlobals ran; the caller then keeps the 00836EF0 defaults.
