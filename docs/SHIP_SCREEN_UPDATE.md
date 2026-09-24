@@ -677,3 +677,160 @@ then on, USN04 4500.
   counts 9,160, not the 9,158 I estimated. `leader_3d0` does not appear.
 - **Summary lines.** All 157 are identical.
 - **Result.** Every prediction holds. **`kHudFollowScreenBound` flips ON.**
+
+## 18. Screen 46h, the ship view: 0064D610 (part 1)
+
+Packet `cc9_screen_46h` (worker cc9-platform2, 2026-09-23). Ghidra has no function at 0064D610.
+The start and exclusive end are **0064D610..0064D731** (two `RET 4` exits, the last at 0064D72E).
+The routine was read from the disk listing. vtable 00CF7978 +20h, `__thiscall(screen, float dt)`,
+SEH frame. The 25h arm's hand-off on interface+7Ch, 0064DA40, stores the unit at +1Ch.
+
+**The flow:**
+1. 0064D62B..0064D639: stop unless +4h (the wanted byte) is set and +1Ch is non-null.
+2. 0064D647: 0064A400(dt). It calls screen 26h's 0051F330: 0051EF00 and 0051F050 read the camera
+   axes and the view and fire actions, and move the camera mover. With 46h's +20h set, it also
+   calls screen 2Eh's 005454B0, which stores three floats and forwards two to screen 4Dh's
+   00637620.
+3. 0064D656: 0064B870(dt), `BSP_HudUnitOrder_UpdateIntegratedControls`.
+4. 0064D65B..0064D66D: screen 2Eh's 005484F0 (3.3 KB: input actions, interface requests and a
+   session route), when [00E198C4]+50h exists.
+5. 0064D675: 00815850(unit), whose result is discarded.
+6. 0064D680..0064D71A: on input action 95h pressed, with the unit's vtable +234h(0) and the
+   local-player test 00927F30, an order is routed. A kind-0Ch unit goes through 00812960, 00465080
+   and 0077D600; any other through 0064A820 and `0077C2A0(msg, 2, 0)`. Input-gated, so these are
+   records never reached.
+
+**Part 1 binds the flow above.** Steps 2 to 4 are the records `HudShipView::view_input`,
+`integrated_controls` and `screen_2eh_005484f0`. Each is a later part. The +4h byte comes from the
+registry, and the +1Ch presence comes from the host's 0x7C hand-off.
+
+**Switch.** `kHudShipViewScreenBound`. OFF keeps the `FrontEndScreen::update` record for slot 46h.
+
+**Predictions, written before the pair.** One tree with every earlier switch on, the switch off
+then on, USN04 4500.
+- `FrontEndScreen::update` falls by about 9,158. `HudShipView::update` appears as done with the
+  same count.
+- `view_input`, `integrated_controls` and `screen_2eh_005484f0` appear with that count each, in
+  every pump where +4h is set and the unit is bound. No `unit_virtual_234`, `unit_00812960` or
+  `order_route_*` row appears.
+- The unimplemented total rises by about 2 x 9,158 = 18,316.
+- Every summary line is identical.
+
+**The part 1 pair.** `local\p8_off_usn04.log` against `local\p8_on_usn04.log`, one tree, 2560x1440.
+
+| row | OFF | ON |
+| --- | ---: | ---: |
+| unimplemented total | 2,257,737 | 2,276,053 (+18,316; predicted about +18,316) |
+| FrontEndScreen::update | 36,643 | 27,485 |
+| HudShipView::update | none | 9,158 done |
+| view_input, integrated_controls, screen_2eh_005484f0 | none | 9,158 each |
+
+- No order-route or unit-virtual row appears.
+- **Summary lines.** All 157 are identical.
+- **Result.** Every prediction holds. **`kHudShipViewScreenBound` flips ON.**
+
+## 19. Screen 46h part 2: the integrated controls 0064B870
+
+`bsp::integrated_controls_0064b870`, read from the listing. `__thiscall(screen 46h, float dt)`,
+RET 4, body 0064B870..0064BB48. The existing fragment `issue_hud_order_fragment_0064b870`
+(0064BA97..0064BB16) covers the order it sends.
+
+**The flow:**
+1. 0064B879: with byte [+1Ch]+6C8h set, it reads the input manager's turn axis +1BE4h, thrust
+   axis +1BB4h, the two binding queries 00A92050/00A92090 on +1B90h, and later the byte +1B91h.
+2. "Thrust moved":
+   - With 00A92050, it is "+30h clear". When +30h is set and +34h differs from the thrust axis,
+     +30h is cleared instead.
+   - Without it, it is |thrust| > 0.1 (00D7A3A0). The magnitude is `-0.0 - x` for x <= 0.
+3. 0064B96C..0064B9BD: when |turn| > 0.1 or the thrust moved, with [+1Ch]+1130h zero and the
+   player holding role 0 but not role 1, it calls `0077C470(unit, 2, 1)` for the transfer. It then
+   seeds +28h from unit+984h and +24h from unit+980h.
+4. 0064B9C5..0064BB12, only while the player holds role 1:
+   - +24h integrates the thrust axis: `+24h - thrust*dt` without a device query. With one, and
+     +1B91h set, it is `-thrust*0.5` for positive thrust, else `-0 - thrust`.
+   - It is clamped to [-0.5, 1] by 00415690.
+   - +28h = `+28h - turn*dt`, clamped to [-1, 1].
+   - The quantised order goes out through 00816A40.
+5. 0064BB19..0064BB3C: role 1 is given back (`0077C470(2, 0)`) while game+19C4h is set.
+
+**Substitutions and records:**
+- The +6C8h gate reads set. The unit constructor stores 1 at 0095CE29, and a disp32 scan finds no
+  other byte writer. No record.
+- `HudShipView::control_inputs` (004BEC00): the input manager fields read zero and clear.
+- `HudShipView::local_player_role` (00927F30): the host has no role table. It answers role 0 held
+  and role 1 not held (docs/CONTROLLED_UNIT_HELM.md section 6).
+- `role_transfer`, `issue_order`, `unit_1130` and `game_19c4` are reached only after input.
+
+**Switch.** `kHudShipViewControlsBound`. OFF keeps part 1's `HudShipView::integrated_controls`
+record.
+
+**Predictions, written before the pair.** Part 1 on, the switch off then on, USN04 4500.
+- **Row that leaves:** `HudShipView::integrated_controls` at 0064B870, 9,158.
+- **Rows added:**
+  - `HudShipView::integrated_controls_0064b870`: done, 9,158.
+  - `control_inputs`: 9,158.
+  - `local_player_role`: 18,316, from the role-1 tests at 0064B9C5 and 0064BB1E. The role-0 test
+    is short-circuited because no axis moves.
+- **Rows not added:** no `role_transfer`, `issue_order`, `unit_1130` or `game_19c4` row.
+- **Total.** The unimplemented total rises by 18,316.
+- **Summary lines.** All identical, and the controlled unit's motion is unchanged.
+
+**The part 2 pair.** `local\p9_off_usn04.log` against `local\p9_on_usn04.log`, one tree, 2560x1440.
+
+| row | OFF | ON |
+| --- | ---: | ---: |
+| unimplemented total | 2,276,053 | 2,294,369 (+18,316; predicted +18,316) |
+| integrated_controls (record) | 9,158 | none |
+| integrated_controls_0064b870 | none | 9,158 done |
+| control_inputs | none | 9,158 |
+| local_player_role | none | 18,316 |
+
+- No `role_transfer`, `issue_order`, `unit_1130` or `game_19c4` row appears.
+- **Summary lines.** All 157 are identical.
+- **Result.** Every prediction holds. **`kHudShipViewControlsBound` flips ON.**
+
+## 20. Handoff (cc9-platform2, 2026-09-23)
+
+**Landed on agent/cc9-platform2**, each switch ON by its own USN04 pair:
+
+| switch | code | what it runs |
+| --- | --- | --- |
+| `kHudShipScreenDamageBound` | 0064F665..0064FD24 | 45h's damage panel |
+| `kHudShipScreenGaugesBound` | 0064FD24..006500C1 | 45h's direction icon and digit gauges |
+| `kHudBaseUpdateScreensBound` | 004F75C0 | slots 26h, 2Eh and 3Eh, a bare `RET 4` |
+| `kHudWarningScreenBound` | 00683020 | 50h's four warnings |
+| `kHudFollowScreenBound` | 0067BF00 | 49h's follow pick |
+| `kHudShipViewScreenBound` | 0064D610 | 46h's top-level flow |
+| `kHudShipViewControlsBound` | 0064B870 | 46h's integrated controls |
+
+The screen code for 49h, 50h and 46h is in `src/hud_warning_screen.cpp`.
+
+**What is left of the in-mission screens:**
+- **27h, 0067BB50..0067BC59.** It calls 0077C470 (SendRoleTransfer) with no input gate (section
+  15). It waits for the lead's decision.
+- **46h part 3, `HudShipView::view_input` (0064A400).**
+  - Screen 26h's 0051F330 runs 0051EF00 (the view-action handling, 0051E7E0, 0051EAA0/0051E6E0
+    and widget +20h) and 0051F050. 0051F050 integrates the camera mover's yaw (+384h) and pitch
+    (0051E650) from input axes +1584h/+15B4h, and handles action 75h and the controlled unit's
+    vtable +C8h.
+  - With 46h's +20h set, 0064A400 also runs screen 2Eh's 005454B0, which stores three floats at
+    2Eh+48h..+50h and forwards two to screen 4Dh's 00637620 when game+19C4h is clear.
+  - The camera mover is the mission camera's (`docs/MISSION_CAMERA.md`). Read how its tick
+    already applies yaw before binding a second writer.
+- **46h part 4, `HudShipView::screen_2eh_005484f0`.** 005484F0 is 3.3 KB of screen 2Eh: seven
+  input actions, 004C5090 holds, two interface requests (`BSP_FrontEndManager_PushInterfaceRequest`)
+  and a session route. Read it whole; expect input-gated order and UI-mode writes.
+- **29h, 00527260** (continues past 0052735C) with 00526A40, its large worker. 29h's +4Ch is what
+  49h's `screen_29h_unit` record stands for.
+- **44h, 00649860..0064A24C**, the HudRoot update. `src/hud_root_rows.cpp` reconstructs part of it,
+  but its host is not bound.
+
+**Method notes:**
+- Build each pair from one tree: build OFF, copy `bsp_game.exe` and `xlive_stub.dll` to
+  `local\bin\<name>`, flip the switch, build ON, copy again. Pass `-Exe local\bin\<name>\bsp_game.exe`
+  to `tools/run_game.ps1`, so both runs can queue at once while the tree moves on.
+- `local\w\unimpl.py <off.log> <on.log>` (worker tree, not committed) prints the unimplemented
+  total, every row that changed and every summary line that moved.
+  `PlatformLoopCallbacks::pretranslate` moves between any two runs; it counts window messages.
+- Ghidra has no function at 00683020, 0067BF00 or 0064D610. Read those from `disasm-raw`, and
+  take their ends from the RET and padding.
