@@ -44,7 +44,7 @@ public:
     const NativeLuaObjectStorage& current_raw() const;
     const std::vector<NativeLuaReaderValue>& values() const noexcept { return objects; }
 
-    std::uint32_t profile_00;
+    volatile std::uint32_t profile_00;
     std::byte proxy_04[4];
 private:
     union { std::vector<NativeLuaReaderValue> objects; };
