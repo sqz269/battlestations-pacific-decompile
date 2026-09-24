@@ -66,14 +66,14 @@ inline constexpr bool kMissionCameraBound = true;
 // order through the frame cursor +7Ch) and runs 00640620 over the four pools:
 // entries past a cursor are hidden, pool D's tail is released, the A/B/C
 // cursors are zeroed. OFF keeps the per-unit widget map and the two records.
-inline constexpr bool kHudMarkerPoolsBound = false;
+inline constexpr bool kHudMarkerPoolsBound = true;
 
 // Packet cc9_mission_camera, part 3 (docs/MISSION_CAMERA.md section 9). ON,
 // together with kMissionCameraBound, sets the Operator fov each camera tick the
 // way screen 45h's pipe-sight block does through 004DC940 (Globals.FOVs.Ship x
 // [00F889B4] x the zoom scale). OFF leaves the constructor's 40 degrees, so the
 // camera pair and the FOV pair can be measured separately.
-inline constexpr bool kMissionFovBound = false;
+inline constexpr bool kMissionFovBound = true;
 
 class GameHostLog;
 class GameFrontendHost;
