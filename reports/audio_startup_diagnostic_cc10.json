@@ -1,0 +1,76 @@
+{
+  "packet": "cc10_audio_startup_diagnostic",
+  "status": "bounded_diagnostic_current_application_sound_startup_passed_historical_failure_unresolved",
+  "source_revision": "f155d3379",
+  "documentation": "docs/AUDIO_STARTUP_DIAGNOSTIC_CC10.md",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "ghidra_worker_mutations": false,
+  "source_edits": false,
+  "installed_artifacts": {
+    "game_root": "I:/SteamLibrary/steamapps/common/Battlestations Pacific",
+    "fmodex_dll": {"file_version": "4.18.4", "sha256": "31e7451aef6115b0aec353e4e508ff9f0fc14ea3a8957e5ddb805ede911700e8"},
+    "fmod_event_dll": {"file_version": "4.18.4", "sha256": "4b6ae7ba8d3da780c23abb5e72a65ea50e5348a60a1b4aef43196e09ae771890"},
+    "exe_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "error_bank": {"path": "sound/gui/error.fsb", "bytes": 2688, "signature": "FSB4", "sha256": "247374fbb9cfcb9e3867f054c72e0663f346ee858ecc1ea1ffa4c4fff32fb555"}
+  },
+  "result_mapping": {
+    "source": "config/fmod_ex_types.json game FMOD_RESULT recovered from six 89-case executable error tables; tools/fmod_sdk_types.py verify passed",
+    "runtime_version": "0x41804",
+    "61": "FMOD_ERR_OUTPUT_INIT",
+    "78": "FMOD_ERR_UNINITIALIZED",
+    "37": "FMOD_ERR_INVALID_PARAM"
+  },
+  "native_functions": [
+    {"address": "00a88770", "name": "BSP_SoundSystem_Initialize", "original_abi": "fastcall self ECX; disabled and two unused words on stack; EventSystem slot0 stdcall receives event,512,0x10,null,0", "coverage": "sound enabled driver scan and configuration through init verified in live listing"},
+    {"address": "00a823f0", "name": "BSP_SoundResource_LoadFsbBank_Provisional", "original_abi": "game-owned sound resource loader with FMOD System C++ stdcall imports", "coverage": "CreateSound/GetLength call sites and error propagation reviewed"},
+    {"address": "00c2df80", "name": "FMOD_EventSystem_Create", "coverage": "existing import thunk"},
+    {"address": "00c2dec0", "name": "FMOD::System::createSound", "coverage": "existing C++ import thunk; source invokes the installed C wrapper FMOD_System_CreateSound"},
+    {"address": "00c2deba", "name": "FMOD::Sound::getLength", "coverage": "existing C++ import thunk; source invokes the installed C wrapper FMOD_Sound_GetLength"}
+  ],
+  "no_ghidra_function": [],
+  "host_steps": [
+    {"address": "00a8881e", "native": "00c2df80", "function": "00a88770", "contract": "Create event system before configuration"},
+    {"address": "00a82492", "native": "00c2dec0", "function": "00a823f0", "contract": "Create 2688-byte fallback bank from memory after init"},
+    {"address": "00a824e5", "native": "00c2deba", "function": "00a823f0", "contract": "Get RAWBYTES=8 length from returned sound"}
+  ],
+  "indirect_steps": [
+    {"address": "00a88844", "function": "00a88770", "contract": "EventSystem table slot7 returns System pointer"},
+    {"address": "00a88931", "function": "00a88770", "contract": "EventSystem table slot0 init with 512,0x10,null,0; result61 was not checked by native except against memory code43"}
+  ],
+  "prior_application_failure": {
+    "source": "reports/platform_activation_application_cc10.json; primary local/cc10-activation-prerequisites-runtime.log",
+    "combined_revision": "648081336", "combined_exe_sha256": "889d5af5bb486e4df0f4c9795b0b063cc41d8b2088eb28bc5328e051199b8895",
+    "comparison_revision": "9dcca1289", "comparison_exe_sha256": "634c1c7cf3912337eea51f187125888248f712f743aa2f9edb8e96c4c800ce18",
+    "event_init_result": 61, "create_sound_result": 78, "get_length_result": 37,
+    "window_created": false, "xinput_lifetime_independent": true
+  },
+  "local_direct_probe": {
+    "executable_sha256": "ca43d0e694bfbb44d27a556fb8fa474e5d72db3035dcff686cdb9203c0de5a44",
+    "build": "MSVC Win32 /MD /link /MANIFEST:EMBED; ignored local/output/audio_probe.cpp",
+    "enabled_log": "local/output/audio_probe_enabled.log",
+    "enabled_results": {"drivers": 8, "driver_caps_errors": 0, "speaker_mode": 2, "set_speaker_mode": 0, "event_init": 0, "output_numeric": 9, "selected_driver": 0, "event_release": 0},
+    "nosound_log": "local/output/audio_probe_nosound.log",
+    "nosound_results": {"set_output_2": 0, "event_init": 0, "output_numeric": 2, "event_release": 0}
+  },
+  "fresh_application_baseline": {
+    "revision": "f155d3379",
+    "build": "strict MSVC Win32; 2 existing CTests passed",
+    "exe_sha256": "d16299bdcdf4b633259f6aa780afff172ba0371d8c83e811617629efa7d4c688",
+    "wrapper": "./tools/run_game.ps1 -Log local/cc10-audio-baseline.log -- --frames 2",
+    "log": "local/cc10-audio-baseline.log",
+    "wrapper_slot": 1,
+    "exit_code": 0,
+    "sound_enabled": true,
+    "sound_startup_fmod_calls": 132,
+    "sound_startup_fmod_errors": 0,
+    "window_created": true,
+    "device_created": true,
+    "frames_presented": 1,
+    "presents_skipped": 1,
+    "settings_resolution": "2560x1440",
+    "note": "One queued wrapper invocation completed without cancellation or retry; the earlier failing log reported 640x480 and no retained full options snapshot. Targeted git diff 648081336..f155d3379 found no changes in seven reviewed direct audio/game-host source and header files."
+  },
+  "interpretation": "Historical result61 is an FMOD output-initialization failure; its cause remains unresolved. Direct same-DLL startup and one current application build both succeed. Results78/37 followed native-compatible continuation after unsuccessful init; no source fix is supported.",
+  "limits": "No native ABI replacement, original-game run, audio system changes, application fix, audible playback, full GUI or gameplay validation."
+}
