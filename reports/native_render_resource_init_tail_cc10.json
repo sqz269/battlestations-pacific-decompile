@@ -1,0 +1,568 @@
+{
+  "packet": "cc10_render_init_tail",
+  "base_commit": "783990c2e84e1b7421152fff1074a662826154f0",
+  "status": "partial_projection_B107F0_B12C9A_to_B13010_epilogue_observed_only",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "source_files": [
+    "include/bsp/native_render_resource_init_tail.hpp",
+    "src/native_render_resource_init_tail.cpp"
+  ],
+  "small_extension": {
+    "header": "include/bsp/native_render_resource_init_post664.hpp",
+    "change": "one-use tail identity and two phases only"
+  },
+  "no_ghidra_function": [],
+  "routines": [
+    {
+      "address": "00b107f0",
+      "name": "continue_native_render_resource_init_00b12c9a_fragment",
+      "status": "partial_projection",
+      "coverage": "ONLY [00B12C9A,00B13010),886 bytes; following25-byte machine epilogue observed only",
+      "start": "00b12c9a",
+      "end_inclusive": "00b1300f",
+      "end_exclusive": "00b13010",
+      "size": 886,
+      "last_instruction": "00b1300b",
+      "last_instruction_size": 5,
+      "last_instruction_text": "CALL 00B4ECC0",
+      "next_instruction": "00B13010 MOV ECX,[ESP+26C]; machine epilogue excluded",
+      "original_abi": "containing ECX service,three borrowed DWORD argument cells,eventual RET0C; no argument read or native return here",
+      "source_abi": "same one-use post664 predecessor/original context; distinct wave/clear canonical blocks; saved-register restores observed only",
+      "preserved_ghidra_name": "BSP_RenderResources_InitializeMembers_PartialEntry",
+      "complete_init": false,
+      "destruction_admitted": false,
+      "runtime_tested": false
+    }
+  ],
+  "live_pe_byte_blocks": [
+    {
+      "start": "00b12c9a",
+      "end_inclusive": "00b12f53",
+      "end_exclusive": "00b12f54",
+      "size": 698,
+      "sha256": "e695e19335b25edfd9a1b4e890113796d089829c8124830fd15083ea22fc140f",
+      "instruction_count": 163,
+      "last_instruction": "00b12f4f",
+      "last_instruction_size": 5,
+      "scope": "post654",
+      "live_equals_disk": true,
+      "implemented": true
+    },
+    {
+      "start": "00b12f54",
+      "end_inclusive": "00b1300f",
+      "end_exclusive": "00b13010",
+      "size": 188,
+      "sha256": "1cb41aa78da50561a4134ac03a83eea2e0b8a602aff3dd9df24e90dd35109901",
+      "instruction_count": 51,
+      "last_instruction": "00b1300b",
+      "last_instruction_size": 5,
+      "scope": "post660_normal",
+      "live_equals_disk": true,
+      "implemented": true
+    },
+    {
+      "start": "00b13010",
+      "end_inclusive": "00b13028",
+      "end_exclusive": "00b13029",
+      "size": 25,
+      "sha256": "f508d4fb8badc2b87470ac10f65438fab558cb4d8fd2f5633e8461800a8821a7",
+      "instruction_count": 6,
+      "last_instruction": "00b13026",
+      "last_instruction_size": 3,
+      "scope": "machine_epilogue",
+      "live_equals_disk": true,
+      "implemented": false
+    },
+    {
+      "start": "00b12c9a",
+      "end_inclusive": "00b1300f",
+      "end_exclusive": "00b13010",
+      "size": 886,
+      "sha256": "608b766b63a4fcd68841632c19c2ad51b789f78f9898fb31d563c532296eee2f",
+      "instruction_count": 214,
+      "last_instruction": "00b1300b",
+      "last_instruction_size": 5,
+      "scope": "normal_resource_tail",
+      "live_equals_disk": true,
+      "implemented": true
+    },
+    {
+      "start": "00b12c9a",
+      "end_inclusive": "00b13028",
+      "end_exclusive": "00b13029",
+      "size": 911,
+      "sha256": "64eeb3de2847faa961e6f7383244f869e9a89dcb291d6e079ca3b46fb4fb0aa7",
+      "instruction_count": 220,
+      "last_instruction": "00b13026",
+      "last_instruction_size": 3,
+      "scope": "all_observed",
+      "live_equals_disk": true,
+      "implemented": false
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "00b12c9c",
+      "native": "00bf681b",
+      "function": "00b107f0",
+      "source": "singleton_lifetime_allocate"
+    },
+    {
+      "address": "00b12cc5",
+      "native": "0041e870",
+      "function": "00b107f0",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b12ce8",
+      "native": "00b4e470",
+      "function": "00b107f0",
+      "source": "construct_native_post_effect20_00b4e470"
+    },
+    {
+      "address": "00b12d29",
+      "native": "00419cc0",
+      "function": "00b107f0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b12d30",
+      "native": "00bd1510",
+      "function": "00b107f0",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b12d41",
+      "native": "0041e870",
+      "function": "00b107f0",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b12d60",
+      "native": "00b4cba0",
+      "function": "00b107f0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b12d67",
+      "native": "00b18b00",
+      "function": "00b107f0",
+      "source": "register_native_material_float2_00b18b00"
+    },
+    {
+      "address": "00b12d8c",
+      "native": "00419cc0",
+      "function": "00b107f0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b12d93",
+      "native": "00bd1510",
+      "function": "00b107f0",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b12da4",
+      "native": "0041e870",
+      "function": "00b107f0",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b12dc9",
+      "native": "00b4cba0",
+      "function": "00b107f0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b12dd0",
+      "native": "00b18b00",
+      "function": "00b107f0",
+      "source": "register_native_material_float2_00b18b00"
+    },
+    {
+      "address": "00b12df5",
+      "native": "00419cc0",
+      "function": "00b107f0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b12dfc",
+      "native": "00bd1510",
+      "function": "00b107f0",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b12e0d",
+      "native": "0041e870",
+      "function": "00b107f0",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b12e34",
+      "native": "00b4cba0",
+      "function": "00b107f0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b12e3b",
+      "native": "00b18ac0",
+      "function": "00b107f0",
+      "source": "existing exact4*count/matrix0 wrapper composition"
+    },
+    {
+      "address": "00b12e60",
+      "native": "00419cc0",
+      "function": "00b107f0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b12e67",
+      "native": "00bd1510",
+      "function": "00b107f0",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b12e78",
+      "native": "0041e870",
+      "function": "00b107f0",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b12e9f",
+      "native": "00b4cba0",
+      "function": "00b107f0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b12ea6",
+      "native": "00b18ac0",
+      "function": "00b107f0",
+      "source": "existing exact4*count/matrix0 wrapper composition"
+    },
+    {
+      "address": "00b12ecb",
+      "native": "00419cc0",
+      "function": "00b107f0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b12ed2",
+      "native": "00bd1510",
+      "function": "00b107f0",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b12ee3",
+      "native": "0041e870",
+      "function": "00b107f0",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b12f0a",
+      "native": "00b4cba0",
+      "function": "00b107f0",
+      "source": "native_post_effect_material_00b4cba0"
+    },
+    {
+      "address": "00b12f11",
+      "native": "00b18ac0",
+      "function": "00b107f0",
+      "source": "existing exact4*count/matrix0 wrapper composition"
+    },
+    {
+      "address": "00b12f36",
+      "native": "00419cc0",
+      "function": "00b107f0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b12f3d",
+      "native": "00bd1510",
+      "function": "00b107f0",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b12f4f",
+      "native": "00b4e2b0",
+      "function": "00b107f0",
+      "source": "assign_native_post_effect_frame_00b4e2b0"
+    },
+    {
+      "address": "00b12f56",
+      "native": "00bf681b",
+      "function": "00b107f0",
+      "source": "singleton_lifetime_allocate"
+    },
+    {
+      "address": "00b12f84",
+      "native": "0041e870",
+      "function": "00b107f0",
+      "source": "construct_native_string_header_0041e870"
+    },
+    {
+      "address": "00b12fa3",
+      "native": "00b4e470",
+      "function": "00b107f0",
+      "source": "construct_native_post_effect20_00b4e470"
+    },
+    {
+      "address": "00b12fda",
+      "native": "00419cc0",
+      "function": "00b107f0",
+      "source": "native_string_pool_get_or_create_00419cc0"
+    },
+    {
+      "address": "00b12fe1",
+      "native": "00bd1510",
+      "function": "00b107f0",
+      "source": "return_native_string_pool_00bd1510"
+    },
+    {
+      "address": "00b12ff6",
+      "native": "00b50010",
+      "function": "00b107f0",
+      "source": "mark_native_render_batch_dirty_00b50010"
+    },
+    {
+      "address": "00b1300b",
+      "native": "00b4ecc0",
+      "function": "00b107f0",
+      "source": "invalidate_native_render_root_chain_00b4ecc0"
+    },
+    {
+      "address": "00b18ad8",
+      "native": "00b17e10",
+      "function": "00b18ac0",
+      "scope": "existing exact4*count/matrix0 wrapper support",
+      "source": "register_native_material_parameter_00b17e10"
+    },
+    {
+      "address": "00b4ecdb",
+      "native": "00b6d890",
+      "function": "00b4ecc0",
+      "scope": "existing requested-root-zero helper support",
+      "source": "existing clear_native_raw_node_root_00b6d890_null"
+    }
+  ],
+  "literal_blocks": [
+    {
+      "start": "00d5e1e4",
+      "end_exclusive": "00d5e1fc",
+      "size": 24,
+      "value": "Passtrough_Wave.mshd",
+      "sha256": "59dbde9139a04625ffd6f4ded696bf62e76d080d634a54af84e895173074bdda",
+      "live_equals_pe": true
+    },
+    {
+      "start": "00d5e1d0",
+      "end_exclusive": "00d5e1e4",
+      "size": 20,
+      "value": "cleartargets.mshd",
+      "sha256": "f74ceb1b135ae569a80ab5a862286e7a999355c26e79f25847c7c375b20259cd",
+      "live_equals_pe": true
+    }
+  ],
+  "parameters": [
+    {
+      "literal": "00d5e430",
+      "name": "cSceneColorSampleOffset",
+      "source": "inherited EBX=service+04",
+      "words": 2,
+      "vector_count": 0,
+      "matrix": 0,
+      "state": 98,
+      "order": "current654 atB12D46 BEFORE PUSH inheritedEBX atB12D4C",
+      "registration_site": "00b12d67"
+    },
+    {
+      "literal": "00d5e2f8",
+      "name": "cDisplacementSampleOffset",
+      "source": "service+194",
+      "words": 2,
+      "vector_count": 0,
+      "matrix": 0,
+      "state": 99,
+      "order": "current654 atB12DA9 BEFORE freshsourceLEA atB12DAF",
+      "registration_site": "00b12dd0"
+    },
+    {
+      "literal": "00d5e260",
+      "name": "cHParams",
+      "source": "service+628",
+      "words": 4,
+      "vector_count": 1,
+      "matrix": 0,
+      "state": 100,
+      "order": "freshsourceLEA atB12E14 BEFORE current654 atB12E23",
+      "registration_site": "00b12e3b"
+    },
+    {
+      "literal": "00d5e254",
+      "name": "cVParams",
+      "source": "service+638",
+      "words": 4,
+      "vector_count": 1,
+      "matrix": 0,
+      "state": 101,
+      "order": "current654 atB12E7D BEFORE freshsourceLEA atB12E85",
+      "registration_site": "00b12ea6"
+    },
+    {
+      "literal": "00d5e2e4",
+      "name": "cAASampleOffsets",
+      "source": "service+F4",
+      "words": 36,
+      "vector_count": 9,
+      "matrix": 0,
+      "state": 102,
+      "order": "current654 atB12EE8 BEFORE freshsourceLEA atB12EF0",
+      "registration_site": "00b12f11"
+    }
+  ],
+  "construction654": {
+    "allocation_site": "00b12c9c",
+    "allocation_state": 95,
+    "constructor_site": "00b12ce8",
+    "constructor_state": 96,
+    "mask": "DWORD200,immediate; EBX stays inherited service4",
+    "bytes": 32,
+    "vertex_count": 3,
+    "optional_input": null,
+    "registers": "EDI/ESP14 raw654; EBP stays inheritedFFFFFFFF; EBX staysservice4",
+    "publication": "test DWORD200 atB12CF1; actualresult/null toservice654 atB12CF9; EH-1 AFTERstore atB12CFF; capturednamedata beforeDWORD200clear",
+    "raw_headers": "baseline len/data20C/210,21C/220,22C/230,23C/240,24C/250,25C/260",
+    "no_texture_or_defaults": true
+  },
+  "frame654": "capture current1D4 atB12F42 then current654 atB12F49; fullB4E2B0 atB12F4F",
+  "construction660": {
+    "allocation_site": "00b12f56",
+    "allocation_state": 103,
+    "constructor_site": "00b12fa3",
+    "constructor_state": 104,
+    "mask": "DWORD400 via EBX400 setB12F71 BEFOREconditional even rawnull; NOmaskclear in ending cleanup",
+    "bytes": 32,
+    "vertex_count": 3,
+    "optional_input": null,
+    "registers": "EDI/ESP14 raw660; EBX400; EBPstillFFFFFFFF",
+    "publication": "DWORDmasktest atB12FAC; POP savedEDI atB12FB0 BEFORE storeactualresult/null toservice660 atB12FB1; EH-1 atB12FB7; POPsavedEBX atB12FBE BEFOREtestbranch/namecapture",
+    "raw_header": "baseline len/data26C/270; afterEDI+EBXpops actual ESP+264/+268",
+    "cleanup": "capturedataB12FC1; currentlen+1 B12FCC; actualpool419CC0 atB12FDA; BD1510 atB12FE1; staleheader and mask400 remain",
+    "no_parameter_texture_or_frame_configuration": true
+  },
+  "focus_tail": "read byte1C4 atB12FE6; ifnonzero current20 B12FEF/nonnull B50010 B12FF6; re-readbyte1C4 B12FFB then current30 B13004/nonnull B4ECC0 B1300B",
+  "focus_provider_bytes": [
+    {
+      "start": "00b50010",
+      "size": 8,
+      "sha256": "71bd6562ec5b219e4c097bab7df1b35cf52d770a9290438a2dcb18846dfc94ea",
+      "live_equals_pe": true
+    },
+    {
+      "start": "00b4ecc0",
+      "size": 50,
+      "sha256": "ccab0fdf1384d2ca86cf870ceedf38afdab0022cafb9024780bc94b6862c1634",
+      "live_equals_pe": true
+    }
+  ],
+  "focus_provider_symbols": {
+    "00b50010": "mark_native_render_batch_dirty_00b50010",
+    "00b4ecc0": "invalidate_native_render_root_chain_00b4ecc0",
+    "00b6d890": "clear_native_raw_node_root_00b6d890_null (existing exact fixed-root-zero projection)",
+    "00b72220": "unlink_native_raw_root_node_00b72220",
+    "focus_source": "src/platform_renderer_activation.cpp"
+  },
+  "machine_epilogue": {
+    "status": "observed_only_not_implemented",
+    "sequence": "B13010 load savedSEH link fromESP26C; POPESI B13017; POPEBP B13018; FS0store B13019; ADDESP270 B13020; RET0C B13026,threebytes,endexclusiveB13029",
+    "physical_stack_or_abi_claim": false
+  },
+  "frontier": {
+    "native_pc": "00b13010",
+    "ESI": "same service",
+    "EBP": "FFFFFFFF",
+    "ESP14": "originalbaseline raw660",
+    "EBX_EDI": "only last pre-restore diagnostics remain; actual saved caller values unknown; restore-site observations never consumed as values",
+    "mask": "400 when clear name constructed,otherwise0; intentionally not cleared",
+    "EH": -1,
+    "argument_cells": "same originalthree,none read",
+    "dimension_spills": "original/aligned/half values unchanged",
+    "phase": "tail and post664 normal work complete; older chain/entry stays partial awaiting_later_continuation"
+  },
+  "lifetime": {
+    "retained": "distinct genuine canonical post20 blocks for654 and660 plus6+1rawnameheaders; same originalctx/entry/args/predecessor chain; serviceparameterstorage survives borrows",
+    "limits": "No extra owner credits or generic companions; current20 must be actualbatch storage; current30 must own valid root3C/root0C intrusive nodes for B4ECC0 traversal. Existing service lifetime, bloom extent, distortion preimage and callback-current-owner obligations remain. Saved caller register/SEH physical stack restoration unavailable in source-state API.",
+    "canonical": "two distinct existing genuine B4E470 blocks; no duplicate generic companion,new registry/count or blanket nested registration",
+    "failure": "preserve publications/raw names/masks/register observations/provider acquisitions and fail chain; no caller rollback/free/retry",
+    "full_service_lifetime_admitted": false
+  },
+  "checks": {
+    "bytes_listing": {
+      "passed": true,
+      "implemented_instructions": 214,
+      "observed_epilogue_instructions": 6,
+      "caller_calls": 38,
+      "listing": "local/render_init_post654_tail_listing.txt",
+      "handoff": "local/render_init_post654_tail_handoff.json"
+    },
+    "build": {
+      "command": "./scripts/build.ps1",
+      "status": "passed",
+      "result": "MSVC Win32 Release MultiThreadedDLL /MD /W4 /WX",
+      "ctest_passed": 3,
+      "ctest_failed": 0,
+      "tests": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ],
+      "log": "local/render_init_tail_build.txt"
+    },
+    "report_calls": {
+      "command": "python tools/verify_report_calls.py reports/native_render_resource_init_tail_cc10.json",
+      "status": "passed",
+      "numeric_checked": 40,
+      "caller_rows": 38,
+      "supporting_rows": 2,
+      "failed": 0,
+      "log": "local/render_init_tail_calls.txt"
+    },
+    "new_tracked_tests": 0,
+    "new_probes": 0,
+    "composed_runtime_tested": false
+  },
+  "provider_contracts": [
+    {
+      "callee": "B4E470",
+      "contract": "two distinct existing genuine20h count3/null blocks and canonical companions; actual wave/clear effect names; no duplicate pass view"
+    },
+    {
+      "callee": "B4CBA0/B18B00/B18AC0/B17E10",
+      "contract": "independent current654 material captures,2/2/4/4/36 borrowed DWORDs,matrix0; actual inherited EBX for first record"
+    },
+    {
+      "callee": "B4E2B0",
+      "contract": "capture current incoming frame then current post; full existing publish/retain-before-old-release,current imports and actual frame lifetime"
+    },
+    {
+      "callee": "41E870/419CC0/BD1510",
+      "contract": "actual raw headers,captured data/current length+1/current pool/manager/gate return; stale headers retained; no clear-mask400 repair"
+    },
+    {
+      "callee": "B50010/B4ECC0/B6D890-null/B72220",
+      "contract": "actual current batch/root owner,exact gate re-read,valid raw root/node storage,existing bounded null-root propagation/unlink; no new host substitute or ownership credit"
+    }
+  ],
+  "artifact_sha256": {
+    "include/bsp/native_render_resource_init_tail.hpp": "13b6dc02e58c81f04e0ff2adf904a3895f81e863221b5078bb73d34bb513de42",
+    "src/native_render_resource_init_tail.cpp": "fa442e90dd3b8833df03687e344cc49ba0c78e01de545a92b6b2be78f1351674",
+    "include/bsp/native_render_resource_init_post664.hpp": "463969c2eaa11485ea227f4883ca722f9b3b8512efaaf2f9d3f48955ee63cfdc",
+    "docs/NATIVE_RENDER_RESOURCE_INIT_TAIL_CC10.md": "b07f787afe80db0d3a8e3cdafad140802e320c9da2ecea273e4bf6e23500615e",
+    "local/render_init_post654_tail_listing.txt": "1f1c0a64be65c98c3a1dbbab38df2e522f8730c7c9b886bf47a3dd620a5a5941",
+    "local/render_init_post654_tail_handoff.json": "377650ff1ffdc14167005fda7d5c5e2548996b627b2f1969b6a711f51d738fc9",
+    "local/render_init_tail_build.txt": "98c0afa1f6ecd5f33ef0b884f662c68429334ad1c827e777621aca2138fbb948",
+    "local/render_init_tail_calls.txt": "1edb74e05c7528282dac40d3ea3aa91ab414c2c355196a52486a67e7ffa864be"
+  }
+}
