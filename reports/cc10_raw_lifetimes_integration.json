@@ -70,6 +70,13 @@
       "valid": true,
       "files": 20,
       "source_worktree": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-resource-continuation"
+    },
+    {
+      "path": "local/cc10-platform-evidence/raw-lua-reader.zip",
+      "sha256": "ea1cc33f022e0214f1468d96562d5d1161f91bd0d17ff1ef6810e19c8cfb4360",
+      "files": 16,
+      "valid": true,
+      "source_worktree": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-reader"
     }
   ],
   "runtime_boundary": "The earlier 35a065629 60-frame startup success is separately recorded in reports/cc10_lua_gui_renderer_integration.json. This newer integration has not been application-run. New raw initialization/lifetime modules remain outside application activation dispatch; no gameplay proof.",
@@ -78,5 +85,19 @@
     "remaining service-visible holder/surface/texture canonical registration",
     "raw GUI child/timed and remove-all bindings for populated owners",
     "raw Lua typed-value reader/default dispatch and full page continuation"
-  ]
+  ],
+  "raw_lua_reader_followup": {
+    "commits": [
+      "e0657004b34678cc88f05468dde8cd53b0b4697f",
+      "ef40e5979ee39fbede952535a165690f8e6bb5db"
+    ],
+    "published_revision": "d94aebfe5",
+    "report": "reports/native_lua_reader_cc10.json",
+    "coverage": "physical20B reader with actual raw20B objects in real MSVC std::vector; same Lua owner tracking; no old-STL port",
+    "review_correction": "Volatile profile stores preserve CE44FC/CE374C through destruction; 0x14 means20bytes, corrected in four doc locations",
+    "checks": "strict MSVC Win32 integration build;3 CTests passed;20 report call rows passed",
+    "probe": "5 original441B70/source successful Lua owner checkpoints; existing tracked parent retained; /O2 placement-buffer +4 preimage retained and final profileCE374C observed",
+    "limits": "Intermediate old/new STL copy order differs; final checkpoints only. No allocation failure, invalid-parameter, native ABI/FH3, arbitrary callback or full application proof.",
+    "integration_log": "local/cc10-integrate-lua-reader.log"
+  }
 }
