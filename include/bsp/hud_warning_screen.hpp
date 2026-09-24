@@ -155,4 +155,62 @@ struct IntegratedControlsHost {
 void integrated_controls_0064b870(IntegratedControlsState& screen,
                                   IntegratedControlsHost& host, float dt);
 
+// Part 3: 0064A400 (__thiscall(screen 46h, float dt), RET 4, body
+// 0064A400..0064A449): screen 26h's 0051F330, then with 46h's mover (+20h)
+// screen 2Eh's 005454B0. Screen 26h is the binoculars screen
+// (BSP_HudBinocularsScreen_Register 0051ED60); its +40h is the same
+// ShipCaptain mover, handed over by 0051E730 from 0064DA40.
+struct BinocularsState {
+    bool view_24{false};          // +24h, set only by action 75h (0051F316)
+    int mode_30{0};               // +30h, 1 = binoculars up; the register stores 0
+    bool flag_34{false};          // +34h
+    bool flag_35{false};          // +35h
+    float zoom_38{1.0f};          // +38h, the register stores 1.0 (00D7A24C)
+};
+
+// The input manager's view axes and GlobalConfig+4, as 0051EF00/0051F050
+// read them.
+struct BinocularsViewTerms {
+    float yaw_axis_1584{0.0f};    // [input+4]+1584h
+    float pitch_axis_15b4{0.0f};  // [input+4]+15B4h
+    float raise_axis_15e4{0.0f};  // [input+4]+15E4h
+    float config_04{0.0f};        // [00432650()]+4h
+};
+
+struct ShipViewInputHost {
+    virtual ~ShipViewInputHost() = default;
+    virtual BinocularsViewTerms view_terms() = 0;
+    virtual bool input_pressed(int action) = 0;       // 004C43C0
+    // 0051EF6B..0051EFA6: the raise toggle 0051E7E0 behind the controlled
+    // unit's kind tests. Reached only on input.
+    virtual void raise_toggle_0051e7e0(BinocularsState& screen) = 0;
+    // 0051EFB7..0051F011: the raised arm (0051EAA0, 0051E6E0, 00452BD0).
+    virtual void raised_view(BinocularsState& screen, float dt) = 0;
+    virtual void set_model_visible(bool visible) = 0; // [+20h] vtable +34h
+    // 00452B80(0) on 00E081A0: byte = 0, 00B0D020 on [00F8D39C] with
+    // (0, 0, 0, 0, 0, 1.0), +4h = [00CE3C68].
+    virtual void lens_effect_off_00452b80() = 0;
+    // The mover at 26h+40h (0 when none): its yaw +384h, pitch +388h and the
+    // pitch limits +3ECh/+3F0h.
+    virtual bool mover_present() = 0;
+    virtual float mover_yaw() = 0;
+    virtual void set_mover_yaw(float yaw) = 0;
+    virtual float mover_pitch() = 0;
+    virtual void set_mover_pitch(float pitch) = 0;
+    virtual float mover_min_pitch() = 0;
+    virtual float mover_max_pitch() = 0;
+    // 0051F1C0..0051F2FA: the view arm with +24h set. Reached only after
+    // action 75h.
+    virtual void view_arm(BinocularsState& screen, float dt) = 0;
+    // 0064A41F..0064A441: screen 2Eh's 005454B0(0.5, 0.5, 26h+38h), which
+    // stores 2Eh+48h..+50h and, with game+19C4h clear, screen 4Dh's +44h/+48h
+    // through 00637620.
+    virtual void screen_2eh_005454b0(float a, float b, float c) = 0;
+    virtual bool ship_view_mover_20() = 0;            // 46h+20h non-null
+};
+
+// 0064A400 with 0051F330 = 0051EF00 then 0051F050's pose part.
+void ship_view_input_0064a400(BinocularsState& binoculars, ShipViewInputHost& host,
+                              float dt);
+
 }  // namespace bsp

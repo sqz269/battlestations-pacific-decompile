@@ -809,18 +809,17 @@ The screen code for 49h, 50h and 46h is in `src/hud_warning_screen.cpp`.
 - **27h, 0067BB50..0067BC59.** Already reconstructed as `GameUnitsHost::Impl::role_screen_update_0067bb50`
   (kPlayerRoleBookkeepingBound, docs/SCRIPTED_HELM.md section 6.1). The pump keeps its record
   (section 21).
-- **46h part 3, `HudShipView::view_input` (0064A400).**
-  - Screen 26h's 0051F330 runs 0051EF00 (the view-action handling, 0051E7E0, 0051EAA0/0051E6E0
-    and widget +20h) and 0051F050. 0051F050 integrates the camera mover's yaw (+384h) and pitch
-    (0051E650) from input axes +1584h/+15B4h, and handles action 75h and the controlled unit's
-    vtable +C8h.
-  - With 46h's +20h set, 0064A400 also runs screen 2Eh's 005454B0, which stores three floats at
-    2Eh+48h..+50h and forwards two to screen 4Dh's 00637620 when game+19C4h is clear.
-  - The camera mover is the mission camera's (`docs/MISSION_CAMERA.md`). Read how its tick
-    already applies yaw before binding a second writer.
+- **46h part 3** is bound (section 22).
 - **46h part 4, `HudShipView::screen_2eh_005484f0`.** 005484F0 is 3.3 KB of screen 2Eh: seven
   input actions, 004C5090 holds, two interface requests (`BSP_FrontEndManager_PushInterfaceRequest`)
-  and a session route. Read it whole; expect input-gated order and UI-mode writes.
+  and a session route. Read it whole; expect input-gated order and UI-mode writes. Its first gates:
+  - 2Eh's +40h, +24h and [+20h]+14h must all be non-null. The host builds none of them, because
+    2Eh's layout 00546A20 is not run.
+  - A controlled unit must exist, and it must hold role 0 (00927F30).
+
+  Then the one-shot bytes +108h and +109h (0051E7E0, 006502C0, the mover's +388h/+384h from
+  +10Ch/+110h). Read the gate producers first: if the gates fail in the image as well, the whole
+  routine is a no-op here.
 - **29h, 00527260** (continues past 0052735C) with 00526A40, its large worker. 29h's +4Ch is what
   49h's `screen_29h_unit` record stands for.
 - **44h, 00649860..0064A24C**, the HudRoot update. `src/hud_root_rows.cpp` reconstructs part of it,
@@ -884,3 +883,85 @@ switch on, `kHudShipViewRoleTableBound` off then on, USN04 4500, no BSP_PLAYER_H
 - No other row moves.
 - **Summary lines.** All 160 are identical.
 - **Result.** Every prediction holds. **`kHudShipViewRoleTableBound` flips ON.**
+
+## 22. Screen 46h part 3: the view input 0064A400 (cc9-platform2, 2026-09-23)
+
+Read from the listings. Bodies, start and exclusive end (Ghidra functions exist for all four):
+
+| routine | body | what it is |
+| --- | --- | --- |
+| 0064A400 | 0064A400..0064A449 | calls 26h's 0051F330, then 2Eh's 005454B0 when 46h+20h is set |
+| 0051F330 | 0051F330..0051F360 | calls 0051EF00(dt), then `0051F050(26h+40h, &26h+24h, dt, 26h+38h)` |
+| 0051EF00 | 0051EF00..0051F035 | the binoculars raise, the lowered arm and the raised arm |
+| 0051F050 | 0051F050..0051F321 | the view axes into the mover, then action 75h and the view arm |
+
+**The mover is the mission camera's.** Screen 26h is the binoculars screen (0051ED60). 0064DA40
+hands it the new ShipCaptain mover through 0051E730, which sets 26h+40h. So 0051F050 writes the
+same mover `src/mission_camera.cpp` ticks:
+- **Yaw.** `+384h = 00438AA0(+384h, min(dt,0.5) * -1 * 26h+38h * axis(+1584h) * GlobalConfig+4)`.
+- **Pitch.** `0051E650(min(dt,0.5) * 0.5 * 26h+38h * axis(+15B4h) * GlobalConfig+4)`. It adds with
+  wrap into +388h, then clamps into [+3ECh, +3F0h].
+- **The axes.** Each is clamped to [-50, 50] (00CE4938/00CE3938).
+
+These are the image's only writes of yaw and pitch after the seed, on the pump's frame path. The
+mission camera tick reads them and writes the pose, so the view input is not a second pose
+writer. With the axes at zero, both steps are zero. The yaw is rewritten unchanged. The pitch
+also stays unchanged, because the seed (-10 degrees, 00CECA08) is inside this installation's
+-89..89 limits.
+
+**0051EF00 with no input.** +30h is 0 (the register), the raise axis is 0 and action E0h is not
+pressed. So it clears +34h/+35h, hides the Tavcso_Model widget (+20h), and calls 00452B80(0) on
+00E081A0. That routine stores the byte, calls 00B0D020 on the renderer object [00F8D39C], and
+sets +4h.
+
+**Records and substitutions:**
+- `HudShipView::view_input_terms` (0051F061): the input axes read zero. GlobalConfig+4 is unread
+  and reads 1.0; it only scales a zero axis.
+- `HudShipView::binoculars_lens_off` (00452B80): the renderer call is not modelled.
+- `HudShipView::screen_2eh_005454b0`: 2Eh+48h..+50h and 4Dh+44h/+48h have no reader in this host.
+- Never reached here: `binoculars_raise_toggle` (0051E7E0), `binoculars_raised_view` and
+  `binoculars_view_arm` (after action 75h).
+
+**Switch.** `kHudShipViewInputBound`. OFF keeps part 1's `HudShipView::view_input` record.
+
+**Predictions, written before the pair.** Every earlier switch on, the switch off then on, USN04 4500.
+- **Row that leaves:** `HudShipView::view_input`, 9,158.
+- **Rows added:** `view_input_0064a400` done, 9,158; `view_input_terms`, `binoculars_lens_off` and
+  `screen_2eh_005454b0`, 9,158 each. None of the toggle, raised-view or view-arm rows appears.
+- **Total.** The unimplemented total rises by 18,316.
+- **Summary lines.** All identical. The camera pose does not move, so the markers' and minimap's
+  projections are unchanged. Tavcso_Model is a Model widget, which the sprite bridge does not draw.
+
+**Who else writes +384h/+388h, and in what order.** `src/mission_camera.cpp` writes them in two
+places:
+- The bind seed, 0064DA40: yaw from the heading, pitch = -10 degrees.
+- The update's death re-base, 00432FC8..00433028: `yaw = 00438AA0(yaw, -0 - angle)`, in mode 0
+  only, when unit+5Dh is set. 0064DA40 binds a ship's mover in mode 1 (00432E60(unit, 1)), so that
+  write does not run for this camera.
+
+Everything else in the tick reads yaw and pitch. The host runs the tick once per interface frame,
+from the first of the 4Dh (markers) or 35h (minimap) updates. In the 25h set's order
+(`29h 49h 44h 27h 4Dh 45h 46h 26h 2Eh 35h 50h`) that is 4Dh, before 46h. So the view input's write
+reaches the pose on the next tick.
+
+In the image the mover ticks as a world entity. Whether that is before or after the interface pump
+is not established here, and with zero input the order changes nothing.
+
+**Request to cc9-platform (the camera's owner, on hold).** No change to the tick is needed for
+this binding. If the tick is ever moved to the world update, check it against the pump order above:
+a view-input step taken after the tick in the same frame would show one frame later. If the mode-0
+re-base is ever reached for a ship, it and 0051F050 both write +384h, the tick first.
+
+**The part 3 pair.** `local\p11_off_usn04.log` against `local\p11_on_usn04.log`, one tree on main
+plus this branch, 2560x1440.
+
+| row | OFF | ON |
+| --- | ---: | ---: |
+| unimplemented total | 2,355,466 | 2,373,782 (+18,316; predicted +18,316) |
+| view_input (record) | 9,158 | none |
+| view_input_0064a400 | none | 9,158 done |
+| view_input_terms, binoculars_lens_off, screen_2eh_005454b0 | none | 9,158 each |
+
+- No toggle, raised-view or view-arm row appears.
+- **Summary lines.** All 160 are identical.
+- **Result.** Every prediction holds. **`kHudShipViewInputBound` flips ON.**

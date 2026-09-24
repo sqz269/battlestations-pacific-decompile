@@ -137,6 +137,12 @@ inline constexpr bool kHudShipViewControlsBound = true;
 // keeps the substitution and its record.
 inline constexpr bool kHudShipViewRoleTableBound = true;
 
+// Part 3 of packet cc9_screen_46h (section 22): 0064A400, the binoculars
+// screen's 0051EF00 and 0051F050 on the ShipCaptain mover. The input axes and
+// GlobalConfig+4 are records; with no input the mover's yaw and pitch are
+// rewritten with a zero step. OFF keeps the part-1 record.
+inline constexpr bool kHudShipViewInputBound = true;
+
 inline constexpr bool kHudShipScreenGaugesBound = true;
 
 class GameHostLog;

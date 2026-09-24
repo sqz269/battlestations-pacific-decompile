@@ -94,6 +94,7 @@ struct GameHudHost::Impl {
     // Packet cc9_screen_46h: screen 46h's +1Ch, stored by 0064DA40.
     bool ship_view_has_unit{false};
     bsp::IntegratedControlsState ship_view_controls{};
+    bsp::BinocularsState binoculars{};
     void bind_mission_camera_0064da40();
     void step_mission_camera(float seconds);
     bool camera_target_view(bsp::ShipCaptainTargetView& out);
@@ -891,6 +892,7 @@ void GameHudHost::detach_world_2k() noexcept {
     impl.follow_screen = bsp::FollowScreen49State{};
     impl.ship_view_has_unit = false;
     impl.ship_view_controls = bsp::IntegratedControlsState{};
+    impl.binoculars = bsp::BinocularsState{};
     bsp::clear_mission_camera();
     impl.unit_request_pending = false;
     impl.unit_request_applied = false;
@@ -1368,13 +1370,7 @@ public:
         : owner_(owner), wanted_(wanted) {}
     bool wanted_04() override { return wanted_; }
     bool has_unit_1c() override { return owner_.ship_view_has_unit; }
-    void view_input_0064a400(float dt) override {
-        static_cast<void>(dt);
-        // Screen 26h's 0051F330 (0051EF00, 0051F050: the camera axes and
-        // the fire and view actions) and, with 46h's +20h set, screen 2Eh's
-        // 005454B0. Not bound.
-        owner_.record("HudShipView::view_input", 0x0064a400u);
-    }
+    void view_input_0064a400(float dt) override;
     void integrated_controls_0064b870(float dt) override;
     bool screen_2eh_present() override {
         // [00E198C4]+50h is slot 2Eh's screen, which the registry holds.
@@ -1481,6 +1477,78 @@ private:
     }
     GameHudHost::Impl& owner_;
 };
+
+// bsp::ShipViewInputHost over this process's HUD and the mission camera's
+// mover.
+class ShipViewInputBinding final : public bsp::ShipViewInputHost {
+public:
+    explicit ShipViewInputBinding(GameHudHost::Impl& owner) : owner_(owner) {}
+    bsp::BinocularsViewTerms view_terms() override {
+        // SUBSTITUTION: the input manager's axes +1584h/+15B4h/+15E4h are not
+        // modelled and read zero (no in-mission input is driven);
+        // GlobalConfig+4 is unread and reads 1.0. It only scales a zero axis.
+        owner_.record("HudShipView::view_input_terms", 0x0051f061u);
+        bsp::BinocularsViewTerms terms{};
+        terms.config_04 = 1.0f;
+        return terms;
+    }
+    bool input_pressed(int action) override { return owner_.menu.input_action_pressed(action); }
+    void raise_toggle_0051e7e0(bsp::BinocularsState& screen) override {
+        static_cast<void>(screen);
+        owner_.record("HudShipView::binoculars_raise_toggle", 0x0051e7e0u);
+    }
+    void raised_view(bsp::BinocularsState& screen, float dt) override {
+        static_cast<void>(screen);
+        static_cast<void>(dt);
+        owner_.record("HudShipView::binoculars_raised_view", 0x0051efb7u);
+    }
+    void set_model_visible(bool visible) override {
+        // Screen 26h's +20h, the Tavcso_Model widget of GUI_binoculars.
+        GuiLayoutPage* page = owner_.menu.in_game_page(0x26, "GUI_binoculars");
+        GuiLayoutWidget* w = page != nullptr && page->root
+            ? bsp::find_descendant_by_name(*page->root, "Tavcso_Model") : nullptr;
+        if (w != nullptr) owner_.menu.frontend().set_widget_visible(*w, visible);
+    }
+    void lens_effect_off_00452b80() override {
+        // 00B0D020 on the renderer object [00F8D39C] is not modelled.
+        owner_.record("HudShipView::binoculars_lens_off", 0x00452b80u);
+    }
+    bool mover_present() override { return owner_.camera_bound; }
+    float mover_yaw() override { return owner_.camera.yaw_384; }
+    void set_mover_yaw(float yaw) override { owner_.camera.yaw_384 = yaw; }
+    float mover_pitch() override { return owner_.camera.pitch_388; }
+    void set_mover_pitch(float pitch) override { owner_.camera.pitch_388 = pitch; }
+    float mover_min_pitch() override { return owner_.camera.min_pitch_3ec; }
+    float mover_max_pitch() override { return owner_.camera.max_pitch_3f0; }
+    void view_arm(bsp::BinocularsState& screen, float dt) override {
+        static_cast<void>(screen);
+        static_cast<void>(dt);
+        owner_.record("HudShipView::binoculars_view_arm", 0x0051f1c0u);
+    }
+    void screen_2eh_005454b0(float a, float b, float c) override {
+        static_cast<void>(a);
+        static_cast<void>(b);
+        static_cast<void>(c);
+        // Screen 2Eh's +48h..+50h and screen 4Dh's +44h/+48h have no reader
+        // in this host.
+        owner_.record("HudShipView::screen_2eh_005454b0", 0x005454b0u);
+    }
+    bool ship_view_mover_20() override { return owner_.camera_bound; }
+
+private:
+    GameHudHost::Impl& owner_;
+};
+
+void ShipViewScreen46Binding::view_input_0064a400(float dt) {
+    if (!kHudShipViewInputBound) {
+        // Screen 26h's 0051F330 and screen 2Eh's 005454B0, not bound.
+        owner_.record("HudShipView::view_input", 0x0064a400u);
+        return;
+    }
+    ShipViewInputBinding binding(owner_);
+    bsp::ship_view_input_0064a400(owner_.binoculars, binding, dt);
+    owner_.done("HudShipView::view_input_0064a400", 0x0064a400u);
+}
 
 void ShipViewScreen46Binding::integrated_controls_0064b870(float dt) {
     if (!kHudShipViewControlsBound) {
