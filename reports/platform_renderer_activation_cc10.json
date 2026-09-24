@@ -425,7 +425,14 @@
     "raw_focus": "Relevant84c6fe880 module reviewed and raw behavior recovered after current-byte/layout check; no broad branch restore",
     "material_reload": "769bdc3e3 reviewed only, numeric-descriptor guard retained as a required dependency"
   },
-  "corrections": [],
+  "corrections": [
+    {
+      "document": "docs/NATIVE_MATERIAL_RELOAD_RECOVERY_CC10.md",
+      "commit": "01cc4b4fe",
+      "entry": "00b469a0",
+      "update": "Current callable-descriptor domain is now implemented and build/fixture checked. A raw numeric D61A44 terminal remains unsupported. Production renderer binding must retain each reload frame until all acquired descriptors are deleted; module availability does not bind the activation leaf automatically."
+    }
+  ],
   "documentation": "docs/PLATFORM_RENDERER_ACTIVATION_CC10.md",
   "no_ghidra_function": [],
   "primary_integration": {

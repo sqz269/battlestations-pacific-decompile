@@ -178,3 +178,13 @@ Predictions:
 - The first set (sections 2-4, on main `710d3fc9b`) is complete and stands. It has A and C: in
   both, no ordnance and 37 deaths.
 - E and F still need their first runs. They need an active session.
+
+## Correction, 2026-09-23 (packet `cc9_ship_platform_attachment`)
+
+Section 4 misread the line-of-fire test. `0098B130` **excludes** both the firer's and the
+target's collision objects, walks the spatial grid for kind-5 units, and returns the nearest
+AABB hit. `0072CDD0` answers "blocked" when that unit's `+54h`, its side, equals the firer's.
+So the predicate refuses a shot through a **friendly unit**, a ship of the same fleet or a
+friendly aircraft, not through the firer's own hull. It still refuses only, so the direction of
+the substitution stands. It no longer needs the hull's convex mesh: it is now bound on the
+host's unit boxes, behind `kAaLineOfFireBound` (docs/SHIP_PLATFORM_ATTACHMENT.md section 3).
