@@ -1,0 +1,470 @@
+{
+  "schema_version": 1,
+  "packet": "cc10_gui_page_construction",
+  "status": "partial_projection_raw_prefix_win32_build_and_bounded_normal_differential_checked",
+  "source": "src/native_gui_page_construction.cpp",
+  "header": "include/bsp/native_gui_page_construction.hpp",
+  "documentation": "docs/NATIVE_GUI_PAGE_CONSTRUCTION_CC10.md",
+  "abi_compatible": false,
+  "game_validated": false,
+  "full_constructor_implemented": false,
+  "full_constructor_executed": false,
+  "routines": [
+    {
+      "address": "00ac6600",
+      "native_end_inclusive": "00ac6878",
+      "native_bytes": 633,
+      "coverage": "partial: implemented normal prefix AC6600..AC6713; omitted continuation AC6714..AC6878 and native caller unwind after base return",
+      "cpp_symbol": "initialize_native_gui_page_00ac6600_prefix",
+      "original_abi": "ECX raw page; stack name,actual node,share-scene slot low byte; EAX page; RET0C",
+      "implemented_prefix_bytes": 276,
+      "source_result": "void; acquired.phase=awaiting_lua_continuation; acquired.continuation=00ac6714; EH state1"
+    },
+    {
+      "address": "00aa6720",
+      "native_end_inclusive": "00aa6734",
+      "native_end_exclusive": "00aa6735",
+      "native_bytes": 21,
+      "coverage": "complete",
+      "cpp_symbol": "bind_native_gui_widget_node_00aa6720",
+      "original_abi": "ECX raw widget; actual node stack; RET4"
+    }
+  ],
+  "host_steps": [
+    {
+      "address": "00ac6627",
+      "native": "00aa9390",
+      "function": "00ac6600",
+      "coverage": "implemented_prefix",
+      "contract": "actual base(type1), borrowed current D7A24C"
+    },
+    {
+      "address": "00ac667c",
+      "native": "0041dd40",
+      "function": "00ac6600",
+      "coverage": "implemented_prefix",
+      "contract": "current name length, preserve1"
+    },
+    {
+      "address": "00ac6691",
+      "native": "00bf7680",
+      "function": "00ac6600",
+      "coverage": "implemented_prefix",
+      "contract": "overlap-safe copy; ADD ESP,0C at AC6696"
+    },
+    {
+      "address": "00ac670f",
+      "native": "00aa6720",
+      "function": "00ac6600",
+      "coverage": "implemented_prefix",
+      "contract": "actual node argument2; no reference operation"
+    }
+  ],
+  "continuation_steps": [
+    {
+      "address": "00ac6718",
+      "native": "00b66bd0",
+      "function": "00ac6600",
+      "coverage": "not_implemented",
+      "contract": "construct actual4C8 Lua state"
+    },
+    {
+      "address": "00ac672b",
+      "native": "00b6a020",
+      "function": "00ac6600",
+      "coverage": "not_implemented",
+      "contract": "open Lua with mask65h"
+    },
+    {
+      "address": "00ac673f",
+      "native": "0041e870",
+      "function": "00ac6600",
+      "coverage": "not_implemented",
+      "contract": "construct by-value _Common name"
+    },
+    {
+      "address": "00ac6748",
+      "native": "00ac5600",
+      "function": "00ac6600",
+      "coverage": "not_implemented",
+      "contract": "unimplemented raw path composition"
+    },
+    {
+      "address": "00ac675a",
+      "native": "00b69d40",
+      "function": "00ac6600",
+      "coverage": "not_implemented",
+      "contract": "run common path with overrides, flag0"
+    },
+    {
+      "address": "00ac677a",
+      "native": "00419cc0",
+      "function": "00ac6600",
+      "coverage": "not_implemented",
+      "contract": "normal temporary path pool getter"
+    },
+    {
+      "address": "00ac6781",
+      "native": "00bd1510",
+      "function": "00ac6600",
+      "coverage": "not_implemented",
+      "contract": "temporary path sized return"
+    },
+    {
+      "address": "00ac678d",
+      "native": "00ac5770",
+      "function": "00ac6600",
+      "coverage": "not_implemented",
+      "contract": "unimplemented current page name to path helper"
+    },
+    {
+      "address": "00ac67a0",
+      "native": "00b69d40",
+      "function": "00ac6600",
+      "coverage": "not_implemented",
+      "contract": "run page path with overrides, flag0"
+    },
+    {
+      "address": "00ac67c0",
+      "native": "00419cc0",
+      "function": "00ac6600",
+      "coverage": "not_implemented",
+      "contract": "normal second temporary path getter"
+    },
+    {
+      "address": "00ac67c7",
+      "native": "00bd1510",
+      "function": "00ac6600",
+      "coverage": "not_implemented",
+      "contract": "second path sized return"
+    },
+    {
+      "address": "00ac67da",
+      "native": "00b67980",
+      "function": "00ac6600",
+      "coverage": "not_implemented",
+      "contract": "construct by-value globals14h"
+    },
+    {
+      "address": "00ac67e3",
+      "native": "004425c0",
+      "function": "00ac6600",
+      "coverage": "not_implemented",
+      "contract": "raw14h reader constructor, by-value root14h; RET14"
+    },
+    {
+      "address": "00ac6804",
+      "native": "reader+vtable04",
+      "function": "00ac6600",
+      "coverage": "not_implemented",
+      "contract": "enter GuiScreen, key tag0/stringD5CB24"
+    },
+    {
+      "address": "00ac6812",
+      "native": "00ac4c50",
+      "function": "00ac6600",
+      "coverage": "not_implemented",
+      "contract": "current page vslot18; known D5BE38 target"
+    },
+    {
+      "address": "00ac681f",
+      "native": "reader+vtable08",
+      "function": "00ac6600",
+      "coverage": "not_implemented",
+      "contract": "leave reader current table"
+    },
+    {
+      "address": "00ac6825",
+      "native": "00b6d890",
+      "function": "00ac6600",
+      "coverage": "not_implemented",
+      "contract": "current page node+4C, requested root0"
+    },
+    {
+      "address": "00ac683e",
+      "native": "00441210",
+      "function": "00ac6600",
+      "coverage": "not_implemented",
+      "contract": "reader vector+4 tidy after CE44FC publication"
+    },
+    {
+      "address": "00ac6857",
+      "native": "00b669a0",
+      "function": "00ac6600",
+      "coverage": "not_implemented",
+      "contract": "Lua close after CE374C reader base publication"
+    }
+  ],
+  "eh_evidence": [
+    {
+      "address": "00cb8a46",
+      "native": "00aa9730",
+      "function": "00cb8a40",
+      "kind": "tail_jump",
+      "coverage": "read_only_pending_cleanup_evidence"
+    },
+    {
+      "address": "00cb8a57",
+      "native": "0041dd20",
+      "function": "00cb8a4b",
+      "kind": "tail_jump",
+      "coverage": "read_only_pending_cleanup_evidence"
+    },
+    {
+      "address": "00cb8a62",
+      "native": "00b669a0",
+      "function": "00cb8a5c",
+      "kind": "tail_jump",
+      "coverage": "read_only_pending_cleanup_evidence"
+    },
+    {
+      "address": "00cb8a6d",
+      "native": "0041dd20",
+      "function": "00cb8a67",
+      "kind": "tail_jump",
+      "coverage": "read_only_pending_cleanup_evidence"
+    },
+    {
+      "address": "00cb8a78",
+      "native": "0041dd20",
+      "function": "00cb8a72",
+      "kind": "tail_jump",
+      "coverage": "read_only_pending_cleanup_evidence"
+    },
+    {
+      "address": "00cb8a83",
+      "native": "00441a20",
+      "function": "00cb8a7d",
+      "kind": "tail_jump",
+      "coverage": "read_only_pending_cleanup_evidence"
+    },
+    {
+      "address": "00cb8a8e",
+      "native": "00410600",
+      "function": "00cb8a88",
+      "kind": "tail_jump",
+      "coverage": "read_only_pending_cleanup_evidence"
+    }
+  ],
+  "caller_rows": [
+    {
+      "address": "00aa5944",
+      "native": "00ac6600",
+      "function": "00aa5840",
+      "contract": "push third slot, actual ESI node, EDI name; ECX actual124h pool slot"
+    },
+    {
+      "address": "00aa6695",
+      "native": "00aa6720",
+      "function": "00aa6640",
+      "contract": "bind returned generated model; new actual node or null"
+    },
+    {
+      "address": "00ab9d8c",
+      "native": "00aa6720",
+      "function": "00ab98f0",
+      "contract": "bind current model clone result; pointer returned by virtual10 call at AB9D87"
+    }
+  ],
+  "raw_handler_rows": [
+    {
+      "address": "00cb8a98",
+      "native": "00bf6b43",
+      "function": "00cb8a93",
+      "kind": "no_ghidra_function",
+      "branch_kind": "tail_jump",
+      "contract": "handler MOV EAX,DEFA98; JMP CRT FH3"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00cb8a93",
+      "native_end_inclusive": "00cb8a9c",
+      "native_end_exclusive": "00cb8a9d",
+      "native_bytes": 10,
+      "last_instruction_address": "00cb8a98",
+      "last_instruction_length": 5,
+      "proposed_name": "BSP_GuiPageConstruction_ExceptionHandler",
+      "worker_mutated_ghidra": false
+    }
+  ],
+  "corrections": [
+    {
+      "was": "Initial historical AC6600(name,int share_scene,char unused) text, already corrected by later retained ledger evidence",
+      "is": "AC6600(name,actual_node,share_scene_low_byte), RET0C",
+      "evidence": "AC66AB MOV EAX,[ESP+50C] -> AC66FA PUSH EAX -> AC670F AA6720; AC66A4 MOV DL,[ESP+510] -> AC66EE page+120=DL; confirms the existing later ledger correction without replacing its history."
+    },
+    {
+      "was": "AA5931 callsite for AC6600",
+      "is": "AA5944 is the CALL AC6600",
+      "evidence": "Live containing body AA5840..AA59AB and saved assembly AA593B/3F/40/41/42/44"
+    },
+    {
+      "was": "AA9750 treated as a potential raw destructor entry",
+      "is": "AA9750 is interior to AA9730..AA99B8",
+      "evidence": "Live ghidra proto AA9730 and AA9750; CB8A46 tail target AA9730"
+    }
+  ],
+  "producers": {
+    "base": "construct_native_gui_widget_base_00aa9390(type1)",
+    "page_pool": "NativeGuiLayerPool; object124h,slot128h,index124h",
+    "node": "NativeNodeStorage produced by B6F5A0; auxiliary_flags_138",
+    "name": "actual8h header at page+100; exact resize/copy sequence"
+  },
+  "borrowed_constants": [
+    {
+      "address": "00d7a2f0",
+      "bits": "3dcccccd",
+      "role": "page+10C"
+    },
+    {
+      "address": "00ce3804",
+      "bits": "447a0000",
+      "role": "page+110"
+    },
+    {
+      "address": "00d7a24c",
+      "bits": "3f800000",
+      "role": "base current reads then page+114/+20/+24 shared captured word"
+    }
+  ],
+  "eh": {
+    "descriptor": "00defa98",
+    "magic": "19930522",
+    "max_state": 7,
+    "map": "00defabc",
+    "try_blocks": 0,
+    "states": [
+      {
+        "state": 0,
+        "to": -1,
+        "action": "00cb8a40",
+        "cleanup": "full raw widget AA9730"
+      },
+      {
+        "state": 1,
+        "to": 0,
+        "action": "00cb8a4b",
+        "cleanup": "page+100 name"
+      },
+      {
+        "state": 2,
+        "to": 1,
+        "action": "00cb8a5c",
+        "cleanup": "actual Lua state"
+      },
+      {
+        "state": 3,
+        "to": 2,
+        "action": "00cb8a67",
+        "cleanup": "temporary path"
+      },
+      {
+        "state": 4,
+        "to": 2,
+        "action": "00cb8a72",
+        "cleanup": "temporary path"
+      },
+      {
+        "state": 5,
+        "to": 2,
+        "action": "00cb8a7d",
+        "cleanup": "reader441A20"
+      },
+      {
+        "state": 6,
+        "to": 2,
+        "action": "00cb8a88",
+        "cleanup": "reader base410600"
+      }
+    ]
+  },
+  "ownership": {
+    "new_logical_page": false,
+    "new_companion": false,
+    "extra_reference": false,
+    "automatic_cleanup": false,
+    "full_constructed_return": false,
+    "replay_allowed": false,
+    "retained_on_cpp_error": "Original raw slot and any acquired name/sentinel/node obligation remain visible; frame's native_eh_state identifies pending native cleanup; base provider still performs its own internal failed allocation cleanup."
+  },
+  "continuation_frontier": [
+    "Raw CE44FC reader/vector 004425C0/00442220/00441210; parent is investigating its actual LuaObject helpers separately.",
+    "Current AC4C50 -> AAA710 properties and child tree without logical/raw casting.",
+    "Raw AA9730 full destructor, named member and Lua/reader cleanup appropriate to current FH3 state.",
+    "Application owner/domain registration and full page factory return remain separate."
+  ],
+  "validation": {
+    "build": {
+      "command": "./scripts/build.ps1",
+      "log": "local/native_gui_page_construction_build.log",
+      "status": "passed",
+      "exit_code": 0,
+      "ctest": "2/2 reconstructed_math and tool_tests"
+    },
+    "call_report": {
+      "command": "python tools/verify_report_calls.py reports/native_gui_page_construction_cc10.json",
+      "status": "passed",
+      "checked": 32,
+      "failed": 0,
+      "log": "local/gui_page_call_verification.log",
+      "limits": "Two symbolic reader slots unchecked; current page slot18 is indirect-resolved; raw CB8A93 handler row checks only callee existence until primary definition."
+    },
+    "prefix_fixture": {
+      "status": "passed",
+      "exit_code": 0,
+      "cases": 2,
+      "source": "local/gui_page_prefix_probe.cpp",
+      "runner": "local/run_gui_page_prefix_probe.cmd",
+      "log": "local/gui_page_prefix_probe.log",
+      "compiler": "MSVC Win32; production TU and probe /W4 /WX /MD; probe /link /MANIFEST:EMBED",
+      "original_prefix_bytes": 276,
+      "original_binder_bytes": 21,
+      "boundaries": "Copy original AC6600 body; redirect AC6714 to original AC685C normal epilogue. Relocate three constant operands to borrowed cells. Bridge AA9390, 41DD40, BF7680 to current source base/resize/CRT; execute copied original AA6720.",
+      "actual_providers": [
+        "canonical NativeGuiLayerPool process and raw slots",
+        "constructed native string pool",
+        "native node constructor",
+        "current raw widget base",
+        "current native string resize"
+      ],
+      "postimages": "Entire128h slots including preserved pool ID; independently allocated +68/+104 pointers normalized only after checking sentinel links and name contents; E4/E8 preimages; node flags; frame waiting at AC6714/state1.",
+      "cases_checked": [
+        "populated name, actual node, low byte A5",
+        "destination-name alias, null node, low byte00, changed constant bit preimages"
+      ],
+      "limits": "Normal prefix only. Original base/string/CRT bodies, Lua continuation, native destructor, FH3/SEH and gameplay not executed. Fixture-only explicit allocation discharge is not a production destructor."
+    },
+    "game_run": false
+  },
+  "native_byte_pins": [
+    {
+      "address": "00ac6600",
+      "bytes": 633,
+      "live_and_installed_pe_equal": true,
+      "sha256": "70252838c6acfb98bbeac3ae72e166bdee52293192e44facd4e4f6800283736c"
+    },
+    {
+      "address": "00aa6720",
+      "bytes": 21,
+      "live_and_installed_pe_equal": true,
+      "sha256": "354a061bc410a71e8f8f538a375195302d5f7b14c6a7d43641660a3f7ac78818"
+    }
+  ],
+  "sha256": {
+    "include/bsp/native_gui_page_construction.hpp": "4aa1b694442ad88f4ea7a553094096d6abd39790870fd35c6cbf1fafc2e5979b",
+    "src/native_gui_page_construction.cpp": "e19850534026caa982df77df909a26c1d56b8904e7f288a35251110ca17b4957",
+    "docs/NATIVE_GUI_PAGE_CONSTRUCTION_CC10.md": "55b4e643ed04d42bc062114248320905740e03d150bea6562ed3e0d1ac1c77d0",
+    "local/native_gui_page_construction_build.log": "6b02ee6f12868a71f5372c7158467e7924af145d64573e270e6c5d3d24d035aa",
+    "local/gui_page_prefix_probe.cpp": "1533bb1dff042c6e0f0e180ae8914a94a8facef1562d7d4b449ce155357e19a6",
+    "local/run_gui_page_prefix_probe.cmd": "2091c64d24d520c79e93c02149d27ccffdfa6058b908b91ba122b69ff5075ca9",
+    "local/gui_page_prefix_probe.exe": "9fb96f684feb4b6d09969757810464700d16425be8795cbc14c5ec5cddc2e7c7",
+    "local/gui_page_prefix_probe.log": "0958336918f2429753d39be6a72112965eceec96c5ebf0ef11ac9762b1a3a807",
+    "local/check_gui_page_pins.py": "33a558e1ba7540892fecc4ccf15d64db01b532b2b6dd6888d70b3e732a0ee1aa",
+    "local/gui_page_native_bytes.hpp": "7ad7041f576eaaa4f954a727fef6b350f5330015af41dc39b59f749153e7ff36",
+    "local/gui_page_constructor_native_bytes.txt": "bba2a068098f409898b7ed2464d8cfd8c427d4a8214cd08519fef03f802c1e28",
+    "local/gui_page_bind_native_bytes.txt": "4af2b659e0e12df7b0b58e81a1edc11eaa226ac30fe8f9108f9d6e794aec1eb9",
+    "local/gui_page_native_pins.json": "557f20aa626825ead97dcf65990631d497fd305288ca6cab14305b515083f119",
+    "build/win32/Release/bsp_core.lib": "0cc65fe11c82653a08492b4ffa2e8fad86034bc5075bd4ba7bba071f1cdd500f"
+  }
+}
