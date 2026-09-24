@@ -540,6 +540,29 @@ struct GameGunneryHost::Impl {
     unsigned long long barrel_guns_from_model{0};
     unsigned long long barrel_guns_changed{0};
     unsigned long long barrel_guns_fallback{0};
+    // DIAGNOSTIC, read-only, packet cc9_e2_zero_ordnance: with BSP_DEATH_TABLE
+    // set, every death prints one "death row" line (damaging hits by category,
+    // the killer and ranges). No gameplay term reads these fields.
+    struct DeathTableRow {
+        float first_damage{-1.0f};
+        int hits[12]{};
+        float damage[12]{};
+        int last_category{-1};
+        std::size_t last_gun{0};
+        bool last_blast{false};
+    };
+    std::map<std::size_t, DeathTableRow> death_table;
+    static bool death_table_enabled() {
+        static const bool on = [] {
+            char* text = nullptr;
+            std::size_t length = 0;
+            const bool set = _dupenv_s(&text, &length, "BSP_DEATH_TABLE") == 0
+                && text != nullptr && text[0] != '\0' && text[0] != '0';
+            std::free(text);
+            return set;
+        }();
+        return on;
+    }
     DeviceFirePoints& device_fire_points(int device);
     // Set by run_projectiles around apply_hit / apply_impact_blast so a round's
     // own class (the second ammunition) prices its damage; -1 means the gun's.
@@ -3908,6 +3931,15 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
     done("Projectile::dispatch_queued_hit_009239a0", 0x009239a0u);
 
     const float applied = before - target.health;
+    if (death_table_enabled() && applied > 0.0f && gun.category >= 0 && gun.category < 12) {
+        DeathTableRow& dt = death_table[victim];
+        if (dt.first_damage < 0.0f) dt.first_damage = clock_seconds;
+        ++dt.hits[gun.category];
+        dt.damage[gun.category] += applied;
+        dt.last_category = gun.category;
+        dt.last_gun = gun_row;
+        dt.last_blast = blast_record != nullptr;
+    }
     if (aa_trace_matches(unit_state[shooter].row.name)) {
         log.notef("  aa hit applied t=%.2f gun=%zu class=%d base=%.1f applied=%.1f health=%.1f "
             "armour=%.1f", static_cast<double>(clock_seconds), gun_row, priced_class,
@@ -4070,6 +4102,43 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
     target.enabled = false;
     target.row.pass_enabled = false;
     ++summary.deaths;
+    if (death_table_enabled()) {
+        const DeathTableRow dt = death_table.count(victim) != 0 ? death_table[victim]
+                                                                : DeathTableRow{};
+        float at[3];
+        unit_aim_point(victim, at);
+        std::string killer = "-";
+        float killer_range = -1.0f;
+        if (target.last_attacker != 0) {
+            float kp[3];
+            unit_aim_point(target.last_attacker - 1, kp);
+            killer = unit_state[target.last_attacker - 1].row.name;
+            killer_range = std::sqrt((at[0] - kp[0]) * (at[0] - kp[0])
+                + (at[1] - kp[1]) * (at[1] - kp[1]) + (at[2] - kp[2]) * (at[2] - kp[2]));
+        }
+        std::string nearest = "-";
+        float nearest_range = -1.0f;
+        for (std::size_t u = 0; u < unit_state.size(); ++u) {
+            if (u == victim || unit_state[u].dead || unit_state[u].row.side == target.row.side)
+                continue;
+            if (!units.unit_is_kind_of(u, bsp::kUnitGunneryKindShipBase)) continue;
+            float up[3];
+            unit_aim_point(u, up);
+            const float dx = at[0] - up[0], dz = at[2] - up[2];
+            const float d = std::sqrt(dx * dx + dz * dz);
+            if (nearest_range < 0.0f || d < nearest_range) { nearest_range = d; nearest = unit_state[u].row.name; }
+        }
+        log.notef("death row: victim=%s t=%.2f alt=%.0f first_damage=%.2f killer=%s "
+            "killer_gun=%zu killer_cat=%d killer_blast=%d killer_range=%.0f nearest_ship=%s "
+            "nearest_horizontal=%.0f hits c0=%d c1=%d c5=%d c6=%d dmg c0=%.0f c1=%.0f c5=%.0f "
+            "c6=%.0f", target.row.name.c_str(), static_cast<double>(clock_seconds),
+            static_cast<double>(at[1]), static_cast<double>(dt.first_damage), killer.c_str(),
+            dt.last_gun, dt.last_category, dt.last_blast ? 1 : 0,
+            static_cast<double>(killer_range), nearest.c_str(),
+            static_cast<double>(nearest_range), dt.hits[0], dt.hits[1], dt.hits[5], dt.hits[6],
+            static_cast<double>(dt.damage[0]), static_cast<double>(dt.damage[1]),
+            static_cast<double>(dt.damage[5]), static_cast<double>(dt.damage[6]));
+    }
     done("Death::entity_kill_00926d90", 0x00926d90u);
     record("Death::unit_sink_008110f0", 0x008110f0u);
 
