@@ -188,3 +188,31 @@ So the predicate refuses a shot through a **friendly unit**, a ship of the same 
 friendly aircraft, not through the firer's own hull. It still refuses only, so the direction of
 the substitution stands. It no longer needs the hull's convex mesh: it is now bound on the
 host's unit boxes, behind `kAaLineOfFireBound` (docs/SHIP_PLATFORM_ATTACHMENT.md section 3).
+
+## 6. Second set, results (2026-09-23, desktop back)
+
+These are the section 5 binaries (`local\yA`, `yC`, `yE`, `yF`), E2 9000, with
+`BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1`.
+
+| run | torpedo drops | bomb drops | deaths | Kate nearest-ship median (min) | prediction |
+| --- | --- | --- | --- | --- | --- |
+| A, all landed | 0 | 0 | 35 | 693 m (485) | held on drops; deaths 35 against "37" |
+| C, moveto blend OFF | 0 | **2** | 38 | 669 m (550) | **no**: predicted no drops |
+| E, pass-side message OFF | 0 | 0 | 35 | 565 m (171) | held (0-2 drops, 35-38 deaths) |
+| F, rudder-gate store OFF | 0 | 0 | 35 | 693 m (485) | held; F is identical to A in every count |
+
+- **C restores releases, and the term is the moveto speed blend.** `D3A Val #3.1|.-4` releases
+  both bombs at 208 m, 96 m/s. It dies at 164.76 s at 162 m altitude, 304 m from Yorktown, to
+  15 category-6 and 3 category-5 hits. Its bombs land at (10898, 0, -11414).
+  - With the blend on, that Val dies before reaching its release point.
+  - The blend (`009C1850`, packet cc9_wing_achieved_speed) sets how fast the torpedo and dive
+    wings close on the target. That timing decides whether a Val reaches its release altitude
+    alive.
+  - The blend is the image's term, landed as read, so it stays on. This result does not argue
+    for turning it off.
+- **E does not restore releases.** Without the traffic pass the ships spread differently, and
+  Kates get as close as 171 m. They still all die before release.
+- **F changes nothing** in E2 with the option on: the rudder-gate store does not reach any AA
+  outcome.
+- **The Kate outcome is the same in all four runs:** 16 of 16 die before releasing, mostly to
+  light-AA bursts.

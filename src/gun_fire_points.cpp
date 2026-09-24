@@ -102,6 +102,31 @@ const GunFirePointItem* find_named_point_group_00718870(
     return found;
 }
 
+bool read_mmod_bounding_box(const std::vector<std::uint8_t>& bytes,
+    std::array<float, 6>& box) {
+    if (bytes.empty()) return false;
+    auto stream = std::make_shared<MemoryStream>(
+        memory_stream_from_complete_bytes(bytes.data(), bytes.size()));
+    StructuredReader reader(stream);
+    auto root = reader.read_root_00bea700();
+    if (!root || !tag_is(*root, "MMOD") || !root->read_control_00be9a40()) return false;
+    bool found = false;
+    while (!found && root->has_remaining_00715bf0()) {
+        auto section = root->read_child_00bea680();
+        if (!section) return false;
+        if (tag_is(*section, "BoundingBox")) {
+            found = true;
+            for (float& v : box) {
+                if (!section->read_float(v)) return false;
+            }
+        } else if (!section->skip_00be9c40()) {
+            return false;
+        }
+        if (!section->close()) return false;
+    }
+    return found;
+}
+
 bool gun_platform_slot_frame_0095f500(const std::vector<GunFirePointItem>& items,
     int key, GunPlatformSlotFrame& frame) {
     static const std::string kSlot("slot");  // 00CEB728, length 4

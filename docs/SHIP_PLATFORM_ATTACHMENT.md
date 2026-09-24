@@ -129,3 +129,37 @@ renderer-init rule, nothing more was launched.
 
 **Both switches are committed OFF.** The binaries for the pairs are built: `local\pN` (both off)
 and `local\pT2` (both on). They land by the pairs once the session is active.
+
+## 6. The attachment pair (2026-09-23)
+
+Binaries are rebuilt on the merged tree: `local\qN` has both switches OFF and `local\qA` has
+the attachment ON. The option is on for both. Logs: `local/qN_9000.log`, `local/qA_9000.log`,
+`local/qN_4500.log`, `local/qA_4500.log`.
+
+- **The mount check held.** The logged Yorktown mounts equal section 2's slot points to the
+  centimetre, for example platform 9 at (-0.88, 11.21, 122.00). All 450 ship guns in E2 found
+  their slot, and none was missing.
+
+| row | OFF | ON | prediction | held? |
+| --- | --- | --- | --- | --- |
+| E2 torpedo / bomb drops | 0 / 0 | 0 / 0 | unchanged | yes |
+| E2 deaths | 35 | 35 | ±2 | yes |
+| E2 category 1 shots / hits | 2789 / 119 | 2640 / 93 | hits ±10 % | **no**: -22 % |
+| E2 category 5 shots / hits | 96 / 73 | 125 / 115 | ±10 % | **no**: +58 % |
+| E2 category 6 shots / hits | 237 / 213 | 275 / 205 | ±10 % | yes (-4 %) |
+| E2 Kate nearest-ship median (min) | 693 m (485) | 687 m (368) | - | - |
+| USN04 4500 deaths | 27 | 27 | ±2 | yes |
+| USN04 4500 category 1 hits | 91 | 87 | ±10 % | yes (-4 %) |
+| USN04 4500 category 5 hits | 55 | 67 | ±10 % | **no**: +22 % |
+| USN04 4500 category 6 hits | 165 | 138 | ±10 % | **no**: -16 % |
+| category 0 (aircraft guns) | 729 / 64 | 729 / 64 | flat | yes |
+
+- **Why the hits move although the aim uses the same point the round leaves.**
+  - The mounts are now up to 125 m fore and aft of the ship's centre. A gun at the far end is up
+    to 250 m farther from a target than one at the near end.
+  - The range gate still tests from the unit's aim point, so an engaged gun can be at the edge
+    of its real reach. Flight time and the flak fuse distance then differ per mount.
+  - Deaths, drops and the Kate outcome do not move.
+- **Decision: `kShipPlatformAttachmentBound` lands ON.** The mount positions are the image's
+  platform frames, and the pair moves no outcome row. The hit moves are the consequence of
+  firing from the right place.
