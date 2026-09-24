@@ -240,9 +240,9 @@
       "address": "00cbef8d",
       "native": "00bf6b43",
       "function": "00cbef88",
-      "kind": "no_ghidra_function",
+      "kind": "tail_jump",
       "branch_kind": "tail_jump",
-      "contract": "Raw ten-byte handler loads descriptor DF7868 and tail-jumps to CRT FH3; native callee exists, containing handler is undefined."
+      "contract": "Defined handler loads DF7868 and tail-jumps to actual CRT FH3; definition byte-verified under primary write lock."
     }
   ],
   "no_ghidra_function": [
@@ -260,7 +260,9 @@
       ],
       "proposed_name": "BSP_TextureReload_ExceptionHandler",
       "definition_owner": "primary_only",
-      "worker_mutated_ghidra": false
+      "worker_mutated_ghidra": false,
+      "defined_by_primary": "reports/cc10_gui_texture_function_definitions.json",
+      "still_undefined": false
     }
   ],
   "eh": {
@@ -387,5 +389,16 @@
     "local/check_texture_reload_pins.py": "42aba16e5c678fde58d29c72f20841ea0544d3122bd31c0c1da8efaa444b7311",
     "local/texture_reload_native_pins.json": "d2810614bc373f89630c165d95ee6f58b64bdf2442b6ed708019e59f9db2dde3",
     "build/win32/Release/bsp_core.lib": "ba94ca5bc1bb37b06b0c0fe3fc0c2f5088d9aecc27e7ca97cd7eb62223430218"
+  },
+  "primary_integration": {
+    "main_commit": "f155d3379c9125285133237d7cf52004d9578b08",
+    "win32_build": true,
+    "existing_checks_passed": 3,
+    "log": "local/cc10-integrate-gui-texture.log",
+    "function_definitions": "reports/cc10_gui_texture_function_definitions.json",
+    "flow_repair": "reports/cc10_gui_layer_pool_flow_repair.json",
+    "source_review": "Primary read complete new source and original texture reload/helper listings; GUI pool template and raw constructor evidence reviewed",
+    "application_bound": false,
+    "game_validated": false
   }
 }

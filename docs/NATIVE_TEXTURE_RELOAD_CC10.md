@@ -120,3 +120,12 @@ This packet does not claim original-code differential execution, a real reload
 through the complete cache/VFS/D3D graph, original ABI, GPU appearance or gameplay.
 The primary's baseline executable currently stops before a game window at FMOD
 Init61/CreateSound78; that unrelated runtime boundary is not reload proof.
+
+## Primary integration correction
+
+Main f155d3379 includes this module; the integration Win32 build and all
+three existing checks passed. Primary reviewed the complete reload/helper
+source and native listings, then defined CBEF88 through CBEF91 under the
+Ghidra write lock after live/PE byte comparison. The original missing-function
+row remains discovery evidence and now records its resolved definition.
+This provides no additional full reload or application/runtime validation.

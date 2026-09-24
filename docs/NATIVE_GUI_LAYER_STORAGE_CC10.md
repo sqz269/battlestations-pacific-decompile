@@ -76,3 +76,14 @@ at the free call; disk-byte disassembly proves the continuation
 `00AC4776..00AC47AF` and the scan through `00AC47EF`. The source
 template implements that continuation, while the original exceptional
 allocation and CRT unwind paths remain outside source parity.
+
+## Primary integration correction
+
+Main f155d3379 includes the pool and raw widget constructor. The integration
+Win32 build and all three existing checks passed. Primary defined CD73D0
+through CD73E5 under the Ghidra write lock after live/PE byte comparison.
+It also repaired AC4750's 58-byte and AC4E50's three-byte post-free gaps,
+without changing either callee's no-return flag; no call gaps remain. The
+reports preserve before/after listings and the exact definitions. A current
+export now includes both normal continuations. This resolves the earlier
+Ghidra analysis gaps; it does not add application page production.
