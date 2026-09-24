@@ -31,6 +31,7 @@ struct NativeLuaFundamentalsView;
 struct NativeDebugFeatureOwnerContext;
 struct NativeGameResourceFactoryContext;
 struct NativeShadowJobContext;
+class NativeShadowDepthTargetContext;
 struct NativeStringPoolStorage;
 struct NativePhysicalFactoryContext;
 struct NativeVfsManagerLifetimeContext;
@@ -204,6 +205,11 @@ struct NativeSingletonDeletionBindings {
     // retain those providers, strings and actual F8BC5C cell through drain.
     // This does not admit projected GuiLayoutPage or frontend manager storage.
     NativeGuiMediaFocusLifetimeContext* native_gui{};
+    // D5B5E8 -> A900C0: actual2Ch shadow target. Same manager/publication,
+    // real resource domains and retained per-call frames survive drain. The
+    // passed receiver can differ from current F8BBF0. Partial base profiles
+    // are not admitted and this optional binding does not construct a target.
+    NativeShadowDepthTargetContext* shadow_depth_target{};
 };
 static_assert(offsetof(NativeSingletonDeletionBindings, mpkg_factory) == 88);
 static_assert(offsetof(NativeSingletonDeletionBindings, resource_manager) == 92);
@@ -226,7 +232,8 @@ static_assert(offsetof(NativeSingletonDeletionBindings, game_classes) == 156);
 static_assert(offsetof(NativeSingletonDeletionBindings, native_profile_hints) == 160);
 static_assert(offsetof(NativeSingletonDeletionBindings, native_media) == 164);
 static_assert(offsetof(NativeSingletonDeletionBindings, native_gui) == 168);
-static_assert(sizeof(NativeSingletonDeletionBindings) == 172);
+static_assert(offsetof(NativeSingletonDeletionBindings, shadow_depth_target) == 172);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 176);
 
 // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX
 // owner, RET; new EDX reference to stable bindings above. Pop before deleting

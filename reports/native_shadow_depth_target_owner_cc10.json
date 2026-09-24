@@ -1,0 +1,1189 @@
+{
+  "packet": "cc10_shadow_depth_target_owner",
+  "base_commit": "b9a326090eaf9fc1c329263df9f3d5ff20667398",
+  "status": "complete_normal_owner_paths_strict_build_and_actual_application_singleton_drain_probe_pass",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "ghidra_mutations": false,
+  "functions": [
+    {
+      "start": "00a8a820",
+      "end_exclusive": "00a8a8b1",
+      "end_inclusive": "00a8a8b0",
+      "bytes": 145,
+      "last_instruction": "00a8a8b0",
+      "last_instruction_length": 1,
+      "sha256": "b8e8145c62cf1b83b4b89ae0562b4935f9815a4b928da79373e4d27e37e68ba5",
+      "role": "normal"
+    },
+    {
+      "start": "00a8a8c0",
+      "end_exclusive": "00a8a959",
+      "end_inclusive": "00a8a958",
+      "bytes": 153,
+      "last_instruction": "00a8a958",
+      "last_instruction_length": 1,
+      "sha256": "a10cbf5d9f78decb58099134ab8f056ec6fc842ba0c277964afcb8e5e4032b4a",
+      "role": "normal"
+    },
+    {
+      "start": "00a8a980",
+      "end_exclusive": "00a8a9a6",
+      "end_inclusive": "00a8a9a5",
+      "bytes": 38,
+      "last_instruction": "00a8a9a3",
+      "last_instruction_length": 3,
+      "sha256": "71356207e4722085728caff17cae7acecd81b49cfe3bca58e160758d9241b770",
+      "role": "normal"
+    },
+    {
+      "start": "00a8a9d0",
+      "end_exclusive": "00a8a9db",
+      "end_inclusive": "00a8a9da",
+      "bytes": 11,
+      "last_instruction": "00a8a9d6",
+      "last_instruction_length": 5,
+      "sha256": "c53ef51b4fa0f4caa3920b188c06d97a1473d0cf0990384e1063bcc8c4071309",
+      "role": "normal"
+    },
+    {
+      "start": "00a8fe30",
+      "end_exclusive": "00a8ff2d",
+      "end_inclusive": "00a8ff2c",
+      "bytes": 253,
+      "last_instruction": "00a8ff2a",
+      "last_instruction_length": 3,
+      "sha256": "1b7c7a888562e8e00fcf804fc7078305424a6f70f8a6a73a188f49492e6a8b1e",
+      "role": "normal"
+    },
+    {
+      "start": "00a8ff30",
+      "end_exclusive": "00a8ffe3",
+      "end_inclusive": "00a8ffe2",
+      "bytes": 179,
+      "last_instruction": "00a8ffe0",
+      "last_instruction_length": 3,
+      "sha256": "4ce882f7f22d09a63a278f61b8c0c36719b5510fed97a059c2fdbc7da0468764",
+      "role": "normal"
+    },
+    {
+      "start": "00a8fff0",
+      "end_exclusive": "00a900b4",
+      "end_inclusive": "00a900b3",
+      "bytes": 196,
+      "last_instruction": "00a900b3",
+      "last_instruction_length": 1,
+      "sha256": "ef96f8492b1b37f9b3c035261dfa83b55af0e35ca72902108653fce129054b56",
+      "role": "normal"
+    },
+    {
+      "start": "00a900c0",
+      "end_exclusive": "00a900de",
+      "end_inclusive": "00a900dd",
+      "bytes": 30,
+      "last_instruction": "00a900db",
+      "last_instruction_length": 3,
+      "sha256": "d720bf97642538a4d260cd096e5cc0263e0e7ec929757d6968994bf7e202f4c8",
+      "role": "normal"
+    },
+    {
+      "start": "00cb6390",
+      "end_exclusive": "00cb6398",
+      "end_inclusive": "00cb6397",
+      "bytes": 8,
+      "last_instruction": "00cb6393",
+      "last_instruction_length": 5,
+      "sha256": "dc5e7b8770cdde3833347e7ab9b6ea63d94bd7d6425fe962fda1400b2f4258a3",
+      "role": "observed EH funclet only; not source exception transport"
+    },
+    {
+      "start": "00cb6398",
+      "end_exclusive": "00cb63a0",
+      "end_inclusive": "00cb639f",
+      "bytes": 8,
+      "last_instruction": "00cb639b",
+      "last_instruction_length": 5,
+      "sha256": "6316d0ae8e9bb5502c6c4e3c38f365894e42568ccc60bd2d3fee5839d1ab91c5",
+      "role": "observed EH funclet only; not source exception transport"
+    },
+    {
+      "start": "00cb63b0",
+      "end_exclusive": "00cb63b8",
+      "end_inclusive": "00cb63b7",
+      "bytes": 8,
+      "last_instruction": "00cb63b3",
+      "last_instruction_length": 5,
+      "sha256": "e65484cad35478a9e17dfcb592ca4f739153b4e520c1123f0114827bd350146b",
+      "role": "observed EH funclet only; not source exception transport"
+    },
+    {
+      "start": "00cb63b8",
+      "end_exclusive": "00cb63c0",
+      "end_inclusive": "00cb63bf",
+      "bytes": 8,
+      "last_instruction": "00cb63bb",
+      "last_instruction_length": 5,
+      "sha256": "9bbd5ab5a9232589d5594147a5eb93a3c2ec49c2b72141647cac61f19a0f631f",
+      "role": "observed EH funclet only; not source exception transport"
+    },
+    {
+      "start": "00cb65a0",
+      "end_exclusive": "00cb65a8",
+      "end_inclusive": "00cb65a7",
+      "bytes": 8,
+      "last_instruction": "00cb65a3",
+      "last_instruction_length": 5,
+      "sha256": "5b3efaf96507a8129a4d37378636b33a56031d3744e25992eae93264fb9a777e",
+      "role": "observed EH funclet only; not source exception transport"
+    },
+    {
+      "start": "00cb65c0",
+      "end_exclusive": "00cb65c8",
+      "end_inclusive": "00cb65c7",
+      "bytes": 8,
+      "last_instruction": "00cb65c3",
+      "last_instruction_length": 5,
+      "sha256": "0ea01a458c1fcde97650986d502a6e5963bb2775b6f69d1ed6d5ac37e5503d35",
+      "role": "observed EH funclet only; not source exception transport"
+    }
+  ],
+  "live_PE_blocks": [
+    {
+      "path": "local/shadow_target_readiness_base_constructor_bytes.txt",
+      "start": "00a8a820",
+      "end_inclusive": "00a8a8b0",
+      "bytes": 145,
+      "sha256": "b8e8145c62cf1b83b4b89ae0562b4935f9815a4b928da79373e4d27e37e68ba5",
+      "live_equals_PE": true
+    },
+    {
+      "path": "local/shadow_target_readiness_base_destructor_bytes.txt",
+      "start": "00a8a8c0",
+      "end_inclusive": "00a8a958",
+      "bytes": 153,
+      "sha256": "a10cbf5d9f78decb58099134ab8f056ec6fc842ba0c277964afcb8e5e4032b4a",
+      "live_equals_PE": true
+    },
+    {
+      "path": "local/shadow_target_readiness_constructor_bytes.txt",
+      "start": "00a8fe30",
+      "end_inclusive": "00a8ff2c",
+      "bytes": 253,
+      "sha256": "1b7c7a888562e8e00fcf804fc7078305424a6f70f8a6a73a188f49492e6a8b1e",
+      "live_equals_PE": true
+    },
+    {
+      "path": "local/shadow_target_readiness_create_bytes.txt",
+      "start": "00a8ff30",
+      "end_inclusive": "00a8ffe2",
+      "bytes": 179,
+      "sha256": "4ce882f7f22d09a63a278f61b8c0c36719b5510fed97a059c2fdbc7da0468764",
+      "live_equals_PE": true
+    },
+    {
+      "path": "local/shadow_target_readiness_destructor_bytes.txt",
+      "start": "00a8fff0",
+      "end_inclusive": "00a900b3",
+      "bytes": 196,
+      "sha256": "ef96f8492b1b37f9b3c035261dfa83b55af0e35ca72902108653fce129054b56",
+      "live_equals_PE": true
+    },
+    {
+      "path": "local/shadow_target_readiness_extents_constructor_bytes.txt",
+      "start": "00a8a980",
+      "end_inclusive": "00a8a9a5",
+      "bytes": 38,
+      "sha256": "71356207e4722085728caff17cae7acecd81b49cfe3bca58e160758d9241b770",
+      "live_equals_PE": true
+    },
+    {
+      "path": "local/shadow_target_readiness_extents_destructor_bytes.txt",
+      "start": "00a8a9d0",
+      "end_inclusive": "00a8a9da",
+      "bytes": 11,
+      "sha256": "c53ef51b4fa0f4caa3920b188c06d97a1473d0cf0990384e1063bcc8c4071309",
+      "live_equals_PE": true
+    },
+    {
+      "path": "local/shadow_target_readiness_profile_bytes.txt",
+      "start": "00d5b5e8",
+      "end_inclusive": "00d5b5f3",
+      "bytes": 12,
+      "sha256": "e267c014ad7b7099fa5c74b2d7c2543ee7c9f81de966b95fc753f7081f90efc1",
+      "live_equals_PE": true
+    },
+    {
+      "path": "local/shadow_target_readiness_runtime_profile_bytes.txt",
+      "start": "00d61948",
+      "end_inclusive": "00d6194f",
+      "bytes": 8,
+      "sha256": "3431d3730534188dda9ee513276a0445b8464b88e87aa76a3b7d5608bc045c5c",
+      "live_equals_PE": true
+    },
+    {
+      "path": "local/shadow_target_readiness_scalar_window_bytes.txt",
+      "start": "00a900c0",
+      "end_inclusive": "00a900ff",
+      "bytes": 64,
+      "sha256": "f32cfb0374b18863fab1e8bfdff064196088718950f6c93c90995a9fa80baf16",
+      "live_equals_PE": true
+    },
+    {
+      "path": "local/shadow_target_readiness_surface_profile_bytes.txt",
+      "start": "00d619a0",
+      "end_inclusive": "00d619a7",
+      "bytes": 8,
+      "sha256": "f1ea2292b0c84c8590d34d6b31259ffc91038b22763e5d7a6e8997112db89f46",
+      "live_equals_PE": true
+    },
+    {
+      "path": "local/shadow_target_owner_base_destroy_funcinfo_bytes.txt",
+      "start": "00dec5f8",
+      "end_inclusive": "00dec61b",
+      "bytes": 36,
+      "sha256": "5aa9a2b266da5afa97045fa12a363c6f0e0d1b5d036e32a8f64cc8dffc1d0b93",
+      "live_equals_PE": true
+    },
+    {
+      "path": "local/shadow_target_owner_base_destroy_unwind_bytes.txt",
+      "start": "00dec5e8",
+      "end_inclusive": "00dec5f7",
+      "bytes": 16,
+      "sha256": "aa0d649ea9734a2a4a287b0ea095ddaeac0bbf0d61cd32bb2ca004f884946482",
+      "live_equals_PE": true
+    },
+    {
+      "path": "local/shadow_target_owner_base_funcinfo_bytes.txt",
+      "start": "00dec5c4",
+      "end_inclusive": "00dec5e7",
+      "bytes": 36,
+      "sha256": "5518bf160fcce5da8dec2244fac5cd3b86f95999a706475da6e9490b177209d4",
+      "live_equals_PE": true
+    },
+    {
+      "path": "local/shadow_target_owner_base_unwind_bytes.txt",
+      "start": "00dec5b4",
+      "end_inclusive": "00dec5c3",
+      "bytes": 16,
+      "sha256": "8cc53bd66d3365dec2ccc73f3ca03ccec3f7e070b8a802e12f98e1723d50d8e6",
+      "live_equals_PE": true
+    },
+    {
+      "path": "local/shadow_target_owner_eh_base_bytes.txt",
+      "start": "00cb6390",
+      "end_inclusive": "00cb63c9",
+      "bytes": 58,
+      "sha256": "c85d2aa93a085eeec1d6f97f6a970a2fb64187dc5efeb7040bc7839c34cf30af",
+      "live_equals_PE": true
+    },
+    {
+      "path": "local/shadow_target_owner_eh_derived_bytes.txt",
+      "start": "00cb65a0",
+      "end_inclusive": "00cb65d1",
+      "bytes": 50,
+      "sha256": "e71f64b63e55554ec390541b5d7e6f3bcabaaf1415a0ec0a7db7dcc1a868df71",
+      "live_equals_PE": true
+    },
+    {
+      "path": "local/shadow_target_owner_producer_bytes.txt",
+      "start": "0073dccb",
+      "end_inclusive": "0073dd08",
+      "bytes": 62,
+      "sha256": "09a4a229501dc87eb8bb3e2b7aa27e43cc5a92962c56ec5aef3c9f68a3561d11",
+      "live_equals_PE": true
+    },
+    {
+      "path": "local/shadow_target_owner_renderer_caps_slot_bytes.txt",
+      "start": "00d5f1ac",
+      "end_inclusive": "00d5f1af",
+      "bytes": 4,
+      "sha256": "ed30541103471b3b04dd4a37562cda7ac165d3d7441eb0de118b78283c07edd7",
+      "live_equals_PE": true
+    },
+    {
+      "path": "local/shadow_target_owner_renderer_create_slot_bytes.txt",
+      "start": "00d5f130",
+      "end_inclusive": "00d5f133",
+      "bytes": 4,
+      "sha256": "6a0c146a1d71c9dd984dcb15e621263afcfadd8168eb4d8544955b9cac0e6145",
+      "live_equals_PE": true
+    },
+    {
+      "path": "local/shadow_target_owner_renderer_format_slot_bytes.txt",
+      "start": "00d5f1a0",
+      "end_inclusive": "00d5f1a3",
+      "bytes": 4,
+      "sha256": "0b245d23c2f00e23c139cc18c1c33a8165deaed63e5f75775b66a329a4c425b6",
+      "live_equals_PE": true
+    },
+    {
+      "path": "local/shadow_target_owner_target_destroy_funcinfo_bytes.txt",
+      "start": "00dec858",
+      "end_inclusive": "00dec87b",
+      "bytes": 36,
+      "sha256": "949309f651f1d0c4f29cf27164ee8f975af8fd479fa0b239e29d79d2ea4a5b28",
+      "live_equals_PE": true
+    },
+    {
+      "path": "local/shadow_target_owner_target_destroy_unwind_bytes.txt",
+      "start": "00dec850",
+      "end_inclusive": "00dec857",
+      "bytes": 8,
+      "sha256": "1073b802ad9e1530ab5f4886bd8a5fb603eb6f5342bf67259d55d4a85b962c71",
+      "live_equals_PE": true
+    },
+    {
+      "path": "local/shadow_target_owner_target_funcinfo_bytes.txt",
+      "start": "00dec82c",
+      "end_inclusive": "00dec84f",
+      "bytes": 36,
+      "sha256": "2b7e1d0eb3b0c0636d8d5da8565815b902b9c45ee2d00296970defb20cd3ff68",
+      "live_equals_PE": true
+    },
+    {
+      "path": "local/shadow_target_owner_target_unwind_bytes.txt",
+      "start": "00dec824",
+      "end_inclusive": "00dec82b",
+      "bytes": 8,
+      "sha256": "1034dd6b74b4908243458e1bf057532a31da3c38e037a12bd6533fb572a7d065",
+      "live_equals_PE": true
+    },
+    {
+      "path": "local/shadow_target_owner_texture_getter_slot_bytes.txt",
+      "start": "00d61978",
+      "end_inclusive": "00d6197b",
+      "bytes": 4,
+      "sha256": "78dcb6e5c5825fbc869cf1eb8c54dcee0ef42362cf371868a3b8dd17532fcb9f",
+      "live_equals_PE": true
+    }
+  ],
+  "native_calls": [
+    {
+      "address": "00a8a84e",
+      "native": "00415350",
+      "function": "00a8a820",
+      "instruction": "call 0x415350",
+      "role": "normal"
+    },
+    {
+      "address": "00a8a867",
+      "native": "IAT[00ce2218]",
+      "function": "00a8a820",
+      "instruction": "call dword ptr [0xce2218]",
+      "role": "normal"
+    },
+    {
+      "address": "00a8a87c",
+      "native": "00415350",
+      "function": "00a8a820",
+      "instruction": "call 0x415350",
+      "role": "normal"
+    },
+    {
+      "address": "00a8a88a",
+      "native": "00bd0c30",
+      "function": "00a8a820",
+      "instruction": "call 0xbd0c30",
+      "role": "normal"
+    },
+    {
+      "address": "00a8a898",
+      "native": "IAT[00ce2210]",
+      "function": "00a8a820",
+      "instruction": "call dword ptr [0xce2210]",
+      "role": "normal"
+    },
+    {
+      "address": "00a8a8ee",
+      "native": "00415350",
+      "function": "00a8a8c0",
+      "instruction": "call 0x415350",
+      "role": "normal"
+    },
+    {
+      "address": "00a8a907",
+      "native": "IAT[00ce2218]",
+      "function": "00a8a8c0",
+      "instruction": "call dword ptr [0xce2218]",
+      "role": "normal"
+    },
+    {
+      "address": "00a8a916",
+      "native": "00415350",
+      "function": "00a8a8c0",
+      "instruction": "call 0x415350",
+      "role": "normal"
+    },
+    {
+      "address": "00a8a924",
+      "native": "00bcfca0",
+      "function": "00a8a8c0",
+      "instruction": "call 0xbcfca0",
+      "role": "normal"
+    },
+    {
+      "address": "00a8a93c",
+      "native": "IAT[00ce2210]",
+      "function": "00a8a8c0",
+      "instruction": "call dword ptr [0xce2210]",
+      "role": "normal"
+    },
+    {
+      "address": "00a8a983",
+      "native": "00a8a820",
+      "function": "00a8a980",
+      "instruction": "call 0xa8a820",
+      "role": "normal"
+    },
+    {
+      "address": "00a8a9d6",
+      "native": "00a8a8c0",
+      "function": "00a8a9d0",
+      "instruction": "jmp 0xa8a8c0",
+      "role": "normal",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00a8fe5a",
+      "native": "00a8a980",
+      "function": "00a8fe30",
+      "instruction": "call 0xa8a980",
+      "role": "normal"
+    },
+    {
+      "address": "00a8fe94",
+      "native": "00d5f0a8+vtable104",
+      "function": "00a8fe30",
+      "instruction": "call eax",
+      "role": "normal"
+    },
+    {
+      "address": "00a8febb",
+      "native": "00d5f0a8+vtableF8",
+      "function": "00a8fe30",
+      "instruction": "call eax",
+      "role": "normal"
+    },
+    {
+      "address": "00a8ff00",
+      "native": "00d5f0a8+vtableF8",
+      "function": "00a8fe30",
+      "instruction": "call eax",
+      "role": "normal"
+    },
+    {
+      "address": "00a8ff69",
+      "native": "00d5f0a8+vtable104",
+      "function": "00a8ff30",
+      "instruction": "call edx",
+      "role": "normal"
+    },
+    {
+      "address": "00a8ff90",
+      "native": "00d5f0a8+vtable88",
+      "function": "00a8ff30",
+      "instruction": "call eax",
+      "role": "normal"
+    },
+    {
+      "address": "00a8ffa0",
+      "native": "00d61948+vtable30",
+      "function": "00a8ff30",
+      "instruction": "call eax",
+      "role": "normal"
+    },
+    {
+      "address": "00a8ffc0",
+      "native": "00d5f0a8+vtable88",
+      "function": "00a8ff30",
+      "instruction": "call edx",
+      "role": "normal"
+    },
+    {
+      "address": "00a8ffd0",
+      "native": "00d61948+vtable30",
+      "function": "00a8ff30",
+      "instruction": "call eax",
+      "role": "normal"
+    },
+    {
+      "address": "00a9002d",
+      "native": "captured IAT[00ce2220]",
+      "function": "00a8fff0",
+      "instruction": "call ebp",
+      "role": "normal"
+    },
+    {
+      "address": "00a90039",
+      "native": "current child+vtable0",
+      "function": "00a8fff0",
+      "instruction": "call eax",
+      "role": "normal"
+    },
+    {
+      "address": "00a90049",
+      "native": "captured IAT[00ce2220]",
+      "function": "00a8fff0",
+      "instruction": "call ebp",
+      "role": "normal"
+    },
+    {
+      "address": "00a90055",
+      "native": "current child+vtable0",
+      "function": "00a8fff0",
+      "instruction": "call eax",
+      "role": "normal"
+    },
+    {
+      "address": "00a90065",
+      "native": "captured IAT[00ce2220]",
+      "function": "00a8fff0",
+      "instruction": "call ebp",
+      "role": "normal"
+    },
+    {
+      "address": "00a90071",
+      "native": "current child+vtable0",
+      "function": "00a8fff0",
+      "instruction": "call eax",
+      "role": "normal"
+    },
+    {
+      "address": "00a90081",
+      "native": "captured IAT[00ce2220]",
+      "function": "00a8fff0",
+      "instruction": "call ebp",
+      "role": "normal"
+    },
+    {
+      "address": "00a9008d",
+      "native": "current child+vtable0",
+      "function": "00a8fff0",
+      "instruction": "call eax",
+      "role": "normal"
+    },
+    {
+      "address": "00a9009c",
+      "native": "00a8a9d0",
+      "function": "00a8fff0",
+      "instruction": "call 0xa8a9d0",
+      "role": "normal"
+    },
+    {
+      "address": "00a900c3",
+      "native": "00a8fff0",
+      "function": "00a900c0",
+      "instruction": "call 0xa8fff0",
+      "role": "normal"
+    },
+    {
+      "address": "00a900d0",
+      "native": "00bf65ac",
+      "function": "00a900c0",
+      "instruction": "call 0xbf65ac",
+      "role": "normal"
+    },
+    {
+      "address": "00cb6393",
+      "native": "00412430",
+      "function": "00cb6390",
+      "instruction": "jmp 0x412430",
+      "role": "observed EH funclet only; not source exception transport",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb639b",
+      "native": "00411ee0",
+      "function": "00cb6398",
+      "instruction": "jmp 0x411ee0",
+      "role": "observed EH funclet only; not source exception transport",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb63b3",
+      "native": "00412430",
+      "function": "00cb63b0",
+      "instruction": "jmp 0x412430",
+      "role": "observed EH funclet only; not source exception transport",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb63bb",
+      "native": "00411ee0",
+      "function": "00cb63b8",
+      "instruction": "jmp 0x411ee0",
+      "role": "observed EH funclet only; not source exception transport",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb65a3",
+      "native": "00a8a9d0",
+      "function": "00cb65a0",
+      "instruction": "jmp 0xa8a9d0",
+      "role": "observed EH funclet only; not source exception transport",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb65c3",
+      "native": "00a8a9d0",
+      "function": "00cb65c0",
+      "instruction": "jmp 0xa8a9d0",
+      "role": "observed EH funclet only; not source exception transport",
+      "kind": "tail_jump"
+    },
+    {
+      "address": "00cb63a5",
+      "native": "00bf6b43",
+      "function": "00cb63a0",
+      "kind": "no_ghidra_function",
+      "instruction": "jmp 0x00bf6b43",
+      "role": "observed EH handler only; verifier can check target but not current missing caller"
+    },
+    {
+      "address": "00cb63c5",
+      "native": "00bf6b43",
+      "function": "00cb63c0",
+      "kind": "no_ghidra_function",
+      "instruction": "jmp 0x00bf6b43",
+      "role": "observed EH handler only; verifier can check target but not current missing caller"
+    },
+    {
+      "address": "00cb65ad",
+      "native": "00bf6b43",
+      "function": "00cb65a8",
+      "kind": "no_ghidra_function",
+      "instruction": "jmp 0x00bf6b43",
+      "role": "observed EH handler only; verifier can check target but not current missing caller"
+    },
+    {
+      "address": "00cb65cd",
+      "native": "00bf6b43",
+      "function": "00cb65c8",
+      "kind": "no_ghidra_function",
+      "instruction": "jmp 0x00bf6b43",
+      "role": "observed EH handler only; verifier can check target but not current missing caller"
+    },
+    {
+      "address": "0073dce5",
+      "native": "00bf681b",
+      "function": "0073d410",
+      "role": "observed actual2Ch producer allocation"
+    },
+    {
+      "address": "0073dd04",
+      "native": "00a8fe30",
+      "function": "0073d410",
+      "role": "observed actual constructor producer"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00cb63a0",
+      "end_inclusive": "00cb63a9",
+      "bytes": 10,
+      "last_instruction": "00cb63a5",
+      "last_instruction_length": 5,
+      "evidence": "current live proto: No function found; exact native MOV EAX,FuncInfo / JMP BF6B43",
+      "scope": "observed compiler handler only"
+    },
+    {
+      "address": "00cb63c0",
+      "end_inclusive": "00cb63c9",
+      "bytes": 10,
+      "last_instruction": "00cb63c5",
+      "last_instruction_length": 5,
+      "evidence": "current live proto: No function found; exact native MOV EAX,FuncInfo / JMP BF6B43",
+      "scope": "observed compiler handler only"
+    },
+    {
+      "address": "00cb65a8",
+      "end_inclusive": "00cb65b1",
+      "bytes": 10,
+      "last_instruction": "00cb65ad",
+      "last_instruction_length": 5,
+      "evidence": "current live proto: No function found; exact native MOV EAX,FuncInfo / JMP BF6B43",
+      "scope": "observed compiler handler only"
+    },
+    {
+      "address": "00cb65c8",
+      "end_inclusive": "00cb65d1",
+      "bytes": 10,
+      "last_instruction": "00cb65cd",
+      "last_instruction_length": 5,
+      "evidence": "current live proto: No function found; exact native MOV EAX,FuncInfo / JMP BF6B43",
+      "scope": "observed compiler handler only"
+    }
+  ],
+  "observed_EH": [
+    {
+      "entry": "00cb63a0",
+      "funcinfo": "00dec5c4",
+      "words": [
+        "19930522",
+        "00000002",
+        "00dec5b4",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000001"
+      ],
+      "unwind": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "funclet": "00cb6390"
+        },
+        {
+          "state": 1,
+          "next_state": 0,
+          "funclet": "00cb6398"
+        }
+      ]
+    },
+    {
+      "entry": "00cb63c0",
+      "funcinfo": "00dec5f8",
+      "words": [
+        "19930522",
+        "00000002",
+        "00dec5e8",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000001"
+      ],
+      "unwind": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "funclet": "00cb63b0"
+        },
+        {
+          "state": 1,
+          "next_state": 0,
+          "funclet": "00cb63b8"
+        }
+      ]
+    },
+    {
+      "entry": "00cb65a8",
+      "funcinfo": "00dec82c",
+      "words": [
+        "19930522",
+        "00000001",
+        "00dec824",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000001"
+      ],
+      "unwind": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "funclet": "00cb65a0"
+        }
+      ]
+    },
+    {
+      "entry": "00cb65c8",
+      "funcinfo": "00dec858",
+      "words": [
+        "19930522",
+        "00000001",
+        "00dec850",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000001"
+      ],
+      "unwind": [
+        {
+          "state": 0,
+          "next_state": -1,
+          "funclet": "00cb65c0"
+        }
+      ]
+    }
+  ],
+  "returning_free_gap": {
+    "function": "00a900c0",
+    "call_site": "00a900d0",
+    "callee": "00bf65ac",
+    "function_end_inclusive": "00a900dd",
+    "missing_instruction": "00a900d5",
+    "missing_bytes": "83 c4 04",
+    "native_instruction": "ADD ESP,4",
+    "resumed_listing": "00a900d8",
+    "last_instruction": "00a900db RET4 length3",
+    "current_instruction_context": "No instruction at address 00a900d5 despite enclosing function extent",
+    "root_repair_pending": true,
+    "worker_mutation": false,
+    "flow_property_query": "rejected: script execution disabled; exact raw error retained, no enable/mutation fallback"
+  },
+  "producer": {
+    "function": "0073d410",
+    "region": "[0073dccb,0073dd09)",
+    "bytes": 62,
+    "allocation_size": 44,
+    "allocation_call": "0073dce5 -> 00bf681b",
+    "constructor_call": "0073dd04 -> 00a8fe30",
+    "dimensions": "same captured ESI for both arguments: F8899D byte zero gives800h, nonzero1000h; fixture explicitly uses32x32"
+  },
+  "contracts": {
+    "storage": "actual2Ch owner, dimensions at4/8 are not counts; padding0F/21..23 untouched",
+    "publication": "first manager captures section, entered/current18 increment; second getter then CURRENT F8BBF0 registration/unregistration; destructor receiver need not equal publication; clear after removal then original section decrement/leave",
+    "imports": "borrowed current CE2218/CE2210 callable cells loaded at reached sites; A8FFF0 captures first14 before one CE2220 epoch",
+    "children": "same actual B2A070/B3FD80 contexts, two independent retained creation/getter blocks; no extra credits or nested registrations",
+    "terminal": "shared canonical-first dispatch checks actual zero/count identity, current0 and fresh4 family; explicit direct domain passed without installing service gate",
+    "failure": "context-owned address-stable per-call arena survives source exceptions including singleton dispatcher; running/failed destruction terminates; no invented cleanup/retry/settlement",
+    "drain": "only complete D5B5E8 admitted via optional binding to A900C0; transient D5B554/D5B558 remain unsupported"
+  },
+  "validation": {
+    "report_calls": {
+      "checked": 24,
+      "full_live_containment_and_transfer": 20,
+      "missing_handler_target_only": 4,
+      "indirect_not_checked_by_verifier": 20,
+      "failed": 0
+    },
+    "strict_win32_build": true,
+    "ctests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "new_tracked_tests": false,
+    "focused_probe": {
+      "current_application_objects": 70,
+      "untouched_current_objects": 69,
+      "observer_only_current_singleton_host_object": 1,
+      "current_libraries": 3,
+      "flags": "/MD /fp:strict /link /MANIFEST:EMBED",
+      "launcher": "tools/run_game.ps1",
+      "source_publication": "caller-owned fixture cell; no production app activation",
+      "color_format": 23,
+      "depth_format": 80,
+      "policy": 1,
+      "real_textures": 2,
+      "surface_counts": [
+        2,
+        2
+      ],
+      "padding_preserved": true,
+      "nested_raw_owners_unbound": true,
+      "attempted_gate": true,
+      "existing_actual_field_toggle": true,
+      "real_singleton_scalar_dispatch": true,
+      "current_publication_cleared": true,
+      "retained_final_operation_complete": true,
+      "lock_balanced": true,
+      "final_device_api_COM": [
+        0,
+        0
+      ],
+      "exit_code": 0
+    }
+  },
+  "limits": [
+    "complete normal source behavior, not original ABI/FH3/SEH/hardware-fault or mutable private stack aliases",
+    "native EH funclets observed, not executed as source failure cleanup; partial publication/resource/lock state remains retained",
+    "calling context must retain all domains and actual storage through final native retirement and quiescence; completed diagnostic raw pointers may be stale",
+    "production F8BBF0 retained app owner/publication and current import binding remains later composition; no startup invocation added",
+    "no cold compiler/effect-cache/B107F0 activation, sampler residue invention, bloom enlargement or distortion preimage zeroing"
+  ],
+  "binary": {
+    "path": "I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\battlestationspacific.exe",
+    "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "evidence": [
+    {
+      "path": "local/build_shadow_target_owner_probe.ps1",
+      "bytes": 2781,
+      "sha256": "13b0c10223e79d1fa731320a67965ef03592411f84198faaac95d9c9f171b06c"
+    },
+    {
+      "path": "local/prepare_shadow_target_owner_probe.py",
+      "bytes": 10346,
+      "sha256": "ab406359fb7b4665bb6e2037f02b43cd87c7951997e937834e5250b06470157a"
+    },
+    {
+      "path": "local/shadow_target_owner_base_destroy_funcinfo_bytes.txt",
+      "bytes": 183,
+      "sha256": "46ec3b43e1624c88d223413b33148dcb67fb0e75d66f56a350dc973d16d7f2a9"
+    },
+    {
+      "path": "local/shadow_target_owner_base_destroy_unwind_bytes.txt",
+      "bytes": 77,
+      "sha256": "de1279ddc408c4eccc73fc8650aaffacb26beef1b06d242d4b0c0073cb59abdf"
+    },
+    {
+      "path": "local/shadow_target_owner_base_funcinfo_bytes.txt",
+      "bytes": 183,
+      "sha256": "55f890765bc8295786dcc2aa60737fa7b0ca23b7b3959498896d0ce9de681d23"
+    },
+    {
+      "path": "local/shadow_target_owner_base_unwind_bytes.txt",
+      "bytes": 77,
+      "sha256": "d578a61072de4eb95ee414fea6079f8f188f1f5806f45ede69c24ed77fe1f98a"
+    },
+    {
+      "path": "local/shadow_target_owner_build.txt",
+      "bytes": 2765,
+      "sha256": "8a5816935936e408b1880c3023afe49f4f7ae08c7d42523d32f9037bf2a35b37"
+    },
+    {
+      "path": "local/shadow_target_owner_eh_base_bytes.txt",
+      "bytes": 284,
+      "sha256": "8d7c0189b09c075faa3b807dbcdb5d709683d20a4afab08dd1205884ac62d27f"
+    },
+    {
+      "path": "local/shadow_target_owner_eh_derived_bytes.txt",
+      "bytes": 252,
+      "sha256": "e740dd4bdf9382366c9c3fde4eb75de40c5309da8db66a62c6794679c58ce7bc"
+    },
+    {
+      "path": "local/shadow_target_owner_eh_proto.txt",
+      "bytes": 512,
+      "sha256": "91237fff1431bf475621a10f77b936d1fdef37007e1265d7fe1bf69ce601906e"
+    },
+    {
+      "path": "local/shadow_target_owner_evidence.py",
+      "bytes": 9911,
+      "sha256": "2c26b223a6a2e111fb1b92a3266a4d78f7103f2518ec2729564d4a489345e6a6"
+    },
+    {
+      "path": "local/shadow_target_owner_flow_properties.json",
+      "bytes": 7890,
+      "sha256": "a4df95115f8b6a3f773d8dc5cae79c355bc32b96db50bf47e109616b260acfaa"
+    },
+    {
+      "path": "local/shadow_target_owner_funclet_proto.txt",
+      "bytes": 4322,
+      "sha256": "31576aa919d480ed957d5aebad630c9ecd6f886ea2a6c73143e1fc5498173513"
+    },
+    {
+      "path": "local/shadow_target_owner_instruction_context.json",
+      "bytes": 940,
+      "sha256": "ac6ca41e4c990e450612c2d9aa231ae6931779eef486d7b935c2bef2b5ad8a37"
+    },
+    {
+      "path": "local/shadow_target_owner_listing.txt",
+      "bytes": 9914,
+      "sha256": "24214506b32ad5aa081a9aeb3e5d3332490ed7bf0447934f218a70887feb33ed"
+    },
+    {
+      "path": "local/shadow_target_owner_probe/adaptation_sources.json",
+      "bytes": 876,
+      "sha256": "cbaf7374ba57d862ad2ce5100e0fc861be6549cc64ed54c9b4ba8a819a614f6b"
+    },
+    {
+      "path": "local/shadow_target_owner_probe/application-objects.json",
+      "bytes": 16546,
+      "sha256": "f93024cee8bd19161e32766bc79e8480efeb50821cd514bc3eec489c0a647cd0"
+    },
+    {
+      "path": "local/shadow_target_owner_probe/application-shadow-target-probe.cpp",
+      "bytes": 30825,
+      "sha256": "d874631710d0c00affca2fc99aa44a4710b6d23e13f87fbb26d2db87f65e840d"
+    },
+    {
+      "path": "local/shadow_target_owner_probe/application-shadow-target-probe.exe",
+      "bytes": 3491328,
+      "sha256": "dc77fd709c5fd400badc8b7e6ee6d4a40a9218c84901f0840b343454217f059d"
+    },
+    {
+      "path": "local/shadow_target_owner_probe/compile.log",
+      "bytes": 15513,
+      "sha256": "29d6f0fc8ef7f1ee3cb8e2d118136c3ce69a1acc40552eaf553380f040b4a64c"
+    },
+    {
+      "path": "local/shadow_target_owner_probe/compile_before_access_fix.log",
+      "bytes": 5789,
+      "sha256": "b8e8c50b8f9fd896c179d662969886e71f25358aad67265ee075f9cc175a2edc"
+    },
+    {
+      "path": "local/shadow_target_owner_probe/dependencies.json",
+      "bytes": 65992,
+      "sha256": "976c1bdb37d2c93c771e6ace2a2c06a3ee3794952eb39aea83ecc6d48dcc0b2a"
+    },
+    {
+      "path": "local/shadow_target_owner_probe/embedded-manifest.xml",
+      "bytes": 381,
+      "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df"
+    },
+    {
+      "path": "local/shadow_target_owner_probe/launcher.txt",
+      "bytes": 341,
+      "sha256": "d70d6b6fcb18f727d782a8d83bce3e0b9dca936e6bb7ff5ebbbce8a88412acab"
+    },
+    {
+      "path": "local/shadow_target_owner_probe/observer-compile.log",
+      "bytes": 39,
+      "sha256": "b1c184a87ffda61eefbf3da93d8a946ba2d987fb6ab3e1b4c9cf586308404a01"
+    },
+    {
+      "path": "local/shadow_target_owner_probe/observer-dependencies.json",
+      "bytes": 44584,
+      "sha256": "d696fa1aa9c2412c82fd0ba561eae55f5388b05a2b569975abda34d418dfb9d3"
+    },
+    {
+      "path": "local/shadow_target_owner_probe/run.log",
+      "bytes": 49059,
+      "sha256": "d53d7dab922cc1e8a60d3e158277b0f63ae897086218961d19d4a7dce0f3b2d9"
+    },
+    {
+      "path": "local/shadow_target_owner_probe/shadow_target_observed_singletons.cpp",
+      "bytes": 5360,
+      "sha256": "4df3c81cb836eceffc61cb00324e4ab1da2f9d8f4ffdbd08b4ad11f83c3541c2"
+    },
+    {
+      "path": "local/shadow_target_owner_probe/shadow_target_probe_startup.hpp",
+      "bytes": 10005,
+      "sha256": "997a0203766cf84cbca7fa86b21af2c559433b6dab3d55e5eaadbefc25c50791"
+    },
+    {
+      "path": "local/shadow_target_owner_probe/toolchain.json",
+      "bytes": 1608,
+      "sha256": "42563eabe098452c60b67bd39a53099a2a61baf2689ad233ee06e8275c73026a"
+    },
+    {
+      "path": "local/shadow_target_owner_producer_bytes.txt",
+      "bytes": 300,
+      "sha256": "777197947ebc2a48e67d981c6ab97cc4a4ef74396cffa30dbc0e80bff43c9f75"
+    },
+    {
+      "path": "local/shadow_target_owner_producer_instructions.json",
+      "bytes": 913,
+      "sha256": "cf73948658e4f3c8d2e01228a7a5f319b9dca04647a139eaa596c595b491855a"
+    },
+    {
+      "path": "local/shadow_target_owner_producer_proto.txt",
+      "bytes": 245,
+      "sha256": "376d72586a74244ba524191c43fbe90c09b6026ecf9f024a7e73b3eb1eb194ae"
+    },
+    {
+      "path": "local/shadow_target_owner_renderer_caps_slot_bytes.txt",
+      "bytes": 29,
+      "sha256": "ceb51131fd1dbc5d9bf8b80252c6a5fbe05ac1e08c979c98a0fd481cba82d414"
+    },
+    {
+      "path": "local/shadow_target_owner_renderer_create_slot_bytes.txt",
+      "bytes": 29,
+      "sha256": "902020db352ee6026878776a49b6104ddc91b2157820928f4d3a731d4a9d51c5"
+    },
+    {
+      "path": "local/shadow_target_owner_renderer_format_slot_bytes.txt",
+      "bytes": 29,
+      "sha256": "1e0ae5fabdc9582667cdb09dface54c340c733c35aa7ee7e2ded4473502f684c"
+    },
+    {
+      "path": "local/shadow_target_owner_target_destroy_funcinfo_bytes.txt",
+      "bytes": 183,
+      "sha256": "63ca7689bc5e6b4a00b5a83dde359ba8256245bec60586caf66313527dae244c"
+    },
+    {
+      "path": "local/shadow_target_owner_target_destroy_unwind_bytes.txt",
+      "bytes": 45,
+      "sha256": "78b79e1f05b8afdabf14176c45228350054c71eab08b552e613057e7c1c541aa"
+    },
+    {
+      "path": "local/shadow_target_owner_target_funcinfo_bytes.txt",
+      "bytes": 183,
+      "sha256": "9be47ce3264db7c2d82a76197cc2355ce9dcb2849de764260b587ba25514ce90"
+    },
+    {
+      "path": "local/shadow_target_owner_target_unwind_bytes.txt",
+      "bytes": 45,
+      "sha256": "22f4e54ee02e36d817ed4daf7afc2adfb1d71baf4c285de51bb50895df3685e6"
+    },
+    {
+      "path": "local/shadow_target_owner_texture_getter_slot_bytes.txt",
+      "bytes": 29,
+      "sha256": "2c57e384baf8c0b21657618f97070c6a2af3e16c66bc28644b02e58b08944ba6"
+    },
+    {
+      "path": "local/shadow_target_owner_verify_calls.txt",
+      "bytes": 2198,
+      "sha256": "06cbba2acf23ebd5bafeab389f5264f5ae7c91840ca3fe24e985227a2a253318"
+    },
+    {
+      "path": "local/shadow_target_readiness_base_constructor_bytes.txt",
+      "bytes": 710,
+      "sha256": "4f2fa61d390e6d9d337932477313711aa98f47612f09637fca151e9aaf9bc2bd"
+    },
+    {
+      "path": "local/shadow_target_readiness_base_destructor_bytes.txt",
+      "bytes": 742,
+      "sha256": "4035d46d54c06d71b6c0df72e6267d6a3844abf22b155ab24e31c98aca2c8d29"
+    },
+    {
+      "path": "local/shadow_target_readiness_blocks.json",
+      "bytes": 1880,
+      "sha256": "5076c2ef670e7fe4230a079403a3061c19a65855f026723f44379e251f7d5ce1"
+    },
+    {
+      "path": "local/shadow_target_readiness_constructor_bytes.txt",
+      "bytes": 1220,
+      "sha256": "3929b616a6f45a71ee69e6cd8a26cd2258de9129bf796736d254b4033c64859e"
+    },
+    {
+      "path": "local/shadow_target_readiness_create_bytes.txt",
+      "bytes": 872,
+      "sha256": "2987ae98c7ee1bf8406dfd51c9146ff74cc141ef08de81996d540ba4a24a90f9"
+    },
+    {
+      "path": "local/shadow_target_readiness_destructor_bytes.txt",
+      "bytes": 953,
+      "sha256": "fb6d092d5f910b61399729014e1b7a33cc5ef7cd9fa76cec007f5c86b030ceff"
+    },
+    {
+      "path": "local/shadow_target_readiness_extents_constructor_bytes.txt",
+      "bytes": 191,
+      "sha256": "5210e562a67a02a040eb4a4f810811e5cb5d208081aa710ed0b49194d27939b1"
+    },
+    {
+      "path": "local/shadow_target_readiness_extents_destructor_bytes.txt",
+      "bytes": 57,
+      "sha256": "0fb8d16af85120a2975132a904284ac8eba29f880b880b7e705b47ac86f9f3d7"
+    },
+    {
+      "path": "local/shadow_target_readiness_listing.txt",
+      "bytes": 9927,
+      "sha256": "9d4fe8a00980dc5bf642d22f2caab60b38cf5d7a114abbf197f0178830fa69d3"
+    },
+    {
+      "path": "local/shadow_target_readiness_profile_bytes.txt",
+      "bytes": 61,
+      "sha256": "df39521a7283b73acaa59ff6a11d8bf11b0ab1b24757625f0c70b10915c99f1a"
+    },
+    {
+      "path": "local/shadow_target_readiness_proto.txt",
+      "bytes": 5269,
+      "sha256": "3b65eaac2f9ef643d9a0be951b24eb8d67ad93cf074e28de92c387b942dcb1e7"
+    },
+    {
+      "path": "local/shadow_target_readiness_runtime_profile_bytes.txt",
+      "bytes": 45,
+      "sha256": "0b57394cbbe8288c0208ff852dbe11d83ebb90475452e8a3a1ea258375562380"
+    },
+    {
+      "path": "local/shadow_target_readiness_scalar_window_bytes.txt",
+      "bytes": 308,
+      "sha256": "8c5b67d8d5912d7b9a78c3ce1fa969385f597638ef2e9f81e043fe5274728bde"
+    },
+    {
+      "path": "local/shadow_target_readiness_surface_profile_bytes.txt",
+      "bytes": 45,
+      "sha256": "794ace23aa77436d7638226734ebd62addc61dcbb3659005e8f0aeba163b0635"
+    }
+  ]
+}
