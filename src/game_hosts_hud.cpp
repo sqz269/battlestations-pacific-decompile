@@ -987,9 +987,70 @@ public:
         // applied by the mission camera's tick (docs/MISSION_CAMERA.md 9).
         owner_.record("HudShipScreen::pipe_sight_block", 0x0064de92u);
     }
+    bool controlled_present() override {
+        return owner_.units != nullptr && owner_.units->controlled_bound();
+    }
+    bool controlled_is_kind_of(int class_id) override {
+        return controlled_present()
+            && owner_.units->unit_is_kind_of(owner_.units->controlled_index(), class_id);
+    }
+    bool controlled_is_local_player() override {
+        // 00927F30(unit, 0): the controlled unit is the local player's ship.
+        return controlled_present();
+    }
+    bool controlled_class_repair() override {
+        // [unit+538h]+D0h, the VehicleClass `Repair` byte (00962E16), not
+        // loaded by the host. Both answers reach the same path with no input
+        // (0064E5FB and 0064E626 both end at 0064F496), so it is recorded.
+        owner_.record("HudShipScreen::class_repair_flag", 0x00962e16u);
+        return false;
+    }
+    bool input_pressed(int action) override { return owner_.menu.input_action_pressed(action); }
+    bool input_held(int action) override { return owner_.menu.input_action_held(action); }
+    bool input_released(int action) override { return owner_.menu.input_action_released(action); }
+    void turn_to_camera_order() override {
+        owner_.record("HudShipScreen::turn_to_camera_order", 0x0077c2a0u);
+    }
+    void turn_to_camera_release() override {
+        owner_.record("HudShipScreen::turn_to_camera_release", 0x0064e5c3u);
+    }
+    bool turn_timer_expired_009539e0() override {
+        owner_.record("HudShipScreen::turn_timer_expired", 0x009539e0u);
+        return false;
+    }
+    void repair_menu_open(float dt) override {
+        static_cast<void>(dt);
+        owner_.record("HudShipScreen::repair_menu", 0x0064e62cu);
+    }
+    void repair_order_route() override {
+        owner_.record("HudShipScreen::repair_order_route", 0x0077c2a0u);
+    }
+    void warning_pulse(float dt) override {
+        static_cast<void>(dt);
+        owner_.record("HudShipScreen::warning_pulse", 0x0064f3c2u);
+    }
+    void repair_mode_panel(float dt) override {
+        static_cast<void>(dt);
+        owner_.record("HudShipScreen::repair_mode_panel", 0x0064f4a3u);
+    }
+    bool other_screen_gate() override {
+        // SUBSTITUTION: +156h is the host's (clear); [[00E198C4]+64h]+81h and
+        // +82h sit on an interface object this process does not build and
+        // read clear, so the gate passes.
+        return true;
+    }
+    void other_screen_00545360() override {
+        // 00545360 on [00E198C4]+50h: that screen's +D4h = 1, +1Ch = 0.
+        owner_.record("HudShipScreen::other_screen_00545360", 0x00545360u);
+    }
+    bool controls_bound() override { return kHudShipScreenControlsBound; }
     void remainder_from_0064e415(float dt) override {
         static_cast<void>(dt);
         owner_.record("HudShipScreen::update_remainder", 0x0064e415u);
+    }
+    void remainder_from_0064f665(float dt) override {
+        static_cast<void>(dt);
+        owner_.record("HudShipScreen::update_remainder", 0x0064f665u);
     }
 
 private:
