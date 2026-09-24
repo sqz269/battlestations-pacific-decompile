@@ -301,7 +301,7 @@ public:
             // 005C17A7: 00B6DB70 on the Operator node, then its world +110h and
             // +118h, the forward row's x and z (docs/MISSION_CAMERA.md).
             bsp::refresh_camera_world_00b6db70(node.state.transform);
-            owner_.done("HudMinimap::refresh_renderer_basis", 0x00b6db70u);
+            owner_.done("HudMinimap::refresh_camera_world", 0x00b6db70u);
             y_component = node.state.transform.world[8];
             x_component = node.state.transform.world[10];
             return;
