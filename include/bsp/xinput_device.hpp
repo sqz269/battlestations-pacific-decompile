@@ -11,6 +11,7 @@
 namespace bsp {
 
 using XInputGetStateFunction = DWORD (WINAPI*)(DWORD, XINPUT_STATE*);
+using XInputEnableFunction = void (WINAPI*)(BOOL);
 
 class XInputApi {
 public:
@@ -19,7 +20,7 @@ public:
     virtual DWORD set_state(DWORD user, XINPUT_VIBRATION&) = 0;
 };
 
-// Actual caller-selected XINPUT1_3 DLL; imported ordinals2/3, stdcall two args.
+// Actual caller-selected XINPUT1_3 DLL; imported ordinals2/3/5.
 // No controller emulation. Keep the library alive through devices and borrowed
 // get_state_function() use (also compatible with the joystick's Xbox branch).
 class XInputLibrary final : public XInputApi {
@@ -28,6 +29,7 @@ public:
     ~XInputLibrary() override;
     DWORD get_state(DWORD, XINPUT_STATE&) override;
     DWORD set_state(DWORD, XINPUT_VIBRATION&) override;
+    void enable(BOOL enabled);
     XInputGetStateFunction get_state_function() const noexcept;
 private:
     struct Impl;

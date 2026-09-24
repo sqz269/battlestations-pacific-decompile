@@ -137,10 +137,11 @@ GameAiWeaponFacts& game_ai_weapon_facts() noexcept {
 
 namespace {
 // Packet cc9_planner_kate_targeting: the planner's range factor as 00A1CD95
-// forms it. docs/PLANNER_KATE_TARGETING.md. OFF, held (2026-09-23): its E2 pair (R0/R1,
-// docs/VAL_SQUADRON_REGISTRY.md section 6.1) lost all torpedo drops, 8 -> 0, through an
-// untraced Yorktown order split at 122 s.
-constexpr bool kPlannerRangeInterpBound = false;
+// forms it. docs/PLANNER_KATE_TARGETING.md. ON (2026-09-24, packet
+// cc9_group_composition): the R1 torpedo loss was a frozen dead leader point, fixed by the
+// plane death flags; the H0/H1 pair's moves are the range law re-weighting the ship group's
+// picks.
+constexpr bool kPlannerRangeInterpBound = true;
 // DIAGNOSTIC, packet cc9_yorktown_order_split: past the 20-line cap, every
 // kAiMovetoDiagEvery-th MOVETOATTACK tick is still logged with the target
 // group's leader, so the 00A12A90 collect-distance promotion can be timed.

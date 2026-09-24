@@ -1,0 +1,7 @@
+# Platform activation application prerequisites
+
+`GameStartupHost` now owns the selected `XInputLibrary` before platform window creation. Later `InputServices` borrows that same object instead of loading and owning another library instance. The startup owner retains the module through input retirement and final window cleanup. This supplies the lifetime needed by early window messages, which can arrive before input-device construction. The original executable's XINPUT1_3 import is resolved before WinMain; the source loader remains an explicit selected-path operation during phase 3, before its first window.
+
+The full `WM_ACTIVATE` handler is still unbound. This change prepares its SDK ownership; it does not by itself call `XInputEnable` or admit GUI pages. The independent XInput import packet adds the exact ordinal5 operation on the same selected module. GUI/media singleton deletion dispatch is described in `GUI_MEDIA_SINGLETON_DISPATCH_CC10.md`; the remaining frontend ownership and raw page dependencies are in `GUI_OWNER_COMPOSITION_CC10.md`.
+
+Validation and the combined revision/runtime receipt are recorded in `reports/platform_activation_application_cc10.json`. The initial lifetime change passed `scripts/build.ps1`, including the strict Win32 build and three existing CTests. Runtime coverage is limited to the paths explicitly recorded there; no populated movie focus, fullscreen focus refresh, original ABI or game-wide parity is inferred.

@@ -1,0 +1,51 @@
+{
+  "packet": "cc10_gui_owner_composition",
+  "status": "audit_only_no_source_binding",
+  "source_branch": "agent/cc10-platform-activate",
+  "source_head": "a4f03c841",
+  "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+  "ghidra_program": "/battlestationspacific.exe",
+  "ghidra_worker_mutations": 0,
+  "native_routines": [
+    {"address": "004c12b0", "coverage": "inspected getter; raw 88h publication and singleton registration", "source": "src/native_platform_focus_owners.cpp"},
+    {"address": "00aa5d70", "coverage": "inspected raw manager constructor and empty +14 vector", "source": "src/native_platform_focus_owners.cpp"},
+    {"address": "00aa5840", "coverage": "inspected page-construction/registration body; production raw page creation remains unbound", "source": "src/gui_layout_loader.cpp"},
+    {"address": "00aa3140", "coverage": "direct page-name lookup dependency inspected through 00aa5840 caller", "source": "src/gui_layout_loader.cpp"},
+    {"address": "00b8f450", "coverage": "plain-root raw group allocation dependency inspected through 00aa5840 caller", "source": "src/gui_native_scene.cpp"},
+    {"address": "00b8f5e0", "coverage": "plain-root raw group constructor dependency inspected through 00aa5840 caller", "source": "src/gui_native_scene.cpp"},
+    {"address": "00b80d70", "coverage": "model-backed page resource dependency inspected through 00aa5840 caller", "source": "src/gui_native_scene.cpp"},
+    {"address": "00ac51a0", "coverage": "raw 124h page allocation dependency inspected through 00aa5840 caller", "source": "src/gui_layout_loader.cpp"},
+    {"address": "00ac6600", "coverage": "raw page constructor inspected; requires actual scene and script services", "source": "src/gui_type_dispatch.cpp"},
+    {"address": "00aa52a0", "coverage": "inspected raw page-vector priority insertion; typed registry is separate", "source": "src/gui_layout_loader.cpp"},
+    {"address": "00aa8320", "coverage": "inspected virtual20 scene-node release; current-profile provider still required", "source": "src/gui_widget_owner.cpp"},
+    {"address": "00aa38f0", "coverage": "inspected virtual04 scalar deletion; derived teardown and pool free still required", "source": "src/gui_layer.cpp"},
+    {"address": "00aa33a0", "coverage": "inspected raw page-vector movie traversal", "source": "src/native_window_focus_dispatch.cpp"},
+    {"address": "00aa8e40", "coverage": "inspected raw widget child and movie traversal", "source": "src/native_window_focus_dispatch.cpp"},
+    {"address": "00aa6340", "coverage": "inspected manager destruction schedule; populated page virtuals remain required providers", "source": "src/native_gui_media_focus_lifetime.cpp"},
+    {"address": "00aa0f70", "coverage": "inspected reset-screens body; not full page destruction", "source": "src/gui_manager_frame.cpp"}
+  ],
+  "host_steps": [
+    {"function": "00bed3b0", "address": "00bed43c", "native": "004c12b0", "contract": "deactivation obtains canonical GUI owner"},
+    {"function": "00bed3b0", "address": "00bed443", "native": "00aa33a0", "contract": "deactivation pauses raw page movie descendants"},
+    {"function": "00bed3b0", "address": "00bed48e", "native": "004c12b0", "contract": "activation obtains canonical GUI owner"},
+    {"function": "00bed3b0", "address": "00bed495", "native": "00aa33a0", "contract": "activation resumes raw page movie descendants"},
+    {"function": "00aa5840", "address": "00aa5944", "native": "00ac6600", "contract": "construct 124h raw page"},
+    {"function": "00aa5840", "address": "00aa5957", "native": "00aa52a0", "contract": "register same raw page in manager priority vector"},
+    {"function": "00aa33a0", "address": "00aa33df", "native": "00aa8e40", "contract": "traverse actual page widget descendants"}
+  ],
+  "source_findings": [
+    "GameFrontendHost::Impl owns a semantic ManagerState and separate GuiPageRegistry; existing store_gui_resource casts to ManagerState.",
+    "Current frontend layout host supplies diagnostic node IDs; native page/profile and movie decoder are not produced there.",
+    "GuiTypeDispatchFactory has no Movie type case; MovieWidgetState is a projection and no actual decoder is admitted to the frontend.",
+    "Native GUI owner registration has no 00D5BFCC singleton deletion dispatch in the audited branch.",
+    "Application shutdown and fallback destructor delete frontend before raw singleton drain."
+  ],
+  "binding_requirements": [
+    "One durable raw manager/publication context shared by early window getter and frontend startup, with deletion binding before first getter.",
+    "Actual raw page/widget/resource construction and registration; typed layout pages remain companions, never raw vector elements.",
+    "Current virtual20 and virtual04 providers plus movie decoder identity for admitted pages; unsupported cases explicit.",
+    "Singleton GUI drain before typed layouts and their scene/render/string services are destroyed."
+  ],
+  "validation": ["bounded source and exported native body/assembly inspection", "verify_report_calls.py"],
+  "runtime": "not_run_audit_only"
+}

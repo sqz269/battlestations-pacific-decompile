@@ -1,6 +1,7 @@
 #include "bsp/native_singleton_destruction.hpp"
 #include "bsp/native_game_class_cleanup.hpp"
 #include "bsp/native_profile_hints_owner.hpp"
+#include "bsp/native_gui_media_focus_lifetime.hpp"
 #include "bsp/native_weak_owner.hpp"
 #include "bsp/observer_lifetime.hpp"
 #include "bsp/observer_dispatch_owner.hpp"
@@ -67,6 +68,20 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
     const NativeSingletonDeletionBindings& bindings, std::uint32_t profile,
     std::uint32_t flags) {
     switch (profile) {
+    case 0x00d24d94:
+        if (bindings.native_media != nullptr) {
+            scalar_delete_native_media_manager_00a4c620(owner, flags,
+                *bindings.native_media);
+            return;
+        }
+        break;
+    case 0x00d5bfcc:
+        if (bindings.native_gui != nullptr) {
+            scalar_delete_native_gui_manager_00aa6540_fragment(owner, flags,
+                *bindings.native_gui);
+            return;
+        }
+        break;
     case 0x00ce3a44:
         if (bindings.native_profile_hints != nullptr) {
             delete_native_profile_hints_owner_00426320(owner, flags,

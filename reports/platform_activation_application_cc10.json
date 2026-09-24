@@ -1,0 +1,20 @@
+{
+  "packet": "cc10_platform_activation_app",
+  "status": "xinput_lifetime_prepared_build_checked_activation_not_bound",
+  "source_files": ["include/bsp/game_hosts.hpp", "src/game_hosts.cpp"],
+  "changes": [
+    "Own the selected XInputLibrary before platform window construction",
+    "InputServices borrows that exact same module instance",
+    "Retain library until input and final window retirement finish"
+  ],
+  "native_timing": "Native DLL imports are resolved before WinMain; source selected-path loader runs in phase3 before first window",
+  "validation": {
+    "initial_build_log": "local/cc10-activation-prerequisites-build.log",
+    "msvc_win32": true,
+    "ctest_passed": 3,
+    "ctest_failed": 0,
+    "combined_xinput_import_runtime": "pending"
+  },
+  "application_wm_activate": false,
+  "remaining": ["one GUI owner shared by early window and loaded frontend pages", "actual raw page/resource admission and movie provider", "renderer focus dependency binding"]
+}

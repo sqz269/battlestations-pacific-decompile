@@ -51,6 +51,7 @@ struct IGameExplorer;
 namespace bsp {
 struct NativeInputActionRecordCalls;
 struct NativeRendererParametersOwner;
+class XInputLibrary;
 struct CameraAxesCrtAccess;
 struct NativeFrameClockPublicationContext;
 class NativeOnlineSigninCalls;
@@ -626,6 +627,9 @@ private:
     std::unique_ptr<GameNativeLuaServices> lua_services_;
     struct SoundServices;
     std::unique_ptr<SoundServices> sound_;
+    // The same selected SDK serves early window activation and later devices.
+    // Retain it until both input retirement and final window cleanup finish.
+    std::unique_ptr<XInputLibrary> xinput_library_;
     struct InputServices;
     std::unique_ptr<InputServices> input_;
     void* volatile input_backend_00f8bbf4_{};
