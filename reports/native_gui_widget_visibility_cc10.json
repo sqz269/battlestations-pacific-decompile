@@ -1,0 +1,213 @@
+{
+  "packet": "cc10_gui_widget_visibility",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "program": "/battlestationspacific.exe",
+  "source": "src/native_gui_widget_visibility.cpp",
+  "status": "complete_normal_raw_storage_build_and_original_source_compared",
+  "functions": [
+    {
+      "address": "00aa8450",
+      "end_inclusive": "00aa852d",
+      "final_instruction": "00aa852b",
+      "final_instruction_length": 3,
+      "byte_span": 222,
+      "original_abi": "ECX widget; five byte-valued stacked arguments; RET14",
+      "coverage": "complete normal valid-list body"
+    },
+    {
+      "address": "00aa8530",
+      "end_inclusive": "00aa85ae",
+      "final_instruction": "00aa85ac",
+      "final_instruction_length": 3,
+      "byte_span": 127,
+      "original_abi": "ECX widget; requested low byte of stacked DWORD; RET4",
+      "coverage": "complete normal body; both node-factor branches"
+    },
+    {
+      "address": "00a9e0d0",
+      "end_inclusive": "00a9e0f0",
+      "final_instruction": "00a9e0f0",
+      "final_instruction_length": 1,
+      "byte_span": 33,
+      "original_abi": "ECX widget; EAX0/1; RET0; source adds borrowed live-zero address in EDX",
+      "coverage": "complete raw leaf"
+    },
+    {
+      "address": "00a9e100",
+      "end_inclusive": "00a9e102",
+      "final_instruction": "00a9e100",
+      "final_instruction_length": 3,
+      "byte_span": 3,
+      "original_abi": "ECX widget; ignored stack DWORD; RET4",
+      "coverage": "complete genuine no-op leaf"
+    }
+  ],
+  "host_steps": [
+    {
+      "function": "00aa8450",
+      "address": "00aa846d",
+      "native": "current_widget+vtable38",
+      "contract": "old effective query"
+    },
+    {
+      "function": "00aa8450",
+      "address": "00aa8498",
+      "native": "current_widget+vtable38",
+      "contract": "new effective query when apply byte0"
+    },
+    {
+      "function": "00aa8450",
+      "address": "00aa84b8",
+      "native": "current_widget+vtable3c",
+      "contract": "normalized byte change notification"
+    },
+    {
+      "function": "00aa8450",
+      "address": "00aa84d6",
+      "native": "00bf6713",
+      "contract": "native invalid list-base path excluded"
+    },
+    {
+      "function": "00aa8450",
+      "address": "00aa84e5",
+      "native": "00bf6713",
+      "contract": "native invalid list-base path excluded"
+    },
+    {
+      "function": "00aa8450",
+      "address": "00aa84ef",
+      "native": "00bf6713",
+      "contract": "current sentinel invalid iterator boundary"
+    },
+    {
+      "function": "00aa8450",
+      "address": "00aa8512",
+      "native": "00aa8450",
+      "contract": "direct recursive raw child walk"
+    },
+    {
+      "function": "00aa8450",
+      "address": "00aa851c",
+      "native": "00bf6713",
+      "contract": "post-callback current sentinel invalid iterator boundary"
+    },
+    {
+      "function": "00aa8530",
+      "address": "00aa854e",
+      "native": "current_ancestor+vtable38",
+      "contract": "raw AL before parent reread and bitwiseAND"
+    },
+    {
+      "function": "00aa8530",
+      "address": "00aa8571",
+      "native": "00aa8450",
+      "contract": "propagate before factor write"
+    },
+    {
+      "function": "00aa8530",
+      "address": "00aa858c",
+      "native": "00b6da70",
+      "contract": "current node/current recurse, FLDZ factor"
+    },
+    {
+      "function": "00aa8530",
+      "address": "00aa85a3",
+      "native": "00b6da70",
+      "contract": "current node/current recurse, FLD1 factor"
+    }
+  ],
+  "no_ghidra_function": [],
+  "raw_layout": {
+    "widget_model": "4c",
+    "widget_list_base": "64",
+    "widget_list_sentinel": "68",
+    "widget_list_count_unused": "6c",
+    "widget_parent": "70",
+    "widget_recurse_byte": "75",
+    "list_node_next": "0",
+    "list_node_previous_unused": "4",
+    "list_node_actual_child": "8",
+    "actual_node_factor": "ac"
+  },
+  "base_profile": {
+    "address": "00d5c130",
+    "slot38": "00a9e0d0",
+    "slot3c": "00a9e100"
+  },
+  "read_order": [
+    "SetVisible: current ancestor+38, then current ancestor+70, then byte AND starting1.",
+    "Propagate: model gate, conditional current38 reads, conditional current3C notification, then current head/first node.",
+    "For each child: current sentinel, current child+8, recursion, current sentinel validation, current next+0. Recurse0 still traverses GUI list.",
+    "SetVisible after propagation: current widget+4C, current+75, FLD1 or FLDZ selected by requested byte, existing raw B6DA70."
+  ],
+  "byte_semantics": {
+    "ancestors": "bitwise accumulator1 AND raw AL, never bool conversion",
+    "before_after": "normalized0/1 at native TEST/MOV points",
+    "requested_recurse_apply": "uint8 unchanged; child_apply=(recurse!=0 ? 0xff:0)&apply_requested",
+    "upper_stack_bytes": "explicitly excluded: native partial BYTE stores and DL-only mask leave upper preimages/register bits"
+  },
+  "required_bindings": {
+    "current_table": "side-effect-free actual current profile resolver at each virtual call",
+    "derived38": "actual byte-returning raw receiver callback; captured target supplied",
+    "derived3c": "actual raw receiver callback with normalized byte; captured target supplied",
+    "zero": "borrowed const volatile float D7A218",
+    "base_fallback": false
+  },
+  "validation": {
+    "strict_win32_build": true,
+    "existing_ctests_passed": 2,
+    "build_log": "local/cc10_gui_widget_visibility_build.log (ignored)",
+    "direct_call_rows_verified": true,
+    "direct_call_rows_checked": 8,
+    "indirect_call_sites_listing_reviewed": 4,
+    "native_bytes_equal_installed_pe": true,
+    "original_ranges": [
+      {
+        "address": "00aa8450",
+        "bytes": 222,
+        "sha256": "303ac49f6fba305ce09cc1ed54ffbdf55d8629be4094f057dd7c4a03cef5d8ef"
+      },
+      {
+        "address": "00aa8530",
+        "bytes": 127,
+        "sha256": "e60e8590b1ca6281fd8bc2a7c72a9784f1e54bcb4e55e484ad7bdabf44af7581"
+      },
+      {
+        "address": "00a9e0d0",
+        "bytes": 33,
+        "sha256": "e5aa5d144c9dbc610090e7b4819f869f1bd0fa79bbb114bba20e5ce93bc62a9b"
+      },
+      {
+        "address": "00a9e100",
+        "bytes": 3,
+        "sha256": "e598d0c3ba86d917b177d7adde0556aa99bc355543c57aee0a3e50b684dd7e99"
+      },
+      {
+        "address": "00b6da70",
+        "bytes": 60,
+        "sha256": "475a1fa70e452bf277644bc875b64c8c3ffc9ab3420d3d9627be5a14a2ef7585"
+      }
+    ],
+    "focused_probe": "local/output/cc10_visibility_probe.cpp (ignored)",
+    "probe_build_command": "cl /nologo /MD /EHsc /std:c++20 /O2 /Gy /W4 /WX /fp:strict /I include /I local\\output /Fo:local\\output\\ /Fe:local\\output\\cc10_visibility_probe.exe local\\output\\cc10_visibility_probe.cpp build\\win32\\Release\\bsp_core.lib build\\win32\\Release\\bsp_lua511.lib build\\win32\\Release\\bsp_zlib121.lib /link /OPT:REF /MANIFEST:EMBED user32.lib d3d9.lib advapi32.lib shell32.lib",
+    "probe_assertions": "NDEBUG compile-time #error; explicit main return0; compile/run exit0",
+    "probe_source_sha256": "0b50962c3b8cce39b2958ffbbbc1054dd875c6c8934a8060bf0a2d659bd3d324",
+    "probe_exe_sha256": "a02cf1bdc88b8d05c74ffeee967640371a9b6275e26a7e2cf8b73b1eede309c1",
+    "getter_pairs": 17,
+    "flow_pairs": 9,
+    "flow_compared_bytes_per_pair": 4516,
+    "probe_result": "PASS: original385B plus original60B B6DA70. Getter return/arithmeticEFLAGS/MXCSR/x87status match; full actual widget/node/list storage and callback trace match. NoncanonicalAND, recurse0, parent/profile/head/next mutations, current notification target, post-callback node/+75 rereads and final factors covered.",
+    "fixture_dispatch": "Corresponding callable original fixture tables and source numeric target views drive same real derived byte callbacks; resolver pure. Invalid-list calls abort if reached.",
+    "unmasked_fp_traps": false,
+    "outer_abi_compatible": false,
+    "application_bound": false,
+    "game_validated": false
+  },
+  "limits": [
+    "Normal valid aligned retained raw storage, finite hierarchies and genuine returning derived dispatch.",
+    "Two list-base-null native debug branches excluded; two head validations use existing CRT; no native invalid-parameter behavior or custom library port.",
+    "No full upper stacked DWORDs, exception transport, unmasked FP faults, outer binary ABI or full machine-state/application/game claim."
+  ],
+  "ghidra_mutations": false,
+  "annotation_handoff": "Primary may retain/extend existing AA8450/AA8530/A9E0D0 names/comments; A9E100 source is proven RET4 no-op. Preserve prior comments and annotate byte AND/circular-list/current rereads under write lock."
+}
