@@ -1,0 +1,220 @@
+{
+  "packet": "cc10_camera_storage_construct_integration",
+  "worker_commit": "c40872d3c81eb60828c09d510a3d1d271bd79d47",
+  "integration": "2ef1bf74abedd7527f18d1ee746bd94799b60459",
+  "worker_report": "reports/native_camera_storage_construct_cc10.json",
+  "archive": {
+    "path": "local/cc10-platform-evidence/camera-storage-construct.zip",
+    "sha256": "81475f3433e301af9fc775b4cc642c80d4875f7b5e07dc7f093f10c76d30a32e",
+    "files": 73,
+    "valid": true
+  },
+  "review": [
+    "Complete header/source/shared viewport delta,604B constructor and156B/7B renderer providers,43B EH listings/map,fixture,adaptation,compiled checks,final documentation and report reviewed",
+    "Same actual45Ch pool payload and existing actual04 lifetime; CameraPlaneSet lifetime starts preserving all preimage bytes, with genuine B659D0 stores afterward",
+    "Six physical outer DWORDs, incoming argument and pushed argument views retain required overlap through viewport and pose providers; private saved/EH/provider stacks excluded",
+    "One actual renderer captured for camera reads; second current table captured before first height, current slot30 afterward, second width then current viewport capture; raw viewport independently reloads publication/profile for each call",
+    "Same mutable incoming name/allocation/color word: byte2/1/0 before current aliased CE3C88, alpha afterward; no synthesized zero argument",
+    "Native state0/1/2 projected with consume-before-call; state2 current438/base retains published viewport allocation/credit, explicit fixture disposition separate",
+    "All64 manifest entries and six committed files independently matched immutable65-entry worker archive"
+  ],
+  "validation": {
+    "normal_bytes": 767,
+    "compiler_evidence_bytes": 43,
+    "live_equals_installed": true,
+    "direct_tail_rows": 13,
+    "indirect_rows_delegated": 4,
+    "strict_win32_build": true,
+    "worker_ctests": 3,
+    "integrated_ctests": 3,
+    "build_log_sha256": "3ff0b090506b6b0f085c57edd5a8fe96dbaa29e287b62464de0e8284a899870f",
+    "normal_pairs": 2,
+    "source_state2_failure": 1,
+    "tracked_tests_added": false,
+    "ghidra_flow_or_definition_required": false,
+    "native_ABI_FH3_SEH": false,
+    "complete_startup": false,
+    "game_validated": false
+  },
+  "focused_probe": {
+    "path": "local/cc10_camera_storage_construct/camera_construct_probe.hpp",
+    "binary": "local/cc10_camera_storage_construct/application-camera-construct-probe.exe",
+    "normal_pairs": 2,
+    "source_failure_cases": 1,
+    "original_bodies": [
+      {
+        "address": "00B71A80",
+        "bytes": 604
+      },
+      {
+        "address": "00B1F850",
+        "bytes": 156
+      },
+      {
+        "address": "00B1FF60",
+        "bytes": 7
+      }
+    ],
+    "relocations": {
+      "calls": [
+        [
+          0,
+          39,
+          11990432
+        ],
+        [
+          0,
+          58,
+          12544027
+        ],
+        [
+          0,
+          81,
+          11663440
+        ],
+        [
+          0,
+          139,
+          11950544
+        ],
+        [
+          0,
+          180,
+          11663648
+        ],
+        [
+          0,
+          234,
+          11663680
+        ],
+        [
+          0,
+          251,
+          11663184
+        ],
+        [
+          0,
+          268,
+          11663200
+        ],
+        [
+          0,
+          332,
+          11993312
+        ]
+      ],
+      "data": [
+        [
+          0,
+          187,
+          16307092
+        ],
+        [
+          0,
+          357,
+          14131788
+        ],
+        [
+          0,
+          481,
+          13515912
+        ],
+        [
+          1,
+          61,
+          14131788
+        ],
+        [
+          1,
+          94,
+          16307092
+        ],
+        [
+          1,
+          117,
+          16307092
+        ]
+      ]
+    },
+    "indirect_instruction_stream_unchanged": true,
+    "renderer_data_relocation": "temporarily replace actual constructed renderer profile word with two fixture-owned copied tables, same genuine slot30 target; source resolver admits exactly these numeric identities. Restore actual profile and parameter width/height before application resumes; no occupied mapping/original table overwritten",
+    "mutations": "after genuine getters only: alternate profile, width/height, current one, incoming allocation/color argument. CE3C88 aliases same incoming word in second pair. Not claimed native B1FF60 behavior",
+    "dynamic_limits": "both alternative tables retain same B1FF60 target; profile mutation does not independently prove different-target lookup/selection. Native/source/compiled inspection separately pins ordering",
+    "compared": [
+      "whole initialized458h camera payload with actual identity normalization",
+      "initialized viewport words",
+      "own viewport padding21..33 against its captured preimage, not unrelated allocations",
+      "six live outer scratch words and incoming argument output",
+      "callback trace and masked x87 status"
+    ],
+    "canonical_retirement": "real application45Ch pool; full successful constructor; same actual atomic+4 registry binding; genuine Windows creator decrement to observed zero; raw camera and viewport terminal; actual pool return; canonical unbind",
+    "source_failure": "one source-only throw after third genuine getter; state2 current438/base cleanup verified, published viewport credit retained; later viewport release/failed-slot return explicit fixture disposition, not native rollback",
+    "crt_math": "genuine production application CameraAxesCrtAccess; default masked FNINIT cases; no unmasked fault/EH comparison",
+    "private_stack": "copied constructor uses real initialized Win32 stack backing; genuine raw pose callback uses separate live fixture stack and original explicit pointer views; native EH handlers not invoked",
+    "application": {
+      "kind": "existing application bootstrap/diagnostic fixture, not complete startup/gameplay",
+      "full_b32410_normal_constructor": true,
+      "actual_renderer_extent": "1D94h",
+      "real_d3d9_hal": true,
+      "windowed": false,
+      "hidden_window_claim": false,
+      "concrete_host_methods": 120,
+      "unimplemented_host_methods": 46,
+      "later_B107F0_B13010_activated": false,
+      "production_object_replacements": 0,
+      "production_application_objects": 70,
+      "current_libraries": 3,
+      "object_receipt": "local/cc10_camera_storage_construct/application-objects.json",
+      "library_receipt": "local/cc10_camera_storage_construct/libraries.json",
+      "all_current_vcxproj_objects_matched": true,
+      "adaptation_diff": "local/cc10_camera_storage_construct/application_adaptation.diff",
+      "main_diff": "exactly two lines against retained shadow fixture: include and wrapper type",
+      "launcher": "tools/run_game.ps1",
+      "run_log": "local/cc10_camera_storage_construct/run_final.log",
+      "exit_code": 0,
+      "reached_ordinary_drain": true,
+      "renderer_worker_joined": true,
+      "final_COM_device_api": [
+        0,
+        0
+      ]
+    },
+    "build_flags": "/std:c++20 /EHsc /MD /O2 /W4 /WX /fp:strict /link /MANIFEST:EMBED",
+    "embedded_manifest": "asInvoker",
+    "tracked_tests_added": false
+  },
+  "exception_boundary": {
+    "descriptor": "00DFAA38",
+    "max_state": 3,
+    "unwind_map": "00DFAA20",
+    "states": [
+      [
+        -1,
+        "00CC1AD0 base"
+      ],
+      [
+        0,
+        "00CC1AD8 current argument free"
+      ],
+      [
+        0,
+        "00CC1AE3 current438 cleanup"
+      ]
+    ],
+    "try_blocks": 0,
+    "flags": 1,
+    "consume_before_call": true,
+    "state1": "free CURRENT original argument then raw base; child viewport owns its base unwind",
+    "state2": "raw605FD0 CURRENT438/fresh decrement then raw base; no viewport180 rollback",
+    "diagnostics": "retain actual allocation/result and completed-prefix/nested cleanup state for caller disposition",
+    "transport": "source C++ exceptions are not native FH3/SEH/CRT identity; cleanup failure terminates",
+    "null_allocation": "not admitted as success; native reaches unconditional viewport access"
+  },
+  "limits": [
+    "No full native startup, B107F0/B13010 activation, gameplay or binary drop-in ABI claim",
+    "State1 failure/current free, unmasked native fault/FH3 and private CRT transport not dynamically tested",
+    "No camera adoption into legacy NativeCameraOwner or SceneAttachmentRuntime",
+    "Fresh null-scene/no-children camera domain in terminal fixture; no attached hierarchy/438 polymorphic terminal graph claim",
+    "Native slots/frames/global bindings must outlive callbacks and explicit failure disposition"
+  ]
+}

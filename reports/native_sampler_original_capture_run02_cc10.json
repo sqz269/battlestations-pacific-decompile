@@ -1,0 +1,220 @@
+{
+  "packet": "cc10_original_sampler_capture_run02",
+  "status": "one_new_owned_original_attempt_closed_inconclusive",
+  "original_launches_this_run": 1,
+  "total_original_attempts": 2,
+  "automatic_retry": false,
+  "original_installation_edits_by_capture_harness": false,
+  "original_installation_complete_post_run_write_audit": false,
+  "sampler_captured": false,
+  "entry_rendezvous_reached": false,
+  "hardware_markers_armed": false,
+  "original_executable_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+  "review_receipt_sha256": "c9f115620f8f20f0dbe3086dc964cc2acfdd0b4acffaab935b73a125985e684f",
+  "review_id": "cc10_original_sampler_20260924_run02",
+  "artifact_roles": {
+    "controller": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\original_sampler_controller_v2_cc10\\capture_session_v2.py",
+      "sha256": "37766fb57d34f7994ef4f8a69daa3c81fa6f80d734703f46f33b93aa1577a038"
+    },
+    "copy_drift_observation": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\original_sampler_controller_v2_cc10\\post_run01_private_copy_drift.json",
+      "sha256": "94330ccd724b3b9c54f73efbbf7267861bb6896bccc39673a260040128472985"
+    },
+    "copy_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\original_sampler_capture_cc10\\copy_manifest.jsonl",
+      "sha256": "97233a0adc7ed7e71d42594262372306cf9ea3b87bc75f89897d9e66d92fff34"
+    },
+    "copy_overlay": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\original_sampler_controller_v2_cc10\\private_copy_log_overlay.json",
+      "sha256": "b6f4f0441fce2443dbb1a5d11321678b0aa9ab000531a347c1c519745e9e6ccd"
+    },
+    "copy_receipt": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\original_sampler_capture_cc10\\copy_verification.json",
+      "sha256": "e1d3155281435882caf93da94ccc54398c210d08d07f9312f9c3f47d5a8f689c"
+    },
+    "exception_policy": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\original_sampler_exception_policy_cc10\\exception_policy.hpp",
+      "sha256": "b01ec5b46ee0480fc37f45696ab164b56032bf10200cf0c7490712084a2d7a58"
+    },
+    "helper": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\original_sampler_exception_policy_cc10\\original-capture-probe-v2.exe",
+      "sha256": "fd1fd17d6a112318fda2ef5930ef77ee724e6a038b6af5f803e55295d1f1bab8"
+    },
+    "helper_expected": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\original_sampler_exception_policy_cc10\\original_capture_expected.hpp",
+      "sha256": "ecfb3adeeb45bb82700c0fddcc587c923aa0ecf3bb3ddfb57ba15648e1a2f2a5"
+    },
+    "helper_source": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\original_sampler_exception_policy_cc10\\original_capture.cpp",
+      "sha256": "bdca0c7cf8f36a356dac208f529fcded5b9972ee1b1cdf7408d65efb24b44a22"
+    },
+    "outer_controller": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\original_sampler_capture_cc10\\capture_session.py",
+      "sha256": "6b5c67ff6b218d661f5b2b4a1f689d7d2a28f77ec9292000540e8618b7c50e33"
+    },
+    "profile_guard": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\original_sampler_capture_cc10\\profile_guard.py",
+      "sha256": "c4b42b60dabf0a3cfae7746fab9c1f7ac82f8894970963a8e90fc55f840d6f04"
+    },
+    "run_game": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\tools\\run_game.ps1",
+      "sha256": "76afbe73cdd93b9d3884b69464fa486a1a441d55f9afbed0ad44f410a9054162"
+    },
+    "source_manifest": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\original_sampler_capture_cc10\\source_manifest.jsonl",
+      "sha256": "558d83fbfb3389c5123d207fd75e137afc0b253facff4b09549790e243c38056"
+    }
+  },
+  "layout": {
+    "artifact_root": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\original_sampler_controller_v2_cc10",
+    "game_root": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\original_sampler_capture_cc10\\game",
+    "helper_artifact_root": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\original_sampler_exception_policy_cc10",
+    "product_root": "C:\\Users\\sqz269\\Documents\\Battlestations-Pacific",
+    "retained_preparation_root": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\original_sampler_capture_cc10",
+    "run_storage_root": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\original_sampler_capture_cc10\\controller_v2_runs"
+  },
+  "controller_review": [
+    "Full initial controller and reporting correction reviewed; all13 absolute-path/hash roles checked before authorization and at closure",
+    "Distinct one-use run review binds run/layout/helper/controller/profileguard/outer wrapper/copy receipts; old and new consumed markers checked",
+    "Fresh backup/authentication and immediate ordinary-copy metadata/identity/hash checks before exactly one suspended owned launch; no profile auto-restore",
+    "Reporting records attempted launch before invocation; complete created events/final helper result establish count; partial journals retain unknown count",
+    "Controller preparation mode launched no original; original/helper protocols unchanged except separately fixture-tested first-chance policy"
+  ],
+  "observed": {
+    "pid": 34772,
+    "tid": 97404,
+    "helper_exit": 1,
+    "child_exit": 125,
+    "inner_active_processes": 0,
+    "outer_active_processes": 0,
+    "owned_handle_wait": 0,
+    "live_child_detached": false,
+    "loaded_module_hashes": 53,
+    "module_hash_errors": 0,
+    "matched_copied_xlive": true,
+    "first_chance": {
+      "event": "exception_record",
+      "pid": 34772,
+      "tid": 97404,
+      "stage": 10,
+      "first_chance": 1,
+      "code": 3221225480,
+      "flags": 128,
+      "address": 140710909464250,
+      "linked_record": 0,
+      "parameter_count": 0,
+      "parameters": []
+    },
+    "first_disposition": "DBG_EXCEPTION_NOT_HANDLED/0x80010001",
+    "second_chance": {
+      "event": "exception_record",
+      "pid": 34772,
+      "tid": 97404,
+      "stage": 10,
+      "first_chance": 0,
+      "code": 3221225480,
+      "flags": 128,
+      "address": 3485879994,
+      "linked_record": 0,
+      "parameter_count": 0,
+      "parameters": []
+    },
+    "second_disposition": "diagnostic owned process closure",
+    "diagnostics": [
+      "First record address0x7FF9CFC64EBA is committed native ntdll with matching current loaded file hash and32 live code bytes.",
+      "Second record address0xCFC64EBA equals low32bits of first; its query reports MEM_FREE, code read0/32 error299. No mapping is assigned to that address.",
+      "Both WOW64 contexts/code/stack and both native contexts/stack windows were captured successfully; second native RIP is in wow64.dll.",
+      "Flags0x80 are preserved as observed. No invalid-handle API, causal module or caller attribution is made."
+    ],
+    "causal_caller_or_API_identified": false
+  },
+  "entry_cleanup": "Original byte E8 write/flush/protection20 reported; helper then verifies protection and compares32 expected entry bytes. No cleanup_entry_failure was recorded, but the cleanup readback buffer is not separately emitted. Initial protection20 versus cleanup-prior40 is retained without identifying a writer.",
+  "profile": {
+    "scope": "Documents/Battlestations-Pacific product folder only",
+    "diff": {
+      "changed": [],
+      "missing": [],
+      "new": []
+    },
+    "restore_applied": false,
+    "options_sha256": "ff5cf3959932cb634374b8a9bf5e6c0d04c50699cc6ba585e7fa7969f7b563d8",
+    "full_Windows_XLive_isolation": false
+  },
+  "private_copy": {
+    "files": 67814,
+    "post_run_audit": "metadata/identity comparison plus exact changed stream/exe/xlive hashes, not full content rehash of every unchanged file",
+    "changed": [
+      {
+        "accepted_before": {
+          "attributes": 32,
+          "bytes": 0,
+          "creation_ns": 1748812086735887100,
+          "file_id": 1407374893507724,
+          "hardlinks": 1,
+          "path": "bsp_debug.log",
+          "streams": [
+            {
+              "bytes": 0,
+              "name": "::$DATA",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          ],
+          "volume": 16434406700183562694,
+          "write_ns": 1790245832039167000
+        },
+        "observed_after": {
+          "attributes": 32,
+          "bytes": 0,
+          "creation_ns": 1748812086735887100,
+          "file_id": 1407374893507724,
+          "hardlinks": 1,
+          "path": "bsp_debug.log",
+          "streams": [
+            {
+              "bytes": 0,
+              "name": "::$DATA",
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          ],
+          "volume": 16434406700183562694,
+          "write_ns": 1790248352714395600
+        },
+        "path": "bsp_debug.log"
+      }
+    ],
+    "other_files_metadata_identity_unchanged": 67813,
+    "new": [],
+    "missing": [],
+    "causal_attribution": null,
+    "approved_overlay_now_matches": false,
+    "overlay_refreshed_or_restore_applied": false
+  },
+  "limits": [
+    "No executable entry rendezvous/context rewind, sampler markers/source word/CE2220 target captured",
+    "First native record is ntdll; second raw record address is only its low32bits and is MEM_FREE; do not identify a module at that unmapped address",
+    "Native and WOW64 contexts/code/stack windows are observations, not a proven API/handle/call-chain cause",
+    "Requested context structures do not establish full XSTATE, linked-record traversal or complete stack unwind",
+    "Initial entry protection20h versus cleanup observed40h has no proven writer/cause; cleanup compares32 bytes/protection but emits no standalone raw readback",
+    "No automatic retry, overlay refresh or profile restoration; broader Windows/XLive changes and original installation post-run writes not exhaustively audited",
+    "No compiler activation, successful startup, native ABI/FH3 or gameplay proof"
+  ],
+  "archive": {
+    "path": "local/cc10-platform-evidence/original-sampler-capture-run02.zip",
+    "sha256": "61b1c85ef31da8e841d09913534b04f0ed5d4c21b1115b45292e8d170dc6705a",
+    "files": 89,
+    "valid": true
+  },
+  "worker_indexes": [
+    {
+      "path": "local/original_sampler_controller_v2_cc10/artifact_index.json",
+      "sha256": "695a509d7b789ee1c6a61cce99821d69ddf2097c8d3166dc5d7c9a474b46a89c",
+      "files": 61
+    },
+    {
+      "path": "local/original_sampler_capture_cc10/controller_v2_runs/original_run02/run_artifact_index.json",
+      "sha256": "8701565f83e284ea7c92df38587ea985624aa036b62c5fb218e2d80c2781bad7",
+      "files": 24
+    }
+  ]
+}
