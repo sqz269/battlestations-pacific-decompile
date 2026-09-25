@@ -1511,3 +1511,224 @@ own update virtual is not bound.
   +C0h..+CCh), like screens 45h and 50h.
 - **The GUI extent** 00AA1FE0 waits on the platform publishing its widescreen byte and active
   aspect (section 29).
+
+## 31. The gunner-role take: 009542B0 and the first cycle (cc9-platform2, 2026-09-25)
+
+Packet `cc9_gunner_role_take`. Section 27 left 009542B0 as a "not available" record. This section
+reads its inputs and binds it under `kHudGunnerRoleTakeBound`.
+
+**009542B0(unit, group)**, `__thiscall`, RET 4:
+
+| group | permission test (0059BBD0: the word is 9 or the local slot game+18ECh) | kind-8 unit | gun test on the kind-20h children of unit+48h |
+| --- | --- | --- | --- |
+| 0 | none | - | none, answers yes |
+| 2 | +194h (role 3), else 0059BBD0(2) (role 2) | pose y above 00CE3D50 | Function 1, 5 or 6 (00728A90, anti-air) |
+| 3 | +198h (role 4) | pose y above 00CE3D50 | Function 2, 3, 4 or 6 (005459B0, artillery) |
+| 4 | +19Ch (role 5) | BSP_Submarine_IsShallowEnoughToEngage | Function 7 |
+| 5 | +1A4h (role 7) | none | Function 8 or 9 |
+
+- The Function is `[gun+3F4h]+80h`. The gunnery host keeps it as `GameGunRow::category`
+  (`include/bsp/gunnery_tables.hpp`, written by 007327B0).
+- **The binding.**
+  - The permission words come from the new `GameUnitsHost::unit_role_permission`.
+  - The gun test walks `GameUnitsHost::gunnery()->guns()` for the unit's rows.
+  - A kind-8 unit's depth tests are not on this host. They are a record,
+    `HudWeaponGroupScreen::submarine_depth`, answering no.
+
+**0077C470(mask, take).** The new `GameUnitsHost::role_request_0077c470` delivers the 4Bh message
+00780162 from the local slot at once, as the 27h take does. The routine's gate is game+5D4h above 0Ch
+(or game+216Ch) with session mode 0. `BSP_Game_EnterMissionState` stores 0Dh at 004DA73C before
+004C9CA0 at 004DA746, so the gate is open when 0064DA40 binds.
+
+**The Lexington in USN04.** The mission script's `SetRoleAvailable` runs at the Lua init stage, before
+the bind. The Lexington's permission words are `989988888`, so roles 0, 2 and 3 are open to any
+player. The bind's cycle therefore goes as follows:
+- Group 1 is never available. **Group 2 is**: +194h is 9 and the carrier has AA guns.
+- +44h becomes 2, and 00545410 sends mask 0Ch: **the local player takes roles 2 and 3**. Both
+  holders were 8, and both words are 9.
+- The ship is kind 6, so 005484B0(3) tries group 3. +198h is 8, so it fails and the group stays 2.
+- 00548360 stops at its kind-18h test: the player unit is a ship.
+
+From then on 005484F0 finds group 2 available and its roles held on every call. So it runs the
+role-held block, builds fire message 79h and routes it to the Lexington.
+
+## 32. What fire message 79h does to the guns: a contract for the gunnery host
+
+The route 0077C2A0 delivers the message to `BSP_Unit_HandleMessage` 0095ABE0, which sends it to
+`BSP_Unit_ApplyGunAimMessage` 00959C20 (RET 4 at 0095A43E).
+- **Message layout** (00954A10): +1Ch group, +20h..+28h the aim vector, +2Ch and +30h (+30h clamped),
+  +34h action 99h pressed, +35h 99h held, +36h has-target, +38h the target id.
+- **Dispatch.** The routine jumps on group - 1 through the table at 0095A5C0. Groups 1 and 2 both go
+  to 00959C91. Group 3 goes to 00959F72 (role 4, +1BCh), 4 to 0095A1CC and 5 to 0095A441.
+
+**The group 1/2 arm, 00959C91..00959F6D**, for each kind-20h gun on unit+48h that 00954210(group,
+gun) keeps:
+1. It aims: 00957BD0 and 00955830, then the fire window 007F60A0 on the resulting angles.
+2. **Out of the window:** if the gun's own seat is AI-held (00521E70(gun, 0), `[gun+1ACh]` is 8 or
+   an AI slot), nothing happens. Otherwise 00729F70 gives it back: `vtable[154h](0, 8)`, trigger
+   `vtable[1E8h](0)`, `BSP_Gun_ClearBotFireTarget`.
+3. **In the window:** if the seat is AI-held, `gun->vtable[154h](0, [unit+1B4h])` hands the gun to
+   the unit's role-2 holder, the player. Kind 6 also calls 0084C500(0).
+4. It turns the gun (0085ABA0 at 00959E01, 00859830).
+5. **The trigger** `vtable[1E8h]` gets 1 only when +34h (99h pressed) is set and the gun is inside
+   the 00D1A8A0 three-degree window (or is Function 1). Otherwise it gets 0.
+
+**The answer to "does the idle player's held group keep firing".** No, for the guns that bear on
+the camera's aim.
+- Every call, each AA gun whose fire window contains the camera direction becomes a player seat:
+  `[gun+1ACh]` becomes 0. It is turned to the camera's aim with its trigger at 0.
+- The gun bots' side gate (docs/GUN_BOT_TICKS.md step 4, 008FFA99) runs a bot only when
+  `[gun+1ACh]` is 8 or an AI slot. So those mounts stop firing at aircraft.
+- Mounts that cannot bear on the camera stay with, or return to, the AI and keep firing.
+- With 99h pressed, the player's mounts fire along the camera.
+
+**Contract for `src/game_hosts_gunnery.cpp`** (not changed by this packet):
+- A per-gun seat `[gun+1ACh]` that `side_enabled_00927f10` reads, default 8.
+- A message entry for 79h: group, aim vector, pressed/held and the target id. For the group's guns
+  it applies the arm above.
+- 00954210's group filter needs reading first. It decides which mounts belong to group 2.
+
+Until that lands, `HudWeaponGroupScreen::fire_message` and `::route_fire_message` stay records.
+Every AA mount keeps its bot, so this host's Lexington fires more AA than the image does while
+the player is idle.
+
+**Other readers of roles 2 and 3.** They were searched in the host code (`current_roles_01ac`,
+`unit_current_role_slot`), and none reads them yet:
+- the ship AI reads roles 0 and 1;
+- the generic tick reads roles 0 and 4;
+- the image's dispersion seat test 00521E70(unit, 2 or 3) at 00730471/00730482
+  (docs/GUN_DISPERSION.md) is not modelled. `gun_throw_magnitude_0073031d` takes the seat's
+  multiplier as an input, and it assumes an AI seat.
+
+## 33. Predictions for the gunner-role take, written before the pairs
+
+One tree, `local\bin\grt_off` (`kHudGunnerRoleTakeBound` off) against `local\bin\grt_on`,
+`BSP_GUNNERY_RNG_STREAMS=1` on both. Two forms: USN04 4700/4500, and E2 9200/9000. `N` is the number
+of `HudWeaponGroupScreen::update` calls, 9,158 in the 4500 form.
+
+- **The bind.** It makes six group queries, all concrete: the cycle's groups 2..5, the take's
+  group-2 test in 00545410, and 005484B0(3). It makes one role request (mask 0Ch), also concrete.
+  No `lvlaa_hint` record.
+- **Every call.**
+  - Group 2 is available (one query), so there is no cycle.
+  - The role-held block runs. `hud_target` answers none, so the target marks show nothing and
+    there is no target.
+  - Then `fire_message`, one `route_fire_message` (the Lexington), then `input_in_set`,
+    `row_widget` (row 0, column 0) and `input_mode`.
+  - `widget_c0` is no longer reached.
+- **Rows.**
+
+| row | OFF | ON |
+| --- | ---: | ---: |
+| HudWeaponGroupScreen::group_available | 4N+5 unimplemented | N+6 concrete |
+| HudWeaponGroupScreen::role_request | none | 1 concrete |
+| HudWeaponGroupScreen::widget_c0 | N | none |
+| ::fire_message, ::route_fire_message, ::input_in_set, ::row_widget, ::input_mode | none | N each |
+| Session::entity_role_message_4b (concrete) | k | k+1 |
+
+- **Unimplemented total.** It falls by exactly 5: 4N+5+N removed, 5N added.
+- **Summary lines.** Two lines move, and every other line is identical in both forms:
+  - `summary mission player roles`: takes 1 -> 3.
+  - The Lexington's `held` string: `088888888` -> `080088888`.
+- **The anti-aircraft rows are unchanged.** The AA acceptance line, the gunnery damage line
+  (hit_records, deaths) and the plane death-mode line do not move. The Kate death band is
+  unchanged in both forms: no host routine reads roles 2 and 3 (section 32).
+- **In the image**, by contrast, the camera-bearing AA mounts go quiet while the player is idle.
+  The host's AA hit records should drop once the section 32 contract lands. That is the gunnery
+  host's pair, not this one.
+
+## 34. 005484F0's target is screen 29h's pick
+
+**Correction to sections 28 and 30.** `[00E198C4]+CCh` is not slot 33h: the manager's offsets are
+not slot times four. docs/IN_MISSION_INTERFACE_MANAGER.md line 120 maps +CCh to **screen 29h**
+(constructor 00525A90, vtable 00CECCF8). So `[[00E198C4]+CCh]+4Ch` is 29h's +4Ch, the unit that
+00526A40 picks. It is also the unit 49h follows, and the one the interface update hands to
+0068C0B0 (docs/IN_MISSION_INTERFACE_RUNTIME.md). Its producer is reconstructed:
+`bsp::unit_pick_screen_update_00527260` stores it in `UnitPickScreenState::pick_4c`.
+`kHudWeaponGroupTargetBound` returns it at 00548856.
+
+**Group 2's gun filter, for section 32's contract.** 00954210 (`__cdecl(kind, gun)`, RET 8) keeps
+a gun when:
+- it is operational (00729F10);
+- for kinds 1 and 2, its Function is 1, 5 or 6;
+- kind 2 also accepts `BSP_Gun_IsTorpedoClassLauncher` 005459E0;
+- kind 3 accepts 005459B0, kind 4 Function 7, and kind 5 0080F750.
+
+**Predictions, written before the pair.** One tree with sections 31 to 33 on, `local\bin\tgt_off`
+against `local\bin\tgt_on`, USN04 4700/4500, `BSP_GUNNERY_RNG_STREAMS=1`.
+- Pump slot 29h runs before 46h, so on each call the target is that pump's pick. Let `P` be the
+  number of 005484F0 calls whose pick is set. `P` is at least 662, the section 29 runs'
+  `UnitPickScreen::owner_140` count, which counts the non-payload picks.
+- With a target and group 2 held, the gunner branch (00548E4A) runs:
+  - For the Lexington, `gunner_distance` and `gunner_range` answer 0 as records. The range test
+    fails, so there is no nearest gunner.
+  - `target_virtual_10c` answers no.
+  - +54h is cleared (0054900D), so there is no fire-message target.
+- **Rows:**
+
+| row | OFF | ON |
+| --- | ---: | ---: |
+| HudWeaponGroupScreen::hud_target | 9,158 unimplemented | 9,158 concrete |
+| ::gunner_distance, ::gunner_range, ::target_virtual_10c | none | P each |
+
+- **Unimplemented total.** It changes by `3P - 9,158`.
+- **Summary lines.** All identical: nothing on this path writes gameplay state.
+
+## 35. The pairs of sections 33 and 34, and the handoff (cc9-platform2, 2026-09-25)
+
+**Section 33's pair, E2 form (9200/9000).** `local\grt_off_e2.log` against `local\grt_on_e2.log`.
+N = 18,158.
+
+| row | OFF | ON (predicted) |
+| --- | ---: | ---: |
+| unimplemented total | 5,308,902 | 5,308,897 (-5; -5) |
+| HudWeaponGroupScreen::group_available | 72,637 unimplemented (4N+5) | 18,164 concrete (N+6) |
+| HudWeaponGroupScreen::role_request | none | 1 concrete |
+| HudWeaponGroupScreen::widget_c0 | 18,158 | none |
+| ::fire_message, ::route_fire_message, ::input_in_set, ::row_widget, ::input_mode | none | 18,158 each |
+| Session::entity_role_message_4b (concrete) | 1 | 2 |
+
+- **Summary lines.** Only `summary mission player roles` moves, takes 1 -> 3. The Lexington's line
+  reads `held=088888888` -> `held=080088888` with `open=989988888`. The gunnery damage line (588 hit
+  records, 37 deaths), the AA acceptance line and the plane death-mode line are identical.
+- **One unrelated line moved.** The OFF run's `summary window_created` line reports
+  `frames_presented=1493 exit_code=1`, against 9199 and 0 for ON. Its mission still simulated all
+  9,000 frames (`mission frame 9000`, `pump_frames=9000`). This is a presentation-side anomaly of
+  that run, not of the switch.
+- **Result.** Every prediction holds. **`kHudGunnerRoleTakeBound` is ON.**
+
+**Section 33's pair, USN04 4500.** Only the OFF side exists: `local\grt_off_usn04.log`, with the
+predicted OFF rows (group_available 36,637, widget_c0 9,158).
+- The ON run (`local\grt_on_usn04.log`) died with 0xC0000005 at mission frame 4361. The same binary
+  ran the E2 form past that frame, and runs are deterministic.
+- The retry (`local\grt_on2_usn04.log`) failed at startup on `sound/gui/error.fsb`
+  (create_result 78). `query session` then showed session 1 disconnected: no audio endpoint, so
+  every run fails until the session is reconnected.
+- **Pending:** rerun `local\bin\grt_on` on USN04 4500 after a reconnect. The E2 pair covers the same
+  frames.
+
+**Section 34's pair.** `local\tgt_off_usn04.log` against `local\tgt_on_usn04.log`, USN04 4500.
+
+| row | OFF | ON |
+| --- | ---: | ---: |
+| unimplemented total | 2,794,667 | 2,785,509 (-9,158) |
+| HudWeaponGroupScreen::hud_target | 9,158 unimplemented | 9,158 concrete |
+| ::gunner_distance, ::gunner_range, ::target_virtual_10c | none | none (predicted P >= 662) |
+
+- **Summary lines.** All 180 are identical.
+- **Prediction miss: P is 0.** The 662 came from the section 29 runs, which were built before this
+  branch took main at 44e93b370. On the current tree, `UnitPickScreen::owner_140` never fires in any
+  of the four runs (grt E2 OFF/ON, tgt OFF/ON). So screen 29h picks no unit, and the target stays
+  empty. The formula `3P - 9,158` holds with P = 0. Why main stopped picking was not investigated.
+- **Result.** **`kHudWeaponGroupTargetBound` is ON.** The answer is exact; it is empty whenever
+  29h's pick is.
+
+**Handoff.**
+- **For the gunnery worker: section 32's contract.** The 79h message arm hands the camera-bearing
+  group-2 mounts to the player's seat `[gun+1ACh]`, and the gun bots' side gate then stops them.
+  Until that lands, this host's Lexington fires AA from every mount while the player is idle, and
+  the image does not. Expect the AA hit records and the Kate death band to fall when it lands.
+  00954210's filter (section 34) is the membership rule.
+- **Dispersion.** The role seat test 00521E70(unit, 2 or 3) in 0073031D would now answer "player"
+  for the Lexington's default-arm guns. The host's `bot_throw_multiplier` input assumes an AI seat.
+- **Screen 29h.** Why it picks nothing on current main is open.

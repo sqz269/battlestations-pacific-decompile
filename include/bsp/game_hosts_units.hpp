@@ -354,6 +354,15 @@ public:
     // Missing unit or role outside 0..8 returns false and preserves out.
     bool unit_current_role_slot(std::size_t index, std::int32_t role_index,
         std::int32_t& out) const;
+    // The permission word unit+188h + role*4 (9 PLAYER_ANY, 8 PLAYER_AI, or a
+    // slot), as SetRoleAvailable (00927D20) writes it. Missing unit or role
+    // outside 0..8 returns false and preserves out. Packet cc9_gunner_role_take.
+    bool unit_role_permission(std::size_t index, std::int32_t role_index,
+        std::int32_t& out) const;
+    // 0077C470(mask, take) on a unit from the local player: the 4Bh role
+    // message 00780162 delivered at once, as the 27h take does. Screen 2Eh's
+    // 00545410 sends it when a weapon group is selected or dropped.
+    void role_request_0077c470(std::size_t index, std::uint32_t mask, bool take);
     // The controller's second and third gates, 009f50f2 and 009f50fc. Milestone
     // 2i holds unit+5Dh clear for a live ship; unit+61h has no writer anywhere
     // in .text outside the constructor (docs/UNIT_AUTOPILOT_PAIR.md).

@@ -189,6 +189,22 @@ inline constexpr bool kHudWeaponGroupScreenBound = true;
 // keeps the record.
 inline constexpr bool kHudGreyArrowSetBound = true;
 
+// Packet cc9_gunner_role_take (docs/SHIP_SCREEN_UPDATE.md sections 31-33).
+// ON answers screen 2Eh's 009542B0 from the units host's permission words
+// and the gunnery host's gun functions, so 0064DA40's bind selects the first
+// available weapon group and takes its gunner roles through 0077C470, as the
+// image does (the Lexington: group 2, roles 2 and 3). The fire message 79h
+// and its route stay records: its effect, handing the in-window guns of the
+// group to the player seat, is the gunnery host's (section 32's contract).
+// OFF keeps the "not available" record.
+inline constexpr bool kHudGunnerRoleTakeBound = true;
+
+// Same packet, section 34. ON answers 005484F0's target at 00548856,
+// [[00E198C4]+CCh]+4Ch, from screen 29h's pick (the manager's +CCh is slot
+// 29h, docs/IN_MISSION_INTERFACE_MANAGER.md), which 00526A40 stores at +4Ch.
+// OFF keeps the record answering none.
+inline constexpr bool kHudWeaponGroupTargetBound = true;
+
 class GameHostLog;
 class GameFrontendHost;
 class GameMenuHost;

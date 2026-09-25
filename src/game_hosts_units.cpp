@@ -14997,6 +14997,23 @@ bool GameUnitsHost::unit_current_role_slot(std::size_t index, std::int32_t role_
     return true;
 }
 
+bool GameUnitsHost::unit_role_permission(std::size_t index, std::int32_t role_index,
+    std::int32_t& out) const {
+    const Impl& host = *impl_;
+    if (index >= host.slots.size() || role_index < 0
+        || role_index >= bsp::kUnitRoleTableEntries) return false;
+    out = host.slots[index]->role_permission_0188[role_index];
+    return true;
+}
+
+void GameUnitsHost::role_request_0077c470(std::size_t index, std::uint32_t mask, bool take) {
+    // 0077C470's gate (game+5D4h > 0Ch or game+216Ch, session mode 0) holds
+    // in a single-player mission from 004DA73C on, before any caller here.
+    if constexpr (Impl::kPlayerRoleBookkeepingBound) {
+        impl_->role_message_4b_00780162(index, mask, Impl::kLocalPlayerSlot, take ? 1 : 0);
+    }
+}
+
 void GameUnitsHost::store_unit_command_target(std::size_t index,
                                               std::size_t target_plus_one) noexcept {
     if (index >= impl_->slots.size()) return;
