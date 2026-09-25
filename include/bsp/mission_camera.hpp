@@ -16,6 +16,7 @@
 // Not ABI-compatible: new C++ interfaces over plain storage.
 
 #include "bsp/camera_transform.hpp"
+#include "bsp/hud_weapon_group_screen.hpp"
 
 #include <array>
 #include <cstdint>
@@ -99,6 +100,20 @@ void construct_ship_captain_0064b650(ShipCaptainCamera& camera) noexcept;
 // not this unit: pitch limits, 00432E60(unit, 1), then the seed.
 void bind_ship_captain_0064da40(ShipCaptainCamera& camera, const ShipCaptainTargetView& unit,
     const ShipCameraSettings& settings) noexcept;
+
+// 0064DA40's two calls on screen 2Eh ([00E198C4]+50h). Packet
+// cc9_screen_2eh_group, docs/SHIP_SCREEN_UPDATE.md section 27.
+// 005470C0, __fastcall(screen), at 0064DA64 before anything else: clears the
+// kind-22h children's +490h on every entry unit, releases the selected
+// group's roles on each (009542B0's answer is discarded there), resets the
+// group widgets (005464E0) and clears +100h and +D6h. +44h is kept.
+void weapon_group_screen_release_005470c0(HudWeaponGroupScreenState& screen,
+                                          HudWeaponGroupScreenHost& host);
+// 00549260, __thiscall(screen, group_unit, bound), RET 8, at 0064DCC4 with
+// 46h's +1Ch (the unit) and +20h (the ShipCaptain mover). Units are index + 1.
+void weapon_group_screen_bind_00549260(HudWeaponGroupScreenState& screen,
+                                       HudWeaponGroupScreenHost& host,
+                                       std::size_t group_unit, bool bound);
 
 // 00432ED0 with 004329D0 and 0042F0C0. Returns true when the pose was
 // published to the node (the 00432B2B call), with the world matrix in `world`.

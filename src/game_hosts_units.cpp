@@ -2925,9 +2925,10 @@ struct GameUnitsHost::Impl {
     // Where 0067BB50 runs: true keeps the once-per-fixed-step call before the
     // unit loop; false leaves it to the HUD pump through the public
     // GameUnitsHost::role_screen_update_0067bb50 (twice per mission frame,
-    // docs/SHIP_SCREEN_UPDATE.md 21). Default true: no row moves until the
-    // pump path is wired.
-    static constexpr bool kRoleScreenFixedStepCall = true;
+    // docs/SHIP_SCREEN_UPDATE.md 21). False since packet cc9_screen_2eh_group
+    // (section 26): the pump's slot 27h calls it under
+    // bsp::kHudRoleScreenPumpBound. Keep the two opposite.
+    static constexpr bool kRoleScreenFixedStepCall = false;
     // Packet cc9_plane_substitution_sweep (docs/PLANE_SUBSTITUTION_SWEEP.md):
     // the torpedo done/prepare tick's 009D1500 answer (was 0), unit+BC4h's yaw
     // gain from the terrain arm (was held at 1.0), and the fighter lead's

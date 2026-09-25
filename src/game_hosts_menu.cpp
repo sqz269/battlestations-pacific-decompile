@@ -836,6 +836,11 @@ public:
             owner_.hud->update_follow_screen_0067bf00();
             return;
         }
+        // Packet cc9_screen_2eh_group: screen 27h's 0067BB50, the role take.
+        if (kHudRoleScreenPumpBound && owner_.hud != nullptr && slot == 0x27) {
+            owner_.hud->update_role_screen_0067bb50();
+            return;
+        }
         // Packet cc9_screen_29h: screen 29h's 00527260, the unit pick.
         if (kHudUnitPickScreenBound && owner_.hud != nullptr && slot == 0x29) {
             owner_.hud->update_unit_pick_screen_00527260(seconds);

@@ -168,6 +168,9 @@ public:
     void update_hud_root_screen_00649860(float seconds);
     // Packet cc9_screen_29h: screen 29h's update 00527260, the unit pick.
     void update_unit_pick_screen_00527260(float seconds);
+    // Packet cc9_screen_2eh_group: screen 27h's update 0067BB50, forwarded to
+    // the units host, which owns the role table the take writes.
+    void update_role_screen_0067bb50();
 
     // One summary line for the run log.
     void report();

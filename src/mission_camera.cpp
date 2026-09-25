@@ -210,6 +210,60 @@ void bind_ship_captain_0064da40(ShipCaptainCamera& camera, const ShipCaptainTarg
     }
 }
 
+void weapon_group_screen_release_005470c0(HudWeaponGroupScreenState& screen,
+                                          HudWeaponGroupScreenHost& host) {
+    for (const HudWeaponGroupEntry& entry : screen.entries) {           // 005470C8
+        if (entry.unit != 0) host.clear_child_flags_005470c0(entry.unit);
+    }
+    const std::uint32_t mask = weapon_group_role_mask_00545410(screen.group_44);
+    for (const HudWeaponGroupEntry& entry : screen.entries) {           // 0054710F
+        if (entry.unit == 0) continue;
+        if (screen.group_44 >= 2 && screen.group_44 <= 5) {
+            static_cast<void>(host.group_available_009542b0(entry.unit, screen.group_44));
+        }
+        if (mask != 0) host.role_request_0077c470(entry.unit, mask, false);
+    }
+    host.reset_widgets_005464e0();                                      // 00547180
+    screen.hold_100 = false;
+    screen.lst_rocket_d6 = false;
+}
+
+void weapon_group_screen_bind_00549260(HudWeaponGroupScreenState& screen,
+                                       HudWeaponGroupScreenHost& host,
+                                       std::size_t group_unit, bool bound) {
+    // 0054927C..005492A2: +40h through the observer pair at +2Ch.
+    screen.mover_40 = bound;
+    screen.target_54 = 0;                                               // 005492AF
+    if (group_unit == 0) {
+        screen.entries.clear();                                         // 005467B0(0)
+        return;
+    }
+    // 005492D2..005492E5: [ESP+3Ch] is reused as "the first entry changed".
+    const bool changed = screen.entries.empty() || screen.entries.front().unit != group_unit;
+    // 005492EA..00549323: 005467B0(0), 005460A0(group_unit), 00546730, 00545600.
+    screen.entries.clear();
+    screen.entries.push_back({group_unit});
+    if (host.unit_is_kind_of(group_unit, 0x1C)) {                       // 00549328
+        for (std::size_t unit : host.unit_records_778(group_unit)) {
+            if (unit != 0) screen.entries.push_back({unit});
+        }
+    }
+    if (changed) {                                                      // 0054936F
+        screen.group_44 = 0;
+        weapon_group_cycle_00548410(screen, host, true);
+        if (host.unit_is_kind_of(group_unit, 6) && !host.unit_is_kind_of(group_unit, 8) &&
+            !host.unit_is_kind_of(group_unit, 0x0E)) {
+            weapon_group_select_005484b0(screen, host, 3);
+        }
+    } else if (weapon_group_any_available_00545b30(screen, host, screen.group_44)) {
+        weapon_group_set_roles_00545bd0(screen, host, true);            // 005493D5
+    } else {
+        weapon_group_cycle_00548410(screen, host, true);                // 005493CA
+    }
+    weapon_group_hint_00548360(screen, host);                           // 005493DE
+    screen.lst_rocket_d6 = host.player_unit_is_lst_rocket();            // 005493E3..0054940D
+}
+
 bool update_ship_captain_00432ed0(ShipCaptainCamera& camera, const ShipCaptainTargetView& unit,
     const ShipCameraSettings& settings, MissionCameraOcean& ocean, float dt,
     CameraMatrix16& world) noexcept {
