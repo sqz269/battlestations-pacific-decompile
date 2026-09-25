@@ -1,0 +1,23 @@
+{
+  "packet": "cc9_gun_horz_sign",
+  "doc": "docs/GUN_HORZ_SIGN.md",
+  "answer": "The image's gun horizontal angle is -0.0 - atan2(x, z) of the local direction (positive = model -x, port). The host used +atan2(right, forward) with the authored windows unnegated, so every window was mirrored. Bound as kGunHorzImageSignBound; committed OFF pending the pairs.",
+  "steps": [
+    {"address": "008fdb80", "native": "00521370", "function": "008fdaf0", "rule": "yaw = atan2(x, z); the caller's horz = -0.0 - yaw"},
+    {"address": "0085aacc", "native": "00521370", "function": "0085a9a0", "rule": "AA acceptance: yaw of the target direction"},
+    {"site": "0085ab17", "rule": "horz = -0.0 (00D7A208) - yaw"},
+    {"address": "0085ab32", "native": "007f60a0", "function": "0085a9a0", "rule": "window test on (-yaw, pitch)"},
+    {"site": "005213a7", "rule": "00521370 loads [row] (x) then [row+8] (z) before _CIatan2: atan2(x, z)"},
+    {"address": "0085978f", "native": "00b646e0", "function": "00859550", "rule": "RotY(-horz): row 2 = (-sin horz, 0, cos horz)"}
+  ],
+  "host_sites": ["want_horz (008FDAF0)", "AA acceptance horz (0085AB17)", "shot direction", "muzzle pose 00859550", "torpedo gate node axis"],
+  "not_changed": "ship AI device_can_bear (0085B7D0) takes its bearing from the ship AI producer; its sign was not re-read",
+  "side_table": {
+    "tool": "local/horz_sides.py (vehicleclasses.lua windows joined with the logged slot x)",
+    "usn02": "94 one-sided off-centre mounts: 94 face their own side in the image sign, 0 in the host sign",
+    "usn04": "108: 104 image, 4 host (Lexington 15 and 17, authored across the deck)"
+  },
+  "ghidra": "read-only",
+  "no_ghidra_function": [],
+  "pair": "not run: session 1 disconnected at 16:01 2026-09-25, every run died at start-up; binaries staged in local/hzO and local/hzT"
+}
