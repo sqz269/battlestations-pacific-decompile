@@ -1,0 +1,180 @@
+{
+  "packet": "cc9_torpedo_launch_gate",
+  "doc": "docs/TORPEDO_LAUNCH_GATE.md",
+  "function": "008fff20",
+  "function_name": "BSP_GunBot_HeadingAimTick",
+  "body": "008FFF20..0090099B",
+  "abi": "__thiscall(bot)(float dt), RET 4 at 009003CB / 0090096A; reached only through the TorpedoBot vtable slot at 00D182BC",
+  "answer": "The image holds a torpedo launch when an own-party ship within 2000 m is predicted within 0.3 * run + 200 m of the crossing of its heading line with the first 1000 m of the run. The host had no such gate; it is bound under kTorpedoFriendlyCrossingBound.",
+  "torpedo_bot_launch_gate": [
+    {
+      "address": "00900110",
+      "native": "008527e0",
+      "function": "008fff20",
+      "rule": "submarine target must be shallow: [t+1204h] - 3.0 < [t+100h]"
+    },
+    {
+      "address": "009001e6",
+      "native": "00415510",
+      "function": "008fff20",
+      "rule": "target distance <= min(owner+44Ch * 1.5, bot+68h + 100), else abort at 009003A6"
+    },
+    {
+      "address": "0090025e",
+      "native": "008fbb00",
+      "function": "008fff20",
+      "rule": "intercept at WaterTravelSpeed must solve, else abort"
+    },
+    {
+      "address": "00900311",
+      "native": "00415510",
+      "function": "008fff20",
+      "rule": "lead distance <= min(owner+44Ch, bot+68h), else abort"
+    },
+    {
+      "address": "00900380",
+      "native": "0085ab50",
+      "function": "008fff20",
+      "rule": "heading snapped up to pi/4 onto a fire window; FLT_MAX at 009003C6 abandons"
+    },
+    {
+      "address": "009003dd",
+      "native": "0085aba0",
+      "function": "008fff20",
+      "rule": "commanded angles (bot+60h, 0.0f)"
+    },
+    {
+      "address": "009003f8",
+      "native": "00438b10",
+      "function": "008fff20",
+      "rule": "|bot+60h - gun+480h| < 1 degree (00CE3984), else abort"
+    },
+    {
+      "site": "0090042f",
+      "native_slot": "gun vtable[1D0h](1)",
+      "rule": "must accept, else abort"
+    },
+    {
+      "address": "0090044a",
+      "native": "00438b10",
+      "function": "008fff20",
+      "rule": "snap amount |bot+60h - raw heading|, converted to degrees"
+    },
+    {
+      "address": "0090049d",
+      "native": "00414260",
+      "function": "008fff20",
+      "rule": "[gun+3CCh]+110h (node row 2) scaled by the snap in degrees, then * 2.0 (00D7A308)"
+    },
+    {
+      "address": "00900506",
+      "native": "0042b260",
+      "function": "008fff20",
+      "rule": "run direction = normalise(lead - (gun + offset)) in (x, z)"
+    },
+    {
+      "address": "0090058a",
+      "native": "008053c0",
+      "function": "008fff20",
+      "rule": "own-party list head [slot(owner+54h)+0DDCh]"
+    },
+    {
+      "site": "009005ad",
+      "native_slot": "entity vtable[5Ch](6)",
+      "rule": "entity must be a ship (IsKindOf 6)"
+    },
+    {
+      "site": "009005ba",
+      "rule": "entity must not be the owner [gun+3Ch]"
+    },
+    {
+      "address": "009005c6",
+      "native": "00427eb0",
+      "function": "008fff20",
+      "rule": "entity position +FCh"
+    },
+    {
+      "address": "00900607",
+      "native": "00427e30",
+      "function": "008fff20",
+      "rule": "|gun - entity|^2 must not exceed 4000000 (00D09FE8)"
+    },
+    {
+      "address": "009006ee",
+      "native": "004f3730",
+      "function": "008fff20",
+      "rule": "run line crosses entity line pos -/+ 1000 * (+94h, +9Ch); both parameters in [0, 1]"
+    },
+    {
+      "address": "00900730",
+      "native": "00414c60",
+      "function": "008fff20",
+      "rule": "run = |cross - gun| (x, z)"
+    },
+    {
+      "site": "00900754",
+      "native_slot": "entity vtable[34h]",
+      "rule": "entity velocity, time = run / WaterTravelSpeed"
+    },
+    {
+      "address": "009007c7",
+      "native": "00414c60",
+      "function": "008fff20",
+      "rule": "miss = |pos + v * time - cross| (x, z)"
+    },
+    {
+      "site": "009007f6",
+      "rule": "threshold = run * 300 / 1000 + 200 (00CE3CA8, 00CE47A0, 00CE4D70); threshold > miss jumps to 0090096D, gun vtable[1E8h](0)"
+    },
+    {
+      "address": "00900830",
+      "native": "00bd2f10",
+      "function": "008fff20",
+      "rule": "aim jitter +/- (AngleErrMin, AngleErrMax) degrees; not modelled by the host"
+    },
+    {
+      "address": "00900951",
+      "native": "00951fc0",
+      "function": "008fff20",
+      "rule": "flips the +6D4h spread offset after a launch; not modelled by the host"
+    }
+  ],
+  "host": {
+    "switch": "kTorpedoFriendlyCrossingBound (src/game_hosts_gunnery.cpp)",
+    "rules": [
+      "torpedo_run_end_008fff20",
+      "torpedo_friendly_crossing_008fff20 (src/gun_bot_remainder.cpp)"
+    ],
+    "sequence": "GameGunneryHost::Impl::torpedo_friendly_hold_008fff20, applied to want_fire for category-7 guns",
+    "substitutions": [
+      "lead point without the 00951FC0 +6D4h spread offset",
+      "node row 2 = hull forward turned by the gun's current horizontal angle, zero elevation",
+      "own-party list = live units with the owner's +54h side",
+      "runs where the host's want_fire holds (0.1 degree settle) rather than after the image's 1 degree test"
+    ]
+  },
+  "coverage": "008FFF20's gate sequence 00900110..009007F6 read from the listing; steps 1-2 (008FFFCE..00900018), 13-15 taken from docs/GUN_BOT_TICKS.md section 6.5 without re-reading",
+  "ghidra": "read-only; no renames, comments or saves",
+  "no_ghidra_function": [],
+  "pair": {
+    "mission": "USN02 9200/9000, BSP_GUNNERY_RNG_STREAMS=1, BSP_DEATH_TABLE=1",
+    "off": "local/tgO_usn02.log",
+    "on": "local/tgT_usn02.log",
+    "diagnostic": "local/tgD_usn02.log (ON + per-launch line, identical rows)",
+    "scans_holds": "0/0 -> 146655/8008",
+    "torpedo_shots": "346 -> 343",
+    "deaths": "20 -> 19",
+    "queued_hits": "763 -> 759",
+    "damage": "75904.7 -> 73299.9",
+    "gunrows_differ": "47 of 464",
+    "verdicts": [
+      "holds 5..300: missed high (per-tick test)",
+      "shots fall < half: held",
+      "Jupiter by Encounter vanishes: held",
+      "Amatsukaze by Hatsukaze vanishes: failed, no friendly crossed the first 1000 m at the 123-125 s launches (image behaviour)",
+      "Jintsu may survive: dies, no crossing at launch (image behaviour)",
+      "Houston/Exeter survive: held"
+    ],
+    "decision": "ON"
+  }
+}
