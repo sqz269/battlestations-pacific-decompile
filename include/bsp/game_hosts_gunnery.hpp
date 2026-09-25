@@ -207,6 +207,36 @@ struct GameGunRow {
     unsigned long long arc_unsolved{0};// 006DFA60's gate: s > 1, out of reach
     unsigned long long shots{0};      // 00730160 bodies
     float first_shot_seconds{-1.0f};
+    // Packet cc9_player_gun_seat (docs/PLAYER_GUN_SEAT.md). [gun+1ACh], the
+    // gun's own seat: 8 (PLAYER_AI) until message 79h hands it to the unit's
+    // role-2 holder. seat_horz/seat_vert are the angles that message's arm
+    // gives 0085ABA0; seat_trigger its vtable[1E8h] argument.
+    std::int32_t seat_1ac{8};
+    float seat_horz{0.0f};
+    float seat_vert{0.0f};
+    bool seat_trigger{false};
+    unsigned long long seat_handovers{0};
+    unsigned long long seat_returns{0};
+};
+
+// Packet cc9_player_gun_seat. ON binds message 79h's group 1/2 arm
+// (00959C20) and the gun bots' side gate 008FFA99 on the gun's own seat.
+// Committed OFF until its pair runs.
+inline constexpr bool kPlayerGunSeatBound = false;
+
+// Session message 79h as 00954A10 builds it in 005484F0 (section 32 of
+// docs/SHIP_SCREEN_UPDATE.md): +1Ch group, +20h..+28h the camera mover's
+// world position, +2Ch yaw and +30h pitch of its forward row (00521370),
+// +34h action 99h held, +35h 99h pressed, +36h has-target, +38h target id.
+// `forward` is the mover's forward row the two angles are taken from.
+struct GunAimMessage79 {
+    int group{0};
+    float camera[3]{};
+    float forward[3]{};
+    bool held_34{false};
+    bool pressed_35{false};
+    bool has_target_36{false};
+    std::uint16_t target_38{0};
 };
 
 // One projectile in flight, as 006E8430 created it.
@@ -557,6 +587,11 @@ public:
     // a second time instead would duplicate every existing gun and throw the
     // whole host's accumulated state away. Safe to call with no new units.
     void register_new_units_00864bd0();
+
+    // Packet cc9_player_gun_seat: 0077C2A0 delivering message 79h to a unit,
+    // the group 1/2 arm of BSP_Unit_ApplyGunAimMessage 00959C20. Other
+    // groups are a record. docs/PLAYER_GUN_SEAT.md.
+    void apply_gun_aim_message_00959c20(std::size_t unit_index, const GunAimMessage79& message);
 
     // One fixed simulation step: the gunnery pass 00864FE0, the aim ticks and
     // the trigger latch, 0072D130's 0ADh send with BSP_Gun_Fire behind it, and

@@ -1,0 +1,144 @@
+{
+ "packet": "cc9_player_gun_seat",
+ "branch": "agent/cc9-platform2",
+ "doc": "docs/PLAYER_GUN_SEAT.md",
+ "switches": {
+  "kPlayerGunSeatBound": false
+ },
+ "functions": [
+  {
+   "address": "00959C20",
+   "name": "BSP_Unit_ApplyGunAimMessage",
+   "status": "group 1/2 arm reconstructed (GameGunneryHost::Impl::apply_gun_aim_message); other groups a record"
+  },
+  {
+   "address": "00954A10",
+   "name": "BSP_GunAimMessage79_Construct",
+   "status": "field order corrected: +34h held, +35h pressed; built by the HUD binding"
+  },
+  {
+   "address": "00957BD0",
+   "status": "range-sphere aim point reconstructed; segment-query hit path a record"
+  },
+  {
+   "address": "008FFA20",
+   "status": "side gate (008FFA99) bound as the player_seat test in run_gun_aim_and_fire"
+  },
+  {
+   "address": "00729F70",
+   "status": "reconstructed inline: seat 8, trigger 0, bot target cleared"
+  },
+  {
+   "address": "00730160",
+   "name": "BSP_Gun_Fire",
+   "status": "analyzed (magnitude chain 0073031D..0073049C): the 00521E70(unit, 2/3) seat test; no host consumer (throw not applied)"
+  }
+ ],
+ "host_steps": [
+  {
+   "function": "005484F0",
+   "address": "005489DA",
+   "native": "00954A10",
+   "host": "build_fire_message_00954a10 -> GunAimMessage79"
+  },
+  {
+   "function": "005484F0",
+   "address": "00548A1F",
+   "native": "0077C2A0",
+   "host": "route_fire_message_0077c2a0 -> apply_gun_aim_message_00959c20"
+  },
+  {
+   "function": "00959C20",
+   "address": "00959CD6",
+   "native": "00954210",
+   "host": "category 1/5/6 filter"
+  },
+  {
+   "function": "00959C20",
+   "address": "00959D2A",
+   "native": "00957BD0",
+   "host": "range-sphere aim point"
+  },
+  {
+   "function": "00959C20",
+   "address": "00959D3F",
+   "native": "00955830",
+   "host": "hull-relative angle pair"
+  },
+  {
+   "function": "00959C20",
+   "address": "00959D72",
+   "native": "007F60A0",
+   "host": "gun_fire_allowed_007f60a0"
+  },
+  {
+   "function": "00959C20",
+   "address": "00959D7F",
+   "native": "00521E70",
+   "host": "seat_1ac == 8 (out of window)"
+  },
+  {
+   "function": "00959C20",
+   "address": "00959D8E",
+   "native": "00729F70",
+   "host": "return to the AI"
+  },
+  {
+   "function": "00959C20",
+   "address": "00959D9B",
+   "native": "00521E70",
+   "host": "seat_1ac == 8 (in window)"
+  },
+  {
+   "function": "00959C20",
+   "address": "00959DCC",
+   "native": "0084C500",
+   "host": "record PlayerGunSeat::flak_0084c500 on a Function 6 hand-over"
+  },
+  {
+   "function": "00959C20",
+   "address": "00959E01",
+   "native": "0085ABA0",
+   "host": "seat_horz/seat_vert -> gun_set_target_angles_0085aba0 in the tick"
+  },
+  {
+   "function": "00959C20",
+   "address": "00959E41",
+   "native": "00859830",
+   "host": "aim point store, not modelled"
+  },
+  {
+   "function": "00957BD0",
+   "address": "00957CCC",
+   "native": "004B4D80",
+   "host": "direction from the two angles"
+  },
+  {
+   "function": "00957BD0",
+   "address": "00957DA0",
+   "native": "0098ADD0",
+   "host": "record PlayerGunSeat::segment_query"
+  },
+  {
+   "function": "00730160",
+   "address": "00730471",
+   "native": "00521E70",
+   "host": "contract: role 2 AI-held"
+  },
+  {
+   "function": "00730160",
+   "address": "00730482",
+   "native": "00521E70",
+   "host": "contract: role 3 AI-held"
+  }
+ ],
+ "no_ghidra_function": [],
+ "pairs": [
+  {
+   "switch": "kPlayerGunSeatBound",
+   "off": "local/bin/seat_off",
+   "on": "local/bin/seat_on",
+   "status": "pending the session reconnect; predictions in docs/PLAYER_GUN_SEAT.md section 4"
+  }
+ ]
+}

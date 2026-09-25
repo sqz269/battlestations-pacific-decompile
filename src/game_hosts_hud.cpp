@@ -114,6 +114,9 @@ struct GameHudHost::Impl {
     bsp::UnitPickScreenState unit_pick{};
     // Screen 2Eh, the weapon groups (00549260, 005484F0).
     bsp::HudWeaponGroupScreenState weapon_group{};
+    // Packet cc9_player_gun_seat: the message 00954A10 last built.
+    GunAimMessage79 pending_gun_message{};
+    bool pending_gun_message_valid{false};
     bool lock_radius_read{false};
     std::vector<float> lock_radius;
     const std::vector<float>& lock_radius_multipliers();
@@ -1064,10 +1067,51 @@ public:
             owner_.record("HudWeaponGroupScreen::show_row_widget", 0x005488f9u);
         }
     }
-    void build_fire_message_00954a10(int, bool, bool, bool, std::uint16_t) override {
+    void build_fire_message_00954a10(int group, bool pressed, bool held, bool has_target,
+                                     std::uint16_t target_id) override {
+        if constexpr (kPlayerGunSeatBound) {
+            // 00548839..005489DA: the mover's world matrix (0042D7E0) forward
+            // row and position (00427EB0); the Operator node carries the
+            // mover's published pose.
+            bsp::MissionCameraPublication& node = bsp::mission_camera_publication();
+            if (node.ready) {
+                if ((node.state.transform.valid_flags & 2u) == 0) {
+                    bsp::refresh_camera_world_00b6db70(node.state.transform);
+                }
+                const bsp::CameraMatrix& world = node.state.transform.world;
+                GunAimMessage79& m = owner_.pending_gun_message;
+                m.group = group;
+                for (int i = 0; i < 3; ++i) {
+                    m.forward[i] = world[8 + i];
+                    m.camera[i] = world[12 + i];
+                }
+                m.held_34 = held;
+                m.pressed_35 = pressed;
+                m.has_target_36 = has_target;
+                m.target_38 = target_id;
+                owner_.pending_gun_message_valid = true;
+                owner_.done("HudWeaponGroupScreen::fire_message", 0x00954a10u);
+                return;
+            }
+            owner_.pending_gun_message_valid = false;
+        }
+        static_cast<void>(group);
+        static_cast<void>(pressed);
+        static_cast<void>(held);
+        static_cast<void>(has_target);
+        static_cast<void>(target_id);
         owner_.record("HudWeaponGroupScreen::fire_message", 0x00954a10u);
     }
-    void route_fire_message_0077c2a0(std::size_t) override {
+    void route_fire_message_0077c2a0(std::size_t unit) override {
+        if constexpr (kPlayerGunSeatBound) {
+            GameGunneryHost* gunnery = owner_.units != nullptr ? owner_.units->gunnery() : nullptr;
+            if (unit != 0 && gunnery != nullptr && owner_.pending_gun_message_valid) {
+                gunnery->apply_gun_aim_message_00959c20(unit - 1, owner_.pending_gun_message);
+                owner_.done("HudWeaponGroupScreen::route_fire_message", 0x0077c2a0u);
+                return;
+            }
+        }
+        static_cast<void>(unit);
         owner_.record("HudWeaponGroupScreen::route_fire_message", 0x0077c2a0u);
     }
     bool camera_busy_00518f30() override {

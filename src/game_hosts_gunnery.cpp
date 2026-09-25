@@ -667,6 +667,13 @@ struct GameGunneryHost::Impl {
     unsigned long long aim_error_rerolls{0};
     unsigned long long no_gravity_shots{0};
     unsigned long long plane_trigger_ticks{0};
+    // Packet cc9_player_gun_seat.
+    unsigned long long seat_messages{0};
+    unsigned long long seat_handovers{0};
+    unsigned long long seat_returns{0};
+    unsigned long long seat_held_ticks{0};
+    unsigned long long seat_trigger_ticks{0};
+    void apply_gun_aim_message(std::size_t unit, const GunAimMessage79& message);
     // ShipGlobals.AAGunnerErrorModifier.CalcTargetPosTimeAddFix / AddMul, the
     // gameplay settings +758h / +75Ch 00901C20 adds to its time of flight
     // (docs/GAMEPLAY_SETTINGS.md; loader defaults 0, installed 0.05 / 0.1).
@@ -3355,6 +3362,15 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 have_target = true;
             }
         }
+        // Packet cc9_player_gun_seat: the side gate 008FFA99 (and 00902999,
+        // 00903136, 0090003B) runs a bot only while [gun+1ACh] is 8 or an AI
+        // slot. A gun the player's seat holds gets no bot target, angle or
+        // trigger; the angles and trigger come from message 79h instead.
+        const bool player_seat = kPlayerGunSeatBound && gun.seat_1ac != 8;
+        if (player_seat) {
+            have_target = false;
+            ++seat_held_ticks;
+        }
 
         float right[3], up[3], forward[3], origin[3];
         unit_pose(owner_unit, right, up, forward, origin);
@@ -3618,6 +3634,10 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             }
         }
 
+        if (player_seat) {                      // 00959E01's 0085ABA0 request
+            want_horz = gun.seat_horz;
+            want_vert = gun.seat_vert;
+        }
         const bsp::GunPlatformArcs arcs{gun.arcs.data(), gun.arcs.size()};
         float accepted_mark = 0.0f;
         const bool accepted = bsp::gun_set_target_angles_0085aba0(gun.angles, arcs,
@@ -3742,6 +3762,10 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 want_fire = units.plane_gun_trigger_bc9(owner_unit);
                 if (want_fire) ++plane_trigger_ticks;
             }
+        }
+        if (player_seat) {                      // 00959DEB / 00959F50 / 00959F68
+            want_fire = gun.seat_trigger;
+            if (want_fire) ++seat_trigger_ticks;
         }
 
         FireRequestBinding fire_host(*this, g);
@@ -5084,6 +5108,113 @@ void GameGunneryHost::Impl::refresh_build_summary() {
     built_units = units.count();
 }
 
+// Packet cc9_player_gun_seat: the group 1/2 arm of 00959C20 (00959C91..
+// 00959F6D) for one unit. docs/PLAYER_GUN_SEAT.md.
+void GameGunneryHost::Impl::apply_gun_aim_message(std::size_t unit,
+                                                  const GunAimMessage79& m) {
+    ++seat_messages;
+    if (m.group != 1 && m.group != 2) {
+        record("PlayerGunSeat::message_other_group", 0x00959c20u);
+        return;
+    }
+    if (unit >= unit_state.size() || unit_state[unit].dead) return;
+    // 00954A10's two angles: 00521370 on the forward row (pitch = asin of y,
+    // clamped to [-1, 1]; yaw = atan2(x, z)), +30h clamped to +/-1.57
+    // (00D1A640/00D1A638), then 004B4D80 rebuilds the direction.
+    const float fy = std::max(-1.0f, std::min(1.0f, m.forward[1]));
+    float pitch = std::asin(fy);
+    const float yaw = std::atan2(m.forward[0], m.forward[2]);
+    pitch = std::max(-1.57f, std::min(1.57f, pitch));
+    const float dir[3] = {std::sin(yaw) * std::cos(pitch), std::sin(pitch),
+                          std::cos(yaw) * std::cos(pitch)};
+    // 00957D79..00957DA0: the 1000-unit segment from the camera through the
+    // spatial index would aim at what it hits; not modelled, so every gun
+    // takes the range-sphere point (labelled).
+    record("PlayerGunSeat::segment_query", 0x00957da0u);
+    if (m.has_target_36) record("PlayerGunSeat::target_intercept", 0x00957ca6u);
+    std::int32_t role2_holder = 8;              // [unit+1B4h]
+    if (!units.unit_current_role_slot(unit, 2, role2_holder)) role2_holder = 8;
+    float right[3], up[3], forward[3], origin[3];
+    unit_pose(unit, right, up, forward, origin);
+    UnitState& state = unit_state[unit];
+    for (std::size_t g = 0; g < guns.size(); ++g) {
+        GameGunRow& gun = guns[g];
+        if (gun.unit_index != unit) continue;
+        // 00954210(kind 1 or 2): operational (00729F10; unit+720h and gun
+        // +3B8h/+5Dh are never set here) and Function 1, 5 or 6.
+        if (!(gun.category == 1 || gun.category == 5 || gun.category == 6)) continue;
+        float muzzle[3];
+        gun_muzzle_point(gun, state, right, up, forward, origin, muzzle);
+        // 00957DE2..009580AB: the camera ray's point at the gun's bullet range.
+        const float rel[3] = {muzzle[0] - m.camera[0], muzzle[1] - m.camera[1],
+                              muzzle[2] - m.camera[2]};
+        const float t = dot3(rel, dir);
+        const float c[3] = {m.camera[0] + t * dir[0], m.camera[1] + t * dir[1],
+                            m.camera[2] + t * dir[2]};
+        const float off[3] = {muzzle[0] - c[0], muzzle[1] - c[1], muzzle[2] - c[2]};
+        const float r2 = gun.max_range * gun.max_range;
+        float s2 = r2 - dot3(off, off);
+        const float floor2 = static_cast<float>(r2 / 9.0);      // 00CF0AB8
+        if (s2 < floor2) s2 = floor2;
+        const float s = std::sqrt(s2);
+        float aim[3] = {c[0] + s * dir[0], c[1] + s * dir[1], c[2] + s * dir[2]};
+        if (m.camera[1] > 0.0f && aim[1] < 0.0f) {                // 00958060: the sea
+            float den = m.camera[1] - aim[1];
+            if (std::fabs(den) < 1.0f) den = den < 0.0f ? -1.0f : 1.0f;
+            const float k = m.camera[1] / den;
+            aim[0] = m.camera[0] + (aim[0] - m.camera[0]) * k;
+            aim[1] = m.camera[1] + (aim[1] - m.camera[1]) * k;
+            aim[2] = m.camera[2] + (aim[2] - m.camera[2]) * k;
+        }
+        // 00955830: the direction from the mount as the gun's own angle pair,
+        // in this host's hull-relative convention (008FDAF0's).
+        const float d[3] = {aim[0] - muzzle[0], aim[1] - muzzle[1], aim[2] - muzzle[2]};
+        const float len = length3(d);
+        if (len <= 0.0f) continue;
+        const float u[3] = {d[0] / len, d[1] / len, d[2] / len};
+        const float horz = kGunHorzSign * std::atan2(dot3(u, right), dot3(u, forward));
+        const float vert = std::asin(std::max(-1.0f, std::min(1.0f, dot3(u, up))));
+        const bsp::GunPlatformArcs arcs{gun.arcs.data(), gun.arcs.size()};
+        const bool in_window = bsp::gun_fire_allowed_007f60a0(arcs, horz, vert);   // 00959D72
+        const bool seat_ai = gun.seat_1ac == 8;                    // 00521E70(gun, 0)
+        if (!in_window) {
+            if (!seat_ai) {                                        // 00959D8E: 00729F70
+                gun.seat_1ac = 8;
+                gun.seat_trigger = false;
+                gun.target_unit = 0;
+                gun.target_name.clear();
+                ++gun.seat_returns;
+                ++seat_returns;
+            }
+            continue;
+        }
+        if (seat_ai && role2_holder != 8) {                        // 00959DA4..00959DB7
+            gun.seat_1ac = role2_holder;
+            ++gun.seat_handovers;
+            ++seat_handovers;
+            // 00959DB9..00959DEB, on the hand-over only: Function 6 calls
+            // 0084C500(0) (not read), Function 1 drops its trigger.
+            if (gun.category == 6) record("PlayerGunSeat::flak_0084c500", 0x00959dccu);
+            if (gun.category == 1) gun.seat_trigger = false;
+        }
+        gun.seat_horz = horz;                                      // 00959E01
+        gun.seat_vert = vert;
+        // 00959E46..00959F5C: the trigger. 99h held fires a kind-1 mount, or
+        // any mount whose angles are within 3 degrees (00D1A8A0) of the pair.
+        const float band = 0.0523598776f;
+        const bool within_band = std::fabs(bsp::wrapped_angle_subtract_00438b10(gun.angles.horz, horz))
+                < band
+            && std::fabs(bsp::wrapped_angle_subtract_00438b10(gun.angles.vert, vert)) < band;
+        gun.seat_trigger = m.held_34 && (gun.category == 1 || within_band);
+    }
+    done("PlayerGunSeat::apply_message_00959c20", 0x00959c20u);
+}
+
+void GameGunneryHost::apply_gun_aim_message_00959c20(std::size_t unit_index,
+                                                     const GunAimMessage79& message) {
+    impl_->apply_gun_aim_message(unit_index, message);
+}
+
 void GameGunneryHost::attach_00864bd0() {
     Impl& host = *impl_;
     host.build_rank_table();
@@ -5700,6 +5831,11 @@ void GameGunneryHost::report() {
             s.torpedo_gun_sent, s.torpedo_gun_shots);
         host.log.notef("summary mission gunnery torpedo_friendly scans=%llu holds=%llu",
             s.torpedo_friendly_scans, s.torpedo_friendly_holds);
+        host.log.notef("summary mission gunnery player seat messages=%llu handovers=%llu "
+            "returns=%llu held_ticks=%llu trigger_ticks=%llu bound=%d (00959C20/008FFA99, "
+            "packet cc9_player_gun_seat)", host.seat_messages, host.seat_handovers,
+            host.seat_returns, host.seat_held_ticks, host.seat_trigger_ticks,
+            kPlayerGunSeatBound ? 1 : 0);
         host.log.notef("summary mission gunnery muzzle offsets shots=%llu fallbacks=%llu "
             "mean_shift=%.2f max_shift=%.2f bound=%d (00730762/00859550, packet cc9_muzzle_offsets)",
             host.muzzle_offset_shots, host.muzzle_offset_fallbacks,
