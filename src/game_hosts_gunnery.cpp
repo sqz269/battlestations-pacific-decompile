@@ -181,6 +181,17 @@ constexpr bool kTorpedoFriendlyCrossingBound = true;
 //    override are not applied; planes and Mesh-less devices keep the mount.
 //    docs/MUZZLE_OFFSETS.md.
 constexpr bool kMuzzleOffsetsBound = true;
+//  * kGunHorzImageSignBound: packet cc9_gun_horz_sign. A gun's horizontal angle
+//    takes the image's sign: 008FDAF0 and 0085A9A0 (0085AB17) store
+//    -0.0 - 00521370's atan2(x, z), so a positive angle turns towards model -x
+//    (port), and 00859550's RotY(-horz) turns the barrel the same way. The
+//    authored Windows and RestAngles are loaded unnegated, as the image loads
+//    them. OFF: the host's earlier +atan2(right, forward), which mirrors every
+//    authored window. docs/GUN_HORZ_SIGN.md.
+constexpr bool kGunHorzImageSignBound = false;
+// +1 in the host's earlier convention, -1 in the image's: the factor on the
+// starboard component wherever a horizontal angle meets a direction.
+constexpr float kGunHorzSign = kGunHorzImageSignBound ? -1.0f : 1.0f;
 //  * kShipSectionPointsBound: the artillery draw 00816650 can pick the target's
 //    engine room (kind 5), fuel tank (6) or magazine (8). 0081F980 fills
 //    unit+A88h / +A78h / +A68h from the ship model's GeomMesh elements of those
@@ -879,7 +890,7 @@ struct GameGunneryHost::Impl {
         // CONVENTION BRIDGE: the host's horizontal angle is the negative of the
         // image's gun+480h (docs/MUZZLE_OFFSETS.md section 2), so the image pose
         // is built from -horz to point the barrel where the host fires.
-        bsp::turning_gun_apply_angles_00859550(-gun.angles.horz, gun.angles.vert,
+        bsp::turning_gun_apply_angles_00859550(-kGunHorzSign * gun.angles.horz, gun.angles.vert,
             have_barrel, root_local, barrel_local);
         const bsp::CameraMatrix ship{right[0], right[1], right[2], 0.0f,
             up[0], up[1], up[2], 0.0f, forward[0], forward[1], forward[2], 0.0f,
@@ -1116,8 +1127,9 @@ struct GameGunneryHost::Impl {
         std::size_t best = owner_unit;
         bsp::TorpedoFriendlyCrossing best_c{};
         const float h = gun.angles.horz;
-        const std::array<float, 2> axis{{forward[0] * std::cos(h) + right[0] * std::sin(h),
-            forward[2] * std::cos(h) + right[2] * std::sin(h)}};
+        const float hs = kGunHorzSign * std::sin(h);
+        const std::array<float, 2> axis{{forward[0] * std::cos(h) + right[0] * hs,
+            forward[2] * std::cos(h) + right[2] * hs}};
         const std::array<float, 3> gun_at{{gun_position[0], gun_position[1], gun_position[2]}};
         const std::array<float, 2> run_end = bsp::torpedo_run_end_008fff20(
             {{gun_at[0], gun_at[2]}}, lead_xz, axis, snap_radians);
@@ -1935,6 +1947,31 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                             static_cast<double>(frame.origin[2]), static_cast<double>(frame.forward[0]),
                             static_cast<double>(frame.forward[1]), static_cast<double>(frame.forward[2]),
                             gun.platform_key);
+                        // Packet cc9_gun_horz_sign: which side the authored fire
+                        // windows face in the image's sign (positive = model -x, port).
+                        std::string spans;
+                        bool any = false, pos = true, neg = true;
+                        for (std::size_t a = 1; a < gun.arcs.size(); ++a) {
+                            const auto& arc = gun.arcs[a];
+                            if ((arc.flags & bsp::kGunArcFlagFire) == 0) continue;
+                            any = true;
+                            if (arc.min_horz < 0.0f) pos = false;
+                            if (arc.max_horz > 0.0f) neg = false;
+                            char buf[48];
+                            std::snprintf(buf, sizeof buf, " [%.0f..%.0f]",
+                                static_cast<double>(arc.min_horz * 57.2957795f),
+                                static_cast<double>(arc.max_horz * 57.2957795f));
+                            spans += buf;
+                        }
+                        const char* image_side = !any ? "none" : pos ? "port" : neg ? "starboard" : "both";
+                        const char* mount_side = frame.origin[0] < -1.0f ? "port"
+                            : frame.origin[0] > 1.0f ? "starboard" : "centre";
+                        log.notef("gunnery: horz side %s platform %d cat=%d mount=%s image_faces=%s "
+                            "host_faces=%s windows%s (008FDAF0/0085AB17)", state.row.name.c_str(),
+                            gun.platform_key, gun.category, mount_side, image_side,
+                            std::strcmp(image_side, "port") == 0 ? "starboard"
+                                : std::strcmp(image_side, "starboard") == 0 ? "port" : image_side,
+                            spans.c_str());
                     }
                     done("VehicleClass::bind_slot_frames_0095f500", 0x0095f500u);
                 } else {
@@ -2613,7 +2650,7 @@ public:
         }
         if (len <= 0.0f || row.arcs.empty()) return;
         const float u[3] = {d[0] / len, d[1] / len, d[2] / len};
-        const float horz = std::atan2(dot3(u, right), dot3(u, forward));
+        const float horz = kGunHorzSign * std::atan2(dot3(u, right), dot3(u, forward));  // 0085AB17
         const float vert = std::asin(std::max(-1.0f, std::min(1.0f, dot3(u, up))));
         const bsp::GunPlatformArcs arcs{row.arcs.data(), row.arcs.size()};
         if (!bsp::gun_fire_allowed_007f60a0(arcs, horz, vert)) {        // 0085A9A0
@@ -3498,7 +3535,8 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 const float unit_delta[3] = {delta[0] / distance, delta[1] / distance,
                     delta[2] / distance};
                 // 008FDAF0: the world direction as a hull-relative angle pair.
-                want_horz = std::atan2(dot3(unit_delta, right), dot3(unit_delta, forward));
+                want_horz = kGunHorzSign * std::atan2(dot3(unit_delta, right),
+                    dot3(unit_delta, forward));   // 008FDAF0 negates when bound
                 const float vertical = std::max(-1.0f,
                     std::min(1.0f, dot3(unit_delta, up)));
                 want_vert = std::asin(vertical) + pitch;
@@ -3802,7 +3840,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         float direction[3];
         for (int i = 0; i < 3; ++i) {
             direction[i] = forward[i] * (flat_component * std::cos(horz))
-                + right[i] * (flat_component * std::sin(horz))
+                + right[i] * (flat_component * kGunHorzSign * std::sin(horz))
                 + up[i] * std::sin(vert);
         }
         GameProjectileRow shot;
