@@ -193,6 +193,18 @@ void weapon_group_cycle_00548410(HudWeaponGroupScreenState& screen,
 void weapon_group_select_005484b0(HudWeaponGroupScreenState& screen,
                                   HudWeaponGroupScreenHost& host, int group);
 
+// The screen's enter 005494C0 (vtable 00CEDF34 +18h, __thiscall(screen),
+// plain RET at 00549564): 00549260(entry 0's unit, or none when the array is
+// empty, +40h), then page +58h vtable +34h(1) and +D4h = 1. Section 39.
+void weapon_group_screen_enter_005494c0(HudWeaponGroupScreenState& screen,
+                                        HudWeaponGroupScreenHost& host,
+                                        HudWeaponGroupLayoutHost& gui);
+// The exit 005470A0 (+1Ch, no Ghidra function, 005470A0..005470BC):
+// 005464E0, page +58h vtable +34h(0), +D4h = 0.
+void weapon_group_screen_exit_005470a0(HudWeaponGroupScreenState& screen,
+                                       HudWeaponGroupScreenHost& host,
+                                       HudWeaponGroupLayoutHost& gui);
+
 // 005484F0, __thiscall(screen 2Eh), plain RET, body 005484F0..005491F4.
 // Returns false when a gate ended the call before the one-shot bytes.
 bool weapon_group_screen_update_005484f0(HudWeaponGroupScreenState& screen,

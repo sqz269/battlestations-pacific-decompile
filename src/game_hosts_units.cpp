@@ -2984,6 +2984,10 @@ struct GameUnitsHost::Impl {
     static constexpr std::int32_t kLocalPlayerSlot = 0;
     std::size_t role_screen_unit_plus_one{0};   // page 27h's tracked unit, +30h
     int role_takes{0}, role_releases{0}, role_refusals{0}, role_permission_writes{0};
+    // A take for a role this slot already holds: 00780346's holder test fails
+    // (a human slot, not 8 and not AI-held), nothing is written and neither
+    // 0077C7B0 nor 0077FE80 runs (docs/SHIP_SCREEN_UPDATE.md section 39).
+    int role_held_retakes{0};
     void role_message_4b_00780162(std::size_t index, std::uint32_t mask,
                                   std::int32_t player_slot, int take);
     void role_screen_update_0067bb50();
@@ -5630,6 +5634,8 @@ void GameUnitsHost::Impl::role_message_4b_00780162(std::size_t index, std::uint3
             if ((holder == 8 || ai_held(holder)) && open_to(i, player_slot)) {
                 set_role(i, player_slot);                       // 0078037C vtable[154h]
                 ++role_takes;
+            } else if (holder == player_slot) {
+                ++role_held_retakes;                            // 0078035C, a no-op
             } else {
                 ++role_refusals;
             }
@@ -16880,9 +16886,9 @@ void GameUnitsHost::report() {
                                     host.helm_issues);
                             }
                             host.log.notef("summary mission player roles takes=%d releases=%d "
-                                "refusals=%d permission_writes=%d (00780162/00927D20/0067BB50, "
+                                "refusals=%d held_retakes=%d permission_writes=%d (00780162/00927D20/0067BB50, "
                                 "packet cc9_player_role_bookkeeping)", host.role_takes,
-                                host.role_releases, host.role_refusals,
+                                host.role_releases, host.role_refusals, host.role_held_retakes,
                                 host.role_permission_writes);
                             for (const auto& sl : host.slots) {
                                 bool any = sl->role_player_0184;

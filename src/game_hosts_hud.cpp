@@ -1947,6 +1947,23 @@ void GameHudHost::update_role_screen_0067bb50() {
     impl.done("HudRoleScreen::update", 0x0067bb50u);
 }
 
+void GameHudHost::enter_weapon_group_screen_005494c0() {
+    Impl& impl = *impl_;
+    WeaponGroupScreenBinding host(impl);
+    WeaponGroupLayoutBinding gui(impl);
+    bsp::weapon_group_screen_enter_005494c0(impl.weapon_group, host, gui);
+    impl.done("HudWeaponGroupScreen::bind", 0x00549260u);
+    impl.done("HudWeaponGroupScreen::enter", 0x005494c0u);
+}
+
+void GameHudHost::exit_weapon_group_screen_005470a0() {
+    Impl& impl = *impl_;
+    WeaponGroupScreenBinding host(impl);
+    WeaponGroupLayoutBinding gui(impl);
+    bsp::weapon_group_screen_exit_005470a0(impl.weapon_group, host, gui);
+    impl.done("HudWeaponGroupScreen::exit", 0x005470a0u);
+}
+
 void GameHudHost::update_follow_screen_0067bf00() {
     Impl& impl = *impl_;
     FollowScreen49Binding binding(impl);

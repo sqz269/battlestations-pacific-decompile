@@ -171,6 +171,9 @@ public:
     // Packet cc9_screen_2eh_group: screen 27h's update 0067BB50, forwarded to
     // the units host, which owns the role table the take writes.
     void update_role_screen_0067bb50();
+    // Packet cc9_role_retake_4bh: screen 2Eh's enter 005494C0 and exit 005470A0.
+    void enter_weapon_group_screen_005494c0();
+    void exit_weapon_group_screen_005470a0();
 
     // One summary line for the run log.
     void report();
