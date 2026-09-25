@@ -147,6 +147,10 @@ void set_active_platform_state(Win32PlatformState* state, PlatformTextInput* tex
     g_active_platform_text = state ? text : nullptr;
 }
 
+const Win32PlatformState* active_platform_state() noexcept {
+    return g_active_platform;
+}
+
 LRESULT CALLBACK game_window_procedure(HWND window, UINT message, WPARAM wparam,
     LPARAM lparam) {
     class WindowMessages final : public PlatformFocusMessageHost {

@@ -9,6 +9,8 @@
 #include "bsp/game_hosts_units.hpp"
 
 #include "bsp/camera_projection.hpp"
+#include "bsp/gui_aspect_extent.hpp"
+#include "bsp/platform_window.hpp"
 #include "bsp/gui_layout_loader.hpp"
 #include "bsp/hud_markers_runtime.hpp"
 #include "bsp/hud_minimap.hpp"
@@ -657,10 +659,19 @@ public:
     explicit MarkerRuntimeBinding(GameHudMarkersHost::Impl& owner) : owner_(owner) {}
 
     void gui_extent(float& width, float& height) override {
-        // 00AA1FE0. The GUI space the page tree composes in is the unit square,
-        // which is what the sprite bridge multiplies by the back buffer, so the
-        // extent the executable supplies is (1, 1) and the native getter is a
-        // record.
+        // 00AA1FE0 over the platform object's +0Dh and +10h
+        // (docs/GUI_EXTENT_INPUTS.md). OFF keeps the (1, 1) the unit-square
+        // GUI space gives at 4:3, as a record.
+        if constexpr (kHudGuiExtentBound) {
+            if (const Win32PlatformState* p = active_platform_state()) {
+                const GuiAspectExtent e = gui_aspect_extent_00aa1fe0(p->widescreen,
+                                                                     p->active_aspect);
+                owner_.done("HudMarkers::gui_extent", 0x00aa1fe0u);
+                width = e.width;
+                height = e.height;
+                return;
+            }
+        }
         owner_.record("HudMarkers::gui_extent", 0x00aa1fe0u);
         width = 1.0f;
         height = 1.0f;
