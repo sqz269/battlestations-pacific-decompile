@@ -232,3 +232,15 @@ planner gate off). Binaries `local\dm0`/`dm1`/`dm2`; the module directory was ch
 | avoid_turn tick | 009A80E0 | 009A83AB |
 
 009A7DE0, 009A7A50 and 009A7F70 now have Ghidra functions.
+
+## Correction from docs/PLANNER_HEADING_WRITES.md (integrator, 2026-09-25)
+
+`kPlannerYawBaseModeGateBound` is now **ON** (main fab4dbebe), landed together with
+`kPilotStateHeadingWritesBound`. Section 4's DM1 result was not the gate's: the host had never run
+the two heading writes the image's torpedo states make, so its bearing fallback was steering the
+Kates. The image steers torpedo moveto through 009F9E40 at 009C1B23 (mode 2) and torpedo
+attackrun by AddWrapped(approach+94h, +20h) at 009D0927 with mode 2 at 009D092D. Torpedo
+done/prepare (009D2720) writes +2C4h = 0 with mode 1, which is the reseed. Pair PHW0/PHW1 (E2
+9000, both OFF / both ON): Kate/Val/movieval deaths 16/16/3 on both sides, hit records 592 -> 588,
+Lexington 6,751 -> 5,929 m, no mission end. The switch table above (line 20) is superseded by this
+section.
