@@ -50,10 +50,23 @@ fed by the ship AI's own words, and nothing in it reads the gun host's angles.
   and `009E8153` stores the approach word `nested+11DCh`, from which `009E5DB4` subtracts the
   slot's own angle. The heading helper `00414EB0` is `pi/2 - atan2(z, x)`, which equals
   `atan2(x, z)`, positive towards `+x` (starboard).
-- **Open.** Whether the hull heading is subtracted, and in which order, before `b` reaches
-  `0085B7D0` was not settled. If `b` arrives as target heading minus hull heading, it is
-  starboard-positive, and the image's own ship-AI bearing test is mirrored against its gun bots.
-  The switch does not change this path either way.
+- **Settled for the `009E634C` path: no hull heading is subtracted anywhere.** `009E6240`
+  normalises the delta, calls `007B4E90 BSP_Vector3_CompassHeading` at `009E6334` (`pi/2 -
+  atan2(z, x)` wrapped into `[0, 2pi)`), stores the result at `record+118h` (`009E6345`) and
+  into query word 5 (`+14h`, `009E634C`). `0095EB40` only wraps it (`00605070` at `0095EB9E`).
+  `0085B7D0` then reads the word as `[ESP+2Ch]` (`0085B828` for function 7, `0085B85D` for the
+  default arm, `0085B881` for artillery) with no subtraction. So on this path the image tests
+  **hull-relative** windows against a **world compass heading**, starboard-positive, in
+  `[0, 2pi)`. That is neither the gun bots' sign nor a hull-relative angle; it is right only for
+  a ship heading due north, and even then it is mirrored against the gun bots. This is the
+  image's behaviour, and the host reproduces it verbatim.
+- **The `009E8153` path, partly.** Word 5 there is `nested+11DCh`, written by the arc-centre step
+  `009E46F0` as a compass heading of a point difference, with the point first in both
+  subtractions (`009E481C`, `009E4826`). `009E5DB4` then subtracts the ring slot's own angle
+  inside the adapter. Whether the ring angles are world or hull-relative was not read, so this
+  path's frame stays open.
+- Neither path reads the gun host's angles. `kGunHorzImageSignBound` does not change them, and no
+  change is proposed: fixing them would depart from the image.
 
 ## 3. Which mounts change their trainable side
 
