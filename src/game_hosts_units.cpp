@@ -950,6 +950,15 @@ struct GameUnitSlot {
     bool torpedo_issue_gate_open{false};
     // The approach object embedded at task+3F8h.
     bsp::TorpedoApproachState torpedo_approach{};
+    // Packet cc9_planner_heading_writes: the torpedo attackrun state's +18h,
+    // +1Ch and +20h. 009D06D0 seeds +1Ch = -U(0,1); the midpoint, as every
+    // other draw in this host. 009D0790 resets +18h and +20h on each entry.
+    float torpedo_ar_period_18{1.0f};
+    float torpedo_ar_countdown_1c{-0.5f};
+    float torpedo_ar_offset_20{0.0f};
+    int torpedo_ar_heading_writes{0};
+    int torpedo_ar_rerolls{0};
+    int torpedo_moveto_heading_writes{0};
     int torpedo_approach_ticks{0};
     int torpedo_approach_no_target_ticks{0};
     int torpedo_approach_replans{0};
@@ -2939,8 +2948,23 @@ struct GameUnitsHost::Impl {
     static constexpr bool kDogfightManeuverBodyBound = true;
     static constexpr bool kDogfightAvoidBodiesBound = true;
     static constexpr bool kDogfightAvoidPickBound = true;
-    static constexpr bool kPlannerYawBaseModeGateBound = false;
+    // ON since packet cc9_planner_heading_writes: with the torpedo moveto and
+    // attackrun heading writes bound (kPilotStateHeadingWritesBound) the Kates
+    // close again; pair PHW0/PHW1, docs/PLANNER_HEADING_WRITES.md section 6.
+    static constexpr bool kPlannerYawBaseModeGateBound = true;
     unsigned long long planner_yaw_base_zeroed{0};
+    // DIAGNOSTIC, packet cc9_planner_heading_writes (docs/PLANNER_HEADING_WRITES.md):
+    // per task/state, the planner ticks with a target, split by +2CCh on
+    // entry to 0099DE8A (index 0, 1, 2; 3 = any other value).
+    static constexpr bool kPlannerModeCensusDiag = true;
+    // Packet cc9_planner_heading_writes (docs/PLANNER_HEADING_WRITES.md): the
+    // torpedo states' own heading writes the host never reproduced. The moveto
+    // tick 009C18C0 steers at its +2Ch target through 009F9E40 (009C1B23,
+    // mode 2 at 009F9EC1); the attackrun tick 009D07B0 writes
+    // AddWrapped(approach+94h, state+20h) with mode 2 (009D0927/009D092D).
+    static constexpr bool kPilotStateHeadingWritesBound = true;
+    struct PlannerModeCount { unsigned long long n[4]{}; };
+    std::map<std::string, PlannerModeCount> planner_mode_census;
     // DIAGNOSTIC: every kFighterAccelTraceEvery lead ticks one line per
     // fighter comparing the two accelerations; 0 = off in the landed build.
     static constexpr int kFighterAccelTraceEvery = 0;
@@ -12707,6 +12731,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                    ctx.current == bsp::TorpedoState::kFollow) {
                             run_move_to_tick_009c18c0();
                         } else if (ctx.current == bsp::TorpedoState::kAttackRun) {
+                            if constexpr (GameUnitsHost::Impl::kPilotStateHeadingWritesBound) {
+                                run_torpedo_attackrun_heading_009d07b0(
+                                    dt, before_state != bsp::TorpedoState::kAttackRun);
+                            }
                             // Step 4 of the attackrun tick 009D07B0, the half
                             // that commands the altitude: "altitude
                             // approach->+78h + approach->+74h through 009FBA50"
@@ -13210,6 +13238,41 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         float heading_{0.0f};
                     };
 
+                    // 009D07B0 steps 1-3 (docs/PLANNER_HEADING_WRITES.md). The
+                    // enter 009D0790 runs on the transition into the state.
+                    // SUBSTITUTION, labelled: 007F0280 at 009D0857 runs in mode
+                    // 0, which walks the list at [approach+0Ch]+3CCh/+3D0h
+                    // rather than the mode-1 aircraft list the host probe
+                    // models; that list is unread, so the probe product is 0
+                    // and the offset is the sector-scan bias alone.
+                    void run_torpedo_attackrun_heading_009d07b0(float dt, bool entered) {
+                        if (entered) {
+                            unit_.torpedo_ar_offset_20 = 0.0f;   // 009D0793
+                            unit_.torpedo_ar_period_18 = 0.4f;   // 009D07A0, 00CE7804
+                        }
+                        const bsp::TorpedoApproachState& ap = unit_.torpedo_approach;
+                        bsp::TorpedoAttackRunHeadingInputs in;
+                        in.dt = dt;
+                        in.period_18 = unit_.torpedo_ar_period_18;
+                        in.countdown_1c = unit_.torpedo_ar_countdown_1c;
+                        in.offset_20 = unit_.torpedo_ar_offset_20;
+                        in.probe_product = 0.0f;
+                        in.range_90 = ap.range_90;
+                        in.scan_seed_88 = ap.scan_radius_seed_88;
+                        in.turn_5c = ap.turn_offset_5c;
+                        in.bearing_94 = ap.bearing_94;
+                        const bsp::TorpedoAttackRunHeadingResult r =
+                            bsp::torpedo_attack_run_heading_009d07b0(in);
+                        unit_.torpedo_ar_countdown_1c = r.countdown_1c;
+                        unit_.torpedo_ar_offset_20 = r.offset_20;
+                        if (r.rerolled) ++unit_.torpedo_ar_rerolls;
+                        unit_.plan_heading_2c0 = r.heading_2c0;       // 009D0927
+                        unit_.plan_heading_2c0_written = true;
+                        unit_.plan_heading_mode_2cc = r.heading_mode_2cc;  // 009D092D
+                        ++unit_.torpedo_ar_heading_writes;
+                        owner_.done("BotStateTorpedoAttackRun::heading", 0x009d0927u);
+                    }
+
                     // 009C18C0's steps 2 and 5, the two halves that matter to a
                     // torpedo bomber's approach. docs/TORPEDO_MOVETO_TICK.md and
                     // docs/TORPEDO_AIM_ALT_AND_SAFE_DIST.md.
@@ -13299,6 +13362,21 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             unit_.plan_state.pitch_mode_2d0 = 2;
                         }
                         owner_.record("BotStateMoveTo::glide_slope", 0x009c18c0u);
+                        if constexpr (GameUnitsHost::Impl::kPilotStateHeadingWritesBound) {
+                            // 009C1B1C-009C1B23: 009F9E40 at the +2Ch target's
+                            // world position (009C18EC-009C1913). The +2Ch
+                            // target is 009C2AC0's, the task's attack target,
+                            // which this host holds as the commanded target.
+                            if (const GameUnitSlot* mt = goaway_target()) {
+                                unit_.plan_heading_2c0 = bsp::heading_command_009f9e40(
+                                    mt->motion.position[0], mt->motion.position[2],
+                                    unit_.motion.position[0], unit_.motion.position[2]);
+                                unit_.plan_heading_2c0_written = true;
+                                unit_.plan_heading_mode_2cc = 2;   // 009F9EC1
+                                ++unit_.torpedo_moveto_heading_writes;
+                                owner_.done("BotStateMoveTo::heading", 0x009c1b23u);
+                            }
+                        }
                         if ((unit_.plane_speed_commands % 50) == 1) {
                             owner_.log.notef("  torpedo %-12s glide census n=%d "
                                 "range=%.1f base=%.2f low=%.1f t=%.3f gain=%.3f "
@@ -14039,6 +14117,23 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
 
                         bsp::PilotBotYawScratch scratch;
                         scratch.base_num = bsp::yaw_base_numerator_0099de8a(term);
+                        if constexpr (GameUnitsHost::Impl::kPlannerModeCensusDiag) {
+                            char key[48];
+                            if (unit_.torpedo_task_installed) {
+                                std::snprintf(key, sizeof key, "torpedo:%X",
+                                    static_cast<unsigned>(unit_.torpedo_state));
+                            } else if (unit_.dive_bomb_task_installed) {
+                                std::snprintf(key, sizeof key, "divebomb:%X",
+                                    static_cast<unsigned>(unit_.dive_bomb_state));
+                            } else if (unit_.dogfight_task_installed) {
+                                std::snprintf(key, sizeof key, "dogfight:%s",
+                                    bsp::dogfight_state_name(unit_.dogfight_state));
+                            } else {
+                                std::snprintf(key, sizeof key, "notask");
+                            }
+                            const int m = unit_.plan_heading_mode_2cc;
+                            ++owner_.planner_mode_census[key].n[(m >= 0 && m <= 2) ? m : 3];
+                        }
                         if constexpr (GameUnitsHost::Impl::kPlannerYawBaseModeGateBound) {
                             // 0099DE8A CMP ECX,2: the heading-hold base term is
                             // computed only when plan+2CCh == 2 on entry; any
@@ -16729,6 +16824,15 @@ void GameUnitsHost::report() {
                             "gate=%d (0099DE8A on +2CCh != 2, packet cc9_dogfight_maneuver_bodies)",
                             host.planner_yaw_base_zeroed,
                             Impl::kPlannerYawBaseModeGateBound ? 1 : 0);
+                        if constexpr (Impl::kPlannerModeCensusDiag) {
+                            for (const auto& kv : host.planner_mode_census) {
+                                host.log.notef("summary mission planner mode census state=%s "
+                                    "mode0=%llu mode1=%llu mode2=%llu other=%llu "
+                                    "(0099DE8A entry +2CCh, packet cc9_planner_heading_writes)",
+                                    kv.first.c_str(), kv.second.n[0], kv.second.n[1],
+                                    kv.second.n[2], kv.second.n[3]);
+                            }
+                        }
                         host.log.notef("summary mission terrain avoidance ticks=%lld bands=%lld "
                             "throttle=%lld dive_ticks=%lld water_ticks=%lld (0099F1C0/0099CAB0, "
                             "packet cc9_pilot_vehicle_terrain_avoidance)", tt, tb, tth, td, tw);

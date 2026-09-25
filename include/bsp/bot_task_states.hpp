@@ -370,6 +370,40 @@ struct TorpedoAttackRunAltitudeCommand {
 TorpedoAttackRunAltitudeCommand torpedo_attack_run_altitude_009d0951(
     const TorpedoAttackRunAltitudeInputs& in) noexcept;
 
+// 009D07B0 steps 1-3, the heading half (packet cc9_planner_heading_writes,
+// docs/PLANNER_HEADING_WRITES.md). The state is state+18h (period), +1Ch
+// (countdown) and +20h (lateral offset). Constructor 009D06D0 seeds +18h = 1.0
+// (00D7A24C), +1Ch = -U(0,1) (00BD2F10, FCHS) and +20h = 0; enter 009D0790
+// (vtable 00D212C4+4) sets +20h = 0 and +18h = 0.4 (00CE7804).
+//   re-roll (dt >= +1Ch): +1Ch = (+18h - dt) + +1Ch;
+//     raw = -out_a.x * out_b.y * out_b.z of 007F0280 (mode 0) * pi/6 (00CEC730);
+//     bias = clamp(interp(3 -> 0, 0.5 -> 3; +90h / +88h) * +5Ch, -1.2, 1.2)
+//            (00CE3854, 00CE3800, 00D05EA4, 00CE3814);
+//     +20h = AddWrapped(raw, bias) (009D08FC)
+//   else: +1Ch -= dt.
+//   cmd+2C0h = AddWrapped(approach+94h, +20h) (009D0915/009D0927), cmd+2CCh = 2
+//   (009D092D), approach+60h = the same angle (009D0939).
+struct TorpedoAttackRunHeadingInputs {
+    float dt{0.0f};
+    float period_18{0.4f};
+    float countdown_1c{0.0f};
+    float offset_20{0.0f};
+    float probe_product{0.0f};   // out_a.x * out_b.y * out_b.z, before the FCHS
+    float range_90{0.0f};        // approach+90h
+    float scan_seed_88{0.0f};    // approach+88h
+    float turn_5c{0.0f};         // approach+5Ch
+    float bearing_94{0.0f};      // approach+94h
+};
+struct TorpedoAttackRunHeadingResult {
+    bool rerolled{false};
+    float countdown_1c{0.0f};
+    float offset_20{0.0f};
+    float heading_2c0{0.0f};     // also approach+60h
+    int heading_mode_2cc{2};
+};
+TorpedoAttackRunHeadingResult torpedo_attack_run_heading_009d07b0(
+    const TorpedoAttackRunHeadingInputs& in) noexcept;
+
 // 009A3770 and 009D07B0, the two attackrun ticks. They differ only in constants,
 // which is why one sequence carries both through `variant`.
 struct AttackRunTickInputs {
