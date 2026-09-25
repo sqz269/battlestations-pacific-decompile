@@ -697,5 +697,10 @@ LRESULT CALLBACK game_window_procedure(HWND window, UINT message, WPARAM wparam,
 // stores that receiver in extra offset zero. Passing null clears both bindings.
 void set_active_platform_state(Win32PlatformState* state,
     PlatformTextInput* text = nullptr) noexcept;
+// The platform object set_active_platform_state published, the one the image
+// keeps in [0109CF04]; null before the window exists and after teardown.
+// Read-only access for readers of its fields (the HUD's GUI extent 00AA1FE0,
+// docs/GUI_EXTENT_INPUTS.md).
+const Win32PlatformState* active_platform_state() noexcept;
 
 }  // namespace bsp::game

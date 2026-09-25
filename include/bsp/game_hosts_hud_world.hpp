@@ -214,6 +214,13 @@ inline constexpr bool kHudWeaponGroupTargetBound = true;
 // records. Committed OFF until its pair runs.
 inline constexpr bool kHudWeaponGroupLayoutBound = false;
 
+// Packet cc9_gui_extent_inputs (docs/GUI_EXTENT_INPUTS.md). ON answers the
+// GUI extent 00AA1FE0 that the markers screen and screen 29h's projection
+// ask for from the platform object's widescreen byte (+0Dh) and active
+// aspect (+10h), through bsp::gui_aspect_extent_00aa1fe0, in place of the
+// (1, 1) substitution and its record. Committed OFF until its pair runs.
+inline constexpr bool kHudGuiExtentBound = false;
+
 class GameHostLog;
 class GameFrontendHost;
 class GameMenuHost;

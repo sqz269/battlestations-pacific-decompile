@@ -1,0 +1,56 @@
+{
+ "packet": "cc9_gui_extent_inputs",
+ "branch": "agent/cc9-platform2",
+ "doc": "docs/GUI_EXTENT_INPUTS.md",
+ "switches": {
+  "kHudGuiExtentBound": false
+ },
+ "functions": [
+  {
+   "address": "00AA1FE0",
+   "name": "BSP_Gui_GetAspectExtent",
+   "end_inclusive": "00AA201A",
+   "status": "reconstructed (bsp::gui_aspect_extent_00aa1fe0); bound at both host call sites under the switch",
+   "abi": "__thiscall(float out[2]) ECX = out, RET"
+  },
+  {
+   "address": "00BECEE0",
+   "name": "BSP_Win32Platform_CreateWindowAndDevice",
+   "status": "analyzed: writes +10h at 00BED126 and +0Dh at 00BED146; host src/platform_window.cpp is the contract"
+  },
+  {
+   "address": "00BEBFA0",
+   "name": "BSP_Win32Platform_ApplyWindowMode",
+   "status": "analyzed: the same law on a mode change"
+  }
+ ],
+ "host_steps": [
+  {
+   "function": "0043A660",
+   "address": "0043A7BB",
+   "native": "00AA1FE0",
+   "host": "UnitPick project_0043a660 -> gui_aspect_extent_00aa1fe0(...).height (mode 1)"
+  },
+  {
+   "function": "0043A660",
+   "address": "0043A7FC",
+   "native": "00AA1FE0",
+   "host": "the same projection's second arm"
+  },
+  {
+   "function": "006435D0",
+   "address": "00643616",
+   "native": "00AA1FE0",
+   "host": "HudMarkers gui_extent -> gui_aspect_extent_00aa1fe0"
+  }
+ ],
+ "no_ghidra_function": [],
+ "pairs": [
+  {
+   "switch": "kHudGuiExtentBound",
+   "off": "local/bin/ext_off",
+   "on": "local/bin/ext_on",
+   "status": "pending the session reconnect; predictions in docs/GUI_EXTENT_INPUTS.md section 4 (records -> concrete, total -334,319 / -678,273, summary identical)"
+  }
+ ]
+}

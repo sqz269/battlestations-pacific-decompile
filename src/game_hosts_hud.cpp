@@ -3,6 +3,8 @@
 #include "bsp/game_hosts_hud.hpp"
 
 #include "bsp/game_hosts.hpp"
+#include "bsp/gui_aspect_extent.hpp"
+#include "bsp/platform_window.hpp"
 #include "bsp/game_hosts_hud_world.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/mission_camera.hpp"
@@ -2327,13 +2329,22 @@ public:
         const float source[4] = {point[0], point[1], point[2], 1.0f};
         float clip[4];
         bsp::transform_native_vector4_00b62d10(source, clip, vp.data());
-        // SUBSTITUTION: mode 1 multiplies y by the GUI extent height
-        // (00AA1FE0()+4h), which reaches the markers host only; 1.0 is the
-        // value its 4/3 law gives (docs/HUD_PRESENTATION_TOP.md row 2).
-        owner_.record("UnitPickScreen::gui_extent", 0x00aa1fe0u);
+        // Mode 1 multiplies y by the GUI extent height (00AA1FE0()+4h).
+        // OFF: SUBSTITUTION of 1.0, the value its 4/3 law gives
+        // (docs/HUD_PRESENTATION_TOP.md row 2), as a record.
+        float extent_height = 1.0f;
+        const Win32PlatformState* platform =
+            kHudGuiExtentBound ? active_platform_state() : nullptr;
+        if (platform != nullptr) {
+            extent_height = bsp::gui_aspect_extent_00aa1fe0(platform->widescreen,
+                                                            platform->active_aspect).height;
+            owner_.done("UnitPickScreen::gui_extent", 0x00aa1fe0u);
+        } else {
+            owner_.record("UnitPickScreen::gui_extent", 0x00aa1fe0u);
+        }
         const bsp::HudMarkerScreenProjection p = bsp::camera_project_world_to_screen_0043a660(
             clip[0], clip[1], clip[2], clip[3], bsp::HudMarkerProjectMode::ViewportAspect, true,
-            1.0f, 1.0f);
+            extent_height, 1.0f);
         x = p.screen_x;
         y = p.screen_y;
         return p.clip_mask;
