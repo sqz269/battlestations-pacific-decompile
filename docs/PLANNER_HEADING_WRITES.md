@@ -199,3 +199,31 @@ Next step: read `vtable[34h]` for the aim tick's head-on test, then re-take S1T 
   If the fighters still drown chasing a Val down, read the aim tick's pitch arm for an altitude
   floor or pull-up on a low target (`009A76E0`'s pitch half, and whether `0099F1C0` terrain/water
   avoidance applies to aim). If they do not drown, land the switch on that pair.
+
+### 7.2 `009A76E0`'s pitch half: no floor of its own (read-only)
+
+- **The call.** `009A78BB` calls `009F9ED0(this = approach, altitude_error, distance)`.
+  - The altitude error is `aim point y - unit+100h` (`009A78A6`-`009A78B8`). The aim point is the
+    triple the approach's `vtable[0]` fills at `[ESP+0Ch]` (`009A7877`-`009A7882`).
+  - The distance is `approach+D8h` (`009A786D`).
+- **`009F9ED0` caps upward only.** It computes `t = pi/2 - atan2(d, a)`, the elevation of the aim
+  point (docs/PLANE_FOLLOW_PITCH.md). It then caps at the class's steepest sustainable climb
+  (`[[this]+8]+1E4h`, `009F9F59`), stores `plan+2BCh`, and sets `plan+2D0h = 2`.
+  - No lower bound and no altitude term exist on this path.
+  - A target at sea level below the fighter gets a pitch-down equal to the full depression angle to
+    the aim point, steeper as the range closes.
+- **The image's only floor is the pilot's avoidance pass.** `009A17D0` runs before `0099D300` every
+  think, for every free-flying plane (`unit+900h == 7`) whose squadron exists, in any task state.
+  Its terrain arm `0099F1C0` builds pitch bands from the height above the surface (`unit+9B4h`) and
+  the velocity's elevation, and adds a throttle and dive term (`0099CAB0`). So aim is covered by the
+  same band as every other state; it is not exempt.
+- **What that means for S1T.** S1T ran on 2026-09-23 at about 08:57 (the packet doc `7d96fd00c`). The
+  vehicle and terrain avoidance arms landed at 19:03 that day (`b4a0e984d`, `kPilotTerrainAvoidanceBound`
+  and `kPilotVehicleAvoidanceBound`, both ON now). So the two Yorktown fighters that dived into the sea
+  inside aim in S1T had **no floor at all** in that host. In the landed run
+  `local\PHW1_9000.log` the arm works: 1,327 terrain-avoidance ticks, 3,902 bands, 102 throttle
+  writes, 0 water ticks.
+- **Verdict for the re-take.** If the fighters still drown with `kDogfightThrottleBound` ON on current
+  `main`, the next read is the band's depth against a full-throttle dive at 100+ m/s: `0099F1C0`'s
+  look-ahead (`look_t = max(1.5 / pitch speed, 3.0)`), and its water-surface substitution in
+  branch A. There is no aim-specific floor to bind first.
