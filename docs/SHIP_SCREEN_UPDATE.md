@@ -1732,3 +1732,62 @@ predicted OFF rows (group_available 36,637, widget_c0 9,158).
 - **Dispersion.** The role seat test 00521E70(unit, 2 or 3) in 0073031D would now answer "player"
   for the Lexington's default-arm guns. The host's `bot_throw_multiplier` input assumes an AI seat.
 - **Screen 29h.** Why it picks nothing on current main is open.
+
+## 36. Why screen 29h stopped picking in USN04 (cc9-platform2, 2026-09-25, read only)
+
+Packet `cc9_unit_pick_regression`. Section 34 found `UnitPickScreen::owner_140` at 0 on current main,
+against 662 in the section 29 runs. Those runs were built on 88e1a3062 plus 3f79fea6b.
+
+**The pick's inputs did not change.** Every other `UnitPickScreen::` row is identical between
+`local\ga_on_usn04.log` (picks) and `local\tgt_on_usn04.log` (no picks):
+- the same 9,160 updates, with `camera_basis` 3 and `project` 51;
+- 261,108 grey-arrow tests, the same candidate walk;
+- 251,897 `gui_extent` calls, one per projected candidate.
+
+So the lists, the lock radius (`lock radius: scripts/datatables/globals.lua` in both) and the
+projection path are the same. Only the outcome changed: no candidate projects inside the lock circle.
+
+**What moved is the camera, because the Lexington's path moved.**
+- `controlled unit frame` lines match through frame 2870 and differ from 2880.
+- At 2880 both runs switch the Lexington from `moveonpath` to an AI `moveto`
+  (`cmdlife 143.75s ... issue ai_command_tick/moveto`, command target "D3A Val #1.1|.-4"). The
+  target differs: heading 0.7103 at 6,251 m on the picking tree, -0.2479 at 6,448 m on main.
+- By frame 3110 the ship steers 19.1° instead of 37.2°, with rudder 0.853 against -0.213. The first
+  pick came at frame 3112 on the picking tree. The ShipCaptain camera follows the ship, so the
+  friendly units the pick finds near screen centre are no longer there.
+- That Val's own trace diverges at the anti-aircraft blasts it takes: 12.7 m instead of 15.0 m, then
+  more damage. That is a downstream effect of changed plane flights, not a pick input.
+
+**Which landing changed it: f7de926f4** (packet cc9_planner_heading_writes,
+`kPilotStateHeadingWritesBound`, in `src/game_hosts_units.cpp`). It is isolated by trees:
+
+| tree | contains | owner_140 | Lexington heading at 3110 |
+| --- | --- | ---: | ---: |
+| section 29 runs (88e1a3062 + 3f79fea6b) | 3f79fea6b | 662 | 37.220 |
+| cc9-aa-targeting `mzO`/`mzT` (muzzle pair, 9176f4b42's tree) | 7dd40497c, muzzle offsets on/off | 662 / 662 | 37.220 / 37.220 |
+| 44e93b370 (sections 33 and 34 runs, role take on or off) | f7de926f4, 7dd40497c, 3f79fea6b | 0 | 19.075 |
+
+- The only code commit that 44e93b370 has and both picking trees lack is f7de926f4.
+- 6824b2817 is documentation only.
+- 7dd40497c (the torpedo launch gate) and 3f79fea6b (sections 26-28) each sit in a picking tree.
+- The muzzle pair shows that moving the AA shot origins alone does not move the path.
+- f7de926f4's own pair already records a path change: docs/PLANNER_HEADING_WRITES.md line 137,
+  "Lexington moved 6750.78 m -> 5929.06 m", judged by band.
+
+The torpedo moveto and attack-run heading writes change the Kates' flights. That moves the AA
+engagement and the Val the Lexington's moveto is aimed at, and so the ship's heading and the camera.
+
+**Not a host bug.** Screen 29h's pick is a function of where the camera looks. On USN04 the camera
+looks where the Lexington steers, and that is a knife-edge (the memory note on the Lexington applies
+to its path as well as its death). Neither the pick nor the 2Eh target needs a change. What this
+means for measurements: the 29h and 2Eh target rows depend on the ship's path, and they should be
+judged from same-tree pairs only.
+
+**Confirming run, pending the reconnect.** Rebuild current main with
+`kPilotStateHeadingWritesBound = false` and run USN04 4700/4500 with `BSP_GUNNERY_RNG_STREAMS=1`.
+Expect:
+- `UnitPickScreen::owner_140` back at 662;
+- the Lexington's `controlled unit frame 3110` heading at 37.220;
+- a non-zero `HudWeaponGroupScreen::gunner_distance` row, since the 2Eh target now follows the pick.
+
+The switch belongs to the planner packet, so the build is a local diagnostic only.
