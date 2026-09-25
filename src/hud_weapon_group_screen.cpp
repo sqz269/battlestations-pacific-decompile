@@ -157,7 +157,7 @@ bool target_marks(HudWeaponGroupScreenState& screen, HudWeaponGroupScreenHost& h
         if (target != 0 && host.relation_00803ce0(first, target) == 0 &&
             !host.unit_is_kind_of(target, 0x36) && host.row_widget_present(row, 1) &&
             target != first) {
-            host.show_row_widget(row, 1);
+            host.show_row_widget(row, 1, screen.flag_d4);
         }
         return false;
     }
@@ -186,14 +186,14 @@ bool target_marks(HudWeaponGroupScreenState& screen, HudWeaponGroupScreenHost& h
     }
     if (host.relation_00803ce0(nearest, target) == 1) {                // 00548F7C
         if (!host.row_widget_present(row, 4)) return false;
-        host.show_row_widget(row, 4);
+        host.show_row_widget(row, 4, screen.flag_d4);
         return true;
     }
     if (host.unit_is_kind_of(target, 0x36)) return false;
     if (!host.row_widget_present(row, 1)) return false;
     if (host.relation_00803ce0(nearest, target) == 2) return false;    // 00548FDF
     if (target == first) return false;
-    host.show_row_widget(row, 1);
+    host.show_row_widget(row, 1, screen.flag_d4);
     return false;
 }
 
@@ -322,11 +322,11 @@ bool weapon_group_screen_update_005484f0(HudWeaponGroupScreenState& screen,
         }
         // 00549134.
         if (screen.group_44 != 0 && !host.input_in_set_00547250(0x99)) {
-            if (!row_shown && host.row_widget_present(row, 0)) host.show_row_widget(row, 0);
+            if (!row_shown && host.row_widget_present(row, 0)) host.show_row_widget(row, 0, screen.flag_d4);
             const int mode = host.input_mode_f8a0c4();
             const int column = mode == 1 ? 2 : mode == 2 ? 3 : -1;
             if (column >= 0 && host.row_widget_present(row, column)) {
-                host.show_row_widget(row, column);
+                host.show_row_widget(row, column, screen.flag_d4);
             }
             screen.row_d0 = row;
             return true;
@@ -335,6 +335,46 @@ bool weapon_group_screen_update_005484f0(HudWeaponGroupScreenState& screen,
     host.show_widget_c0_005491c2();                                     // 005491C2
     screen.row_d0 = row;
     return true;
+}
+
+// 00546A20 (section 37). The names come from the literals the routine
+// copies; the column rules are its jump table at 0054708C.
+void weapon_group_layout_00546a20(HudWeaponGroupScreenState& screen,
+                                  HudWeaponGroupLayoutHost& host) {
+    static const char* const kGroups[5] = {
+        "ship_AA_Group", "ship_art_Group", "ship_torpedo_Group", "ship_DC_Group",
+        "ship_rocket_Group"};
+    static const char* const kCells[5] = {
+        "cross__Icon", "cross_F_Icon", "cross_H_Icon", "cross_HF_Icon", "cross_L_Icon"};
+    screen.row_d0 = 0;                                                  // 00546A30
+    const std::uintptr_t ship = host.page_58();
+    if (ship != 0) {
+        for (int row = 0; row < 5; ++row) {
+            const std::uintptr_t group = host.find_child(ship, kGroups[row]);   // 00546AAF
+            if (row == 1) {                                             // 00546AC3..00546C1B
+                screen.aim_c4 = host.find_child(group, "cross_botton_Icon");
+                screen.aim_c8 = host.find_child(group, "cross_left_Icon");
+                screen.aim_cc = host.find_child(group, "cross_right_Icon");
+            }
+            for (int column = 0; column < 5; ++column) {                // 00546C28
+                screen.cells[row][column] = 0;
+                const bool skip = (column == 1 && row == 3) ||
+                                  (column == 3 && (row == 2 || row == 3)) ||
+                                  (column == 4 && (row == 1 || row == 2 || row == 3));
+                if (!skip) screen.cells[row][column] = host.find_child(group, kCells[column]);
+            }
+            const std::uintptr_t f_cell = screen.cells[row][1];
+            if (f_cell != 0) {                                          // 00546D61
+                host.place_f2(f_cell, host.find_child(f_cell, "cross_F2_Icon"), row);
+            }
+        }
+    }
+    const std::uintptr_t gunstate = host.page_dc();
+    screen.disable_c0 = host.find_child(gunstate, "CrosshairDisable_Icon");  // 00546F27
+    screen.gunstate_fc = host.find_child(gunstate, "GunState_Icon");        // 00546FA6
+    host.set_visible(screen.gunstate_fc, false);                            // 00546FD7
+    screen.circle_d8 = host.find_child(gunstate, "circle_Section");        // 00547030
+    screen.layout_done = true;
 }
 
 }  // namespace bsp

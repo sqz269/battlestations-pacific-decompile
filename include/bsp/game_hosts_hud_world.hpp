@@ -205,6 +205,15 @@ inline constexpr bool kHudGunnerRoleTakeBound = true;
 // OFF keeps the record answering none.
 inline constexpr bool kHudWeaponGroupTargetBound = true;
 
+// Packet cc9_screen_2eh_layout (docs/SHIP_SCREEN_UPDATE.md section 37). ON
+// runs screen 2Eh's layout 00546A20 over GUI_cross_ship / GUI_cross_gunstate
+// (once, before the first use) and binds 005484F0's widget calls to it: the
+// hide-all 005452F0, the row-widget presence and show (argument +D4h) and
+// widget +C0h's show. Screen 45h's 00545360 then sets +D4h. The F2 placement
+// (GUI geometry), the group sight 00548300 and the other widget helpers stay
+// records. Committed OFF until its pair runs.
+inline constexpr bool kHudWeaponGroupLayoutBound = false;
+
 class GameHostLog;
 class GameFrontendHost;
 class GameMenuHost;

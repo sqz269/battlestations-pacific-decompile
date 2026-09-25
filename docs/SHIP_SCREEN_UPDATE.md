@@ -1791,3 +1791,95 @@ Expect:
 - a non-zero `HudWeaponGroupScreen::gunner_distance` row, since the 2Eh target now follows the pick.
 
 The switch belongs to the planner packet, so the build is a local diagnostic only.
+
+## 37. Screen 2Eh's layout 00546A20 (cc9-platform2, 2026-09-25)
+
+Packet `cc9_screen_2eh_layout`. The switch `kHudWeaponGroupLayoutBound` is **committed OFF**. Its pair
+waits for the session reconnect.
+
+**The screen's vtable, 00CEDF34.** It is read from the dwords at 00CEDF30..00CEDF5C:
+
+| slot | routine | role |
+| --- | --- | --- |
+| +10h | 005468B0 | register: `BSP_GuiManager_LoadPage("GUI_cross_gunstate")` into +DCh, `"GUI_cross_ship"` into +58h |
+| +14h | 00546A20 | layout, this section |
+| +18h | 005494C0 | enter: 00549260(entry 0's unit or none, +40h), page +58h vtable +34h(1), +D4h = 1 |
+| +1Ch | 005470A0 | exit: 005464E0, page +58h vtable +34h(0), +D4h = 0 (no Ghidra function; 005470A0..005470BD, see the report) |
+| +20h | 004F75C0 | update, the base `RET 4` (section 14) |
+
+**00546A20**, `__fastcall(screen)`, plain RET at 00547076. Every lookup is
+`BSP_GuiWidget_FindChildByName` (00AA7E00) with its recursive flag set.
+1. +D0h = 0.
+2. If the `GUI_cross_ship` page +58h exists, for each row 0..4 it finds the group on the page:
+   `ship_AA_Group`, `ship_art_Group`, `ship_torpedo_Group`, `ship_DC_Group`, `ship_rocket_Group`.
+   - Row 1 also finds `cross_botton_Icon`, `cross_left_Icon` and `cross_right_Icon` under its group,
+     into +C4h, +C8h and +CCh.
+   - Each column 0..4 is cleared, then found under the group (jump table 0054708C):
+
+| column | name | rows that skip it |
+| --- | --- | --- |
+| 0 | `cross__Icon` | none |
+| 1 | `cross_F_Icon` | 3 |
+| 2 | `cross_H_Icon` | none |
+| 3 | `cross_HF_Icon` | 2, 3 |
+| 4 | `cross_L_Icon` | 1, 2, 3 |
+
+   - The cell is stored at +5Ch + row*14h + column*4h.
+   - When the row's F cell exists, `cross_F2_Icon` is found under it and placed:
+     - its local bounds are half the F cell's size (00AA6740, 00AA7DC0);
+     - rows 1 and 2 then get a resolved position (00AA6750, 00AA8240) whose y is 00CE3800 or
+       00CEDE2C;
+     - the F2 handle is not stored.
+3. On the `GUI_cross_gunstate` page +DCh, with no null test, it finds three widgets:
+   - `CrosshairDisable_Icon` into +C0h;
+   - `GunState_Icon` into +FCh, which is then hidden (vtable +34h(0));
+   - `circle_Section` into +D8h.
+
+This installation's `interface/gui_cross_ship.lua` defines exactly these names. The occurrence counts
+match the skip rules: `cross__Icon` 5, `cross_F_Icon` 4, `cross_H_Icon` 5, `cross_HF_Icon` 3,
+`cross_L_Icon` 2 and `cross_F2_Icon` 4. `gui_cross_gunstate.lua` defines the three gunstate names.
+
+**+D4h, the show argument.** Every row-widget call in 005484F0 passes the byte +D4h. Its writers:
+- the enter 005494C0 (1) and the exit 005470A0 (0);
+- 00545360 (1, and +1Ch = 0) and 00545AC0 (0, +1Ch = 1). Both are called from screen 45h's
+  0064DD30. 45h calls 00545360 at 0064F65A on every update outside repair mode: 9,158 calls in
+  USN04 4500.
+
+**The binding** (`bsp::weapon_group_layout_00546a20`, `src/hud_weapon_group_screen.cpp`; host
+`WeaponGroupLayoutBinding`, `src/game_hosts_hud.cpp`):
+- Pages come from `GameMenuHost::in_game_page(0x2E, ...)`. Lookups use
+  `bsp::find_descendant_by_name`, and visibility uses `set_widget_visible`. The GUI resource
+  code behind them is the front end's (Codex's), used as a contract.
+- The layout runs once, before the first widget use. The image runs it at registration; the
+  difference is labelled.
+- 005484F0's `hide_widgets` (005452F0), `row_widget_present`, `show_row_widget` (argument +D4h)
+  and `widget_c0` act on the found widgets.
+- 45h's 00545360 sets +D4h.
+- The F2 placement is a record, `HudWeaponGroupScreen::place_f2`: it is GUI geometry.
+- 00548300's group sight, 005464E0, the group-3 rocket widgets and the group-5 widget +98h stay
+  records.
+- The 2Eh enter and exit are the generic `FrontEndScreen::enter`/`exit` records. Binding the enter
+  would re-run 00549260, whose role retake 4Bh message would be refused: a summary-line change.
+  So it is left for its own packet.
+
+**Predictions, written before the pair.** One tree (main bd3d6996b plus this),
+`local\bin\lay_off` against `local\bin\lay_on`, `BSP_GUNNERY_RNG_STREAMS=1`, USN04 4700/4500 and E2
+9200/9000. N is the number of 005484F0 calls: 9,158 and 18,158. On this tree group 2 is held and the
+target is empty (section 36), so every call takes the role-held path with row 0.
+
+| row | OFF | ON |
+| --- | ---: | ---: |
+| HudWeaponGroupScreen::hide_widgets | N unimplemented | N concrete |
+| HudWeaponGroupScreen::row_widget | N unimplemented | N concrete |
+| HudWeaponGroupScreen::show_row_widget | none | N concrete (row 0, column 0, `ship_AA_Group/cross__Icon`) |
+| HudShipScreen::other_screen_00545360 | N unimplemented | N concrete |
+| HudWeaponGroupScreen::layout | none | 1 concrete |
+| HudWeaponGroupScreen::place_f2 | none | 4 unimplemented (rows 0, 1, 2, 4) |
+| HudWeaponGroupScreen::input_mode | N | N (unchanged) |
+
+- **Unimplemented total.** It falls by 3N - 4: 27,470 in USN04 and 54,470 in E2.
+- **Summary lines.** All identical. No summary line counts image-widget visibility, and nothing here
+  writes gameplay state.
+- **If a page did not load**, the cells stay empty: `show_row_widget` and `place_f2` do not appear,
+  and the total falls by 3N instead. That would be a front-end page-loading finding, not a change
+  to this switch.

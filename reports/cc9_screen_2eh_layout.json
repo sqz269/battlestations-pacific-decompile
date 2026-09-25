@@ -1,0 +1,119 @@
+{
+ "packet": "cc9_screen_2eh_layout",
+ "branch": "agent/cc9-platform2",
+ "doc": "docs/SHIP_SCREEN_UPDATE.md section 37",
+ "switches": {
+  "kHudWeaponGroupLayoutBound": false
+ },
+ "functions": [
+  {
+   "address": "00546A20",
+   "end_inclusive": "00547076",
+   "status": "reconstructed (bsp::weapon_group_layout_00546a20)",
+   "abi": "__fastcall(screen), RET"
+  },
+  {
+   "address": "005468B0",
+   "status": "analyzed: register, pages GUI_cross_gunstate -> +DCh, GUI_cross_ship -> +58h"
+  },
+  {
+   "address": "005494C0",
+   "status": "analyzed: 2Eh enter (vtable +18h), not bound"
+  },
+  {
+   "address": "005470A0",
+   "status": "analyzed: 2Eh exit (vtable +1Ch), not bound"
+  },
+  {
+   "address": "005452F0",
+   "status": "bound under the switch (hide all)"
+  },
+  {
+   "address": "00545360",
+   "status": "bound under the switch from 45h (+D4h = 1)"
+  }
+ ],
+ "host_steps": [
+  {
+   "function": "00546A20",
+   "address": "00546AAF",
+   "native": "00AA7E00",
+   "host": "find_child(page +58h, group name)"
+  },
+  {
+   "function": "00546A20",
+   "address": "00546B05",
+   "native": "00AA7E00",
+   "host": "find_child(art group, cross_botton_Icon)"
+  },
+  {
+   "function": "00546A20",
+   "address": "00546B7A",
+   "native": "00AA7E00",
+   "host": "find_child(art group, cross_left_Icon)"
+  },
+  {
+   "function": "00546A20",
+   "address": "00546BEF",
+   "native": "00AA7E00",
+   "host": "find_child(art group, cross_right_Icon)"
+  },
+  {
+   "function": "00546A20",
+   "address": "00546D17",
+   "native": "00AA7E00",
+   "host": "find_child(group, cell name)"
+  },
+  {
+   "function": "00546A20",
+   "address": "00546DB3",
+   "native": "00AA7E00",
+   "host": "find_child(F cell, cross_F2_Icon) -> place_f2 (record)"
+  },
+  {
+   "function": "00546A20",
+   "address": "00546F27",
+   "native": "00AA7E00",
+   "host": "find_child(page +DCh, CrosshairDisable_Icon)"
+  },
+  {
+   "function": "00546A20",
+   "address": "00546FA6",
+   "native": "00AA7E00",
+   "host": "find_child(page +DCh, GunState_Icon)"
+  },
+  {
+   "function": "00546A20",
+   "address": "00547030",
+   "native": "00AA7E00",
+   "host": "find_child(page +DCh, circle_Section)"
+  },
+  {
+   "function": "005484F0",
+   "address": "00548699",
+   "native": "005452F0",
+   "host": "hide_widgets_005452f0 -> WeaponGroupLayoutBinding::set_visible"
+  },
+  {
+   "function": "0064DD30",
+   "address": "0064F65A",
+   "native": "00545360",
+   "host": "other_screen_00545360 -> weapon_group.flag_d4 = true"
+  }
+ ],
+ "no_ghidra_function": [
+  {
+   "start": "005470A0",
+   "end_inclusive": "005470BC",
+   "role": "screen 2Eh exit, vtable 00CEDF34 +1Ch (dword at 00CEDF50); jump table 0054708C..0054709F precedes, INT3 follows"
+  }
+ ],
+ "pairs": [
+  {
+   "switch": "kHudWeaponGroupLayoutBound",
+   "off": "local/bin/lay_off",
+   "on": "local/bin/lay_on",
+   "status": "pending the session reconnect; predictions in section 37 (total -3N+4, summary identical)"
+  }
+ ]
+}
