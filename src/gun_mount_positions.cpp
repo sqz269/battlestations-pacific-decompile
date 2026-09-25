@@ -6,6 +6,8 @@
 #include "bsp/gun_mount_positions.hpp"
 
 #include "bsp/camera_affine.hpp"  // transform_point_004142e0
+#include "bsp/camera_multiply.hpp"  // multiply_camera_matrices_00413920
+#include <cmath>
 
 namespace bsp {
 
@@ -74,6 +76,40 @@ std::array<float, 3> gun_muzzle_direction_0073022a(
     return std::array<float, 3>{node_world[kNodeMatrixRowForward + 0],
         node_world[kNodeMatrixRowForward + 1],
         node_world[kNodeMatrixRowForward + 2]};
+}
+
+void turning_gun_apply_angles_00859550(float horz, float vert, bool have_barrel,
+    CameraMatrix& root_local, CameraMatrix& barrel_local) noexcept {
+    // 00859574/0085976E: -0.0f (00D7A208) minus the angle, then FSIN / FCOS.
+    const float yaw = -0.0f - horz;
+    const float ys = static_cast<float>(std::sin(yaw));
+    const float yc = static_cast<float>(std::cos(yaw));
+    const float pitch = -0.0f - vert;
+    const float ps = static_cast<float>(std::sin(pitch));
+    const float pc = static_cast<float>(std::cos(pitch));
+    // 00B646E0 / 008595D1..00859633: rows (c,0,-s,0) (0,1,0,0) (s,0,c,0).
+    const CameraMatrix rot_y{yc, 0.0f, -0.0f - ys, 0.0f,
+                             0.0f, 1.0f, 0.0f, 0.0f,
+                             ys, 0.0f, yc, 0.0f,
+                             0.0f, 0.0f, 0.0f, 1.0f};
+    // 008596D1..0085973A: rows (1,0,0,0) (0,c,s,0) (0,-s,c,0).
+    const CameraMatrix rot_x{1.0f, 0.0f, 0.0f, 0.0f,
+                             0.0f, pc, ps, 0.0f,
+                             0.0f, -0.0f - ps, pc, 0.0f,
+                             0.0f, 0.0f, 0.0f, 1.0f};
+    if (have_barrel) {
+        CameraMatrix root = rot_y;
+        for (int i = 12; i < 16; ++i) root[i] = root_local[i];      // 008595BA..0085965A
+        root_local = root;
+        CameraMatrix barrel = rot_x;
+        for (int i = 12; i < 16; ++i) barrel[i] = barrel_local[i];  // 008596B5..0085974C
+        barrel_local = barrel;
+        return;
+    }
+    CameraMatrix product{};
+    multiply_camera_matrices_00413920(product, rot_x, rot_y);     // 008597E2
+    for (int i = 12; i < 15; ++i) product[i] = root_local[i];      // 008597F2..00859816
+    root_local = product;
 }
 
 }  // namespace bsp

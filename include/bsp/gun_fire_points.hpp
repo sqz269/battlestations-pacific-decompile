@@ -29,6 +29,9 @@ struct GunFirePointItem {
     std::uint32_t index{0xffffffffu};         // item+24h, 0071ABB0 seeds FFFFFFFFh
     std::string category;                     // item+28h
     std::vector<std::array<float, 3>> points; // item+44h..4Ch
+    // Host bookkeeping: the entry's position among all Resource children, the
+    // index a Hierarchy Item's `resources` list refers to (hypothesis).
+    std::uint32_t resource_position{0xffffffffu};
 };
 
 // Parse an .mmod byte image: root `MMOD`, the version control word, then the
@@ -83,5 +86,23 @@ bool read_mmod_geom_meshes(const std::vector<std::uint8_t>& bytes,
 
 bool gun_platform_slot_frame_0095f500(const std::vector<GunFirePointItem>& items,
     int key, GunPlatformSlotFrame& frame);
+
+// Packet cc9_muzzle_offsets: the model's top-level `Hierarchy`, each `Item`
+// parsed by the recovered 00B7EB90 through 00B7F100, in file order. Parent
+// fields stay raw serialized DWORDs. False when the model has no Hierarchy or
+// the stream is malformed.
+bool read_mmod_hierarchy_items(const std::vector<std::uint8_t>& bytes,
+    std::vector<struct HierarchyItem>& items, std::string& error);
+
+// Every Resource entry's tag in file order, and each `Note` entry's text as
+// 00719000 reads it (00718F50: the entry's own counted string, cut at the
+// first NUL). 0071AD50 looks a name up among these texts (00718C70 compares
+// record+8 whole) and returns the node paired with the matching Note.
+struct MmodNoteItem {
+    std::string text;
+    std::uint32_t resource_position{0xffffffffu};
+};
+bool read_mmod_resource_notes(const std::vector<std::uint8_t>& bytes,
+    std::vector<MmodNoteItem>& notes, std::vector<std::string>& tags, std::string& error);
 
 } // namespace bsp

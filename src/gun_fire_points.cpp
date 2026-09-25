@@ -2,6 +2,7 @@
 #include "bsp/gun_fire_points.hpp"
 #include "bsp/geom_mesh_resource.hpp"
 #include "bsp/memory_stream.hpp"
+#include "bsp/structured_model.hpp"
 #include "bsp/structured_reader.hpp"
 #include <cstring>
 #include <memory>
@@ -63,6 +64,7 @@ bool read_mmod_aux_point_items_0071b3e0(const std::vector<std::uint8_t>& bytes,
     if (!root || !tag_is(*root, "MMOD")) { error = "no MMOD root"; return false; }
     // 00B80720 consumes the version word before 00B7F430 dispatches the children.
     if (!root->read_control_00be9a40()) { error = "no version word"; return false; }
+    std::uint32_t resource_position = 0;  // file order across Resource entries
     while (root->has_remaining_00715bf0()) {
         auto section = root->read_child_00bea680();
         if (!section) { error = "bad root child"; return false; }
@@ -71,8 +73,10 @@ bool read_mmod_aux_point_items_0071b3e0(const std::vector<std::uint8_t>& bytes,
             while (section->has_remaining_00715bf0()) {
                 auto entry = section->read_child_00bea680();
                 if (!entry) { error = "bad resource entry"; return false; }
+                const std::uint32_t position = resource_position++;
                 if (tag_is(*entry, "Aux")) {
                     GunFirePointItem item;
+                    item.resource_position = position;
                     if (!read_aux_item(*entry, item)) { error = "bad Aux item"; return false; }
                     items.push_back(std::move(item));
                 } else if (!entry->skip_00be9c40()) {
@@ -160,6 +164,84 @@ bool read_mmod_geom_meshes(const std::vector<std::uint8_t>& bytes,
             error = "cannot skip root child"; return false;
         }
         if (!section->close()) { error = "cannot close root child"; return false; }
+    }
+    return reader.error() == StructuredReaderError::none;
+}
+
+bool read_mmod_hierarchy_items(const std::vector<std::uint8_t>& bytes,
+    std::vector<HierarchyItem>& items, std::string& error) {
+    if (bytes.empty()) { error = "empty model"; return false; }
+    auto stream = std::make_shared<MemoryStream>(
+        memory_stream_from_complete_bytes(bytes.data(), bytes.size()));
+    StructuredReader reader(stream);
+    auto root = reader.read_root_00bea700();
+    if (!root || !tag_is(*root, "MMOD") || !root->read_control_00be9a40()) {
+        error = "no MMOD root"; return false;
+    }
+    bool found = false;
+    while (!found && root->has_remaining_00715bf0()) {
+        auto section = root->read_child_00bea680();
+        if (!section) { error = "bad root child"; return false; }
+        if (tag_is(*section, "Hierarchy")) {
+            // 00B7F430 hands the section to 00B7F100.
+            StructuredModel model;
+            if (!parse_hierarchy_00b7f100(*section, model, error)) return false;
+            items = std::move(model.hierarchy);
+            found = true;
+        } else if (!section->skip_00be9c40()) {
+            error = "cannot skip root child"; return false;
+        }
+        if (section->attached() && !section->close()) {
+            error = "cannot close root child"; return false;
+        }
+    }
+    if (!found) { error = "no Hierarchy"; return false; }
+    return true;
+}
+
+bool read_mmod_resource_notes(const std::vector<std::uint8_t>& bytes,
+    std::vector<MmodNoteItem>& notes, std::vector<std::string>& tags, std::string& error) {
+    if (bytes.empty()) { error = "empty model"; return false; }
+    auto stream = std::make_shared<MemoryStream>(
+        memory_stream_from_complete_bytes(bytes.data(), bytes.size()));
+    StructuredReader reader(stream);
+    auto root = reader.read_root_00bea700();
+    if (!root || !tag_is(*root, "MMOD") || !root->read_control_00be9a40()) {
+        error = "no MMOD root"; return false;
+    }
+    std::uint32_t position = 0;
+    while (root->has_remaining_00715bf0()) {
+        auto section = root->read_child_00bea680();
+        if (!section) { error = "bad root child"; return false; }
+        if (tag_is(*section, "Resource")) {
+            while (section->has_remaining_00715bf0()) {
+                auto entry = section->read_child_00bea680();
+                if (!entry) { error = "bad resource entry"; return false; }
+                tags.push_back(entry->tag());
+                if (tag_is(*entry, "Note")) {
+                    MmodNoteItem note;
+                    note.resource_position = position;
+                    std::string raw;
+                    if (!entry->read_string(raw)) { error = "bad Note"; return false; }
+                    note.text = raw.substr(0, raw.find('\0'));   // 00718F50's strlen
+                    notes.push_back(std::move(note));
+                    if (entry->has_remaining_00715bf0() && !entry->skip_00be9c40()) {
+                        error = "cannot skip Note tail"; return false;
+                    }
+                } else if (!entry->skip_00be9c40()) {
+                    error = "cannot skip resource entry"; return false;
+                }
+                ++position;
+                if (entry->attached() && !entry->close()) {
+                    error = "cannot close resource entry"; return false;
+                }
+            }
+        } else if (!section->skip_00be9c40()) {
+            error = "cannot skip root child"; return false;
+        }
+        if (section->attached() && !section->close()) {
+            error = "cannot close root child"; return false;
+        }
     }
     return reader.error() == StructuredReaderError::none;
 }

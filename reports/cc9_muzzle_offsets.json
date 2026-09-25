@@ -1,0 +1,167 @@
+{
+  "packet": "cc9_muzzle_offsets",
+  "doc": "docs/MUZZLE_OFFSETS.md",
+  "answer": "A ship gun's shot starts at TransformAffinePoint(class+98h[barrel], [gun+3CCh] world). gun+3CCh is the node paired with the device model's 'barrel' Note (else 'base', else the root); 00859550 poses the root with RotY(-horz) and the barrel with RotX(-vert) every turning-gun update. Bound as kMuzzleOffsetsBound; only the spawn point moves.",
+  "steps": [
+    {
+      "address": "0072e9e9",
+      "native": "0071ad50",
+      "function": "0072e6d0",
+      "rule": "gun+3C4h = lookup 'base' (00CFACD8)"
+    },
+    {
+      "address": "0072ea15",
+      "native": "0071ad50",
+      "function": "0072e6d0",
+      "rule": "gun+3C8h = lookup 'barrel' (00CF70C4)"
+    },
+    {
+      "address": "0071adba",
+      "native": "0071aae0",
+      "function": "0071ad50",
+      "rule": "search the instance's +7Ch pair vector; returns the pair's second word"
+    },
+    {
+      "address": "0071ab2a",
+      "native": "00719fa0",
+      "function": "0071aae0",
+      "rule": "linear find_if over 8-byte pairs"
+    },
+    {
+      "address": "00719fd5",
+      "native": "00718c70",
+      "function": "00719fa0",
+      "rule": "predicate: record name equals the key"
+    },
+    {
+      "address": "00718cbf",
+      "native": "004beb60",
+      "function": "00718c70",
+      "rule": "whole-string compare of record+8 with the key"
+    },
+    {
+      "address": "00719065",
+      "native": "00718f50",
+      "function": "00719000",
+      "rule": "a Note resource's text lands at item+8, the field the predicate compares"
+    },
+    {
+      "address": "0085a3b9",
+      "native": "00859550",
+      "function": "0085a270",
+      "rule": "every turning-gun update ends in the node pose"
+    },
+    {
+      "address": "008595b5",
+      "native": "00b6db60",
+      "function": "00859550",
+      "rule": "root local matrix; its row 3 is kept"
+    },
+    {
+      "site": "0085966d",
+      "native_slot": "root node vtable[38h]",
+      "rule": "root local = RotY(-horz) with its own row 3 (barrel present)"
+    },
+    {
+      "address": "008596b0",
+      "native": "00b6db60",
+      "function": "00859550",
+      "rule": "barrel local matrix; its row 3 is kept"
+    },
+    {
+      "site": "0085975c",
+      "native_slot": "barrel node vtable[38h]",
+      "rule": "barrel local = RotX(-vert) with its own row 3"
+    },
+    {
+      "address": "0085978f",
+      "native": "00b646e0",
+      "function": "00859550",
+      "rule": "no barrel: RotY(-horz)"
+    },
+    {
+      "address": "008597bf",
+      "native": "00b64640",
+      "function": "00859550",
+      "rule": "no barrel: RotX(-vert)"
+    },
+    {
+      "address": "008597e2",
+      "native": "00413920",
+      "function": "00859550",
+      "rule": "no barrel: root local = RotX * RotY, row-3 xyz restored"
+    },
+    {
+      "address": "007301cc",
+      "native": "00b6db70",
+      "function": "00730160",
+      "rule": "refresh [gun+3CCh] world before the copy at node+0F0h"
+    },
+    {
+      "address": "007307a0",
+      "native": "004181a0",
+      "function": "00730160",
+      "rule": "class+98h[gun+44Ch], the barrel's offset"
+    },
+    {
+      "address": "007307d3",
+      "native": "004142e0",
+      "function": "00730160",
+      "rule": "offset transformed by the node world: the spawn point"
+    }
+  ],
+  "host": {
+    "switch": "kMuzzleOffsetsBound (src/game_hosts_gunnery.cpp)",
+    "rules": [
+      "turning_gun_apply_angles_00859550 (src/gun_mount_positions.cpp)",
+      "read_mmod_hierarchy_items, read_mmod_resource_notes (src/gun_fire_points.cpp)",
+      "gun_muzzle_world_position_00730762 (existing)"
+    ],
+    "sequence": "GameGunneryHost::Impl::gun_barrel_muzzle_world_00730762 at the shot spawn",
+    "substitutions": [
+      "a Note is paired with the Hierarchy item whose resources list holds its index (inferred from data; the +7Ch vector's producer is unread)",
+      "Hierarchy item 0 is [model+0Ch]; Item matrices are parent-relative",
+      "the host's horizontal angle is negated to the image convention (the host's angle is mirrored, docs/MUZZLE_OFFSETS.md section 2)",
+      "node composition by 00413920 rather than 00B6DB70's own affine compose",
+      "recoil (0085A270's barrel loop) and the [gun+3Ch] slot-8Ch/94h override not applied",
+      "shot direction stays the host's angle direction, not the node's row 2"
+    ],
+    "unbound": [
+      "planes",
+      "devices with no Mesh or no Hierarchy (keep the mount, the image's empty-list fallback)"
+    ]
+  },
+  "finding": "The host's gun horizontal angle is the negative of the image's: 00521370 is atan2(x, z) (005213A7..005213AC) and 008FDAF0 subtracts it from -0.0f, while the host uses +atan2(right, forward) with arcs loaded unnegated.",
+  "ghidra": "read-only",
+  "no_ghidra_function": [],
+  "pair": {
+    "env": "BSP_GUNNERY_RNG_STREAMS=1, BSP_DEATH_TABLE=1",
+    "usn02": {
+      "off": "local/mzO_usn02.log",
+      "on": "local/mzT_usn02.log",
+      "muzzle_shots": "1412, mean 5.63 m, max 10.09 m",
+      "shots": "1208 -> 1412",
+      "hits": "759 -> 952",
+      "deaths": "19 -> 18",
+      "gunrows_differ": "255 of 464",
+      "note": "cascade: Samidare platform-12 torpedo salvo no longer sinks Java and DeRuyter; ON run exit 1 from two failed Presents, fixed steps=9000 complete"
+    },
+    "usn04": {
+      "off": "local/mzO_usn04.log",
+      "on": "local/mzT_usn04.log",
+      "muzzle_shots": "2066 (2051 plane-gun fallbacks), mean 3.19 m, max 6.63 m",
+      "shots": "4113 -> 4117",
+      "hits": "473 -> 465",
+      "deaths": "29 -> 29",
+      "aa": "cat1 shots 1799 -> 1820, hits 62 -> 67"
+    },
+    "verdicts": [
+      "shift bands: held",
+      "USN02 shots identical: failed (cascade)",
+      "USN02 hits within 10%: failed (+25%, cascade)",
+      "USN02 deaths within 2, Houston/Exeter survive: held",
+      "USN04 AA within bands: held"
+    ],
+    "decision": "ON (one-line revert if the integrator wants a per-hit trace first)"
+  }
+}

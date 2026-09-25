@@ -9,6 +9,8 @@
 #include "bsp/gun_fire_points.hpp"
 #include "bsp/geom_mesh_resource.hpp"
 #include "bsp/gun_mount_positions.hpp"
+#include "bsp/camera_multiply.hpp"
+#include "bsp/structured_hierarchy.hpp"
 
 #include <array>
 #include <limits>
@@ -167,6 +169,18 @@ constexpr bool kArtilleryAimPointBound = true;
 //    own-party list is every live same-side unit (a sunk ship leaves it).
 //    docs/TORPEDO_LAUNCH_GATE.md.
 constexpr bool kTorpedoFriendlyCrossingBound = true;
+//  * kMuzzleOffsetsBound: packet cc9_muzzle_offsets. A ship gun's shot starts
+//    at 00730762's TransformAffinePoint(class+98h[barrel], [gun+3CCh] world):
+//    the device model's "barrel"/"base"/first node, posed by 00859550 from the
+//    gun's current angles, under the platform frame and the ship pose. Only
+//    the spawn point moves; the aim keeps the mount (gun+FCh). SUBSTITUTIONS:
+//    0071AD50's name lookup is an exact name match on the parsed Hierarchy;
+//    hierarchy item 0 is taken as [model+0Ch]; Item matrices are taken as
+//    parent-relative; the host's horizontal angle is negated to the image's
+//    convention; recoil (0085A270's barrel loop) and the [gun+3Ch] slot-94h
+//    override are not applied; planes and Mesh-less devices keep the mount.
+//    docs/MUZZLE_OFFSETS.md.
+constexpr bool kMuzzleOffsetsBound = true;
 //  * kShipSectionPointsBound: the artillery draw 00816650 can pick the target's
 //    engine room (kind 5), fuel tank (6) or magazine (8). 0081F980 fills
 //    unit+A88h / +A78h / +A68h from the ship model's GeomMesh elements of those
@@ -690,6 +704,11 @@ struct GameGunneryHost::Impl {
         bsp::GunFireMuzzleList list; // class+98h..A0h
         int records{-1};             // the OFF count, Bullet records
         std::size_t guns{0};         // guns built on this device
+        // Packet cc9_muzzle_offsets: the model's Hierarchy and the two names
+        // 0072E9E2/0072EA15 look up; -1 when absent.
+        std::vector<bsp::HierarchyItem> nodes;
+        int barrel_node{-1};
+        int base_node{-1};
     };
     std::map<int, DeviceFirePoints> fire_points_by_device;
     unsigned long long barrel_guns_from_model{0};
@@ -828,6 +847,78 @@ struct GameGunneryHost::Impl {
         out[0] = origin[0];
         out[1] = origin[1] + state.hull_height;
         out[2] = origin[2];
+    }
+    // Packet cc9_muzzle_offsets (docs/MUZZLE_OFFSETS.md): 00730160's shot origin,
+    // TransformAffinePoint(class+98h[barrel], [gun+3CCh] world) with the node pose
+    // 00859550 writes. False when the gun has no mount, no loaded offsets or no
+    // usable node chain; the caller then keeps the mount point, which is the
+    // image's own empty-list fallback (00730899, the root translation).
+    bool gun_barrel_muzzle_world_00730762(const GameGunRow& gun, int barrel,
+        const float right[3], const float up[3], const float forward[3],
+        const float origin[3], float out[3]) {
+        if (!kMuzzleOffsetsBound || !kShipPlatformAttachmentBound || !gun.mount_known) {
+            return false;
+        }
+        const auto found = fire_points_by_device.find(gun.device_class);
+        if (found == fire_points_by_device.end()) return false;
+        const DeviceFirePoints& fp = found->second;
+        if (!fp.loaded || fp.list.offsets.empty() || fp.nodes.empty()) return false;
+        const std::size_t count = fp.nodes.size();
+        const bool have_barrel = fp.barrel_node > 0;
+        // 0072EE65..0072EE8F: barrel, then base, then the model's first node.
+        const int pick = have_barrel ? fp.barrel_node : (fp.base_node > 0 ? fp.base_node : 0);
+        // The root's local is the platform frame (0072E9A1), a translation.
+        bsp::CameraMatrix root_local{1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+            0.0f, 0.0f, 1.0f, 0.0f, gun.mount_local[0], gun.mount_local[1],
+            gun.mount_local[2], 1.0f};
+        bsp::CameraMatrix barrel_local{};
+        if (have_barrel) {
+            if (!fp.nodes[static_cast<std::size_t>(fp.barrel_node)].matrix) return false;
+            barrel_local = *fp.nodes[static_cast<std::size_t>(fp.barrel_node)].matrix;
+        }
+        // CONVENTION BRIDGE: the host's horizontal angle is the negative of the
+        // image's gun+480h (docs/MUZZLE_OFFSETS.md section 2), so the image pose
+        // is built from -horz to point the barrel where the host fires.
+        bsp::turning_gun_apply_angles_00859550(-gun.angles.horz, gun.angles.vert,
+            have_barrel, root_local, barrel_local);
+        const bsp::CameraMatrix ship{right[0], right[1], right[2], 0.0f,
+            up[0], up[1], up[2], 0.0f, forward[0], forward[1], forward[2], 0.0f,
+            origin[0], origin[1], origin[2], 1.0f};
+        // 00B6DB70: world = local * parent world, walked from the picked node up
+        // to the root (item 0), whose parent is the ship.
+        std::vector<int> chain;
+        int at = pick;
+        while (at != 0) {
+            if (chain.size() > count) return false;
+            chain.push_back(at);
+            const std::uint32_t parent = fp.nodes[static_cast<std::size_t>(at)].parent;
+            if (parent >= count) return false;
+            at = static_cast<int>(parent);
+        }
+        bsp::CameraMatrix world{};
+        bsp::multiply_camera_matrices_00413920(world, root_local, ship);
+        for (auto it = chain.rbegin(); it != chain.rend(); ++it) {
+            const int node = *it;
+            bsp::CameraMatrix local{};
+            if (have_barrel && node == fp.barrel_node) {
+                local = barrel_local;
+            } else if (fp.nodes[static_cast<std::size_t>(node)].matrix) {
+                local = *fp.nodes[static_cast<std::size_t>(node)].matrix;
+            } else {
+                return false;
+            }
+            bsp::CameraMatrix next{};
+            bsp::multiply_camera_matrices_00413920(next, local, world);
+            world = next;
+        }
+        bsp::GunMuzzleMount mount;
+        mount.node_world = world;
+        mount.muzzle_offsets = fp.list.offsets;
+        const int n = static_cast<int>(fp.list.offsets.size());
+        mount.barrel_index = ((barrel % n) + n) % n;
+        const std::array<float, 3> p = bsp::gun_muzzle_world_position_00730762(mount);
+        for (int i = 0; i < 3; ++i) out[i] = p[i];
+        return true;
     }
     // Set by run_projectiles around apply_hit / apply_impact_blast so a round's
     // own class (the second ammunition) prices its damage; -1 means the gun's.
@@ -1008,6 +1099,11 @@ struct GameGunneryHost::Impl {
     // Packet cc9_torpedo_launch_gate: 008FFF20's friendly walk, 0090058A..009007FC.
     // True when some own-side ship blocks the launch (the image's JA 0090096D).
     int torpedo_friendly_hold_logs{0};
+    // Packet cc9_muzzle_offsets counters.
+    unsigned long long muzzle_offset_shots{0};
+    unsigned long long muzzle_offset_fallbacks{0};
+    double muzzle_shift_sum{0.0};
+    double muzzle_shift_max{0.0};
     // DIAGNOSTIC, no gameplay effect: at each torpedo launch, the closest
     // own-side ship to holding it (the smallest miss - threshold).
     bool torpedo_friendly_diag{false};
@@ -1193,6 +1289,80 @@ GameGunneryHost::Impl::device_fire_points(int device) {
                 if (item.name == "fire") ++entry.fire_items;
             }
             entry.list = bsp::gun_fire_muzzle_offsets_007325a0(items);
+            std::string hierarchy_error;
+            if (bsp::read_mmod_hierarchy_items(bytes, entry.nodes, hierarchy_error)) {
+                // 0071AD50: the node paired with the Note whose text is the name.
+                std::vector<bsp::MmodNoteItem> notes;
+                std::vector<std::string> tags;
+                std::string note_error;
+                const bool notes_read = bsp::read_mmod_resource_notes(bytes, notes, tags,
+                    note_error);
+                auto node_with_note = [&](const char* name) {
+                    for (const bsp::MmodNoteItem& note : notes) {
+                        if (note.text != name) continue;
+                        for (std::size_t i = 0; i < entry.nodes.size(); ++i) {
+                            for (std::uint32_t r : entry.nodes[i].resources) {
+                                if (r == note.resource_position) return static_cast<int>(i);
+                            }
+                        }
+                    }
+                    return -1;
+                };
+                entry.barrel_node = node_with_note("barrel");   // 0072EA15, 00CF70C4
+                entry.base_node = node_with_note("base");       // 0072E9E2, 00CFACD8
+                std::string chain;
+                chain += notes_read ? " notes:" : (" notes-error:" + note_error);
+                for (const bsp::MmodNoteItem& note : notes) {
+                    chain += " '" + note.text + "'@" + std::to_string(note.resource_position);
+                }
+                chain += " tags:";
+                for (const std::string& tag : tags) chain += " " + tag;
+                const int pick = entry.barrel_node >= 0 ? entry.barrel_node : entry.base_node;
+                for (int at = pick, guard = 0; at >= 0 && guard < 16; ++guard) {
+                    const bsp::HierarchyItem& n = entry.nodes[static_cast<std::size_t>(at)];
+                    char buf[160];
+                    if (n.matrix) {
+                        std::snprintf(buf, sizeof buf, " %d:%s(p=%d t=%.2f,%.2f,%.2f r2=%.2f,%.2f,%.2f)",
+                            at, n.name.c_str(), static_cast<int>(n.parent),
+                            static_cast<double>((*n.matrix)[12]), static_cast<double>((*n.matrix)[13]),
+                            static_cast<double>((*n.matrix)[14]), static_cast<double>((*n.matrix)[8]),
+                            static_cast<double>((*n.matrix)[9]), static_cast<double>((*n.matrix)[10]));
+                    } else {
+                        std::snprintf(buf, sizeof buf, " %d:%s(p=%d no matrix)", at, n.name.c_str(),
+                            static_cast<int>(n.parent));
+                    }
+                    chain += buf;
+                    if (at == 0 || n.parent >= entry.nodes.size()) break;
+                    at = static_cast<int>(n.parent);
+                }
+                chain += " names:";
+                for (const bsp::HierarchyItem& n : entry.nodes) {
+                    chain += " '";
+                    for (char ch : n.name) chain += (ch == '\0') ? '~' : ch;
+                    chain += "'/" + std::to_string(static_cast<int>(n.parent));
+                    for (std::uint32_t r : n.resources) chain += "," + std::to_string(r);
+                }
+                chain += " aux:";
+                for (const bsp::GunFirePointItem& it : items) {
+                    chain += " '" + it.name + "'#" + std::to_string(static_cast<int>(it.index))
+                        + "@" + std::to_string(it.resource_position);
+                }
+                std::string offsets;
+                for (const auto& o : entry.list.offsets) {
+                    char buf[64];
+                    std::snprintf(buf, sizeof buf, " (%.2f,%.2f,%.2f)", static_cast<double>(o[0]),
+                        static_cast<double>(o[1]), static_cast<double>(o[2]));
+                    offsets += buf;
+                }
+                log.notef("gunnery: device %d mesh=%s hierarchy nodes=%zu barrel=%d base=%d "
+                    "chain:%s offsets:%s (0072EE65/00859550)", device, entry.mesh.c_str(),
+                    entry.nodes.size(), entry.barrel_node, entry.base_node, chain.c_str(),
+                    offsets.c_str());
+            } else {
+                entry.nodes.clear();
+                log.notef("gunnery: device %d mesh=%s hierarchy not read: %s", device,
+                    entry.mesh.c_str(), hierarchy_error.c_str());
+            }
         }
     }
     if (entry.loaded) {
@@ -3649,12 +3819,30 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             }
         }
         shot.alive = true;
-        for (int i = 0; i < 3; ++i) shot.position[i] = muzzle[i];
+        // Packet cc9_muzzle_offsets: 00730762's per-barrel muzzle point.
+        float spawn[3] = {muzzle[0], muzzle[1], muzzle[2]};
+        if constexpr (kMuzzleOffsetsBound) {
+            float at_muzzle[3];
+            if (gun_barrel_muzzle_world_00730762(gun, barrel, right, up, forward, origin,
+                    at_muzzle)) {
+                const float shift[3] = {at_muzzle[0] - muzzle[0], at_muzzle[1] - muzzle[1],
+                    at_muzzle[2] - muzzle[2]};
+                const double moved = static_cast<double>(length3(shift));
+                ++muzzle_offset_shots;
+                muzzle_shift_sum += moved;
+                muzzle_shift_max = std::max(muzzle_shift_max, moved);
+                for (int i = 0; i < 3; ++i) spawn[i] = at_muzzle[i];
+                done("Gun::muzzle_world_position_00730762", 0x00730762u);
+            } else {
+                ++muzzle_offset_fallbacks;
+            }
+        }
+        for (int i = 0; i < 3; ++i) shot.position[i] = spawn[i];
         const bsp::TickPoint3 launch_direction{direction[0], direction[1], direction[2]};
         const bsp::TickPoint3 velocity = bsp::projectile_launch_velocity_006e8430(
             launch_speed, launch_direction, 0);
         shot.flight.velocity = velocity;
-        shot.flight.snapshot_current = bsp::TickPoint3{muzzle[0], muzzle[1], muzzle[2]};
+        shot.flight.snapshot_current = bsp::TickPoint3{spawn[0], spawn[1], spawn[2]};
         shot.flight.local_position = shot.flight.snapshot_current;
         shot.flight.mode = bsp::ProjectileMotionMode::kBallistic;
         {
@@ -5424,6 +5612,12 @@ void GameGunneryHost::report() {
             s.torpedo_gun_sent, s.torpedo_gun_shots);
         host.log.notef("summary mission gunnery torpedo_friendly scans=%llu holds=%llu",
             s.torpedo_friendly_scans, s.torpedo_friendly_holds);
+        host.log.notef("summary mission gunnery muzzle offsets shots=%llu fallbacks=%llu "
+            "mean_shift=%.2f max_shift=%.2f bound=%d (00730762/00859550, packet cc9_muzzle_offsets)",
+            host.muzzle_offset_shots, host.muzzle_offset_fallbacks,
+            host.muzzle_offset_shots != 0
+                ? host.muzzle_shift_sum / static_cast<double>(host.muzzle_offset_shots) : 0.0,
+            host.muzzle_shift_max, kMuzzleOffsetsBound ? 1 : 0);
         host.log.notef("summary mission gunnery torpedo_drop drops=%llu refusals=%llu "
             "water_entry_breakups=%llu",
             s.torpedo_drops, s.torpedo_drop_refusals, s.water_entry_breakups);

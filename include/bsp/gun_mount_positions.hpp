@@ -122,4 +122,20 @@ std::array<float, 3> gun_muzzle_world_position_00730762(
 std::array<float, 3> gun_muzzle_direction_0073022a(
     const CameraMatrix& node_world) noexcept;
 
+// ---------------------------------------------------------------------------
+// 00859550 BSP_TurningGun_ApplyAnglesToNodes, __fastcall(gun), RET, body
+// 00859550..0085982F. Packet cc9_muzzle_offsets, docs/MUZZLE_OFFSETS.md.
+// Called by 0085A270 (the turning gun's update), 0085A3D0 (its setup) and
+// 0085B0F0 (set angles immediately). `horz`/`vert` are gun+480h/+484h in the
+// IMAGE's convention (008FDAF0: horz = -0.0 - atan2(x, z)).
+//   gun+3C8h ("barrel") present: root (gun+3BCh) local = RotY(-horz) and
+//     barrel local = RotX(-vert), each keeping its own row 3 (all four floats,
+//     008595BA..0085965A and 008596B5..0085974C), installed by vtable[38h].
+//   no barrel: root local = RotX(-vert) * RotY(-horz) (00B64640, 00B646E0,
+//     00413920 left = pitch) with the root's row-3 xyz copied in (008597F2).
+//   no root: nothing is written (00859561).
+// ---------------------------------------------------------------------------
+void turning_gun_apply_angles_00859550(float horz, float vert, bool have_barrel,
+    CameraMatrix& root_local, CameraMatrix& barrel_local) noexcept;
+
 }  // namespace bsp
