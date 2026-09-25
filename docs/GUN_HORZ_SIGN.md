@@ -33,8 +33,27 @@ component at every site where a horizontal gun angle meets a direction:
 | the torpedo gate's node axis | `[gun+3CCh]+110h` under `00859550` |
 
 The torpedo heading snap and the settle and window tests take the angle as they get it, so they
-follow automatically. The ship AI's `device_can_bear` (`0085B7D0`) takes its bearing from the ship
-AI's own producer and is not changed here; its sign was not re-read.
+follow automatically.
+
+**The ship AI's `device_can_bear`, `0085B7D0`, re-read (partial).** It is outside the switch: the
+host reconstructs it verbatim (`ship_ai_gun_can_bear_0085b7d0`, `src/ship_ai_bearing_rating.cpp`),
+fed by the ship AI's own words, and nothing in it reads the gun host's angles.
+- Every arm tests the authored windows against the bearing word `b` itself. Function 7 hands `b`
+  to `0085AB50`'s snap directly (`0085B80B`..`0085B844`). The default arm uses `b` as the
+  horizontal angle (`[ESP+28h]`).
+- The artillery arm (functions 2, 3, 4, 6 and 9) builds the direction `(sin b, 0, cos b)` from
+  `a = pi/2 - b` and solves it with `00955630`. That solver returns `-0.0 - atan2(x, z)`
+  (`009557F8`), and `0085B8F1`..`0085B8FF` negate it again. The two negations cancel, so this arm
+  also tests `+b`.
+- So `0085B7D0` agrees with the gun bots exactly when `b` is port-positive. Its two producers
+  here are compass headings: `009E634C` stores `heading_118` from the shooter-to-target delta,
+  and `009E8153` stores the approach word `nested+11DCh`, from which `009E5DB4` subtracts the
+  slot's own angle. The heading helper `00414EB0` is `pi/2 - atan2(z, x)`, which equals
+  `atan2(x, z)`, positive towards `+x` (starboard).
+- **Open.** Whether the hull heading is subtracted, and in which order, before `b` reaches
+  `0085B7D0` was not settled. If `b` arrives as target heading minus hull heading, it is
+  starboard-positive, and the image's own ship-AI bearing test is mirrored against its gun bots.
+  The switch does not change this path either way.
 
 ## 3. Which mounts change their trainable side
 
