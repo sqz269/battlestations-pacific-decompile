@@ -1,0 +1,18 @@
+{
+  "packet": "cc9_e2_release_bisect",
+  "doc": "docs/E2_RELEASE_BISECT.md",
+  "calls": [
+    {"address": "009D0857", "native": "007F0280", "function": "009D07B0", "note": "mode 0 (PUSH 0 at 009D07FF), ECX = [approach+0Ch] = the plane squadron (009D0854); walks the squadron's +3D0h member array for +3CCh entries, skipping the unit itself. Read here, not bound (src/game_hosts_units.cpp leased by agent/cc9-platform2)."}
+  ],
+  "runs": [
+    {"commit": "8fba85d95", "torpedo_releases": 5, "kate_deaths": 16, "hit_records": 553, "lexington_m": 6517.06, "log": "local/BIS_8fba85d.log"},
+    {"commit": "b515bc059", "torpedo_releases": 4, "kate_deaths": 16, "hit_records": 571, "lexington_m": 6184.98, "log": "local/BIS_b515bc0.log"},
+    {"commit": "6e48234f6", "torpedo_releases": 4, "kate_deaths": 16, "hit_records": 571, "lexington_m": 6184.98, "log": "local/BIS_6e48234.log"},
+    {"commit": "9ee202de7", "torpedo_releases": 6, "kate_deaths": 16, "hit_records": 592, "lexington_m": 6750.78, "log": "local/BIS_9ee202d.log"},
+    {"commit": "9ee202de7 with kFighterFriendlyInLineBound=false", "torpedo_releases": 4, "kate_deaths": 16, "hit_records": 571, "lexington_m": 6184.98, "log": "local/BIS_9ee202d_noff.log"},
+    {"commit": "88e1a3062", "torpedo_releases": 6, "kate_deaths": 16, "hit_records": 592, "lexington_m": 6750.78, "log": "local/BIS_88e1a30.log"}
+  ],
+  "cause": {"commit": "6467f73b1", "switch": "kFighterFriendlyInLineBound", "path": "007B96D0 -> DogfightGunInputs::finder_busy at 009FC7C0; fighter fire ticks 216 -> 366; the Kates' gunfire avoidance 009A17D0 reacts differently; Kate #6.1|.-2 no longer evades into the sea and releases, as does #8.1|.-4", "host_bug": false},
+  "no_ghidra_function": [],
+  "ledger_names_added": []
+}
