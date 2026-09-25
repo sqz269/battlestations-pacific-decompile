@@ -244,3 +244,12 @@ done/prepare (009D2720) writes +2C4h = 0 with mode 1, which is the reseed. Pair 
 9000, both OFF / both ON): Kate/Val/movieval deaths 16/16/3 on both sides, hit records 592 -> 588,
 Lexington 6,751 -> 5,929 m, no mission end. The switch table above (line 20) is superseded by this
 section.
+
+## Correction from docs/E2_RELEASE_BISECT.md (integrator, 2026-09-25)
+
+The `releases` row of section 4 ("0 / 0") counts dive-bomb releases and player-role releases, not
+torpedo releases. The torpedo task line of the same logs reads releases = 5 (DM0), 0 (DM1, whose
+Kates never reached the fleet under the gate) and 4 (DM2). The later move to 6 on main is
+attributed in docs/E2_RELEASE_BISECT.md: 5 -> 4 is this packet's bodies landing, 4 -> 6 is the
+fighter friendly-in-line hold call site (6467f73b1), under which the fighters fire more and one
+Kate that used to evade into the sea lives to release. No host bug.
