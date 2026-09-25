@@ -48,7 +48,48 @@ struct HudWeaponGroupScreenState {
     bool one_shot_109{false};       // +109h
     float pitch_10c{0.0f};          // +10Ch, copied to the periscope mover's +388h
     float yaw_110{0.0f};            // +110h, copied to the periscope mover's +384h
+    // +D4h, the show argument of every row widget call. 00545360 sets it and
+    // 00545AC0 clears it (both from screen 45h's 0064DD30); the enter 005494C0
+    // sets it and the exit 005470A0 clears it.
+    bool flag_d4{false};
+
+    // The widgets the layout 00546A20 finds (section 37). Opaque host
+    // handles, 0 when absent. cells[row][column] is +5Ch + row*14h + column*4h:
+    // row 0 ship_AA_Group, 1 ship_art_Group, 2 ship_torpedo_Group, 3
+    // ship_DC_Group, 4 ship_rocket_Group; column 0 cross__Icon, 1 cross_F_Icon,
+    // 2 cross_H_Icon, 3 cross_HF_Icon, 4 cross_L_Icon.
+    std::uintptr_t cells[5][5]{};
+    std::uintptr_t disable_c0{0};   // +C0h CrosshairDisable_Icon (GUI_cross_gunstate)
+    std::uintptr_t aim_c4{0};       // +C4h cross_botton_Icon (ship_art_Group)
+    std::uintptr_t aim_c8{0};       // +C8h cross_left_Icon
+    std::uintptr_t aim_cc{0};       // +CCh cross_right_Icon
+    std::uintptr_t circle_d8{0};    // +D8h circle_Section (GUI_cross_gunstate)
+    std::uintptr_t gunstate_fc{0};  // +FCh GunState_Icon (GUI_cross_gunstate)
+    bool layout_done{false};
 };
+
+// The GUI side of the layout. The pages are +58h (GUI_cross_ship) and +DCh
+// (GUI_cross_gunstate), both loaded by the register 005468B0 through
+// BSP_GuiManager_LoadPage. Lookups are BSP_GuiWidget_FindChildByName
+// (00AA7E00) with its recursive flag set; the GUI resource code behind them
+// is a contract, not reconstructed here.
+struct HudWeaponGroupLayoutHost {
+    virtual ~HudWeaponGroupLayoutHost() = default;
+    virtual std::uintptr_t page_58() = 0;     // GUI_cross_ship's root
+    virtual std::uintptr_t page_dc() = 0;     // GUI_cross_gunstate's root
+    virtual std::uintptr_t find_child(std::uintptr_t parent, const char* name) = 0;
+    // 00546DA2..00546E9D: cross_F2_Icon under a row's F cell gets local
+    // bounds of half the F cell's size (00AA6740, 00AA7DC0); rows 1 and 2
+    // then get a resolved position (00AA6750, 00AA8240) with y 00CE3800 or
+    // 00CEDE2C. The F2 handle is not stored.
+    virtual void place_f2(std::uintptr_t f_cell, std::uintptr_t f2, int row) = 0;
+    virtual void set_visible(std::uintptr_t widget, bool visible) = 0;   // vtable +34h
+};
+
+// 00546A20, __fastcall(screen), vtable 00CEDF34 slot +14h, plain RET at
+// 00547076. Fills the widget handles above, clears +D0h, and hides GunState.
+void weapon_group_layout_00546a20(HudWeaponGroupScreenState& screen,
+                                  HudWeaponGroupLayoutHost& host);
 
 // 00545410's role mask for a group, 0 for group 0 and outside 1..5.
 std::uint32_t weapon_group_role_mask_00545410(int group) noexcept;
@@ -117,7 +158,7 @@ struct HudWeaponGroupScreenHost {
     // is non-null, and its vtable +34h(byte +D4h). The body tests presence
     // before some calls (00548FCA precedes the third 00803CE0).
     virtual bool row_widget_present(int row, int column) = 0;
-    virtual void show_row_widget(int row, int column) = 0;
+    virtual void show_row_widget(int row, int column, bool shown_d4) = 0;
     // 00954A10 over the mover's aim (0042D7E0, 00521370, 00427EB0), then
     // 0077C2A0(unit, message, 3, 0) for one unit.
     virtual void build_fire_message_00954a10(int group, bool pressed, bool held,

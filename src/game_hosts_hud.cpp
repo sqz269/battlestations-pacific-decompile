@@ -781,6 +781,34 @@ bool GameHudHost::Impl::camera_target_view(bsp::ShipCaptainTargetView& out) {
 }
 
 namespace {
+// bsp::HudWeaponGroupLayoutHost over the two pages screen 2Eh registers.
+class WeaponGroupLayoutBinding final : public bsp::HudWeaponGroupLayoutHost {
+public:
+    explicit WeaponGroupLayoutBinding(GameHudHost::Impl& owner) : owner_(owner) {}
+    std::uintptr_t page_58() override { return page("GUI_cross_ship"); }
+    std::uintptr_t page_dc() override { return page("GUI_cross_gunstate"); }
+    std::uintptr_t find_child(std::uintptr_t parent, const char* name) override {
+        if (parent == 0) return 0;
+        return reinterpret_cast<std::uintptr_t>(bsp::find_descendant_by_name(
+            *reinterpret_cast<GuiLayoutWidget*>(parent), name));
+    }
+    void place_f2(std::uintptr_t, std::uintptr_t, int) override {
+        owner_.record("HudWeaponGroupScreen::place_f2", 0x00546da2u);
+    }
+    void set_visible(std::uintptr_t widget, bool visible) override {
+        if (widget == 0) return;
+        owner_.menu.frontend().set_widget_visible(
+            *reinterpret_cast<GuiLayoutWidget*>(widget), visible);
+    }
+
+private:
+    std::uintptr_t page(const char* name) {
+        GuiLayoutPage* p = owner_.menu.in_game_page(0x2e, name);
+        return p != nullptr && p->root ? reinterpret_cast<std::uintptr_t>(p->root.get()) : 0;
+    }
+    GameHudHost::Impl& owner_;
+};
+
 // bsp::HudWeaponGroupScreenHost over this process's HUD (packet
 // cc9_screen_2eh_group). Screen 2Eh's layout 00546A20 is not run, so its
 // widgets are records; units are index + 1.
@@ -910,7 +938,31 @@ public:
         owner_.record("HudWeaponGroupScreen::one_shot_109", 0x0054861bu);
     }
     void hide_widgets_005452f0() override {
-        owner_.record("HudWeaponGroupScreen::hide_widgets", 0x005452f0u);
+        if constexpr (kHudWeaponGroupLayoutBound) {
+            bsp::HudWeaponGroupScreenState& s = layout();
+            WeaponGroupLayoutBinding gui(owner_);
+            for (auto& row : s.cells) {
+                for (std::uintptr_t cell : row) gui.set_visible(cell, false);   // 005452FA
+            }
+            gui.set_visible(s.disable_c0, false);                     // 0054531A..
+            gui.set_visible(s.aim_c4, false);
+            gui.set_visible(s.aim_c8, false);
+            gui.set_visible(s.aim_cc, false);
+            owner_.done("HudWeaponGroupScreen::hide_widgets", 0x005452f0u);
+        } else {
+            owner_.record("HudWeaponGroupScreen::hide_widgets", 0x005452f0u);
+        }
+    }
+    // 00546A20 has run at registration in the image; here it runs once,
+    // before the first widget use (labelled).
+    bsp::HudWeaponGroupScreenState& layout() {
+        bsp::HudWeaponGroupScreenState& s = owner_.weapon_group;
+        if (!s.layout_done) {
+            WeaponGroupLayoutBinding gui(owner_);
+            bsp::weapon_group_layout_00546a20(s, gui);
+            owner_.done("HudWeaponGroupScreen::layout", 0x00546a20u);
+        }
+        return s;
     }
     void group_sight_00548300(int group) override {
         static_cast<void>(group);
@@ -989,12 +1041,26 @@ public:
     void target_debug_00548942(std::size_t) override {
         owner_.record("HudWeaponGroupScreen::target_debug", 0x00548942u);
     }
-    bool row_widget_present(int, int) override {
-        owner_.record("HudWeaponGroupScreen::row_widget", 0x005488d5u);
-        return false;
+    bool row_widget_present(int row, int column) override {
+        if constexpr (kHudWeaponGroupLayoutBound) {
+            owner_.done("HudWeaponGroupScreen::row_widget", 0x005488d5u);
+            return row >= 0 && row < 5 && column >= 0 && column < 5
+                && layout().cells[row][column] != 0;
+        } else {
+            owner_.record("HudWeaponGroupScreen::row_widget", 0x005488d5u);
+            return false;
+        }
     }
-    void show_row_widget(int, int) override {
-        owner_.record("HudWeaponGroupScreen::show_row_widget", 0x005488f9u);
+    void show_row_widget(int row, int column, bool shown_d4) override {
+        if constexpr (kHudWeaponGroupLayoutBound) {
+            if (row >= 0 && row < 5 && column >= 0 && column < 5) {
+                WeaponGroupLayoutBinding gui(owner_);
+                gui.set_visible(layout().cells[row][column], shown_d4);
+            }
+            owner_.done("HudWeaponGroupScreen::show_row_widget", 0x005488f9u);
+        } else {
+            owner_.record("HudWeaponGroupScreen::show_row_widget", 0x005488f9u);
+        }
     }
     void build_fire_message_00954a10(int, bool, bool, bool, std::uint16_t) override {
         owner_.record("HudWeaponGroupScreen::fire_message", 0x00954a10u);
@@ -1018,7 +1084,13 @@ public:
         return 0;
     }
     void show_widget_c0_005491c2() override {
-        owner_.record("HudWeaponGroupScreen::widget_c0", 0x005491c2u);
+        if constexpr (kHudWeaponGroupLayoutBound) {
+            WeaponGroupLayoutBinding gui(owner_);
+            gui.set_visible(layout().disable_c0, true);
+            owner_.done("HudWeaponGroupScreen::widget_c0", 0x005491c2u);
+        } else {
+            owner_.record("HudWeaponGroupScreen::widget_c0", 0x005491c2u);
+        }
     }
 
 private:
@@ -1362,7 +1434,13 @@ public:
     }
     void other_screen_00545360() override {
         // 00545360 on [00E198C4]+50h: that screen's +D4h = 1, +1Ch = 0.
-        owner_.record("HudShipScreen::other_screen_00545360", 0x00545360u);
+        if constexpr (kHudWeaponGroupLayoutBound) {
+            // +1Ch is the screen's own byte, not modelled (labelled).
+            owner_.weapon_group.flag_d4 = true;
+            owner_.done("HudShipScreen::other_screen_00545360", 0x00545360u);
+        } else {
+            owner_.record("HudShipScreen::other_screen_00545360", 0x00545360u);
+        }
     }
     bool controls_bound() override { return kHudShipScreenControlsBound; }
     void remainder_from_0064e415(float dt) override {
