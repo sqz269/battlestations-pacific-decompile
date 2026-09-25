@@ -959,6 +959,10 @@ struct GameUnitSlot {
     int torpedo_ar_heading_writes{0};
     int torpedo_ar_rerolls{0};
     int torpedo_moveto_heading_writes{0};
+    // Packet cc9_attackrun_squadron_probe: the mode-0 probe on the re-roll arm.
+    int torpedo_ar_probe_calls{0};
+    int torpedo_ar_probe_nonzero{0};
+    float torpedo_ar_probe_max_raw{0.0f};   // |product| * pi/6, radians
     int torpedo_approach_ticks{0};
     int torpedo_approach_no_target_ticks{0};
     int torpedo_approach_replans{0};
@@ -2964,6 +2968,13 @@ struct GameUnitsHost::Impl {
     // mode 2 at 009F9EC1); the attackrun tick 009D07B0 writes
     // AddWrapped(approach+94h, state+20h) with mode 2 (009D0927/009D092D).
     static constexpr bool kPilotStateHeadingWritesBound = true;
+    // Packet cc9_attackrun_squadron_probe (docs/ATTACKRUN_SQUADRON_PROBE.md):
+    // 007F0280 at 009D0857 runs in mode 0 with ECX = [approach+0Ch], the plane
+    // squadron, so it walks the squadron's +3D0h member array (+3CCh entries,
+    // 007F0481), skipping the unit itself and with no kind filter. The host's
+    // copy of that array is the squadron registry's member_units. OFF: the
+    // probe product is 0 (the planner-heading-writes substitution).
+    static constexpr bool kAttackRunSquadronProbeBound = false;
     struct PlannerModeCount { unsigned long long n[4]{}; };
     std::map<std::string, PlannerModeCount> planner_mode_census;
     // DIAGNOSTIC: every kFighterAccelTraceEvery lead ticks one line per
@@ -10019,6 +10030,46 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         return r;
                     }
 
+                    // 007F0280 in mode 0 (packet cc9_attackrun_squadron_probe):
+                    // the candidates are this unit's squadron members, the
+                    // +3D0h array walked for +3CCh entries at 007F0481, less
+                    // the unit itself; no vtable[5Ch] kind test (that is the
+                    // mode-1 arm at 007F03D8). A member slot the registry has
+                    // not resolved (kPlaneSquadronNoUnit) is skipped. The reach
+                    // prefilter is the same host shortcut as the mode-1 probe.
+                    bsp::NearFieldProbeResult nf_probe_squadron_007f0280(
+                        const float extents[3], const float weights[3]) {
+                        std::vector<bsp::NearFieldCandidate> cands;
+                        const bsp::PlaneSquadronHostRecord* sq =
+                            bsp::plane_squadron_registry().find_by_member_unit(
+                                unit_.process_index);
+                        const float reach = extents[0] + extents[1] + extents[2];
+                        if (sq != nullptr) {
+                            for (const std::size_t j : sq->member_units) {
+                                if (j == bsp::kPlaneSquadronNoUnit) continue;
+                                if (j == unit_.process_index) continue;   // 007F049A
+                                if (j >= owner_.slots.size()) continue;
+                                const GameUnitSlot& o = *owner_.slots[j];
+                                const double dx = static_cast<double>(o.motion.position[0]) - unit_.motion.position[0];
+                                const double dy = static_cast<double>(o.motion.position[1]) - unit_.motion.position[1];
+                                const double dz = static_cast<double>(o.motion.position[2]) - unit_.motion.position[2];
+                                if (dx * dx + dy * dy + dz * dz > static_cast<double>(reach) * reach) continue;
+                                bsp::NearFieldCandidate c;
+                                float pp[3] = {o.motion.position[0], o.motion.position[1], o.motion.position[2]};
+                                df_local(pp, c.local);
+                                c.formation_index_9d0 = nf_formation_index_9d0(j);
+                                cands.push_back(c);
+                            }
+                        }
+                        const bsp::NearFieldProbeResult r = bsp::near_field_probe_007f0280(
+                            extents, weights, nf_formation_index_9d0(unit_.process_index),
+                            cands.data(), cands.size());
+                        ++unit_.nf_calls;
+                        if (r.hit) ++unit_.nf_hits;
+                        owner_.done("NearFieldProbe::probe_mode0_squadron", 0x009d0857u);
+                        return r;
+                    }
+
                     // 007E2090 proper: +84h <= +8Ch (2.0) returns the cached +B0h;
                     // otherwise subtract 2.0 and rescan +50h with these arguments.
                     // One cache and one clock for every caller (the gun, 009AAA80).
@@ -13241,11 +13292,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
 
                     // 009D07B0 steps 1-3 (docs/PLANNER_HEADING_WRITES.md). The
                     // enter 009D0790 runs on the transition into the state.
-                    // SUBSTITUTION, labelled: 007F0280 at 009D0857 runs in mode
-                    // 0, which walks the list at [approach+0Ch]+3CCh/+3D0h
-                    // rather than the mode-1 aircraft list the host probe
-                    // models; that list is unread, so the probe product is 0
-                    // and the offset is the sector-scan bias alone.
+                    // 007F0280 at 009D0857 runs in mode 0 over the squadron's
+                    // members (kAttackRunSquadronProbeBound). OFF: SUBSTITUTION,
+                    // labelled, the probe product is 0 and the offset is the
+                    // sector-scan bias alone.
                     void run_torpedo_attackrun_heading_009d07b0(float dt, bool entered) {
                         if (entered) {
                             unit_.torpedo_ar_offset_20 = 0.0f;   // 009D0793
@@ -13258,6 +13308,30 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         in.countdown_1c = unit_.torpedo_ar_countdown_1c;
                         in.offset_20 = unit_.torpedo_ar_offset_20;
                         in.probe_product = 0.0f;
+                        if constexpr (GameUnitsHost::Impl::kAttackRunSquadronProbeBound &&
+                                      GameUnitsHost::Impl::kNearFieldProbeBound) {
+                            // 009D0857 runs only on the re-roll arm (009D07ED).
+                            if (bsp::attack_run_should_reroll(in.countdown_1c, dt)) {
+                                // 009D07F6/009D0809/009D0826: 80, 60, 120;
+                                // 009D0839-009D0845: the weights, all 0.
+                                const float ext[3] = {80.0f, 60.0f, 120.0f};
+                                const float w[3] = {0.0f, 0.0f, 0.0f};
+                                const bsp::NearFieldProbeResult pr =
+                                    nf_probe_squadron_007f0280(ext, w);
+                                // 009D085C-009D086B: the dive-bomb product, 8
+                                // bytes deeper on the stack; the rule negates.
+                                in.probe_product = bsp::near_field_attackrun_sampler_009c42bd(pr);
+                                ++unit_.torpedo_ar_probe_calls;
+                                if (in.probe_product != 0.0f) {
+                                    ++unit_.torpedo_ar_probe_nonzero;
+                                    const float raw = std::fabs(in.probe_product) *
+                                        0.5235987901687622f;
+                                    if (raw > unit_.torpedo_ar_probe_max_raw) {
+                                        unit_.torpedo_ar_probe_max_raw = raw;
+                                    }
+                                }
+                            }
+                        }
                         in.range_90 = ap.range_90;
                         in.scan_seed_88 = ap.scan_radius_seed_88;
                         in.turn_5c = ap.turn_offset_5c;
@@ -16842,6 +16916,24 @@ void GameUnitsHost::report() {
                             "gate=%d (0099DE8A on +2CCh != 2, packet cc9_dogfight_maneuver_bodies)",
                             host.planner_yaw_base_zeroed,
                             Impl::kPlannerYawBaseModeGateBound ? 1 : 0);
+                        {
+                            long long calls = 0, nonzero = 0, units = 0;
+                            float max_raw = 0.0f;
+                            for (const auto& sl : host.slots) {
+                                if (sl->torpedo_ar_probe_calls == 0) continue;
+                                ++units;
+                                calls += sl->torpedo_ar_probe_calls;
+                                nonzero += sl->torpedo_ar_probe_nonzero;
+                                if (sl->torpedo_ar_probe_max_raw > max_raw) {
+                                    max_raw = sl->torpedo_ar_probe_max_raw;
+                                }
+                            }
+                            host.log.notef("summary mission torpedo attackrun squadron probe "
+                                "units=%lld calls=%lld nonzero=%lld max_raw_offset=%.4f rad bound=%d "
+                                "(007F0280 mode 0 at 009D0857, packet cc9_attackrun_squadron_probe)",
+                                units, calls, nonzero, static_cast<double>(max_raw),
+                                Impl::kAttackRunSquadronProbeBound ? 1 : 0);
+                        }
                         if constexpr (Impl::kPlannerModeCensusDiag) {
                             for (const auto& kv : host.planner_mode_census) {
                                 host.log.notef("summary mission planner mode census state=%s "
