@@ -157,6 +157,16 @@ constexpr bool kAaLineOfFireBound = true;
 //    toward bot+84h is not modelled; a target change re-draws at once. OFF:
 //    the target origin raised by Height. docs/SURFACE_GUNNERY_REFERENCE.md.
 constexpr bool kArtilleryAimPointBound = true;
+//  * kTorpedoFriendlyCrossingBound: packet cc9_torpedo_launch_gate. 008FFF20's
+//    friendly-crossing gate 0090058A..009007F6: a torpedo launch is held when
+//    another own-side ship within 2000 m would be within 0.3 * run + 200 m of
+//    the crossing of its heading line with the 1000 m run line when the torpedo
+//    gets there. SUBSTITUTIONS: the lead point lacks 00951FC0's alternating
+//    +6D4h spread offset (the host does not model it); [gun+3CCh]'s row-2 axis
+//    is the hull forward turned by the gun's current horizontal angle; the
+//    own-party list is every live same-side unit (a sunk ship leaves it).
+//    docs/TORPEDO_LAUNCH_GATE.md.
+constexpr bool kTorpedoFriendlyCrossingBound = true;
 //  * kShipSectionPointsBound: the artillery draw 00816650 can pick the target's
 //    engine room (kind 5), fuel tank (6) or magazine (8). 0081F980 fills
 //    unit+A88h / +A78h / +A68h from the ship model's GeomMesh elements of those
@@ -993,6 +1003,77 @@ struct GameGunneryHost::Impl {
         unit_pose(index, right, up, forward, origin);
         for (int i = 0; i < 3; ++i) out[i] = origin[i];
         if (index < unit_state.size()) out[1] += unit_state[index].hull_height;
+    }
+
+    // Packet cc9_torpedo_launch_gate: 008FFF20's friendly walk, 0090058A..009007FC.
+    // True when some own-side ship blocks the launch (the image's JA 0090096D).
+    int torpedo_friendly_hold_logs{0};
+    // DIAGNOSTIC, no gameplay effect: at each torpedo launch, the closest
+    // own-side ship to holding it (the smallest miss - threshold).
+    bool torpedo_friendly_diag{false};
+    bool torpedo_friendly_hold_008fff20(const GameGunRow& gun, std::size_t owner_unit,
+        const float gun_position[3], const float right[3], const float forward[3],
+        const std::array<float, 2>& lead_xz, float snap_radians) {
+        int in_range = 0;
+        int crossed = 0;
+        float best_margin = 1.0e30f;
+        std::size_t best = owner_unit;
+        bsp::TorpedoFriendlyCrossing best_c{};
+        const float h = gun.angles.horz;
+        const std::array<float, 2> axis{{forward[0] * std::cos(h) + right[0] * std::sin(h),
+            forward[2] * std::cos(h) + right[2] * std::sin(h)}};
+        const std::array<float, 3> gun_at{{gun_position[0], gun_position[1], gun_position[2]}};
+        const std::array<float, 2> run_end = bsp::torpedo_run_end_008fff20(
+            {{gun_at[0], gun_at[2]}}, lead_xz, axis, snap_radians);
+        // 00900236: [[gun+3F8h]+34h]+0E4h, WaterTravelSpeed.
+        const float water_speed = gun.water_travel_speed > 0.0f
+            ? gun.water_travel_speed : gun.muzzle_speed;
+        const int own_side = units.unit_side_0054(owner_unit);
+        for (std::size_t i = 0; i < unit_state.size(); ++i) {
+            // 0090058F: [008053C0([owner+54h]) + 0DDCh], the own-party list.
+            if (i == owner_unit || unit_state[i].dead) continue;   // 009005BA
+            if (units.unit_side_0054(i) != own_side) continue;
+            if (!units.unit_is_kind_of(i, bsp::kUnitGunneryKindShipBase)) continue; // 009005AD
+            float r[3], u[3], f[3], o[3], v[3];
+            unit_pose(i, r, u, f, o);
+            unit_velocity(i, v);
+            const bsp::TorpedoFriendlyCrossing c = bsp::torpedo_friendly_crossing_008fff20(
+                gun_at, run_end, water_speed, {{o[0], o[1], o[2]}}, {{f[0], f[2]}},
+                {{v[0], v[2]}});
+            if (torpedo_friendly_diag) {
+                if (c.in_range) ++in_range;
+                if (c.crossed) {
+                    ++crossed;
+                    if (c.miss - c.threshold < best_margin) {
+                        best_margin = c.miss - c.threshold;
+                        best = i;
+                        best_c = c;
+                    }
+                }
+                continue;
+            }
+            if (!c.blocks) continue;
+            if (torpedo_friendly_hold_logs < 60) {
+                ++torpedo_friendly_hold_logs;
+                log.notef("gunnery: torpedo friendly hold t=%.2f shooter=%s friendly=%s "
+                    "run=%.1f miss=%.1f threshold=%.1f (008FFF20 009007F6)",
+                    static_cast<double>(clock_seconds),
+                    unit_state[owner_unit].row.name.c_str(), unit_state[i].row.name.c_str(),
+                    static_cast<double>(c.run_distance), static_cast<double>(c.miss),
+                    static_cast<double>(c.threshold));
+            }
+            return true;
+        }
+        if (torpedo_friendly_diag) {
+            log.notef("gunnery: torpedo launch t=%.2f shooter=%s gun=%s friendly_in_2km=%d "
+                "crossed=%d closest=%s run=%.1f miss=%.1f threshold=%.1f",
+                static_cast<double>(clock_seconds), unit_state[owner_unit].row.name.c_str(),
+                gun.target_name.c_str(), in_range, crossed,
+                best == owner_unit ? "-" : unit_state[best].row.name.c_str(),
+                static_cast<double>(best_c.run_distance), static_cast<double>(best_c.miss),
+                static_cast<double>(best_c.threshold));
+        }
+        return false;
     }
 };
 
@@ -3069,6 +3150,10 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         gun_muzzle_point(gun, state, right, up, forward, origin, muzzle);
 
         bool arc_solved = true;
+        // Packet cc9_torpedo_launch_gate: 008FFF20's lead point (x, z) and
+        // |bot+60h - raw heading| for the friendly-crossing gate below.
+        std::array<float, 2> torpedo_lead_xz{{0.0f, 0.0f}};
+        float torpedo_snap_radians = 0.0f;
         if (have_target) {
             float theirs[3];
             if (kArtilleryAimPointBound && artillery_bot_aims(gun.category, target)
@@ -3264,6 +3349,10 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                     if (bsp::gun_heading_snap_failed(snapped)) {
                         have_target = false;          // 00900392..009003A2
                     } else {
+                        // 0090043D..0090044A: 00438B10(bot+60h, raw heading).
+                        torpedo_snap_radians = std::fabs(
+                            bsp::wrapped_angle_subtract_00438b10(snapped, want_horz));
+                        torpedo_lead_xz = {{lead[0], lead[2]}};
                         want_horz = snapped;
                         ++summary.torpedo_heading_snaps;
                     }
@@ -3407,6 +3496,17 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         }
         bool want_fire = have_target && accepted && settled && may_fire_here
             && !inhibited;
+        if (kTorpedoFriendlyCrossingBound && want_fire
+            && gun.category == bsp::kUnitGunneryTorpedoCategory) {
+            // 008FFF20 0090058A..009007F6, after the settle test and vtable[1D0h].
+            ++summary.torpedo_friendly_scans;
+            if (torpedo_friendly_hold_008fff20(gun, owner_unit, muzzle, right, forward,
+                    torpedo_lead_xz, torpedo_snap_radians)) {
+                want_fire = false;                 // 0090096D -> vtable[1E8h](0)
+                ++summary.torpedo_friendly_holds;
+            }
+            done("TorpedoBot::friendly_crossing_scan_008fff20", 0x0090058au);
+        }
         const bool plane_gun = gun.category == 0
             && units.unit_is_kind_of(owner_unit, bsp::kUnitGunneryKindPlaneBase);
         if constexpr (kPlaneGunfireHooked) {
@@ -3500,6 +3600,12 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         ++state.row.shots;
         ++summary.shots;
         if (torpedo_gun) ++summary.torpedo_gun_shots;
+        if (kTorpedoFriendlyCrossingBound && gun.category == bsp::kUnitGunneryTorpedoCategory) {
+            torpedo_friendly_diag = true;     // DIAGNOSTIC line only
+            torpedo_friendly_hold_008fff20(gun, owner_unit, muzzle, right, forward,
+                torpedo_lead_xz, torpedo_snap_radians);
+            torpedo_friendly_diag = false;
+        }
         if (gun.first_shot_seconds < 0.0f) gun.first_shot_seconds = clock_seconds;
         if (summary.first_shot_seconds < 0.0f) {
             summary.first_shot_seconds = clock_seconds;
@@ -5316,6 +5422,8 @@ void GameGunneryHost::report() {
             torpedo_guns, s.torpedo_gun_ticks, s.torpedo_gun_targeted,
             s.torpedo_gun_accepted, s.torpedo_gun_settled, s.torpedo_gun_window,
             s.torpedo_gun_sent, s.torpedo_gun_shots);
+        host.log.notef("summary mission gunnery torpedo_friendly scans=%llu holds=%llu",
+            s.torpedo_friendly_scans, s.torpedo_friendly_holds);
         host.log.notef("summary mission gunnery torpedo_drop drops=%llu refusals=%llu "
             "water_entry_breakups=%llu",
             s.torpedo_drops, s.torpedo_drop_refusals, s.water_entry_breakups);
