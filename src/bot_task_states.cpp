@@ -317,6 +317,32 @@ TorpedoAttackRunAltitudeCommand torpedo_attack_run_altitude_009d0951(
 }
 
 // 009A3770 and 009D07B0, complete for both.
+TorpedoAttackRunHeadingResult torpedo_attack_run_heading_009d07b0(
+    const TorpedoAttackRunHeadingInputs& in) noexcept {
+    TorpedoAttackRunHeadingResult out;
+    out.offset_20 = in.offset_20;
+    out.rerolled = attack_run_should_reroll(in.countdown_1c, in.dt);
+    out.countdown_1c = attack_run_next_countdown(in.period_18, in.countdown_1c, in.dt);
+    if (out.rerolled) {
+        // 009D085C-009D0885: FCHS, two FMULs, then FMUL double 00CEC730.
+        const float raw = static_cast<float>(
+            static_cast<double>(-in.probe_product) * 0.5235987901687622);
+        // 009D0888-009D08C0: 00419010(3, 0, 0.5, 3, +90h / +88h) * +5Ch.
+        const float ratio = in.range_90 / in.scan_seed_88;
+        float bias = clamped_interpolate_00419010(3.0f, 0.0f, 0.5f, 3.0f, ratio) * in.turn_5c;
+        // 009D08CC-009D08D6 and 009D0982-009D0999: the clamp to [-1.2, 1.2].
+        if (bias < -1.2000000476837158f) {
+            bias = -1.2000000476837158f;
+        } else if (bias > 1.2000000476837158f) {
+            bias = 1.2000000476837158f;
+        }
+        out.offset_20 = wrapped_angle_add_00438aa0(raw, bias);
+    }
+    out.heading_2c0 = wrapped_angle_add_00438aa0(in.bearing_94, out.offset_20);
+    out.heading_mode_2cc = 2;
+    return out;
+}
+
 AttackRunTickResult attack_run_tick(BotTaskStateHost& host, BotTaskStateContext& ctx,
                                     const AttackRunTickInputs& in, float dt) {
     AttackRunTickResult out;

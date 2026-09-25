@@ -1,0 +1,18 @@
+{
+  "packet": "cc9_planner_heading_writes",
+  "doc": "docs/PLANNER_HEADING_WRITES.md",
+  "calls": [
+    {"address": "009C1B23", "native": "009F9E40", "function": "009C18C0", "note": "moveto heading toward the +2Ch target's world position; 009F9E40 writes cmd+2C0h and cmd+2CCh=2 (009F9EB9/009F9EC1). Bound under kPilotStateHeadingWritesBound for the torpedo task."},
+    {"address": "009D0857", "native": "007F0280", "function": "009D07B0", "note": "near-field probe in mode 0 (PUSH 0 at 009D07FF), re-roll arm only. SUBSTITUTION: the mode-0 list is unread; the host passes a probe product of 0."},
+    {"address": "009D08BB", "native": "00419010", "function": "009D07B0", "note": "InterpolateClamped(3, 0, 0.5, 3, approach+90h / approach+88h), times approach+5Ch, clamped to +-1.2"},
+    {"address": "009D08FC", "native": "00438AA0", "function": "009D07B0", "note": "+20h = AddWrapped(raw offset, bias)"},
+    {"address": "009D0915", "native": "00438AA0", "function": "009D07B0", "note": "heading = AddWrapped(approach+94h, +20h), stored to cmd+2C0h at 009D0927 with cmd+2CCh=2 at 009D092D"}
+  ],
+  "no_ghidra_function": [
+    {"start": "009D0790", "end_inclusive": "009D07A5", "evidence": "ghidra proto --brief finds no function; torpedo attackrun vtable 00D212C4+4 (data xref 00D212C8); +20h=0, +18h=0.4 (00CE7804), RET at 009D07A5"}
+  ],
+  "ledger_names_added": [
+    {"address": "009D0790", "name": "BSP_BotStateTorpedoAttackRun_Enter"},
+    {"address": "009D07B0", "name": "BSP_BotStateTorpedoAttackRun_Tick", "note": "evidence appended"}
+  ]
+}
