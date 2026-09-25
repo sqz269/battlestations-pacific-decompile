@@ -21,6 +21,7 @@
 #include "bsp/game_hosts_menu.hpp"
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/game_hosts_ai.hpp"
+#include "bsp/game_hosts_gunnery.hpp"
 
 #include "bsp/hud_screens.hpp"
 #include "bsp/in_mission_interface_runtime.hpp"
@@ -798,21 +799,79 @@ public:
             && owner_.units->unit_current_role_slot(unit - 1, role, holder) && holder == 0;
     }
     bool group_available_009542b0(std::size_t unit, int group) override {
-        // SUBSTITUTION: "not available". The image answers from the unit's
-        // permission word (+194h/+198h/+19Ch/+1A4h against PLAYER_ANY or the
-        // local slot) and its gun list at unit+48h, and a yes makes the
-        // bind's cycle take that group's gunner roles (00545410 -> 0077C470).
-        // Neither input is on this host (section 27).
-        static_cast<void>(unit);
-        static_cast<void>(group);
-        owner_.record("HudWeaponGroupScreen::group_available", 0x009542b0u);
-        return false;
+        if constexpr (kHudGunnerRoleTakeBound) {
+            return group_available_bound(unit, group);
+        } else {
+            // SUBSTITUTION: "not available". The image answers from the
+            // unit's permission word (+194h/+198h/+19Ch/+1A4h against
+            // PLAYER_ANY or the local slot) and its gun list at unit+48h, and
+            // a yes makes the bind's cycle take that group's gunner roles
+            // (00545410 -> 0077C470). Section 27.
+            static_cast<void>(unit);
+            static_cast<void>(group);
+            owner_.record("HudWeaponGroupScreen::group_available", 0x009542b0u);
+            return false;
+        }
     }
     void role_request_0077c470(std::size_t unit, std::uint32_t mask, bool take) override {
+        if constexpr (kHudGunnerRoleTakeBound) {
+            if (unit != 0 && owner_.units != nullptr) {
+                owner_.units->role_request_0077c470(unit - 1, mask, take);
+                owner_.done("HudWeaponGroupScreen::role_request", 0x0077c470u);
+                return;
+            }
+        }
         static_cast<void>(unit);
         static_cast<void>(mask);
         static_cast<void>(take);
         owner_.record("HudWeaponGroupScreen::role_request", 0x0077c470u);
+    }
+    // 009542B0(unit, group) for groups 2..5 (section 31).
+    bool group_available_bound(std::size_t unit, int group) {
+        if (unit == 0 || owner_.units == nullptr) return false;
+        const std::size_t index = unit - 1;
+        // 0059BBD0(unit, role, slot): the permission word is 9 or the local
+        // slot game+18ECh (0 here).
+        auto open = [&](int role) {
+            std::int32_t word = 8;
+            return owner_.units->unit_role_permission(index, role, word)
+                && (word == 9 || word == 0);
+        };
+        bool permitted = false;
+        switch (group) {
+        case 2: permitted = open(3) || open(2); break;   // +194h, else 0059BBD0(2)
+        case 3: permitted = open(4); break;              // +198h
+        case 4: permitted = open(5); break;              // +19Ch
+        case 5: permitted = open(7); break;              // +1A4h
+        default: return false;
+        }
+        owner_.done("HudWeaponGroupScreen::group_available", 0x009542b0u);
+        if (!permitted) return false;
+        if (group != 5 && owner_.units->unit_is_kind_of(index, 8)) {
+            // A kind-8 unit's depth tests (the pose y against 00CE3D50, and
+            // BSP_Submarine_IsShallowEnoughToEngage for group 4): not held.
+            owner_.record("HudWeaponGroupScreen::submarine_depth", 0x009542b0u);
+            return false;
+        }
+        const GameGunneryHost* gunnery = owner_.units->gunnery();
+        if (gunnery == nullptr) {
+            owner_.record("HudWeaponGroupScreen::gun_list", 0x009542b0u);
+            return false;
+        }
+        // The kind-20h children on unit+48h; the weapon Function is
+        // [gun+3F4h]+80h, which the gunnery host keeps as the category.
+        for (const GameGunRow& gun : gunnery->guns()) {
+            if (gun.unit_index != index) continue;
+            const int f = gun.category;
+            switch (group) {
+            case 2: if (f == 1 || f == 5 || f == 6) return true; break;   // 00728A90
+            case 3: if (f == 2 || f == 3 || f == 4 || f == 6) return true; break;  // 005459B0
+            case 4: if (f == 7) return true; break;
+            case 5: if (f == 8 || f == 9) return true; break;
+            default: break;
+            }
+        }
+        return false;
     }
     std::vector<std::size_t> unit_records_778(std::size_t unit) override {
         static_cast<void>(unit);
@@ -831,6 +890,12 @@ public:
         return false;
     }
     void lvlaa_hint_00548360() override {
+        // 00548378: [00E188D8] must be kind 18h (a plane squadron); a ship
+        // ends the routine here whatever the applied byte +5h holds.
+        if (owner_.units != nullptr && owner_.units->controlled_bound()
+            && !owner_.units->unit_is_kind_of(owner_.units->controlled_index(), 0x18)) {
+            return;
+        }
         owner_.record("HudWeaponGroupScreen::lvlaa_hint", 0x00548360u);
     }
     bool player_unit_present() override {
@@ -888,8 +953,14 @@ public:
         return false;
     }
     std::size_t hud_target_00548856() override {
-        owner_.record("HudWeaponGroupScreen::hud_target", 0x00548856u);
-        return 0;
+        if constexpr (kHudWeaponGroupTargetBound && kHudUnitPickScreenBound) {
+            // The manager's +CCh is screen 29h; its +4Ch is the unit pick.
+            owner_.done("HudWeaponGroupScreen::hud_target", 0x00548856u);
+            return owner_.unit_pick.pick_4c;
+        } else {
+            owner_.record("HudWeaponGroupScreen::hud_target", 0x00548856u);
+            return 0;
+        }
     }
     float gunner_distance_00548ea9(std::size_t, std::size_t) override {
         owner_.record("HudWeaponGroupScreen::gunner_distance", 0x00548ea9u);

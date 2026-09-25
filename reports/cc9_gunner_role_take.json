@@ -1,0 +1,164 @@
+{
+ "packet": "cc9_gunner_role_take",
+ "branch": "agent/cc9-platform2",
+ "doc": "docs/SHIP_SCREEN_UPDATE.md sections 31-35",
+ "switches": {
+  "kHudGunnerRoleTakeBound": true,
+  "kHudWeaponGroupTargetBound": true
+ },
+ "functions": [
+  {
+   "address": "009542B0",
+   "name": "BSP_Unit_HasWeaponGroup",
+   "status": "bound (groups 2..5 from permissions and gun Function); kind-8 depth tests a record",
+   "abi": "__thiscall(unit, group), RET 4"
+  },
+  {
+   "address": "00545410",
+   "name": "BSP_HudWeaponGroupScreen_SetUnitGroupRoles",
+   "status": "reconstructed; take bound through GameUnitsHost::role_request_0077c470",
+   "abi": "__thiscall(screen, unit, take), RET 8"
+  },
+  {
+   "address": "0077C470",
+   "name": "BSP_UnitInstance_SendRoleTransfer (existing)",
+   "status": "bound as GameUnitsHost::role_request_0077c470 (00780162 delivered at once)"
+  },
+  {
+   "address": "0059BBD0",
+   "name": "BSP_Unit_IsRoleOpenToSlot (existing)",
+   "status": "bound through GameUnitsHost::unit_role_permission"
+  },
+  {
+   "address": "00954A10",
+   "name": "BSP_GunAimMessage79_Construct",
+   "status": "analyzed; the fire message stays a record"
+  },
+  {
+   "address": "00959C20",
+   "name": "BSP_Unit_ApplyGunAimMessage",
+   "status": "group 1/2 arm analyzed (section 32); contract for the gunnery host, not bound"
+  },
+  {
+   "address": "00954210",
+   "name": "BSP_Unit_GunAimMessageAcceptsDevice",
+   "status": "analyzed (section 34)"
+  },
+  {
+   "address": "00729F70",
+   "status": "analyzed: vtable[154h](0, 8), vtable[1E8h](0), BSP_Gun_ClearBotFireTarget"
+  }
+ ],
+ "host_steps": [
+  {
+   "function": "00545410",
+   "address": "0054541E",
+   "native": "009542B0",
+   "host": "HudWeaponGroupScreenHost::group_available_009542b0 -> group_available_bound"
+  },
+  {
+   "function": "00545410",
+   "address": "00545456",
+   "native": "0077C470",
+   "host": "role_request_0077c470 (group 2, mask 0Ch) -> GameUnitsHost::role_request_0077c470"
+  },
+  {
+   "function": "009542B0",
+   "address": "009542E6",
+   "native": "0059BBD0",
+   "host": "unit_role_permission(role 2) in group_available_bound"
+  },
+  {
+   "function": "009542B0",
+   "address": "00954337",
+   "native": "00728A90",
+   "host": "GameGunRow::category in {1,5,6}"
+  },
+  {
+   "function": "009542B0",
+   "address": "009543B4",
+   "native": "005459B0",
+   "host": "GameGunRow::category in {2,3,4,6}"
+  },
+  {
+   "function": "005484F0",
+   "address": "005489DA",
+   "native": "00954A10",
+   "host": "build_fire_message_00954a10 (record)"
+  },
+  {
+   "function": "005484F0",
+   "address": "00548A1F",
+   "native": "0077C2A0",
+   "host": "route_fire_message_0077c2a0 (record; contract section 32)"
+  },
+  {
+   "function": "00959C20",
+   "address": "00959CD6",
+   "native": "00954210",
+   "host": "contract: group filter"
+  },
+  {
+   "function": "00959C20",
+   "address": "00959D7F",
+   "native": "00521E70",
+   "host": "contract: out-of-window seat test"
+  },
+  {
+   "function": "00959C20",
+   "address": "00959D8E",
+   "native": "00729F70",
+   "host": "contract: return the gun to the AI"
+  },
+  {
+   "function": "00959C20",
+   "address": "00959D9B",
+   "native": "00521E70",
+   "host": "contract: in-window seat test"
+  },
+  {
+   "function": "00959C20",
+   "address": "00959E01",
+   "native": "0085ABA0",
+   "host": "contract: turn the gun"
+  }
+ ],
+ "no_ghidra_function": [],
+ "pairs": [
+  {
+   "switch": "kHudGunnerRoleTakeBound",
+   "form": "E2 9200/9000",
+   "off": "local/grt_off_e2.log",
+   "on": "local/grt_on_e2.log",
+   "unimplemented_total": [
+    5308902,
+    5308897
+   ],
+   "summary_moved": [
+    "player roles takes 1 -> 3",
+    "Lexington held 088888888 -> 080088888",
+    "window line of the OFF run (presentation anomaly, mission complete)"
+   ],
+   "verdict": "ON; every prediction held"
+  },
+  {
+   "switch": "kHudGunnerRoleTakeBound",
+   "form": "USN04 4700/4500",
+   "off": "local/grt_off_usn04.log",
+   "on": null,
+   "verdict": "ON side pending: 0xC0000005 at mission frame 4361, then startup FMOD failure with session 1 disconnected"
+  },
+  {
+   "switch": "kHudWeaponGroupTargetBound",
+   "form": "USN04 4700/4500",
+   "off": "local/tgt_off_usn04.log",
+   "on": "local/tgt_on_usn04.log",
+   "unimplemented_total": [
+    2794667,
+    2785509
+   ],
+   "summary_lines_identical": true,
+   "verdict": "ON; P = 0 against the predicted >= 662 (stale baseline: screen 29h picks nothing on current main)"
+  }
+ ]
+}
