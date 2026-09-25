@@ -1,5 +1,7 @@
 #include "bsp/gun_bot_remainder.hpp"
 
+#include "bsp/avoid_zone_clearance.hpp"  // native_segment_crossing_004f3730
+
 #include <cmath>
 
 namespace bsp {
@@ -365,6 +367,86 @@ SegmentCrossingXZ segment_crossing_004f3730(const std::array<float, 2>& a0,
 bool submarine_is_shallow_008527e0(float entity_height, float depth_reference) noexcept {
     // 008527FA: [entity+1204h] - 3.0 < [entity+100h].
     return depth_reference - kSubmarineSubmergedBias < entity_height;
+}
+
+// ---------------------------------------------------------------------------
+// 008FFF20's friendly-crossing launch gate
+// ---------------------------------------------------------------------------
+namespace {
+
+// 00414C60 BSP_Vector2f_LengthWithCutoff: the sum rounded to float, compared
+// against the 1e-10 double at 00CE3820; below or equal answers +0.
+float length2_with_cutoff_00414c60(float x, float z) noexcept {
+    const float sum = x * x + z * z;
+    if (!(static_cast<double>(sum) > 1e-10)) return 0.0f;
+    return static_cast<float>(std::sqrt(sum));
+}
+
+} // namespace
+
+std::array<float, 2> torpedo_run_end_008fff20(const std::array<float, 2>& gun_xz,
+                                              const std::array<float, 2>& lead_xz,
+                                              const std::array<float, 2>& node_axis_xz,
+                                              float snap_radians) noexcept {
+    // 0090047B/0090048B: FDIV [00CE3D28] (pi), FMUL [00CE3D20] (180).
+    const float degrees = static_cast<float>(
+        static_cast<double>(std::fabs(snap_radians)) / 3.141592653589793 * 180.0);
+    // 0090049D 00414260: axis * degrees; 009004A4 * 2.0 (00D7A308).
+    const float ox = static_cast<float>(static_cast<double>(node_axis_xz[0] * degrees) * 2.0);
+    const float oz = static_cast<float>(static_cast<double>(node_axis_xz[1] * degrees) * 2.0);
+    // 009004C6..009004F2: lead - (gun + offset).
+    float dx = lead_xz[0] - (ox + gun_xz[0]);
+    float dz = lead_xz[1] - (gun_xz[1] + oz);
+    // 00900506 0042B260 on (dx, 0, dz).
+    const float len = std::sqrt(dx * dx + dz * dz);
+    if (len > 0.0f) {
+        dx /= len;
+        dz /= len;
+    }
+    // 00900537..00900583: gun + 1000 * direction.
+    return {static_cast<float>(1000.0 * dx) + gun_xz[0],
+            gun_xz[1] + static_cast<float>(1000.0 * dz)};
+}
+
+TorpedoFriendlyCrossing torpedo_friendly_crossing_008fff20(
+    const std::array<float, 3>& gun, const std::array<float, 2>& run_end_xz,
+    float water_speed, const std::array<float, 3>& friendly_position,
+    const std::array<float, 2>& friendly_forward_xz,
+    const std::array<float, 2>& friendly_velocity_xz) noexcept {
+    TorpedoFriendlyCrossing out;
+    // 009005CB..00900618: squared distance gun - friendly; JA skips above 4e6.
+    const float ex = gun[0] - friendly_position[0];
+    const float ey = gun[1] - friendly_position[1];
+    const float ez = gun[2] - friendly_position[2];
+    const float squared = ex * ex + ey * ey + ez * ez;
+    if (static_cast<double>(squared) > 4000000.0) return out;
+    out.in_range = true;
+
+    // 00900630..009006E7: the friendly's own line, position -/+ 1000 * body axis.
+    const float fx = static_cast<float>(1000.0 * friendly_forward_xz[0]);
+    const float fz = static_cast<float>(1000.0 * friendly_forward_xz[1]);
+    const float a0[2] = {gun[0], gun[2]};
+    const float a1[2] = {run_end_xz[0], run_end_xz[1]};
+    const float b0[2] = {friendly_position[0] - fx, friendly_position[2] - fz};
+    const float b1[2] = {friendly_position[0] + fx, friendly_position[2] + fz};
+    float crossing[2] = {0.0f, 0.0f};
+    if (!native_segment_crossing_004f3730(a0, a1, b0, b1, crossing)) return out;
+    out.crossed = true;
+
+    // 009006FB..00900750: the run distance and the torpedo's time to it.
+    out.run_distance = length2_with_cutoff_00414c60(crossing[0] - a0[0],
+                                                    crossing[1] - a0[1]);
+    const float time = out.run_distance / water_speed;
+    // 00900756..009007C3: the friendly's position after that time.
+    const float px = friendly_velocity_xz[0] * time + friendly_position[0];
+    const float pz = friendly_velocity_xz[1] * time + friendly_position[2];
+    out.miss = length2_with_cutoff_00414c60(px - crossing[0], pz - crossing[1]);
+    // 009007D0..009007E6: run * 300 (00CE3CA8) / 1000 (00CE47A0) + 200 (00CE4D70).
+    out.threshold = static_cast<float>(
+        static_cast<double>(out.run_distance) * 300.0 / 1000.0 + 200.0);
+    // 009007F2 FCOMIP threshold, miss; JA aborts.
+    out.blocks = out.threshold > out.miss;
+    return out;
 }
 
 } // namespace bsp

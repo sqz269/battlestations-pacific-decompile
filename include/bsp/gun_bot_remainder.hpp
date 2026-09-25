@@ -291,6 +291,45 @@ SegmentCrossingXZ segment_crossing_004f3730(const std::array<float, 2>& a0,
 // own +1204h reference minus three metres.
 bool submarine_is_shallow_008527e0(float entity_height, float depth_reference) noexcept;
 
+// ---------------------------------------------------------------------------
+// 008FFF20's friendly-crossing launch gate, 0090043D..009007F6
+// ---------------------------------------------------------------------------
+// Packet cc9_torpedo_launch_gate, docs/TORPEDO_LAUNCH_GATE.md. After the
+// one-degree settle test and gun->vtable[1D0h](1), the torpedo bot builds a
+// 1000 m run line in (x, z) from the gun's +FCh position and walks the own-party
+// list [008053C0([owner+54h])+0DDCh]. Any other ship (IsKindOf 6) within
+// 2000 m whose predicted position, when the torpedo reaches the crossing of the
+// two lines, is closer to the crossing than 0.3 * run distance + 200 m aborts
+// the launch through gun->vtable[1E8h](0) at 0090096D.
+
+// 00900476..00900583: the run line's far end. `snap_radians` is
+// |00438B10(bot+60h, raw heading)|, converted to degrees (FDIV pi, FMUL 180);
+// `node_axis_xz` is row 2 of [gun+3CCh]'s world matrix (node+110h). The aim is
+// taken from gun + 2 * degrees * axis (00D7A308 = 2.0) towards the lead point,
+// normalised by 0042B260 and laid 1000 m (00CE47A0) out from the gun.
+std::array<float, 2> torpedo_run_end_008fff20(const std::array<float, 2>& gun_xz,
+                                              const std::array<float, 2>& lead_xz,
+                                              const std::array<float, 2>& node_axis_xz,
+                                              float snap_radians) noexcept;
+
+struct TorpedoFriendlyCrossing {
+    bool in_range = false;      // 0090060C: squared 3D distance <= 4000000 (00D09FE8)
+    bool crossed = false;       // 009006EE: 004F3730 accepted both parameters
+    float run_distance = 0.0f;  // 00900730: |crossing - gun| (00414C60)
+    float miss = 0.0f;          // 009007C7: |predicted - crossing|
+    float threshold = 0.0f;     // 009007D0..009007E6
+    bool blocks = false;        // 009007F6 JA 0090096D
+};
+
+// One node of the 0090058A walk. `friendly_forward_xz` is (+94h, +9Ch), the
+// body axis; `friendly_velocity_xz` is (x, z) of vtable[34h]; `water_speed` is
+// [[gun+3F8h]+34h]+0E4h, stored at 00900236.
+TorpedoFriendlyCrossing torpedo_friendly_crossing_008fff20(
+    const std::array<float, 3>& gun, const std::array<float, 2>& run_end_xz,
+    float water_speed, const std::array<float, 3>& friendly_position,
+    const std::array<float, 2>& friendly_forward_xz,
+    const std::array<float, 2>& friendly_velocity_xz) noexcept;
+
 } // namespace bsp
 
 #endif // BSP_GUN_BOT_REMAINDER_HPP
