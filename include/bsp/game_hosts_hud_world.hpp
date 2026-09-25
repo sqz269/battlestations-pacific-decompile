@@ -164,6 +164,31 @@ inline constexpr bool kHudRootScreenBound = true;
 // without input. OFF keeps both records.
 inline constexpr bool kHudUnitPickScreenBound = true;
 
+// Packet cc9_screen_2eh_group (docs/SHIP_SCREEN_UPDATE.md section 26). ON
+// routes the pump's slot 27h (vtable 00CF7A38 slot 20h, 0067BB50, the role-0
+// take on the controlled unit) to GameUnitsHost::role_screen_update_0067bb50
+// in place of the FrontEndScreen::update record, at the pump's cadence. The
+// units host's GameUnitsHost::Impl::kRoleScreenFixedStepCall must be the
+// opposite of this switch, or the take runs twice or never.
+inline constexpr bool kHudRoleScreenPumpBound = true;
+
+// Packet cc9_screen_2eh_group (docs/SHIP_SCREEN_UPDATE.md sections 27 and
+// 28). ON runs screen 2Eh's release 005470C0 and bind 00549260 inside
+// 0064DA40, and its body 005484F0 from screen 46h's update in place of the
+// HudShipView::screen_2eh_005484f0 record. The group test 009542B0 answers
+// "not available" as a record, so no group is selected and no gunner role is
+// taken; the widgets (2Eh's layout 00546A20 is not run), the HUD target, the
+// input axes and every input-gated branch are records. OFF keeps the record.
+inline constexpr bool kHudWeaponGroupScreenBound = true;
+
+// Packet cc9_screen_2eh_group, part 3 (docs/SHIP_SCREEN_UPDATE.md section
+// 29). ON answers screen 29h's 008DDF90 (BSP_SzurkeNyil_ContainsUnit on the
+// local slot's grey-arrow set, game+21A4h + game+18ECh*4) from
+// bsp::game::game_objective_sets(), which the mission Lua's Objectives_Add
+// and Objectives_AddUnit fill, in place of the "not a member" record. OFF
+// keeps the record.
+inline constexpr bool kHudGreyArrowSetBound = true;
+
 class GameHostLog;
 class GameFrontendHost;
 class GameMenuHost;

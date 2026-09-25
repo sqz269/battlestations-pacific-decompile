@@ -20,6 +20,7 @@
 #include "bsp/ship_class_fields.hpp"
 #include "bsp/game_hosts_menu.hpp"
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/game_hosts_ai.hpp"
 
 #include "bsp/hud_screens.hpp"
 #include "bsp/in_mission_interface_runtime.hpp"
@@ -108,6 +109,8 @@ struct GameHudHost::Impl {
     GuiLayoutWidget* hud_root_closed_group_widget();
     // Screen 29h, the unit pick (00527260, 00526A40).
     bsp::UnitPickScreenState unit_pick{};
+    // Screen 2Eh, the weapon groups (00549260, 005484F0).
+    bsp::HudWeaponGroupScreenState weapon_group{};
     bool lock_radius_read{false};
     std::vector<float> lock_radius;
     const std::vector<float>& lock_radius_multipliers();
@@ -776,10 +779,191 @@ bool GameHudHost::Impl::camera_target_view(bsp::ShipCaptainTargetView& out) {
     return true;
 }
 
+namespace {
+// bsp::HudWeaponGroupScreenHost over this process's HUD (packet
+// cc9_screen_2eh_group). Screen 2Eh's layout 00546A20 is not run, so its
+// widgets are records; units are index + 1.
+class WeaponGroupScreenBinding final : public bsp::HudWeaponGroupScreenHost {
+public:
+    explicit WeaponGroupScreenBinding(GameHudHost::Impl& owner) : owner_(owner) {}
+
+    bool unit_is_kind_of(std::size_t unit, int kind) override {
+        return unit != 0 && owner_.units != nullptr && owner_.units->unit_is_kind_of(unit - 1, kind);
+    }
+    bool local_player_role(std::size_t unit, int role) override {
+        // 00927F30(unit, role): the holder at unit+1ACh is the local player's
+        // slot 0, as for screen 46h (section 21).
+        std::int32_t holder = -1;
+        return unit != 0 && owner_.units != nullptr
+            && owner_.units->unit_current_role_slot(unit - 1, role, holder) && holder == 0;
+    }
+    bool group_available_009542b0(std::size_t unit, int group) override {
+        // SUBSTITUTION: "not available". The image answers from the unit's
+        // permission word (+194h/+198h/+19Ch/+1A4h against PLAYER_ANY or the
+        // local slot) and its gun list at unit+48h, and a yes makes the
+        // bind's cycle take that group's gunner roles (00545410 -> 0077C470).
+        // Neither input is on this host (section 27).
+        static_cast<void>(unit);
+        static_cast<void>(group);
+        owner_.record("HudWeaponGroupScreen::group_available", 0x009542b0u);
+        return false;
+    }
+    void role_request_0077c470(std::size_t unit, std::uint32_t mask, bool take) override {
+        static_cast<void>(unit);
+        static_cast<void>(mask);
+        static_cast<void>(take);
+        owner_.record("HudWeaponGroupScreen::role_request", 0x0077c470u);
+    }
+    std::vector<std::size_t> unit_records_778(std::size_t unit) override {
+        static_cast<void>(unit);
+        owner_.record("HudWeaponGroupScreen::unit_records_778", 0x00549337u);
+        return {};
+    }
+    void clear_child_flags_005470c0(std::size_t unit) override {
+        static_cast<void>(unit);
+        owner_.record("HudWeaponGroupScreen::clear_child_flags", 0x005470e7u);
+    }
+    void reset_widgets_005464e0() override {
+        owner_.record("HudWeaponGroupScreen::reset_widgets", 0x005464e0u);
+    }
+    bool player_unit_is_lst_rocket() override {
+        owner_.record("HudWeaponGroupScreen::player_unit_name", 0x005493f9u);
+        return false;
+    }
+    void lvlaa_hint_00548360() override {
+        owner_.record("HudWeaponGroupScreen::lvlaa_hint", 0x00548360u);
+    }
+    bool player_unit_present() override {
+        return owner_.units != nullptr && owner_.units->controlled_bound();
+    }
+    void one_shot_108_0054856b() override {
+        owner_.record("HudWeaponGroupScreen::one_shot_108", 0x0054856bu);
+    }
+    void one_shot_109_0054861b(float pitch_10c, float yaw_110) override {
+        static_cast<void>(pitch_10c);
+        static_cast<void>(yaw_110);
+        owner_.record("HudWeaponGroupScreen::one_shot_109", 0x0054861bu);
+    }
+    void hide_widgets_005452f0() override {
+        owner_.record("HudWeaponGroupScreen::hide_widgets", 0x005452f0u);
+    }
+    void group_sight_00548300(int group) override {
+        static_cast<void>(group);
+        owner_.record("HudWeaponGroupScreen::group_sight", 0x00548300u);
+    }
+    void rocket_widgets_00548716() override {
+        owner_.record("HudWeaponGroupScreen::rocket_widgets", 0x00548716u);
+    }
+    void widget_98_005486c7(bool flag_d5) override {
+        static_cast<void>(flag_d5);
+        owner_.record("HudWeaponGroupScreen::widget_98", 0x005486c7u);
+    }
+    bool input_pressed(int action) override { return owner_.menu.input_action_pressed(action); }
+    bool input_held(int action) override { return owner_.menu.input_action_held(action); }
+    bool input_axis_active_004d9480(int action) override {
+        static_cast<void>(action);
+        owner_.record("HudWeaponGroupScreen::input_axis_active", 0x004d9480u);
+        return false;
+    }
+    float input_axis_value_004c5070(int action) override {
+        static_cast<void>(action);
+        owner_.record("HudWeaponGroupScreen::input_axis_value", 0x004c5070u);
+        return 0.0f;
+    }
+    bool input_in_set_00547250(int action) override {
+        static_cast<void>(action);
+        owner_.record("HudWeaponGroupScreen::input_in_set", 0x00547250u);
+        return false;
+    }
+    float clock_f876a4() override {
+        owner_.record("HudWeaponGroupScreen::clock", 0x00548808u);
+        return 0.0f;
+    }
+    bool lock_branch_00548b06(bsp::HudWeaponGroupScreenState&) override {
+        owner_.record("HudWeaponGroupScreen::lock_branch", 0x00548b06u);
+        return false;
+    }
+    bool torpedo_branch_00548cb6(bsp::HudWeaponGroupScreenState&) override {
+        owner_.record("HudWeaponGroupScreen::torpedo_branch", 0x00548cb6u);
+        return false;
+    }
+    std::size_t hud_target_00548856() override {
+        owner_.record("HudWeaponGroupScreen::hud_target", 0x00548856u);
+        return 0;
+    }
+    float gunner_distance_00548ea9(std::size_t, std::size_t) override {
+        owner_.record("HudWeaponGroupScreen::gunner_distance", 0x00548ea9u);
+        return 0.0f;
+    }
+    float gunner_range_49c(std::size_t) override {
+        owner_.record("HudWeaponGroupScreen::gunner_range", 0x00548ed0u);
+        return 0.0f;
+    }
+    bool target_virtual_10c(std::size_t) override {
+        owner_.record("HudWeaponGroupScreen::target_virtual_10c", 0x00548923u);
+        return false;
+    }
+    int relation_00803ce0(std::size_t, std::size_t) override {
+        owner_.record("HudWeaponGroupScreen::relation", 0x00803ce0u);
+        return 0;
+    }
+    bool same_side_54(std::size_t, std::size_t) override {
+        owner_.record("HudWeaponGroupScreen::same_side", 0x00548919u);
+        return true;
+    }
+    std::uint16_t target_id_174(std::size_t) override {
+        owner_.record("HudWeaponGroupScreen::target_id", 0x00548934u);
+        return 0;
+    }
+    void target_debug_00548942(std::size_t) override {
+        owner_.record("HudWeaponGroupScreen::target_debug", 0x00548942u);
+    }
+    bool row_widget_present(int, int) override {
+        owner_.record("HudWeaponGroupScreen::row_widget", 0x005488d5u);
+        return false;
+    }
+    void show_row_widget(int, int) override {
+        owner_.record("HudWeaponGroupScreen::show_row_widget", 0x005488f9u);
+    }
+    void build_fire_message_00954a10(int, bool, bool, bool, std::uint16_t) override {
+        owner_.record("HudWeaponGroupScreen::fire_message", 0x00954a10u);
+    }
+    void route_fire_message_0077c2a0(std::size_t) override {
+        owner_.record("HudWeaponGroupScreen::route_fire_message", 0x0077c2a0u);
+    }
+    bool camera_busy_00518f30() override {
+        owner_.record("HudWeaponGroupScreen::camera_busy", 0x00518f30u);
+        return false;
+    }
+    bool depth_charge_child_00549061(std::size_t) override {
+        owner_.record("HudWeaponGroupScreen::depth_charge_child", 0x00549061u);
+        return false;
+    }
+    void hold_camera_005490a6(std::size_t) override {
+        owner_.record("HudWeaponGroupScreen::hold_camera", 0x005490a6u);
+    }
+    int input_mode_f8a0c4() override {
+        owner_.record("HudWeaponGroupScreen::input_mode", 0x0054917du);
+        return 0;
+    }
+    void show_widget_c0_005491c2() override {
+        owner_.record("HudWeaponGroupScreen::widget_c0", 0x005491c2u);
+    }
+
+private:
+    GameHudHost::Impl& owner_;
+};
+}  // namespace
+
 void GameHudHost::Impl::bind_mission_camera_0064da40() {
     if (units == nullptr || !units->controlled_bound()) return;
     const std::size_t index = units->controlled_index();
     const GameUnitRow* row = units->unit_row(index);
+    // 0064DA64: screen 2Eh's 005470C0 before anything else.
+    if constexpr (kHudWeaponGroupScreenBound) {
+        WeaponGroupScreenBinding group_host(*this);
+        bsp::weapon_group_screen_release_005470c0(weapon_group, group_host);
+    }
     // The settings block (00424C40, ShipGlobals["ShipCamera"]) and the class
     // camera keys (00831E0D) come from the live Lua state.
     bool settings_read = false;
@@ -812,6 +996,12 @@ void GameHudHost::Impl::bind_mission_camera_0064da40() {
     camera_target_view(view);
     bsp::bind_ship_captain_0064da40(camera, view, camera_settings);
     camera_bound = true;
+    // 0064DCC4: 00549260(screen 2Eh, 46h's +1Ch the unit, 46h's +20h the mover).
+    if constexpr (kHudWeaponGroupScreenBound) {
+        WeaponGroupScreenBinding group_host(*this);
+        bsp::weapon_group_screen_bind_00549260(weapon_group, group_host, index + 1, camera_bound);
+        done("HudWeaponGroupScreen::bind", 0x00549260u);
+    }
     done("MissionCamera::bind_ship_view", 0x0064da40u);
     log.notef("mission camera: ShipCaptain mover bound to \"%s\" (0064da40): ShipCamera "
         "ZoomOffset %.3f LengthMult %.3f angles [%.1f, %.1f] deg; class CameraDistance front "
@@ -906,6 +1096,7 @@ void GameHudHost::detach_world_2k() noexcept {
     impl.warning_widgets.clear();
     impl.warning_widgets_bound = false;
     impl.follow_screen = bsp::FollowScreen49State{};
+    impl.weapon_group = bsp::HudWeaponGroupScreenState{};
     impl.ship_view_has_unit = false;
     impl.ship_view_controls = bsp::IntegratedControlsState{};
     impl.binoculars = bsp::BinocularsState{};
@@ -1394,7 +1585,13 @@ public:
         return owner_.menu.in_game_screen_registered(0x2e);
     }
     void screen_2eh_005484f0() override {
-        owner_.record("HudShipView::screen_2eh_005484f0", 0x005484f0u);
+        if constexpr (kHudWeaponGroupScreenBound) {
+            WeaponGroupScreenBinding group_host(owner_);
+            bsp::weapon_group_screen_update_005484f0(owner_.weapon_group, group_host);
+            owner_.done("HudWeaponGroupScreen::update", 0x005484f0u);
+        } else {
+            owner_.record("HudShipView::screen_2eh_005484f0", 0x005484f0u);
+        }
     }
     bool input_pressed(int action) override { return owner_.menu.input_action_pressed(action); }
     bool unit_virtual_234() override {
@@ -1584,6 +1781,19 @@ void GameHudHost::update_ship_view_screen_0064d610(float seconds, bool wanted) {
     ShipViewScreen46Binding binding(impl, wanted);
     bsp::ship_view_update_0064d610(binding, seconds);
     impl.done("HudShipView::update", 0x0064d610u);
+}
+
+// 0067BB50, slot 20h of vtable 00CF7A38 (HUD page 27h). The pump only calls
+// it while the page's +4h and +5h are set, so the routine's +4h test at
+// 0067BBE0 holds on this path. The units host owns the take.
+void GameHudHost::update_role_screen_0067bb50() {
+    Impl& impl = *impl_;
+    if (impl.units == nullptr) {
+        impl.log.unimplemented("HudRoleScreen::update_no_units", "0067bb50");
+        return;
+    }
+    impl.units->role_screen_update_0067bb50();
+    impl.done("HudRoleScreen::update", 0x0067bb50u);
 }
 
 void GameHudHost::update_follow_screen_0067bf00() {
@@ -1915,7 +2125,32 @@ public:
         owner_.record("UnitPickScreen::squadron_members", 0x00526e58u);
         return 0;
     }
-    bool grey_arrow_contains_008ddf90(std::size_t) override {
+    bool grey_arrow_contains_008ddf90(std::size_t unit) override {
+        if constexpr (kHudGreyArrowSetBound) {
+            // 008DDF90 on the local slot's set (game+18ECh is 0 here). The
+            // set's unit tree (+18h, size +20h) is what the objective table
+            // holds per slot; the Lua host fills it (Objectives_AddUnit).
+            const std::vector<std::size_t> set =
+                bsp::game::game_objective_sets().units_in_slot(0);
+            if (set.empty() || unit == 0 || owner_.units == nullptr) {  // 008DDF93
+                owner_.done("UnitPickScreen::grey_arrow_set", 0x008ddf90u);
+                return false;
+            }
+            std::size_t subject = unit - 1;
+            if (!owner_.units->unit_is_kind_of(subject, 5)) {           // 008DDFA9
+                if (owner_.units->unit_is_kind_of(subject, 0x18)) {     // 008DDFB8
+                    // unit+3D0h, a squadron's plane: not exposed here.
+                    owner_.record("UnitPickScreen::grey_arrow_squadron", 0x008ddfc2u);
+                }
+                owner_.done("UnitPickScreen::grey_arrow_set", 0x008ddf90u);
+                return false;
+            }
+            owner_.done("UnitPickScreen::grey_arrow_set", 0x008ddf90u);
+            for (const std::size_t member : set) {                      // 008DDF00
+                if (member == subject) return true;
+            }
+            return false;
+        }
         // SUBSTITUTION: no entity set is built at game+21A4h
         // (docs/AI_SQUADRON_SERVED.md), so nothing is a grey-arrow member.
         owner_.record("UnitPickScreen::grey_arrow_set", 0x008ddf90u);

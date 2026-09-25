@@ -1243,3 +1243,271 @@ The role test 00927F30(ship, 0) then answers "held", as section 21 established f
    - 0051E7E0 and 006502C0, the one-shot bytes +108h/+109h.
 
 Expect input-gated orders and UI-mode writes. It is a packet of its own.
+
+## 26. Screen 27h runs from the pump (cc9-platform2, 2026-09-25)
+
+**The routing.** 0067BB50 is slot 20h of vtable 00CF7A38, HUD page 27h (the vtable dword sits at
+00CF7A58). The recovered pump 004F8830 calls slot 20h of every screen that is both wanted (+4h)
+and applied (+5h), so the image runs the 27h take at the pump's cadence. That is twice per
+mission frame here, from `run_front_end_state_frame`.
+- `bsp::kHudRoleScreenPumpBound` routes the pump's slot 27h to
+  `GameHudHost::update_role_screen_0067bb50`, which forwards to the public
+  `GameUnitsHost::role_screen_update_0067bb50`.
+- `GameUnitsHost::Impl::kRoleScreenFixedStepCall` goes false in the same change, so the take runs
+  once per pump and never from the fixed step. The two switches must stay opposite.
+- The routine's test of the page byte +4h at 0067BBE0 was labelled "taken as set". On the pump
+  path it is exact: the pump skips the screen when +4h is clear.
+
+**Predictions, written before the pair.** One tree, `local\bin\r27_off` (pump switch off, fixed-step
+call on) against `local\bin\r27_on`, USN04 4700/4500, `BSP_GUNNERY_RNG_STREAMS=1` on both.
+- **Row that leaves:** `FrontEndScreen::update` 004f75c0, 9,165 (27h is the last slot the pump
+  still records).
+- **Rows added:** none. `HudRoleScreen::update` is an implemented row.
+- **Take bookkeeping.** The take fires on the first call that sees a controlled kind-2 unit
+  without role 0, and afterwards only when the controlled unit changes. The pump reaches page 27h
+  once the in-mission interface publishes it, before the mission's first fixed step moves any unit.
+  So `Session::entity_role_message_4b` and the role counts stay identical.
+- **Summary lines.** All identical, the Lexington's path and death time included. The ignored
+  counters are `ship avoidance search refills` and `pretranslate`.
+
+**The pair.** `local\r27_off_usn04.log` against `local\r27_on_usn04.log`, one tree, USN04 4700/4500.
+
+| row | OFF | ON |
+| --- | ---: | ---: |
+| unimplemented total | 2,991,192 | 2,982,034 (-9,158) |
+| FrontEndScreen::update 004f75c0 | 9,165 | 7 |
+| HudRoleScreen::update 0067bb50 (concrete) | none | 9,158 |
+
+- **Summary lines.** All 163 are identical, the role bookkeeping and the Lexington's path included.
+- **Prediction miss.** `FrontEndScreen::update` did not reach 0. Slot 27h accounted for 9,158 of
+  its 9,165 calls. The other 7 come from a slot that is not 27h (see the end of section 28).
+- **Result.** The take is unchanged and runs once per pump. **`kHudRoleScreenPumpBound` is ON and
+  `kRoleScreenFixedStepCall` is false.**
+
+## 27. Screen 2Eh's weapon groups: the bind 00549260 (cc9-platform2, 2026-09-25)
+
+**Correction to section 25.** 0064DA40 pushes its +20h and +1Ch before calling 00549260
+(0064DCB3..0064DCC4). Its +20h is the ShipCaptain mover it constructed at 0064DAC0..0064DB02, not a
+unit. So 2Eh's +40h, the object 00549260 observes through the pair at +2Ch, is the camera mover.
+The argument order is `(group_unit, bound)`: the frame puts `[ESP+38h]` in ESI and `[ESP+3Ch]` in EDI.
+
+**The array.** +20h data, +24h count, +28h capacity; 18h-byte entries.
+- 005460A0 builds an entry: base vtable 00CEDD88, +4h..+Ch zeroed, +10h = 1, +14h = the unit, and
+  an observer registration on it. 00545600 is the matching destructor.
+- 00546730 appends a copy (00545F50), growing through 00546370 to twice the capacity. The copy gets
+  the derived vtable 00CEDDA0.
+- 005467B0 resizes, destroying from the tail through vtable slot 0.
+
+**The groups.** +44h selects one of six weapon groups. The table below is read from 009542B0,
+00545370, 00545E50, 00545410 and 00548300:
+
+| group | 009542B0 on the unit | player roles tested | 0077C470 mask | 00548300 |
+| --- | --- | --- | --- | --- |
+| 0 | yes, no unit test | none | none | 005464E0 |
+| 1 | no (the switch default) | 2 | 04h | nothing |
+| 2 | permission +194h, an anti-air gun (BSP_Gun_IsAntiAirKind) | 2 or 3 | 0Ch | 00547A20(5) |
+| 3 | permission +198h, an artillery gun; a kind-8 unit must be surfaced | 4 | 10h | 00547A20(2) |
+| 4 | permission +19Ch, a gun with +3F4h+80h = 7 | 5 | 20h | 00547A20(7) |
+| 5 | permission +1A4h, a gun with +3F4h+80h = 8 or 9 | 7 | 80h | 00547A20(9) |
+
+The permission words pass when they hold 9 (PLAYER_ANY) or the local slot game+18ECh. Group 2
+also passes when 0059BBD0(2, slot) does. The guns are the kind-20h children on unit+48h, chained
+through +44h.
+
+**Selecting a group takes roles.** 00545BD0(take) calls 00545410(unit, take) on every entry.
+00545410 asks 009542B0 first, then sends 0077C470(mask, take) when the group is available or the
+call releases. 00548410 and 005484B0 release the old group's roles, store +44h, take the new
+group's roles, then run 00548360.
+- **00548410(forward, unused)**, RET 8: it steps +44h by 1 (forward) or 5 (back) modulo 6 until it
+  lands on an available group among 1..5. If none is available, the result is group 0.
+- **005484B0(group)** selects `group` only when it is available.
+- **00548360** gives the "LVLAA" award hint on group 2, when the screen is applied and the player
+  unit is a kind-18h unit whose +3D0h is kind 10h.
+
+**00549260(group_unit, bound)**, RET 8:
+1. It stores `bound` at +40h and clears +54h.
+2. With no unit it empties the array and returns.
+3. It notes whether the first entry changed: the array was empty, or entry 0's unit differs.
+4. It rebuilds the array with the unit. A kind-1Ch unit (MCommandBuilding) adds the unit of each
+   64h-byte record at +778h (count +77Ch) whose +14h is set.
+5. **Changed:** +44h = 0, 00548410(forward). Then a kind-6 unit that is not kind 8 or 0Eh (a
+   surface ship other than a torpedo boat) tries group 3 through 005484B0.
+6. **Unchanged:** it retakes the current group's roles if the group is still available.
+   Otherwise it steps forward.
+7. It runs 00548360, then sets +D6h when the player unit's vtable +10h name is "LST - Rocket"
+   (00CEDF90, 0Dh bytes with the terminator).
+
+**005470C0, 0064DA40's first call.** It clears +490h on every kind-22h child of every entry unit.
+Then it releases the current group's mask on each unit. It calls 009542B0 there but discards the
+answer. Finally it resets the widgets (005464E0) and clears +100h and +D6h. +44h is kept.
+
+**What the image does in USN04.** The bind's cycle asks 009542B0 for groups 1 to 5 on the
+Lexington. The first group that answers yes gets its gunner roles taken by the local player
+through the 4Bh role message. From then on 005484F0 builds fire message 79h each call and routes
+it to the Lexington (section 28). This host cannot answer 009542B0: the permission words
++188h..+1A8h are private to the units host, and the gun list is the gunnery host's. So the
+reconstruction answers "not available" as a record. **No group is selected and no gunner role is
+taken.** Binding 009542B0 is a gameplay change and needs its own pair: it would move the role
+table and every routine that reads it.
+
+**Code.** `bsp::weapon_group_screen_release_005470c0` and `bsp::weapon_group_screen_bind_00549260`
+in `src/mission_camera.cpp`. The helpers 00545B30, 00545B80, 00545370, 00545E50, 00545BD0, 00548360,
+00548410 and 005484B0 are in `src/hud_weapon_group_screen.cpp`.
+
+## 28. Screen 2Eh's 005484F0 (cc9-platform2, 2026-09-25)
+
+**The body.** `__thiscall(screen 2Eh)`, plain RET at 005491F3, 005484F0..005491F4 (FUN_005484F0).
+The call census matches section 25: seven 004C43C0, seven 004C5090, two 004CC460, one 0077C2A0,
+three 00803CE0 and four 00927F30 calls. The fourth 00927F30 call, at 00548F69, has its answer
+discarded.
+
+**The flow.**
+1. **Gates** (00548512..0054854E): +40h, +24h, entry 0's unit, [00E188D8], and 00927F30(entry 0, 0).
+2. **One-shot bytes.** Each of +108h and +109h is cleared before its block runs.
+   - +108h: the binocular screen [00E198C4]+4Ch is reset through 0051E7E0, or on a kind-8 unit the
+     periscope +84h through 006502C0.
+   - +109h: the periscope mover +2Ch gets +10Ch/+110h in +388h/+384h.
+   - Only the torpedo branch sets them (00548E20, 00548E2A).
+3. **Selection** (0054867A): if +44h is 0 or no longer available, step forward (00548410).
+4. **Widgets**: hide all (005452F0), then the group's sight (00548300). A row is chosen: group 3
+   gives 1 (the rocket gauges, from the player unit's +63Ch), or 4 on an "LST - Rocket". Group 4
+   gives 2, and group 5 gives 3 (widget +98h).
+5. **Keys.**
+   - Action 99h pressed stores the clock [00F876A4] in +104h.
+   - 9Ch, 9Dh, 9Eh and 9Fh select groups 2, 3, 4 and 5.
+   - 9Bh pressed with 99h held is the lock branch. On group 3 it walks the input manager's +19CCh
+     list and ends in 004CC460(26h, unit).
+   - Otherwise the 9Bh axis (004D9480, 004C5070) steps the group.
+   - Otherwise 99h held on group 4 is the torpedo branch. It ends in 004CC460(26h, unit) and sets
+     +108h/+109h.
+6. **Target** (00548839): +54h = [[00E198C4]+CCh]+4Ch. The mover's aim (0042D7E0, 00521370) is
+   computed here, but only the fire message reads it.
+7. **Role-held block**, only when +44h is not 0 and 00545E50 finds the group's role held on some
+   entry:
+   - the target marks (00548E4A's nearest gunner within unit+49Ch, three 00803CE0 relations);
+   - fire message 79h (00954A10: group, aim, 99h pressed, 99h held, has-target, the target's
+     +174h id);
+   - `0077C2A0(unit, message, 3, 0)` for each entry whose 00545370 role test passes;
+   - group 5's hold latch +100h.
+8. **Tail**: the row's widgets and +D0h. With +44h at 0 only widget +C0h is shown.
+
+**Coverage.** Every branch is reconstructed as control flow. What the host does not hold is
+recorded, each under its own name: the widgets, the target, the clock, the axis, the input set
+00547250, the lock and torpedo branches, the target marks' unit queries, the fire message and its
+route. `HudWeaponGroupScreen::lock_branch` and `::torpedo_branch` return "not taken", and they are
+reached only on input.
+
+**Predictions, written before the pair.** One tree with every section 26 change,
+`local\bin\g2e_off` (`kHudWeaponGroupScreenBound` off) against `local\bin\g2e_on`, USN04
+4700/4500, `BSP_GUNNERY_RNG_STREAMS=1` on both.
+- **The bind.** It runs once, with an empty array, so the release does only `reset_widgets`. The
+  cycle asks four groups (2..5; group 1 needs no query), and 005484B0(3) asks one more because the
+  Lexington is a kind-6 ship. Then the name test.
+- **Every call** of the 9,158 passes the gates: the 27h take runs earlier in the same pump. Group 0
+  is always available, and +44h = 0 makes the cycle ask groups 2..5 again, four records. Then come
+  `hide_widgets`, `group_sight`, `input_axis_active`, `hud_target` and `widget_c0`.
+  With no input, no key branch is reached.
+- **Row that leaves:** `HudShipView::screen_2eh_005484f0`, 9,158.
+- **Rows added, unimplemented:**
+
+| row | calls |
+| --- | ---: |
+| HudWeaponGroupScreen::group_available 009542b0 | 36,637 (4 x 9,158 + 5) |
+| HudWeaponGroupScreen::hide_widgets | 9,158 |
+| HudWeaponGroupScreen::group_sight | 9,158 |
+| HudWeaponGroupScreen::input_axis_active | 9,158 |
+| HudWeaponGroupScreen::hud_target | 9,158 |
+| HudWeaponGroupScreen::widget_c0 | 9,158 |
+| HudWeaponGroupScreen::reset_widgets | 1 |
+| HudWeaponGroupScreen::player_unit_name | 1 |
+
+- **Rows added, concrete:** `HudWeaponGroupScreen::bind` 1 and `HudWeaponGroupScreen::update` 9,158.
+- **Total.** The unimplemented total rises by 73,271 (82,429 added, 9,158 removed). The records
+  mirror the image's own per-call calls.
+- **Summary lines.** All identical: nothing here writes gameplay state while no group is selected.
+
+## 29. The grey-arrow set and the GUI extent (cc9-platform2, 2026-09-25)
+
+Screen 29h's pick (section 24) makes two calls per candidate that stood as records:
+`UnitPickScreen::grey_arrow_set` (008DDF90) and `UnitPickScreen::gui_extent` (00AA1FE0).
+
+**The grey-arrow set: bound.** 008DDF90 is `BSP_SzurkeNyil_ContainsUnit` on
+`[game+21A4h + game+18ECh*4]`, the local slot's set (docs/LOCAL_PLAYER_UNIT_LISTS.md).
+- **Its producer.** `BSP_Game_ConstructWorld` builds the eight sets (008DF900). Only the mission
+  Lua fills them: 008CD440 `Objectives_Add` and 008CDD60 `Objectives_AddUnit`. Both are
+  reconstructed now and fill `bsp::game::game_objective_sets()` (`src/game_hosts_lua.cpp`). The AI
+  host already reads that table for 00A2C450.
+- **What the test reads.** The set's `_Tree` at +18h is keyed by the unit: 008DDF00 finds the
+  argument itself (008DD310). The emptiness test at 008DDF93 reads the tree's size +20h, so it counts
+  units, not objectives. USN04 adds one objective, "Bombers", to slot 0 with no units, so the set
+  stays empty.
+- **The binding.** `kHudGreyArrowSetBound` answers from `units_in_slot(0)`. An empty set answers
+  "no" (008DDF99). Otherwise the subject is the unit when it is kind 5, the vehicle root. A kind-18h
+  unit's +3D0h is not exposed, so that case is a record, `UnitPickScreen::grey_arrow_squadron`.
+- **Counted per call.** The image makes the call once per candidate, so the implemented row keeps
+  that count.
+
+**The GUI extent: stays a record, per call.** 00AA1FE0 `BSP_Gui_GetAspectExtent` is a pure getter.
+It computes `a = 16/9` when the platform's widescreen byte `[[0109CF04]+0Dh]` is set, else `4/3`.
+It returns `(a / (4/3), a / [[0109CF04]+10h])`. Both inputs are platform state that this process
+substitutes: the markers host and the pick both use `(1, 1)`, the 4/3 law. The call stays a
+per-candidate record, like the image's own call, until the platform publishes the two fields.
+Binding it then is a projection change (0043A660 mode 1), with its own pair.
+
+**Predictions, written before the pair.** One tree with every section 26 to 28 change,
+`local\bin\ga_off` (`kHudGreyArrowSetBound` off) against `local\bin\ga_on`, USN04 4700/4500,
+`BSP_GUNNERY_RNG_STREAMS=1` on both.
+- **Row that changes:** `UnitPickScreen::grey_arrow_set` goes from UNIMPLEMENTED to concrete with
+  the same count (261,108 in the section 26 runs).
+- **Rows added:** none. The set is empty, so `grey_arrow_squadron` is never reached.
+- **Total.** The unimplemented total falls by the row's count.
+- **Summary lines.** All identical: the answer is "no" on both sides.
+
+## 30. The pairs of sections 28 and 29, and the handoff (cc9-platform2, 2026-09-25)
+
+**Section 28's pair.** `local\g2e_off_usn04.log` against `local\g2e_on_usn04.log`, one tree,
+USN04 4700/4500, `BSP_GUNNERY_RNG_STREAMS=1`.
+
+| row | OFF | ON (predicted) |
+| --- | ---: | ---: |
+| unimplemented total | 2,982,034 | 3,055,305 (+73,271; +73,271) |
+| HudShipView::screen_2eh_005484f0 | 9,158 | none (none) |
+| HudWeaponGroupScreen::group_available | none | 36,637 (36,637) |
+| ::hide_widgets, ::group_sight, ::input_axis_active, ::hud_target, ::widget_c0 | none | 9,158 each (9,158) |
+| ::reset_widgets, ::player_unit_name | none | 1 each (1) |
+| ::bind / ::update (concrete) | none | 1 / 9,158 |
+
+- **Summary lines.** All 163 are identical.
+- **Result.** Every prediction holds. **`kHudWeaponGroupScreenBound` is ON.**
+
+**Section 29's pair.** `local\ga_off_usn04.log` against `local\ga_on_usn04.log`, same settings.
+
+| row | OFF | ON |
+| --- | ---: | ---: |
+| unimplemented total | 3,055,305 | 2,794,197 (-261,108; predicted -261,108) |
+| UnitPickScreen::grey_arrow_set | 261,108 unimplemented | 261,108 concrete |
+
+- **Summary lines.** All 163 are identical.
+- **Result.** Every prediction holds. **`kHudGreyArrowSetBound` is ON.**
+
+**The 7 leftover `FrontEndScreen::update` calls (section 26).** A diagnostic build logged the slot
+of every call that reaches the record. All 7 are slot 1, `FE_main`, the main menu, in the frames
+between the press-start exit and the mission load. They are front-end calls, not HUD ones: FE_main's
+own update virtual is not bound.
+
+**Handoff.**
+- **009542B0 is the next gameplay packet.** In the image, the 0064DA40 bind takes the gunner roles
+  of the first available weapon group for the local player. It needs:
+  - the units host's permission words +188h..+1A8h;
+  - 0059BBD0(2, slot);
+  - the gunnery host's per-unit gun kinds (anti-air, artillery, +3F4h+80h = 7, 8 or 9);
+  - the kind-8 depth tests.
+
+  Once 009542B0 answers, the role take (0077C470 through `role_request`) and the per-call fire
+  message 79h route (0077C2A0) become live. Both are records now. They change the role table that
+  the 27h take, 0064B870 and the gunnery read, so land them only on a measured pair.
+- **The HUD target** `[[00E198C4]+CCh]+4Ch` is slot 33h's +4Ch. Its producer is not identified.
+- **The 2Eh widgets** need 2Eh's layout 00546A20 bound (the 25-slot row grid +5Ch..+BCh and
+  +C0h..+CCh), like screens 45h and 50h.
+- **The GUI extent** 00AA1FE0 waits on the platform publishing its widescreen byte and active
+  aspect (section 29).

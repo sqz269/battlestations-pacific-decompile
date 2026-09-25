@@ -1,0 +1,527 @@
+{
+ "packet": "cc9_screen_2eh_group",
+ "branch": "agent/cc9-platform2",
+ "doc": "docs/SHIP_SCREEN_UPDATE.md sections 26-30",
+ "functions": [
+  {
+   "address": "0067BB50",
+   "name": "BSP_HudUnitPage27_UpdateCaptainRole",
+   "status": "routed (already reconstructed)",
+   "switch": "kHudRoleScreenPumpBound"
+  },
+  {
+   "address": "00549260",
+   "end_inclusive": "00549428",
+   "name": "BSP_HudWeaponGroupScreen_BindUnit",
+   "status": "reconstructed",
+   "abi": "__thiscall(screen, group_unit, bound), RET 8"
+  },
+  {
+   "address": "005470C0",
+   "name": "BSP_HudWeaponGroupScreen_Release",
+   "status": "reconstructed",
+   "abi": "__fastcall(screen)"
+  },
+  {
+   "address": "005484F0",
+   "end_inclusive": "005491F3",
+   "name": "BSP_HudWeaponGroupScreen_Update",
+   "status": "reconstructed (control flow; host-side calls recorded)",
+   "abi": "__thiscall(screen), RET"
+  },
+  {
+   "address": "00548410",
+   "name": "BSP_HudWeaponGroupScreen_StepGroup",
+   "status": "reconstructed",
+   "abi": "__thiscall(screen, forward, unused), RET 8"
+  },
+  {
+   "address": "005484B0",
+   "name": "BSP_HudWeaponGroupScreen_SelectGroup",
+   "status": "reconstructed",
+   "abi": "__thiscall(screen, group), RET 4"
+  },
+  {
+   "address": "00545B30",
+   "name": "BSP_HudWeaponGroupScreen_AnyUnitHasGroup",
+   "status": "reconstructed",
+   "abi": "__thiscall(screen, group), RET 4"
+  },
+  {
+   "address": "00545410",
+   "name": "BSP_HudWeaponGroupScreen_SetUnitGroupRoles",
+   "status": "reconstructed",
+   "abi": "__thiscall(screen, unit, take), RET 8"
+  },
+  {
+   "address": "00545370",
+   "status": "reconstructed (unnamed)",
+   "abi": "__thiscall(screen, unit), RET 4"
+  },
+  {
+   "address": "00545E50",
+   "status": "reconstructed (unnamed)",
+   "abi": "__fastcall(screen)"
+  },
+  {
+   "address": "00545B80",
+   "status": "reconstructed (unnamed)",
+   "abi": "__thiscall(screen, role), RET 4"
+  },
+  {
+   "address": "00545BD0",
+   "status": "reconstructed (unnamed)",
+   "abi": "__thiscall(screen, take), RET 4"
+  },
+  {
+   "address": "00548360",
+   "status": "screen-side tests reconstructed; hint is a record"
+  },
+  {
+   "address": "005460A0",
+   "name": "BSP_HudWeaponGroupEntry_Construct",
+   "status": "analyzed; modelled as vector push_back"
+  },
+  {
+   "address": "00546730",
+   "name": "BSP_HudWeaponGroupArray_Append",
+   "status": "analyzed; modelled as vector push_back"
+  },
+  {
+   "address": "005467B0",
+   "name": "BSP_HudWeaponGroupArray_Resize",
+   "status": "analyzed; modelled as vector clear"
+  },
+  {
+   "address": "009542B0",
+   "name": "BSP_Unit_HasWeaponGroup",
+   "status": "analyzed; groups 0/1 exact, 2..5 a record answering false (SUBSTITUTION)"
+  },
+  {
+   "address": "008DDF90",
+   "name": "BSP_SzurkeNyil_ContainsUnit",
+   "status": "bound over bsp::game::game_objective_sets()",
+   "switch": "kHudGreyArrowSetBound"
+  },
+  {
+   "address": "00AA1FE0",
+   "name": "BSP_Gui_GetAspectExtent",
+   "status": "analyzed; stays a per-call record (platform inputs substituted)"
+  }
+ ],
+ "host_steps": [
+  {
+   "function": "004F8830",
+   "address": "004F8906",
+   "native": "0067BB50+vtable20",
+   "host": "GameHudHost::update_role_screen_0067bb50 -> GameUnitsHost::role_screen_update_0067bb50",
+   "note": "slot 20h of vtable 00CF7A38 (dword at 00CF7A58); the pump's update pass"
+  },
+  {
+   "function": "0064DA40",
+   "address": "0064DA64",
+   "native": "005470C0",
+   "host": "bsp::weapon_group_screen_release_005470c0"
+  },
+  {
+   "function": "0064DA40",
+   "address": "0064DCC4",
+   "native": "00549260",
+   "host": "bsp::weapon_group_screen_bind_00549260"
+  },
+  {
+   "function": "00549260",
+   "address": "00549292",
+   "native": "006952A0",
+   "host": "observer pair +2Ch (modelled as HudWeaponGroupScreenState::mover_40)"
+  },
+  {
+   "function": "00549260",
+   "address": "005492A2",
+   "native": "00694A60",
+   "host": "observer pair +2Ch"
+  },
+  {
+   "function": "00549260",
+   "address": "005492B8",
+   "native": "005467B0",
+   "host": "entries.clear() (no unit)"
+  },
+  {
+   "function": "00549260",
+   "address": "005492F0",
+   "native": "005467B0",
+   "host": "entries.clear()"
+  },
+  {
+   "function": "00549260",
+   "address": "005492FA",
+   "native": "005460A0",
+   "host": "entries.push_back"
+  },
+  {
+   "function": "00549260",
+   "address": "00549312",
+   "native": "00546730",
+   "host": "entries.push_back"
+  },
+  {
+   "function": "00549260",
+   "address": "00549323",
+   "native": "00545600",
+   "host": "temporary entry destroyed"
+  },
+  {
+   "function": "00549260",
+   "address": "00549355",
+   "native": "00546730",
+   "host": "HudWeaponGroupScreenHost::unit_records_778 (record)"
+  },
+  {
+   "function": "00549260",
+   "address": "0054937C",
+   "native": "00548410",
+   "host": "bsp::weapon_group_cycle_00548410"
+  },
+  {
+   "function": "00549260",
+   "address": "005493B2",
+   "native": "005484B0",
+   "host": "bsp::weapon_group_select_005484b0"
+  },
+  {
+   "function": "00549260",
+   "address": "005493BF",
+   "native": "00545B30",
+   "host": "bsp::weapon_group_any_available_00545b30"
+  },
+  {
+   "function": "00549260",
+   "address": "005493CE",
+   "native": "00548410",
+   "host": "bsp::weapon_group_cycle_00548410"
+  },
+  {
+   "function": "00549260",
+   "address": "005493D7",
+   "native": "00545BD0",
+   "host": "bsp::weapon_group_set_roles_00545bd0"
+  },
+  {
+   "function": "00549260",
+   "address": "005493DE",
+   "native": "00548360",
+   "host": "bsp::weapon_group_hint_00548360"
+  },
+  {
+   "function": "005484F0",
+   "address": "00548547",
+   "native": "00927F30",
+   "host": "local_player_role(entry 0, 0) via GameUnitsHost::unit_current_role_slot"
+  },
+  {
+   "function": "005484F0",
+   "address": "005485A6",
+   "native": "006502C0",
+   "host": "one_shot_108_0054856b (record)"
+  },
+  {
+   "function": "005484F0",
+   "address": "005485F0",
+   "native": "0051E7E0",
+   "host": "one_shot_108_0054856b (record)"
+  },
+  {
+   "function": "005484F0",
+   "address": "00548680",
+   "native": "00545B30",
+   "host": "bsp::weapon_group_any_available_00545b30"
+  },
+  {
+   "function": "005484F0",
+   "address": "00548692",
+   "native": "00548410",
+   "host": "bsp::weapon_group_cycle_00548410"
+  },
+  {
+   "function": "005484F0",
+   "address": "00548699",
+   "native": "005452F0",
+   "host": "hide_widgets_005452f0 (record)"
+  },
+  {
+   "function": "005484F0",
+   "address": "005486A0",
+   "native": "00548300",
+   "host": "group_sight_00548300 (record)"
+  },
+  {
+   "function": "005484F0",
+   "address": "005487FF",
+   "native": "004C43C0",
+   "host": "input_pressed(99h) -> GameMenuHost::input_action_pressed"
+  },
+  {
+   "function": "005484F0",
+   "address": "00548823",
+   "native": "004C43C0",
+   "host": "input_pressed(9Ch)"
+  },
+  {
+   "function": "005484F0",
+   "address": "00548834",
+   "native": "005484B0",
+   "host": "bsp::weapon_group_select_005484b0"
+  },
+  {
+   "function": "005484F0",
+   "address": "0054883C",
+   "native": "0042D7E0",
+   "host": "folded into build_fire_message_00954a10 (record)"
+  },
+  {
+   "function": "005484F0",
+   "address": "0054884D",
+   "native": "00521370",
+   "host": "folded into build_fire_message_00954a10 (record)"
+  },
+  {
+   "function": "005484F0",
+   "address": "00548870",
+   "native": "00545E50",
+   "host": "bsp::weapon_group_roles_held_00545e50"
+  },
+  {
+   "function": "005484F0",
+   "address": "00548881",
+   "native": "00545B80",
+   "host": "bsp::weapon_group_any_role_00545b80(2)"
+  },
+  {
+   "function": "005484F0",
+   "address": "00548892",
+   "native": "00545B80",
+   "host": "bsp::weapon_group_any_role_00545b80(3)"
+  },
+  {
+   "function": "005484F0",
+   "address": "005488B5",
+   "native": "00803CE0",
+   "host": "relation_00803ce0 (record)"
+  },
+  {
+   "function": "005484F0",
+   "address": "00548989",
+   "native": "004C43C0",
+   "host": "input_pressed(99h) for the fire message"
+  },
+  {
+   "function": "005484F0",
+   "address": "0054899A",
+   "native": "004C5090",
+   "host": "input_held(99h) for the fire message -> GameMenuHost::input_action_held"
+  },
+  {
+   "function": "005484F0",
+   "address": "005489DA",
+   "native": "00954A10",
+   "host": "build_fire_message_00954a10 (record)"
+  },
+  {
+   "function": "005484F0",
+   "address": "00548A06",
+   "native": "00545370",
+   "host": "bsp::weapon_group_unit_roles_00545370"
+  },
+  {
+   "function": "005484F0",
+   "address": "00548A1F",
+   "native": "0077C2A0",
+   "host": "route_fire_message_0077c2a0 (record)"
+  },
+  {
+   "function": "005484F0",
+   "address": "00548A44",
+   "native": "004C5090",
+   "host": "input_held(99h), group 5 latch"
+  },
+  {
+   "function": "005484F0",
+   "address": "00548A57",
+   "native": "004C5090",
+   "host": "input_held(4Bh)"
+  },
+  {
+   "function": "005484F0",
+   "address": "00548A6F",
+   "native": "004C5090",
+   "host": "input_held(ECh)"
+  },
+  {
+   "function": "005484F0",
+   "address": "00548A91",
+   "native": "004C43C0",
+   "host": "input_pressed(9Dh)"
+  },
+  {
+   "function": "005484F0",
+   "address": "00548AAC",
+   "native": "004C43C0",
+   "host": "input_pressed(9Eh)"
+  },
+  {
+   "function": "005484F0",
+   "address": "00548AC6",
+   "native": "004C43C0",
+   "host": "input_pressed(9Fh)"
+  },
+  {
+   "function": "005484F0",
+   "address": "00548AE1",
+   "native": "004C43C0",
+   "host": "input_pressed(9Bh)"
+  },
+  {
+   "function": "005484F0",
+   "address": "00548AF9",
+   "native": "004C5090",
+   "host": "input_held(99h), lock branch gate"
+  },
+  {
+   "function": "005484F0",
+   "address": "00548C3D",
+   "native": "004CC460",
+   "host": "lock_branch_00548b06 (record)"
+  },
+  {
+   "function": "005484F0",
+   "address": "00548C52",
+   "native": "004D9480",
+   "host": "input_axis_active_004d9480 (record)"
+  },
+  {
+   "function": "005484F0",
+   "address": "00548C66",
+   "native": "004C5070",
+   "host": "input_axis_value_004c5070 (record)"
+  },
+  {
+   "function": "005484F0",
+   "address": "00548C81",
+   "native": "00548410",
+   "host": "bsp::weapon_group_cycle_00548410(forward)"
+  },
+  {
+   "function": "005484F0",
+   "address": "00548C91",
+   "native": "00548410",
+   "host": "bsp::weapon_group_cycle_00548410(back)"
+  },
+  {
+   "function": "005484F0",
+   "address": "00548CA0",
+   "native": "004C5090",
+   "host": "input_held(99h), torpedo branch gate"
+  },
+  {
+   "function": "005484F0",
+   "address": "00548E39",
+   "native": "004CC460",
+   "host": "torpedo_branch_00548cb6 (record)"
+  },
+  {
+   "function": "005484F0",
+   "address": "00548E93",
+   "native": "00927F30",
+   "host": "local_player_role(unit, 2)"
+  },
+  {
+   "function": "005484F0",
+   "address": "00548EA0",
+   "native": "00927F30",
+   "host": "local_player_role(unit, 3)"
+  },
+  {
+   "function": "005484F0",
+   "address": "00548F69",
+   "native": "00927F30",
+   "host": "local_player_role(entry 0, 2), answer discarded"
+  },
+  {
+   "function": "005484F0",
+   "address": "00548F7C",
+   "native": "00803CE0",
+   "host": "relation_00803ce0 (record)"
+  },
+  {
+   "function": "005484F0",
+   "address": "00548FDF",
+   "native": "00803CE0",
+   "host": "relation_00803ce0 (record)"
+  },
+  {
+   "function": "005484F0",
+   "address": "0054902C",
+   "native": "004C5090",
+   "host": "input_held(99h), group 5 latch"
+  },
+  {
+   "function": "005484F0",
+   "address": "0054903D",
+   "native": "00518F30",
+   "host": "camera_busy_00518f30 (record)"
+  },
+  {
+   "function": "005484F0",
+   "address": "00549149",
+   "native": "00547250",
+   "host": "input_in_set_00547250 (record)"
+  }
+ ],
+ "no_ghidra_function": [],
+ "pairs": [
+  {
+   "switch": "kHudRoleScreenPumpBound (+ kRoleScreenFixedStepCall false)",
+   "off": "local/r27_off_usn04.log",
+   "on": "local/r27_on_usn04.log",
+   "unimplemented_total": [
+    2991192,
+    2982034
+   ],
+   "rows": {
+    "FrontEndScreen::update": [
+     9165,
+     7
+    ],
+    "HudRoleScreen::update (concrete)": [
+     0,
+     9158
+    ]
+   },
+   "summary_lines_identical": true,
+   "verdict": "ON; the 7 leftover calls are slot 1 FE_main (predicted 0)"
+  },
+  {
+   "switch": "kHudWeaponGroupScreenBound",
+   "off": "local/g2e_off_usn04.log",
+   "on": "local/g2e_on_usn04.log",
+   "unimplemented_total": [
+    2982034,
+    3055305
+   ],
+   "summary_lines_identical": true,
+   "verdict": "ON; every prediction held"
+  },
+  {
+   "switch": "kHudGreyArrowSetBound",
+   "off": "local/ga_off_usn04.log",
+   "on": "local/ga_on_usn04.log",
+   "unimplemented_total": [
+    3055305,
+    2794197
+   ],
+   "summary_lines_identical": true,
+   "verdict": "ON; every prediction held"
+  }
+ ]
+}
