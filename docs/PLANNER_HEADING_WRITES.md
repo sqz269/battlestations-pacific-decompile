@@ -168,3 +168,34 @@ docs/PLANE_GUN_PASS.md, docs/DOGFIGHT_MOVETO.md run MB):
   follow roll/bank arms (1,853 thinks) and maneuver/avoid (37 thinks).
 
 Next step: read `vtable[34h]` for the aim tick's head-on test, then re-take S1T with the gate ON.
+
+### 7.1 The head-on flag's read, and what binding the throttle needs (packet cc9_attackrun_squadron_probe, read-only)
+
+- **What `vtable[34h]` reads.** It is `007BBB70`, which returns `unit+AC8h`, the world velocity
+  (docs/PLANE_GUN_PASS.md, 2026-09-23 correction; docs/PLANE_FLIGHT_NATIVES.md section 6). The aim
+  tick's `+25h` is set when the target is ahead (local `z > 1`) and the dot product of the two units'
+  velocities is below 0 (docs/DOGFIGHT_ENGAGED.md).
+- **The host has the real answer.** Run A1 classified by velocity instead of the forward rows and
+  got the same head-on counts (195/183/169), with every row identical to X0. The head-on passes are
+  genuine: carrier fighters meeting incoming Vals. Section 7 above, and the earlier
+  docs/PLANE_GUN_PASS.md section 6, were wrong to name this as the blocker.
+- **`007B4ED0` is read.** It is `BSP_PilotPlan_SetDirectThrottle`:
+  - `plan+278h = clamp(f, 0, 1)`;
+  - `+2A8h = clamp(-f, 0, 1)`;
+  - `+27Ch = +2ACh = 1`;
+  - speed mode `+2D8h = 0`.
+  It is bound in the host as `dogfight_throttle_007b4ed0`.
+- **What still blocks the switch.** The last pair with it ON is S1T (docs/PILOT_THROTTLE_SLOT.md
+  section 5). The stall is gone there: the speed hold returns the throttle to 1.0 after aim. But the
+  Yorktown leader and `.-2` still reach the water inside aim at |v| 105.7 and 100.5.
+  - Aim's speed arm asks for full throttle, and its pitch tracks a target Val gliding into the sea
+    at 35-55 m/s.
+  - S1T called that loss downstream of the Val regression, not of the throttle wiring, and said it
+    was not proven.
+  - In the landed run `local\PHW1_9000.log` (throttle wiring OFF) no US fighter touches the water.
+- **What the binding needs.** Re-take the S1T pair on current `main`. Since S1T:
+  - the dive-bomb throttle writers have landed;
+  - the planner gate and heading writes are ON.
+  If the fighters still drown chasing a Val down, read the aim tick's pitch arm for an altitude
+  floor or pull-up on a low target (`009A76E0`'s pitch half, and whether `0099F1C0` terrain/water
+  avoidance applies to aim). If they do not drown, land the switch on that pair.
