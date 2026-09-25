@@ -130,3 +130,37 @@ frames failed their Present (9193 presented + 5 skipped of 9200); every mission 
 
 **Decision: ON**, as the image's shot origin, with the USN02 churn stated. It is a one-line revert
 if the integrator prefers to wait for a per-hit trace of the USN02 cascade.
+
+## 7. Notes for the next re-baseline
+
+**The two failed Presents on the USN02 ON run.** `local/mzT_usn02.log` has two frames whose
+Present returned `D3DERR_DEVICELOST`, each followed by two skipped Presents:
+
+```
+51583: native frame complete: frame=5416 ... present=1 hr=88760868 ...
+51625: native frame complete: frame=5419 ... present=1 hr=88760868 ...
+```
+
+The run reports `frames_presented=9193 presents_skipped=5 ... exit_code=1`. The exit code is 1
+because presented plus skipped frames (9198) fall short of `--frames 9200`. The OFF run had one
+skipped Present (frame 1, the start-up inhibit) and exit code 0. A lost device is a
+session-level event, not a gameplay one. All 9000 mission steps ran on both sides
+(`fixed steps=9000`), so the gameplay rows compare. A re-baseline that gates on exit code alone
+would reject this run wrongly.
+
+**Samidare's salvo, traced.** A diagnostic, `BSP_MUZZLE_TRACE=<unit prefix>`, prints every
+placed shot of that unit. Each line gives the mount, the muzzle, the picked node's name, its
+facing (row 2), the shot and target bearings, and the shift split into along the facing, across
+it and up. Pending: the run needs a connected session (session 1 was disconnected from 16:01 on
+2026-09-25).
+
+What the static data already settles for that salvo: Samidare's platform 12 is device 70,
+`jap_quadruple_torpedo_turret.mmod`. It carries a `base` Note (resource 7, listed by item 1
+`Quad launcher:base`, which also lists the four `fire` Aux entries) and **no** `barrel` Note.
+So the picked node is `base`, the same node that owns the fire points. The no-barrel branch of
+`00859550` gives the root RotX(-vert) * RotY(-horz), and `base` inherits it. The four offsets are
+`(+1.28, 0.69, 1.41)`, `(+0.42, 0.71, 1.41)`, `(-0.48, 0.69, 1.41)` and `(-1.30, 0.69, 1.41)` in
+the base's frame. The tube-mouth shift is therefore 1.41 m along the mount's facing and 0.7 m
+up, plus up to 1.3 m across it. The trace will confirm that split on the live salvo.
+Every torpedo mount in USN02 has this shape (a `base` Note and no `barrel`); gun turrets carry
+both, and `barrel` resolves to the elevating child (for example `150mm dual:barrels`).

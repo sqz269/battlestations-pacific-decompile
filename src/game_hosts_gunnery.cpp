@@ -929,7 +929,25 @@ struct GameGunneryHost::Impl {
         mount.barrel_index = ((barrel % n) + n) % n;
         const std::array<float, 3> p = bsp::gun_muzzle_world_position_00730762(mount);
         for (int i = 0; i < 3; ++i) out[i] = p[i];
+        last_muzzle_node_world = world;     // DIAGNOSTIC for BSP_MUZZLE_TRACE
+        last_muzzle_pick = pick;
         return true;
+    }
+    bsp::CameraMatrix last_muzzle_node_world{};
+    int last_muzzle_pick{-1};
+    // DIAGNOSTIC: BSP_MUZZLE_TRACE=<unit-name prefix> prints every placed shot of
+    // that unit with the mount, the muzzle, the node facing and the target bearing.
+    static const std::string& muzzle_trace_prefix() {
+        static const std::string v = [] {
+            char* text = nullptr;
+            std::size_t bytes = 0;
+            std::string out;
+            if (_dupenv_s(&text, &bytes, "BSP_MUZZLE_TRACE") == 0 && text != nullptr)
+                out = text;
+            std::free(text);
+            return out;
+        }();
+        return v;
     }
     // Set by run_projectiles around apply_hit / apply_impact_blast so a round's
     // own class (the second ammunition) prices its damage; -1 means the gun's.
@@ -3871,6 +3889,38 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 muzzle_shift_max = std::max(muzzle_shift_max, moved);
                 for (int i = 0; i < 3; ++i) spawn[i] = at_muzzle[i];
                 done("Gun::muzzle_world_position_00730762", 0x00730762u);
+                if (!muzzle_trace_prefix().empty()
+                    && state.row.name.compare(0, muzzle_trace_prefix().size(),
+                           muzzle_trace_prefix()) == 0) {
+                    const bsp::CameraMatrix& w = last_muzzle_node_world;
+                    const float fx = w[8], fz = w[10];     // node row 2, the facing
+                    const float fl = std::sqrt(fx * fx + fz * fz);
+                    const float along = fl > 0.0f ? (shift[0] * fx + shift[2] * fz) / fl : 0.0f;
+                    const float across = fl > 0.0f ? (shift[0] * fz - shift[2] * fx) / fl : 0.0f;
+                    float tp[3] = {0.0f, 0.0f, 0.0f};
+                    if (have_target) unit_aim_point(target, tp);
+                    const auto fp_it = fire_points_by_device.find(gun.device_class);
+                    const char* node_name = "?";
+                    if (fp_it != fire_points_by_device.end() && last_muzzle_pick >= 0
+                        && static_cast<std::size_t>(last_muzzle_pick) < fp_it->second.nodes.size()) {
+                        node_name = fp_it->second.nodes[static_cast<std::size_t>(last_muzzle_pick)].name.c_str();
+                    }
+                    log.notef("gunnery: muzzle trace t=%.2f %s plat=%d cat=%d barrel=%d node=%d(%s) "
+                        "mount=(%.1f %.1f %.1f) muzzle=(%.1f %.1f %.1f) facing_deg=%.1f "
+                        "shot_deg=%.1f target=%s target_deg=%.1f shift_along=%.2f shift_across=%.2f "
+                        "shift_up=%.2f",
+                        static_cast<double>(clock_seconds), state.row.name.c_str(), gun.platform_key,
+                        gun.category, barrel, last_muzzle_pick, node_name,
+                        static_cast<double>(muzzle[0]), static_cast<double>(muzzle[1]),
+                        static_cast<double>(muzzle[2]), static_cast<double>(at_muzzle[0]),
+                        static_cast<double>(at_muzzle[1]), static_cast<double>(at_muzzle[2]),
+                        static_cast<double>(std::atan2(fx, fz) * 57.2957795f),
+                        static_cast<double>(std::atan2(direction[0], direction[2]) * 57.2957795f),
+                        have_target ? unit_state[target].row.name.c_str() : "none",
+                        static_cast<double>(std::atan2(tp[0] - muzzle[0], tp[2] - muzzle[2]) * 57.2957795f),
+                        static_cast<double>(along), static_cast<double>(across),
+                        static_cast<double>(shift[1]));
+                }
             } else {
                 ++muzzle_offset_fallbacks;
             }
