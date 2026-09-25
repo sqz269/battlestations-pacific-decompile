@@ -774,6 +774,11 @@ public:
             owner_.log.implemented("PressStartScreen::exit", "0067c870");
             return;
         }
+        // Packet cc9_role_retake_4bh: screen 2Eh's +1Ch, 005470A0.
+        if (kHudWeaponGroupEnterExitBound && owner_.hud != nullptr && slot == 0x2e) {
+            owner_.hud->exit_weapon_group_screen_005470a0();
+            return;
+        }
         // Every other leaf's +1Ch is its own routine; none is reconstructed.
         owner_.log.unimplemented("FrontEndScreen::exit", "004f75b0");
         owner_.log.notef("screen %d exit virtual %08lx", slot,
@@ -786,6 +791,11 @@ public:
         if (screen != nullptr && screen->press_start) {
             enter_press_start_screen_0067cb40(owner_.press_start, press_);
             owner_.log.implemented("PressStartScreen::enter", "0067cb40");
+            return;
+        }
+        // Packet cc9_role_retake_4bh: screen 2Eh's +18h, 005494C0.
+        if (kHudWeaponGroupEnterExitBound && owner_.hud != nullptr && slot == 0x2e) {
+            owner_.hud->enter_weapon_group_screen_005494c0();
             return;
         }
         owner_.log.unimplemented("FrontEndScreen::enter", "004f75a0");

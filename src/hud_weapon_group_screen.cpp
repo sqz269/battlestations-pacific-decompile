@@ -1,5 +1,7 @@
 #include "bsp/hud_weapon_group_screen.hpp"
 
+#include "bsp/mission_camera.hpp"
+
 // Screen 2Eh's selection helpers and its per-call body 005484F0. Packet
 // cc9_screen_2eh_group, docs/SHIP_SCREEN_UPDATE.md sections 27 and 28. Every
 // address below is the image's; the control flow is taken from the listing
@@ -335,6 +337,26 @@ bool weapon_group_screen_update_005484f0(HudWeaponGroupScreenState& screen,
     host.show_widget_c0_005491c2();                                     // 005491C2
     screen.row_d0 = row;
     return true;
+}
+
+// 005494C0. With an empty array the image passes a default-constructed
+// entry's +14h, which is null (005494EE..0054950B).
+void weapon_group_screen_enter_005494c0(HudWeaponGroupScreenState& screen,
+                                        HudWeaponGroupScreenHost& host,
+                                        HudWeaponGroupLayoutHost& gui) {
+    const std::size_t unit = screen.entries.empty() ? 0 : screen.entries.front().unit;
+    weapon_group_screen_bind_00549260(screen, host, unit, screen.mover_40);   // 00549526
+    gui.set_visible(gui.page_58(), true);                                    // 0054954B
+    screen.flag_d4 = true;                                                   // 00549551
+}
+
+// 005470A0.
+void weapon_group_screen_exit_005470a0(HudWeaponGroupScreenState& screen,
+                                       HudWeaponGroupScreenHost& host,
+                                       HudWeaponGroupLayoutHost& gui) {
+    host.reset_widgets_005464e0();                                           // 005470A3
+    gui.set_visible(gui.page_58(), false);                                   // 005470B2
+    screen.flag_d4 = false;                                                  // 005470B4
 }
 
 // 00546A20 (section 37). The names come from the literals the routine

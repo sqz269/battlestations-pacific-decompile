@@ -221,6 +221,13 @@ inline constexpr bool kHudWeaponGroupLayoutBound = false;
 // (1, 1) substitution and its record. Committed OFF until its pair runs.
 inline constexpr bool kHudGuiExtentBound = false;
 
+// Packet cc9_role_retake_4bh (docs/SHIP_SCREEN_UPDATE.md section 39). ON runs
+// screen 2Eh's enter 005494C0 and exit 005470A0 from the pump in place of the
+// FrontEndScreen::enter/exit records. The enter's 00549260 retakes the held
+// group's roles, which the 4Bh arm answers as a no-op. Committed OFF until
+// its pair runs.
+inline constexpr bool kHudWeaponGroupEnterExitBound = false;
+
 class GameHostLog;
 class GameFrontendHost;
 class GameMenuHost;

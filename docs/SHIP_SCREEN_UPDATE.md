@@ -1883,3 +1883,74 @@ target is empty (section 36), so every call takes the role-held path with row 0.
 - **If a page did not load**, the cells stay empty: `show_row_widget` and `place_f2` do not appear,
   and the total falls by 3N instead. That would be a front-end page-loading finding, not a change
   to this switch.
+
+## 38. The GUI extent
+
+Packet `cc9_gui_extent_inputs` is written up in docs/GUI_EXTENT_INPUTS.md.
+
+## 39. A second take of a held role, and screen 2Eh's enter and exit (cc9-platform2, 2026-09-25)
+
+Packet `cc9_role_retake_4bh`. The switch `kHudWeaponGroupEnterExitBound` is **committed OFF**. Its
+pair waits for the session reconnect.
+
+**What the image does with a take for a role the same slot holds.** 0077C470 sends message 4Bh from
+the local slot (game+18ECh), and the unit's receiver 00780120 handles it in its 4Bh arm
+(00780162..007803D9). For each mask bit, the take branch (msg+2Ch = 1) works as follows:
+- Role 0 only: 0078027C..00780328 rebinds the player record's unit (+4Ch) and routes a 1FFh release
+  to its previous unit.
+- 0078032C: when msg+30h is set, `vtable[148h](mask, slot)`.
+- **00780346..0078035C:** the role is free only when its holder `[unit+1ACh+role*4]` is 8, or a slot
+  that 00927F10 reports AI-held. **A human slot, the local player's own included, jumps to
+  00780393.**
+- 0078035E..00780387: with the permission word 9 or the slot, `vtable[154h](role, slot)` stores
+  it, then `0077C7B0(msg, 0)`.
+- 00780393..007803A8: `0077FE80` runs only when the holder changed.
+
+**So a second take of a held role is a no-op.** Nothing is written, and neither 0077C7B0 nor 0077FE80
+runs. It is not a release-and-retake, and it leaves no refusal state: the image keeps no counter.
+The held string is unchanged.
+
+**The host's arm matched in state and differed in its bookkeeping.** `role_message_4b_00780162`
+already wrote nothing for a held role, but it counted it in `role_refusals`, the summary line's
+`refusals`. It now counts it separately as `held_retakes`, and `refusals` keeps only the other
+case: a free role whose permission word is closed. This change is unconditional; it is counters only.
+The summary line gains the field, so its text differs from logs made before this change.
+
+**The pump's enter slot.** The pump calls vtable **+18h** for enter (004F88EF) and +1Ch for exit
+(004F88A4). For 2Eh those are 005494C0 and 005470A0 (section 37's vtable). The host's
+`screen N (...) enter virtual` note prints the register slot +10h for in-mission screens
+(`GameMenuHost` registration sets `enter_virtual = register_virtual`). It is a label only, left as
+it is.
+
+**The binding.** `bsp::weapon_group_screen_enter_005494c0` and `..._exit_005470a0`
+(`src/hud_weapon_group_screen.cpp`) run from the pump's slot 2Eh under the switch.
+- The enter re-runs `weapon_group_screen_bind_00549260` on entry 0's unit (null with an empty array)
+  and +40h. It then shows page +58h and sets +D4h.
+- The exit runs 005464E0 (a record), hides page +58h and clears +D4h.
+- In the host, as in the image, 0064DA40's bind (the interface apply) comes before the pump
+  enters 2Eh (log order: `HudWeaponGroupScreen::bind`, then `screen 46 (HUD2E) enter`). So the enter
+  finds the Lexington already bound with group 2 held. Its 00549260 takes the unchanged branch:
+  00545B30(2), then 00545BD0(1). That is one 00545410 test and one 0077C470(0Ch, 1), which the 4Bh arm
+  answers with two held no-ops.
+
+**Predictions, written before the pair.** One tree (main 5bc52a1d9 plus this), `local\bin\ee_off`
+against `local\bin\ee_on`, `BSP_GUNNERY_RNG_STREAMS=1`, USN04 4700/4500 and E2 9200/9000. Both sides
+carry the new `held_retakes` field. N is 9,158 and 18,158 as before.
+
+| row | OFF | ON |
+| --- | ---: | ---: |
+| FrontEndScreen::enter | 12 unimplemented | 11 |
+| HudWeaponGroupScreen::enter | none | 1 concrete |
+| HudWeaponGroupScreen::bind | 1 | 2 |
+| HudWeaponGroupScreen::group_available | N+6 | N+8 |
+| HudWeaponGroupScreen::role_request | 1 | 2 |
+| Session::entity_role_message_4b | 2 | 3 |
+| HudWeaponGroupScreen::player_unit_name | 1 unimplemented | 2 |
+| FrontEndScreen::exit, HudWeaponGroupScreen::exit | none | none (no HUD screen exits in either form) |
+
+- **Unimplemented total.** Unchanged: the enter record goes and one `player_unit_name` record comes.
+- **The one line that moves:** `summary mission player roles`. It goes from `takes=3 releases=0
+  refusals=0 held_retakes=0` to `takes=3 releases=0 refusals=0 held_retakes=2`. It moves because the
+  enter's retake of roles 2 and 3 reaches the 4Bh arm and is counted as the no-op it is.
+- **Unchanged.** The Lexington's `held=080088888 open=989988888` stays, and every other summary line
+  is identical in both forms.

@@ -1,0 +1,73 @@
+{
+ "packet": "cc9_role_retake_4bh",
+ "branch": "agent/cc9-platform2",
+ "doc": "docs/SHIP_SCREEN_UPDATE.md section 39",
+ "switches": {
+  "kHudWeaponGroupEnterExitBound": false
+ },
+ "host_fix": "GameUnitsHost::Impl::role_message_4b_00780162 counts a take of a role the slot already holds as held_retakes, not refusals (state unchanged; image: no-op at 0078035C)",
+ "functions": [
+  {
+   "address": "00780120",
+   "status": "4Bh take arm read (00780246..007803BF): held role -> no write, no 0077C7B0, no 0077FE80"
+  },
+  {
+   "address": "005494C0",
+   "status": "reconstructed (bsp::weapon_group_screen_enter_005494c0), bound under the switch",
+   "abi": "__thiscall(screen), RET at 00549564"
+  },
+  {
+   "address": "005470A0",
+   "end_inclusive": "005470BC",
+   "status": "reconstructed (bsp::weapon_group_screen_exit_005470a0), bound under the switch",
+   "abi": "__fastcall(screen), RET"
+  }
+ ],
+ "host_steps": [
+  {
+   "function": "00780120",
+   "address": "00780355",
+   "native": "00927F10",
+   "host": "ai_held(holder) in role_message_4b_00780162"
+  },
+  {
+   "function": "00780120",
+   "address": "0078038E",
+   "native": "0077C7B0",
+   "host": "not modelled (after a real take only)"
+  },
+  {
+   "function": "00780120",
+   "address": "007803A8",
+   "native": "0077FE80",
+   "host": "not modelled (holder changed only)"
+  },
+  {
+   "function": "005494C0",
+   "address": "00549526",
+   "native": "00549260",
+   "host": "weapon_group_screen_bind_00549260"
+  },
+  {
+   "function": "005494C0",
+   "address": "0054953C",
+   "native": "00545600",
+   "host": "temporary entry destroyed"
+  },
+  {
+   "function": "005470A0",
+   "address": "005470A3",
+   "native": "005464E0",
+   "host": "reset_widgets_005464e0 (record)"
+  }
+ ],
+ "no_ghidra_function": [],
+ "pairs": [
+  {
+   "switch": "kHudWeaponGroupEnterExitBound",
+   "off": "local/bin/ee_off",
+   "on": "local/bin/ee_on",
+   "status": "pending the session reconnect; predictions in section 39 (player roles line: held_retakes 0 -> 2, all else identical)"
+  }
+ ]
+}
