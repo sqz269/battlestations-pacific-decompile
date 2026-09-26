@@ -1,0 +1,238 @@
+{
+  "packet": "cc10_texture_owner_lifetimes_integration",
+  "source_integration": "4569fcd445de354594cb249d982202db072bb36a",
+  "atomic_primary_verification": {
+    "result": "PASS",
+    "named_commit": "8d3eb9ce4220c98a2e3ca237ce35b4ea483e505f",
+    "unnamed_commit": "4f07789478c1c64d27e8147fe42a116ddda1c24a",
+    "archives": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\local\\output\\cc10_named_texture_atomic_count_implementation\\evidence.zip",
+        "sha256": "eb3cea27208d68c8380ae62078a942115dc758e597ddf518f2a1bab85da42232",
+        "rows": 499,
+        "members": 500
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\local\\output\\cc10_named_texture_atomic_count_implementation\\git_blob_evidence.zip",
+        "sha256": "d5b00bc5113e7a49affd1015384114d68bab75f4cafe85f2801fd3469c09e74e",
+        "rows": 6,
+        "members": 7
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-field-values\\local\\cc10_unnamed_texture_atomic_lifetime_implementation\\evidence.zip",
+        "sha256": "8d072731c0736c66eff9dd2df852c42bc621572ff104ac90186c2cdcdc4bfadb",
+        "rows": 224,
+        "members": 225
+      }
+    ],
+    "exact_commit_files": 8,
+    "named": {
+      "common_sections": 18,
+      "old_code_bytes": 717,
+      "new_code_bytes": 787,
+      "all_relocations": 29,
+      "selected_code_units": 9,
+      "selected_EH_data_units": 2,
+      "actual_PE_linked_hex_matches": true,
+      "source_pins": 34,
+      "actual_headers": 100,
+      "tools": 6
+    },
+    "unnamed": {
+      "full_constructor_bytes": 211,
+      "full_caller_physical_sections": 28,
+      "caller_sections_and_relocations_unchanged": true,
+      "one_count_store_at": 40,
+      "final_input_pins": 154,
+      "unbacked_physical_sections": 4
+    },
+    "worker_CTests_each": 3,
+    "new_native_credit": 0,
+    "new_runtime": 0,
+    "root_members": {
+      "native_logical_texture_named_base.obj": {
+        "sha256": "12ff2acb5d5bf24e0a98fdaf388fb90ef5d16100e1494e9810e05ae9017f302a",
+        "checked_code_and_relocated_sections": 25,
+        "all_code_and_relocated_section_bytes_and_canonical_relocations_equal": true,
+        "EH_data_relocations_included": true,
+        "verified_internal_anonymous_symbol_mappings": {
+          "??1BaseUnwindCleanup@?A0xb1a8e6df@bsp@@QAE@XZ": {
+            "root_symbol": "??1BaseUnwindCleanup@?A0xa8706b1d@bsp@@QAE@XZ",
+            "definition": [
+              14,
+              0,
+              32,
+              3
+            ],
+            "definition_raw_sha256": "b7d91d66e9d62005fe915e3a2405e5f4a6090c47ff191da3b1e828874413819a"
+          },
+          "??1NameUnwindCleanup@?A0xb1a8e6df@bsp@@QAE@XZ": {
+            "root_symbol": "??1NameUnwindCleanup@?A0xa8706b1d@bsp@@QAE@XZ",
+            "definition": [
+              16,
+              0,
+              32,
+              3
+            ],
+            "definition_raw_sha256": "82f5ce655342bfb0e5a33c399429ff87f6f90388c6cbe0a70094150343b150cb"
+          }
+        },
+        "raw_copy": "J:\\PROG\\battlestations-pacific-decompile-cc10\\local\\cc10-atomic-root-objects\\native_logical_texture_named_base.obj"
+      },
+      "native_cube_texture_base.obj": {
+        "sha256": "f976938e6661d7d8c6445d2e6100f5b9fdad246f2d2f06407566be4e74e2f189",
+        "checked_code_and_relocated_sections": 9,
+        "all_code_and_relocated_section_bytes_and_canonical_relocations_equal": true,
+        "EH_data_relocations_included": true,
+        "verified_internal_anonymous_symbol_mappings": {},
+        "raw_copy": "J:\\PROG\\battlestations-pacific-decompile-cc10\\local\\cc10-atomic-root-objects\\native_cube_texture_base.obj"
+      },
+      "native_cube_texture_owner.obj": {
+        "sha256": "3aa0122f095630789c6d7f42d771fd8600def75dbea0b114c665d9f1c97f7ae3",
+        "checked_code_and_relocated_sections": 23,
+        "all_code_and_relocated_section_bytes_and_canonical_relocations_equal": true,
+        "EH_data_relocations_included": true,
+        "verified_internal_anonymous_symbol_mappings": {
+          "?unwind_owner@?A0x5067c077@bsp@@YAXPAXAAVNativeStringStorage@2@@Z": {
+            "root_symbol": "?unwind_owner@?A0xf73cc850@bsp@@YAXPAXAAVNativeStringStorage@2@@Z",
+            "definition": [
+              21,
+              0,
+              32,
+              3
+            ],
+            "definition_raw_sha256": "33eebf48baa34d10faa375558a21c7ab9962938a77f774d092bd8f921bb7d21b"
+          },
+          "??1OwnerCleanup@?A0x5067c077@bsp@@QAE@XZ": {
+            "root_symbol": "??1OwnerCleanup@?A0xf73cc850@bsp@@QAE@XZ",
+            "definition": [
+              4,
+              0,
+              32,
+              3
+            ],
+            "definition_raw_sha256": "82f5ce655342bfb0e5a33c399429ff87f6f90388c6cbe0a70094150343b150cb"
+          },
+          "__sehtable$?unwind_owner@?A0x5067c077@bsp@@YAXPAXAAVNativeStringStorage@2@@Z": {
+            "root_symbol": "__sehtable$?unwind_owner@?A0xf73cc850@bsp@@YAXPAXAAVNativeStringStorage@2@@Z",
+            "definition": [
+              27,
+              0,
+              0,
+              3
+            ],
+            "definition_raw_sha256": "6f5bd3e89493726d1f583bb592183a17e40102d9bd8d01326167c7086661728e"
+          }
+        },
+        "raw_copy": "J:\\PROG\\battlestations-pacific-decompile-cc10\\local\\cc10-atomic-root-objects\\native_cube_texture_owner.obj"
+      }
+    }
+  },
+  "cache_header_and_installed_traits_verification": {
+    "result": "PASS",
+    "worker_commit": "2167ce8b0c75a6e9865f7dd5c815b06c1b8a980c",
+    "archives": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\cc10_texture_2d_cache_header_lifetime_documentation\\evidence.zip",
+        "sha256": "e8dfb486aeae5ff6867e12bf75e2a66e6805f366a472c77db54a38806e45fa46",
+        "rows": 29,
+        "members": 30
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\cc10_texture_2d_cache_header_lifetime_readiness\\evidence.zip",
+        "sha256": "7a5ee622af26eeb3106f5b27926a47bfecb77033f6dad440d14fa42c0658b7a5",
+        "rows": 33,
+        "members": 34
+      }
+    ],
+    "exact_Git_blobs": 2,
+    "native_context_bytes": 337,
+    "native_context_instructions": 120,
+    "new_native_credit": 0,
+    "traits": {
+      "compiler": "MSVC14.51.36231 Win32 C++17",
+      "precompile_pins": 5,
+      "actual_include_pins_after_compile": 39,
+      "object_sha256": "669c557ec3dfd3cfe2616c59c5cec3223772ca2be9559887fefa38c480a0595a",
+      "object_size": 904,
+      "data_words": [
+        0,
+        201703,
+        4,
+        4,
+        4,
+        1,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        1,
+        0
+      ],
+      "code_bytes": 0,
+      "compiler_invocations": 1,
+      "link": false,
+      "runtime": false
+    },
+    "conclusion": "Genuine malloc/SlabBytes path supports trivial cache-header implicit lifetime under documented C++17 DR/compiler contract; actual installed outer atomic lacks eligible trivial constructors, separately from its trivial storage base. No production modification or general atomic implementation claim."
+  },
+  "independent_reviews": [
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-field-values\\local\\cc10_named_texture_atomic_count_independent_review\\evidence.zip",
+      "sha256": "294739db2b880ba621051ffbb8b34dae807a7e2d1ca83afb650f3099bdfca928",
+      "rows": 35,
+      "members": 36,
+      "verdict": "PASS; no blocking defect; independently reviewed source, full COFF/EH and linked-selection boundaries"
+    },
+    {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\local\\output\\cc10_unnamed_texture_atomic_independent_final_review\\review_evidence.zip",
+      "sha256": "56145374d3e625922c6745aeb6dde25270d01163e79743c24ee6b8e1903a0f82",
+      "rows": 31,
+      "members": 32,
+      "verdict": "PASS; no blocking defect; independently reviewed source, full COFF/EH and linked-selection boundaries"
+    }
+  ],
+  "worker_reports": [
+    "reports/native_named_texture_atomic_lifetime_cc10.json",
+    "reports/native_unnamed_texture_atomic_lifetime_cc10.json",
+    "reports/native_texture_2d_cache_header_lifetime_cc10.json"
+  ],
+  "validation": {
+    "worker_CTests_per_production_packet": 3,
+    "combined_root_CTests": 3,
+    "isolated_traits_compile_only_objects": 1,
+    "new_tests": 0,
+    "new_runtime_cases": 0,
+    "game_validated": false
+  },
+  "native_accounting": {
+    "new_reconstructed_functions": 0,
+    "new_native_bytes": 0,
+    "new_Ghidra_functions": 0
+  },
+  "annotation": {
+    "existing_names_appended": 4,
+    "prior_values_recorded": true,
+    "write_lock": true,
+    "saved": true,
+    "forced_exports": 4
+  },
+  "root_comparison": "Exact code and every relocated section byte, including EH data, matched. Different internal anonymous namespace hashes accepted only for verified same positive section/value/type/storage and exact definition bytes; canonical relocation schedules match and external target spellings remain exact.",
+  "limits": [
+    "Explicit source atomic construction only, under fresh or fully retired exclusive backing. No active count reset, extra credit or complete-owner lifetime.",
+    "Named CEB130 intermediate store was elided in both old/new builds; no forced emission or concurrent visibility claim.",
+    "Named selected application bodies are not execution proof; unnamed B34020/B3D650 are unselected.",
+    "Pooled trivial cache-header lifetime is inferred from genuine malloc/SlabBytes and documented C++17 DR/compiler contract; external images remain separately admitted.",
+    "Atomic classification is proven for installed MSVC14.51 Win32 C++17, not every library implementation.",
+    "Pool return precedes canonical unbind/Entry retirement; caller exclusion must cover all callbacks and postcallback accesses.",
+    "No new original ABI/private EH/hardware-fault, runtime factory/ownership composition, SDK/platform, application or game proof."
+  ],
+  "archive": {
+    "path": "local/cc10-platform-evidence/texture-owner-lifetimes.zip",
+    "sha256": "e7b000738eb52e73209c11de1cb2169c4a13d1fe675dcba0653d6123f0a9199f",
+    "files": 41,
+    "valid": true
+  }
+}
