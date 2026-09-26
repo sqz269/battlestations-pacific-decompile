@@ -9091,6 +9091,36 @@ frame is shorter than the fixed step and jitters, for example 1/45 s ± 20 %
 --frame-jitter 20` with about 2.25 times the mission frames for the same simulated time. That
 setting has not been run.
 
+#### Progression check, 2026-09-26: a frame shorter than the fixed step (not a reference row)
+
+This run checks whether mission progression that the image leaves to frame-time drift happens
+at all. **It is not a reference row.** Reference rows stay lockstep at 0.05 s with no jitter.
+It is built from main `a4e3798c3`, with everything ON and streams on. The frame counts are
+scaled by 0.05 / 0.0222, so the simulated time matches E2 9000. The command, from the worktree
+root:
+
+```
+$env:BSP_GUNNERY_RNG_STREAMS='1'; $env:BSP_DEATH_TABLE='1'
+./tools/run_game.ps1 -Exe local\pc\bsp_game.exe -Log local\PC_J20_20270.log -- --frames 20720 `
+    --press-start-frame 68 --menu-select USN04 --mission-frames 20270 `
+    --mission-frame-seconds 0.0222 --frame-jitter '20,1'
+```
+
+Quote the jitter value in PowerShell: an unquoted `20,1` becomes two arguments, and the
+executable exits 2.
+
+**Predictions (written before the run):**
+- **Phase 1** completes at 200-230 s (the jittered E2 run: 210.01 s).
+- **The `luaMoveToPh2` callback fires**, most likely within 100 s of completion and by the end
+  of the run at about 450 s. The float32 model at 1/45 s ± 20 % fired in all eight seeds, 35-359 s
+  after the first re-issue, half of them within 83 s. If it fires:
+  - phase 2 spawns the Zuiho group (Zuiho-class01, Takao-class01, Mogami-class01) and the
+    `movie*` units;
+  - the unit count is 92 against the lockstep runs' 81;
+  - the Lexington moves less than in the phase-1-stuck runs: 3500-5500 m against 5952;
+  - plane deaths are 51 ± 8, and hit records 873 ± 150.
+- **Wall time** is about 2.25 times an E2 9000 run: 20-30 minutes.
+
 ## Mission reference baselines, 2026-09-23 (after the firepower, RNG-stream and ballistics landings)
 
 Packet `cc9_gun_ballistics`. **The difficulty-1 rows above predate three landings**, so they are
