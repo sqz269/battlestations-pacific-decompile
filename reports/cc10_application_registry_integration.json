@@ -1,0 +1,57 @@
+{
+  "packet": "cc10_application_registry_integration",
+  "worker_commit": "4c0af5e0f0782bc582e331820a578cd082215044",
+  "integration": "2cd4db8aba2b7f0e6ce8d4902f40f8e591672f95",
+  "worker_report": "reports/native_application_resource_registry_binding_cc10.json",
+  "primary_verification": {
+    "worker_commit": "4c0af5e0f0782bc582e331820a578cd082215044",
+    "archive_sha256": "30a119ed85ea16ff57caf7c35e98586b0b6a411f968e66a50864bb30c5bab016",
+    "archive_rows_verified": 868,
+    "archive_members": 869,
+    "prebuild_current_source_config_pins": 19,
+    "toolchain_current_pins": 2,
+    "current_build_outputs_verified": 19,
+    "application_objects": 2,
+    "exact_core_library_members": 3,
+    "COFF_sections_verified": 172,
+    "unique_linked_normal_sections": 3,
+    "linked_funclets_verified": 1,
+    "byte_checks": 16,
+    "relocation_checks": 6,
+    "linked_VFS_call_targets_exact_binder": true,
+    "worker_Win32_deletion_binding_bytes": 176,
+    "combined_clock_binding_bytes_expected": 180,
+    "worker_CTests": 3,
+    "new_native_bytes": 0,
+    "application_executed": false,
+    "review": [
+      "Three production files43 additions reviewed; real VFS core succeeds before binding actual borrowed services",
+      "Host owns publication and deletion context; metadata created before deletion pointer publication; no getter, registration or publication reset",
+      "Host drains while bindings alive and VFS referents outlive host; source1 consumers remain unwired"
+    ],
+    "limits": [
+      "Worker compiled offsets apply to176byte deletion header; combined180byte interface requires primary rebuild",
+      "No new runtime, application/game, native ABI or FH3 proof"
+    ]
+  },
+  "validation": {
+    "primary_strict_win32_CTests": 3,
+    "worker_strict_win32_CTests": 3,
+    "worker_and_this_integration_deletion_binding_bytes": 176,
+    "later_clock_integration_requires_rebuild_for_180byte_layout": true,
+    "new_native_bytes": 0,
+    "new_runtime_runs": 0,
+    "application_executed": false,
+    "game_validated": false
+  },
+  "limits": [
+    "Worker compiled offsets apply to176byte deletion header; combined180byte interface requires primary rebuild",
+    "No new runtime, application/game, native ABI or FH3 proof"
+  ],
+  "archive": {
+    "path": "local/cc10-platform-evidence/application-resource-registry-binding.zip",
+    "sha256": "1f98d90868474179da5da9f96be47331a8201252ea62e22eb346b96333dff6f0",
+    "files": 5,
+    "valid": true
+  }
+}
