@@ -1,0 +1,57 @@
+{
+  "packet": "cc10_resource_atomic_integration",
+  "worker_commit": "19c34e8bd11807c1a28d17b03bdf6d688b34ca5a",
+  "integration": "21050f24ea84013e6426522b58b36ae0235c2286",
+  "worker_report": "reports/native_procedural_resource_atomic_lifetime_cc10.json",
+  "primary_verification": {
+    "worker_commit": "19c34e8bd11807c1a28d17b03bdf6d688b34ca5a",
+    "archive_sha256": "6d41bd9b83767db4d5ea1e1252814b19108fafd2d506f4d82fb9077368216b62",
+    "archive_members": 688,
+    "indexed_rows_verified": 687,
+    "unchanged_sources_compared_root": 14,
+    "prior_indexed_rows_verified": 1187,
+    "readiness_rows_verified": 211,
+    "coff_sections_verified": 291,
+    "exact_library_members_verified": 5,
+    "linked_sections_verified": 52,
+    "native_ranges_verified": 37,
+    "count_constructor_sections_equal_cached_prechange": 3,
+    "review": [
+      "Minimal production source/header diff and complete fixture/document reviewed",
+      "One atomic lifetime begins at original producer count initialization; no later reset or extra reference",
+      "Both genuine creators count1/bind1/Interlocked retain2/actual release1/terminal0 and exact unbind passed",
+      "Fresh zero-child source domain only; caller-owned failed companion/bind disposition explicit and untested",
+      "Complete object/library/linked provenance checked; duplicate probe-selected COMDAT excluded",
+      "MSVC Win32 C++17 production/C++20 fixture representation domain; no generic portability/native ABI claim"
+    ],
+    "limits": [
+      "source C++ lifetime correction, not binary/private-register ABI replacement or native/game validation",
+      "fixture starts at genuine creators; no factory-table/registry-lookup end-to-end activation claim",
+      "general nonempty child domains and C30210 family not newly admitted",
+      "no source metadata failure injection, creator allocation failure injection or native FH3/SEH/hardware fault execution",
+      "COFF/PE identity excludes unselected duplicate COMDATs and is not a recursive CRT graph proof",
+      "historical direct-byte fixture does not prove aligned C++ atomic-object lifetime and is preserved unchanged"
+    ]
+  },
+  "validation": {
+    "strict_win32_ctests": 3,
+    "direct_call_rows_passed": 5,
+    "both_profile_source_composition": true,
+    "copied_original_executed": false,
+    "game_validated": false
+  },
+  "limits": [
+    "source C++ lifetime correction, not binary/private-register ABI replacement or native/game validation",
+    "fixture starts at genuine creators; no factory-table/registry-lookup end-to-end activation claim",
+    "general nonempty child domains and C30210 family not newly admitted",
+    "no source metadata failure injection, creator allocation failure injection or native FH3/SEH/hardware fault execution",
+    "COFF/PE identity excludes unselected duplicate COMDATs and is not a recursive CRT graph proof",
+    "historical direct-byte fixture does not prove aligned C++ atomic-object lifetime and is preserved unchanged"
+  ],
+  "archive": {
+    "path": "local/cc10-platform-evidence/procedural-resource-atomic-lifetime.zip",
+    "sha256": "72cf3d0ad1901a2bb17d7212dc02beb0213152e981a46ddce3c51d267419a65c",
+    "files": 693,
+    "valid": true
+  }
+}
