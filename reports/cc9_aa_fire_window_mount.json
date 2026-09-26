@@ -1,0 +1,23 @@
+{
+  "packet": "cc9_aa_fire_window_mount",
+  "doc": "docs/AA_FIRE_WINDOW_MOUNT.md",
+  "answer": "0085A9A0 tests the gun-node-to-target direction in the parent entity's frame ([gun+3Ch]+110h, the cached inverse 00B63D50 builds from +CCh). Every slot frame the host binds in this installation is hull-aligned, so the host's hull-frame test is exact apart from the origin; kAaFireWindowBound is ON.",
+  "steps": [
+    {"address": "0085aa8f", "native": "00b63d50", "function": "0085a9a0", "rule": "[gun+3Ch]+110h = inverse of +CCh, +10Ch = 1"},
+    {"address": "0085aaa3", "native": "0042d0d0", "function": "0085a9a0", "rule": "direction into the parent frame (flag 0)"},
+    {"address": "0085aacc", "native": "00521370", "function": "0085a9a0", "rule": "yaw and pitch"},
+    {"address": "0085ab32", "native": "007f60a0", "function": "0085a9a0", "rule": "(-yaw, pitch) against the platform's arcs"}
+  ],
+  "evidence_sites": {
+    "0085a9e9..0085aa18": "origin = [gun+3CCh]+120h..+128h, the gun node's translation",
+    "0085aa27..0085aa51": "target+FCh minus that origin"
+  },
+  "substitutions": ["the origin is the slot point plus the muzzle offsets, not the node's own translation"],
+  "pair": {
+    "runs": "USN04 4700/4500 and USN02 9200/9000 at 0.05 s, BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1, same-tree fw_off / fw_on",
+    "usn04": "deaths 31 -> 30, hit records 528 -> 520, AA shots (1+5) 1971 -> 2366, window refusals 1437 observed -> 3443 applied",
+    "usn02": "identical (0 refusals), failed at 39.65 s both",
+    "predictions": "all held"
+  },
+  "ghidra": "read-only; no renames, comments or saves"
+}

@@ -60,4 +60,25 @@ Current main plus this branch, `BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`.
 
 ## 5. Results
 
-Pending.
+Same-tree builds `fw_off` and `fw_on`, window line and module directory checked, logs deleted
+first.
+
+| run | deaths | hit records | total damage | window refusals | AA shots (sub-type 1 / 5) | AA hits (1 / 5) |
+| --- | --- | --- | --- | --- | --- | --- |
+| USN04 OFF | 31 (16 Kates, 12 Vals) | 528 | 7215.6 | 1437 (observed) | 1879 / 92 | 73 / 65 |
+| USN04 ON | 30 (16 Kates, 11 Vals) | 520 | 6971.7 | 3443 (applied) | 2279 / 87 | 74 / 64 |
+| USN02 OFF / ON | 20 / 20, identical | 487 | 53671.0 | 0 | - | - |
+
+1. **Held:** USN02 is identical, and it still fails at 39.65 s.
+2. **Held:**
+   * AA shots on planes rose 20%, from 1971 to 2366 (inside -10 to +25%).
+   * Hit records fell 1.5% (inside -15 to +25%).
+   * Deaths are 30 (inside 26 to 36).
+
+   Guns that can bear take the planes the refused guns used to hold, so sub-type 1 fires 400 more
+   rounds for one more hit. The Kate torpedo squadrons still die between 199.66 s and 215.66 s,
+   a few tenths of a second to five seconds later than OFF. One Val (#3.1|.-2, 193.51 s OFF)
+   survives, Val #3.1 dies 9.85 s earlier (143.45 s), and the rest move by up to 2.4 s.
+
+`kAaFireWindowBound` is ON. The USN04 reference moves from 31 to 30 deaths and from 528 to 520
+hit records. USN02 does not move.

@@ -72,11 +72,11 @@ namespace {
 //    predicted Yorktown-class01 FLAK rows (gun rows 199-206) and nothing else.
 //  * AA gunner armour test: LANDED. No aircraft in USN04 has the armour to
 //    trigger it, and its pair was identical, as predicted.
-//  * fire window: OFF. It needs the per-gun node frame the host does not build;
-//    bound here in the hull frame, which is a substitution.
+//  * fire window: LANDED (packet cc9_aa_fire_window_mount): 0085A9A0 tests in the
+//    parent entity [gun+3Ch]'s frame, and every slot frame here is hull-aligned.
 constexpr bool kAaMinRangeBound = true;     // 005459E0 / 00729B90
 constexpr bool kAaArmourBound = true;       // 008FBE00's armour test
-constexpr bool kAaFireWindowBound = false;  // 0085A9A0 (hull-frame substitution)
+constexpr bool kAaFireWindowBound = true;   // 0085A9A0 (hull frame = mount frame here; cc9_aa_fire_window_mount)
 
 // Packet cc9_gun_ballistics. docs/GUN_BALLISTICS.md.
 //  * kGunGravityArcBound: the gravity arc 00955630 and its 006DF8BF pre-estimate
