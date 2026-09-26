@@ -1,0 +1,76 @@
+{
+  "packet": "cc10_startup_cache_integration",
+  "worker_commit": "092a7f30a601d603134d336576e86f013a25d5ba",
+  "source_integration": "7bc47e09c3dc553cb0b21884bc87b9079ae49174",
+  "worker_report": "reports/native_application_material_state_cache_provider_cc10.json",
+  "primary_verification": {
+    "result": "PASS",
+    "worker_commit": "092a7f30a601d603134d336576e86f013a25d5ba",
+    "archive_sha256": "d30b34e7b2de0ba0e029e524282516781f51e275ce0542c33fb3cba7a86e20c1",
+    "archive_rows": 551,
+    "archive_members": 552,
+    "git_blobs": 4,
+    "actual_dependencies_prebuild_matched": 651,
+    "complete_new_selected_physical_sections": 94,
+    "complete_new_code_sections": 81,
+    "complete_new_code_bytes": 12592,
+    "complete_new_instructions": 3701,
+    "complete_selected_relocations": 571,
+    "compile_only_layout_values": [
+      48,
+      4,
+      12,
+      32
+    ],
+    "reference_field_offsets": "actual complete getter stores; no invalid reference offsetof inference",
+    "worker_CTests": 3,
+    "new_tests": 0,
+    "runtime": false,
+    "native_byte_credit": 0,
+    "linkage_limit": "worker records only unique full relocation-masked byte matches; no map/object-origin selected claim",
+    "root_object_sha256": "640eb90c0306092907f0838828ba18197dc553384d877103518e0c642e861eec",
+    "root_selected_complete_code_EH_sections_equal": 94
+  },
+  "independent_review": {
+    "archive_sha256": "d06e176bc8e4531e6444e2a17b5b6bdcdc5e4428fd3f4e49d237ac2f81f76acc",
+    "rows": 31,
+    "members": 32,
+    "result": "no_blocking_defect",
+    "unchanged_provider_functions": 827,
+    "unchanged_ordered_relocation_targets_in_changed_functions": 52
+  },
+  "validation": {
+    "worker_CTests": 3,
+    "root_CTests": 3,
+    "new_tests": 0,
+    "new_runtime_cases": 0,
+    "game_validated": false
+  },
+  "native_accounting": {
+    "new_reconstructed_functions": 0,
+    "new_native_bytes": 0,
+    "new_Ghidra_functions": 0
+  },
+  "behavior": "Graph retains NativeMaterialStateCacheContext borrowing the same actual-owner registry and supplies a trailing reference in the existing ready material compiler view; no cache invocation or ownership change.",
+  "limits": "Compile-only Win32 size48/alignment4 and actual getter slot44 preserve old slots. Full COFF proof and qualified worker relocation-masked PE matches do not establish original ABI, map-selected constructor/getter, runtime cache behavior, complete B107F0 loading/Programs/NativeChildren/compiler/sampler graph, actual source0/W/platformMSG preimages, failed-frame retirement, complete teardown or startup/game execution.",
+  "archive": {
+    "path": "local/cc10-platform-evidence/startup-state-cache-binding.zip",
+    "sha256": "d06c816ee8891803eb91c212abb6d4a2d6f4fedeea54af6b48e5a584a9d01c13",
+    "files": 20,
+    "valid": true
+  },
+  "root_artifacts": {
+    "object": {
+      "bytes": 315678,
+      "sha256": "640eb90c0306092907f0838828ba18197dc553384d877103518e0c642e861eec"
+    },
+    "map": {
+      "bytes": 6078329,
+      "sha256": "4e768281f9066ce560a41218ac24ea9ae1edac1eaadef01ba2f667883c43dbd4"
+    },
+    "executable": {
+      "bytes": 3708416,
+      "sha256": "1229fab0b77ab73701565be676922300530f166aae320a950b7aeccfa59b383d"
+    }
+  }
+}
