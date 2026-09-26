@@ -1,0 +1,27 @@
+{
+  "packet": "cc9_blackout_callback",
+  "doc": "docs/MISSION_BLACKOUT.md",
+  "verdict": "image-side: the re-arm restarts the fade and the callback depends on frame-time drift in the image too; recorded, no host change",
+  "calls": [
+    {"address": "004E4D45", "native": "004C6E30", "function": "004E4A40", "note": "scaled frame delta into game+21F0h"},
+    {"address": "004E5133", "native": "004C40A0", "function": "004E4A40", "note": "fixed steps, then the think walk"},
+    {"address": "004E5469", "native": "004C40F0", "function": "004E4A40", "note": "interface update, after the fixed steps"},
+    {"address": "004C429A", "native": "004F71F0", "function": "004C40F0", "note": "screen update with game+21F0h"},
+    {"address": "005BC9FC", "native": "005B9800", "function": "005BC920", "note": "fade update per rendered frame"},
+    {"address": "00875E64", "native": "00929460", "function": "00875BB0", "note": "think walk per 0.05f fixed step"},
+    {"address": "005B9C01", "native": "005B9800", "function": "005B9BA0", "note": "immediate 1e-4 update after the re-arm"}
+  ],
+  "coverage": [
+    {"routine": "005B9BA0", "coverage": "re-arm read in full (005B9BA0-005B9C3B)"},
+    {"routine": "00929460", "coverage": "countdown subtract 0092946B and refill 00929542-0092955D only"}
+  ],
+  "constants": [
+    {"address": "00D7A268", "width": 8, "value": "1.0e-4 (double)"},
+    {"address": "00CE3C68", "width": 4, "value": "1.0e-4f"},
+    {"address": "00D7A2B0", "width": 8, "value": "3.0 (double)"},
+    {"address": "00D0DE84", "width": 4, "value": "0.05f"}
+  ],
+  "switches": [],
+  "no_ghidra_function": [],
+  "ledger_names_added": []
+}

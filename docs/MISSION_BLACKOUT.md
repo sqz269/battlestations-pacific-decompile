@@ -288,3 +288,78 @@ The 3000-frame variant (`--frames 3200 --mission-frames 3000`) reaches the same 
 no Ghidra function. After the integrator runs
 `python tools/ghidra_define_function.py 005bc920 005bca17`, the row `005BC9FC -> 005B9800` becomes
 checkable and can move into `host_steps`.
+
+## A re-issued blackout never calls back (packet cc9_blackout_callback)
+
+2026-09-26. Ghidra is read-only here, and nothing in the code changed. This section answers why
+`luaMoveToPh2` never ran in the circle-steer pair (`docs/PILOT_MOVETO_TASK.md` Part 4, `local\CS_ON_9000.log`
+in worktree cc9-circle-steer). **Verdict: the image behaves the same way. It is recorded here,
+not fixed.**
+
+**The script side.** This installation's `usn_19_coralus.lua` checks phase 1 in the Think handler
+(`SetThink(this, "Think")`). At difficulty 1-2 it calls
+`luaObj_Completed("primary",1,true)` and then `Blackout(true, "luaMoveToPh2", 3)` while
+`luaObj_IsActive("primary",1)` holds and any of these is true:
+- BomberWave == 5;
+- no IJN bombers aimed at the Lexington are left;
+- no IJN fighters aimed at the Lexington are left.
+
+`luaObj_Completed` in this installation's `scripts/global/commandhelpers.lua` sets `obj.Success`
+and leaves `obj.Active` set (the line `--obj.Active = false` is commented out). So the call
+repeats on every Think pass for as long as its condition holds. This is script behaviour, not
+host behaviour. Both files differ from the untouched 2024-07-13 bulk: they are dated
+2024-10-29 and 2024-08-26.
+
+**The image side.** Every call re-arms the fade:
+- 005B9BA0 stores `+C8h` = duration + 1.0e-4 (`00D7A268`, a double), and replaces the name at
+  `+CCh` with no pending test (005B9BA0-005B9BF2).
+- One update with 1.0e-4f (`00CE3C68`) follows at once (005B9C01).
+- A call with the same name while the fade is pending therefore restarts it.
+- The callback runs only on the pass after the timer lands at zero (005B9800, the idle arm).
+
+**The two clocks.**
+- **The Think pass** is `00929460`'s untimed countdown. It subtracts the fixed step 0.05f
+  (`00D0DE84`) and fires below zero. It refills by adding the double 3.0 (`00D7A2B0`, 00929557),
+  so a pass runs every 60 fixed steps. The fixed steps come from `00875BB0` (`00875E64`), zero or
+  more per rendered frame.
+- **The fade** steps once per rendered frame by the scaled real delta `game+21F0h`
+  (004C4290 -> 004F71F0 -> 005BC920 -> 005B9800). That delta is written by 004C6E30.
+- **The frame order** in `GGame::OnMove` 004E4A40 is 004C6E30 (004E4D45), then 004C40A0 with the
+  fixed steps and the think (004E5133), then 004C40F0 with the fade (004E5469).
+- A pass that re-arms therefore steps the new fade in the same frame. The host keeps the same
+  order (`GameScriptOrdersHost::run_script_timers`).
+
+Between two passes the fade loses the real time of the frames from the re-arming frame up to
+the frame before the next pass. That is 3.0 s plus the change in the fixed-step accumulator's
+leftover, minus one frame. It must reach the arm's 3.0001 - 0.0001 and then leave one more
+update before the next re-arm. With a steady frame time it almost never does.
+
+**Models** (float32, same order and constants, re-arm on every pass):
+
+| frame timing | seconds from the first re-arm to the callback, eight seeds |
+| --- | --- |
+| lockstep 0.05 s (this host: one fixed step per frame) | never (390 s window) |
+| steady 1/60 s | never |
+| 1/60 s ± 10 % | never |
+| 1/30 s ± 10 % | 125, 158, 227, 335, 374; never in three |
+| 1/45 s ± 20 % | 35-359 |
+
+The image, too, leaves the callback to frame-time drift while the condition holds. The host's
+lockstep frame removes even that, so it never fires.
+
+**Why the OFF side reached phase 2.** Its phase-1 trigger was BomberWave == 5. The wave spawner
+`luaSpawnPh1Bombers` raises BomberWave every 80 s, so the condition held only from 345 s to 425 s.
+The re-issues stopped, and the last fade called back 3 s later: the movie blackout is at 424.97 s
+in `CS_OFF_9000.log`. On the ON side the trigger was "no IJN fighters left", which stays true, so
+the re-issues never stop.
+
+**Consequence for measurement.** Any USN04 pair in which every escort Zero dies before BomberWave
+reaches 5 stays in phase 1 for the rest of the run. That covers E2 9000 with the circle steer ON.
+Such a pair differs from its control by the whole of phase 2, and none of that difference belongs
+to the change under test. Getting the image's behaviour in the host would need frame deltas that
+are not locked to the fixed step. That is a harness decision (`--mission-frame-seconds`, and a
+render cadence separate from the fixed step), not a correction to 005B9BA0 or 005B9800. Both
+were checked against the listing and match.
+
+Coverage: 005B9BA0 and 005B9800 were read for the re-arm and the idle arm only; the rest is
+earlier sections of this doc. No functions were added and no names changed.
