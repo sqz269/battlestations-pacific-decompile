@@ -1,0 +1,219 @@
+{
+  "packet": "cc10_complete_clock_singleton_binding",
+  "address": "00bd0400",
+  "baseline": "d3eec1a8554a154f1cd12d15d19e5abda45179da",
+  "status": "source_dispatch_binding_strict_win32_and_genuine_registered_empty_clock_fixture_verified",
+  "production_files": [
+    "include/bsp/native_singleton_destruction.hpp",
+    "src/native_singleton_destruction.cpp"
+  ],
+  "interface": {
+    "new_binding": "NativeParticleClockShutdownContext* particle_clock",
+    "win32_offset": 176,
+    "old_size": 176,
+    "new_size": 180,
+    "prior_offsets_preserved": true,
+    "borrowed": true
+  },
+  "dispatch": {
+    "admitted_complete_profile": "00ce7d38",
+    "provider": "004de340",
+    "passes_popped_owner": true,
+    "passes_original_flags": true,
+    "manager_pop_before_delete": true,
+    "secondary_profile_admitted": false,
+    "owner_publication_equality_test": false,
+    "manual_clock_free": false,
+    "extra_owner_credit": false
+  },
+  "original_abi": {
+    "manager": "00BD0400 ECX manager; RET; source adds bindings",
+    "scalar_delete": "004DE340 ECX complete owner; stack flags; RET4; EAX captured owner; source adds shutdown context",
+    "native_fh3_validated": false,
+    "drop_in_abi": false
+  },
+  "build": {
+    "command": {
+      "argv": [
+        "powershell",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1",
+        "-Configuration",
+        "Release"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-field-values",
+      "strict": "MSVC Win32 /W4 /WX /fp:strict; required three existing CTests; no new tracked tests."
+    },
+    "receipt": "local/cc10_complete_clock_singleton_probe/build.log",
+    "strict_win32": true,
+    "existing_ctests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "all_pass": true,
+    "new_tracked_tests": false,
+    "explicit_prebuild_pins": 11,
+    "baseline_git_tree_pinned": true,
+    "individual_toolchain_hashes_prebuild": false
+  },
+  "standalone": {
+    "receipt": "local/cc10_complete_clock_singleton_probe/compile.log",
+    "active_assertions": true,
+    "embedded_as_invoker_manifest": true,
+    "i386": true,
+    "precompile_explicit_inputs": 53,
+    "selected_project_members": 362,
+    "member_schema": "compiled_evidence.json: linked_members[].library/member/object/source",
+    "compiled_body_schema": "compiled_evidence.json: compiled_functions[].object/name/address/length/object_hex/linked_hex/relocations/instructions/standalone_entry_selected",
+    "compiled_coff_bodies": 9,
+    "compiled_coff_bytes": 4377,
+    "standalone_linked_bodies": 8,
+    "object_only": [
+      "destroy_native_particle_clock_records_004de290"
+    ],
+    "object_only_reason": "Standalone OPT:REF discard after schedule inlining into selected B1B680; no linked standalone claim",
+    "compiled_evidence": "local/cc10_complete_clock_singleton_probe/compiled_evidence.json",
+    "project_libraries": [
+      {
+        "path": "local/cc10_complete_clock_singleton_probe/before_compile/inputs/build/win32/Release/bsp_core.lib",
+        "size": 71204740,
+        "sha256": "71b044e1486efcf69f301f25946733b70ce89cd313b060bbcc5305d64ae2afec"
+      },
+      {
+        "path": "local/cc10_complete_clock_singleton_probe/before_compile/inputs/build/win32/Release/bsp_lua511.lib",
+        "size": 455456,
+        "sha256": "312a40acde7fbb14e245a0f606bda72b9581554bc279aa705c476e161449d67b"
+      },
+      {
+        "path": "local/cc10_complete_clock_singleton_probe/before_compile/inputs/build/win32/Release/bsp_zlib121.lib",
+        "size": 71978,
+        "sha256": "9ca87fa5a1f67dc5597e6d93c04a85f5074af0f94dc57cf93a068737bcc14cb3"
+      }
+    ],
+    "searched_link_libraries": 16,
+    "actual_fixture_headers": 294,
+    "postlink_sdk_pins": [
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/um/x86/dinput8.lib",
+        "size": 309048,
+        "sha256": "e18e93836e1aa52920cd2f8e320d4b18d6b2cba454affce527df6371c8de541b"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/um/x86/dxguid.lib",
+        "size": 1327538,
+        "sha256": "4b66bbc675e4d7ff0c5d81765fc06fdd96dc77f9b1ef142db33b87aa58415a9e"
+      }
+    ],
+    "prelink_coverage_limit": "dinput8.lib/dxguid.lib individual hashes are postlink/preRun; precompile pinned SDKroot/version only for them. Root accepted this explicit limit; source/object/exe unchanged, no relink/recompile.",
+    "inspection_expectation_error_preserved": true,
+    "compile_or_runtime_failure": false,
+    "no_recompile_or_relink_after_success": true
+  },
+  "fixture": {
+    "source": "local/cc10_complete_clock_singleton_probe/probe.cpp",
+    "case": "genuine registered empty particle-clock manager drain",
+    "getter": "004de4b0",
+    "manager": "00bd0400",
+    "scalar_delete": "004de340 flags1",
+    "genuine_crt_manager_clock_section": true,
+    "genuine_actual_owner_registry": true,
+    "typed_to_void_same_cell_quiescent_placement_reuse": true,
+    "new_object_access_via_returned_placement_pointer": true,
+    "old_typed_references_used_after_reuse": false,
+    "untouched_plus18": "static constructor/listing proof only; never initialized or read",
+    "record_count": 0,
+    "canonical_resource_release_domain": "bound, unexecuted",
+    "actual_interlocked_decrement": "real kernel32 entry bound, unexecuted",
+    "string_pool": "real interface retained, null pool, no returns",
+    "bootstrap": {
+      "provider": "GameNativeDataBootstrapChild",
+      "plan": "ReadOnlyV1",
+      "spans": [
+        {
+          "address": "00ce7d08",
+          "bytes": 20
+        },
+        {
+          "address": "00ce7d24",
+          "bytes": 20
+        }
+      ],
+      "band": "00ce0000",
+      "original_mem_free_observed": true,
+      "real_mapping_ack_observed": true
+    },
+    "unexecuted_revision": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_complete_clock_singleton_probe/unexecuted_unsuspended_revision.zip",
+      "size": 4038,
+      "sha256": "0667ef8c6e8486bf1ae4acb8dede809cc5d913cdf52d58eb8105afbf9134b4cb"
+    },
+    "observations": [
+      "clock publication null",
+      "still-live manager vector +4/+8/+C and section +10 zero; count0",
+      "manager publication retains manager bits",
+      "only already-drained manager explicitly freed afterward",
+      "no postfree clock/vector/section reads"
+    ]
+  },
+  "runtime": {
+    "utc_start": "2026-09-26T07:36:10.389582+00:00",
+    "utc_end": "2026-09-26T07:36:11.401146+00:00",
+    "argv": [
+      "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-field-values\\local\\cc10_complete_clock_singleton_probe\\complete-clock-drain-probe.exe"
+    ],
+    "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-field-values",
+    "parent_pid": 54320,
+    "parent_exit": 0,
+    "timeout_seconds": 110,
+    "timed_out": false,
+    "child_pid": 48136,
+    "child_exit": 0,
+    "child_wait": 0,
+    "source_parent_pid": 54320,
+    "original_band_mem_free_observed": true,
+    "mapping_ack_observed": true,
+    "case_pass_observed": true,
+    "exact_inputs": 1022,
+    "inputs_unchanged": true,
+    "preserved_prior_artifacts_unchanged": true,
+    "remaining_matching_processes": 0,
+    "one_launch": true,
+    "success": true
+  },
+  "closure": {
+    "utc": "2026-09-26T07:36:11.0667493Z",
+    "process_name": "complete-clock-drain-probe.exe",
+    "remaining_count": 0,
+    "processes": []
+  },
+  "final_preRun_seal": "local/cc10_complete_clock_singleton_probe/before_run_inputs.json",
+  "preservation": {
+    "prior_archives": 36,
+    "prior_files": 50,
+    "unchanged": true
+  },
+  "native_evidence": {
+    "immutable_design_archive": "local/output/cc10_complete_clock_singleton_design/evidence.zip",
+    "windows": 8,
+    "code_bytes": 610,
+    "data_bytes": 44,
+    "ghidra_read_only": true
+  },
+  "limits": [
+    "selected members/bound domains are not all reached",
+    "4DE290 standalone is object-only; inlined B1B680 schedule selected",
+    "two SDK individual hashes postlink/preRun only",
+    "no dynamic call stack or per-free instrumentation",
+    "strictly quiescent fixture publication lifetime boundary only",
+    "no +18 read or sentinel",
+    "no secondary or changed-publication case",
+    "no nonempty cache, sink decrement or other profile case",
+    "no full application startup, original code/game execution or native FH3/ABI validation"
+  ],
+  "documentation": "docs/NATIVE_COMPLETE_CLOCK_SINGLETON_BINDING_CC10.md",
+  "archive": "local/cc10_complete_clock_singleton_binding_evidence.zip",
+  "manifest": "local/cc10_complete_clock_singleton_probe/manifest.json",
+  "freeze_receipt": "local/cc10_complete_clock_singleton_probe/freeze_receipt.json"
+}
