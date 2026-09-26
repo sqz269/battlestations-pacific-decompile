@@ -151,3 +151,15 @@ What a binding needs:
   `ray_pick_*` stay unless a member lands nearest the screen centre. Nothing moves in gameplay
   unless an enemy member is picked while the weapon group's gunner path runs
   (`docs/HUD_PICK_SEGMENT_QUERY.md` section 5).
+
+## 7. Outcome of packet `cc9_side_ai_scheduler` (cc9-side-ai, 2026-09-26)
+
+Step A settled the open question in section 2: **no reader outside the scoring object turns
+`+78h`, `+84h`/`+88h` or `+1E0h` into an order.** The records are per-player-slot
+`MissionScoreRecord`s:
+- The two think passes evaluate the badges and achievements of achievements.lua.
+- 00914390 recomputes the category totals the debrief shows.
+
+The only gameplay reader is Lua `Scoring_GetTotalMissionScore` in competitive multiplayer.
+The three records stay host records, and no switch was added. The evidence, the census and
+the corrections to sections 1-3 are in `docs/SIDE_AI_SCHEDULER_READERS.md`.
