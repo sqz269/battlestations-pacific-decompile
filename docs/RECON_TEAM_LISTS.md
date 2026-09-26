@@ -208,3 +208,20 @@ checked, logs deleted first. The member-class order was checked in the listing a
 
 **Decision: ON.** `kReconAggregatesBound` is on. USN04 and USN02 references do not move; USN04's
 recon triples mean own / enemy / unknown become 69.5 / 32.5 / 1.1.
+
+### Does the image score squadron records? (integrator's question, answered from the listing)
+
+Yes. The sweep walks `[recon+DE8h]` at `00865220`, and `00865237` calls `00863990(i, cand, &dist)`
+for **every** node, with no kind test before it (`docs/UNIT_GUNNERY_PASS.md` 8.5). The only
+filters are inside `00863990` itself:
+* `008633D0`'s category bits against `IsKindOf(0Fh)` (`008633F0`, `00863409`);
+* the owner's `IsKindOf(5)` at `008639B6`;
+* the class test at `00863A93`.
+
+The extra `00863990` scorings on USN04 are therefore the image's behaviour, not a host
+admission. The host's own pre-filter in `recon_contact_count_008053c0` (ship-base or
+plane-base) has no image counterpart. It is a stand-in that squadrons pass because the units
+host answers plane-base for them. Whether a class-18h record then survives `008633D0` depends on
+its `IsKindOf(0Fh)` answer, and that is the units host's class table, not this file. No host
+change.
+

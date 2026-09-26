@@ -153,6 +153,7 @@ struct GameShipAiRow {
     std::string brain_target_name;           // the created instance it resolves to
     std::string command_descriptor;          // what 0071EB60 answered with
     unsigned long long path_plan_refreshes{0};  // 009ED3E0 call sites
+    unsigned long long corridor_group_widths{0};  // 009ED3E0 head: widths from the group
     unsigned long long path_plan_seeds{0};   // 009E3780 calls that rebuilt the graph
     unsigned long long path_plan_accepts{0}; // 009E3780 calls that answered true
     int path_plan_state{0};                  // plan+1Ch after the last request
@@ -384,6 +385,8 @@ struct GameShipAiSummary {
     std::size_t units_with_nonzero_goal{0};
     std::size_t units_with_brain_target{0};
     unsigned long long path_plan_refreshes{0};
+    unsigned long long corridor_group_widths{0};
+    float corridor_width_max{0.0f};
     unsigned long long path_plan_seeds{0};
     unsigned long long path_plan_accepts{0};
     unsigned long long approach_frames{0};

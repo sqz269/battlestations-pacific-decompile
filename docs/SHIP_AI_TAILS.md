@@ -190,3 +190,81 @@ The binding is the image's order and span (009F51AE and 009F51B7 in 009F50E0, se
 missions move for reasons traced to the restored fields: the +1D0h carry-over in USN02, and the
 +3A5h clear in E2. Neither is a divergence of the binding. The OFF behaviour, where per-step
 writes persist between replans, was the host's. `kShipAiSnapshotBound` is set true.
+
+## 6. The turn clearance and the path-plan head (packet `cc9_ship_ai_turn_clearance`)
+
+cc9-gunnery, 2026-09-26. Addresses: 009EF910 009F4D10 009F4D87 009ED3E0 00778890 0070D400
+0070D5D0 009ED41F 009ED460 009D9DE0 0070D290.
+
+### What was actually missing
+
+- **009EF910 `BSP_ShipAi_RefreshTurnClearance`**, body `009EF910..009F00F3`. It is **already
+  reconstructed and run every step.**
+  - The rule is `ship_ai_refresh_turn_clearance_009ef910` (`src/ship_ai_clearance_profile.cpp`,
+    `docs/SHIP_AI_CLEARANCE_PROFILE.md`, packet `cc_ai_clearance_profile`).
+  - `run_clearance_refresh` calls it straight after `ship_ai_publish_order_009f4d10` returns. Its
+    rows `ShipAi::refresh_turn_clearance_009ef910` and `ShipAiObstacle::clearance_37c_producer`
+    are concrete at 162000 calls in E2.
+  - The UNIMPLEMENTED row `ShipAiOrder::tail_009ef910`, rank 6 of
+    `docs/UNIMPLEMENTED_RANKING_2.md`, is the publish reconstruction's own hook for the same call
+    (`009F4D87`, 009F4D10's only call into it). It recorded instead of saying where the body runs.
+  - Nothing between the hook and `run_clearance_refresh` reads what 009EF910 writes. The slot
+    copy-back touches `order.slots`; the clearance reads `blk+324h/+330h/+35Ch` and the geometry.
+    So the row is a bookkeeping gap, not a behaviour gap.
+- **009ED3E0's head**, `009ED3E0..009ED498`. It is **reconstructed but not bound**
+  (`src/ship_ai_path_corridor.cpp`, `docs/SHIP_AI_PATH_CORRIDOR.md`, packet `cc_ai_corridor`). The
+  host passed the `20.0f` of `00CE3930` for both corridor widths.
+  - The head asks `00778890` whether the ship leads its formation group (`entity+284h`, leader
+    `[group+14h]`).
+  - When it does, `0070D400` and `0070D5D0` reduce the member records' across-axis column to the
+    largest offset on each side: each slot is clamped into `[0, 1200]`, the result floored at 5 and
+    capped at 400.
+  - Each extent + 20.0 (capped at 600) becomes a width.
+  - `009D9DE0` stores the widths into the plan blocks (`plan+4h`, `plan+8h`) and throws a running
+    search away when a width moves by more than 25. `009EE61E` publishes `max(30, plan+8h)` for
+    the point the follower steers to.
+
+### The binding (`kShipAiTurnClearanceBound`)
+
+- **The corridor head.** `CorridorBinding` answers the three calls from the units host's
+  formation groups:
+  - `unit_formation_group_0284` and `formation_leader_0014` for `00778890`;
+  - for the extents, the member records' across-axis value through `formation_station_0070d290`
+    at unit scales. That is `record+10h + column*4`, 0070D290's own read.
+
+  `ship_ai_path_corridor_widths_009ed3e0` turns them into the two widths, which go to the refresh
+  arm in place of the literal.
+- **The hook.** `ShipAiOrder::tail_009ef910` becomes `done`.
+- Labelled: the leader's own record, which 0070D290's leader branch skips, contributes 0 to the
+  reduction. A leader's formation offset is its own station, normally 0.
+
+The summary line `ship ai corridor` counts the refreshes whose widths came from a group and the
+largest width.
+
+### Predictions (written before the runs)
+
+Same-tree pairs, switch only, `BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`: USN02 9200/9000 and
+E2 (USN04 9200/9000).
+
+1. **Rows.** `ShipAiOrder::tail_009ef910` goes from UNIMPLEMENTED to concrete: 162000 calls on
+   E2, and on USN02 the count of its `refresh_turn_clearance` row. `ShipAiPath::refresh_plan_head`
+   goes from UNIMPLEMENTED to concrete at the `plan requests` count (136950 on E2, 149843 on
+   USN02). Three new concrete rows appear: `00778890`, `0070D400` and `0070D5D0`.
+2. **Widths.** On USN02, the formation leaders (the Houston and Exeter groups the script joins,
+   `usn_2_java.lua` `JoinFormation`) take group widths: `group_widths > 0` and `max_width`
+   between 25 and 420. E2 takes group widths only if USN04 forms a group: 0 or a few leaders.
+3. **Paths and tracks.** Plan requests stay equal (the refresh cadence does not depend on the
+   widths). Seeds and accepts move on USN02 when a wider corridor changes the searches or a
+   width change throws a search away. The leaders' tracks and their followers' stations can move
+   by tens of metres. `station_keeping` (16424 on USN02) moves by less than 10%.
+4. **Outcomes.**
+   * USN02: deaths 20 +/- 3, hit records 487 +/- 15%, failure at 39.65 s +/- 5 s. A cascade
+     through who is afloat can move single deaths by tens of seconds.
+   * E2: identical if no ship leads a group. Otherwise deaths 35 +/- 2 and hit records
+     594 +/- 5%.
+5. **The native table.** Both ways, only the rows in (1) change status. Rows with
+   ship-motion-dependent counts can move on USN02.
+
+### Results
+
+Pending.
