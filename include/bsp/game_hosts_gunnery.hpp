@@ -599,6 +599,13 @@ public:
     // ship motion reads; this host applies "Explosion" and "Fire" itself.
     bool unit_failure_active(std::size_t unit_index, const char* name) const;
 
+    // Packet cc9_blast_element_parts: the hull segments (0..19, controller+310h
+    // slots) of unit `unit_index` that 0092D1F0 drove to zero, in the order they
+    // went. Each one is a message 99h the image routes to 0080E440 DetachPart
+    // (00934150: debris, effects and the dynamics list); the physics side is the
+    // ship motion's to apply.
+    std::vector<int> destroyed_hull_segments(std::size_t unit_index) const;
+
     // 00727BD0 over the authored preference lists, then the twelve per-unit
     // category lists through 00956C20's sequence, then 00864BD0 on every unit
     // that ended with at least one gun. Runs once, after the first create_units.

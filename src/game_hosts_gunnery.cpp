@@ -23,6 +23,7 @@
 #include <cstdarg>
 #include <cstdio>
 #include <cstdlib>
+#include <cctype>
 #include <cstring>
 #include <set>
 #include <stdexcept>
@@ -322,6 +323,27 @@ constexpr bool kShipHullRepairBound = true;
 //    failure after its seconds at rate 1.0 (priority 0). OFF: 0093BED0 is a
 //    record. Packet cc9_component_failures, docs/COMPONENT_FAILURES.md.
 constexpr bool kComponentFailureBound = true;
+//  * kBlastElementEntriesBound: a burst on a ship with a GeomMesh builds the
+//    record's part-hit array the image's sphere shape builds (0070F720 ->
+//    00723F80 -> 00723B70 -> 006D2E30): one 10h entry per element whose
+//    triangles come within the radius, {element+4h, element+8h, 0, distance},
+//    the distance being the closest triangle point (0085DF60, Eberly's
+//    point-triangle distance, in model space) after the root-box reject
+//    (0085BF90). No entry, no damage. 008777D0's part pass then keeps the
+//    LARGEST 004705C0 over the entries, skipping index -1, with the class
+//    UnderwaterArmour (009635D0, +6B4h) for kind 4 and Armour otherwise, and
+//    adds it once (008778E4..00877A37). OFF: one entry at the hull-box
+//    distance. Packet cc9_blast_element_parts, docs/BLAST_ELEMENT_PARTS.md.
+constexpr bool kBlastElementEntriesBound = false;
+//  * kHullSegmentHealthBound: 0092D1F0 on the controller's 20 per-segment
+//    healths (00937C90: HP / the number of fizika_NN model nodes found, the
+//    gate byte -1 for an index with none), reached by R4 (a direct hit on a
+//    fizika element) and R11b (a fizika part entry). A segment that reaches
+//    0.0 is parked at -10000.0 and message 99h (0092CED0) detaches it
+//    (00821FF0 -> 0080E440 -> 00934150: debris, effects, dynamics). Published
+//    through GameGunneryHost::destroyed_hull_segments; the detach physics is
+//    the ship motion's. OFF: the part damage is counted only.
+constexpr bool kHullSegmentHealthBound = false;
 //  * kKillCreditDamageGateBound: 0077CE60 writes the attribution block (the
 //    +2C4h attacker the kill credit 0091BDA0 names) only for a live victim and
 //    only when the hit's damage, 00470510 for a hull segment or 00470740 when
@@ -456,6 +478,7 @@ struct GameGunneryHost::Impl {
         float hull_width{0.0f};
         float hull_height{0.0f};
         float armour{0.0f};
+        float underwater_armour{0.0f};   // class vtable[24h] 009635D0, +6B4h
         float max_health{0.0f};
         float health{0.0f};
         // The twelve category records at unit+394h and the ranges at unit+430h.
@@ -890,6 +913,19 @@ struct GameGunneryHost::Impl {
         std::vector<std::array<float, 3>> element_tris;
         std::vector<int> element_kind;
         std::vector<int> element_index;
+        // Packet cc9_blast_element_parts: each element's triangle run in
+        // element_tris, in element order, and the 00937C90 node census.
+        struct ElementRange {
+            std::size_t first{0};   // first triangle
+            std::size_t count{0};
+            int kind{-1};
+            int index{0};
+            float lo[3]{0.0f, 0.0f, 0.0f};
+            float hi[3]{0.0f, 0.0f, 0.0f};
+        };
+        std::vector<ElementRange> element_ranges;
+        bool fizika_node[20]{};
+        int fizika_node_count{0};
         std::array<float, 6> mesh_box{};
         bool section_present[3]{false, false, false};
         std::array<float, 3> section_point[3]{};
@@ -1124,6 +1160,12 @@ struct GameGunneryHost::Impl {
             float threshold{-1.0f};      // row+2Ch, FailureDamageThreshold
         };
         std::vector<Section> sections;
+        // Packet cc9_blast_element_parts: controller+310h (20 floats) and the
+        // gate bytes controller+34Ch+i, built on first use from the model.
+        bool segments_built{false};
+        float segment_health[20]{};
+        bool segment_present[20]{};
+        std::vector<std::pair<int, float>> destroyed_segments;   // (index, time)
         double water_damage{0.0};     // totals for the summary
         double fire_damage{0.0};
         double repaired{0.0};
@@ -1151,6 +1193,17 @@ struct GameGunneryHost::Impl {
     float explosion_fraction{0.01f};       // settings+3C4h (/ 100)
     float fire_failure_seconds{1.0f};      // settings+3C0h
     bool failure_settings_read{false};
+    unsigned long long be_blast_records{0};     // bursts on a meshed ship
+    unsigned long long be_blast_no_entry{0};    // no element within the radius
+    unsigned long long be_entries{0};
+    unsigned long long be_entries_fizika{0};
+    unsigned long long be_entries_underwater{0};
+    double be_damage_element{0.0};
+    unsigned long long seg_hits{0};
+    unsigned long long seg_gate_refused{0};
+    unsigned long long seg_destroyed{0};
+    double seg_damage{0.0};
+    void apply_segment_damage_0092d1f0(std::size_t unit, int index, float damage);
     unsigned long long cf_rolls{0};        // 0093BED0 entered past the gate
     unsigned long long cf_resolved{0};     // 008782A0 found a section
     unsigned long long cf_started{0};
@@ -1589,6 +1642,11 @@ GameGunneryHost::Impl::ship_model_slots(int type_id) {
                 }
             }
             for (const bsp::GeomMeshElement& el : mesh.elements) {
+                ShipModelSlots::ElementRange range;
+                range.first = entry.element_tris.size() / 3;
+                range.kind = el.kind;
+                range.index = static_cast<int>(el.node_index);
+                for (int k = 0; k < 3; ++k) { range.lo[k] = 1e30f; range.hi[k] = -1e30f; }
                 for (std::uint16_t ord : el.triangle_ordinals) {
                     if (ord >= mesh.triangles.size()) continue;
                     const bsp::GeomMeshTriangle& t = mesh.triangles[ord];
@@ -1599,7 +1657,15 @@ GameGunneryHost::Impl::ship_model_slots(int type_id) {
                     entry.element_tris.push_back(c);
                     entry.element_kind.push_back(el.kind);
                     entry.element_index.push_back(static_cast<int>(el.node_index));
+                    for (const auto& v : {a, b, c}) {
+                        for (int k = 0; k < 3; ++k) {
+                            range.lo[k] = std::min(range.lo[k], v[k]);
+                            range.hi[k] = std::max(range.hi[k], v[k]);
+                        }
+                    }
                 }
+                range.count = entry.element_tris.size() / 3 - range.first;
+                entry.element_ranges.push_back(range);
             }
             // 0081F980: engine room 5 -> slot 0, magazine 8 -> slot 1, fuel 6 -> slot 2.
             for (const bsp::GeomMeshElement& el : mesh.elements) {
@@ -1630,14 +1696,36 @@ GameGunneryHost::Impl::ship_model_slots(int type_id) {
             entry.has_mesh = true;
             for (int k = 0; k < 3; ++k) { entry.mesh_box[k] = lo[k]; entry.mesh_box[k + 3] = hi[k]; }
         }
+        {
+            // 00937C90: "fizika_%02d" for 0..19 through the model's node lookup;
+            // an index counts when at least one node carries that name.
+            std::vector<bsp::HierarchyItem> nodes;
+            std::string node_error;
+            if (bsp::read_mmod_hierarchy_items(bytes, nodes, node_error)) {
+                for (const bsp::HierarchyItem& node : nodes) {
+                    std::string name(node.name.c_str());
+                    for (auto& ch : name) ch = static_cast<char>(std::tolower(
+                        static_cast<unsigned char>(ch)));
+                    if (name.size() != 9 || name.compare(0, 7, "fizika_") != 0) continue;
+                    if (!std::isdigit(static_cast<unsigned char>(name[7]))
+                        || !std::isdigit(static_cast<unsigned char>(name[8]))) continue;
+                    const int idx = (name[7] - '0') * 10 + (name[8] - '0');
+                    if (idx < 20 && !entry.fizika_node[idx]) {
+                        entry.fizika_node[idx] = true;
+                        ++entry.fizika_node_count;
+                    }
+                }
+            }
+        }
         std::size_t fizika = 0;
         for (int k : entry.element_kind) {
             if (k == bsp::kShipHitSegmentKindBreakable) ++fizika;
         }
         log.notef("gunnery: vehicle class %d geom meshes=%zu triangles=%zu element_triangles=%zu "
-            "fizika=%zu sections engine=%d "
+            "fizika=%zu fizika_nodes=%d sections engine=%d "
             "magazine=%d fuel=%d%s%s (0081F980 / 00723030)", type_id, meshes.size(),
             entry.tris.size() / 3, entry.element_tris.size() / 3, fizika,
+            entry.fizika_node_count,
             entry.section_present[0] ? 1 : 0,
             entry.section_present[1] ? 1 : 0, entry.section_present[2] ? 1 : 0,
             mesh_error.empty() ? "" : " error: ", mesh_error.c_str());
@@ -1887,6 +1975,7 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         "    f.nfail = nf\n"
         "    f.hp = num(row.HP, 1000) or 0\n"
         "    f.armour = num(row.Armour, 1000) or 0\n"
+        "    f.uwarmour = num(row.UnderwaterArmour, 1000) or -1\n"
         "    f.length = num(row.Length, 1000) or 0\n"
         "    f.width = num(row.Width, 1000) or 0\n"
         "    f.height = num(row.Height, 1000) or 0\n"
@@ -2101,6 +2190,13 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
         state.max_health = flat_scaled(type_id, "hp", kMilliScale, 0.0f);
         state.health = state.max_health;
         state.armour = flat_scaled(type_id, "armour", kMilliScale, 0.0f);
+        // Ship class vtable[24h] = 009635D0 (+6B4h UnderwaterArmour); every other
+        // family's slot is 004407A0 (Armour). Labelled: an absent key keeps Armour.
+        {
+            const float uw = flat_scaled(type_id, "uwarmour", kMilliScale, -1.0f);
+            state.underwater_armour = (uw >= 0.0f
+                && units.unit_is_kind_of(i, bsp::kUnitGunneryKindShipBase)) ? uw : state.armour;
+        }
         state.hull_length = flat_scaled(type_id, "length", kMilliScale, 0.0f);
         state.hull_width = flat_scaled(type_id, "width", kMilliScale, 0.0f);
         state.hull_height = flat_scaled(type_id, "height", kMilliScale, 0.0f);
@@ -5361,9 +5457,12 @@ public:
         return 1.0f;
     }
 
-    void apply_part_damage(int, const float[3], float damage) override {
+    void apply_part_damage(int index, const float[3], float damage) override {
         applied_ += damage;
         ++owner_.summary.part_damages;
+        if constexpr (kHullSegmentHealthBound) {
+            owner_.apply_segment_damage_0092d1f0(victim_, index, damage);
+        }
         owner_.done("ShipHit::part_health_0092d1f0", 0x0092d1f0u);
     }
     void impact_direction(float out[3]) override {
@@ -5481,6 +5580,24 @@ public:
         // array at +3Ch, each floored at zero inside the formula and added
         // through the same 00879070 the hull pass uses (AddDamage at 00877A37).
         // A blast record carries its damage here, in +28h.
+        if constexpr (kBlastElementEntriesBound) {
+            // 008778E4..00877A37: skip +4h == -1, armour by kind (4 -> the
+            // class vtable[24h]), keep the largest result from -FLT_MAX
+            // (00D7A244) and add it once when it is above 0.0.
+            float best = -3.402823466e+38f;
+            int best_index = -1;
+            for (int i = 0; i < hit_.part_hit_count; ++i) {
+                const bsp::HitPartEntry& e = hit_.part_hits[i];
+                if (e.part_index == -1) continue;
+                const float a = e.kind == bsp::kUnitHitPartEntryAlternateArmour
+                    ? owner_.unit_state[victim_].underwater_armour : armour;
+                const float part = bsp::part_damage_004705c0(hit_, a, i);
+                owner_.done("ShipHit::part_damage_004705c0", 0x004705c0u);
+                if (part > best) { best = part; best_index = i; }
+            }
+            if (best_index > -1 && best > 0.0f && add_damage(best)) applied_any = true;
+            return applied_any;
+        }
         for (int i = 0; i < hit_.part_hit_count; ++i) {
             const float part = bsp::part_damage_004705c0(hit_, armour, i);
             owner_.done("ShipHit::part_damage_004705c0", 0x004705c0u);
@@ -5673,6 +5790,120 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
 // 004705C0's falloff has no read producer in the image at all -- the array at
 // +3Ch is docs/EXPLOSION_RADIAL_DAMAGE.md's labelled gap. The falloff
 // arithmetic is 004705C0's; the distance handed to it is this host's.
+namespace {
+// 0085DF60, __fastcall(point /*ECX*/, v0 /*EDX*/, v1, v2) -> squared distance
+// (x87). Its body follows the region tests of Eberly's point-triangle distance
+// (the det / s / t split visible in the decompilation); this is that algorithm
+// in float, not a transcription of the image's operation order.
+float point_triangle_distance2_0085df60(const float p[3], const float v0[3],
+                                        const float v1[3], const float v2[3]) {
+    const float e0[3] = {v1[0] - v0[0], v1[1] - v0[1], v1[2] - v0[2]};
+    const float e1[3] = {v2[0] - v0[0], v2[1] - v0[1], v2[2] - v0[2]};
+    const float d[3] = {v0[0] - p[0], v0[1] - p[1], v0[2] - p[2]};
+    const float a = e0[0] * e0[0] + e0[1] * e0[1] + e0[2] * e0[2];
+    const float b = e0[0] * e1[0] + e0[1] * e1[1] + e0[2] * e1[2];
+    const float c = e1[0] * e1[0] + e1[1] * e1[1] + e1[2] * e1[2];
+    const float dd = e0[0] * d[0] + e0[1] * d[1] + e0[2] * d[2];
+    const float e = e1[0] * d[0] + e1[1] * d[1] + e1[2] * d[2];
+    const float f = d[0] * d[0] + d[1] * d[1] + d[2] * d[2];
+    const float det = std::fabs(a * c - b * b);
+    float s = b * e - c * dd;
+    float t = b * dd - a * e;
+    const auto clamp01 = [](float v) { return v < 0.0f ? 0.0f : (v > 1.0f ? 1.0f : v); };
+    if (s + t <= det) {
+        if (s < 0.0f) {
+            if (t < 0.0f) {   // region 4
+                if (dd < 0.0f) { t = 0.0f; s = (-dd >= a) ? 1.0f : -dd / a; }
+                else { s = 0.0f; t = (e >= 0.0f) ? 0.0f : ((-e >= c) ? 1.0f : -e / c); }
+            } else {          // region 3
+                s = 0.0f; t = (e >= 0.0f) ? 0.0f : ((-e >= c) ? 1.0f : -e / c);
+            }
+        } else if (t < 0.0f) {   // region 5
+            t = 0.0f; s = (dd >= 0.0f) ? 0.0f : ((-dd >= a) ? 1.0f : -dd / a);
+        } else {                 // region 0
+            const float inv = det > 0.0f ? 1.0f / det : 0.0f;
+            s *= inv; t *= inv;
+        }
+    } else {
+        if (s < 0.0f) {          // region 2
+            const float tmp0 = b + dd, tmp1 = c + e;
+            if (tmp1 > tmp0) {
+                const float numer = tmp1 - tmp0, denom = a - 2.0f * b + c;
+                s = numer >= denom ? 1.0f : numer / denom; t = 1.0f - s;
+            } else {
+                s = 0.0f; t = tmp1 <= 0.0f ? 1.0f : (e >= 0.0f ? 0.0f : -e / c);
+            }
+        } else if (t < 0.0f) {   // region 6
+            const float tmp0 = b + e, tmp1 = a + dd;
+            if (tmp1 > tmp0) {
+                const float numer = tmp1 - tmp0, denom = a - 2.0f * b + c;
+                t = numer >= denom ? 1.0f : numer / denom; s = 1.0f - t;
+            } else {
+                t = 0.0f; s = tmp1 <= 0.0f ? 1.0f : (dd >= 0.0f ? 0.0f : -dd / a);
+            }
+        } else {                 // region 1
+            const float numer = c + e - b - dd;
+            if (numer <= 0.0f) { s = 0.0f; }
+            else { const float denom = a - 2.0f * b + c; s = numer >= denom ? 1.0f : numer / denom; }
+            t = 1.0f - s;
+        }
+    }
+    s = clamp01(s); t = clamp01(t);
+    float q[3];
+    for (int k = 0; k < 3; ++k) q[k] = v0[k] + s * e0[k] + t * e1[k] - p[k];
+    static_cast<void>(f);
+    return q[0] * q[0] + q[1] * q[1] + q[2] * q[2];
+}
+}  // namespace
+
+void GameGunneryHost::Impl::apply_segment_damage_0092d1f0(std::size_t unit, int index,
+    float damage) {
+    if (unit >= damage_control.size() || unit >= unit_state.size()) return;
+    DamageControl& dc = damage_control[unit];
+    if (!dc.segments_built) {
+        // 00937C90 at 009383C0..0093841B: every slot starts at class HP (+48h)
+        // over the number of fizika_NN nodes that resolved.
+        dc.segments_built = true;
+        const ShipModelSlots* model = ship_mesh_of(unit);
+        const int count = model != nullptr ? model->fizika_node_count : 0;
+        for (int k = 0; k < 20; ++k) {
+            dc.segment_present[k] = model != nullptr && model->fizika_node[k];
+            dc.segment_health[k] = count > 0 ? unit_state[unit].max_health
+                / static_cast<float>(count) : 0.0f;
+        }
+    }
+    ++seg_hits;
+    // 0092D210: the gate byte; then the bounds check (a fault in the image).
+    if (index < 0 || index >= 20 || !dc.segment_present[index]) {
+        ++seg_gate_refused;
+        return;
+    }
+    float& h = dc.segment_health[index];
+    if (!(h > -10000.0f)) return;   // 0092D23x against 00D19620
+    const float before = h;
+    h -= damage;                     // 0092D275
+    seg_damage += before - (h > 0.0f ? h : 0.0f);
+    if (h <= 0.0f) {                 // against 00D7A218
+        h = -10000.0f;
+        ++seg_destroyed;
+        dc.destroyed_segments.emplace_back(index, clock_seconds);
+        log.notef("gunnery: hull segment %d of %s destroyed t=%.2f (0092D1F0 -> 99h -> "
+            "0080E440)", index, unit_state[unit].row.name.c_str(),
+            static_cast<double>(clock_seconds));
+        record("Parts::detach_part_message_99h_0092ced0", 0x0092ced0u);
+    }
+}
+
+std::vector<int> GameGunneryHost::destroyed_hull_segments(std::size_t unit_index) const {
+    std::vector<int> out;
+    const Impl& host = *impl_;
+    if (unit_index >= host.damage_control.size()) return out;
+    for (const auto& d : host.damage_control[unit_index].destroyed_segments) {
+        out.push_back(d.first);
+    }
+    return out;
+}
+
 void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
     std::size_t gun_row, const float point[3], const float direction[3]) {
     if (gun_row >= guns.size() || shooter >= unit_state.size()) return;
@@ -5726,6 +5957,48 @@ void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
         entry.kind = 0;
         entry.part_index = 0;
         entry.distance = distance;
+        std::vector<bsp::HitPartEntry> element_entries;
+        const ShipModelSlots* model = kBlastElementEntriesBound ? ship_mesh_of(i) : nullptr;
+        if (model != nullptr && !model->element_ranges.empty()) {
+            // 00723F80: the centre into the node's space (the pose rows here),
+            // then 00723B70 per element: the root-box reject, the closest
+            // triangle, and an entry when it lies within the radius.
+            float local[3];
+            for (int a = 0; a < 3; ++a) local[a] = dot3(rel, axes[a]);
+            const float r2 = weapon->blast_range * weapon->blast_range;
+            for (const auto& range : model->element_ranges) {
+                if (range.count == 0) continue;
+                float box2 = 0.0f;
+                for (int a = 0; a < 3; ++a) {
+                    const float d = local[a] < range.lo[a] ? range.lo[a] - local[a]
+                        : (local[a] > range.hi[a] ? local[a] - range.hi[a] : 0.0f);
+                    box2 += d * d;
+                }
+                if (box2 > r2) continue;   // 00723B98 FCOMIP / JBE
+                float best2 = r2;
+                bool any = false;
+                for (std::size_t t = range.first; t < range.first + range.count; ++t) {
+                    const float d2 = point_triangle_distance2_0085df60(local,
+                        model->element_tris[t * 3].data(), model->element_tris[t * 3 + 1].data(),
+                        model->element_tris[t * 3 + 2].data());
+                    if (d2 < best2) { best2 = d2; any = true; }   // 00723CFB strict
+                }
+                if (!any) continue;
+                bsp::HitPartEntry e;
+                e.kind = range.kind;
+                e.part_index = range.index;
+                e.distance = std::sqrt(best2);
+                element_entries.push_back(e);
+                ++be_entries;
+                if (e.kind == bsp::kShipHitSegmentKindBreakable) ++be_entries_fizika;
+                if (e.kind == bsp::kUnitHitPartEntryAlternateArmour) ++be_entries_underwater;
+            }
+            ++be_blast_records;
+            if (element_entries.empty()) {
+                ++be_blast_no_entry;
+                continue;   // 0070F090 reports no overlap: no record for this unit
+            }
+        }
         bsp::HitRecord blast;
         blast.hull_damage_base = 0.0f;  // the burst's damage is +28h, see above
         blast.part_damage_base = damage;
@@ -5735,15 +6008,26 @@ void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
         blast.hull_segment = kDirectHitHullSegment;
         blast.weapon_scale = 1.0f;
         blast.owner_modifier = 1.0f;
-        blast.part_hits = &entry;
-        blast.part_hit_count = 1;
+        if (!element_entries.empty()) {
+            blast.part_hits = element_entries.data();
+            blast.part_hit_count = static_cast<int>(element_entries.size());
+        } else {
+            blast.part_hits = &entry;
+            blast.part_hit_count = 1;
+        }
 
         const float before = state.health;
         apply_hit(shooter, gun_row, i, point, direction, &blast);
-        log.notef("  impact blast bullet=%d on %s dist=%.1f base=%.1f range=%.1f "
-            "armour=%.1f took=%.1f health=%.1f",
+        if (!element_entries.empty()) be_damage_element += before - unit_state[i].health;
+        float nearest = distance;
+        for (const bsp::HitPartEntry& e : element_entries) {
+            if (&e == &element_entries.front() || e.distance < nearest) nearest = e.distance;
+        }
+        log.notef("  impact blast bullet=%d on %s dist=%.1f entries=%zu nearest=%.1f base=%.1f "
+            "range=%.1f armour=%.1f took=%.1f health=%.1f",
             gun.bullet_class,
             unit_name_or_index(i + 1).c_str(), static_cast<double>(distance),
+            element_entries.size(), static_cast<double>(nearest),
             static_cast<double>(damage),
             static_cast<double>(weapon->blast_range),
             static_cast<double>(state.armour),
@@ -7264,13 +7548,20 @@ void GameGunneryHost::report() {
             "pending_over_health=%llu water_damage=%.0f fire_damage=%.0f repaired=%.0f "
             "dc_deaths=%llu ships_with_damage_control=%zu failure_bound=%d rolls=%llu "
             "resolved=%llu started=%llu explosions=%llu explosion_damage=%.0f fires=%llu "
-            "jams=%llu retired=%llu failure_deaths=%llu",
+            "jams=%llu retired=%llu failure_deaths=%llu element_bound=%d blast_records=%llu "
+            "blast_no_entry=%llu entries=%llu entries_fizika=%llu entries_underwater=%llu "
+            "element_blast_damage=%.0f segment_bound=%d segment_hits=%llu segment_gate=%llu "
+            "segment_damage=%.0f segments_destroyed=%llu",
             kHullElementSegmentBound ? 1 : 0, kShipDamageControlTickBound ? 1 : 0,
             kShipHullRepairBound ? 1 : 0, host.element_hits, host.element_hits_fizika,
             host.dc_water_adds, host.dc_fire_adds, host.dc_doomed_notes, water, fire, repaired,
             host.dc_deaths, enabled, kComponentFailureBound ? 1 : 0, host.cf_rolls,
             host.cf_resolved, host.cf_started, host.cf_explosions, host.cf_explosion_damage,
-            host.cf_fires, host.cf_jams, host.cf_retired, host.cf_deaths);
+            host.cf_fires, host.cf_jams, host.cf_retired, host.cf_deaths,
+            kBlastElementEntriesBound ? 1 : 0, host.be_blast_records, host.be_blast_no_entry,
+            host.be_entries, host.be_entries_fizika, host.be_entries_underwater,
+            host.be_damage_element, kHullSegmentHealthBound ? 1 : 0, host.seg_hits,
+            host.seg_gate_refused, host.seg_damage, host.seg_destroyed);
     }
 
     std::array<unsigned long long, bsp::kUnitGunneryCategoryCount> cat_guns{};
