@@ -945,6 +945,15 @@ struct GameUnitSlot {
     int rack_single_fired{0};          // racks whose +498h is set
     int rack_device_walks{0};          // 007CEB00 walks (cleanup arm only)
     int rack_device_walks_busy{0};
+    // Packet cc9_release_issue_stage. The rack's own fields (serializer 006E4A60
+    // names them): +484h `ammo`, +494h `toRepeatTime`, +498h `dropBombs`. The host
+    // keeps one rack state per aircraft (its single racks taken together).
+    bool rack_dropping{false};         // dropBombs +498h
+    float rack_to_repeat{0.0f};        // toRepeatTime +494h
+    int rack_ammo{-1};                 // ammo +484h, -1 until the census
+    int rack_drops{0};                 // 006E4D50 drops (host spawns)
+    int rack_gate_refused{0};          // 007CC8E0 / 007C7600 said no
+    int rack_requests_deferred{0};     // 007BBBA0 requests whose spawn waits
     int torpedo_orders_issued{0};
     int torpedo_orders_issue_ticks{0};
     int torpedo_peak_release_orders_c58{0};
@@ -1767,7 +1776,11 @@ struct GameUnitsHost::Impl {
             // that a bomb platform is a Gun subclass (00730B80 calls
             // BSP_Gun_Construct at 00730B88), so the round is handed to the gun
             // spawn 0072F830 the gunnery host already implements.
-            if (gunnery != nullptr) {
+            if constexpr (kReleaseIssueStageBound) {
+                // The spawn waits for the rack (run_rack_tick_006e56f0).
+                ++slot.rack_requests_deferred;
+                record("Plane::release_spawn_deferred_to_rack", 0x006e4d50u);
+            } else if (gunnery != nullptr) {
                 const std::size_t index = index_of_slot(slot);
                 // Packet cc9_plane_death_modes: a dead aircraft releases
                 // nothing. 007D1314 sets unit+C3Ah when the death message is
@@ -3170,6 +3183,15 @@ struct GameUnitsHost::Impl {
     // ON since the pair (identical rows; the walk is not reached here). OFF: the
     // walk stays the record Plane::device_busy_1fc and nothing is busy.
     static constexpr bool kPlaneDeviceWalkBound = true;
+    // Packet cc9_release_issue_stage, docs/RELEASE_ISSUE_STAGE.md: a torpedo leaves
+    // the rack, not the request. 007BBBA0 only opens the bay and counts unit+C20h;
+    // the stage's issue 007C0D90 arms the first idle rack (006E3550: toRepeatTime
+    // += delay, dropBombs = 1); the rack tick 006E56F0 drops through 007CC8E0 /
+    // 007C7600 and the fire message into 006E4D50, and clears dropBombs once its
+    // ammo is spent. OFF: the torpedo spawns at the request (the old stand-in).
+    // Torpedoes only; the dive bomber's bombs keep their spawn at the request.
+    // ON since the E2 9000 / USN04 4500 pairs (docs/RELEASE_ISSUE_STAGE.md).
+    static constexpr bool kReleaseIssueStageBound = true;
     // Packet cc9_plane_death_modes: 007CA8A0's death mode, 007CAF10's dead-step
     // terms, the kill that takes the aircraft out of the world, and the release
     // refusal of a dead aircraft (007CEA1C). docs/PLANE_DEATH_MODES.md.
@@ -8056,6 +8078,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             owner_.log.unimplemented(
                                 "Plane::droppable_device_walk", "007c0d90");
                             const bsp::OrdnanceKindSet set{slot_.ordnance_mask};
+                            if constexpr (GameUnitsHost::Impl::kReleaseIssueStageBound) {
+                                // 007C0DE3-007C0DEF: the first rack holding 2Ah that
+                                // is not busy. The host's rack census and ammo.
+                                if (slot_.rack_ammo < 0) {
+                                    slot_.rack_ammo = slot_.rack_single_count;
+                                }
+                                return bsp::ordnance_has_torpedo_2bh(set) &&
+                                       slot_.rack_ammo > 0 && !slot_.rack_dropping;
+                            }
                             return bsp::ordnance_has_torpedo_2bh(set);
                         }
                         void set_release_pending_c25(bool value) override {
@@ -13253,7 +13284,71 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                     // abandons the clear. 006E3CD0 answers +498h, 006E4360 false.
                     bool plane_device_walk_007ceb00() {
                         plane_rack_census();
-                        return unit_.rack_single_fired > 0;
+                        // Correction (packet cc9_release_issue_stage): +498h is
+                        // cleared by the rack tick at 006E58E1 once the ammo is
+                        // spent, so busy means "dropping", not "has fired".
+                        return unit_.rack_dropping;
+                    }
+
+                    // 006E56F0, the rack's fixed-step tick (ESI = rack+310h, so
+                    // +184h is toRepeatTime and +188h dropBombs). Run after the
+                    // plane's stage in the same fixed step (order between the
+                    // rack's tick and the plane's is not read).
+                    void run_rack_tick_006e56f0(float dt) {
+                        if (!unit_.rack_census_done || unit_.rack_single_count <= 0) return;
+                        // 006E5718-006E5748: the owner must be live; a dead
+                        // aircraft's rack does nothing.
+                        if (GameUnitsHost::Impl::kPlaneDeathModesBound && unit_.plane_death_c3a) return;
+                        // 006E577F-006E579E: counted down while above -1.0.
+                        if (unit_.rack_to_repeat > -1.0f) unit_.rack_to_repeat -= dt;
+                        if (!unit_.rack_dropping || !(dt > 0.0f) ||
+                            !(unit_.rack_to_repeat < 0.0f)) return;  // 006E57D4-006E57FA
+                        // 006E5816 CanFire(1) = 00729A80 + ordnance 2Ah (006E3460).
+                        // SUBSTITUTION, labelled: the gun gates of 00729A80 are
+                        // not modelled for a rack; a rack can fire while it has
+                        // ammo.
+                        owner_.record("Rack::can_fire_00729a80", 0x00729a80u);
+                        if (unit_.rack_ammo <= 0) {
+                            unit_.rack_dropping = false;  // 006E58D8-006E58E1
+                            return;
+                        }
+                        // 006E5837-006E585F -> 007CC8E0: not a level bomber (10h)
+                        // here, so 007C7600. Pitch below DiveBombPitchAngleMin
+                        // (+564h) passes at 007C76AB; above Max (+568h) refuses.
+                        // The roll curve between them (00419010, 007C76B1-007C7734)
+                        // is not bound: a record, and the drop is allowed.
+                        float pmin = 1.0471976f, pmax = 1.5707964f;
+                        if (owner_.lua.plane_globals_loaded()) {
+                            const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
+                            pmin = g.pilot_general_dive_bomb_pitch_angle_min;
+                            pmax = g.pilot_general_dive_bomb_pitch_angle_max;
+                        }
+                        const float pitch = unit_.plane_pitch_angle_c64;
+                        if (pitch > pmax) {
+                            ++unit_.rack_gate_refused;  // 007C7690
+                            return;
+                        }
+                        if (!(pmin > pitch)) {
+                            owner_.record("Plane::drop_roll_curve_007c76b1", 0x007c76b1u);
+                        }
+                        // 006E588B-006E58A5: the fire message 0ADh -> 0072D860 ->
+                        // the rack's 006E4C10 -> 00727E30 -> 006E4D50, the drop. The
+                        // host's spawn stands in for 006E4D50, as at the request.
+                        owner_.done("Rack::tick_006e56f0", 0x006e56f0u);
+                        if (owner_.gunnery != nullptr) {
+                            const std::size_t index = owner_.index_of_slot(unit_);
+                            if (index < owner_.slots.size() &&
+                                owner_.gunnery->release_ordnance_drop(index)) {
+                                ++unit_.torpedo_drops_spawned;
+                            }
+                        }
+                        --unit_.rack_ammo;
+                        ++unit_.rack_drops;
+                        // 006E58AA-006E58B7: toRepeatTime = descriptor+E0h. The
+                        // descriptor is unread; with one round per rack it does
+                        // not matter before the ammo test clears dropBombs.
+                        unit_.rack_to_repeat = 0.0f;
+                        owner_.record("Rack::repeat_time_descriptor_e0", 0x006e58aau);
                     }
 
                     void run_release_order_issue_007c0d90() {
@@ -13272,6 +13367,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             if (unit_.rack_single_fired < unit_.rack_single_count) {
                                 ++unit_.rack_single_fired;
                             }
+                            // 006E3550 via 007C0E17: toRepeatTime += delay (0 for
+                            // a single torpedo), dropBombs = 1.
+                            if (unit_.rack_single_count > 0) unit_.rack_dropping = true;
                         }
                         ++unit_.torpedo_orders_issue_ticks;
                         unit_.torpedo_orders_issued += r.units_raised;
@@ -15724,6 +15822,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // itself. So the stage runs on every fixed step of
                         // every arm, which is what this position models.
                         run_release_issue_stage_007ce9fd(fixed_step_seconds_);
+                        if constexpr (GameUnitsHost::Impl::kReleaseIssueStageBound) {
+                            run_rack_tick_006e56f0(fixed_step_seconds_);
+                        }
                     }
                     bool airborne_time_frozen() override {
                         return unit_.plane_airborne_frozen_9e0;
@@ -18108,6 +18209,13 @@ void GameUnitsHost::report() {
                             slot->rack_single_fired, slot->rack_device_walks,
                             slot->rack_device_walks_busy,
                             slot->torpedo_release_pending_c25 ? 1 : 0);
+                        if constexpr (GameUnitsHost::Impl::kReleaseIssueStageBound) {
+                            host.log.notef("  torpedo %-12s rack 006E56F0: deferred=%d drops=%d "
+                                "ammo=%d dropping=%d gate_refused=%d", slot->row.name.c_str(),
+                                slot->rack_requests_deferred, slot->rack_drops,
+                                slot->rack_ammo, slot->rack_dropping ? 1 : 0,
+                                slot->rack_gate_refused);
+                        }
                     }
                     host.log.notef("  torpedo %-12s issue gate 007EEF40: "
                         "ctl+390h=%.4f ctl+374h=%.4f open=%d",

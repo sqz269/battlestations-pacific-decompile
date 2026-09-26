@@ -155,3 +155,21 @@ Until the bay path `007BBBA0` -> unit+C20h feeds the stage, the walk is correct 
 stand-in's constant "not busy", and the ranking's top record, with the image's answer. Its
 behaviour, a torpedo bomber's cleanup held off for good after one drop, is untested here; it
 becomes testable once the release-issue stage issues.
+
+## Correction, 2026-09-26 (packet cc9_release_issue_stage)
+
+`dropBombs` (+498h; the serializer `006E4A60` names it) is **not** cleared only by the
+constructor. The rack's tick `006E56F0` runs with ESI = rack+310h and clears it as
+`[ESI+188h]` in two places:
+- at `006E5880`, a non-plane owner's drop;
+- at `006E58E1`, when `CanFire(1)` fails with the ammo (+484h) spent or +3B8h set.
+
+The byte scan above looked for disp32 498h and could not see stores through the sub-object
+base. So "busy" is "still dropping", and a single-rack plane's cleanup is held off only until
+the tick after its drop. The claims "until a re-equip" and "for good after one drop" in the
+sections above are wrong.
+
+The host's walk now answers the rack's `dropping` state (`src/game_hosts_units.cpp`,
+`plane_device_walk_007ceb00`), which `kReleaseIssueStageBound` drives; see
+`docs/RELEASE_ISSUE_STAGE.md`. With that switch OFF no rack is ever dropping, which is also
+what the device-walk pair measured.

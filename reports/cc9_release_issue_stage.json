@@ -1,0 +1,47 @@
+{
+  "packet": "cc9_release_issue_stage",
+  "doc": "docs/RELEASE_ISSUE_STAGE.md",
+  "calls": [
+    {"address": "007CEA8D", "native": "007C0D90", "function": "007CE040", "note": "the stage spends one unit+C20h request into the issue"},
+    {"address": "006E5713", "native": "0072D130", "function": "006E56F0", "note": "rack tick: base gun fixed-step tick"},
+    {"address": "006E585F", "native": "007CC8E0", "function": "006E56F0", "note": "rack tick: the plane owner's drop attitude gate"},
+    {"address": "006E5891", "native": "006E3940", "function": "006E56F0", "note": "rack tick: builds the fire message 0ADh"},
+    {"address": "006E58A5", "native": "0077C2A0", "function": "006E56F0", "note": "rack tick: routes the fire message"},
+    {"address": "007CC99F", "native": "007C7600", "function": "007CC8E0", "note": "not a level bomber: the dive drop gate"}
+  ],
+  "coverage": [
+    {"routine": "006E56F0", "coverage": "complete for the drop arm; the paratrooper walk 006E574F-006E577D and owner vtable[1E4h]/[204h] (006E57A4-006E57D2) are not bound"},
+    {"routine": "007C7600", "coverage": "partial: the pitch limits bound; the roll curve 007C76B1-007C7734, the bay-door test and the rocket arm are not"},
+    {"routine": "007CC8E0", "coverage": "partial: the non-level-bomber arm to 007C7600 bound; the level bomber arm 007CC8F4-007CC98E not"},
+    {"routine": "007C0D90", "coverage": "partial: first idle rack, fire slot, unit+C25h; the level-bomber stagger and 007EEF30 tail are the host's existing binding"},
+    {"routine": "006E4D50", "coverage": "not reconstructed: the host's spawn stands in"}
+  ],
+  "substitutions": [
+    {"what": "rack CanFire 00729A80", "is": "the rack has ammo", "evidence": "gun gates for racks unread"},
+    {"what": "ammo", "is": "one round per single rack", "evidence": "DeviceClass ammo not read"},
+    {"what": "the drop 006E4D50 and the fire-message route", "is": "the gunnery host's torpedo spawn", "evidence": "as at the request before"},
+    {"what": "toRepeatTime reload, descriptor +E0h", "is": "0", "evidence": "descriptor unread; one round per rack"},
+    {"what": "rack tick order", "is": "after the plane's stage in the same fixed step", "evidence": "fan-out order not read"}
+  ],
+  "corrections": [
+    {"was": "dropBombs +498h is cleared only by the constructor (docs/PLANE_DEVICE_WALK.md)", "is": "the rack tick clears it at 006E5880 and 006E58E1 through [ESI+188h], ESI = rack+310h", "evidence": "006E56F0 listing"}
+  ],
+  "switches": [
+    {"name": "GameUnitsHost::Impl::kReleaseIssueStageBound", "state": "ON",
+     "pair": "local/RS_OFF_9000.log vs local/RS_ON_9000.log, local/RS_OFF_4500.log vs local/RS_ON_4500.log"}
+  ],
+  "no_ghidra_function": [
+    {"start": "006E3460", "end_inclusive": "006E3488", "evidence": "rack CanFire, slot +1D0h; RET 4 at 006E3486; INT3 on both sides"},
+    {"start": "006E4C10", "end_inclusive": "006E4D29", "evidence": "rack FireIfReady, slot +1DCh; RET at 006E4D29; INT3 on both sides"},
+    {"start": "006E4D50", "end_inclusive": "006E56EF", "evidence": "rack drop, slot +1D8h; RET 0Ch at 006E56ED; INT3 before; 006E56F0 follows at once"}
+  ],
+  "ledger_names_added": [
+    {"address": "006E56F0", "name": "BSP_MBombPlatform_Tick"},
+    {"address": "006E4D50", "name": "BSP_MBombPlatform_Drop"},
+    {"address": "006E3460", "name": "BSP_MBombPlatform_CanFire"},
+    {"address": "006E4C10", "name": "BSP_MBombPlatform_FireIfReady"},
+    {"address": "006E4A60", "name": "BSP_MBombPlatform_Serialize"},
+    {"address": "007CC8E0", "name": "BSP_Plane_DropAttitudeGate"},
+    {"address": "007C7600", "name": "BSP_Plane_DiveDropAttitudeGate"}
+  ]
+}
