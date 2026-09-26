@@ -3000,6 +3000,10 @@ struct GameUnitsHost::Impl {
     // 009A7650 the null that 007F3970 leaves in +3D0h[0]. OFF: the host keeps
     // the last target, dead or not.
     static constexpr bool kDogfightEmptySquadronClearBound = true;
+    // Packet cc9_taskless_plan_arms (docs/TASKLESS_PLAN_ARMS.md): 0099D300 runs
+    // its arms for a plane with no commanded target. OFF: the host returns
+    // before any arm, which froze a task-less Zero after an avoidance repair.
+    static constexpr bool kPlannerTasklessArmsBound = true;
     // Packet cc9_planner_heading_writes (docs/PLANNER_HEADING_WRITES.md): the
     // torpedo states' own heading writes the host never reproduced. The moveto
     // tick 009C18C0 steers at its +2Ch target through 009F9E40 (009C1B23,
@@ -14358,27 +14362,38 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // (009F9FC0 wrote it this think); 0099B450 reseeds 1.
                         const bool yaw_mode_zero = unit_.gl_yaw_mode_2d4_zero;
                         unit_.gl_yaw_mode_2d4_zero = false;
-                        if (unit_.command_target_plus_one == 0) return false;
-                        const std::size_t target_index =
-                            unit_.command_target_plus_one - 1;
-                        if (target_index >= owner_.slots.size()) return false;
-
-                        const float* const target_pos =
-                            owner_.slots[target_index]->motion.position;
+                        // 0099D300 has no command-target test (0099D309-0099D3C5
+                        // is the neutral-plan case, then every arm runs). The
+                        // host's early return is its own guard, kept when
+                        // kPlannerTasklessArmsBound is OFF. docs/TASKLESS_PLAN_ARMS.md.
+                        const float* target_pos = nullptr;
+                        if (unit_.command_target_plus_one != 0 &&
+                            unit_.command_target_plus_one - 1 < owner_.slots.size()) {
+                            target_pos = owner_.slots[unit_.command_target_plus_one - 1]
+                                             ->motion.position;
+                        }
+                        if constexpr (!GameUnitsHost::Impl::kPlannerTasklessArmsBound) {
+                            if (target_pos == nullptr) return false;
+                        }
                         // 009AC40B writes the bearing into plan+2C0h with mode
                         // 2 at 009AC41B, and a bot state's tick may overwrite
                         // the same pair - the torpedo aim tick does at 009D1D16.
                         // 0099DEB8 reads plan+2C0h, never the raw bearing, so
                         // the state's heading wins whenever it has written one.
-                        const float arm_heading =
-                            bsp::plane_bearing_to_target_009ac190(
-                                unit_.motion.position, target_pos);
+                        // Without a target, 0099DEB8 still reads plan+2C0h, which
+                        // holds whatever it last held; never written, the current
+                        // heading stands in (a zero error).
+                        const float arm_heading = target_pos != nullptr
+                            ? bsp::plane_bearing_to_target_009ac190(
+                                  unit_.motion.position, target_pos)
+                            : (unit_.plan_heading_2c0_written ? unit_.plan_heading_2c0
+                                                              : unit_.plane_heading_c6c);
                         const float desired_heading =
                             (unit_.plan_heading_2c0_written &&
                              unit_.plan_heading_mode_2cc == 2)
                                 ? unit_.plan_heading_2c0
                                 : arm_heading;
-                        {
+                        if (target_pos != nullptr) {
                             const double dx = target_pos[0] - unit_.motion.position[0];
                             const double dy = target_pos[1] - unit_.motion.position[1];
                             const double dz = target_pos[2] - unit_.motion.position[2];
