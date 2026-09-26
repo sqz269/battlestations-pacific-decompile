@@ -1,0 +1,46 @@
+{
+ "packet": "cc9_minimap_camera_getters",
+ "branch": "agent/cc9-platform2",
+ "doc": "docs/HUD_MINIMAP_CAMERA.md",
+ "switches": {
+  "kHudMinimapDirectionWedgeBound": true
+ },
+ "functions": [
+  {
+   "address": "0042BA40",
+   "status": "reconstructed inline: -atan2(unit+ECh, unit+F4h), ship vtable 00CFC3D0 +C8h"
+  },
+  {
+   "address": "005C0F20",
+   "status": "wedge site 005C1851..005C187F bound"
+  }
+ ],
+ "host_steps": [
+  {
+   "function": "005C0F20",
+   "address": "005C154E",
+   "native": "004B4B00",
+   "host": "camera_unit_004b4b00 (kHudCameraUnitBound)"
+  }
+ ],
+ "no_ghidra_function": [
+  {
+   "start": "0042BA40",
+   "end_inclusive": "0042BA66",
+   "role": "unit vtable +C8h, negated world yaw from the forward row; INT3 follows"
+  }
+ ],
+ "pairs": [
+  {
+   "switch": "kHudMinimapDirectionWedgeBound",
+   "off": "local/wd_off_usn04.log",
+   "on": "local/wd_on_usn04.log",
+   "unimplemented_total": [
+    2377592,
+    2368432
+   ],
+   "summary_lines_identical": true,
+   "verdict": "ON"
+  }
+ ]
+}
