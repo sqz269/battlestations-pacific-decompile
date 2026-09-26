@@ -1,0 +1,33 @@
+{
+ "packet": "cc9_hud_camera_team_lists",
+ "branch": "agent/cc9-platform2",
+ "doc": "docs/HUD_CAMERA_TEAM_LISTS.md",
+ "switches": {
+  "kHudCameraUnitBound": true
+ },
+ "functions": [
+  {
+   "address": "004B4B00",
+   "status": "bound (camera_unit_004b4b00); kind-18h arm a record"
+  },
+  {
+   "address": "004C3CB0",
+   "status": "analyzed: walks recon lists own/enemy/unknown; left recorded (gunnery-owned recon lists)"
+  }
+ ],
+ "host_steps": [],
+ "no_ghidra_function": [],
+ "pairs": [
+  {
+   "switch": "kHudCameraUnitBound",
+   "off": "local/cu_off_usn04.log",
+   "on": "local/cu_on_usn04.log",
+   "unimplemented_total": [
+    2399232,
+    2380914
+   ],
+   "summary_lines_identical": true,
+   "verdict": "ON"
+  }
+ ]
+}
