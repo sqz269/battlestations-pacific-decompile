@@ -1,0 +1,48 @@
+{
+  "packet": "cc10_stock_xlive_dependency_readiness",
+  "primary_verification": {
+    "archive_sha256": "64ea35ca662dc96edc221b9f2ecd1459331a72ff85d5e41f389127bc4bdda81b",
+    "indexed_rows_verified": 50,
+    "archive_members": 51,
+    "source_API_pins_equal_primary": 8,
+    "stock_candidate": {
+      "path": "C:/Windows/SysWOW64/xlive.dll",
+      "size": 14303392,
+      "sha256": "79da26ab6b2dc25936c3354087de0ba41da1a8b62924972e9100c29b95d34385"
+    },
+    "msidcrl_blocker": {
+      "path": "C:/Windows/SysWOW64/msidcrl40.dll",
+      "size": 15872,
+      "sha256": "f86c15642ddbe787d015a8e801835bed54e1a30d404d9d8fa6042a6794e27427"
+    },
+    "required_msidcrl_ordinal": 43,
+    "observed_EAT_slot_value": 0,
+    "original_game_xlive_imports_present": 106,
+    "stock_5030_present_nonforwarded": true,
+    "direct_ms_id_imports": 17,
+    "wlid_forwarded_names_present": 16,
+    "runtime_attempted": false,
+    "load_ready": false,
+    "limits": [
+      "Direct-file PE/export/version/publisher-policy observations only; no candidate load, SxS activation or SDK initialization",
+      "Forwarded/transitive/API-set resolution remains unproven; bounded installed-location search is not exhaustive",
+      "Existing explicit absolute DLL/dependency source configuration requires no change; no fallback or dependency provision performed",
+      "No declaration cache/count/CRT teardown, native ABI or gameplay success follows from readiness"
+    ]
+  },
+  "readiness": "NOT load-ready with inspected installed dependency set",
+  "source_changes": false,
+  "runtime_attempted": false,
+  "limits": [
+    "Direct-file PE/export/version/publisher-policy observations only; no candidate load, SxS activation or SDK initialization",
+    "Forwarded/transitive/API-set resolution remains unproven; bounded installed-location search is not exhaustive",
+    "Existing explicit absolute DLL/dependency source configuration requires no change; no fallback or dependency provision performed",
+    "No declaration cache/count/CRT teardown, native ABI or gameplay success follows from readiness"
+  ],
+  "archive": {
+    "path": "local/cc10-platform-evidence/stock-xlive-dependency-readiness.zip",
+    "sha256": "46d16a2f3b85cc2c3b4259db1f0b7b8d25c8068a65a77680b68a469e838d3311",
+    "files": 4,
+    "valid": true
+  }
+}

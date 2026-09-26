@@ -1,0 +1,68 @@
+{
+  "packet": "cc10_material_effect_resolver_integration",
+  "worker_commit": "f940331ac2bb50b86ac276815acbe93d9312ea6d",
+  "integration": "e83e4db4e0199bf0c391d710e0ce5cc73b1d8536",
+  "worker_report": "reports/native_material_effect_resolver_binding_cc10.json",
+  "primary_verification": {
+    "worker_commit": "f940331ac2bb50b86ac276815acbe93d9312ea6d",
+    "archive_sha256": "1387052aea8c4dd6ede48c06adefedef93eb470d186c3a2e22c7a62546415f78",
+    "archive_members": 2169,
+    "indexed_rows_verified": 2168,
+    "build_source_inputs_verified": 18,
+    "unchanged_sources_compared_root": 10,
+    "coff_sections_verified": 462,
+    "exact_library_members_verified": 5,
+    "linked_sections_verified": 61,
+    "unchanged_Name_helper_sections_and_relocations": 4,
+    "native_ranges_verified": 3,
+    "compiled_order_byte_checks": 18,
+    "runtime_parent": 54252,
+    "runtime_child": 99648,
+    "runtime_exit": 0,
+    "exact_handoff_bands": 19,
+    "review": [
+      "Complete four-production-file diff and full final180linefixture/document reviewed",
+      "Fresh per-load acquired child attached before current-manager capture; same actual header and shared domains; no replay/fallback",
+      "Provider-only true/false runtime and source-only injected throw; failed frame retained and caller cleanup consumed once",
+      "Binder/retained overload/B2/B4 remain compile-only; existing Name and B46950 retention order preserved",
+      "Initial failed admission preserved without refused-band/occupant attribution; controlled second attempt reserves exact free19bands before loader/CRT",
+      "ExitProcess retains backing; no aggregate teardown/native EH or game proof"
+    ],
+    "limits": [
+      "binder/retained overload/B2EBB0/B4E470 runtime",
+      "native EH/SEH",
+      "full aggregate teardown",
+      "cold effect activation",
+      "source0/W original preimage",
+      "original game/application launch",
+      "binary replacement"
+    ]
+  },
+  "validation": {
+    "primary_strict_win32_ctests": 3,
+    "worker_strict_win32_ctests": 3,
+    "call_rows_passed": 1,
+    "existing_complete_bodies_reused": true,
+    "new_composition_window_bytes": 16,
+    "runtime": "provider call-record only: true/false and source-only injected failure",
+    "binder_retained_overload_loader_runtime": false,
+    "native_EH": false,
+    "full_teardown": false,
+    "game_validated": false
+  },
+  "limits": [
+    "binder/retained overload/B2EBB0/B4E470 runtime",
+    "native EH/SEH",
+    "full aggregate teardown",
+    "cold effect activation",
+    "source0/W original preimage",
+    "original game/application launch",
+    "binary replacement"
+  ],
+  "archive": {
+    "path": "local/cc10-platform-evidence/material-effect-resolver-binding.zip",
+    "sha256": "d3b58c9bed8f5b9bff9f2ce9093d821464367afb83ee7374cd52a5ec6ad0360d",
+    "files": 5,
+    "valid": true
+  }
+}
