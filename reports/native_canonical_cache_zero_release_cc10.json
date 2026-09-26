@@ -1,0 +1,144 @@
+{
+  "packet": "cc10_canonical_cache_zero_release",
+  "baseline": "23238ecba3c8a3248699cc168bd113ef2dfc8334",
+  "status": "canonical_current_IAT_nonzero_and_genuine_zero_retirement_source_fixture_passed",
+  "production_files": [
+    "include/bsp/native_render_context.hpp",
+    "src/native_render_context.cpp",
+    "include/bsp/native_particle_clock_sink_release.hpp",
+    "src/native_particle_clock_sink_release.cpp",
+    "include/bsp/native_particle_clock_shutdown.hpp",
+    "src/native_particle_clock_shutdown.cpp"
+  ],
+  "owned_addresses": [
+    "004ddb40",
+    "004dda40",
+    "004de290",
+    "00b1b680"
+  ],
+  "new_native_reconstruction_bytes": 0,
+  "new_native_functions": 0,
+  "tracked_tests_added": 0,
+  "source_ABI": {
+    "canonical_leaf": "Explicit fastcall source overload adds canonical owner domain; raw naked public sink/RET4 unchanged.",
+    "shared_helper": "Already-zero resolve/same actual+4 companion/terminal only; never decrement.",
+    "old_helper": "Exactly one seq_cst fetch_sub; shared post-zero body only on previous1.",
+    "shutdown_context": "Append optional actual_resource_owners; Win32 size20->24, previous offsets unchanged; rebuild source callers.",
+    "Packet_B": "Singleton deletion binding/layout/profile dispatch unchanged; remains separate."
+  },
+  "validation": {
+    "strict_win32_build": {
+      "attempts": 1,
+      "exit_code": 0,
+      "log": "build01.log",
+      "actual_result": "build_result.json"
+    },
+    "existing_CTests": {
+      "passed": 3,
+      "count": 3,
+      "names": [
+        "reconstructed_math",
+        "native_math_differential",
+        "tool_tests"
+      ]
+    },
+    "fixture_compilation": {
+      "attempts": 2,
+      "first_exit_code": 2,
+      "second_exit_code": 0,
+      "first_preserved_archive": "compile_failure01.zip",
+      "revision": "Fixture only: real Kernel32 InterlockedDecrement stdcall export, not SDK intrinsic pointer.",
+      "embedded_manifest": "probe.manifest.xml",
+      "assertions_active": true,
+      "production_recompiled_by_fixture": false
+    },
+    "compiled_inspection": {
+      "receipt": "compiled_inspection.json",
+      "tool_failures_preserved": 3,
+      "old_raw_27B_exact_existing_native31B_transformation": true,
+      "canonical": "Current cell load +3, call ECX +D once, TEST EAX +F/JNE +11, zero-only shared helper call +17, RET8.",
+      "old_release_atomic_RMWs": 1,
+      "shared_zero_helper_atomic_RMWs": 0,
+      "new_optimization_attributes": false,
+      "scope": "Primary emitted public COMDAT entries; shared-section EH labels are not separately claimed."
+    },
+    "linked_library_objects": {
+      "receipt": "library_members.json",
+      "exact_members": 8
+    },
+    "linked_exe": {
+      "receipt": "linked_inspection.json",
+      "exact_public_entries": 3,
+      "relocation_bytes_qualified": true
+    },
+    "single_runtime": {
+      "attempts": 1,
+      "pid": 84596,
+      "exit_code": 0,
+      "process_closed": true,
+      "log": "run01.log",
+      "actual_process_receipt": "launch_result.json",
+      "independent_raw_tool_receipt": "launch_tool_receipt.json",
+      "source_only": true,
+      "copied_native": false,
+      "original_executable": false
+    }
+  },
+  "observations": [
+    "Two distinct genuine BBC6F0/BBC810-created34h allocations before either is freed.",
+    "Real Kernel32 stdcall InterlockedDecrement target76071AB0 bound directly through current volatile cell.",
+    "First count2->1 with empty SAME canonical registry proves no nonzero lookup.",
+    "Both companions borrow SAME live actual+4 atomic; bind does not initialize or retain.",
+    "First1->0 and second direct1->0 reach genuine current procedural terminal/free and exact successful-binding unbind/disposal.",
+    "No resource/count/companion access after terminal disposal.",
+    "Shutdown current profile+10 validation and post-callback current count/base/record/memory-RMW schedule retained; not runtime-exercised here."
+  ],
+  "source_error_obligations": [
+    "Missing/mismatched identity after zero leaves countzero and unresolved caller obligation; no compensating retain/reset/retry.",
+    "Keep canonical companion and current terminal dependencies live under caller lifetime synchronization.",
+    "Completed companion whose metadata bind failed must retire explicitly; unbind only when the actual bind succeeded.",
+    "Nullable cache records, partial aliases/append/resources and unknown profiles retain existing caller obligations."
+  ],
+  "identity_checkpoints": [
+    {
+      "receipt": "attempt01/prebuild/identities.json",
+      "input_rows": 45,
+      "before_action": "fresh production build"
+    },
+    {
+      "receipt": "attempt01/precompile/identities.json",
+      "input_rows": 53,
+      "before_action": "fixture compilation"
+    },
+    {
+      "receipt": "attempt02/precompile/identities.json",
+      "input_rows": 53,
+      "before_action": "fixture compilation"
+    },
+    {
+      "receipt": "attempt02/prerun/identities.json",
+      "input_rows": 56,
+      "before_action": "first and only fixture launch"
+    }
+  ],
+  "final_fixture_sha256": "407469d799cda60c33c16798ec5e2a9d93916f86cb92c2d289500151d122e3b3",
+  "native_static_pins": {
+    "receipt": "native_pin_receipt.json",
+    "normal_bodies": 4,
+    "normal_bytes": 299,
+    "profile_rows": 2,
+    "read_only": true,
+    "same_as_original_PE": true
+  },
+  "frozen_readiness_archive_sha256": "afa2530765d8325052fa034bb0a23db02401e2a22bd6500221e6f28e09ca7727",
+  "evidence": {
+    "directory": "local/output/cc10_canonical_cache_zero_release",
+    "archive": "local/output/cc10_canonical_cache_zero_release_evidence.zip"
+  },
+  "documentation": "docs/NATIVE_CANONICAL_CACHE_ZERO_RELEASE_CC10.md",
+  "limits": [
+    "One normal source case, both actual zero-child profiles only; no injected failure case.",
+    "No full cache entry/clear/clock manager drain, pump, Default/source0, sampler/B4 or startup/application activation.",
+    "No PacketB implementation; no original binary ABI/FH3/SEH/game validation."
+  ]
+}
