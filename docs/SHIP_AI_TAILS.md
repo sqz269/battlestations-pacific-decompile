@@ -377,3 +377,33 @@ pair show it, so it comes from the landings since `7c421ba25`, not from this swi
 
 **Decision: ON.** `kShipAiArmFinalWholeBound` is true. Section 7's own effect waits on `009DC2E0`,
 which still answers a recorded false.
+
+## 8. The navigation arm tail 009EEAAB (packet `cc9_ship_ai_tails_2`, part b)
+
+`ShipAi::navigation_arm_tail` (009EEAAB, rank 10) is UNIMPLEMENTED only because the host recorded it
+on the path where the image itself skips it. The disk listing shows the jump:
+
+```
+009ee59b: je  0x9ee5a5
+009ee59d: test bl, bl
+009ee59f: je  0x9ef206          ; the path gate is closed: skip 009EEAAB..009EF205
+...
+009ef206: fld dword ptr [esp + 0xd0]
+009ef213: call 0x9de5b0         ; the arm-final step, which both paths reach
+```
+
+- **Gate open:** the host already runs the tail whole (`ship_ai_navigation_arm_tail_009eeaab`, body
+  009EEAAB..009EF226, the row `done` at the same name).
+- **Gate closed:** the host returned through a record of the tail's own address. With
+  `kShipAiNavTailGateBookkeeping`, that path counts under its own row,
+  `ShipAi::navigation_gate_closed_009ee59f`.
+
+No behaviour changes.
+
+**Prediction (before the run):** E2 9000, OFF against ON, same tree.
+- The tail's row stops being UNIMPLEMENTED. It becomes concrete at the count of open-gate passes,
+  and the new gate row takes the rest.
+- Deaths, hit records, every ship-ai line and the death table are identical.
+
+**Result:** pending.
+
