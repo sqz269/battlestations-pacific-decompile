@@ -48,8 +48,14 @@ void release_current_sink(void* secondary, void* captured_sink, Context& context
     const Word target = load(table, 0x10);
     if (target != 0x004ddb40u)
         throw std::logic_error("particle cache current release slot has no recovered raw entry");
-    release_native_particle_clock_sink_004ddb40(
-        secondary, context.actual_decrement_00ce2220, captured_sink);
+    if (context.actual_resource_owners) {
+        release_native_particle_clock_sink_004ddb40(
+            secondary, context.actual_decrement_00ce2220, captured_sink,
+            *context.actual_resource_owners);
+    } else {
+        release_native_particle_clock_sink_004ddb40(
+            secondary, context.actual_decrement_00ce2220, captured_sink);
+    }
 }
 
 struct ArrayCleanup {

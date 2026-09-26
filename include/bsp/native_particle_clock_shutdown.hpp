@@ -11,12 +11,16 @@ struct NativeParticleClockShutdownContext {
     void* volatile& actual_publication_00f8d420;
     const void* actual_cache_profile_00ce7d08;
     const void* actual_cache_profile_00ce7d24;
+    // Optional SAME canonical actual-resource domain. Borrow through drain;
+    // null retains the existing raw callable-profile release contract.
+    NativeRenderActualOwners* actual_resource_owners{};
 };
 
 // Actual secondary owner is complete clock+4. The two profile views above
 // borrow the current native CE7D08/CE7D24 tables, whose +10 slots identify
 // 004DDB40. Capture the current last sink before reading the current profile;
-// use the current IAT/raw sink slot0 path, then fresh count/data after it.
+// use the current IAT/raw sink slot0 path or explicit canonical zero composition,
+// then fresh count/data after it. Canonical dispatch performs no second decrement.
 void __fastcall clear_native_particle_clock_records_004dda40(
     void* actual_secondary, NativeParticleClockShutdownContext& context);
 
