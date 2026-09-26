@@ -1,0 +1,160 @@
+{
+  "abi_compatible": false,
+  "baseline": "23238ecba3c8a3248699cc168bd113ef2dfc8334",
+  "call_sites": [
+    {
+      "address": "00b2ed1e",
+      "function": "00b2ebb0",
+      "instruction": "call 0xbdf4c0",
+      "native": "00bdf4c0"
+    }
+  ],
+  "contract": {
+    "configuration": "quiescent; all contexts/publication/provider backing live through call/continuation",
+    "failure": "no replay/automatic cleanup; ended buffers diagnostic identity only; no dereference; existing Name cleanup and later B46950 retention unchanged",
+    "identity": "same load-owned actual8h resolved header/shared strings/current manager cell/device/logging domains",
+    "order": "validate -> attach acquired -> current manager capture -> manager/header/start publication -> genuine BDF4C0 -> result/returned; exception failed retains frame",
+    "record": "concrete per-load retained NativeMaterialEffectNameResolutionCall",
+    "selection": "exactly one explicit numeric/callback provider; numeric has no fallback; old helper rejects numeric"
+  },
+  "documentation": "docs/NATIVE_MATERIAL_EFFECT_RESOLVER_BINDING_CC10.md",
+  "evidence_folder": "local/material_effect_resolver_binding_cc10",
+  "existing_complete_bodies_reused": true,
+  "game_validated": false,
+  "ghidra_writes": 0,
+  "native_ranges": [
+    {
+      "abi": "ECX unused registry; stack name/ignored DWORD; EAX effect; RET8",
+      "address": "00b2ebb0",
+      "complete_instructions": true,
+      "end_exclusive": "00b2eed3",
+      "evidence": "accepted read-only readiness archive",
+      "live_equals_installed": true,
+      "native_bytes": 803,
+      "native_pin": {
+        "bytes": 803,
+        "path": "local/post_effect20_immediate_provider_readiness_cc10/native/00b2ebb0.bin",
+        "sha256": "37f556ad7a43d3d46354018093dd878008b10fba5f01e75bf803a2f09327a725"
+      }
+    },
+    {
+      "abi": "ECX manager; stack mutable8h; AL; RET4",
+      "address": "00bdf4c0",
+      "complete_instructions": true,
+      "end_exclusive": "00bdf589",
+      "evidence": "accepted read-only readiness archive",
+      "live_equals_installed": true,
+      "native_bytes": 201,
+      "native_pin": {
+        "bytes": 201,
+        "path": "local/post_effect20_immediate_provider_readiness_cc10/native/00bdf4c0.bin",
+        "sha256": "1af8f347987129b4c22a38cb7d495bf0fda69e57fce9e682e59e64638554cb16"
+      }
+    },
+    {
+      "abi": "current manager F10C28 capture; stable actual8h header; BDF4C0 call",
+      "address": "00b2ed13",
+      "complete_instructions": true,
+      "end_exclusive": "00b2ed23",
+      "evidence": "accepted read-only readiness archive",
+      "live_equals_installed": true,
+      "native_bytes": 16,
+      "native_pin": {
+        "bytes": 16,
+        "path": "local/post_effect20_immediate_provider_readiness_cc10/native/00b2ed13.bin",
+        "sha256": "fc09238adac70fc159ffb576e90ff11131382345b97e2253bd29069020443514"
+      }
+    }
+  ],
+  "new_native_coverage_bytes": 16,
+  "packet": "cc10_material_effect_resolver_binding",
+  "program": "/battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "scope_exclusions": [
+    "binder/retained overload/B2EBB0/B4E470 runtime",
+    "native EH/SEH",
+    "full aggregate teardown",
+    "cold effect activation",
+    "source0/W original preimage",
+    "original game/application launch",
+    "binary replacement"
+  ],
+  "validation": {
+    "COFF_sections": 462,
+    "Name_helpers_byte_and_relocation_equal_cached": 4,
+    "active_assertions": true,
+    "all_selected_relocation_masked_equal": true,
+    "build": {
+      "bytes": 2943,
+      "path": "local/material_effect_resolver_binding_cc10/build01.receipt.json",
+      "sha256": "708399bc275a474faa687e8ce0323510f7cc9f644f0b03872388060588578561"
+    },
+    "compiled": {
+      "bytes": 702557,
+      "path": "local/material_effect_resolver_binding_cc10/compiled_inspection_run02.json",
+      "sha256": "580c1cc9791a9d670e9eed57caea0cd9736783b94db0484d74ffc533b15e9b1c"
+    },
+    "compiled_order": {
+      "bytes": 4479,
+      "path": "local/material_effect_resolver_binding_cc10/compiled_order_checks.json",
+      "sha256": "e0f4105953cd612347dcbc08fe9b0f20e2c5063819eca4da52b5c7721fceb854"
+    },
+    "embedded_asInvoker_manifest": true,
+    "existing_CTests_passed": 3,
+    "first_attempt": {
+      "archive": {
+        "bytes": 30414885,
+        "path": "local/material_effect_resolver_binding_cc10/attempt01_frozen.zip",
+        "sha256": "8e7d3042844467386316de7aaad0fc203d92f0c432e07c2d6954b1d286ab8251"
+      },
+      "exact_refused_band": "unknown",
+      "exit": 2,
+      "occupant": "unknown",
+      "pid": 42240,
+      "preparation_failure_preserved": true,
+      "stage": "readonly data admission; provider cases unexecuted"
+    },
+    "linked_sections": 61,
+    "production_changed_after_build": false,
+    "run02": {
+      "all_bands_free_before_reservation": true,
+      "band_count": 19,
+      "both_closed": true,
+      "child_exit": 0,
+      "child_pid": 99648,
+      "child_stdout": {
+        "bytes": 328,
+        "path": "local/material_effect_resolver_binding_cc10/run02/child_stdout.txt",
+        "sha256": "99de456f5e38b36a147f0869049d04163586c8164d18dab0ccfa42b178e84f73"
+      },
+      "children": {
+        "bytes": 804,
+        "path": "local/material_effect_resolver_binding_cc10/run02/controlled_children.receipt.json",
+        "sha256": "306aab35202735c80649eab51ae35b60102ba3e3515870118ddc73bd30f5a1f7"
+      },
+      "executed": "provider call-record only; genuine actual-manager true/false and one source-only injected dispatch failure; caller cleanup once",
+      "fixture": {
+        "bytes": 11966,
+        "path": "local/material_effect_resolver_binding_cc10/run02/probe.cpp",
+        "sha256": "cc63f8d6606373a4f8ccd36063f2f89ab2ae4d88b780515699abda7f9d9c345b"
+      },
+      "fixture_lines": 180,
+      "full_teardown": false,
+      "mapper_ACK": true,
+      "mask": "0007ffff",
+      "occupied_range_replacement": false,
+      "parent_exit": 0,
+      "parent_pid": 54252,
+      "run": {
+        "bytes": 1594,
+        "path": "local/material_effect_resolver_binding_cc10/run02/run.receipt.json",
+        "sha256": "8502d8b63ba46c6d62ddbc428e407c28b49df670825f25c6bfbdcc5323be809c"
+      },
+      "span_bytes": 1202980,
+      "span_end_inclusive": "00e07b23",
+      "span_narrowing": false,
+      "span_start": "00ce2000"
+    },
+    "strict_Win32": true
+  }
+}
