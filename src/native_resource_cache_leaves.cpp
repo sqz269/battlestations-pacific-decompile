@@ -1,4 +1,5 @@
 #include "bsp/native_resource_cache_leaves.hpp"
+#include "bsp/native_texture_source_storage.hpp"
 
 #include "bsp/native_string_pool_storage.hpp"
 #include "bsp/native_vfs_date_leaf_providers.hpp"
@@ -72,8 +73,9 @@ void* construct_native_texture_resource_base_00b19980(void* actual_storage) noex
 
 void* construct_native_texture_source_00c30470(void* actual_storage) noexcept {
     construct_native_texture_resource_base_00b19980(actual_storage);
+    auto* const payload = ::new (at_offset(actual_storage, 8)) NativeTextureSourcePayload;
     write_word(actual_storage, 0, 0x00d79b54);
-    write_word(actual_storage, 0x10, 0);
+    static_cast<volatile NativeTextureSourcePayload*>(payload)->children_08.data_00 = nullptr;
     write_word(actual_storage, 0x14, 0);
     write_word(actual_storage, 0x18, 0);
     write_word(actual_storage, 0x08, 0);
