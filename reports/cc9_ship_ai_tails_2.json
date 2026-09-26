@@ -4,11 +4,35 @@
   "part_a": {
     "answer": "009DE5B0 (body 009DE5B0..009DF117) runs whole at both arm-final call sites through ship_ai_arm_final_step_009de5b0, sections 1..7, with its host calls resolved; 0070E450 and 009DC2E0 stay records. kShipAiArmFinalWholeBound is ON.",
     "steps": [
-      {"address": "009ef213", "native": "009de5b0", "function": "009ed6b0", "rule": "the arm tail's final call"},
-      {"address": "009dee1e", "native": "00778890", "function": "009de5b0", "rule": "section 7: leads its formation group"},
-      {"address": "009df0fa", "native": "009dc2e0", "function": "009de5b0", "rule": "section 7: the free-bearing query (recorded false)"}
+      {
+        "address": "009ef213",
+        "native": "009de5b0",
+        "function": "009ed6b0",
+        "rule": "the arm tail's final call"
+      },
+      {
+        "address": "009dee1e",
+        "native": "00778890",
+        "function": "009de5b0",
+        "rule": "section 7: leads its formation group"
+      },
+      {
+        "address": "009df0fa",
+        "native": "009dc2e0",
+        "function": "009de5b0",
+        "rule": "section 7: the free-bearing query (recorded false)"
+      }
     ],
     "pair": "USN02 9200/9000 and E2 9200/9000, same tree 43be33806, streams on: deaths, hit records, failure time, every ship-ai line and the death tables identical; only the predicted rows changed status"
   },
-  "ghidra": "read-only; no renames, comments or saves"
+  "ghidra": "read-only; no renames, comments or saves",
+  "part_b": {
+    "answer": "009EEAAB (tail body 009EEAAB..009EF205) was UNIMPLEMENTED only on the path where the image itself jumps past it: 009EE59F JE 009EF206 with the path gate closed, reaching the arm-final call 009EF213 directly. That path now counts as done under ShipAi::navigation_gate_closed_009ee59f. Bookkeeping, not a gap; nothing new bound. kShipAiNavTailGateBookkeeping is ON.",
+    "evidence_site": {
+      "address": "009ee59f",
+      "instruction": "je 0x9ef206",
+      "function": "009ed6b0"
+    },
+    "pair": "E2 9200/9000, same tree bf6eddc7a, streams on: navigation_arm_tail UNIMPLEMENTED 132146 becomes concrete 130833 plus navigation_gate_closed_009ee59f concrete 1313; deaths 51, hit records 841, every ship-ai line and the death table identical"
+  }
 }
