@@ -1,0 +1,61 @@
+{
+  "packet": "cc10_application_clock_shutdown_integration",
+  "worker_commit": "5c5a1d526436fcb78db0038a09ebcdcccc0eaf29",
+  "integration": "80d2b7e37040ddb599786dff9759eef9c88acb84",
+  "worker_report": "reports/native_application_clock_shutdown_cc10.json",
+  "primary_verification": {
+    "worker_commit": "5c5a1d526436fcb78db0038a09ebcdcccc0eaf29",
+    "archive_sha256": "cfbfc2d0c603a714ad08b775b0707ea10f16d4a1941738c4cf491f5b7b24b9f8",
+    "archive_rows_verified": 209,
+    "archive_members": 210,
+    "current_source_config_pins": 25,
+    "prebuild_source_config_entries": 26,
+    "toolchain_pins": 2,
+    "build_outputs": 19,
+    "application_objects": 2,
+    "exact_core_members": 5,
+    "COFF_full_sections": 23,
+    "unique_linked_sections": 17,
+    "independent_byte_checks": 15,
+    "relocations": 10,
+    "unchanged_whole_core_members": 4,
+    "unchanged_function_sections": 41,
+    "installed_PE_ranges": 11,
+    "worker_CTests": 3,
+    "deletion_binding_bytes": 180,
+    "shutdown_context_bytes": 24,
+    "records_context_bytes": 8,
+    "new_native_bytes": 0,
+    "runtime_runs": 0,
+    "review": [
+      "Entire approved and applied three-file diff reviewed; one actual host void cell, same records/camera callable cell/canonical owners/profile windows",
+      "Final constructor pointer install follows last throwing worker binder; startup and fallback host drains precede renderer and VFS destruction",
+      "Only preparation binding and post-drain observation added; no getter, registration, count normalization or explicit unregister path"
+    ],
+    "limits": [
+      "Bounded source and compiled construction/lifetime checks; no application execution or nonempty clock/cache runtime",
+      "Mixed dispatcher contains 2972 code/padding bytes and 137 embedded table bytes; no full linear instruction claim",
+      "Source interfaces and C++ cleanup are not original native ABI or FH3 proof; source0/W and full sampler graph remain unresolved"
+    ]
+  },
+  "validation": {
+    "primary_strict_win32_CTests": 3,
+    "worker_strict_win32_CTests": 3,
+    "coherent_source_layout_rebuilt": true,
+    "new_native_bytes": 0,
+    "new_runtime_runs": 0,
+    "application_executed": false,
+    "game_validated": false
+  },
+  "limits": [
+    "Bounded source and compiled construction/lifetime checks; no application execution or nonempty clock/cache runtime",
+    "Mixed dispatcher contains 2972 code/padding bytes and 137 embedded table bytes; no full linear instruction claim",
+    "Source interfaces and C++ cleanup are not original native ABI or FH3 proof; source0/W and full sampler graph remain unresolved"
+  ],
+  "archive": {
+    "path": "local/cc10-platform-evidence/application-clock-shutdown.zip",
+    "sha256": "f68abde91379f152a0ef318e097aab501b3c7726ee1f4fb725e699a169371363",
+    "files": 8,
+    "valid": true
+  }
+}
