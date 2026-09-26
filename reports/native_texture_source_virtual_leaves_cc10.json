@@ -1,0 +1,191 @@
+{
+  "packet": "native_texture_source_virtual_leaves_cc10",
+  "status": "complete_source_three_existing_ctests_full_COFF_library_only_no_new_runtime",
+  "baseline": "13c41f6a13b57cdad6694ae4ea9b30e5b50544a9",
+  "source": [
+    "include/bsp/native_texture_source_virtual_leaves.hpp",
+    "src/native_texture_source_virtual_leaves.cpp"
+  ],
+  "implemented": [
+    {
+      "address": "C30210",
+      "bytes": 18,
+      "instructions": 7,
+      "branches": [],
+      "calls": [
+        {
+          "address": "00c30213",
+          "bytes": "e86897eeff",
+          "target": "0xb19980"
+        }
+      ]
+    },
+    {
+      "address": "C30270",
+      "bytes": 30,
+      "instructions": 11,
+      "branches": [
+        {
+          "address": "00c3027d",
+          "bytes": "7409",
+          "mnemonic": "je",
+          "operands": "0xc30288"
+        }
+      ],
+      "calls": [
+        {
+          "address": "00c30273",
+          "bytes": "e8d894eeff",
+          "target": "0xb19750"
+        },
+        {
+          "address": "00c30280",
+          "bytes": "e82763fcff",
+          "target": "0xbf65ac"
+        }
+      ]
+    },
+    {
+      "address": "C30550",
+      "bytes": 30,
+      "instructions": 11,
+      "branches": [
+        {
+          "address": "00c3055d",
+          "bytes": "7409",
+          "mnemonic": "je",
+          "operands": "0xc30568"
+        }
+      ],
+      "calls": [
+        {
+          "address": "00c30553",
+          "bytes": "e848ffffff",
+          "target": "0xc304a0"
+        },
+        {
+          "address": "00c30560",
+          "bytes": "e84760fcff",
+          "target": "0xbf65ac"
+        }
+      ]
+    }
+  ],
+  "native_total": {
+    "bytes": 78,
+    "instructions": 29,
+    "conditional_branches": 2,
+    "call_sites": 5,
+    "callees_reused_no_new_credit": [
+      "B19980",
+      "B19750",
+      "C304A0",
+      "BF65AC"
+    ]
+  },
+  "deferred": {
+    "addresses": [
+      "C30310",
+      "C30360",
+      "C30460"
+    ],
+    "bytes": 163,
+    "concrete_blocker": "Missing B19C70 actual ShaderDataSource descriptor/storage/parent initialization; existing6FAC20 service alone cannot replace it",
+    "external_type_routes": [
+      "C303B0",
+      "C302F0"
+    ]
+  },
+  "table_topology": {
+    "producer_refs": {
+      "D64494": "D64478+1C=C30570",
+      "D644D0": "D644B4+1C=C30570",
+      "D79B70": "D79B54+1C=C30570"
+    },
+    "deleting_entries": {
+      "D79AEC+04": "C30270",
+      "D79B54+04": "C30550",
+      "D64478+04": "BBC6D0",
+      "D644B4+04": "BBC7F0"
+    },
+    "numeric_callable_installation": false
+  },
+  "abi": "Original ECX receiver; C30210RET/EAXself, deleting leaves stackedflags/RET4/EAXcapturedself. Ordinary source MSVCcdecl signatures differ; C30550 adds SAMEowners/retainedoperation parameters.",
+  "ownership": "Reuse existing fresh8B base/+04atomic placement; no complete-owner/payload adoption, count change, credit, automatic unbind/companion retirement. C30550 delegates existing C304A0 failure semantics and frees only after successful destroy/bit0. Operation diagnostics remain C304A0; wrapper marks normal free only.",
+  "validation": {
+    "strict_Win32_build": {
+      "argv": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post",
+      "exit_code": 0,
+      "elapsed_seconds": 15.958696365356445,
+      "runtime": false
+    },
+    "existing_CTests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "new_tests": 0,
+    "source_pins": 15,
+    "tool_pins": 10,
+    "exact_object_AR_members": 4,
+    "complete_unique_new_function_sections": 3,
+    "new_COFF_bytes": 112,
+    "new_REL32_targets": 5,
+    "emitted_order_checks": 14,
+    "all_three_reused_provider_raw_objects_equal_preserved_c21": true,
+    "provider_function_symbol_comparison_rows": 99,
+    "provider_section_count_not_claimed_as_unique": true,
+    "new_application_map_selected_symbols": 0,
+    "linked_body_equivalence_claim": false
+  },
+  "gaps": {
+    "free_entry": "00bf65ac",
+    "prototype": "void __cdecl _free(void*)",
+    "target": "JMP00bf9dc8; same prototype",
+    "omitted_sites": [
+      "00c30285",
+      "00c30565"
+    ],
+    "exact_bytes": "83c404",
+    "instruction": "ADD ESP,4",
+    "instruction_context": "No instruction at address",
+    "function_membership": "No function found at gaps; neighboring call addresses resolve enclosing wrappers",
+    "source_of_gap": "Undisassembled/excluded stored-body bytes; not export filtering",
+    "exact_no_return_flag": "UNKNOWN",
+    "exact_callsite_flow_override": "UNKNOWN",
+    "property_query_error": "Script execution disabled. Set GHIDRA_MCP_ALLOW_SCRIPTS=1 (and GHIDRA_MCP_AUTH_TOKEN if exposing beyond loopback) to enable. /run_script_inline executes arbitrary Java against the Ghidra process.",
+    "no_mutation_or_config_fallback": true
+  },
+  "preserved_attempts": [
+    "audit_native_attempt01:missingGhidraADDsites",
+    "audit_native_attempt02:incorrectC30550firstwordassumption",
+    "query_followup_attempt01:exactflowpropertiesdisabled"
+  ],
+  "limits": [
+    "No leaf runtime/fixture/game/controller launch",
+    "No native registerABI/privateFH3 equivalence",
+    "No fullsource dispatch or callerwiring",
+    "No completeowner/rawstorage/nullchild/nonemptyteardown admission",
+    "No platformMSG/source0W changes",
+    "C30570body and existingC30470/C304A0/append/time sources untouched"
+  ],
+  "evidence": {
+    "folder": "local/cc10_texture_source_virtual_leaves",
+    "native": "native_audit.json",
+    "installed_PE": "installed_PE_native_identity.json",
+    "compiler": "compiled_inspection.json",
+    "order": "emitted_order_checks.json",
+    "source_tools": "before_build_inputs.json",
+    "old_build": "pre_sync_preservation.json",
+    "old_outputs": "pre_sync_c21_build.zip",
+    "raw_build_receipts": "build.stdout.txt/build.stderr.txt/LastTest.log"
+  },
+  "ledger_Ghidra_changes": false,
+  "root_owns_annotation_accounting_integration": true
+}
