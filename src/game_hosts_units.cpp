@@ -34,6 +34,7 @@
 #include "bsp/torpedo_approach_update.hpp"
 #include "bsp/torpedo_first_release.hpp"
 #include "bsp/torpedo_issue_timing.hpp"
+#include "bsp/pilot_order_bindings.hpp"
 #include "bsp/plane_squadron_host.hpp"
 #include "bsp/scene_record_side_blocks.hpp"
 #include "bsp/plane_follow_law.hpp"
@@ -384,6 +385,23 @@ struct GameUnitSlot {
     // Packet cc9_dogfight_task: the dogfight task (kind 2), installed when
     // 007EEC50 chose class 00E08F58. docs/DOGFIGHT_TASK.md.
     bool dogfight_task_installed{false};
+    // Packet cc9_pilot_moveto_task: the kind-7 moveto task (009C3BE0 -> 009C3000,
+    // vtable 00D20B68). The three states live in the sub-object at task+3F8h and
+    // register their names through 00411E70 (009C2E96-009C2EB6):
+    //   +47Ch "moveto (moveto)"  (00D20998), vtable 00D20A80
+    //   +494h "follow (moveto)"  (00D20988), 009C2980 BSP_BotStateFollow_Construct
+    //   +52Ch "circle (moveto)"  (00D20978), 009C25D0
+    // 009C3097-009C30BF picks the start: a flight leader (007B8AD0) enters
+    // +52Ch when task+454h (the sub-object's +5Ch) is set, else +47Ch; a wingman
+    // enters +494h. 009C1D0A clears +5Ch at construction, so a leader starts in
+    // moveto; 009C3636 in 009C3570 sets it later.
+    enum class MoveToTaskState : int { kNone = 0, kMoveTo = 0x47C, kFollow = 0x494, kCircle = 0x52C };
+    bool moveto_task_installed{false};
+    MoveToTaskState moveto_state{MoveToTaskState::kNone};
+    bool moveto_arrived_454{false};        // task+454h, cleared by 009C1D0A
+    float moveto_range{0.0f};              // the order's descriptor +14h
+    float moveto_timer_548{1.0f};          // 009C307C, 1.0 (00D7A24C)
+    float moveto_stagger_54c{-0.5f};       // 009C3084/009C3089: -U(0, 1), the midpoint
     bsp::DogfightState dogfight_state{bsp::DogfightState::kNone};
     int df_state_ticks[bsp::kDogfightStateCount]{};
     int df_transitions{0};
@@ -14030,6 +14048,32 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                     }
 
+                    // 0099A236 -> 009C3BE0 -> 009C3000, packet cc9_pilot_moveto_task
+                    // part 1: the record and its start state only. The task's
+                    // tick (00D20B68) and the state bodies are parts 2 and 3.
+                    void run_moveto_task_install_009c3000() {
+                        if (unit_.attack_command_class != bsp::kPilotOrderClassMoveTo) return;
+                        if (unit_.moveto_task_installed) return;
+                        unit_.moveto_task_installed = true;
+                        unit_.moveto_arrived_454 = false;       // 009C1D0A
+                        unit_.moveto_timer_548 = 1.0f;          // 009C307C
+                        unit_.moveto_stagger_54c = -0.5f;       // 009C3089, midpoint
+                        const bool leader =
+                            owner_.unit_is_flight_leader_007b8ad0(unit_.process_index);
+                        unit_.moveto_state = leader
+                            ? (unit_.moveto_arrived_454 ? GameUnitSlot::MoveToTaskState::kCircle
+                                                        : GameUnitSlot::MoveToTaskState::kMoveTo)
+                            : GameUnitSlot::MoveToTaskState::kFollow;   // 009C3097-009C30BF
+                        owner_.log.notef("  moveto task %s: installed kind 7, leader=%d state=%s "
+                            "range=%.1f (009C3000)", unit_.row.name.c_str(), leader ? 1 : 0,
+                            unit_.moveto_state == GameUnitSlot::MoveToTaskState::kFollow
+                                ? "follow (moveto)"
+                                : (unit_.moveto_state == GameUnitSlot::MoveToTaskState::kCircle
+                                       ? "circle (moveto)" : "moveto (moveto)"),
+                            static_cast<double>(unit_.moveto_range));
+                        owner_.done("BotTaskMoveTo::construct", 0x009c3000u);
+                    }
+
                     void pilot_think_and_commit(float step) {
                         // Gate 6, 0099AD0F..0099AD29. The accumulator absorbs
                         // the frame delta and the tick fires when it reaches
@@ -14137,6 +14181,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // sub-object updates are contracts.
                             run_torpedo_task_arm_009d4850(elapsed);
                             run_dive_bomb_task_arm_009c8790(elapsed);
+                            if constexpr (bsp::kPilotMoveToTaskBound) {
+                                run_moveto_task_install_009c3000();
+                            }
                             if constexpr (GameUnitsHost::Impl::kDogfightTaskBound) {
                                 run_dogfight_task_arm_009ab1c0(elapsed);
                             }
@@ -15389,6 +15436,11 @@ void GameUnitsHost::store_unit_attack_command_class(std::size_t index,
                                                     unsigned int cls) noexcept {
     if (index >= impl_->slots.size()) return;
     impl_->slots[index]->attack_command_class = cls;
+}
+
+void GameUnitsHost::store_unit_moveto_range(std::size_t index, float range) noexcept {
+    if (index >= impl_->slots.size()) return;
+    impl_->slots[index]->moveto_range = range;
 }
 
 void GameUnitsHost::store_unit_ordnance(std::size_t index, std::uint64_t mask) noexcept {

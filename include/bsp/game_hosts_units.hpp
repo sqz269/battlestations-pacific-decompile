@@ -383,6 +383,9 @@ public:
     // turns it into a bot task. A unit with no attack order keeps 0.
     // docs/DIVE_BOMB_TASK.md, "The class gate".
     void store_unit_attack_command_class(std::size_t index, unsigned int cls) noexcept;
+    // Packet cc9_pilot_moveto_task: the moveto order's range, descriptor +14h
+    // (008A4708), which the kind-7 task's approach reads.
+    void store_unit_moveto_range(std::size_t index, float range) noexcept;
     std::uint64_t unit_ordnance(std::size_t index) const noexcept;
     bool unit_flag_0061(std::size_t index) const;
     // 0092d730 over the unit's body axis and linear velocity, the same value the
