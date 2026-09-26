@@ -1,0 +1,81 @@
+{
+  "packet": "cc9_warning_manager_tick",
+  "doc": "docs/WARNING_MANAGER.md",
+  "switch": "kWarningManagerTickBound (src/game_hosts_mission_frame.cpp): committed OFF in 89c858ed4, set ON by the verdict",
+  "calls": [
+    {
+      "address": "009875A2",
+      "native": "00982540",
+      "function": "00987590",
+      "kind": "call",
+      "host": "WorldTickBinding::mission_events_pre_pass_00982540 -> WarningManager::pump_input_channel"
+    },
+    {
+      "address": "009875D9",
+      "native": "00977990",
+      "function": "00987590",
+      "kind": "call",
+      "host": "WorldTickBinding::mission_events_periodic_00977990 -> WarningManager::scan_proximity (record)"
+    },
+    {
+      "address": "009875E0",
+      "native": "0096D540",
+      "function": "00987590",
+      "kind": "call",
+      "host": "bsp::poll_warning_prompt_0096d540"
+    },
+    {
+      "address": "009875E7",
+      "native": "00968550",
+      "function": "00987590",
+      "kind": "call",
+      "host": "bsp::update_warning_deadlines"
+    },
+    {
+      "address": "0097775F",
+      "native": "00965810",
+      "function": "00977690",
+      "kind": "call",
+      "host": "report_torpedo guard: the entity is the controlled unit"
+    },
+    {
+      "address": "0097774F",
+      "native": "0077EDF0",
+      "function": "00977690",
+      "kind": "call",
+      "host": "report_torpedo guard: suppress byte on this+D4h"
+    }
+  ],
+  "contract": {
+    "header": "include/bsp/game_hosts_mission_frame.hpp",
+    "entries": [
+      "void game_warning_report_torpedo_00977690(std::size_t unit)",
+      "void game_warning_torpedo_effect_00977820(std::size_t unit)"
+    ],
+    "caller": "009DA8D0 (gunnery worker, cc9_ship_ai_tails_2)"
+  },
+  "host_bug_found": "WorldTickState::game.scaled_delta is never written; the warning accumulator (fixed here for the director's call) and the bot scheduler 00914EF0 and markers 006DC1A0 (not fixed; gameplay) read 0",
+  "ghidra": "read-only; decompile of 00977690, 00977820, 00965810; disk-byte disassembly of 00977744..0097775F; bytes 00CE7630, 00D7A24C",
+  "no_ghidra_function": [],
+  "verdict": "ON",
+  "pairs": {
+    "usn04": {
+      "scans": 55,
+      "torpedo_reports": 0,
+      "gameplay": "identical",
+      "unimpl": [
+        2249392,
+        2240447
+      ]
+    },
+    "usn02": {
+      "scans": 111,
+      "torpedo_reports": 0,
+      "gameplay": "identical",
+      "unimpl": [
+        4302306,
+        4284417
+      ]
+    }
+  }
+}

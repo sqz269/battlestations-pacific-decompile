@@ -128,3 +128,38 @@ One tree (main 6e7e38a66 plus this), `local\bin\wm_off` against `local\bin\wm_on
   is not raised.
 - **Gameplay.** No gameplay row, per-entity row or summary line moves except the new
   warning-manager line and the rows above. A move would be the finding.
+
+## 7. The pairs and the verdict
+
+One tree (6e7e38a66 + 89c858ed4), `local\bin\wm_off` against `local\bin\wm_on`,
+`BSP_GUNNERY_RNG_STREAMS=1`. All four logs show the 1600x900 fit line and the final COM release.
+
+| Row | USN04 OFF | USN04 ON | USN02 OFF | USN02 ON |
+| --- | ---: | ---: | ---: | ---: |
+| `MissionEvents::pre_pass` / `poll_zones` / `poll_triggers` | 4,500 records each | gone | 9,000 records each | gone |
+| `WarningManager::pump_input_channel` / `poll_prompt` / `update_deadlines` | - | 4,500 concrete each | - | 9,000 concrete each |
+| `WarningManager::input_channel_subscriptions` (0097E360) | - | 4,500 record | - | 9,000 record |
+| `WarningManager::scan_proximity` (00977990) | - | 55 record | - | 111 record |
+| unimplemented total | 2,249,392 | 2,240,447 | 4,302,306 | 4,284,417 |
+
+**Every prediction held.**
+- The scan fires 55 and 111 times, once every 81 frames.
+- The summary line reads `torpedo_reports=0 accepted=0 effect_calls=0 effects=0
+  deadline_expiries=0` on both missions: nothing calls the entries yet, and nothing writes the
+  deadlines or the prompt.
+- The per-entity tables, the gunnery damage lines and every other summary line are identical, so
+  the clock offset is zero. No gameplay line moved.
+
+**Verdict: ON.** The four calls run in the image's order under the image's routines. The
+accumulator takes the argument 0098759E adds, and nothing outside the manager moves.
+`kWarningManagerTickBound` is set true. Named records remain for the parts this process cannot
+feed:
+- `WarningManager::input_channel_subscriptions` (0097E360's parser);
+- `WarningManager::scan_proximity` (the world lists);
+- and, once 009DA8D0 calls in, `WarningManager::report_torpedo_queue` (009763E0's warning object)
+  and `WarningManager::torpedo_effect_spawn` (the point effect).
+
+**For the gunnery worker's 009DA8D0 pair.** With the entries live, expect `torpedo_reports` to
+count every timer expiry that reaches 00977690. Expect `accepted` to count only those whose unit is
+the controlled one, alive and not kind 8, past 4 s. Expect `effects` to be at most one per unit per
+30 s. None of these is a gunnery or ship-AI line.
