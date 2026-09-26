@@ -409,5 +409,34 @@
   ],
   "docs": [
     "docs/NATIVE_TEXTURE_SOURCE_PRODUCER_CC10.md"
-  ]
+  ],
+  "physical_section_collector_qualification": {
+    "original_collector": "coff_sections.py slices blob[rp:rp+size] for declared nonzero size even when PointerToRawData rp==0",
+    "affected_original_json": "local/cc10_texture_source_full_producer_implementation/compiled_sections.json",
+    "no_file_backed_bss_records": {
+      "old": 13,
+      "new": 14
+    },
+    "declared_storage": "uninitialized .bss storage; zero physical raw bytes",
+    "original_synthetic_slices": "COFF header bytes, not initialized-data evidence",
+    "corrected_physical_sections": "local/cc10_producer_physical_section_review/physical_sections.json",
+    "corrected_review_archive": {
+      "path": "local/cc10_producer_physical_section_review/evidence.zip",
+      "sha256": "617976eea25ea7ca661adb73425c98c43c734d91194943d3c93ace7746517818",
+      "rows": 5,
+      "members": 6
+    },
+    "corrected_file_backed_provider_comparisons": 12,
+    "file_backed_sections_unchanged": true,
+    "code_sections_unchanged": 107,
+    "code_bytes_unchanged": 5607,
+    "complete_code_relocations_and_AR_identity_conclusions_unaffected": true,
+    "no_initialized_bss_byte_claim": true,
+    "original_archive_unchanged": {
+      "path": "local/cc10_texture_source_producer_evidence.zip",
+      "sha256": "8616f71c4baa5eb4cc29408e0f2c5785e4aed6b9d81beffb15508d482e44a6d7"
+    },
+    "source_build_unchanged": true,
+    "qualification_scope": "doc/report only; corrected supplement retained separately; no historical output rewrite, source/CMake/tools/ledger/Ghidra/build/test/runtime changes"
+  }
 }
