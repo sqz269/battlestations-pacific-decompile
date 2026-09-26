@@ -1,0 +1,351 @@
+{
+  "CMake_changes_needed": false,
+  "approved_proposal": {
+    "bytes": 4718,
+    "path": "local/application_clock_explicit_shutdown_readiness_cc10/PROPOSED.diff",
+    "sha256": "5b43b0e1cb17071f2676450fbf757012b5e6c8b07f3d5db75cc5025383e28783"
+  },
+  "calls": [
+    {
+      "address": "00736952",
+      "function": "00736930",
+      "native": "00415350",
+      "role": "firstmanager lookup before capturedlock"
+    },
+    {
+      "address": "00736986",
+      "function": "00736930",
+      "native": "00415350",
+      "role": "secondmanager lookup before currentunregisterowner capture"
+    },
+    {
+      "address": "00736994",
+      "function": "00736930",
+      "native": "00bcfca0",
+      "role": "firstmatch slotclear through currentmanager"
+    },
+    {
+      "address": "00738319",
+      "function": "00737f30",
+      "native": "00736930",
+      "role": "original soleimmediatecaller; application not wired"
+    }
+  ],
+  "documentation": "docs/NATIVE_EXPLICIT_CLOCK_SHUTDOWN_CC10.md",
+  "evidence_folder": "local/explicit_clock_shutdown_provider_cc10",
+  "excluded": [
+    "newentry/base/sourcefailure runtime",
+    "newtests or fixtures",
+    "application/startup caller wiring",
+    "nonempty producer/admission",
+    "source0W and platformMSG",
+    "arbitrary original virtualcalls",
+    "nativeprivateFH3/SEH/hardwarefault parity",
+    "original game"
+  ],
+  "functions": [
+    {
+      "address": "00736930",
+      "bytes": 164,
+      "cpp_symbol": "destroy_published_native_particle_clock_00736930",
+      "inclusive_end": "007369d3",
+      "native": "00736930",
+      "native_sha256": "522ab551571d7bd8f6e40731bf6381b4504fdd2748fe15ca9fc0ce4c1ebe2c30",
+      "original_abi": "cdecl, no inputs,RET0",
+      "source_abi": "cdecl four bindings16caller-cleaned bytes; additional source interfaces,not binary compatible"
+    }
+  ],
+  "indirect_native_sites": [
+    {
+      "address": "0073696b",
+      "native": "IAT CE2218 current EnterCriticalSection"
+    },
+    {
+      "address": "007369a9",
+      "native": "CURRENT profile slot0 withflags1; admittedcomplete4DE340/base412440"
+    },
+    {
+      "address": "007369be",
+      "native": "IAT CE2210 current LeaveCriticalSection"
+    }
+  ],
+  "native_ranges": [
+    {
+      "address": "00736930",
+      "bytes": 164,
+      "bytes_file": {
+        "bytes": 164,
+        "path": "local/application_clock_explicit_shutdown_readiness_cc10/native/00736930.bin",
+        "sha256": "522ab551571d7bd8f6e40731bf6381b4504fdd2748fe15ca9fc0ce4c1ebe2c30"
+      },
+      "kind": "complete explicitclock normal body",
+      "live_equals_installed": true,
+      "wrapper_receipt": {
+        "bytes": 788,
+        "path": "local/application_clock_explicit_shutdown_readiness_cc10/native/00736930.txt",
+        "sha256": "361f97451289f768f73748caf6c921ea1e60c72a84195e95e25e11319d827301"
+      }
+    },
+    {
+      "address": "00bcfca0",
+      "bytes": 115,
+      "bytes_file": {
+        "bytes": 115,
+        "path": "local/application_clock_explicit_shutdown_readiness_cc10/native/00bcfca0.bin",
+        "sha256": "7d6aa4f0c51391f3d2cfe4c0b35f7833a16fce5613b92eaa615bb1f54003f473"
+      },
+      "kind": "complete existing raw unregister",
+      "live_equals_installed": true,
+      "wrapper_receipt": {
+        "bytes": 556,
+        "path": "local/application_clock_explicit_shutdown_readiness_cc10/native/00bcfca0.txt",
+        "sha256": "76078043a4cf2d5b6c66f7489ab3cde19888dab25669fb44764b7bf663b6c4fa"
+      }
+    },
+    {
+      "address": "00411ee0",
+      "bytes": 25,
+      "bytes_file": {
+        "bytes": 25,
+        "path": "local/application_clock_explicit_shutdown_readiness_cc10/native/00411ee0.bin",
+        "sha256": "bc62d20fb11c300342533b8e94fc0319bb550dcd5bb5ecd734f2e03c92cc3382"
+      },
+      "kind": "complete existing actual guard",
+      "live_equals_installed": true,
+      "wrapper_receipt": {
+        "bytes": 124,
+        "path": "local/application_clock_explicit_shutdown_readiness_cc10/native/00411ee0.txt",
+        "sha256": "0777736c25cfad0510d76b69989675f3e5df3b5d81afb0ecbdbec937008222b1"
+      }
+    },
+    {
+      "address": "00412440",
+      "bytes": 31,
+      "bytes_file": {
+        "bytes": 31,
+        "path": "local/application_clock_explicit_shutdown_readiness_cc10/native/00412440.bin",
+        "sha256": "61d4c09ccc46b0bf6c6f7f08a45e4e5e1d652ccba884505951000da209a35c1e"
+      },
+      "kind": "complete existing base scalar",
+      "live_equals_installed": true,
+      "wrapper_receipt": {
+        "bytes": 148,
+        "path": "local/application_clock_explicit_shutdown_readiness_cc10/native/00412440.txt",
+        "sha256": "4e26bd5ec0d68ab6177e918cd39921672459419596468935fdc0a89a927e75f7"
+      }
+    },
+    {
+      "address": "004de340",
+      "bytes": 30,
+      "bytes_file": {
+        "bytes": 30,
+        "path": "local/application_clock_explicit_shutdown_readiness_cc10/native/004de340.bin",
+        "sha256": "a436f22b03ad7062c5b18fb2d81c6573184fa30c2b6ad2a4ec134ed0eb4a607a"
+      },
+      "kind": "complete existing completeclock scalar",
+      "live_equals_installed": true,
+      "wrapper_receipt": {
+        "bytes": 144,
+        "path": "local/application_clock_explicit_shutdown_readiness_cc10/native/004de340.txt",
+        "sha256": "13af4bd13db3b45da9784ffc0107859403ef0119e1a44633defbd14eac373d1e"
+      }
+    },
+    {
+      "address": "00c86000",
+      "bytes": 18,
+      "bytes_file": {
+        "bytes": 18,
+        "path": "local/application_clock_explicit_shutdown_readiness_cc10/native/00c86000.bin",
+        "sha256": "b06ef73312ec08485a7d1631e5b097b640001ff34784459a92806a004d890dd8"
+      },
+      "kind": "exact8B unwind plus10B handler; latter missing function definition remains untouched",
+      "live_equals_installed": true,
+      "wrapper_receipt": {
+        "bytes": 96,
+        "path": "local/application_clock_explicit_shutdown_readiness_cc10/native/00c86000.txt",
+        "sha256": "2307c62afea34b55b67dfd135d4995eb2cc881b5b5b06880a6f7be49bc827b0b"
+      }
+    },
+    {
+      "address": "00db54b0",
+      "bytes": 44,
+      "bytes_file": {
+        "bytes": 44,
+        "path": "local/application_clock_explicit_shutdown_readiness_cc10/native/00db54b0.bin",
+        "sha256": "e592fcd96fdfd133a307b1ca4202a3590fc5275b693d1556d7a894437bcf28a4"
+      },
+      "kind": "8B unwind map and36B FuncInfo",
+      "live_equals_installed": true,
+      "wrapper_receipt": {
+        "bytes": 212,
+        "path": "local/application_clock_explicit_shutdown_readiness_cc10/native/00db54b0.txt",
+        "sha256": "ac18a01f2c92c78b9ad0e2a30d0a4f6a3383d9fed53238754a53a1e8e1466413"
+      }
+    },
+    {
+      "address": "0073830a",
+      "bytes": 35,
+      "bytes_file": {
+        "bytes": 35,
+        "path": "local/application_clock_explicit_shutdown_readiness_cc10/native/0073830a.bin",
+        "sha256": "bd6191f915af1cb4fce1bbe37a1b719c698022d3551055118cd64b01e77dd1ef"
+      },
+      "kind": "exact caller seven-call window; not full737F30",
+      "live_equals_installed": true,
+      "wrapper_receipt": {
+        "bytes": 176,
+        "path": "local/application_clock_explicit_shutdown_readiness_cc10/native/0073830a.txt",
+        "sha256": "4c44aed1c46e365366a56dd2657b7b76a9cd1313f2b22e31edf689b75c3b288b"
+      }
+    },
+    {
+      "address": "00ce7d38",
+      "bytes": 8,
+      "bytes_file": {
+        "bytes": 8,
+        "path": "local/application_clock_explicit_shutdown_readiness_cc10/native/00ce7d38.bin",
+        "sha256": "e5e2c3f30a0f70c33df7d6f8d089c1d433b47dbde251175495943a468321badf"
+      },
+      "kind": "completeclock current slotzero data view",
+      "live_equals_installed": true,
+      "wrapper_receipt": {
+        "bytes": 44,
+        "path": "local/application_clock_explicit_shutdown_readiness_cc10/native/00ce7d38.txt",
+        "sha256": "728aafd0fe0094256abeee3f97c868c943e18318212de77306f02952d6741148"
+      }
+    },
+    {
+      "address": "00ce3818",
+      "bytes": 8,
+      "bytes_file": {
+        "bytes": 8,
+        "path": "local/application_clock_explicit_shutdown_readiness_cc10/native/00ce3818.bin",
+        "sha256": "14683c8f2c223a4cabd107e69667b214c7a240958a9ded88d51d2027b6dafe5f"
+      },
+      "kind": "base current slotzero data view",
+      "live_equals_installed": true,
+      "wrapper_receipt": {
+        "bytes": 44,
+        "path": "local/application_clock_explicit_shutdown_readiness_cc10/native/00ce3818.txt",
+        "sha256": "b783045f9becd35de577903e64204e6d7b997b6370cf896547526612d07bedfc"
+      }
+    }
+  ],
+  "new_native_normal_bytes": 164,
+  "packet": "explicit_clock_shutdown_provider_cc10",
+  "production_files": [
+    "include/bsp/native_particle_clock_shutdown.hpp",
+    "src/native_particle_clock_shutdown.cpp"
+  ],
+  "program": "/battlestationspacific.exe",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "readiness_archive": {
+    "bytes": 79009,
+    "path": "local/application_clock_explicit_shutdown_readiness_cc10/evidence.zip",
+    "sha256": "76dd61c25a1d5aba2051777f6d4e3e0929f7e3b1be7b908f0ab4dcc75465f4b2"
+  },
+  "schedule": {
+    "clear": "normalbranchonly, redundantafter scalar; skippedifpostlock publicationnull",
+    "dispatch": "reloadcurrentF8/profile/slot0 thenflags1 genuinecomplete4DE340/base412440",
+    "guard": "firstactualmanager+10 captured section; actual8BCE37FCguard; Enter andsingleADD+18 beforestate0",
+    "null": "no manager/profile read",
+    "release": "singlecurrentdecrementADD thenLeave on capturedfirstsection",
+    "sourcefailure": "existing411EE0 guard cleanup thenrethrow; no clockcleanup/reset/rollback/re-registration or replay",
+    "unregister": "postlock publicationrecheck; secondmanager BEFORE currentF8capture; genuine115BBCFCA0 firstmatchclear only"
+  },
+  "source_layout": {
+    "added_cdecl_source_inputs_bytes": 16,
+    "deletion_bindings_unchanged_Win32_bytes": 180,
+    "drop_in_binary_compatible": false,
+    "shutdown_context_unchanged_Win32_bytes": 24
+  },
+  "status": "standalone_raw_provider_strict_Win32_existing3CTests_complete_emitted_normal_catch_order_checked_runtime_unexecuted",
+  "validation": {
+    "all16_linearly_decode": true,
+    "build_receipt": {
+      "bytes": 15023,
+      "path": "local/explicit_clock_shutdown_provider_cc10/build01.receipt.json",
+      "sha256": "48b3d4fb0c770de90757e8d610eab3352c00183247e29d0054e0e5dfb95d458a"
+    },
+    "call_import_relocations": 9,
+    "embeddedmanifest": {
+      "bytes": 381,
+      "path": "local/explicit_clock_shutdown_provider_cc10/build01_outputs/Release/bsp_game.manifest.xml",
+      "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df"
+    },
+    "emitted_checks": 52,
+    "existing_Release_checks_active_independent_of_NDEBUG": true,
+    "existing_provider_preservation": [
+      {
+        "added_function_sections": 2,
+        "all_prior_section_bytes_relocations_equal": true,
+        "member": "native_particle_clock_shutdown.obj",
+        "prior_function_sections": 18,
+        "whole_member_changed_for_added_provider": true
+      },
+      {
+        "function_sections": 5,
+        "member": "native_singleton_publication.obj",
+        "sha256": "164d7a291546572edb5a14768d06cae5b78be619a00b1e708873bc9659aa632b",
+        "whole_member_equal": true
+      },
+      {
+        "function_sections": 3,
+        "member": "native_singleton_removal_reorder.obj",
+        "sha256": "a3d1ed3ef5ed376b8e84fb65693ea8bb87b9b327e96edd642227a9d38c4c1f32",
+        "whole_member_equal": true
+      },
+      {
+        "function_sections": 8,
+        "member": "native_diagnostic_sink_lifetime.obj",
+        "sha256": "322d12cfbeeb1410374b2a9c38d63fab0ce1b0414681a78aff6f4f927b66bb04",
+        "whole_member_equal": true
+      },
+      {
+        "COFFtimestamp_only_change": true,
+        "all_function_bytes_masks_relocations_equal": true,
+        "current_timestamp": 1790412071,
+        "function_sections": 12,
+        "member": "native_singleton_destruction.obj",
+        "prior_timestamp": 1790409455,
+        "sha256": "71d6743dc21b4736568a73b9b879a57a383274df5032c8a3a660e22817e6bc23",
+        "whole_member_equal": false
+      },
+      {
+        "function_sections": 2,
+        "member": "native_particle_clock_sink_release.obj",
+        "sha256": "bd82d2d93598ee3fc0201f22cbe90118e46e6ddd595cfafb067e2b586fea9169",
+        "whole_member_equal": true
+      },
+      {
+        "function_sections": 9,
+        "member": "native_particle_record_resize.obj",
+        "sha256": "5e4fb5f69187856777fab5576d9a2711f587f92ed13b96eab3b23ff849e6252e",
+        "whole_member_equal": true
+      }
+    ],
+    "full_COFF_sections": 16,
+    "initial_failed_wholeobject_assumption_preserved": {
+      "bytes": 631,
+      "path": "local/explicit_clock_shutdown_provider_cc10/emitted_attempt01.json",
+      "sha256": "cac81df399526c2e0617dc4debb1fc80f42db7d556806e46a6ce1dca37cb63be"
+    },
+    "inlinecatch_main_offset": 258,
+    "inputs": {
+      "bytes": 11820,
+      "path": "local/explicit_clock_shutdown_provider_cc10/build01.inputs.json",
+      "sha256": "d9d319a77320ee518d27eadb2eb35b53c7d7703032807eceb7bcd183b7e560cc"
+    },
+    "new_entry366B_COFF_only": true,
+    "new_handler29B_ambiguous12_linkedmatches_COFFonly": true,
+    "rooted88B_sourceEH_metadata": {
+      "bytes": 2585,
+      "path": "local/explicit_clock_shutdown_provider_cc10/source_EH_identity.json",
+      "sha256": "f4e34a88e08f8604b2e36964fbe2ee58f1b848c8b65a9e725ebcc32878cde17e"
+    },
+    "source_checks": 15,
+    "strict_Win32_existing3CTests_passed": true,
+    "unique_full_masked_linked_sections": 9
+  },
+  "worker_baseline": "616f96c331e8e868773703d24bfb8ff3c0c02bfa"
+}
