@@ -97,4 +97,39 @@ The log shows 4 units at 0, 10 at 2 and 12 at 1.
 
 ## 5. Results
 
-Pending.
+Same-tree builds `ar_off` and `ar_on`, window line and module directory checked, logs deleted
+first. USN02 ran at 9200/9000 frames and USN04 at 4700/4500, with `BSP_GUNNERY_RNG_STREAMS=1
+BSP_DEATH_TABLE=1`.
+
+| run | deaths | hit records | total damage | records built / updates (after shots) | mean offset on ship aim |
+| --- | --- | --- | --- | --- | --- |
+| USN04 OFF / ON | 31 / 31, identical | 528 / 528 | 7215.6 / 7215.6 | 0 / 103, 241 (41) | no ship aim steps |
+| USN02 OFF | 19, failed at 44.60 s | 195 | 56430.6 | - | - |
+| USN02 ON | 23, failed at 44.60 s | 413 | 59841.9 | 39 / 710 (171) | 32.5 m over 101322 steps |
+
+Artillery (sub-types 2, 3, 4, 6, 9) shots and hits by group on USN02 (`gunrow` lines; hits can
+exceed shots because a burst can register on several units):
+
+| group | skill | shots OFF -> ON | hits OFF -> ON | hits per shot |
+| --- | --- | --- | --- | --- |
+| DeRuyter, Java, Kortenaer, Electra | Stun | 144 -> 151 | 33 -> 22 | 0.23 -> 0.15 |
+| Japanese | SPNormal | 164 -> 370 | 90 -> 155 | 0.55 -> 0.42 |
+| Houston, Exeter groups | SPVeteran | 61 -> 180 | 46 -> 216 | no offset |
+
+1. **Held:** the SPVeteran groups carry no offset. Their counts moved only with the battle.
+2. **Did not hold as sized:** the Stun group's hits per shot fell about 35%, not 80%. `bot+90h`
+   starts at zero and walks at 30 m/s per axis, so a 560 to 750 m error takes up to about 25 s to
+   arrive. Many of the group's salvos fire before it does (`006DF66A..006DF6D2` as read).
+3. **Held for accuracy:** Japanese hits per shot fell about 24%. Their raw counts rose because
+   the fight lasted longer.
+4. **Did not hold:** deaths rose from 19 to 23. The OFF run's Houston sinks at 168.66 s on the
+   torpedo impact that also starts a magazine explosion. ON, the fight has shifted by then (the
+   impact does not happen), and Houston lives to 207.96 s.
+   Haguro fires 200 shells instead of 60, and Encounter and John3 enter the gunfight (77 and 25
+   shots). Four more Japanese ships sink: Murasame, Jintsu, Asagumo and Harusame. Yudachi and
+   Samidare die later. Kortenaer and Electra die 0.35 s and 4.35 s later. The failure time
+   stays at 44.60 s.
+5. **Held:** USN04 is identical. Records are built for AA engagements, but no ship aim step runs.
+
+`kArtilleryRangingErrorBound` is ON. The USN02 9000 reference moves from 19 to 23 deaths and
+from 195 to 413 hit records.

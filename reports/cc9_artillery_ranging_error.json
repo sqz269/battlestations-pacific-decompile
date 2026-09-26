@@ -1,0 +1,29 @@
+{
+  "packet": "cc9_artillery_ranging_error",
+  "doc": "docs/ARTILLERY_RANGING_ERROR.md",
+  "answer": "The unit pass's per-target engagement record is bound: 00864880 builds the error from the ArtillerySubDirectorBot row, 00862CD0 shrinks it after shots, grows it after idle time, caps it and turns its bearing, 00862660 hands the (0,0,err)-about-up offset to the gun's ArtilleryGunnerBot (bot+84h), and 006DF520 walks bot+90h toward it at 30 m/s per axis and adds it to the aim point. kArtilleryRangingErrorBound is ON.",
+  "steps": [
+    {"address": "00864d17", "native": "00864880", "function": "00864ca0", "rule": "build the record on a lookup miss"},
+    {"address": "00864d6a", "native": "00862660", "function": "00864ca0", "rule": "hand the offset to the gun's bot; set the fired-since flag from gun+474h"},
+    {"address": "006df694", "native": "0042ac60", "function": "006df520", "rule": "bot+90h steps toward bot+84h by dt*30 (x axis; y and z at 006DF6B3 / 006DF6D2)"}
+  ],
+  "evidence_sites": {
+    "006df800..006df81f": "bot+90h (EDI = ESI+90h at 006DF677) added to the world aim point",
+    "006df9a5..006df9cd": "bot+90h = 00F87574 (zero) when the target is not a ship",
+    "00ce3d9c": "6.2831855, the initial bearing range",
+    "00ce7630": "30.0, the step rate"
+  },
+  "substitutions": [
+    "the skill row is GameUnitsHost::skill_level (the slot's unit+390h)",
+    "the extrapolation uses the pose rows; +50h at build time is the target position",
+    "bot+90h resets when a gun's aim leaves the ship-target path"
+  ],
+  "pair": {
+    "runs": "USN04 4700/4500 and USN02 9200/9000 at 0.05 s, BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1, same-tree ar_off / ar_on",
+    "usn04": "identical",
+    "usn02": "deaths 19 -> 23, hit records 195 -> 413, failed at 44.60 s both; hits per shot Stun 0.23 -> 0.15, SPNormal 0.55 -> 0.42; Houston 168.66 -> 207.96 s drives the cascade",
+    "predictions": "1, 3 (rate), 5 held; 2 (80%) and 4 (fewer deaths) did not"
+  },
+  "commits": {"off": "4a57d7481"},
+  "ghidra": "read-only; no renames, comments or saves"
+}

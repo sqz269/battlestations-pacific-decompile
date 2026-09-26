@@ -362,7 +362,7 @@ constexpr bool kHullSegmentHealthBound = true;
 //    ArtillerySubDirectorBot (00E19994, stride 28h), by the owner's skill row.
 //    OFF: no ranging offset. Packet cc9_artillery_ranging_error,
 //    docs/ARTILLERY_RANGING_ERROR.md.
-constexpr bool kArtilleryRangingErrorBound = false;
+constexpr bool kArtilleryRangingErrorBound = true;
 //  * kKillCreditDamageGateBound: 0077CE60 writes the attribution block (the
 //    +2C4h attacker the kill credit 0091BDA0 names) only for a live victim and
 //    only when the hit's damage, 00470510 for a hull segment or 00470740 when
