@@ -1,0 +1,374 @@
+{
+  "packet": "cc10_clock_owner_header_lifetime",
+  "baseline": "09edb1f1da09abfbbcc8562b7d0b3ad4eff8cb60",
+  "address": "004de4b0",
+  "status": "canonical_clock_owner_nested_header_lifetime_source_established_strict_win32_three_ctests_full401B_coff_equivalent_no_new_runtime",
+  "production_files": [
+    "include/bsp/native_particle_clock_singleton.hpp",
+    "src/native_particle_clock_singleton.cpp",
+    "include/bsp/native_sampler_loader_context.hpp",
+    "src/native_sampler_loader_context.cpp"
+  ],
+  "matches_reviewed_frozen_four_file_proposal": true,
+  "canonical_owner": {
+    "type": "NativeParticleClockStorage",
+    "size": 28,
+    "alignment": 4,
+    "vector_offset": 8,
+    "vector_size": 12,
+    "word_offset": 20,
+    "time_offset": 24,
+    "sampler_name_is_alias": true,
+    "default_placement": "::new (allocation) NativeParticleClockStorage;",
+    "no_parentheses_or_braces_or_value_initialization": true,
+    "one_owner_and_nested_header_lifetime": true,
+    "uses_returned_new_object_pointer": true,
+    "no_separate_header_atomic_or_count": true,
+    "time_18_neither_initialized_nor_read_until_B19A10": true,
+    "seven_native_stores": [
+      {
+        "offset": 153,
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 4], 0xce7d08"
+      },
+      {
+        "offset": 162,
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 8], 0"
+      },
+      {
+        "offset": 169,
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 0xc], 0"
+      },
+      {
+        "offset": 176,
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 0x10], 0"
+      },
+      {
+        "offset": 183,
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 0x14], 0"
+      },
+      {
+        "offset": 190,
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax], 0xce7d38"
+      },
+      {
+        "offset": 196,
+        "mnemonic": "mov",
+        "operands": "dword ptr [eax + 4], 0xce7d24"
+      }
+    ],
+    "no_extra_owner_access_or_constructor_call": true,
+    "incoming_nonnull_publication_requires_live_canonical_owner": true,
+    "void_publication_cell_unchanged": true
+  },
+  "native_original": {
+    "identity": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_owner_header_lifetime_implementation/native/004de4b0_getter.bin",
+      "size": 199,
+      "sha256": "fa1f9c042b0a54c37c68547e0fed4dc02526fdfe6a8911e5b66e46ed9d541ec2"
+    },
+    "length": 199,
+    "verified_live_bytes_equal_frozen_and_disk": true,
+    "read_only_queries": [
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "count"
+        ],
+        "exit": 0,
+        "output": {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_owner_header_lifetime_implementation/native/verified_count.txt",
+          "size": 48,
+          "sha256": "63d6898b1a95682fed821ede231b093983ced0dad27690ab2031a3b6fe2e91a9"
+        }
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "proto",
+          "004de4b0",
+          "--brief"
+        ],
+        "exit": 0,
+        "output": {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_owner_header_lifetime_implementation/native/getter_proto.txt",
+          "size": 119,
+          "sha256": "07ebd3ace0889c15a1034a0cdc705e3070113ed10eff6f4681cb9cc9e3746bf9"
+        }
+      },
+      {
+        "command": [
+          "python",
+          "tools/bsp.py",
+          "ghidra",
+          "bytes",
+          "004de4b0",
+          "--length",
+          "199"
+        ],
+        "exit": 0,
+        "output": {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_owner_header_lifetime_implementation/native/getter_bytes.txt",
+          "size": 952,
+          "sha256": "7a3ca585f47eb7b553e1d817b977ae02fefba40730c804882ea74b7b5f7a5686"
+        }
+      }
+    ],
+    "original_abi": "No input; EAX actual owner result; RET; original native private EH separate"
+  },
+  "source_interfaces": {
+    "getter": "Borrowed live void* volatile manager and clock cells; actual canonical owner result",
+    "adapter": "Same operation frame and cells; direct canonical owner return; sampler independent class becomes alias",
+    "removed_old_fields": [
+      "word_08",
+      "word_0c",
+      "word_10",
+      "payload_18"
+    ],
+    "decorated_source_symbols_change": true,
+    "not_original_binary_replacement": true
+  },
+  "build": {
+    "utc_start": "2026-09-26T09:12:00.182739+00:00",
+    "utc_end": "2026-09-26T09:12:24.041068+00:00",
+    "command": {
+      "argv": [
+        "powershell",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1",
+        "-Configuration",
+        "Release"
+      ],
+      "cwd": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values"
+    },
+    "exit": 0,
+    "all_three_ctests_pass": true,
+    "runtime_cases": 0,
+    "new_tracked_tests": false,
+    "inputs_and_prior_artifacts_unchanged": true
+  },
+  "source_config_pins": 26,
+  "tool_sdk_pins": 27,
+  "preservation_rows": 1340,
+  "prior_artifacts_unchanged": true,
+  "compiled": {
+    "schema": "local/cc10_clock_owner_header_lifetime_implementation/compiled_evidence.json",
+    "identity": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_owner_header_lifetime_implementation/compiled_evidence.json",
+      "size": 313325,
+      "sha256": "f025f2e1bd4c97c54ef6a72895a3a42feae83fd56b0c1689a49a429e631c197f"
+    },
+    "function_schema": "compiled_functions[]",
+    "member_schema": "exact_members[]",
+    "full_old_new_body_sizes": [
+      274,
+      127
+    ],
+    "total_compared_bytes": 401,
+    "raw_bodies_and_instructions_equal": true,
+    "getter_relocations_equal": true,
+    "declared_symbol_changes": [
+      {
+        "old_name": "?get_native_particle_clock_singleton_004de4b0@bsp@@YAPAUNativeParticleClockStorage@1@ACRAX0@Z",
+        "new_name": "?get_native_particle_clock_singleton_004de4b0@bsp@@YAPAUNativeParticleClockStorage@1@ACRAX0@Z",
+        "relocations": []
+      },
+      {
+        "old_name": "?get_native_sampler_loader_singleton_004de4b0@bsp@@YAPAUNativeSamplerLoaderSingletonStorage@1@ACRAX0AAUNativeSamplerLoaderOperation@1@@Z",
+        "new_name": "?get_native_sampler_loader_singleton_004de4b0@bsp@@YAPAUNativeParticleClockStorage@1@ACRAX0AAUNativeSamplerLoaderOperation@1@@Z",
+        "relocations": [
+          {
+            "offset": 6,
+            "kind": 6,
+            "old_symbol": "__ehhandler$?get_native_sampler_loader_singleton_004de4b0@bsp@@YAPAUNativeSamplerLoaderSingletonStorage@1@ACRAX0AAUNativeSamplerLoaderOperation@1@@Z",
+            "new_symbol": "__ehhandler$?get_native_sampler_loader_singleton_004de4b0@bsp@@YAPAUNativeParticleClockStorage@1@ACRAX0AAUNativeSamplerLoaderOperation@1@@Z"
+          }
+        ]
+      }
+    ],
+    "exact_members": [
+      {
+        "member": "native_particle_clock_singleton.obj",
+        "object": {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_owner_header_lifetime_implementation/compiled/build/win32/bsp_core.dir/Release/native_particle_clock_singleton.obj",
+          "size": 3787,
+          "sha256": "f1ee58f16cac53bed1ebb4596703e0df7fd1c3fbf79af9cfc3837de25e804940"
+        },
+        "exact_cmake_object_member": true
+      },
+      {
+        "member": "native_sampler_loader_context.obj",
+        "object": {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_owner_header_lifetime_implementation/compiled/build/win32/bsp_core.dir/Release/native_sampler_loader_context.obj",
+          "size": 11802,
+          "sha256": "d07ef2e550c2c5e9b784d01d2f9561e4d4ba9843722e4dc7f94016e07dd01c46"
+        },
+        "exact_cmake_object_member": true
+      },
+      {
+        "member": "native_sampler_cache_entry.obj",
+        "object": {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_owner_header_lifetime_implementation/compiled/build/win32/bsp_core.dir/Release/native_sampler_cache_entry.obj",
+          "size": 44569,
+          "sha256": "488c572b96a8e4e750f2c0ecb28fd0c7edb1b28b43399af17a80036180e32704"
+        },
+        "exact_cmake_object_member": true
+      },
+      {
+        "member": "native_material_descriptor_samplers.obj",
+        "object": {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_owner_header_lifetime_implementation/compiled/build/win32/bsp_core.dir/Release/native_material_descriptor_samplers.obj",
+          "size": 77158,
+          "sha256": "7d5d686c300f7acb8775fe53718f3d81470052e5dfd46654eaf835e4cd99b086"
+        },
+        "exact_cmake_object_member": true
+      }
+    ],
+    "library": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_owner_header_lifetime_implementation/compiled/build/win32/Release/bsp_core.lib",
+      "size": 71219230,
+      "sha256": "2e3bb4ce1dc2088150e8cdff66251fddaa416dbbac96e5b0168e80c55a93e7ba"
+    },
+    "all_archive_member_identities": 1778,
+    "initialization_window_only_seven_stores": true,
+    "no_owner_plus18_read_or_store": true,
+    "native_zero_fields_use_immediate_zero": true,
+    "source_lifetime_change_has_no_added_emitted_constructor_call": true,
+    "rebuilt_sampler_symbol": "?load_native_sampler_with_default_options_00b1b4d0@bsp@@YAPAXPAUNativeParticleClockStorage@1@PBXAAUNativeSamplerCacheEntryContext@1@AAUNativeSamplerDefaultLoadOperation@1@@Z",
+    "rebuilt_consumer_call": {
+      "offset": 384,
+      "kind": 20,
+      "symbol": "?get_native_sampler_loader_singleton_004de4b0@bsp@@YAPAUNativeParticleClockStorage@1@ACRAX0AAUNativeSamplerLoaderOperation@1@@Z"
+    },
+    "strict_flags": {
+      "AdditionalIncludeDirectories": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-field-values\\include;J:\\PROG\\battlestations-pacific-decompile-cc10-lua-field-values\\build\\win32\\_deps\\lua511-src\\src;J:\\PROG\\battlestations-pacific-decompile-cc10-lua-field-values\\build\\win32\\_deps\\zlib121-src;%(AdditionalIncludeDirectories)",
+      "AdditionalOptions": "%(AdditionalOptions) /external:I \"J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/build/win32/_deps/dxsdk_d3dx-src/build/native/include\"",
+      "AssemblerListingLocation": "$(IntDir)",
+      "BasicRuntimeChecks": "Default",
+      "BufferSecurityCheck": null,
+      "CallingConvention": null,
+      "ExceptionHandling": "Sync",
+      "ExternalWarningLevel": "TurnOffAllWarnings",
+      "FloatingPointModel": "Strict",
+      "ForceConformanceInForLoopScope": null,
+      "InlineFunctionExpansion": "AnySuitable",
+      "LanguageStandard": "stdcpp17",
+      "MinimalRebuild": null,
+      "Optimization": "MaxSpeed",
+      "PrecompiledHeader": "NotUsing",
+      "RemoveUnreferencedCodeData": null,
+      "RuntimeLibrary": "MultiThreadedDLL",
+      "SupportJustMyCode": null,
+      "TreatWChar_tAsBuiltInType": null,
+      "TreatWarningAsError": "true",
+      "UseFullPaths": "false",
+      "WarningLevel": "Level4",
+      "PreprocessorDefinitions": "%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\"",
+      "ObjectFileName": "$(IntDir)",
+      "DebugInformationFormat": "\n      ",
+      "ScanSourceForModuleDependencies": "false"
+    },
+    "linked_body_claim": false
+  },
+  "raw_build_tool_receipts": [
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_owner_header_lifetime_implementation/raw_build_launch_tool_result.json",
+      "size": 130,
+      "sha256": "5cb2c459e603d4736bde50da69cea19d37f30bc7f51f2103cd414de1de7975a4"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_owner_header_lifetime_implementation/raw_build_wait_tool_result01.json",
+      "size": 129,
+      "sha256": "f0d909b1af42fc22453a6122fdde2f71747d6f3f3c2ce3e3508d334e269116d3"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_owner_header_lifetime_implementation/raw_build_wait_tool_result02.json",
+      "size": 583,
+      "sha256": "3bd3fecbcbde10ed25a98e4484029d03e8d8881ed06acc26cfe760ecc773ee55"
+    }
+  ],
+  "raw_successful_static_tool_receipt": {
+    "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_owner_header_lifetime_implementation/raw_static_verification_tool_result.json",
+    "size": 1369,
+    "sha256": "9c03060f57a48bcafd480a32dc49461d9283f1978d15810958310b8c37f8e26f"
+  },
+  "analysis_failures": [
+    {
+      "folder": "inspection_attempt01",
+      "diagnosis": "inspect.py helper filename shadowed Python inspect during Capstone import; no object reads",
+      "original_helper_and_observed_transcript_preserved": true,
+      "raw_tool_wrapper_preserved": false
+    },
+    {
+      "folder": "inspection_attempt02",
+      "diagnosis": "Full401B equality already passed; handwritten predicate expected register-zero stores and omitted existing MOV ECX,EAX",
+      "original_helper_preserved": true,
+      "actual_raw_tool_result": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_owner_header_lifetime_implementation/inspection_attempt02/raw_static_verification_tool_result.json",
+        "size": 470,
+        "sha256": "1e316ee9ebba2e1064a08f9aa022660db49e6ddb73e1cec2ac5bd4a2e3a59ba3"
+      }
+    }
+  ],
+  "no_production_change_or_rebuild_for_analysis_corrections": true,
+  "remaining_header_alias_sites": [
+    {
+      "file": "src/native_particle_record_resize.cpp",
+      "lines": [
+        27,
+        40,
+        64,
+        113
+      ]
+    },
+    {
+      "file": "src/native_particle_clock_shutdown.cpp",
+      "lines": [
+        29,
+        99,
+        105,
+        118,
+        129
+      ]
+    },
+    {
+      "file": "src/native_sampler_cache_operation.cpp",
+      "lines": [
+        24,
+        28,
+        115,
+        152
+      ]
+    }
+  ],
+  "limits": [
+    "Unchanged incompatible raw integer/pointer lvalue consumers and broader record/string/profile interfaces remain",
+    "No fully ISO-safe or executed nonempty clock/sampler composition",
+    "C30570 genuine positive-child/rate producer remains missing",
+    "Platform5030/SDK and caller MSG preimage remain separate",
+    "No source0W/full sampler/material/application/startup/draw/original-game activation",
+    "No native original register/private-stack/FH3/SEH/hardware-fault proof"
+  ],
+  "readiness": {
+    "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_owner_header_lifetime_readiness/evidence.zip",
+    "size": 170834,
+    "sha256": "bc093d5f3a8cd274e621c3c5f9576d445c1a10cdfa5911e0429db44a1a954476"
+  },
+  "new_tracked_tests": false,
+  "new_runtime_case": false,
+  "ghidra_read_only": true,
+  "doc": "docs/NATIVE_CLOCK_OWNER_HEADER_LIFETIME_CC10.md",
+  "archive": "local/cc10_clock_owner_header_lifetime_evidence.zip",
+  "manifest": "local/cc10_clock_owner_header_lifetime_implementation/manifest.json",
+  "freeze_receipt": "local/cc10_clock_owner_header_lifetime_implementation/freeze_receipt.json"
+}

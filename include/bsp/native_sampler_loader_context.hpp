@@ -1,22 +1,13 @@
 #pragma once
-#include "bsp/native_resource_record_vector.hpp"
+#include "bsp/native_particle_clock_singleton.hpp"
 #include "bsp/native_resource_registry_lookup.hpp"
 #include <cstddef>
 
 namespace bsp {
-// Actual 1Ch F8D420 owner view. The established native particle-clock provider
-// produces this same storage; this module does not implement 4DE4B0 a second
-// time. B1A4F0 consumes the record vector through owner+4 and B19A10 writes
-// float18. No constructor initializes18 or constructs a projected clock.
-struct NativeSamplerLoaderSingletonStorage {
-    std::uint32_t vtable_00, cache_vtable_04;
-    NativeResourceRecordVectorStorage records_08;
-    std::uint32_t word_14;
-    float time_18;
-};
-static_assert(sizeof(NativeSamplerLoaderSingletonStorage) == 0x1c);
-static_assert(offsetof(NativeSamplerLoaderSingletonStorage, records_08) == 8);
-static_assert(offsetof(NativeSamplerLoaderSingletonStorage, time_18) == 0x18);
+// SAME canonical actual owner type and SAME live vector subobject at +8.
+// The alias creates no second object/header or constructor. The existing
+// getter owns construction; genuine B19A10 is the first time_18 writer.
+using NativeSamplerLoaderSingletonStorage = NativeParticleClockStorage;
 
 struct NativeSamplerLoaderOperation final {
     enum class Phase { fresh, running, complete, failed, diagnostic_retired };

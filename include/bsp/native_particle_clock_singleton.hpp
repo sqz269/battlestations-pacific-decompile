@@ -4,24 +4,42 @@
 #error Native particle-clock singleton requires MSVC Win32.
 #endif
 
+#include "bsp/native_resource_record_vector.hpp"
+
 #include <cstddef>
 #include <cstdint>
+#include <type_traits>
 
 namespace bsp {
 
-// Actual 1Ch owner storage. The native constructor does not write payload_18;
-// a caller may observe its allocation preimage before the clock setter runs.
+// One actual 1Ch owner and its actual nested vector header. The getter starts
+// this object's lifetime once by default placement construction, before the
+// seven native stores. No initializer or store defines time_18: do not read it
+// until the genuine B19A10 writer has run. This is not a projected clock.
 struct NativeParticleClockStorage {
     std::uint32_t profile_00;
     std::uint32_t profile_04;
-    std::uint32_t word_08;
-    std::uint32_t word_0c;
-    std::uint32_t word_10;
+    NativeResourceRecordVectorStorage records_08;
     std::uint32_t word_14;
-    std::uint32_t payload_18;
+    float time_18;
 };
+static_assert(sizeof(void*) == 4 && sizeof(float) == 4);
+static_assert(sizeof(NativeResourceRecordVectorStorage) == 0x0c);
+static_assert(alignof(NativeResourceRecordVectorStorage) == 4);
+static_assert(offsetof(NativeResourceRecordVectorStorage, data_00) == 0);
+static_assert(offsetof(NativeResourceRecordVectorStorage, count_04) == 4);
+static_assert(offsetof(NativeResourceRecordVectorStorage, capacity_08) == 8);
 static_assert(sizeof(NativeParticleClockStorage) == 0x1c);
-static_assert(offsetof(NativeParticleClockStorage, payload_18) == 0x18);
+static_assert(alignof(NativeParticleClockStorage) == 4);
+static_assert(offsetof(NativeParticleClockStorage, profile_00) == 0);
+static_assert(offsetof(NativeParticleClockStorage, profile_04) == 4);
+static_assert(offsetof(NativeParticleClockStorage, records_08) == 8);
+static_assert(offsetof(NativeParticleClockStorage, word_14) == 0x14);
+static_assert(offsetof(NativeParticleClockStorage, time_18) == 0x18);
+static_assert(std::is_standard_layout_v<NativeParticleClockStorage>);
+static_assert(std::is_trivially_default_constructible_v<NativeParticleClockStorage>);
+static_assert(std::is_trivially_destructible_v<NativeParticleClockStorage>);
+static_assert(std::is_trivially_default_constructible_v<NativeResourceRecordVectorStorage>);
 
 // Complete source behavior of 004DE4B0[199]. Original entry takes no input,
 // returns EAX and uses RET. Source adds stable borrowed references to the
