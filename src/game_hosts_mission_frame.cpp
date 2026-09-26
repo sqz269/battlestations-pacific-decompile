@@ -1310,6 +1310,13 @@ void game_warning_report_torpedo_00977690(std::size_t unit) {
     host->record("WarningManager::report_torpedo_queue", 0x009763e0u);
 }
 
+void game_scoring_set_real_play_time_running_00905340(bool running) {
+    GameMissionFrameHost::Impl* host = g_warning_owner;
+    if (host == nullptr) return;
+    host->world.bots.slots_active = running;  // 00905344 MOV [ECX+14A4h],AL
+    host->done("MissionScoring::set_real_play_time_running", 0x00905340u);
+}
+
 void game_warning_torpedo_effect_00977820(std::size_t unit) {
     GameMissionFrameHost::Impl* host = g_warning_owner;
     if (host == nullptr) return;
@@ -1564,6 +1571,38 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             host.units->create_units(host.scene_contents->entities());
             host.world_host = std::make_unique<GameWorldHost>(host.log, *host.units);
             host.world_host->build_entity_chains_009037f0();
+            if constexpr (kBotSchedulerWritersBound) {
+                // 0091B2E0 (from BSP_Game_OnInit 004E3AA0, once per process in
+                // the image; here at the first world build) stores the two
+                // Scoring.lua intervals, then 0091C560 (from construct_world
+                // 004DE610) resets the scheduler for the new mission:
+                // 0091C603 +1494h = +14ACh, 0091C61C +149Ch = +14A8h,
+                // 0091C610 +14A4h = 0, 0091C628 +1498h = 1, 0091C62F +14A0h = 0.
+                // +14A5h and +1424h (the local slot) have no field here.
+                bsp::BotSchedulerState& bots = host.world.bots;
+                float update = 1.0f;
+                float recalc = 5.0f;
+                const bool read = host.lua.read_scoring_intervals_0091b2e0(update, recalc);
+                if (read) {
+                    host.done("MissionScoring::load_intervals", 0x0091b2e0u);
+                } else {
+                    host.record("MissionScoring::load_intervals", 0x0091b2e0u);
+                }
+                bots.retarget_period = update;
+                bots.think_period = recalc;
+                bots.think_countdown = bots.think_period;
+                bots.retarget_countdown = bots.retarget_period;
+                bots.slots_active = false;
+                bots.enabled = true;
+                bots.active_time = 0.0f;
+                host.done("MissionScoring::reset_for_new_mission", 0x0091c560u);
+                // 0091C63B JMP 0090FA40, the reset's tail, not read.
+                host.record("MissionScoring::reset_tail_0090fa40", 0x0090fa40u);
+                host.log.notef("mission scoring: Scoring.lua %s, InGameScoreUpdateTimeInterval=%.3f "
+                    "ReCalcTimeInterval=%.3f; 0091C560 reset: +1498h=1 +14A4h=0",
+                    read ? "read" : "not reached (defaults)", static_cast<double>(update),
+                    static_cast<double>(recalc));
+            }
             host.units->issue_authored_commands();
             if (host.units->count() > 0) host.units->set_controlled_unit_004c0890(0);
             // Milestone 2l: one `thisTable` slot per created instance, which is

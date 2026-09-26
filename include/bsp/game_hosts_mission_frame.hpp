@@ -49,6 +49,18 @@ void game_warning_report_torpedo_00977690(std::size_t unit);
 // point effect (this+190h) parented to entity+4A4h.
 void game_warning_torpedo_effect_00977820(std::size_t unit);
 
+// Packet cc9_bot_scheduler_writers (docs/BOT_SCHEDULER_WRITERS.md). True: the
+// three writers of the side-AI scheduler's gate and periods run - 0091B2E0's
+// Scoring.lua intervals (+14A8h, +14ACh), 0091C560's reset for a new mission
+// (+1498h = 1, +14A4h = 0, both countdowns reloaded) at the construct-world
+// point, and the Lua native Scoring_RealPlayTimeRunning (008B87F0 -> 00905340,
+// +14A4h). False: the four fields keep their zero defaults.
+inline constexpr bool kBotSchedulerWritersBound = false;
+
+// 00905340 BSP_MissionScoring_SetRealPlayTimeRunning on [game+21A0h]: +14A4h.
+// A no-op before a mission frame host exists.
+void game_scoring_set_real_play_time_running_00905340(bool running);
+
 class GameHostLog;
 class GameVfsHost;
 class GameMissionLuaHost;

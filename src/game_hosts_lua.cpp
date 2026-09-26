@@ -11,6 +11,7 @@
 // binding bodies, which are host records rather than game behaviour.
 
 #include "bsp/game_hosts_lua.hpp"
+#include "bsp/game_hosts_mission_frame.hpp"
 
 #include "bsp/air_operations.hpp"
 #include "bsp/game_hosts_ai.hpp"
@@ -181,8 +182,12 @@ int binding_trampoline(lua_State* state) {
     // queues is drained into the units host through this host's own frame step,
     // and its callback needs this host's `thisTable`.
     const bool spawn_new_row = dispatch_row.address == 0x0094c480u;
+    // Packet cc9_bot_scheduler_writers: Scoring_RealPlayTimeRunning (008B87F0),
+    // argument 0 as a boolean (008B88EF) into 00905340 on [game+21A0h].
+    const bool scoring_play_time_row
+        = kBotSchedulerWritersBound && dispatch_row.address == 0x008b87f0u;
     const bool handled = avoidance_setting || objective_row || get_property_row || ready_row
-        || launch_row || generate_row || spawn_new_row
+        || launch_row || generate_row || spawn_new_row || scoring_play_time_row
         || (orders != nullptr && GameScriptOrdersHost::handles(dispatch_row.name));
     // The replay of a failed named call, which the executable makes only to
     // recover the error message, must not count a second time.
@@ -276,6 +281,12 @@ int binding_trampoline(lua_State* state) {
         // diagnostic string or native SEH construction is claimed here.
         if (!host->error_replay())
             host->set_avoid_all_ship_collision_008d0852(lua_toboolean(state, 1) != 0);
+        return 0;
+    }
+    if (scoring_play_time_row) {
+        if (!host->error_replay()) {
+            game_scoring_set_real_play_time_running_00905340(lua_toboolean(state, 1) != 0);
+        }
         return 0;
     }
     if (handled && !host->error_replay()) {
@@ -974,6 +985,36 @@ bool GameMissionLuaHost::read_global_number_pair(const char* name, float& first,
             first = static_cast<float>(::lua_tonumber(state_, -2));
             second = static_cast<float>(::lua_tonumber(state_, -1));
             ok = true;
+        }
+    }
+    ::lua_settop(state_, top);
+    return ok;
+}
+
+bool GameMissionLuaHost::read_scoring_intervals_0091b2e0(float& update_interval,
+    float& recalc_interval) {
+    update_interval = 1.0f;   // 0091BC0E FLD1
+    recalc_interval = 5.0f;   // 0091BC4C FLD [00CE3850]
+    if (state_ == nullptr) return false;
+    const int top = ::lua_gettop(state_);
+    lua_getfield(state_, LUA_GLOBALSINDEX, "Scoring");
+    if (lua_type(state_, -1) != LUA_TTABLE) {
+        ::lua_settop(state_, top);
+        set_phase("scoring table");
+        bsp::run_script_file(*this, "Scripts/datatables/Scoring.lua");
+        lua_getfield(state_, LUA_GLOBALSINDEX, "Scoring");
+    }
+    bool ok = false;
+    if (lua_type(state_, -1) == LUA_TTABLE) {
+        ok = true;
+        ::lua_getfield(state_, -1, "InGameScoreUpdateTimeInterval");  // 00D18974
+        if (::lua_isnumber(state_, -1)) {
+            update_interval = static_cast<float>(::lua_tonumber(state_, -1));
+        }
+        ::lua_pop(state_, 1);
+        ::lua_getfield(state_, -1, "ReCalcTimeInterval");  // 00D18960
+        if (::lua_isnumber(state_, -1)) {
+            recalc_interval = static_cast<float>(::lua_tonumber(state_, -1));
         }
     }
     ::lua_settop(state_, top);

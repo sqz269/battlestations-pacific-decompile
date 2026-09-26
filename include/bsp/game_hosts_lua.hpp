@@ -391,6 +391,12 @@ public:
     // 004A9BD0 reads into [00E18710]/[00E1870C]. False when the global is
     // absent or not a table of two numbers.
     bool read_global_number_pair(const char* name, float& first, float& second);
+    // Packet cc9_bot_scheduler_writers: 0091B2E0's two reads of the Scoring
+    // table (Scripts\datatables\Scoring.lua, run when `Scoring` is absent):
+    // InGameScoreUpdateTimeInterval (default 1.0, 0091BC0E) and
+    // ReCalcTimeInterval (default 5.0 = 00CE3850). A missing key keeps its
+    // default. False when the table could not be reached.
+    bool read_scoring_intervals_0091b2e0(float& update_interval, float& recalc_interval);
     // Packet cc9_screen_29h: Globals["Difficulty"]["LockRadiusMultipliers"],
     // which 0087D7B0 appends at 0087DC85..0087DCFD into the global config's
     // vector at +3Ch (first +40h), one float per difficulty index from Lua
