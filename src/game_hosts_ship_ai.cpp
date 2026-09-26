@@ -76,6 +76,7 @@
 #include "bsp/ship_ai_hull_geometry.hpp"
 #include "bsp/ship_ai_path_point.hpp"
 #include "bsp/ship_ai_path_refresh.hpp"
+#include "bsp/ship_ai_path_corridor.hpp"
 #include "bsp/ship_ai_path_search.hpp"
 #include "bsp/ship_ai_goal_vector.hpp"
 #include "bsp/ship_ai_obstacle_tables.hpp"
@@ -211,6 +212,19 @@ inline constexpr float kTorpedoCollectTimer1 = 1.5f;
 // step, so a per-step write between replans lasts one step. False: both are
 // records and such writes persist.
 inline constexpr bool kShipAiSnapshotBound = true;
+// Packet cc9_ship_ai_turn_clearance, docs/SHIP_AI_TAILS.md section 6. True:
+//  * 009ED3E0's head (009ED3E0..009ED498) builds the two corridor widths from
+//    the unit's formation group: 00778890 (the unit leads its group, entity+284h
+//    then [group+14h]), 0070D400 / 0070D5D0 (the largest across-axis offset on
+//    each side over the member records, clamped per slot into [0, 1200], floor
+//    5, cap 400), each + 20.0 and capped at 600 (009ED41F / 009ED460). They go
+//    to 009D9DE0 through the refresh arm instead of the 20.0f literal of
+//    00CE3930;
+//  * 009F4D10's tail call 009EF910 (009F4D87) is the routine this host already
+//    runs right after the publish (run_clearance_refresh), so the hook's row is
+//    `done` instead of a record.
+// False: both corridor widths are 20.0f and the hook records.
+inline constexpr bool kShipAiTurnClearanceBound = false;
 inline constexpr float kTorpedoCollectTimer2 = 2.0f;
 // Packet cc9_station_keeping, docs/STATION_KEEPING.md. True: the follow update's
 // station request 009DA3B0 is stored (blk+38Ch..+3A6h, including blk+39Ch = 0
@@ -4236,7 +4250,13 @@ public:
         }
     }
     void tail_009ef910(float) override {
-        owner_.record("ShipAiOrder::tail_009ef910", 0x009ef910u);
+        // 009F4D87. The body runs in run_clearance_refresh, straight after the
+        // publish returns: nothing between reads what it writes.
+        if constexpr (kShipAiTurnClearanceBound) {
+            owner_.done("ShipAiOrder::tail_009ef910", 0x009ef910u);
+        } else {
+            owner_.record("ShipAiOrder::tail_009ef910", 0x009ef910u);
+        }
     }
 
 private:
@@ -5352,6 +5372,55 @@ private:
     std::size_t index_;
 };
 
+// Packet cc9_ship_ai_turn_clearance: 009ED3E0's head over the units host's
+// formation groups (entity+284h). The member records' across-axis column is
+// read through 0070D290's projection (formation_station_0070d290 with unit
+// scales), which returns record+10h+column*4 for a member with a record.
+class CorridorBinding final : public bsp::ShipAiPathCorridorHost {
+public:
+    CorridorBinding(GameShipAiHost::Impl& owner, std::size_t index)
+        : owner_(owner), index_(index) {}
+    bool unit_leads_group_00778890() override {
+        group_ = owner_.units.unit_formation_group_0284(index_);
+        const bool leads = group_ >= 0 && owner_.units.formation_leader_0014(group_) == index_;
+        owner_.done("ShipAiPath::unit_leads_group_00778890", 0x00778890u);
+        return leads;
+    }
+    float group_extent_positive_0070d400() override {
+        build_view();
+        owner_.done("ShipAiPath::group_extent_0070d400", 0x0070d400u);
+        return bsp::ship_ai_unit_group_extent_positive_0070d400(view_);
+    }
+    float group_extent_negative_0070d5d0() override {
+        build_view();
+        owner_.done("ShipAiPath::group_extent_0070d5d0", 0x0070d5d0u);
+        return bsp::ship_ai_unit_group_extent_negative_0070d5d0(view_);
+    }
+
+private:
+    void build_view() {
+        if (built_) return;
+        built_ = true;
+        const std::int32_t count = owner_.units.formation_member_count(group_);
+        members_.assign(static_cast<std::size_t>(std::max(0, count)), bsp::ShipAiUnitGroupMember{});
+        for (std::int32_t slot = 0; slot < count; ++slot) {
+            const std::size_t unit = owner_.units.formation_member_unit(group_, slot);
+            if (unit == static_cast<std::size_t>(-1)) continue;
+            const auto station = owner_.units.formation_station_0070d290(unit, 1.0f, 1.0f);
+            for (float& v : members_[static_cast<std::size_t>(slot)].lateral) v = station.across;
+        }
+        view_.members = members_.empty() ? nullptr : members_.data();
+        view_.count = count;
+        view_.column = 0;   // every column holds the group's own column value
+    }
+    GameShipAiHost::Impl& owner_;
+    std::size_t index_;
+    std::int32_t group_{-1};
+    bool built_{false};
+    std::vector<bsp::ShipAiUnitGroupMember> members_;
+    bsp::ShipAiUnitGroupView view_{};
+};
+
 class PathPickBinding final : public bsp::ShipAiPathPickHost {
 public:
     PathPickBinding(GameShipAiHost::Impl& owner, GameShipAiHost::Impl::Controller& ctl,
@@ -5365,7 +5434,6 @@ public:
         // the unit's group, is not projected, so both widths are the literal
         // 20.0f at 00CE3930 that 009ED3E3 seeds them with.
         owner_.done("ShipAiPath::refresh_plan_009ed4e4", 0x009ed4e4u);
-        owner_.record("ShipAiPath::refresh_plan_head", 0x009ed3e0u);
         ++row_.path_plan_refreshes;
         ++owner_.summary.path_plan_refreshes;
 
@@ -5381,12 +5449,27 @@ public:
 
         PathPlannerBinding planner(owner_, ctl_, index_);
         PathSearchBinding search(owner_, ctl_);
+        // 009ED3E0..009ED498: the two corridor widths.
+        bsp::ShipAiPathCorridorWidths widths{};
+        if constexpr (kShipAiTurnClearanceBound) {
+            CorridorBinding corridor(owner_, index_);
+            widths = bsp::ship_ai_path_corridor_widths_009ed3e0(corridor);
+            owner_.done("ShipAiPath::refresh_plan_head", 0x009ed3e0u);
+            if (widths.from_group) {
+                ++owner_.summary.corridor_group_widths;
+                owner_.summary.corridor_width_max = std::max(owner_.summary.corridor_width_max,
+                    std::max(widths.width_a, widths.width_b));
+                ++row_.corridor_group_widths;
+            }
+        } else {
+            owner_.record("ShipAiPath::refresh_plan_head", 0x009ed3e0u);
+        }
         const bsp::ShipAiPathRefreshResult result = bsp::ship_ai_path_refresh_arm_009ed4e4(
             state, seconds,
             std::array<float, 2>{pose_x, pose_z},
             std::array<float, 2>{ctl_.goal.goal_x_1dc, ctl_.goal.goal_z_1e0},
             kShipPlannerTravelLayerBound ? ctl_.travel_layer_30c : state.in_use->zone_layer, 0.0f,
-            bsp::kShipAiPathCorridorWidthDefault, bsp::kShipAiPathCorridorWidthDefault,
+            widths.width_a, widths.width_b,
             planner, search);
         owner_.done("ShipAiPath::plan_009e3780", 0x009e3780u);
         owner_.done("ShipAiPath::search_step_009ec680", 0x009ec680u);
@@ -7761,6 +7844,10 @@ void GameShipAiHost::report() {
         host.summary.path_plan_refreshes, host.summary.path_plan_seeds,
         host.summary.path_plan_accepts, host.summary.approach_frames,
         host.summary.controller_updates);
+    host.log.notef("summary mission ship ai corridor bound=%d group_widths=%llu max_width=%.1f "
+        "(009ED3E0 head: 00778890 / 0070D400 / 0070D5D0, packet cc9_ship_ai_turn_clearance)",
+        kShipAiTurnClearanceBound ? 1 : 0, host.summary.corridor_group_widths,
+        static_cast<double>(host.summary.corridor_width_max));
     // Milestone 2q: the search, the swap and the point.
     host.log.notef("  %-20s %-10s %8s %6s %6s %10s %7s %11s %11s %9s %9s", "unit", "state",
         "searches", "state", "nodes", "swaps", "points", "point_x", "point_z", "nav_dist",
