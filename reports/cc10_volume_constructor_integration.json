@@ -1,0 +1,102 @@
+{
+  "packet": "cc10_volume_constructor_integration",
+  "worker_commit": "ca9bc937751dcdb06d60d3bcc308168a31726827",
+  "source_integration": "ced8e97296658f48fa59bd1a5e6635e9b9567e05",
+  "worker_report": "reports/native_runtime_volume_texture_owner_cc10.json",
+  "primary_verification": {
+    "result": "PASS",
+    "worker_commit": "ca9bc937751dcdb06d60d3bcc308168a31726827",
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-field-values\\local\\cc10_runtime_volume_constructor_implementation\\evidence.zip",
+      "sha256": "558ed1d072fcffd7df0a5f1485a057573b87a19eda89daa7f98b499ba251f8d3",
+      "rows": 194,
+      "members": 195,
+      "index": "artifact_index.json"
+    },
+    "exact_git_blobs": 4,
+    "prebuild_source_pins": 113,
+    "prebuild_tool_SDK_pins": 29,
+    "postbuild_include_pins": 258,
+    "final_identity_rows": 410,
+    "full_old_new_AR_member_counts": [
+      1783,
+      1784
+    ],
+    "physical_sections": 61,
+    "unbacked_sections": 2,
+    "existing_code_sections": 15,
+    "existing_code_bytes": 1033,
+    "existing_EH_table_bytes": 72,
+    "new_entry_bytes": 365,
+    "new_entry_instructions": 132,
+    "new_complete_funclet_EH_bytes": 52,
+    "new_EH_data_bytes": 44,
+    "new_relocations": 11,
+    "emitted_order_events": 28,
+    "native_body_bytes": 136,
+    "native_body_instructions": 46,
+    "total_original_windows_bytes": 198,
+    "selected_existing_linked_sections": 6,
+    "selected_existing_linked_bytes": 731,
+    "selected_existing_linked_relocations": 20,
+    "worker_CTests": 3,
+    "new_application_entry_selected": false,
+    "limits": "Ordinary conditional C++ source constructor; actual descriptor machine preimages, raw storage, serial, genuine COM and retirement contracts remain. No new runtime, native ABI/FH3, full factory/canonical/reuse or game credit.",
+    "root_member_sha256": "0e991ed1cd839789c2e901ebc311187b547e17589daf23f4287ded432382e571",
+    "root_complete_code_and_EH_sections_equal_worker": true,
+    "root_code_and_EH_sections_checked": 20,
+    "root_relocations_equivalent_with_verified_internal_definitions": true
+  },
+  "validation": {
+    "worker_CTests": 3,
+    "root_CTests": 3,
+    "new_tests": 0,
+    "new_runtime_cases": 0,
+    "root_application_selects_entry": false,
+    "game_validated": false
+  },
+  "native_accounting": {
+    "new_reconstructed_functions": 1,
+    "new_native_bytes": 136,
+    "native_instructions": 46,
+    "new_Ghidra_functions": 0,
+    "compiler_windows_evidence_only": true,
+    "B340A0_not_recredited": true
+  },
+  "annotation": {
+    "address": "00b3d720",
+    "end_exclusive": "00b3d7a8",
+    "old_name": "FUN_00b3d720",
+    "new_hypothesis": "BSP_RuntimeVolumeTexture_Construct",
+    "prior_annotation_values_recorded": true,
+    "prior_comments_preserved": true,
+    "write_lock": true,
+    "saved": true,
+    "forced_export": true
+  },
+  "primary_inspection_notes": [
+    "First verifier attempt assumed section-definition symbols were included and unbacked hashes were SHA(empty); corrected to documented manifest schema while retaining physical zero bytes.",
+    "First root comparison occurred while the known integration build was still running and observed the previous object without the new entry; no restart. Re-polled the same session to terminal success, then fresh complete comparison passed."
+  ],
+  "limits": "Ordinary conditional C++ source constructor; actual descriptor machine preimages, raw storage, serial, genuine COM and retirement contracts remain. No new runtime, native ABI/FH3, full factory/canonical/reuse or game credit.",
+  "archive": {
+    "path": "local/cc10-platform-evidence/runtime-volume-texture-constructor.zip",
+    "sha256": "9bd71982aec61fcff4b7ead5a48ec99da9d4c6abdf0f6b009119a46bdb6c04b3",
+    "files": 30,
+    "valid": true
+  },
+  "root_artifacts": {
+    "object": {
+      "bytes": 8433,
+      "sha256": "0e991ed1cd839789c2e901ebc311187b547e17589daf23f4287ded432382e571"
+    },
+    "map": {
+      "bytes": 6078329,
+      "sha256": "50981d5245df048c52e110c12ca74c61d8dea62f835e83d6259b9484469d557e"
+    },
+    "executable": {
+      "bytes": 3708416,
+      "sha256": "5c9456ddc9f346c0f2ea9b1a00dd62652b37e89799ef8cf8c063732661757136"
+    }
+  }
+}
