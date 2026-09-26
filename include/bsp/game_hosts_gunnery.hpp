@@ -238,8 +238,8 @@ inline constexpr bool kPlayerGunSeatBound = true;
 // [unit+360h] (vtable slot 20h, 006D1E30); a hit with y > 0 (00D7A218) is
 // every gun's aim point, skipping the range sphere and the sea cut. This host
 // answers the query over its own units (query_segment_units; no islands or
-// terrain in it). Committed OFF until its pair runs.
-inline constexpr bool kPlayerGunSeatSegmentQueryBound = false;
+// terrain in it). ON: the USN02 and E2 pairs held (docs/PLAYER_GUN_SEAT.md 6.4).
+inline constexpr bool kPlayerGunSeatSegmentQueryBound = true;
 
 // Session message 79h as 00954A10 builds it in 005484F0 (section 32 of
 // docs/SHIP_SCREEN_UPDATE.md): +1Ch group, +20h..+28h the camera mover's

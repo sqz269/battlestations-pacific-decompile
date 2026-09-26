@@ -4,19 +4,87 @@
   "ghidra": "read-only; no renames, comments or saves",
   "answer": "00957BD0 casts camera -> camera + d*1000 (00CE47A0 double) through 0098ADD0 with kind 0, excluding unit->vtable[20h]() = [unit+360h] (006D1E30), the same entity 009043A0 excludes through slot B0h (006D1DF0); a hit with y > 0.0 (00D7A218) is every gun's aim point. Bound through query_segment_units_impl under kPlayerGunSeatSegmentQueryBound (committed OFF, pair pending).",
   "steps": [
-    {"address": "00957d79", "native": "0042e630", "function": "00957bd0", "rule": "the spatial-index singleton"},
-    {"address": "00957da0", "native": "0098add0", "function": "00957bd0", "rule": "QuerySegment(camera, to, [unit+360h], record, 0)"},
-    {"address": "00959d2a", "native": "00957bd0", "function": "00959c20", "rule": "the aim point, ECX = unit, EDX = gun"},
-    {"address": "009043d4", "native": "0098add0", "function": "009043a0", "rule": "the HUD form compared: kind 0, ignore->vtable[B0h]"}
+    {
+      "address": "00957d79",
+      "native": "0042e630",
+      "function": "00957bd0",
+      "rule": "the spatial-index singleton"
+    },
+    {
+      "address": "00957da0",
+      "native": "0098add0",
+      "function": "00957bd0",
+      "rule": "QuerySegment(camera, to, [unit+360h], record, 0)"
+    },
+    {
+      "address": "00959d2a",
+      "native": "00957bd0",
+      "function": "00959c20",
+      "rule": "the aim point, ECX = unit, EDX = gun"
+    },
+    {
+      "address": "009043d4",
+      "native": "0098add0",
+      "function": "009043a0",
+      "rule": "the HUD form compared: kind 0, ignore->vtable[B0h]"
+    }
   ],
   "routines": [
-    {"address": "00957bd0", "name": "PlayerGunSeat aim point (FUN_00957bd0)", "coverage": "partial: 00957D79..00957DD2 bound here; 00957DD7..009580AB is section 2's range sphere and sea cut; 00957C2F..00957CAB (the target intercept 00901C20) stays a record"}
+    {
+      "address": "00957bd0",
+      "name": "PlayerGunSeat aim point (FUN_00957bd0)",
+      "coverage": "partial: 00957D79..00957DD2 bound here; 00957DD7..009580AB is section 2's range sphere and sea cut; 00957C2F..00957CAB (the target intercept 00901C20) stays a record"
+    }
   ],
   "substitutions": [
     "the world's spatial index is this host's units (SegmentBinding: ship meshes or hull extents), no islands or terrain",
     "the excluded [unit+360h] is the seat unit itself (one-based exclude)",
     "one cast per message where the image casts per gun: the inputs do not depend on the gun and the query is pure"
   ],
-  "switch": {"name": "kPlayerGunSeatSegmentQueryBound", "file": "include/bsp/game_hosts_gunnery.hpp", "committed": false},
-  "pairs": "pending"
+  "switch": {
+    "name": "kPlayerGunSeatSegmentQueryBound",
+    "file": "include/bsp/game_hosts_gunnery.hpp",
+    "committed": true
+  },
+  "pairs": {
+    "tree": "1cab77c2c",
+    "logs": "local/seg_{off,on}_{e2,usn02}.log",
+    "env": "BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1",
+    "E2": {
+      "segment_query": "18158 UNIMPLEMENTED -> 18158 concrete",
+      "casts_hits_aims_on": [
+        17997,
+        0,
+        0
+      ],
+      "hit_records": [
+        836,
+        836
+      ],
+      "deaths": [
+        51,
+        51
+      ],
+      "other_rows_moved": 0
+    },
+    "USN02": {
+      "segment_query": "absent both",
+      "casts_hits_aims_on": [
+        0,
+        0,
+        0
+      ],
+      "hit_records": [
+        440,
+        440
+      ],
+      "deaths": [
+        22,
+        22
+      ],
+      "other_rows_moved": 0
+    },
+    "verdict": "held; switch ON",
+    "failed_predictions": []
+  }
 }
