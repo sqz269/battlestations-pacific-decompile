@@ -1995,3 +1995,38 @@ from before the disconnect) against `local\grt_on3_usn04.log`.
 
 **The GUI extent** is recorded in docs/GUI_EXTENT_INPUTS.md section 5. **`kHudGuiExtentBound` flips
 ON.**
+
+## 41. Section 36's attribution is falsified (cc9-platform2, 2026-09-25)
+
+Section 36 named f7de926f4 as the landing that moved the Lexington's path and stopped screen 29h's
+picks. It reached that by comparing trees. The confirming run was held for the reconnect. It is
+now run, alongside two more single-switch diagnostics on the current tree (main 3a6d8b847 plus this
+branch). All are USN04 4700/4500, 2560x1440, `BSP_GUNNERY_RNG_STREAMS=1`, each against a same-tree
+control.
+
+| diagnostic (local builds, not committed) | the switch took effect | Lexington heading at 2880 / 3110 | `owner_140` |
+| --- | --- | --- | --- |
+| control (`local\hdg_on_usn04.log`, `local\tg_on_usn04.log`) | - | 27.689 / 19.075 | none |
+| `kPilotStateHeadingWritesBound = false` (`local\hdg_off_usn04.log`) | yes: ship-AI plan lines move, 103,000 more records | 27.689 / 19.075 | none |
+| `kTorpedoFriendlyCrossingBound = false` (`local\tg_off_usn04.log`) | - | 27.689 / 19.075 | none |
+| `kPlannerYawBaseModeGateBound = false` (`local\yb_off_usn04.log`) | - | 27.689 / 19.075 | none |
+| the picking tree (section 29, `local\ga_on_usn04.log`) | - | 27.694 / 37.220 | 662 |
+
+- **No single switch restores the path.** Neither of f7de926f4's two behaviour switches does, and
+  neither does 7dd40497c's torpedo gate.
+- The current tree leaves the picking tree's trace between frames 2870 and 2880, as the section 33
+  and 34 trees did.
+- **What is left:**
+  - code in f7de926f4 or 7dd40497c that no switch covers;
+  - `kPlannerModeCensusDiag`, which f7de926f4 also added;
+  - an interaction between two landings. The muzzle pair's tree had 7dd40497c without 3f79fea6b,
+    and the picking tree had 3f79fea6b without 7dd40497c.
+- **Settling it needs a tree bisect, not switches.** Build 3f79fea6b's tree once with f7de926f4
+  added and once with 7dd40497c added, in a scratch worktree, and run each on USN04 4500. The
+  picking tree is the baseline.
+- **Section 36's other conclusions stand:**
+  - the pick's inputs are unchanged;
+  - the path moves at the frame-2880 AI moveto on "D3A Val #1.1|.-4", and the camera follows;
+  - it is not a host bug in the pick.
+
+  Only the named commit is withdrawn.
