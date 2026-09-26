@@ -341,3 +341,81 @@ mission frame, so there is no clock offset.
 
 **Kept OFF**, as briefed. The circle steer (`009FBB20`) matters as soon as a leader arrives. The
 final all-on pair should be read with that record in view.
+
+## Part 3: the wingman's follow state, and what a squadron holds before its first order
+
+### The read
+
+**What the state rule hands a wingman.** `009C3310` selects `+494h`, the follow state built by
+`009C2980`:
+- its vtable `00D20AB8` has seven slots: `009C2A60`, `009BED80` enter, `009BDE40` exit,
+  `009C1FD0` tick, `007B3DE0`, `009BE590`, `009A4860`;
+- `+70h` = 0.6 (`00CE3D30`) is the search period, and `+74h` = -U(0, 0.6) its first countdown;
+- `+6Ch` = `tuning+380h`.
+
+**The enter** `009BED80` (body `009BED80`-`009BEE24`):
+- `009BE150(tuning+380h)`, then it clears `+90h`, `+94h` and `+84h`;
+- `+88h` = `[+6Ch]+8` and `+8Ch` = 1.0;
+- on the squadron it sets `+3E4h` = 1 and calls `007ED260` `BSP_PlaneSquadron_AssignFormationIndices`;
+- it takes the leader from `squadron+3D0h` into `+2Ch` and registers the observer pair;
+- it clears `+85h`.
+
+It runs when the state is first entered and at every change `009C3310` makes.
+
+**The tick** `009C1FD0` (body `009C1FD0`-`009C2355`):
+1. It sets `cmd+26Ch` = 2 (`009C1FE2`).
+2. It calls `009BFD70`, the station (`009C1FEA`). If that returns false, the tick ends.
+3. A release pending (`unit+C25h`) or queued (`+C20h`, `009C1FFD`-`009C2006`) takes a four-store
+   arm: speed `class+190h` and pitch mode 2.
+4. Otherwise it calls `009BFEE0`, the station keeping (`009C2068`), then `009BEE30(dt)`, the command
+   step (`009C2077`).
+5. The `+85h` trail arm (`009C207C`-) writes `unit+844h`/`+840h` from the leader's bank `+C68h`.
+6. The `+74h` countdown reloads from `+70h` (`009C211D`-`009C213B`). On reload it runs a sight
+   search (`009C214A`-) over the recon list (`008053C0`) for objects of kind 5 inside a forward box
+   from `dir+34h` and `dir+38h`, setting `+84h`, `+80h` and `unit+914h`.
+7. `+84h` selects `dir+4Ch` = `[00CE3958]` or 0.
+
+**What a squadron holds before its first order.** `0099A170` builds a task only from the
+director's current command. It returns without a task when the director or its class is null
+(`0099A17F`, `0099A19E`). A freshly spawned escort or strike squadron therefore has an empty task
+vector until something issues a command. `009998A0` then runs the reseed `0099B450`, `009A17D0` and
+`0099D300` with no task tick. Those are the task-less planner arms `kPlannerTasklessArmsBound`
+binds, and that is what they stand in for.
+
+**Who gives the first order:**
+- In USN04, the spawn callback (`PilotMoveToRange`, `PilotSetTarget`) for script-spawned waves.
+- For air-ops launches, the party AI's `attackmove` (docs/AIROPS_LAUNCH_TICK.md).
+- An `attackmove` that `007EEC50` cannot resolve to an attack class has `EDI` = 0 at `0099A20A`
+  and takes `009C3C40` (`0099A219`). That is a kind-7 moveto variant (`009C3B10`, vtable
+  `00D20BE0`) toward the command's target or point. `009BE310` falls back to the zero vector at
+  `00F87574`.
+  - Its class getter `+3Ch` `009C3B80` answers `00E08F78` `attackmove`, where the plain moveto's
+    `009C3150` answers `00E08F68`.
+  - Its tick `+64h` is the same `009C3950`.
+
+ATTACK_COMMANDS.md's "none / null" row is this unresolved-attackmove arm.
+
+### The binding
+
+`kMoveToFollowBound` depends on `kMoveToTaskTickBound`. The follow state runs `009BFD70`,
+`009BFEE0` and `009BEE30` through the host's existing bodies
+(`place_wing_member_on_station_007f23a0`, `run_follow_law_009bfee0_009bee30`), the same ones the
+torpedo prepare seam uses.
+- The formation indices and the leader come from the squadron registry. That stands in for
+  `007ED260` and `squadron+3D0h` at the enter.
+- The release arm, the `+85h` trail arm and the sight search are named records. The `+74h`
+  countdown runs.
+
+### Predictions for part 3's pair (written before the runs)
+
+The pair is `kMoveToFollowBound` OFF against ON. Both sides are built with
+`kPilotMoveToTaskBound`, `kMissionTurnAndStanceBound` and `kMoveToTaskTickBound` ON, on main
+`7d88bf1e2`, E2 9000, streams on.
+
+| row | OFF | ON prediction |
+| --- | --- | --- |
+| `BotStateMoveToFollow::tick` | a record, about 20000 | concrete, the same order |
+| wingman distance at the end | 30-40 km out for a surviving wing, as in part 2 | close to a live leader, following it past the ship after arrival |
+| promotions (follow -> moveto) | about 4, each on a leader's death | about the same; each promoted wingman flies on to the ship and may arrive |
+| escort Zero deaths | part 2's level with the turn | rise: the wingmen follow their leaders through the fleet's fire |
+| bomber and ship rows | as OFF | within the RNG bands |

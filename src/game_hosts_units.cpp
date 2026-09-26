@@ -412,6 +412,10 @@ struct GameUnitSlot {
     float moveto_point[3]{0.0f, 0.0f, 0.0f}; // +48h..+50h, the steer point
     float moveto_follow_stagger_74{0.0f};    // follow state +74h, -U(0, 0.6), 009C2980
     bool moveto_circle_flag_18{false};       // circle state +18h, U(0,1) >= 0.5, 009C25D0
+    // Part 3, the follow state: +70h the search period (0.6, 00CE3D30, set in 009C2980),
+    // +74h its countdown, drawn at construction.
+    unsigned long long moveto_follow_ticks{0};
+    unsigned long long moveto_follow_no_station{0};
     unsigned long long moveto_ticks{0};
     unsigned long long moveto_state_changes{0};
     unsigned long long moveto_arrivals{0};
@@ -14245,11 +14249,59 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             break;
                         case GameUnitSlot::MoveToTaskState::kFollow:
                             // 00D20AB8 +0Ch = 009C1FD0, part 3.
-                            owner_.record("BotStateMoveToFollow::tick", 0x009c1fd0u);
+                            if constexpr (bsp::kMoveToFollowBound) {
+                                run_moveto_follow_tick_009c1fd0(dt);
+                            } else {
+                                owner_.record("BotStateMoveToFollow::tick", 0x009c1fd0u);
+                            }
                             break;
                         default:
                             break;
                         }
+                    }
+
+                    // 009C1FD0, the follow state's tick (vtable 00D20AB8 +0Ch), for
+                    // the kind-7 task's wingman, packet cc9_pilot_moveto_task part 3.
+                    // Its enter 009BED80 assigns the squadron's formation indices
+                    // through 007ED260 and takes the leader from squadron+3D0h;
+                    // the host's station routine does both from the registry.
+                    void run_moveto_follow_tick_009c1fd0(float dt) {
+                        ++unit_.moveto_follow_ticks;
+                        // 009C1FE2: cmd+26Ch = 2, a byte 0099D300's neutral-plan
+                        // entry reads; this host keeps no such field.
+                        // 009C1FEA: 009BFD70, the station. False ends the tick.
+                        bsp::PlaneFormationStation station;
+                        const GameUnitSlot* leader = nullptr;
+                        owner_.place_wing_member_on_station_007f23a0(
+                            unit_, false, &station, &leader, false);
+                        if (!station.produced || leader == nullptr) {
+                            ++unit_.moveto_follow_no_station;
+                            return;
+                        }
+                        // 009C1FFD-009C2006: a release pending (unit+C25h) or a
+                        // queued release (+C20h) takes the four-store arm.
+                        if (unit_.torpedo_release_pending_c25 ||
+                            unit_.torpedo_issue_requests_c20 > 0) {
+                            owner_.record("BotStateFollow::release_arm", 0x009c1ffdu);
+                            return;
+                        }
+                        // 009C2068 / 009C2077: 009BFEE0 then 009BEE30(dt).
+                        owner_.run_follow_law_009bfee0_009bee30(unit_, station, *leader);
+                        // 009C207C-009C211C: the +85h trail arm (unit+844h/+840h),
+                        // live only once +85h is raised; 009BED80 clears it.
+                        owner_.record("BotStateFollow::trail_arm_85", 0x009c207cu);
+                        // 009C211D-009C2355: the +74h countdown on the +70h period,
+                        // and on expiry the sight search over the recon list
+                        // (008053C0, vtable[5Ch](5)) that sets +84h, +80h and
+                        // unit+914h; +84h then picks dir+4Ch = [00CE3958] or 0.
+                        if (dt < unit_.moveto_follow_stagger_74) {
+                            unit_.moveto_follow_stagger_74 -= dt;
+                        } else {
+                            unit_.moveto_follow_stagger_74 =
+                                (0.6f - dt) + unit_.moveto_follow_stagger_74;
+                            owner_.record("BotStateFollow::sight_search", 0x009c214au);
+                        }
+                        owner_.done("BotStateMoveToFollow::tick", 0x009c1fd0u);
                     }
 
                     // 009C2430, the kind-7 moveto state's tick (vtable 00D20A80).
@@ -17565,9 +17617,11 @@ void GameUnitsHost::report() {
                             changes += sl->moveto_state_changes;
                             arrivals += sl->moveto_arrivals;
                             host.log.notef("  moveto task %-24s state=%d ticks=%llu arrived=%d "
+                                "follow_ticks=%llu no_station=%llu "
                                 "min_d=%.1f last_d=%.1f dwell=%.2f",
                                 sl->row.name.c_str(), static_cast<int>(sl->moveto_state),
                                 sl->moveto_ticks, sl->moveto_arrived_454 ? 1 : 0,
+                                sl->moveto_follow_ticks, sl->moveto_follow_no_station,
                                 static_cast<double>(sl->moveto_min_distance),
                                 static_cast<double>(sl->moveto_distance_64),
                                 static_cast<double>(sl->moveto_dwell_60));

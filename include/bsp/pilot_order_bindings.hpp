@@ -49,6 +49,13 @@ inline constexpr bool kMissionTurnAndStanceBound = false;
 // five construction draws in the image's order. Needs kPilotMoveToTaskBound;
 // the circle steer (009FBB20) and the follow state stay named records.
 inline constexpr bool kMoveToTaskTickBound = false;
+
+// Packet cc9_pilot_moveto_task part 3: the kind-7 task's wingman state +494h
+// (vtable 00D20AB8), its enter 009BED80 and its tick 009C1FD0, over the host's
+// follow bodies (009BFD70's station, 009BFEE0 / 009BEE30). Needs
+// kMoveToTaskTickBound. The tick's sight search (009C214A-009C2355) and the
+// +85h trail arm stay named records.
+inline constexpr bool kMoveToFollowBound = false;
 // 008A44EF. `retreat`.
 inline constexpr std::uint32_t kPilotOrderClassRetreat = 0x00E08F90u;
 // 008A4900. `land`, SCENE_COMMAND_TYPES row 22.

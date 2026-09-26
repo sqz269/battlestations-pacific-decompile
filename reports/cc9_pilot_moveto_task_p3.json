@@ -1,0 +1,77 @@
+{
+  "packet": "cc9_pilot_moveto_task (part 3)",
+  "doc": "docs/PILOT_MOVETO_TASK.md",
+  "calls": [
+    {
+      "address": "009C1FEA",
+      "native": "009BFD70",
+      "function": "009C1FD0",
+      "note": "follow tick takes the station"
+    },
+    {
+      "address": "009C2068",
+      "native": "009BFEE0",
+      "function": "009C1FD0",
+      "note": "station keeping"
+    },
+    {
+      "address": "009C2077",
+      "native": "009BEE30",
+      "function": "009C1FD0",
+      "note": "command step"
+    },
+    {
+      "address": "009C21A7",
+      "native": "008053C0",
+      "function": "009C1FD0",
+      "note": "sight search over the recon list"
+    },
+    {
+      "address": "0099A219",
+      "native": "009C3C40",
+      "function": "0099A170",
+      "note": "null-class arm, the moveto variant"
+    },
+    {
+      "address": "009C3C85",
+      "native": "009C3B10",
+      "function": "009C3C40",
+      "note": "moveto variant constructor"
+    },
+    {
+      "address": "009C3C7C",
+      "native": "009BE310",
+      "function": "009C3C40",
+      "note": "target descriptor from the command"
+    }
+  ],
+  "switches": [
+    {
+      "name": "kMoveToFollowBound",
+      "state": "OFF",
+      "pair": "local/MF_OFF_9000.log vs local/MF_ON_9000.log (1a, 1b and 2 ON on both sides)"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "009C3B80",
+      "end_inclusive": "009C3B85",
+      "evidence": "moveto-variant task vtable 00D20BE0 +3Ch: MOV EAX,00E08F78; RET, INT3 from 009C3B86; ghidra proto --brief reports no function"
+    },
+    {
+      "start": "009C3150",
+      "end_inclusive": "009C3155",
+      "evidence": "moveto task vtable 00D20B68 +3Ch: MOV EAX,00E08F68; RET, INT3 from 009C3156; ghidra proto --brief reports no function"
+    }
+  ],
+  "ledger_names_added": [
+    {
+      "address": "009C3C40",
+      "name": "BSP_BotTask_MakeMoveToForAttackMove"
+    },
+    {
+      "address": "009C3B10",
+      "name": "BSP_BotTaskMoveToForAttackMove_Construct"
+    }
+  ]
+}
