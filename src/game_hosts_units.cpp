@@ -402,6 +402,20 @@ struct GameUnitSlot {
     float moveto_range{0.0f};              // the order's descriptor +14h
     float moveto_timer_548{1.0f};          // 009C307C, 1.0 (00D7A24C)
     float moveto_stagger_54c{-0.5f};       // 009C3084/009C3089: -U(0, 1), the midpoint
+    // Part 2, the approach at task+3F8h (009C1C30 on 009F9CE0) and two state
+    // fields, named by their offset in that object.
+    std::size_t moveto_target_plus_one{0};   // approach+44h, the order's target
+    float moveto_alt_offset_2c{0.0f};        // U(0, tuning+540h MaxAltOffset), 009C1C30
+    float moveto_refresh_58{0.0f};           // countdown; period +54h = 0.5 (009C1CE0)
+    float moveto_dwell_60{0.0f};             // the arrival dwell
+    float moveto_distance_64{0.0f};          // planar distance, 009BEBA0
+    float moveto_point[3]{0.0f, 0.0f, 0.0f}; // +48h..+50h, the steer point
+    float moveto_follow_stagger_74{0.0f};    // follow state +74h, -U(0, 0.6), 009C2980
+    bool moveto_circle_flag_18{false};       // circle state +18h, U(0,1) >= 0.5, 009C25D0
+    unsigned long long moveto_ticks{0};
+    unsigned long long moveto_state_changes{0};
+    unsigned long long moveto_arrivals{0};
+    float moveto_min_distance{-1.0f};
     bsp::DogfightState dogfight_state{bsp::DogfightState::kNone};
     int df_state_ticks[bsp::kDogfightStateCount]{};
     int df_transitions{0};
@@ -14060,6 +14074,39 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         unit_.moveto_stagger_54c = -0.5f;       // 009C3089, midpoint
                         const bool leader =
                             owner_.unit_is_flight_leader_007b8ad0(unit_.process_index);
+                        if constexpr (bsp::kMoveToTaskTickBound) {
+                            // The five 00BD2F10 draws construction makes, in the
+                            // image's order: 009C1C30 (+2Ch, +58h), 009C2980
+                            // (+74h), 009C25D0 (+18h), then 009C3084 (+54Ch).
+                            const std::string& n = unit_.row.name;
+                            float max_alt_offset = 5.0f;
+                            if (owner_.lua.plane_globals_loaded()) {
+                                max_alt_offset =
+                                    owner_.lua.plane_globals().pilot_general_max_alt_offset;
+                            }
+                            unit_.moveto_alt_offset_2c = owner_.release_altitude_draw_00bd2f10(
+                                n + "#mt2c", 0.0f, max_alt_offset);
+                            unit_.moveto_refresh_58 = -owner_.release_altitude_draw_00bd2f10(
+                                n + "#mt58", 0.0f, 0.5f);
+                            unit_.moveto_follow_stagger_74 =
+                                -owner_.release_altitude_draw_00bd2f10(n + "#mt74", 0.0f, 0.6f);
+                            unit_.moveto_circle_flag_18 = owner_.release_altitude_draw_00bd2f10(
+                                n + "#mt18", 0.0f, 1.0f) >= 0.5f;
+                            unit_.moveto_stagger_54c = -owner_.release_altitude_draw_00bd2f10(
+                                n + "#mt54c", 0.0f, 1.0f);
+                            unit_.moveto_dwell_60 = 0.0f;       // 009C1CFD
+                            moveto_refresh_009beba0();          // 009C1D9D
+                            if (leader) {
+                                // 009C1D32-009C1D9A: min(planar distance to the
+                                // target, TurnCircleRadius) / TravelSpeed.
+                                float d = unit_.moveto_distance_64;
+                                if (unit_.plane_turn_circle_radius <= d) {
+                                    d = unit_.plane_turn_circle_radius;
+                                }
+                                unit_.moveto_dwell_60 = unit_.plane_travel_speed > 0.0f
+                                    ? d / unit_.plane_travel_speed : 0.0f;
+                            }
+                        }
                         unit_.moveto_state = leader
                             ? (unit_.moveto_arrived_454 ? GameUnitSlot::MoveToTaskState::kCircle
                                                         : GameUnitSlot::MoveToTaskState::kMoveTo)
@@ -14072,6 +14119,190 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                        ? "circle (moveto)" : "moveto (moveto)"),
                             static_cast<double>(unit_.moveto_range));
                         owner_.done("BotTaskMoveTo::construct", 0x009c3000u);
+                    }
+
+                    // 009BEBA0, the approach refresh, as far as the kind-7 task
+                    // reads it: the steer point is the target's world x/z
+                    // (+44h, 009BEBB3-009BEBD8) at altitude ctl+394h less +2Ch
+                    // (009BEBDB-009BEBE6), and +64h is the planar distance
+                    // (009BEC22). ctl+394h is written by the task's +54h
+                    // cruise profile 009C3650, which is not bound: its fighter
+                    // arm stores Small/LargePlaneTravelAlt (tuning+35Ch/+360h,
+                    // chosen by 0047B880) plus 0.6 * TravelAltRandom
+                    // (009C36DD-009C36F2, 009C38FD). That value is used here;
+                    // 009C3650's per-call redraw of +2Ch is not. 009FD050 and the
+                    // +28h path leg (009BD400 / 009FC260) are records.
+                    void moveto_refresh_009beba0() {
+                        if (unit_.moveto_target_plus_one != 0 &&
+                            unit_.moveto_target_plus_one - 1 < owner_.slots.size()) {
+                            const GameUnitSlot& t =
+                                *owner_.slots[unit_.moveto_target_plus_one - 1];
+                            unit_.moveto_point[0] = t.motion.position[0];
+                            unit_.moveto_point[2] = t.motion.position[2];
+                        }
+                        float small_alt = 800.0f, large_alt = 1400.0f, rnd = 50.0f;
+                        if (owner_.lua.plane_globals_loaded()) {
+                            const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
+                            small_alt = g.pilot_move_to_small_plane_travel_alt;
+                            large_alt = g.pilot_move_to_large_plane_travel_alt;
+                            rnd = g.pilot_move_to_travel_alt_random;
+                        }
+                        const bool large = bsp::unit_is_kind_of(unit_.class_id, 0x10) ||
+                                           bsp::unit_is_kind_of(unit_.class_id, 0x16);
+                        const float cruise = (large ? large_alt : small_alt) + 0.6f * rnd;
+                        unit_.moveto_point[1] = cruise - unit_.moveto_alt_offset_2c;
+                        const float dx = unit_.moveto_point[0] - unit_.motion.position[0];
+                        const float dz = unit_.moveto_point[2] - unit_.motion.position[2];
+                        const double d2 = static_cast<double>(dx) * dx +
+                                          static_cast<double>(dz) * dz;
+                        unit_.moveto_distance_64 = d2 <= 1e-6
+                            ? 0.0f : static_cast<float>(std::sqrt(d2));
+                        owner_.record("BotApproach::refresh_path_leg_009fd050", 0x009fd050u);
+                    }
+
+                    // 009C3950, the kind-7 task's vtable+64h, packet
+                    // cc9_pilot_moveto_task part 2: 009C3570 on the approach,
+                    // 009C3310, then the current state's vtable[0Ch].
+                    void run_moveto_task_tick_009c3950(float dt) {
+                        if (!unit_.moveto_task_installed) return;
+                        if (unit_.attack_command_class != bsp::kPilotOrderClassMoveTo) return;
+                        ++unit_.moveto_ticks;
+                        // 009C3570: the refresh countdown, period 0.5.
+                        if (dt < unit_.moveto_refresh_58) {
+                            unit_.moveto_refresh_58 -= dt;
+                        } else {
+                            unit_.moveto_refresh_58 = (0.5f - dt) + unit_.moveto_refresh_58;
+                            moveto_refresh_009beba0();
+                        }
+                        // 009C359F-009C35D3: approach+6Ch from the squadron's
+                        // +348h block when its command is moveto. No block here.
+                        owner_.record("BotApproachMoveTo::command_block_range_6c", 0x009c359fu);
+                        if (!unit_.moveto_arrived_454) {
+                            float closing = 800.0f, reference = 40.0f;
+                            if (owner_.lua.plane_globals_loaded()) {
+                                const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
+                                closing = g.pilot_move_to_closing_dist;
+                                reference = g.pilot_move_to_reference_speed;
+                            }
+                            // approach+24h: max(1, MaxSpd / ReferenceSpeed), 009F9D30.
+                            float ratio = reference > 0.0f ? unit_.plane_max_spd / reference
+                                                           : 1.0f;
+                            if (ratio < 1.0f) ratio = 1.0f;
+                            const float inner = closing * ratio;
+                            const float d = unit_.moveto_distance_64;
+                            if (inner <= d) {
+                                if (d < inner + unit_.plane_turn_circle_radius) {
+                                    unit_.moveto_dwell_60 -= dt;
+                                }
+                            } else {
+                                unit_.moveto_dwell_60 = -1.0f;   // [00D7A260]
+                            }
+                            if (unit_.moveto_dwell_60 < 0.0f) {
+                                unit_.moveto_arrived_454 = true;  // 009C3636
+                                ++unit_.moveto_arrivals;
+                                owner_.log.notef("  moveto task %s: arrived d=%.1f inner=%.1f "
+                                    "(009C3636)", unit_.row.name.c_str(),
+                                    static_cast<double>(d), static_cast<double>(inner));
+                            }
+                        }
+                        if (unit_.moveto_arrived_454) {
+                            owner_.record("BotApproachMoveTo::arrived_vtable8", 0x009c3647u);
+                        }
+                        owner_.done("BotApproachMoveTo::update", 0x009c3570u);
+                        // 009C3310: the state rule, once a second.
+                        if (unit_.moveto_stagger_54c <= dt) {
+                            unit_.moveto_stagger_54c =
+                                (unit_.moveto_timer_548 - dt) + unit_.moveto_stagger_54c;
+                            const bool leader =
+                                owner_.unit_is_flight_leader_007b8ad0(unit_.process_index);
+                            const GameUnitSlot::MoveToTaskState next = !leader
+                                ? GameUnitSlot::MoveToTaskState::kFollow
+                                : (unit_.moveto_arrived_454
+                                       ? GameUnitSlot::MoveToTaskState::kCircle
+                                       : GameUnitSlot::MoveToTaskState::kMoveTo);
+                            if (next != unit_.moveto_state) {
+                                ++unit_.moveto_state_changes;
+                                owner_.log.notef("  moveto task %s: state %d -> %d (009C3310)",
+                                    unit_.row.name.c_str(), static_cast<int>(unit_.moveto_state),
+                                    static_cast<int>(next));
+                                unit_.moveto_state = next;
+                            }
+                        } else {
+                            unit_.moveto_stagger_54c -= dt;
+                        }
+                        owner_.done("BotTaskMoveTo::state_rule", 0x009c3310u);
+                        if (unit_.moveto_min_distance < 0.0f ||
+                            unit_.moveto_distance_64 < unit_.moveto_min_distance) {
+                            unit_.moveto_min_distance = unit_.moveto_distance_64;
+                        }
+                        switch (unit_.moveto_state) {
+                        case GameUnitSlot::MoveToTaskState::kMoveTo:
+                            run_moveto_state_tick_009c2430();
+                            break;
+                        case GameUnitSlot::MoveToTaskState::kCircle:
+                            // 009C26D0 steers through 009FBB20, not bound here.
+                            owner_.record("BotStateMoveToCircle::steer", 0x009fbb20u);
+                            break;
+                        case GameUnitSlot::MoveToTaskState::kFollow:
+                            // 00D20AB8 +0Ch = 009C1FD0, part 3.
+                            owner_.record("BotStateMoveToFollow::tick", 0x009c1fd0u);
+                            break;
+                        default:
+                            break;
+                        }
+                    }
+
+                    // 009C2430, the kind-7 moveto state's tick (vtable 00D20A80).
+                    void run_moveto_state_tick_009c2430() {
+                        // 009C2453: approach vtable[0] = 009BE2C0 hands back +48h..+50h.
+                        const float* pt = unit_.moveto_point;
+                        const float dx = pt[0] - unit_.motion.position[0];
+                        const float dz = pt[2] - unit_.motion.position[2];
+                        const double d2 = static_cast<double>(dx) * dx +
+                                          static_cast<double>(dz) * dz;
+                        const float dist = d2 <= 1e-6 ? 0.0f : static_cast<float>(std::sqrt(d2));
+                        // 009C24D5-009C24EB: 009BECD0(009C23B0(), 007C47F0(), dist).
+                        // 009C23B0 is [approach+0Ch]+3A0h unless the target is
+                        // within TurnCircleRadius + 50 and faster than 007C47F0;
+                        // that override is not applied (a record below).
+                        unit_.plane_desired_speed_2b4 = owner_.moveto_speed_009c1850(unit_, dist);
+                        unit_.plane_trg_speed_corr_off_2b0 = 0;   // 009C2503
+                        unit_.plane_air_brake_mode_2d8 = 1;       // 009C250A
+                        ++unit_.plane_speed_commands;
+                        owner_.record("BotStateMoveTo::target_speed_override_009c23b0",
+                                      0x009c23b0u);
+                        if (unit_.torpedo_release_pending_c25) {
+                            owner_.record("BotStateMoveTo::c25_arm", 0x009c2519u);
+                            return;
+                        }
+                        // 009C255C-009C256E: 009FB800(pt.y, 1.0).
+                        bsp::PlanePitchCommandInputs pin;
+                        pin.desired_altitude = pt[1];
+                        pin.reference = 1.0f;
+                        pin.unit_world_y = unit_.motion.position[1];
+                        if (owner_.lua.plane_globals_loaded()) {
+                            const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
+                            pin.ceiling = g.dynamics_ceiling;
+                            pin.climb_dist = g.pilot_general_climb_dist;
+                            pin.drop_dist = g.pilot_general_drop_dist;
+                        }
+                        pin.class_climb_angle = unit_.plane_climb_angle_1ec;
+                        pin.class_drop_angle = unit_.plane_drop_angle;
+                        unit_.plane_commanded_altitude = pt[1];
+                        unit_.plane_commanded_pitch = bsp::pitch_command_009fb800(pin);
+                        unit_.plan_state.pitch_target_2bc = unit_.plane_commanded_pitch;
+                        if constexpr (GameUnitsHost::Impl::kPitchCommandCallersBound) {
+                            unit_.plan_state.pitch_mode_2d0 = 2;
+                        }
+                        // 009C257A: 009F9E40 toward the steer point.
+                        unit_.plan_heading_2c0 = bsp::heading_command_009f9e40(
+                            pt[0], pt[2], unit_.motion.position[0], unit_.motion.position[2]);
+                        unit_.plan_heading_2c0_written = true;
+                        unit_.plan_heading_mode_2cc = 2;   // 009F9EC1
+                        // 009C257F-009C25AD: dir+40h = Angle_MoveTo, then 009FABE0;
+                        // this host models no approach+1Ch direction object.
+                        owner_.record("BotStateMoveTo::direction_009fabe0", 0x009fabe0u);
+                        owner_.done("BotStateMoveToTask::tick", 0x009c2430u);
                     }
 
                     void pilot_think_and_commit(float step) {
@@ -14183,6 +14414,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             run_dive_bomb_task_arm_009c8790(elapsed);
                             if constexpr (bsp::kPilotMoveToTaskBound) {
                                 run_moveto_task_install_009c3000();
+                                if constexpr (bsp::kMoveToTaskTickBound) {
+                                    run_moveto_task_tick_009c3950(elapsed);
+                                }
                             }
                             if constexpr (GameUnitsHost::Impl::kDogfightTaskBound) {
                                 run_dogfight_task_arm_009ab1c0(elapsed);
@@ -15441,6 +15675,13 @@ void GameUnitsHost::store_unit_attack_command_class(std::size_t index,
 void GameUnitsHost::store_unit_moveto_range(std::size_t index, float range) noexcept {
     if (index >= impl_->slots.size()) return;
     impl_->slots[index]->moveto_range = range;
+}
+
+void GameUnitsHost::store_unit_moveto_target(std::size_t index,
+                                             std::size_t target_index) noexcept {
+    if (index >= impl_->slots.size()) return;
+    impl_->slots[index]->moveto_target_plus_one =
+        target_index < impl_->slots.size() ? target_index + 1u : 0u;
 }
 
 bool GameUnitsHost::set_unit_world_basis_007c9540(std::size_t index, const float right[3],
@@ -17314,6 +17555,27 @@ void GameUnitsHost::report() {
                     host.log.notef("summary mission plane squadron leaves=%d promotions=%d "
                         "(007BCAA0 -> 007F3970 at death, packet cc9_val_squadron_registry)",
                         host.squadron_leaves_, host.squadron_promotions_);
+                    if constexpr (bsp::kPilotMoveToTaskBound && bsp::kMoveToTaskTickBound) {
+                        std::size_t tasks = 0;
+                        unsigned long long ticks = 0, changes = 0, arrivals = 0;
+                        for (const auto& sl : host.slots) {
+                            if (!sl->moveto_task_installed) continue;
+                            ++tasks;
+                            ticks += sl->moveto_ticks;
+                            changes += sl->moveto_state_changes;
+                            arrivals += sl->moveto_arrivals;
+                            host.log.notef("  moveto task %-24s state=%d ticks=%llu arrived=%d "
+                                "min_d=%.1f last_d=%.1f dwell=%.2f",
+                                sl->row.name.c_str(), static_cast<int>(sl->moveto_state),
+                                sl->moveto_ticks, sl->moveto_arrived_454 ? 1 : 0,
+                                static_cast<double>(sl->moveto_min_distance),
+                                static_cast<double>(sl->moveto_distance_64),
+                                static_cast<double>(sl->moveto_dwell_60));
+                        }
+                        host.log.notef("summary mission moveto task: tasks=%zu ticks=%llu "
+                            "state_changes=%llu arrivals=%llu (009C3950, packet "
+                            "cc9_pilot_moveto_task part 2)", tasks, ticks, changes, arrivals);
+                    }
                     if (df_aircraft > 0) {
                         host.log.notef("summary mission fighter gun: bursts=%d fire_ticks=%d "
                             "rounds=0 (the gunFire consumer is not established; "

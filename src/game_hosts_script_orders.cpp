@@ -1134,6 +1134,7 @@ int GameScriptOrdersHost::run_pilot_move_to_range(GameScriptOrderRow& row) {
         if (task != 0u) {
             units_.store_unit_attack_command_class(index, cls);
             units_.store_unit_moveto_range(index, target.trailing);
+            units_.store_unit_moveto_target(index, target_index);
             ++tasks;
         }
     };
