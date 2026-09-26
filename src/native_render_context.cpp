@@ -104,15 +104,21 @@ RenderCommandReference* NativeRenderActualOwnerRegistry::find_callback(
     return static_cast<NativeRenderActualOwnerRegistry*>(context)->find(identity);
 }
 
+void dispatch_native_render_actual_owner_zero(
+    NativeRenderActualOwners& owners, void* identity) {
+    auto* const actual = std::launder(reinterpret_cast<std::atomic<std::int32_t>*>(
+        static_cast<std::byte*>(identity) + 4));
+    auto& reference = owners.resolve_actual(identity);
+    if (&reference.reference_count != actual)
+        throw std::invalid_argument("native owner companion must borrow the same actual +04 atomic");
+    reference.release_zero_references();
+}
+
 void release_native_render_actual_owner(NativeRenderActualOwners& owners, void* identity) {
     auto* const actual = std::launder(reinterpret_cast<std::atomic<std::int32_t>*>(
         static_cast<std::byte*>(identity) + 4));
-    if (actual->fetch_sub(1, std::memory_order_seq_cst) == 1) {
-        auto& reference = owners.resolve_actual(identity);
-        if (&reference.reference_count != actual)
-            throw std::invalid_argument("native owner companion must borrow the same actual +04 atomic");
-        reference.release_zero_references();
-    }
+    if (actual->fetch_sub(1, std::memory_order_seq_cst) == 1)
+        dispatch_native_render_actual_owner_zero(owners, identity);
 }
 
 NativeRenderContextStorage* initialize_native_render_context_00b1edc0_fragment(void* raw) noexcept {

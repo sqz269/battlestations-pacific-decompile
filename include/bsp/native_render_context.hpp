@@ -80,6 +80,14 @@ private:
 // companion only on zero. No use of raw storage/companion after its callback.
 void release_native_render_actual_owner(NativeRenderActualOwners&, void* raw_identity);
 
+// Shared post-zero dispatch ONLY: caller has already decremented the actual
+// live +04 atomic once and observed zero. Resolve the SAME canonical companion,
+// validate its borrowed +04 identity, then invoke its nonthrowing current-profile
+// terminal. Never decrement, initialize, retain, retry or touch the owner after
+// terminal return. Lookup/identity errors leave the already-zero obligation
+// with the caller. Native lifetime synchronization is still required.
+void dispatch_native_render_actual_owner_zero(NativeRenderActualOwners&, void* raw_identity);
+
 // Placement-only fragment B1EDD3..B1EDF2 within B1EDC0: publish CEB130, set +04
 // to1, publish D5E5C4, then clear +08/+0C/+10/+14 in order. Valid storage required.
 // No allocation, command+28 publication, retained assignment or batch creation.
