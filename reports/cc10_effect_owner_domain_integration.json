@@ -1,0 +1,123 @@
+{
+  "packet": "cc10_effect_owner_domain_integration",
+  "worker_commit": "8ec22778a8f5c1c582eb5447edcb56c5498db040",
+  "source_integration": "54ef6939f7f8e96b57c5fd75daae5535484ec4a3",
+  "worker_report": "reports/native_application_material_effect_owner_provider_cc10.json",
+  "primary_verification": {
+    "result": "PASS_COMPLETE_COMBINED_ROOT_APPLICATION_COFF",
+    "worker_object_sha256": "987aab93e2ac782501dc2eb5656ee798e21b2e28627948fdb7855d03a4eb1454",
+    "root_object_sha256": "664837f99f731fe8f4fa3ac4d0e583adfe1df25e7cdf281834adbddeda24b1ba",
+    "physical_sections": 1188,
+    "whole_equal_sections": 1183,
+    "complete_code_sections_equal": 686,
+    "complete_code_bytes_equal": 42996,
+    "ordered_relocations_with_positive_target_correspondence": 2122,
+    "observed_namespace_pair": [
+      "?A0x56b9cdcb@",
+      "?A0xe2027e5d@"
+    ],
+    "qualified_data_differences": [
+      {
+        "section": 2,
+        "name": ".debug$S",
+        "kind": "nonloaded_compiler_metadata",
+        "worker_sha256": "494c8358591c04165112869d45ba7cfbaade7e3dad46c6165f9b905dfa848c3a",
+        "root_sha256": "813cb97bb283dbe3e479f361e75db3be51e0fa74c0468e1a9e503079a3614afe"
+      },
+      {
+        "section": 1166,
+        "name": ".data$rs",
+        "kind": "exact_observed_namespace_RTTI_spelling",
+        "worker_sha256": "7b02742c439747daf4b6316c330837ee83121675fe844916b6a022272f71814d",
+        "root_sha256": "a5a796956fe8b5b20e336974acf4e10a58ce9fbab49a85d4941c410534c0b644"
+      },
+      {
+        "section": 1171,
+        "name": ".data$rs",
+        "kind": "exact_observed_namespace_RTTI_spelling",
+        "worker_sha256": "165a87231d95169acd55ef31166869d34c0fb13e2f445cf3df60bb5e6876ff87",
+        "root_sha256": "28ccf3827fc9ac717feada3a15106eff2782363e1b381221232784d0b358c4cc"
+      },
+      {
+        "section": 1184,
+        "name": ".data$rs",
+        "kind": "exact_observed_namespace_RTTI_spelling",
+        "worker_sha256": "26d1228154113a87b52fc4ac2e83721478b7a1b1e7833b49303289e268e3bac1",
+        "root_sha256": "23adbcc329669e021e970eeac9daff64a3b192b526159c8c91fc9858bc0d2fa8"
+      },
+      {
+        "section": 1188,
+        "name": ".chks64",
+        "kind": "nonloaded_compiler_metadata",
+        "worker_sha256": "33730cd0f87dd13b720f34eac5ee21eaad5a8ba86fefc0c03f2b04a6e4f34253",
+        "root_sha256": "a5feb78ab4871db07b0eb3529c0cb367f33f51484eea682104cb6d36821651b0"
+      }
+    ],
+    "exact_effect_source_files": 4,
+    "combined_2D_nonvolatile_header_code_effect": "No emitted application-code byte or qualified relocation change versus effect worker; actual comparison, not inference.",
+    "root_CTests": 3,
+    "new_tests": 0,
+    "new_runtime_cases": 0,
+    "limits": "Code/EH/all-relocation identity with observed namespace definition correspondence. Nonloaded metadata retained separately; combined-root linked origin/relocation verification is in the independently reviewed archive. No execution/ABI/startup/game proof."
+  },
+  "worker_evidence": {
+    "archive_sha256": "3b6ff2aad0c1564acfe44cae82c8f26fea0e0ef2dd26fa0acedb084115736fd9",
+    "rows": 10390,
+    "members": 10391,
+    "git_closeout_sha256": "746a132e9e13aa74698c2a9527df387451bc44bf5313690333d02b6784432d73",
+    "git_rows": 12,
+    "actual_Git_blobs": 6,
+    "presealed_inputs": 1266,
+    "tools": 13,
+    "actual_inputs": 1261,
+    "actual_presealed": 1260,
+    "postbuild_only_inputs": [
+      "native_material_state_cache.hpp"
+    ]
+  },
+  "independent_review": {
+    "result": "PASS_no_blocking_defect_with_documented_preparatory_scope",
+    "archive_sha256": "aede5c853f3a83eebbc9820a9fb268ef7ac7b63a73012239ee71e31410be5666",
+    "rows": 61,
+    "members": 62,
+    "complete_linked_origin_sections": 213,
+    "resolved_relocations": 956
+  },
+  "validation": {
+    "worker_CTests": 3,
+    "root_CTests": 3,
+    "new_tests": 0,
+    "new_runtime_cases": 0,
+    "game_validated": false
+  },
+  "native_accounting": {
+    "new_reconstructed_functions": 0,
+    "new_native_bytes": 0,
+    "new_Ghidra_functions": 0
+  },
+  "behavior": "Stable EffectOwnersGraph after compiler owners and before render resources; SAME VFS strings/current renderer/process serial, canonical compiler registry, genuine texture geometry and D61A00 profile. Ready-only view borrows stored construction/lifetime/load-owner references.",
+  "lifetime": "Existing owner metadata allocates its host Impl/list; no native effect allocation/count/registration/loading. External retained failed frames and successful Entries must reach native terminal/unbind/Entry erasure/caller postcallback and quiescence before context/backing disposal. Existing requires_process_retention and drain admission do not discover these external users; nonempty-owner destructor rejection is not automatic retention or rollback.",
+  "comparison_baseline": "Worker old own factory build is historical; immutable root startup-state-cache-binding object640eb90c at7bc47e09 (4a metadata-only successor) separates prior4-byte view extension from this24-byte graph. Integrated root includes published2D nonvolatile-output correction and is independently compared.",
+  "subsequent_sampler_evidence": "Separate caller audit proves root/mode share W=P-30h within one actual compiler invocation, with separate operations/captures. This does not authorize renderer-global scratch across unrelated/reentrant/retained-failed invocations, supply entry knowledge, or construct missing Programs/compiler/sampler caller contexts.",
+  "limits": "Complete source compiler/EH and qualified linked selection evidence only. Public getter/out-of-line graph helpers remain unselected; inlined Impl construction/cleanup are selected. No native FH3/ABI, effect loading/cache/Programs/NativeChildren activation, actual source0/W/platformMSG admission, full resource initialization, cold startup or gameplay proof.",
+  "archive": {
+    "path": "local/cc10-platform-evidence/effect-owner-domain.zip",
+    "sha256": "169e55c87c4508a7dd0de0a21d695be17649507fa5cb49bdc88501a754412cd1",
+    "files": 27,
+    "valid": true
+  },
+  "root_artifacts": {
+    "object": {
+      "bytes": 318126,
+      "sha256": "664837f99f731fe8f4fa3ac4d0e583adfe1df25e7cdf281834adbddeda24b1ba"
+    },
+    "map": {
+      "bytes": 6081076,
+      "sha256": "a4d191f0edf9763daa9e4dd39b304d454e246fc4403ae50f4dff20b25b0dd2d0"
+    },
+    "executable": {
+      "bytes": 3709440,
+      "sha256": "78efe5daa3206d273f52e98850a130935f7819ee4227a0eef9874bf9b4f4ac86"
+    }
+  }
+}
