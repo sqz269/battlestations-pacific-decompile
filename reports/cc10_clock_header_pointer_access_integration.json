@@ -1,0 +1,51 @@
+{
+  "packet": "cc10_clock_header_pointer_access_integration",
+  "worker_commit": "21aa59001748d2bd772f2da99a2fb9248d441836",
+  "integration": "bfa651437781d6a1d8b3966f94c76f5cf22eab39",
+  "worker_report": "reports/native_clock_header_pointer_access_cc10.json",
+  "primary_verification": {
+    "result": "PASS",
+    "baseline": "d3abd087546eb77bd721511147bcf8fe8011c99c",
+    "source_pins": 28,
+    "toolchain_pins": 27,
+    "preserved_artifacts": 1414,
+    "exact_old_and_new_core_members": 3,
+    "complete_COFF_code_sections_old": 89,
+    "complete_COFF_code_sections_new": 91,
+    "complete_COFF_all_sections": 378,
+    "code_bytes_old": 6236,
+    "code_bytes_new": 6250,
+    "unchanged_existing_sections": 85,
+    "unchanged_existing_bytes": 5569,
+    "typed_helper_sizes": [
+      10,
+      10,
+      11
+    ],
+    "complete_native_ranges": 5,
+    "native_bytes": 1744,
+    "strict_win32_CTests": 3,
+    "runtime_runs": 0,
+    "reviewed_lowering": "Resize catch one-argument typed reload changes private frame and cookie; ordered cleanup/reload/wrapping/store/rethrow retained. Secondary destructor uses equivalent live header via EBX; current/postcallback/pre-free loads and calls retained. All existing cache sections identical.",
+    "limits": "No original private FH3/SEH or native ABI proof, linked/runtime/nonempty/application/game claim, or broad raw record/string/profile alias correction.",
+    "worker_commit": "21aa59001748d2bd772f2da99a2fb9248d441836",
+    "worker_archive_sha256": "82549f7bd2f2d4d0b86fbffcfa944c88bca15fd96fe37dabbc2de447e9d90b72",
+    "archive_rows": 98,
+    "archive_members": 99,
+    "committed_blobs_verified": 7
+  },
+  "validation": {
+    "worker_strict_win32_CTests": 3,
+    "primary_strict_win32_CTests": 3,
+    "new_runtime_runs": 0,
+    "new_native_bytes": 0,
+    "game_validated": false
+  },
+  "limits": "No original private FH3/SEH or native ABI proof, linked/runtime/nonempty/application/game claim, or broad raw record/string/profile alias correction.",
+  "archive": {
+    "path": "local/cc10-platform-evidence/clock-header-pointer-access.zip",
+    "sha256": "3dc1ab7d46e9bd271fde09f686dd287899c4889fae2305d3638ed7052927d1d4",
+    "files": 8,
+    "valid": true
+  }
+}
