@@ -103,7 +103,7 @@ void format_address(std::uint32_t value, char (&out)[16]) {
 // argument (0098759E FLD [EBP+8]), and 00977990 is reached as a named record.
 // False: the three calls are records under the old MissionEvents names and the
 // accumulator reads the world state's never-written delta.
-constexpr bool kWarningManagerTickBound = false;
+constexpr bool kWarningManagerTickBound = true;
 
 struct GameMissionFrameHost::Impl {
     Impl(GameHostLog& log_in, GameVfsHost& vfs_in, GameMissionLuaHost& lua_in,
