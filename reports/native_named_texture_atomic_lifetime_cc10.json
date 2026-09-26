@@ -1,0 +1,409 @@
+{
+  "packet": "cc10_named_texture_atomic_count",
+  "status": "implemented_build_tested_and_compiled_inspected",
+  "native_new_functions": 0,
+  "native_new_bytes": 0,
+  "addresses": [
+    "00B34120",
+    "00B34230"
+  ],
+  "source_baseline": "00e88108252aaf228df9004adb0dadeef4f77142",
+  "old_build_baseline": "db3bf29a0c73b046700ce134436ec880c1df5552",
+  "production_files": [
+    "src/native_logical_texture_named_base.cpp",
+    "include/bsp/native_logical_texture_named_base.hpp"
+  ],
+  "documentation": "docs/NATIVE_NAMED_TEXTURE_ATOMIC_LIFETIME_CC10.md",
+  "change": "Explicit placement atomic<int32_t>(1) at the existing actual+4 count store; 4-byte size/alignment/lock-free assertions and fresh/fully-retired exclusive backing contract. Exact reviewed LF proposal, no public API/header type/CMake changes.",
+  "build": {
+    "source_base": "00e88108252aaf228df9004adb0dadeef4f77142",
+    "finished_utc": "2026-09-26T12:29:56.5659337Z",
+    "old_emitted_baseline": "db3bf29a0c73b046700ce134436ec880c1df5552",
+    "started_utc": "2026-09-26T12:29:30.7719091Z",
+    "exit_code": 0,
+    "strict_Win32": true,
+    "new_fixture_runtime": false,
+    "existing_CTests": 3
+  },
+  "strict_actual_flags": [
+    "/c /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC10-LUA-READER-QUERIES\\INCLUDE\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC10-LUA-READER-QUERIES\\BUILD\\WIN32\\_DEPS\\LUA511-SRC\\SRC\" /I\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC10-LUA-READER-QUERIES\\BUILD\\WIN32\\_DEPS\\ZLIB121-SRC\" /nologo /W4 /WX /diagnostics:column /O2 /Ob2 /Oy- /D _MBCS /D WIN32 /D _WINDOWS /D NDEBUG /D \"CMAKE_INTDIR=\\\"Release\\\"\" /EHsc /MD /fp:strict /std:c++17 /Fo\"BSP_CORE.DIR\\RELEASE\\\\\" /Fd\"J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC10-LUA-READER-QUERIES\\BUILD\\WIN32\\RELEASE\\BSP_CORE.PDB\" /external:W0 /TP /analyze-  /external:I \"J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/build/win32/_deps/dxsdk_d3dx-src/build/native/include\" J:\\PROG\\BATTLESTATIONS-PACIFIC-DECOMPILE-CC10-LUA-READER-QUERIES\\SRC\\NATIVE_LOGICAL_TEXTURE_NAMED_BASE.CPP"
+  ],
+  "actual_compiler_header_count": 100,
+  "bounded_MSVC_tools": [
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x86/cl.exe",
+      "bytes": 891752,
+      "sha256": "95db52a9c9bd300131474769df7d32b342725b1e1574e0fc83a266479b196938"
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x86/c1xx.dll",
+      "bytes": 13321528,
+      "sha256": "0bdcc62e9a6ef7463c324bbb901e09de6015bb9a77f5465d3196c428f911bfc2"
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x86/c2.dll",
+      "bytes": 10542392,
+      "sha256": "9a58e902f0b7471615d1f602cf569e3e19d726eb5ad85fcc2cc08349f9d531c0"
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x86/mspdb140.dll",
+      "bytes": 386872,
+      "sha256": "e4a77d56915522b874b682f5e33af3b40bee20b3e58e4efb139d84f05e1b22b9"
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x86/link.exe",
+      "bytes": 3698016,
+      "sha256": "36186698fc03d62a1151e48c55d5c17170b94b4621a2faa11189d08182e11a81"
+    },
+    {
+      "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/Hostx64/x86/lib.exe",
+      "bytes": 23424,
+      "sha256": "8c59e7b3642ad1c5719bdc5e567e89254ab1022b7d20f1933e79b92213c76ebc"
+    }
+  ],
+  "selected_prebuild_inputs_unchanged": 34,
+  "unchanged_selected_providers": 25,
+  "new_tests": false,
+  "new_runtime": false,
+  "application_executed": false,
+  "objects": {
+    "old": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_named_texture_atomic_count_implementation/old_member/native_logical_texture_named_base.obj",
+      "bytes": 6790,
+      "sha256": "c1eb37a951e0c67f15f653fed1d11e322152cfdee06a1bbd281c0b117dc023a0"
+    },
+    "new": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/build/win32/bsp_core.dir/Release/native_logical_texture_named_base.obj",
+      "bytes": 7542,
+      "sha256": "21fe44d21803218902ce73e775231df32ee43e0e70aa6ab793466af8c0df2e97"
+    },
+    "old_member_exact": true,
+    "new_member_exact": true,
+    "old_library": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_named_texture_atomic_count_implementation/old_member/bsp_core.lib",
+      "bytes": 71329376,
+      "sha256": "2b8cddf0270ff241622906873ccd045aed4279696737f80c2729865a8e3851cd"
+    },
+    "new_library": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/build/win32/Release/bsp_core.lib",
+      "bytes": 71335352,
+      "sha256": "8239037421ad83b79b0acc4c1b95de90a6b9aea7bfddd3e7f35bbfe12d416a24"
+    },
+    "application_exe": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/build/win32/Release/bsp_game.exe",
+      "bytes": 3708416,
+      "sha256": "3b5a90415153c15dd6690f10961a90957f5af477d2db88297296e1426f118a09"
+    },
+    "application_map": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/build/win32/bsp_game.map",
+      "bytes": 6078329,
+      "sha256": "76ef3bfb74729fe66a8c13022d06d14d03a25403830be516d19e0bd56972fd81"
+    }
+  },
+  "complete_object_comparison": {
+    "old_sections": 25,
+    "new_sections": 30,
+    "common_code_EH_sections_identical": 18,
+    "common_code_bytes": 717,
+    "new_complete_code_bytes": 787,
+    "added_unselected_helpers": [
+      {
+        "symbol_key": "??0?$_Atomic_integral@H$03@std@@QAE@ABH@Z",
+        "section": 10,
+        "size": 16,
+        "code": true
+      },
+      {
+        "symbol_key": "??0?$_Atomic_integral_facade@H@std@@QAE@ABH@Z",
+        "section": 11,
+        "size": 16,
+        "code": true
+      },
+      {
+        "symbol_key": "??0?$_Atomic_storage@H$03@std@@QAE@ABH@Z",
+        "section": 12,
+        "size": 16,
+        "code": true
+      },
+      {
+        "symbol_key": "??0?$atomic@H@std@@QAE@H@Z",
+        "section": 13,
+        "size": 14,
+        "code": true
+      },
+      {
+        "symbol_key": "??2@YAPAXIPAX@Z",
+        "section": 18,
+        "size": 8,
+        "code": true
+      }
+    ],
+    "all_object_relocations": 29,
+    "selected_code_relocations": 21,
+    "EH_data_relocations": 6,
+    "debug_frame_relocations": 2,
+    "unique_linked_code_ranges": [
+      {
+        "start": "101c2470",
+        "end": "101c2484"
+      },
+      {
+        "start": "1023b6f0",
+        "end": "1023b6ff"
+      },
+      {
+        "start": "1024b540",
+        "end": "1024b54b"
+      },
+      {
+        "start": "1026b870",
+        "end": "1026b930"
+      },
+      {
+        "start": "1026b930",
+        "end": "1026b9f6"
+      },
+      {
+        "start": "1026ba00",
+        "end": "1026ba25"
+      },
+      {
+        "start": "102b6300",
+        "end": "102b6332"
+      }
+    ],
+    "unique_linked_code_bytes": 523,
+    "ICF_aliases_qualified": true,
+    "sxdata_handler_symbols_equal": true,
+    "full_old_records": "old_coff.json",
+    "full_new_records": "new_coff.json"
+  },
+  "constructor_schedule": [
+    {
+      "symbol": "?construct_native_logical_texture_named_base_00b34120@bsp@@YAPAXPAXPBX0IAAVNativeStringStorage@1@AAI@Z",
+      "length": 192,
+      "linked_address": "1026b870",
+      "checked_offset_schedule": {
+        "32": "mov dword ptr [esi + 4], 1",
+        "3c": "mov dword ptr [esi], 0xd5f1f4",
+        "45": "mov dword ptr [ebp - 4], 0",
+        "4c": "mov dword ptr [edi], 0",
+        "52": "mov dword ptr [edi + 4], 0",
+        "66": "mov byte ptr [ebp - 4], 1",
+        "6a": "cmp edi, ebx",
+        "70": "push dword ptr [ebx]",
+        "7c": "cmp dword ptr [ebx], 0",
+        "81": "mov eax, dword ptr [edi]",
+        "88": "push dword ptr [ebx + 4]",
+        "8b": "push dword ptr [edi + 4]",
+        "9e": "mov dword ptr [esi + 0x10], ecx",
+        "a4": "mov dword ptr [esi + 0x1c], ecx",
+        "a7": "mov ecx, dword ptr [edx]",
+        "a9": "mov dword ptr [esi + 0x20], ecx",
+        "ac": "inc dword ptr [edx]"
+      },
+      "calls": [
+        {
+          "offset": 117,
+          "kind": 20,
+          "symbol": "?resize_native_string_header_0041dd40@bsp@@YAXPAXAAVNativeStringStorage@1@I_N@Z",
+          "target_section": 0,
+          "target_value": 0,
+          "target_storage": 2
+        },
+        {
+          "offset": 143,
+          "kind": 20,
+          "symbol": "_memmove",
+          "target_section": 0,
+          "target_value": 0,
+          "target_storage": 2
+        }
+      ],
+      "one_plain_count_store": true,
+      "initial_CEB130_store_elided_in_both_predecessor_and_candidate": true,
+      "profile_wrapper_inlines_base_and_publishes_D5F228_at_ae": false,
+      "existing_zero_destination_count_omits_zero_byte_memmove_and_pointer_captures": true
+    },
+    {
+      "symbol": "?construct_native_logical_texture_named_profile_00b34230@bsp@@YAPAXPAXPBX0IAAVNativeStringStorage@1@AAI@Z",
+      "length": 198,
+      "linked_address": "1026b930",
+      "checked_offset_schedule": {
+        "32": "mov dword ptr [esi + 4], 1",
+        "3c": "mov dword ptr [esi], 0xd5f1f4",
+        "45": "mov dword ptr [ebp - 4], 0",
+        "4c": "mov dword ptr [edi], 0",
+        "52": "mov dword ptr [edi + 4], 0",
+        "66": "mov byte ptr [ebp - 4], 1",
+        "6a": "cmp edi, ebx",
+        "70": "push dword ptr [ebx]",
+        "7c": "cmp dword ptr [ebx], 0",
+        "81": "mov eax, dword ptr [edi]",
+        "88": "push dword ptr [ebx + 4]",
+        "8b": "push dword ptr [edi + 4]",
+        "9e": "mov dword ptr [esi + 0x10], ecx",
+        "a4": "mov dword ptr [esi + 0x1c], ecx",
+        "a7": "mov ecx, dword ptr [edx]",
+        "a9": "mov dword ptr [esi + 0x20], ecx",
+        "ac": "inc dword ptr [edx]"
+      },
+      "calls": [
+        {
+          "offset": 117,
+          "kind": 20,
+          "symbol": "?resize_native_string_header_0041dd40@bsp@@YAXPAXAAVNativeStringStorage@1@I_N@Z",
+          "target_section": 0,
+          "target_value": 0,
+          "target_storage": 2
+        },
+        {
+          "offset": 143,
+          "kind": 20,
+          "symbol": "_memmove",
+          "target_section": 0,
+          "target_value": 0,
+          "target_storage": 2
+        }
+      ],
+      "one_plain_count_store": true,
+      "initial_CEB130_store_elided_in_both_predecessor_and_candidate": true,
+      "profile_wrapper_inlines_base_and_publishes_D5F228_at_ae": true,
+      "existing_zero_destination_count_omits_zero_byte_memmove_and_pointer_captures": true
+    }
+  ],
+  "genuine_named_delegate_calls": [
+    {
+      "symbol": "?construct_native_texture_2d_00b3f930@bsp@@YAPAXPAXPBXPAUIDirect3DTexture9@@IIIAAUNativeTexture2DOwnerContext@1@@Z",
+      "length": 848,
+      "application_map_selected": true,
+      "delegate": {
+        "offset": 86,
+        "kind": 20,
+        "symbol": "?construct_native_logical_texture_named_profile_00b34230@bsp@@YAPAXPAXPBX0IAAVNativeStringStorage@1@AAI@Z",
+        "target_section": 0,
+        "target_value": 0,
+        "target_storage": 2,
+        "linked_target": "1026b930"
+      }
+    },
+    {
+      "symbol": "?construct_native_named_cube_texture_base_00b34280@bsp@@YAPAXPAXPBX0IAAVActualNativeStringPoolStorage@1@AAI@Z",
+      "length": 44,
+      "application_map_selected": false,
+      "delegate": {
+        "offset": 22,
+        "kind": 20,
+        "symbol": "?construct_native_logical_texture_named_base_00b34120@bsp@@YAPAXPAXPBX0IAAVNativeStringStorage@1@AAI@Z",
+        "target_section": 0,
+        "target_value": 0,
+        "target_storage": 2
+      }
+    },
+    {
+      "symbol": "?construct_native_named_volume_texture_base_00b342d0@bsp@@YAPAXPAXPBX0IAAVActualNativeStringPoolStorage@1@AAI@Z",
+      "length": 44,
+      "application_map_selected": false,
+      "delegate": {
+        "offset": 22,
+        "kind": 20,
+        "symbol": "?construct_native_logical_texture_named_base_00b34120@bsp@@YAPAXPAXPBX0IAAVNativeStringStorage@1@AAI@Z",
+        "target_section": 0,
+        "target_value": 0,
+        "target_storage": 2
+      }
+    },
+    {
+      "symbol": "?construct_native_named_cube_texture_00b3ced0@bsp@@YAPAXPAXPBXPAUIDirect3DCubeTexture9@@IAAUNativeCubeTextureOwnerContext@1@PAUNativeNamedSpecialTextureAcquired@1@@Z",
+      "length": 504,
+      "application_map_selected": true,
+      "delegate": {
+        "offset": 147,
+        "kind": 20,
+        "symbol": "?construct_native_logical_texture_named_base_00b34120@bsp@@YAPAXPAXPBX0IAAVNativeStringStorage@1@AAI@Z",
+        "target_section": 0,
+        "target_value": 0,
+        "target_storage": 2,
+        "linked_target": "1026b870"
+      }
+    },
+    {
+      "symbol": "?construct_native_named_volume_texture_00b3cfa0@bsp@@YAPAXPAXPBXPAUIDirect3DVolumeTexture9@@IAAUNativeNamedVolumeTextureContext@1@PAUNativeNamedSpecialTextureAcquired@1@@Z",
+      "length": 574,
+      "application_map_selected": true,
+      "delegate": {
+        "offset": 149,
+        "kind": 20,
+        "symbol": "?construct_native_logical_texture_named_base_00b34120@bsp@@YAPAXPAXPBX0IAAVNativeStringStorage@1@AAI@Z",
+        "target_section": 0,
+        "target_value": 0,
+        "target_storage": 2,
+        "linked_target": "1026b870"
+      }
+    }
+  ],
+  "compiler_specific_atomic_traits": {
+    "_HAS_CXX20": 0,
+    "_MSVC_LANG": 201703,
+    "sizeof_void_pointer": 4,
+    "sizeof_atomic": 4,
+    "alignof_atomic": 4,
+    "default_constructible": 1,
+    "trivially_default_constructible": 0,
+    "trivially_destructible": 1,
+    "trivially_copy_constructible": 0,
+    "trivially_move_constructible": 0,
+    "aggregate": 0,
+    "storage4_trivially_default_constructible": 1,
+    "always_lock_free": 1,
+    "trivially_copyable": 0
+  },
+  "compiler_specific_traits_object": {
+    "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_named_texture_atomic_count_implementation/compiler_specific_traits/atomic_traits.obj",
+    "bytes": 904,
+    "sha256": "669c557ec3dfd3cfe2616c59c5cec3223772ca2be9559887fefa38c480a0595a"
+  },
+  "atomic_classification_limit": "Installed MSVC14.51 Win32 C++17 outer atomic is not implicit-lifetime despite trivial storage base; no universal C++17 claim or inference from deleted-copy/value ctor alone. A separately proven earlier count construction remains a separate caller fact.",
+  "retirement_order": [
+    "current zero transition",
+    "genuine flags1 terminal/destruction",
+    "actual pool return",
+    "canonical unbind",
+    "Entry erase"
+  ],
+  "caller_obligations": [
+    "stable reached extent and aligned+4 backing",
+    "fresh or fully retired count with no surviving companion/credit/in-flight access",
+    "outer quiescence/exclusion across pool return through companion retirement",
+    "same actual pools/string storage and live shared serial disjoint from count",
+    "source/name/header/COM and other owner/cache/source count lifetimes independently valid",
+    "failed constructor or metadata leaves count alive in retained backing; no rollback/replay/automatic discard"
+  ],
+  "remaining_boundaries": [
+    "unnamed B34020/B3D650",
+    "concurrent reuse binding",
+    "complete owner/string/cache/source/payload lifetime",
+    "original register ABI/private FH3 or foreign/hardware exception equivalence",
+    "application/game runtime"
+  ],
+  "evidence_folder": "local/output/cc10_named_texture_atomic_count_implementation",
+  "archive_schema": "index.json is a JSON list; each row has path (archive-relative member), bytes, sha256. Archive includes index.json as additional member.",
+  "prior_DWM_preservation": "All666 inputs verified before sync; mutable selected inputs copied; five readiness/review/DWM archives pinned and unchanged. Old live source/build paths are expected to change after sync/build.",
+  "source_order_qualification": "Native initial CEB130 store remains source statement but is elided in both old/new emission. Value initialization emits one plain MOV. No barrier/noinline/volatile/asm adjustment or asynchronous visibility claim. Existing zero-byte memmove omission unchanged.",
+  "analysis_attempts_preserved": [
+    "attempt01",
+    "attempt02",
+    "inspection_attempt01",
+    "inspection_attempt02",
+    "qualification_attempt01"
+  ],
+  "compiler_specific_atomic_traits_archive": {
+    "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_named_texture_atomic_count_implementation/compiler_specific_traits/external_evidence.zip",
+    "bytes": 98288,
+    "sha256": "e8dfb486aeae5ff6867e12bf75e2a66e6805f366a472c77db54a38806e45fa46",
+    "rows": 29,
+    "members": 30,
+    "all_rows_independently_rehashed": true,
+    "no_new_compile_or_runtime": true
+  }
+}

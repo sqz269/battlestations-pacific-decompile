@@ -11,6 +11,15 @@ namespace bsp {
 // Bytes +14..+1B and storage after +24 are untouched. An existing name is
 // abandoned by construction; the source may alias any accessible owner bytes.
 // The final current-buffer copy preserves BF7680's backward-overlap handling.
+// Construction requires exclusive, stable raw backing of at least 24h bytes,
+// with owner+04 aligned for the four-byte lock-free atomic<int32_t>. Its count
+// lifetime starts at the original count=1 store. Reused backing must have no
+// surviving companion, outstanding credit, or in-flight access to its old count;
+// pool availability alone does not establish this retirement/exclusion contract.
+// A failed construction leaves that count alive in the retained backing; no
+// count rollback, automatic cleanup, or replay is supplied. This does not start
+// a complete texture owner, NativeString wrapper, cache, or retained-source life.
+// The actual serial is a live uint32_t; it must not overlap the count object.
 // Pass the actual shared texture serial DWORD corresponding to 0108D6E8,
 // including for callers of the unnamed constructors. It is incremented with
 // DWORD wrap only after the current source/header copy and COM/flags stores.
