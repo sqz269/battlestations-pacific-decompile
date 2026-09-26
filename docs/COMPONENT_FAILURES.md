@@ -102,4 +102,28 @@ Same-tree pair, `BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`, USN04 4700/4500 a
 
 ## 7. Results
 
-Pending.
+Two builds of the same tree (local `cf_off`, `cf_on`), window line and module directory checked,
+logs deleted first. ShipGlobals read as FailureChance 1.000, FailureDamageThreshold 100.0,
+ExplosionDamagePercentage 0.350, FireFailureDamageDuration 10.0, 6 Failures rows.
+
+| run | rolls | resolved | started | effect | death table | USN02 end |
+| --- | --- | --- | --- | --- | --- | --- |
+| USN04 OFF / ON | 0 / 0 | 0 / 0 | 0 / 0 | none | identical (31) | - |
+| USN02 OFF / ON | 0 / 19 | 0 / 12 | 0 / 2 | two Explosions | identical (5) | failed at 44.60 s both |
+
+The two USN02 failures:
+
+* Exeter at 43.45 s, from a direct torpedo hit on its magazine. The same impact's blast
+  (bullet 67, 6090 taken) sank it before the next pass, so its scheduled explosion found a dead
+  unit and did nothing.
+* Kortenaer at 54.00 s, at 1892 of 2500: the explosion took 875 (35%), leaving it afloat.
+
+1. Held: USN04 rolls 0 and nothing else moves.
+2. Held: 19 rolls, 12 resolved (the top of the band), 2 started.
+3. **Did not hold.** No death moved or was added: Exeter was already sinking from the same hit,
+   and Kortenaer survived the 35%. The 10 other resolved rolls either drew above p or hit a kind
+   with no Failures row (`body`), so no EngineJam or Fire started.
+4. Held: the USN02 failure stays at 44.60 s.
+
+`kComponentFailureBound` is ON. No reference count moves; Kortenaer ends the USN02 run 875 points
+lower.

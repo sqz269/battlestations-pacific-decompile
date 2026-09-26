@@ -1,0 +1,34 @@
+{
+  "packet": "cc9_component_failures",
+  "doc": "docs/COMPONENT_FAILURES.md",
+  "answer": "R8's 0093BED0 now rolls on every direct element hit with hull damage: 008782A0 finds the victim's Damage.Sections row by (kind, index), p = damage / 100 from ShipGlobals, 0093AA00 finds the ShipGlobals.Failures row of that kind, an active failure of the same name blocks it, and 00827B90 applies the effect (Explosion: 35% of max health on the next pass through 0081B630; Fire: 10 s of fire time through 9Eh; Steering/EngineJam: published flags). 0093C520 retires failures. kComponentFailureBound is ON.",
+  "steps": [
+    {"address": "0093bf1b", "native": "008782a0", "function": "0093bed0", "rule": "section row with +4h == hit+30h and +8h == hit+34h"},
+    {"address": "0093bf98", "native": "00bd2f10", "function": "0093bed0", "rule": "draw in [0,1); above p ends the roll"},
+    {"address": "0093bfc1", "native": "0093aa00", "function": "0093bed0", "rule": "the settings+3E8h row (stride 14h) whose +0h equals the kind"},
+    {"address": "0093c02e", "native": "0093a9e0", "function": "0093bed0", "rule": "search task+18h by the row's name"},
+    {"address": "0093c0a7", "native": "0093bc30", "function": "0093bed0", "rule": "push {kind, name, row+0Ch}"},
+    {"address": "008198e2", "native": "00876e20", "rule": "6Ah arm of 008198A0 (slot 220h)"},
+    {"address": "0081997f", "native": "00818110", "rule": "the 38h scheduled object; +2Ch = msg+30h"},
+    {"address": "0083e956", "native": "00438e10", "function": "0083b5e0", "rule": "SectionName -> 00E08138 index, stored at 0083E97B, no remap"}
+  ],
+  "evidence_sites": {
+    "0093c0ed": "CALL EAX = unit vtable[21Ch]; 00827B90 sits at 00CFC5EC = 00CFC3D0 + 21Ch",
+    "0081b729": "CALL EAX = unit vtable[1ACh] with obj+2Ch, then vtable[10h] (0071C4A0)",
+    "0083e2e3 / 0083e379 / 0083e547": "FDIV qword [00D7A220] after FireFailureChance / ExplosionDamagePercentage / FailureChance",
+    "007273b1": "a steering element is filed as body, so SteeringJam never starts from a hit"
+  },
+  "substitutions": [
+    "the explosion object's step runs at the start of the host's next damage-control pass",
+    "00982C50, 00913D80, 0093A2C0 and the clear messages are records",
+    "the jam flags are published through GameGunneryHost::unit_failure_active; the ship motion is not changed"
+  ],
+  "pair": {
+    "runs": "USN04 4700/4500 and USN02 1400/1200 at 0.05 s, BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1, same-tree builds cf_off / cf_on",
+    "usn04": "rolls 0, identical",
+    "usn02": "rolls 19, resolved 12, started 2 (Explosion on Exeter at 43.45 s, already sunk by the same impact; Explosion on Kortenaer at 54.00 s, 875 taken); death table identical; failed at 44.60 s in both",
+    "prediction_3": "did not hold: no death moved"
+  },
+  "commits": {"off": "c304c9096"},
+  "ghidra": "read-only; no renames, comments or saves"
+}
