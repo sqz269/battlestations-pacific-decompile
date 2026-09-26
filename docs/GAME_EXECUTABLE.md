@@ -9713,7 +9713,12 @@ which is the whole 39 -> 35) is attributed by elimination to the flight and dogf
 The integrator's expectations hold: USN04 30 deaths / 520 hit records, and USN02 20 deaths with
 the failure at 39.65 s. Flagged:
 * the E2 step from 39 to 35 before the fire window, unpaired at 9000;
-* the USN02 step from 22 to 23 before the component failures, unpaired at 9000;
+* the USN02 step from 22 to 23 before the component failures, unpaired at 9000. **Update
+  (packet `cc9_fire_flooding_9000_pair`, `docs/SHIP_FIRE_FLOODING.md` section 7):** on today's
+  tree fire and flooding account for +1 death (19 -> 20), -33 hit records (520 -> 487) and the
+  failure at 39.65 s instead of 64.40 s (Exeter's flood tick). The 769 -> 358 hit-record fall
+  of that step is not theirs, and remains flagged for the other landings of
+  `fad22c424..c304c9096`;
 * the recon lists, corpse chase, task-less arms, avoidance gate, integrator/throttle, seat flip,
   camera unit and wedge landings. None was paired on these four missions by this packet. Any
   effect they have is inside those two unpaired steps or the USN04/USN01 attribution.
