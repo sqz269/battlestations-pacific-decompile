@@ -42,7 +42,7 @@ namespace {
 // (GameGunneryHost::query_segment_units) and the hit branch 00526C74..00526DB2
 // picks a hit of kind 6, 0Fh, 45h, 46h, 1Bh or 35h by ray. False: the query
 // reports no hit and the branch is a record.
-constexpr bool kHudPickSegmentQueryBound = false;
+constexpr bool kHudPickSegmentQueryBound = true;
 
 void format_address(std::uint32_t address, char (&out)[16]) {
     std::snprintf(out, sizeof(out), "%08lx", static_cast<unsigned long>(address));

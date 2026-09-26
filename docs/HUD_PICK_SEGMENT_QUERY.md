@@ -192,3 +192,43 @@ owner.
   - If it is non-zero, a move in the gunnery lines is possible through 00954A10. Any such move
     will be attributed through the `HudWeaponGroupScreen` rows, not called a finding.
   - A gameplay move with `ray_pick_other` at zero would be the finding.
+
+## 6. The pairs and the verdict
+
+One tree (661e8bc45 + 09298b10e + 222d60660), `local\bin\rp_off` against `local\bin\rp_on`,
+`BSP_GUNNERY_RNG_STREAMS=1`. All four logs show the 1600x900 fit line and the final COM release.
+
+| Line | USN04 OFF | USN04 ON | USN02 OFF | USN02 ON |
+|---|---|---|---|---|
+| `segment_query` | 9,160 record | 9,160 concrete | 18,160 record | 18,160 concrete |
+| `segment_query_hit` | - | 0 | - | 26 |
+| `ray_pick_other` / `ray_pick_own` | - | 0 / 0 | - | 26 / 0 |
+| `hit_section` (record, ship hits) | - | 0 | - | 26 |
+| `owner_140` (record, resolved picks) | 0 | 0 | 0 | 26 |
+| lock-radius walks (`list_1970`) | 9,160 | 9,160 | 18,160 | 18,134 |
+| unimplemented total | 2,248,522 | 2,239,362 | 4,718,386 | 4,700,278 |
+
+**Gameplay: nothing moved.** The per-entity tables and the gunnery damage lines are identical, so
+the clock offset is zero, and no summary line differs. The 26 enemy picks in USN02 did not reach
+the fire message: no `HudWeaponGroupScreen` row moved, so the weapon group's gunner path did not
+run with them.
+
+**The prediction of what the ray meets was wrong.** I expected own-formation hits in the
+thousands. A probe build, not committed (`local\rp_probe.log`, USN04, every 500th query), shows
+why there are none.
+- The camera sits 53.7 above the sea, about 250 behind the Lexington, and its forward pitches
+  down by about 10 degrees. `to` is at y = -1682.8 after 10000.
+- The segment therefore enters the water about 300 ahead of the camera.
+- 0098ADD0 tests unit boxes, not water, so only a unit within a few hundred of the camera on
+  that line is hit. In USN04 nothing ever is.
+- In USN02, 26 queries hit an enemy ship (kind 6), which became the pick by ray.
+
+Whether the image's camera pitches the same way is the mission camera's contract, not this
+packet's.
+
+**Verdict: ON.** The query and the hit branch are the image's (sections 1 and 2), and no gameplay
+line moves. `kHudPickSegmentQueryBound` is set true. Two named records remain:
+- `UnitPickScreen::hit_section` (00526C8C), because record+38h has no writer;
+- `UnitPickScreen::part_owner_00923810`, which did not run.
+
+`owner_140` is an existing record of the pick's owner getter, now reached 26 times.
