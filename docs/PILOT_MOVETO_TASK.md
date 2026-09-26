@@ -494,3 +494,46 @@ The ON side has `kPilotMoveToTaskBound`, `kMissionTurnAndStanceBound`, `kMoveToT
 | escort leaders | fly away from the fleet | turn toward it and close; arrivals only for the early waves |
 | plane deaths | main's | up to +4, escort Zeros |
 | releases | main's | within band |
+
+### The all-on pair, measured
+
+Binaries `local\ao_off` and `local\ao_on` are built from `6037768c6`. Streams were on, the runs
+went one at a time, and the 1600x900 window line is in all four logs. The spawn callbacks run at
+the same frames on both sides.
+
+**E2 9000** (`local\AO_OFF_9000.log`, `local\AO_ON_9000.log`):
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| natives | UNIMPLEMENTED 9 / 18 / 8 | concrete 9 / 18 / 8 | concrete | held |
+| moveto tasks | none | 17, 14 arrivals; surviving wingmen 4-40 m from their leaders | 17, about 14 | held |
+| plane deaths | 35 | 43: eight escort Zeros added (#3.2, #5.2, #6.2, #7.2 and their wingmen), none removed | about 43, all escorts | held |
+| torpedo / dive releases | 5 / 2 | 5 / 6 | within 3-6 / 1-6 | held, dive at the top of the band |
+| hit records | 595 | 796 | - | the escort losses |
+| the Lexington's distance moved | 6641 | 4285 | 4000-6200 | held |
+
+The ON log's summary equals part 3's `MF_ON_9000.log`: it is the same switch set on a tree that
+differs only in the doc.
+
+**USN04 4700/4500** (`local\AO_OFF_4500.log`, `local\AO_ON_4500.log`):
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| natives | UNIMPLEMENTED 8 / 17 / 8 | concrete 8 / 17 / 8 | concrete where called | held |
+| moveto tasks | none | 16 tasks, 14 arrivals: all eight waves arrive within 225 s | the early waves only | **failed**: every wave arrives |
+| plane deaths | 30 | 36: six escort Zeros added (#3.2, #5.2, #6.2 and their wingmen) | up to +4 | **failed**: +6 |
+| torpedo / dive releases | 5 / 2 | 5 / 5 | within band | held |
+| the Lexington's distance moved | 3467 | 3481 | - | unchanged |
+
+### Verdict: all four switches ON
+
+`kPilotMoveToTaskBound`, `kMissionTurnAndStanceBound`, `kMoveToTaskTickBound` and
+`kMoveToFollowBound` are set ON.
+- **What moves, and why.** Every row that moves comes from the escorts now doing what the script
+  orders: they turn toward the fleet, fly to their ship and keep formation. The extra deaths are
+  escorts lost to anti-aircraft fire. The extra dive releases come from bombers that face the fleet
+  from spawn.
+- **Part 1b.** Its turn is the image's own, and the velocity read above shows the slide that
+  follows is too.
+- **What stays wrong.** After arriving, a leader and its wing fly straight on instead of circling.
+  That is the circle steer `009FBB20`, part 4, and it is the next thing to bind.
