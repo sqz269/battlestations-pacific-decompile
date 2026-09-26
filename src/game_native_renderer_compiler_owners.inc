@@ -7,6 +7,7 @@ struct CompilerOwnersGraph {
  NativeMaterialPassConstructionAccess passes;
  NativeMaterialPassCopyAccess copies;
  NativeMaterialProgramNumericRendererDomain numeric_renderer;
+ NativeMaterialStateCacheContext state_cache;
  NativeD3dx9ShaderConstantTableImport reflection_import;
  NativeCompiledShaderReflectionContext reflection;
  NativeD3d9ShaderConstructionActualContext shaders;
@@ -73,6 +74,7 @@ struct CompilerOwnersGraph {
    pass_lifetime{vfs.strings,registry,game_native_graphics_pool_process().material_pass_pool_0108fbf8()},
    passes{pass_lifetime,renderer,{this,&bind_states}},
    copies{pass_lifetime,this,&bind_state},numeric_renderer{passes,textures,profiles(0xd5f0a8)},
+   state_cache{registry},
    reflection_import(d3dx),
    reflection{vfs.strings,constants,reflection_import},
    shaders{raw,support.actual_published_0108fedc,renderer},
@@ -87,7 +89,7 @@ struct CompilerOwnersGraph {
    pixel{vfs.strings,renderer,vfs.actual_vfs_publication_0109ceec,vfs.bindings,pixel_import} {}
  GameNativeMaterialCompilerOwners borrowed() noexcept {
   return {passes,reflection,shaders,{this,&bind_pass,&bind_reflection,&bind_shader},
-      copies,{this,&bind_pass},numeric_renderer};
+      copies,{this,&bind_pass},numeric_renderer,state_cache};
  }
  GameNativeMaterialCompilerSources borrowed_sources() noexcept {return {source,vertex,pixel};}
  bool quiescent() const noexcept {return live_companions.load(std::memory_order_relaxed)==0;}

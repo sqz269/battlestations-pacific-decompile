@@ -1,0 +1,84 @@
+{
+  "packet": "cc10_startup_state_cache_binding",
+  "status": "reviewed_provider_composition_strict_win32_build_static_checked",
+  "baseline": "07fe2d8c0ebf99c566a3691a258eea5efb31023a",
+  "approved_diff_sha256": "ac43740c8538f0b33c670c258b9d62e177514102606aef063f3cc1b3e901a35a",
+  "files": ["include/bsp/game_native_material_compiler_owners.hpp", "src/game_native_renderer_compiler_owners.inc"],
+  "native_context_only": ["00b46950", "00b45ee0", "00b5f6a0", "00b26500", "00b265c0", "00b26680"],
+  "native_credit": {"new_bytes": 0, "new_functions": 0, "provider_body_changes": 0, "ledger_or_ghidra_mutations": 0},
+  "binding": {
+    "context": "retained NativeMaterialStateCacheContext{existing registry}",
+    "view": "trailing borrowed state_cache reference",
+    "same_domains": ["CompilerOwnersGraph owners", "pass lifetime", "existing state/pass companions"],
+    "ownership": "borrowed canonical metadata domain; no native owner credit",
+    "restrictions": "ready-only getter; existing drain/live-companion guard; all contexts outlive consumers and retained failed frames",
+    "native_activation": false
+  },
+  "source_abi": {
+    "target": "MSVC14.51.36231 Win32 C++17",
+    "old_view_bytes": 44,
+    "new_view_bytes": 48,
+    "alignment": 4,
+    "previous_slot_offsets": [0, 4, 8, 12, 28, 32, 40],
+    "state_cache_offset": 44,
+    "reference_slot_proof": "complete actual production borrowed return/getter stores",
+    "compile_only_exported_values": [48, 4, 12, 32],
+    "qualification": "new source interface; graph/application layouts change; not original ABI or immutable future offsets"
+  },
+  "validation": {
+    "strict_win32_builds": 1,
+    "existing_ctests": "3/3 PASS",
+    "actual_view_consumers_rebuilt": ["src/game_native_renderer_application.cpp"],
+    "before_build_source_config_pins": 17,
+    "before_build_tool_pins": 11,
+    "actual_postbuild_dependencies_prebuild_matched": 651,
+    "prior_archives_unchanged": 46,
+    "new_tests": 0,
+    "runtime": false,
+    "layout_compile_only": true
+  },
+  "compiled": {
+    "application_object": "separate actual bsp_game object, not a bsp_core member",
+    "old_provenance": "actual preserved fae8b644 worker object; not built from later 07fe baseline",
+    "old_new_application_function_symbols": 681,
+    "identical_function_symbols": 629,
+    "changed_function_symbols": 52,
+    "old_new_selected_physical_sections_each": 94,
+    "new_complete_code_sections": 81,
+    "new_complete_code_bytes": 12592,
+    "new_decoded_instructions": 3701,
+    "selected_code_and_eh_relocations": 571,
+    "unique_complete_relocation_masked_linked_sections": 26,
+    "linked_observed_operands": 328,
+    "linked_qualification": "actual operands and complete masked matches; no map-resolved symbolic-target claim; remaining full COFF only",
+    "core_provider_members_with_unchanged_code_relocations": 7,
+    "unchanged_provider_function_symbols": 827,
+    "whole_identical_members": 4,
+    "timestamp_bytes_4_5_only_members": 3,
+    "raw_pointer_zero": "zero physical bytes, no synthetic BSS/header slices"
+  },
+  "preserved_attempts": [
+    "LF git-apply check against CRLF files failed before mutation; exact normalized proposal applied preserving CRLF",
+    "initial collector whole-AR-byte equality assumption failed; three differences proved timestamp bytes4/5 only",
+    "layout vcvars parent-path and cmd-quoting preparations failed before cl",
+    "PowerShell preparation quoting/missing-script outcomes preserved in raw tool conversation/receipt",
+    "first actual layout compile failed reference-member offsetof assertions; ignored probe corrected, production unchanged"
+  ],
+  "evidence": {
+    "folder": "local/cc10_startup_state_cache_binding_implementation",
+    "archive": "local/cc10_startup_state_cache_binding_implementation/evidence.zip",
+    "manifest_schema": "index.json list[path,bytes,sha256]; ZIP adds index.json",
+    "verification": "verification.json",
+    "full_sections": "compiled_sections.json",
+    "full_old_new_coff": ["before_sync_application_coff.json", "after_build_application_coff.json"],
+    "providers": "provider_members_v02.json",
+    "layout": ["view_layout_v02_proof.json", "layout_v02.receipt.json", "layout_macro_qualification.json"],
+    "committed_blobs": "committed_blobs.json"
+  },
+  "limits": [
+    "Provider composition prepares a real child dependency; no NativeChildren/cache/load/registration/count execution",
+    "Full startup loading/Programs/compiler/sampler graph remains unconstructed",
+    "No source0/W, caller preimage, platform/MSG or complete-owner/lifetime defaults",
+    "No native EH/SEH/private stack alias, application activation, teardown runtime or game validation"
+  ]
+}
