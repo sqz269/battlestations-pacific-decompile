@@ -1,0 +1,665 @@
+{
+  "packet": "cc10_texture_source_child_append",
+  "baseline": "e64ad38490e20c2c524faeb61c60e80d288cf239",
+  "pre_sync_baseline": "826922ca6f389cd340942041a445171801da304a",
+  "status": "isolated_internal_append_fragment_strict_Win32_three_existing_CTests_complete_COFF_verified_no_runtime_or_whole_producer",
+  "production_files": [
+    "include/bsp/native_texture_source_child_append.hpp",
+    "src/native_texture_source_child_append.cpp",
+    "cmake/startup.cmake"
+  ],
+  "source_interface": "cdecl NativeTextureSourcePayload& and capturedvoid*; no standalone native function or binary ABI claim",
+  "original_fragment": {
+    "enclosing_function": "00c30570",
+    "start": "00c307ad",
+    "end": "00c307e1",
+    "bytes": 53,
+    "instructions": 19,
+    "abi": "internal producer frame/register schedule; ESI original owner, EDI captured child, EBX0; original CALL735FF0 ECX header/stack signedcapacity/RET4"
+  },
+  "new_native_bytes": 53,
+  "new_native_functions": 0,
+  "prior_credit_check": "local/cc10_texture_source_producer_typed_readiness/fragment_credit_check.json no producer/append reconstruction rows; bounded lookup/range/enclosing lookup",
+  "calls": [
+    {
+      "address": "00c307cb",
+      "native": "00735ff0",
+      "function": "00c30570",
+      "source_target": "reserve_native_cube_texture_owner_array_00735ff0(NativeRenderPointerArrayStorage&,int32_t)",
+      "compiled_relocation_offset": 33
+    }
+  ],
+  "lifetime": {
+    "payload": "already-live actual C30470-created separatepayload actual+8, sole nested header at actual+10",
+    "backing": "genuine typed735FF0 and already-live reached source slots",
+    "slot": "default placement Pointer without()/{} only at reached native store; volatile assignment uses placement result; transparent replacement only same live scalar type",
+    "callbacks": "may mutate fields but retain active payload/header and valid reached backing",
+    "no_duplicate_payload_header_or_atomic": true
+  },
+  "behavior": {
+    "capacity_then_current_count": true,
+    "wrapped_signed_growth": true,
+    "fresh_count_then_data_after_reserve": true,
+    "placement_address_zero_skip": true,
+    "captured_null_stored": true,
+    "unconditional_fresh_wrapped_count": true,
+    "no_child_credit_retain_release_or_rollback": true
+  },
+  "compiled_schedule": {
+    "result": "PASS",
+    "native_fragment": {
+      "start": "00c307ad",
+      "end": "00c307e1",
+      "bytes": 53,
+      "instructions": 19
+    },
+    "leaf_bytes": 67,
+    "object_code_bytes": 83,
+    "unreferenced_helpers": [
+      {
+        "section": 3,
+        "name": ".text$mn",
+        "owner": "??2@YAPAXIPAX@Z",
+        "is_code": true,
+        "symbols": [
+          {
+            "name": "??2@YAPAXIPAX@Z",
+            "value": 0,
+            "section": 3,
+            "kind": 32,
+            "storage": 2
+          }
+        ],
+        "size": 8,
+        "sha256": "a88b542608dec5bd7f04897050a7ac52f6da1375a7d97d0db7ac5ab21c137b21",
+        "hex": "558bec8b450c5dc3",
+        "relocations": [],
+        "decoded_bytes": 8,
+        "full_linear_decode": true,
+        "instructions": [
+          {
+            "offset": 0,
+            "size": 1,
+            "mnemonic": "push",
+            "operands": "ebp"
+          },
+          {
+            "offset": 1,
+            "size": 2,
+            "mnemonic": "mov",
+            "operands": "ebp, esp"
+          },
+          {
+            "offset": 3,
+            "size": 3,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ebp + 0xc]"
+          },
+          {
+            "offset": 6,
+            "size": 1,
+            "mnemonic": "pop",
+            "operands": "ebp"
+          },
+          {
+            "offset": 7,
+            "size": 1,
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ],
+        "limit": "Whole bounded COFF code section; linear decode does not distinguish embedded table/data by itself"
+      },
+      {
+        "section": 5,
+        "name": ".text$mn",
+        "owner": "?signed_bits@?A0xefaa3491@bsp@@YAHI@Z",
+        "is_code": true,
+        "symbols": [
+          {
+            "name": "?signed_bits@?A0xefaa3491@bsp@@YAHI@Z",
+            "value": 0,
+            "section": 5,
+            "kind": 32,
+            "storage": 3
+          }
+        ],
+        "size": 8,
+        "sha256": "d5a2b635b0bbb254914f2641e4508361a0c95686c0422dcebeb3abbcca7f1d2b",
+        "hex": "558bec8b45085dc3",
+        "relocations": [],
+        "decoded_bytes": 8,
+        "full_linear_decode": true,
+        "instructions": [
+          {
+            "offset": 0,
+            "size": 1,
+            "mnemonic": "push",
+            "operands": "ebp"
+          },
+          {
+            "offset": 1,
+            "size": 2,
+            "mnemonic": "mov",
+            "operands": "ebp, esp"
+          },
+          {
+            "offset": 3,
+            "size": 3,
+            "mnemonic": "mov",
+            "operands": "eax, dword ptr [ebp + 8]"
+          },
+          {
+            "offset": 6,
+            "size": 1,
+            "mnemonic": "pop",
+            "operands": "ebp"
+          },
+          {
+            "offset": 7,
+            "size": 1,
+            "mnemonic": "ret",
+            "operands": ""
+          }
+        ],
+        "limit": "Whole bounded COFF code section; linear decode does not distinguish embedded table/data by itself"
+      }
+    ],
+    "instructions": 29,
+    "events": [
+      {
+        "event": "capacity read",
+        "native": "00c307b1",
+        "emitted": 10,
+        "owner_offset": "18"
+      },
+      {
+        "event": "current count comparison read",
+        "native": "00c307b7",
+        "emitted": 13,
+        "owner_offset": "14"
+      },
+      {
+        "event": "conditional genuine typed reserve",
+        "native": "00c307cb",
+        "emitted": 32
+      },
+      {
+        "event": "fresh count after reserve",
+        "native": "00c307d0",
+        "emitted": 40,
+        "owner_offset": "14"
+      },
+      {
+        "event": "fresh data after count",
+        "native": "00c307d3",
+        "emitted": 43,
+        "owner_offset": "10"
+      },
+      {
+        "event": "reached captured child pointer store",
+        "native": "00c307dc",
+        "emitted": 55
+      },
+      {
+        "event": "fresh count increment read",
+        "native": "00c307de",
+        "emitted": 57,
+        "owner_offset": "14"
+      },
+      {
+        "event": "wrapped count increment store",
+        "native": "00c307de",
+        "emitted": 61,
+        "owner_offset": "14"
+      }
+    ],
+    "branch_correspondence": [
+      {
+        "native": "C307BA JNE C307D0",
+        "emitted": "16JNE40"
+      },
+      {
+        "native": "C307C1 signedJG C307C8 else1",
+        "emitted": "25signedCMP;27CMOVG, defaultEAX1"
+      },
+      {
+        "native": "C307DA addresszeroJE C307DE",
+        "emitted": "50JE57"
+      }
+    ],
+    "single_typed_reserve_call": true,
+    "no_placement_or_memcpy_call": true,
+    "no_fp_operations": true,
+    "null_child_value_guard": false,
+    "unconditional_fresh_count_after_address_skip": true,
+    "source_interface": "cdecl payload reference and captured pointer;67B new source code; not original53B register/frame ABI",
+    "native_new_fragment_credit": 53,
+    "new_native_function_credit": 0,
+    "unchanged_members": [
+      {
+        "member": "native_cube_texture_owner_array_reserve.obj",
+        "exact_full_member": true,
+        "all_raw_sections_and_relocations_identical": true,
+        "code_sections": 6,
+        "code_bytes": 307,
+        "raw_sections": 10
+      },
+      {
+        "member": "native_procedural_resource_lifetime.obj",
+        "exact_full_member": true,
+        "all_raw_sections_and_relocations_identical": true,
+        "code_sections": 74,
+        "code_bytes": 3598,
+        "raw_sections": 166
+      },
+      {
+        "member": "native_texture_source_time.obj",
+        "exact_full_member": true,
+        "all_raw_sections_and_relocations_identical": true,
+        "code_sections": 1,
+        "code_bytes": 74,
+        "raw_sections": 4
+      }
+    ],
+    "whole_producer_runtime_FH3_not_validated": true
+  },
+  "old_library": {
+    "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_texture_source_child_append_implementation/old/bsp_core.lib",
+    "size": 71222484,
+    "sha256": "5d69d93d1581d491d9acb5ec9da0997d0371481c9085279e36d7dddd767f7b33"
+  },
+  "new_library": {
+    "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_texture_source_child_append_implementation/compiled/bsp_core.lib",
+    "size": 71224348,
+    "sha256": "099337175ec40d503b6045a90a5376b11880a513c698fa8587be9984ad05475f"
+  },
+  "selected_objects": [
+    {
+      "member": "native_cube_texture_owner_array_reserve.obj",
+      "object": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_texture_source_child_append_implementation/compiled/native_cube_texture_owner_array_reserve.obj",
+        "size": 2486,
+        "sha256": "4483b7f034ff61fd443cb8e48d4dfa40206d42dd6d30f16a56bfa3b2af95c7c0"
+      }
+    },
+    {
+      "member": "native_procedural_resource_lifetime.obj",
+      "object": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_texture_source_child_append_implementation/compiled/native_procedural_resource_lifetime.obj",
+        "size": 39362,
+        "sha256": "cd907295d26dee2fc5b21bef82a372c87e297a8b226eca0a3493099d52572d3e"
+      }
+    },
+    {
+      "member": "native_texture_source_time.obj",
+      "object": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_texture_source_child_append_implementation/compiled/native_texture_source_time.obj",
+        "size": 802,
+        "sha256": "8df84dc5924ec41dbab6bbd885800059a06475e9215cd48bf67e956dc84d6b64"
+      }
+    },
+    {
+      "member": "native_texture_source_child_append.obj",
+      "object": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_texture_source_child_append_implementation/compiled/native_texture_source_child_append.obj",
+        "size": 1392,
+        "sha256": "dd2cc1290a0409a5b1b0702066b6b81b36beceb14394cd37dc85935aea503b4a"
+      }
+    }
+  ],
+  "old_full_library_provenance": "Frozen worker child-header library produced once against fe858 baseline plus826922 owned patch; historical full library, not all later disjoint main providers.",
+  "evidence_pins": {
+    "source_inputs": [
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/include/bsp/native_texture_source_child_append.hpp",
+        "size": 1164,
+        "sha256": "2691f657c481ce740a14e2f9b4589ed83a587b453d58629aa88f97db6ef50610",
+        "copy": "before_build/inputs/include/bsp/native_texture_source_child_append.hpp"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/src/native_texture_source_child_append.cpp",
+        "size": 1526,
+        "sha256": "750583eca03df9494a7075b4a98a126f4dd0a6d8d8dca22878e09392d682e8f5",
+        "copy": "before_build/inputs/src/native_texture_source_child_append.cpp"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/cmake/startup.cmake",
+        "size": 184793,
+        "sha256": "93bc77e165b279022d25d7140c968a28ddf8fc22f92cdc4d100fe09a043ae1ac",
+        "copy": "before_build/inputs/cmake/startup.cmake"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/include/bsp/native_texture_source_storage.hpp",
+        "size": 1371,
+        "sha256": "fcbb95174fdc99e34404eefa82b131b2a189574f6cd56bc0a78bfecf5f085731",
+        "copy": "before_build/inputs/include/bsp/native_texture_source_storage.hpp"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/include/bsp/native_render_pointer_arrays.hpp",
+        "size": 4572,
+        "sha256": "d9cf406a178986114205fe9a154a2b74c0f8dd857b6186d7d840d8fe398ae881",
+        "copy": "before_build/inputs/include/bsp/native_render_pointer_arrays.hpp"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/include/bsp/native_cube_texture_owner_array_reserve.hpp",
+        "size": 1167,
+        "sha256": "6ecffbb6def9f0d27c8d0a5d16408f4000c4fb8f9b650b8a6c5a3d58baf585b8",
+        "copy": "before_build/inputs/include/bsp/native_cube_texture_owner_array_reserve.hpp"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/src/native_cube_texture_owner_array_reserve.cpp",
+        "size": 3238,
+        "sha256": "f8456b8a3477eb07bbef1f5cd207ef27f145d501b5d09f43c0701ba47b1f4779",
+        "copy": "before_build/inputs/src/native_cube_texture_owner_array_reserve.cpp"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/include/bsp/native_procedural_resource_lifetime.hpp",
+        "size": 5891,
+        "sha256": "9cc49e7418f53e49cec2a12074901577f334af26b1e4e036256314756e9ed4fe",
+        "copy": "before_build/inputs/include/bsp/native_procedural_resource_lifetime.hpp"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/src/native_procedural_resource_lifetime.cpp",
+        "size": 9785,
+        "sha256": "87108b3f56828a77255b2ce561525db435a463b3a0f06cfe1786d2eecef4961b",
+        "copy": "before_build/inputs/src/native_procedural_resource_lifetime.cpp"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/include/bsp/native_resource_cache_leaves.hpp",
+        "size": 4052,
+        "sha256": "35dce4cb6544e5c59e1da0893669d66637dbb20c27faea4a1a3f10fa7225ee26",
+        "copy": "before_build/inputs/include/bsp/native_resource_cache_leaves.hpp"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/src/native_resource_cache_leaves.cpp",
+        "size": 6034,
+        "sha256": "2db1be65e9cd7940759e5b28817ff9bf090f1abdbe8789ce2d62db971be020fa",
+        "copy": "before_build/inputs/src/native_resource_cache_leaves.cpp"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/include/bsp/singleton_lifetime.hpp",
+        "size": 4372,
+        "sha256": "56621ccc09d54ad59acd6b5ad641aa04700a7957df972c49946e9c9a7d33041f",
+        "copy": "before_build/inputs/include/bsp/singleton_lifetime.hpp"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/src/singleton_lifetime.cpp",
+        "size": 13257,
+        "sha256": "97733266a44569114fca8142035375b728144e20658a6d914156b2a78655ec62",
+        "copy": "before_build/inputs/src/singleton_lifetime.cpp"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/config/target.json",
+        "size": 455,
+        "sha256": "366e5a64ac945473bb8d91607a78e56fee52e2579d38e66df3c240000b108ffb",
+        "copy": "before_build/inputs/config/target.json"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/CMakeLists.txt",
+        "size": 15689,
+        "sha256": "754522100c9579ee50d4f36ce078b1d7ba643fc9879d2748460b12f7b90feb03",
+        "copy": "before_build/inputs/CMakeLists.txt"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/scripts/build.ps1",
+        "size": 1820,
+        "sha256": "ba4a34b029718dbd5b1336bb0c99decafa859e42bdc1b9d9811265032a9a4f62",
+        "copy": "before_build/inputs/scripts/build.ps1"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/tools/bsp.py",
+        "size": 71540,
+        "sha256": "bce3670db26119294329be646539557f8368256b5d7fd19340e839cdd0175067",
+        "copy": "before_build/inputs/tools/bsp.py"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/tools/ghidra_export.py",
+        "size": 14411,
+        "sha256": "0367957cab3518c622104dc20309d571c0a253d0b0163f8e303ed409ccae0612",
+        "copy": "before_build/inputs/tools/ghidra_export.py"
+      }
+    ],
+    "tool_and_sdk": [
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/HostX86/x86/cl.exe",
+        "size": 830824,
+        "sha256": "33ee095d65686e5f4caedd7d52b74fbba8447b2ef4b07019a9dca58c5cb74e5c"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/HostX86/x86/link.exe",
+        "size": 3208544,
+        "sha256": "b00f360e373955590d61ca2a5e43f504365edf555d9e80d28fd1cbc0bcd59438"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/bin/10.0.26100.0/x86/mt.exe",
+        "size": 1556392,
+        "sha256": "2b51140fe58cd1ab255a4e66ed5d332224aa8621a1d46eba24bf3ab3dfe8fb46"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/HostX86/x86/c1xx.dll",
+        "size": 11055928,
+        "sha256": "fe5610a0ed19fd233e56c9dc4d0e5b0ebbf64ed97dac08a7ade06a204856fedc"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/HostX86/x86/c2.dll",
+        "size": 8720696,
+        "sha256": "03befd4b4a8d3915091b99a4e4fe12586fb49ccd519e568f655fb1f431f6d7f0"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Auxiliary/Build/vcvars32.bat",
+        "size": 39,
+        "sha256": "e0f12ba374968f55ce898ee0384eb9c9b989cc3b499e3c0d553368ad223e28c8"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/um/x86/user32.lib",
+        "size": 179898,
+        "sha256": "ab26e29a6f06b0eba87861aebb9e61874a22f297d03d66e08296066ce0dbdbeb"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/um/x86/d3d9.lib",
+        "size": 5692,
+        "sha256": "f7efc12189fc46406762aebe66a80a44181bbd93e40e7adfe051af0db3bd53af"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/um/x86/advapi32.lib",
+        "size": 192644,
+        "sha256": "b3c77049c3e3d0630b8bd45abacc5237cd11cb2d77c49055fd9dd71c574d02a5"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/um/x86/shell32.lib",
+        "size": 280164,
+        "sha256": "140aa220a74bfc2d6230d3f056f368c646e5feee0b097b8e19de3976f62d5a52"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/um/x86/kernel32.lib",
+        "size": 329914,
+        "sha256": "0916cf9c90410acf8fe000b23443f54c467bdecb14078034f3c9ec086200afc7"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/lib/x86/msvcrt.lib",
+        "size": 8263656,
+        "sha256": "863545158568f88be2b64aa98f00ea69c5f9a7dc1e7e7a281af9debaf24e7918"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/lib/x86/msvcprt.lib",
+        "size": 5365666,
+        "sha256": "5043c6d473b6f5d0f767df241b4004175ad9b60d01ae4565b7caaea1709ab55f"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/lib/x86/vcruntime.lib",
+        "size": 400312,
+        "sha256": "3409bc1818adc4881c55c4869d91dd5172027e3a459c375d8360f9ccee2c2a8c"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/ucrt/x86/ucrt.lib",
+        "size": 299244,
+        "sha256": "ccd3dad2a72ad555a320b855eea24eb9b6fc2d216473bd794ae7831bde00913d"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/lib/x86/oldnames.lib",
+        "size": 158090,
+        "sha256": "3af0bc33f96a74105b9a83eea9238b7191885764b36bec144ec783a8fba59457"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/um/x86/uuid.lib",
+        "size": 8973686,
+        "sha256": "c67dde91ba590a490ed57c09ce6b3c8b6ef90e60a78dbde6acf7f11e1eefbfc0"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/um/x86/ole32.lib",
+        "size": 108518,
+        "sha256": "037effd2a291e69b7a6b310ca52c95dd7baed17b9bcd718967324e89730dfcc8"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/um/x86/winmm.lib",
+        "size": 42736,
+        "sha256": "549fb561414304d3f48665497247d3c82c0fe6f0c127ac08aab0e4497e44dc71"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/um/x86/ws2_32.lib",
+        "size": 255926,
+        "sha256": "467e17d18f18cb924dfcee79165ce013721523e918a0f5142e49de5bc6d0d268"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/um/x86/psapi.lib",
+        "size": 7912,
+        "sha256": "79deb2ee511d2978856e07fb56fbce40468ce09f6e2ab9fb6ac5a8f91272706b"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/um/x86/shlwapi.lib",
+        "size": 80504,
+        "sha256": "4567aac48694d5ddbcb9df82b96213a5f9d5967decd508c4c8ce1ad1aca54f41"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/lib/x86/legacy_stdio_definitions.lib",
+        "size": 394336,
+        "sha256": "6bbc35db378e391a80a8d3f30b5bb9dc1fb2978a5e0cd8905723951a42cb4432"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/um/x86/dinput8.lib",
+        "size": 309048,
+        "sha256": "e18e93836e1aa52920cd2f8e320d4b18d6b2cba454affce527df6371c8de541b"
+      },
+      {
+        "path": "C:/Program Files (x86)/Windows Kits/10/Lib/10.0.26100.0/um/x86/dxguid.lib",
+        "size": 1327538,
+        "sha256": "4b66bbc675e4d7ff0c5d81765fc06fdd96dc77f9b1ef142db33b87aa58415a9e"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/bin/cmake.exe",
+        "size": 14060088,
+        "sha256": "d8173552e9d943c20feadd74d0437371f49d45c3d53a20dae2655ecc2493392c"
+      },
+      {
+        "path": "C:/Program Files/Microsoft Visual Studio/18/Community/MSBuild/Current/Bin/MSBuild.exe",
+        "size": 387856,
+        "sha256": "b21235a7b75630114ed923dfb881e60f501000dd996a09c25dd1f73f0bbde220"
+      }
+    ],
+    "preserved": [
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_texture_source_producer_typed_readiness/evidence.zip",
+        "size": 598118,
+        "sha256": "fea132007233e0d5a97d86342e6fb1182e08abf83ce591521d4c317f23d8bafa"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_texture_source_producer_typed_readiness/manifest.json",
+        "size": 19766,
+        "sha256": "da16b1d5cd5cc73e7a330d9d025f288ffe926f1058571e4b2ed2b780adaabf87"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_texture_source_child_header_evidence.zip",
+        "size": 30796828,
+        "sha256": "a1d039bab4e7b5b3fb8a10c30040e45f538932aa216eedd9fe59c66a07f03264"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_positive_texture_source_readiness/evidence.zip",
+        "size": 184315,
+        "sha256": "1c5378d5ac8f6aa3c22ac72d17717232952049c234fa506e768ad4c30e164b5f"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_texture_source_payload_evidence.zip",
+        "size": 30476755,
+        "sha256": "ad501605f343f3069397bcc29de44bf191659654a742a78aff498585d172fca1"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_texture_source_child_append_implementation/old/bsp_core.lib",
+        "size": 71222484,
+        "sha256": "5d69d93d1581d491d9acb5ec9da0997d0371481c9085279e36d7dddd767f7b33"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_texture_source_child_append_implementation/old/native_cube_texture_owner_array_reserve.obj",
+        "size": 2486,
+        "sha256": "4483b7f034ff61fd443cb8e48d4dfa40206d42dd6d30f16a56bfa3b2af95c7c0"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_texture_source_child_append_implementation/old/native_procedural_resource_lifetime.obj",
+        "size": 39362,
+        "sha256": "cd907295d26dee2fc5b21bef82a372c87e297a8b226eca0a3493099d52572d3e"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_texture_source_child_append_implementation/old/native_texture_source_time.obj",
+        "size": 802,
+        "sha256": "8df84dc5924ec41dbab6bbd885800059a06475e9215cd48bf67e956dc84d6b64"
+      }
+    ],
+    "native_fragment": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_texture_source_child_append_implementation/native/00c307ad_child_append_fragment.bin",
+      "size": 53,
+      "sha256": "28bc140eecd193b5dd8f38f945b634baaf807f52e106bab70d2d15af3fdfc4cf"
+    },
+    "original_binary": {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "size": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    }
+  },
+  "verification": {
+    "build": {
+      "utc_start": "2026-09-26T10:49:29.776949+00:00",
+      "utc_end": "2026-09-26T10:50:17.903708+00:00",
+      "command": {
+        "argv": [
+          "powershell",
+          "-NoProfile",
+          "-File",
+          "scripts/build.ps1",
+          "-Configuration",
+          "Release"
+        ],
+        "cwd": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values"
+      },
+      "exit": 0,
+      "all_three_ctests_pass": true,
+      "runtime_cases": 0,
+      "new_tracked_tests": false,
+      "inputs_and_prior_artifacts_unchanged": true
+    },
+    "strict": "/MD /W4 /WX /fp:strict MSVCWin32",
+    "new_tests": 0,
+    "runtime_cases": 0,
+    "code_exact_reviewed_proposal": true,
+    "member_and_complete_raw_section_checks": true,
+    "call_and_field_schedule": true
+  },
+  "preserved_analysis_failures": [
+    "seal_input_filename_failure.json (stderr transcription; no rawtool claim)",
+    "failed_compare/diagnosis.json and original actual failure tool result"
+  ],
+  "limits": [
+    "only53B append internal fragment; no wholeC30570 function or remaining751B credit",
+    "source interface not originalnative ABI; source/privateFH3/SEH/hardwarefault no proof",
+    "real C30470 livepayload/header/backing/slots admission; no arbitraryraw adoption",
+    "nullchild appended not safe subsequent C304A0 retirement; FPS unchecked no positivity guarantee",
+    "returned-but-unappended obligations remaincaller; no sourceflag/FPS/priorappend rollback",
+    "fullLua rawfatal/nonlocal/errortransport/cleanup and capturedrenderer dispatch domains separate",
+    "no childfactory/cache/platformMSG/XLive/source0W/fullsampler/application activation or newruntime"
+  ],
+  "doc": "docs/NATIVE_TEXTURE_SOURCE_CHILD_APPEND_CC10.md",
+  "archive": "local/cc10_texture_source_child_append_evidence.zip",
+  "manifest": "local/cc10_texture_source_child_append_implementation/manifest.json",
+  "compiled_schema": "local/cc10_texture_source_child_append_implementation/complete_coff_sections.json",
+  "member_schema": "local/cc10_texture_source_child_append_implementation/new_members.json",
+  "separate_full_producer_audit": "local/cc10_positive_texture_source_readiness/evidence.zip, nested inside prior/append_readiness.zip; nonreconstructed"
+}
