@@ -583,6 +583,28 @@ PlaneDynAccumulators accumulate_free_flight_007db680(const PlaneFreeFlightState&
                                                      float step, bool ramp_reset = false);
 
 // 007D8470's first two folds and the 0.001f deadband at 007D8502..007D85A5.
+// 007D8470's velocity step, the free-flight path (packet cc9_flight_integrator,
+// docs/FLIGHT_INTEGRATOR.md). Per body axis, 007D8611-007D874F:
+//   w = v + a*step                      a = dyn+1Ch (lift, thrust, gravity folded)
+//   b = r*step                          r = dyn+04h (damping, drag folded)
+//   c = |q|*step                        q = dyn+40h (the third fold; 0 in free flight)
+//   w >= 0: v' = max(0, w + min(b, 0) - c)
+//   w <  0: v' = min(0, w + max(b, 0) + c)
+// so the resisting terms act only against the motion and stop it at zero.
+// Then 007D8755-007D8774 adds dyn+88h..90h (the constructor 007D7B90 copies
+// it from the read-only global 00F87574; zero here) and 007D8777-007D87C2
+// zeroes any component under 0.01f (00D7A238). The takeoff floor (dyn+C8h),
+// the contact terms (dyn+A4h/+94h) and the unit+904h sink term do not run in
+// free flight and are not part of this rule.
+struct PlaneBodyVelocityStep {
+    float velocity[3] = {0.0f, 0.0f, 0.0f};
+};
+PlaneBodyVelocityStep integrate_body_velocity_007d8611(const float velocity[3],
+                                                        const float accel_1c[3],
+                                                        const float resist_04[3],
+                                                        const float resist_40[3],
+                                                        float step) noexcept;
+
 PlaneBodyAcceleration fold_world_into_body_007d8470(const PlaneDynAccumulators& acc,
                                                     const float world_to_body[9]);
 

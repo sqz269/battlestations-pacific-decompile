@@ -2982,6 +2982,10 @@ struct GameUnitsHost::Impl {
     // its bank limit (0099DFFB), a fighter held at 60-70 degrees of bank
     // stopped turning toward its target. OFF: both angles zero.
     static constexpr bool kRateLawAttitudeTermsBound = false;
+    // Packet cc9_flight_integrator (docs/FLIGHT_INTEGRATOR.md): 007D8470's
+    // velocity step in place of the host's Euler step. OFF: v += a * step.
+    // ON with kDogfightThrottleBound on the pair FI0/FI1 (section 4).
+    static constexpr bool kFlightIntegratorBound = true;
     // Packet cc9_planner_heading_writes (docs/PLANNER_HEADING_WRITES.md): the
     // torpedo states' own heading writes the host never reproduced. The moveto
     // tick 009C18C0 steers at its +2Ch target through 009F9E40 (009C1B23,
@@ -3130,7 +3134,10 @@ struct GameUnitsHost::Impl {
     // multiplier (kPilotThrottleSlotBound). With both on (local/S1T_9000.log) the
     // pair no longer stalls but still reaches the water at |v| 100-106, in aim,
     // chasing Vals that the same switch sends gliding into the sea. Still OFF.
-    static constexpr bool kDogfightThrottleBound = false;
+    // ON since packet cc9_flight_integrator: pair FI0/FI1 with the integrator
+    // bound (docs/FLIGHT_INTEGRATOR.md section 4); the low-speed stall is the
+    // image's own regime (docs/FREEFLIGHT_STALL_LAW.md).
+    static constexpr bool kDogfightThrottleBound = true;
     // Packet cc9_aimglide_pitch: approach+A8h is Uniform(row+38h, row+3Ch) drawn
     // by 00BD2F10 on stream ECX = 1 in the approach constructor 009C3EA0
     // (009C3F09-009C3F2E), once per dive-bomb task. This host pinned it to the
@@ -7624,9 +7631,35 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 world_accel[c] += rows[r][c] * body.total[r];
                             }
                         }
-                        for (int i = 0; i < 3; ++i) {
-                            unit_.plane_world_velocity[i] += world_accel[i] * step;
-                            unit_.motion.position[i] += unit_.plane_world_velocity[i] * step;
+                        if constexpr (GameUnitsHost::Impl::kFlightIntegratorBound) {
+                            // 007D8611-007D87C2 on the body velocity: the
+                            // resisting fold dyn+04h acts only against the
+                            // motion and stops it at zero, then the 0.01f
+                            // deadband; 007D8C6B-007D8CE6 rotates it back to
+                            // world. docs/FLIGHT_INTEGRATOR.md.
+                            float vb[3] = {0.0f, 0.0f, 0.0f};
+                            for (int r = 0; r < 3; ++r) {
+                                for (int c = 0; c < 3; ++c) {
+                                    vb[r] += rows[r][c] * unit_.plane_world_velocity[c];
+                                }
+                            }
+                            const float none[3] = {0.0f, 0.0f, 0.0f};   // dyn+40h, empty in free flight
+                            const bsp::PlaneBodyVelocityStep vs =
+                                bsp::integrate_body_velocity_007d8611(
+                                    vb, body.pair_1c, body.pair_04, none, step);
+                            for (int c = 0; c < 3; ++c) {
+                                float w = 0.0f;
+                                for (int r = 0; r < 3; ++r) w += rows[r][c] * vs.velocity[r];
+                                unit_.plane_world_velocity[c] = w;
+                            }
+                            for (int i = 0; i < 3; ++i) {
+                                unit_.motion.position[i] += unit_.plane_world_velocity[i] * step;
+                            }
+                        } else {
+                            for (int i = 0; i < 3; ++i) {
+                                unit_.plane_world_velocity[i] += world_accel[i] * step;
+                                unit_.motion.position[i] += unit_.plane_world_velocity[i] * step;
+                            }
                         }
                         // 0092D730 takes the body's linear velocity from
                         // 00C31F40 and dots it with the third row of the body

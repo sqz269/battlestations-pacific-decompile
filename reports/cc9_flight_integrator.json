@@ -1,0 +1,14 @@
+{
+  "packet": "cc9_flight_integrator",
+  "doc": "docs/FLIGHT_INTEGRATOR.md",
+  "calls": [
+    {"address": "007DC6E6", "native": "007D8470", "function": "007DB680", "note": "the integration step; its free-flight velocity update 007D8611-007D87C2 is now bound (kFlightIntegratorBound ON)"}
+  ],
+  "switches": [
+    {"name": "kFlightIntegratorBound", "state": "ON", "pair": "local/FI0_9000.log vs local/FI1_9000.log"},
+    {"name": "kDogfightThrottleBound", "state": "ON", "pair": "same pair, same build"}
+  ],
+  "rules_added": [{"name": "integrate_body_velocity_007d8611", "address": "007D8611", "file": "include/bsp/plane_flight.hpp"}],
+  "no_ghidra_function": [],
+  "ledger_names_added": []
+}
