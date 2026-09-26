@@ -2,11 +2,33 @@
   "packet": "cc9_fighter_roll_trace",
   "doc": "docs/FIGHTER_ROLL_TRACE.md",
   "calls": [
-    {"address": "009A0AE0", "native": "0099CAB0", "function": "0099F1C0", "note": "terrain band producer; inserts into set = pass (0 or 1) at 0099D025, never the roll set 2"},
-    {"address": "0099D95C", "native": "00419010", "function": "0099D300", "note": "target-speed correction multiplier, only with plan+2B0h clear; aim sets it"}
+    {
+      "address": "009A0AE0",
+      "native": "0099CAB0",
+      "function": "0099F1C0",
+      "note": "terrain band producer; inserts into set = pass (0 or 1) at 0099D025, never the roll set 2"
+    },
+    {
+      "address": "0099D95C",
+      "native": "00419010",
+      "function": "0099D300",
+      "note": "target-speed correction multiplier, only with plan+2B0h clear; aim sets it"
+    }
   ],
   "finding": "the Yorktown sea losses are zero-throttle stalls in aim with the wings near level; the image's terrain arm has no roll set and its aim speed arm has no minimum-speed guard; nothing bound; kRateLawAttitudeTermsBound stays OFF pending the original-game check",
-  "switches": [{"name": "kFighterLowTraceDiag", "state": "OFF", "kind": "diagnostic, extended"}],
+  "switches": [
+    {
+      "name": "kFighterLowTraceDiag",
+      "state": "OFF",
+      "kind": "diagnostic, extended"
+    },
+    {
+      "name": "kZeroTraceDiag",
+      "state": "OFF",
+      "kind": "diagnostic"
+    }
+  ],
   "no_ghidra_function": [],
-  "ledger_names_added": []
+  "ledger_names_added": [],
+  "zero_losses": "Zero #4.2/#8.2: no task and no command target; vehicle-avoidance repair at ~30 s freezes the controls (pitch 0.99, throttle 0.008) because the host's plan_yaw_0099d300 returns before any arm without a command target; stalls and tumbles into the sea. Open item: does the image's 0099D300 run pitch/roll/throttle arms without a target? Also: leader and wingman spawn at the same point."
 }
