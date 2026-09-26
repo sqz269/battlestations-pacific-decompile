@@ -1,0 +1,139 @@
+{
+  "packet": "cc10_texture_2d_callcells_integration",
+  "worker_commit": "2cb7d1b94bf5c288c124555c31fdc0afbe6bf779",
+  "source_integration": "ce38396f99b0e0f31e1ec5ba324cf32aa141e068",
+  "worker_report": "reports/native_runtime_texture_2d_callcells_cc10.json",
+  "primary_worker_verification": {
+    "result": "PASS_COMMITTED_ARCHIVE_SCHEDULE_AND_LINK_CORRESPONDENCE",
+    "worker_commit": "2cb7d1b94bf5c288c124555c31fdc0afbe6bf779",
+    "archive_sha256": "a9ba2935d338d514841cd92018d061eb52807ab8e01d1231b3b9365f50654785",
+    "manifest_rows": 547,
+    "members": 548,
+    "exact_Git_blobs": 4,
+    "whole_factory_bytes": 1223,
+    "whole_factory_instructions": 417,
+    "whole_funclet_bytes": 42,
+    "whole_cleanup_bytes": 190,
+    "standalone_account_bytes": 169,
+    "inlined_FP_operations": 13,
+    "all_jump_and_CMOV_events": 34,
+    "unconditional_jumps_in_those_events": 6,
+    "worker_branch_field_name_qualification": "all_factory_conditional_jumps_and_CMOV includes six unconditional jumps; all actual conditional events are present",
+    "nine_DWORD_COM_calls": 2,
+    "unchanged_old_code_units": 455,
+    "unchanged_old_code_bytes": 29149,
+    "linked_correspondence_rows": 268,
+    "actual_member_origin_rows": 57,
+    "shared_other_origin_rows": 211,
+    "unique_linked_correspondence_ranges": 117,
+    "unique_actual_member_origin_ranges": 57,
+    "all_correspondence_resolved_relocations": 627,
+    "factory_selected": false,
+    "standalone_account_selected": false,
+    "caller_clear_qualification": "Two unchanged-source cancel/quiescent-reset bodies coalesce zero initialization after output loses volatile object qualification; whole differences preserved, no arbitrary intermediate-observer claim.",
+    "new_tests": 0,
+    "runtime": false
+  },
+  "primary_root_verification": {
+    "result": "PASS_FULL_COFF_AND_INPUT_IDENTITY",
+    "old_new_AR_object_counts": [
+      1784,
+      1785
+    ],
+    "objects": 14,
+    "physical_sections": 1650,
+    "whole_code_sections": 934,
+    "whole_code_bytes": 77670,
+    "relocations": 2966,
+    "presealed_source_and_dependency_pins": 4239,
+    "presealed_tool_SDK_pins": 29,
+    "actual_postbuild_includes": 387,
+    "postbuild_only_includes": 0,
+    "worker_CTests": 3,
+    "new_tests": 0,
+    "runtime": false,
+    "contract_schedule_review": "separate worker schedule and primary review still required",
+    "root_whole_raw_equal_sections": 811,
+    "root_objects": {
+      "native_runtime_texture_creation.obj": {
+        "whole_raw_equal_sections": 78,
+        "physical_sections": 80,
+        "sha256": "040b6d807a40687e3c19033a0b16f8406d8f81e8ba6b7bc91497bf6889c855e4"
+      },
+      "native_render_texture_surface_owner.obj": {
+        "whole_raw_equal_sections": 81,
+        "physical_sections": 83,
+        "sha256": "dad5f8cbde05e11438e5cd5b4dd1e2d9c622919dba83410782506b878257ee82"
+      },
+      "native_luminance_owner.obj": {
+        "whole_raw_equal_sections": 145,
+        "physical_sections": 147,
+        "sha256": "739b557030c7676bef657453da35bc36e100288e675e9a9044820dd58f8ad626"
+      },
+      "native_render_resource_init_continuation.obj": {
+        "whole_raw_equal_sections": 111,
+        "physical_sections": 113,
+        "sha256": "ba88476fe14fe10f0f5731d84810a81bf5712813c96b21993b63e32b7559ae98"
+      },
+      "native_shadow_depth_target_owner.obj": {
+        "whole_raw_equal_sections": 285,
+        "physical_sections": 287,
+        "sha256": "9d0799f03daed3c49f827049858fb937d26dc262860a48a506f6be94e0fa5379"
+      },
+      "d3d9_texture2d_pool.obj": {
+        "whole_raw_equal_sections": 80,
+        "physical_sections": 82,
+        "sha256": "1ff5064b2c19a5069f1616700e4af9a5546b8bb05cda8e194df3523e0bdb6226"
+      },
+      "native_texture_2d_owner.obj": {
+        "whole_raw_equal_sections": 31,
+        "physical_sections": 33,
+        "sha256": "47449ee5ad033ec53131c0f9b279911aeae6c4f9f82c682f87708292cb5286f6"
+      }
+    },
+    "root_physical_sections": 825,
+    "root_complete_code_sections_equal": 467,
+    "root_code_bytes_equal": 38850,
+    "root_ordered_relocations": 1483,
+    "qualified_section_permutations": 32,
+    "qualified_nonloaded_metadata_differences": 14,
+    "qualification": "Explicit bijective lambda correspondence and positive definition/value/type/storage targets; all code/EH raw bytes exact. Only CodeView object paths and nonloaded .chks64 metadata differ; no blanket code-byte normalization."
+  },
+  "validation": {
+    "worker_CTests": 3,
+    "root_CTests": 3,
+    "new_tests": 0,
+    "new_runtime_cases": 0,
+    "game_validated": false
+  },
+  "native_accounting": {
+    "existing_body_bytes": 753,
+    "existing_body_instructions": 237,
+    "new_reconstructed_functions": 0,
+    "new_native_bytes": 0,
+    "new_Ghidra_functions": 0
+  },
+  "annotation": {
+    "address": "00b2a070",
+    "name_preserved": true,
+    "prior_values_recorded": true,
+    "prior_comments_preserved": true,
+    "write_lock": true,
+    "saved": true,
+    "forced_export": true
+  },
+  "limits": "Conditional corrected MSVC Win32 source interface; historical R73 original/source normal-path fixtures predate this correction. No new executed factory/COM/accounting, native ABI/FH3/foreign fault equivalence, automatic canonical lifetime, full startup or gameplay proof.",
+  "inspection_notes": [
+    "Full jump/CMOV worker field includes six unconditional jumps; all 28 actual conditional/CMOV events and full34 events checked.",
+    "Worker COM argument vector is a nine-element list, not count; root verifier corrected schema.",
+    "Five renamed old decorated symbols have no same-name new section and are excluded from unchanged-name comparison; raw Create call bytes independently matched.",
+    "Root original comparison incorrectly assumed worktree-local lambda/COMDAT section numbering; failed helper/log preserved. Qualified symbol/section matching is documented in root verification.",
+    "Shared/folded COMDAT byte correspondence does not establish actual member origin; factory and standalone accounting remain COFF-only."
+  ],
+  "archive": {
+    "path": "local/cc10-platform-evidence/runtime-texture-2d-callcells.zip",
+    "sha256": "332d2c68a13e35d0452e7664d1147db1a78510ee41c970321c8bdff8c7fb4d87",
+    "files": 49,
+    "valid": true
+  }
+}
