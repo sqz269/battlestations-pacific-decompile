@@ -151,8 +151,27 @@ would reject this run wrongly.
 **Samidare's salvo, traced.** A diagnostic, `BSP_MUZZLE_TRACE=<unit prefix>`, prints every
 placed shot of that unit. Each line gives the mount, the muzzle, the picked node's name, its
 facing (row 2), the shot and target bearings, and the shift split into along the facing, across
-it and up. Pending: the run needs a connected session (session 1 was disconnected from 16:01 on
-2026-09-25).
+it and up. Run on 2026-09-25 from `2d86ffac6` (muzzle offsets and the gun sign both ON), USN02
+3300 frames, `BSP_MUZZLE_TRACE=Samidare`, `local/mzD_usn02.log`:
+
+```
+t=1.40   plat=12 barrel=0 node=1(Quad launcher:base) facing_deg=132.1 shot_deg=132.1 target_deg=173.7 shift_along=1.41 shift_across=1.28  shift_up=0.69
+t=1.90   plat=12 barrel=1 node=1(Quad launcher:base) facing_deg=132.0 shot_deg=132.0 target_deg=173.6 shift_along=1.41 shift_across=0.42  shift_up=0.71
+t=2.40   plat=12 barrel=2 node=1(Quad launcher:base) facing_deg=132.0 shot_deg=132.0 target_deg=173.6 shift_along=1.41 shift_across=-0.48 shift_up=0.69
+t=2.90   plat=12 barrel=3 node=1(Quad launcher:base) facing_deg=132.0 shot_deg=132.0 target_deg=173.6 shift_along=1.41 shift_across=-1.30 shift_up=0.69
+t=121.40 plat=12 barrel=0 node=1(Quad launcher:base) facing_deg=118.6 shot_deg=118.6 target=Houston target_deg=161.3 shift_along=1.41 shift_across=1.28 shift_up=0.69
+```
+
+- **The pick is `base`, as the static read says.** It is the node that lists both the `base` Note
+  and the four `fire` points.
+- **The shift lies along the tube's facing.** Every launch moves 1.41 m along the facing and
+  0.69..0.71 m up. The across component is the tube's own offset (+1.28, +0.42, -0.48, -1.30),
+  cycling with the barrel index.
+- **The facing equals the shot direction** on every launch, so the pose and the host's firing
+  direction agree.
+- The target bearing sits 41..43 degrees off the facing. The quadruple mount's window stops
+  short of the target bearing, and `0085AB50` snaps the heading onto the window edge, which it
+  allows up to pi/4. This is the same snap `docs/TORPEDO_LAUNCH_ACCURACY.md` records.
 
 What the static data already settles for that salvo: Samidare's platform 12 is device 70,
 `jap_quadruple_torpedo_turret.mmod`. It carries a `base` Note (resource 7, listed by item 1
@@ -164,3 +183,9 @@ the base's frame. The tube-mouth shift is therefore 1.41 m along the mount's fac
 up, plus up to 1.3 m across it. The trace will confirm that split on the live salvo.
 Every torpedo mount in USN02 has this shape (a `base` Note and no `barrel`); gun turrets carry
 both, and `barrel` resolves to the elevating child (for example `150mm dual:barrels`).
+- Samidare launches only twice in the first 165 s: eight torpedoes at Kortenaer at 1.40..5.00 s,
+  and eight at Houston at 121.40..125.00 s (platform 12, then platform 11). The second salvo is
+  the only candidate for the torpedoes that struck Java and DeRuyter at 142.75 and 144.70 s in
+  the muzzle-offsets OFF run. Both ships were near Houston, and they were not the aim. This run
+  has the gun sign ON as well, so its positions are not the muzzle pair's; the geometry of the
+  shift is what it checks.
