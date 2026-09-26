@@ -29,6 +29,10 @@ public:
     // Explicit diagnostic abandonment: release owned temporary references/name
     // and close the retained Lua state. Configuration writes are not rolled back.
     // This is not the original FH3 cleanup schedule and does not permit replay.
+    // Requires an independently valid Lua state; phase/site alone is not
+    // a restoration token. Do not use after foreign C++ escape through Lua C
+    // frames: object release/close can execute Lua, and this method establishes
+    // neither restored state invariants nor finalizer-service safety.
     void discard_retained_state_for_diagnostics();
 private:
     struct Impl;
