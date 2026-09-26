@@ -1,0 +1,24 @@
+{
+  "packet": "cc9_torpedo_spread",
+  "doc": "docs/TORPEDO_SPREAD.md",
+  "answer": "008FFF20 now adds the owner's unit+6D4h times the target's forward axis to the torpedo intercept, and 00951FC0 flips it after each launch (0, -35, +35, -70, +70, -105, then 0). kTorpedoSpreadBound is ON.",
+  "steps": [
+    {"address": "00900951", "native": "00951fc0", "function": "008fff20", "rule": "flip unit+6D4h after the launch"},
+    {"address": "0090027b", "native": "0042d7e0", "function": "008fff20", "rule": "the target's world matrix; +20h / +28h scale the offset into the lead"}
+  ],
+  "evidence_sites": {
+    "00900280..009002bf": "lead.x += unit+6D4h * m+20h, lead.z += unit+6D4h * m+28h",
+    "00cf8608": "35.0 (double)",
+    "00d19be8": "80.0, above it the offset resets",
+    "0095ce11": "unit+6D4h = 0 in the constructor"
+  },
+  "substitutions": ["the offset is added whether or not the intercept solved"],
+  "pair": {
+    "runs": "USN04 4700/4500 and USN02 9200/9000 at 0.05 s, BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1, same-tree ts_off / ts_on",
+    "usn04": "identical",
+    "usn02": "torpedoes 274 -> 217, hits 20 -> 12, deaths 23 -> 20, hit records 413 -> 487, failure 44.60 -> 39.65 s (Exeter sinks at 35.95 s instead of 43.45 s)",
+    "predictions": "1 and the deaths band held; the hit band, launch count and failure time did not"
+  },
+  "commits": {"off": "f869d9591"},
+  "ghidra": "read-only; no renames, comments or saves"
+}

@@ -49,4 +49,30 @@ The baseline is current main (`ar_on`), USN02 9200/9000. It fires 274 torpedoes 
 
 ## 4. Results
 
-Pending.
+Same-tree builds `ts_off` and `ts_on`, window line and module directory checked, logs deleted
+first. `BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`.
+
+| run | torpedoes / hits / damage | deaths | hit records | total damage | end |
+| --- | --- | --- | --- | --- | --- |
+| USN04 OFF / ON | 0 | 31 / 31, identical | 528 | 7215.6 | - |
+| USN02 OFF | 274 / 20 / 38384 | 23 | 413 | 59841.9 | failed at 44.60 s (Exeter sank at 43.45 s) |
+| USN02 ON | 217 / 12 / 29986 | 20 | 487 | 53671.0 | failed at 39.65 s (Exeter sank at 35.95 s) |
+
+`usn_2_java.lua` fails the mission when Houston or Exeter is dead (line 521), and ends it a
+little over a second later.
+
+1. **Held:** USN04 is identical.
+2. **Did not hold:** hits fell to 12 (4.4% of 217), under the 14 to 26 band, and launches fell by
+   21%, more than 10%. The spread moved the early torpedo kills:
+   * Java sinks at 27.75 s to Yudachi (141.30 s OFF), and Exeter at 35.95 s to Tokitsukaze
+     (43.45 s OFF).
+   * DeRuyter still goes, at 30.25 s.
+   * Alden sinks at 149.35 s instead of 34.50 s. Perth, sunk at 46.65 s OFF, survives the run.
+3. **Deaths held** at 20, inside 17 to 27. **The failure time did not hold:** Exeter's earlier
+   torpedo death ends the mission 4.95 s sooner, at 39.65 s instead of 44.60 s.
+
+`kTorpedoSpreadBound` is ON. The USN02 9000 reference moves:
+* deaths 23 -> 20;
+* hit records 413 -> 487;
+* torpedoes 274 -> 217;
+* failure 44.60 -> 39.65 s.
