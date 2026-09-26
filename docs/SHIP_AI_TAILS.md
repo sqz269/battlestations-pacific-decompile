@@ -405,5 +405,11 @@ No behaviour changes.
   and the new gate row takes the rest.
 - Deaths, hit records, every ship-ai line and the death table are identical.
 
-**Result:** pending.
+**Result:** held (`nb_off` / `nb_on`, E2 9200/9000, tree `bf6eddc7a`).
+- The tail's row is concrete at 130833 calls, and `navigation_gate_closed_009ee59f` is concrete at
+  1313. Together they make the OFF record's 132146.
+- Deaths and hit records (51 / 841), the per-ship `ship ai` digest (`62143c922f`) and the death
+  table digest are identical both ways.
+
+`kShipAiNavTailGateBookkeeping` is ON. Tail (b) was bookkeeping, not a gap.
 
