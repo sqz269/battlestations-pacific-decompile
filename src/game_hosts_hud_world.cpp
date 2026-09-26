@@ -561,9 +561,25 @@ void GameHudMinimapHost::update_005c0f20(float seconds) {
     // icon_heading + pi/2). The camera object is the renderer owner's, so the
     // heading it would return is recorded and the controlled unit's own is used.
     if (host.direction != nullptr) {
-        host.record("HudMinimap::camera_heading_virtual", 0x004b4b00u);
-        binding.set_map_layer_rotation(host.direction,
-            bsp::kHudMinimapHeadingBias - headings.icon);
+        bool squadron = false;
+        const std::size_t camera = kHudMinimapDirectionWedgeBound
+            ? camera_unit_004b4b00(host.units, squadron) : 0;
+        float right[3], up[3], forward[3], origin[3];
+        if (camera != 0 && host.units->unit_pose(camera - 1, right, up, forward, origin)) {
+            // 0042BA40 (vtable +C8h): 00414DB0 refreshes the pose, then
+            // FSTP float of atan2(+ECh, +F4h) and FCHS; 005C1864 FSUB the icon
+            // heading, 005C186C FADD double pi/2 (00CF1438), 005C1874 FSTP.
+            const float yaw = static_cast<float>(std::atan2(static_cast<double>(forward[0]),
+                                                            static_cast<double>(forward[2])));
+            const float wedge = static_cast<float>(static_cast<double>(-yaw)
+                - static_cast<double>(headings.icon) + 1.5707963267948966);
+            host.done("HudMinimap::camera_heading_0042ba40", 0x0042ba40u);
+            binding.set_map_layer_rotation(host.direction, wedge);
+        } else {
+            host.record("HudMinimap::camera_heading_virtual", 0x004b4b00u);
+            binding.set_map_layer_rotation(host.direction,
+                bsp::kHudMinimapHeadingBias - headings.icon);
+        }
     }
     if (host.icons.size() != before && !host.logged_camera) {
         host.logged_camera = true;

@@ -236,6 +236,13 @@ inline constexpr bool kHudWeaponGroupEnterExitBound = true;
 // camera. ON by its USN04 pair (docs/HUD_CAMERA_TEAM_LISTS.md section 4).
 inline constexpr bool kHudCameraUnitBound = true;
 
+// Packet cc9_minimap_camera_getters (docs/HUD_MINIMAP_CAMERA.md). ON gives the
+// minimap's direction wedge 005C1851..005C187F its first term: the camera
+// unit's (004B4B00's) vtable +C8h, 0042BA40 = -atan2(unit+ECh, unit+F4h), the
+// hull's world yaw, so the wedge turns with the ship: C8h - icon + pi/2
+// (00CF1438 double). ON by its USN04 pair (docs/HUD_MINIMAP_CAMERA.md section 4).
+inline constexpr bool kHudMinimapDirectionWedgeBound = true;
+
 class GameHostLog;
 class GameFrontendHost;
 class GameMenuHost;
