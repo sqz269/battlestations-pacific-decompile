@@ -301,3 +301,79 @@ the 2026-09-26 b reference's 20 / 487. The move comes from landings since `7c421
 this switch; which landing was not isolated here.
 
 **Decision: ON.** `kShipAiTurnClearanceBound` is true.
+
+## 7. The whole arm-final step 009DE5B0 (packet `cc9_ship_ai_tails_2`, part a)
+
+cc9-gunnery, 2026-09-26. Body `009DE5B0..009DF117`, `void __thiscall(blk)(float unused)`, `RET 4`.
+Reconstruction `ship_ai_arm_final_step_009de5b0` (`src/ship_ai_arm_final_step.cpp`); section list
+in `docs/HEADING_TARGET_SECTIONS.md` section 1.
+
+### What was bound before
+
+`torpedo_override_009de8f1` ran sections 1 and 3 to 6 at both 009DE5B0 call sites: the arm tail
+at `009EF213` and the station arm's jump at `009EE57B`. The row `ShipAiArmTail::after_arm` stayed
+a record. Section 7, the free-bearing query `009DEE0B..009DF10F`, never ran.
+
+### The binding (`kShipAiArmFinalWholeBound`)
+
+At both call sites the whole routine runs with its twelve host calls:
+
+| call | host answer |
+| --- | --- |
+| `0092D730` | the unit's signed body-axis speed |
+| the heading slot | the unit's heading |
+| `009DE853` | the unit+102Ch latch |
+| `009DA1D0` | the torpedo gate, behind `kShipTorpedoResponseBound` as before |
+| `class+500h` | the class max speed |
+| the `+608h` walk | the neighbour view, as section 6 had it |
+| `00778890`, `0070D400`, `0070D5D0` | the formation group, as in section 6 of this doc |
+| `007788B0` | `unit_is_formation_follower_007788b0` |
+| `0070E450` | **record**: the leader's own travel layer, so the "moved" searcher is never chosen |
+| `009DC2E0` | **record**: false, the same stand-in the sector scan uses |
+
+`blk+354h` is projected twice in this host: the throttle profile's hold and the block's clamp.
+The routine is handed the hold, which section 5 read on the partial path. The clamp is raised with
+it when section 4 raises it, and restored otherwise.
+
+### Predictions (written before the runs)
+
+Same-tree pairs, switch only, `BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`: USN02 9200/9000 and
+E2 (USN04 9200/9000).
+
+1. **Rows.**
+   * `ShipAiArmTail::after_arm` goes from UNIMPLEMENTED to concrete at its current count (136509
+     class on E2).
+   * New rows appear: `ShipAiArmFinal::step_009de5b0`; the section-7 calls `00778890`, `0070D400`,
+     `0070D5D0` and `007788B0` (concrete); `0070E450` and `009DC2E0` (records).
+2. **Heading and astern outputs on USN02.** Sections 1 to 6 are the same rules as the partial
+   path, over the same inputs, including the torpedo override inside the whole pass. Section 7's
+   query always answers false. So `blk+324h` and the astern latch come out bit-identical:
+   `torpedo_overrides`, `zone_escape_turns` and `separation_turns` are equal both ways.
+3. **Counts.** Station keeping, path picks (plan requests, seeds, accepts) and every per-ship
+   AI line are identical.
+4. **Outcomes.** No ship's track or fate moves. Deaths and hit records are identical: USN02
+   22 / 440 with the failure at 39.65 s, E2 35 / 595.
+5. **The native table.** It differs only in the rows of (1).
+
+### Results
+
+Builds `af_off` / `af_on`, one tree (`43be33806`), only the switch differs. Window line and
+module directory checked, logs deleted first.
+
+| run | deaths | hit records | end | `ship ai` lines digest | death table digest |
+| --- | --- | --- | --- | --- | --- |
+| USN02 OFF / ON | 22 / 22 | 440 / 440 | 39.65 s both | `19be554862` both | `c6b1476e9c` both |
+| E2 OFF / ON | 43 / 43 | 796 / 796 | - | `1a7c03f25b` both | `c9c78a38b6` both |
+
+**Native table.** It changed only as predicted, plus the message-pump counter:
+* `ShipAiArmTail::after_arm` becomes concrete (145972 on USN02, 109814 on E2);
+* new rows: `step_009de5b0` (166750 / 160908), `00778890`, `007788B0`, `0070D400` and `0070D5D0`
+  concrete; `0070E450` and `009DC2E0` records.
+
+All five predictions held. The heading target, the astern latch and every per-ship line are
+bit-identical: the torpedo override now runs inside the whole pass with the same answers. This
+tree's E2 row (43 / 796) differs from the 2026-09-26 b reference's 35 / 594. Both builds of this
+pair show it, so it comes from the landings since `7c421ba25`, not from this switch.
+
+**Decision: ON.** `kShipAiArmFinalWholeBound` is true. Section 7's own effect waits on `009DC2E0`,
+which still answers a recorded false.
