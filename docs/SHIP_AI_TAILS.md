@@ -267,4 +267,37 @@ E2 (USN04 9200/9000).
 
 ### Results
 
-Pending.
+Builds `tc_off` / `tc_on`, one tree (`85622ab37`), only the switch differs. Window line and
+module directory checked, logs deleted first.
+
+| run | deaths | hit records | damage | end | plan requests / seeds / accepts | station keeping | group widths (max) |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| USN02 OFF | 22 | 440 | 59209.2 | 39.65 s | 145972 / 951 / 143147 | 20778 | 0 |
+| USN02 ON | 22 | 440 | 59209.2 | 39.65 s | 145972 / 951 / 143147 | 20778 | 6605 (420.0) |
+| E2 OFF | 35 | 595 | 7845.7 | - | 136955 / 1657 / 132002 | - | 0 |
+| E2 ON | 35 | 595 | 7845.7 | - | 136955 / 1657 / 132002 | - | 7895 (420.0) |
+
+**The native table, both ways.** The only changes are the predicted ones, plus
+`PlatformLoopCallbacks::pretranslate` (the Windows message pump, 28 against 20):
+* `ShipAiOrder::tail_009ef910` becomes concrete (252000 on USN02, 162000 on E2);
+* `ShipAiPath::refresh_plan_head` becomes concrete at the plan-request count;
+* the new concrete rows `00778890`, `0070D400` and `0070D5D0`.
+
+**Per-entity tables.** The death tables are identical line for line on both missions, and so is
+every `ship ai` per-step line (16611 on USN02, 15954 on E2, same digest both ways). So no ship's
+track, station or fate moved, and there is no clock offset to subtract.
+
+1. **Held:** every row change was predicted.
+2. **Held:** groups give widths up to 420 on both missions. E2 does form groups: 7895 group
+   refreshes, where I predicted few.
+3. **Held for the counts:** plan requests, seeds, accepts and station keeping are unchanged. The
+   "tracks can move" half did not occur. The widths reach `009D9DE0`, but in these runs no
+   running search is thrown away and no steering line changes. Why the published width
+   (`009EE61E`) changes nothing here was not traced further.
+4. **Held:** deaths and hit records are identical, and so is USN02's failure time.
+
+Note for the integrator: this tree's USN02 row is 22 deaths / 440 hit records / 39.65 s, against
+the 2026-09-26 b reference's 20 / 487. The move comes from landings since `7c421ba25`, not from
+this switch; which landing was not isolated here.
+
+**Decision: ON.** `kShipAiTurnClearanceBound` is true.

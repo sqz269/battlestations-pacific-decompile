@@ -224,7 +224,7 @@ inline constexpr bool kShipAiSnapshotBound = true;
 //    runs right after the publish (run_clearance_refresh), so the hook's row is
 //    `done` instead of a record.
 // False: both corridor widths are 20.0f and the hook records.
-inline constexpr bool kShipAiTurnClearanceBound = false;
+inline constexpr bool kShipAiTurnClearanceBound = true;
 inline constexpr float kTorpedoCollectTimer2 = 2.0f;
 // Packet cc9_station_keeping, docs/STATION_KEEPING.md. True: the follow update's
 // station request 009DA3B0 is stored (blk+38Ch..+3A6h, including blk+39Ch = 0
