@@ -205,6 +205,12 @@ inline constexpr bool kShipPlannerTravelLayerBound = true;
 // wrote a distance. False: the store is dropped and the gate stays shut.
 inline constexpr bool kShipRudderGateStoreBound = true;
 inline constexpr float kTorpedoCollectTimer1 = 1.5f;
+// Packet cc9_ship_ai_tails, docs/SHIP_AI_TAILS.md section 1. True: 009DDBC0
+// snapshots blk+1C4h..+1F0h and +38Ch..+3A6h on each replan step into
+// +1F4h..+220h / +3A8h..+3C2h, and 009DA0D0 restores them on every other
+// step, so a per-step write between replans lasts one step. False: both are
+// records and such writes persist.
+inline constexpr bool kShipAiSnapshotBound = true;
 inline constexpr float kTorpedoCollectTimer2 = 2.0f;
 // Packet cc9_station_keeping, docs/STATION_KEEPING.md. True: the follow update's
 // station request 009DA3B0 is stored (blk+38Ch..+3A6h, including blk+39Ch = 0
@@ -688,6 +694,29 @@ struct GameShipAiHost::Impl {
         // Packet cc9_station_keeping: blk+38Ch..+3A6h as 009DA3B0 stores them,
         // and the arm's three bytes blk+388h / +389h / +38Ah.
         bsp::ShipAiStationRequest station_request{};
+        // Packet cc9_ship_ai_tails: the saved blocks blk+1F4h..+220h and
+        // +3A8h..+3C2h (009DDBC0 writes, 009DA0D0 reads), held as the host
+        // members that alias the live offsets.
+        struct Snapshot {
+            bsp::ShipAiSteeringMode mode{bsp::ShipAiSteeringMode::Rudder};   // +1F4h
+            int throttle_hold_1c8{0};
+            bsp::ShipAiThrottleDirection requested_direction{bsp::ShipAiThrottleDirection::Stopped};
+            float desired_throttle{0.0f};
+            float desired_rudder{0.0f};
+            float desired_heading{0.0f};
+            float goal_x_1dc{0.0f};
+            float goal_z_1e0{0.0f};
+            bool final_leg_1e4{false};
+            float planned_x_1e8{0.0f};
+            float planned_z_1ec{0.0f};
+            float plan_length_1f0{0.0f};
+            bsp::ShipAiStationRequest station{};                           // +3A8h..
+            float speed_scale_39c{0.0f};
+            bool flag_3a5{false};
+            bool flag_3a6{false};
+        };
+        Snapshot snapshot{};
+        bool snapshot_taken{false};
         bool station_aligned_388{false};
         bool station_reversing_389{false};
         bool station_close_38a{false};
@@ -6101,9 +6130,62 @@ public:
         return ticks;
     }
     void replan_finish_009ddbc0() override {
-        owner_.record("ShipAi::replan_finish", 0x009ddbc0u);
+        if constexpr (kShipAiSnapshotBound) {
+            // 009DDBC0: saved <- current, both blocks.
+            auto& s = ctl_.snapshot;
+            s.mode = ctl_.blk.mode;
+            s.throttle_hold_1c8 = ctl_.blk.throttle_hold_1c8;
+            s.requested_direction = ctl_.blk.requested_direction;
+            s.desired_throttle = ctl_.blk.desired_throttle;
+            s.desired_rudder = ctl_.blk.desired_rudder;
+            s.desired_heading = ctl_.blk.desired_heading;
+            s.goal_x_1dc = ctl_.goal.goal_x_1dc;
+            s.goal_z_1e0 = ctl_.goal.goal_z_1e0;
+            s.final_leg_1e4 = ctl_.goal.final_leg_1e4;
+            s.planned_x_1e8 = ctl_.goal.planned_x_1e8;
+            s.planned_z_1ec = ctl_.goal.planned_z_1ec;
+            s.plan_length_1f0 = ctl_.goal.plan_length_1f0;
+            s.station = ctl_.station_request;
+            s.speed_scale_39c = ctl_.speed_scale_39c;
+            s.flag_3a5 = ctl_.blk.flag_3a5;
+            s.flag_3a6 = ctl_.flag_3a6;
+            ctl_.snapshot_taken = true;
+            owner_.done("ShipAi::replan_finish", 0x009ddbc0u);
+        } else {
+            owner_.record("ShipAi::replan_finish", 0x009ddbc0u);
+        }
     }
-    void hold_009da0d0() override { owner_.record("ShipAi::hold", 0x009da0d0u); }
+    void hold_009da0d0() override {
+        if constexpr (kShipAiSnapshotBound) {
+            // 009DA0D0: current <- saved. Before the first replan the saved
+            // block is the constructor's zeroes; the first controller step
+            // replans (interval 0), so that case is not reached (labelled).
+            if (!ctl_.snapshot_taken) {
+                owner_.record("ShipAi::hold_before_snapshot", 0x009da0d0u);
+                return;
+            }
+            const auto& s = ctl_.snapshot;
+            ctl_.blk.mode = s.mode;
+            ctl_.blk.throttle_hold_1c8 = s.throttle_hold_1c8;
+            ctl_.blk.requested_direction = s.requested_direction;
+            ctl_.blk.desired_throttle = s.desired_throttle;
+            ctl_.blk.desired_rudder = s.desired_rudder;
+            ctl_.blk.desired_heading = s.desired_heading;
+            ctl_.goal.goal_x_1dc = s.goal_x_1dc;
+            ctl_.goal.goal_z_1e0 = s.goal_z_1e0;
+            ctl_.goal.final_leg_1e4 = s.final_leg_1e4;
+            ctl_.goal.planned_x_1e8 = s.planned_x_1e8;
+            ctl_.goal.planned_z_1ec = s.planned_z_1ec;
+            ctl_.goal.plan_length_1f0 = s.plan_length_1f0;
+            ctl_.station_request = s.station;
+            ctl_.speed_scale_39c = s.speed_scale_39c;
+            ctl_.blk.flag_3a5 = s.flag_3a5;
+            ctl_.flag_3a6 = s.flag_3a6;
+            owner_.done("ShipAi::hold", 0x009da0d0u);
+        } else {
+            owner_.record("ShipAi::hold", 0x009da0d0u);
+        }
+    }
     void step_009eca20(float seconds) override {
         if (!kShipAvoidZoneEscapeBound || !ctl_.leaf_tuning_loaded || !owner_.zones.ready()) {
             owner_.record("ShipAi::step_009eca20", 0x009eca20u);
