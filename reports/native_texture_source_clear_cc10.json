@@ -1,0 +1,96 @@
+{
+  "packet": "cc10_texture_source_clear_implementation",
+  "baseline": "f84de80563bc483942d659a806b6b9b05d640a54",
+  "document": "docs/NATIVE_TEXTURE_SOURCE_CLEAR_CC10.md",
+  "source": "src/native_texture_source_clear.cpp",
+  "header": "include/bsp/native_texture_source_clear.hpp",
+  "status": "restricted_source_complete_static_library_COFF_build_existing_tests_pass_no_runtime",
+  "function": {
+    "address": "00c303b0",
+    "native_end_exclusive": "00c30404",
+    "native_bytes": 84,
+    "native_instructions": 36,
+    "cpp_symbol": "bsp::clear_native_texture_source_children_00c303b0",
+    "original_abi": "ECX actual receiver; no stack arguments; plain RET; no recovered semantic EAX result",
+    "source_abi": "new ordinary C++ interface with borrowed canonical owners and one-shot host operation",
+    "native_function_creation_and_credit": "root only after review",
+    "native_calls": [
+      {"site": "00c303d1", "kind": "IAT", "target_cell": "00ce2220", "provider": "InterlockedDecrement actual child+4; reused source release helper"},
+      {"site": "00c303e1", "kind": "virtual", "slot": 0, "receiver": "captured nonnull child", "stack_arguments": 0, "guard": "decrement result zero", "provider": "supported CURRENT zero-profile canonical companion"},
+      {"site": "00c303f8", "kind": "direct", "target": "00737390", "arguments": "actual live header+10, signed requested0", "provider": "existing typed resize overload"}
+    ],
+    "table_contexts": [
+      {"profile": "00d64478", "slot_28": "00c303b0", "slot_2c": "00c302f0"},
+      {"profile": "00d644b4", "slot_28": "00c303b0", "slot_2c": "00c302f0"},
+      {"profile": "00d79b54", "slot_28": "00c303b0", "slot_2c": "00c302f0"}
+    ]
+  },
+  "admission": {
+    "payload": "separate already-live NativeTextureSourcePayload at actual+8 from genuine C30470; no image adoption",
+    "header_and_slots": "live nested canonical header and reached scalar void* cells; no duplicate construction",
+    "child_atomic": "caller independently proves live std::atomic<int32_t> at child+4 and valid credit before entry",
+    "canonical_companion": "same actual identity/count; borrowed provider contexts retained",
+    "reentrant_callbacks": "captured old slot backing remains live until terminal returns and SAME captured slot is cleared, even if current data/count change",
+    "fresh_factory_gap": "B319B0/named B3F930-B34230-B34120, unnamed factory/base paths, raw slab storage and Entry borrow do not establish lifetime; not fixed here",
+    "zero_profile_correspondence": "NativeTextureLoadOwners supports CURRENT D61948/D61870/D618B0 slot0BD30E0 -> fresh scalar04(flags1) B3F590/B3F410/B3F430; separate from lifetime proof"
+  },
+  "preserved_schedule": [
+    "DWORD index0 and unsigned fresh count comparisons",
+    "fresh current array/current child, SAME captured slot",
+    "null skips release/dispatch/slot clear",
+    "one actual+4 decrement and zero-only CURRENT slot0, no flags supplied by clear",
+    "clear captured slot after normal terminal return, DWORD index increment, fresh count",
+    "typed737390 requested0, then initialized+1C0 only after return",
+    "no per-child count decrement, array free, selected/rate/profile/base/owner count changes"
+  ],
+  "failure_contract": {
+    "one_shot_host_metadata": "fresh/running/complete/failed/diagnostic_retired; never native owner metadata or ownership credit",
+    "source_catch": "markfailed and rethrow only; no cleanup/rollback/retry/resume",
+    "partial_obligations": "decrement may already reachzero before resolution failure; captured slot remains uncleared; resize failure leaves initialized untouched",
+    "zero_callback_noexcept": "existing companion terminates on terminal failure; no native exception equivalence",
+    "native_private_FH3_SEH_hardware_fault": false,
+    "unknown_nonlocal_escape_failed_return_guarantee": false
+  },
+  "validation": {
+    "build": "one strict MSVC Win32 Release, /WX, /fp:strict",
+    "existing_CTests": {"passed": 3, "failed": 0},
+    "new_tests": 0,
+    "runtime_cases": 0,
+    "source_matches_revision02": true,
+    "old_new_unchanged_provider_members": 6,
+    "unchanged_provider_code_sections": 663,
+    "unchanged_provider_code_bytes": 35410,
+    "new_member_code_sections": 16,
+    "new_member_unique_declared_code_bytes": 785,
+    "whole_normal_catch_invalid_operation_section_bytes": 299,
+    "catch_symbol_offset": 248,
+    "normal_ret_offset": 247,
+    "separate_EH_bytes": 29,
+    "unique_related_sections_bytes": 328,
+    "complete_section_relocations_and_CFG_checked": true,
+    "PointerToRawData0_physical_bytes": 0,
+    "initialized_BSS_byte_claim": false,
+    "application_map_selects_leaf": false,
+    "linked_leaf_body_credit": false
+  },
+  "evidence": {
+    "folder": "local/cc10_texture_source_clear_implementation",
+    "build_receipt": "build_result.json",
+    "physical_sections": "compiled_sections.json",
+    "complete_code_and_funclets": "compiled_clear.json",
+    "schedule_and_CFG": "compiled_schedule.json",
+    "exact_library_member_indices": "members.json",
+    "input_seal": "before_build.json",
+    "initial_readiness_archive_sha256": "c3baec0c85482947772a4999d65ded33238267b8679b7ce2e0b3bd8afecafb40",
+    "qualification_archive_sha256": "d30d5a86bbb1524eb34204a712918056c426551338afb7e1f58a11c6bcaa1d90",
+    "independent_review_archive_sha256": "d0214509685d1ffb4918a16780e1bec6079be585ccd4831a0a3c504ed041b55a",
+    "dependency_addendum_archive_sha256": "44b4f6b2c7bef3364187b330c812210bfedbbd78460ae3fe3cf3bd9f297bdf23"
+  },
+  "limits": [
+    "no C302F0 or C30360 source/native recredit",
+    "no child count construction/reset/retain or factory lifetime fix",
+    "no C304A0 substitution or new null-child destructor safety",
+    "no Lua/platform5030/MSG/source0W/sampler/application activation",
+    "no binary ABI, native private EH, fixture, game or runtime validation"
+  ]
+}
