@@ -1,0 +1,33 @@
+{
+  "packet": "cc9_blast_element_parts",
+  "doc": "docs/BLAST_ELEMENT_PARTS.md",
+  "answer": "A burst on a meshed ship now carries one part-hit entry per GeomMesh element within the radius (root-box reject, closest triangle), and 008777D0's part pass keeps the largest entry (skip -1, UnderwaterArmour for kind 4) instead of summing. Fizika entries and direct fizika hits drive the 20 controller segments (HP / fizika node count, 0092D1F0), and destroyed segments are published through GameGunneryHost::destroyed_hull_segments. Both switches are ON.",
+  "steps": [
+    {"address": "0070f759", "native": "00723f80", "function": "0070f720", "rule": "the sphere slot of the unit-part shape runs the element walk"},
+    {"address": "007240b5", "native": "006d2e30", "function": "00723f80", "rule": "append {element+4h, element+8h, 0, distance}"},
+    {"address": "00723b8d", "native": "0085bf90", "function": "00723b70", "rule": "root-box squared distance, reject above radius^2"},
+    {"address": "00723cea", "native": "0085df60", "function": "00723b70", "rule": "point-triangle squared distance, smallest strictly below radius^2"},
+    {"address": "008779d3", "native": "004705c0", "function": "008777d0", "rule": "per entry; the largest is kept"},
+    {"address": "0093812f", "native": "00b6f9a0", "function": "00937c90", "rule": "fizika_%02d node lookup by substring (_strstr)"}
+  ],
+  "evidence_sites": {
+    "0087790f": "CMP [entry],4 -> [unit+354h]->vtable[24h] (009635D0, UnderwaterArmour +6B4h)",
+    "00877a09..00877a37": "one AddDamage with the kept maximum when its index > -1 and value > 0",
+    "0092d275": "segment health -= damage; <= 0 parks -10000.0 and routes 99h (0092CED0)",
+    "00821ff6": "99h -> 0080E440 -> 00934150 (debris, effects, dynamics list, DYN physics)"
+  },
+  "substitutions": [
+    "the gather stays the host's hull-box test; only a meshed ship gets element entries",
+    "0085DF60 implemented as Eberly's point-triangle distance, not transcribed",
+    "the node census runs over MMOD hierarchy names, not the live scene tree",
+    "the 99h detach is published, not applied (ship motion's)"
+  ],
+  "pair": {
+    "runs": "USN04 4700/4500 and USN02 9200/9000 at 0.05 s, BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1, same-tree be_off / be_elem / be_all",
+    "usn04": "identical in all three",
+    "usn02": "off 19 deaths, 56414.2 damage; elem 19 deaths, 56430.6, Yamakaze 58.60 -> 58.45 s, 95 bursts / 527 entries / 207 fizika, 0 empty; all: death table = elem, 26 segments destroyed; failed at 44.60 s in all",
+    "prediction_1": "did not hold: the mesh reaches past the class box in 76 of 95 bursts, so blasts did not weaken"
+  },
+  "commits": {"off": "86ee73197"},
+  "ghidra": "read-only; no renames, comments or saves"
+}

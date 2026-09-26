@@ -44,8 +44,11 @@ while the slot is above -10000.0. At 0.0 or below it parks -10000.0 and routes m
 unlinking, point effects, the dynamics list and `DYN_physics`: debris and the hull body, not guns
 or engines.
 
-Labelled: the node census reads the MMOD hierarchy names `fizika_00..fizika_19`
-(case-insensitive). The image's lookup goes through `[[controller+1Ch]+4A4h]`, which is not read.
+The lookup is `[[controller+1Ch]+4A4h]` handed to `00B6F9A0` (`0093812F`), which walks the node
+tree and keeps every node whose name (`node+54h`) **contains** the pattern (`_strstr`,
+case-sensitive). On `farragut.MMOD`, `fizika_00` matches `bridge00-fizika_00` through
+`bridge03-fizika_00`, `bridge-ep_fizika_00` and `bridge-roncs_fizika_00`, so three indices resolve
+(0, 1, 2). Labelled: the census runs over the MMOD hierarchy item names, not the live scene tree.
 
 ## 3. Switches
 
@@ -74,4 +77,25 @@ Same-tree builds `be_off`, `be_elem` (entries only) and `be_all` (both), with
 
 ## 5. Results
 
-Pending.
+Same-tree builds `be_off`, `be_elem` and `be_all`, window line and module directory checked, logs
+deleted first. The first `be_all` run found no `fizika_NN` node because the census compared whole
+names. After reading `00B6F9A0` it matches substrings, and `be_all` was rebuilt and rerun on USN02.
+The node counts are 1 to 4 per class; Farragut has 3.
+
+| run | USN04 | USN02 9000: deaths, end | total damage | blast records / entries (fizika) | segments destroyed |
+| --- | --- | --- | --- | --- | --- |
+| off | 31 deaths, 7215.6 | 19, failed at 44.60 s | 56414.2 | - | - |
+| elem | identical | 19, failed at 44.60 s | 56430.6 | 95 / 527 (207) | - |
+| all | identical | 19, death table = elem | 56430.6 | 95 / 527 (207) | 26 of 154 fizika hits |
+
+1. **Did not hold.** The entries did not weaken blasts. In 76 of the 95 USN02 bursts the nearest
+   element triangle is closer than the class `Length`/`Width`/`Height` box (by up to 18.8 m): the mesh reaches
+   past the authored box. In the other 19 both are at 0. No burst found zero
+   elements (`blast_no_entry = 0`), and no entry was kind 4. Total damage rose by 16.4 points, and
+   the only death that moved is Yamakaze, 58.60 -> 58.45 s. USN04 is identical, as predicted, and
+   the 44.60 s failure does not move.
+2. **Held.** 26 segments were destroyed, and the death table matches `elem` line for line. Most go
+   several at once, when a torpedo burst's fizika entries cover every slot of a small ship: DeRuyter
+   0 and 1 at 30.40 s, Alden 0, 1 and 2 at 34.50 s, Perth 0, 1 and 2 at 46.65 s.
+
+Both switches are ON. No reference count moves; Yamakaze's USN02 death is 0.15 s earlier.
