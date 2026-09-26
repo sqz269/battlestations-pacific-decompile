@@ -1,0 +1,64 @@
+{
+  "packet": "cc10_sampler_record_pointer_access_integration",
+  "worker_commit": "43b3d51e7583347f95528ef1ff480a684ba6d1f4",
+  "integration": "93c81468b055f0c674cb62ebaf812b44820b9a82",
+  "worker_report": "reports/native_sampler_cache_record_pointer_access_cc10.json",
+  "primary_verification": {
+    "result": "PASS",
+    "worker_commit": "43b3d51e7583347f95528ef1ff480a684ba6d1f4",
+    "source_baseline": "a40922b3a8f258430644a6fb1bf6b750c451e2c9",
+    "prebuild_pins": 15,
+    "postbuild_headers": 98,
+    "postbuild_tool_pins": 21,
+    "exact_member_bytes": 26233,
+    "complete_function_symbols": 56,
+    "symbol_covered_bytes": 3682,
+    "exact_COFF_relocations": 113,
+    "accepted_common_functions": 52,
+    "unchanged_common_function_bytes": 51,
+    "common_relocation_tables_match": 52,
+    "namespace_pair": [
+      "?A0xa55fdcb2@",
+      "?A0x4f9c324c@"
+    ],
+    "append_bytes": 88,
+    "changed_byte_offsets": [
+      66,
+      71
+    ],
+    "run_bytes_unchanged": 1559,
+    "new_private_helpers": 4,
+    "new_helper_bytes": 43,
+    "original_native_bytes": 1338,
+    "worker_CTests": 3,
+    "archives": {
+      "compiled_evidence.zip": {
+        "sha256": "870839b15594ed786efa7c80bd007bc1397c346a5721cef16bce93381000ec25",
+        "rows": 145,
+        "members": 146
+      },
+      "git_closeout_evidence.zip": {
+        "sha256": "bd3a49d76d552c34ada6fefd691b889b2d69d0ff2ce463fe7f9f7fe22a874925",
+        "rows": 9,
+        "members": 10
+      }
+    },
+    "committed_blobs": 4,
+    "new_runtime_runs": 0,
+    "limits": "Postbuild headers/tools are not prebuild pins. Historical09ed is not incremental baseline. Function-symbol byte totals need not be unique sections. COFF/member evidence only; no new linked-body/nativeABI/FH3/nonempty/application/game claim. Raw string/profile domains remain separate."
+  },
+  "validation": {
+    "worker_CTests": 3,
+    "primary_CTests": 3,
+    "new_native_bytes": 0,
+    "new_runtime_runs": 0,
+    "game_validated": false
+  },
+  "limits": "Postbuild headers/tools are not prebuild pins. Historical09ed is not incremental baseline. Function-symbol byte totals need not be unique sections. COFF/member evidence only; no new linked-body/nativeABI/FH3/nonempty/application/game claim. Raw string/profile domains remain separate.",
+  "archive": {
+    "path": "local/cc10-platform-evidence/sampler-record-pointer-access.zip",
+    "sha256": "46f30d48b5237358f47010dfbc4ac813073938a6d4308caaae8e673753dad7a4",
+    "files": 8,
+    "valid": true
+  }
+}
