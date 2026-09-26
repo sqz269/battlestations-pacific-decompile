@@ -1,0 +1,47 @@
+{
+  "packet": "cc10_local_live_redist_readiness",
+  "primary_verification": {
+    "archive_sha256": "889e0bb3699c8a9133650de777f3756cc57eaf3b6b0eeeb42e8333d3b6749956",
+    "archive_members": 56,
+    "indexed_rows_verified": 55,
+    "outer_to_two_MSI_members_verified": true,
+    "both_installed_cached_MSI_files_equal": true,
+    "MSI_to_embedded_cabinet_readonly_stream_verified": true,
+    "cabinet_to_legacy_candidate_member_verified": true,
+    "candidate_sha256": "623cb6ca98e566357abbd0e76b15713921e1d7e1144c0c4f589a0407c7eff1ee",
+    "candidate_offline_signature": {
+      "policy": "WINTRUST_ACTION_GENERIC_VERIFY_V2; cache-only URL retrieval; revocation disabled; no network retrieval",
+      "result": "00000000",
+      "accepted_offline": true,
+      "close_result": "00000000"
+    },
+    "all_stock_msidcrl_required_exports_present_nonforwarded": 17,
+    "ordinal43_RVA": "000684f0",
+    "direct_dependencies_hash_and_exports_verified": 15,
+    "direct_exports_verified": 289,
+    "unresolved_forwarded_exports": 17,
+    "source_API_pins_equal_primary": 8,
+    "candidate_loaded": false,
+    "limits": [
+      "Offline cache-only signature policy with revocation disabled is not current online revocation proof",
+      "Static exports and exact package provenance do not prove DllMain/SDK/SxS/PPCRL configuration or initialization",
+      "No install, game/system/configuration change, candidate load, platform/cache runtime or gameplay validation"
+    ]
+  },
+  "result": "Legitimate already-local legacy dependency found; exact package provenance and required direct exports verified. No load or initialization readiness claimed.",
+  "source_changes": false,
+  "candidate_loaded": false,
+  "game_validated": false,
+  "signature_boundary": "Candidate passes reviewed cache-only generic file trust policy with revocation disabled. This does not establish current online revocation or transfer signature status from nested DLL/MSIs to the outer wrapper.",
+  "limits": [
+    "Offline cache-only signature policy with revocation disabled is not current online revocation proof",
+    "Static exports and exact package provenance do not prove DllMain/SDK/SxS/PPCRL configuration or initialization",
+    "No install, game/system/configuration change, candidate load, platform/cache runtime or gameplay validation"
+  ],
+  "archive": {
+    "path": "local/cc10-platform-evidence/local-live-redist-readiness.zip",
+    "sha256": "a9a2c2bab75d63fcef99dba45cbcfff0e13d77c601fd1d5763c46a055d24a256",
+    "files": 4,
+    "valid": true
+  }
+}
