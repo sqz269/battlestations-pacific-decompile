@@ -1,0 +1,35 @@
+# Sampler cache record pointer accesses
+
+The B1A4F0 continuation now reads and writes the actual live record and alias-node pointer subobjects through their pointer types. Previously, the same fields were accessed through volatile uint32 words. The correction covers 16 source access sites mapping to 26 original native sites in src/native_sampler_cache_operation.cpp. It adds no count/ownership operation, object lifetime, public API, header/CMake/test change or runtime case, and credits zero new native bytes.
+
+The exact reviewed source SHA is `6715d23ac730ef19e42b967c707cfd4fb06638369cc15bd50919cf9fe6cf0ab6`. The implementation is the approved one-file candidate. Private typed volatile helpers cover record+28 resources, record+C sentinel pointers and alias-node next/previous links. The two local record pointer stores use their actual volatile record members.
+
+Both resource reads remain in their original positions: B1A5F2 before first-hit retain, and B1A879 after the resolved-hit alias insertion. The local sentinel store remains at B1A787 and the local resource store at B1A8F6 before the resource-record append. Current sentinel validator comparisons retain fresh reads. All three alias insertion paths still capture the actual previous-link address before allocation/count callbacks, publish through that captured address, then read the inserted node's CURRENT previous member and publish its next. No callback rollback, compensating retain or extra current-state read was added.
+
+The existing record/node lifetimes were already established: reserve/append begin default placement record lifetimes; the operation's automatic record member is live on entry; sentinel 4C3020 and alias 4CE6F0 allocations begin default placement node lifetimes. The helpers do not overlay new objects or admit arbitrary backing. Record resource+28 remains borrowed pointer storage. String/list destruction and existing terminal/count providers retain their separate contracts. Root-reviewed design `72a8718d215b453361ebc619eaadb012e8d364ca89e2f18d8d88904fbe9ceba1` contains the full 26-site native access map and type/lifetime provenance.
+
+The current build used snapshot `a40922b3a8f258430644a6fb1bf6b750c451e2c9` plus the reviewed candidate. The previous local build was **09ed**, not b1ee. Before safe-sync/build, all 159 tracked historical launch pins were verified against preserved copies and the other 363 historical pins still matched; all old preparation/runtime/Git archives remained unchanged. The receipt lists all 32 intervening tracked paths, including clock/header changes and gunnery changes. These intervening changes are not credited to this packet.
+
+The correct incremental comparator is the separately frozen accepted `21aa59001748d2bd772f2da99a2fb9248d441836` cache object from archive SHA `82549f7bd2f2d4d0b86fbffcfa944c88bca15fd96fe37dabbc2de447e9d90b72`. Its prechange cache source equals the current prechange source. The old 09ed local object remains a labeled historical artifact and was not substituted for that comparator. The archive had both old/new objects; the failed initial basename-only selector and its explicit compiled/new correction are preserved.
+
+Existing scripts/build.ps1 completed one incremental strict Win32 Release build and all three existing CTests passed. Actual cache compiler flags include /O2 /Ob2 /W4 /WX /fp:strict /std:c++17. The compiler naturally inlined the new typed accesses at the reached caller sites while retaining four emitted private helper bodies. No noinline or custom optimizer attribute was introduced.
+
+The complete 26,233-byte current CMake object, SHA `39ea7c1943bc221364618b22d5fdd45d86ce6040c2b1b9784358ad0116be1ea3`, exactly equals the selected member in the current 1,778-object bsp_core archive. The full 71,223,902-byte library is frozen with SHA `42e149c22de0edaa5924cf9ce79d9f599689c4acb9353772247f1ef57f94bdc5`. This is complete core-member provenance; it is not a new executable link-selection or runtime claim.
+
+All 56 emitted functions were completely disassembled, totaling 3,682 body bytes and 113 recorded COFF relocations. After normalizing only the anonymous-namespace identifier, 51 of the 52 common bodies match the accepted comparator byte for byte, and all 52 common relocation offset/type/target tables match. The whole 1,559-byte run body is identical, including its current sentinel rereads, both resource loads and local pointer stores.
+
+The only common body difference is the 88-byte append_alias body: two register substitutions at offsets 65/70. At offset 65 the current pending node is loaded into EAX instead of ECX; at 70 its previous field is loaded through EAX instead of ECX. The actual memory schedule remains:
+
+| Emitted offset | Observed operation |
+| --- | --- |
+|15 /18|captured sentinel /captured previous load|
+|34 /51|real alias allocation /count-growth calls with exact COFF targets|
+|62|publish inserted node through captured sentinel.previous address|
+|70|read CURRENT inserted.previous after the first publication|
+|76|publish inserted node through that current prior.next address|
+
+The reached typed helpers are inlined: resource loads are run offsets 296/834, with the resolved-hit alias append at 829; local sentinel/resource stores are 1073/1305. Three append calls remain 829/1161/1291. The four retained helper bodies total 43 bytes, contain only their actual pointer reads and introduce no count/allocation/retirement call. An initial inspection incorrectly expected helper call relocations; its failure and compiled inputs are frozen in inspection_attempt01_evidence.zip, SHA `78c66b386a9c0c555f6e3a78f1bc48e8bfb3b92eec0f24c089cf83b922fabb6a`. Only the inspector was corrected; source/build inputs were not changed or rebuilt.
+
+The frozen compiled evidence is `local/output/cc10_sampler_cache_record_pointer_access/compiled_evidence.zip`, SHA `870839b15594ed786efa7c80bd007bc1397c346a5721cef16bce93381000ec25`, 145 rows /146 members. Every direct row was reread and rehashed. It includes exact old/new/comparator objects, the complete current library, full emitted bodies/relocations, actual build/tool receipts, the 15 prebuild pins, 98 headers from this source's actual CL.read record and 21 tool identities acquired after the successful build. Later header/tool identities are not mislabeled as prebuild pins.
+
+The raw string-header representation helpers, raw profile/operation words and date-payload routes remain separate review boundaries. This packet does not prove every generic word/put/pointer use type-correct, does not overlay NativeString, and does not change char* header-view semantics. Actual record/node alignment and live storage are required; null/dangling aliases or replaced backing are not admitted. Host EH/orphan limits, native ABI/FH3, source payload production, nonempty clock behavior and full application/game remain open. No DLL, fixture, controller or original game was invoked. Ghidra remained read only; integration and annotations belong to the primary.

@@ -26,6 +26,19 @@ void put(void* p, U offset, U value) noexcept {
     *static_cast<volatile U*>(at(p, offset)) = value;
 }
 void* pointer(const void* p, U offset = 0) noexcept { return reinterpret_cast<void*>(word(p, offset)); }
+using Node = NativeRenderResourceAliasNode;
+Node* list_sentinel(const void* actual_list) noexcept {
+    return *static_cast<Node* const volatile*>(at(actual_list, 4));
+}
+Node* next_node(const Node* node) noexcept {
+    return static_cast<const volatile Node*>(node)->next_00;
+}
+Node* previous_node(const Node* node) noexcept {
+    return static_cast<const volatile Node*>(node)->previous_04;
+}
+void* record_resource(const void* actual_record) noexcept {
+    return static_cast<const volatile NativeRenderResourceRecord*>(actual_record)->resource_28;
+}
 NativeRenderResourceRecord* current_record_data(const void* actual_cache) noexcept {
     const auto* const vector = static_cast<const volatile NativeResourceRecordVectorStorage*>(at(actual_cache, 4));
     return vector->data_00;
@@ -82,16 +95,16 @@ bool unequal(const void* left, const void* right, Op& a, U site) {
     return _stricmp(lhs, rhs) != 0;
 }
 void append_alias(void* list, const void* name, Op& a, U allocate_site, U count_site) {
-    auto* sentinel = static_cast<NativeRenderResourceAliasNode*>(pointer(list, 4));
-    auto* previous = static_cast<NativeRenderResourceAliasNode*>(pointer(sentinel, 4));
+    auto* sentinel = list_sentinel(list);
+    auto* previous = previous_node(sentinel);
     void* const captured_link = at(sentinel, 4);
     a.native_site = allocate_site;
     a.pending_alias = allocate_native_render_alias_node_004ce6f0(sentinel, previous, name, a.context->strings);
     a.native_site = count_site;
     grow_native_alias_list_count_004ce780(list, 1);
-    put(captured_link, 0, reinterpret_cast<U>(a.pending_alias));
-    void* const prior = pointer(a.pending_alias, 4);
-    put(prior, 0, reinterpret_cast<U>(a.pending_alias));
+    *static_cast<Node* volatile*>(captured_link) = a.pending_alias;
+    Node* const prior = previous_node(a.pending_alias);
+    static_cast<volatile Node*>(prior)->next_00 = a.pending_alias;
     a.pending_alias = nullptr;
 }
 void* retain(Op& a, void* resource, U site) {
@@ -120,17 +133,17 @@ void* run(Op& a, std::uint8_t retain_new, std::uint8_t allow_load) {
     const void* const end = at(record, count * 0x2cu);
     while (record != end) {
         void* const list = at(record, 8);
-        void* const sentinel = pointer(list, 4);
-        void* node = pointer(sentinel);
+        Node* const sentinel = list_sentinel(list);
+        Node* node = next_node(sentinel);
         while (node != sentinel) {
             // B1A593 CMP EAX,EAX always skips B1A597. Other CRT checks return.
-            if (node == pointer(list, 4)) invalid(a, 0xb1a5a5);
+            if (node == list_sentinel(list)) invalid(a, 0xb1a5a5);
             if (alias_equal(at(node, 8), a.requested, a, 0xb1a5d3)) {
-                put(a.hidden_or_resource, 0, word(record, 0x28));
+                put(a.hidden_or_resource, 0, reinterpret_cast<U>(record_resource(record)));
                 break;
             }
-            if (node == pointer(list, 4)) invalid(a, 0xb1a5e9);
-            node = pointer(node);
+            if (node == list_sentinel(list)) invalid(a, 0xb1a5e9);
+            node = next_node(node);
         }
         if (word(a.hidden_or_resource)) break;
         record = at(record, 0x2c);
@@ -157,12 +170,12 @@ void* run(Op& a, std::uint8_t retain_new, std::uint8_t allow_load) {
         const void* const second_end = at(record, second_count * 0x2cu);
         while (record != second_end) {
             void* const list = at(record, 8);
-            void* const sentinel = pointer(list, 4);
-            void* const node = pointer(sentinel);
+            Node* const sentinel = list_sentinel(list);
+            Node* const node = next_node(sentinel);
             if (node == sentinel) invalid(a, 0xb1a6f8);
             if (alias_equal(at(node, 8), a.resolved, a, 0xb1a726)) {
                 append_alias(list, a.requested, a, 0xb1a85d, 0xb1a868);
-                void* const cached = pointer(record, 0x28);
+                void* const cached = record_resource(record);
                 put(a.hidden_or_resource, 0, reinterpret_cast<U>(cached));
                 if (cached) {
                     a.result = retain(a, cached, 0xb1a896);
@@ -190,7 +203,8 @@ void* run(Op& a, std::uint8_t retain_new, std::uint8_t allow_load) {
     clear_name(&a.record); a.record_name_live = true;
     a.native_site = 0xb1a782;
     auto* sentinel = allocate_native_render_alias_sentinel_004c3020();
-    put(&a.record, 0xc, reinterpret_cast<U>(sentinel)); put(&a.record, 0x10, 0);
+    static_cast<volatile NativeRenderResourceRecord*>(&a.record)->sentinel_0c = sentinel;
+    put(&a.record, 0x10, 0);
     put(&a.record, 0x24, 0); put(&a.record, 0x20, 0); put(&a.record, 0x1c, 0);
     put(&a.record, 0x18, 0); put(&a.record, 0x14, 0);
     a.record_live = true; a.record_name_live = false;
@@ -210,7 +224,7 @@ void* run(Op& a, std::uint8_t retain_new, std::uint8_t allow_load) {
         a.native_site = 0xb1a8b0; different = _stricmp(lhs, rhs) != 0;
     }
     if (different) append_alias(at(&a.record, 8), a.requested, a, 0xb1a8d1, 0xb1a8de);
-    put(&a.record, 0x28, reinterpret_cast<U>(a.created_resource));
+    static_cast<volatile NativeRenderResourceRecord*>(&a.record)->resource_28 = a.created_resource;
     a.native_site = 0xb1a8fa; a.append_entered = true;
     append_native_resource_record_00b1a3c0(*static_cast<NativeResourceRecordVectorStorage*>(at(a.actual_cache, 4)),
         &a.record, a.context->strings, a.context->validation);

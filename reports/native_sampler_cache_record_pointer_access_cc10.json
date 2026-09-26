@@ -1,0 +1,366 @@
+{
+  "packet": "cc10_sampler_cache_record_pointer_access",
+  "status": "typed_live_pointer_subobjects_corrected_strict_win32_and_emitted_schedule_verified",
+  "source": "src/native_sampler_cache_operation.cpp",
+  "address": "00b1a4f0",
+  "documentation": "docs/NATIVE_SAMPLER_CACHE_RECORD_POINTER_ACCESS_CC10.md",
+  "native_byte_credit": 0,
+  "tracked_tests_added": 0,
+  "runtime_cases": 0,
+  "Ghidra_mutations": false,
+  "source_access_sites": 16,
+  "native_access_sites": 26,
+  "exact_source": {
+    "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/src/native_sampler_cache_operation.cpp",
+    "size": 12656,
+    "sha256": "6715d23ac730ef19e42b967c707cfd4fb06638369cc15bd50919cf9fe6cf0ab6"
+  },
+  "current_build_snapshot": "a40922b3a8f258430644a6fb1bf6b750c451e2c9",
+  "old_local_build_snapshot": "09edb1f1da09abfbbcc8562b7d0b3ad4eff8cb60",
+  "accepted_comparator_snapshot": "21aa59001748d2bd772f2da99a2fb9248d441836",
+  "preservation": {
+    "old_local_build_snapshot": "09edb1f1da09abfbbcc8562b7d0b3ad4eff8cb60",
+    "old_local_object": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_sampler_cache_record_pointer_access/old09ed/native_sampler_cache_operation.obj",
+      "size": 25314,
+      "sha256": "fe19d3c26ff3bbf469322a40f7578b910ba74cd298b700fe38f14a0b6abe085d"
+    },
+    "all159_tracked_sealed09ed_inputs_preserved": true,
+    "all_remaining_nontracked_sealed_inputs_unchanged": 363,
+    "historical_archives": [
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_stock_xlive_tombstone_case_preparation/preparation_evidence.zip",
+        "size": 55165437,
+        "sha256": "b73baeb3ce9a6fd56a2db8d8f6fc498a4e6625d43b97ff8142427cdbfcbe44f7"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_stock_xlive_tombstone_case_preparation/runtime_evidence.zip",
+        "size": 55080780,
+        "sha256": "3e9bc26d05bf7c6164b5fe834310e53bcb5934af01903b2c748d37220f78507e"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_stock_xlive_tombstone_case_preparation/git_closeout_evidence.zip",
+        "size": 64720,
+        "sha256": "9a8866671cb2c3202b70ff44429e14478fa22c4ddc722887693c25de698c487a"
+      }
+    ],
+    "prior_preservation_archive": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_native_message_pump_5030_readiness/preservation_evidence.zip",
+      "size": 1220736,
+      "sha256": "6141aa31e90e106ee59d4113f0d453786b28c894e6b65f57ece757c7c4a838cc"
+    },
+    "observed_before_sync_HEAD": "b1eeaa2780538f1697d588b2ced02d15be8c613d",
+    "current_HEAD": "a40922b3a8f258430644a6fb1bf6b750c451e2c9",
+    "requested_main": "a40922b3a8f258430644a6fb1bf6b750c451e2c9",
+    "safe_FF_observed_tool_chunk": "dab640",
+    "safe_FF_tool_exit_code": 0,
+    "receipt_written_after_safe_FF": true,
+    "intervening_tracked_paths_since_old_build": [
+      "config/names/004d0000.jsonl",
+      "config/names/00730000.jsonl",
+      "config/names/00b10000.jsonl",
+      "config/names/00b30000.jsonl",
+      "config/reconstruction/004d0000.jsonl",
+      "config/reconstruction/00730000.jsonl",
+      "config/reconstruction/00b10000.jsonl",
+      "config/reconstruction/00b30000.jsonl",
+      "docs/ARTILLERY_RANGING_ERROR.md",
+      "docs/BLAST_ELEMENT_PARTS.md",
+      "docs/NATIVE_CLOCK_HEADER_POINTER_ACCESS_CC10.md",
+      "docs/NATIVE_CLOCK_OWNER_HEADER_LIFETIME_CC10.md",
+      "docs/NATIVE_EXPLICIT_CLOCK_UNREGISTER_FIXTURE_CC10.md",
+      "docs/NATIVE_VERTEX_DECLARATION_NAME_TOMBSTONE_COMPOSITION_CC10.md",
+      "include/bsp/game_hosts_gunnery.hpp",
+      "include/bsp/native_particle_clock_singleton.hpp",
+      "include/bsp/native_sampler_loader_context.hpp",
+      "reports/cc10_clock_header_pointer_access_integration.json",
+      "reports/cc10_clock_owner_header_lifetime_integration.json",
+      "reports/cc10_explicit_clock_fixture_integration.json",
+      "reports/cc10_stock_tombstone_integration.json",
+      "reports/cc9_blast_element_parts.json",
+      "reports/native_clock_header_pointer_access_cc10.json",
+      "reports/native_clock_owner_header_lifetime_cc10.json",
+      "reports/native_explicit_clock_unregister_fixture_cc10.json",
+      "reports/native_vertex_declaration_name_tombstone_composition_cc10.json",
+      "src/game_hosts_gunnery.cpp",
+      "src/native_particle_clock_shutdown.cpp",
+      "src/native_particle_clock_singleton.cpp",
+      "src/native_particle_record_resize.cpp",
+      "src/native_sampler_cache_operation.cpp",
+      "src/native_sampler_loader_context.cpp"
+    ],
+    "accepted_comparator": {
+      "archive": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_evidence.zip",
+        "size": 15528076,
+        "sha256": "82549f7bd2f2d4d0b86fbffcfa944c88bca15fd96fe37dabbc2de447e9d90b72"
+      },
+      "member": "implementation/compiled/build/win32/bsp_core.dir/Release/native_sampler_cache_operation.obj",
+      "payload": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_sampler_cache_record_pointer_access/accepted21aa_comparator/native_sampler_cache_operation.obj",
+        "size": 25502,
+        "sha256": "735e13f17d70da57a43e591574ca9252921127121339c7d1eab84838fa586f54"
+      },
+      "source_baseline": "21aa59001748d2bd772f2da99a2fb9248d441836",
+      "qualification": "Frozen accepted comparator; not the old local09ed CMake object. Source equality with current baseline is verified separately."
+    },
+    "current_cache_source_equals_accepted21aa_source": true,
+    "no_rebuild_or_runtime_yet": true
+  },
+  "build": {
+    "utc_start": "2026-09-26T10:02:58.2717773Z",
+    "utc_end": "2026-09-26T10:03:26.1208728Z",
+    "exit_code": 0,
+    "error": null,
+    "command": "Existing scripts/build.ps1 Release strict Win32 and three existing CTests; incremental current a409 snapshot plus exact reviewed cache candidate",
+    "old_local_build_snapshot": "09edb1f1da09abfbbcc8562b7d0b3ad4eff8cb60",
+    "runtime_authorized": false
+  },
+  "strict_Win32": true,
+  "existing_CTests_passed": 3,
+  "emitted": {
+    "complete_object": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_sampler_cache_record_pointer_access/compiled/native_sampler_cache_operation.obj",
+      "size": 26233,
+      "sha256": "39ea7c1943bc221364618b22d5fdd45d86ce6040c2b1b9784358ad0116be1ea3"
+    },
+    "full_library": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_sampler_cache_record_pointer_access/compiled/bsp_core.lib",
+      "size": 71223902,
+      "sha256": "42e149c22de0edaa5924cf9ce79d9f599689c4acb9353772247f1ef57f94bdc5"
+    },
+    "selected_complete_core_member": {
+      "name": "bsp_core.dir\\Release\\native_sampler_cache_operation.obj",
+      "offset": 26738956,
+      "identity": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_sampler_cache_record_pointer_access/compiled/selected_core_member.obj",
+        "size": 26233,
+        "sha256": "39ea7c1943bc221364618b22d5fdd45d86ce6040c2b1b9784358ad0116be1ea3"
+      },
+      "equals_complete_current_CMake_object": true
+    },
+    "core_member_count": 1778,
+    "emitted_functions": 56,
+    "whole_body_bytes": 3682,
+    "COFF_relocations": 113,
+    "common_functions": 52,
+    "whole_common_bodies_identical": 51,
+    "all52_common_relocation_tables_equal": true,
+    "anonymous_namespace_only_normalized": true,
+    "whole_run_body_bytes": 1559,
+    "whole_run_body_and_relocations_identical": true,
+    "append_body_bytes": 88,
+    "append_instruction_differences": [
+      {
+        "offset": 65,
+        "current": "mov eax, dword ptr [ebx + 0x78]",
+        "accepted": "mov ecx, dword ptr [ebx + 0x78]"
+      },
+      {
+        "offset": 70,
+        "current": "mov ecx, dword ptr [eax + 4]",
+        "accepted": "mov ecx, dword ptr [ecx + 4]"
+      }
+    ],
+    "append_callback_order": {
+      "calls": [
+        [
+          34,
+          "call 0x27",
+          [
+            "?allocate_native_render_alias_node_004ce6f0@bsp@@YAPAUNativeRenderResourceAliasNode@1@PAU21@0PBXAAVActualNativeStringPoolStorage@1@@Z"
+          ]
+        ],
+        [
+          51,
+          "call 0x38",
+          [
+            "?grow_native_alias_list_count_004ce780@bsp@@YAXPAXI@Z"
+          ]
+        ]
+      ],
+      "captured_sentinel_and_previous_before_allocate": true,
+      "allocate_before_count_before_captured_link_publication": true,
+      "current_inserted_previous_after_first_publication": true,
+      "current_previous_next_store_after_reload": true,
+      "captured_sentinel_load": 15,
+      "captured_previous_load": 18,
+      "allocate_call_offset": 34,
+      "grow_call_offset": 51,
+      "captured_link_publication": 62,
+      "CURRENT_inserted_previous_load": 70,
+      "current_prior_next_store": 76,
+      "publication_window": [
+        {
+          "offset": 56,
+          "size": 3,
+          "hex": "8b4378",
+          "text": "mov eax, dword ptr [ebx + 0x78]",
+          "relocation_targets": []
+        },
+        {
+          "offset": 59,
+          "size": 3,
+          "hex": "83c418",
+          "text": "add esp, 0x18",
+          "relocation_targets": []
+        },
+        {
+          "offset": 62,
+          "size": 3,
+          "hex": "894704",
+          "text": "mov dword ptr [edi + 4], eax",
+          "relocation_targets": []
+        },
+        {
+          "offset": 65,
+          "size": 3,
+          "hex": "8b4378",
+          "text": "mov eax, dword ptr [ebx + 0x78]",
+          "relocation_targets": []
+        },
+        {
+          "offset": 68,
+          "size": 1,
+          "hex": "5f",
+          "text": "pop edi",
+          "relocation_targets": []
+        },
+        {
+          "offset": 69,
+          "size": 1,
+          "hex": "5e",
+          "text": "pop esi",
+          "relocation_targets": []
+        }
+      ],
+      "post_previous_instructions": [
+        {
+          "offset": 70,
+          "size": 3,
+          "hex": "8b4804",
+          "text": "mov ecx, dword ptr [eax + 4]",
+          "relocation_targets": []
+        },
+        {
+          "offset": 73,
+          "size": 3,
+          "hex": "8b4378",
+          "text": "mov eax, dword ptr [ebx + 0x78]",
+          "relocation_targets": []
+        },
+        {
+          "offset": 76,
+          "size": 2,
+          "hex": "8901",
+          "text": "mov dword ptr [ecx], eax",
+          "relocation_targets": []
+        },
+        {
+          "offset": 78,
+          "size": 7,
+          "hex": "c7437800000000",
+          "text": "mov dword ptr [ebx + 0x78], 0",
+          "relocation_targets": []
+        },
+        {
+          "offset": 85,
+          "size": 1,
+          "hex": "5b",
+          "text": "pop ebx",
+          "relocation_targets": []
+        },
+        {
+          "offset": 86,
+          "size": 1,
+          "hex": "5d",
+          "text": "pop ebp",
+          "relocation_targets": []
+        },
+        {
+          "offset": 87,
+          "size": 1,
+          "hex": "c3",
+          "text": "ret",
+          "relocation_targets": []
+        }
+      ]
+    },
+    "run_pointer_schedule": {
+      "resource_read_instruction_offsets": [
+        296,
+        834
+      ],
+      "alias_append_call_offsets": [
+        829,
+        1161,
+        1291
+      ],
+      "local_sentinel_store": 1073,
+      "local_resource_store": 1305,
+      "whole_body_and_relocations_equal_accepted21aa": true,
+      "second_resource_read_after_resolved_alias_append": true,
+      "typed_helpers_naturally_inlined_at_reached_sites": true
+    },
+    "new_private_helpers": 4,
+    "new_helper_body_bytes": 43,
+    "no_noinline_or_optimizer_attribute": true,
+    "new_executable_link_or_live_target_claim": false
+  },
+  "provenance": {
+    "prebuild_pins": 15,
+    "actual_target_CL_read_header_pins_acquired_after_build": 98,
+    "postbuild_toolchain_pins": 21,
+    "exact_compiler_command_file": "local/output/cc10_sampler_cache_record_pointer_access/actual_compile_command.txt"
+  },
+  "compiled_archive": {
+    "archive": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_sampler_cache_record_pointer_access/compiled_evidence.zip",
+      "size": 15394990,
+      "sha256": "870839b15594ed786efa7c80bd007bc1397c346a5721cef16bce93381000ec25"
+    },
+    "rows": 145,
+    "members": 146,
+    "all_rows_rehashed": true,
+    "production_source": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/src/native_sampler_cache_operation.cpp",
+      "size": 12656,
+      "sha256": "6715d23ac730ef19e42b967c707cfd4fb06638369cc15bd50919cf9fe6cf0ab6"
+    },
+    "object": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_sampler_cache_record_pointer_access/compiled/native_sampler_cache_operation.obj",
+      "size": 26233,
+      "sha256": "39ea7c1943bc221364618b22d5fdd45d86ce6040c2b1b9784358ad0116be1ea3"
+    },
+    "library": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_sampler_cache_record_pointer_access/compiled/bsp_core.lib",
+      "size": 71223902,
+      "sha256": "42e149c22de0edaa5924cf9ce79d9f599689c4acb9353772247f1ef57f94bdc5"
+    },
+    "current_snapshot": "a40922b3a8f258430644a6fb1bf6b750c451e2c9",
+    "old_local_build_snapshot": "09edb1f1da09abfbbcc8562b7d0b3ad4eff8cb60",
+    "accepted_comparator_snapshot": "21aa59001748d2bd772f2da99a2fb9248d441836",
+    "source_access_sites": 16,
+    "native_access_sites": 26,
+    "emitted_functions": 56,
+    "whole_emitted_body_bytes": 3682,
+    "whole_function_relocations": 113,
+    "common_bodies_identical": 51,
+    "all52_common_relocation_tables_equal": true,
+    "runtime_cases": 0,
+    "strict_Win32_and3_existing_CTests_pass": true
+  },
+  "preserved_inspection_failure": {
+    "archive": "local/output/cc10_sampler_cache_record_pointer_access/inspection_attempt01_evidence.zip",
+    "sha256": "78c66b386a9c0c555f6e3a78f1bc48e8bfb3b92eec0f24c089cf83b922fabb6a",
+    "failure": "Inspector assumed helper call relocations despite genuine compiler inlining",
+    "correction": "Inspect actual emitted inlined accesses; no source or build revision"
+  },
+  "ownership_and_lifetime": "Existing default placement record/node lifetimes reused; resource pointer remains borrowed; no count, reset, extra lifetime, terminal, callback or ownership operation added",
+  "remaining": [
+    "Raw char* string-header representation/helper routes are separate; no blanket word/put/pointer type-correctness claim",
+    "Actual live aligned record/node storage is required; arbitrary replaced/null/dangling backing is not admitted",
+    "No runtime/native ABI/FH3/full game validation",
+    "C30570 source payload and sibling4D shutdown/resize work excluded"
+  ]
+}
