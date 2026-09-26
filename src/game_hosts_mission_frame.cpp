@@ -105,6 +105,12 @@ void format_address(std::uint32_t value, char (&out)[16]) {
 // accumulator reads the world state's never-written delta.
 constexpr bool kWarningManagerTickBound = true;
 
+// Packet cc9_scaled_delta_write (docs/SCALED_DELTA_WRITE.md). True: the frame
+// writes game+21F0h, the scaled delta 004C6E30 stores at 004E4D45, into the
+// world tick state every frame, so each world-tick reader of +21F0h sees it.
+// False: that field is never written and reads 0.
+constexpr bool kScaledDeltaWriteBound = false;
+
 struct GameMissionFrameHost::Impl {
     Impl(GameHostLog& log_in, GameVfsHost& vfs_in, GameMissionLuaHost& lua_in,
         bsp::SessionParticipantPools& participants_in,
@@ -896,11 +902,17 @@ public:
         // 0098759E: the accumulator adds the director's argument [EBP+8]. The
         // reconstruction reads it from the world state, which this host never
         // writes, so it is supplied for this call alone.
+        // With kScaledDeltaWriteBound the frame has already written it, and
+        // it is the same value the director receives.
         const float held = owner_.world.game.scaled_delta;
-        if constexpr (kWarningManagerTickBound) owner_.world.game.scaled_delta = scaled_delta;
+        if constexpr (kWarningManagerTickBound && !kScaledDeltaWriteBound) {
+            owner_.world.game.scaled_delta = scaled_delta;
+        } else {
+            static_cast<void>(scaled_delta);
+        }
         const bsp::MissionEventTickResult result
             = bsp::update_mission_events_00987590(owner_.world, world);
-        owner_.world.game.scaled_delta = held;
+        if constexpr (!kScaledDeltaWriteBound) owner_.world.game.scaled_delta = held;
         static_cast<void>(result);
         owner_.done("MissionFrame::update_mission_events", 0x00987590u);
     }
@@ -1914,6 +1926,12 @@ bool GameMissionFrameHost::run_mission_frame_004e4a40(float raw_delta_in) {
     host.frame_state.scaled_delta = raw_delta;  // no time dilation in this process
     host.frame_state.global_time = host.world_clock;
     host.world.game.elapsed = host.world_clock;
+    // 004E4D45: 004C6E30 stores the scaled delta at game+21F0h, after the
+    // request drain (004E4D02, which reads no delta) and before the fixed steps
+    // and Think (004E5133). frame_state.scaled_delta is that value here: with
+    // no fast-forward, turbo, slow-motion or cinematic input and a step under
+    // the single-view threshold, 004C6E30 returns the delta unchanged.
+    if constexpr (kScaledDeltaWriteBound) host.world.game.scaled_delta = host.frame_state.scaled_delta;
     host.result->set_mission_clock(host.world_clock);
 
     // 004e4d02, the first thing OnMove does after the console pre-tick: the
