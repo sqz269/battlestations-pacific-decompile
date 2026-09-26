@@ -243,6 +243,13 @@ inline constexpr bool kHudCameraUnitBound = true;
 // (00CF1438 double). ON by its USN04 pair (docs/HUD_MINIMAP_CAMERA.md section 4).
 inline constexpr bool kHudMinimapDirectionWedgeBound = true;
 
+// Packet cc9_hud_gauge_text_mirrors (docs/UNIMPLEMENTED_RANKING_2.md section
+// "HUD mirrors"). ON answers the in-mission interface update's 00E188D8 reads
+// (has a controlled unit; 0068CC04 IsKindOf(8); 0068CC1x its +100h) from the
+// units host's controlled unit, which BSP_Game_SetControlledUnit's host
+// counterpart (004C0890) sets. ON by its USN04 pair.
+inline constexpr bool kHudInterfaceControlledUnitBound = true;
+
 class GameHostLog;
 class GameFrontendHost;
 class GameMenuHost;
