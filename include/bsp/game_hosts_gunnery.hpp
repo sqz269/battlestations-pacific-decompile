@@ -165,6 +165,9 @@ struct GameGunRow {
     // 009FE270 switches on the result to pick a BulletTypeAccuracy row.
     // docs/AI_TARGET_WEIGHT_TERMS.md, docs/BULLET_ENGAGEMENT_RANGE.md.
     int bullet_sub_type{0};
+    // gun[+3F8h]+4h, the fire record's `Throw` (007313E0): the cone half-angle
+    // in radians before 0073031D's seat multiplier. docs/BULLET_THROW.md.
+    float throw_amount{0.0f};
     float max_range{0.0f};            // 00731020's answer, the bullet `Range`
     float muzzle_speed{0.0f};
     float water_travel_speed{0.0f};   // MTorpedo classDesc+0E4h, 008566B0

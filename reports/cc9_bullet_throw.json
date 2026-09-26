@@ -1,0 +1,193 @@
+{
+  "packet": "cc9_bullet_throw",
+  "doc": "docs/BULLET_THROW.md",
+  "function": "00730160",
+  "function_name": "BSP_Gun_Fire",
+  "answer": "00730160's dispersion cone: magnitude = fire-record Throw times the seat bot's BulletThrowMul (per level, robots.lua) when the seat's role(s) are AI-held (00521E70), else the authored Throw unscaled; theta = U(0, 2pi), radius = tan(m) * U(0, 1) from RNG stream 1, added across the barrel, not renormalised. A seventh arm covers a plane's Function-0 guns through the PilotBot's AimBulletThrowMul (00999610). Torpedoes (sub-type 0Ah) take the deterministic fan instead.",
+  "steps": [
+    {
+      "address": "00730306",
+      "native": "00424c40",
+      "function": "00730160",
+      "rule": "settings object; +760h TurnOffAAGunThrow zeroes the magnitude for Functions 1/5/6"
+    },
+    {
+      "address": "00730367",
+      "native": "00521e70",
+      "function": "00730160",
+      "rule": "plane Function-0 arm: role 1 AI-held"
+    },
+    {
+      "site": "0073038d",
+      "native_slot": "[unit+0DF4h] vtable[24h] = 00999610",
+      "rule": "PilotBot AimBulletThrowMul"
+    },
+    {
+      "address": "007303ba",
+      "native": "00521e70",
+      "function": "00730160",
+      "rule": "sub-type 0Ah: role 5, seat gun+39Ch (TorpedoBot)"
+    },
+    {
+      "address": "007303df",
+      "native": "00521e70",
+      "function": "00730160",
+      "rule": "sub-type 0Bh: role 7, seat gun+3A4h else gun+3A0h"
+    },
+    {
+      "address": "0073041a",
+      "native": "00521e70",
+      "function": "00730160",
+      "rule": "sub-type 10h: role 3, seat gun+394h (AAFlakBot)"
+    },
+    {
+      "address": "0073044b",
+      "native": "00521e70",
+      "function": "00730160",
+      "rule": "sub-types 4..7: role 4, seat gun+398h (ArtilleryGunnerBot)"
+    },
+    {
+      "address": "00730471",
+      "native": "00521e70",
+      "function": "00730160",
+      "rule": "default arm: role 2"
+    },
+    {
+      "address": "00730482",
+      "native": "00521e70",
+      "function": "00730160",
+      "rule": "default arm: role 3, seat gun+390h (AAGunnerBot / TailGunnerBot)"
+    },
+    {
+      "site": "00730496",
+      "native_slot": "seat vtable[24h]",
+      "rule": "BulletThrowMul, multiplied in at 00730498"
+    },
+    {
+      "address": "00730557",
+      "native": "00bd2f10",
+      "function": "00730160",
+      "rule": "theta = U(0, 2pi), stream 1"
+    },
+    {
+      "address": "00730575",
+      "native": "00bd2f10",
+      "function": "00730160",
+      "rule": "u = U(0, 1), stream 1"
+    },
+    {
+      "address": "00730586",
+      "native": "00412e20",
+      "function": "00730160",
+      "rule": "tan(magnitude); radius = tan * u"
+    }
+  ],
+  "getters": [
+    {
+      "address": "008fb4c0",
+      "name": "BSP_AAGunnerBot_GetBulletThrowMul",
+      "record": "[00E19998] + 10h*lv + 18h"
+    },
+    {
+      "address": "008fb4e0",
+      "name": "BSP_TailGunnerBot_GetBulletThrowMul",
+      "record": "[00E199A0] + 24h*lv + 1Ch"
+    },
+    {
+      "address": "008fb500",
+      "name": "BSP_AAFlakBot_GetBulletThrowMul",
+      "record": "[00E1999C] + 20h*lv + 28h"
+    },
+    {
+      "address": "006dee00",
+      "name": "BSP_ArtilleryGunnerBot_GetBulletThrowMul",
+      "record": "[00E19994] + 28h*lv + 30h"
+    },
+    {
+      "address": "008fb550",
+      "name": "BSP_TorpedoBot_GetBulletThrowMul",
+      "record": "[00E1998C] + 14h*lv + 1Ch"
+    },
+    {
+      "address": "008fb570",
+      "name": "BSP_DepthChargeBot_GetBulletThrowMul",
+      "record": "[00E19988] + 14h*lv + 10h"
+    },
+    {
+      "address": "00999610",
+      "name": "BSP_PilotBot_GetAimBulletThrowMul",
+      "record": "[00F8A30C] + 248h*lv + 250h"
+    }
+  ],
+  "names_added": [
+    "008FB4C0 BSP_AAGunnerBot_GetBulletThrowMul",
+    "008FB500 BSP_AAFlakBot_GetBulletThrowMul",
+    "008FB550 BSP_TorpedoBot_GetBulletThrowMul",
+    "008FB570 BSP_DepthChargeBot_GetBulletThrowMul",
+    "00999610 BSP_PilotBot_GetAimBulletThrowMul",
+    "00521E70 BSP_Unit_RoleIsAiHeld"
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "008fb4c0",
+      "end_inclusive": "008fb4d0"
+    },
+    {
+      "start": "008fb500",
+      "end_inclusive": "008fb510"
+    },
+    {
+      "start": "008fb550",
+      "end_inclusive": "008fb560"
+    },
+    {
+      "start": "008fb570",
+      "end_inclusive": "008fb580"
+    },
+    {
+      "start": "00999610",
+      "end_inclusive": "00999626"
+    }
+  ],
+  "host": {
+    "switch": "kBulletThrowBound (src/game_hosts_gunnery.cpp)",
+    "sequence": "bullet_throw_magnitude_0073031d, then the cone or the fan at the shot spawn",
+    "rng": "Draw::bullet_throw, key (gun, 0)",
+    "substitutions": [
+      "non-8 role slot = player-held (00927F10 not modelled)",
+      "unit+63Ch = 1.0 (0095DD79)",
+      "00470440(7) = 1.0",
+      "cone axes: any orthonormal pair across the shot direction",
+      "torpedo fan about the hull up axis (0085C3F0 entry only)"
+    ]
+  },
+  "ghidra": "read-only",
+  "pair": {
+    "env": "BSP_GUNNERY_RNG_STREAMS=1, BSP_DEATH_TABLE=1",
+    "e2": {
+      "off": "local/btO_e2.log",
+      "on": "local/btT_e2.log",
+      "hits": "569 -> 636",
+      "deaths": "37 -> 38",
+      "fighters": "shots 940 -> 645, hits 86 -> 80, kills 5 -> 5",
+      "aa_hits_cat1_5_6": "85/106/281 -> 110/97/319"
+    },
+    "usn02": {
+      "off": "local/btO_usn02.log",
+      "on": "local/btT_usn02.log",
+      "hits": "647 -> 603",
+      "deaths": "16 -> 16 (same victims)",
+      "surface_hits": "639 -> 595"
+    },
+    "verdicts": [
+      "E2 AA hits fall 0..15%: failed, rose by cascade",
+      "E2 fighter hits fall 20..50%: failed, -7%",
+      "E2 fighter kills 2..5: held",
+      "E2 deaths within 4: held",
+      "USN02 surface hits fall 25..50%: failed, -7%",
+      "USN02 deaths 6..15: failed, 16",
+      "Houston/Exeter survive: held"
+    ],
+    "decision": "ON"
+  }
+}

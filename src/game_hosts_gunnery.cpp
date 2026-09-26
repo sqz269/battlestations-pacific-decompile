@@ -192,6 +192,40 @@ constexpr bool kGunHorzImageSignBound = true;
 // +1 in the host's earlier convention, -1 in the image's: the factor on the
 // starboard component wherever a horizontal angle meets a direction.
 constexpr float kGunHorzSign = kGunHorzImageSignBound ? -1.0f : 1.0f;
+//  * kBulletThrowBound: packet cc9_bullet_throw. 00730160's dispersion cone:
+//    the fire record's `Throw` times the seat bot's BulletThrowMul
+//    (0073031D..00730498, the role gates through 00521E70), then
+//    theta = U(0, 2pi), radius = tan(magnitude) * U(0, 1) (00730540..0073058F)
+//    added across the barrel (00730654..0073075E); torpedo sub-type 0Ah takes
+//    the deterministic fan (007304A0) instead. Own RNG purpose (bullet_throw).
+//    SUBSTITUTIONS: unit+63Ch is 1.0 (0095DD79 for every unit whose role 4 is
+//    not held locally; the idle player's steady fraction is not modelled);
+//    00470440(7) is 1.0 (no modifier records); a role slot other than 8 is
+//    taken as player-held (00927F10 not modelled); the cone's two axes are any
+//    orthonormal pair across the shot direction (the draw is rotation-uniform);
+//    the fan rotates about the hull up axis (0085C3F0 read only at its entry).
+//    docs/BULLET_THROW.md.
+constexpr bool kBulletThrowBound = true;
+// This installation's shipglobals.lua:74 authors TurnOffAAGunThrow = false
+// (0083B5E0 reads it into settings+760h at 00841B68).
+constexpr bool kTurnOffAaGunThrow = false;
+// This installation's robots.lua (2025-06-01), by skill index 0 Stun,
+// 1 SPNormal, 2 SPVeteran, 3 MPNormal, 4 MPVeteran, 5 Elite. The getters:
+// AAGunnerBot 008FB4C0 (+18h), TailGunnerBot 008FB4E0 (+1Ch), AAFlakBot
+// 008FB500 (+28h), TorpedoBot 008FB550 (+1Ch), DepthChargeBot 008FB570 (+10h),
+// ArtilleryGunnerBot 006DEE00 (the SubDirector's +30h), PilotBot 00999610
+// (AimBulletThrowMul, +250h).
+enum ThrowSeatBot : int { kThrowAaGunner, kThrowTailGunner, kThrowAaFlak, kThrowTorpedo,
+    kThrowDepthCharge, kThrowArtillery, kThrowPilot, kThrowSeatCount };
+constexpr float kBulletThrowMul[kThrowSeatCount][6] = {
+    {1.0f, 1.0f, 0.0f, 0.5f, 0.25f, 0.0f},   // AAGunnerBot
+    {1.0f, 1.0f, 1.0f, 1.0f, 0.5f, 0.0f},    // TailGunnerBot
+    {1.0f, 0.6f, 0.0f, 0.0f, 0.0f, 0.0f},    // AAFlakBot
+    {1.0f, 1.0f, 0.0f, 1.0f, 0.5f, 0.0f},    // TorpedoBot
+    {1.0f, 1.0f, 1.0f, 1.0f, 0.5f, 0.0f},    // DepthChargeBot
+    {1.0f, 0.9f, 0.1f, 0.85f, 0.5f, 0.1f},   // ArtillerySubDirectorBot
+    {1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f},    // PilotBot AimBulletThrowMul
+};
 //  * kShipSectionPointsBound: the artillery draw 00816650 can pick the target's
 //    engine room (kind 5), fuel tank (6) or magazine (8). 0081F980 fills
 //    unit+A88h / +A78h / +A68h from the ship model's GeomMesh elements of those
@@ -508,6 +542,7 @@ struct GameGunneryHost::Impl {
         death_delay = 9,      // 007BBFA0's ExplosionExplosionDelay (stream 0), key (unit, 0)
         aim_wander = 10,      // 009FA620 / 009FA7E0, the dogfight aim distortion, key (unit, 0)
         aim_point = 11,       // 00816650's hull-box draws for the artillery bot, key (gun, 0)
+        bullet_throw = 12,    // 00730557 / 00730575, the throw cone, key (gun, 0)
     };
     unsigned long long next_projectile_serial{0};
     static bool rng_streams_enabled() {
@@ -1134,6 +1169,59 @@ struct GameGunneryHost::Impl {
 
     // Packet cc9_torpedo_launch_gate: 008FFF20's friendly walk, 0090058A..009007FC.
     // True when some own-side ship blocks the launch (the image's JA 0090096D).
+    // Packet cc9_bullet_throw: 0073031D..00730498, the cone half-angle this shot
+    // draws from. `seat_out` names the bot whose multiplier applied, or -1.
+    bool role_ai_held_00521e70(std::size_t unit, int role) const {
+        std::int32_t slot = 8;
+        if (!units.unit_current_role_slot(unit, role, slot)) return true;
+        return slot == 8;   // SUBSTITUTION: 00927F10 on a non-8 slot is taken as false
+    }
+    float bullet_throw_magnitude_0073031d(const GameGunRow& gun, std::size_t owner,
+        int& seat_out) const {
+        seat_out = -1;
+        float magnitude = gun.throw_amount;                           // 007302DF
+        const int f = gun.category;                                   // gunclass+80h
+        if ((f == 1 || f == 5 || f == 6) && kTurnOffAaGunThrow) {     // 007302EA..00730317
+            magnitude = 0.0f;
+        }
+        if (gun.bullet_class < 0) return magnitude;                   // 00730323..0073032F
+        int level = units.skill_level(owner);                         // bot+34h, 008FBCAC
+        if (level < 0 || level > 5) level = 1;
+        int seat = -1;
+        const bool plane = units.unit_is_kind_of(owner, bsp::kUnitGunneryKindPlaneBase);
+        if (plane && f == 0) {                                        // 00730348..0073038D
+            if (role_ai_held_00521e70(owner, 1)) seat = kThrowPilot;  // [unit+0DF4h]
+        } else {
+            const int sub = gun.bullet_sub_type;                      // [[gun+3F8h]+34h]+8h
+            if (sub == 0x0A) {                                        // gun+39Ch, role 5
+                if (f == 7 && role_ai_held_00521e70(owner, 5)) seat = kThrowTorpedo;
+            } else if (sub == 0x0B) {                                 // role 7, +3A4h else +3A0h
+                if (role_ai_held_00521e70(owner, 7)) {
+                    if (f == 9) seat = kThrowArtillery;
+                    else if (f == 8) seat = kThrowDepthCharge;
+                }
+            } else if (sub == 0x10) {                                 // gun+394h, role 3
+                if ((f == 5 || f == 6) && role_ai_held_00521e70(owner, 3)) seat = kThrowAaFlak;
+            } else if (sub >= 4 && sub <= 7) {                        // gun+398h, role 4
+                if ((f == 2 || f == 3 || f == 4 || f == 6)
+                    && role_ai_held_00521e70(owner, 4)) seat = kThrowArtillery;
+            } else if (f == 1 && role_ai_held_00521e70(owner, 2)      // gun+390h, 00730471
+                       && role_ai_held_00521e70(owner, 3)) {          // 00730482
+                seat = plane ? kThrowTailGunner : kThrowAaGunner;     // 00922E90(gun, 0Fh)
+            }
+        }
+        if (seat >= 0) {
+            magnitude *= kBulletThrowMul[seat][level];                // 00730498 FMUL
+            seat_out = seat;
+        }
+        return magnitude;
+    }
+    unsigned long long throw_cone_shots{0};
+    unsigned long long throw_fan_shots{0};
+    unsigned long long throw_zero_shots{0};
+    double throw_angle_sum_deg{0.0};
+    double throw_magnitude_sum_deg{0.0};
+    unsigned long long throw_by_seat[kThrowSeatCount + 1]{};
     int torpedo_friendly_hold_logs{0};
     // Packet cc9_muzzle_offsets counters.
     unsigned long long muzzle_offset_shots{0};
@@ -1726,6 +1814,7 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
             gun.bullet_class = flat(type_id, make("bullet"), -1);
             gun.reload_time = flat_scaled(type_id, make("reload"), kMilliScale, 0.0f);
             gun.barrel_delay_time = flat_scaled(type_id, make("bdelay"), kMilliScale, 0.0f);
+            gun.throw_amount = flat_scaled(type_id, make("throw"), kAngleScale, 0.0f);
             gun.muzzle_speed = flat_scaled(type_id, make("v0"), kMilliScale, 0.0f);
             gun.max_range = flat_scaled(type_id, make("range"), kMilliScale, 0.0f);
             // 00731020 answers with descriptor+60h, NOT the authored Lua `Range`:
@@ -3885,6 +3974,60 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 + right[i] * (flat_component * kGunHorzSign * std::sin(horz))
                 + up[i] * std::sin(vert);
         }
+        if (gun.shots == 1) {
+            // DIAGNOSTIC, both sides: the throw terms this gun fires with.
+            int seat = -1;
+            const float m = bullet_throw_magnitude_0073031d(gun, owner_unit, seat);
+            log.notef("gunnery: throw first shot %s plat=%d cat=%d sub=%d throw_deg=%.3f "
+                "level=%d seat=%d magnitude_deg=%.3f (0073031D)", state.row.name.c_str(),
+                gun.platform_key, gun.category, gun.bullet_sub_type,
+                static_cast<double>(gun.throw_amount * 57.2957795f),
+                units.skill_level(owner_unit), seat, static_cast<double>(m * 57.2957795f));
+        }
+        if constexpr (kBulletThrowBound) {
+            // Packet cc9_bullet_throw: 0073031D..0073075E.
+            int seat = -1;
+            const float magnitude = bullet_throw_magnitude_0073031d(gun, owner_unit, seat);
+            ++throw_by_seat[seat >= 0 ? seat : kThrowSeatCount];
+            if (!(magnitude > 0.0f)) {
+                ++throw_zero_shots;                                   // 00730525 JBE
+            } else if (gun.bullet_sub_type == 0x0A) {
+                // 007304A0..0073051A: the deterministic torpedo fan, about the
+                // hull up axis here (0085C3F0 rotates about row 1).
+                const float offset = bsp::gun_torpedo_fan_offset_007304a0(magnitude,
+                    std::max(1, gun.barrel_num), std::max(0, barrel));
+                const float c = std::cos(offset), s = std::sin(offset);
+                float side[3] = {up[1] * direction[2] - up[2] * direction[1],
+                    up[2] * direction[0] - up[0] * direction[2],
+                    up[0] * direction[1] - up[1] * direction[0]};
+                for (int i = 0; i < 3; ++i) direction[i] = direction[i] * c + side[i] * s;
+                ++throw_fan_shots;
+            } else {
+                // 00730540..0073058F: theta = U(0, 2pi), radius = tan(m) * U(0, 1).
+                const float theta = draw(Draw::bullet_throw, g, 0, 0.0f, 6.28318548f);
+                const float u = draw(Draw::bullet_throw, g, 0, 0.0f, 1.0f);
+                const float radius = static_cast<float>(std::tan(magnitude) * u);
+                // 007305D6 (sub-types 4..7) times unit+63Ch = 1.0; 0073062C times
+                // 00470440(7) = 1.0. Then 00730654..0073075E, not renormalised.
+                float a[3] = {up[1] * direction[2] - up[2] * direction[1],
+                    up[2] * direction[0] - up[0] * direction[2],
+                    up[0] * direction[1] - up[1] * direction[0]};
+                float la = length3(a);
+                if (la < 1e-6f) { a[0] = right[0]; a[1] = right[1]; a[2] = right[2]; la = 1.0f; }
+                for (int i = 0; i < 3; ++i) a[i] /= la;
+                const float b[3] = {direction[1] * a[2] - direction[2] * a[1],
+                    direction[2] * a[0] - direction[0] * a[2],
+                    direction[0] * a[1] - direction[1] * a[0]};
+                const float ct = std::cos(theta), st = std::sin(theta);
+                for (int i = 0; i < 3; ++i) {
+                    direction[i] += radius * (ct * b[i] + st * a[i]);
+                }
+                ++throw_cone_shots;
+                throw_angle_sum_deg += std::atan(radius) * 57.29577951308232;
+                throw_magnitude_sum_deg += magnitude * 57.29577951308232;
+            }
+            done("Gun::throw_cone_00730540", 0x00730540u);
+        }
         GameProjectileRow shot;
         shot.gun_row = g;
         shot.owner_unit = owner_unit + 1;
@@ -5836,6 +5979,18 @@ void GameGunneryHost::report() {
             "packet cc9_player_gun_seat)", host.seat_messages, host.seat_handovers,
             host.seat_returns, host.seat_held_ticks, host.seat_trigger_ticks,
             kPlayerGunSeatBound ? 1 : 0);
+        host.log.notef("summary mission gunnery bullet throw cone=%llu fan=%llu zero=%llu "
+            "mean_magnitude_deg=%.4f mean_angle_deg=%.4f seats aa=%llu tail=%llu flak=%llu "
+            "torpedo=%llu depth=%llu artillery=%llu pilot=%llu none=%llu bound=%d "
+            "(0073031D/00730540, packet cc9_bullet_throw)",
+            host.throw_cone_shots, host.throw_fan_shots, host.throw_zero_shots,
+            host.throw_cone_shots ? host.throw_magnitude_sum_deg / host.throw_cone_shots : 0.0,
+            host.throw_cone_shots ? host.throw_angle_sum_deg / host.throw_cone_shots : 0.0,
+            host.throw_by_seat[kThrowAaGunner], host.throw_by_seat[kThrowTailGunner],
+            host.throw_by_seat[kThrowAaFlak], host.throw_by_seat[kThrowTorpedo],
+            host.throw_by_seat[kThrowDepthCharge], host.throw_by_seat[kThrowArtillery],
+            host.throw_by_seat[kThrowPilot], host.throw_by_seat[kThrowSeatCount],
+            kBulletThrowBound ? 1 : 0);
         host.log.notef("summary mission gunnery muzzle offsets shots=%llu fallbacks=%llu "
             "mean_shift=%.2f max_shift=%.2f bound=%d (00730762/00859550, packet cc9_muzzle_offsets)",
             host.muzzle_offset_shots, host.muzzle_offset_fallbacks,
