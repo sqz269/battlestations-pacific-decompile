@@ -225,6 +225,14 @@ inline constexpr bool kShipAiSnapshotBound = true;
 //    `done` instead of a record.
 // False: both corridor widths are 20.0f and the hook records.
 inline constexpr bool kShipAiTurnClearanceBound = true;
+// Packet cc9_ship_ai_tails_2 (a), docs/SHIP_AI_TAILS.md section 7. True: every
+// arm's last step runs the whole of 009DE5B0 (ship_ai_arm_final_step_009de5b0):
+// sections 1 to 6 as before plus section 7, the free-bearing query 009DEE0B..
+// 009DF10F with its range and widths from the formation group (00778890,
+// 0070D400, 0070D5D0, 0070E450, 007788B0), handed to 009DC2E0, which stays a
+// recorded false here. False: the partial path torpedo_override_009de8f1
+// (sections 1 and 3..6), as before.
+inline constexpr bool kShipAiArmFinalWholeBound = false;
 inline constexpr float kTorpedoCollectTimer2 = 2.0f;
 // Packet cc9_station_keeping, docs/STATION_KEEPING.md. True: the follow update's
 // station request 009DA3B0 is stored (blk+38Ch..+3A6h, including blk+39Ch = 0
@@ -1167,6 +1175,150 @@ struct GameShipAiHost::Impl {
         }
         traffic_separation_009de96c(index, ctl, row, entry_target, signed_speed);
     }
+
+    // Packet cc9_ship_ai_tails_2 (a): 009DE5B0 whole, over this host's fields.
+    // blk+354h is projected twice here (the throttle profile's hold and the
+    // block's clamp); the partial path read the hold for section 5, so the
+    // routine is handed the hold and the clamp is kept in step afterwards.
+    void arm_final_step_009de5b0(std::size_t index, Controller& ctl, GameShipAiRow& row) {
+        struct Host final : bsp::ShipAiArmFinalStepHost {
+            Impl& impl;
+            Controller& ctl;
+            std::size_t index;
+            bsp::ShipAiArmFinalNeighbour view{};
+            Host(Impl& i, Controller& c, std::size_t u) : impl(i), ctl(c), index(u) {}
+            float body_axis_speed_0092d730() override {
+                return impl.units.unit_forward_speed_0092d730(index);
+            }
+            float unit_heading_vtable_0050() override { return impl.units.unit_heading_radians(index); }
+            void raise_turn_assist_load_009de853(float request) override {
+                impl.units.raise_turn_assist_load_102c(index, request);
+            }
+            bool clearance_gate_009da1d0() override {
+                return kShipTorpedoResponseBound && impl.torpedo_gate_009da1d0(index, ctl);
+            }
+            float class_reference_speed_500() override {
+                return impl.units.unit_class_max_speed_0500(index);
+            }
+            const bsp::ShipAiArmFinalNeighbour& neighbour_608(int i) override {
+                bsp::ShipAiObstacleNode& node = *ctl.neighbours[static_cast<std::size_t>(i)];
+                view = {};
+                view.has_unit = node.owner != nullptr;
+                view.lifetime_78 = node.lifetime_78;
+                view.centre_x_20 = node.near_box_x;
+                view.centre_z_24 = node.near_box_z;
+                if (node.owner != nullptr) {
+                    bsp::SceneNodeFlags flags;
+                    if (impl.units.read_scene_node_flags(node.owner, flags)) {
+                        view.unit_flag_5c = flags.active;
+                        view.unit_flag_5d = flags.torn_down;
+                        view.unit_gone_5e = flags.destroyed;
+                    }
+                    const std::size_t unit = NeighbourList::store(node).unit;
+                    bool pending = false;
+                    impl.units.unit_pending_destroy_0060(unit, pending);
+                    view.unit_flag_60 = pending;
+                    view.unit_hull_radius_9c8 = impl.units.unit_hull_length_09c8(unit);
+                }
+                return view;
+            }
+            std::int32_t group() const { return impl.units.unit_formation_group_0284(index); }
+            bool unit_leads_controller_00778890() override {
+                const std::int32_t g = group();
+                impl.done("ShipAiArmFinal::unit_leads_controller_00778890", 0x00778890u);
+                return g >= 0 && impl.units.formation_leader_0014(g) == index;
+            }
+            float extent(bool negative) {
+                const std::int32_t g = group();
+                const std::int32_t count = impl.units.formation_member_count(g);
+                std::vector<bsp::ShipAiUnitGroupMember> members(
+                    static_cast<std::size_t>(std::max(0, count)));
+                for (std::int32_t slot = 0; slot < count; ++slot) {
+                    const std::size_t unit = impl.units.formation_member_unit(g, slot);
+                    if (unit == static_cast<std::size_t>(-1)) continue;
+                    const auto st = impl.units.formation_station_0070d290(unit, 1.0f, 1.0f);
+                    for (float& v : members[static_cast<std::size_t>(slot)].lateral) v = st.across;
+                }
+                bsp::ShipAiUnitGroupView v{};
+                v.members = members.empty() ? nullptr : members.data();
+                v.count = count;
+                v.column = 0;
+                return negative ? bsp::ship_ai_unit_group_extent_negative_0070d5d0(v)
+                                : bsp::ship_ai_unit_group_extent_positive_0070d400(v);
+            }
+            float controller_extent_0070d400() override {
+                impl.done("ShipAiArmFinal::group_extent_0070d400", 0x0070d400u);
+                return extent(false);
+            }
+            float controller_extent_0070d5d0() override {
+                impl.done("ShipAiArmFinal::group_extent_0070d5d0", 0x0070d5d0u);
+                return extent(true);
+            }
+            int controller_area_key_0070e450() override {
+                // The largest member vtable[214h] over the group's ships; this
+                // host's stand-in is the leader's own travel layer, so the key
+                // equals blk+30Ch and the "moved" searcher is never chosen.
+                impl.record("ShipAiArmFinal::group_area_key_0070e450", 0x0070e450u);
+                return static_cast<int>(ctl.travel_layer_30c);
+            }
+            bool controller_belongs_to_another_007788b0() override {
+                impl.done("ShipAiArmFinal::belongs_to_another_007788b0", 0x007788b0u);
+                return impl.units.unit_is_formation_follower_007788b0(index);
+            }
+            bool avoid_zone_free_bearing_009dc2e0(int, bsp::ShipAiSectorFreeBearingQuery&,
+                                                  int) override {
+                impl.record("ShipAiArmFinal::free_bearing_009dc2e0", 0x009dc2e0u);
+                return false;
+            }
+        } host(*this, ctl, index);
+        bsp::ShipAiArmFinalStepState state{};
+        state.look_ahead_318 = ctl.nav_block.look_ahead_floor_318;
+        state.layer_key_30c = static_cast<int>(ctl.travel_layer_30c);
+        state.pose_x_184 = ctl.hull_geometry.position_184[0];
+        state.pose_z_188 = ctl.hull_geometry.position_184[1];
+        state.goal_x_174 = ctl.hull_geometry.bow_174[0];
+        state.goal_z_178 = ctl.hull_geometry.bow_174[1];
+        state.avoidance_x_34c = ctl.throttle_profile.avoid_x_34c;
+        state.avoidance_z_350 = ctl.throttle_profile.avoid_z_350;
+        state.escape_distance_14c = ctl.nav_block.value_14c;
+        state.escape_direction_150 = {ctl.escape_x_150, ctl.escape_z_154};
+        state.inside_avoid_zone_160 = kShipAvoidZoneEscapeBound && ctl.nav_block.flag_160;
+        state.neighbour_count_604 = ctl.nav_block.neighbour_count_604;
+        bsp::ShipAiArmFinalStepTuning tuning{};
+        tuning.hull_radius_9c8 = units.unit_hull_length_09c8(index);
+        tuning.hull_half_width_9cc = units.unit_half_width_09cc(index);
+        bsp::ShipAiSectorFreeBearingQuery query{};
+        const float clamp_before = ctl.blk.clamp_354;
+        const float hold_before = ctl.throttle_profile.hold_354;
+        ctl.blk.clamp_354 = hold_before;
+        const float target_before = ctl.blk.heading_target_324;
+        const bsp::ShipAiArmFinalStepResult r = bsp::ship_ai_arm_final_step_009de5b0(
+            ctl.blk, ctl.nav, state, tuning, query, host);
+        const float raised = ctl.blk.clamp_354;
+        if (raised > hold_before) {                      // 009DE763 raised it
+            ctl.throttle_profile.hold_354 = raised;
+            ctl.blk.clamp_354 = std::max(clamp_before, raised);
+        } else {
+            ctl.blk.clamp_354 = clamp_before;
+        }
+        if (r.escape_applied) {
+            ++row.zone_escape_turns;
+            if (row.zone_escape_first_s < 0.0f) {
+                row.zone_escape_first_s = static_cast<float>(steps) * 0.05f;
+            }
+        }
+        if (r.avoidance_override) {
+            ++row.torpedo_overrides;
+            if (row.torpedo_first_override_s < 0.0f) {
+                row.torpedo_first_override_s = static_cast<float>(steps) * 0.05f;
+            }
+        }
+        if (r.separation_applied) ++row.separation_turns;
+        if (r.free_bearing_queried) ++arm_final_queries;
+        static_cast<void>(target_before);
+        done("ShipAiArmFinal::step_009de5b0", 0x009de5b0u);
+    }
+    unsigned long long arm_final_queries{0};
 
     // 009DE96C..009DEE07, section 6: the push away from every live neighbour's
     // near-box centre, turned by 009DEBB9. blk+604h is the consumers' count
@@ -5360,6 +5512,12 @@ public:
         return 0.0f;
     }
     void after_arm_009de5b0(float) override {
+        if constexpr (kShipAiArmFinalWholeBound) {
+            owner_.arm_final_step_009de5b0(index_, owner_.controllers[index_],
+                                           owner_.rows[index_]);
+            owner_.done("ShipAiArmTail::after_arm", 0x009de5b0u);
+            return;
+        }
         if (kShipTorpedoResponseBound || kShipAvoidZoneEscapeBound) {
             owner_.torpedo_override_009de8f1(index_, owner_.controllers[index_],
                                              owner_.rows[index_]);
@@ -6456,7 +6614,9 @@ public:
             ctl_.blk.distance_32c = st.distance_32c;
             owner_.done("ShipAi::station_keeping_arm", 0x009eda28u);
             // 009EE57B JMP 009EF206: the arm ends in 009DE5B0 like every other.
-            if (kShipTorpedoResponseBound || kShipAvoidZoneEscapeBound)
+            if (kShipAiArmFinalWholeBound)
+                owner_.arm_final_step_009de5b0(index_, ctl_, row_);
+            else if (kShipTorpedoResponseBound || kShipAvoidZoneEscapeBound)
                 owner_.torpedo_override_009de8f1(index_, ctl_, row_);
             ++row_.station_arm_runs;
             row_.station_throttle_min = std::min(row_.station_throttle_min, st.throttle_39c);
