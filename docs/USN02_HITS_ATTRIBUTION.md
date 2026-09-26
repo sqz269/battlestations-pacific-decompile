@@ -33,4 +33,32 @@ showed that fire and flooding account for only 33 hit records on today's tree.
 
 ## Runs
 
-Pending.
+Every log shows `window resolution override fit: 2560x1440 -> 1600x900` and its own
+`module directory ...\local\bis_<commit>\`.
+
+| commit | position | deaths | hit records | shots | damage | end |
+| --- | --- | --- | --- | --- | --- | --- |
+| `fad22c424` | start | 22 | 769 | 1215 | 81173.2 | 44.60 s |
+| `28a996994` | after every dogfight-engaged merge | 22 | 769 | 1215 | 81173.2 | 44.60 s |
+| `7a6025ddb` | just before the fire/flooding landing | 22 | 769 | 1215 | 81173.2 | 44.60 s |
+| `0e51c215c` | **the fire/flooding landing** (`c5247e57c`) | 23 | 358 | 878 | 69461.2 | 44.60 s |
+| `041970ada` | end | 23 | 358 | 878 | 69461.2 | 44.60 s |
+
+1. **Held:** both ends reproduce exactly.
+2. **Did not hold:** the whole step sits in `0e51c215c`, the fire/flooding landing, not in a
+   dogfight-engaged merge. Every merge before it is identical to `fad22c424` on all five rows,
+   and `0e51c215c` is identical to the end.
+3. **Held:** shots fell with the hit records (1215 -> 878), and deaths are 23.
+
+**Why flooding moved 411 records then and only 33 on today's tree.** On the `0e51c215c` tree,
+flooding sinks ships early. The damage-control deaths are four Japanese ships (Yamakaze at
+58.60 s, Haguro at 242.56 s, Asagumo at 261.41 s, Murasame at 286.45 s) and Allied Electra at
+118.05 s. Minegumo,
+Yudachi and Samidare also die 10 to 67 s earlier. With fewer Japanese ships afloat from 60 s
+on, both sides fire less: 878 shots against 1215. The landings since (component failures,
+ranging error, torpedo spread) change who is afloat when. On today's tree the same three
+switches move only 33 records (`docs/SHIP_FIRE_FLOODING.md` section 7). The effect is the same
+kind, a cascade through who survives, but its size depends on the tree.
+
+**The flag is closed:** the 2026-09-26 step (22 -> 23 deaths, 769 -> 358 hit records) is
+`0e51c215c`, packet `cc9_ship_fire_flooding`.
