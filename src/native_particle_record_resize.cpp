@@ -69,13 +69,14 @@ void resize_with_public_slot(NativeResourceRecordVectorStorage& actual_vector,
             if (record != nullptr) {
                 ::new (record) NativeRenderResourceRecord; // No value writes.
                 store(record, 0, 0);
-                store(record, 4, 0);
+                static_cast<volatile NativeRenderResourceRecord*>(record)
+                    ->name_data_04 = nullptr;
                 name_armed = true; // Native state 1 precedes 004C3020.
 
                 auto* const sentinel =
                     allocate_native_render_alias_sentinel_004c3020();
-                store(record, 0x0c, static_cast<Word>(
-                    reinterpret_cast<std::uintptr_t>(sentinel)));
+                static_cast<volatile NativeRenderResourceRecord*>(record)
+                    ->sentinel_0c = sentinel;
                 store(record, 0x10, 0);
                 bound = *requested_slot; // 004DC47F: same current public word.
                 store(record, 0x24, 0);

@@ -1,0 +1,160 @@
+{
+  "packet": "clock_record_pointer_access_cc10",
+  "baseline": "b1eeaa2780538f1697d588b2ced02d15be8c613d",
+  "status": "three_live_record_pointer_accesses_typed_volatile_strict_win32_three_existing_ctests_complete_coff_order_checked_no_runtime",
+  "production_files": [
+    "src/native_particle_clock_shutdown.cpp",
+    "src/native_particle_record_resize.cpp"
+  ],
+  "native_accesses": [
+    {
+      "address": "004dda59",
+      "field": "NativeRenderResourceRecord::resource_28",
+      "type": "void*",
+      "operation": "current last sink capture before profile/slot"
+    },
+    {
+      "address": "004dc463",
+      "field": "name_data_04",
+      "type": "char*",
+      "operation": "null initialization at existing store position"
+    },
+    {
+      "address": "004dc475",
+      "field": "sentinel_0c",
+      "type": "NativeRenderResourceAliasNode*",
+      "operation": "captured allocation publication at existing store position"
+    }
+  ],
+  "live_contract": "Actual aligned0x2C record already default-placement-constructed; no adoption/default field/count/reference/lifetime addition",
+  "source_change": {
+    "exact_accesses": 3,
+    "header_ABI_CMake_test_changes": false,
+    "all_other_read_store_failure_ownership_schedules_unchanged": true,
+    "exact_diff": "local/clock_record_pointer_access_cc10/applied.diff"
+  },
+  "validation": {
+    "strict_win32_builds": 1,
+    "existing_CTests": 3,
+    "new_tests": 0,
+    "runtime": false,
+    "application_execution": false,
+    "native_ABI_EH": false,
+    "active_raw_build_receipts": "local/clock_record_pointer_access_cc10/raw_tool_receipts.json",
+    "build_inputs": 34,
+    "build_outputs": 29,
+    "old_exact_AR_members": 2,
+    "new_exact_AR_object_members": 2,
+    "full_new_BSP_COFF_sections": 30,
+    "full_historical_old_BSP_COFF_sections": 29,
+    "actual_unique_linked_sections": 18,
+    "map_resolved_relocations": 39,
+    "unresolved_map_targets": 0,
+    "byte_relocation_order_checks": 28,
+    "installed_PE_ranges": 6,
+    "installed_PE_bytes": 557
+  },
+  "historical_comparison": {
+    "provenance": "Preserved worker prebuild objects are historical09ed fixture-era artifacts, not compiled from b1ee source; comparison spans intervening canonical owner/header and nine header-pointer changes, including21aa590",
+    "matched_symbols": 28,
+    "equal_code_arrays": 25,
+    "changed_code_arrays": [
+      {
+        "symbol": "?destroy_native_particle_clock_records_004de290@bsp@@YIXPAXAAUNativeParticleClockShutdownContext@1@@Z",
+        "old_bytes": 307,
+        "new_bytes": 306
+      },
+      {
+        "symbol": "?resize_with_public_slot@?A0xc38dd426@bsp@@YAXAAUNativeResourceRecordVectorStorage@2@AAUNativeParticleRecordResizeContext@2@QCH@Z",
+        "old_bytes": 317,
+        "new_bytes": 315
+      },
+      {
+        "symbol": "__ehhandler$?resize_with_public_slot@?A0xc38dd426@bsp@@YAXAAUNativeResourceRecordVectorStorage@2@AAUNativeParticleRecordResizeContext@2@QCH@Z",
+        "old_bytes": 29,
+        "new_bytes": 29
+      }
+    ],
+    "equal_relocation_lists": 26,
+    "new_typed_data_helpers": 2,
+    "old_raw_pointer_helper_removed": true,
+    "no_attribution_to_three_access_patch": true,
+    "full_old_new_members_sections_relocations_frozen": true
+  },
+  "incremental_comparison": {
+    "reference_archive_sha256": "82549f7bd2f2d4d0b86fbffcfa944c88bca15fd96fe37dabbc2de447e9d90b72",
+    "reference_manifest_sha256": "08a8571b48caf375de140106583e0a649fd0d9e7856b460214ab227979d0f087",
+    "accepted_build": "Nine-header-access packet accepted/published21aa590, source inputs match reviewed pre3-access files after newline normalization",
+    "BSP_sections": 30,
+    "code_arrays_exact_equal": 30,
+    "relocation_lists_exact_equal": 19,
+    "relocation_lists_qualified_equal": 30,
+    "qualification": "Only MSVC anonymous-namespace discriminator A0xHEX normalized for cross-worktree pairing and relocation name comparison; both original names and all original relocation targets retained. No addresses, offsets, types or code bytes normalized.",
+    "proof": "local/clock_record_pointer_access_cc10/accepted_baseline_comparison_v02.json",
+    "compiler_delta_of_three_source_access_corrections": "No code-byte difference; relocation names differ only by cross-worktree anonymous namespace discriminators"
+  },
+  "link_limits": {
+    "standalone_clear_004dda40": "195B complete COFF; no unique linked match",
+    "private_EH_handlers": "29B handlers ambiguous in linked image; COFF-only",
+    "inlined_clear": "Current linked306B4DE290 container sink sequence separately inspected",
+    "broader_COFF_comparison_is_not18_linked_sections": true
+  },
+  "preservation": {
+    "historical09ed_launch_pins": 1684,
+    "readiness_rows": 68,
+    "prior_archives": 4,
+    "immutable_old_source_compiler_runtime_evidence": true
+  },
+  "failures_preserved": [
+    {
+      "stage": "application preparation01",
+      "outcome": "git apply rejected generated diff without source mutation",
+      "evidence": "original apply_approved.py and direct exec transcript; raw console not reconstructed"
+    },
+    {
+      "stage": "accepted comparison01",
+      "outcome": "Exact private symbol-set pairing refused due cross-worktree MSVC anonymous namespace discriminators; extracted inputs/script/raw tool result retained",
+      "later_qualification": "v02 normalizes only namespace discriminator for pairing/relocation-name comparison, retaining original names/targets/code"
+    }
+  ],
+  "remaining_open": [
+    "Cache-operation record/string pointer caller accesses; separate worker packet",
+    "Genuine positive-child source-owner/producer admission and exact actual +4 atomic/count obligations",
+    "Initialized resource28 in each live nonempty record, genuine terminal/profile/retirement and SAME actual pool/validation/allocator/canonical domain through drain",
+    "Full nonempty composition, nativeEH/SEH, fullapplication/game/source0W/platformMSG"
+  ],
+  "new_native_bytes": 0,
+  "calls": [
+    {
+      "address": "004dda78",
+      "native": "004d45a0",
+      "function": "004dda40"
+    },
+    {
+      "address": "004dda8c",
+      "native": "004dc410",
+      "function": "004dda40"
+    },
+    {
+      "address": "004dc43a",
+      "native": "004da180",
+      "function": "004dc410"
+    },
+    {
+      "address": "004dc470",
+      "native": "004c3020",
+      "function": "004dc410"
+    },
+    {
+      "address": "004dc4bc",
+      "native": "004d45a0",
+      "function": "004dc410"
+    }
+  ],
+  "evidence": {
+    "directory": "local/clock_record_pointer_access_cc10",
+    "archive": "local/clock_record_pointer_access_cc10/evidence.zip",
+    "index": "local/clock_record_pointer_access_cc10/artifact_index.json",
+    "external_hash_receipt": "local/clock_record_pointer_access_cc10/freeze_receipt.json"
+  }
+}
