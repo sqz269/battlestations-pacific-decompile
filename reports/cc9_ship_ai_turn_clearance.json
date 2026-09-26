@@ -1,0 +1,21 @@
+{
+  "packet": "cc9_ship_ai_turn_clearance",
+  "doc": "docs/SHIP_AI_TAILS.md",
+  "answer": "009EF910 was already reconstructed and run every step after the publish (run_clearance_refresh); its UNIMPLEMENTED row was the publish hook's record and is now done. 009ED3E0's head is bound: 00778890 (leads its formation group), 0070D400 / 0070D5D0 (largest across-axis offsets, [0,1200] per slot, floor 5, cap 400), + 20 capped at 600, fed to the refresh arm instead of the 20.0f literal. kShipAiTurnClearanceBound is ON.",
+  "steps": [
+    {"address": "009f4d87", "native": "009ef910", "function": "009f4d10", "rule": "the publish's only call into the clearance refresh"},
+    {"address": "009ed401", "native": "00778890", "function": "009ed3e0", "rule": "does the unit lead its group"},
+    {"address": "009ed41a", "native": "0070d400", "function": "009ed3e0", "rule": "positive-side extent"},
+    {"address": "009ed45b", "native": "0070d5d0", "function": "009ed3e0", "rule": "negative-side extent"}
+  ],
+  "substitutions": [
+    "member across-axis values read through 0070D290's projection (formation_station_0070d290 at unit scales); the leader's own record contributes 0"
+  ],
+  "pair": {
+    "runs": "USN02 9200/9000 and E2 (USN04 9200/9000), BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1, same-tree tc_off / tc_on",
+    "usn02": "22 / 440 / 39.65 s both; 6605 group widths (max 420); plan counts, station keeping, every ship-ai line and the death table identical",
+    "e2": "35 / 595 both; 7895 group widths (max 420); identical",
+    "native_table": "only the predicted rows change status, plus the message-pump counter"
+  },
+  "ghidra": "read-only; no renames, comments or saves"
+}
