@@ -188,7 +188,7 @@ constexpr bool kMuzzleOffsetsBound = true;
 //    authored Windows and RestAngles are loaded unnegated, as the image loads
 //    them. OFF: the host's earlier +atan2(right, forward), which mirrors every
 //    authored window. docs/GUN_HORZ_SIGN.md.
-constexpr bool kGunHorzImageSignBound = false;
+constexpr bool kGunHorzImageSignBound = true;
 // +1 in the host's earlier convention, -1 in the image's: the factor on the
 // starboard component wherever a horizontal angle meets a direction.
 constexpr float kGunHorzSign = kGunHorzImageSignBound ? -1.0f : 1.0f;
@@ -1976,7 +1976,7 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                         // windows face in the image's sign (positive = model -x, port).
                         std::string spans;
                         bool any = false, pos = true, neg = true;
-                        for (std::size_t a = 1; a < gun.arcs.size(); ++a) {
+                        for (std::size_t a = 0; a < gun.arcs.size(); ++a) {   // 007F5A10 sorts by angle
                             const auto& arc = gun.arcs[a];
                             if ((arc.flags & bsp::kGunArcFlagFire) == 0) continue;
                             any = true;
