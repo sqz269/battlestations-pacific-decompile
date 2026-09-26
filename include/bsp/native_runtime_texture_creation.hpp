@@ -45,6 +45,10 @@ struct NativeRuntimeTextureCreationContext {
     const volatile float& unsigned_dword_fix_00ce3978;
     const volatile double& unsigned_counter_fix_00d57da0;
 };
+// Retained mutable five-DWORD call cells. B2A20B replaces levels with raw
+// slot bits before state1; cleanup reads that CURRENT word. When accounting
+// is reached, format/flags also become the original float/CW scratch words.
+// Keep all cells live/address-stable through callbacks and cleanup; no stack ABI claim.
 struct NativeRuntimeTextureCreationArguments {
     std::uint32_t width, height, levels, format, flags;
 };
@@ -56,7 +60,11 @@ struct NativeRuntimeTextureCreationAcquired {
     // The original switch leaves its stack slot untouched for low nibbles>3.
     // Supply a readable preimage if exercising that domain; never infer DEFAULT.
     std::uint32_t native_pool_slot;
-    IDirect3DTexture9* volatile com_output{};
+    // One live typed output cell, passed directly to the genuine COM entry.
+    // Source current accesses use volatile views; the object itself is not volatile.
+    IDirect3DTexture9* com_output{};
+    // Phase/state/result/raw_slot/owner/return diagnostics are implementation-owned
+    // across callbacks. raw_slot is captured evidence, not current cleanup authority.
     HRESULT create_result{};
     void* raw_slot{};
     void* owner{};
@@ -69,11 +77,15 @@ struct NativeRuntimeTextureCreationAcquired {
 // Current real CreateTexture; exact retry predicate and real B29670; canonical
 // pool/constructor; x87 accounting iff flags&10h; append borrowed owner to
 // renderer+1B00; diagnostic COM pair then release creator COM; optional leave.
-// The explicit argument block supplies current source words at their native
-// read sites. No failed-HRESULT null substitute, owner cleanup, retry timeout,
+// The mutable argument block supplies current source words at their native
+// read sites and retains the overwritten levels word for current slot cleanup.
+// Accounting preserves native format/flags scratch-byte writes for later observers.
+// CreateTexture admits only its genuine MSVC Win32 native stdcall target; raw
+// DWORD format/pool call types do not admit ISO-compatible SDK-enum stand-ins.
+// No failed-HRESULT null substitute, owner cleanup, retry timeout,
 // alternate pool or native ABI/SEH claim. All contexts/publications belong to
 // the same actual renderer/string/owner/pool/synchronization domain.
 void* create_native_runtime_texture_2d_00b2a070(void* actual_renderer,
-    const volatile NativeRuntimeTextureCreationArguments&,
+    volatile NativeRuntimeTextureCreationArguments&,
     NativeRuntimeTextureCreationContext&, NativeRuntimeTextureCreationAcquired&);
 } // namespace bsp

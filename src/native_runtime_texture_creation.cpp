@@ -32,7 +32,11 @@ template<class T> T method(void* p,Word offset) noexcept {
 }
 using ComWord=ULONG (__stdcall*)(void*);
 using ComDesc=HRESULT (__stdcall*)(void*,UINT,D3DSURFACE_DESC*);
-using Create=HRESULT (__stdcall*)(void*,UINT,UINT,UINT,DWORD,D3DFORMAT,D3DPOOL,IDirect3DTexture9**,HANDLE*);
+// Genuine MSVC Win32 native stdcall entry: nine four-byte words. Format/pool
+// retain all DWORD bits; this call type is not ISO-compatible with arbitrary
+// C++ stand-ins declared with the SDK enum parameter types.
+static_assert(sizeof(DWORD)==4 && sizeof(UINT)==4 && sizeof(HRESULT)==4);
+using Create=HRESULT (__stdcall*)(void*,UINT,UINT,UINT,DWORD,DWORD,DWORD,IDirect3DTexture9**,HANDLE*);
 void pair(void* captured) {
     (void)method<ComWord>(captured,4)(captured);
     (void)method<ComWord>(captured,8)(captured);
@@ -65,11 +69,13 @@ void unwind_constructor(NativeRuntimeTextureConstructionContext& c,
     } __except(cleanup_exception(GetExceptionCode())) { __assume(0); }
 }
 void unwind_factory(NativeRuntimeTextureCreationContext& c,
+    volatile NativeRuntimeTextureCreationArguments& arguments,
     NativeRuntimeTextureCreationAcquired& a) noexcept {
     __try {
         if(a.unwind_state==1) {
             a.unwind_state=0;
-            return_d3d9_texture2d_slot_00b3dcd0(a.raw_slot);
+            const Word current_slot=arguments.levels;
+            return_d3d9_texture2d_slot_00b3dcd0(pointer(current_slot));
             a.raw_slot_returned=true;
         }
         if(a.unwind_state==0) {
@@ -90,63 +96,75 @@ struct ConstructorCleanup {
 };
 struct FactoryCleanup {
     NativeRuntimeTextureCreationContext& context;
+    volatile NativeRuntimeTextureCreationArguments& arguments;
     NativeRuntimeTextureCreationAcquired& acquired;
     ~FactoryCleanup() noexcept {
         if(acquired.phase!=NativeRuntimeTextureCreationAcquired::Phase::complete) {
             acquired.phase=NativeRuntimeTextureCreationAcquired::Phase::failed;
-            if(acquired.unwind_state>=0)unwind_factory(context,acquired);
+            if(acquired.unwind_state>=0)unwind_factory(context,arguments,acquired);
         }
     }
 };
-void account(Word width,Word height,Word format,NativeRuntimeTextureCreationContext& c) noexcept {
-    const Word storage_bits=native_format_storage_bits_00b21210(format);
-    Word bytes=storage_bits>>3;
-    float bytes_float=0.0f;
+void account(Word width,Word height,volatile NativeRuntimeTextureCreationArguments& arguments,
+    NativeRuntimeTextureCreationContext& c) noexcept {
+    const Word storage_bits=native_format_storage_bits_00b21210(arguments.format);
+    volatile Word* const format_cell=&arguments.format;
+    volatile Word* const flags_cell=&arguments.flags;
     const volatile float* const unsigned_fix=&c.unsigned_dword_fix_00ce3978;
     const volatile double* const counter_fix=&c.unsigned_counter_fix_00d57da0;
     volatile Word* const counter=&c.allocation_bytes_0108d4bc;
-    if(storage_bits) {
-        __asm {
-            mov eax,bytes
-            test eax,eax
-            fild dword ptr bytes
-            jns converted_bytes
-            mov edx,unsigned_fix
-            fadd dword ptr [edx]
-        converted_bytes:
-            fstp dword ptr bytes_float
-        }
-    }
-    Word area=width*height;
-    unsigned short saved,truncating;
     __int64 converted;
+    // Genuine MSVC x86 machine accesses to the SAME live DWORD call cells.
+    // FSTP/FNSTCW change their byte representations; no float/WORD C++ lvalue
+    // aliases are formed. FNSTCW preserves format's current upper two bytes.
     __asm {
-        mov eax,area
+        mov edi,format_cell
+        mov esi,flags_cell
+        mov eax,storage_bits
         test eax,eax
-        fild dword ptr area
-        jns converted_area
+        jne nonzero_storage
+        xorps xmm0,xmm0
+        movss dword ptr [edi],xmm0
+        jmp converted_bytes
+    nonzero_storage:
+        shr eax,3
+        test eax,eax
+        mov [edi],eax
+        fild dword ptr [edi]
+        jge converted_nonzero_bytes
+        mov edx,unsigned_fix
+        fadd dword ptr [edx]
+    converted_nonzero_bytes:
+        fstp dword ptr [edi]
+    converted_bytes:
+        mov eax,width
+        imul eax,height
+        test eax,eax
+        mov [esi],eax
+        fild dword ptr [esi]
+        jge converted_area
         mov edx,unsigned_fix
         fadd dword ptr [edx]
     converted_area:
         mov ecx,counter
         mov eax,[ecx]
-        fmul dword ptr bytes_float
+        fmul dword ptr [edi]
         test eax,eax
         fild dword ptr [ecx]
-        jns converted_counter
+        jge converted_counter
         mov edx,counter_fix
         fadd qword ptr [edx]
     converted_counter:
-        fnstcw saved
-        movzx eax,saved
+        fnstcw word ptr [edi]
+        movzx eax,word ptr [edi]
         faddp st(1),st(0)
         or eax,0c00h
-        mov truncating,ax
-        fldcw truncating
+        mov [esi],eax
+        fldcw word ptr [esi]
         fistp qword ptr converted
         mov eax,dword ptr converted
         mov [ecx],eax
-        fldcw saved
+        fldcw word ptr [edi]
     }
 }
 void append(void* renderer,void* owner) {
@@ -218,12 +236,12 @@ void* construct_native_runtime_texture_2d_00b3f7b0(void* owner,
 }
 
 void* create_native_runtime_texture_2d_00b2a070(void* renderer,
-    const volatile NativeRuntimeTextureCreationArguments& arguments,
+    volatile NativeRuntimeTextureCreationArguments& arguments,
     NativeRuntimeTextureCreationContext& c,NativeRuntimeTextureCreationAcquired& a) {
     if(a.phase!=NativeRuntimeTextureCreationAcquired::Phase::fresh)
         throw std::invalid_argument("runtime texture factory frame must be fresh");
     a.phase=NativeRuntimeTextureCreationAcquired::Phase::running;
-    FactoryCleanup cleanup{c,a};
+    FactoryCleanup cleanup{c,arguments,a};
         if(c.synchronization.mode_00!=0) {
             a.guard.renderer_04=renderer;
             a.guard.entered_00=enter_native_renderer_optional_guard_00b33ad0(renderer,c.synchronization);
@@ -240,29 +258,30 @@ void* create_native_runtime_texture_2d_00b2a070(void* renderer,
         if((flags&0xff000000u)==0x01000000u)usage|=0x400;
         void* device=pointer(word(at(renderer,0x1a10)));
         const Word levels=arguments.levels,height=arguments.height,width=arguments.width;
-        a.com_output=nullptr;
+        static_cast<IDirect3DTexture9* volatile&>(a.com_output)=nullptr;
         const auto create=method<Create>(device,0x5c);
-        a.create_result=create(device,width,height,levels,usage,static_cast<D3DFORMAT>(arguments.format),
-            static_cast<D3DPOOL>(word(&a.native_pool_slot)),const_cast<IDirect3DTexture9**>(&a.com_output),nullptr);
-        if(!a.com_output && a.create_result!=0 && static_cast<Word>(a.create_result)!=0x8876017cu
+        a.create_result=create(device,width,height,levels,usage,arguments.format,
+            word(&a.native_pool_slot),&a.com_output,nullptr);
+        if(!static_cast<IDirect3DTexture9* volatile&>(a.com_output) && a.create_result!=0 && static_cast<Word>(a.create_result)!=0x8876017cu
             && static_cast<Word>(a.create_result)!=0x8007000eu) {
             if(!c.recreation)throw std::invalid_argument("runtime texture reached unbound actual B29670 recreation domain");
             recreate_native_renderer_device_00b29670(renderer,*c.recreation);
             device=pointer(word(at(renderer,0x1a10)));
             a.create_result=method<Create>(device,0x5c)(device,width,height,levels,usage,
-                static_cast<D3DFORMAT>(arguments.format),static_cast<D3DPOOL>(word(&a.native_pool_slot)),
-                const_cast<IDirect3DTexture9**>(&a.com_output),nullptr);
+                arguments.format,word(&a.native_pool_slot),
+                &a.com_output,nullptr);
         }
-        void* const captured=a.com_output;if(captured)pair(captured);
-        a.raw_slot=allocate_d3d9_texture2d_slot_00b3f2b0();a.unwind_state=1;
+        void* const captured=static_cast<IDirect3DTexture9* volatile&>(a.com_output);if(captured)pair(captured);
+        a.raw_slot=allocate_d3d9_texture2d_slot_00b3f2b0();
+        arguments.levels=reinterpret_cast<Word>(a.raw_slot);a.unwind_state=1;
         a.phase=NativeRuntimeTextureCreationAcquired::Phase::constructing;
-        a.owner=a.raw_slot?construct_native_runtime_texture_2d_00b3f7b0(a.raw_slot,a.com_output,
+        a.owner=a.raw_slot?construct_native_runtime_texture_2d_00b3f7b0(a.raw_slot,static_cast<IDirect3DTexture9* volatile&>(a.com_output),
             width,height,arguments.flags,c.construction,a.construction):nullptr;
         a.unwind_state=0;
-        if((flags&0x10u)!=0)account(width,height,arguments.format,c);
+        if((flags&0x10u)!=0)account(width,height,arguments,c);
         append(renderer,a.owner);
-        void* const before_pair=a.com_output;if(before_pair)pair(before_pair);
-        void* const current=a.com_output;(void)method<ComWord>(current,8)(current);
+        void* const before_pair=static_cast<IDirect3DTexture9* volatile&>(a.com_output);if(before_pair)pair(before_pair);
+        void* const current=static_cast<IDirect3DTexture9* volatile&>(a.com_output);(void)method<ComWord>(current,8)(current);
         const auto exit_mode=c.synchronization.mode_00;a.unwind_state=-1;
         if(exit_mode!=0)leave_native_renderer_optional_guard_00b33b00(a.guard.renderer_04,word(&a.guard),c.synchronization);
         a.phase=NativeRuntimeTextureCreationAcquired::Phase::complete;return a.owner;

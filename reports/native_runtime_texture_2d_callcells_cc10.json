@@ -1,0 +1,349 @@
+{
+  "packet": "cc10_runtime_texture_2d_callcells",
+  "address": "00b2a070",
+  "baseline": "4a092057bed9d8d28a5a7155ca236daf1a0cdcc9",
+  "status": "source-and-compiled-correction; no runtime",
+  "functions": [],
+  "calls": [],
+  "native_byte_credit": 0,
+  "ledger_mutations": 0,
+  "owned_production_files": [
+    "include/bsp/native_runtime_texture_creation.hpp",
+    "src/native_runtime_texture_creation.cpp"
+  ],
+  "source_pins": [
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/include/bsp/native_runtime_texture_creation.hpp",
+      "bytes": 4907,
+      "sha256": "ea8010b2b83c0c50a42647ec443e1e7c08846567cc6ffb2fd71511409033d80c"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/src/native_runtime_texture_creation.cpp",
+      "bytes": 14129,
+      "sha256": "df1037d5f1f3d75e68976fc998ef59d6e559dd9731588f1bc00f36bd8622183a"
+    }
+  ],
+  "exact_applied_proposal": {
+    "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_runtime_texture_2d_callcell_implementation/applied.diff",
+    "bytes": 12136,
+    "sha256": "9475167f381dc702b59bfc1027115e491fc3028c936914067c8d623932aee30e"
+  },
+  "native": {
+    "original_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "body": {
+      "start": "00b2a070",
+      "end_exclusive": "00b2a361",
+      "bytes": 753,
+      "instructions": 237,
+      "RET": "14h"
+    },
+    "accounting": {
+      "start": "00b2a231",
+      "end_exclusive": "00b2a2ca",
+      "bytes": 153,
+      "instructions": 39
+    },
+    "continuation": {
+      "start": "00b2a2ca",
+      "end_exclusive": "00b2a361",
+      "bytes": 151,
+      "instructions": 52
+    },
+    "credit": "existing body only; no new standalone native account function or duplicate credit"
+  },
+  "corrections": [
+    "Raw DWORD format/pool COM signature; four enum casts removed, all bit patterns preserved at admitted genuine MSVC x86 stdcall boundary.",
+    "Five live mutable DWORD arguments; levels receives allocated slot bits before state1. Cleanup consumes state before fresh current levels load, not captured raw_slot.",
+    "One actual nonvolatile typed COM output object, initialized null once and passed directly to both Create calls; current observations use volatile views.",
+    "Accounting writes full format/flags scratch representations, preserves low16 saved CW store, two counter reads, low-DWORD publication then saved-CW restoration."
+  ],
+  "caller_rebuild": {
+    "actual_call_relocations": 5,
+    "objects": [
+      {
+        "member": "native_runtime_texture_creation.obj",
+        "actual_build_object": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-field-values\\build\\win32\\bsp_core.dir\\Release\\native_runtime_texture_creation.obj",
+        "modified_UTC": "2026-09-26T14:14:47.549306+00:00",
+        "within_single_authorized_build": true
+      },
+      {
+        "member": "native_render_texture_surface_owner.obj",
+        "actual_build_object": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-field-values\\build\\win32\\bsp_core.dir\\Release\\native_render_texture_surface_owner.obj",
+        "modified_UTC": "2026-09-26T14:14:47.564225+00:00",
+        "within_single_authorized_build": true
+      },
+      {
+        "member": "native_luminance_owner.obj",
+        "actual_build_object": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-field-values\\build\\win32\\bsp_core.dir\\Release\\native_luminance_owner.obj",
+        "modified_UTC": "2026-09-26T14:14:44.114710+00:00",
+        "within_single_authorized_build": true
+      },
+      {
+        "member": "native_render_resource_init_continuation.obj",
+        "actual_build_object": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-field-values\\build\\win32\\bsp_core.dir\\Release\\native_render_resource_init_continuation.obj",
+        "modified_UTC": "2026-09-26T14:14:44.294034+00:00",
+        "within_single_authorized_build": true
+      },
+      {
+        "member": "native_shadow_depth_target_owner.obj",
+        "actual_build_object": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-field-values\\build\\win32\\bsp_core.dir\\Release\\native_shadow_depth_target_owner.obj",
+        "modified_UTC": "2026-09-26T14:14:47.526442+00:00",
+        "within_single_authorized_build": true
+      }
+    ],
+    "source_edits": 0,
+    "mutable_reference_decorated_symbol": "?create_native_runtime_texture_2d_00b2a070@bsp@@YAPAXPAXACUNativeRuntimeTextureCreationArguments@1@AAUNativeRuntimeTextureCreationContext@1@AAUNativeRuntimeTextureCreationAcquired@1@@Z",
+    "post_call_argument_fields": "current five callsites do not reread overwritten members; retained public diagnostics and later callbacks may observe them"
+  },
+  "compiled": {
+    "old_new_objects": 14,
+    "physical_sections": 1650,
+    "code_sections": 934,
+    "code_bytes": 77670,
+    "all_section_relocations": 2966,
+    "rp0_qualification": "declared storage with zero physical raw bytes, no synthetic header slice or initialized-data claim",
+    "old_AR_entries": 1787,
+    "new_AR_entries": 1788,
+    "exact_object_AR_members": 14,
+    "libraries": {
+      "old_library": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_runtime_texture_2d_callcell_implementation/old/held/0275_bsp_core.lib",
+        "bytes": 71349058,
+        "sha256": "a0360ededbed9692f2fc35f7c892055109337b5e5df0799a32cd7d97ba15dc7c"
+      },
+      "new_library": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_runtime_texture_2d_callcell_implementation/new/bsp_core.lib",
+        "bytes": 71366704,
+        "sha256": "603f087267b160a3b5d1cb55e5aca47ddda0bcdd5ea33233ff731bbcad1e7b82"
+      }
+    },
+    "factory_bytes": 1223,
+    "factory_funclet_bytes": 42,
+    "standalone_account_bytes": 169,
+    "whole_cleanup_normal_filter_continuation_bytes": 190,
+    "factory_account_inlined": true,
+    "factory_FP_operations": 13,
+    "normal_CFG_instructions": 417,
+    "factory_jump_CMOV_events": 34,
+    "COM_calls": 2,
+    "COM_argument_bytes_each": 36,
+    "same_actual_typed_output_cell": true,
+    "factory_selected_in_actual_map": false,
+    "standalone_account_selected": false,
+    "selected_PE": "I386 PE32 embeddedmanifest; whole-section linked byte correspondence and exact relocation resolution. Only actual member-origin subset is selection; shared/folded standard COMDATs do not select factory member.",
+    "unique_linked_byte_correspondence_ranges": 117,
+    "unique_linked_code_correspondence_ranges": 55,
+    "matched_rows": 268,
+    "actual_member_origin_rows": 57,
+    "shared_or_folded_other_origin_rows": 211,
+    "unique_actual_member_origin_sections": 57,
+    "unique_actual_member_origin_code_sections": 42,
+    "old_object_AR_members": 1784,
+    "new_object_AR_members": 1785
+  },
+  "unchanged": {
+    "status": "PASS",
+    "account_bytes": 169,
+    "factory_bytes": 1223,
+    "cleanup_whole_bytes": 190,
+    "five_callers_consistent": true,
+    "common_code_sections": 467,
+    "unchanged_sections": 455,
+    "unchanged_bytes": 29149,
+    "unrelated_main_deltas_qualification": "old build ca9; new build4a092 includes startup/cache/volume integrations; raw changed sections not automatically attributed to owned source",
+    "unchanged_required_prefixes": [
+      "?construct_native_runtime_texture_2d_00b3f7b0@",
+      "?construct_native_logical_texture_unnamed_00b33fc0@",
+      "?append@",
+      "?pair@",
+      "?unwind_constructor@",
+      "??1ConstructorCleanup@"
+    ],
+    "unchanged_pool_texture_owner_code": true
+  },
+  "compiler_lowering_qualifications": [
+    "Create method body33B unchanged despite enum-to-DWORD signature decoration",
+    "Four caller bodies retain bytes with five mutable factory relocation substitutions",
+    "Unchanged-source luminance cancel/reset lower four adjacent zero DWORD stores into a16-byte store and move independent stores;811->800/866->855B, quiescence required",
+    "Historical old ca9 library predates disjoint main4a092 integrations; unrelated library changes are not credited to this packet"
+  ],
+  "build": {
+    "UTC_start": "2026-09-26T14:14:26.939100+00:00",
+    "UTC_end": "2026-09-26T14:14:57.256209+00:00",
+    "command": {
+      "argv": [
+        "pwsh",
+        "-NoProfile",
+        "-File",
+        "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-field-values\\scripts\\build.ps1",
+        "-Configuration",
+        "Release"
+      ],
+      "cwd": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values",
+      "strict": "MSVC Win32 /W4 /WX /fp:strict; existing3CTest; verify actual command records afterward"
+    },
+    "exit_code": 0,
+    "all_three_CTests_pass": true,
+    "new_tracked_tests": 0,
+    "runtime_cases": 0,
+    "source_and_prebuild_inputs_content_unchanged": true
+  },
+  "sealing": {
+    "prebuild_UTC": "2026-09-26T14:14:11.263678+00:00",
+    "presealed_inputs": 4239,
+    "presealed_tools": 29,
+    "actual_include_postcollection_UTC": "2026-09-26T14:16:37.363652+00:00",
+    "actual_include_pins": 387,
+    "postbuild_only_include_pins": 0,
+    "preserved_old_held_inputs": 406,
+    "copies_verified_before_FF": true,
+    "prior_archives": [
+      {
+        "rows": 65,
+        "archive": {
+          "original": {
+            "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_runtime_texture_2d_raw_bits_readiness/evidence.zip",
+            "bytes": 1655723,
+            "sha256": "c10385e4d5202d6227424eaa471c032d04b1967a9b81df157fa2fb2c465ce42f"
+          },
+          "stored": {
+            "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_runtime_texture_2d_callcell_implementation/inputs/cc10_runtime_texture_2d_raw_bits_readiness.zip",
+            "bytes": 1655723,
+            "sha256": "c10385e4d5202d6227424eaa471c032d04b1967a9b81df157fa2fb2c465ce42f"
+          }
+        },
+        "index": {
+          "original": {
+            "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_runtime_texture_2d_raw_bits_readiness/artifact_index.json",
+            "bytes": 10609,
+            "sha256": "1d3a7734670e1816c5f5d2c1af198cffe619069b1641b31b743230a179dd3e48"
+          },
+          "stored": {
+            "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_runtime_texture_2d_callcell_implementation/inputs/cc10_runtime_texture_2d_raw_bits_readiness_index.json",
+            "bytes": 10609,
+            "sha256": "1d3a7734670e1816c5f5d2c1af198cffe619069b1641b31b743230a179dd3e48"
+          }
+        }
+      },
+      {
+        "rows": 57,
+        "archive": {
+          "original": {
+            "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_runtime_texture_2d_combined_proposal/evidence.zip",
+            "bytes": 1796750,
+            "sha256": "b3f1a53b7b1036ab5ba2ff52e88bfc33d285e41241c19809b8891f575e16bd05"
+          },
+          "stored": {
+            "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_runtime_texture_2d_callcell_implementation/inputs/cc10_runtime_texture_2d_combined_proposal.zip",
+            "bytes": 1796750,
+            "sha256": "b3f1a53b7b1036ab5ba2ff52e88bfc33d285e41241c19809b8891f575e16bd05"
+          }
+        },
+        "index": {
+          "original": {
+            "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_runtime_texture_2d_combined_proposal/artifact_index.json",
+            "bytes": 9503,
+            "sha256": "a22da2114da2870c4ceb509862be529b6ca78b601ad51c57672ab6d7fde25238"
+          },
+          "stored": {
+            "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_runtime_texture_2d_callcell_implementation/inputs/cc10_runtime_texture_2d_combined_proposal_index.json",
+            "bytes": 9503,
+            "sha256": "a22da2114da2870c4ceb509862be529b6ca78b601ad51c57672ab6d7fde25238"
+          }
+        }
+      },
+      {
+        "rows": 49,
+        "archive": {
+          "original": {
+            "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_runtime_texture_2d_accounting_callcells_proposal/evidence.zip",
+            "bytes": 1903569,
+            "sha256": "4a63ebf09d28bef4a0af79fb0d7c203175db2351d2b70ba798fa36e094342ef0"
+          },
+          "stored": {
+            "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_runtime_texture_2d_callcell_implementation/inputs/cc10_runtime_texture_2d_accounting_callcells_proposal.zip",
+            "bytes": 1903569,
+            "sha256": "4a63ebf09d28bef4a0af79fb0d7c203175db2351d2b70ba798fa36e094342ef0"
+          }
+        },
+        "index": {
+          "original": {
+            "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_runtime_texture_2d_accounting_callcells_proposal/artifact_index.json",
+            "bytes": 7872,
+            "sha256": "a3e45fed1e4faa8be29b1e4ebbed1a30bf5c77b0238238fec220ad65e630e029"
+          },
+          "stored": {
+            "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_runtime_texture_2d_callcell_implementation/inputs/cc10_runtime_texture_2d_accounting_callcells_proposal_index.json",
+            "bytes": 7872,
+            "sha256": "a3e45fed1e4faa8be29b1e4ebbed1a30bf5c77b0238238fec220ad65e630e029"
+          }
+        }
+      },
+      {
+        "rows": 17,
+        "archive": {
+          "original": {
+            "path": "J:/PROG/battlestations-pacific-decompile-cc10-render-init-post/local/cc10_runtime_texture_2d_combined_independent_review/evidence.zip",
+            "bytes": 3681355,
+            "sha256": "9cdcc1cd2bb0a6065f140dfbaf12eebbdd08074a333fb9143f9631427bc91924"
+          },
+          "stored": {
+            "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_runtime_texture_2d_callcell_implementation/inputs/cc10_runtime_texture_2d_combined_independent_review.zip",
+            "bytes": 3681355,
+            "sha256": "9cdcc1cd2bb0a6065f140dfbaf12eebbdd08074a333fb9143f9631427bc91924"
+          }
+        },
+        "index": {
+          "original": {
+            "path": "J:/PROG/battlestations-pacific-decompile-cc10-render-init-post/local/cc10_runtime_texture_2d_combined_independent_review/artifact_index.json",
+            "bytes": 2591,
+            "sha256": "facfd85f3f4ab6f5893833d168780d6ed2c1250de5e865d5d79d8eb9c14ad981"
+          },
+          "stored": {
+            "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_runtime_texture_2d_callcell_implementation/inputs/cc10_runtime_texture_2d_combined_independent_review_index.json",
+            "bytes": 2591,
+            "sha256": "facfd85f3f4ab6f5893833d168780d6ed2c1250de5e865d5d79d8eb9c14ad981"
+          }
+        }
+      }
+    ],
+    "historical_old_HEAD": "ca9bc937751dcdb06d60d3bcc308168a31726827",
+    "no_additional_build_for_inspection": true
+  },
+  "ordering_admission": [
+    "Current table target is captured before pool/format call operands; native pool then format precede target. C++ operand evaluation and emitted ordering are explicitly qualified.",
+    "Append emits fresh data before count; native count before data. Source increments count before current COM output read; native output capture precedes count RMW.",
+    "Equal-value reasoning is restricted to ordinary actual disjoint retained host cells and genuine renderer/COM/vector backing, quiescent accesses and no callbacks within adjacent clusters. No overlapping backing, every volatile observation, async mutation or fault-position parity."
+  ],
+  "failure_and_lifetime_limits": [
+    "No activation/runtime/newtests/nativeABI/privateFH3/foreign-nonlocal/hardware-fault/asynchronous/fullfactory-schedule claim.",
+    "Diagnostic control fields implementation-owned; native arguments/current backing callback mutable. Original source exception cleanup/filter and residuals unchanged; no invented rollback/retain/binding.",
+    "B33FC0 actual count placement already existed. B3F7B0 raw descriptor/preimages/string/header/pointer lvalue/ignored HRESULT admissions and complete owner retirement remain unmodified.",
+    "Real native COM function ABI is nonportable and is not ISO function-type compatibility with arbitrary SDK-enum C++ stand-ins.",
+    "No source0/W, platform/MSG/Lua/originalgame/fullstartup closure."
+  ],
+  "evidence": {
+    "folder": "local/cc10_runtime_texture_2d_callcell_implementation",
+    "archive": "local/cc10_runtime_texture_2d_callcell_implementation/evidence.zip",
+    "index": "local/cc10_runtime_texture_2d_callcell_implementation/artifact_index.json",
+    "schemas": {
+      "raw_decoder": "compiled_code.json",
+      "full_AR_and_exact_members": "members.json",
+      "complete_factory_CFG_events": "emitted_factory_schedule.json",
+      "standalone_account_and_cleanup": "compiled_schedule.json",
+      "emission_limits": "emission_qualifications.json",
+      "all_section_COMDAT_compare": "code_comparison.json",
+      "selected_whole_linked_sections": "linked_selection.json",
+      "prebuild_pins": "before_build.json",
+      "actual_includes": "actual_includes_postbuild.json",
+      "compiler_commands": "compiler_commands.json",
+      "actual_build_receipts": [
+        "build_launch_tool_result.json",
+        "build_poll01_tool_result.json",
+        "build_result.json"
+      ],
+      "physical_COFF": "compiled_sections.json"
+    },
+    "inspection_failures": "preserved link_attempt01..04 and schedule_attempt01; collector corrections only, source/build unchanged"
+  }
+}
