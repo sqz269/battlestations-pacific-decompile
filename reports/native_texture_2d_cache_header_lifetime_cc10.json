@@ -1,0 +1,89 @@
+{
+  "packet": "cc10_texture_2d_cache_header_lifetime_documentation",
+  "status": "pooled_trivial_header_source_lifetime_contract_verified_no_production_change",
+  "readiness_source_head": "5fa82a28b158e4024f9ea608414babf6bb9060f8",
+  "document": "docs/NATIVE_TEXTURE_2D_CACHE_HEADER_LIFETIME_CC10.md",
+  "source": "src/native_texture_2d_owner.cpp",
+  "header": "include/bsp/native_texture_2d_owner.hpp",
+  "native_range": {
+    "entry": "00b3f930",
+    "end_inclusive": "00b3fa80",
+    "bytes": 337,
+    "instructions": 120,
+    "installed_PE_Ghidra_identical": true,
+    "new_native_credit": 0,
+    "original_abi": "ECX raw owner; stack name/COM/saved width/saved height/flags; EAX owner; RET14h",
+    "source_abi": "existing ordinary explicit C++ interface; no binary ABI claim",
+    "header_stores": [
+      {"site": "00b3f978", "offset": "40", "value": 0},
+      {"site": "00b3f97b", "offset": "44", "value": 0},
+      {"site": "00b3f97e", "offset": "48", "value": 0}
+    ]
+  },
+  "lifetime_contract": {
+    "object": "trivial aggregate NativeTextureSurfaceCacheStorage, 12 bytes at owner+40..+4B",
+    "entry_layout": "trivial 8-byte mip/surface-owner aggregate; current scalar consumers do not supply new typed entry ownership proof",
+    "actual_creation": "std::malloc -> D3D9Texture2DPool initialize_slab_00b3d1e0 placement SlabBytes -> nested std::byte array lifetime; implicit object creation under documented P0593 defect support",
+    "actual_initialization": "original raw zeros at B3F978/97B/97E; no moved or duplicate initialization",
+    "extent_alignment": "malloc fundamental alignment; 54h slot stride; +40 header; +4C source; +50 slab index untouched",
+    "typed_borrowers": ["native_texture_2d_owner.cpp cache/unwind/terminal", "native_texture_surface_getter.cpp B3FD80 reserve", "native_texture_surface_cache_storage.cpp B3D9B0/B3DA20/B3EC40", "native_runtime_texture_creation.cpp B3F7B0 cleanup dependency"],
+    "reuse": "B3EC40 is semantic storage teardown and never invokes the C++ header destructor; header persists in the live slab across raw slot reuse",
+    "array_retirement": "entry free/reallocation ends old backing lifetimes; captured entries require live backing through reached post-callback stores",
+    "external_callers": "other buffers/images/mappings require their own live aligned header/extent/exclusive-access admission; casts and launder do not start lifetime",
+    "separate_count": "named/unnamed +4 atomic producer correction not supplied or inferred by this header conclusion",
+    "separate_exclusion": "flags1 slot return precedes canonical unbind/Entry retirement; outer exclusion/quiescence remains required",
+    "failure": "existing state0/1/2 cleanup and retained backing/input obligations remain; no replay/reset/cleanup addition or native private EH guarantee"
+  },
+  "language_evidence": {
+    "compiler": "MSVC 14.51.36231 HostX86/x86, Win32 C++17",
+    "target_feature": "CMakeLists.txt:222 cxx_std_17",
+    "primary_urls": [
+      "https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2020/p0593r6.html",
+      "https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2020/p2131r0.html",
+      "https://learn.microsoft.com/en-us/cpp/overview/visual-cpp-language-conformance?view=msvc-170"
+    ],
+    "Cplusplus17_defect_status": "P2131R0 Unlisted papers explicitly lists P0593R6 among accepted defect resolutions against C++17",
+    "compiler_support": "MSVC table reports Yes without C++20-only annotation; application to this source path is a documented source-model inference",
+    "atomic_classification": {
+      "qualified_actual_type": "installed MSVC14.51 Win32 std::atomic<int32_t> under /std:c++17 and _HAS_CXX20=0",
+      "default_constructible": true,
+      "trivially_default_constructible": false,
+      "trivially_destructible": true,
+      "trivially_copy_constructible": false,
+      "trivially_move_constructible": false,
+      "aggregate": false,
+      "storage4_trivially_default_constructible": true,
+      "size": 4,
+      "alignment": 4,
+      "always_lock_free": true,
+      "conclusion": "this actual type is not implicit-lifetime; do not generalize from copying/value-constructor facts alone",
+      "scope": "one primary-authorized compile-only traits object after readonly freeze; no executable/link/runtime or production rebuild",
+      "evidence": "local/cc10_texture_2d_cache_header_lifetime_documentation/atomic_cpp17_traits.json"
+    },
+    "isolated_traits_compiler_invocations": 1,
+    "new_language_feature_runtime_experiment": false
+  },
+  "evidence": {
+    "folder": "local/cc10_texture_2d_cache_header_lifetime_readiness",
+    "archive_sha256": "7a5ee622af26eeb3106f5b27926a47bfecb77033f6dad440d14fa42c0658b7a5",
+    "index_sha256": "51b6c7c6b17ca2459f6c2e659c4fe664dda5a400df8fa2cfeab45f3470617317",
+    "rows": 33,
+    "members": 34,
+    "schema": "index.json list of path, bytes, sha256; ZIP adds index as one member",
+    "complete_native": "B3F930_complete.bin/.txt and native_complete.json",
+    "source_pins": 14,
+    "preserved_prior_archives": 48,
+    "preserved_descriptor_outputs": 4
+  },
+  "validation": {
+    "production_changes": 0,
+    "new_builds": 0,
+    "isolated_compile_only_traits_objects": 1,
+    "new_tests": 0,
+    "test_execution": false,
+    "runtime": false,
+    "Ghidra_or_ledger_mutation": false,
+    "full_consumer_graph_or_game_proof": false,
+    "native_credit": 0
+  }
+}
