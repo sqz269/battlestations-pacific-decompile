@@ -46,6 +46,7 @@
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_observer_runtime.hpp"
 #include "bsp/game_hosts_lua.hpp"
+#include "bsp/gunnery_tables.hpp"  // GunneryCategory, packet cc9_plane_device_walk
 #include "bsp/game_hosts_ai.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/game_hosts_script_orders.hpp"
@@ -932,6 +933,18 @@ struct GameUnitSlot {
     // unit+C25h, the byte 007C0EE2 raises before it calls the issuer, and the
     // issue path's own bookkeeping. docs/TORPEDO_RELEASE_ORDERS.md.
     bool torpedo_release_pending_c25{false};
+    // Packet cc9_plane_device_walk. The weapon controller's device list
+    // (unit+974h, count unit+994h) holds every child answering IsKindOf(25h):
+    // MBombPlatform (25h, `Type` "BombPlatform") and MMultipleBombPlatform
+    // (26h, "MultiBombPlatform"). Only a single rack can answer busy
+    // (006E3CD0 reads its +498h; 006E4360 is XOR AL,AL), and +498h is set by
+    // the fire slot 006E3550 and cleared only by the constructor 006E3C00.
+    bool rack_census_done{false};
+    int rack_single_count{0};
+    int rack_multi_count{0};
+    int rack_single_fired{0};          // racks whose +498h is set
+    int rack_device_walks{0};          // 007CEB00 walks (cleanup arm only)
+    int rack_device_walks_busy{0};
     int torpedo_orders_issued{0};
     int torpedo_orders_issue_ticks{0};
     int torpedo_peak_release_orders_c58{0};
@@ -3151,6 +3164,11 @@ struct GameUnitsHost::Impl {
     static constexpr bool kDogfightHeadOnVelocityBound = true;
     // 007CE9FD's release-issue predicates: session mode, +C3Ah, +5Dh, BombDelay.
     static constexpr bool kPlaneFixedStepPredicatesBound = true;
+    // Packet cc9_plane_device_walk, docs/PLANE_DEVICE_WALK.md: 007CEB00-007CEB1D,
+    // the cleanup arm's walk over the rack list asking vtable[1FCh], and the
+    // busy byte the fire slot vtable[1F0h] (006E3550) raises at 007C0E17.
+    // OFF: the walk stays the record Plane::device_busy_1fc and nothing is busy.
+    static constexpr bool kPlaneDeviceWalkBound = false;
     // Packet cc9_plane_death_modes: 007CA8A0's death mode, 007CAF10's dead-step
     // terms, the kill that takes the aircraft out of the world, and the release
     // refusal of a dead aircraft (007CEA1C). docs/PLANE_DEATH_MODES.md.
@@ -13136,10 +13154,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         in.step_seconds = dt;
                         in.issue_requests_c20 = unit_.torpedo_issue_requests_c20;
                         in.release_pending_c25 = unit_.torpedo_release_pending_c25;
-                        // 007CEB00: the element's device walk. contract: unread,
-                        // so no device ever holds the cleanup off.
-                        owner_.log.unimplemented("Plane::device_busy_1fc", "007ceb00");
-                        in.any_device_busy_1fc = false;
+                        // 007CEB00: the element's device walk.
+                        if constexpr (GameUnitsHost::Impl::kPlaneDeviceWalkBound) {
+                            in.any_device_busy_1fc = plane_device_walk_007ceb00();
+                        } else {
+                            // contract: unread, so no device ever holds the
+                            // cleanup off.
+                            owner_.log.unimplemented("Plane::device_busy_1fc", "007ceb00");
+                            in.any_device_busy_1fc = false;
+                        }
                         // 007CEAB3 BSP_Random_UniformFloatRange(1, 0.9, 1.1).
                         // The host's deterministic draw takes the low end, the
                         // same convention random_between already uses here.
@@ -13179,6 +13202,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             case bsp::PlaneReleaseIssueStageArm::kCleanup:
                             case bsp::PlaneReleaseIssueStageArm::kCleanupBlocked:
                                 ++unit_.torpedo_issue_stage_cleanups;
+                                if constexpr (GameUnitsHost::Impl::kPlaneDeviceWalkBound) {
+                                    // The walk runs only here in the image
+                                    // (007CEAF6-007CEB1D, after the park).
+                                    ++unit_.rack_device_walks;
+                                    if (r.arm == bsp::PlaneReleaseIssueStageArm::kCleanupBlocked) {
+                                        ++unit_.rack_device_walks_busy;
+                                    }
+                                    owner_.done("Plane::device_busy_1fc", 0x007ceb00u);
+                                }
                                 break;
                             default:
                                 ++unit_.torpedo_issue_stage_waiting;
@@ -13188,12 +13220,58 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         run_release_order_issue_007c0d90();
                     }
 
+                    // Packet cc9_plane_device_walk: the rack census, once per unit.
+                    // A plane's racks are its BSPGun platforms whose Function is
+                    // BOMBPLATFORM; `Type` "BombPlatform" is MBombPlatform (25h),
+                    // "MultiBombPlatform" MMultipleBombPlatform (26h). The mapping
+                    // from `Type` to the constructed class is the device factory's
+                    // and is ASSUMED here (docs/PLANE_DEVICE_WALK.md).
+                    void plane_rack_census() {
+                        if (unit_.rack_census_done) return;
+                        unit_.rack_census_done = true;
+                        const int type_id = unit_.row.type_id;
+                        const int platforms =
+                            owner_.lua.read_vehicle_class_integer(type_id, "BSPGun", "n", 0);
+                        for (int p = 1; p <= platforms && p <= 64; ++p) {
+                            char key[32];
+                            std::snprintf(key, sizeof(key), "p%d_cat", p);
+                            const int cat = owner_.lua.read_vehicle_class_integer(
+                                type_id, "BSPGun", key, -1);
+                            if (cat != static_cast<int>(bsp::GunneryCategory::kBombPlatform)) continue;
+                            std::snprintf(key, sizeof(key), "p%d_dev", p);
+                            const int dev = owner_.lua.read_vehicle_class_integer(
+                                type_id, "BSPGun", key, -1);
+                            const std::string type = dev >= 0
+                                ? owner_.lua.read_device_class_string(dev, "Type") : std::string();
+                            if (type == "BombPlatform") ++unit_.rack_single_count;
+                            else if (type == "MultiBombPlatform") ++unit_.rack_multi_count;
+                        }
+                    }
+
+                    // 007CEB00-007CEB1D: for each rack, vtable[1FCh]; one true
+                    // abandons the clear. 006E3CD0 answers +498h, 006E4360 false.
+                    bool plane_device_walk_007ceb00() {
+                        plane_rack_census();
+                        return unit_.rack_single_fired > 0;
+                    }
+
                     void run_release_order_issue_007c0d90() {
                         TorpedoReleaseOrderBinding binding(owner_, unit_);
                         const bsp::ReleaseOrderIssueResult r =
                             bsp::torpedo_issue_release_orders_007c0d90(binding);
                         unit_.torpedo_issue_gate_open = r.gate_passed;
                         if (!r.walk_found_device) return;
+                        if constexpr (GameUnitsHost::Impl::kPlaneDeviceWalkBound) {
+                            // 007C0E17: the rack found is fired through vtable[1F0h]
+                            // = 006E3550, which sets its +498h. SUBSTITUTION,
+                            // labelled: the host keeps no per-rack child list, so
+                            // the rack fired is taken to be a single one while any
+                            // single rack is unfired (list order unread).
+                            plane_rack_census();
+                            if (unit_.rack_single_fired < unit_.rack_single_count) {
+                                ++unit_.rack_single_fired;
+                            }
+                        }
                         ++unit_.torpedo_orders_issue_ticks;
                         unit_.torpedo_orders_issued += r.units_raised;
                     }
@@ -18022,6 +18100,14 @@ void GameUnitsHost::report() {
                         slot->torpedo_release_requests_007bbba0,
                         slot->torpedo_issue_requests_c20,
                         static_cast<double>(slot->torpedo_issue_interval_c28));
+                    if constexpr (GameUnitsHost::Impl::kPlaneDeviceWalkBound) {
+                        host.log.notef("  torpedo %-12s device walk 007CEB00: single=%d multi=%d "
+                            "fired=%d walks=%d busy=%d C25h=%d", slot->row.name.c_str(),
+                            slot->rack_single_count, slot->rack_multi_count,
+                            slot->rack_single_fired, slot->rack_device_walks,
+                            slot->rack_device_walks_busy,
+                            slot->torpedo_release_pending_c25 ? 1 : 0);
+                    }
                     host.log.notef("  torpedo %-12s issue gate 007EEF40: "
                         "ctl+390h=%.4f ctl+374h=%.4f open=%d",
                         slot->row.name.c_str(),
