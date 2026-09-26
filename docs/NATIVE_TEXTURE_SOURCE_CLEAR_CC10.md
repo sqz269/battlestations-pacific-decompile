@@ -16,8 +16,12 @@ children decrement their actual+4 once and dispatch CURRENT slot0 only at
 zero, with the captured child receiver and no stack flags argument. After
 normal return, clear the captured slot; increment with DWORD wrapping and
 reload count. Finally call typed737390(header,0), then write actual+1C=0 only
-after it returns. No per-child count decrement, array free, selected/rate reset,
-base/profile store or owner count operation was added. Data/capacity stay stale.
+after it returns. No per-child count decrement, direct leaf array free,
+selected/rate reset, base/profile store or owner count operation was added.
+Data/capacity stay stale on the ordinary nonnegative-capacity resize-to-zero
+path. Existing typed737390 can reserve(header,0) when current signed capacity
+is negative, retaining its allocation/copy/free/publication behavior. No new
+capacity guard or normalization is introduced.
 
 The caller must supply the separate live NativeTextureSourcePayload genuinely
 placed at actual+8 by C30470, its already-live nested header, and reached live

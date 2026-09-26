@@ -41,8 +41,13 @@
     "one actual+4 decrement and zero-only CURRENT slot0, no flags supplied by clear",
     "clear captured slot after normal terminal return, DWORD index increment, fresh count",
     "typed737390 requested0, then initialized+1C0 only after return",
-    "no per-child count decrement, array free, selected/rate/profile/base/owner count changes"
+    "no per-child count decrement, direct leaf array free, selected/rate/profile/base/owner count changes; existing typed resize/reserve effects remain"
   ],
+  "resize_zero_capacity_behavior": {
+    "ordinary_nonnegative_signed_capacity": "data/capacity remain unchanged",
+    "negative_current_signed_capacity": "existing typed737390 can reserve(header,0), retaining existing allocation/copy/free/publication schedule",
+    "new_capacity_guard_or_normalization": false
+  },
   "failure_contract": {
     "one_shot_host_metadata": "fresh/running/complete/failed/diagnostic_retired; never native owner metadata or ownership credit",
     "source_catch": "markfailed and rethrow only; no cleanup/rollback/retry/resume",
