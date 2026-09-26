@@ -1,0 +1,458 @@
+{
+  "packet": "cc10_vertex_declaration_name_composition",
+  "status": "strict_win32_compiled_existing_provider_fixture_attempted_installed_dll_host_image_failure_before_declaration_calls",
+  "baseline": "7a6025ddbd7cc062cf6444427cffe21022aaaa4a",
+  "production_cpp_changes": false,
+  "tracked_tests_added": 0,
+  "owned_addresses": [
+    "00b317e0",
+    "00b305f0",
+    "00b2dbd0"
+  ],
+  "source": "src/native_vertex_declaration_cache.cpp",
+  "documentation": "docs/NATIVE_VERTEX_DECLARATION_NAME_COMPOSITION_CC10.md",
+  "ghidra": {
+    "project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "worker_mutations": false
+  },
+  "functions": [
+    {
+      "address": "00b305f0",
+      "length": 1351,
+      "end_exclusive": "00b30b37"
+    },
+    {
+      "address": "00b317e0",
+      "length": 193,
+      "end_exclusive": "00b318a1"
+    },
+    {
+      "address": "00b2dbd0",
+      "length": 3435,
+      "end_exclusive": "00b2e93b"
+    }
+  ],
+  "build": {
+    "strict_win32": true,
+    "existing_ctests": 3,
+    "passed": 3,
+    "standalone_flags": "/MD /O2 /W4 /WX /fp:strict /permissive- /MANIFEST:EMBED; NDEBUG rejected",
+    "compiled_evidence": {
+      "path": "local/cc10_vertex_declaration_name_probe_diagnostic/compiled_evidence.json",
+      "size": 696590,
+      "sha256": "8b2fed01c61877ae313fa06d8eef3fc04d6a31267344bf7a41c50dda78223aa4"
+    },
+    "selected_members": 523,
+    "archived_game_members": 72,
+    "selected_game_members": 35,
+    "selected_member_object_equal": true,
+    "compiled_functions": 5
+  },
+  "attempt1": {
+    "run": {
+      "utc_start": "2026-09-26T06:45:38.685578+00:00",
+      "argv": [
+        "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-field-values\\local\\cc10_vertex_declaration_name_probe\\vertex-declaration-name-probe.exe"
+      ],
+      "cwd": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-field-values",
+      "parent_pid": 75944,
+      "parent_exit": 3221225477,
+      "timed_out": false,
+      "child_pid": 22420,
+      "child_exit": 3221225477,
+      "run_input_count": 1432,
+      "inputs_unchanged": true
+    },
+    "closure": {
+      "utc": "2026-09-26T06:45:39.6825626Z",
+      "process_name": "vertex-declaration-name-probe.exe",
+      "remaining_count": 0,
+      "processes": []
+    },
+    "runtime_success": false,
+    "localization_only": "after genuine VFS receipt; before DLL-loaded receipt",
+    "dll_empty_log_addendum": {
+      "path": "local/cc10_vertex_declaration_name_probe/attempt1_dll_bsp_debug.log",
+      "size": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "addendum_note": "Discovered after attempt1 ZIP freeze, not a member of that immutable ZIP."
+  },
+  "diagnostic": {
+    "run": {
+      "utc_start": "2026-09-26T06:50:36.120705+00:00",
+      "parent_pid": 83952,
+      "parent_exit": 3221225477,
+      "child_pid": 32324,
+      "child_exit": 3221225477,
+      "timed_out": false,
+      "run_input_count": 1444,
+      "inputs_unchanged": true
+    },
+    "closure": {
+      "utc": "2026-09-26T06:50:37.0432938Z",
+      "process_name": "vertex-declaration-name-diagnostic-probe.exe",
+      "remaining_count": 0,
+      "processes": []
+    },
+    "runtime_success": false,
+    "controller_exit0_is_capture_only": true,
+    "fault_count": 27,
+    "first_fault": "C0000005 address=573b9049 eip=573b9049 access=00000001 target=10640f5e allocation=570a0000 type=01000000 protection=00000020 module=I:\\SteamLibrary\\steamapps\\common\\Battlestations Pacific\\xlive.dll",
+    "all_faults": {
+      "path": "local/cc10_vertex_declaration_name_probe_diagnostic/diagnostic_fault.log",
+      "size": 4410,
+      "sha256": "23a461dd39530cfab6f8935fd8bf2eac56f2f8bbde59bbda004a0971edfbcf28"
+    },
+    "static_evidence": {
+      "path": "local/cc10_vertex_declaration_name_probe_diagnostic/first_fault_static_evidence.json",
+      "size": 11077,
+      "sha256": "91a3787adead260d2bac75c4fbb6a367c080ab7e3c581c3572d1b3d907af84d9"
+    },
+    "exception_disposition": "all logger paths CONTINUE_SEARCH; no context changes or fault-target reads",
+    "later_ntdll_faults_cause": "unassigned"
+  },
+  "reached": {
+    "vfs_constructor": "genuine BE1DC0, six real sentinels and six original canonicalizer probes",
+    "pool_getters": 12,
+    "pool_returns": 12,
+    "lowercase_calls": 39,
+    "registered_singletons": 2,
+    "dll_load_attempted": true,
+    "dll_constructor_returned": false,
+    "declaration_functions_reached": false,
+    "cache_hit_or_miss_completed": false,
+    "owner_allocated": false,
+    "canonical_reference_counts_observed": false,
+    "token_tables_initialized": false,
+    "token_crt_callbacks_completed": false,
+    "declaration_pool_crt_retirement_completed": false,
+    "vfs_explicit_retirement_completed": false,
+    "manager_final_drain_completed": false,
+    "ordinal5030_executed": false,
+    "message_pump_executed": false
+  },
+  "dll_requirement": {
+    "selected": {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/xlive.dll",
+      "size": 3833856,
+      "sha256": "71b50b3e91b5e17603f1d8fd44f1fc1da53c305f191dd126fb5059e5d3c841b2",
+      "preferred_base": "10000000",
+      "loaded_base": "570a0000",
+      "fault_rva": "00319049"
+    },
+    "fault_instruction": {
+      "address": "10319049",
+      "rva": "00319049",
+      "hex": "8917",
+      "text": "mov dword ptr [edi], edx"
+    },
+    "target": {
+      "address": "10640f5e",
+      "probe_base": "10000000",
+      "relative_to_probe": "00640f5e",
+      "probe_size_of_image": "000a6000",
+      "within_probe_image": false,
+      "original_base": "00400000",
+      "original_size": "00e2f000",
+      "corresponding_original_address": "00a40f5e"
+    },
+    "static_host_base_cell": "GetModuleHandleA(NULL) ->104D8450; add640F5E then copy5",
+    "copy_thunk": {
+      "rva": "00154fd1",
+      "hex": "e96a3b1c00",
+      "text": "jmp 0x10318b40"
+    },
+    "supported_dependency_configuration_identified": false,
+    "dependency_limit": "Optional absolute dependency DLLs do not provide bytes at an offset of the main executable image; limited inspected config evidence does not establish a disable-host-patch option.",
+    "no_fallback_or_patch": true
+  },
+  "artifacts": {
+    "immutable_archives": [
+      {
+        "path": "local/cc10_vertex_declaration_name_readiness_evidence.zip",
+        "size": 7544471,
+        "sha256": "340c82c646db8d029f24b048b2318e0896cbe6cad7779712093b4eccb9be238d"
+      },
+      {
+        "path": "local/cc10_vertex_declaration_name_failed_link_attempt1.zip",
+        "size": 15179222,
+        "sha256": "f8ed19708135374307aa62ad49670cb5b5ab2e47d734bf172281e04b211dc26f"
+      },
+      {
+        "path": "local/cc10_vertex_declaration_name_failed_package_preflight1.zip",
+        "size": 3805785,
+        "sha256": "1c94b6de282a9ec7dfffa4789ec3156c6fe606f1061ac0ccfd7a8ce89790a7fc"
+      },
+      {
+        "path": "local/cc10_vertex_declaration_name_unexecuted_path_revision.zip",
+        "size": 683387,
+        "sha256": "90875a91132ac5b441910a75e09c70396f849d8c14a909489fdd2534125e32af"
+      },
+      {
+        "path": "local/cc10_vertex_declaration_name_failed_runtime_attempt1.zip",
+        "size": 32746098,
+        "sha256": "b90cc8604261ba82110315f62b303360a24c733a96e4c6fd6de215f5802981e7"
+      },
+      {
+        "path": "local/cc10_vertex_declaration_name_diagnostic_attempt_evidence.zip",
+        "size": 32967003,
+        "sha256": "3f718ce76d8935d6de163f2486732b03826c71021489431bb1569c5429003078"
+      }
+    ],
+    "attempt1_inputs": {
+      "path": "local/cc10_vertex_declaration_name_probe/before_run_inputs.json",
+      "size": 272157,
+      "sha256": "e1676b71fd32a0fee2332a76f74969e9015fedae85588ba87ca36a1e0904d762"
+    },
+    "diagnostic_inputs": {
+      "path": "local/cc10_vertex_declaration_name_probe_diagnostic/before_run_inputs.json",
+      "size": 274397,
+      "sha256": "cd5977e8ad5a27fe329146f61f7f072a87579d5a70bbe06e3e9318c9fb78089f"
+    },
+    "linked_members": {
+      "path": "local/cc10_vertex_declaration_name_probe_diagnostic/compiled_evidence.json",
+      "size": 696590,
+      "sha256": "8b2fed01c61877ae313fa06d8eef3fc04d6a31267344bf7a41c50dda78223aa4"
+    }
+  },
+  "prior_26_archives_unchanged": {
+    "local/cc10_field_values_evidence.zip": "a749dbf4656596e6a4e0c11ecb320a02bfe62dcba5fa3654c2744aa2a3022153",
+    "local/cc10_widget_transform_evidence.zip": "0d90499f71be2a3cc99ad732deaa8a71a5b55546da4dbaa7ee708c364bae45f8",
+    "local/cc10_widget_property_prefix_evidence.zip": "181ebe9358fe2d7ea6832b8051a0b3fd6f830a0360f3ef390626403ba7cbfcdf",
+    "local/cc10_gui_page_default_evidence.zip": "a224fc79f56861715059ff9717fcdad40893be00d26697a230b64ceafced5c8b",
+    "local/cc10_gui_group_pool_evidence.zip": "c7aa87452ab19400fe950d3a4c3a4a146c94715f4080f463dc2de1740df37853",
+    "local/cc10_gui_group_factory_evidence.zip": "d22d364ce3b5cf7833d8ad1998cd5c14cbf792abc34634e2df1421949e42f34f",
+    "local/cc10_gui_camera_store_map_evidence.zip": "625a751eab1f2416e7b0fa5876b921106cf0a246c0b8ca5ce97ca3e9d1586c54",
+    "local/cc10_scene_registry_storage_evidence.zip": "7219d8cbbdab960d3d2b49076f79b13854aa582faa0edb23c8a7fc286cebd6a9",
+    "local/cc10_scene_resource_storage_evidence.zip": "d989b85db55805c8b173e40c95e9322586ec4146e3ad0e504c316bf48364ed51",
+    "local/cc10_gui_scene_fields_evidence.zip": "8158076968340fd863b7e86018def420eabcae87ab0939f90085d79a1751a1af",
+    "local/cc10_scene_registry_vector_mutation_evidence.zip": "90b9d70c3b735e1274c2c0d2e333f5e88e860aee7155ea9ac6ef18e105aaed6b",
+    "local/cc10_scene_registry_registration_evidence.zip": "663ec13309abdaf992b22c321c66817230852066d76e5ccd0b663c3a783e05cf",
+    "local/cc10_node_scene_attachment_evidence.zip": "c45c8248fe0434426648b48b7c8e473f94b057f5ff1098088c34762dbc3d8f04",
+    "local/cc10_node_tree_retirement_evidence.zip": "b9720c00ba0e29c222ae2d41fb5fd2820e305039c673e61cea0ee22d3a2a2e13",
+    "local/cc10_node_base_destruction_evidence.zip": "2f4f970317032085f851a2331dd3e4bf6f02b3722e5e44a668153000e2b13dbf",
+    "local/cc10_camera_storage_lifetime_evidence.zip": "9eb1ac2cbde243e6c4d2d1d10fca263eda2e43aed2527964986875f2217c3936",
+    "local/cc10_camera_raw_world_edit_evidence.zip": "f80fd83057ef325506bbe1d0a06046e765dd8e32b2f10148c67d497af0971d9c",
+    "local/cc10_camera_pose_storage_evidence.zip": "d294c281a6475c33b4b779d9857e2a7f06b75948df45618c12b70112649bfeac",
+    "local/cc10_camera_storage_construct_evidence.zip": "ebf1bca43bf5bbe75beae65ec707845a2219d745bda58fd91588455278fbf357",
+    "local/cc10_distortion_storage_lifetime_evidence.zip": "71843fd98d2d4bb1e13633393487fc99617c1456458cd2354139c57a2d1a286c",
+    "local/cc10_render_texture_surface_argument_view_evidence.zip": "0754170a6ce2d6042e644beef0a62f82e07c8642afe3a6315c18fb967493034e",
+    "local/cc10_gui_scene_argument_view_evidence.zip": "8c061ccbec187f7b3796187bd7369c95eeaddabf27d1122c3795f77be52abaf5",
+    "local/cc10_post_effect_argument_view_evidence.zip": "df95be9b3469c09684e9a0463af73f49900dbda6de6de8304197e711e7ed7acf",
+    "local/cc10_material_raw_header_hot_evidence.zip": "f92217d232ae09b84455c88ca28722d848afcc00c6c89619e25fd02ca985ca45",
+    "local/cc10_dynamic_vertex_owner_composition_evidence.zip": "61d5f5d8db8920430f8271e6662c135a29e0464b09b7b4e8a6b9d7f548527e1f",
+    "local/cc10_vertex_declaration_atomic_lifetime_evidence.zip": "309c034c0607e4063cecb2bd75e29c8af6237513ad772248d1da1983d3de323b"
+  },
+  "frozen_prior_files_unchanged": {
+    "local/cc10_dynamic_vertex_owner_probe/build.log": {
+      "size": 2708,
+      "sha256": "26a1ac92b0fc7cd9bad7a9ec9548a0ed5a50762bb78a8d3df3fa071080728ea0"
+    },
+    "local/cc10_dynamic_vertex_owner_probe/child_probe.log": {
+      "size": 1169,
+      "sha256": "377e16629fc704ee811ba0afa85bb3f2c9c9f99a373f664dbdd033a2e06aa062"
+    },
+    "local/cc10_dynamic_vertex_owner_probe/collect.py": {
+      "size": 10641,
+      "sha256": "a67a369f03f61c439ddd2f9eced360944b48d6843d5a7e613544899c69c3e96c"
+    },
+    "local/cc10_dynamic_vertex_owner_probe/compile.cmd": {
+      "size": 678,
+      "sha256": "fb72dbb8db6090c38948710d39263f1d7f881da28f3fbfbbcabf8ce0229a28aa"
+    },
+    "local/cc10_dynamic_vertex_owner_probe/compile.log": {
+      "size": 11,
+      "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+    },
+    "local/cc10_dynamic_vertex_owner_probe/d3d_scaffold.txt": {
+      "size": 1917,
+      "sha256": "d0382138ee3348721155788700b32e985c5f6e3f021b2e906ddfa458457b6000"
+    },
+    "local/cc10_dynamic_vertex_owner_probe/dynamic-vertex-owner-probe.exe": {
+      "size": 287744,
+      "sha256": "73bcce84bb89b3e5cb2453d415a4b0dce3a6a7f186d79b9b0ddf2a40305889e9"
+    },
+    "local/cc10_dynamic_vertex_owner_probe/freeze.py": {
+      "size": 4951,
+      "sha256": "34dc016dcc4d0b2bada0a4fd258d46d49a19c08b1ec3af2804bf8d4bcb164daa"
+    },
+    "local/cc10_dynamic_vertex_owner_probe/inputs.json": {
+      "size": 13269,
+      "sha256": "8c9e9e7de0f08e082b0b7888a184dca49d30193b18340b6f7675c89e07dd3510"
+    },
+    "local/cc10_dynamic_vertex_owner_probe/manifest.json": {
+      "size": 14643,
+      "sha256": "4cb23edf62271f68fed69ed852c812e479e96372e691fa91c98f0d6cf09dba05"
+    },
+    "local/cc10_dynamic_vertex_owner_probe/native_bytes.txt": {
+      "size": 1131,
+      "sha256": "3b1a626a0b3f2ea7fca2ed1f10517e31dc03fef2f1340edabe84415b2a7aea4e"
+    },
+    "local/cc10_dynamic_vertex_owner_probe/native_evidence.json": {
+      "size": 10591,
+      "sha256": "2e98bb323d3fa08ad7b046521af6d0cc7b29335dc9a7248d4327fb58a66cc3b9"
+    },
+    "local/cc10_dynamic_vertex_owner_probe/probe.cpp": {
+      "size": 15543,
+      "sha256": "4d9efbd513813883a5c72769d8ac8ce097eb5f86766af9e76d7035fdab488bc7"
+    },
+    "local/cc10_dynamic_vertex_owner_probe/probe.map": {
+      "size": 437009,
+      "sha256": "1905b37b374dc134dc74851bd432dee39fecdb0c0a8b7a0e7e1de30231687237"
+    },
+    "local/cc10_dynamic_vertex_owner_probe/probe.obj": {
+      "size": 244589,
+      "sha256": "6332ea44611c5882b0b9492d5844c0a32ee36895fbabb0cc50324c1ec3fc6fc8"
+    },
+    "local/cc10_dynamic_vertex_owner_probe/process_closure.json": {
+      "size": 145,
+      "sha256": "54f00a1e9cd476722ec230f072adf653531a7ec0289d7c9e920b6d1df5026cb1"
+    },
+    "local/cc10_dynamic_vertex_owner_probe/run.json": {
+      "size": 2243,
+      "sha256": "ce3761377946ba7fa4a85dab765c0c437d47a51da40e02cae02733c8327f658e"
+    },
+    "local/cc10_dynamic_vertex_owner_probe/run.log": {
+      "size": 1215,
+      "sha256": "332c2f9601d863a12515d3028b7d108206b12be742692c754752784b27bd6148"
+    },
+    "local/cc10_dynamic_vertex_owner_probe/scaffold.diff": {
+      "size": 45792,
+      "sha256": "1a602863058fd85c2d88c75f9e8bfdb2434ce5b7350afcfe9c862fd85ee77a94"
+    },
+    "local/cc10_dynamic_vertex_owner_readiness/collect.py": {
+      "size": 6904,
+      "sha256": "ac86d0a59163ae120ab83f47cab86ffbfe0796f2f97eccbf481c3d02b70be20f"
+    },
+    "local/cc10_dynamic_vertex_owner_readiness/evidence.json": {
+      "size": 115140,
+      "sha256": "c84a90190b3e7d30e1e2ce100aeec1a42897aeb120260ffee54fa1a22ad80c26"
+    },
+    "local/cc10_dynamic_vertex_owner_readiness/README.md": {
+      "size": 9878,
+      "sha256": "7e556d2abc01f30102cdc3205d3b2b0851598aac7ff0779970f95db7768f0ac1"
+    },
+    "local/cc10_vertex_declaration_atomic_probe/build.log": {
+      "size": 4677,
+      "sha256": "98d5f70fd4509d8536a2a53557bc8b11c56ae52192f2ca13cfb415af39929b46"
+    },
+    "local/cc10_vertex_declaration_atomic_probe/child_probe.log": {
+      "size": 1250,
+      "sha256": "e1bc407141507afe513d0c1f3dfbe2c75440618c02b6355af85849c8ad646982"
+    },
+    "local/cc10_vertex_declaration_atomic_probe/compile.cmd": {
+      "size": 698,
+      "sha256": "d7570da4d7da0bb81773c72edc51a0954f9ee2f22ce6bf5e07104bfe554de244"
+    },
+    "local/cc10_vertex_declaration_atomic_probe/compile.log": {
+      "size": 11,
+      "sha256": "25d4f66c7c01d5b35c220cb97ffdd1608405f4ab45160497e6cc7ea3079676cf"
+    },
+    "local/cc10_vertex_declaration_atomic_probe/compiled_constructor.txt": {
+      "size": 2644,
+      "sha256": "cd7aa2c8b878ffae270302365036774233ee6ccdf328fdc215cc98b3fad69d84"
+    },
+    "local/cc10_vertex_declaration_atomic_probe/compiled_evidence.json": {
+      "size": 12306,
+      "sha256": "c48fd37819cec670bfcd764b90467057385d2ebe93dd97ca67209cd1d29c81d0"
+    },
+    "local/cc10_vertex_declaration_atomic_probe/compiled_object.txt": {
+      "size": 97202,
+      "sha256": "65f8930e817ac713ddf872a3026c14f92b1780dd6143b3f7c8ca1e890d3e4cb4"
+    },
+    "local/cc10_vertex_declaration_atomic_probe/compile_configuration.json": {
+      "size": 1671,
+      "sha256": "fd11e3c9fa844a47fe8c9ae4bc2a70e7d9e3dd6a3639dea72e4600bc40631725"
+    },
+    "local/cc10_vertex_declaration_atomic_probe/create_revision.py": {
+      "size": 3439,
+      "sha256": "aca107c0a462a27b5a1f0a512727f6970fc2a360476555c6643807dee2c7c507"
+    },
+    "local/cc10_vertex_declaration_atomic_probe/freeze.py": {
+      "size": 3963,
+      "sha256": "aa65f8fc94acb9836545ff0f95eee64975f502b88d647fb19588362a1655bbb3"
+    },
+    "local/cc10_vertex_declaration_atomic_probe/inputs.json": {
+      "size": 7997,
+      "sha256": "77600718084c76d020412a5fcb09a306535b504ee4b9101fc2e66df013ed6f8d"
+    },
+    "local/cc10_vertex_declaration_atomic_probe/inspect_evidence.py": {
+      "size": 5761,
+      "sha256": "4a62a35bdd77fabfa5edcb627b351b4ef15b73d668b0566bdc4adf37cc5c6935"
+    },
+    "local/cc10_vertex_declaration_atomic_probe/ledger_record.json": {
+      "size": 1077,
+      "sha256": "3089c2f70d8c7d556028344ebc7c70aa6297e39c8933237191f41b06812005d9"
+    },
+    "local/cc10_vertex_declaration_atomic_probe/manifest.json": {
+      "size": 18180,
+      "sha256": "a736887fb514906ca1a216973345d85773c329a56d8b2054a7724bf58e5ff64c"
+    },
+    "local/cc10_vertex_declaration_atomic_probe/native_00b48af0.txt": {
+      "size": 576,
+      "sha256": "5a0885cd5c2d9237ac3ec1b1c13a5793e9c87b6ed95ca42783bf8b4232979c54"
+    },
+    "local/cc10_vertex_declaration_atomic_probe/native_00cbf710.txt": {
+      "size": 140,
+      "sha256": "d6f7a880c09bf66b51a6da1903dae7016166c2295aed635a59ede06ace0f9dd1"
+    },
+    "local/cc10_vertex_declaration_atomic_probe/native_evidence.json": {
+      "size": 7283,
+      "sha256": "0e4c32afe8dd4d277af1f0fecddee6b97138e88d6ff5818dc10f28c2a521ed30"
+    },
+    "local/cc10_vertex_declaration_atomic_probe/preserved_prior_files.json": {
+      "size": 3775,
+      "sha256": "3657873507f26f5188d3c5ce9d48dfa99e65348e66c8cc06f1b79445cd714786"
+    },
+    "local/cc10_vertex_declaration_atomic_probe/probe.cpp": {
+      "size": 15545,
+      "sha256": "6f74fe44617d56dd7788979c85150f5bcbb978633a97e3871112ca371c989ed6"
+    },
+    "local/cc10_vertex_declaration_atomic_probe/probe.map": {
+      "size": 437014,
+      "sha256": "ad6dc61a0ff2ad9977b6a23d125f26640e7ff0531ceea95b6f5673ddee1d5b29"
+    },
+    "local/cc10_vertex_declaration_atomic_probe/probe.obj": {
+      "size": 244090,
+      "sha256": "458de51cf881f0a0f17dcdddcd5edd519ba4bd233d09636fc132c2f3cae76789"
+    },
+    "local/cc10_vertex_declaration_atomic_probe/process_closure.json": {
+      "size": 144,
+      "sha256": "9e43404bdd4bcc8de453f56d22080f68ed726e8ca902690e976bdee96e20d229"
+    },
+    "local/cc10_vertex_declaration_atomic_probe/production.diff": {
+      "size": 2683,
+      "sha256": "e8e385e33f714e0cb69835f1e9ec5edfb96c630901f348591df98fb08bcd482d"
+    },
+    "local/cc10_vertex_declaration_atomic_probe/run.json": {
+      "size": 3140,
+      "sha256": "b5171698ea6510aa73c23f6efc0f7480716862bd72ac2f1a543820d71ff72335"
+    },
+    "local/cc10_vertex_declaration_atomic_probe/run.log": {
+      "size": 1296,
+      "sha256": "7dafe2ec43e3073447eccf603933864ec824c432063b862b4387351448c9ce4b"
+    },
+    "local/cc10_vertex_declaration_atomic_probe/run_once.py": {
+      "size": 3834,
+      "sha256": "d2fee5b5f5f539c111f9a785a7c7fdad4687355205ee78e5b9038c439ffaf17e"
+    },
+    "local/cc10_vertex_declaration_atomic_probe/vertex-declaration-atomic-probe.exe": {
+      "size": 288256,
+      "sha256": "b1796ff719decd4faedc4dbe41f2cc7397ad35742d41c022c74b74a73a78f3d6"
+    },
+    "local/cc10_vertex_declaration_atomic_probe/write_report.py": {
+      "size": 7973,
+      "sha256": "c4e35ead61aad6faaffcf0f61359e4edfdb669381c510fb9b5a0344e88f0ad46"
+    }
+  },
+  "limits": [
+    "No successful B317E0/B305F0/B2DBD0 composition",
+    "No cache/date/actual-count/token-CRT/manager-drain proof from these attempts",
+    "C++ compilation is not native register/stack/FH3/private-frame ABI proof",
+    "Later ntdll faults preserved without causal interpretation",
+    "Invalid/null row, changed-name scan, filesystem mounts, full B4E470/source0/startup/draw/gameplay excluded",
+    "No original-game launch, module patch, dummy main-host bytes, installed config change or system DLL fallback"
+  ]
+}
