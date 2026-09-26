@@ -233,6 +233,12 @@ inline constexpr bool kShipAiTurnClearanceBound = true;
 // recorded false here. False: the partial path torpedo_override_009de8f1
 // (sections 1 and 3..6), as before.
 inline constexpr bool kShipAiArmFinalWholeBound = true;
+// Packet cc9_ship_ai_tails_2 (b), docs/SHIP_AI_TAILS.md section 8. 009EE59F
+// JZ 009EF206: with the path gate closed the image itself jumps past the tail
+// 009EEAAB..009EF205 to the arm-final call at 009EF206..009EF213. True: that
+// path counts as `done` under its own row (the gate jump), not as the tail's
+// record. False: the tail's record, as before. No behaviour either way.
+inline constexpr bool kShipAiNavTailGateBookkeeping = false;
 inline constexpr float kTorpedoCollectTimer2 = 2.0f;
 // Packet cc9_station_keeping, docs/STATION_KEEPING.md. True: the follow update's
 // station request 009DA3B0 is stored (blk+38Ch..+3A6h, including blk+39Ch = 0
@@ -6649,7 +6655,11 @@ public:
         // left in the record. A closed gate leaves through 009EE59F JZ 009EF206
         // and reaches neither.
         if (!result.entered) {
-            owner_.record("ShipAi::navigation_arm_tail", 0x009eeaabu);
+            if constexpr (kShipAiNavTailGateBookkeeping) {
+                owner_.done("ShipAi::navigation_gate_closed_009ee59f", 0x009ee59fu);
+            } else {
+                owner_.record("ShipAi::navigation_arm_tail", 0x009eeaabu);
+            }
             return false;
         }
         bsp::ShipAiNavWaypoint waypoint{};
