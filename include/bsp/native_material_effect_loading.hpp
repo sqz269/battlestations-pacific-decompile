@@ -9,6 +9,25 @@ class NativeMaterialEffectProgramOperation;
 struct NativeMaterialEffectCacheContext;
 struct NativeTextureCacheContext;
 struct NativeTextureCacheAcquired;
+struct NativeVfsNameResolutionContext;
+class NativeVfsNameResolutionAcquired;
+
+// One concrete numeric BDF4C0 invocation. Attach its acquired frame before
+// capturing the current manager; never replace or replay an interrupted call.
+// Saved header/buffer identities are diagnostics after native string cleanup,
+// not readable ownership. This metadata introduces no native object/count.
+struct NativeMaterialEffectNameResolutionCall final {
+    NativeMaterialEffectNameResolutionCall();
+    ~NativeMaterialEffectNameResolutionCall();
+    NativeMaterialEffectNameResolutionCall(const NativeMaterialEffectNameResolutionCall&) = delete;
+    NativeMaterialEffectNameResolutionCall& operator=(const NativeMaterialEffectNameResolutionCall&) = delete;
+    std::unique_ptr<NativeVfsNameResolutionAcquired> acquired;
+    void* manager{};
+    void* name{};
+    bool frame_creation_started{}, started{}, returned{}, failed{}, result{};
+    bool invoke(void* actual_mutable_header, void* const volatile& current_manager,
+        NativeVfsNameResolutionContext&);
+};
 
 enum class NativeMaterialEffectLoadPhase {
     not_started, names, resolution, allocation, constructor, programs,
@@ -37,6 +56,9 @@ struct NativeMaterialEffectLoadAcquired final {
     // its allocation here with their retained frame; success performs the
     // native reverse local cleanup. This is not native FH3 exception parity.
     NativeString resolved_name;
+    // Declared after the stable header so completed resolver metadata ends
+    // first. Failed outer/inner frames must remain alive; no recovery is added.
+    NativeMaterialEffectNameResolutionCall name_resolution;
     bool resolved_name_retained{};
     // On completed registration this SAME frame transfers to the canonical
     // effect record, surviving descriptor current0 callbacks during teardown.
@@ -84,10 +106,21 @@ struct NativeMaterialEffectLoadingContext {
     // Required at the found-path constructor arm. SAME renderer/string and
     // canonical texture owner domain. No callable-table substitute is supplied.
     NativeTextureCacheContext* texture_cache{};
+    // Exactly one provider: this numeric domain OR the explicit callback above.
+    // Numeric selection requires resolution_context=null. Configure under
+    // external quiescence; contexts/cells outlive every retained invocation.
+    NativeVfsNameResolutionContext* numeric_name_resolution{};
 };
 
+// Explicit callback interface retained for existing providers. Numeric mode is
+// rejected here because this overload has no retained invocation frame.
 bool resolve_native_material_effect_name(void* actual_mutable_name,
     NativeMaterialEffectLoadingContext&);
+// Same actual stable resolved8h header; numeric mode owns a distinct resolver
+// frame in this load before its current-manager capture. Numeric failures
+// propagate without callback fallback. No name cleanup/retain is added.
+bool resolve_native_material_effect_name(void* actual_mutable_name,
+    NativeMaterialEffectLoadingContext&, NativeMaterialEffectLoadAcquired&);
 // Full B18F70: ECX actual effect; stack native name; RET4. Identity skips;
 // otherwise resize actual+B8 then copy using live source/destination headers.
 void set_native_material_effect_name_00b18f70(NativeMaterialEffectBaseStorage&,

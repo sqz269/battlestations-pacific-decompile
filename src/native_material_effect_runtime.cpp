@@ -8,6 +8,8 @@
 #include "bsp/native_material_state_cache.hpp"
 #include "bsp/native_material_program_compiler.hpp"
 #include "bsp/native_texture_loading_cache.hpp"
+#include "bsp/native_material_effect_loading.hpp"
+#include "bsp/native_vfs_open_logging.hpp"
 #include <exception>
 #include <stdexcept>
 
@@ -75,6 +77,18 @@ void bind_native_texture_vfs_name_resolution(NativeTextureLoadingContext& textur
         throw std::invalid_argument("texture resolver requires the same actual pool and VFS publication");
     textures.resolution_context = &names;
     textures.make_resolution_operation = &make_texture_name_operation;
+}
+void bind_native_material_effect_vfs_name_resolution(NativeMaterialEffectLoadingContext& effects,
+    NativeVfsNameResolutionContext& names) {
+    if (&effects.construction.strings != &names.device.lookup.physical.strings ||
+        &effects.programs.strings != &names.device.lookup.physical.strings ||
+        &effects.current_vfs_0109ceec != &names.device.lookup.physical.manager_0109ceec ||
+        names.device.lookup.device != &names.device ||
+        &names.logging.strings != &names.device.lookup.physical.strings)
+        throw std::invalid_argument("effect resolver requires the same actual pool and VFS publication");
+    effects.resolve_existing_name_00bdf4c0 = nullptr;
+    effects.resolution_context = nullptr;
+    effects.numeric_name_resolution = &names;
 }
 
 NativeMaterialEffectNativeChildren::NativeMaterialEffectNativeChildren(

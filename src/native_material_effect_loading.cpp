@@ -6,6 +6,10 @@
 #include "bsp/native_particle_type_property.hpp"
 #include "bsp/native_instance_collection.hpp"
 #include "bsp/native_physical_file_date.hpp"
+#include "bsp/native_vfs_name_resolution.hpp"
+#include "bsp/native_vfs_device_route.hpp"
+#include "bsp/native_vfs_lookup_routes.hpp"
+#include "bsp/native_vfs_open_logging.hpp"
 #include <cstring>
 #include <exception>
 #include <list>
@@ -72,10 +76,36 @@ ActualNativeStringPoolStorage& require_domain(NativeMaterialEffectLoadingContext
         &c.programs.lifetime.retained_owners == &c.owners.actual_owners() &&
         &c.programs.current_renderer_00f8d394 == &c.construction.current_renderer_00f8d394 &&
         &c.programs.current_vfs_0109ceec == &c.current_vfs_0109ceec &&
-        c.resolve_existing_name_00bdf4c0,
+        ((c.numeric_name_resolution != nullptr) != (c.resolve_existing_name_00bdf4c0 != nullptr)),
         "effect loading requires its same actual string/cache/owner/resolution domains");
     return *strings;
 }
+}
+
+NativeMaterialEffectNameResolutionCall::NativeMaterialEffectNameResolutionCall() = default;
+NativeMaterialEffectNameResolutionCall::~NativeMaterialEffectNameResolutionCall() = default;
+bool NativeMaterialEffectNameResolutionCall::invoke(void* header,
+    void* const volatile& current_manager, NativeVfsNameResolutionContext& context) {
+    require(!acquired && !frame_creation_started && !started && !failed,
+        "effect name resolution child cannot replay");
+    require(header && &current_manager == &context.device.lookup.physical.manager_0109ceec &&
+        context.device.lookup.device == &context.device &&
+        &context.device.lookup.physical.strings == &context.logging.strings,
+        "effect resolver requires its same actual header, VFS publication and string domain");
+    frame_creation_started = true;
+    try {
+        acquired = std::make_unique<NativeVfsNameResolutionAcquired>();
+        // Publish first, then capture CURRENT manager at the native call site.
+        manager = current_manager;
+        name = header;
+        started = true;
+        result = resolve_native_vfs_existing_name_00bdf4c0(manager, name, context, *acquired);
+        returned = true;
+        return result;
+    } catch (...) {
+        failed = true;
+        throw;
+    }
 }
 
 NativeMaterialEffectLoadAcquired::NativeMaterialEffectLoadAcquired() = default;
@@ -152,10 +182,22 @@ void NativeMaterialEffectLoadOwners::register_completed_creator(NativeMaterialEf
 }
 
 bool resolve_native_material_effect_name(void* name, NativeMaterialEffectLoadingContext& c) {
-    require(c.resolve_existing_name_00bdf4c0,
-        "effect name resolution requires the actual mutable-manager BDF4C0 body");
+    require(c.resolve_existing_name_00bdf4c0 && !c.numeric_name_resolution,
+        "unretained effect name resolution requires an explicitly selected callback");
     void* const manager = c.current_vfs_0109ceec;
     return c.resolve_existing_name_00bdf4c0(c.resolution_context, manager, name);
+}
+bool resolve_native_material_effect_name(void* name, NativeMaterialEffectLoadingContext& c,
+    NativeMaterialEffectLoadAcquired& a) {
+    require((c.numeric_name_resolution != nullptr) != (c.resolve_existing_name_00bdf4c0 != nullptr),
+        "effect name resolution requires exactly one explicit provider");
+    if (!c.numeric_name_resolution) return resolve_native_material_effect_name(name, c);
+    auto& numeric = *c.numeric_name_resolution;
+    require(!c.resolution_context && name == &a.resolved_name &&
+        &c.construction.strings == &numeric.device.lookup.physical.strings &&
+        &c.programs.strings == &numeric.device.lookup.physical.strings,
+        "numeric effect resolution requires its retained header and same pooled strings");
+    return a.name_resolution.invoke(name, c.current_vfs_0109ceec, numeric);
 }
 void set_native_material_effect_name_00b18f70(NativeMaterialEffectBaseStorage& effect,
     const void* name, NativeStringStorage& strings) {
@@ -166,7 +208,8 @@ void* load_native_material_effect_00b2ebb0(const void* name, std::uint32_t ignor
     NativeMaterialEffectLoadingContext& c, NativeMaterialEffectLoadAcquired& a) {
     (void)ignored;
     require(a.phase == NativeMaterialEffectLoadPhase::not_started && !a.creator &&
-        !a.raw_slot && !a.programs && !a.fallback && !a.constructor_texture,
+        !a.raw_slot && !a.programs && !a.fallback && !a.constructor_texture &&
+        !a.name_resolution.acquired && !a.name_resolution.frame_creation_started,
         "effect load requires a fresh retained caller frame");
     auto& strings = require_domain(c);
     a.phase = NativeMaterialEffectLoadPhase::names;
@@ -186,7 +229,7 @@ void* load_native_material_effect_00b2ebb0(const void* name, std::uint32_t ignor
         }
         a.phase = NativeMaterialEffectLoadPhase::resolution;
         a.native_site = 0x00b2ed1e;
-        if (resolve_native_material_effect_name(&resolved.value, c)) {
+        if (resolve_native_material_effect_name(&resolved.value, c, a)) {
             // Host continuation allocation precedes acquiring native storage;
             // its failure therefore cannot hide an already-created effect.
             a.programs = std::make_unique<NativeMaterialEffectProgramOperation>();

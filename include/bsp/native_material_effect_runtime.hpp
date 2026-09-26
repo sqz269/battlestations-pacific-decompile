@@ -7,6 +7,7 @@ struct NativeVfsNameResolutionContext;
 struct NativeMaterialStateCacheContext;
 struct NativeMaterialProgramCompileContext;
 struct NativeTextureLoadingContext;
+struct NativeMaterialEffectLoadingContext;
 
 // Remaining compiler dependency. Implementations must publish their persistent
 // child frame before acquiring native state; return an actual canonical held
@@ -34,6 +35,12 @@ private:
 // checking one string pool and manager publication. Each invocation creates
 // its own retained VFS operation; the name context must outlive failed frames.
 void bind_native_texture_vfs_name_resolution(NativeTextureLoadingContext&,
+    NativeVfsNameResolutionContext&);
+
+// Configure under external quiescence before loading. Select genuine numeric
+// BDF4C0, clearing the legacy callback/context only after same-domain/cell
+// validation. Each load owns its own retained resolver; no shared call scratch.
+void bind_native_material_effect_vfs_name_resolution(NativeMaterialEffectLoadingContext&,
     NativeVfsNameResolutionContext&);
 
 // Concrete five-child composition for B45EE0/B46950/B5F6A0. Construct with the
