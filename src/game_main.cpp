@@ -341,7 +341,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
             " [--order throttle=<f>,rudder=<f> | --order <command>[:<entity>]"
             " | --order <command>=<x>,<z>]"
             " [--order-unit <name>] [--ai-drive <unit>=<throttle>,<rudder>]"
-            " [--order-frame N] [--mission-frame-seconds S]"
+            " [--order-frame N] [--mission-frame-seconds S] [--frame-jitter <pct>[,<seed>]]"
             " [--trajectory-csv <path>]"
             " [--screenshot <path>] [--screenshot-frame N]"
             " [--screenshot-mission-frame N] [--hardware-probe-commit]\n");
@@ -491,6 +491,14 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         static_cast<double>(options.mission_frame_seconds),
         options.trajectory_csv.empty() ? "(none)" : options.trajectory_csv.c_str(),
         options.log_path.empty() ? "(stdout only)" : options.log_path.c_str());
+    // Packet cc9_frame_delta_jitter: --frame-jitter or BSP_FRAME_JITTER; off by default.
+    bsp::game::set_mission_frame_jitter(options.frame_jitter_percent, options.frame_jitter_seed);
+    if (options.frame_jitter_percent > 0.0f) {
+        log.notef("frame jitter %g%% seed %u", static_cast<double>(options.frame_jitter_percent),
+            static_cast<unsigned>(options.frame_jitter_seed));
+    } else {
+        log.notef("frame jitter off");
+    }
     if (!options.ai_drive_unit.empty()) {
         log.notef("--ai-drive %s=%.3f,%.3f: a labelled diagnostic stand-in for the ship AI "
             "state step, engaged on --order-frame. It substitutes nothing after the two "

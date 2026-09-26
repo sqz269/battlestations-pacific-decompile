@@ -1,0 +1,23 @@
+{
+  "packet": "cc9_frame_delta_jitter",
+  "doc": "docs/GAME_EXECUTABLE.md",
+  "calls": [
+    {"address": "00875E64", "native": "00929460", "function": "00875BB0", "note": "think walk per 0.05f fixed step, now mirrored by kScriptThinkOnFixedStep"},
+    {"address": "004C429A", "native": "004F71F0", "function": "004C40F0", "note": "fade stepped once per frame with the frame delta"}
+  ],
+  "switches": [
+    {"name": "kScriptThinkOnFixedStep", "state": "ON", "pair": "local/FP_OFF_9000.log vs local/FJ_LOCK_9000.log: identical apart from the header and a wall-clock title alpha"}
+  ],
+  "option": "--frame-jitter <pct>[,<seed>] / BSP_FRAME_JITTER, default off",
+  "verdict": [
+    {"row": "lockstep equals control", "verdict": "held"},
+    {"row": "10,1 deterministic", "verdict": "held"},
+    {"row": "phase 2 with 10,1", "result": "not reached (79 re-issues from 210.01 s)", "verdict": "held (predicted probably not)"},
+    {"row": "phase-1 completion", "result": "210.01 s", "verdict": "failed (predicted 225-260 s)"},
+    {"row": "deaths / hits", "result": "51 / 873 vs 51 / 836", "verdict": "held"},
+    {"row": "Lexington moved", "result": "5952.29 vs 5731.91", "verdict": "held"}
+  ],
+  "logs": ["local/FJ_LOCK_9000.log", "local/FJ_J1_9000.log", "local/FJ_J2_9000.log", "local/FP_OFF_9000.log"],
+  "no_ghidra_function": [],
+  "ledger_names_added": []
+}

@@ -302,6 +302,7 @@ std::size_t GameHostLog::unimplemented_count() const noexcept {
 // ---------------------------------------------------------------------------
 
 bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
+    bool frame_jitter_from_option = false;
     for (int index = 1; index < argc; ++index) {
         const char* argument = argv[index];
         if (std::strcmp(argument, "--frames") == 0) {
@@ -576,6 +577,16 @@ bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
                 error = "--mission-frame-seconds needs a non-negative duration";
                 return false;
             }
+        } else if (std::strcmp(argument, "--frame-jitter") == 0) {
+            // Packet cc9_frame_delta_jitter: --frame-jitter <pct>[,<seed>].
+            if (index + 1 >= argc
+                || !parse_frame_jitter(argv[index + 1], frame_jitter_percent,
+                                       frame_jitter_seed)) {
+                error = "--frame-jitter needs <pct>[,<seed>] with 0 <= pct < 100";
+                return false;
+            }
+            ++index;
+            frame_jitter_from_option = true;
         } else if (std::strcmp(argument, "--trajectory-csv") == 0) {
             // Milestone 2j: where to write the per-step per-unit trace.
             if (index + 1 >= argc) {
@@ -661,6 +672,39 @@ bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
             return false;
         }
     }
+    // BSP_FRAME_JITTER, the same syntax, only when the option was not given.
+    if (!frame_jitter_from_option) {
+        char* text = nullptr;
+        std::size_t length = 0;
+        if (_dupenv_s(&text, &length, "BSP_FRAME_JITTER") == 0 && text != nullptr) {
+            const bool ok = parse_frame_jitter(text, frame_jitter_percent, frame_jitter_seed);
+            std::free(text);
+            if (!ok) {
+                error = "BSP_FRAME_JITTER needs <pct>[,<seed>] with 0 <= pct < 100";
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+bool parse_frame_jitter(const char* text, float& percent, std::uint32_t& seed) noexcept {
+    if (text == nullptr || *text == '\0') return false;
+    char* end = nullptr;
+    const double pct = std::strtod(text, &end);
+    if (end == text || !(pct >= 0.0) || !(pct < 100.0)) return false;
+    std::uint32_t parsed_seed = 1;
+    if (*end == ',') {
+        const char* seed_text = end + 1;
+        char* seed_end = nullptr;
+        const unsigned long value = std::strtoul(seed_text, &seed_end, 10);
+        if (seed_end == seed_text || *seed_end != '\0') return false;
+        parsed_seed = static_cast<std::uint32_t>(value);
+    } else if (*end != '\0') {
+        return false;
+    }
+    percent = static_cast<float>(pct);
+    seed = parsed_seed;
     return true;
 }
 
