@@ -90,3 +90,90 @@ Verdict per prediction:
 entry `GameGunneryHost::recon_triple_units` is in place for the HUD worker's `004C3CB0` call
 sites. The E2 pair the brief allows "if the pick changes any order" is not needed: the pick is
 the HUD's, still unbound, and USN04 moved no order.
+## 5. The squadron and convoy aggregates (packet `cc9_recon_aggregates`)
+
+Addresses: 00805490 00805680 008073C0 00807581 00807877 00807921 008069A0 00806A60 00805430
+008040E0 008042B0
+
+### What the grouping does (from the listing and pseudocode of 00805490)
+
+`__thiscall void(List* members, List* groups)`, `RET 8`, body `00805490..00805674`. For every
+record of `members`:
+
+* **The skip.** A record with level `+0Ch < 1` is skipped (`008054D7`), and so is one whose unit
+  has no squadron (`unit+9D4h == 0`).
+* **The group record.** The squadron's record is:
+  * found in last pass's carry-over list `slot+F34h` (`D[18h]`), taken out of it with
+    `008040E0`, its level reset to 0 and its member list at `+10h` cleared with `008042B0`;
+  * or found in `groups`;
+  * or created as a `1Ch` record: vtable `00D08E78`, `+4h` the squadron, `+8h` its
+    `+1E4h->vtable[1]()`, level 0. It is appended to `groups`, and the pair is registered with
+    `00694A60`.
+* **The fold.** The member's record is appended to the group's `+10h` list. The group's level
+  becomes the maximum of its members' (`00805631..0080564A`). The member record stays where it
+  was.
+
+`00805680` (`00805680..00805864`) is the same pass for land vehicles: class `19h` members, back
+pointer `unit+738h`, carry-over `slot+F4Ch`, group class `1Ah`.
+
+### Where it runs in 008073C0 (docs/RECON_SLOT_LISTS.md step list)
+
+* **Enemy (step 8, `00807581..00807610`).** Seven `00805490` calls fold classes `10h`, `13h`,
+  `12h`, `11h`, `16h`, `15h`, `17h` into `B[18h]`. `008069A0(B[18h])` writes each squadron's level
+  to its own detection record. `00805680(B[19h], B[1Ah])` and `00806A60(B[1Ah])` do the same
+  for convoys. Then triple 1 walks every bucket in class order, so the groups sit at bucket
+  `18h` / `1Ah`, and they drain like any record: level 2 stays, level 1 goes to `unknown`.
+* **Neutral (step 10).** The same, into triple 2.
+* **Own (step 11, `00807877..0080791C`).** The grouping runs after triple 0's copy, and triple 0
+  then takes `A[18h]` and `A[1Ah]` at its end.
+* **Retire (step 12, `00807921..0080792E`).** `00805430(18h)` and `00805430(1Ah)` retire
+  whatever was not folded this pass. A group record never outlives its members' detection.
+
+### The host binding
+
+`publish_recon_triples_008073c0` builds the three relation arrays as `{unit, level}` records,
+runs the fold on enemy, neutral and then own, and assembles the triples in the order above. The
+squadron is `plane_squadron_registry().find_by_member_unit(u)->squadron_unit`.
+
+Labelled substitutions:
+* This host has no land-vehicle convoy membership, so `00805680` folds nothing. The summary
+  counts the class-19h records such a pass would read.
+* `008069A0` / `00806A60` (the group's own detection record) are records.
+* A carried group record and a new one are rebuilt identically each pass. That is the same
+  list, because `00805430` retires the unfolded ones.
+
+The summary line `recon aggregates` counts the group records, members, own groups, identified
+and unknown enemy groups, and how many group units the units host calls ship-base or plane-base.
+
+**What the HUD entry now returns** (`GameGunneryHost::recon_triple_units`, the input of
+`004C3CB0`'s two call sites, owned by cc9-hud):
+* own (0) ends with the side's squadron entities;
+* enemy (1) carries identified enemy squadrons at their class-18h place;
+* unknown (3) carries blip squadrons.
+
+Those are squadron units, not planes, so the HUD's per-entry handling of a class-18h unit
+decides how they draw.
+
+### Predictions (written before the runs)
+
+Same-tree pairs, `BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`, switch OFF against ON.
+
+1. **USN04 4700/4500 (squadrons).**
+   * `recon triples` mean own rises by the number of own squadrons with a member present (3
+     to 8).
+   * Mean enemy rises by the identified IJN squadrons (1 to 6), and mean unknown by 0 to 1.
+   * Neutral stays 0.
+2. **USN02 9200/9000 (convoys).** The run creates no squadron (`squadrons_created=0`) and has no
+   convoy membership, so every line is identical, including the recon triples.
+3. **The gunnery sweep.**
+   * Squadron units are neither ship-base nor plane-base in the units host, so the sweep
+     rejects them by kind. `contact_reject_kind` rises, and every gunnery row (shots, hits,
+     damage, deaths, per-gun rows, death table) stays identical on both missions.
+   * If `kind_plane` or `kind_ship` in the new summary line is above 0, the sweep admits them.
+     That would be a finding, and the rows it moves will be listed.
+4. **The native table:** no host method row changes except the three new rows this packet
+   adds (`00805490` done, `00805680` and `008069A0` records).
+
+### Results
+
+Pending.
