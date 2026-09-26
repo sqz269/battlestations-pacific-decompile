@@ -231,6 +231,16 @@ struct GameGunRow {
 // Committed OFF until its pair runs.
 inline constexpr bool kPlayerGunSeatBound = true;
 
+// Packet cc9_player_gun_seat_segment_query. ON binds 00957D79..00957DD2 of
+// 00957BD0: with no target and the camera off the x = z = 0 axis, the
+// 1000-unit segment (00CE47A0, double) from the camera along the aim
+// direction goes through 0098ADD0 with kind 0, excluding the unit's
+// [unit+360h] (vtable slot 20h, 006D1E30); a hit with y > 0 (00D7A218) is
+// every gun's aim point, skipping the range sphere and the sea cut. This host
+// answers the query over its own units (query_segment_units; no islands or
+// terrain in it). Committed OFF until its pair runs.
+inline constexpr bool kPlayerGunSeatSegmentQueryBound = false;
+
 // Session message 79h as 00954A10 builds it in 005484F0 (section 32 of
 // docs/SHIP_SCREEN_UPDATE.md): +1Ch group, +20h..+28h the camera mover's
 // world position, +2Ch yaw and +30h pitch of its forward row (00521370),

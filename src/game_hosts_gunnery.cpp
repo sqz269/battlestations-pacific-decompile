@@ -1019,6 +1019,10 @@ struct GameGunneryHost::Impl {
     unsigned long long seat_returns{0};
     unsigned long long seat_held_ticks{0};
     unsigned long long seat_trigger_ticks{0};
+    // Packet cc9_player_gun_seat_segment_query.
+    unsigned long long seat_segment_casts{0};
+    unsigned long long seat_segment_hits{0};
+    unsigned long long seat_segment_aims{0};
     void apply_gun_aim_message(std::size_t unit, const GunAimMessage79& message);
     // ShipGlobals.AAGunnerErrorModifier.CalcTargetPosTimeAddFix / AddMul, the
     // gameplay settings +758h / +75Ch 00901C20 adds to its time of flight
@@ -5310,14 +5314,14 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
     return true;
 }
 
-}  // namespace
-
-bool GameGunneryHost::query_segment_units(const float from[3], const float to[3],
-    std::size_t exclude, std::size_t& hit_unit, float hit_point[3]) const {
-    // Integrator arbitration 2026-09-26: the HUD's one const query over
-    // SegmentBinding. The binding counts its mesh and 0085CDB0 hits; a HUD
-    // query restores both so the gunnery summary reports shots only.
-    Impl& host = *impl_;
+// 0098ADD0 over this host's units with kind filter 0, as 009043A0 (the HUD
+// pick) and 00957D79..00957DA0 (the player's gun seat) call it. `exclude` is
+// one based (0 = none); both callers exclude [unit+360h] (unit vtable slots
+// B0h = 006D1DF0 and 20h = 006D1E30 both return it), which this host stands
+// for by the unit itself. The binding counts its mesh and 0085CDB0 hits; the
+// query restores both so the gunnery summary reports shots only.
+bool query_segment_units_impl(GameGunneryHost::Impl& host, const float from[3],
+    const float to[3], std::size_t exclude, std::size_t& hit_unit, float hit_point[3]) {
     const unsigned long long mesh_hits = host.shell_mesh_hits;
     const unsigned long long box_hits = host.narrowphase_box_0085cdb0;
     hit_unit = 0;
@@ -5337,6 +5341,16 @@ bool GameGunneryHost::query_segment_units(const float from[3], const float to[3]
     hit_point[1] = record.position.y;
     hit_point[2] = record.position.z;
     return true;
+}
+
+}  // namespace
+
+bool GameGunneryHost::query_segment_units(const float from[3], const float to[3],
+    std::size_t exclude, std::size_t& hit_unit, float hit_point[3]) const {
+    // Integrator arbitration 2026-09-26: the HUD's one const query over
+    // SegmentBinding (packet cc9_player_gun_seat_segment_query moved the body
+    // into query_segment_units_impl so the seat shares it).
+    return query_segment_units_impl(*impl_, from, to, exclude, hit_unit, hit_point);
 }
 
 void GameGunneryHost::Impl::run_projectiles(float dt) {
@@ -6881,9 +6895,35 @@ void GameGunneryHost::Impl::apply_gun_aim_message(std::size_t unit,
     const float dir[3] = {std::sin(yaw) * std::cos(pitch), std::sin(pitch),
                           std::cos(yaw) * std::cos(pitch)};
     // 00957D79..00957DA0: the 1000-unit segment from the camera through the
-    // spatial index would aim at what it hits; not modelled, so every gun
-    // takes the range-sphere point (labelled).
-    record("PlayerGunSeat::segment_query", 0x00957da0u);
+    // spatial index. OFF: not modelled, so every gun takes the range-sphere
+    // point (labelled).
+    // ON (packet cc9_player_gun_seat_segment_query): 00957BD0 casts only with
+    // no target (00957C29) and the camera off x = z = 0 (00957CDA..00957D0A).
+    // Its inputs do not depend on the gun, so this host casts once per message
+    // where the image casts once per gun; the query is pure. SUBSTITUTION: the
+    // world's spatial index is this host's units (no islands, no terrain), and
+    // the excluded [unit+360h] is the unit itself.
+    bool seat_has_hit = false;
+    float seat_hit[3] = {0.0f, 0.0f, 0.0f};
+    if (!kPlayerGunSeatSegmentQueryBound) {
+        record("PlayerGunSeat::segment_query", 0x00957da0u);
+    } else if (!m.has_target_36 && (m.camera[0] != 0.0f || m.camera[2] != 0.0f)) {
+        const double reach = 1000.0;                               // 00CE47A0
+        const float to[3] = {
+            static_cast<float>(dir[0] * reach) + m.camera[0],
+            static_cast<float>(dir[1] * reach) + m.camera[1],
+            static_cast<float>(dir[2] * reach) + m.camera[2]};
+        std::size_t hit_unit = 0;
+        ++seat_segment_casts;
+        done("PlayerGunSeat::segment_query", 0x00957da0u);
+        if (query_segment_units_impl(*this, m.camera, to, unit + 1, hit_unit, seat_hit)) {
+            ++seat_segment_hits;
+            if (seat_hit[1] > 0.0f) {                              // 00957DAF
+                seat_has_hit = true;
+                ++seat_segment_aims;
+            }
+        }
+    }
     if (m.has_target_36) record("PlayerGunSeat::target_intercept", 0x00957ca6u);
     std::int32_t role2_holder = 8;              // [unit+1B4h]
     if (!units.unit_current_role_slot(unit, 2, role2_holder)) role2_holder = 8;
@@ -6911,7 +6951,11 @@ void GameGunneryHost::Impl::apply_gun_aim_message(std::size_t unit,
         if (s2 < floor2) s2 = floor2;
         const float s = std::sqrt(s2);
         float aim[3] = {c[0] + s * dir[0], c[1] + s * dir[1], c[2] + s * dir[2]};
-        if (m.camera[1] > 0.0f && aim[1] < 0.0f) {                // 00958060: the sea
+        if (seat_has_hit) {                                       // 00957DB8..00957DD2
+            aim[0] = seat_hit[0];
+            aim[1] = seat_hit[1];
+            aim[2] = seat_hit[2];
+        } else if (m.camera[1] > 0.0f && aim[1] < 0.0f) {         // 00958060: the sea
             float den = m.camera[1] - aim[1];
             if (std::fabs(den) < 1.0f) den = den < 0.0f ? -1.0f : 1.0f;
             const float k = m.camera[1] / den;
@@ -7615,6 +7659,10 @@ void GameGunneryHost::report() {
             "packet cc9_player_gun_seat)", host.seat_messages, host.seat_handovers,
             host.seat_returns, host.seat_held_ticks, host.seat_trigger_ticks,
             kPlayerGunSeatBound ? 1 : 0);
+        host.log.notef("summary mission gunnery player seat segment casts=%llu hits=%llu "
+            "aims=%llu bound=%d (00957DA0, packet cc9_player_gun_seat_segment_query)",
+            host.seat_segment_casts, host.seat_segment_hits, host.seat_segment_aims,
+            kPlayerGunSeatSegmentQueryBound ? 1 : 0);
         host.log.notef("summary mission gunnery torpedo gyro launches=%llu turn_steps=%llu "
             "mean_launch_offset_deg=%.2f bound=%d (007311B0/00856637/00857061, packet "
             "cc9_usn02_sameside_torpedoes)", host.torpedo_gyro_launches,
