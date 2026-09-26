@@ -9582,3 +9582,9 @@ they are a first reading, not a comparison.
 **Flagged, not attributed by a measured pair:** USN04 deaths +2 (between `51e22e56d` and
 `a6a77c147`); USN01 hit records -9 and torpedo drops -1; E2 US fighter depth kills 2 against the
 documented 0 to 1. USN01 needs its own pair on the next gunnery landing.
+
+**Integrator note, 2026-09-26:** the flagged E2 US fighter depth kills (Lexington sqn01 and its
+`.-3` at 432 s) are the corpse chase docs/STALL_TARGET_VALIDITY.md attributes: the host kept a
+dogfight target after its squadron emptied. `kDogfightEmptySquadronClearBound` landed ON at main
+da4ba1baf, after this section's base; the planner's pair on 44631c067 read US sea losses 2 -> 0.
+The USN04 and USN01 moves stay open for the attribution runs.
