@@ -1,0 +1,381 @@
+{
+  "status": "source_build_tested_complete_physical_COFF_order_verified_unselected_application_no_runtime",
+  "snapshot": "07fe2d8c0ebf99c566a3691a258eea5efb31023a",
+  "function": {
+    "entry": "00b2a5a0",
+    "end_exclusive": "00b2a7aa",
+    "bytes": 522,
+    "instructions": 164,
+    "ABI": "ECX renderer; six stack DWORDs; EAX owner or zero; RET 0x18"
+  },
+  "selector": {
+    "entry": "00b3dcf0",
+    "end_exclusive": "00b3dcfc",
+    "bytes": 12,
+    "instructions": 4,
+    "provider": "same actual0108DBA8 pool B3D860"
+  },
+  "compiler_support": [
+    {
+      "entry": "00cbd3a0",
+      "bytes": 8
+    },
+    {
+      "entry": "00cbd3a8",
+      "bytes": 8
+    },
+    {
+      "entry": "00cbd3b0",
+      "bytes": 10
+    }
+  ],
+  "data_bytes": 72,
+  "local_frame": {
+    "bytes": 20,
+    "members": [
+      "uint32 pool",
+      "actual IDirect3DVolumeTexture9* output",
+      "void* saved renderer",
+      "8-byte live optional guard"
+    ],
+    "preimages": "caller-defined; no value-initializing overlay",
+    "guard_word": "bounded MSVC machine-byte read, not DWORD lvalue over mixed members"
+  },
+  "mutable_arguments": {
+    "bytes": 24,
+    "words": 6,
+    "height": "DWORD overwritten by raw-slot bits before low-byte state1; current cleanup reread",
+    "SDK_output": "address of actual typed COM pointer member; zero once, reused without retry clear"
+  },
+  "schedule": [
+    "captured entry mode then saved renderer; conditional guard receiver and low byte",
+    "cached flags/usage and pool preimage rules",
+    "original device; cached format/depth/levels; output zero; first table; current pool/height/width; first target",
+    "captured first HRESULT plus current output retry predicate; genuine B29670; current saved renderer/device/table/target; current pool/height/width",
+    "real B3F2D0; overwrite current height; low state1; current full flags/current COM -> genuine B3D720",
+    "current capacity then current count comparison; low state0 before reserve",
+    "current count then data after reserve; captured owner publication; current count RMW",
+    "current exit mode; full -1 before raw guard word/current receiver/real leave"
+  ],
+  "exception_cleanup": "consume current state1 before current height-slot return, then consume state0 before current guard; sibling inner cleanup precedes outer return; second C++ cleanup exception terminates; no native FH3/foreign/hardware equivalence",
+  "dependencies": {
+    "B340A0": {
+      "publication": "1fedd15749883846ac755e5ecdc2c47c10cb849f",
+      "source": "fae8b644d5e6cb4093fddfa5b501fe88e30e9230",
+      "status": "published current source provider",
+      "contract": "fresh or fully retired exclusive aligned backing; same separately live nonoverlapping serial"
+    },
+    "B3D720": {
+      "status": "published genuine current implementation",
+      "archive_sha256": "4c2ae5801f14822666c23efce858a6975c81d232cee1b6fc427ce9907a718f3d",
+      "contract": "original actual owner/input COM/current flags/same serial/actual owner context; defined reached descriptor reads; live count and COM survive base-only failure cleanup",
+      "publication": "07fe2d8c0ebf99c566a3691a258eea5efb31023a",
+      "source": "ca9bc937"
+    },
+    "canonical": {
+      "status": "existing register_completed_creator supports truthful normal nonnull actual completion metadata; no VFS completion or retain required",
+      "native_factory_binds": false,
+      "application_runtime_volume_recipient": "absent",
+      "audit_sha256": "d55c247d843bd0279ee0bc3db2a14fc319cbf592ef385cdf489072eaf8b9cb4e"
+    },
+    "array": "raw actual renderer+1B00 header/slot lifetimes remain caller-proven; typed 735FF0 overload is not adoption"
+  },
+  "retirement": "quiesce creator publication and all borrowed append/reset/traversal uses through terminal pool return, exact unbind, Entry erase, caller postcallback work and real backing disposal; RendererNotify and all reached domains remain live; no early backing free/destructor replay",
+  "residuals": [
+    "entry guard failure unarmed",
+    "partial constructor count/COM survive current-slot raw return",
+    "post-disarm reserve/append failure leaves constructed owner",
+    "null allocation leaves COM and publishes null",
+    "leave exception after full -1 does not rearm",
+    "binding failure metadata retains real effects; no rollback"
+  ],
+  "files": [
+    "include/bsp/native_runtime_volume_texture_creation.hpp",
+    "src/native_runtime_volume_texture_creation.cpp",
+    "docs/NATIVE_RUNTIME_VOLUME_TEXTURE_CREATION_CC10.md",
+    "reports/native_runtime_volume_texture_creation_cc10.json"
+  ],
+  "later_shared_change": "one serialized cmake/startup.cmake source append after publication and review",
+  "acceptance_plan": "authorized strict Win32 build and three existing CTests; complete emitted bodies/EH/relocations and all current-load/store/callback/state schedules, no optimizer workaround or invented defaults",
+  "boundary_correction": "c218008bff at B2A7A7; body unchanged; immutable readiness error retained",
+  "actions": {
+    "production_edits": 5,
+    "builds": 1,
+    "new_tests": 0,
+    "runtime": 0,
+    "DLL_loads": 0,
+    "Ghidra_queries_or_mutations": 0,
+    "ledger_edits": 0,
+    "native_credit": 0,
+    "sync": 1,
+    "existing_CTests": 3
+  },
+  "frozen_readiness": {
+    "archive": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_runtime_volume_factory_readiness/evidence.zip",
+      "bytes": 558186,
+      "sha256": "4cc5a2baef21ecd31fc3f6910739b85d684c9b572afdbf301615180147473637"
+    },
+    "manifest": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_runtime_volume_factory_readiness/index.json",
+      "bytes": 16073,
+      "sha256": "e7e4bf537e7a8e1b59dcbacd5d9c38ed63c0d163a29135430afd466adf6dbc5f"
+    },
+    "schema": "flat array of {path,bytes,sha256}, relative ZIP paths",
+    "rows": 105,
+    "members": 106,
+    "all_rows_and_current_outputs_verified": true
+  },
+  "independent_review": {
+    "archive": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_runtime_volume_factory_independent_review/evidence.zip",
+      "bytes": 63294,
+      "sha256": "54ab49f842f156176c7f61226d56100b634a0c83f7070ba8e5eea7b267ddc644"
+    },
+    "manifest": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_runtime_volume_factory_independent_review/artifact_index.json",
+      "bytes": 4934,
+      "sha256": "b20771f572d711941760dcd0c4320d38c38875a0920d9e79f4f5ca8c4db8f918"
+    },
+    "schema": "flat array of {path,bytes,sha256}, relative ZIP paths",
+    "rows": 31,
+    "members": 32,
+    "all_rows_and_current_outputs_verified": true
+  },
+  "representation_qualification": {
+    "status": "unapplied_revision",
+    "SDK_enums": "nonfixed unscoped; range0..0x7fffffff",
+    "old_cast_problem": "0xffffffff is outside range; N4659 expr.static.cast/10 undefined",
+    "proposed_call": "raw DWORD format/pool in recovered MSVC x86 stdcall signature; direct full-bit operands",
+    "portable_SDK_function_type_compatibility": false,
+    "target_admission": "genuine current callable native COM entry with recovered10x4B stack/EAX/callee-clean contract; no arbitrary C++ stand-in",
+    "compiler_or_runtime_proof": "compiler physical COFF preserves both full-bit DWORD calls; runtime absent"
+  },
+  "acquired_control_contract": "phase/unwind state/diagnostics implementation-owned across callbacks; no callback mutation/move/destruction/reentry; native20B cells and mutable six-word arguments distinct",
+  "historical_preservation": {
+    "HEAD": "8d3eb9ce4220c98a2e3ca237ce35b4ea483e505f",
+    "compiled_headers": 100,
+    "copies": 169,
+    "all_copies_verified": true
+  },
+  "validation": {
+    "strict_Win32_build": {
+      "new_tests": 0,
+      "source_base": "07fe2d8c0ebf99c566a3691a258eea5efb31023a",
+      "started_utc": "2026-09-26T13:43:17.8754122Z",
+      "finished_utc": "2026-09-26T13:44:46.2119698Z",
+      "old_build_head": "8d3eb9ce4220c98a2e3ca237ce35b4ea483e505f",
+      "existing_CTests": 3,
+      "strict_Win32": true,
+      "runtime": false,
+      "exit_code": 0
+    },
+    "compiled": {
+      "object": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/build/win32/bsp_core.dir/Release/native_runtime_volume_texture_creation.obj",
+        "bytes": 16748,
+        "sha256": "e754ff3bbdd9605dad8da75104c9cbc30515f896373df47cb15e064eb8ef35b5"
+      },
+      "library": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/build/win32/Release/bsp_core.lib",
+        "bytes": 71370234,
+        "sha256": "b62c5df2d6f923b99ea09e7aca3501a6bb00f6367f607afa98cb05e657895e11"
+      },
+      "exe": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/build/win32/Release/bsp_game.exe",
+        "bytes": 3708416,
+        "sha256": "7c4b00752a52229b76591d974c62e577eca2e4705f5fcf4ae3a01dee3538ae47"
+      },
+      "map": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/build/win32/bsp_game.map",
+        "bytes": 6078329,
+        "sha256": "644c029a2d6bca24f44f3589dcf74040ab35ccd2783f85a4d510771bda8824f8"
+      },
+      "physical_sections": 66,
+      "physical_code_sections": 26,
+      "physical_code_bytes": 1917,
+      "physical_relocations": 114,
+      "selected_sections": 0,
+      "selected_code_sections": 0,
+      "unselected_code_sections": 26,
+      "AR_member_exact": true,
+      "AR_rows": 1788,
+      "header_rows": 338,
+      "presealed_headers": 110,
+      "postbuild_headers": 228,
+      "provider_object_rows": 11,
+      "unchanged_common_code_provider_rows": 11,
+      "application_factory_activation_claim": false
+    },
+    "instruction_checkpoints": 75,
+    "conditional_branches": 28,
+    "relocations": 114,
+    "COM_calls": [
+      {
+        "section": 26,
+        "call_offset": "0x188",
+        "push_count": 10,
+        "stack_bytes": 40,
+        "pushes": [
+          {
+            "offset": 367,
+            "hex": "6a00",
+            "text": "push 0"
+          },
+          {
+            "offset": 372,
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "offset": 373,
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "offset": 374,
+            "hex": "ff7514",
+            "text": "push dword ptr [ebp + 0x14]"
+          },
+          {
+            "offset": 380,
+            "hex": "ff75f0",
+            "text": "push dword ptr [ebp - 0x10]"
+          },
+          {
+            "offset": 383,
+            "hex": "ff75ec",
+            "text": "push dword ptr [ebp - 0x14]"
+          },
+          {
+            "offset": 386,
+            "hex": "ff75e8",
+            "text": "push dword ptr [ebp - 0x18]"
+          },
+          {
+            "offset": 389,
+            "hex": "52",
+            "text": "push edx"
+          },
+          {
+            "offset": 390,
+            "hex": "56",
+            "text": "push esi"
+          },
+          {
+            "offset": 391,
+            "hex": "57",
+            "text": "push edi"
+          }
+        ],
+        "format_push_offset": "0x176",
+        "pool_push_offset": "0x175",
+        "no_enum_object_or_conversion": true,
+        "typed_output_address": "acquired+8; same address saved for retry"
+      },
+      {
+        "section": 26,
+        "call_offset": "0x21e",
+        "push_count": 10,
+        "stack_bytes": 40,
+        "pushes": [
+          {
+            "offset": 513,
+            "hex": "6a00",
+            "text": "push 0"
+          },
+          {
+            "offset": 523,
+            "hex": "ff75d8",
+            "text": "push dword ptr [ebp - 0x28]"
+          },
+          {
+            "offset": 526,
+            "hex": "50",
+            "text": "push eax"
+          },
+          {
+            "offset": 527,
+            "hex": "ff7514",
+            "text": "push dword ptr [ebp + 0x14]"
+          },
+          {
+            "offset": 530,
+            "hex": "ff75f0",
+            "text": "push dword ptr [ebp - 0x10]"
+          },
+          {
+            "offset": 533,
+            "hex": "ff75ec",
+            "text": "push dword ptr [ebp - 0x14]"
+          },
+          {
+            "offset": 536,
+            "hex": "ff75e8",
+            "text": "push dword ptr [ebp - 0x18]"
+          },
+          {
+            "offset": 539,
+            "hex": "51",
+            "text": "push ecx"
+          },
+          {
+            "offset": 540,
+            "hex": "52",
+            "text": "push edx"
+          },
+          {
+            "offset": 541,
+            "hex": "57",
+            "text": "push edi"
+          }
+        ],
+        "format_push_offset": "0x20f",
+        "pool_push_offset": "0x20e",
+        "no_enum_object_or_conversion": true,
+        "typed_output_address": "acquired+8; same address saved for retry"
+      }
+    ],
+    "current_capacity_compare_disarm_offsets": [
+      "0x280",
+      "0x291",
+      "0x296",
+      "0x299",
+      "0x2b5"
+    ],
+    "EH": {
+      "factory_FH3_section": 38,
+      "factory_FuncInfo_offset": 8,
+      "unwind_table_offset": 0,
+      "unwind_to_minus1": true,
+      "callback_section": 27,
+      "callback_offset": 0,
+      "FactoryCleanup_section": 12,
+      "SEH4_cleanup_section": 39,
+      "filter_section": 33,
+      "filter_offset": 197,
+      "handler_offset": 233,
+      "source_nested_cleanup_not_native_FH3_identity": true
+    },
+    "actual_header_rows": 338,
+    "presealed_header_rows": 110,
+    "postbuild_header_rows": 228,
+    "presealed_inputs_unchanged": 142,
+    "tools_unchanged": 9,
+    "whole_project_precompile_seal": false,
+    "source_order_qualifications": [
+      "normal FactoryCleanup call elided after implementation-owned phase complete store; no callback follows",
+      "slot selector inlined in cleanup to actual same pool method; standalone complete selector remains physical",
+      "signed_bits and raw read/write helpers inlined into normal body; complete unselected standalone helpers retained",
+      "shared std exception COMDAT names map to game_main.obj; all26 candidate physical code sections unselected",
+      "338 actual compiler headers:110 presealed,228 newly acquired after build; no whole-project precompile seal",
+      "all11 old/current provider objects common code/relocation records identical; volume owner source adds published constructor outside old common set"
+    ],
+    "application_selection": "zero member-origin sections; public factory/selector absent; shared std COMDAT symbols from game_main.obj excluded",
+    "provider_objects_common_code_exact": 11,
+    "source_header_exact_approved_revision": true,
+    "CMake_single_append": true
+  },
+  "evidence_folder": "local/output/cc10_runtime_volume_factory_implementation",
+  "artifact_index_schema": "flat array {path,bytes,sha256}, relative ZIP paths; index additional member"
+}
