@@ -163,9 +163,10 @@ reproduces the 2026-09-26 b reference death table line for line.
    next hit at 60.55 s. So the failure time depends on the flood tick, not only on torpedo
    damage.
 5. **Held:** the pair cannot reproduce the 2026-09-26 step. Fire and flooding account for one
-   death and a 33-record fall on today's tree, not the 769 -> 358 fall of that step. That drop
-   in hit records belongs to the other landings of the `fad22c424..c304c9096` window (the
-   dogfight-engaged merges and the cc10 lineage), and stays unpaired.
+   death and a 33-record fall on today's tree. **Correction (packet
+   `cc9_usn02_hits_attribution`, `docs/USN02_HITS_ATTRIBUTION.md`):** this section first gave
+   the 769 -> 358 fall to other landings. A bisection puts all of it in `0e51c215c`, this
+   packet's own landing. On that tree the flood deaths came early and cut the shooting.
 
 Total damage is higher OFF (77438 against 53671) because the fight lasts longer: the failure
 comes 24.75 s later and more ships stay afloat to shoot and be shot.
