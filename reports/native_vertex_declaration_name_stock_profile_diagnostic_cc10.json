@@ -1,0 +1,358 @@
+{
+  "packet": "cc10_vertex_declaration_name_stock_profile_diagnostic",
+  "status": "strict_win32_current_providers_compiled_explicit_legacy_and_stock_eager_load_verified_reported_path_assertion_failed_before_declaration_cache",
+  "native_byte_credit": 0,
+  "production_cpp_changes": false,
+  "tracked_tests_added": 0,
+  "baseline": "8f9f0c94ac064791e209cba4d7a512ee5c591177",
+  "documentation": "docs/NATIVE_VERTEX_DECLARATION_NAME_STOCK_PROFILE_DIAGNOSTIC_CC10.md",
+  "source": "src/native_vertex_declaration_cache.cpp",
+  "owned_addresses": [
+    "00b317e0",
+    "00b305f0",
+    "00b2dbd0",
+    "00b48af0",
+    "00ce0c30",
+    "00ce0c10"
+  ],
+  "ghidra_worker_mutations": false,
+  "layout": {
+    "coherent_built_baseline": "8f9f0c94ac064791e209cba4d7a512ee5c591177",
+    "latest_comparison": "b23f7b122",
+    "old_binding_bytes": 176,
+    "latest_binding_bytes": 180,
+    "source_new_vs_built_not_runtime_compared": true,
+    "selected_cache_loading_vertex_xlive_providers_unchanged": true,
+    "four_changed_files": [
+      {
+        "path": "include/bsp/game_hosts_singletons.hpp",
+        "current_baseline": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\include\\bsp\\game_hosts_singletons.hpp",
+          "size": 6108,
+          "sha256": "2c12e192ebbcbf7bc2b17552ca51253e643878d73c37c33b076302ebc082cb03"
+        },
+        "latest_blob_sha256": "6003dff0c387be604e55ad7588e2529be20f3f2719e9d14e62b036dd440e2030",
+        "latest_copy": "local\\output\\cc10_stock_xlive_declaration_replay_design\\preparation\\baseline_delta\\include\\bsp\\game_hosts_singletons.hpp",
+        "captured_after_build": true,
+        "git_blob_equals_current_baseline": true
+      },
+      {
+        "path": "include/bsp/native_singleton_destruction.hpp",
+        "current_baseline": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\include\\bsp\\native_singleton_destruction.hpp",
+          "size": 16525,
+          "sha256": "06cc74844e6a3fc4c80ea63a97f4881c93531aee93665831fa4f110a1d33495c"
+        },
+        "latest_blob_sha256": "8b0c9e8bb2ec5952ba07859d2b981890d92cc0743c19abca09960922c623adc4",
+        "latest_copy": "local\\output\\cc10_stock_xlive_declaration_replay_design\\preparation\\baseline_delta\\include\\bsp\\native_singleton_destruction.hpp",
+        "captured_after_build": true,
+        "git_blob_equals_current_baseline": true
+      },
+      {
+        "path": "src/game_hosts_singletons.cpp",
+        "current_baseline": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\src\\game_hosts_singletons.cpp",
+          "size": 5018,
+          "sha256": "783fc6654822b6511c13c6f548e693fc31f6dcf8c17e43bf3a40d836408e6dda"
+        },
+        "latest_blob_sha256": "73db5d4cff2d6e3e1dea02c49d9e15a4a038020e0b875489be9594022decf526",
+        "latest_copy": "local\\output\\cc10_stock_xlive_declaration_replay_design\\preparation\\baseline_delta\\src\\game_hosts_singletons.cpp",
+        "captured_after_build": true,
+        "git_blob_equals_current_baseline": true
+      },
+      {
+        "path": "src/native_singleton_destruction.cpp",
+        "current_baseline": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\src\\native_singleton_destruction.cpp",
+          "size": 23962,
+          "sha256": "41b62750b869ae45ea43f1ef253610b4b2bed725ce28e8d939c2ae8379576b84"
+        },
+        "latest_blob_sha256": "d1901241daf398bbb42967ec81258e399f4abb27f5d676ec1999804ccd9328ec",
+        "latest_copy": "local\\output\\cc10_stock_xlive_declaration_replay_design\\preparation\\baseline_delta\\src\\native_singleton_destruction.cpp",
+        "captured_after_build": true,
+        "git_blob_equals_current_baseline": true
+      }
+    ]
+  },
+  "build": {
+    "strict_win32": "PASS",
+    "existing_ctests_passed": 3,
+    "game_executable_launched": false,
+    "fixture_manifest_embedded": true,
+    "assertions_active": true,
+    "game_archive_actual_nonmain_objects": 71,
+    "actual_selected_members": 525,
+    "actual_selected_game_members": 35,
+    "selected_library_counts": {
+      "game": 35,
+      "core": 458,
+      "lua": 28,
+      "zlib": 4
+    },
+    "five_coff_and_linked_bodies_equal_except_relocations": true,
+    "constructor_exactly_one_actual_plus4_count_one_store": true,
+    "genuine_atexit_relocation": true,
+    "fixture_production_recompile": false,
+    "compiled_evidence": {
+      "path": "local/output/cc10_stock_xlive_declaration_replay_design/preparation/compiled_evidence.json",
+      "size": 697602,
+      "sha256": "03307cb2cb2a53dcee90e566937c61d72cb5999077978ce342d75bb547ab3445"
+    },
+    "precompile_inputs": {
+      "path": "local/output/cc10_stock_xlive_declaration_replay_design/preparation/precompile_inputs.json",
+      "size": 28687,
+      "sha256": "946cb6f9d5a5cd1df86bad41e32257804db5bbbfa35c783eb57a437d6917d21b"
+    },
+    "post_link_two_source_pin_timing": [
+      {
+        "source": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\src\\gameplay_settings.cpp",
+          "size": 25265,
+          "sha256": "1ca6a296520b9081ba7d2342e453e4dc48ac174c6da30b2fedd855cd5a09630f"
+        },
+        "member": "gameplay_settings.obj",
+        "source_pin_acquired_after_link": "Current8f Git blob equals worktree source; member equals current CMake object. These are not prebuild pins."
+      },
+      {
+        "source": {
+          "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\src\\unit_fire_flooding.cpp",
+          "size": 17682,
+          "sha256": "c3d9e4f3f19d456138474e82ed20997158e2ca25c22880c360b66a83c6b439dc"
+        },
+        "member": "unit_fire_flooding.obj",
+        "source_pin_acquired_after_link": "Current8f Git blob equals worktree source; member equals current CMake object. These are not prebuild pins."
+      }
+    ]
+  },
+  "fixture_source": {
+    "path": "local/output/cc10_stock_xlive_declaration_replay_design/preparation/probe_with_child_receipt.cpp",
+    "size": 24538,
+    "sha256": "caac2984a10175bc0d04e6a4e17706b7234ab4e9d16b43a51c7736ab048c9f0f"
+  },
+  "executable": {
+    "path": "local/output/cc10_stock_xlive_declaration_replay_design/vertex-declaration-name-stock-probe.exe",
+    "size": 670208,
+    "sha256": "91502e19b89a6ced5930195a838367ed3662a6ba6a6d29fa340a6a3132d0c76d"
+  },
+  "immutable_archives": [
+    {
+      "path": "local/output/cc10_stock_xlive_declaration_replay_design/design_evidence.zip",
+      "size": 134670,
+      "sha256": "933406ba818391a65501644b89cd1cedbc9a3b64aad6869404c71881fa26976d"
+    },
+    {
+      "path": "local/output/cc10_stock_xlive_declaration_replay_design/preparation_evidence.zip",
+      "size": 24052997,
+      "sha256": "d33e4826924b60463e3f484114826a4ba2a002a81974b628bd0cf42841a0e539"
+    },
+    {
+      "path": "local/output/cc10_stock_xlive_declaration_replay_design/preparation/compile_attempt01_launcher_refusal.zip",
+      "size": 22497,
+      "sha256": "0cb428b44bcee1077d862943ee60f99d08e53b813b6acd452351abafc3cbcc4c"
+    },
+    {
+      "path": "local/output/cc10_stock_xlive_declaration_replay_design/runtime_attempt01_evidence.zip",
+      "size": 24060252,
+      "sha256": "2521d40bf8236d5ef3b9f459e2101bdb8be6aa94d79f105b42596c4354a3f3f9"
+    },
+    {
+      "path": "local/output/cc10_stock_xlive_declaration_replay_design/preparation/attempt02/preRun_evidence.zip",
+      "size": 23980635,
+      "sha256": "4ff7344a1b80ff86401714460eab6daff0f4e971b63012f726b4a6545d93d67a"
+    },
+    {
+      "path": "local/output/cc10_stock_xlive_declaration_replay_design/runtime_attempt02_evidence.zip",
+      "size": 24011903,
+      "sha256": "10e464c811ef01a1dea9ab90d07ce91cdc31bd102e1d51a4fecd0b93f18413c6"
+    }
+  ],
+  "attempt01": {
+    "controller": {
+      "path": "local/output/cc10_stock_xlive_declaration_replay_design/preparation/run_once.py",
+      "size": 18135,
+      "sha256": "d7e4c2503690a3161ea75d0910c014de04031a1b7ea1c1576fd9fa7e5b15af41"
+    },
+    "preRun_input_count": 130,
+    "seal": {
+      "path": "local/output/cc10_stock_xlive_declaration_replay_design/preparation/before_run_inputs.json",
+      "size": 34120,
+      "sha256": "0429d48e7ac9eda0a0a863c70a97a4c442c2ee28ec6cd2978dfbcce4eed743cd"
+    },
+    "result": {
+      "parent": {
+        "pid": 86340,
+        "creation_filetime": 134348833659427357,
+        "image_path": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\local\\output\\cc10_stock_xlive_declaration_replay_design\\vertex-declaration-name-stock-probe.exe"
+      },
+      "child": {
+        "pid": 37700,
+        "creation_filetime": 134348833659582966,
+        "image_path": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\local\\output\\cc10_stock_xlive_declaration_replay_design\\vertex-declaration-name-stock-probe.exe"
+      },
+      "child_actual_command": {
+        "pid": 37700,
+        "parent_pid": 86340,
+        "image_path": null,
+        "command_line": "\"J:\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\local\\output\\cc10_stock_xlive_declaration_replay_design\\vertex-declaration-name-stock-probe.exe\" --fixture-child --bsp-native-data-handoff=00000190",
+        "creation_filetime": 134348833659582960,
+        "creation_utc": "2026-09-26T08:02:45.9582960Z"
+      },
+      "receipt": {
+        "parent_pid": 86340,
+        "pid": 37700,
+        "creation_filetime": 134348833659582966,
+        "image_path": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\local\\output\\cc10_stock_xlive_declaration_replay_design\\vertex-declaration-name-stock-probe.exe"
+      },
+      "acknowledged": false,
+      "parent_exit": 2,
+      "child_exit": 1460,
+      "timed_out": false,
+      "error": "TypeError('_path_normpath: path should be string, bytes or os.PathLike, not NoneType')",
+      "cleanup_errors": [],
+      "capture_errors": [],
+      "hash_audit_errors": [],
+      "termination_actions": [
+        {
+          "process": "child",
+          "identity": {
+            "pid": 37700,
+            "creation_filetime": 134348833659582966,
+            "image_path": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\local\\output\\cc10_stock_xlive_declaration_replay_design\\vertex-declaration-name-stock-probe.exe"
+          },
+          "action": "TerminateProcess on verified retained handle",
+          "termination_code": 1460
+        }
+      ],
+      "remaining_recorded_processes": 0,
+      "final_discovery_complete": true,
+      "parent_closed_filetime_upper_bound": 134348833665118552,
+      "closure_complete": true,
+      "child_identity_missing": false,
+      "frozen_inputs_unchanged": true,
+      "final_crt_audit_marker_seen": false,
+      "case_success": false,
+      "controller_capture_is_distinct_from_case_success": true,
+      "fixture_launches": 1,
+      "observed_pretranslation_calls": null
+    },
+    "dll_load_reached": false,
+    "raw_tool_provenance": "Observed return fields transcribed after printed raw result; stdout reconstructed from actual unchanged run.json because orchestration store(undefined session_id) prevented planned immediate archival. No contemporaneously saved raw transcript claim.",
+    "tool_receipt": {
+      "path": "local/output/cc10_stock_xlive_declaration_replay_design/preparation/runtime_tool_observed.json",
+      "size": 2531,
+      "sha256": "ca6bae6177b86686bac2fd5d8f85aa9781bc89953254b3190e0c1d7bda2c6e5e"
+    }
+  },
+  "attempt02": {
+    "controller": {
+      "path": "local/output/cc10_stock_xlive_declaration_replay_design/preparation/run_once_attempt02_candidate.py",
+      "size": 18537,
+      "sha256": "80bba5ba4ea2d7f84507a22000c2d396ef2a3d86c5a129f40c453cc2280c9356"
+    },
+    "preRun_input_count": 133,
+    "seal": {
+      "path": "local/output/cc10_stock_xlive_declaration_replay_design/preparation/attempt02/before_run_inputs.json",
+      "size": 33823,
+      "sha256": "b07ab0a5b8f135cb4b22cf9d848f64117811fa6fdc535292d9dc6171a4b9fea0"
+    },
+    "result": {
+      "parent": {
+        "pid": 48960,
+        "creation_filetime": 134348835586245725,
+        "image_path": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\local\\output\\cc10_stock_xlive_declaration_replay_design\\vertex-declaration-name-stock-probe.exe"
+      },
+      "child": {
+        "pid": 66028,
+        "creation_filetime": 134348835586393644,
+        "image_path": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\local\\output\\cc10_stock_xlive_declaration_replay_design\\vertex-declaration-name-stock-probe.exe"
+      },
+      "child_actual_command": {
+        "pid": 66028,
+        "parent_pid": 48960,
+        "image_path": null,
+        "command_line": "\"J:\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\local\\output\\cc10_stock_xlive_declaration_replay_design\\vertex-declaration-name-stock-probe.exe\" --fixture-child --bsp-native-data-handoff=0000016C",
+        "creation_filetime": 134348835586393640,
+        "creation_utc": "2026-09-26T08:05:58.6393640Z"
+      },
+      "receipt": {
+        "parent_pid": 48960,
+        "pid": 66028,
+        "creation_filetime": 134348835586393644,
+        "image_path": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\local\\output\\cc10_stock_xlive_declaration_replay_design\\vertex-declaration-name-stock-probe.exe"
+      },
+      "acknowledged": true,
+      "parent_exit": 3221226505,
+      "child_exit": 3221226505,
+      "timed_out": false,
+      "error": null,
+      "cleanup_errors": [],
+      "capture_errors": [],
+      "hash_audit_errors": [],
+      "termination_actions": [],
+      "remaining_recorded_processes": 0,
+      "final_discovery_complete": true,
+      "parent_closed_filetime_upper_bound": 134348835593478770,
+      "closure_complete": true,
+      "child_identity_missing": false,
+      "frozen_inputs_unchanged": true,
+      "final_crt_audit_marker_seen": false,
+      "case_success": false,
+      "controller_capture_is_distinct_from_case_success": true,
+      "fixture_launches": 1,
+      "observed_pretranslation_calls": null
+    },
+    "actual_raw_tool_receipt": {
+      "path": "local/output/cc10_stock_xlive_declaration_replay_design/preparation/attempt02/raw_launch_tool_result.json",
+      "size": 2062,
+      "sha256": "69771ac55afdc9bad0344cdb09a7f7a50d5944ecb8c5add2d4c5a6639092bc91"
+    },
+    "load_calls_returned": true,
+    "preexisting_profile_basenames": false,
+    "dependency": {
+      "reported_path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_local_live_redist_readiness/payload/msidcrl40.dll",
+      "base": "27500000",
+      "sha256": "623cb6ca98e566357abbd0e76b15713921e1d7e1144c0c4f589a0407c7eff1ee",
+      "ordinal43": "275684f0",
+      "MEM_IMAGE_allocation_base": "27500000",
+      "protection": "20"
+    },
+    "stock": {
+      "requested_path": "C:/Windows/SysWOW64/xlive.dll",
+      "reported_path": "C:/Windows/System32/xlive.dll",
+      "base": "55da0000",
+      "reported_path_read_sha256": "79da26ab6b2dc25936c3354087de0ba41da1a8b62924972e9100c29b95d34385",
+      "physical_path_equivalence_proven": false
+    },
+    "failure_site": "fixture CHECK line100 normalized reported module path versus requested path",
+    "genuine_vfs_probes": {
+      "getters": 12,
+      "returns": 12,
+      "lowercase": 39,
+      "registered_slots": 2
+    },
+    "actual_5030_calls": null,
+    "5030_origin_receipt_reached": false,
+    "declaration_cache_reached": false,
+    "final_crt_audit_passed": false,
+    "fixture_initiated_sdk_initialization": false,
+    "sdk_initialization_proof": false,
+    "fixture_logs": [
+      {
+        "path": "local/output/cc10_stock_xlive_declaration_replay_design/preparation/attempt02/fixture_logs/child_probe.log",
+        "size": 1131,
+        "sha256": "647c565222431945975e4cc987862fa30e1a66dd00a0e6261512f51ebb9116e6"
+      },
+      {
+        "path": "local/output/cc10_stock_xlive_declaration_replay_design/preparation/attempt02/fixture_logs/diagnostic_fault.log",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "local/output/cc10_stock_xlive_declaration_replay_design/preparation/attempt02/fixture_logs/host.log",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ]
+  },
+  "additional_run_or_profile_change": false
+}
