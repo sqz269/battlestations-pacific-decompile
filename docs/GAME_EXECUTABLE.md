@@ -9065,6 +9065,32 @@ The binary is built from this worktree's branch: main at the time of the circle-
 | plane deaths / hit records | within ± 5 / ± 80 of the control (51 / 836) |
 | the Lexington's distance moved | within ± 800 m of the control (5731.91) if phase 2 is not reached |
 
+#### Measured
+
+All three runs are E2 9000 with streams on. Each log shows the 1600x900 window line and the
+`local\fj` module directory. The runs are `local\FJ_LOCK_9000.log`, `FJ_J1_9000.log` and
+`FJ_J2_9000.log`, in worktree cc9-circle-steer. The diffs ignore heap pointers, the launcher slot
+lines and the log name.
+
+| check | result | prediction | verdict |
+| --- | --- | --- | --- |
+| lockstep against `FP_OFF_9000` | only `frame jitter off` and the title screen's blink alpha differ; the alpha runs on the wall clock before the mission; 0 of 196 summary lines and 0 of 1506 native rows differ | identical apart from the header | held |
+| `10,1` twice | only the same title-screen alpha differs | identical | held |
+| phase 2 with `10,1` | not reached: `luaMoveToPh2` issued 79 times from 210.01 s to the end, callback never fired, 81 units | probably not reached | held |
+| phase-1 completion | 210.01 s | 225-260 s | **failed** |
+| plane deaths / hit records | 51 / 873 (control 51 / 836) | ± 5 / ± 80 | held |
+| the Lexington's distance moved | 5952.29 (control 5731.91) | ± 800 m | held |
+| releases (torpedo / dive) | 4 / 2 (control 5 / 3) | - | - |
+| fixed steps | 8979 over 448.91 s (control 9000 over 449.96 s) | - | the jitter's mean factor over the run is 0.9977 |
+
+**What this says about the option.** At a 0.05 s frame, 10 % jitter does not bring back the
+image's drift, as the model predicted. A frame is never shorter than the fixed step, so the
+fixed-step leftover has almost no room to move. The model fires regularly only when the rendered
+frame is shorter than the fixed step and jitters, for example 1/45 s ± 20 %
+(`docs/MISSION_BLACKOUT.md`). That corresponds to `--mission-frame-seconds 0.0222
+--frame-jitter 20` with about 2.25 times the mission frames for the same simulated time. That
+setting has not been run.
+
 ## Mission reference baselines, 2026-09-23 (after the firepower, RNG-stream and ballistics landings)
 
 Packet `cc9_gun_ballistics`. **The difficulty-1 rows above predate three landings**, so they are
