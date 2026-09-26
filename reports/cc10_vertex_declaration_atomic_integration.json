@@ -1,0 +1,58 @@
+{
+  "packet": "cc10_vertex_atomic_integration",
+  "worker_commit": "a80f13c49d1272ad74a6b23e8e26b1df9b2ade47",
+  "integration": "7af330c3670f46bc380f8dcb7358549442ce24ac",
+  "worker_report": "reports/native_vertex_declaration_atomic_lifetime_cc10.json",
+  "primary_verification": {
+    "worker_commit": "a80f13c49d1272ad74a6b23e8e26b1df9b2ade47",
+    "archive_sha256": "309c034c0607e4063cecb2bd75e29c8af6237513ad772248d1da1983d3de323b",
+    "archive_members": 68,
+    "manifest_rows_verified": 67,
+    "exact_run_inputs": 14,
+    "provider_pins": 28,
+    "unchanged_providers_compared_root": 26,
+    "prior_fixture_readiness_files_verified": 23,
+    "prior_archives_verified": 25,
+    "native_constructor_bytes": 120,
+    "compiler_evidence_bytes": 29,
+    "compiled_constructor_bytes": 149,
+    "exact_library_member_verified": true,
+    "linked_constructor_verified_except_one_call_relocation": true,
+    "review": [
+      "Complete minimal production source/header diff and full fixture revision diff reviewed",
+      "Single actual atomic begins at native count initialization point between base and derived profile stores; no extra credit",
+      "All52 payload DWORDs plus unchanged trailing slab index checked with no fixture manual placement",
+      "Genuine HAL canonical companions and pool/COM/process retirement retained from reviewed composition",
+      "Full native/compiler bytes, COFF/library member/linked code and final document reviewed"
+    ],
+    "limits": [
+      "new C++ interface, not native binary/exception ABI equivalence",
+      "one valid fresh aligned normal composition; failure/concurrency/profile/import epoch variations not admitted",
+      "B317E0 name decoding/cache and full B4E470 caller not exercised; direct CPU declaration construction only",
+      "secondary19AC0 only; no optional19B0 disposal proof",
+      "no application/renderer/global startup, draw or original gameplay",
+      "old archive/source/library inputs preserved as historical evidence; old on-disk production providers intentionally changed"
+    ]
+  },
+  "validation": {
+    "strict_win32_ctests": 3,
+    "direct_call_rows_passed": 1,
+    "real_HAL_source_composition": true,
+    "copied_original_executed": false,
+    "game_validated": false
+  },
+  "limits": [
+    "new C++ interface, not native binary/exception ABI equivalence",
+    "one valid fresh aligned normal composition; failure/concurrency/profile/import epoch variations not admitted",
+    "B317E0 name decoding/cache and full B4E470 caller not exercised; direct CPU declaration construction only",
+    "secondary19AC0 only; no optional19B0 disposal proof",
+    "no application/renderer/global startup, draw or original gameplay",
+    "old archive/source/library inputs preserved as historical evidence; old on-disk production providers intentionally changed"
+  ],
+  "archive": {
+    "path": "local/cc10-platform-evidence/vertex-declaration-atomic-lifetime.zip",
+    "sha256": "452b1edb6b75affd64c242f530cdc9bb6587fbdd7f91662a8c72e0620aef44bc",
+    "files": 73,
+    "valid": true
+  }
+}
