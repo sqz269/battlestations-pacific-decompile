@@ -9012,6 +9012,59 @@ one `gunrow` line per gun.
 Use it on both sides of a pair, with every other parameter matched, and compare the `gunrow` and
 per-unit rows.
 
+### Harness option `--frame-jitter` / `BSP_FRAME_JITTER` (2026-09-26, packet `cc9_frame_delta_jitter`)
+
+`--frame-jitter <pct>[,<seed>]` multiplies each in-mission frame delta by a uniform factor in
+[1 - pct/100, 1 + pct/100]. The environment variable `BSP_FRAME_JITTER` takes the same syntax
+and applies only when the option is absent. The seed defaults to 1, and 0 <= pct < 100.
+- **The generator.** The factors come from a process-private splitmix64 stream seeded by the
+  option, never from the shared generator `00BD2F10`. Gunnery and planner draws therefore see
+  no extra draw.
+- **Where it applies.** It applies where the in-mission frame is driven
+  (`src/game_hosts_mission.cpp`, before `run_mission_frame_004e4a40`). With
+  `--mission-frame-seconds S` it replaces S for that frame. This host does not run
+  `004C6E30`'s scaling in-mission: the raw delta is the scaled delta, which is why it is not
+  applied in `src/game_frame_control.cpp`.
+- **What it leaves alone.** The fixed step stays 0.05 and `00875BB0`'s accumulator absorbs the
+  difference.
+- **The log.** It prints `frame jitter <pct>% seed <n>`, or `frame jitter off`, after the
+  milestone header.
+
+**It is a measurement option and is never on in a reference run.** Every reference row is taken
+with the lockstep frame (`--mission-frame-seconds 0.05` and no jitter).
+
+What it is for: mission progression that the image leaves to frame-time drift.
+`docs/MISSION_BLACKOUT.md`, section "A re-issued blackout never calls back", describes a
+`Blackout` callback that the script re-issues every Think pass. The callback can fire only when
+the fade's per-frame clock slips against the fixed-step Think countdown. The lockstep frame
+removes that slip.
+
+**A host change that goes with it.** `kScriptThinkOnFixedStep`
+(`include/bsp/game_hosts_script_orders.hpp`) runs the script think walk `00929460` once per
+0.05f fixed step. The step count mirrors `00875BB0`'s accumulator, which is the image's row 8 at
+`00875E64`. Before this change it ran once per frame with the frame delta, so a jittered frame
+would have moved the Think countdown and the fade together, and nothing would slip. The fade
+still steps once per frame with the frame delta (`004C429A`). With the lockstep frame this is
+exactly one pass per frame, as before.
+
+#### Predictions (written before the runs)
+
+The binary is built from this worktree's branch: main at the time of the circle-steer pair
+(`3de034859` lineage), plus parts 3-4, the placement flip OFF (88cc4de81) and this packet.
+- **The control.** It is `local\FP_OFF_9000.log`: the same source without this packet, with
+  placement OFF, lockstep. `CS_ON_9000.log` had placement ON, so it is not the right control for
+  this tree.
+- **Settings.** All move-to switches and the circle steer are ON, streams on, E2 9000.
+
+| check | prediction |
+| --- | --- |
+| lockstep, new binary, against `FP_OFF_9000` | identical except the header lines (log name, module directory, `frame jitter off`) |
+| `--frame-jitter 10,1` twice | the two logs identical except the log name |
+| phase 2 with `10,1` | **probably not reached.** A float32 model of the fade, the fixed-step accumulator and the Think countdown, with 0.05 s frames and 10 % jitter, re-arming from 240 s, fired in 1 of 20 seeds within 220 s (at +66 s). Frames no shorter than the fixed step leave the accumulator's leftover little room to slip. If it fires: after 243 s, with 92 units, and the Lexington moving less than the control. If it does not: 81 units, as in the control |
+| phase-1 completion (`luaMoveToPh2` first call) | 225-260 s (control 240.01 s); the per-frame systems see different deltas, so the run diverges from the first mission frame |
+| plane deaths / hit records | within ± 5 / ± 80 of the control (51 / 836) |
+| the Lexington's distance moved | within ± 800 m of the control (5731.91) if phase 2 is not reached |
+
 ## Mission reference baselines, 2026-09-23 (after the firepower, RNG-stream and ballistics landings)
 
 Packet `cc9_gun_ballistics`. **The difficulty-1 rows above predate three landings**, so they are

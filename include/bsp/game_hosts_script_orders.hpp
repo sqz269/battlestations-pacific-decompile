@@ -127,6 +127,14 @@ inline constexpr bool kEntityDeadBound = true;
 // the three bindings stay host records and no row is written.
 inline constexpr bool kMissionEndBound = true;
 
+// Packet cc9_frame_delta_jitter, docs/GAME_EXECUTABLE.md. True: the script think
+// walk 00929460 runs once per 0.05f fixed step, as the image's fan-out row 8 does
+// (00875E64 inside 00875BB0), while the Blackout fade still steps once per frame
+// with the frame delta (004C429A). The step count mirrors 00875BB0's accumulator
+// rule. With a lockstep 0.05 s frame this is one pass per frame, which is the
+// old behaviour exactly. False: one think pass per frame with the frame delta.
+inline constexpr bool kScriptThinkOnFixedStep = true;
+
 class GameHostLog;
 class GameUnitsHost;
 struct GameSceneEntityRecord;
@@ -427,6 +435,8 @@ private:
 
     // The 004C40F0 step at 004C429A: one 005B9800 pass with the frame delta.
     void run_blackout_update(float step);
+    // One 00929460 walk with its delay updates, the body run_script_timers repeats.
+    void run_script_think_pass(float step);
 
     // --- bsp::EntityThinkHost, the walk 00929460 makes over those entities ------
     void run_entity_think_00929150(std::uint32_t entity) override;
@@ -546,6 +556,7 @@ private:
     bsp::EntityThinkList think_live_{};
     bsp::EntityThinkList think_pending_{};
     float think_countdown_{0.0f};   // 00F89A04, zero at process start
+    float think_step_accumulator_{0.0f};  // mirror of 00875BB0's accumulator (00F876AC)
     // A DeleteScript from inside a think function would erase from the live list
     // while the walk is iterating it. The native's cursor captured its successor
     // first; this reconstruction holds the erase until the walk returns.

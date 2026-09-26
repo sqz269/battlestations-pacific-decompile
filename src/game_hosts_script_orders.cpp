@@ -10,6 +10,7 @@
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/in_mission_subsystem_tick.hpp"  // kFixedSimulationStepSeconds / Float
 #include "bsp/command_execution.hpp"
 #include "bsp/lua_binding_navigator.hpp"
 #include "bsp/mission_lua_bindings.hpp"
@@ -2657,15 +2658,7 @@ void GameScriptOrdersHost::observe_mission_end() {
         mission_end_.fail_text.c_str(), mission_end_.fail_entity.c_str());
 }
 
-void GameScriptOrdersHost::run_script_timers(float step) {
-    run_air_ops_update_006cdc70(step);
-    if (machine_state_ == nullptr) return;
-    observe_mission_end();
-    publish_unit_deaths_00929800();
-    if (script_entities_.empty()) {
-        run_blackout_update(step);
-        return;
-    }
+void GameScriptOrdersHost::run_script_think_pass(float step) {
     state_ = machine_state_;
     argument_count_ = 0;
     mission_clock_ += step;
@@ -2703,6 +2696,29 @@ void GameScriptOrdersHost::run_script_timers(float step) {
     ++timers_.passes;
     timers_.timed_fires += run.thinks_run;
     state_ = nullptr;
+}
+
+void GameScriptOrdersHost::run_script_timers(float step) {
+    run_air_ops_update_006cdc70(step);
+    if (machine_state_ == nullptr) return;
+    observe_mission_end();
+    publish_unit_deaths_00929800();
+    if (script_entities_.empty()) {
+        run_blackout_update(step);
+        return;
+    }
+    if constexpr (kScriptThinkOnFixedStep) {
+        // 00875BB0's rule (src/in_mission_subsystem_tick.cpp): add the frame delta,
+        // then one 0.05f step while the step does not exceed the accumulator.
+        const float fixed = static_cast<float>(bsp::kFixedSimulationStepSeconds);
+        think_step_accumulator_ += step;
+        while (fixed <= think_step_accumulator_) {
+            run_script_think_pass(bsp::kFixedSimulationStepFloat);  // 00875E64
+            think_step_accumulator_ -= fixed;
+        }
+    } else {
+        run_script_think_pass(step);
+    }
     // Packet cc_mission_blackout. GGame::OnMove step 18 runs 004C40A0, which
     // drives the fixed-step fan-out and so the think walk, and only then 004C40F0,
     // which steps the fade. Keeping that order here means a `luaDelay` that

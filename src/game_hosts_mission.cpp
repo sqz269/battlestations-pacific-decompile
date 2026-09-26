@@ -42,6 +42,25 @@
 namespace bsp::game {
 namespace {
 
+// Packet cc9_frame_delta_jitter. A process-private splitmix64 stream, so the
+// shared generator 00BD2F10 (gunnery, planner) never sees a draw from it.
+struct MissionFrameJitter {
+    bool armed{false};
+    double fraction{0.0};         // pct / 100
+    std::uint64_t state{0};
+    float next_factor() noexcept {
+        state += 0x9E3779B97F4A7C15ull;
+        std::uint64_t z = state;
+        z = (z ^ (z >> 30)) * 0xBF58476D1CE4E5B9ull;
+        z = (z ^ (z >> 27)) * 0x94D049BB133111EBull;
+        z ^= z >> 31;
+        const double u = static_cast<double>(z >> 11) * (1.0 / 9007199254740992.0);
+        return static_cast<float>(1.0 + fraction * (2.0 * u - 1.0));
+    }
+};
+MissionFrameJitter g_mission_frame_jitter;
+
+
 // The locale text of a menu label id, folded to ASCII for the log exactly as
 // milestone 2d folds a resolved Text run.
 std::string ascii_fold(const std::u16string& text) {
@@ -1808,7 +1827,20 @@ bool GameMissionHost::advance(float seconds) {
             host.step = GameMissionStep::Stopped;
             return false;
         }
-        const bool more = host.frame_host->run_mission_frame_004e4a40(seconds);
+        // Packet cc9_frame_delta_jitter: one factor per in-mission frame. With
+        // --mission-frame-seconds the fixed delta is what the frame host uses, so
+        // the jittered value replaces it for this frame; the fixed step (0.05) and
+        // 00875BB0's accumulator are untouched and absorb the difference.
+        float frame_seconds = seconds;
+        if (g_mission_frame_jitter.armed) {
+            const float factor = g_mission_frame_jitter.next_factor();
+            if (host.mission_frame_seconds > 0.0f) {
+                host.frame_host->set_mission_frame_seconds(host.mission_frame_seconds * factor);
+            } else {
+                frame_seconds = seconds * factor;
+            }
+        }
+        const bool more = host.frame_host->run_mission_frame_004e4a40(frame_seconds);
         host.publish_frame_summary();
         host.step = GameMissionStep::MissionFrames;
         // The frame budget bounds the in-mission frames only. Once the mission
@@ -1829,6 +1861,12 @@ bool GameMissionHost::advance(float seconds) {
         return false;
     }
     return false;
+}
+
+void set_mission_frame_jitter(float percent, std::uint32_t seed) noexcept {
+    g_mission_frame_jitter.armed = percent > 0.0f;
+    g_mission_frame_jitter.fraction = static_cast<double>(percent) / 100.0;
+    g_mission_frame_jitter.state = seed;
 }
 
 }  // namespace bsp::game

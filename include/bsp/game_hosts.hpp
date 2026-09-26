@@ -262,6 +262,13 @@ struct GameExecutableOptions {
     // does not depend on how fast the machine presents. Zero keeps the wall
     // clock, which is what every earlier milestone's run used.
     float mission_frame_seconds{0.0f};
+    // --frame-jitter <pct>[,<seed>], packet cc9_frame_delta_jitter (env
+    // BSP_FRAME_JITTER, same syntax): multiply each in-mission frame delta by a
+    // uniform factor in [1 - pct/100, 1 + pct/100] from a private generator, so a
+    // run reproduces the image's frame-time drift against the 0.05 s fixed step.
+    // Off (0) keeps the lockstep frame every reference row is taken with.
+    float frame_jitter_percent{0.0f};
+    std::uint32_t frame_jitter_seed{1};
     // --trajectory-csv <path>, milestone 2j: one row per unit per fixed
     // simulation step, so an external comparison against a trace taken from the
     // running game can be made. Empty writes nothing. The column contract is in
@@ -732,5 +739,12 @@ void set_active_platform_state(Win32PlatformState* state,
 // Read-only access for readers of its fields (the HUD's GUI extent 00AA1FE0,
 // docs/GUI_EXTENT_INPUTS.md).
 const Win32PlatformState* active_platform_state() noexcept;
+
+// Packet cc9_frame_delta_jitter: arm the in-mission frame-delta jitter for this
+// process (percent 0 disarms). Defined in src/game_hosts_mission.cpp, which applies
+// one factor per in-mission frame from its own splitmix64 stream, never 00BD2F10.
+void set_mission_frame_jitter(float percent, std::uint32_t seed) noexcept;
+// "<pct>[,<seed>]"; false on a malformed or negative value. Seed defaults to 1.
+bool parse_frame_jitter(const char* text, float& percent, std::uint32_t& seed) noexcept;
 
 }  // namespace bsp::game
