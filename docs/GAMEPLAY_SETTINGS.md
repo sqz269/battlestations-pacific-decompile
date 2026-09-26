@@ -192,15 +192,15 @@ listed under "The consumer survey" below.
 | `+3B0h` | `WaterTickDamage` | float | 0 | 100 * | 0083e1b3 | `BSP_Ai_TargetWeight`, `BSP_UnitSubObjectA20_Construct`, `FUN_0095e9a0` +1 |
 | `+3B4h` | `BodyRepairTickPercentage` | float | 0.2 | 0.1 * | 0083e23e | `BSP_RepairTask_RepairHull` (stored / 100.0: `FDIV qword [00D7A220]` at `0083e243`) |
 | `+3B8h` | `GunRepairTickPercentage` | float | 2 | 2 * | 0083e290 | `BSP_RepairTask_RepairSubObjects` (stored / 100.0: `FDIV qword [00D7A220]` at `0083e295`) |
-| `+3BCh` | `FireFailureChance` | float | 1 | 3 * | 0083e2de | - |
+| `+3BCh` | `FireFailureChance` | float | 1 | 3 * | 0083e2de | - (stored / 100.0: `FDIV qword [00D7A220]` at `0083e2e3`) |
 | `+3C0h` | `FireFailureDamageDuration` | float | 1 | 10 * | 0083e32c | `FUN_00827b90` |
-| `+3C4h` | `ExplosionDamagePercentage` | float | 1 | 35 * | 0083e374 | `FUN_00827b90` |
+| `+3C4h` | `ExplosionDamagePercentage` | float | 1 | 35 * | 0083e374 | `FUN_00827b90` (stored / 100.0: `FDIV qword [00D7A220]` at `0083e379`) |
 | `+3C8h` | `PumpRepairMultiplier` | float | 2 | 3 * | 0083e3c6 | `BSP_InGameHudRootScreen_UpdateUnitRowWidgets`, `BSP_RepairTask_ApplyFireDamage` |
 | `+3CCh` | `FireRepairMultiplier` | float | 2 | 3 * | 0083e412 | `BSP_InGameHudRootScreen_UpdateUnitRowWidgets`, `BSP_RepairTask_ApplyWaterDamage` |
 | `+3D0h` | `FailureRepairMultiplier` | float | 2 | 3 * | 0083e45e | `BSP_RepairTask_RepairFailures` |
 | `+3D4h` | `BodyRepairMultiplier` | float | 2 | 2 * | 0083e4aa | `BSP_RepairTask_RepairHull` |
 | `+3D8h` | `GunRepairMultiplier` | float | 2 | 4 * | 0083e4f6 | `BSP_RepairTask_RepairSubObjects` |
-| `+3DCh` | `FailureChance` | float | 5 | 100 * | 0083e542 | - |
+| `+3DCh` | `FailureChance` | float | 5 | 100 * | 0083e542 | - (stored / 100.0: `FDIV qword [00D7A220]` at `0083e547`) |
 | `+3E0h` | `FailureDamageThreshold` | float | 100 | 100 * | 0083e594 | `BSP_ShipSystems_RollComponentFailure` |
 | `+3F4h` | `VizbeomlesDolgok.KillDepth` | float | - | -200.0 | 0083ea71 | `BSP_UnitInstance_UpdateShipMotion` |
 | `+3F8h` | `VizbeomlesDolgok.PTBoatLeakSize` | float | - | 100.0 | 0083eaad | - |

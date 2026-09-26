@@ -25,6 +25,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <set>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -50,6 +51,8 @@
 #include "bsp/recon_sensor_pass.hpp"
 #include "bsp/sensor_table_data.hpp"
 #include "bsp/ship_hit_record.hpp"
+#include "bsp/part_damage_reachability.hpp"
+#include "bsp/unit_fire_flooding.hpp"
 #include "bsp/submarine_model.hpp"
 #include "bsp/unit_kind_query.hpp"
 #include "bsp/unit_damage.hpp"
@@ -304,6 +307,21 @@ constexpr bool kShipDamageControlTickBound = true;
 //    (0083E243 divides) * max * BodyRepairMultiplier (priority 0), clamped to
 //    the maximum. OFF: no repair.
 constexpr bool kShipHullRepairBound = true;
+//  * kComponentFailureBound: R8 (00827432..00827450) calls 0093BED0 on a hull
+//    hit that applied damage. 008782A0 finds the victim's Damage.Sections row
+//    with the hit's kind (+30h) and index (+34h); p = FailureChance * damage /
+//    FailureDamageThreshold from the row, or from ShipGlobals (1.0 and 100)
+//    when the row leaves either negative; a draw <= p looks up the
+//    ShipGlobals.Failures row of that kind (0093AA00) and, unless a failure of
+//    the same name is active, pushes it for FailureDuration seconds and runs
+//    00827B90 (vtable 21Ch): "Explosion" -> message 6Ah, whose scheduled object
+//    0081B630 adds max health * ExplosionDamagePercentage (35%) through
+//    vtable[1ACh]; "Fire" -> 9Eh adds FireFailureDamageDuration fire seconds;
+//    "SteeringJam" / "EngineJam" -> the unit+9E4h / +9E5h flags, published
+//    through GameGunneryHost::unit_failure_active. 0093C520 retires each
+//    failure after its seconds at rate 1.0 (priority 0). OFF: 0093BED0 is a
+//    record. Packet cc9_component_failures, docs/COMPONENT_FAILURES.md.
+constexpr bool kComponentFailureBound = false;
 //  * kKillCreditDamageGateBound: 0077CE60 writes the attribution block (the
 //    +2C4h attacker the kill credit 0091BDA0 names) only for a live victim and
 //    only when the hit's damage, 00470510 for a hull segment or 00470740 when
@@ -604,6 +622,7 @@ struct GameGunneryHost::Impl {
         aim_point = 11,       // 00816650's hull-box draws for the artillery bot, key (gun, 0)
         bullet_throw = 12,    // 00730557 / 00730575, the throw cone, key (gun, 0)
         torpedo_gyro = 13,    // 00900830 / 0090083E, the launch heading jitter, key (gun, 0|1)
+        component_failure = 14, // 0093BF98, the failure roll, key (victim unit, 0)
     };
     unsigned long long next_projectile_serial{0};
     static bool rng_streams_enabled() {
@@ -1095,6 +1114,16 @@ struct GameGunneryHost::Impl {
         float water_tick{0.0f};       // task+2Ch <- settings+3B0h WaterTickDamage
         float fire_tick{0.0f};        // task+30h <- settings+3ACh FireTickDamage
         float repair_fraction{0.0f};  // settings+3B4h (already / 100) * +3D4h
+        // Packet cc9_component_failures: the task's failure vector (+18h) and
+        // its flags as 0093BCC0 leaves them (+46h = 1, priority 0).
+        bsp::RepairTaskState task{};
+        struct Section {
+            int kind{-1};                // row+4h, 007149D0(MshCategory)
+            int index{0};                // row+8h, Index
+            float chance{-1.0f};         // row+28h, FailureChance / 100
+            float threshold{-1.0f};      // row+2Ch, FailureDamageThreshold
+        };
+        std::vector<Section> sections;
         double water_damage{0.0};     // totals for the summary
         double fire_damage{0.0};
         double repaired{0.0};
@@ -1107,6 +1136,36 @@ struct GameGunneryHost::Impl {
     unsigned long long dc_deaths{0};
     unsigned long long element_hits{0};
     unsigned long long element_hits_fizika{0};
+    // Packet cc9_component_failures: the settings the roll and 00827B90 read,
+    // and the ShipGlobals.Failures rows as 0093AA00 walks them (stride 14h:
+    // +0h kind, +4h name, +0Ch duration).
+    struct FailureRow {
+        int kind{-1};
+        int name_id{0};              // first row with the same FailureName
+        int effect{0};               // 1 Explosion, 2 SteeringJam, 3 EngineJam, 4 Fire
+        float duration{0.0f};
+    };
+    std::vector<FailureRow> failure_rows;
+    float failure_chance{0.05f};           // settings+3DCh (FailureChance / 100)
+    float failure_threshold{100.0f};       // settings+3E0h
+    float explosion_fraction{0.01f};       // settings+3C4h (/ 100)
+    float fire_failure_seconds{1.0f};      // settings+3C0h
+    bool failure_settings_read{false};
+    unsigned long long cf_rolls{0};        // 0093BED0 entered past the gate
+    unsigned long long cf_resolved{0};     // 008782A0 found a section
+    unsigned long long cf_started{0};
+    unsigned long long cf_explosions{0};
+    unsigned long long cf_fires{0};
+    unsigned long long cf_jams{0};
+    unsigned long long cf_retired{0};
+    unsigned long long cf_deaths{0};
+    double cf_explosion_damage{0.0};
+    // 00818110's scheduled objects: (unit, msg+30h damage), stepped once by
+    // 0081B630 on the next scheduler pass.
+    std::vector<std::pair<std::size_t, float>> pending_explosions;
+    void roll_component_failure_0093bed0(std::size_t unit, int kind, int segment,
+                                         float damage);
+    void apply_failure_effect_00827b90(std::size_t unit, const std::string& name);
     void damage_control_add_seconds(std::size_t unit, bool water, float seconds);
     void run_damage_control(float dt);
     const SecondAmmo* dp_air_ammo(std::size_t gun_index, int category,
@@ -1715,6 +1774,15 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         chunk += (name != nullptr ? name : "");
         chunk += "\",";
     }
+    // Packet cc9_component_failures: the 00E08138 names 007149D0 searches, so
+    // the chunk can map Damage.Sections[].MshCategory and
+    // ShipGlobals.Failures[].SectionName to the same index (0087CF7B, 0083E956).
+    chunk += "}\nlocal MC = {";
+    for (std::size_t i = 0; i < bsp::kMeshCategoryCount; ++i) {
+        chunk += "\"";
+        chunk += bsp::kMeshCategoryNames[i];
+        chunk += "\",";
+    }
     chunk += "}\nlocal ids = {";
     for (std::size_t i = 0; i < class_ids.size(); ++i) {
         char number[16];
@@ -1727,6 +1795,12 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         "  if type(s) ~= 'string' then return -1 end\n"
         "  local u = string.upper(s)\n"
         "  for i = 1, table.getn(F) do if F[i] == u then return i - 1 end end\n"
+        "  return -1\n"
+        "end\n"
+        "local function mcat(s)\n"
+        "  if type(s) ~= 'string' then return -1 end\n"
+        "  local u = string.lower(s)\n"
+        "  for i = 1, table.getn(MC) do if string.lower(MC[i]) == u then return i - 1 end end\n"
         "  return -1\n"
         "end\n"
         "local function num(v, s)\n"
@@ -1761,6 +1835,56 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         "    f.dcbody = num(SG.BodyRepairTickPercentage, 1000000) or 200000\n"
         "    f.dcbodymul = num(SG.BodyRepairMultiplier, 1000) or 2000\n"
         "    f.dcsg = (type(ShipGlobals) == 'table') and 1 or 0\n"
+        // Packet cc9_component_failures. Damage.Sections (0087CA80): kind from
+        // 007149D0 with no remap, Index, FailureChance / 100 (default -1) and
+        // FailureDamageThreshold (default -1). ShipGlobals: FailureChance / 100
+        // (0083E547), FailureDamageThreshold (0083E594), ExplosionDamagePercentage
+        // / 100 (0083E379), FireFailureDamageDuration (0083E32C) and the
+        // Failures rows (SectionName -> kind at 0083E956, FailureName,
+        // FailureDuration). The name is carried as the first row index with the
+        // same FailureName plus an effect code for the 00827B90 compares.
+        "    local secs = type(row.Damage) == 'table' and row.Damage.Sections or nil\n"
+        "    local ns = 0\n"
+        "    if type(secs) == 'table' then\n"
+        "      for k = 1, 64 do\n"
+        "        local sc = secs[k]\n"
+        "        if type(sc) == 'table' then\n"
+        "          ns = ns + 1\n"
+        "          local q = 's' .. ns .. '_'\n"
+        "          f[q .. 'kind'] = mcat(sc.MshCategory)\n"
+        "          f[q .. 'idx'] = type(sc.Index) == 'number' and math.floor(sc.Index + 0.5) or 0\n"
+        "          f[q .. 'fc'] = num(sc.FailureChance, 1000) or -100000\n"
+        "          f[q .. 'thr'] = num(sc.FailureDamageThreshold, 1000) or -1000\n"
+        "        end\n"
+        "      end\n"
+        "    end\n"
+        "    f.nsec = ns\n"
+        "    f.fchance = num(SG.FailureChance, 1000) or 5000\n"
+        "    f.fthr = num(SG.FailureDamageThreshold, 1000) or 100000\n"
+        "    f.explpct = num(SG.ExplosionDamagePercentage, 1000) or 1000\n"
+        "    f.firefd = num(SG.FireFailureDamageDuration, 1000) or 1000\n"
+        "    local nf = 0\n"
+        "    if type(SG.Failures) == 'table' then\n"
+        "      local names = {}\n"
+        "      for k = 1, 32 do\n"
+        "        local r = SG.Failures[k]\n"
+        "        if type(r) == 'table' then\n"
+        "          nf = nf + 1\n"
+        "          local q = 'fl' .. nf .. '_'\n"
+        "          local nm = type(r.FailureName) == 'string' and r.FailureName or ''\n"
+        "          if names[nm] == nil then names[nm] = nf end\n"
+        "          f[q .. 'kind'] = mcat(r.SectionName)\n"
+        "          f[q .. 'id'] = names[nm]\n"
+        "          f[q .. 'dur'] = num(r.FailureDuration, 1000) or 0\n"
+        "          local lo = string.lower(nm)\n"
+        "          local e = 0\n"
+        "          if lo == 'explosion' then e = 1 elseif lo == 'steeringjam' then e = 2\n"
+        "          elseif lo == 'enginejam' then e = 3 elseif lo == 'fire' then e = 4 end\n"
+        "          f[q .. 'eff'] = e\n"
+        "        end\n"
+        "      end\n"
+        "    end\n"
+        "    f.nfail = nf\n"
         "    f.hp = num(row.HP, 1000) or 0\n"
         "    f.armour = num(row.Armour, 1000) or 0\n"
         "    f.length = num(row.Length, 1000) or 0\n"
@@ -1996,6 +2120,54 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
             dc.repair_fraction = bsp::store_repair_tick_percentage_0083e243(
                 flat_scaled(type_id, "dcbody", 1000000.0f, 0.2f))
                 * flat_scaled(type_id, "dcbodymul", kMilliScale, 2.0f);
+            dc.task.failure_repair_enabled = true;   // 0093BCC0 +46h = 1
+            dc.task.hull_repair_enabled = true;      // +45h = 1
+            dc.sections.clear();
+            const int nsec = flat(type_id, "nsec", 0);
+            for (int k = 1; k <= nsec && k <= 64; ++k) {
+                char key[24];
+                DamageControl::Section sec;
+                std::snprintf(key, sizeof(key), "s%d_kind", k);
+                sec.kind = flat(type_id, key, -1);
+                std::snprintf(key, sizeof(key), "s%d_idx", k);
+                sec.index = flat(type_id, key, 0);
+                std::snprintf(key, sizeof(key), "s%d_fc", k);
+                // 0087CA80: FDIV by 100.0 (D7A220) of the authored value.
+                sec.chance = bsp::store_repair_tick_percentage_0083e243(
+                    flat_scaled(type_id, key, kMilliScale, -100.0f));
+                std::snprintf(key, sizeof(key), "s%d_thr", k);
+                sec.threshold = flat_scaled(type_id, key, kMilliScale, -1.0f);
+                dc.sections.push_back(sec);
+            }
+            if (!failure_settings_read) {
+                failure_settings_read = true;
+                failure_chance = bsp::store_repair_tick_percentage_0083e243(
+                    flat_scaled(type_id, "fchance", kMilliScale, 5.0f));
+                failure_threshold = flat_scaled(type_id, "fthr", kMilliScale, 100.0f);
+                explosion_fraction = bsp::store_repair_tick_percentage_0083e243(
+                    flat_scaled(type_id, "explpct", kMilliScale, 1.0f));
+                fire_failure_seconds = flat_scaled(type_id, "firefd", kMilliScale, 1.0f);
+                const int nf = flat(type_id, "nfail", 0);
+                for (int k = 1; k <= nf && k <= 32; ++k) {
+                    char key[24];
+                    FailureRow frow;
+                    std::snprintf(key, sizeof(key), "fl%d_kind", k);
+                    frow.kind = flat(type_id, key, -1);
+                    std::snprintf(key, sizeof(key), "fl%d_id", k);
+                    frow.name_id = flat(type_id, key, k);
+                    std::snprintf(key, sizeof(key), "fl%d_eff", k);
+                    frow.effect = flat(type_id, key, 0);
+                    std::snprintf(key, sizeof(key), "fl%d_dur", k);
+                    frow.duration = flat_scaled(type_id, key, kMilliScale, 0.0f);
+                    failure_rows.push_back(frow);
+                }
+                log.notef("gunnery: failures FailureChance=%.3f FailureDamageThreshold=%.1f "
+                    "ExplosionDamagePercentage=%.3f FireFailureDamageDuration=%.1f rows=%zu "
+                    "(0083E547, 0083E594, 0083E379, 0083E32C, 0093AA00)",
+                    static_cast<double>(failure_chance), static_cast<double>(failure_threshold),
+                    static_cast<double>(explosion_fraction),
+                    static_cast<double>(fire_failure_seconds), failure_rows.size());
+            }
             if (!dc_logged) {
                 dc_logged = true;
                 log.notef("gunnery: damage control ShipGlobals=%d WaterTickDamage=%.1f "
@@ -5244,8 +5416,16 @@ public:
         }
     }
 
-    void roll_component_failure(float) override {
-        owner_.record("ShipHit::component_failure_0093bed0", 0x0093bed0u);
+    void roll_component_failure(float damage) override {
+        // 00827450: 0093BED0(task, hit, damage); the kind and index are the
+        // hit's +30h / +34h (the element trace's, see kHullElementSegmentBound).
+        if constexpr (kComponentFailureBound) {
+            owner_.roll_component_failure_0093bed0(victim_, owner_.impact_shape_kind,
+                hit_.hull_segment, damage);
+            owner_.done("ShipHit::component_failure_0093bed0", 0x0093bed0u);
+        } else {
+            owner_.record("ShipHit::component_failure_0093bed0", 0x0093bed0u);
+        }
     }
 
     bool is_local_players_unit() override { return false; }
@@ -5573,6 +5753,182 @@ void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
     done("Projectile::blast_radial_damage_0084bad0", 0x0084bad0u);
 }
 
+namespace {
+
+// Packet cc9_component_failures. The call sites 0093BED0 and 0093C520 reach,
+// over this host's unit rows (bsp/unit_fire_flooding.hpp's sequences). Every
+// other site of the interface belongs to steps this binding does not run and
+// throws if reached.
+class FailureBinding final : public bsp::UnitFireFloodingHost {
+public:
+    FailureBinding(GameGunneryHost::Impl& owner, std::size_t unit)
+        : owner_(owner), unit_(unit) {
+        settings_.failure_chance_numerator = owner.failure_chance;      // +3DCh
+        settings_.failure_chance_denominator = owner.failure_threshold; // +3E0h
+    }
+    const bsp::DamageControlSettings& game_settings() override { return settings_; }
+    // 00F88C30 is never created in this process: the factor is 1.0.
+    bool modifier_manager_present() override { return false; }
+    bool modifier_manager_enabled() override { return false; }
+    float gameplay_modifier_product(int, std::uint32_t) override { return 1.0f; }
+    // 0093BED0 reaches this with SessionMode 0 (single player).
+    bool failure_rolls_enabled() override { return true; }
+    // 008782A0: the first section row whose +4h and +8h equal (kind, index).
+    bool resolve_component(std::uint32_t kind, int segment, float* numerator,
+                           float* denominator) override {
+        const auto& dc = owner_.damage_control[unit_];
+        for (const auto& sec : dc.sections) {
+            if (sec.kind == static_cast<int>(kind) && sec.index == segment) {
+                *numerator = sec.chance;
+                *denominator = sec.threshold;
+                ++owner_.cf_resolved;
+                return true;
+            }
+        }
+        return false;
+    }
+    float random_unit_float() override {
+        return owner_.draw(GameGunneryHost::Impl::Draw::component_failure, unit_, 0, 0.0f, 1.0f);
+    }
+    // 0093AA00: the first settings row with row+0h == kind.
+    bool failure_descriptor_for(std::uint32_t kind, std::string* name,
+                                float* duration) override {
+        for (const auto& row : owner_.failure_rows) {
+            if (row.kind != static_cast<int>(kind)) continue;
+            *name = name_of(row);
+            *duration = row.duration;
+            return true;
+        }
+        return false;
+    }
+    // 0093A9E0 over task+18h with the row's name, 0093A5D0 against the end.
+    bool failure_already_active(const std::string& name) override {
+        for (const auto& f : owner_.damage_control[unit_].task.failures) {
+            if (f.name == name) return true;
+        }
+        return false;
+    }
+    void session_route_failure_started(std::uint32_t, int) override {
+        owner_.record("Failure::section_state_message_0093a2c0", 0x0093a2c0u);
+    }
+    void warning_fire_failure(std::uint32_t, const std::string&, float) override {
+        owner_.record("Failure::warning_manager_00982c50", 0x00982c50u);
+    }
+    void failure_side_effect(std::uint32_t, std::uint32_t, std::uint32_t) override {
+        owner_.record("Failure::statistics_00913d80", 0x00913d80u);
+    }
+    void unit_on_failure(std::uint32_t, const std::string& name, std::uint32_t) override {
+        ++owner_.cf_started;
+        owner_.apply_failure_effect_00827b90(unit_, name);
+    }
+    // 0093C520's expiry: vtable[19Ch] and the clear message (6Dh / 6Eh for
+    // the two jams, 008137B0). The failure leaves task+18h, which is all
+    // unit_failure_active reads.
+    void unit_named_state_dispatch(std::uint32_t, const std::string&) override {
+        ++owner_.cf_retired;
+    }
+    void session_route_failure_cleared(std::uint32_t, const std::string&) override {
+        owner_.record("Failure::clear_message_0077c2a0", 0x0077c2a0u);
+    }
+
+    static std::string name_of(const GameGunneryHost::Impl::FailureRow& row) {
+        switch (row.effect) {
+            case 1: return "Explosion";
+            case 2: return "SteeringJam";
+            case 3: return "EngineJam";
+            case 4: return "Fire";
+            default: return "Failure#" + std::to_string(row.name_id);
+        }
+    }
+
+    [[noreturn]] static void unreached(const char* site) {
+        throw std::logic_error(std::string("FailureBinding: ") + site
+            + " is not reached by 0093BED0 or 0093C520");
+    }
+    float unit_max_health(std::uint32_t) override { unreached("+36Ch"); }
+    float unit_health(std::uint32_t) override { unreached("+370h"); }
+    void apply_health_delta(std::uint32_t, float) override { unreached("00879810"); }
+    void set_health(std::uint32_t, float) override { unreached("00877B90"); }
+    void unit_add_damage(std::uint32_t, float) override { unreached("vtable[1ACh]"); }
+    std::string unit_display_name(std::uint32_t) override { unreached("vtable[14h]"); }
+    float unit_get_health_0923be0(std::uint32_t) override { unreached("00923BE0"); }
+    void log_line(const char*, const std::string&, double, double) override {
+        unreached("004254B0");
+    }
+    void repair_completed_notify(std::uint32_t) override { unreached("00914100"); }
+    std::uint32_t random_next_u32() override { unreached("00BD2FC0"); }
+    bool failure_table_row(int, std::string*, float*, bool*) override { unreached("+3E8h"); }
+    int failure_table_size() override { unreached("+3E8h"); }
+    std::uint32_t unit_parts_object(std::uint32_t) override { unreached("0080E490"); }
+    float parts_displacement(std::uint32_t) override { unreached("0092BEB0"); }
+    int leak_manager_count(std::uint32_t) override { unreached("+10D4h"); }
+    const float* leak_manager_leaks(std::uint32_t) override { unreached("+10D4h"); }
+    const float* leak_manager_water(std::uint32_t) override { unreached("+10D4h"); }
+    void lua_push_number(float) override { unreached("00B66480"); }
+    bool unit_is_kind_of(std::uint32_t, int) override { unreached("vtable[5Ch]"); }
+    void unit_max_repair(std::uint32_t) override { unreached("vtable[1B8h]"); }
+    int group_member_count(std::uint32_t) override { unreached("+3CCh"); }
+    std::uint32_t group_member(std::uint32_t, int) override { unreached("+3D0h"); }
+    int roster_size(std::uint32_t) override { unreached("+398h"); }
+    std::uint32_t roster_member(std::uint32_t, int) override { unreached("+398h"); }
+
+private:
+    GameGunneryHost::Impl& owner_;
+    std::size_t unit_;
+    bsp::DamageControlSettings settings_{};
+};
+
+}  // namespace
+
+void GameGunneryHost::Impl::roll_component_failure_0093bed0(std::size_t unit, int kind,
+    int segment, float damage) {
+    if (unit >= damage_control.size() || unit >= unit_state.size()) return;
+    if (segment == kDirectHitHullSegment) return;
+    ++cf_rolls;
+    FailureBinding binding(*this, unit);
+    bsp::roll_component_failure_0093bed0(binding, static_cast<std::uint32_t>(unit + 1),
+        damage_control[unit].task, 0, static_cast<std::uint32_t>(kind), segment, damage);
+}
+
+// 00827B90, the ship's vtable[21Ch]. Explosion: message 6Ah -> 008198A0 ->
+// the 38h scheduled object 00818110 whose step 0081B630 calls vtable[1ACh]
+// with msg+30h = max health * settings+3C4h (applied here at once; the image
+// applies it on the scheduler's next pass). Fire: 9Eh selector 0 with
+// settings+3C0h seconds and the add flag. SteeringJam / EngineJam: messages
+// 6Bh / 6Ch set unit+9E4h / +9E5h (published by unit_failure_active). Any
+// other name returns 1 with no effect.
+void GameGunneryHost::Impl::apply_failure_effect_00827b90(std::size_t unit,
+    const std::string& name) {
+    UnitState& state = unit_state[unit];
+    log.notef("gunnery: component failure %s on %s t=%.2f health=%.0f/%.0f",
+        name.c_str(), state.row.name.c_str(), static_cast<double>(clock_seconds),
+        static_cast<double>(state.health), static_cast<double>(state.max_health));
+    if (name == "Explosion") {
+        ++cf_explosions;
+        // msg+30h = unit+36Ch * settings+3C4h, taken when 00827B90 runs.
+        pending_explosions.emplace_back(unit, state.max_health * explosion_fraction);
+    } else if (name == "Fire") {
+        ++cf_fires;
+        if constexpr (kShipDamageControlTickBound) {
+            damage_control_add_seconds(unit, false, fire_failure_seconds);
+        }
+    } else if (name == "SteeringJam" || name == "EngineJam") {
+        ++cf_jams;
+        record(name == "SteeringJam" ? "Failure::steering_jam_flag_0081999d"
+                                     : "Failure::engine_jam_flag_008199c7",
+            name == "SteeringJam" ? 0x0081999du : 0x008199c7u);
+    }
+}
+
+bool GameGunneryHost::unit_failure_active(std::size_t unit_index, const char* name) const {
+    const Impl& host = *impl_;
+    if (name == nullptr || unit_index >= host.damage_control.size()) return false;
+    for (const auto& f : host.damage_control[unit_index].task.failures) {
+        if (f.name == name) return true;
+    }
+    return false;
+}
+
 // 0093A4F0 (water) / 0093A470 (fire), reached through 9Eh's add arm 0082203D.
 // Both add the seconds unconditionally (0093A4F0 skips only its statistics call
 // 009832F0 for a non-positive amount; 0093A470 calls 00983780 always), clear
@@ -5608,6 +5964,42 @@ void GameGunneryHost::Impl::damage_control_add_seconds(std::size_t unit, bool wa
 // inside the ship-motion update, and the entity flags +5Ch..+60h are read as
 // "not dead".
 void GameGunneryHost::Impl::run_damage_control(float dt) {
+    // 0081B630 for every explosion object 008198A0 scheduled since the last
+    // pass: vtable[1ACh](+2Ch), then the object retires itself (vtable[10h]).
+    if (!pending_explosions.empty()) {
+        std::vector<std::pair<std::size_t, float>> due;
+        due.swap(pending_explosions);
+        for (const auto& [unit, amount] : due) {
+            if (unit >= unit_state.size()) continue;
+            UnitState& state = unit_state[unit];
+            if (state.dead) continue;
+            bsp::UnitHealth health;
+            health.current_health = state.health;
+            health.max_health = state.max_health;
+            bsp::UnitDamageGates gates;
+            const bsp::UnitDamageOutcome outcome = bsp::apply_damage_00879070(health, gates,
+                amount);
+            if (!outcome.refused) {
+                const bsp::UnitHealthWrite write = bsp::set_health_00877b90(health,
+                    outcome.new_health, bsp::UnitSessionMode::campaign, 0, false);
+                if (write.wrote) {
+                    cf_explosion_damage += state.health - write.stored_health;
+                    state.health = write.stored_health;
+                }
+            }
+            state.row.health = state.health;
+            done("Failure::explosion_damage_0081b630", 0x0081b630u);
+            bsp::UnitHealth after;
+            after.current_health = state.health;
+            after.max_health = state.max_health;
+            if (bsp::unit_is_dead(after)) {
+                ++cf_deaths;
+                log.notef("gunnery: explosion death %s t=%.2f", state.row.name.c_str(),
+                    static_cast<double>(clock_seconds));
+                kill_unit(unit);
+            }
+        }
+    }
     if (!(dt > 0.0f)) return;
     const std::size_t n = std::min(damage_control.size(), unit_state.size());
     for (std::size_t i = 0; i < n; ++i) {
@@ -5636,6 +6028,16 @@ void GameGunneryHost::Impl::run_damage_control(float dt) {
                 dc.repaired += state.health - before;
             }
             done("DamageControl::repair_hull_0093c770", 0x0093c770u);
+        }
+        if constexpr (kComponentFailureBound) {
+            // 0093C520, the third step: every failure's seconds run down at
+            // rate 1.0 (priority 0, +46h set) and expired ones are retired.
+            if (!dc.task.failures.empty()) {
+                FailureBinding binding(*this, i);
+                bsp::repair_failures_0093c520(binding, static_cast<std::uint32_t>(i + 1),
+                    dc.task, dt);
+            }
+            done("DamageControl::repair_failures_0093c520", 0x0093c520u);
         }
         // 0093C120 water, then 0093C210 fire: the elapsed part of this step.
         const auto timer = [&](float& seconds, float rate, double& total) {
@@ -5957,7 +6359,8 @@ void GameGunneryHost::fixed_step(float step_seconds) {
     }
     host.run_gun_aim_and_fire(step_seconds);
     host.run_projectiles(step_seconds);
-    if constexpr (kShipDamageControlTickBound || kShipHullRepairBound) {
+    if constexpr (kShipDamageControlTickBound || kShipHullRepairBound
+                  || kComponentFailureBound) {
         host.run_damage_control(step_seconds);
     }
     // The rows are complete for this step here, after every per-unit pass and
@@ -6859,11 +7262,15 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery damage control element_bound=%d tick_bound=%d "
             "repair_bound=%d element_hits=%llu fizika=%llu water_adds=%llu fire_adds=%llu "
             "pending_over_health=%llu water_damage=%.0f fire_damage=%.0f repaired=%.0f "
-            "dc_deaths=%llu ships_with_damage_control=%zu",
+            "dc_deaths=%llu ships_with_damage_control=%zu failure_bound=%d rolls=%llu "
+            "resolved=%llu started=%llu explosions=%llu explosion_damage=%.0f fires=%llu "
+            "jams=%llu retired=%llu failure_deaths=%llu",
             kHullElementSegmentBound ? 1 : 0, kShipDamageControlTickBound ? 1 : 0,
             kShipHullRepairBound ? 1 : 0, host.element_hits, host.element_hits_fizika,
             host.dc_water_adds, host.dc_fire_adds, host.dc_doomed_notes, water, fire, repaired,
-            host.dc_deaths, enabled);
+            host.dc_deaths, enabled, kComponentFailureBound ? 1 : 0, host.cf_rolls,
+            host.cf_resolved, host.cf_started, host.cf_explosions, host.cf_explosion_damage,
+            host.cf_fires, host.cf_jams, host.cf_retired, host.cf_deaths);
     }
 
     std::array<unsigned long long, bsp::kUnitGunneryCategoryCount> cat_guns{};

@@ -42,7 +42,9 @@ void store_gameplay_artillery_throw_rate_0083da26(float duration, float& rate) n
 
 // 0083E243 / 0083E295: FDIV qword ptr [00D7A220] (00 00 00 00 00 00 59 40, 100.0) on the
 // 00B66330 result, then FSTP dword to settings+3B4h (0083E258) / +3B8h (0083E2AA). The
-// authored "percentage" is stored as a fraction.
+// authored "percentage" is stored as a fraction. The same FDIV follows the reads of
+// FireFailureChance (0083E2E3), ExplosionDamagePercentage (0083E379) and FailureChance
+// (0083E547); these are all five FDIV [00D7A220] sites in 0083B5E0..00842951.
 float store_repair_tick_percentage_0083e243(float authored) noexcept {
     return static_cast<float>(static_cast<double>(authored) / 100.0);
 }
@@ -175,15 +177,18 @@ void load_gameplay_tuning_settings(GameplayTuningRowView& rows,
         rows.number_or("BodyRepairTickPercentage", 0.2f));  // 0083e23e, / 100 at 0083e243
     out.gun_repair_tick_percentage = store_repair_tick_percentage_0083e243(
         rows.number_or("GunRepairTickPercentage", 2.0f));  // 0083e290, / 100 at 0083e295
-    out.fire_failure_chance = rows.number_or("FireFailureChance", 1.0f);  // 0083e2de
+    out.fire_failure_chance = store_repair_tick_percentage_0083e243(
+        rows.number_or("FireFailureChance", 1.0f));  // 0083e2de, / 100 at 0083e2e3
     out.fire_failure_damage_duration = rows.number_or("FireFailureDamageDuration", 1.0f);  // 0083e32c
-    out.explosion_damage_percentage = rows.number_or("ExplosionDamagePercentage", 1.0f);  // 0083e374
+    out.explosion_damage_percentage = store_repair_tick_percentage_0083e243(
+        rows.number_or("ExplosionDamagePercentage", 1.0f));  // 0083e374, / 100 at 0083e379
     out.pump_repair_multiplier = rows.number_or("PumpRepairMultiplier", 2.0f);  // 0083e3c6
     out.fire_repair_multiplier = rows.number_or("FireRepairMultiplier", 2.0f);  // 0083e412
     out.failure_repair_multiplier = rows.number_or("FailureRepairMultiplier", 2.0f);  // 0083e45e
     out.body_repair_multiplier = rows.number_or("BodyRepairMultiplier", 2.0f);  // 0083e4aa
     out.gun_repair_multiplier = rows.number_or("GunRepairMultiplier", 2.0f);  // 0083e4f6
-    out.failure_chance = rows.number_or("FailureChance", 5.0f);  // 0083e542
+    out.failure_chance = store_repair_tick_percentage_0083e243(
+        rows.number_or("FailureChance", 5.0f));  // 0083e542, / 100 at 0083e547
     out.failure_damage_threshold = rows.number_or("FailureDamageThreshold", 100.0f);  // 0083e594
     rows.enter("VizbeomlesDolgok");
     out.vizbeomles_dolgok_kill_depth = rows.number("KillDepth");  // 0083ea71
