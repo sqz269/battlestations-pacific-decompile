@@ -102,8 +102,10 @@ void __fastcall clear_native_particle_clock_records_004dda40(
     while (load(secondary, 8) != 0) {
         const Word count = load(secondary, 8);
         auto* const data = current_record_data(vector_at(secondary));
-        void* const sink = reinterpret_cast<void*>(
-            load(data, count * 0x2cu - 4u));
+        const volatile auto* const captured_record =
+            static_cast<NativeRenderResourceRecord*>(
+                at(data, count * 0x2cu - 0x2cu));
+        void* const sink = captured_record->resource_28;
         release_current_sink(secondary, sink, context);
         const Word current_count = load(secondary, 8);
         if (current_count != 0) {
