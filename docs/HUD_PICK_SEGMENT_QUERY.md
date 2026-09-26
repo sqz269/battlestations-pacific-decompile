@@ -144,3 +144,51 @@ a `const_cast` the owner judges safe; the binding only reads.
 - `ray_hit_branch` implements section 2: the kind list, records for `hit_section` and 00923810,
   and 0 otherwise;
 - predictions and the USN04 and USN02 pairs follow the standing pattern.
+
+## 5. The binding and its predictions (the switch committed OFF)
+
+The gunnery entry landed as 09298b10e under the integrator's arbitration of 2026-09-26. Section 4
+was wrong on one point. The trace bumps `shell_mesh_hits` (per mesh hit) and
+`narrowphase_box_0085cdb0` (per box hit), so the entry restores both after each query.
+
+`kHudPickSegmentQueryBound` (`src/game_hosts_hud.cpp`):
+- `ray_pick_009043a0` calls `query_segment_units(from, to, firing, ...)`.
+- `ray_hit_branch` implements section 2:
+  - kinds 6, 0Fh, 45h, 46h, 1Bh and 35h are the pick, counted as `ray_pick_own` or
+    `ray_pick_other` by side against the controlled unit;
+  - a ship hit also records `UnitPickScreen::hit_section` (00526C8C);
+  - kind 1Eh records `UnitPickScreen::part_owner_00923810`;
+  - any other kind counts `ray_hit_other_kind`.
+
+**What reads the pick.** 00527260 stores it in +4Ch, and +B0h is the pick or its vtable +140h
+owner.
+- The weapon-group screen 2Eh reads +4Ch as its target (00548856). With gunner roles held and
+  the target not on the first entry's side (+54h), it builds the fire message 00954A10 with the
+  target's id. `route_fire_message` hands that to `GameGunneryHost::apply_gun_aim_message_00959c20`.
+  **That is a gameplay path.** An enemy picked by ray, while the group's gunner path runs, can
+  move the player's guns.
+- The follow screen 49h reads +4Ch (0067BF44). That is camera and HUD only.
+- The lock branches of 00527260 need input. With an idle player they do not run.
+
+**Predictions, written before the pairs.** One tree (main 661e8bc45 plus 09298b10e plus this),
+`local\bin\rp_off` against `local\bin\rp_on`, `BSP_GUNNERY_RNG_STREAMS=1`, 1600x900. USN04
+4700/4500 and USN02 9200/9000.
+- **Rows.**
+  - `UnitPickScreen::segment_query` turns concrete at its OFF count (9,160 in USN04, 18,160 in
+    USN02).
+  - `UnitPickScreen::ray_hit_branch` (a record that never ran) is replaced by the new rows.
+  - `segment_query_hit` counts the calls whose ray hits a unit other than the controlled one.
+- **What the ray meets.** The camera follows the controlled unit: the Lexington in USN04, and
+  the controlled ship of USN02. Its forward line runs over that ship and on for 10000. The ship
+  itself is excluded.
+  - Hits come from the ships of the controlled unit's own formation that lie ahead on that line.
+    They are own-side ship hits, so they count `ray_pick_own` and `hit_section`.
+  - Enemy aircraft or ships crossing the line count `ray_pick_other`.
+  - I expect own-ship hits in the thousands, and enemy hits in the tens or none.
+- **Resolved picks.** `UnitPickScreen::owner_140` rises by the ray picks. A ship is not kind 19h,
+  so +B0h goes through vtable +140h.
+- **Gameplay.** Own-side picks are filtered at the weapon group's side test and move nothing.
+  - If `ray_pick_other` is zero, no gameplay row, per-entity row or summary line moves.
+  - If it is non-zero, a move in the gunnery lines is possible through 00954A10. Any such move
+    will be attributed through the `HudWeaponGroupScreen` rows, not called a finding.
+  - A gameplay move with `ray_pick_other` at zero would be the finding.

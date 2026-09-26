@@ -5312,6 +5312,33 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
 
 }  // namespace
 
+bool GameGunneryHost::query_segment_units(const float from[3], const float to[3],
+    std::size_t exclude, std::size_t& hit_unit, float hit_point[3]) const {
+    // Integrator arbitration 2026-09-26: the HUD's one const query over
+    // SegmentBinding. The binding counts its mesh and 0085CDB0 hits; a HUD
+    // query restores both so the gunnery summary reports shots only.
+    Impl& host = *impl_;
+    const unsigned long long mesh_hits = host.shell_mesh_hits;
+    const unsigned long long box_hits = host.narrowphase_box_0085cdb0;
+    hit_unit = 0;
+    SegmentBinding query(host, exclude == 0 ? static_cast<std::size_t>(-1) : exclude - 1);
+    bsp::SegmentQueryArgs args;
+    args.from = bsp::HitQueryPoint{from[0], from[1], from[2]};
+    args.to = bsp::HitQueryPoint{to[0], to[1], to[2]};
+    args.exclude_entity = reinterpret_cast<const void*>(exclude);
+    bsp::HitRecordFill record;
+    bsp::hit_record_reset_00470470(record);
+    const bool hit = bsp::query_segment_0098add0(query, args, record);
+    host.shell_mesh_hits = mesh_hits;
+    host.narrowphase_box_0085cdb0 = box_hits;
+    if (!hit || query.hit_unit == 0) return false;
+    hit_unit = query.hit_unit;
+    hit_point[0] = record.position.x;
+    hit_point[1] = record.position.y;
+    hit_point[2] = record.position.z;
+    return true;
+}
+
 void GameGunneryHost::Impl::run_projectiles(float dt) {
     for (GameProjectileRow& shot : shots) {
         if (!shot.alive) continue;

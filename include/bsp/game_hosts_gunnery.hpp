@@ -593,6 +593,14 @@ public:
     // before the first rebuild or for a side with no slot.
     bool recon_triple_units(int side, int triple, std::vector<std::size_t>& out) const;
 
+    // Packet cc9_hud_ray_pick (docs/HUD_PICK_SEGMENT_QUERY.md section 4): 0098ADD0
+    // over this host's units, as 009043A0 calls it with kind filter 0. `exclude`
+    // is one-based (0 = none) and stands for ignore->vtable[B0h]. True with the
+    // nearest hit's one-based unit and point. Read-only: the two trace counters
+    // the binding bumps are restored, so no gunnery summary line moves.
+    bool query_segment_units(const float from[3], const float to[3], std::size_t exclude,
+        std::size_t& hit_unit, float hit_point[3]) const;
+
     // Packet cc9_component_failures: true while unit `unit_index` carries an active
     // failure of that name in its repair task (task+18h), started by 0093BED0 and
     // retired by 0093C520. "SteeringJam" and "EngineJam" are the ones 008198A0
