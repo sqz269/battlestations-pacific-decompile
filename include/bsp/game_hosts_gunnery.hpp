@@ -222,7 +222,7 @@ struct GameGunRow {
 // Packet cc9_player_gun_seat. ON binds message 79h's group 1/2 arm
 // (00959C20) and the gun bots' side gate 008FFA99 on the gun's own seat.
 // Committed OFF until its pair runs.
-inline constexpr bool kPlayerGunSeatBound = false;
+inline constexpr bool kPlayerGunSeatBound = true;
 
 // Session message 79h as 00954A10 builds it in 005484F0 (section 32 of
 // docs/SHIP_SCREEN_UPDATE.md): +1Ch group, +20h..+28h the camera mover's
