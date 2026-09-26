@@ -729,3 +729,37 @@ the 11 missing units follow from that split, not from the steer.
   it now decides whether a 9000-frame USN04 run reaches phase 2.
 - **Still records:** `approach+6Ch` (the `+348h` command block), the `009C23B0` override, the
   release arm `009C2763` and the `009FABE0` direction tail.
+
+## The formation placement pair (packet cc9_plane_formation_placement_pair)
+
+2026-09-26. This is a measurement and changes no code. `kPlaneFormationPlacementEnabled`
+(`src/game_hosts_units.cpp`, `GameUnitsHost::Impl`) moves each wing member onto its station at
+its first step. That placement stands in for `009BFEE0`. The 2026-09-19 note beside it records
+a null result, because no USN04 plane then entered a follow state. Parts 3 and 4 changed that:
+- the escort Zero wingmen now run the kind-7 follow tick;
+- the Kate wingmen run the torpedo task's follow state.
+So the pair can now be read.
+
+**The pair.**
+- Both sides run all four move-to switches and part 4, from `beb281dd9`.
+- The true side is `local\CS_ON_9000.log` / `local\CS_ON_4500.log` above: the same source, with
+  placement true.
+- The false side is `local\fp_off`, the same tree with only that constant set to false.
+- Streams are on, one run at a time.
+
+### Predictions (written before the false-side runs)
+
+The true side's figures come from the `plane formation geometry` lines. These are printed
+every 400 report ticks, before the placement branch, so tick 0 shows the spawn clump on both
+sides.
+
+| row | true side (measured) | false side prediction |
+| --- | --- | --- |
+| Zero pairs (leader-wingman) | 0 at tick 0; mean 155 m at tick 400; 61-90 m from tick 800 on | tick 400 mean below 100 m, because the follow law closes from the clump instead of from the placed station; from tick 800 on, 55-95 m, since the kind-7 follow law holds them |
+| Kate pairs | mean 141 m at tick 400, rising to 290 m by tick 2800 | tick 400 mean below the true side's; later means within a factor of 2 of the true side's, since the follow law, not the placement, governs after the first step |
+| Val pairs | mean 126-133 m through tick 1200 | the Vals never enter a follow state (`states[attackrun...]`), so nothing separates them: mean below 20 m through tick 1200 |
+| escort Zero deaths (9000) | 16 | 16 ± 2 |
+| total plane deaths | 51 (9000), 43 (4500) | within ± 4 |
+| torpedo / dive releases | 5 / 5 (9000), 5 / 4 (4500) | torpedo ± 2; dive ± 3, since stacked Vals share one run and release together or not at all |
+| moveto follow_ticks / no_station | 9154 / 18 (9000), 9033 / 18 (4500) | follow_ticks within 5 %, no_station 18 ± 10 |
+| identical rows | - | every row up to the first member step (the tick 0 geometry lines, the spawn records) |
