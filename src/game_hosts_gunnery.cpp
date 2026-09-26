@@ -7,6 +7,7 @@
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/gun_aim_terms.hpp"
 #include "bsp/gun_fire_points.hpp"
+#include "bsp/gameplay_settings.hpp"
 #include "bsp/geom_mesh_resource.hpp"
 #include "bsp/gun_mount_positions.hpp"
 #include "bsp/camera_multiply.hpp"
@@ -1989,9 +1990,11 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                 && units.unit_is_kind_of(i, bsp::kUnitGunneryKindShipBase);
             dc.water_tick = flat_scaled(type_id, "dcwater", kMilliScale, 0.0f);
             dc.fire_tick = flat_scaled(type_id, "dcfire", kMilliScale, 0.0f);
-            // 0083E243: BodyRepairTickPercentage / 100.0; 0093C770 at priority 0
-            // multiplies by BodyRepairMultiplier (settings+3D4h).
-            dc.repair_fraction = flat_scaled(type_id, "dcbody", 1000000.0f, 0.2f) / 100.0f
+            // settings+3B4h as the loader stores it (0083E243 divides by 100.0,
+            // bsp/gameplay_settings.hpp); 0093C770 at priority 0 multiplies by
+            // BodyRepairMultiplier (settings+3D4h).
+            dc.repair_fraction = bsp::store_repair_tick_percentage_0083e243(
+                flat_scaled(type_id, "dcbody", 1000000.0f, 0.2f))
                 * flat_scaled(type_id, "dcbodymul", kMilliScale, 2.0f);
             if (!dc_logged) {
                 dc_logged = true;

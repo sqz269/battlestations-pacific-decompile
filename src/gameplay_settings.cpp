@@ -40,6 +40,13 @@ void store_gameplay_artillery_throw_rate_0083da26(float duration, float& rate) n
     }
 }
 
+// 0083E243 / 0083E295: FDIV qword ptr [00D7A220] (00 00 00 00 00 00 59 40, 100.0) on the
+// 00B66330 result, then FSTP dword to settings+3B4h (0083E258) / +3B8h (0083E2AA). The
+// authored "percentage" is stored as a fraction.
+float store_repair_tick_percentage_0083e243(float authored) noexcept {
+    return static_cast<float>(static_cast<double>(authored) / 100.0);
+}
+
 void apply_constructor_defaults_00424a10(GameplayTuningSettings& out) noexcept {
     // 00424A8D..00424BBA, in store order. The addresses in the comments are the constants.
     out.dofparams_dist = 1.0f;             // 00424AC5, 00D7A24C
@@ -164,8 +171,10 @@ void load_gameplay_tuning_settings(GameplayTuningRowView& rows,
     rows.enter();
     out.fire_tick_damage = rows.number_or("FireTickDamage", 0.0f);  // 0083e1f5
     out.water_tick_damage = rows.number_or("WaterTickDamage", 0.0f);  // 0083e1b3
-    out.body_repair_tick_percentage = rows.number_or("BodyRepairTickPercentage", 0.2f);  // 0083e23e
-    out.gun_repair_tick_percentage = rows.number_or("GunRepairTickPercentage", 2.0f);  // 0083e290
+    out.body_repair_tick_percentage = store_repair_tick_percentage_0083e243(
+        rows.number_or("BodyRepairTickPercentage", 0.2f));  // 0083e23e, / 100 at 0083e243
+    out.gun_repair_tick_percentage = store_repair_tick_percentage_0083e243(
+        rows.number_or("GunRepairTickPercentage", 2.0f));  // 0083e290, / 100 at 0083e295
     out.fire_failure_chance = rows.number_or("FireFailureChance", 1.0f);  // 0083e2de
     out.fire_failure_damage_duration = rows.number_or("FireFailureDamageDuration", 1.0f);  // 0083e32c
     out.explosion_damage_percentage = rows.number_or("ExplosionDamagePercentage", 1.0f);  // 0083e374
