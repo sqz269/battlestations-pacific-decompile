@@ -36,8 +36,10 @@ void store(void* base, Word offset, Word value) noexcept {
     word(base, offset) = value;
 }
 
-void* pointer(void* base, Word offset = 0) noexcept {
-    return reinterpret_cast<void*>(load(base, offset));
+NativeRenderResourceRecord* current_record_data(
+    const NativeResourceRecordVectorStorage& actual_vector) noexcept {
+    const volatile auto& vector = actual_vector;
+    return vector.data_00;
 }
 
 std::int32_t signed_bits(Word bits) noexcept {
@@ -61,7 +63,7 @@ void resize_with_public_slot(NativeResourceRecordVectorStorage& actual_vector,
     Word index = load(vector, 4);
     while (signed_bits(index) < bound) {
         auto* const record = static_cast<NativeRenderResourceRecord*>(
-            at(pointer(vector), index * 0x2cu));
+            at(current_record_data(actual_vector), index * 0x2cu));
         bool name_armed = false;
         try {
             if (record != nullptr) {
@@ -90,7 +92,8 @@ void resize_with_public_slot(NativeResourceRecordVectorStorage& actual_vector,
                 destroy_native_string_header_0041dd20(record, context.strings);
             }
             volatile Word placement_address =
-                load(vector, 0) + index * 0x2cu;
+                static_cast<Word>(reinterpret_cast<std::uintptr_t>(
+                    current_record_data(actual_vector))) + index * 0x2cu;
             (void)placement_address;
             throw;
         }
@@ -110,7 +113,7 @@ void resize_with_public_slot(NativeResourceRecordVectorStorage& actual_vector,
         }
         const Word current_index = load(vector, 4);
         auto* const record = static_cast<NativeRenderResourceRecord*>(
-            at(pointer(vector), current_index * 0x2cu));
+            at(current_record_data(actual_vector), current_index * 0x2cu));
         destroy_native_resource_record_004d45a0(*record, context.strings);
     }
     store(vector, 4, static_cast<Word>(bound));
