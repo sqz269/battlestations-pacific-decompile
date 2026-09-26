@@ -33,8 +33,9 @@ volatile std::uint32_t& tracked_counter(CRITICAL_SECTION* section) noexcept {
 __declspec(noinline) NativeParticleClockStorage*
 get_native_particle_clock_singleton_004de4b0(
     void* volatile& actual_manager_publication_01090aa0,
-    NativeParticleClockStorage* volatile& actual_particle_publication_00f8d420) {
-    NativeParticleClockStorage* const initial = actual_particle_publication_00f8d420;
+    void* volatile& actual_particle_publication_00f8d420) {
+    NativeParticleClockStorage* const initial =
+        static_cast<NativeParticleClockStorage*>(actual_particle_publication_00f8d420);
     if (initial) {
         return initial;
     }
@@ -73,7 +74,7 @@ get_native_particle_clock_singleton_004de4b0(
             void* const current_manager = get_native_singleton_manager_00415350(
                 actual_manager_publication_01090aa0);
             NativeParticleClockStorage* const current_particle =
-                actual_particle_publication_00f8d420;
+                static_cast<NativeParticleClockStorage*>(actual_particle_publication_00f8d420);
             register_native_singleton_object_00bd0c30(
                 current_manager, nullptr, current_particle);
         }
@@ -87,7 +88,7 @@ get_native_particle_clock_singleton_004de4b0(
         destroy_native_singleton_guard_00411ee0(&guard);
         throw;
     }
-    return actual_particle_publication_00f8d420;
+    return static_cast<NativeParticleClockStorage*>(actual_particle_publication_00f8d420);
 }
 
 } // namespace bsp

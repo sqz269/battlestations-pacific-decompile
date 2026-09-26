@@ -33,6 +33,6 @@ static_assert(offsetof(NativeParticleClockStorage, payload_18) == 0x18);
 // originally captured lock and return a final publication read.
 NativeParticleClockStorage* get_native_particle_clock_singleton_004de4b0(
     void* volatile& actual_manager_publication_01090aa0,
-    NativeParticleClockStorage* volatile& actual_particle_publication_00f8d420);
+    void* volatile& actual_particle_publication_00f8d420);
 
 } // namespace bsp
