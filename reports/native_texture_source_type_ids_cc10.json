@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "packet": "cc10_texture_source_type_ids",
+  "baseline": "db3bf29a0c73b046700ce134436ec880c1df5552",
+  "status": "reconstructed_strict_win32_build_existing_tests_and_complete_library_emission_checked",
+  "source": "src/native_texture_source_type_ids.cpp",
+  "header": "include/bsp/native_texture_source_type_ids.hpp",
+  "native_bodies": [
+    {"address": "00b19c70", "end_exclusive": "00b19cae", "bytes": 62},
+    {"address": "00c30310", "end_exclusive": "00c30357", "bytes": 71},
+    {"address": "00c30360", "end_exclusive": "00c303b0", "bytes": 80},
+    {"address": "00c30460", "end_exclusive": "00c3046c", "bytes": 12}
+  ],
+  "native_body_bytes": 225,
+  "native_instructions": 63,
+  "native_read_spans": {"count": 5, "bytes": 243, "note": "Four complete bodies plus18B cShaderDataSource name, exact installed PE comparison; no new runtime/native activation credit"},
+  "genuine_existing_providers": ["LightTypeBootstrap::initialize_root_00bea780", "TypeIdCounterLifetime::get_006fac20"],
+  "storage_contract": "SAME actual processcounter/bootstrap/storage domain; live stable aligned12/16/20B descriptors and byteguards. Every reached parent/counter read must have valid initialized contents. A nonzero guard or partial failure does not initialize another target/parent. No adoption/reset/default/retry; unsigned DWORD wrap and failure writes preserved.",
+  "abi": "Original ECX target/no stackarguments/RET, C30460 same-target EAX return. Explicit C++ source ABI differs; no binary replacement/EH equivalence claim.",
+  "build": {"strict_win32": true, "warning_level": 4, "warnings_as_errors": true, "floating_point": "Strict", "toolset": "14.51.36231", "sdk": "10.0.26100.0", "attempts": 1, "existing_ctests_passed": 3, "new_tests": 0, "runtime": false},
+  "compiled": {"complete_unique_own_code_sections": 7, "own_code_bytes": 739, "own_code_rel32_calls": 14, "own_all_physical_section_relocations": 15, "remaining_relocation": ".debug$F DIR32NB to private consume_type_id", "byte_order_checks": 42, "exact_raw_object_ar_members": 4, "preserved13c_raw_members_identical": 3, "own_application_map_selected_symbols": 0, "physical_zero_pointer_has_zero_raw_bytes": true},
+  "pins": {"beforebuild_source_config": 12, "beforebuild_compiler_sdk": 15, "committed_owned_files": 5, "previous_packet_rows_preserved": 180},
+  "evidence": "local/cc10_texture_source_type_ids_implementation/evidence.zip",
+  "hash_receipt": "local/cc10_texture_source_type_ids_implementation/closure.json",
+  "limits": ["No own linked-body/activation proof", "No new runtime/Lua/game/controller case", "No original register ABI/privateFH3 proof", "No exact process type IDs", "No application shader cells/CRT/dispatch activation", "No source0/W or full sampler/program graph", "No complete texture-source ownership/storage admission"],
+  "metadata": "No worker ledger or Ghidra changes; primary integrates and accounts native bodies"
+}
