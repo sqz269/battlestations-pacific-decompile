@@ -87,3 +87,20 @@ options.
 - **Summary lines.** All identical: the extent is (1, 1) on both sides, so no projection moves.
 - **A later confirmation.** A 16:10 or 5:4 run (not available on this host's single mode) would
   be the one that moves marker and pick positions.
+
+## 5. The pair
+
+`local\ext_off_usn04.log` against `local\ext_on_usn04.log`, USN04 4700/4500,
+`BSP_GUNNERY_RNG_STREAMS=1`. The runs came after the session reconnect, so both sides ran at
+**2560x1440 windowed**, not the 640x480 section 4 assumed.
+
+| row | OFF | ON |
+| --- | ---: | ---: |
+| unimplemented total | 2,782,240 | 2,447,921 (-334,319; predicted -334,319) |
+| UnitPickScreen::gui_extent | 251,897 unimplemented | 251,897 concrete |
+| HudMarkers::gui_extent | 82,422 unimplemented | 82,422 concrete |
+
+- **Summary lines.** All 182 are identical.
+- **Why nothing moved at 16:9.** 2560x1440 is 16:9, so the extent is (1.3333333, 1.0). Both
+  consumers read the height, which is still exactly 1.0 (section 3's table).
+- **Result.** Every prediction holds. **`kHudGuiExtentBound` flips ON.**

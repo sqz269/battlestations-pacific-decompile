@@ -1954,3 +1954,44 @@ carry the new `held_retakes` field. N is 9,158 and 18,158 as before.
   enter's retake of roles 2 and 3 reaches the 4Bh arm and is counted as the no-op it is.
 - **Unchanged.** The Lexington's `held=080088888 open=989988888` stays, and every other summary line
   is identical in both forms.
+
+## 40. The pending pairs, run after the session came back (cc9-platform2, 2026-09-25)
+
+The session was reconnected at the console. From then on, runs use this installation's
+`options.txt` resolution, 2560x1440 windowed: the renderer now enumerates it, where the remote
+session offered only 640x480. Both sides of every pair below ran in that environment.
+`BSP_GUNNERY_RNG_STREAMS=1`, USN04 4700/4500.
+
+**Section 33, the role take, the USN04 confirmation.** `local\grt_off_usn04.log` (the 640x480 run
+from before the disconnect) against `local\grt_on3_usn04.log`.
+- Every row is as predicted: `group_available` 36,637 unimplemented -> 9,164 concrete,
+  `role_request` 1, `widget_c0` gone, five rows at 9,158 each, `entity_role_message_4b` 1 -> 2.
+- The unimplemented total falls by 5.
+- **Summary lines.** Player roles takes 1 -> 3. Otherwise only the two environment lines differ
+  (`back_buffer` and `options_file`: 640x480 -> 2560x1440).
+- **Confirmed.** `kHudGunnerRoleTakeBound` stays ON.
+
+**Section 37, the 2Eh layout.** `local\lay_off_usn04.log` against `local\lay_on_usn04.log`.
+- Every row is as predicted: `hide_widgets`, `row_widget` and `other_screen_00545360` concrete at
+  9,158; `show_row_widget` 9,158 new; `layout` 1; `place_f2` 4 unimplemented.
+- The total falls by 27,470 (3N - 4).
+- **Prediction miss: one summary line moves.** `summary bridge ... quads=184` becomes `quads=157`.
+  The sprite bridge's quad count is a count of drawn image widgets, so visibility does reach a
+  summary line after all. The 27 are exact:
+  - hidden: the 19 grid cells, their 4 `cross_F2_Icon` children, `CrosshairDisable_Icon`, the
+    three artillery aim icons and `GunState_Icon` (28);
+  - shown: the anti-aircraft centre cross (1).
+
+  This is the image's visible state for group 2 with an idle player.
+- **Result.** **`kHudWeaponGroupLayoutBound` flips ON.**
+
+**Section 39, the 2Eh enter and exit.** `local\ee_off_usn04.log` against `local\ee_on_usn04.log`.
+- Every row is as predicted: `FrontEndScreen::enter` 12 -> 11, `enter` 1, `bind` 1 -> 2,
+  `group_available` +2, `role_request` 1 -> 2, `entity_role_message_4b` 2 -> 3,
+  `player_unit_name` 1 -> 2.
+- The unimplemented total is unchanged.
+- **The only moved summary line** is player roles, `held_retakes=0` -> `held_retakes=2`.
+- **Result.** **`kHudWeaponGroupEnterExitBound` flips ON.**
+
+**The GUI extent** is recorded in docs/GUI_EXTENT_INPUTS.md section 5. **`kHudGuiExtentBound` flips
+ON.**
