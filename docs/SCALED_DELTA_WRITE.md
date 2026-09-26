@@ -67,3 +67,27 @@ One tree (main aba71a717 plus this), `local\bin\sd_off` against `local\bin\sd_on
 - **Deaths, hit records, releases.** Identical: a band of zero. The whole native table, the
   per-entity tables and every summary line are the same on both sides. A move would be the
   finding, and it would name a reader missing from section 2.
+
+## 4. The pairs and the verdict
+
+One tree (aba71a717 + de0ed0f47), `local\bin\sd_off` against `local\bin\sd_on`,
+`BSP_GUNNERY_RNG_STREAMS=1`. All four logs show the 1600x900 fit line and the final COM release.
+
+| | USN04 OFF | USN04 ON | USN02 OFF | USN02 ON |
+| --- | ---: | ---: | ---: | ---: |
+| unimplemented total | 2,194,415 | 2,194,415 | 4,302,698 | 4,302,698 |
+| `scan_proximity` | 55 | 55 | 111 | 111 |
+| gunnery deaths / hit records | 41 / 727 | 41 / 727 | 22 / 440 | 22 / 440 |
+
+**Every prediction held.**
+- The whole native table, concrete and unimplemented rows both ways, is identical. The only
+  exception is the harness counter `PlatformLoopCallbacks::pretranslate` (18 against 19 in USN04),
+  which the standing rules ignore.
+- The per-entity tables and every summary line are identical, so the clock offset is zero.
+- No `BotScheduler::*` or `Markers::update_marker` row appears on either side.
+- The warning scan keeps 55 and 111, now fed by the frame's write, not by the workaround.
+
+**Verdict: ON.** The write is the image's (004E4D45). It moves nothing in these runs, because
+every gameplay-side reader is gated shut by state the host does not build (section 2). With the
+switch on, the warning director reads the frame's value directly. `kScaledDeltaWriteBound` is set
+true.

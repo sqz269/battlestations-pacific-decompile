@@ -109,7 +109,7 @@ constexpr bool kWarningManagerTickBound = true;
 // writes game+21F0h, the scaled delta 004C6E30 stores at 004E4D45, into the
 // world tick state every frame, so each world-tick reader of +21F0h sees it.
 // False: that field is never written and reads 0.
-constexpr bool kScaledDeltaWriteBound = false;
+constexpr bool kScaledDeltaWriteBound = true;
 
 struct GameMissionFrameHost::Impl {
     Impl(GameHostLog& log_in, GameVfsHost& vfs_in, GameMissionLuaHost& lua_in,
