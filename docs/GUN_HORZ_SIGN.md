@@ -111,7 +111,55 @@ OFF `local\hzO` against ON `local\hzT`, one tree differing only in `kGunHorzImag
 
 ## 5. The pairs, and the decision
 
-Not run yet. At 16:01 on 2026-09-25 two short runs died during start-up, after
-`load_game_settings`, with session 1 disconnected (`query session`); a disconnected session gives
-the process no renderer or audio endpoint. The binaries are staged in `local\hzO` and `local\hzT`.
-The commit lands the switch OFF until the pairs are measured.
+Both pairs were rebuilt from the merged tree (main at `51e22e56d`, which includes the HUD worker's
+player-seat code with its switch OFF), in `local\hzO` and `local\hzT`, and run one pair at a time.
+USN04: `local/hzO_usn04.log` against `local/hzT_usn04.log`. USN02: `local/hzO_usn02.log`
+against `local/hzT_usn02.log`. All four runs presented every frame and exited 0.
+
+| row | USN04 OFF | USN04 ON | USN02 OFF | USN02 ON |
+| --- | --- | --- | --- | --- |
+| shots | 3672 | 3654 | 1412 | 1155 |
+| queued hits | 448 | 445 | 952 | 647 |
+| deaths | 30 | 30 | 18 | 16 |
+| AA line of fire blocked / refusals | 258 / 786 | 293 / 985 | - | - |
+| AA hits (cat 1 / cat 5) | 84 / 66 | 82 / 62 | - | - |
+| torpedo launches | - | - | 335 | 305 |
+| gun rows that differ | - | 289 of 726 | - | 301 of 464 |
+
+**The mirror, seen directly.** Lexington's four island-group mounts swap roles exactly.
+
+| platform (x, window) | OFF shots / hits | ON shots / hits |
+| --- | --- | --- |
+| 14 (+19.0 m, `[-170..-10]`) | 8 / 7 | 4 / 4 |
+| 15 (+18.8 m, `[10..170]`) | 3 / 3 | 9 / 8 |
+| 16 (-19.1 m, `[10..170]`) | 3 / 3 | 8 / 6 |
+| 17 (-18.8 m, `[-170..-10]`) | 8 / 5 | 4 / 4 |
+
+The attack comes from port. OFF, the busy pair is 14 and 17, the two windows the host was
+turning to port. ON, it is 15 and 16, the two the image faces to port.
+
+Verdict per prediction:
+- **USN04 AA line of fire falls by more than half: failed, and the premise was wrong.**
+  `line_of_fire_blocked_0072cdd0` skips the firing ship (`u == owner`). A sponson was never
+  blocked by its own hull; the count tracks which other ships sit between a gun and the targets
+  it now admits.
+- **USN04 AA hits rise, plane deaths +0..5: failed, flat instead** (cat 1 84 to 82, cat 5 66 to
+  62, deaths 30 on both sides). Every mirrored mount has a twin on the other beam, so correcting
+  the sign swaps which twin serves which side; coverage is unchanged. The swap is the effect.
+- **USN02 total shots within 20 percent: held** (-18 percent).
+- **USN02 torpedo launches within 15 percent: held** (-9 percent).
+- **USN02 main turrets move only by cascade: held in kind, large in size.** Main-turret shots fall
+  from 293 to 193. Their windows cover both sides, so the change comes through what the side
+  mounts and torpedoes now do first: Witte, Java and Encounter survive, and Haguro and Jintsu die
+  early to Harusame's torpedoes (131.35 s and 128.45 s). Both are same-side kills (IJN on IJN), and the torpedo friendly gate did not hold either launch. 17 of 20 death rows change.
+- **Deaths within 4, Houston and Exeter survive: held** on both missions.
+
+A log fix went in with the verdict. The `horz side` line started at arc index 1, but `007F5A10`
+inserts the windows sorted by angle, so a window beginning at -180 sits at index 0. The line
+therefore misreported aft turrets such as Houston's platform 3 (`[45..180]` plus `[-180..-45]`)
+as one-sided. The side table in section 3 comes from the Lua file through
+`local/horz_sides.py` and was not affected.
+
+**Decision: ON.** The windows fit the image's sign on 198 of 202 one-sided mounts in the two
+missions, and on 4 of 202 under the host's old sign. USN04 barely moves. USN02 churns as it did for
+the muzzle offsets.
