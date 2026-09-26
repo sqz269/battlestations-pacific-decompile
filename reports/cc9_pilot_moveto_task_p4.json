@@ -1,0 +1,41 @@
+{
+  "packet": "cc9_pilot_moveto_task_p4",
+  "doc": "docs/PILOT_MOVETO_TASK.md",
+  "calls": [
+    {"address": "009C26E7", "native": "007C47F0", "function": "009C26D0", "note": "desired speed with 0.0 (009C26D3 FLDZ); host moveto_speed_009c1850(unit, 0)"},
+    {"address": "009C26F2", "native": "009C23B0", "function": "009C26D0", "note": "target-speed override, kept a record"},
+    {"address": "009C26FD", "native": "009BECD0", "function": "009C26D0", "note": "wingmen-wait blend; then min with class+18Ch"},
+    {"address": "009C280E", "native": "009FBB20", "function": "009C26D0", "note": "circle steer (point_xz, r, side +18h, &local+18h); result popped"},
+    {"address": "009C2827", "native": "009FB800", "function": "009C26D0", "note": "pitch toward point.y with reference 1.0"},
+    {"address": "009C285F", "native": "009FABE0", "function": "009C26D0", "note": "direction tail, kept a record"},
+    {"address": "009FBCFC", "native": "004F4840", "function": "009FBB20", "note": "tangent points of circle(point, r) from q = point + u(m + r)"},
+    {"address": "009FBF3A", "native": "00BF701A", "function": "009FBB20", "note": "LIBCRT_atan2(v.x, v.z) -> cmd+2C0h"},
+    {"address": "004F4872", "native": "004F4430", "function": "004F4840", "note": "on the packed {c.x, c.z, r}"},
+    {"address": "004F4442", "native": "004F3810", "function": "004F4430", "note": "chord midpoint and half-chord"}
+  ],
+  "coverage": [
+    {"routine": "009C26D0", "coverage": "complete; release arm 009C2763-009C2794, 009C23B0 override and 009FABE0 tail are named records"},
+    {"routine": "009FBB20", "coverage": "complete"},
+    {"routine": "004F4840", "coverage": "complete"},
+    {"routine": "004F4430", "coverage": "complete"},
+    {"routine": "004F3810", "coverage": "complete"}
+  ],
+  "substitutions": [
+    {"what": "approach+6Ch", "is": "0.0, so r = TurnCircleRadius class+268h", "evidence": "written from the squadron +348h command block at 009C359F, not modelled"},
+    {"what": "unit+340h CheatTurbo", "is": "0.0", "evidence": "same substitution as the 0099D4EE dtScale site"}
+  ],
+  "corrections": [
+    {"was": "the circle passes &speed as 009FBB20's out pointer", "is": "it passes &local+18h, never read after the call", "evidence": "009C27DB LEA EAX,[ESP+0x18]; speed at local+14h is overwritten by r at 009C27E0"},
+    {"was": "009FBB20 returns [00D7A208] - (dist - r) otherwise", "is": "[00D7A208] is -0.0f, so it returns -(dist - r)", "evidence": "00D7A208 bytes 00 00 00 80"}
+  ],
+  "switches": [
+    {"name": "kMoveToCircleSteerBound", "state": "OFF", "pair": "local/CS_OFF_9000.log vs local/CS_ON_9000.log, local/CS_OFF_4500.log vs local/CS_ON_4500.log (all four move-to switches ON on both sides)"}
+  ],
+  "no_ghidra_function": [],
+  "ledger_names_added": [
+    {"address": "009FBB20", "name": "BSP_BotApproach_CircleSteer"},
+    {"address": "004F4840", "name": "BSP_Circle2D_TangentPointsFrom"},
+    {"address": "004F4430", "name": "BSP_Circle2D_TangentPoints"},
+    {"address": "004F3810", "name": "BSP_Circle2D_TangentChord"}
+  ]
+}
