@@ -64,6 +64,9 @@ void* volatile& GameSingletonHost::resource_registry_publication_00f8d41c() {
         throw std::logic_error("resource registry publication requires its retained deletion domain");
     return resource_registry_publication_00f8d41c_;
 }
+void* volatile& GameSingletonHost::particle_clock_publication_00f8d420() noexcept {
+    return particle_clock_publication_00f8d420_;
+}
 void GameSingletonHost::bind_sound_runtime(GameSoundRuntime* runtime) noexcept {
     deletion_bindings_.sound_runtime = runtime;
 }

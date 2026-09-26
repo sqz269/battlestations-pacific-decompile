@@ -45,6 +45,10 @@ public:
     // Expose the exact host-owned cell only after its deletion binding exists.
     // All later procedural/sampler contexts borrow this same reference.
     void* volatile& resource_registry_publication_00f8d41c();
+    // Stable application F8D420 cell. Preparing the renderer shutdown context
+    // borrows this cell without activating the clock. Any getter/registration
+    // must wait until native_deletion_bindings().particle_clock is installed.
+    void* volatile& particle_clock_publication_00f8d420() noexcept;
     void bind_sound_runtime(GameSoundRuntime*) noexcept;
     // Borrow the same application dispatch table when composing raw VFS
     // services. Bind their contexts before any corresponding owner registers.
@@ -118,6 +122,9 @@ private:
     NativeDiagnosticSinkStorage* volatile diagnostic_publication_0109cf14_{};
     void* volatile resource_registry_publication_00f8d41c_{};
     std::unique_ptr<NativeResourceRegistryDeleteBindings> resource_registry_bindings_;
+    // The renderer retains its SAME records/canonical-owner/IAT domain through
+    // this host's normal and fallback drains; this cell remains host-owned.
+    void* volatile particle_clock_publication_00f8d420_{};
     NativeSingletonDeletionBindings deletion_bindings_;
     std::unique_ptr<NativeWeakOwnerDomain> weak_owners_;
     GameNativeVfsRuntime* vfs_runtime_{};

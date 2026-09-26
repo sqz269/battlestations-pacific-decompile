@@ -34,6 +34,7 @@
 #include "bsp/native_singleton_removal_reorder.hpp"
 #include "bsp/native_singleton_vector_leaves.hpp"
 #include "bsp/native_singleton_destruction.hpp"
+#include "bsp/native_particle_clock_shutdown.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include "bsp/game_native_surface_pool.hpp"
 #include "bsp/game_native_texture_pool.hpp"
@@ -177,6 +178,8 @@ struct GameNativeRendererApplication::Impl {
     TextureLoadingGraph texture_loading;
     GameGridGraph game_grids;
     CameraGraph cameras;
+    NativeParticleRecordResizeContext particle_clock_records;
+    NativeParticleClockShutdownContext particle_clock_shutdown;
     ShaderGraph shaders;
     DescriptorGraph descriptors;
     CompilerOwnersGraph compiler_owners;
@@ -215,6 +218,10 @@ struct GameNativeRendererApplication::Impl {
         texture_loading(graph,devices,owners,vfs,platform_events,validation,accounting),
         game_grids(graph,devices,texture_loading,declaration_cache,vfs.strings,renderer),
           cameras(graph,renderer,files.native_owners().types(),files.native_types().camera_types()),
+          particle_clock_records{vfs.strings,validation},
+          particle_clock_shutdown{particle_clock_records,cameras.decrement,
+              host.particle_clock_publication_00f8d420(),
+              data.data_at(0x00ce7d08,0x14),data.data_at(0x00ce7d24,0x14),&owners},
           shaders(vfs,raw,cameras,profiles),
           descriptors(vfs.strings,services,definitions),
           compiler_owners(owners,profiles,vfs,raw,*host.native_deletion_bindings().resource_support,
@@ -227,12 +234,15 @@ struct GameNativeRendererApplication::Impl {
         check(!deletion.render_resources,"render-resource lifetime already bound");
         check(!deletion.shadow_depth_target && !shadow.process.shadow_target_publication_00f8bbf0(),
             "shadow target lifetime already bound");
+        check(!deletion.particle_clock && !host.particle_clock_publication_00f8d420(),
+            "particle clock lifetime already bound or published");
         bind_native_renderer_control_worker_process_context(control);
         deletion.renderer_owner=&graph.destructor;
         deletion.renderer_lua_owner=&lua;
         deletion.render_entry_cache=&entry_cache;
         deletion.render_resources=&resources.lifetime;
         deletion.shadow_depth_target=&shadow.context;
+        deletion.particle_clock=&particle_clock_shutdown;
     }
     ~Impl() {
         if(phase!=Phase::prepared && phase!=Phase::drained) std::terminate();
@@ -461,6 +471,8 @@ void GameNativeRendererApplication::drain_singletons() {
 void GameNativeRendererApplication::after_native_drain() {
     auto& p=*impl_;if(p.phase==Impl::Phase::drained)return;
     p.shadow.after_native_drain();
+    check(!p.particle_clock_shutdown.actual_publication_00f8d420,
+        "particle clock survived native drain");
     if(p.phase==Impl::Phase::prepared)return;
     check(!p.renderer && !p.lua_publication && !p.system_publication && !p.definitions,"native renderer children survived drain");
     check(!p.entry_cache_publication,"native render-entry cache survived drain");
