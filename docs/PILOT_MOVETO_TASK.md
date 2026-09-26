@@ -651,3 +651,81 @@ differ. The predictions are for the difference between the two sides.
 | plane deaths | OFF + 0 to 4, all escort Zeros |
 | releases | within band |
 | the Lexington's distance moved | within about 300 m of OFF |
+
+### The pairs, measured
+
+The binaries `local\cs_off` and `local\cs_on` are built from `72dc65b2d`, with the switch flipped
+for `cs_on`. `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1` were set, and the runs went
+one at a time. All four logs show the 1600x900 window line and a module directory inside this
+worktree. Each OFF log matches the earlier all-on runs on every row quoted above: 43 deaths, 796
+hits and 4284.80 m for 9000, and 36 deaths, 708 hits and 3481.38 m for 4500.
+
+Both sides enter the first circle state at the same log line, at t = 110 s (`A6M Zero #1.2:
+state 1148 -> 1324`). Every death before 122 s is identical. Deaths after that move by
+0.05-2 s, because the AA guns now also engage the circling Zeros.
+
+**E2 9000** (`local\CS_OFF_9000.log`, `local\CS_ON_9000.log`):
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| steer native | `BotStateMoveToCircle::steer` UNIMPLEMENTED, 13929 calls | gone; `BotStateMoveToCircle::tick` concrete, 3762 calls | similar count, fewer if the escorts die sooner | held; they die sooner |
+| `c25_arm` record | - | not called | 0 | held |
+| arrived leaders' distance | #1.2, #2.2, #4.2 and #8.2 end 20.9-30.9 km out | every circling leader stays within r: circle max_d is 947-1044 m, and last_d at death is 248-992 m | 600-1600 m, max_d below 2r | held; no circling leader is alive at the end |
+| wingmen | 20.9-30.9 km out with their leaders | last_d 278-1064 m | within about 2 km | held |
+| escort Zero deaths | 8 | 16: #1.2, #2.2, #4.2, #8.2 and their wingmen added, at 136.7-240.06 s | +2 to +8 | held, at the top |
+| total plane deaths | 43 | 51 | +2 to +8 | held |
+| hit records | 796 | 841 | +50 to +300 | **failed**: +45 |
+| torpedo / dive releases | 5 / 6 | 5 / 5 | within band | held |
+| the Lexington's distance moved | 4284.80 | 5833.61 | within 1000 m | **failed**: +1549, see the stage split below |
+| units | 92 | 81 | not predicted | **failed**: the mission stays in phase 1 |
+| identical rows | - | every row up to the first circle entry at 110 s | the same | held |
+
+**The stage split.** The mission is `usn_19_coralus.lua` at difficulty 1-2. Its phase-1 check
+completes objective primary 1 and calls `Blackout(true, "luaMoveToPh2", 3)` when any of these
+holds:
+- BomberWave == 5;
+- no IJN bombers aimed at the Lexington are left;
+- no IJN fighters aimed at the Lexington are left (`IJNFightersLex`).
+
+On ON, the last escort Zero dies at 240.06 s, and the check fires at t = 240.01 s.
+- On OFF, the escorts survive 20-30 km out. The check fires only at t = 345 s, on the wave
+  count or the bomber list, with escorts still alive.
+- `luaObj_Completed` sets `Success` but leaves `Active` set (`scripts/global/commandhelpers.lua`
+  `luaObj_Completed`, `luaObj_IsActive`). So the Think handler re-issues the 3 s blackout on
+  every pass, and a pass runs every 60 frames (3.0 s).
+- On OFF, the blackout's callback fired after 27 re-issues, at t ≈ 425 s. The Japanese fleet
+  and the `movie*` units then spawned, which makes 92 units.
+- On ON, it was re-issued 70 times until the run ended, and phase 2 never began.
+
+Whether a re-issue restarts the fade is decided by the reconstructed binding 008D1340
+(`src/mission_blackout.cpp`) and by the host's Think cadence, and neither is part of this
+packet. A 3 s re-arm on a 3.0 s period is a knife-edge. OFF escaping it at 425 s rather than
+348 s already suggests the host differs from the image there. The Lexington's extra 1549 m and
+the 11 missing units follow from that split, not from the steer.
+
+**USN04 4700/4500** (`local\CS_OFF_4500.log`, `local\CS_ON_4500.log`):
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| steer native | UNIMPLEMENTED, 4452 calls | concrete tick, 3129 calls | similar count | held |
+| end distances | #1.2, #2.2 and #4.2 end 9.4-10.8 km out | the one leader alive at 225 s, #8.2, is at 996 m with its wingman at 1064 m; every other circling leader dies within 1044 m | within about 2 km | held |
+| plane deaths | 36 | 43: seven escort Zeros added; the bombers' deaths only shift in time | +0 to +4 | **failed**: +7 |
+| hit records | 708 | 751 | - | - |
+| torpedo / dive releases | 5 / 5 | 5 / 4 | within band | held |
+| the Lexington's distance moved | 3481.38 | 3474.54 | within 300 m | held |
+| stage | phase 1 throughout | phase 1 throughout (no `luaMoveToPh2` call before 225 s) | - | same |
+
+### Verdict: `kMoveToCircleSteerBound` ON
+
+- **The steer behaves as read.** Every arrived leader turns onto a circle of radius r = 1000 m
+  round the Lexington (max_d 947-1044 m), in the direction its side byte picks. Its wing
+  follows it.
+- **The deaths.** The escorts orbit inside the carrier group's anti-aircraft cover, so they
+  die there. In E2 9000 that kills the whole `IJNFightersLex` list by 240 s, which the
+  mission script treats as the end of phase 1.
+- **The failed rows.** The extra 4500 deaths are that same effect, earlier than predicted.
+  The 9000 unit count and the Lexington's distance come from the blackout loop described
+  above. That loop is a separate host question for the blackout / Think-cadence owner, and
+  it now decides whether a 9000-frame USN04 run reaches phase 2.
+- **Still records:** `approach+6Ch` (the `+348h` command block), the `009C23B0` override, the
+  release arm `009C2763` and the `009FABE0` direction tail.
