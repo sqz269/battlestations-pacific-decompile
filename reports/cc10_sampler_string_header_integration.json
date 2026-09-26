@@ -1,0 +1,52 @@
+{
+  "packet": "cc10_sampler_string_header_integration",
+  "worker_commit": "e57f1947c6505a71d8909aa805ad5a3d9f5c34c2",
+  "integration": "a9b49eceb29d256d4d94c3550d93e00001c4eb44",
+  "worker_report": "reports/native_sampler_cache_string_header_access_cc10.json",
+  "primary_verification": {
+    "result": "PASS",
+    "worker_commit": "e57f1947c6505a71d8909aa805ad5a3d9f5c34c2",
+    "archives": {
+      "compiled_evidence.zip": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\local\\output\\cc10_sampler_cache_string_header_implementation\\compiled_evidence.zip",
+        "sha256": "ccd6080c1e6acf691e3a3bf016f69e0b1f792520f2f13e1d4550dc1ddb756edb",
+        "rows": 143,
+        "members": 144
+      },
+      "git_closeout_evidence.zip": {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\local\\output\\cc10_sampler_cache_string_header_implementation\\git_closeout_evidence.zip",
+        "sha256": "ff37a5e1a9840c1e8c999e8385c2290ad7f3539f6092a79e760a7f01ceceb79a",
+        "rows": 10,
+        "members": 11
+      }
+    },
+    "committed_blobs": 4,
+    "exact_member_bytes": 26376,
+    "complete_function_symbols": 57,
+    "symbol_covered_bytes": 3683,
+    "COFF_relocations": 113,
+    "unchanged_common_bodies": 53,
+    "unchanged_common_relocation_tables": 54,
+    "common_ordered_relocation_targets": 56,
+    "read_sites": 21,
+    "pointer_stores": 3,
+    "zero_count_paths": 3,
+    "worker_CTests": 3,
+    "new_runtime_runs": 0,
+    "limits": "Nonvolatile representation access; actual target emitted schedule verified, no stronger volatile/asynchronous contract. COFF/core-member evidence only; no new link selection, native ABI, FH3 or game validation."
+  },
+  "validation": {
+    "worker_CTests": 3,
+    "primary_CTests": 3,
+    "new_native_bytes": 0,
+    "new_runtime_runs": 0,
+    "game_validated": false
+  },
+  "limits": "Nonvolatile representation access; actual target emitted schedule verified, no stronger volatile/asynchronous contract. COFF/core-member evidence only; no new link selection, native ABI, FH3 or game validation.",
+  "archive": {
+    "path": "local/cc10-platform-evidence/sampler-string-header-access.zip",
+    "sha256": "228d03295172a7894cea9686cc69402a8e969440e1bd142c861bddc7db33fa68",
+    "files": 9,
+    "valid": true
+  }
+}
