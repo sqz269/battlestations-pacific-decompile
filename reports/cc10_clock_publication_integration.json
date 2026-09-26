@@ -1,0 +1,87 @@
+{
+  "packet": "cc10_clock_publication_integration",
+  "worker_commit": "806731e002d0e54c387213c317a82204f7396ad1",
+  "integration": "1fc5c459f8af2783e371f01e896dc9af72078261",
+  "worker_report": "reports/native_clock_publication_cell_cc10.json",
+  "primary_verification": {
+    "worker_commit": "806731e002d0e54c387213c317a82204f7396ad1",
+    "archive_sha256": "00c562c0967ba857644373eab8689fc0bdba4cca5ceefd0f55be423f89bb3afc",
+    "archive_rows_verified": 1219,
+    "archive_members": 1220,
+    "current_prerun_inputs_verified": 1029,
+    "prior_archives_unchanged": 40,
+    "prior_files_unchanged": 1188,
+    "exact_project_library_members": 362,
+    "only_relocation_symbol_changes": [
+      {
+        "offset": 6,
+        "kind": 6,
+        "effect": "getter EH name decoration"
+      },
+      {
+        "offset": 93,
+        "kind": 20,
+        "effect": "adapter getter name decoration"
+      }
+    ],
+    "COFF_windows": 10,
+    "COFF_window_bytes": 4504,
+    "linked_windows": 9,
+    "dispatcher_code_and_data_bytes": [
+      2972,
+      137
+    ],
+    "worker_CTests": 3,
+    "one_actual_source_fixture": true,
+    "runtime_parent_pid": 92428,
+    "runtime_child_pid": 15264,
+    "runtime_exits": [
+      0,
+      0
+    ],
+    "actual_raw_tool_receipt_verified": true,
+    "preflight_refusal_fixture_launches": 0,
+    "new_native_bytes": 0,
+    "review": [
+      "Three-file getter/adapter source diff preserves every volatile access/manager/guard/registration operation",
+      "Only freshly loaded values cast to owner type; actual void pointer cell remains live through getter and shutdown",
+      "Full void-cell fixture and retained-handle controller reviewed, null CIM field and path-spelling corrections separately reviewed before actual case",
+      "One direct genuine getter/registered empty-clock drain passed; sampler adapter source/COFF only"
+    ],
+    "limits": [
+      "004DE290 object-only, inlined schedule in B1B680; dispatcher lookup data never claimed as instructions",
+      "Historical PacketB two postlinkSDKpins/rawwrapperabsence retained; current16linklibraries individually precompilepinned",
+      "Owner raw storage/view lifetime and sampler view interpretation not established by this cell fix",
+      "No sampler pump/nonempty cache/concurrent publication/application F8D420 binding/source0W/nativeABI/FH3/game proof"
+    ],
+    "old_new_getter_adapter_identical_COFF_bytes": [
+      274,
+      127
+    ]
+  },
+  "validation": {
+    "primary_strict_Win32_CTests": 3,
+    "worker_strict_Win32_CTests": 3,
+    "changed_source_getter_symbol_all_callers_rebuilt": true,
+    "new_native_bytes": 0,
+    "actual_direct_getter_empty_clock_runs": 1,
+    "runtime_parent_child_exits": [
+      0,
+      0
+    ],
+    "sampler_adapter_runtime": false,
+    "application_or_game_validated": false
+  },
+  "limits": [
+    "004DE290 object-only, inlined schedule in B1B680; dispatcher lookup data never claimed as instructions",
+    "Historical PacketB two postlinkSDKpins/rawwrapperabsence retained; current16linklibraries individually precompilepinned",
+    "Owner raw storage/view lifetime and sampler view interpretation not established by this cell fix",
+    "No sampler pump/nonempty cache/concurrent publication/application F8D420 binding/source0W/nativeABI/FH3/game proof"
+  ],
+  "archive": {
+    "path": "local/cc10-platform-evidence/clock-publication-cell.zip",
+    "sha256": "968b8d8627034005c325b850738ceab00c9738aee4fdd24a4fe1912286e6e09d",
+    "files": 6,
+    "valid": true
+  }
+}
