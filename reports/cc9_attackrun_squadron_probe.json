@@ -2,9 +2,20 @@
   "packet": "cc9_attackrun_squadron_probe",
   "doc": "docs/ATTACKRUN_SQUADRON_PROBE.md",
   "calls": [
-    {"address": "009D0857", "native": "007F0280", "function": "009D07B0", "note": "mode 0 (PUSH 0 at 009D07FF), ECX = [approach+0Ch] the plane squadron; candidates = the squadron's +3D0h members less self (007F0481-007F049A). Bound under kAttackRunSquadronProbeBound, committed OFF."}
+    {
+      "address": "009D0857",
+      "native": "007F0280",
+      "function": "009D07B0",
+      "note": "mode 0 (PUSH 0 at 009D07FF), ECX = [approach+0Ch] the plane squadron; candidates = the squadron's +3D0h members less self (007F0481-007F049A). Bound under kAttackRunSquadronProbeBound, committed OFF."
+    }
   ],
-  "switches": [{"name": "kAttackRunSquadronProbeBound", "state": "OFF", "pair": "not run (session disconnected)"}],
+  "switches": [
+    {
+      "name": "kAttackRunSquadronProbeBound",
+      "state": "ON",
+      "pair": "local/ASP0_9000.log vs local/ASP1_9000.log, main 51e22e56d"
+    }
+  ],
   "no_ghidra_function": [],
   "ledger_names_added": []
 }
