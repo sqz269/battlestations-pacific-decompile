@@ -136,9 +136,45 @@
  "pairs": [
   {
    "switch": "kPlayerGunSeatBound",
-   "off": "local/bin/seat_off",
-   "on": "local/bin/seat_on",
-   "status": "pending the session reconnect; predictions in docs/PLAYER_GUN_SEAT.md section 4"
+   "form": "E2 9200/9000",
+   "off": "local/seat_off_e2.log",
+   "on": "local/seat_on_e2.log",
+   "handovers": 24,
+   "returns": 19,
+   "hit_records": [
+    555,
+    542
+   ],
+   "shots": [
+    4932,
+    4588
+   ],
+   "deaths": [
+    37,
+    37
+   ],
+   "verdict": "flip ON (magnitude misses only)"
+  },
+  {
+   "switch": "kPlayerGunSeatBound",
+   "form": "USN04 4700/4500",
+   "off": "local/seat_off_usn04.log",
+   "on": "local/seat_on_usn04.log",
+   "handovers": 16,
+   "returns": 8,
+   "hit_records": [
+    448,
+    435
+   ],
+   "shots": [
+    3672,
+    3326
+   ],
+   "deaths": [
+    30,
+    30
+   ],
+   "verdict": "flip ON; header line leased by cc9_gun_horz_sign, handed to the integrator"
   }
  ]
 }

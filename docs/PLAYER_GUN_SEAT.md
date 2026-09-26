@@ -126,3 +126,45 @@ Function 6 (the `gunnery: mount Lexington-class01` lines).
 - **Mission end:** neither side ends the mission early in the host; both run their fixed frames.
 - **Would falsify the binding:** any movement with handovers = 0; or hit records rising with
   handovers > 0, since player-held mounts fire nothing while the player is idle.
+
+## 5. The pair
+
+One tree (main 85b73359e plus 3c0b84e95), `local\bin\seat_off` against `local\bin\seat_on`,
+`BSP_GUNNERY_RNG_STREAMS=1`. Logs: `local\seat_{off,on}_e2.log` and `local\seat_{off,on}_usn04.log`.
+
+| line | E2 OFF | E2 ON | USN04 OFF | USN04 ON |
+| --- | ---: | ---: | ---: | ---: |
+| player seat messages / handovers / returns | 0 / 0 / 0 | 17,997 / 24 / 19 | 0 / 0 / 0 | 8,997 / 16 / 8 |
+| held_ticks / trigger_ticks | 0 / 0 | 53,967 / 0 | 0 / 0 | 41,371 / 0 |
+| shots (`gunnery aim`) | 4,932 | 4,588 (-7.0%) | 3,672 | 3,326 (-9.4%) |
+| AA hit_records (`gunnery damage`) | 555 | 542 (-2.3%) | 448 | 435 (-2.9%) |
+| deaths / total_damage | 37 / 7,832.4 | 37 / 7,832.4 | 30 / 6,487.4 | 30 / 6,487.4 |
+| torpedo_drop drops | 0 | 0 | 1 | 1 |
+| unimplemented total | 5,285,527 | 5,267,318 | 2,782,240 | 2,773,031 |
+
+- **Records.** `fire_message` and `route_fire_message` turned concrete at N (18,158 / 9,158).
+  `PlayerGunSeat::segment_query` N appeared.
+- **The summary's `messages`** is 161 short of N. The gunnery summary is written at mission frame
+  9000 (or 4500), and the HUD keeps routing through the run's last 200 frames.
+- **The other moved lines** follow from the shots: flak bursts, projectile steps, targeted
+  refusals, `aa_direct_aims`. Also one plane step (a plane survived one more step) and one torpedo
+  gate tick.
+- **The Lexington's role line** (`held=080088888`) is unchanged, and so is every other summary line.
+
+**Verdicts.**
+- **Held.**
+  - The records turned concrete as predicted.
+  - Returns stayed below handovers + 10.
+  - The trigger stayed off with an idle player.
+  - Deaths stayed within the band (identical), and torpedo drops are unchanged.
+  - Nothing moved that the seat does not explain, and hit records fell, not rose.
+- **Missed, on magnitude.**
+  - Handovers are cumulative over the run: 24 and 16, against my 4..16 for the first message. The
+    first message's own count is not logged.
+  - Hit records fell 2.3 and 2.9 percent, just under the 3..30 percent band.
+  - The AA shots fell 7 to 9 percent, but the silenced mounts' rounds were mostly misses, so the
+    kill table did not move.
+- **Result.** The binding does what the image does, with no contradiction in either form.
+  **`kPlayerGunSeatBound` should flip ON.** The flip is one line in
+  `include/bsp/game_hosts_gunnery.hpp`, currently leased by cc9-aa-targeting
+  (`cc9_gun_horz_sign`), so it is handed to the integrator.
