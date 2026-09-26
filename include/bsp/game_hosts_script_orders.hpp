@@ -444,6 +444,16 @@ private:
     // it does not yet issue.
     int run_pilot_set_target(GameScriptOrderRow& row);
     int run_pilot_move_to_range(GameScriptOrderRow& row);
+    int run_entity_turn_to_entity(GameScriptOrderRow& row);
+    int run_unit_set_fire_stance(GameScriptOrderRow& row);
+public:
+    // The +3Ch allowFire / +3Dh allowMove bytes of a squadron's +348h command
+    // block (0084D810), keyed by squadron name. This host builds no such block,
+    // so the bytes live here; absent means the constructor's defaults
+    // (0084D862-0084D8A2).
+    struct SquadronPermissions { bool allow_fire{false}; bool allow_move{false}; };
+private:
+    std::map<std::string, SquadronPermissions> squadron_permissions_;
     std::size_t index_of(void* entity) const noexcept;
     std::string name_of(void* entity) const;
 

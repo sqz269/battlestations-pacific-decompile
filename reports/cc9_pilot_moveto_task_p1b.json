@@ -1,0 +1,78 @@
+{
+  "packet": "cc9_pilot_moveto_task (part 1b)",
+  "doc": "docs/PILOT_MOVETO_TASK.md",
+  "calls": [
+    {
+      "address": "008A0CE3",
+      "native": "0085DC80",
+      "function": "008A0A10",
+      "note": "EntityTurnToEntity orthonormalises the basis at esp+34h"
+    },
+    {
+      "address": "008A0D96",
+      "native": "00414DB0",
+      "function": "008A0A10",
+      "note": "squadron arm refreshes each member's pose before reading +FCh"
+    },
+    {
+      "address": "008A65EB",
+      "native": "0071BE80",
+      "function": "008A6490",
+      "note": "UnitSetFireStance applies the stance to the director vtable[114h] returned"
+    },
+    {
+      "address": "0084D844",
+      "native": "00720180",
+      "function": "0084D810",
+      "note": "squadron +348h command block base constructor"
+    }
+  ],
+  "switches": [
+    {
+      "name": "kMissionTurnAndStanceBound",
+      "state": "OFF",
+      "pair": "local/TT_OFF_9000.log vs local/TT_ON_9000.log"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "0047F180",
+      "end_inclusive": "0047F182",
+      "evidence": "plane vtable[114h] (00D00184, 00D06034): XOR EAX,EAX; RET, INT3 after; ghidra disasm reports no function (enclosing candidate 0047F0C0)"
+    },
+    {
+      "start": "007ECFD0",
+      "end_inclusive": "007ECFD6",
+      "evidence": "squadron vtable[114h] (00D088D4): MOV EAX,[ECX+348h]; RET; already recorded by cc8_plane_squadron_entity"
+    },
+    {
+      "start": "0084D910",
+      "end_inclusive": "0084D928",
+      "evidence": "squadron command block vtable 00D0BD98 +24h, allowFire for stance 1 or 2; RET 4 at 0084D920/0084D928, INT3 from 0084D92B; lookup reports no function (enclosing candidate 0084D810)"
+    },
+    {
+      "start": "0084D930",
+      "end_inclusive": "0084D94C",
+      "evidence": "vtable 00D0BD98 +28h, allowMove for stance 0, 2 or 3; RET 4 at 0084D944/0084D94C; lookup reports no function (enclosing candidate 0084D810)"
+    },
+    {
+      "start": "0084D960",
+      "end_inclusive": "0084D96A",
+      "evidence": "vtable 00D0BD98 +50h, tests +3Dh then +3Ch (the 0080DC70 test); start and first compares only, body end not read"
+    }
+  ],
+  "ledger_names_added": [
+    {
+      "address": "008A0A10",
+      "name": "BSP_LuaBinding_EntityTurnToEntity"
+    },
+    {
+      "address": "0084D810",
+      "name": "BSP_PlaneSquadronCommandBlock_Construct"
+    },
+    {
+      "address": "007C9540",
+      "name": "BSP_Plane_SetWorldMatrix"
+    }
+  ]
+}

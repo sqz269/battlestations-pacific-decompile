@@ -386,6 +386,13 @@ public:
     // Packet cc9_pilot_moveto_task: the moveto order's range, descriptor +14h
     // (008A4708), which the kind-7 task's approach reads.
     void store_unit_moveto_range(std::size_t index, float range) noexcept;
+    // Packet cc9_pilot_moveto_task part 1b: plane vtable[88h] = 007C9540, the
+    // world-matrix setter EntityTurnToEntity's squadron arm calls per member
+    // (008A0DD4). Rows 0..2 replace the pose; the position is the member's own
+    // (008A0D9B-008A0DBF), so it is left alone. 007C9540 touches no velocity.
+    // False for an index out of range.
+    bool set_unit_world_basis_007c9540(std::size_t index, const float right[3],
+        const float up[3], const float forward[3]) noexcept;
     std::uint64_t unit_ordnance(std::size_t index) const noexcept;
     bool unit_flag_0061(std::size_t index) const;
     // 0092d730 over the unit's body axis and linear velocity, the same value the

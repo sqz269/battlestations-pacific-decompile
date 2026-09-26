@@ -15443,6 +15443,20 @@ void GameUnitsHost::store_unit_moveto_range(std::size_t index, float range) noex
     impl_->slots[index]->moveto_range = range;
 }
 
+bool GameUnitsHost::set_unit_world_basis_007c9540(std::size_t index, const float right[3],
+    const float up[3], const float forward[3]) noexcept {
+    if (index >= impl_->slots.size()) return false;
+    GameUnitSlot& slot = *impl_->slots[index];
+    for (int i = 0; i < 3; ++i) {
+        slot.motion.pose_row0[i] = right[i];
+        slot.motion.pose_row1[i] = up[i];
+        slot.motion.pose_row2[i] = forward[i];
+    }
+    Impl::publish_pose(slot);
+    impl_->done("Plane::set_world_matrix_007c9540", 0x007c9540u);
+    return true;
+}
+
 void GameUnitsHost::store_unit_ordnance(std::size_t index, std::uint64_t mask) noexcept {
     if (index >= impl_->slots.size()) return;
     impl_->slots[index]->ordnance_mask = mask;

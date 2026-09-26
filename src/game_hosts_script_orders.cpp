@@ -18,6 +18,7 @@
 #include "bsp/attack_target_classify.hpp"
 #include "bsp/ordnance_kinds.hpp"
 #include "bsp/pilot_order_bindings.hpp"
+#include "bsp/plane_pose_commit.hpp"
 #include "bsp/plane_squadron_host.hpp"
 #include "bsp/mission_lua_host.hpp"
 // Packet cc8_ship_follow: 00779D50's transcription and the ship-base kind.
@@ -54,6 +55,10 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // (luaBombersSpawnedLex, difficulty 1-2). Routed only with
     // kPilotMoveToTaskBound; otherwise it stays a named record.
     {"PilotMoveToRange", 0x008a4590u},
+    // Packet cc9_pilot_moveto_task part 1b: the same callback's turn and
+    // stance. Handled only with kMissionTurnAndStanceBound.
+    {"EntityTurnToEntity", 0x008a0a10u},
+    {"UnitSetFireStance", 0x008a6490u},
     // Packet cc8_navigator_path. The navigator sibling cc_lua_navigator left
     // out, with its two per-unit companions: 98, 18 and 18 calls on USN04, and
     // the eight script sites are the Lexington and the Town being told to circle
@@ -245,7 +250,16 @@ GameScriptOrdersHost::GameScriptOrdersHost(GameHostLog& log, GameUnitsHost& unit
     : log_(log), units_(units) {}
 
 bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
-    return find_binding(binding_name) != nullptr;
+    const ScriptOrderBinding* binding = find_binding(binding_name);
+    if (binding == nullptr) return false;
+    // A switch that is off leaves its native an unimplemented record, not a
+    // concrete binding that does nothing.
+    if (std::strcmp(binding->name, "PilotMoveToRange") == 0) return bsp::kPilotMoveToTaskBound;
+    if (std::strcmp(binding->name, "EntityTurnToEntity") == 0 ||
+        std::strcmp(binding->name, "UnitSetFireStance") == 0) {
+        return bsp::kMissionTurnAndStanceBound;
+    }
+    return true;
 }
 
 // ---------------------------------------------------------------------------
@@ -1142,6 +1156,128 @@ int GameScriptOrdersHost::run_pilot_move_to_range(GameScriptOrderRow& row) {
     return 0;  // the binding pushes nothing
 }
 
+// 008A0A10 `EntityTurnToEntity(entity, target [, keep_pitch])`, packet
+// cc9_pilot_moveto_task part 1b. The single-player arm ([00E188A8]+1FE4h is 0,
+// so the session-message arm through 007EDEB0 is not taken):
+//  - d = target+FCh - entity+FCh (008A0B6A-008A0BD8); d.y is zeroed unless a
+//    third argument is present and true (008A0C0A-008A0C5F);
+//  - rows (1,0,0), (0,1,0), d and position 0 at esp+34h, then 0085DC80
+//    (008A0C65-008A0CE3);
+//  - a squadron (vtable[5Ch](18h)) re-poses each of its +3CCh members, at most
+//    five, at the member's own +FCh through member vtable[88h] (008A0D6D-
+//    008A0DE2), which is 007C9540 for a plane.
+// Only the squadron arm is bound. The entity's +FCh is the squadron's spawn
+// matrix, which 007F4580 gives every member, so the leader's position stands in
+// for it. A plane or ship argument is left a record: those arms are unread.
+int GameScriptOrdersHost::run_entity_turn_to_entity(GameScriptOrderRow& row) {
+    if constexpr (!bsp::kMissionTurnAndStanceBound) {
+        return 0;
+    }
+    resolve_plane_squadron_members();
+    void* unit = argument_ptr_field(0);
+    if (unit == nullptr) unit = entity_from_argument(0);
+    row.unit_index = index_of(unit);
+    row.unit = name_of(unit);
+    void* target = entity_from_argument(1);
+    if (target == nullptr) target = argument_ptr_field(1);
+    const std::size_t target_index = index_of(target);
+    bsp::PlaneSquadronHostRecord* squadron = row.unit_index < units_.count()
+        ? bsp::plane_squadron_registry().find_by_member_unit(row.unit_index) : nullptr;
+    if (squadron == nullptr || target_index >= units_.count()) {
+        log_.unimplemented("MissionLuaNative::EntityTurnToEntity non-squadron arm", "008a0d1c");
+        return 0;
+    }
+    float ex = 0.0f, ey = 0.0f, ez = 0.0f, tx = 0.0f, ty = 0.0f, tz = 0.0f;
+    units_.unit_position_00fc(row.unit_index, ex, ey, ez);
+    units_.unit_position_00fc(target_index, tx, ty, tz);
+    const bool keep_pitch = argument_count_ == 3 && argument_boolean(2);
+    float m[16] = {1.0f, 0.0f, 0.0f, 0.0f,
+                   0.0f, 1.0f, 0.0f, 0.0f,
+                   tx - ex, keep_pitch ? ty - ey : 0.0f, tz - ez, 0.0f,
+                   0.0f, 0.0f, 0.0f, 1.0f};
+    bsp::orthonormalize_pose_matrix_0085dc80(m);
+    std::size_t posed = 0;
+    std::size_t seat = 0;
+    for (const std::size_t member : squadron->member_units) {
+        if (seat++ > 4) break;                       // 008A0D80: at most five
+        if (member == bsp::kPlaneSquadronNoUnit) continue;
+        if (units_.set_unit_world_basis_007c9540(member, &m[0], &m[4], &m[8])) ++posed;
+    }
+    log_.notef("  EntityTurnToEntity: squadron %s -> %s: %zu member(s) re-posed, forward "
+        "(%.3f %.3f %.3f) (008A0A10 -> 0085DC80 -> vtable[88h] 007C9540)",
+        squadron->name.c_str(), name_of(target).c_str(), posed,
+        static_cast<double>(m[8]), static_cast<double>(m[9]), static_cast<double>(m[10]));
+    return 0;
+}
+
+// 008A6490 `UnitSetFireStance(unit, stance)`, packet cc9_pilot_moveto_task part
+// 1b, the squadron arm. vtable[114h] of a squadron is 007ECFD0, which hands back
+// the +348h command block 007F4FE3-007F5009 builds with 0084D810 (vtable
+// 00D0BD98). 0071BE80 asks that block's own predicates:
+//   +24h 0084D910: allowFire for stance 1 or 2;
+//   +28h 0084D930: allowMove for stance 0, 2 or 3;
+// then stores them through 0071DA50/0071DAD0 (+3Ch, +3Dh). The block's
+// defaults (0084D862-0084D8A2): Behaviour (+364h) 0 frees both; any other
+// Behaviour frees fire only for a fighter class (vtable[18h](13h)), move only
+// otherwise. A plane's vtable[114h] is 0047F180 (XOR EAX,EAX), so a plane
+// argument is the image's own no-op. A ship argument is left a record.
+namespace {
+GameScriptOrdersHost::SquadronPermissions squadron_permissions_0084d810(
+    const bsp::PlaneSquadronHostRecord& squadron, bool fighter) noexcept {
+    GameScriptOrdersHost::SquadronPermissions p;
+    if (squadron.behaviour == 0) {
+        p.allow_fire = true;
+        p.allow_move = true;
+    } else if (fighter) {
+        p.allow_fire = true;
+    } else {
+        p.allow_move = true;
+    }
+    return p;
+}
+}  // namespace
+
+int GameScriptOrdersHost::run_unit_set_fire_stance(GameScriptOrderRow& row) {
+    if constexpr (!bsp::kMissionTurnAndStanceBound) {
+        return 0;
+    }
+    resolve_plane_squadron_members();
+    void* unit = argument_ptr_field(0);
+    if (unit == nullptr) unit = entity_from_argument(0);
+    row.unit_index = index_of(unit);
+    row.unit = name_of(unit);
+    const int stance = argument_integer(1);
+    bsp::PlaneSquadronHostRecord* squadron = row.unit_index < units_.count()
+        ? bsp::plane_squadron_registry().find_by_member_unit(row.unit_index) : nullptr;
+    if (squadron == nullptr) {
+        if (row.unit_index < units_.count() && units_.unit_is_kind_of(row.unit_index, 0x0f)) {
+            log_.implemented("Plane::weapon_director_0047f180 (null, 0071BE80 returns)",
+                             "0047f180");
+        } else {
+            log_.unimplemented("MissionLuaNative::UnitSetFireStance non-squadron arm",
+                               "0071be80");
+        }
+        return 0;
+    }
+    const std::size_t leader = squadron->member_units.empty()
+        ? bsp::kPlaneSquadronNoUnit : squadron->member_units.front();
+    const bool fighter = leader != bsp::kPlaneSquadronNoUnit &&
+        units_.unit_is_kind_of(leader, 0x13);
+    auto found = squadron_permissions_.find(squadron->name);
+    const SquadronPermissions before = found != squadron_permissions_.end()
+        ? found->second : squadron_permissions_0084d810(*squadron, fighter);
+    SquadronPermissions after;
+    after.allow_fire = stance == 1 || stance == 2;                  // 0084D910
+    after.allow_move = stance == 0 || stance == 2 || stance == 3;   // 0084D930
+    squadron_permissions_[squadron->name] = after;                  // 0071DA50/0071DAD0
+    log_.notef("  UnitSetFireStance: squadron %s stance=%d allowFire %d->%d allowMove %d->%d "
+        "(behaviour=%d fighter=%d; 008A6490 -> 007ECFD0 +348h -> 0071BE80)",
+        squadron->name.c_str(), stance, before.allow_fire ? 1 : 0, after.allow_fire ? 1 : 0,
+        before.allow_move ? 1 : 0, after.allow_move ? 1 : 0,
+        static_cast<int>(squadron->behaviour), fighter ? 1 : 0);
+    return 0;
+}
+
 int GameScriptOrdersHost::argument_integer(int index) {
     if (state_ == nullptr) return 0;
     const int slot = stack_slot(index);
@@ -1590,6 +1726,10 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
         results = run_pilot_set_target(row);
     } else if (std::strcmp(binding->name, "PilotMoveToRange") == 0) {
         results = run_pilot_move_to_range(row);
+    } else if (std::strcmp(binding->name, "EntityTurnToEntity") == 0) {
+        results = run_entity_turn_to_entity(row);
+    } else if (std::strcmp(binding->name, "UnitSetFireStance") == 0) {
+        results = run_unit_set_fire_stance(row);
     } else if (std::strcmp(binding->name, "NavigatorAttackMove") == 0) {
         results = bsp::lua_binding_navigator_attack_move(*this, *this);
     } else if (std::strcmp(binding->name, "NavigatorMoveOnPath") == 0) {
