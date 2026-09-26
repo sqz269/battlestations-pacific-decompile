@@ -1,0 +1,118 @@
+{
+  "packet": "cc10_stock_profile_diagnostic_integration",
+  "worker_commit": "5e9d23e060afd9292063c33662ce438a41bf9af3",
+  "integration": "85851b0aee7e7ee1372cb076f00f20637ee1ec45",
+  "worker_report": "reports/native_vertex_declaration_name_stock_profile_diagnostic_cc10.json",
+  "primary_verification": {
+    "worker_commit": "5e9d23e060afd9292063c33662ce438a41bf9af3",
+    "verified_archives": {
+      "preparation_evidence.zip": {
+        "sha256": "d33e4826924b60463e3f484114826a4ba2a002a81974b628bd0cf42841a0e539",
+        "rows": 199
+      },
+      "runtime_attempt01_evidence.zip": {
+        "sha256": "2521d40bf8236d5ef3b9f459e2101bdb8be6aa94d79f105b42596c4354a3f3f9",
+        "rows": 208
+      },
+      "runtime_attempt02_evidence.zip": {
+        "sha256": "10e464c811ef01a1dea9ab90d07ce91cdc31bd102e1d51a4fecd0b93f18413c6",
+        "rows": 17
+      },
+      "closeout_metadata.zip": {
+        "sha256": "76329b3f0cddf668bf4411024015f3afb2bf2139e54c3f49cc19e327973bee34",
+        "rows": 3
+      },
+      "closeout_git_metadata.zip": {
+        "sha256": "dbb36cef92963d7e5bc258545f715ef178b67cd38256b1d75d00e6f3332e1213",
+        "rows": 3
+      }
+    },
+    "direct_archive_rows_verified": 430,
+    "preRun_seals_verified": [
+      130,
+      133
+    ],
+    "exact_link_selected_members": {
+      "game_providers_current": 35,
+      "bsp_core": 458,
+      "bsp_lua511": 28,
+      "bsp_zlib121": 4
+    },
+    "all_game_archive_members_exact": 71,
+    "COFF_and_linked_functions": 5,
+    "native_ranges_verified": 4,
+    "actual_constructor_count_one_and_atexit_relocation_verified": true,
+    "worker_snapshot": "8f9f0c94ac064791e209cba4d7a512ee5c591177",
+    "worker_deletion_binding_bytes": 176,
+    "attempt01": {
+      "parent": 86340,
+      "child": 37700,
+      "exits": [
+        2,
+        1460
+      ],
+      "ACK": false,
+      "closed": true,
+      "raw_wrapper_fields_transcribed": true
+    },
+    "attempt02": {
+      "parent": 48960,
+      "child": 66028,
+      "exits": [
+        3221226505,
+        3221226505
+      ],
+      "ACK": true,
+      "closed": true,
+      "actual_raw_tool_result_verified": true,
+      "both_explicit_DLL_loads_returned": true,
+      "legacy_ordinal43_origin_verified": true,
+      "failed_fixture_reported_path_assertion": true
+    },
+    "review": [
+      "Full explicit-profile source diff, genuine unchanged case and suspended-child receipt/ACK controller reviewed",
+      "Controller fixed observed nullable CIM image field while retaining kernel path/FILETIME and exact command/parent/creation",
+      "Actual stock reported System32 versus explicit SysWOW64, same disk hash in 32bit probe; no assertion bypass/rebuild/third run"
+    ],
+    "limits": [
+      "No physical loaded-image/file alias identity equivalence established",
+      "No5030 origin/call count, platform/cache/count/CRT success or nativeABI/game proof",
+      "Coherent176byte snapshot; later180byte headers not mixed",
+      "Two extra selected sources and later interface comparison pinned postlink/build; raw attempt01 tool receipt transcription qualified",
+      "Metadata-only zero new native bytes; eager-load success is bounded to this process"
+    ]
+  },
+  "validation": {
+    "metadata_only_integration": true,
+    "worker_strict_Win32_CTests": 3,
+    "new_native_bytes": 0,
+    "production_source_changed": false,
+    "game_validated": false
+  },
+  "limits": [
+    "No physical loaded-image/file alias identity equivalence established",
+    "No5030 origin/call count, platform/cache/count/CRT success or nativeABI/game proof",
+    "Coherent176byte snapshot; later180byte headers not mixed",
+    "Two extra selected sources and later interface comparison pinned postlink/build; raw attempt01 tool receipt transcription qualified",
+    "Metadata-only zero new native bytes; eager-load success is bounded to this process"
+  ],
+  "archive": {
+    "path": "local/cc10-platform-evidence/stock-profile-declaration-diagnostic.zip",
+    "sha256": "33f3d1bf3a0abdb129f2426f02fc7e1373e66165272bcdba813ebb8604fa9c3a",
+    "files": 10,
+    "valid": true
+  },
+  "primary_verification_encoding_qualification": {
+    "reason": "Primary added build-log check after initial full artifact verification; recheck stopped on PowerShell UTF-8 BOM JSON before UTF-16 log. Initial closure used prior valid artifact proof. Corrected decoder now passed all430rows/130+133pins/525members/5bodies and worker buildexit0/3CTests. Worker artifacts unchanged. Original primary archive retained.",
+    "original_primary_archive_sha256": "33f3d1bf3a0abdb129f2426f02fc7e1373e66165272bcdba813ebb8604fa9c3a",
+    "corrected_verifier_passed": true,
+    "worker_build_exit": 0,
+    "worker_CTests": 3
+  },
+  "verification_supplement": {
+    "path": "local/cc10-platform-evidence/stock-profile-diagnostic-verification-encoding.zip",
+    "sha256": "b654f164474ce27a151b0d2553eb7c927bf7f1e2630c2d1a3e654d279858c91e",
+    "files": 4,
+    "valid": true
+  }
+}
