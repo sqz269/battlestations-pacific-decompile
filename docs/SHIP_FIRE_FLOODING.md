@@ -117,3 +117,32 @@ All three switches are ON. USN02's reference moves from 4 to 5 deaths. USN04 doe
   `+3B4h` at `0083E258` and `+3B8h` at `0083E2AA`). The host takes its repair fraction through the
   same rule; the result is bit-identical to its former own division (`0x3B03126F`, 0.002 of max per
   second), so no pair was run.
+
+## 7. The 9000-frame USN02 pair (packet `cc9_fire_flooding_9000_pair`)
+
+Same tree (branch tip `e4f9a5912`, everything else as landed), USN02 9200/9000,
+`BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`. OFF sets all three switches of section 3 false.
+With the element trace OFF, no hull pass runs, so the component failures and the R4 segment
+damage that sit behind it go quiet as well. ON is the landed state (the 2026-09-26 b reference
+row).
+
+### Predictions (written before the runs)
+
+From the 1200-frame series (19 floods, 2 fires, 3401 flood and 324 fire damage and one extra
+death in 60 s), and the landed row (247 floods, 22 fires, 13740 / 3650 damage, 8 damage-control
+deaths, 17 failures):
+
+1. OFF: 0 floods, 0 fires, 0 part hits, 0 failures, 0 destroyed segments.
+2. OFF deaths 14 to 20 against ON's 20. OFF loses the flood and fire damage and the magazine
+   explosions but keeps the blast and gun damage.
+3. Hit records within 20% of ON's 487. The hits themselves do not depend on these switches;
+   only the cascade through who survives moves them.
+4. The failure stays near 39.65 s, within 5 s. Exeter's death is a torpedo blast.
+5. This pair measures what the three switches contribute on today's tree. It cannot reproduce
+   the 2026-09-26 step (22 -> 23 deaths, 769 -> 358 hit records), because the landings since
+   (failures, blast parts, ranging, spread, fire window) all sit on top.
+
+### Results
+
+Pending.
+
