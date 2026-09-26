@@ -416,6 +416,13 @@ struct GameUnitSlot {
     // +74h its countdown, drawn at construction.
     unsigned long long moveto_follow_ticks{0};
     unsigned long long moveto_follow_no_station{0};
+    // Part 4, the circle state 009C26D0 (kMoveToCircleSteerBound): tick count and
+    // the planar distance to the steer point that 009FBB20 measured, min / max / last.
+    unsigned long long moveto_circle_ticks{0};
+    unsigned long long moveto_circle_no_heading{0};   // 009FBBF8 early exit
+    float moveto_circle_min_d{-1.0f};
+    float moveto_circle_max_d{-1.0f};
+    float moveto_circle_last_d{-1.0f};
     unsigned long long moveto_ticks{0};
     unsigned long long moveto_state_changes{0};
     unsigned long long moveto_arrivals{0};
@@ -14244,8 +14251,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             run_moveto_state_tick_009c2430();
                             break;
                         case GameUnitSlot::MoveToTaskState::kCircle:
-                            // 009C26D0 steers through 009FBB20, not bound here.
-                            owner_.record("BotStateMoveToCircle::steer", 0x009fbb20u);
+                            // 00D20A9C +0Ch = 009C26D0, part 4.
+                            if constexpr (bsp::kMoveToCircleSteerBound) {
+                                run_moveto_circle_tick_009c26d0();
+                            } else {
+                                // 009C26D0 steers through 009FBB20, not bound here.
+                                owner_.record("BotStateMoveToCircle::steer", 0x009fbb20u);
+                            }
                             break;
                         case GameUnitSlot::MoveToTaskState::kFollow:
                             // 00D20AB8 +0Ch = 009C1FD0, part 3.
@@ -14302,6 +14314,249 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             owner_.record("BotStateFollow::sight_search", 0x009c214au);
                         }
                         owner_.done("BotStateMoveToFollow::tick", 0x009c1fd0u);
+                    }
+
+                    // 004F4840 -> 004F4430 -> 004F3810, packet cc9_pilot_moveto_task
+                    // part 4. 004F4840 packs {c.x, c.z, r} and calls 004F4430 on it
+                    // with the external point q; 004F3810 returns the chord midpoint
+                    // m = c + (r*r/d) u and b = h (-u.z, u.x), h = r sqrt(d*d - r*r) / d,
+                    // u = (q - c) / d; 004F4430 writes out0 = m + b, out1 = m - b.
+                    // False (outs untouched) unless r < d (004F3887). The two
+                    // tangent points of the circle seen from q. Coverage: complete.
+                    static bool circle_tangent_points_004f4840(const float c[2], float r,
+                                                               const float q[2],
+                                                               float out0[2], float out1[2]) {
+                        const float dx = q[0] - c[0];                          // 004F3826
+                        const float dz = q[1] - c[1];                          // 004F3838
+                        const float d2 = static_cast<float>(
+                            static_cast<double>(dx) * dx + static_cast<double>(dz) * dz);
+                        const float d = static_cast<double>(d2) > 1e-10        // 00CE3820
+                            ? static_cast<float>(std::sqrt(static_cast<double>(d2))) : 0.0f;
+                        if (!(r < d)) return false;                            // 004F3887
+                        const float ux = static_cast<float>(static_cast<double>(dx) / d);
+                        const float uz = static_cast<float>(static_cast<double>(dz) / d);
+                        const float p = static_cast<float>(
+                            static_cast<double>(r) * r / d);                   // 004F38C1
+                        const float t = static_cast<float>(std::sqrt(static_cast<double>(
+                            static_cast<float>(static_cast<double>(d) * d -
+                                               static_cast<double>(r) * r))));  // 004F38D8
+                        const float h = static_cast<float>(
+                            static_cast<double>(t) * r / d);                   // 004F38F2
+                        const float mx = static_cast<float>(
+                            c[0] + static_cast<double>(static_cast<float>(
+                                static_cast<double>(p) * ux)));
+                        const float mz = static_cast<float>(
+                            c[1] + static_cast<double>(static_cast<float>(
+                                static_cast<double>(p) * uz)));
+                        const float bx = static_cast<float>(-static_cast<double>(uz) * h);
+                        const float bz = static_cast<float>(static_cast<double>(ux) * h);
+                        out0[0] = static_cast<float>(static_cast<double>(mx) + bx);   // 004F4479
+                        out0[1] = static_cast<float>(static_cast<double>(mz) + bz);
+                        out1[0] = static_cast<float>(static_cast<double>(mx) - bx);   // 004F4498
+                        out1[1] = static_cast<float>(static_cast<double>(mz) - bz);
+                        return true;
+                    }
+
+                    // 009FBB20, packet cc9_pilot_moveto_task part 4: the circle steer,
+                    // __thiscall on the approach (ECX), stack (const float* point_xz,
+                    // float r, bool side, float* out_xz), RET 10h. Coverage: complete.
+                    // Read from the listing (x87 FSIN/FCOS, doubles at 00CE3820,
+                    // 00CE3DC0, 00D7A390, 00CE65D0, 00D7A250, 00CE3D10 read 8 wide).
+                    //   u = (pos - point) / dist; dist < 0.001f returns r with no write.
+                    //   m = max(max(2*cheat, 10), dist > r ? dist - r : (r - dist) * 0.9);
+                    //   q = point + u (m + r); T = tangent point [side] from q;
+                    //   A = clamp(FollowedDist * max(cheat * 0.4, 1) / r, MinAngle,
+                    //   MaxAngle), negated for side 1; P = point + r rot(u, A);
+                    //   w = clamp((dist / r - 1) / 0.2, 0, 1);
+                    //   v = w (T - pos) + (1 - w) (P - pos);
+                    //   cmd+2C0h = atan2(v.x, v.z), cmd+2CCh = 2; out = pos + v;
+                    //   returns dist - r when positive, else -0.0f - (dist - r).
+                    struct CircleSteer009fbb20 {
+                        bool heading_written{false};
+                        float heading_2c0{0.0f};
+                        float out[2]{0.0f, 0.0f};
+                        float dist{0.0f};
+                        float result{0.0f};
+                    };
+                    static CircleSteer009fbb20 circle_steer_009fbb20(
+                        const float pos[2], const float point[2], float r, bool side,
+                        float cheat_turbo_340, float min_angle_5dc, float max_angle_5e0,
+                        float followed_dist_5e4) {
+                        CircleSteer009fbb20 s;
+                        const float dx = pos[0] - point[0];                    // 009FBB64
+                        const float dz = pos[1] - point[1];                    // 009FBB77
+                        const float d2 = static_cast<float>(
+                            static_cast<double>(dx) * dx + static_cast<double>(dz) * dz);
+                        const float dist = static_cast<double>(d2) > 1e-10     // 00CE3820
+                            ? static_cast<float>(std::sqrt(static_cast<double>(d2))) : 0.0f;
+                        s.dist = dist;
+                        if (0.001f > dist) {                                   // 00D7A23C
+                            s.result = r;                                      // 009FBBF8
+                            return s;
+                        }
+                        const float ux = static_cast<float>(static_cast<double>(dx) / dist);
+                        const float uz = static_cast<float>(static_cast<double>(dz) / dist);
+                        const float ratio = static_cast<float>(
+                            static_cast<double>(dist) / r);                    // 009FBBF2
+                        const float r_minus_d = static_cast<float>(
+                            static_cast<double>(r) - dist);                    // 009FBC1D
+                        float lead = static_cast<float>(
+                            static_cast<double>(cheat_turbo_340) * 2.0);       // 009FBC30
+                        if (10.0 > static_cast<double>(lead)) lead = 10.0f;    // 00CE3DC0, 00CE38B8
+                        const float gap = r_minus_d < 0.0f                     // 00D7A218
+                            ? -r_minus_d
+                            : static_cast<float>(static_cast<double>(r_minus_d) *
+                                                 0.8999999761581421);          // 00D7A390
+                        const float m = lead > gap ? lead : gap;               // 009FBC89
+                        const float mr = static_cast<float>(
+                            static_cast<double>(m) + r);                       // 009FBCA7
+                        const float q[2] = {
+                            static_cast<float>(point[0] + static_cast<double>(
+                                static_cast<float>(static_cast<double>(ux) * mr))),
+                            static_cast<float>(point[1] + static_cast<double>(
+                                static_cast<float>(static_cast<double>(uz) * mr)))};
+                        float tangent[2][2]{};   // uninitialised in the image if 004F3887 fails
+                        circle_tangent_points_004f4840(point, r, q, tangent[0], tangent[1]);
+                        const float* t = tangent[side ? 1 : 0];                // 009FBD0E
+                        const float tvx = t[0] - pos[0];                       // 009FBD22
+                        const float tvz = t[1] - pos[1];                       // 009FBD35
+                        float scale = static_cast<float>(
+                            static_cast<double>(cheat_turbo_340) *
+                            0.4000000059604645);                               // 00CE65D0
+                        if (1.0f > scale) scale = 1.0f;                        // 00D7A24C
+                        const float a = static_cast<float>(static_cast<double>(
+                            static_cast<float>(static_cast<double>(followed_dist_5e4) *
+                                               scale)) / r);                   // 009FBD88
+                        float angle;
+                        if (min_angle_5dc > a) {
+                            angle = min_angle_5dc;                             // 009FBDBD
+                        } else {
+                            angle = a > max_angle_5e0 ? max_angle_5e0 : a;     // 009FBDD3
+                        }
+                        if (side) angle = static_cast<float>(
+                            static_cast<double>(angle) * -1.0);               // 00D7A250
+                        const float sn = static_cast<float>(
+                            std::sin(static_cast<double>(angle)));             // 009FBE0E FSIN
+                        const float cs = static_cast<float>(
+                            std::cos(static_cast<double>(angle)));             // 009FBE32 FCOS
+                        const float rx = static_cast<float>(
+                            static_cast<double>(static_cast<float>(static_cast<double>(cs) * ux)) +
+                            static_cast<float>(-static_cast<double>(uz) * sn));
+                        const float rz = static_cast<float>(
+                            static_cast<double>(static_cast<float>(static_cast<double>(cs) * uz)) +
+                            static_cast<float>(static_cast<double>(ux) * sn));
+                        const float px = static_cast<float>(point[0] + static_cast<double>(
+                            static_cast<float>(static_cast<double>(rx) * r)));  // 009FBE87
+                        const float pz = static_cast<float>(point[1] + static_cast<double>(
+                            static_cast<float>(static_cast<double>(rz) * r)));  // 009FBE92
+                        const float pvx = px - pos[0];                         // 009FBE9E
+                        const float pvz = pz - pos[1];                         // 009FBEAA
+                        float w = static_cast<float>(
+                            (static_cast<double>(ratio) - 1.0) /
+                            0.20000000298023224);                              // 00CE3D10
+                        if (0.0f > w) w = 0.0f;                                // 009FBECC
+                        else if (w > 1.0f) w = 1.0f;                           // 009FBFC3
+                        const float omw = static_cast<float>(1.0 - static_cast<double>(w));
+                        const float vx = static_cast<float>(
+                            static_cast<double>(static_cast<float>(static_cast<double>(tvx) * w)) +
+                            static_cast<float>(static_cast<double>(pvx) * omw));  // 009FBF22
+                        const float vz = static_cast<float>(
+                            static_cast<double>(static_cast<float>(static_cast<double>(tvz) * w)) +
+                            static_cast<float>(static_cast<double>(pvz) * omw));  // 009FBF2E
+                        // 009FBF3A: LIBCRT_atan2 with ST1 = v.x, ST0 = v.z; no wrap.
+                        s.heading_2c0 = static_cast<float>(
+                            std::atan2(static_cast<double>(vx), static_cast<double>(vz)));
+                        s.heading_written = true;                              // 009FBF4D/53
+                        s.out[0] = static_cast<float>(static_cast<double>(pos[0]) + vx);
+                        s.out[1] = static_cast<float>(static_cast<double>(pos[1]) + vz);
+                        const float e = static_cast<float>(static_cast<double>(dist) - r);
+                        s.result = e > 0.0f ? e : -0.0f - e;                   // 00D7A208
+                        return s;
+                    }
+
+                    // 009C26D0, the circle state's tick (vtable 00D20A9C +0Ch), for an
+                    // arrived kind-7 leader, packet cc9_pilot_moveto_task part 4.
+                    void run_moveto_circle_tick_009c26d0() {
+                        ++unit_.moveto_circle_ticks;
+                        // 009C26D3-009C2702: 009BECD0(009C23B0(007C47F0(0))), the moveto
+                        // state's chain with 0 where it passes dist; the host's
+                        // moveto_speed_009c1850 takes that slot as `sep`.
+                        const float blended = owner_.moveto_speed_009c1850(unit_, 0.0f);
+                        // 009C270B-009C2730: min with TravelSpeed class+18Ch.
+                        const float travel = unit_.plane_travel_speed;
+                        unit_.plane_desired_speed_2b4 = travel > blended ? blended : travel;
+                        unit_.plane_trg_speed_corr_off_2b0 = 0;   // 009C2743
+                        unit_.plane_air_brake_mode_2d8 = 1;       // 009C274F
+                        ++unit_.plane_speed_commands;
+                        owner_.record("BotStateMoveTo::target_speed_override_009c23b0",
+                                      0x009c23b0u);
+                        if (unit_.torpedo_release_pending_c25) {
+                            // 009C2763-009C2794: +2BCh = 0, +2D0h = 2, +2C4h = 0, +2CCh = 1.
+                            owner_.record("BotStateMoveToCircle::c25_arm", 0x009c2763u);
+                            return;
+                        }
+                        // 009C27A2: approach vtable[0] = 009BE2C0, +48h..+50h.
+                        const float* pt = unit_.moveto_point;
+                        // 009C27A6-009C27D7: r = max(approach+6Ch, TurnCircleRadius
+                        // class+268h). SUBSTITUTION, labelled: approach+6Ch comes from
+                        // the squadron's +348h command block (009C359F), which this host
+                        // does not model; 0 stands in, so r is TurnCircleRadius.
+                        const float approach_6c = 0.0f;
+                        const float tcr = unit_.plane_turn_circle_radius;
+                        const float r = tcr > approach_6c ? tcr : approach_6c;
+                        float min_angle = 0.0f, max_angle = 0.0f, followed = 0.0f;
+                        if (owner_.lua.plane_globals_loaded()) {
+                            const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
+                            min_angle = g.pilot_general_move_circle_min_angle;
+                            max_angle = g.pilot_general_move_circle_max_angle;
+                            followed = g.pilot_general_move_circle_followed_dist;
+                        }
+                        // SUBSTITUTION, labelled: unit+340h (CheatTurbo) is 0 in this
+                        // host, as at the 0099D4EE dtScale site.
+                        const float cheat_turbo_340 = 0.0f;
+                        const float pos[2] = {unit_.motion.position[0], unit_.motion.position[2]};
+                        const float point_xz[2] = {pt[0], pt[2]};
+                        // 009C280E: 009FBB20(&point_xz, r, side +18h, &local18h). The out
+                        // point lands in a local the tick never reads; the result is
+                        // popped (009C2813).
+                        const CircleSteer009fbb20 s = circle_steer_009fbb20(
+                            pos, point_xz, r, unit_.moveto_circle_flag_18, cheat_turbo_340,
+                            min_angle, max_angle, followed);
+                        if (s.heading_written) {
+                            unit_.plan_heading_2c0 = s.heading_2c0;   // 009FBF4D
+                            unit_.plan_heading_2c0_written = true;
+                            unit_.plan_heading_mode_2cc = 2;          // 009FBF53
+                        } else {
+                            ++unit_.moveto_circle_no_heading;
+                        }
+                        unit_.moveto_circle_last_d = s.dist;
+                        if (unit_.moveto_circle_min_d < 0.0f || s.dist < unit_.moveto_circle_min_d)
+                            unit_.moveto_circle_min_d = s.dist;
+                        if (s.dist > unit_.moveto_circle_max_d)
+                            unit_.moveto_circle_max_d = s.dist;
+                        // 009C2815-009C2827: 009FB800(point.y, 1.0).
+                        bsp::PlanePitchCommandInputs pin;
+                        pin.desired_altitude = pt[1];
+                        pin.reference = 1.0f;
+                        pin.unit_world_y = unit_.motion.position[1];
+                        if (owner_.lua.plane_globals_loaded()) {
+                            const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
+                            pin.ceiling = g.dynamics_ceiling;
+                            pin.climb_dist = g.pilot_general_climb_dist;
+                            pin.drop_dist = g.pilot_general_drop_dist;
+                        }
+                        pin.class_climb_angle = unit_.plane_climb_angle_1ec;
+                        pin.class_drop_angle = unit_.plane_drop_angle;
+                        unit_.plane_commanded_altitude = pt[1];
+                        unit_.plane_commanded_pitch = bsp::pitch_command_009fb800(pin);
+                        unit_.plan_state.pitch_target_2bc = unit_.plane_commanded_pitch;
+                        if constexpr (GameUnitsHost::Impl::kPitchCommandCallersBound) {
+                            unit_.plan_state.pitch_mode_2d0 = 2;
+                        }
+                        // 009C282C-009C285F: dir+40h = Angle_MoveTo tuning+670h, then
+                        // 009FABE0(009A1A20(0099B630())); no direction object here.
+                        owner_.record("BotStateMoveTo::direction_009fabe0", 0x009fabe0u);
+                        owner_.done("BotStateMoveToCircle::tick", 0x009c26d0u);
                     }
 
                     // 009C2430, the kind-7 moveto state's tick (vtable 00D20A80).
@@ -17625,6 +17880,20 @@ void GameUnitsHost::report() {
                                 static_cast<double>(sl->moveto_min_distance),
                                 static_cast<double>(sl->moveto_distance_64),
                                 static_cast<double>(sl->moveto_dwell_60));
+                            if constexpr (bsp::kMoveToCircleSteerBound) {
+                                if (sl->moveto_circle_ticks > 0) {
+                                    host.log.notef("  moveto circle %-24s ticks=%llu "
+                                        "no_heading=%llu side=%d r=%.1f min_d=%.1f "
+                                        "max_d=%.1f last_d=%.1f (009C26D0/009FBB20, part 4)",
+                                        sl->row.name.c_str(), sl->moveto_circle_ticks,
+                                        sl->moveto_circle_no_heading,
+                                        sl->moveto_circle_flag_18 ? 1 : 0,
+                                        static_cast<double>(sl->plane_turn_circle_radius),
+                                        static_cast<double>(sl->moveto_circle_min_d),
+                                        static_cast<double>(sl->moveto_circle_max_d),
+                                        static_cast<double>(sl->moveto_circle_last_d));
+                                }
+                            }
                         }
                         host.log.notef("summary mission moveto task: tasks=%zu ticks=%llu "
                             "state_changes=%llu arrivals=%llu (009C3950, packet "

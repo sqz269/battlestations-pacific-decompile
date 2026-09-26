@@ -56,6 +56,13 @@ inline constexpr bool kMoveToTaskTickBound = true;
 // kMoveToTaskTickBound. The tick's sight search (009C214A-009C2355) and the
 // +85h trail arm stay named records.
 inline constexpr bool kMoveToFollowBound = true;
+
+// Packet cc9_pilot_moveto_task part 4: the circle state's tick 009C26D0
+// (vtable 00D20A9C +0Ch) with its steer 009FBB20 and the tangent points
+// 004F4840 -> 004F4430 -> 004F3810. Needs kMoveToTaskTickBound. ON since the
+// part 4 pairs (docs/PILOT_MOVETO_TASK.md). OFF: the
+// arrived leader's state stays the named record BotStateMoveToCircle::steer.
+inline constexpr bool kMoveToCircleSteerBound = true;
 // 008A44EF. `retreat`.
 inline constexpr std::uint32_t kPilotOrderClassRetreat = 0x00E08F90u;
 // 008A4900. `land`, SCENE_COMMAND_TYPES row 22.

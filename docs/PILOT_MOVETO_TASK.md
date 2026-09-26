@@ -537,3 +537,195 @@ differs only in the doc.
   follows is too.
 - **What stays wrong.** After arriving, a leader and its wing fly straight on instead of circling.
   That is the circle steer `009FBB20`, part 4, and it is the next thing to bind.
+
+## Part 4: the circle state's steer (packet cc9_pilot_moveto_task_p4)
+
+2026-09-26. Ghidra read-only; names are ledger hypotheses. Switch `kMoveToCircleSteerBound` in
+`include/bsp/pilot_order_bindings.hpp`, landed OFF first; OFF keeps the named record
+`BotStateMoveToCircle::steer` (`009FBB20`).
+
+### The routines
+
+| routine | role | coverage |
+| --- | --- | --- |
+| `009C26D0` `BSP_BotStateMoveToCircle_Tick` | circle state tick, vtable `00D20A9C` `+0Ch` | complete (host: `run_moveto_circle_tick_009c26d0`) |
+| `009FBB20` `BSP_BotApproach_CircleSteer` | the steer | complete (host: `circle_steer_009fbb20`) |
+| `004F4840` `BSP_Circle2D_TangentPointsFrom` | packs `{c.x, c.z, r}`, calls `004F4430` | complete |
+| `004F4430` `BSP_Circle2D_TangentPoints` | `004F3810`, then `m + b` and `m - b` | complete |
+| `004F3810` `BSP_Circle2D_TangentChord` | chord midpoint and half-chord | complete (host: `circle_tangent_points_004f4840` covers all three) |
+
+**`009C26D0`**, read from the listing:
+- **Speed.** The chain `009BECD0(009C23B0(007C47F0(0)))` is the moveto state's, with 0 where
+  the moveto state passes its distance (`009C26D3` `FLDZ`). It is capped by TravelSpeed
+  `class+18Ch` (`009C270B`-`009C2730`, the smaller wins). `+2B0h` = 0, `+2D8h` = 1.
+- **Release arm.** With `unit+C25h` set it writes `+2BCh` = 0, `+2D0h` = 2, `+2C4h` = 0 and
+  `+2CCh` = 1, then returns (`009C2763`-`009C2794`). This differs from the moveto state's arm.
+- **Steer call** (`009C27D7`-`009C280E`). r = max(`approach+6Ch`, TurnCircleRadius
+  `class+268h`). The call passes a two-float copy (x, z) of the point, r, the side byte `+18h`
+  and `&local+18h`. The tick never reads that local again, and it pops the return value
+  (`009C2813`). The brief called this pointer `&speed`; the speed is at `local+14h`, and r
+  overwrites that slot at `009C27E0`.
+- **Tail.** `009FB800(point.y, 1.0)`, then `dir+40h` = Angle_MoveTo `tuning+670h` and
+  `009FABE0(009A1A20(0099B630()))`. It has no `009F9E40` call, because `009FBB20` writes the
+  heading itself.
+
+**`009FBB20`**: `__thiscall`, ECX = the approach. Stack: `(const float* point_xz, float r,
+bool side, float* out_xz)`, `RET 10h`. Ghidra's signature has no parameters. The position is
+`unit+FCh`/`+104h` after `00414DB0`.
+1. d = the planar distance from the point to the plane, and u = (pos - point) / d. The square
+   root is taken only when d² > 1e-10 (`00CE3820`, double).
+2. If d < 0.001f (`00D7A23C`), it returns r and writes nothing (`009FBBF8`).
+3. lead = 2 × `unit+340h`, raised to 10 when below 10.0 (`00CE3DC0` double, `00CE38B8` float).
+   gap = d - r when r - d < 0.0f (`00D7A218`), else (r - d) × 0.9 (`00D7A390` double).
+   m = max(lead, gap).
+4. q = point + u (m + r). This is an external point on the plane's side, so `004F3810`'s r < d
+   test always passes. The tangent points from q to the circle (point, r) are
+   m' ± h (-u'.z, u'.x). Here u' = (q - c)/|q - c|, m' = c + (r²/|q - c|) u' and
+   h = r·sqrt(|q - c|² - r²)/|q - c|. `004F4430` writes out0 = m' + b and out1 = m' - b. The
+   side byte picks out1 when set (`009FBD0E`); call the pick T.
+5. The angle is A = FollowedDist `tuning+5E4h` × max(`unit+340h` × 0.4 (`00CE65D0` double),
+   1.0f) / r. It is clamped to [MinAngle `+5DCh`, MaxAngle `+5E0h`] (15° and 45° by default),
+   and multiplied by -1.0 (`00D7A250` double) for side 1.
+6. P = point + r·rot(u, A), using a raw `FSIN`/`FCOS` pair (`009FBE0E`, `009FBE32`).
+7. w = clamp((d/r - 1)/0.2, 0, 1) (`00CE3D10` double, `00D7A24C` 1.0f). The steer vector is
+   v = w(T - pos) + (1 - w)(P - pos).
+8. `cmd+2C0h` = atan2(v.x, v.z) (`LIBCRT_atan2` with ST1 = v.x and ST0 = v.z, no wrap, so the
+   range is (-π, π]). `cmd+2CCh` = 2. The host's heading consumer takes a wrapped difference
+   (`00438B10`). When the out pointer is non-null, out = pos + v.
+9. It returns d - r when that is positive, else -0.0f - (d - r) (`00D7A208`).
+
+In words: far out (d ≥ 1.2r), the plane heads for the tangent point on its side. Inside that
+band, it heads more and more for the point A radians ahead of its radial position on the circle
+of radius r. Side 0 and side 1 orbit in opposite directions.
+
+**Other callers of `009FBB20`**, not bound here: `009B0FE0` and `009BCA50` (Ghidra xrefs).
+**Other caller of `004F4840`:** `009C1448` inside `009BFEE0` (the follow law).
+
+### Substitutions (each labelled in the code)
+
+- **`approach+6Ch`.** The squadron's `+348h` command block writes it (`009C359F`), and this host
+  does not model that block. 0 stands in, so r = TurnCircleRadius, the class's
+  `plane_turn_circle_radius` (1000 m for the Zero rows in this installation's
+  vehicleclasses.lua). A mission-authored circle radius would be lost.
+- **`unit+340h` (CheatTurbo).** It is 0 in this host, as at the `0099D4EE` dtScale site. That
+  gives lead = 10 and a scale of 1.0.
+- **The `009C23B0` target-speed override** stays the record
+  `BotStateMoveTo::target_speed_override_009c23b0`. **The release arm** is the record
+  `BotStateMoveToCircle::c25_arm` (`009C2763`). **The direction tail** is the record
+  `BotStateMoveTo::direction_009fabe0`.
+- **The out point** is computed and dropped, as in the image.
+
+The host adds a diagnostic line, `moveto circle <unit> ticks= no_heading= side= r= min_d= max_d=
+last_d=`, printed only when the switch is ON. min_d, max_d and last_d are the planar distances
+from the plane to the steer point (its ship) that the steer measured.
+
+### Predictions (written before the runs)
+
+Two same-tree pairs, `local\cs_off` against `local\cs_on`, built from `3de034859` plus this
+part. All four earlier move-to switches are ON on both sides, with `BSP_GUNNERY_RNG_STREAMS=1`,
+`BSP_DEATH_TABLE=1` and one run at a time. The baseline figures come from the all-on runs
+above (`AO_ON_*`, built from `6037768c6`). Main has moved since then, so the OFF numbers may
+differ. The predictions are for the difference between the two sides.
+
+**E2 9000** (USN04, frames 9200, mission frames 9000):
+
+| row | prediction |
+| --- | --- |
+| steer native | `BotStateMoveToCircle::steer` UNIMPLEMENTED (about 14 000 calls) disappears, and `BotStateMoveToCircle::tick` appears as concrete with a similar count; fewer if circling escorts die sooner |
+| `c25_arm` record | 0 calls (escorts carry no torpedo) |
+| arrived leaders' end distance | every leader alive at the end is within about 0.6r-1.6r (600-1600 m) of the Lexington, against 21-31 km on OFF for #1.2, #2.2, #4.2 and #8.2. The circle line's max_d after the first lap stays below about 2r |
+| wingmen | follow their leaders into the orbit, so their last_d is also within about 2 km |
+| escort Zero deaths | up by 2-8: the circling waves (#1, #2, #4, #8 and wingmen) stay inside the carrier group's anti-aircraft cover |
+| total plane deaths | OFF + 2 to 8 |
+| hit records | up, by about 50-300 |
+| torpedo / dive releases | within the bands seen so far (3-6 / 1-6); no escort change reaches the bombers' release logic directly, but AA diversion and RNG coupling can move them by 1-2 |
+| the Lexington's distance moved | within about 1000 m of OFF |
+| identical rows | every row fixed before the first arrival: the task installs (17), the construction draws, the spawn schedule, the fixed-step counts. The first arrival's frame is the same on both sides; moved timestamps before it would be a host bug |
+
+**USN04 4700/4500:**
+
+| row | prediction |
+| --- | --- |
+| steer native | record (about 4 500) becomes a concrete tick of similar count |
+| end distances | circling leaders alive at 225 s are within about 2 km of the Lexington, against 9-11 km on OFF for #1.2, #2.2 and #4.2 |
+| plane deaths | OFF + 0 to 4, all escort Zeros |
+| releases | within band |
+| the Lexington's distance moved | within about 300 m of OFF |
+
+### The pairs, measured
+
+The binaries `local\cs_off` and `local\cs_on` are built from `72dc65b2d`, with the switch flipped
+for `cs_on`. `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1` were set, and the runs went
+one at a time. All four logs show the 1600x900 window line and a module directory inside this
+worktree. Each OFF log matches the earlier all-on runs on every row quoted above: 43 deaths, 796
+hits and 4284.80 m for 9000, and 36 deaths, 708 hits and 3481.38 m for 4500.
+
+Both sides enter the first circle state at the same log line, at t = 110 s (`A6M Zero #1.2:
+state 1148 -> 1324`). Every death before 122 s is identical. Deaths after that move by
+0.05-2 s, because the AA guns now also engage the circling Zeros.
+
+**E2 9000** (`local\CS_OFF_9000.log`, `local\CS_ON_9000.log`):
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| steer native | `BotStateMoveToCircle::steer` UNIMPLEMENTED, 13929 calls | gone; `BotStateMoveToCircle::tick` concrete, 3762 calls | similar count, fewer if the escorts die sooner | held; they die sooner |
+| `c25_arm` record | - | not called | 0 | held |
+| arrived leaders' distance | #1.2, #2.2, #4.2 and #8.2 end 20.9-30.9 km out | every circling leader stays within r: circle max_d is 947-1044 m, and last_d at death is 248-992 m | 600-1600 m, max_d below 2r | held; no circling leader is alive at the end |
+| wingmen | 20.9-30.9 km out with their leaders | last_d 278-1064 m | within about 2 km | held |
+| escort Zero deaths | 8 | 16: #1.2, #2.2, #4.2, #8.2 and their wingmen added, at 136.7-240.06 s | +2 to +8 | held, at the top |
+| total plane deaths | 43 | 51 | +2 to +8 | held |
+| hit records | 796 | 841 | +50 to +300 | **failed**: +45 |
+| torpedo / dive releases | 5 / 6 | 5 / 5 | within band | held |
+| the Lexington's distance moved | 4284.80 | 5833.61 | within 1000 m | **failed**: +1549, see the stage split below |
+| units | 92 | 81 | not predicted | **failed**: the mission stays in phase 1 |
+| identical rows | - | every row up to the first circle entry at 110 s | the same | held |
+
+**The stage split.** The mission is `usn_19_coralus.lua` at difficulty 1-2. Its phase-1 check
+completes objective primary 1 and calls `Blackout(true, "luaMoveToPh2", 3)` when any of these
+holds:
+- BomberWave == 5;
+- no IJN bombers aimed at the Lexington are left;
+- no IJN fighters aimed at the Lexington are left (`IJNFightersLex`).
+
+On ON, the last escort Zero dies at 240.06 s, and the check fires at t = 240.01 s.
+- On OFF, the escorts survive 20-30 km out. The check fires only at t = 345 s, on the wave
+  count or the bomber list, with escorts still alive.
+- `luaObj_Completed` sets `Success` but leaves `Active` set (`scripts/global/commandhelpers.lua`
+  `luaObj_Completed`, `luaObj_IsActive`). So the Think handler re-issues the 3 s blackout on
+  every pass, and a pass runs every 60 frames (3.0 s).
+- On OFF, the blackout's callback fired after 27 re-issues, at t ≈ 425 s. The Japanese fleet
+  and the `movie*` units then spawned, which makes 92 units.
+- On ON, it was re-issued 70 times until the run ended, and phase 2 never began.
+
+Whether a re-issue restarts the fade is decided by the reconstructed binding 008D1340
+(`src/mission_blackout.cpp`) and by the host's Think cadence, and neither is part of this
+packet. A 3 s re-arm on a 3.0 s period is a knife-edge. OFF escaping it at 425 s rather than
+348 s already suggests the host differs from the image there. The Lexington's extra 1549 m and
+the 11 missing units follow from that split, not from the steer.
+
+**USN04 4700/4500** (`local\CS_OFF_4500.log`, `local\CS_ON_4500.log`):
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| steer native | UNIMPLEMENTED, 4452 calls | concrete tick, 3129 calls | similar count | held |
+| end distances | #1.2, #2.2 and #4.2 end 9.4-10.8 km out | the one leader alive at 225 s, #8.2, is at 996 m with its wingman at 1064 m; every other circling leader dies within 1044 m | within about 2 km | held |
+| plane deaths | 36 | 43: seven escort Zeros added; the bombers' deaths only shift in time | +0 to +4 | **failed**: +7 |
+| hit records | 708 | 751 | - | - |
+| torpedo / dive releases | 5 / 5 | 5 / 4 | within band | held |
+| the Lexington's distance moved | 3481.38 | 3474.54 | within 300 m | held |
+| stage | phase 1 throughout | phase 1 throughout (no `luaMoveToPh2` call before 225 s) | - | same |
+
+### Verdict: `kMoveToCircleSteerBound` ON
+
+- **The steer behaves as read.** Every arrived leader turns onto a circle of radius r = 1000 m
+  round the Lexington (max_d 947-1044 m), in the direction its side byte picks. Its wing
+  follows it.
+- **The deaths.** The escorts orbit inside the carrier group's anti-aircraft cover, so they
+  die there. In E2 9000 that kills the whole `IJNFightersLex` list by 240 s, which the
+  mission script treats as the end of phase 1.
+- **The failed rows.** The extra 4500 deaths are that same effect, earlier than predicted.
+  The 9000 unit count and the Lexington's distance come from the blackout loop described
+  above. That loop is a separate host question for the blackout / Think-cadence owner, and
+  it now decides whether a 9000-frame USN04 run reaches phase 2.
+- **Still records:** `approach+6Ch` (the `+348h` command block), the `009C23B0` override, the
+  release arm `009C2763` and the `009FABE0` direction tail.
