@@ -1,5 +1,6 @@
 #pragma once
 #include "bsp/native_render_context.hpp"
+#include "bsp/native_render_pointer_arrays.hpp"
 
 namespace bsp {
 struct NativeProceduralResourceLifetimeContext {
@@ -33,12 +34,23 @@ struct NativeProceduralResourceLifetimeOperation final {
 // arithmetic, zero placement with null-slot skip, decrement-before-shrink,
 // final count publication. Pointer slots have no element destructor.
 void resize_native_procedural_pointer_array_00737390(void*, std::int32_t requested);
+// Already-live canonical header path; use the typed735FF0 overload. Begin a
+// void* slot lifetime only at each nonnull reached zero store; existing slots
+// are transparently replaced. Shrink does not destroy slots or null stale data.
+void resize_native_procedural_pointer_array_00737390(
+    NativeRenderPointerArrayStorage&, std::int32_t requested);
 // Complete B19750..B1975A: stampD5C104 then tail BD30F0 stampCEB130.
 void destroy_native_procedural_resource_base_00b19750(void*) noexcept;
 // Complete C304A0..C3054B normal body and source-exception cleanup. ECX owner,
 // RET. StampD79B54; current last child +04 decrement / zero-only current
 // virtual0 dispatch; reread count, decrement; resize0/free CURRENT +10 data;
 // B19750. State1 unwind clears/frees vector then base; state0 only base.
+// Requires the separate live NativeTextureSourcePayload placed by actual
+// C30470 on fresh backing (including its nested header), retained through all
+// callbacks/cleanup. Launder accesses that existing object; it cannot adopt a
+// raw image or start a lifetime. Reached children are live void* slots and each
+// nonnull identity has its genuine +04 atomic/canonical zero provider. Native
+// null children are not guarded. No payload/header/atomic construction occurs.
 // No payload/string cleanup at +08/+0C and no field nulling after free.
 void destroy_native_procedural_resource_00c304a0(void*, NativeRenderActualOwners&,
     NativeProceduralResourceLifetimeOperation&);

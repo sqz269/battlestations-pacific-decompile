@@ -1,5 +1,6 @@
 #include "bsp/native_procedural_resource_lifetime.hpp"
 #include "bsp/native_cube_texture_owner_array_reserve.hpp"
+#include "bsp/native_texture_source_storage.hpp"
 #include "bsp/native_ref_counted.hpp"
 #include "bsp/singleton_lifetime.hpp"
 #include <cstring>
@@ -41,31 +42,38 @@ template<class F> void invoke(Op& op, F body) {
     try { body(); op.phase = Op::Phase::complete; }
     catch (...) { op.phase = Op::Phase::failed; throw; }
 }
+NativeRenderPointerArrayStorage& source_children(void* owner) noexcept {
+    // The caller contract supplies the C30470-created live payload. This
+    // pointer recovery does not start or adopt a payload/header lifetime.
+    auto* const payload = std::launder(static_cast<NativeTextureSourcePayload*>(at(owner, 8)));
+    return payload->children_08;
+}
 void destroy_array(void* owner, Op& op, bool unwind) {
-    void* const header = at(owner, 0x10);
+    auto& header = source_children(owner);
     op.native_site = unwind ? 0x00737bf5 : 0x00c3051c;
     resize_native_procedural_pointer_array_00737390(header, 0);
-    op.array_allocation = pointer(header);
+    op.array_allocation = static_cast<volatile NativeRenderPointerArrayStorage&>(header).data_00;
     op.native_site = unwind ? 0x00737bfd : 0x00c30524;
     singleton_lifetime_free(op.array_allocation);
     op.array_free_returned = true;
 }
 void destroy_body(void* owner, NativeRenderActualOwners& owners, Op& op) {
     word(owner) = 0x00d79b54;
+    volatile auto& actual = source_children(owner);
     bool array_armed = true;
     try {
-        while (word(owner, 0x14) != 0) {
-            const U count = word(owner, 0x14);
-            void* const data = pointer(owner, 0x10);
-            void* const child = pointer(at(data, count * 4u - 4u));
+        while (actual.count_04 != 0) {
+            const U count = static_cast<U>(actual.count_04);
+            void** const data = actual.data_00;
+            void* const child = *static_cast<void* const volatile*>(at(data, count * 4u - 4u));
             op.child = child;
             op.child_release_started = true;
             op.child_release_returned = false;
             op.native_site = 0x00c304ee;
             release_native_render_actual_owner(owners, child);
             op.child_release_returned = true;
-            const U current_count = word(owner, 0x14);
-            if (current_count != 0) word(owner, 0x14) = current_count - 1u;
+            const U current_count = static_cast<U>(actual.count_04);
+            if (current_count != 0) actual.count_04 = signed_bits(current_count - 1u);
         }
         // Native state1 -> state0 precedes resize/free. No repeated array
         // cleanup if resize throws; state0 still stamps the base.
@@ -146,6 +154,25 @@ void resize_native_procedural_pointer_array_00737390(void* header, std::int32_t 
     }
     while (requested < signed_bits(word(header, 4))) word(header, 4) = word(header, 4) - 1u;
     word(header, 4) = static_cast<U>(requested);
+}
+void resize_native_procedural_pointer_array_00737390(
+    NativeRenderPointerArrayStorage& header, std::int32_t requested) {
+    using Pointer = void*;
+    volatile auto& actual = header;
+    if (requested > actual.capacity_08)
+        reserve_native_cube_texture_owner_array_00735ff0(header, requested);
+    U index = static_cast<U>(actual.count_04);
+    while (signed_bits(index) < requested) {
+        void* const slot = at(actual.data_00, index * 4u);
+        if (slot) {
+            auto* const live = ::new (slot) Pointer;
+            *static_cast<volatile Pointer*>(live) = nullptr;
+        }
+        ++index;
+    }
+    while (requested < actual.count_04)
+        actual.count_04 = signed_bits(static_cast<U>(actual.count_04) - 1u);
+    actual.count_04 = requested;
 }
 void destroy_native_procedural_resource_base_00b19750(void* owner) noexcept {
     word(owner) = 0x00d5c104;

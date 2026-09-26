@@ -2,6 +2,7 @@
 #include "bsp/singleton_lifetime.hpp"
 
 #include <cstring>
+#include <new>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native cube-texture owner array reserve requires MSVC Win32.
@@ -48,6 +49,34 @@ void reserve_native_cube_texture_owner_array_00735ff0(
     word(header) = static_cast<std::uint32_t>(
         reinterpret_cast<std::uintptr_t>(replacement));
     word(header, 8) = static_cast<std::uint32_t>(requested_capacity);
+}
+
+void reserve_native_cube_texture_owner_array_00735ff0(
+    NativeRenderPointerArrayStorage& header, std::int32_t requested_capacity) {
+    using Pointer = void*;
+    volatile auto& actual = header;
+    if (requested_capacity < 1) requested_capacity = 1;
+    if (actual.capacity_08 >= requested_capacity) return;
+    const auto bytes = static_cast<std::uint32_t>(requested_capacity) * 4u;
+    auto** const replacement = static_cast<void**>(singleton_lifetime_allocate({
+        SingletonAllocationKind::pointer_slots, bytes, bytes}));
+    auto destination = static_cast<std::uint32_t>(
+        reinterpret_cast<std::uintptr_t>(replacement));
+    std::uint32_t index = 0;
+    while (signed_word(index) < actual.count_04) {
+        if (destination != 0) {
+            const auto source = static_cast<std::uint32_t>(
+                reinterpret_cast<std::uintptr_t>(actual.data_00)) + index * 4u;
+            Pointer const value = *static_cast<const volatile Pointer*>(address(source));
+            auto* const live = ::new (address(destination)) Pointer;
+            *static_cast<volatile Pointer*>(live) = value;
+        }
+        ++index;
+        destination += 4u;
+    }
+    singleton_lifetime_free(actual.data_00);
+    actual.data_00 = replacement;
+    actual.capacity_08 = requested_capacity;
 }
 
 } // namespace bsp
