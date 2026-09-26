@@ -9588,3 +9588,14 @@ documented 0 to 1. USN01 needs its own pair on the next gunnery landing.
 dogfight target after its squadron emptied. `kDogfightEmptySquadronClearBound` landed ON at main
 da4ba1baf, after this section's base; the planner's pair on 44631c067 read US sea losses 2 -> 0.
 The USN04 and USN01 moves stay open for the attribution runs.
+
+**Attribution runs, 2026-09-26 (packet cc9_usn04_usn01_attribution,
+docs/USN04_USN01_ATTRIBUTION.md):** on one build of main `5f7daab07`, removing
+`kBulletThrowBound`, `kAabb0085cdb0Bound`, `kTorpedoGyroHeadingBound` or
+`kAvoidanceDummyAiGateBound` alone leaves USN04 at 31 deaths and USN01 at 7 deaths and 2 torpedo
+drops. Hits move by at most 16 (USN04) and 2 (USN01). Neither flagged move is on current main:
+USN04 reads 31 / 528 hit records and USN01 141 / 2 / 7, after the three dogfight merges that
+followed this section's base (`347ef9007`, `44631c067`, `da4ba1baf`). USN01's two extra deaths
+are US ScoutDauntless scouts shot down by Convoy2 at 124/130 s. Both flagged moves are
+attributed by elimination to the flight and dogfight merges, cascade-coupled; no single switch
+flips them. The next reference should be taken on current main.
