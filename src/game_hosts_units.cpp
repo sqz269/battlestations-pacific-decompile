@@ -2962,6 +2962,9 @@ struct GameUnitsHost::Impl {
     // per task/state, the planner ticks with a target, split by +2CCh on
     // entry to 0099DE8A (index 0, 1, 2; 3 = any other value).
     static constexpr bool kPlannerModeCensusDiag = true;
+    // DIAGNOSTIC, packet cc9_climbout_speed_gate: once a second, every live
+    // dogfight fighter below 400 m, its state, speed and pitch chain.
+    static constexpr bool kFighterLowTraceDiag = false;
     // Packet cc9_planner_heading_writes (docs/PLANNER_HEADING_WRITES.md): the
     // torpedo states' own heading writes the host never reproduced. The moveto
     // tick 009C18C0 steers at its +2Ch target through 009F9E40 (009C1B23,
@@ -14009,6 +14012,41 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 owner_.gunfire_avoidance_009a17d0(unit_, elapsed);
                             }
                             unit_.plane_think_dt = elapsed;   // 0099D300's argument
+                            if constexpr (GameUnitsHost::Impl::kFighterLowTraceDiag) {
+                                if (unit_.dogfight_task_installed && !unit_.plane_death_c3a &&
+                                    unit_.motion.position[1] < 400.0f) {
+                                    static std::map<const void*, float> lt;
+                                    float& acc = lt[&unit_];
+                                    acc -= elapsed;
+                                    if (acc <= 0.0f) {
+                                        acc = 1.0f;
+                                        const float* const wv = unit_.plane_world_velocity;
+                                        owner_.log.notef("  fighter low %s t=%.2f st=%s alt=%.1f vy=%.2f "
+                                            "spd=%.2f stall=%.2f pitch=%.3f plan_pitch=%.3f mode2d0=%d "
+                                            "pitch_slot=%.3f/%d thr_live=%.3f thr_slot=%.3f/%d spd2d8=%d "
+                                            "want2b4=%.1f climb1ec=%.3f",
+                                            unit_.row.name.c_str(),
+                                            static_cast<double>(owner_.summary.simulated_seconds),
+                                            bsp::dogfight_state_name(unit_.dogfight_state),
+                                            static_cast<double>(unit_.motion.position[1]),
+                                            static_cast<double>(wv[1]),
+                                            static_cast<double>(std::sqrt(wv[0] * wv[0] +
+                                                wv[1] * wv[1] + wv[2] * wv[2])),
+                                            static_cast<double>(unit_.plane_stall_spd),
+                                            static_cast<double>(unit_.plane_pitch_angle_c64),
+                                            static_cast<double>(unit_.plan_state.pitch_target_2bc),
+                                            unit_.plan_state.pitch_mode_2d0,
+                                            static_cast<double>(unit_.plan_slots[bsp::kPilotSlotPitch].desired),
+                                            unit_.plan_slots[bsp::kPilotSlotPitch].active,
+                                            static_cast<double>(unit_.plane_live_throttle),
+                                            static_cast<double>(unit_.plan_slots[bsp::kPilotSlotThrottle].desired),
+                                            unit_.plan_slots[bsp::kPilotSlotThrottle].active,
+                                            unit_.plane_air_brake_mode_2d8,
+                                            static_cast<double>(unit_.plane_desired_speed_2b4),
+                                            static_cast<double>(unit_.plane_climb_angle_1ec));
+                                    }
+                                }
+                            }
                             if (plan_yaw_0099d300()) {
                                 ++owner_.summary.pilot_yaw_plans;
                             }

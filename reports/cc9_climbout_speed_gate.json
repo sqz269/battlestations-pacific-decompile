@@ -1,0 +1,11 @@
+{
+  "packet": "cc9_climbout_speed_gate",
+  "doc": "docs/CLIMBOUT_SPEED_GATE.md",
+  "calls": [
+    {"address": "009A78BB", "native": "009F9ED0", "function": "009A76E0", "note": "aim pitch: elevation of the aim point, capped upward only at class+1E4h"}
+  ],
+  "finding": "no climb-out law exists; cmd_alt in the surface census is the stale moveto command; the image's pitch chain has no minimum-speed guard; no host gap; kDogfightThrottleBound stays OFF",
+  "switches": [{"name": "kFighterLowTraceDiag", "state": "OFF", "kind": "diagnostic"}],
+  "no_ghidra_function": [],
+  "ledger_names_added": []
+}
