@@ -1,0 +1,32 @@
+{
+  "packet": "cc9_stall_target_validity",
+  "doc": "docs/STALL_TARGET_VALIDITY.md",
+  "calls": [
+    {
+      "address": "009AA685",
+      "native": "009A7650",
+      "function": "009AA630",
+      "note": "SetTarget(+3D0h[0]) when +3CCh <= 1; 007F3970 nulls the vacated slot (007F39FA), so an emptied squadron clears the target"
+    }
+  ],
+  "finding": "the stalled Yorktown fighters were chasing D3A Val #7.1|.-4, dead at 264.26 s and frozen at 234.6 m; the host's re-select returned early on the emptied squadron and kept the corpse as target",
+  "switches": [
+    {
+      "name": "kDogfightEmptySquadronClearBound",
+      "state": "ON",
+      "pair": "local/SV_OFF_9000.log vs local/SV_ON_9000.log"
+    },
+    {
+      "name": "kRateLawAttitudeTermsBound",
+      "state": "ON",
+      "pair": "same pair; US sea losses 2 -> 0"
+    },
+    {
+      "name": "kFighterChaseTraceDiag",
+      "state": "OFF",
+      "kind": "diagnostic, extended with target validity"
+    }
+  ],
+  "no_ghidra_function": [],
+  "ledger_names_added": []
+}

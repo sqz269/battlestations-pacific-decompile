@@ -2985,7 +2985,7 @@ struct GameUnitsHost::Impl {
     // got no bank-induced yaw: once the planner's yaw base term fades above
     // its bank limit (0099DFFB), a fighter held at 60-70 degrees of bank
     // stopped turning toward its target. OFF: both angles zero.
-    static constexpr bool kRateLawAttitudeTermsBound = false;
+    static constexpr bool kRateLawAttitudeTermsBound = true;
     // Packet cc9_flight_integrator (docs/FLIGHT_INTEGRATOR.md): 007D8470's
     // velocity step in place of the host's Euler step. OFF: v += a * step.
     // ON with kDogfightThrottleBound on the pair FI0/FI1 (section 4).
@@ -2995,6 +2995,11 @@ struct GameUnitsHost::Impl {
     // (record+908h, default 3), not with the player's side. OFF: the
     // controlled unit's side stands in, which skips every friendly plane.
     static constexpr bool kAvoidanceDummyAiGateBound = true;
+    // Packet cc9_stall_target_validity (docs/STALL_TARGET_VALIDITY.md): an
+    // emptied target squadron clears the dogfight target, as 009AA630 hands
+    // 009A7650 the null that 007F3970 leaves in +3D0h[0]. OFF: the host keeps
+    // the last target, dead or not.
+    static constexpr bool kDogfightEmptySquadronClearBound = true;
     // Packet cc9_planner_heading_writes (docs/PLANNER_HEADING_WRITES.md): the
     // torpedo states' own heading writes the host never reproduced. The moveto
     // tick 009C18C0 steers at its +2Ch target through 009F9E40 (009C1B23,
@@ -9277,7 +9282,21 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             if (n == 5 || m == bsp::kPlaneSquadronNoUnit) break;
                             members[n++] = m;
                         }
-                        if (n == 0) return;
+                        if (n == 0) {
+                            if constexpr (GameUnitsHost::Impl::kDogfightEmptySquadronClearBound) {
+                                // 009AA66B: +3CCh <= 1 takes +3D0h[0], and
+                                // 007F3970 nulls the vacated slot (007F39FA), so
+                                // an emptied squadron hands 009A7650 a null and
+                                // the target is cleared.
+                                if (unit_.df_target_plus_one != 0) {
+                                    ++unit_.df_target_changes;
+                                    owner_.log.notef("  dogfight %-12s target -> none (empty squadron)",
+                                        unit_.row.name.c_str());
+                                }
+                                unit_.df_target_plus_one = 0;
+                            }
+                            return;
+                        }
                         std::size_t best = bsp::kPlaneSquadronNoUnit;
                         if (n < 2) {  // 009AA66B, +3CCh < 2
                             best = members[0];
@@ -14177,7 +14196,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                         owner_.log.notef("  fighter chase %s t=%.2f st=%s tgt=%s d=%.1f "
                                             "dh=%.1f spd=%.2f tspd=%.2f alt=%.1f talt=%.1f want2b4=%.1f "
                                             "spd2d8=%d thr=%.3f maxspd=%.2f aimy=%.1f plan2bc=%.3f "
-                                            "pitch=%.3f bank=%.3f hdgerr=%.3f prev_floored=%.3f prev_demand=%.3f",
+                                            "pitch=%.3f bank=%.3f hdgerr=%.3f prev_floored=%.3f prev_demand=%.3f "
+                                            "tclass=%d tside=%d tlive=%d tdeath=%d tdead=%d tmode=%d tthr=%.3f "
+                                            "ttask=%d%d%d twant=%.1f tdb=%X ttorp=%X",
                                             unit_.row.name.c_str(),
                                             static_cast<double>(owner_.summary.simulated_seconds),
                                             bsp::dogfight_state_name(unit_.dogfight_state),
@@ -14200,7 +14221,19 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                             static_cast<double>(unit_.plane_bank_angle_c68),
                                             static_cast<double>(unit_.attack_hdg_err_last),
                                             static_cast<double>(unit_.diag_floored_2bc),
-                                            static_cast<double>(unit_.diag_pitch_demand));
+                                            static_cast<double>(unit_.diag_pitch_demand),
+                                            static_cast<int>(ct->class_id), ct->row.party,
+                                            df_slot_live(*ct) ? 1 : 0,
+                                            ct->plane_death_c3a ? 1 : 0,
+                                            (ct->state != nullptr && ct->state->simulate != 0) ? 1 : 0,
+                                            ct->plane_control_mode_900,
+                                            static_cast<double>(ct->plane_live_throttle),
+                                            ct->torpedo_task_installed ? 1 : 0,
+                                            ct->dive_bomb_task_installed ? 1 : 0,
+                                            ct->dogfight_task_installed ? 1 : 0,
+                                            static_cast<double>(ct->plane_desired_speed_2b4),
+                                            static_cast<unsigned>(ct->dive_bomb_state),
+                                            static_cast<unsigned>(ct->torpedo_state));
                                     }
                                 }
                             }
