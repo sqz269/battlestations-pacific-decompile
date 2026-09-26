@@ -1,0 +1,19 @@
+{
+  "packet": "cc9_unimplemented_ranking_3",
+  "doc": "docs/UNIMPLEMENTED_RANKING_3.md",
+  "tree": "main 8c6cf2c49, local/bin/rk3",
+  "logs": {"E2": "local/rk3_e2.log (USN04 9200/9000)", "USN04": "local/rk3_usn04.log (4700/4500)", "USN02": "local/rk3_usn02.log (9200/9000)"},
+  "unimplemented_calls": {"E2": 4078603, "USN04": 2249389, "USN02": 4302303},
+  "closed_since_ranking_2": ["009EF910", "009ED3E0", "009DA0D0", "009DDBC0", "008053C0", "009043A0", "004C3CB0 sites (29h pick, minimap)", "004B4B00 minimap heading"],
+  "top_real_gaps_outside_leased_files": [
+    {"row": "MissionEvents::pre_pass", "address": "00982540", "is": "BSP_WarningManager_PumpInputChannel", "file": "src/game_hosts_mission_frame.cpp"},
+    {"row": "MissionEvents::poll_zones", "address": "0096D540", "is": "BSP_WarningManager_PollPrompt", "file": "src/game_hosts_mission_frame.cpp"},
+    {"row": "MissionEvents::poll_triggers", "address": "00968550", "is": "BSP_WarningManager_UpdateDeadlines", "file": "src/game_hosts_mission_frame.cpp"},
+    {"row": "PlayerGunSeat::segment_query", "address": "00957DA0", "is": "the seat's segment query inside 00957BD0", "file": "src/game_hosts_gunnery.cpp"},
+    {"row": "MissionCamera::collision_ray", "address": "0098B370", "is": "the camera collision probe", "file": "src/game_hosts_hud.cpp"}
+  ],
+  "camera_question": "image: 0064DA40 seeds pitch +388h from 00CECA08 = -0.1745329 (-10 degrees); the offset uses the class camera distances; kMissionCameraBound's substitutions do not touch pitch or offset",
+  "recommended_next_hud_packet": "the warning manager's per-frame tick on [00F8A0C4]: 00982540, 0096D540, 00968550 (and 00977990)",
+  "ghidra": "read-only; proto of 00968550, 0096D540, 00982540, 00977990, 00957DA0, 006529C0; bytes at 00CECA08",
+  "no_ghidra_function": []
+}
