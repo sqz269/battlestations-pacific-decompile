@@ -111,5 +111,9 @@ All three switches are ON. USN02's reference moves from 4 to 5 deaths. USN04 doe
   `008160BF..008160D1` are read as "not dead".
 * Blast records keep `+34h = -1` as the image's do, so a bomb or torpedo burst never floods; only
   the round's own direct impact does.
-* `src/gameplay_settings.cpp` stores BodyRepairTickPercentage and GunRepairTickPercentage without
-  the `/ 100.0` of `0083E243` and `0083E295`. It has no reader yet. This host divides its own copy.
+* Packet `cc9_repair_percentage_scale`: `src/gameplay_settings.cpp` now stores BodyRepairTickPercentage
+  and GunRepairTickPercentage through `store_repair_tick_percentage_0083e243`, the `/ 100.0` of
+  `0083E243` / `0083E295` (`FDIV qword [00D7A220]`, bytes `00 00 00 00 00 00 59 40`, then `FSTP` to
+  `+3B4h` at `0083E258` and `+3B8h` at `0083E2AA`). The host takes its repair fraction through the
+  same rule; the result is bit-identical to its former own division (`0x3B03126F`, 0.002 of max per
+  second), so no pair was run.

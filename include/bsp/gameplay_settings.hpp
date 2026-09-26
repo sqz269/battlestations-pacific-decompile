@@ -498,6 +498,9 @@ static_assert(offsetof(GameplayTuningSettings, ship_torpedo_delay) == 0x768, "+7
 // again by the loader, so they are the pre-load state, not the values the game runs with;
 // they are kept because the loader's own defaults differ from them (+5A0h is 1000.0 here and
 // the loader's default for DOFParams.Range2 is 1.0).
+// 0083E243 / 0083E295: BodyRepairTickPercentage and GunRepairTickPercentage are stored
+// divided by 100.0 (00D7A220), so settings+3B4h / +3B8h hold fractions.
+float store_repair_tick_percentage_0083e243(float authored) noexcept;
 void apply_constructor_defaults_00424a10(GameplayTuningSettings& out) noexcept;
 
 // One virtual per native getter call site in 0083B5E0. `enter` replaces the current-table

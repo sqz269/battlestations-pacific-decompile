@@ -190,8 +190,8 @@ listed under "The consumer survey" below.
 | `+3A0h` | `ColliDolgok.ColliDamageMultiplier` | float | 0 | 1.0 | 0083dfd4 | - |
 | `+3ACh` | `FireTickDamage` | float | 0 | 40 * | 0083e1f5 | `BSP_UnitSubObjectA20_Construct`, `FUN_0095eb40` |
 | `+3B0h` | `WaterTickDamage` | float | 0 | 100 * | 0083e1b3 | `BSP_Ai_TargetWeight`, `BSP_UnitSubObjectA20_Construct`, `FUN_0095e9a0` +1 |
-| `+3B4h` | `BodyRepairTickPercentage` | float | 0.2 | 0.1 * | 0083e23e | `BSP_RepairTask_RepairHull` |
-| `+3B8h` | `GunRepairTickPercentage` | float | 2 | 2 * | 0083e290 | `BSP_RepairTask_RepairSubObjects` |
+| `+3B4h` | `BodyRepairTickPercentage` | float | 0.2 | 0.1 * | 0083e23e | `BSP_RepairTask_RepairHull` (stored / 100.0: `FDIV qword [00D7A220]` at `0083e243`) |
+| `+3B8h` | `GunRepairTickPercentage` | float | 2 | 2 * | 0083e290 | `BSP_RepairTask_RepairSubObjects` (stored / 100.0: `FDIV qword [00D7A220]` at `0083e295`) |
 | `+3BCh` | `FireFailureChance` | float | 1 | 3 * | 0083e2de | - |
 | `+3C0h` | `FireFailureDamageDuration` | float | 1 | 10 * | 0083e32c | `FUN_00827b90` |
 | `+3C4h` | `ExplosionDamagePercentage` | float | 1 | 35 * | 0083e374 | `FUN_00827b90` |
