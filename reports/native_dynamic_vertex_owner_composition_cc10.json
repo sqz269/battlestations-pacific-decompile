@@ -1,0 +1,197 @@
+{
+  "packet": "cc10_dynamic_vertex_owner_composition",
+  "status": "one_current_source_dynamic_owner_composition_passed",
+  "owned_files": [
+    "docs/NATIVE_DYNAMIC_VERTEX_OWNER_COMPOSITION_CC10.md",
+    "reports/native_dynamic_vertex_owner_composition_cc10.json"
+  ],
+  "source_changes": false,
+  "native": {
+    "address": "00b287c0",
+    "length": 234,
+    "end_exclusive": "00b288aa",
+    "end_inclusive": "00b288a9",
+    "last_instruction": {
+      "address": "00b288a7",
+      "size": 3,
+      "hex": "c20c00",
+      "text": "ret 0xc"
+    },
+    "instruction_count": 77,
+    "sha256": "1403a4015028fcf34e9c40de61707a76b03b8fcfc51cd877bcc2413d85725b0b",
+    "live_pe_equal": true
+  },
+  "calls": [
+    {
+      "address": "00b287e0",
+      "function": "00b287c0",
+      "instruction": "call 0xb4b370",
+      "native": "00b4b370",
+      "kind": "call"
+    },
+    {
+      "address": "00b28804",
+      "function": "00b287c0",
+      "instruction": "call 0xb4bc00",
+      "native": "00b4bc00",
+      "kind": "call"
+    },
+    {
+      "address": "00b28836",
+      "function": "00b287c0",
+      "instruction": "call 0xb22d10",
+      "native": "00b22d10",
+      "kind": "call"
+    },
+    {
+      "address": "00b28854",
+      "function": "00b287c0",
+      "instruction": "call eax",
+      "indirect": "eax",
+      "kind": "indirect_call"
+    },
+    {
+      "address": "00b2887d",
+      "function": "00b287c0",
+      "instruction": "call 0xb22d10",
+      "native": "00b22d10",
+      "kind": "call"
+    }
+  ],
+  "functions": [
+    {
+      "address": "00b287c0",
+      "source": "src/native_logical_vertex_owner.cpp",
+      "name": "BSP_Renderer_CreateRegisteredVertexStream",
+      "coverage": "existing234B complete source unchanged; one genuine dynamic count4 flags1000 normal composition"
+    }
+  ],
+  "compiler_boundary": {
+    "address": "00cbd238",
+    "length": 10,
+    "end_inclusive": "00cbd241",
+    "last_instruction": "00cbd23d",
+    "last_instruction_length": 5,
+    "ghidra_function_missing_at_readiness": true,
+    "scope": "readiness boundary only; root annotation separate; original FH3 not exercised",
+    "end_exclusive": "00cbd242",
+    "hex": "b8c859df00e90199f3ff",
+    "sha256": "a1f51bd6504c6538f2c8f6a217ab68b3199846db8fd9fd22b30b9c20ff95402b",
+    "cleanup_funclet": {
+      "address": "00cbd230",
+      "length": 8,
+      "end_exclusive": "00cbd238",
+      "hex": "8b4df0e928c7e8ff",
+      "sha256": "fcef9e9a575b3706426ebd1fd01a48e866db3a10d1cecf38be9a004382ec4712"
+    },
+    "native_eh_executed": false
+  },
+  "fixture": {
+    "source": "local\\cc10_dynamic_vertex_owner_probe\\probe.cpp",
+    "scaffold_diff": "local\\cc10_dynamic_vertex_owner_probe\\scaffold.diff",
+    "cases": 1,
+    "original_instruction_execution": false,
+    "renderer": "isolated aligned1B90h field fixture with D5F0A8 profile/current publication, initialized19F4 lock, realD3D9 device1A10, initial zero raw arrays, secondary19AC0 and sync mode0; not B32410 construction or full startup",
+    "physical": "actual30h slot from genuine physical pool lifetime/acquisition; B4BBB0 complete2Ch constructor, publish1974, real16MiB DEFAULT vertex buffer usage208/FVF0, current-profileB4C370 Attach flags1000/capacity1000000 and temporary Release1",
+    "declaration": "actualD4h pool slot/B48AF0 plus B48330 records(type3,usage0),(type1,usage5),(type0,usage5), autooffsetFFFFFFFF; native size table16/8/4 -> stride28 and offsets0/16/24; no name decoder/cache/token initialization",
+    "atomic_lifetime_preparation": "Fixture only: after completed B48AF0, capture initialized actual+4 count1; assert std::atomic<int32_t> size/alignment4 and address alignment; placement-construct at SAME actual+4 with the captured value and compare all four bytes. No separate count or new credit. B61E20 already starts the logical atomic. Physical remains LONG/DWORD and uses genuine same-address interlocked/deleting-family terminal.",
+    "logical": "actual78h pool slot/B287C0 count4 flags1000/B4BC00 base+derived construction; creator-out cell equals returned logical; real same+58 physical/+68 declaration, offsetFFFFFFFF, flags1000,count4,stride28, IDFFFFFFFF->0",
+    "ownership": "one same-actual registry for declaration/logical canonical companions, no duplicate credit; after creation logical1/physical2/declaration2; exactly one physical+08 and renderer+1AAC borrowed membership; secondary19B0 remains absent",
+    "retirement": "release declaration creator first; logical canonical retirement removes both reached memberships, reaches genuine declaration zero and returns both slots; keep physical creator alive until then; decrement same actual physical4 to observed0, verify currentD61E7C/BD30E0/B4C230, genuine pooled deletion, clear1974 after return, no payload reread",
+    "drain": "all32 free slots verified at logical slabF40/declaration1AC0/physical640; free empty primary-array backing; genuine three pool destructions and empty allocator list; support and raw string pool drained; device/API COM0/0; own window closed",
+    "rejected": "B29670 private device recreation throws if reached; no fake COM/declaration/header/owner, private-buffer substitution, successful cold provider or guessed default"
+  },
+  "validation": {
+    "strict_win32": true,
+    "ctests_passed": 3,
+    "build_log": "local\\cc10_dynamic_vertex_owner_probe\\build.log",
+    "compile_log": "local\\cc10_dynamic_vertex_owner_probe\\compile.log",
+    "run_log": "local\\cc10_dynamic_vertex_owner_probe\\run.log",
+    "run_exit": 0,
+    "assertions_active": true,
+    "runtime": "MD",
+    "fp": "strict",
+    "warnings": "W4 WX",
+    "manifest_embedded": true,
+    "project_libraries": 3,
+    "exact_run_inputs": 10,
+    "dependency_pins": 28,
+    "input_manifest": "local\\cc10_dynamic_vertex_owner_probe\\inputs.json",
+    "linked_providers": {
+      "create_native_registered_vertex_stream_00b287c0": "0001:0000aae0       ?create_native_registered_vertex_stream_00b287c0@bsp@@YAPAXPAXII0AAUNativeLogicalVertexOwnerContext@1@PAPAX@Z 1000bae0 f   bsp_core:native_logical_vertex_owner.obj",
+      "construct_native_logical_vertex_stream_00b4bc00": "0001:0000a6e0       ?construct_native_logical_vertex_stream_00b4bc00@bsp@@YAPAXPAXI0IAAUNativeLogicalVertexOwnerContext@1@@Z 1000b6e0 f   bsp_core:native_logical_vertex_owner.obj",
+      "attach_native_physical_vertex_buffer_00b4c370": "0001:00009cf0       ?attach_native_physical_vertex_buffer_00b4c370@bsp@@YAXPAXPAUIDirect3DVertexBuffer9@@IIAAUNativePhysicalBufferOwnerContext@1@@Z 1000acf0 f   bsp_core:native_physical_buffer_owner.obj",
+      "construct_native_vertex_declaration_00b48af0": "0001:0000bab0       ?construct_native_vertex_declaration_00b48af0@bsp@@YAPAXPAX@Z 1000cab0 f   bsp_core:native_vertex_declaration_owner.obj",
+      "append_native_vertex_declaration_00b48330": "0001:0000b6c0       ?append_native_vertex_declaration_00b48330@bsp@@YAXPAXIIIPDI@Z 1000c6c0 f   bsp_core:native_vertex_declaration_loading.obj"
+    },
+    "inputs_unchanged_after_run": true,
+    "remaining_processes": 0,
+    "closure": "local\\cc10_dynamic_vertex_owner_probe\\process_closure.json",
+    "new_tracked_tests": 0,
+    "application_run": false,
+    "original_game_run": false,
+    "fresh_native_bytes": 234,
+    "direct_call_rows": 4,
+    "indirect_inventory_rows": 1,
+    "prior_24_archives_unchanged": {
+      "local/cc10_field_values_evidence.zip": "a749dbf4656596e6a4e0c11ecb320a02bfe62dcba5fa3654c2744aa2a3022153",
+      "local/cc10_widget_transform_evidence.zip": "0d90499f71be2a3cc99ad732deaa8a71a5b55546da4dbaa7ee708c364bae45f8",
+      "local/cc10_widget_property_prefix_evidence.zip": "181ebe9358fe2d7ea6832b8051a0b3fd6f830a0360f3ef390626403ba7cbfcdf",
+      "local/cc10_gui_page_default_evidence.zip": "a224fc79f56861715059ff9717fcdad40893be00d26697a230b64ceafced5c8b",
+      "local/cc10_gui_group_pool_evidence.zip": "c7aa87452ab19400fe950d3a4c3a4a146c94715f4080f463dc2de1740df37853",
+      "local/cc10_gui_group_factory_evidence.zip": "d22d364ce3b5cf7833d8ad1998cd5c14cbf792abc34634e2df1421949e42f34f",
+      "local/cc10_gui_camera_store_map_evidence.zip": "625a751eab1f2416e7b0fa5876b921106cf0a246c0b8ca5ce97ca3e9d1586c54",
+      "local/cc10_scene_registry_storage_evidence.zip": "7219d8cbbdab960d3d2b49076f79b13854aa582faa0edb23c8a7fc286cebd6a9",
+      "local/cc10_scene_resource_storage_evidence.zip": "d989b85db55805c8b173e40c95e9322586ec4146e3ad0e504c316bf48364ed51",
+      "local/cc10_gui_scene_fields_evidence.zip": "8158076968340fd863b7e86018def420eabcae87ab0939f90085d79a1751a1af",
+      "local/cc10_scene_registry_vector_mutation_evidence.zip": "90b9d70c3b735e1274c2c0d2e333f5e88e860aee7155ea9ac6ef18e105aaed6b",
+      "local/cc10_scene_registry_registration_evidence.zip": "663ec13309abdaf992b22c321c66817230852066d76e5ccd0b663c3a783e05cf",
+      "local/cc10_node_scene_attachment_evidence.zip": "c45c8248fe0434426648b48b7c8e473f94b057f5ff1098088c34762dbc3d8f04",
+      "local/cc10_node_tree_retirement_evidence.zip": "b9720c00ba0e29c222ae2d41fb5fd2820e305039c673e61cea0ee22d3a2a2e13",
+      "local/cc10_node_base_destruction_evidence.zip": "2f4f970317032085f851a2331dd3e4bf6f02b3722e5e44a668153000e2b13dbf",
+      "local/cc10_camera_storage_lifetime_evidence.zip": "9eb1ac2cbde243e6c4d2d1d10fca263eda2e43aed2527964986875f2217c3936",
+      "local/cc10_camera_raw_world_edit_evidence.zip": "f80fd83057ef325506bbe1d0a06046e765dd8e32b2f10148c67d497af0971d9c",
+      "local/cc10_camera_pose_storage_evidence.zip": "d294c281a6475c33b4b779d9857e2a7f06b75948df45618c12b70112649bfeac",
+      "local/cc10_camera_storage_construct_evidence.zip": "ebf1bca43bf5bbe75beae65ec707845a2219d745bda58fd91588455278fbf357",
+      "local/cc10_distortion_storage_lifetime_evidence.zip": "71843fd98d2d4bb1e13633393487fc99617c1456458cd2354139c57a2d1a286c",
+      "local/cc10_render_texture_surface_argument_view_evidence.zip": "0754170a6ce2d6042e644beef0a62f82e07c8642afe3a6315c18fb967493034e",
+      "local/cc10_gui_scene_argument_view_evidence.zip": "8c061ccbec187f7b3796187bd7369c95eeaddabf27d1122c3795f77be52abaf5",
+      "local/cc10_post_effect_argument_view_evidence.zip": "df95be9b3469c09684e9a0463af73f49900dbda6de6de8304197e711e7ed7acf",
+      "local/cc10_material_raw_header_hot_evidence.zip": "f92217d232ae09b84455c88ca28722d848afcc00c6c89619e25fd02ca985ca45"
+    },
+    "frozen_hot_fixture_manifest_rows_unchanged": 52,
+    "frozen_readiness": {
+      "local\\cc10_dynamic_vertex_owner_readiness\\collect.py": "ac86d0a59163ae120ab83f47cab86ffbfe0796f2f97eccbf481c3d02b70be20f",
+      "local\\cc10_dynamic_vertex_owner_readiness\\evidence.json": "c84a90190b3e7d30e1e2ce100aeec1a42897aeb120260ffee54fa1a22ad80c26",
+      "local\\cc10_dynamic_vertex_owner_readiness\\README.md": "7e556d2abc01f30102cdc3205d3b2b0851598aac7ff0779970f95db7768f0ac1"
+    },
+    "readiness_spans": 21,
+    "readiness_code_bytes": 1949,
+    "readiness_data_bytes": 158,
+    "closure_live_call_rows_checked": 4,
+    "closure_live_call_rows_failed": 0,
+    "closure_build_or_fixture_rerun": false
+  },
+  "production_followup_gap": "Production B4E470 obtains a declaration through B317E0 then immediately admits NativeVertexDeclarationReference. The B48AF0 producer writes DWORD count1 but does not establish the C++ atomic lifetime expected by that companion. This fixture-only placement step does not validate or fix that production producer-to-companion path; a separately reviewed lifetime contract/migration remains required.",
+  "limits": [
+    "source-only composition, not copied-original execution or binary ABI equivalence",
+    "secondary19AC0 only; logical destructor does not remove19B0",
+    "no declaration-name decoder/cache/CRT token initialization or production atomic-admission proof",
+    "no full B4E470/model/camera/source0/initializer/renderer/globalstartup/application/draw/gameplay admission",
+    "no failure, guard mode changes, alternate profile/import epochs, private buffer/device recreation or native FH3/SEH execution",
+    "caller metadata and native unexposed private-stack/argument aliases remain separate; same stable valid pool/storage/provider domains required"
+  ],
+  "provenance": {
+    "baseline": "88e1a306269068a5b9982faf5565bb1b08f5bc79",
+    "utc": "2026-09-24T14:22:55.175491+00:00",
+    "ghidra_project": "C:/Users/sqz269/bsp.gpr",
+    "program": "/battlestationspacific.exe",
+    "project_verified_before_each_query": true
+  },
+  "evidence_archive": {
+    "path": "local/cc10_dynamic_vertex_owner_composition_evidence.zip",
+    "manifest": "local/cc10_dynamic_vertex_owner_probe/manifest.json",
+    "includes_exact_run_inputs": true,
+    "prior_archives_nested": false
+  }
+}
