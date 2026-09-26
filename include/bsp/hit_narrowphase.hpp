@@ -94,6 +94,19 @@ HitQueryCell clamp_cell_0098add0(const HitQueryCell& cell, bool clamp_low) noexc
 bool bounds_overlap_0098add0(const HitQueryBounds& segment,
                              const HitQueryBounds& box) noexcept;
 
+// 0085CDB0, __fastcall(float out[3] = ECX, const float min[3] = EDX,
+// const float max[3], const float p0[3], const float p1[3]), RET 0Ch, body
+// 0085CDB0..0085D01A. Packet cc9_aabb_0085cdb0, docs/AABB_0085CDB0.md. The
+// slab test of the segment p0 -> p1 against the axis-aligned box: per axis it
+// returns false when the segment lies wholly on one side, raises the entry
+// fraction from 0 and lowers the exit fraction from 1, and returns false once
+// exit < entry. On a hit `out` = p0 + (p1 - p0) * entry and `entry` is set.
+// A segment starting inside the box hits at p0 (entry 0); a zero-length or
+// axis-parallel segment inside the slab never divides. Touching counts.
+bool segment_box_hit_0085cdb0(const HitQueryBounds& box, const HitQueryPoint& p0,
+                              const HitQueryPoint& p1, HitQueryPoint& out,
+                              float* entry = nullptr) noexcept;
+
 // 0085CAD0: the six-axis separating-axis test between the box and the segment
 // treated as a degenerate box. Three face axes, then the three cross products.
 bool segment_overlaps_box_0085cad0(const HitQueryBounds& box,
