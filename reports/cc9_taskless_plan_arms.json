@@ -1,0 +1,23 @@
+{
+  "packet": "cc9_taskless_plan_arms",
+  "doc": "docs/TASKLESS_PLAN_ARMS.md",
+  "calls": [],
+  "finding": "0099D300 has no command-target test (0099D309-0099D3C2 is the neutral-plan case, then every arm runs); the host returned before any arm without a target, stranding a task-less Zero after an avoidance repair",
+  "switches": [
+    {
+      "name": "kPlannerTasklessArmsBound",
+      "state": "ON",
+      "pairs": [
+        "local/TP_OFF_9000.log vs local/TP_ON_9000.log (current main, neutral)",
+        "local/TZ_OFF_9000.log vs local/TZ_ON_9000.log (freeze base: Zero depth kills 2 -> 0)"
+      ]
+    },
+    {
+      "name": "kZeroTraceDiag",
+      "state": "OFF",
+      "kind": "diagnostic"
+    }
+  ],
+  "no_ghidra_function": [],
+  "ledger_names_added": []
+}
