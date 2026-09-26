@@ -55,7 +55,7 @@ void game_warning_torpedo_effect_00977820(std::size_t unit);
 // (+1498h = 1, +14A4h = 0, both countdowns reloaded) at the construct-world
 // point, and the Lua native Scoring_RealPlayTimeRunning (008B87F0 -> 00905340,
 // +14A4h). False: the four fields keep their zero defaults.
-inline constexpr bool kBotSchedulerWritersBound = false;
+inline constexpr bool kBotSchedulerWritersBound = true;
 
 // 00905340 BSP_MissionScoring_SetRealPlayTimeRunning on [game+21A0h]: +14A4h.
 // A no-op before a mission frame host exists.
