@@ -60,11 +60,25 @@ fed by the ship AI's own words, and nothing in it reads the gun host's angles.
   `[0, 2pi)`. That is neither the gun bots' sign nor a hull-relative angle; it is right only for
   a ship heading due north, and even then it is mirrored against the gun bots. This is the
   image's behaviour, and the host reproduces it verbatim.
-- **The `009E8153` path, partly.** Word 5 there is `nested+11DCh`, written by the arc-centre step
-  `009E46F0` as a compass heading of a point difference, with the point first in both
-  subtractions (`009E481C`, `009E4826`). `009E5DB4` then subtracts the ring slot's own angle
-  inside the adapter. Whether the ring angles are world or hull-relative was not read, so this
-  path's frame stays open.
+- **Settled for the `009E8153` path: world minus world, with no hull heading either.**
+  - Word 5 is `nested+11DCh`. The arc-centre step `009E46F0` writes it as the compass heading of
+    the ship-to-point delta: the point comes first in both subtractions (`009E481C`,
+    `009E4826`), then `atan2(dz, dx)` at `009E4865`, `FSUBR` of pi/2 at `009E4872`, and the
+    `[0, 2pi)` wrap at `009E4882`.
+  - Each ring slot's angle is a fixed world spoke. `009E5530` stores
+    `angle_08 = wrap((i / N) * 2pi)` at `009E56F9` and builds the slot's world direction from it
+    as `(cos(pi/2 - a), 0, sin(pi/2 - a)) = (sin a, 0, cos a)` (`009E571E`..`009E574A`). That is
+    the compass convention of `007B4E90`: starboard-positive, measured from world `+z`. No hull
+    heading enters the construction.
+  - `009E5DA0` replaces word 5 in place with `wrap(word5 - angle_08)` (`009E5DA3`..`009E5DBB`,
+    `00438B10`), then rates the block through `0095EB40` (`009E5DBF`).
+  - So on this route `0085B7D0` receives the angle from the ring slot's world spoke to the
+    arc-centre direction, clockwise-positive. It is relative to the spoke, not to the hull.
+- **Both routes, then.** Neither passes a hull-relative angle to `0085B7D0`. The `009E634C` route
+  passes a world heading. The `009E8153` route passes a spoke-relative angle. Both are
+  starboard/clockwise-positive, which is the opposite sense to the gun bots' port-positive angle.
+  The image's ship-AI bearing test is therefore not the gun bots' test on either route. The host
+  reproduces both routes verbatim, and `kGunHorzImageSignBound` does not touch them.
 - Neither path reads the gun host's angles. `kGunHorzImageSignBound` does not change them, and no
   change is proposed: fixing them would depart from the image.
 
