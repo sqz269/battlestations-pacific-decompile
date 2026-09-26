@@ -1,0 +1,38 @@
+{
+  "packet": "cc10_lua_boundary_contract_integration",
+  "worker_commit": "32c607443417a7cdd0c87667a970e9471d4c6da9",
+  "integration": "3a1e4d6ccf3d0f569623919fc47cdecfe9de7449",
+  "worker_report": "reports/native_lua_raw_boundary_contract_cc10.json",
+  "primary_verification": {
+    "result": "PASS",
+    "worker_commit": "32c607443417a7cdd0c87667a970e9471d4c6da9",
+    "baseline": "fe858cae394ec488a345fea09ff62b13f1b19a36",
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\cc10_lua_boundary_contract_implementation\\evidence.zip",
+      "sha256": "abe2eb642a8891f5fa96592f795caeede9644f36518d0a2fa9604222f8f12825",
+      "rows": 66,
+      "members": 67
+    },
+    "committed_blobs": 6,
+    "comment_lines_added": 14,
+    "header_non_comment_tokens_unchanged": 3,
+    "worker_CTests": 3,
+    "new_native_bytes": 0,
+    "new_runtime_runs": 0,
+    "limits": "Comment-only contract. Prior PE/C-object audit separately qualified; no Lua restoration, exception transport, runtime, ABI or game proof."
+  },
+  "validation": {
+    "worker_CTests": 3,
+    "primary_CTests": 3,
+    "new_native_bytes": 0,
+    "new_runtime_runs": 0,
+    "game_validated": false
+  },
+  "limits": "Comment-only contract. Prior PE/C-object audit separately qualified; no Lua restoration, exception transport, runtime, ABI or game proof.",
+  "archive": {
+    "path": "local/cc10-platform-evidence/lua-boundary-contract.zip",
+    "sha256": "efce43df05cb881827d79696120f8846a28959466e3536b72c5b5b723e6e0230",
+    "files": 6,
+    "valid": true
+  }
+}
