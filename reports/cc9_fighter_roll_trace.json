@@ -1,0 +1,12 @@
+{
+  "packet": "cc9_fighter_roll_trace",
+  "doc": "docs/FIGHTER_ROLL_TRACE.md",
+  "calls": [
+    {"address": "009A0AE0", "native": "0099CAB0", "function": "0099F1C0", "note": "terrain band producer; inserts into set = pass (0 or 1) at 0099D025, never the roll set 2"},
+    {"address": "0099D95C", "native": "00419010", "function": "0099D300", "note": "target-speed correction multiplier, only with plan+2B0h clear; aim sets it"}
+  ],
+  "finding": "the Yorktown sea losses are zero-throttle stalls in aim with the wings near level; the image's terrain arm has no roll set and its aim speed arm has no minimum-speed guard; nothing bound; kRateLawAttitudeTermsBound stays OFF pending the original-game check",
+  "switches": [{"name": "kFighterLowTraceDiag", "state": "OFF", "kind": "diagnostic, extended"}],
+  "no_ghidra_function": [],
+  "ledger_names_added": []
+}

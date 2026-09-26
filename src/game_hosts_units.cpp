@@ -14092,7 +14092,8 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                         owner_.log.notef("  fighter low %s t=%.2f st=%s alt=%.1f vy=%.2f "
                                             "spd=%.2f stall=%.2f pitch=%.3f plan_pitch=%.3f mode2d0=%d "
                                             "pitch_slot=%.3f/%d thr_live=%.3f thr_slot=%.3f/%d spd2d8=%d "
-                                            "want2b4=%.1f climb1ec=%.3f",
+                                            "want2b4=%.1f climb1ec=%.3f bank=%.3f roll_cmd=%.3f pitch_cmd=%.3f "
+                                            "bands=%d/%d/%d",
                                             unit_.row.name.c_str(),
                                             static_cast<double>(owner_.summary.simulated_seconds),
                                             bsp::dogfight_state_name(unit_.dogfight_state),
@@ -14111,7 +14112,11 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                             unit_.plan_slots[bsp::kPilotSlotThrottle].active,
                                             unit_.plane_air_brake_mode_2d8,
                                             static_cast<double>(unit_.plane_desired_speed_2b4),
-                                            static_cast<double>(unit_.plane_climb_angle_1ec));
+                                            static_cast<double>(unit_.plane_climb_angle_1ec),
+                                            static_cast<double>(unit_.plane_bank_angle_c68),
+                                            static_cast<double>(unit_.pilot_command_block[bsp::kPilotCmdRoll]),
+                                            static_cast<double>(unit_.pilot_command_block[bsp::kPilotCmdPitch]),
+                                            unit_.ga_band_n[0], unit_.ga_band_n[1], unit_.ga_band_n[2]);
                                     }
                                 }
                             }
