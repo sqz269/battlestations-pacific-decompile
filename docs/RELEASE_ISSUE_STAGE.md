@@ -104,3 +104,33 @@ It uses the switch only, streams on, and one run at a time.
 | plane deaths / hit records | 51 ± 2 / 836 ± 40 | 41 ± 2 / 727 ± 40 |
 | the Lexington's distance moved | 5731.91 ± 100 | 3454.40 ± 50 |
 | identical rows | everything before #4.1\|.-4's request | same |
+
+## The pair, measured
+
+The logs are `local\RS_OFF_9000.log` / `RS_ON_9000.log` and `RS_OFF_4500.log` / `RS_ON_4500.log`,
+in worktree cc9-circle-steer. All show the 1600x900 line and a module directory in this tree.
+Both OFF logs match the device-walk runs' values.
+
+| row | E2 9000 OFF -> ON | USN04 4500 OFF -> ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| torpedo spawns | 1 -> 1 (#4.1\|.-4, both at about 130 s) | 1 -> 1 | 1, one or two fixed steps later | held: ON drops at 73.1 m/s against 73.2 and its run is 6.80 s against 6.90 s |
+| the four dead Kates' requests | refused at the request -> held in unit+C20h behind the death guard (`deferred=1 drops=0`) | same | as predicted | held |
+| `dead_releases_refused` | 8 -> 4 | 8 -> 4 | 8 -> 4 | held |
+| rack | `deferred=1 drops=1 ammo=0 dropping=0` on #4.1\|.-4 | same | same | held |
+| cleanup walk / unit+C25h at the end | walks 0, C25h 1 on #4.1\|.-4 | same | one walk, not busy, C25h 0 | **failed**: #4.1\|.-4 dies before its cleanup interval runs out, and the stage is guard-blocked from then on (6392 ticks), as the image's death guard does |
+| new natives | `Rack::tick_006e56f0` concrete 1; records `Plane::release_spawn_deferred_to_rack` 5, `Rack::can_fire_00729a80` 2, `Rack::repeat_time_descriptor_e0` 1; no `drop_roll_curve` | same | same, with `can_fire` 1 | **failed** on `can_fire`: 2. The second tick, with the ammo spent, reaches CanFire and clears `dropping` (006E58E1) |
+| the torpedo's run | Fletcher-class05 at 28.6 m -> 27.6 m; hull part 1 and flood 1 on both | same | a few metres | held |
+| plane deaths | 51 -> 51, the same victims; 18 death times move, the first at 151.9 s, after the drop | 41 -> 41, the same victims; 10 move | ± 2 | held |
+| hit records | 836 -> 843 | 727 -> 743 | ± 40 | held |
+| dive releases | 3 -> 3 | 3 -> 3 | identical | held |
+| the Lexington's distance moved | 5731.91 -> 5721.98 | 3454.40 -> 3454.40 | ± 100 / ± 50 | held |
+
+**Verdict: `kReleaseIssueStageBound` ON.**
+- The torpedo now comes out of the rack the image uses, through the stage and its guards.
+- A dead aircraft's request is refused where the image refuses it: by the stage's death guard,
+  holding the request in unit+C20h, not by a host check at the request.
+- The rack tick's `dropBombs` goes up and down as read.
+- The behaviour rows hold within their bands, and every moved death is later than the drop.
+- **Open:** the Val's bombs, the rack `CanFire` gates, the roll curve, the level bomber's gate,
+  the descriptor's repeat time, and the fire-message route are records or stand-ins (listed
+  above).

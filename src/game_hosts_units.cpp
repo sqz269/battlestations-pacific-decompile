@@ -3190,7 +3190,8 @@ struct GameUnitsHost::Impl {
     // 007C7600 and the fire message into 006E4D50, and clears dropBombs once its
     // ammo is spent. OFF: the torpedo spawns at the request (the old stand-in).
     // Torpedoes only; the dive bomber's bombs keep their spawn at the request.
-    static constexpr bool kReleaseIssueStageBound = false;
+    // ON since the E2 9000 / USN04 4500 pairs (docs/RELEASE_ISSUE_STAGE.md).
+    static constexpr bool kReleaseIssueStageBound = true;
     // Packet cc9_plane_death_modes: 007CA8A0's death mode, 007CAF10's dead-step
     // terms, the kill that takes the aircraft out of the world, and the release
     // refusal of a dead aircraft (007CEA1C). docs/PLANE_DEATH_MODES.md.
