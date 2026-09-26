@@ -24,8 +24,11 @@ void resize_native_vertex_elements_00b480f0(void* actual_header, std::int32_t co
 void destroy_native_vertex_elements_00b48ad0(void* actual_header);
 
 // B48AF0: original ECX raw D0h storage, EAX same address, RET. Installs native
-// profile D61D1C and initializes the actual fields only. The trailing pool
-// DWORD at+D0 must already contain its slab index and remains untouched.
+// profile D61D1C and initializes the actual fields only. Supply fresh storage
+// aligned to four bytes, with no live owner or admitted companion. The one
+// actual +04 count starts its std::atomic<int32_t> lifetime with value1 at the
+// native count initialization point, between base and derived profile stores.
+// The trailing pool DWORD at+D0 already contains its slab index and is untouched.
 void* construct_native_vertex_declaration_00b48af0(void* actual_storage);
 // B488E0: original ECX owner, RET. Clear main then15 usage counts, zero stride,
 // then perform the native live-count/type-size pass. Borrow the actual D61CC0

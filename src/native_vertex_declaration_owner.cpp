@@ -5,8 +5,10 @@
 #define NOMINMAX
 #include <Windows.h>
 
+#include <atomic>
 #include <cstring>
 #include <exception>
+#include <new>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native vertex declaration owners require MSVC Win32.
@@ -16,6 +18,8 @@ namespace bsp {
 namespace {
 static_assert(sizeof(void*) == 4);
 static_assert(sizeof(CRITICAL_SECTION) == 24);
+static_assert(sizeof(std::atomic<std::int32_t>) == 4);
+static_assert(alignof(std::atomic<std::int32_t>) == 4);
 constexpr std::uint32_t declaration_profile = 0x00d61d1c;
 constexpr std::uint32_t base_profile = 0x00ceb130;
 
@@ -190,7 +194,10 @@ void destroy_native_vertex_elements_00b48ad0(void* header) {
 
 void* construct_native_vertex_declaration_00b48af0(void* owner) {
     put(owner, 0, base_profile);
-    put(owner, 4, 1);
+    // Start the one actual +4 count lifetime at the native count store point.
+    // The supplied fresh storage is four-byte aligned; no companion owns a
+    // separate count or reference credit.
+    ::new (at(owner, 4)) std::atomic<std::int32_t>(1);
     put(owner, 0, declaration_profile);
     put(owner, 8, 0);
     OwnerCleanup cleanup{owner, 0};
