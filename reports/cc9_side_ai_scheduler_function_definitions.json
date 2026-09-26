@@ -1,0 +1,55 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "0076d220",
+    "end_address": "0076d235"
+   },
+   "result": {
+    "success": true,
+    "start_address": "0076d220",
+    "end_address": "0076d234",
+    "bytes_disassembled": 21,
+    "message": "Successfully disassembled 21 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "0076d220",
+    "disassemble_first": false
+   },
+   "result": {
+    "success": true,
+    "address": "0076d220",
+    "function_name": "FUN_0076d220",
+    "entry_point": "0076d220",
+    "body_size": 21,
+    "message": "Function created successfully at 0076d220"
+   }
+  },
+  {
+   "defined": "0076d220",
+   "end": "0076d235",
+   "name": null,
+   "after": "Function: FUN_0076d220 at 0076d220\nSignature: undefined FUN_0076d220(void)\nEntry: 0076d220\nBody: 0076d220 - 0076d234"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
