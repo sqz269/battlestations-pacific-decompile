@@ -1,0 +1,14 @@
+{
+  "packet": "cc9_hud_pick_segment_query",
+  "doc": "docs/HUD_PICK_SEGMENT_QUERY.md",
+  "switch": "none this packet: (a) blocked on a gunnery-host entry (contract in doc section 4); (b) already bound by kHudMinimapDirectionWedgeBound",
+  "calls": [
+    {"address": "00526C4A", "native": "009043A0", "function": "00526A40", "kind": "call", "args": "from, to, record (reset at 00526B5F), ignore = firing unit (004B4B00), kind filter 0"},
+    {"address": "009043D4", "native": "0098ADD0", "function": "009043A0", "kind": "call", "args": "from, to, ignore->vtable[B0h](record, filter), record, filter"},
+    {"address": "009043F6", "native": "0098ADD0", "function": "009043A0", "kind": "tail_jump", "args": "from, to, 0, record, filter"}
+  ],
+  "hit_branch": "00526C74..00526DB2: kind 6 with record+38h->+4h != 9 labels screen+54h (8/7/5/6 -> 00CECE48/3C/24/0C); kinds 6,0Fh,45h,46h,1Bh,35h are the pick; 1Eh -> screen+50h = hit, pick = 00923810(hit,1); *by_ray = 1 at 00526DA7",
+  "b_status": "004B4B00 minimap heading: camera_heading_0042ba40 concrete 9,160 (USN04) / 18,160 (USN02) in local/rc_on_*.log; camera_heading_virtual absent",
+  "ghidra": "read-only; decompile of 009043A0, disk-byte disassembly of 00526BC2..00526DE2 and 009043A0..009043FA",
+  "no_ghidra_function": []
+}
