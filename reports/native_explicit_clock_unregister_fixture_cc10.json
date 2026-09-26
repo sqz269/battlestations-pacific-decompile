@@ -1,0 +1,224 @@
+{
+  "packet": "explicit_clock_unregister_fixture_runtime_cc10",
+  "status": "PASS_one_controlled_complete_profile_empty_clock_explicit_unregister_and_manager_drain",
+  "compiled_baseline": "09edb1f1da09abfbbcc8562b7d0b3ad4eff8cb60",
+  "pre_canonical_owner_fix": true,
+  "production_changes": false,
+  "new_native_bytes": 0,
+  "native_function": "00736930",
+  "source": "src/native_particle_clock_shutdown.cpp",
+  "original_abi": "cdecl,noarguments,RET0; original164Bnormalbody already reconstructed",
+  "source_abi": "cdecl fourbindings16caller-cleaned bytes; sourceinterface,notbinaryreplacement",
+  "source_native_EH_alias_and_nonempty_limits": true,
+  "doc": "docs/NATIVE_EXPLICIT_CLOCK_UNREGISTER_FIXTURE_CC10.md",
+  "prepared_archive": {
+    "path": "local/explicit_clock_unregister_fixture_cc10/evidence.zip",
+    "bytes": 78805736,
+    "sha256": "178240da79d827ab4068c78502ac57036504df5f25717e4edd1abe2f195ae09d"
+  },
+  "prepared_index": {
+    "path": "local/explicit_clock_unregister_fixture_cc10/artifact_index.json",
+    "bytes": 421508,
+    "sha256": "d73f160f84442193098576cfb28f9af8084dae1c6a482182528f8d8520c846a4"
+  },
+  "reviewed_probe": {
+    "path": "local/explicit_clock_unregister_fixture_cc10/run01/probe.cpp",
+    "bytes": 11822,
+    "sha256": "7accf6c28b76846bf4f4bbef464b6520e569a3467f875d197f4c012b8f97bc53"
+  },
+  "reviewed_controller": {
+    "path": "local/explicit_clock_unregister_fixture_cc10/run01/run_once.py",
+    "bytes": 18580,
+    "sha256": "2ac50de8e1f2211b13e545c0aefb37310d07241a28eb7a5a0839b2d4e6ee7519"
+  },
+  "compiled_probe": {
+    "path": "local/explicit_clock_unregister_fixture_cc10/run01/explicit-clock-probe.exe",
+    "bytes": 449536,
+    "sha256": "c17c522760604a106c2639b4536f86d464f1daf529b4670c5edcaf0bdd7a1fff"
+  },
+  "launch_manifest": {
+    "path": "local/explicit_clock_unregister_fixture_cc10/run01/before_run_inputs.json",
+    "bytes": 508941,
+    "sha256": "4fa3f9764cae407bfd86051eb294291489e931f144fada21a8f0faa52b9fb6b3"
+  },
+  "primary_release": {
+    "path": "local/explicit_clock_unregister_fixture_runtime_cc10/run01/runtime_release.json",
+    "bytes": 885,
+    "sha256": "ebc8f7e0d62141e86090eeff7bbdaf7fd866a9128fdcb459acffcf1168e6969d"
+  },
+  "primary_preparation_verification": {
+    "path": "local/explicit_clock_unregister_fixture_runtime_cc10/primary_preparation_receipt.json",
+    "bytes": 843,
+    "sha256": "1d946775adfeb842fd4cbcb756dfd133701fba2a8359326668711237df233d5d"
+  },
+  "tool_result": {
+    "path": "local/explicit_clock_unregister_fixture_runtime_cc10/raw_exec_tool_result.json",
+    "bytes": 1914,
+    "sha256": "7535138c96fff0e731783115f127d308fdb582c852b06cf75bdd6b9c37360c5d"
+  },
+  "wait_tool_result": "not needed; exec finished directly",
+  "controller": {
+    "parent": {
+      "pid": 94092,
+      "creation_filetime": 134348883875932171,
+      "image_path": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\explicit_clock_unregister_fixture_cc10\\run01\\explicit-clock-probe.exe"
+    },
+    "child": {
+      "pid": 96268,
+      "creation_filetime": 134348883876082883,
+      "image_path": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\explicit_clock_unregister_fixture_cc10\\run01\\explicit-clock-probe.exe"
+    },
+    "child_actual_command": {
+      "pid": 96268,
+      "parent_pid": 94092,
+      "image_path": null,
+      "command_line": "\"J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\explicit_clock_unregister_fixture_cc10\\run01\\explicit-clock-probe.exe\" --case --bsp-native-data-handoff=00000188",
+      "creation_filetime": 134348883876082880,
+      "creation_utc": "2026-09-26T09:26:27.6082880Z"
+    },
+    "receipt": {
+      "parent_pid": 94092,
+      "pid": 96268,
+      "creation_filetime": 134348883876082883,
+      "image_path": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\explicit_clock_unregister_fixture_cc10\\run01\\explicit-clock-probe.exe"
+    },
+    "acknowledged": true,
+    "parent_exit": 0,
+    "child_exit": 0,
+    "timed_out": false,
+    "error": null,
+    "cleanup_errors": [],
+    "capture_errors": [],
+    "hash_audit_errors": [],
+    "termination_actions": [],
+    "remaining_recorded_processes": 0,
+    "final_discovery_complete": true,
+    "parent_closed_filetime_upper_bound": 134348883882232880,
+    "closure_complete": true,
+    "child_identity_missing": false,
+    "frozen_inputs_unchanged": true,
+    "explicit_unregister_audit_marker_seen": true,
+    "case_success": true,
+    "controller_capture_is_distinct_from_case_success": true,
+    "fixture_launches": 1
+  },
+  "process_closure": {
+    "parent": {
+      "pid": 94092,
+      "creation_filetime": 134348883875932171,
+      "image_path": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\explicit_clock_unregister_fixture_cc10\\run01\\explicit-clock-probe.exe"
+    },
+    "child": {
+      "pid": 96268,
+      "creation_filetime": 134348883876082883,
+      "image_path": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\explicit_clock_unregister_fixture_cc10\\run01\\explicit-clock-probe.exe"
+    },
+    "parent_handle_signaled": true,
+    "child_handle_signaled": true,
+    "remaining_recorded_processes": 0,
+    "final_discovery_complete": true,
+    "closure_complete": true,
+    "child_identity_missing": false,
+    "actions": [],
+    "closure_error": null,
+    "cleanup_errors": [],
+    "hash_audit_errors": []
+  },
+  "admission": {
+    "band": "00ce0000[65536]",
+    "original_state": "MEM_FREE00010000",
+    "base": "00CE0000",
+    "AllocationBase": "00000000",
+    "RegionSize": 254935040,
+    "Protect": "00000001",
+    "AllocationProtect": "00000000",
+    "plan": "ReadOnlyV1",
+    "spans": [
+      {
+        "address": "00ce7d08",
+        "bytes": 20
+      },
+      {
+        "address": "00ce7d24",
+        "bytes": 20
+      },
+      {
+        "address": "00ce7d38",
+        "bytes": 8
+      },
+      {
+        "address": "00ce3818",
+        "bytes": 8
+      }
+    ],
+    "ACK": true,
+    "occupied_range_replacement": false
+  },
+  "case": {
+    "manager": "006C0930",
+    "clock": "006C7AB8",
+    "same_publication_cell": "001AFED0",
+    "manager_first_slot_initial_count": 1,
+    "clock_records": 0,
+    "after_explicit_native_slot_count": 1,
+    "after_explicit_first_slot": 0,
+    "after_explicit_geometry_and_section_depth": "successful activeCHECK equality; exact words not logged",
+    "publication_null": true,
+    "complete_profile_route": "CE7D38->4DE340 flags1",
+    "base_profile_executed": false,
+    "BD0400_after_nullslot": true,
+    "manager_vector_and_section_zero_after_drain": true,
+    "postfree_clock_vector_section_reads": false,
+    "clock18hpreimage_read": false,
+    "canonical_registry_empty": true,
+    "no_second_clock_delete": true
+  },
+  "verification": {
+    "manifest_pins_equal": 1684,
+    "preparation_current_rows_equal": 1753,
+    "source_controller_seal_unchanged": true,
+    "fixture_invocations": 1,
+    "retries": 0,
+    "both_exit_zero": true,
+    "closure_complete": true,
+    "errors_or_forced_terminations": false
+  },
+  "inherited_preparation": {
+    "strictWin32_existing3CTests": true,
+    "builds": 1,
+    "fixture_compiles": 1,
+    "activeCHECK": true,
+    "embedded_asInvoker": true,
+    "selected_exact_members": 362,
+    "compiler_header_matches": 300,
+    "full_COFF_to_linked_entry": 366,
+    "all_map_relocation_targets": 23,
+    "entry_va": "100081E0",
+    "direct_fixture_call": "10001817"
+  },
+  "limits": [
+    "pre-canonical-fix source/storage lifetime and alias preconditions retained; empty owner registry only",
+    "source ABI rather than native binary replacement; no original code/FH3/SEH proof",
+    "normal complete emptyclock route only; no base route,duplicate,failed cleanup,record/sink/owner retirement",
+    "no application/fullsampler/platform/source0W/game execution; original game only readonlydata",
+    "prospective DLL/APIset pins are not actual loadedmodule proof"
+  ],
+  "runtime_archive": {
+    "path": "local/explicit_clock_unregister_fixture_runtime_cc10/evidence.zip",
+    "bytes": 138691,
+    "sha256": "152d94164687711bbdd87c1b92c8bcb54472aefc023e79cbb5059de70bf7d995"
+  },
+  "runtime_index": {
+    "path": "local/explicit_clock_unregister_fixture_runtime_cc10/artifact_index.json",
+    "bytes": 5458,
+    "sha256": "a5136e51fde18a2c02be81104c9edd514f953047b65be5d95a638b4339bade4c"
+  },
+  "primary_runtime_verification": {
+    "path": "J:\\PROG\\battlestations-pacific-decompile-cc10\\local\\cc10_explicit_clock_fixture_runtime_primary.json",
+    "bytes": 1838,
+    "sha256": "f46fe1d29f049243067a4a66c102296ade094d479f48f19aac2d32842aaebaff"
+  },
+  "runtime_archive_indexed_rows": 24,
+  "runtime_archive_members": 25,
+  "archived_durable_report_snapshot": "durable_before_archive copy precedes final archive/index hashes; final tracked report pinned in external freeze_receipt"
+}
