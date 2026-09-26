@@ -584,6 +584,14 @@ public:
 
     void set_ship_ai(GameShipAiHost* ai) noexcept;
 
+    // Packet cc9_recon_team_lists: the recon slot of party `side` after the last
+    // 008073C0 rebuild, one published triple as unit indices in native order.
+    // `triple`: 0 own (+DD8h, head +DDCh), 1 enemy (+DE4h, head +DE8h),
+    // 2 neutral (+DF0h), 3 unknown (+DFCh, head +E00h), 4 union (+E08h).
+    // 004C3CB0 walks 0, 1 and 3 of the player's slot. False (and `out` empty)
+    // before the first rebuild or for a side with no slot.
+    bool recon_triple_units(int side, int triple, std::vector<std::size_t>& out) const;
+
     // 00727BD0 over the authored preference lists, then the twelve per-unit
     // category lists through 00956C20's sequence, then 00864BD0 on every unit
     // that ended with at least one gun. Runs once, after the first create_units.
