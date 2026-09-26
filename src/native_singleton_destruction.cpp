@@ -39,6 +39,7 @@
 #include "bsp/native_game_resource_parsers.hpp"
 #include "bsp/native_resource_support.hpp"
 #include "bsp/native_frame_clock_lifetime.hpp"
+#include "bsp/native_particle_clock_shutdown.hpp"
 #include "bsp/native_diagnostic_sink_lifetime.hpp"
 #include "bsp/native_renderer_record_guard.hpp"
 #include "bsp/native_renderer_lua_owner.hpp"
@@ -69,6 +70,13 @@ __declspec(noinline) void __fastcall delete_current_profile(void* owner,
     const NativeSingletonDeletionBindings& bindings, std::uint32_t profile,
     std::uint32_t flags) {
     switch (profile) {
+    case 0x00ce7d38:
+        if (bindings.particle_clock != nullptr) {
+            delete_native_particle_clock_004de340(
+                owner, *bindings.particle_clock, flags);
+            return;
+        }
+        break;
     case 0x00d5b5e8:
         if (bindings.shadow_depth_target != nullptr) {
             delete_native_shadow_depth_target_00a900c0(owner, flags, *bindings.shadow_depth_target);

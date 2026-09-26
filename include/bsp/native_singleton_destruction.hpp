@@ -8,6 +8,7 @@ struct NativeGameClassCleanupContext;
 struct NativeProfileHintsOwnerContext;
 struct NativePlatformFocusOwnersContext;
 struct NativeGuiMediaFocusLifetimeContext;
+struct NativeParticleClockShutdownContext;
 struct NativeResourceRegistryDeleteBindings;
 struct NativeResourceManagerContext;
 struct NativeResourceExtraParserContexts;
@@ -210,6 +211,11 @@ struct NativeSingletonDeletionBindings {
     // passed receiver can differ from current F8BBF0. Partial base profiles
     // are not admitted and this optional binding does not construct a target.
     NativeShadowDepthTargetContext* shadow_depth_target{};
+    // CE7D38 -> 4DE340: registered complete particle-clock owner. Borrow the
+    // SAME F8D420 cell, actual records/strings and current profile/IAT domain
+    // through manager drain; pass the popped owner even if publication changed.
+    // CE7D24 is a secondary profile and is not admitted by this binding.
+    NativeParticleClockShutdownContext* particle_clock{};
 };
 static_assert(offsetof(NativeSingletonDeletionBindings, mpkg_factory) == 88);
 static_assert(offsetof(NativeSingletonDeletionBindings, resource_manager) == 92);
@@ -233,7 +239,8 @@ static_assert(offsetof(NativeSingletonDeletionBindings, native_profile_hints) ==
 static_assert(offsetof(NativeSingletonDeletionBindings, native_media) == 164);
 static_assert(offsetof(NativeSingletonDeletionBindings, native_gui) == 168);
 static_assert(offsetof(NativeSingletonDeletionBindings, shadow_depth_target) == 172);
-static_assert(sizeof(NativeSingletonDeletionBindings) == 176);
+static_assert(offsetof(NativeSingletonDeletionBindings, particle_clock) == 176);
+static_assert(sizeof(NativeSingletonDeletionBindings) == 180);
 
 // Full BD0400[197] normal schedule over raw14h manager storage. Native ECX
 // owner, RET; new EDX reference to stable bindings above. Pop before deleting
