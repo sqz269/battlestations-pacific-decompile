@@ -29,8 +29,10 @@
 #include "bsp/hud_screens.hpp"
 #include "bsp/in_mission_interface_runtime.hpp"
 #include "bsp/ingame_interface.hpp"
+#include "bsp/plane_squadron_host.hpp"
 
 #include <cstdio>
+#include <map>
 #include <string>
 #include <vector>
 
@@ -2242,6 +2244,19 @@ namespace {
 // 00526A40). Units are index + 1. The lock branches, which send orders, move
 // roles or take control, are records that perform nothing; each is reached
 // only after an input flag.
+// Packet cc9_pick_squadron_members (docs/PICK_SQUADRON_MEMBERS.md). ON answers
+// 00526A40's squadron arm from bsp::plane_squadron_registry():
+//  * 00526F33 IsKindOf(18h) on a LIST ENTRY is true when the entry is a
+//    registry squadron_unit. SUBSTITUTION: this host fuses the 414h container
+//    with its wing-0 leader (docs/PLANE_SQUADRON_HOST.md section 1), so the
+//    leader stands for the container here; every other kind test is the unit's.
+//  * +3CCh (00526FBE) is the record's live_count(), +3D0h[k] (00526E58,
+//    00526FCF) its k-th live member, index + 1. The image's array holds only
+//    planes that exist; the host keeps a no-unit slot for a wing that never
+//    became a unit, so the k-th LIVE member is the image's slot k.
+// OFF keeps the entry as the one plane it is and records squadron_members.
+constexpr bool kPickSquadronMembersBound = false;
+
 class UnitPickBinding final : public bsp::UnitPickHost {
 public:
     explicit UnitPickBinding(GameHudHost::Impl& owner) : owner_(owner) {}
@@ -2281,7 +2296,21 @@ public:
         return 0;
     }
     bool is_kind_of(std::size_t unit, int class_id) override {
-        return unit != 0 && owner_.units->unit_is_kind_of(unit - 1, class_id);
+        if (unit == 0) return false;
+        if (kPickSquadronMembersBound && class_id == 0x18 && squadron_of(unit) != nullptr) {
+            owner_.done("UnitPickScreen::squadron_entry", 0x00526f33u);
+            return true;
+        }
+        return owner_.units->unit_is_kind_of(unit - 1, class_id);
+    }
+    // The registry record whose squadron_unit is `unit` (index + 1), or null.
+    const bsp::PlaneSquadronHostRecord* squadron_of(std::size_t unit) const {
+        for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+            if (r.squadron_unit != bsp::kPlaneSquadronNoUnit && r.squadron_unit == unit - 1) {
+                return &r;
+            }
+        }
+        return nullptr;
     }
     int unit_slot_1b4(std::size_t) override {
         owner_.record("UnitPickScreen::unit_slot_1b4", 0x00526b36u);
@@ -2408,6 +2437,7 @@ public:
                 ? bsp::LocalPlayerUnitList::kWalk0Rest : bsp::LocalPlayerUnitList::kMerged)];
             for (const bsp::UnitRef ref : source) team_.push_back(static_cast<std::size_t>(ref));
             owner_.done(name, site);
+            report_list_census(team, team_);
             return team_.size();
         }
         if (list == bsp::UnitPickList::Kind35) {
@@ -2439,8 +2469,31 @@ public:
     std::size_t list_unit(bsp::UnitPickList, std::size_t i) override {
         return i < team_.size() ? team_[i] : 0;
     }
-    int member_count_3cc(std::size_t) override { return 0; }
-    std::size_t member_3d0(std::size_t, int) override {
+    int member_count_3cc(std::size_t squadron) override {
+        if constexpr (kPickSquadronMembersBound) {
+            // 00526FBE CMP EBP,[EDI+3CCh].
+            const bsp::PlaneSquadronHostRecord* r = squadron_of(squadron);
+            return r != nullptr ? r->live_count() : 0;
+        }
+        return 0;
+    }
+    std::size_t member_3d0(std::size_t squadron, int k) override {
+        if constexpr (kPickSquadronMembersBound) {
+            // 00526E58 [EDI+3D0h] for k = 0, 00526FCF [ECX] for the next slots.
+            const bsp::PlaneSquadronHostRecord* r = squadron_of(squadron);
+            if (r != nullptr && k >= 0) {
+                int live = 0;
+                for (const std::size_t u : r->member_units) {
+                    if (u == bsp::kPlaneSquadronNoUnit) continue;
+                    if (live++ == k) {
+                        owner_.done("UnitPickScreen::squadron_members", 0x00526e58u);
+                        return u + 1;
+                    }
+                }
+            }
+            owner_.done("UnitPickScreen::squadron_member_empty", 0x00526e5eu);
+            return 0;
+        }
         // SUBSTITUTION: squadron members (+3D0h, count +3CCh) are not exposed.
         owner_.record("UnitPickScreen::squadron_members", 0x00526e58u);
         return 0;
@@ -2565,6 +2618,57 @@ public:
 
 private:
     GameHudHost::Impl& owner_;
+    // Packet cc9_pick_squadron_members (docs/PICK_SQUADRON_MEMBERS.md section 1):
+    // the class census of each pick list. 00526F33 expands an entry that answers
+    // IsKindOf(18h) into its +3D0h members. The line prints when a list's shape
+    // changes, so a mission logs a few lines, not one per update.
+    void report_list_census(bool team, const std::vector<std::size_t>& entries) {
+        struct Shape {
+            std::size_t size{static_cast<std::size_t>(-1)};
+            std::size_t kind_18{0};
+            std::size_t kind_5{0};
+            std::size_t squadron_units{0};
+            std::size_t members{0};
+        };
+        static Shape last[2];
+        Shape now;
+        now.size = entries.size();
+        std::map<int, std::size_t> classes;
+        const bsp::PlaneSquadronRegistry& registry = bsp::plane_squadron_registry();
+        for (const std::size_t unit : entries) {
+            if (unit == 0) {
+                ++classes[-1];
+                continue;
+            }
+            ++classes[owner_.units->unit_class_id(unit - 1)];
+            if (owner_.units->unit_is_kind_of(unit - 1, 0x18)) ++now.kind_18;
+            if (owner_.units->unit_is_kind_of(unit - 1, 5)) ++now.kind_5;
+            if (registry.find_by_member_unit(unit - 1) != nullptr) ++now.members;
+            for (const bsp::PlaneSquadronHostRecord& r : registry.records()) {
+                if (r.squadron_unit == unit - 1) {
+                    ++now.squadron_units;
+                    break;
+                }
+            }
+        }
+        Shape& prev = last[team ? 0 : 1];
+        if (now.size == prev.size && now.kind_18 == prev.kind_18 && now.kind_5 == prev.kind_5
+            && now.squadron_units == prev.squadron_units && now.members == prev.members) {
+            return;
+        }
+        prev = now;
+        std::string histogram;
+        for (const auto& [class_id, count] : classes) {
+            char item[32];
+            std::snprintf(item, sizeof item, " %Xh:%zu", static_cast<unsigned>(class_id), count);
+            histogram += item;
+        }
+        owner_.log.notef("pick list census: list=%s entries=%zu kind18=%zu kind5=%zu "
+            "squadron_units=%zu squadron_members=%zu registry_squadrons=%zu classes:%s",
+            team ? "1970" : "19b8", now.size, now.kind_18, now.kind_5, now.squadron_units,
+            now.members, registry.size(), histogram.c_str());
+    }
+
     std::vector<std::size_t> team_;
     int game_19c4_queries_{0};
 };
