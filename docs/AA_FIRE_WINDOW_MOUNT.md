@@ -93,5 +93,11 @@ result and precede only the two E2 runs, on the same `fw_off` and `fw_on` builds
 * Total deaths are within 4 of OFF.
 * Window refusals applied are more than 2 times the OFF run's observed count.
 
-Pending.
+| E2 run | deaths (Kates / Vals) | hit records | total damage | window refusals |
+| --- | --- | --- | --- | --- |
+| OFF | 35 (16 / 16) | 586 | 7968.1 | 1624 observed |
+| ON | 35 (16 / 16) | 594 | 7845.7 | 4214 applied |
+
+All four held: hit records +1.4%, Kates unchanged, deaths unchanged, and 4214 is 2.6 times 1624.
+The E2 reference keeps 35 deaths, and its hit records move from 586 to 594.
 
