@@ -450,4 +450,53 @@ brain+B3Ch. On expiry it reports to the warning manager [00F8A0C4] for the brain
 - The timer draws nothing and writes only B40h. Deaths, hit records, every ship-ai line and the
   death tables are identical.
 
-**Result:** pending.
+**Result:** held (`wt_off` / `wt_on`, tree `07ae5066d`, streams on).
+
+| Pair | tail_009da8d0 calls | Expiries ON | Reports | Deaths / hit records |
+|---|---|---|---|---|
+| USN02 9200/9000 | 252000 | 9417 | 0 / 0 | 22 / 440 both ways |
+| E2 9200/9000 | 162000 | 6363 | 0 / 0 | 51 / 836 both ways |
+
+- The tail's row turned concrete at the same count, and no other gameplay row moved.
+  `PlatformLoopCallbacks::pretranslate` differs by a few calls. It is the window message pump and
+  varies between runs.
+- Every ship-ai line and the death tables are identical by digest.
+
+`kShipAiWarningTimerBound` is ON. The reports stay silent until something sets blk+3E9h or
+blk+3EAh (see section 10).
+
+## 10. Handoff (end of the cc9-gunnery segment, 2026-09-26)
+
+What is left for a successor, in the order I would take it.
+
+1. **00957DA0 `PlayerGunSeat::segment_query`** (src/game_hosts_gunnery.cpp, the record just after
+   the 00954A10 angle clamp).
+   - The image casts the 1000-unit segment from the camera through the spatial index
+     (00957D79..00957DA0) and aims at what it hits. The host records it, and every gun takes the
+     range-sphere point.
+   - Bind it through `GameGunneryHost::query_segment_units` (the HUD's const query over
+     `SegmentBinding`, docs/HUD_PICK_SEGMENT_QUERY.md section 4). That query's exclude is
+     one-based, and it restores the binding's two trace counters.
+   - Check first that the kind filter and the ignore entity used at 00957DA0 match what 009043A0
+     passes (kind 0, ignore vtable+B0h). If they differ, extend `SegmentQueryArgs` rather than
+     reusing the HUD form.
+   - Only the player's gun seat takes this path, so the pairs should move only when a player seat
+     is manned. Predict and pair it on USN02 and E2 as usual.
+2. **The warning flags' producer.**
+   - blk+3E9h / +3EAh are only cleared by the host (hull pre-step 009E04A0 / 009E04A9).
+   - A byte-immediate scan found one store of 1 to +3E9h, at 00A3F13D in 00A3F100. Its object is
+     not established. Register-source stores (`88 /r` with other registers, and word or dword
+     stores covering the pair) were not swept.
+   - Until a producer is bound, the section 9 reports never fire. The HUD switch
+     `kWarningManagerTickBound` must also be ON for them to do more than their guard records.
+3. **Remaining `ShipAi` records** in src/game_hosts_ship_ai.cpp, none of them started:
+   - `throttle_ceiling` 009F4DA0 (brain+34Ch / +350h);
+   - `step_009eca20`;
+   - `hold` / `hold_before_snapshot` 009DA0D0;
+   - `replan_finish` 009DDBC0;
+   - `replan_prepare_threat_scan` at 009F158A;
+   - `station_keeping_arm` at 009EDA28;
+   - `neighbour_list_add_009f0d20`.
+
+   Read each record's call counts from the latest E2 log before choosing, and check each against
+   the listing first. Tail (b) showed that a record can sit on a path the image itself skips.

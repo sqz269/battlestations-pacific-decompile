@@ -249,7 +249,7 @@ inline constexpr bool kShipAiNavTailGateBookkeeping = true;
 // cc9_warning_manager_tick). B3Ch / B40h are the brain constructor's draws at
 // 009F12CD / 009F12F1 (B40h negated by 009F12F6 FCHS), now kept. False: the
 // tail's record.
-inline constexpr bool kShipAiWarningTimerBound = false;
+inline constexpr bool kShipAiWarningTimerBound = true;
 inline constexpr float kTorpedoCollectTimer2 = 2.0f;
 // Packet cc9_station_keeping, docs/STATION_KEEPING.md. True: the follow update's
 // station request 009DA3B0 is stored (blk+38Ch..+3A6h, including blk+39Ch = 0

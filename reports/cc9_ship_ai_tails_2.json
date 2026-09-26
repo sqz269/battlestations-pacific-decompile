@@ -34,5 +34,23 @@
       "function": "009ed6b0"
     },
     "pair": "E2 9200/9000, same tree bf6eddc7a, streams on: navigation_arm_tail UNIMPLEMENTED 132146 becomes concrete 130833 plus navigation_gate_closed_009ee59f concrete 1313; deaths 51, hit records 841, every ship-ai line and the death table identical"
-  }
+  },
+  "part_c": {
+    "answer": "009DA8D0 (body 009DA8D0..009DA93F) runs as the countdown on brain+B40h re-armed from B3Ch; on expiry blk+3EAh reports through game_warning_report_torpedo_00977690 and blk+3E9h through game_warning_torpedo_effect_00977820 (the HUD worker's entries). The constructor draws B3Ch (009F12CD) and -B40h (009F12F1, FCHS 009F12F6) are kept. kShipAiWarningTimerBound is ON; no host path sets either flag, so the reports stay at 0.",
+    "steps": [
+      {
+        "address": "009da90e",
+        "native": "00977690",
+        "function": "009da8d0",
+        "rule": "blk+3EAh set: torpedo report"
+      }
+    ],
+    "evidence_site": {
+      "address": "009da930",
+      "instruction": "jmp 0x977820",
+      "function": "009da8d0"
+    },
+    "pair": "USN02 9200/9000 and E2 9200/9000, same tree 07ae5066d, streams on: tail_009da8d0 UNIMPLEMENTED to concrete at 252000 / 162000 calls, expiries 9417 / 6363, reports 0; deaths, hit records, every ship-ai line and the death tables identical"
+  },
+  "handoff": "docs/SHIP_AI_TAILS.md section 10: 00957DA0 PlayerGunSeat::segment_query through query_segment_units, the producer of blk+3E9h/+3EAh, and the remaining ShipAi records"
 }
