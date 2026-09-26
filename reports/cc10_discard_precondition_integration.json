@@ -1,0 +1,45 @@
+{
+  "packet": "cc10_discard_precondition_integration",
+  "integration": "2a9957d0513f91d48a61c1384df35b9dfe61c0db",
+  "worker_report": "reports/native_global_config_diagnostic_discard_precondition_cc10.json",
+  "primary_verification": {
+    "result": "PASS",
+    "worker_commit": "c21f2429bcd2e5542ae661cd32675184abd149e3",
+    "baseline": "9287a5d58ef84661c844eec8695e9d59992954db",
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\cc10_global_config_discard_precondition_implementation\\evidence.zip",
+      "sha256": "f5e5bd69fab8e6ab574f882b67d4afaa082fd55debccbcb95b6a9fc15b311e61",
+      "rows": 44,
+      "members": 45
+    },
+    "committed_blobs": 3,
+    "added_comment_lines": 4,
+    "non_comment_tokens_unchanged": true,
+    "retirement_readiness": {
+      "result": "PASS",
+      "archive": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\cc10_lua_foreign_exception_retirement_readiness\\evidence.zip",
+      "sha256": "2282c5999fb4f716fb75d0eb9414cf8b06c41870609e2f86a4ce80ae47edc902",
+      "rows": 30,
+      "members": 31,
+      "scope": "Source-only negative retirement audit and unapplied four-comment proposal; no behavior/runtime/CRT proof"
+    },
+    "worker_CTests": 3,
+    "new_runtime_runs": 0,
+    "new_native_bytes": 0,
+    "limits": "Comment-only precondition; no foreign-exception restoration, retirement, cleanup guard, API or behavior change. Prior build separately preserved; no binary differences attributed to comments. No native address/function credit or runtime/game claim."
+  },
+  "validation": {
+    "primary_CTests": 3,
+    "build_required": true,
+    "new_runtime_runs": 0,
+    "new_BSP_native_bytes": 0,
+    "game_validated": false
+  },
+  "limits": "Comment-only precondition; no foreign-exception restoration, retirement, cleanup guard, API or behavior change. Prior build separately preserved; no binary differences attributed to comments. No native address/function credit or runtime/game claim.",
+  "archive": {
+    "path": "local/cc10-platform-evidence/lua-diagnostic-discard-precondition.zip",
+    "sha256": "f6b6438922370a6f980f6a068cb521f2e88f15f127d26ac6c7e7aa34826d981b",
+    "files": 8,
+    "valid": true
+  }
+}
