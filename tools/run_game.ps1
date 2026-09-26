@@ -44,6 +44,14 @@ if (-not (Test-Path $Exe)) { throw "bsp_game.exe not found at $Exe (run from the
 if ($XLiveDll -eq '') { $XLiveDll = Join-Path (Split-Path $Exe -Parent) 'xlive_stub.dll' }
 if (-not (Test-Path $XLiveDll)) { throw "XLive stand-in not found at $XLiveDll" }
 $GameArgs = @($GameArgs | Where-Object { $_ -ne '--' })
+# Default window placement (harness only): config/run_game.json's "window_monitor" is forwarded
+# as --window-monitor unless the caller passed --window-monitor or --window-origin, or set
+# BSP_WINDOW_MONITOR (which the executable reads itself). See docs/WINDOW_MONITOR.md.
+$runDefaults = Join-Path $PSScriptRoot '..\config\run_game.json'
+if (-not $env:BSP_WINDOW_MONITOR -and -not @($GameArgs | Where-Object { $_ -match '^--window-(monitor|origin)$' }) -and (Test-Path $runDefaults)) {
+    $windowMonitor = (Get-Content $runDefaults -Raw | ConvertFrom-Json).window_monitor
+    if ($windowMonitor) { $GameArgs = @('--window-monitor', "$windowMonitor") + $GameArgs }
+}
 $owner = if ($env:BSP_AGENT) { $env:BSP_AGENT } else { Split-Path (Get-Location) -Leaf }
 
 $lockDir = Split-Path $Lock -Parent

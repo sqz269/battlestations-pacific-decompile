@@ -335,6 +335,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
         std::fprintf(stderr, "usage: bsp_game.exe [--frames N] [--log <path>]"
             " [--game-root <dir>] [--settings-personal-root <dir>] [--vfs-probe <virtual path>]"
             " [--press-start-frame N] [--menu-select <mission id>] [--mission-frames N]"
+            " [--window-monitor <n|primary|smallest|largest>] [--window-origin X,Y]"
             " [--mission-complete-frame N]"
             " [--order throttle=<f>,rudder=<f> | --order <command>[:<entity>]"
             " | --order <command>=<x>,<z>]"

@@ -158,6 +158,15 @@ struct GameExecutableOptions {
     // image's processor 0. Negative keeps processor 0. Overlapping runs pinned to one
     // processor would only share it.
     int affinity_core{-1};
+    // Harness only, added 2026-09-25 at the user's request. --window-monitor <n|primary|
+    // smallest|largest> or --window-origin X,Y chooses the screen the window opens on. The
+    // image always creates and moves its window at 0,0 (00bed028..00bed07d; arguments 5 and
+    // 6 of 00becee0 have no writer), so the reconstruction keeps writing 0,0 and
+    // GameWindowHost translates every positioned create or move by the chosen monitor's
+    // origin. Empty falls back to the BSP_WINDOW_MONITOR environment variable, then to no
+    // translation (the primary monitor). A monitor index is 1-based in EnumDisplayMonitors
+    // order. Unknown specs are an error; an index past the last monitor is an error.
+    std::string window_monitor;
     // Optional absolute library selections, resolved before --game-root changes
     // CWD. Empty DLL paths select the original names in the current game root.
     std::wstring fmod_dll;
@@ -279,11 +288,17 @@ public:
     void show_window(HWND window, int command) override;
     ATOM registered_class() const noexcept { return registered_class_; }
     void unregister_class(const char* name) noexcept;
+    // Harness translation of the reconstruction's 0,0 placement (see
+    // GameExecutableOptions::window_monitor). Applied in create_window and in every
+    // set_window_pos that moves (no SWP_NOMOVE).
+    void set_origin(int x, int y) noexcept { origin_x_ = x; origin_y_ = y; }
 
 private:
     GameHostLog& log_;
     HINSTANCE instance_{};
     ATOM registered_class_{};
+    int origin_x_{};
+    int origin_y_{};
 };
 
 // SaveStorageHost for 00beb2c0: SHGetSpecialFolderPathA plus CreateDirectoryA.

@@ -28,6 +28,8 @@
 #include <cstdarg>
 #include <cstdlib>
 #include <cstring>
+#include <string>
+#include <vector>
 #include <cerrno>
 #include <filesystem>
 
@@ -622,11 +624,114 @@ bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
                 return false;
             }
             affinity_core = static_cast<int>(core);
+        } else if (std::strcmp(argument, "--window-monitor") == 0) {
+            if (index + 1 >= argc) {
+                error = "--window-monitor needs <n|primary|smallest|largest>";
+                return false;
+            }
+            window_monitor = argv[++index];
+        } else if (std::strcmp(argument, "--window-origin") == 0) {
+            if (index + 1 >= argc) {
+                error = "--window-origin needs X,Y";
+                return false;
+            }
+            window_monitor = argv[++index];
+            if (window_monitor.find(',') == std::string::npos) {
+                error = "--window-origin needs X,Y";
+                return false;
+            }
         } else {
             error = std::string("unknown option ") + argument;
             return false;
         }
     }
+    return true;
+}
+
+// Harness only: resolve a --window-monitor / --window-origin spec (or BSP_WINDOW_MONITOR) to a
+// desktop offset. Returns false with a message when the spec cannot be honoured; an empty spec
+// resolves to no translation.
+namespace {
+struct MonitorRect {
+    RECT rect{};
+    bool primary{};
+    char name[CCHDEVICENAME]{};
+};
+
+BOOL CALLBACK collect_monitor(HMONITOR monitor, HDC, LPRECT, LPARAM parameter) {
+    auto* list = reinterpret_cast<std::vector<MonitorRect>*>(parameter);
+    MONITORINFOEXA info{};
+    info.cbSize = sizeof(info);
+    if (GetMonitorInfoA(monitor, &info)) {
+        MonitorRect entry{};
+        entry.rect = info.rcMonitor;
+        entry.primary = (info.dwFlags & MONITORINFOF_PRIMARY) != 0;
+        strncpy_s(entry.name, sizeof(entry.name), info.szDevice, _TRUNCATE);
+        list->push_back(entry);
+    }
+    return TRUE;
+}
+
+long monitor_area(const RECT& r) {
+    return static_cast<long>(r.right - r.left) * static_cast<long>(r.bottom - r.top);
+}
+}  // namespace
+
+bool resolve_window_origin(const std::string& spec, int& x, int& y, std::string& description) {
+    x = 0;
+    y = 0;
+    description.clear();
+    if (spec.empty() || spec == "primary") {
+        description = spec.empty() ? "unset (primary)" : "primary";
+        return true;
+    }
+    const std::size_t comma = spec.find(',');
+    if (comma != std::string::npos) {
+        char* end = nullptr;
+        const long ox = std::strtol(spec.c_str(), &end, 10);
+        if (end != spec.c_str() + comma) {
+            description = "--window-origin needs X,Y";
+            return false;
+        }
+        const char* rest = spec.c_str() + comma + 1;
+        const long oy = std::strtol(rest, &end, 10);
+        if (*rest == '\0' || *end != '\0') {
+            description = "--window-origin needs X,Y";
+            return false;
+        }
+        x = static_cast<int>(ox);
+        y = static_cast<int>(oy);
+        description = "origin " + spec;
+        return true;
+    }
+    std::vector<MonitorRect> monitors;
+    EnumDisplayMonitors(nullptr, nullptr, collect_monitor, reinterpret_cast<LPARAM>(&monitors));
+    if (monitors.empty()) {
+        description = "no monitors enumerated";
+        return false;
+    }
+    const MonitorRect* chosen = nullptr;
+    if (spec == "smallest" || spec == "largest") {
+        chosen = &monitors.front();
+        for (const MonitorRect& m : monitors) {
+            const bool better = spec == "smallest" ? monitor_area(m.rect) < monitor_area(chosen->rect)
+                                                    : monitor_area(m.rect) > monitor_area(chosen->rect);
+            if (better) chosen = &m;
+        }
+    } else {
+        char* end = nullptr;
+        const long index = std::strtol(spec.c_str(), &end, 10);
+        if (*end != '\0' || index < 1 || static_cast<std::size_t>(index) > monitors.size()) {
+            description = "--window-monitor needs <n|primary|smallest|largest> with n from 1 to " +
+                std::to_string(monitors.size());
+            return false;
+        }
+        chosen = &monitors[static_cast<std::size_t>(index - 1)];
+    }
+    x = chosen->rect.left;
+    y = chosen->rect.top;
+    description = spec + " = " + chosen->name + " " + std::to_string(chosen->rect.right - chosen->rect.left) +
+        "x" + std::to_string(chosen->rect.bottom - chosen->rect.top) + (chosen->primary ? " primary" : "");
     return true;
 }
 
@@ -665,7 +770,8 @@ HWND GameWindowHost::create_window(DWORD extended_style, const char* class_name,
     const char* title, DWORD style, int x, int y, int width, int height, HINSTANCE instance,
     void* parameter) {
     log_.implemented("PlatformWindowHost::create_window", "00bed01d");
-    return CreateWindowExA(extended_style, class_name, title, style, x, y, width, height,
+    return CreateWindowExA(extended_style, class_name, title, style, x + origin_x_, y + origin_y_,
+        width, height,
         nullptr, nullptr, instance, parameter);
 }
 
@@ -677,6 +783,10 @@ void GameWindowHost::set_window_long(HWND window, int index, LONG value) {
 void GameWindowHost::set_window_pos(HWND window, HWND insert_after, int x, int y, int width,
     int height, UINT flags) {
     log_.implemented("PlatformWindowHost::set_window_pos", "00bed0c9");
+    if ((flags & SWP_NOMOVE) == 0) {
+        x += origin_x_;
+        y += origin_y_;
+    }
     SetWindowPos(window, insert_after, x, y, width, height, flags);
 }
 
@@ -698,6 +808,11 @@ void GameWindowHost::show_window(HWND window, int command) {
     log_.implemented("PlatformWindowHost::show_window", "00bed19c");
     ShowWindow(window, command);
     UpdateWindow(window);
+    RECT rect{};
+    if (GetWindowRect(window, &rect)) {
+        log_.notef("window rect %ld,%ld %ldx%ld", rect.left, rect.top, rect.right - rect.left,
+            rect.bottom - rect.top);
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -1751,6 +1866,23 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         request.renderer_option);
 
     window_host_ = new GameWindowHost(log_, instance_);
+    {
+        // Harness only: the screen the window opens on (GameExecutableOptions::window_monitor).
+        std::string spec = options_.window_monitor;
+        if (spec.empty()) {
+            char env[256]{};
+            if (GetEnvironmentVariableA("BSP_WINDOW_MONITOR", env, sizeof(env)) > 0) spec = env;
+        }
+        int origin_x = 0;
+        int origin_y = 0;
+        std::string description;
+        if (resolve_window_origin(spec, origin_x, origin_y, description)) {
+            window_host_->set_origin(origin_x, origin_y);
+            log_.notef("window monitor %s: origin %d,%d", description.c_str(), origin_x, origin_y);
+        } else {
+            log_.notef("window monitor '%s' not honoured: %s", spec.c_str(), description.c_str());
+        }
+    }
     summary_.window_created = configure_platform_window_00becee0(*window_host_, request,
         platform_, renderer_request_);
     if (summary_.window_created) {
