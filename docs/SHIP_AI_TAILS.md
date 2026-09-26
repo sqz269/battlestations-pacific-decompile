@@ -69,3 +69,34 @@ until 10:31). The binding waits for the lease. The plan:
 - a switch `kShipAiSnapshotBound` for 009DDBC0 + 009DA0D0, committed OFF;
 - predictions on USN02 9000 (the surface reference) and E2 9000;
 - flip on the verdict.
+
+## 4. The binding and its predictions (the switch committed OFF)
+
+`kShipAiSnapshotBound` (`src/game_hosts_ship_ai.cpp`):
+- `replan_finish_009ddbc0` copies the aliasing host members into `ctl_.snapshot`, the saved blocks.
+- `hold_009da0d0` copies them back.
+- A hold before the first snapshot would restore the constructor's zeroes. It is recorded as
+  `ShipAi::hold_before_snapshot` and not applied. The first controller step replans (interval 0),
+  so it should not occur.
+
+**Predictions, written before the pairs.** One tree (main 9a27b915b plus this), `local\bin\sn_off`
+against `local\bin\sn_on`, `BSP_GUNNERY_RNG_STREAMS=1`, 1600x900. USN02 9200/9000 (the surface
+reference; since d0caf31e2 the mission fails at 44.6 s with an idle player, on both sides) and E2
+USN04 9200/9000.
+- **Rows.**
+  - `ShipAi::hold` and `ShipAi::replan_finish` turn concrete at their OFF counts. Together they are
+    one call per AI step: 162,000 in E2, split about 129,000 and 33,000.
+  - `ShipAi::hold_before_snapshot` does not appear.
+- **Unimplemented total.** It falls by exactly those two counts.
+- **Where state can move.** Two host writers change these fields between replans:
+  - 009ED6B0's 007788B0 gate clears the station-keeping enable +3A5h on formation followers;
+  - 009EE6B5 raises +1F0h to the planner's path length.
+
+  With the binding, both are undone at the next step. The raise repeats every step, so +1F0h is
+  unchanged while the path is. The +3A5h clear stops persisting, so a follower's station-keeping
+  arm (009EDA28) runs again on the steps after it.
+- **Summary-line prediction.** Movement is confined to the formation followers' station keeping:
+  the `ship ai` station and follow lines, and follower paths. Deaths and the Lexington's path may
+  shift only through that.
+  - USN02 still fails at about 44.6 s on both sides.
+  - If no line moves, then no host code wrote these fields between replans in these runs.
