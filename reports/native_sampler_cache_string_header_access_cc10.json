@@ -1,0 +1,364 @@
+{
+  "packet": "cc10_sampler_cache_string_header_access",
+  "address": "00b1a4f0",
+  "source": "src/native_sampler_cache_operation.cpp",
+  "documentation": "docs/NATIVE_SAMPLER_CACHE_STRING_HEADER_ACCESS_CC10.md",
+  "status": "representation_pointer_access_corrected_strict_win32_all_required_emitted_orders_verified_no_new_runtime",
+  "source_read_expressions": 9,
+  "source_pointer_clear_expressions": 1,
+  "native_data_read_sites": 21,
+  "native_pointer_store_sites": 3,
+  "native_byte_credit": 0,
+  "tests_added": 0,
+  "runtime": 0,
+  "Ghidra_mutations": false,
+  "current_snapshot": "fe858cae394ec488a345fea09ff62b13f1b19a36",
+  "exact_source": {
+    "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/src/native_sampler_cache_operation.cpp",
+    "size": 13026,
+    "sha256": "64cbf82f9417a1e931196ad63de3e5ec7cb95f7ade0b885d266e963925921e1a"
+  },
+  "predecessor": "Accepted 43b3 source compiled on a409; exact complete39ea member captured before candidate",
+  "preservation": {
+    "no_sync_after_verified_design": true,
+    "current_HEAD": "fe858cae394ec488a345fea09ff62b13f1b19a36",
+    "accepted_predecessor_object": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/build/win32/bsp_core.dir/Release/native_sampler_cache_operation.obj",
+      "size": 26233,
+      "sha256": "39ea7c1943bc221364618b22d5fdd45d86ce6040c2b1b9784358ad0116be1ea3"
+    },
+    "previous_library": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/build/win32/Release/bsp_core.lib",
+      "size": 71223902,
+      "sha256": "42e149c22de0edaa5924cf9ce79d9f599689c4acb9353772247f1ef57f94bdc5"
+    },
+    "previous_build_snapshot": "a40922b3a8f258430644a6fb1bf6b750c451e2c9 plus accepted43b3 source",
+    "historical09ed_build_is_not_predecessor": true,
+    "immutable_archives": [
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_sampler_cache_string_header_design/design_evidence.zip",
+        "size": 137198,
+        "sha256": "7e88c947d77f590a31a664ebab8695d89737b471f857aaaae6c0673ca47e0ab9"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_sampler_cache_record_pointer_access/compiled_evidence.zip",
+        "size": 15394990,
+        "sha256": "870839b15594ed786efa7c80bd007bc1397c346a5721cef16bce93381000ec25"
+      },
+      {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_sampler_cache_record_pointer_access/git_closeout_evidence.zip",
+        "size": 86991,
+        "sha256": "bd3a49d76d552c34ada6fefd691b889b2d69d0ff2ce463fe7f9f7fe22a874925"
+      }
+    ],
+    "old15_prebuild_98_headers_21_tools_and34_current_tracked_snapshots_preserved_in_prior_archives": true,
+    "source_API_pins_current_and_frozen": 13
+  },
+  "build": {
+    "utc_start": "2026-09-26T10:25:41.5576152Z",
+    "utc_end": "2026-09-26T10:25:55.9973695Z",
+    "exit_code": 0,
+    "error": null,
+    "command": "Existing scripts/build.ps1 Release strict Win32 and three existing CTests; current fe858 snapshot plus exact reviewed nonvolatile header representation candidate",
+    "accepted_predecessor": "43b3 source compiled on a409",
+    "runtime_authorized": false
+  },
+  "existing_CTests": {
+    "reconstructed_math": "PASS",
+    "native_math_differential": "PASS",
+    "tool_tests": "PASS",
+    "total_seconds": 4.69
+  },
+  "actual_target_flags": [
+    "/O2",
+    "/Ob2",
+    "/W4",
+    "/WX",
+    "/fp:strict",
+    "/std:c++17"
+  ],
+  "full_core_member": {
+    "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_sampler_cache_string_header_implementation/compiled/native_sampler_cache_operation.obj",
+    "size": 26376,
+    "sha256": "3b6f2c3cb847c622ebddc77503eaf2425a5037a2a1275afc0e3d712f49523014"
+  },
+  "full_core_library": {
+    "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_sampler_cache_string_header_implementation/compiled/bsp_core.lib",
+    "size": 71224044,
+    "sha256": "f9eaa31fb93749953f8c9f53522d379900f4c108ba3d3f9bc537818f920960a9"
+  },
+  "core_object_members": 1778,
+  "complete_emitted_functions": 57,
+  "whole_body_bytes": 3683,
+  "whole_COFFERelocations": 113,
+  "common_functions": 56,
+  "common_bodies_byte_equal": 53,
+  "common_relocation_offset_type_target_tables_equal": 54,
+  "all56_common_ordered_relocation_type_target_sequences_equal": true,
+  "changed_common_functions": [
+    "alias_equal",
+    "unequal",
+    "run"
+  ],
+  "new_private_helper": {
+    "name": "name_data",
+    "bytes": 11,
+    "relocations": 0
+  },
+  "unchanged_complete_bodies_and_relocations": {
+    "copy_name": true,
+    "release_name": true,
+    "finish_names": true,
+    "clear_name": true,
+    "append_alias": true
+  },
+  "all_three_zero_destination_count_paths": [
+    {
+      "native_resize": "00b1a540",
+      "function": "run",
+      "resize": 60,
+      "current_source_length": 65,
+      "destination_count": 74,
+      "source_data": 76,
+      "destination_data": 79,
+      "count_test": 89,
+      "zero_branch": 91,
+      "zero_target": 104
+    },
+    {
+      "native_resize": "00b1a663",
+      "function": "copy_name",
+      "reached_call_from_run": 536,
+      "resize": 36,
+      "current_source_length": 41,
+      "destination_count": 50,
+      "source_data": 52,
+      "destination_data": 55,
+      "count_test": 64,
+      "zero_branch": 66,
+      "zero_target": 79
+    },
+    {
+      "native_resize": "00b1a7b3",
+      "function": "copy_name",
+      "reached_call_from_run": 1132,
+      "resize": 36,
+      "current_source_length": 41,
+      "destination_count": 50,
+      "source_data": 52,
+      "destination_data": 55,
+      "count_test": 64,
+      "zero_branch": 66,
+      "zero_target": 79
+    }
+  ],
+  "native_read_matrix": [
+    {
+      "native": "00b1a54d",
+      "function": "run",
+      "offset": 76,
+      "domain": "input"
+    },
+    {
+      "native": "00b1a550",
+      "function": "run",
+      "offset": 79,
+      "domain": "requested"
+    },
+    {
+      "native": "00b1a670",
+      "function": "copy_name",
+      "offset": 52,
+      "domain": "resolver-returned"
+    },
+    {
+      "native": "00b1a673",
+      "function": "copy_name",
+      "offset": 55,
+      "domain": "resolved"
+    },
+    {
+      "native": "00b1a7c2",
+      "function": "copy_name",
+      "offset": 52,
+      "domain": "resolved"
+    },
+    {
+      "native": "00b1a7c6",
+      "function": "copy_name",
+      "offset": 55,
+      "domain": "record name"
+    },
+    {
+      "native": "00b1a5ca",
+      "function": "run",
+      "offset": 224,
+      "domain": "requested"
+    },
+    {
+      "native": "00b1a5ce",
+      "function": "run",
+      "offset": 227,
+      "domain": "first alias"
+    },
+    {
+      "native": "00b1a71d",
+      "function": "run",
+      "offset": 722,
+      "domain": "resolved"
+    },
+    {
+      "native": "00b1a721",
+      "function": "run",
+      "offset": 725,
+      "domain": "resolved alias"
+    },
+    {
+      "native": "00b1a6c5",
+      "function": "run",
+      "offset": 611,
+      "domain": "requested"
+    },
+    {
+      "native": "00b1a6c9",
+      "function": "run",
+      "offset": 614,
+      "domain": "resolved"
+    },
+    {
+      "native": "00b1a8a6",
+      "function": "run",
+      "offset": 1231,
+      "domain": "resolved post-date"
+    },
+    {
+      "native": "00b1a8aa",
+      "function": "run",
+      "offset": 1234,
+      "domain": "requested post-date"
+    },
+    {
+      "native": "00b1a682",
+      "function": "run",
+      "offset": 541,
+      "domain": "hidden"
+    },
+    {
+      "native": "00b1a927",
+      "function": "finish_names",
+      "offset": 9,
+      "domain": "resolved retained creation"
+    },
+    {
+      "native": "00b1a964",
+      "function": "finish_names",
+      "offset": 9,
+      "domain": "resolved unretained creation"
+    },
+    {
+      "native": "00b1a94b",
+      "function": "finish_names",
+      "offset": 44,
+      "domain": "requested retained creation"
+    },
+    {
+      "native": "00b1a988",
+      "function": "finish_names",
+      "offset": 44,
+      "domain": "requested unretained creation"
+    },
+    {
+      "native": "00b1a9c8",
+      "function": "run",
+      "offset": 368,
+      "domain": "resolved common returns"
+    },
+    {
+      "native": "00b1a9ec",
+      "function": "run",
+      "offset": 401,
+      "domain": "requested common returns"
+    }
+  ],
+  "native_pointer_store_matrix": [
+    {
+      "native": "00b1a531",
+      "function": "run",
+      "length_zero_offset": 25,
+      "pointer_null_offset": 31
+    },
+    {
+      "native": "00b1a61d",
+      "function": "run",
+      "length_zero_offset": 326,
+      "pointer_null_offset": 332
+    },
+    {
+      "native": "00b1a775",
+      "function": "run",
+      "length_zero_offset": 1039,
+      "pointer_null_offset": 1045
+    }
+  ],
+  "all_required_current_load_store_orders": "PASS",
+  "cleanup_captures_before_disarm": "PASS",
+  "provenance": {
+    "prebuild_pins": 16,
+    "actual_CL_read_headers_acquired_after_build": 98,
+    "tool_pins_acquired_after_build": 21
+  },
+  "compiled_evidence": {
+    "archive": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_sampler_cache_string_header_implementation/compiled_evidence.zip",
+      "size": 15502665,
+      "sha256": "ccd6080c1e6acf691e3a3bf016f69e0b1f792520f2f13e1d4550dc1ddb756edb"
+    },
+    "rows": 143,
+    "members": 144,
+    "all_rows_rehashed": true,
+    "source": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/src/native_sampler_cache_operation.cpp",
+      "size": 13026,
+      "sha256": "64cbf82f9417a1e931196ad63de3e5ec7cb95f7ade0b885d266e963925921e1a"
+    },
+    "object": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_sampler_cache_string_header_implementation/compiled/native_sampler_cache_operation.obj",
+      "size": 26376,
+      "sha256": "3b6f2c3cb847c622ebddc77503eaf2425a5037a2a1275afc0e3d712f49523014"
+    },
+    "library": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_sampler_cache_string_header_implementation/compiled/bsp_core.lib",
+      "size": 71224044,
+      "sha256": "f9eaa31fb93749953f8c9f53522d379900f4c108ba3d3f9bc537818f920960a9"
+    },
+    "emitted_order_inspection": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_sampler_cache_string_header_implementation/order_inspection.json",
+      "size": 9520,
+      "sha256": "6a19887a7932b4b7ac442a88b396fa00e77753a2eeec1bcf1ce1539f433ac8e1"
+    },
+    "prebuild_pins": 16,
+    "postbuild_actual_header_pins": 98,
+    "postbuild_tool_pins": 21,
+    "current_snapshot": "fe858cae394ec488a345fea09ff62b13f1b19a36",
+    "predecessor": "43b3 accepted source compiled on a409, exact whole member",
+    "native_data_reads": 21,
+    "native_pointer_stores": 3,
+    "all_three_zero_count_paths": "PASS",
+    "emitted_functions": 57,
+    "whole_body_bytes": 3683,
+    "COFF_relocations": 113,
+    "strict_Win32_three_existing_CTests": "PASS",
+    "runtime": 0,
+    "native_byte_credit": 0,
+    "nonvolatile_asynchronous_limit_explicit": true
+  },
+  "qualification": [
+    "Nonvolatile memcpy does not promise a fixed-width volatile access in the C++ abstract machine or asynchronous mutations",
+    "No NativeString overlay or new object lifetime; existing mixed uint32[2]/actual char* backing and valid pointer/header obligations remain",
+    "Complete COFF/core-member provenance only; no new executable link-selection or runtime claim",
+    "B19E40 raw representation helper remains a separate named boundary",
+    "Native ABI/FH3/orphan/zero-copy/source payload/SDK/Lua/full game boundaries remain open"
+  ],
+  "optimizer_barrier_asm_noinline_adjustments": false,
+  "source_revised_after_approved_candidate": false
+}

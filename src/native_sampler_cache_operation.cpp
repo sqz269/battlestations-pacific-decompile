@@ -43,21 +43,32 @@ NativeRenderResourceRecord* current_record_data(const void* actual_cache) noexce
     const auto* const vector = static_cast<const volatile NativeResourceRecordVectorStorage*>(at(actual_cache, 4));
     return vector->data_00;
 }
-void clear_name(void* p) noexcept { put(p, 0, 0); put(p, 4, 0); }
+char* name_data(const void* actual_header) noexcept {
+    // Representation access supports raw uint32[2] and live char* members;
+    // it neither overlays NativeString nor snapshots a header across callbacks.
+    char* data;
+    std::memcpy(&data, at(actual_header, 4), sizeof(data));
+    return data;
+}
+void clear_name(void* p) noexcept {
+    put(p, 0, 0);
+    char* const empty = nullptr;
+    std::memcpy(at(p, 4), &empty, sizeof(empty));
+}
 void copy_name(void* to, const void* from, Op& a, U resize_site, U copy_site) {
     if (to == from) return;
     a.native_site = resize_site;
     resize_native_string_header_0041dd40(to, a.context->strings, word(from), true);
     if (word(from) != 0) {
         const U count = word(to);
-        const void* input = pointer(from, 4);
-        void* output = pointer(to, 4);
+        const void* input = name_data(from);
+        void* output = name_data(to);
         a.native_site = copy_site;
         if (count) std::memmove(output, input, count);
     }
 }
 void release_name(void* p, bool& live, Op& a, U site) {
-    auto* data = static_cast<char*>(pointer(p, 4)); // Before disarming.
+    auto* data = static_cast<char*>(name_data(p)); // Before disarming.
     live = false;
     if (data) {
         const U bytes = word(p) + 1u;
@@ -80,8 +91,8 @@ bool alias_equal(const void* alias_name, const void* name, Op& a, U site) {
     if (left != right) return false;
     if (!left) return right == 0;
     if (!right) return false;
-    const auto* rhs = static_cast<const char*>(pointer(name, 4));
-    const auto* lhs = static_cast<const char*>(pointer(alias_name, 4));
+    const auto* rhs = static_cast<const char*>(name_data(name));
+    const auto* lhs = static_cast<const char*>(name_data(alias_name));
     a.native_site = site;
     return _stricmp(lhs, rhs) == 0;
 }
@@ -89,8 +100,8 @@ bool unequal(const void* left, const void* right, Op& a, U site) {
     if (!word(left)) return word(right) != 0;
     if (!word(right)) return true;
     // Native callers fetch right data, then left data, before cdecl pushes.
-    const auto* rhs = static_cast<const char*>(pointer(right, 4));
-    const auto* lhs = static_cast<const char*>(pointer(left, 4));
+    const auto* rhs = static_cast<const char*>(name_data(right));
+    const auto* lhs = static_cast<const char*>(name_data(left));
     a.native_site = site;
     return _stricmp(lhs, rhs) != 0;
 }
@@ -219,8 +230,8 @@ void* run(Op& a, std::uint8_t retain_new, std::uint8_t allow_load) {
     if (!requested_nonempty) different = word(a.resolved) != 0;
     else if (!word(a.resolved)) different = true;
     else {
-        const auto* rhs = static_cast<const char*>(pointer(a.resolved, 4));
-        const auto* lhs = static_cast<const char*>(pointer(a.requested, 4));
+        const auto* rhs = static_cast<const char*>(name_data(a.resolved));
+        const auto* lhs = static_cast<const char*>(name_data(a.requested));
         a.native_site = 0xb1a8b0; different = _stricmp(lhs, rhs) != 0;
     }
     if (different) append_alias(at(&a.record, 8), a.requested, a, 0xb1a8d1, 0xb1a8de);
