@@ -1,0 +1,55 @@
+{
+  "packet": "cc10_clock_record_pointer_access_integration",
+  "worker_commit": "59fc2b66e89690389e0dc70da072ddaf4298b4f1",
+  "integration": "7182a9065ce5868048a4c9a80a64de2a80e7abc7",
+  "worker_report": "reports/native_clock_record_pointer_access_cc10.json",
+  "primary_verification": {
+    "result": "PASS",
+    "source_baseline": "b1eeaa2780538f1697d588b2ced02d15be8c613d",
+    "source_pins": 34,
+    "tool_pins": 2,
+    "exact_current_core_members": 2,
+    "complete_BSP_code_sections": 30,
+    "code_section_bytes": 2240,
+    "unique_linked_sections": 18,
+    "exact_map_targets": 39,
+    "native_ranges": 6,
+    "native_bytes": 557,
+    "worker_strict_win32_CTests": 3,
+    "new_runtime_runs": 0,
+    "limits": "Old worker09ed build is historical only. Current predecessor function bytes are identical after exact local namespace spelling correspondence for relocations. Unselected sections are COFF-only; no native ABI/FH3/nonempty/application/game credit.",
+    "worker_commit": "59fc2b66e89690389e0dc70da072ddaf4298b4f1",
+    "worker_archive_sha256": "b134c83f2890ed0f0f8b80d6fcbae90896ac0a4a4fa89abe4c0d98f0af91c720",
+    "worker_archive_rows": 348,
+    "worker_archive_members": 349,
+    "committed_blobs_verified": 5,
+    "incremental_comparison": {
+      "source_commit": "21aa59001748d2bd772f2da99a2fb9248d441836",
+      "function_symbols": [
+        35,
+        11
+      ],
+      "symbol_covered_bytes": [
+        2167,
+        444
+      ],
+      "code_bytes_identical": true,
+      "relocations_equal_after_only_exact_per_file_namespace_pairs": true,
+      "counts_are_not_unique_section_coverage": true
+    }
+  },
+  "validation": {
+    "worker_CTests": 3,
+    "primary_CTests": 3,
+    "new_native_bytes": 0,
+    "new_runtime_runs": 0,
+    "game_validated": false
+  },
+  "limits": "Old worker09ed build is historical only. Current predecessor function bytes are identical after exact local namespace spelling correspondence for relocations. Unselected sections are COFF-only; no native ABI/FH3/nonempty/application/game credit.",
+  "archive": {
+    "path": "local/cc10-platform-evidence/clock-record-pointer-access.zip",
+    "sha256": "0747986af0843a993acf0d0066f97c36394b358f9eb97e8fcaadc8c7bb69991c",
+    "files": 12,
+    "valid": true
+  }
+}
