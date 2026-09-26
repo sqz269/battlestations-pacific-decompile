@@ -1,6 +1,10 @@
 #include "bsp/native_cube_texture_base.hpp"
 #include "bsp/native_logical_texture_named_base.hpp"
 
+#include <atomic>
+#include <cstddef>
+#include <new>
+
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native cube texture base requires MSVC Win32.
 #endif
@@ -8,6 +12,9 @@
 namespace bsp {
 namespace {
 static_assert(sizeof(void*) == 4);
+static_assert(sizeof(std::atomic<std::int32_t>) == 4);
+static_assert(alignof(std::atomic<std::int32_t>) == 4);
+static_assert(std::atomic<std::int32_t>::is_always_lock_free);
 
 std::uint32_t word(const void* storage, std::uint32_t byte_offset = 0) noexcept {
     std::uint32_t value;
@@ -30,7 +37,7 @@ void* construct_native_logical_texture_unnamed_base_00b34020(
     std::uint32_t& serial) noexcept {
     put(owner, 0, 0x00ceb130);
     put(owner, 0, 0x00d5f1f4);
-    put(owner, 4, 1);
+    ::new (static_cast<std::byte*>(owner) + 4) std::atomic<std::int32_t>(1);
     put(owner, 8, 0);
     put(owner, 0x0c, 0);
     put(owner, 0x14, 0);
