@@ -1,0 +1,413 @@
+{
+  "packet": "cc10_texture_source_full_producer",
+  "baseline": "656ba8326c08ec9f7c74db0acf525884d823b81f",
+  "pre_sync_baseline": "8e1318e8c7ec9aa88d0d12991469d817f13b1994",
+  "status": "full_normal_source_strict_Win32_three_existing_CTests_complete_COFF_static_library_verified_no_runtime",
+  "production_files": [
+    "include/bsp/native_texture_source_producer.hpp",
+    "src/native_texture_source_producer.cpp",
+    "cmake/startup.cmake"
+  ],
+  "source_interface": "cdecl live NativeTextureSourcePayload&, requested constNativeString&, borrowed producercontext&, nonmovable persistent acquired&; original ECXowner/stackname/RET4 ABI separate",
+  "original_function": {
+    "address": "00c30570",
+    "end": "00c30893",
+    "bytes": 804,
+    "instructions": 209,
+    "conditional_branches": 11,
+    "direct_call_sites": 33,
+    "distinct_direct_callees": 21,
+    "indirect_call": "00c30782 CALL EDX captured renderer profile+64",
+    "raw_window": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_texture_source_full_producer_implementation/native/00c30570_complete_producer.bin",
+      "size": 804,
+      "sha256": "c369e346815725637636b54bcab881126069338177cb184d369be5ce7b917d0f"
+    }
+  },
+  "native_accounting": {
+    "worker_ledger_writes": false,
+    "primary_only": true,
+    "already_credited_append": {
+      "start": "00c307ad",
+      "end": "00c307e1",
+      "bytes": 53
+    },
+    "future_primary_full_minus_append": 751
+  },
+  "calls": [
+    {
+      "address": "00c305b0",
+      "native": "00b66bd0",
+      "function": "00c30570",
+      "source_target": "existing genuine source provider",
+      "evidence": "reused frozen804B PE window; complete Capstone/native listing"
+    },
+    {
+      "address": "00c305c5",
+      "native": "00b6a020",
+      "function": "00c30570",
+      "source_target": "existing genuine source provider",
+      "evidence": "reused frozen804B PE window; complete Capstone/native listing"
+    },
+    {
+      "address": "00c305d3",
+      "native": "0041e870",
+      "function": "00c30570",
+      "source_target": "existing genuine source provider",
+      "evidence": "reused frozen804B PE window; complete Capstone/native listing"
+    },
+    {
+      "address": "00c305e9",
+      "native": "00b69d40",
+      "function": "00c30570",
+      "source_target": "existing genuine source provider",
+      "evidence": "reused frozen804B PE window; complete Capstone/native listing"
+    },
+    {
+      "address": "00c30608",
+      "native": "00419cc0",
+      "function": "00c30570",
+      "source_target": "native_string_pool_get_or_create_00419cc0",
+      "evidence": "reused frozen804B PE window; complete Capstone/native listing"
+    },
+    {
+      "address": "00c3060f",
+      "native": "00bd1510",
+      "function": "00c30570",
+      "source_target": "return_native_string_pool_00bd1510",
+      "evidence": "reused frozen804B PE window; complete Capstone/native listing"
+    },
+    {
+      "address": "00c30623",
+      "native": "00b67980",
+      "function": "00c30570",
+      "source_target": "existing genuine source provider",
+      "evidence": "reused frozen804B PE window; complete Capstone/native listing"
+    },
+    {
+      "address": "00c3063c",
+      "native": "00b67800",
+      "function": "00c30570",
+      "source_target": "existing genuine source provider",
+      "evidence": "reused frozen804B PE window; complete Capstone/native listing"
+    },
+    {
+      "address": "00c30650",
+      "native": "00b67700",
+      "function": "00c30570",
+      "source_target": "existing genuine source provider",
+      "evidence": "reused frozen804B PE window; complete Capstone/native listing"
+    },
+    {
+      "address": "00c30662",
+      "native": "00b68100",
+      "function": "00c30570",
+      "source_target": "existing genuine source provider",
+      "evidence": "reused frozen804B PE window; complete Capstone/native listing"
+    },
+    {
+      "address": "00c30680",
+      "native": "00b67800",
+      "function": "00c30570",
+      "source_target": "existing genuine source provider",
+      "evidence": "reused frozen804B PE window; complete Capstone/native listing"
+    },
+    {
+      "address": "00c3068f",
+      "native": "00b66270",
+      "function": "00c30570",
+      "source_target": "existing genuine source provider",
+      "evidence": "reused frozen804B PE window; complete Capstone/native listing"
+    },
+    {
+      "address": "00c306a6",
+      "native": "00b67700",
+      "function": "00c30570",
+      "source_target": "existing genuine source provider",
+      "evidence": "reused frozen804B PE window; complete Capstone/native listing"
+    },
+    {
+      "address": "00c306b9",
+      "native": "00b67800",
+      "function": "00c30570",
+      "source_target": "existing genuine source provider",
+      "evidence": "reused frozen804B PE window; complete Capstone/native listing"
+    },
+    {
+      "address": "00c306ca",
+      "native": "00b65f50",
+      "function": "00c30570",
+      "source_target": "existing genuine source provider",
+      "evidence": "reused frozen804B PE window; complete Capstone/native listing"
+    },
+    {
+      "address": "00c306db",
+      "native": "00b65f50",
+      "function": "00c30570",
+      "source_target": "existing genuine source provider",
+      "evidence": "reused frozen804B PE window; complete Capstone/native listing"
+    },
+    {
+      "address": "00c306f6",
+      "native": "00b67080",
+      "function": "00c30570",
+      "source_target": "existing genuine source provider",
+      "evidence": "reused frozen804B PE window; complete Capstone/native listing"
+    },
+    {
+      "address": "00c30704",
+      "native": "00b66420",
+      "function": "00c30570",
+      "source_target": "existing genuine source provider",
+      "evidence": "reused frozen804B PE window; complete Capstone/native listing"
+    },
+    {
+      "address": "00c30715",
+      "native": "00b66a60",
+      "function": "00c30570",
+      "source_target": "existing genuine source provider",
+      "evidence": "reused frozen804B PE window; complete Capstone/native listing"
+    },
+    {
+      "address": "00c30726",
+      "native": "00b662b0",
+      "function": "00c30570",
+      "source_target": "existing genuine source provider",
+      "evidence": "reused frozen804B PE window; complete Capstone/native listing"
+    },
+    {
+      "address": "00c3074a",
+      "native": "0041dd40",
+      "function": "00c30570",
+      "source_target": "existing genuine source provider",
+      "evidence": "reused frozen804B PE window; complete Capstone/native listing"
+    },
+    {
+      "address": "00c30761",
+      "native": "00bf7680",
+      "function": "00c30570",
+      "source_target": "std::memmove overlap-admitting copy",
+      "evidence": "reused frozen804B PE window; complete Capstone/native listing"
+    },
+    {
+      "address": "00c307a1",
+      "native": "00419cc0",
+      "function": "00c30570",
+      "source_target": "native_string_pool_get_or_create_00419cc0",
+      "evidence": "reused frozen804B PE window; complete Capstone/native listing"
+    },
+    {
+      "address": "00c307a8",
+      "native": "00bd1510",
+      "function": "00c30570",
+      "source_target": "return_native_string_pool_00bd1510",
+      "evidence": "reused frozen804B PE window; complete Capstone/native listing"
+    },
+    {
+      "address": "00c307cb",
+      "native": "00735ff0",
+      "function": "00c30570",
+      "source_target": "unchanged typed reserve via existing53B append fragment",
+      "evidence": "reused frozen804B PE window; complete Capstone/native listing"
+    },
+    {
+      "address": "00c307f4",
+      "native": "00b67190",
+      "function": "00c30570",
+      "source_target": "existing genuine source provider",
+      "evidence": "reused frozen804B PE window; complete Capstone/native listing"
+    },
+    {
+      "address": "00c30802",
+      "native": "00b66420",
+      "function": "00c30570",
+      "source_target": "existing genuine source provider",
+      "evidence": "reused frozen804B PE window; complete Capstone/native listing"
+    },
+    {
+      "address": "00c3081e",
+      "native": "00b67700",
+      "function": "00c30570",
+      "source_target": "existing genuine source provider",
+      "evidence": "reused frozen804B PE window; complete Capstone/native listing"
+    },
+    {
+      "address": "00c3082f",
+      "native": "00b67700",
+      "function": "00c30570",
+      "source_target": "existing genuine source provider",
+      "evidence": "reused frozen804B PE window; complete Capstone/native listing"
+    },
+    {
+      "address": "00c30840",
+      "native": "00b67700",
+      "function": "00c30570",
+      "source_target": "existing genuine source provider",
+      "evidence": "reused frozen804B PE window; complete Capstone/native listing"
+    },
+    {
+      "address": "00c30851",
+      "native": "00b67700",
+      "function": "00c30570",
+      "source_target": "existing genuine source provider",
+      "evidence": "reused frozen804B PE window; complete Capstone/native listing"
+    },
+    {
+      "address": "00c30861",
+      "native": "00b67700",
+      "function": "00c30570",
+      "source_target": "existing genuine source provider",
+      "evidence": "reused frozen804B PE window; complete Capstone/native listing"
+    },
+    {
+      "address": "00c30878",
+      "native": "00b669a0",
+      "function": "00c30570",
+      "source_target": "existing genuine source provider",
+      "evidence": "reused frozen804B PE window; complete Capstone/native listing"
+    }
+  ],
+  "captured_dispatch": {
+    "site": "00c30782",
+    "profile": "00d5f0a8",
+    "slot_offset": 100,
+    "observed_target": "00b319b0",
+    "source": "fresh current renderer load, captured current profile and genuine borrowed table slot; admit supported target then genuine capturedreceiver B319B0",
+    "no_unknown_profile_or_target_admission": true
+  },
+  "normal_contract": {
+    "initialized_set_before_callback": true,
+    "raw_lua_only": true,
+    "owner_backing_bytes": 1224,
+    "owner_align": "alignas(NativeLuaStateStorage), actual Win32 type4",
+    "lua_cells": 7,
+    "lua_cell_bytes": 20,
+    "one_caller_live_scratch_bytes": 8,
+    "script_literal": "shaderfx/animtextures.lua",
+    "script_bytes_with_NUL": 26,
+    "copy": "memmove currentcaptureddata/currentlength+1, overlap admitted",
+    "same_real_stringpool_domain": true,
+    "unchecked_fps": true,
+    "unchecked_value_nonnull_NUL_lifetime_caller_domain": true,
+    "null_child_append_unchanged": true,
+    "returned_unappended_credit_retained": true,
+    "no_added_owner_credit_or_rollback": true
+  },
+  "failure_domain": {
+    "caught_cpp": "metadata and rethrow only; retain unresolvedoperation",
+    "raw_fatal_nonlocal": "not a C++ failed return; may bypass catch",
+    "foreign_unknown_lua_escape": "unadmitted; no Lua API/close/discard/replay; retained backing does not restoreCframes",
+    "private_FH3_SEH": "native11state map preserved separate, no source equivalence claim",
+    "source_diagnostics": "one-shot retained phase/frame/childcache observations; metadata allocation admitted, unsupported profile/target sourceerrors"
+  },
+  "compiled": {
+    "schedule": "local/cc10_texture_source_full_producer_implementation/compiled_schedule.json",
+    "full_raw_bytes_relocations": "local/cc10_texture_source_full_producer_implementation/compiled_sections.json",
+    "new_member": {
+      "member": "native_texture_source_producer.obj",
+      "object": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_texture_source_full_producer_implementation/new/native_texture_source_producer.obj",
+        "size": 59659,
+        "sha256": "ea3053211313c1e1771314bb9e4155b27b6e9e89568359a113911c2236565352"
+      }
+    },
+    "new_library": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_texture_source_full_producer_implementation/new/bsp_core.lib",
+      "size": 71321956,
+      "sha256": "51f99eb0e840b4f03d6353b4815826ff8c4bbd48e0a1eebb3f4e239e09a6b029"
+    },
+    "new_library_members": 1780,
+    "existing_provider_members_equal": 12,
+    "entry_only_slice_bytes": 1604,
+    "complete_entry_catch_bytes": 1675,
+    "EH_unwind_bytes": 60,
+    "unique_relevant_section_bytes": 1735,
+    "new_member_code_sections": 107,
+    "new_member_unique_code_bytes": 5607,
+    "rate": "B66270 CALL; integerMOV/ADD; FSTP32 spill; MOVSS bits to rate, no extraFP/call",
+    "linked_producer_selected": false,
+    "linked_limit": "Existing application PE/map/linktlogs pinned, newproducer not selected; COFF/staticmember proof only"
+  },
+  "validation": {
+    "failed_attempt01": "C4324/C2220 align8 padding under/W4/WX; exactfailure frozen before correction, no tests/runtime",
+    "failed_archive": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_texture_source_full_producer_implementation/failed/attempt01.zip",
+      "size": 2340889,
+      "sha256": "165887b1d9f6c6c3fb276be7a51511f44fe9e4bc6c5946bf63e0e445c1366ba9"
+    },
+    "correction": "owner_cell alignas NativeLuaStateStorage actualtype4 only, no warning suppression/nativebehavior change",
+    "strict_attempt02": {
+      "utc_start": "2026-09-26T11:13:30.482391+00:00",
+      "utc_end": "2026-09-26T11:13:45.975034+00:00",
+      "command": {
+        "argv": [
+          "powershell",
+          "-NoProfile",
+          "-File",
+          "scripts/build.ps1",
+          "-Configuration",
+          "Release"
+        ],
+        "cwd": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values"
+      },
+      "exit": 0,
+      "all_three_ctests_pass": true,
+      "runtime_cases": 0,
+      "new_tracked_tests": false,
+      "inputs_and_prior_artifacts_unchanged": true
+    },
+    "source_pins": 37,
+    "toolchain_SDK_pins": 27,
+    "new_tests": 0,
+    "runtime_cases": 0
+  },
+  "evidence": {
+    "folder": "local/cc10_texture_source_full_producer_implementation",
+    "archive": "local/cc10_texture_source_producer_evidence.zip",
+    "manifest": "local/cc10_texture_source_full_producer_implementation/manifest.json",
+    "independent_Lua_review": {
+      "pins": [
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc10-render-init-post/local/cc10_texture_source_full_producer_independent_review/evidence.zip",
+          "size": 34872,
+          "sha256": "dbe246f0cbf4bbf4b8df2e2f2b15b683e8e9c61993635c99dff26409350e989b"
+        },
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc10-render-init-post/local/cc10_texture_source_full_producer_independent_review/artifact_index.json",
+          "size": 3774,
+          "sha256": "d88b7874d19fe4008dec65d5eec97c8056051a5d366cd45b405f9896b7da69ce"
+        },
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc10-render-init-post/local/cc10_texture_source_full_producer_independent_review/REVIEW.md",
+          "size": 4950,
+          "sha256": "96ea36674b9d4ecf5319d177a21c8f28846627d40fc73079a5be6fd9a704dbbd"
+        },
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc10-render-init-post/local/cc10_texture_source_full_producer_independent_review/review_inputs.json",
+          "size": 10336,
+          "sha256": "846acd5956f78f62c3df1d05e69ed179e0b285c043682a153c89d497e572c3e8"
+        }
+      ],
+      "required_correction": "std::memmove same captured destination/currentlength+1, no extra guards",
+      "remaining_concrete_issues": []
+    },
+    "frozen_design": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_texture_source_full_producer_implementation/prior/full_producer_design.zip",
+      "size": 413546,
+      "sha256": "e613b5a4a04669c1a6b63aefa1e90832dba1d946e7d0113ba80f8879a45a4d88"
+    },
+    "original_audit": "separate nested read-only804B C30570 audit; no historicalruntimecredit",
+    "actual_tool_receipts": "attempt01 preserved raw buildlaunch and attempt02 actuallaunch/completion; inspection-only inlinequoting error preserved as transcription"
+  },
+  "remaining_limits": [
+    "Original native ABI/stack frame/privateFH3/SEH",
+    "Unknown/foreign rawLua C errors and universalcleanup",
+    "Nonempty clock/sampler/runtime/linkedapplicationactivation",
+    "Platform/XLive/MSG and source0/W",
+    "PositiveFPS/non-nullchildren/childretirement safety",
+    "C30470 provenance/header/backing/currentcallback lifetimes remain explicit"
+  ],
+  "docs": [
+    "docs/NATIVE_TEXTURE_SOURCE_PRODUCER_CC10.md"
+  ]
+}
