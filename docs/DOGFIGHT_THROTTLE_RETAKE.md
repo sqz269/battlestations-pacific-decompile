@@ -75,3 +75,7 @@ left is a low-speed stall inside aim with the direct throttle wired.
   aim point well above, and the Val was near the sea.
 - The command target log names D3A Val #5.1, so the aim point's source, the approach's `vtable[0]`,
   is the first thing to check.
+- The same probe line reads `cmd_alt=661.5`, the surface climb-out's commanded altitude (packet
+  cc9_pilot_surface_climbout). So the +0.78 pitch is probably the climb-out law pulling up at low
+  height, not aim's `009F9ED0`, and the loss is a climb-out at a speed too low to climb. Read that
+  law's speed gate against the direct throttle's value on leaving aim first.
