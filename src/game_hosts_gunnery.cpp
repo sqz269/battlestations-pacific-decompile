@@ -363,6 +363,16 @@ constexpr bool kHullSegmentHealthBound = true;
 //    OFF: no ranging offset. Packet cc9_artillery_ranging_error,
 //    docs/ARTILLERY_RANGING_ERROR.md.
 constexpr bool kArtilleryRangingErrorBound = true;
+//  * kTorpedoSpreadBound: 008FFF20 adds the owner's unit+6D4h times the TARGET's
+//    forward axis (its world matrix +20h / +28h, x and z) to the 008FBB00
+//    intercept (00900280..009002BF), and after each launch 00951FC0 (called at
+//    00900951) flips it: a negative value becomes its negation, a non-negative
+//    one becomes -value - 35.0 (00CF8608), and a result above 80.0 (00D19BE8)
+//    resets to 0. From the constructor's 0 (0095CE11) one ship's launches aim
+//    0, -35, +35, -70, +70, -105, then 0 again, metres along the target's
+//    track. OFF: every tube at the bare intercept. Packet cc9_torpedo_spread,
+//    docs/TORPEDO_SPREAD.md.
+constexpr bool kTorpedoSpreadBound = false;
 //  * kKillCreditDamageGateBound: 0077CE60 writes the attribution block (the
 //    +2C4h attacker the kill credit 0091BDA0 names) only for a live victim and
 //    only when the hit's damage, 00470510 for a hull segment or 00470740 when
@@ -498,6 +508,7 @@ struct GameGunneryHost::Impl {
         float hull_height{0.0f};
         float armour{0.0f};
         float underwater_armour{0.0f};   // class vtable[24h] 009635D0, +6B4h
+        float torpedo_spread{0.0f};      // unit+6D4h, 0 from 0095CE11
         float max_health{0.0f};
         float health{0.0f};
         // The twelve category records at unit+394h and the ranges at unit+430h.
@@ -747,6 +758,7 @@ struct GameGunneryHost::Impl {
     std::map<std::size_t, std::array<float, 3>> ranging_target_by_gun;   // bot+84h
     std::map<std::size_t, std::array<float, 3>> ranging_step_by_gun;     // bot+90h
     std::map<std::size_t, bool> ranging_ship_aim_by_gun;
+    unsigned long long torpedo_spread_flips{0};
     unsigned long long ranging_records_built{0};
     unsigned long long ranging_updates{0};
     unsigned long long ranging_shot_updates{0};
@@ -4328,6 +4340,14 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 } else {
                     lead = at;
                 }
+                if constexpr (kTorpedoSpreadBound) {
+                    // 00900280..009002BF: lead.xz += unit+6D4h * target forward.xz.
+                    float tr[3], tu[3], tf[3], to[3];
+                    unit_pose(target, tr, tu, tf, to);
+                    const float spread = state.torpedo_spread;
+                    lead[0] += spread * tf[0];
+                    lead[2] += spread * tf[2];
+                }
             } else if (kGunGravityArcBound && gun.muzzle_speed > 0.0f
                        && (aa_bot_aims(gun.category, target)
                            || dp_air_ammo(g, gun.category, target) != nullptr)) {
@@ -4748,6 +4768,14 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         ++state.row.shots;
         ++summary.shots;
         if (torpedo_gun) ++summary.torpedo_gun_shots;
+        if (kTorpedoSpreadBound && gun.category == bsp::kUnitGunneryTorpedoCategory) {
+            // 00951FC0 at 00900951, right after the launch (vtable[1F0h]).
+            float& spread = state.torpedo_spread;
+            spread = spread < 0.0f ? -0.0f - spread : -spread - 35.0f;   // 00D7A208, 00CF8608
+            if (80.0f < spread) spread = 0.0f;                          // 00D19BE8
+            ++torpedo_spread_flips;
+            done("Unit::flip_torpedo_spread_00951fc0", 0x00951fc0u);
+        }
         if (kTorpedoFriendlyCrossingBound && gun.category == bsp::kUnitGunneryTorpedoCategory) {
             torpedo_friendly_diag = true;     // DIAGNOSTIC line only
             torpedo_friendly_hold_008fff20(gun, owner_unit, muzzle, right, forward,
@@ -7501,6 +7529,8 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery artillery aim points drawn=%llu bound=%d "
             "(006DF520 step 4 / 00816650, packet cc9_surface_gunnery_reference)",
             host.artillery_aim_points, kArtilleryAimPointBound ? 1 : 0);
+    host.log.notef("summary mission gunnery torpedo spread bound=%d flips=%llu (00951FC0)",
+        kTorpedoSpreadBound ? 1 : 0, host.torpedo_spread_flips);
     host.log.notef("summary mission gunnery ranging bound=%d records_built=%llu updates=%llu "
         "shot_updates=%llu growth_updates=%llu dropped=%llu mean_offset=%.1f m over %llu aim steps "
         "(00864880, 00862CD0, 00862660, 006DF520 bot+90h)",
