@@ -1,0 +1,1149 @@
+{
+  "baseline_main": "7af330c3670f46bc380f8dcb7358549442ce24ac",
+  "concrete_backing": "genuine fresh CRT34h creation through existing BBC6F0/BBC810; no whole-payload initialization",
+  "direct_storage_contract": "exclusive four-byte-aligned backing for a new constructed lifetime; no active count users or canonical companion",
+  "documentation": "docs/NATIVE_PROCEDURAL_RESOURCE_ATOMIC_LIFETIME_CC10.md",
+  "evidence": {
+    "archive": "local/procedural_resource_atomic_lifetime_cc10/evidence.zip",
+    "artifact_index": "local/procedural_resource_atomic_lifetime_cc10/artifact_index.json",
+    "directory": "local/procedural_resource_atomic_lifetime_cc10",
+    "freeze_receipt": "local/procedural_resource_atomic_lifetime_cc10/freeze_receipt.json"
+  },
+  "existing_profiles": {
+    "D64478": [
+      "BD30E0",
+      "BBC6D0"
+    ],
+    "D644B4": [
+      "BD30E0",
+      "BBC7F0"
+    ]
+  },
+  "failure_validation": "no injected failures; metadata construction/bind disposition remains explicit caller source contract, separate from native creator EH",
+  "fragment": {
+    "address": "00B19988",
+    "bytes": 7,
+    "end_exclusive": "00B1998F",
+    "end_inclusive": "00B1998E",
+    "original_instruction": "MOV DWORD PTR [EAX+4],1",
+    "source_effect": "placement construct the single std::atomic<int32_t>(1) at original count initialization"
+  },
+  "ghidra_mutations": 0,
+  "header": "include/bsp/native_resource_cache_leaves.hpp",
+  "header_sha256": "282ea88091763f76f1730be711d37ac42e51f69e522236dec0f63c054936ecf2",
+  "limits": [
+    "source C++ lifetime correction, not binary/private-register ABI replacement or native/game validation",
+    "fixture starts at genuine creators; no factory-table/registry-lookup end-to-end activation claim",
+    "general nonempty child domains and C30210 family not newly admitted",
+    "no source metadata failure injection, creator allocation failure injection or native FH3/SEH/hardware fault execution",
+    "COFF/PE identity excludes unselected duplicate COMDATs and is not a recursive CRT graph proof",
+    "historical direct-byte fixture does not prove aligned C++ atomic-object lifetime and is preserved unchanged"
+  ],
+  "native_evidence": {
+    "bytes": 53204,
+    "path": "local/procedural_factory_resource_readiness_cc10/native_evidence.json",
+    "sha256": "007417a424d299ef3396965e71309886e315e9cb186cc30f746f51ac4c1f4f84"
+  },
+  "native_ranges": [
+    {
+      "address": "00BBC6F0",
+      "binary": {
+        "bytes": 80,
+        "path": "local/procedural_factory_resource_readiness_cc10/bytes_00bbc6f0.bin",
+        "sha256": "310c1fb7dad8d55e21d7f1b328a82539bf058e2c355451fe447951ab14510cfd"
+      },
+      "bytes": 80,
+      "command": {
+        "bytes": 444,
+        "path": "local/procedural_factory_resource_readiness_cc10/live_00bbc6f0.command.json",
+        "sha256": "6f85de9a27b78c2c0889118faee4cd9532a606cff2965f7fdf0c6937472e4b77"
+      },
+      "end_exclusive": "00BBC740",
+      "end_inclusive": "00BBC73F",
+      "last_instruction": "00BBC73F",
+      "last_instruction_length": 1,
+      "listing": {
+        "bytes": 1450,
+        "path": "local/procedural_factory_resource_readiness_cc10/asm_00bbc6f0.txt",
+        "sha256": "f3d048bde7daff6ec850c0d1641af44e1c4ee0e030c46e0ca39509da7d830875"
+      },
+      "live": {
+        "bytes": 385,
+        "path": "local/procedural_factory_resource_readiness_cc10/live_00bbc6f0.txt",
+        "sha256": "ba9c756322d31d4d2b1e039b3a16a7c213473dd3c9e4284d0ad3a3edd0749717"
+      },
+      "live_equals_PE": true,
+      "live_exact_body_boundary": true,
+      "prototype": {
+        "bytes": 391,
+        "path": "local/procedural_factory_resource_readiness_cc10/proto_00bbc6f0.txt",
+        "sha256": "d997c5a2912918e94c0b5f3854f6e11d19d51bc139c4edc4545d00425792d4ed"
+      },
+      "prototype_command": {
+        "bytes": 443,
+        "path": "local/procedural_factory_resource_readiness_cc10/proto_00bbc6f0.command.json",
+        "sha256": "9021ee1849aed65d0ce1e545105eb054002b03d54a98e3add2998ba25a148b9b"
+      },
+      "role": "complete_normal",
+      "transfers": [
+        {
+          "address": "00BBC709",
+          "bytes": "e80da10300",
+          "text": "call 0xbf681b"
+        },
+        {
+          "address": "00BBC723",
+          "bytes": "e8483d0700",
+          "text": "call 0xc30470"
+        }
+      ]
+    },
+    {
+      "address": "00BBC810",
+      "binary": {
+        "bytes": 80,
+        "path": "local/procedural_factory_resource_readiness_cc10/bytes_00bbc810.bin",
+        "sha256": "4a25637fc7034fdce68be05e3ff0478dc5b433e444c8a15dadcc94df49613455"
+      },
+      "bytes": 80,
+      "command": {
+        "bytes": 444,
+        "path": "local/procedural_factory_resource_readiness_cc10/live_00bbc810.command.json",
+        "sha256": "7e59fe95bfe795b0ada60524ec9f01b2a6676f7ab516c71d10030de2a6323242"
+      },
+      "end_exclusive": "00BBC860",
+      "end_inclusive": "00BBC85F",
+      "last_instruction": "00BBC85F",
+      "last_instruction_length": 1,
+      "listing": {
+        "bytes": 1450,
+        "path": "local/procedural_factory_resource_readiness_cc10/asm_00bbc810.txt",
+        "sha256": "61d25c14b6970cd1485c0317c2821bd766dad707547a391d2af1a63099487883"
+      },
+      "live": {
+        "bytes": 385,
+        "path": "local/procedural_factory_resource_readiness_cc10/live_00bbc810.txt",
+        "sha256": "a21980fdde4847cb0492f467f54e45e291b02933045fea81ca24c09b3042b7c9"
+      },
+      "live_equals_PE": true,
+      "live_exact_body_boundary": true,
+      "prototype": {
+        "bytes": 394,
+        "path": "local/procedural_factory_resource_readiness_cc10/proto_00bbc810.txt",
+        "sha256": "fd45df562bc69960ad4f83a48bdf290c0b30c4ff8ccd466772d64a00e27f23d6"
+      },
+      "prototype_command": {
+        "bytes": 443,
+        "path": "local/procedural_factory_resource_readiness_cc10/proto_00bbc810.command.json",
+        "sha256": "865457182a19a919d225e51b48d6d924f4ba7ef9664898f8c8b29c42b15edd52"
+      },
+      "role": "complete_normal",
+      "transfers": [
+        {
+          "address": "00BBC829",
+          "bytes": "e8ed9f0300",
+          "text": "call 0xbf681b"
+        },
+        {
+          "address": "00BBC843",
+          "bytes": "e8283c0700",
+          "text": "call 0xc30470"
+        }
+      ]
+    },
+    {
+      "address": "00C30470",
+      "binary": {
+        "bytes": 35,
+        "path": "local/procedural_factory_resource_readiness_cc10/bytes_00c30470.bin",
+        "sha256": "29ebfb40b0ac77a7989972ffa487f27a7311848508fc89c18b583e896469c4c0"
+      },
+      "bytes": 35,
+      "command": {
+        "bytes": 444,
+        "path": "local/procedural_factory_resource_readiness_cc10/live_00c30470.command.json",
+        "sha256": "233e200dab8a1edc6ad0e4509dd8d11e9016c9c0afc47e18318bca86b1446c3a"
+      },
+      "end_exclusive": "00C30493",
+      "end_inclusive": "00C30492",
+      "last_instruction": "00C30492",
+      "last_instruction_length": 1,
+      "listing": {
+        "bytes": 806,
+        "path": "local/procedural_factory_resource_readiness_cc10/asm_00c30470.txt",
+        "sha256": "42f4634d8b078bd2c886076939f3f28f1479631a64403b542397bbc04456f81b"
+      },
+      "live": {
+        "bytes": 179,
+        "path": "local/procedural_factory_resource_readiness_cc10/live_00c30470.txt",
+        "sha256": "7fe0c6610e1c2078ec1732aea3ff3536f9f28e3d3babde225a3f358b4b331c0d"
+      },
+      "live_equals_PE": true,
+      "live_exact_body_boundary": true,
+      "prototype": {
+        "bytes": 376,
+        "path": "local/procedural_factory_resource_readiness_cc10/proto_00c30470.txt",
+        "sha256": "e864f26d91666b186dfc2dbdedd989f898e3d9176e3e63d6bd019d25f87c4cf5"
+      },
+      "prototype_command": {
+        "bytes": 443,
+        "path": "local/procedural_factory_resource_readiness_cc10/proto_00c30470.command.json",
+        "sha256": "cecdc36d5ebabe65d3a9789fe345dad7d1b585e72df1327aafe1bcde96c33d7b"
+      },
+      "role": "complete_normal",
+      "transfers": [
+        {
+          "address": "00C30473",
+          "bytes": "e80895eeff",
+          "text": "call 0xb19980"
+        }
+      ]
+    },
+    {
+      "address": "00B19980",
+      "binary": {
+        "bytes": 22,
+        "path": "local/procedural_factory_resource_readiness_cc10/bytes_00b19980.bin",
+        "sha256": "b26833e11b0634915df7b20def4a02519ef23fed4c8cd5afd3d127926d230b40"
+      },
+      "bytes": 22,
+      "command": {
+        "bytes": 444,
+        "path": "local/procedural_factory_resource_readiness_cc10/live_00b19980.command.json",
+        "sha256": "9120b159a9c854a62643301798100a8593ed9378d209efba8b787430440a031a"
+      },
+      "end_exclusive": "00B19996",
+      "end_inclusive": "00B19995",
+      "last_instruction": "00B19995",
+      "last_instruction_length": 1,
+      "listing": {
+        "bytes": 315,
+        "path": "local/procedural_factory_resource_readiness_cc10/asm_00b19980.txt",
+        "sha256": "b98ca402603847d42fd738b238336ccbd72e640594ea0a063bd08f33831da867"
+      },
+      "live": {
+        "bytes": 114,
+        "path": "local/procedural_factory_resource_readiness_cc10/live_00b19980.txt",
+        "sha256": "607a4d1b80db21f27ce83edd6c27256ede9084f7c21e522e2a12cd7614bdbfe3"
+      },
+      "live_equals_PE": true,
+      "live_exact_body_boundary": true,
+      "prototype": {
+        "bytes": 393,
+        "path": "local/procedural_factory_resource_readiness_cc10/proto_00b19980.txt",
+        "sha256": "2cda8181aad7002c586ccbefa28ff2cdf7001b78046954ef43063c4b41ae678c"
+      },
+      "prototype_command": {
+        "bytes": 443,
+        "path": "local/procedural_factory_resource_readiness_cc10/proto_00b19980.command.json",
+        "sha256": "95db0f3999780bcbaaffe941d95042c10fcb73b8a131d4c80d5c8c1a9d72f83a"
+      },
+      "role": "complete_normal",
+      "transfers": []
+    },
+    {
+      "address": "00BBC6D0",
+      "binary": {
+        "bytes": 30,
+        "path": "local/procedural_factory_resource_readiness_cc10/bytes_00bbc6d0.bin",
+        "sha256": "7e255976b8de2c032cbd5fe24d74ba9862c012453cd9dee6a473c09b6e9ec5c7"
+      },
+      "bytes": 30,
+      "command": {
+        "bytes": 444,
+        "path": "local/procedural_factory_resource_readiness_cc10/live_00bbc6d0.command.json",
+        "sha256": "a48c173437b6ceb392fdeee743fb65eb724e4a19ef4ef70492029424a3dd32b1"
+      },
+      "end_exclusive": "00BBC6EE",
+      "end_inclusive": "00BBC6ED",
+      "last_instruction": "00BBC6EB",
+      "last_instruction_length": 3,
+      "listing": {
+        "bytes": 598,
+        "path": "local/procedural_factory_resource_readiness_cc10/asm_00bbc6d0.txt",
+        "sha256": "463fe27bfb3cc8f3983e3eb6f877e004d574ba1de5639a10083c0b91e8b0c339"
+      },
+      "live": {
+        "bytes": 146,
+        "path": "local/procedural_factory_resource_readiness_cc10/live_00bbc6d0.txt",
+        "sha256": "30d499afff893854f3e8133c543f84575007ec9b4a7962fb501f0d877d34445f"
+      },
+      "live_equals_PE": true,
+      "live_exact_body_boundary": true,
+      "prototype": {
+        "bytes": 409,
+        "path": "local/procedural_factory_resource_readiness_cc10/proto_00bbc6d0.txt",
+        "sha256": "5e330c270ed447fe27cf3ec9a1404e7623ec20a46ebe743573eff4624260367c"
+      },
+      "prototype_command": {
+        "bytes": 443,
+        "path": "local/procedural_factory_resource_readiness_cc10/proto_00bbc6d0.command.json",
+        "sha256": "e71ad8e0341bca4dbb148438eefbd936246412862cead3d5f7d94bace8137955"
+      },
+      "role": "complete_normal",
+      "transfers": [
+        {
+          "address": "00BBC6D3",
+          "bytes": "e8c83d0700",
+          "text": "call 0xc304a0"
+        },
+        {
+          "address": "00BBC6E0",
+          "bytes": "e8c79e0300",
+          "text": "call 0xbf65ac"
+        }
+      ]
+    },
+    {
+      "address": "00BBC7F0",
+      "binary": {
+        "bytes": 30,
+        "path": "local/procedural_factory_resource_readiness_cc10/bytes_00bbc7f0.bin",
+        "sha256": "73d21946bb0bc7e392a7b10e0dc7193b88ed39dcf1944b1f60ff52f915b8d62f"
+      },
+      "bytes": 30,
+      "command": {
+        "bytes": 444,
+        "path": "local/procedural_factory_resource_readiness_cc10/live_00bbc7f0.command.json",
+        "sha256": "695b16523b2bc193c660e0562e4f3a89cfbf3c9189221f84ef553b980efbfdd4"
+      },
+      "end_exclusive": "00BBC80E",
+      "end_inclusive": "00BBC80D",
+      "last_instruction": "00BBC80B",
+      "last_instruction_length": 3,
+      "listing": {
+        "bytes": 598,
+        "path": "local/procedural_factory_resource_readiness_cc10/asm_00bbc7f0.txt",
+        "sha256": "8bf83a264a3f54613f28633025fd949f3186f22de24bf5c87196e9af3b5138ac"
+      },
+      "live": {
+        "bytes": 146,
+        "path": "local/procedural_factory_resource_readiness_cc10/live_00bbc7f0.txt",
+        "sha256": "4b15d1c7bc1c9a070f8679a0eae556a675a6142c38bbbe3018be6113790abd75"
+      },
+      "live_equals_PE": true,
+      "live_exact_body_boundary": true,
+      "prototype": {
+        "bytes": 412,
+        "path": "local/procedural_factory_resource_readiness_cc10/proto_00bbc7f0.txt",
+        "sha256": "91c33a4a25f1adba4d931e4e727e79c45b6ff55aafd95f0f2ecf8977a06b25b0"
+      },
+      "prototype_command": {
+        "bytes": 443,
+        "path": "local/procedural_factory_resource_readiness_cc10/proto_00bbc7f0.command.json",
+        "sha256": "17ffeaf58d684c45f273a0f10a776bb09ab2a15f6321800f8023e47d69fff767"
+      },
+      "role": "complete_normal",
+      "transfers": [
+        {
+          "address": "00BBC7F3",
+          "bytes": "e8a83c0700",
+          "text": "call 0xc304a0"
+        },
+        {
+          "address": "00BBC800",
+          "bytes": "e8a79d0300",
+          "text": "call 0xbf65ac"
+        }
+      ]
+    },
+    {
+      "address": "00C304A0",
+      "binary": {
+        "bytes": 172,
+        "path": "local/procedural_factory_resource_readiness_cc10/bytes_00c304a0.bin",
+        "sha256": "0a6910b2f3d70c95dc9afd4e0dfef9fc9c55cbe201e8cb68469e0afc86c735f1"
+      },
+      "bytes": 172,
+      "command": {
+        "bytes": 445,
+        "path": "local/procedural_factory_resource_readiness_cc10/live_00c304a0.command.json",
+        "sha256": "887b85c889967615301e72f28642a514c3425ebca47982754173f1e4d4ad763d"
+      },
+      "end_exclusive": "00C3054C",
+      "end_inclusive": "00C3054B",
+      "last_instruction": "00C3054B",
+      "last_instruction_length": 1,
+      "listing": {
+        "bytes": 3368,
+        "path": "local/procedural_factory_resource_readiness_cc10/asm_00c304a0.txt",
+        "sha256": "2f9db3f90c1f43b3aa50be7b0f7091dac599f60c8cb540ab61898ad26201f377"
+      },
+      "live": {
+        "bytes": 831,
+        "path": "local/procedural_factory_resource_readiness_cc10/live_00c304a0.txt",
+        "sha256": "f3767f2bcaf03f079e1b10ab39fdd6e347aa66f93abadc839a39a839b83512a1"
+      },
+      "live_equals_PE": true,
+      "live_exact_body_boundary": true,
+      "prototype": {
+        "bytes": 400,
+        "path": "local/procedural_factory_resource_readiness_cc10/proto_00c304a0.txt",
+        "sha256": "f9601fdec2650cc8bad6c9f7e9f8500c369bbe0aa8ebbd4a71704a9e2c2f0c58"
+      },
+      "prototype_command": {
+        "bytes": 443,
+        "path": "local/procedural_factory_resource_readiness_cc10/proto_00c304a0.command.json",
+        "sha256": "35a83be7f6f4961236499c6686ad74041b5cfec960d14a694d951293c98f57d8"
+      },
+      "role": "complete_normal",
+      "transfers": [
+        {
+          "address": "00C304EE",
+          "bytes": "ffd3",
+          "text": "call ebx"
+        },
+        {
+          "address": "00C304FA",
+          "bytes": "ffd2",
+          "text": "call edx"
+        },
+        {
+          "address": "00C3051C",
+          "bytes": "e86f6eb0ff",
+          "text": "call 0x737390"
+        },
+        {
+          "address": "00C30524",
+          "bytes": "e86064fcff",
+          "text": "call 0xbf6989"
+        },
+        {
+          "address": "00C30536",
+          "bytes": "e81592eeff",
+          "text": "call 0xb19750"
+        }
+      ]
+    },
+    {
+      "address": "00737390",
+      "binary": {
+        "bytes": 80,
+        "path": "local/procedural_factory_resource_readiness_cc10/bytes_00737390.bin",
+        "sha256": "49fb1569fb5ef002c8f3b8f0e2d79d5247ae2e032365b7ad52e55af27316e4c5"
+      },
+      "bytes": 80,
+      "command": {
+        "bytes": 444,
+        "path": "local/procedural_factory_resource_readiness_cc10/live_00737390.command.json",
+        "sha256": "3ee99c8b32aabf1f6169454033e52c5f12fb93ca0ce38cccbf0e4fb532214acd"
+      },
+      "end_exclusive": "007373E0",
+      "end_inclusive": "007373DF",
+      "last_instruction": "007373DD",
+      "last_instruction_length": 3,
+      "listing": {
+        "bytes": 1827,
+        "path": "local/procedural_factory_resource_readiness_cc10/asm_00737390.txt",
+        "sha256": "07bdbcdc715c8daeffeadcdf4fdda2a799b6a9586a9e09e3e648629f1cfd43a6"
+      },
+      "live": {
+        "bytes": 385,
+        "path": "local/procedural_factory_resource_readiness_cc10/live_00737390.txt",
+        "sha256": "b9923cc642d11073a5f268cb09167b4afc08802a8822db7c3a778cb9f07f7cfc"
+      },
+      "live_equals_PE": true,
+      "live_exact_body_boundary": true,
+      "prototype": {
+        "bytes": 395,
+        "path": "local/procedural_factory_resource_readiness_cc10/proto_00737390.txt",
+        "sha256": "40f42053511955457ad84a3462e3790e207bc6cc461c58dd029d98b2eec57d43"
+      },
+      "prototype_command": {
+        "bytes": 443,
+        "path": "local/procedural_factory_resource_readiness_cc10/proto_00737390.command.json",
+        "sha256": "ba212af880fa9ee017a3aa462aad015dd2bcff08e621fa0671d099acaeb13aca"
+      },
+      "role": "complete_normal",
+      "transfers": [
+        {
+          "address": "0073739E",
+          "bytes": "e84decffff",
+          "text": "call 0x735ff0"
+        }
+      ]
+    },
+    {
+      "address": "00B19750",
+      "binary": {
+        "bytes": 11,
+        "path": "local/procedural_factory_resource_readiness_cc10/bytes_00b19750.bin",
+        "sha256": "3361a36c37aa721fe2b55389623448b46a05cb63f00dd24ee205541a17f34ee7"
+      },
+      "bytes": 11,
+      "command": {
+        "bytes": 443,
+        "path": "local/procedural_factory_resource_readiness_cc10/live_00b19750.command.json",
+        "sha256": "72625165bb7c89b19ceaf13f69fce6b1388973db047bd5f14ba252393466843d"
+      },
+      "end_exclusive": "00B1975B",
+      "end_inclusive": "00B1975A",
+      "last_instruction": "00B19756",
+      "last_instruction_length": 5,
+      "listing": {
+        "bytes": 127,
+        "path": "local/procedural_factory_resource_readiness_cc10/asm_00b19750.txt",
+        "sha256": "3d6508c93f74f938b65c226c30c18db8a1553da2347d3019d1b10a232d2f0e95"
+      },
+      "live": {
+        "bytes": 57,
+        "path": "local/procedural_factory_resource_readiness_cc10/live_00b19750.txt",
+        "sha256": "14b0f3e81df88f972d0e2f7ae8741ce78d25fb9a6bb572546768db7f234511f7"
+      },
+      "live_equals_PE": true,
+      "live_exact_body_boundary": true,
+      "prototype": {
+        "bytes": 411,
+        "path": "local/procedural_factory_resource_readiness_cc10/proto_00b19750.txt",
+        "sha256": "bbe6381cacf26dca42a492abd69ba3a2142e92bd4bca191b210c2b4e2070951f"
+      },
+      "prototype_command": {
+        "bytes": 443,
+        "path": "local/procedural_factory_resource_readiness_cc10/proto_00b19750.command.json",
+        "sha256": "b271ea5c443719ba885f0268d9bfbe39a3e1aacd3809afa3b98be6beda4befd9"
+      },
+      "role": "complete_normal",
+      "transfers": [
+        {
+          "address": "00B19756",
+          "bytes": "e995990b00",
+          "text": "jmp 0xbd30f0"
+        }
+      ]
+    },
+    {
+      "address": "00BD30E0",
+      "binary": {
+        "bytes": 14,
+        "path": "local/procedural_factory_resource_readiness_cc10/bytes_00bd30e0.bin",
+        "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01"
+      },
+      "bytes": 14,
+      "command": {
+        "bytes": 443,
+        "path": "local/procedural_factory_resource_readiness_cc10/live_00bd30e0.command.json",
+        "sha256": "f01f63e76f07f966dfdc50378531c524c26085ea7f5b503ca1496610e8915597"
+      },
+      "end_exclusive": "00BD30EE",
+      "end_inclusive": "00BD30ED",
+      "last_instruction": "00BD30ED",
+      "last_instruction_length": 1,
+      "listing": {
+        "bytes": 395,
+        "path": "local/procedural_factory_resource_readiness_cc10/asm_00bd30e0.txt",
+        "sha256": "59968ff5c130afe643924690358ea1867e537c0ee5b9a99d59d4b6788737ce37"
+      },
+      "live": {
+        "bytes": 69,
+        "path": "local/procedural_factory_resource_readiness_cc10/live_00bd30e0.txt",
+        "sha256": "1d70d9d639234f376753c69e736b613bbef917a14ca52c5d82dc737141237953"
+      },
+      "live_equals_PE": true,
+      "live_exact_body_boundary": true,
+      "prototype": {
+        "bytes": 424,
+        "path": "local/procedural_factory_resource_readiness_cc10/proto_00bd30e0.txt",
+        "sha256": "7d79acea58d369b40ab09fa6a5b9bf1572f9687a706194d394658a62fd087063"
+      },
+      "prototype_command": {
+        "bytes": 443,
+        "path": "local/procedural_factory_resource_readiness_cc10/proto_00bd30e0.command.json",
+        "sha256": "f85af1ea447155e77619c346939140160d7b3af1efe86d909191d40334b2cd7e"
+      },
+      "role": "complete_normal",
+      "transfers": [
+        {
+          "address": "00BD30EB",
+          "bytes": "ffd2",
+          "text": "call edx"
+        }
+      ]
+    },
+    {
+      "address": "00BD30F0",
+      "binary": {
+        "bytes": 7,
+        "path": "local/procedural_factory_resource_readiness_cc10/bytes_00bd30f0.bin",
+        "sha256": "8daac2aa1112cc210d755933c76c5b27923094750190fdb37502dbc648eb7d16"
+      },
+      "bytes": 7,
+      "command": {
+        "bytes": 442,
+        "path": "local/procedural_factory_resource_readiness_cc10/live_00bd30f0.command.json",
+        "sha256": "e079f9864d909bd94bc899c20f725e20618f861d773a95d41a63dc56851fc74d"
+      },
+      "end_exclusive": "00BD30F7",
+      "end_inclusive": "00BD30F6",
+      "last_instruction": "00BD30F6",
+      "last_instruction_length": 1,
+      "listing": {
+        "bytes": 119,
+        "path": "local/procedural_factory_resource_readiness_cc10/asm_00bd30f0.txt",
+        "sha256": "f64561bd13a6ca6daa0a12edc03e6e755794bd1be652a854f39733d9771d5a84"
+      },
+      "live": {
+        "bytes": 41,
+        "path": "local/procedural_factory_resource_readiness_cc10/live_00bd30f0.txt",
+        "sha256": "d149296eaa70886958deab82ed0f56710a49d0fd05255bf152da01b4bb23c889"
+      },
+      "live_equals_PE": true,
+      "live_exact_body_boundary": true,
+      "prototype": {
+        "bytes": 385,
+        "path": "local/procedural_factory_resource_readiness_cc10/proto_00bd30f0.txt",
+        "sha256": "939320456f8e0fec3f48f4707e19402be63c41103ed42d1bced9672be81162ca"
+      },
+      "prototype_command": {
+        "bytes": 443,
+        "path": "local/procedural_factory_resource_readiness_cc10/proto_00bd30f0.command.json",
+        "sha256": "c973a9f48459ebdda0d709ea5ecf1f14f6870464387acf711f3d26d79a084921"
+      },
+      "role": "complete_normal",
+      "transfers": []
+    },
+    {
+      "address": "004DDB20",
+      "binary": {
+        "bytes": 21,
+        "path": "local/procedural_factory_resource_readiness_cc10/bytes_004ddb20.bin",
+        "sha256": "984d24bc0617becd91f8537f65986b285467e90f1695f65378b419b70861961c"
+      },
+      "bytes": 21,
+      "command": {
+        "bytes": 444,
+        "path": "local/procedural_factory_resource_readiness_cc10/live_004ddb20.command.json",
+        "sha256": "4830935c3e4c4f73078d680cfb4906f11c7920acced0507371cbb2f6d06001dc"
+      },
+      "end_exclusive": "004DDB35",
+      "end_inclusive": "004DDB34",
+      "last_instruction": "004DDB32",
+      "last_instruction_length": 3,
+      "listing": {
+        "bytes": 455,
+        "path": "local/procedural_factory_resource_readiness_cc10/asm_004ddb20.txt",
+        "sha256": "4335fa86fe638e00309a4d21003c864e0f5e5f0bf858d17a49c737149334aecc"
+      },
+      "live": {
+        "bytes": 110,
+        "path": "local/procedural_factory_resource_readiness_cc10/live_004ddb20.txt",
+        "sha256": "63db750dce2212d53c3e2b8219b499f462f8127d309a53e21207d42a5e252031"
+      },
+      "live_equals_PE": true,
+      "live_exact_body_boundary": true,
+      "prototype": {
+        "bytes": 390,
+        "path": "local/procedural_factory_resource_readiness_cc10/proto_004ddb20.txt",
+        "sha256": "27cdffe5cc332356558e9a1897ce26e0e5e892de12edbba4c3f88d2b1d313c19"
+      },
+      "prototype_command": {
+        "bytes": 443,
+        "path": "local/procedural_factory_resource_readiness_cc10/proto_004ddb20.command.json",
+        "sha256": "1a5348cf9d721c23c749755497f58efe122703376c2406b911a89b16e56b0a0e"
+      },
+      "role": "complete_normal",
+      "transfers": [
+        {
+          "address": "004DDB29",
+          "bytes": "ff151c22ce00",
+          "text": "call dword ptr [0xce221c]"
+        }
+      ]
+    },
+    {
+      "address": "004DDB40",
+      "binary": {
+        "bytes": 31,
+        "path": "local/procedural_factory_resource_readiness_cc10/bytes_004ddb40.bin",
+        "sha256": "1071027371a9ce2f817139cbfde3b2eb3ef9061595d7348715c459167dea677f"
+      },
+      "bytes": 31,
+      "command": {
+        "bytes": 444,
+        "path": "local/procedural_factory_resource_readiness_cc10/live_004ddb40.command.json",
+        "sha256": "2e5dd75674a8125abe4d541de79275e153d9ad5b9af9083c91929cfcdcea05b9"
+      },
+      "end_exclusive": "004DDB5F",
+      "end_inclusive": "004DDB5E",
+      "last_instruction": "004DDB5C",
+      "last_instruction_length": 3,
+      "listing": {
+        "bytes": 751,
+        "path": "local/procedural_factory_resource_readiness_cc10/asm_004ddb40.txt",
+        "sha256": "5807f33a481f880da159eff521e5edc80d1170ad97dc63d519040622593c7526"
+      },
+      "live": {
+        "bytes": 150,
+        "path": "local/procedural_factory_resource_readiness_cc10/live_004ddb40.txt",
+        "sha256": "4373a8e4500def0aa19bba2e0f45954fd27c3ec98548044ab9e3c12e188f2d92"
+      },
+      "live_equals_PE": true,
+      "live_exact_body_boundary": true,
+      "prototype": {
+        "bytes": 438,
+        "path": "local/procedural_factory_resource_readiness_cc10/proto_004ddb40.txt",
+        "sha256": "9ce34823b5d163303560e49a2d557e88bfa6b37d94c0423ad9af50fcc33ef71f"
+      },
+      "prototype_command": {
+        "bytes": 443,
+        "path": "local/procedural_factory_resource_readiness_cc10/proto_004ddb40.command.json",
+        "sha256": "4deb666e71e164c07b61ecc6ee042b55c33f8d1a3f2ceb02108142e4b94edd83"
+      },
+      "role": "complete_normal",
+      "transfers": [
+        {
+          "address": "004DDB49",
+          "bytes": "ff152022ce00",
+          "text": "call dword ptr [0xce2220]"
+        },
+        {
+          "address": "004DDB59",
+          "bytes": "ffd0",
+          "text": "call eax"
+        }
+      ]
+    }
+  ],
+  "nearest_constructor_evidence": [
+    {
+      "address": "00C30210",
+      "binary": {
+        "bytes": 18,
+        "path": "local/procedural_factory_resource_readiness_cc10/producer_bytes_00c30210.bin",
+        "sha256": "6e3f50bd05a6bb7bf93624e8bbb36dcb317d3ab2db9039875a4195d5e090c94c"
+      },
+      "bytes": 18,
+      "end_inclusive": "00C30221",
+      "listing": {
+        "bytes": 386,
+        "path": "local/procedural_factory_resource_readiness_cc10/producer_asm_00c30210.txt",
+        "sha256": "5cc35a503d92f5bed6f2d3672850fcf6b4e99ce33253951a6fb7950ebefa9145"
+      },
+      "live": {
+        "bytes": 98,
+        "path": "local/procedural_factory_resource_readiness_cc10/producer_live_00c30210.txt",
+        "sha256": "44b243e8f0e14cf888c110acaf6d3bae5894451febcf6885f1bb0411440e5081"
+      },
+      "live_command": {
+        "bytes": 452,
+        "path": "local/procedural_factory_resource_readiness_cc10/producer_live_00c30210.command.json",
+        "sha256": "22ee70857f70253220ae912e946b9697084cde6a64fefdbd796c50011b97da4b"
+      },
+      "live_equals_PE": true,
+      "live_exact_body_boundary": true,
+      "prototype": {
+        "bytes": 330,
+        "path": "local/procedural_factory_resource_readiness_cc10/producer_proto_00c30210.txt",
+        "sha256": "399485a86809d99b516174639bfd072ac6e7f7d29ae81c47c0b351c65001f048"
+      },
+      "prototype_command": {
+        "bytes": 452,
+        "path": "local/procedural_factory_resource_readiness_cc10/producer_proto_00c30210.command.json",
+        "sha256": "45b1619fc78e34b5872699eb9b084ed3f78b0a38a057490702993a38760a52a6"
+      },
+      "transfers": [
+        {
+          "address": "00C30213",
+          "text": "call 0xb19980"
+        }
+      ]
+    },
+    {
+      "address": "00BBC670",
+      "binary": {
+        "bytes": 18,
+        "path": "local/procedural_factory_resource_readiness_cc10/producer_bytes_00bbc670.bin",
+        "sha256": "69927bb20bf39a5a02f06eeefdd0932f89bdeea8a6f102d67d452cd1ef3947e6"
+      },
+      "bytes": 18,
+      "end_inclusive": "00BBC681",
+      "listing": {
+        "bytes": 386,
+        "path": "local/procedural_factory_resource_readiness_cc10/producer_asm_00bbc670.txt",
+        "sha256": "cbf56e1cfeb18599f8a6ddeb29681542ff0ab4a311f1620c055395cd9aa32f6d"
+      },
+      "live": {
+        "bytes": 98,
+        "path": "local/procedural_factory_resource_readiness_cc10/producer_live_00bbc670.txt",
+        "sha256": "68c10a386322ee449670d9afe6f47da4b55f7579e10d4cc68fe1cef579eca703"
+      },
+      "live_command": {
+        "bytes": 452,
+        "path": "local/procedural_factory_resource_readiness_cc10/producer_live_00bbc670.command.json",
+        "sha256": "727a999ee9e0fb99e849d0d3780aa35a9b5caa54769d3964aa5d5e6f91ec981c"
+      },
+      "live_equals_PE": true,
+      "live_exact_body_boundary": true,
+      "prototype": {
+        "bytes": 330,
+        "path": "local/procedural_factory_resource_readiness_cc10/producer_proto_00bbc670.txt",
+        "sha256": "c31e4ff866db4ed1fa9f76a80bde24283799905859019afca017dcc1adeecf4d"
+      },
+      "prototype_command": {
+        "bytes": 452,
+        "path": "local/procedural_factory_resource_readiness_cc10/producer_proto_00bbc670.command.json",
+        "sha256": "97fa9820f7a53258671918f5a886ecf5a3c67b36544de42a0ebbdcf87c0d5313"
+      },
+      "transfers": [
+        {
+          "address": "00BBC673",
+          "text": "call 0xc30470"
+        }
+      ]
+    },
+    {
+      "address": "00BBC7C0",
+      "binary": {
+        "bytes": 18,
+        "path": "local/procedural_factory_resource_readiness_cc10/producer_bytes_00bbc7c0.bin",
+        "sha256": "35c1ac9341598d95c02fa35acd4b1cf04bf40943d1348d47f876d875291a2a34"
+      },
+      "bytes": 18,
+      "end_inclusive": "00BBC7D1",
+      "listing": {
+        "bytes": 386,
+        "path": "local/procedural_factory_resource_readiness_cc10/producer_asm_00bbc7c0.txt",
+        "sha256": "7d2be702600a017f9ca92e792643f99d11f53cb9249dbcb8439345bb7ffab5cb"
+      },
+      "live": {
+        "bytes": 98,
+        "path": "local/procedural_factory_resource_readiness_cc10/producer_live_00bbc7c0.txt",
+        "sha256": "9db34b074fb0613055fb712d8853f9fd133e6323187b4af869d65265161ab436"
+      },
+      "live_command": {
+        "bytes": 452,
+        "path": "local/procedural_factory_resource_readiness_cc10/producer_live_00bbc7c0.command.json",
+        "sha256": "b0c14d86475d6884e830b1e5a8e8deb0ecd2cfd38f50bb4fd8f1aa565be63ec8"
+      },
+      "live_equals_PE": true,
+      "live_exact_body_boundary": true,
+      "prototype": {
+        "bytes": 330,
+        "path": "local/procedural_factory_resource_readiness_cc10/producer_proto_00bbc7c0.txt",
+        "sha256": "a6602bf38b9676682d6ad7a27cc04c4e3ca723639ccd029af9c658a29c0891d6"
+      },
+      "prototype_command": {
+        "bytes": 452,
+        "path": "local/procedural_factory_resource_readiness_cc10/producer_proto_00bbc7c0.command.json",
+        "sha256": "9048bc93a8dd517fa48acdf57bca3d90edd21013515c5b28d6d6624967ae8146"
+      },
+      "transfers": [
+        {
+          "address": "00BBC7C3",
+          "text": "call 0xc30470"
+        }
+      ]
+    }
+  ],
+  "new_full_function_claims": 0,
+  "ordered_native_calls": [
+    {
+      "address": "00BBC709",
+      "contract": "existing genuine allocation/constructor composition; source placement starts count at existing B19988 store",
+      "function": "00BBC6F0",
+      "kind": "call",
+      "native": "00BF681B"
+    },
+    {
+      "address": "00BBC723",
+      "contract": "existing genuine allocation/constructor composition; source placement starts count at existing B19988 store",
+      "function": "00BBC6F0",
+      "kind": "call",
+      "native": "00C30470"
+    },
+    {
+      "address": "00BBC829",
+      "contract": "existing genuine allocation/constructor composition; source placement starts count at existing B19988 store",
+      "function": "00BBC810",
+      "kind": "call",
+      "native": "00BF681B"
+    },
+    {
+      "address": "00BBC843",
+      "contract": "existing genuine allocation/constructor composition; source placement starts count at existing B19988 store",
+      "function": "00BBC810",
+      "kind": "call",
+      "native": "00C30470"
+    },
+    {
+      "address": "00C30473",
+      "contract": "existing genuine allocation/constructor composition; source placement starts count at existing B19988 store",
+      "function": "00C30470",
+      "kind": "call",
+      "native": "00B19980"
+    }
+  ],
+  "original_full_constructor": {
+    "ABI": "ECX actual storage; EAX same storage; RET",
+    "address": "00B19980",
+    "bytes": 22,
+    "end_inclusive": "00B19995"
+  },
+  "packet": "cc10_procedural_resource_atomic_lifetime",
+  "preserved_order": [
+    "CEB130 profile store",
+    "single count+4 atomic lifetime/value1 initialization",
+    "D5E554 profile store"
+  ],
+  "producer_evidence": {
+    "bytes": 7151,
+    "path": "local/procedural_factory_resource_readiness_cc10/producer_evidence.json",
+    "sha256": "b066657caf2e09afbeeebfff04c2795f29c9ee90b99221cda9cf8271271775b7"
+  },
+  "program": "/battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "source": "src/native_resource_cache_leaves.cpp",
+  "source_failure_obligations": {
+    "bytes": 1952,
+    "path": "local/procedural_resource_atomic_lifetime_cc10/SOURCE_FAILURE_OBLIGATIONS.md",
+    "sha256": "cf1dc4f30fbd790e5f47b17c416e8d25f236da4072af5913ac14b57410f7139d"
+  },
+  "source_sha256": "f59bc47ca54af206644755ff31a4f0b1092612e00d86eb0dff77c5829e1ad14a",
+  "status": "producer_single_atomic_lifetime_complete_strict_win32_and_source_only_genuine_admission_composition_checked",
+  "target_requirements": {
+    "MSVC_Win32": true,
+    "atomic_alignment": 4,
+    "atomic_always_lock_free": true,
+    "atomic_size": 4,
+    "fixture_standard": "C++20 fixture; same MSVC Win32 atomic representation statically constrained",
+    "source_standard": "C++17 production library"
+  },
+  "tracked_tests_added": 0,
+  "validation": {
+    "active_assertions": true,
+    "aggregate_zero_stand_in": false,
+    "all_selected_linked_nonrelocated_bytes_equal": true,
+    "both_schedules": [
+      "actual creator count1",
+      "companion borrowed count1",
+      "canonical bind count1",
+      "genuine cache Interlocked retain count2",
+      "actual release count1, allocation/binding retained",
+      "actual release count0, current profile/scalar/destructor/CRT terminal and exact retirement"
+    ],
+    "call_check_receipt": "local/procedural_resource_atomic_lifetime_cc10/call_check01.txt",
+    "canonical_registry": "existing NativeRenderActualOwnerRegistry, exact same identity/companion bind/unbind",
+    "compile_inputs_receipt": {
+      "bytes": 61372,
+      "path": "local/procedural_resource_atomic_lifetime_cc10/run01/compile.receipt.json",
+      "sha256": "3ab7e1d9c6bf2eb18388ead3cdb70f2193ae05d9eeb5028248bdd1b9c49e4e02"
+    },
+    "compiler_identity": {
+      "bytes": 357887,
+      "path": "local/procedural_resource_atomic_lifetime_cc10/compiled_identity.json",
+      "sha256": "ea40280e605945126952b7e4be9d64af8e44333f6c43d602b54b441985e37e1f"
+    },
+    "count_initialization": [
+      {
+        "coff": {
+          "bytes": 27,
+          "path": "local/procedural_resource_atomic_lifetime_cc10/compiled/native_resource_cache_leaves_00.coff.bin",
+          "sha256": "082dd628556cc32e0db49345430981f360ff0816429f8b8f7197da9cefc38816"
+        },
+        "count_one_stores": [
+          {
+            "offset": 12,
+            "text": "mov dword ptr [eax + 4], 1"
+          }
+        ],
+        "linked": false,
+        "old_cached_complete_section_equal": true,
+        "ordered_DWORD_stores": [
+          {
+            "offset": 6,
+            "text": "mov dword ptr [eax], 0xceb130"
+          },
+          {
+            "offset": 12,
+            "text": "mov dword ptr [eax + 4], 1"
+          },
+          {
+            "offset": 19,
+            "text": "mov dword ptr [eax], 0xd5e554"
+          }
+        ],
+        "symbol": "?construct_native_texture_resource_base_00b19980@bsp@@YAPAXPAX@Z"
+      },
+      {
+        "coff": {
+          "bytes": 65,
+          "path": "local/procedural_resource_atomic_lifetime_cc10/compiled/native_resource_cache_leaves_01.coff.bin",
+          "sha256": "d2da7f1ddc49723021ed5eb696abe81d5538deb8b9a0942a4297fcc06bc3235f"
+        },
+        "count_one_stores": [
+          {
+            "offset": 12,
+            "text": "mov dword ptr [eax + 4], 1"
+          }
+        ],
+        "linked": false,
+        "old_cached_complete_section_equal": true,
+        "ordered_DWORD_stores": [
+          {
+            "offset": 6,
+            "text": "mov dword ptr [eax], 0xceb130"
+          },
+          {
+            "offset": 12,
+            "text": "mov dword ptr [eax + 4], 1"
+          },
+          {
+            "offset": 19,
+            "text": "mov dword ptr [eax], 0xd5e554"
+          },
+          {
+            "offset": 25,
+            "text": "mov dword ptr [eax], 0xd79b54"
+          },
+          {
+            "offset": 31,
+            "text": "mov dword ptr [eax + 0x10], 0"
+          },
+          {
+            "offset": 38,
+            "text": "mov dword ptr [eax + 0x14], 0"
+          },
+          {
+            "offset": 45,
+            "text": "mov dword ptr [eax + 0x18], 0"
+          },
+          {
+            "offset": 52,
+            "text": "mov dword ptr [eax + 8], 0"
+          }
+        ],
+        "symbol": "?construct_native_texture_source_00c30470@bsp@@YAPAXPAX@Z"
+      },
+      {
+        "coff": {
+          "bytes": 133,
+          "path": "local/procedural_resource_atomic_lifetime_cc10/compiled/native_resource_cache_leaves_14.coff.bin",
+          "sha256": "ce50f04da3ee4258576f1cca704b279d8358938ea666938b12bd2f90355c7ca9"
+        },
+        "count_one_stores": [
+          {
+            "offset": 64,
+            "text": "mov dword ptr [ecx + 4], 1"
+          }
+        ],
+        "linked": true,
+        "old_cached_complete_section_equal": true,
+        "ordered_DWORD_stores": [
+          {
+            "offset": 13,
+            "text": "mov dword ptr [ebp - 4], eax"
+          },
+          {
+            "offset": 19,
+            "text": "mov dword ptr [ebp - 0x10], 3"
+          },
+          {
+            "offset": 27,
+            "text": "mov dword ptr [ebp - 0xc], 0x34"
+          },
+          {
+            "offset": 34,
+            "text": "mov dword ptr [ebp - 8], 0x34"
+          },
+          {
+            "offset": 58,
+            "text": "mov dword ptr [ecx], 0xceb130"
+          },
+          {
+            "offset": 64,
+            "text": "mov dword ptr [ecx + 4], 1"
+          },
+          {
+            "offset": 71,
+            "text": "mov dword ptr [ecx], 0xd5e554"
+          },
+          {
+            "offset": 77,
+            "text": "mov dword ptr [ecx], 0xd79b54"
+          },
+          {
+            "offset": 83,
+            "text": "mov dword ptr [ecx + 0x10], 0"
+          },
+          {
+            "offset": 90,
+            "text": "mov dword ptr [ecx + 0x14], 0"
+          },
+          {
+            "offset": 97,
+            "text": "mov dword ptr [ecx + 0x18], 0"
+          },
+          {
+            "offset": 104,
+            "text": "mov dword ptr [ecx + 8], 0"
+          },
+          {
+            "offset": 115,
+            "text": "mov dword ptr [ecx], eax"
+          }
+        ],
+        "symbol": "?create_texture_source@?A0x79b7d10f@bsp@@YAPAXI@Z"
+      }
+    ],
+    "embedded_manifest": "asInvoker",
+    "existing_CTests_failed": 0,
+    "existing_CTests_passed": 3,
+    "fixture_run": {
+      "automatic_retries": 0,
+      "end_ns": 1790403497253502400,
+      "executable": {
+        "bytes": 218624,
+        "path": "local/procedural_resource_atomic_lifetime_cc10/run01/resource-probe.exe",
+        "sha256": "957a218135dbcbf1b1391bdd8551995d689ab0becfd8abc98c067d460540e949"
+      },
+      "exit_code": 0,
+      "inputs": {
+        "bytes": 5121,
+        "path": "local/procedural_resource_atomic_lifetime_cc10/run01/run.inputs.json",
+        "sha256": "d1868e7d6b5a6308fed44a0b50477da591b6a32cc50bb66b51c8f8f668bd5e38"
+      },
+      "manifest": {
+        "bytes": 406,
+        "path": "local/procedural_resource_atomic_lifetime_cc10/run01/manifest.xml",
+        "sha256": "be8918559280a2e74748bf8f6238b568ed7cbf75183b2180a6a8a979a1ebf243"
+      },
+      "native_execution": false,
+      "original_or_application_launches": 0,
+      "owned_pid": 77520,
+      "owned_process_closed": true,
+      "scope": "source-only genuine existing creator/count/registry/refcount/destructor/CRT composition; no injected failures or native EH",
+      "start_ns": 1790403497214825100,
+      "stderr": {
+        "bytes": 0,
+        "path": "local/procedural_resource_atomic_lifetime_cc10/run01/stderr.txt",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stdout": {
+        "bytes": 407,
+        "path": "local/procedural_resource_atomic_lifetime_cc10/run01/stdout.txt",
+        "sha256": "37e91335dc02a71a1f9140349c0fbee1c77bbf9b5c07c0c9b543e798deaf5e6b"
+      },
+      "timed_out": false
+    },
+    "full_COFF_sections": 291,
+    "identity_inspector_first_attempt": {
+      "bytes": 510,
+      "path": "local/procedural_resource_atomic_lifetime_cc10/compiled_v1_diagnostic.json",
+      "sha256": "dc6f232d56daa290744e31dfd857281edcdbef6be840545d1f642928b513ee13"
+    },
+    "identity_inspector_retry_scope": "analysis only; no additional build or runtime",
+    "native_EH_executed": false,
+    "no_access_after_raw_terminal_free": true,
+    "original_or_application_launches": 0,
+    "production_compiled_in_fixture": false,
+    "production_object_equal_extracted_library_member": true,
+    "profile_views": "borrowed immutable exact8B native data; no executable native vtable invoked",
+    "registry_or_companion_count_reset": false,
+    "selected_linked_sections": 52,
+    "source_only": true,
+    "strict_build_receipt": {
+      "bytes": 2385,
+      "path": "local/procedural_resource_atomic_lifetime_cc10/build01.receipt.json",
+      "sha256": "8457e7a69be3e9b86a6f8051dcf7053124aca6882996e23c45edeb49efa75014"
+    }
+  }
+}

@@ -8,8 +8,10 @@
 #define NOMINMAX
 #include <windows.h>
 
+#include <atomic>
 #include <cstdint>
 #include <cstring>
+#include <new>
 
 #if !defined(_MSC_VER) || !defined(_M_IX86)
 #error Native resource-cache leaves require MSVC Win32.
@@ -18,6 +20,9 @@
 namespace bsp {
 namespace {
 static_assert(sizeof(void*) == 4 && sizeof(LONG) == 4);
+static_assert(sizeof(std::atomic<std::int32_t>) == 4);
+static_assert(alignof(std::atomic<std::int32_t>) == 4);
+static_assert(std::atomic<std::int32_t>::is_always_lock_free);
 
 void* at_offset(void* storage, std::uint32_t offset) noexcept {
     return reinterpret_cast<void*>(reinterpret_cast<std::uintptr_t>(storage) + offset);
@@ -60,7 +65,7 @@ void* create_texture_source(std::uint32_t final_profile) {
 
 void* construct_native_texture_resource_base_00b19980(void* actual_storage) noexcept {
     write_word(actual_storage, 0, 0x00ceb130);
-    write_word(actual_storage, 4, 1);
+    ::new (at_offset(actual_storage, 4)) std::atomic<std::int32_t>(1);
     write_word(actual_storage, 0, 0x00d5e554);
     return actual_storage;
 }
