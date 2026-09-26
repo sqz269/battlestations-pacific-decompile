@@ -75,3 +75,51 @@ closures happen: without it, the fighters never come round onto a target's tail.
   `kFighterChaseTraceDiag` would give it. A slow target is either a Kate on its run-in or a Val in a
   glide, and 72-80 m/s Kates would not explain 13-21 m/s. Which target is being chased is the first
   thing to check if this is taken further.
+
+## 5. The two undamaged Zero losses: a different mechanism (open item)
+
+The lead asked to include one of E2's two unattributed deaths, Zeros #4.2 (about 87 s) and #8.2
+(about 167 s), which take no damage and go through the surface.
+- **The run.** A diagnostic `kZeroTraceDiag` (committed OFF) logs every live A6M once a second.
+  Run `local\ZT_9000.log`: the landed switch set, E2 9000, RNG streams on, window 1600x900. Both
+  Zeros die as on main: #4.2 at 88.45 s, #8.2 at 168.41 s, both by depth kill.
+
+Zero #4.2, from spawn:
+
+| t (s) | alt (m) | speed (m/s) | pitch | bank | controls (yaw/pitch/roll) | throttle | task / target | repairs / vehicle ticks |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 26.8 | 1500 | 69.4 | 0.00 | 0.00 | 0 / 0 / 0 | 1.0 | none / none | 0 / 0 |
+| 30.8 | 1500 | 68.0 | 0.06 | -0.03 | -1.0 / 0.99 / 0 | **0.008** | none / none | 10 / 7 |
+| 31.8 | 1512 | 50.1 | 0.46 | -0.07 | 0.90 / 0.99 / 0 | 0.008 | none / none | 14 / 14 |
+| 33.8 | 1547 | 13.0 | 0.94 | -0.82 | 0.90 / 0.99 / 0 | 0.008 | none / none | 14 / 14 |
+| 50.8 | 1143 | 31.7 | 0.84 | -1.68 | 0.90 / 0.99 / 0 | 0.008 | none / none | 14 / 14 |
+| 80.8 | 276 | 29.0 | 0.09 | -2.27 | 0.90 / 0.99 / 0 | 0.008 | none / none | 14 / 14 |
+| 86.8 | 62 | 51.8 | -0.05 | -2.31 | -1.0 / -1.0 / 0 | 0.008 | none / none | 49 / 14 |
+
+**What happens, step by step.**
+- **Spawn.** The leader and its wingman spawn at the same point (both `seed=(12.06 0.00 68.39)`, and
+  the formation logs `pairwise=[0-1=0.000000]` at tick 0).
+- **Repair.** At about 30 s the vehicle-avoidance arm fires on the wingman, and `0099BF30` repairs
+  the command block: yaw -1 then 0.90, pitch 0.99. The avoidance throttle arm cuts the throttle to
+  0.01.
+- **No re-plan.** The Zero has no task and no command target. The host's `plan_yaw_0099d300` returns
+  at its first test (`command_target_plus_one == 0`) before any arm runs, so nothing re-plans pitch,
+  roll or throttle again:
+  - the controls stay frozen at the repaired values for 55 s;
+  - the throttle stays at 0.008;
+  - the Zero pitches up to 0.95 rad, stalls at 13 m/s, rolls past vertical (`up_y` -0.67), and falls
+    at about 30 m/s from 1,500 m.
+- **The end.** Near the water the repairs resume (49), and the dive goes in at 55 m/s.
+
+**It is not the Yorktown mechanism.** There is no dogfight state, no aim pitch cap and no speed arm.
+The terrain arm's bands are irrelevant: the aircraft is already stalled and tumbling with frozen
+controls.
+
+**Open item, a separate packet.** Does the image's `0099D300` run its pitch, roll and throttle arms
+for a plane with no commanded target? The host's early return is its own guard. The yaw arm needs a
+heading, but in the host the reseed (`0099B450`: `+2B4h` TravelSpeed x mul, `+2D8h` = 1) and the
+throttle arm would restore the throttle, and the pitch arm's floor would lower the nose. If the image
+runs them, this is a host gap that strands every task-less leader after an avoidance repair.
+
+**A second open item.** Why the Zero leader and its wingman spawn at the same point. The formation's
+seat offset `(-60, -25, 70)` is logged, but the spawn seed is identical for both.

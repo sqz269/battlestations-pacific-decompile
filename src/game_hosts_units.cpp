@@ -2972,6 +2972,9 @@ struct GameUnitsHost::Impl {
     // DIAGNOSTIC, packet cc9_climbout_speed_gate: once a second, every live
     // dogfight fighter below 400 m, its state, speed and pitch chain.
     static constexpr bool kFighterLowTraceDiag = false;
+    // DIAGNOSTIC, packet cc9_fighter_roll_trace: once a second, every live A6M
+    // Zero, its task, controls and attitude (the two undamaged Zero losses).
+    static constexpr bool kZeroTraceDiag = false;
     // DIAGNOSTIC, packet cc9_kate_engagement: every two seconds, every live
     // dogfight fighter with a target, the chase geometry and speeds.
     static constexpr bool kFighterChaseTraceDiag = false;
@@ -14010,6 +14013,46 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // 0.09 s; the value passed downstream is the accumulated
                         // interval, not `step`.
                         unit_.pilot_think_accumulator_70 += step;
+                        if constexpr (GameUnitsHost::Impl::kZeroTraceDiag) {
+                            if (!unit_.plane_death_c3a &&
+                                unit_.row.name.compare(0, 3, "A6M") == 0) {
+                                static std::map<const void*, float> zt;
+                                float& acc = zt[&unit_];
+                                acc -= step;
+                                if (acc <= 0.0f) {
+                                    acc = 1.0f;
+                                    const float* const wv = unit_.plane_world_velocity;
+                                    owner_.log.notef("  zero trace %s t=%.2f alt=%.1f vy=%.2f spd=%.2f "
+                                        "pitch=%.3f bank=%.3f up_y=%.3f live=%.2f/%.2f/%.2f thr=%.3f "
+                                        "cmd=%.2f/%.2f/%.2f/%.2f task=%d%d%d tgt=%u df=%s ga_rep=%d va=%d "
+                                        "2bc=%.3f 2d0=%d",
+                                        unit_.row.name.c_str(),
+                                        static_cast<double>(owner_.summary.simulated_seconds),
+                                        static_cast<double>(unit_.motion.position[1]),
+                                        static_cast<double>(wv[1]),
+                                        static_cast<double>(std::sqrt(wv[0] * wv[0] + wv[1] * wv[1] + wv[2] * wv[2])),
+                                        static_cast<double>(unit_.plane_pitch_angle_c64),
+                                        static_cast<double>(unit_.plane_bank_angle_c68),
+                                        static_cast<double>(unit_.motion.pose_row1[1]),
+                                        static_cast<double>(unit_.plane_live_controls[0]),
+                                        static_cast<double>(unit_.plane_live_controls[1]),
+                                        static_cast<double>(unit_.plane_live_controls[2]),
+                                        static_cast<double>(unit_.plane_live_throttle),
+                                        static_cast<double>(unit_.pilot_command_block[0]),
+                                        static_cast<double>(unit_.pilot_command_block[1]),
+                                        static_cast<double>(unit_.pilot_command_block[2]),
+                                        static_cast<double>(unit_.pilot_command_block[3]),
+                                        unit_.torpedo_task_installed ? 1 : 0,
+                                        unit_.dive_bomb_task_installed ? 1 : 0,
+                                        unit_.dogfight_task_installed ? 1 : 0,
+                                        static_cast<unsigned>(unit_.command_target_plus_one),
+                                        bsp::dogfight_state_name(unit_.dogfight_state),
+                                        unit_.ga_repairs, unit_.va_plane_ticks,
+                                        static_cast<double>(unit_.plan_state.pitch_target_2bc),
+                                        unit_.plan_state.pitch_mode_2d0);
+                                }
+                            }
+                        }
                         if (unit_.pilot_think_accumulator_70 >= bsp::kPilotThinkInterval) {
                             const float elapsed = unit_.pilot_think_accumulator_70;
                             unit_.pilot_think_accumulator_70 = 0.0f;   // 0099AD75
