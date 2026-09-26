@@ -1,0 +1,16 @@
+{
+  "packet": "cc9_classtable_selection",
+  "doc": "docs/CLASSTABLE_SELECTION.md",
+  "answer": "classtables/arcade. The executable has no classtables/realistic/arcade/gamemode.lua/RealisticTable/ArcadeTable strings; the choice is made by this installation's modded autoload wrappers (scripts/datatables/autoload/{bullet,device,recon}classes.lua, effects.lua), which DoFile gamemode.lua and take arcade unless GameMode == 1. The installation root gamemode.lua sets GameMode = 0 (and a nil GameMode also takes arcade). The host reads the same Bullets global, so the Type 93's WaterTravelSpeed 170.444 (realistic 51.444) is the image's value here and USN02's failed mission at 44.6 s is the image's outcome for an idle player.",
+  "evidence": [
+    {"file": "gamemode.lua (installation root)", "size": 229, "modified": "2024-07-13", "content": "GameMode = 0; note: Kantai Kessen does not support BSPRM 1.0's Realistic mode"},
+    {"file": "scripts/datatables/autoload/bulletclasses.lua", "size": 536, "rule": "if GameMode == 1 then realistic else arcade"},
+    {"file": "battlestationspacific.exe", "strings_absent": ["classtables", "realistic", "arcade", "gamemode.lua", "RealisticTable", "ArcadeTable"], "strings_present": ["autoload/DeviceClasses.lua", "autoload/VehicleClasses.lua"]},
+    {"reader": "008566B0 BSP_TorpedoClass_ReadLuaFields", "field": "WaterTravelSpeed -> classDesc+0E4h"}
+  ],
+  "host": "GameMissionLuaHost::read_bullet_class_number reads the global Bullets; kReconVariant is arcade (its comment's 'no gamemode.lua' is inaccurate, the answer is the same)",
+  "divergence": "none",
+  "switch": "none",
+  "ghidra": "not needed (string census on the PE and the installation's Lua files)",
+  "no_ghidra_function": []
+}
