@@ -21,6 +21,13 @@ recovered symbol. `docs/TORPEDO_LAUNCH_GATE.md` (the lead point and the launch c
   * a negative value becomes `-0.0 - value` (`00D7A208`);
   * a non-negative one becomes `-value - 35.0` (`00CF8608`, double);
   * a result above 80.0 (`00D19BE8`) is reset to 0.
+* **The flip, from the listing.** `00951FCC COMISS value, 0` / `JB 00951FE9` sends a negative
+  value to `00951FE9..00951FF5` (`-0.0 - value`, SSE). A value >= 0 goes through `FCHS` /
+  `FSUB qword [00CF8608]` / `FSTP` (`00951FD6..00951FE1`). The reset test runs **after** the
+  store on the new value: `00951FFD` reloads `+6D4h`, and `00952005 COMISS new, [00D19BE8]` /
+  `JBE` leaves `EAX = 0` when `new <= 80.0`. Otherwise `EAX = 1`, and the `CVTSI2SS` / `fabs` /
+  `UCOMISS 0` / `LAHF` / `TEST AH,44h` / `JNP` tail stores 0 at `00952039` exactly when
+  `new > 80.0`, strictly.
 * **Start.** The unit constructor stores 0 (`0095CE11`, `XORPS XMM0,XMM0` at `0095CD7D`).
 
 One ship's launches therefore aim at 0, -35, +35, -70, +70 and -105 m. The next flip gives 105,
