@@ -55,4 +55,21 @@ void* __fastcall delete_native_particle_clock_secondary_004de360(
 // Additional contexts are new source ABIs; native private FH3 and a complete
 // mixed-owner manager shutdown are separate integration boundaries.
 
+// Full00736930[164] explicit current-publication route. Original is cdecl
+// with no native inputs, RET0. Added source bindings borrow SAME manager cell,
+// shutdown domain and current CE7D38/CE3818 slot-zero data views through return.
+// Initial-null touches no manager/profile. Capture first manager lock; enter
+// and increment; recheck publication; resolve second manager BEFORE capturing
+// current publication for BCFCA0; reload current publication/profile/slotzero;
+// flags1 delete; clear only after normal return; release captured first lock.
+// Admit completeCE7D38->4DE340 and baseCE3818->412440 at the native dispatch
+// boundary. Unsupported profiles/targets throw after completed unregister,
+// with existing411EE0 guard cleanup. No clock replay/reset/rollback or manager
+// drain is added. NativeFH3/SEH and original no-input ABI remain separate.
+void __cdecl destroy_published_native_particle_clock_00736930(
+    void* volatile& actual_manager_publication_01090aa0,
+    NativeParticleClockShutdownContext& shutdown,
+    const volatile std::uint32_t* actual_complete_profile_00ce7d38,
+    const volatile std::uint32_t* actual_base_profile_00ce3818);
+
 } // namespace bsp

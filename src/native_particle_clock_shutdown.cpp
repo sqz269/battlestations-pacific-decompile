@@ -1,3 +1,8 @@
+#include "bsp/native_singleton_publication.hpp"
+#include "bsp/native_singleton_removal_reorder.hpp"
+#include "bsp/native_singleton_destruction.hpp"
+#include "bsp/native_diagnostic_sink_lifetime.hpp"
+#include <Windows.h>
 #include "bsp/native_particle_clock_shutdown.hpp"
 #include "bsp/native_particle_clock_publication_base.hpp"
 #include "bsp/native_string_pool_storage.hpp"
@@ -155,4 +160,60 @@ __declspec(naked) void* __fastcall delete_native_particle_clock_secondary_004de3
         jmp delete_native_particle_clock_004de340
     }
 }
+void __cdecl destroy_published_native_particle_clock_00736930(
+    void* volatile& manager_publication,
+    NativeParticleClockShutdownContext& shutdown,
+    const volatile Word* complete_profile,
+    const volatile Word* base_profile) {
+    if (!shutdown.actual_publication_00f8d420) return;
+    void* const first_manager = get_native_singleton_manager_00415350(manager_publication);
+    auto* const captured_section = *reinterpret_cast<CRITICAL_SECTION* volatile*>(
+        at(first_manager, 0x10));
+    struct Guard { Word profile; CRITICAL_SECTION* section; };
+    static_assert(sizeof(Guard) == 8);
+    Guard guard{0x00ce37fcu, captured_section};
+    if (captured_section) {
+        EnterCriticalSection(captured_section);
+        __asm {
+            mov eax, captured_section
+            add dword ptr [eax + 18h], 1
+        }
+    }
+    // Native state0 arms only after Enter and the single counter ADD.
+    try {
+        if (shutdown.actual_publication_00f8d420) {
+            void* const current_manager = get_native_singleton_manager_00415350(manager_publication);
+            void* const unregister_owner = shutdown.actual_publication_00f8d420;
+            unregister_native_singleton_object_00bcfca0(current_manager, nullptr, unregister_owner);
+            if (void* const current = shutdown.actual_publication_00f8d420) {
+                const Word profile = load(current);
+                if (profile == 0x00ce7d38u) {
+                    const Word target = *complete_profile;
+                    if (target != 0x004de340u)
+                        throw std::logic_error("clock current complete slotzero is unsupported");
+                    delete_native_particle_clock_004de340(current, shutdown, 1);
+                } else if (profile == 0x00ce3818u) {
+                    const Word target = *base_profile;
+                    if (target != 0x00412440u)
+                        throw std::logic_error("clock current base slotzero is unsupported");
+                    delete_native_singleton_base_00412440(current, nullptr, 1);
+                } else {
+                    throw std::logic_error("clock current explicit-shutdown profile is unsupported");
+                }
+            }
+            shutdown.actual_publication_00f8d420 = nullptr;
+        }
+        if (captured_section) {
+            __asm {
+                mov eax, captured_section
+                add dword ptr [eax + 18h], -1
+            }
+            LeaveCriticalSection(captured_section);
+        }
+    } catch (...) {
+        destroy_native_singleton_guard_00411ee0(&guard);
+        throw;
+    }
+}
+
 } // namespace bsp
