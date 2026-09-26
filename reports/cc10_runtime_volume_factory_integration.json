@@ -1,0 +1,84 @@
+{
+  "packet": "cc10_runtime_volume_factory_integration",
+  "worker_commit": "653d651fed5d8e0efebc8852abfaaae37b624405",
+  "source_integration": "4c1c0bd5f869887704227cde2e5d8d4dfe027882",
+  "worker_report": "reports/native_runtime_volume_texture_creation_cc10.json",
+  "primary_verification": {
+    "result": "PASS",
+    "worker_commit": "653d651fed5d8e0efebc8852abfaaae37b624405",
+    "main_archive_sha256": "2bad8af23e9f7025e990630122826216d56d783a829e845de673d107b987a8d1",
+    "manifest_rows": 781,
+    "exact_git_blobs": 5,
+    "presealed_inputs": 142,
+    "tool_pins": 9,
+    "actual_includes": 338,
+    "presealed_actual_includes": 110,
+    "physical_sections": 66,
+    "complete_code_sections": 26,
+    "complete_code_bytes": 1917,
+    "relocations": 114,
+    "instruction_checkpoints": 75,
+    "conditional_branches": 28,
+    "full_word_COM_calls": 2,
+    "provider_objects": 11,
+    "unchanged_common_provider_code_sections": 772,
+    "existing_CTests": 3,
+    "application_factory_selected": false,
+    "runtime": false,
+    "root_member_sha256": "58714610af5bf0cae3bd3e0c4910e867581c82595f2e7fe7bed5b191db72d1d9",
+    "root_full_code_EH_and_relocated_sections_equal": 56
+  },
+  "validation": {
+    "worker_CTests": 3,
+    "root_CTests": 3,
+    "new_tests": 0,
+    "new_runtime_cases": 0,
+    "application_member_selected": false,
+    "game_validated": false
+  },
+  "native_accounting": {
+    "new_reconstructed_functions": 2,
+    "new_native_bytes": 534,
+    "native_instructions": 168,
+    "new_Ghidra_functions": 0,
+    "compiler_support_bytes_evidence_only": 26,
+    "data_bytes_evidence_only": 72
+  },
+  "annotation": {
+    "addresses": [
+      "00b2a5a0",
+      "00b3dcf0"
+    ],
+    "prior_values_recorded": true,
+    "prior_comments_preserved": true,
+    "write_lock": true,
+    "saved": true,
+    "forced_export": true
+  },
+  "inspection_notes": [
+    "Root initial COFF comparison assumed parser included section names; corrected to independent manifest section names, preserved failed script/log; no source rebuild.",
+    "Root selector reconstruction record initially used an extra runtime word in the source symbol; corrected against exact source before publication; native annotation unchanged.",
+    "Shared COMDAT name presence is not selection from the new member: exact map object origin excludes it."
+  ],
+  "limits": "Conditional MSVC Win32 source factory with exact raw-word COM boundary, actual mutable call cells and typed output. No original ABI/FH3/foreign exception parity, executed COM or factory, automatic canonical binding, actual runtime-volume application recipient, descriptor defaults, complete lifetime/retirement/concurrent reuse or full startup/game credit.",
+  "archive": {
+    "path": "local/cc10-platform-evidence/runtime-volume-texture-factory.zip",
+    "sha256": "9d83390dc90b28feb1b9a79d3dd1010fc666c91db57a0794bd2338b202955ab3",
+    "files": 32,
+    "valid": true
+  },
+  "root_artifacts": {
+    "object": {
+      "bytes": 16728,
+      "sha256": "58714610af5bf0cae3bd3e0c4910e867581c82595f2e7fe7bed5b191db72d1d9"
+    },
+    "map": {
+      "bytes": 6078329,
+      "sha256": "1ea2b485c9b2144d5db8f14865e32931a0252c6ba21c2b9e0e9b2ec389350692"
+    },
+    "executable": {
+      "bytes": 3708416,
+      "sha256": "37912e85d54966d03a5aa480df4484e887cd59007a9094eab393d61b8400be7a"
+    }
+  }
+}
