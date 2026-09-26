@@ -42,6 +42,13 @@ inline constexpr bool kPilotMoveToTaskBound = false;
 // +348h command block (0084D810), whose predicates are 0084D910/0084D930.
 // OFF: both natives stay unimplemented records.
 inline constexpr bool kMissionTurnAndStanceBound = false;
+
+// Packet cc9_pilot_moveto_task part 2 (docs/PILOT_MOVETO_TASK.md): the kind-7
+// task's tick 009C3950 - the approach update 009C3570 with its arrival dwell,
+// the state rule 009C3310 and the moveto state's own tick 009C2430 - plus the
+// five construction draws in the image's order. Needs kPilotMoveToTaskBound;
+// the circle steer (009FBB20) and the follow state stay named records.
+inline constexpr bool kMoveToTaskTickBound = false;
 // 008A44EF. `retreat`.
 inline constexpr std::uint32_t kPilotOrderClassRetreat = 0x00E08F90u;
 // 008A4900. `land`, SCENE_COMMAND_TYPES row 22.

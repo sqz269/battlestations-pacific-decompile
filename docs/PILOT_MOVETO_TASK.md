@@ -85,16 +85,6 @@ is examined before the verdict.
 **Part 1a is committed OFF,** as the lead briefed. It changes no flight until the tick (part 2) and
 the wingman state (part 3) land.
 
-## Part 2, the read so far
-
-- **The tick.** `00D20B68` slot `+64h` is **`009C3950`**, with no Ghidra function
-  (`009C3950`-`009C398B` inclusive). In order it runs:
-  - `009C3570(task+3F8h, dt)`, the approach update, which writes `+5Ch` (`task+454h`) at `009C3636`;
-  - `009C3310(dt)`, the transition rule;
-  - the current state's `vtable[0Ch]`, at `009C3988`.
-- **The moveto state's vtable** begins at `00D20A80`: destructor `009C2DB0`, tick `009C2430` (slot
-  `+0Ch`). That is not the generic moveto tick `009C18C0` that the torpedo and dive-bomb tasks run.
-
 ## Part 1b: EntityTurnToEntity and UnitSetFireStance
 
 The script calls both from `luaBombersSpawnedLex` (`usn_19_coralus.lua:3086-3098` and the five
@@ -189,3 +179,131 @@ a turned plane keeps its spawn velocity of about (±12, 0, 66) for its first ste
 image's flight model re-derives velocity from the body axes on the next step, and so turns the
 plane at once, is not read. The switch should be judged together with parts 1a, 2 and 3 in the
 final pair, not alone.
+
+## Part 2: the tick, the approach, the state rule and the moveto state
+
+### The read
+
+**The tick** `009C3950` (task vtable `00D20B68` `+64h`, `009C3950`-`009C398D`, now a Ghidra
+function) runs `009C3570(task+3F8h, dt)`, then `009C3310(dt)`, then the current state's
+`vtable[0Ch]` (`009C3988`).
+
+**The approach object** at `task+3F8h`. `009F9CE0` fills its head: `+4` the unit, `+8` the class
+block (`unit+538h`), `+0Ch` the pilot control block (`unit+9D4h`), and `+24h` =
+max(1, MaxSpd `class+188h` / ReferenceSpeed `tuning+37Ch`). `009C1C30` then sets:
+- `+2Ch` = U(0, `tuning+540h` MaxAltOffset), the first of the five construction draws;
+- `+44h` the target and `+48h`..`+50h` its point;
+- `+54h` = 0.5 and `+58h` = -U(0, 0.5), the refresh period and its stagger;
+- `+5Ch` = 0 (arrived), `+60h` = 0 (dwell), `+68h` = 50.0 (`00CEB4D4`);
+- for a flight leader, `+60h` = min(planar distance to the target, TurnCircleRadius `class+268h`)
+  / TravelSpeed `class+18Ch` (`009C1D32`-`009C1D9A`);
+- then one refresh.
+
+**The refresh** `009BEBA0`:
+- `+2Ch` is cleared unless the control block's dirty byte `ctl+3ADh` is set;
+- the point is the target's x/z, at altitude `ctl+394h` - `+2Ch`;
+- `+64h` is the planar distance;
+- then `009FD050(dist, point)`, and the `+28h` path leg (`009BD400`, `009FC260`).
+
+**The approach update** `009C3570(dt)`:
+1. `+58h` counts down; at zero it reloads with the 0.5 s period and refreshes.
+2. When the squadron's `+348h` block holds a moveto command (`+54h` == `00E08F68`), `+6Ch` is copied
+   from the block's `+6Ch`.
+3. While not arrived, with `inner` = ClosingDist `tuning+370h` × `+24h`:
+   - `dist < inner` sets `+60h` = -1.0 (`00D7A260`);
+   - `inner <= dist < inner + TurnCircleRadius` counts `+60h` down;
+   - a negative `+60h` sets `+5Ch` = 1 at `009C3636`.
+4. Once arrived, approach `vtable[8]` runs every tick.
+
+**The state rule** `009C3310(dt)`: `+54Ch` counts down and reloads from `+548h` = 1.0. At each
+reload it picks follow `+494h` for a wingman, circle `+52Ch` for an arrived leader, and moveto
+`+47Ch` otherwise. When the pick changes, it calls `vtable[8]` on the old state and `vtable[4]` on
+the new one.
+
+**The moveto state** `009C2430` (vtable `00D20A80`: `+4` `007B3DB0`, `+8` `007B3DC0`, `+0Ch` the
+tick):
+1. It raises `cmd+26Ch`, reads the point through approach `vtable[0]` = `009BE2C0`
+   (`+48h`..`+50h`), and takes the planar distance.
+2. The speed is `009BECD0(009C23B0(), 007C47F0(), dist)` into `cmd+2B4h`, with `+2B0h` = 0 and
+   `+2D8h` = 1. `009C23B0` is `[approach+0Ch]+3A0h`, unless the target is within
+   TurnCircleRadius + `+68h` and faster than `007C47F0`; then it is the target's speed.
+3. When `unit+C25h` is set, it takes a four-store arm and stops.
+4. Otherwise it commands the pitch with `009FB800(point.y, 1.0)` and the heading toward the point
+   with `009F9E40`.
+5. It sets `dir+40h` = `tuning+670h` Angle_MoveTo, then calls `009FABE0(009A1A20(p), p)` with
+   p = `0099B630()`.
+
+**The circle state** (vtable `00D20A9C`, tick `009C26D0`):
+- Its constructor `009C25D0` draws U(0, 1) >= 0.5 into `+18h` (the side).
+- The speed is min(`009BECD0(009C23B0(), 007C47F0(0), 0)`, TravelSpeed `class+18Ch`).
+- It then calls `009FBB20(this=approach, &point, r, side, &out)` with
+  r = max(`approach+6Ch`, TurnCircleRadius), followed by the same pitch and direction tail as the
+  moveto state.
+
+**`009FBB20`**, x87-heavy and not reconstructed:
+- **Inputs:** ECX = the approach, the point, the radius r, the side byte and an out pointer.
+- **Outputs:**
+  - it writes `cmd+2C0h` (an `atan2` heading) and `cmd+2CCh` = 2;
+  - through the out pointer, it writes a blended steer point on the circle of radius r;
+  - it returns dist - r while dist > r, else `[00D7A208]` - (dist - r).
+- **Internals:** a turn angle from `tuning+5DCh`..`+5E4h`, scaled by `unit+340h` and negated for
+  the other side, `sin`/`cos`, and `004F4840`.
+
+**The follow state** (vtable `00D20AB8`, tick `009C1FD0`, constructor `009C2980`) draws
+-U(0, 0.6) into `+74h` (`00CE3D30`). It is part 3.
+
+**The construction draws** from the shared stream, in order:
+
+| order | where | draw |
+| --- | --- | --- |
+| 1 | `009C1C30` | approach `+2Ch` = U(0, MaxAltOffset) |
+| 2 | `009C1C30` | approach `+58h` = -U(0, 0.5) |
+| 3 | `009C2980` | follow `+74h` = -U(0, 0.6) |
+| 4 | `009C25D0` | circle `+18h` = U(0, 1) >= 0.5 |
+| 5 | `009C3084` | task `+54Ch` = -U(0, 1) |
+
+**The task's `+54h` cruise profile** is `009C3650`-`009C394A` inclusive (`RET` at `009C394A`, INT3 after), with
+no Ghidra function. It draws twice more: `+460h` = U(FollowDist/1,
+FollowDist/2) and `+424h` (approach `+2Ch`) = U(0, TravelAltRandom). For a leader it writes
+`ctl+394h` from the class tests `007B93F0` torpedo, `007B94F0` depth charge, `007B9320` bomb,
+`0047B850`, and `0047B880`. A fighter takes SmallPlaneTravelAlt `tuning+35Ch` (800), or
+LargePlaneTravelAlt `+360h` (1400) for a level bomber or large recon, plus 0.6 × TravelAltRandom
+(`009C36DD`-`009C36F2`, `009C38FD`).
+
+### The binding
+
+`kMoveToTaskTickBound` depends on `kPilotMoveToTaskBound`.
+- **At install:** the five draws in the image's order through the units host's shared stream, then
+  the refresh and the leader's dwell.
+- **Each think, after the install:** the approach update, the state rule, and the moveto state.
+  - The speed reuses `moveto_speed_009c1850`, which is `009BECD0` of `[approach+0Ch]+3A0h`.
+  - The pitch uses `pitch_command_009fb800` and the heading `heading_command_009f9e40`, as the
+    torpedo and dogfight moveto bodies do.
+- **Substitutions**, each named in the code:
+  - `ctl+394h` is the fighter value from `009C3650`, computed at every refresh. That profile's
+    cadence and its redraw of `+2Ch` are not bound.
+  - `009C23B0`'s target-speed override is a record.
+  - `009FD050`, the `+28h` path leg, the `+6Ch` block copy, approach `vtable[8]` after arrival
+    and `009FABE0` are records.
+  - The circle state's steer (`009FBB20`) and the follow state's tick (`009C1FD0`) are named
+    records.
+
+### Predictions for part 2's pair (written before the runs)
+
+`kMoveToTaskTickBound` OFF against ON, both built with `kPilotMoveToTaskBound` ON and
+`kMissionTurnAndStanceBound` OFF, on main `98ef34226`, E2 9000, streams on.
+
+| row | OFF | ON prediction |
+| --- | --- | --- |
+| moveto task records | 17 | 17 |
+| summary `moveto task` line | absent | 17 tasks; 9 leaders in moveto, 8 wingmen in follow (a record) |
+| escort leader heading | as main (task-less) | toward the ordered ship at about 805 m |
+| arrivals | none | early waves' leaders arrive; inner is about 150 × max(1, Zero MaxSpd / 83.3) |
+| state changes | none | one moveto to circle per arrived leader |
+| `BotStateMoveToCircle::steer` | absent | recorded after each arrival |
+| wingmen | as OFF | as OFF except through coupling: the follow tick is a record |
+| escort Zero deaths | as OFF | may rise: leaders now fly into the fleet's fire, as in part 1b |
+| bomber rows and ship rows | as OFF | move within the RNG bands |
+
+**Open, for the final all-on pair.** Does the flight model re-derive velocity from the body axes on
+the step after a turn? Part 1b's `007C9540` writes no velocity.

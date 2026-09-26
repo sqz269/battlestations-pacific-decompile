@@ -1,0 +1,111 @@
+{
+  "packet": "cc9_pilot_moveto_task (part 2)",
+  "doc": "docs/PILOT_MOVETO_TASK.md",
+  "calls": [
+    {
+      "address": "009C3961",
+      "native": "009C3570",
+      "function": "009C3950",
+      "note": "tick runs the approach update on task+3F8h"
+    },
+    {
+      "address": "009C3970",
+      "native": "009C3310",
+      "function": "009C3950",
+      "note": "tick runs the state rule"
+    },
+    {
+      "address": "009C358F",
+      "native": "009BEBA0",
+      "function": "009C3570",
+      "note": "approach refresh on the 0.5 s period"
+    },
+    {
+      "address": "009C1CEE",
+      "native": "00BD2F10",
+      "function": "009C1C30",
+      "note": "approach +58h stagger draw"
+    },
+    {
+      "address": "009C1D1A",
+      "native": "007B8AD0",
+      "function": "009C1C30",
+      "note": "leader test before the dwell initialisation"
+    },
+    {
+      "address": "009C2E84",
+      "native": "009C25D0",
+      "function": "009C2DF0",
+      "note": "circle state constructor"
+    },
+    {
+      "address": "009C261E",
+      "native": "00BD2F10",
+      "function": "009C25D0",
+      "note": "circle side draw"
+    },
+    {
+      "address": "009C24EB",
+      "native": "009BECD0",
+      "function": "009C2430",
+      "note": "moveto state speed blend"
+    },
+    {
+      "address": "009C256E",
+      "native": "009FB800",
+      "function": "009C2430",
+      "note": "pitch from the steer point altitude"
+    },
+    {
+      "address": "009C257A",
+      "native": "009F9E40",
+      "function": "009C2430",
+      "note": "heading toward the steer point"
+    }
+  ],
+  "switches": [
+    {
+      "name": "kMoveToTaskTickBound",
+      "state": "OFF",
+      "pair": "local/MT_OFF_9000.log vs local/MT_ON_9000.log (both with kPilotMoveToTaskBound ON)"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "009C3650",
+      "end_inclusive": "009C394A",
+      "evidence": "kind-7 task vtable 00D20B68 +54h cruise profile; ghidra proto --brief reports no function; previous body 009C3570 ends 009C364D (RET 4 at 009C364B), INT3 at 009C364E-F; RET at 009C394A, INT3 from 009C394B"
+    },
+    {
+      "start": "009BE2C0",
+      "end_inclusive": "009BE2D7",
+      "evidence": "approach vtable 00D209CC slot 0, copies +48h..+50h to the out pointer; RET 4 at 009BE2D5, INT3 from 009BE2D8; ghidra proto --brief reports no function"
+    }
+  ],
+  "ledger_names_added": [
+    {
+      "address": "009C3950",
+      "name": "BSP_BotTaskMoveTo_Tick"
+    },
+    {
+      "address": "009C3570",
+      "name": "BSP_BotApproachMoveTo_Update"
+    },
+    {
+      "address": "009C3310",
+      "name": "BSP_BotTaskMoveTo_SelectState"
+    },
+    {
+      "address": "009C2430",
+      "name": "BSP_BotStateMoveToTask_Tick"
+    },
+    {
+      "address": "009C26D0",
+      "name": "BSP_BotStateMoveToCircle_Tick"
+    },
+    {
+      "address": "009C25D0",
+      "name": "BSP_BotStateMoveToCircle_Construct"
+    }
+  ]
+}
