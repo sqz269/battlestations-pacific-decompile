@@ -74,6 +74,8 @@
 #include "bsp/native_shader_binary_cache.hpp"
 #include "bsp/native_shader_descriptor_reader.hpp"
 #include "bsp/game_native_material_compiler_owners.hpp"
+#include "bsp/game_native_material_effect_owners.hpp"
+#include "bsp/game_native_material_process.hpp"
 #include "bsp/game_native_material_compiler_sources.hpp"
 #include "bsp/native_d3d9_shader_lifetime.hpp"
 // Constructor, device startup, frame and destructor borrow one application graph.
@@ -134,6 +136,7 @@ NativeVertexDeclarationLoadingContext application_declaration_loading(
 #include "game_native_renderer_shaders.inc"
 #include "game_native_renderer_descriptors.inc"
 #include "game_native_renderer_compiler_owners.inc"
+#include "game_native_renderer_effect_owners.inc"
 #include "game_native_renderer_resources.inc"
 #include "game_native_renderer_shadow.inc"
 #include "game_native_renderer_frame.inc"
@@ -183,6 +186,7 @@ struct GameNativeRendererApplication::Impl {
     ShaderGraph shaders;
     DescriptorGraph descriptors;
     CompilerOwnersGraph compiler_owners;
+    EffectOwnersGraph effect_owners;
     RenderResourcesGraph resources;
     ShadowTargetGraph shadow;
     std::unique_ptr<FrameGraph> frames;
@@ -226,6 +230,7 @@ struct GameNativeRendererApplication::Impl {
           descriptors(vfs.strings,services,definitions),
           compiler_owners(owners,profiles,vfs,raw,*host.native_deletion_bindings().resource_support,
               renderer,system_publication,devices.d3dx,texture_loading.cache),
+          effect_owners(compiler_owners,texture_loading,profiles,vfs.strings,renderer),
           resources(graph,devices,cameras,texture_loading,host,raw,vfs,owners),
           shadow(graph,resources,host,renderer) {
         auto& deletion=host.native_deletion_bindings();
@@ -279,6 +284,10 @@ NativeShaderDescriptorReadContext& GameNativeRendererApplication::shader_descrip
 GameNativeMaterialCompilerOwners GameNativeRendererApplication::material_compiler_owners() {
     check(impl_->phase==Impl::Phase::ready,"material compiler owners require the ready application renderer");
     return impl_->compiler_owners.borrowed();
+}
+GameNativeMaterialEffectOwners GameNativeRendererApplication::material_effect_owners() {
+    check(impl_->phase==Impl::Phase::ready,"material effect owners require the ready application renderer");
+    return impl_->effect_owners.borrowed();
 }
 GameNativeMaterialCompilerSources GameNativeRendererApplication::material_compiler_sources() {
     check(impl_->phase==Impl::Phase::ready,"material compiler sources require the ready application renderer");

@@ -1,0 +1,437 @@
+{
+  "packet": "cc10_application_material_effect_owner_provider",
+  "status": "reconstructed and build-tested preparatory source exposure",
+  "source_baseline": "4a092057bed9d8d28a5a7155ca236daf1a0cdcc9",
+  "approved_proposal_sha256": "d3ea4aca392f302b1db684345f298cf7369d348d22c893cef7ff22ed25352727",
+  "owned_files": [
+    "include/bsp/game_native_material_effect_owners.hpp",
+    "src/game_native_renderer_effect_owners.inc",
+    "include/bsp/game_native_renderer_application.hpp",
+    "src/game_native_renderer_application.cpp",
+    "docs/NATIVE_APPLICATION_MATERIAL_EFFECT_OWNER_PROVIDER_CC10.md",
+    "reports/native_application_material_effect_owner_provider_cc10.json"
+  ],
+  "native_credit": {
+    "functions": 0,
+    "bytes": 0,
+    "ledger_records": 0,
+    "Ghidra_mutation": false
+  },
+  "source_files": [
+    {
+      "path": "include/bsp/game_native_material_effect_owners.hpp",
+      "bytes": 689,
+      "sha256": "a8fd3fa10ff559795d772c5c39d3e6be528830635f3a50e854bb57c235e07bf8"
+    },
+    {
+      "path": "src/game_native_renderer_effect_owners.inc",
+      "bytes": 1043,
+      "sha256": "55bf626d3a4b85fd0a08598c1aa8cc13d584074df8591b07968359ae9c445962"
+    },
+    {
+      "path": "include/bsp/game_native_renderer_application.hpp",
+      "bytes": 7462,
+      "sha256": "76697a466ce3860162618a4736bcc7da1800636193758cbc1e4a7b8428399fbb"
+    },
+    {
+      "path": "src/game_native_renderer_application.cpp",
+      "bytes": 29426,
+      "sha256": "c6146bb466d875ce62b17eb0a912e527205bde51017d1fc206e0dde5ef0e0989"
+    }
+  ],
+  "identity": {
+    "stable_storage": "GameNativeRendererApplication::Impl::effect_owners after compiler_owners and before resources",
+    "construction": [
+      "SAME vfs.strings",
+      "SAME current renderer cell",
+      "SAME game_native_material_process().effect_serial_00f8d3a8()"
+    ],
+    "lifetime": [
+      "SAME vfs.strings",
+      "SAME compiler_owners.owners actual canonical registry"
+    ],
+    "owners": [
+      "SAME texture_loading.geometry",
+      "SAME lifetime",
+      "actual read-only D61A00 profile"
+    ],
+    "metadata_allocation": "existing NativeMaterialEffectLoadOwners allocates host Impl/list metadata; no native effect allocation/registration/retain",
+    "borrowed_getter": "requires actual ready phase and returns stored construction/lifetime/owners references"
+  },
+  "lifetime": {
+    "declaration_order": "compiler_owners, effect_owners, resources",
+    "reverse_destruction": "resources then effect_owners then compiler/shader/texture geometry then registry",
+    "inner_reverse_destruction": "owners then lifetime then construction",
+    "partial_constructor": "load-owner construction may throw; state8 armed only after normal return; earlier graph cleanup retained",
+    "external_obligations": [
+      "failed loading/Programs/registration frames may retain native backing/metadata/Entry",
+      "native terminal, exact canonical unbind, Entry erase and caller postcallback completion",
+      "all borrowed consumers quiescent while same application/strings/registry/geometry/profile contexts remain live"
+    ],
+    "requires_process_retention_or_drain_effect_inspection_added": false,
+    "automatic_retain_rollback_retry_defaults": false
+  },
+  "real_downstream_API_mapping": [
+    {
+      "domain": "NativeChildren",
+      "supplied": "effect view lifetime + compiler state_cache",
+      "still_required": "actual descriptor reader, SAME VFS resolver and genuine compiler binding"
+    },
+    {
+      "domain": "Programs",
+      "supplied": "SAME effect lifetime and existing pass/copy/secondary providers",
+      "still_required": "actual child, renderer/manager/VFS/mode/numeric-renderer context"
+    },
+    {
+      "domain": "loading/cache",
+      "supplied": "SAME construction/owners domain; compiler numeric renderer exposes SAME texture cache",
+      "still_required": "link mutually borrowing loading/cache contexts before use with real Programs/string/renderer/VFS domain and numeric BDF4C0 selection"
+    },
+    {
+      "domain": "compiler/sampler",
+      "supplied": "real source/VS/PS/reflection/shader/registration providers",
+      "still_required": "actual root/mode B3C018/B3C024 caller context, actual B-16 word/release residues and SAME-slot provenance; no graph defaults"
+    },
+    {
+      "domain": "sampler source1",
+      "supplied": "existing primitive providers only",
+      "still_required": "actual F8D420 singleton and B1B4D0/B1A4F0/BECCD0 domain, published factories/registry, manager/date/raw platform/caller MSG preimage/input/online/XLive profile"
+    },
+    {
+      "domain": "activation",
+      "supplied": "borrowed provider exposure only",
+      "still_required": "real 535320/B4C700/B4E470/B107F0 recipients and complete resource initialization/preload; device creation is insufficient"
+    }
+  ],
+  "caller_frame_cut": {
+    "source0": "unknown B5F100 consumption must remain explicit",
+    "source1": "release can invalidate word knowledge until actual writes; reaches raw pump before first lookup",
+    "source3": "actual sampler identity write requires own provenance",
+    "state_setter": "actual return-PC write requires own provenance",
+    "separate_calls": "SAME actual slot proof required",
+    "shader_mode_bytes": "actual either nonzero selects B3B513, else B3B536; unchanged gates",
+    "platform_MSG": "ResourceLoadEventHost is not automatic raw pump receiver; caller preimages/natural MSG/explicit profile constraints retained",
+    "stock5030": "separate DWM fixture proved only logged normalized false in its own actual case, no SDK init/arbitrary MSG/production activation"
+  },
+  "build": {
+    "argv": [
+      "powershell",
+      "-NoProfile",
+      "-ExecutionPolicy",
+      "Bypass",
+      "-File",
+      "scripts/build.ps1"
+    ],
+    "cwd": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries",
+    "pid": 66940,
+    "start_utc": "2026-09-26T14:21:10.113479+00:00",
+    "end_utc": "2026-09-26T14:21:26.478622+00:00",
+    "elapsed_seconds": 16.365143,
+    "exit_code": 0,
+    "one_build": true,
+    "strict_Win32_requested": true,
+    "new_tests_or_fixture_runtime": false
+  },
+  "validation": {
+    "existing_CTests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "all_pass": true,
+    "one_build": true,
+    "extra_compile_or_new_test": false,
+    "ad_hoc_fixture_or_game_DLL_or_startup_invocation": false
+  },
+  "compiled": {
+    "actual_application_object": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_application_effect_owner_domain_implementation/after_build/build/win32/bsp_game.dir/Release/game_native_renderer_application.obj",
+      "bytes": 318146,
+      "sha256": "987aab93e2ac782501dc2eb5656ee798e21b2e28627948fdb7855d03a4eb1454"
+    },
+    "sections": 1188,
+    "code_functions": 686,
+    "physical_code_bytes": 42996,
+    "all_physical_relocations": 2122,
+    "root_state_cache_comparator": {
+      "archive": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10/local/cc10-platform-evidence/startup-state-cache-binding.zip",
+        "bytes": 54373272,
+        "sha256": "d06c816ee8891803eb91c212abb6d4a2d6f4fedeea54af6b48e5a584a9d01c13"
+      },
+      "members": 20,
+      "extracted": [
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_application_effect_owner_domain_implementation/root_state_cache_baseline/primary/root/game_native_renderer_application.obj",
+          "bytes": 315678,
+          "sha256": "640eb90c0306092907f0838828ba18197dc553384d877103518e0c642e861eec"
+        },
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_application_effect_owner_domain_implementation/root_state_cache_baseline/primary/root/bsp_game.map",
+          "bytes": 6078329,
+          "sha256": "4e768281f9066ce560a41218ac24ea9ae1edac1eaadef01ba2f667883c43dbd4"
+        },
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_application_effect_owner_domain_implementation/root_state_cache_baseline/primary/root/bsp_game.exe",
+          "bytes": 3708416,
+          "sha256": "1229fab0b77ab73701565be676922300530f166aae320a950b7aeccfa59b383d"
+        },
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_application_effect_owner_domain_implementation/root_state_cache_baseline/primary/report.json",
+          "bytes": 2593,
+          "sha256": "6e4af9a43982709e7bc7a19cd38555342ecee17fc18b2386ee6a5c130ac0c827"
+        },
+        {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_application_effect_owner_domain_implementation/root_state_cache_baseline/primary/cc10_startup_cache_root_primary.json",
+          "bytes": 1042,
+          "sha256": "7d207dbcd80e725f16a2f7e5364107e24eed9b64bf4f1c4dc29fff5a4503b429"
+        }
+      ],
+      "qualification": "strict root build at 7bc47e09; 4a092057 adds metadata only; exact current application/compiler/include source matches 4a before the effect-owner proposal. Separate from own old 07fe factory build."
+    },
+    "own_old_build_qualification": "actual previous own factory build from 07fe2d8c + factory source; compiler view predates state-cache packet, not a build from 4a092057",
+    "normalized_comparison": {
+      "anonymous_namespace_token_normalization": {
+        "root": "?A0xe2027e5d",
+        "worker": "?A0x56b9cdcb",
+        "qualification": "only observed compiler anonymous namespace token; original names and all raw sections/relocations preserved"
+      },
+      "common_functions": 681,
+      "identical_functions": 647,
+      "changed_functions": 34,
+      "added_functions": 5,
+      "removed_functions": [],
+      "same_mnemonics_changed": 31,
+      "same_ordered_reloc_names_changed": 31,
+      "distinct_changed_data_sections": 5,
+      "focus_physical_sections": 44,
+      "focus_code_sections": 39,
+      "focus_code_bytes": 9643,
+      "focus_physical_bytes": 10011,
+      "focus_relocations": 413,
+      "focus_selected_sections": 24,
+      "qualification": "full raw COFF/data/EH and all relocations retained; source-dependent field offsets and real callback targets reviewed. No runtime/ABI compatibility/native allocation or new byte credit."
+    },
+    "source_layout_observations": {
+      "graph_base": 5416,
+      "construction_offsets": [
+        0,
+        4,
+        8
+      ],
+      "destruction_offsets": [
+        12,
+        16
+      ],
+      "load_owners_offset": 20,
+      "borrowed_result_stores": [
+        0,
+        4,
+        8
+      ],
+      "phase_offset": 9892,
+      "implementation_allocation_operand": 9908,
+      "layout_qualification": "actual emitted target-MSVC fields/allocation operand; no portable sizeof/reference offsetof assertion or extra no-link compile"
+    },
+    "constructor_EH": {
+      "normal_section": 380,
+      "normal_bytes": 3305,
+      "unwind_section": 381,
+      "unwind_bytes": 202,
+      "data_section": 1014,
+      "data_bytes": 132,
+      "states": 12,
+      "completed_graph_state": 8,
+      "next_resources_state": 9
+    },
+    "destructor": {
+      "section": 542,
+      "bytes": 389,
+      "effect_load_owners_call": 205
+    },
+    "focus": {
+      "sections": 44,
+      "code_sections": 39,
+      "code_bytes": 9643,
+      "all_relocations": 413,
+      "selected_sections": 24,
+      "selected_code_sections": 20,
+      "selected_code_bytes": 7602,
+      "selected_relocations": 316
+    },
+    "whole_application_linked": {
+      "sections": 213,
+      "bytes": 25277,
+      "relocations": 956,
+      "all_exact_named_targets": 956,
+      "origin": "game_native_renderer_application.obj plus exact map symbol and complete masked physical section",
+      "public_ready_getter_out_of_line_graph_ctor_borrowed_serial_accessor": "unselected; COFF only",
+      "runtime": false
+    },
+    "whole_AR": {
+      "old_members": 1785,
+      "new_members": 1785,
+      "identical_members": 1784,
+      "changed": [
+        {
+          "name": "game_native_settings_application.obj",
+          "old_sha256": "07c6e7ee90def00ebcc3eb050651ee2a3599f259dfaa886a6638a56362067838",
+          "new_sha256": "9129f7e50e0c892cc35026877bfae61571301968e060fe6a98691a1735c492f2",
+          "different_offsets": [
+            4,
+            5
+          ],
+          "timestamp_only": true
+        }
+      ],
+      "qualification": "own historical 07fe factory library vs current build; one COFF timestamp-only member difference, all other member payloads exactly equal; archive bookkeeping differs"
+    },
+    "providers": {
+      "providers": [
+        {
+          "name": "native_material_effect_loading.obj",
+          "old_sha256": "5fad0f848a5907477f91acd1ad21025025cbecd96712a002bf2b511019ab358c",
+          "new_sha256": "5fad0f848a5907477f91acd1ad21025025cbecd96712a002bf2b511019ab358c",
+          "whole_object_equal": true,
+          "common_functions": 255,
+          "all_function_raw_and_ordered_relocations_equal": true
+        },
+        {
+          "name": "native_material_effect_runtime.obj",
+          "old_sha256": "87478c87ce780a2497362736ce8ad206c199826a857712b0ceb2c0974848a4d5",
+          "new_sha256": "87478c87ce780a2497362736ce8ad206c199826a857712b0ceb2c0974848a4d5",
+          "whole_object_equal": true,
+          "common_functions": 150,
+          "all_function_raw_and_ordered_relocations_equal": true
+        },
+        {
+          "name": "native_material_effect_owner.obj",
+          "old_sha256": "d313f666b213a8a3046e44493709019d2774e3b0fccb35f1a25db64f00a69205",
+          "new_sha256": "d313f666b213a8a3046e44493709019d2774e3b0fccb35f1a25db64f00a69205",
+          "whole_object_equal": true,
+          "common_functions": 103,
+          "all_function_raw_and_ordered_relocations_equal": true
+        },
+        {
+          "name": "native_material_effect_programs.obj",
+          "old_sha256": "111132bcfb201b778c7d4696278e0d02aa7b7530cfc9f56c28e2699772712f5c",
+          "new_sha256": "111132bcfb201b778c7d4696278e0d02aa7b7530cfc9f56c28e2699772712f5c",
+          "whole_object_equal": true,
+          "common_functions": 156,
+          "all_function_raw_and_ordered_relocations_equal": true
+        },
+        {
+          "name": "native_material_state_cache.obj",
+          "old_sha256": "c30753323c8437b64915b7073a85a4f63e1625af12775cfd6b61ca8a4f8ca77f",
+          "new_sha256": "c30753323c8437b64915b7073a85a4f63e1625af12775cfd6b61ca8a4f8ca77f",
+          "whole_object_equal": true,
+          "common_functions": 40,
+          "all_function_raw_and_ordered_relocations_equal": true
+        },
+        {
+          "name": "native_material_pass_states.obj",
+          "old_sha256": "2ccfbded6472329da39075b764b5de7faf93f327ac67d71daa4eb00a7556f456",
+          "new_sha256": "2ccfbded6472329da39075b764b5de7faf93f327ac67d71daa4eb00a7556f456",
+          "whole_object_equal": true,
+          "common_functions": 76,
+          "all_function_raw_and_ordered_relocations_equal": true
+        },
+        {
+          "name": "native_material_pass_copy.obj",
+          "old_sha256": "36f60b546b7cae7808d73e6e2f3cd525f913c483f0ea87faa2b0323879770406",
+          "new_sha256": "36f60b546b7cae7808d73e6e2f3cd525f913c483f0ea87faa2b0323879770406",
+          "whole_object_equal": true,
+          "common_functions": 61,
+          "all_function_raw_and_ordered_relocations_equal": true
+        },
+        {
+          "name": "native_material_pass_owner.obj",
+          "old_sha256": "edb884781bac9346023c87bb977606b60d45eff18792327c46cbd2b9dbbbedc4",
+          "new_sha256": "edb884781bac9346023c87bb977606b60d45eff18792327c46cbd2b9dbbbedc4",
+          "whole_object_equal": true,
+          "common_functions": 58,
+          "all_function_raw_and_ordered_relocations_equal": true
+        },
+        {
+          "name": "native_render_context.obj",
+          "old_sha256": "bf7a571321a2e81b3e64e615698bcf3faaf779dfbcbbbf404ea721a8854b3098",
+          "new_sha256": "bf7a571321a2e81b3e64e615698bcf3faaf779dfbcbbbf404ea721a8854b3098",
+          "whole_object_equal": true,
+          "common_functions": 286,
+          "all_function_raw_and_ordered_relocations_equal": true
+        }
+      ],
+      "whole_library_equal": false,
+      "old_members": 1785,
+      "new_members": 1785,
+      "qualification": "old library is actual own 07fe factory build; unchanged whole-provider function/relocation evidence, not an old 4a build. Current member list and source seals pin actual build."
+    },
+    "material_process_object": "whole byte-identical to own preserved old object",
+    "representation": "raw-pointer-zero sections receive zero physical bytes; no synthetic BSS/native byte credit"
+  },
+  "inputs": {
+    "presealed_inputs": 1266,
+    "presealed_tools": 13,
+    "actual_active_game_TUs": 72,
+    "actual_postbuild_inputs": 1261,
+    "presealed_actual_matches": 1260,
+    "later_acquired": [
+      {
+        "path": "J:/PROG/BATTLESTATIONS-PACIFIC-DECOMPILE-CC10-LUA-READER-QUERIES/INCLUDE/BSP/NATIVE_MATERIAL_STATE_CACHE.HPP",
+        "bytes": 3617,
+        "sha256": "4079a8a77f751e920c616234e4aa8ace10551b1d2afd4c12995d34617ed00c8f",
+        "frozen": "postbuild_inputs/1226_NATIVE_MATERIAL_STATE_CACHE.HPP",
+        "presealed": false,
+        "presealed_sha256": null,
+        "presealed_match": null
+      }
+    ],
+    "qualification": "actual active game-TU CL.read dependencies acquired after the one build; presealed matches distinguished individually; no retroactive prebuild claim",
+    "all_tools_unchanged": true,
+    "historical_archives_preserved": 113
+  },
+  "evidence": {
+    "folder": "local/output/cc10_application_effect_owner_domain_implementation",
+    "archive": "evidence.zip",
+    "manifest": "artifact_index.json",
+    "manifest_schema": "flat list [{path,bytes,sha256}] with relative path; index is not self-indexed",
+    "complete_COFF": [
+      "COFF_old_factory.json",
+      "COFF_root_state_cache.json",
+      "COFF_new_effect.json"
+    ],
+    "COFF_schema": "sections: index/name/declared_raw_size/raw_pointer/physical_bytes/sha256/flags/symbols/relocations(offset,type,target,target_symbol_index,target_section,target_value,raw_u32)/raw_file/instructions; all physical sections and relocations, no rp0 fabricated bytes",
+    "raw_old_object": "before_sync/build/win32/bsp_game.dir/Release/game_native_renderer_application.obj",
+    "raw_root_intermediate_object": "root_state_cache_baseline/primary/root/game_native_renderer_application.obj",
+    "raw_new_object": "after_build/build/win32/bsp_game.dir/Release/game_native_renderer_application.obj",
+    "map": "after_build/build/win32/bsp_game.map",
+    "exe": "after_build/build/win32/Release/bsp_game.exe",
+    "raw_tools": [
+      "build_tool_initial.json",
+      "build_tool_completion01.json"
+    ],
+    "compiled_checks": [
+      "verification.json",
+      "qualified_application_changes.json",
+      "linked_application_sections.json",
+      "provider_comparison.json",
+      "whole_AR_comparison.json"
+    ],
+    "tracking": [
+      "prebuild_inputs.json",
+      "actual_postbuild_dependencies.json",
+      "postbuild_artifacts.json",
+      "postbuild_tool_check.json"
+    ]
+  },
+  "limits": [
+    "preparatory source/build and qualified link evidence only",
+    "no native effect allocation/complete owner/context/frame/SDK/ABI/full application activation credit",
+    "no automatic detection or drain of externally retained failed frames and effect Entries",
+    "current renderer may remain unpublished until actual caller admission",
+    "private layout is target compiler observation; no portable sizeof/reference offsetof claim",
+    "getter/out-of-line graph ctor not selected in current executable",
+    "historical own 07fe object is not state-cache/4a baseline",
+    "one postbuild-only actual header is not credited as presealed"
+  ]
+}

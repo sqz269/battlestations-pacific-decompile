@@ -31,6 +31,7 @@ class NativeShadowDepthTargetContext;
 namespace bsp::game {
 struct GameNativeMaterialCompilerOwners;
 struct GameNativeMaterialCompilerSources;
+struct GameNativeMaterialEffectOwners;
 struct GameNativeRenderResourceProviders;
 class GameSingletonHost;
 class GameVfsHost;
@@ -88,6 +89,11 @@ public:
     // and genuine owner retirement; no implicit cleanup or replay is supplied.
     GameNativeMaterialCompilerOwners material_compiler_owners();
     GameNativeMaterialCompilerSources material_compiler_sources();
+    // Ready-only SAME lifetime/creator-registration prerequisites for genuine
+    // effect loading and NativeChildren. No cache/compiler/sampler graph or
+    // native load is created. Keep this application and all retained failed
+    // frames alive until native owners, bindings and borrowed uses are retired.
+    GameNativeMaterialEffectOwners material_effect_owners();
     // Full B43B00 over a caller-owned initialized110h descriptor. The caller
     // keeps descriptor/name/operation alive and retires descriptor children
     // before this graph. Unknown native stack inputs are never synthesized.
