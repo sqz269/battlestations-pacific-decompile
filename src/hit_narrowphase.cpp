@@ -69,6 +69,66 @@ bool bounds_overlap_0098add0(const HitQueryBounds& segment,
     return true;
 }
 
+// 0085CDB0 (docs/AABB_0085CDB0.md). Every per-axis fraction is stored to a
+// float before it meets the running entry/exit floats (0085CE51, 0085CEC0),
+// and each denominator b - a is rounded to float first (0085CE33, 0085CE86);
+// the quotient itself is the x87 one, a double here. The point is
+// ((p1 - p0) as float) * entry + p0, each product and sum stored as float.
+bool segment_box_hit_0085cdb0(const HitQueryBounds& box, const HitQueryPoint& p0,
+                              const HitQueryPoint& p1, HitQueryPoint& out,
+                              float* entry_out) noexcept {
+    const float lo[3] = {box.min.x, box.min.y, box.min.z};
+    const float hi[3] = {box.max.x, box.max.y, box.max.z};
+    const float a3[3] = {p0.x, p0.y, p0.z};
+    const float b3[3] = {p1.x, p1.y, p1.z};
+    float entry = 0.0f;          // FLDZ, [ESP+10h]
+    float exit = 1.0f;           // 00D7A24C, [ESP+14h]
+    for (int i = 0; i < 3; ++i) {
+        const float a = a3[i];
+        const float b = b3[i];
+        float t_in = 0.0f;
+        float t_out = 1.0f;
+        if (b <= a) {                                       // 0085CE10 JBE
+            if (hi[i] < b) return false;                    // 0085CE65..: all above
+            if (a < lo[i]) return false;                    // all below
+            const float den = static_cast<float>(static_cast<double>(b) - a);
+            if (hi[i] < a) {
+                t_in = static_cast<float>((static_cast<double>(hi[i]) - a) / den);
+            }
+            if (lo[i] > b) {
+                t_out = static_cast<float>((static_cast<double>(lo[i]) - a) / den);
+            }
+        } else {
+            if (hi[i] < a) return false;
+            if (b < lo[i]) return false;
+            const float den = static_cast<float>(static_cast<double>(b) - a);
+            if (a < lo[i]) {
+                t_in = static_cast<float>((static_cast<double>(lo[i]) - a) / den);
+            }
+            if (b > hi[i]) {
+                t_out = static_cast<float>((static_cast<double>(hi[i]) - a) / den);
+            }
+        }
+        if (entry < t_in) entry = t_in;                     // 0085CEC4..0085CEDA
+        if (t_out < exit) exit = t_out;                     // 0085CEE2..0085CEF2
+        if (exit < entry) return false;                     // 0085CEFE JA
+    }
+    // 0085CF19..0085CFAB.
+    const float span[3] = {static_cast<float>(static_cast<double>(b3[0]) - a3[0]),
+                           static_cast<float>(static_cast<double>(b3[1]) - a3[1]),
+                           static_cast<float>(static_cast<double>(b3[2]) - a3[2])};
+    float p[3];
+    for (int i = 0; i < 3; ++i) {
+        const float scaled = static_cast<float>(static_cast<double>(span[i]) * entry);
+        p[i] = static_cast<float>(static_cast<double>(scaled) + a3[i]);
+    }
+    out.x = p[0];
+    out.y = p[1];
+    out.z = p[2];
+    if (entry_out != nullptr) *entry_out = entry;
+    return true;
+}
+
 bool segment_overlaps_box_0085cad0(const HitQueryBounds& box,
                                    const HitQueryPoint& from,
                                    const HitQueryPoint& to) noexcept

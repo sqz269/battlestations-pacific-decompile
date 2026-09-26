@@ -1,0 +1,103 @@
+diff --git a/src/game_hosts_gunnery.cpp b/src/game_hosts_gunnery.cpp
+index 81335be5b..5317f084f 100644
+--- a/src/game_hosts_gunnery.cpp
++++ b/src/game_hosts_gunnery.cpp
+@@ -41,6 +41,7 @@
+ #include "bsp/gun_bot_ticks.hpp"
+ #include "bsp/gun_dispersion.hpp"
+ #include "bsp/hit_narrowphase.hpp"
++#include "bsp/spatial_index.hpp"
+ #include "bsp/kill_credit.hpp"
+ #include "bsp/attack_target_classify.hpp"
+ #include "bsp/projectile_impact.hpp"
+@@ -145,6 +146,12 @@ constexpr bool kShipPlatformAttachmentBound = true;
+ //    since nothing static stands between ships at sea. OFF: always clear.
+ //    docs/SHIP_PLATFORM_ATTACHMENT.md.
+ constexpr bool kAaLineOfFireBound = true;
++//  * kAabb0085cdb0Bound: packet cc9_aabb_0085cdb0 (docs/AABB_0085CDB0.md).
++//    0098B130 tests each unit's spatial-index WORLD AABB (0098A750: the
++//    oriented box's axis-aligned hull) with 0085CDB0, nearest hit first;
++//    00929B80 runs 0085CDB0 on the shape's local box with the segment
++//    carried into its frame. OFF: the oriented-box slab tests.
++constexpr bool kAabb0085cdb0Bound = true;
+ //  * kArtilleryAimPointBound: the ArtilleryGunnerBot (006DF520, sub-types 2, 3,
+ //    4, 9, and 6 against a non-plane) aims at a point ON its ship target, not
+ //    at the target origin raised by the class Height. Step 4: when bot+B4h
+@@ -779,6 +786,8 @@ struct GameGunneryHost::Impl {
+     unsigned long long line_of_fire_queries{0};
+     unsigned long long line_of_fire_blocked{0};
+     unsigned long long line_of_fire_refusals{0};
++    unsigned long long line_of_fire_aabb_tests{0};
++    unsigned long long narrowphase_box_0085cdb0{0};
+     // 0072CDD0 with 0098B130: true when the raised segment's nearest unit hit
+     // (firer and target excluded) is on the firer's side.
+     bool line_of_fire_blocked_0072cdd0(std::size_t owner, std::size_t target,
+@@ -814,6 +823,25 @@ struct GameGunneryHost::Impl {
+             if (ext[0] <= 0.0f || ext[2] <= 0.0f) continue;
+             float r[3], up[3], f[3], o[3];
+             unit_pose(u, r, up, f, o);
++            if constexpr (kAabb0085cdb0Bound) {
++                // 0098B130: the node's world AABB (0098A750) then 0085CDB0.
++                const bsp::CameraMatrix m{r[0], r[1], r[2], 0.0f, up[0], up[1], up[2], 0.0f,
++                    f[0], f[1], f[2], 0.0f, o[0], o[1], o[2], 1.0f};
++                bsp::SpatialLocalBox local;
++                local.centre = {ctr[0], ctr[1], ctr[2]};
++                local.extent = {ext[0], ext[1], ext[2]};
++                const bsp::HitQueryBounds world = bsp::spatial_world_bounds_0098a750(local, m);
++                bsp::HitQueryPoint hit_point;
++                float entry = 0.0f;
++                if (bsp::segment_box_hit_0085cdb0(world, {from[0], from[1], from[2]},
++                        {to[0], to[1], to[2]}, hit_point, &entry)
++                    && entry < best) {
++                    best = entry;
++                    best_unit = u;
++                }
++                ++line_of_fire_aabb_tests;
++                continue;
++            }
+             // Segment in the unit's frame, then a slab test on the oriented box.
+             const float rel[3] = {from[0] - o[0], from[1] - o[1], from[2] - o[2]};
+             const float* axes[3] = {r, up, f};
+@@ -4130,6 +4158,32 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
+         local_origin[i] = dot3(rel, axes[i]);
+         local_span[i] = dot3(span, axes[i]);
+     }
++    if constexpr (kAabb0085cdb0Bound) {
++        // 00929B80: both endpoints into the shape's frame, 0085CDB0 on the
++        // local box, the point back to world (here along the world segment).
++        bsp::HitQueryBounds local_box;
++        local_box.min = {-extents[0], -extents[1], -extents[2]};
++        local_box.max = {extents[0], extents[1], extents[2]};
++        bsp::HitQueryPoint local_hit;
++        float entry = 0.0f;
++        if (!bsp::segment_box_hit_0085cdb0(local_box,
++                {local_origin[0], local_origin[1], local_origin[2]},
++                {local_origin[0] + local_span[0], local_origin[1] + local_span[1],
++                 local_origin[2] + local_span[2]}, local_hit, &entry)) {
++            return false;
++        }
++        ++owner_.narrowphase_box_0085cdb0;
++        bsp::HitQueryPoint point;
++        point.x = world_from[0] + span[0] * entry;
++        point.y = world_from[1] + span[1] * entry;
++        point.z = world_from[2] + span[2] * entry;
++        bsp::shape_hit_fill_0087fec0(record, point, entity);
++        record.shape_kind = 0x0A;
++        record.hull_segment = kDirectHitHullSegment;
++        bsp::hit_record_set_entity_00470370(record, entity);
++        hit_unit = index + 1;
++        return true;
++    }
+     float enter = 0.0f;
+     float leave = 1.0f;
+     for (int i = 0; i < 3; ++i) {
+@@ -5881,6 +5935,9 @@ void GameGunneryHost::report() {
+             "refusals=%llu bound=%d (0072F6E0/0072CDD0/0098B130, packet cc9_ship_platform_attachment)",
+             host.line_of_fire_queries, host.line_of_fire_blocked, host.line_of_fire_refusals,
+             kAaLineOfFireBound ? 1 : 0);
++        host.log.notef("summary mission gunnery aabb 0085cdb0 line_of_fire_tests=%llu "
++            "narrowphase_box_hits=%llu bound=%d (0098B130/00929B80, packet cc9_aabb_0085cdb0)",
++            host.line_of_fire_aabb_tests, host.narrowphase_box_0085cdb0, kAabb0085cdb0Bound ? 1 : 0);
+         host.log.notef("summary mission gunnery ship mounts from model=%llu missing=%llu "
+             "classes=%zu bound=%d (0095F500 slot frames, packet cc9_ship_platform_attachment)",
+             host.mounts_from_model, host.mounts_missing, host.ship_slots_by_class.size(),

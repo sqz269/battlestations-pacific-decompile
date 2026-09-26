@@ -1,0 +1,85 @@
+{
+ "packet": "cc9_aabb_0085cdb0",
+ "branch": "agent/cc9-platform2",
+ "doc": "docs/AABB_0085CDB0.md",
+ "functions": [
+  {
+   "address": "0085CDB0",
+   "name": "BSP_Geometry_SegmentBoxHit",
+   "end_inclusive": "0085D01A",
+   "status": "reconstructed (bsp::segment_box_hit_0085cdb0)",
+   "abi": "__fastcall(out ECX, min EDX, max, p0, p1), RET 0Ch"
+  },
+  {
+   "address": "0098B130",
+   "status": "analyzed: node world AABB (+13Ch/+148h), segment end moved to each hit"
+  },
+  {
+   "address": "00929B80",
+   "status": "analyzed: shape-frame box"
+  }
+ ],
+ "host_steps": [
+  {
+   "function": "0098B130",
+   "address": "0098B2D2",
+   "native": "0085CDB0",
+   "host": "contract: line_of_fire_blocked_0072cdd0 -> spatial_world_bounds_0098a750 + segment_box_hit_0085cdb0"
+  },
+  {
+   "function": "00929B80",
+   "address": "00929C1F",
+   "native": "0085CDB0",
+   "host": "contract: SegmentBinding::shape_trace_segment non-mesh -> segment_box_hit_0085cdb0"
+  }
+ ],
+ "contract_hunk": "reports/cc9_aabb_0085cdb0_gunnery.diff (src/game_hosts_gunnery.cpp, leased by cc9_bullet_throw; lands kAabb0085cdb0Bound = true)",
+ "no_ghidra_function": [],
+ "pairs": [
+  {
+   "form": "E2 USN04 9200/9000",
+   "off": "local/ab_off_e2.log",
+   "on": "local/ab_on_e2.log",
+   "line_of_fire_blocked": [
+    330,
+    401
+   ],
+   "refusals": [
+    1074,
+    1447
+   ],
+   "hit_records": [
+    569,
+    561
+   ],
+   "deaths": [
+    37,
+    38
+   ],
+   "summary_lines_moved": 77
+  },
+  {
+   "form": "USN02 9200/9000",
+   "off": "local/ab_off_usn02.log",
+   "on": "local/ab_on_usn02.log",
+   "line_of_fire_blocked": [
+    6,
+    9
+   ],
+   "refusals": [
+    278,
+    319
+   ],
+   "hit_records": [
+    647,
+    645
+   ],
+   "deaths": [
+    16,
+    16
+   ],
+   "summary_lines_moved": 15
+  }
+ ],
+ "verdict": "recommend ON; misses: E2 refusals +35% (band 30), USN02 one surface hit moved, narrowphase equality unverified"
+}
