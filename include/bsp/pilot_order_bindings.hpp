@@ -32,7 +32,7 @@ inline constexpr std::uint32_t kPilotOrderClassMoveTo = 0x00E08F68u;
 // 008A4590 wired into the mission host, 0099A170's moveto arm routing to the
 // kind-7 task 009C3BE0 / 009C3000, and the task's start state. OFF: the native
 // stays unimplemented and no plane holds a moveto task.
-inline constexpr bool kPilotMoveToTaskBound = false;
+inline constexpr bool kPilotMoveToTaskBound = true;
 
 // Packet cc9_pilot_moveto_task part 1b (docs/PILOT_MOVETO_TASK.md): the two
 // natives the escorts' spawn callback calls before PilotMoveToRange.
@@ -41,21 +41,21 @@ inline constexpr bool kPilotMoveToTaskBound = false;
 // UnitSetFireStance 008A6490, squadron arm only: 0071BE80 on the squadron's
 // +348h command block (0084D810), whose predicates are 0084D910/0084D930.
 // OFF: both natives stay unimplemented records.
-inline constexpr bool kMissionTurnAndStanceBound = false;
+inline constexpr bool kMissionTurnAndStanceBound = true;
 
 // Packet cc9_pilot_moveto_task part 2 (docs/PILOT_MOVETO_TASK.md): the kind-7
 // task's tick 009C3950 - the approach update 009C3570 with its arrival dwell,
 // the state rule 009C3310 and the moveto state's own tick 009C2430 - plus the
 // five construction draws in the image's order. Needs kPilotMoveToTaskBound;
 // the circle steer (009FBB20) and the follow state stay named records.
-inline constexpr bool kMoveToTaskTickBound = false;
+inline constexpr bool kMoveToTaskTickBound = true;
 
 // Packet cc9_pilot_moveto_task part 3: the kind-7 task's wingman state +494h
 // (vtable 00D20AB8), its enter 009BED80 and its tick 009C1FD0, over the host's
 // follow bodies (009BFD70's station, 009BFEE0 / 009BEE30). Needs
 // kMoveToTaskTickBound. The tick's sight search (009C214A-009C2355) and the
 // +85h trail arm stay named records.
-inline constexpr bool kMoveToFollowBound = false;
+inline constexpr bool kMoveToFollowBound = true;
 // 008A44EF. `retreat`.
 inline constexpr std::uint32_t kPilotOrderClassRetreat = 0x00E08F90u;
 // 008A4900. `land`, SCENE_COMMAND_TYPES row 22.
