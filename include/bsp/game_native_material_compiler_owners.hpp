@@ -1,6 +1,7 @@
 #pragma once
 #include "bsp/native_material_program_compiler_actual.hpp"
 #include "bsp/native_material_pass_copy.hpp"
+#include "bsp/native_material_state_cache.hpp"
 
 namespace bsp::game {
 // Borrowed production domains for B3B3C0 and B45E00/B455C0.
@@ -17,5 +18,6 @@ struct GameNativeMaterialCompilerOwners {
     NativeMaterialPassCopyAccess& copies;
     NativeMaterialSecondaryPassRegistration secondary_registration;
     NativeMaterialProgramNumericRendererDomain& numeric_renderer;
+    NativeMaterialStateCacheContext& state_cache;
 };
 } // namespace bsp::game
