@@ -1,0 +1,86 @@
+{
+  "packet": "cc10_complete_clock_integration",
+  "worker_commit": "1473c3d2c6d32c343f805ea6d6eb2cb0a88763fb",
+  "integration": "714d00c39b4f86c0533dabbbc10ccd9f664f9889",
+  "worker_report": "reports/native_complete_clock_singleton_binding_cc10.json",
+  "primary_verification": {
+    "worker_commit": "1473c3d2c6d32c343f805ea6d6eb2cb0a88763fb",
+    "archive_sha256": "d5199fa4469abecba5d5b1c2375f54e312a02cf9c32cb00a95ea7dfbd687b566",
+    "archive_rows_verified": 1141,
+    "archive_members": 1142,
+    "current_prerun_inputs_verified": 1022,
+    "prior_archives_unchanged": 36,
+    "prior_files_unchanged": 50,
+    "prebuild_source_inputs": 11,
+    "exact_project_library_members": 362,
+    "COFF_functions": 9,
+    "COFF_body_bytes": 4377,
+    "linked_functions": 8,
+    "dispatcher_linked_call_targets_exact_scalar_delete": true,
+    "worker_CTests": 3,
+    "runtime_parent_pid": 54320,
+    "runtime_child_pid": 48136,
+    "runtime_exits": [
+      0,
+      0
+    ],
+    "actual_controller_and_process_closure_receipts_verified": true,
+    "raw_tool_launch_receipt_archived": false,
+    "empty_clock_source_case_only": true,
+    "review": [
+      "Full two-file16-addition source dispatch diff and complete fixture/revised bootstrap reviewed",
+      "Only complete CE7D38 admits borrowed context at176; original flags/pop-before-delete/current-count schedule retained",
+      "Actual typed publication lifetime ends through quiescent placement reuse with same pointer bits and new void object; no old typed reference later used",
+      "Empty-clock genuine registration/drain and unchanged ReadOnlyV1 suspended bootstrap; no record/sink branch executed"
+    ],
+    "limits": [
+      "Raw successful tool-wrapper launch result was not separately archived; controller, stdout, child and CIM closure receipts are archived",
+      "Two implicit SDK libraries individually pinned postlink/preRun only; no relink",
+      "004DE290 standalone object only; inlined schedule linked in B1B680",
+      "New source deletion interface176to180bytes requires rebuilt callers; no native ABI/FH3/nonempty cache/full application/source0/game proof"
+    ]
+  },
+  "validation": {
+    "primary_strict_win32_CTests": 3,
+    "worker_strict_win32_CTests": 3,
+    "combined_registry_application_and_clock_deletion_binding_bytes": 180,
+    "rebuilt_combined_objects": [
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_hosts_singletons.obj",
+        "bytes": 36168,
+        "sha256": "28422966e930363e11dde576218f18a96d01b76485615a8edb5120a0ca5ba6d9"
+      },
+      {
+        "path": "build/win32/bsp_game.dir/Release/game_native_vfs_application.obj",
+        "bytes": 52170,
+        "sha256": "7999eaf06ca41cbe5caa721416ae5d5112644b34e2c06aaf52cdbcffcdc9b625"
+      },
+      {
+        "path": "build/win32/bsp_core.dir/Release/native_singleton_destruction.obj",
+        "bytes": 24707,
+        "sha256": "588df5b307252ced865e2da7846ca186dd80630a0c8cd03b8e9da7215af0001b"
+      }
+    ],
+    "new_native_bytes": 0,
+    "runtime_source_fixture_runs": 1,
+    "runtime_parent_child_exits": [
+      0,
+      0
+    ],
+    "raw_tool_launch_receipt_archived": false,
+    "full_cache_or_application_executed": false,
+    "game_validated": false
+  },
+  "limits": [
+    "Raw successful tool-wrapper launch result was not separately archived; controller, stdout, child and CIM closure receipts are archived",
+    "Two implicit SDK libraries individually pinned postlink/preRun only; no relink",
+    "004DE290 standalone object only; inlined schedule linked in B1B680",
+    "New source deletion interface176to180bytes requires rebuilt callers; no native ABI/FH3/nonempty cache/full application/source0/game proof"
+  ],
+  "archive": {
+    "path": "local/cc10-platform-evidence/complete-clock-singleton-binding.zip",
+    "sha256": "8d3a89e85a6c3a452d7035630a9d21b8f4884bf2b47d84183b70e804113ebae1",
+    "files": 8,
+    "valid": true
+  }
+}
