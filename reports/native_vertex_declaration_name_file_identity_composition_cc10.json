@@ -1,0 +1,262 @@
+{
+  "packet": "cc10_vertex_declaration_name_file_identity_composition",
+  "status": "guarded_explicit_profile_identity_verified_fixture_post_vfs_raw_count_assertion_failed",
+  "native_byte_credit": 0,
+  "production_cpp_changes": false,
+  "tracked_tests_added": 0,
+  "documentation": "docs/NATIVE_VERTEX_DECLARATION_NAME_FILE_IDENTITY_COMPOSITION_CC10.md",
+  "source": "src/native_vertex_declaration_cache.cpp",
+  "coherent_snapshot": "dd244aac2fcd7636b19c05a2af1302f4c29d3c83",
+  "addresses": [
+    "00b317e0",
+    "00b305f0",
+    "00b2dbd0",
+    "00b48af0",
+    "00ce0c30",
+    "00ce0c10"
+  ],
+  "Ghidra_mutations": false,
+  "interfaces": {
+    "singleton_deletion_binding_bytes": 180,
+    "material_compiler_borrowed_view_bytes": 44,
+    "private_host_layout": "dd244 declaration/object pairing; later616f comparison not compiled"
+  },
+  "qualification": {
+    "strict_win32_build": {
+      "utc_start": "2026-09-26T08:26:13.3458654Z",
+      "utc_end": "2026-09-26T08:26:46.1853194Z",
+      "exit_code": 0,
+      "command": "Existing scripts/build.ps1 strict Win32 and three existing CTests",
+      "fixture_compile_authorized": false,
+      "target_DLL_load_authorized": false
+    },
+    "existing_ctests_passed": 3,
+    "active_assertions": true,
+    "I386": true,
+    "manifest": "asInvoker embedded",
+    "game_objects": 71,
+    "exact_selected_project_library_members": 531,
+    "checked_production_bodies": 5,
+    "checked_identity_helper_bodies": 3,
+    "actual_imports_checked": 8,
+    "precompile_inputs": 124,
+    "original_preRun_inputs": 145,
+    "corrected_preRun_inputs": 149,
+    "post_link_source_pins": "Six source pins were acquired after linking; corresponding object bytes were already in sealed libraries. No claim they were source-precompile pins.",
+    "profile_identity_limit": "Guarded held expected file objects and current reported/mapped filename backing correlation; not direct section fileID/full memory integrity/historical physical backing proof."
+  },
+  "fixture": {
+    "source_sha256": "4cdddae7dfb1b660584ce737e0686711b9b21076c295a6b04695cf7390af79d8",
+    "exe_sha256": "7e76f37a1918889cc6b33dc907844237c159e7df4123556edc4d953d119f7f26",
+    "original_controller_sha256": "fd60cc863808df7635b098e13aab051e85a045407c24b858188b2da226c35de3",
+    "corrected_controller_sha256": "074cad48d3eeca4c2e083899c121337f42584933fcb968283be5d3110707f59a",
+    "original_seal_sha256": "5dd62dcdfe5416578d5d34f0274af740273a096debab16318b62cd71fd37e93b",
+    "corrected_seal_sha256": "fc0bce4bc8407f37e848b9a0088356cddfce0dbc68c6791c45366c581271777d",
+    "embedded_manifest_sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df"
+  },
+  "attempt01": {
+    "utc": "2026-09-26T08:42:47.017009+00:00",
+    "status": "controller_child_argument_refusal_before_ack",
+    "fixture_launches": 1,
+    "dll_loads_reached": false,
+    "target_profile_identity_reached": false,
+    "ordinal43_origin_reached": false,
+    "ordinal5030_origin_reached": false,
+    "ordinal5030_call_count": null,
+    "declaration_cache_reached": false,
+    "final_crt_audit_reached": false,
+    "parent_pid": 73568,
+    "parent_exit": 2,
+    "child_pid": 19048,
+    "child_exit": 1460,
+    "acknowledged": false,
+    "closure_complete": true,
+    "remaining_recorded_processes": 0,
+    "inputs_rechecked": 145,
+    "frozen_inputs_unchanged": true,
+    "error": "RuntimeError('Child actual command arguments mismatch')",
+    "static_schedule": "Controller validation/discovery require --case; unchanged fixture bootstrap emits --fixture-child. No runtime or source/controller revision follows.",
+    "raw_tool_receipt": "raw_launch_tool_result.json is the directly serialized actual exec_command return; it completed without session_id and no wait was needed.",
+    "log_presence": {
+      "child_probe.log": false,
+      "diagnostic_fault.log": false,
+      "host.log": false,
+      "controller_ack.json": false,
+      "suspended_child_identity.json": false
+    },
+    "native_byte_credit": 0,
+    "no_additional_launch": true
+  },
+  "attempt02": {
+    "utc": "2026-09-26T08:48:32.144282+00:00",
+    "status": "guarded_profile_identity_passed_existing_post_vfs_singleton_count_assertion_failed_before_final_audits",
+    "parent_pid": 43840,
+    "parent_exit": 3221226505,
+    "child_pid": 96200,
+    "child_exit": 3221226505,
+    "acknowledged": true,
+    "closure_complete": true,
+    "remaining_recorded_processes": 0,
+    "controller_error": null,
+    "termination_actions": [],
+    "inputs_rechecked": 149,
+    "frozen_inputs_unchanged": true,
+    "profile_file_identity_matches": [
+      {
+        "base": "27500000",
+        "volume": "12bda9c6",
+        "fileid": "0001000000aac5ad"
+      },
+      {
+        "base": "55d90000",
+        "volume": "e8dcd6e0",
+        "fileid": "0009000000155f68"
+      }
+    ],
+    "ordinal_origin_receipts": [
+      {
+        "ordinal": 43,
+        "address": "275684f0",
+        "allocation": "27500000",
+        "protection": "00000020"
+      },
+      {
+        "ordinal": 5030,
+        "address": "55e44e6c",
+        "allocation": "55d90000",
+        "protection": "00000020"
+      }
+    ],
+    "stock_reported_path": "C:\\Windows\\System32\\xlive.dll",
+    "stock_mapped_nt_path": "\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\xlive.dll",
+    "profile_identity_limit": "Held expected file objects, current reported/mapped name backing opened and compared by fileID/size/time/hash; no direct section fileID, full memory integrity, or historical physical image claim.",
+    "failure_line": 318,
+    "failure_expression": "CHECK(count_native_singleton_slots_00bcf910(strings_process.manager_01090aa0(),nullptr)==1);",
+    "preceding_source_schedule": "Bounded inference from sequential activeCHECK progress: sealed unchanged source reached the post-VFS singleton count assertion after B317E0 miss/hit count2/3 checks, canonical releases2/1, B32210 terminal0 exactunbind/retirement, free32 slots, rawname destruction and BE25C0(flags1) VFS retirement check. These are not standalone logged measurements. The singleton-count and subsequent focus-count checks did not pass. No CASE PASS or final CRT marker was printed.",
+    "ordinal5030_actual_call_count": null,
+    "ordinal5030_call_count_print_reached": false,
+    "sdk_initialization_credit": false,
+    "case_marker_seen": false,
+    "final_crt_marker_seen": false,
+    "native_byte_credit": 0,
+    "no_additional_launch": true,
+    "diagnostic_fault_log_bytes": 0,
+    "host_log_bytes": 0,
+    "raw_tool_receipt": "Directly serialized actual exec_command return saved immediately; no session_id, no wait required."
+  },
+  "attempt02_process_closure": {
+    "parent": {
+      "pid": 43840,
+      "creation_filetime": 134348860061514576,
+      "image_path": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\local\\output\\cc10_stock_xlive_file_identity_case_preparation\\vertex-declaration-name-file-identity-probe.exe"
+    },
+    "child": {
+      "pid": 96200,
+      "creation_filetime": 134348860061660852,
+      "image_path": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\local\\output\\cc10_stock_xlive_file_identity_case_preparation\\vertex-declaration-name-file-identity-probe.exe"
+    },
+    "parent_handle_signaled": true,
+    "child_handle_signaled": true,
+    "remaining_recorded_processes": 0,
+    "final_discovery_complete": true,
+    "closure_complete": true,
+    "child_identity_missing": false,
+    "actions": [],
+    "closure_error": null,
+    "cleanup_errors": [],
+    "hash_audit_errors": []
+  },
+  "direct_tool_receipts": [
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_stock_xlive_file_identity_case_preparation/raw_launch_tool_result.json",
+      "sha256": "27b8968bbfbaef53310f0a8af8b4d1cd889d2c87a6e6fffd44184f446bc1f230",
+      "receipt_saved": "Direct JSON serialization of actual exec_command result immediately after return",
+      "session_id_present": false
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_stock_xlive_file_identity_case_attempt02/raw_launch_tool_result.json",
+      "sha256": "7898afdaf372b82828ab1b4d64929fdf12eb5ac55ed17be7eea888e7cdb6c3e1",
+      "receipt_saved": "Direct JSON serialization of actual exec_command result immediately after return",
+      "session_id_present": false
+    }
+  ],
+  "count_audit": {
+    "archive": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_stock_case_post_vfs_manager_count_audit/evidence.zip",
+    "readiness": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_stock_case_post_vfs_manager_count_audit/handoff.md",
+    "BCF910": "Counts raw vector length including null tombstones",
+    "BCFCA0": "Zeros matching slot without changing end",
+    "VFS": "BE25C0->BE1F60->BDA790 unregisters CURRENT0109CEEC before publication clear and scalar free; uses same actual01090AA0 manager domain",
+    "fixture_line318": "Incorrect raw count1 expectation; pre-VFS count2 cannot shrink solely through genuine unregister",
+    "final_audit_line216": "Repeats same untested raw-length assumption",
+    "BD0400": "Pops end then skips null entries; current run did not reach final raw drain",
+    "focus_line319": "Unreached; static two B305F0 entry pumps/one focus increment perBECCD0 supports expected2",
+    "actual_post_vfs_slots_or_length": "Not separately logged; bounded sequential-source/native schedule inference only",
+    "native_tail_original_PE_call": "BE21CC->BDA790 pinned from original PE; existing Ghidra BE1F60 body/export truncation atBE2028 retained"
+  },
+  "ordinal5030_actual_call_count": null,
+  "ordinal5030_call_count_status": "UNKNOWN; counter print not reached",
+  "SDK_initialization_credit": false,
+  "case_pass_marker_seen": false,
+  "final_CRT_marker_seen": false,
+  "no_forced_messages_or_fallback": true,
+  "no_original_game_execution": true,
+  "archives": [
+    {
+      "kind": "preparation",
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_stock_xlive_file_identity_case_preparation/preparation_evidence.zip",
+      "size": 28522358,
+      "sha256": "e96a1b6f53a6a14e3285f52bbfa31d62f8ad513015bb2d1578ad91e7113083be",
+      "members": 227,
+      "rows": 226,
+      "input_bytes": 138756476,
+      "all_rows_verified": true,
+      "runtime_attempted": false
+    },
+    {
+      "kind": "attempt01",
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_stock_xlive_file_identity_case_preparation/runtime_attempt01_evidence.zip",
+      "size": 28753089,
+      "sha256": "9f6937e7b2d9bd8c1a2249bf5736ec70e5daf72193dd081f3b8e4d81003e9732",
+      "members": 15,
+      "rows": 14,
+      "all_rows_verified": true,
+      "nested_preparation_rows": 226,
+      "unchanged_inputs": 145
+    },
+    {
+      "kind": "attempt02_preRun",
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_stock_xlive_file_identity_case_attempt02/preRun_evidence.zip",
+      "size": 28799806,
+      "sha256": "756c3b84feb457d85e4ac1676ab937e77dcb6cd8580a4834772d6e260fc46ffe",
+      "members": 9,
+      "rows": 8,
+      "all_rows_verified": true,
+      "inputs": 149,
+      "manifest_sha256": "fc0bce4bc8407f37e848b9a0088356cddfce0dbc68c6791c45366c581271777d",
+      "controller_sha256": "074cad48d3eeca4c2e083899c121337f42584933fcb968283be5d3110707f59a",
+      "wrapper_sha256": "78f9b2f26601375b48c01d65a459068241c6e17c832a517fa7e502226801e646",
+      "runtime_attempted": false
+    },
+    {
+      "kind": "attempt02",
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_stock_xlive_file_identity_case_attempt02/runtime_attempt02_evidence.zip",
+      "size": 28839957,
+      "sha256": "ec73138a003f27251c4978b428d2065a80cd2c7cde56e9c29f1beb97a6878fb6",
+      "members": 21,
+      "rows": 20,
+      "all_rows_verified": true,
+      "unchanged_inputs": 149
+    },
+    {
+      "kind": "read_only_count_audit",
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_stock_case_post_vfs_manager_count_audit/evidence.zip",
+      "size": 34491,
+      "sha256": "9979df0a4f9c544c6eedef02b0b773f0f659b505d6385fa17d9e116c0217d0ce",
+      "members": 25,
+      "rows": 24,
+      "all_rows_verified": true
+    }
+  ],
+  "prior_evidence_preserved": "Earlier component/redistributable/path-identity/diagnostic archives unchanged; nested current evidence retains preparation and both current failed attempts.",
+  "packaging_correction": "First closeout mapping mislabeled318 as focus319. Nonexecuting packaging assertion caught mismatch before archive creation; old helper/draft preserved in nested freeze_packaging_attempt01_evidence.zip. Runtime inputs unchanged."
+}
