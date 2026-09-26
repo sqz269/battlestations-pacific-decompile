@@ -1,0 +1,110 @@
+{
+  "packet": "cc10_vertex_declaration_name_failure_integration",
+  "worker_commit": "21798284ad7c9d2dcefd22f8602712cd29644030",
+  "integration": "95015e9ed112da4bf6f7c57f9ea9f3db6f9bd6be",
+  "worker_report": "reports/native_vertex_declaration_name_composition_cc10.json",
+  "primary_verification": {
+    "worker_commit": "21798284ad7c9d2dcefd22f8602712cd29644030",
+    "archives": [
+      {
+        "path": "local/cc10_vertex_declaration_name_readiness_evidence.zip",
+        "size": 7544471,
+        "sha256": "340c82c646db8d029f24b048b2318e0896cbe6cad7779712093b4eccb9be238d",
+        "indexed_rows_verified": 2621,
+        "members": 2622
+      },
+      {
+        "path": "local/cc10_vertex_declaration_name_failed_link_attempt1.zip",
+        "size": 15179222,
+        "sha256": "f8ed19708135374307aa62ad49670cb5b5ab2e47d734bf172281e04b211dc26f",
+        "indexed_rows_verified": 19,
+        "members": 20
+      },
+      {
+        "path": "local/cc10_vertex_declaration_name_failed_package_preflight1.zip",
+        "size": 3805785,
+        "sha256": "1c94b6de282a9ec7dfffa4789ec3156c6fe606f1061ac0ccfd7a8ce89790a7fc",
+        "indexed_rows_verified": 6,
+        "members": 7
+      },
+      {
+        "path": "local/cc10_vertex_declaration_name_unexecuted_path_revision.zip",
+        "size": 683387,
+        "sha256": "90875a91132ac5b441910a75e09c70396f849d8c14a909489fdd2534125e32af",
+        "indexed_rows_verified": 7,
+        "members": 8
+      },
+      {
+        "path": "local/cc10_vertex_declaration_name_failed_runtime_attempt1.zip",
+        "size": 32746098,
+        "sha256": "b90cc8604261ba82110315f62b303360a24c733a96e4c6fd6de215f5802981e7",
+        "indexed_rows_verified": 1160,
+        "members": 1161
+      },
+      {
+        "path": "local/cc10_vertex_declaration_name_diagnostic_attempt_evidence.zip",
+        "size": 32967003,
+        "sha256": "3f718ce76d8935d6de163f2486732b03826c71021489431bb1569c5429003078",
+        "indexed_rows_verified": 1146,
+        "members": 1147
+      },
+      {
+        "path": "local/cc10_vertex_declaration_name_composition_metadata_evidence_v2.zip",
+        "size": 32833,
+        "sha256": "85f40e7e6d0252ee88f187c081151601259aa8f741877be3757de6b8039fe960",
+        "indexed_rows_verified": 17,
+        "members": 18
+      }
+    ],
+    "prelaunch_inputs_verified": {
+      "attempt1_inputs": 1432,
+      "diagnostic_inputs": 1444
+    },
+    "exact_selected_library_members_verified": 523,
+    "compiled_object_library_linked_functions_verified": 5,
+    "native_constructor_count_store_offset": 24,
+    "dll_instruction_windows_verified": 4,
+    "diagnostic_fault_rows": 27,
+    "source_changes": false,
+    "worker_strict_win32_ctests": 3,
+    "review": [
+      "Complete final source and diagnostic-only diff reviewed before their controlled launches",
+      "Observed DLL fault and invalid destination distinguished from statically inferred caller path",
+      "First attempt only localized before DLL receipt; later ntdll causes unassigned",
+      "Both attempts failed before declaration name/cache/count/CRT teardown paths; no corresponding runtime success credited"
+    ],
+    "limits": [
+      "No successful B317E0/B305F0/B2DBD0 composition",
+      "No cache/date/actual-count/token-CRT/manager-drain proof from these attempts",
+      "C++ compilation is not native register/stack/FH3/private-frame ABI proof",
+      "Later ntdll faults preserved without causal interpretation",
+      "Invalid/null row, changed-name scan, filesystem mounts, full B4E470/source0/startup/draw/gameplay excluded",
+      "No original-game launch, module patch, dummy main-host bytes, installed config change or system DLL fallback"
+    ]
+  },
+  "validation": {
+    "metadata_only": true,
+    "new_native_bytes": 0,
+    "new_report_call_rows": 0,
+    "worker_strict_win32_ctests": 3,
+    "runtime_attempts": 2,
+    "runtime_success": false,
+    "original_game_launched": false,
+    "game_validated": false
+  },
+  "fault_boundary": "Diagnostic observed write fault in installed xlive.dll at RVA319049 to probe base+640F5E outside its image. Static GetModuleHandleA(NULL)/offset/copy windows strongly corroborate original-host patch assumption; no runtime caller stack or register trace. Attempt1 only localized before DLL receipt. Later26ntdll causes unassigned.",
+  "limits": [
+    "No successful B317E0/B305F0/B2DBD0 composition",
+    "No cache/date/actual-count/token-CRT/manager-drain proof from these attempts",
+    "C++ compilation is not native register/stack/FH3/private-frame ABI proof",
+    "Later ntdll faults preserved without causal interpretation",
+    "Invalid/null row, changed-name scan, filesystem mounts, full B4E470/source0/startup/draw/gameplay excluded",
+    "No original-game launch, module patch, dummy main-host bytes, installed config change or system DLL fallback"
+  ],
+  "archive": {
+    "path": "local/cc10-platform-evidence/vertex-declaration-name-failure.zip",
+    "sha256": "a014ebde65faf68beb5f0d5bf4b79356c91c4b1aa6e0a9b95c9220eb189bfa26",
+    "files": 13,
+    "valid": true
+  }
+}
