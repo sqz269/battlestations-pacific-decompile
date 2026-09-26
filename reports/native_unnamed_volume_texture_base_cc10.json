@@ -1,0 +1,116 @@
+{
+  "packet": "cc10_unnamed_volume_texture_base_implementation",
+  "address": "00b340a0",
+  "source_name": "construct_native_unnamed_volume_texture_base_00b340a0",
+  "baseline": "ff47303b226d1a94085a35cae959894377eea2e2",
+  "files": [
+    "include/bsp/native_volume_texture_base.hpp",
+    "src/native_volume_texture_base.cpp",
+    "cmake/startup.cmake",
+    "docs/NATIVE_UNNAMED_VOLUME_TEXTURE_BASE_CC10.md",
+    "reports/native_unnamed_volume_texture_base_cc10.json"
+  ],
+  "native": {
+    "start": "00b340a0",
+    "end": "00b340e6",
+    "bytes": 71,
+    "instructions": 18,
+    "calls": 0,
+    "branches": 0,
+    "abi": "ECX owner; stack borrowed COM/flags; EAX same owner; RET8",
+    "sha256": "681682a8c5329560dd50d974e96e62870cafac07c44bb275eb444ed1eb807a47",
+    "original_PE_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+  },
+  "source_abi": "New MSVC Win32 cdecl function with explicit SAME process serial reference; no drop-in native ABI claim",
+  "exact_schedule": [
+    "profile CEB130",
+    "profile D5F1F4",
+    "one placement atomic<int32_t>(1) at+4, native B340B5",
+    "zero+8,+C,+14",
+    "borrowed COM+10",
+    "flags+1C",
+    "old SAME shared serial+20",
+    "fresh current serial read and DWORDwrapped increment/store",
+    "profile D5F2C0",
+    "same-owner return"
+  ],
+  "invariants": [
+    "actual writable24h prefix; valid reached scalar fields",
+    "aligned4 count storage; size4 and always_lock_free checked",
+    "fresh or fullyretired exclusive backing; no live count reset",
+    "SAME live serial0108D6E8; nonoverlap and no concurrent mutation",
+    "all prior atomic/canonical/resource/failure-diagnostic borrowers ended before replacement",
+    "untouched+18 and beyond24h; no COM retain/release"
+  ],
+  "validation": {
+    "strict_Win32_build": "PASS",
+    "existing_CTests": "3/3 PASS",
+    "new_tests": 0,
+    "runtime": 0,
+    "toolset": "14.51.36231",
+    "sdk": "10.0.26100.0",
+    "flags": "/W4 /WX /O2 /EHsc /MD /fp:strict /std:c++17",
+    "exact_revision02_applied": true,
+    "prebuild_source_config_pins": 8,
+    "prebuild_tool_header_pins": 11,
+    "actual_selected_dependencies_postbuild": 53,
+    "exact_AR_object_members": 2,
+    "own_physical_sections": 12,
+    "own_unique_code_sections": 9,
+    "own_code_bytes": 290,
+    "own_instructions": 121,
+    "entry_bytes": 177,
+    "entry_instructions": 62,
+    "all_physical_relocations": 0,
+    "code_relocations": 0,
+    "entry_calls_branches_EH": 0,
+    "emitted_order_checks": 15,
+    "app_entry_selected": false,
+    "B33FC0": {
+      "source_header_unchanged": true,
+      "already_explicit_atomic": true,
+      "full_101byte_section_and_relocations_equal": true,
+      "comparison": "Historical db3bf29a0 descriptor build preserved member vs current ff47303b2+leaf; not a rebuilt current baseline"
+    }
+  },
+  "open_boundaries": [
+    "missing B3D720 complete runtime-volume constructor/current COM/failure projection",
+    "missing B2A5A0 runtime-volume factory",
+    "complete D618B0 owner/canonical admission",
+    "other header/string/payload/COM lifetimes",
+    "pool return before unbind/Entry retirement: availability/lock alone not safe replacement",
+    "native FH3/SEH identity, concurrency, game execution"
+  ],
+  "preservation": {
+    "prior_archives": 54,
+    "all_archive_paths_unchanged": true,
+    "old_four_outputs_preserved_exactly": true,
+    "old_actual_member_preserved_exactly": true,
+    "approved_revision02_source_bytes_exact": true,
+    "new_build_outputs_separately_frozen": true
+  },
+  "evidence": {
+    "folder": "local/cc10_unnamed_volume_texture_base_implementation",
+    "archive": "evidence.zip",
+    "index": "index.json",
+    "schema": "index.json list[path,bytes,sha256]; ZIP adds index",
+    "archive_identity": "detached freeze_receipt.json after committed Git blob seal",
+    "compiled": "compiled_inspection.json",
+    "order": "compiled_schedule.json",
+    "objects": "compiled/members",
+    "native": "native/00b340a0.native.*",
+    "build": "build_receipt.json + build.stdout.txt/build.stderr.txt + LastTest.log",
+    "inputs": "before_build_inputs.json",
+    "postbuild_dependencies": "actual_compile_dependencies_after_build.json",
+    "preserved_old_member": "correct_old_member_identity.json",
+    "collector_qualifications": "collector_correction/qualification.json"
+  },
+  "reused_archives": {
+    "readiness": "5b443095793a8b8af6eb3cd6e624dd66be35998e88162ae2e94b55e8836b799d",
+    "revision02": "a596fb16171a418c7400daf509b8050e51749769878677116b5223b96b8905af",
+    "installed_traits": "e8dfb486aeae5ff6867e12bf75e2a66e6805f366a472c77db54a38806e45fa46"
+  },
+  "traits_limit": "Actual MSVC14.51.36231 Win32 C++17 _HAS_CXX20=0 outer atomic classification, not all standard library implementations",
+  "ghidra_mutations": 0,
+  "worker_native_ledger_credit": 0
+}
