@@ -168,3 +168,86 @@ One tree (main 85b73359e plus 3c0b84e95), `local\bin\seat_off` against `local\bi
   **`kPlayerGunSeatBound` should flip ON.** The flip is one line in
   `include/bsp/game_hosts_gunnery.hpp`, currently leased by cc9-aa-targeting
   (`cc9_gun_horz_sign`), so it is handed to the integrator.
+
+## 6. The segment query 00957DA0 (packet `cc9_player_gun_seat_segment_query`)
+
+### 6.1 What the image does (00957BD0, body 00957BD0..009580DC, `RET 1Ch`)
+
+00959C20 calls it once per kept gun at 00959D2A with ECX = the unit (EBP, written once, from ECX
+at 00959C7C) and EDX = the gun (ESI, from the unit+48h list).
+- **With a target** (the stack argument tested at 00957C29) it takes 00901C20's intercept and
+  never casts.
+- **The cast is skipped** when the camera's x and z are both 0.0 (00957CDA..00957D0A, the
+  `UCOMISS`/`LAHF`/`TEST AH,44h` not-equal idiom on each).
+- **The segment** (00957D10..00957D75): `to = camera + d*1000`. The 1000 is the 8-byte double
+  00CE47A0 (`FLD double`). `d` is 004B4D80's direction from the two angles.
+- **The call** (00957D79..00957DA0): 0042E630 gives the spatial index. `unit->vtable[20h]()` gives
+  the exclusion, then `0098ADD0(camera, to, exclusion, record, 0)`.
+  - The kind filter is 0, as in 009043A0.
+  - The exclusion is `[unit+360h]` through a different slot than 009043A0 uses. Slot 20h is 006D1E30
+    and slot B0h is 006D1DF0. Both are `MOV EAX,[ECX+360h]; RET` on all eleven unit vtables read
+    (00CFC3D0, 00D0BF80, 00D01630, 00CFB738, 00CFA778, 00CFFA30, 00CF90B0, 00D0C648, 00D06638,
+    00D06920, 00D09678). So the HUD form serves unchanged, and `SegmentQueryArgs` was not
+    extended.
+- **The hit** (00957DA5..00957DD2): with AL set and the hit's y above 0.0 (00D7A218, a 4-byte
+  float read by `COMISS`), the hit point is the aim point. It jumps to 009580AE, past both the
+  range sphere and the sea cut.
+- **No hit, or a hit at y <= 0**, falls through to the range-sphere point of section 2.
+
+### 6.2 The binding (switch `kPlayerGunSeatSegmentQueryBound`, committed OFF)
+
+- The body of `GameGunneryHost::query_segment_units` moved into the file-local
+  `query_segment_units_impl(Impl&, ...)`. The public entry delegates to it unchanged, so the HUD's
+  contract (section 4 of docs/HUD_PICK_SEGMENT_QUERY.md) is untouched.
+- `apply_gun_aim_message` casts when there is no target and the camera is off x = z = 0, with
+  exclude = the seat unit (one based).
+- **Once per message, not per gun.** The inputs do not depend on the gun, and the query is pure:
+  it restores the two trace counters and draws no random number.
+- A hit with y > 0 replaces every kept gun's aim point, skipping the range sphere and the sea cut.
+- **Substitutions (labelled in the code):**
+  - The world's spatial index is this host's units (`SegmentBinding`: ship meshes or hull
+    extents). There are no islands and no terrain.
+  - The excluded `[unit+360h]` is the unit itself.
+- **Records:** OFF keeps `PlayerGunSeat::segment_query` as a record once per message. ON makes it
+  concrete once per cast.
+- **New summary line, printed on both sides:** `summary mission gunnery player seat segment
+  casts= hits= aims= bound=`. `hits` counts the query's hits, and `aims` counts those above y = 0.
+
+### 6.3 Predictions, written before the pair
+
+Two builds of this tree differing only by the switch, `BSP_GUNNERY_RNG_STREAMS=1`,
+`BSP_DEATH_TABLE=1`, E2 = USN04 9200/9000 and USN02 9200/9000.
+
+**USN02.** The seat takes no message there (`messages=0` in the previous worker's
+`af_on_usn02l.log`).
+- The segment line reads 0 / 0 / 0 on both sides.
+- The native table, the summaries and the per-entity tables are identical.
+- `PlayerGunSeat::segment_query` does not appear on either side.
+
+**E2, the records.**
+- `PlayerGunSeat::segment_query` goes from 18,158 UNIMPLEMENTED to 18,158 concrete. The idle player
+  never sets a target (no `target_intercept` row in `wt_on_e2.log`), and the camera is never at
+  x = z = 0.
+- `casts` equals the seat line's `messages`, about 17,997. Both are summarised at mission frame
+  9000.
+
+**E2, hits and aims.**
+- The idle ShipCaptain camera sits behind the Lexington, pitched -10 degrees (section 4). Its ray
+  crosses y = 0 a few hundred units ahead, so most of the 1000 units run under the sea.
+- The query has no sea, so a hit on an escort's hull below the waterline counts in `hits` but is not
+  an aim.
+- **Prediction:** `aims` is at most 10 percent of `casts`, and `hits >= aims`. A value of 0 is
+  plausible: nothing sits within a few hundred units ahead of the Lexington's bow above the water.
+
+**E2, the downstream lines.**
+- **If `aims` = 0:** the whole native table, every summary line and the per-entity death table are
+  identical, except the segment_query row's status and the unimplemented total. That total falls by
+  exactly 18,158.
+- **If `aims` > 0:** only the seat line's `handovers`, `returns` and `held_ticks` may move first.
+  Through the held set, the AA shots, hit records and deaths may also move. Deaths stay within 3,
+  and `trigger_ticks` stays 0 (the idle player never holds 99h).
+- **Would falsify the binding:**
+  - any moved line with `aims` = 0;
+  - `casts` differing from `messages` by more than the 161 late messages;
+  - `trigger_ticks` above 0;
+  - a moved line on USN02.
