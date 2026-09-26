@@ -9440,3 +9440,145 @@ parameters, `BSP_GUNNERY_RNG_STREAMS` unset. Log: `local\sR3_usn02.log`.
 
 Houston and Exeter survive, so the mission does not fail. Details:
 docs/SURFACE_GUNNERY_REFERENCE.md section 8.
+
+## Mission reference baselines, 2026-09-26 (main fad22c424)
+
+**These rows are the current reference for all four missions.** Packet
+`cc9_reference_rebaseline_1`.
+
+**Run parameters:**
+- one binary, `local\rb`, built from main `fad22c424` with every switch in its landed state;
+- `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1`, idle player, one run per mission, queued
+  one at a time through `tools/run_game.ps1`;
+- every log shows `window resolution override fit: 2560x1440 -> 1600x900 (monitor 1920x1080,
+  index kept 24)` and `module directory ...\local\rb\`;
+- every run exited 0 with all its mission steps (`fixed steps` equal to the mission frames) and
+  one skipped Present.
+
+A device-lost exit 1 with every mission step complete would **not** be a rejection. None
+occurred here. The older `local\rb_usn0*.log` files from 2026-09-23 were overwritten; each log
+used here is dated 2026-09-25 21:16..21:57.
+
+Killing categories are the gunnery categories: 0 fighter forward guns, 1 AA machine gun,
+2/3 artillery, 5 flak, 6 dual-purpose, 7 torpedo, and -1 no attacker (the depth kill, see
+`docs/E2_UNATTRIBUTED_DEATHS.md`).
+
+Sides: ships take the party of their `GenerateObject` line. A carrier squadron (`..._sqn..`)
+takes its carrier's side. The A6M, D3A, B5N, movieval and Mavis flights are IJN. USN02's ships
+are sided from the mission's order of battle, because they are not created through
+`GenerateObject`.
+
+| mission | frames | damage | deaths (side) | deaths by category | hit records (hull) | shots | first hit | torpedo drops / torpedo-task releases | bomb drops / dive-bomb releases | plane water contacts | controlled moved | mission end | unimplemented | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 mission | 6801.7 | 32 (32 IJN) | 0: 9, 1: 10, 5: 2, 6: 9, -1: 2 | 476 (211) | 3918 | 99.00 s | 2 / 6 of 16 | 0 / 0 of 19 | 15 | Lexington 3416.06 m | none | 546 | `local\rb_usn04.log` |
+| USN01 | 3000 mission | 2250.0 | 5 (5 IJN) | 1: 4, 5: 1 | 126 (75) | 373 | 55.70 s | 1 / 4 of 5 | 0 / 0 of 2 | 3 | Airfield2 0.00 | none | 464 | `local\rb_usn01.log` |
+| USN04 (E2) | 9000 mission | 7739.4 | 39 (37 IJN, 2 US) | IJN 0: 9, 1: 11, 5: 3, 6: 12, -1: 2; US -1: 2 | 553 (213) | 5047 | 99.00 s | 2 / 6 of 16 | 0 / 0 of 19 | 19 | Lexington 6648.23 m | none | 559 | `local\rb_e2.log` |
+| USN02 | 9000 mission | 81173.2 | 22 (14 Allied, 8 IJN) | 7: 10, 3: 6, 6: 5, 2: 1 | 769 (389) | 1215 | 30.40 s | - | - | 0 | DeRuyter 1963.94 m | **failed at 44.60 s** ("Game Over", entity Jupiter) | 507 | `local\rb_usn02.log` |
+
+USN02's rounds hitting a unit / water / expired: 389 / 735 / 359. USN01's five deaths are the
+Mavis flying boats Mav5 (64.70 s, SaltLakeCity), Mav3 (67.40 s, Northampton), Mav4 (67.85 s,
+SaltLakeCity), Mav2 (71.45 s, Northampton, flak burst) and Mav1 (81.05 s, Dunlap).
+
+### USN02 deaths
+
+| victim | side | time | killer | category | blast | range |
+| --- | --- | --- | --- | --- | --- | --- |
+| DeRuyter | Allied | 30.40 s | Jintsu | 7 | 1 | 2436 |
+| Alden | Allied | 34.50 s | Minegumo | 7 | 1 | 2884 |
+| Exeter | Allied | 43.45 s | Hatsukaze | 7 | 1 | 4124 |
+| Perth | Allied | 46.65 s | Hatsukaze | 7 | 1 | 4264 |
+| Kortenaer | Allied | 91.20 s | Haguro | 3 | 1 | 1078 |
+| Minegumo | IJN | 119.50 s | Houston | 3 | 0 | 2031 |
+| Electra | Allied | 130.15 s | Harusame | 6 | 0 | 1137 |
+| Jupiter | Allied | 140.80 s | Kawakaze | 7 | 1 | 1724 |
+| Java | Allied | 151.40 s | Haguro | 7 | 1 | 326 |
+| Kawakaze | IJN | 159.21 s | Witte | 6 | 0 | 1548 |
+| Witte | Allied | 159.81 s | Kawakaze | 7 | 1 | 1540 |
+| John1 | Allied | 175.06 s | Tokitsukaze | 7 | 1 | 5203 |
+| Yudachi | IJN | 175.76 s | Houston | 3 | 0 | 2070 |
+| John3 | Allied | 190.76 s | Haguro | 7 | 1 | 3755 |
+| Samidare | IJN | 202.01 s | Houston | 3 | 0 | 2127 |
+| Houston | Allied | 225.11 s | Jintsu | 7 | 1 | 1289 |
+| Murasame | IJN | 229.46 s | Houston | 3 | 1 | 1694 |
+| Harusame | IJN | 263.71 s | Encounter | 6 | 1 | 1632 |
+| Jintsu | IJN | 276.11 s | Encounter | 6 | 0 | 1633 |
+| Encounter | Allied | 324.29 s | Haguro | 3 | 0 | 1888 |
+| Yukikaze | IJN | 339.54 s | John2 | 2 | 0 | 335 |
+| John2 | Allied | 372.73 s | Yamakaze | 6 | 0 | 889 |
+
+### E2 deaths
+
+| victim | side | time | killer | category | blast | range |
+| --- | --- | --- | --- | --- | --- | --- |
+| A6M Zero #4.2 | IJN | 88.45 s | - | -1 | 0 | -1 |
+| D3A Val #1.1 | IJN | 99.25 s | Lexington-class01_sqn01 | 0 | 0 | 473 |
+| D3A Val #1.1 | IJN | 1 | 99.55 s | Lexington-class01_sqn01 | .-2 | 0 |
+| D3A Val #1.1 | IJN | 1 | 102.95 s | Lexington-class01_sqn01 | .-3 | 0 |
+| D3A Val #1.1 | IJN | 1 | 103.15 s | Lexington-class01_sqn01 | .-2 | 0 |
+| B5N Kate #2.1 | IJN | 1 | 124.85 s | Fletcher-class01 | 6 | 1 |
+| B5N Kate #2.1 | IJN | 125.00 s | Fletcher-class03 | 1 | 0 | 825 |
+| B5N Kate #2.1 | IJN | 1 | 126.80 s | Fletcher-class03 | 1 | 0 |
+| B5N Kate #4.1 | IJN | 1 | 128.80 s | Fletcher-class05 | 6 | 1 |
+| B5N Kate #2.1 | IJN | 1 | 129.25 s | Lexington-class01 | 6 | 1 |
+| B5N Kate #4.1 | IJN | 131.90 s | Fletcher-class05 | 1 | 0 | 385 |
+| movieval | IJN | 1 | 145.70 s | Lexington-class01 | 1 | 0 |
+| D3A Val #5.1 | IJN | 1 | 146.10 s | Lexington-class01_sqn01 | .-2 | 0 |
+| B5N Kate #4.1 | IJN | 1 | 147.30 s | Fletcher-class05 | 1 | 0 |
+| D3A Val #5.1 | IJN | 1 | 148.45 s | Lexington-class01_sqn01 | .-2 | 0 |
+| B5N Kate #4.1 | IJN | 1 | 148.75 s | Fletcher-class08 | 6 | 1 |
+| movieval | IJN | 153.05 s | Northampton-class02 | 6 | 1 | 1064 |
+| movieval | IJN | 1 | 158.16 s | York-class01 | 6 | 1 |
+| D3A Val #5.1 | IJN | 1 | 166.91 s | Lexington-class01_sqn03 | .-2 | 0 |
+| A6M Zero #8.2 | IJN | 168.41 s | - | -1 | 0 | -1 |
+| D3A Val #5.1 | IJN | 173.86 s | Lexington-class01_sqn03 | .-2 | 0 | 0 |
+| D3A Val #3.1 | IJN | 182.26 s | Fletcher-class08 | 6 | 1 | 1359 |
+| D3A Val #3.1 | IJN | 1 | 196.36 s | Northampton-class03 | 1 | 0 |
+| D3A Val #3.1 | IJN | 1 | 198.31 s | Northampton-class03 | 1 | 0 |
+| B5N Kate #6.1 | IJN | 1 | 204.71 s | Lexington-class01 | 5 | 1 |
+| B5N Kate #8.1 | IJN | 1 | 206.01 s | Yorktown-class01 | 5 | 1 |
+| B5N Kate #6.1 | IJN | 206.21 s | Lexington-class01 | 6 | 1 | 865 |
+| B5N Kate #6.1 | IJN | 1 | 209.46 s | Lexington-class01 | 1 | 0 |
+| B5N Kate #8.1 | IJN | 209.46 s | Fletcher-class05 | 6 | 1 | 547 |
+| B5N Kate #8.1 | IJN | 1 | 212.31 s | Northampton-class03 | 1 | 0 |
+| B5N Kate #6.1 | IJN | 1 | 212.56 s | Lexington-class01_sqn03 | .-2 | 0 |
+| B5N Kate #8.1 | IJN | 1 | 215.11 s | Northampton-class03 | 1 | 0 |
+| D3A Val #7.1 | IJN | 1 | 266.46 s | Yorktown-class01 | 5 | 1 |
+| D3A Val #7.1 | IJN | 1 | 273.21 s | Northampton-class03 | 6 | 1 |
+| D3A Val #7.1 | IJN | 278.16 s | Northampton-class03 | 6 | 1 | 904 |
+| D3A Val #3.1 | IJN | 1 | 278.56 s | Northampton-class03 | 1 | 0 |
+| D3A Val #7.1 | IJN | 1 | 284.90 s | Fletcher-class05 | 6 | 1 |
+| Lexington-class01_sqn01 | IJN | 0 | 432.07 s | - | -1 | 0 |
+| Lexington-class01_sqn01 | US | 432.82 s | - | -1 | 0 | -1 |
+
+### Against the 2026-09-24 sections, and what moved each row
+
+The comparison rows are the "after the player role bookkeeping" section (USN04, USN01, E2:
+`local\RB1_*`, main `35a065629`, streams on) and the 2026-09-24 USN02 row (`local\sR3_usn02.log`,
+build `local\hT`, **streams unset**).
+
+| mission | row | 2026-09-24 | now | moved by |
+| --- | --- | --- | --- | --- |
+| USN04 | deaths | 27 | 32 | +2 through the flight and dogfight landings, since the muzzle pair's OFF side on main 2026-09-25 reads 29 (`docs/MUZZLE_OFFSETS.md` 6); +1 more before the gun-sign pair's base (30, `docs/GUN_HORZ_SIGN.md` 5); **+2 not attributed by any pair**, landed between the sign pair's tree (`51e22e56d`) and the recon pair's (32, `docs/RECON_TEAM_LISTS.md` 4). The candidates are the bullet throw, the AABB line of fire, the torpedo gyro and the terrain-arm side gate, none measured on USN04. |
+| USN04 | damage / hit records | 6252.5 / 474 | 6801.7 / 476 | hit records within the same pairs' noise (445..476); damage follows the extra deaths |
+| USN04 | torpedo drops | 0 | 2 | the attack-run probe and planner heading writes (`docs/ATTACKRUN_SQUADRON_PROBE.md`, `docs/PLANNER_HEADING_WRITES.md`): Kates now reach their release |
+| USN04 | plane water contacts | 13 | 15 | the flight integrator and throttle landings (`docs/FLIGHT_INTEGRATOR.md`) |
+| USN04 | controlled moved / first hit | 3424.02 m / 99.05 s | 3416.06 m / 99.00 s | noise-level; the first hit moves with the muzzle offsets |
+| USN01 | hit records | 135 | 126 | **not attributed by a pair**; USN01 has not been paired since the gunnery landings. Candidates: the muzzle offsets, the bullet throw and the gun sign on the Mavis AA engagements |
+| USN01 | torpedo drops | 2 | 1 | **not attributed by a pair**; the planner and attack-run landings changed the torpedo flow on E2 (`docs/E2_RELEASE_BISECT.md`), unmeasured on USN01 |
+| USN01 | damage, deaths, first hit | 2250.0, 5, 55.65 s | 2250.0, 5, 55.70 s | unchanged (first hit +0.05 s, the muzzle origin) |
+| E2 | deaths | 35 | 39 | +2 IJN through the flight and dogfight landings (37 on main `27f082d38`, `docs/FIGHTER_GUNFIRE_CONSUMER.md` 2); +1 the AABB line of fire and +1 the bullet throw (37 -> 38 each, `docs/AABB_0085CDB0.md`, `docs/BULLET_THROW.md` 5); **+2 US**: Lexington-class01_sqn01 and its `.-3` depth-killed at 432.07 / 432.82 s. That is the class the flight integrator and throttle docs record (`docs/FLIGHT_INTEGRATOR.md`, US fighter depth kills 0 -> 1; `docs/DOGFIGHT_THROTTLE_RETAKE.md`), at a count **above** those docs' measure |
+| E2 | hit records | 584 | 553 | the flight and dogfight landings (569 on `27f082d38`), then the AABB line of fire (-8) and the bullet throw (+67 on its own base); the net is not separable from these pairs |
+| E2 | fighter kills | not in the 2026-09-24 section (no death table there) | 9, including B5N Kate #6.1\|.-4 at 212.56 s (`Lexington-class01_sqn03\|.-2`) | the fighter lead and dogfight landings (`docs/FIGHTER_GUN_LEAD.md`, `docs/DOGFIGHT_MANEUVER_BODIES.md`); the Kate kill is the first seen |
+| E2 | torpedo drops / plane water contacts | 0 / 15 | 2 / 19 | as USN04: the attack-run and planner landings, and the flight integrator (the two US depth kills are among the 19) |
+| E2 | controlled moved | 6880.79 m | 6648.23 m | the carrier's path under the moved air battle; not attributed to one landing |
+| USN02 | mission end | none | **failed at 44.60 s** | the torpedo run-line steer (`kTorpedoGyroHeadingBound`, `docs/USN02_SAMESIDE_TORPEDOES.md` 5.1): Exeter and Perth die to the opening IJN salvos at 43.45 and 46.65 s |
+| USN02 | deaths | 17 (3 Allied, 14 IJN) | 22 (14 Allied, 8 IJN) | the same steer (16 -> 21 on its pair); the other +1 is Yukikaze (339.54 s, by John2), which survived that pair's ON run; it arrives after that tree, with the AABB and recon landings |
+| USN02 | shots / hit records / first hit | 1527 / 975 / 37.85 s | 1215 / 769 / 30.40 s | the gun sign (shots 1412 -> 1155), the muzzle offsets and bullet throw (hits), the steer (first hit 30.40 s is DeRuyter's torpedo) |
+| USN02 | parameters | streams unset | streams on | **a parameter change**: the 2026-09-24 USN02 row predates `BSP_GUNNERY_RNG_STREAMS=1`, so part of every USN02 move is the stream change, not a landing |
+
+**Unimplemented totals** (546, 464, 559, 507) were not recorded in the 2026-09-24 sections, so
+they are a first reading, not a comparison.
+
+**Flagged, not attributed by a measured pair:** USN04 deaths +2 (between `51e22e56d` and
+`a6a77c147`); USN01 hit records -9 and torpedo drops -1; E2 US fighter depth kills 2 against the
+documented 0 to 1. USN01 needs its own pair on the next gunnery landing.
