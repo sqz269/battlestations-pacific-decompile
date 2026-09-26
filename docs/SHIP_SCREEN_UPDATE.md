@@ -2030,3 +2030,54 @@ control.
   - it is not a host bug in the pick.
 
   Only the named commit is withdrawn.
+
+## 42. The Lexington's path: f7de926f4 after all, through both of its switches (cc9-platform2, 2026-09-25)
+
+Packet `cc9_lexington_path_bisect`, following section 41.
+
+**No unswitched random draw.** I read the diffs of f7de926f4 and 7dd40497c looking for code outside a
+constexpr switch that draws from 00BD2F10, or anything else unswitched that could move the
+simulation.
+- f7de926f4's new state (`torpedo_ar_*`) seeds its countdown at the midpoint of -U(0,1) (-0.5)
+  instead of drawing. `torpedo_attack_run_heading_009d07b0` is pure, and its callers sit under
+  `kPilotStateHeadingWritesBound`.
+- The `kPlannerModeCensusDiag` lines only count and print.
+- 7dd40497c's unswitched lines only fill two locals (the lead point and the snap angle) that its
+  switched gate reads.
+
+Neither commit consumes a draw, or changes behaviour, outside its switches.
+
+**What section 41 missed.** f7de926f4 made two behaviour changes in one hunk:
+- it added `kPilotStateHeadingWritesBound` (true);
+- it turned `kPlannerYawBaseModeGateBound` from **false to true** (`src/game_hosts_units.cpp`).
+
+The earlier diagnostics turned only one of the two off at a time. Only both off reproduces the tree
+before the commit.
+
+**The run.** Current main e9dd7b739 plus this branch (the new 1600x900 harness default), USN04
+4700/4500, `BSP_GUNNERY_RNG_STREAMS=1`, both sides built from the same tree:
+
+| build | yaw gate / heading writes | Lexington heading at 2880 / 3110 | `owner_140` |
+| --- | --- | ---: | ---: |
+| control `local\pb_ctl_usn04.log` | on / on | 27.689 / 19.075 | none |
+| `local\pb_both_usn04.log` | **off / off** | **27.694 / 37.223** | **524** |
+| section 41: `yb_off` | off / on | 27.689 / 19.075 | none |
+| section 41: `hdg_off` | on / off | 27.689 / 19.075 | none |
+| the picking tree (section 29) | off / (absent) | 27.694 / 37.220 | 662 |
+
+- With both switches off, the Lexington takes the picking tree's path: the frame-2880 moveto and
+  the 37.2-degree heading at 3110. Screen 29h picks again.
+- The remaining differences, 37.223 against 37.220 and 524 against 662, belong to landings after
+  f7de926f4.
+- Either switch alone, the other on, keeps the new path. So **each of f7de926f4's two behaviour
+  switches moves the Lexington's path by itself**.
+
+**Conclusion.**
+- Section 36's attribution to f7de926f4 stands. Section 41's withdrawal is itself withdrawn: its
+  single-switch diagnostics could not distinguish "the commit" from "one of its switches".
+- The mechanism is the planner. Its heading writes and yaw-base gate change the torpedo bombers'
+  flights, hence the AA engagement and the Val the Lexington's frame-2880 moveto aims at, and so the
+  ship's heading and the camera.
+- Nothing here is a host bug. The switches are the planner owner's and were landed on their own
+  measured pair (docs/PLANNER_HEADING_WRITES.md section 6). The Lexington's path, and with it
+  29h's picks, remains a knife-edge to judge only within one tree.
