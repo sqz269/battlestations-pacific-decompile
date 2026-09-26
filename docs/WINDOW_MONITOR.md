@@ -35,3 +35,34 @@ Probe 2026-09-25: `window monitor smallest = \.\DISPLAY3 1920x1080: origin -1920
 `window rect -1920,353 2576x1460`. The window keeps the size the game asks for (here the
 2560x1440 desktop-sized back buffer plus frame), so on a smaller monitor it overhangs to the
 right and bottom; the placement option does not resize it.
+
+## Resolution: `--window-resolution <WxH|fit>` (2026-09-25, same request)
+
+The options file on this machine asks for 2560x1440 windowed, so on a 1920x1080 screen the
+window overhung. The override is applied to the host's read view of the settings block right
+after the native loader has parsed and validated `options.txt`, so the window request, the
+present size and the back buffer all follow it while the file on disk and the native block
+keep their values (the file's resolution index is kept too; only the options screen shows it).
+
+- `WxH` sets the size outright.
+- `fit` keeps the file's size when its framed window (`AdjustWindowRectEx` with the windowed
+  style) fits the chosen monitor, else takes the largest of 3840x2160, 2560x1440, 1920x1080,
+  1600x900, 1366x768, 1280x720, 1024x576, 800x600, 640x480 whose framed window fits. On the
+  1920x1080 DISPLAY3 that is 1600x900 (a 1920x1080 client plus frame is 1936x1100).
+- Precedence as for the monitor: option, then `BSP_WINDOW_RESOLUTION`, then
+  `config/run_game.json` key `window_resolution` (this machine: `fit`), then the file.
+- The run logs `window resolution override <spec>: WxH -> WxH (monitor WxH, index kept N)`.
+
+Reference runs: the GUI extent (docs/GUI_EXTENT_INPUTS.md) is identical at every 16:9 mode, and
+no gameplay path reads the window size, so a 16:9 override should leave every gameplay row
+unchanged; a same-binary check is recorded below when taken. Logs carry the effective
+resolution in their `settings resolution=` line only before the override (the loader's line);
+the `window request` and `back_buffer` lines show the effective size.
+
+Same-binary check, 2026-09-25 (cc9 tree at the flips merge e69168f54, RNG streams on, USN04 4700/4500,
+both runs on DISPLAY3): `local\cc9_res_fit_usn04.log` (fit = 1600x900) against
+`local\cc9_res_2560_usn04.log` (`--window-resolution 2560x1440`). All 186 summary lines are
+identical except the `window request`, `window rect` and options-file `resolution=` lines; the
+census, gunnery, deaths and unimplemented-call rows match exactly. The fitted default therefore
+changes no reference row, and `settings resolution=` in a log names the file value while
+`window request` names the effective one.

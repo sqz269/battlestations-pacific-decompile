@@ -630,6 +630,22 @@ bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
                 return false;
             }
             window_monitor = argv[++index];
+        } else if (std::strcmp(argument, "--window-resolution") == 0) {
+            if (index + 1 >= argc) {
+                error = "--window-resolution needs <WxH|fit>";
+                return false;
+            }
+            window_resolution = argv[++index];
+            if (window_resolution != "fit") {
+                char* end = nullptr;
+                const long w = std::strtol(window_resolution.c_str(), &end, 10);
+                const bool x_ok = end && *end == 'x';
+                const long h = x_ok ? std::strtol(end + 1, &end, 10) : 0;
+                if (!x_ok || *end != '\0' || w < 320 || h < 200) {
+                    error = "--window-resolution needs <WxH|fit>";
+                    return false;
+                }
+            }
         } else if (std::strcmp(argument, "--window-origin") == 0) {
             if (index + 1 >= argc) {
                 error = "--window-origin needs X,Y";
@@ -677,12 +693,17 @@ long monitor_area(const RECT& r) {
 }
 }  // namespace
 
-bool resolve_window_origin(const std::string& spec, int& x, int& y, std::string& description) {
+bool resolve_window_origin(const std::string& spec, int& x, int& y, int& width, int& height,
+    std::string& description) {
     x = 0;
     y = 0;
+    width = 0;
+    height = 0;
     description.clear();
     if (spec.empty() || spec == "primary") {
         description = spec.empty() ? "unset (primary)" : "primary";
+        width = GetSystemMetrics(SM_CXSCREEN);
+        height = GetSystemMetrics(SM_CYSCREEN);
         return true;
     }
     const std::size_t comma = spec.find(',');
@@ -730,6 +751,8 @@ bool resolve_window_origin(const std::string& spec, int& x, int& y, std::string&
     }
     x = chosen->rect.left;
     y = chosen->rect.top;
+    width = chosen->rect.right - chosen->rect.left;
+    height = chosen->rect.bottom - chosen->rect.top;
     description = spec + " = " + chosen->name + " " + std::to_string(chosen->rect.right - chosen->rect.left) +
         "x" + std::to_string(chosen->rect.bottom - chosen->rect.top) + (chosen->primary ? " primary" : "");
     return true;
@@ -1303,6 +1326,26 @@ struct GameStartupHost::InputServices {
 GameStartupHost::GameStartupHost(GameHostLog& log, HINSTANCE instance,
     const GameExecutableOptions& options, GameNativeReadOnlyData* native_data)
     : log_(log), instance_(instance), options_(options), native_data_(native_data) {
+    {
+        // Harness only: the screen the window opens on (GameExecutableOptions::window_monitor).
+        std::string spec = options_.window_monitor;
+        if (spec.empty()) {
+            char env[256]{};
+            if (GetEnvironmentVariableA("BSP_WINDOW_MONITOR", env, sizeof(env)) > 0) spec = env;
+        }
+        std::string description;
+        if (resolve_window_origin(spec, window_origin_x_, window_origin_y_, window_monitor_width_,
+                window_monitor_height_, description)) {
+            window_monitor_note_ = "window monitor " + description + ": origin " +
+                std::to_string(window_origin_x_) + "," + std::to_string(window_origin_y_);
+        } else {
+            window_origin_x_ = 0;
+            window_origin_y_ = 0;
+            window_monitor_width_ = GetSystemMetrics(SM_CXSCREEN);
+            window_monitor_height_ = GetSystemMetrics(SM_CYSCREEN);
+            window_monitor_note_ = "window monitor '" + spec + "' not honoured: " + description;
+        }
+    }
     auto singletons = std::make_unique<GameSingletonHost>(log_);
     // Represented CRT table order: CE2BAC -> CCD6A0 precedes CE3054 -> CD2D80.
     // Keep context/publication cells alive if later source construction fails.
@@ -1765,6 +1808,60 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
     auto& settings_host = *settings_host_;
     settings_host.load();
     settings_host.copy_read_view(settings_view_);
+    {
+        // Harness only: --window-resolution <WxH|fit> (GameExecutableOptions::window_resolution).
+        // Applied to the host's read view only, after the native loader validated the file, so
+        // the window request, the present size and the back buffer follow it. The file's
+        // resolution index is kept: only the options screen would show it.
+        std::string spec = options_.window_resolution;
+        if (spec.empty()) {
+            char env[64]{};
+            if (GetEnvironmentVariableA("BSP_WINDOW_RESOLUTION", env, sizeof(env)) > 0) spec = env;
+        }
+        if (!spec.empty()) {
+            auto& file = settings_view_.options_file;
+            const int before_w = file.width_14;
+            const int before_h = file.height_18;
+            int after_w = before_w;
+            int after_h = before_h;
+            if (spec == "fit") {
+                RECT frame{0, 0, 0, 0};
+                AdjustWindowRectEx(&frame, WS_CAPTION, FALSE, WS_EX_WINDOWEDGE | WS_EX_CLIENTEDGE);
+                const int frame_w = frame.right - frame.left;
+                const int frame_h = frame.bottom - frame.top;
+                const bool fits = before_w + frame_w <= window_monitor_width_ &&
+                    before_h + frame_h <= window_monitor_height_;
+                if (!fits && window_monitor_width_ > 0 && window_monitor_height_ > 0) {
+                    static constexpr int kCandidates[][2] = {
+                        {3840, 2160}, {2560, 1440}, {1920, 1080}, {1600, 900}, {1366, 768},
+                        {1280, 720}, {1024, 576}, {800, 600}, {640, 480}};
+                    after_w = 640;
+                    after_h = 480;
+                    for (const auto& c : kCandidates) {
+                        if (c[0] + frame_w <= window_monitor_width_ && c[1] + frame_h <= window_monitor_height_) {
+                            after_w = c[0];
+                            after_h = c[1];
+                            break;
+                        }
+                    }
+                }
+            } else {
+                char* end = nullptr;
+                after_w = static_cast<int>(std::strtol(spec.c_str(), &end, 10));
+                after_h = static_cast<int>(std::strtol(end + 1, nullptr, 10));
+            }
+            if (after_w != before_w || after_h != before_h) {
+                file.width_14 = after_w;
+                file.height_18 = after_h;
+                log_.notef("window resolution override %s: %dx%d -> %dx%d (monitor %dx%d, index kept %d)",
+                    spec.c_str(), before_w, before_h, after_w, after_h, window_monitor_width_,
+                    window_monitor_height_, file.resolution_index_78);
+            } else {
+                log_.notef("window resolution override %s: %dx%d kept (monitor %dx%d)", spec.c_str(),
+                    before_w, before_h, window_monitor_width_, window_monitor_height_);
+            }
+        }
+    }
     if (command_line.fixed_frame_rate)
         enable_fixed_published_native_frame_clock(require_frame_clock_context(), 50);
     log_.implemented("Phase 5 load_game_settings", "008d8190");
@@ -1866,23 +1963,8 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         request.renderer_option);
 
     window_host_ = new GameWindowHost(log_, instance_);
-    {
-        // Harness only: the screen the window opens on (GameExecutableOptions::window_monitor).
-        std::string spec = options_.window_monitor;
-        if (spec.empty()) {
-            char env[256]{};
-            if (GetEnvironmentVariableA("BSP_WINDOW_MONITOR", env, sizeof(env)) > 0) spec = env;
-        }
-        int origin_x = 0;
-        int origin_y = 0;
-        std::string description;
-        if (resolve_window_origin(spec, origin_x, origin_y, description)) {
-            window_host_->set_origin(origin_x, origin_y);
-            log_.notef("window monitor %s: origin %d,%d", description.c_str(), origin_x, origin_y);
-        } else {
-            log_.notef("window monitor '%s' not honoured: %s", spec.c_str(), description.c_str());
-        }
-    }
+    window_host_->set_origin(window_origin_x_, window_origin_y_);
+    log_.note(window_monitor_note_.c_str());
     summary_.window_created = configure_platform_window_00becee0(*window_host_, request,
         platform_, renderer_request_);
     if (summary_.window_created) {

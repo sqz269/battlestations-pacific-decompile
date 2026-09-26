@@ -336,6 +336,7 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previous_instance, LPSTR comman
             " [--game-root <dir>] [--settings-personal-root <dir>] [--vfs-probe <virtual path>]"
             " [--press-start-frame N] [--menu-select <mission id>] [--mission-frames N]"
             " [--window-monitor <n|primary|smallest|largest>] [--window-origin X,Y]"
+            " [--window-resolution <WxH|fit>]"
             " [--mission-complete-frame N]"
             " [--order throttle=<f>,rudder=<f> | --order <command>[:<entity>]"
             " | --order <command>=<x>,<z>]"

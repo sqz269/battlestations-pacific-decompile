@@ -167,6 +167,13 @@ struct GameExecutableOptions {
     // translation (the primary monitor). A monitor index is 1-based in EnumDisplayMonitors
     // order. Unknown specs are an error; an index past the last monitor is an error.
     std::string window_monitor;
+    // --window-resolution <WxH|fit>: harness override of the options file's resolution, applied
+    // to the host's read view after the native loader has parsed and validated the file, so
+    // the window, the present size and the back buffer follow it while the file on disk and
+    // the native block stay as they are. `fit` shrinks a request that does not fit the chosen
+    // monitor to the largest common 16:9 size whose framed window fits. Empty falls back to
+    // BSP_WINDOW_RESOLUTION, then to the file's value.
+    std::string window_resolution;
     // Optional absolute library selections, resolved before --game-root changes
     // CWD. Empty DLL paths select the original names in the current game root.
     std::wstring fmod_dll;
@@ -658,6 +665,14 @@ private:
     GameHostLog& log_;
     HINSTANCE instance_{};
     GameExecutableOptions options_;
+    // Harness window placement, resolved once in the constructor from options_.window_monitor
+    // (or BSP_WINDOW_MONITOR): the origin GameWindowHost translates by, and the chosen
+    // monitor's size for the `fit` resolution override. See docs/WINDOW_MONITOR.md.
+    int window_origin_x_{};
+    int window_origin_y_{};
+    int window_monitor_width_{};
+    int window_monitor_height_{};
+    std::string window_monitor_note_;
     // The entrypoint retains adopted numeric data beyond this host's drain.
     GameNativeReadOnlyData* native_data_{};
 

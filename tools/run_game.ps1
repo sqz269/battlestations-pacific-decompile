@@ -48,9 +48,16 @@ $GameArgs = @($GameArgs | Where-Object { $_ -ne '--' })
 # as --window-monitor unless the caller passed --window-monitor or --window-origin, or set
 # BSP_WINDOW_MONITOR (which the executable reads itself). See docs/WINDOW_MONITOR.md.
 $runDefaults = Join-Path $PSScriptRoot '..\config\run_game.json'
-if (-not $env:BSP_WINDOW_MONITOR -and -not @($GameArgs | Where-Object { $_ -match '^--window-(monitor|origin)$' }) -and (Test-Path $runDefaults)) {
-    $windowMonitor = (Get-Content $runDefaults -Raw | ConvertFrom-Json).window_monitor
-    if ($windowMonitor) { $GameArgs = @('--window-monitor', "$windowMonitor") + $GameArgs }
+if (Test-Path $runDefaults) {
+    $runDefaultValues = Get-Content $runDefaults -Raw | ConvertFrom-Json
+    if (-not $env:BSP_WINDOW_MONITOR -and -not @($GameArgs | Where-Object { $_ -match '^--window-(monitor|origin)$' })) {
+        $windowMonitor = $runDefaultValues.window_monitor
+        if ($windowMonitor) { $GameArgs = @('--window-monitor', "$windowMonitor") + $GameArgs }
+    }
+    if (-not $env:BSP_WINDOW_RESOLUTION -and -not @($GameArgs | Where-Object { $_ -eq '--window-resolution' })) {
+        $windowResolution = $runDefaultValues.window_resolution
+        if ($windowResolution) { $GameArgs = @('--window-resolution', "$windowResolution") + $GameArgs }
+    }
 }
 $owner = if ($env:BSP_AGENT) { $env:BSP_AGENT } else { Split-Path (Get-Location) -Leaf }
 
