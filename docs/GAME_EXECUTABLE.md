@@ -9599,3 +9599,12 @@ followed this section's base (`347ef9007`, `44631c067`, `da4ba1baf`). USN01's tw
 are US ScoutDauntless scouts shot down by Convoy2 at 124/130 s. Both flagged moves are
 attributed by elimination to the flight and dogfight merges, cascade-coupled; no single switch
 flips them. The next reference should be taken on current main.
+## Ship damage chain, 2026-09-26 (packets cc9_ship_fire_flooding, cc9_component_failures)
+
+Direct element hits now open the hull pass of 00826F10, so floods, fires, part hits and
+component-failure rolls run; docs/SHIP_FIRE_FLOODING.md and docs/COMPONENT_FAILURES.md.
+
+- **SteeringJam never starts from a hit.** The geometry parser files a `steering` element as
+  `body` (007273B1, 7 -> 9), while the ShipGlobals.Failures row keys on kind 7 with no remap
+  (0083E956 / 0083E97B) and so does the Damage.Sections row (0087CF7B). The Lua route to message
+  6Bh (008132C0, docs/UNIT_MESSAGE_ARMS.md) is the only producer this read found.
