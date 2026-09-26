@@ -123,6 +123,9 @@ struct GameBulletClassRow {
     // why a torpedo bomber releases low and slow. docs/TORPEDO_TICK.md.
     float max_water_hit_vel{0.0f};    // "MaxWaterHitVel", classDesc+0DCh
     float max_fall{0.0f};             // "MaxFall", behind classDesc+0ECh
+    // "HeadingTurn", classDesc+0E8h, degrees per second: 00857061's turn rate
+    // toward the commanded heading. Packet cc9_usn02_sameside_torpedoes.
+    float heading_turn{0.0f};
 };
 
 // One authored `DeviceClass` row, as the gun needs it.
@@ -253,6 +256,10 @@ struct GameProjectileRow {
     float life{0.0f};
     bool alive{false};
     bool swimming{false};             // past the water crossing, on the swim
+    // record+46Ch, the commanded world heading (atan2(x, z)) the launch command
+    // 007311B0 carries as `heading`; 10000 (00D0C310) means none, and the steer
+    // then holds the heading it swims on. Packet cc9_usn02_sameside_torpedoes.
+    float commanded_heading{10000.0f};
     // Packet cc8_torpedo_closest_approach. Tracked only while swimming: the
     // smallest horizontal distance this round reached to any unit of another
     // side, and when. Centre to centre - this host has no oriented hull box for

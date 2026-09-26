@@ -1,0 +1,127 @@
+{
+  "packet": "cc9_usn02_sameside_torpedoes",
+  "doc": "docs/USN02_SAMESIDE_TORPEDOES.md",
+  "answer": "Outcome (a). 008FFF20's launch command carries the gate's own run-line world heading (plus the TorpedoBot AngleErr jitter) as `heading`; 00856637 installs it as the torpedo's record+46Ch and 00857061 turns the swimming torpedo onto it at HeadingTurn deg/s. The host launched along the snapped tube heading and swam straight, up to pi/4 off the line the gate cleared, which is the geometry of all three same-side kills. Bound as kTorpedoGyroHeadingBound. Also 00927F10 bound (kPartySlotAiHeldBound, ON; the E2 pair is identical).",
+  "kills": [
+    {
+      "victim": "Amatsukaze",
+      "t": 127.95,
+      "shooter": "Hatsukaze",
+      "plat": 11,
+      "at_launch": "along 196 across 260 (53 deg off the gate line), crossed=0",
+      "impact_off_line_deg": 54
+    },
+    {
+      "victim": "Jintsu",
+      "t": 128.45,
+      "shooter": "Harusame",
+      "plat": 11,
+      "at_launch": "along 348 across -286, crossed=0",
+      "impact_off_line_deg": 47
+    },
+    {
+      "victim": "Haguro",
+      "t": 131.35,
+      "shooter": "Harusame",
+      "plat": 12,
+      "at_launch": "along 529 across -633, crossed=0",
+      "impact_off_line_deg": 47
+    }
+  ],
+  "steps": [
+    {
+      "address": "00900380",
+      "native": "0085ab50",
+      "function": "008fff20",
+      "rule": "the snapped heading bot+60h; trains the tube only"
+    },
+    {
+      "address": "00900506",
+      "native": "0042b260",
+      "function": "008fff20",
+      "rule": "the gate's run direction normalise(lead - (gun + 2*snap_deg*row2))"
+    },
+    {
+      "address": "00900513",
+      "native": "00bf701a",
+      "function": "008fff20",
+      "rule": "atan2(x, z) of that direction, stored at [S+24h] (00900526)"
+    },
+    {
+      "address": "00900830",
+      "native": "00bd2f10",
+      "function": "008fff20",
+      "rule": "jitter magnitude U(AngleErrMin, AngleErrMax) degrees"
+    },
+    {
+      "address": "0090083e",
+      "native": "00bd2fc0",
+      "function": "008fff20",
+      "rule": "jitter sign from bit 0 (AND AL,1 at 00900843); added to [S+24h] at 00900872"
+    },
+    {
+      "address": "00900912",
+      "native": "0072c970",
+      "function": "008fff20",
+      "rule": "the run value (distance / WaterTravelSpeed via 00852410); plain RET leaves its argument as 007311B0's third"
+    },
+    {
+      "address": "00900927",
+      "native": "007311b0",
+      "function": "008fff20",
+      "rule": "command(heading = [S+24h], value, unit), RET 0Ch"
+    },
+    {
+      "address": "0090093b",
+      "native": "0072ac20",
+      "function": "008fff20",
+      "rule": "parks the command at gun+41Ch for the fire"
+    },
+    {
+      "site": "00856637",
+      "rule": "BSP_TorpedoClass_CreateProjectile: record+46Ch = [cmd+4]; 00856614 stores 10000.0 without a command"
+    },
+    {
+      "site": "00857061",
+      "rule": "the steer turns toward record+46Ch at classDesc+0E8h HeadingTurn deg/s"
+    },
+    {
+      "address": "009006ee",
+      "native": "004f3730",
+      "function": "008fff20",
+      "rule": "the only friendly test: crossing with the fixed 1000 m run line; no look-ahead term, no second pass, no in-run friendly test"
+    }
+  ],
+  "ai_held": {
+    "routine": "00927F10 BSP_PartySlot_IsAiHeld: return byte [[[00E188A8]+18CCh+slot*4]+9], stdcall, RET 4",
+    "switch": "kPartySlotAiHeldBound (src/game_hosts_gunnery.cpp), through GameShipAiHost::session_participants()",
+    "pair": "E2 9000 local/ahO_e2.log vs local/ahT_e2.log: identical (0 of 834 gun rows, 38 deaths both)",
+    "decision": "ON"
+  },
+  "runs": {
+    "diagnostic": "local/stB_usn02.log (main c7a0d886e + diagnostics), window resolution override fit 2560x1440 -> 1600x900, exit 0"
+  },
+  "ghidra": "read-only",
+  "no_ghidra_function": [],
+  "pair": {
+    "env": "BSP_GUNNERY_RNG_STREAMS=1, BSP_DEATH_TABLE=1; window 1600x900",
+    "off": "local/gyO_usn02.log",
+    "on": "local/gyT_usn02.log",
+    "gyro_launches": "268, mean offset 28.4 deg",
+    "same_side_hits": "8 (3 kills) -> 0",
+    "torpedo_hits": "8 -> 20",
+    "hits": "603 -> 757",
+    "deaths": "16 -> 21",
+    "mission_end": "none -> failed at 44.60 s (Exeter and Perth torpedoed at 43-47 s)",
+    "houston": "dies 225.11 s (Jintsu torpedo)",
+    "verdicts": [
+      "launch offset 10..35: held",
+      "same-side 0..1: held",
+      "torpedo hits 8..25: held",
+      "deaths within 5: held (edge)",
+      "Houston/Exeter survive: failed"
+    ],
+    "open": "arcade bulletclasses.lua authors the IJN torpedo at WaterTravelSpeed 170.444 (realistic max 51.444); which table the image selects was not read",
+    "decision": "ON"
+  }
+}
