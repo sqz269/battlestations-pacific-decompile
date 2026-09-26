@@ -1,0 +1,108 @@
+{
+  "packet": "native_stock_xlive_5030_guards_cc10",
+  "status": "primary_verified_read_only_static_evidence_publication",
+  "publication_base": "e64ad38490e20c2c524faeb61c60e80d288cf239",
+  "document": "docs/NATIVE_STOCK_XLIVE_5030_GUARDS_CC10.md",
+  "module": {
+    "path": "C:/Windows/SysWOW64/xlive.dll",
+    "machine": "I386",
+    "size": 14303392,
+    "sha256": "79da26ab6b2dc25936c3354087de0ba41da1a8b62924972e9100c29b95d34385",
+    "preferred_image_base": "0x00400000",
+    "ordinal": 5030,
+    "forwarded": false,
+    "entry_RVA": "0xB4E6C",
+    "exclusive_end_RVA": "0xB51A2",
+    "ret4_RVA": "0xB519F",
+    "body_bytes": 822,
+    "body_sha256": "f78365978f5fc7a1d068feaf365148c5681d97275d34d34aa52c9005ff74662d",
+    "instructions": 200,
+    "complete_static_CFG": true,
+    "external_or_indirect_jumps": 0,
+    "actual_call_sites": 8,
+    "resolved_imports": 6
+  },
+  "guards": [
+    {"RVA": "0xB5099", "condition": "captured MSG pointer is null", "effect": "FALSE before MSG field or import"},
+    {"RVA": "0xB50A1", "condition": "current DWORD RVA633570 is zero", "effect": "FALSE before MSG field or import"},
+    {"RVA": "0xB50AD", "effect": "first MSG field read: message+4"},
+    {"RVA": "0xB5100", "condition": "message differs from current registered ID and wParam+8 differs from 0xE5", "effect": "FALSE without HWND read or import"},
+    {"RVA": "0xB510D/0xB5114", "condition": "unmatched message with wParam 0xE5 is neither 0x100 nor 0x104", "effect": "FALSE without HWND read or import"}
+  ],
+  "registered_message_route": {
+    "current_ID_RVA": "0x632E7C",
+    "wParam_0_1": "ImmAssociateContextEx(HWND,0,0/0x10), then TRUE",
+    "wParam_2": "ImmGetContext; nonnull context -> ImmNotifyIME -> reread current HWND at B50F2 -> ImmReleaseContext; then TRUE",
+    "other_wParam": "TRUE without import",
+    "producer": "RegisterWindowMessageA(PanEnableIme), return store at B65E8",
+    "producer_reachability_closed": false
+  },
+  "unmatched_E5_route": {
+    "message": ["0x100", "0x104"],
+    "first_import": "ImmGetVirtualKey(HWND)",
+    "key_0x17": "TRUE",
+    "key_0x19": "TRUE if current language WORD RVA632DA0 masked by 0x3FF equals 0x12",
+    "GetKeyState": {
+      "IAT_RVA": "0x1494",
+      "target_capture_RVA": "0xB5143",
+      "target_register": "EBX",
+      "IAT_reads_for_three_calls": 1,
+      "calls": ["0xB514B", "0xB5157", "0xB5163"],
+      "arguments": ["0x11", "0x10", "0x12"],
+      "schedule": "capture current IAT target once; all three calls use captured EBX",
+      "constant_modifier_key_rows": 23
+    }
+  },
+  "MSG_fields_read": ["HWND+0", "message+4", "wParam+8"],
+  "state": {
+    "slots": ["DWORD RVA633570", "DWORD RVA632E7C", "WORD RVA632DA0"],
+    "disk_values": "zero",
+    "live_values": "unobserved",
+    "relocated_references": 23,
+    "writer_windows": 6,
+    "explicit_guard_one_store": "0xB6A70",
+    "other_register_valued_guard_stores": ["0xB86BE", "0xB87B4", "0xB8928"],
+    "language_store_window": "0xB3C84..0xB3C8A",
+    "SDK_initialized_meaning_established": false,
+    "all_callers_or_indirect_mutations_closed": false
+  },
+  "prior_actual_case": {
+    "pumps": 2,
+    "focus_calls": 2,
+    "ordinal5030_calls": 0,
+    "conclusion": "no successful Peek result entered retrieved-message body; sent/internal processing is not excluded",
+    "ordinal5030_branch_or_live_state_credit": false
+  },
+  "evidence": {
+    "archive": "local/output/cc10_stock_5030_first_message_readiness/readiness_evidence.zip",
+    "size": 9876882,
+    "sha256": "7b9242c1dee88b397853460dc83bd45c31dfa15d83a0775fe711bd6fc8c4cace",
+    "rows": 57,
+    "members": 58,
+    "handoff_sha256": "76525ec36ffe2aa13839d7121db2e15fb60609426e957b25c4d10eee710b1601",
+    "readiness_sha256": "9f854029baba2b1aede0710529547c9bc04a906a6267bd09b1d51965b7c2f0ed",
+    "immutable_readiness_modified": false,
+    "publication_clarification": "B5143 captures GetKeyState IAT target once; B514B/B5157/B5163 call EBX"
+  },
+  "open_obligations": [
+    "genuine naturally retrieved MSG and actual field/lifetime evidence",
+    "qualified live state and any intervening writers",
+    "genuine normally returning import ABI",
+    "complete downstream MSG/window-procedure/payload and quiescence obligations",
+    "official pre-initialization API support remains unestablished"
+  ],
+  "limits": {
+    "new_runtime_or_DLL_load": 0,
+    "build_or_test": 0,
+    "CXX_or_production_changes": 0,
+    "SDK_initialization": 0,
+    "natural_window_fixture_design": 0,
+    "forced_posted_default_or_fabricated_MSG": 0,
+    "Ghidra_import_or_mutation": 0,
+    "BSP_native_function_credit": 0,
+    "BSP_native_byte_credit": 0,
+    "BSP_ledger_or_name_changes": 0,
+    "runtime_or_physical_loaded_image_proof": false,
+    "game_validation": false
+  }
+}
