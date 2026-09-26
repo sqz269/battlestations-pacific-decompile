@@ -321,7 +321,7 @@ constexpr bool kShipHullRepairBound = true;
 //    through GameGunneryHost::unit_failure_active. 0093C520 retires each
 //    failure after its seconds at rate 1.0 (priority 0). OFF: 0093BED0 is a
 //    record. Packet cc9_component_failures, docs/COMPONENT_FAILURES.md.
-constexpr bool kComponentFailureBound = false;
+constexpr bool kComponentFailureBound = true;
 //  * kKillCreditDamageGateBound: 0077CE60 writes the attribution block (the
 //    +2C4h attacker the kill credit 0091BDA0 names) only for a live victim and
 //    only when the hit's damage, 00470510 for a hull segment or 00470740 when
