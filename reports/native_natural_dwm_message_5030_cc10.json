@@ -1,0 +1,213 @@
+{
+  "packet": "cc10_natural_dwm_message_5030",
+  "status": "qualified_single_message_normal_return",
+  "evidence_class": "Win32 source composition with genuine explicit stock-profile ordinal call",
+  "native_BSP_function_credit": 0,
+  "native_BSP_byte_credit": 0,
+  "production_changes": false,
+  "new_tests": false,
+  "coherent_snapshot": "db3bf29a0c73b046700ce134436ec880c1df5552",
+  "inputs": {
+    "launch_inputs": 666,
+    "pins_unchanged": true,
+    "preparation_archive": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_natural_dwm_message_case_preparation/preparation_evidence.zip",
+      "size": 64590289,
+      "sha256": "f5fbb158ac7b0c8adecaa203b993c74de52c2387598224374e2653353217dbf5"
+    },
+    "launch_manifest": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_natural_dwm_message_case_preparation/before_run_inputs.json",
+      "size": 152674,
+      "sha256": "9cb0214f9da9314fc82f82b474b8028ed0ea1dfc64a35b25027f0eb8aaff5c3b"
+    },
+    "source": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_natural_dwm_message_case_preparation/probe.cpp",
+      "size": 25821,
+      "sha256": "bf0dceee03138666a8c17b8a8a1b4075697bdadf65f305c13bf00525b2b4fe44"
+    },
+    "controller": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_natural_dwm_message_case_preparation/run_once.py",
+      "size": 19780,
+      "sha256": "f3088014fafce103991ab3c26ff91203d591d60447c02e2bca9cea62a509eea8"
+    },
+    "executable": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_natural_dwm_message_case_preparation/natural-dwm-message-probe.exe",
+      "size": 456704,
+      "sha256": "c39008dd510a139274dde7407f0fad86889c1c19e88cc124b1214041b18433bd"
+    },
+    "embedded_manifest": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_natural_dwm_message_case_preparation/embedded_manifest.xml",
+      "size": 381,
+      "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df"
+    }
+  },
+  "runtime_archive": {
+    "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_natural_dwm_message_case_preparation/runtime_evidence.zip",
+    "size": 287420,
+    "sha256": "a980653a1c4717a7ff12afe3dd31fa646675e57bf0202d411f4bc5d616c3faaa"
+  },
+  "runtime_rows": 25,
+  "runtime_members": 26,
+  "actual": {
+    "parent": {
+      "pid": 45380,
+      "creation_filetime": 134348983859139404,
+      "image_path": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\local\\output\\cc10_natural_dwm_message_case_preparation\\natural-dwm-message-probe.exe"
+    },
+    "child": {
+      "pid": 35136,
+      "creation_filetime": 134348983859291177,
+      "image_path": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\local\\output\\cc10_natural_dwm_message_case_preparation\\natural-dwm-message-probe.exe"
+    },
+    "CIM_child": {
+      "pid": 35136,
+      "parent_pid": 45380,
+      "image_path": null,
+      "command_line": "\"J:\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\local\\output\\cc10_natural_dwm_message_case_preparation\\natural-dwm-message-probe.exe\" --fixture-child --bsp-native-data-handoff=00000194",
+      "creation_filetime": 134348983859291170,
+      "creation_utc": "2026-09-26T12:13:05.9291170Z"
+    },
+    "kernel_minus_CIM_creation_100ns": 7,
+    "parent_exit": 0,
+    "child_exit": 0,
+    "acquired_MSGs": 1,
+    "ordinal5030_attempts": 1,
+    "ordinal5030_normal_returns": 1,
+    "normalized_return": false,
+    "raw_numeric_BOOL_observed": false,
+    "focus_updates": 1,
+    "MSG": "MSG actual-Peek-output-before-admission address=001ae7f4 tid=27872 hwnd=02f52884 message=0000031f wParam=00000001 lParam=00000000 time=295250609 point=3952,941",
+    "MSG_post": "MSG after-real-delegation address=001ae7f4 tid=27872 hwnd=02f52884 message=0000031f wParam=00000001 lParam=00000000 time=295250609 point=3952,941",
+    "closure_complete": true,
+    "remaining_recorded_processes": 0
+  },
+  "observations": {
+    "MSG_before": [
+      "MSG actual-Peek-output-before-admission address=001ae7f4 tid=27872 hwnd=02f52884 message=0000031f wParam=00000001 lParam=00000000 time=295250609 point=3952,941"
+    ],
+    "MSG_after": [
+      "MSG after-real-delegation address=001ae7f4 tid=27872 hwnd=02f52884 message=0000031f wParam=00000001 lParam=00000000 time=295250609 point=3952,941"
+    ],
+    "admission": [
+      "ADMISSION acquired=1 accepted=1 owner_pid=35136 owner_tid=27872; actual owned live WM_PAINT or Boolean/zero-payload WM_DWMNCRENDERINGCHANGED only"
+    ],
+    "attempts": [
+      "ORDINAL5030 ATTEMPT 1 same_MSG=001ae7f4 source_counter_before=0"
+    ],
+    "returns": [
+      "ORDINAL5030 NORMAL_RETURN 1 zero_or_nonzero=0; raw numeric BOOL not exposed by unchanged bool API"
+    ],
+    "pump": [
+      "PUMP NORMAL_RETURN acquired=1 ordinal5030_attempts=1 ordinal5030_normal_returns=1 focus=1 source_attempt_counter=1; no branch or SDK-init inference"
+    ],
+    "teardown": [
+      "WINDOW TEARDOWN COMPLETE: destroyed, class unregistered, active projection null; no postdestroy SDK pump"
+    ],
+    "final": [
+      "NATURAL_MSG_CASE_COMPLETE outcome=QUALIFIED_MSG_NORMAL_RETURN acquired=1 ordinal5030_attempts=1 ordinal5030_normal_returns=1; profile retained to process exit, no native CRT or SDK shutdown credit"
+    ],
+    "file_records": [
+      "PROFILE file role=expected-stock requested=C:/Windows/SysWOW64/xlive.dll final_dos=\\\\?\\C:\\Windows\\SysWOW64\\xlive.dll final_nt=\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\xlive.dll volume=e8dcd6e0 fileid=0009000000155f68 size=0000000000da40a0 sha256=79da26ab6b2dc25936c3354087de0ba41da1a8b62924972e9100c29b95d34385",
+      "PROFILE file role=expected-msid requested=J:/PROG/battlestations-pacific-decompile-cc10-lua-reader-queries/local/output/cc10_local_live_redist_readiness/payload/msidcrl40.dll final_dos=\\\\?\\J:\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\local\\output\\cc10_local_live_redist_readiness\\payload\\msidcrl40.dll final_nt=\\Device\\HarddiskVolume16\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\local\\output\\cc10_local_live_redist_readiness\\payload\\msidcrl40.dll volume=12bda9c6 fileid=0001000000aac5ad size=0000000000109fa0 sha256=623cb6ca98e566357abbd0e76b15713921e1d7e1144c0c4f589a0407c7eff1ee",
+      "PROFILE file role=reported requested=J:\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\local\\output\\cc10_local_live_redist_readiness\\payload\\msidcrl40.dll final_dos=\\\\?\\J:\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\local\\output\\cc10_local_live_redist_readiness\\payload\\msidcrl40.dll final_nt=\\Device\\HarddiskVolume16\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\local\\output\\cc10_local_live_redist_readiness\\payload\\msidcrl40.dll volume=12bda9c6 fileid=0001000000aac5ad size=0000000000109fa0 sha256=623cb6ca98e566357abbd0e76b15713921e1d7e1144c0c4f589a0407c7eff1ee",
+      "PROFILE file role=mapped requested=\\\\?\\GLOBALROOT\\Device\\HarddiskVolume16\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\local\\output\\cc10_local_live_redist_readiness\\payload\\msidcrl40.dll final_dos=\\\\?\\J:\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\local\\output\\cc10_local_live_redist_readiness\\payload\\msidcrl40.dll final_nt=\\Device\\HarddiskVolume16\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\local\\output\\cc10_local_live_redist_readiness\\payload\\msidcrl40.dll volume=12bda9c6 fileid=0001000000aac5ad size=0000000000109fa0 sha256=623cb6ca98e566357abbd0e76b15713921e1d7e1144c0c4f589a0407c7eff1ee",
+      "PROFILE file role=reported requested=C:\\Windows\\System32\\xlive.dll final_dos=\\\\?\\C:\\Windows\\SysWOW64\\xlive.dll final_nt=\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\xlive.dll volume=e8dcd6e0 fileid=0009000000155f68 size=0000000000da40a0 sha256=79da26ab6b2dc25936c3354087de0ba41da1a8b62924972e9100c29b95d34385",
+      "PROFILE file role=mapped requested=\\\\?\\GLOBALROOT\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\xlive.dll final_dos=\\\\?\\C:\\Windows\\SysWOW64\\xlive.dll final_nt=\\Device\\HarddiskVolume3\\Windows\\SysWOW64\\xlive.dll volume=e8dcd6e0 fileid=0009000000155f68 size=0000000000da40a0 sha256=79da26ab6b2dc25936c3354087de0ba41da1a8b62924972e9100c29b95d34385"
+    ],
+    "identity_matches": [
+      "PROFILE identity match base=27500000 volume=12bda9c6 fileid=0001000000aac5ad",
+      "PROFILE identity match base=55d90000 volume=e8dcd6e0 fileid=0009000000155f68"
+    ],
+    "closes": [
+      "PROFILE closed role=mapped",
+      "PROFILE closed role=reported",
+      "PROFILE closed role=mapped",
+      "PROFILE closed role=reported",
+      "PROFILE closed role=expected-stock",
+      "PROFILE closed role=expected-msid"
+    ],
+    "ordinals": [
+      "PROFILE ordinal=43 address=275684f0 allocation=27500000 protection=00000020",
+      "PROFILE ordinal=5030 address=55e44e6c allocation=55d90000 protection=00000020",
+      "PROFILE ordinal=5030 address=55e44e6c allocation=55d90000 protection=00000020"
+    ],
+    "stock_snapshots": [
+      "STOCK STATE before-real-delegation guard=00000000 registered=00000000 language=0000; snapshots do not prove executed branch",
+      "STOCK STATE after-real-delegation guard=00000000 registered=00000000 language=0000; snapshots do not prove executed branch"
+    ]
+  },
+  "process_closure": {
+    "parent": {
+      "pid": 45380,
+      "creation_filetime": 134348983859139404,
+      "image_path": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\local\\output\\cc10_natural_dwm_message_case_preparation\\natural-dwm-message-probe.exe"
+    },
+    "child": {
+      "pid": 35136,
+      "creation_filetime": 134348983859291177,
+      "image_path": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\local\\output\\cc10_natural_dwm_message_case_preparation\\natural-dwm-message-probe.exe"
+    },
+    "parent_handle_signaled": true,
+    "child_handle_signaled": true,
+    "remaining_recorded_processes": 0,
+    "final_discovery_complete": true,
+    "closure_complete": true,
+    "child_identity_missing": false,
+    "actions": [],
+    "closure_error": null,
+    "cleanup_errors": [],
+    "hash_audit_errors": []
+  },
+  "controller_results": {
+    "fixture_launches": 1,
+    "acknowledged": true,
+    "timed_out": false,
+    "outcome": "QUALIFIED_MSG_NORMAL_RETURN",
+    "case_success": true,
+    "fixture_protocol_completed": true,
+    "qualified_message_normal_return": true,
+    "no_natural_message_inconclusive": false,
+    "errors": {
+      "error": null,
+      "cleanup_errors": [],
+      "capture_errors": [],
+      "hash_audit_errors": [],
+      "termination_actions": []
+    }
+  },
+  "independent_worker_audit": {
+    "all_666_pins_unchanged": true,
+    "actual_tool_output_equals_run": true,
+    "parent_child_zero_exit": true,
+    "exact_ack": true,
+    "retained_handles_signaled": true,
+    "final_discovery_closure": true,
+    "current_scoped_cim_empty": true,
+    "no_errors": true,
+    "qualified_actual_single_return": true,
+    "six_file_records_six_closes": true,
+    "single_actual_MSG_same_posttuple": true,
+    "single_teardown_final_marker": true,
+    "fault_log_empty": true
+  },
+  "current_scoped_process_audit": {
+    "utc": "2026-09-26T12:13:57.7602599Z",
+    "filter": "ProcessId = 45380 OR ProcessId = 35136 OR ParentProcessId = 45380",
+    "rows": [],
+    "read_only": true
+  },
+  "proof_qualification": [
+    "Normalized false only, raw numeric BOOL unavailable.",
+    "Guard zero snapshots before/after do not establish executed internal branch under mutation.",
+    "No SDK initialization, handled-true, native CRT/SDK shutdown, physical historical-image, ABI/EH or gameplay credit.",
+    "Post-owner/procedure/class/extra-byte and tuple checks passed by sequential active fixture progress to final marker; not separately logged measurements."
+  ],
+  "profile_retained_to_process_exit": true,
+  "SDK_initialization_or_shutdown_credit": false,
+  "message_producer_identified": false,
+  "stock_guard_branch_proven": false,
+  "actual_numeric_BOOL_observed": false,
+  "previous_case_immutable": true,
+  "no_retry_or_subsequent_case": true,
+  "documentation": "docs/NATIVE_NATURAL_DWM_MESSAGE_5030_CC10.md"
+}
