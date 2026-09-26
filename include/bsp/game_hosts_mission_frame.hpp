@@ -37,6 +37,18 @@ struct SceneRecord;
 
 namespace bsp::game {
 
+// Packet cc9_warning_manager_tick (docs/WARNING_MANAGER.md section 5): the two
+// report entries of the warning manager ([00F8A0C4], game+21E0h) that the ship
+// AI's warning timer 009DA8D0 calls on [brain+AA8h]. `unit` is the zero-based
+// unit index. Both are no-ops before a mission frame host exists, and neither
+// touches a gunnery or ship-AI summary counter.
+// 00977690 BSP_WarningManager_ReportTorpedo(this, entity): the guards, then a
+// "torpedo" warning through 00974150 and 009763E0.
+void game_warning_report_torpedo_00977690(std::size_t unit);
+// 00977820(this, entity): a 30 s per-entity cooldown on 00975D00's record, then a
+// point effect (this+190h) parented to entity+4A4h.
+void game_warning_torpedo_effect_00977820(std::size_t unit);
+
 class GameHostLog;
 class GameVfsHost;
 class GameMissionLuaHost;

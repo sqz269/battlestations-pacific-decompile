@@ -35,6 +35,7 @@
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/game_hosts_trajectory.hpp"
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/mission_events.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/game_hosts_world.hpp"
 #include "bsp/award_trackers.hpp"
@@ -60,6 +61,7 @@
 #include <cstdint>
 #include <cstdio>
 #include <cstring>
+#include <map>
 #include <string>
 #include <vector>
 
@@ -93,6 +95,15 @@ void format_address(std::uint32_t value, char (&out)[16]) {
 // ---------------------------------------------------------------------------
 // Impl
 // ---------------------------------------------------------------------------
+
+// Packet cc9_warning_manager_tick (docs/WARNING_MANAGER.md). True: the
+// warning manager's per-frame calls from 00987590 run as the image's routines
+// under their own names (00982540 the input channel pump, 0096D540 the prompt
+// poll, 00968550 the deadlines), the 4 s accumulator takes the director's own
+// argument (0098759E FLD [EBP+8]), and 00977990 is reached as a named record.
+// False: the three calls are records under the old MissionEvents names and the
+// accumulator reads the world state's never-written delta.
+constexpr bool kWarningManagerTickBound = false;
 
 struct GameMissionFrameHost::Impl {
     Impl(GameHostLog& log_in, GameVfsHost& vfs_in, GameMissionLuaHost& lua_in,
@@ -157,6 +168,15 @@ struct GameMissionFrameHost::Impl {
     int script_reentry_depth{0};              // game+644h
     std::int32_t published_mission_id{0};     // [00f8a2fc]+48h
     float world_clock{0.0f};                  // 00f876a4
+    // Packet cc9_warning_manager_tick: the manager's fields this process holds.
+    bsp::WarningManagerState warning{};
+    std::map<std::size_t, float> warning_effect_deadline;  // 00975D00 record +0h, per unit
+    unsigned long long warning_scans{0};
+    unsigned long long warning_torpedo_calls{0};
+    unsigned long long warning_torpedo_accepted{0};
+    unsigned long long warning_effect_calls{0};
+    unsigned long long warning_effects{0};
+    unsigned long long warning_deadline_expiries{0};
     bool device_edge_injected{false};         // the executable's own injection
     // Packet cc_mission_tick's reconstruction of the four-call opener of every
     // simulated frame, and the dynamics list behind its fourth call.
@@ -228,6 +248,12 @@ struct GameMissionFrameHost::Impl {
     }
 };
 
+namespace {
+// Packet cc9_warning_manager_tick: the manager of the live mission frame host,
+// for the two report entries the ship AI's warning timer calls.
+GameMissionFrameHost::Impl* g_warning_owner = nullptr;
+}  // namespace
+
 // ---------------------------------------------------------------------------
 // bsp::InputTickHost, for the load's 00a92c40 and the device wait's own call
 // ---------------------------------------------------------------------------
@@ -266,6 +292,34 @@ private:
 // per-entity methods below are unreachable in this process and never record.
 // ---------------------------------------------------------------------------
 
+class WarningManagerBinding final : public bsp::WarningManagerHost {
+public:
+    explicit WarningManagerBinding(GameMissionFrameHost::Impl& owner) : owner_(owner) {}
+    void pump_input_channel_00982540() override {}
+    void scan_proximity_00977990() override {}
+    bool input_action_pressed(int) override {
+        owner_.record("WarningManager::input_action_004c43c0", 0x004c43c0u);
+        return false;
+    }
+    void raise_prompt_hud(int) override {
+        owner_.record("WarningManager::raise_prompt_hud", 0x0096d540u);
+    }
+    void call_mission_lua(const std::string&) override {
+        owner_.record("WarningManager::call_mission_lua", 0x00887e50u);
+    }
+    void stop_collision_sound() override {}
+    bool message_id_known(const std::string&) override { return false; }
+    void report_error(const char*) override {}
+    void destroy_warning(std::size_t, bool) override {}
+    void on_warning_accepted(std::size_t) override {}
+    bool voice_ready(std::size_t) override { return false; }
+    void apply_warning_00974070(std::size_t) override {}
+
+private:
+    GameMissionFrameHost::Impl& owner_;
+};
+
+
 class WorldTickBinding final : public bsp::WorldTickHost {
 public:
     explicit WorldTickBinding(GameMissionFrameHost::Impl& owner) : owner_(owner) {}
@@ -273,16 +327,50 @@ public:
     float world_clock() override { return owner_.world_clock; }
 
     void mission_events_pre_pass_00982540() override {
-        owner_.record("MissionEvents::pre_pass", 0x00982540u);
+        if constexpr (kWarningManagerTickBound) {
+            // 00982540: the `input` channel's subscriptions, each fired when an
+            // action in its nested list was pressed this frame. The channel is
+            // filled by 0097E360's parser from the mission's Lua event blocks,
+            // which this process does not run, so it is empty here.
+            owner_.done("WarningManager::pump_input_channel", 0x00982540u);
+            owner_.record("WarningManager::input_channel_subscriptions", 0x0097e360u);
+        } else {
+            owner_.record("MissionEvents::pre_pass", 0x00982540u);
+        }
     }
     void mission_events_periodic_00977990() override {
-        owner_.record("MissionEvents::periodic", 0x00977990u);
+        if constexpr (kWarningManagerTickBound) {
+            // 00977990 walks the world lists [game+19CCh]+64h and +13Ch, which
+            // are not built (construct_world 004DE610 is a load record).
+            ++owner_.warning_scans;
+            owner_.record("WarningManager::scan_proximity", 0x00977990u);
+        } else {
+            owner_.record("MissionEvents::periodic", 0x00977990u);
+        }
     }
     void mission_events_poll_0096d540() override {
-        owner_.record("MissionEvents::poll_zones", 0x0096d540u);
+        if constexpr (kWarningManagerTickBound) {
+            // 0096D540: +19Ch, the pending prompt callback, has no writer in this
+            // process, so the poll returns before the input test.
+            WarningManagerBinding binding(owner_);
+            bsp::poll_warning_prompt_0096d540(owner_.warning, binding);
+            owner_.done("WarningManager::poll_prompt", 0x0096d540u);
+        } else {
+            owner_.record("MissionEvents::poll_zones", 0x0096d540u);
+        }
     }
     void mission_events_poll_00968550() override {
-        owner_.record("MissionEvents::poll_triggers", 0x00968550u);
+        if constexpr (kWarningManagerTickBound) {
+            const bsp::WarningDeadlineResult r
+                = bsp::update_warning_deadlines(owner_.warning, owner_.world_clock);
+            owner_.done("WarningManager::update_deadlines", 0x00968550u);
+            if (r.air_raid_expired || r.collision_expired) ++owner_.warning_deadline_expiries;
+            if (r.collision_expired) {
+                owner_.record("WarningManager::stop_collision_sound", 0x00968550u);
+            }
+        } else {
+            owner_.record("MissionEvents::poll_triggers", 0x00968550u);
+        }
     }
     float mission_event_start_time(std::size_t) override { return 0.0f; }
     float mission_event_priority(std::size_t) override { return 0.0f; }
@@ -804,10 +892,15 @@ public:
 
     // --- the warning director and the input effect sets ------------------
     void update_warning_manager_00987590(float scaled_delta) override {
-        static_cast<void>(scaled_delta);
         WorldTickBinding& world = world_;
+        // 0098759E: the accumulator adds the director's argument [EBP+8]. The
+        // reconstruction reads it from the world state, which this host never
+        // writes, so it is supplied for this call alone.
+        const float held = owner_.world.game.scaled_delta;
+        if constexpr (kWarningManagerTickBound) owner_.world.game.scaled_delta = scaled_delta;
         const bsp::MissionEventTickResult result
             = bsp::update_mission_events_00987590(owner_.world, world);
+        owner_.world.game.scaled_delta = held;
         static_cast<void>(result);
         owner_.done("MissionFrame::update_mission_events", 0x00987590u);
     }
@@ -1167,9 +1260,58 @@ GameMissionFrameHost::GameMissionFrameHost(GameHostLog& log, GameVfsHost& vfs,
     GameHudHost* hud)
     : impl_(std::make_unique<Impl>(log, vfs, lua, participants, profiler, std::move(language))) {
     impl_->hud = hud;
+    g_warning_owner = impl_.get();
 }
 
-GameMissionFrameHost::~GameMissionFrameHost() = default;
+GameMissionFrameHost::~GameMissionFrameHost() {
+    if (g_warning_owner == impl_.get()) g_warning_owner = nullptr;
+}
+
+// ---------------------------------------------------------------------------
+// Packet cc9_warning_manager_tick: the manager's host boundary and the two
+// report entries 009DA8D0 calls.
+// ---------------------------------------------------------------------------
+
+
+
+void game_warning_report_torpedo_00977690(std::size_t unit) {
+    GameMissionFrameHost::Impl* host = g_warning_owner;
+    if (host == nullptr || host->units == nullptr) return;
+    ++host->warning_torpedo_calls;
+    // 009776E0..0097775F: +D0h clear, the local slot in [0,8) (0 here), the
+    // clock past 4.0 (00CE3D34), the entity's +5Ch set and +5Dh/+60h/+5Eh
+    // clear, its suppress byte (0077EDF0 on this+D4h, no entries here) clear,
+    // 00965810 (the entity is the controlled unit, or a plane whose +9D4h is),
+    // and not kind 8.
+    const GameUnitsHost& units = *host->units;
+    bsp::SceneNodeFlags flags;
+    bool pending = false;
+    if (host->warning.suppressed || !bsp::warning_report_clock_allows(host->world_clock)) return;
+    if (!units.unit_scene_node_flags(unit, flags) || !units.unit_pending_destroy_0060(unit, pending)
+        || !flags.active || flags.torn_down || pending || flags.destroyed) return;
+    const bool controlled = units.controlled_bound() && units.controlled_index() == unit;
+    if (!controlled) return;  // 00965810; a plane's +9D4h owner is not modelled
+    if (units.unit_is_kind_of(unit, 8)) return;
+    ++host->warning_torpedo_accepted;
+    // 00974150 builds the "torpedo" warning and 009763E0 queues it for the
+    // voice manager; neither is built here.
+    host->record("WarningManager::report_torpedo_queue", 0x009763e0u);
+}
+
+void game_warning_torpedo_effect_00977820(std::size_t unit) {
+    GameMissionFrameHost::Impl* host = g_warning_owner;
+    if (host == nullptr) return;
+    ++host->warning_effect_calls;
+    // 0097784B..00977866: 00975D00's per-entity record, deadline = now + 30.0
+    // (00CE7630) when it has passed.
+    float& deadline = host->warning_effect_deadline[unit];
+    if (!(deadline < host->world_clock)) return;
+    deadline = host->world_clock + 30.0f;
+    ++host->warning_effects;
+    // BSP_PointEffect_CreateWithParentMatrix(this+190h, entity+4A4h, identity)
+    // and effect+9 = 1: render-side.
+    host->record("WarningManager::torpedo_effect_spawn", 0x00977820u);
+}
 
 void GameMissionFrameHost::bind_observer_runtime(GameObserverRuntime& runtime) {
     if (!runtime.has_live_dispatch_owner())
@@ -1990,6 +2132,11 @@ void GameMissionFrameHost::report(long requested_frames) {
             "construct_world 004de610 is a load record", scene.created,
             host.frames.entities_updated, host.frames.unit_motion_ticks);
     }
+    host.log.notef("summary mission warning manager bound=%d scans=%llu torpedo_reports=%llu "
+        "accepted=%llu effect_calls=%llu effects=%llu deadline_expiries=%llu (packet "
+        "cc9_warning_manager_tick)", kWarningManagerTickBound ? 1 : 0, host.warning_scans,
+        host.warning_torpedo_calls, host.warning_torpedo_accepted, host.warning_effect_calls,
+        host.warning_effects, host.warning_deadline_expiries);
     host.log.notef("summary mission fixed steps=%llu at %.3f s each (00875bb0's own clock "
         "at 00f876a4/00f876ac)", host.fixed_steps,
         static_cast<double>(bsp::kFixedSimulationStepFloat));
