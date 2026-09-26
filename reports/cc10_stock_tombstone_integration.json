@@ -1,0 +1,100 @@
+{
+  "packet": "cc10_stock_tombstone_integration",
+  "worker_commit": "01a11e6fc82dbe9392fadcd4d305d6727bf5e456",
+  "integration": "0877f10660e2279e66cb1f9a93729521ae57ea59",
+  "metadata_only": true,
+  "worker_report": "reports/native_vertex_declaration_name_tombstone_composition_cc10.json",
+  "primary_verification": {
+    "result": "PASS",
+    "preparation": {
+      "result": "PASS",
+      "coherent_snapshot": "09edb1f1da09abfbbcc8562b7d0b3ad4eff8cb60",
+      "archive_sha256": "b73baeb3ce9a6fd56a2db8d8f6fc498a4e6625d43b97ff8142427cdbfcbe44f7",
+      "archive_rows": 622,
+      "archive_members": 623,
+      "launch_pins": 522,
+      "precompile_pins": 137,
+      "later_compiler_headers": 384,
+      "qualified_postlink_sources": 5,
+      "selected_library_members": 531,
+      "fresh_game_objects": 71,
+      "complete_linked_bodies": 12,
+      "complete_linked_bytes": 12973,
+      "exact_map_relocations": 635,
+      "map_unlisted_symbols": [],
+      "required_imports": 8,
+      "source_only_three_log_path_changes": true,
+      "controller_exact_reviewed": true,
+      "embedded_asInvoker": true,
+      "probe_sha256": "4eb6aa06d40cd7d9b3e425787eea36e7433439832339d675b71d9de78898d5af",
+      "manifest_sha256": "00989ad5d775f60bb19fcc34454d7cc89ee93876ebf35c7cf6555f07659fc914",
+      "strict_win32_CTests": 3,
+      "runtime_runs": 0,
+      "limits": "Coherent09ed source fixture before later clock fixes. Actual target DLL module correlation, SDK/5030 observations, tombstone and final CRT checks require separate runtime. Mapped-name/current-file-object checks do not prove historical section-file identity or full relocated image integrity."
+    },
+    "runtime_runs": 1,
+    "parent_pid": 72316,
+    "child_pid": 88716,
+    "parent_exit": 0,
+    "child_exit": 0,
+    "closed_kernel_handles": true,
+    "remaining_processes": 0,
+    "ACK": true,
+    "unchanged_launch_inputs": 522,
+    "exact_raw_tool_stdout_equals_run": true,
+    "CIM_image_path_unavailable_kernel_image_verified": true,
+    "CIM_creation_delta_100ns": 5,
+    "manager": "00570d28",
+    "vector": [
+      "005849b0",
+      "005849b8",
+      "00584db0"
+    ],
+    "captured_slots": [
+      "0056ea80",
+      "02787020"
+    ],
+    "both_boundary_slots": [
+      "00000000",
+      "02787020"
+    ],
+    "raw_length": 2,
+    "actual_pumps": 2,
+    "actual_focus": 2,
+    "actual_ordinal5030_calls": 0,
+    "exact_token_returns": 25,
+    "token_ring": [
+      23,
+      48
+    ],
+    "CASE_and_final_CRT_markers": true,
+    "guarded_profile_file_records": 6,
+    "closed_file_handles": 6,
+    "limits": "One coherent09ed source-interface declaration/VFS/CRT fixture; no separately logged raw MEM_FREE observation, no5030 call or SDK initialization credit. Current mapped-name/file-object identity correlation is not historical section identity/full image integrity. No later clock-fix rerun, original ABI/FH3, application or gameplay proof.",
+    "worker_commit": "01a11e6fc82dbe9392fadcd4d305d6727bf5e456",
+    "runtime_archive_sha256": "3e9bc26d05bf7c6164b5fe834310e53bcb5934af01903b2c748d37220f78507e",
+    "runtime_archive_rows": 19,
+    "closeout_archive_sha256": "9a8866671cb2c3202b70ff44429e14478fa22c4ddc722887693c25de698c487a",
+    "closeout_archive_rows": 10,
+    "unchanged_preparation_rows": 622,
+    "committed_metadata_blobs_verified": 3
+  },
+  "validation": {
+    "worker_strict_win32_CTests": 3,
+    "fixture_compiles": 1,
+    "fixture_runtime_runs": 1,
+    "integration_rebuild_required": false,
+    "new_native_bytes": 0,
+    "later_clock_fixes_reexecuted": false,
+    "actual_ordinal5030_calls": 0,
+    "SDK_initialization_validated": false,
+    "game_validated": false
+  },
+  "limits": "One coherent09ed source-interface declaration/VFS/CRT fixture; no separately logged raw MEM_FREE observation, no5030 call or SDK initialization credit. Current mapped-name/file-object identity correlation is not historical section identity/full image integrity. No later clock-fix rerun, original ABI/FH3, application or gameplay proof.",
+  "archive": {
+    "path": "local/cc10-platform-evidence/stock-declaration-tombstone.zip",
+    "sha256": "c80b99123ec671d23a29765a3e3ec076b26cc64b39174fec35998380d3add87f",
+    "files": 11,
+    "valid": true
+  }
+}
