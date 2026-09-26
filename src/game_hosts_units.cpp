@@ -400,6 +400,12 @@ struct GameUnitSlot {
     float df_local_ec[3]{0.0f, 0.0f, 0.0f}; // approach+ECh..F4h
     float df_tan_f8[2]{0.0f, 0.0f};         // approach+F8h/FCh
     float df_aim[3]{0.0f, 0.0f, 0.0f};      // approach+48h (substitute: target origin)
+    // DIAGNOSTIC, packet cc9_kate_engagement: the pitch arm's last floored
+    // target and demand, for the chase trace.
+    float diag_floored_2bc{0.0f};
+    // Packet cc9_kate_engagement: thinks with a positive turn numerator.
+    int turn_numerator_ticks{0};
+    float diag_pitch_demand{0.0f};
     bsp::DogfightAimState df_aim_state{};   // task+67Ch + 18h..25h
     float df_maneuver_range_34{0.0f};       // task+6D8h
     float df_avoid_timer{0.0f};             // task+720h / +748h
@@ -2965,6 +2971,17 @@ struct GameUnitsHost::Impl {
     // DIAGNOSTIC, packet cc9_climbout_speed_gate: once a second, every live
     // dogfight fighter below 400 m, its state, speed and pitch chain.
     static constexpr bool kFighterLowTraceDiag = false;
+    // DIAGNOSTIC, packet cc9_kate_engagement: every two seconds, every live
+    // dogfight fighter with a target, the chase geometry and speeds.
+    static constexpr bool kFighterChaseTraceDiag = false;
+    // Packet cc9_kate_engagement (docs/KATE_ENGAGEMENT.md): 007DA710 reads the
+    // unit's pitch unit+C64h and bank unit+C68h for its slide term (007DAA3B-
+    // 007DAA58, yaw -= SlideRatio * YawSpd * sin(bank) * cos(pitch)) and the
+    // state-6 bank factor. This host passed zero for both, so a banked plane
+    // got no bank-induced yaw: once the planner's yaw base term fades above
+    // its bank limit (0099DFFB), a fighter held at 60-70 degrees of bank
+    // stopped turning toward its target. OFF: both angles zero.
+    static constexpr bool kRateLawAttitudeTermsBound = false;
     // Packet cc9_planner_heading_writes (docs/PLANNER_HEADING_WRITES.md): the
     // torpedo states' own heading writes the host never reproduced. The moveto
     // tick 009C18C0 steers at its +2Ch target through 009F9E40 (009C1B23,
@@ -14047,6 +14064,47 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     }
                                 }
                             }
+                            if constexpr (GameUnitsHost::Impl::kFighterChaseTraceDiag) {
+                                const GameUnitSlot* ct = df_target_slot();
+                                if (unit_.dogfight_task_installed && !unit_.plane_death_c3a &&
+                                    ct != nullptr) {
+                                    static std::map<const void*, float> cht;
+                                    float& acc = cht[&unit_];
+                                    acc -= elapsed;
+                                    if (acc <= 0.0f) {
+                                        acc = 2.0f;
+                                        const float* const wv = unit_.plane_world_velocity;
+                                        const float* const tv = ct->plane_world_velocity;
+                                        owner_.log.notef("  fighter chase %s t=%.2f st=%s tgt=%s d=%.1f "
+                                            "dh=%.1f spd=%.2f tspd=%.2f alt=%.1f talt=%.1f want2b4=%.1f "
+                                            "spd2d8=%d thr=%.3f maxspd=%.2f aimy=%.1f plan2bc=%.3f "
+                                            "pitch=%.3f bank=%.3f hdgerr=%.3f prev_floored=%.3f prev_demand=%.3f",
+                                            unit_.row.name.c_str(),
+                                            static_cast<double>(owner_.summary.simulated_seconds),
+                                            bsp::dogfight_state_name(unit_.dogfight_state),
+                                            ct->row.name.c_str(),
+                                            static_cast<double>(unit_.df_distance_d4),
+                                            static_cast<double>(unit_.df_horizontal_d8),
+                                            static_cast<double>(std::sqrt(wv[0] * wv[0] +
+                                                wv[1] * wv[1] + wv[2] * wv[2])),
+                                            static_cast<double>(std::sqrt(tv[0] * tv[0] +
+                                                tv[1] * tv[1] + tv[2] * tv[2])),
+                                            static_cast<double>(unit_.motion.position[1]),
+                                            static_cast<double>(ct->motion.position[1]),
+                                            static_cast<double>(unit_.plane_desired_speed_2b4),
+                                            unit_.plane_air_brake_mode_2d8,
+                                            static_cast<double>(unit_.plane_live_throttle),
+                                            static_cast<double>(unit_.plane_max_spd),
+                                            static_cast<double>(unit_.df_aim[1]),
+                                            static_cast<double>(unit_.plan_state.pitch_target_2bc),
+                                            static_cast<double>(unit_.plane_pitch_angle_c64),
+                                            static_cast<double>(unit_.plane_bank_angle_c68),
+                                            static_cast<double>(unit_.attack_hdg_err_last),
+                                            static_cast<double>(unit_.diag_floored_2bc),
+                                            static_cast<double>(unit_.diag_pitch_demand));
+                                    }
+                                }
+                            }
                             if (plan_yaw_0099d300()) {
                                 ++owner_.summary.pilot_yaw_plans;
                             }
@@ -14269,11 +14327,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             bsp::yaw_base_gain_0099dffb(tuning, frame.abs_bank);
                         scratch.turn_num = 0.0f;
 
-                        const float desired = bsp::plan_yaw_0099e81a(
-                            frame, tuning, scratch, unit_.plane_class.yaw_spd);
-                        if (!yaw_mode_zero) {
-                            unit_.plan_slots[bsp::kPilotSlotYaw].desired = desired;
-                            unit_.plan_slots[bsp::kPilotSlotYaw].active = 1;  // 0099EA46
+                        // With kRateLawAttitudeTermsBound the yaw arm runs after
+                        // the pitch arm, as 0099E81A follows 0099E490-0099E739 in
+                        // the image, so it can read the turn numerator the pitch
+                        // arm leaves at [ESP+10h] (0099E8F6).
+                        if constexpr (!GameUnitsHost::Impl::kRateLawAttitudeTermsBound) {
+                            const float desired = bsp::plan_yaw_0099e81a(
+                                frame, tuning, scratch, unit_.plane_class.yaw_spd);
+                            if (!yaw_mode_zero) {
+                                unit_.plan_slots[bsp::kPilotSlotYaw].desired = desired;
+                                unit_.plan_slots[bsp::kPilotSlotYaw].active = 1;  // 0099EA46
+                            }
                         }
 
                         // 0099DE93-0099E39D, the roll arm. Without it the plane
@@ -14460,10 +14524,39 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         const bsp::PilotBotPitchResult pitch =
                             bsp::pilot_pitch_demand_0099e490(pin);
                         unit_.plan_state.pitch_target_2bc = pitch.floored_target;
+                        unit_.diag_floored_2bc = pitch.floored_target;
+                        unit_.diag_pitch_demand = pitch.demand;
                         unit_.plan_slots[bsp::kPilotSlotPitch].desired =
                             bsp::plan_pitch_0099e68d(pitch.demand);
+                        if constexpr (GameUnitsHost::Impl::kRateLawAttitudeTermsBound) {
+                            // 0099E68D-0099E72F: the turn numerator, only on a
+                            // saturated demand. X's speed factor is the same
+                            // 007D9A70 authority the demand used (0099E5D7).
+                            bsp::PilotBotTurnTerm tt;
+                            tt.sin_bank = frame.sin_bank;
+                            tt.cos_bank = frame.cos_bank;
+                            tt.cos_pitch = frame.cos_pitch;
+                            tt.slide_ratio = unit_.plane_class.slide_ratio;
+                            tt.yaw_spd = unit_.plane_class.yaw_spd;
+                            tt.rate_b = unit_.plane_class.pitch_spd;
+                            tt.negative_pitch_ratio = unit_.plane_class.negative_pitch_ratio;
+                            tt.speed_factor = pin.control_authority;
+                            tt.inverted = 0.0f > frame.cos_bank;
+                            scratch.turn_num =
+                                bsp::yaw_turn_numerator_gated_0099e68d(pitch.demand, tt);
+                            if (scratch.turn_num > 0.0f) ++unit_.turn_numerator_ticks;
+                        }
                         unit_.plan_slots[bsp::kPilotSlotPitch].active = 1;  // 0099E741
                         }   // end of the +2D0h != 0 arm, 0099E490-0099E739
+                        if constexpr (GameUnitsHost::Impl::kRateLawAttitudeTermsBound) {
+                            // 0099E756-0099EA46, after the pitch arm.
+                            const float desired = bsp::plan_yaw_0099e81a(
+                                frame, tuning, scratch, unit_.plane_class.yaw_spd);
+                            if (!yaw_mode_zero) {
+                                unit_.plan_slots[bsp::kPilotSlotYaw].desired = desired;
+                                unit_.plan_slots[bsp::kPilotSlotYaw].active = 1;  // 0099EA46
+                            }
+                        }
                         // 0099D300's throttle arms. The demand arm is reachable
                         // in flight through 0099D8CD, which jumps past the
                         // flight-state test at 0099D8FD.
@@ -14698,6 +14791,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         state.latched_pitch = unit_.plane_latched_controls[1];
                         state.latched_roll = unit_.plane_latched_controls[2];
                         state.flight_state_900 = unit_.plane_control_mode_900;
+                        if constexpr (GameUnitsHost::Impl::kRateLawAttitudeTermsBound) {
+                            // 007DAA3B / 007DAA4A read unit+C68h and unit+C64h
+                            // through FSIN / FCOS; 007DA766 reads |unit+C68h|.
+                            state.pitch_angle_c64 = unit_.plane_pitch_angle_c64;
+                            state.bank_angle_c68 = unit_.plane_bank_angle_c68;
+                        }
                         // 007DC841 zeroes ctl+FCh every step, so free flight is
                         // mode 0 and the roll target is not zeroed.
                         state.controller_mode_fc = 0;
@@ -16956,6 +17055,13 @@ void GameUnitsHost::report() {
                                 "bound=%d (0099BB00 -> 007DA92C, packet "
                                 "cc9_plane_substitution_sweep)", raises,
                                 Impl::kPlaneYawGainBc4Bound ? 1 : 0);
+                        }
+                        {
+                            long long tn = 0;
+                            for (const auto& sl : host.slots) tn += sl->turn_numerator_ticks;
+                            host.log.notef("summary mission planner turn numerator ticks=%lld "
+                                "slide_term=%d (0099E68D / 007DAA3B, packet cc9_kate_engagement)",
+                                tn, Impl::kRateLawAttitudeTermsBound ? 1 : 0);
                         }
                         host.log.notef("summary mission planner yaw base zeroed_ticks=%llu "
                             "gate=%d (0099DE8A on +2CCh != 2, packet cc9_dogfight_maneuver_bodies)",

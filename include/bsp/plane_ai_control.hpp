@@ -254,6 +254,15 @@ struct PilotBotTurnTerm {
 };
 float yaw_turn_numerator_0099e69b(const PilotBotTurnTerm& in);
 
+// 0099E68D-0099E72F, the gate on the turn numerator (packet cc9_kate_engagement,
+// docs/KATE_ENGAGEMENT.md). `demand` is the pitch arm's unclamped demand, the
+// value 0099E689 stores. Only a saturated demand produces a turn term:
+//   demand > 1:                p - k*X  (0099E69B-0099E6E8, k = NPR when inverted, else 1)
+//   demand < -1 and inverted:  p + NPR*X  (0099E703-0099E729)
+//   otherwise:                 0, the 0099E3CB definition
+// `inverted` is the sign held in [ESP+44h] (0099E5E5/0099E698/0099E6FB).
+float yaw_turn_numerator_gated_0099e68d(float demand, const PilotBotTurnTerm& in);
+
 // 0099D602-0099D6C6. Before any arm runs, a direct stick input on the unit overrides the
 // axis and cancels its mode word, so the computed arm does not run this tick. The native
 // test is the MSVC exact-equality idiom (UCOMISS / LAHF / TEST AH,44h / JNP), which skips
