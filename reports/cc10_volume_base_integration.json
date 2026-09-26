@@ -1,0 +1,72 @@
+{
+  "packet": "cc10_volume_base_integration",
+  "worker_commit": "fae8b644d5e6cb4093fddfa5b501fe88e30e9230",
+  "source_integration": "57413247452e00edd0328aa8db742055cafe4371",
+  "worker_report": "reports/native_unnamed_volume_texture_base_cc10.json",
+  "primary_verification": {
+    "result": "PASS",
+    "worker_commit": "fae8b644d5e6cb4093fddfa5b501fe88e30e9230",
+    "archive_sha256": "90ad6c625fb8e987fe1bcf871d62278247a94b51c1f995b77a564d545b1383ee",
+    "archive_rows": 108,
+    "archive_members": 109,
+    "exact_git_blobs": 5,
+    "prebuild_source_pins": 8,
+    "prebuild_tool_pins": 11,
+    "postbuild_dependency_pins": 53,
+    "exact_AR_members": 2,
+    "physical_sections_inspected": 92,
+    "own_physical_sections": 12,
+    "own_code_sections": 9,
+    "own_code_bytes": 290,
+    "own_instructions": 121,
+    "own_all_physical_relocations": 0,
+    "entry_bytes": 177,
+    "entry_instructions": 62,
+    "entry_branches_calls": 0,
+    "emitted_order_checks": 15,
+    "atomic_initializer_stores": 1,
+    "historical_B33FC0_full101B_and_relocations_unchanged": true,
+    "native_bytes": 71,
+    "native_instructions": 18,
+    "worker_CTests": 3,
+    "application_entry_selected": false,
+    "limits": "Ordinary conditional C++ source leaf only; no execution, binary ABI, factory, complete owner/canonical binding, retirement or reuse proof. B33FC0 comparison uses historical descriptor-build member, not current baseline build.",
+    "root_member_sha256": "bea46a3dea8078f7750e0b7b0ce09b7e633d242e1b81eeaa9d3151fee2ad15a2",
+    "all_root_code_and_relocations_equal_worker": true,
+    "root_all_physical_relocations": 0
+  },
+  "validation": {
+    "worker_CTests": 3,
+    "root_CTests": 3,
+    "new_tests": 0,
+    "new_runtime_cases": 0,
+    "application_selects_leaf": false,
+    "game_validated": false
+  },
+  "native_accounting": {
+    "new_reconstructed_functions": 1,
+    "new_native_bytes": 71,
+    "native_instructions": 18,
+    "new_Ghidra_functions": 0,
+    "existing_B33FC0_not_recredited": true,
+    "prior_metadata_fragment_not_complete_body": true
+  },
+  "annotation": {
+    "address": "00b340a0",
+    "end_exclusive": "00b340e7",
+    "name": "BSP_LogicalTextureBase_ConstructUnnamed_D5F2C0",
+    "existing_name_preserved": true,
+    "old_evidence_appended": true,
+    "prior_annotation_values_recorded": true,
+    "write_lock": true,
+    "saved": true,
+    "forced_export": true
+  },
+  "limits": "Ordinary conditional C++ source leaf only; no execution, binary ABI, factory, complete owner/canonical binding, retirement or reuse proof. B33FC0 comparison uses historical descriptor-build member, not current baseline build.",
+  "archive": {
+    "path": "local/cc10-platform-evidence/unnamed-volume-texture-base.zip",
+    "sha256": "c533b3f749f767294d0e8a99cc147391ec634bfb240cffd836e279e10ad369de",
+    "files": 21,
+    "valid": true
+  }
+}
