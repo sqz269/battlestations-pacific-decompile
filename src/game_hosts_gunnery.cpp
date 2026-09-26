@@ -280,6 +280,29 @@ constexpr bool kShipSectionPointsBound = true;
 //    (the node transforms are identity on the hulls read), with no per-element
 //    AABB tree (007238E0 unread). OFF: the class hull box.
 constexpr bool kShellHullHitTestBound = true;
+//  * kHullElementSegmentBound: the hull trace above walks the GeomMesh ELEMENTS
+//    in order over each element's own triangle list (00723D60: the far end is
+//    shortened on every hit, so the last acceptor of an equal distance wins,
+//    and a triangle outside every element is never tested) and copies the
+//    element's kind and index into record+30h / +34h (00723F62 / 00723F6C).
+//    A real +34h opens R1 (00826F62), so the hull pass of 00826F10 reaches R7b
+//    (flood, every hit with a weapon), R7c (fire, on a roll against
+//    FireChance / 100: the class reader stores it divided by 00D7A220) and R4.
+//    OFF: every mesh hit carries -1 / 0Ah and none of them runs.
+//    Packet cc9_ship_fire_flooding, docs/SHIP_FIRE_FLOODING.md.
+constexpr bool kHullElementSegmentBound = true;
+//  * kShipDamageControlTickBound: message 9Eh's add arms 0093A4F0 (water,
+//    task+34h) and 0093A470 (fire, task+38h) add seconds, and the water and
+//    fire steps of 0093CA20 (0093C120 over +34h at WaterTickDamage, 0093C210
+//    over +38h at FireTickDamage) turn each elapsed second into AddDamage.
+//    Run for every ship whose class Repair is not false (00962DBC: nil -> 1),
+//    after the projectile pass. OFF: the 9Eh message is counted and dropped.
+constexpr bool kShipDamageControlTickBound = true;
+//  * kShipHullRepairBound: 0093C770, the first step of the same tick: a
+//    damaged hull heals effectivity (1.0) * dt * BodyRepairTickPercentage/100
+//    (0083E243 divides) * max * BodyRepairMultiplier (priority 0), clamped to
+//    the maximum. OFF: no repair.
+constexpr bool kShipHullRepairBound = true;
 //  * kKillCreditDamageGateBound: 0077CE60 writes the attribution block (the
 //    +2C4h attacker the kill credit 0091BDA0 names) only for a live victim and
 //    only when the hit's damage, 00470510 for a hull segment or 00470740 when
@@ -841,6 +864,12 @@ struct GameGunneryHost::Impl {
         // section points, engine room (5), magazine (8), fuel tank (6).
         bool has_mesh{false};
         std::vector<std::array<float, 3>> tris;   // three vertices per triangle
+        // Packet cc9_ship_fire_flooding: the same triangles in 00723D60's order,
+        // element by element over each element's ordinals, with the element's
+        // kind (+4h) and index (+8h) per triangle.
+        std::vector<std::array<float, 3>> element_tris;
+        std::vector<int> element_kind;
+        std::vector<int> element_index;
         std::array<float, 6> mesh_box{};
         bool section_present[3]{false, false, false};
         std::array<float, 3> section_point[3]{};
@@ -1052,6 +1081,33 @@ struct GameGunneryHost::Impl {
     // Set by run_projectiles around apply_hit / apply_impact_blast so a round's
     // own class (the second ammunition) prices its damage; -1 means the gun's.
     int round_bullet_class{-1};
+    // Packet cc9_ship_fire_flooding: record+30h / +34h of the direct impact the
+    // segment query returned, set by run_projectiles around apply_hit only.
+    int impact_shape_kind{0x0A};
+    int impact_hull_segment{-1};
+    // The repair task at unit+A20h, as far as this host models it (0093BCC0):
+    // the two timers and the per-class inputs of 0093CA20.
+    struct DamageControl {
+        bool enabled{false};          // class +D0h, VehicleClass.Repair (nil -> 1)
+        float water_seconds{0.0f};    // task+34h
+        float fire_seconds{0.0f};     // task+38h
+        float water_tick{0.0f};       // task+2Ch <- settings+3B0h WaterTickDamage
+        float fire_tick{0.0f};        // task+30h <- settings+3ACh FireTickDamage
+        float repair_fraction{0.0f};  // settings+3B4h (already / 100) * +3D4h
+        double water_damage{0.0};     // totals for the summary
+        double fire_damage{0.0};
+        double repaired{0.0};
+    };
+    std::vector<DamageControl> damage_control;
+    bool dc_logged{false};
+    unsigned long long dc_water_adds{0};
+    unsigned long long dc_fire_adds{0};
+    unsigned long long dc_doomed_notes{0};   // 0090E6C0 tail calls
+    unsigned long long dc_deaths{0};
+    unsigned long long element_hits{0};
+    unsigned long long element_hits_fizika{0};
+    void damage_control_add_seconds(std::size_t unit, bool water, float seconds);
+    void run_damage_control(float dt);
     const SecondAmmo* dp_air_ammo(std::size_t gun_index, int category,
                                   std::size_t target) const {
         if (!kDualPurposeSecondAmmoBound || category != 6) return nullptr;
@@ -1472,6 +1528,19 @@ GameGunneryHost::Impl::ship_model_slots(int type_id) {
                     }
                 }
             }
+            for (const bsp::GeomMeshElement& el : mesh.elements) {
+                for (std::uint16_t ord : el.triangle_ordinals) {
+                    if (ord >= mesh.triangles.size()) continue;
+                    const bsp::GeomMeshTriangle& t = mesh.triangles[ord];
+                    std::array<float, 3> a, b, c;
+                    if (!vert(t.v0, a) || !vert(t.v1, b) || !vert(t.v2, c)) continue;
+                    entry.element_tris.push_back(a);
+                    entry.element_tris.push_back(b);
+                    entry.element_tris.push_back(c);
+                    entry.element_kind.push_back(el.kind);
+                    entry.element_index.push_back(static_cast<int>(el.node_index));
+                }
+            }
             // 0081F980: engine room 5 -> slot 0, magazine 8 -> slot 1, fuel 6 -> slot 2.
             for (const bsp::GeomMeshElement& el : mesh.elements) {
                 const int slot = el.kind == 5 ? 0 : el.kind == 8 ? 1 : el.kind == 6 ? 2 : -1;
@@ -1501,9 +1570,15 @@ GameGunneryHost::Impl::ship_model_slots(int type_id) {
             entry.has_mesh = true;
             for (int k = 0; k < 3; ++k) { entry.mesh_box[k] = lo[k]; entry.mesh_box[k + 3] = hi[k]; }
         }
-        log.notef("gunnery: vehicle class %d geom meshes=%zu triangles=%zu sections engine=%d "
+        std::size_t fizika = 0;
+        for (int k : entry.element_kind) {
+            if (k == bsp::kShipHitSegmentKindBreakable) ++fizika;
+        }
+        log.notef("gunnery: vehicle class %d geom meshes=%zu triangles=%zu element_triangles=%zu "
+            "fizika=%zu sections engine=%d "
             "magazine=%d fuel=%d%s%s (0081F980 / 00723030)", type_id, meshes.size(),
-            entry.tris.size() / 3, entry.section_present[0] ? 1 : 0,
+            entry.tris.size() / 3, entry.element_tris.size() / 3, fizika,
+            entry.section_present[0] ? 1 : 0,
             entry.section_present[1] ? 1 : 0, entry.section_present[2] ? 1 : 0,
             mesh_error.empty() ? "" : " error: ", mesh_error.c_str());
     }
@@ -1675,6 +1750,16 @@ void GameGunneryHost::Impl::flatten_class_tables(const std::vector<int>& class_i
         "    f.think = num(think, 1000) or 2000\n"
         "    f.aafix = num(aafix, 100000) or 0\n"
         "    f.aamul = num(aamul, 100000) or 0\n"
+        // Packet cc9_ship_fire_flooding: 00962DBC stores 1 unless Repair is
+        // present and false; the ShipGlobals damage block with 0083E1B3..
+        // 0083E4AA's defaults (0, 0, 0.2, 2) when a key is absent.
+        "    f.repair = (row.Repair == false) and 0 or 1\n"
+        "    local SG = type(ShipGlobals) == 'table' and ShipGlobals or {}\n"
+        "    f.dcwater = num(SG.WaterTickDamage, 1000) or 0\n"
+        "    f.dcfire = num(SG.FireTickDamage, 1000) or 0\n"
+        "    f.dcbody = num(SG.BodyRepairTickPercentage, 1000000) or 200000\n"
+        "    f.dcbodymul = num(SG.BodyRepairMultiplier, 1000) or 2000\n"
+        "    f.dcsg = (type(ShipGlobals) == 'table') and 1 or 0\n"
         "    f.hp = num(row.HP, 1000) or 0\n"
         "    f.armour = num(row.Armour, 1000) or 0\n"
         "    f.length = num(row.Length, 1000) or 0\n"
@@ -1896,6 +1981,26 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
         state.hull_height = flat_scaled(type_id, "height", kMilliScale, 0.0f);
         state.row.health = state.health;
         state.row.max_health = state.max_health;
+        if (damage_control.size() < unit_state.size()) damage_control.resize(unit_state.size());
+        {
+            // 0093BCC0 at 0081EF47: +2Ch <- settings+3B0h, +30h <- settings+3ACh.
+            DamageControl& dc = damage_control[i];
+            dc.enabled = flat(type_id, "repair", 1) != 0
+                && units.unit_is_kind_of(i, bsp::kUnitGunneryKindShipBase);
+            dc.water_tick = flat_scaled(type_id, "dcwater", kMilliScale, 0.0f);
+            dc.fire_tick = flat_scaled(type_id, "dcfire", kMilliScale, 0.0f);
+            // 0083E243: BodyRepairTickPercentage / 100.0; 0093C770 at priority 0
+            // multiplies by BodyRepairMultiplier (settings+3D4h).
+            dc.repair_fraction = flat_scaled(type_id, "dcbody", 1000000.0f, 0.2f) / 100.0f
+                * flat_scaled(type_id, "dcbodymul", kMilliScale, 2.0f);
+            if (!dc_logged) {
+                dc_logged = true;
+                log.notef("gunnery: damage control ShipGlobals=%d WaterTickDamage=%.1f "
+                    "FireTickDamage=%.1f hull repair %.5f of max per second (0093BCC0, 0093C770)",
+                    flat(type_id, "dcsg", 0), static_cast<double>(dc.water_tick),
+                    static_cast<double>(dc.fire_tick), static_cast<double>(dc.repair_fraction));
+            }
+        }
 
         const int platforms = flat(type_id, "n", 0);
         for (int p = 1; p <= platforms && p <= kMaxPlatformScan; ++p) {
@@ -4473,7 +4578,10 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
                 + (wt[2] - wf[2]) * ax[i][2];
         }
         float best = 2.0f;
-        const auto& tri = model->tris;
+        int best_kind = 0x0A;
+        int best_index = kDirectHitHullSegment;
+        const bool by_element = kHullElementSegmentBound && !model->element_tris.empty();
+        const auto& tri = by_element ? model->element_tris : model->tris;
         for (std::size_t n = 0; n + 2 < tri.size(); n += 3) {
             const auto& a = tri[n];
             const auto& b = tri[n + 1];
@@ -4493,7 +4601,17 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
             const float v = (d[0] * q[0] + d[1] * q[1] + d[2] * q[2]) * inv;
             if (v < 0.0f || u + v > 1.0f) continue;
             const float t = (e2[0] * q[0] + e2[1] * q[1] + e2[2] * q[2]) * inv;
-            if (t >= 0.0f && t <= 1.0f && t < best) best = t;
+            if (by_element) {
+                // 00723D60: the far end is already pulled back to `best`, so a
+                // later element at the same distance is still accepted.
+                if (t >= 0.0f && t <= 1.0f && t <= best) {
+                    best = t;
+                    best_kind = model->element_kind[n / 3];
+                    best_index = model->element_index[n / 3];
+                }
+            } else if (t >= 0.0f && t <= 1.0f && t < best) {
+                best = t;
+            }
         }
         if (best > 1.0f) return false;
         bsp::HitQueryPoint point;
@@ -4501,8 +4619,9 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
         point.y = wf[1] + (wt[1] - wf[1]) * best;
         point.z = wf[2] + (wt[2] - wf[2]) * best;
         bsp::shape_hit_fill_0087fec0(record, point, entity);
-        record.shape_kind = 0x0A;
-        record.hull_segment = kDirectHitHullSegment;
+        // 00723F62 / 00723F6C with the element bound; 0Ah / -1 otherwise.
+        record.shape_kind = best_kind;
+        record.hull_segment = best_index;
         bsp::hit_record_set_entity_00470370(record, entity);
         hit_unit = index + 1;
         ++owner_.shell_mesh_hits;
@@ -4717,8 +4836,20 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
             }
             done("Projectile::on_impact_0084bc60", 0x0084bc60u);
             round_bullet_class = shot.bullet_class;
+            if constexpr (kHullElementSegmentBound) {
+                impact_shape_kind = record.shape_kind;
+                impact_hull_segment = record.hull_segment;
+                if (record.hull_segment != kDirectHitHullSegment) {
+                    ++element_hits;
+                    if (record.shape_kind == bsp::kShipHitSegmentKindBreakable) {
+                        ++element_hits_fizika;
+                    }
+                }
+            }
             apply_hit(shot.owner_unit - 1, shot.gun_row, query.hit_unit - 1, point,
                 direction);
+            impact_shape_kind = 0x0A;
+            impact_hull_segment = kDirectHitHullSegment;
             // 0084BC60 step 7: the impact also spawns the burst that carries a
             // torpedo's warhead. Without it a torpedo does its DamageMin draw
             // and nothing else, which a carrier's Armour cancels exactly.
@@ -5078,7 +5209,10 @@ public:
         return weapon_ != nullptr ? weapon_->fire_damage : 0.0f;
     }
     float weapon_fire_chance() override {
-        return weapon_ != nullptr ? weapon_->fire_chance : 0.0f;
+        if (weapon_ == nullptr) return 0.0f;
+        // weapon+C4h holds FireChance / 100.0 (00D7A220); the bullet row keeps
+        // the authored percentage.
+        return kHullElementSegmentBound ? weapon_->fire_chance / 100.0f : weapon_->fire_chance;
     }
     float random_unit_float() override {
         return owner_.draw(GameGunneryHost::Impl::Draw::hit_effect, victim_, 0, 0.0f, 1.0f);
@@ -5095,8 +5229,16 @@ public:
             ++owner_.summary.fire_messages_9e;
         }
     }
-    void route_set_damage_channel(bsp::ShipDamageChannel, float, bool) override {
+    void route_set_damage_channel(bsp::ShipDamageChannel channel, float value,
+        bool add) override {
         owner_.done("ShipHit::damage_channel_message_9e_0080fa50", 0x0080fa50u);
+        // 0082203D: selector 1 is water, 0 fire; both R7b and R7c pass add = 1.
+        if constexpr (kShipDamageControlTickBound) {
+            if (add) {
+                owner_.damage_control_add_seconds(victim_,
+                    channel == bsp::ShipDamageChannel::kWater, value);
+            }
+        }
     }
 
     void roll_component_failure(float) override {
@@ -5226,7 +5368,7 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
     hit.falloff_range = 0.0f;
     hit.ignore_falloff = false;
     hit.armour_selector = 0.0f;
-    hit.hull_segment = kDirectHitHullSegment;
+    hit.hull_segment = kHullElementSegmentBound ? impact_hull_segment : kDirectHitHullSegment;
     hit.weapon_scale = 1.0f;   // shot->vtable[58h] = 006E7C90, gun+43Ch, default 1.0f
     hit.owner_modifier = 1.0f; // 008E6430 over an empty modifier list
     hit.part_hits = nullptr;
@@ -5241,7 +5383,10 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
     if (blast_record != nullptr) hit = *blast_record;
 
     bsp::ShipHitRecordView view;
-    view.segment_kind = 0x0A;
+    // +30h: the element's kind with the element trace bound (a blast record
+    // keeps -1 in +34h, so R1 skips it whatever this says).
+    view.segment_kind = kHullElementSegmentBound && blast_record == nullptr ? impact_shape_kind
+                                                                             : 0x0A;
     for (int i = 0; i < 3; ++i) view.impact_point[i] = point[i];
     view.shot_present = true;
     view.shot_is_depth_charge = false;
@@ -5423,6 +5568,102 @@ void GameGunneryHost::Impl::apply_impact_blast(std::size_t shooter,
             static_cast<double>(unit_state[i].health));
     }
     done("Projectile::blast_radial_damage_0084bad0", 0x0084bad0u);
+}
+
+// 0093A4F0 (water) / 0093A470 (fire), reached through 9Eh's add arm 0082203D.
+// Both add the seconds unconditionally (0093A4F0 skips only its statistics call
+// 009832F0 for a non-positive amount; 0093A470 calls 00983780 always), clear
+// +44h, and then test water_s * +2Ch + fire_s * +30h against the health at
+// +370h: a larger sum tail-calls 0090E6C0(game+21A0h, unit), recorded here.
+void GameGunneryHost::Impl::damage_control_add_seconds(std::size_t unit, bool water,
+    float seconds) {
+    if (unit >= damage_control.size() || unit >= unit_state.size()) return;
+    DamageControl& dc = damage_control[unit];
+    if (water) {
+        dc.water_seconds += seconds;
+        ++dc_water_adds;
+        done("DamageControl::add_water_seconds_0093a4f0", 0x0093a4f0u);
+    } else {
+        dc.fire_seconds += seconds;
+        ++dc_fire_adds;
+        done("DamageControl::add_fire_seconds_0093a470", 0x0093a470u);
+    }
+    const float pending = dc.water_seconds * dc.water_tick + dc.fire_seconds * dc.fire_tick;
+    if (pending > unit_state[unit].health) {
+        ++dc_doomed_notes;
+        record("DamageControl::pending_exceeds_health_0090e6c0", 0x0090e6c0u);
+    }
+}
+
+// 0093CA20 per ship, the call 00826B84 makes through vtable slot 1ECh
+// (008160B0) with the motion step. Steps 0093C860 and 0093C520 have nothing to
+// act on in this host (no subobjects, the failure list stays empty because
+// 0093BED0 is a record), so only the hull, water and fire steps run. The
+// gameplay modifier (00F88C30) is absent, so it is 1.0; the priority is the
+// constructor's 0, so both timer divisors are 1.0 and the hull step takes
+// BodyRepairMultiplier. Labelled: run after the projectile pass instead of
+// inside the ship-motion update, and the entity flags +5Ch..+60h are read as
+// "not dead".
+void GameGunneryHost::Impl::run_damage_control(float dt) {
+    if (!(dt > 0.0f)) return;
+    const std::size_t n = std::min(damage_control.size(), unit_state.size());
+    for (std::size_t i = 0; i < n; ++i) {
+        DamageControl& dc = damage_control[i];
+        UnitState& state = unit_state[i];
+        if (!dc.enabled || state.dead) continue;
+        const auto damage = [&](float amount) {
+            bsp::UnitHealth health;
+            health.current_health = state.health;
+            health.max_health = state.max_health;
+            bsp::UnitDamageGates gates;
+            const bsp::UnitDamageOutcome outcome = bsp::apply_damage_00879070(health, gates,
+                amount);
+            if (outcome.refused) return;
+            const bsp::UnitHealthWrite write = bsp::set_health_00877b90(health,
+                outcome.new_health, bsp::UnitSessionMode::campaign, 0, false);
+            if (write.wrote) state.health = write.stored_health;
+        };
+        if constexpr (kShipHullRepairBound) {
+            // 0093C770, then 00877B90(max) when the heal overshoots.
+            const float heal = 1.0f * dt * dc.repair_fraction * state.max_health;
+            if (state.health < state.max_health && heal > 0.0f) {
+                const float before = state.health;
+                damage(-heal);   // 00879810 negates into 00879070
+                if (state.health > state.max_health) state.health = state.max_health;
+                dc.repaired += state.health - before;
+            }
+            done("DamageControl::repair_hull_0093c770", 0x0093c770u);
+        }
+        // 0093C120 water, then 0093C210 fire: the elapsed part of this step.
+        const auto timer = [&](float& seconds, float rate, double& total) {
+            const float before = seconds;
+            seconds = before - dt;
+            if (seconds < 0.0f) seconds = 0.0f;
+            const float elapsed = before - seconds;
+            if (elapsed > 0.0f) {
+                const float amount = elapsed * rate / 1.0f;
+                const float h0 = state.health;
+                damage(amount);   // unit vtable[1ACh]
+                total += h0 - state.health;
+            }
+        };
+        timer(dc.water_seconds, dc.water_tick, dc.water_damage);
+        done("DamageControl::water_step_0093c120", 0x0093c120u);
+        timer(dc.fire_seconds, dc.fire_tick, dc.fire_damage);
+        done("DamageControl::fire_step_0093c210", 0x0093c210u);
+        state.row.health = state.health;
+        bsp::UnitHealth health;
+        health.current_health = state.health;
+        health.max_health = state.max_health;
+        if (bsp::unit_is_dead(health)) {
+            ++dc_deaths;
+            log.notef("gunnery: damage control death %s t=%.2f water_total=%.0f "
+                "fire_total=%.0f repaired=%.0f", state.row.name.c_str(),
+                static_cast<double>(clock_seconds), dc.water_damage, dc.fire_damage,
+                dc.repaired);
+            kill_unit(i);
+        }
+    }
 }
 
 void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
@@ -5713,6 +5954,9 @@ void GameGunneryHost::fixed_step(float step_seconds) {
     }
     host.run_gun_aim_and_fire(step_seconds);
     host.run_projectiles(step_seconds);
+    if constexpr (kShipDamageControlTickBound || kShipHullRepairBound) {
+        host.run_damage_control(step_seconds);
+    }
     // The rows are complete for this step here, after every per-unit pass and
     // the aim, fire and projectile passes have run. 00A08460 BSP_Ai_TargetWeight
     // reads the target's hit points and the attacker's barrels, and the AI
@@ -6600,6 +6844,24 @@ void GameGunneryHost::report() {
         s.part_damages, s.fire_messages_9e, s.flood_messages_9e, s.attributions, s.deaths,
         s.kill_credits, static_cast<double>(s.damage_total),
         static_cast<double>(s.first_hit_seconds));
+    {
+        double water = 0.0, fire = 0.0, repaired = 0.0;
+        std::size_t enabled = 0;
+        for (const auto& dc : host.damage_control) {
+            water += dc.water_damage;
+            fire += dc.fire_damage;
+            repaired += dc.repaired;
+            if (dc.enabled) ++enabled;
+        }
+        host.log.notef("summary mission gunnery damage control element_bound=%d tick_bound=%d "
+            "repair_bound=%d element_hits=%llu fizika=%llu water_adds=%llu fire_adds=%llu "
+            "pending_over_health=%llu water_damage=%.0f fire_damage=%.0f repaired=%.0f "
+            "dc_deaths=%llu ships_with_damage_control=%zu",
+            kHullElementSegmentBound ? 1 : 0, kShipDamageControlTickBound ? 1 : 0,
+            kShipHullRepairBound ? 1 : 0, host.element_hits, host.element_hits_fizika,
+            host.dc_water_adds, host.dc_fire_adds, host.dc_doomed_notes, water, fire, repaired,
+            host.dc_deaths, enabled);
+    }
 
     std::array<unsigned long long, bsp::kUnitGunneryCategoryCount> cat_guns{};
     std::array<unsigned long long, bsp::kUnitGunneryCategoryCount> cat_assigns{};

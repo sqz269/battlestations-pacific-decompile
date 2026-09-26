@@ -1,0 +1,39 @@
+{
+  "packet": "cc9_ship_fire_flooding",
+  "doc": "docs/SHIP_FIRE_FLOODING.md",
+  "answer": "part=0 fires=0 floods=0 came from the hull mesh trace writing record+34h = -1 and +30h = 0Ah on every hit, so R1 (00826F62) skipped R2..R10. The trace now walks the GeomMesh elements in 00723D60's order and copies element+4h / +8h (00723F62 / 00723F6C). Floods and fires add seconds through 9Eh (0093A4F0 water +34h, 0093A470 fire +38h). The damage-control tick 0093CA20 turns each elapsed second into WaterTickDamage (100) or FireTickDamage (40) damage and heals BodyRepairTickPercentage/100 * BodyRepairMultiplier of max per second. All three switches are ON.",
+  "switches": {
+    "kHullElementSegmentBound": "element kind/index into +30h/+34h; FireChance / 100",
+    "kShipDamageControlTickBound": "9Eh add-seconds and the water/fire steps 0093C120 / 0093C210",
+    "kShipHullRepairBound": "the hull step 0093C770"
+  },
+  "steps": [
+    {"address": "0081ef47", "native": "0093bcc0", "function": "0081ed40", "rule": "the repair task constructor at unit+A20h: +2Ch <- settings+3B0h WaterTickDamage, +30h <- settings+3ACh FireTickDamage, +28h = 1.0, +24h = 0"},
+    {"address": "0093ca2b", "native": "0093c770", "rule": "hull step, heal = +28h * dt * settings+3B4h * max * settings+3D4h * modifier"},
+    {"address": "0093ca58", "native": "0093c120", "rule": "water step over +34h at +2Ch, divisor settings+3C8h only at priority 4"},
+    {"address": "0093ca67", "native": "0093c210", "rule": "fire step over +38h at +30h, divisor settings+3CCh only at priority 3"},
+    {"address": "0093c820", "native": "00879810", "rule": "the heal goes through ApplyHealthDelta, which negates into 00879070"},
+    {"address": "0093a4dd", "native": "0090e6c0", "kind": "tail_jump", "rule": "AddFireSeconds: water_s * +2Ch + fire_s * +30h above health notifies game+21A0h"},
+    {"address": "0093a55f", "native": "0090e6c0", "kind": "tail_jump", "rule": "AddWaterSeconds: the same test"}
+  ],
+  "evidence_sites": {
+    "00723f62 / 00723f6c": "record+30h = element+4h, record+34h = element+8h",
+    "00826b84": "CALL EAX = unit vtable slot 1ECh (008160B0 in nine vtables), unconditional in 00825F20 with the motion dt",
+    "00962dcf..00962dda": "VehicleClass.Repair nil -> class+D0h = 1",
+    "0083e243": "FDIV qword [00D7A220] (100.0) after reading BodyRepairTickPercentage; 0083E295 the same for GunRepairTickPercentage",
+    "0083e1b8 / 0083e1fa": "WaterTickDamage / FireTickDamage stored raw"
+  },
+  "substitutions": [
+    "0093BED0 component failure stays a record, so failures and 0093C520 stay empty",
+    "0092D1F0 part damage is counted, not applied (no per-segment health vector)",
+    "the tick runs after the gunnery projectile pass, not inside 00825F20; entity flags read as not dead",
+    "modifier 008E6430 absent -> 1.0"
+  ],
+  "pair": {
+    "runs": "USN04 4700/4500 and USN02 1400/1200 at 0.05 s, BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1, four same-tree builds",
+    "usn02": {"off": "floods 0 fires 0 part 0, 4 deaths", "element": "19 / 2 / 7, death table identical", "tick": "water 3313 fire 324, 5 deaths (Yamakaze 57.70 s)", "repair": "repaired 382, Yamakaze 58.60 s"},
+    "usn04": "identical in all four: 31 deaths, 528 hits, 2 direct mesh hits on ships from rounds with no WaterDamage"
+  },
+  "also": "src/gameplay_settings.cpp stores BodyRepairTickPercentage and GunRepairTickPercentage without 0083E243 / 0083E295's / 100.0; no reader yet, not in this lease.",
+  "ghidra": "read-only; no renames, comments or saves"
+}
