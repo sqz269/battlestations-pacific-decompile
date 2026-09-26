@@ -5,6 +5,8 @@ struct CompilerOwnersGraph {
  CanonicalProfiles profiles;
  NativeMaterialPassDestructionAccess pass_lifetime;
  NativeMaterialPassConstructionAccess passes;
+ NativeMaterialPassCopyAccess copies;
+ NativeMaterialProgramNumericRendererDomain numeric_renderer;
  NativeD3dx9ShaderConstantTableImport reflection_import;
  NativeCompiledShaderReflectionContext reflection;
  NativeD3d9ShaderConstructionActualContext shaders;
@@ -37,15 +39,16 @@ struct CompilerOwnersGraph {
   owners.bind(raw,entry->reference);
   live_companions.fetch_add(1,std::memory_order_relaxed);
  }
- static void bind_states(void* context,NativeMaterialPassBaseStorage& pass) noexcept {
+ static void bind_state(void* context,NativeMaterialStateOwnerStorage& state) noexcept {
   auto& self=*static_cast<CompilerOwnersGraph*>(context);
-  for(auto* state:{pass.render_18,pass.third_1c,pass.sampler_20}) {
-   const auto profile=get<U>(state);
-   check(profile==0xd61a2c || profile==0xd61a34 || profile==0xd61a3c,
-       "compiler state owner has an unsupported original profile");
-   self.bind<NativeMaterialStateReference,NativeMaterialStateCompanionDisposal>(
-       state,*state,self.profiles(profile));
-  }
+  const auto profile=get<U>(&state);
+  check(profile==0xd61a2c || profile==0xd61a34 || profile==0xd61a3c,
+      "compiler state owner has an unsupported original profile");
+  self.bind<NativeMaterialStateReference,NativeMaterialStateCompanionDisposal>(
+      &state,state,self.profiles(profile));
+ }
+ static void bind_states(void* context,NativeMaterialPassBaseStorage& pass) noexcept {
+  for(auto* state:{pass.render_18,pass.third_1c,pass.sampler_20}) bind_state(context,*state);
  }
  static void bind_pass(void* context,NativeMaterialPassStorage& pass) noexcept {
   auto& self=*static_cast<CompilerOwnersGraph*>(context);
@@ -65,10 +68,12 @@ struct CompilerOwnersGraph {
  CompilerOwnersGraph(NativeRenderActualOwnerRegistry& registry,CanonicalProfiles p,
      GameNativeVfsRawServices& vfs,NativeStringRawPoolContext& raw,
      NativeResourceSupportRawContext& support,void* const volatile& renderer,
-     void* const volatile& constants,HMODULE d3dx)
+     void* const volatile& constants,HMODULE d3dx,NativeTextureCacheContext& textures)
   :owners(registry),profiles(p),
    pass_lifetime{vfs.strings,registry,game_native_graphics_pool_process().material_pass_pool_0108fbf8()},
-   passes{pass_lifetime,renderer,{this,&bind_states}},reflection_import(d3dx),
+   passes{pass_lifetime,renderer,{this,&bind_states}},
+   copies{pass_lifetime,this,&bind_state},numeric_renderer{passes,textures,profiles(0xd5f0a8)},
+   reflection_import(d3dx),
    reflection{vfs.strings,constants,reflection_import},
    shaders{raw,support.actual_published_0108fedc,renderer},
    shader_lifetime{support.actual_published_0108fedc,NativeResourceSupportLifetime(support),
@@ -81,7 +86,8 @@ struct CompilerOwnersGraph {
    vertex{vfs.strings,renderer,vfs.actual_vfs_publication_0109ceec,vfs.bindings,vertex_import},
    pixel{vfs.strings,renderer,vfs.actual_vfs_publication_0109ceec,vfs.bindings,pixel_import} {}
  GameNativeMaterialCompilerOwners borrowed() noexcept {
-  return {passes,reflection,shaders,{this,&bind_pass,&bind_reflection,&bind_shader}};
+  return {passes,reflection,shaders,{this,&bind_pass,&bind_reflection,&bind_shader},
+      copies,{this,&bind_pass},numeric_renderer};
  }
  GameNativeMaterialCompilerSources borrowed_sources() noexcept {return {source,vertex,pixel};}
  bool quiescent() const noexcept {return live_companions.load(std::memory_order_relaxed)==0;}

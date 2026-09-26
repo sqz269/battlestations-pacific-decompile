@@ -82,8 +82,10 @@ public:
     void create_shader_cache();
     void release_shader_cache();
     NativeShaderBinaryCacheContext& shader_cache_context() noexcept;
-    // Same pass/reflection/shader domains for the actual compiler. The caller
-    // supplies its persistent native operation frames and retains failed work.
+    // Same compiler and secondary-pass construction/copy/registration domains.
+    // No effect/program load graph is created. The caller keeps persistent
+    // native operation frames and this application alive through failed work
+    // and genuine owner retirement; no implicit cleanup or replay is supplied.
     GameNativeMaterialCompilerOwners material_compiler_owners();
     GameNativeMaterialCompilerSources material_compiler_sources();
     // Full B43B00 over a caller-owned initialized110h descriptor. The caller
