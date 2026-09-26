@@ -166,7 +166,8 @@
     },
     "supported_dependency_configuration_identified": false,
     "dependency_limit": "Optional absolute dependency DLLs do not provide bytes at an offset of the main executable image; limited inspected config evidence does not establish a disable-host-patch option.",
-    "no_fallback_or_patch": true
+    "no_fallback_or_patch": true,
+    "caller_path_evidence": "Static module-base/host-offset/copy windows strongly corroborate original-host patch diagnosis; no runtime stack trace or caller-register capture, so no exact dynamic call-stack reconstruction. The invalid target outside the probe is directly observed."
   },
   "artifacts": {
     "immutable_archives": [

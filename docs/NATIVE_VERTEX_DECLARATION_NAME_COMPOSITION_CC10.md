@@ -96,8 +96,11 @@ instruction windows, not a claimed complete DLL function/caller reconstruction.
 The observed destination equals the probe base10000000 plus640F5E. The probe's
 SizeOfImage is A6000, so the destination is outside its image. With the original
 base400000 this offset corresponds to A40F5E inside the original imageE2F000.
-The installed DLL therefore reaches an original main-host image patch during
-initialization before this fixture can call the declaration loader.
+The observed invalid destination and those static windows strongly support an
+original main-host image patch as the failing initialization path. No runtime
+stack trace or caller-register capture was recorded, so this is not an exact
+dynamic call-stack reconstruction. The directly observed target is outside the
+probe image, and the fixture did not reach the declaration loader.
 
 No supported explicit dependency configuration was identified for this host
 requirement. XLiveLibrary's optional dependency vector loads additional absolute
