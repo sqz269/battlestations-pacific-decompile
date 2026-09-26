@@ -46,7 +46,7 @@ namespace bsp::game {
 // minimap walks the union triple 4 (+E0Ch at 005C1610). False: the stand-ins
 // (walk 0 = every created unit, walks 1/2 empty, the pick's own-party filter,
 // the minimap over every unit).
-inline constexpr bool kReconUnitListSourcesBound = false;
+inline constexpr bool kReconUnitListSourcesBound = true;
 
 // The eight lists the last 004c3cb0 body built ([00E188A8]+1964h..+19B8h, a
 // field of the process-wide game object); nullptr before the first build or

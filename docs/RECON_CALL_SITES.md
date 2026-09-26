@@ -20,7 +20,7 @@ and the minimap walks every unit.
 | 004C3CB0 walk 2 | 004C3EB4 `MOV EBP,[EAX+0E00h]` | triple 3, unknown | once per scene load |
 | 00526A40, first list | 00526E01 `MOV EAX,[EAX+1974h]` | game+1970h, walk 0's non-ordnance | read every call |
 | 00526A40, second list | 00526FF1 `MOV EAX,[EAX+19BCh]` | game+19B8h, the merged list | read every call |
-| 005C1600 minimap walk | 005C1610 `MOV EBX,[ECX+0E0Ch]` | triple 4, union | read every frame |
+| 005C0F20 minimap update, walk at 005C1600 | 005C1610 `MOV EBX,[ECX+0E0Ch]` | triple 4, union | read every frame |
 
 `EAX` at 004C3CF5 and `ECX` at 005C160D are `[game+18CCh + game+18ECh*4]+30h`, the local slot's
 recon record. 004C3CB0 runs once after a load: its latch `game+193Ch` is cleared only by
@@ -67,7 +67,7 @@ Publishing the triples (008073C0, the gunnery host):
 - the nearest by screen distance wins (00526F9C, strict); 0052721A..0052723A drop a pick that is
   not alive and visible.
 
-The minimap walk 005C1600: alive and visible (005C1628..005C164A), not the camera unit
+The minimap walk in 005C0F20 (from 005C1600): alive and visible (005C1628..005C164A), not the camera unit
 (005C1650), IsKindOf(5) (005C165D), vtable +B8h (005C1675), then the distance cull (005C16DB).
 
 ## 3. What the readers will show once group records exist
@@ -75,9 +75,14 @@ The minimap walk 005C1600: alive and visible (005C1628..005C164A), not the camer
 The gunnery worker is building the squadron and convoy aggregates (00805490/00805680). When class
 18h and 1Ah records enter the triples:
 - A squadron (chain [18h,2,1,0]) is not ordnance. Walk 0 keeps it in +1970h, and walk 1 files it
-  under squadrons, which merge into +19B8h. It is the only kind-1 entry, so it is what 00526A40
-  can pick. Each one contributes up to five members. The host's `member_3d0` is still a
-  substitution answering 0, so until members are exposed a squadron adds no candidate.
+  under squadrons, which merge into +19B8h.
+- In 00526A40 a squadron entry passes IsKindOf(1). 00526F33 then replaces it with up to five
+  members, and each member must pass IsKindOf(5). The host's `member_3d0` is still a substitution
+  answering 0, so until members are exposed a squadron adds no candidate.
+- Every ship passes IsKindOf(1) too. The destroyer chain is [7,6,5,4,2,1,0]
+  (`kUnitDestroyerAncestry`); the [6,5,4] in `kUnitClassTable` is one implementation's own
+  range, not the whole chain. Section 4's prediction said ships fail this test. That was wrong:
+  the USN04 pair calls the grey-arrow test once per own ship per call (section 5).
 - A squadron fails the minimap's IsKindOf(5), so it draws no icon; its planes, if they are in the
   union as units of their own, do.
 - A 1Ah record is dropped by walk 1 and walk 2 unless it matches a later test (none of 6, 18h,
@@ -105,3 +110,61 @@ USN04 4700/4500 and USN02 9200/9000.
     only after a refresh.
 - **Gameplay.** No gameplay row, per-entity row or summary line moves. The readers are HUD
   reads and a list only the pick screen reads. If one moves, that is the finding.
+
+## 5. The pairs and the verdict
+
+One tree (main 98ef34226 plus 1e7f0aeae), `local\bin\rc_off` against `local\bin\rc_on`,
+`BSP_GUNNERY_RNG_STREAMS=1`. All four logs show `window resolution override fit: 2560x1440 ->
+1600x900` and reach `native renderer final COM release`.
+
+**Gameplay: nothing moved, as predicted.** In both missions:
+- the per-entity tables are identical, so the clock offset is zero;
+- the gunnery damage lines are identical;
+- no summary line moves except the unit-list, minimap and HUD quad lines.
+
+**The census.** On both sides the build runs at mission clock 0.05, from the first frame's pass.
+
+| | USN04 OFF | USN04 ON | USN02 OFF | USN02 ON |
+|---|---|---|---|---|
+| triples own / enemy / unknown | 18 / 0 / 0 | 18 / 0 / 0 | 14 / 0 / 0 | 14 / 0 / 0 |
+| +1964h ships / +1970h rest | 18 / 21 | 18 / 18 | 28 / 28 | 14 / 14 |
+| +19B8h merged | 0 | 0 | 0 | 0 |
+
+Without the binding, +1970h held every created unit of both sides: USN04's three `movieval`
+aircraft, and USN02's fourteen Japanese ships. With it, +1970h holds the player side's ships only,
+in the triple's class-bucket order. The merged list is empty on both sides, because no enemy is
+detected one frame into the mission.
+
+**The rows.**
+
+| Row | USN04 OFF | USN04 ON | USN02 OFF | USN02 ON |
+|---|---|---|---|---|
+| unimplemented total | 2,275,704 | 2,248,222 | 4,772,283 | 4,717,786 |
+| `UnitPickScreen::grey_arrow_set` | 261,108 | 164,880 | unchanged | unchanged |
+| `UnitPickScreen::gui_extent` | 251,897 | 155,669 | unchanged | unchanged |
+| `HudMinimap::unit_alive_and_visible` | 192,360 | 174,000 | 508,480 | 285,440 |
+| `HudMinimap::world_position` | 182,320 | 173,920 | 508,480 | 302,280 |
+| minimap icons created | unchanged | unchanged | 23 | 20 |
+
+- Records `UnitPickScreen::team_unit_list`, `kind35_list`, `HudMinimap::team_unit_list` and
+  `UnitLists::registry_walk1/2` are gone. They are replaced by the concrete `list_1970`,
+  `list_19b8`, `union_triple` and `recon_walk0/1/2`.
+- `UnitPickScreen::owner_140`, the count of picks that resolved, does not appear in either diff.
+  The pick is unchanged.
+- In USN04, `grey_arrow_set` is exactly 18 per call with the binding: one per own ship, which
+  pass IsKindOf(1). Section 4 was wrong on that point, and section 3 is corrected. The pick
+  still did not change, because the own ships were candidates without the binding too.
+- In USN02, `grey_arrow_set` is 254,240 on both sides: 14 per call, the own ships, from the
+  stand-in's party filter without the binding and from the own triple with it.
+
+**The minimap.** It now shows the player's side and the contacts it has detected, not every unit
+within 4000.
+- USN02 at frame 1 places 7 icons against 14; at frame 16000, 2 against 22.
+- At the end, the player's side has two ships and detects nothing: the final triple line is
+  `own=2 enemy=0 union=2` on both sides.
+- The drawn counts and the HUD quad count move with it (196 against 193 in USN02).
+
+**Verdict: ON.** The three readers now take the triples the image's loads read, at 004C3CF8,
+004C3D61, 004C3EB4, 00526E01, 00526FF1 and 005C1610. Every test between each triple and each
+consumer is the image's own (section 2). No gameplay line moves in either mission.
+`kReconUnitListSourcesBound` is set true.

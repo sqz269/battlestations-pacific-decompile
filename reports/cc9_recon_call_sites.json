@@ -1,0 +1,21 @@
+{
+  "packet": "cc9_recon_call_sites",
+  "doc": "docs/RECON_CALL_SITES.md",
+  "switch": "kReconUnitListSourcesBound (include/bsp/game_hosts_world.hpp)",
+  "loads": [
+    {"site": "004C3CF8", "function": "004C3CB0", "instruction": "MOV EBP,[EAX+0DDCh]", "reads": "recon triple 0 (own)", "host": "LocalPlayerUnitListsBinding::registry_walk_units(kWalk0)"},
+    {"site": "004C3D61", "function": "004C3CB0", "instruction": "MOV EBP,[EAX+0DE8h]", "reads": "recon triple 1 (enemy)", "host": "LocalPlayerUnitListsBinding::registry_walk_units(kWalk1)"},
+    {"site": "004C3EB4", "function": "004C3CB0", "instruction": "MOV EBP,[EAX+0E00h]", "reads": "recon triple 3 (unknown)", "host": "LocalPlayerUnitListsBinding::registry_walk_units(kWalk2)"},
+    {"site": "00526E01", "function": "00526A40", "instruction": "MOV EAX,[EAX+1974h]", "reads": "game+1970h, walk 0 non-ordnance", "host": "UnitPickBinding::list_size(TeamUnits)"},
+    {"site": "00526FF1", "function": "00526A40", "instruction": "MOV EAX,[EAX+19BCh]", "reads": "game+19B8h, the merged list", "host": "UnitPickBinding::list_size(Kind35)"},
+    {"site": "005C1610", "function": "005C0F20 (BSP_HudMinimapScreen_Update, the walk at 005C1600)", "instruction": "MOV EBX,[ECX+0E0Ch]", "reads": "recon triple 4 (union)", "host": "MinimapBinding::team_unit_list_head"}
+  ],
+  "filters": "docs/RECON_CALL_SITES.md section 2: every test between each triple and each consumer, with addresses",
+  "substitutions": [
+    "slot record [game+18CCh+game+18ECh*4]+30h taken as the triples of the controlled unit's side (+54h)",
+    "no load-time 008073C0 before 004C3CB0 (004DFB70 step 19); the first frame's fixed-step pass runs before call 2 of 004C40A0 instead",
+    "the lists reach the HUD through game_local_player_unit_lists(), a process-wide accessor, as the image's lists are fields of the game object at [00E188A8]"
+  ],
+  "ghidra": "read-only; disk-byte disassembly of 004C3CB0, 00526DB0..0052705x and 005C1600..005C1613",
+  "no_ghidra_function": []
+}
