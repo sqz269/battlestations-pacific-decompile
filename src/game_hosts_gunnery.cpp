@@ -372,7 +372,7 @@ constexpr bool kArtilleryRangingErrorBound = true;
 //    0, -35, +35, -70, +70, -105, then 0 again, metres along the target's
 //    track. OFF: every tube at the bare intercept. Packet cc9_torpedo_spread,
 //    docs/TORPEDO_SPREAD.md.
-constexpr bool kTorpedoSpreadBound = false;
+constexpr bool kTorpedoSpreadBound = true;
 //  * kKillCreditDamageGateBound: 0077CE60 writes the attribution block (the
 //    +2C4h attacker the kill credit 0091BDA0 names) only for a live victim and
 //    only when the hit's damage, 00470510 for a hull segment or 00470740 when
