@@ -51,8 +51,9 @@ Every log shows `window resolution override fit: 2560x1440 -> 1600x900` and its 
 3. **Held:** shots fell with the hit records (1215 -> 878), and deaths are 23.
 
 **Why flooding moved 411 records then and only 33 on today's tree.** On the `0e51c215c` tree,
-flooding sinks Japanese ships early: the damage-control deaths are Yamakaze at 58.60 s,
-Electra at 118.05 s, Haguro at 242.56 s, Asagumo at 261.41 s and Murasame at 286.45 s. Minegumo,
+flooding sinks ships early. The damage-control deaths are four Japanese ships (Yamakaze at
+58.60 s, Haguro at 242.56 s, Asagumo at 261.41 s, Murasame at 286.45 s) and Allied Electra at
+118.05 s. Minegumo,
 Yudachi and Samidare also die 10 to 67 s earlier. With fewer Japanese ships afloat from 60 s
 on, both sides fire less: 878 shots against 1215. The landings since (component failures,
 ranging error, torpedo spread) change who is afloat when. On today's tree the same three
