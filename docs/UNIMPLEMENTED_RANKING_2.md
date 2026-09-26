@@ -121,3 +121,62 @@ The ship AI tails in `src/game_hosts_ship_ai.cpp`: 162,000 calls each in E2. Amo
 
 The binding packet takes the two small ones first: 009DA0D0's commit and 009DA8D0's timer. Their
 readers decide whether they move anything.
+
+## HUD mirrors (packet cc9_hud_gauge_text_mirrors, 2026-09-25)
+
+The 58 HUD-file rows at 10,000 or more E2 calls were read to find mirrors: image calls whose inputs
+the host already holds. Only one qualifies. The rest fall into four groups.
+- **Render-side (Codex's GUI and render code, contracts):**
+  - `HudShipScreen::gauge_digit_uv` 0043ABA0 rewrites the digit icon's vertex UVs. The GUI layer
+    exposes no UV setter, only visibility, colour, text, position and rotation.
+  - `GuiText::create_glyph_buffers` 00AB8400 and `::ensure_draw_sections` 00AB8530 are the
+    renderer's vertex and index objects; the host draws through its sprite bridge instead.
+  - The binoculars lens effect (00452B80) and the viewport descriptor (00B6FDE0) are the renderer's
+    too.
+- **Other owners' data:**
+  - 00927880 (`controlled_target`, `self_marker_unit`, `displayed_self_unit`) asks the weapon
+    director, held by the commands host.
+  - 004C3CB0 reads the recon lists (docs/HUD_CAMERA_TEAM_LISTS.md).
+  - 009043A0 is the spatial segment query (gunnery's `SegmentBinding`).
+- **Unknown producers:**
+  - game+19C4h (docs/IN_MISSION_INTERFACE_RUNTIME.md leaves it a contract);
+  - the class record's +A4h extent (`class_record_extents` already reads the other two);
+  - the VehicleClass `Repair` byte;
+  - the world bounds GGame+711Ch;
+  - the platform clock behind `dir_clock_step`.
+- **Pause bytes:** game+61Fh/+620h are never written in this host, but they are not modelled
+  state either, so they stay records.
+
+**The one mirror: `InGameInterfaceUpdate::controlled_unit` (00E188D8), 18,000 E2 calls.**
+- Its record said "nothing in this process sets a controlled unit", which is stale: the units host
+  binds one (004C0890).
+- `kHudInterfaceControlledUnitBound` answers it, 0068CC04's IsKindOf(8) and the unit's +100h from
+  the units host. The last two were unconditional stubs.
+- Every use of the answer in 0068C3E7..0068CAD4 is gated by input, or by camera-screen flags that
+  stay clear. The audio environment's term stays 1 for a surface ship.
+
+**Predictions, written before the pair.** One tree (main cc4520059 plus this), `local\bin\ic_off`
+against `local\bin\ic_on`, USN04 4700/4500, `BSP_GUNNERY_RNG_STREAMS=1`, 1600x900.
+
+| row | OFF | ON |
+| --- | ---: | ---: |
+| InGameInterfaceUpdate::controlled_unit | 9,000 unimplemented | 9,000 concrete |
+| InGameInterfaceUpdate::query_006529c0 | none | 4,500 unimplemented |
+
+- **The new record** is the camera screen's flag 66h, now reached behind the `&&` at 0068CAA9
+  once per update.
+- **Unimplemented total.** It falls by 4,500.
+- **Summary lines.** All identical. The audio environment stays `Underwater`: the camera-height term
+  already decides it in these runs (the water height is itself a record), and the new unit term is 1
+  because the Lexington is not kind 8.
+
+**The pair.** `local\ic_off_usn04.log` against `local\ic_on_usn04.log`, both at 1600x900.
+
+| row | OFF | ON |
+| --- | ---: | ---: |
+| unimplemented total | 2,368,432 | 2,363,932 (-4,500; predicted -4,500) |
+| InGameInterfaceUpdate::controlled_unit | 9,000 unimplemented | 9,000 concrete |
+| InGameInterfaceUpdate::query_006529c0 | none | 4,500 unimplemented |
+
+- **Summary lines.** All 185 are identical.
+- **Result.** Every prediction holds. **`kHudInterfaceControlledUnitBound` is ON.**

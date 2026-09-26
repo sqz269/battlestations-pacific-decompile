@@ -1,0 +1,34 @@
+{
+ "packet": "cc9_hud_gauge_text_mirrors",
+ "branch": "agent/cc9-platform2",
+ "doc": "docs/UNIMPLEMENTED_RANKING_2.md (HUD mirrors)",
+ "switches": {
+  "kHudInterfaceControlledUnitBound": true
+ },
+ "not_bound": {
+  "HudShipScreen::gauge_digit_uv": "render-side: no GUI UV setter (contract)",
+  "GuiText::create_glyph_buffers": "renderer buffers (contract)",
+  "GuiText::ensure_draw_sections": "renderer buffers (contract)"
+ },
+ "functions": [
+  {
+   "address": "00E188D8",
+   "status": "the controlled-unit global answered from the units host in the interface update; 0068CC04 IsKindOf(8) and +100h bound"
+  }
+ ],
+ "host_steps": [],
+ "no_ghidra_function": [],
+ "pairs": [
+  {
+   "switch": "kHudInterfaceControlledUnitBound",
+   "off": "local/ic_off_usn04.log",
+   "on": "local/ic_on_usn04.log",
+   "unimplemented_total": [
+    2368432,
+    2363932
+   ],
+   "summary_lines_identical": true,
+   "verdict": "ON"
+  }
+ ]
+}

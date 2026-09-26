@@ -342,10 +342,15 @@ public:
     bool local_slot_flag_19() override { return false; }
     int local_slot_unit_id() override { return -1; }
     bool has_controlled_unit() override {
-        // 00e188d8, written only by BSP_Game_SetControlledUnit 004c0880. Nothing
-        // in this process sets a controlled unit, so the HUD has no unit.
-        owner_.record("InGameInterfaceUpdate::controlled_unit", 0x00e188d8u);
-        return false;
+        // 00e188d8, written by BSP_Game_SetControlledUnit 004c0880; the units
+        // host binds its controlled unit through 004c0890.
+        if constexpr (kHudInterfaceControlledUnitBound) {
+            owner_.done("InGameInterfaceUpdate::controlled_unit", 0x00e188d8u);
+            return owner_.units != nullptr && owner_.units->controlled_bound();
+        } else {
+            owner_.record("InGameInterfaceUpdate::controlled_unit", 0x00e188d8u);
+            return false;
+        }
     }
     bool input_action_pressed(int action) override {
         if (!kHudPresentationTopBound) {
@@ -519,9 +524,27 @@ public:
     int cockpit_screen_mode() override { return record_false("00604f30", 0x00604f30u) ? 1 : 0; }
     bool second_cockpit_screen_wanted() override { return false; }
     int second_cockpit_screen_mode() override { return 0; }
-    bool controlled_unit_is_submarine() override { return false; }
+    bool controlled_unit_is_submarine() override {
+        // 0068CC04: IsKindOf(8) on 00E188D8.
+        if constexpr (kHudInterfaceControlledUnitBound) {
+            return owner_.units != nullptr && owner_.units->controlled_bound()
+                && owner_.units->unit_is_kind_of(owner_.units->controlled_index(), 8);
+        } else {
+            return false;
+        }
+    }
     void refresh_controlled_unit_pose() override {}
-    float controlled_unit_height() override { return 0.0f; }
+    float controlled_unit_height() override {
+        // The unit's +100h, the world translation's y.
+        if constexpr (kHudInterfaceControlledUnitBound) {
+            float r[3], u[3], f[3], o[3];
+            if (owner_.units != nullptr && owner_.units->controlled_bound()
+                && owner_.units->unit_pose(owner_.units->controlled_index(), r, u, f, o)) {
+                return o[1];
+            }
+        }
+        return 0.0f;
+    }
     void set_audio_environment(std::string_view name) override {
         owner_.summary.audio_environment.assign(name.data(), name.size());
         owner_.record("InGameInterfaceUpdate::set_audio_environment", 0x00a7b710u);
