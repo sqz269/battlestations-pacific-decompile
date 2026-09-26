@@ -1,0 +1,770 @@
+{
+  "abi_compatible": false,
+  "baseline_main": "f43803a4a",
+  "compiler_boundaries": [
+    {
+      "address": "00CC4B20",
+      "binary": {
+        "bytes": 8,
+        "path": "local/procedural_factory_table_readiness_cc10/bytes_00cc4b20.bin",
+        "sha256": "d8aa5c2c8a3e2ebd5278b7815070dbe1f9183cdff119435ef1ec60abef88240c"
+      },
+      "call_and_jump_rows": [
+        {
+          "address": "00CC4B23",
+          "bytes": "e9b879efff",
+          "text": "jmp 0xbbc4e0"
+        }
+      ],
+      "coverage": "compiler evidence and source cleanup projection only; native FH3 excluded",
+      "inclusive_end": "00CC4B27",
+      "last_instruction": "00CC4B23",
+      "last_instruction_length": 5,
+      "last_instruction_text": "jmp 0xbbc4e0",
+      "listing": {
+        "bytes": 129,
+        "path": "local/procedural_factory_table_readiness_cc10/asm_00cc4b20.txt",
+        "sha256": "020a88b7c4b64b55b84f4ee267c3b22020dbf5dffadabc344ea10cb2a8e2f29d"
+      },
+      "live_equals_PE": true,
+      "live_output": {
+        "bytes": 44,
+        "path": "local/procedural_factory_table_readiness_cc10/live_00cc4b20.txt",
+        "sha256": "f81f498c957831accfe2ec88f8129289a2c1dea13e029e994e0da0778e78f55e"
+      },
+      "loader_zero_fill_beyond_raw_extent": false,
+      "native_end_exclusive": "00CC4B28",
+      "role": "compiler_cleanup",
+      "size": 8
+    },
+    {
+      "address": "00CC4B28",
+      "binary": {
+        "bytes": 11,
+        "path": "local/procedural_factory_table_readiness_cc10/bytes_00cc4b28.bin",
+        "sha256": "0a6adc9990a4339edb60d015bf7f28a13421ce30fbbffe6d73687e1975ae880f"
+      },
+      "call_and_jump_rows": [
+        {
+          "address": "00CC4B2E",
+          "bytes": "e9cd79efff",
+          "text": "jmp 0xbbc500"
+        }
+      ],
+      "coverage": "compiler evidence and source cleanup projection only; native FH3 excluded",
+      "inclusive_end": "00CC4B32",
+      "last_instruction": "00CC4B2E",
+      "last_instruction_length": 5,
+      "last_instruction_text": "jmp 0xbbc500",
+      "listing": {
+        "bytes": 182,
+        "path": "local/procedural_factory_table_readiness_cc10/asm_00cc4b28.txt",
+        "sha256": "e11e291da6f984cf6ddcbbe969b7f7b0317a9fbbb9e8951704778126b30b371c"
+      },
+      "live_equals_PE": true,
+      "live_output": {
+        "bytes": 56,
+        "path": "local/procedural_factory_table_readiness_cc10/live_00cc4b28.txt",
+        "sha256": "76ba8b9c867e0f8482df6b47fc75c4dcc0397b33ab89175278a22fa4fdc10ec6"
+      },
+      "loader_zero_fill_beyond_raw_extent": false,
+      "native_end_exclusive": "00CC4B33",
+      "role": "compiler_cleanup",
+      "size": 11
+    },
+    {
+      "address": "00CC4B33",
+      "binary": {
+        "bytes": 11,
+        "path": "local/procedural_factory_table_readiness_cc10/bytes_00cc4b33.bin",
+        "sha256": "b939f2c307216c53ec2155c53d2d78d2fdad8a6d9c27fca8de102f232eb4322e"
+      },
+      "call_and_jump_rows": [
+        {
+          "address": "00CC4B39",
+          "bytes": "e9c279efff",
+          "text": "jmp 0xbbc500"
+        }
+      ],
+      "coverage": "compiler evidence and source cleanup projection only; native FH3 excluded",
+      "inclusive_end": "00CC4B3D",
+      "last_instruction": "00CC4B39",
+      "last_instruction_length": 5,
+      "last_instruction_text": "jmp 0xbbc500",
+      "listing": {
+        "bytes": 182,
+        "path": "local/procedural_factory_table_readiness_cc10/asm_00cc4b33.txt",
+        "sha256": "d52fcc2b6c7a3f7f1f08a4951425cf8ddc5715c668f8bbc1d0e360eae7067fd1"
+      },
+      "live_equals_PE": true,
+      "live_output": {
+        "bytes": 56,
+        "path": "local/procedural_factory_table_readiness_cc10/live_00cc4b33.txt",
+        "sha256": "f2d0b3c3a15726607f290a27e592071e1c01e87353d4a7de3481da3ef66c98fb"
+      },
+      "loader_zero_fill_beyond_raw_extent": false,
+      "native_end_exclusive": "00CC4B3E",
+      "role": "compiler_cleanup",
+      "size": 11
+    },
+    {
+      "address": "00CC4B3E",
+      "binary": {
+        "bytes": 10,
+        "path": "local/procedural_factory_table_readiness_cc10/bytes_00cc4b3e.bin",
+        "sha256": "127006e7e9c1e01512d1633b163a1282ce04d4a16df7bbe5287b1ef2b56d4b84"
+      },
+      "call_and_jump_rows": [
+        {
+          "address": "00CC4B43",
+          "bytes": "e9fb1ff3ff",
+          "text": "jmp 0xbf6b43"
+        }
+      ],
+      "coverage": "compiler evidence and source cleanup projection only; native FH3 excluded",
+      "inclusive_end": "00CC4B47",
+      "last_instruction": "00CC4B43",
+      "last_instruction_length": 5,
+      "last_instruction_text": "jmp 0xbf6b43",
+      "listing": {
+        "bytes": 115,
+        "path": "local/procedural_factory_table_readiness_cc10/asm_00cc4b3e.txt",
+        "sha256": "18dead277c0b1b0fd6621fd4aca5d87bc7bd50ed1193377172ea5996697a1faf"
+      },
+      "live_equals_PE": true,
+      "live_output": {
+        "bytes": 52,
+        "path": "local/procedural_factory_table_readiness_cc10/live_00cc4b3e.txt",
+        "sha256": "f73b4cbb1d5c729070e118ad596c522b1a15e52082c1fc51733c1f2d7d1e7cb0"
+      },
+      "loader_zero_fill_beyond_raw_extent": false,
+      "native_end_exclusive": "00CC4B48",
+      "role": "compiler_handler",
+      "size": 10
+    }
+  ],
+  "compiler_boundary_bytes": 40,
+  "dispatch": {
+    "base_scalar_00BBC460_implemented": false,
+    "qualified_current_pairs": {
+      "00D64470": "00BBC650",
+      "00D644AC": "00BBC7A0",
+      "00D644E8": "00BBC890",
+      "00D644F0": "00BBC8E0"
+    },
+    "scalar": "capture LOW flags bit0 before D64468 stamp; genuine conditional CRT free; return captured address bits without post-free access",
+    "slot": "capture slot address/current owner/current profile/current target0; validate pair; write flags1; invoke genuine scalar; clear captured slot only on return",
+    "unsupported_base_profile": "00D64468"
+  },
+  "documentation": "docs/NATIVE_PROCEDURAL_FACTORY_TABLE_STORAGE_CC10.md",
+  "eh": {
+    "actions": [
+      {
+        "action": "00CC4B33",
+        "current_cleanup_self_offset": 8,
+        "from_state": 2,
+        "to_state": 1
+      },
+      {
+        "action": "00CC4B28",
+        "current_cleanup_self_offset": 4,
+        "from_state": 1,
+        "to_state": 0
+      },
+      {
+        "action": "00CC4B20",
+        "current_cleanup_self_offset": 0,
+        "from_state": 0,
+        "to_state": -1
+      }
+    ],
+    "handler_info": "00DFE96C",
+    "transport": "source validation/injection exceptions only; native FH3/SEH and termination rules excluded",
+    "unwind_map": "00DFE954"
+  },
+  "evidence": {
+    "approved_readiness_files": 79,
+    "archive": "local/output/native_procedural_factory_table_storage_cc10_evidence.zip",
+    "artifact_index": "local/procedural_factory_table_storage_cc10/artifact_index.json",
+    "directory": "local/procedural_factory_table_storage_cc10",
+    "freeze_receipt": "local/output/native_procedural_factory_table_storage_cc10_freeze_receipt.json",
+    "input_identity": {
+      "bytes": 4631,
+      "path": "local/procedural_factory_table_storage_cc10/frozen_input_identity.json",
+      "sha256": "ca04215d8132aa8af8fb3227eebd0498bda4bb0ea0a17c023233b7a6c3c63fe7"
+    },
+    "preservation": {
+      "bytes": 3920,
+      "path": "local/procedural_factory_table_storage_cc10/preservation_verification.json",
+      "sha256": "f9406311b77e9515c9b30d64ca9a653f56a7e143081ce38833c5f48ff624aa68"
+    },
+    "prior_indexed_artifacts_verified": 1187,
+    "readiness_index": {
+      "bytes": 15831,
+      "path": "local/procedural_factory_table_readiness_cc10/artifact_index.json",
+      "sha256": "bbe1cb0b03882663c25a852bbc6e6473fc9397f714c032bd50c39d4ac8998396"
+    },
+    "readiness_report": {
+      "bytes": 2606,
+      "path": "local/procedural_factory_table_readiness_cc10/report.json",
+      "sha256": "48e0ead9e0eef5194a8c083179890b627791988f768f62bdd075426482180293"
+    }
+  },
+  "failure": {
+    "first_failure": "consume each cleanup state then reread current cleanup-self; original source failure rethrown after successful cleanup",
+    "registry_values": "borrowed +14 factory bits with no retain/count; lookup quiescence required before disposal; no application shutdown ordering proof",
+    "second_failure": "stop immediately retaining consumed state, reached slot, captured targets and completed effects; no retry/settled mark",
+    "throwing_slot": "never cleared or disposed again"
+  },
+  "frame_contract": {
+    "cleanup_helper_frames": "explicit caller-owned frames; no invented native private-stack alias relation",
+    "cleanup_self": "seeded twice; current cell reread after consuming each cleanup state",
+    "factory_bytes": 4,
+    "lifetime": "fresh disjoint persistent metadata and payload; frames/profile views/backing retained on failure; no automatic cleanup or replay",
+    "normal_flags_cell": "one caller-owned actual flags cell shared by reached normal slots",
+    "normal_slot_offsets": [
+      12,
+      8,
+      4,
+      0
+    ],
+    "normal_states_after_owner_read_before_dispatch": [
+      2,
+      1,
+      0,
+      -1
+    ],
+    "table_bytes": 16
+  },
+  "functions": [
+    {
+      "address": "00BBC4E0",
+      "binary": {
+        "bytes": 25,
+        "path": "local/procedural_factory_table_readiness_cc10/bytes_00bbc4e0.bin",
+        "sha256": "a64cccdbae0bd914f487bb3b23fce89cf97e3eeab4c316b1dae064029207b50b"
+      },
+      "call_and_jump_rows": [
+        {
+          "address": "00BBC4EF",
+          "bytes": "ffd2",
+          "text": "call edx"
+        }
+      ],
+      "coverage": "complete qualified normal source behavior",
+      "cpp_symbol": "bsp::destroy_native_procedural_factory_slot_00bbc4e0",
+      "inclusive_end": "00BBC4F8",
+      "last_instruction": "00BBC4F8",
+      "last_instruction_length": 1,
+      "last_instruction_text": "ret ",
+      "listing": {
+        "bytes": 679,
+        "path": "local/procedural_factory_table_readiness_cc10/asm_00bbc4e0.txt",
+        "sha256": "75e9f82584e23a53519bc1cb81708a953a56a9cbef6e033200848303053ad275"
+      },
+      "live_equals_PE": true,
+      "live_output": {
+        "bytes": 124,
+        "path": "local/procedural_factory_table_readiness_cc10/live_00bbc4e0.txt",
+        "sha256": "9cfdc42feecf8726ec49295e853bb66732378180ee0e9a005192e5d7e8ff8c0a"
+      },
+      "loader_zero_fill_beyond_raw_extent": false,
+      "native_end_exclusive": "00BBC4F9",
+      "original_abi": "ECX actual DWORD slot address; RET",
+      "role": "new_normal",
+      "size": 25
+    },
+    {
+      "address": "00BBC500",
+      "binary": {
+        "bytes": 25,
+        "path": "local/procedural_factory_table_readiness_cc10/bytes_00bbc500.bin",
+        "sha256": "a64cccdbae0bd914f487bb3b23fce89cf97e3eeab4c316b1dae064029207b50b"
+      },
+      "call_and_jump_rows": [
+        {
+          "address": "00BBC50F",
+          "bytes": "ffd2",
+          "text": "call edx"
+        }
+      ],
+      "coverage": "complete qualified normal source behavior",
+      "cpp_symbol": "bsp::destroy_native_procedural_factory_slot_00bbc500",
+      "inclusive_end": "00BBC518",
+      "last_instruction": "00BBC518",
+      "last_instruction_length": 1,
+      "last_instruction_text": "ret ",
+      "listing": {
+        "bytes": 679,
+        "path": "local/procedural_factory_table_readiness_cc10/asm_00bbc500.txt",
+        "sha256": "8f80ee6ff0f8388ea13cca5f6f7aff13431c6e92307edebbb8ccc2320828a3ce"
+      },
+      "live_equals_PE": true,
+      "live_output": {
+        "bytes": 124,
+        "path": "local/procedural_factory_table_readiness_cc10/live_00bbc500.txt",
+        "sha256": "e598dea9253a86e6dd5f8d6b2b172d86f31d0aabd5b1dcc562bb761bee52a40b"
+      },
+      "loader_zero_fill_beyond_raw_extent": false,
+      "native_end_exclusive": "00BBC519",
+      "original_abi": "ECX actual DWORD slot address; RET",
+      "role": "new_normal",
+      "size": 25
+    },
+    {
+      "address": "00BBC520",
+      "binary": {
+        "bytes": 144,
+        "path": "local/procedural_factory_table_readiness_cc10/bytes_00bbc520.bin",
+        "sha256": "8653ab5f55aae5941086442b2f0ae9a8b7a30f74ac5461baabb872e111cd1207"
+      },
+      "call_and_jump_rows": [
+        {
+          "address": "00BBC555",
+          "bytes": "ffd2",
+          "text": "call edx"
+        },
+        {
+          "address": "00BBC56C",
+          "bytes": "ffd2",
+          "text": "call edx"
+        },
+        {
+          "address": "00BBC582",
+          "bytes": "ffd2",
+          "text": "call edx"
+        },
+        {
+          "address": "00BBC59B",
+          "bytes": "ffd2",
+          "text": "call edx"
+        }
+      ],
+      "coverage": "complete qualified normal source behavior",
+      "cpp_symbol": "bsp::destroy_native_procedural_factory_table_00bbc520",
+      "inclusive_end": "00BBC5AF",
+      "last_instruction": "00BBC5AF",
+      "last_instruction_length": 1,
+      "last_instruction_text": "ret ",
+      "listing": {
+        "bytes": 3203,
+        "path": "local/procedural_factory_table_readiness_cc10/asm_00bbc520.txt",
+        "sha256": "8c04c59f102cad6417b4f149688e189b58de366efb6a55cc89f6957a07379d2f"
+      },
+      "live_equals_PE": true,
+      "live_output": {
+        "bytes": 684,
+        "path": "local/procedural_factory_table_readiness_cc10/live_00bbc520.txt",
+        "sha256": "341f67f2c2d94cd36300e187b5f991adb0f2c485cf01d5fae9167b566fcc0d27"
+      },
+      "loader_zero_fill_beyond_raw_extent": false,
+      "native_end_exclusive": "00BBC5B0",
+      "original_abi": "ECX actual10h table; compiler FH3 frame/private cleanup cells; RET",
+      "role": "new_normal",
+      "size": 144
+    },
+    {
+      "address": "00BBC5D0",
+      "binary": {
+        "bytes": 29,
+        "path": "local/procedural_factory_table_readiness_cc10/bytes_00bbc5d0.bin",
+        "sha256": "ee0618a56ec7836941afd84e36193b1c44d5f3e090e5022495a8e2a68a60de35"
+      },
+      "call_and_jump_rows": [
+        {
+          "address": "00BBC5DD",
+          "bytes": "e83effffff",
+          "text": "call 0xbbc520"
+        },
+        {
+          "address": "00BBC5E3",
+          "bytes": "e8c49f0300",
+          "text": "call 0xbf65ac"
+        }
+      ],
+      "coverage": "complete qualified normal source behavior",
+      "cpp_symbol": "bsp::shutdown_native_procedural_factory_table_00bbc5d0",
+      "inclusive_end": "00BBC5EC",
+      "last_instruction": "00BBC5EC",
+      "last_instruction_length": 1,
+      "last_instruction_text": "ret ",
+      "listing": {
+        "bytes": 602,
+        "path": "local/procedural_factory_table_readiness_cc10/asm_00bbc5d0.txt",
+        "sha256": "43d9e6012ad6cf51d18642623f959679b67600d06f2c4c4480741296f52b2c8e"
+      },
+      "live_equals_PE": true,
+      "live_output": {
+        "bytes": 140,
+        "path": "local/procedural_factory_table_readiness_cc10/live_00bbc5d0.txt",
+        "sha256": "76e0511d6249912893618ce9b4c81e03f9d38ec09d323802a4afdd374b21a1e4"
+      },
+      "loader_zero_fill_beyond_raw_extent": false,
+      "native_end_exclusive": "00BBC5ED",
+      "original_abi": "no caller arguments; current01090900 read once; RET",
+      "role": "new_normal",
+      "size": 29
+    },
+    {
+      "address": "00BBC890",
+      "binary": {
+        "bytes": 31,
+        "path": "local/procedural_factory_table_readiness_cc10/bytes_00bbc890.bin",
+        "sha256": "21e1e5b0fb18e9a41292b65180a4d253e5148ce3af005c729e64302797022e88"
+      },
+      "call_and_jump_rows": [
+        {
+          "address": "00BBC8A1",
+          "bytes": "e8069d0300",
+          "text": "call 0xbf65ac"
+        }
+      ],
+      "coverage": "complete qualified normal source behavior",
+      "cpp_symbol": "bsp::delete_native_table_caustics_factory_00bbc890",
+      "inclusive_end": "00BBC8AE",
+      "last_instruction": "00BBC8AC",
+      "last_instruction_length": 3,
+      "last_instruction_text": "ret 4",
+      "listing": {
+        "bytes": 614,
+        "path": "local/procedural_factory_table_readiness_cc10/asm_00bbc890.txt",
+        "sha256": "c91faf509ba6e79dec152bcb09dfc3ea2cb6b99922252dec3f6bcba5da96a6c4"
+      },
+      "live_equals_PE": true,
+      "live_output": {
+        "bytes": 148,
+        "path": "local/procedural_factory_table_readiness_cc10/live_00bbc890.txt",
+        "sha256": "a835150113bb95888e9b751a13589e1ca702762d5a77eb8aa59d2e21b384e89f"
+      },
+      "loader_zero_fill_beyond_raw_extent": false,
+      "native_end_exclusive": "00BBC8AF",
+      "original_abi": "ECX actual4B factory; stacked flags LOW byte bit0 captured before stamp/free; RET4/EAX captured address",
+      "role": "new_normal_no_ghidra_function",
+      "size": 31
+    },
+    {
+      "address": "00BBC8E0",
+      "binary": {
+        "bytes": 31,
+        "path": "local/procedural_factory_table_readiness_cc10/bytes_00bbc8e0.bin",
+        "sha256": "419def5f8841306a00d3fc48829f853869c85370c45f7bcc58fa152d2d0a708d"
+      },
+      "call_and_jump_rows": [
+        {
+          "address": "00BBC8F1",
+          "bytes": "e8b69c0300",
+          "text": "call 0xbf65ac"
+        }
+      ],
+      "coverage": "complete qualified normal source behavior",
+      "cpp_symbol": "bsp::delete_native_table_shore_wave_factory_00bbc8e0",
+      "inclusive_end": "00BBC8FE",
+      "last_instruction": "00BBC8FC",
+      "last_instruction_length": 3,
+      "last_instruction_text": "ret 4",
+      "listing": {
+        "bytes": 614,
+        "path": "local/procedural_factory_table_readiness_cc10/asm_00bbc8e0.txt",
+        "sha256": "8c4777a4b4b465daf21d64d3be2e0c13e2accaeeed73f007c6aabfcf64d47e56"
+      },
+      "live_equals_PE": true,
+      "live_output": {
+        "bytes": 148,
+        "path": "local/procedural_factory_table_readiness_cc10/live_00bbc8e0.txt",
+        "sha256": "ce288934f8b34291af5d3325dc4b96915d1bc274e34cb5157880220b99c674c0"
+      },
+      "loader_zero_fill_beyond_raw_extent": false,
+      "native_end_exclusive": "00BBC8FF",
+      "original_abi": "ECX actual4B factory; stacked flags LOW byte bit0 captured before stamp/free; RET4/EAX captured address",
+      "role": "new_normal_no_ghidra_function",
+      "size": 31
+    }
+  ],
+  "game_validated": false,
+  "header": "include/bsp/native_procedural_factory_table_storage.hpp",
+  "limits": [
+    "source interfaces are not original register/private-stack ABI replacements",
+    "copied-native equivalence inconclusive; initial fast-fail cause unproved",
+    "source failure injections and explicit diagnostic ExitProcess do not prove native EH or failed-frame CRT cleanup",
+    "COFF/PE section comparison is not a recursive CRT call graph or original ABI proof",
+    "BBC460/base-profile domain excluded; no new count, retain, registry or ownership map",
+    "no table/factory construction, process publication backing, atexit startup, resource34h admission or application/game launch"
+  ],
+  "no_ghidra_function": [
+    {
+      "address": "00BBC890",
+      "end_inclusive": "00BBC8AE",
+      "last_instruction_address": "00BBC8AC",
+      "last_instruction_length": 3,
+      "native_end_exclusive": "00BBC8AF",
+      "reason": "undefined exact live/PE-equal body; primary owns later function definition"
+    },
+    {
+      "address": "00BBC8E0",
+      "end_inclusive": "00BBC8FE",
+      "last_instruction_address": "00BBC8FC",
+      "last_instruction_length": 3,
+      "native_end_exclusive": "00BBC8FF",
+      "reason": "undefined exact live/PE-equal body; primary owns later function definition"
+    },
+    {
+      "address": "00CC4B3E",
+      "end_inclusive": "00CC4B47",
+      "last_instruction_address": "00CC4B43",
+      "last_instruction_length": 5,
+      "native_end_exclusive": "00CC4B48",
+      "reason": "undefined exact live/PE-equal body; primary owns later function definition"
+    }
+  ],
+  "normal_bytes": 285,
+  "ordered_native_calls": [
+    {
+      "actual_mnemonic": "CALL",
+      "address": "00BBC4EF",
+      "bytes": "ffd2",
+      "contract": "current owner/profile/target captured before flags1; qualified four-profile scalar dispatch",
+      "function": "00BBC4E0",
+      "kind": "indirect",
+      "native": "current_profile+0 (EDX)"
+    },
+    {
+      "actual_mnemonic": "CALL",
+      "address": "00BBC50F",
+      "bytes": "ffd2",
+      "contract": "current owner/profile/target captured before flags1; qualified four-profile scalar dispatch",
+      "function": "00BBC500",
+      "kind": "indirect",
+      "native": "current_profile+0 (EDX)"
+    },
+    {
+      "actual_mnemonic": "CALL",
+      "address": "00BBC555",
+      "bytes": "ffd2",
+      "contract": "current owner/profile/target captured before flags1; qualified four-profile scalar dispatch",
+      "function": "00BBC520",
+      "kind": "indirect",
+      "native": "current_profile+0 (EDX)"
+    },
+    {
+      "actual_mnemonic": "CALL",
+      "address": "00BBC56C",
+      "bytes": "ffd2",
+      "contract": "current owner/profile/target captured before flags1; qualified four-profile scalar dispatch",
+      "function": "00BBC520",
+      "kind": "indirect",
+      "native": "current_profile+0 (EDX)"
+    },
+    {
+      "actual_mnemonic": "CALL",
+      "address": "00BBC582",
+      "bytes": "ffd2",
+      "contract": "current owner/profile/target captured before flags1; qualified four-profile scalar dispatch",
+      "function": "00BBC520",
+      "kind": "indirect",
+      "native": "current_profile+0 (EDX)"
+    },
+    {
+      "actual_mnemonic": "CALL",
+      "address": "00BBC59B",
+      "bytes": "ffd2",
+      "contract": "current owner/profile/target captured before flags1; qualified four-profile scalar dispatch",
+      "function": "00BBC520",
+      "kind": "indirect",
+      "native": "current_profile+0 (EDX)"
+    },
+    {
+      "actual_mnemonic": "CALL",
+      "address": "00BBC5DD",
+      "bytes": "e83effffff",
+      "contract": "captured table normal destruction",
+      "function": "00BBC5D0",
+      "kind": "call",
+      "native": "00BBC520"
+    },
+    {
+      "actual_mnemonic": "CALL",
+      "address": "00BBC5E3",
+      "bytes": "e8c49f0300",
+      "contract": "genuine CRT free after normal child return or captured LOW flags test",
+      "function": "00BBC5D0",
+      "kind": "call",
+      "native": "00BF65AC"
+    },
+    {
+      "actual_mnemonic": "CALL",
+      "address": "00BBC8A1",
+      "bytes": "e8069d0300",
+      "contract": "genuine CRT free after normal child return or captured LOW flags test",
+      "function": "00BBC890",
+      "kind": "no_ghidra_function",
+      "kind_after_definition": "call",
+      "missing_containment_note": "raw complete decode pins actual mnemonic; callee verification still required",
+      "native": "00BF65AC"
+    },
+    {
+      "actual_mnemonic": "CALL",
+      "address": "00BBC8F1",
+      "bytes": "e8b69c0300",
+      "contract": "genuine CRT free after normal child return or captured LOW flags test",
+      "function": "00BBC8E0",
+      "kind": "no_ghidra_function",
+      "kind_after_definition": "call",
+      "missing_containment_note": "raw complete decode pins actual mnemonic; callee verification still required",
+      "native": "00BF65AC"
+    },
+    {
+      "actual_mnemonic": "JMP",
+      "address": "00CC4B23",
+      "bytes": "e9b879efff",
+      "contract": "current EBP-10 cleanup-self reload; source consumes state before invoking action",
+      "function": "00CC4B20",
+      "kind": "tail_jump",
+      "native": "00BBC4E0"
+    },
+    {
+      "actual_mnemonic": "JMP",
+      "address": "00CC4B2E",
+      "bytes": "e9cd79efff",
+      "contract": "current EBP-10 cleanup-self reload; source consumes state before invoking action",
+      "function": "00CC4B28",
+      "kind": "tail_jump",
+      "native": "00BBC500"
+    },
+    {
+      "actual_mnemonic": "JMP",
+      "address": "00CC4B39",
+      "bytes": "e9c279efff",
+      "contract": "current EBP-10 cleanup-self reload; source consumes state before invoking action",
+      "function": "00CC4B33",
+      "kind": "tail_jump",
+      "native": "00BBC500"
+    },
+    {
+      "actual_mnemonic": "JMP",
+      "address": "00CC4B43",
+      "bytes": "e9fb1ff3ff",
+      "contract": "native FH3 dispatcher evidence only; source exceptions are separate",
+      "function": "00CC4B3E",
+      "kind": "no_ghidra_function",
+      "kind_after_definition": "tail_jump",
+      "missing_containment_note": "raw complete decode pins actual mnemonic; callee verification still required",
+      "native": "00BF6B43"
+    }
+  ],
+  "packet": "cc10_procedural_factory_table_storage",
+  "program": "/battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "reader_dependency_commit": "abb5d4d7f01cf9ab9992cc38daf4d0d016788425",
+  "shutdown": {
+    "clears_publication": false,
+    "publication": "01090900",
+    "reads": 1,
+    "table_free": "captured nonnull table freed only after normal destruction return; current replacement publication preserved"
+  },
+  "source": "src/native_procedural_factory_table_storage.cpp",
+  "status": "complete_qualified_normal_source_strict_win32_source_fixture_checked_copied_native_inconclusive",
+  "validation": {
+    "ASLR": "Linked RVAs/preferred VAs are static-file identities. Revision02 recorded actual module base00570000; the quiet attempt01 actual module base was not captured.",
+    "additional_runtime_retries": 0,
+    "call_check_receipt": "local/procedural_factory_table_storage_cc10/call_check01.txt",
+    "call_rows": 14,
+    "compiled_identity": {
+      "bytes": 182898,
+      "path": "local/procedural_factory_table_storage_cc10/compiled_identity.json",
+      "sha256": "23b86ccd43705cd4be080c3f47ed3f0166ffbaf71f96d9fb85af3aa7de78975d"
+    },
+    "compiled_scope": "Exact full COFF sections with relocation mapping; production table/slot/cleanup code and ignored instrumented variants. Not a recursive CRT graph or original ABI proof.",
+    "direct_rows": 8,
+    "existing_CTests": 3,
+    "existing_CTests_passed": 3,
+    "explicit_indirect_rows": 6,
+    "failure_source": "failure01 PASS: injected first/second cleanup failures and unsupported base rejection; genuine remaining providers; failed backing retained until explicit ExitProcess(0)",
+    "mapping_refusal": {
+      "GetLastError": 487,
+      "VirtualAlloc_return": 0,
+      "allocation_base": "00BA0000",
+      "attempt01_copied_native_progress": "unobservable; cause not retrospectively assigned",
+      "larger_reservation_attempted": false,
+      "occupied_memory_replaced": false,
+      "region_bytes": 970752,
+      "requested": "00BB0000",
+      "revision02_copied_native_executed": false,
+      "state": "MEM_RESERVE",
+      "type": "MEM_PRIVATE"
+    },
+    "native_equivalence": "inconclusive; attempt01 exitC0000409 without usable buffered output and unknown cause; revision02 refused occupied address before copied-native execution",
+    "normal_source": "revision02 PASS: four profiles, C/8/4/0, captured global free/no-clear, replay rejection, both flags0 scalars; source-only target/flags alias",
+    "post_return_instrumentation": "revision02 PASS: replacement slot cleared, late future slot loading, normal captured table after cleanup-self mutation, publication replacement preserved/captured old table freed",
+    "receipts": [
+      {
+        "attach_calls": 0,
+        "automatic_retries": 0,
+        "end_ns": 1790259340940434800,
+        "exe_sha256": "79d83c0f546f3264b6f95cb43efebc762e6c6b5bcc675cae0616f9780bcd639e",
+        "exit_code": 3221226505,
+        "failure_shutdown": "normal return and CRT termination",
+        "mode": "normal",
+        "original_or_application_launches": 0,
+        "owned_pid": 48092,
+        "owned_process_closed": true,
+        "receipt": {
+          "bytes": 4110,
+          "path": "local/procedural_factory_table_storage_cc10/normal01.receipt.json",
+          "sha256": "2f30325a7372df767a3402f469c0c9bb308f468cbd70912b1cd0ae6a55b28493"
+        },
+        "start_ns": 1790259340809105700,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "timed_out": false
+      },
+      {
+        "attach_calls": 0,
+        "automatic_retries": 0,
+        "end_ns": 1790259340958016200,
+        "exe_sha256": "79d83c0f546f3264b6f95cb43efebc762e6c6b5bcc675cae0616f9780bcd639e",
+        "exit_code": 0,
+        "failure_shutdown": "explicit diagnostic ExitProcess, no native failed-frame cleanup claim",
+        "mode": "failure",
+        "original_or_application_launches": 0,
+        "owned_pid": 101212,
+        "owned_process_closed": true,
+        "receipt": {
+          "bytes": 4139,
+          "path": "local/procedural_factory_table_storage_cc10/failure01.receipt.json",
+          "sha256": "457ef7c906f123498d9c12e8d55f4b498738b44caff714798cfe73c33066b4df"
+        },
+        "start_ns": 1790259340941454900,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "92de62e728b767efd34400f8a11c98fa3945c14960099bc34b31e6c57f941742",
+        "timed_out": false
+      },
+      {
+        "attach_calls": 0,
+        "automatic_retries": 0,
+        "end_ns": 1790259566906854800,
+        "exit_code": 2,
+        "mode": "normal_diagnostic_revision02",
+        "original_or_application_launches": 0,
+        "owned_pid": 102536,
+        "owned_process_closed": true,
+        "receipt": {
+          "bytes": 4120,
+          "path": "local/procedural_factory_table_storage_cc10/revision02/normal01.receipt.json",
+          "sha256": "76abc5c9ecd1e08ad90e6210ea68c4a538c264d1d6e8b2ad0a41b04da7c484fd"
+        },
+        "start_ns": 1790259566860717000,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "e31937154fed71ae36888bab7614cf56c402bc981de6e4b550e5aeadc87020e3",
+        "timed_out": false
+      }
+    ],
+    "source_and_header_unchanged_after_accepted_build": true,
+    "strict_win32": {
+      "bytes": 11463,
+      "path": "local/procedural_factory_table_storage_cc10/build01.log",
+      "sha256": "db13e56482bde4cde450e5eb8ff6acd72870bcba96073e5e7d8553cfb251d71a"
+    },
+    "tracked_tests_added": 0
+  },
+  "worker_ghidra_mutations": 0
+}
