@@ -151,6 +151,7 @@ struct GameDeviceClassRow {
 // +450h barrelDelayTime, +478h the stagger, +44Ch nextFireBarrel.
 struct GameGunRow {
     std::size_t unit_index{0};
+    float last_fire_seconds{-1.0f};   // gun+474h, the clock at the last shot
     std::string unit_name;
     int platform_key{0};              // the Lua `Platforms` key
     std::string platform_name;        // "Name"
