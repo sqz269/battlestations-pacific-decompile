@@ -1,12 +1,17 @@
 #include "bsp/native_logical_texture_named_base.hpp"
 
+#include <atomic>
 #include <cstddef>
 #include <cstring>
+#include <new>
 
 namespace bsp {
 namespace {
 
 static_assert(sizeof(void*) == 4, "Native texture storage requires Win32.");
+static_assert(sizeof(std::atomic<std::int32_t>) == 4);
+static_assert(alignof(std::atomic<std::int32_t>) == 4);
+static_assert(std::atomic<std::int32_t>::is_always_lock_free);
 
 template<class T> T read(const void* object, std::size_t offset = 0) noexcept {
     T value;
@@ -45,7 +50,7 @@ void* construct_native_logical_texture_named_base_00b34120(void* owner,
     const void* source, void* borrowed_com, std::uint32_t flags,
     NativeStringStorage& storage, std::uint32_t& serial) {
     write(owner, 0, std::uint32_t{0x00ceb130});
-    write(owner, 4, std::uint32_t{1});
+    ::new (static_cast<char*>(owner) + 4) std::atomic<std::int32_t>(1);
     auto* const name = static_cast<char*>(owner) + 8;
     write(owner, 0, std::uint32_t{0x00d5f1f4});
     BaseUnwindCleanup base{owner}; // State 0 at 00B34155.
