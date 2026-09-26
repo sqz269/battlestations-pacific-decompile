@@ -1,0 +1,15 @@
+{
+  "packet": "cc9_squadron_spawn_seats",
+  "doc": "docs/SQUADRON_SPAWN_SEATS.md",
+  "calls": [],
+  "finding": "the image spawns every squadron member at one point; the host's spawn matches; the host's first-step station teleport (kPlaneFormationPlacementEnabled) is the divergence, but without it task-less Zero pairs and two carrier flights stay coincident",
+  "switches": [
+    {
+      "name": "kPlaneFormationPlacementEnabled",
+      "state": "ON (unchanged)",
+      "pair": "local/SS_ON_9000.log vs local/SS_OFF_9000.log: separation rows missed"
+    }
+  ],
+  "no_ghidra_function": [],
+  "ledger_names_added": []
+}
