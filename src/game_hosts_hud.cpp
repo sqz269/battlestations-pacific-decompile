@@ -37,6 +37,13 @@
 namespace bsp::game {
 namespace {
 
+// Packet cc9_hud_ray_pick (docs/HUD_PICK_SEGMENT_QUERY.md). True: 00526A40's
+// camera segment query 009043A0 runs over the gunnery host's units
+// (GameGunneryHost::query_segment_units) and the hit branch 00526C74..00526DB2
+// picks a hit of kind 6, 0Fh, 45h, 46h, 1Bh or 35h by ray. False: the query
+// reports no hit and the branch is a record.
+constexpr bool kHudPickSegmentQueryBound = false;
+
 void format_address(std::uint32_t address, char (&out)[16]) {
     std::snprintf(out, sizeof(out), "%08lx", static_cast<unsigned long>(address));
 }
@@ -2302,16 +2309,70 @@ public:
             position[i] = world[12 + i];
         }
     }
-    bool ray_pick_009043a0(const float*, const float*, std::size_t, std::size_t& hit) override {
-        // SUBSTITUTION: the spatial index ([00E188A8]+19CCh, 0098ADD0) is not
-        // built, so the segment query reports no hit.
-        owner_.record("UnitPickScreen::segment_query", 0x009043a0u);
+    bool ray_pick_009043a0(const float* from, const float* to, std::size_t ignore,
+                           std::size_t& hit) override {
         hit = 0;
-        return false;
+        if constexpr (kHudPickSegmentQueryBound) {
+            // Packet cc9_hud_ray_pick (docs/HUD_PICK_SEGMENT_QUERY.md sections
+            // 1-2): 009043A0 with kind filter 0 (00526BCD) and the firing unit
+            // as `ignore`, whose vtable +B0h is its own collision root here.
+            // 0098ADD0 runs over the gunnery host's units (SegmentBinding):
+            // SUBSTITUTION for the world grid [game+19CCh]+84h, which is not
+            // built in this process.
+            const GameGunneryHost* gunnery =
+                owner_.units != nullptr ? owner_.units->gunnery() : nullptr;
+            if (gunnery == nullptr) {
+                owner_.record("UnitPickScreen::segment_query", 0x009043a0u);
+                return false;
+            }
+            float point[3];
+            const bool any = gunnery->query_segment_units(from, to, ignore, hit, point);
+            owner_.done("UnitPickScreen::segment_query", 0x009043a0u);
+            if (any) owner_.done("UnitPickScreen::segment_query_hit", 0x00526c62u);
+            return any;
+        } else {
+            // SUBSTITUTION: the spatial index ([00E188A8]+19CCh, 0098ADD0) is not
+            // built, so the segment query reports no hit.
+            static_cast<void>(from);
+            static_cast<void>(to);
+            static_cast<void>(ignore);
+            owner_.record("UnitPickScreen::segment_query", 0x009043a0u);
+            return false;
+        }
     }
-    std::size_t ray_hit_branch(bsp::UnitPickScreenState&, std::size_t) override {
-        owner_.record("UnitPickScreen::ray_hit_branch", 0x00526c74u);
-        return 0;
+    std::size_t ray_hit_branch(bsp::UnitPickScreenState& screen, std::size_t hit) override {
+        if constexpr (kHudPickSegmentQueryBound) {
+            // 00526C74..00526DB2.
+            if (is_kind_of(hit, 6)) {
+                // 00526C80..00526D15: the section label at +54h and the two
+                // points from record+38h, which no host narrowphase writes;
+                // +54h keeps 00CE43EC "" (section_named_54 false).
+                owner_.record("UnitPickScreen::hit_section", 0x00526c8cu);
+            }
+            // 00526D1A..00526D78: these kinds are the pick themselves.
+            for (const int kind : {6, 0x0f, 0x45, 0x46, 0x1b, 0x35}) {
+                if (!is_kind_of(hit, kind)) continue;
+                const bool own = owner_.units != nullptr && controlled_unit() != 0
+                    && owner_.units->unit_side_0054(hit - 1)
+                        == owner_.units->unit_side_0054(controlled_unit() - 1);
+                owner_.done(own ? "UnitPickScreen::ray_pick_own" : "UnitPickScreen::ray_pick_other",
+                    0x00526d9cu);
+                return hit;
+            }
+            // 00526D80: kind 1Eh, +50h = the hit and the pick is 00923810(hit, 1).
+            if (is_kind_of(hit, 0x1e)) {
+                screen.exclude_hit_50 = hit;
+                owner_.record("UnitPickScreen::part_owner_00923810", 0x00923810u);
+                return 0;
+            }
+            owner_.done("UnitPickScreen::ray_hit_other_kind", 0x00526dafu);
+            return 0;
+        } else {
+            static_cast<void>(screen);
+            static_cast<void>(hit);
+            owner_.record("UnitPickScreen::ray_hit_branch", 0x00526c74u);
+            return 0;
+        }
     }
     bool game_1fe4() override { return false; }  // single player: no session
     int game_difficulty_6ac() override { return game_effective_difficulty_6ac(); }
