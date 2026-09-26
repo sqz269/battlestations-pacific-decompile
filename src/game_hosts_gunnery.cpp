@@ -53,6 +53,7 @@
 #include "bsp/sensor_table_data.hpp"
 #include "bsp/ship_hit_record.hpp"
 #include "bsp/part_damage_reachability.hpp"
+#include "bsp/plane_squadron_host.hpp"
 #include "bsp/unit_fire_flooding.hpp"
 #include "bsp/submarine_model.hpp"
 #include "bsp/unit_kind_query.hpp"
@@ -373,6 +374,23 @@ constexpr bool kArtilleryRangingErrorBound = true;
 //    track. OFF: every tube at the bare intercept. Packet cc9_torpedo_spread,
 //    docs/TORPEDO_SPREAD.md.
 constexpr bool kTorpedoSpreadBound = true;
+//  * kReconAggregatesBound: 008073C0's grouping steps. 00805490 folds every
+//    record of the member classes 10h, 13h, 12h, 11h, 16h, 15h and 17h (the
+//    seven calls at 00807581.., in that order) whose level (+0Ch) is at least 1
+//    and whose unit has a squadron (unit+9D4h) into that squadron's 1Ch record
+//    in the class-18h bucket: taken over from last pass's list (slot+F34h) or
+//    found or created there, appended in first-member order, its member list
+//    (+10h) rebuilt and its level the maximum of its members'. 00805680 does
+//    the same for class 19h into 1Ah through unit+738h. The enemy and neutral
+//    groups sit in bucket 18h / 1Ah of their triple walk and drain by level
+//    like any record; the own groups are appended to triple 0 after its copy
+//    (00807877..0080791C, A[18h] then A[1Ah]). A group nobody folded this pass
+//    is retired at 00807921 (00805430(18h / 1Ah)), so no record outlives its
+//    members. Host: the squadron is plane_squadron_registry()'s squadron_unit;
+//    no land-vehicle convoy membership exists in this host, so 00805680 folds
+//    nothing (labelled). OFF: no group records. Packet cc9_recon_aggregates,
+//    docs/RECON_TEAM_LISTS.md.
+constexpr bool kReconAggregatesBound = false;
 //  * kKillCreditDamageGateBound: 0077CE60 writes the attribution block (the
 //    +2C4h attacker the kill credit 0091BDA0 names) only for a live victim and
 //    only when the hit's damage, 00470510 for a hull segment or 00470740 when
@@ -1563,6 +1581,14 @@ struct GameGunneryHost::Impl {
     std::vector<ReconSlotTriples> recon_triples;
     unsigned long long recon_triple_builds{0};
     unsigned long long recon_triple_sum[5]{};
+    unsigned long long recon_group_records{0};      // group records published, all sides
+    unsigned long long recon_group_members{0};      // members folded
+    unsigned long long recon_group_own{0};
+    unsigned long long recon_group_enemy_identified{0};
+    unsigned long long recon_group_unknown{0};
+    unsigned long long recon_group_kind_ship{0};    // group units IsKindOf ship base
+    unsigned long long recon_group_kind_plane{0};   // group units IsKindOf plane base
+    unsigned long long recon_convoy_members_seen{0};  // class 19h records a convoy pass would read
     const ReconSlotTriples* recon_triples_for(int side) const {
         for (const ReconSlotTriples& t : recon_triples) {
             if (t.side == side) return &t;
@@ -4019,10 +4045,15 @@ void GameGunneryHost::Impl::publish_recon_triples_008073c0() {
     }
     GunneryReconSensorPassHost host(*this);
     recon_triples.clear();
+    // The member classes of the seven 00805490 calls, in call order.
+    static constexpr int kSquadronMemberClasses[7] = {0x10, 0x13, 0x12, 0x11, 0x16, 0x15, 0x17};
     for (const int side : sides) {
         ReconSlotTriples t;
         t.side = side;
-        std::vector<std::size_t> unknown_enemy, unknown_neutral;
+        // Step 5: the three relation arrays, bucketed by class id, in scan order,
+        // with each record's level (+0Ch): own records carry 2 (00804E70).
+        struct Rec { std::size_t unit; int level; };
+        std::map<int, std::vector<Rec>> own, enemy, neutral;
         for (const int id : ids) {
             const std::size_t n = units.world_list_size(id);
             for (std::size_t pos = 0; pos < n; ++pos) {
@@ -4032,20 +4063,93 @@ void GameGunneryHost::Impl::publish_recon_triples_008073c0() {
                 if (!units.unit_is_kind_of(u, bsp::kReconScanRequiredClassId)) continue;  // 008074F2
                 const bsp::ReconRelation rel = bsp::recon_relation_for_008065ff(side,
                     units.unit_side_0054(u));
-                if (rel == bsp::ReconRelation::own) {                       // step 6
-                    t.lists[0].push_back(u);
+                if (rel == bsp::ReconRelation::own) {
+                    own[id].push_back({u, 2});
                     continue;
                 }
-                // Steps 9 and 10: the drain keeps level 2 in its relation's
-                // triple, copies level 1 into `unknown`, drops level 0.
                 const bsp::ReconDetectionLevel level = recon_pass.level(side, u);
-                const bool enemy = rel == bsp::ReconRelation::enemy;
-                if (level == bsp::ReconDetectionLevel::identified) {
-                    t.lists[enemy ? 1 : 2].push_back(u);
-                } else if (level == bsp::ReconDetectionLevel::blip) {
-                    (enemy ? unknown_enemy : unknown_neutral).push_back(u);
+                const int lv = level == bsp::ReconDetectionLevel::identified ? 2
+                    : level == bsp::ReconDetectionLevel::blip ? 1 : 0;
+                (rel == bsp::ReconRelation::enemy ? enemy : neutral)[id].push_back({u, lv});
+                if (id == 0x19) ++recon_convoy_members_seen;
+            }
+        }
+        // 00805490 over one relation array: the class-18h bucket it leaves.
+        const auto group = [&](std::map<int, std::vector<Rec>>& arr) {
+            std::vector<Rec>& groups = arr[0x18];
+            std::vector<std::vector<std::size_t>> members;
+            for (const int cls : kSquadronMemberClasses) {
+                const auto found = arr.find(cls);
+                if (found == arr.end()) continue;
+                for (const Rec& m : found->second) {
+                    if (m.level < 1) continue;                                // 008054D7
+                    const bsp::PlaneSquadronHostRecord* sq =
+                        bsp::plane_squadron_registry().find_by_member_unit(m.unit);
+                    if (sq == nullptr || sq->squadron_unit == bsp::kPlaneSquadronNoUnit) continue;
+                    std::size_t k = 0;
+                    while (k < groups.size() && groups[k].unit != sq->squadron_unit) ++k;
+                    if (k == groups.size()) {
+                        groups.push_back({sq->squadron_unit, 0});             // 008055A0 / carried
+                        members.emplace_back();
+                    }
+                    members[k].push_back(m.unit);                             // 008055EE
+                    if (m.level > groups[k].level) groups[k].level = m.level; // 00805631..0080564A
+                    ++recon_group_members;
                 }
             }
+            for (const Rec& g : groups) {
+                ++recon_group_records;
+                if (units.unit_is_kind_of(g.unit, bsp::kUnitGunneryKindShipBase)) ++recon_group_kind_ship;
+                if (units.unit_is_kind_of(g.unit, bsp::kUnitGunneryKindPlaneBase)) ++recon_group_kind_plane;
+            }
+            if (groups.empty()) arr.erase(0x18);
+            // 00805680(B[19h], B[1Ah]): no convoy membership in this host.
+        };
+        if constexpr (kReconAggregatesBound) {
+            group(enemy);                                                     // step 8
+            group(neutral);                                                   // step 10
+        }
+        // Step 6: triple 0 copies every own bucket BEFORE the own grouping.
+        std::vector<int> walk(ids.begin(), ids.end());
+        if constexpr (kReconAggregatesBound) {
+            walk.push_back(0x18);
+            walk.push_back(0x1a);
+            std::sort(walk.begin(), walk.end());
+        }
+        for (const int id : walk) {
+            const auto found = own.find(id);
+            if (found == own.end()) continue;
+            for (const Rec& r : found->second) t.lists[0].push_back(r.unit);
+        }
+        std::vector<std::size_t> unknown_enemy, unknown_neutral;
+        // Steps 9 and 10: every bucket in class order; the drain keeps level 2,
+        // copies level 1 into `unknown`, drops level 0.
+        for (const int id : walk) {
+            for (int which = 0; which < 2; ++which) {
+                std::map<int, std::vector<Rec>>& arr = which == 0 ? enemy : neutral;
+                const auto found = arr.find(id);
+                if (found == arr.end()) continue;
+                for (const Rec& r : found->second) {
+                    if (r.level == 2) t.lists[which == 0 ? 1 : 2].push_back(r.unit);
+                    else if (r.level == 1) (which == 0 ? unknown_enemy : unknown_neutral).push_back(r.unit);
+                    if (id == 0x18 && r.level == 2 && which == 0) ++recon_group_enemy_identified;
+                    if (id == 0x18 && r.level == 1) ++recon_group_unknown;
+                }
+            }
+        }
+        if constexpr (kReconAggregatesBound) {
+            // Step 11: the own grouping, then triple 0 takes A[18h] and A[1Ah].
+            group(own);
+            const auto found = own.find(0x18);
+            if (found != own.end()) {
+                for (const Rec& r : found->second) {
+                    t.lists[0].push_back(r.unit);
+                    ++recon_group_own;
+                }
+            }
+            done("Recon::group_members_under_squadron_00805490", 0x00805490u);
+            record("Recon::group_members_under_convoy_00805680", 0x00805680u);
+            record("Recon::publish_group_level_008069a0", 0x008069a0u);
         }
         t.lists[3] = unknown_enemy;                                         // 00807644
         t.lists[3].insert(t.lists[3].end(), unknown_neutral.begin(), unknown_neutral.end());
@@ -7387,6 +7491,14 @@ void GameGunneryHost::report() {
                     "unknown=%zu union=%zu", t.side, t.lists[0].size(), t.lists[1].size(),
                     t.lists[2].size(), t.lists[3].size(), t.lists[4].size());
             }
+            host.log.notef("summary mission recon aggregates bound=%d group_records=%llu "
+                "members=%llu own=%llu enemy_identified=%llu unknown=%llu kind_ship=%llu "
+                "kind_plane=%llu convoy_member_records=%llu (00805490 / 00805680, packet "
+                "cc9_recon_aggregates)", kReconAggregatesBound ? 1 : 0,
+                host.recon_group_records, host.recon_group_members, host.recon_group_own,
+                host.recon_group_enemy_identified, host.recon_group_unknown,
+                host.recon_group_kind_ship, host.recon_group_kind_plane,
+                host.recon_convoy_members_seen);
         }
         host.log.notef("summary mission recon sensor_pass passes=%llu observers=%llu "
             "targets=%llu forced=%llu no_table=%llu blip=%llu identified=%llu none=%llu "
