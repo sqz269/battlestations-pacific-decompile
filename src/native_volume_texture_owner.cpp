@@ -1,5 +1,6 @@
 #include "bsp/native_volume_texture_owner.hpp"
 #include "bsp/native_logical_texture_named_base.hpp"
+#include "bsp/native_volume_texture_base.hpp"
 
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
@@ -12,6 +13,12 @@
 namespace bsp {
 namespace {
 static_assert(sizeof(void*) == 4);
+static_assert(sizeof(D3DVOLUME_DESC) == 0x1c);
+static_assert(alignof(D3DVOLUME_DESC) == 4);
+static_assert(offsetof(D3DVOLUME_DESC, Format) == 0);
+static_assert(offsetof(D3DVOLUME_DESC, Width) == 0x10);
+static_assert(offsetof(D3DVOLUME_DESC, Height) == 0x14);
+static_assert(offsetof(D3DVOLUME_DESC, Depth) == 0x18);
 static_assert(D3D9SurfacePool::slot_bytes == 0x38);
 static_assert(D3D9SurfacePool::slot_slab_index_offset == native_volume_texture_owner_bytes);
 
@@ -57,6 +64,7 @@ void release_memory_at_zero(void* captured, NativeRetainedMemoryOwnerContext& co
     }
     __assume(0);
 }
+using VolumeDescriptorCall = HRESULT (__stdcall*)(void*, UINT, D3DVOLUME_DESC*);
 using ComWordCall = std::uint32_t (__stdcall*)(void*);
 ComWordCall current_com_call(void* actual_com, std::uint32_t offset) noexcept {
     return reinterpret_cast<ComWordCall>(word(address(pointer(word(actual_com)), offset)));
@@ -81,6 +89,35 @@ struct OwnerCleanup {
     ~OwnerCleanup() noexcept { if (armed) unwind_owner(owner, strings); }
 };
 } // namespace
+
+void* construct_native_runtime_volume_texture_00b3d720(void* owner,
+    IDirect3DVolumeTexture9* input, std::uint32_t flags,
+    std::uint32_t& serial, NativeVolumeTextureOwnerContext& context) {
+    auto* const captured_input = input;
+    construct_native_unnamed_volume_texture_base_00b340a0(
+        owner, captured_input, flags, serial);
+    put(address(owner, 0x30), 0);
+    put(owner, 0x00d618b0);
+    D3DVOLUME_DESC descriptor; // No value initialization or HRESULT fallback.
+    const auto* const captured_descriptor_table = pointer(word(captured_input));
+    OwnerCleanup cleanup{owner, context.renderer_notification.actual_string_storage};
+    const auto get_descriptor = reinterpret_cast<VolumeDescriptorCall>(
+        word(address(captured_descriptor_table, 0x44)));
+    get_descriptor(captured_input, 0, &descriptor); // HRESULT intentionally ignored.
+    const auto width = word(address(&descriptor, 0x10));
+    const auto height = word(address(&descriptor, 0x14));
+    const auto depth = word(address(&descriptor, 0x18));
+    put(address(owner, 0x28), height);
+    put(address(owner, 0x24), width);
+    put(address(owner, 0x2c), depth);
+    const auto get_level_count = current_com_call(captured_input, 0x34);
+    const auto mip_count = get_level_count(captured_input);
+    put(address(owner, 0x14), mip_count);
+    const auto format = word(&descriptor);
+    put(address(owner, 0x18), format);
+    cleanup.armed = false;
+    return owner;
+}
 
 void unwind_native_volume_texture_base_00b340f0(
     void* owner, NativeStringStorage& strings) {

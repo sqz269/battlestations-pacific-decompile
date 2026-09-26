@@ -6,6 +6,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <d3d9.h>
 
 namespace bsp {
 
@@ -22,6 +23,28 @@ struct NativeVolumeTextureOwnerContext {
     D3D9SurfacePool& actual_volume_pool_0108dba8;
     const volatile std::uint32_t* actual_renderer_profile_00d5f0a8;
 };
+
+// Complete B3D720..B3D7A7 (136B): native ECX actual34h owner; stack
+// INPUT volume COM/flags; EAX SAME owner; RET8. Reuse genuine B340A0 once,
+// clear retained source+30 BEFORE D618B0, then capture INPUT current+44 for
+// GetLevelDesc(0). Capture Width/Height/Depth, store Height+28/Width+24/Depth+2C,
+// reload SAME captured INPUT current+34 for GetLevelCount, store mip+14 before
+// the fresh descriptor Format read/store+18. Do not reload owner+10 as receiver.
+// No AddRef, HRESULT branch/default descriptor or slot/index+34 write occurs.
+// Local descriptor is default-initialized WITHOUT braces; unwritten preimages
+// are unspecified, not a successful fallback. Actual COM and reached backing
+// must remain valid; callbacks may update current COM tables/descriptor/owner.
+// B340A0's aligned fresh/fully-retired exclusive atomic backing and SAME live,
+// nonoverlapping serial contract applies. No whole-owner/header lifetime is
+// inferred from a raw slot/profile or diagnostic projection. Context/string/
+// pool/renderer/retained domains must remain caller-live through later retirement.
+// State0 source cleanup runs B340F0->B33F50 on admitted C++ unwinding only;
+// it adds no COM release, count decrement or pool return. Failed construction
+// retains caller raw-slot/COM/count obligations: no rollback/replay/discard.
+// New C++ interface, not private native FH3/foreign-fault/stack ABI proof.
+void* construct_native_runtime_volume_texture_00b3d720(void* actual_owner,
+    IDirect3DVolumeTexture9* input_com, std::uint32_t flags,
+    std::uint32_t& actual_shared_serial_0108d6e8, NativeVolumeTextureOwnerContext&);
 
 // Full B340F0: native ECX owner, five-byte JMP B33F50; no extra state.
 // Distinct volume base cleanup entry, with the actual current name domain.
