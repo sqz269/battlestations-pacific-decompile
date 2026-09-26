@@ -1,0 +1,23 @@
+{
+  "packet": "cc9_plane_formation_placement_pair",
+  "doc": "docs/PILOT_MOVETO_TASK.md",
+  "calls": [],
+  "coverage": [],
+  "switches": [
+    {"name": "GameUnitsHost::Impl::kPlaneFormationPlacementEnabled", "state": "true (unchanged)", "pair": "local/CS_ON_9000.log vs local/FP_OFF_9000.log, local/CS_ON_4500.log vs local/FP_OFF_4500.log (all move-to switches and part 4 ON on both sides)"}
+  ],
+  "verdict": [
+    {"row": "Zero pairs tick 400", "true": "mean 155 m", "false": "mean 236 m", "verdict": "failed (predicted < 100)"},
+    {"row": "Zero pairs tick 800+", "true": "means 65-68 m", "false": "means 91-98 m (station 95.5 m)", "verdict": "held to 2400, failed at 2800"},
+    {"row": "Kate pairs", "true": "means 141-290 m", "false": "means 59-146 m", "verdict": "held to 2400"},
+    {"row": "Val pairs", "true": "means 126-133 m", "false": "means 126-130 m", "verdict": "failed (predicted < 20 m)"},
+    {"row": "deaths 9000 / 4500", "true": "51 / 43", "false": "51 / 41", "verdict": "held"},
+    {"row": "Zero deaths 9000", "true": "16", "false": "16", "verdict": "held"},
+    {"row": "releases torpedo/dive 9000 / 4500", "true": "5/5, 5/4", "false": "5/3, 5/3", "verdict": "held"},
+    {"row": "follow_ticks 9000 / 4500", "true": "9154 / 9033", "false": "9809 / 9614", "verdict": "failed (+7.2 % / +6.4 %, predicted 5 %)"},
+    {"row": "no_station 9000 / 4500", "true": "18 / 18", "false": "18 / 10", "verdict": "held"}
+  ],
+  "no_ghidra_function": [],
+  "ledger_names_added": [],
+  "logs": ["local/FP_OFF_9000.log", "local/FP_OFF_4500.log", "local/CS_ON_9000.log", "local/CS_ON_4500.log"]
+}
