@@ -76,5 +76,30 @@
     "sha256": "869749aace84d50043aa765f01a929edca86fe6639787b2aed740f0c056380ac",
     "files": 24,
     "valid": true
+  },
+  "physical_section_qualification": {
+    "result": "PASS",
+    "qualification_commit": "033f434db14c63de3eb2b8491a01bfdad2809a41",
+    "publication_rows": 17,
+    "physical_review_rows": 5,
+    "git_blobs": 2,
+    "section_records": 3383,
+    "no_file_backed_counts": {
+      "old": 13,
+      "new": 14
+    },
+    "identical_file_backed_provider_sets": 12,
+    "leaf_historical_complete_provider_objects": 3,
+    "limits": "27 uninitialized-storage sections contain no physical raw bytes. Historical parser header slices are not initialized-data evidence. Existing file-backed code/relocation and complete AR identity claims remain bounded and unchanged.",
+    "worker_report": "reports/native_texture_source_producer_cc10.json",
+    "original_worker_archive_unchanged": true,
+    "original_primary_archive_unchanged": true,
+    "new_source_build_test_runtime": false,
+    "archive": {
+      "path": "local/cc10-platform-evidence/texture-source-producer-physical-qualification.zip",
+      "sha256": "5d358a092769cbe7fca56bf781b9b185851c8797242d074e9a91a07a1b9bc385",
+      "files": 7,
+      "valid": true
+    }
   }
 }

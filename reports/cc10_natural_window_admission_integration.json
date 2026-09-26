@@ -1,0 +1,40 @@
+{
+  "packet": "cc10_natural_window_admission_integration",
+  "worker_commit": "6b77f2ba623c9b446b934fc83c53b52b36295735",
+  "integration": "3fe020ace13f88636130167fca3c6e7b297e9e3a",
+  "primary_verification": {
+    "result": "PASS",
+    "worker_commit": "6b77f2ba623c9b446b934fc83c53b52b36295735",
+    "runtime_rows": 24,
+    "publication_rows": 13,
+    "Git_blobs": 2,
+    "unchanged_launch_pins": 665,
+    "actual_message": "0x031F WM_DWMNCRENDERINGCHANGED",
+    "acquired_MSGs": 1,
+    "ordinal5030_attempts": 0,
+    "ordinal5030_normal_returns": 0,
+    "focus_updates": 0,
+    "parent_exit": 2,
+    "child_exit": 2,
+    "controller_exit": 1,
+    "verified_closure": true,
+    "current_exact_process_observation": {
+      "query": "ProcessId=38448 OR ProcessId=43832 OR ParentProcessId=38448",
+      "records": [],
+      "utc": "2026-09-26T11:46:18.1033662Z"
+    },
+    "new_native_byte_credit": 0,
+    "limits": "Natural owned-window message acquisition and teardown only. Explicit admission refusal before SDK delegation; no normal pump/focus, BOOL, SDK initialization/shutdown, ABI or full-game proof. No retry."
+  },
+  "worker_report": "reports/native_natural_window_message_admission_cc10.json",
+  "new_builds_or_tests": 0,
+  "new_runtime_invocations": 1,
+  "additional_invocations": 0,
+  "game_validated": false,
+  "archive": {
+    "path": "local/cc10-platform-evidence/natural-window-message-admission.zip",
+    "sha256": "62147261e63226d45fccae3d37dbf11d7c74178d02fad09d0828b626f90824ac",
+    "files": 12,
+    "valid": true
+  }
+}

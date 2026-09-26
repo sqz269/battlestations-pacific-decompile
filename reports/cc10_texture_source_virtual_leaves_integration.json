@@ -1,0 +1,68 @@
+{
+  "packet": "cc10_texture_source_virtual_leaves_integration",
+  "worker_commit": "1f8b460302152b996c716d50925222263646d2e7",
+  "source_and_diagnostic_integration": "3fe020ace13f88636130167fca3c6e7b297e9e3a",
+  "primary_verification": {
+    "result": "PASS",
+    "worker_commit": "1f8b460302152b996c716d50925222263646d2e7",
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\cc10_texture_source_virtual_leaves\\evidence.zip",
+      "sha256": "6f131144c9ab57a5ac23c246f02adbeeb6c1879865cf02754d555ad39dce25a2",
+      "rows": 180,
+      "members": 181
+    },
+    "Git_blobs": 5,
+    "source_pins": 15,
+    "tool_pins": 10,
+    "build_outputs": 4,
+    "exact_AR_members": 4,
+    "new_functions": 3,
+    "new_unique_code_bytes": 112,
+    "new_exact_REL32_targets": 5,
+    "native_read_spans": 13,
+    "native_read_bytes": 561,
+    "selected_native_bytes": 78,
+    "selected_native_instructions": 29,
+    "selected_native_calls": 5,
+    "selected_native_branches": 2,
+    "worker_CTests": 3,
+    "new_runtime_cases": 0,
+    "limits": "Library-only wrappers over genuine existing providers; no app selection/runtime/original ABI/owner retirement proof. B19C70 descriptor-dependent leaves deferred. Ghidra omitted ADD ESP sites C30285/C30565 independently recovered from original bytes; exact override/noReturn flags remain unknown; no listing repair yet. COFF checks use full file-backed code sections, no initialized BSS inference."
+  },
+  "root_code": {
+    "result": "PASS",
+    "primary_library": "J:\\PROG\\battlestations-pacific-decompile-cc10\\build\\win32\\Release\\bsp_core.lib",
+    "primary_library_member_sha256": "0d426e044fdf42667f7272112bd7ec70be9d51443db6793d23104b7211cc5a36",
+    "code_sections": 3,
+    "unique_code_bytes": 112,
+    "all_code_bytes_and_relocations_match_worker": true,
+    "limits": "File-backed code only; uninitialized data is not read as physical bytes. New code remains library-only."
+  },
+  "worker_report": "reports/native_texture_source_virtual_leaves_cc10.json",
+  "validation": {
+    "worker_CTests": 3,
+    "primary_CTests": 3,
+    "new_runtime_cases": 0
+  },
+  "annotation": {
+    "names_applied": 3,
+    "producer_qualification_appended": true,
+    "prior_comments_preserved": true,
+    "saved": true,
+    "exports_refreshed": true,
+    "flow_or_listing_repair": false
+  },
+  "native_accounting": {
+    "new_reconstructed_functions": 3,
+    "new_native_bytes": 78,
+    "native_instructions": 29,
+    "new_Ghidra_functions": 0
+  },
+  "limits": "Library-only wrappers over genuine existing providers; no app selection/runtime/original ABI/owner retirement proof. B19C70 descriptor-dependent leaves deferred. Ghidra omitted ADD ESP sites C30285/C30565 independently recovered from original bytes; exact override/noReturn flags remain unknown; no listing repair yet. COFF checks use full file-backed code sections, no initialized BSS inference.",
+  "archive": {
+    "path": "local/cc10-platform-evidence/texture-source-virtual-leaves.zip",
+    "sha256": "2171dd9ff71c346bf3983298cd106588856111704767910d488ca91ccb108a3a",
+    "files": 18,
+    "valid": true
+  }
+}
