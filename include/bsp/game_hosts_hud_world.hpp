@@ -229,6 +229,13 @@ inline constexpr bool kHudGuiExtentBound = true;
 // (section 40).
 inline constexpr bool kHudWeaponGroupEnterExitBound = true;
 
+// Packet cc9_hud_camera_team_lists (docs/HUD_CAMERA_TEAM_LISTS.md). ON answers
+// 004B4B00 exactly for the minimap (005C154E) and the markers screen: the
+// controlled unit [00E188D8] when it is kind 5, its +3D0h when kind 18h (a
+// record here: the leader is not exposed), else none. The routine reads no
+// camera. ON by its USN04 pair (docs/HUD_CAMERA_TEAM_LISTS.md section 4).
+inline constexpr bool kHudCameraUnitBound = true;
+
 class GameHostLog;
 class GameFrontendHost;
 class GameMenuHost;

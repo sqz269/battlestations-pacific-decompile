@@ -29,6 +29,22 @@
 namespace bsp::game {
 namespace {
 
+// 004B4B00, __cdecl, no arguments, returns the unit or null: [00E188D8]
+// through vtable +5Ch(5), else +5Ch(18h) -> [unit+3D0h]. Units are index + 1;
+// `squadron_case` flags the kind-18h arm, whose +3D0h is not exposed here.
+std::size_t camera_unit_004b4b00(const GameUnitsHost* units, bool& squadron_case) {
+    squadron_case = false;
+    if (units == nullptr || !units->controlled_bound()) return 0;
+    const std::size_t index = units->controlled_index();
+    if (units->unit_is_kind_of(index, 5)) return index + 1;
+    if (units->unit_is_kind_of(index, 0x18)) squadron_case = true;
+    return 0;
+}
+
+}  // namespace
+
+namespace {
+
 void format_address(std::uint32_t address, char (&out)[16]) {
     std::snprintf(out, sizeof(out), "%08lx", static_cast<unsigned long>(address));
 }
@@ -134,9 +150,20 @@ public:
         // this process, so the executable hands the pass the controlled unit and
         // records the call. This is the executable's decision, not a value the
         // routine returns.
-        owner_.record("HudMinimap::camera_unit", 0x004b4b00u);
-        if (owner_.units == nullptr || !owner_.units->controlled_bound()) return nullptr;
-        return owner_.handle_for(owner_.units->controlled_index());
+        if constexpr (kHudCameraUnitBound) {
+            bool squadron = false;
+            const std::size_t unit = camera_unit_004b4b00(owner_.units, squadron);
+            if (squadron) {
+                owner_.record("HudMinimap::camera_unit_squadron_leader", 0x004b4b2au);
+                return nullptr;
+            }
+            owner_.done("HudMinimap::camera_unit", 0x004b4b00u);
+            return unit != 0 ? owner_.handle_for(unit - 1) : nullptr;
+        } else {
+            owner_.record("HudMinimap::camera_unit", 0x004b4b00u);
+            if (owner_.units == nullptr || !owner_.units->controlled_bound()) return nullptr;
+            return owner_.handle_for(owner_.units->controlled_index());
+        }
     }
 
     float minimap_range() override {
@@ -889,10 +916,23 @@ public:
         owner_.done("HudMarkers::publish_clip_rect", 0x0064361bu);
     }
     std::uint32_t camera_unit() override {
-        owner_.record("HudMarkers::camera_unit", 0x004b4b00u);
-        // There is no camera; the controlled unit stands in, which is what makes
-        // the target, group and reinforcement gates reachable at all.
-        return owner_.units != nullptr && owner_.units->controlled_bound() ? 1u : 0u;
+        if constexpr (kHudCameraUnitBound) {
+            // The update tests the answer against zero only (00643685, and
+            // the gates at hud_updates 307/378), so a non-zero token stands.
+            bool squadron = false;
+            const std::size_t unit = camera_unit_004b4b00(owner_.units, squadron);
+            if (squadron) {
+                owner_.record("HudMarkers::camera_unit_squadron_leader", 0x004b4b2au);
+                return 0u;
+            }
+            owner_.done("HudMarkers::camera_unit", 0x004b4b00u);
+            return unit != 0 ? 1u : 0u;
+        } else {
+            owner_.record("HudMarkers::camera_unit", 0x004b4b00u);
+            // There is no camera; the controlled unit stands in, which is what makes
+            // the target, group and reinforcement gates reachable at all.
+            return owner_.units != nullptr && owner_.units->controlled_bound() ? 1u : 0u;
+        }
     }
     void reset_marker_pool() override {
         if (kHudMarkerPoolsBound) {
