@@ -334,7 +334,7 @@ constexpr bool kComponentFailureBound = true;
 //    UnderwaterArmour (009635D0, +6B4h) for kind 4 and Armour otherwise, and
 //    adds it once (008778E4..00877A37). OFF: one entry at the hull-box
 //    distance. Packet cc9_blast_element_parts, docs/BLAST_ELEMENT_PARTS.md.
-constexpr bool kBlastElementEntriesBound = false;
+constexpr bool kBlastElementEntriesBound = true;
 //  * kHullSegmentHealthBound: 0092D1F0 on the controller's 20 per-segment
 //    healths (00937C90: HP / the number of fizika_NN model nodes found, the
 //    gate byte -1 for an index with none), reached by R4 (a direct hit on a
@@ -343,7 +343,7 @@ constexpr bool kBlastElementEntriesBound = false;
 //    (00821FF0 -> 0080E440 -> 00934150: debris, effects, dynamics). Published
 //    through GameGunneryHost::destroyed_hull_segments; the detach physics is
 //    the ship motion's. OFF: the part damage is counted only.
-constexpr bool kHullSegmentHealthBound = false;
+constexpr bool kHullSegmentHealthBound = true;
 //  * kKillCreditDamageGateBound: 0077CE60 writes the attribution block (the
 //    +2C4h attacker the kill credit 0091BDA0 names) only for a live victim and
 //    only when the hit's damage, 00470510 for a hull segment or 00470740 when
@@ -1697,22 +1697,21 @@ GameGunneryHost::Impl::ship_model_slots(int type_id) {
             for (int k = 0; k < 3; ++k) { entry.mesh_box[k] = lo[k]; entry.mesh_box[k + 3] = hi[k]; }
         }
         {
-            // 00937C90: "fizika_%02d" for 0..19 through the model's node lookup;
-            // an index counts when at least one node carries that name.
+            // 00937C90: "fizika_%02d" for 0..19 through [[controller+1Ch]+4A4h] and
+            // 00B6F9A0, which walks the node tree and keeps every node whose name
+            // (node+54h) CONTAINS the pattern (_strstr, case-sensitive). An index
+            // counts when the list is not empty.
             std::vector<bsp::HierarchyItem> nodes;
             std::string node_error;
             if (bsp::read_mmod_hierarchy_items(bytes, nodes, node_error)) {
-                for (const bsp::HierarchyItem& node : nodes) {
-                    std::string name(node.name.c_str());
-                    for (auto& ch : name) ch = static_cast<char>(std::tolower(
-                        static_cast<unsigned char>(ch)));
-                    if (name.size() != 9 || name.compare(0, 7, "fizika_") != 0) continue;
-                    if (!std::isdigit(static_cast<unsigned char>(name[7]))
-                        || !std::isdigit(static_cast<unsigned char>(name[8]))) continue;
-                    const int idx = (name[7] - '0') * 10 + (name[8] - '0');
-                    if (idx < 20 && !entry.fizika_node[idx]) {
+                for (int idx = 0; idx < 20; ++idx) {
+                    char pattern[16];
+                    std::snprintf(pattern, sizeof(pattern), "fizika_%02d", idx);
+                    for (const bsp::HierarchyItem& node : nodes) {
+                        if (std::strstr(node.name.c_str(), pattern) == nullptr) continue;
                         entry.fizika_node[idx] = true;
                         ++entry.fizika_node_count;
+                        break;
                     }
                 }
             }
