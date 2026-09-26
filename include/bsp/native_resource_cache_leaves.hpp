@@ -6,7 +6,12 @@ struct SingletonLifetimeCallbacks;
 
 // Full B19980/C30470: ECX actual storage, EAX same storage, RET. Write only
 // the recovered words/byte, in order, retaining original profile identities.
-// These are raw construction bodies, not C++ objects or callable vtables.
+// At B19980's original +04=1 store, start the single std::atomic<int32_t>
+// lifetime with value1. Require four-byte-aligned, exclusive backing for a new
+// constructed lifetime, with no active count users or canonical companion.
+// Concrete creators supply fresh CRT backing. Preserve all unwritten bytes;
+// no payload overlay or callable C++ vtable is installed. The count is live
+// before an existing procedural companion or owner registry borrows it.
 void* construct_native_texture_resource_base_00b19980(void* actual_storage) noexcept;
 void* construct_native_texture_source_00c30470(void* actual_storage) noexcept;
 
