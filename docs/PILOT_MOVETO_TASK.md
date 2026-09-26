@@ -763,3 +763,46 @@ sides.
 | torpedo / dive releases | 5 / 5 (9000), 5 / 4 (4500) | torpedo ± 2; dive ± 3, since stacked Vals share one run and release together or not at all |
 | moveto follow_ticks / no_station | 9154 / 18 (9000), 9033 / 18 (4500) | follow_ticks within 5 %, no_station 18 ± 10 |
 | identical rows | - | every row up to the first member step (the tick 0 geometry lines, the spawn records) |
+
+### The pair, measured
+
+The false side's logs are `local\FP_OFF_9000.log` and `local\FP_OFF_4500.log`. Both show the
+1600x900 line and the `local\fp_off` module directory. Both sides take the same mission path in
+9000: phase 1 completes at 240 s and the `luaMoveToPh2` blackout loop follows (part 4).
+
+**The station.** Every seat-1 line gives local = (-60, -25, 70). That puts the station 95.5 m from
+the leader.
+
+| row | placement true | placement false | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| Zero pairs, tick 400 | mean 155 m | mean 236 m (226-242) | below 100 m | **failed** |
+| Zero pairs, tick 800 onward | 61-90 m (means 65-68 to tick 2800) | 72-123 m (means 91-98 to tick 2800) | 55-95 m | held to tick 2400; **failed** at 2800 (98.4) |
+| Kate pairs, tick 400 | mean 141 m | mean 59 m | below the true side | held |
+| Kate pairs, later means | 210-290 m | 106-146 m | within a factor of 2 | held to tick 2400; **failed** at 2800 (2.7×) |
+| Kate member-member pairs | 1-2 = 122, 1-3 = 61, 2-3 = 182 m (squadron #2.1) | the same 122 / 62 / 182 m from tick 1200 | - | only the leader's distance to its members differs |
+| Val pairs | mean 126-133 m to tick 1200 | mean 126-130 m to tick 1200 | below 20 m | **failed**: the placement does not separate the Vals |
+| escort Zero deaths | 16 (9000), 13 (4500) | 16, 11 | 16 ± 2 | held |
+| total plane deaths | 51 (9000), 43 (4500) | 51, 41 | ± 4 | held |
+| hit records | 841, 751 | 836, 727 | - | - |
+| torpedo / dive releases | 5 / 5, 5 / 4 | 5 / 3, 5 / 3 | torpedo ± 2, dive ± 3 | held |
+| torpedo in the water | none | one, from B5N Kate #4.1\|.-4: a 6.9 s run passing 28.6 m from Fletcher-class05; hull part 1 and floods 1 | - | new on the false side |
+| follow_ticks / no_station | 9154 / 18, 9033 / 18 | 9809 / 18, 9614 / 10 | within 5 %, 18 ± 10 | **failed** on follow_ticks (+7.2 % and +6.4 %); no_station held |
+| moveto arrivals | 14, 14 | 16, 16 | - | the two #5.2 planes arrive without placement |
+
+**Reading.**
+- **Zeros.** Without the placement, the kind-7 follow law holds each wingman at about the
+  station's own distance (91-98 m against 95.5 m). With the placement, the wingman settles
+  about 30 m inside it (65-68 m). The follow law therefore does not pull a placed wingman out to
+  its station. A hold arm that keeps whatever offset it reaches inside GoodPositionDist
+  (`tuning` Pilot/Follow, 100 m) would do this. That arm is `009BEE56`-`009BF9E5`, read in
+  docs/PLANE_FOLLOW_HOLD_ARM.md. This explanation is not verified.
+- **Kates.** The members keep the same spacing among themselves on both sides. The placement
+  changes only how far the leader runs ahead of its wing.
+- **Vals.** Their tick-400 spread is the same on both sides, so the first-step placement is not
+  what separates them. Which gate keeps it from the Vals, or makes it a no-op for them, is not
+  established. The call is at the fixed-step publish site (`place_wing_member_on_station_007f23a0(unit_, true)`),
+  and its reach was not traced.
+- **No host bug is shown.** The constant stays true, as the 2026-09-19 note chose. The one
+  behavioural gain from false, Zero wingmen on station, is the image's `009BFEE0` law acting
+  alone. Whether to turn placement off is a question for the follow-law owner, with this
+  table as its evidence.
