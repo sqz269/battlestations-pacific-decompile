@@ -41,10 +41,8 @@ NativeSamplerLoaderSingletonStorage* get_native_sampler_loader_singleton_004de4b
     void* volatile& manager, void* volatile& publication, Op& operation) {
     begin(operation, 0x004de4b0, manager, publication);
     try {
-        auto& typed_publication = *reinterpret_cast<NativeParticleClockStorage* volatile*>(
-            &publication);
         auto* const result = get_native_particle_clock_singleton_004de4b0(
-            manager, typed_publication);
+            manager, publication);
         operation.result = result;
         operation.phase = Op::Phase::complete;
         return reinterpret_cast<NativeSamplerLoaderSingletonStorage*>(result);
