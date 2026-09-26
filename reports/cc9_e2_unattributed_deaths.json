@@ -1,0 +1,19 @@
+{
+  "packet": "cc9_e2_unattributed_deaths",
+  "doc": "docs/E2_UNATTRIBUTED_DEATHS.md",
+  "answer": "Both are A6M Zeros (#4.2, #8.2) that dive into the sea with no damaging hit and die by the depth kill BSP_MissionEntity_Kill(unit, 1) at 007CE3A7. The image credits only +2C4h, written by 0077CE60 on hits with damage above 0; 00926D90 names no attacker and no other writer of +2C4h sits on the plane, depth or collision paths. The image leaves them unattributed too.",
+  "deaths": [
+    {"victim": "A6M Zero #4.2", "t": [86.60, 88.45], "alt": -28, "damage": "none", "cause": "depth kill, cause 1, 007CE3A7"},
+    {"victim": "A6M Zero #8.2", "t": [166.41, 168.41], "alt": -28, "damage": "none", "cause": "depth kill, cause 1"}
+  ],
+  "evidence": [
+    {"routine": "00926D90 BSP_MissionEntity_Kill", "rule": "no attacker read or written; queues for the on-killed dispatch"},
+    {"routine": "0077CE60 BSP_Unit_RecordDamageAttribution", "rule": "writes +2C4h only when the hit's damage > 0 (0077CEB7)"},
+    {"scan": "MOV [reg+2C4h] writers", "result": "entity classes: only 0077EFC6 in BSP_UnitOwnerEntity_Construct; the others are GUI/lobby/ship-AI path objects"}
+  ],
+  "divergence": "none",
+  "switch": "none",
+  "open": "whether the image's Zero dives into the sea there at all (007BC5B0 false at the surface, water law skipped) is flight behaviour, not attribution",
+  "ghidra": "read-only",
+  "no_ghidra_function": []
+}
