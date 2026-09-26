@@ -34,3 +34,44 @@ The pair is `kDogfightThrottleBound` OFF against ON, one tree (current main), E2
 
 If a US fighter reaches the water with the switch ON, the verdict is OFF. The next read is then
 `0099F1C0`'s look-ahead depth against a full-throttle dive.
+
+## 3. The pair, measured
+
+`local\THR0_9000.log` (binary `local\thr0`, switch OFF) and `local\THR1_9000.log` (`local\thr1`,
+switch ON), built from `2d1e2f167`, which is main `51e22e56d` plus the squadron probe ON. The module
+directory was checked in both logs.
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| US fighter water contacts or depth kills | 0 | **1**: Lexington-class01_sqn03 | 0 | **missed** |
+| US fighter losses | 0 | 2 | 0-3 | held |
+| fighter bursts / fire ticks | 9 / 159 | 13 / 344 | -50% to +100% | fire ticks **missed, high** (+116%) |
+| Kate / Val deaths | 16 / 16 | 16 / 16 | 12-16 / 12-16 | held |
+| hit records | 586 | 616 | 450-700 | held |
+| torpedo / dive-bomb releases | 5 / 0 | 7 / 0 | 2-8 / 0 | held |
+| Lexington moved | 6281.42 m | 6190.88 m | 5.5-7.5 km | held |
+| terrain-avoidance ticks / bands / water ticks | 1315 / 3827 / 0 | 1386 / 3956 / 0 | - | - |
+| mission end | none | none | none | held |
+
+**The loss that decides it.** Lexington-class01_sqn03 dies at 340.39 s by the depth kill
+(`alt = -31.61`, below -30 m; `007CE3A7`, packet cc9_water_surface_law).
+- Its last transition was maneuver to aim, at 410 m from D3A Val #5.1, the target it was chasing.
+- One second before, the surface probe shows alt 4.5 m, vy -34.6 m/s, speed 57.7 m/s, pitch +0.79 rad
+  nose up (commanded +0.78), and throttle 1.0.
+- That is a stall mush, not a dive. The fighter points 45 degrees up at full throttle and sinks at
+  34 m/s. S1T's fighters instead went in at 100-106 m/s. The avoidance arm did not flag a water tick.
+  It bands the pitch, and the pitch was already nose-up.
+- The other loss, Lexington-class01_sqn01 at 192.81 s, is a gun kill: D3A Val #5.1|.-4's rear gunner,
+  280 damage taken. It is RNG-coupled and judged by band.
+
+**Verdict:** `kDogfightThrottleBound` stays **OFF**, as the prediction's rule says. The dive half of
+the S1T blocker is gone: the terrain arm now bounds the pitch, and no fighter goes in fast. What is
+left is a low-speed stall inside aim with the direct throttle wired.
+
+**Next read.**
+- Why a fighter at full throttle and 58 m/s with its nose 45 degrees up cannot hold altitude. Its
+  class stall speed and the planner's pitch arm under `plan+2BCh` = +0.78 are the candidates.
+- Whether the image's aim tick commands that pitch at all. `009F9ED0` would give +0.78 only for an
+  aim point well above, and the Val was near the sea.
+- The command target log names D3A Val #5.1, so the aim point's source, the approach's `vtable[0]`,
+  is the first thing to check.
