@@ -1,0 +1,304 @@
+{
+  "approved_proposal": {
+    "bytes": 5123,
+    "path": "local/application_clock_shutdown_readiness_cc10/PROPOSED.diff",
+    "sha256": "c61d09ffd5539838724391178f3cec555caa2739b0ba7af59fbc081b9b29df07"
+  },
+  "build": {
+    "active_Release_existing_checks_independent_of_NDEBUG": true,
+    "embedded_manifest": {
+      "bytes": 381,
+      "path": "local/application_clock_shutdown_composition_cc10/build01_outputs/bsp_game.manifest.xml",
+      "sha256": "4bb79dcea0a901f7d9eac5aa05728ae92acb42e0cb22e5dd14134f4421a3d8df"
+    },
+    "existing3CTests": true,
+    "inputs": {
+      "bytes": 13293,
+      "path": "local/application_clock_shutdown_composition_cc10/build01.inputs.json",
+      "sha256": "6198deb37f1fdf2155a9928984d19c1be69b3d6be97a775487ca9caec65b42e0"
+    },
+    "receipt": {
+      "bytes": 9634,
+      "path": "local/application_clock_shutdown_composition_cc10/build01.receipt.json",
+      "sha256": "551a434201497a92cdf59225c4f04dd276b0bebd34a7e0ba9c0075b824243fed"
+    },
+    "strict_Win32": true
+  },
+  "documentation": "docs/NATIVE_APPLICATION_CLOCK_SHUTDOWN_CC10.md",
+  "evidence_folder": "local/application_clock_shutdown_composition_cc10",
+  "excluded": [
+    "clock getter activation/registration",
+    "explicit00736930 unregister route wiring",
+    "fullsampler or material/program graph",
+    "platform/MSG/source0W provenance",
+    "new runtime or tests",
+    "application execution",
+    "nativeprivateFH3/SEH parity",
+    "original game"
+  ],
+  "native_ranges": [
+    {
+      "address": "004de4b0",
+      "byte_file": {
+        "bytes": 199,
+        "path": "local/application_clock_shutdown_readiness_cc10/native/004de4b0.bin",
+        "sha256": "fa1f9c042b0a54c37c68547e0fed4dc02526fdfe6a8911e5b66e46ed9d541ec2"
+      },
+      "bytes": 199,
+      "complete_body": true,
+      "live_equals_installed": true,
+      "wrapper_receipt": {
+        "bytes": 952,
+        "path": "local/application_clock_shutdown_readiness_cc10/native/004de4b0.txt",
+        "sha256": "7a3ca585f47eb7b553e1d817b977ae02fefba40730c804882ea74b7b5f7a5686"
+      }
+    },
+    {
+      "address": "004dda40",
+      "byte_file": {
+        "bytes": 84,
+        "path": "local/application_clock_shutdown_readiness_cc10/native/004dda40.bin",
+        "sha256": "6a968969ae7b08b6a38a49c8e4cf5e232866381e31408b5d5028830696d1e5f1"
+      },
+      "bytes": 84,
+      "complete_body": true,
+      "live_equals_installed": true,
+      "wrapper_receipt": {
+        "bytes": 408,
+        "path": "local/application_clock_shutdown_readiness_cc10/native/004dda40.txt",
+        "sha256": "6cb2f8e589422822fdd5c80cfe9df0f8b7a32ec9f0edf7ffa0506454e9d8d435"
+      }
+    },
+    {
+      "address": "004ddaa0",
+      "byte_file": {
+        "bytes": 23,
+        "path": "local/application_clock_shutdown_readiness_cc10/native/004ddaa0.bin",
+        "sha256": "4f051e0d2d7e6bc49c9416594b2d6d3e19d652e517204ea5d7a40a0d3e1d657f"
+      },
+      "bytes": 23,
+      "complete_body": true,
+      "live_equals_installed": true,
+      "wrapper_receipt": {
+        "bytes": 116,
+        "path": "local/application_clock_shutdown_readiness_cc10/native/004ddaa0.txt",
+        "sha256": "c0f9db87f42fa57f7724a4edaf970ed26381ecce3171e2ab4e9ff45f1f97c3c7"
+      }
+    },
+    {
+      "address": "004de290",
+      "byte_file": {
+        "bytes": 95,
+        "path": "local/application_clock_shutdown_readiness_cc10/native/004de290.bin",
+        "sha256": "8bf7b0c241edb4b0336c26465cb29ae74067453c5b865df3d566a9357210be56"
+      },
+      "bytes": 95,
+      "complete_body": true,
+      "live_equals_installed": true,
+      "wrapper_receipt": {
+        "bytes": 452,
+        "path": "local/application_clock_shutdown_readiness_cc10/native/004de290.txt",
+        "sha256": "f9ecb96ed754995c60e05c0dd63a5134e4dfb75482e96592f4758573e00e46f5"
+      }
+    },
+    {
+      "address": "00b1b680",
+      "byte_file": {
+        "bytes": 89,
+        "path": "local/application_clock_shutdown_readiness_cc10/native/00b1b680.bin",
+        "sha256": "dcd2d39096ce43bf8160c2071bd316991bf064577a3caa7afb3f7634ebbd9a3d"
+      },
+      "bytes": 89,
+      "complete_body": true,
+      "live_equals_installed": true,
+      "wrapper_receipt": {
+        "bytes": 428,
+        "path": "local/application_clock_shutdown_readiness_cc10/native/00b1b680.txt",
+        "sha256": "81e6c282e83a24935cd3caf21b6bd64d8a75af5cd41cfd38b43a3397d2f4c57f"
+      }
+    },
+    {
+      "address": "004de340",
+      "byte_file": {
+        "bytes": 30,
+        "path": "local/application_clock_shutdown_readiness_cc10/native/004de340.bin",
+        "sha256": "a436f22b03ad7062c5b18fb2d81c6573184fa30c2b6ad2a4ec134ed0eb4a607a"
+      },
+      "bytes": 30,
+      "complete_body": true,
+      "live_equals_installed": true,
+      "wrapper_receipt": {
+        "bytes": 144,
+        "path": "local/application_clock_shutdown_readiness_cc10/native/004de340.txt",
+        "sha256": "13af4bd13db3b45da9784ffc0107859403ef0119e1a44633defbd14eac373d1e"
+      }
+    },
+    {
+      "address": "004de360",
+      "byte_file": {
+        "bytes": 8,
+        "path": "local/application_clock_shutdown_readiness_cc10/native/004de360.bin",
+        "sha256": "ce521d978bd6fe4b54d56addf5f39ef6640d949531ed61e3d6aaac638ad9b314"
+      },
+      "bytes": 8,
+      "complete_body": true,
+      "live_equals_installed": true,
+      "wrapper_receipt": {
+        "bytes": 44,
+        "path": "local/application_clock_shutdown_readiness_cc10/native/004de360.txt",
+        "sha256": "21a4fd1cd5e99c19544c21c1700bd619911c1b29e53e3e81026b22c56249b16f"
+      }
+    },
+    {
+      "address": "004b4f10",
+      "byte_file": {
+        "bytes": 17,
+        "path": "local/application_clock_shutdown_readiness_cc10/native/004b4f10.bin",
+        "sha256": "c663d2852ae875ca1d07a9a096b66942af425f33d767d89e7bb35d79805f789b"
+      },
+      "bytes": 17,
+      "complete_body": true,
+      "live_equals_installed": true,
+      "wrapper_receipt": {
+        "bytes": 92,
+        "path": "local/application_clock_shutdown_readiness_cc10/native/004b4f10.txt",
+        "sha256": "738a6a48bb3413ab9e464724f857a128529ebbc52bf6d15355d18b6c8dbde6d9"
+      }
+    },
+    {
+      "address": "00ce7d08",
+      "byte_file": {
+        "bytes": 20,
+        "path": "local/application_clock_shutdown_readiness_cc10/native/00ce7d08.bin",
+        "sha256": "3502eb7920107b9d84538336ebbe82836d14b0eec4f9e27becbde4afa7125cca"
+      },
+      "bytes": 20,
+      "complete_body": false,
+      "live_equals_installed": true,
+      "wrapper_receipt": {
+        "bytes": 104,
+        "path": "local/application_clock_shutdown_readiness_cc10/native/00ce7d08.txt",
+        "sha256": "a2adc9a1872f9219badd6214bea921f51cfcb2b680d0f149d565d821e151b9fa"
+      }
+    },
+    {
+      "address": "00ce7d24",
+      "byte_file": {
+        "bytes": 20,
+        "path": "local/application_clock_shutdown_readiness_cc10/native/00ce7d24.bin",
+        "sha256": "82fed636b359d203664f7b11c3f1d6a12fab8cb5782d4abf7276be51c5a3fec8"
+      },
+      "bytes": 20,
+      "complete_body": false,
+      "live_equals_installed": true,
+      "wrapper_receipt": {
+        "bytes": 104,
+        "path": "local/application_clock_shutdown_readiness_cc10/native/00ce7d24.txt",
+        "sha256": "c35a9b951895d7604f7f06fb0b6061cc5e88281fcbf8a2177ec12cc51aa8dcc5"
+      }
+    },
+    {
+      "address": "00ce7d38",
+      "byte_file": {
+        "bytes": 8,
+        "path": "local/application_clock_shutdown_readiness_cc10/native/00ce7d38.bin",
+        "sha256": "e5e2c3f30a0f70c33df7d6f8d089c1d433b47dbde251175495943a468321badf"
+      },
+      "bytes": 8,
+      "complete_body": false,
+      "live_equals_installed": true,
+      "wrapper_receipt": {
+        "bytes": 44,
+        "path": "local/application_clock_shutdown_readiness_cc10/native/00ce7d38.txt",
+        "sha256": "728aafd0fe0094256abeee3f97c868c943e18318212de77306f02952d6741148"
+      }
+    }
+  ],
+  "native_ranges_origin": "immutable independently reviewed readiness; exact installed/live identity; source composition adds no native bytes",
+  "new_native_byte_credit": 0,
+  "ownership": {
+    "canonical_domain": "renderer Impl::owners; shutdown explicitly selects canonical postzero route",
+    "cell": "GameSingletonHost actual void* volatile F8D420, source accessor returns samecell",
+    "current_decrement": "borrowed SAME CameraGraph::decrement retained const real Windows export cell, current volatile reference reads; original RO numeric CE2220 unresolved",
+    "failure": "no allocation/getter/register/count or automatic cleanup introduced; existing sourcefailure/backing/terminal obligations retained",
+    "installation": "after final throwing worker binder, final nonthrowing constructor assignment",
+    "profiles": "exact current CE7D08/CE7D24 20-byte windows, release slot+10 identifies4DDB40",
+    "records": "renderer Impl, SAME vfs.strings and existing renderer validation",
+    "teardown": "raw host drain and fallback host destructor before renderer reset, VFS later; reverse context/camera/owners lifetime"
+  },
+  "packet": "application_clock_shutdown_composition_cc10",
+  "production_files": [
+    "include/bsp/game_hosts_singletons.hpp",
+    "src/game_hosts_singletons.cpp",
+    "src/game_native_renderer_application.cpp"
+  ],
+  "program": "/battlestationspacific.exe",
+  "project_file": "C:/Users/sqz269/bsp.gpr",
+  "readiness_archive": {
+    "bytes": 121066,
+    "path": "local/application_clock_shutdown_readiness_cc10/evidence.zip",
+    "sha256": "ded04f99024c858afbc55577a136fb85e2502e983ad667421940db93058c9ca3"
+  },
+  "source_ABI": {
+    "all_production_callers_rebuilt_together": true,
+    "deletion_bindings_Win32_bytes_unchanged": 180,
+    "drop_in_binary_compatible": false,
+    "emitted_offsets_this_build_only": {
+      "host_cell": 56,
+      "host_deletion_bindings": 60,
+      "renderer_camera_decrement": 5020,
+      "renderer_canonical_registry": 156,
+      "renderer_records": 5032,
+      "renderer_shutdown": 5040
+    },
+    "host_private_cell_bytes_added": 4,
+    "old_ignored_binaries_not_reused": true,
+    "records_context_Win32_bytes": 8,
+    "retained_renderer_context_bytes_added": 32,
+    "shutdown_context_Win32_bytes": 24
+  },
+  "status": "application_context_composition_strict_Win32_existing3CTests_source_emitted_identity_checked_runtime_unexecuted",
+  "validation": {
+    "all41_existing_sections_and_relocations_equal": true,
+    "embedded_switch_data_bytes": 137,
+    "emitted_checks": 37,
+    "full_COFF_sections": 23,
+    "full_linear_sections": 22,
+    "initial_naive_decode_receipt_retained": true,
+    "mixed_switch_code_padding_bytes": 2972,
+    "relocation_checks": 10,
+    "source_checks": 15,
+    "unchanged_existing_core_members": [
+      {
+        "all_section_bytes_relocations_equal": true,
+        "function_sections": 18,
+        "member": "native_particle_clock_shutdown.obj",
+        "sha256": "f46b70c77d9012086ff2db549823e9f2bd127592a7a0ba8563b96534b4f53aad",
+        "whole_member_equal": true
+      },
+      {
+        "all_section_bytes_relocations_equal": true,
+        "function_sections": 2,
+        "member": "native_particle_clock_sink_release.obj",
+        "sha256": "bd82d2d93598ee3fc0201f22cbe90118e46e6ddd595cfafb067e2b586fea9169",
+        "whole_member_equal": true
+      },
+      {
+        "all_section_bytes_relocations_equal": true,
+        "function_sections": 9,
+        "member": "native_particle_record_resize.obj",
+        "sha256": "5e4fb5f69187856777fab5576d9a2711f587f92ed13b96eab3b23ff849e6252e",
+        "whole_member_equal": true
+      },
+      {
+        "all_section_bytes_relocations_equal": true,
+        "function_sections": 12,
+        "member": "native_singleton_destruction.obj",
+        "sha256": "8d00b723031358d4e2070788e2fb3a0a1207201ec6d0df1c2d8f0bd1e79a3daa",
+        "whole_member_equal": true
+      }
+    ],
+    "unique_full_masked_linked_sections": 17
+  },
+  "worker_baseline": "dd244aac2fcd7636b19c05a2af1302f4c29d3c83"
+}
