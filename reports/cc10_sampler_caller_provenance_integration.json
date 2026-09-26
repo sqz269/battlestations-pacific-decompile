@@ -1,0 +1,202 @@
+{
+  "packet": "cc10_sampler_caller_provenance_integration",
+  "result": "PASS_WITH_EXPLICIT_NATIVE_NORMAL_RETURN_AND_ACTUAL_CONSUMPTION_CONTRACTS",
+  "worker_archive_sha256": "7e2d33607e6a4faf8f444039170ae43fe33a99d8e0d8abd3992b9fe076792830",
+  "worker_rows": 88,
+  "worker_members": 89,
+  "independent_archive_sha256": "e424d60d2f7dfe40e57b16467448383e3e25a61a820de8f2e7f919d3554239f0",
+  "independent_rows": 32,
+  "independent_members": 33,
+  "primary_native_verification": {
+    "result": "PASS_ORIGINAL_PE_BODY_IDENTITY_AND_COMPLETE_RAW_DECODE",
+    "original_sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6",
+    "bodies": [
+      {
+        "address": "00b3b3c0",
+        "bytes": 4049,
+        "instructions": 1282,
+        "sha256": "190350a4fbf442dd6820d2b5caad70f55f4f9b2eb1be3bbb97c5b944a1ed0757"
+      },
+      {
+        "address": "00b3b280",
+        "bytes": 306,
+        "instructions": 104,
+        "sha256": "cdf241047d8ec93b39fa9058ac6b15b71c386832dfb4170b2dc7c0fcce6e28d9"
+      },
+      {
+        "address": "00b5f080",
+        "bytes": 59,
+        "instructions": 24,
+        "sha256": "d3185d1aecdc4a500f2116dcf0f1f81dcb95ef6cfcc1b70a8c9af9c5d6d55fc6"
+      },
+      {
+        "address": "00b5f9b0",
+        "bytes": 320,
+        "instructions": 107,
+        "sha256": "201cd1f024b0d9199951bf6243a7a11eab3344e7a28e6553cd6d615d6738fd28"
+      },
+      {
+        "address": "00bd30e0",
+        "bytes": 14,
+        "instructions": 7,
+        "sha256": "736f250e66b094b45227c156ef6ad7091fc6a0a2791c5f0aa5d52d9430d96c01"
+      },
+      {
+        "address": "00b5f6e0",
+        "bytes": 30,
+        "instructions": 11,
+        "sha256": "f0c6e9cc2ac50569213fb37f423aa2e81dd631db5cc65749d18cba179af58787"
+      },
+      {
+        "address": "00b5f410",
+        "bytes": 113,
+        "instructions": 31,
+        "sha256": "c45130617e54cf59d60885390204198593dba15fc371c07186e385db62b76fcc"
+      }
+    ],
+    "total_bytes": 4891,
+    "total_instructions": 1566,
+    "limits": "Independent body identity/decode verification only; detailed stack and path review recorded separately. No runtime or new native credit."
+  },
+  "actual_branch_and_consumption_contracts": {
+    "schema": "bsp.cc10.sampler-caller-branch-contracts.v1",
+    "native_caller": "00b3b3c0",
+    "common_admission": "Actual normal-return compiler path, nonnull raw wrapper allocation and completed B5F9B0, genuine live pass/wrapper/count/storage domains. No foreign/nonlocal/asynchronous saved-slot mutation.",
+    "branches": [
+      {
+        "name": "actual unsupported vertex-texture shader skip",
+        "selection": "B3B76E/B3B775 derive P+13 from real B20190(format71h) and actual vertex sampler; B3BCEC tests that byte and jumps B3BF95",
+        "last_parent_EBX_definition": "00b3bcc1 MOV EBX,[P+14h]",
+        "word_at_constructor_normal_return": "actual pass pointer captured from [P+14h]",
+        "COM_output": "B3BCE8 stores zero to P+28h; PS creation skipped",
+        "post_constructor_COM_Release": "B3BFCF skips B3BFD7",
+        "sampler_reachability": "continues through genuine setter/creator-drop suffix; suffix admission still required"
+      },
+      {
+        "name": "cached pixel shader returns null output normally",
+        "selection": "Current mode bytes at B3BCF2/B3BCFF both zero; genuine B34890 lookup and dereferenced cache row; B3BDE1 CreatePixelShader output remains null",
+        "last_parent_EBX_definition": "00b3bd6b MOV EBX,EAX after B3BD66 lookup",
+        "word_at_constructor_normal_return": "actual returned pixel cache-row pointer",
+        "COM_output": "P+28h zeroed at B3BCE8; current COM method returns normally with null output; HRESULT is not tested",
+        "post_constructor_COM_Release": "B3BFCF skips B3BFD7",
+        "sampler_reachability": "continues through genuine wrapper/setter/creator-drop; no default cache row or fabricated successful shader"
+      },
+      {
+        "name": "cached pixel shader returns nonnull output",
+        "selection": "Same cached gate, genuine current CreatePixelShader returns a nonnull actual output",
+        "last_parent_EBX_definition": "00b3bd6b MOV EBX,EAX",
+        "word_at_constructor_normal_return": "actual returned pixel cache-row pointer",
+        "first_post_constructor_unqualified_callee": "00b3bfd7 current COM table+8 Release",
+        "sampler_entry_word": "unknown without the reached current Release stack/residue contract and later suffix qualification"
+      },
+      {
+        "name": "generated pixel shader succeeds with nonnull output",
+        "selection": "Either current mode byte nonzero; B61280 returns normally with actual nonnull P+28h output; actual subsequent cache write/cleanup returns normally",
+        "last_parent_EBX_definition": "00b3befd MOV EBX,ESI after B3BEEB current [0108D6EC] load",
+        "word_at_constructor_normal_return": "captured shader-binary-cache domain from that current load",
+        "first_post_constructor_unqualified_callee": "00b3bfd7 current COM table+8 Release",
+        "sampler_entry_word": "unknown without current Release stack/residue contract and later suffix qualification"
+      },
+      {
+        "name": "generated pixel shader returns null",
+        "selection": "B3BE35 current output read equals zero; B3BE3B jumps B3B6CC",
+        "sampler_reachability": "does not reach B3C018/B3C024 on that normal failure route",
+        "entry_word_claim": "none"
+      },
+      {
+        "name": "wrapper allocation null or constructor failure",
+        "selection": "B3BFAD skips constructor on null allocation, or B5F9B0 does not return normally",
+        "entry_word_claim": "none; normal live-owner admission absent, no alternate owner or synthetic constructor"
+      }
+    ],
+    "value_identity_qualification": "These are provenance expressions. No address inequality with builder is proved; incidental equality is possible. The historical one invocation's builder-valued W is not universal.",
+    "common_suffix": [
+      "B5F080 captures current pass+58, publishes incoming before retain, current incoming IAT increment, old IAT decrement and current old virtual0 only on zero; direct pushes/stores do not reach W",
+      "B3BFE7 uses current IAT decrement of incoming creator credit; current virtual0 at B3BFF7 only on actual zero",
+      "Genuine fresh-pass null old field and successful incoming retain can exclude old-zero and outer-zero only while that actual credit/field invariant survives reached callbacks",
+      "Specific captured/current-target stack proof is required for reached IAT calls; import names, disk bodies or later binding snapshots do not prove earlier call epochs",
+      "Current-profile D62A60 terminal bodies have direct W writes, and their support/unregister/current COM/base/shared free route leaves the final word unqualified"
+    ],
+    "conditional_establishing_case": {
+      "requirements": [
+        "One actual no-COM-Release branch above, nonnull wrapper allocation and normal B5F9B0",
+        "Actual fresh pass old+58 remains null; genuine incoming/pass credit remains live through native suffix",
+        "Actual reached increment/decrement targets equal the proved shallow 20-byte profiles in the relevant call epochs, or an equally complete no-W-write contract",
+        "Actual creator decrement is nonzero, with no reached terminal or unqualified callback writing W"
+      ],
+      "conclusion": "W at B3C018 retains the pass or returned cache-row provenance expression, respectively; not an unconditional production binding",
+      "unmet_current_source_contract": "Compiler context carries canonical owner services, not proof of original IAT call-epoch lower-stack effects; C++ atomics semantic outcome alone does not establish the native residue."
+    },
+    "shared_knowledge": {
+      "word": "SAME physical W=P-30h",
+      "knowledge": "SAME known/unknown state can pass root normal return to mode entry; there is no intervening call or W write, including empty root",
+      "separate": "Two actual sampler operation records, descriptor sequences, sampler indices and release-capture lists remain distinct",
+      "source1_release": "Actual release owner/index captures still required when consumed; unknown must remain unknown until a proven native replacement write",
+      "no_fallback": "Unknown entry is never replaced by builder, zero, empty lists or a current later cache read"
+    },
+    "actual_sampler_consumption_partition": [
+      {
+        "reached_source": "0",
+        "effect": "Direct B3B328 texture reference consumes W after its low-byte stage write",
+        "admission": "Requires prior known entry or genuine earlier full writer; cannot consume unknown"
+      },
+      {
+        "reached_source": "3",
+        "effect": "Genuine B18FB0 normal route saves actual sampler ESI at W before this sampler's texture-reference consumption",
+        "admission": "Actual source3 dependencies and normal return establish known sampler-pointer expression, even if entry unknown"
+      },
+      {
+        "reached_source": "1, returned loader owner null",
+        "effect": "Genuine B1B4D0 normal return establishes CBC760; no owner release",
+        "admission": "Actual loader/singleton route required; not a default null result"
+      },
+      {
+        "reached_source": "1, returned loader owner nonnull",
+        "effect": "Wrapper establishes CBC760, binding CALL establishes B3B2E4, actual owner release then invalidates absent matched residue",
+        "admission": "Actual released owner/index capture required if later consumed before another native full writer"
+      },
+      {
+        "reached_source": "Any source with an actual reached sampler state",
+        "effect": "Three-argument B3B369 CALL establishes B3B36E at W after the current sampler's reference work",
+        "admission": "Can establish knowledge for later samplers or mode; cannot justify an earlier source0 consumption in this same sampler"
+      },
+      {
+        "reached_source": "2/other with no actual states, or empty descriptor",
+        "effect": "No full native W write",
+        "admission": "Carries prior known/unknown unchanged, no empty/default assumption"
+      }
+    ],
+    "next_action": {
+      "already_supported": "Bind existing root/mode sampler context references to the same actual Word and knowledge object with separate operation/capture domains; API needs no new semantic abstraction. Full native caller binding remains conditional.",
+      "concrete_remaining_cut": "B3BFD7 reached current COM Release, plus the reached IAT/zero-terminal suffix. The already-recovered ordinary native constructor supplies the upstream expression, so another constructor rewrite is unnecessary.",
+      "smallest_next_evidence": "First use actual descriptor sequence/consumption order to determine whether unknown is consumed before an established full write. If so, qualify B3BFD7 actual receiver/current table+8 final residue, or an actual no-COM route with exact reached IAT/no-zero evidence. Disk D3D9 candidate alone is insufficient.",
+      "implementation_ready_without_that_evidence": false,
+      "no_new_source_diff": "No unconditionally justified automatic entry producer or full cold/compiler/sampler caller patch is proposed."
+    }
+  },
+  "per_invocation_lifetime": "Root and mode may borrow one stable Word and known/unknown state within the same retained actual compiler operation. Descriptor/operation/release-capture domains stay separate. This is not permission for renderer-global scratch across unrelated, reentrant or retained-failed invocations.",
+  "independent_partial_register_check": "Four BL writes exist; the two before the final definitions are superseded and the other two occur after sampler calls. Full EBX/BX/BL/BH reaching definitions still yield exactly B3BCC1/B3BD6B/B3BEFD. Initial reviewer no-partial-write assertion and corrected collector are preserved.",
+  "annotation": {
+    "existing_names_preserved": true,
+    "prior_values_and_comments_preserved": true,
+    "write_lock": true,
+    "saved": true,
+    "forced_exports": true
+  },
+  "validation": {
+    "new_source_changes": 0,
+    "new_builds": 0,
+    "new_tests": 0,
+    "new_runtime_cases": 0,
+    "new_native_functions": 0,
+    "new_native_bytes": 0,
+    "new_Ghidra_functions": 0
+  },
+  "limits": "Body identity, complete raw decode and reviewed native stack/control-flow contracts; no unconditional sampler entry producer, missing Programs/compiler caller construction, original ABI/drop-in replacement, SDK/platform MSG admission, full cold startup or gameplay validation.",
+  "archive": {
+    "path": "local/cc10-platform-evidence/sampler-caller-stack-provenance.zip",
+    "sha256": "1a6a69e1720ee9e89c9d2d1909da4dafdb3a79581dd7e4dc621ba53095172b18",
+    "files": 19,
+    "valid": true
+  }
+}
