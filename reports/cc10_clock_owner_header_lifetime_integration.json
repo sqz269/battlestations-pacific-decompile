@@ -1,0 +1,60 @@
+{
+  "packet": "cc10_clock_owner_header_lifetime_integration",
+  "worker_commit": "8cc151e35347b87a21048995de81f4b05711cfd9",
+  "integration": "56a718db002d7ee3e4197a8b013a4c411f6dc1cc",
+  "worker_report": "reports/native_clock_owner_header_lifetime_cc10.json",
+  "primary_verification": {
+    "result": "PASS",
+    "source_inputs": 26,
+    "toolchain_pins": 27,
+    "preserved_artifacts": 1340,
+    "exact_reviewed_source_files": 4,
+    "complete_old_new_body_sizes": [
+      274,
+      127
+    ],
+    "exact_new_library_members": 4,
+    "body_bytes_equal": true,
+    "seven_ordered_stores_equal": true,
+    "sole_relocation_change": [
+      {
+        "offset": 6,
+        "kind": 6,
+        "old_symbol": "__ehhandler$?get_native_sampler_loader_singleton_004de4b0@bsp@@YAPAUNativeSamplerLoaderSingletonStorage@1@ACRAX0AAUNativeSamplerLoaderOperation@1@@Z",
+        "new_symbol": "__ehhandler$?get_native_sampler_loader_singleton_004de4b0@bsp@@YAPAUNativeParticleClockStorage@1@ACRAX0AAUNativeSamplerLoaderOperation@1@@Z"
+      }
+    ],
+    "rebuilt_decorated_consumer": true,
+    "strict_win32_CTests": 3,
+    "runtime_runs": 0,
+    "limits": [
+      "COFF body/member/source comparison, not original binary ABI/private FH3/SEH proof",
+      "Header and broader raw pointer-lvalue accesses remain separate",
+      "No nonempty producer/platform MSG/source0W/full sampler/application/game runtime"
+    ],
+    "worker_commit": "8cc151e35347b87a21048995de81f4b05711cfd9",
+    "worker_archive_sha256": "c24ff9d3b2fc99bebe2c14f4179ced6868d89cadc9225bf094be5dc646b0efd0",
+    "archive_rows": 76,
+    "archive_members": 77,
+    "committed_blobs_verified": 7
+  },
+  "validation": {
+    "worker_strict_win32_CTests": 3,
+    "primary_strict_win32_CTests": 3,
+    "new_runtime_runs": 0,
+    "original_game_validated": false,
+    "complete_getter_adapter_COFF_bytes_unchanged": 401,
+    "newly_reconstructed_native_bytes": 0
+  },
+  "limits": [
+    "COFF body/member/source comparison, not original binary ABI/private FH3/SEH proof",
+    "Header and broader raw pointer-lvalue accesses remain separate",
+    "No nonempty producer/platform MSG/source0W/full sampler/application/game runtime"
+  ],
+  "archive": {
+    "path": "local/cc10-platform-evidence/clock-owner-header-lifetime.zip",
+    "sha256": "b4d666bfc39cd85e434b5c744a77d69398d76270188a5026ba940303df3a3653",
+    "files": 9,
+    "valid": true
+  }
+}
