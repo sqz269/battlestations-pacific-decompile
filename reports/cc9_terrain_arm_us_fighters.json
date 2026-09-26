@@ -1,0 +1,15 @@
+{
+  "packet": "cc9_terrain_arm_us_fighters",
+  "doc": "docs/TERRAIN_ARM_US_FIGHTERS.md",
+  "calls": [],
+  "finding": "009A17D0 skips a plane when [[00E188A8]+5FCh]+908h (the scene's DummyAIEnabled, 004F20EE-004F2101, default 3 at 004F2109/004DA4CF) equals unit+54h; the host substituted the controlled unit's side, which skipped every US plane",
+  "switches": [
+    {
+      "name": "kAvoidanceDummyAiGateBound",
+      "state": "OFF",
+      "pair": "pending (runs blocked on the merge question)"
+    }
+  ],
+  "no_ghidra_function": [],
+  "ledger_names_added": []
+}

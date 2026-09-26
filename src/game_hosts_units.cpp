@@ -35,6 +35,7 @@
 #include "bsp/torpedo_first_release.hpp"
 #include "bsp/torpedo_issue_timing.hpp"
 #include "bsp/plane_squadron_host.hpp"
+#include "bsp/scene_record_side_blocks.hpp"
 #include "bsp/plane_follow_law.hpp"
 #include "bsp/plane_follow_hold.hpp"
 #include "bsp/plane_formation.hpp"
@@ -2986,6 +2987,11 @@ struct GameUnitsHost::Impl {
     // velocity step in place of the host's Euler step. OFF: v += a * step.
     // ON with kDogfightThrottleBound on the pair FI0/FI1 (section 4).
     static constexpr bool kFlightIntegratorBound = true;
+    // Packet cc9_terrain_arm_us_fighters (docs/TERRAIN_ARM_US_FIGHTERS.md):
+    // 009A17D0's side gate compares unit+54h with the scene's DummyAIEnabled
+    // (record+908h, default 3), not with the player's side. OFF: the
+    // controlled unit's side stands in, which skips every friendly plane.
+    static constexpr bool kAvoidanceDummyAiGateBound = false;
     // Packet cc9_planner_heading_writes (docs/PLANNER_HEADING_WRITES.md): the
     // torpedo states' own heading writes the host never reproduced. The moveto
     // tick 009C18C0 steers at its +2Ch target through 009F9E40 (009C1B23,
@@ -3607,7 +3613,19 @@ struct GameUnitsHost::Impl {
         const bool free_flight = u.plane_control_mode_900 == 7;
         if (!free_flight && u.plane_control_mode_900 != 6) return;
         if (!(controlled_bound && controlled_index < slots.size())) return;
-        if (slots[controlled_index]->row.party == u.row.party) return;
+        if constexpr (kAvoidanceDummyAiGateBound) {
+            // 009A184A-009A1871: skip when [[00E188A8]+5FCh] (the scene record)
+            // is null, or when its +908h equals unit+54h. +908h is the scene's
+            // `DummyAIEnabled` (004F20EE-004F2101), 3 when absent (004F2109,
+            // and 004DA4CF in the constructor); unit+54h is the side. So in a
+            // mission that does not author the key no side is skipped.
+            // SUBSTITUTION, labelled: the key is not plumbed from the scene
+            // header to this host, so the default 3 stands in.
+            // docs/TERRAIN_ARM_US_FIGHTERS.md.
+            if (u.row.party == bsp::kSceneDefaultDummyAi) return;
+        } else {
+            if (slots[controlled_index]->row.party == u.row.party) return;
+        }
         // 009A1865/009A194F/009A1972: +2E4h bits 4, 2, 1 and the squadron's
         // +3A4h bits. +2E4h is the task's per-tick mask (0FFh at 009C87A3 /
         // 009D4865, copied at 009C8855 / 009D48FF, 0FFh at 00999944 before
