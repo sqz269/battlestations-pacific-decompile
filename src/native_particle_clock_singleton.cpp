@@ -11,6 +11,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <new>
 
 namespace bsp {
 namespace {
@@ -59,16 +60,19 @@ get_native_particle_clock_singleton_004de4b0(
                 SingletonAllocationKind::object, 0x1c, 0x1c});
             NativeParticleClockStorage* owner = nullptr;
             if (allocation) {
-                owner = static_cast<NativeParticleClockStorage*>(allocation);
-                auto* const words = reinterpret_cast<volatile std::uint32_t*>(owner);
-                words[1] = 0x00ce7d08u;
-                words[2] = 0;
-                words[3] = 0;
-                words[4] = 0;
-                words[5] = 0;
-                words[0] = 0x00ce7d38u;
-                words[1] = 0x00ce7d24u;
-                // No store to words[6]: native +18 remains allocation preimage.
+                // malloc backing is fresh and aligned for this 4-byte type.
+                // Default construction (no () or {}) begins owner/header
+                // lifetimes without initializing any scalar representation.
+                owner = ::new (allocation) NativeParticleClockStorage;
+                volatile auto& actual_owner = *owner;
+                actual_owner.profile_04 = 0x00ce7d08u;
+                actual_owner.records_08.data_00 = nullptr;
+                actual_owner.records_08.count_04 = 0;
+                actual_owner.records_08.capacity_08 = 0;
+                actual_owner.word_14 = 0;
+                actual_owner.profile_00 = 0x00ce7d38u;
+                actual_owner.profile_04 = 0x00ce7d24u;
+                // No store or read of time_18: native +18 stays unspecified.
             }
             actual_particle_publication_00f8d420 = owner;
             void* const current_manager = get_native_singleton_manager_00415350(

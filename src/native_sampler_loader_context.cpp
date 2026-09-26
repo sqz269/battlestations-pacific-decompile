@@ -8,16 +8,8 @@
 namespace bsp {
 namespace {
 using Op = NativeSamplerLoaderOperation;
-static_assert(sizeof(NativeSamplerLoaderSingletonStorage) ==
-    sizeof(NativeParticleClockStorage));
-static_assert(alignof(NativeSamplerLoaderSingletonStorage) ==
-    alignof(NativeParticleClockStorage));
-static_assert(offsetof(NativeSamplerLoaderSingletonStorage, records_08) ==
-    offsetof(NativeParticleClockStorage, word_08));
-static_assert(offsetof(NativeSamplerLoaderSingletonStorage, word_14) ==
-    offsetof(NativeParticleClockStorage, word_14));
-static_assert(offsetof(NativeSamplerLoaderSingletonStorage, time_18) ==
-    offsetof(NativeParticleClockStorage, payload_18));
+static_assert(std::is_same_v<NativeSamplerLoaderSingletonStorage,
+    NativeParticleClockStorage>);
 
 void begin(Op& operation, std::uint32_t function,
     void* volatile& manager, void* volatile& owner) {
@@ -45,7 +37,7 @@ NativeSamplerLoaderSingletonStorage* get_native_sampler_loader_singleton_004de4b
             manager, publication);
         operation.result = result;
         operation.phase = Op::Phase::complete;
-        return reinterpret_cast<NativeSamplerLoaderSingletonStorage*>(result);
+        return result;
     } catch (...) {
         operation.phase = Op::Phase::failed;
         throw;
