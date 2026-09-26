@@ -1,0 +1,61 @@
+{
+  "packet": "cc10_explicit_clock_shutdown_integration",
+  "worker_commit": "8942dcb81314723d03ffdff54f8553b6caed26ba",
+  "integration": "73fc73d0c3402d6e46fc13fe0f6d22202c841381",
+  "worker_report": "reports/native_explicit_clock_shutdown_cc10.json",
+  "primary_verification": {
+    "worker_commit": "8942dcb81314723d03ffdff54f8553b6caed26ba",
+    "archive_sha256": "fcd593e820362a046b5feecdc28951d7bcb81ec82c80f6dc7b8e2366d45e056c",
+    "archive_rows": 197,
+    "archive_members": 198,
+    "current_source_config_pins": 22,
+    "prebuild_entries": 23,
+    "toolchain_pins": 2,
+    "exact_current_build_outputs": 29,
+    "exact_core_library_members": 7,
+    "full_COFF_sections": 16,
+    "unique_linked_existing_sections": 9,
+    "new_entry_COFF_bytes": 366,
+    "new_entry_linked": false,
+    "source_EH_metadata_bytes": 88,
+    "source_inline_catch_offset": 258,
+    "independent_byte_checks": 19,
+    "relocation_checks": 9,
+    "prior_clock_functions_unchanged": 18,
+    "borrowed_members_whole_equal": 5,
+    "one_borrowed_member_COFFtimestamp_only_change": true,
+    "worker_strict_Win32_CTests": 3,
+    "native_body_bytes": 164,
+    "runtime_runs": 0,
+    "review": [
+      "Entire approved and applied two-file provider reviewed against full native listing and10installed ranges",
+      "Current manager lookup precedes unregister-owner capture; fresh owner/profile/slot and flags1 dispatch; normal clear only after return",
+      "Captured first lock and actual guard survive all source callbacks; catch invokes existing guard then rethrows"
+    ],
+    "limits": [
+      "New explicit entry and source handler are COFF-only; handler has ambiguous linked matches",
+      "No explicit entry/base/failure/application runtime; no new fixture or tests",
+      "Four added source ABI arguments and rooted compiler EH metadata are not original private FH3/SEH proof",
+      "Full startup shutdown and nonempty/source0W/platform dependencies remain separate"
+    ]
+  },
+  "validation": {
+    "primary_strict_win32_CTests": 3,
+    "worker_strict_win32_CTests": 3,
+    "new_runtime_runs": 0,
+    "application_executed": false,
+    "game_validated": false
+  },
+  "limits": [
+    "New explicit entry and source handler are COFF-only; handler has ambiguous linked matches",
+    "No explicit entry/base/failure/application runtime; no new fixture or tests",
+    "Four added source ABI arguments and rooted compiler EH metadata are not original private FH3/SEH proof",
+    "Full startup shutdown and nonempty/source0W/platform dependencies remain separate"
+  ],
+  "archive": {
+    "path": "local/cc10-platform-evidence/explicit-clock-shutdown.zip",
+    "sha256": "3ca09245a51778f7fec118f628a26ef71448394c32164d06fd62d689944b817a",
+    "files": 9,
+    "valid": true
+  }
+}
