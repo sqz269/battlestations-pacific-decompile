@@ -1,0 +1,71 @@
+{
+  "packet": "cc10_texture_source_child_append_integration",
+  "worker_commit": "8e1318e8c7ec9aa88d0d12991469d817f13b1994",
+  "integration": "6ab1bedd2af0ad784136b86bbab6ab62d52feb1d",
+  "worker_report": "reports/native_texture_source_child_append_cc10.json",
+  "primary_verification": {
+    "result": "PASS",
+    "worker_commit": "8e1318e8c7ec9aa88d0d12991469d817f13b1994",
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-field-values\\local\\cc10_texture_source_child_append_evidence.zip",
+      "sha256": "ca1560dd100de8852c2449a043e9ff21f7b60cd792e1b0b8d3b4e6f900cb70a7",
+      "rows": 88,
+      "members": 89
+    },
+    "committed_blobs": 6,
+    "prebuild_source_pins": 18,
+    "prebuild_tool_pins": 27,
+    "old_new_library_members": [
+      1778,
+      1779
+    ],
+    "complete_raw_sections": 366,
+    "unchanged_full_members": 3,
+    "unchanged_code_sections": 81,
+    "unchanged_code_bytes": 3979,
+    "exact_new_member_bytes": 1392,
+    "new_object_code_bytes": 83,
+    "reached_leaf_bytes": 67,
+    "reached_leaf_instructions": 29,
+    "typed_reserve_relocation": 33,
+    "field_call_events": 8,
+    "native_fragment_bytes": 53,
+    "native_instructions": 19,
+    "new_native_functions": 0,
+    "worker_CTests": 3,
+    "new_runtime_runs": 0,
+    "design": {
+      "result": "PASS",
+      "archive": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-field-values\\local\\cc10_texture_source_producer_typed_readiness\\evidence.zip",
+      "sha256": "fea132007233e0d5a97d86342e6fb1182e08abf83ce591521d4c317f23d8bafa",
+      "rows": 55,
+      "members": 56,
+      "review": "Exact proposal and19native instructions reviewed;53Bfragment only, no wholeproducer/error/dispatch/runtime credit"
+    },
+    "limits": "53B internal fragment only; remaining751B C30570 uncredited. Actual live payload/header and reached slots required. Captured null stored; no child credits/rollback/safety guards. No caller/producer/Lua/factory/application activation, linked-body/nativeABI/FH3/game proof."
+  },
+  "annotation": {
+    "interior_label": "BSP_TextureSource_AppendCapturedChild",
+    "address": "00c307ad",
+    "enclosing": "00c30570",
+    "enclosing_name_preserved": "FUN_00c30570",
+    "function_count_unchanged": true,
+    "original_values_and_save_receipt_archived": true,
+    "export_refreshed": true
+  },
+  "validation": {
+    "worker_CTests": 3,
+    "primary_CTests": 3,
+    "native_fragment_bytes": 53,
+    "new_native_functions": 0,
+    "new_runtime_runs": 0,
+    "game_validated": false
+  },
+  "limits": "53B internal fragment only; remaining751B C30570 uncredited. Actual live payload/header and reached slots required. Captured null stored; no child credits/rollback/safety guards. No caller/producer/Lua/factory/application activation, linked-body/nativeABI/FH3/game proof.",
+  "archive": {
+    "path": "local/cc10-platform-evidence/texture-source-child-append.zip",
+    "sha256": "c50384020536876167e4d3c955ee78398fcf07ffc7961e640d6d800064580cb9",
+    "files": 13,
+    "valid": true
+  }
+}
