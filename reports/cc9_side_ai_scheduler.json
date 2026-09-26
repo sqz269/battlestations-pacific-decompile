@@ -1,0 +1,168 @@
+{
+  "packet": "cc9_side_ai_scheduler",
+  "doc": "docs/SIDE_AI_SCHEDULER_READERS.md",
+  "switch": "none: Step A found no order reader and the binding is not cheap, so the five BotScheduler records stay host records",
+  "calls": [
+    {
+      "address": "00914F9F",
+      "native": "00914390",
+      "function": "00914EF0",
+      "kind": "call",
+      "host": "BotScheduler::slot_prepare (record)"
+    },
+    {
+      "address": "00915032",
+      "native": "00911E80",
+      "function": "00914EF0",
+      "kind": "call",
+      "host": "BotScheduler::think_a (record)"
+    },
+    {
+      "address": "00915039",
+      "native": "00912A60",
+      "function": "00914EF0",
+      "kind": "call",
+      "host": "BotScheduler::think_b (record)"
+    },
+    {
+      "address": "009150CC",
+      "native": "00914390",
+      "function": "009150A0",
+      "kind": "call",
+      "host": "none: Scoring_ForceRefreshScoringTable path, not called in the pairs"
+    },
+    {
+      "address": "00920D79",
+      "native": "00914390",
+      "function": "00920A20",
+      "kind": "call",
+      "host": "debrief bring-up, read only"
+    },
+    {
+      "address": "00920D80",
+      "native": "00912A60",
+      "function": "00920A20",
+      "kind": "call",
+      "host": "debrief bring-up, read only"
+    },
+    {
+      "address": "009129EE",
+      "native": "0090EDE0",
+      "function": "00911E80",
+      "kind": "call",
+      "host": "award grant, read only"
+    },
+    {
+      "address": "009133C9",
+      "native": "0090EDE0",
+      "function": "00912A60",
+      "kind": "call",
+      "host": "award grant, read only"
+    },
+    {
+      "address": "009139C4",
+      "native": "0090EDE0",
+      "function": "00912A60",
+      "kind": "call",
+      "host": "award grant, read only"
+    },
+    {
+      "address": "00914E8B",
+      "native": "00914270",
+      "function": "00914390",
+      "kind": "call",
+      "host": "badge score lookup, read only"
+    },
+    {
+      "address": "00777CBD",
+      "native": "0091C650",
+      "function": "00777850",
+      "kind": "call",
+      "host": "network receive, read only"
+    }
+  ],
+  "readers": [
+    {
+      "field": "tree +78h, tree +84h",
+      "site": "00593D6C",
+      "function": "00593CA0",
+      "kind": "record copy"
+    },
+    {
+      "field": "totals +1E0h",
+      "site": "008B912A",
+      "function": "008B8FF0",
+      "kind": "Lua Scoring_GetTotalMissionScore, competitive multiplayer only"
+    },
+    {
+      "field": "totals +1E0h",
+      "site": "0060E64A",
+      "function": "0060E440",
+      "kind": "scoreboard page"
+    },
+    {
+      "field": "totals +1CCh..+1E0h",
+      "site": "00755EC4",
+      "function": "007556A0",
+      "kind": "telemetry"
+    },
+    {
+      "field": "totals +1E0h",
+      "site": "0091C6DF",
+      "function": "0091C650",
+      "kind": "network receive case 12h (writer)"
+    }
+  ],
+  "routines": [
+    {
+      "address": "00911E80",
+      "coverage": "read, not reconstructed"
+    },
+    {
+      "address": "00912A60",
+      "coverage": "read, not reconstructed"
+    },
+    {
+      "address": "00914390",
+      "coverage": "partial: final sum 00914EB7..00914EC8 in src/bot_scheduler_output.cpp; 00914390..00914EB6 not reconstructed"
+    },
+    {
+      "address": "00914270",
+      "coverage": "read, not reconstructed"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "per-side AI demand list +78h and goal list +88h",
+      "is": "per-player-slot achievement counter trees at +78h (head +7Ch) and +84h (head +88h)",
+      "evidence": "achievements.lua rows BU_DM, BO_CV, RUA_CU; destructor table docs/NATIVE_MISSION_SCORE_RECORD_R108.md"
+    },
+    {
+      "was": "asset scores from asset lists",
+      "is": "totals_1c8 mission/action/ship/plane/command/badge from the score maps and damage/kill trees",
+      "evidence": "00914390 head indices [7],[10],[0xd],[0x10],[0x13],[0x1c]"
+    },
+    {
+      "was": "message 15h receive side unknown",
+      "is": "0091C650 case 12h stores the sender's +1E0h",
+      "evidence": "0091C650 decompile, case 0x12"
+    }
+  ],
+  "installation": "scripts/datatables/achievements.lua 2024-07-13; scripts/global/commandhelpers.lua lines 6344-6421 and 10445 guarded by competitive multiplayer",
+  "ghidra": "read-only; disk-byte scans of 284h immediates, rel32 callers of 004B4750, 0090EDE0, 00914270, 0090C740, 009150A0; body sweeps for 78h..90h, 188h, 18Ch, 1C8h..1E4h",
+  "no_ghidra_function": [
+    {
+      "start": "0076D220",
+      "end": "0076D234",
+      "evidence": "MOV ECX,[ESP+4]; CALL 0091C650; MOV EAX,[00F8A2FC]; MOV byte [EAX+74h],0; RET 8, bounded by INT3 padding at 0076D21C and 0076D235; no rel32 or absolute reference to 0076D220 in any section"
+    }
+  ],
+  "names": [
+    "00911E80 BSP_MissionScoreRecord_EvaluateBadgeCounters",
+    "00912A60 BSP_MissionScoreRecord_EvaluateAchievementCounters",
+    "00914390 BSP_MissionScoreRecord_RecomputeCategoryTotals",
+    "00914270 BSP_AwardRegistry_GetScoreForName"
+  ],
+  "verdict": "not bound: score-keeping only",
+  "pairs": {}
+}
