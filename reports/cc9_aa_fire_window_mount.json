@@ -17,7 +17,8 @@
     "runs": "USN04 4700/4500 and USN02 9200/9000 at 0.05 s, BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1, same-tree fw_off / fw_on",
     "usn04": "deaths 31 -> 30, hit records 528 -> 520, AA shots (1+5) 1971 -> 2366, window refusals 1437 observed -> 3443 applied",
     "usn02": "identical (0 refusals), failed at 39.65 s both",
-    "predictions": "all held"
+    "e2": "USN04 9200/9000: deaths 35 -> 35 (16 Kates both), hit records 586 -> 594, refusals 1624 observed -> 4214 applied",
+    "predictions": "all held, E2 included"
   },
   "ghidra": "read-only; no renames, comments or saves"
 }

@@ -82,3 +82,22 @@ first.
 
 `kAaFireWindowBound` is ON. The USN04 reference moves from 31 to 30 deaths and from 528 to 520
 hit records. USN02 does not move.
+
+## 6. E2 (USN04 9200/9000): predictions written after the flip, before these runs
+
+The integrator asked for E2 after the flip was committed, so these predictions follow the 4500-frame
+result and precede only the two E2 runs, on the same `fw_off` and `fw_on` builds.
+
+* AA hit records change by -10 to +10%.
+* Kate deaths change by at most 2.
+* Total deaths are within 4 of OFF.
+* Window refusals applied are more than 2 times the OFF run's observed count.
+
+| E2 run | deaths (Kates / Vals) | hit records | total damage | window refusals |
+| --- | --- | --- | --- | --- |
+| OFF | 35 (16 / 16) | 586 | 7968.1 | 1624 observed |
+| ON | 35 (16 / 16) | 594 | 7845.7 | 4214 applied |
+
+All four held: hit records +1.4%, Kates unchanged, deaths unchanged, and 4214 is 2.6 times 1624.
+The E2 reference keeps 35 deaths, and its hit records move from 586 to 594.
+
