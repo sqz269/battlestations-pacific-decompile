@@ -344,6 +344,25 @@ constexpr bool kBlastElementEntriesBound = true;
 //    through GameGunneryHost::destroyed_hull_segments; the detach physics is
 //    the ship motion's. OFF: the part damage is counted only.
 constexpr bool kHullSegmentHealthBound = true;
+//  * kArtilleryRangingErrorBound: the unit pass's per-target engagement record
+//    (8Ch, 00864880 builds it, 00862CD0 updates it at step 6, 00864CA0 finds or
+//    builds it per assigned gun and 00862660 hands its offset to the gun's
+//    ArtilleryGunnerBot at bot+84h..+8Ch). The offset is a horizontal world
+//    vector of length +70h at bearing +6Ch. Its length starts at
+//    U(MinErrorMul, 1) * min(MaxErrorRadius, ErrorRangeMul * distance), shrinks
+//    after every update that followed a shot by ApproachMul (Min..Max over
+//    distance / artillery max range) plus DeviationMul * frac^2 * the target's
+//    miss of its extrapolated position, grows back at MaxErrorRadius * frac /
+//    ErrorDistIncFullTime per second once ErrorDistIncStartTime passes with no
+//    shot, and is capped by min(MaxErrorRadius, ErrorRangeMul * distance). The
+//    bearing turns by U(-AngleChange, AngleChange) per update. 006DF520 walks
+//    bot+90h toward bot+84h at 30 m/s per axis (0042AC60 at 006DF694..006DF6D2),
+//    adds it to the world aim point (006DF800..006DF81F), and zeroes it when the
+//    target is not a ship (006DF9A5..006DF9CD). Rows: robots.lua
+//    ArtillerySubDirectorBot (00E19994, stride 28h), by the owner's skill row.
+//    OFF: no ranging offset. Packet cc9_artillery_ranging_error,
+//    docs/ARTILLERY_RANGING_ERROR.md.
+constexpr bool kArtilleryRangingErrorBound = false;
 //  * kKillCreditDamageGateBound: 0077CE60 writes the attribution block (the
 //    +2C4h attacker the kill credit 0091BDA0 names) only for a live victim and
 //    only when the hit's damage, 00470510 for a hull segment or 00470740 when
@@ -646,6 +665,7 @@ struct GameGunneryHost::Impl {
         bullet_throw = 12,    // 00730557 / 00730575, the throw cone, key (gun, 0)
         torpedo_gyro = 13,    // 00900830 / 0090083E, the launch heading jitter, key (gun, 0|1)
         component_failure = 14, // 0093BF98, the failure roll, key (victim unit, 0)
+        ranging = 15,         // 00864880 / 00862CD0, key (owner unit, target unit)
     };
     unsigned long long next_projectile_serial{0};
     static bool rng_streams_enabled() {
@@ -693,6 +713,145 @@ struct GameGunneryHost::Impl {
         {1.0f, 0.5f, 1.0f, 1.0f},   // Elite
     };
     unsigned long long artillery_section_points{0};
+    // Packet cc9_artillery_ranging_error. robots.lua ArtillerySubDirectorBot by
+    // skill row 0 Stun .. 5 Elite, fields +28h StartTime, +2Ch FullTime, +0Ch
+    // MaxErrorRadius, +10h ErrorRangeMul, +14h MinErrorMul, +18h ApproachMulMin,
+    // +1Ch ApproachMulMax, +20h DeviationMul, +24h AngleChange (radians).
+    struct SubDirectorRow {
+        float start_time, full_time, max_error, range_mul, min_error_mul, approach_min,
+            approach_max, deviation_mul, angle_change;
+    };
+    static constexpr float kDeg = 0.0174532925199432957692f;
+    static constexpr SubDirectorRow kSubDirectorRows[6] = {
+        {5.0f, 30.0f, 750.0f, 0.50f, 0.75f, 0.75f, 0.75f, 10.0f, 20.0f * kDeg},   // Stun
+        {10.0f, 40.0f, 40.0f, 0.20f, 0.50f, 0.15f, 0.25f, 0.80f, 15.0f * kDeg},   // SPNormal
+        {60.0f, 120.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 10.0f * kDeg},        // SPVeteran
+        {20.0f, 90.0f, 25.0f, 0.10f, 0.15f, 0.15f, 0.20f, 0.75f, 10.0f * kDeg},   // MPNormal
+        {40.0f, 100.0f, 15.0f, 0.10f, 0.10f, 0.10f, 0.175f, 0.70f, 10.0f * kDeg}, // MPVeteran
+        {60.0f, 120.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 10.0f * kDeg},        // Elite
+    };
+    struct Engagement {
+        int level{1};                       // +14h, owner unit+390h
+        float t_update{0.0f};               // +80h
+        float t_shot{0.0f};                 // +84h
+        float error{0.0f};                  // +70h
+        float angle{0.0f};                  // +6Ch
+        float offset[3]{0.0f, 0.0f, 0.0f};  // +74h..+7Ch
+        bool shot{false};                   // +88h
+        float prev_pos[3]{};                // +50h..+58h, the target's translation
+        float prev_right[3]{};              // +20h.., its rotation rows
+        float prev_forward[3]{};
+        float predicted[3]{};               // +60h..+68h
+    };
+    std::map<std::pair<std::size_t, std::size_t>, Engagement> engagements;
+    std::map<std::size_t, std::array<float, 3>> ranging_target_by_gun;   // bot+84h
+    std::map<std::size_t, std::array<float, 3>> ranging_step_by_gun;     // bot+90h
+    std::map<std::size_t, bool> ranging_ship_aim_by_gun;
+    unsigned long long ranging_records_built{0};
+    unsigned long long ranging_updates{0};
+    unsigned long long ranging_shot_updates{0};
+    unsigned long long ranging_growth_updates{0};
+    unsigned long long ranging_records_dropped{0};
+    double ranging_error_sum{0.0};          // over ship-target aim steps
+    unsigned long long ranging_error_samples{0};
+    int ranging_level(std::size_t owner) {
+        int level = units.skill_level(owner);
+        if (level < 0 || level > 5) level = 1;   // the host's default, SPNormal
+        return level;
+    }
+    // 00864880, the record's construction.
+    Engagement& engagement_00864880(std::size_t owner, std::size_t target) {
+        Engagement& e = engagements[{owner, target}];
+        e.level = ranging_level(owner);
+        const SubDirectorRow& row = kSubDirectorRows[e.level];
+        e.t_update = clock_seconds;
+        e.t_shot = clock_seconds;
+        float ro[3], uo[3], fo[3], po[3], rt[3], ut[3], ft[3], pt[3];
+        unit_pose(owner, ro, uo, fo, po);
+        unit_pose(target, rt, ut, ft, pt);
+        const float d[3] = {pt[0] - po[0], pt[1] - po[1], pt[2] - po[2]};
+        const float dist = length3(d);
+        const float err0 = std::min(row.max_error, row.range_mul * dist);
+        e.error = draw(Draw::ranging, owner, target, err0 * row.min_error_mul, err0);
+        e.angle = draw(Draw::ranging, owner, target, 0.0f, 6.28318548202514648438f); // 00CE3D9C
+        set_ranging_offset(e);
+        for (int k = 0; k < 3; ++k) {
+            e.prev_pos[k] = pt[k];
+            e.prev_right[k] = rt[k];
+            e.prev_forward[k] = ft[k];
+            e.predicted[k] = pt[k];
+        }
+        e.predicted[1] = 0.0f;   // +64h = 0 at the end of 00864880
+        ++ranging_records_built;
+        done("Gunnery::engagement_record_00864880", 0x00864880u);
+        return e;
+    }
+    // BSP_Vector3f_RotateAboutAxis of (0, 0, +70h) about the up axis by +6Ch.
+    static void set_ranging_offset(Engagement& e) {
+        e.offset[0] = std::sin(e.angle) * e.error;
+        e.offset[1] = 0.0f;
+        e.offset[2] = std::cos(e.angle) * e.error;
+    }
+    // 00862CD0 on one record.
+    void engagement_update_00862cd0(std::size_t owner, std::size_t target, Engagement& e) {
+        ++ranging_updates;
+        e.level = ranging_level(owner);
+        const SubDirectorRow& row = kSubDirectorRows[e.level];
+        const float now = clock_seconds;
+        float ro[3], uo[3], fo[3], po[3], rt[3], ut[3], ft[3], pt[3];
+        unit_pose(owner, ro, uo, fo, po);
+        unit_pose(target, rt, ut, ft, pt);
+        const float d[3] = {pt[0] - po[0], pt[1] - po[1], pt[2] - po[2]};
+        const float dist = length3(d);
+        const float max_range = unit_state[owner].artillery_max_range;
+        float frac = max_range > 0.0f ? dist / max_range : 0.0f;
+        frac = frac < 0.0f ? 0.0f : (frac > 1.0f ? 1.0f : frac);
+        bool changed = true;
+        if (!e.shot) {
+            if (now - e.t_shot <= row.start_time) {
+                changed = false;   // 00862D8A: straight to the aim point refresh
+            } else {
+                e.error = row.max_error * frac * ((now - e.t_update) / row.full_time) + e.error;
+                ++ranging_growth_updates;
+            }
+        } else {
+            e.t_shot = now;
+            const float approach = (row.approach_max - row.approach_min) * frac + row.approach_min;
+            const float dev_mul = frac * frac * row.deviation_mul;
+            const float miss[3] = {e.predicted[0] - pt[0], e.predicted[1] - pt[1],
+                e.predicted[2] - pt[2]};
+            e.shot = false;
+            e.error = e.error * approach + length3(miss) * dev_mul;
+            ++ranging_shot_updates;
+        }
+        if (changed) {
+            const float cap = std::min(row.max_error, row.range_mul * dist);
+            if (e.error > cap) e.error = cap;
+            e.angle += draw(Draw::ranging, owner, target, -0.0f - row.angle_change,
+                row.angle_change);
+            e.angle = std::remainder(e.angle, 6.28318548202514648438f);   // AddWrappedAngle
+            set_ranging_offset(e);
+        }
+        // 00862FA9..: the target's motion since the last update, carried from the
+        // old frame into the new one, extrapolates its next position (+60h).
+        const float move[3] = {pt[0] - e.prev_pos[0], 0.0f, pt[2] - e.prev_pos[2]};
+        const float prev_up[3] = {e.prev_right[1] * e.prev_forward[2] - e.prev_right[2] * e.prev_forward[1],
+            e.prev_right[2] * e.prev_forward[0] - e.prev_right[0] * e.prev_forward[2],
+            e.prev_right[0] * e.prev_forward[1] - e.prev_right[1] * e.prev_forward[0]};
+        const float local[3] = {move[0] * e.prev_right[0] + move[1] * e.prev_right[1] + move[2] * e.prev_right[2],
+            move[0] * prev_up[0] + move[1] * prev_up[1] + move[2] * prev_up[2],
+            move[0] * e.prev_forward[0] + move[1] * e.prev_forward[1] + move[2] * e.prev_forward[2]};
+        const float local_flat[3] = {local[0], 0.0f, local[2]};
+        for (int k = 0; k < 3; ++k) {
+            e.predicted[k] = pt[k] + rt[k] * local_flat[0] + ut[k] * local_flat[1]
+                + ft[k] * local_flat[2];
+            e.prev_pos[k] = pt[k];
+            e.prev_right[k] = rt[k];
+            e.prev_forward[k] = ft[k];
+        }
+        e.t_update = now;
+        done("Gunnery::update_target_records_00862cd0", 0x00862cd0u);
+    }
     void artillery_aim_point(std::size_t gun_index, std::size_t target, float dt,
                              float out[3], std::size_t owner = static_cast<std::size_t>(-1)) {
         ArtilleryAimPoint& st = artillery_aim_by_gun[gun_index];
@@ -750,6 +909,25 @@ struct GameGunneryHost::Impl {
         unit_pose(target, r, u, f, o);
         for (int i = 0; i < 3; ++i) {
             out[i] = o[i] + r[i] * st.body[0] + u[i] * st.body[1] + f[i] * st.body[2];
+        }
+        if constexpr (kArtilleryRangingErrorBound) {
+            // 006DF66A..006DF6D2: bot+90h steps toward bot+84h by dt * 30 per
+            // axis (0042AC60), then 006DF800..006DF81F adds it to the point.
+            std::array<float, 3>& step = ranging_step_by_gun[gun_index];
+            if (!ranging_ship_aim_by_gun[gun_index]) step = {0.0f, 0.0f, 0.0f};
+            ranging_ship_aim_by_gun[gun_index] = true;
+            const auto found = ranging_target_by_gun.find(gun_index);
+            const std::array<float, 3> goal = found != ranging_target_by_gun.end()
+                ? found->second : std::array<float, 3>{0.0f, 0.0f, 0.0f};
+            const float max_step = dt * 30.0f;   // 00CE7630
+            for (int i = 0; i < 3; ++i) {
+                const float gap = goal[i] - step[i];
+                if (max_step > std::fabs(gap)) step[i] = goal[i];
+                else step[i] += gap > 0.0f ? max_step : -max_step;
+                out[i] += step[i];
+            }
+            ranging_error_sum += std::sqrt(step[0] * step[0] + step[2] * step[2]);
+            ++ranging_error_samples;
         }
     }
     // 0072C6A0's slots, and 00729BC0's dispatch on the projectile kind of the
@@ -2830,10 +3008,25 @@ public:
     }
 
     void update_target_records_00862cd0() override {
-        // The this+B0h per-target engagement list. 00862CD0 and 00864880 are
-        // contract: unread (docs/UNIT_GUNNERY_PASS.md section 10), so the list
-        // is not built and nothing reads one back.
-        owner_.record("Gunnery::update_target_records_00862cd0", 0x00862cd0u);
+        // Step 6, 00865078..0086513C: every record of this unit's +B0h list; one
+        // whose target (+1Ch) or owner (+18h) has been released is deleted,
+        // the rest go through 00862CD0.
+        if constexpr (!kArtilleryRangingErrorBound) {
+            owner_.record("Gunnery::update_target_records_00862cd0", 0x00862cd0u);
+            return;
+        }
+        auto it = owner_.engagements.lower_bound({unit_, 0});
+        while (it != owner_.engagements.end() && it->first.first == unit_) {
+            const std::size_t target = it->first.second;
+            if (target >= owner_.unit_state.size() || owner_.unit_state[target].dead
+                || owner_.unit_state[unit_].dead) {
+                it = owner_.engagements.erase(it);
+                ++owner_.ranging_records_dropped;
+                continue;
+            }
+            owner_.engagement_update_00862cd0(unit_, target, it->second);
+            ++it;
+        }
     }
 
     bool category_record_present(int category) override {
@@ -3361,8 +3554,23 @@ public:
         }
         owner_.done("Gunnery::set_bot_fire_target_00727f10", 0x00727f10u);
     }
-    void add_gun_to_target_record_00864ca0(void*, void*) override {
-        owner_.record("Gunnery::add_gun_to_target_record_00864ca0", 0x00864ca0u);
+    void add_gun_to_target_record_00864ca0(void* target, void* gun) override {
+        if constexpr (!kArtilleryRangingErrorBound) {
+            owner_.record("Gunnery::add_gun_to_target_record_00864ca0", 0x00864ca0u);
+            return;
+        }
+        const std::size_t other = unit_of(target);
+        const std::size_t slot = reinterpret_cast<std::size_t>(gun) - 1;
+        if (other >= owner_.unit_state.size() || slot >= owner_.guns.size()) return;
+        // 00863B10 finds it, 00864880 + 00864160 build and insert it on a miss.
+        auto found = owner_.engagements.find({unit_, other});
+        GameGunneryHost::Impl::Engagement& e = found != owner_.engagements.end()
+            ? found->second : owner_.engagement_00864880(unit_, other);
+        // 00862660: the offset into the gun's ArtilleryGunnerBot (gun+398h,
+        // +84h..+8Ch), and the "fired since" flag from gun+474h.
+        owner_.ranging_target_by_gun[slot] = {e.offset[0], e.offset[1], e.offset[2]};
+        if (!e.shot && e.t_shot < owner_.guns[slot].last_fire_seconds) e.shot = true;
+        owner_.done("Gunnery::add_gun_to_target_record_00864ca0", 0x00864ca0u);
     }
     void clear_bot_fire_target_00728000(void* gun) override {
         const std::size_t slot = reinterpret_cast<std::size_t>(gun) - 1;
@@ -4088,6 +4296,8 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 && units.unit_is_kind_of(target, bsp::kUnitGunneryKindShipBase)) {
                 artillery_aim_point(g, target, dt, theirs, owner_unit);
             } else {
+                // 006DF9A5..006DF9CD: no ship target zeroes bot+90h.
+                if (kArtilleryRangingErrorBound) ranging_ship_aim_by_gun[g] = false;
                 unit_aim_point(target, theirs);
             }
             float velocity[3];
@@ -4534,6 +4744,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
             if (st.shot_range_min < 0.0f || r < st.shot_range_min) st.shot_range_min = r;
         }
         ++gun.shots;
+        gun.last_fire_seconds = clock_seconds;   // gun+474h
         ++state.row.shots;
         ++summary.shots;
         if (torpedo_gun) ++summary.torpedo_gun_shots;
@@ -7290,6 +7501,14 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery artillery aim points drawn=%llu bound=%d "
             "(006DF520 step 4 / 00816650, packet cc9_surface_gunnery_reference)",
             host.artillery_aim_points, kArtilleryAimPointBound ? 1 : 0);
+    host.log.notef("summary mission gunnery ranging bound=%d records_built=%llu updates=%llu "
+        "shot_updates=%llu growth_updates=%llu dropped=%llu mean_offset=%.1f m over %llu aim steps "
+        "(00864880, 00862CD0, 00862660, 006DF520 bot+90h)",
+        kArtilleryRangingErrorBound ? 1 : 0, host.ranging_records_built, host.ranging_updates,
+        host.ranging_shot_updates, host.ranging_growth_updates, host.ranging_records_dropped,
+        host.ranging_error_samples != 0 ? host.ranging_error_sum
+            / static_cast<double>(host.ranging_error_samples) : 0.0,
+        host.ranging_error_samples);
         host.log.notef("summary mission gunnery kill credit zero-damage hits not attributed=%llu bound=%d "
             "(0077CEB7, packet cc9_kill_credit)", host.summary_zero_damage_attributions_skipped,
             kKillCreditDamageGateBound ? 1 : 0);
