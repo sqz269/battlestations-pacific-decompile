@@ -1,0 +1,62 @@
+{
+  "packet": "cc10_canonical_cache_zero_integration",
+  "worker_commit": "5f050fe2556179cab7150599556fc01e6323ff27",
+  "integration": "20ce3dd53dd08fadbc01dc30f35ac9b199bcce8d",
+  "worker_report": "reports/native_canonical_cache_zero_release_cc10.json",
+  "primary_verification": {
+    "checkpoint_inputs_verified": {
+      "attempt01/prebuild": 45,
+      "attempt01/precompile": 53,
+      "attempt02/precompile": 53,
+      "attempt02/prerun": 56
+    },
+    "unchanged_source_API_pins_equal_primary": 18,
+    "exact_library_members_verified": 8,
+    "COFF_public_functions_verified": 4,
+    "linked_public_functions_verified": 3,
+    "current_IAT_call_before_zero_branch_and_genuine_helper_target": true,
+    "raw_entry_equal_original_IAT_cell_transformation": true,
+    "native_ranges_verified": 6,
+    "runtime_pid": 84596,
+    "runtime_exit": 0,
+    "process_closed": true,
+    "raw_tool_exit_receipt_verified": true,
+    "review": [
+      "Complete six-production-file diff and finalfixture reviewed",
+      "One current volatile IAT read/call; nonzero skips all canonical lookup; zero helper never decrements or retains",
+      "One source normal case: two genuine34h allocations,2to1emptyregistry then sameatomic bindings and both1to0genuine terminals/exactunbind",
+      "Shared helper preserves old release path; raw naked entry unchanged; shutdown current profile/target checks and fresh iteration schedule preserved"
+    ],
+    "limits": [
+      "Full cache entry/drain/pump and PacketB are unexecuted",
+      "No copied-native ABI/FH3/source0/startup/gameplay proof"
+    ],
+    "worker_commit": "5f050fe2556179cab7150599556fc01e6323ff27",
+    "archive_sha256": "df533d75009f4da819b72fe55696924514692dbc4d3f7c302de2d32c4d1e60c6",
+    "indexed_archive_rows_verified": 273,
+    "archive_members": 274,
+    "failed_attempt_archives_preserved": 4
+  },
+  "validation": {
+    "primary_strict_win32_ctests": 3,
+    "worker_strict_win32_ctests": 3,
+    "new_native_bytes": 0,
+    "new_report_call_rows": 0,
+    "runtime_source_fixture_runs": 1,
+    "runtime_exit": 0,
+    "context_size_change": "NativeParticleClockShutdownContext Win32 size20 to24; all prior fields preserved; rebuilt callers required",
+    "copied_native_executed": false,
+    "full_cache_drain_executed": false,
+    "game_validated": false
+  },
+  "limits": [
+    "Full cache entry/drain/pump and PacketB are unexecuted",
+    "No copied-native ABI/FH3/source0/startup/gameplay proof"
+  ],
+  "archive": {
+    "path": "local/cc10-platform-evidence/canonical-cache-zero-release.zip",
+    "sha256": "ef87b6db2d076b96aa19eab50c59ab98bc182ddb644474f625ef7f6fa518fcea",
+    "files": 5,
+    "valid": true
+  }
+}
