@@ -144,5 +144,29 @@ deaths, 17 failures):
 
 ### Results
 
-Pending.
+Builds `f9_off` and `f9_on` from the same tree; window line and module directory checked. ON
+reproduces the 2026-09-26 b reference death table line for line.
+
+| run | deaths | hit records (hull / part) | fires / floods | flood / fire damage, repaired | failures | segments destroyed | total damage | end |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| OFF | 19 | 520 (264 / 325) | 0 / 0 | 0 / 0, 0 | 0 | 18 | 77438.2 | failed at 64.40 s (Exeter 60.55 s) |
+| ON | 20 | 487 (247 / 233) | 22 / 247 | 13740 / 3650, 5545 | 17 | 11 | 53671.0 | failed at 39.65 s (Exeter 35.95 s) |
+
+1. **Partly held.** Floods, fires, part-hull passes and failures are 0 OFF, but 18 segments
+   are destroyed. R11b (a blast's fizika entries, `docs/BLAST_ELEMENT_PARTS.md`) reaches
+   `0092D1F0` without the hull pass, and I had missed that path.
+2. **Held:** deaths are 19 OFF against 20 ON.
+3. **Held:** hit records are 520 OFF against 487 ON, 7%.
+4. **Did not hold.** The failure moves by 24.75 s. In both runs the same torpedo burst (bullet
+   67, 6076.5 taken) leaves Exeter at 13.5 of 6500. ON, that hit's own flood finishes it:
+   `damage control death Exeter t=35.95 water_total=16`. OFF, Exeter floats at 13.5 until the
+   next hit at 60.55 s. So the failure time depends on the flood tick, not only on torpedo
+   damage.
+5. **Held:** the pair cannot reproduce the 2026-09-26 step. Fire and flooding account for one
+   death and a 33-record fall on today's tree, not the 769 -> 358 fall of that step. That drop
+   in hit records belongs to the other landings of the `fad22c424..c304c9096` window (the
+   dogfight-engaged merges and the cc10 lineage), and stays unpaired.
+
+Total damage is higher OFF (77438 against 53671) because the fight lasts longer: the failure
+comes 24.75 s later and more ships stay afloat to shoot and be shot.
 
