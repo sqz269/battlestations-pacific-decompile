@@ -1,0 +1,52 @@
+{
+  "packet": "cc10_stock_5030_guards_integration",
+  "integration": "8c0ff3ff148b17fedd0bc0ecd61b4369e5581b1d",
+  "worker_report": "reports/native_stock_xlive_5030_guards_cc10.json",
+  "primary_verification": {
+    "result": "PASS",
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\local\\output\\cc10_stock_5030_first_message_readiness\\readiness_evidence.zip",
+      "sha256": "7b9242c1dee88b397853460dc83bd45c31dfa15d83a0775fe711bd6fc8c4cace",
+      "rows": 57,
+      "members": 58
+    },
+    "stock_sha256": "79da26ab6b2dc25936c3354087de0ba41da1a8b62924972e9100c29b95d34385",
+    "ordinal": 5030,
+    "entry_RVA": "0xb4e6c",
+    "body_bytes": 822,
+    "body_instructions": 200,
+    "all_instruction_CFG_reachability": true,
+    "exact_import_calls": 8,
+    "distinct_imports": 6,
+    "writer_windows": 6,
+    "guard_before_MSG_read": true,
+    "new_runtime_runs": 0,
+    "limits": "Disk code/static CFG only, not actual execution or loaded IAT/state identity. Disk zero is not live zero; guard is not SDK-initialized proof. No natural returned-MSG/window procedure/payload lifetime or live stability is admitted.",
+    "worker_commit": "bf661e1ce9cc7d40e893c5459bc88b2dc02a4176",
+    "publication_archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-reader-queries\\local\\output\\cc10_stock_5030_guards_publication\\publication_evidence.zip",
+      "sha256": "92efda9d1b55c6c2d69d1c989c4d4ac4b77b950c244d7ddaf47cfc07265d4a9a",
+      "rows": 14,
+      "members": 15
+    },
+    "committed_blobs": 2,
+    "publication_code_changes": false,
+    "publication_builds": 0,
+    "GetKeyState_IAT_capture_RVA": "0xb5143",
+    "GetKeyState_calls_use_captured_EBX": true
+  },
+  "validation": {
+    "primary_CTests": 0,
+    "build_required": false,
+    "new_runtime_runs": 0,
+    "new_BSP_native_bytes": 0,
+    "game_validated": false
+  },
+  "limits": "Disk code/static CFG only, not actual execution or loaded IAT/state identity. Disk zero is not live zero; guard is not SDK-initialized proof. No natural returned-MSG/window procedure/payload lifetime or live stability is admitted.",
+  "archive": {
+    "path": "local/cc10-platform-evidence/stock-5030-guards.zip",
+    "sha256": "e10932512b91f1900eebd3949668a4ac1db16b844e835f48f28f71ca589b24fc",
+    "files": 9,
+    "valid": true
+  }
+}
