@@ -1,0 +1,29 @@
+{
+  "packet": "cc9_recon_aggregates",
+  "doc": "docs/RECON_TEAM_LISTS.md",
+  "answer": "008073C0's grouping is bound: 00805490 folds every detected (level >= 1) member of classes 10h, 13h, 12h, 11h, 16h, 15h, 17h into its squadron's class-18h record (level = max of members), enemy and neutral before their triple walks, own after triple 0's copy with the groups appended at its end; unfolded groups retire each pass. 00805680 (convoys) folds nothing in this host. kReconAggregatesBound is ON.",
+  "steps": [
+    {"address": "00807591", "native": "00805490", "function": "008073c0", "rule": "enemy class 10h into B[18h] (B = slot+4C0h)"},
+    {"address": "008075eb", "native": "00805490", "function": "008073c0", "rule": "enemy class 17h, the seventh call"},
+    {"address": "008075f3", "native": "008069a0", "function": "008073c0", "rule": "the squadrons' own detection level (record)"},
+    {"address": "00807608", "native": "00805680", "function": "008073c0", "rule": "convoys: 19h into 1Ah (no membership in this host)"},
+    {"address": "00807610", "native": "00806a60", "function": "008073c0", "rule": "the convoys' stored level (record)"}
+  ],
+  "evidence_sites": {
+    "008054d7": "member level +0Ch must be > 0",
+    "00805631..0080564a": "group level = max(group, member)",
+    "00807581..008075eb": "member lists +580h, +5A4h, +598h, +58Ch, +5C8h, +5BCh, +5D4h = classes 10h, 13h, 12h, 11h, 16h, 15h, 17h"
+  },
+  "substitutions": [
+    "no land-vehicle convoy membership in the host; 00805680 folds nothing",
+    "008069A0 / 00806A60 are records",
+    "group records are rebuilt each pass rather than carried (equivalent after 00805430's retire)"
+  ],
+  "hud_entry": "GameGunneryHost::recon_triple_units now returns squadron units: own (0) ends with the side's squadrons, enemy (1) carries identified enemy squadrons at their 18h place, unknown (3) the blip squadrons; 004C3CB0 (cc9-hud) decides how a class-18h entry draws",
+  "pair": {
+    "runs": "USN04 4700/4500 and USN02 9200/9000 at 0.05 s, BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1, same-tree ra_off / ra_on",
+    "usn04": "recon triples mean own 55.7 -> 69.5, enemy 26.8 -> 32.5, unknown 0.9 -> 1.1; 1468 group records, all plane-base in the units host, admitted by the sweep (admit_plane +44058) with every gunnery row and the death table identical",
+    "usn02": "identical (no squadrons, no convoy members)"
+  },
+  "ghidra": "read-only; no renames, comments or saves"
+}

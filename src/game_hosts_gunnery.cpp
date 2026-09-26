@@ -390,7 +390,7 @@ constexpr bool kTorpedoSpreadBound = true;
 //    no land-vehicle convoy membership exists in this host, so 00805680 folds
 //    nothing (labelled). OFF: no group records. Packet cc9_recon_aggregates,
 //    docs/RECON_TEAM_LISTS.md.
-constexpr bool kReconAggregatesBound = false;
+constexpr bool kReconAggregatesBound = true;
 //  * kKillCreditDamageGateBound: 0077CE60 writes the attribution block (the
 //    +2C4h attacker the kill credit 0091BDA0 names) only for a live victim and
 //    only when the hit's damage, 00470510 for a hull segment or 00470740 when

@@ -176,4 +176,35 @@ Same-tree pairs, `BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`, switch OFF again
 
 ### Results
 
-Pending.
+Builds `ra_off` / `ra_on`, one tree, only the switch differs. Window line and module directory
+checked, logs deleted first. The member-class order was checked in the listing at
+`00807581..008075EB`: the pushed lists `B+580h`, `+5A4h`, `+598h`, `+58Ch`, `+5C8h`, `+5BCh` and
+`+5D4h` are classes `10h`, `13h`, `12h`, `11h`, `16h`, `15h` and `17h` into `B+5E0h` (`18h`), with
+`B = slot+4C0h`.
+
+| run | recon triples mean own / enemy / unknown | group records (own / enemy identified / unknown) | members folded | group units plane-base | contacts considered / admit_plane / dead | deaths / hit records / damage |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 OFF | 55.7 / 26.8 / 0.9 | 0 | 0 | 0 | 242267 / 150793 / 1511 | 30 / 520 / 6971.7 |
+| USN04 ON | 69.5 / 32.5 / 1.1 | 1468 (1028 / 424 / 16) | 4190 | 1468 | 292396 / 194851 / 7582 | 30 / 520 / 6971.7 |
+| USN02 OFF / ON | 21.5 / 15.9 / 3.1 both | 0 / 0 | 0 | 0 | identical | 20 / 487 / 53671.0 both, failed at 39.65 s |
+
+1. **Partly held.**
+   * Mean own rose by 13.8, above the predicted 3 to 8. USN04 carries more own squadrons than I
+     counted.
+   * Mean enemy rose by 5.7 and unknown by 0.2, both inside their bands.
+   * Neutral stays 0.
+2. **Held:** USN02 is identical on every line. It creates no squadron and has no convoy members.
+3. **Did not hold for the kind check (a finding); held for the rows.**
+   * Every squadron unit is plane-base in the units host (`kind_plane=1468`), so the sweep admits
+     the enemy groups: `admit_plane` rises by 44058 and `dead` by 6071.
+   * `00863990` scores 15806 more candidates, and `00729BC0` evaluates 1556 more bot slots.
+   * No assignment changes. Shots (4324), hits, damage, every `gunrow` line and the full death
+     table are identical, because no squadron wins a gun over its own planes.
+   * Whether the image's sweep admits a class-18h record is not settled here. If the HUD's or a
+     later packet's squadron class gets a different IsKindOf answer, these rows can move.
+4. **Held for the native table.** The only rows that differ are the three new ones and
+   `PlatformLoopCallbacks::pretranslate` (8 against 19 on USN04, 20 against 19 on USN02). That is
+   the Windows message pump, which varies from run to run.
+
+**Decision: ON.** `kReconAggregatesBound` is on. USN04 and USN02 references do not move; USN04's
+recon triples mean own / enemy / unknown become 69.5 / 32.5 / 1.1.
