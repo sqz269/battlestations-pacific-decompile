@@ -1,0 +1,665 @@
+{
+  "packet": "cc10_clock_header_pointer_access",
+  "baseline": "d3abd087546eb77bd721511147bcf8fe8011c99c",
+  "status": "nine_canonical_header_pointer_reads_typed_volatile_strict_win32_three_ctests_complete_coff_order_verified_no_new_runtime",
+  "production_files": [
+    "src/native_particle_record_resize.cpp",
+    "src/native_particle_clock_shutdown.cpp",
+    "src/native_sampler_cache_operation.cpp"
+  ],
+  "typed_access": {
+    "type": "const volatile NativeResourceRecordVectorStorage data_00 member",
+    "required_live_header": true,
+    "actual_complete_owner_offset": 8,
+    "actual_secondary_cache_offset": 4,
+    "header_member_offset": 0,
+    "corrected_reads": 9,
+    "resize_reads": 3,
+    "shutdown_reads": 4,
+    "cache_reads": 2,
+    "no_construct_snapshot_default_cache_or_ownership_credit": true,
+    "scalar_profile_record_string_accesses_unchanged": true,
+    "stale_header_data_capacity_policy_unchanged": true,
+    "incoming_arbitrary_native_bytes_not_adopted": true
+  },
+  "native_accesses": [
+    {
+      "address": "004dc455",
+      "route": "growth current header data"
+    },
+    {
+      "address": "004dc4ba",
+      "route": "shrink current count then header data"
+    },
+    {
+      "address": "004dda53",
+      "route": "current count then data before sink/profile/slot/release"
+    },
+    {
+      "address": "004dda6e",
+      "route": "fresh postrelease count then data before destroy/decrement"
+    },
+    {
+      "address": "004ddaaa",
+      "route": "returning resize0 then current vector data before free"
+    },
+    {
+      "address": "004de2d4",
+      "route": "guard disarm/second resize0 then current data before free"
+    },
+    {
+      "address": "00b1a56f",
+      "route": "count B1A56C then data first scan"
+    },
+    {
+      "address": "00b1a6de",
+      "route": "count B1A6DB then data second scan"
+    },
+    {
+      "route": "existing source resize catch",
+      "native_original_private_EH_boundary": "existing CY recovery C669C1/state0 ret-only401130",
+      "source_order": "retained-name cleanup; fresh typed data; captured-index uint32 wrap; volatile placement store/read; rethrow",
+      "no_new_private_FH3_or_SEH_proof": true
+    }
+  ],
+  "original_abis": {
+    "resize": "ECX live actual0Ch header; stack requested signed count; RET4",
+    "release_all": "ECX actual secondary complete+4; RET",
+    "array_destroy": "ECX live actual0Ch header; RET",
+    "secondary_destroy": "ECX actual secondary complete+4; RET",
+    "cache": "ECX actual secondary cache; stack name/options/retain-new-byte/load-missing-byte; EAX resource result; RET10h; existing resolve scratch obligations remain"
+  },
+  "source_abis_unchanged": true,
+  "new_native_functions_or_bytes": 0,
+  "native_ranges": [
+    {
+      "address": "004dc410",
+      "size": 204,
+      "identity": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/native/004dc410_resize.bin",
+        "size": 204,
+        "sha256": "92fe6a11dfd0a9384aac242baf0cc794edd44777f5ebb0994fe9203421b0682d"
+      },
+      "live_equals_exact_disk": true
+    },
+    {
+      "address": "004dda40",
+      "size": 84,
+      "identity": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/native/004dda40_release_all.bin",
+        "size": 84,
+        "sha256": "6a968969ae7b08b6a38a49c8e4cf5e232866381e31408b5d5028830696d1e5f1"
+      },
+      "live_equals_exact_disk": true
+    },
+    {
+      "address": "004ddaa0",
+      "size": 23,
+      "identity": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/native/004ddaa0_array_destroy.bin",
+        "size": 23,
+        "sha256": "4f051e0d2d7e6bc49c9416594b2d6d3e19d652e517204ea5d7a40a0d3e1d657f"
+      },
+      "live_equals_exact_disk": true
+    },
+    {
+      "address": "004de290",
+      "size": 95,
+      "identity": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/native/004de290_secondary_destroy.bin",
+        "size": 95,
+        "sha256": "8bf7b0c241edb4b0336c26465cb29ae74067453c5b865df3d566a9357210be56"
+      },
+      "live_equals_exact_disk": true
+    },
+    {
+      "address": "00b1a4f0",
+      "size": 1338,
+      "identity": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/native/00b1a4f0_cache.bin",
+        "size": 1338,
+        "sha256": "002cdaf6ca625b6e3b138575622dc3dc6feb22a468c021f33814f1815a669f62"
+      },
+      "live_equals_exact_disk": true
+    }
+  ],
+  "native_range_bytes": 1744,
+  "verified_read_only_queries": [
+    {
+      "command": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "count"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/native/verified_count.txt",
+        "size": 48,
+        "sha256": "63d6898b1a95682fed821ede231b093983ced0dad27690ab2031a3b6fe2e91a9"
+      }
+    },
+    {
+      "command": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "proto",
+        "004dc410",
+        "004dda40",
+        "004ddaa0",
+        "004de290",
+        "00b1a4f0",
+        "--brief"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/native/prototypes.txt",
+        "size": 677,
+        "sha256": "93f28db519dec1f606ce7c7a88b59bde73510f783a170e4237088bfa021a9d2a"
+      }
+    },
+    {
+      "command": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "004dc410",
+        "--length",
+        "204"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/native/resize_0000.txt",
+        "size": 972,
+        "sha256": "105ccc7328beabd4d72f7edd72123b8a958e5154afb75e4e3b8c8475acd7c6a0"
+      }
+    },
+    {
+      "command": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "004dda40",
+        "--length",
+        "84"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/native/release_all_0000.txt",
+        "size": 408,
+        "sha256": "6cb2f8e589422822fdd5c80cfe9df0f8b7a32ec9f0edf7ffa0506454e9d8d435"
+      }
+    },
+    {
+      "command": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "004ddaa0",
+        "--length",
+        "23"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/native/array_destroy_0000.txt",
+        "size": 116,
+        "sha256": "c0f9db87f42fa57f7724a4edaf970ed26381ecce3171e2ab4e9ff45f1f97c3c7"
+      }
+    },
+    {
+      "command": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "004de290",
+        "--length",
+        "95"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/native/secondary_destroy_0000.txt",
+        "size": 452,
+        "sha256": "f9ecb96ed754995c60e05c0dd63a5134e4dfb75482e96592f4758573e00e46f5"
+      }
+    },
+    {
+      "command": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00b1a4f0",
+        "--length",
+        "240"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/native/cache_0000.txt",
+        "size": 1140,
+        "sha256": "54ec0a306b0a85092f36d333b65d5d8b96b57345a78c4140471c2eb90f74099b"
+      }
+    },
+    {
+      "command": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00b1a5e0",
+        "--length",
+        "240"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/native/cache_00f0.txt",
+        "size": 1140,
+        "sha256": "c176d5186be8bac9796541a7b1679636dcfe700bb20d95658632c8678e5d4b7c"
+      }
+    },
+    {
+      "command": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00b1a6d0",
+        "--length",
+        "240"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/native/cache_01e0.txt",
+        "size": 1140,
+        "sha256": "05aa042bf94446a1cb8affe2c7ff9dd81170c6b02ffe465474666a8a16065f4b"
+      }
+    },
+    {
+      "command": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00b1a7c0",
+        "--length",
+        "240"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/native/cache_02d0.txt",
+        "size": 1140,
+        "sha256": "777083f6379c258ba1643a14d4f970245a91ea9c9c8f77cde6dc1db7e60e1e80"
+      }
+    },
+    {
+      "command": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00b1a8b0",
+        "--length",
+        "240"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/native/cache_03c0.txt",
+        "size": 1140,
+        "sha256": "476c6b9e9d8ff324544f15e227bb5bbd05f176ae0ac2883c212aa8c379333b4e"
+      }
+    },
+    {
+      "command": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "bytes",
+        "00b1a9a0",
+        "--length",
+        "138"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/native/cache_04b0.txt",
+        "size": 660,
+        "sha256": "7aa62944fabf30cf45c7b4c5e67322634e3f78366932bf886c883e5e0d76d18a"
+      }
+    },
+    {
+      "command": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "disasm",
+        "004dc410",
+        "--start",
+        "0",
+        "--lines",
+        "77"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/native/resize_listing.txt",
+        "size": 2136,
+        "sha256": "87e341ab63afbe22abd93c7aa487466b2bceba926878b1a0449f89c253ec1ce0"
+      }
+    },
+    {
+      "command": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "disasm",
+        "004dda40",
+        "--start",
+        "0",
+        "--lines",
+        "42"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/native/release_all_listing.txt",
+        "size": 927,
+        "sha256": "904d588350e7cac81cc2411bd14ce4186aa19a9984b7e064f4af03e6078a5ec1"
+      }
+    },
+    {
+      "command": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "disasm",
+        "004ddaa0",
+        "--start",
+        "0",
+        "--lines",
+        "16"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/native/array_destroy_listing.txt",
+        "size": 229,
+        "sha256": "848881820506cd23c9c8e71f65da67e5057197b34109145f7f7ff7472bc61a6d"
+      }
+    },
+    {
+      "command": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "disasm",
+        "004de290",
+        "--start",
+        "0",
+        "--lines",
+        "37"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/native/secondary_destroy_listing.txt",
+        "size": 729,
+        "sha256": "e654975b28b5d56bcefb28110c7b6cf85a32ff12a05586ebc0f4768eb48b835b"
+      }
+    },
+    {
+      "command": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "disasm",
+        "00b1a4f0",
+        "--start",
+        "35",
+        "--lines",
+        "16"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/native/cache_first_listing.txt",
+        "size": 556,
+        "sha256": "f1845159cc04a890c5b3b8f1346b753a2b5e1db28ed09db12017111b434c9e11"
+      }
+    },
+    {
+      "command": [
+        "python",
+        "tools/bsp.py",
+        "ghidra",
+        "disasm",
+        "00b1a4f0",
+        "--start",
+        "161",
+        "--lines",
+        "12"
+      ],
+      "exit": 0,
+      "output": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/native/cache_second_listing.txt",
+        "size": 386,
+        "sha256": "15a04bc02022b7fa6ccf0115cf78c815f5fd5cb8e87c01c0b454aa1c6afc01a5"
+      }
+    }
+  ],
+  "build": {
+    "utc_start": "2026-09-26T09:24:26.862259+00:00",
+    "utc_end": "2026-09-26T09:24:41.524761+00:00",
+    "command": {
+      "argv": [
+        "powershell",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1",
+        "-Configuration",
+        "Release"
+      ],
+      "cwd": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values"
+    },
+    "exit": 0,
+    "all_three_ctests_pass": true,
+    "runtime_cases": 0,
+    "new_tracked_tests": false,
+    "inputs_and_prior_artifacts_unchanged": true
+  },
+  "source_config_pins": 28,
+  "tool_sdk_pins": 27,
+  "preserved_artifacts": 1414,
+  "all_prior_artifacts_unchanged": true,
+  "compiled": {
+    "section_schema": "local/cc10_clock_header_pointer_access_implementation/compiled_sections.json",
+    "section_identity": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/compiled_sections.json",
+      "size": 1244768,
+      "sha256": "d3ada327d14a688c39573a55884479024f86a0ebc30142abc4beb7eba9c22864"
+    },
+    "objects_schema": "objects[];old_sections[];new_sections[];comparisons[]",
+    "complete_metadata_schema": "local/cc10_clock_header_pointer_access_implementation/complete_coff_sections.json",
+    "metadata_identity": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/complete_coff_sections.json",
+      "size": 1694112,
+      "sha256": "c6dbbb9198d2345c2f20cab991e7dafa92edf65ffdad5e1baae565d86a7f0c43"
+    },
+    "metadata_includes_all_raw_sections_and_relocations": true,
+    "schedule_schema": "local/cc10_clock_header_pointer_access_implementation/compiled_schedule.json",
+    "schedule_identity": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/compiled_schedule.json",
+      "size": 3863,
+      "sha256": "6b94e22fbaa42361b668f4b8386c27569840320f84e6eb544e94a12ff5ba27a7"
+    },
+    "library": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/compiled/build/win32/Release/bsp_core.lib",
+      "size": 71219718,
+      "sha256": "c71723a3ac1ca51973241461a472e789430a3f9deaa4a17b07106937b028fc46"
+    },
+    "exact_members": [
+      {
+        "member": "native_particle_record_resize.obj",
+        "old_object": {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/old/native_particle_record_resize.obj",
+          "size": 5111,
+          "sha256": "b78c707e33d6d5aa34546e6484487e5268aa2fc794c099c8ae6017fafbd93ba7"
+        },
+        "new_object": {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/compiled/build/win32/bsp_core.dir/Release/native_particle_record_resize.obj",
+          "size": 5181,
+          "sha256": "082d534ed360a9e00a4e5bcaa9e6ddd7c2a340bef55cfd15f653726fbc213150"
+        },
+        "exact_new_member": true
+      },
+      {
+        "member": "native_particle_clock_shutdown.obj",
+        "old_object": {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/old/native_particle_clock_shutdown.obj",
+          "size": 18290,
+          "sha256": "2b4c1e3132df1cb862e2920533d088f5fe6b7003133d9bea9eb5aba3ea5ca771"
+        },
+        "new_object": {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/compiled/build/win32/bsp_core.dir/Release/native_particle_clock_shutdown.obj",
+          "size": 18516,
+          "sha256": "5795b45ed7a264fd4f75c4a09f14568d9a470c86c63c8ab6b650e132b6a8923d"
+        },
+        "exact_new_member": true
+      },
+      {
+        "member": "native_sampler_cache_operation.obj",
+        "old_object": {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/old/native_sampler_cache_operation.obj",
+          "size": 25310,
+          "sha256": "bd55f2ff745308b0db752387427af15ad244763317396ba54297c4e1752b6540"
+        },
+        "new_object": {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/compiled/build/win32/bsp_core.dir/Release/native_sampler_cache_operation.obj",
+          "size": 25502,
+          "sha256": "735e13f17d70da57a43e591574ca9252921127121339c7d1eab84838fa586f54"
+        },
+        "exact_new_member": true
+      }
+    ],
+    "code_sections_old": 89,
+    "code_sections_new": 91,
+    "code_bytes_old": 6236,
+    "code_bytes_new": 6250,
+    "unchanged_existing_sections": 85,
+    "unchanged_existing_bytes": 5569,
+    "public_resize_adapter21B_raw_and_relocations_equal": true,
+    "all_cache50_existing_code_sections_raw_and_relocations_equal": true,
+    "typed_helper_sizes": [
+      10,
+      10,
+      11
+    ],
+    "each_typed_helper_one_current_pointer_read": true,
+    "resize": {
+      "old_size": 317,
+      "new_size": 315,
+      "growth_current_count": 82,
+      "growth_current_data": 92,
+      "memory_count_RMW": 211,
+      "shrink_current_count": 215,
+      "shrink_current_data": 218,
+      "catch_name_cleanup_call": 272,
+      "catch_typed_data_reload_call": 280,
+      "catch_wrapping_index_product": 285,
+      "catch_volatile_placement_store": 296,
+      "catch_volatile_placement_read": 299,
+      "catch_rethrow_call": 304,
+      "new_private_frame_reserve": 20,
+      "old_private_frame_reserve": 16,
+      "new_cookie_offset": -36,
+      "old_cookie_offset": -32
+    },
+    "secondary_destroy": {
+      "old_size": 307,
+      "new_size": 306,
+      "current_count": 81,
+      "current_data": 84,
+      "current_sink": 89,
+      "current_profile": 93,
+      "current_slot10": 121,
+      "postrelease_count": 164,
+      "postrelease_data": 171,
+      "resize_calls": [
+        214,
+        229
+      ],
+      "cleanup_disarm": 225,
+      "current_data_before_free": 234,
+      "free_call": 237,
+      "all_REL32_call_symbols_same_order": true,
+      "header_address": "EBX actual secondary+4"
+    },
+    "explicit_lowering_changes": [
+      "Resize main/catch317->315B, private frame10h->14h, locals move, cookie -20h->-24h; raw two-argument read replaced with typed one-argument read",
+      "4DE290307->306B uses actual header address EBX instead of secondary ESI+4; instruction offsets shift; REL32 call-symbol order unchanged"
+    ],
+    "strict_flags": {
+      "AdditionalIncludeDirectories": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-field-values\\include;J:\\PROG\\battlestations-pacific-decompile-cc10-lua-field-values\\build\\win32\\_deps\\lua511-src\\src;J:\\PROG\\battlestations-pacific-decompile-cc10-lua-field-values\\build\\win32\\_deps\\zlib121-src;%(AdditionalIncludeDirectories)",
+      "AdditionalOptions": "%(AdditionalOptions) /external:I \"J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/build/win32/_deps/dxsdk_d3dx-src/build/native/include\"",
+      "AssemblerListingLocation": "$(IntDir)",
+      "BasicRuntimeChecks": "Default",
+      "BufferSecurityCheck": null,
+      "CallingConvention": null,
+      "ExceptionHandling": "Sync",
+      "ExternalWarningLevel": "TurnOffAllWarnings",
+      "FloatingPointModel": "Strict",
+      "ForceConformanceInForLoopScope": null,
+      "InlineFunctionExpansion": "AnySuitable",
+      "LanguageStandard": "stdcpp17",
+      "MinimalRebuild": null,
+      "Optimization": "MaxSpeed",
+      "PrecompiledHeader": "NotUsing",
+      "RemoveUnreferencedCodeData": null,
+      "RuntimeLibrary": "MultiThreadedDLL",
+      "SupportJustMyCode": null,
+      "TreatWChar_tAsBuiltInType": null,
+      "TreatWarningAsError": "true",
+      "UseFullPaths": "false",
+      "WarningLevel": "Level4",
+      "PreprocessorDefinitions": "%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\"",
+      "ObjectFileName": "$(IntDir)",
+      "DebugInformationFormat": "\n      ",
+      "ScanSourceForModuleDependencies": "false"
+    },
+    "linear_decoder_not_alone_code_data_classification": true,
+    "linked_body_claim": false
+  },
+  "raw_tool_receipts": [
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/raw_build_launch_tool_result.json",
+      "size": 130,
+      "sha256": "61c4f6ab4844556de092426dc4e48b9ead2d6913d25c21d436b25c34c8a3ace5"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/raw_build_wait_tool_result01.json",
+      "size": 583,
+      "sha256": "9092e11de1ea0b2008ae271dc34dee13ebbb7a49e6964a5f31db01a33d7b25f6"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/raw_section_comparison_tool_result.json",
+      "size": 2801,
+      "sha256": "c70da612b724dd5808ca4b80f78a08510a52c2b5961315a1af4dcf9a8f982eae"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_header_pointer_access_implementation/raw_schedule_verification_tool_result.json",
+      "size": 743,
+      "sha256": "60d9192e952c63e127bdddf6f8fe5041809bf97f3b1407004788a80750ab817b"
+    }
+  ],
+  "inspection_failure": false,
+  "new_tracked_tests": false,
+  "new_runtime_case": false,
+  "ghidra_read_only": true,
+  "limits": [
+    "Only actual header data-pointer lvalues corrected; raw pointer fields in records/aliases/strings/tables and other providers retain prior limits",
+    "No fully ISO-safe composition or native original ABI/private stack/FH3/SEH/hardware fault equivalence",
+    "No C30570 positive children/rate/platform5030 SDK/caller MSG/source0W expansion",
+    "No new nonempty cache/sampler/runtime/full linked application/material/startup/draw/original-game proof"
+  ],
+  "doc": "docs/NATIVE_CLOCK_HEADER_POINTER_ACCESS_CC10.md",
+  "archive": "local/cc10_clock_header_pointer_access_evidence.zip",
+  "manifest": "local/cc10_clock_header_pointer_access_implementation/manifest.json",
+  "freeze_receipt": "local/cc10_clock_header_pointer_access_implementation/freeze_receipt.json"
+}

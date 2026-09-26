@@ -26,6 +26,10 @@ void put(void* p, U offset, U value) noexcept {
     *static_cast<volatile U*>(at(p, offset)) = value;
 }
 void* pointer(const void* p, U offset = 0) noexcept { return reinterpret_cast<void*>(word(p, offset)); }
+NativeRenderResourceRecord* current_record_data(const void* actual_cache) noexcept {
+    const auto* const vector = static_cast<const volatile NativeResourceRecordVectorStorage*>(at(actual_cache, 4));
+    return vector->data_00;
+}
 void clear_name(void* p) noexcept { put(p, 0, 0); put(p, 4, 0); }
 void copy_name(void* to, const void* from, Op& a, U resize_site, U copy_site) {
     if (to == from) return;
@@ -112,7 +116,7 @@ void* run(Op& a, std::uint8_t retain_new, std::uint8_t allow_load) {
     normalize_native_resource_path_header_00bee690(a.requested, a.context->strings);
 
     const U count = word(a.actual_cache, 8);
-    void* record = pointer(a.actual_cache, 4);
+    void* record = current_record_data(a.actual_cache);
     const void* const end = at(record, count * 0x2cu);
     while (record != end) {
         void* const list = at(record, 8);
@@ -149,7 +153,7 @@ void* run(Op& a, std::uint8_t retain_new, std::uint8_t allow_load) {
     normalize_native_resource_path_header_00bee690(a.resolved, a.context->strings);
     if (unequal(a.resolved, a.requested, a, 0xb1a6cf)) {
         const U second_count = word(a.actual_cache, 8);
-        record = pointer(a.actual_cache, 4);
+        record = current_record_data(a.actual_cache);
         const void* const second_end = at(record, second_count * 0x2cu);
         while (record != second_end) {
             void* const list = at(record, 8);

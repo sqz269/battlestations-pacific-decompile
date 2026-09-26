@@ -35,6 +35,11 @@ void store(void* p, Word byte_offset, Word value) noexcept {
 NativeResourceRecordVectorStorage& vector_at(void* secondary) noexcept {
     return *static_cast<NativeResourceRecordVectorStorage*>(at(secondary, 4));
 }
+NativeRenderResourceRecord* current_record_data(
+    const NativeResourceRecordVectorStorage& actual_vector) noexcept {
+    const volatile auto& vector = actual_vector;
+    return vector.data_00;
+}
 
 // Native single memory RMW at 004DDA7D, after record destruction returns.
 __declspec(naked) void __fastcall decrement_current_count(void*) noexcept {
@@ -96,15 +101,15 @@ void __fastcall clear_native_particle_clock_records_004dda40(
     void* secondary, Context& context) {
     while (load(secondary, 8) != 0) {
         const Word count = load(secondary, 8);
-        const Word data = load(secondary, 4);
+        auto* const data = current_record_data(vector_at(secondary));
         void* const sink = reinterpret_cast<void*>(
-            load(reinterpret_cast<void*>(data), count * 0x2cu - 4u));
+            load(data, count * 0x2cu - 4u));
         release_current_sink(secondary, sink, context);
         const Word current_count = load(secondary, 8);
         if (current_count != 0) {
-            const Word current_data = load(secondary, 4);
+            auto* const current_data = current_record_data(vector_at(secondary));
             auto& current_record = *static_cast<NativeRenderResourceRecord*>(
-                at(reinterpret_cast<void*>(current_data), current_count * 0x2cu - 0x2cu));
+                at(current_data, current_count * 0x2cu - 0x2cu));
             destroy_native_resource_record_004d45a0(current_record, context.records.strings);
             decrement_current_count(secondary);
         }
@@ -115,7 +120,7 @@ void __fastcall clear_native_particle_clock_records_004dda40(
 void __fastcall destroy_native_particle_record_array_004ddaa0(
     NativeResourceRecordVectorStorage& vector, Context& context) {
     resize_native_particle_record_array_004dc410(vector, context.records, 0);
-    singleton_lifetime_free(reinterpret_cast<void*>(load(&vector)));
+    singleton_lifetime_free(current_record_data(vector));
 }
 
 void __fastcall destroy_native_particle_clock_records_004de290(
@@ -126,7 +131,7 @@ void __fastcall destroy_native_particle_clock_records_004de290(
     cleanup.armed = false;
     auto& vector = vector_at(secondary);
     resize_native_particle_record_array_004dc410(vector, context.records, 0);
-    singleton_lifetime_free(reinterpret_cast<void*>(load(&vector)));
+    singleton_lifetime_free(current_record_data(vector));
 }
 
 void __fastcall destroy_native_particle_clock_00b1b680(
