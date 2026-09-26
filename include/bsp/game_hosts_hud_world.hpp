@@ -211,22 +211,23 @@ inline constexpr bool kHudWeaponGroupTargetBound = true;
 // hide-all 005452F0, the row-widget presence and show (argument +D4h) and
 // widget +C0h's show. Screen 45h's 00545360 then sets +D4h. The F2 placement
 // (GUI geometry), the group sight 00548300 and the other widget helpers stay
-// records. Committed OFF until its pair runs.
-inline constexpr bool kHudWeaponGroupLayoutBound = false;
+// records. ON by its USN04 pair (section 40).
+inline constexpr bool kHudWeaponGroupLayoutBound = true;
 
 // Packet cc9_gui_extent_inputs (docs/GUI_EXTENT_INPUTS.md). ON answers the
 // GUI extent 00AA1FE0 that the markers screen and screen 29h's projection
 // ask for from the platform object's widescreen byte (+0Dh) and active
 // aspect (+10h), through bsp::gui_aspect_extent_00aa1fe0, in place of the
-// (1, 1) substitution and its record. Committed OFF until its pair runs.
-inline constexpr bool kHudGuiExtentBound = false;
+// (1, 1) substitution and its record. ON by its USN04 pair
+// (docs/GUI_EXTENT_INPUTS.md section 5).
+inline constexpr bool kHudGuiExtentBound = true;
 
 // Packet cc9_role_retake_4bh (docs/SHIP_SCREEN_UPDATE.md section 39). ON runs
 // screen 2Eh's enter 005494C0 and exit 005470A0 from the pump in place of the
 // FrontEndScreen::enter/exit records. The enter's 00549260 retakes the held
-// group's roles, which the 4Bh arm answers as a no-op. Committed OFF until
-// its pair runs.
-inline constexpr bool kHudWeaponGroupEnterExitBound = false;
+// group's roles, which the 4Bh arm answers as a no-op. ON by its USN04 pair
+// (section 40).
+inline constexpr bool kHudWeaponGroupEnterExitBound = true;
 
 class GameHostLog;
 class GameFrontendHost;

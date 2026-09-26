@@ -111,9 +111,16 @@
  "pairs": [
   {
    "switch": "kHudWeaponGroupLayoutBound",
-   "off": "local/bin/lay_off",
-   "on": "local/bin/lay_on",
-   "status": "pending the session reconnect; predictions in section 37 (total -3N+4, summary identical)"
+   "off": "local/lay_off_usn04.log",
+   "on": "local/lay_on_usn04.log",
+   "unimplemented_total": [
+    2782240,
+    2754770
+   ],
+   "summary_moved": [
+    "sprite bridge quads 184 -> 157 (prediction miss: drawn-widget count)"
+   ],
+   "verdict": "ON"
   }
  ]
 }

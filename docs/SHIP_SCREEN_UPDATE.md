@@ -1954,3 +1954,79 @@ carry the new `held_retakes` field. N is 9,158 and 18,158 as before.
   enter's retake of roles 2 and 3 reaches the 4Bh arm and is counted as the no-op it is.
 - **Unchanged.** The Lexington's `held=080088888 open=989988888` stays, and every other summary line
   is identical in both forms.
+
+## 40. The pending pairs, run after the session came back (cc9-platform2, 2026-09-25)
+
+The session was reconnected at the console. From then on, runs use this installation's
+`options.txt` resolution, 2560x1440 windowed: the renderer now enumerates it, where the remote
+session offered only 640x480. Both sides of every pair below ran in that environment.
+`BSP_GUNNERY_RNG_STREAMS=1`, USN04 4700/4500.
+
+**Section 33, the role take, the USN04 confirmation.** `local\grt_off_usn04.log` (the 640x480 run
+from before the disconnect) against `local\grt_on3_usn04.log`.
+- Every row is as predicted: `group_available` 36,637 unimplemented -> 9,164 concrete,
+  `role_request` 1, `widget_c0` gone, five rows at 9,158 each, `entity_role_message_4b` 1 -> 2.
+- The unimplemented total falls by 5.
+- **Summary lines.** Player roles takes 1 -> 3. Otherwise only the two environment lines differ
+  (`back_buffer` and `options_file`: 640x480 -> 2560x1440).
+- **Confirmed.** `kHudGunnerRoleTakeBound` stays ON.
+
+**Section 37, the 2Eh layout.** `local\lay_off_usn04.log` against `local\lay_on_usn04.log`.
+- Every row is as predicted: `hide_widgets`, `row_widget` and `other_screen_00545360` concrete at
+  9,158; `show_row_widget` 9,158 new; `layout` 1; `place_f2` 4 unimplemented.
+- The total falls by 27,470 (3N - 4).
+- **Prediction miss: one summary line moves.** `summary bridge ... quads=184` becomes `quads=157`.
+  The sprite bridge's quad count is a count of drawn image widgets, so visibility does reach a
+  summary line after all. The 27 are exact:
+  - hidden: the 19 grid cells, their 4 `cross_F2_Icon` children, `CrosshairDisable_Icon`, the
+    three artillery aim icons and `GunState_Icon` (28);
+  - shown: the anti-aircraft centre cross (1).
+
+  This is the image's visible state for group 2 with an idle player.
+- **Result.** **`kHudWeaponGroupLayoutBound` flips ON.**
+
+**Section 39, the 2Eh enter and exit.** `local\ee_off_usn04.log` against `local\ee_on_usn04.log`.
+- Every row is as predicted: `FrontEndScreen::enter` 12 -> 11, `enter` 1, `bind` 1 -> 2,
+  `group_available` +2, `role_request` 1 -> 2, `entity_role_message_4b` 2 -> 3,
+  `player_unit_name` 1 -> 2.
+- The unimplemented total is unchanged.
+- **The only moved summary line** is player roles, `held_retakes=0` -> `held_retakes=2`.
+- **Result.** **`kHudWeaponGroupEnterExitBound` flips ON.**
+
+**The GUI extent** is recorded in docs/GUI_EXTENT_INPUTS.md section 5. **`kHudGuiExtentBound` flips
+ON.**
+
+## 41. Section 36's attribution is falsified (cc9-platform2, 2026-09-25)
+
+Section 36 named f7de926f4 as the landing that moved the Lexington's path and stopped screen 29h's
+picks. It reached that by comparing trees. The confirming run was held for the reconnect. It is
+now run, alongside two more single-switch diagnostics on the current tree (main 3a6d8b847 plus this
+branch). All are USN04 4700/4500, 2560x1440, `BSP_GUNNERY_RNG_STREAMS=1`, each against a same-tree
+control.
+
+| diagnostic (local builds, not committed) | the switch took effect | Lexington heading at 2880 / 3110 | `owner_140` |
+| --- | --- | --- | --- |
+| control (`local\hdg_on_usn04.log`, `local\tg_on_usn04.log`) | - | 27.689 / 19.075 | none |
+| `kPilotStateHeadingWritesBound = false` (`local\hdg_off_usn04.log`) | yes: ship-AI plan lines move, 103,000 more records | 27.689 / 19.075 | none |
+| `kTorpedoFriendlyCrossingBound = false` (`local\tg_off_usn04.log`) | - | 27.689 / 19.075 | none |
+| `kPlannerYawBaseModeGateBound = false` (`local\yb_off_usn04.log`) | - | 27.689 / 19.075 | none |
+| the picking tree (section 29, `local\ga_on_usn04.log`) | - | 27.694 / 37.220 | 662 |
+
+- **No single switch restores the path.** Neither of f7de926f4's two behaviour switches does, and
+  neither does 7dd40497c's torpedo gate.
+- The current tree leaves the picking tree's trace between frames 2870 and 2880, as the section 33
+  and 34 trees did.
+- **What is left:**
+  - code in f7de926f4 or 7dd40497c that no switch covers;
+  - `kPlannerModeCensusDiag`, which f7de926f4 also added;
+  - an interaction between two landings. The muzzle pair's tree had 7dd40497c without 3f79fea6b,
+    and the picking tree had 3f79fea6b without 7dd40497c.
+- **Settling it needs a tree bisect, not switches.** Build 3f79fea6b's tree once with f7de926f4
+  added and once with 7dd40497c added, in a scratch worktree, and run each on USN04 4500. The
+  picking tree is the baseline.
+- **Section 36's other conclusions stand:**
+  - the pick's inputs are unchanged;
+  - the path moves at the frame-2880 AI moveto on "D3A Val #1.1|.-4", and the camera follows;
+  - it is not a host bug in the pick.
+
+  Only the named commit is withdrawn.

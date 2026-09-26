@@ -142,13 +142,6 @@
    "verdict": "ON; every prediction held"
   },
   {
-   "switch": "kHudGunnerRoleTakeBound",
-   "form": "USN04 4700/4500",
-   "off": "local/grt_off_usn04.log",
-   "on": null,
-   "verdict": "ON side pending: 0xC0000005 at mission frame 4361, then startup FMOD failure with session 1 disconnected"
-  },
-  {
    "switch": "kHudWeaponGroupTargetBound",
    "form": "USN04 4700/4500",
    "off": "local/tgt_off_usn04.log",
@@ -159,6 +152,21 @@
    ],
    "summary_lines_identical": true,
    "verdict": "ON; P = 0 against the predicted >= 662 (stale baseline: screen 29h picks nothing on current main)"
+  },
+  {
+   "switch": "kHudGunnerRoleTakeBound",
+   "form": "USN04 4700/4500",
+   "off": "local/grt_off_usn04.log",
+   "on": "local/grt_on3_usn04.log",
+   "unimplemented_total": [
+    2794672,
+    2794667
+   ],
+   "summary_moved": [
+    "player roles takes 1 -> 3",
+    "environment lines (640x480 -> 2560x1440)"
+   ],
+   "verdict": "confirmed ON"
   }
  ]
 }

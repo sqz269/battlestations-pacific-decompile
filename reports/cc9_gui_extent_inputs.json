@@ -48,9 +48,15 @@
  "pairs": [
   {
    "switch": "kHudGuiExtentBound",
-   "off": "local/bin/ext_off",
-   "on": "local/bin/ext_on",
-   "status": "pending the session reconnect; predictions in docs/GUI_EXTENT_INPUTS.md section 4 (records -> concrete, total -334,319 / -678,273, summary identical)"
+   "off": "local/ext_off_usn04.log",
+   "on": "local/ext_on_usn04.log",
+   "unimplemented_total": [
+    2782240,
+    2447921
+   ],
+   "summary_lines_identical": true,
+   "environment": "2560x1440 windowed",
+   "verdict": "ON"
   }
  ]
 }
