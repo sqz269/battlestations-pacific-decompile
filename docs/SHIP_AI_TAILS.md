@@ -413,3 +413,41 @@ No behaviour changes.
 
 `kShipAiNavTailGateBookkeeping` is ON. Tail (b) was bookkeeping, not a gap.
 
+
+## 9. The warning timer 009DA8D0 (packet `cc9_ship_ai_tails_2`, part c)
+
+`ShipAi::tail_009da8d0` (body 009DA8D0..009DA93F) is a countdown on brain+B40h, re-armed from
+brain+B3Ch. On expiry it reports to the warning manager [00F8A0C4] for the brain's own unit
+(brain+AA8h):
+
+```
+009da8e6: fcomi st(1)            ; dt against B40h
+009da8e8: jb    0x9da935         ; dt < B40h: B40h -= dt (009DA935..009DA937)
+009da8ea: fsubr [esi + 0xb3c]    ; otherwise B40h = B40h + (B3Ch - dt)
+009da8f8: cmp byte ptr [esi + 0x3f2], 0   ; blk+3EAh set: 00977690 (torpedo report)
+009da913: cmp byte ptr [esi + 0x3f1], 0   ; blk+3E9h set: tail jump to 00977820
+```
+
+- **Seeds.** The brain constructor draws B3Ch = uniform(1, 2) at 009F12CD and B40h =
+  -uniform(0, B3Ch) at 009F12F1 (009F12F6 FCHS, stored at 009F1300). The host already made both
+  draws for the stream order. It now keeps the values in the controller.
+- **Reports.** They go through the HUD worker's entries `game_warning_report_torpedo_00977690` and
+  `game_warning_torpedo_effect_00977820` (include/bsp/game_hosts_mission_frame.hpp). Each has its
+  own guards, and their remaining steps are records on the HUD side. The HUD switch
+  `kWarningManagerTickBound` is still OFF on this tree.
+- **Flag producers.** The host clears both flags in the hull pre-step (009E04A0 and 009E04A9, image
+  stores of 0) and never sets them. A byte-immediate scan found one store of 1 to +3E9h, at
+  00A3F13D in 00A3F100. Its object is not established, and register-source stores were not
+  swept.
+
+`kShipAiWarningTimerBound` gates the binding.
+
+**Prediction (before the runs):** USN02 9200/9000 and E2 9200/9000, OFF against ON, same tree.
+- `ShipAi::tail_009da8d0` goes from UNIMPLEMENTED to concrete at the same call count.
+- The summary line `ship ai warning timer` shows expiries > 0 with the switch ON.
+- Torpedo and effect reports are 0, because no host path sets either flag. The two new report
+  rows do not appear, and neither do the HUD entries' rows.
+- The timer draws nothing and writes only B40h. Deaths, hit records, every ship-ai line and the
+  death tables are identical.
+
+**Result:** pending.

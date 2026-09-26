@@ -387,6 +387,9 @@ struct GameShipAiSummary {
     unsigned long long path_plan_refreshes{0};
     unsigned long long corridor_group_widths{0};
     float corridor_width_max{0.0f};
+    unsigned long long warning_timer_expiries{0};
+    unsigned long long warning_torpedo_reports{0};
+    unsigned long long warning_other_reports{0};
     unsigned long long path_plan_seeds{0};
     unsigned long long path_plan_accepts{0};
     unsigned long long approach_frames{0};

@@ -35,6 +35,7 @@
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/game_hosts_mission_frame.hpp"
 #include "bsp/command_completion.hpp"
 #include "bsp/director_update_arms.hpp"
 #include "bsp/ship_ai_approach_update.hpp"
@@ -239,6 +240,16 @@ inline constexpr bool kShipAiArmFinalWholeBound = true;
 // path counts as `done` under its own row (the gate jump), not as the tail's
 // record. False: the tail's record, as before. No behaviour either way.
 inline constexpr bool kShipAiNavTailGateBookkeeping = true;
+// Packet cc9_ship_ai_tails_2 (c), docs/SHIP_AI_TAILS.md section 9. True:
+// 009DA8D0 runs: brain+B40h counts down by dt; on reaching it (dt >= B40h) it
+// is re-armed to B40h + B3Ch - dt (009DA8EA..009DA8F2), and then brain+3F2h
+// (blk+3EAh) reports the torpedo warning 00977690 and brain+3F1h (blk+3E9h)
+// tail-calls 00977820 on the warning manager [00F8A0C4], through the HUD
+// worker's entries (bsp/game_hosts_mission_frame.hpp, packet
+// cc9_warning_manager_tick). B3Ch / B40h are the brain constructor's draws at
+// 009F12CD / 009F12F1 (B40h negated by 009F12F6 FCHS), now kept. False: the
+// tail's record.
+inline constexpr bool kShipAiWarningTimerBound = false;
 inline constexpr float kTorpedoCollectTimer2 = 2.0f;
 // Packet cc9_station_keeping, docs/STATION_KEEPING.md. True: the follow update's
 // station request 009DA3B0 is stored (blk+38Ch..+3A6h, including blk+39Ch = 0
@@ -826,6 +837,8 @@ struct GameShipAiHost::Impl {
         NeighbourList neighbour_list;
         float neighbour_countdown_b50{0.0f};
         float neighbour_period_b4c{1.0f};
+        float warning_period_b3c{0.0f};     // brain+B3Ch, 009F12CD
+        float warning_countdown_b40{0.0f};  // brain+B40h, 009F12F1 then 009DA8D0
         bool neighbour_timer_seeded{false};
         // Milestone 2r: the 60-slot approach ring at nested+30h and the 60
         // score records the four scorers fill. 009E5530's second pass builds
@@ -1049,7 +1062,8 @@ struct GameShipAiHost::Impl {
             if (!ctl.nav_block_built || ctl.torpedo_timer.seeded) continue;
             TorpedoDraw draw(*this, index);
             const float b3c = draw.uniform_00bd2f10(1.0f, 2.0f);        // 009F12CD
-            static_cast<void>(draw.uniform_00bd2f10(0.0f, b3c));        // 009F12F1, B40
+            ctl.warning_period_b3c = b3c;
+            ctl.warning_countdown_b40 = -draw.uniform_00bd2f10(0.0f, b3c);   // 009F12F1, B40
             ctl.torpedo_timer.countdown_b48 = -draw.uniform_00bd2f10(0.0f, 1.0f);   // 009F1330
             ctl.neighbour_countdown_b50 = -draw.uniform_00bd2f10(0.0f, 1.0f); // 009F1360, B50
             static_cast<void>(draw.uniform_00bd2f10(0.0f, 2.0f));       // 009F138C, B58
@@ -6817,7 +6831,32 @@ public:
         if (clearance.node_hits != 0) ++row_.clearance_node_hits;
         row_.clearance_37c = ctl_.clearance.clearance_37c;
     }
-    void tail_009da8d0(float) override { owner_.record("ShipAi::tail_009da8d0", 0x009da8d0u); }
+    void tail_009da8d0(float seconds) override {
+        if constexpr (!kShipAiWarningTimerBound) {
+            owner_.record("ShipAi::tail_009da8d0", 0x009da8d0u);
+        } else {
+            // 009DA8D4..009DA8E8: FCOMI dt, B40h; JC -> B40h -= dt (009DA935).
+            if (seconds < ctl_.warning_countdown_b40) {
+                ctl_.warning_countdown_b40 -= seconds;
+                owner_.done("ShipAi::tail_009da8d0", 0x009da8d0u);
+                return;
+            }
+            ctl_.warning_countdown_b40 = ctl_.warning_countdown_b40
+                + (ctl_.warning_period_b3c - seconds);                      // 009DA8EA..009DA8F2
+            ++owner_.summary.warning_timer_expiries;
+            if (ctl_.nav_block.flag_3ea != 0) {                             // 009DA8F8, brain+3F2h
+                game_warning_report_torpedo_00977690(index_);                // 009DA90E, [brain+AA8h]
+                owner_.done("ShipAi::warning_report_torpedo_009da90e", 0x009da90eu);
+                ++owner_.summary.warning_torpedo_reports;
+            }
+            if (ctl_.nav_block.flag_3e9 != 0) {                             // 009DA913, brain+3F1h
+                game_warning_torpedo_effect_00977820(index_);                // 009DA930 tail jump
+                owner_.done("ShipAi::warning_torpedo_effect_009da930", 0x009da930u);
+                ++owner_.summary.warning_other_reports;
+            }
+            owner_.done("ShipAi::tail_009da8d0", 0x009da8d0u);
+        }
+    }
     void tail_009f4da0(float seconds) override {
         // 009F5248, chain slot 16. 009F4DA0's own body is the throttle ceiling
         // on brain+34Ch / +350h, which no packet has reconstructed, so it stays
@@ -8014,6 +8053,10 @@ void GameShipAiHost::report() {
         host.summary.path_plan_refreshes, host.summary.path_plan_seeds,
         host.summary.path_plan_accepts, host.summary.approach_frames,
         host.summary.controller_updates);
+    host.log.notef("summary mission ship ai warning timer bound=%d expiries=%llu torpedo_reports=%llu "
+        "other_reports=%llu (009DA8D0)", kShipAiWarningTimerBound ? 1 : 0,
+        host.summary.warning_timer_expiries, host.summary.warning_torpedo_reports,
+        host.summary.warning_other_reports);
     host.log.notef("summary mission ship ai corridor bound=%d group_widths=%llu max_width=%.1f "
         "(009ED3E0 head: 00778890 / 0070D400 / 0070D5D0, packet cc9_ship_ai_turn_clearance)",
         kShipAiTurnClearanceBound ? 1 : 0, host.summary.corridor_group_widths,
