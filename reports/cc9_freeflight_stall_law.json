@@ -1,0 +1,14 @@
+{
+  "packet": "cc9_freeflight_stall_law",
+  "doc": "docs/FREEFLIGHT_STALL_LAW.md",
+  "calls": [
+    {"address": "007DBB5E", "native": "007D9140", "function": "007DB680", "note": "drag magnitude; a2 = unit+9F0h command throttle (host passes latched +BBCh)"},
+    {"address": "007DC6E6", "native": "007D8470", "function": "007DB680", "note": "integration step; host uses its own Euler step (substitution, equivalent in the mushing regime)"}
+  ],
+  "finding": "every free-flight term acting in the below-StallSpd regime matches the image; the mush is the image's own regime; no binding; kDogfightThrottleBound stays OFF",
+  "no_ghidra_function": [],
+  "ledger_names_added": [
+    {"address": "007D9140", "name": "BSP_PlaneFlight_DragAccel", "note": "evidence appended"},
+    {"address": "007D8470", "name": "BSP_PlaneDynamics_IntegrateStep", "note": "evidence appended"}
+  ]
+}
