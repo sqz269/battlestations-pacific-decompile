@@ -9608,3 +9608,112 @@ component-failure rolls run; docs/SHIP_FIRE_FLOODING.md and docs/COMPONENT_FAILU
   `body` (007273B1, 7 -> 9), while the ShipGlobals.Failures row keys on kind 7 with no remap
   (0083E956 / 0083E97B) and so does the Damage.Sections row (0087CF7B). The Lua route to message
   6Bh (008132C0, docs/UNIT_MESSAGE_ARMS.md) is the only producer this read found.
+
+## Mission reference baselines, 2026-09-26 b (main 7c421ba25)
+
+**These rows are the current reference for all four missions. They are interim**: the planner's
+moveto task and the HUD worker's ship-AI snapshot are still pending, and both will move them.
+Packet `cc9_reference_rebaseline_2`.
+
+**Run parameters:**
+- one binary, `local\rb2` (SHA-256 prefix `E77BBC5E574D`), built from a `git archive` export of
+  main `7c421ba25` with every switch in its landed state; the gunnery host has no switch left OFF
+  apart from the deliberate `kTurnOffAaGunThrow`;
+- `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1`, idle player, one run per mission, queued
+  one at a time through `tools/run_game.ps1`;
+- every log shows `window resolution override fit: 2560x1440 -> 1600x900 (monitor 1920x1080,
+  index kept 24)` and `module directory ...\local\rb2\`;
+- every run exited 0 with all its mission steps and one skipped Present;
+- logs dated 2026-09-26 06:53 (USN04), 07:08 (E2), 07:11 (USN01) and 07:33 (USN02).
+
+Categories and sides as in the 2026-09-26 section above.
+
+| mission | frames | damage | deaths (side) | deaths by category | hit records (hull) | shots | first hit | torpedo-task / dive-bomb-task releases | plane water contacts | controlled moved | mission end | unimplemented | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 | 6971.7 | 30 (30 IJN) | 0: 9, 1: 7, 5: 1, 6: 13 | 520 (208) | 4324 | 93.10 s | 5 of 16 / 2 of 19 | 13 | Lexington 3466.62 m | none | 541 | `local\rb2_usn04.log` |
+| USN01 | 3000 | 2690.0 | 7 (5 IJN, 2 US) | IJN 1: 5; US 1: 2 | 141 (90) | 457 | 53.70 s | 4 of 5 / 0 of 2 | 3 | Airfield2 0.00 | none | 464 | `local\rb2_usn01.log` |
+| USN04 (E2) | 9000 | 7845.7 | 35 (35 IJN) | 0: 9, 1: 7, 5: 4, 6: 15 | 594 (208) | 5405 | 93.10 s | 5 of 16 / 2 of 19 | 15 | Lexington 6635.57 m | none | 554 | `local\rb2_e2.log` |
+| USN02 | 9000 | 53671.0 | 20 (10 Allied, 10 IJN) | 2: 4, 3: 2, 6: 8, 7: 6 | 487 (247) | 863 | 27.75 s | - | 0 | DeRuyter 2459.13 m | **failed at 39.65 s** ("Game Over", entity Encounter) | 513 | `local\rb2_usn02.log` |
+
+The new counters (summary lines `damage queued`, `damage control`, `torpedo spread`, `ranging`
+and `aa acceptance`):
+
+| mission | fires / floods / part hits | flood / fire damage, repaired | damage-control deaths | failures started (explosions, jams) | blast element entries | segments destroyed | ranging records, mean offset | spread launches | fire-window refusals |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 0 / 0 / 0 | 0 / 0, 0 | 0 | 0 | 17 | 0 | 96, no ship aim | 0 | 3443 |
+| USN01 | 0 / 0 / 0 | 0 / 0, 0 | 0 | 0 | 0 | 0 | 5, no ship aim | 0 | 385 |
+| E2 | 0 / 0 / 0 | 0 / 0, 0 | 0 | 0 | 17 | 0 | 104, no ship aim | 0 | 4214 |
+| USN02 | 22 / 247 / 233 | 13740 / 3650, 5545 | 8 | 17 (9, 5) | 1272 | 11 | 41, 21.9 m over 84502 aim steps | 217 | 0 |
+
+USN02 fails when Houston or Exeter is dead (`usn_2_java.lua` line 521); Exeter sinks at 35.95 s.
+
+### USN02 deaths
+
+| victim | side | time | killer | category | blast | range |
+| --- | --- | --- | --- | --- | --- | --- |
+| Java | Allied | 27.75 s | Yudachi | 7 | 1 | 2201 |
+| DeRuyter | Allied | 30.25 s | Jintsu | 7 | 1 | 2422 |
+| Exeter | Allied | 35.95 s | Tokitsukaze | 7 | 1 | 3189 |
+| Yamakaze | IJN | 51.65 s | Houston | 3 | 1 | 2111 |
+| Kortenaer | Allied | 71.30 s | Samidare | 6 | 0 | 1097 |
+| Houston | Allied | 74.40 s | Nachi | 7 | 1 | 4059 |
+| Kawakaze | IJN | 115.15 s | Perth | 3 | 1 | 1594 |
+| Electra | Allied | 128.05 s | Jintsu | 2 | 1 | 1333 |
+| Alden | Allied | 149.35 s | Asagumo | 7 | 1 | 2341 |
+| John2 | Allied | 176.41 s | Tokitsukaze | 7 | 1 | 5218 |
+| Amatsukaze | IJN | 281.30 s | Witte | 6 | 0 | 1620 |
+| Samidare | IJN | 316.65 s | Encounter | 6 | 0 | 1559 |
+| Yudachi | IJN | 330.19 s | Encounter | 6 | 1 | 1492 |
+| Asagumo | IJN | 338.54 s | John3 | 2 | 0 | 1455 |
+| John1 | Allied | 355.94 s | Murasame | 6 | 1 | 1255 |
+| Harusame | IJN | 361.89 s | Encounter | 6 | 0 | 1356 |
+| Encounter | Allied | 366.43 s | Jintsu | 2 | 1 | 1279 |
+| Jintsu | IJN | 376.18 s | Jupiter | 6 | 0 | 1471 |
+| Murasame | IJN | 393.38 s | John3 | 2 | 0 | 929 |
+| Haguro | IJN | 394.23 s | Jupiter | 6 | 0 | 1481 |
+
+The "killer" is the last attacker (`+2C4h`). A ship that sinks to flooding or fire keeps the
+attacker of its last hit.
+
+### Against the 2026-09-26 section, and what moved each row
+
+Each packet's pair ran on the same tree as the packet before it. The chain closes: every OFF run
+equals the previous packet's ON run on every row below.
+
+**USN04 (4500).** 32 deaths / 476 hit records / 6801.7 damage, then 31 / 528 / 7215.6
+(`docs/USN04_USN01_ATTRIBUTION.md`: the flight and dogfight merges, by elimination), then
+unchanged through fire/flooding, component failures, blast parts, ranging and spread (each pair
+identical), then **30 / 520 / 6971.7 from the fire window** (`docs/AA_FIRE_WINDOW_MOUNT.md`).
+The two depth kills (-1) of the earlier section are gone by this reference; which step removed them was not isolated.
+
+**USN01 (3000).** 5 / 126, then 7 / 141 (`docs/USN04_USN01_ATTRIBUTION.md`: two US
+ScoutDauntless scouts shot down by Convoy2), then unchanged. The shots and damage rows moved
+with the same merges.
+
+**E2 (9000).** 39 deaths (37 IJN, 2 US) / 553 / 7739.4, then 35 (35 IJN) / 586 / 7968.1 on the
+fire window's OFF build, then **35 / 594 / 7845.7 from the fire window** (its E2 pair). The first
+step is **not paired at 9000 frames**. Its first 4500 frames are the USN04 attribution above, and
+the gunnery packets up to the fire window left USN04 identical. The rest (the two IJN Zero depth
+kills at 88 and 168 s and the two US Lexington-class01_sqn01 depth kills at 432 s disappearing,
+which is the whole 39 -> 35) is attributed by elimination to the flight and dogfight landings. It is
+**flagged** for a 9000-frame pair if it matters.
+
+**USN02 (9000):**
+
+| step | deaths | hit records | damage | end | by |
+| --- | --- | --- | --- | --- | --- |
+| 2026-09-26 section (`fad22c424`) | 22 | 769 | 81173.2 | 44.60 s | - |
+| component failures' OFF build (`c304c9096` tree) | 23 | 358 | 69461.2 | 44.60 s | fire/flooding and hull repair (`docs/SHIP_FIRE_FLOODING.md`, paired at 1200 frames only), with the other landings of that window; **not paired at 9000, flagged** |
+| component failures ON | 19 | 197 | 56414.2 | 44.60 s | `docs/COMPONENT_FAILURES.md` (Houston's 168.66 s magazine explosion cascade) |
+| blast element entries ON | 19 | 195 | 56430.6 | 44.60 s | `docs/BLAST_ELEMENT_PARTS.md` (Yamakaze 0.15 s earlier); segments: death table unchanged |
+| ranging error ON | 23 | 413 | 59841.9 | 44.60 s | `docs/ARTILLERY_RANGING_ERROR.md` (Houston lives to 207.96 s, a longer fight) |
+| torpedo spread ON | 20 | 487 | 53671.0 | **39.65 s** | `docs/TORPEDO_SPREAD.md` (Exeter sinks at 35.95 s) |
+| fire window ON = this section | 20 | 487 | 53671.0 | 39.65 s | `docs/AA_FIRE_WINDOW_MOUNT.md` (0 refusals on USN02) |
+
+The integrator's expectations hold: USN04 30 deaths / 520 hit records, and USN02 20 deaths with
+the failure at 39.65 s. Flagged:
+* the E2 step from 39 to 35 before the fire window, unpaired at 9000;
+* the USN02 step from 22 to 23 before the component failures, unpaired at 9000;
+* the recon lists, corpse chase, task-less arms, avoidance gate, integrator/throttle, seat flip,
+  camera unit and wedge landings. None was paired on these four missions by this packet. Any
+  effect they have is inside those two unpaired steps or the USN04/USN01 attribution.
