@@ -1,4 +1,6 @@
 #include "bsp/game_hosts_singletons.hpp"
+#include <stdexcept>
+#include "bsp/native_resource_registry_scalar_delete.hpp"
 #include "bsp/game_native_input_settings_process.hpp"
 #include "bsp/game_native_string_process.hpp"
 #include "bsp/game_native_weak_pool.hpp"
@@ -40,6 +42,27 @@ NativeWeakOwnerDomain& GameSingletonHost::weak_owners() {
         deletion_bindings_.weak_owner_domain = weak_owners_.get();
     }
     return *weak_owners_;
+}
+void GameSingletonHost::bind_resource_registry_domain(
+    ActualNativeStringPoolStorage& strings, const SingletonLifetimeCallbacks& validation) {
+    if (resource_registry_bindings_) {
+        if (&resource_registry_bindings_->strings != &strings ||
+            &resource_registry_bindings_->invalid_parameters != &validation ||
+            deletion_bindings_.resource_registry != resource_registry_bindings_.get())
+            throw std::logic_error("resource registry is already bound to another application domain");
+        return;
+    }
+    if (resource_registry_publication_00f8d41c_ || deletion_bindings_.resource_registry)
+        throw std::logic_error("resource registry deletion must bind before publication or registration");
+    resource_registry_bindings_ = std::make_unique<NativeResourceRegistryDeleteBindings>(
+        NativeResourceRegistryDeleteBindings{resource_registry_publication_00f8d41c_, strings, validation});
+    deletion_bindings_.resource_registry = resource_registry_bindings_.get();
+}
+void* volatile& GameSingletonHost::resource_registry_publication_00f8d41c() {
+    if (!resource_registry_bindings_ ||
+        deletion_bindings_.resource_registry != resource_registry_bindings_.get())
+        throw std::logic_error("resource registry publication requires its retained deletion domain");
+    return resource_registry_publication_00f8d41c_;
 }
 void GameSingletonHost::bind_sound_runtime(GameSoundRuntime* runtime) noexcept {
     deletion_bindings_.sound_runtime = runtime;

@@ -6,6 +6,12 @@
 #include "bsp/native_resource_support.hpp"
 #include <memory>
 
+namespace bsp {
+class ActualNativeStringPoolStorage;
+struct SingletonLifetimeCallbacks;
+struct NativeResourceRegistryDeleteBindings;
+}
+
 namespace bsp::game {
 class GameHostLog;
 class GameObserverRuntime;
@@ -31,6 +37,14 @@ public:
     // canonical manager. Explicit CD8A60 startup must already have returned.
     // This domain and its deletion binding survive the complete raw drain.
     NativeWeakOwnerDomain& weak_owners();
+    // Prepare the SAME pooled-string/validation domain after VFS core setup,
+    // before any registry getter can register D5E59C. Host owns the binding;
+    // referenced VFS services remain alive through shutdown/destruction.
+    void bind_resource_registry_domain(ActualNativeStringPoolStorage&,
+        const SingletonLifetimeCallbacks&);
+    // Expose the exact host-owned cell only after its deletion binding exists.
+    // All later procedural/sampler contexts borrow this same reference.
+    void* volatile& resource_registry_publication_00f8d41c();
     void bind_sound_runtime(GameSoundRuntime*) noexcept;
     // Borrow the same application dispatch table when composing raw VFS
     // services. Bind their contexts before any corresponding owner registers.
@@ -102,6 +116,8 @@ private:
     NativeResourceSupportRawContext resource_support_context_{
         manager_publication_01090aa0_, resource_support_publication_0108fedc_};
     NativeDiagnosticSinkStorage* volatile diagnostic_publication_0109cf14_{};
+    void* volatile resource_registry_publication_00f8d41c_{};
+    std::unique_ptr<NativeResourceRegistryDeleteBindings> resource_registry_bindings_;
     NativeSingletonDeletionBindings deletion_bindings_;
     std::unique_ptr<NativeWeakOwnerDomain> weak_owners_;
     GameNativeVfsRuntime* vfs_runtime_{};
