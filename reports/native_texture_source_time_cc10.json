@@ -1,0 +1,443 @@
+{
+  "packet": "cc10_texture_source_time",
+  "baseline": "616f96c331e8e868773703d24bfb8ff3c0c02bfa",
+  "addresses": [
+    "00c302a0",
+    "00b19a10"
+  ],
+  "status": "complete_source_strict_win32_and_full_coff_schedule_verified_no_new_runtime",
+  "production": {
+    "files": [
+      "include/bsp/native_texture_source_time.hpp",
+      "src/native_texture_source_time.cpp",
+      "include/bsp/native_particle_clock_draw.hpp",
+      "src/native_particle_clock_draw.cpp"
+    ],
+    "registration": "cmake/startup.cmake one native_texture_source_time.cpp target_sources append",
+    "code_matches_reviewed_proposal": true,
+    "original_naked_preserved": true,
+    "no_caller_activation": true
+  },
+  "callback": {
+    "native_length": 74,
+    "full_zero_and_nonzero_branches": true,
+    "native_abi": "ECX source; one stacked float; RET4; savedESI; no meaningful return",
+    "source_abi": "fastcall ECX source/EDX raw actual8Bscale/one stacked float; RET4; additional savedEDI",
+    "schedule": {
+      "bytes": 74,
+      "full_zero_and_nonzero_sequence": true,
+      "count_capture": 7,
+      "zero_branch": 12,
+      "zero_target": 66,
+      "frame_FLD": 14,
+      "EDX_zero": 18,
+      "rate_FLD": 20,
+      "actual_scale_FDIVR": 23,
+      "FDIVP": 25,
+      "FDIVP_opcode": "DEF9",
+      "CW_save": 27,
+      "CW_RC_only_OR": 36,
+      "temporary_CW_load": 45,
+      "FISTP_qword": 49,
+      "low_DWORD_load": 53,
+      "unsigned_DIV_captured_count": 57,
+      "original_CW_restore": 59,
+      "remainder_store": 63,
+      "extra_saved_EDI": true,
+      "stack": "entryS;currentESP=S-16;frame/CW+14h;tempqword+8/+C;savedEDI+0,savedESI+4"
+    },
+    "no_normalization_clamp_or_fallback": true,
+    "normal_CW_restoration_only": true,
+    "no_ownership_transfer": true
+  },
+  "dispatch": {
+    "native_abi": "ECX clock; one stacked float; RET4",
+    "preserved_naked_source_abi": "fastcall ECX clock/unusedEDX/stackfloat; RET4",
+    "new_source_abi": "cdecl explicitclock/float/borrowedcontext; plainRET",
+    "supported_current_profiles": [
+      "00d64478",
+      "00d644b4",
+      "00d79b54"
+    ],
+    "current_slot18_required": "00c302a0",
+    "borrowed_actual_tables": true,
+    "no_synthetic_profile_table_or_sink": true,
+    "full_normal_current_count_data_schedule": {
+      "bytes": 284,
+      "initial_data": 18,
+      "time_store": 24,
+      "initial_count": 29,
+      "sink_capture": 87,
+      "fresh_incoming_FLD": 93,
+      "current_profile": 96,
+      "current_slot": 143,
+      "fresh_FSTP": 158,
+      "no_calls_or_extra_FP_in_window": true,
+      "admission_after_FSTP": [
+        161,
+        167
+      ],
+      "argument_lowering": {
+        "spilled_local": "EBP-1Ch",
+        "raw_MOVSS_load": 176,
+        "raw_MOVSS_stack_store": 188,
+        "stack_float_bytes": 4,
+        "callback_call": 193,
+        "callee_RET": 4,
+        "ECX_captured_sink_at": 185,
+        "EDX_scale_at": 181,
+        "no_FP_reconversion": true
+      },
+      "current_count_read": 204,
+      "current_data_read": 215,
+      "captured_record_advance": 227,
+      "count_data_sequenced": true,
+      "source_error_calls_after_spill": [
+        {
+          "offset": 265,
+          "kind": 20,
+          "symbol": "??0invalid_argument@std@@QAE@PBD@Z"
+        },
+        {
+          "offset": 279,
+          "kind": 20,
+          "symbol": "__CxxThrowException@8"
+        }
+      ]
+    },
+    "unsupported_source_error_after_spill": true,
+    "no_throw_through_naked_frame": true,
+    "no_retain_release_vector_count_or_publication_change": true
+  },
+  "build": {
+    "utc_start": "2026-09-26T08:44:04.258262+00:00",
+    "utc_end": "2026-09-26T08:44:34.244796+00:00",
+    "command": {
+      "argv": [
+        "powershell",
+        "-NoProfile",
+        "-File",
+        "scripts/build.ps1",
+        "-Configuration",
+        "Release"
+      ],
+      "cwd": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values"
+    },
+    "exit": 0,
+    "all_three_ctests_pass": true,
+    "runtime_cases": 0,
+    "new_tracked_tests": false,
+    "inputs_and_prior_artifacts_unchanged": true
+  },
+  "compiler": {
+    "condition": "'$(Configuration)|$(Platform)'=='Release|Win32'",
+    "options": {
+      "AdditionalIncludeDirectories": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-field-values\\include;J:\\PROG\\battlestations-pacific-decompile-cc10-lua-field-values\\build\\win32\\_deps\\lua511-src\\src;J:\\PROG\\battlestations-pacific-decompile-cc10-lua-field-values\\build\\win32\\_deps\\zlib121-src;%(AdditionalIncludeDirectories)",
+      "AdditionalOptions": "%(AdditionalOptions) /external:I \"J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/build/win32/_deps/dxsdk_d3dx-src/build/native/include\"",
+      "AssemblerListingLocation": "$(IntDir)",
+      "BasicRuntimeChecks": "Default",
+      "BufferSecurityCheck": null,
+      "CallingConvention": null,
+      "ExceptionHandling": "Sync",
+      "ExternalWarningLevel": "TurnOffAllWarnings",
+      "FloatingPointModel": "Strict",
+      "ForceConformanceInForLoopScope": null,
+      "InlineFunctionExpansion": "AnySuitable",
+      "LanguageStandard": "stdcpp17",
+      "MinimalRebuild": null,
+      "Optimization": "MaxSpeed",
+      "PrecompiledHeader": "NotUsing",
+      "RemoveUnreferencedCodeData": null,
+      "RuntimeLibrary": "MultiThreadedDLL",
+      "SupportJustMyCode": null,
+      "TreatWChar_tAsBuiltInType": null,
+      "TreatWarningAsError": "true",
+      "UseFullPaths": "false",
+      "WarningLevel": "Level4",
+      "PreprocessorDefinitions": "%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\"",
+      "ObjectFileName": "$(IntDir)",
+      "DebugInformationFormat": "\n      ",
+      "ScanSourceForModuleDependencies": "false"
+    }
+  },
+  "prebuild_inputs": 8,
+  "prebuild_tool_sdk_pins": 27,
+  "compiled": {
+    "path": "local/cc10_texture_source_time_implementation/compiled_evidence.json",
+    "identity": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_texture_source_time_implementation/compiled_evidence.json",
+      "size": 31576,
+      "sha256": "da47b0b817d84ef484e95385bd358a204c22d94bb22545a416e7bf13da2a5bef"
+    },
+    "schedule": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_texture_source_time_implementation/compiled_schedule.json",
+      "size": 3723,
+      "sha256": "434990f87298898ef8f0bad9db4803b229a8f2ac9827fcbcf39947fdd595760a"
+    },
+    "exact_member_schema": "exact_members[]",
+    "function_schema": "compiled_functions[]",
+    "exact_members": [
+      {
+        "member": "native_particle_clock_draw.obj",
+        "identity": {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_texture_source_time_implementation/compiled/build/win32/bsp_core.dir/Release/native_particle_clock_draw.obj",
+          "size": 10156,
+          "sha256": "4096ea93f3ff02f3c4a0e63829d3912a150454f4aa60407f8c2c3010ce0310b7"
+        },
+        "exact_cmake_object_member": true
+      },
+      {
+        "member": "native_texture_source_time.obj",
+        "identity": {
+          "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_texture_source_time_implementation/compiled/build/win32/bsp_core.dir/Release/native_texture_source_time.obj",
+          "size": 802,
+          "sha256": "8df84dc5924ec41dbab6bbd885800059a06475e9215cd48bf67e956dc84d6b64"
+        },
+        "exact_cmake_object_member": true
+      }
+    ],
+    "library": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_texture_source_time_implementation/compiled/build/win32/Release/bsp_core.lib",
+      "size": 71215498,
+      "sha256": "299522d957e1877c2d0c22adade58417d48db019552255e9ebd72630d2f05c86"
+    },
+    "emitted_bodies": 3,
+    "total_emitted_bytes": 429,
+    "body_sizes": [
+      71,
+      74,
+      284
+    ],
+    "original_naked_complete_bytes_equal_old_object_member_and_native": true,
+    "callback_native_full_instruction_order_equivalent_with_declared_source_ABI_changes": true,
+    "FDIVP_opcode": "DEF9",
+    "FDIVP_direction": "ST1/ST0",
+    "no_external_call_or_extra_FP_between_dispatch_FLD_FSTP": true,
+    "callback_argument_transfer_preserves_spilled_32_bits": true,
+    "linked_entry_claim": false
+  },
+  "raw_tool_receipts": [
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_texture_source_time_implementation/raw_build_launch_tool_result.json",
+      "size": 130,
+      "sha256": "81d284ccb118e78176ba82056772cb405a28bb58dc1be6b6e8e33a116ae591ef"
+    },
+    {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_texture_source_time_implementation/raw_build_wait_tool_result01.json",
+      "size": 582,
+      "sha256": "2dfa7cbdd52b3695e293cd893676473dfeaca63f845b28cc8a285c350ef16d6a"
+    }
+  ],
+  "static_inspection_failure": {
+    "status": "static_inspection_filter_assertion_failed",
+    "command": "python local/cc10_texture_source_time_implementation/verify_schedule.py",
+    "exit_code": 1,
+    "exception": "AssertionError at verify_schedule.py:35",
+    "failed_helper": "verify_schedule_attempt1.py",
+    "diagnosis": "Name filter also matched the DIR32 invalid_argument RTTI data relocation. Filter error CALL targets by REL32 kind20; both actual calls remain after FSTP. Full RTTI relocation stays preserved in compiled_evidence.json.",
+    "metadata_origin": "Actual tool transcript, not a reconstructed raw tool wrapper",
+    "production_source_changed_for_inspection": false,
+    "rebuild_or_relink": false,
+    "runtime_cases": 0
+  },
+  "preservation": {
+    "prior_archives": 43,
+    "prior_frozen_files": 1188,
+    "all_unchanged": true
+  },
+  "immutable_readiness": {
+    "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_nonempty_clock_sampler_readiness/evidence.zip",
+    "size": 330141,
+    "sha256": "9b9e7f5fb151967d4cd7b6085dee353233981b66b0b9dbeb0b4c637ac3161072"
+  },
+  "immutable_reviewed_proposal": {
+    "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_texture_source_time_design/proposal.zip",
+    "size": 341366,
+    "sha256": "7b2e89ecc871f583c4ddfb42daf175511042a36ee63550ca2a73be84cacc5fc4"
+  },
+  "original_body_comparison": {
+    "object": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_texture_source_time_implementation/old/native_particle_clock_draw.obj",
+      "size": 797,
+      "sha256": "66d84694a1f8056066884c6ef473f617ba859b56128aa29935a09d43370599fd"
+    },
+    "body": {
+      "object": {
+        "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_texture_source_time_implementation/old/native_particle_clock_draw.obj",
+        "size": 797,
+        "sha256": "66d84694a1f8056066884c6ef473f617ba859b56128aa29935a09d43370599fd"
+      },
+      "name": "?set_native_particle_clock_time_00b19a10@bsp@@YIXPAX0M@Z",
+      "length": 71,
+      "hex": "f30f1044240456578bf98b7708f30f1147188b470c6bc02c03c63bf074248bff8b4e28d944240c8b118b421851d91c24ffd08b4f0c6bc92c034f0883c62c3bf175de5f5ec20400",
+      "relocations": [],
+      "instructions": [
+        {
+          "offset": 0,
+          "mnemonic": "movss",
+          "operands": "xmm0, dword ptr [esp + 4]"
+        },
+        {
+          "offset": 6,
+          "mnemonic": "push",
+          "operands": "esi"
+        },
+        {
+          "offset": 7,
+          "mnemonic": "push",
+          "operands": "edi"
+        },
+        {
+          "offset": 8,
+          "mnemonic": "mov",
+          "operands": "edi, ecx"
+        },
+        {
+          "offset": 10,
+          "mnemonic": "mov",
+          "operands": "esi, dword ptr [edi + 8]"
+        },
+        {
+          "offset": 13,
+          "mnemonic": "movss",
+          "operands": "dword ptr [edi + 0x18], xmm0"
+        },
+        {
+          "offset": 18,
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edi + 0xc]"
+        },
+        {
+          "offset": 21,
+          "mnemonic": "imul",
+          "operands": "eax, eax, 0x2c"
+        },
+        {
+          "offset": 24,
+          "mnemonic": "add",
+          "operands": "eax, esi"
+        },
+        {
+          "offset": 26,
+          "mnemonic": "cmp",
+          "operands": "esi, eax"
+        },
+        {
+          "offset": 28,
+          "mnemonic": "je",
+          "operands": "0x42"
+        },
+        {
+          "offset": 30,
+          "mnemonic": "mov",
+          "operands": "edi, edi"
+        },
+        {
+          "offset": 32,
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [esi + 0x28]"
+        },
+        {
+          "offset": 35,
+          "mnemonic": "fld",
+          "operands": "dword ptr [esp + 0xc]"
+        },
+        {
+          "offset": 39,
+          "mnemonic": "mov",
+          "operands": "edx, dword ptr [ecx]"
+        },
+        {
+          "offset": 41,
+          "mnemonic": "mov",
+          "operands": "eax, dword ptr [edx + 0x18]"
+        },
+        {
+          "offset": 44,
+          "mnemonic": "push",
+          "operands": "ecx"
+        },
+        {
+          "offset": 45,
+          "mnemonic": "fstp",
+          "operands": "dword ptr [esp]"
+        },
+        {
+          "offset": 48,
+          "mnemonic": "call",
+          "operands": "eax"
+        },
+        {
+          "offset": 50,
+          "mnemonic": "mov",
+          "operands": "ecx, dword ptr [edi + 0xc]"
+        },
+        {
+          "offset": 53,
+          "mnemonic": "imul",
+          "operands": "ecx, ecx, 0x2c"
+        },
+        {
+          "offset": 56,
+          "mnemonic": "add",
+          "operands": "ecx, dword ptr [edi + 8]"
+        },
+        {
+          "offset": 59,
+          "mnemonic": "add",
+          "operands": "esi, 0x2c"
+        },
+        {
+          "offset": 62,
+          "mnemonic": "cmp",
+          "operands": "esi, ecx"
+        },
+        {
+          "offset": 64,
+          "mnemonic": "jne",
+          "operands": "0x20"
+        },
+        {
+          "offset": 66,
+          "mnemonic": "pop",
+          "operands": "edi"
+        },
+        {
+          "offset": 67,
+          "mnemonic": "pop",
+          "operands": "esi"
+        },
+        {
+          "offset": 68,
+          "mnemonic": "ret",
+          "operands": "4"
+        }
+      ]
+    },
+    "old_library": {
+      "path": "J:/PROG/battlestations-pacific-decompile-cc10-lua-field-values/local/cc10_clock_publication_cell_probe/before_compile/inputs/build/win32/Release/bsp_core.lib",
+      "size": 71204674,
+      "sha256": "38aee73ee670eeb064ccc3d9afea4565cb4a345e20609f519e5b381a718e3f3d"
+    },
+    "exact_old_member": true,
+    "exact_native71B": true,
+    "limit": "Old object comparison artifact; unrelated old library providers are not current-build inputs"
+  },
+  "new_tests": false,
+  "new_executable": false,
+  "new_fixture_runtime": false,
+  "ghidra_read_only": true,
+  "limits": [
+    "Explicit new source interfaces, not original binary replacements",
+    "No native FH3/SEH/private-stack/hardware-fault identity proof",
+    "No C302A0 zero or positive-child runtime case; full body recovered/static-verified",
+    "C30570 Lua/FPS/real texture-child producer remains separate",
+    "Clock owner/typed vector-header/view lifetime remains separate",
+    "No B1B4D0/B1A4F0/5030/MSG/current online-input/source0W activation",
+    "No full sampler/material/application/startup/draw/original-game proof"
+  ],
+  "doc": "docs/NATIVE_TEXTURE_SOURCE_TIME_CC10.md",
+  "archive": "local/cc10_texture_source_time_evidence.zip",
+  "manifest": "local/cc10_texture_source_time_implementation/manifest.json",
+  "freeze_receipt": "local/cc10_texture_source_time_implementation/freeze_receipt.json"
+}
