@@ -117,3 +117,41 @@ Both sides have every switch as on main, streams on, and one run at a time.
 
 If a behaviour row moves, the unit+C25h lifetime reaches a reader not listed above, and that
 reader is the finding.
+
+## The pair, measured
+
+The logs are `local\DW_OFF_9000.log` / `DW_ON_9000.log` and `DW_OFF_4500.log` / `DW_ON_4500.log`,
+in worktree cc9-circle-steer. All four show the 1600x900 line and a module directory in this tree.
+The whole-log diffs ignore heap pointers, the launcher slot lines, the title-screen alpha, and
+the `ship avoidance search refills` and `pretranslate` counters.
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| `Plane::device_busy_1fc` | UNIMPLEMENTED, 327 049 calls (E2), 183 354 (4500) | gone; its `done` never fires because the cleanup arm is never reached | concrete, tens to about 2 000 calls | **failed**: 0 walks |
+| rack census | - | all 16 Kates `single=1 multi=0` on both missions | one single rack per Kate | held |
+| racks fired / unit+C25h at the end | - | `fired=0` and C25h 0 for every Kate | fired 1 and C25h 1 for each dropping Kate | **failed** |
+| issue-stage lines | - | identical (E2: one `issues` in total over all Kates, `cleanups=0`) | cleanups up for dropping Kates | **failed**: the stage never cleans up |
+| deaths / hits / releases / the Lexington | 51 / 836 / 5 and 3 / 5731.91 (E2) | identical | identical | held |
+| whole log | - | identical apart from the native row, the diagnostic line and the host-method count (543 -> 542 unimplemented on E2) | identical apart from the rows above | held |
+
+**Why the walk is not reached.** In this host the torpedo drops do not come through the
+release-issue stage.
+- The five E2 releases are the torpedo task's own drops (`summary mission torpedo task:
+  releases=5`).
+- 11 of the 16 Kates see no request from `007BBBA0` (`requests_007BBBA0=0`).
+- Five see one request each on E2:
+  - Four of them, #6.1|.-2, #6.1|.-3, #8.1|.-3 and #8.1|.-4, still hold it in unit+C20h at the
+    end. Their stages report 4730-4885 guard-blocked ticks each; when the blocking began
+    relative to the request was not traced.
+  - The fifth, #4.1|.-4, the Kate whose torpedo ran, is issued once. That issue's walk found no
+    droppable device (`fired=0`). The likely cause, not traced, is that the host's device check
+    reads the torpedo ordnance bit and the drop had already cleared it.
+- So unit+C25h is never raised through `007C0EE2`, and the cleanup arm that holds the walk is
+  never entered.
+
+Until the bay path `007BBBA0` -> unit+C20h feeds the stage, the walk is correct but dormant.
+
+**Verdict: `kPlaneDeviceWalkBound` ON.** It changes no row on either mission. It replaces the
+stand-in's constant "not busy", and the ranking's top record, with the image's answer. Its
+behaviour, a torpedo bomber's cleanup held off for good after one drop, is untested here; it
+becomes testable once the release-issue stage issues.

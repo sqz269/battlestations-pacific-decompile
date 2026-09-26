@@ -1,0 +1,89 @@
+{
+  "packet": "cc9_plane_device_walk",
+  "doc": "docs/PLANE_DEVICE_WALK.md",
+  "calls": [
+    {
+      "address": "007CEA8D",
+      "native": "007C0D90",
+      "function": "007CE040",
+      "note": "issue arm: fires the first idle rack through vtable[1F0h] at 007C0E17"
+    }
+  ],
+  "coverage": [
+    {
+      "routine": "007CEB00-007CEB1D (inside 007CE040)",
+      "coverage": "complete"
+    },
+    {
+      "routine": "006E3CD0",
+      "coverage": "complete"
+    },
+    {
+      "routine": "006E4360",
+      "coverage": "complete"
+    },
+    {
+      "routine": "006E3550",
+      "coverage": "complete"
+    },
+    {
+      "routine": "007C0D90",
+      "coverage": "partial: read for the rack walk and the fire call; the level-bomber stagger 007C0E67-007C0EC9 and the 007EEF30 tail are not reconstructed here"
+    }
+  ],
+  "substitutions": [
+    {
+      "what": "rack classes",
+      "is": "DeviceClass Type BombPlatform -> MBombPlatform 25h, MultiBombPlatform -> 26h",
+      "evidence": "names; the device factory mapping is unread"
+    },
+    {
+      "what": "which rack fires",
+      "is": "a single rack while one is unfired",
+      "evidence": "the host keeps no per-plane child list; list order unread"
+    },
+    {
+      "what": "re-equip 007BCB30",
+      "is": "not modelled",
+      "evidence": "only caller 007ED690"
+    }
+  ],
+  "switches": [
+    {
+      "name": "GameUnitsHost::Impl::kPlaneDeviceWalkBound",
+      "state": "ON",
+      "pair": "local/DW_OFF_9000.log vs local/DW_ON_9000.log, local/DW_OFF_4500.log vs local/DW_ON_4500.log: identical apart from the record row"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "006E3CD0",
+      "end_inclusive": "006E3CD6",
+      "evidence": "8A 81 98 04 00 00 C3; INT3 before and after; MBombPlatform vtable 00CF96A8 slot +1FCh (00CF98A4)"
+    },
+    {
+      "start": "006E4360",
+      "end_inclusive": "006E4362",
+      "evidence": "32 C0 C3; INT3 before and after; MMultipleBombPlatform vtable 00CF9918 slot +1FCh (00CF9B14)"
+    },
+    {
+      "start": "006E3550",
+      "end_inclusive": "006E3569",
+      "evidence": "RET 4 at 006E3567; INT3 before and after; slot +1F0h of both rack vtables (00CF9898, 00CF9B08)"
+    }
+  ],
+  "ledger_names_added": [
+    {
+      "address": "006E3CD0",
+      "name": "BSP_MBombPlatform_IsBusy"
+    },
+    {
+      "address": "006E4360",
+      "name": "BSP_MMultipleBombPlatform_IsBusy"
+    },
+    {
+      "address": "006E3550",
+      "name": "BSP_MBombPlatform_Fire"
+    }
+  ]
+}

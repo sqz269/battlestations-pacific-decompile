@@ -3167,8 +3167,9 @@ struct GameUnitsHost::Impl {
     // Packet cc9_plane_device_walk, docs/PLANE_DEVICE_WALK.md: 007CEB00-007CEB1D,
     // the cleanup arm's walk over the rack list asking vtable[1FCh], and the
     // busy byte the fire slot vtable[1F0h] (006E3550) raises at 007C0E17.
-    // OFF: the walk stays the record Plane::device_busy_1fc and nothing is busy.
-    static constexpr bool kPlaneDeviceWalkBound = false;
+    // ON since the pair (identical rows; the walk is not reached here). OFF: the
+    // walk stays the record Plane::device_busy_1fc and nothing is busy.
+    static constexpr bool kPlaneDeviceWalkBound = true;
     // Packet cc9_plane_death_modes: 007CA8A0's death mode, 007CAF10's dead-step
     // terms, the kill that takes the aircraft out of the world, and the release
     // refusal of a dead aircraft (007CEA1C). docs/PLANE_DEATH_MODES.md.
