@@ -85,3 +85,14 @@ measured in that packet). No code change.
   (cc9_gunner_role_take) until 2026-09-26T06:05Z. The binding is a squadron-member candidate list for
   `nf_probe_007f0280` passed at the attackrun heading call site, under `kNearFieldProbeBound`, and
   measured as a pair.
+
+## Correction from docs/FIGHTER_GUNFIRE_CONSUMER.md (packet cc9_fighter_gunfire_consumer)
+
+- **Was:** "Fighter rounds stay 0 in this host (the gunFire consumer is not established)" (section 3).
+  **Is:** the consumer is `007CE9F4` (`docs/PLANE_GUN_PASS.md` section 2), bound under
+  `kPlaneGunfireHooked`. On main `27f082d38`, E2 fires 940 fighter rounds with 86 hits, and the
+  fighters kill five aircraft: three D3A Vals of #1.1 and two of the movieval flight. No
+  fighter hits a Kate.
+  **Evidence:** `local/fgB_e2.log` (`summary mission gunnery plane guns trigger_ticks=1908
+  rounds=940`; five `death row` lines with `killer_cat=0`), and `THR1_9000.log` in the
+  dogfight-engaged tree (1946 category-0 rounds, 96 hits).
