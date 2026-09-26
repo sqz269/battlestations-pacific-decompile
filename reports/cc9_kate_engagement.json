@@ -1,0 +1,16 @@
+{
+  "packet": "cc9_kate_engagement",
+  "doc": "docs/KATE_ENGAGEMENT.md",
+  "calls": [
+    {"address": "007DB6A6", "native": "007DA710", "function": "007DB680", "note": "rate law; the slide term 007DAA3B-007DAA58 reads unit+C68h (007DAA00) and unit+C64h (007DAA23); host passed 0"}
+  ],
+  "switches": [
+    {"name": "kRateLawAttitudeTermsBound", "state": "OFF", "pairs": ["local/KE0_9000.log vs local/KE1_9000.log (slide term only)", "local/KE0b_9000.log vs local/KE1b_9000.log (slide term + gated turn numerator + arm order)"], "reason": "fighters engage Kates (4 Kate kills by fighter guns) but 5 Yorktown fighters reach the water; the terrain arm 0099F1C0 records no tick for any US fighter"},
+    {"name": "kFighterChaseTraceDiag", "state": "OFF", "kind": "diagnostic"}
+  ],
+  "rules_added": [
+    {"name": "yaw_turn_numerator_gated_0099e68d", "address": "0099E68D", "file": "include/bsp/plane_ai_control.hpp"}
+  ],
+  "no_ghidra_function": [],
+  "ledger_names_added": []
+}

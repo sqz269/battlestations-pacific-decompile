@@ -252,6 +252,19 @@ float yaw_turn_numerator_0099e69b(const PilotBotTurnTerm& in) {
     return p - k * x;  // 0099E6CE FSUBR
 }
 
+float yaw_turn_numerator_gated_0099e68d(float demand, const PilotBotTurnTerm& in) {
+    if (demand > 1.0f) {                  // 0099E693 COMISS against 1.0f, JBE past
+        return yaw_turn_numerator_0099e69b(in);
+    }
+    if (-1.0f > demand && in.inverted) {  // 0099E6F6 against -1.0f, 0099E6FB the sign
+        // 0099E703-0099E729: p + class+1D8h * X, the opposite sign of the +1 arm.
+        const float p = in.sin_bank * in.sin_bank * in.cos_pitch * in.slide_ratio * in.yaw_spd;
+        const float x = in.rate_b * (in.speed_factor * 0.9f + 0.1f) * in.cos_bank;
+        return p + in.negative_pitch_ratio * x;
+    }
+    return 0.0f;                          // 0099E72F leaves [ESP+10h] at 0099E3CB's 0
+}
+
 bool stick_override_0099d620(float stick_axis, float* out) {
     if (stick_axis == 0.0f) return false;  // 0099D620 UCOMISS / 0099D627 JNP
     *out = clamp_unit(stick_axis);         // 0099D629-0099D638, bounds -1.0f and 1.0f
