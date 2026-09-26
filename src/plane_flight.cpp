@@ -396,6 +396,38 @@ PlaneDynAccumulators accumulate_free_flight_007db680(const PlaneFreeFlightState&
     return acc;
 }
 
+PlaneBodyVelocityStep integrate_body_velocity_007d8611(const float velocity[3],
+                                                        const float accel_1c[3],
+                                                        const float resist_04[3],
+                                                        const float resist_40[3],
+                                                        float step) noexcept {
+    PlaneBodyVelocityStep out;
+    for (int i = 0; i < 3; ++i) {
+        const float w = velocity[i] + accel_1c[i] * step;          // 007D8647
+        const float b = resist_04[i] * step;                        // 007D8664
+        const float q = resist_40[i] > 0.0f ? resist_40[i] : (-0.0f - resist_40[i]);
+        const float c = q * step;                                   // 007D86A6
+        float v;
+        if (!(w < 0.0f)) {                                          // 007D86B0 JC
+            const float bn = b > 0.0f ? 0.0f : b;                   // 007D86B2
+            const float x = bn + w - c;                             // 007D86CA-007D86D2
+            v = 0.0f > x ? 0.0f : x;                                // 007D86E0
+        } else {
+            const float bp = 0.0f > b ? 0.0f : b;                   // 007D86F5
+            const float y = bp + w + c;                             // 007D870F-007D8717
+            v = y > 0.0f ? 0.0f : y;                                // 007D8723
+        }
+        out.velocity[i] = v;                                        // 007D874B
+    }
+    // 007D8755-007D8774: + dyn+88h..90h, zero here. 007D8777-007D87C2: the
+    // 0.01f deadband, FABS against 00D7A238: only |v| < 0.01f zeroes.
+    for (int i = 0; i < 3; ++i) {
+        const float m = out.velocity[i] < 0.0f ? -out.velocity[i] : out.velocity[i];
+        if (0.01f > m) out.velocity[i] = 0.0f;   // 007D8789 FCOMI, 007D878D JBE keeps equality
+    }
+    return out;
+}
+
 PlaneBodyAcceleration fold_world_into_body_007d8470(const PlaneDynAccumulators& acc,
                                                     const float world_to_body[9]) {
     const auto rotate = [&world_to_body](const float* v, float* out) {
