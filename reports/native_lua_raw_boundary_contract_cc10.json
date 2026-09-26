@@ -1,0 +1,74 @@
+{
+  "packet": "cc10_lua_raw_boundary_contract",
+  "baseline": "fe858cae394ec488a345fea09ff62b13f1b19a36",
+  "change": {
+    "headers": [
+      "include/bsp/native_lua_bootstrap.hpp",
+      "include/bsp/native_lua_file_loading.hpp",
+      "include/bsp/native_lua_service_bindings.hpp"
+    ],
+    "added_line_comments": 14,
+    "non_comment_tokens_unchanged": true,
+    "ABI_and_schedule_unchanged": true,
+    "new_native_bytes": 0
+  },
+  "contract": {
+    "native_raw_fatal_or_current_handler_selection_preserved": true,
+    "direct_fundamentals_getter_Cpp_failure_is_separate": true,
+    "direct_DoFile_override_Cpp_callbacks_have_no_transport": true,
+    "foreign_exception_active_Lua_C_frame_restoration_not_admitted": true,
+    "interrupted_state_reuse_replay_API_or_automatic_close_not_admitted": true,
+    "no_categorical_longjmp_destructor_finally_Activation_claim": true
+  },
+  "validation": {
+    "strict_MSVC_Win32_Release": true,
+    "existing_CTests": [
+      "reconstructed_math",
+      "native_math_differential",
+      "tool_tests"
+    ],
+    "passed": 3,
+    "build_attempts": 1,
+    "new_tests": 0,
+    "Lua_runtime": false,
+    "application_execution": false,
+    "body_provider_guard_pcall_transport_cleanup_changes": false
+  },
+  "readiness": {
+    "proposal": "local/cc10_texture_source_lua_boundary_readiness/PROPOSAL.md",
+    "qualified_archive": "local/cc10_texture_source_lua_boundary_readiness/revision02/evidence.zip",
+    "sha256": "cc385191e99259de78a0d95f894d5caa1f5ca9b2695a7d27d5baaca28ff9278e",
+    "initial_archive_sha256": "2fa19dbdc25e24a358a86b4f94d07d58483ae2eaa9277004ed1ea54a7d5df8d4",
+    "initial_rows": 132,
+    "qualified_rows": 5,
+    "PE_windows": 11,
+    "body_bytes": 1765,
+    "handler_info_bytes": 92,
+    "stdout_disassembly_pages": 12,
+    "instructions": 593,
+    "first_collector_24_page_error_preserved": true,
+    "C_AR_members": 3,
+    "C_COFF_functions": 7,
+    "C_jump_targets": [
+      "_longjmp",
+      "__setjmp3"
+    ],
+    "compiled_scope": "Existing-object inspection at59fc2b66; not new-link, original ABI, actual CRT cleanup or runtime proof"
+  },
+  "implementation_evidence": "local/cc10_lua_boundary_contract_implementation/",
+  "preservation": {
+    "original_readiness_rows": 132,
+    "qualified_rows": 5,
+    "prior_record_packet_rows": 348,
+    "historical09ed_launch_pins": 1684,
+    "unchanged_before_sync": true,
+    "historical_fixture_scope_unchanged": true
+  },
+  "limits": [
+    "C30570 source-owner/reserve/child obligations remain external",
+    "No producer/nonempty/application/MSG/source0/W admission",
+    "No foreign exception restoration or retirement mechanism added",
+    "No Ghidra write, game/DLL/controller/probe launch"
+  ],
+  "doc": "docs/NATIVE_LUA_RAW_BOUNDARY_CONTRACT_CC10.md"
+}

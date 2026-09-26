@@ -27,6 +27,11 @@ int native_lua_panic_00b669c0(lua_State*);
 // does not reset tracking slots or close an earlier state. PC/X360/region chunks
 // use protected calls and ignore statuses; fundamentals uses unprotected call.
 // No added exception rollback or automatic close; DoFile has ZERO upvalues.
+// Raw library/fundamentals errors select the current Lua handler or fatal panic
+// route. Platform pcall protects Lua errors only, with its status ignored.
+// No foreign C++ exception transport is supplied across Lua C call frames.
+// An interrupted state is not admitted for reuse or automatic close merely
+// because a C++ caller catches the exception.
 void open_native_lua_state_00b6a020(NativeLuaStateStorage&,std::uint32_t mask,
     NativeStringStorage&,const NativeLuaBootstrapInputs&);
 } // namespace bsp
