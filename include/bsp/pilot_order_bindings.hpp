@@ -33,6 +33,15 @@ inline constexpr std::uint32_t kPilotOrderClassMoveTo = 0x00E08F68u;
 // kind-7 task 009C3BE0 / 009C3000, and the task's start state. OFF: the native
 // stays unimplemented and no plane holds a moveto task.
 inline constexpr bool kPilotMoveToTaskBound = false;
+
+// Packet cc9_pilot_moveto_task part 1b (docs/PILOT_MOVETO_TASK.md): the two
+// natives the escorts' spawn callback calls before PilotMoveToRange.
+// EntityTurnToEntity 008A0A10, squadron arm only (008A0D6D-008A0DE2): every
+// member re-posed at its own position with a level basis toward the target.
+// UnitSetFireStance 008A6490, squadron arm only: 0071BE80 on the squadron's
+// +348h command block (0084D810), whose predicates are 0084D910/0084D930.
+// OFF: both natives stay unimplemented records.
+inline constexpr bool kMissionTurnAndStanceBound = false;
 // 008A44EF. `retreat`.
 inline constexpr std::uint32_t kPilotOrderClassRetreat = 0x00E08F90u;
 // 008A4900. `land`, SCENE_COMMAND_TYPES row 22.

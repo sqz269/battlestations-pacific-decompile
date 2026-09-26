@@ -78,8 +78,8 @@ is examined before the verdict.
 
 | row | OFF | ON | prediction | verdict |
 | --- | --- | --- | --- | --- |
-| `PilotMoveToRange` native | UNIMPLEMENTED, 9 calls | concrete, 9 calls | routed | held |
-| moveto task records | 0 | 17: each ordered leader in `moveto (moveto)`, each wingman in `follow (moveto)` | 2 per ordered pair | held (one install short of 18, not traced) |
+| `PilotMoveToRange` native | concrete, 9 calls, doing nothing | concrete, 9 calls | routed | the OFF census row was wrong: `handles()` ignored the switch. Part 1b makes an OFF switch leave the native an unimplemented record |
+| moveto task records | 0 | 17: each ordered leader in `moveto (moveto)`, each wingman in `follow (moveto)` | 2 per ordered pair | held: 8 escort pairs give 16, and the ninth call orders `moviefisher`, a single plane, for 1 |
 | every gameplay row | - | identical, distance moved included | identical | held |
 
 **Part 1a is committed OFF,** as the lead briefed. It changes no flight until the tick (part 2) and
@@ -94,3 +94,98 @@ the wingman state (part 3) land.
   - the current state's `vtable[0Ch]`, at `009C3988`.
 - **The moveto state's vtable** begins at `00D20A80`: destructor `009C2DB0`, tick `009C2430` (slot
   `+0Ch`). That is not the generic moveto tick `009C18C0` that the torpedo and dive-bomb tasks run.
+
+## Part 1b: EntityTurnToEntity and UnitSetFireStance
+
+The script calls both from `luaBombersSpawnedLex` (`usn_19_coralus.lua:3086-3098` and the five
+repeats): `EntityTurnToEntity` on the bombers (`unit1`) and the escorts (`unit2`) toward
+`bombertrg`, then `UnitSetFireStance(unit2, 2)` on the escorts. `luaLexKillersSpawned` (1173-1176)
+and the cutscene plane `moviefisher` (2184) also turn. `UnitSetFireStance(Mission.Lex,
+STANCE_HOLD_FIRE)` (867) is at the mission's end.
+
+**`008A0A10` EntityTurnToEntity**, single-player arm (`[00E188A8]+1FE4h` is 0, so the
+session-message arm through `007EDEB0` is not taken):
+- `d = target+FCh - entity+FCh`; `d.y` is zeroed unless a third argument is present and true
+  (`008A0C0A`-`008A0C5F`);
+- the matrix at `esp+34h` is rows (1,0,0), (0,1,0), `d`, position 0, `[+70h]` 1.0, then `0085DC80`
+  orthonormalises it (`008A0C65`-`008A0CE3`, read from the listing);
+- a squadron (`vtable[5Ch](18h)`, `007EFB00` answers 18h, 2, 1, 0) re-poses each of its `+3CCh`
+  members, at most five, at the member's own `+FCh` through member `vtable[88h]`
+  (`008A0D6D`-`008A0DE2`);
+- a plane's `vtable[88h]` is `007C9540`: it copies the matrix to `+74h` and `+674h`, clears the two
+  pose-valid bytes, and calls `(plane+310h)->vtable[0Ch]` = `007BEEE0`, which re-derives attached
+  matrices. It writes no velocity.
+
+**`008A6490` UnitSetFireStance** on a squadron: `vtable[114h]` is `007ECFD0`, the `+348h`
+command block built at `007F4FE3`-`007F5009` by `0084D810` (vtable `00D0BD98`). `0071BE80` asks
+that block's own predicates and stores through the shared senders:
+
+| slot | body | rule |
+| --- | --- | --- |
+| `+24h` | `0084D910` | allowFire for stance 1 or 2 |
+| `+28h` | `0084D930` | allowMove for stance 0, 2 or 3 |
+| `+40h`/`+44h` | `0071DA50`/`0071DAD0` | send; `+64h` `0071D5D0` stores `+3Ch`, `+68h` `0071D5E0` stores `+3Dh` |
+
+The block's defaults (`0084D862`-`0084D8A2`): Behaviour (`+364h`) 0 frees both; any other value
+frees fire only for a fighter class (`[+35Ch]->vtable[18h](13h)`), move only otherwise. An
+escort Zero squadron has Behaviour -1, so it starts with **allowFire 1, allowMove 0**, and stance
+2 sets allowMove 1. A plane's `vtable[114h]` is `0047F180` (`XOR EAX,EAX; RET`), so on a single
+plane the native does nothing.
+
+**Readers of `+3Dh`.** `0080DC70` tests `+3Ch` and `+3Dh` together. `009F83CB` in
+`BSP_Bot_RevalidateCurrentCommand` calls it on `bot+4` for a category 1 or 2 command. The block's
+own `+50h` slot `0084D960` is the same test. Which object a plane bot holds at `+4` is not read
+here, so whether allowMove 0 holds a Zero back in the image is open.
+
+**The binding.** `kMissionTurnAndStanceBound`, squadron arms only:
+- **`run_entity_turn_to_entity`** builds the basis from the leader's position, the stand-in for
+  the squadron's `+FCh` because `007F4580` spawns every member at one matrix. It re-poses each
+  member through `GameUnitsHost::set_unit_world_basis_007c9540`. A plane or ship argument is left a
+  record, because those arms are unread.
+- **`run_unit_set_fire_stance`** keeps the block's two bytes per squadron in the script host,
+  because this host builds no `+348h` block. Nothing in the host reads them yet.
+- **`handles()`** now returns false for a switch that is off, for `PilotMoveToRange` too.
+
+### Predictions for part 1b's pair (written before the runs)
+
+The pair is `kMissionTurnAndStanceBound` OFF against ON, with `kPilotMoveToTaskBound` OFF on both,
+on main `25b5f4fb8`, E2 9000.
+
+| row | OFF | ON prediction |
+| --- | --- | --- |
+| `EntityTurnToEntity` | UNIMPLEMENTED, 18 calls | concrete, 18 calls; 16 squadron turns (8 bomber, 8 escort) plus the `moviefisher` and `LexKillers` calls if they are reached, which log a record |
+| `UnitSetFireStance` | UNIMPLEMENTED, 8 calls | concrete; 8 escort squadrons, allowFire 1->1, allowMove 0->1 |
+| `PilotMoveToRange` | now UNIMPLEMENTED, 9 calls | the same |
+| each turned member's heading at the callback | its spawn heading | level and toward the Lexington (the Town for waves 4-6) |
+| bomber and escort gameplay rows (releases, hits, deaths, distance) | as main | may move within the RNG bands: a bomber's approach starts from a new heading |
+| ship rows and everything not in a turned squadron | as main | within band only through RNG coupling |
+
+### Part 1b's pair, measured
+
+`local\TT_OFF_9000.log` (binary `local\tt_off`) and `local\TT_ON_9000.log` (`local\tt_on`), main
+`25b5f4fb8` plus this change, window 1600x900 in both, the spawn callback at mission frame 500 in
+both, so there is no clock offset.
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| `EntityTurnToEntity` | UNIMPLEMENTED, 18 | concrete, 18; all 18 took the squadron arm; 52 member re-poses | 16 squadron turns plus records | held, and more: `movieval` and the `LexKillers` are squadrons too, so no call fell to the record arm |
+| `UnitSetFireStance` | UNIMPLEMENTED, 8 | concrete, 8; every escort squadron Behaviour -1, fighter, allowFire 1->1, allowMove 0->1 | the same | held |
+| `PilotMoveToRange` | UNIMPLEMENTED, 9 | UNIMPLEMENTED, 9 | the same | held; the `handles()` correction works |
+| turned heading | spawn forward (±0.17, 0, 0.98), heading ±10 deg | forward about (0, 0, -1) | level, toward the Lexington | held. **The turn is about 170 degrees**: every wave spawns flying away from the fleet |
+| plane deaths | 35 | 38: A6M Zero #1.2 wingman, #6.2 and its wingman added; none removed | within band | **moved beyond the band** |
+| torpedo releases | 6 | 3 | within band | moved |
+| dive-bomb releases | 2 | 4 | within band | moved |
+| gunnery shots / hit records | 4597 / 586 | 6316 / 586 | within band | shots moved |
+| plane distance moved | 1168477 | 1089997 | within band | moved |
+| the Lexington's distance moved | 6616 | 3086 | within band | moved |
+| ship-AI plan seeds, approach frames | 1674, 1504 | 3740, 4872 | as main | moved; the ships react to planes that now close on them |
+
+**Verdict: kept OFF.** The pair moves gameplay well beyond the heading and the stance. That was
+expected: a bomber that spawns facing the fleet reaches it about a turn earlier, and the escorts,
+which hold no moveto task while part 1a is off, fly into the fleet's anti-aircraft fire.
+
+**What the pair cannot settle.** `007C9540` writes no velocity, so in both the image and this host
+a turned plane keeps its spawn velocity of about (±12, 0, 66) for its first steps. Whether the
+image's flight model re-derives velocity from the body axes on the next step, and so turns the
+plane at once, is not read. The switch should be judged together with parts 1a, 2 and 3 in the
+final pair, not alone.
