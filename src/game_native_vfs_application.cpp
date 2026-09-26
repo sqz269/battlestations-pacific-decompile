@@ -135,6 +135,10 @@ struct GameNativeVfsApplication::Impl {
         // If this throws, neither the runtime nor A0h can be unwound here:
         // registration may have partially published or registered native state.
         vfs_runtime->construct_and_register_core();
+        // No registry getter is called here. Prepare its stable application
+        // cell/deletion domain before later procedural/sampler registration.
+        auto services = vfs_runtime->borrow_raw_services();
+        singleton_host.bind_resource_registry_domain(services.strings, services.invalid_parameters);
     }
 };
 

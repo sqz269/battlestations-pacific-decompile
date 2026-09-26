@@ -1,0 +1,157 @@
+{
+  "Ghidra_writes": 0,
+  "abi_compatible": false,
+  "approved_readiness_versions": [
+    {
+      "bytes": 128754,
+      "path": "local/effect_program_next_provider_readiness_cc10/evidence.zip",
+      "sha256": "8980b4cb23b5859fc04842c7873dcd9817b98e5389722d1692f9c99267899517"
+    },
+    {
+      "bytes": 117298,
+      "path": "local/effect_program_next_provider_readiness_cc10/revision02/evidence.zip",
+      "sha256": "f1d514d0df22bafed62a57990da3b1913ac5de6ede417f7aa381bccd40c8b248"
+    }
+  ],
+  "baseline": "96e18088621f00d80f86dc9a4d9d19cd087ca5fa",
+  "documentation": "docs/NATIVE_APPLICATION_RESOURCE_REGISTRY_BINDING_CC10.md",
+  "evidence_folder": "local/application_resource_registry_binding_cc10",
+  "excluded": [
+    "application execution",
+    "full procedural/sampler consumer graph",
+    "new runtime failure cases",
+    "newly bound mixed-owner application drain runtime",
+    "native FH3/EH/SEH parity",
+    "source0/W preimage recovery",
+    "platform/XLive activation",
+    "original game"
+  ],
+  "game_validated": false,
+  "implementation": {
+    "approved_diff_additions": 43,
+    "cell_owner": "GameSingletonHost",
+    "context_owner": "GameSingletonHost unique_ptr<NativeResourceRegistryDeleteBindings>",
+    "deletions": 0,
+    "eager_getter": false,
+    "files": [
+      "include/bsp/game_hosts_singletons.hpp",
+      "src/game_hosts_singletons.cpp",
+      "src/game_native_vfs_application.cpp"
+    ],
+    "future_consumers_wired": false,
+    "installation": "GameNativeVfsApplication::Impl::initialize_core after construct_and_register_core returns; exact borrow_raw_services strings/invalid_parameters refs",
+    "lifetime": "host/context and VFS references outlive raw manager drain; host shutdown before member destruction, production host deleted before VFS",
+    "metadata_allocation_failure": "cell and deletion pointer unchanged; existing VFS failure retention applies",
+    "public_cell": "resource_registry_publication_00f8d41c returns exact cell only after owned binding",
+    "reset_or_rollback": false,
+    "same_domains_required": true
+  },
+  "layout_limits": {
+    "combined_integration_rebuilt_by_primary": true,
+    "external_clock_packet_appends_to": 180,
+    "worker_deletion_binding_header_bytes": 176,
+    "worker_offsets_not_immutable_across_later_integration": true
+  },
+  "native_provenance": [
+    {
+      "abi": "no input, EAX actual registry, plain RET; source adds actual manager/publication refs",
+      "accepted_native_pin": {
+        "bytes": 200,
+        "path": "local/effect_program_next_provider_readiness_cc10/collection02/native/00b1b730.bin",
+        "sha256": "bb032fcf785ab485134e3f1b4643154a461e636aaae6c09bfd31f713a09484e4"
+      },
+      "address": "00b1b730",
+      "live_equals_installed": true,
+      "native_bytes": 200,
+      "new_bytes_credit": 0,
+      "role": "existing provider reused unchanged"
+    },
+    {
+      "abi": "ECX registry, flags stack, RET4/EAX captured; source adds EDX binding",
+      "accepted_native_pin": {
+        "bytes": 30,
+        "path": "local/effect_program_next_provider_readiness_cc10/collection02/native/00b1b710.bin",
+        "sha256": "639aaeb12610e072c427d7b8fc7a80e771fe2b1ad74bea561e9ae1783b4ed137"
+      },
+      "address": "00b1b710",
+      "live_equals_installed": true,
+      "native_bytes": 30,
+      "new_bytes_credit": 0,
+      "role": "existing provider reused unchanged"
+    }
+  ],
+  "new_native_byte_coverage": 0,
+  "packet": "cc10_application_resource_registry_binding",
+  "program": "/battlestationspacific.exe",
+  "project": "C:/Users/sqz269/bsp.gpr",
+  "scope_dependencies": {
+    "Packet_A": "integrated before worker baseline",
+    "Packet_B": "external clock singleton deletion; primary rebuilds later180B layout",
+    "platform_snapshots": "installed AlterBSP host-layout fault and separately inspected stock MSIDCRL40#43 dependency gap; legacy candidate under read-only review; no dependency for this binding"
+  },
+  "validation": {
+    "accessor": "COFF emitted53B only; absent linked match",
+    "application_objects": 2,
+    "application_sections_fully_decoded": true,
+    "build": {
+      "bytes": 9769,
+      "path": "local/application_resource_registry_binding_cc10/build01.receipt.json",
+      "sha256": "239b94b8fdecbb24fb8052101bc33b7b1557ad5b105685bba37128bb08664506"
+    },
+    "builds": 1,
+    "closeout_selection_failure_preserved": {
+      "bytes": 487,
+      "path": "local/application_resource_registry_binding_cc10/closeout_attempt01.receipt.json",
+      "sha256": "007365ec312d6204f923ff1e7f2d3b36a115d70ba5e6ec3ff2decd1367b8f3d1"
+    },
+    "collector_failure_preserved": {
+      "bytes": 740,
+      "path": "local/application_resource_registry_binding_cc10/collection_attempt01.receipt.json",
+      "sha256": "70ca3e2ec47102b4686ef94fc33f90ababb6f237a961c44c57f460d65aa2b4a7"
+    },
+    "emitted": {
+      "bytes": 245725,
+      "path": "local/application_resource_registry_binding_cc10/compiled_inspection_v03.json",
+      "sha256": "810c49adc9494da46bc88997f6e2910a66004b1765f2599a77014e91ad028f20"
+    },
+    "emitted_order": {
+      "bytes": 5755,
+      "path": "local/application_resource_registry_binding_cc10/compiled_order_checks.json",
+      "sha256": "ac174a59f7ba3f28365d7fd94e0f53abd0cbdcd612f1d19b61e7d818ecb102ec"
+    },
+    "exact_core_library_provider_members": 3,
+    "existing_CTests_passed": 3,
+    "flags": "/W4 /WX /fp:strict",
+    "full_emitted_COFF_sections": 172,
+    "immutable_inputs": {
+      "bytes": 10825,
+      "path": "local/application_resource_registry_binding_cc10/build01.inputs.json",
+      "sha256": "163ba2a3e333c3aecce516e1e8dab6eca721cb79f957834e35049a66d6a16f1b"
+    },
+    "inspection_failure_preserved": {
+      "bytes": 422,
+      "path": "local/application_resource_registry_binding_cc10/inspection_attempt02.receipt.json",
+      "sha256": "8312cc862c3bcd4468208aa0a600a5aa4e3999c76b1e46e184f2da56dd3dbe08"
+    },
+    "linked_masked_equality_scope": "host destructor314B, binder157B, VFS Impl init627B; linked VFS direct call targets exact binder",
+    "new_runtime": 0,
+    "new_tests": 0,
+    "production_changed_after_build_inputs": false,
+    "provider_linear_decode_limit": [
+      {
+        "bytes": 2977,
+        "decoded_bytes": 2976,
+        "member": "native_singleton_destruction.obj",
+        "symbol": "?delete_current_profile@?A0x7bc20576@bsp@@YIXPAXABUNativeSingletonDeletionBindings@2@II@Z"
+      }
+    ],
+    "rebuilds": 0,
+    "source_order": {
+      "bytes": 2299,
+      "path": "local/application_resource_registry_binding_cc10/source_order_checks.json",
+      "sha256": "2edb64023945bce8ebbda877dd37b22ab917c0c2aa1eb5466fc7f44a9772c03c"
+    },
+    "strict_MSVC_Win32": true,
+    "unique_linked_normal_sections": 3
+  }
+}
