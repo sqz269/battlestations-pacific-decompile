@@ -1,0 +1,67 @@
+{
+  "packet": "cc10_dynamic_vertex_owner_integration",
+  "worker_commit": "620692f2b9a086c2ab49f232485b537b507968c3",
+  "integration": "39f17e0cd4cd8db63335ceec70b094b834659e55",
+  "worker_report": "reports/native_dynamic_vertex_owner_composition_cc10.json",
+  "primary_verification": {
+    "worker_commit": "620692f2b9a086c2ab49f232485b537b507968c3",
+    "archive_sha256": "61d5f5d8db8920430f8271e6662c135a29e0464b09b7b4e8a6b9d7f548527e1f",
+    "archive_members": 57,
+    "manifest_rows_verified": 56,
+    "exact_run_inputs": 10,
+    "provider_sources_compared_worker_git_root": 28,
+    "prior_archives_verified": 24,
+    "historical_hot_manifest_rows_verified": 52,
+    "metadata_only": true,
+    "native_bytes": 234,
+    "native_instructions": 77,
+    "review": [
+      "Full189-line fixture and final documentation reviewed",
+      "Genuine physical/logical/declaration pools and real16MiB HAL buffer; actual renderer1974 and primary/physical registration",
+      "Fixture-only same-address declaration atomic lifetime preparation is explicit and byte preserving; production path remains unvalidated",
+      "Declaration creator release precedes logical retirement; physical creator retained to observed zero and genuine pooled terminal",
+      "Pools, allocator list, support, string pool, COM and owned child closure verified",
+      "No copied original execution, decoder/cache, native EH, full post-effect/startup/draw/gameplay claim"
+    ],
+    "limits": [
+      "source-only composition, not copied-original execution or binary ABI equivalence",
+      "secondary19AC0 only; logical destructor does not remove19B0",
+      "no declaration-name decoder/cache/CRT token initialization or production atomic-admission proof",
+      "no full B4E470/model/camera/source0/initializer/renderer/globalstartup/application/draw/gameplay admission",
+      "no failure, guard mode changes, alternate profile/import epochs, private buffer/device recreation or native FH3/SEH execution",
+      "caller metadata and native unexposed private-stack/argument aliases remain separate; same stable valid pool/storage/provider domains required"
+    ],
+    "production_followup_gap": "Production B4E470 obtains a declaration through B317E0 then immediately admits NativeVertexDeclarationReference. The B48AF0 producer writes DWORD count1 but does not establish the C++ atomic lifetime expected by that companion. This fixture-only placement step does not validate or fix that production producer-to-companion path; a separately reviewed lifetime contract/migration remains required."
+  },
+  "validation": {
+    "metadata_only": true,
+    "worker_strict_win32_ctests": 3,
+    "direct_call_rows_passed": 4,
+    "indirect_calls_reviewed": 1,
+    "real_HAL_source_composition": true,
+    "copied_original_executed": false,
+    "game_validated": false
+  },
+  "ghidra": {
+    "definition_record": "reports/cc10_dynamic_vertex_handler_definition.json",
+    "defined": "00cbd238",
+    "bytes": 10,
+    "exclusive_end": "00cbd242",
+    "native_EH_executed": false
+  },
+  "limits": [
+    "source-only composition, not copied-original execution or binary ABI equivalence",
+    "secondary19AC0 only; logical destructor does not remove19B0",
+    "no declaration-name decoder/cache/CRT token initialization or production atomic-admission proof",
+    "no full B4E470/model/camera/source0/initializer/renderer/globalstartup/application/draw/gameplay admission",
+    "no failure, guard mode changes, alternate profile/import epochs, private buffer/device recreation or native FH3/SEH execution",
+    "caller metadata and native unexposed private-stack/argument aliases remain separate; same stable valid pool/storage/provider domains required"
+  ],
+  "production_followup_gap": "Production B4E470 obtains a declaration through B317E0 then immediately admits NativeVertexDeclarationReference. The B48AF0 producer writes DWORD count1 but does not establish the C++ atomic lifetime expected by that companion. This fixture-only placement step does not validate or fix that production producer-to-companion path; a separately reviewed lifetime contract/migration remains required.",
+  "archive": {
+    "path": "local/cc10-platform-evidence/dynamic-vertex-owner.zip",
+    "sha256": "dca79205ad9765325a60fb83cf7b54e5f388d7cc6f2f680fcbe7346e961475ef",
+    "files": 63,
+    "valid": true
+  }
+}

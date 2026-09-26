@@ -1,0 +1,73 @@
+{
+  "packet": "cc10_procedural_table_lifetime_integration",
+  "worker_commit": "3c94f0800e62b411d3b5f3c241c488b93c019e8d",
+  "integration": "f1a6fab774cc06eefdc772cb7731e3bb4d6454f7",
+  "worker_report": "reports/native_procedural_factory_table_storage_cc10.json",
+  "primary_verification": {
+    "worker_commit": "3c94f0800e62b411d3b5f3c241c488b93c019e8d",
+    "archive_sha256": "5e64d4c8d76e29022b27a5e21c76337635a048de7faf3b1f8aade67d2e70795f",
+    "archive_members": 313,
+    "indexed_files_verified": 312,
+    "prior_indexed_rows_verified": 1187,
+    "readiness_rows_verified": 79,
+    "frozen_current_build_inputs_verified": 8,
+    "coff_sections_verified": 72,
+    "linked_sections_verified": 48,
+    "normal_bytes": 285,
+    "compiler_bytes": 40,
+    "review": [
+      "Complete header/source, native bodies, cleanup map and final documentation reviewed",
+      "Full original probe and instrumentation diff plus full diagnostic revision diff reviewed",
+      "Current slot/profile/target before flags, captured-slot clear after return, C/8/4/0 and current cleanup self order preserved",
+      "Captured publication destroy/free without clearing; borrowed factory lifetimes explicit",
+      "Uninstrumented normal and instrumented post-return mutation PASS; source-only first/second failures and base-profile rejection are separate",
+      "Initial normal exitC0000409 unexplained; later mapping refusal is specific to diagnostic run; copied-native execution inconclusive",
+      "Failed frames and backing retained to explicit ExitProcess; no native EH/full failed-state cleanup claim"
+    ],
+    "copied_original_comparison": "inconclusive",
+    "limits": [
+      "source interfaces are not original register/private-stack ABI replacements",
+      "copied-native equivalence inconclusive; initial fast-fail cause unproved",
+      "source failure injections and explicit diagnostic ExitProcess do not prove native EH or failed-frame CRT cleanup",
+      "COFF/PE section comparison is not a recursive CRT call graph or original ABI proof",
+      "BBC460/base-profile domain excluded; no new count, retain, registry or ownership map",
+      "no table/factory construction, process publication backing, atexit startup, resource34h admission or application/game launch"
+    ]
+  },
+  "validation": {
+    "normal_bytes": 285,
+    "compiler_bytes": 40,
+    "strict_win32_build": true,
+    "integrated_ctests": 3,
+    "direct_tail_full_containment_rows_passed": 8,
+    "indirect_rows_separately_reviewed": 6,
+    "source_normal_and_postreturn_mutation_passed": true,
+    "source_only_failure_checks_passed": true,
+    "copied_original_comparison": "inconclusive",
+    "tracked_tests_added": false,
+    "game_validated": false
+  },
+  "ghidra": {
+    "definition_record": "reports/cc10_procedural_table_lifetime_definitions.json",
+    "defined": {
+      "00bbc890": 31,
+      "00bbc8e0": 31,
+      "00cc4b3e": 10
+    },
+    "worker_evidence_unchanged": true
+  },
+  "limits": [
+    "source interfaces are not original register/private-stack ABI replacements",
+    "copied-native equivalence inconclusive; initial fast-fail cause unproved",
+    "source failure injections and explicit diagnostic ExitProcess do not prove native EH or failed-frame CRT cleanup",
+    "COFF/PE section comparison is not a recursive CRT call graph or original ABI proof",
+    "BBC460/base-profile domain excluded; no new count, retain, registry or ownership map",
+    "no table/factory construction, process publication backing, atexit startup, resource34h admission or application/game launch"
+  ],
+  "archive": {
+    "path": "local/cc10-platform-evidence/procedural-table-lifetime.zip",
+    "sha256": "0f1c0dbe0e4c0f011a28d60fc4e0818245d513473cab5a21fa88260bb5ccce67",
+    "files": 320,
+    "valid": true
+  }
+}

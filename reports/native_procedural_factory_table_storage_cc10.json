@@ -490,32 +490,6 @@
     "BBC460/base-profile domain excluded; no new count, retain, registry or ownership map",
     "no table/factory construction, process publication backing, atexit startup, resource34h admission or application/game launch"
   ],
-  "no_ghidra_function": [
-    {
-      "address": "00BBC890",
-      "end_inclusive": "00BBC8AE",
-      "last_instruction_address": "00BBC8AC",
-      "last_instruction_length": 3,
-      "native_end_exclusive": "00BBC8AF",
-      "reason": "undefined exact live/PE-equal body; primary owns later function definition"
-    },
-    {
-      "address": "00BBC8E0",
-      "end_inclusive": "00BBC8FE",
-      "last_instruction_address": "00BBC8FC",
-      "last_instruction_length": 3,
-      "native_end_exclusive": "00BBC8FF",
-      "reason": "undefined exact live/PE-equal body; primary owns later function definition"
-    },
-    {
-      "address": "00CC4B3E",
-      "end_inclusive": "00CC4B47",
-      "last_instruction_address": "00CC4B43",
-      "last_instruction_length": 5,
-      "native_end_exclusive": "00CC4B48",
-      "reason": "undefined exact live/PE-equal body; primary owns later function definition"
-    }
-  ],
   "normal_bytes": 285,
   "ordered_native_calls": [
     {
@@ -596,10 +570,11 @@
       "bytes": "e8069d0300",
       "contract": "genuine CRT free after normal child return or captured LOW flags test",
       "function": "00BBC890",
-      "kind": "no_ghidra_function",
-      "kind_after_definition": "call",
+      "kind": "call",
       "missing_containment_note": "raw complete decode pins actual mnemonic; callee verification still required",
-      "native": "00BF65AC"
+      "native": "00BF65AC",
+      "historical_kind": "no_ghidra_function",
+      "primary_definition_verified": true
     },
     {
       "actual_mnemonic": "CALL",
@@ -607,10 +582,11 @@
       "bytes": "e8b69c0300",
       "contract": "genuine CRT free after normal child return or captured LOW flags test",
       "function": "00BBC8E0",
-      "kind": "no_ghidra_function",
-      "kind_after_definition": "call",
+      "kind": "call",
       "missing_containment_note": "raw complete decode pins actual mnemonic; callee verification still required",
-      "native": "00BF65AC"
+      "native": "00BF65AC",
+      "historical_kind": "no_ghidra_function",
+      "primary_definition_verified": true
     },
     {
       "actual_mnemonic": "JMP",
@@ -645,10 +621,11 @@
       "bytes": "e9fb1ff3ff",
       "contract": "native FH3 dispatcher evidence only; source exceptions are separate",
       "function": "00CC4B3E",
-      "kind": "no_ghidra_function",
-      "kind_after_definition": "tail_jump",
+      "kind": "tail_jump",
       "missing_containment_note": "raw complete decode pins actual mnemonic; callee verification still required",
-      "native": "00BF6B43"
+      "native": "00BF6B43",
+      "historical_kind": "no_ghidra_function",
+      "primary_definition_verified": true
     }
   ],
   "packet": "cc10_procedural_factory_table_storage",
@@ -766,5 +743,41 @@
     },
     "tracked_tests_added": 0
   },
-  "worker_ghidra_mutations": 0
+  "worker_ghidra_mutations": 0,
+  "historical_worker_missing_functions": [
+    {
+      "address": "00BBC890",
+      "end_inclusive": "00BBC8AE",
+      "last_instruction_address": "00BBC8AC",
+      "last_instruction_length": 3,
+      "native_end_exclusive": "00BBC8AF",
+      "reason": "undefined exact live/PE-equal body; primary owns later function definition"
+    },
+    {
+      "address": "00BBC8E0",
+      "end_inclusive": "00BBC8FE",
+      "last_instruction_address": "00BBC8FC",
+      "last_instruction_length": 3,
+      "native_end_exclusive": "00BBC8FF",
+      "reason": "undefined exact live/PE-equal body; primary owns later function definition"
+    },
+    {
+      "address": "00CC4B3E",
+      "end_inclusive": "00CC4B47",
+      "last_instruction_address": "00CC4B43",
+      "last_instruction_length": 5,
+      "native_end_exclusive": "00CC4B48",
+      "reason": "undefined exact live/PE-equal body; primary owns later function definition"
+    }
+  ],
+  "no_ghidra_function": [],
+  "primary_integration": {
+    "definition_record": "reports/cc10_procedural_table_lifetime_definitions.json",
+    "defined": {
+      "00bbc890": 31,
+      "00bbc8e0": 31,
+      "00cc4b3e": 10
+    },
+    "worker_evidence_unchanged": true
+  }
 }
