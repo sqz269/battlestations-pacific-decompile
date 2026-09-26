@@ -95,3 +95,65 @@ change, which shifts the fighter-kill and loss rows further. Those rows are judg
 
 **The flip rule.** If the sea-loss row holds, all four switches land ON. If it misses,
 `kRateLawAttitudeTermsBound` stays OFF, and the other three are judged on their own rows.
+
+### 4.1 A third build: the gate alone (written before the runs)
+
+`local\ta_gate` has only `kAvoidanceDummyAiGateBound` ON, the other three OFF. It attributes the
+gate's own effect against all OFF:
+- US fighters appear in the avoidance census;
+- terrain ticks rise;
+- US sea losses stay 0;
+- Kate/Val 12-16 each, hit records 450-750, torpedo releases 2-8, Lexington 5.5-7.5 km, no mission
+  end.
+
+The fighter rows move only through the US planes' new gunfire and vehicle avoidance. They are judged
+by band.
+
+All three builds come from `e9a801082` (main), with the harness window defaults.
+
+## 5. The runs, measured
+
+Three builds from main `e9a801082`, E2 9000, `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, module
+directory checked. Every log carries `window resolution override fit: 2560x1440 -> 1600x900`.
+
+| row | all OFF (`TA_OFF`) | gate alone (`TA_GATE`) | all four ON (`TA_ON`) | prediction (all ON) | verdict |
+| --- | --- | --- | --- | --- | --- |
+| US units in the avoidance census | 1 | 5 | 12 | at least 6 | held |
+| terrain ticks / bands / water ticks | 1375 / 4059 / 0 | 1375 / 4059 / 0 | 4787 / 16111 / 0 | above OFF | held (all ON); the gate alone moved none |
+| **US fighter depth kills and sea contacts** | 0 | 0 | **5** (Yorktown sqn02 x3, sqn04 x2) | **0-1** | **missed** |
+| US fighter losses | 1 (Lexington sqn01, gun) | 1 | 5 | 0-4 | missed |
+| Kate death rows with fighter hits | 0 | 0 | 2 | at least 1 | held |
+| Kate deaths by category (0 / 1 / 5 / 6) | 0 / 11 / 1 / 4 | same | 1 / 7 / 0 / 8 | AA 8-16 | held (AA 15) |
+| fighter kills | 5 | 5 | 11 | 4-20 | held |
+| fighter bursts / fire ticks | 6 / 109 | 6 / 109 | 19 / 375 | fire 100-600 | held |
+| Kate / Val deaths | 16 / 16 | 16 / 16 | 16 / 16 | 12-16 each | held |
+| hit records | 636 | 636 | 588 | 450-750 | held |
+| torpedo / dive-bomb releases | 4 / 0 | 4 / 0 | 6 / 2 | 2-8 / 0-4 | held |
+| Lexington moved | 6510 m | 6510 m | 6655 m | 5.5-7.5 km | held |
+| plane distance moved | 1,082,216 m | 1,082,070 m | 1,149,318 m | +-15% | held |
+| mission end | none | none | none | none | held |
+
+**The gate alone** is neutral on every headline row. The US fighters now run the pass: 5 US units
+log gunfire or vehicle ticks. But none comes near the sea without the slide term, so the terrain
+totals do not move. The "terrain ticks rise" prediction for this build missed for that reason.
+
+**All four ON.** The terrain arm now fires for the Yorktown fighters: sqn04 alone logs 1,706 ticks
+and 6,472 bands. Five of them still reach the water, with `min_margin` near -30.
+- The bands are consumed: `0099BF30` moves the pitch, yaw and roll commands out of them.
+- The falling fighters already hold full up stick (`live_pitch` = 1.0, docs/KATE_ENGAGEMENT.md
+  section 5), so a pitch band cannot add anything.
+- A fighter that the slide term pulls down in a steep bank sinks at the pitch limit.
+- The one lever left is the roll command: a roll band that levels the wings. Whether the image's
+  bands, or `0099C129`'s roll fallback, do that for a fighter in this state is the next read.
+
+## 6. Verdict
+
+- **`kAvoidanceDummyAiGateBound` lands ON.** It is the image's gate, and its own pair against all
+  OFF is neutral on every headline row.
+- **`kRateLawAttitudeTermsBound` stays OFF.** With every other switch ON, the sea-loss gate missed:
+  5 against 0-1.
+- **`kFlightIntegratorBound` and `kDogfightThrottleBound` stay ON**, as landed in
+  docs/FLIGHT_INTEGRATOR.md.
+- **Next.** Trace a Yorktown fighter's bank and roll command through its last 20 s with the slide term
+  ON. Does the terrain arm's roll band level it, or does `0099C129` push the roll to the band edge?
+  Then read the roll set's producer in `0099CAB0`.

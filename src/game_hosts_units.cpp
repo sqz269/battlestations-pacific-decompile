@@ -2991,7 +2991,7 @@ struct GameUnitsHost::Impl {
     // 009A17D0's side gate compares unit+54h with the scene's DummyAIEnabled
     // (record+908h, default 3), not with the player's side. OFF: the
     // controlled unit's side stands in, which skips every friendly plane.
-    static constexpr bool kAvoidanceDummyAiGateBound = false;
+    static constexpr bool kAvoidanceDummyAiGateBound = true;
     // Packet cc9_planner_heading_writes (docs/PLANNER_HEADING_WRITES.md): the
     // torpedo states' own heading writes the host never reproduced. The moveto
     // tick 009C18C0 steers at its +2Ch target through 009F9E40 (009C1B23,
