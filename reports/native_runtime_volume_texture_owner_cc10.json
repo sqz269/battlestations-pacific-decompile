@@ -1,0 +1,222 @@
+{
+  "packet": "cc10_runtime_volume_constructor_implementation",
+  "address": "00b3d720",
+  "source_name": "construct_native_runtime_volume_texture_00b3d720",
+  "baseline": "1fedd15749883846ac755e5ecdc2c47c10cb849f",
+  "files": [
+    "include/bsp/native_volume_texture_owner.hpp",
+    "src/native_volume_texture_owner.cpp",
+    "docs/NATIVE_RUNTIME_VOLUME_TEXTURE_OWNER_CC10.md",
+    "reports/native_runtime_volume_texture_owner_cc10.json"
+  ],
+  "native": {
+    "start": "00b3d720",
+    "end_exclusive": "00b3d7a8",
+    "bytes": 136,
+    "instructions": 46,
+    "abi": "ECX owner; INPUT COM/flags stack; EAX SAME owner; RET8",
+    "sha256": "11ccc387c6c10e6a01c5e6b94bfb65b6f493a421fd3c406cf0669ec10cd98a10",
+    "original_PE": {
+      "path": "I:/SteamLibrary/steamapps/common/Battlestations Pacific/battlestationspacific.exe",
+      "bytes": 12223752,
+      "sha256": "b682a82c52f81f957b2c70222077305a933f72481686c88843077f714b956dd6"
+    },
+    "calls": [
+      {
+        "site": "00b3d74a",
+        "target": "00b340a0"
+      },
+      {
+        "site": "00b3d76a",
+        "target": "captured INPUT current table+44"
+      },
+      {
+        "site": "00b3d787",
+        "target": "SAME INPUT fresh current table+34"
+      }
+    ],
+    "normal_branches": 0,
+    "compiler_windows": [
+      {
+        "address": "00cbed80",
+        "end_exclusive": "00cbed88",
+        "bytes": 8,
+        "sha256": "b751ac62e1f820048351fa912fe938b5f4f9d5caebf240a1c218ca5eb0364603",
+        "hex": "8b4dd4e96853e7ff",
+        "kind": "code",
+        "role": "state0 saved-owner cleanup funclet",
+        "instructions": [
+          {
+            "address": "00cbed80",
+            "bytes": "8b4dd4",
+            "instruction": "mov ecx, dword ptr [ebp - 0x2c]"
+          },
+          {
+            "address": "00cbed83",
+            "bytes": "e96853e7ff",
+            "instruction": "jmp 0xb340f0"
+          }
+        ]
+      },
+      {
+        "address": "00cbed88",
+        "end_exclusive": "00cbed92",
+        "bytes": 10,
+        "sha256": "3ba9a6e5cc22dfc34150cf1fe0e674ea8fcec34727888df63756e6c848c88f9e",
+        "hex": "b89c75df00e9b17df3ff",
+        "kind": "code",
+        "role": "FH3 handler stub",
+        "instructions": [
+          {
+            "address": "00cbed88",
+            "bytes": "b89c75df00",
+            "instruction": "mov eax, 0xdf759c"
+          },
+          {
+            "address": "00cbed8d",
+            "bytes": "e9b17df3ff",
+            "instruction": "jmp 0xbf6b43"
+          }
+        ]
+      },
+      {
+        "address": "00df7594",
+        "end_exclusive": "00df759c",
+        "bytes": 8,
+        "sha256": "e0075c3a01a626a8ff17ac9b01e8ab04c5c925c2a0b17a7d8075256e7cb82c58",
+        "hex": "ffffffff80edcb00",
+        "kind": "data",
+        "role": "one-entry unwind map"
+      },
+      {
+        "address": "00df759c",
+        "end_exclusive": "00df75c0",
+        "bytes": 36,
+        "sha256": "3978bdf7028aec79c94a999349d02bfe54880554956b1a5199d6d92041cc3e7d",
+        "hex": "22059319010000009475df00000000000000000000000000000000000000000001000000",
+        "kind": "data",
+        "role": "complete FH3 FuncInfo"
+      }
+    ]
+  },
+  "source_abi": "New MSVC Win32 cdecl five-argument interface; not native RET8/FH3/stack ABI",
+  "exact_schedule": [
+    "capture INPUT",
+    "genuine B340A0 once with SAME serial",
+    "zero source+30 before D618B0",
+    "one plain automatic28B descriptor, no value initialization",
+    "capture INPUT table before guard arm",
+    "current captured table+44 GetLevelDesc(0), HRESULT ignored",
+    "current Width,Height,Depth capture",
+    "Height+28,Width+24,Depth+2C stores",
+    "SAME INPUT fresh current table/+34 GetLevelCount",
+    "mip+14 store before fresh descriptor Format",
+    "Format+18 store",
+    "source cleanup disarm",
+    "return SAME original owner"
+  ],
+  "descriptor_contract": "Raw MSVC volatile DWORD machine-preimage observations; no ISO-defined indeterminate members, numeric validity, HRESULT-success or zero fallback claim; no pointer use after automatic descriptor lifetime ends",
+  "invariants": [
+    "No additional count lifetime/start/reset/retain; producer B340A0 owns same+4 atomic once",
+    "No COM AddRef/Release, pool/index+34 write, current owner+10 receiver substitution or HRESULT branch",
+    "Fresh/fully-retired exclusive aligned atomic backing, SAME live disjoint process serial",
+    "Actual owner/rawfields/context/strings/pool/renderer/metadata retained through reached use and later retirement",
+    "Failed source cleanup B340F0->B33F50 adds no count/COM/pool cleanup; raw slot and retained obligations persist",
+    "Terminal/pool callback, canonical unbind, Entry erasure and caller postcallback completion required before reuse; pool return alone insufficient"
+  ],
+  "validation": {
+    "one_strict_Win32_build": true,
+    "existing_CTests_pass": 3,
+    "newtests": 0,
+    "runtime_cases": 0,
+    "source_exact_frozen_proposal": true,
+    "CMake_unchanged": true,
+    "prebuild_source_rows": 113,
+    "prebuild_tool_SDK_rows": 29,
+    "postbuild_actual_include_rows": 258,
+    "postbuild_includes_not_retroactive_prebuild_seal": true,
+    "full_old_new_AR_members": [
+      1783,
+      1784
+    ],
+    "existing_volume_code_unchanged": {
+      "sections": 15,
+      "bytes": 1033,
+      "all_relocations_equal": true
+    },
+    "existing_EH_tables_unchanged": [
+      {
+        "symbol": "__unwindtable$?destroy_native_volume_texture_00b3eb70@bsp@@YAXPAXAAUNativeVolumeTextureOwnerContext@1@@Z",
+        "bytes": 44,
+        "old_section": 21,
+        "new_section": 24,
+        "bytes_and_relocations_equal": true
+      },
+      {
+        "symbol": "__sehtable$?unwind_owner@?A0xad69e54a@bsp@@YAXPAXAAVNativeStringStorage@2@@Z",
+        "bytes": 28,
+        "old_section": 22,
+        "new_section": 25,
+        "bytes_and_relocations_equal": true
+      }
+    ],
+    "new_entry_bytes": 365,
+    "whole_new_funclet_EH_section_bytes": 52,
+    "new_EH_data_bytes": 44,
+    "all_new_relocations": 11,
+    "physical_COFF_sections": 61,
+    "rp0_zero_physical_bytes": true,
+    "new_emitted_schedule_events": 28,
+    "original_windows": 5,
+    "original_window_bytes": 198,
+    "map_selection": {
+      "B3D720_selected": false,
+      "exact_rows": [
+        " 0001:00238130       ?delete_native_volume_texture_00b3f430@bsp@@YAPAXPAXIAAUNativeVolumeTextureOwnerContext@1@@Z 10239130 f   bsp_core:native_volume_texture_owner.obj",
+        " 0001:00238160       ?destroy_native_volume_texture_00b3eb70@bsp@@YAXPAXAAUNativeVolumeTextureOwnerContext@1@@Z 10239160 f   bsp_core:native_volume_texture_owner.obj",
+        " 0001:00238350       ?unwind_native_volume_texture_base_00b340f0@bsp@@YAXPAXAAVNativeStringStorage@1@@Z 10239350 f   bsp_core:native_volume_texture_owner.obj",
+        " 0001:00238110       ??1OwnerCleanup@?A0xad69e54a@bsp@@QAE@XZ 10239110 f   bsp_core:native_volume_texture_owner.obj",
+        " 0001:00238360       ?unwind_owner@?A0xad69e54a@bsp@@YAXPAXAAVNativeStringStorage@2@@Z 10239360 f   bsp_core:native_volume_texture_owner.obj",
+        " 0001:002b2d40       __unwindfunclet$?destroy_native_volume_texture_00b3eb70@bsp@@YAXPAXAAUNativeVolumeTextureOwnerContext@1@@Z$0 102b3d40 f   bsp_core:native_volume_texture_owner.obj",
+        " 0001:002b2d4d       __ehhandler$?destroy_native_volume_texture_00b3eb70@bsp@@YAXPAXAAUNativeVolumeTextureOwnerContext@1@@Z 102b3d4d f   bsp_core:native_volume_texture_owner.obj",
+        " 0002:000a4a84       __unwindtable$?destroy_native_volume_texture_00b3eb70@bsp@@YAXPAXAAUNativeVolumeTextureOwnerContext@1@@Z 1035ca84     bsp_core:native_volume_texture_owner.obj",
+        " 0002:000a4a8c       __ehfuncinfo$?destroy_native_volume_texture_00b3eb70@bsp@@YAXPAXAAUNativeVolumeTextureOwnerContext@1@@Z 1035ca8c     bsp_core:native_volume_texture_owner.obj",
+        " 0002:000a4ab0       __sehtable$?unwind_owner@?A0xad69e54a@bsp@@YAXPAXAAVNativeStringStorage@2@@Z 1035cab0     bsp_core:native_volume_texture_owner.obj"
+      ]
+    },
+    "selected_existing_provider_linked_sections": 6,
+    "selected_existing_provider_linked_bytes": 731,
+    "all_selected_linked_relocations_resolved_equal": true
+  },
+  "open_boundaries": [
+    "No original byte/register/private FH3/hardware/foreign exception equivalence",
+    "No complete owner/header adoption or concurrency/reuse proof",
+    "No factory B2A5A0/canonical binding/reset-array activation",
+    "No full COM/pool cleanup or descriptor unwritten-value validity",
+    "New constructor unselected in application map; no linked execution/runtime/gameplay credit"
+  ],
+  "evidence": {
+    "directory": "local/cc10_runtime_volume_constructor_implementation",
+    "before_build": "before_build.json",
+    "source_diff": "applied.diff",
+    "raw_physical_sections": "compiled_sections.json",
+    "whole_code": "compiled_code.json",
+    "all_calls": "compiled_calls.json",
+    "schedule": "compiled_schedule.json",
+    "AR_members": "members.json",
+    "compiler": "compiler_commands.json",
+    "actual_includes": "actual_includes_postbuild.json",
+    "build": "build_result.json",
+    "new_link": "new/link",
+    "link_selection": "linked_selection.json",
+    "source_Git": "git_blobs.json",
+    "index": "artifact_index.json",
+    "archive": "evidence.zip"
+  },
+  "preserved_inspection_failures": [
+    "apply_and_seal_attempt01.py and apply_and_seal_tool_result.json: readiness/source path correction; no build",
+    "capture_compiled_attempt01.py and capture_compiled_tool_result.json: plain-text CL.items UTF16 decoding; code/link copies unchanged, no rebuild"
+  ],
+  "ghidra_mutations": 0,
+  "worker_native_ledger_credit": 0
+}
