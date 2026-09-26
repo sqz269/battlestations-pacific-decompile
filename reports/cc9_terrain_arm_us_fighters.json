@@ -6,8 +6,13 @@
   "switches": [
     {
       "name": "kAvoidanceDummyAiGateBound",
+      "state": "ON",
+      "pair": "local/TA_OFF_9000.log vs local/TA_GATE_9000.log (gate alone, neutral)"
+    },
+    {
+      "name": "kRateLawAttitudeTermsBound",
       "state": "OFF",
-      "pair": "pending (runs blocked on the merge question)"
+      "pair": "local/TA_OFF_9000.log vs local/TA_ON_9000.log (all four ON): 5 US sea losses, gate row missed"
     }
   ],
   "no_ghidra_function": [],
