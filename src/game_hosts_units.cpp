@@ -2930,7 +2930,13 @@ struct GameUnitsHost::Impl {
     // until 009C1FD0 becomes reachable.  The blocker for a real before/after is
     // no longer the reading of 009BFEE0 - it is that nothing in this host
     // enters BotStateFollow.  See docs/HANDOFF_PLANE_FOLLOW_REGIMES.md.
-    static constexpr bool kPlaneFormationPlacementEnabled = true;
+    // 2026-09-26, packet cc9_placement_off: OFF by the integrator's ruling. The
+    // kind-7 task (docs/PILOT_MOVETO_TASK.md parts 1-4) now puts the escort Zeros
+    // in a follow state, and the placement pair there (FP_OFF against CS_ON) shows
+    // the follow law holding wingmen at the 95.5 m station with deaths, releases
+    // and Zero deaths in band. The image spawns the wing stacked
+    // (docs/SQUADRON_SPAWN_SEATS.md section 6, dated update).
+    static constexpr bool kPlaneFormationPlacementEnabled = false;
     static constexpr bool kPlaneFollowLawEnabled = true;
     // Packet cc9_plane_follow_law (docs/PLANE_FOLLOW_LAW.md section 14): the
     // image's 009C1FD0 body at all three follow seams - the torpedo follow tick

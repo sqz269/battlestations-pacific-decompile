@@ -115,3 +115,31 @@ the teleported stations, the torpedo and dive-bomb rows move. They are judged by
   1. Does `007DF4F0` separate two aircraft at zero offset?
   2. Do the task-less Zeros have a task, or an escort follow state, in the image?
   3. Why do the Lexington sqn03 and Yorktown sqn04 wingmen not follow in their first 20 s?
+
+### 6a. Verdict update, 2026-09-26: `kPlaneFormationPlacementEnabled` OFF
+
+This update does not replace the verdict above, which stands as the record of its pair. It
+supersedes one bullet: "`kPlaneFormationPlacementEnabled` stays ON".
+- **Why it was kept ON.** The teleport stayed ON because the task-less Zero pairs never
+  separated without it.
+- **What changed.** Parts 1-4 of `docs/PILOT_MOVETO_TASK.md` gave those Zeros the kind-7
+  move-to task: the wingman's follow state, and the leader's circle.
+- **The new pair.** The placement pair in that doc ("The formation placement pair") was
+  measured with every move-to switch ON on both sides:
+  - `local\FP_OFF_9000.log` / `FP_OFF_4500.log` against `local\CS_ON_9000.log` / `CS_ON_4500.log`,
+  - in worktree cc9-circle-steer.
+- **Result.** Without the teleport, the follow law holds each Zero wingman at 91-98 m. The
+  station is 95.5 m. With the teleport the wingman sits at 65-68 m. Deaths, Zero deaths and
+  releases stay in band. The integrator ruled the constant OFF on that evidence. The image
+  spawns the wing stacked (section 1), so OFF is the image's spawn.
+
+**What the pair still shows**, for whoever reads the remaining questions above:
+- **The carrier flights.** Lexington sqn03 and Yorktown sqn04 stay at their stacked 2.8 m from
+  report tick 400 to 1600 without the teleport; with it they sit at 106 m. On both sides the
+  spacing is constant over that span, so those planes are not moving yet. From tick 2400 both
+  separate without the teleport: means 266 m and 181 m. Question 3 above is therefore still
+  open, but only for the time before those flights move.
+- **The Vals.** Their spacing is the same with and without the teleport: means 126-130 m against
+  126-133 m. The teleport is not what separates them in this host. Which gate keeps it from the
+  Vals, or makes it a no-op for them, has not been traced.
+- **Questions 1 and 2** above are not answered by this pair.
