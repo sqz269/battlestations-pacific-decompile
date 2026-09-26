@@ -1,0 +1,80 @@
+{
+  "packet": "cc10_texture_source_producer_integration",
+  "worker_commit": "289408741f5ca6579bbcbd09b496bd193cc6d8d8",
+  "integration": "13c41f6a13b57cdad6694ae4ea9b30e5b50544a9",
+  "worker_report": "reports/native_texture_source_producer_cc10.json",
+  "primary_verification": {
+    "result": "PASS",
+    "worker_commit": "289408741f5ca6579bbcbd09b496bd193cc6d8d8",
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-field-values\\local\\cc10_texture_source_producer_evidence.zip",
+      "sha256": "8616f71c4baa5eb4cc29408e0f2c5785e4aed6b9d81beffb15508d482e44a6d7",
+      "rows": 284,
+      "members": 285
+    },
+    "committed_blobs": 5,
+    "pins": {
+      "sealed_inputs": 37,
+      "tool_and_sdk_pins_prebuild": 27,
+      "preservation_rows": 29
+    },
+    "old_new_selected_members": [
+      12,
+      13
+    ],
+    "raw_sections": 3383,
+    "unchanged_provider_section_sets": 12,
+    "new_member_bytes": 59659,
+    "new_code_sections": 107,
+    "new_unique_code_bytes": 5607,
+    "relevant_unique_section_bytes": 1735,
+    "producer_section_instructions": 400,
+    "cfg_edges": 17,
+    "native_bytes": 804,
+    "native_instructions": 209,
+    "direct_native_calls": 33,
+    "distinct_direct_native_callees": 21,
+    "native_conditional_branches": 11,
+    "unwind_observation_stores": 19,
+    "worker_CTests": 3,
+    "new_runtime_cases": 0,
+    "source_review": "Exact proposal plus overlap-safe copy and required-type alignment; complete native and compiled main/catch/EH listings reviewed.",
+    "limits": "Full supported normal source domain only. New member not selected in existing application link. Float32 temporary spill plus MOVSS bits differs from native direct rate FSTP. No producer runtime, original ABI/private FH3/SEH, unknown/foreign Lua recovery, complete-owner/factory/application/game activation. Incremental native accounting804-53=751; append not counted twice."
+  },
+  "primary_code_verification": {
+    "result": "PASS",
+    "primary_library_member_sha256": "22975e2441ee09c672df4a981aaab16e09753968b378ac746645999ffa6c8475",
+    "code_sections": 107,
+    "unique_code_bytes": 5607,
+    "all_code_bytes_and_relocations_match_worker": true
+  },
+  "annotation": {
+    "address": "00c30570",
+    "name": "BSP_TextureSource_PopulateAnimatedTextures",
+    "previous_name": "FUN_00c30570",
+    "previous_append_comment_preserved": true,
+    "write_lock": true,
+    "saved": true,
+    "export_refreshed": true
+  },
+  "validation": {
+    "worker_CTests": 3,
+    "primary_CTests": 3,
+    "new_runtime_cases": 0,
+    "game_validated": false
+  },
+  "native_accounting": {
+    "total_normal_source_bytes": 804,
+    "previous_append_bytes": 53,
+    "incremental_normal_source_bytes": 751,
+    "new_reconstructed_functions": 1,
+    "new_Ghidra_functions": 0
+  },
+  "limits": "Full supported normal source domain only. New member not selected in existing application link. Float32 temporary spill plus MOVSS bits differs from native direct rate FSTP. No producer runtime, original ABI/private FH3/SEH, unknown/foreign Lua recovery, complete-owner/factory/application/game activation. Incremental native accounting804-53=751; append not counted twice.",
+  "archive": {
+    "path": "local/cc10-platform-evidence/texture-source-producer.zip",
+    "sha256": "869749aace84d50043aa765f01a929edca86fe6639787b2aed740f0c056380ac",
+    "files": 24,
+    "valid": true
+  }
+}
