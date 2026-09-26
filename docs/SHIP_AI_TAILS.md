@@ -357,4 +357,23 @@ E2 (USN04 9200/9000).
 
 ### Results
 
-Pending.
+Builds `af_off` / `af_on`, one tree (`43be33806`), only the switch differs. Window line and
+module directory checked, logs deleted first.
+
+| run | deaths | hit records | end | `ship ai` lines digest | death table digest |
+| --- | --- | --- | --- | --- | --- |
+| USN02 OFF / ON | 22 / 22 | 440 / 440 | 39.65 s both | `19be554862` both | `c6b1476e9c` both |
+| E2 OFF / ON | 43 / 43 | 796 / 796 | - | `1a7c03f25b` both | `c9c78a38b6` both |
+
+**Native table.** It changed only as predicted, plus the message-pump counter:
+* `ShipAiArmTail::after_arm` becomes concrete (145972 on USN02, 109814 on E2);
+* new rows: `step_009de5b0` (166750 / 160908), `00778890`, `007788B0`, `0070D400` and `0070D5D0`
+  concrete; `0070E450` and `009DC2E0` records.
+
+All five predictions held. The heading target, the astern latch and every per-ship line are
+bit-identical: the torpedo override now runs inside the whole pass with the same answers. This
+tree's E2 row (43 / 796) differs from the 2026-09-26 b reference's 35 / 594. Both builds of this
+pair show it, so it comes from the landings since `7c421ba25`, not from this switch.
+
+**Decision: ON.** `kShipAiArmFinalWholeBound` is true. Section 7's own effect waits on `009DC2E0`,
+which still answers a recorded false.

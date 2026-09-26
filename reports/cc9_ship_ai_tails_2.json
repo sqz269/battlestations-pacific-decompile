@@ -1,0 +1,14 @@
+{
+  "packet": "cc9_ship_ai_tails_2",
+  "doc": "docs/SHIP_AI_TAILS.md",
+  "part_a": {
+    "answer": "009DE5B0 (body 009DE5B0..009DF117) runs whole at both arm-final call sites through ship_ai_arm_final_step_009de5b0, sections 1..7, with its host calls resolved; 0070E450 and 009DC2E0 stay records. kShipAiArmFinalWholeBound is ON.",
+    "steps": [
+      {"address": "009ef213", "native": "009de5b0", "function": "009ed6b0", "rule": "the arm tail's final call"},
+      {"address": "009dee1e", "native": "00778890", "function": "009de5b0", "rule": "section 7: leads its formation group"},
+      {"address": "009df0fa", "native": "009dc2e0", "function": "009de5b0", "rule": "section 7: the free-bearing query (recorded false)"}
+    ],
+    "pair": "USN02 9200/9000 and E2 9200/9000, same tree 43be33806, streams on: deaths, hit records, failure time, every ship-ai line and the death tables identical; only the predicted rows changed status"
+  },
+  "ghidra": "read-only; no renames, comments or saves"
+}

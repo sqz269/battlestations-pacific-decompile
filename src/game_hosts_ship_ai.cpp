@@ -232,7 +232,7 @@ inline constexpr bool kShipAiTurnClearanceBound = true;
 // 0070D400, 0070D5D0, 0070E450, 007788B0), handed to 009DC2E0, which stays a
 // recorded false here. False: the partial path torpedo_override_009de8f1
 // (sections 1 and 3..6), as before.
-inline constexpr bool kShipAiArmFinalWholeBound = false;
+inline constexpr bool kShipAiArmFinalWholeBound = true;
 inline constexpr float kTorpedoCollectTimer2 = 2.0f;
 // Packet cc9_station_keeping, docs/STATION_KEEPING.md. True: the follow update's
 // station request 009DA3B0 is stored (blk+38Ch..+3A6h, including blk+39Ch = 0
