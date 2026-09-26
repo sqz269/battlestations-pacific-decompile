@@ -443,6 +443,7 @@ private:
     // 008A4C90 PilotSetTarget. Resolves and reports; see the definition for why
     // it does not yet issue.
     int run_pilot_set_target(GameScriptOrderRow& row);
+    int run_pilot_move_to_range(GameScriptOrderRow& row);
     std::size_t index_of(void* entity) const noexcept;
     std::string name_of(void* entity) const;
 

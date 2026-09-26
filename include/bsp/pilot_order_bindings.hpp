@@ -27,6 +27,12 @@ namespace bsp {
 
 // 008A42A0 and 008A471C both push this; docs/ATTACK_COMMANDS.md names it `moveto`.
 inline constexpr std::uint32_t kPilotOrderClassMoveTo = 0x00E08F68u;
+
+// Packet cc9_pilot_moveto_task (docs/PILOT_MOVETO_TASK.md): PilotMoveToRange
+// 008A4590 wired into the mission host, 0099A170's moveto arm routing to the
+// kind-7 task 009C3BE0 / 009C3000, and the task's start state. OFF: the native
+// stays unimplemented and no plane holds a moveto task.
+inline constexpr bool kPilotMoveToTaskBound = false;
 // 008A44EF. `retreat`.
 inline constexpr std::uint32_t kPilotOrderClassRetreat = 0x00E08F90u;
 // 008A4900. `land`, SCENE_COMMAND_TYPES row 22.

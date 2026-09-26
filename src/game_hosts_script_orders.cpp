@@ -50,6 +50,10 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // of magnitude - 1125 lines across 197 shipped files - and the one USN01
     // actually calls (`native PilotSetTarget argc=2 phase=luaStageInit`).
     {"PilotSetTarget", 0x008a4c90u},
+    // Packet cc9_pilot_moveto_task: the escorts' order in usn_19_coralus.lua
+    // (luaBombersSpawnedLex, difficulty 1-2). Routed only with
+    // kPilotMoveToTaskBound; otherwise it stays a named record.
+    {"PilotMoveToRange", 0x008a4590u},
     // Packet cc8_navigator_path. The navigator sibling cc_lua_navigator left
     // out, with its two per-unit companions: 98, 18 and 18 calls on USN04, and
     // the eight script sites are the Lexington and the Town being told to circle
@@ -1081,6 +1085,63 @@ int GameScriptOrdersHost::run_pilot_set_target(GameScriptOrderRow& row) {
     return 0;  // 00B66400: the binding pushes nothing.
 }
 
+// 008A4590 `PilotMoveToRange(unit, target [, range])`, packet cc9_pilot_moveto_task.
+// The native issues command 00E08F68 (moveto) through 0077D600 with the target
+// descriptor, whose +14h holds the range when exactly three arguments are
+// passed (008A46DC-008A4708, pilot_move_to_range_008a46dc). 0099A170's moveto
+// arm (0099A223-0099A236) takes it without a target precondition and builds
+// the kind-7 task 009C3BE0 -> 009C3000. The squadron fan-out is the same
+// 007ECF80 route PilotSetTarget takes, so every member gets the order and its
+// own task. docs/PILOT_MOVETO_TASK.md.
+int GameScriptOrdersHost::run_pilot_move_to_range(GameScriptOrderRow& row) {
+    if constexpr (!bsp::kPilotMoveToTaskBound) {
+        return 0;
+    }
+    resolve_plane_squadron_members();
+    void* unit = argument_ptr_field(0);
+    if (unit == nullptr) unit = entity_from_argument(0);
+    row.unit_index = index_of(unit);
+    row.unit = name_of(unit);
+    bsp::SceneCommandTarget target = bsp::lua_read_command_target(*this, 1);
+    target.trailing = bsp::pilot_move_to_range_008a46dc(argument_count_, argument_number(2));
+    const std::size_t target_index = target.object != nullptr
+        ? index_of(target.object)
+        : (target.object_id > 0 ? static_cast<std::size_t>(target.object_id - 1)
+                                : ~static_cast<std::size_t>(0));
+    const std::uint32_t target_token = target_index < units_.count()
+        ? static_cast<std::uint32_t>(target_index + 1u) : 0u;
+    const std::uint32_t cls = bsp::kPilotOrderClassMoveTo;
+    std::size_t tasks = 0;
+    auto order_one = [&](std::size_t index, void* handle) {
+        entity_issue_command(handle, cls, target, 1);
+        ScriptOrderAttackCommandHost bot_host(units_, log_, cls, target_token);
+        const std::uint32_t task = bsp::bot_install_command_task_0099a170(
+            static_cast<std::uint32_t>(index + 1u), bot_host);
+        if (task != 0u) {
+            units_.store_unit_attack_command_class(index, cls);
+            units_.store_unit_moveto_range(index, target.trailing);
+            ++tasks;
+        }
+    };
+    if (unit != nullptr && row.unit_index < units_.count()) {
+        order_one(row.unit_index, unit);
+        bsp::PlaneSquadronHostRecord* squadron =
+            bsp::plane_squadron_registry().find_by_member_unit(row.unit_index);
+        if (squadron != nullptr) {
+            for (const std::size_t member : squadron->member_units) {
+                if (member == bsp::kPlaneSquadronNoUnit || member == row.unit_index) continue;
+                order_one(member,
+                          reinterpret_cast<void*>(static_cast<std::uintptr_t>(member + 1u)));
+            }
+        }
+    }
+    log_.notef("  PilotMoveToRange: unit=%s target_token=%u range=%.1f -> %zu moveto task(s) "
+        "(008A4590 -> 0077D600 00E08F68 -> 0099A170 -> 009C3BE0)",
+        row.unit.empty() ? "(unresolved)" : row.unit.c_str(),
+        static_cast<unsigned>(target_token), static_cast<double>(target.trailing), tasks);
+    return 0;  // the binding pushes nothing
+}
+
 int GameScriptOrdersHost::argument_integer(int index) {
     if (state_ == nullptr) return 0;
     const int slot = stack_slot(index);
@@ -1527,6 +1588,8 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
     int results = 0;
     if (std::strcmp(binding->name, "PilotSetTarget") == 0) {
         results = run_pilot_set_target(row);
+    } else if (std::strcmp(binding->name, "PilotMoveToRange") == 0) {
+        results = run_pilot_move_to_range(row);
     } else if (std::strcmp(binding->name, "NavigatorAttackMove") == 0) {
         results = bsp::lua_binding_navigator_attack_move(*this, *this);
     } else if (std::strcmp(binding->name, "NavigatorMoveOnPath") == 0) {
