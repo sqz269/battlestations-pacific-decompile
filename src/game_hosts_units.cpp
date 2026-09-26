@@ -2973,8 +2973,9 @@ struct GameUnitsHost::Impl {
     // squadron, so it walks the squadron's +3D0h member array (+3CCh entries,
     // 007F0481), skipping the unit itself and with no kind filter. The host's
     // copy of that array is the squadron registry's member_units. OFF: the
-    // probe product is 0 (the planner-heading-writes substitution).
-    static constexpr bool kAttackRunSquadronProbeBound = false;
+    // probe product is 0 (the planner-heading-writes substitution). ON on the
+    // pair ASP0/ASP1 (docs/ATTACKRUN_SQUADRON_PROBE.md section 4).
+    static constexpr bool kAttackRunSquadronProbeBound = true;
     struct PlannerModeCount { unsigned long long n[4]{}; };
     std::map<std::string, PlannerModeCount> planner_mode_census;
     // DIAGNOSTIC: every kFighterAccelTraceEvery lead ticks one line per

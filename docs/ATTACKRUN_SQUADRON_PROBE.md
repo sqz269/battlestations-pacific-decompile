@@ -2,7 +2,7 @@
 
 2026-09-25. Names are hypotheses. This binds the list read in docs/E2_RELEASE_BISECT.md section 4 and
 replaces the substitution of docs/PLANNER_HEADING_WRITES.md section 4 (probe product 0). The switch is
-committed **OFF**; the pair has not run (the session is disconnected).
+committed OFF first and landed ON on the pair in section 4.
 
 ## 1. What the image does
 
@@ -64,3 +64,30 @@ writes ON), E2 9000, `BSP_GUNNERY_RNG_STREAMS=1`. The expectations come from the
 
 The leaders weave, so their aim entry shifts. Every later draw shifts with it, so the kill rows are
 judged by band.
+
+## 4. The pair, measured
+
+`local\ASP0_9000.log` (binary `local\asp0`, switch OFF) and `local\ASP1_9000.log` (`local\asp1`,
+switch ON), built from main `51e22e56d`, module directory checked in both.
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| probe units / calls | 0 / 0 | 4 / 302 | 4 / 200-320 | held |
+| non-zero products | 0 | **302 of 302** | 15-60 % | **missed, high** |
+| largest raw offset | 0 | 0.0706 rad | 0.05-0.30 rad | held |
+| Kate / Val deaths | 16 / 16 | 16 / 16 | 12-16 / 12-16 | held |
+| hit records | 555 | 586 | 450-700 | held |
+| torpedo / dive-bomb releases | 4 / 0 | 5 / 0 | 2-8 / 0 | held |
+| Lexington moved | 6285.94 m | 6281.42 m | 5.5-7.5 km | held |
+| planner yaw base zeroed thinks | 10,100 | 10,300 | 7,000-13,000 | held |
+| mission end | none | none | none | held |
+
+**Why every call finds a mate.** The four leaders fly the attackrun with their three wingmen still in
+follow, holding station inside 80 m laterally and 120 m fore and aft. So the box is never empty. The
+product stays small, and the largest offset is about 4 degrees. The leaders weave slightly on the
+run-in, as the image's own formula asks, instead of flying straight.
+
+The OFF side differs from `local\PHW1_9000.log` (hit records 555 against 588) because main moved
+between the two builds. Only same-tree rows are compared here.
+
+**Verdict:** `kAttackRunSquadronProbeBound` lands **ON**.
