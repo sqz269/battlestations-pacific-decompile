@@ -307,3 +307,37 @@ LargePlaneTravelAlt `+360h` (1400) for a level bomber or large recon, plus 0.6 Ã
 
 **Open, for the final all-on pair.** Does the flight model re-derive velocity from the body axes on
 the step after a turn? Part 1b's `007C9540` writes no velocity.
+
+### Part 2's pair, measured
+
+`local\MT_OFF_9000.log` (binary `local\mt_off`) and `local\MT_ON_9000.log` (`local\mt_on`).
+Both sides are built from `0e94d176b` with `kPilotMoveToTaskBound` ON and differ only in
+`kMoveToTaskTickBound`. The window is 1600x900 in both, and the spawn callback runs at the same
+mission frame, so there is no clock offset.
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| moveto task records | 17 | 17 | 17 | held |
+| `moveto task` summary | absent | 17 tasks, 49304 ticks, 14 state changes, 10 arrivals | 9 leaders in moveto, 8 wingmen in follow | held |
+| arrival radius | - | inner = 150.0: the Zero's MaxSpd is 83.33 = ReferenceSpeed, so the ratio is 1 | about 150 Ã— max(1, MaxSpd / 83.3) | held |
+| arrivals | none | 8 escort leaders at 122-143 m, plus 2 wingmen promoted after their leaders died | the early waves' leaders | held, and wider: every wave arrived within 450 s |
+| state changes | none | 8 moveto->circle; 4 follow->moveto from promotion (`007B8AD0` turns true) and 2 of those then arrive | one per arrived leader | held; promotion was not predicted |
+| `BotStateMoveToCircle::steer` | absent | 13571 records | recorded after arrivals | held |
+| plane deaths | 35 | 42: seven escort Zeros added (#2.2, #3.2 and #5.2 with their wingmen, and #7.2), none removed | may rise | held in direction; the size is well beyond the band |
+| hit records | 595 | 705 | within band | moved, from the added Zero deaths |
+| torpedo / dive releases | 5 / 2 | 6 / 1 | within band | held |
+| the Lexington's distance moved | 6641 | 6145 | within band | held |
+
+**What the pair shows.**
+- **Leaders fly to the ordered ship.** Every escort leader, moving at about 805 m, closes to about
+  130 m of it and arrives.
+- **Then they leave the fight.** With the circle steer a record, nothing writes their heading after
+  arrival, so they fly straight on; four end 20-31 km away.
+- **Why the deaths rise.** The Zeros that died are the ones the tick took into the fleet's
+  anti-aircraft fire.
+- **Waiting on part 3.** The wingmen's follow tick is a record, so they still run the task-less arms
+  and do not stay with their leaders; the wingmen of waves 1, 4, 6 and 8 end 31-40 km out. Part 3
+  binds that state.
+
+**Kept OFF**, as briefed. The circle steer (`009FBB20`) matters as soon as a leader arrives. The
+final all-on pair should be read with that record in view.
