@@ -20,6 +20,11 @@ public:
 
     // Activate around every synchronous Lua execution entry. Nested scopes,
     // including scopes for a different bundle, restore the preceding binding.
+    // DoFile/override callbacks directly invoke the genuine C++ services; this
+    // bridge has no catch/exception transport into Lua. Its normal scope
+    // restoration does not qualify interrupted Lua C frames or nonlocal
+    // transfer cleanup. Retained backing is diagnostic only; do not resume it
+    // without a separately established restoration/retirement contract.
     class Activation final {
     public:
         explicit Activation(NativeLuaServiceBindings& binding) noexcept;

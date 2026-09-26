@@ -18,6 +18,10 @@ struct NativeLuaFileServices {
 // Early returns retain a returned stream. Read count/load status ignored;
 // decrement references+04, dispatch current+00 at zero, then unprotected Lua
 // call and free. Live length reads and signed32/unsigned64 loop comparison.
+// Raw Lua errors retain current-handler/fatal selection. Neither parser status
+// nor a C++ service exception is converted to a successful file result.
+// An exception escaping through Lua C frames does not establish a reusable
+// state; existing C++ cleanup is not proof of Lua protection/stack restoration.
 void load_native_lua_chunk_00b66ca0(NativeLuaStateStorage&,const NativeString&,
     std::uint32_t obfuscated,const NativeLuaFileServices&);
 // Full B69D40 disk extent. Initial chunk then current manager's override
