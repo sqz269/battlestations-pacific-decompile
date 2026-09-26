@@ -79,3 +79,8 @@ left is a low-speed stall inside aim with the direct throttle wired.
   cc9_pilot_surface_climbout). So the +0.78 pitch is probably the climb-out law pulling up at low
   height, not aim's `009F9ED0`, and the loss is a climb-out at a speed too low to climb. Read that
   law's speed gate against the direct throttle's value on leaving aim first.
+
+**Correction (packet cc9_climbout_speed_gate).** The last bullet above is wrong. There is no
+climb-out law. `cmd_alt` in the surface census is the stale moveto altitude command, because aim does
+not write it. The +0.79 pitch is aim's own cap `class+1E4h` = 0.78 from `009F9ED0`. See
+docs/CLIMBOUT_SPEED_GATE.md.
