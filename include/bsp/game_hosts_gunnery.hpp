@@ -592,6 +592,13 @@ public:
     // before the first rebuild or for a side with no slot.
     bool recon_triple_units(int side, int triple, std::vector<std::size_t>& out) const;
 
+    // Packet cc9_component_failures: true while unit `unit_index` carries an active
+    // failure of that name in its repair task (task+18h), started by 0093BED0 and
+    // retired by 0093C520. "SteeringJam" and "EngineJam" are the ones 008198A0
+    // turns into unit+9E4h / unit+9E5h through messages 6Bh / 6Ch, the flags the
+    // ship motion reads; this host applies "Explosion" and "Fire" itself.
+    bool unit_failure_active(std::size_t unit_index, const char* name) const;
+
     // 00727BD0 over the authored preference lists, then the twelve per-unit
     // category lists through 00956C20's sequence, then 00864BD0 on every unit
     // that ended with at least one gun. Runs once, after the first create_units.
