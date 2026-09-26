@@ -22,6 +22,7 @@
 #include "bsp/ship_class_fields.hpp"
 #include "bsp/game_hosts_menu.hpp"
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/game_hosts_world.hpp"
 #include "bsp/game_hosts_ai.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
 
@@ -2325,6 +2326,29 @@ public:
         return m[static_cast<std::size_t>(index)];
     }
     std::size_t list_size(bsp::UnitPickList list) override {
+        if constexpr (kReconUnitListSourcesBound) {
+            // Packet cc9_recon_call_sites: 00526E01 reads the head at
+            // game+1974h, the list game+1970h (walk 0's everything-not-
+            // ordnance), and 00526FF1 the head at game+19BCh, the list
+            // game+19B8h (walk 1's 35h and objective-set units, then the
+            // merge of ships, squadrons, airfields, shipyards and forts).
+            // 004C3CB0 built both once after the load; the tests after the
+            // list are 00526A40's own (bsp::unit_pick_00526a40).
+            team_.clear();
+            const bsp::LocalPlayerUnitLists* lists = game_local_player_unit_lists();
+            const bool team = list == bsp::UnitPickList::TeamUnits;
+            const char* name = team ? "UnitPickScreen::list_1970" : "UnitPickScreen::list_19b8";
+            const std::uint32_t site = team ? 0x00526e01u : 0x00526ff1u;
+            if (lists == nullptr) {
+                owner_.record(name, site);
+                return 0;
+            }
+            const auto& source = (*lists)[static_cast<std::size_t>(team
+                ? bsp::LocalPlayerUnitList::kWalk0Rest : bsp::LocalPlayerUnitList::kMerged)];
+            for (const bsp::UnitRef ref : source) team_.push_back(static_cast<std::size_t>(ref));
+            owner_.done(name, site);
+            return team_.size();
+        }
         if (list == bsp::UnitPickList::Kind35) {
             // SUBSTITUTION: game+19BCh, 004C3CB0's second-walk list of kind-35h
             // and grey-arrow units (team record +DE8h), is not built: empty.

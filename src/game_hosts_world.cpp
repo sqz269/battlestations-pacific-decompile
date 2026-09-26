@@ -10,6 +10,7 @@
 #include "bsp/game_hosts_world.hpp"
 
 #include "bsp/game_hosts.hpp"
+#include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/game_hosts_units.hpp"
 
 #include "bsp/in_mission_subsystem_tick.hpp"
@@ -18,11 +19,31 @@
 #include "bsp/unit_instance.hpp"
 #include "bsp/world_entity_update.hpp"
 
+#include <array>
 #include <cstdio>
 #include <stdexcept>
+#include <string>
 #include <vector>
 
 namespace bsp::game {
+
+namespace {
+// Packet cc9_recon_call_sites: the lists of the world host that built last.
+const bsp::LocalPlayerUnitLists* g_local_player_unit_lists = nullptr;
+}  // namespace
+
+const bsp::LocalPlayerUnitLists* game_local_player_unit_lists() noexcept {
+    return g_local_player_unit_lists;
+}
+
+bool game_local_recon_triple(const GameUnitsHost& units, int triple,
+    std::vector<std::size_t>& out) {
+    out.clear();
+    const GameGunneryHost* gunnery = units.gunnery();
+    if (gunnery == nullptr || !units.controlled_bound()) return false;
+    const int side = units.unit_side_0054(units.controlled_index());
+    return gunnery->recon_triple_units(side, triple, out);
+}
 
 struct GameWorldHost::Impl {
     Impl(GameHostLog& log_in, GameUnitsHost& units_in) : log(log_in), units(units_in) {}
@@ -46,6 +67,9 @@ struct GameWorldHost::Impl {
     bsp::UnitListsGate gate{};
     bool logged_empty_interpolators{false};
     bool logged_walk_sources{false};
+    // Packet cc9_recon_call_sites census: each walk's triple size when the
+    // body ran (-1: not published).
+    int walk_triple_sizes[4]{-1, -1, -1, -1};
 
     void record(const char* method, std::uint32_t address) {
         char text[16];
@@ -145,6 +169,32 @@ public:
     }
 
     const std::vector<bsp::UnitRef>& registry_walk_units(bsp::UnitRegistryWalk walk) override {
+        // Packet cc9_recon_call_sites: the walk's list head is triple
+        // `walk` of the local slot's recon record (the enum values are the
+        // triple numbers 0, 1 and 3). The walk visits it in list order, and
+        // every test between the triple and the eight lists is 004C3CB0's own
+        // (bsp::classify_walk{0,1,2}_unit).
+        const int triple = static_cast<int>(walk);
+        if (triple >= 0 && triple < 4) {
+            std::vector<std::size_t> units;
+            const bool published = game_local_recon_triple(owner_.units, triple, units);
+            owner_.walk_triple_sizes[triple] = published ? static_cast<int>(units.size()) : -1;
+            if constexpr (kReconUnitListSourcesBound) {
+                static constexpr std::uint32_t kSite[4] = {
+                    0x004c3cf8u, 0x004c3d61u, 0u, 0x004c3eb4u};
+                static const char* const kName[4] = {"UnitLists::recon_walk0_own",
+                    "UnitLists::recon_walk1_enemy", "", "UnitLists::recon_walk2_unknown"};
+                auto& out = recon_[static_cast<std::size_t>(triple)];
+                out.clear();
+                if (!published) {
+                    owner_.record(kName[triple], kSite[triple]);
+                    return out;
+                }
+                for (const std::size_t u : units) out.push_back(static_cast<bsp::UnitRef>(u + 1));
+                owner_.done(kName[triple], kSite[triple]);
+                return out;
+            }
+        }
         if (walk == bsp::UnitRegistryWalk::kWalk0) {
             if (!owner_.logged_walk_sources) {
                 owner_.logged_walk_sources = true;
@@ -202,6 +252,7 @@ private:
     GameWorldHost::Impl& owner_;
     std::vector<bsp::UnitRef> walk0_;
     std::vector<bsp::UnitRef> empty_;
+    std::array<std::vector<bsp::UnitRef>, 4> recon_{};
 };
 
 }  // namespace
@@ -213,7 +264,9 @@ private:
 GameWorldHost::GameWorldHost(GameHostLog& log, GameUnitsHost& units)
     : impl_(std::make_unique<Impl>(log, units)) {}
 
-GameWorldHost::~GameWorldHost() = default;
+GameWorldHost::~GameWorldHost() {
+    if (g_local_player_unit_lists == &impl_->lists) g_local_player_unit_lists = nullptr;
+}
 
 void GameWorldHost::build_entity_chains_009037f0() {
     Impl& host = *impl_;
@@ -271,6 +324,27 @@ void GameWorldHost::build_local_player_unit_lists_004c3cb0() {
         host.summary.list_counts[0], host.summary.list_counts[1], host.summary.list_counts[2],
         host.summary.list_counts[3], host.summary.list_counts[4], host.summary.list_counts[5],
         host.summary.list_counts[6], host.summary.list_counts[7]);
+    // Packet cc9_recon_call_sites census: what each triple held when the body
+    // ran, and who is in the two lists the pick screen reads.
+    g_local_player_unit_lists = &host.lists;
+    host.log.notef("local-player unit lists sources: recon_bound=%d triples own=%d enemy=%d "
+        "unknown=%d (-1 = not published) at mission clock %.2f",
+        kReconUnitListSourcesBound ? 1 : 0, host.walk_triple_sizes[0],
+        host.walk_triple_sizes[1], host.walk_triple_sizes[3], host.units.mission_clock());
+    for (const bsp::LocalPlayerUnitList list :
+         {bsp::LocalPlayerUnitList::kWalk0Rest, bsp::LocalPlayerUnitList::kMerged}) {
+        std::string names;
+        for (const bsp::UnitRef ref : host.lists[static_cast<std::size_t>(list)]) {
+            const GameUnitRow* row = host.units.unit_row(static_cast<std::size_t>(ref) - 1);
+            if (!names.empty()) names += ',';
+            names += row != nullptr ? row->name : std::string("?");
+            names += '/';
+            names += std::to_string(host.units.unit_side_0054(static_cast<std::size_t>(ref) - 1));
+        }
+        host.log.notef("local-player unit list %s: %s",
+            list == bsp::LocalPlayerUnitList::kWalk0Rest ? "game+1970h" : "game+19B8h",
+            names.empty() ? "(empty)" : names.c_str());
+    }
 }
 
 void GameWorldHost::log_frame(unsigned long long mission_frame) {

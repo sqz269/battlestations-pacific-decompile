@@ -7,6 +7,7 @@
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_menu.hpp"
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/game_hosts_world.hpp"
 
 #include "bsp/camera_projection.hpp"
 #include "bsp/gui_aspect_extent.hpp"
@@ -225,6 +226,22 @@ public:
     }
 
     void* team_unit_list_head(int team_index) override {
+        if constexpr (kReconUnitListSourcesBound) {
+            // Packet cc9_recon_call_sites: 005C1610 loads the head of the
+            // local slot's union triple (+E08h, head +E0Ch), which 008073C0
+            // rebuilds every refresh: own, enemy, neutral and unknown in
+            // that order. The tests after the list are 005C1628..005C1675's
+            // (bsp hud_minimap walk). A node is an entry of `union_`.
+            static_cast<void>(team_index);
+            union_.clear();
+            if (owner_.units == nullptr
+                || !game_local_recon_triple(*owner_.units, 4, union_)) {
+                owner_.record("HudMinimap::union_triple", 0x005c1610u);
+                return nullptr;
+            }
+            owner_.done("HudMinimap::union_triple", 0x005c1610u);
+            return union_.empty() ? nullptr : static_cast<void*>(union_.data());
+        }
         // [[[00E188A8 + 18ECh*4 + 18CCh] + 30h] + E0Ch]. Nothing in this process
         // fills the local player's unit registry, which is the same stand-in
         // milestone 2i records for walk 0 of 004C3CB0: the executable hands the
@@ -235,10 +252,19 @@ public:
         return &owner_.handles[0];
     }
     void* team_unit_list_next(void* node) override {
+        if constexpr (kReconUnitListSourcesBound) {
+            std::size_t* entry = static_cast<std::size_t*>(node) + 1;
+            return entry < union_.data() + union_.size() ? static_cast<void*>(entry) : nullptr;
+        }
         const std::size_t next = owner_.index_of(node) + 1;
         return owner_.handle_for(next);
     }
-    void* team_unit_list_unit(void* node) override { return node; }
+    void* team_unit_list_unit(void* node) override {
+        if constexpr (kReconUnitListSourcesBound) {
+            return owner_.handle_for(*static_cast<std::size_t*>(node));
+        }
+        return node;
+    }
 
     bool unit_is_alive_and_visible(void* unit) override {
         // 005C1628..005C164A, the same four bytes 0043F080 tests.
@@ -385,6 +411,8 @@ public:
 
 private:
     GameHudMinimapHost::Impl& owner_;
+    // Packet cc9_recon_call_sites: the union triple the walk is over.
+    std::vector<std::size_t> union_;
 };
 
 }  // namespace

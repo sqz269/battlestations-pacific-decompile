@@ -28,6 +28,8 @@
 // docs/LOCAL_PLAYER_UNIT_LISTS.md, docs/IN_MISSION_SUBSYSTEM_TICK.md,
 // docs/GAME_EXECUTABLE.md.
 
+#include "bsp/local_player_unit_lists.hpp"
+
 #include <cstddef>
 #include <cstdint>
 #include <memory>
@@ -35,6 +37,29 @@
 #include <vector>
 
 namespace bsp::game {
+
+// Packet cc9_recon_call_sites (docs/RECON_CALL_SITES.md). True: 004C3CB0's three
+// registry walks read the local slot's recon triples 0, 1 and 3 (heads +DDCh,
+// +DE8h, +E00h at 004C3CF8/004C3D61/004C3EB4) from
+// GameGunneryHost::recon_triple_units; the 29h pick screen reads the lists
+// that body built (game+1974h at 00526E01, game+19BCh at 00526FF1); the
+// minimap walks the union triple 4 (+E0Ch at 005C1610). False: the stand-ins
+// (walk 0 = every created unit, walks 1/2 empty, the pick's own-party filter,
+// the minimap over every unit).
+inline constexpr bool kReconUnitListSourcesBound = false;
+
+// The eight lists the last 004c3cb0 body built ([00E188A8]+1964h..+19B8h, a
+// field of the process-wide game object); nullptr before the first build or
+// after the world host is gone.
+const bsp::LocalPlayerUnitLists* game_local_player_unit_lists() noexcept;
+
+// The local slot's recon triple `triple` (0 own, 1 enemy, 3 unknown, 4 union)
+// as unit indices. SUBSTITUTION: the slot is [game+18CCh + game+18ECh*4]+30h
+// in the image; here it is the side (+54h) of the controlled unit. False when
+// there is no controlled unit, no gunnery host or no published triple.
+class GameUnitsHost;
+bool game_local_recon_triple(const GameUnitsHost& units, int triple,
+    std::vector<std::size_t>& out);
 
 class GameHostLog;
 class GameUnitsHost;
