@@ -251,3 +251,26 @@ Two builds of this tree differing only by the switch, `BSP_GUNNERY_RNG_STREAMS=1
   - `casts` differing from `messages` by more than the 161 late messages;
   - `trigger_ticks` above 0;
   - a moved line on USN02.
+
+### 6.4 The pairs and the verdict
+
+Tree `1cab77c2c`, `local\seg_off` against `local\seg_on` (the same tree, differing only by the
+switch), `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, 9200/9000.
+Logs: `local\seg_{off,on}_{e2,usn02}.log`.
+
+| line | E2 OFF | E2 ON | USN02 OFF | USN02 ON |
+| --- | ---: | ---: | ---: | ---: |
+| `PlayerGunSeat::segment_query` | 18,158 UNIMPLEMENTED | 18,158 concrete | absent | absent |
+| segment casts / hits / aims | 0 / 0 / 0 | 17,997 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 |
+| seat messages | 17,997 | 17,997 | 0 | 0 |
+| hit_records / deaths | 836 / 51 | 836 / 51 | 440 / 22 | 440 / 22 |
+
+- **Both ways, the whole native table** (1,515 rows on E2, 1,417 on USN02), every summary line,
+  and every `death row` and `plane death mode` line are identical. The exceptions are the one row
+  on E2 and the new segment line's own values.
+- **The 0 hits agree with the HUD pair.** docs/HUD_PICK_SEGMENT_QUERY.md section 6 found the same
+  query never hits in USN04. The idle camera's segment runs from behind the excluded Lexington,
+  and under the sea past a few hundred units.
+
+**Verdict: held, every prediction.** `casts` equals `messages`, `aims` = 0, nothing else moved,
+and USN02 is identical. `kPlayerGunSeatSegmentQueryBound` is ON.
