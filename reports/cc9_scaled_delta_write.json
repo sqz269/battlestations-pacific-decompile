@@ -1,0 +1,18 @@
+{
+  "packet": "cc9_scaled_delta_write",
+  "doc": "docs/SCALED_DELTA_WRITE.md",
+  "switch": "kScaledDeltaWriteBound (src/game_hosts_mission_frame.cpp): committed OFF in de0ed0f47, set ON by the verdict",
+  "calls": [
+    {"address": "004E4D45", "native": "004C6E30", "function": "004E4A40", "kind": "call", "host": "frame writes WorldTickState::game.scaled_delta from frame_state.scaled_delta"}
+  ],
+  "readers": [
+    {"reader": "00987590", "site": "0098759E", "gate": "open (value unchanged: the workaround already supplied it)"},
+    {"reader": "00914EF0", "sites": ["00914F36", "00915003", "00915058"], "gate": "closed: +1498h enabled and +14A4h slots_active have no host writer"},
+    {"reader": "006DC1A0", "sites": ["006DC1C3..006DC39C"], "gate": "no markers in the host's groups"},
+    {"reader": "00481640", "sites": ["00481652"], "gate": "closed: world_gate.enabled false"}
+  ],
+  "verdict": "ON",
+  "pairs": {"usn04": "identical except pretranslate 18 vs 19", "usn02": "identical"},
+  "ghidra": "read-only; disk-byte disassembly of 004E4D32..004E4D5E",
+  "no_ghidra_function": []
+}
