@@ -1,0 +1,74 @@
+{
+  "packet": "cc9_bot_scheduler_writers",
+  "doc": "docs/BOT_SCHEDULER_WRITERS.md",
+  "switch": "kBotSchedulerWritersBound (include/bsp/game_hosts_mission_frame.hpp): committed OFF in 5f1d7e1bf, set ON by the verdict",
+  "calls": [
+    {
+      "address": "0091C63B",
+      "native": "0090FA40",
+      "function": "0091C560",
+      "kind": "tail_jump",
+      "host": "MissionScoring::reset_tail_0090fa40 (record)"
+    },
+    {
+      "address": "008B8901",
+      "native": "00905340",
+      "function": "008B87F0",
+      "kind": "call",
+      "host": "game_scoring_set_real_play_time_running_00905340"
+    }
+  ],
+  "writers": [
+    {
+      "field": "+14A8h",
+      "site": "0091BC23",
+      "function": "0091B2E0",
+      "value": "Scoring.InGameScoreUpdateTimeInterval, default 1.0"
+    },
+    {
+      "field": "+14ACh",
+      "site": "0091BC65",
+      "function": "0091B2E0",
+      "value": "Scoring.ReCalcTimeInterval, default 5.0 (00CE3850)"
+    },
+    {
+      "field": "+1498h",
+      "site": "0091C628",
+      "function": "0091C560",
+      "value": "1"
+    },
+    {
+      "field": "+14A4h",
+      "site": "0091C610",
+      "function": "0091C560",
+      "value": "0"
+    },
+    {
+      "field": "+14A4h",
+      "site": "00905344",
+      "function": "00905340",
+      "value": "the Lua native's boolean"
+    }
+  ],
+  "installation": "Scripts/datatables/Scoring.lua 2024-07-13 lines 861-862 (1, 5); usn_19_coralus.lua 2024-08-26 line 42 and usn_2_java.lua 2024-07-13 line 35 call Scoring_RealPlayTimeRunning(true)",
+  "ghidra": "read-only; disk-byte scans of the four displacements; disassembly of 0091BC00..0091BC6B, 0091C5E0..0091C63B, 00905340; decompile of 0091B2E0 and 008B87F0",
+  "no_ghidra_function": [],
+  "verdict": "ON",
+  "pairs": {
+    "usn04": {
+      "retarget_begin": 225,
+      "slot_prepare": 1800,
+      "think_a": 360,
+      "think_b": 360,
+      "gameplay": "identical"
+    },
+    "e2": {
+      "retarget_begin": 450,
+      "slot_prepare": 3600,
+      "think_a": 720,
+      "think_b": 720,
+      "gameplay": "identical"
+    },
+    "unpredicted": "MissionLua::open_script 41 -> 42 (Scoring.lua run by read_scoring_intervals_0091b2e0)"
+  }
+}
