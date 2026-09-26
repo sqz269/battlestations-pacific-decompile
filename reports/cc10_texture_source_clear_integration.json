@@ -1,0 +1,95 @@
+{
+  "packet": "cc10_texture_source_clear_integration",
+  "worker_commit": "71e4b212e76726ccffe0106b8f192ac60649d207",
+  "capacity_qualification_commit": "81aa6cd1483c925fab96d42cf83681bf54a90f69",
+  "source_integration": "e64ab96eb5d78b34ac510a37bd5453be8b92789f",
+  "worker_report": "reports/native_texture_source_clear_cc10.json",
+  "primary_verification": {
+    "result": "PASS",
+    "worker_commit": "71e4b212e76726ccffe0106b8f192ac60649d207",
+    "archive": {
+      "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-field-values\\local\\cc10_texture_source_clear_implementation\\evidence.zip",
+      "sha256": "bd76450b8c530c83bc0a08ed1b35d06555f1d5f5ab51148200bdbae87e2097df",
+      "rows": 227,
+      "members": 228
+    },
+    "exact_Git_blobs": 5,
+    "source_pins": 128,
+    "tool_pins": 27,
+    "physical_section_records": 2417,
+    "unbacked_sections": 9,
+    "unchanged_providers": 6,
+    "provider_code_sections": 663,
+    "provider_code_bytes": 35410,
+    "new_code_sections": 16,
+    "new_unique_code_bytes": 785,
+    "whole_entry_catch_tail_bytes": 299,
+    "separate_EH_bytes": 29,
+    "native_bytes": 84,
+    "native_instructions": 36,
+    "field_order_checks": 18,
+    "worker_CTests": 3,
+    "limits": "Restricted source leaf; already-live child atomic/canonical companion/retained old captured slot required. No runtime/application/binary ABI/private EH credit.",
+    "root_member_sha256": "6aeeb22b40c3864fb0bdb01af57542b87e7f62e0331d3553cbc3d30d031fe0bd",
+    "all_root_code_and_relocations_equal_worker": true
+  },
+  "independent_review_and_qualification": {
+    "result": "PASS",
+    "archives": [
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-lua-field-values\\local\\cc10_texture_source_clear_capacity_qualification\\evidence.zip",
+        "sha256": "eb288725b1904cafd60834417d6452a6ceef875bfb4aa4b13550232887bafa2a",
+        "rows": 14,
+        "members": 15
+      },
+      {
+        "path": "J:\\PROG\\battlestations-pacific-decompile-cc10-render-init-post\\local\\cc10_texture_source_clear_independent_review_lifetime\\evidence.zip",
+        "sha256": "e9168c88f45285f8aff23107d7ddbd5b123b02f151e89003e1e6af6b1a60cb01",
+        "rows": 24,
+        "members": 25
+      }
+    ],
+    "qualification_commit": "81aa6cd1483c925fab96d42cf83681bf54a90f69",
+    "qualification_only_two_metadata_files": true,
+    "independent_review_source_defects": 0,
+    "capacity_qualification_resolved": true
+  },
+  "validation": {
+    "worker_CTests": 3,
+    "root_CTests": 3,
+    "new_tests": 0,
+    "new_runtime_cases": 0,
+    "application_selects_leaf": false,
+    "game_validated": false
+  },
+  "native_accounting": {
+    "new_reconstructed_functions": 1,
+    "new_native_bytes": 84,
+    "native_instructions": 36,
+    "new_Ghidra_functions": 1,
+    "no_C30360_or_C302F0_credit": true
+  },
+  "definition": {
+    "address": "00c303b0",
+    "end_exclusive": "00c30404",
+    "name": "BSP_TextureSource_ClearChildren",
+    "prior_function_absent": true,
+    "live_bytes_match_original_PE": true,
+    "write_lock": true,
+    "no_force_or_recreate": true,
+    "saved": true,
+    "live_body_size": 84,
+    "live_instructions": 36,
+    "prior_annotation_values_recorded": true,
+    "forced_export": true,
+    "snapshot_refreshed": true
+  },
+  "capacity_qualification": "Ordinary nonnegative-capacity resize0 keeps data/capacity; negative current capacity retains existing typed reserve0 allocation/copy/free/publication schedule. No guard or normalization.",
+  "limits": "Restricted source leaf; already-live child atomic/canonical companion/retained old captured slot required. No runtime/application/binary ABI/private EH credit.",
+  "archive": {
+    "path": "local/cc10-platform-evidence/texture-source-clear.zip",
+    "sha256": "97931e2bff72d20b65e209f0d6728ff332ceb9af9de4aec80e332c3a7c4867ad",
+    "files": 31,
+    "valid": true
+  }
+}
