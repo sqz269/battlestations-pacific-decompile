@@ -210,7 +210,7 @@ inline constexpr float kTorpedoCollectTimer1 = 1.5f;
 // +1F4h..+220h / +3A8h..+3C2h, and 009DA0D0 restores them on every other
 // step, so a per-step write between replans lasts one step. False: both are
 // records and such writes persist.
-inline constexpr bool kShipAiSnapshotBound = false;
+inline constexpr bool kShipAiSnapshotBound = true;
 inline constexpr float kTorpedoCollectTimer2 = 2.0f;
 // Packet cc9_station_keeping, docs/STATION_KEEPING.md. True: the follow update's
 // station request 009DA3B0 is stored (blk+38Ch..+3A6h, including blk+39Ch = 0

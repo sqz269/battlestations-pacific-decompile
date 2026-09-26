@@ -64,11 +64,9 @@ HUD warning state, so they come after the snapshot pair.
 
 ## 3. Status
 
-`src/game_hosts_ship_ai.cpp` is leased by `agent/cc9-aa-targeting` (`cc9_usn02_sameside_torpedoes`,
-until 10:31). The binding waits for the lease. The plan:
-- a switch `kShipAiSnapshotBound` for 009DDBC0 + 009DA0D0, committed OFF;
-- predictions on USN02 9000 (the surface reference) and E2 9000;
-- flip on the verdict.
+`kShipAiSnapshotBound` binds 009DDBC0 + 009DA0D0. It was committed OFF with the predictions in
+section 4 (57eb1160b), measured on USN02 9000 and E2 9000, and set ON by the verdict in section 5.
+The warning timer 009DA8D0 (section 2) is still a record.
 
 ## 4. The binding and its predictions (the switch committed OFF)
 
@@ -100,3 +98,95 @@ USN04 9200/9000.
   shift only through that.
   - USN02 still fails at about 44.6 s on both sides.
   - If no line moves, then no host code wrote these fields between replans in these runs.
+
+## 5. The pairs and the verdict
+
+One tree (main 9a27b915b plus section 4's binding), `local\bin\sn_off` against `local\bin\sn_on`,
+`BSP_GUNNERY_RNG_STREAMS=1`. Every log shows `window resolution override fit: 2560x1440 -> 1600x900`.
+
+### USN02 9200/9000 (`local\sn_off_usn02.log`, `local\sn_on_usn02.log`)
+
+| Line | OFF | ON |
+|---|---|---|
+| `ShipAi::hold` / `ShipAi::replan_finish` | records | concrete, same counts |
+| `ShipAi::hold_before_snapshot` | absent | absent |
+| unimplemented total | 4,905,576 | 4,695,309 |
+| mission end (`EndMission`, failed, entity `Jupiter`) | 44.60 s | 39.65 s |
+| gunnery deaths | 22 | 19 |
+| station_keeping | 44,727 | 29,756 |
+| path_picks / plan requests | 124,495 | 134,131 |
+| arm tail stops / arrival_latches | 989 / 606 | 166 / 28 |
+| trace lines with `dir=astern` | 520 | 0 |
+| `ShipAi::drive_astern_heading` | 4,264 | absent |
+
+The rows and the missing `hold_before_snapshot` came out as predicted. The unimplemented total
+fell by less than the two rows (252,000). The rest is the run itself moving, and records rose
+elsewhere.
+
+**The prediction of where state moves was wrong.** It listed two host writers between replans
+(+3A5h and +1F0h). It missed the per-frame obstacle block of the chain after the hold,
+009F43C6..009F44B2 (`src/ship_ai_obstacle_tables.cpp`):
+- With blk+1C8h clear and the direction latched, 009F4439 does not write +1D0h.
+- The profile snap at 009F448E then starts from the previous step's +1D0h, with a window of
+  -1.5..1.5.
+
+Without the snapshot that previous value is the last step's own output, so the snap's result
+carries from step to step and can reach the window edge (how 009D6B40 moves it was not re-read
+for this section). Samidare at step 70 traces `throttle=1.500` OFF against
+`1.000` ON, the first divergent trace line. From there the astern latch (+35Ch = 2, which is
+outside the restored ranges) engages, and 009F409E steers about the reciprocal heading. With the
+snapshot, 009DA0D0 puts the replan step's +1D0h back before the chain runs on every step. The
+snap cannot build up, the latch is never taken, and no ship traces astern.
+
+That is the image's order: 009F50E0 calls 009DA0D0 before the per-frame chain (section 1). The
+restored span matches section 1 byte for byte:
+- the twelve dwords +1C4h..+1F0h;
+- the 27 bytes +38Ch..+3A6h, the whole `ShipAiStationRequest`;
+- +39Ch and +3A5h/+3A6h, carried inside that request.
+
+The drop in station keeping and the earlier failure follow from the changed paths. They are not a
+separate writer. Both runs simulate all 9,000 frames; the failure does not end the run.
+
+**Per-entity table, both ways.** The clock offset is zero: one tree, the same frames, and both
+first hits land within 0.1 s (30.40 s against 30.50 s).
+- Allied ships sunk: 14 without the binding, 11 with it. John1, John2 and Encounter survive with
+  it. Exeter goes down earlier (43.45 s against 35.45 s).
+- Japanese ships sunk: 8 on both sides, the same eight. Haguro, Yamakaze and Asagumo survive both.
+  The kill times and credits move, because the Allied ships now fight longer.
+
+### E2, USN04 9200/9000 (`local\sn_off_e2.log`, `local\sn_on_e2.log`)
+
+| Line | OFF | ON |
+|---|---|---|
+| `ShipAi::hold` / `ShipAi::replan_finish` | records | concrete, same counts |
+| `ShipAi::hold_before_snapshot` | absent | absent |
+| unimplemented total | 4,440,677 | 4,229,915 |
+| station_keeping | 17,938 | 46,798 |
+| path_picks (`ShipAi::pick_path_point`) | 144,062 | 115,202 |
+| brain_targets | 0 | 8 |
+| gunnery deaths | 37 | 39 |
+| trace lines with `dir=astern` | 0 | 0 |
+
+Here the station-keeping arm runs more, and the path-pick arm, its alternative, runs less. That is
+section 4's +3A5h mechanism: the per-step clear is undone at the next hold. The astern carry-over
+does not arise in this mission.
+
+**Per-entity table, both ways.** No ship's fate changes, and the Lexington's row is the same on both
+sides. Only aircraft rows move:
+- two aircraft of `Lexington-class01_sqn01` die at 381.3 s and 381.9 s with the binding, and live
+  without it;
+- several aircraft kills change their credited ship (a D3A, B5Ns, one Val kill moves from a
+  Fletcher to the Lexington);
+- the kill times that stay with the same aircraft move by at most 3.4 s.
+
+Rows new with the binding, all records: `BotStateDiveBombDone::enter` (1),
+`BotStateDiveBombDone::station_keeping` (158), and three `HudWeaponGroupScreen` gunner rows (152
+each). No row disappears. USN02 loses `ShipAi::drive_astern_heading` and gains
+`ShipAiFollow::min_float` (1,043).
+
+### Verdict: ON
+
+The binding is the image's order and span (009F51AE and 009F51B7 in 009F50E0, section 1). Both
+missions move for reasons traced to the restored fields: the +1D0h carry-over in USN02, and the
++3A5h clear in E2. Neither is a divergence of the binding. The OFF behaviour, where per-step
+writes persist between replans, was the host's. `kShipAiSnapshotBound` is set true.

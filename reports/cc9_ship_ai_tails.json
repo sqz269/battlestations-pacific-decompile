@@ -1,0 +1,80 @@
+{
+  "packet": "cc9_ship_ai_tails",
+  "doc": "docs/SHIP_AI_TAILS.md",
+  "switch": "kShipAiSnapshotBound (src/game_hosts_ship_ai.cpp): committed OFF in 57eb1160b, set ON by the verdict",
+  "binding": [
+    {
+      "address": "009F51AE",
+      "native": "009DDBC0",
+      "function": "009F50E0",
+      "kind": "call",
+      "host": "replan_finish_009ddbc0: saved blocks <- blk+1C4h..+1F0h and +38Ch..+3A6h"
+    },
+    {
+      "address": "009F51B7",
+      "native": "009DA0D0",
+      "function": "009F50E0",
+      "kind": "call",
+      "host": "hold_009da0d0: blk+1C4h..+1F0h and +38Ch..+3A6h <- saved blocks"
+    }
+  ],
+  "restored_span": {
+    "block_a": "+1C4h..+1F0h (12 dwords) -> +1F4h..+220h",
+    "block_b": "+38Ch..+3A6h (27 bytes, ShipAiStationRequest incl. +39Ch, +3A5h, +3A6h) -> +3A8h..+3C2h"
+  },
+  "pairs": {
+    "tree": "main 9a27b915b + 57eb1160b, local/bin/sn_off vs local/bin/sn_on, BSP_GUNNERY_RNG_STREAMS=1, 1600x900 confirmed in all four logs",
+    "usn02": {
+      "unimplemented_total": [
+        4905576,
+        4695309
+      ],
+      "mission_end_s": [
+        44.6,
+        39.65
+      ],
+      "station_keeping": [
+        44727,
+        29756
+      ],
+      "dir_astern_trace_lines": [
+        520,
+        0
+      ],
+      "allied_sunk": [
+        14,
+        11
+      ],
+      "japanese_sunk": [
+        8,
+        8
+      ],
+      "flips": "John1, John2, Encounter survive with the binding; same eight Japanese sunk"
+    },
+    "e2": {
+      "unimplemented_total": [
+        4440677,
+        4229915
+      ],
+      "station_keeping": [
+        17938,
+        46798
+      ],
+      "path_picks": [
+        144062,
+        115202
+      ],
+      "gunnery_deaths": [
+        37,
+        39
+      ],
+      "ship_fate_flips": 0,
+      "aircraft": "two Lexington-class01_sqn01 aircraft die at 381.3/381.9 s with the binding; several kill credits move"
+    }
+  },
+  "prediction_miss": "the per-frame obstacle block 009F43C6..009F44B2 carries +1D0h through the profile snap 009F448E when blk+1C8h is clear; the snapshot resets it each step, so the astern latch no longer engages (USN02 dir=astern trace lines 520 -> 0)",
+  "divergence": "none known; order and span match 009F50E0 and 009DDBC0/009DA0D0",
+  "ghidra": "read-only; disk-byte disassembly of 009F51A0..009F51BC",
+  "no_ghidra_function": [],
+  "verdict": "ON"
+}
