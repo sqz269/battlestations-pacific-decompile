@@ -446,3 +446,51 @@ frame.
   task-less arms. Part 2's added deaths came from the leaders' approach, not from the wingmen.
 
 **Kept OFF**, pending the all-on pair.
+
+## The all-on pair: every moveto switch ON against every one OFF
+
+### The velocity question, answered from the image before the runs
+
+Does the flight model rebuild velocity from the body axes on the step after `007C9540` turns a
+plane? **No.**
+- **Where the velocity lives.** The plane's velocity is the world vector `ctl+18h..20h`. The pose
+  arm adds it straight to the position (`007D827B`, `007DA218`; docs/PLANE_ADVANCE_POSE.md).
+- **What the turn writes.** `007C9540` writes only the pose (`+74h`, `+674h`), the two pose-valid
+  bytes and the child chain. Its `(plane+310h)->vtable[0Ch]`, `007BEEE0`, writes only derived
+  matrices and an attachment point.
+- **How the next step reads it.** `007D8470` takes the unchanged world velocity through the new pose
+  into body axes, integrates it (`007D8611`: `w = v + a*dt`, the resisting fold only against `w`),
+  and rotates it back (docs/FLIGHT_INTEGRATOR.md).
+
+So a plane turned by about 170 degrees slides backwards along its spawn velocity, and drag and
+thrust bend it round over the following steps. The host carries `motion.linear_velocity` the same
+way through `kFlightIntegratorBound`. Part 1b's behaviour is therefore the image's, and its pair
+movement is not a host artefact.
+
+**Known gap for every switch set.** The circle steer `009FBB20` is unbound (part 4). A leader that
+arrives flies straight on, and its wing follows it.
+
+### Predictions (written before the runs)
+
+The ON side has `kPilotMoveToTaskBound`, `kMissionTurnAndStanceBound`, `kMoveToTaskTickBound` and
+`kMoveToFollowBound` all ON. The OFF side has all four OFF, which is main. Both are built from
+`f8b96cf44`, with streams on and one run at a time.
+
+**E2 9000:**
+
+| row | OFF | ON prediction |
+| --- | --- | --- |
+| natives | PilotMoveToRange, EntityTurnToEntity, UnitSetFireStance UNIMPLEMENTED | all concrete, 9 / 18 / 8 calls |
+| moveto tasks | none | 17, about 14 arrivals, surviving wingmen within about 40 m of their leaders |
+| plane deaths | about 35 | about 43, the added deaths all escort Zeros |
+| torpedo / dive releases | about 5-6 / 2 | within the bands seen in the parts (3-6 / 1-6) |
+| the Lexington's distance moved | about 6600 | lower, 4000-6200 |
+
+**USN04 4700/4500 (E2 parameters, 225 s of mission):**
+
+| row | OFF | ON prediction |
+| --- | --- | --- |
+| natives | as above, fewer calls | concrete where called; waves 1-4 at most |
+| escort leaders | fly away from the fleet | turn toward it and close; arrivals only for the early waves |
+| plane deaths | main's | up to +4, escort Zeros |
+| releases | main's | within band |
