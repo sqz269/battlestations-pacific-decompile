@@ -218,7 +218,7 @@ struct GameNativeRendererApplication::Impl {
           shaders(vfs,raw,cameras,profiles),
           descriptors(vfs.strings,services,definitions),
           compiler_owners(owners,profiles,vfs,raw,*host.native_deletion_bindings().resource_support,
-              renderer,system_publication,devices.d3dx),
+              renderer,system_publication,devices.d3dx,texture_loading.cache),
           resources(graph,devices,cameras,texture_loading,host,raw,vfs,owners),
           shadow(graph,resources,host,renderer) {
         auto& deletion=host.native_deletion_bindings();
