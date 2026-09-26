@@ -9121,6 +9121,31 @@ executable exits 2.
   - plane deaths are 51 ± 8, and hit records 873 ± 150.
 - **Wall time** is about 2.25 times an E2 9000 run: 20-30 minutes.
 
+**Measured** (`local\PC_J20_20270.log`). The log shows `frame jitter 20% seed 1`, the 1600x900 line
+and the `local\pc` module directory. All 20270 mission frames were simulated, and the fixed
+steps numbered 8982 over 449.06 s.
+
+| row | result | prediction | verdict |
+| --- | --- | --- | --- |
+| phase-1 completion | 225.01 s | 200-230 s | held |
+| the `luaMoveToPh2` callback | **never fired**: 75 re-issues from 225.01 s to the end of the run | fires, most likely within 100 s | **failed** |
+| units | 81 (phase 2 not reached) | 92 if it fires | - |
+| plane deaths / hit records | 51 / 824 | 51 ± 8 / 873 ± 150 | held |
+| torpedo / dive releases | 4 / 5 | - | - |
+| the Lexington's distance moved | 5448.01 | 3500-5500 if phase 2 starts | not applicable: phase 2 did not start |
+| wall time | 923 s | 20-30 minutes | **failed**: 15.4 minutes |
+
+**The run's own cost.** Wall time was 923 s for 20720 frames, taken from the launcher's start
+to its exit.
+
+**Verdict.** The callback did not fire, so the progression check did not reproduce phase 2,
+and per the integrator's ruling there is no further tuning.
+- **How likely a miss was.** The float32 model at this frame rate fired in 5 of 8 seeds within
+  the 225 s this run had left. A single seed missing is therefore consistent with the model.
+  The model does not show that the host differs from the image.
+- **What that means.** Even at the image's rendered frame rate, reaching phase 2 on this path
+  is a matter of chance per run, in the host and, by the same arithmetic, in the image.
+
 ## Mission reference baselines, 2026-09-23 (after the firepower, RNG-stream and ballistics landings)
 
 Packet `cc9_gun_ballistics`. **The difficulty-1 rows above predate three landings**, so they are
