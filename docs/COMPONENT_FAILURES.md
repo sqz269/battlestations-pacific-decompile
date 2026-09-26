@@ -125,5 +125,24 @@ The two USN02 failures:
    with no Failures row (`body`), so no EngineJam or Fire started.
 4. Held: the USN02 failure stays at 44.60 s.
 
-`kComponentFailureBound` is ON. No reference count moves; Kortenaer ends the USN02 run 875 points
-lower.
+### The 9000-frame USN02 pair (asked for by the integrator after the flip)
+
+Same two builds, USN02 9200/9000 at 0.05 s (450 s), same environment.
+
+| run | rolls | resolved | started | explosions | deaths | USN02 end |
+| --- | --- | --- | --- | --- | --- | --- |
+| OFF | 0 | 0 | 0 | 0 | 23 | failed at 44.60 s |
+| ON | 100 | 52 | 6 | 5, 2695 damage applied | 19 | failed at 44.60 s |
+
+The six failures: Explosions on Exeter (43.45 s), Kortenaer (54.00 s), Yudachi (69.00 s), Electra
+(82.70 s) and Houston (168.66 s), and one EngineJam on John2 (150.15 s). Exeter, John2 and Houston
+died on the same impact that started their failure. The three survivors of their explosion die
+earlier than OFF: Kortenaer 81.15 -> 71.90 s, Electra 118.05 -> 105.40 s, Yudachi 120.55 ->
+105.65 s. Houston sinking at 168.66 s instead of 307.65 s removes the Allied cruiser from the rest
+of the fight. Six Japanese ships that die OFF survive ON (Haguro, Jintsu, Asagumo, Yukikaze, Murasame,
+Harusame); John2 and John3 die only ON, and Encounter dies at 406.67 s instead of 284.75 s. The
+total falls from 23 to 19. Prediction 3 holds
+on this run: explosions move deaths earlier. The larger count change is the cascade from Houston.
+
+`kComponentFailureBound` is ON. The USN02 failure time does not move. The 9000-frame USN02 death
+count moves from 23 to 19. The 1200-frame form does not move.
