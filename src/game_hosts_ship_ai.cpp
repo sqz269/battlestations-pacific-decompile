@@ -7066,6 +7066,10 @@ void GameShipAiHost::bind_session_participants(
     impl_->session_participants = &owner;
 }
 
+const bsp::SessionParticipantPools* GameShipAiHost::session_participants() const noexcept {
+    return impl_->session_participants;
+}
+
 void GameShipAiHost::load_avoid_zone_geometry(const GameSceneContentsHost& scene,
     GameMissionLuaHost& lua, std::int32_t mode, std::uint8_t forced, std::int32_t session) {
     std::string error;

@@ -449,6 +449,8 @@ public:
 
     // Borrow the actual session participant owner; it must outlive this host.
     void bind_session_participants(const bsp::SessionParticipantPools& owner) noexcept;
+    // The bound owner, or null (packet cc9_usn02_sameside_torpedoes: 00927F10 for gunnery).
+    const bsp::SessionParticipantPools* session_participants() const noexcept;
 
     // Packet cc8_ship_ai_firepower_inputs. Borrow the gunnery host so the
     // firepower rating 0095EB40 can read the tables 00956C20 built: the max

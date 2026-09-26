@@ -36,6 +36,7 @@
 #include "bsp/unit_rudder.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
+#include "bsp/session_participant_pools.hpp"
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/gun_bot_remainder.hpp"
 #include "bsp/gun_bot_ticks.hpp"
@@ -206,6 +207,26 @@ constexpr float kGunHorzSign = kGunHorzImageSignBound ? -1.0f : 1.0f;
 //    the fan rotates about the hull up axis (0085C3F0 read only at its entry).
 //    docs/BULLET_THROW.md.
 constexpr bool kBulletThrowBound = true;
+//  * kPartySlotAiHeldBound: packet cc9_usn02_sameside_torpedoes. 00521E70's
+//    AI test on a role slot other than 8 reads the party slot record through
+//    00927F10 (the ship AI host's SessionParticipantPools) instead of taking
+//    it as player-held. Used by the bullet-throw gates and the player gun seat.
+constexpr bool kPartySlotAiHeldBound = true;
+//  * kTorpedoGyroHeadingBound: packet cc9_usn02_sameside_torpedoes. 008FFF20's
+//    launch command 007311B0 carries `heading` = the world heading of the
+//    friendly gate's own run line (atan2 at 00900513, stored 00900526) plus the
+//    TorpedoBot AngleErr jitter (00900830..00900876); 00856637 copies it to the
+//    torpedo's record+46Ch and 00857061 turns the swimming torpedo toward it at
+//    HeadingTurn degrees per second. The snapped bot+60h only trains the tube.
+//    Without this the host's torpedo ran straight down the snapped tube
+//    heading, up to pi/4 off the line the gate tested. SUBSTITUTIONS: the turn
+//    runs only while swimming; `swimdepth` (00852410) is not modelled; the
+//    rotation sense is toward the commanded heading.
+constexpr bool kTorpedoGyroHeadingBound = true;
+// TorpedoBot AngleErrMin / AngleErrMax, degrees, this installation's
+// robots.lua by skill index (008FD640 +0Ch / +10h).
+constexpr float kTorpedoAngleErr[6][2] = {
+    {10.0f, 20.0f}, {0.0f, 10.0f}, {0.0f, 0.5f}, {0.0f, 6.0f}, {0.0f, 3.0f}, {0.0f, 0.5f}};
 // This installation's shipglobals.lua:74 authors TurnOffAAGunThrow = false
 // (0083B5E0 reads it into settings+760h at 00841B68).
 constexpr bool kTurnOffAaGunThrow = false;
@@ -543,6 +564,7 @@ struct GameGunneryHost::Impl {
         aim_wander = 10,      // 009FA620 / 009FA7E0, the dogfight aim distortion, key (unit, 0)
         aim_point = 11,       // 00816650's hull-box draws for the artillery bot, key (gun, 0)
         bullet_throw = 12,    // 00730557 / 00730575, the throw cone, key (gun, 0)
+        torpedo_gyro = 13,    // 00900830 / 0090083E, the launch heading jitter, key (gun, 0|1)
     };
     unsigned long long next_projectile_serial{0};
     static bool rng_streams_enabled() {
@@ -1171,10 +1193,24 @@ struct GameGunneryHost::Impl {
     // True when some own-side ship blocks the launch (the image's JA 0090096D).
     // Packet cc9_bullet_throw: 0073031D..00730498, the cone half-angle this shot
     // draws from. `seat_out` names the bot whose multiplier applied, or -1.
+    // 00521E70's test on a role slot: 8 (unassigned) or a party slot whose
+    // record answers AI at +9 (00927F10, [[00E188A8]+18CCh+slot*4]+9). With
+    // kPartySlotAiHeldBound off, or the record unavailable, a non-8 slot is
+    // taken as player-held (the earlier substitution).
+    bool slot_ai_held_00927f10(std::int32_t slot) const {
+        if (slot == 8) return true;
+        if constexpr (kPartySlotAiHeldBound) {
+            const bsp::SessionParticipantPools* pools =
+                ship_ai != nullptr ? ship_ai->session_participants() : nullptr;
+            std::uint8_t ai = 0;
+            if (pools != nullptr && pools->try_ai_held_00927f10(slot, ai)) return ai != 0;
+        }
+        return false;
+    }
     bool role_ai_held_00521e70(std::size_t unit, int role) const {
         std::int32_t slot = 8;
         if (!units.unit_current_role_slot(unit, role, slot)) return true;
-        return slot == 8;   // SUBSTITUTION: 00927F10 on a non-8 slot is taken as false
+        return slot_ai_held_00927f10(slot);
     }
     float bullet_throw_magnitude_0073031d(const GameGunRow& gun, std::size_t owner,
         int& seat_out) const {
@@ -1216,6 +1252,9 @@ struct GameGunneryHost::Impl {
         }
         return magnitude;
     }
+    unsigned long long torpedo_gyro_launches{0};
+    unsigned long long torpedo_gyro_turn_steps{0};
+    double torpedo_gyro_offset_sum_deg{0.0};
     unsigned long long throw_cone_shots{0};
     unsigned long long throw_fan_shots{0};
     unsigned long long throw_zero_shots{0};
@@ -1293,6 +1332,36 @@ struct GameGunneryHost::Impl {
                 best == owner_unit ? "-" : unit_state[best].row.name.c_str(),
                 static_cast<double>(best_c.run_distance), static_cast<double>(best_c.miss),
                 static_cast<double>(best_c.threshold));
+            // Every same-side ship within 8 km: along / across the run line from
+            // the gun (x, z), its distance, and its speed across the run.
+            const float rx = run_end[0] - gun_at[0], rz = run_end[1] - gun_at[2];
+            const float rl = std::sqrt(rx * rx + rz * rz);
+            std::string near_list;
+            for (std::size_t i = 0; rl > 0.0f && i < unit_state.size(); ++i) {
+                if (i == owner_unit || unit_state[i].dead) continue;
+                if (units.unit_side_0054(i) != own_side) continue;
+                if (!units.unit_is_kind_of(i, bsp::kUnitGunneryKindShipBase)) continue;
+                float r[3], u[3], f[3], o[3], v[3];
+                unit_pose(i, r, u, f, o);
+                unit_velocity(i, v);
+                const float dx = o[0] - gun_at[0], dz = o[2] - gun_at[2];
+                const float d = std::sqrt(dx * dx + dz * dz);
+                if (d > 8000.0f) continue;
+                const float along = (dx * rx + dz * rz) / rl;
+                const float across = (dx * rz - dz * rx) / rl;
+                const float v_across = (v[0] * rz - v[2] * rx) / rl;
+                char buf[128];
+                std::snprintf(buf, sizeof buf, " %s(along=%.0f across=%.0f d=%.0f vx=%.1f)",
+                    unit_state[i].row.name.c_str(), static_cast<double>(along),
+                    static_cast<double>(across), static_cast<double>(d),
+                    static_cast<double>(v_across));
+                near_list += buf;
+            }
+            log.notef("gunnery: torpedo launch friends t=%.2f shooter=%s plat=%d water_speed=%.1f "
+                "run_dir=(%.3f %.3f)%s", static_cast<double>(clock_seconds),
+                unit_state[owner_unit].row.name.c_str(), gun.platform_key,
+                static_cast<double>(water_speed), static_cast<double>(rl > 0 ? rx / rl : 0.0f),
+                static_cast<double>(rl > 0 ? rz / rl : 0.0f), near_list.c_str());
         }
         return false;
     }
@@ -1942,6 +2011,8 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
                     gun.bullet_class, "MaxWaterHitVel", 0.0f);
                 b.max_fall = lua.read_bullet_class_number(
                     gun.bullet_class, "MaxFall", 0.0f);
+                b.heading_turn = lua.read_bullet_class_number(
+                    gun.bullet_class, "HeadingTurn", 0.0f);
                 b.damage_min = flat_scaled(type_id, make("dmin"), kMilliScale, 0.0f);
                 b.damage_max = flat_scaled(type_id, make("dmax"), kMilliScale, 0.0f);
                 b.water_damage = flat_scaled(type_id, make("wdmg"), kMilliScale, 0.0f);
@@ -3455,7 +3526,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         // 00903136, 0090003B) runs a bot only while [gun+1ACh] is 8 or an AI
         // slot. A gun the player's seat holds gets no bot target, angle or
         // trigger; the angles and trigger come from message 79h instead.
-        const bool player_seat = kPlayerGunSeatBound && gun.seat_1ac != 8;
+        const bool player_seat = kPlayerGunSeatBound && !slot_ai_held_00927f10(gun.seat_1ac);
         if (player_seat) {
             have_target = false;
             ++seat_held_ticks;
@@ -4106,6 +4177,34 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
                 && round_class != nullptr && round_class->no_gravity;   // classDesc+20h
             if (shot.flight.class_disables_gravity) ++no_gravity_shots;
         }
+        if (kTorpedoGyroHeadingBound && gun.category == bsp::kUnitGunneryTorpedoCategory
+            && torpedo_gun && (torpedo_lead_xz[0] != 0.0f || torpedo_lead_xz[1] != 0.0f)) {
+            // 008FFF20 00900476..00900526: the run line's world heading from the
+            // gun, then 00900830..00900876 the AngleErr jitter; 007311B0 carries
+            // it and 00856637 installs it as record+46Ch.
+            const float h = gun.angles.horz;
+            const float hs = kGunHorzSign * std::sin(h);
+            const std::array<float, 2> axis{{forward[0] * std::cos(h) + right[0] * hs,
+                forward[2] * std::cos(h) + right[2] * hs}};
+            const std::array<float, 2> run_end = bsp::torpedo_run_end_008fff20(
+                {{muzzle[0], muzzle[2]}}, torpedo_lead_xz, axis, torpedo_snap_radians);
+            const float dx = run_end[0] - muzzle[0], dz = run_end[1] - muzzle[2];
+            if (dx != 0.0f || dz != 0.0f) {
+                int level = units.skill_level(owner_unit);
+                if (level < 0 || level > 5) level = 1;
+                const float magnitude = draw(Draw::torpedo_gyro, g, 0,
+                    kTorpedoAngleErr[level][0], kTorpedoAngleErr[level][1]);
+                // 0090083E 00BD2FC0 & 1 -> +1 or -1 (0090084A..0090084F).
+                const float sign = draw(Draw::torpedo_gyro, g, 1, 0.0f, 1.0f) < 0.5f
+                    ? -1.0f : 1.0f;
+                shot.commanded_heading = static_cast<float>(std::atan2(dx, dz)
+                    + sign * magnitude * 3.14159265358979 / 180.0);
+                const float vyaw = std::atan2(shot.flight.velocity.x, shot.flight.velocity.z);
+                torpedo_gyro_offset_sum_deg += std::fabs(bsp::wrapped_angle_subtract_00438b10(
+                    shot.commanded_heading, vyaw)) * 57.2957795;
+                ++torpedo_gyro_launches;
+            }
+        }
         shots.push_back(shot);
         ++summary.projectiles;
         done("Projectile::launch_velocity_006e8430", 0x006e8430u);
@@ -4308,6 +4407,26 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
         if (!shot.alive) continue;
         if (shot.serial == 0) shot.serial = ++next_projectile_serial;
         if (shot.swimming) shot.swim_seconds += dt;   // 0085748A, record+488h += dt
+        if (kTorpedoGyroHeadingBound && shot.swimming && shot.commanded_heading != 10000.0f) {
+            // 00857061: e = -SubtractWrapped(yaw, record+46Ch), clamped to
+            // +/- HeadingTurn (deg/s, classDesc+0E8h) * pi/180, times dt.
+            const GameBulletClassRow* round = bullet(shot.bullet_class);
+            const float turn_rate = round != nullptr ? round->heading_turn : 0.0f;
+            const float vx = shot.flight.velocity.x, vz = shot.flight.velocity.z;
+            const float speed = std::sqrt(vx * vx + vz * vz);
+            if (turn_rate > 0.0f && speed > 0.0f) {
+                const float yaw = std::atan2(vx, vz);
+                const float e = bsp::wrapped_angle_subtract_00438b10(shot.commanded_heading, yaw);
+                const float rate = static_cast<float>(turn_rate * 3.14159265358979 / 180.0);
+                const float step = std::max(-rate, std::min(rate, e)) * dt;
+                if (step != 0.0f) {
+                    const float ny = yaw + step;
+                    shot.flight.velocity.x = speed * std::sin(ny);
+                    shot.flight.velocity.z = speed * std::cos(ny);
+                    ++torpedo_gyro_turn_steps;
+                }
+            }
+        }
         const float from[3] = {shot.position[0], shot.position[1], shot.position[2]};
         shot.flight = bsp::projectile_flight_step(shot.flight, dt);
         shot.position[0] = shot.flight.local_position.x;
@@ -4890,6 +5009,20 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
     if (target.dead) return;
     const GameGunRow& gun = guns[gun_row];
     const int priced_class = round_bullet_class >= 0 ? round_bullet_class : gun.bullet_class;
+    if (gun.category == 7 && victim != shooter
+        && unit_state[shooter].row.side == target.row.side) {
+        // DIAGNOSTIC, packet cc9_usn02_sameside_torpedoes: a torpedo on its own side.
+        float sp[3], vp[3], r[3], u[3], f[3];
+        unit_pose(shooter, r, u, f, sp);
+        unit_pose(victim, r, u, f, vp);
+        log.notef("gunnery: friendly torpedo hit t=%.2f shooter=%s plat=%d victim=%s "
+            "point=(%.0f %.0f) shooter_pos=(%.0f %.0f) victim_pos=(%.0f %.0f) %s",
+            static_cast<double>(clock_seconds), unit_state[shooter].row.name.c_str(),
+            gun.platform_key, target.row.name.c_str(), static_cast<double>(point[0]),
+            static_cast<double>(point[2]), static_cast<double>(sp[0]), static_cast<double>(sp[2]),
+            static_cast<double>(vp[0]), static_cast<double>(vp[2]),
+            blast_record != nullptr ? "blast" : "direct");
+    }
     if (aa_trace_matches(unit_state[shooter].row.name)) {
         log.notef("  aa hit t=%.2f %s gun=%zu cat=%d on %s %s health_before=%.1f",
             static_cast<double>(clock_seconds), unit_state[shooter].row.name.c_str(), gun_row,
@@ -5319,7 +5452,7 @@ void GameGunneryHost::Impl::apply_gun_aim_message(std::size_t unit,
         const float vert = std::asin(std::max(-1.0f, std::min(1.0f, dot3(u, up))));
         const bsp::GunPlatformArcs arcs{gun.arcs.data(), gun.arcs.size()};
         const bool in_window = bsp::gun_fire_allowed_007f60a0(arcs, horz, vert);   // 00959D72
-        const bool seat_ai = gun.seat_1ac == 8;                    // 00521E70(gun, 0)
+        const bool seat_ai = slot_ai_held_00927f10(gun.seat_1ac);   // 00521E70(gun, 0)
         if (!in_window) {
             if (!seat_ai) {                                        // 00959D8E: 00729F70
                 gun.seat_1ac = 8;
@@ -5979,6 +6112,13 @@ void GameGunneryHost::report() {
             "packet cc9_player_gun_seat)", host.seat_messages, host.seat_handovers,
             host.seat_returns, host.seat_held_ticks, host.seat_trigger_ticks,
             kPlayerGunSeatBound ? 1 : 0);
+        host.log.notef("summary mission gunnery torpedo gyro launches=%llu turn_steps=%llu "
+            "mean_launch_offset_deg=%.2f bound=%d (007311B0/00856637/00857061, packet "
+            "cc9_usn02_sameside_torpedoes)", host.torpedo_gyro_launches,
+            host.torpedo_gyro_turn_steps,
+            host.torpedo_gyro_launches ? host.torpedo_gyro_offset_sum_deg / host.torpedo_gyro_launches
+                                       : 0.0,
+            kTorpedoGyroHeadingBound ? 1 : 0);
         host.log.notef("summary mission gunnery bullet throw cone=%llu fan=%llu zero=%llu "
             "mean_magnitude_deg=%.4f mean_angle_deg=%.4f seats aa=%llu tail=%llu flak=%llu "
             "torpedo=%llu depth=%llu artillery=%llu pilot=%llu none=%llu bound=%d "
