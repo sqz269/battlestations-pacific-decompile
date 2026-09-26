@@ -1,0 +1,14 @@
+{
+  "packet": "cc9_reference_rebaseline_3",
+  "doc": "docs/GAME_EXECUTABLE.md, Mission reference baselines, 2026-09-26 c (main 015b4bf71)",
+  "ghidra": "not used",
+  "binary": {"path": "local/rb3/bsp_game.exe", "sha256_prefix": "A55996C5A72D", "tree": "d74f068a6 = main 015b4bf71 + one doc-only commit"},
+  "env": "BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1, --mission-frame-seconds 0.05, idle player",
+  "predictions": {
+    "USN04_4500": {"damage": 11393.0, "deaths": 41, "hit_records": 727, "hull": 266, "shots": 5567, "first_hit_s": 93.0, "moved_m": 3454.40, "end": "none", "source": "cc9-platform2 local/bs_on_usn04.log"},
+    "E2_9000": {"damage": 13329.3, "deaths": 51, "hit_records": 836, "hull": 282, "shots": 6486, "first_hit_s": 93.0, "moved_m": 5731.91, "end": "none", "phase": "phase 1 only; first luaMoveToPh2 re-arm after fixed step 4621 (231.05 s), 73 re-arms, no callback", "source": "local/seg_on_e2.log, cc9-platform2 local/bs_on_e2.log"},
+    "USN02_9000": {"damage": 59209.2, "deaths": 22, "hit_records": 440, "hull": 222, "shots": 789, "first_hit_s": 30.25, "moved_m": 2930.61, "end": "failed at 39.65 s", "source": "local/seg_on_usn02.log"},
+    "USN01_3000": {"null": "2026-09-26 b row: 2690.0 / 7 / 141 (90) / 457", "note": "no landing paired on USN01; any move is flagged unpaired"}
+  },
+  "results": "pending"
+}

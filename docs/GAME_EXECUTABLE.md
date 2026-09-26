@@ -9857,3 +9857,73 @@ the failure at 39.65 s. Flagged:
 * the recon lists, corpse chase, task-less arms, avoidance gate, integrator/throttle, seat flip,
   camera unit and wedge landings. None was paired on these four missions by this packet. Any
   effect they have is inside those two unpaired steps or the USN04/USN01 attribution.
+
+## Mission reference baselines, 2026-09-26 c (main 015b4bf71)
+
+Packet `cc9_reference_rebaseline_3`. It replaces the 2026-09-26 b rows above once its runs are
+recorded below.
+
+**Run parameters:**
+- one binary, `local\rb3` (SHA-256 prefix `A55996C5A72D`), built in worktree cc9-gunnery2 at
+  `d74f068a6`. That is main `015b4bf71` plus one doc-only commit, with every switch in its landed
+  state;
+- `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1`, lockstep `--mission-frame-seconds 0.05`, no
+  frame jitter, idle player, one run at a time through `tools/run_game.ps1`;
+- USN04 4700/4500, E2 = USN04 9200/9000, USN01 3200/3000 and USN02 9200/9000, each
+  `--press-start-frame 30 --menu-select <mission>`.
+
+### Predictions, committed before the runs
+
+The landings since `7c421ba25` and their pairs (OFF -> ON; "=" means identical both ways):
+
+| landing | pair doc | USN04 4500 | E2 9000 | USN02 9000 |
+| --- | --- | --- | --- | --- |
+| ship-AI replan snapshot `kShipAiSnapshotBound` (1ff05f399) | `docs/SHIP_AI_TAILS.md` section 5 | - | 37 -> 39 deaths | 22 -> 19 deaths, end 44.60 -> 39.65 s |
+| recon squadron aggregates (7edcb4c78) | `docs/RECON_TEAM_LISTS.md` Results | = (30 / 520) | - | = (20 / 487) |
+| recon call sites (710efc679) | `docs/RECON_CALL_SITES.md` section 5 | = | - | = |
+| the four move-to switches, all-on pair (2770e1ecb) | `docs/PILOT_MOVETO_TASK.md`, "The all-on pair, measured" | 30 -> 36 deaths | 35 -> 43 / 595 -> 796 | - |
+| 29h ray pick (5edd9e5b5) | `docs/HUD_PICK_SEGMENT_QUERY.md` section 6 | = | - | = |
+| corridor head and clearance hook (afff8eb6a) | `docs/SHIP_AI_TAILS.md` section 6 | - | = (35 / 595) | = (22 / 440) |
+| move-to circle steer (beb281dd9) | `docs/PILOT_MOVETO_TASK.md`, "The pairs, measured" | 36 -> 43 / 708 -> 751 | 43 -> 51 / 796 -> 841, **stays in phase 1** | - |
+| whole 009DE5B0 (cc62d2d48) | `docs/SHIP_AI_TAILS.md` section 7 | - | = | = |
+| formation placement teleport OFF (88cc4de81; pair 83416b435) | `docs/PILOT_MOVETO_TASK.md`, "The pair, measured"; `docs/SQUADRON_SPAWN_SEATS.md` section 6a | 43 -> 41 / 751 -> 727 | 51 / 841 -> 836 | - |
+| closed-gate bookkeeping (1992e9cd3) | `docs/SHIP_AI_TAILS.md` section 8 | - | = | - |
+| warning manager tick (2d5cdf079) | `docs/WARNING_MANAGER.md` section 7 | = | - | = |
+| scaled-delta write (ec2309604) | `docs/SCALED_DELTA_WRITE.md` section 4 | = (41 / 727) | - | = (22 / 440) |
+| warning timer (f606c876e) | `docs/SHIP_AI_TAILS.md` section 9 | - | = (51 / 836) | = |
+| plane device walk (64b094146) | `docs/PLANE_DEVICE_WALK.md`, "The pair, measured" | = | = | - |
+| bot scheduler writers (fdfd52ff6) | `docs/BOT_SCHEDULER_WRITERS.md` section 4 | = | = | - |
+| gun-seat segment query (3c955899d) | `docs/PLAYER_GUN_SEAT.md` section 6.4 | - | = | = |
+
+No landing was paired on USN01.
+
+**Expected values.** Each is the latest ON log of the last pair on that mission. Every later
+landing was identical there.
+- **USN04 4500** from `bs_on_usn04.log` (cc9-platform2): 11393.0 damage, 41 deaths, 727 hit
+  records (266 hull), 5567 shots, first hit 93.00 s, torpedo-task 5 of 16 / dive-bomb 3 of 19,
+  15 water contacts, Lexington 3454.40 m, no mission end.
+  - Counters: fires / floods / parts 0 / 1 / 1; flood damage 1000, repaired 440; 4 blast
+    entries; 158 ranging records; 14416 window rejects.
+- **E2** from `bs_on_e2.log` and `seg_on_e2.log` (identical on every gameplay line): 13329.3
+  damage, 51 deaths (categories 0: 11, 1: 16, 6: 24), 836 hit records (282 hull), 6486 shots,
+  first hit 93.00 s, 5 of 16 / 3 of 19, 19 water contacts, Lexington 5731.91 m, no mission end.
+  - Counters: 0 / 1 / 1; flood 1000, repaired 1565; 4 blast entries; 172 ranging records; 16320
+    window rejects.
+  - **Phase 1:** the first `Blackout(true, "luaMoveToPh2")` follows fixed step 4621 (231.05 s).
+    It is re-issued on every 3 s Think pass, 73 times, and never calls back, so there is no phase
+    2 (`docs/MISSION_BLACKOUT.md`, "A re-issued blackout never calls back").
+- **USN02** from `seg_on_usn02.log`, equal to `sd_on_usn02.log`: 59209.2 damage, 22 deaths
+  (categories 2: 3, 3: 5, 6: 6, 7: 8), 440 hit records (222 hull), 789 shots, first hit 30.25 s,
+  DeRuyter 2930.61 m, **failed at 39.65 s** ("Game Over", entity Encounter).
+  - Counters: 19 / 222 / 220; flood / fire damage 13907 / 3525, repaired 4471; 6 damage-control
+    deaths; 19 failures (11 explosions, 5 jams); 1157 blast entries; 16 segments destroyed;
+    37 ranging records, mean 25.6 m over 66779 aim steps; 224 spread launches; 0 window rejects.
+- **USN01 3000:** there is no pair, so the null is the b row (2690.0 / 7 / 141 (90) / 457 /
+  53.70 s / 4 of 5, 0 of 2 / 3). The move-to chain and circle steer act on ordered aircraft, and
+  USN01 has two US scouts, so a move is possible. Any move there is **flagged as unpaired**.
+- **Unimplemented rows:** within +/- 5 of E2 545, USN04 544, USN02 506 and USN01 464. The exact
+  count depends on which records each landing turned concrete or added.
+- **Per-entity death tables:** equal to the source logs' `death row` lines (51 on E2, 22 on
+  USN02).
+- **Would contradict the chain:** any gameplay row on USN04, E2 or USN02 differing from these
+  values. Every landing after those logs was identical on its pairs.
