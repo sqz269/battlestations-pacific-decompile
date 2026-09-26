@@ -419,3 +419,30 @@ The pair is `kMoveToFollowBound` OFF against ON. Both sides are built with
 | promotions (follow -> moveto) | about 4, each on a leader's death | about the same; each promoted wingman flies on to the ship and may arrive |
 | escort Zero deaths | part 2's level with the turn | rise: the wingmen follow their leaders through the fleet's fire |
 | bomber and ship rows | as OFF | within the RNG bands |
+
+### Part 3's pair, measured
+
+`local\MF_OFF_9000.log` (binary `local\mf_off`) and `local\MF_ON_9000.log` (`local\mf_on`).
+Both sides are built from `162a2affe` with parts 1a, 1b and 2 ON, and differ only in
+`kMoveToFollowBound`. The window is 1600x900 in both, and the spawn callback runs at the same
+frame.
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| `BotStateMoveToFollow::tick` | record, 16178 | concrete, 20259 | concrete, the same order | held |
+| wingman at the end, beside a live leader (waves 1, 2, 4, 8) | 2.7-31.5 km, unrelated to the leader | 4-40 m from the leader (30918/30923, 26557/26547, 30415/30454, 20945/20915) | close to the leader | held |
+| promotions (follow -> moveto) | 4 | 1 | about the same | **failed**: fewer leaders die while their wingman is still in follow |
+| follow -> circle | 0 | 3 | not predicted | the wingman was promoted when its leader had already arrived |
+| arrivals | 11 | 14 | - | wingmen now reach the ship with their leaders |
+| plane deaths | 44 | 43: A6M Zero #1.2's wingman survives, and nothing is added | rise | **failed**: flat |
+| hit records | 788 | 796 | within band | held |
+| torpedo / dive releases | 5 / 4 | 5 / 6 | within band | held |
+| the Lexington's distance moved | 5828 | 4285 | within band | held |
+
+**What the pair shows.**
+- **The follow state does its job.** Every surviving wingman holds its leader's station through the
+  run, including past the ship after the leader arrives.
+- **Deaths stay flat.** A wingman flying in formation is no more exposed than one flying the
+  task-less arms. Part 2's added deaths came from the leaders' approach, not from the wingmen.
+
+**Kept OFF**, pending the all-on pair.
