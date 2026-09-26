@@ -1,0 +1,57 @@
+{
+  "packet": "cc10_global_config_diagnostic_discard_precondition",
+  "baseline": "9287a5d58ef84661c844eec8695e9d59992954db",
+  "header": "include/bsp/native_global_config_load.hpp",
+  "helper": "NativeGlobalConfigLoadOperation::discard_retained_state_for_diagnostics",
+  "change": {
+    "added_comments": 4,
+    "non_comment_tokens_unchanged": true,
+    "behavior_API_cleanup_unchanged": true,
+    "native_address_claimed": false,
+    "native_bytes_claimed": 0,
+    "function_credit": false,
+    "ledger_changes": false
+  },
+  "contract": "Caller must independently establish valid Lua state; failed/running phase and last site are not restoration tokens. Foreign C++ escape through Lua C frames does not admit this diagnostic helper: object release/close can execute Lua and the helper establishes neither state invariants nor finalizer-service safety.",
+  "validation": {
+    "strict_MSVC_Win32_Release": true,
+    "build_attempts": 1,
+    "existing_CTests_passed": 3,
+    "new_tests": 0,
+    "Lua_execution": false,
+    "runtime": false
+  },
+  "negative_audit": {
+    "proposal": "local/cc10_lua_foreign_exception_retirement_readiness/PROPOSAL.md",
+    "archive": "local/cc10_lua_foreign_exception_retirement_readiness/evidence.zip",
+    "sha256": "2282c5999fb4f716fb75d0eb9414cf8b06c41870609e2f86a4ce80ae47edc902",
+    "rows": 30,
+    "members": 31,
+    "source_files": 14,
+    "source_windows": 21,
+    "no_independent_behavioral_restoration_or_retirement_patch": true
+  },
+  "preservation": {
+    "previous_build_commit": "32c607443417a7cdd0c87667a970e9471d4c6da9",
+    "build_outputs_preserved": 4,
+    "pre_sync_build_zip_sha256": "e9edefeb32645b902b6308a3115e33e25860ea14fd1284a0dff2dc3138d9ebde",
+    "previous_archival_rows": [
+      66,
+      30,
+      132,
+      5
+    ],
+    "new_baseline_has_intervening_source_changes": true,
+    "no_binary_delta_attribution_to_comments": true,
+    "historical09ed_scope_unchanged": true
+  },
+  "evidence": "local/cc10_global_config_discard_precondition_implementation/",
+  "doc": "docs/NATIVE_GLOBAL_CONFIG_DIAGNOSTIC_DISCARD_PRECONDITION_CC10.md",
+  "limits": [
+    "No restoration token or retirement/transport mechanism added",
+    "Existing rawfatal/current-handler choice unchanged; direct fundamentals failures distinct",
+    "No categorical longjmp destructor/finally/Activation/nativeFH3 claim",
+    "No source0/W/producer/nonempty/application admission",
+    "No Ghidra write, native address/body credit, runtime or new test"
+  ]
+}
