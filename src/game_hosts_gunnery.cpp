@@ -232,6 +232,14 @@ constexpr bool kPartySlotAiHeldBound = true;
 constexpr bool kTorpedoGyroHeadingBound = true;
 // TorpedoBot AngleErrMin / AngleErrMax, degrees, this installation's
 // robots.lua by skill index (008FD640 +0Ch / +10h).
+//  * kReconTeamListsBound: packet cc9_recon_team_lists. The gunnery sweep's
+//    contact list 008053C0(unit+54h)+0DE8h is the recon slot's published enemy
+//    triple as 008073C0 leaves it: scanned classes (00806480) in bucket order,
+//    identified (level 2) targets only, blips going to `unknown` instead. OFF:
+//    the earlier stand-in, every other-side unit with any level above none, in
+//    unit order. SUBSTITUTIONS: the squadron and convoy aggregates (classes 18h
+//    and 1Ah, 00805490 / 00805680) are not built. docs/RECON_TEAM_LISTS.md.
+constexpr bool kReconTeamListsBound = true;
 constexpr float kTorpedoAngleErr[6][2] = {
     {10.0f, 20.0f}, {0.0f, 10.0f}, {0.0f, 0.5f}, {0.0f, 6.0f}, {0.0f, 3.0f}, {0.0f, 0.5f}};
 // This installation's shipglobals.lua:74 authors TurnOffAAGunThrow = false
@@ -1185,6 +1193,24 @@ struct GameGunneryHost::Impl {
         unsigned long long identified{0};
     };
     std::vector<ReconSideCensus> recon_side_census;
+    // Packet cc9_recon_team_lists: each recon slot's five published triples
+    // after the last 008073C0 rebuild, as unit indices in native order:
+    // 0 own (+DD8h), 1 enemy (+DE4h), 2 neutral (+DF0h), 3 unknown (+DFCh),
+    // 4 their union (+E08h). docs/RECON_TEAM_LISTS.md.
+    struct ReconSlotTriples {
+        int side{0};
+        std::array<std::vector<std::size_t>, 5> lists{};
+    };
+    std::vector<ReconSlotTriples> recon_triples;
+    unsigned long long recon_triple_builds{0};
+    unsigned long long recon_triple_sum[5]{};
+    const ReconSlotTriples* recon_triples_for(int side) const {
+        for (const ReconSlotTriples& t : recon_triples) {
+            if (t.side == side) return &t;
+        }
+        return nullptr;
+    }
+    void publish_recon_triples_008073c0();
 
     const ReconClassRecord* recon_record_for_class(int recon_class_id);
     void resolve_recon_inputs();
@@ -2455,10 +2481,37 @@ public:
     bool sweep_suppressed() override { return state_.sweep_suppressed; }
 
     int recon_contact_count_008053c0() override {
-        // [recon+DE8h], the side's published enemy contact list. This process
-        // builds no recon slot object; the stand-in is documented in the header.
+        // [recon+DE8h], the side's published enemy contact list.
         contacts_.clear();
         const int own_side = owner_.units.unit_side_0054(unit_);
+        if constexpr (kReconTeamListsBound) {
+            // Packet cc9_recon_team_lists: the published enemy triple itself.
+            const auto* t = owner_.recon_triples_for(own_side);
+            if (t != nullptr) {
+                for (const std::size_t i : t->lists[1]) {
+                    ++owner_.summary.contact_considered;
+                    if (i == unit_) continue;
+                    if (i < owner_.unit_state.size() && owner_.unit_state[i].dead) {
+                        ++owner_.summary.contact_reject_dead;
+                        continue;
+                    }
+                    const bool ship_base =
+                        owner_.units.unit_is_kind_of(i, bsp::kUnitGunneryKindShipBase);
+                    const bool plane_base =
+                        owner_.units.unit_is_kind_of(i, bsp::kUnitGunneryKindPlaneBase);
+                    if (!ship_base && !plane_base) {
+                        ++owner_.summary.contact_reject_kind;
+                        continue;
+                    }
+                    if (plane_base) ++owner_.summary.contact_admit_plane;
+                    else ++owner_.summary.contact_admit_ship;
+                    contacts_.push_back(i);
+                }
+            }
+            ++owner_.summary.recon_sweeps;
+            owner_.done("Gunnery::recon_slot_contacts_008053c0", 0x008053c0u);
+            return static_cast<int>(contacts_.size());
+        }
         const std::size_t count = owner_.units.count();
         for (std::size_t i = 0; i < count; ++i) {
             if (i == unit_) continue;
@@ -3086,9 +3139,10 @@ void GameGunneryHost::Impl::refresh_command_targets() {
 // ---------------------------------------------------------------------------
 
 // scripts/datatables/autoload/reconclasses.lua takes `RealisticTable` only when
-// the global `GameMode` is 1 and falls through to `ArcadeTable` otherwise. The
-// installed scripts tree carries no gamemode.lua for that autoload's DoFile to
-// define `GameMode` from, so the else arm is the one this process can reach.
+// the global `GameMode` is 1 and falls through to `ArcadeTable` otherwise. This
+// installation's root gamemode.lua sets `GameMode = 0` (and a nil GameMode takes
+// the same arm), so arcade is the image's table here too.
+// docs/CLASSTABLE_SELECTION.md.
 inline constexpr bsp::ReconTableVariant kReconVariant = bsp::ReconTableVariant::arcade;
 
 const GameGunneryHost::Impl::ReconClassRecord*
@@ -3346,8 +3400,78 @@ void GameGunneryHost::Impl::step_recon_sensor_pass_008073c0(float frame_dt) {
             }
         }
     }
+    publish_recon_triples_008073c0();
     done("Recon::sensor_pass", 0x008073c0u);
     done("Recon::evaluate_sensors", 0x008048a0u);
+}
+
+void GameGunneryHost::Impl::publish_recon_triples_008073c0() {
+    // 008073C0 steps 5..13 for every slot this process observes. The buckets
+    // are walked in class-id order (the 61h-bucket loops at 00807529,
+    // 00807615, 008076F9); inside a bucket the records follow this pass's scan
+    // order, because 008065B0 appends new records and splices carried ones to
+    // the tail. The scan (0080749C..00807527) visits only the 22 ids of
+    // 00806480, each through the world registry's per-class list, behind the
+    // four gate bytes and IsKindOf(2).
+    std::array<int, 22> ids = bsp::kReconScannedClassIds;
+    std::sort(ids.begin(), ids.end());
+    std::vector<int> sides;
+    for (const ReconSideCensus& row : recon_side_census) sides.push_back(row.side);
+    const std::size_t count = units.count();
+    for (std::size_t u = 0; u < count; ++u) {
+        const int s = units.unit_side_0054(u);
+        if (std::find(sides.begin(), sides.end(), s) == sides.end()) sides.push_back(s);
+    }
+    GunneryReconSensorPassHost host(*this);
+    recon_triples.clear();
+    for (const int side : sides) {
+        ReconSlotTriples t;
+        t.side = side;
+        std::vector<std::size_t> unknown_enemy, unknown_neutral;
+        for (const int id : ids) {
+            const std::size_t n = units.world_list_size(id);
+            for (std::size_t pos = 0; pos < n; ++pos) {
+                const std::size_t u = units.world_list_entry(id, pos);
+                if (u >= count) continue;
+                if (!host.unit_present(u)) continue;                        // 008074D5..008074EE
+                if (!units.unit_is_kind_of(u, bsp::kReconScanRequiredClassId)) continue;  // 008074F2
+                const bsp::ReconRelation rel = bsp::recon_relation_for_008065ff(side,
+                    units.unit_side_0054(u));
+                if (rel == bsp::ReconRelation::own) {                       // step 6
+                    t.lists[0].push_back(u);
+                    continue;
+                }
+                // Steps 9 and 10: the drain keeps level 2 in its relation's
+                // triple, copies level 1 into `unknown`, drops level 0.
+                const bsp::ReconDetectionLevel level = recon_pass.level(side, u);
+                const bool enemy = rel == bsp::ReconRelation::enemy;
+                if (level == bsp::ReconDetectionLevel::identified) {
+                    t.lists[enemy ? 1 : 2].push_back(u);
+                } else if (level == bsp::ReconDetectionLevel::blip) {
+                    (enemy ? unknown_enemy : unknown_neutral).push_back(u);
+                }
+            }
+        }
+        t.lists[3] = unknown_enemy;                                         // 00807644
+        t.lists[3].insert(t.lists[3].end(), unknown_neutral.begin(), unknown_neutral.end());
+        for (int k = 0; k < 4; ++k) {                                       // step 13
+            t.lists[4].insert(t.lists[4].end(), t.lists[k].begin(), t.lists[k].end());
+        }
+        for (int k = 0; k < 5; ++k) recon_triple_sum[k] += t.lists[k].size();
+        recon_triples.push_back(std::move(t));
+    }
+    ++recon_triple_builds;
+    done("Recon::publish_triples_008073c0", 0x00807529u);
+}
+
+bool GameGunneryHost::recon_triple_units(int side, int triple,
+    std::vector<std::size_t>& out) const {
+    out.clear();
+    if (triple < 0 || triple > 4) return false;
+    const Impl::ReconSlotTriples* t = impl_->recon_triples_for(side);
+    if (t == nullptr) return false;
+    out = t->lists[static_cast<std::size_t>(triple)];
+    return true;
 }
 
 void GameGunneryHost::Impl::run_gunnery_pass(std::size_t index, float dt) {
@@ -6078,6 +6202,20 @@ void GameGunneryHost::report() {
         // run, then the published level per observing side, then the contact
         // drops rule (c) is responsible for.
         const bsp::ReconSensorPassState& pass = host.recon_pass;
+        {
+            const double b = host.recon_triple_builds ? static_cast<double>(host.recon_triple_builds) : 1.0;
+            host.log.notef("summary mission recon triples builds=%llu mean own=%.1f enemy=%.1f "
+                "neutral=%.1f unknown=%.1f union=%.1f bound=%d (008073C0 / 004C3CB0, packet "
+                "cc9_recon_team_lists)", host.recon_triple_builds, host.recon_triple_sum[0] / b,
+                host.recon_triple_sum[1] / b, host.recon_triple_sum[2] / b,
+                host.recon_triple_sum[3] / b, host.recon_triple_sum[4] / b,
+                kReconTeamListsBound ? 1 : 0);
+            for (const auto& t : host.recon_triples) {
+                host.log.notef("  recon triples final side %d own=%zu enemy=%zu neutral=%zu "
+                    "unknown=%zu union=%zu", t.side, t.lists[0].size(), t.lists[1].size(),
+                    t.lists[2].size(), t.lists[3].size(), t.lists[4].size());
+            }
+        }
         host.log.notef("summary mission recon sensor_pass passes=%llu observers=%llu "
             "targets=%llu forced=%llu no_table=%llu blip=%llu identified=%llu none=%llu "
             "classes=%zu class_missing=%llu modifier_absent=%llu suppressed=%d "

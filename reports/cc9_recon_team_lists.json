@@ -1,0 +1,28 @@
+{
+  "packet": "cc9_recon_team_lists",
+  "doc": "docs/RECON_TEAM_LISTS.md",
+  "answer": "The five triples 008073C0 publishes per recon slot (own, enemy, neutral, unknown, union) are built after every host sensor pass from the scan rule (00806480's 22 class ids through the world registry, gate bytes, IsKindOf(2)), the relation rule 008065FF and the published level (drain: level 2 stays, level 1 to unknown). The gunnery sweep's 008053C0(unit+54h)+0DE8h read now takes the enemy triple (kReconTeamListsBound ON). The HUD gets GameGunneryHost::recon_triple_units(side, triple, out) for 004C3CB0's walks of triples 0, 1 and 3.",
+  "steps": [
+    {"site": "0080749c", "rule": "scan the 22 class ids of 00806480 through [game+19CCh]+18h+id*0Ch, gate 008074D5..008074F2"},
+    {"site": "008065ff", "rule": "relation own / enemy / neutral from the slot index and unit+54h"},
+    {"site": "00807529", "rule": "triple 0 = every own bucket, class-id order"},
+    {"site": "00807615", "rule": "triple 1 = every enemy bucket, drained at 00807634 to level 2; level 1 copied to triple 3"},
+    {"site": "008076f9", "rule": "triple 2 = neutral, drained at 008077B4"},
+    {"site": "00807933", "rule": "triple 4 = copies of triples 0..3"}
+  ],
+  "hud_entry": "bool GameGunneryHost::recon_triple_units(int side, int triple, std::vector<std::size_t>& out) const",
+  "substitutions": ["no squadron / convoy aggregates (classes 18h, 1Ah; 00805490 / 00805680)"],
+  "pair": {
+    "mission": "USN04 4700/4500, BSP_GUNNERY_RNG_STREAMS=1, BSP_DEATH_TABLE=1, window 1600x900",
+    "off": "local/rtO_usn04.log", "on": "local/rtT_usn04.log",
+    "triples": "identical (mean own 55.7, enemy 28.3, unknown 0.3)",
+    "contacts_admitted": "ship 90252 -> 90252, plane 171430 -> 164896",
+    "considered": "1097368 -> 256883",
+    "shots_hits_deaths": "3772/469/32 identical; 0 of 726 gun rows differ",
+    "verdicts": ["triples identical: held", "admits fall 20..40%: failed (-2.5%; USN04 has 19 blips vs 2121 identified)", "shots/hits/deaths within bands: held (identical)"],
+    "decision": "ON"
+  },
+  "also": "kReconVariant's comment corrected (gamemode.lua exists at the installation root; docs/CLASSTABLE_SELECTION.md)",
+  "ghidra": "read-only; the triples' rules are docs/RECON_SLOT_LISTS.md's, not re-read",
+  "no_ghidra_function": []
+}
