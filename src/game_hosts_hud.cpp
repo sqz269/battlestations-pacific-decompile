@@ -2474,8 +2474,10 @@ public:
             // 00526FBE CMP EBP,[EDI+3CCh].
             const bsp::PlaneSquadronHostRecord* r = squadron_of(squadron);
             return r != nullptr ? r->live_count() : 0;
+        } else {
+            static_cast<void>(squadron);
+            return 0;
         }
-        return 0;
     }
     std::size_t member_3d0(std::size_t squadron, int k) override {
         if constexpr (kPickSquadronMembersBound) {
@@ -2493,10 +2495,13 @@ public:
             }
             owner_.done("UnitPickScreen::squadron_member_empty", 0x00526e5eu);
             return 0;
+        } else {
+            // SUBSTITUTION: squadron members (+3D0h, count +3CCh) are not exposed.
+            static_cast<void>(squadron);
+            static_cast<void>(k);
+            owner_.record("UnitPickScreen::squadron_members", 0x00526e58u);
+            return 0;
         }
-        // SUBSTITUTION: squadron members (+3D0h, count +3CCh) are not exposed.
-        owner_.record("UnitPickScreen::squadron_members", 0x00526e58u);
-        return 0;
     }
     bool grey_arrow_contains_008ddf90(std::size_t unit) override {
         if constexpr (kHudGreyArrowSetBound) {
