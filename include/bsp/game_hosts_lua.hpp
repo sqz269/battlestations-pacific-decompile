@@ -55,6 +55,15 @@ struct ShipClassCameraInputs;
 
 namespace bsp::game {
 
+// Packet cc9_wing_construction_lua (docs/WING_CONSTRUCTION_LUA.md, section 15.4 of
+// docs/SENTITY_INIT_ATTACH_ORDER.md), committed OFF. Effective only together
+// with the units host's kWingConstructionInPassABound (docs/CONSTRUCT_WORLD.md
+// section 30): pass A marks the nodes appended during the squadron's 007F4580
+// hook as its wing (wing_member, squadron_id = the leader, class_index = the
+// squadron's), and the pass A wing append, the squadron's recorded wing range
+// and the dedup's wing deferral are retired.
+inline constexpr bool kWingConstructionLuaBound = false;
+
 class GameHostLog;
 class GameVfsHost;
 class GameScriptOrdersHost;
@@ -275,6 +284,9 @@ struct GameMissionLuaSummary {
     unsigned long long init_all_nonempty{0};
     unsigned long long init_all_entities{0};
     unsigned long long init_all_wing_appended{0};
+    // Packet cc9_wing_construction_lua: nodes pass A marked as the squadron's
+    // wing because the units host appended them during its 007F4580 hook.
+    unsigned long long init_all_wing_marked{0};
     // Packet cc9_init_attach_order: pass B 009292B0 binds and pass C
     // SquadronID stores that found a slot.
     unsigned long long init_all_class_bound{0};
