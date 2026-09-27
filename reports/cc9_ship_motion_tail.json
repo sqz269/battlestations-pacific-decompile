@@ -1,0 +1,138 @@
+{
+  "packet": "cc9_ship_motion_tail",
+  "doc": "docs/SHIP_POST_MOTION.md",
+  "calls": [
+    {
+      "address": "00826C5C",
+      "native": "0092E5B0",
+      "function": "00825F20",
+      "note": "network correction, gate closed in single player"
+    },
+    {
+      "address": "00826C75",
+      "native": "00811890",
+      "function": "00825F20",
+      "note": "the wake's yaw rate from the ordered rudder unit+984h"
+    },
+    {
+      "address": "00826CEE",
+      "native": "00810190",
+      "function": "00825F20",
+      "note": "wake append"
+    },
+    {
+      "address": "00826CF5",
+      "native": "00778890",
+      "function": "00825F20",
+      "note": "the unit leads its group"
+    },
+    {
+      "address": "00826D3E",
+      "native": "0070DB60",
+      "function": "00825F20",
+      "note": "the slot swap when unit+1158h expires"
+    },
+    {
+      "address": "00826D5A",
+      "native": "0077A650",
+      "function": "00825F20",
+      "note": "the scheduled expiry; unit+308h is 0 here"
+    },
+    {
+      "address": "0070E066",
+      "native": "00811180",
+      "function": "0070DB60",
+      "note": "member i against the leader's wake"
+    },
+    {
+      "address": "0070E156",
+      "native": "00811180",
+      "function": "0070DB60",
+      "note": "member j against the leader's wake"
+    },
+    {
+      "address": "0070E1D1",
+      "native": "00BF7030",
+      "function": "0070DB60",
+      "note": "sqrt of d_ii"
+    }
+  ],
+  "coverage": [
+    {
+      "routine": "00826C34",
+      "coverage": "complete (ship_motion_tail_00826c34, bound)"
+    },
+    {
+      "routine": "0070DB60",
+      "coverage": "complete from the listing; the inlined world-matrix refreshes are the host's pose cache"
+    },
+    {
+      "routine": "00826B84",
+      "coverage": "bookkeeping: 008160B0's entity gate evaluated; the repair work runs in the gunnery host"
+    }
+  ],
+  "substitutions": [
+    {
+      "what": "00811180 with no leg to measure",
+      "is": "the pair is skipped and counted invalid",
+      "evidence": "the image reads stale stack slots"
+    },
+    {
+      "what": "class flag +D0h at 008160B6",
+      "is": "taken as set",
+      "evidence": "no host field; its producer is unread"
+    },
+    {
+      "what": "0092E5B0",
+      "is": "gate closed, no state change",
+      "evidence": "controller+60h's only writer is the network state message 0092F2E0"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "unit+308h's constructor value is set before the window read (docs/SHIP_POST_MOTION.md section 11)",
+      "is": "0077EFFE stores 0 from a cleared XMM0 (0077EFE4), so 0077A650 is not reached",
+      "evidence": "0077EFE4 XORPS XMM0,XMM0; 0077EFFE MOVSS [ESI+308h],XMM0"
+    },
+    {
+      "was": "the provisional wake yaw rate result.steering.rate_row1",
+      "is": "00811890(unit, [unit+984h]), the ordered rudder ring+14Ch",
+      "evidence": "00826C61-00826C75"
+    },
+    {
+      "was": "docs/COMMAND_COMPLETION.md: 009CFB47 in 009CFA80 is a moveto",
+      "is": "009CFA80 is the takeoff task's altitude floor completing a moveto command",
+      "evidence": "009CFD70, vtable 00D21228 slot +64h, string takeoff at 00D21290"
+    }
+  ],
+  "switches": [
+    {
+      "name": "GameUnitsHost::Impl::kShipMotionTailBound",
+      "state": "ON",
+      "pair": "local/MT_OFF_USN02.log vs local/MT_ON_USN02.log, local/MT_OFF_USN04.log vs local/MT_ON_USN04.log"
+    },
+    {
+      "name": "GameUnitsHost::Impl::kFormationSlotSwapBound",
+      "state": "ON",
+      "pair": "local/SS_OFF_USN02.log vs local/SS_ON_USN02.log, local/SS_OFF_USN04.log vs local/SS_ON_USN04.log"
+    },
+    {
+      "name": "GameUnitsHost::Impl::kShipPostMotionRepairOrder",
+      "state": "ON",
+      "pair": "local/PM_OFF_USN02.log vs local/PM_ON_USN02.log, local/PM_OFF_USN04.log vs local/PM_ON_USN04.log"
+    }
+  ],
+  "failed_predictions": [
+    {
+      "row": "8c post_motion_gate below the tick count",
+      "predicted": "below 285,540 / 162,000",
+      "measured": "every tick",
+      "why": "the host's entity bytes never mark a sunk ship (USN02's 22 sunk ships pass); USN04 sinks none"
+    }
+  ],
+  "no_ghidra_function": [],
+  "ledger_names_added": [],
+  "runtime_gaps": [
+    "0070DB60's distance test and swap: both missions hold every ship in the controlled unit's group, so every call is gated (pairs=0)"
+  ]
+}
