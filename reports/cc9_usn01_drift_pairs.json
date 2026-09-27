@@ -1,0 +1,32 @@
+{
+  "packet": "cc9_usn01_drift_pairs",
+  "doc": "docs/GAME_EXECUTABLE.md, reference c section",
+  "tree": "export of main 471d3d74b",
+  "binaries": {
+    "control": "ud_ctl 6B4FF917CFE3",
+    "carried_rounds_off": "ud_cr_off 273ACB04BDFF",
+    "layer_sample_off": "ud_az_off 1E956C75F709"
+  },
+  "results": {
+    "control": "7 / 150 (85) / 583 shots / releases 3 of 5 / refusals 648 / torpedo drops 0",
+    "a_carried_rounds_off": "identical to the control",
+    "b_layer_sample_off": "7 / 141 (90) / 447 / 4 of 5 / 754 / torpedo drops 2 (rack drops 4+4); identical to the e3aba0f36 control on every gameplay line"
+  },
+  "attribution": "the whole USN01 drift is the avoid-zone layer sample 0d02479e5; the layer is this installation's generic .nav (all 13 USN .nav files identical, md5 ec09b4bbff20); no edge clamp (bounds +/-10000 inside +/-12000); the image's rule, not a host bug",
+  "authored_ammo": "VehicleClass[112] TBD Devastator: DefaultEquipment 1, Equipments[1][50] = {Ammo 1, Platform 75, ReloadTime 80} (vehicleclasses.lua lines 47365-47381, dated 2026-05-09); the torpedo carriers on USN01 are the Mavis",
+  "corrections": [
+    {
+      "was": "USN01 e3aba0f36 control: 8 torpedo drops",
+      "is": "2 torpedo drops (8 rack drops); the 8 came from the 1eaedc668 control",
+      "evidence": "local/fp2_ctl_usn01.log, local/ap_ctl_usn01.log"
+    }
+  ],
+  "flags": [
+    "torpedo drops 8 -> 2 between 1eaedc668 and e3aba0f36, racks still dropping 8 while 2 torpedoes spawn; candidate 5c25befbe; unpaired"
+  ],
+  "failed_predictions": [
+    "(a) was predicted to restore 6..8 drops; it moved nothing",
+    "the Kates/Devastators premise: the torpedo carriers are the Mavis"
+  ],
+  "source_touched": false
+}

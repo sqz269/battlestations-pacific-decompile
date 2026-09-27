@@ -10293,3 +10293,51 @@ authored Ammo is **1**, not 0.
   terrain. Releases may move by 1 (4 against 3), and plane paths over Marshall's terrain move.
 - **Gameplay.** Deaths stay 7 on all three builds. Hit records and shots may move with (b) and
   with the torpedoes of (a).
+
+**The USN01 drift pairs, measured.**
+- **Builds:** one export of `471d3d74b`; control `local\ud_ctl` (`6B4FF917CFE3`), treatments
+  `local\ud_cr_off` (`273ACB04BDFF`) and `local\ud_az_off` (`1E956C75F709`).
+- **Logs:** `local\ud_{ctl,cr_off,az_off}_usn01.log`. Each shows its own module directory, and
+  all exited 0.
+
+| build | deaths | hit records (hull) | shots | torpedo-task releases | window refusals | torpedo drops | rack drops (Mav1..5) |
+| --- | ---: | ---: | ---: | --- | ---: | ---: | --- |
+| control (both switches ON) | 7 | 150 (85) | 583 | 3 of 5 | 648 | 0 | 0 / 0 / 0 / 0 / 0 |
+| (a) carried rounds OFF | 7 | 150 (85) | 583 | 3 of 5 | 648 | 0 | identical to the control |
+| (b) avoid-zone layer sample OFF | 7 | **141 (90)** | **447** | **4 of 5** | **754** | **2** | 4 / 0 / 0 / 4 / 0 |
+
+**(b) is the whole drift.** Against the afternoon control (`local\fp2_ctl_usn01.log`,
+`e3aba0f36`), the layer-OFF run is identical on every gameplay line and every death row. The only
+differences are the summary lines of landings made since then.
+
+(a) moves nothing on USN01.
+
+**The mechanism.**
+- USN01's torpedo carriers are the IJN Mavis flying boats (Mav1..Mav5). The Devastators, whose
+  `VehicleClass[112]` authors Ammo 1 on Platform 75, launch no torpedo run in this mission.
+- **With the layer:**
+  - 92.5 % of the planes' samples read terrain (218,495 of 236,073, mean 108.9 m, max 260.6 m);
+  - terrain avoidance takes 984 ticks with 1,049 throttle cuts, against 528 and 57 without it;
+  - Mav1 never makes its release request, and Mav4's request is never issued (`issues=0` on all
+    five), so no rack drops.
+- **Is the layer wrong?**
+  - It is this installation's data: all 13 `.nav` files under `universe/Scenes/missions/USN/`,
+    `usn_1_marshall.nav` included, are the same 172,939 bytes (md5 prefix `ec09b4bbff20`,
+    2024-07-13). So Marshall samples the generic tan(70°) layer that
+    `docs/AVOID_ZONE_REGISTRY.md` maps, not the atolls.
+  - The grid-edge clamp is not involved: USN01's bounds are +/-10000 and the grid is +/-12000.
+  - The avoidance is the image's rule (0041BC20 over the registry layer, selected by 0041DF40), so
+    the lost drops are the image's consequence of this installation's data. That is not a host
+    bug.
+  - **Uncertain:** the squadron's layer choice (`squadron_34c=3`) was not re-verified against
+    0041DF40 in this packet.
+
+**A correction to the drift flag.** The afternoon control on `e3aba0f36` had **2** torpedo drops,
+not 8. The flag quoted the `1eaedc668` control (`local\ap_ctl_usn01.log`: 8).
+- So USN01's torpedo drops went 8 -> 2 between `1eaedc668` and `e3aba0f36`, and 2 -> 0 with the
+  layer sample.
+- **Flagged, unpaired:** in both 2-drop runs the racks report `drops=4` for Mav1 and for Mav4 (8
+  rack drops), while the gunnery host spawns 2 torpedoes. Whether a rack drop without a torpedo
+  spawn is the image's behaviour for the Mavis' platform, or a host gap in the rack-to-spawn
+  step, is not established. The candidate landing in that window is the Val rack route
+  `5c25befbe` (`cc9_release_issue_stage_vals`).
