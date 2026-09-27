@@ -1,0 +1,50 @@
+{
+  "packet": "cc9_torpedo_gate_bytes",
+  "doc": "docs/SENTITY_INIT_PASSES.md section 10",
+  "calls": [
+    {
+      "address": "009F2AFF",
+      "native": "008637D0",
+      "function": "009F1BC0",
+      "note": "AA group, +12B8h"
+    },
+    {
+      "address": "009F2B38",
+      "native": "00863840",
+      "function": "009F1BC0",
+      "note": "artillery group, +12B9h"
+    },
+    {
+      "address": "009F2B85",
+      "native": "008638B0",
+      "function": "009F1BC0",
+      "note": "depth-charge group, +12BBh"
+    },
+    {
+      "address": "009F2C1F",
+      "native": "00863920",
+      "function": "009F1BC0",
+      "note": "torpedo group, +12BAh"
+    },
+    {
+      "address": "0086380E",
+      "native": "008633D0",
+      "function": "008637D0",
+      "note": "category accepts target"
+    }
+  ],
+  "switches": [
+    {
+      "name": "kShipAiQueryGateBytesBound",
+      "state": "OFF",
+      "pair": "pending"
+    }
+  ],
+  "no_ghidra_function": [],
+  "names_added": [],
+  "substitutions": [
+    "byte +77h/+78h read from the host's torpedo_group_flag/depth_charge_group_flag",
+    "[+60h]->vtable[4] is 00861BE0 (always 1) as category_gate_slot4 has it"
+  ],
+  "failed_predictions": []
+}

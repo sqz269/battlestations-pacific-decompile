@@ -123,6 +123,14 @@ struct ShipAiApproachState {
     // 009E72F3 gates the standoff cap on it. NOT set by 009E8171/009E8178,
     // which store +12BCh/+12BDh (the query's +40h/+41h bytes).
     bool  clearance_valid_12ba{false};
+    // nested+12B8h, +12B9h and +12BBh, the query block's other three gate bytes
+    // (+3Ch, +3Dh, +3Fh). 009F1BC0 writes them every frame (009F2AE7/009F2B04,
+    // 009F2B20/009F2B3D, 009F2B6D/009F2B8A; 009F2E0F, 009F2E29, 009F2E43 on the
+    // arm without a target). Packet cc9_torpedo_gate_bytes: read only when
+    // kShipAiQueryGateBytesBound; the constructor's value is not modelled.
+    bool  allow_aa_12b8{true};
+    bool  allow_artillery_12b9{true};
+    bool  allow_depth_charge_12bb{true};
     float avoid_radius_1290{0.0f};    // nested+1290h, 009E8153, fed to 009E6400
 };
 
@@ -942,5 +950,42 @@ struct ShipAiTorpedoStandoffResult {
 // in the image's order. The other three gate bytes are not produced here.
 ShipAiTorpedoStandoffResult ship_ai_torpedo_standoff_009f2ac9(
     const ShipAiTorpedoStandoffInputs& in, ShipAiTorpedoStandoffHost& host);
+
+// ---------------------------------------------------------------------------
+// The query block's gate bytes +12B8h..+12BBh (packet cc9_torpedo_gate_bytes)
+// ---------------------------------------------------------------------------
+//
+// docs/SENTITY_INIT_PASSES.md section 10. True: 009F1BC0 fills +12B8h, +12B9h
+// and +12BBh every frame, and the frame-state query (0095F080 at 009F2F11) and
+// the ring query (009E7FC0 -> 009E5DA0) take all four gate bytes from the
+// block, the torpedo one being +12BAh; 00863920 is the gunnery host's live
+// answer. False: all four gates are 1 in both queries (the earlier labelled
+// substitution) and 00863920 is recomputed from the stance-push inputs.
+inline constexpr bool kShipAiQueryGateBytesBound = false;
+
+// The calls 009F2AD1..009F2B8A and 009F2DF7..009F2E43 make for the three
+// bytes. The group tests are [unit+6DCh]->008637D0 / 00863840 / 008638B0 on the
+// raw target EDI.
+struct ShipAiQueryGateHost {
+    virtual ~ShipAiQueryGateHost() = default;
+    virtual bool director_artillery_enable_0220() = 0;   // [0080E160(unit)+220h]
+    virtual bool director_aa_enable_0221() = 0;          // +221h
+    virtual bool director_depth_charge_enable_0223() = 0; // +223h
+    virtual bool aa_group_accepts_008637d0() = 0;         // 009F2AFF, list 00E0A510
+    virtual bool artillery_group_accepts_00863840() = 0;  // 009F2B38, list 00E0A4F8
+    virtual bool depth_charge_group_accepts_008638b0() = 0; // 009F2B85, list 00E0A528
+};
+
+struct ShipAiQueryGateBytes {
+    bool aa_12b8 = false;
+    bool artillery_12b9 = false;
+    bool depth_charge_12bb = false;
+};
+
+// With a raw target: +12B8h = +221h && 008637D0; +12B9h = +220h && 00863840;
+// +12BBh = ship target && +223h && 008638B0 (009F2B43..009F2B8A). Without one:
+// the three director bytes as they are (009F2DF7..009F2E43).
+ShipAiQueryGateBytes ship_ai_query_gate_bytes_009f2ac9(const ShipAiTorpedoStandoffInputs& in,
+                                                       ShipAiQueryGateHost& host);
 
 } // namespace bsp

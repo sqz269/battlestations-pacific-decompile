@@ -757,3 +757,73 @@ USN04 is untouched. The failed rows are predictions of effect, not mismatches wi
   accessor on `GameGunneryHost` once `src/game_hosts_gunnery.cpp` is free.
 - The TorpedoBot descriptor (008FB530) is not loaded in this process; the six accuracies are
   constants.
+
+## 10. The query block's gate bytes `+12B8h..+12BBh` (packet `cc9_torpedo_gate_bytes`)
+
+Worker cc9-ships2, on main `bca91c9d8`. Ghidra was read-only. The switch is
+`kShipAiQueryGateBytesBound` in `include/bsp/ship_ai_approach_update.hpp`, committed OFF.
+
+**Answer:** 008637D0, 00863840, 00863920 and 008638B0 are one loop, each over its own category
+list:
+- 00E0A510, AA `{1, 5, 6}`;
+- 00E0A4F8, artillery `{1, 2, 3, 4, 6}`;
+- 00E0A520, torpedo `{7}`;
+- 00E0A528, depth charge `{8, 9}`.
+
+Each is `__thiscall(gunneryAi)(Entity* target)`, `RET 4`. It answers true at the first category
+that passes three tests:
+- its byte `+70h+c` is set;
+- `[+60h]->vtable[4](c)` passes;
+- 008633D0(c, target) accepts the target.
+
+009F1BC0 fills the query block's four gate bytes from them, and the frame-state query (0095F080 at
+009F2F11) and the ring query (009E7FC0 -> 009E5DA0) both read those bytes. The host has had all
+four at 1.
+
+| byte | query field | with a raw target | without one |
+| --- | --- | --- | --- |
+| `+12B8h` | `+3Ch`, category 1 | `+221h` and 008637D0 (009F2ADF..009F2B04) | `+221h` (009F2E0F) |
+| `+12B9h` | `+3Dh`, categories 2, 3, 4, 6 | `+220h` and 00863840 (009F2B18..009F2B3D) | `+220h` (009F2E29) |
+| `+12BAh` | `+3Eh`, category 7 | section 9 | section 9 |
+| `+12BBh` | `+3Fh`, categories 8, 9 | ship target, `+223h` and 008638B0 (009F2B43..009F2B8A) | `+223h` (009F2E43) |
+
+The target block `+1238h` really does hold four 1s (009F2733's EBX), so it is left as it is.
+
+### The binding (under `kShipAiQueryGateBytesBound`)
+
+- `GameGunneryHost::group_accepts_target_008637d0(unit, list, target)` is the loop on the gunnery
+  host's live pass state.
+  - The byte `+70h+c` is the enabled array, except for `+77h` and `+78h`. The host keeps those two
+    as `torpedo_group_flag` and `depth_charge_group_flag` (00861DB7, 00861E07).
+  - The gate `00861BE0` is always 1.
+  - 008633D0 applies the liveness, class, rank and mask tests in the order of
+    `score_candidate_00863990`.
+- `bsp::ship_ai_query_gate_bytes_009f2ac9` fills the three bytes every frame, after the standoff
+  block. Both queries then take all four bytes from the block.
+- With the switch on, the standoff's 00863920 is the gunnery-host accessor. Section 9's
+  recomputation stays on the OFF path.
+- **The census:** `summary mission ship ai query gates frames=.. aa=.. artillery=.. torpedo=..
+  depth_charge=..`, and per row `query gates <unit> frames aa artillery depth_charge`.
+
+### Predictions (written before the pairs; same tree, switch only, streams and the death table on)
+
+The ON baseline is section 9's ON:
+- USN02: 4171 capped clearances, 219 launches, 21 deaths, 656 hit records;
+- USN04: gameplay identical to its OFF.
+
+Every row below is one the log prints.
+
+| row | prediction |
+| --- | --- |
+| USN02 `query gates depth_charge` | 0: rows 8 and 9 of the preference table rank only 08h and 41h, and USN02 has no submarine target |
+| USN02 `query gates torpedo` | within 5% of the standoff's enabled frames, since the torpedo byte is section 9's gate |
+| USN02 `query gates artillery` | more than 90% of the gate frames: every ship target is ranked by categories 2..4 and 6, and `+220h` is on |
+| USN02 `pair_diff` | 3: the own and ring ratings lose every torpedo and depth-charge mount they counted with the gates at 1 |
+| USN02 standoff rows | Haguro and Jintsu (torpedo byte 0, masked) change `standoff last`; so do at least half of the Allied tube ships |
+| USN02 ship torpedo launches | 219, unchanged: the launch path does not read the block |
+| USN02 deaths / hit records | differ from 21 / 656 |
+| USN02 `capped` (clearances) | within 10% of 4171 |
+| USN04 `query gates depth_charge` and `torpedo` | both 0: every escort frame holds a plane target |
+| USN04 `query gates aa` and `artillery` | equal to the gate frames: category 1 ranks planes, and both lists contain it |
+| USN04 standoff rows | Fletcher-class01..04 (two category-7 and two category-8 mounts each) and York-class01/02 (two category-7) change `first` or `last`. Northampton-class01/02 (categories 1, 3 and 6 only, from the OFF log's mount lines) keep theirs |
+| USN04 `pair_diff` | 3, carried by the Fletcher standoffs; air deaths may move through AA geometry |

@@ -8502,6 +8502,53 @@ void GameGunneryHost::report() {
 }
 
 // Packet cc9_ship_torpedo_response.
+bool GameGunneryHost::group_accepts_target_008637d0(std::size_t unit_index,
+                                                    std::uint32_t list_address,
+                                                    std::size_t target_index) const {
+    const Impl& d = *impl_;
+    if (unit_index >= d.unit_state.size() || target_index >= d.unit_state.size()) return false;
+    const Impl::UnitState& state = d.unit_state[unit_index];
+    if (!state.attached) return false;   // no pass object at unit+6DCh
+    const int* list = nullptr;
+    std::size_t count = 0;
+    switch (list_address) {
+    case bsp::kUnitGunneryAaGroupAddress:
+        list = bsp::kAaFlakCategories.data(); count = bsp::kAaFlakCategories.size(); break;
+    case bsp::kUnitGunneryArtilleryGroupAddress:
+        list = bsp::kArtilleryCategories.data(); count = bsp::kArtilleryCategories.size(); break;
+    case bsp::kUnitGunneryTorpedoGroupAddress:
+        list = bsp::kTorpedoCategories.data(); count = bsp::kTorpedoCategories.size(); break;
+    case bsp::kUnitGunneryDepthChargeGroupAddress:
+        list = bsp::kDepthChargeCategories.data(); count = bsp::kDepthChargeCategories.size(); break;
+    default:
+        return false;
+    }
+    for (std::size_t i = 0; i < count; ++i) {
+        const int category = list[i];
+        const std::size_t slot = static_cast<std::size_t>(category);
+        // Byte +70h+c. The host keeps +77h and +78h (00861DB7, 00861E07) apart
+        // from the enabled array, which 008624C0 restores for 7 and 8.
+        bool present = state.category.enabled[slot];
+        if (category == 7) present = state.category.torpedo_group_flag;
+        if (category == 8) present = state.category.depth_charge_group_flag;
+        if (!present) continue;                                   // 008637F2
+        // [+60h]->vtable[4](c): 00861BE0, MOV AL,1 (category_gate_slot4).
+        // 008633D0: 00862820, then the mask word. The same order and inputs as
+        // score_candidate_00863990 above.
+        bsp::GunneryTargetLiveness liveness;
+        liveness.registered = d.units.unit_active(target_index);
+        liveness.dead = d.unit_state[target_index].dead;
+        if (!bsp::target_is_engageable_00862820(liveness)) continue;
+        const int class_id = d.units.unit_class_id(target_index);
+        if (class_id < 0) continue;
+        if (bsp::gunnery_rank(d.rank_table.data(), category, class_id) == 0) continue;
+        const bool plane = d.units.unit_is_kind_of(target_index, bsp::kUnitGunneryKindPlaneBase);
+        if (!bsp::category_mask_admits_target_008633d0(state.category.mask[slot], plane)) continue;
+        return true;                                              // 00863834
+    }
+    return false;
+}
+
 std::vector<GameGunneryHost::LiveTorpedo> GameGunneryHost::live_torpedoes() const {
     std::vector<LiveTorpedo> out;
     for (const GameProjectileRow& shot : impl_->shots) {

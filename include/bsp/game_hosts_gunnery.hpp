@@ -815,6 +815,16 @@ public:
         float water_travel_speed{0.0f};
     };
     std::vector<LiveTorpedo> live_torpedoes() const;
+    // Packet cc9_torpedo_gate_bytes (docs/SENTITY_INIT_PASSES.md section 10).
+    // 008637D0, 00863840, 00863920 and 008638B0 are one loop over the category
+    // lists 00E0A510 (AA {1,5,6}), 00E0A4F8 (artillery {1,2,3,4,6}), 00E0A520
+    // (torpedo {7}) and 00E0A528 (depth charge {8,9}): true at the first
+    // category whose byte +70h+c is set, whose [+60h]->vtable[4](c) gate passes
+    // and that 008633D0(c, target) accepts. `list_address` is one of the four
+    // kUnitGunnery*GroupAddress constants; any other answers false. Reads the
+    // unit's live pass state; a unit with no pass answers false.
+    bool group_accepts_target_008637d0(std::size_t unit_index, std::uint32_t list_address,
+                                       std::size_t target_index) const;
     // Packet cc9_ship_torpedo_response: 00BD2F10 on stream 1 for the ship AI's
     // torpedo draws (009F0AD0, 009F1316..009F13BE). Default: the shared
     // generator every gunnery draw uses, in call order. BSP_GUNNERY_RNG_STREAMS=1:
