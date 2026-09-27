@@ -713,3 +713,20 @@ hit.
 from other ships' circles. No gameplay band was broken. `kShipAiNeighbourCountBound` is set true.
 Ranking 3 row 19 (`ShipAiArmTail::neighbour_list_count`) is closed, and so is row 20
 (`entity_hull_radius`).
+
+### 12a. The E2 snapshot pair on main e3aba0f36 (packet `cc9_reference_flag_pairs_2`)
+
+The same export method, run on E2 = USN04 9200/9000, logs `local\fp2_{ctl,sn_off}_usn04.log`.
+
+| line | ON (control) | OFF |
+| --- | ---: | ---: |
+| deaths / hit records (hull) | 51 / 843 (282) | 51 / 824 (292) |
+| shots / dive-bomb releases | 6714 / 3 of 19 | 7554 / 4 of 19 |
+| station keeping / path picks | 37308 / 123354 | 32189 / 128355 |
+| `dir=astern` lines | 0 | 0 |
+| phase 1 completes | 231.05 s (step 4621) | 225.05 s (step 4501) |
+
+- No ship sinks on either side.
+- As in section 5, Coral Sea moves through +3A5h's per-step clear, not the astern latch: station
+  keeping and path picks trade places.
+- The aircraft rows move: hit records -19 and shots +840.

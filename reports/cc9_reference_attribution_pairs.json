@@ -54,5 +54,23 @@
   ],
   "failed_predictions": [
     "snapshot OFF sinks 2 fewer Allied ships (10 vs 12), not at least 2 more"
-  ]
+  ],
+  "flag_pairs_2": {
+    "packet": "cc9_reference_flag_pairs_2",
+    "tree": "export synced to main e3aba0f36",
+    "binaries": {
+      "control": "fp2_ctl 21257B8020DA",
+      "ra_off": "fp2_ra_off 5E71C4F8D111",
+      "sn_off": "fp2_sn_off 6E5281215D91"
+    },
+    "recon_aggregates_USN01": {
+      "off": "group records 0, window refusals 385, admit_plane 3922, candidates 152; deaths/hits/shots identical",
+      "verdict": "held; closes the USN01 refusal flag"
+    },
+    "snapshot_E2": {
+      "on_off": "51/843 vs 51/824, shots 6714 vs 7554, astern 0/0, no sinking",
+      "verdict": "held; the switch moves E2 hit records by 19 on this base, so the 594 -> 595 residue is not isolable and stays flagged"
+    },
+    "transient_crash": "first fp2_ra_off USN01 run 0xC0000005 after frame 2428 (log fp2_ra_off_usn01_crash1.log); repeat of the same binary clean; not reproduced, not explained"
+  }
 }
