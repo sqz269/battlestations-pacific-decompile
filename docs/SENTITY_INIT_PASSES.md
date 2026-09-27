@@ -499,3 +499,90 @@ when `[unit+0C0h]` is set and its `+4h` is 3 (0081FA4B..0081FA5D). The table is 
 - `lua_enable=0` and `close_attack_sends > 0`.
 - No ship launched a torpedo with every enable at 1, so nothing can launch more.
 - Gameplay identical: pair_diff exit 1, and the death, plane and unit tables identical.
+
+### The pairs, measured
+
+- **Builds.** `tools/pair_export.py` from commit `4cd2ce621` (main `fe43c66cd` plus this packet,
+  the switch OFF):
+  - `local\tm_off`, no flip, SHA-256 prefix `D63EBC8453A8`;
+  - `local\tm_on`, `--flip kShipDirectorEnablesBound=true`, SHA-256 prefix `B791ED12EAB6`.
+- **Logs.** `local\tm_{off,on}_{usn02,e2}.log` in worktree cc9-ships. Each has the 1600x900
+  override, the immediate present interval, its own module directory and the final COM release.
+
+**`tools/pair_diff.py`, USN02 9200/9000: exit 3, gameplay moved.**
+
+```
+GAMEPLAY: MOVED
+* deaths                                 20                                       22
+* hit records                            329                                      597
+* hull hits                              167                                      302
+* damage                                 59663.8                                  57705.4
+* shots                                  807                                      1063
+* first hit                              30.25 s                                  35.80 s
+  torpedo-task releases                                                           
+  dive-bomb-task releases                                                         
+  torpedo drops                          0                                        0
+  plane water contacts                                                            
+* controlled moved                       DeRuyter 316.14                          DeRuyter 1941.74
+  units                                  32                                       32
+  mission end                            failed at 39.65 s (Mission.EndMission) text="Game Over" e... failed at 39.65 s (Mission.EndMission) text="Game Over" e...
+* host methods concrete/unimplemented    981 / 518                                984 / 516
+DEATH ROWS: 20 -> 22 rows, 5 only ON, 3 only OFF, 15 changed
+```
+
+- **The writers.** `lua_enable=12 lua_disable=0 close_attack_sends=1090 changed=26`. The first
+  `close attack torpedo enable` line follows fixed step 208.
+- **Launches.** Gyro launches went from 314 to 212. `torpedo_disabled_pushes` is 1123.
+- **Who killed with torpedoes ON.** The eight category-7 deaths are Exeter (Tokitsukaze, 35.95 s),
+  Houston (Nachi), Perth, Jupiter and Witte (Amatsukaze), John1 (Minegumo), Asagumo (Yukikaze)
+  and Alden (John3, 380.28 s). Every killer is a script-enabled ship or an Allied ship after the
+  CLOSEATTACK enable. None of Haguro, Jintsu, Yudachi, Samidare, Murasame and Harusame fires one.
+- **DeRuyter** now dies at 179.06 s to Murasame's category 6. Java dies at 187.21 s to Jintsu's
+  category 2.
+
+**`tools/pair_diff.py`, E2 = USN04 9200/9000: exit 1, gameplay identical.** The death, plane and
+unit tables are identical (52, 52 and 81 rows). The writers read `lua_enable=0
+close_attack_sends=522 changed=18`, and there are 0 gyro launches on both sides.
+
+**Predictions against the measurement:**
+
+| row | predicted | measured | held |
+| --- | --- | --- | --- |
+| lua_enable / lua_disable | 12 / 0 | 12 / 0 | yes |
+| close_attack_sends | > 0 from about 10.4 s | 1090, first after fixed step 208 | yes |
+| changed | 26 (band 23..26) | 26 | yes |
+| category-7 kills by the six masked ships | none | none | yes |
+| DeRuyter's 30.25 s death by Jintsu | does not happen | dies at 179.06 s, Murasame, category 6 | yes |
+| gyro launches | 40%..95% of OFF | 212 of 314, 68% | yes |
+| USN02 pair_diff | exit 3 | exit 3 | yes |
+| USN02 mission end | not predicted | failed at 39.65 s on both sides | - |
+| E2 | exit 1, tables identical, lua 0, sends > 0 | exit 1, identical, lua 0, sends 522 | yes |
+
+### Verdict: `kShipDirectorEnablesBound` ON
+
+- No launch path the reference missions reach reads past the mask, and both writers that re-open
+  it are bound. So the switch now gives each ship the image's enables.
+- **The Java Sea reference row keeps its meaning.** The 39.65 s `Game Over` is not a host
+  artefact. usn_2_java.lua line 521 fails the mission when Houston or Exeter is dead. In the image
+  Exeter is sunk at 35.95 s by Tokitsukaze, a destroyer the script's `TorpedoEnable` re-armed, as
+  on OFF.
+- **What changes is how the Java Sea opens.**
+  - DeRuyter and Java are no longer torpedoed at 30.25 s and 32.40 s by Jintsu and Haguro: those
+    two cruisers stay masked unless a Japanese group reaches CLOSEATTACK, and the host promotes
+    none on USN02 (its one promotion is the Allied group).
+  - The torpedo attack comes from the eight script destroyers and the four `FinalShips`, as the
+    mission authors wrote it.
+  - The Allied tube ships join from about 10.4 s, when their group enters CLOSEATTACK.
+- **Section 7's ON measurement is superseded.** It showed no failure and 0 launches because
+  neither writer was bound. It was not a picture of the image.
+
+### Open
+
+- **The ship AI's torpedo standoff.** 009E6E80 caps the standoff at `+12B4h` minus the turn
+  radius when `+12BAh`, the cached torpedo enable, is set. The host never writes `clearance_12b4`,
+  and it calls `+12BAh` `clearance_valid_12ba`: src/ship_ai_approach_update.cpp:465 sets it with
+  no image store behind it. Reading 009F1BC0's `+12B4h` arithmetic (009F2D46..009F2D8C) and
+  binding the pair would let torpedo-enabled ships close in the way the image's do.
+- **NavigatorForceTorpedo 008A7200** and **SubmarineAttack 00894440** bypass the mask. Neither is
+  used by the reference missions; `vtable[1D8h]` and 00894440 are unread.
+- **00A11B80,** CLOSEATTACK's and DEFENDPOSITION's middle call, is unread and unbound.

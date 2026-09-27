@@ -160,11 +160,50 @@
   "switches": [
     {
       "name": "kShipDirectorEnablesBound",
-      "state": "OFF",
-      "pair": "pending"
+      "state": "ON",
+      "pair": "local/tm_off_usn02.log vs local/tm_on_usn02.log (exit 3, gameplay moved), local/tm_off_e2.log vs local/tm_on_e2.log (exit 1) (pair_export of 4cd2ce621: local/tm_off D63EBC8453A8, local/tm_on B791ED12EAB6)"
     }
   ],
-  "pair_diff": {},
+  "pair_diff": {
+    "usn02": [
+      "GAMEPLAY: MOVED",
+      "* deaths                                 20                                       22",
+      "* hit records                            329                                      597",
+      "* hull hits                              167                                      302",
+      "* damage                                 59663.8                                  57705.4",
+      "* shots                                  807                                      1063",
+      "* first hit                              30.25 s                                  35.80 s",
+      "  torpedo-task releases",
+      "  dive-bomb-task releases",
+      "  torpedo drops                          0                                        0",
+      "  plane water contacts",
+      "* controlled moved                       DeRuyter 316.14                          DeRuyter 1941.74",
+      "  units                                  32                                       32",
+      "  mission end                            failed at 39.65 s (Mission.EndMission) text=\"Game Over\" e... failed at 39.65 s (Mission.EndMission) text=\"Game Over\" e...",
+      "* host methods concrete/unimplemented    981 / 518                                984 / 516",
+      "DEATH ROWS: 20 -> 22 rows, 5 only ON, 3 only OFF, 15 changed",
+      "  - only OFF: John2"
+    ],
+    "e2": [
+      "GAMEPLAY: identical",
+      "  deaths                                 52                                       52",
+      "  hit records                            875                                      875",
+      "  hull hits                              345                                      345",
+      "  damage                                 13618.3                                  13618.3",
+      "  shots                                  6092                                     6092",
+      "  first hit                              93.00 s                                  93.00 s",
+      "  torpedo-task releases                  4 of 16                                  4 of 16",
+      "  dive-bomb-task releases                1 of 19                                  1 of 19",
+      "  torpedo drops                          1                                        1",
+      "  plane water contacts                   19                                       19",
+      "  controlled moved                       Lexington-class01 6017.22                Lexington-class01 6017.22",
+      "  units                                  81                                       81",
+      "  mission end                            none (Mission.EndMission never true)     none (Mission.EndMission never true)",
+      "* host methods concrete/unimplemented    1046 / 546                               1048 / 546",
+      "DEATH ROWS: identical (52 rows)",
+      "PLANE DEATH MODES: identical (52 rows)"
+    ]
+  },
   "failed_predictions": [],
   "no_ghidra_function": [
     {
@@ -186,5 +225,9 @@
     "00836510 BSP_WeaponDirector_VisitEnables",
     "008367F0 BSP_WeaponDirector_VisitState",
     "00729F40 BSP_Gun_TorpedoBotAccuracyOrOne"
-  ]
+  ],
+  "writers_measured": {
+    "usn02": "lua_enable=12 lua_disable=0 close_attack_sends=1090 changed=26; gyro launches 314 -> 212",
+    "e2": "lua_enable=0 close_attack_sends=522 changed=18; gyro launches 0 -> 0"
+  }
 }

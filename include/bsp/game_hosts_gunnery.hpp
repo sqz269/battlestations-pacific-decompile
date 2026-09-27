@@ -276,7 +276,7 @@ inline constexpr bool kDeathRouteDestroyBound = true;
 // 00A11AF0 (every ship of the own group, every tick). SUBSTITUTION: both store
 // at the send instead of through the session. False: all four stay the
 // constructor's 1 (007202FD) and TorpedoEnable stays unimplemented.
-inline constexpr bool kShipDirectorEnablesBound = false;
+inline constexpr bool kShipDirectorEnablesBound = true;
 
 // Session message 79h as 00954A10 builds it in 005484F0 (section 32 of
 // docs/SHIP_SCREEN_UPDATE.md): +1Ch group, +20h..+28h the camera mover's
