@@ -2378,3 +2378,77 @@ The translation row never changes, so no start position moves.
 **Verdict: ON.** The moves are the image's frames reaching the host's start poses, and each one
 traces to a normalised frame. USN02's reference rows (19 deaths, 566 hit records) are superseded
 by 19 and 573 on this base.
+
+## 19. USN13's 670 plane water contacts (packet `cc9_usn13_water_contacts`, read, nothing bound)
+
+Worker cc9-terrain2, 2026-09-27, on main 93e12f5a4. Logs: `local\FN_{OFF,ON}_USN13.log`,
+`local\ROT2_USN13.log`, `local\WC_TRAJ_USN13.log` in worktree cc9-terrain2.
+
+### 19.1 What the 670 counts
+
+- **The row is a record count, not an event count.** It counts `Plane::water_contact_007cb7f0`,
+  UNIMPLEMENTED. The host records it once per tick while a live plane is below the water line with
+  007BC5B0's gate false (`src/game_hosts_units.cpp`, the "plane water contact ignored" path). It also
+  records it at each state 7 -> 6 contact.
+- **The events on USN13 3200/3000:**
+  - 21 live torpedo bombers of the `bruh #1.7`..`#1.15` squadrons go below the surface, fall to
+    -30 m and die by the depth kill (`007CE3A7`) about 0.85 s later;
+  - 15 of them then register a dead-plane contact (state 7 -> 6).
+  - About 30 ticks under water per plane gives the 670.
+- **All 34 USN13 deaths are `bruh` planes.** 21 are these undamaged sea crashes (`first_damage=-1`,
+  no killer) and 13 are shot down.
+- **The same 670 appears OFF and ON** of the frame normalisation (section 18) and in the older
+  `ROT2` run.
+
+### 19.2 What it is not
+
+- **Not terrain.** The water line is the flat sea (`water=0.00`). The crashes happen during the
+  torpedo approach on Enterprise, 5.6 km from the nearest ship. No island is involved.
+- **Not branch A.** `water probe probes=0`: no live plane is ever in mode 6.
+- **Not the frame normalisation.** The count is identical OFF and ON.
+- **Not a height-source defect.** The contact test compares the plane's y with the ocean height
+  0.0, as the image's 007CB7F0 does.
+
+### 19.3 What it is: live bombers stall into the sea
+
+- **The surface probes** (below 5 m, once a second) show the crashed planes in a deep, sinking
+  stall. Two examples:
+  - `bruh #1.12` at 127.75 s: pitch `+C64h` 1.18 rad, live pitch input -1 (full nose down), throttle
+    1.0, 25.9 m/s, sinking at 17.6 m/s;
+  - `bruh #1.12|.-2` at 90.9 s: 50.7 m/s, sinking at 36 m/s, throttle 0.071.
+  - The commanded altitude is 719..1450 m and the commanded pitch 0.46..0.48, the climb cap.
+- **They are the planes that fought their wingmen.** Averaged per plane:
+
+  | | crashed (21) | other bombers (39) |
+  | --- | --- | --- |
+  | vehicle-avoidance plane ticks | 560 | 88 |
+  | vehicle-avoidance bands | 5674 | 1347 |
+  | vehicle-avoidance throttle writes | 1473 | 337 |
+  | terrain-avoidance ticks | 47 | 12 |
+
+- **Why the wingmen are close.**
+  - The squadrons spawn stacked: members 0-1 and 2-3 coincide and the pairs are 2.78 m apart. That
+    is the image's own spawn (docs/SQUADRON_SPAWN_SEATS.md section 6).
+  - In the torpedo approach's `follow` state, members 0-2 stay 12..41 m apart and 1-3 15..68 m
+    through tick 1200 (`plane formation geometry`), while 0-1 open to 570 m.
+  - So 007DF4F0 keeps firing for those pairs. Its throttle write `interp(3, 1, 15, -1, s)` cuts
+    power when they close.
+- **The open question is the one docs/CLIMBOUT_SPEED_GATE.md section 4 left.** Does the image's
+  free-flight law (007DA710 and the pose advance) drop the nose in a deep stall? The host plane
+  keeps a nose-up pitch of 1.0..1.19 rad under full nose-down input while sinking. The rate law
+  itself cannot move the body rate away from its target (docs/PLANE_CONTROL_RATE_LAW.md). So the
+  nose-up growth comes from elsewhere in the host's pose advance or from `+C64h`'s sign convention,
+  and either needs its own read.
+
+### 19.4 Verdict
+
+- **Not the image's behaviour proven, and not a terrain gap.** Nothing is bound here.
+- **Two reads for the plane owners, in order:**
+  1. The follow state's station keeping for the torpedo approach: why members 0-2 and 1-3 hold
+     12..68 m apart, and whether 009C1FD0's follow law gives them distinct stations.
+  2. The high-angle-of-attack flight: why `+C64h` rises to 1.19 rad with the pitch input at -1
+     (007DA710's pitch target and the pose advance).
+- **The reference flag in `reports/cc9_reference_rebaseline_6.json` stays.** That file is cc9-ships2's
+  lease, and the contacts are not shown to be the image's own. Its reason should read "21 live
+  torpedo bombers stall into the sea (host flight / formation question, docs/SCENE_CONTENTS_HOSTS.md
+  19)" rather than a water-contact defect.

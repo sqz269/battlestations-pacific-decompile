@@ -1,0 +1,18 @@
+{
+  "packet": "cc9_usn13_water_contacts",
+  "doc": "docs/SCENE_CONTENTS_HOSTS.md, section 19",
+  "kind": "read, nothing bound",
+  "calls": [],
+  "switches": [],
+  "findings": [
+    "670 = per-tick records of 007CB7F0 while 21 live torpedo bombers fall from the surface to the -30 m depth kill, plus 15 dead-plane contacts",
+    "not terrain, not branch A (0 probes), not the frame normalisation (identical OFF/ON), not the height source",
+    "the crashed bombers stall nose-up under full nose-down input after heavy vehicle avoidance between close wingmen (members 0-2 and 1-3 at 12..68 m in follow)"
+  ],
+  "open": [
+    "follow-state station keeping for the torpedo approach (009C1FD0)",
+    "high-angle-of-attack flight: +C64h rising under pitch input -1 (007DA710, pose advance)"
+  ],
+  "no_ghidra_function": [],
+  "names_added": []
+}
