@@ -1,0 +1,19 @@
+{
+  "packet": "cc9_usn02_torpedo_stock_flag",
+  "doc": "docs/GAME_EXECUTABLE.md, Mission reference baselines e, flags: USN02 552 -> 579 closed by a first-parent bisect",
+  "closes": "reports/cc9_reference_rebaseline_5.json open_flags: USN02 torpedo stock on top of the throttle cut, 22/552 -> 22/579",
+  "calls": [],
+  "run_parameters": "USN02 9200/9000, BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1, --mission-frame-seconds 0.05, --press-start-frame 30, idle player, tools/run_game.ps1, one run at a time; each point tools/pair_export.py --commit <sha> --out local/bis, no flip",
+  "points": [
+    {"commit": "1dae0cf67", "hit_records": 552, "note": "pair_diff exit 0 against cc9-units3 local/TC_ON_USN02.log", "sha256_prefix": "E9599047C3EC"},
+    {"commit": "e26db34df", "hit_records": 552, "sha256_prefix": "70C9DECA0558"},
+    {"commit": "d1bde0cb7", "hit_records": 552, "note": "movie mover ON", "sha256_prefix": "B5926E48600A"},
+    {"commit": "93786e63e", "hit_records": 579, "note": "torpedo stock merge; only code change against 6a209456c is kTorpedoStockBound false -> true", "sha256_prefix": "ED1F9E767613"},
+    {"commit": "27cc522b2", "hit_records": 579, "note": "pair_diff exit 0 against cc9-units3 local/LK_OFF_USN02.log", "sha256_prefix": "AC08699737A6"}
+  ],
+  "attribution": "kTorpedoStockBound alone, on the base with the wreck throttle cut and the movie mover: d1bde0cb7 -> 93786e63e is 22/552/278/1121 -> 22/579/290/1142 (deaths/hits/hull hits/shots), the same 8 death rows and 9 unit rows as the original logs",
+  "no_ghidra_function": [],
+  "names_added": [],
+  "substitutions": [],
+  "failed_predictions": []
+}
