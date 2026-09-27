@@ -1120,3 +1120,78 @@ Worker cc9-movie-camera, 2026-09-27, base main 87b51d106, branch `agent/cc9-movi
   in `local\` under the same prefix.
 - **Scripts and message files:** `local\cc9-movie-camera-*`.
 - **Raw listings and decompiles:** `local\mc\`.
+
+## 10. The movie camera's substitutions and unsupported keys (packet `cc9_movie_camera_keys`)
+
+Worker cc9-hud2, 2026-09-27, base main 73983fada. This takes items 2 and 3 of the section 9.2
+queue. Each substitution and key was read in the image and given one of three outcomes: bound
+behind its own switch, kept with a reason, or left for a later packet.
+
+### 10.1 The substitutions (item 3)
+
+| substitution | read | outcome |
+| --- | --- | --- |
+| one 00798C80 step per frame | 00798C80 is slot `+8h` of the tick element, wave 3, run once per fixed step. The step is `0.05f` (00D0DE84, `docs/ENTITY_THINK_DISPATCH.md`) | **exact under lockstep 0.05**, which every reference run uses: one frame is one fixed step. Kept, relabelled as exact under that protocol |
+| the 00798D07 draw is not taken | the else arm (00798CD9..00798D36) runs on every step after the latch. It counts `+408h`, sums dt into `+40Ch`, draws `00BD2F10(ECX = 1, 0.0, [00D046A8] = 65535.0)` and stores the 00BF7420 conversion in the ring `+3C4h[+404h]`, wrapping after 15. No reader of the ring was found: displacement scans of 0078D880..007A4860 for `+254h`/`+294h`/`+298h`/`+29Ch` hit only 00798C80 | **switch 4**, `kMovieStepDrawBound` |
+| plane+810h taken as zero | **the writer is found.** Plane+810h is a sub-object, not a field. 007CFD6D `LEA ECX,[ESI+810h]` in `BSP_PlaneUnitInstance_Construct` passes it to 007C4560, which zeroes its three vectors (`+0`, `+Ch`, `+18h`) and seeds `+24h` from stream 1. 007BE060, called only from the plane fixed step 007CE040 (one rel32 call at 007CE0D2, no absolute reference), rewrites `+0..+8` every step from the `Wanderer/*` tuning (`+1C0h..+1E8h`, `docs/GAME_TUNING_SINGLETON.md`). So `+810h..818h` is the **plane wanderer velocity**. The displacement scans missed it because the writer's base is the sub-object | **kept, and consistent.** The host has no plane wanderer: its plane pose advance takes `+810h` as zero too (`src/game_hosts_units.cpp`, the 007D8230 note). So subtracting zero matches the pose the host publishes. Binding the wanderer is a plane-host packet; it moves every plane path and draws stream 1 per plane per step |
+| `+5Eh` read through `alive_and_visible` | 00799D70 tests `CMP byte [entity+5Eh],0` alone: set means no parent and return 0. Clear means a kind-18h entity is replaced by `[entity+3D0h]` | **switch 5**, `kMovieParentKilledByteBound` |
+| the destructor's wall-clock reseed 0079A2FB | `00BD2FD0(1, ...)` with a wall-clock value truncated by FISTP at 0079A2EF | **kept as a record.** A wall-clock seed is not reproducible, and the reference protocol is deterministic |
+
+**Switch 4's host path, a labelled substitution.** `src/game_hosts_gunnery.cpp` is leased to
+cc9-units3, so the draw goes through the gunnery host's public `death_mode_draw_00bd2f10(1, ...)`.
+With stream 1 that is the shared stand-in generator on the default path, the same generator every
+gunnery draw and the switch 2 reseed use. Under `BSP_GUNNERY_RNG_STREAMS=1` its key is
+`(death_mode, FFFFFFh)`, an index no unit has, so no other draw reads it. A dedicated entry point
+can replace it once the gunnery file is free.
+
+### 10.2 The unsupported keys (item 2)
+
+The installation's scripts were searched for each key. None of these keys is reached by an idle
+run of USN01, USN02 or USN04: every earlier pair logged `unsupported=0`. Their callers are mission
+end and failure cameras (`luaMissionEnd_CamOnEnt`, `luaMissionFailedNew_CamOnFailEnt`,
+`luaMissionCompletedNew_CamOnComplEnt`), `luaCamOnTargetNew`, and per-mission unit jumps such as
+`jm01.lua` `luaJM1JumpToUnit`.
+
+| key | parse (007A0EB0) | consumer | outcome |
+| --- | --- | --- | --- |
+| `terrainavoid` | boolean only, keyframe `+D9h` (007A1488). 00799C4B clears it | 00795B45: when set and 00903860 answers, `y = ground + 1.0` (double 00D7A210, rounded to float at 00795B75) unless y is already above it. Every arm joins it except the null parent | **switch 6**, `kMovieTerrainAvoidBound`. The host's `world_ground_height_00903860` is the same query (`docs/SCENE_CONTENTS_HOSTS.md` section 6) |
+| `flyalt` | any non-nil value sets `+DCh = 1` (007A1D3C). **The number is not read** | the evaluator lift 007986C3.. in 00798130: y += interp(y) * weight * min(horizontal distance, cap) * scale, and it sets a byte at `+64h` of an object not yet identified | left: pure arithmetic, but x87 with four constants (00CE4BC4, 00CFD714, 00D046A0/00D04698, 00D04690) still to read from the listing |
+| `maxcamspeed` | number, `+E0h` (007A1D8D) | **no reader found** in 0078D880..007A4860 | nothing to bind. The host silently skips the key, which matches |
+| `relativetotarget` | boolean, camera keyframes only, `+E8h` (007A1913) | 00795758, the position routine's parent-matrix arm | left: one script (`bsm_04`) |
+| `upvector` | `+58h..+60h` through 0079C040/0078FD70 | the keyframe up | left: no script uses it |
+| `deckpos` | integer, the parent's vehicle camera array (`BSP_VehicleCameraArray_Resize`) | position | left: no script uses it |
+| `modifier` `goaround` | 64h-byte object 007A0650, vtable 00D04C8C | `+E4h`: slot `+18h` at begin (00791020), slot `+8h` each evaluation (007911E0), slot `+0` destroy | left: a packet of its own |
+| `modifier` `gamecamera` / `fpscamera` | 7Ch-byte object 007A06D0(0 or 1), vtable 00D04CC0, with an observer at `+38h`. It also sets `+CCh = 0` and `+25h = 1` | as above; `+25h` sends 00795650 down the unattached arm | left: needs the game camera it hands back to |
+| `event` (`killed`, `noparent`, `noentity`) | 28h-byte event objects (00799FA0), a Lua `function` name | the tick element's 00797ED0 (section 8.7) | left |
+| `finishscript` | a string, camera or named keyframes only | not read in this packet | left |
+| `_thennone` transforms | `+30h` | 00795866/00795976/00795A8E | left |
+
+### 10.3 Predictions (written before any run)
+
+**Protocol.** Each pair is the same tree with the switch flipped by `tools/pair_export.py`, streams
+ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player. Switches 5 and 6 are both predicted identical,
+so they share one ON export; if that pair moves, they are split. Switch 4 also gets one
+default-path USN04 pair (streams unset), which is a record and not a reference protocol.
+
+**Switch 4, `kMovieStepDrawBound`, streams ON:**
+- **USN01 3200/3000:** 1,498 camera steps over two camera instances, and each instance's first step
+  latches without drawing. So `step_draws = 1496`, and `MovieCamera::fixed_step_draw` goes from
+  UNIMPLEMENTED 1,498 to concrete 1,496.
+- **USN04 4700/4500:** one instance, 420 steps, so `step_draws = 419`, and the record goes from
+  UNIMPLEMENTED 420 to concrete 419.
+- **Gameplay identical, `pair_diff` exit 1.** The draw's key is read by nothing else. Keyframes,
+  poses, pick counts and casts are unchanged, because the ring has no reader.
+
+**Switch 4, default path (streams unset), USN04:**
+- **Gameplay moves, exit 3.** 419 extra draws on the shared generator between t = 4 s and 25 s
+  shift every later stream-1 draw.
+- Bands, taken from switch 2's default pair: deaths within ±25%, hit records and damage within
+  ±20%, shots within ±10%, death rows differ.
+- The clock offset stays 0.
+
+**Switches 5 and 6 together, streams ON:**
+- **USN01 and USN04: gameplay identical, exit 1.** Only the packet's summary line differs.
+- Every keyframe parent is alive at its add, so the one-byte test and the four-byte gate agree.
+  Keyframes stay 16 and 12, and every `movie camera pose` line is identical.
+- Neither mission has a `terrainavoid` key, so `unsupported` stays 0 on both sides.
+- Pick counts and casts are unchanged.

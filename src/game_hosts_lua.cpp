@@ -242,12 +242,20 @@ void parse_movie_keyframe(lua_State* state, int table, bsp::MovieKeyframeInput& 
             in.polar = v;
         }
         lua_pop(state, 1);
-        for (const char* key : {"deckpos", "upvector", "modifier", "relativetotarget",
-                 "terrainavoid"}) {
+        for (const char* key : {"deckpos", "upvector", "modifier", "relativetotarget"}) {
             lua_getfield(state, position, key);
             if (!lua_isnil(state, -1)) in.unsupported_keys.push_back(key);
             lua_pop(state, 1);
         }
+        // Packet cc9_movie_camera_keys, switch 6: 007A1470 IsBoolean, then
+        // 007A1488 stores it at +D9h; a non-boolean value is ignored.
+        lua_getfield(state, position, "terrainavoid");
+        if constexpr (kMovieTerrainAvoidBound) {
+            if (lua_type(state, -1) == LUA_TBOOLEAN) in.terrainavoid = lua_toboolean(state, -1) != 0;
+        } else {
+            if (!lua_isnil(state, -1)) in.unsupported_keys.push_back("terrainavoid");
+        }
+        lua_pop(state, 1);
     }
     lua_pop(state, 1);
     movie_number(state, table, "starttime", in.starttime);
