@@ -290,3 +290,31 @@ or call, and names the chunk and the status. This is a log change only; it moves
 | JM06 9200/9000 | its script loads: `script_calls` above 0, a `luaInit` call and think registrations, and Lua-native rows appear. `pair_diff` 3 |
 | LOMP06 1200/1000 | the same: `luaInitLOMP06` runs, and its `ShipSetTorpedoStock(Narwhal, ...)` at 06_crucial_cargo.lua:110 shows as a native call |
 | "chunk error" lines | none on any run unless a real load or call fails, and then named |
+
+### The pairs, measured, and the verdict
+
+- OFF is this tree's `build\` at `7c328f0f8`; ON is `pair_export --flip kSceneStageScriptBound=true`
+  of the same commit (SHA-256 `ECAC2AF0AA16`).
+- All runs had the streams and the death table on. Logs: `local\ss_{off,on}_{jm06,lomp06,usn02,usn04}.log`.
+- Every log was checked for its milestone line, its module directory and its final COM release
+  line.
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| USN02 `pair_diff` | - | 1, gameplay identical; the header name `USN\\usn_2_java` resolves through the native VFS to the same script | 1 | holds |
+| USN04 `pair_diff` | - | 1 | 1 | holds |
+| JM06 script | none (`script_calls=0`) | `Scripts/missions/COTP-IJN\\PRCPIJN\\JM06.lua` runs; `script_calls=157` on frame 1; 4 think registrations, 0 failures; 46 Lua-native rows | loads | holds |
+| JM06 `pair_diff` | - | 3: deaths 6 -> 12, hit records 336 -> 655, shots 479 -> 1060, first hit 111.90 -> 54.30 s | 3 | holds |
+| LOMP06 script | none | `Scripts/missions/USN\\LOMP\\06_crucial_cargo.lua` runs; `script_calls=169`; 29 timers; `ShipSetTorpedoStock: Narwhal stock=36` at luaInitLOMP06 | loads, the stock call runs | holds |
+| LOMP06 `pair_diff` | - | 3: deaths 0 -> 1, hit records 0 -> 10, shots 0 -> 16 | 3 | holds |
+| "chunk error" lines | 17 on JM06 before this commit | 0 on every run | none | holds |
+
+**The doubled backslashes are fine.** The name is kept exactly as the scene lexer stores it
+(`USN\\usn_2_java`), and the game's reconstructed VFS resolves it to the same file. No
+normalisation was added.
+
+**LOMP06's next gap.** Its `luaTimetable` fails 6 times at 06_crucial_cargo.lua:713,
+`GetSubmarineDepthLevel(Mission.PlayerUnit) < 1`: the native is unimplemented and answers nil.
+
+**Verdict: `kSceneStageScriptBound` ON.** The script name is the scene header's, as 004F1D70 fills
+it. Two missions that ran no script now run theirs, and the reference missions are identical.

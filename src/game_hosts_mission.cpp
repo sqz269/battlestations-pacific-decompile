@@ -1651,7 +1651,7 @@ void GameMissionHost::build_top_level_page_00584ae0() {
 // takes the name verbatim. False: the name is derived from the scene path, as
 // before; that misses every script whose folder differs from the scene's
 // (JM06's `COTP-IJN\PRCPIJN\JM06`, LOMP06's `USN\LOMP\06_crucial_cargo`).
-inline constexpr bool kSceneStageScriptBound = false;
+inline constexpr bool kSceneStageScriptBound = true;
 
 void GameMissionHost::Impl::finish_scene_load() {
     if (load.records.empty()) return;
