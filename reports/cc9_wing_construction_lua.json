@@ -1,0 +1,15 @@
+{
+  "packet": "cc9_wing_construction_lua",
+  "doc": "docs/WING_CONSTRUCTION_LUA.md (section 15.4 of docs/SENTITY_INIT_ATTACH_ORDER.md; docs/CONSTRUCT_WORLD.md section 30)",
+  "switch": "kWingConstructionLuaBound (include/bsp/game_hosts_lua.hpp): committed OFF in 4a04a110a; effective only with kWingConstructionInPassABound; the joint flip is cc9-ships's",
+  "calls": [],
+  "routines": [
+    {"address": "007F4580", "coverage": "Lua side only: marks the nodes the units host's pass A hook appended"}
+  ],
+  "no_ghidra_function": [],
+  "verdict": "OFF as briefed; alone identical; local joint check matched",
+  "pairs": {
+    "usn04_alone": {"exit": 0, "gameplay": "identical"},
+    "usn04_joint_local": {"exit": 3, "wing_appended": [40, 0], "wing_marked": [0, 40], "wing_deferred": [40, 0], "squadron_ids": [40, 40], "wing_member_tables": [40, 40], "hits": [799, 801], "deaths": [40, 40]}
+  }
+}

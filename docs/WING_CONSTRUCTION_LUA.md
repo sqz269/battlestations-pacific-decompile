@@ -53,4 +53,21 @@ main.
 
 ## 3. Pairs and verdict
 
-(filled after the runs)
+The same tree at 4a04a110a, `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, USN04 4700/4500.
+
+| pair | binaries | `pair_diff` | result |
+| --- | --- | --- | --- |
+| this half alone (the committed pair) | `local\bin\wl_off` / `wl_on` | exit 0 | identical: gameplay, 40 death rows, 81 unit rows, the native table, every summary line |
+| joint, **local and uncommitted** (both switches flipped in the working tree, then reverted) | `wl_off` / `wj_on` | exit 3 | the joint predictions, all held |
+
+The joint results, in detail:
+- `wing_appended` 40 -> 0, `wing_marked` 0 -> 40 and `wing_deferred` 40 -> 0.
+- `squadron_ids` stays 40, `wing_member_tables` stays 40, InitAll `pushes` stays 86 and
+  `entities` stays 86.
+- The gameplay move is the units half's air move: hits 799 -> 801, hull hits 306 -> 308, damage
+  11621.4 -> 11662.6, shots 6395 -> 6388. Torpedo-task releases went 7 -> 5 and dive-bomb-task
+  releases 3 -> 5.
+- There are the same 40 victims (12 death rows changed in altitude, range or killer gun), and
+  the clock offset is 0.
+
+**Verdict:** this half stays OFF on this branch, as briefed. The joint flip is cc9-ships's commit.
