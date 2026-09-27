@@ -21,7 +21,7 @@
       "start": "007C2680",
       "end_inclusive": "007C2805",
       "abi": "RET 4 at 007C2803 (one stack argument); ECX use not read",
-      "note": "builds a 47h-family message through 007BD3E0 at 007C270A and sends it through 00779FC0 at 007C2729 and 007C27C2; Ghidra attributes it to 007C2610, which ends at 007C2674"
+      "note": "builds a 47h-family message through 007BD3E0 at 007C270A and sends it through 00779FC0 at 007C2729 and 007C27C2; lookup named 007C2610 only as the nearest preceding function (its body ends at 007C2674); defined by the lead at 0f53a48f5"
     }
   ],
   "names_added": []
