@@ -1,0 +1,37 @@
+{
+  "packet": "cc9_sentity_init_all",
+  "doc": "docs/CONSTRUCT_WORLD.md section 17",
+  "switch": "kSEntityInitAllBound (include/bsp/game_hosts_fixed_step.hpp): committed OFF with the predictions",
+  "calls": [
+    {"address": "00875EA2", "native": "00925F20", "function": "00875BB0", "kind": "call", "host": "GameFixedStepHost::init_pending_entities_00925f20"},
+    {"address": "0046DBE8", "native": "00925F20", "function": "0046D930", "kind": "call", "host": "GameMissionLuaHost::run_generate_object_00944fd0"},
+    {"address": "00874D79", "native": "00925F20", "function": "00874D00", "kind": "call", "host": "GameMissionLuaHost::run_generate_object_00944fd0 (reached from 00945311)"},
+    {"address": "0094879A", "native": "00925F20", "function": "009483D0", "kind": "call", "host": "GameMissionLuaHost::fulfil_spawn_request_009483d0"},
+    {"address": "0089E613", "native": "00925F20", "function": "0089E3C0", "kind": "call", "host": "GameMissionLuaHost::run_launch_squadron_0089e3c0"},
+    {"address": "00928760", "native": "00926BE0", "function": "00928630", "kind": "call", "host": "GameMissionLuaHost::push_pending_entity_00926be0 / push_pending_squadron_00926be0 at each route"},
+    {"address": "009262AE", "native": "0077F090", "function": "00925F20", "kind": "call", "host": "GameMissionLuaInitAllBinding::session_register_0077f090 (single player: returns at 0077F0A4)"}
+  ],
+  "routines": [
+    {"address": "00925F20", "coverage": "complete walker (five passes, list growth, the post-pass-A count re-read); per-class pass B (+A0h), pass C (+A4h) and pass E bodies are named records; start branch and pass D exact for single player"},
+    {"address": "0077F090", "coverage": "complete for single player: returns unless [00E188A8]+1FE4h == 1; the peer walk 0077F0B0..0077F0D4 into 0077EB50 is not bound"},
+    {"address": "007C9770", "coverage": "read, not bound (named record SEntity::InitAll pass C init_slot_a4)"},
+    {"address": "007F4BA0", "coverage": "partial read: 007F4BA0..007F4CA1; not bound"}
+  ],
+  "corrections": [
+    {"was": "docs/CONSTRUCT_WORLD.md section 13: the four USN04 air-ops launches are attached at the next row 12, at most one step later", "is": "LaunchSquadron 0089E3C0 calls InitAll synchronously after 006CC690; only deck-tick launches wait for row 12", "evidence": "0089E5E9 CALL 006CC690; 0089E611 XOR CL,CL; 0089E613 CALL 00925F20"},
+    {"was": "section 13: USN02 has no GenerateObject", "is": "USN02 calls GenerateObject 4 times (four DestroyerGen)", "evidence": "local/tw_off_usn02.log of cc9-side-ai: MissionLuaNative::GenerateObject calls=4, lines 9182..9243"},
+    {"was": "include/bsp/lua_binding_mission_2.hpp: the walk is a snapshot, no pass adds a node", "is": "each pass follows next from a reloaded sentinel and visits nodes appended during it (squadron pass A constructs planes, pushed by 00926BE0)", "evidence": "00925FC6 MOV EBX,[00F899D0]; 00926060 MOV ESI,[ESI]; 00928760 CALL 00926BE0"},
+    {"was": "src/lua_binding_mission_2.cpp: passes B and C keep pass A's step and denominator", "is": "00926067 re-reads the count; the step becomes the count and the denominator three times it", "evidence": "00926067 MOV EAX,[00F899D4]; 0092607A MOV [ESP+1Ch],EAX; 0092607E MOV [ESP+24h],ECX after three pushes"}
+  ],
+  "no_ghidra_function": [
+    {"start": "007C9770", "end_inclusive": "007C985F", "note": "plane vtable slot +A4h"},
+    {"start": "007F4BA0", "end_inclusive": "007F544F", "note": "squadron vtable 00D087C0 slot +A4h; 007F5450 is a separate one-byte RET"}
+  ],
+  "names": [
+    {"address": "00926BE0", "name": "BSP_SEntity_PushPending"},
+    {"address": "007C9770", "name": "BSP_Plane_SEntityInitSlotA4"},
+    {"address": "007F4BA0", "name": "BSP_PlaneSquadron_SEntityInitSlotA4"}
+  ],
+  "verdict": "pending",
+  "pairs": {}
+}

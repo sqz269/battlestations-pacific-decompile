@@ -30,6 +30,30 @@ class GameHostLog;
 class GameStepSubsystemsHost;
 class GameNativeGameRuntime;
 
+// Packet cc9_sentity_init_all (docs/CONSTRUCT_WORLD.md section 17). True: every
+// route this process creates a mid-mission entity on feeds the pending list the
+// image keeps at 00F899D0 (the 00926BE0 push_back 00928760 makes from the base
+// constructor) and runs 00925F20 BSP_SEntity_InitAll where the image does: the
+// fixed-step row 12 (00875EA2), GenerateObject's creator (0046DBE8) and its
+// RunExtraFixedStep (00874D79 from 00945311), SpawnNew's CreateMembers
+// (0094879A) and LaunchSquadron (0089E613). Pass A is the existing `thisTable`
+// attach, run in the image's list order; passes B, C and E are named records
+// (their per-class bodies are done piecemeal at creation by other hosts); the
+// start branch and pass D are exact for single player. False: each route
+// attaches at creation (attach_created_entity_00928a00 and
+// attach_wing_member_tables), and row 12 is the named record.
+inline constexpr bool kSEntityInitAllBound = false;
+
+// The owner of the pending list and of 00925F20's per-entity work. The Lua host
+// is the one, because pass A is its `thisTable` attach.
+class GameEntityInitAllRunner {
+public:
+    virtual ~GameEntityInitAllRunner() = default;
+    // 00925F20 at one native call site; `flag` is the CL byte the site passes
+    // and `call_site` the CALL's address, for the log.
+    virtual void run_sentity_init_all_00925f20(bool flag, std::uint32_t call_site) = 0;
+};
+
 // What the run's fixed steps did.
 struct GameFixedStepSummary {
     unsigned long long steps{0};             // fixed steps whose body ran
@@ -64,6 +88,8 @@ public:
     void attach_subsystems(GameStepSubsystemsHost* subsystems) noexcept;
     // Borrow the completed actual game owner through its last fixed step.
     void attach_native_game(GameNativeGameRuntime* game) noexcept;
+    // Packet cc9_sentity_init_all: row 12's owner. Attached for the whole run.
+    void attach_entity_init(GameEntityInitAllRunner* runner) noexcept;
 
     // 00875cc0..00875dfc, waves 1..3 over the five groups, inside the step loop.
     void run_job_waves_00875cc0(std::uint8_t run_pass);
@@ -127,6 +153,7 @@ private:
     bsp::GameDynamicsState& dynamics_;
     GameStepSubsystemsHost* subsystems_{nullptr};
     GameNativeGameRuntime* native_game_{nullptr};
+    GameEntityInitAllRunner* entity_init_{nullptr};
     GameFixedStepSummary summary_{};
     // session+278h (game+2168h), 00778450's countdown; -1.0 from 0076EE67.
     float session_countdown_278_{-1.0f};

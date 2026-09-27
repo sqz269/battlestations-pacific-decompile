@@ -169,6 +169,8 @@ struct GameMissionFrameHost::Impl {
         // Milestone 2m: the six fan-out rows whose reconstructions are on main.
         step_subsystems = std::make_unique<GameStepSubsystemsHost>(log);
         fixed_step->attach_subsystems(step_subsystems.get());
+        // Packet cc9_sentity_init_all: row 12's pending list is the Lua host's.
+        fixed_step->attach_entity_init(&lua);
     }
 
     ~Impl() { release_units(); }

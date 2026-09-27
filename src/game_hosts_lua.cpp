@@ -23,6 +23,7 @@
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/game_hosts_vfs.hpp"
 #include "bsp/global_script_folders.hpp"
+#include "bsp/lua_binding_mission_2.hpp"
 #include "bsp/lua_spawn_new.hpp"
 #include "bsp/mission_lobby_settings.hpp"
 #include "bsp/mission_lua_bindings.hpp"
@@ -1954,6 +1955,11 @@ int GameMissionLuaHost::run_launch_squadron_0089e3c0(lua_State* state, int argum
 
     const bsp::AirOpsLaunchResult result
         = bsp::air_ops_launch_squadron_006cc690(*deck, request);
+    if constexpr (kSEntityInitAllBound) {
+        // 0089E611 XOR CL,CL / 0089E613 CALL 00925F20, right after 006CC690 and
+        // before the result is pushed: a started launch is attached here.
+        run_sentity_init_all_00925f20(false, 0x0089e613u);
+    }
     if (result.started) ++summary_.air_ops_launch_started;
     if (result.queued) ++summary_.air_ops_launch_queued;
     if (summary_.air_ops_launch_calls <= 12) {
@@ -2143,6 +2149,7 @@ int GameMissionLuaHost::run_generate_object_00944fd0(lua_State* state, int argum
     }
 
     if (script_orders_ == nullptr) return 0;
+    const std::size_t units_before = script_orders_->units().count();
     const std::uint32_t entity_id
         = script_orders_->create_unit_from_scene_record_0046db4b(record);
     if (entity_id == 0u) {
@@ -2153,8 +2160,28 @@ int GameMissionLuaHost::run_generate_object_00944fd0(lua_State* state, int argum
     // 0046DBE8 finishes with 00925F20 BSP_SEntity_InitAll, whose part this host
     // can do is the `thisTable` slot every entity that reaches virtual slot 39
     // carries; without it the script's own variable resolves to nothing.
-    if (!attach_created_entity_00928a00(static_cast<int>(entity_id), name,
-                                        record.type_id)) {
+    bool attached = false;
+    if constexpr (kSEntityInitAllBound) {
+        // Packet cc9_sentity_init_all. The creator's construction pushed the
+        // entity (00928760); a plane squadron's pass A then pushes its wing.
+        if (record.class_id == 0x18) {
+            push_pending_squadron_00926be0(static_cast<int>(entity_id), name,
+                record.type_id, units_before);
+        } else {
+            push_pending_entity_00926be0(static_cast<int>(entity_id), name, record.type_id);
+        }
+        run_sentity_init_all_00925f20(false, 0x0046dbe8u);  // 0046DBE6 XOR CL,CL
+        // 00945311 MOV CL,1 / CALL 00874D00, BSP_Game_RunExtraFixedStep, whose
+        // 00874D77 XOR CL,CL / 00874D79 CALL 00925F20 finds the list the
+        // creator's own call just emptied. Only that row of 00874D00 is run.
+        run_sentity_init_all_00925f20(false, 0x00874d79u);
+        attached = init_all_attached(static_cast<int>(entity_id));
+    } else {
+        static_cast<void>(units_before);
+        attached = attach_created_entity_00928a00(static_cast<int>(entity_id), name,
+                                                  record.type_id);
+    }
+    if (!attached) {
         log_.notef("  GenerateObject 00944fd0: \"%s\" was created as unit %u but took no "
             "`thisTable` slot, so the script's variable would be an id no binding "
             "resolves", name.c_str(), entity_id);
@@ -2493,11 +2520,20 @@ void GameMissionLuaHost::fulfil_spawn_request_009483d0(bsp::SpawnNewRequest& req
             entry->entity_id = static_cast<int>(entity);
         }
         if (entity == 0u) break;
-        if (!attach_created_entity_00928a00(static_cast<int>(entity), record.name,
-                                            member.type_class_id)) {
-            break;
+        if constexpr (kSEntityInitAllBound) {
+            // Packet cc9_sentity_init_all. Pushed at construction; the attach
+            // is 0094879A's InitAll after the whole member loop, so every
+            // member squadron is attached before any plane (each squadron's
+            // pass A appends its wing to the tail).
+            push_pending_squadron_00926be0(static_cast<int>(entity), record.name,
+                member.type_class_id, units_before);
+        } else {
+            if (!attach_created_entity_00928a00(static_cast<int>(entity), record.name,
+                                                member.type_class_id)) {
+                break;
+            }
+            attach_wing_member_tables(units_before, entity, member.type_class_id);
         }
-        attach_wing_member_tables(units_before, entity, member.type_class_id);
         made.push_back(entity);
         if (summary_.spawn_new_units + made.size() <= 16) {
             log_.notef("  spawn queue 0094c490: serial %u member %zu \"%s\" type %d "
@@ -2508,6 +2544,10 @@ void GameMissionLuaHost::fulfil_spawn_request_009483d0(bsp::SpawnNewRequest& req
                 static_cast<double>(frame.position[1]),
                 static_cast<double>(frame.position[2]));
         }
+    }
+    if constexpr (kSEntityInitAllBound) {
+        // 00948798 XOR CL,CL / 0094879A CALL 00925F20, after the member loop.
+        run_sentity_init_all_00925f20(false, 0x0094879au);
     }
     if (made.size() != request.members.size()) {
         // 00949300's `bVar4 &= ...` gate: a group that cannot be placed whole is
@@ -2622,6 +2662,15 @@ std::uint32_t GameMissionLuaHost::create_squadron(const bsp::AirOpsSquadronReque
         request.type, request.wing_count, request.equipment, request.home_base, name,
         wing);
     if (entity == 0u) return 0u;
+    if constexpr (kSEntityInitAllBound) {
+        // Packet cc9_sentity_init_all. 006C5050 returns the squadron whatever
+        // its attach will do; the attach is the next InitAll: 0089E613 when a
+        // LaunchSquadron call started it, row 12 of the step otherwise.
+        push_pending_squadron_00926be0(static_cast<int>(entity), name,
+            static_cast<int>(request.type), units_before);
+        ++summary_.air_ops_squadrons_created;
+        return entity;
+    }
     if (!attach_created_entity_00928a00(static_cast<int>(entity), name,
                                         static_cast<int>(request.type))) {
         log_.notef("  air ops squadron %s: unit %u exists but no `thisTable` slot was "
@@ -2695,6 +2744,183 @@ bool GameMissionLuaHost::attach_created_entity_00928a00(int entity_id,
     if (!name.empty()) scene_entity_ids_[name] = entity_id;
     ++summary_.self_table_entities;
     return true;
+}
+
+// ---------------------------------------------------------------------------
+// Packet cc9_sentity_init_all: 00925F20 over this process's pending list.
+// ---------------------------------------------------------------------------
+//
+// One method per native call site of bsp::SEntityInitAllHost. What each pass
+// does per class (docs/CONSTRUCT_WORLD.md section 17):
+//   A  +9Ch  the `thisTable` attach, 00928A00 through each class's override;
+//            the plane squadron's 007F4580 also constructs the wing.
+//   B  +A0h  ships 00822C20, carriers 007593D0, squadrons 007F1FE0, planes
+//            007D5D20, airfields 006D3C10: the scene-property readers. This
+//            process does parts of them at creation (create_units's StartSpeed
+//            arm and wake-ring fill, the scene-contents deck pass), so the pass
+//            is a NAMED RECORD here, not a second run of those parts.
+//   C  +A4h  ships 0081F980, carriers 00758210 (0081F980 then +11A8h = 1),
+//            squadrons 007F4BA0, planes 007C9770 (thisTable.SquadronID, a
+//            disable for +900h in {0,1}, 007C5AC0(-1.0)), airfields 006D5220:
+//            a NAMED RECORD for the same reason; 0081F980's section binding is
+//            the gunnery host's at creation.
+//   C' the start branch: kind 2 at holder+4h only. This process's holders are
+//            the kind-1 scene property bag (00922E35), and the kind-2 objects
+//            (vtable 00D03754) come only from the session message paths
+//            00768530 and 00774E30, the latter gated on session mode 1 or 2.
+//            Exact: the branch is never taken in single player.
+//   D  5Ch(2) then 0077F090, which returns at 0077F0A4 unless
+//            [00E188A8]+1FE4h == 1; it is 0 in this process. Exact.
+//   E  the holder at +C0h released through its slot 0 with 1. This process
+//            keeps no holder object on the entity (the property bag stays on
+//            the spawn-pool record), so the release is a NAMED RECORD.
+class GameMissionLuaInitAllBinding final : public bsp::SEntityInitAllHost {
+public:
+    explicit GameMissionLuaInitAllBinding(GameMissionLuaHost& host) : host_(host) {}
+
+    std::int32_t pending_count_00f899d4() override {
+        return static_cast<std::int32_t>(host_.pending_entities_.size());
+    }
+    std::size_t pending_size_00f899d0() override { return host_.pending_entities_.size(); }
+    void* pending_at_00f899d0(std::size_t index) override {
+        return &host_.pending_entities_[index];
+    }
+    // The name accessor's result is discarded at all four sites.
+    void entity_name_vcall_10(void*) override {}
+    void loading_progress_report_0057c1a0(int, float) override {
+        // The loading bar's singleton [00E194B4]; this process draws no bar mid
+        // mission.
+        host_.log_.unimplemented("SEntity::InitAll loading_progress", "0057c1a0");
+    }
+    void entity_attach_lua_self_vcall_9c(void* entity) override {
+        GameMissionLuaHost::PendingEntity& node = at(entity);
+        ++host_.summary_.init_all_entities;
+        if (host_.attach_created_entity_00928a00(node.entity_id, node.name,
+                node.class_index)) {
+            host_.init_all_attached_.insert(node.entity_id);
+            if (node.wing_member) ++host_.summary_.wing_member_tables;
+        }
+        host_.log_.implemented("SEntity::InitAll pass A attach_self_table", "0092604e");
+        if (!node.squadron || host_.script_orders_ == nullptr) return;
+        // 007F4580 constructs each plane of the wing, and each construction
+        // reaches 00928760 CALL 00926BE0: the planes join the tail now, after
+        // every node already pending, and this same pass reaches them.
+        const int leader = node.entity_id;
+        const int class_index = node.class_index;
+        const std::size_t first = node.units_before;
+        const std::size_t end = node.units_end;
+        const GameUnitsHost& units = host_.script_orders_->units();
+        for (std::size_t index = first; index < end && index < units.count(); ++index) {
+            const int id = static_cast<int>(index) + 1;
+            if (id == leader) continue;
+            const GameUnitRow* const row = units.unit_row(index);
+            if (row == nullptr) continue;
+            GameMissionLuaHost::PendingEntity plane;
+            plane.entity_id = id;
+            plane.name = row->name;
+            plane.class_index = class_index;
+            plane.wing_member = true;
+            host_.pending_entities_.push_back(std::move(plane));  // `node` stays valid
+            ++host_.summary_.init_all_wing_appended;
+        }
+    }
+    void entity_init_second_vcall_a0(void*) override {
+        host_.log_.unimplemented("SEntity::InitAll pass B init_slot_a0", "00926110");
+    }
+    void entity_init_third_vcall_a4(void*) override {
+        host_.log_.unimplemented("SEntity::InitAll pass C init_slot_a4", "009261a1");
+    }
+    bool entity_descriptor_kind_is_initial_state(void*) override {
+        // 009261AD: the holder's +4h against 2. Kind 1 here, see above.
+        host_.log_.implemented("SEntity::InitAll pass C start_state_branch", "009261ad");
+        return false;
+    }
+    // Unreachable while the kind test above answers false.
+    bool entity_descriptor_start_enabled_3c(void*) override { return false; }
+    bool entity_flag_5e(void*) override { return false; }
+    bool entity_flag_5c(void*) override { return false; }
+    void entity_set_flag_5c(void*, bool) override {}
+    void entity_enable_vcall_68(void*) override {}
+    void entity_disable_vcall_6c(void*) override {}
+    void* entity_first_child_48(void*) override { return nullptr; }
+    void* entity_next_child_44(void*) override { return nullptr; }
+    void scene_node_enable_00922f30(void*) override {}
+    void scene_node_disable_00922f80(void*) override {}
+    bool entity_session_gate_vcall_5c(void*, int argument) override {
+        // Every class this process pushes (ships, carriers, squadrons, planes)
+        // lists kind 2 in its +5Ch test (006DFE90, 007DDA80, 007EFB00 ...).
+        return argument == bsp::kEntitySessionGateArgument;
+    }
+    void session_register_0077f090(void*) override {
+        // 0077F09D CMP [ECX+1FE4h],1 / JNZ 0077F0D7: the peer walk needs a
+        // session mode of 1; single player is 0, so the routine returns.
+        host_.log_.implemented("SEntity::InitAll pass D session_register", "0077f090");
+    }
+    void entity_release_spawn_descriptor(void*) override {
+        host_.log_.unimplemented("SEntity::InitAll pass E release_spawn_holder", "00926317");
+    }
+    void set_init_active_flag_00f899a5(bool value) override {
+        host_.init_active_00f899a5_ = value;
+    }
+    void log_enum_count_004b8490(std::int32_t pending_count) override {
+        // 004B8490 formats into the routine's own 100h buffer; the text goes
+        // nowhere the process shows, so the first few land in this log instead.
+        if (host_.summary_.init_all_nonempty <= 8) {
+            host_.log_.notef("  SEntity::InitAll 00925f20: " "INIT,ENUM:%d",
+                static_cast<int>(pending_count));
+        }
+    }
+    void clear_pending_list_00926335() override { host_.pending_entities_.clear(); }
+    void recon_force_refresh_00807a50() override {
+        host_.log_.unimplemented("SEntity::InitAll recon_force_refresh", "00807a50");
+    }
+
+private:
+    static GameMissionLuaHost::PendingEntity& at(void* entity) {
+        return *static_cast<GameMissionLuaHost::PendingEntity*>(entity);
+    }
+    GameMissionLuaHost& host_;
+};
+
+void GameMissionLuaHost::push_pending_entity_00926be0(int entity_id,
+    const std::string& name, int class_index) {
+    PendingEntity node;
+    node.entity_id = entity_id;
+    node.name = name;
+    node.class_index = class_index;
+    pending_entities_.push_back(std::move(node));
+    ++summary_.init_all_pushes;
+}
+
+void GameMissionLuaHost::push_pending_squadron_00926be0(int entity_id,
+    const std::string& name, int class_index, std::size_t units_before) {
+    PendingEntity node;
+    node.entity_id = entity_id;
+    node.name = name;
+    node.class_index = class_index;
+    node.squadron = true;
+    node.units_before = units_before;
+    node.units_end = script_orders_ != nullptr ? script_orders_->units().count() : units_before;
+    pending_entities_.push_back(std::move(node));
+    ++summary_.init_all_pushes;
+}
+
+void GameMissionLuaHost::run_sentity_init_all_00925f20(bool flag, std::uint32_t call_site) {
+    ++summary_.init_all_calls;
+    if (!pending_entities_.empty()) {
+        ++summary_.init_all_nonempty;
+        if (summary_.init_all_nonempty <= 8) {
+            log_.notef("  SEntity::InitAll 00925f20 at %08x: %zu pending",
+                static_cast<unsigned>(call_site), pending_entities_.size());
+        }
+    }
+    GameMissionLuaInitAllBinding binding(*this);
+    bsp::sentity_init_all_00925f20(flag, binding);
+    log_.implemented("SEntity::InitAll", "00925f20");
+}
+
+bool GameMissionLuaHost::init_all_attached(int entity_id) const {
+    return init_all_attached_.count(entity_id) != 0;
 }
 
 void GameMissionLuaHost::note_objective_binding(const char* binding,
@@ -3631,6 +3857,11 @@ void GameMissionLuaHost::report_mission_script_state() {
     // end of a run, so the spawn-queue summary rides with it rather than asking
     // for a second call site in a file this packet does not own.
     report_spawn_queue();
+    log_.notef("summary SEntity::InitAll 00925f20 bound=%d calls=%llu nonempty=%llu "
+        "entities=%llu wing_appended=%llu pushes=%llu still_pending=%zu",
+        kSEntityInitAllBound ? 1 : 0, summary_.init_all_calls, summary_.init_all_nonempty,
+        summary_.init_all_entities, summary_.init_all_wing_appended,
+        summary_.init_all_pushes, pending_entities_.size());
     if (state_ == nullptr) return;
     const int base = ::lua_gettop(state_);
     lua_getfield(state_, LUA_GLOBALSINDEX, "Mission");

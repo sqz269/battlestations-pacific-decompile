@@ -55,12 +55,19 @@ void sentity_init_all_00925f20(bool force_recon_refresh, SEntityInitAllHost& hos
     // pass and the tail, the char argument included.
     if (count == 0) return;
 
-    const std::int32_t denominator = sentity_init_progress_denominator(count);
+    std::int32_t denominator = sentity_init_progress_denominator(count);
     std::int32_t step = 0;  // 00925FB6 MOV dword ptr [ESP+0xC],EDI, EDI = 0
 
+    // Every pass below is `for (i = 0; i < size(); ++i)` with size() re-read
+    // each step: the native reloads the sentinel and follows `next`, so nodes
+    // appended during a pass are walked by it (see pending_size_00f899d0).
+
     // Pass A, 00925FC4..00926062. The attach pass: every pending entity reaches
-    // vtable +9Ch here, which is what gives it a `thisTable` slot.
-    for (void* entity : host.pending_entities_00f899d0()) {
+    // vtable +9Ch here, which is what gives it a `thisTable` slot. The clamp
+    // ceiling is the ORIGINAL count: 0092601E IMUL [ESP+0x18] divides the
+    // denominator local, which pass A does not rewrite.
+    for (std::size_t i = 0; i < host.pending_size_00f899d0(); ++i) {
+        void* entity = host.pending_at_00f899d0(i);
         host.entity_name_vcall_10(entity);                              // 00925FFB
         host.loading_progress_report_0057c1a0(kSEntityInitProgressPhase,
             sentity_init_progress_fraction(step, denominator));         // 00926019
@@ -68,11 +75,20 @@ void sentity_init_all_00925f20(bool force_recon_refresh, SEntityInitAllHost& hos
         host.entity_attach_lua_self_vcall_9c(entity);                   // 0092604E
     }
 
+    // CORRECTED, packet cc9_sentity_init_all. 00926067 re-reads the count, and
+    // with three words pushed 0092607A MOV [ESP+0x1C],EAX lands on the step
+    // local (+10h) and 0092607E MOV [ESP+0x24],ECX on the denominator (+18h):
+    // passes B and C report against the count pass A grew the list to, and
+    // start one third of the way along.
+    const std::int32_t grown = host.pending_count_00f899d4();          // 00926067
+    step = grown;                                                       // 0092607A
+    denominator = sentity_init_progress_denominator(grown);             // 0092607E
     host.set_init_active_flag_00f899a5(true);           // 00926082
-    host.log_enum_count_004b8490(count, denominator);   // 00926089
+    host.log_enum_count_004b8490(grown);                // 00926089
 
     // Pass B, 009260A0..0092611E.
-    for (void* entity : host.pending_entities_00f899d0()) {
+    for (std::size_t i = 0; i < host.pending_size_00f899d0(); ++i) {
+        void* entity = host.pending_at_00f899d0(i);
         host.entity_name_vcall_10(entity);                              // 009260D3
         host.loading_progress_report_0057c1a0(kSEntityInitProgressPhase,
             sentity_init_progress_fraction(step, denominator));         // 009260F1
@@ -83,7 +99,8 @@ void sentity_init_all_00925f20(bool force_recon_refresh, SEntityInitAllHost& hos
     // Pass C, 00926136..00926230: the third virtual, then the spawn descriptor's
     // start-enabled byte decides whether the entity and its children come up
     // enabled or disabled.
-    for (void* entity : host.pending_entities_00f899d0()) {
+    for (std::size_t i = 0; i < host.pending_size_00f899d0(); ++i) {
+        void* entity = host.pending_at_00f899d0(i);
         host.entity_name_vcall_10(entity);                              // 00926172
         host.loading_progress_report_0057c1a0(kSEntityInitProgressPhase,
             sentity_init_progress_fraction(step, denominator));         // 0092618D
@@ -108,7 +125,8 @@ void sentity_init_all_00925f20(bool force_recon_refresh, SEntityInitAllHost& hos
     host.set_init_active_flag_00f899a5(false);  // 0092623B
 
     // Pass D, 00926250..009262BF. No progress report on this pass.
-    for (void* entity : host.pending_entities_00f899d0()) {
+    for (std::size_t i = 0; i < host.pending_size_00f899d0(); ++i) {
+        void* entity = host.pending_at_00f899d0(i);
         if (!host.entity_session_gate_vcall_5c(entity, kEntitySessionGateArgument)) {
             continue;  // 00926289 TEST AL,AL / JZ
         }
@@ -118,8 +136,8 @@ void sentity_init_all_00925f20(bool force_recon_refresh, SEntityInitAllHost& hos
 
     // Pass E, 009262D0..0092632B: the spawn descriptor is destroyed and the
     // field nulled, so nothing downstream sees a stale kind.
-    for (void* entity : host.pending_entities_00f899d0()) {
-        host.entity_release_spawn_descriptor(entity);
+    for (std::size_t i = 0; i < host.pending_size_00f899d0(); ++i) {
+        host.entity_release_spawn_descriptor(host.pending_at_00f899d0(i));
     }
 
     host.clear_pending_list_00926335();

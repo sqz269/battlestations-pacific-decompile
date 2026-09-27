@@ -301,3 +301,8 @@ Host methods in call order, with native call sites, are the `host_steps` list of
 
 none. Every address this packet names is inside a Ghidra function: `00925F20` and `0057C1A0` are
 functions in the stored listing, and the class vtables are data.
+
+**Correction (packet `cc9_sentity_init_all`, docs/CONSTRUCT_WORLD.md section 17).** The passes
+are not a snapshot walk: nodes appended during a pass are visited by it (the squadron's 007F4580
+constructs planes, each pushed by 00926BE0). After pass A, 00926067..0092607E re-read the count
+and reset the step and the denominator from it. `sentity_init_all_00925f20` now does both.
