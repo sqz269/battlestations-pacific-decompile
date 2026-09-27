@@ -872,3 +872,53 @@ the named risk fired, through the host rather than the image.
 - **Follow-up for the ship-AI owner:** the gate on a killed ship's `+5Dh` (or the units host's
   `pending_destroy`/`destroyed` flags) in 009F50E0.
 - With that gate in place, this pair is predicted to be identity. Then flip.
+
+## Handoff (cc9-hud2 retires after this commit)
+
+Worker cc9-hud2, 2026-09-27. The branch is `agent/cc9-hud2` and the worktree
+`J:\PROG\battlestations-pacific-decompile-cc9-hud2`. It holds no leases.
+
+### Switches this worker set
+
+| switch | file | state | doc |
+| --- | --- | --- | --- |
+| `kMovieStepDrawBound`, `kMovieParentKilledByteBound`, `kMovieTerrainAvoidBound` | `include/bsp/game_hosts_hud.hpp` | ON | `docs/HUD_PICK_SEGMENT_QUERY.md` 10 |
+| `kForceSelectUnitBound` | same | ON (the call itself unmeasured) | this doc, "ForceSelectUnit and 006485A0" |
+| `kLocalPlayerUnitListRuleBound` | `include/bsp/game_hosts_world.hpp` | ON | `docs/LOCAL_PLAYER_UNIT_LISTS.md` |
+| `kInitialControlledUnitBound` | same | ON | this doc, "The initial controlled unit" |
+| `kControlledUnitObserverBound` | `include/bsp/game_hosts_hud.hpp` | **OFF** | this doc, "The controlled unit's destruction notice" |
+
+### Open, in order
+
+1. **The after-row-9 order queue** (`kAfterRow9OrderQueueBound`, not yet written).
+   `docs/SENTITY_INIT_ATTACH_ORDER.md` section 22 has the design, the per-callback census and the
+   predictions. It waits on `src/game_hosts_script_orders.cpp` and its header: cc9-ships2 holds
+   them under `cc9_get_hp_percentage`.
+   - Set a flag around `GameScriptOrdersHost::mission_lua_call_named_00887e50` when
+     `src/mission_blackout.cpp` (005B9800) calls it.
+   - While the flag is set, the 58h (0077D600) and 5Eh (00835860) order natives enqueue.
+   - The next `GameFixedStepHost::pump_session_00778450` applies the queue in post order.
+   - `GenerateObject` and `SetSelectedUnit` stay direct.
+   - Predictions: USN01 moves through `luaIn`'s five `PilotSetTarget`; USN04 is identity, census
+     0; USN02 moves through `luaMoveToPh2`'s `NavigatorAttackMove`.
+2. **The observer switch** waits on a ship-AI fix:
+   - 009F50E0 must stop driving a killed ship, gating on `+5Dh` as the image's kill flush sets
+     it.
+   - With that gate, USN02 9200/9000 is predicted identical. Then flip
+     `kControlledUnitObserverBound`.
+3. **Non-ship `vtable[124h]`** ("SetSelectedUnit's records"). 006D1EF0 is the base liveness test
+   of 23 vtables. The host answers false for every non-ship and needs a class-to-vtable map.
+4. **For the gunnery owner:** 0085AD00 skips unauthored RestAngles (FLT_MAX at 00D7A278), while
+   the host's `rest_horz` defaults to 0.0.
+5. **For the world host:** USN01's intro movie poses vary from run to run
+   (`docs/HUD_PICK_SEGMENT_QUERY.md` 10.4); the source is not found.
+6. **Movie camera parse keys** left unbound (`docs/HUD_PICK_SEGMENT_QUERY.md` 10.2): `flyalt`
+   (x87 constants), the `goaround`/`gamecamera` modifiers, `event` and `finishscript`. None is
+   reached by an idle measured run.
+
+### Local files
+
+- **Pair binaries:** `local\{sd_on,pt_on,fs_on,lp_on,ic_on,kk_ctl}`, each an export with its
+  build.
+- **Logs:** `local\{kk,sd,pt,fs,lp,ic,ic2,ld,ob}_*_usnNN.log`.
+- **Scripts:** `local\cc9-hud2-*`.
