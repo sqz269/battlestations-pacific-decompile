@@ -2346,6 +2346,27 @@ DEATH ROWS: 40 -> 40 rows, 0 only ON, 0 only OFF, 12 changed
   pair shows only that the index order moves USN04's air battle within its usual bands.
 - **State: committed OFF, held for the joint flip** with cc9-movie-camera's Lua half.
 
+### 30.5 The joint flip: predictions (cc9-movie-camera, written before the pairs)
+
+The joint flip turns this half's `kWingConstructionInPassABound` and the Lua half's
+`kWingConstructionLuaBound` (`docs/WING_CONSTRUCTION_LUA.md`) ON in one commit. The pairs are
+USN04 4700/4500 and USN02 9200/9000, the same tree with both switches flipped,
+`BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1`. The base is main 87b51d106, which now
+includes cc9-ships's torpedo stock ON. So the absolute rows below come from the earlier base, and
+the deltas are the prediction.
+
+**USN04:**
+- `wing_appended` and `wing_deferred` 40 -> 0, and `wing_marked` 0 -> 40.
+- `squadron_ids` and `wing_member_tables` stay 40, InitAll pushes stay 81 with 40 made during
+  pass A, and `entities` stays 86.
+- The gameplay move is this half's order move: hit records 799 -> 801, hull hits 306 -> 308,
+  shots 6395 -> 6388, torpedo-task releases 7 -> 5 and dive-bomb-task releases 3 -> 5, with the
+  same 40 victims.
+
+**USN02:** identity, apart from the census and Lua counters (`staged=0`, so no wing is built in
+pass A).
+
+A failed joint row leaves both switches OFF.
 ## 31. The scene-contents half of the HomeBase contract (packet `cc9_scene_home_base_contract`, `kSceneHomeBaseContractBound`, committed OFF)
 
 Worker cc9-ships, 2026-09-27. It wires section 29's contract.
