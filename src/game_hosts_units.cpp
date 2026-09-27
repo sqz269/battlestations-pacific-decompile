@@ -79,6 +79,7 @@
 #include "bsp/ship_motion.hpp"
 #include "bsp/unit_controller.hpp"
 #include "bsp/unit_forces.hpp"
+#include "bsp/air_operations.hpp"
 #include "bsp/unit_instance.hpp"
 #include "bsp/unit_instance_layout.hpp"
 #include "bsp/unit_kind_query.hpp"
@@ -3710,6 +3711,16 @@ struct GameUnitsHost::Impl {
     unsigned long long construction_pushes = 0;
     unsigned long long squadron_pass_a_hook_calls = 0;  // packet cc9_squadron_pass_hooks
     unsigned long long squadron_pass_c_hook_calls = 0;
+    // Packet cc9_squadron_initial_command, docs/CONSTRUCT_WORLD.md section 27:
+    // the squadron's pass C default order at 007F4E9E. OFF: none.
+    // ON since the USN04 4700/4500, E2 9200/9000 and USN02 pairs: 4 movetos (12
+    // member orders) on USN04, gameplay identical on all three.
+    static constexpr bool kSquadronInitialCommandBound = true;
+    unsigned long long initial_command_movetos = 0;
+    unsigned long long initial_command_stops = 0;
+    unsigned long long initial_command_member_orders = 0;
+    unsigned long long initial_command_skipped_current = 0;
+    unsigned long long initial_command_no_home = 0;
     // Packet cc9_ship_sink_descent, docs/CONSTRUCT_WORLD.md section 25. ON: the
     // leak manager at unit+10D4h is built (0074F490 with controller+84h from the
     // displacement sum 00937DBB..00937F74 over the hull's element list), the
@@ -17876,8 +17887,106 @@ void GameUnitsHost::on_squadron_pass_a_construct_wing(std::size_t squadron_index
 }
 
 void GameUnitsHost::on_squadron_pass_c_initial_command(std::size_t squadron_index) {
-    static_cast<void>(squadron_index);
     ++impl_->squadron_pass_c_hook_calls;
+    if constexpr (!Impl::kSquadronInitialCommandBound) {
+        static_cast<void>(squadron_index);
+    } else {
+        // Packet cc9_squadron_initial_command, 007F4E06..007F4EA3 (docs/
+        // CONSTRUCT_WORLD.md section 27). The host fuses the squadron with its
+        // leader, so the leader's director stands in for the squadron's own
+        // controller +348h (SUBSTITUTION, labelled).
+        Impl& host = *impl_;
+        if (squadron_index >= host.slots.size()) return;
+        // 007F4E0C 0071BE40: a current command skips the block.
+        if (director_current_command_0071be40(squadron_index) != 0u) {
+            ++host.initial_command_skipped_current;
+            return;
+        }
+        // 007F4E19..007F4E24: lobby mode 2 skips; single player is 0.
+        const bsp::PlaneSquadronHostRecord* sq =
+            bsp::plane_squadron_registry().find_by_member_unit(squadron_index);
+        if (sq == nullptr || sq->member_units.empty()) return;
+        std::vector<std::size_t> live;
+        for (const std::size_t m : sq->member_units) {
+            if (m == bsp::kPlaneSquadronNoUnit || m >= host.slots.size()) continue;
+            if (!host.slots[m]->row.active) continue;
+            live.push_back(m);
+        }
+        if (live.empty()) return;
+        const std::size_t first = sq->member_units.front();
+        const bool on_water = first < host.slots.size() &&
+            host.slots[first]->plane_control_mode_900 == 6;   // 007F4E30
+        bsp::SceneCommandTarget target;
+        std::uint32_t command = 0;
+        std::string target_name;
+        if (on_water) {
+            // 007F4E5D..007F4E97: stop at the squadron's own position +FCh.
+            // SUBSTITUTION, labelled: 007EF8F0 / 00468560 are unread; the
+            // leader's position is passed as the descriptor's point.
+            const GameUnitSlot& leader = *host.slots[squadron_index];
+            target.kind = 0;
+            target.position_valid = 1;
+            target.position[0] = leader.motion.position[0];
+            target.position[1] = leader.motion.position[1];
+            target.position[2] = leader.motion.position[2];
+            command = 0x00E08F88u;                              // stop
+            target_name = "(position)";
+        } else {
+            // 007F4E39..007F4E56: the home base +404h (007F1C00). The host
+            // knows it for an air-ops launch: the deck whose slot launched this
+            // squadron (entity id = index + 1) is owned by the home base.
+            std::string home;
+            const std::uint32_t id = static_cast<std::uint32_t>(squadron_index + 1);
+            bsp::AirOpsDeckRegistry& decks = bsp::air_ops_decks();
+            for (std::size_t d = 0; d < decks.size() && home.empty(); ++d) {
+                const bsp::AirOpsDeck* deck = decks.mutable_at(d);
+                if (deck == nullptr) continue;
+                for (const auto& slot : deck->slots) {
+                    if (slot.launched_squadron == id) {
+                        home = decks.name_at(d);
+                        break;
+                    }
+                }
+            }
+            if (home.empty()) {
+                ++host.initial_command_no_home;
+                return;
+            }
+            std::size_t home_index = host.slots.size();
+            for (std::size_t u = 0; u < host.slots.size(); ++u) {
+                if (host.slots[u]->row.name == home) {
+                    home_index = u;
+                    break;
+                }
+            }
+            if (home_index >= host.slots.size()) {
+                ++host.initial_command_no_home;
+                return;
+            }
+            // 00465080(home, 0.0f, 1): an object descriptor.
+            target.kind = 1;
+            target.position_valid = 0;
+            target.object_id = static_cast<std::uint16_t>(home_index + 1);
+            target.object = const_cast<void*>(unit_identity(home_index));
+            command = 0x00E08F68u;                              // moveto
+            target_name = home;
+        }
+        // 007F4E9C 0077D600 on the squadron, flags 1; its MT_COMMAND fans out
+        // to the members (007ECF80's shape), one order per live member here.
+        std::size_t placed = 0;
+        for (const std::size_t m : live) {
+            if (issue_script_command(m, command, target, 1, "squadron_pass_c", target_name)
+                    != nullptr) {
+                ++placed;
+            }
+        }
+        host.initial_command_member_orders += placed;
+        if (on_water) ++host.initial_command_stops; else ++host.initial_command_movetos;
+        host.log.notef("squadron initial command 007F4E9E: squadron=%s %s -> %s, %zu member "
+            "order(s) (packet cc9_squadron_initial_command)", host.slots[squadron_index]->row.name.c_str(),
+            on_water ? "stop" : "moveto", target_name.c_str(), placed);
+        host.done("Squadron::initial_command_007f4e9e", 0x007f4e9eu);
+    }
 }
 
 bool GameUnitsHost::ship_wreck_sink_00824fe5(const void* identity) {
@@ -18386,6 +18495,12 @@ void GameUnitsHost::report() {
         host.log.notef("summary squadron pass hooks pass_a=%llu pass_c=%llu (no-op entries, "
             "packet cc9_squadron_pass_hooks)", host.squadron_pass_a_hook_calls,
             host.squadron_pass_c_hook_calls);
+        host.log.notef("summary squadron initial command bound=%d movetos=%llu stops=%llu "
+            "member_orders=%llu skipped_current=%llu no_home=%llu (007F4E9E, packet "
+            "cc9_squadron_initial_command)", Impl::kSquadronInitialCommandBound ? 1 : 0,
+            host.initial_command_movetos, host.initial_command_stops,
+            host.initial_command_member_orders, host.initial_command_skipped_current,
+            host.initial_command_no_home);
         host.log.notef("summary units construction push bound=%d pushes=%llu (00928760 -> "
             "00926BE0, packet cc9_units_push_pending)", Impl::kUnitsPendingPushBound ? 1 : 0,
             host.construction_pushes);

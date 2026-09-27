@@ -540,3 +540,66 @@ queue below is in the lead's order. Every item is in `src/game_hosts_units.cpp`,
   - a live Val's rack drop (no mission here has a live Val release);
   - the slot swap's distance test (both missions gate every call);
   - unit+9B8h has no host reader.
+
+## Handoff: cc9-units2's queue (2026-09-27)
+
+Worker cc9-units2 stopped at about 80 % context after `cc9_squadron_initial_command` (ON at
+88b41ee34). Everything below is in `src/game_hosts_units.cpp` unless named.
+
+**Before starting any item:** run `python tools/bsp.py sync` and `brief`. Claim the lease before
+the first edit. Keep scripts under your tree's `local\`. Write multi-line Python edits to a file:
+Git Bash heredocs break on an apostrophe in the body. Diff every pair with `tools/pair_diff.py`.
+
+### Landed by this worker, all ON
+
+| switch | doc | what |
+| --- | --- | --- |
+| `kRackRoundsPerRackBound` | this file, "Mavis rack drops" | one ammo per single rack; one issue is one drop |
+| `kSunkShipKillDepthBound` | docs/CONSTRUCT_WORLD.md 24 | sinkTime, the KillDepth kill, the removal and the on-killed world-list unlink |
+| `kShipSinkDescentBound` | docs/CONSTRUCT_WORLD.md 25 | the leak manager and the wreck handler's sink block: wrecks flood and sink |
+| `kUnitsPendingPushBound` | docs/CONSTRUCT_WORLD.md 26 | `create_units` pushes each instance (00928630 at 00928760) |
+| `kSquadronInitialCommandBound` | docs/CONSTRUCT_WORLD.md 27 | the squadron's pass C default order (007F4E9E) |
+
+The squadron hooks `on_squadron_pass_a_construct_wing` / `on_squadron_pass_c_initial_command`
+are called by the Lua host since 27ab3a4b4 (20 / 20 on USN04, 0 on USN02).
+
+### 1. The wing construction in pass A (next; three files, one switch)
+
+- **Units half:** `on_squadron_pass_a_construct_wing(leader)` constructs the squadron's wing
+  planes through `create_units`, which pushes each one while the walk is inside pass A.
+- **Where the wing records live today:** the creator batches in `src/game_hosts_script_orders.cpp`
+  build them, near line 400 for the air-ops launch and near 571 for GenerateObject/SpawnNew
+  (`wing_record` copies of the leader's record, class `PlaneUnitInstance`, `class_id -1`, names
+  from `plane_squadron_plan_members_007f4580`). They also fill the registry record's
+  `member_units` as `before + wing`.
+- **What must move:**
+  - the script-orders host builds the leader only and holds the plan's wing records, for example
+    on the `PlaneSquadronHostRecord`;
+  - the hook builds them and appends their unit indices to `member_units`;
+  - the air-ops `squadron_unit` / `member_units` pre-registration (script_orders.cpp around
+    line 425) must then take the indices the hook makes, not `before + wing`.
+- **The Lua half** is written in docs/SENTITY_INIT_ATTACH_ORDER.md section 15.4, with its
+  predictions: `wing_appended` 40 -> 0, `wing_deferred` 40 -> 0, construction pushes 81 unchanged,
+  entities / `self_table_entities` / `wing_member_tables` unchanged.
+- **One switch across three owners:** units (this file), script orders (cc9-ships at the time of
+  writing) and the Lua host (cc9-init-passes). The lead coordinates the joint flip.
+- **Watch:**
+  - unit ids: planes will be constructed after the squadron's pass A starts, not in the creator
+    batch. On a SpawnNew group, member B's leader is then built before member A's wing, so every
+    wing plane's id changes;
+  - anything keyed by unit index (gunnery rows, logs by name) must follow. Expect identical
+    gameplay only if nothing orders by id.
+
+### 2. Open items this worker found, by owner
+
+- **Gunnery (cc9-ships):** the torpedo stock contract (docs/CONSTRUCT_WORLD.md 27). Spare
+  unit+104Ch = MaxTorpedoStock − loaded; a fired tube waits at the FLT_MAX sentinel until the
+  spare re-arms it. The host's tubes re-arm on their own clock.
+- **Gunnery (cc9-ships):** the live-hull leak, message 90h (docs/CONSTRUCT_WORLD.md 25). A
+  units-host `add_leak_0074f440` entry is still to be written when the hit that sends it is bound.
+- **Units:** the buoyancy element producer. The descent's rate rests on controller+84h over the
+  eight stand-in elements (capacity = Mass / 3, about 97 s to −200 m).
+- **Units:** the scene `HomeBase` key at squadron pass C (`00CF8820`) is not read. Only air-ops
+  launches have a home base in the host.
+- **Not isolated:** on the sink-descent pair, Kawakaze's first damage moved 2 s before any kill.
+  If it recurs, check the heeling wrecks' hull geometry against rounds first.
