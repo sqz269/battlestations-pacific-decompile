@@ -1,0 +1,61 @@
+{
+ "events": [
+  {
+   "endpoint": "disassemble_bytes",
+   "body": {
+    "start_address": "00814420",
+    "end_address": "00814493"
+   },
+   "result": {
+    "success": true,
+    "start_address": "00814420",
+    "end_address": "00814492",
+    "bytes_disassembled": 115,
+    "message": "Successfully disassembled 115 byte(s)"
+   }
+  },
+  {
+   "endpoint": "create_function",
+   "body": {
+    "address": "00814420",
+    "disassemble_first": false,
+    "name": "BSP_Ship_CountForeignTorpedoThreats"
+   },
+   "result": {
+    "success": true,
+    "address": "00814420",
+    "function_name": "BSP_Ship_CountForeignTorpedoThreats",
+    "entry_point": "00814420",
+    "body_size": 109,
+    "message": "Function created successfully at 00814420",
+    "warnings": [
+     "Function name 'BSP_Ship_CountForeignTorpedoThreats' \u2014 main part 'Ship_CountForeignTorpedoThreats' is not PascalCase. Expected: ShipCountforeigntorpedothreats",
+     "Function name 'BSP_Ship_CountForeignTorpedoThreats' \u2014 main part 'Ship_CountForeignTorpedoThreats' contains underscores. Use PascalCase after the module prefix.",
+     "Function name 'BSP_Ship_CountForeignTorpedoThreats' does not start with a recognized verb. First word 'Ship_' not in allowed list. Common verbs: Get, Set, Initialize, Process, Calculate, Find, Check, Handle"
+    ]
+   }
+  },
+  {
+   "defined": "00814420",
+   "end": "00814493",
+   "name": "BSP_Ship_CountForeignTorpedoThreats",
+   "after": "Function: BSP_Ship_CountForeignTorpedoThreats at 00814420\nSignature: undefined BSP_Ship_CountForeignTorpedoThreats(void)\nEntry: 00814420\nBody: 00814420 - 00814492"
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "error": "Unable to lock due to active transaction"
+   }
+  },
+  {
+   "endpoint": "save_program",
+   "body": {},
+   "result": {
+    "success": true,
+    "program": "battlestationspacific.exe",
+    "message": "Program saved successfully"
+   }
+  }
+ ]
+}
