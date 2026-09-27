@@ -1073,3 +1073,84 @@ in five places, all in `src/game_hosts_lua.cpp`, under one switch landed with un
 - gameplay identical, **unless** the wing's construction time moves something. The planes would
   now exist from pass A of the InitAll that follows their squadron's creation, instead of from
   the creator batch. On USN04 both are inside the same Lua call, so identity is expected.
+
+## 16. Handoff (cc9-init-passes retires after this landing)
+
+Worker cc9-init-passes, 2026-09-27, main 92f7cad2f. Owners are from `bsp.py lease list` just
+before this commit: cc9-ships holds `docs/GAME_EXECUTABLE.md` (cc9_reference_rebaseline_4), and
+cc9-units2 holds `docs/CONSTRUCT_WORLD.md` and `src/game_hosts_units.cpp`
+(cc9_squadron_initial_command). Every other file named below is unleased.
+
+### 16.1 Switches this line set ON (all in `include/bsp/game_hosts_fixed_step.hpp`)
+
+| switch | section | what it does |
+| --- | --- | --- |
+| `kSEntityInitThisTableStepsBound` | 1..6 | pass B 009292B0 (`ClassID`, `Name`, `Class`) and pass C `SquadronID`, after every pass A |
+| `kSEntityInitPassEReleaseBound` | 7 | pass E's holder release, exact (the host's per-entity copy is a creator temporary) |
+| `kSceneLoadThisTableIdentityBound` | 8 | the load attach's identity writes: units' 009292B0, markers' 00928100 `Party`/`Name`/`Type`. Superseded while section 10's switch is ON |
+| `kPendingListDedupBound` | 9 | one pending node per entity id |
+| `kLoadTimeInitAllBound` | 10 | the load-time instances go through the pending list and one InitAll walk (0046EB4B) in place of `attach_scene_entities_00928a00` |
+| `kRunExtraFixedStepBound` | 11 | GenerateObject runs 00874D00's whole body |
+| `kDeckTickInFixedStepBound` | 12 | the air-ops deck tick 006CDC70 runs after the job waves, before row 12 |
+| `kRoutePushesRetiredBound` | 14 | `create_units` is the one unit pusher. The routes and the load walk look its node up, the squadron routes annotate it, and markers still push |
+| `kSquadronPassHooksCalled` | 15 | pass A and pass C call the units host's squadron entries |
+
+### 16.2 Open, with owners
+
+1. **The wing construction, a joint flip with cc9-units2** (section 15.4). When units2 constructs
+   the wing inside `on_squadron_pass_a_construct_wing`, the Lua side (`src/game_hosts_lua.cpp`,
+   unleased) changes in exactly four places, under one switch flipped together with units2's:
+   - `entity_attach_lua_self_vcall_9c` loses the wing-append loop.
+   - It records the pending-list size before the hook call, and marks every node appended during
+     the call with `wing_member = true`, `squadron_id` = the leader's id and `class_index` = the
+     squadron's.
+   - `route_push_squadron` stops passing `units_before`/`units_end`.
+   - The dedup's `wing_deferred` rule is retired.
+   - The squadron flag annotation stays until `create_units` can mark a squadron itself.
+
+   Predictions for that pair:
+   - `wing_appended` 40 -> 0 and `wing_deferred` 40 -> 0;
+   - construction pushes stay 81, with 40 of them during pass A;
+   - `entities`, `self_table_entities` (86) and `wing_member_tables` (40) unchanged, and
+     `squadron_ids` 40;
+   - gameplay identical on USN04.
+2. **The movie camera binding** (`docs/HUD_PICK_SEGMENT_QUERY.md` section 8.4). About 11 KB of
+   x87 to read (007A0EB0, 00798130, 00797DA0, 0078FAF0, 007A0860, 007A2CD0), then the bind in the
+   HUD host (`src/game_hosts_hud.cpp`, unleased). There is one open question: when screen 38h's
+   slot `+18h` (005CDC50, the null mover) runs. It is a fresh x87-capable worker's packet.
+3. **For the scene-contents owner** (`src/game_hosts_scene_contents.cpp`, unleased now):
+   - **The load-time InitAll's position** (section 10.2). Run the one InitAll inside the scene
+     read, at the entity-blocks boundary (0046EB4B, before the traffic, groups and deferred
+     references 0046AAB0), through the Lua host's runner. Today the mission frame calls it after
+     `create_units`, `issue_authored_commands` and the scoring reset.
+   - **The marker pushes** (sections 10.2, 14.1). Push each marker instance at its construction
+     (00928760). Then the load walk's marker pushes in `run_scene_load_init_all_0046eb4b` retire
+     like the units' did.
+   - **`Race`** (section 8.4). Carry the authored `Race` on `GameSceneEntityRecord`, as
+     00927050's kind-1 arm reads it into `+58h`. The marker mirror 00928100 and 00928F50's unit
+     mirror then write it; ships and units have no `Race` today.
+4. **For the script-orders owner** (`src/game_hosts_script_orders.cpp`, unleased): the
+   CreateScript script entity's 00928100 mirror at its InitAll pass C (section 8.4): `Race` -1,
+   `Party` 2, `Type` `SCRIPTENTITY` (00D19034), and `Name` if named. Whether it is named is unread.
+5. **For the gunnery owner** (`docs/CONSTRUCT_WORLD.md` section 27, cc9-units2's contract): the
+   ship pass C torpedo stock 0081F8B0.
+6. **The loopback drain's per-poster contract** (section 13.2). For each local order kind (58h
+   MT_COMMAND, 5Eh fire target, 5Ah director, 8Fh pass-side), name the image's enqueue site and
+   its fixed-step position. Delivery before fan-out row 9 is exact as direct. Delivery after row 9
+   belongs in the next step's pump, which needs a host-wide loopback queue. The posters are in
+   the commands, gunnery, ship-AI and units files. None is leased now except
+   `src/game_hosts_units.cpp` (cc9-units2).
+7. **Unread, noted where they arose:**
+   - the callers of the XLive system's slots `54h` and `184h` (section 13.1);
+   - the deck-tick launch lag's demonstration run, a mission with a queued `LaunchSquadron`
+     (section 12.3);
+   - Landscape's `thisTable` key (section 8.4);
+   - the 004E5xxx and 004E7xxx default-pass-C classes not in the identity table (section 1.3).
+
+### 16.3 State of this worker
+
+- **Tree:** `J:\PROG\battlestations-pacific-decompile-cc9-init-passes`, branch
+  `agent/cc9-init-passes`. It is kept, per the lead.
+- **Local files:** the pair binaries are in `local\bin\{ao,pe,ig,dd,lt,rx,dt,rp,sh}_{off,on}`, with
+  their logs beside them in `local\`, and the scripts are the `local\cc9-init-passes-*` files.
+- **Leases:** none after this landing.
