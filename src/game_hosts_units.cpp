@@ -3906,7 +3906,8 @@ struct GameUnitsHost::Impl {
     // child (0092523A _strchr on 5Ch, then the children). SUBSTITUTION, labelled:
     // the host keeps no scene tree, so the parent segments are not checked and
     // the last segment is matched. OFF: an exact, case-sensitive whole-name match.
-    static constexpr bool kSceneHomeBaseQualifiedNameBound = false;
+    // ON since the pairs (docs/CONSTRUCT_WORLD.md 32, "Pairs and verdict").
+    static constexpr bool kSceneHomeBaseQualifiedNameBound = true;
     unsigned long long scene_home_keys_set = 0;
     unsigned long long scene_home_resolved = 0;
     unsigned long long scene_home_unresolved = 0;

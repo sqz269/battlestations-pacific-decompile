@@ -1,0 +1,26 @@
+{
+  "packet": "cc9_load_time_squadron_hooks (step 2: kSceneHomeBaseQualifiedNameBound)",
+  "doc": "docs/CONSTRUCT_WORLD.md, section 32, \"Pairs and verdict (step 2 of cc9_load_time_squadron_hooks)\"",
+  "calls": [
+    {"address": "0092521E", "native": "00438E10", "function": "009251F0", "note": "case-insensitive name compare"},
+    {"address": "0092523A", "native": "00BF86F0", "function": "009251F0", "note": "_strchr(name, 5Ch), the path split"},
+    {"address": "00925273", "native": "00BFAE6B", "function": "009251F0", "note": "__strnicmp of the prefix"},
+    {"address": "0092529E", "native": "009251F0", "function": "009251F0", "note": "recursion into the node's children"}
+  ],
+  "switches": [
+    {
+      "name": "kSceneHomeBaseQualifiedNameBound",
+      "state": "ON",
+      "pair": "OFF = step 1 ON logs local/LSH_ON2_JM08.log, LSH_ON_USN04.log, LSH_ON_USN02.log (pair_export of a04aa3998 with kLoadTimeSquadronHooksBound flipped; 3d4b44269 differs from it only by a comment); ON = pair_export of 3d4b44269 with this switch flipped (local/lsh_on, SHA-256 E6CDF9F3A93B): local/QN_ON_{JM08,USN04,USN02}.log. JM08 exit 1: resolved 0 -> 2, unresolved 2 -> 0, queue_pushes 0 -> 2, movetos 0 -> 2, member_orders 0 -> 6, no_home 3 -> 1, mission commands issued 40 -> 46; USN04 exit 0; USN02 exit 0. Gameplay, death rows, plane death modes and unit tables identical on all three."
+    }
+  ],
+  "no_ghidra_function": [],
+  "names_added": [],
+  "substitutions": [
+    "the host keeps no scene tree: the parent segments of the HomeBase path are not checked and the last segment is matched case-insensitively (cc9-units3's, unchanged)",
+    "the leader's director stands in for the squadron's own controller +348h in the initial command (existing, cc9_squadron_initial_command)"
+  ],
+  "failed_predictions": [
+    "JM08: 'gameplay moves' predicted; the six Oscar/Gekko planes take moveto -> MainAirFieldEntity 01 in place of the director's idle stop, but pair_diff's gameplay rows, death rows, plane death modes and unit table are identical (exit 1)"
+  ]
+}
