@@ -808,7 +808,7 @@ void ship_ai_approach_frame_state_009f1bc0(ShipAiApproachState& state,
 // frame before the curve refills (009F2F11/009F2FB1), 0080DF40 counts the ready
 // torpedo barrels, and 009E8171 no longer sets +12BAh. False: the host leaves
 // +12B4h at 0 and 0080DF40 answers 0, so the cap at 009E72F3 never applies.
-inline constexpr bool kTorpedoStandoffBound = false;
+inline constexpr bool kTorpedoStandoffBound = true;
 
 // Constants of 009F2AC9..009F2E9B.
 inline constexpr float kTorpedoStandoffHealthY0 = 3.0f;   // 00CE3854, at health 0
