@@ -251,6 +251,17 @@ inline constexpr bool kPlayerGunSeatSegmentQueryBound = true;
 // the kill credit. ON: the USN02 and E2 pairs held (docs/UNIT_DEATH_ROUTE.md s4).
 inline constexpr bool kUnitDeathRouteBound = true;
 
+// Packet cc9_death_route_destroy, docs/CONSTRUCT_WORLD.md section 22. True: the
+// death route calls the Destroy step at the kill, as the image's death step does
+// (00958A30 -> vt[70h](1) = 0077D1A0 -> 00926C80, +60h = 1 at 00926CD5), for a
+// ship. The row-15 flush (kSunkShipFlushBound, src/game_hosts_ready.cpp) keeps
+// setting +5Dh and finds +60h already set. Planes already get both bytes in the
+// units host (kPlaneDeathFlagsBound). False: +60h lands at row 15, the flush's
+// labelled substitution.
+// Committed false for the pairs; USN02 and E2 kept gameplay identical, and the
+// HUD markers stop drawing a dead ship one frame earlier, as in the image. ON.
+inline constexpr bool kDeathRouteDestroyBound = true;
+
 // Session message 79h as 00954A10 builds it in 005484F0 (section 32 of
 // docs/SHIP_SCREEN_UPDATE.md): +1Ch group, +20h..+28h the camera mover's
 // world position, +2Ch yaw and +30h pitch of its forward row (00521370),
