@@ -730,3 +730,83 @@ The same export method, run on E2 = USN04 9200/9000, logs `local\fp2_{ctl,sn_off
 - As in section 5, Coral Sea moves through +3A5h's per-step clear, not the astern latch: station
   keeping and path picks trade places.
 - The aircraft rows move: hit records -19 and shots +840.
+
+## 14. The ring scan's avoid-zone probe (packet `cc9_ship_ai_ring_scan_probe`)
+
+This binds ranking 3 rows 9 to 11, from the contract in `docs/AVOID_ZONE_REGISTRY.md` ("The
+ring-scan probe's contract over the manager"). Ghidra was read only.
+
+### 14.1 The three sites against the listing (009E6640, body 009E6640..009E6868)
+
+| site | listing | binding (switch ON) |
+| --- | --- | --- |
+| 009E66EB | `MOV ECX,[[state]+AA8h]` (the unit); `CALL [vtable+218h]` = 006DFD90 `BSP_ShipUnit_GetNavigationGroup` (a Ghidra function now, 006DFD90..006DFD9D), no arguments (the `PUSH EBP; PUSH EDI` before it are saves popped at 009E680F / 009E6810); EAX is kept in EBP as the group | `GameAvoidZoneRuntime::group_for_layer([class+560h])` when `ready()`, the 1-based group token of 004120D0 |
+| 009E673E | `00417B10(ECX = group)(&out, &start, [00CE3854] = 3.0f, 1)`; the pushes are 1, the float, `&start`, `&out` | new `GameAvoidZoneRuntime::offset(group, start, 3.0, true)` over `avoid_zone_group_offset_00417b10` |
+| 009E6808 | `0041B4E0(ECX = group)(&start, &end, &hit)`, then `TEST AL,AL` at 009E680D. 0041B4E0 forwards to 004179D0 on the same group | new `GameAvoidZoneRuntime::group_segment_point(group, toward = start, from = end, running)`: the running point starts at `from` (004179D4..004179E6) and ends at the crossing nearest `toward` |
+
+On a hit, the reconstruction (`src/ship_ai_ring_scan.cpp`, 009E6813..009E6838) sets the slot's
+blocked byte (`+40h`), and the reset distance becomes |start - hit|. That part was already bound.
+
+### 14.2 The binding
+
+- **The switch.** `kShipAiRingScanProbeBound` in `src/game_hosts_ship_ai.cpp`, committed OFF.
+  OFF keeps the three stand-ins: no space, the start point unchanged, and no hit.
+- **ON with an unready runtime** keeps the stand-in and the record, because the runtime throws
+  unless `ready()`.
+- **The two runtime gaps** of the contract are filled in `src/game_avoid_zone_runtime.cpp`:
+  `offset` and `group_segment_point`, each on `groups[token-1]` with the group's native view.
+- **The new summary line** `ship ai ring probe spaces= moved_starts= casts= hits= bound=` is
+  printed on both sides.
+
+### 14.3 Where the probe can differ from the sea at all
+
+The probe reads the **manager's zone polygons**, not the registry's terrain grid layer (the
+`.nav` heights of `docs/AVOID_ZONE_REGISTRY.md`). Every measured run reports
+`summary avoid-zone geometry groups=1 zones=0` (`local\rb3_e2.log` and `local\rb3_usn02.log`),
+because the scene's zone creators are unresolved (`native_scene_creators=unresolved`).
+
+So on USN02 and E2 the one group has no zone:
+- 00417B10 walks no zone and returns the start point unchanged;
+- 004179D0 finds no crossing.
+
+The probe therefore cannot differ from the stand-in's open sea on these missions. That holds
+whatever the shared `.nav` holds, and for the Japanese carriers clamped to 0 m.
+
+### 14.4 Predictions, written before the pair
+
+Two builds of one tree, differing only by the switch, with streams and the death table on.
+USN02 9200/9000 and E2 = USN04 9200/9000.
+- **Records.** `ShipAiRingScan::probe_space_vtable_0218`, `probe_origin_00417b10` and
+  `probe_hit_0041b4e0` go from UNIMPLEMENTED to concrete at the same counts: **21,660 on E2 and
+  165,960 on USN02** (today's `nc_on` logs; the ranking's 2247 / 4493 / 18440 are its per-1000
+  rates on older trees).
+- **The new line.** ON reads spaces = casts = those counts, with moved_starts = 0 and hits = 0.
+  OFF reads 0 / 0 / 0 / 0.
+- **Everything else is identical both ways:**
+  - every ship-AI line (ring scans, ring bearings, path picks, station keeping);
+  - every sector's blocked byte, because it is never set;
+  - deaths (51 E2, 22 USN02), hit records (843, 439), and the USN02 failure at 39.65 s;
+  - the per-entity tables.
+  There are no bands: the claim is identity.
+- **Would falsify the reading:** any hit or moved start (a zone would then exist), or any moved
+  gameplay line.
+
+### 14.5 The pairs and the verdict
+
+One tree (main `2731f0283` plus `e6efbf13a`), `local\rs_off` against `local\rs_on` (SHA-256
+prefixes `1CB7DFE04F27` / `9AB2FF004FD6`). Streams and the death table on. Logs:
+`local\rs_{off,on}_{usn04,usn02}.log`. Every log shows the 1600x900 override and its own module
+directory, and every run exited 0.
+
+| line | E2 OFF | E2 ON | USN02 OFF | USN02 ON |
+| --- | ---: | ---: | ---: | ---: |
+| the three `ShipAiRingScan::probe_*` rows | 21,660 UNIMPLEMENTED | 21,660 concrete | 165,960 UNIMPLEMENTED | 165,960 concrete |
+| ring probe spaces / moved starts / casts / hits | 0 / 0 / 0 / 0 | 21,660 / 0 / 21,660 / 0 | 0 / 0 / 0 / 0 | 165,960 / 0 / 165,960 / 0 |
+
+- Both ways, the whole native table (1,538 rows on E2, 1,436 on USN02), every other summary line
+  and every `death row` / `plane death mode` line are identical.
+- USN02 is 22 deaths and 439 hit records, failing at 39.65 s, on both sides.
+
+**Verdict: held, every prediction.** The probe asks the image's group and casts through the image's
+two group routines. With `zones=0` on both missions it answers what the open-sea stand-in
+answered. `kShipAiRingScanProbeBound` is ON, and ranking 3 rows 9 to 11 are closed.
