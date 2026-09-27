@@ -1,0 +1,24 @@
+{
+  "packet": "cc9_ring_scan_probe_usn01",
+  "docs": [
+    "docs/GAME_AVOID_ZONE_RUNTIME.md (zone-creator finding and the pair)",
+    "docs/GAME_EXECUTABLE.md reference c note"
+  ],
+  "note": "docs/AVOID_ZONE_REGISTRY.md was leased to cc9-plane-release, so the finding is in the runtime doc",
+  "finding": "zone creation already bound (GameAvoidZoneRuntime::rebuild = 00424D00 walk); usn_19_coralus.scn and usn_2_java.scn author no AvoidZone/landscape/include lines; usn_1_marshall.scn authors 21 AvoidZoneG paths (line 3450) and 47 landscape lines; native_scene_creators=unresolved = Path (47h, creator 004EA650) and Landscape (44h, creator 004F1460) entity creation",
+  "pair": {
+    "tree": "export of 7eb3679dd + 76d9e3ecf",
+    "binaries": {
+      "off": "pu_off 1F97F05CB460",
+      "on": "pu_on B4DA67FE2547"
+    },
+    "logs": "local/pu_{off,on}_usn01.log",
+    "zones": "groups=6 zones=21 both",
+    "probe": "spaces=0 moved_starts=0 casts=0 hits=0 both (no ring scan on USN01)",
+    "verdict": "identity, as predicted"
+  },
+  "failed_predictions": [
+    "absolute USN01 values: 7 / 150 / 583 shots / 0 torpedo drops on both sides, not the predicted 7 / 141 / 447 / 8; a move between e3aba0f36 and 7eb3679dd, flagged for reference d"
+  ],
+  "source_touched": false
+}

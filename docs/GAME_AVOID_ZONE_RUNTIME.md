@@ -158,3 +158,27 @@ state). USN01 3200/3000, streams and the death table on.
 - **Consequence.** The probe cannot be measured against real zones on any of the four reference
   missions. A mission that both authors zones and puts ships into an approach would be needed;
   none was surveyed here.
+
+### The USN01 probe pair, measured
+
+- **Builds:** a `git archive` export of main `7eb3679dd` plus the finding commit `76d9e3ecf`, in
+  `local\ap_src`. The switch is flipped in the export only: `local\pu_off`
+  (`1F97F05CB460`) against `local\pu_on` (`B4DA67FE2547`).
+- **Logs:** `local\pu_{off,on}_usn01.log`. Both show the 1600x900 override and their own module
+  directory, and both exited 0.
+
+**Identity, as predicted.**
+- Both sides load `groups=6 zones=21`. Both read `ring probe spaces=0 moved_starts=0 casts=0
+  hits=0`: no USN01 ship reaches the approach ring scan.
+- The whole native table (1,299 rows), every summary line but the probe line's `bound=` field,
+  and every death row are identical.
+
+**A failed prediction, on absolute values.** Both sides read 7 deaths, **150** hit records (85
+hull), **583** shots and **0** torpedo drops. That differs from the afternoon's control
+(`local\fp2_ctl_usn01.log` on `e3aba0f36`: 141 / 447 / 8 drops).
+- The move is between the two trees, not inside this pair. Main gained other landings between
+  `e3aba0f36` and `7eb3679dd`.
+- The USN01-relevant candidates were paired only on USN04 and USN02: the planes' avoid-zone layer
+  sample `0d02479e5` (Marshall has terrain, unlike the reference seas) and the dive bombers'
+  carried rounds `e3f5d58ab`.
+- This is flagged for reference d (`docs/GAME_EXECUTABLE.md`, reference c section).
