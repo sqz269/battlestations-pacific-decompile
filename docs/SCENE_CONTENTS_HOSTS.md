@@ -816,6 +816,52 @@ and the death table are on, and the commands are as in section 5.
 - **Census:** `landscapes=0 loaded=0` on both sides.
 - **Outcome:** identity on every row, 41 / 743 / 5603.
 
+### The pairs, measured
+
+- **Builds.** One tree (`agent/cc9-scene-entities` at `3f5b154b8`, which is main `365b1b967` plus
+  this packet), built twice with only `kSceneLandscapeTerrainBound` flipped:
+  - `local\lt_off`, SHA-256 prefix `68F5491766B2`;
+  - `local\lt_on`, SHA-256 prefix `EEECEEE00EDE`.
+- **Logs.** `local\lt_{off,on}_{usn01,usn04}.log`. Each shows the 1600x900 override and its own
+  module directory in this tree, and each exited 0.
+
+**USN01 3200/3000: identity on every measured row.**
+- **Outcome.** Both sides: 7 deaths, 150 hit records, 583 shots and `damage=2690.0`. All 23
+  death rows and every summary line are identical, except `summary scene terrain`.
+- **Native table.** The one differing row is `Landscape::load_height_field` 00ADDA60 (4 calls,
+  ON only).
+- **Loaded, ON:**
+  - `Landscape 03`: `TRNV2`, 11x12 tiles, 75 blocks, box_min (-599.68, -711.07), origin
+    (-900, -1200), node (3000, 0, -4000), height [-119.413, 90.548].
+  - `Landscape 04..06`: `TRNV2`, 19x22 tiles, 234 blocks each, box_min (-2900, -2950), origin
+    (-3300, -3300), height [-110.003, 209.148]. Their nodes are (-2000, 0, 3000),
+    (-7000, 0, 4000) and (-6500, 0, -2000).
+- **Self-check.** On `Landscape 03`, 41 of its 51 authored objects are within 1 cm of the
+  sampled ground. The worst is 66.34 m, `Coastal Gun 01`, as the prototype found. 009039D0 names
+  `Landscape 03` for all 51.
+- **Census.** Height, normal and landscape-at are each 51 calls, 51 hits and 0 fallbacks. Segment
+  calls are 0. No consumer calls any query after the load.
+
+**Failed or vacuous predictions:**
+- **Landscapes 04..06 author no child objects**, so the rotation question has no evidence on this
+  mission (`objects=0` for all three). It stays open: does the native ground query sample a
+  rotated island unrotated? 00ADA900 subtracts only the node translation, and the only way the
+  answer differs from the island's geometry is a rotated Landscape with something standing on it.
+- **`landscape_at_self` is 51, not "less the sea points".** The landing points lie inside the
+  island's tile grid over shallow water, where the height field answers a sea-floor height rather
+  than -1000.
+- **The top of m07_a is 90.548, not 90.60.** The box's maximum is the model's; the height field's
+  highest sample is 5 cm lower.
+
+**USN04 4700/4500: identity on every row.**
+- Both sides: 41 deaths, 743 hit records and 5,603 shots.
+- The native table is identical: 0 rows differ.
+- The census is `landscapes=0 loaded=0` on both sides.
+
+**Verdict: ON.** Both pairs are identity on every death, hit-record and shot row, and the height
+field reproduces the authored ground to 1 cm on the island that has objects. The queries now
+answer for the consumers listed under the contracts above.
+
 ## Ledger names recorded
 
 | Address | Name |

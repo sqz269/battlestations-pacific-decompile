@@ -364,8 +364,9 @@ struct SceneWorldObject {
 // True loads each Landscape's height field at the pass-A point and answers the
 // queries below. No consumer calls them: the 30 native call sites of 00903860
 // and the others stay in their owners' files (see the doc's contracts), so the
-// switch is committed false with the prediction that no measured row moves.
-inline constexpr bool kSceneLandscapeTerrainBound = false;
+// switch was committed false with the prediction that no measured row moves;
+// the USN01 and USN04 pairs were identity, so it is ON.
+inline constexpr bool kSceneLandscapeTerrainBound = true;
 
 // One 33x33 sample block of a `NODE` tile (00ADFD70: 00ADC420(21h, 21h), block
 // vtable 00D5D314, 2 bytes per sample). 00ADC6C0 reads `offset` (+2Ch) and
