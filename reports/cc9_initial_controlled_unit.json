@@ -4,14 +4,38 @@
  "doc": "docs/CONTROLLED_UNIT.md, section \"The initial controlled unit\"",
  "switch": "kInitialControlledUnitBound, include/bsp/game_hosts_world.hpp, committed false",
  "steps": [
-  {"address": "004e059b", "native": "008073c0", "function": "004dfb70", "what": "scene load step 19: recon rebuild of the local slot"},
-  {"address": "004e05a9", "native": "004c3cb0", "function": "004dfb70", "what": "scene load step 19: list build after the latch clear 004E05A2"},
-  {"address": "004e05b7", "native": "006485a0", "function": "004dfb70", "what": "scene load step 19: ForceSelectUnit, the initial controlled unit"},
-  {"address": "004c9e9d", "native": "006485a0", "function": "004c9ca0", "what": "mission entry arm, network session only (JZ 004C9EA2 at 004C9E38 in single player)"}
+  {
+   "address": "004e059b",
+   "native": "008073c0",
+   "function": "004dfb70",
+   "what": "scene load step 19: recon rebuild of the local slot"
+  },
+  {
+   "address": "004e05a9",
+   "native": "004c3cb0",
+   "function": "004dfb70",
+   "what": "scene load step 19: list build after the latch clear 004E05A2"
+  },
+  {
+   "address": "004e05b7",
+   "native": "006485a0",
+   "function": "004dfb70",
+   "what": "scene load step 19: ForceSelectUnit, the initial controlled unit"
+  },
+  {
+   "address": "004c9e9d",
+   "native": "006485a0",
+   "function": "004c9ca0",
+   "what": "mission entry arm, network session only (JZ 004C9EA2 at 004C9E38 in single player)"
+  }
  ],
  "names_added": {},
  "no_ghidra_function": [],
  "substitutions": [
-  "step 19's 006485A0 runs after the first in-mission list build over a published own triple (the first tick), not at the end of scene load; no unit is controlled before it"
- ]
+  "with the load-time fix, step 19 runs at the load site after attach_world_2k; if no own triple is published there, it falls back to the first tick's build"
+ ],
+ "load_time_fix": {
+  "packet": "cc9_initial_controlled_unit_load",
+  "substitution": "the load-time 008073C0 pass covers every side at once, where 004E059B rebuilds only the local slot; the periodic countdown 008079B0 is untouched"
+ }
 }

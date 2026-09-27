@@ -640,3 +640,51 @@ through followers of the controlled unit's group.
   load, as 004E059B does, then the world host's build and 006485A0, with the HUD attached. That
   touches `src/game_hosts_gunnery.cpp` and the mission frame's load order, so it is a follow-up
   packet.
+
+### Step 19 at the load site (packet `cc9_initial_controlled_unit_load`)
+
+Worker cc9-hud2, 2026-09-27, base ad46022e6. The switch is still `kInitialControlledUnitBound`,
+committed OFF.
+
+**The change.**
+- **The mission frame's load block runs step 19 itself** when the switch is ON. It runs after
+  `attach_world_2k` and before the HUD's scene interface request, so before the first tick:
+  1. it arms the request;
+  2. it runs `GameGunneryHost::run_recon_pass_at_scene_load_004e059b`: 008073C0 as 004E059B calls
+     it, outside 008079B0's countdown, which is left untouched;
+  3. it runs the world host's 004C3CB0 build (004E05A9), which then runs 006485A0 (004E05B7)
+     once it has published the lists.
+- If that pass or build publishes no own triple, the request stays armed for the first tick's
+  build, as in the earlier binding.
+- **The periodic pass.** `step_recon_sensor_pass_008073c0` is split into its countdown and
+  `run_recon_sensor_pass_body_008073c0`. The OFF path runs the same code in the same order.
+- **SUBSTITUTION, labelled:** this host's pass covers every side at once, where 004E059B rebuilds
+  only the local slot. The first-tick substitution of the earlier binding is gone whenever the
+  load-time build publishes.
+
+**Predictions** (written before any run; the same protocol; the rows come from the measured pairs
+at a3a03908f):
+
+- **USN01 3200/3000:**
+  - Northampton is controlled from load (the log line precedes hud update frame 0), and
+    `SetSelectedUnit(Northampton)` at 20.1 s refreshes it in place.
+  - **Gameplay identical, exit 1.**
+  - Seat messages about 2,961 (OFF 2,801), as measured.
+  - Pick `owner_140` unchanged from OFF. Nothing in the 0..4 s window before the movie casts
+    differently: the pick's ShipCaptain camera exists from load either way.
+- **USN04 4700/4500:**
+  - The Lexington is controlled from load, the same unit as OFF's first created unit, because
+    `+8Ch` = {Lexington} is the only selectable party-0 unit.
+  - The first tick's formation assignment now sees the player ship, so the t = 0.05 swap of the
+    earlier ON run does not occur.
+  - **Gameplay identical, exit 1.** The added rows are the load-time recon pass (sensor-pass
+    counts +1), one more list build, and one `ForceSelectUnit` with its 20h push. Seat messages
+    equal OFF's.
+  - **The risk,** named in advance: if a recon value carries from one pass to the next, the
+    load-time pass moves the recon rows and, through them, the AI.
+- **USN02 9200/9000:**
+  - Alden is controlled from load, then Houston from the script's `SetSelectedUnit`.
+  - **Gameplay moves, exit 3,** in the measured direction: hit records 652 -> about 645, shots
+    1095 -> about 1169. The exact rows may differ from a3a03908f's, because the first tick now
+    sees Alden controlled.
+  - Judged on the per-entity tables and the player-seat rows.

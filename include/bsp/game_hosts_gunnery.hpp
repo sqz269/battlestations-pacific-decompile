@@ -680,6 +680,12 @@ public:
     // 004C3CB0 walks 0, 1 and 3 of the player's slot. False (and `out` empty)
     // before the first rebuild or for a side with no slot.
     bool recon_triple_units(int side, int triple, std::vector<std::size_t>& out) const;
+    // Packet cc9_initial_controlled_unit_load: the scene load's step 19 calls
+    // 008073C0 on the local slot directly (004E059B), outside 008079B0's
+    // periodic countdown, which it leaves untouched. SUBSTITUTION, labelled:
+    // this host's pass covers every side at once, not only the local slot.
+    // Returns false when no unit is registered (the pass has nothing to scan).
+    bool run_recon_pass_at_scene_load_004e059b();
 
     // Packet cc9_hud_ray_pick (docs/HUD_PICK_SEGMENT_QUERY.md section 4): 0098ADD0
     // over this host's units, as 009043A0 calls it with kind filter 0. `exclude`
