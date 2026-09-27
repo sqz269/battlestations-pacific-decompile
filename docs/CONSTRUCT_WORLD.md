@@ -1900,3 +1900,143 @@ this tree and the final COM release.
 
 **Verdict: ON.** The moveto toward the carrier is issued as in the image. The AI group's
 `dogfight` replaces it before it changes an intercept on these missions.
+
+## 28. The image's buoyancy element list replaces the stand-in (packet `cc9_buoyancy_elements`, `kShipBuoyancyElementsBound`, committed OFF)
+
+2026-09-27, worker cc9-units3, on main 5b9a40d70. Ghidra was read only.
+
+Section 25's caveat: the leak manager's capacity comes from controller+84h, the reserve buoyancy
+`00937DBB..00937F74` sums over the class's element list, and the host list was an eight-element
+stand-in (capacity = Mass / 3). The element list's producer was already found and reconstructed
+(docs/SHIP_BUOYANCY_ELEMENTS.md, `src/ship_buoyancy_elements.cpp`) but not bound in any host.
+
+### Where the real elements come from (V)
+
+- **The producer is `0082D040`.** It is called once, at `0082FEE3`, inside `0082FE30`. That
+  function is the ship class descriptor's model-binding virtual: slot 8 of every ship-kind
+  vtable, and the ninth kind's `00759120` calls it at `0075913D`. `ghidra xrefs 0082D040`
+  returns that one site.
+- **The window, from disk bytes:**
+  - `0082FEA9` loads the class model `[EDI+50h]`, the row's `Mesh`.
+  - `0082FEBA` and `0082FECA` call `00718000`, the node lookup, with kind `EBX` = 0, for
+    `"deckline"` and `"bottomline"`.
+  - `0082FECF` loads `Hull.WaterLineRatio` at descriptor+71Ch.
+  - `0082FED9` / `0082FEDD` add 44h to each record (its point vector).
+  - `0082FEE3` calls `0082D040` with `ECX` = the descriptor.
+- **The authored data in this installation:**
+  - `Hull = { Segments, WaterLineRatio }` is in `scripts/datatables/autoload/vehicleclasses.lua`
+    (2026-05-09, modded). 161 class blocks carry it. The DeRuyter block starts at line 13618 and
+    its `Hull` table at line 13771: `Segments = 5`, `WaterLineRatio = 0.55`.
+  - The two point sets are `Aux` entries in the class `.mmod`. Each is an `Identifier` (counted
+    name, then the u32 kind) followed by `Points` (a byte count and float triples). 160 of the
+    161 classes have both. The one without them is the Black Cat, a plane model that `0082FE30`
+    never reaches.
+  - The PACK3 classes (Fiji, Icarus) are not in the loose Lua file. The run log prints their
+    values.
+- **The list:** `2 × Hull.Segments` records.
+  - The station z values span the whole Length, and x = ±Width/2.
+  - Deck, keel and waterline come from the two polylines.
+  - The coefficient is `5 × Mass / (Segments × draught)`.
+
+### What the reserve becomes, in closed form
+
+At every record, waterline − keel = (deck − keel) × (1 − r), with r = `Hull.WaterLineRatio`. So
+00937C90's fraction |keel − deck| / |waterline − keel| is 1 / (1 − r) at every station. With the
+Ship material's Kitevo of 1, each term is coefficient × section height × Gravitacio / 10. The sum
+is 10 × Mass / (1 − r), which gives:
+
+- controller+84h = 10 × Mass × r / (1 − r);
+- the leak capacity = Mass × r / (1 − r).
+
+Once both nodes exist, this does not depend on the model geometry. Against the stand-in's
+Mass / 3:
+
+| class (this installation) | r | capacity / Mass | stand-in | hydrodynamic saturation, × weight | time to neutral |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| DeRuyter | 0.55 | 1.222 | 0.333 | 3.58 | 52.8 s |
+| Northampton (Houston) | 0.45 | 0.818 | 0.333 | 2.56 | 47.7 s |
+| York (Exeter) | 0.50 | 1.000 | 0.333 | 3.00 | 50.0 s |
+| Kagero | 0.48 | 0.923 | 0.333 | 2.81 | 49.0 s |
+| Shiratsuyu | 0.46 | 0.852 | 0.333 | 2.64 | 48.1 s |
+| Clemson | 0.3925 | 0.646 | 0.333 | 2.18 | 45.6 s |
+| Fubuki | 0.415 | 0.709 | 0.333 | 2.32 | 46.4 s |
+| Kuma | 0.50 | 1.000 | 0.333 | 3.00 | 50.0 s |
+| Myoko | 0.37 | 0.587 | 0.333 | 2.05 | 44.8 s |
+
+The last two columns are this section's model of the descent, not the image:
+
+- **Saturation.** `009329C0`'s element force is coefficient × d × (0.5 d / draught + 0.5), with
+  d clamped to the section height. The stand-in hull floats already saturated: its element
+  point is at y = 0 and its span is the draft, so any water sinks it at once. The real hull
+  floats at its waterline. It holds (saturation − 1) × weight in reserve before its deck line
+  goes under.
+- **Time to neutral** = (saturation − 1) × Mass / inflow. The inflow is 2 × cap = 0.04 ×
+  capacity per second after the handler's redistribution.
+- **After neutral**, the net downward acceleration follows the stand-in's curve to within 3 %.
+  For DeRuyter it is 10 × 0.0489 t / (3.58 + 0.0489 t), against the stand-in's
+  10 × 0.0133 t / (1 + 0.0133 t).
+- So each wreck's descent should take the stand-in's time plus its class's time to neutral.
+
+### It is not only the wrecks
+
+`009329C0` walks the element list on every step of every live hull, so the binding changes live
+flotation too:
+
+- elements at ±Width/2 give the hull a roll-restoring buoyancy it did not have;
+- the stations sample the real deck and keel lines, so the trim follows the model;
+- the drag scale is Mass / count × fraction, and a floating hull's fraction falls from 1 (the
+  saturated stand-in) to 1 − r;
+- the element count is 2 × Segments instead of 8.
+
+The waterline samples lie within 0.15 m of the model origin on the DeRuyter (the table in
+docs/SHIP_BUOYANCY_ELEMENTS.md), so the mean draft barely moves. Motion and gunnery geometry still
+move from the first step, so identity on E2 is **not** expected.
+
+### The binding
+
+- **The switch** is `kShipBuoyancyElementsBound` in `src/game_hosts_units.cpp`, committed OFF.
+- **In both builds**, the units host builds each ship class's image list once, at the
+  stand-in's site in `create_units`. `class_buoyancy_list_0082fe30` does four things:
+  - it reads the `Mesh` through the mounted VFS;
+  - it reads the Aux point items through `read_mmod_aux_point_items_0071b3e0`, the reader
+    docs/GUN_BARREL_COUNT.md uses for `"fire"`;
+  - it finds the two nodes with `find_named_point_group_00718870`, which applies 00718000's rule
+    (the last exact match of name and kind);
+  - it runs `ship_buoyancy_build_from_model_0082fea9` and logs one `buoyancy elements class=...`
+    line per class.
+- **ON:** a hull whose class list was built takes it.
+- **OFF, and ON for a class without both nodes or with Segments ≤ 0:** the stand-in, which stays
+  reachable. ON, such a hull is counted in `fallbacks`. The original would dereference a null
+  node record there; the host refuses instead.
+- **Lua:** `Hull.WaterLineRatio` is a nested float. The Lua host gains
+  `read_vehicle_class_nested_number`, the float twin of the nested integer reader.
+  `Hull.Segments` uses the integer reader, which truncates like the CRT float-to-int at
+  `00832DE8`.
+- **Census:** `summary ship buoyancy elements` counts the classes, the hulls on the image list,
+  the hulls on the stand-in and the fallbacks. The wreck `leaks` line gains `elements=`.
+- **Nothing else changes.** The reserve, the leak manager, the handler and the kill are sections
+  24 and 25's, now fed by the image's list.
+
+### Predictions (written before the runs)
+
+Same tree: the OFF build against the ON export, both variables set. The OFF rows are expected
+close to section 25's `SD_ON` measurements. Main has moved since, with gameplay-identical
+verdicts on USN02.
+
+| row | USN02 9200/9000 | E2 = USN04 9200/9000 |
+| --- | --- | --- |
+| `summary ship buoyancy elements` | OFF: image 0, stand-in 32. ON: image 32, stand-in 0, fallbacks 0 | OFF: image 0, stand-in 18 (the `leak_models` count). ON: image 18, fallbacks 0 |
+| `buoyancy elements` class lines | both builds, one per ship class, all `image list`; `sum_coef_draught` = 10 × Mass | the same |
+| wreck `capacity` | Mass × r / (1 − r): DeRuyter 9396, Houston 9492, Exeter 10350; Kortenaer (Icarus) from the log | no wrecks |
+| `elements=` on the wreck lines | 2 × Segments: DeRuyter 10, Houston 8, Kagero 10, Clemson 10 | - |
+| each wreck's time from first +5Dh to −200 m | section 25's 91.6..98.6 s plus the class's time to neutral: about 140..152 s, band 115..200 s | - |
+| kills within 450 s | only wrecks whose first +5Dh is before about 300 s: 13, band 9..16 (OFF about 17) | 0 |
+| list 6 at the end | about 19, band 16..23 (OFF about 15) | 18 both |
+| neighbour `mean_count` | above OFF (fewer and later unlinks), band OFF..OFF+4 | unchanged at 18.00 |
+| hydrodynamics `element_steps` | up by the mean 2 × Segments / 8, about × 1.15, band × 1.0..1.35 (wreck removals also move it) | about × 1.3, band × 1.1..1.6 |
+| live hulls | trim and roll follow the new list from the first step | the same |
+| deaths | OFF ± 4 | 52 ± 6 |
+| hit records | OFF ± 15 % | 875 ± 12 % |
+| first moved gameplay row | before the first kill, possibly before the first death: live hulls float differently from t = 0 | anywhere |
+| failure time | 39.65 s ± 2 s (it is scripted; a change means the early engagement moved) | none |
+| pair_diff exit | 3 | 3 (1 only if no live motion reaches a hit or a death) |
