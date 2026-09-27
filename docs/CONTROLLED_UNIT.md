@@ -1061,3 +1061,29 @@ either side.
   - **Gameplay identical, exit 1.**
 - **USN04 4700/4500:** census none; the same table change. **Identity, exit 1.**
 - **USN02 9200/9000:** census none; the same table change. **Identity, exit 1.**
+
+### Pairs and verdict
+
+- **The pairs.** The OFF side is this tree's build at c30b838cd (`local\vt_off_*`). The ON side
+  is `local\vt_on`, a `tools/pair_export.py` export of the same commit with only the switch
+  flipped.
+- **Run parameters:** streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05 and an idle player.
+
+| pair | `pair_diff` | result |
+| --- | --- | --- |
+| USN01 3200/3000 | exit 1 | gameplay, 7 death rows and 28 unit rows identical. Every `+8Ch` build is identical (members, order, cursor), and so are the initial unit (Dunlap) and `SetSelectedUnit(Northampton)`. The one moved line is ScoutDauntless's rejection with `vt124=0 -> 1`, still rejected at `kind0F=1`. The native table swaps the record `SetSelectedUnit::unit_vtable_124` (25 calls) for `Unit::vtable_124` (59, concrete) |
+| USN04 4700/4500 | exit 1 | gameplay, 44 death rows and 81 unit rows identical; the table gains `Unit::vtable_124` (62) |
+| USN02 9200/9000 | exit 1 | gameplay, 19 death rows and 28 unit rows identical; the table gains `Unit::vtable_124` (70) |
+
+**Predictions:**
+- **Held:** identity on all three missions; ScoutDauntless's answer; the `+8Ch` builds; the
+  initial controlled unit.
+- **Failed, minor:** USN04 and USN02 had no record row to remove. No non-ship unit is asked there,
+  so the old rule never reached its record arm, and the table only gains the concrete row.
+
+**Verdict: `kUnitVtable124MapBound = true`.**
+
+**Open (units host, not this switch):** the host's squadron slot carries its leader's class.
+`SetSelectedUnit(Mission.ScoutBomba)` in USN01's `luaPh2MovieEnd` is therefore rejected at
+`IsKindOf(0Fh)`, where the image's PlaneSquadronGen (18h) would pass. That would make the squadron
+the controlled unit, since its `+124h` 007EE670 answers the leader's liveness.

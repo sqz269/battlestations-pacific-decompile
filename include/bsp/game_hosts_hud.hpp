@@ -262,7 +262,7 @@ inline constexpr bool kControlledUnitObserverBound = true;  // ON: lead ruling, 
 //    false.
 // While true the HUD answers vtable[124h] by that map. While false it answers
 // the four bytes for ships (IsKindOf(6)) and false for every other class.
-inline constexpr bool kUnitVtable124MapBound = false;
+inline constexpr bool kUnitVtable124MapBound = true;  // ON by the identity pairs (docs/CONTROLLED_UNIT.md, "The unit vtable[124h] map")
 // Returns false when no HUD is attached.
 bool hud_force_select_unit_006485a0();
 
