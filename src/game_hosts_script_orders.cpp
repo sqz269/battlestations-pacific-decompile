@@ -315,7 +315,9 @@ std::size_t GameScriptOrdersHost::drain_deferred_orders_0076c600() {
             o.after_apply ? ", then its delivery continuation" : "");
         if (o.after_apply) {
             ++deferred_continuations_;
+            delivery_source_ = o.source;
             o.after_apply();
+            delivery_source_.clear();
         }
     }
     after_row9_poster_ = outer_poster;
@@ -1482,6 +1484,9 @@ void GameScriptOrdersHost::entity_issue_command(void* entity,
     }
     std::string source("script:");
     source += (row_ != nullptr) ? row_->binding : std::string("navigator");
+    // Packet cc9_after_row9_continuation: an order a delivery continuation
+    // issues (the fan-out's wingman orders) keeps the queued order's source.
+    if (row_ == nullptr && !delivery_source_.empty()) source = delivery_source_;
     if (kAfterRow9OrderQueueBound && !after_row9_poster_.empty()) {
         // Posted after row 9 (a Blackout callback): 0077D600 routes the
         // MT_COMMAND into the loopback queue, applied by the next step's pump.

@@ -282,8 +282,13 @@ struct GameScriptTimerSummary {
 // While true, the MT_COMMAND issues (0077D600) that callback's bindings make
 // are queued and applied, in post order, by the next
 // GameFixedStepHost::pump_session_00778450. GenerateObject and
-// SetSelectedUnit are not session orders and stay direct.
-inline constexpr bool kAfterRow9OrderQueueBound = false;
+// SetSelectedUnit are not session orders and stay direct. The receiver side a
+// binding does after issuing (the bot task install, the squadron fan-out, the
+// path pair) runs on delivery through DeferredOrder::after_apply (packet
+// cc9_after_row9_continuation, section 22.8). ON by the verdict of section
+// 22.9: USN01 applied 7 with 6 continuations and identical gameplay; USN04 and
+// USN02 identical with no census.
+inline constexpr bool kAfterRow9OrderQueueBound = true;
 // The pump's loopback drain: applies the queued orders of the one live host.
 // Returns the number applied.
 std::size_t script_orders_drain_loopback_0076c600();
@@ -689,6 +694,8 @@ private:
     unsigned long long deferred_continuations_{0};
     // True when the last entity_issue_command queued its order.
     bool last_issue_deferred_{false};
+    // The queued order's source while its continuation runs at the drain.
+    std::string delivery_source_;
     // Runs `fn` now when the last order was applied directly, or attaches it to
     // that queued order so the drain runs it on delivery.
     void after_order_delivery(std::function<void()> fn);

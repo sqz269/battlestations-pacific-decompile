@@ -1911,3 +1911,53 @@ behind `kAfterRow9OrderQueueBound`.
   tick before the image's `+7Ch` route in 0099ACD0.
 
 The predictions are 22.7's.
+
+### 22.9 Pairs and verdict (packet `cc9_after_row9_continuation`)
+
+Worker cc9-hud3, 2026-09-27.
+- **The pairs.** The OFF side is this tree's build at 5793fa6d2. The ON side is `local\cq_on`, a
+  `tools/pair_export.py` export of the same commit with only the switch flipped.
+- **Run parameters.** Streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05 and an idle player. The
+  argument lines are the milestone headers of cc9-hud2's `aq_*` logs.
+
+| pair | `pair_diff` | census | result |
+| --- | --- | --- | --- |
+| USN01 3200/3000 | **exit 1** | applied 7, continuations 6, `blackout:luaIn=5 blackout:luaMoveToPh2=2` | gameplay, 7 death rows, 7 plane death modes and 28 unit rows identical (150 hit records, 561 shots) |
+| USN04 4700/4500 | exit 1 | `(none)` | gameplay identical; the only change is the drain row |
+| USN02 9200/9000 | exit 1 | `(none)` | gameplay identical; the only change is the drain row |
+
+**USN01 in detail:**
+- The ScoutDauntless install now answers `0099A170 -> 1` at the drain, with `1 wingman task(s)`,
+  as OFF does. The five Mavis installs are built from the attack command `00e08f18`.
+- `luaMoveToPh2` defers two orders, to units 55 and 62. The third order of 22.6, to unit 63, was
+  the wingman's. It is now issued by the delivery continuation at the drain, so it is applied
+  directly and not queued.
+- **The binding table moves in one row.** `NavigatorMoveToRange Convoy1` shows 0 issued and 0
+  reached ON, because the row records the call, and a deferred order is not applied during the
+  call.
+- **The wingman's source label.** It first showed `script:navigator`, because the drain clears the
+  running row. The committed build carries the queued order's source (`delivery_source_`). A
+  rerun of that build (`local\cq_on2_usn01.log` against the same OFF log) is identical in gameplay
+  and every table, and the only differing binding row is the Convoy1 row.
+
+**Predictions (22.7):**
+- **Held:**
+  - the `luaIn=5` census;
+  - the ScoutDauntless install and the one wingman task;
+  - deaths staying 7;
+  - USN04 and USN02 identity, with census `(none)`.
+- **Failed 1, the `luaMoveToPh2=3` census and `applied 8`.** They were 2 and 7: the wingman order
+  moved from the queue into the continuation, as 22.8 designed. The prediction should have
+  followed the design.
+- **Failed 2, "exit 3, rows moving by about one step".** Nothing moved: the deaths, hits, shots and
+  every unit row are identical.
+  - The one-step later delivery is not observable once the task install follows it.
+  - **Unverified hypothesis:** the host's pilot bots first read the task after the drain of the
+    step that delivers it, so delivery at row 9 and delivery in the callback reach the same bot
+    tick. The plane tick's position relative to row 9 was not read in this packet.
+
+**Verdict: `kAfterRow9OrderQueueBound = true`.**
+- The image delivers an order posted after row 9 at the next step's pump (22.1, 22.7). With the
+  receiver side following the delivery, all three pairs keep gameplay identical.
+- **Labelled substitution, as in 22.7:** the task install happens at the delivery. The image
+  installs one bot tick later, through `+7Ch` in 0099ACD0.
