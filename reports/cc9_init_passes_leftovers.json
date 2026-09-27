@@ -1,0 +1,19 @@
+{
+ "packet": "cc9_init_passes_leftovers",
+ "worker": "agent/cc9-hud2",
+ "kind": "read only, no binding",
+ "doc": "docs/SENTITY_INIT_ATTACH_ORDER.md section 21",
+ "steps": [
+  {"address": "00777b89", "native": "0076d030", "function": "00777850", "what": "message 0Bh receiver -> XLive slot 54h"},
+  {"address": "00778286", "native": "007746f0", "function": "00777850", "what": "message E4h receiver -> XLive slot 184h"},
+  {"address": "0077268d", "native": "0075b430", "function": "00772610", "what": "mission reload builds message 0Bh"},
+  {"address": "004c97a3", "native": "0075b430", "function": "004c9780", "what": "message E4h constructor"},
+  {"address": "0077d7be", "native": "007798d0", "function": "0077d600", "what": "58h MT_COMMAND built by BSP_Entity_IssueCommand"},
+  {"address": "0083589e", "native": "00835740", "function": "00835860", "what": "5Eh fire target built by SetFireTarget"},
+  {"address": "009d8cb0", "native": "009d66b0", "function": "009d8c60", "what": "8Fh pass-side built by NeighbourPostPassSide"}
+ ],
+ "no_ghidra_function": [
+  {"start": "0076bc40", "end_inclusive": "0076bc63", "evidence": "message 0Bh constructor (vtable 00D0314C): PUSH 0Bh; CALL 0075B430 at 0076BC45; RET 4 at 0076BC61; INT3 before and after; no rel32 or absolute reference"}
+ ],
+ "names_added": {}
+}
