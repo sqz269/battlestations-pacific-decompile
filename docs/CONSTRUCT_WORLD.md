@@ -513,3 +513,26 @@ Passes B to E have no host counterpart at all. What `[vt+A0h]`, `[vt+A4h]`, the 
 4. Pairs: USN04 4700/4500 and E2, where launches and GenerateObject happen. USN02 would stay
    identical. Predict the `thisTable` attach counts unchanged (pass A), and each B to E arm by
    class.
+
+## 14. Part 7 pairs and verdict
+
+One tree, 1d223d54c, with `local\bin\gf_off` against `local\bin\gf_on`. The two builds differ
+only by the switch. Both variables were set. All four logs show the fit line and the final COM
+release.
+
+| row | USN04 OFF | USN04 ON | USN02 OFF | USN02 ON |
+| --- | ---: | ---: | ---: | ---: |
+| native table rows | 1,536 | 1,538 (+2, the named records) | 1,438 | 1,440 |
+| the four bound rows | UNIMPLEMENTED 4,500 each | concrete 4,500 each | UNIMPLEMENTED 9,000 | concrete 9,000 |
+| `Session::global_object_step_00f8a2fc`, `Session::drain_loopback_queue_0076c600` | absent | 4,500 each | absent | 9,000 each |
+| `summary fixed step body` concrete / records | 40,500 / 27,000 | 58,500 / 9,000 | 81,000 / 54,000 | 117,000 / 18,000 |
+| death rows, gunnery | 41, 727 hits | identical | 22, 440 hits | identical |
+
+**Every prediction held.** A masked whole-log diff leaves only these lines:
+- the bound rows and their summary;
+- the ignored counters;
+- the pre-mission blink alpha;
+- in USN02, the harness's launcher slot and affinity lines (the two runs took different slots).
+
+**Verdict: ON.** Rows 9, 10, 11 and 13 run their single-player arms. Row 12, 00925F20, stays
+the record for the successor packet planned in section 13.

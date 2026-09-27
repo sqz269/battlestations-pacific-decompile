@@ -1,0 +1,100 @@
+{
+  "packet": "cc9_construct_world_p7",
+  "doc": "docs/CONSTRUCT_WORLD.md section 13",
+  "switch": "kGatedFanoutBodiesBound (src/game_hosts_fixed_step.cpp): committed OFF in 1d223d54c, set ON by the verdict",
+  "calls": [
+    {
+      "address": "00875E91",
+      "native": "00778450",
+      "function": "00875BB0",
+      "kind": "call",
+      "host": "GameFixedStepHost::pump_session_00778450"
+    },
+    {
+      "address": "00875E96",
+      "native": "0077EC20",
+      "function": "00875BB0",
+      "kind": "call",
+      "host": "GameFixedStepHost::apply_pending_entity_creates_0077ec20"
+    },
+    {
+      "address": "00875E9B",
+      "native": "00874C90",
+      "function": "00875BB0",
+      "kind": "call",
+      "host": "GameFixedStepHost::flush_pending_tick_registrations_00874c90"
+    },
+    {
+      "address": "00875EBF",
+      "native": "0076FFC0",
+      "function": "00875BB0",
+      "kind": "call",
+      "host": "GameFixedStepHost::flush_outbound_session_0076ffc0"
+    },
+    {
+      "address": "00778542",
+      "native": "0076C600",
+      "function": "00778450",
+      "kind": "call",
+      "host": "Session::drain_loopback_queue_0076c600 (record; the ship AI delivers the host's one kind)"
+    },
+    {
+      "address": "00875EA2",
+      "native": "00925F20",
+      "function": "00875BB0",
+      "kind": "call",
+      "host": "FixedStepFanout::init_pending_entities (record; plan only)"
+    }
+  ],
+  "routines": [
+    {
+      "address": "00778450",
+      "coverage": "partial: the +F4h == 0 arm (00778450..007784F8, 00778542..00778552); the networked arm 00778501..0077853D is not bound"
+    },
+    {
+      "address": "0077EC20",
+      "coverage": "partial: the empty-count arm 0077EC23..0077EC2A; the list walk 0077EC30..0077EDE4 is not bound"
+    },
+    {
+      "address": "00874C90",
+      "coverage": "partial: the empty-list arm 00874C95..00874CFE; the splice loop 00874C9C..00874CDD is not bound"
+    },
+    {
+      "address": "0076FFC0",
+      "coverage": "partial: the +F4h == 0 arm 0076FFC3..0076FFCA, 007700DB; the networked body is not bound"
+    },
+    {
+      "address": "00925F20",
+      "coverage": "read: passes A-E and the 15 call sites; not bound"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "docs/FIXED_STEP_FANOUT.md row 9: 00778450 runs its session calls only with +F4h set",
+      "is": "with +F4h clear it calls 0076C600, the loopback drain, at 00778542",
+      "evidence": "007784F8 CMP [ESI+F4h],0; 00778542 CALL 0076C600; 00778550 RET 4"
+    }
+  ],
+  "no_ghidra_function": [],
+  "names": [],
+  "verdict": "ON",
+  "pairs": {
+    "usn04": {
+      "rows": "1536 -> 1538, the two named records",
+      "bound_rows": "UNIMPLEMENTED 4500 -> concrete 4500 each",
+      "concrete_records": "40500/27000 -> 58500/9000",
+      "deaths": 41,
+      "hit_records": 727,
+      "gameplay": "identical"
+    },
+    "usn02": {
+      "rows": "1438 -> 1440",
+      "bound_rows": "UNIMPLEMENTED 9000 -> concrete 9000 each",
+      "concrete_records": "81000/54000 -> 117000/18000",
+      "deaths": 22,
+      "hit_records": 440,
+      "gameplay": "identical"
+    },
+    "unpredicted": "none; USN02 harness slot and affinity lines differ because the runs took different launcher slots"
+  }
+}
