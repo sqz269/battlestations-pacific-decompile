@@ -1,0 +1,19 @@
+{
+  "packet": "cc9_navigator_force_torpedo",
+  "doc": "docs/UNIT_WEAPON_DEVICES.md, NavigatorForceTorpedo",
+  "calls": [],
+  "switches": [
+    {
+      "name": "kNavigatorForceTorpedoBound",
+      "state": "OFF",
+      "pair": "pending"
+    }
+  ],
+  "no_ghidra_function": [],
+  "names_added": [],
+  "substitutions": [
+    "gun rows in build order stand for the unit+48h child list",
+    "the forced shot is queued to the unit's next aim-and-fire pass"
+  ],
+  "failed_predictions": []
+}

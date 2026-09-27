@@ -167,6 +167,13 @@ inline constexpr bool kPutToBound = true;
 // every unit reads 0% to the scripts.
 inline constexpr bool kUnitHealthFractionBound = true;
 
+// Packet cc9_navigator_force_torpedo (docs/UNIT_WEAPON_DEVICES.md,
+// "NavigatorForceTorpedo"). True: the Lua native NavigatorForceTorpedo
+// (008A7200) fires the unit's torpedo guns through 00730160, all of them or
+// only the first when argument 1 is true (GameGunneryHost::
+// force_torpedo_fire_008a7200). False: the native stays an unimplemented record.
+inline constexpr bool kNavigatorForceTorpedoBound = false;
+
 // Packet cc9_frame_delta_jitter, docs/GAME_EXECUTABLE.md. True: the script think
 // walk 00929460 runs once per 0.05f fixed step, as the image's fan-out row 8 does
 // (00875E64 inside 00875BB0), while the Blackout fade still steps once per frame

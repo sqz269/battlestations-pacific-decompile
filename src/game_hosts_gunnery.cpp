@@ -1749,6 +1749,9 @@ struct GameGunneryHost::Impl {
     unsigned long long torpedo_barrels_unloaded{0};
     // Packet cc9_ship_set_torpedo_stock.
     unsigned long long torpedo_stock_lua_sets{0};
+    // Packet cc9_navigator_force_torpedo.
+    unsigned long long forced_torpedo_marks{0};
+    unsigned long long forced_torpedo_fires{0};
     unsigned long long torpedo_supply_ticks{0};
     unsigned long long torpedo_supply_in_area{0};
     unsigned long long torpedo_supply_calls{0};
@@ -5081,7 +5084,14 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         const bool sent = bsp::gun_fixed_step_tick_0072d130(gun.fire, fire_host, dt);
         done("Gun::fixed_step_tick_0072d130", 0x0072d130u);
         if (torpedo_gun && sent) ++summary.torpedo_gun_sent;
-        if (!sent) continue;
+        // Packet cc9_navigator_force_torpedo: 008A7200's direct 00730160.
+        const bool forced = gun.force_fire_008a7200;
+        if (forced) {
+            gun.force_fire_008a7200 = false;
+            ++forced_torpedo_fires;
+            done("NavigatorForceTorpedo::fire_00730160", 0x008a7200u);
+        }
+        if (!sent && !forced) continue;
 
         // 0072D860, the 0ADh arm: gun->vtable[1DCh] FireIfReady 00727E30, which
         // asks CanFire and fires on a yes.
@@ -5102,7 +5112,7 @@ void GameGunneryHost::Impl::run_gun_aim_and_fire(float dt) {
         const bool can_fire = bsp::gun_can_fire_turning_0085a830(inhibited, arcs,
             gun.angles, gate, true);
         done("Gun::can_fire_0085a830", 0x0085a830u);
-        if (!can_fire) {
+        if (!can_fire && !forced) {
             ++gun.can_fire_refusals;
             ++summary.can_fire_refusals;
             continue;
@@ -8222,6 +8232,9 @@ void GameGunneryHost::report() {
                 "cc9_torpedo_supply_tick)", kTorpedoSupplyTickBound ? 1 : 0,
                 host.torpedo_supply_ticks, host.torpedo_supply_in_area,
                 host.torpedo_supply_calls, host.torpedo_barrels_unloaded);
+            host.log.notef("summary mission gunnery forced torpedo marks=%llu fires=%llu "
+                "(008A7200 -> 00730160, packet cc9_navigator_force_torpedo)",
+                host.forced_torpedo_marks, host.forced_torpedo_fires);
             host.log.notef("summary mission gunnery ship set torpedo stock bound=%d calls=%llu "
                 "(0089EEE0 -> 0081F8B0, packet cc9_ship_set_torpedo_stock)",
                 kShipSetTorpedoStockBound ? 1 : 0, host.torpedo_stock_lua_sets);
@@ -8719,6 +8732,23 @@ bool GameGunneryHost::group_accepts_target_008637d0(std::size_t unit_index,
         return true;                                              // 00863834
     }
     return false;
+}
+
+int GameGunneryHost::force_torpedo_fire_008a7200(std::size_t unit_index, bool first_only) {
+    Impl& d = *impl_;
+    int marked = 0;
+    for (GameGunRow& gun : d.guns) {
+        if (gun.unit_index != unit_index || gun.category != bsp::kUnitGunneryTorpedoCategory) {
+            continue;
+        }
+        gun.force_fire_008a7200 = true;
+        ++marked;
+        ++d.forced_torpedo_marks;
+        if (first_only) break;   // the loop's `local_519 == 0` test
+    }
+    d.log.notef("  NavigatorForceTorpedo: unit=%zu first_only=%d marked=%d (008A7200 -> "
+        "vtable[1D8h] 00730160)", unit_index, first_only ? 1 : 0, marked);
+    return marked;
 }
 
 std::vector<GameGunneryHost::LiveTorpedo> GameGunneryHost::live_torpedoes() const {
