@@ -268,10 +268,15 @@ inline constexpr bool kDeathRouteDestroyBound = true;
 // 007219C0 at +220h..+223h), so the stance 008624C0 pushes masks off every
 // category the ship's bag disables; this installation's ship.props defaults
 // TorpedoDirector to false. SUBSTITUTION: read at the stance push from the
-// scene host's per-name table rather than stored on the controller at creation
-// (the values never change after pass B in these missions: no script calls a
-// director setter). False: all four stay the constructor's 1 (007202FD).
-inline constexpr bool kShipDirectorEnablesBound = false;
+// scene host's per-name table rather than stored on the controller at creation.
+// Packet cc9_ship_torpedo_mask_read (section 8): the torpedo byte has two
+// runtime writers on these missions, both session message 5Ah sub-kind 5
+// (0071E0D0 -> 0071C25B), bound with this switch: the Lua native TorpedoEnable
+// 0089C8F0 (usn_2_java.lua 354 and 706 at difficulty 1) and CLOSEATTACK's tail
+// 00A11AF0 (every ship of the own group, every tick). SUBSTITUTION: both store
+// at the send instead of through the session. False: all four stay the
+// constructor's 1 (007202FD) and TorpedoEnable stays unimplemented.
+inline constexpr bool kShipDirectorEnablesBound = true;
 
 // Session message 79h as 00954A10 builds it in 005484F0 (section 32 of
 // docs/SHIP_SCREEN_UPDATE.md): +1Ch group, +20h..+28h the camera mover's

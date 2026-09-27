@@ -401,3 +401,188 @@ separate shots in the shot counter.
   (00861D70's mask word, its readers, and the command step's torpedo arm). Flip only if no path
   bypasses the mask.
 
+
+## 8. Does anything launch a ship's torpedoes past the category-7 mask? (packet `cc9_ship_torpedo_mask_read`)
+
+Worker cc9-ships, on main `fe43c66cd`. Ghidra was read-only. Every census below is a rel32 or
+absolute-dword scan of the image on disk (`tools/callsite_census.py`, and a displacement scan of
+`.text` for `+39Ch`, `+222h`, `+12B4h` and `+12BAh`), not `ghidra callers`.
+
+**Answer: no launch path reads past the mask on the two reference missions, but the mask does not
+stay where pass B leaves it.** Two runtime writers put `+222h` back to 1, and both are reached on
+USN02. Section 7's premise, "no script calls a director setter", was wrong: it searched for
+`SetWeaponDirector*`, and the setter the scripts call is `TorpedoEnable`.
+
+### The launch paths
+
+| path | where | reads `+222h` or the mask before launching? | reached on USN02 / USN04? |
+| --- | --- | --- | --- |
+| the gunnery pass | 00864FE0 -> 00727F10 at 00865833 -> torpedo bot `vtable[38h]` 009035A0 -> 006DF170 (stores `bot+38h`) -> tick 008FFF20 -> launch 0072C970 at 00900912 | **yes.** Step 8.2's `enabled` (00865191..008651A6, `BL`) gates only the recon sweep; `EBX` is reloaded with `this` at 008651DD. The director-target arm (8.7) goes through 00863990, whose first call is the mask test 008633D0 at 008639A2. `mask[7]` is 3 or 0 (00861D70), so 0 refuses every target | yes, the only automatic route |
+| the player's torpedo seat | message 79h group 4, 00959C20's arm 0095A1CC..0095A426 (jump table 0095A5C0, entry 4) -> 0072C970 at 0095A326 (surface ship: `+34h` held, within `00CEDF5C` of the pair) and 0095A3DD (`IsKindOf(8)` or `0Eh`: `+35h` pressed and `vtable[1D0h](1)`) | **no**, and it needs none: it fires on the player's input. 79h has one builder, 005484F0 at 005489DA (00954A10 census: 1) | only with a player at the seat; the harness player is idle |
+| `NavigatorForceTorpedo` 008A7200 | walks `unit+48h`; every kind-20h device whose `[[dev+3F4h]+80h]` is 7 gets `vtable[1D8h](0,0,0)` (contract unread); a true second argument stops after the first | **no, a real bypass** | no. Five files use it: `jm05`/`jm06` (IJN, three copies each counted once) and `competitive12`/`14`; not usn_2_java.lua, usn_19_coralus.lua or commandhelpers.lua |
+| `SubmarineAttack` 00894440 | not read | - | no; only `jm05` uses it |
+| the command step 00836920 | body 00836920..00836EA7, 409 instructions | it has **no torpedo arm**: no read of `+222h`, `+240h` or the `torpedo` class 00E08F18, and no call into a gun. 005457C0 at 00836BD5 is a hostile-party test (`[ecx+54h] != arg && arg != 2`) | - |
+| the `torpedo` command class 00E08F18 | 18 references: the HUD (00534870, 00648C20), the plane attack-command choice (007EE8F0, 007EEC50, 0099A170, 009F6D80, 009F8160, 009F9770, 00A08460), `PilotTorpedo` 008A5310, and 0071D6D0 | these are the squadron's torpedo run, not a ship launch | - |
+| the ship AI, 009F1BC0 | caches `+222h` into `nested+12BAh` (009F2BAD..009F2BC2, 009F2E54..009F2E5C) and stores into `+12B4h` at 009F2D8C a value built from 00729F40(7) at 009F2D46 and `unit+44Ch` (the arithmetic between is not read). 00729F40 answers the torpedo bot's slot `20h`, 008FB530, which returns the skill row's `+14h` (FireTargetAccuracy in docs/TORPEDO_LAUNCH_GATE.md's layout), or 1.0 for another kind | it launches nothing. 009E6E80 reads the pair at 009E72F3..009E7338: with `+12BAh` set and `+12B4h` above the floor it caps the standoff at `+12B4h` minus the turn radius | the host does not model it: see "Open" |
+
+### The two writers that re-open the mask
+
+`+222h` has five writers in `.text`: the constructor 0072030B (1), pass B's 007219E7, 007219A7
+(00721980, referenced only from the message vtables 00CFDBA0/00CFDBAC), 00720DFC (00720DE0, no
+reference), and **0071C25B**, the sub-kind 5 arm of 0071C1E0. Sub-kind 5 is sent only by 0071E0D0,
+which has two callers:
+
+1. **`TorpedoEnable` 0089C8F0**, the Lua native (0089CA52).
+   - usn_2_java.lua (2024-07-13) calls it for the eight `EnemyDestroya` (lines 333..340; 349
+     `false` at difficulty 0, 354 `true` at 1 or 2) and the four `FinalShips` (lines 689..692; 701
+     and 706).
+   - The harness runs difficulty 1 (`game+6ACh=1`; `GetDifficulty` 008AE030 pushes it, or 2 when
+     `[00E188A8]+1FE4h` is set). So in the image the twelve ships get `+222h = 1` after pass B:
+     Yamakaze, Minegumo, Asagumo, Yukikaze, Kawakaze, Tokitsukaze, Amatsukaze, Hatsukaze, Nachi,
+     Sazanami, Naka and Ushio.
+   - The native is UNIMPLEMENTED in the host today (`calls=12` on USN02, 0 on E2).
+   - usn_19_coralus.lua calls it at 1765..1911, in arms the E2 run does not reach.
+2. **CLOSEATTACK's tail 00A11AF0** (00A15490 ends `JMP 00A11AF0` at 00A154F7; census: that is
+   its only reference).
+   - It walks the command's own group (`[cmd+4h]+563Ch`, the list 00A13B60 counts at `+5644h`).
+   - Every member that answers `IsKindOf(6)` gets `director->0071E0D0(1)`, on every tick.
+   - On USN02 the host promotes the Allied group (leader DeRuyter, 14 members) at fixed step 208,
+     about 10.4 s. On E2 it promotes the Lexington group (18 members) four times.
+
+Pass B runs in InitAll at scene load; `luaInit` runs later as a script thread (`luaStageInit`
+calls `CreateScript("luaInit")`). A `GenerateObject` ship runs InitAll inside the call (the GenerateObject/SpawnNew route of docs/CONSTRUCT_WORLD.md),
+before the script line that follows it. So in the image the script's value wins in both cases.
+
+**Not a writer on a fresh mission: pass C's 008367F0.** 0081F980 calls it at 00820046 with a Lua
+reader, and 00836510 hands the reader `&+220h..+223h`. `BSP_LuaReader_ReadField` 00BD6830 has no
+presence test, and 00BD63B0 stores `lua_toboolean`, so a nil would store 0. But the block runs only
+when `[unit+0C0h]` is set and its `+4h` is 3 (0081FA4B..0081FA5D). The table is the savegame's
+(009238A0 builds the `_savedata` / `_entities` reader), and its keys are runtime state
+(`repairTimer`, `helmsmanControl`, `formaciosGenya`, `pathstuff`, `gameUnit`). No `.lua`, `.props`,
+`.scn` or `.txt` file of this installation contains `torpedoEnabled` or `artilleryEnabled`.
+
+### The binding (under `kShipDirectorEnablesBound`)
+
+- `scene_director_enables_set_torpedo` (`src/game_hosts_scene_contents.cpp`) writes the torpedo
+  byte of the per-name table the stance push reads. A name with no entry starts from the
+  constructor's four 1s.
+- `TorpedoEnable` is handled in `src/game_hosts_script_orders.cpp` only when the switch is on. A
+  plane is skipped, since its `vtable[114h]` 0047F180 answers null.
+- CLOSEATTACK's tick in `src/game_hosts_ai.cpp` sends 1 for every ship of the command's own group
+  after 00A13B60. 00A11B80 before it stays unbound.
+- **LABELLED SUBSTITUTION:** both writers store at the send. The image routes message 5Ah through
+  0077C2A0 and the session delivers it to 0071C1E0.
+- **The census:** `summary mission gunnery ship director torpedo writes lua_enable=.. lua_disable=..
+  close_attack_sends=.. changed=.. bound=..`.
+
+### Predictions (written before the pairs; one tree, switch only, streams and the death table on)
+
+**USN02 9200/9000.**
+- **The writers:** `lua_enable=12`, `lua_disable=0`, `close_attack_sends > 0` from about 10.4 s.
+  `changed` is 26: the twelve script ships and the fourteen Allied members, all of which pass B
+  left at 0. The band is 23..26, in case a member has left the group before the first tick.
+- **Who can launch ON:**
+  - the eleven Allied tube ships (Kortenaer, Electra, Alden, John1..3, Exeter, Perth, Encounter,
+    Jupiter, Witte), from about 10.4 s;
+  - the twelve script ships;
+  - **not** Haguro, Jintsu, Yudachi, Samidare, Murasame or Harusame. No death row names one of
+    these six with `killer_cat=7`.
+- **DeRuyter's 30.25 s death** (`killer=Jintsu killer_cat=7` on section 7's OFF) does not happen
+  from Jintsu.
+- **Gyro launches ON:** between 40% and 95% of OFF. The six masked Japanese ships and the Allied
+  launches before 10.4 s are removed.
+- **Outcome:** pair_diff exit 3. The deaths, the first hit and the mission end all move. Whether
+  the mission still ends in `Game Over` is not predicted: the script ships' torpedoes can still
+  reach DeRuyter.
+
+**E2 = USN04 9200/9000.**
+- `lua_enable=0` and `close_attack_sends > 0`.
+- No ship launched a torpedo with every enable at 1, so nothing can launch more.
+- Gameplay identical: pair_diff exit 1, and the death, plane and unit tables identical.
+
+### The pairs, measured
+
+- **Builds.** `tools/pair_export.py` from commit `4cd2ce621` (main `fe43c66cd` plus this packet,
+  the switch OFF):
+  - `local\tm_off`, no flip, SHA-256 prefix `D63EBC8453A8`;
+  - `local\tm_on`, `--flip kShipDirectorEnablesBound=true`, SHA-256 prefix `B791ED12EAB6`.
+- **Logs.** `local\tm_{off,on}_{usn02,e2}.log` in worktree cc9-ships. Each has the 1600x900
+  override, the immediate present interval, its own module directory and the final COM release.
+
+**`tools/pair_diff.py`, USN02 9200/9000: exit 3, gameplay moved.**
+
+```
+GAMEPLAY: MOVED
+* deaths                                 20                                       22
+* hit records                            329                                      597
+* hull hits                              167                                      302
+* damage                                 59663.8                                  57705.4
+* shots                                  807                                      1063
+* first hit                              30.25 s                                  35.80 s
+  torpedo-task releases                                                           
+  dive-bomb-task releases                                                         
+  torpedo drops                          0                                        0
+  plane water contacts                                                            
+* controlled moved                       DeRuyter 316.14                          DeRuyter 1941.74
+  units                                  32                                       32
+  mission end                            failed at 39.65 s (Mission.EndMission) text="Game Over" e... failed at 39.65 s (Mission.EndMission) text="Game Over" e...
+* host methods concrete/unimplemented    981 / 518                                984 / 516
+DEATH ROWS: 20 -> 22 rows, 5 only ON, 3 only OFF, 15 changed
+```
+
+- **The writers.** `lua_enable=12 lua_disable=0 close_attack_sends=1090 changed=26`. The first
+  `close attack torpedo enable` line follows fixed step 208.
+- **Launches.** Gyro launches went from 314 to 212. `torpedo_disabled_pushes` is 1123.
+- **Who killed with torpedoes ON.** The eight category-7 deaths are Exeter (Tokitsukaze, 35.95 s),
+  Houston (Nachi), Perth, Jupiter and Witte (Amatsukaze), John1 (Minegumo), Asagumo (Yukikaze)
+  and Alden (John3, 380.28 s). Every killer is a script-enabled ship or an Allied ship after the
+  CLOSEATTACK enable. None of Haguro, Jintsu, Yudachi, Samidare, Murasame and Harusame fires one.
+- **DeRuyter** now dies at 179.06 s to Murasame's category 6. Java dies at 187.21 s to Jintsu's
+  category 2.
+
+**`tools/pair_diff.py`, E2 = USN04 9200/9000: exit 1, gameplay identical.** The death, plane and
+unit tables are identical (52, 52 and 81 rows). The writers read `lua_enable=0
+close_attack_sends=522 changed=18`, and there are 0 gyro launches on both sides.
+
+**Predictions against the measurement:**
+
+| row | predicted | measured | held |
+| --- | --- | --- | --- |
+| lua_enable / lua_disable | 12 / 0 | 12 / 0 | yes |
+| close_attack_sends | > 0 from about 10.4 s | 1090, first after fixed step 208 | yes |
+| changed | 26 (band 23..26) | 26 | yes |
+| category-7 kills by the six masked ships | none | none | yes |
+| DeRuyter's 30.25 s death by Jintsu | does not happen | dies at 179.06 s, Murasame, category 6 | yes |
+| gyro launches | 40%..95% of OFF | 212 of 314, 68% | yes |
+| USN02 pair_diff | exit 3 | exit 3 | yes |
+| USN02 mission end | not predicted | failed at 39.65 s on both sides | - |
+| E2 | exit 1, tables identical, lua 0, sends > 0 | exit 1, identical, lua 0, sends 522 | yes |
+
+### Verdict: `kShipDirectorEnablesBound` ON
+
+- No launch path the reference missions reach reads past the mask, and both writers that re-open
+  it are bound. So the switch now gives each ship the image's enables.
+- **The Java Sea reference row keeps its meaning.** The 39.65 s `Game Over` is not a host
+  artefact. usn_2_java.lua line 521 fails the mission when Houston or Exeter is dead. In the image
+  Exeter is sunk at 35.95 s by Tokitsukaze, a destroyer the script's `TorpedoEnable` re-armed, as
+  on OFF.
+- **What changes is how the Java Sea opens.**
+  - DeRuyter and Java are no longer torpedoed at 30.25 s and 32.40 s by Jintsu and Haguro: those
+    two cruisers stay masked unless a Japanese group reaches CLOSEATTACK, and the host promotes
+    none on USN02 (its one promotion is the Allied group).
+  - The torpedo attack comes from the eight script destroyers and the four `FinalShips`, as the
+    mission authors wrote it.
+  - The Allied tube ships join from about 10.4 s, when their group enters CLOSEATTACK.
+- **Section 7's ON measurement is superseded.** It showed no failure and 0 launches because
+  neither writer was bound. It was not a picture of the image.
+
+### Open
+
+- **The ship AI's torpedo standoff.** 009E6E80 caps the standoff at `+12B4h` minus the turn
+  radius when `+12BAh`, the cached torpedo enable, is set. The host never writes `clearance_12b4`,
+  and it calls `+12BAh` `clearance_valid_12ba`: src/ship_ai_approach_update.cpp:465 sets it with
+  no image store behind it. Reading 009F1BC0's `+12B4h` arithmetic (009F2D46..009F2D8C) and
+  binding the pair would let torpedo-enabled ships close in the way the image's do.
+- **NavigatorForceTorpedo 008A7200** and **SubmarineAttack 00894440** bypass the mask. Neither is
+  used by the reference missions; `vtable[1D8h]` and 00894440 are unread.
+- **00A11B80,** CLOSEATTACK's and DEFENDPOSITION's middle call, is unread and unbound.

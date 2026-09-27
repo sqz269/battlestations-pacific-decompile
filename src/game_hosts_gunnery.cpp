@@ -7903,6 +7903,14 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery ship director enables torpedo_disabled_pushes=%llu "
             "bound=%d (007214C0 / 007219C0, packet cc9_ship_weapon_director_enable)",
             host.director_torpedo_disabled_pushes, kShipDirectorEnablesBound ? 1 : 0);
+        {
+            const SceneDirectorTorpedoWrites& w = scene_director_torpedo_writes();
+            host.log.notef("summary mission gunnery ship director torpedo writes lua_enable=%llu "
+                "lua_disable=%llu close_attack_sends=%llu changed=%llu bound=%d (0071E0D0 from "
+                "0089C8F0 and 00A11AF0, packet cc9_ship_torpedo_mask_read)",
+                w.lua_enables, w.lua_disables, w.close_attack_sends, w.changed,
+                kShipDirectorEnablesBound ? 1 : 0);
+        }
         host.log.notef("summary mission gunnery player seat segment casts=%llu hits=%llu "
             "aims=%llu bound=%d (00957DA0, packet cc9_player_gun_seat_segment_query)",
             host.seat_segment_casts, host.seat_segment_hits, host.seat_segment_aims,

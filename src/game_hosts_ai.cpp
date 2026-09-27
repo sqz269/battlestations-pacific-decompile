@@ -25,6 +25,8 @@
 #include "bsp/ai_tuning_globals.hpp"
 #include "bsp/ai_target_weights.hpp"
 #include "bsp/game_hosts.hpp"
+#include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/plane_squadron_entity.hpp"
 #include "bsp/plane_squadron_host.hpp"
@@ -1063,6 +1065,27 @@ struct GameAiCoordinatorHost::Impl : public bsp::AiGroupThinkHost,
             summary.close_fallback_movetos += close_tick.fallback_movetos;
             summary.close_candidates_scored += close_tick.candidates_scored;
             done("AiCommand::close_attack_tick", 0x00a13b60u);
+            if constexpr (kShipDirectorEnablesBound) {
+                if (close) {
+                    // 00A154F7 JMP 00A11AF0 (packet cc9_ship_torpedo_mask_read):
+                    // every node of the OWN group's +563Ch list whose entity
+                    // answers IsKindOf(6) gets director->0071E0D0(1), every
+                    // tick; 00A11B80 before it is not bound.
+                    if (Group* own = group_at(cmd->owner_group)) {
+                        for (const std::size_t m : own->members) {
+                            if (m >= units.count() || !units.unit_is_kind_of(m, 0x06)) continue;
+                            const GameUnitRow* row = units.unit_row(m);
+                            if (row == nullptr) continue;
+                            ++scene_director_torpedo_writes().close_attack_sends;
+                            if (scene_director_enables_set_torpedo(row->name, true)) {
+                                log.notef("  close attack torpedo enable: %s director+222h=1 "
+                                    "(00A11AF0 -> 0071E0D0)", row->name.c_str());
+                            }
+                        }
+                    }
+                    done("AiCommand::close_attack_torpedo_enable", 0x00a11af0u);
+                }
+            }
         }
         summary.tick_orders += tick.orders_issued;
         summary.tick_formation_requests += tick.formation_requests;

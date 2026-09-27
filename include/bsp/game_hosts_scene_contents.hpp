@@ -523,5 +523,22 @@ struct SceneDirectorEnables {
 void scene_director_enables_clear() noexcept;
 void scene_director_enables_set(const std::string& name, const SceneDirectorEnables& enables);
 const SceneDirectorEnables* scene_director_enables_find(const std::string& name) noexcept;
+// Packet cc9_ship_torpedo_mask_read (docs/SENTITY_INIT_PASSES.md section 8). The
+// two runtime writers of director+222h the reference missions reach, both
+// through session message 5Ah sub-kind 5 (0071E0D0) that 0071C1E0 stores at
+// 0071C25B: the Lua native TorpedoEnable 0089C8F0, and CLOSEATTACK's tail
+// 00A11AF0 (JMP at 00A154F7), which sends 1 for every ship of its own group
+// on every tick. A name with no entry takes the constructor's four 1s
+// (007202FD) before the torpedo byte is written. SUBSTITUTION: the message is
+// applied at the send, not routed through 0077C2A0 and delivered by the
+// session.
+struct SceneDirectorTorpedoWrites {
+    unsigned long long lua_enables{0};
+    unsigned long long lua_disables{0};
+    unsigned long long close_attack_sends{0};
+    unsigned long long changed{0};
+};
+bool scene_director_enables_set_torpedo(const std::string& name, bool enabled);
+SceneDirectorTorpedoWrites& scene_director_torpedo_writes() noexcept;
 
 }  // namespace bsp::game

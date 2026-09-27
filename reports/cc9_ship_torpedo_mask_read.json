@@ -1,0 +1,233 @@
+{
+  "packet": "cc9_ship_torpedo_mask_read",
+  "doc": "docs/SENTITY_INIT_PASSES.md",
+  "calls": [
+    {
+      "address": "00865833",
+      "native": "00727F10",
+      "function": "00864FE0",
+      "note": "the only assignment of a gun's bot target (rel32 census: 1)"
+    },
+    {
+      "address": "008639A2",
+      "native": "008633D0",
+      "function": "00863990",
+      "note": "the director-target arm's first test is the category mask"
+    },
+    {
+      "address": "00900912",
+      "native": "0072C970",
+      "function": "008FFF20",
+      "note": "the torpedo bot tick's launch"
+    },
+    {
+      "address": "0095A326",
+      "native": "0072C970",
+      "function": "00959C20",
+      "note": "message 79h group 4, surface ship, +34h held"
+    },
+    {
+      "address": "0095A3DD",
+      "native": "0072C970",
+      "function": "00959C20",
+      "note": "message 79h group 4, IsKindOf(8) or 0Eh, +35h pressed"
+    },
+    {
+      "address": "005489DA",
+      "native": "00954A10",
+      "function": "005484F0",
+      "note": "79h's only builder"
+    },
+    {
+      "address": "009035B8",
+      "native": "006DF170",
+      "function": "009035A0",
+      "note": "the torpedo bot's slot 38h stores bot+38h through the base setter"
+    },
+    {
+      "address": "0089CA52",
+      "native": "0071E0D0",
+      "function": "0089C8F0",
+      "note": "TorpedoEnable sends sub-kind 5"
+    },
+    {
+      "address": "00A11B5C",
+      "native": "0071E0D0",
+      "function": "00A11AF0",
+      "note": "CLOSEATTACK sends 1 for each ship of its own group"
+    },
+    {
+      "address": "00820046",
+      "native": "008367F0",
+      "function": "0081F980",
+      "note": "pass C's savegame arm, guarded at 0081FA4B..0081FA5D"
+    },
+    {
+      "address": "008367F9",
+      "native": "00836510",
+      "function": "008367F0",
+      "note": "the enables visitor"
+    },
+    {
+      "address": "009F2D46",
+      "native": "00729F40",
+      "function": "009F1BC0",
+      "note": "the ship AI's kind-7 query"
+    }
+  ],
+  "tail_jumps": [
+    {
+      "site": "00A154F7",
+      "target": "00A11AF0",
+      "function": "00A15490",
+      "note": "JMP, not CALL: CLOSEATTACK's tail JMP, 00A11AF0's only reference"
+    }
+  ],
+  "coverage": [
+    {
+      "routine": "00A11AF0",
+      "coverage": "complete"
+    },
+    {
+      "routine": "00A15490",
+      "coverage": "complete"
+    },
+    {
+      "routine": "009035A0",
+      "coverage": "complete"
+    },
+    {
+      "routine": "008FC010",
+      "coverage": "complete"
+    },
+    {
+      "routine": "00729F40",
+      "coverage": "complete"
+    },
+    {
+      "routine": "00863990",
+      "coverage": "partial: 00863990..008639B3, the mask test and its refusal"
+    },
+    {
+      "routine": "00864FE0",
+      "coverage": "partial: 00865160..00865237, the enabled flag and where it is dropped"
+    },
+    {
+      "routine": "00959C20 group 4 arm",
+      "coverage": "complete: 0095A1CC..0095A426"
+    },
+    {
+      "routine": "008A7200",
+      "coverage": "partial: the device walk; vtable[1D8h] unread"
+    },
+    {
+      "routine": "00836920",
+      "coverage": "census: every CALL and every +222h/+240h/00E08F18 operand of 00836920..00836EA7"
+    },
+    {
+      "routine": "0081F980",
+      "coverage": "partial: the guard 0081FA4B..0081FA5D and 0081FE38..0082004B"
+    },
+    {
+      "routine": "00894440",
+      "coverage": "not read (used only by jm05)"
+    }
+  ],
+  "substitutions": [
+    {
+      "what": "TorpedoEnable and CLOSEATTACK's 0071E0D0 sends",
+      "is": "stored in the scene host's per-name table at the send",
+      "evidence": "the image routes message 5Ah through 0077C2A0 and 0071C1E0 stores it at 0071C25B"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "no script calls a director setter, so the enables never change after pass B (section 7)",
+      "is": "usn_2_java.lua calls TorpedoEnable for twelve Japanese ships (354, 706 at difficulty 1), and CLOSEATTACK's tail 00A11AF0 enables every ship of its own group",
+      "evidence": "0089C8F0 and 00A11AF0 are 0071E0D0's two callers (rel32 census); usn_2_java.lua 333..354 and 689..706"
+    },
+    {
+      "was": "the command step 00836920 has a torpedo arm (section 9 handoff)",
+      "is": "00836920..00836EA7 reads no enable, names no torpedo class and calls no gun",
+      "evidence": "the call and operand census of its listing"
+    },
+    {
+      "was": "host nested+12BAh is clearance_valid, set at 009E8171 (src/ship_ai_approach_update.cpp:465)",
+      "is": "009F1BC0 stores director+222h there (009F2BC2, 009F2E5C); 009E7FC0 only clears it (009E8019)",
+      "evidence": "displacement scan of .text for +12BAh"
+    }
+  ],
+  "switches": [
+    {
+      "name": "kShipDirectorEnablesBound",
+      "state": "ON",
+      "pair": "local/tm_off_usn02.log vs local/tm_on_usn02.log (exit 3, gameplay moved), local/tm_off_e2.log vs local/tm_on_e2.log (exit 1) (pair_export of 4cd2ce621: local/tm_off D63EBC8453A8, local/tm_on B791ED12EAB6)"
+    }
+  ],
+  "pair_diff": {
+    "usn02": [
+      "GAMEPLAY: MOVED",
+      "* deaths                                 20                                       22",
+      "* hit records                            329                                      597",
+      "* hull hits                              167                                      302",
+      "* damage                                 59663.8                                  57705.4",
+      "* shots                                  807                                      1063",
+      "* first hit                              30.25 s                                  35.80 s",
+      "  torpedo-task releases",
+      "  dive-bomb-task releases",
+      "  torpedo drops                          0                                        0",
+      "  plane water contacts",
+      "* controlled moved                       DeRuyter 316.14                          DeRuyter 1941.74",
+      "  units                                  32                                       32",
+      "  mission end                            failed at 39.65 s (Mission.EndMission) text=\"Game Over\" e... failed at 39.65 s (Mission.EndMission) text=\"Game Over\" e...",
+      "* host methods concrete/unimplemented    981 / 518                                984 / 516",
+      "DEATH ROWS: 20 -> 22 rows, 5 only ON, 3 only OFF, 15 changed",
+      "  - only OFF: John2"
+    ],
+    "e2": [
+      "GAMEPLAY: identical",
+      "  deaths                                 52                                       52",
+      "  hit records                            875                                      875",
+      "  hull hits                              345                                      345",
+      "  damage                                 13618.3                                  13618.3",
+      "  shots                                  6092                                     6092",
+      "  first hit                              93.00 s                                  93.00 s",
+      "  torpedo-task releases                  4 of 16                                  4 of 16",
+      "  dive-bomb-task releases                1 of 19                                  1 of 19",
+      "  torpedo drops                          1                                        1",
+      "  plane water contacts                   19                                       19",
+      "  controlled moved                       Lexington-class01 6017.22                Lexington-class01 6017.22",
+      "  units                                  81                                       81",
+      "  mission end                            none (Mission.EndMission never true)     none (Mission.EndMission never true)",
+      "* host methods concrete/unimplemented    1046 / 546                               1048 / 546",
+      "DEATH ROWS: identical (52 rows)",
+      "PLANE DEATH MODES: identical (52 rows)"
+    ]
+  },
+  "failed_predictions": [],
+  "no_ghidra_function": [
+    {
+      "start": "008FB530",
+      "end": "008FB542",
+      "note": "TorpedoBot vtable 00D182B0 slot +20h: FLD the skill row's +14h"
+    },
+    {
+      "start": "00903580",
+      "end": "00903597",
+      "note": "TorpedoBot vtable 00D182B0 slot +3Ch: store bot+6Ch, running 00903420 on a change"
+    }
+  ],
+  "ledger_names_added": [
+    "00A11AF0 BSP_AiCommand_CloseAttackEnableShipTorpedoes",
+    "008A7200 BSP_LuaBinding_NavigatorForceTorpedo",
+    "009035A0 BSP_TorpedoBot_SetFireTarget",
+    "008FC010 BSP_TorpedoBot_AcceptsTarget",
+    "00836510 BSP_WeaponDirector_VisitEnables",
+    "008367F0 BSP_WeaponDirector_VisitState",
+    "00729F40 BSP_Gun_TorpedoBotAccuracyOrOne"
+  ],
+  "writers_measured": {
+    "usn02": "lua_enable=12 lua_disable=0 close_attack_sends=1090 changed=26; gyro launches 314 -> 212",
+    "e2": "lua_enable=0 close_attack_sends=522 changed=18; gyro launches 0 -> 0"
+  }
+}

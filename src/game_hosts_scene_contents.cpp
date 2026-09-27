@@ -2398,7 +2398,10 @@ std::map<std::string, SceneDirectorEnables>& director_enables_table() {
 }
 }  // namespace
 
-void scene_director_enables_clear() noexcept { director_enables_table().clear(); }
+void scene_director_enables_clear() noexcept {
+    director_enables_table().clear();
+    scene_director_torpedo_writes() = SceneDirectorTorpedoWrites{};
+}
 
 void scene_director_enables_set(const std::string& name, const SceneDirectorEnables& enables) {
     director_enables_table()[name] = enables;
@@ -2407,6 +2410,20 @@ void scene_director_enables_set(const std::string& name, const SceneDirectorEnab
 const SceneDirectorEnables* scene_director_enables_find(const std::string& name) noexcept {
     const auto it = director_enables_table().find(name);
     return it == director_enables_table().end() ? nullptr : &it->second;
+}
+
+SceneDirectorTorpedoWrites& scene_director_torpedo_writes() noexcept {
+    static SceneDirectorTorpedoWrites writes;
+    return writes;
+}
+
+// 0071C25B: MOV byte ptr [ECX+222h],DL, the sub-kind 5 arm of 0071C1E0.
+bool scene_director_enables_set_torpedo(const std::string& name, bool enabled) {
+    SceneDirectorEnables& e = director_enables_table()[name];  // 007202FD's 1s when new
+    const bool changed = e.torpedo != enabled;
+    e.torpedo = enabled;
+    if (changed) ++scene_director_torpedo_writes().changed;
+    return changed;
 }
 
 // ---------------------------------------------------------------------------
