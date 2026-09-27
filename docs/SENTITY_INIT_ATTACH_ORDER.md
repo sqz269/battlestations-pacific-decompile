@@ -506,3 +506,38 @@ With the Lua routes as the only pusher, no rule fires.
   - Gameplay identical.
 - **USN02 9200/9000:** the same, with `pushes=4`, `entities=4`, `self_table_entities=34` and
   InitAll 9,008 / 4. Gameplay identical.
+
+### 9.5 Pairs and verdict
+
+- **The runs.** The binaries are `local\bin\dd_off` (the committed OFF, cbaf29bc9) and
+  `local\bin\dd_on` (flipped locally, then reverted). `BSP_GUNNERY_RNG_STREAMS=1` and
+  `BSP_DEATH_TABLE=1` were set. All four logs have the fit line, the immediate present interval
+  and the final COM release, and each module directory is under `local\bin\dd_*` in this tree.
+- **What `tools/pair_diff.py` reports.** It exits 1 on both pairs, and the clock offset is
+  +0.00 s. The native table is identical in both. The only moved line is the dedup summary's
+  `bound 0 -> 1`. The masked multiset of other lines shows 0 lines only OFF and 0 only ON.
+
+| row | USN04 OFF | USN04 ON | USN02 OFF | USN02 ON |
+| --- | ---: | ---: | ---: | ---: |
+| InitAll calls / with work / entities | 4,512 / 12 / 60 | identical | 9,008 / 4 / 4 | identical |
+| pushes / wing appended | 20 / 40 | identical | 4 / 0 | identical |
+| `self_table_entities` | 86 | 86 | 34 | 34 |
+| every dedup counter | 0 | 0 | 0 | 0 |
+| deaths, hit records | 43, 788 | identical | 20, 329 | identical |
+| death rows, plane death modes, unit table | 43, 43, 81 | identical | 20, 0, 32 | identical |
+
+**Every prediction held. Verdict: ON.**
+
+**The rules are not exercised yet:** no counter fired, because the Lua routes are still the only
+pusher. The pair that exercises them is cc9-units2's `create_units` push. With that push in
+place, the counters should read as follows, on the same missions:
+- **USN04:** `create_units` pushes the 20 squadrons' leader units and their 40 wing planes as
+  plain nodes. The routes' 20 squadron pushes then drop the 40 wing nodes (`wing_deferred=40`)
+  and upgrade the 20 leader nodes (`squadron_upgrades=20`). Pass A appends the 40 again
+  (`wing_appended=40`, `wing_append_skipped=0`). So `entities=60` and `self_table_entities=86`
+  are unchanged. The load-time scene units, pushed by `create_units` at load, are dropped by the
+  load attach (`load_dropped` = the scene unit count, 21). Gameplay identical.
+- **USN02:** the 4 GenerateObject ships are pushed by `create_units`, and the route's plain
+  push is skipped (`skipped_pending=4`). `load_dropped=28`, and gameplay identical.
+- **If a count differs,** the push order in `create_units` differs from the one assumed here,
+  which is squadron before its wing, both before the route's push.

@@ -108,8 +108,9 @@ inline constexpr bool kSceneLoadThisTableIdentityBound = true;
 //   - pass A's wing append skips an id already pending;
 //   - the load attach drops pending nodes of the ids it attaches.
 // With the Lua routes the only pusher (today), none of these fires. False: the
-// list takes every push.
-inline constexpr bool kPendingListDedupBound = false;
+// list takes every push. ON by the verdict: identity on USN04 and USN02, no
+// rule fired (section 9.5); the create_units push is what exercises it.
+inline constexpr bool kPendingListDedupBound = true;
 
 // The owner of the pending list and of 00925F20's per-entity work. The Lua host
 // is the one, because pass A is its `thisTable` attach.
