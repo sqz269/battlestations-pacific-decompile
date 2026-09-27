@@ -109,6 +109,11 @@ struct GameWorldSummary {
     std::size_t list_walk0_units{0};
 };
 
+// Packet cc9_bsm01_state_natives: an AddMatrixInterpolator call (008ADE00), queued
+// by the script host and registered through 00905080 at the world's next pass.
+void queue_add_matrix_interpolator_008ade00(std::size_t unit_index, const float translation[3],
+                                            const float rotation[3], float duration);
+
 // The world object's entity half, owned for the whole run because 009037f0
 // allocates the chain headers once, at load time.
 class GameWorldHost {

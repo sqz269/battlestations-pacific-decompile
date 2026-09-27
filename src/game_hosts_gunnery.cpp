@@ -1476,6 +1476,9 @@ struct GameGunneryHost::Impl {
     unsigned long long seg_destroyed{0};
     double seg_damage{0.0};
     void apply_segment_damage_0092d1f0(std::size_t unit, int index, float damage);
+    void ensure_hull_segments_00937c90(std::size_t unit);
+    void explode_to_parts_00935c70(std::size_t unit);
+    unsigned long long explode_calls{0}, explode_detached{0};
     unsigned long long cf_rolls{0};        // 0093BED0 entered past the gate
     unsigned long long wreck_hits_reaching{0};   // apply_hit with a dead victim
     unsigned long long wreck_hits_delivered{0};  // passed on by 009239A0's rule
@@ -6672,18 +6675,7 @@ void GameGunneryHost::Impl::apply_segment_damage_0092d1f0(std::size_t unit, int 
     float damage) {
     if (unit >= damage_control.size() || unit >= unit_state.size()) return;
     DamageControl& dc = damage_control[unit];
-    if (!dc.segments_built) {
-        // 00937C90 at 009383C0..0093841B: every slot starts at class HP (+48h)
-        // over the number of fizika_NN nodes that resolved.
-        dc.segments_built = true;
-        const ShipModelSlots* model = ship_mesh_of(unit);
-        const int count = model != nullptr ? model->fizika_node_count : 0;
-        for (int k = 0; k < 20; ++k) {
-            dc.segment_present[k] = model != nullptr && model->fizika_node[k];
-            dc.segment_health[k] = count > 0 ? unit_state[unit].max_health
-                / static_cast<float>(count) : 0.0f;
-        }
-    }
+    ensure_hull_segments_00937c90(unit);
     ++seg_hits;
     // 0092D210: the gate byte; then the bounds check (a fault in the image).
     if (index < 0 || index >= 20 || !dc.segment_present[index]) {
@@ -6704,6 +6696,47 @@ void GameGunneryHost::Impl::apply_segment_damage_0092d1f0(std::size_t unit, int 
             static_cast<double>(clock_seconds));
         record("Parts::detach_part_message_99h_0092ced0", 0x0092ced0u);
     }
+}
+
+void GameGunneryHost::Impl::ensure_hull_segments_00937c90(std::size_t unit) {
+    DamageControl& dc = damage_control[unit];
+    if (dc.segments_built) return;
+    // 00937C90 at 009383C0..0093841B: every slot starts at class HP (+48h)
+    // over the number of fizika_NN nodes that resolved.
+    dc.segments_built = true;
+    const ShipModelSlots* model = ship_mesh_of(unit);
+    const int count = model != nullptr ? model->fizika_node_count : 0;
+    for (int k = 0; k < 20; ++k) {
+        dc.segment_present[k] = model != nullptr && model->fizika_node[k];
+        dc.segment_health[k] = count > 0 ? unit_state[unit].max_health
+            / static_cast<float>(count) : 0.0f;
+    }
+}
+
+// 00935C70 (fastcall parts, RET): every part whose health is above 0 is set to
+// -10000.0 [00D19620] (00935CEE) and detached through 00934150 (00935D16), which
+// does its work only for a slot that holds a node. The host's parts are the 20
+// hull segments; a present one is published as destroyed, as 0092D1F0's path
+// publishes it. LABELLED: 00934150's debris, effects and dynamics are the ship
+// motion's reading of the published list, as for a segment shot away.
+void GameGunneryHost::Impl::explode_to_parts_00935c70(std::size_t unit) {
+    if (unit >= damage_control.size() || unit >= unit_state.size()) return;
+    ensure_hull_segments_00937c90(unit);
+    DamageControl& dc = damage_control[unit];
+    ++explode_calls;
+    int detached = 0;
+    for (int k = 0; k < 20; ++k) {
+        if (!(dc.segment_health[k] > 0.0f)) continue;           // 00935CC7
+        dc.segment_health[k] = -10000.0f;                        // 00935CEE
+        if (!dc.segment_present[k]) continue;
+        dc.destroyed_segments.emplace_back(k, clock_seconds);    // 00935D16 -> 00934150
+        ++detached;
+    }
+    explode_detached += static_cast<unsigned long long>(detached);
+    log.notef("gunnery: ExplodeToParts %s: %d hull segment(s) detached t=%.2f (0088E1B0 -> "
+        "00935C70, packet cc9_bsm01_state_natives)", unit_state[unit].row.name.c_str(),
+        detached, static_cast<double>(clock_seconds));
+    done("Parts::detach_all_live_00935c70", 0x00935c70u);
 }
 
 std::vector<int> GameGunneryHost::destroyed_hull_segments(std::size_t unit_index) const {
@@ -7573,6 +7606,17 @@ void queue_ship_set_torpedo_stock_0089eee0(std::size_t unit_index, std::int32_t 
     ship_torpedo_stock_queue().emplace_back(unit_index, stock);
 }
 
+namespace {
+std::vector<std::size_t>& explode_to_parts_queue() {
+    static std::vector<std::size_t> queue;
+    return queue;
+}
+}  // namespace
+
+void queue_explode_to_parts_0088e1b0(std::size_t unit_index) {
+    explode_to_parts_queue().push_back(unit_index);
+}
+
 void GameGunneryHost::fixed_step(float step_seconds) {
     Impl& host = *impl_;
     if constexpr (kShipSetTorpedoStockBound) {
@@ -7583,6 +7627,12 @@ void GameGunneryHost::fixed_step(float step_seconds) {
         for (const auto& request : pending) {
             host.set_torpedo_stock_0081f8b0(request.first, request.second);
         }
+    }
+    {
+        // Packet cc9_bsm01_state_natives: the script host's ExplodeToParts calls.
+        std::vector<std::size_t> pending;
+        pending.swap(explode_to_parts_queue());
+        for (const std::size_t unit : pending) host.explode_to_parts_00935c70(unit);
     }
     if (host.guns.empty()) return;
     host.clock_seconds += step_seconds;

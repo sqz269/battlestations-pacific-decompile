@@ -321,6 +321,9 @@ inline constexpr bool kShipSetTorpedoStockBound = true;
 // `unit_index` is the units host's index. Process-wide, drained by
 // GameGunneryHost::fixed_step.
 void queue_ship_set_torpedo_stock_0089eee0(std::size_t unit_index, std::int32_t stock);
+// Packet cc9_bsm01_state_natives: an ExplodeToParts call (0088E1B0), applied as
+// 00935C70 over the unit's hull segments at the next fixed step.
+void queue_explode_to_parts_0088e1b0(std::size_t unit_index);
 
 // Session message 79h as 00954A10 builds it in 005484F0 (section 32 of
 // docs/SHIP_SCREEN_UPDATE.md): +1Ch group, +20h..+28h the camera mover's

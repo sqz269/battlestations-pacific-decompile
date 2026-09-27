@@ -9,6 +9,7 @@
 #include "bsp/air_operations.hpp"
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/game_hosts_world.hpp"
 #include "bsp/scoring_bodies.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/game_hosts_units.hpp"
@@ -49,7 +50,26 @@ struct ScriptOrderBinding {
     std::uint32_t row_address;
 };
 
+// Packet cc9_bsm01_state_natives (docs/LUA_BINDING_MISSION.md, "BSM01's state
+// natives"): three natives BSM01's scripted sinkings call. Each switch OFF leaves its
+// native an unimplemented record.
+//  * DisablePhysics 00891380: 0080E490 (unit+1018h, the force controller), then
+//    byte +14h = BL (0089149E, MOV [EAX+14h],BL); 009329C9 then parks the body every step.
+//  * AddMatrixInterpolator 008ADE00: argument 0 an entity, 1 and 2 two Vector3
+//    tables, 3 a number, into 00905080 on the world (008ADF92), which the world
+//    pass 00904600 applies through the entity's slot 88h.
+//  * ExplodeToParts 0088E1B0: 0080E490, then 00935C70 detaches every part whose
+//    health is above 0.
+// ON since the BSM01 / USN01 / USN04 / USN02 pairs: identical (no call reached on
+// any of them), so all three are bound but unexercised.
+constexpr bool kDisablePhysicsBound = true;
+constexpr bool kAddMatrixInterpolatorBound = true;
+constexpr bool kExplodeToPartsBound = true;
+
 constexpr ScriptOrderBinding kScriptOrderBindings[] = {
+    {"DisablePhysics", 0x00891380u},
+    {"AddMatrixInterpolator", 0x008ade00u},
+    {"ExplodeToParts", 0x0088e1b0u},
     {"NavigatorAttackMove", 0x008a30d0u},
     // Packet cc7_pilot_order_bindings. The scripts' most-used order by an order
     // of magnitude - 1125 lines across 197 shipped files - and the one USN01
@@ -360,6 +380,11 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
         return kScoringPlayerShotDownBound;
     }
     if (std::strcmp(binding->name, "PutTo") == 0) return kPutToBound;
+    if (std::strcmp(binding->name, "DisablePhysics") == 0) return kDisablePhysicsBound;
+    if (std::strcmp(binding->name, "AddMatrixInterpolator") == 0) {
+        return kAddMatrixInterpolatorBound;
+    }
+    if (std::strcmp(binding->name, "ExplodeToParts") == 0) return kExplodeToPartsBound;
     if (std::strcmp(binding->name, "NavigatorForceTorpedo") == 0) {
         return kNavigatorForceTorpedoBound;
     }
@@ -1976,6 +2001,52 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             gunnery->force_torpedo_fire_008a7200(index, first_only);
         }
         results = 0;
+    } else if (std::strcmp(binding->name, "DisablePhysics") == 0) {
+        // 00891380: 00888AA0 resolves argument 0; 0080E490 reads unit+1018h and
+        // 0089149E stores 1 at +14h with no null test (a unit with no controller
+        // faults in the image; the host drops it).
+        void* entity = entity_from_argument(0);
+        const std::size_t index = index_of(entity);
+        if (entity != nullptr && index < units_.count()) {
+            const bool done = units_.disable_physics_00891380(index);
+            log_.notef("  DisablePhysics: %s controller+14h=1%s (00891380)",
+                units_.unit_row(index) != nullptr ? units_.unit_row(index)->name.c_str() : "?",
+                done ? "" : " refused: no controller");
+        }
+    } else if (std::strcmp(binding->name, "AddMatrixInterpolator") == 0) {
+        // 008ADE00: argument 3 as a number, arguments 2 and 1
+        // through 00888760 (Vector3 tables), argument 0 through 00888AA0, then
+        // 00905080(world, entity, translation, rotation, duration) at 008ADF92.
+        // LABELLED: queued for the world's next pass, which reads the base
+        // matrix and the clock when it registers the record.
+        void* entity = entity_from_argument(0);
+        float translation[3] = {0.0f, 0.0f, 0.0f};
+        float rotation[3] = {0.0f, 0.0f, 0.0f};
+        argument_vector3(1, translation);
+        argument_vector3(2, rotation);
+        const float duration = argument_number(3);
+        const std::size_t index = index_of(entity);
+        if (entity != nullptr && index < units_.count()) {
+            queue_add_matrix_interpolator_008ade00(index, translation, rotation, duration);
+            log_.notef("  AddMatrixInterpolator: %s t=(%.2f,%.2f,%.2f) r=(%.4f,%.4f,%.4f) "
+                "duration=%.2f (008ADE00 -> 00905080, queued)",
+                units_.unit_row(index) != nullptr ? units_.unit_row(index)->name.c_str() : "?",
+                static_cast<double>(translation[0]), static_cast<double>(translation[1]),
+                static_cast<double>(translation[2]), static_cast<double>(rotation[0]),
+                static_cast<double>(rotation[1]), static_cast<double>(rotation[2]),
+                static_cast<double>(duration));
+        }
+    } else if (std::strcmp(binding->name, "ExplodeToParts") == 0) {
+        // 0088E1B0: argument 0 through 00888AA0, 0080E490, then 00935C70 on the
+        // controller. LABELLED: queued for the gunnery host's next fixed step,
+        // which holds the 20 segment healths.
+        void* entity = entity_from_argument(0);
+        const std::size_t index = index_of(entity);
+        if (entity != nullptr && index < units_.count()) {
+            queue_explode_to_parts_0088e1b0(index);
+            log_.notef("  ExplodeToParts: %s (0088E1B0 -> 00935C70, queued)",
+                units_.unit_row(index) != nullptr ? units_.unit_row(index)->name.c_str() : "?");
+        }
     } else if (std::strcmp(binding->name, "PutTo") == 0) {
         // 008A9F90: argument 0 through 00888AA0, 007788B0 when it answers
         // IsKindOf(2) (result unused, 008AA0BF), argument 1 through 00888760 as

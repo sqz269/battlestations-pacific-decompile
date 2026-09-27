@@ -718,3 +718,101 @@ host names at the store). The time, the text and the cause are the same.
 - USN02's phase 1 now ends the way the script says, on DeRuyter's hit points or the enemy
   destroyers.
 - BSM01's battleships no longer sink by script at full health.
+
+## BSM01's state natives (packet `cc9_bsm01_state_natives`, three switches committed OFF)
+
+Worker cc9-terrain2, 2026-09-27, on main 4c0a7ad1e. Ghidra was read only. Every body below is
+a defined Ghidra function, so there are no `no_ghidra_function` bodies.
+
+### What each native does (read)
+
+- **`DisablePhysics` 00891380.**
+  - It resolves argument 0, calls 0080E490 (`MOV EAX,[ECX+1018h]`, the ship's force controller)
+    and stores 1 at controller +14h, with no null test.
+  - 009329C9 tests that byte at the head of the controller's apply-forces callback. When it is set,
+    both velocities go to zero, the body's no-gravity bit is set, and the accumulators are cleared
+    (docs/SHIP_HYDRO_FORCES.md, docs/UNIT_CONTROLLER_UPDATE.md).
+  - So the ship stops moving under its own physics from the next step.
+- **`AddMatrixInterpolator` 008ADE00.** It reads argument 3 as a number, arguments 1 and 2 as
+  Vector3 tables and argument 0 as an entity, then calls 00905080(world, entity, translation,
+  rotation, duration) at 008ADF92. The record takes the entity's +74h matrix and the clock
+  (docs/WORLD_ENTITY_UPDATE.md). Every frame, the world pass 00904600 then:
+  - composes `RotZ(-p·rz) RotY(-p·ry) RotX(-p·rx) Translate(p·t) · base`, where p =
+    clamp((clock - start) / duration, 0, 1);
+  - writes that through the entity's slot 88h, which is 006E00A0 for a unit
+    (docs/ENTITY_LOCAL_MATRIX.md): it copies into +74h, invalidates the pose and calls
+    (entity+310h)->vtable[0Ch].
+  - In BSM01 this is the scripted settling of a sunk battleship: down 4 to 15 m and rolled over 1
+    to 65 s.
+- **`ExplodeToParts` 0088E1B0.** It resolves argument 0, calls 0080E490, then 00935C70 on the
+  controller: every part whose health is above 0 is set to -10000.0 and detached through 00934150
+  (bsp `parts_detach_all_live_00935c70`, src/unit_damage.cpp).
+
+### Callers in this installation's Lua (read-only)
+
+- **bsm_01_stationed_at_pearl.lua:**
+  - `ExplodeToParts` at lines 1191 (Phoenix) and 2448 (a helper's `ship`);
+  - `DisablePhysics` and `AddMatrixInterpolator` in pairs at 1776/1781 (Raleigh) and 2075..2289
+    (Arizona, West Virginia, Nevada, Utah, Maryland, Oklahoma, Tennessee, California);
+  - each pair sits inside a battleship's sinking branch.
+- **usn_2_java.lua:906 and usn_1_marshall.lua:1096:** `ExplodeToParts(ship)`.
+- **usn_19_coralus.lua:1658..1671:** Shokaku and Zuikaku sinking.
+- **On the current base none of these is reached.**
+  - BSM01 9200/9000 (`local\BASE_BSM01.log`, worktree cc9-terrain2) fires no shot, and no
+    battleship is damaged: the idle player's side has nothing attacking. With
+    `kUnitHealthFractionBound` ON the sinking branches read full health.
+  - The native table has no row for any of the three.
+  - USN01, USN02 and USN04 show no row either (`local\AC_ON_*.log`).
+
+### The bindings (each committed OFF)
+
+- **`kDisablePhysicsBound`.** The native sets the host slot's `controller_disabled_14`, which feeds
+  the hydrodynamics' `in.disabled`. That input used to be fixed at false, and its disabled path
+  is already reconstructed.
+  - A unit with no buoyancy elements (no controller in the host) is refused and logged.
+- **`kAddMatrixInterpolatorBound`.** The native queues a request, and the world pass registers it
+  through `add_matrix_interpolator_00905080` with the unit's `local` matrix and the world clock.
+  - The pass's slot 88h call now writes the matrix into the unit's motion pose and publishes it
+    (`set_local_matrix_006e00a0`).
+- **`kExplodeToPartsBound`.** The native queues the unit, and the gunnery host's next fixed step
+  runs 00935C70 over its 20 hull segments:
+  - each live segment goes to -10000;
+  - a present segment is published as destroyed, as when a segment is shot away (0092D1F0's
+    path).
+- **LABELLED:**
+  - the two queues run at the next world pass or fixed step, not inside the Lua call;
+  - (entity+310h)->vtable[0Ch] is unread and not reproduced;
+  - 00934150's debris, effects and dynamics are the ship motion's reading of the published list;
+  - `entity_active` stays the existing stand-in (always true).
+
+### Predictions (written before the pairs; streams and the death table on, lockstep 0.05, idle player)
+
+- **BSM01 9200/9000, USN01 3200/3000, USN04 4700/4500, USN02 9200/9000.** None of the three natives
+  is called, so no queue is filled and no record or flag is set.
+  - `pair_diff` exits 0 on all four (1 only on listed noise).
+  - No unit is frozen or moved by script, and deaths and hit records do not move.
+  - This is a pair of three switches flipped together in one export: every one of them is
+    unreached.
+
+### The pairs and the verdict
+
+- **The runs.** OFF is `local\bin\bs_off`, a build of b14ea3683. ON is `pair_export` of b14ea3683
+  with all three switches flipped (SHA-256 099CE22D7AEB). Streams and the death table were on,
+  lockstep 0.05, idle player. Logs: `local\BS_{OFF,ON}_{BSM01,USN01,USN04,USN02}.log` in worktree
+  cc9-terrain2. Each has its milestone line, module directory and final COM release.
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| BSM01 native rows for the three | none | none | none | held |
+| BSM01 deaths, hit records, shots | 0, 0, 0 | identical | identical | held |
+| USN01 deaths, hits, shots | 7, 150, 561 | identical | identical | held |
+| USN04 deaths, hits, shots | 44, 789, 6321 | identical | identical | held |
+| USN02 deaths, hits, shots | 19, 566, 850 | identical | identical | held |
+| `pair_diff` (all four) | | exit 0 | exit 0 | held |
+
+**Verdict: all three ON, bound but unexercised.** No reference run reaches a call. The first
+measurement needs a run in which the player's side damages a Pearl Harbor battleship (BSM01) or
+sinks Shokaku or Zuikaku (USN04's late phase). That run should show:
+- the frozen hull (`DisablePhysics: ... controller+14h=1`);
+- the settling pose (the world's `interpolators=` field in the per-frame line);
+- `ExplodeToParts` segment lines.
