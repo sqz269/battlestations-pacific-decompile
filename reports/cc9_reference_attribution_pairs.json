@@ -71,6 +71,14 @@
       "on_off": "51/843 vs 51/824, shots 6714 vs 7554, astern 0/0, no sinking",
       "verdict": "held; the switch moves E2 hit records by 19 on this base, so the 594 -> 595 residue is not isolable and stays flagged"
     },
-    "transient_crash": "first fp2_ra_off USN01 run 0xC0000005 after frame 2428 (log fp2_ra_off_usn01_crash1.log); repeat of the same binary clean; not reproduced, not explained"
+    "transient_crash": "first fp2_ra_off USN01 run 0xC0000005 after frame 2428 (log fp2_ra_off_usn01_crash1.log); repeat of the same binary clean; not reproduced, not explained",
+    "boundary_pair": {
+      "builds": {
+        "parent e9053b7db": "bd_parent 2C671E1029F7",
+        "landing 7edcb4c78": "bd_landing 2B470758E174"
+      },
+      "USN01": "group records 0 -> 293, window refusals 385 -> 754, admit_plane 3922 -> 7466, candidates 152 -> 291; all else identical",
+      "verdict": "held exactly; the USN01 refusal flag is closed at the landing's own boundary"
+    }
   }
 }
