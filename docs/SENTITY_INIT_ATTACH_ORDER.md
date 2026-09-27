@@ -834,3 +834,81 @@ Worker cc9-init-passes, 2026-09-27. Ghidra was read only.
 - **The lag itself is not shown** by these pairs. See 12.3 for the run that would show it.
 
 **Every prediction held. Verdict: ON.**
+
+## 13. The session pump's two records (packet `cc9_session_pump_records_read`, docs only, no switch)
+
+Worker cc9-init-passes, 2026-09-27. Ghidra was read only. The records are
+`Session::global_object_step_00f8a2fc` (007784F6) and `Session::drain_loopback_queue_0076c600`
+(00778542). They are in `GameFixedStepHost::pump_session_00778450`. They stay records, and the
+reasons follow.
+
+### 13.1 `[00F8A2FC]->vtable[5Ch](step)` (V)
+
+- **What the object is.** `BSP_Game_OnInit` calls 00992A50 at 004E3F0F whenever `[00F8A2FC]`
+  is null. That routine allocates 2218h bytes, constructs them through 00A47EE0 (vtable 00D24878,
+  stored at 00A47F1D), and stores the object at `00F8A300` and `00F8A2FC` (00992A9A, 00992A9F).
+  The object is the XLive system (`BSP_XLiveSystem_Initialize` 00A40DF0 writes its fields).
+  **It exists in single player,** so the pump calls its slot `5Ch` every fixed step.
+- **Slot `5Ch` = 00A42A50** (`XLiveSystem_StepCountdown`). It has **no Ghidra function**; its
+  body is 00A42A50..00A42A97, with `RET 4` at 00A42A95.
+  - While byte `+85h` is set and float `+88h` >= `[00D7A218]` = 0.0, it subtracts the step from
+    `+88h`.
+  - When the result drops below 0.0, it calls `vtable[58h]`.
+- **Who arms it:**
+  - `+85h` = 1 comes only from slot `54h`, 00A43650 (`XLiveSystem_ArmCountdown`, 00A436B5).
+    That same routine sets `+88h` to `[00D7A260]` = -1.0 (00A436BC), so arming alone does not
+    start the countdown.
+  - A non-negative `+88h` comes from slot `184h`, 00A47B80: `[00CEB4B0]` at 00A47BD2, unless its
+    `vtable[19Ch]` answers true.
+  - The constructor stores both fields at 00A47F23 and 00A47F29.
+  - The other `+88h` writers in the class are at 00A40E69, 00A4A3B3, 00A4A3EC and 00A4AFF1. They
+    are not read here.
+  - The byte scan found no other `+85h` writer in 00A3xxxx..00A4xxxx.
+- **Expiry, slot `58h` = 00A435E0** (`XLiveSystem_OnCountdownExpired`). It clears `+85h`
+  (00A435EC). It then returns when `[00E188A8]+1FE4h` is 0 (00A435F8/00A435FF), which is single
+  player.
+- **Single-player content.** At most, a timer runs down and clears its own flag. That happens
+  only after slot `54h` and slot `184h` have run. Their callers go through the vtable and were not
+  found. `BSP_Game_LoadMissionScene` touches the object only at 004E184F (`+48h`). **No gameplay
+  state is reached in single player**, so the record is not replaced by a binding. The unread parts
+  are the callers of slots `54h` and `184h`.
+
+### 13.2 `0076C600` the loopback drain
+
+- **What it carries.** `docs/SESSION_MESSAGE_DISPATCH.md` read it complete: with `+F4h` = 0,
+  the pump calls it every step. It carries every local order the image routes through the
+  session, in single player too:
+  - `MT_COMMAND` 58h;
+  - fire target 5Eh, built by 00835740;
+  - director 5Ah;
+  - the pass-side 8Fh;
+  - the entity-create category 47h.
+  Delivery follows that doc's "same-step answer": a message routed before row 9 of the step
+  arrives in the same step, one routed after row 9 arrives in the next.
+- **What the host does.** The posters deliver each kind directly:
+  - the command host issues commands;
+  - the gunnery host sets fire targets;
+  - the ship-AI host delivers 8Fh at the start of its controller step (`kShipPassSideMessageBound`);
+  - nothing posts 47h.
+  So **the drain has single-player content, but no queue exists to drain.**
+- **Binding it would need** a host-wide loopback queue that every poster enqueues to, drained by
+  the pump. The posters live in the units, gunnery, ship-AI and commands files. The observable
+  difference is only the step a message arrives in, for posters that run after row 9.
+- **Contract, for the lead to route per poster.** For each local order kind, name the image's
+  enqueue site and its fixed-step position:
+  - before row 9: direct delivery is exact;
+  - after row 9: delivery belongs in the next step's pump.
+  Only the posts after row 9 need the queue.
+
+### 13.3 Coverage and bodies without a Ghidra function
+
+| routine | coverage |
+| --- | --- |
+| 00A42A50 | complete, **no Ghidra function**: 00A42A50..00A42A97 inclusive |
+| 00A43650 | 00A436A2..00A436C5 (the arming stores) |
+| 00A435E0 | 00A435E0..00A4360D (the flag clear and the single-player return) |
+| 00992A50 | complete |
+| 0076C600 | as `docs/SESSION_MESSAGE_DISPATCH.md` (complete) |
+
+Names added (hypotheses): `XLiveSystem_StepCountdown` 00A42A50, `XLiveSystem_ArmCountdown`
+00A43650, `XLiveSystem_OnCountdownExpired` 00A435E0.
