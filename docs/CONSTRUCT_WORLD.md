@@ -2367,6 +2367,37 @@ the deltas are the prediction.
 pass A).
 
 A failed joint row leaves both switches OFF.
+### 30.6 The joint flip: pairs and verdict (cc9-movie-camera)
+
+The same tree at 3f544fc73 with both switches flipped, streams ON and `BSP_DEATH_TABLE=1`.
+Binaries `local\bin\jf_off` and `jf_on` in worktree cc9-movie-camera; every log shows the
+harness lines and its own module directory.
+
+| row | USN04 OFF | USN04 ON | predicted | held |
+| --- | --- | --- | --- | --- |
+| `wing_appended` / `wing_deferred` | 40 / 40 | 0 / 0 | 0 / 0 | yes |
+| `wing_marked` | 0 | 40 | 40 | yes |
+| `squadron_ids` / `wing_member_tables` | 40 / 40 | 40 / 40 | 40 / 40 | yes |
+| staged / builds / planes | 0 / 0 / 0 | 40 / 20 / 40 | as 30.4 | yes |
+| InitAll pushes / entities | 86 / 86 | 86 / 86 | unchanged | yes |
+| deaths (same victims) | 41 | 41, 11 rows changed | the same victims | yes |
+| hit records | 808 | 812 | +2 | **no, +4** |
+| hull hits | 306 | 306 | +2 | **no, +0** |
+| shots | 6374 | 6366 | -7 | **no, -8** |
+| torpedo-task / dive-bomb-task releases | 6 / 3 | 4 / 5 | -2 / +2 | yes |
+
+- **The base moved.** The OFF side already has 41 deaths and 808 hits, because the movie camera
+  mover (switch 3) and the torpedo stock landed since the local joint check.
+- **The order move on this base is not the recorded one.** Hits +4 and hull hits +0 against the
+  predicted +2 and +2, and shots -8 against -7. The deltas were written in 30.5 as the prediction.
+- **USN02 9200/9000:** `pair_diff` exit 1. Gameplay, 22 death rows, 32 unit rows and the native
+  table are identical. Only `squadron wing construction: bound 0 -> 1` moved.
+
+**Verdict: both switches left OFF,** per the lead's rule for a failed joint row. The failing rows
+are USN04's hit records, hull hits and shots. The pass-A census and every Lua counter held, and
+the victims are the same. The remaining gameplay difference is the same kind of air-order move as
+30.4's, of a different size on the new base. So this is a prediction-size failure, not a
+wrong-behaviour finding. The lead may flip with these rows as the expected result.
 ## 31. The scene-contents half of the HomeBase contract (packet `cc9_scene_home_base_contract`, `kSceneHomeBaseContractBound`, committed OFF)
 
 Worker cc9-ships, 2026-09-27. It wires section 29's contract.

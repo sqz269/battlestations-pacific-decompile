@@ -31,5 +31,62 @@
   ],
   "substitutions": [],
   "no_ghidra_function": [],
-  "ledger_names_added": []
+  "ledger_names_added": [],
+  "joint_flip": {
+    "by": "cc9-movie-camera (reassigned from cc9-ships)",
+    "doc": "docs/CONSTRUCT_WORLD.md sections 30.5 (predictions) and 30.6 (verdict)",
+    "base": "main 87b51d106; pairs at 3f544fc73 with both switches flipped",
+    "verdict": "both switches left OFF: USN04 hits +4 vs +2, hull hits +0 vs +2, shots -8 vs -7; every counter held; the same 41 victims; USN02 identical",
+    "usn04": {
+      "exit": 3,
+      "wing_appended": [
+        40,
+        0
+      ],
+      "wing_deferred": [
+        40,
+        0
+      ],
+      "wing_marked": [
+        0,
+        40
+      ],
+      "squadron_ids": [
+        40,
+        40
+      ],
+      "wing_member_tables": [
+        40,
+        40
+      ],
+      "deaths": [
+        41,
+        41
+      ],
+      "hits": [
+        808,
+        812
+      ],
+      "hull_hits": [
+        306,
+        306
+      ],
+      "shots": [
+        6374,
+        6366
+      ],
+      "torpedo_task_releases": [
+        6,
+        4
+      ],
+      "dive_bomb_task_releases": [
+        3,
+        5
+      ]
+    },
+    "usn02": {
+      "exit": 1,
+      "gameplay": "identical"
+    }
+  }
 }
