@@ -1476,6 +1476,15 @@ struct GameGunneryHost::Impl {
     unsigned long long wreck_hits_reaching{0};   // apply_hit with a dead victim
     unsigned long long wreck_hits_delivered{0};  // passed on by 009239A0's rule
     unsigned long long wreck_hits_past_window{0}; // hull shapes out of the index
+    unsigned long long wreck_shapes_offered{0};   // shape_count answered 1 for a wreck
+    // Packet cc9_wreck_hit_delivery: a dead ship whose hull shapes are still in
+    // the collision index (flag 8 until 008263E2: 60 s, 20 s for kind 0Eh).
+    bool wreck_in_hit_window(std::size_t index) const {
+        if (index >= unit_state.size() || !unit_state[index].dead) return false;
+        if (!units.unit_is_kind_of(index, 6)) return false;
+        const float window = units.unit_is_kind_of(index, 0x0E) ? 20.0f : 60.0f;
+        return clock_seconds - unit_state[index].row.sunk_seconds <= window;
+    }
     unsigned long long cf_resolved{0};     // 008782A0 found a section
     unsigned long long cf_started{0};
     unsigned long long cf_explosions{0};
@@ -5273,7 +5282,17 @@ public:
         if (landscape_entry(index) >= 0) return 1;   // the shape +344h
         if (index == exclude_) return 0;
         if (index >= owner_.unit_state.size()) return 0;
-        if (owner_.unit_state[index].dead) return 0;
+        if (owner_.unit_state[index].dead) {
+            // Packet cc9_wreck_hit_delivery: a ship wreck keeps its hull shapes in
+            // the index until 008263E2 clears flag 8; 009239A0 then delivers.
+            if constexpr (kWreckHitDeliveryBound) {
+                if (owner_.wreck_in_hit_window(index)) {
+                    ++owner_.wreck_shapes_offered;
+                    return 1;
+                }
+            }
+            return 0;
+        }
         if (!owner_.units.unit_alive_and_visible(index)) return 0;
         return 1;
     }
@@ -6263,9 +6282,7 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
         } else {
             // 009239A6..009239B4: only +5Eh / +5Fh refuse; a ship wreck keeps
             // its hull shapes in the index until 008263E2 clears flag 8.
-            if (!units.unit_is_kind_of(victim, 6)) return;
-            const float window = units.unit_is_kind_of(victim, 0x0E) ? 20.0f : 60.0f;
-            if (clock_seconds - target.row.sunk_seconds > window) {
+            if (!wreck_in_hit_window(victim)) {
                 ++wreck_hits_past_window;
                 return;
             }
@@ -8089,9 +8106,10 @@ void GameGunneryHost::report() {
             / static_cast<double>(host.ranging_error_samples) : 0.0,
         host.ranging_error_samples);
         host.log.notef("summary mission gunnery wreck hits bound=%d reaching=%llu delivered=%llu "
-            "past_window=%llu (009239A0 / 00826F10, packet cc9_wreck_hit_delivery)",
-            kWreckHitDeliveryBound ? 1 : 0, host.wreck_hits_reaching,
-            host.wreck_hits_delivered, host.wreck_hits_past_window);
+            "past_window=%llu shapes_offered=%llu (009239A0 / 00826F10, packet "
+            "cc9_wreck_hit_delivery)", kWreckHitDeliveryBound ? 1 : 0,
+            host.wreck_hits_reaching, host.wreck_hits_delivered,
+            host.wreck_hits_past_window, host.wreck_shapes_offered);
         host.log.notef("summary mission gunnery kill credit zero-damage hits not attributed=%llu bound=%d "
             "(0077CEB7, packet cc9_kill_credit)", host.summary_zero_damage_attributions_skipped,
             kKillCreditDamageGateBound ? 1 : 0);

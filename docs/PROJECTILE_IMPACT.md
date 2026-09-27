@@ -538,3 +538,27 @@ and Repair is 0, so of the leak path only a wreck's sends apply.
 | deaths | identical ± 1 (a wreck is already dead; neighbours move only through wreck timing) | identical |
 | kills | ± 1 | 0 |
 | pair_diff exit | 3 (hit records move) | 1 or 0 |
+
+### First pair: the hits never reach `apply_hit` (`18e6f9ab9`)
+
+`local\WH_OFF_USN02.log` / `WH_ON_USN02.log` (worktree cc9-units3): `reaching` was 0 in both
+builds and the pair was identical (exit 1). The prediction of 20..150 **failed**. The host
+filters a dead unit earlier: `SegmentBinding::shape_count` answers 0 shapes for it, so no round
+can meet a wreck, and the `apply_hit` test never sees one.
+
+**Revised binding (this commit).** `shape_count` answers 1 for a ship wreck inside the window,
+the same `wreck_in_hit_window` rule `apply_hit` now uses. The census adds `shapes_offered`. The
+same segment query also serves the HUD pick and the gun seat, which matches the image, whose
+collision index keeps the wreck's shapes the same way.
+
+**Predictions for the revised pair** (same tree, the switch only):
+
+| row | USN02 9200/9000 | USN04 4700/4500 |
+| --- | --- | --- |
+| `shapes_offered` | above 0 (every query that walks a wreck inside its 60 s) | 0 |
+| `reaching` = `delivered` | 10..150 rounds that meet a wreck in its first 60 s | 0 |
+| hit records, hull hits | up by about `delivered` | identical |
+| `applied_wreck` (live hull leak) | 0 -> about `delivered` × 1.5 | 0 |
+| wreck descent | 0..−5 s for the wrecks that were hit | - |
+| deaths | identical ± 2: rounds a wreck absorbs no longer reach the ship behind it | identical |
+| pair_diff exit | 3 | 1 or 0 |
