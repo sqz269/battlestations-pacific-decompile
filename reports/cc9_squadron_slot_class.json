@@ -1,0 +1,16 @@
+{
+  "packet": "cc9_squadron_slot_class",
+  "worker": "cc9-hud3",
+  "base": "3e754f54e",
+  "switch": "kSquadronSlotClassBound",
+  "state": "OFF",
+  "doc": "docs/CONTROLLED_UNIT.md, The squadron slot in the selection tests",
+  "substitutions": [
+    "The fused squadron slot's own four liveness bytes are the wing-0 plane's; the image's squadron entity outlives that plane.",
+    "The HUD observer releases the controlled unit at the slot's (wing-0 plane's) death; the image releases when the squadron entity goes (007F3A60).",
+    "The plane interface's camera hand-off (+6Ch/+68h) is not modelled; the mission camera stays unbound after a plane is selected."
+  ],
+  "no_ghidra_function": [],
+  "names_added": [],
+  "pairs": "pending"
+}

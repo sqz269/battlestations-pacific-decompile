@@ -37,6 +37,7 @@
 #include "bsp/in_mission_interface_runtime.hpp"
 #include "bsp/ingame_interface.hpp"
 #include "bsp/plane_squadron_host.hpp"
+#include "bsp/unit_kind_query.hpp"
 
 #include <cstdio>
 #include <map>
@@ -211,6 +212,12 @@ struct GameHudHost::Impl {
     bsp::UnitSelectableInputs selectable_inputs_00645060(std::size_t unit);
     // Packet cc9_vtable124_liveness: unit->vtable[124h]() by class.
     bool unit_vtable_124(std::size_t unit, std::uint32_t site);
+    // Packet cc9_squadron_slot_class: the class the selection tests see, and
+    // their IsKindOf over it. A squadron's fused slot answers 18h when bound.
+    int selection_class_id(std::size_t unit) const;
+    bool selection_is_kind_of(std::size_t unit, int class_id) const;
+    bool is_squadron_slot(std::size_t unit) const;
+    std::vector<std::size_t> squadron_slots_seen;   // census, each once
     // The units the class map answers true for and the ship-only rule does not,
     // each counted once, with the site that first asked.
     std::vector<std::pair<std::size_t, std::uint32_t>> vtable124_map_only;
@@ -1471,11 +1478,18 @@ bsp::UnitSelectableInputs GameHudHost::Impl::selectable_inputs_00645060(std::siz
     // (labelled, as game_hosts_ai.cpp does for the same read): the local
     // player's side record is party 0, and unit+54h is the authored party.
     in.team_matches_owner = units->unit_side_0054(unit) == 0;
-    in.is_kind_2 = units->unit_is_kind_of(unit, bsp::kUnitTraitSelectableBase);
-    in.is_kind_0f = units->unit_is_kind_of(unit, 0x0f);
-    in.is_kind_2a = units->unit_is_kind_of(unit, bsp::kUnitTraitRejectedA);
-    in.is_kind_46 = units->unit_is_kind_of(unit, bsp::kUnitTraitRejectedB);
-    in.is_kind_45 = units->unit_is_kind_of(unit, bsp::kUnitTraitRejectedC);
+    // Packet cc9_squadron_slot_class: the unit's own class test, which for a
+    // squadron's fused slot is PlaneSquadronGen's (18h) when bound.
+    in.is_kind_2 = selection_is_kind_of(unit, bsp::kUnitTraitSelectableBase);
+    in.is_kind_0f = selection_is_kind_of(unit, 0x0f);
+    in.is_kind_2a = selection_is_kind_of(unit, bsp::kUnitTraitRejectedA);
+    in.is_kind_46 = selection_is_kind_of(unit, bsp::kUnitTraitRejectedB);
+    in.is_kind_45 = selection_is_kind_of(unit, bsp::kUnitTraitRejectedC);
+    if (is_squadron_slot(unit)) {
+        bool seen = false;
+        for (const std::size_t u : squadron_slots_seen) seen = seen || u == unit;
+        if (!seen) squadron_slots_seen.push_back(unit);
+    }
     // 00645110 vtable[124h]() (packet cc9_vtable124_liveness).
     in.vtable_124_allows = unit_vtable_124(unit, 0x00645110u);
     // 00645121 00927C50(unit, 0): any role word 9 or 0.
@@ -1493,6 +1507,27 @@ bsp::UnitSelectableInputs GameHudHost::Impl::selectable_inputs_00645060(std::siz
     return in;
 }
 
+// Packet cc9_squadron_slot_class. A slot is a squadron's when a registry
+// record names it as its squadron_unit (the fused wing 0).
+bool GameHudHost::Impl::is_squadron_slot(std::size_t unit) const {
+    for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+        if (r.squadron_unit != bsp::kPlaneSquadronNoUnit && r.squadron_unit == unit) return true;
+    }
+    return false;
+}
+
+int GameHudHost::Impl::selection_class_id(std::size_t unit) const {
+    if constexpr (kSquadronSlotClassBound) {
+        if (is_squadron_slot(unit)) return 0x18;         // PlaneSquadronGen
+    }
+    return units->unit_class_id(unit);
+}
+
+bool GameHudHost::Impl::selection_is_kind_of(std::size_t unit, int class_id) const {
+    if (unit >= units->count()) return false;
+    return bsp::unit_is_kind_of(selection_class_id(unit), class_id);
+}
+
 // unit->vtable[124h]() by class (include/bsp/game_hosts_hud.hpp,
 // kUnitVtable124MapBound). The four bytes are 0043F080's, which the units
 // host answers as unit_alive_and_visible.
@@ -1502,16 +1537,16 @@ bool GameHudHost::Impl::unit_vtable_124(std::size_t unit, std::uint32_t site) {
     // The rule before this packet: the ship vtable only.
     const bool ship_rule = units->unit_is_kind_of(unit, 6) && alive;
     bool map = false;
-    if (units->unit_is_kind_of(unit, 0x1c)) {
+    if (selection_is_kind_of(unit, 0x1c)) {
         // 006F5920 MCommandBuilding: +790h is clear in single player (its one
         // setter 006F292D needs effective game mode 2 or 3, and 004BCA50
         // reports 8), so the +70h == 58h arm is not reached: the four bytes.
         map = alive;
-    } else if (units->unit_is_kind_of(unit, 0x1b)) {
+    } else if (selection_is_kind_of(unit, 0x1b)) {
         map = false;                                   // 00745A50 MLandFort
-    } else if (units->unit_is_kind_of(unit, 5)) {
+    } else if (selection_is_kind_of(unit, 5)) {
         map = alive;                                   // 006D1EF0
-    } else if (units->unit_is_kind_of(unit, 0x18)) {
+    } else if (selection_is_kind_of(unit, 0x18)) {
         // 007EE670 PlaneSquadronGen. +3B0h is only ever cleared (007F2DD3,
         // 007EFB69), so it reads 0. SUBSTITUTION (labelled): +361h, set by
         // 007F31A0 when the leader leaves the map with survivors, is not
@@ -1568,7 +1603,9 @@ public:
         owner_.record("SetControlledUnit::clear_hud_root_1c", 0x00645637u);
     }
     bool candidate_is_selectable() override { return selectable_; }
-    bool candidate_is_kind_1() override { return owner_.units->unit_is_kind_of(candidate_, 1); }
+    bool candidate_is_kind_1() override {
+        return owner_.selection_is_kind_of(candidate_, 1);   // 0064565A
+    }
     bool candidate_vtable_124() override {
         // 0064565F (packet cc9_vtable124_liveness).
         return owner_.unit_vtable_124(candidate_, 0x0064565fu);
@@ -3619,6 +3656,21 @@ void GameHudHost::report() {
             only += row != nullptr ? row->name : std::string("?");
             only += tail;
         }
+        std::string slots;
+        for (const std::size_t u : impl.squadron_slots_seen) {
+            const GameUnitRow* row = impl.units != nullptr ? impl.units->unit_row(u) : nullptr;
+            char tail[24];
+            std::snprintf(tail, sizeof(tail), "/%02X->%02X",
+                impl.units != nullptr ? impl.units->unit_class_id(u) & 0xff : 0,
+                impl.selection_class_id(u) & 0xff);
+            if (!slots.empty()) slots += ' ';
+            slots += row != nullptr ? row->name : std::string("?");
+            slots += tail;
+        }
+        impl.log.notef("summary mission hud squadron slot class (packet cc9_squadron_slot_class, "
+            "00645060 / 00645600): bound=%d squadron slots asked=%zu: %s",
+            kSquadronSlotClassBound ? 1 : 0, impl.squadron_slots_seen.size(),
+            slots.empty() ? "(none)" : slots.c_str());
         impl.log.notef("summary mission hud unit vtable124 map (packet cc9_vtable124_liveness, "
             "00645110 / 0064565F): bound=%d asks=%llu map_only_asks=%llu map_only_units=%zu: %s",
             kUnitVtable124MapBound ? 1 : 0, impl.vtable124_asks, impl.vtable124_map_only_asks,

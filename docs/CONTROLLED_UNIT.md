@@ -1087,3 +1087,95 @@ either side.
 `SetSelectedUnit(Mission.ScoutBomba)` in USN01's `luaPh2MovieEnd` is therefore rejected at
 `IsKindOf(0Fh)`, where the image's PlaneSquadronGen (18h) would pass. That would make the squadron
 the controlled unit, since its `+124h` 007EE670 answers the leader's liveness.
+
+## The squadron slot in the selection tests (packet `cc9_squadron_slot_class`, `kSquadronSlotClassBound`)
+
+Worker cc9-hud3, 2026-09-27, base 3e754f54e. Ghidra was read only.
+
+### The read
+
+- **In the image, a squadron is selectable.** `Mission.ScoutBomba = GenerateObject("ScoutDauntless")`
+  is the PlaneSquadronGen entity (class 18h). 00645060 then passes it:
+  - it answers `IsKindOf(2)` and none of `0Fh`, `2Ah`, `46h` or `45h`;
+  - its `vtable[124h]` 007EE670 answers the slot-0 plane's four bytes (previous section);
+  - 00645600's `IsKindOf(1)` holds.
+  So `SetSelectedUnit(Mission.ScoutBomba)` in USN01's `luaPh2MovieEnd` makes the squadron the
+  controlled unit `00E188D8`.
+- **What a controlled squadron changes in the image:**
+  - **The interface.** 0068AE0B's 20h classifier tests 18h last and redispatches with the
+    squadron's `+3D0h` plane (0068AF18), which answers `IsKindOf(0Fh)`. So the final interface is
+    INTF_PLANE or INTF_PLANESPAWN with the plane as payload, whose hand-offs are `+6Ch`/`+68h`
+    (0068B03B, 0068B047).
+  - **The plane-side readers of `00E188D8`**, all display-only (census of the absolute address,
+    `tools/callsite_census.py`):
+    - 007BBD1A in `BSP_PlaneEntity_ApplyHitRecord` compares it with the plane's squadron
+      `+9D4h` and feeds the HUD hit indicator 0064B170;
+    - 008259EB (`BSP_UnitInstance_Update`) and 0080FC9B compare it with the unit itself and pick
+      an effect intensity (1.0 or `[00CE3800]`);
+    - 007F3A60 `BSP_PlaneSquadron_ReleaseControlledUnit` is the squadron's `+7Ch` slot, which
+      releases the controlled unit when the squadron itself goes.
+    No pilot or squadron AI reader was found in 007A0000..0084FFFF or 00990000..009CFFFF.
+- **The host fuses the squadron with its wing-0 plane in one slot.** That slot is
+  `PlaneSquadronHostRecord::squadron_unit` (`src/game_hosts_script_orders.cpp`), and it carries the
+  plane's class (ScoutDauntless: 12h). So 00645060 rejects it at 006450DF, `IsKindOf(0Fh)`.
+- **The role screen** (0067BB50, units host) needs only `IsKindOf(2)`, which the plane class also
+  answers. It takes role 0 (mask 1) on the controlled slot. Only the pilot role (mask 2) sets
+  `+184h`, so the plane's AI is not handed to the player.
+
+### The binding
+
+- **Switch:** `kSquadronSlotClassBound` in `include/bsp/game_hosts_hud.hpp`, committed OFF.
+- **The code:** `GameHudHost::Impl::selection_class_id` answers 18h for a squadron's fused slot.
+  `selection_is_kind_of` then serves:
+  - 00645060's five class tests;
+  - the `vtable[124h]` dispatch (so the slot takes 007EE670's arm, the slot-0 plane's liveness);
+  - 00645600's `IsKindOf(1)`.
+  The HUD root lists and ForceSelectUnit use the same tests.
+- **Everything else keeps the plane's class:** the interface classifier (whose image path ends on
+  the plane anyway), the units host and gunnery.
+- **SUBSTITUTIONS, labelled:**
+  - **The slot's own four bytes are the plane's.** After the wing-0 plane dies, the image's
+    squadron entity is still alive, but this host's slot reads dead.
+  - **The HUD observer releases on the slot's death**, which is the wing-0 plane's death. The
+    image releases when the squadron entity goes (007F3A60 or its own destruction notice).
+  - **The plane interface's camera hand-off** (`+6Ch`/`+68h`) is not modelled. After a plane is
+    selected, the mission camera stays unbound.
+- **The census:** `summary mission hud squadron slot class`, listing each squadron slot the
+  selection tests saw, with its class (host -> selection).
+
+### The OFF census (this commit's OFF build, `local\sq_off_*`)
+
+| mission | squadron slots asked |
+| --- | --- |
+| USN01 3200/3000 | ScoutDauntless (12h -> 12h), by `SetSelectedUnit(Mission.ScoutBomba)` at mission frame 2003 (about 100.2 s) |
+| USN04 4700/4500 | none |
+| USN02 9200/9000 | none |
+
+The installation's scripts were grepped read-only. `usn_2_java.lua` selects only Houston. USN04
+(`usn_19_coralus.lua`) selected only the Lexington in the OFF log. USN01's other selections
+(`luaKatMovieEnd`, `luaConHitMovieEnd`) are not reached within 3,000 frames.
+
+### Predictions (streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player)
+
+**USN01 3200/3000:**
+1. The census reads `ScoutDauntless/12->18`.
+2. `SetSelectedUnit("ScoutDauntless")` is **accepted** at mission frame 2003, with `kind0F=0` and
+   `vt124=1`.
+   - 00645600 releases Northampton through its ship arm and moves `00E188D8` to ScoutDauntless.
+   - 00647040 pushes 20h with the unit. The 20h classifier picks INTF_PLANE (in flight).
+3. The role screen releases role 0 on Northampton and takes role 0 on ScoutDauntless. `+184h`
+   stays clear. The planes' AI is unchanged.
+4. The controlled-unit observer (ON) registers on ScoutDauntless. At its death (129.85 s on OFF)
+   it releases the controlled unit (`004C0890(null)`), so the controlled unit is none from then on.
+   The world summary's `controlled=` reads `none`.
+5. The mission camera is not rebound after the phase-2 movie. The pose, pick and camera lines
+   after about 100 s move. `ray_pick_*` and `owner_140` move or stop.
+6. **Gameplay.** The slot-swap gate on Northampton's group (Northampton, SaltLakeCity, Dunlap)
+   lifts after 100.2 s. The OFF run logs no `formation slot swap` at all, even for the ungated
+   groups. So no swap is predicted, and the ships' paths are unchanged.
+   - Deaths stay 7, with every death row identical in time and killer.
+   - The ScoutDauntless row may differ only in a controlled flag, if the death table prints one.
+   - **Gameplay identical, `pair_diff` exit 1.**
+
+**USN04 4700/4500 and USN02 9200/9000:** census `(none)`, and every line identical except the
+switch's own summary. **Identity, exit 1.**
