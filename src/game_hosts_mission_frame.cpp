@@ -241,6 +241,11 @@ struct GameMissionFrameHost::Impl {
     unsigned long long warning_effect_calls{0};
     unsigned long long warning_effects{0};
     unsigned long long warning_deadline_expiries{0};
+    // Packet cc9_loss_report_entry: 009813A0 calls, and its guard's passes by side.
+    unsigned long long warning_loss_calls{0};
+    unsigned long long warning_loss_side0{0};
+    unsigned long long warning_loss_side1{0};
+    unsigned long long warning_loss_other{0};
     bool device_edge_injected{false};         // the executable's own injection
     // Packet cc_mission_tick's reconstruction of the four-call opener of every
     // simulated frame, and the dynamics list behind its fourth call.
@@ -1460,6 +1465,30 @@ void game_warning_report_torpedo_00977690(std::size_t unit) {
     host->record("WarningManager::report_torpedo_queue", 0x009763e0u);
 }
 
+void game_warning_report_loss_009813a0(std::size_t unit) {
+    GameMissionFrameHost::Impl* host = g_warning_owner;
+    if (host == nullptr || host->units == nullptr) return;
+    ++host->warning_loss_calls;
+    const GameUnitsHost& units = *host->units;
+    // 009813C6..009813D2: [entity+54h] against 2, signed; a negative side passes.
+    const int side = units.unit_side_0054(unit);
+    if (!(side < 2)) return;
+    // 009813D8..009813F4: [vt+5Ch](18h), then [vt+5Ch](6); neither answers for an
+    // aircraft.
+    if (!units.unit_is_kind_of(unit, 0x18) && !units.unit_is_kind_of(unit, 6)) return;
+    if (side == 0) {
+        ++host->warning_loss_side0;
+    } else if (side == 1) {
+        ++host->warning_loss_side1;
+    } else {
+        ++host->warning_loss_other;
+    }
+    // 009813FA..00982110: unread past the guard here; docs/LOSS_WARNING.md has
+    // the plan (the 00976F10 cancel, the 009FFD20 text posted by 005CF3D0, and
+    // the "kill" channel's Lua listeners through 00887E50).
+    host->record("WarningManager::report_loss_body", 0x009813fau);
+}
+
 void game_scoring_set_real_play_time_running_00905340(bool running) {
     GameMissionFrameHost::Impl* host = g_warning_owner;
     if (host == nullptr) return;
@@ -2356,10 +2385,13 @@ void GameMissionFrameHost::report(long requested_frames) {
         kScanProximityBound ? 1 : 0, host.warning_scans, host.proximity_ships_scanned,
         host.proximity_records_created, host.proximity_hits, host.proximity_expiries);
     host.log.notef("summary mission warning manager bound=%d scans=%llu torpedo_reports=%llu "
-        "accepted=%llu effect_calls=%llu effects=%llu deadline_expiries=%llu (packet "
-        "cc9_warning_manager_tick)", kWarningManagerTickBound ? 1 : 0, host.warning_scans,
-        host.warning_torpedo_calls, host.warning_torpedo_accepted, host.warning_effect_calls,
-        host.warning_effects, host.warning_deadline_expiries);
+        "accepted=%llu effect_calls=%llu effects=%llu deadline_expiries=%llu loss_reports=%llu "
+        "loss_side0=%llu loss_side1=%llu loss_other=%llu (packet cc9_warning_manager_tick; "
+        "009813a0 guard, cc9_loss_report_entry)", kWarningManagerTickBound ? 1 : 0,
+        host.warning_scans, host.warning_torpedo_calls, host.warning_torpedo_accepted,
+        host.warning_effect_calls, host.warning_effects, host.warning_deadline_expiries,
+        host.warning_loss_calls, host.warning_loss_side0, host.warning_loss_side1,
+        host.warning_loss_other);
     host.log.notef("summary mission fixed steps=%llu at %.3f s each (00875bb0's own clock "
         "at 00f876a4/00f876ac)", host.fixed_steps,
         static_cast<double>(bsp::kFixedSimulationStepFloat));
