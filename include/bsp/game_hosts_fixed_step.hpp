@@ -112,6 +112,20 @@ inline constexpr bool kSceneLoadThisTableIdentityBound = true;
 // rule fired (section 9.5); the create_units push is what exercises it.
 inline constexpr bool kPendingListDedupBound = true;
 
+// Packet cc9_load_time_init_all (docs/SENTITY_INIT_ATTACH_ORDER.md section 10).
+// BSP_SceneFile_Read 0046DF00 runs InitAll once per instantiate pass, at the
+// first of 0046EB4B / 0046EB88 / 0046EBC6 / 0046ED0F it reaches (the latch
+// [ESP+13h], set at 0046EB50 and 0046EB8D after the call), after the entity
+// blocks (0046CF40) and before the traffic, groups and browser-groups blocks.
+// True: the mission frame pushes every load-time instance (the units
+// create_units made, then the scene markers) on the pending list, standing in
+// for their constructors' 00928760 pushes, and runs one InitAll walk at
+// 0046EB4B in place of attach_scene_entities_00928a00, so passes A..E and the
+// section 8 identity writes come from the walk. Needs kSEntityInitAllBound.
+// False: the load attach and its section 8 patch. ON by the verdict: the USN04
+// and USN02 pairs moved only the predicted rows (section 10.4).
+inline constexpr bool kLoadTimeInitAllBound = true;
+
 // The owner of the pending list and of 00925F20's per-entity work. The Lua host
 // is the one, because pass A is its `thisTable` attach.
 class GameEntityInitAllRunner {

@@ -541,3 +541,135 @@ place, the counters should read as follows, on the same missions:
   push is skipped (`skipped_pending=4`). `load_dropped=28`, and gameplay identical.
 - **If a count differs,** the push order in `create_units` differs from the one assumed here,
   which is squadron before its wing, both before the route's push.
+
+## 10. The load-time InitAll through the walk (packet `cc9_load_time_init_all`, `kLoadTimeInitAllBound`)
+
+Worker cc9-init-passes, 2026-09-27, base main 338c8b4e3. Ghidra was read only.
+
+### 10.1 Where the scene read calls InitAll (V)
+
+- **The loop.** `BSP_SceneFile_Read` 0046DF00..0046EF62 is a token loop, whose head is at
+  0046E9F5. An `entity` block is read by `BSP_SceneFile_ReadEntityBlock` 0046CF40 (0046EB0F);
+  its creators construct the instances, and each construction pushes through 00928760.
+- **The four sites.** The first block that is not an entity block, or the end of the file, runs
+  InitAll:
+
+| site | before | guard |
+| --- | --- | --- |
+| 0046EB4B | the traffic block 009514B0 | `TEST BL,BL` (the instantiate pass), `CMP [ESP+13h],BL` |
+| 0046EB88 | the groups block 00467E10 | the same |
+| 0046EBC6 | the browser-groups block 00469E40 | the same |
+| 0046ED0F | the end of the file, before the holder release at 0046ED1E and 0046AAB0 `ResolveDeferredReferences` | `CMP [ESP+13h],0` |
+
+- **One call per pass.** `[ESP+13h]` is cleared at 0046E9F0 and set after each call (0046EB50,
+  0046EB8D). So a scene read runs **one** InitAll, and it runs over every instance the entity
+  blocks made, before the traffic, groups and deferred references.
+- **The host.** `run_load_scene_contents_004d4df0` reads the records, `create_units` builds the
+  units, and the mission frame collects the markers. The load attach
+  `attach_scene_entities_00928a00` then stood in for this InitAll with pass A alone. Section 8
+  added the pass B and C identity writes.
+
+### 10.2 The binding
+
+- **Under the switch,** the mission frame calls `run_scene_load_init_all_0046eb4b(entities)` in
+  place of the load attach, at the same point and with the same list: the units in unit order,
+  then the markers. It pushes one node per instance, standing in for each constructor's 00928760
+  push. The node carries `load_scene`, `findable`, the marker's class id and its authored `Party`.
+  The dedup rules skip an id that `create_units` has already pushed, once that lands. It then
+  runs one InitAll, logged at 0046EB4B.
+- **Pass A**, for a load node:
+  - binds the air-ops deck id (`air_ops_decks().bind_entity_id`), as the load attach did;
+  - records the id as load-attached;
+  - attaches with `findable`, so a marker that is not findable stays out of the name index;
+  - writes `Party`/`Race` when the SceneEntity carries them. No caller does today.
+- **Pass B** skips markers, which have no 009292B0. Units get `ClassID`, `Name` and `Class`
+  (section 1.1).
+- **Pass C** runs 00928100 for markers of the seven default-pass-C classes (section 8). The row is
+  `SEntity::InitAll pass C mirror_identity` (00928100).
+- **Passes D and E, the start branch and loading progress** run per node, as for runtime
+  entities.
+- **Retired when ON:** the load attach and its section 8 block. Their rows go: `MissionLua::
+  entity_lua_attach`, `SceneLoad::pass B bind_lua_class` and `SceneLoad::pass C
+  mirror_identity`, and so do the two `thisTable:` note lines.
+- **Summary line:** `summary SEntity::InitAll load walk bound=<0|1> pushes=N mirrored=N`.
+- **Not reproduced:**
+  - **The call's position.** The host calls it after `create_units`, `issue_authored_commands`
+    and the scoring reset, where the load attach was. The image calls it inside the scene read,
+    before the traffic and groups blocks and 0046AAB0. Nothing between the two points reads or
+    writes `thisTable`. The scene-contents half, an InitAll inside `run_load_scene_contents`, is
+    the contract below.
+  - **The site.** The call is logged at 0046EB4B whichever block the scene reaches first.
+
+**Contract for cc9-ships, `src/game_hosts_scene_contents.cpp`.** The instantiate pass
+constructs, so push each marker instance there (00928760). Then run the one InitAll at the
+entity-blocks boundary through the Lua host's runner (`run_sentity_init_all_00925f20`, site
+0046EB4B), once the units host's `create_units` push exists and the unit instances are built
+inside that pass. Until then, the mission frame's push-and-walk is the stand-in.
+
+### 10.3 Predictions (written before the pairs; the same tree, switch only, both variables set)
+
+- **USN04 4700/4500.** The load list holds 26 entities: 21 units and 5 markers, which are four
+  Paths and the NavPoint `IJNRetreat`.
+  - Load walk: `pushes` 0 -> 26 and `mirrored` 0 -> 5.
+  - InitAll: calls 4,512 -> 4,513, with work 12 -> 13, entities 60 -> 86, pushes 20 -> 46.
+    `wing_appended` stays 40.
+  - Section 6's `class_bound` goes 60 -> 81 and `squadron_ids` stays 40. Section 8's
+    `class_bound` and `mirrored` go 21 -> 0 and 5 -> 0.
+  - Native rows, calls OFF -> ON:
+    - `SEntity::InitAll` 4,512 -> 4,513;
+    - pass A, pass B record, pass C record, start branch, pass D and pass E each 60 -> 86;
+    - loading progress 180 -> 258;
+    - pass B `bind_lua_class` 60 -> 81;
+    - `pass C mirror_identity` added, with 5;
+    - `pass C plane squadron_id` stays 40.
+  - Removed: `MissionLua::entity_lua_attach`, and the two `SceneLoad::` rows (21 and 5).
+  - Unchanged: `self_table_entities=86`, `wing_member_tables=40`, and every dedup counter at 0.
+    `load_dropped` is 0 on both sides, because nothing pushes at load today.
+  - Other lines:
+    - OFF only: the two `thisTable:` load notes.
+    - ON only: the `at 0046eb4b: 26 pending` and `INIT,ENUM:26` notes.
+    - The log prints only the first 8 walks that find work. The load walk is now the first, so
+      the eighth runtime walk's two note lines become OFF only.
+  - Gameplay identical: deaths, hit records, releases, death rows, plane death modes and the unit
+    table.
+- **USN02 9200/9000.** The load list holds 30 entities: 28 units and 2 NavPoints.
+  - Load walk: `pushes` 30 and `mirrored` 2.
+  - InitAll: calls 9,008 -> 9,009, with work 4 -> 5, entities 4 -> 34, pushes 4 -> 34.
+  - Pass B `bind_lua_class` goes 4 -> 32, and the per-pass rows go 4 -> 34.
+  - Loading progress goes 12 -> 102.
+  - Unchanged: `self_table_entities=34`.
+  - Other lines: the same removals, and the notes as above; with only 5 walks, none is pushed out.
+  - Gameplay identical.
+- **If a gameplay row moves,** the call's later position or a pass the load attach never ran is
+  the cause, and the switch stays OFF.
+
+### 10.4 Pairs and verdict
+
+- **The runs.** The binaries are `local\bin\lt_off` (the committed OFF, 86074aa4b) and
+  `local\bin\lt_on` (flipped locally, then reverted). `BSP_GUNNERY_RNG_STREAMS=1` and
+  `BSP_DEATH_TABLE=1` were set. All four logs have the fit line, the immediate present interval
+  and the final COM release, and each module directory is under `local\bin\lt_*` in this tree.
+- **What `tools/pair_diff.py` reports.** It exits 1 on both pairs, and the clock offset is
+  +0.00 s. Every gameplay and per-entity row is identical, and the other changes are the ones
+  predicted in 10.3:
+
+| row | USN04 OFF | USN04 ON | USN02 OFF | USN02 ON |
+| --- | ---: | ---: | ---: | ---: |
+| InitAll calls / with work / entities / pushes | 4,512 / 12 / 60 / 20 | 4,513 / 13 / 86 / 46 | 9,008 / 4 / 4 / 4 | 9,009 / 5 / 34 / 34 |
+| load walk pushes / mirrored | 0 / 0 | 26 / 5 | 0 / 0 | 30 / 2 |
+| pass A..E and start-branch rows | 60 each | 86 each | 4 each | 34 each |
+| pass B `bind_lua_class` | 60 | 81 | 4 | 32 |
+| `pass C mirror_identity` (walk) | - | 5 | - | 2 |
+| `SceneLoad::` rows, `MissionLua::entity_lua_attach` | 21, 5, 1 | removed | 28, 2, 1 | removed |
+| loading progress | 180 | 258 | 12 | 102 |
+| `self_table_entities` | 86 | 86 | 34 | 34 |
+| deaths, hit records | 43, 788 | identical | 20, 329 | identical |
+| death rows, plane death modes, unit table | 43, 43, 81 | identical | 20, 0, 32 | identical |
+
+- **Other lines.** The two `thisTable:` load notes are OFF only. The `26 pending`/`INIT,ENUM:26`
+  notes (30 on USN02) are ON only. On USN04 the eighth runtime walk's two notes (`1 pending`,
+  `INIT,ENUM:3`) are OFF only, as predicted.
+- **Noise.** The pretranslate row, 18 -> 17 and 18 -> 19, is on the noise list.
+
+**Every prediction held. Verdict: ON.** The load attach and the section 8 block are retired while
+the switch is on. Both stay in the code as the OFF path.

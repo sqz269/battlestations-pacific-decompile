@@ -2707,7 +2707,7 @@ void GameMissionLuaHost::attach_wing_member_tables(std::size_t units_before,
 }
 
 bool GameMissionLuaHost::attach_created_entity_00928a00(int entity_id,
-    const std::string& name, int class_index, bool seed_class) {
+    const std::string& name, int class_index, bool seed_class, bool findable) {
     if (state_ == nullptr || entity_id <= 0) return false;
     lua_getfield(state_, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);
     if (lua_isnil(state_, -1)) {
@@ -2743,7 +2743,9 @@ bool GameMissionLuaHost::attach_created_entity_00928a00(int entity_id,
     }
     lua_setfield(state_, -2, key);
     ::lua_settop(state_, ::lua_gettop(state_) - 1);
-    if (!name.empty()) scene_entity_ids_[name] = entity_id;
+    // `findable`: only the entities whose world bucket 0088B1B0 walks enter
+    // the name index (packet cc_lua_find_entity); the load markers carry it.
+    if (findable && !name.empty()) scene_entity_ids_[name] = entity_id;
     ++summary_.self_table_entities;
     return true;
 }
@@ -2776,6 +2778,31 @@ bool GameMissionLuaHost::attach_created_entity_00928a00(int entity_id,
 //   E  the holder at +C0h released through its slot 0 with 1. This process
 //            keeps no holder object on the entity (the property bag stays on
 //            the spawn-pool record), so the release is a NAMED RECORD.
+namespace {
+// Packet cc9_init_identity_gaps. 00925E1D MOV dword ptr [ESI+54h],2: the base
+// entity's Party before any authored value (PARTY_NEUTRAL in this
+// installation's luamw_init.lua).
+constexpr int kEntityDefaultParty00925e1d = 2;
+
+// The `Type` 00928100 writes, 00E0CD80[+C4h], for the classes whose slot +A4h is
+// 009295B0 (section 1.3). +C4h is the scene class id each constructor stores:
+// 004E59AD 41h, 004E5A0D 42h, 004E5A6D 43h, 0047B6C8 47h, 004E58B8 4Ah,
+// 004E7F31 5Bh, 004E800E 5Ch. Strings read from the image at 00D18CCC..00D18E68.
+// nullptr: the class has its own pass C (or no default one was found).
+const char* default_pass_c_type_name(int class_id) noexcept {
+    switch (class_id) {
+    case 0x41: return "NAVPOINT";        // 00D18E68
+    case 0x42: return "MOVIECAMPOS";     // 00D18E5C
+    case 0x43: return "MOVIECAMLOOKAT";  // 00D18E4C
+    case 0x47: return "GAMEPATH";        // 00D18E1C
+    case 0x4A: return "CAMERAPATH";      // 00D18DFC
+    case 0x5B: return "SIMPLEEFF";       // 00D18CD8
+    case 0x5C: return "PERIODEFF";       // 00D18CCC
+    default: return nullptr;
+    }
+}
+}  // namespace
+
 class GameMissionLuaInitAllBinding final : public bsp::SEntityInitAllHost {
 public:
     explicit GameMissionLuaInitAllBinding(GameMissionLuaHost& host) : host_(host) {}
@@ -2797,10 +2824,20 @@ public:
     void entity_attach_lua_self_vcall_9c(void* entity) override {
         GameMissionLuaHost::PendingEntity& node = at(entity);
         ++host_.summary_.init_all_entities;
+        if (node.load_scene) {
+            // Packet cc9_load_time_init_all: what the load attach did per
+            // instance besides the slot. The scene pass's decks are keyed by
+            // the authored name (docs/AIROPS_LOAD_FROM_SCENE.md).
+            bsp::air_ops_decks().bind_entity_id(node.entity_id, node.name);
+            host_.load_attached_.insert(node.entity_id);
+        }
         if (host_.attach_created_entity_00928a00(node.entity_id, node.name,
-                node.class_index, !kSEntityInitThisTableStepsBound)) {
+                node.class_index, !kSEntityInitThisTableStepsBound, node.findable)) {
             host_.init_all_attached_.insert(node.entity_id);
             if (node.wing_member) ++host_.summary_.wing_member_tables;
+            if (node.load_scene && (node.party >= 0 || node.race >= 0)) {
+                host_.write_party_race_fields(node.entity_id, node.party, node.race);
+            }
         }
         host_.log_.implemented("SEntity::InitAll pass A attach_self_table", "0092604e");
         if (!node.squadron || host_.script_orders_ == nullptr) return;
@@ -2846,6 +2883,8 @@ public:
             // squadron's first plane's descriptor +70h at 007F2181, the
             // entity's own at 00955420; both are the node's VehicleClass row.
             const GameMissionLuaHost::PendingEntity& node = at(entity);
+            // A scene marker (no VehicleClass row) has no 009292B0 in its pass B.
+            if (node.class_index < 0) return;
             if (host_.bind_lua_class_009292b0(node.entity_id, node.class_index, node.name)) {
                 ++host_.summary_.init_all_class_bound;
             }
@@ -2861,6 +2900,22 @@ public:
             // stands for the squadron and its leader plane at once, and the
             // image's squadron table carries no SquadronID, so it gets none.
             const GameMissionLuaHost::PendingEntity& node = at(entity);
+            if (node.class_index < 0 && node.marker_class_id >= 0) {
+                // Packet cc9_load_time_init_all: a load marker of a class whose
+                // slot +A4h is 009295B0 takes 009297E4 CALL 00928100 (section 8).
+                const char* const type_name
+                    = default_pass_c_type_name(node.marker_class_id);
+                if (type_name != nullptr) {
+                    const int party = node.marker_authored_party >= 0
+                        ? node.marker_authored_party : kEntityDefaultParty00925e1d;
+                    if (host_.mirror_identity_00928100(node.entity_id, party, node.name,
+                            type_name)) {
+                        ++host_.summary_.init_all_identity_mirrored;
+                    }
+                    host_.log_.implemented("SEntity::InitAll pass C mirror_identity", "00928100");
+                }
+                return;
+            }
             if (node.wing_member && node.squadron_id > 0) {
                 if (host_.set_plane_squadron_id_007c97e3(node.entity_id, node.squadron_id)) {
                     ++host_.summary_.init_all_squadron_ids;
@@ -3028,6 +3083,58 @@ GameMissionLuaHost::PendingEntity* GameMissionLuaHost::find_pending(int entity_i
         if (node.entity_id == entity_id) return &node;
     }
     return nullptr;
+}
+
+// Packet cc9_load_time_init_all. The load attach's `Party`/`Race` fields for
+// a SceneEntity that carries them (00928F50's mirror; every caller today
+// passes -1, so this writes nothing yet).
+void GameMissionLuaHost::write_party_race_fields(int entity_id, int party, int race) {
+    if (state_ == nullptr) return;
+    const int base = ::lua_gettop(state_);
+    lua_getfield(state_, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);
+    char key[16];
+    std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat, entity_id);
+    if (lua_istable(state_, -1)) {
+        lua_getfield(state_, -1, key);
+        if (lua_istable(state_, -1)) {
+            if (party >= 0) {
+                lua_pushinteger(state_, party);
+                lua_setfield(state_, -2, "Party");
+            }
+            if (race >= 0) {
+                lua_pushinteger(state_, race);
+                lua_setfield(state_, -2, "Race");
+            }
+        }
+    }
+    ::lua_settop(state_, base);
+}
+
+// Packet cc9_load_time_init_all. 0046CF40's creators push each instance from
+// its base constructor (00928760); the scene read then runs InitAll once, at
+// the first of its four sites (the [ESP+13h] latch, 0046EB50). Here the
+// instances already exist (create_units, the markers), so the pushes are made
+// in their order now: the units, then the markers, as the load attach took
+// them. The dedup rules (section 9) keep one node per id if create_units has
+// pushed already.
+std::size_t GameMissionLuaHost::run_scene_load_init_all_0046eb4b(
+    const std::vector<SceneEntity>& entities) {
+    if (state_ == nullptr || entities.empty()) return 0;
+    const unsigned long long before = summary_.init_all_entities;
+    for (const SceneEntity& entity : entities) {
+        push_pending_entity_00926be0(entity.id, entity.name, entity.class_index);
+        if (PendingEntity* const node = find_pending(entity.id)) {
+            node->load_scene = true;
+            node->findable = entity.findable;
+            node->marker_class_id = entity.marker_class_id;
+            node->marker_authored_party = entity.marker_authored_party;
+            node->party = entity.party;
+            node->race = entity.race;
+            ++summary_.load_init_all_pushes;
+        }
+    }
+    run_sentity_init_all_00925f20(false, 0x0046eb4bu);
+    return static_cast<std::size_t>(summary_.init_all_entities - before);
 }
 
 void GameMissionLuaHost::push_pending_entity_00926be0(int entity_id,
@@ -3739,30 +3846,6 @@ bool GameMissionLuaHost::call_entry_point(const std::string& name, bool threadsa
     return run.dispatched && run.pcall_status == 0;
 }
 
-namespace {
-// Packet cc9_init_identity_gaps. 00925E1D MOV dword ptr [ESI+54h],2: the base
-// entity's Party before any authored value (PARTY_NEUTRAL in this
-// installation's luamw_init.lua).
-constexpr int kEntityDefaultParty00925e1d = 2;
-
-// The `Type` 00928100 writes, 00E0CD80[+C4h], for the classes whose slot +A4h is
-// 009295B0 (section 1.3). +C4h is the scene class id each constructor stores:
-// 004E59AD 41h, 004E5A0D 42h, 004E5A6D 43h, 0047B6C8 47h, 004E58B8 4Ah,
-// 004E7F31 5Bh, 004E800E 5Ch. Strings read from the image at 00D18CCC..00D18E68.
-// nullptr: the class has its own pass C (or no default one was found).
-const char* default_pass_c_type_name(int class_id) noexcept {
-    switch (class_id) {
-    case 0x41: return "NAVPOINT";        // 00D18E68
-    case 0x42: return "MOVIECAMPOS";     // 00D18E5C
-    case 0x43: return "MOVIECAMLOOKAT";  // 00D18E4C
-    case 0x47: return "GAMEPATH";        // 00D18E1C
-    case 0x4A: return "CAMERAPATH";      // 00D18DFC
-    case 0x5B: return "SIMPLEEFF";       // 00D18CD8
-    case 0x5C: return "PERIODEFF";       // 00D18CCC
-    default: return nullptr;
-    }
-}
-}  // namespace
 
 std::size_t GameMissionLuaHost::attach_scene_entities_00928a00(
     const std::vector<SceneEntity>& entities) {
@@ -4138,6 +4221,9 @@ void GameMissionLuaHost::report_mission_script_state() {
         summary_.dedup_skipped_attached, summary_.dedup_squadron_upgrades,
         summary_.dedup_wing_deferred, summary_.dedup_wing_append_skipped,
         summary_.dedup_load_dropped);
+    log_.notef("summary SEntity::InitAll load walk bound=%d pushes=%llu mirrored=%llu",
+        kLoadTimeInitAllBound ? 1 : 0, summary_.load_init_all_pushes,
+        summary_.init_all_identity_mirrored);
     log_.notef("summary SceneLoad thisTable identity bound=%d class_bound=%llu mirrored=%llu",
         kSceneLoadThisTableIdentityBound ? 1 : 0, summary_.load_class_bound,
         summary_.load_identity_mirrored);
