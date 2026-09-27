@@ -1,0 +1,18 @@
+{
+  "packet": "cc9_deck_tick_in_step",
+  "doc": "docs/SENTITY_INIT_ATTACH_ORDER.md section 12",
+  "switch": "kDeckTickInFixedStepBound (include/bsp/game_hosts_fixed_step.hpp): committed OFF",
+  "calls": [
+    {"address": "0075828E", "native": "006CDC70", "function": "00758270", "kind": "call", "host": "FixedStepBinding::run_step_job_waves -> GameScriptOrdersHost::run_air_ops_update_006cdc70 (once per step, all decks)"},
+    {"address": "006D254B", "native": "006CDC70", "function": "006D2510", "kind": "call", "host": "the same call (airfields)"},
+    {"address": "00875EA2", "native": "00925F20", "function": "00875BB0", "kind": "call", "host": "GameFixedStepHost::init_pending_entities_00925f20 (row 12, after the job waves)"}
+  ],
+  "routines": [
+    {"address": "00875BB0", "coverage": "order only: job waves 00875CDD..00875DBD before the fan-out 00875E0C..00875EDF (docs/IN_MISSION_SUBSYSTEM_TICK.md)"}
+  ],
+  "corrections": [],
+  "no_ghidra_function": [],
+  "names": [],
+  "verdict": "pending",
+  "pairs": {}
+}
