@@ -852,3 +852,122 @@ All six logs show the fit line, the final COM release, and a module directory in
 
 **Verdict: ON.** `kSEntityInitAllBound` is set true. Passes B, C and E stay named records, and
 their per-class bodies are the successor's.
+
+## 18. Part 10: the proximity scan's two stand-ins retired (`kScanProximityUnitsEntriesBound`, committed OFF)
+
+Packet `cc9_scan_units_entries`, worker cc9-world-init, on main 297fcf7fe. The units entries
+come from cc9_units_contracts (a3c7096e1). Ghidra was read only.
+
+**What 00977990 tests, per list-24 node (V, 00977A25..00977AF9).**
+- **Where each test reads.** The walk starts at `[world+13Ch]` and steps through the node's
+  `+4h`. The node's entity (`+8h`) is the squadron:
+  - its own four live bytes (00977A36..00977A58);
+  - its own side against the ship's (00977A5E..00977A64);
+  - `00803CE0(ECX = ship side, EDX = squadron) == 1` (00977A6A..00977A74).
+- **Position.** Only the position comes from the flight leader `[squadron+3D0h]` (00977A76),
+  after its pose refresh 00414DB0.
+- **Distance.** The squared distance is `(dx*dx + dy*dy) + dz*dz` on the x87, with each
+  difference stored to a float first. The sum is stored to a float at 00977AD8 and compared
+  against the double 4.0e6 at 00D09FE8. The old host code summed the other way round in float,
+  which could only matter at the rounding edge.
+- **The part test** is 009779E7..00977A03: `+348h` non-null and `(+34Ch - +348h) >> 2` not below
+  2.
+
+**The binding** (`src/game_hosts_mission_frame.cpp`):
+- The part test becomes `unit_part_descriptor_count(ship) < 2`, which rejects the ship.
+- List 24 is `world_list_entry(24, i)`. The side, live bytes and rating are read on that unit.
+- The position comes from `squadron_list_24_leader(unit)`.
+- **Substitution:** the image reads `[+3D0h]` unguarded, but when the host answers "none alive"
+  the node is skipped and counted in `list24_no_leader`.
+- The switch off keeps the two stand-ins. The summary line gains `units_entries`,
+  `part_rejects`, `list24_nodes` and `list24_no_leader`.
+
+### Predictions (written before the pairs; the same tree, switch only, both variables set)
+
+- **Part test.** It passes for every ship: the plane-release census counts 18/18 and 32/32 ships
+  with more than one section. So `part_rejects=0`, and `ships` and `records` are unchanged
+  against the OFF run of the same tree.
+- **USN04 4700/4500.**
+  - `list24_nodes` goes from 0 to a positive count. List 24 holds up to 21 nodes, pushed at
+    0.00 s, 25.1 to 30.1 s and 105.1 to 106.6 s. It is walked for each scanned ship until the
+    first hit.
+  - `hits` goes above 0, because Japanese strikes close to within 2 km of Allied ships and are
+    identified. `expiries` may rise with them.
+  - `list24_no_leader` is small, 0 until a squadron loses every plane.
+- **USN02 9200/9000.** No squadron registers on list 24 in this scene, so `list24_nodes=0`,
+  `hits=0` and the whole log is identical apart from the summary fields.
+- **Gameplay identical on both.** The hit arm only spawns a render-side point effect and holds
+  a host record that nothing else reads. Deaths, hit records and releases do not move. The new
+  `WarningManager::proximity_effect_0096c070` record calls appear only when hits do.
+
+### Part 10 pairs and verdict
+
+One tree, 718254fe0: `local\bin\sc_off` against `local\bin\sc_on`, differing only by the
+switch. Both variables were set. All four logs show the fit line, the final COM release, and a
+module directory inside this tree.
+
+| field | USN04 OFF | USN04 ON | USN02 OFF | USN02 ON |
+| --- | ---: | ---: | ---: | ---: |
+| ships scanned, records | 990, 18 | 990, 18 | 3,524, 32 | 3,524, 32 |
+| `part_rejects` | 0 | 0 | 0 | 0 |
+| `list24_nodes` | 0 | 10,576 | 0 | 0 |
+| hits, expiries | 0, 0 | 444, 16 | 0, 0 | 0, 0 |
+| `list24_no_leader` | 0 | 0 | 0 | 0 |
+| native table | 1,581 rows | +2 records: `proximity_effect_0096c070` 444, `proximity_effect_stop_00867b10` 16 | 1,481 rows | identical |
+| deaths, hit records | 41, 743 | identical | 22, 439 | identical |
+
+**Every prediction held.** The masked whole-log diff leaves only the summary line, the two
+record rows on USN04, and the ignored refills counter.
+
+**Verdict: ON.** `kScanProximityUnitsEntriesBound` is set true.
+
+## 19. Part 11: the loss warning 009813A0 bound past its guard (`kLossWarningBound`, committed OFF)
+
+Packet `cc9_loss_warning`, worker cc9-world-init, from the plan in `docs/LOSS_WARNING.md`.
+Ghidra was read only.
+
+**Read for this packet (V).**
+- **00976F10 `CancelByTarget`** (00976F10..00976FF0, `RET 4`). The argument is the unit pointer:
+  0098167A `PUSH EDI`, with EDI the unit since 009813BF.
+  - It walks the `+E0h` pending list. A record is destroyed through its slot 0 with 1, unlinked,
+    and the count at `+E8h` dropped, when its `vt[10h]()` kind is 4 and its `+80h` is the unit.
+  - It then stores `now + 2.0` (`[00F876A4]` plus the double 00D7A308) under the unit in the map
+    at `+15Ch` (00975C40). The readers of that map are unread.
+- **The ship arm, 0098168D..009816C5.** IsKindOf 6, then three calls on manager+184h, which is
+  the per-ship proximity record map the scan 00977990 keeps:
+  - 00975D00 finds the record;
+  - 0096AE90 stops a live effect (00867B10, effect+9 = 1), releases it and nulls it;
+  - 00975E30 erases the record.
+
+**The binding** (`include/bsp/game_hosts_mission_frame.hpp`, `src/game_hosts_mission_frame.cpp`,
+and one hunk in `src/game_hosts_gunnery.cpp`). With the switch on:
+- The death route calls `game_warning_report_loss_009813a0` in place of its record. That is plan
+  step 5; the gunnery file was unleased, and its loss counters are unchanged.
+- **Bound:** past the guard, the cancel runs over `warning.pending` and stamps the `+15Ch` map. A
+  ship's proximity record is erased.
+- **Named records:** the text post (`loss_text_005cf3d0`), 006E6670, the `kill` channel
+  (`kill_channel_0097b8c0`) and the teardown.
+- **Substitution:** no player slot is resolved, so the text key is counted by side,
+  `warn_uslost` or `warn_japanlost`.
+- The host keeps no channel-subscription store, so the plan's listener count cannot be given.
+
+### Predictions (written before the pairs; the same tree, switch only, both variables set)
+
+- **USN02 9200/9000.**
+  - 22 entries: every death reaches the entry.
+  - The guard passes 22 times, as `loss_side0=12 loss_side1=10`; the text keys are 12
+    `warn_uslost` and 10 `warn_japanlost`.
+  - `cancelled=0`: no host path queues a pending warning, so the list is always empty.
+  - `proximity_erased=22`. Every ship that dies has been scanned at least once, since deaths come
+    after 27 s and a scan runs every 4 s, so each has a record. A dead ship is never scanned
+    again, so `records` does not move.
+  - Native table: the gunnery row `WarningManager::report_loss_009813a0` (22 records) goes. The
+    entry row (22 concrete) and six rows, 22 each, come in: text, cancel, erase, 006E6670, kill
+    channel and teardown.
+- **E2 = USN04 9200/9000.**
+  - 51 entries with 0 guard passes: every loss is an aircraft, which fails IsKindOf 18h and 6.
+  - The gunnery record row (51) is replaced by the entry row (51 concrete), and nothing else
+    moves.
+- **Both.** Gameplay identical: deaths, the per-entity death table, hit records and releases.
+  Nothing the cancel or the erase touches is read by gameplay, and the Lua listeners stay
+  records.

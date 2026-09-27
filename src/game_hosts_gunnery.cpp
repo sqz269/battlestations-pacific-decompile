@@ -39,6 +39,7 @@
 #include "bsp/gun_heading_snap.hpp"
 #include "bsp/unit_rudder.hpp"
 #include "bsp/game_hosts_lua.hpp"
+#include "bsp/game_hosts_mission_frame.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/session_participant_pools.hpp"
 #include "bsp/game_hosts_units.hpp"
@@ -6829,9 +6830,14 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
         }
         if (decision.reports_kill) {
             // 009813A0 on [00F8A0C4]; its own guard is side < 2 and IsKindOf
-            // 18h or 6. The body (009813A0..00982110) builds the radio loss
-            // report and is not reconstructed.
-            record("WarningManager::report_loss_009813a0", 0x009813a0u);
+            // 18h or 6. Packet cc9_loss_warning: with kLossWarningBound the
+            // warning manager host runs it (src/game_hosts_mission_frame.cpp);
+            // otherwise it is the record.
+            if constexpr (kLossWarningBound) {
+                game_warning_report_loss_009813a0(victim);
+            } else {
+                record("WarningManager::report_loss_009813a0", 0x009813a0u);
+            }
             ++loss_report_calls;
             if (target.row.side >= 0 && target.row.side < 2
                 && units.unit_is_kind_of(victim, bsp::kUnitGunneryKindShipBase)) {

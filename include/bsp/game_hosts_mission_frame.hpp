@@ -57,6 +57,14 @@ void game_warning_torpedo_effect_00977820(std::size_t unit);
 // 00959507 in the death route and 007F3B56 in BSP_Aircraft_OnDestroyed. No
 // gunnery or ship-AI counter is touched.
 void game_warning_report_loss_009813a0(std::size_t unit);
+// Packet cc9_loss_warning (docs/LOSS_WARNING.md section 5). True: the death
+// route calls the entry above, and past the guard it runs 009813A0's cancel
+// 00976F10 over the manager's pending list and, for a ship, the proximity
+// record's removal (00975D00 -> 0096AE90 -> 00975E30); the text post 005CF3D0
+// and the `kill` channel's Lua listeners (0097B8C0 -> 00887E50) stay named
+// records, so a mission's own failure path does not run twice. False: the
+// death route keeps its record and the entry runs the guard only.
+inline constexpr bool kLossWarningBound = false;
 
 // Packet cc9_bot_scheduler_writers (docs/BOT_SCHEDULER_WRITERS.md). True: the
 // three writers of the side-AI scheduler's gate and periods run - 0091B2E0's
