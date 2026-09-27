@@ -2,17 +2,33 @@
   "packet": "cc9_units_push_pending",
   "doc": "docs/CONSTRUCT_WORLD.md",
   "calls": [
-    {"address": "00928760", "native": "00926BE0", "function": "00928630", "note": "the base constructor BSP_GameEntity_Construct pushes the entity onto 00F899D0"}
+    {
+      "address": "00928760",
+      "native": "00926BE0",
+      "function": "00928630",
+      "note": "the base constructor BSP_GameEntity_Construct pushes the entity onto 00F899D0"
+    }
   ],
   "coverage": [
-    {"routine": "00928630", "coverage": "partial: its 00926BE0 push at 00928760 only"}
+    {
+      "routine": "00928630",
+      "coverage": "partial: its 00926BE0 push at 00928760 only"
+    }
   ],
   "substitutions": [],
   "corrections": [
-    {"was": "section 9.5 forecast load_dropped=21/28 and USN02 skipped_pending=4", "is": "with the load walk ON the load attach is retired, so the load walk's unit pushes are skipped as pending instead", "evidence": "src/game_hosts_lua.cpp run_scene_load_init_all_0046eb4b; kLoadTimeInitAllBound ON"}
+    {
+      "was": "section 9.5 forecast load_dropped=21/28 and USN02 skipped_pending=4",
+      "is": "with the load walk ON the load attach is retired, so the load walk's unit pushes are skipped as pending instead",
+      "evidence": "src/game_hosts_lua.cpp run_scene_load_init_all_0046eb4b; kLoadTimeInitAllBound ON"
+    }
   ],
   "switches": [
-    {"name": "GameUnitsHost::Impl::kUnitsPendingPushBound", "state": "OFF", "pair": "pending"}
+    {
+      "name": "GameUnitsHost::Impl::kUnitsPendingPushBound",
+      "state": "ON",
+      "pair": "local/PP_OFF_USN04.log vs local/PP_ON_USN04.log, local/PP_OFF_USN02.log vs local/PP_ON_USN02.log"
+    }
   ],
   "failed_predictions": [],
   "no_ghidra_function": [],

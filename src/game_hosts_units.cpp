@@ -3704,7 +3704,9 @@ struct GameUnitsHost::Impl {
     // Packet cc9_units_push_pending, docs/CONSTRUCT_WORLD.md section 26:
     // create_units pushes each instance it constructs onto the pending list, as
     // 00928760 does. OFF: only the Lua routes and the load walk push.
-    static constexpr bool kUnitsPendingPushBound = false;
+    // ON since the USN04 4700/4500 and USN02 9200/9000 pairs: every counter as
+    // predicted, InitAll rows and gameplay identical.
+    static constexpr bool kUnitsPendingPushBound = true;
     unsigned long long construction_pushes = 0;
     // Packet cc9_ship_sink_descent, docs/CONSTRUCT_WORLD.md section 25. ON: the
     // leak manager at unit+10D4h is built (0074F490 with controller+84h from the

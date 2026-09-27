@@ -1656,7 +1656,7 @@ and the kill, the unlink and the expiry release now run. **Caveat:** the descent
 controller+84h over the host's stand-in element list (capacity = Mass / 3), so the ~97 s descent is
 a property of the stand-in. It will move when the element producer is read.
 
-## 26. The pending-list push moves to create_units (packet `cc9_units_push_pending`, `kUnitsPendingPushBound`, committed OFF)
+## 26. The pending-list push moves to create_units (packet `cc9_units_push_pending`, `kUnitsPendingPushBound`, committed OFF, ON since the pairs)
 
 2026-09-27, worker cc9-units2, on main af9eab355, after cc9-init-passes' dedup list (docs/
 SENTITY_INIT_ATTACH_ORDER.md section 9, 338c8b4e3) and load-time InitAll (section 10,
@@ -1703,3 +1703,28 @@ matches section 10.4's ON column.
 
 These differ from section 9.5's forecast (`load_dropped=21`/`28`, `skipped_pending=4`), which was
 written before the load walk replaced the load attach.
+
+### The pairs, measured
+
+One tree, `7edcd3102`: `local\pp_off` against `local\pp_on`, the switch only, both variables
+set. Logs `local\PP_OFF_USN04.log` / `PP_ON_USN04.log` and `PP_OFF_USN02.log` /
+`PP_ON_USN02.log` in worktree cc9-units2. All four show the fit line, the immediate present
+interval, a module directory in this tree and the final COM release. `tools/pair_diff.py` exits 1
+on both pairs: gameplay, death rows and the unit table are identical, and the masked multiset of
+other lines is empty.
+
+| row | USN04 OFF -> ON | USN02 OFF -> ON | verdict |
+| --- | --- | --- | --- |
+| construction pushes (native `construct_push_00926be0` calls) | 0 -> 81 | 0 -> 32 | held |
+| `skipped_pending` | 0 -> 21 | 0 -> 32 | held |
+| `squadron_upgrades` / `wing_deferred` / `wing_append_skipped` | 0 -> 20 / 40 / 0 | 0 / 0 / 0 | held |
+| `load_dropped` / `skipped_attached` | 0 / 0 | 0 / 0 | held |
+| InitAll `pushes` | 46 -> 86 | 34 -> 34 | held |
+| InitAll calls / with work / entities / wing appended | unchanged | 9,009 / 5 / 34 / 0 unchanged | held |
+| load walk pushes / mirrored | unchanged | 30 / 2 unchanged | held |
+| every other native row | unchanged | unchanged | held |
+| deaths, hit records | 43, 788 both | 21, 354 both | held |
+
+**Verdict: ON.** `create_units` is now a pusher, as 00928630 is in the image. The Lua routes'
+pushes and the load walk's unit pushes are duplicates the dedup list skips. Retiring them is
+cc9-init-passes' next step. The wing-construction contract (section 9.3) remains open.
