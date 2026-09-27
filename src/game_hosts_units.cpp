@@ -3708,6 +3708,8 @@ struct GameUnitsHost::Impl {
     // predicted, InitAll rows and gameplay identical.
     static constexpr bool kUnitsPendingPushBound = true;
     unsigned long long construction_pushes = 0;
+    unsigned long long squadron_pass_a_hook_calls = 0;  // packet cc9_squadron_pass_hooks
+    unsigned long long squadron_pass_c_hook_calls = 0;
     // Packet cc9_ship_sink_descent, docs/CONSTRUCT_WORLD.md section 25. ON: the
     // leak manager at unit+10D4h is built (0074F490 with controller+84h from the
     // displacement sum 00937DBB..00937F74 over the hull's element list), the
@@ -17866,6 +17868,18 @@ bool GameUnitsHost::store_scene_node_flags(const void* identity,
     return false;
 }
 
+// Packet cc9_squadron_pass_hooks: declared no-ops, counted, until the two
+// bindings land (docs/CONSTRUCT_WORLD.md section 27).
+void GameUnitsHost::on_squadron_pass_a_construct_wing(std::size_t squadron_index) {
+    static_cast<void>(squadron_index);
+    ++impl_->squadron_pass_a_hook_calls;
+}
+
+void GameUnitsHost::on_squadron_pass_c_initial_command(std::size_t squadron_index) {
+    static_cast<void>(squadron_index);
+    ++impl_->squadron_pass_c_hook_calls;
+}
+
 bool GameUnitsHost::ship_wreck_sink_00824fe5(const void* identity) {
     if constexpr (!Impl::kShipSinkDescentBound) {
         static_cast<void>(identity);
@@ -18369,6 +18383,9 @@ void GameUnitsHost::report() {
                 static_cast<double>(slot->leak_first_water_t),
                 static_cast<double>(slot->motion_class.hull_mass));
         }
+        host.log.notef("summary squadron pass hooks pass_a=%llu pass_c=%llu (no-op entries, "
+            "packet cc9_squadron_pass_hooks)", host.squadron_pass_a_hook_calls,
+            host.squadron_pass_c_hook_calls);
         host.log.notef("summary units construction push bound=%d pushes=%llu (00928760 -> "
             "00926BE0, packet cc9_units_push_pending)", Impl::kUnitsPendingPushBound ? 1 : 0,
             host.construction_pushes);

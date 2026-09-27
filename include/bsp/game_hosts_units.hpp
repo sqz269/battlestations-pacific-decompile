@@ -606,6 +606,17 @@ public:
     // two dampings), run by the row-15 flush at vt[7Ch]. False when the switch is
     // off, the identity is not a unit, or its leak model was never built.
     bool ship_wreck_sink_00824fe5(const void* identity);
+    // Packet cc9_squadron_pass_hooks (docs/CONSTRUCT_WORLD.md section 27). Two
+    // entries the Lua host's InitAll calls for a plane-squadron node, by unit
+    // index of the squadron (its fused leader). Both are no-ops for now and
+    // only count their calls:
+    // - pass A (007F4580): construct the squadron's wing there, as the image
+    //   does (docs/SENTITY_INIT_ATTACH_ORDER.md section 9.3);
+    // - pass C (007F4BA0 at 007F4E9E): with no current command, a stop
+    //   (00E08F88) at the first member's position when its +900h is 6, else a
+    //   moveto (00E08F68) toward the home base +404h when one is set.
+    void on_squadron_pass_a_construct_wing(std::size_t squadron_index);
+    void on_squadron_pass_c_initial_command(std::size_t squadron_index);
     // Instance vtable+5Ch dispatch using the class selected by VehicleClass.Type
     // and the compiled predicates in unit_kind_query.hpp. Missing/unrecognized
     // identity and invalid indices answer false. docs/GAME_UNIT_KIND_BINDING.md.
