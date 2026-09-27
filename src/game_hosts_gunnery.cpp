@@ -1850,6 +1850,7 @@ struct GameGunneryHost::Impl {
     const ReconClassRecord* recon_record_for_class(int recon_class_id);
     void resolve_recon_inputs();
     void step_recon_sensor_pass_008073c0(float dt);
+    void run_recon_sensor_pass_body_008073c0();
 
     void unit_pose(std::size_t index, float right[3], float up[3], float forward[3],
         float origin[3]) const {
@@ -4259,6 +4260,13 @@ void GameGunneryHost::Impl::step_recon_sensor_pass_008073c0(float frame_dt) {
     if (recon_refresh_timer > 0.0f) return;
     recon_refresh_timer += bsp::kReconSensorPassRefreshPeriod;
     if (recon_refresh_timer < 0.0f) recon_refresh_timer = 0.0f;
+    run_recon_sensor_pass_body_008073c0();
+}
+
+// 008073C0 itself, without 008079B0's countdown: the periodic service above
+// and the scene load's direct call at 004E059B (packet
+// cc9_initial_controlled_unit_load) both run it.
+void GameGunneryHost::Impl::run_recon_sensor_pass_body_008073c0() {
     // 008073C1/008073CC/008073D6: dt is the measured gap since this slot's
     // previous rebuild, [00F876A4] minus slot+2Ch, not the frame delta.
     const float dt = clock_seconds - recon_last_pass_seconds;
@@ -8737,6 +8745,12 @@ std::vector<GameGunneryHost::LiveTorpedo> GameGunneryHost::live_torpedoes() cons
 
 float GameGunneryHost::ship_ai_draw(std::size_t unit_index, float low, float high) {
     return impl_->draw(Impl::Draw::ship_ai_torpedo, unit_index, 0, low, high);
+}
+
+bool GameGunneryHost::run_recon_pass_at_scene_load_004e059b() {
+    if (impl_->units.count() == 0) return false;
+    impl_->run_recon_sensor_pass_body_008073c0();
+    return true;
 }
 
 bool GameGunneryHost::reseed_shared_stream_00bd2fd0(int stream, std::uint32_t seed) {

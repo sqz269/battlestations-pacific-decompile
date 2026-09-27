@@ -1954,13 +1954,9 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             }
             host.units->issue_authored_commands();
             if constexpr (kInitialControlledUnitBound) {
-                // Packet cc9_initial_controlled_unit: scene load step 19's
-                // 006485A0 (004E05B7) picks the controlled unit from the HUD
-                // root's +8Ch; the world host runs it after the first list
-                // build. No first-created-unit stand-in.
-                if (host.world_host != nullptr) {
-                    host.world_host->request_scene_load_force_select_004e05b7();
-                }
+                // Packet cc9_initial_controlled_unit(_load): no first-created-unit
+                // stand-in. Scene load step 19 picks the controlled unit after
+                // the HUD is attached, below.
             } else {
                 if (host.units->count() > 0) host.units->set_controlled_unit_004c0890(0);
             }
@@ -2068,6 +2064,26 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             // payload and publishes 25h INTF_CAPTAIN's level-1 set for a ship.
             if (host.hud != nullptr) {
                 host.hud->attach_world_2k(*host.units, host.lua);
+                if constexpr (kInitialControlledUnitBound) {
+                    // Packet cc9_initial_controlled_unit_load: scene load step 19,
+                    // 004E0565..004E05B7, before the first tick. 004E059B
+                    // 008073C0 on the local slot, 004E05A2 game+193Ch = 0,
+                    // 004E05A9 004C3CB0, then 004E05B7 006485A0 (run by the
+                    // world host right after that build publishes the lists).
+                    // Should the gunnery pass or the build not publish an own
+                    // triple, the request stays armed for the first tick's build.
+                    if (host.world_host != nullptr) {
+                        host.world_host->request_scene_load_force_select_004e05b7();
+                        GameGunneryHost* gunnery = host.units->gunnery();
+                        if (gunnery != nullptr && gunnery->run_recon_pass_at_scene_load_004e059b()) {
+                            host.done("SceneLoad::recon_rebuild_local_slot", 0x004e059bu);
+                        } else {
+                            host.record("SceneLoad::recon_rebuild_local_slot", 0x004e059bu);
+                        }
+                        host.world_host->build_local_player_unit_lists_004c3cb0();
+                        host.done("SceneLoad::unit_lists_004c3cb0", 0x004e05a9u);
+                    }
+                }
                 host.hud->request_scene_interface_for_unit_004cc460();
             }
             continue;
