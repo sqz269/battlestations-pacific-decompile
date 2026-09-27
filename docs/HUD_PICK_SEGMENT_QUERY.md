@@ -986,3 +986,48 @@ USN04 4700/4500:
 - **Pick and seat.** The ShipCaptain's pose after 25 s differs from OFF, so pick and seat ray
   endpoints differ from then. The counts stay the same (8,159 and 8,157).
 - **Gameplay identical.** Seat and pick hits stay 0 on both sides.
+
+**Switch 3, pairs and verdict.** The same tree at 93e87be80, switch only, streams ON,
+`BSP_DEATH_TABLE=1`, binaries `local\bin\mv_off` and `local\bin\mv_on`.
+
+| row | USN01 OFF | USN01 ON | USN04 OFF | USN04 ON |
+| --- | --- | --- | --- | --- |
+| `pair_diff` exit | | 1 | | **3** |
+| deaths / hits / damage / shots | 7 / 150 / 2690.0 / 561 | same | 40 / 799 / 11621.4 / 6395 | **41 / 808 / 11721.4 / 6374** |
+| movie builds / destroys / keyframes / active at end | | 2 / 1 / 16 / 1 | | 1 / 1 / 12 / 0 |
+| `MovCamNew_AddPosition` | UNIMPLEMENTED 12 | concrete 12 | UNIMPLEMENTED 6 | concrete 6 |
+| pick: `ray_pick_other` / `ray_pick_own` / `owner_140` | 0 / 0 / 0 | 2,240 / 160 / 2,404 | 0 / 0 / 0 | 1 / 0 / 0 |
+| pick land hits | 0 | 22 | 0 | 0 |
+| seat held ticks / returns | | | 7,071 / 5 | 5,707 / 3 |
+
+**USN01: every predicted row held except one band.**
+- The intro camera was built at frame 81 and replaced no mover. It started on SaltLakeCity's
+  frame and cut to CB2 at clock 7 s: position (3928.4, 15.1, -3158.3) at 8 s, holding (3920.4,
+  16.0, -3154.1) from 14 s.
+- It was destroyed at frame 403 by Northampton's ShipCaptain. It was rebuilt at frame 1824 under
+  25h, replacing that ShipCaptain, and the pick cast from it for the rest of the run.
+- Gameplay, death rows and the unit table are identical.
+- **Failed band:** `owner_140` reached 2,404, above the predicted [1, 1,200]. The look-at sits on
+  ScoutDauntless or ConLeader, so almost every cast after 91 s resolves a unit.
+- `camera_basis` UNIMPLEMENTED went 163 -> 162: one frame at 20.1 s cast from the movie's last pose
+  before the ShipCaptain published.
+
+**USN04: the identity prediction failed. Gameplay moved, and the cause is identified.**
+- The movie camera replaced the Lexington's ShipCaptain at frame 81 and was destroyed at frame
+  502, t = 25.1 s. 0064DA40 then built a **new** ShipCaptain with the retarget seed; OFF resumes
+  the old one.
+- The player gun seat aims the Lexington's guns along the camera ray (`docs/PLAYER_GUN_SEAT.md`
+  sections 1 to 3). So its held guns and aim follow the camera from 25 s: held ticks 7,071 ->
+  5,707, returns 5 -> 3.
+- The first gunnery difference is one extra shot at step 2200 (t = 110 s). Deaths moved 40 -> 41,
+  and the ship-AI rows follow the combat.
+- The move is the binding's own consequence through the seat. It is faithful exactly insofar as
+  the image destroys the ShipCaptain when the movie camera installs, and rebuilds it at the next
+  0064DA40. That destruction is read: 004BC410's 00926D90 on the outgoing mover.
+- The rebuild relies on 46h's `+20h` being cleared by that destruction's observer. That is
+  **inferred**, like the screen's `+1Ch`, not read.
+
+**Verdict: not flipped.** `kMovieMoverBound` stays OFF pending the lead's ruling, because it moves
+USN04's reference rows through the seat and the identity prediction failed. The recommendation is
+ON, once someone reads the 46h `+20h` observer clearing (the 00694A60 registration at 0064DCxx and
+its callback).
