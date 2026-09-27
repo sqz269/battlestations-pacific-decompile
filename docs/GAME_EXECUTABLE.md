@@ -10627,8 +10627,8 @@ above** once the runs below are recorded.
   `--press-start-frame 30 --menu-select <mission>`.
 
 **Known behaviours carried into this reference:**
-- **USN02 is controlled through Houston**, not DeRuyter (`kSetSelectedUnitBound`, packet
-  `cc9_set_selected_unit`).
+- **USN02 is controlled through Houston**, not DeRuyter. The change is bracketed with the movie
+  interface switches; see the USN02 chain below.
 - **E2 ends in phase 1** under lockstep: `Blackout(true, "luaMoveToPh2")` is re-issued with no
   callback (docs/MISSION_BLACKOUT.md).
 
@@ -10650,3 +10650,140 @@ above** once the runs below are recorded.
     and the HomeBase contract.
   - Band: deaths 6..9, hit records 140..175. Any move is **flagged as unpaired** unless a pair
     doc names USN01.
+
+### The runs
+
+**These rows are the current reference for all four missions.** The binary is
+`local\rb5\build\win32\Release\bsp_game.exe` (SHA-256 prefix `6617D44CB4A9`), a no-flip export of
+main `7711f353f`. The predictions were committed at `1963d12cf`. The logs are
+`local\rb5_{usn04,e2,usn01,usn02}.log` in worktree cc9-units3, 2026-09-27. Every log shows
+`window resolution override fit: 2560x1440 -> 1600x900`,
+`present interval immediate (harness override)`, a module directory under `local\rb5\` and the
+final COM release.
+
+The run lines, each from the worktree root, one at a time, with both variables set:
+
+```
+./tools/run_game.ps1 -Exe local\rb5\build\win32\Release\bsp_game.exe -Log local\rb5_usn04.log -- --frames 4700 --press-start-frame 30 --menu-select USN04 --mission-frames 4500 --mission-frame-seconds 0.05
+./tools/run_game.ps1 -Exe local\rb5\build\win32\Release\bsp_game.exe -Log local\rb5_usn01.log -- --frames 3200 --press-start-frame 30 --menu-select USN01 --mission-frames 3000 --mission-frame-seconds 0.05
+./tools/run_game.ps1 -Exe local\rb5\build\win32\Release\bsp_game.exe -Log local\rb5_e2.log -- --frames 9200 --press-start-frame 30 --menu-select USN04 --mission-frames 9000 --mission-frame-seconds 0.05
+./tools/run_game.ps1 -Exe local\rb5\build\win32\Release\bsp_game.exe -Log local\rb5_usn02.log -- --frames 9200 --press-start-frame 30 --menu-select USN02 --mission-frames 9000 --mission-frame-seconds 0.05
+```
+
+| mission | frames | damage | deaths | hit records (hull) | shots | first hit | torpedo-task / dive-bomb-task releases | plane water contacts | controlled moved | mission end | unimplemented | log |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| USN04 | 4500 | 11758.0 | 41 | 812 (307) | 6341 | 93.00 s | 4 of 16 / 5 of 19 | 16 | Lexington 3497.48 m | none | 561 | `local\rb5_usn04.log` |
+| USN01 | 3000 | 2690.0 | 7 | 150 (85) | 561 | 53.75 s | 3 of 5 / 0 of 2 | 3 | Northampton 0.00 | none | 520 | `local\rb5_usn01.log` |
+| USN04 (E2) | 9000 | 13369.3 | 51 | 902 (320) | 7339 | 93.00 s | 4 of 16 / 5 of 19 | 19 | Lexington 5789.15 m | none; **phase 1 only** (known) | 563 | `local\rb5_e2.log` |
+| USN02 | 9000 | 53370.4 | 20 | 664 (305) | 1163 | 35.65 s | - | 0 | **Houston** 1167.61 m (known; the change is bracketed with the movie interface switches) | **failed at 39.65 s** ("Game Over"; Exeter sunk at 35.80 s) | 542 | `local\rb5_usn02.log` |
+
+### Predictions against the runs
+
+- **USN04 and USN02 held exactly.** `tools/pair_diff.py` exits 0 against `local\RP_ON_USN04.log`
+  and `local\RP_ON_USN02.log`, the Repair pair's ON sides on this tip.
+- **E2 held its band:** 51 deaths (49..55) and 902 hit records (860..940), phase 1 only.
+- **USN01 held its band:** 7 deaths and 150 hit records. Shots moved 583 -> 561 and the controlled
+  unit changed; both are attributed below.
+
+### Per-entity death tables
+
+Each is the log's `death row` lines: victim, time, killer.
+
+- **USN02 (20):** Exeter 35.80 (Tokitsukaze); Yamakaze 49.65 (Houston); Kortenaer 73.95
+  (Yudachi); Houston 74.55 (Nachi); Kawakaze 111.15 (Perth); Electra 126.95 (Yudachi); Encounter
+  157.66 (Tokitsukaze); Perth 168.21 (Asagumo); John3 174.31 (Tokitsukaze); DeRuyter 185.41
+  (Haguro); Java 196.61 (Yudachi); Amatsukaze 271.11 (Witte); Yudachi 298.80 (Alden); Yukikaze
+  302.25 (John2); Samidare 323.44 (Jupiter); Murasame 348.49 (Alden); Harusame 357.24 (Jupiter);
+  Jintsu 394.48 (Jupiter); Haguro 403.48 (Jupiter); Witte 426.72 (Minegumo).
+  - Against d: John1 and Alden no longer die; Witte now dies.
+- **USN01 (7):** Mav5 66.65 (SaltLakeCity); Mav4 69.15 (SaltLakeCity); Mav3 69.40 (Northampton);
+  Mav2 71.65 (Northampton); Mav1 84.35 (Dunlap); ScoutDauntless 129.85 (Convoy4);
+  ScoutDauntless|.-2 135.95 (Convoy5).
+  - The same victims as d; four rows changed only in their killer or range fields.
+- **USN04 (41, all aircraft)** and **E2 (51, all aircraft):**
+  - E2's first 41 rows are USN04's, victim for victim and time for time. The first is
+    `D3A Val #1.1` at 93.45 s, the last in USN04 is `A6M Zero #6.2` at 223.06 s, and E2 ends
+    with `D3A Val #7.1|.-2` at 269.26 s. The full lines are in the logs.
+  - Against d: USN04 has 3 victims only in d, 1 only in e and 40 changed; E2 has 1 victim only in
+    d and 51 changed.
+
+### The natives against d
+
+| mission | rows d -> e | added | removed | unimplemented d -> e |
+| --- | --- | --- | --- | --- |
+| USN04 | 1597 -> 1634 | 43 | 6 | 545 -> 561 |
+| E2 | 1597 -> 1636 | 43 | 4 | 545 -> 563 |
+| USN01 | 1359 -> 1484 | 128 | 3 | 461 -> 520 |
+| USN02 | 1504 -> 1561 | 60 | 3 | 518 -> 542 |
+
+The added rows are the new hosts' first calls: the movie interface, mover and seat paths, the
+squadron pass hooks and initial command, the construction push, the deck tick, the wing
+construction, the leak, wreck and sink entries, and the torpedo stock. The full lists are in
+`local\cc9-units3-rb5-vs-d-<mission>.txt` (worktree cc9-units3).
+
+### Against the 2026-09-27 d section, and what moved each row
+
+The chains below use the pair logs of each landing. Where a landing was not paired on a mission,
+the step is bracketed between the last pair base without it and the first pair base with it,
+and marked **bracketed**.
+
+**Not in this list:**
+- The KillDepth kill, the sunk-ship flush and the sink descent were already in d.
+- No landing named "torpedo director mask" exists between `df7f875c7` and `7711f353f`.
+
+**USN04 (4500).** 43 / 788 / 5075 shots became **41 / 812 / 6341**:
+
+| step | deaths | hit records (hull) | shots | releases | Lexington | by | doc |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| d | 43 | 788 (331) | 5075 | 4 of 16 / 1 of 19 | 3514.72 | - | - |
+| construction push, run-extra step, deck tick, route pushes, squadron hooks and initial command, race and identity, set-selected unit (each identical on USN04) | 43 | 788 | 5075 | - | - | - | CONSTRUCT_WORLD 26-27, CONTROLLED_UNIT.md (43 / 788 both at `0aac5988c`) |
+| buoyancy elements ON, **bracketed** | 40 | 799 (306) | 6395 | 7 of 16 / 3 of 19 | 3497.57 | 972f0e1a1 | CONSTRUCT_WORLD 28 (E2 pair); 43 / 788 at `0aac5988c`, 40 / 799 at `eaa9a301b` |
+| movie interface push and reseed, HomeBase key and contract, throttle cut (each identical on USN04) | 40 | 799 | 6395 | - | - | - | HUD_PICK_SEGMENT_QUERY (switches 1 and 2), CONSTRUCT_WORLD 29 and 31, UNIT_DEATH_MESSAGE_AND_SINK |
+| movie camera mover ON | 41 | 808 | 6374 | 6 of 16 / 3 of 19 | 3497.48 | b5861c09a | HUD_PICK_SEGMENT_QUERY, switch 3 |
+| torpedo stock, live leak, wreck-hit delivery (each identical on USN04) | 41 | 808 | 6374 | - | - | - | UNIT_WEAPON_DEVICES, UNIT_MESSAGE_ARMS "90h, bound", PROJECTILE_IMPACT |
+| joint wing flip ON | 41 | 812 (306) | 6366 | 4 of 16 / 5 of 19 | 3497.48 | dcbe56b74 | CONSTRUCT_WORLD 30.6 / 30.7 |
+| live hull Repair ON = this section | 41 | 812 (307) | 6341 | 4 of 16 / 5 of 19 | 3497.48 | fd49aa9a4 | UNIT_MESSAGE_ARMS, "the Repair byte and the health" |
+
+**E2 (9000).** 52 / 875 / 6092 shots became **51 / 902 / 7339**:
+
+| step | deaths | hit records | by | doc |
+| --- | --- | --- | --- | --- |
+| d | 52 | 875 | - | - |
+| buoyancy elements ON | 51 | 894 | 972f0e1a1 | CONSTRUCT_WORLD 28, `BU_{OFF,ON}_E2` |
+| the mover, the wing flip and Repair (paired on USN04 4500, not on E2) = this section | 51 | 902 | b5861c09a, dcbe56b74, fd49aa9a4 | **flag**: the +8 is not paired on E2; its first 4500 frames move +13 on USN04 across the same three landings |
+
+**USN01 (3000).** 7 / 150 / 583 shots / Airfield2 became **7 / 150 / 561 / Northampton**:
+
+| step | shots | controlled | by | doc |
+| --- | --- | --- | --- | --- |
+| d | 583 | Airfield2 | - | - |
+| set-selected unit ON | 583 | Northampton | 0995a2e16 | CONTROLLED_UNIT.md (USN01 exit 3, controlled row only) |
+| buoyancy elements or scene race and identity ON, **bracketed** | 561 | Northampton | 972f0e1a1 / 8c8f2bdce | **flag**: 583 at `0aac5988c`, 561 at `eaa9a301b` (HUD_PICK_SEGMENT_QUERY); neither landing was paired on USN01 |
+| every later landing (paired identical on USN01 where paired) = this section | 561 | Northampton | - | HUD_PICK_SEGMENT_QUERY switches 1-3 |
+
+**USN02 (9000).** 21 / 566 / 1067 shots / DeRuyter became **20 / 664 / 1163 / Houston**; the
+failure is still at 39.65 s:
+
+| step | deaths | hit records | by | doc |
+| --- | --- | --- | --- | --- |
+| d | 21 | 566 | - | - |
+| buoyancy elements ON | 21 | 596 | 972f0e1a1 | CONSTRUCT_WORLD 28, `BU_{OFF,ON}_USN02` |
+| HomeBase key (identical) | 21 | 596 | 3f6b7d8a7 | CONSTRUCT_WORLD 29 |
+| movie interface push and reseed, **bracketed** | 22 | 603 | 2a5458d7e, 6c9ec4026 | **flag**: 21 / 596 on the HomeBase pair's base `fc14864c9`, 22 / 603 on the throttle-cut and torpedo-stock pairs' base; the movie switches were paired on USN01 and USN04 only. The controlled unit also changes from DeRuyter to Houston in this window: `kSetSelectedUnitBound` (0995a2e16) is already in `fc14864c9`, which still controls DeRuyter |
+| wreck throttle cut ON | 22 | 552 | 1dae0cf67 | UNIT_DEATH_MESSAGE_AND_SINK, `TC_{OFF,ON}_USN02` |
+| torpedo stock ON, paired on the 22 / 603 base (-> 21 / 623), combined with the cut | 22 | 579 | f3a9d8d2d | UNIT_WEAPON_DEVICES; **flag**: the combined step was not paired |
+| live hull leak (identical) | 22 | 579 | 53379d3bd | UNIT_MESSAGE_ARMS, `LK_{OFF,ON}_USN02` |
+| wreck-hit delivery ON | 20 | 674 | d6256bb43 | PROJECTILE_IMPACT, `WH2_{OFF,ON}_USN02` |
+| joint wing flip (identical on USN02) | 20 | 674 | dcbe56b74 | CONSTRUCT_WORLD 30.6 |
+| live hull Repair ON = this section | 20 | 664 | fd49aa9a4 | UNIT_MESSAGE_ARMS, `RP_{OFF,ON}_USN02` |
+
+**Flags:**
+- **USN02 21 / 596 -> 22 / 603** between `fc14864c9` and the throttle-cut base: bracketed to the
+  movie interface switches, not paired on USN02.
+- **USN02, the torpedo stock on top of the throttle cut:** 22 / 552 -> 22 / 579, not paired as a
+  combination.
+- **E2 894 -> 902** across the mover, the wing flip and Repair: not paired on E2.
+- **USN01 shots 583 -> 561:** bracketed to the buoyancy elements or the scene race and identity,
+  not paired on USN01.
+- Carried from d: E2 594 -> 595 (before c) not isolated; E2 phase 1 under lockstep (known); the
+  Marshall `.nav` is the generic layer.
