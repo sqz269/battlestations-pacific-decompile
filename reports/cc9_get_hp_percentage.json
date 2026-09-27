@@ -1,0 +1,25 @@
+{
+  "packet": "cc9_get_hp_percentage",
+  "doc": "docs/LUA_BINDING_MISSION.md, GetHpPercentage's health slot",
+  "calls": [
+    {
+      "address": "0088EAE8",
+      "native": "00923BE0",
+      "function": "0088E9D0",
+      "note": "GetHealth"
+    }
+  ],
+  "switches": [
+    {
+      "name": "kUnitHealthFractionBound",
+      "state": "OFF",
+      "pair": "pending"
+    }
+  ],
+  "no_ghidra_function": [],
+  "names_added": [],
+  "substitutions": [
+    "+5Dh gate is the gunnery host's death record"
+  ],
+  "failed_predictions": []
+}

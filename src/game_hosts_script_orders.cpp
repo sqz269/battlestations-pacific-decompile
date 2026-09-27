@@ -2307,19 +2307,45 @@ float GameScriptOrdersHost::random_uniform_00bd2f10(float minimum, float maximum
 }
 
 bool GameScriptOrdersHost::unit_health_gate_5d_00923be4(void* entity) {
-    // include/bsp/game_hosts_units.hpp carries +5Ch but not +5Dh, so the gate is
-    // the neutral clear and the record is the health itself, below.
-    static_cast<void>(entity);
-    return false;
+    // 00923BE4, [entity+5Dh]. Packet cc9_get_hp_percentage: bound, the unit's
+    // death as the gunnery host records it (the destroy funnel sets +5Dh).
+    // LABELLED: a scene marker has no death record and reads clear.
+    if (!kUnitHealthFractionBound) {
+        static_cast<void>(entity);
+        return false;
+    }
+    const std::size_t index = index_of(entity);
+    const GameGunneryHost* gunnery = units_.gunnery();
+    if (index >= units_.count() || gunnery == nullptr) return false;
+    return gunnery->unit_dead(index);
 }
 
 float GameScriptOrdersHost::unit_health_vtable_110_00923bf6(void* entity) {
-    // The virtual at the unit's vtable +110h. No concrete vtable is resolved in
-    // this process and no created instance carries a health field, so this is a
-    // record and the binding answers the unclamped zero the rule then returns.
-    static_cast<void>(entity);
-    log_.unimplemented("UnitInstance::health_vtable_110", "00923bf6");
-    return 0.0f;
+    // The virtual at the entity's vtable +110h (00923BF1..00923BF7).
+    if (!kUnitHealthFractionBound) {
+        static_cast<void>(entity);
+        log_.unimplemented("UnitInstance::health_vtable_110", "00923bf6");
+        return 0.0f;
+    }
+    // Packet cc9_get_hp_percentage. Every unit vtable (00CF90B0, 00CFA778,
+    // 00CFB738, 00CFC3D0, 00CFFA30, 00D01630, 00D09678, 00D0BF80, 00D0C648)
+    // holds 00876260: FLD [+370h], FDIV [+36Ch], FSTP float. The gunnery host
+    // keeps both fields per unit (health, max_health).
+    ++health_reads_;
+    const std::size_t index = index_of(entity);
+    const GameGunneryHost* gunnery = units_.gunnery();
+    if (index >= units_.count() || gunnery == nullptr) {
+        // 0042BB50, the base entity's slot: FLD1.
+        ++health_reads_marker_;
+        log_.implemented("UnitInstance::health_vtable_110_base_0042bb50", "0042bb50");
+        return 1.0f;
+    }
+    const std::vector<GameGunneryUnitRow>& rows = gunnery->unit_rows();
+    if (index >= rows.size()) return 1.0f;
+    if (gunnery->unit_dead(index)) ++health_reads_dead_;
+    log_.implemented("UnitInstance::health_vtable_110_00876260", "00876260");
+    return static_cast<float>(static_cast<double>(rows[index].health) /
+                              static_cast<double>(rows[index].max_health));
 }
 
 void GameScriptOrdersHost::unit_health_cache_store_00923c16(void* entity, float value) {
@@ -2966,6 +2992,10 @@ void GameScriptOrdersHost::run_script_timers(float step) {
 }
 
 void GameScriptOrdersHost::report() {
+    log_.notef("summary mission script unit health reads bound=%d reads=%llu dead=%llu "
+        "markers=%llu (00923BE0 -> 00876260, packet cc9_get_hp_percentage)",
+        kUnitHealthFractionBound ? 1 : 0, health_reads_, health_reads_dead_,
+        health_reads_marker_);
     log_.notef("summary mission script player shot down bound=%d calls=%llu last=%d "
         "(008BC9B0, packet cc9_bsm01_think_natives)", kScoringPlayerShotDownBound ? 1 : 0,
         shot_down_calls_, shot_down_last_);
