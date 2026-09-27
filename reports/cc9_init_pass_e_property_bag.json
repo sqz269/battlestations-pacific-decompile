@@ -1,0 +1,39 @@
+{
+  "packet": "cc9_init_pass_e_property_bag",
+  "doc": "docs/SENTITY_INIT_ATTACH_ORDER.md section 7",
+  "switch": "kSEntityInitPassEReleaseBound (include/bsp/game_hosts_fixed_step.hpp): committed OFF",
+  "calls": [
+    {
+      "address": "00926317",
+      "native": "00779570",
+      "function": "00925F20",
+      "kind": "virtual",
+      "host": "GameMissionLuaInitAllBinding::entity_release_spawn_descriptor (holder vtable 00D03D94 slot 0 = 00779570, the scalar deleting destructor, which calls 00922E50: kind 1 or 2 frees +8h)"
+    },
+    {
+      "address": "00922E2D",
+      "native": "008F41F0",
+      "function": "00922E20",
+      "kind": "call",
+      "host": "none: the bag clone the holder owns; this process copies authored keys into GameSceneEntityRecord instead"
+    }
+  ],
+  "routines": [
+    {"address": "00925F20", "coverage": "pass E 009262FE..00926319 read; bound as exact under the switch"},
+    {"address": "00922E20", "coverage": "complete (kind-1 holder constructor)"},
+    {"address": "00922E50", "coverage": "complete (holder destructor body, kinds 1 and 2)"}
+  ],
+  "corrections": [],
+  "no_ghidra_function": [],
+  "names": [],
+  "readers": [
+    {"file": "src/game_hosts_units.cpp:6500", "field": "StartSpeed, ShipYardLaunch", "when": "create_units", "image": "pass B 00822C20, before pass E"},
+    {"file": "src/game_hosts_units.cpp:6690", "field": "Command, CommandTarget", "when": "create_units", "image": "00469610 queue at database+14Ch"},
+    {"file": "src/game_hosts_script_orders.cpp:565", "field": "WingCount", "when": "creator call", "image": "scene database bag; resolved +3C8h afterwards"},
+    {"file": "src/game_hosts_lua.cpp:2197", "field": "air-ops deck", "when": "GenerateObject creator", "image": "006CADD0 in pass B"},
+    {"file": "src/game_avoid_zone_runtime.cpp:153", "field": "Path points", "when": "load", "image": "Path pass B 007B38D0 copy"},
+    {"file": "src/game_hosts_mission_frame.cpp:1967", "field": "object header only", "when": "load", "image": "not a bag key"}
+  ],
+  "verdict": "pending",
+  "pairs": {}
+}

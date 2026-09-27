@@ -66,6 +66,17 @@ inline constexpr bool kSEntityInitAllBound = true;
 // (docs/SENTITY_INIT_ATTACH_ORDER.md section 6).
 inline constexpr bool kSEntityInitThisTableStepsBound = true;
 
+// Packet cc9_init_pass_e_property_bag (docs/SENTITY_INIT_ATTACH_ORDER.md section
+// 7). Pass E of 00925F20 releases the holder at entity+C0h (00926317
+// CALL [vtable+0] with 1, then 00926319 stores 0). The holder owns a CLONE of
+// the authored bag (00922E2D CALL 008F41F0), so the scene database's own bag
+// outlives it. This process's per-entity copy of the authored values is the
+// GameSceneEntityRecord its creator passes to create_units, a temporary that
+// no reader holds past the creator call; the spawn pool and the scene
+// entities stand for the scene database. True: the release is exact, logged as
+// implemented, and counted. False: the named record.
+inline constexpr bool kSEntityInitPassEReleaseBound = false;
+
 // The owner of the pending list and of 00925F20's per-entity work. The Lua host
 // is the one, because pass A is its `thisTable` attach.
 class GameEntityInitAllRunner {
