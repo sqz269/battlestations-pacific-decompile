@@ -2648,6 +2648,393 @@ double local_ground(const SceneTerrainHeightField& field, double lx, double lz) 
 }
 }  // namespace
 
+// ---------------------------------------------------------------------------
+// Packet cc9_terrain_segment_quadtree: terrain slot 3Ch 00ADA240's walk.
+// Rounding: every value the native stores through a float is kept as a float;
+// x87 chains the native keeps in registers are evaluated in double. Not
+// bit-verified against the image.
+namespace {
+constexpr float kQuadTileSize = 300.0f;        // terrain +18h [00CE3AE8]
+constexpr float kQuadRangeSeed = 1000.0f;      // [00CE3804]
+constexpr float kQuadMinDirection = 0.001f;    // [00D7A23C]
+constexpr double kQuadLeafMinLengthSq = 1e-6;  // [00D7A2B8] double
+constexpr float kQuadTreeTop = 1e10f;          // terrain +14h [00CE4970]
+
+// Block slot 8h 00ADC5F0: one sample, no node y; FFFFh answers -1000.0.
+float block_sample_00adc5f0(const SceneTerrainBlock& block, int x, int z) noexcept {
+    const std::uint16_t s = block.samples[static_cast<std::size_t>(33 * z + x)];
+    if (s == 0xffffu) return kTerrainNoGround;
+    return terrain_f32(s * static_cast<double>(block.inv_scale) + block.offset);
+}
+
+// The tile table +40h[+38h * z + x], null outside the grid (00ADAC30 is +38h,
+// 00ADAC40 +3Ch) or for a tile the file does not carry.
+const SceneTerrainBlock* quad_tile(const SceneTerrainHeightField& field, int x, int z) noexcept {
+    if (x < 0 || z < 0 || x >= field.tiles_wide || z >= field.tiles_deep) return nullptr;
+    const int index = field.block_index[static_cast<std::size_t>(field.tiles_wide) * z + x];
+    return index < 0 ? nullptr : &field.blocks[static_cast<std::size_t>(index)];
+}
+
+// Block vt+0Ch 00AED020 (from sample (0,0), over all 33 x 33 samples, holes
+// included), stored by 00ADF8B0 at tile +14h (min, 00ADF90A) / +18h (max).
+void tile_range_00aed020(const SceneTerrainBlock& block, float& lo, float& hi) noexcept {
+    lo = hi = block_sample_00adc5f0(block, 0, 0);
+    for (int x = 0; x < 33; ++x) {
+        for (int z = 0; z < 33; ++z) {
+            const float v = block_sample_00adc5f0(block, x, z);
+            if (v < lo) lo = v;
+            if (hi < v) hi = v;
+        }
+    }
+}
+
+// 00AE9C80: the y range of the n x n tiles at (x, z), seeded [1000, -1000];
+// a tile outside the grid or missing contributes [-1000, 1000].
+void node_range_00ae9c80(const SceneTerrainHeightField& field, int x, int z, int n,
+                         float& lo, float& hi) noexcept {
+    lo = kQuadRangeSeed;
+    hi = kTerrainNoGround;
+    for (int dx = 0; dx < n; ++dx) {
+        for (int k = 0; k < n; ++k) {
+            float tile_hi = kQuadRangeSeed;
+            float tile_lo = kTerrainNoGround;
+            if (const SceneTerrainBlock* block = quad_tile(field, x + dx, z + k)) {
+                tile_range_00aed020(*block, tile_lo, tile_hi);
+            }
+            if (hi < tile_hi) hi = tile_hi;
+            if (tile_lo < lo) lo = tile_lo;
+        }
+    }
+}
+
+// 00AEA5F0: four children of the n x n block at (x, z) appended in the order
+// (x,z), (x,z+h), (x+h,z), (x+h,z+h) with tile +0Ch = (k >> 1) + x and +10h =
+// (k & 1) + z, then each recursed while h > 1. Returns the first child's index.
+int build_children_00aea5f0(const SceneTerrainHeightField& field, int x, int z, int n) {
+    std::vector<SceneTerrainHeightField::QuadNode>& nodes = field.quadtree;
+    const int base = static_cast<int>(nodes.size());
+    const int h = n / 2;
+    for (int k = 0; k < 4; ++k) {
+        SceneTerrainHeightField::QuadNode node;
+        node_range_00ae9c80(field, x + (k >> 1) * h, z + (k & 1) * h, h, node.min_y, node.max_y);
+        node.children = -1;
+        node.tile_x = (k >> 1) + x;
+        node.tile_z = (k & 1) + z;
+        nodes.push_back(node);
+    }
+    if (1 < h) {
+        for (int k = 0; k < 4; ++k) {
+            const int first = build_children_00aea5f0(field, x + (k >> 1) * h, z + (k & 1) * h, h);
+            nodes[static_cast<std::size_t>(base + k)].children = first;
+        }
+    }
+    return base;
+}
+
+// 00ADDA60's tail: depth = ceil(log2(max(+38h, +3Ch))) (unsigned max), then
+// 00AEA900 (box (0, -1000, 0)..(2^depth * 300, 1e10, 2^depth * 300)) and
+// 00AEA820 (the root, then its children).
+void build_quadtree_00aea820(const SceneTerrainHeightField& field) {
+    const unsigned wide = static_cast<unsigned>(field.tiles_wide);
+    const unsigned deep = static_cast<unsigned>(field.tiles_deep);
+    const int n = static_cast<int>(wide <= deep ? deep : wide);
+    int depth = 0;
+    for (int u = n; 1 < u; u >>= 1) ++depth;
+    if ((1 << depth) < n) ++depth;
+    field.quadtree_leaves = 1 << depth;
+    field.quadtree.clear();
+    SceneTerrainHeightField::QuadNode root;
+    node_range_00ae9c80(field, 0, 0, field.quadtree_leaves, root.min_y, root.max_y);
+    root.children = 0;
+    root.tile_x = 0;
+    root.tile_z = 0;
+    field.quadtree.push_back(root);
+    const int first = build_children_00aea5f0(field, 0, 0, field.quadtree_leaves);
+    field.quadtree[0].children = first;
+}
+
+// 004F9B30: out.x = a.y*b.z - a.z*b.y, out.y = b.x*a.z - a.x*b.z,
+// out.z = b.y*a.x - a.y*b.x.
+void quad_cross(const float a[3], const float b[3], float out[3]) noexcept {
+    out[0] = terrain_f32(static_cast<double>(a[1]) * b[2] - static_cast<double>(a[2]) * b[1]);
+    out[1] = terrain_f32(static_cast<double>(b[0]) * a[2] - static_cast<double>(a[0]) * b[2]);
+    out[2] = terrain_f32(static_cast<double>(b[1]) * a[0] - static_cast<double>(a[1]) * b[0]);
+}
+
+float quad_dot(const float a[3], const float b[3]) noexcept {
+    return terrain_f32(static_cast<double>(a[0]) * b[0] + static_cast<double>(a[1]) * b[1]
+        + static_cast<double>(a[2]) * b[2]);
+}
+
+// 00ADEB40: u . (v x w), stored through a float.
+float scalar_triple_00adeb40(const float u[3], const float v[3], const float w[3]) noexcept {
+    float c[3];
+    quad_cross(v, w, c);
+    return quad_dot(c, u);
+}
+
+// 00ADEB80 (fastcall a = ECX, b = EDX; c, d, p, q, out): the LINE through p
+// and q against the quad a b c d, split on the b-d diagonal (m = pb x pq,
+// 00ADEC6A). No clip to [p, q]: a hit beyond the segment inside the cell counts.
+bool line_quad_00adeb80(const float a[3], const float b[3], const float c[3], const float d[3],
+                        const float p[3], const float q[3], float r[3]) noexcept {
+    float pq[3], pd[3], pb[3], pa[3], pc[3];
+    for (int k = 0; k < 3; ++k) {
+        pq[k] = terrain_f32(static_cast<double>(q[k]) - p[k]);
+        pd[k] = terrain_f32(static_cast<double>(d[k]) - p[k]);
+        pb[k] = terrain_f32(static_cast<double>(b[k]) - p[k]);
+        pa[k] = terrain_f32(static_cast<double>(a[k]) - p[k]);
+        pc[k] = terrain_f32(static_cast<double>(c[k]) - p[k]);
+    }
+    float m[3];
+    quad_cross(pb, pq, m);
+    const float v = quad_dot(m, pd);
+    if (v < 0.0f) {
+        const float u = quad_dot(m, pa);
+        if (!(0.0f <= u)) return false;
+        const float w = scalar_triple_00adeb40(pq, pd, pa);
+        if (!(0.0f <= w)) return false;
+        const double denom = 1.0 / (static_cast<double>(w) + -static_cast<double>(v) + u);
+        const double cu = denom * u, cv = -static_cast<double>(v) * denom, cw = denom * w;
+        for (int k = 0; k < 3; ++k) r[k] = terrain_f32(cu * d[k] + cv * a[k] + cw * b[k]);
+        return true;
+    }
+    const float u = -quad_dot(m, pc);
+    if (!(0.0f <= u)) return false;
+    const float w = scalar_triple_00adeb40(pq, pc, pd);
+    if (!(0.0f <= w)) return false;
+    const double denom = 1.0 / (static_cast<double>(w) + v + u);
+    const double cu = u * denom, cv = v * denom, cw = denom * w;
+    for (int k = 0; k < 3; ++k) r[k] = terrain_f32(cu * d[k] + cv * c[k] + cw * b[k]);
+    return true;
+}
+
+// 00ADF1B0: the 2-D DDA over the tile's 32 x 32 cells of 9.375 from p to q
+// (origin-relative local), each cell's four samples (slot 8h, no node y) as
+// the quad (i,j) (i+1,j) (i+1,j+1) (i,j+1) at x = tile*300 + i*9.375.
+bool tile_walk_00adf1b0(const SceneTerrainBlock& block, int tile_x, int tile_z, const float p[3],
+                        const float q[3], float out[3]) noexcept {
+    SceneTerrainQuadtreeCensus& census = scene_terrain_quadtree_census();
+    const double cell = kTerrainCellSize;               // [00D5D410] double
+    const float ox = terrain_f32(static_cast<double>(tile_x) * 300.0);  // [00CE3CA8]
+    const float oz = terrain_f32(300.0 * static_cast<double>(tile_z));
+    const float lx0 = terrain_f32(static_cast<double>(p[0]) - ox);
+    const float lx1 = terrain_f32(static_cast<double>(q[0]) - ox);
+    const float lz0 = terrain_f32(static_cast<double>(p[2]) - oz);
+    const float lz1 = terrain_f32(static_cast<double>(q[2]) - oz);
+    const float cellf = terrain_f32(cell);
+    const double fx0 = std::floor(static_cast<double>(terrain_f32(lx0 / cell)));   // 00BF85B0
+    const double fz0 = std::floor(static_cast<double>(terrain_f32(lz0 / cell)));
+    int i = static_cast<int>(fx0);
+    int j = static_cast<int>(fz0);
+    const int i1 = static_cast<int>(std::floor(static_cast<double>(terrain_f32(lx1 / cell))));  // 00BF7420
+    const int j1 = static_cast<int>(std::floor(static_cast<double>(terrain_f32(lz1 / cell))));
+    const int step_x = lx1 <= lx0 ? -1 : 1;
+    const int step_z = lz1 <= lz0 ? -1 : 1;
+    const float cell_x = terrain_f32(static_cast<double>(terrain_f32(fx0)) * cellf);
+    const float cell_z = terrain_f32(static_cast<double>(terrain_f32(fz0)) * cellf);
+    float tx = step_x == -1
+        ? terrain_f32((static_cast<double>(lx0) - cell_x) / (static_cast<double>(lx0) - lx1))
+        : terrain_f32((static_cast<double>(cell_x) + cellf - lx0) / (static_cast<double>(lx1) - lx0));
+    float tz = step_z == -1
+        ? terrain_f32((static_cast<double>(lz0) - cell_z) / (static_cast<double>(lz0) - lz1))
+        : terrain_f32((static_cast<double>(cell_z) + cellf - lz0) / (static_cast<double>(lz1) - lz0));
+    float adx = terrain_f32(static_cast<double>(lx1) - lx0);
+    if (adx <= 0.0f) adx = -adx;
+    float adz = terrain_f32(static_cast<double>(lz1) - lz0);
+    if (adz <= 0.0f) adz = -adz;
+    const float dtx = terrain_f32(cellf / static_cast<double>(adx));
+    const float dtz = terrain_f32(cellf / static_cast<double>(adz));
+    const float x_base = static_cast<float>(tile_x * 300);   // IMUL 12Ch, FILD
+    const float z_base = static_cast<float>(tile_z * 300);
+    for (;;) {
+        if (static_cast<unsigned>(i) < 32u && static_cast<unsigned>(j) < 32u) {
+            ++census.cells;
+            const float xa = terrain_f32(x_base + static_cast<double>(i) * cell);
+            const float xb = terrain_f32(x_base + static_cast<double>(i + 1) * cell);
+            const float za = terrain_f32(z_base + static_cast<double>(j) * cell);
+            const float zb = terrain_f32(z_base + static_cast<double>(j + 1) * cell);
+            const float a[3] = {xa, block_sample_00adc5f0(block, i, j), za};
+            const float b[3] = {xb, block_sample_00adc5f0(block, i + 1, j), za};
+            const float c[3] = {xb, block_sample_00adc5f0(block, i + 1, j + 1), zb};
+            const float d[3] = {xa, block_sample_00adc5f0(block, i, j + 1), zb};
+            if (line_quad_00adeb80(a, b, c, d, p, q, out)) return true;
+        }
+        // 00ADF553..00ADF55D: FCOMI tz against tx, JB (below or unordered)
+        // steps z; otherwise x.
+        if (!(tz >= tx)) {
+            if (j == j1) return false;
+            tz = terrain_f32(static_cast<double>(tz) + dtz);
+            j += step_z;
+        } else {
+            if (i == i1) return false;
+            tx = terrain_f32(static_cast<double>(tx) + dtx);
+            i += step_x;
+        }
+    }
+}
+
+struct QuadRay {
+    float origin[3]{};     // +0h, x and z mirrored under the flags
+    float direction[3]{};  // +18h, x and z made positive
+    float hit[3]{};        // +24h
+    float length{0.0f};    // +30h
+    unsigned flags{0};     // +34h: 4 x mirrored, 2 z mirrored
+};
+
+struct QuadBox {
+    float min_x{0.0f}, min_z{0.0f}, max_x{0.0f}, max_z{0.0f};
+};
+
+// 00AE9BD0: the leaf's tile (+0Ch, +10h), in the grid and present, and a
+// sub-segment of squared length at least 1e-6 (004193E0), then 00ADF1B0.
+bool leaf_00ae9bd0(const SceneTerrainHeightField& field, int tile_x, int tile_z,
+                   const float start[3], const float end[3], float out[3]) noexcept {
+    if (!(tile_x < field.tiles_wide) || !(tile_z < field.tiles_deep)) return false;
+    const SceneTerrainBlock* block = quad_tile(field, tile_x, tile_z);
+    if (block == nullptr) return false;
+    float diff[3];
+    for (int k = 0; k < 3; ++k) diff[k] = terrain_f32(static_cast<double>(start[k]) - end[k]);
+    const double length_sq = static_cast<double>(diff[1]) * diff[1]
+        + static_cast<double>(diff[0]) * diff[0] + static_cast<double>(diff[2]) * diff[2];
+    if (length_sq < kQuadLeafMinLengthSq) return false;
+    ++scene_terrain_quadtree_census().leaves;
+    return tile_walk_00adf1b0(*block, tile_x, tile_z, start, end, out);
+}
+
+// 00AE9A00: (f1 <= f2) ? a : b (FCOMIP f2 against f1, JAE).
+int next_node_00ae9a00(float f1, float f2, int a, int b) noexcept {
+    return f2 >= f1 ? a : b;
+}
+
+// 00AE9D80 (__thiscall tree, RET 18h): 1 hit, 0 go on, -1 the ray has ended.
+int node_walk_00ae9d80(const SceneTerrainHeightField& field, const QuadBox& box, QuadRay& ray,
+                       int node_index, float tx0, float tz0, float tx1, float tz1) noexcept {
+    if (0.0f >= tx1 || 0.0f >= tz1) return 0;        // 00AE9D8C / 00AE9D9E COMISS, JAE
+    float t_in = !(tx0 >= tz0) ? tz0 : tx0;          // 00AE9DAF FCOMI, JB
+    if (0.0f > t_in) t_in = 0.0f;
+    float t_out = !(tz1 >= tx1) ? tz1 : tx1;         // 00AE9DDA FCOMPI, JB
+    if (t_out > ray.length) t_out = ray.length;      // 00AE9E02, JBE keeps
+    if (t_in >= t_out) return -1;                    // 00AE9E1E, JB (or unordered) goes on
+    float sx = ray.origin[0], sy = ray.origin[1], sz = ray.origin[2];
+    float dx = ray.direction[0], dy = ray.direction[1], dz = ray.direction[2];
+    if ((ray.flags & 4u) != 0) {
+        dx = -dx;
+        sx = terrain_f32(static_cast<double>(box.max_x) + box.min_x - sx);
+    }
+    if ((ray.flags & 2u) != 0) {
+        dz = -ray.direction[2];
+        sz = terrain_f32(static_cast<double>(box.max_z) + box.min_z - sz);
+    }
+    const float y_in = terrain_f32(sy + static_cast<double>(terrain_f32(static_cast<double>(dy) * t_in)));
+    const float y_out = terrain_f32(static_cast<double>(t_out) * dy + sy);
+    const float y_lo = y_in < y_out ? y_in : y_out;
+    const SceneTerrainHeightField::QuadNode& node = field.quadtree[static_cast<std::size_t>(node_index)];
+    if (!(y_lo <= node.max_y)) return 0;
+    const float y_hi = y_out < y_in ? y_in : y_out;
+    if (!(node.min_y <= y_hi)) return 0;
+    if (node.children == -1) {
+        const float start[3] = {terrain_f32(sx + static_cast<double>(terrain_f32(static_cast<double>(t_in) * dx))),
+            y_in, terrain_f32(sz + static_cast<double>(terrain_f32(static_cast<double>(dz) * t_in)))};
+        const float end[3] = {terrain_f32(sx + static_cast<double>(dx) * t_out), y_out,
+            terrain_f32(sz + static_cast<double>(dz) * t_out)};
+        return leaf_00ae9bd0(field, node.tile_x, node.tile_z, start, end, ray.hit) ? 1 : 0;
+    }
+    const float txm = terrain_f32((static_cast<double>(tx1) + tx0) * 0.5);   // [00D7A280]
+    const float tzm = terrain_f32((static_cast<double>(tz1) + tz0) * 0.5);
+    int current = 0;
+    if (tx0 < tz0) {
+        if (txm < tz0) current = 4;
+    } else if (tzm < tx0) {
+        current = 2;
+    }
+    const int first_child = node.children;
+    auto child = [&](unsigned k) {
+        return static_cast<int>((ray.flags ^ k) >> 1) + first_child;
+    };
+    for (;;) {
+        int result = 0;
+        int next = 8;
+        switch (current) {
+        case 0:
+            result = node_walk_00ae9d80(field, box, ray, child(0), tx0, tz0, txm, tzm);
+            if (result == 1) return 1;
+            if (result == -1) return -1;
+            next = next_node_00ae9a00(txm, tzm, 4, 2);
+            break;
+        case 2:
+            result = node_walk_00ae9d80(field, box, ray, child(2), tx0, tzm, txm, tz1);
+            if (result == 1) return 1;
+            if (result == -1) return -1;
+            next = next_node_00ae9a00(txm, tz1, 6, 8);
+            break;
+        case 4:
+            result = node_walk_00ae9d80(field, box, ray, child(4), txm, tz0, tx1, tzm);
+            if (result == 1) return 1;
+            if (result == -1) return -1;
+            next = next_node_00ae9a00(tx1, tzm, 8, 6);
+            break;
+        case 6:
+            result = node_walk_00ae9d80(field, box, ray, child(6), txm, tzm, tx1, tz1);
+            if (result == 1) return 1;
+            return result == -1 ? -1 : 0;
+        default:
+            return 0;   // table arms 1, 3, 5 (00AEA201); never reached
+        }
+        if (next > 7) return 0;
+        current = next;
+    }
+}
+
+// 00AEA2B0 (__thiscall tree; p, q origin-relative local, out), RET 0Ch.
+bool ray_walk_00aea2b0(const SceneTerrainHeightField& field, const float p[3], const float q[3],
+                       float out[3]) noexcept {
+    const float span = terrain_f32(static_cast<double>(field.quadtree_leaves) * kQuadTileSize);
+    const QuadBox box{0.0f, 0.0f, span, span};
+    float diff[3];
+    for (int k = 0; k < 3; ++k) diff[k] = terrain_f32(static_cast<double>(q[k]) - p[k]);
+    const float length = terrain_f32(std::sqrt(static_cast<double>(diff[0]) * diff[0]
+        + static_cast<double>(diff[1]) * diff[1] + static_cast<double>(diff[2]) * diff[2]));  // 00419440
+    QuadRay ray;
+    ray.length = length;
+    ray.origin[0] = p[0];
+    ray.origin[1] = p[1];
+    ray.origin[2] = p[2];
+    for (int k = 0; k < 3; ++k) {
+        ray.direction[k] = terrain_f32((static_cast<double>(q[k]) - p[k]) / length);
+    }
+    if (ray.direction[0] < 0.0f) {
+        ray.direction[0] = -ray.direction[0];   // [00D7A208] -0.0 minus
+        ray.flags = 4u;
+        ray.origin[0] = terrain_f32(static_cast<double>(box.max_x) + box.min_x - p[0]);
+    }
+    if (ray.direction[2] < 0.0f) {
+        ray.flags |= 2u;
+        ray.direction[2] = -ray.direction[2];
+        ray.origin[2] = terrain_f32(static_cast<double>(box.max_z) + box.min_z - ray.origin[2]);
+    }
+    if (ray.direction[0] < kQuadMinDirection) ray.direction[0] = kQuadMinDirection;
+    if (ray.direction[2] < kQuadMinDirection) ray.direction[2] = kQuadMinDirection;
+    const float tx0 = terrain_f32((static_cast<double>(box.min_x) - ray.origin[0]) / ray.direction[0]);
+    const float tx1 = terrain_f32((static_cast<double>(box.max_x) - ray.origin[0]) / ray.direction[0]);
+    const float tz0 = terrain_f32((static_cast<double>(box.min_z) - ray.origin[2]) / ray.direction[2]);
+    const float tz1 = terrain_f32((static_cast<double>(box.max_z) - ray.origin[2]) / ray.direction[2]);
+    const float t_lo = tz0 < tx0 ? tx0 : tz0;
+    const float t_hi = tx1 < tz1 ? tx1 : tz1;
+    if (t_hi <= t_lo) return false;
+    const int result = node_walk_00ae9d80(field, box, ray, 0, tx0, tz0, tx1, tz1);
+    out[0] = ray.hit[0];
+    out[1] = ray.hit[1];
+    out[2] = ray.hit[2];
+    return result == 1;
+}
+}  // namespace
+
+SceneTerrainQuadtreeCensus& scene_terrain_quadtree_census() noexcept {
+    static SceneTerrainQuadtreeCensus census;
+    return census;
+}
+
 std::size_t landscape_segment_entry_count() noexcept {
     return landscape_entries().size();
 }
@@ -2693,6 +3080,52 @@ bool landscape_entry_segment_hit(std::size_t entry, const float from[3],
         return false;
     }
     const double d[3] = {b[0] - a[0], b[1] - a[1], b[2] - a[2]};
+    bool vertical_case = false;
+    if constexpr (kTerrainSegmentQuadtreeBound) {
+        // Packet cc9_terrain_segment_quadtree: 00ADA240 after its two
+        // transforms (00ADA262, 00ADA283), stored as floats.
+        SceneTerrainQuadtreeCensus& census = scene_terrain_quadtree_census();
+        const float la[3] = {static_cast<float>(a[0]), static_cast<float>(a[1]), static_cast<float>(a[2])};
+        const float lb[3] = {static_cast<float>(b[0]), static_cast<float>(b[1]), static_cast<float>(b[2])};
+        const float adx = std::fabs(terrain_f32(static_cast<double>(la[0]) - lb[0]));
+        const float adz = std::fabs(terrain_f32(static_cast<double>(la[2]) - lb[2]));
+        if (adx < kQuadMinDirection && adz < kQuadMinDirection) {
+            // 00ADA2EE -> 00AECC40 with the WORLD from (EDX) and to. Its
+            // sub-walk 00AECA60 and the terrain's vt+48h are unread: LABELLED
+            // STAND-IN, the march below answers this case.
+            ++census.vertical;
+            vertical_case = true;
+        } else {
+            ++census.walks;
+            if (field.quadtree.empty()) build_quadtree_00aea820(field);
+            const float p[3] = {terrain_f32(static_cast<double>(la[0]) - field.origin_x), la[1],
+                terrain_f32(static_cast<double>(la[2]) - field.origin_z)};
+            const float q[3] = {terrain_f32(static_cast<double>(lb[0]) - field.origin_x), lb[1],
+                terrain_f32(static_cast<double>(lb[2]) - field.origin_z)};
+            float r[3];
+            if (!ray_walk_00aea2b0(field, p, q, r)) return false;
+            ++census.walk_hits;
+            // 00ADA35E..00ADA3C7: origin added back, then the node's world
+            // matrix +F0h.
+            const double local[3] = {terrain_f32(static_cast<double>(field.origin_x) + r[0]), r[1],
+                terrain_f32(static_cast<double>(field.origin_z) + r[2])};
+            double world[3];
+            frame_point(object.world, local, world);
+            for (int k = 0; k < 3; ++k) hit.point[k] = static_cast<float>(world[k]);
+            hit.landscape_object = object_index;
+            hit.entry = entry;
+            hit.shape_kind = 0x0a;
+            hit.hull_segment = -1;
+            // SUBSTITUTION, labelled: 00ADA240 answers a point only; the host's
+            // `fraction` is its projection on from->to, which the line test
+            // (00ADEB80) can put outside [0, 1].
+            const double dd = d[0] * d[0] + d[1] * d[1] + d[2] * d[2];
+            const double along = dd > 0.0 ? ((local[0] - a[0]) * d[0] + (local[1] - a[1]) * d[1]
+                + (local[2] - a[2]) * d[2]) / dd : 0.0;
+            hit.fraction = static_cast<float>(along);
+            return true;
+        }
+    }
     const double length = std::sqrt(d[0] * d[0] + d[1] * d[1] + d[2] * d[2]);
     const int steps = std::max(1, static_cast<int>(std::ceil(length / (kTerrainCellSize * 0.5))));
     auto below = [&](double t) {
@@ -2721,6 +3154,7 @@ bool landscape_entry_segment_hit(std::size_t entry, const float from[3],
         }
     }
     if (t_hit < 0.0) return false;
+    if (vertical_case) ++scene_terrain_quadtree_census().vertical_hits;
     const double local[3] = {a[0] + d[0] * t_hit, a[1] + d[1] * t_hit, a[2] + d[2] * t_hit};
     double world[3];
     frame_point(object.world, local, world);   // 00ADA240's +F0h transform back
@@ -2767,11 +3201,14 @@ void note_land_hit_query(LandHitConsumer consumer, bool land_hit) noexcept {
 
 std::string format_land_hit_census() {
     const SceneLandHitCensus& c = scene_land_hit_census();
-    char text[256];
+    const SceneTerrainQuadtreeCensus& t = scene_terrain_quadtree_census();
+    char text[512];
     std::snprintf(text, sizeof(text),
-        "pick=%llu/%llu seat=%llu/%llu line_of_fire=%llu/%llu blocked=%llu projectile=%llu/%llu",
+        "pick=%llu/%llu seat=%llu/%llu line_of_fire=%llu/%llu blocked=%llu projectile=%llu/%llu "
+        "slot3c bound=%d walks=%llu/%llu vertical=%llu/%llu leaves=%llu cells=%llu",
         c.calls[0], c.land_hits[0], c.calls[1], c.land_hits[1], c.calls[2], c.land_hits[2],
-        c.line_of_fire_blocked, c.calls[3], c.land_hits[3]);
+        c.line_of_fire_blocked, c.calls[3], c.land_hits[3], kTerrainSegmentQuadtreeBound ? 1 : 0,
+        t.walks, t.walk_hits, t.vertical, t.vertical_hits, t.leaves, t.cells);
     return text;
 }
 
@@ -2782,6 +3219,20 @@ bool world_segment_blocked_00903bc0(const float from[3], const float to[3]) noex
     if (terrain_list_walk(from, winner) > from[1] || terrain_list_walk(to, winner) > to[1]) {
         ++census.segment_endpoint_blocks;
         return true;
+    }
+    if constexpr (kTerrainSegmentQuadtreeBound) {
+        // Packet cc9_terrain_segment_quadtree: 00903C20..00903C42, every node
+        // of list 44h through its terrain's slot 3Ch (vt+3Ch on +3D0h), which
+        // takes the Landscape's full frame; the first hit blocks.
+        const std::size_t count = landscape_segment_entry_count();
+        for (std::size_t entry = 0; entry < count; ++entry) {
+            LandscapeSegmentHit hit;
+            if (landscape_entry_segment_hit(entry, from, to, hit)) {
+                ++census.segment_sweep_blocks;
+                return true;
+            }
+        }
+        return false;
     }
     // LABELLED STAND-IN for slot 3Ch (see the header).
     const double dx = static_cast<double>(to[0]) - from[0];
@@ -2953,6 +3404,11 @@ void GameSceneContentsHost::run_load_scene_contents_004d4df0(const std::string& 
             blocks += land.terrain->blocks.size();
             std::size_t mine = 0, close = 0, same_landscape = 0, probe_hits = 0;
             std::size_t probe_close = 0;
+            // Packet cc9_terrain_segment_quadtree: a slanted trace through each
+            // object walks the quadtree (the vertical one above takes 00AECC40);
+            // its hit is checked against this Landscape's own local surface.
+            std::size_t slant_hits = 0, slant_on_surface = 0;
+            double slant_worst = 0.0;
             std::size_t entry_of_land = static_cast<std::size_t>(-1);
             {
                 const std::size_t entries = landscape_segment_entry_count();
@@ -2986,6 +3442,21 @@ void GameSceneContentsHost::run_load_scene_contents_004d4df0(const std::string& 
                         }
                     }
                 }
+                if constexpr (kTerrainSegmentQuadtreeBound) {
+                    if (entry_of_land != static_cast<std::size_t>(-1)) {
+                        const float top[3] = {point[0] - 20.0f, point[1] + 50.0f, point[2] - 15.0f};
+                        const float bottom[3] = {point[0] + 20.0f, point[1] - 50.0f, point[2] + 15.0f};
+                        LandscapeSegmentHit slant;
+                        double lp[3];
+                        if (landscape_entry_segment_hit(entry_of_land, top, bottom, slant)
+                            && frame_inverse_point(land.world, slant.point, lp)) {
+                            ++slant_hits;
+                            const double err = std::fabs(lp[1] - local_ground(*land.terrain, lp[0], lp[2]));
+                            if (err < 0.25) ++slant_on_surface;
+                            slant_worst = std::max(slant_worst, err);
+                        }
+                    }
+                }
                 ++mine;
                 const double diff = std::fabs(static_cast<double>(ground) - point[1]);
                 if (diff < 0.01) ++close;
@@ -2997,6 +3468,12 @@ void GameSceneContentsHost::run_load_scene_contents_004d4df0(const std::string& 
                 "worst=%.3f landscape_at_self=%zu segment_probe_hits=%zu segment_probe_on_ground=%zu "
                 "(00903860 / 009038f0 / 009039d0 / 0087ff80)",
                 land.name.c_str(), mine, close, worst, same_landscape, probe_hits, probe_close);
+            if constexpr (kTerrainSegmentQuadtreeBound) {
+                impl.log.notef("scene terrain slot 3Ch self-check: landscape=%s slant_hits=%zu "
+                    "on_local_surface_25cm=%zu worst=%.3f (00ADA240 -> 00AEA2B0, packet "
+                    "cc9_terrain_segment_quadtree)", land.name.c_str(), slant_hits,
+                    slant_on_surface, slant_worst);
+            }
         }
         const SceneTerrainQueryCensus& census = scene_terrain_query_census();
         impl.log.notef("summary scene terrain bound=%d landscapes=%zu loaded=%zu blocks=%zu "
@@ -3010,6 +3487,7 @@ void GameSceneContentsHost::run_load_scene_contents_004d4df0(const std::string& 
             census.landscape_calls, census.landscape_hits, census.segment_calls,
             landscape_segment_entry_count(), format_land_hit_census().c_str());
         scene_terrain_query_census() = SceneTerrainQueryCensus{};
+        scene_terrain_quadtree_census() = SceneTerrainQuadtreeCensus{};
     }
     // The wings 007F4580 spawned, flushed after the census loops so the scene
     // tallies stay a count of scene rows: a member plane is not a scene entity,

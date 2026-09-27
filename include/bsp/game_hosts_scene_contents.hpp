@@ -399,6 +399,15 @@ struct SceneWorldObject {
 // the USN01 and USN04 pairs were identity, so it is ON.
 inline constexpr bool kSceneLandscapeTerrainBound = true;
 
+// Packet cc9_terrain_segment_quadtree (docs/SCENE_CONTENTS_HOSTS.md section
+// "Slot 3Ch reconstructed"). When set, terrain slot 3Ch 00ADA240 walks the
+// quadtree 00AEA820 builds (00AEA2B0 -> 00AE9D80 -> leaf 00AE9BD0 -> tile DDA
+// 00ADF1B0 -> line-quad test 00ADEB80) in place of the half-cell march, and
+// 00903BC0 asks every Landscape's slot 3Ch (full inverse frame, rotation
+// included) in place of its world-space march. The vertical case 00AECC40 is
+// still the march (its sub-walk 00AECA60 is unread; labelled).
+inline constexpr bool kTerrainSegmentQuadtreeBound = false;
+
 // One 33x33 sample block of a `NODE` tile (00ADFD70: 00ADC420(21h, 21h), block
 // vtable 00D5D314, 2 bytes per sample). 00ADC6C0 reads `offset` (+2Ch) and
 // `scale` (+30h) and stores 1/scale at +34h; 00ADC5F0 answers a sample as
@@ -442,6 +451,20 @@ struct SceneTerrainHeightField {
     // Terrain slot 38h, 00ADABA0 -> slot 30h 00ADAA40: the unit normal of the
     // cell the world (x, z) truncates to.
     void normal_00adaba0(float x, float z, float out[3]) const noexcept;
+
+    // Packet cc9_terrain_segment_quadtree: the tree 00AEA820 builds at the end
+    // of 00ADDA60 (20-byte nodes at +3Ch: min y, max y, first child or -1, tile
+    // x, tile z), built here on the first slot 3Ch query. `quadtree_leaves` is
+    // +38h, 1 << depth tiles per side.
+    struct QuadNode {
+        float min_y{0.0f};
+        float max_y{0.0f};
+        int children{-1};
+        int tile_x{0};
+        int tile_z{0};
+    };
+    mutable std::vector<QuadNode> quadtree;
+    mutable int quadtree_leaves{0};
 };
 
 // The four world queries, over scene_world_class_lists().list(44h) in list
@@ -463,6 +486,14 @@ struct SceneTerrainQueryCensus {
     unsigned long long segment_calls{0}, segment_endpoint_blocks{0};
     unsigned long long segment_sweep_blocks{0};
 };
+
+// Packet cc9_terrain_segment_quadtree: slot 3Ch calls by path, over the run.
+struct SceneTerrainQuadtreeCensus {
+    unsigned long long walks{0}, walk_hits{0};
+    unsigned long long vertical{0}, vertical_hits{0};
+    unsigned long long leaves{0}, cells{0};
+};
+SceneTerrainQuadtreeCensus& scene_terrain_quadtree_census() noexcept;
 SceneTerrainQueryCensus& scene_terrain_query_census() noexcept;
 
 // ---------------------------------------------------------------------------
