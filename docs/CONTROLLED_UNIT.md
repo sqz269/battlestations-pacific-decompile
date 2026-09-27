@@ -1179,3 +1179,58 @@ The installation's scripts were grepped read-only. `usn_2_java.lua` selects only
 
 **USN04 4700/4500 and USN02 9200/9000:** census `(none)`, and every line identical except the
 switch's own summary. **Identity, exit 1.**
+
+### Pairs and verdict
+
+- **The pairs.** The OFF side is this tree's build at f9de31c1f (`local\sq_off_*`). The ON side is
+  `local\sq_on`, a `tools/pair_export.py` export of the same commit with only the switch flipped.
+- **Run parameters:** streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05 and an idle player.
+
+| pair | `pair_diff` | result |
+| --- | --- | --- |
+| USN01 3200/3000 | **exit 3** | hits 150, shots 561, damage 2690.0, 7 death rows, 7 plane death modes and 28 unit rows all identical. The exit comes from `controlled moved`: Northampton -> `(none)`. Script timer failures go 0 -> 5 |
+| USN04 4700/4500 | exit 1 | census `(none)`; only the switch's summary line changed |
+| USN02 9200/9000 | exit 1 | census `(none)`; only the switch's summary line changed |
+
+**USN01 in detail:**
+- **Held:**
+  - The census reads `ScoutDauntless/12->18`.
+  - `SetSelectedUnit("ScoutDauntless")` is **accepted** at mission frame 2003. 00645600 moves
+    `00E188D8` from Northampton to ScoutDauntless and pushes 20h.
+  - The HUD observer's destruction notice fires once, at ScoutDauntless's death (129.85 s).
+    `004C0890(null)` releases the controlled unit, so the run ends with none.
+  - Every death row is identical.
+- **Failed 1, the interface.** It is 24h INTF_PLANESPAWN, not 22h INTF_PLANE. The host's
+  007BB9A0 (`plane_is_in_flight`) is unimplemented and answers false.
+- **Failed 2, the exit code.** `pair_diff` counts `controlled moved` as gameplay, so the
+  predicted release makes exit 3. Every combat number is identical.
+- **Failed 3, "no swap".** On ON only, Enterprise's group (group 2) swaps once at 110.00 s, and
+  Ralph and McCall exchange stations (across 68.92 and -561.47). No other ship line differs.
+  - That group never held the controlled unit, so 0070DB60's own gate (0070DB87..0070DBA0, per
+    group) does not explain it.
+  - The caller's walk over the groups was not read. One reading is that it stops at the first
+    gated group, which was Northampton's on OFF. That is **unverified**.
+- **Not predicted, the blocker: five `luaTimetable` failures between about 100 s and 130 s**:
+  `commandhelpers.lua:330: attempt to index field '?' (a nil value)`.
+  - USN01's `luaCheckObjectives` runs the music check first:
+    `luaCheckMusic(GetSelectedUnit())` -> `luaGetShipsAround`.
+  - That reads `recon[thisTable[target.ID].Party][allegiance]`. The generated squadron's Lua
+    table carries no `Party`: the GenerateObject route's attach writes none, and
+    `write_party_race_fields`'s callers all pass -1. So `recon[nil]` is nil.
+  - Each failure also skips the rest of that objective check.
+  - The image would not fail there: its squadron entity's table carries its party (the 00928F50
+    mirror).
+  - The failures stop once the controlled unit is released at 129.85 s.
+
+**Verdict: `kSquadronSlotClassBound` stays false.** The selection now matches the image. But
+turning it on exposes three host gaps whose effects the image does not have. Bind them first, in
+this order, then re-run this pair:
+1. **`Party` (and `Race`) on a GenerateObject'd entity's Lua table** (00928F50's mirror; the
+   caller of `GameMissionLuaHost::write_party_race_fields` on that route). This removes the
+   script failures.
+2. **007BB9A0 `plane_is_in_flight`**, for INTF_PLANE.
+3. **The walk that calls 0070DB60**, to establish whether the group-2 swap is the image's
+   consequence of the new controlled unit.
+
+The plane interface's camera hand-off (`+6Ch`/`+68h`) stays a labelled record. It only affects
+display and the pick.
