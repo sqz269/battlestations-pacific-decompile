@@ -551,6 +551,15 @@ public:
     // consumer that walks id 6 into the neighbour list at blk+608h lives in
     // GameShipAiHost and is not wired here.
     std::size_t world_list_size(int class_id) const noexcept;
+    // Packet cc9_units_contracts, docs/AVOID_ZONE_REGISTRY.md. The unit's part
+    // table size, (unit+34Ch - unit+348h) >> 2: its class's Damage.Sections
+    // count (0087BCC0 sizes the table to the descriptor's +18h vector).
+    std::size_t unit_part_descriptor_count(std::size_t index) const;
+    // List 24 (007F10B0, +138h) holds one node per plane squadron: the member
+    // slot the host fuses with the squadron. This answers [squadron+3D0h], the
+    // squadron's current flight leader, for such a node; the unit count when
+    // it is not a squadron node or no member is alive.
+    std::size_t squadron_list_24_leader(std::size_t entry_unit) const;
     // The unit index at `position` of the class-`class_id` list, or the unit
     // count when the position is past the end. The order is 00484540's own:
     // appended at the tail, walked from the head.

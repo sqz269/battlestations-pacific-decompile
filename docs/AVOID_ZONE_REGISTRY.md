@@ -183,3 +183,82 @@ is `697e8cc48`'s source with the switch set, which only moves the sea return int
 **Verdict: `kAvoidZoneLayerSampleBound` ON.** The planes read the scene's avoid-zone layer where
 the image reads it, and its only measured consequence is the Yorktown's fighters flying their
 terrain avoidance over the eastern block. No death, hit or release moved on either mission.
+
+## Units contracts (packet cc9_units_contracts)
+
+2026-09-26. Switch `kUnitsContractsBound`, committed OFF with the predictions below.
+
+### unit+9B8h, `007CE92A`
+
+- **The formula.** The second sample of the fixed step uses the same squadron+34Ch layer as
+  unit+9B4h. r is the unit's `vtable[34h]` (the world velocity). The value is
+  unit+9B8h = unit+9B4h − ((y − r.y) − layer(x − r.x, z − r.z)). That is the height above the
+  layer now, less the height above the layer one second back along the velocity. The three
+  differences are floats (`007CE8D4`, `007CE8E1`, `007CE8EE`), y is kept as a double
+  (`007CE8F4`), and the store is `007CE941`.
+- **Its readers** come from a disp32 scan of `B8 09 00 00` and of the unit+310h form
+  `A8 06 00 00`. False hits were removed: `007C8139` is `MOV EAX,9` and `007BFFCC` is a `JE`
+  offset. None of the real readers is on a path this host runs:
+  - `007B9620` reads unit+9B4h and +9B8h, and has no reference anywhere (rel32 and absolute
+    scans).
+  - `007C2B6B` in `007C2AF0` and `007D18CE` in `007D1360` are the plane state-message arms.
+    This host delivers no plane state message.
+  - `007DA24F` in `007D9F60` is `007C6500`'s alternate pose branch on unit+210h.
+- **The binding** stores it per plane (`plane_height_rate_9b8`) under the switch, when the
+  layer sample is bound too. It skips a plane with no squadron, as `007CE87F` does. Nothing
+  reads it; a census line prints its range.
+
+### The +350h sample `009CFAD0` is the takeoff task's, not the move-to's
+
+**Correction** to this doc's table and to `docs/COMMAND_COMPLETION.md`'s "moveto" row.
+`009CFA80` is called only from `009CFD8B`, in `009CFD70`: `__thiscall(task)(float dt)`,
+`RET 4`, body `009CFD70`-`009CFDC3`, **no Ghidra function**. `009CFD70` is slot +64h (the tick)
+of the vtable at `00D21228`, whose string after the table is `takeoff` (`00D21290`). It calls
+`009CFA80` on the sub-object at task+3F8h (`[+4h]` the unit, `[+0Ch]` the squadron). That writes
+sub+2Ch = max(layer350(x, z) + sub+30h, sub+30h + sub+34h), an altitude floor, then checks
+the moveto command's completion (`0071E430`, not terminal). This host has no takeoff task, so
+the sample stays a named record.
+
+### Contract 1: `GameUnitsHost::unit_part_descriptor_count(std::size_t index) const`
+
+It returns (unit+34Ch − unit+348h) >> 2.
+- `0087BCC0` sizes the part table at unit+344h to the class descriptor's +18h vector: the count
+  (+20h − +1Ch) / 30h at `0087BD20`-`0087BD43`, resized at `0087BD4F`. It then stores one
+  pointer per record (`0087BDBC`).
+- That vector's records are `Damage.Sections`, appended by `0087CA80` (a 30h record zeroed at
+  `0087CE00`, pushed at `0087CE48`).
+- The host counts the class row's `Damage.Sections` entries with a Lua `pairs` walk, cached
+  per class. It returns 0 past the end.
+
+### Contract 2: list 24 and `GameUnitsHost::squadron_list_24_leader(std::size_t node) const`
+
+- **What the image does.** `007F10B0` is slot +130h of the squadron vtable `00D087C0`
+  (`00D088F0` − `00D087C0` = 130h). That is the per-class registrar the entity creation calls
+  after placement. It pushes the squadron into list 1 (`00928560`), list 2 (`[+30h]+30h`) and
+  list 24 (`[+30h]+138h`).
+- **When.** The push happens **at squadron creation**. For a carrier strike, creation is the
+  launch: `006C7490` → `006C5050` builds the squadron through `004F0AD0`, the same creator a
+  `PlaneSquadronGen` scene row uses (`docs/AIROPS_LAUNCH_START.md` section 3). A scene squadron
+  is pushed at scene load.
+- **The host.** `world_list_size(24)` and `world_list_entry(24, i)` now answer. Each node is
+  the member slot the host fuses with the squadron: `squadron_unit`, else its first member.
+  `squadron_list_24_leader(node)` returns [squadron+3D0h], the current flight leader, or the
+  unit count when no member is alive. The consumer should read the squadron's side and position
+  through that leader.
+- **Substitutions, labelled:**
+  - Lists 1 and 2 are not pushed, because the fused slot is already registered as a plane.
+  - The push happens at the first units step after the record has a unit, at most one frame
+    after creation.
+  - Nothing removes a node, so the consumer's live test is the leader.
+
+### Predictions (written before the runs)
+
+Same-tree pairs `local\uc_off` against `local\uc_on`, the switch only, streams on.
+
+| row | USN04 4700/4500 | USN02 9200/9000 |
+| --- | --- | --- |
+| `summary mission units contracts` | OFF `list24_size=0 list24_pushes=0`, `9B8h writes=0`; ON `list24_size=21 list24_pushes=21` (the 21 squadrons the formation lines name), 9B8h writes between 100,000 and 183,221 (the plane fixed steps), range within ±400 m | no squadrons: `list24_size=0` on both; 9B8h writes 0 |
+| `list6` and `with_parts>1` | printed identically on both sides | identical |
+| `squadron world list 24 push` lines | ON only, 21, the first at mission start for the scene squadrons and the rest at each launch | none |
+| natives | ON: `PlaneSquadron::register_in_world_lists_007f10b0` 21, `PlaneStep::height_rate_9b8_007ce92a` concrete; `UnitList::push_back` + 21 | identical |
+| gameplay | identical: the proximity scan, the only list-24 reader, is not bound on this tree (`WarningManager::scan_proximity` UNIMPLEMENTED), and nothing reads unit+9B8h | identical |

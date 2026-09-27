@@ -957,6 +957,7 @@ struct GameUnitSlot {
     int rack_requests_deferred{0};     // 007BBBA0 requests whose spawn waits
     int rack_bomb_drops{0};            // packet cc9_release_issue_stage_vals
     int rack_rounds_authored{0};       // packet cc9_dive_bomb_carried_rounds
+    float plane_height_rate_9b8{0.0f}; // unit+9B8h, packet cc9_units_contracts
     int db_bomb_requests_logged{0};    // diagnostic line cap
     int torpedo_orders_issued{0};
     int torpedo_orders_issue_ticks{0};
@@ -1910,6 +1911,75 @@ struct GameUnitsHost::Impl {
         return kPilotDiveBombRows[i];
     }
 
+    // Packet cc9_units_contracts. The count of the class's Damage.Sections, the
+    // records 0087CA80 appends (memset 30h at 0087CE00, pushed at 0087CE48) into
+    // the descriptor vector +18h (+1Ch..+20h). 0087BCC0 sizes the unit's part
+    // table unit+344h (+348h..+34Ch) to that count (0087BD20-0087BD4F) and
+    // fills one pointer per record (0087BDBC), so (+34Ch - +348h) >> 2 is it.
+    // Every table entry is counted, as the image's iterator does; -1 when the
+    // class row is absent.
+    int damage_section_count(int class_id) {
+        const auto it = part_count_cache.find(class_id);
+        if (it != part_count_cache.end()) return it->second;
+        char chunk[512];  // the chunk is about 270 bytes; 256 truncated it
+        std::snprintf(chunk, sizeof(chunk),
+            "local c = type(VehicleClass) == 'table' and VehicleClass[%d] or nil\n"
+            "if type(c) ~= 'table' then return -1 end\n"
+            "local d = c.Damage\n"
+            "if type(d) ~= 'table' or type(d.Sections) ~= 'table' then return 0 end\n"
+            "local n = 0\n"
+            "for _, v in pairs(d.Sections) do n = n + 1 end\n"
+            "return n\n", class_id);
+        const int top = lua.lua_gettop();
+        int value = -2;   // -2: the chunk did not run; -1: no class row
+        if (lua.luaL_loadbuffer(chunk, static_cast<int>(std::strlen(chunk)),
+                                "bsp_damage_sections") == 0 &&
+            lua.lua_pcall(0, 1, 0) == 0) {
+            const std::string text = lua.lua_tolstring_at_top();
+            if (!text.empty()) value = std::atoi(text.c_str());
+        }
+        lua.lua_settop(top);
+        part_count_cache[class_id] = value;
+        return value;
+    }
+
+    // Packet cc9_units_contracts. 007F10B0 (squadron vtable 00D087C0 slot
+    // +130h, called after placement) pushes the squadron into list 1
+    // (00928560), list 2 (+30h) and list 24 (+138h). This host fuses a
+    // squadron with a member slot (squadron_unit, else its first member), which
+    // the plane registrar already put in its own lists, so only list 24 is
+    // pushed here, with that slot as the node. SUBSTITUTION, labelled: the push
+    // happens at the first units step after the record has a unit, not inside
+    // the creation call (at most one frame later).
+    void sync_squadron_world_list_24() {
+        auto& records = bsp::plane_squadron_registry().records();
+        if (squadron_list24_pushed.size() < records.size()) {
+            squadron_list24_pushed.resize(records.size(), 0);
+        }
+        for (std::size_t i = 0; i < records.size(); ++i) {
+            if (squadron_list24_pushed[i] != 0) continue;
+            const bsp::PlaneSquadronHostRecord& r = records[i];
+            std::size_t node = r.squadron_unit;
+            if (node == bsp::kPlaneSquadronNoUnit) {
+                for (const std::size_t m : r.member_units) {
+                    if (m != bsp::kPlaneSquadronNoUnit) { node = m; break; }
+                }
+            }
+            if (node == bsp::kPlaneSquadronNoUnit || node >= slots.size()) continue;
+            squadron_list24_pushed[i] = 1;
+            // 007F10C7-007F10CE: ECX = [squadron+30h] + 138h, the id 24 list.
+            world_list_push_back_00484540(world_lists,
+                static_cast<std::uint32_t>(bsp::kWorldSlotArrayOffset +
+                                           bsp::kWorldSlotStride * 24),
+                *slots[node]);
+            ++squadron_list24_pushes;
+            done("PlaneSquadron::register_in_world_lists_007f10b0", 0x007f10b0u);
+            log.notef("squadron world list 24 push: squadron=%s node=%s t=%.2f",
+                r.name.c_str(), slots[node]->row.name.c_str(),
+                static_cast<double>(summary.simulated_seconds));
+        }
+    }
+
     // VehicleClass[class].Equipments[DefaultEquipment or 1][platform].Ammo, the
     // authored round count of one platform (the equipment reader 00961F57 stores
     // Platform, Ammo and ReloadTime per entry). -1 when any level is absent.
@@ -1917,7 +1987,7 @@ struct GameUnitsHost::Impl {
     // another equipment is not modelled.
     int read_equipment_ammo(int class_id, int platform_key) {
         if (platform_key < 0) return -1;
-        char chunk[320];
+        char chunk[512];
         std::snprintf(chunk, sizeof(chunk),
             "local c = type(VehicleClass) == 'table' and VehicleClass[%d] or nil\n"
             "if type(c) ~= 'table' or type(c.Equipments) ~= 'table' then return -1 end\n"
@@ -3294,6 +3364,19 @@ struct GameUnitsHost::Impl {
     // now fly terrain avoidance over the eastern block; no death, hit or release
     // moved, and USN02's ship rows are identical.
     static constexpr bool kAvoidZoneLayerSampleBound = true;
+    // Packet cc9_units_contracts, docs/AVOID_ZONE_REGISTRY.md section "Units
+    // contracts": (1) unit+9B8h, the fixed step's second 0041BC20 sample
+    // (007CE92A), stored per plane; no host path reads it (its readers are the
+    // unreferenced 007B9620, the state-message arms 007C2B6B / 007D18CE and the
+    // alternate pose 007DA24F); (2) 007F10B0's push of a squadron into world
+    // list 24 (+138h), the squadron's +130h registrar. OFF: neither.
+    static constexpr bool kUnitsContractsBound = false;
+    unsigned long long h9b8_writes = 0;
+    double h9b8_min = 0.0, h9b8_max = 0.0;
+    std::vector<unsigned char> squadron_list24_pushed;
+    int squadron_list24_pushes = 0;
+    std::map<int, int> part_count_cache;
+    std::size_t part_count_primed = 0;
     // Diagnostic census of both heights at every sample, in both builds.
     unsigned long long az_samples = 0;
     unsigned long long az_samples_layer_nonzero = 0;
@@ -7226,6 +7309,13 @@ void GameUnitsHost::update_entity_008255b0(std::size_t index, float scaled_delta
 void GameUnitsHost::motion_step_00825f20(float step_seconds) {
     Impl& host = *impl_;
     if (host.slots.empty()) return;
+    if constexpr (Impl::kUnitsContractsBound) host.sync_squadron_world_list_24();
+    // Packet cc9_units_contracts: read each class's Damage.Sections count while
+    // the class tables are live (the end-of-mission census found them gone).
+    while (host.part_count_primed < host.slots.size()) {
+        host.damage_section_count(host.slots[host.part_count_primed]->row.type_id);
+        ++host.part_count_primed;
+    }
     if (!host.logged_precision) {
         // The second half of docs/X87_CONTROL_WORD.md's read, taken where that
         // document says it matters: the fixed step that runs the reconstruction
@@ -13616,6 +13706,43 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         }
                     }
 
+                    // Packet cc9_units_contracts. 007CE877-007CE941 with
+                    // ESI = unit+310h: skipped when unit+9D4h is null; r is
+                    // the unit's vtable[34h] (world velocity); both samples on
+                    // squadron+34Ch. unit+9B8h = unit+9B4h - ((y - r.y) -
+                    // layer(x - r.x, z - r.z)), each difference a float
+                    // (007CE8D4 / 007CE8E1 / 007CE8EE), y kept as a double.
+                    void store_height_rate_9b8_007ce92a() {
+                        if (bsp::plane_squadron_registry().find_by_member_unit(
+                                unit_.process_index) == nullptr) return;   // 007CE87F
+                        const GameAvoidZoneRegistry& reg = GameAvoidZoneRegistry::instance();
+                        const bsp::TerrainGridLayerRecord* layer =
+                            reg.layer(reg.squadron_layer_34c());
+                        if (layer == nullptr) return;
+                        float r[3];
+                        avoid_velocity(unit_, r);
+                        const float* p = unit_.world.data() + 12;          // unit+FCh
+                        const float a = static_cast<float>(static_cast<double>(p[0]) - r[0]);
+                        const float b = static_cast<float>(static_cast<double>(p[1]) - r[1]);
+                        const float c = static_cast<float>(static_cast<double>(p[2]) - r[2]);
+                        const double y = p[1];
+                        const float h9b4 = static_cast<float>(
+                            y - avoid_zone_sample_0041bc20(*layer, p[0], p[2]));  // 007CE904
+                        const float t = static_cast<float>(
+                            static_cast<double>(b) - avoid_zone_sample_0041bc20(*layer, a, c));
+                        unit_.plane_height_rate_9b8 = static_cast<float>(
+                            static_cast<double>(h9b4) - t);                  // 007CE941
+                        const double v = unit_.plane_height_rate_9b8;
+                        if (owner_.h9b8_writes == 0) {
+                            owner_.h9b8_min = owner_.h9b8_max = v;
+                        } else {
+                            if (v < owner_.h9b8_min) owner_.h9b8_min = v;
+                            if (v > owner_.h9b8_max) owner_.h9b8_max = v;
+                        }
+                        ++owner_.h9b8_writes;
+                        owner_.done("PlaneStep::height_rate_9b8_007ce92a", 0x007ce92au);
+                    }
+
                     void run_release_order_issue_007c0d90() {
                         TorpedoReleaseOrderBinding binding(owner_, unit_);
                         const bsp::ReleaseOrderIssueResult r =
@@ -16086,6 +16213,10 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // that could skip it: 007CE99D's JE lands on 007CE9FD
                         // itself. So the stage runs on every fixed step of
                         // every arm, which is what this position models.
+                        if constexpr (GameUnitsHost::Impl::kUnitsContractsBound &&
+                                      GameUnitsHost::Impl::kAvoidZoneLayerSampleBound) {
+                            store_height_rate_9b8_007ce92a();
+                        }
                         run_release_issue_stage_007ce9fd(fixed_step_seconds_);
                         if constexpr (GameUnitsHost::Impl::kReleaseIssueStageBound) {
                             run_rack_tick_006e56f0(fixed_step_seconds_);
@@ -16968,6 +17099,32 @@ void GameUnitsHost::unit_position_00fc(std::size_t index, float& x, float& y,
     x = motion.position[0];
     y = motion.position[1];
     z = motion.position[2];
+}
+
+std::size_t GameUnitsHost::unit_part_descriptor_count(std::size_t index) const {
+    // (unit+34Ch - unit+348h) >> 2: the class's Damage.Sections count (see
+    // Impl::damage_section_count). 0 for an index past the end.
+    if (index >= impl_->slots.size()) return 0;
+    const int n = impl_->damage_section_count(impl_->slots[index]->row.type_id);
+    return n > 0 ? static_cast<std::size_t>(n) : 0;
+}
+
+std::size_t GameUnitsHost::squadron_list_24_leader(std::size_t entry_unit) const {
+    // [squadron+3D0h] for the squadron whose list-24 node is `entry_unit`: the
+    // registry record fused with that slot, then its current flight leader.
+    // The unit count when no record matches or the squadron has no live member.
+    for (const bsp::PlaneSquadronHostRecord& r : bsp::plane_squadron_registry().records()) {
+        std::size_t node = r.squadron_unit;
+        if (node == bsp::kPlaneSquadronNoUnit) {
+            for (const std::size_t m : r.member_units) {
+                if (m != bsp::kPlaneSquadronNoUnit) { node = m; break; }
+            }
+        }
+        if (node != entry_unit) continue;
+        const std::size_t leader = r.flight_leader();
+        return leader < impl_->slots.size() ? leader : impl_->slots.size();
+    }
+    return impl_->slots.size();
 }
 
 std::size_t GameUnitsHost::world_list_size(int class_id) const noexcept {
@@ -18348,6 +18505,25 @@ void GameUnitsHost::report() {
                             host.az_diff_abs_max,
                             host.az_samples > 0 ? host.az_diff_abs_sum /
                                 static_cast<double>(host.az_samples) : 0.0);
+                    }
+                    {
+                        // Packet cc9_units_contracts: the three contracts' census,
+                        // printed in both builds.
+                        std::size_t ships = 0, multi = 0;
+                        const std::size_t n6 = host.world_lists.entries[6].count;
+                        for (const GameUnitWorldNode* node = host.world_lists.entries[6].head;
+                             node != nullptr; node = node->next) {
+                            ++ships;
+                            if (host.damage_section_count(node->unit->row.type_id) > 1) ++multi;
+                        }
+                        host.log.notef("summary mission units contracts: bound=%d "
+                            "list24_size=%zu list24_pushes=%d | list6=%zu with_parts>1=%zu | "
+                            "9B8h writes=%llu range=[%.3f %.3f]",
+                            GameUnitsHost::Impl::kUnitsContractsBound ? 1 : 0,
+                            static_cast<std::size_t>(host.world_lists.entries[24].count),
+                            host.squadron_list24_pushes, n6, multi,
+                            host.h9b8_writes, host.h9b8_min, host.h9b8_max);
+                        static_cast<void>(ships);
                     }
                     if constexpr (bsp::kPilotMoveToTaskBound && bsp::kMoveToTaskTickBound) {
                         std::size_t tasks = 0;
