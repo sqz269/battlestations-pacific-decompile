@@ -80,7 +80,8 @@ inline constexpr bool kLoadTimeSquadronHooksBound = true;
 // create_units, so its planes reach the load walk as plain nodes. When set,
 // the load walk marks members 1.. of each scene squadron record as that
 // squadron's wing, as the mission-time pass A marks a hook-built wing.
-inline constexpr bool kLoadWingSquadronIdBound = false;
+// ON since the pairs (docs/SENTITY_INIT_ATTACH_ORDER.md 20.4).
+inline constexpr bool kLoadWingSquadronIdBound = true;
 
 class GameHostLog;
 class GameVfsHost;

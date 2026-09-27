@@ -1,0 +1,28 @@
+{
+  "packet": "cc9_load_wing_squadron_id",
+  "doc": "docs/SENTITY_INIT_ATTACH_ORDER.md, section 20",
+  "calls": [
+    {"address": "007C97E3", "native": "00927B40", "function": "007C9770", "note": "plane pass C: the entity's thisTable"},
+    {"address": "007C9805", "native": "00B67460", "function": "007C9770", "note": "SquadronID = squadron +174h (007C97EE), from plane +9D4h (007C97E8)"}
+  ],
+  "stores": [
+    {"address": "007F4B49", "function": "007F4580", "note": "MOV [EBX+9D4h],ESI: every constructed plane carries its squadron, slot 0 included"}
+  ],
+  "switches": [
+    {
+      "name": "kLoadWingSquadronIdBound",
+      "state": "ON",
+      "pair": "local/WS_OFF_{JM08,USN04,USN02}.log (build of b6fc0fc21, local/bin/ws_off) against local/WS_ON_*.log (pair_export of b6fc0fc21, SHA-256 8A440150CD3A). JM08 exit 1: marked 0 -> 4, squadron_ids 0 -> 4, pass C plane squadron_id row added (4); USN04 exit 1: marked 0 -> 2, squadron_ids 40 -> 42, row 40 -> 42, wing_member_tables 40 -> 42; USN02 exit 1 on the bound field only. Gameplay, death rows, plane death modes and unit tables identical."
+    }
+  ],
+  "no_ghidra_function": [],
+  "names_added": [],
+  "substitutions": [
+    "slot 0 of a scene squadron's wing is fused with the squadron node and gets no SquadronID; the image writes one into every plane 007F4580 builds",
+    "class_index of a load wing plane is left as create_units pushed it (the mission-time marking sets the squadron's)"
+  ],
+  "failed_predictions": [],
+  "noise_observed": [
+    "JM08: ShipAiClearance::static_zone_blocks_009d57e0 / static_zone_clearance_00415d70 (3 calls each) appear or not independently of any switch across seven runs, like ShipAiSectorScan::clip_arc_zones; this also accounts for those two rows in the kSceneHomeBaseQualifiedNameBound pair"
+  ]
+}

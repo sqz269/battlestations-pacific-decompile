@@ -1519,3 +1519,36 @@ Worker cc9-init2, 2026-09-27, on 3ef1ec0c1. Ghidra was read only. This closes 19
     attaches.
   - `pair_diff` exits 1.
 - **USN02 9200/9000.** No scene squadron: only the new line's `bound` field moves, exit 1.
+
+### 20.4 Pairs and verdict
+
+- **The runs.** The OFF binary is `local\bin\ws_off` (a build of b6fc0fc21). The ON binary is
+  `pair_export` of b6fc0fc21 with the switch flipped (`local\lsh_on`, SHA-256 8A440150CD3A). Both
+  variables were set, lockstep 0.05, idle player. Logs: `local\WS_{OFF,ON}_{JM08,USN04,USN02}.log`.
+
+| row | JM08 OFF | JM08 ON | USN04 OFF | USN04 ON | USN02 |
+| --- | ---: | ---: | ---: | ---: | --- |
+| `load wing squadron ids marked` | 0 | 4 | 0 | 2 | 0 |
+| `thisTable steps squadron_ids` | 0 | 4 | 40 | 42 | 0 |
+| `pass C plane squadron_id` native row | absent | 4 | 40 | 42 | absent |
+| SpawnNew `wing_member_tables` | (no line) | (no line) | 40 | 42 | (no line) |
+| deaths, hits, death rows, plane death modes, unit table | identical | | identical | | identical |
+| `pair_diff` exit | | 1 | | 1 | 1 (the `bound` field only) |
+
+- **Every prediction held.**
+- **Noise on JM08, again.** `ShipAiClearance::static_zone_blocks_009d57e0` and
+  `static_zone_clearance_00415d70` (3 calls each) are OFF only here. Across seven JM08 runs of this
+  session they appear or not independently of any switch, as `clip_arc_zones` does (12000, 6000
+  or none):
+
+| log | `clip_arc_zones` | `static_zone_blocks` |
+| --- | ---: | ---: |
+| LSH_OFF_JM08 / LSH_OFF2_JM08 (one binary) | 12000 / none | none / none |
+| LSH_ON_JM08 / LSH_ON2_JM08 | 6000 / 12000 | none / none |
+| QN_ON_JM08 | 12000 | 3 |
+| WS_OFF_JM08 / WS_ON_JM08 | 6000 / 6000 | 3 / none |
+
+  So the two static-zone rows added in CONSTRUCT_WORLD.md 32's step 2 pair are this noise too, not
+  that switch's. Gameplay was identical in every pair.
+
+**Verdict: ON.**
