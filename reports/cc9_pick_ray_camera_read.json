@@ -1,0 +1,21 @@
+{
+  "packet": "cc9_pick_ray_camera_read",
+  "doc": "docs/HUD_PICK_SEGMENT_QUERY.md",
+  "state": "read committed; binding not made: on an airfield-controlled mission the image installs no ShipCaptain mover, and the host models neither candidate camera (the in-game movie mover, the node's initial pose)",
+  "calls": [
+    {"address": "0064DC9C", "native": "004BC410", "function": "0064DA40", "note": "the ShipCaptain mover, interface 25h only"},
+    {"address": "005CC2A9", "native": "004BC410", "function": "005CC170", "note": "the in-game movie screen's mover"},
+    {"address": "005CDC72", "native": "004BC410", "function": "005CDC50", "note": "a second movie-screen setter"}
+  ],
+  "coverage": [
+    {"routine": "00526B64..00526BC7", "coverage": "complete: the node [game+19FCh], its translation and row 2"}
+  ],
+  "substitutions": [],
+  "corrections": [
+    {"was": "the pick ray on USN01 is (0,0,0)->(0,0,0) because nothing supplies the camera", "is": "the image's node always exists and is posed by the last mover; USN01's 2Eh INTF_AIRFIELD arm installs none, so the pose is the intro movie's mover or the node's initial pose, not a ShipCaptain camera", "evidence": "0068AEAE kind 45h -> 2Eh; 2Eh jumps to 0068B23A untouched; 004BC410 callers 0064DC9C, 005CC2A9, 005CDC72"}
+  ],
+  "switches": [],
+  "failed_predictions": [],
+  "no_ghidra_function": [],
+  "ledger_names_added": []
+}

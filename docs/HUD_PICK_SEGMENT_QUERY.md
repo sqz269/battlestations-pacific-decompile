@@ -232,3 +232,56 @@ line moves. `kHudPickSegmentQueryBound` is set true. Two named records remain:
 - `UnitPickScreen::part_owner_00923810`, which did not run.
 
 `owner_140` is an existing record of the pick's owner getter, now reached 26 times.
+
+## 7. The ray's camera on a mission whose player unit is not a ship (packet `cc9_pick_ray_camera_read`, read)
+
+**What the cast reads.**
+- 00526B64..00526BC7 load `[[00E188A8]+19FCh]`, the camera **node**, with no null test.
+- They refresh the node's world through 00B6DB70 when bit 2 of `+5Ch` is clear.
+- They read the world translation `+120h..+128h` as `from` and row 2 `+110h..+118h` as the forward.
+- The node is posed by whichever **mover** 004BC410 last installed (`docs/MISSION_CAMERA.md`
+  section 2). The mover's tail 004329D0 pushes its pose into the node every frame.
+
+**Which mover the player's interface installs.** The level-1 dispatch
+(`docs/IN_GAME_INTERFACE_SCREEN_SETS.md`) maps the controlled unit's kind to an interface:
+- **A ship** (kind 06h) takes **25h** `INTF_CAPTAIN`. Its arm calls 0064DA40 on `interface+7Ch`,
+  which creates the `ShipCaptain` mover and installs it at 0064DC9C. This is the only mover the host
+  models (`GameHudHost::Impl::bind_mission_camera_0064da40`). That is why USN02 (a ship) records 26
+  ray picks from a real camera, and why USN04's Lexington camera sits 53.7 above the sea.
+- **An airfield** (kind 45h, 0068AEAE) takes **2Eh** `INTF_AIRFIELD`. Its arm jumps straight to
+  the shared tail 0068B23A: it leaves the screen set untouched and installs **no mover**.
+  USN01's log reads `applied as 2Eh`, and the controlled unit is `Airfield2`.
+- The only other publishing path, 2Ah `INTF_IDLECAMERA` at 0068AFAB, needs `game+1FE4h != 0`,
+  which is multiplayer.
+
+**So on USN01 the image's node keeps the pose of the last mover installed by something else.**
+There are 18 rel32 callers of 004BC410. The candidates on this mission:
+- **The in-game movie.** `usn_1_marshall.lua` runs `luaIntroMovie` (line 440), whose
+  `luaIngameMovie` keyframes place the camera relative to `SaltLakeCity` and `CB2` (lines
+  619..630). The movie screen's `BSP_HudMovieScreen_EnsureCamera` 005CC170 installs a mover at
+  005CC2A9, and 005CDC50 (call at 005CDC72) is a second movie-screen setter.
+- **Otherwise the node's pose before any mover**, which was not read. The node's constructor and
+  its initial world were not located.
+
+**Why the host's ray is (0,0,0) -> (0,0,0).** `camera_basis` answers from the ShipCaptain
+publication only (`mission_camera_publication().ready`). With no ship there is no publication,
+so both vectors are the record's zeros (`UnitPickScreen::camera_basis` 00526B71 UNIMPLEMENTED,
+6,160 calls on USN01).
+- **The image's ray is not degenerate.** An identity node alone would cast 10,000 along +Z from
+  the origin.
+- **So the zero ray is a host artefact.**
+- **But the right replacement is not the ShipCaptain camera**, which the image never installs on
+  USN01.
+
+**Not bound.** No host model of either candidate camera exists, and a pose chosen without one would
+be invented:
+- the movie mover's keyframed pose after the intro, and what the movie screen restores when the
+  movie ends;
+- or the node's initial world.
+
+A binding needs one of three reads first:
+1. **The movie screen's mover**, 005CC170 / 005CDC50 and what `luaIngameMovie` leaves installed
+   at the movie's end. If it stays installed, USN01's pick casts from the last keyframe near `CB2`.
+2. **The node's construction** and its initial world, if the movie restores "no mover".
+3. **The camera-control input path**, since a player on the airfield interface can move the view.
+
