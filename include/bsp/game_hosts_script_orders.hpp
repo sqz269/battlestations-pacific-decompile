@@ -176,7 +176,10 @@ inline constexpr bool kUnitHealthFractionBound = true;
 // or catapult model), the kamikaze test reads false, and a unit that is not
 // a submarine answers 0. False: the native stays an unimplemented record and
 // pushes nothing, which 06_crucial_cargo.lua:713 compares as nil.
-inline constexpr bool kSubmarineDepthLevelBound = false;
+// ON by the pairs at eedf5dc79: LOMP06 Narwhal answers 1 on all six calls and
+// the failures move from :713 to :531 (reconlevel), gameplay identical;
+// USN02 and USN04 identical (docs/SUBMARINE_MODEL.md section 11).
+inline constexpr bool kSubmarineDepthLevelBound = true;
 
 // Packet cc9_navigator_force_torpedo (docs/UNIT_WEAPON_DEVICES.md,
 // "NavigatorForceTorpedo"). True: the Lua native NavigatorForceTorpedo

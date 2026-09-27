@@ -22,6 +22,16 @@
     "USN02_9200_9000": "identical (exit 0 or 1): no call",
     "USN04_4700_4500": "identical (exit 0 or 1): no call"
   },
-  "off_commit": "pending",
-  "results": "pending"
+  "off_commit": "eedf5dc79",
+  "results": {
+    "LOMP06_1200_1000": "seed line 'unit=Narwhal level=1 dive=1:1'; ON calls=6 forced=0 last=1; the six failures moved from :713 (compare nil) to :531 (index field 'reconlevel', nil) at the same timers; pair_diff exit 1, gameplay/death rows/unit table identical; native table: GetSubmarineDepthLevel UNIMPLEMENTED -> concrete, ForceRecon 008AADF0 now reached (UNIMPLEMENTED calls=6)",
+    "USN02_9200_9000": "pair_diff exit 1, 19 deaths / 573 hit records both sides, native table unchanged",
+    "USN04_4700_4500": "pair_diff exit 1, 44 deaths / 789 hit records both sides, native table unchanged",
+    "logs": "local/sdl_{off,on}_{lomp06,usn02,usn04}.log"
+  },
+  "on_export": "tools/pair_export.py --commit eedf5dc79 --flip kSubmarineDepthLevelBound=true -> local/sdl_on",
+  "verdict": "every prediction held; flipped ON",
+  "names_added": [
+    "00894100 BSP_LuaNative_GetSubmarineDepthLevel (provisional)"
+  ]
 }
