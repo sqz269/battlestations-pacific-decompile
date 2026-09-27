@@ -345,5 +345,57 @@
       "address": "009038F0",
       "name": "BSP_World_GroundNormalAt (replaces BSP_World_GroundHeightAndNormalAt)"
     }
-  ]
+  ],
+  "pair_diff": {
+    "usn01": {
+      "tool": "tools/pair_diff.py (origin/main 7e7b78339)",
+      "exit": 1,
+      "verdict": "VERDICT: DIFFERENT, gameplay identical (exit 1)",
+      "gameplay": [
+        "GAMEPLAY: identical",
+        "  deaths                                 7                                        7",
+        "  hit records                            150                                      150",
+        "  hull hits                              85                                       85",
+        "  damage                                 2690.0                                   2690.0",
+        "  shots                                  583                                      583",
+        "  first hit                              53.75 s                                  53.75 s",
+        "  torpedo-task releases                  3 of 5                                   3 of 5",
+        "  dive-bomb-task releases                0 of 2                                   0 of 2",
+        "  torpedo drops                          0                                        0",
+        "  plane water contacts                   3                                        3",
+        "  controlled moved                       Airfield2 0.00                           Airfield2 0.00",
+        "  units                                  64                                       64",
+        "  mission end                            none (Mission.EndMission never true)     none (Mission.EndMission never true)",
+        "* host methods concrete/unimplemented    882 / 464                                883 / 464",
+        "DEATH ROWS: identical (7 rows)",
+        "PLANE DEATH MODES: identical (7 rows)",
+        "UNIT TABLE: identical (28 rows)"
+      ]
+    },
+    "usn04": {
+      "tool": "tools/pair_diff.py (origin/main 7e7b78339)",
+      "exit": 1,
+      "verdict": "VERDICT: DIFFERENT, gameplay identical (exit 1)",
+      "gameplay": [
+        "GAMEPLAY: identical",
+        "  deaths                                 41                                       41",
+        "  hit records                            743                                      743",
+        "  hull hits                              264                                      264",
+        "  damage                                 11494.8                                  11494.8",
+        "  shots                                  5603                                     5603",
+        "  first hit                              93.00 s                                  93.00 s",
+        "  torpedo-task releases                  5 of 16                                  5 of 16",
+        "  dive-bomb-task releases                3 of 19                                  3 of 19",
+        "  torpedo drops                          1                                        1",
+        "  plane water contacts                   15                                       15",
+        "  controlled moved                       Lexington-class01 3454.40                Lexington-class01 3454.40",
+        "  units                                  81                                       81",
+        "  mission end                            none (Mission.EndMission never true)     none (Mission.EndMission never true)",
+        "  host methods concrete/unimplemented    1037 / 545                               1037 / 545",
+        "DEATH ROWS: identical (41 rows)",
+        "PLANE DEATH MODES: identical (41 rows)",
+        "UNIT TABLE: identical (81 rows)"
+      ]
+    }
+  }
 }
