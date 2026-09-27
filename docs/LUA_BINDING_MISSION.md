@@ -611,3 +611,67 @@ BSM01 runs at 9200/9000; USN02 and USN04 run OFF against `SP`.
 - **`kPutToBound` ON.** All eight placements land where the script asks, and the reference missions
   are identical.
 - BSM01's next gaps are the effect natives listed above; they are outside this packet.
+
+## GetHpPercentage's health slot (packet `cc9_get_hp_percentage`, `kUnitHealthFractionBound`, committed OFF)
+
+Worker cc9-ships2, on main `0a86f3d5b`. Ghidra was read-only.
+
+### The read
+
+- **GetHpPercentage** (0088E9D0, `lua_binding_get_hp_percentage`) pushes 00923BE0's answer
+  unscaled. It is a fraction in `[0, 1]`, not a percentage.
+- **00923BE0 BSP_UnitInstance_GetHealth:**
+  - `[entity+5Dh]` set answers 0.0 (00923BE4..00923BEE);
+  - otherwise it calls `vtable[110h]` (00923BF1..00923BF7), float-stores the result, answers 0.0
+    below 0 (storing 0 at `+164h`), and clamps it to 1.0 (00D7A24C);
+  - the clamped value is cached at `+164h`.
+- **vtable[110h]** is 00876260 BSP_UnitInstance_GetHealthFraction in all nine unit vtables
+  (00CF90B0, 00CFA778, 00CFB738, 00CFC3D0, 00CFFA30, 00D01630, 00D09678, 00D0BF80 and 00D0C648,
+  each `+110h`). Its body is `FLD [ecx+370h]`, `FDIV [ecx+36Ch]`, then a float store: health over
+  max health.
+- **The base entity's slot** is 0042BB50, `FLD1`. A non-unit entity reads 1.0.
+- **The host today** clears the gate and answers 0 from the slot, so every unit reads 0.0 to the
+  scripts.
+
+### Callers in this installation's Lua (read-only)
+
+| mission | line | branch | today |
+| --- | --- | --- | --- |
+| USN02 | usn_2_java.lua:533 | phase 1, while primary 1 is active: `hp = GetHpPercentage(DeRuyter)`. With `hp < 0.15` or all eight `EnemyDestroya` dead, it completes primary 1 and runs `luaPh1FadeOut`, which is `Blackout(true, "luaMoveToPh2", 1)` | `calls=1`: DeRuyter reads 0 at the first check, so phase 1 ends and `luaMoveToPh2` runs at about 25 s (`bt_off_usn02.log`: the call before the 500-step line; the `Blackout(true, "luaMoveToPh2")` line; the callback line) |
+| USN04 | usn_19_coralus.lua:1996, `luaGetHP` | used for the HUD text | `calls=0` in every USN04 log |
+| USN01 | usn_1_marshall.lua:555 | `hp = GetHpPercentage(Mission.Katori)` | not measured in this packet |
+| BSM01 | bsm_01_stationed_at_pearl.lua:703..759 | per battleship, `if GetHpPercentage(ship) <= 0.31 and not ...Sunk`: that ship's scripted sinking | `calls=1192`: all eight read 0, so every one takes its sinking branch |
+
+### The binding (under `kUnitHealthFractionBound`)
+
+- The gate is the gunnery host's death record (`GameGunneryHost::unit_dead`).
+- The slot is the gunnery row's `health / max_health` for a unit, and 1.0 for a scene marker
+  (0042BB50).
+- **LABELLED:** `+5Dh` stands for the gunnery host's death; the host has no torn-down byte.
+- **Census:** `summary mission script unit health reads bound=.. reads=.. dead=.. markers=..`.
+
+### Predictions (written before the pairs; same tree, switch only, streams and the death table on)
+
+| row | prediction |
+| --- | --- |
+| USN02 GetHpPercentage calls | 1 -> many (one per think while phase 1 and primary 1 are active) |
+| USN02 first value | DeRuyter 1.0 at the first check, against 0 |
+| USN02 phase change | `luaMoveToPh2` at about 25 s on OFF; later on ON, or not within 450 s |
+| USN02 `pair_diff` | 3: phase 2's moves start later, so ship positions, hits, deaths and the mission end move |
+| USN04 `pair_diff` | 1, `calls=0` |
+| BSM01 battleship sinking branches | none taken on ON, since the eight read 1.0 until damaged: Effect (32), ExplodeToParts (15), SetDamagedGFXLevel (8), DisablePhysics (8) and AddMatrixInterpolator (9) go to 0 |
+| BSM01 `pair_diff` | 1: those natives are unimplemented, so nothing in the gunnery tables moves |
+
+### BSM01's remaining gaps (for a later packet)
+
+These natives are the scripted sinking at lines 703..759 and elsewhere. Each is unimplemented in
+this host. The labels below come from the names and the calling code, not from a read of the
+bodies.
+
+| native | label |
+| --- | --- |
+| `Effect` (008A9730) | display-only: spawns a named visual effect at an entity or point |
+| `ExplodeToParts` (0088E1B0) | state: breaks the entity into its parts (a destruction step) |
+| `SetDamagedGFXLevel` (0088F710) | display-only: the damage texture level |
+| `DisablePhysics` (00891380) | state: stops the entity's physics (its motion) |
+| `AddMatrixInterpolator` (008ADE00) | state: drives the entity's world matrix along an interpolation (the sinking pose) |

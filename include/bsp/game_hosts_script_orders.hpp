@@ -158,6 +158,15 @@ inline constexpr bool kScoringPlayerShotDownBound = true;
 // unimplemented record.
 inline constexpr bool kPutToBound = true;
 
+// Packet cc9_get_hp_percentage (docs/LUA_BINDING_MISSION.md, "GetHpPercentage's
+// health slot"). True: 00923BE0's two host reads answer from the gunnery host.
+// The +5Dh gate is the unit's death (GameGunneryHost::unit_dead), and
+// vtable[110h] is 00876260 on all nine unit vtables, [+370h] / [+36Ch] (health
+// over max health) float-stored; a scene marker (no unit) takes the base
+// entity's 0042BB50, FLD1. False: the gate is clear and the slot answers 0, so
+// every unit reads 0% to the scripts.
+inline constexpr bool kUnitHealthFractionBound = false;
+
 // Packet cc9_frame_delta_jitter, docs/GAME_EXECUTABLE.md. True: the script think
 // walk 00929460 runs once per 0.05f fixed step, as the image's fan-out row 8 does
 // (00875E64 inside 00875BB0), while the Blackout fade still steps once per frame
@@ -566,6 +575,10 @@ private:
     int shot_down_last_{0};
     unsigned long long put_to_calls_{0};
     unsigned long long put_to_placed_{0};
+    // Packet cc9_get_hp_percentage.
+    unsigned long long health_reads_{0};
+    unsigned long long health_reads_dead_{0};
+    unsigned long long health_reads_marker_{0};
     // 008A4C90's tally. `calls` counts what the scripts asked for; the two
     // `resolved` counters say whether the Lua argument path actually reached a
     // unit and a target, which was the open question the wiring settles.
