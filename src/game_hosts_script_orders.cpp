@@ -273,8 +273,39 @@ void set_game_effective_difficulty_6ac(std::int32_t value) noexcept {
     g_effective_difficulty_6ac = value;
 }
 
+namespace {
+GameScriptOrdersHost* g_live_script_orders = nullptr;
+}  // namespace
+
 GameScriptOrdersHost::GameScriptOrdersHost(GameHostLog& log, GameUnitsHost& units)
-    : log_(log), units_(units) {}
+    : log_(log), units_(units) {
+    g_live_script_orders = this;
+}
+
+GameScriptOrdersHost::~GameScriptOrdersHost() {
+    if (g_live_script_orders == this) g_live_script_orders = nullptr;
+}
+
+std::size_t script_orders_drain_loopback_0076c600() {
+    return g_live_script_orders != nullptr
+        ? g_live_script_orders->drain_deferred_orders_0076c600() : 0;
+}
+
+std::size_t GameScriptOrdersHost::drain_deferred_orders_0076c600() {
+    // 0076C600 over the orders posted since the last pump, in post order.
+    if (deferred_orders_.empty()) return 0;
+    std::vector<DeferredOrder> batch;
+    batch.swap(deferred_orders_);
+    for (const DeferredOrder& o : batch) {
+        apply_issued_order(o.index, o.command_object, o.target, o.flags, o.source,
+            o.target_name);
+        ++deferred_applied_;
+        log_.notef("  after-row-9 queue: %s's order for unit %zu applied at the step's pump "
+            "(0076C600)", o.poster.c_str(), o.index);
+    }
+    log_.implemented("Session::drain_loopback_queue_0076c600", "00778542");
+    return batch.size();
+}
 
 bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
     const ScriptOrderBinding* binding = find_binding(binding_name);
@@ -1398,6 +1429,36 @@ void GameScriptOrdersHost::entity_issue_command(void* entity,
     }
     std::string source("script:");
     source += (row_ != nullptr) ? row_->binding : std::string("navigator");
+    if (kAfterRow9OrderQueueBound && !after_row9_poster_.empty()) {
+        // Posted after row 9 (a Blackout callback): 0077D600 routes the
+        // MT_COMMAND into the loopback queue, applied by the next step's pump.
+        DeferredOrder o;
+        o.index = index;
+        o.command_object = command_object;
+        o.target = target;
+        o.flags = flags;
+        o.source = source;
+        o.target_name = target_name;
+        o.poster = "blackout:" + after_row9_poster_;
+        bool counted = false;
+        for (auto& entry : deferred_by_poster_) {
+            if (entry.first == o.poster) { ++entry.second; counted = true; break; }
+        }
+        if (!counted) deferred_by_poster_.emplace_back(o.poster, 1ull);
+        deferred_orders_.push_back(std::move(o));
+        if (row_ != nullptr) {
+            row_->command = name;
+            row_->target = target_name;
+        }
+        return;
+    }
+    apply_issued_order(index, command_object, target, flags, source, target_name);
+}
+
+void GameScriptOrdersHost::apply_issued_order(std::size_t index, std::uint32_t command_object,
+    const bsp::SceneCommandTarget& target, int flags, const std::string& source,
+    const std::string& target_name) {
+    const char* name = command_name_of(command_object);
     const GameCommandRow* issued = units_.issue_script_command(index, command_object,
         target, flags, source, target_name);
     if (row_ != nullptr) {
@@ -2626,7 +2687,11 @@ void GameScriptOrdersHost::mission_lua_call_named_00887e50(const std::string& na
         lua_settop(machine, base);
         return;
     }
-    if (lua_pcall(machine, 0, 0, 0) != 0) {
+    const std::string outer_poster = after_row9_poster_;
+    if constexpr (kAfterRow9OrderQueueBound) after_row9_poster_ = name;
+    const int call_status = lua_pcall(machine, 0, 0, 0);
+    after_row9_poster_ = outer_poster;
+    if (call_status != 0) {
         ++timers_.call_failures;
         const char* message = lua_tolstring(machine, -1, nullptr);
         if (timers_.first_error.empty() && message != nullptr) {
@@ -2992,6 +3057,17 @@ void GameScriptOrdersHost::run_script_timers(float step) {
 }
 
 void GameScriptOrdersHost::report() {
+    {
+        std::string per;
+        for (const auto& entry : deferred_by_poster_) {
+            if (!per.empty()) per += ' ';
+            per += entry.first + '=' + std::to_string(entry.second);
+        }
+        log_.notef("summary mission script after-row-9 order queue (packet "
+            "cc9_after_row9_order_queue, 0076C600): bound=%d applied=%llu pending=%zu "
+            "deferred_by_poster: %s", kAfterRow9OrderQueueBound ? 1 : 0, deferred_applied_,
+            deferred_orders_.size(), per.empty() ? "(none)" : per.c_str());
+    }
     log_.notef("summary mission script unit health reads bound=%d reads=%llu dead=%llu "
         "markers=%llu (00923BE0 -> 00876260, packet cc9_get_hp_percentage)",
         kUnitHealthFractionBound ? 1 : 0, health_reads_, health_reads_dead_,
