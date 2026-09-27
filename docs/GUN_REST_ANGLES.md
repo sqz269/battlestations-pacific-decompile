@@ -109,10 +109,45 @@ One switch, OFF, in `include/bsp/game_hosts_gunnery.hpp` (name to be fixed at bi
   class authors in this installation's robots.lua. The host does not read a descriptor for it.
 - **The side gate:** the host's `kPlayerGunSeatBound` test (`slot_ai_held_00927f10`) stands in for
   the gate. A player-seat gun already takes its angles from message 79h.
-- **The class test:** the host has no class id per gun. `IsKindOf(22h)` is proven only for the
-  22h turning class itself. 23h MRFSGun shares the 22h vtable except the destructor and
-  slot `164h` (docs/GUN_AIMING.md), but what its `5Ch` test answers for 22h was not read. For
-  23h, 24h and 27h (MRFS/MRT/MST) it is **unverified**. Either those class tests are read in the image before
+- **The class test:** the host has no class id per gun and decides the 22h test from the
+  category, as `device_is_turning_gun` already does (cc9_ship_firepower): a gun is 22h-kind
+  unless its category is PLANEGUN (0), BOMBPLATFORM (0Ah) or CATAPULT (0Bh). Section 4.1 is the
+  evidence.
+
+### 4.1 Which guns answer `IsKindOf(22h)` (read after the first commit)
+
+The class test is `vtable[5Ch]`: a run of `CMP EAX,imm` over the owning class's whole ancestor
+chain, then `CMP EAX,[ECX+0C4h]` (docs/ENTITY_CLASS_IDS.md). Read from disk bytes:
+
+| Id | Class | Constructor, `+C4h` stamp | `vtable[5Ch]` | Chain | 22h? |
+| --- | --- | --- | --- | --- | --- |
+| 22h | turning base, no factory record | `006FDDA0`, `MOV [ESI+0C4h],22h` at `006FDE09` | - | - | yes |
+| 23h | `MRTGun`, `Rapid_Turning_Gun` | `00730E80` calls `006FDDA0`, stamps `23h` at `00730EBF` | `00730ED0` (slot `00CFE5A4`) | `23h 22h 20h 1Eh 4 2 1 0` | **yes** |
+| 24h | `MSTGun`, `Single_Turning_Gun` | - | `006FDF20` (slot `00CFBFB4`) | `24h 22h 20h 1Eh 4 2 1 0` | **yes** |
+| 27h | `MDepthChargeLauncher` | not re-read | `006FE050` | `27h 24h 22h 20h ...` | **yes** (test body; the vtable that installs it follows docs/ENTITY_CLASS_IDS.md) |
+| 21h | `MRFSGun`, `Rapid_Fixed_Slave_Gun` | - | - | under 20h | no |
+| 25h, 26h, 28h | `MBombPlatform`, `MMultipleBombPlatform`, `MCatapult` | - | - | under 20h / 25h | no |
+
+The names follow docs/ENTITY_CLASS_IDS.md's corrected pairing. docs/GUN_AIMING.md's "`22h`/`23h`
+turning, `24h`/`27h` MRT/MST" column headings and its "MRFSGun (`23h`)" section carry the old
+pairing that docs/GUN_CLASS_FAMILY.md corrects. The ids and addresses in those sections still hold.
+Only the names are shifted.
+
+The class comes from the device's Lua `Type` (`00443090`). In this installation's
+`classtables/arcade/deviceclasses.lua` and `classtables/realistic/deviceclasses.lua`, `Type` follows
+`Function` exactly (census `local/cc9-gunnery3-types.py`):
+
+| `Function` (host category) | `Type` | 22h? |
+| --- | --- | --- |
+| PLANEGUN (0) | `Rapid_Fixed_Slave_Gun`, 12 devices | no |
+| AAMACHINEGUN (1) | `Rapid_Turning_Gun` | yes |
+| LIGHT/MEDIUM/HEAVYARTILLERY, FLAK, LIGHTARTILLERYFLAK, TORPEDO, DEPTHCHARGE (2-8) | `Single_Turning_Gun` | yes |
+| DEPTHCHARGELAUNCHER (9) | `Depth_Charge_Launcher`, 1 device | yes |
+| BOMBPLATFORM (0Ah) | `BombPlatform` or `MultiBombPlatform` | no |
+| CATAPULT (0Bh) | `Catapult` | no |
+
+So the category test is exact on this data. It is a labelled substitution only because a mod
+could pair a `Function` with a different `Type`. Either those class tests are read in the image before
   the switch is committed, or the switch is scoped to guns proven 22h and the rest are labelled.
 - **One timer per gun row:** the host keeps one timer per gun, where the image keeps one per bot.
 
