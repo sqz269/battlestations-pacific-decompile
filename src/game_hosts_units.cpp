@@ -9796,7 +9796,9 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // 009D3420-009D3E3F, 2592 bytes, the producer of
                             // every state-machine input.
                             // docs/TORPEDO_APPROACH_UPDATE.md.
-                            record("BotApproachTorpedo::update", "009d3420");
+                            // Runs bsp::torpedo_approach_update_009d3420 below, so
+                            // the marker is concrete (packet cc9_units_record_markers).
+                            owner_.done("BotApproachTorpedo::update", 0x009d3420u);
                             TorpedoApproachBinding approach(owner_, slot_);
                             const bsp::TorpedoApproachUpdateResult r =
                                 bsp::torpedo_approach_update_009d3420(
@@ -10260,7 +10262,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 owner_.log.implemented("BotStateFollow::station_point",
                                                        "007f23a0");
                             }
-                            record("BotStateFollow::station_keeping", "009bfee0");
+                            // Concrete when the follow law runs (packet
+                            // cc9_units_record_markers); a record when it does not.
+                            if constexpr (GameUnitsHost::Impl::kPlaneFollowLawBound) {
+                                owner_.done("BotStateFollow::station_keeping", 0x009bfee0u);
+                            } else {
+                                record("BotStateFollow::station_keeping", "009bfee0");
+                            }
                         }
                         void steer_toward_target_009f9e40(void*) override {
                             record("BotApproach::steer_to_point", "009f9e40");

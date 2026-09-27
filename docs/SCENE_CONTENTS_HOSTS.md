@@ -2985,3 +2985,96 @@ Worker cc9-plane2, 2026-09-27, on main 7ca25aa95. Ghidra was read only.
 | USN04 4700/4500 gameplay | FP_ON (44 deaths) | MK_USN04 | identical | holds (pair_diff 1) |
 | USN13 3200/3000 gameplay | LS (27 deaths) | MK_USN13 | identical | holds (pair_diff 1) |
 | host methods concrete / unimplemented, USN04 | 1095 / 558 | 1097 / 556 | two rows move | holds |
+
+## 28. The string-record markers in the torpedo binding (packet `cc9_units_record_markers`)
+
+Worker cc9-plane2, 2026-09-27, on main 948bd78da. Gameplay-neutral.
+
+Section 27.3 left eight `record(name, "<address>")` sites in src/game_hosts_units.cpp, all in
+`TorpedoArmBinding`. Each was checked against what the site computes:
+
+| site | marker | what the site does | now |
+| --- | --- | --- | --- |
+| `refresh_move_to_ranges` | 009BDE80 BotStateMoveTo::refresh_ranges | nothing; body `contract: unread` | record |
+| `should_break_off` | 009D4C10 BotTaskTorpedo::should_break_off | returns false; the bound rule runs elsewhere and this override is unused | record |
+| `manual_release_requested` | 009D4923 Unit::device_requests_release | returns false, stub | record |
+| `update_torpedo_approach_009d3420` | 009D3420 BotApproachTorpedo::update | runs `bsp::torpedo_approach_update_009d3420` | **done** |
+| `time_to_target_009d1500` | 009D1500 | records only in the `kTorpedoArmTimeToTargetBound` OFF branch | record (unchanged) |
+| `approach_committed_hook_009d1360` | 009D1360 | empty | record |
+| `follow_base_tick_009c1fd0` | 009BFEE0 BotStateFollow::station_keeping | runs the follow law when `kPlaneFollowLawBound` | **done** under that switch, record otherwise |
+| `steer_toward_target_009f9e40` | 009F9E40 BotApproach::steer_to_point | empty | record |
+
+| row | before (`MK_*`) | after (`RM_*`) | predicted | verdict |
+| --- | --- | --- | --- | --- |
+| USN04 4700/4500 gameplay | 44 deaths | identical | identical | holds (pair_diff 1) |
+| USN13 3200/3000 gameplay | 27 deaths | identical | identical | holds (pair_diff 1) |
+| USN04 concrete / unimplemented | 1097 / 556 | 1098 / 555 | one or two rows move | holds, one |
+| USN13 concrete / unimplemented | 1071 / 548 | 1072 / 547 | one or two rows move | holds, one |
+
+- **The station-keeping override is not reached on either mission.** The torpedo follow state runs
+  through `run_follow_tick_009c1fd0` from the arm tick (section 24), not through this override.
+  So only 009D3420's row moved: 17071 calls on USN04 and 68953 on USN13.
+
+## 29. Handoff: cc9-plane2 stops here (2026-09-27)
+
+Worker cc9-plane2 took section 21's queue from cc9-terrain2 and stops at about 80 % of its context.
+This section supersedes section 21's open list for the items below.
+
+### Landed by this worker
+
+| switch / change | section | state |
+| --- | --- | --- |
+| `kSpawnNewMemberOffsetsBound` (00948CC0's member offsets) | 22 | ON |
+| `kSpawnNewPlacementBound` (0094A140 frame, 00941D30, retry, class extents, requeue) | 23 | ON |
+| `plane formation seats` log line (every seat's station, leader 2B4h) | 25 | added |
+| markers made concrete: 007EE7F0, 009FBA50, 009D3420, 009BFEE0 (under its switch) | 27, 28 | done |
+
+Reads closed: 24 (station keeping on the new spacing), 25 (the torpedo leader's midpoint speed),
+26 (the stacked spawn), 27 (USN04's releases are attrition).
+
+### Open items, in order
+
+1. **The +170h virtual at 007F4BD8.** 007F4BA0 calls it on the sub-object at +170h of the pointer in
+   squadron+3D0h. It is the one unread step of the spawn tail (26.1). Read its target from that
+   object's vtable, and confirm it writes no member pose.
+2. **The ctl+390h class field.** 0079CD36 seeds ctl+390h/+394h/+398h from `*(unit+538h)+A0h` x 0.95.
+   The host stands in 1.0 (`PlaneClass::issue_threshold_a0`, UNIMPLEMENTED). It closes the
+   007EEF40 gate only for flights of about 20 with rounds (27.1), so no reference run moves.
+   +394h/+398h are later overwritten with `Pilot/Torpedo/CruisingAlt`, which suggests an altitude
+   field. Identify unit+538h's type and its +A0h.
+3. **Ranked items 2 and 3.**
+   - `004F0AD0 SceneUnit::create_plane_squadron_gen`: one UNIMPLEMENTED call per mission at load,
+     on all four reference runs. The log line before it says no PlaneSquadronGen is built through
+     it.
+   - `00565FB0 LimboScreen::take_unit`: one call on one run.
+   Both are low value.
+4. **The unexercised bindings and what would exercise them** (none has a cheap scenario, 25.5):
+   - branch A, the flying-boat water probe (section 12): a live Mavis in mode 6 on the water;
+     USN01 logs `water probe probes=0`;
+   - the BSM01 natives `DisablePhysics`, `AddMatrixInterpolator`, `ExplodeToParts`: a script
+     that calls them;
+   - the tile and cell steppers (section 14): a trace crossing a grid line in the vertical case;
+   - the SpawnNew refusal and retry path (23.6): a wave spawned within ownHorizontal or
+     enemyHorizontal of live units;
+   - the SpawnNew kind-6 arm (a ship group, y zeroed at 0094B24x): a SpawnNew with a ship member.
+5. **The six remaining string-record markers** of section 28 are true records: unread bodies,
+   stubs, or empty hooks. Each needs its own read before it can change.
+6. **For the gunnery owners** (27.2): USN04's 16 Kates all die, 10 before releasing. Where and to
+   whom is in the per-entity death table.
+7. **For the plane owners** (24.3, 25.3): seat 3 of a four-plane squadron starts 281 m ahead of
+   its station on the stacked spawn and never latches. This holds the leader at the midpoint
+   speed. Every term read so far is the image's; the image's own spawn of seat 3 is item 1's
+   residual.
+
+### State left by this worker
+
+- The worktree is clean after this commit, and no lease is held.
+- Scripts are under `local\` with the prefix `cc9-plane2-`:
+  - `pe.py` reads image constants;
+  - `run.ps1` / `run2.ps1` are the pair runners;
+  - `static.py` finds squadrons whose spacing never changes;
+  - `rank.py` joins the docs' open-item addresses with the host-method tables.
+- Kept, uncommitted diagnostics:
+  - `local\cc9-plane2-pitchtrace2.patch` (pitch, repair, hold, eval, vehicle-avoidance and geometry
+    trace, env `BSP_PITCH_TRACE=<unit>`);
+  - `local\cc9-plane2-luahost.patch` (superseded: applied as be664aa2f).
