@@ -3493,6 +3493,9 @@ struct GameUnitsHost::Impl {
     // ON since the USN02 / USN04 pairs: identical gameplay.
     static constexpr bool kShipPostMotionRepairOrder = true;
     unsigned long long post_motion_gate_passes = 0;
+    // Packet cc9_ground_height_hunks: the torpedo approach's 009D39D3 probe.
+    unsigned long long segment_probes = 0;
+    unsigned long long segment_probes_blocked = 0;
     std::vector<unsigned long long> slot_swap_runs_by_group;
     std::vector<unsigned long long> slot_swaps_by_group;
     std::vector<unsigned char> slot_swap_gated_by_group;
@@ -8820,10 +8823,16 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             OceanFieldBinding sea(owner_);
                             const float ga =
                                 bsp::ocean_water_height_0078cf20(from[0], from[2], sea);
-                            if (from[1] < ga) return true;   // 009D390E
+                            ++owner_.segment_probes;
+                            if (from[1] < ga) {              // 009D390E
+                                ++owner_.segment_probes_blocked;
+                                return true;
+                            }
                             const float gb =
                                 bsp::ocean_water_height_0078cf20(to[0], to[2], sea);
-                            return to[1] < gb;               // 009D3946
+                            const bool blocked = to[1] < gb; // 009D3946
+                            if (blocked) ++owner_.segment_probes_blocked;
+                            return blocked;
                         }
                         bool target_reachable_007df360(const float[3]) override {
                             owner_.log.unimplemented(
@@ -18760,6 +18769,9 @@ void GameUnitsHost::report() {
                             host.formation_groups.size(), per.c_str(),
                             GameUnitsHost::Impl::kShipPostMotionRepairOrder ? 1 : 0,
                             host.post_motion_gate_passes);
+                        host.log.notef("summary mission ground queries: torpedo approach "
+                            "segment probes 009D39D3=%llu blocked=%llu",
+                            host.segment_probes, host.segment_probes_blocked);
                     }
                     if constexpr (bsp::kPilotMoveToTaskBound && bsp::kMoveToTaskTickBound) {
                         std::size_t tasks = 0;
