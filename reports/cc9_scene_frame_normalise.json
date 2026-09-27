@@ -1,0 +1,33 @@
+{
+  "packet": "cc9_scene_frame_normalise",
+  "doc": "docs/SCENE_CONTENTS_HOSTS.md, sections 16 and 18",
+  "calls": [
+    {
+      "address": "0046D198",
+      "native": "00BF7030",
+      "function": "0046CF40",
+      "note": "sqrt of row 0's stored squared length"
+    },
+    {
+      "address": "0046D1BA",
+      "native": "0085DC80",
+      "function": "0046CF40",
+      "note": "orthonormalise, row 2 the authority"
+    }
+  ],
+  "switches": [
+    {
+      "name": "kSceneFrameNormaliseBound",
+      "state": "ON",
+      "pair": "local/FN_OFF_{USN01,USN13,USN04,USN02}.log (build of 6ad4e6ff0, local/bin/fn_off) against local/FN_ON_*.log (pair_export of 6ad4e6ff0, SHA-256 20B1473EA717), worktree cc9-terrain2; USN01 exit 1, USN04/USN13/USN02 exit 3",
+      "failed_predictions": [
+        "USN01: child path points moved 0.7..0.8 m (no start position was predicted to move)",
+        "USN02: death count stayed 19 (rows reshuffled; hits 566 -> 573)",
+        "USN13: deaths and hit record counts held (hull hits 103 -> 102)"
+      ]
+    }
+  ],
+  "substitutions": [],
+  "no_ghidra_function": [],
+  "names_added": []
+}

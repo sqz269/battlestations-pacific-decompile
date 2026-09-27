@@ -214,7 +214,8 @@ std::size_t skip_balanced_block(SceneLexer& lexer)
 // on the frame (row 2 the authority); 0046D1BF..0046D222: rows 0..2 each
 // multiplied by s and stored float. The translation row is untouched.
 // OFF: the frame as read (the earlier host behaviour).
-constexpr bool kSceneFrameNormaliseBound = false;
+// ON since the USN01 / USN02 / USN04 / USN13 pairs (section 18.4).
+constexpr bool kSceneFrameNormaliseBound = true;
 
 void normalise_localframe_0046d168(float m[16])
 {

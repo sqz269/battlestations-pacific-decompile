@@ -2345,3 +2345,36 @@ The translation row never changes, so no start position moves.
   - Landscape 07's rotation census row changes: the drawn footprint becomes the -90 degree island,
     and the segment test and the ground height still disagree (rotation).
   - Deaths 34 and hit records 204 move.
+
+### 18.4 Pairs and verdict
+
+- **The runs.** OFF is `local\bin\fn_off`, a build of 6ad4e6ff0. ON is `pair_export` of 6ad4e6ff0
+  with the switch flipped (SHA-256 20B1473EA717). Streams and the death table were on, lockstep
+  0.05, idle player. Logs: `local\FN_{OFF,ON}_{USN01,USN13,USN04,USN02}.log` in worktree
+  cc9-terrain2.
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| USN01 gameplay, death rows, unit table | 7 deaths, 150 hits, 561 shots | identical | within noise | held |
+| USN01 start positions | | 5 avoid-zone path points move 0.7..0.8 m | no start position moves | **failed**: a child's world position composes its parent's normalised rows |
+| USN01 Landscape 05 census dy | | cm level | cm level | held |
+| USN01 `pair_diff` | | exit 1 | 1 or 3 | held |
+| USN04 deaths, hits, shots | 44, 789, 6321 | identical | within +-10 | held |
+| USN04 per-entity | | Northampton-class05 dealt 584 -> 583; one more gun fire call (38342 -> 38343) | at most a death row or two | held |
+| USN04 `pair_diff` | | exit 3 (that unit row) | 1 or 3 | held |
+| USN02 hit records, hull hits, shots | 566, 217, 850 | 573, 228, 863 | move | held |
+| USN02 deaths | 19 | 19 (Encounter survives, John2 dies; 16 rows change in time or killer) | move | count **failed**; the rows moved |
+| USN02 mission end | failed at 39.65 s | the same | - | - |
+| USN02 `pair_diff` | | exit 3 | 3 | held |
+| USN13 deaths, hit records, shots | 34, 204, 2551 | identical | move | **failed**: the counts held; hull hits 103 -> 102, two death rows change in detail, five units' `dealt` moves |
+| USN13 Landscape 07 census | segment 54, height 231, both 8 | segment 90, height 90, both 3 | footprint matches, still disagrees | held |
+| USN13 `pair_diff` | | exit 3 | 3 | held |
+
+- **What moved gameplay.** USN02's 18 sheared destroyers start with a unit forward row and a right
+  row at 90 degrees to it, as in the image. Their fight changes from about 40 s on.
+- **USN04 and USN13** carry mostly rounding-level changes. USN13's sheared Marus sit far from the
+  fighting (their `nearest` moves by metres).
+
+**Verdict: ON.** The moves are the image's frames reaching the host's start poses, and each one
+traces to a normalised frame. USN02's reference rows (19 deaths, 566 hit records) are superseded
+by 19 and 573 on this base.
