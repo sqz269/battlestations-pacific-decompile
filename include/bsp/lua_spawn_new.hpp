@@ -290,5 +290,40 @@ struct SpawnNewFrame {
 // reading: 0094A140's own sampling was not decoded.
 SpawnNewFrame spawn_member_frame_0094a140(const SpawnNewRequest& request,
                                           std::size_t member) noexcept;
+// The fan-out contract itself, which the function above runs unless the
+// member-offset binding applies.
+SpawnNewFrame spawn_member_frame_0094a140_contract(const SpawnNewRequest& request,
+                                                   std::size_t member) noexcept;
+
+// Packet cc9_plane_follow_pitch_flip (docs/SCENE_CONTENTS_HOSTS.md section 22);
+// ON by the USN13, USN04, USN01 and USN02 pairs (22.5).
+// With the switch on, a request whose `excludeRadiusOverride.formationHorizontal`
+// is positive places its members the way the image does: ONE group frame (the
+// first candidate of 0094A140, mid-angle, low distance, facing `lookAt`) and
+// per-member offsets from the record constructor 00948CC0, which 00949300
+// composes with that frame (BSP_Matrix_Multiply4x4 inside its member loop) and
+// 009483D0 reads back at 00948440. Off, the fan-out contract above runs.
+inline constexpr bool kSpawnNewMemberOffsetsBound = true;
+
+// 00948CC0's member-offset loop (00948E56-009492C0), in the record frame
+// (x right, z forward). Members go in rows of three, row r holding members
+// 3r (A, centre), 3r+1 (B) and 3r+2 (C):
+//   lateral L = max(fH, (A.A4 + B.A4) * 0.5, (A.A4 + C.A4) * 0.5) * 2.5 + 5
+//   row gap G = 5 + max(fH, half sums of +A0h with the previous row) * 1.5
+//   z_r = z_(r-1) - G (row 0 at z = 0)
+//   full row: A (0, 0, z), B (-L, 0, z), C (+L, 0, z); a row of one: A only;
+//   a row of two (B, no C): (-L/2, 0, z), (+L/2, 0, z).
+// fH is record+ACh = `formationHorizontal`, clamped at 0 (00948EA7; the key
+// order is 009481A0's: own/enemy horizontal, own/enemy vertical, formation
+// horizontal at block+10h, strings 00D19968..00D19928). Constants: 0.5 double
+// [00D7A280], 2.5 double [00CE3DE0], 5.0 double [00D7A370], 1.5 double
+// [00CE3D78].
+// SUBSTITUTION, labelled: the class +A0h/+A4h extents are not carried into
+// the request, so they are taken as 0 here; the result is the image's exactly
+// while fH is at least every half sum, which holds for aircraft classes under
+// the 100 and 500 the reference missions author. Returns false (no offset)
+// when fH <= 0, where the class extents would decide.
+bool spawn_member_offset_00948cc0(const SpawnNewRequest& request, std::size_t member,
+                                  float offset[3]) noexcept;
 
 }  // namespace bsp
