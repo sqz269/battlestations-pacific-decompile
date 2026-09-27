@@ -10787,3 +10787,49 @@ failure is still at 39.65 s:
   not paired on USN01.
 - Carried from d: E2 594 -> 595 (before c) not isolated; E2 phase 1 under lockstep (known); the
   Marshall `.nav` is the generic layer.
+
+### Flags closed by pairs (packet `cc9_reference_e_flags`)
+
+2026-09-27, worker cc9-units3. Each pair is a `tools/pair_export.py --commit 05c8f3634 --flip
+<switch>=false` export against the tree's own build of main `e4dbf38b2` (every switch landed),
+with both variables set and one run at a time. The predictions are in
+`reports/cc9_reference_rebaseline_5.json` (`flag_pairs`), committed at `05c8f3634` before the
+runs. The logs are `local\FL_*.log` in worktree cc9-units3, and all pass the four checks.
+
+**The bases on `e4dbf38b2`:**
+- **E2 and USN01 equal rb5** (exit 1 against `rb5_e2.log` and `rb5_usn01.log`).
+- **USN02 moved since `7711f353f`:** 664 -> 640 hit records, deaths 20, from the landings after
+  it (merge `e4dbf38b2`, cc9-ships2). The USN02 pairs are judged against this 20 / 640 base.
+
+| flag | flip (export SHA-256) | mission | OFF (flip) -> ON (base) | verdict |
+| --- | --- | --- | --- | --- |
+| USN02 596 -> 603, DeRuyter -> Houston | `kMovieInterfacePushBound` (F44B8839215C) | USN02 | identical (exit 1), Houston both | not this switch |
+| same | `kMovieReseedBound` (57B35F86744D) | USN02 | identical (exit 1), Houston both | not this switch |
+| same | `kSetSelectedUnitBound` (648696043C59), added | USN02 | 22 / 659 / 1096 shots, **DeRuyter** 1867.18 m -> 20 / 640 / 1119, Houston 1167.61 m (exit 3) | **closed**: this switch moves the controlled unit and the rows on the current base |
+| USN02 552 -> 579, the torpedo stock on top of the throttle cut | `kTorpedoStockBound` (85FCFEBC1B1C) | USN02 | hit records identical (640); shots 1131 -> 1119; one death row changed | not the hits |
+| same | `kMovieMoverBound` (7670DEA10A7B), added | USN02 | identical (exit 1) | not this switch; **flag stays open** |
+| E2 894 -> 902 | `kMovieMoverBound` (811CF79E073C) | E2 | 893 -> 902 hits, hull 326 -> 320, shots 7394 -> 7339, torpedo releases 5 -> 4 of 16 | the mover's share: +9 |
+| same | `kWingConstructionInPassABound` + `kWingConstructionLuaBound` (7647AF8C3A52) | E2 | 898 -> 902, shots 7395 -> 7339, releases 6 of 16 / 3 of 19 -> 4 / 5 | the wing flip's share: +4 |
+| same | `kLiveHullRepairBound` (8D3F465E4489) | E2 | 900 -> 902, hull 325 -> 320, shots 7356 -> 7339 | Repair's share: +2 |
+| USN01 shots 583 -> 561 | `kShipBuoyancyElementsBound` (D1C14201EDFF) | USN01 | shots 583 -> 561, deaths 7 and hits 150 both | **closed**: the buoyancy elements |
+| same | `kSceneRaceAndScriptIdentityBound` (5BE525C5B4E7) | USN01 | identical (exit 1) | not this switch |
+
+**Verdicts:**
+- **USN02 DeRuyter -> Houston: closed** by `kSetSelectedUnitBound`. With it OFF, DeRuyter is
+  controlled again and the mission reads 22 / 659 against 20 / 640.
+  - The prediction that the movie push moves the controlled unit **failed**. Neither movie switch
+    moves USN02 on the current base.
+  - A question remains from the bracket: the HomeBase pair's base `fc14864c9` already contained
+    this switch and still controlled DeRuyter. What enabled the switch's effect between
+    `fc14864c9` and the throttle-cut base was not isolated.
+- **E2 894 -> 902: closed**, with shares measured one at a time on the current base: mover +9,
+  wing flip +4, Repair +2. The shares are not additive: the three landings interact, and they
+  were landed on a moving base.
+  - The mover prediction (−4..−9) held. The wing prediction (−4) held. The Repair prediction
+    (±2 hits, hull −1, shots +25) held for hits; hull −5 and shots +17 fall outside the band.
+- **USN01 583 -> 561: closed** by the buoyancy elements. The race-and-identity flip is
+  identical, as predicted.
+- **USN02 552 -> 579: stays open, candidates narrowed.** The torpedo stock moves only shots on the
+  current base (predicted: hits −20..−40, **failed**), and the mover is identical. No single
+  switch of that window reproduces the step on the current base. It was an interaction on a base
+  now changed by the wreck-hit and Repair landings.

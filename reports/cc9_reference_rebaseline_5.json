@@ -136,10 +136,7 @@
     "E2 594 -> 595 hit records (before c) not isolated",
     "E2 ends in phase 1 under lockstep (Blackout re-issued 76 times, docs/MISSION_BLACKOUT.md)",
     "the Marshall .nav is the generic layer",
-    "USN02 21/596 -> 22/603 and the controlled unit DeRuyter -> Houston, bracketed to the movie interface switches (2a5458d7e, 6c9ec4026), not paired on USN02",
-    "USN02 torpedo stock on top of the throttle cut, 22/552 -> 22/579, not paired as a combination",
-    "E2 894 -> 902 across the mover, the wing flip and Repair, not paired on E2",
-    "USN01 shots 583 -> 561, bracketed to the buoyancy elements or the scene race and identity, not paired on USN01"
+    "USN02 torpedo stock on top of the throttle cut, 22/552 -> 22/579, not paired as a combination; narrowed by cc9_reference_e_flags: kTorpedoStockBound=false moves only shots on e4dbf38b2 (hits identical) and kMovieMoverBound=false is identical, so no single switch of the window reproduces it on the current base"
   ],
   "closed_flags": [
     {
@@ -156,7 +153,94 @@
       "flag": "the sink-descent pair moved Kawakaze's first damage 104.05 -> 102.10 s before any kill, not isolated",
       "closed_by": "docs/WRECK_MOTION_AVOIDANCE.md (179699af8)",
       "evidence": "a wreck's speed projects its neighbour box (009EAECA, 009EB1FE): Kortenaer's sector scan blocked by the cruising DeRuyter from step 1015, Minegumo diverging behind its dead leader Yamakaze at step 1060; diagnostic local/PK_OFF_USN02.log (cc9-units3) reproduces SD_OFF_USN02"
+    },
+    {
+      "flag": "USN02 21/596 -> 22/603 and the controlled unit DeRuyter -> Houston, bracketed to the movie interface switches (2a5458d7e, 6c9ec4026), not paired on USN02",
+      "closed_by": "kSetSelectedUnitBound (0995a2e16)",
+      "evidence": "pair on e4dbf38b2: flip false -> DeRuyter controlled, 22/659 vs 20/640 (local/FL_SELECT_USN02.log vs FL_BASE_USN02.log, cc9-units3); kMovieInterfacePushBound and kMovieReseedBound flips identical. Open question: fc14864c9 already held the switch and controlled DeRuyter"
+    },
+    {
+      "flag": "E2 894 -> 902 across the mover, the wing flip and Repair, not paired on E2",
+      "closed_by": "the mover b5861c09a (+9), the joint wing flip dcbe56b74 (+4), Repair fd49aa9a4 (+2), measured one at a time, not additive",
+      "evidence": "local/FL_{MOVER,WING,REPAIR}_E2.log vs FL_BASE_E2.log (cc9-units3)"
+    },
+    {
+      "flag": "USN01 shots 583 -> 561, bracketed to the buoyancy elements or the scene race and identity, not paired on USN01",
+      "closed_by": "kShipBuoyancyElementsBound (972f0e1a1)",
+      "evidence": "flip false: shots 583 vs 561, deaths and hits identical (local/FL_BUOY_USN01.log vs FL_BASE_USN01.log); kSceneRaceAndScriptIdentityBound flip identical"
     }
   ],
-  "failed_predictions": []
+  "failed_predictions": [],
+  "flag_pairs": {
+    "packet": "cc9_reference_e_flags",
+    "base": "main e4dbf38b2, the tree's own build (every switch landed); each pair = tools/pair_export.py --commit e4dbf38b2 --flip <switch>=false against it; BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1, one run at a time",
+    "predictions_written_before_the_runs": [
+      {
+        "flag": "USN02 21/596 -> 22/603 and DeRuyter -> Houston",
+        "flip": "kMovieInterfacePushBound=false",
+        "mission": "USN02 9200/9000",
+        "prediction": "the controlled unit returns to DeRuyter (the 2Ch push is what hands the ship screen its unit); deaths and hit records move (exit 3), direction toward d's DeRuyter-controlled rows"
+      },
+      {
+        "flag": "same",
+        "flip": "kMovieReseedBound=false",
+        "mission": "USN02 9200/9000",
+        "prediction": "the controlled unit stays Houston; deaths +-2 and hit records +-8 % move through the reseeded streams (exit 3), or identical if no USN02 draw is reseeded"
+      },
+      {
+        "flag": "USN02 torpedo stock on top of the throttle cut, 22/552 -> 22/579",
+        "flip": "kTorpedoStockBound=false",
+        "mission": "USN02 9200/9000",
+        "prediction": "hit records move by about the step's size (20..40), direction down; deaths +-2; gyro launches up (no ship runs dry)"
+      },
+      {
+        "flag": "E2 894 -> 902",
+        "flip": "kMovieMoverBound=false",
+        "mission": "E2 9200/9000",
+        "prediction": "hit records fall by 4..9 of the 8 (the mover's USN04 4500 share was +9); deaths 50..52"
+      },
+      {
+        "flag": "E2 894 -> 902",
+        "flip": "kWingConstructionInPassABound=false and kWingConstructionLuaBound=false",
+        "mission": "E2 9200/9000",
+        "prediction": "hit records fall by about 4 (the wing flip's USN04 share); deaths 51 +-1"
+      },
+      {
+        "flag": "E2 894 -> 902",
+        "flip": "kLiveHullRepairBound=false",
+        "mission": "E2 9200/9000",
+        "prediction": "hit records within +-2; hull hits -1; shots up by about 25 (its USN04 share)"
+      },
+      {
+        "flag": "USN01 shots 583 -> 561",
+        "flip": "kShipBuoyancyElementsBound=false",
+        "mission": "USN01 3200/3000",
+        "prediction": "shots return toward 583 (exit 3), deaths 7 and hit records 150 unchanged"
+      },
+      {
+        "flag": "USN01 shots 583 -> 561",
+        "flip": "kSceneRaceAndScriptIdentityBound=false",
+        "mission": "USN01 3200/3000",
+        "prediction": "identical (exit 0 or 1): its own pairs were identical on USN04 and USN02"
+      }
+    ],
+    "failed_predictions": [
+      {
+        "flip": "kMovieInterfacePushBound=false",
+        "predicted": "controlled returns to DeRuyter",
+        "measured": "identical, Houston"
+      },
+      {
+        "flip": "kTorpedoStockBound=false",
+        "predicted": "hit records -20..-40",
+        "measured": "hits identical, shots +12"
+      },
+      {
+        "flip": "kLiveHullRepairBound=false on E2",
+        "predicted": "hull -1, shots +25",
+        "measured": "hull +5, shots +17 (hits +-2 held)"
+      }
+    ],
+    "usn02_base_moved": "USN02 on e4dbf38b2 reads 20/640, not rb5's 20/664 (landings after 7711f353f)"
+  }
 }
