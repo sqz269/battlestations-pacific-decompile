@@ -12,6 +12,7 @@ or a reconstructed body.
 | `bsp.py sync` | `python tools/bsp.py sync [--no-fetch]` (and one line in `bsp.py brief`) |
 | crash record | `./tools/run_game.ps1 -Log local\crash_test.log -- ... --crash-test [N]` (the record itself is always on) |
 | `tools/sample_main_thread.py` | `python tools/sample_main_thread.py --log local\X.log` (start it, then the run with the same -Log) |
+| present interval | `./tools/run_game.ps1 ... -- --present-interval <immediate|vsync|native>`; `config/run_game.json` defaults to immediate |
 
 ## 1. `tools/pair_diff.py`: the same-tree pair comparison
 
@@ -64,6 +65,8 @@ Each item is masked (or, for the one native row, its count ignored) before anyth
 | thread-ids | `worker=` and `render_thread=` on the renderer lines | OS thread ids |
 | press-start-blink | `color=(...)` on `text press_start_Text` | the title screen's blink runs on the wall clock before the mission (docs/GAME_EXECUTABLE.md, `--frame-jitter` measured table) |
 | prewindow-fmod-calls | `fmod_calls=` on `sound startup before window:` | FMOD polls before the window exists, a wall-clock count (131 against 132 in the UC3 pair, docs/AVOID_ZONE_REGISTRY.md) |
+| present-interval-header | the line `present interval <x> (harness override)`, dropped | printed only when `--present-interval` overrides the options file (section 7) |
+| present-interval-device | `interval=` on `device created by full native startup` | the D3D present interval the override sets; lockstep frames make it a wall-time setting only |
 | avoidance-refills | `refills=` on `ship avoidance search:` | differs between identical runs of one binary (257 against 265, 2026-09-22) |
 | pretranslate-count | calls of the `PlatformLoopCallbacks::pretranslate` native row | window messages (focus, paint) depend on the desktop; printed as `(noise)` |
 
@@ -315,3 +318,51 @@ Known limits:
 - about 7 Hz on the main thread, because thread enumeration is slow;
 - the first few seconds of startup are not sampled;
 - the render worker thread is not identified.
+
+## 7. The harness present interval (packet `cc9_tooling_present_interval`)
+
+After the record index, a run is paced by vsync (section 6). `--present-interval
+<vsync|immediate|native>` (env `BSP_PRESENT_INTERVAL`, the same words, used only when the option
+is absent) overrides the D3D present interval for a harness run. It is harness only.
+- **Where it applies.** The host (`src/game_hosts.cpp`) replaces the VSync word of the renderer
+  request just before `GameDeviceHost::create`. `00B2AEB0` turns that slot into
+  `PresentationInterval` (renderer+1A5C): `immediate` gives `0x80000000` and `vsync` gives 0.
+- **What it leaves alone.** The options file and the settings read are not touched, so the
+  `window request ... vsync=1` and `renderer init request ... vsync=1` lines keep the options
+  file's value. The reset path reuses the stored parameters.
+- **The log.** It prints `present interval <x> (harness override)` after the jitter line, only
+  when an override is in force. `native` (the default when nothing is given) prints nothing and
+  keeps the settings' value, so a run without the override logs exactly what it did before.
+- **The launcher.** `tools/run_game.ps1` forwards `config/run_game.json`'s `"present_interval":
+  "immediate"` unless the caller passed `--present-interval` or set `BSP_PRESENT_INTERVAL`, in
+  the same way as `window_monitor`. Pass `--present-interval native` for the options file's own
+  VSync.
+- **Why simulation cannot see it.** Mission frames are lockstep (`--mission-frame-seconds 0.05`),
+  so the interval changes only how long a frame waits for the screen. The pre-mission wall-clock
+  counters were already masked noise (section 1). A presentation-mode switch at run time
+  (`native_renderer_presentation_mode.cpp`) would rewrite +1A5C, but none happens in a harness run.
+
+**Proof.** The binary is this worktree at `704f5dd02` plus this change. Both runs are USN04
+4700/4500 through `tools/run_game.ps1`, with `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1` and
+lockstep 0.05.
+
+| run | option | device line | launcher wall time |
+| --- | --- | --- | ---: |
+| `local\pi_native_usn04.log` | `--present-interval native` | `interval=0x0`, no override line | 173.7 s |
+| `local\pi_imm_usn04.log` | config default (immediate) | `interval=0x80000000`, `present interval immediate (harness override)` | 32.1 s |
+| `local\ri_after_usn04.log` (section 6, older source) | none | `interval=0x0` | 89.1 s |
+
+- **Same binary, immediate against native.** `python tools/pair_diff.py local\pi_native_usn04.log
+  local\pi_imm_usn04.log` exits 0: 43 death rows, 43 plane death modes, 81 unit rows, 1,591 native
+  rows, 209 summary lines and 0 other lines, all identical.
+- **Immediate against the 89.1 s run.** The comparison exits 1, with gameplay, native table,
+  death and unit rows all identical. One summary line differs, `summary scene terrain`, and it
+  does so because its format changed in the scene-entities landings merged between the two
+  builds (`e9b533ada`, `c593b83b2`), not because of the override. So the same-binary pair is the
+  proof.
+- **The native run's wall time.** 173.7 s against 89.1 s for the same path in section 6. It is
+  wall-clock only, its log is identical to the immediate run, and the likeliest cause is other
+  slots' runs sharing the machine. That was not checked.
+
+**Reference rows are unaffected in content.** They are taken lockstep, and this setting changes
+presentation only.

@@ -54,6 +54,13 @@ if (Test-Path $runDefaults) {
         $windowMonitor = $runDefaultValues.window_monitor
         if ($windowMonitor) { $GameArgs = @('--window-monitor', "$windowMonitor") + $GameArgs }
     }
+    # Packet cc9_tooling_present_interval: "present_interval" is forwarded as --present-interval
+    # unless the caller passed it or set BSP_PRESENT_INTERVAL. `--present-interval native` runs the
+    # options file's own VSync. Simulation is lockstep, so the interval changes wall time only.
+    if (-not $env:BSP_PRESENT_INTERVAL -and -not @($GameArgs | Where-Object { $_ -eq '--present-interval' })) {
+        $presentInterval = $runDefaultValues.present_interval
+        if ($presentInterval) { $GameArgs = @('--present-interval', "$presentInterval") + $GameArgs }
+    }
     if (-not $env:BSP_WINDOW_RESOLUTION -and -not @($GameArgs | Where-Object { $_ -eq '--window-resolution' })) {
         $windowResolution = $runDefaultValues.window_resolution
         if ($windowResolution) { $GameArgs = @('--window-resolution', "$windowResolution") + $GameArgs }

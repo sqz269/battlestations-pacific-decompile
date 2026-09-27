@@ -316,6 +316,13 @@ std::size_t GameHostLog::unimplemented_count() const noexcept {
 
 bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
     bool frame_jitter_from_option = false;
+    bool present_interval_from_option = false;
+    const auto parse_present_interval = [](const char* text, int& out) {
+        if (std::strcmp(text, "vsync") == 0) { out = 0; return true; }
+        if (std::strcmp(text, "immediate") == 0) { out = 1; return true; }
+        if (std::strcmp(text, "native") == 0) { out = -1; return true; }
+        return false;
+    };
     for (int index = 1; index < argc; ++index) {
         const char* argument = argv[index];
         if (std::strcmp(argument, "--frames") == 0) {
@@ -590,6 +597,14 @@ bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
                 error = "--mission-frame-seconds needs a non-negative duration";
                 return false;
             }
+        } else if (std::strcmp(argument, "--present-interval") == 0) {
+            // Packet cc9_tooling_present_interval, harness only.
+            if (index + 1 >= argc || !parse_present_interval(argv[index + 1], present_interval)) {
+                error = "--present-interval needs vsync, immediate or native";
+                return false;
+            }
+            ++index;
+            present_interval_from_option = true;
         } else if (std::strcmp(argument, "--frame-jitter") == 0) {
             // Packet cc9_frame_delta_jitter: --frame-jitter <pct>[,<seed>].
             if (index + 1 >= argc
@@ -683,6 +698,19 @@ bool GameExecutableOptions::parse(int argc, char** argv, std::string& error) {
         } else {
             error = std::string("unknown option ") + argument;
             return false;
+        }
+    }
+    // BSP_PRESENT_INTERVAL, the same words, only when the option was not given.
+    if (!present_interval_from_option) {
+        char* text = nullptr;
+        std::size_t length = 0;
+        if (_dupenv_s(&text, &length, "BSP_PRESENT_INTERVAL") == 0 && text != nullptr) {
+            const bool ok = parse_present_interval(text, present_interval);
+            std::free(text);
+            if (!ok) {
+                error = "BSP_PRESENT_INTERVAL needs vsync, immediate or native";
+                return false;
+            }
         }
     }
     // BSP_FRAME_JITTER, the same syntax, only when the option was not given.
@@ -2049,6 +2077,11 @@ void GameStartupHost::run_initialize_phases(const char* mode) {
         reinterpret_cast<const volatile std::uint32_t*>(&sound_->online_00f8abe8), &sound_->device_adapter,sound_->xlive);
     device_ = new GameDeviceHost(log_, *native_renderer_);
     if (summary_.window_created && renderer_request_.requested) {
+        // Packet cc9_tooling_present_interval (harness only): --present-interval replaces the
+        // VSync word B2AEB0 turns into PresentationInterval (+1A5C). The settings value above
+        // and the window request keep what the options file says.
+        if (options_.present_interval >= 0)
+            renderer_request_.color_depth_selector = options_.present_interval == 0;
         summary_.device_created = device_->create(renderer_request_);
         // Complete BED1E8..BED222 follows the native device call in BECEE0.
         // Its actual cache joins the same manager as the renderer and is
