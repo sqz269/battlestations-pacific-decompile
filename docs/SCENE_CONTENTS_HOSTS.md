@@ -2607,7 +2607,7 @@ Worker cc9-plane2, 2026-09-27, on main 1c2e84d27. Ghidra was read only. Addresse
 
 ### 22.3 The binding
 
-`kSpawnNewMemberOffsetsBound` (include/bsp/lua_spawn_new.hpp), committed OFF. With it on, a request
+`kSpawnNewMemberOffsetsBound` (include/bsp/lua_spawn_new.hpp), committed OFF at a5ebad82c and flipped ON by 22.5. With it on, a request
 with a positive `formationHorizontal` takes one group frame and 00948CC0's offsets.
 - **The group frame is the contract's mid-angle candidate.** That is 0094A140's first candidate: the
   mid angle, at the low distance record+70h.
@@ -2630,3 +2630,34 @@ with a positive `formationHorizontal` takes one group frame and 00948CC0's offse
 | USN04 4700/4500 | 44 deaths | gameplay moves (pair_diff 3); deaths within 36..52 |
 | USN01 3200/3000 | - | identical: no `SpawnNew` request |
 | USN02 9200/9000 | - | identical: no `SpawnNew` request |
+
+### 22.5 The pairs (flipped ON)
+
+OFF is this tree's build at a5ebad82c. ON is `pair_export --flip kSpawnNewMemberOffsetsBound=true` from the
+same commit. Environment `BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`, lockstep 0.05, idle player.
+Logs `local\SP_{OFF,ON}_<mission>.log` in worktree cc9-plane2.
+
+| row | OFF | ON | predicted | verdict |
+| --- | --- | --- | --- | --- |
+| USN13 undamaged `bruh` sea crashes | 21 | 0 | 0..3 | holds |
+| USN13 deaths | 34 (13 shot down) | 20 (20 shot down) | 15..40, shot-down share rising | holds |
+| USN13 water-contact records | 670 | 5 | under 150 | holds |
+| USN13 hit records / shots | 204 / 2551 | 460 / 4033 | both move | holds |
+| USN04 gameplay | - | pair_diff 3 | moves | holds |
+| USN04 deaths | 44 | 44 | 36..52 | holds |
+| USN04 torpedo / dive releases | 3 / 4 of 16 / 19 | 6 / 8 | not predicted | - |
+| USN01 3200/3000 | - | pair_diff 0 | identical | holds |
+| USN02 9200/9000 | - | pair_diff 0 | identical | holds |
+
+- **The spawn geometry is the read one.** USN13's members 1 and 2 are 1255 m apart, and members 1
+  and 4 are 755 m apart. The rows trail away from Enterprise. USN04's pair is 255 m apart.
+- **USN13's 20 deaths are all shot down.** More bombers survive the climb-out, so the carriers'
+  fighters and the ships' guns engage more of them: hit records 204 -> 460.
+- **USN04's death set swaps one row.** `A6M Zero #6.2|.-2` dies OFF only and `A6M Zero #6.2` ON
+  only; the other 43 rows change time and killer. The releases double because the pairs no longer
+  start inside each other's avoidance radius.
+- **No failed prediction.**
+- **What stays open:** the placement test 00941D30 and 0094A140's retry still do not run. The group
+  frame's axes and the class extents are the two labelled substitutions of 22.3. Section 19.4's
+  read 1 (the follow-state station keeping, pairs 0-2 and 1-3 at 12..68 m) should be re-measured
+  on this binding, because the other squadrons' avoidance bands are gone.

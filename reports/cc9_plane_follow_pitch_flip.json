@@ -1,0 +1,29 @@
+{
+ "packet": "cc9_plane_follow_pitch_flip",
+ "worker": "cc9-plane2",
+ "switch": "kSpawnNewMemberOffsetsBound",
+ "state": "ON",
+ "doc": "docs/SCENE_CONTENTS_HOSTS.md section 22",
+ "finding": "The USN13 torpedo-bomber stall is not the follow hold arm 009BEE56 (the traced leader never runs it). 0099BF30's full-band fallback forces pitch +1, fed by 007DF4F0 bands from other squadrons that the host's SpawnNew fan-out contract placed 5 m apart. The image spaces SpawnNew members by formationHorizontal (record+ACh) through the record constructor 00948CC0.",
+ "steps": [
+  {"address": "0094996d", "native": "009481a0", "function": "00949750", "what": "the binding reads excludeRadiusOverride into the 7-float block"},
+  {"address": "0099b0ac", "native": "0099bf30", "function": "0099acd0", "what": "the pilot tick runs the band repair after 0099BEE0"}
+ ],
+ "reads": ["00948cc0", "009481a0", "00949300", "00941d30", "0094a140", "0099bf30", "009c1fd0", "007d7a40"],
+ "substitutions": [
+  "group frame axes from the host yaw toward lookAt (0094A140's rotation pair about the 008F8680 frame not decoded)",
+  "class extents +A0h/+A4h taken as 0 (exact while formationHorizontal covers every half sum)"
+ ],
+ "names_added": {"009481a0": "BSP_SpawnRequest_ReadExcludeRadius", "00941d30": "BSP_SpawnRequest_MemberPlacementLegal"},
+ "no_ghidra_function": [],
+ "verdict": [
+  {"row": "USN13 undamaged sea crashes", "off": 21, "on": 0, "predicted": "0..3", "verdict": "holds"},
+  {"row": "USN13 deaths", "off": 34, "on": 20, "predicted": "15..40, shot-down share rising", "verdict": "holds"},
+  {"row": "USN13 water-contact records", "off": 670, "on": 5, "predicted": "under 150", "verdict": "holds"},
+  {"row": "USN13 hit records / shots", "off": "204 / 2551", "on": "460 / 4033", "predicted": "both move", "verdict": "holds"},
+  {"row": "USN04 gameplay", "off": "-", "on": "pair_diff 3", "predicted": "moves", "verdict": "holds"},
+  {"row": "USN04 deaths", "off": 44, "on": 44, "predicted": "36..52", "verdict": "holds"},
+  {"row": "USN01", "off": "-", "on": "pair_diff 0", "predicted": "identical", "verdict": "holds"},
+  {"row": "USN02", "off": "-", "on": "pair_diff 0", "predicted": "identical", "verdict": "holds"}
+ ]
+}

@@ -295,14 +295,15 @@ SpawnNewFrame spawn_member_frame_0094a140(const SpawnNewRequest& request,
 SpawnNewFrame spawn_member_frame_0094a140_contract(const SpawnNewRequest& request,
                                                    std::size_t member) noexcept;
 
-// Packet cc9_plane_follow_pitch_flip (docs/SCENE_CONTENTS_HOSTS.md section 22).
+// Packet cc9_plane_follow_pitch_flip (docs/SCENE_CONTENTS_HOSTS.md section 22);
+// ON by the USN13, USN04, USN01 and USN02 pairs (22.5).
 // With the switch on, a request whose `excludeRadiusOverride.formationHorizontal`
 // is positive places its members the way the image does: ONE group frame (the
 // first candidate of 0094A140, mid-angle, low distance, facing `lookAt`) and
 // per-member offsets from the record constructor 00948CC0, which 00949300
-// composes with that frame (BSP_Matrix_Multiply4x4 at 00949380 area) and
+// composes with that frame (BSP_Matrix_Multiply4x4 inside its member loop) and
 // 009483D0 reads back at 00948440. Off, the fan-out contract above runs.
-inline constexpr bool kSpawnNewMemberOffsetsBound = false;
+inline constexpr bool kSpawnNewMemberOffsetsBound = true;
 
 // 00948CC0's member-offset loop (00948E56-009492C0), in the record frame
 // (x right, z forward). Members go in rows of three, row r holding members
