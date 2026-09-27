@@ -3,10 +3,31 @@
   "worker": "cc9-hud3",
   "base": "d9d55c3f1",
   "switch": "kObjectiveStatusBound",
-  "state": "OFF",
+  "state": "ON",
   "doc": "docs/MISSION_OBJECTIVES.md section 8",
-  "substitutions": ["The objective kind is not recorded, so 008DFE50 drops units of hidden objectives too (none hold units on the measured missions).", "The announcement sound and marker refresh are not modelled."],
+  "substitutions": [
+    "The objective kind is not recorded, so 008DFE50 drops units of hidden objectives too (none hold units on the measured missions).",
+    "The announcement sound and marker refresh are not modelled."
+  ],
   "no_ghidra_function": [],
   "names_added": [],
-  "pairs": "pending"
+  "pairs": [
+    {
+      "mission": "USN01",
+      "pair_diff": 1,
+      "result": "DD, CA completed; sets=2; no mission end; identical"
+    },
+    {
+      "mission": "USN02",
+      "pair_diff": 1,
+      "result": "Sink, CL failed; sets=2; still fails at 39.65 s; identical"
+    },
+    {
+      "mission": "USN04",
+      "pair_diff": 0,
+      "result": "no call; identical"
+    }
+  ],
+  "off_commit": "f637c824d",
+  "failed_predictions": []
 }

@@ -92,7 +92,7 @@ inline constexpr bool kLoadWingSquadronIdBound = true;
 // mirror. While true, the GenerateObject route hands the record's party and
 // race to its pending node, and pass A writes thisTable[key].Party/.Race as it
 // does for a load-time node. While false only load-time nodes get them.
-inline constexpr bool kGeneratedEntityPartyBound = true;
+inline constexpr bool kGeneratedEntityPartyBound = true;  // ON: identity pairs (section 23.4)
 
 // Packet cc9_objectives_completed (docs/MISSION_OBJECTIVES.md section 8),
 // committed OFF with predictions. 008BD340 Objectives_Completed and 008BD900
@@ -102,7 +102,7 @@ inline constexpr bool kGeneratedEntityPartyBound = true;
 // units. Nothing native ends the mission or scores from +1Ch; the scripts keep
 // their own Mission.Objectives state. While true the two rows update
 // bsp::game::game_objective_sets(); while false they stay records.
-inline constexpr bool kObjectiveStatusBound = false;  // ON: identity pairs (section 23.4)
+inline constexpr bool kObjectiveStatusBound = true;  // ON: identity pairs (docs/MISSION_OBJECTIVES.md 8)
 
 class GameHostLog;
 class GameVfsHost;

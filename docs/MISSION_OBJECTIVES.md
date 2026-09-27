@@ -252,3 +252,17 @@ counted. On the measured idle runs the natives are reached:
   Over", Houston). **Identity, exit 1.**
 - **USN04:** census all 0. The mission still ends without an end (phase 1). **Identity, exit 1.**
 - **No mission completes or scores differently:** nothing reads `+1Ch` toward the result.
+
+**Pairs and verdict.**
+- **The pairs.** The OFF side is this tree's build at f637c824d (`local\ob2_off_*`). The ON side is
+  `local\ob2_on`, an export of the same commit with only the switch flipped.
+- **Run parameters:** streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05 and an idle player.
+
+| pair | `pair_diff` | result |
+| --- | --- | --- |
+| USN01 3200/3000 | exit 1 | `Objectives_Completed` "DD" then "CA", `sets=2 misses=0 unit_drops=0`. Mission end `none`. Gameplay, 7 death rows and 28 unit rows identical |
+| USN02 9200/9000 | exit 1 | `Objectives_Failed` "Sink" and "CL", `sets=2`. Still fails at 39.65 s ("Game Over", Houston). Gameplay, 19 death rows and 28 unit rows identical |
+| USN04 4700/4500 | **exit 0** | no call; everything identical |
+
+**Every prediction held. No mission completes or scores differently.** **Verdict:
+`kObjectiveStatusBound = true`.**
