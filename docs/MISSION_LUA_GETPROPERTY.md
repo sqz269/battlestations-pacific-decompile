@@ -408,10 +408,12 @@ census row, and `pair_diff`'s per-entity tables.
     The body was read from disk (`disasm-raw`), not from a Ghidra listing.
   - It sits in 10 vtables at +138h (9.2).
 
-### 9.9 Proposed names (not added)
+### 9.9 Ledger names
 
-The ledger shards (`config/names`) were leased to cc9-plane2 when this read was written, so no
-names were added. These are proposed; each is a descriptive hypothesis, not a recovered symbol.
+Each is a descriptive hypothesis, not a recovered symbol.
+- Ten names were added to the ledger under packet `cc9_get_property_names`, after the read landed.
+- `006E2AC0`'s name is proposed only, and is left to the lead's function definition.
+- No Ghidra function was renamed.
 
 | address | proposed name |
 | --- | --- |
