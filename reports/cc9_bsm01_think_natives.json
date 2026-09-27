@@ -36,13 +36,13 @@
   "switches": [
     {
       "name": "kScoringPlayerShotDownBound",
-      "state": "OFF",
-      "pair": "pending"
+      "state": "ON",
+      "pair": "local/bt_{off,s}_bsm01.log: failures 149 -> 0, calls 149, exit 1; USN02/USN04 OFF vs SP exit 1; S 01B64C27E428"
     },
     {
       "name": "kPutToBound",
-      "state": "OFF",
-      "pair": "pending"
+      "state": "ON",
+      "pair": "local/bt_{s,sp}_bsm01.log: calls 8 placed 8, exit 1; USN02/USN04 OFF vs SP exit 1; SP 542464D48C01"
     }
   ],
   "no_ghidra_function": [
@@ -57,5 +57,24 @@
     "shot-down count from the gunnery death rows: plane-family victims killed by the controlled unit (slot 0), ENEMY by 00803510",
     "PutTo places only non-follower units; group snap, scene-node refresh, +0BCCh and the heading argument not applied"
   ],
-  "failed_predictions": []
+  "failed_predictions": [
+    {
+      "row": "BSM01 pair_diff OFF vs S",
+      "predicted": "3",
+      "measured": "1",
+      "why": "the natives the think reaches past 683 (Effect, ExplodeToParts, ...) are unimplemented"
+    },
+    {
+      "row": "BSM01 pair_diff S vs SP",
+      "predicted": "3",
+      "measured": "1",
+      "why": "the placed craft fight nothing; positions are not pair_diff gameplay rows"
+    },
+    {
+      "row": "BSM01 deaths / hit records",
+      "predicted": "move",
+      "measured": "0 / 0 on all three",
+      "why": "as above"
+    }
+  ]
 }

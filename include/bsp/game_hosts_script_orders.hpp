@@ -147,7 +147,7 @@ inline constexpr bool kFillPathPointsBound = true;
 // (IsKindOf(0Fh)) whose killer is the controlled unit (player slot 0; no
 // other unit carries a player slot in this process) and whose side is ENEMY
 // to the killer's (00803510). Other slots answer 0.
-inline constexpr bool kScoringPlayerShotDownBound = false;
+inline constexpr bool kScoringPlayerShotDownBound = true;
 
 // Packet cc9_bsm01_think_natives. True: PutTo (008A9F90) places a unit through
 // its vtable slot +118h (008193A0, GameUnitsHost::place_at_world_position_008193a0)
