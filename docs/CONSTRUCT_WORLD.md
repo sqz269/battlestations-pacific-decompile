@@ -536,3 +536,158 @@ release.
 
 **Verdict: ON.** Rows 9, 10, 11 and 13 run their single-player arms. Row 12, 00925F20, stays
 the record for the successor packet planned in section 13.
+
+## 15. Part 8: the traffic walk and 00959450's world byte
+
+Packet `cc9_construct_world_p8`. Ghidra was read only.
+
+### The traffic groups (`kTrafficWalkBound`, committed OFF)
+
+**What they are.** `game+21D0h` is the TrafficConfig (004A43C0), loaded by 0049D690 from
+`Scripts\datatables\TrafficGlobals.lua`: its soldier and vehicle party pairs
+(`docs/TRAFFIC_CONFIG.md`). `+8h` is one 20h group object, vtable 00CE6600, with a `std::list`
+whose sentinel is at `+10h` and whose count is at `+14h`.
+- **The walk.** 00487270, the group's slot 1 (V), goes from the sentinel's next to the
+  sentinel. For each node it calls the payload `+8h`'s slot 1 with the delta. It returns at
+  once when the list is empty (0048728C).
+- **The producer.** The only one is the scene-traffic commit. The `traffic {}` block of a
+  `.scn` is read by `BSP_SceneFile_ReadTrafficBlock` 009514B0 into records. 004A5620 then
+  builds one 170h runtime per record through 004A50D0, with `[manager+8h]` as an argument, and
+  keys it in the map at `manager+10h` (`docs/SCENE_TRAFFIC_BLOCK.md`).
+- **Where items exist.** 251 scene files carry a traffic block, with 172 items between them.
+- **The two missions.** Both blocks are empty:
+  - `usn_19_coralus.scn` (USN04) line 2567: `traffic { }`;
+  - `usn_2_java.scn` (USN02) line 1760.
+- **Scripts.** The Lua natives that also touch `game+21D0h` (`TempAddFloatsam` 008C5B80,
+  `TempAddAnim` 008C5CD0, `RemoveTempAddedStuff` 008C5E20) are not called by either mission
+  script. The shared helper `commandhelpers.lua` uses `TempAddAnim` at lines 4380 and 17110, and
+  neither run logs it.
+- **So:** no unit and no player ship is ever on a traffic list in these missions. The walk
+  visits nothing.
+
+**The binding.** 00481640's call becomes the walk itself, done as `TrafficConfig::group_walk_00487270`,
+over an empty list. **Substitution:** the host does not load the traffic block
+(`SceneContents::load_traffic_block` 009514B0 stays a record), so the walk is exact only for a
+scene whose block has no item. A scene with items needs the commit 004A5620 first. That belongs
+to the scene-contents owner, `src/game_hosts_scene_contents.cpp`.
+
+### 00959450 `BSP_Unit_OnDestroyed` and the world byte
+
+**The body** (V):
+1. It clears `unit+520h` and runs 00878990.
+2. **The report gate.** The clock must be above 1.0 (00959468, strictly), `unit+70h` must be 1,
+   which is the `KillReason` harm cause that 00929800 publishes (`docs/KILL_CREDIT.md`), and
+   `world+4ACh` must be set (0095948A).
+3. **The report.** It walks the `+48h`/`+44h` children and calls `vt[1E8h](0)` on each one of
+   kind 20h. Then comes **009813A0 on the warning manager `[00F8A0C4]`**: for a ship or a
+   squadron (kinds 6, 18h) of side 0 or 1, it builds the loss report through
+   `BSP_Unit_LossCountingSlot`, the radio "we lost X" warning. That call is skipped when the
+   controller at `unit+538h` answers kind 17h with `unit+C41h` set, or kind 6 with `unit+100Ah`
+   set. Then **0091BDA0**, the kill credit, runs **in every reported case** (00959519).
+4. **The controlled unit.** If the unit is the controlled one (004B4B00), and the byte is set
+   again (00959537) and the front-end state is not 29h, 2Bh, 2Ch or 2Dh, it runs the limbo page
+   00565FB0 and the limbo interface or retarget (`src/mission_result.cpp`).
+
+**Correction to the host model.** `unit_death_00959450` had the two reports as alternatives: the
+kill warning, or the credit when the flags were set. The listing runs the credit always and
+skips only the warning. The model is fixed in `src/mission_result.cpp` and
+`include/bsp/mission_result.hpp`. The existing test still holds.
+
+**Who calls it in the image** (rel32 census):
+- 007473E3, 0074DC29 (in 0074DB70), 007BCAD9 (`BSP_Plane_OnDestroyed` 007BCAA0) and 00825271
+  (`BSP_UnitInstance_OnWrecked` 00824B60);
+- four vtable slots: 00CF8C84, 00CFCDDC, 00D0B7EC and 00D1A714.
+- **0091BDA0's only caller in the whole image is 00959519.**
+
+**The host's route misses a step.** The gunnery host's death path (`src/game_hosts_gunnery.cpp`,
+about lines 6780-6845) goes from `Death::entity_kill_00926d90` to `Death::unit_sink_008110f0`,
+and then calls `kill_credit_record_unit_kill_0091bda0` directly. That skips 00959450's frame:
+- the report gate (clock above 1.0, cause 1, the world byte, which is now 1);
+- the kind-20h child pass;
+- the **009813A0 loss warning**;
+- the **limbo page** for the controlled unit.
+
+In these runs the gate would pass for every credited death: the first hit lands after 90 s, and
+every credited death is a harm death.
+
+**Contract for the gunnery owner (cc9-gunnery2, `src/game_hosts_gunnery.cpp`).** Route the
+sunk and wrecked unit through `bsp::unit_death_00959450` with these inputs:
+- `mission_clock`;
+- `unit_party_70` = 1 for a harm death;
+- `world_gate_4ac` from the mission frame's `world.world_gate.enabled`;
+- `is_controlled_unit`;
+- the controller flags for `owner_allows_alternate_report`.
+
+Then act on the decision:
+- `reports_alternate` goes to the existing `kill_credit_record_unit_kill_0091bda0`;
+- `reports_kill` goes to the warning manager's loss report 009813A0, a new host method in
+  `src/game_hosts_mission_frame.cpp`, which is free;
+- `registers_limbo_page` goes to the HUD's `limbo_screen_take_unit` 00565FB0.
+
+**Predictions for that binding** (for the successor, not run here):
+- the credit count stays 41 and 22;
+- a new loss-report row appears for each allied or Japanese ship and squadron death;
+- gameplay is identical unless a mission script reacts to the loss report.
+
+### Predictions for `kTrafficWalkBound` (written before the pairs; the same tree, switch only, both variables set)
+
+| row | USN04 4700/4500 OFF -> ON | USN02 9200/9000 OFF -> ON |
+| --- | --- | --- |
+| `TrafficConfig::group_walk_00487270` | UNIMPLEMENTED 4,500 -> concrete 4,500 | 9,000 -> concrete 9,000 |
+| every other native row, per-entity rows, death rows, gunnery and summary lines | identical, zero clock offset | identical |
+
+The `mission_result` correction has no caller, so it cannot move a row.
+
+### Part 8 pairs and verdict
+
+One tree, f7c11bf4e, with `local\bin\tw_off` against `local\bin\tw_on`. The two builds differ
+only by the switch. Both variables were set. All four logs show the fit line and the final COM
+release.
+
+| row | USN04 OFF -> ON | USN02 OFF -> ON |
+| --- | --- | --- |
+| native table rows | 1,540 = 1,540 | 1,442 = 1,442 |
+| `TrafficConfig::group_walk_00487270` | UNIMPLEMENTED 4,500 -> concrete 4,500 | 9,000 -> concrete 9,000 |
+| death rows, gunnery | 41, 727 hits, identical | 22, 440 hits, identical |
+
+**Every prediction held.** A masked whole-log diff leaves only the ignored counters and the
+pre-mission blink. **Verdict: ON.**
+
+## 16. Handoff (cc9-side-ai retires after this packet)
+
+**State reached on the world object** (sections 9 to 15, all ON on main once this lands):
+- **The world-active byte `+4ACh`** is set at the `construct_world` load step. It opens the
+  fan-out gate and 00481640.
+- **ScanProximity 00977990** is bound over list 6. The part-count test and list 24 are labelled
+  stand-ins.
+- **Fan-out rows 9, 10, 11 and 13** run their single-player arms. The pump's `[00F8A2FC]` step
+  and its loopback drain are named records.
+- **The traffic walk 00487270** runs over an empty group list. That is exact for scenes with an
+  empty `traffic` block.
+- **The 00959450 model** in `src/mission_result.cpp` is corrected: the credit is always run,
+  and only the loss warning is gated.
+
+**Open items for a successor, with owners as of 2026-09-27, taken from `bsp.py lease list` just
+before this commit:**
+
+| item | what | files and owners | where it is written up |
+| --- | --- | --- | --- |
+| SEntity_InitAll 00925F20 | a pending-entity list, the image's 00F899D0, fed at unit creation, with InitAll at the four routes: fixed-step row 12, GenerateObject/SpawnNew, the air-ops launch and RunExtraFixedStep. Passes B to E (vt+A0h, vt+A4h with the start branch, 0077F090, the descriptor destroy) must be read first for the plane, squadron and ship classes. It retires the creation-time `attach_created_entity_00928a00` and `attach_wing_member_tables` in favour of pass A. | `src/game_hosts_fixed_step.cpp`, `src/game_hosts_lua.cpp` and `src/game_hosts_script_orders.cpp` are unleased. `src/game_hosts_units.cpp`, where `create_units` is, is leased to cc9-plane-release (cc9_units_contracts). | section 13; pairs USN04 4700/4500 and E2, where launches and GenerateObject happen |
+| the 00959450 route | route sunk and wrecked units through `unit_death_00959450`. That adds the loss warning 009813A0 and the limbo page 00565FB0 before the existing credit. | `src/game_hosts_gunnery.cpp` (cc9-gunnery2's file, unleased right now); a new warning-manager method in `src/game_hosts_mission_frame.cpp`, which is free | section 15, the contract |
+| the scene traffic block | load `traffic {}` items (009514B0) and commit them (004A5620 -> 004A50D0), so the walk has elements in the scenes that author some (172 items over 251 files) | `src/game_hosts_scene_contents.cpp`, unleased | section 15; `docs/SCENE_TRAFFIC_BLOCK.md` |
+| ScanProximity stand-ins | `unit_part_descriptor_count` and 007F10B0's push into list 24 | `src/game_hosts_units.cpp`, cc9-plane-release; the lead routed both contracts | section 11 |
+| the pump's two records | the object at `[00F8A2FC]` (its `vtable[5Ch]` step) and 0076C600's drain, once more loopback kinds exist than 8Fh | `src/game_hosts_fixed_step.cpp` (free), `src/game_hosts_ship_ai.cpp` (cc9-gunnery2) | section 13 |
+
+**Parts 4 to 6** (section 7 plan) belong to other workers:
+- **Part 4, the neighbour count 009EEB8B.** It landed on main at cd9264a68, merging cc9-gunnery2.
+- **Part 5, the ring-scan probe (ranking rows 9 to 11).** It is with cc9-gunnery2. It reads the
+  avoid-zone manager `[00E17624]`, not the world.
+- **Part 6, the AvoidZoneLayer sample 0041BC20 (row 15).** It is with cc9-plane-release. It
+  reads the avoid-zone registry `[00E17620]`, not the world. Main now has
+  `src/game_hosts_avoid_zones.cpp` from that line of work.
+
+**Not done and not planned here:**
+- the world's `+Ch..+14h`, `+4A4h` and `+4A8h` meanings;
+- the 0047F130 getter's extent;
+- list 28 and list 71 fillers;
+- the other `+4ACh` readers' routines (section 9 table), none reached by the host.

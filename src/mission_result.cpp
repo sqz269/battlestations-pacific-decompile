@@ -239,11 +239,11 @@ UnitDeathDecision unit_death_00959450(const UnitDeathInputs& inputs) noexcept
     const bool reports = inputs.mission_clock > kUnitDeathReportGraceSeconds
                          && inputs.unit_party_70 == 1 && inputs.world_gate_4ac;
     if (reports) {
-        if (inputs.owner_allows_alternate_report) {
-            decision.reports_alternate = true; // 0091bda0
-        } else {
-            decision.reports_kill = true; // 009813a0
-        }
+        // 009594C4..0095951E (packet cc9_construct_world_p8): 009813A0 is skipped
+        // when the controller at unit+538h is kind 17h with +C41h set or kind 6
+        // with +100Ah set; 0091BDA0 follows in every case (00959519).
+        decision.reports_kill = !inputs.owner_allows_alternate_report; // 009813a0
+        decision.reports_alternate = true;                            // 0091bda0
     }
     if (!inputs.is_controlled_unit) {
         return decision;

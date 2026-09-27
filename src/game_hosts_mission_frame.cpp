@@ -137,6 +137,19 @@ constexpr bool kWorldActiveByteBound = true;
 // the verdict: USN04 and USN02 pairs identical but for the scan row (section 12).
 constexpr bool kScanProximityBound = true;
 
+// Packet cc9_construct_world_p8 (docs/CONSTRUCT_WORLD.md section 15). True:
+// 00481640's call is the walk 00487270 itself: the std::list whose sentinel is
+// group+10h (group = [TrafficConfig+8h], the 20h object 0049D690 builds), each
+// node's payload +8h taking its slot 1 with the delta. The list's only producer
+// is the scene-traffic commit 004A5620 -> 004A50D0 (one 170h runtime per `item`
+// of the scene's `traffic` block; docs/SCENE_TRAFFIC_BLOCK.md). This host does
+// not load that block (SceneContents::load_traffic_block stays a record), so
+// the walk visits nothing. SUBSTITUTION, exact only for a scene whose traffic
+// block has no item, as USN04 (usn_19_coralus.scn line 2567) and USN02
+// (usn_2_java.scn line 1760) are. False: the walk is the named record. ON by
+// the verdict: USN04 and USN02 pairs identical but for this row (section 15).
+constexpr bool kTrafficWalkBound = true;
+
 // Packet cc9_scaled_delta_write (docs/SCALED_DELTA_WRITE.md). True: the frame
 // writes game+21F0h, the scaled delta 004C6E30 stores at 004E4D45, into the
 // world tick state every frame, so each world-tick reader of +21F0h sees it.
@@ -547,7 +560,12 @@ public:
         // each traffic group's slot 1. No unit is on that list. The groups
         // are not read (docs/CONSTRUCT_WORLD.md section 5): a named record.
         ++owner_.frames.traffic_walks;
-        owner_.record("TrafficConfig::group_walk_00487270", 0x00481664u);
+        if constexpr (kTrafficWalkBound) {
+            // 0048728C: the first node is the sentinel, so no element is called.
+            owner_.done("TrafficConfig::group_walk_00487270", 0x00481664u);
+        } else {
+            owner_.record("TrafficConfig::group_walk_00487270", 0x00481664u);
+        }
     }
 
     void power_ups_pre_pass_008eac80() override {

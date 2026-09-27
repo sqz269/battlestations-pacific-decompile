@@ -1,0 +1,29 @@
+{
+  "packet": "cc9_construct_world_p8",
+  "doc": "docs/CONSTRUCT_WORLD.md sections 15 and 16",
+  "switch": "kTrafficWalkBound (src/game_hosts_mission_frame.cpp): committed OFF in f7c11bf4e, set ON by the verdict",
+  "calls": [
+    {"address": "004E52F4", "native": "00481640", "function": "004E4A40", "kind": "call", "host": "update_entity_manager_00481640 -> TrafficConfig::group_walk_00487270 (concrete, empty list)"},
+    {"address": "00959507", "native": "009813A0", "function": "00959450", "kind": "call", "host": "not routed: contract for the gunnery owner (loss warning)"},
+    {"address": "00959519", "native": "0091BDA0", "function": "00959450", "kind": "call", "host": "kill_credit_record_unit_kill_0091bda0, called directly by the gunnery death route"}
+  ],
+  "routines": [
+    {"address": "00487270", "coverage": "complete for an empty list; the element slot 1 is not reached in these scenes"},
+    {"address": "00959450", "coverage": "report and limbo decision modelled (unit_death_00959450, corrected); no host caller"}
+  ],
+  "corrections": [
+    {"was": "unit_death_00959450: 009813A0 or 0091BDA0, exclusive, on the controller flags", "is": "0091BDA0 in every reported case; the flags only skip 009813A0", "evidence": "009594FE JNZ 0095950C past 00959507 CALL 009813A0; 00959519 CALL 0091BDA0 unconditional after the gate"}
+  ],
+  "contracts": [
+    "cc9-gunnery2, src/game_hosts_gunnery.cpp: route sunk/wrecked units through bsp::unit_death_00959450 (clock, harm cause, world byte, controlled, controller flags); reports_alternate -> existing kill credit; reports_kill -> warning-manager loss report 009813A0 (new method in src/game_hosts_mission_frame.cpp); registers_limbo_page -> HUD 00565FB0"
+  ],
+  "installation": "universe/Scenes/missions/USN/usn_19_coralus.scn line 2567 and usn_2_java.scn line 1760: empty traffic blocks; TempAdd* natives not called by either mission script",
+  "no_ghidra_function": [],
+  "names": [],
+  "verdict": "ON",
+  "pairs": {
+    "usn04": {"traffic_walk": "UNIMPLEMENTED 4500 -> concrete 4500", "rows": "1540 = 1540", "deaths": 41, "hit_records": 727, "gameplay": "identical"},
+    "usn02": {"traffic_walk": "UNIMPLEMENTED 9000 -> concrete 9000", "rows": "1442 = 1442", "deaths": 22, "hit_records": 440, "gameplay": "identical"},
+    "unpredicted": "none"
+  }
+}
