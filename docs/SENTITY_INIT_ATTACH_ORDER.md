@@ -1346,3 +1346,87 @@ write Race itself (authored, else -1)".
 moving. No switch is added, and `src/game_hosts_lua.cpp` (cc9-hud2's lease) is not edited. A
 one-line edit writing `Race = -1` in `mirror_identity_00928100` when no race is carried remains
 available if a scene ever authors a marker outside `Common`.
+
+## 19. The squadron pass hooks at load time (packet `cc9_load_time_squadron_hooks`, `kLoadTimeSquadronHooksBound`)
+
+Worker cc9-init2, 2026-09-27, base main 222a80033. Ghidra was read only. This closes the gap
+docs/CONSTRUCT_WORLD.md section 32 measured on JM08: the load walk (section 10) never calls the
+units host's squadron hooks, so a squadron built from a scene row never reads its `HomeBase`.
+
+### 19.1 The image
+
+- **The same walk.** All four scene-read sites load `CL` = 0 and call 00925F20: `XOR CL,CL` at
+  0046EB49 before 0046EB4B, and at 0046ED0D before 0046ED0F. That is the flag the runtime InitAll
+  passes too, so the passes a node runs do not depend on the call site.
+- **A squadron's two slots.** The PlaneSquadron vtable is 00D087C0:
+  - `+9Ch` holds 007F4580 (the DATA xref at 00D0885C): pass A, which constructs the wing;
+  - `+A4h` holds 007F4BA0 (the DATA xref at 00D08864): pass C, which reads `HomeBase` at
+    007F4C43, calls 007F1C00 at 007F4CFA, and issues the initial command at 007F4E9E.
+- **So every squadron the scene read constructs runs both,** in the one load InitAll, as every
+  mission-time squadron does.
+- **Order against the authored commands.** The end-of-file site 0046ED0F runs before
+  `ResolveDeferredReferences` 0046AAB0 (0046ED1E), which issues each unit's authored command. In
+  the image a load squadron's pass C therefore sees no current command. The host issues the
+  authored commands before its load walk (section 10.2, "Not reproduced"), so a row that authors a
+  `Command` reaches pass C with one and takes 007F4E0C's skip. **Not reproduced, labelled.**
+  Where the authored command replaces the initial one, the end state is the same.
+
+### 19.2 The host today
+
+- **Which nodes are squadrons.** Section 15.1 marks only route squadrons (GenerateObject, SpawnNew,
+  air-ops) and adds no load-node test. So the load walk's squadron nodes carry `squadron = false`,
+  and passes A and C skip both hooks. JM08 reads `pass_a=0 pass_c=0`.
+- **The wing is already built.** `create_units` builds a scene row's wing at load, from the
+  records that the `plane squadrons: ... wing record(s) appended` line counts, and stages nothing.
+  So the pass A hook finds nothing staged and constructs nothing. **SUBSTITUTION, labelled
+  (existing):** the image constructs these planes inside pass A.
+- **The member array is resolved before the walk.** `create_units` ends with
+  `resolve_plane_squadron_members(..., only_unresolved=true)`, and the mission frame calls the load
+  walk after it. So the registry answers for a scene squadron's leader when the walk runs.
+
+### 19.3 The binding (planned; `src/game_hosts_lua.cpp` is cc9-hud2's lease at the time of writing)
+
+- **Under `kLoadTimeSquadronHooksBound`,** `run_scene_load_init_all_0046eb4b` marks a load node
+  `squadron = true` when the plane-squadron registry holds a record that did not come from an
+  air-ops launch and whose `squadron_unit` (the fused leader, slot 0) is the node's unit index.
+  Passes A and C then call the two hooks exactly as for a route squadron.
+- **No wing range.** The node records none. With `kWingConstructionLuaActive` the pass A loop marks
+  only nodes the hook pushes, and a scene squadron's hook pushes none.
+- **Summary line:** `summary SEntity::InitAll load squadron hooks bound=<0|1> squadrons=N`.
+- **Left open:** the load wing planes (the `|.-2` and `|.-3` units) are plain load nodes. They
+  carry no `wing_member` or `squadron_id`, so pass C writes no `SquadronID` for them (007C9770
+  through plane+9D4h). That is a separate gap, not bound here.
+
+### 19.4 Predictions (written before any pair; both variables set, lockstep 0.05, idle player)
+
+**Step 1, `kLoadTimeSquadronHooksBound` alone** (`kSceneHomeBaseQualifiedNameBound` OFF):
+
+- **JM08 3200/3000.** Six scene squadrons: Movie Mavis, H6K Mavis 01..03, Ki-43 Oscar 01 and
+  Gekko 01.
+  - `load squadron hooks squadrons` 0 -> 6; `squadron pass hooks` 0/0 -> `pass_a=6 pass_c=6`; the
+    two native hook rows are added with 6 calls each.
+  - Wing construction unchanged: `staged=0 builds=0 planes=0 left_staged=0`. `wing_marked` and
+    `squadron_ids` stay 0.
+  - Home base: `keys=2`, `resolved` stays 0, `unresolved` 0 -> 2, `queue_pushes` stays 0.
+  - Initial command, for squadrons whose leader is active at load: the three H6K Mavis rows author
+    `Command = Stop`, so `skipped_current` 0 -> 3. Oscar 01 and Gekko 01 have no home, so
+    `no_home` 0 -> 2. Movie Mavis authors no command and no home, so it adds 1 to `no_home`, or 1
+    to `stops` if its leader is in water mode (+900h = 6). An inactive leader returns silently and
+    adds to none of these.
+  - `movetos` stays 0. **Gameplay identical, unless Movie Mavis takes the water stop.**
+- **USN04 4700/4500.** One scene squadron, `movieval` (usn_19_coralus.scn: no command, empty
+  `HomeBase`, 700 m up). The brief expected identity; the scene row makes it one more squadron.
+  - `pass_a` 20 -> 21 and `pass_c` 20 -> 21, and both native hook rows 20 -> 21;
+  - `keys=0`, so the home-base census does not move;
+  - `no_home` 16 -> 17 (unchanged if the leader is inactive at load); `movetos` stays 4;
+  - no command is issued, so **gameplay identical** (`pair_diff` exits 1).
+- **USN02 9200/9000.** No scene row builds a squadron (the log has no `plane squadrons:` line), so
+  nothing moves and `pair_diff` exits 0.
+
+**Step 2, `kSceneHomeBaseQualifiedNameBound` ON** (its own commit and pair, on top of step 1 ON):
+
+- **JM08.** `unresolved` 2 -> 0, `resolved` 0 -> 2, `queue_pushes` 0 -> 2, both keys matching the
+  deck "MainAirFieldEntity 01". Oscar 01 and Gekko 01 then find a home unit, so `no_home` falls by
+  2 and `movetos` rises by 2 if both leaders are active. **Gameplay moves:** the two squadrons are
+  ordered to their airfield, and two entries join the deck's assign queue (006CC7B0).
+- **USN04 and USN02.** No key, so identity (`pair_diff` exits 0, or 1 on noise only).
