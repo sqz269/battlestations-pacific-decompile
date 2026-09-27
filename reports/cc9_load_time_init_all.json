@@ -1,0 +1,59 @@
+{
+  "packet": "cc9_load_time_init_all",
+  "doc": "docs/SENTITY_INIT_ATTACH_ORDER.md section 10",
+  "switch": "kLoadTimeInitAllBound (include/bsp/game_hosts_fixed_step.hpp): committed OFF",
+  "calls": [
+    {
+      "address": "0046EB4B",
+      "native": "00925F20",
+      "function": "0046DF00",
+      "kind": "call",
+      "host": "GameMissionLuaHost::run_scene_load_init_all_0046eb4b (from the mission frame, in place of attach_scene_entities_00928a00)"
+    },
+    {
+      "address": "0046EB88",
+      "native": "00925F20",
+      "function": "0046DF00",
+      "kind": "call",
+      "host": "the same one call: the [ESP+13h] latch lets only the first of the four sites run"
+    },
+    {
+      "address": "0046EBC6",
+      "native": "00925F20",
+      "function": "0046DF00",
+      "kind": "call",
+      "host": "the same one call (latch)"
+    },
+    {
+      "address": "0046ED0F",
+      "native": "00925F20",
+      "function": "0046DF00",
+      "kind": "call",
+      "host": "the same one call (latch)"
+    },
+    {
+      "address": "0046EB0F",
+      "native": "0046CF40",
+      "function": "0046DF00",
+      "kind": "call",
+      "host": "the entity blocks: GameSceneContentsHost + create_units + the mission frame's markers"
+    }
+  ],
+  "routines": [
+    {"address": "0046DF00", "coverage": "partial: the token loop's block dispatch 0046E9F0..0046EBDD and the end 0046ECFE..0046ED2A (the four InitAll sites and their latch); the block readers are not read here"}
+  ],
+  "corrections": [
+    {
+      "was": "docs/CONSTRUCT_WORLD.md sections 13, 17 and 23: the scene read's four InitAll calls",
+      "is": "one InitAll per scene read: a latch at [ESP+13h] (cleared 0046E9F0, set 0046EB50/0046EB8D) lets only the first of the four sites run, after the entity blocks",
+      "evidence": "0046DF00 listing 0046E9F0..0046ED0F"
+    }
+  ],
+  "no_ghidra_function": [],
+  "names": [],
+  "contracts": [
+    {"owner": "cc9-ships", "file": "src/game_hosts_scene_contents.cpp", "contract": "push each marker instance at construction and run the one load InitAll at the entity-blocks boundary through the Lua host's runner (site 0046EB4B), once create_units pushes and builds units inside the instantiate pass"}
+  ],
+  "verdict": "pending",
+  "pairs": {}
+}

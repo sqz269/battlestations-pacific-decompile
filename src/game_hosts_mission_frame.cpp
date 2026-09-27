@@ -1975,7 +1975,13 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
                     seed.marker_authored_party = marker.party;
                     entities.push_back(seed);
                 }
-                host.lua.attach_scene_entities_00928a00(entities);
+                if constexpr (kLoadTimeInitAllBound) {
+                    // Packet cc9_load_time_init_all: the scene read's InitAll
+                    // (0046EB4B), over the load-time instances.
+                    host.lua.run_scene_load_init_all_0046eb4b(entities);
+                } else {
+                    host.lua.attach_scene_entities_00928a00(entities);
+                }
                 if (!markers.empty()) report_scene_markers(host.log, markers);
             }
             // Milestone 2m: with the slots built, the eight binding bodies

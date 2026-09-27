@@ -292,6 +292,10 @@ struct GameMissionLuaSummary {
     unsigned long long dedup_wing_deferred{0};
     unsigned long long dedup_wing_append_skipped{0};
     unsigned long long dedup_load_dropped{0};
+    // Packet cc9_load_time_init_all: load-time pushes, and 00928100 mirrors
+    // the walk's pass C made.
+    unsigned long long load_init_all_pushes{0};
+    unsigned long long init_all_identity_mirrored{0};
     unsigned long long init_all_pushes{0};
     unsigned long long spawn_new_callbacks{0};   // named globals actually called
     unsigned long long spawn_new_callback_missing{0};
@@ -598,6 +602,11 @@ public:
         int marker_authored_party{-1};
     };
     std::size_t attach_scene_entities_00928a00(const std::vector<SceneEntity>& entities);
+    // Packet cc9_load_time_init_all: every load-time instance pushed (the
+    // stand-in for each constructor's 00928760 push), then the scene read's
+    // one InitAll (0046EB4B). Returns the entities the walk attached.
+    std::size_t run_scene_load_init_all_0046eb4b(const std::vector<SceneEntity>& entities);
+    void write_party_race_fields(int entity_id, int party, int race);
     // Packet cc9_init_identity_gaps: 00928100 on a slot that already exists.
     bool mirror_identity_00928100(int entity_id, int party, const std::string& name,
         const char* type_name);
@@ -707,7 +716,7 @@ public:
     // `seed_class` false: only the three fields 00928A00 itself seeds (packet
     // cc9_init_attach_order, where pass B's 009292B0 writes `Class`).
     bool attach_created_entity_00928a00(int entity_id, const std::string& name,
-        int class_index, bool seed_class = true);
+        int class_index, bool seed_class = true, bool findable = true);
     // Packet cc9_init_attach_order: 009292B0 BSP_Unit_BindLuaClass over the
     // entity's existing `thisTable` slot (ClassID, Name, Class), and the plane
     // pass C store 007C97E3..007C9805 (SquadronID). False when there is no slot.
@@ -813,6 +822,14 @@ private:
         // (007F4B49 stores the squadron there in its pass A). This process
         // keys the squadron's slot by its leader unit's id.
         int squadron_id{0};
+        // Packet cc9_load_time_init_all: a load-time instance, with what the
+        // load attach used to take from its SceneEntity.
+        bool load_scene{false};
+        bool findable{true};
+        int marker_class_id{-1};
+        int marker_authored_party{-1};
+        int party{-1};
+        int race{-1};
         std::size_t units_before{0};
         // The unit count right after this squadron's creator returned: its wing
         // is [units_before, units_end). A later creation before InitAll (the
