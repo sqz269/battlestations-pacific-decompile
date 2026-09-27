@@ -9,10 +9,11 @@
 // Two facts decide what a run of this file can show, and both are reported
 // rather than worked around:
 //
-// 1. The world gate 00875e69..00875e7f reads [[game+19CCh]+4ACh]. This process
-//    builds no world object (construct_world 004de610 is a load record), so the
-//    gate is closed and rows 9..13 of the fan-out are skipped every step. That
-//    is the native behaviour for an inactive world, not a substitution.
+// 1. The world gate 00875e69..00875e7f reads [[game+19CCh]+4ACh]. The byte is
+//    set by the construct_world load step only when kWorldActiveByteBound
+//    (src/game_hosts_mission_frame.cpp, docs/CONSTRUCT_WORLD.md). Closed, rows
+//    9..13 of the fan-out are skipped every step; open, each is a named record
+//    below until its body is read.
 // 2. The five 68h groups at 00f876c0 are empty. Every element is built by
 //    00875890, whose nine call sites are unit, aircraft and objective
 //    constructions this process never reaches, and the one routine that would

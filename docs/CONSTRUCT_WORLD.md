@@ -229,3 +229,53 @@ other `+4ACh` readers listed in section 4 have no host binding that tests the by
 - Slot `+218h` was checked only for MDestroyer's vtable 00CFC3D0.
 - The census window follows only the register that loaded the world. Routines that copy the
   pointer (for example 00875BB0) show no field in the census table even when they read one.
+
+## 9. Part 2: the world-active byte (`kWorldActiveByteBound`, committed OFF)
+
+**The binding.** These changes are in `src/game_hosts_mission_frame.cpp`, which is free:
+- **At load.** The `construct_world` load step sets `world.world_gate.enabled`, the host's copy
+  of `[game+19CCh]+4ACh`. 004CB098 is `MOV byte ptr [ESI+4ACh],1`. The new row is
+  `World::active_byte_004cb098`. The rest of 004DE610 stays the load record.
+- **The two gates.** The fixed-step driver's `world_active` (00875E69..00875E7F) and
+  `update_entity_manager_00481640`'s gate (0048164B) now read that byte.
+- **The traffic walk.** 00481640's call is now the named record
+  `TrafficConfig::group_walk_00487270`, at 00481664. It used to be "EntityManager::submanager_update"
+  and bumped the unit counter; it now bumps `traffic_walks`, since no unit is on that list.
+- **The five gated rows** stay the records they were (`src/game_hosts_fixed_step.cpp:293-320`).
+- **Teardown.** 004D2BB0 clears the byte through the destructor (00904C67). This host runs no
+  teardown, so the byte stays set until the process exits.
+- **Not wired.** `unit_death_00959450`'s `world_gate_4ac` input is noted only: nothing in the
+  game host calls it.
+- **New summary line.** `summary mission world active_byte_bound=%d active=%d traffic_walks=%llu`.
+
+**The other `+4ACh` readers when the byte is 1.** Each was checked for a host binding and for a
+row in `local\psm_on_usn04.log`:
+
+| site | routine | what the byte gates | reached in this host |
+| --- | --- | --- | --- |
+| 00874D3A | 00874D00 `BSP_Game_RunExtraFixedStep`, from the Lua Spawn, GenerateObject and LaunchAirBaseSlot bindings and 0046B730 | re-running nine fan-out rows outside the driver | no: no host method calls 00874D00 |
+| 00534BCB | 00534BC0..00534BF7, **no Ghidra function**, slot 1 of vtable 00CED6E0 (installed by 00538A80 at 00538AB1) | with `this+D4h` set, calls `[this-64h]` slots 1Ch then 18h | no: the class is not built |
+| 007D0C75 | 007D0B80 `BSP_Plane_HandleStateMessageKinds` | with `unit+5Eh` clear, `00498F80(unit)` on the TrafficConfig `game+21D0h` | no: the host's `plane_death_flags_007d0b80` models the flags only and has no byte test |
+| 007F3A7A | 007F3A60 `BSP_PlaneSquadron_ReleaseControlledUnit` (vtable slot) | the release of the controlled squadron outside states 29h, 2Bh, 2Ch and 2Dh | no host binding |
+| 007F3B2A | 007F3B10 `BSP_Aircraft_OnDestroyed` | the kill report 009813A0 | no host binding |
+| 00806F12 | 00806F00..008073B9, **no Ghidra function**, slot 1 of the recon slot vtable 00D08E94 (installed by `BSP_Recon_ConstructSlot` 008050E0) | the whole body: a walk over the scanned classes 00806480 | no: the host's recon runs 008073C0 only |
+| 0095948A, 00959537 | 00959450 `BSP_Unit_OnDestroyed` | the kill report (0091BDA0 or 009813A0) and the limbo page 00565FB0 | no: `unit_death_00959450` has no caller |
+
+So no gameplay path in this host tests the byte except the two gates bound here.
+
+**Predictions** (written before the pairs; the same tree, switch only, both variables set):
+
+| row | USN04 4700/4500 OFF -> ON | USN02 9200/9000 OFF -> ON |
+| --- | --- | --- |
+| `World::active_byte_004cb098` | absent -> 1 | absent -> 1 |
+| `MissionLoad::construct_world` | 1 record, unchanged | unchanged |
+| `summary fixed step body` | `gate_closed_steps` 4 500 -> 0, `gated_sites_skipped` 22 500 -> 0, `records` 4 500 -> 27 000 | 9 000 -> 0, 45 000 -> 0, 9 000 -> 54 000 |
+| `FixedStepFanout::pump_session`, `apply_pending_entity_creates`, `flush_tick_registrations`, `init_pending_entities`, `flush_outbound_session` | absent -> 4 500 records each | absent -> 9 000 each |
+| `TrafficConfig::group_walk_00487270` | absent -> 4 500 (one per simulated frame) | absent -> 9 000 |
+| `summary mission world` | `active=0 traffic_walks=0` -> `active=1 traffic_walks=4500` | -> `active=1 traffic_walks=9000` |
+| `summary mission frames ... units=` | 0, unchanged | 0, unchanged |
+| unimplemented total | + 5 x 4 500 + 4 500 + 1 | + 5 x 9 000 + 9 000 + 1 |
+| every other native row, per-entity rows, death rows, gunnery and summary lines | identical, zero clock offset | identical |
+
+Every consumer behind the two gates is a record, so nothing can reach a unit. The ignored
+counters are `ship avoidance search refills` and `pretranslate`.

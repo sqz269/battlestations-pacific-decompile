@@ -117,6 +117,7 @@ struct GameMissionFrameRunSummary {
     unsigned long long simulated{0};
     unsigned long long paused{0};
     unsigned long long units_ticked{0};
+    unsigned long long traffic_walks{0};  // 00481640 reached past its world gate
     unsigned long long mission_events_applied{0};
     unsigned long long script_calls{0};
     unsigned long long input_entries_erased{0};
