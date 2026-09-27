@@ -954,6 +954,8 @@ struct GameUnitSlot {
     int rack_drops{0};                 // 006E4D50 drops (host spawns)
     int rack_gate_refused{0};          // 007CC8E0 / 007C7600 said no
     int rack_requests_deferred{0};     // 007BBBA0 requests whose spawn waits
+    int rack_bomb_drops{0};            // packet cc9_release_issue_stage_vals
+    int db_bomb_requests_logged{0};    // diagnostic line cap
     int torpedo_orders_issued{0};
     int torpedo_orders_issue_ticks{0};
     int torpedo_peak_release_orders_c58{0};
@@ -2810,6 +2812,36 @@ struct GameUnitsHost::Impl {
         } else {
             ++slot.db_bay_requests_refused;
         }
+        // Diagnostic, both builds: the request instant per Val, so a pair can
+        // compare the request with the drop. First eight requests per Val.
+        if (slot.db_bomb_requests_logged < 8) {
+            ++slot.db_bomb_requests_logged;
+            log.notef("val bomb request: unit=%s t=%.2f rounds=%d alt=%.1f "
+                "pitch=%.4f bank=%.4f state=%x",
+                slot.row.name.c_str(), static_cast<double>(summary.simulated_seconds),
+                rounds, static_cast<double>(slot.motion.position[1]),
+                static_cast<double>(slot.plane_pitch_angle_c64),
+                static_cast<double>(slot.plane_bank_angle_c68),
+                static_cast<unsigned>(slot.dive_bomb_state));
+        }
+        // Packet cc9_release_issue_stage_vals: the spawn waits for the rack
+        // (run_rack_tick_006e56f0). unit+C20h is NOT raised here: the task's
+        // request_ordnance_release hook already routes each 007BBBA0 call
+        // (009C60F1, 009C5777 per round) through release_ordnance_007bbba0,
+        // whose 007BBC00 raise is the image's one per call. A raise here doubled
+        // it (the first ON run, local\RV_ON1_4500.log of dadc05b84).
+        // Only an aircraft whose census found a single rack takes this route;
+        // a multi rack (26h, never busy) is not bound, so such an aircraft keeps
+        // the request spawn below. The death refusal is the stage's guard.
+        if constexpr (kReleaseIssueStageBound && kReleaseIssueStageValsBound) {
+            if (slot.rack_census_done && slot.rack_single_count > 0) {
+                for (int i = 0; i < rounds; ++i) {
+                    ++slot.rack_requests_deferred;
+                    record("Plane::release_spawn_deferred_to_rack", 0x006e4d50u);
+                }
+                return;
+            }
+        }
         // SUBSTITUTION, labelled, and the reason the spawn does not hang off
         // `accepted`: the image's chain from the bay to a round is 007BBBA0 ->
         // unit+C20h -> 007CE040 -> 007C0D90 -> 007EEF30 -> 007BCBE0 ->
@@ -3192,6 +3224,20 @@ struct GameUnitsHost::Impl {
     // Torpedoes only; the dive bomber's bombs keep their spawn at the request.
     // ON since the E2 9000 / USN04 4500 pairs (docs/RELEASE_ISSUE_STAGE.md).
     static constexpr bool kReleaseIssueStageBound = true;
+    // Packet cc9_release_issue_stage_vals, docs/RELEASE_ISSUE_STAGE.md section
+    // "Vals": the dive bomber's bomb leaves the same rack through the same stage.
+    // 007BBBA0 raises unit+C20h once per round (the aimglide's 009C5771-009C5784
+    // loop calls it per round); the stage spends one request per reloaded
+    // interval into 007C0D90, which arms the D3A's single BombPlatform (device
+    // class 87, Ammo 1 in this installation); the rack tick drops the bomb
+    // ballistically (006E4D50 carries no aim point for a dive bomber: the target
+    // point setter 006E3F90 is called only from the level bomber's branch
+    // 007C0EC9). The roll curve of 007C7600 (00419010 over tuning +554h..+560h)
+    // is bound under this switch too. OFF: the bomb spawns at the request.
+    // ON since the USN04 9000 / 4500 pairs: every behaviour row identical, the
+    // dead Vals' requests held by the stage's guard. The live Val's drop has no
+    // run-time evidence yet (no mission here has a live Val release).
+    static constexpr bool kReleaseIssueStageValsBound = true;
     // Packet cc9_plane_death_modes: 007CA8A0's death mode, 007CAF10's dead-step
     // terms, the kill that takes the aircraft out of the world, and the release
     // refusal of a dead aircraft (007CEA1C). docs/PLANE_DEATH_MODES.md.
@@ -8084,8 +8130,14 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 if (slot_.rack_ammo < 0) {
                                     slot_.rack_ammo = slot_.rack_single_count;
                                 }
-                                return bsp::ordnance_has_torpedo_2bh(set) &&
-                                       slot_.rack_ammo > 0 && !slot_.rack_dropping;
+                                // 007C0DCB vtable[210h](2Ah, 0): a torpedo and a
+                                // general bomb both answer 2Ah. With the Vals
+                                // switch the bomb carrier's rack is found too.
+                                const bool holds =
+                                    bsp::ordnance_has_torpedo_2bh(set) ||
+                                    (GameUnitsHost::Impl::kReleaseIssueStageValsBound &&
+                                     bsp::ordnance_has_general_bomb_2ah(set));
+                                return holds && slot_.rack_ammo > 0 && !slot_.rack_dropping;
                             }
                             return bsp::ordnance_has_torpedo_2bh(set);
                         }
@@ -8134,6 +8186,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     if (bsp::ordnance_has_torpedo_2bh(set)) {
                                         n = 1 - u->torpedo_releases;
                                         if (n < 0) n = 0;
+                                    } else if (GameUnitsHost::Impl::kReleaseIssueStageValsBound &&
+                                               bsp::ordnance_has_general_bomb_2ah(set)) {
+                                        // 006E3500 summed over the racks: the
+                                        // host's rack rounds (one per single
+                                        // rack until the issue's first check).
+                                        n = u->rack_ammo < 0 ? u->rack_single_count
+                                                             : u->rack_ammo;
                                     }
                                 }
                                 rounds.push_back(n);
@@ -8231,6 +8290,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             if (u != nullptr) {
                                 const bsp::OrdnanceKindSet set{u->ordnance_mask};
                                 holds_2ah = bsp::ordnance_has_torpedo_2bh(set);
+                                if (GameUnitsHost::Impl::kReleaseIssueStageValsBound &&
+                                    !holds_2ah && bsp::ordnance_has_general_bomb_2ah(set)) {
+                                    const int left = u->rack_ammo < 0
+                                        ? u->rack_single_count : u->rack_ammo;
+                                    holds_2ah = left > 0;
+                                }
                             }
                             const bool device_table[1] = {holds_2ah};
                             bsp::CanDropOrdnanceInputs can;
@@ -13329,13 +13394,44 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             return;
                         }
                         if (!(pmin > pitch)) {
-                            owner_.record("Plane::drop_roll_curve_007c76b1", 0x007c76b1u);
+                            if constexpr (GameUnitsHost::Impl::kReleaseIssueStageValsBound) {
+                                // 007C76B1-007C7734: |bank| C68h against
+                                // 00419010(x0 = +560h RollAngleMaxPitch, y0 =
+                                // +558h RollAngleMax, x1 = +55Ch
+                                // RollAngleMinPitch, y1 = +554h RollAngleMin,
+                                // pitch); 007C7734 JBE passes |bank| <= limit.
+                                float rmin = 1.0471976f, rmax = 1.5707964f;
+                                float rmin_p = -1.3962634f, rmax_p = 1.5707964f;
+                                if (owner_.lua.plane_globals_loaded()) {
+                                    const bsp::GameTuningBlock& g = owner_.lua.plane_globals();
+                                    rmin = g.pilot_general_dive_bomb_roll_angle_min;
+                                    rmax = g.pilot_general_dive_bomb_roll_angle_max;
+                                    rmin_p = g.pilot_general_dive_bomb_roll_angle_min_pitch;
+                                    rmax_p = g.pilot_general_dive_bomb_roll_angle_max_pitch;
+                                }
+                                const float limit = bsp::clamped_interpolate_00419010(
+                                    rmax_p, rmax, rmin_p, rmin, pitch);
+                                owner_.done("Plane::drop_roll_curve_007c76b1", 0x007c76b1u);
+                                if (std::fabs(unit_.plane_bank_angle_c68) > limit) {
+                                    ++unit_.rack_gate_refused;  // 007C7736
+                                    return;
+                                }
+                            } else {
+                                owner_.record("Plane::drop_roll_curve_007c76b1", 0x007c76b1u);
+                            }
                         }
                         // 006E588B-006E58A5: the fire message 0ADh -> 0072D860 ->
                         // the rack's 006E4C10 -> 00727E30 -> 006E4D50, the drop. The
                         // host's spawn stands in for 006E4D50, as at the request.
                         owner_.done("Rack::tick_006e56f0", 0x006e56f0u);
-                        if (owner_.gunnery != nullptr) {
+                        const bsp::OrdnanceKindSet drop_set{unit_.ordnance_mask};
+                        const bool drop_is_bomb =
+                            GameUnitsHost::Impl::kReleaseIssueStageValsBound &&
+                            !bsp::ordnance_has_torpedo_2bh(drop_set) &&
+                            bsp::ordnance_has_general_bomb_2ah(drop_set);
+                        if (drop_is_bomb) {
+                            run_rack_bomb_drop_006e4d50();
+                        } else if (owner_.gunnery != nullptr) {
                             const std::size_t index = owner_.index_of_slot(unit_);
                             if (index < owner_.slots.size() &&
                                 owner_.gunnery->release_ordnance_drop(index)) {
@@ -13349,6 +13445,57 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // not matter before the ammo test clears dropBombs.
                         unit_.rack_to_repeat = 0.0f;
                         owner_.record("Rack::repeat_time_descriptor_e0", 0x006e58aau);
+                    }
+
+                    // Packet cc9_release_issue_stage_vals. 006E4D50 for a dive
+                    // bomber: the rack's child of kind 2Ah is released with the
+                    // rack's pose and the owner's velocity, scattered by draws
+                    // from the shared stream (006E4F91, 006E4FB1, 006E513C,
+                    // 006E51AC). The target point block 006E541F-006E5515 runs
+                    // only with rack+4F8h set, and its one setter 006E3F90 is
+                    // called only from the level bomber's branch of 007C0D90
+                    // (007C0EC9, after IsKindOf(10h) at 007C0E1C), so a Val's
+                    // bomb carries no aim point: it is ballistic from the drop.
+                    // The host's bomb spawn keeps a predicted impact point and
+                    // fall time for its scoring census; they are 009C7D71's
+                    // prediction from the aircraft's state at THIS tick, the
+                    // drop's own instant, not the request's.
+                    void run_rack_bomb_drop_006e4d50() {
+                        // SUBSTITUTION, labelled: the scatter draws are not
+                        // taken (the host spawn has no dispersion).
+                        owner_.record("Rack::drop_dispersion_006e4f91", 0x006e4f91u);
+                        if (owner_.gunnery == nullptr) return;
+                        const std::size_t index = owner_.index_of_slot(unit_);
+                        if (index >= owner_.slots.size()) return;
+                        bsp::DiveBombImpactPointInputs ip;
+                        for (int i = 0; i < 3; ++i) {
+                            ip.unit_position[i] = unit_.motion.position[i];
+                        }
+                        ip.unit_velocity[0] = unit_.motion.linear_velocity.x;
+                        ip.unit_velocity[1] = unit_.motion.linear_velocity.y;
+                        ip.unit_velocity[2] = unit_.motion.linear_velocity.z;
+                        // approach+50h, the aim point's height the task's
+                        // 009FADA0 stores every tick (0 before the first).
+                        ip.aim_point_y = unit_.db_aim_point_height_50;
+                        const bsp::DiveBombImpactPoint r =
+                            bsp::dive_bomb_impact_point_009c7d71(ip);
+                        if (!owner_.gunnery->release_bomb_drop(index, r.point, r.fall_time)) {
+                            return;
+                        }
+                        ++unit_.db_bombs_spawned;
+                        ++unit_.rack_bomb_drops;
+                        if (unit_.rack_bomb_drops <= 4) {
+                            owner_.log.notef("val rack drop: unit=%s t=%.2f alt=%.1f "
+                                "pitch=%.4f bank=%.4f fall=%.2f state=%x requests_left=%d",
+                                unit_.row.name.c_str(),
+                                static_cast<double>(owner_.summary.simulated_seconds),
+                                static_cast<double>(unit_.motion.position[1]),
+                                static_cast<double>(unit_.plane_pitch_angle_c64),
+                                static_cast<double>(unit_.plane_bank_angle_c68),
+                                static_cast<double>(r.fall_time),
+                                static_cast<unsigned>(unit_.dive_bomb_state),
+                                unit_.torpedo_issue_requests_c20);
+                        }
                     }
 
                     void run_release_order_issue_007c0d90() {
@@ -17432,6 +17579,19 @@ void GameUnitsHost::report() {
                     slot->db_bay_requests_accepted,
                     slot->db_bay_requests_refused,
                     slot->torpedo_drops_spawned);
+                // Packet cc9_release_issue_stage_vals: the Val's stage and rack,
+                // printed in both builds so a pair diffs line for line.
+                host.log.notef("  divebomb %-12s rack 006E56F0: single=%d multi=%d "
+                    "deferred=%d drops=%d ammo=%d dropping=%d gate_refused=%d "
+                    "| stage 007CE9FD: issues=%d guard_blocked=%d C20h=%d C25h=%d",
+                    slot->row.name.c_str(), slot->rack_single_count,
+                    slot->rack_multi_count, slot->rack_requests_deferred,
+                    slot->rack_bomb_drops, slot->rack_ammo,
+                    slot->rack_dropping ? 1 : 0, slot->rack_gate_refused,
+                    slot->torpedo_issue_stage_issues,
+                    slot->torpedo_issue_stage_guard_blocked,
+                    slot->torpedo_issue_requests_c20,
+                    slot->torpedo_release_pending_c25 ? 1 : 0);
                 // 009C7240 / 009C7270, packet cc8_done_state. `placed` counts
                 // the ticks on which the placement stand-in moved the aircraft,
                 // which is zero for a flight LEADER by 009BFD70's own refusal -

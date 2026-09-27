@@ -74,7 +74,7 @@ held off only until the tick after its drop, not until a re-equip. The host's wa
 release-tick aim point and fall time (`db_run_in_origin`, `db_impact_fall_time`) to the rack's
 tick. Those are what the gunnery host scores a bomb against. The Val's rack census (single or
 multiple racks, rounds per rack) has not been printed either. The next part should take both,
-with the stage's interval draw from the shared stream.
+with the stage's interval draw from the shared stream. Taken by the next packet: see "Vals (packet cc9_release_issue_stage_vals)" below.
 
 ## Bodies with no Ghidra function
 
@@ -134,3 +134,138 @@ Both OFF logs match the device-walk runs' values.
 - **Open:** the Val's bombs, the rack `CanFire` gates, the roll curve, the level bomber's gate,
   the descriptor's repeat time, and the fire-message route are records or stand-ins (listed
   above).
+
+## Vals (packet cc9_release_issue_stage_vals)
+
+2026-09-26. Ghidra read-only. Switch `kReleaseIssueStageValsBound` in `GameUnitsHost::Impl`,
+committed OFF with the predictions below.
+
+### What the image does with a Val's bomb
+
+- **No aim point reaches the rack.** The drop `006E4D50` has a target-point block
+  (`006E541F`-`006E5515`): with rack+4F8h set and the round of kind 31h, it calls `007AB230` on
+  the round with rack+4FCh..+504h plus two draws, advanced by `toRepeatTime` × rack+508h..+510h.
+  The only byte store to +4F8h other than the drop's own clear (`006E55FE`) is `006E3F94`, in
+  the setter `006E3F90` (`__thiscall(rack)(point*, velocity*)`, `RET 8`), which stores both
+  vectors. Its one caller is `007C0EC9` in `007C0D90`, on the branch taken only after the
+  owner answers `IsKindOf(10h)` (`007C0E1C`, a level bomber) and the ordnance is not 2Ch, 2Bh
+  or 33h. Its arguments are built by `007BCCF0` on the unit and the unit's `vtable[34h]`; their
+  roles were not read. A D3A is not kind 10h,
+  so its rack never has a target point and its bomb is **ballistic from the drop**. The byte
+  scan was `C6 ?? F8 04 00 00` (two hits). A store through the rack+310h sub-object would be
+  `+1E8h` and is not covered by that scan.
+- **The drop's own state.** `006E4D50` takes the rack's first child that answers
+  `IsKindOf(2Ah)` (`006E4EC0`-`006E4ED6`). It sets its orientation from two angles at
+  rack+400h/+404h, drawn from the shared stream `00BD2F10` (`006E4F91`, `006E4FB1`) unless the
+  first argument supplies them. It scatters the release velocity at rack+4ECh with two more
+  draws (`006E513C`, `006E51AC`), and adds rack+DCh..+E4h scaled by `[rack+3F4h]+DCh` to the
+  round (`006E52B4`-`006E5301`).
+  Then it hands the round to the world (`009555A0`) and, with ammo left (+484h > 0), reloads
+  through `vtable[224h]`, else clears +4F8h.
+- **The census.** This installation's D3A Val (`VehicleClass[158]`, `vehicleclasses.lua`) has
+  one equipment. Its platform 50 mounts device class 87 with `Ammo = 1`. Class 87 in
+  `classtables/realistic/deviceclasses.lua` is `"Bomb platform 500kg JP"`, `Type` `BombPlatform`
+  (a single rack, 25h), `RepeatTime` 0.05. Platform 50 has `UseBayDoor = true` and no
+  `MainPlatform` key. The rack's round count `006E3500` is `vtable[21Ch](2Ah)` + ammo, and its
+  rearm `006E3410` sets ammo to orgAmmo − 1 when a round is already loaded. So a Val holds
+  **one** bomb in this installation. The path from the equipment's `Ammo` to the setter
+  `006E3530` was not read, so that one link is an assumption.
+- **The attitude gate never holds a diving Val.** The rack tick passes its platform's byte
+  +0Eh (`006E5837`-`006E585F`: class+94h entry, `movzx edx, byte [eax+0Eh]`). The parser names
+  +0Dh `UseBayDoor` (`0096127F`, key string `00D1AB80`) and +0Eh `MainPlatform` (key
+  `00D1AB70`, default 0 at `009612B3`). With 0, `007C7600` skips its bay test. Pitch unit+C64h
+  is negative nose-down (`docs/PLANE_FLIGHT_CORE_LAW.md`), so every dive attitude is below
+  DiveBombPitchAngleMin (60°) and passes at `007C76AB`. The gate refuses only nose-up: above
+  90° always, and between 60° and 90° when |bank| exceeds the curve.
+- **The roll curve** (`007C76B1`-`007C7734`): limit = `00419010`(x0 = +560h
+  RollAngleMaxPitch, y0 = +558h RollAngleMax, x1 = +55Ch RollAngleMinPitch, y1 = +554h
+  RollAngleMin, pitch); `00419010` is `RET 14h`, so `007C772A` reads the |bank| double stored
+  before the call, and `007C7734 JBE` passes |bank| <= limit. This installation's
+  `planeglobals.lua`: 90°, 90°, −80°, 60°, so the limit runs from 84.7° at 60° pitch to 90°.
+- **Timing.** Each `007BBBA0` call is one request. The stage spends one per interval,
+  U(0.9, 1.1) × BombDelay (0.4 s on the D3A), into `007C0D90`. The issue fires the rack with
+  delay 0 (the next-rack delay `007C0E67`-`007C0E9A` is the level bomber's). The rack tick drops
+  on its first tick with `toRepeatTime` < 0, which is the same fixed step if it runs after the
+  stage. A second request finds no rack holding 2Ah (the child has gone and ammo is 0), so it
+  issues nothing: **a Val has no second round in this installation.** The host's aimglide
+  still requests two, because its carried-rounds stock is the substitute 2
+  (`kDiveBombCarriedRoundsSubstitute`, `007C1DB0`); ON, the second request is spent on nothing.
+- **A Val that never reaches the pitch window.** There is no window to reach. The window is an
+  upper bound on nose-up pitch, so a Val's drop follows its issue by at most one rack tick in
+  any dive or pull-out attitude. What stops a drop is death: a request made after death is
+  held in unit+C20h behind the stage's guard `007CEA1C`, and a drop pending at death is held
+  by the rack tick's live-owner test (`006E5718`-`006E5748`).
+
+### The binding
+
+- **The request** (`release_bomb_007bbba0`): with the switch ON and a census single rack, each
+  round raises unit+C20h through `007BBC00` and is counted `deferred`; nothing spawns there,
+  and the host's dead-release refusal is not applied (the stage's guard is). An aircraft with
+  only multi racks keeps the request spawn: `006E4360` (never busy) is not bound.
+- **The issue's device check** accepts a general bomb (2Ah) as well as a torpedo, with the same
+  rack ammo and `dropping` tests. `007C1F60`'s per-unit rounds and `007B9140`'s "holds 2Ah"
+  count a bomb carrier's rack rounds.
+- **The rack tick** drops a bomb through `run_rack_bomb_drop_006e4d50`: the host's bomb spawn,
+  with the predicted impact point and fall time computed by `009C7D71` from the aircraft's
+  state at the drop tick. The gunnery host uses those two only for its scoring census.
+- **The roll curve** is bound (above), under the same switch.
+
+**Substitutions and records** (labelled in the code):
+- `Rack::drop_dispersion_006e4f91`: the four scatter draws of `006E4D50` are not taken.
+- The stage's interval draw keeps the host's low end 0.9 (the torpedo binding's convention),
+  not a draw from the shared stream.
+- One round per single rack, as for torpedoes. It agrees with this installation's D3A `Ammo`.
+- `kDiveBombCarriedRoundsSubstitute` (2) is unchanged. It is the next gap: the image's
+  `007C1DB0` would latch 1 for a D3A, and the aimglide would then request one round.
+- Unchanged from the torpedo packet: `CanFire` as "has ammo", the level bomber's gate, the bay
+  test (not reached for a Val: `MainPlatform` is 0), the fire-message route and the descriptor
+  repeat time.
+
+### Predictions (written before the runs)
+
+The pairs are `local\rv_off` against `local\rv_on`, built from this branch with the switch
+only, `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, one run at a time. The previous pairs
+(`RS_*`) show 3 dive releases on both missions, all made by Vals that were already dead
+(#1.1|.-4 two rounds, #1.1|.-2 and #5.1|.-2 one each), and 0 bombs spawned.
+
+| row | USN04 9200/9000 | USN04 4700/4500 |
+| --- | --- | --- |
+| Val requests (`val bomb request` lines) and their times | identical: 3 requests, 4 rounds, same instants | same |
+| bombs spawned (`bombs_spawned`, gunnery `bomb_drops`) | 0 -> 0 | 0 -> 0 |
+| `dead_releases_refused` | 4 -> 0; the three `dead release refused ... bombs=` lines go | same |
+| the three dead Vals' rack lines | OFF `deferred=0 C20h=0`; ON `deferred=2/1/1`, `C20h=2/1/1`, `drops=0`, `issues=0` | same |
+| rack census | every D3A `single=1 multi=0` on both sides | same |
+| rack drops, gate refusals, roll curve | 0, 0, and `Plane::drop_roll_curve_007c76b1` absent on both | same |
+| new natives | ON: `Plane::release_spawn_deferred_to_rack` +4 over OFF; `Rack::drop_dispersion_006e4f91` absent | same |
+| second-round timing | not observable: no live Val releases on either mission | same |
+| plane deaths, hit records, torpedo rows, the Lexington's movement | identical, the same victims at the same times | identical |
+| identical rows | everything except the lines above; the follow state's release arm (`BotStateFollow::release_arm`, reads C20h) stays as OFF unless a dead Val is still in follow | same |
+
+A failed prediction of "identical" would mean something reads unit+C20h on a dead Val.
+
+### The pairs, measured
+
+Logs in worktree cc9-plane-release: `local\RV_OFF_9000.log` / `RV_ON_9000.log` and
+`RV_OFF_4500.log` / `RV_ON_4500.log`. All four show the 1600x900 line and a module directory in
+that tree. The OFF runs use the binary of `dadc05b84`. The first ON run of 4500
+(`RV_ON1_4500.log`, same commit) raised unit+C20h twice per round; the fix is `a1de87bda`, and
+both ON logs above are from it. Apart from pointers, the harness slot lines and the ignored
+`ship avoidance search refills` counter, each pair differs in exactly the lines in this table.
+
+| row | USN04 9000 OFF -> ON | USN04 4500 OFF -> ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| Val requests and times | identical: #1.1\|.-4 2 rounds at 128.10 s, #1.1\|.-2 1 at 129.60 s, #5.1\|.-2 1 at 205.66 s, all nose-down (pitch −0.91, −0.85, −0.76 rad) | same | identical | held |
+| bombs spawned, gunnery `bomb_drops` | 0 -> 0 | 0 -> 0 | 0 -> 0 | held |
+| `dead_releases_refused` and the three refusal lines | 4 -> 0, the lines go | same | same | held |
+| the three dead Vals' rack lines | `deferred` 0 -> 2/1/1; `C20h` 2/1/1 on both sides; `issues=0`, `drops=0` | same | OFF C20h 0 | **failed** for OFF C20h: the dive task's request hook already raises C20h per call through the torpedo binding. The first ON run doubled it to 4/2/2; fixed in `a1de87bda` |
+| rack census | 19 D3A `single=1 multi=0` on both | same | same | held |
+| rack drops, gate refusals, roll curve | 0, 0, absent | same | same | held |
+| natives | `release_spawn_deferred_to_rack` 5 -> 9; `Plane::issue_block_c3a` 326734 -> 326731 (the request-side refusal's three calls go); no `drop_dispersion` | 5 -> 9; 183224 -> 183221 | +4; the c3a move not predicted | held; the c3a move is the refusal leaving the request |
+| deaths, hit records, death table, torpedo rows, the Lexington's line | identical | identical | identical | held |
+| second-round timing | not observable | same | not observable | no live Val releases on either mission, nor in any recent USN01 log |
+
+**Verdict: `kReleaseIssueStageValsBound` ON.** The dead Vals' requests are now refused where the
+image refuses them, by the stage's death guard. Every behaviour row is identical. **Not
+run-time evidenced:** the live Val's issue, rack drop, roll curve and the one-round consequence.
+No mission in this tree currently has a live Val release. The first mission that does is the
+test, and it should show one bomb per Val where OFF spawned two from a two-round glide.
