@@ -586,3 +586,115 @@ close_attack_sends=522 changed=18`, and there are 0 gyro launches on both sides.
 - **NavigatorForceTorpedo 008A7200** and **SubmarineAttack 00894440** bypass the mask. Neither is
   used by the reference missions; `vtable[1D8h]` and 00894440 are unread.
 - **00A11B80,** CLOSEATTACK's and DEFENDPOSITION's middle call, is unread and unbound.
+
+## 9. The ship AI's torpedo standoff, `nested+12B4h` / `+12BAh` (packet `cc9_torpedo_standoff`)
+
+Worker cc9-ships2, on main `87b51d106`. Ghidra was read-only. Every body below was read from the
+listing (`disasm-raw`), with Ghidra's decompile of 009F1BC0 as the cross-check for the stack slots.
+The switch is `kTorpedoStandoffBound` in `include/bsp/ship_ai_approach_update.hpp`.
+
+**Answer:** the pair is the torpedo half of the frame-state query block at `nested+127Ch`.
+`+12BAh` is the block's torpedo gate byte (`+3Eh`) and `+12B4h` its word 14. 0095EB40 never reads
+word 14; 009E6E80 does. With the gate set, the clearance above 0 and a ready torpedo barrel,
+009E72F3..009E7338 caps the standoff at `clearance - turn radius`. So a torpedo-armed ship with its
+director's torpedo enable set closes to about half its torpedo reach.
+
+### What 009F2AC9..009F2E9B does
+
+EDI is `[brain+0B20h]`, the raw target. EBX is EDI when it answers `vtable[5Ch](5)`. The ship
+target (`vtable[5Ch](6)`) is kept at `[ESP+1Ch]` from 009F1DE8. Offsets are nested-relative.
+
+**Arm without a target (009F2DF7..009F2E9B):**
+- The four gate bytes `+12B8h..+12BBh` are the director's `+221h`, `+220h`, `+222h` and `+223h` as
+  they are.
+- Word 9 (`+12A0h`) is 5.0 (00CE3850) when the torpedo gate is set, else 0.
+- `+12B4h` is `[unit+44Ch] * 0.8` (00CE3D40) when the gate is set, else 0. `unit+44Ch` is
+  `unit+430h + 7*4`, the category-7 maximum range 00956C20 writes.
+
+**Arm with a target (009F2AD1..009F2DF2), torpedo half:**
+1. `+12BAh` = ship target and `+222h` (009F2BA8..009F2BC2).
+2. `h = 00419010(0, 3.0, 0.4, 1.0, 00923BE0(unit))` (009F2BCE..009F2BFE): 3.0 at no health, 1.0 from
+   40% up. It is taken on every target frame.
+3. With the gate set, `+12BAh = [unit+6DCh]->00863920(EDI)` (009F2C1F). 00863920 walks the list
+   00E0A520, which is `{7}`: the byte `+77h`, `[+60h]->vtable[4](7)` and 008633D0(7, target).
+4. With the gate still set and EBX nonzero, `p = 00814350(unit, 7)` (009F2C45).
+   - 00814350 returns `[[[[unit+3ECh]+8]+354h]+74h]+34h]`, the first torpedo tube's projectile
+     class, when `[unit+3E8h] > 0`. Otherwise it returns 0.
+   - With a class, word 9 = `EBX->0095E9A0(p, [nested+1218h]) * h` (009F2C5F..009F2C6B).
+   - Then, if `0080DF40(unit) > 0`:
+     - `e = 00814390(unit, EBX) * 0.5`.
+     - When word 9 is above `e`, `e = max(e, EBX->vtable[1D4h]() / 5.0)`.
+     - Word 9 becomes word 9 minus `e`. At 0 or below the gate is cleared (009F2D04).
+5. With the gate still set:
+   - `[unit+3E8h] <= 0` clears the gate (009F2DEB).
+   - Otherwise `+12B4h = 008387B0(7, [nested+1280h], [unit+44Ch], acc)`. `acc` is
+     `[[unit+3ECh]+8]->00729F40(7)` when that device exists, else 0.
+   - Then `+12B4h = min(+12B4h, max(300.0, 00952530(nested+13B0h)) * h)` (009F2D92..009F2DDE).
+6. When EBX is zero the gate stays set and `+12B4h` stays at the 0 009F2A10 stored.
+
+`+1218h` is 0 at the read: its only nested-base writers are the ring constructor's clear 009E5600
+and 009E7FD1's zero. Word 9 is scratch; nothing outside 009F1BC0 reads `+12A0h`.
+
+### The callees, read whole
+
+| address | what it is |
+| --- | --- |
+| 0080DF40 | `__fastcall(unit)`: over the category-7 list `unit+3ECh`, each operational device (00729F10) adds 00727D70(0.0), its ready barrels. Body 0080DF40..0080DF7D |
+| 00814350 | `__thiscall(unit)(int category)`: the first node's projectile class, as above |
+| 00814390 | `__thiscall(unit)(Entity* target)`: live torpedoes in the world list `[[00E188A8]+19CCh]+21Ch/+220h` whose owner `+4F8h` is `unit`, counting only those `target->vtable[1D0h]` accepts |
+| 00814420 | the ship vtable's `[1D4h]` (00CFC5A4 in MDestroyer 00CFC3D0). **No Ghidra function:** 00814420..00814492 inclusive (RET at 00814492, INT3 from 00814493). Live torpedoes whose owner is NOT this unit and that its `vtable[1D0h]` accepts |
+| 008173E0 | the ship vtable's `[1D0h]` (00CFC5A0). A torpedo threatens the unit unless: it is torn down; its `+488h` run time is not above 0; for a submarine `\|dy\| > 6.0`; for another unit its y is at or below `-[class+570h]`. Otherwise it is a threat when `wrap(+46Ch) - wrap(bearing to the unit)` is below `00419010(2.0, 80 deg, 6.0, 45 deg, distance / WaterTravelSpeed)`, or when the flattened distance is under half the class Length |
+| 0095E9A0 | `__thiscall(target)(class* p, float offset)`: torpedo hits still needed. `remaining = health - offset`; 0 when torn down, no class or no remaining health. The armour is the class's vtable[24h] for sub-types 0Ah/0Bh, else `+4Ch`. `f = 00419010(max(+ACh,+B4h), 1, max(+B0h,+B8h), 0, armour)`, and a zero `f` returns FLT_MAX. The per-hit damage is `WaterTickDamage * +BCh * 0.5` plus the band excess, and the answer is `remaining / (per-hit damage * f)` |
+| 00838530 | the accuracy profile's inverse: the range fraction at which the accuracy falls to `acc`, blended by the target length between the small and large rows. Its first float is a LENGTH (compared with TargetReferenceSizes), so the ledger's `(range, size)` naming of 008387B0's arguments was wrong |
+| 00729F40 / 008FB530 | the tube's TorpedoBot `+39Ch` (0072C870 gives every Function-7 gun one) answers `[[00E1998C] + 14h*(level+1)]`, the level row's FireTargetAccuracy |
+
+**Image quirk kept:** 008173E0's angle test is signed. The code casts `tolerance > difference` to
+a float, masks its sign and compares with 0. A torpedo whose heading lies on one side of the bearing
+counts as a threat at any angle.
+
+### The binding (under `kTorpedoStandoffBound`)
+
+- `bsp::ship_ai_torpedo_standoff_009f2ac9` (`src/ship_ai_approach_update.cpp`) is the block above,
+  in the image's order. The ship AI host runs it every frame before the two curve refills
+  (009F2F11/009F2FB1), and stores `+12BAh` and `+12B4h`.
+- 009E8171/009E8178 store `+12BCh`/`+12BDh`. The earlier projection set `+12BAh` there; with the
+  switch on only 009F1BC0 writes it.
+- 0080DF40 answers the ready torpedo barrels through `FirepowerBinding`, for both 009F2C77 and
+  009E731B. With the switch off it answers 0, as before.
+- 0095E9A0, 008173E0, 007B4E90, 00838530 and 008387B0 are transcribed whole.
+- **LABELLED SUBSTITUTIONS:**
+  - 00863920 is recomputed in the ship AI host from the inputs the gunnery host's stance push uses:
+    the `+222h` table, 00861D70's mask 3/0, the gate `00861BE0` (always 1), and the liveness, class
+    and rank tests of the gunnery host's `score_candidate_00863990`. A live-state accessor would
+    need `src/game_hosts_gunnery.cpp`, which cc9-units3 holds.
+  - 008FB530's FireTargetAccuracy is this installation's robots.lua (lines 392..432, mtime
+    2025-06-01), per level `{Stun 0.03, SPNormal 0.35, SPVeteran 0.055, MPNormal 0.04, MPVeteran
+    0.045, Elite 0.055}`. The level is the units host's skill level; a ship defaults to 1 (0.35).
+  - A torpedo's `+46Ch` is `atan2(vx, vz)` of the host round, as the torpedo response already takes
+    it. A target without a ship depth input takes `class+570h = 0`.
+  - WaterTickDamage is shipglobals.lua's 100, the value `FirepowerBinding` already uses.
+- **The census:** `summary mission ship ai torpedo standoff frames=.. exits=.. cap_tests=..
+  cap_gates=..`, and per row `enabled`, `clearance_min`, `clearance_last` and `cap_gates`.
+
+### Predictions (written before the pairs; same tree, switch only, streams and the death table on)
+
+Measured on OFF logs of cc9-ships's `ts_*` pair (main `87b51d106`'s parent tree):
+- USN02 has 203 ship torpedo launches, 21 deaths and `Game Over` at 39.65 s.
+- The Japanese script destroyers carry a 6136 m category range and choose standoffs of 1900..2300 m.
+  The Allied tube ships carry 1852 m and choose 1450..1600 m.
+- USN04 has 0 ship launches and `targeted=0`. The Lexington group (18 members, Fletcher-class01..04
+  among them) is promoted to CLOSEATTACK between 95 and 100 s, and its tail then sets `+222h`.
+
+| row | prediction |
+| --- | --- |
+| USN02 `pair_diff` | 3, gameplay moved |
+| USN02 first divergence | before 10.4 s, on one of the eight TorpedoEnable'd Japanese destroyers: with a ship target, its clearance is about `0.45 * 6136` capped by the target curve times `h`, and minus its turn radius it falls under its 1900 m standoff |
+| USN02 Allied tube ships after 10.4 s | clearance about `0.5 * 1852`, so the capped standoff falls to roughly 600..800 m from 1450..1600 m (`clearance_min` under 950 on Kortenaer, Electra, Encounter, Jupiter and Witte) |
+| USN02 ship torpedo launches | more than 203 |
+| USN02 deaths | differ from 21; direction not predicted |
+| USN02 per-ship kills and hit records | move for the Allied destroyers and the Japanese script destroyers |
+| USN02 mission end | still `Game Over` (failed), time moves off 39.65 s |
+| USN04 `pair_diff` | 3, NOT identity: after the promotion (95..100 s) the Fletcher-class01..04 take the no-target arm with `+12B4h = 0.8 * range`, which minus the turn radius sits under their 1450..1550 m standoffs |
+| USN04 first divergence | at or after 95 s, on a Fletcher-class standoff; nothing before |
+| USN04 ship torpedo launches | 0 on both sides (no ship target, `targeted=0`) |
+| USN04 deaths | 2 through 95 s on both sides; later ones may move through the escorts' positions |

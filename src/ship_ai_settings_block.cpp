@@ -3,6 +3,8 @@
 // uncertainty behind every rule and every table row.
 #include "bsp/ship_ai_settings_block.hpp"
 
+#include "bsp/unit_rudder.hpp"
+
 namespace bsp {
 namespace {
 
@@ -205,6 +207,57 @@ bool weapon_hit_accuracy_category_008387b0(int weapon_kind,
     default:
         return false;  // 00838891 FLD [ESP+0Ch] / RET 10h, the scale unchanged
     }
+}
+
+namespace {
+
+// 00838530's per-row walk, 0083858D..0083861F (small) and 0083862D..008386C2
+// (large). `row` is the ten accuracy slots.
+float range_fraction_row_00838530(const float row[kWeaponHitAccuracyBucketCount],
+                                  float accuracy) noexcept
+{
+    constexpr double kTenth = 0.10000000149011612; // 00D7A3A0, 0.1f widened
+    int i = 0;
+    // FLD accuracy, FLD row[i], FXCH, FCOMI ST(1), JA: stop at the first slot
+    // the accuracy is above. An unordered compare does not jump.
+    while (i < kWeaponHitAccuracyBucketCount && !(accuracy > row[i])) ++i;
+    if (i == 0) return 0.1f;                            // 00D7A2F0
+    if (i == kWeaponHitAccuracyBucketCount) return 1.0f; // 00D7A24C
+    // FILD i, FMUL 0.1, FSTP float -> y1; FIMUL (i+1) on the 0.1, FSTP float -> y0.
+    const float y1 = static_cast<float>(static_cast<double>(i) * kTenth);
+    const float y0 = static_cast<float>(static_cast<double>(i + 1) * kTenth);
+    return clamped_interpolate_00419010(row[i], y0, row[i - 1], y1, accuracy);
+}
+
+}  // namespace
+
+float weapon_hit_accuracy_range_fraction_00838530(const WeaponHitAccuracyProfile& profile,
+                                                  float target_length,
+                                                  float accuracy) noexcept
+{
+    float w = 0.5f; // 00838540, 00CE3800
+    if (!(0.0f > target_length)) { // 00838536 COMISS then JBE
+        w = clamped_interpolate_00419010(profile.small_target_size, 1.0f,
+                                         profile.large_target_size, 0.0f, target_length);
+    }
+    // 0083857C..00838589: FLD w, FLD1, FSUBRP, FSTP float.
+    const float one_minus_w = static_cast<float>(1.0 - static_cast<double>(w));
+    const float r_small = range_fraction_row_00838530(profile.small_target_accuracy, accuracy);
+    const float r_large = range_fraction_row_00838530(profile.large_target_accuracy, accuracy);
+    // 008386C6..008386D8: r_large * (1-w) + r_small * w, one float store.
+    return static_cast<float>(static_cast<double>(r_large) * one_minus_w +
+                              static_cast<double>(r_small) * w);
+}
+
+float weapon_hit_accuracy_scaled_008387b0(const WeaponHitAccuracyProfile profiles[4],
+                                          int weapon_kind, float target_length,
+                                          float scale, float accuracy) noexcept
+{
+    WeaponHitAccuracyCategory category{};
+    if (!weapon_hit_accuracy_category_008387b0(weapon_kind, category)) return scale;
+    const float fraction = weapon_hit_accuracy_range_fraction_00838530(
+        profiles[static_cast<int>(category)], target_length, accuracy);
+    return static_cast<float>(static_cast<double>(fraction) * scale);
 }
 
 const ShipAiSettingsKeyRecord* ship_ai_settings_keys(std::size_t& count) noexcept

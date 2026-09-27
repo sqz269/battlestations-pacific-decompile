@@ -33,6 +33,7 @@
 #include <cstdint>
 
 #include "bsp/ship_ai_attackmove_substates.hpp"
+#include "bsp/ship_ai_bearing_rating.hpp"
 
 namespace bsp {
 
@@ -111,8 +112,17 @@ struct ShipAiApproachState {
     float timer_1224{0.0f};           // nested+1224h, 009F1C13
     ShipAiApproachPoint point_1228{}; // nested+1228h..1230h, the approach point
     ShipAiApproachMode mode_1234{ShipAiApproachMode::free_0}; // nested+1234h
-    float clearance_12b4{0.0f};       // nested+12B4h, read at 009E7302/009E7324
-    bool  clearance_valid_12ba{false}; // nested+12BAh, gates that read
+    // nested+12B4h, word 14 of the frame-state query block: the torpedo
+    // standoff clearance. 009F1BC0 writes it every frame (009F2A10, 009F2D8C,
+    // 009F2DDE, 009F2E9B); 009E6E80 reads it at 009E7302/009E7324.
+    // Packet cc9_torpedo_standoff, docs/SENTITY_INIT_PASSES.md section 9.
+    float clearance_12b4{0.0f};
+    // nested+12BAh, the query block's torpedo gate byte (+3Eh): 009F1BC0 fills
+    // it from the director's +222h (009F2BC2/009F2E5C) and clears it on the
+    // way (009F2C26, 009F2D04, 009F2DEB); 009E8019 clears it on an override;
+    // 009E72F3 gates the standoff cap on it. NOT set by 009E8171/009E8178,
+    // which store +12BCh/+12BDh (the query's +40h/+41h bytes).
+    bool  clearance_valid_12ba{false};
     float avoid_radius_1290{0.0f};    // nested+1290h, 009E8153, fed to 009E6400
 };
 
@@ -787,5 +797,150 @@ void ship_ai_approach_frame_state_009f1bc0(ShipAiApproachState& state,
                                            bool has_target, bool has_zone,
                                            float seconds,
                                            ShipAiApproachPointHost& host);
+
+// ---------------------------------------------------------------------------
+// The torpedo standoff: nested+12B4h and +12BAh (packet cc9_torpedo_standoff)
+// ---------------------------------------------------------------------------
+//
+// docs/SENTITY_INIT_PASSES.md section 9. 009F1BC0's block 009F2AC9..009F2E9B
+// fills the query's four gate bytes and, for the torpedo gate, the clearance
+// 009E6E80 caps the standoff with. True: the ship AI host runs this block every
+// frame before the curve refills (009F2F11/009F2FB1), 0080DF40 counts the ready
+// torpedo barrels, and 009E8171 no longer sets +12BAh. False: the host leaves
+// +12B4h at 0 and 0080DF40 answers 0, so the cap at 009E72F3 never applies.
+inline constexpr bool kTorpedoStandoffBound = false;
+
+// Constants of 009F2AC9..009F2E9B.
+inline constexpr float kTorpedoStandoffHealthY0 = 3.0f;   // 00CE3854, at health 0
+inline constexpr float kTorpedoStandoffHealthX1 = 0.4f;   // 00CE7804
+inline constexpr double kTorpedoInFlightWeight = 0.5;     // 00D7A280, 009F2C9B
+inline constexpr double kTorpedoThreatShareDivisor = 5.0; // 00D7A370, 009F2CD1
+inline constexpr float kTorpedoStandoffRangeFloor = 300.0f; // 00CE3AE8, 009F2DA1
+inline constexpr float kTorpedoStandoffNoTargetNeed = 5.0f; // 00CE3850, 009F2E64
+inline constexpr double kTorpedoStandoffNoTargetScale = 0.800000011920929; // 00CE3D40
+inline constexpr int kTorpedoStandoffWeaponKind = 7;      // 009F2C43, 009F2D44, 009F2D85
+
+// 0095E9A0, __thiscall(target)(ProjectileClass* p, float damage_offset) -> ST0,
+// RET 8, body 0095E9A0-0095EB38, read whole from the listing. The torpedo hits
+// the target still needs: 0 for a torn-down target, a null class or no health
+// left past the offset; FLT_MAX (00D7A248) when no hit beats the armour;
+// otherwise remaining / (hit damage * kill fraction).
+struct ShipAiTorpedoSinkInputs {
+    bool target_torn_down = false;       // [target+5Dh], 0095E9A3
+    float target_health = 0.0f;          // [target+370h], 0095E9A7
+    float damage_offset = 0.0f;          // the float argument
+    bool have_projectile = false;        // the class pointer, 0095E9C0
+    ShipAiFirepowerProjectileClass projectile{};
+    float target_armour = 0.0f;          // [[target+538h]+4Ch], 0095E9F7
+    float target_armour_torpedo = 0.0f;  // [target+538h]->vtable[24h](), 0095EA09
+    float water_tick_damage = 0.0f;      // [00424C40()+3B0h], 0095EAFF
+};
+inline constexpr float kTorpedoSinkNoKill = 3.4028234663852886e+38f; // 00D7A248
+float ship_ai_torpedo_hits_to_sink_0095e9a0(const ShipAiTorpedoSinkInputs& in) noexcept;
+
+// 007B4E90 BSP_Vector3_CompassHeading, __fastcall(vec) -> ST0: the CRT atan2
+// of (z, x) float-stored, pi/2 (00CE3830) minus it float-stored, plus 2pi
+// (00CE3828) when below zero.
+float ship_ai_compass_heading_007b4e90(float x, float z) noexcept;
+
+// 008173E0, the ship classes' vtable[1D0h] (00CFC5A0 in MDestroyer 00CFC3D0),
+// __thiscall(unit)(Entity* torpedo) -> AL, RET 4, read whole from the listing.
+// Whether a live torpedo threatens `unit`: false for a torn-down torpedo or one
+// not yet in the water (+488h); for a submarine (vtable[5Ch](8)) false when the
+// height difference exceeds 6.0 (00CE6630), otherwise false when the torpedo's
+// y is at or below -[class+570h]; then, on the flattened delta unit - torpedo,
+// true when wrap(heading) - wrap(bearing) is BELOW the tolerance
+// 00419010(2.0, 1.3962634, 6.0, 0.7853982, distance / water speed) - a signed
+// test the image makes (00817575..0081757D), so any negative difference counts -
+// or when the distance is inside half the unit class's Length (008175B3..008175CD).
+struct ShipAiTorpedoThreatInputs {
+    bool torpedo_torn_down = false;      // [torpedo+5Dh]
+    float torpedo_run_seconds = 0.0f;    // [torpedo+488h]
+    float torpedo_position[3]{};         // torpedo+0FCh..+104h
+    float torpedo_heading = 0.0f;        // [torpedo+46Ch]
+    float water_travel_speed = 0.0f;     // [[torpedo+314h]+0E4h]
+    float unit_position[3]{};            // unit+0FCh..+104h
+    bool unit_is_submarine = false;      // unit->vtable[5Ch](8), 00817466
+    std::int32_t class_0570 = 0;         // [[unit+538h]+570h], 008174BA
+    float class_length_00a0 = 0.0f;      // [[unit+538h]+0A0h], 008175BD
+};
+bool ship_ai_torpedo_threatens_008173e0(const ShipAiTorpedoThreatInputs& in) noexcept;
+
+// The calls 009F2AC9..009F2E9B makes, in the order it makes them. `unit` is
+// [brain+0AA8h], `target` EBX (the brain's target when it answers
+// vtable[5Ch](5)).
+struct ShipAiTorpedoStandoffHost {
+    virtual ~ShipAiTorpedoStandoffHost() = default;
+    // [0080E160(unit)+222h], the weapon director's torpedo enable
+    // (009F2BAD on the target arm, 009F2E54 on the other).
+    virtual bool director_torpedo_enable_0222() = 0;
+    // 00923BE0(unit), 009F2BCE: the unit's health fraction.
+    virtual float own_health_00923be0() = 0;
+    // [unit+6DCh]->00863920(raw target), 009F2C1F: the torpedo group 00E0A520
+    // ({7}) through the category byte +70h+7, [+60h]->vtable[4](7) and 008633D0.
+    virtual bool torpedo_group_accepts_target_00863920() = 0;
+    // 00814350(unit, 7), 009F2C45: [[[[unit+398h+54h]+8]+354h]+74h]+34h] when
+    // the category-7 count is positive; false for the null pointer.
+    virtual bool torpedo_projectile_00814350(ShipAiFirepowerProjectileClass& out) = 0;
+    // target->0095E9A0(p, nested+1218h), 009F2C5F.
+    virtual float hits_to_sink_0095e9a0(const ShipAiFirepowerProjectileClass& p,
+                                        float damage_offset) = 0;
+    // 0080DF40(unit), 009F2C77 (and 009E731B): the ready barrels 00727D70(0.0)
+    // summed over the operational devices of the category-7 list unit+3ECh.
+    virtual int ready_torpedo_barrels_0080df40() = 0;
+    // 00814390(unit, target), 009F2C8E: live torpedoes owned by `unit` that
+    // target->vtable[1D0h] (008173E0) calls a threat.
+    virtual int own_torpedoes_threatening_target_00814390() = 0;
+    // target->vtable[1D4h](), 009F2CBF: 00814420 on a ship, live torpedoes
+    // owned by anyone but the target that its vtable[1D0h] calls a threat.
+    virtual int torpedoes_threatening_target_00814420() = 0;
+    // [unit+3E8h], 009F2D21: the category-7 device count.
+    virtual int torpedo_device_count_03e8() = 0;
+    // [[unit+3ECh]+8] != 0, 009F2D37: the first category-7 device.
+    virtual bool first_torpedo_device_present() = 0;
+    // 00729F40(7) on that device, 009F2D46: its torpedo bot's FireTargetAccuracy
+    // (008FB530), or 1.0 with no bot.
+    virtual float first_torpedo_bot_accuracy_00729f40() = 0;
+    // [unit+44Ch], 009F2D58: the category-7 maximum range (unit+430h + 7*4).
+    virtual float torpedo_range_044c() = 0;
+    // 008387B0 on 00424C40(), 009F2D87.
+    virtual float weapon_hit_accuracy_008387b0(int kind, float target_length, float scale,
+                                               float accuracy) = 0;
+    // 00952530(nested+13B0h), 009F2D98: the target curve's effective range.
+    virtual float target_curve_effective_range_00952530() = 0;
+};
+
+struct ShipAiTorpedoStandoffInputs {
+    bool has_raw_target = false;   // EDI = [brain+0B20h] != 0, 009F2AC9
+    bool has_unit_target = false;  // EBX, EDI answering vtable[5Ch](5), 009F29F3
+    bool has_ship_target = false;  // [ESP+1Ch], vtable[5Ch](6), stored at 009F1DE8
+    float target_length_1280 = 0.0f; // nested+1280h, 009F2A54 or 009F2AC1
+    float damage_offset_1218 = 0.0f; // nested+1218h, 009F2C52
+};
+
+// Which exit the block took, for the census.
+enum class ShipAiTorpedoStandoffExit : int {
+    no_target_disabled = 0,  // 009F2E5C with +222h clear
+    no_target_enabled,       // 009F2E82: 12B4 = range * 0.8
+    not_ship_or_disabled,    // 009F2C09
+    group_refused,           // 009F2C2C
+    no_unit_target,          // 009F2C34, +12BAh stays set, +12B4h stays 0
+    enough_in_flight,        // 009F2D04
+    no_devices,              // 009F2DEB
+    clearance,               // 009F2D8C, not capped
+    clearance_capped,        // 009F2DDE
+};
+
+struct ShipAiTorpedoStandoffResult {
+    bool enabled_12ba = false;
+    float clearance_12b4 = 0.0f;
+    float need_12a0 = 0.0f;      // word 9, 009F2B95/009F2C6B/009F2CF6/009F2E78
+    ShipAiTorpedoStandoffExit exit = ShipAiTorpedoStandoffExit::no_target_disabled;
+};
+
+// 009F2AC9..009F2E9B, the torpedo half: the +12BAh / +12B4h / +12A0h stores
+// in the image's order. The other three gate bytes are not produced here.
+ShipAiTorpedoStandoffResult ship_ai_torpedo_standoff_009f2ac9(
+    const ShipAiTorpedoStandoffInputs& in, ShipAiTorpedoStandoffHost& host);
 
 } // namespace bsp
