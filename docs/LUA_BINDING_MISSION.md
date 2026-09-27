@@ -675,3 +675,46 @@ bodies.
 | `SetDamagedGFXLevel` (0088F710) | display-only: the damage texture level |
 | `DisablePhysics` (00891380) | state: stops the entity's physics (its motion) |
 | `AddMatrixInterpolator` (008ADE00) | state: drives the entity's world matrix along an interpolation (the sinking pose) |
+
+### The pairs, measured, and the verdict
+
+- OFF is this tree's `build\` at `de6053b5c`; ON is `pair_export --flip
+  kUnitHealthFractionBound=true` of the same commit (SHA-256 `F2259A46169F`).
+- All runs had the streams and the death table on. Logs: `local\hp_{off,on}_{usn02,usn04,bsm01}.log`.
+- Every log was checked for its milestone line, its module directory and its final COM release
+  line.
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| USN02 health reads (GetHpPercentage) | 1 | 3 | many | **failed**: the check runs only from the intro's end to the mission failure at 39.65 s |
+| USN02 first value | 0 (phase 1 ends) | at least 0.15 (the branch is not taken; the value is not logged) | 1.0 | not resolvable from the log |
+| USN02 phase 2 (`luaMoveToPh2`) | about 25 s | never within 450 s | later or never | holds |
+| USN02 `pair_diff` | - | 3 | 3 | holds |
+| USN04 `pair_diff` | - | 1; `reads=0` | 1 | holds |
+| BSM01 health reads | 1192 at 0 | 1192 | - | - |
+| BSM01 scripted sinkings | Effect 32, ExplodeToParts 15, SetDamagedGFXLevel 8, DisablePhysics 8, AddMatrixInterpolator 9 | all 0 (no row) | all 0 | holds |
+| BSM01 `pair_diff` | - | 1 | 1 | holds |
+
+**USN02's new shape** (the reference e row is superseded by this):
+
+| quantity | OFF (phase 1 ended at the first check) | ON |
+| --- | --- | --- |
+| phase 2, `luaMoveToPh2` | at about 25 s | not reached within 450 s |
+| units | 32 | 28: phase 2's Nachi, Sazanami, Naka and Ushio are never generated |
+| mission end | failed at 39.65 s, "Game Over" | failed at 39.65 s, "Game Over" |
+| its cause | Exeter sunk at 35.80 s by Tokitsukaze, then usn_2_java.lua:521 (`Houston.Dead or Exeter.Dead`) | the same kill at the same time |
+| deaths | 21 | 20 |
+| hit records | 652 | 611 |
+| hull hits | 296 | 227 |
+| shots | 1095 | 865 |
+| ship torpedo launches | 221 | 165 |
+| death rows | - | 16 changed; Houston, Witte, Alden and John1 survive; Minegumo, Perth and Asagumo die |
+
+The mission-end row's `entity` label moves from "Encounter" to "Houston" (the script object the
+host names at the store). The time, the text and the cause are the same.
+
+**Verdict: `kUnitHealthFractionBound` ON.**
+- The slot answers the read's fraction.
+- USN02's phase 1 now ends the way the script says, on DeRuyter's hit points or the enemy
+  destroyers.
+- BSM01's battleships no longer sink by script at full health.

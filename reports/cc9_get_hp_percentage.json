@@ -12,8 +12,8 @@
   "switches": [
     {
       "name": "kUnitHealthFractionBound",
-      "state": "OFF",
-      "pair": "pending"
+      "state": "ON",
+      "pair": "local/hp_{off,on}_{usn02,usn04,bsm01}.log: USN02 exit 3 (phase 2 never, units 32->28, deaths 21->20, hits 652->611, shots 1095->865, launches 221->165, Game Over 39.65 s both), USN04 exit 1, BSM01 exit 1 (sinking natives 0); ON F2259A46169F"
     }
   ],
   "no_ghidra_function": [],
@@ -21,5 +21,18 @@
   "substitutions": [
     "+5Dh gate is the gunnery host's death record"
   ],
-  "failed_predictions": []
+  "failed_predictions": [
+    {
+      "row": "USN02 health reads",
+      "predicted": "many",
+      "measured": "3",
+      "why": "the phase-1 check runs only from the intro's end to the mission failure at 39.65 s"
+    },
+    {
+      "row": "USN02 first value 1.0",
+      "predicted": "1.0",
+      "measured": "not logged",
+      "why": "the census has no value line; the branch not being taken shows only hp >= 0.15"
+    }
+  ]
 }
