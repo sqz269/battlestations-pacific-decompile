@@ -2398,6 +2398,21 @@ are USN04's hit records, hull hits and shots. The pass-A census and every Lua co
 the victims are the same. The remaining gameplay difference is the same kind of air-order move as
 30.4's, of a different size on the new base. So this is a prediction-size failure, not a
 wrong-behaviour finding. The lead may flip with these rows as the expected result.
+### 30.7 The joint flip: ON by the lead's ruling (packet `cc9_wing_joint_flip_on`)
+
+2026-09-27, worker cc9-units3, on main 8e0f53b92. Both switches are now true in one commit:
+`kWingConstructionInPassABound` (`include/bsp/game_hosts_units.hpp`) and
+`kWingConstructionLuaBound` (`include/bsp/game_hosts_lua.hpp`).
+
+- **Why.** Section 30.6 left them OFF because three USN04 gameplay deltas missed their predicted
+  sizes: hits +4 against +2, hull hits +0 against +2, shots −8 against −7. Every wing counter
+  held exactly, the same 41 victims died, and USN02 was identical. The lead ruled these
+  prediction-size misses on a base that moved under the mover and torpedo-stock landings, not a
+  behaviour finding.
+- **No re-run.** The 30.6 pair is the measurement: main 87b51d106 with both switches flipped.
+  Its rows are the expected USN04 result of this commit: wing_appended 40 -> 0, wing_deferred
+  40 -> 0, wing_marked 0 -> 40, deaths 41 both, hit records 808 -> 812, and USN02 identical.
+
 ## 31. The scene-contents half of the HomeBase contract (packet `cc9_scene_home_base_contract`, `kSceneHomeBaseContractBound`, committed OFF)
 
 Worker cc9-ships, 2026-09-27. It wires section 29's contract.

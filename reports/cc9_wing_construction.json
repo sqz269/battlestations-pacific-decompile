@@ -6,7 +6,8 @@
     {
       "name": "kWingConstructionInPassABound",
       "state": "OFF, held for the joint flip with the Lua half",
-      "pair": "local/wc_{off,on}_{usn04,usn02}.log: USN04 exit 3 (census as predicted, air battle moved), USN02 exit 1 (pair_export of 212eac5a3: ri_off B9C6C653C435, ri_on 2049997AB2E5)"
+      "pair": "local/wc_{off,on}_{usn04,usn02}.log: USN04 exit 3 (census as predicted, air battle moved), USN02 exit 1 (pair_export of 212eac5a3: ri_off B9C6C653C435, ri_on 2049997AB2E5)",
+      "committed": "OFF, flipped ON by the lead's ruling (30.7)"
     }
   ],
   "census_usn04": {
@@ -87,6 +88,12 @@
     "usn02": {
       "exit": 1,
       "gameplay": "identical"
+    },
+    "flip_on": {
+      "by": "cc9-units3, packet cc9_wing_joint_flip_on",
+      "ruling": "the lead: section 30.6's three USN04 size misses are prediction-size misses on a moved base, not a behaviour finding; both switches ON",
+      "expected": "section 30.6's rows are the expected USN04 result (no re-run); USN02 identical",
+      "doc": "docs/CONSTRUCT_WORLD.md 30.7"
     }
   }
 }

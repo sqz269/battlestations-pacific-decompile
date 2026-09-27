@@ -62,7 +62,9 @@ namespace bsp::game {
 // hook as its wing (wing_member, squadron_id = the leader, class_index = the
 // squadron's), and the pass A wing append, the squadron's recorded wing range
 // and the dedup's wing deferral are retired.
-inline constexpr bool kWingConstructionLuaBound = false;
+// ON since the joint flip (docs/CONSTRUCT_WORLD.md 30.7), by the lead's ruling
+// on 30.6's pairs.
+inline constexpr bool kWingConstructionLuaBound = true;
 
 class GameHostLog;
 class GameVfsHost;
