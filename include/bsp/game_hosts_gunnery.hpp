@@ -289,7 +289,7 @@ inline constexpr bool kShipDirectorEnablesBound = true;
 // first torpedo shot (every barrel is still loaded then); the supply tick
 // 00825450 and the unload 0081DCB0 (stock < loaded) are not bound. False:
 // tubes reload without limit, as before.
-inline constexpr bool kTorpedoStockBound = false;
+inline constexpr bool kTorpedoStockBound = true;
 
 // Session message 79h as 00954A10 builds it in 005484F0 (section 32 of
 // docs/SHIP_SCREEN_UPDATE.md): +1Ch group, +20h..+28h the camera mover's
