@@ -1065,3 +1065,58 @@ streams ON and `BSP_DEATH_TABLE=1`, binaries `local\bin\fl_off` and `fl_on`.
 
 USN04's move comes through the player seat's camera ray, from the ShipCaptain rebuilt at 25 s.
 The observer read above confirms that rebuild.
+
+## 9. Handoff (cc9-movie-camera retires after this commit)
+
+Worker cc9-movie-camera, 2026-09-27, base main 87b51d106, branch `agent/cc9-movie-camera`, worktree
+`J:\PROG\battlestations-pacific-decompile-cc9-movie-camera`. It holds no leases.
+
+### 9.1 Switches this line set
+
+| switch | file | state | doc |
+| --- | --- | --- | --- |
+| `kSetSelectedUnitBound` | `include/bsp/game_hosts_hud.hpp` | ON | `docs/CONTROLLED_UNIT.md`, SetSelectedUnit section |
+| `kMovieInterfacePushBound` (2Ch push) | same | ON | section 8.7 |
+| `kMovieReseedBound` (005CD1A0 reseed, default path only) | same | ON | section 8.7 |
+| `kMovieMoverBound` (the movie camera mover) | same | ON | section 8.7 |
+| `kWingConstructionLuaBound` | `include/bsp/game_hosts_lua.hpp` | OFF: the joint flip failed on sizes | `docs/WING_CONSTRUCTION_LUA.md`, `docs/CONSTRUCT_WORLD.md` 30.6 |
+
+### 9.2 Open, in order of value
+
+1. **The joint wing flip** (`docs/CONSTRUCT_WORLD.md` 30.6).
+   - Every counter held, and the victims are the same.
+   - USN04's air-order deltas on the current base are hits +4, hull hits +0 and shots -8. The
+     prediction was +2, +2 and -7.
+   - Flip both switches with those rows as the expected result, or re-measure on the next base.
+2. **Movie camera, unsupported parse keys and arms.** These are counted as `unsupported` in the
+   summary line:
+   - modifiers (`goaround`, `gamecamera`, `fpscamera`);
+   - `deckpos`, `upvector`, `relativetotarget`, `terrainavoid`, `flyalt` (the evaluator lift
+     007986C0..007987B4), `event`, `finishscript` and the `_thennone` transforms.
+   None of them occur in USN01, USN02 or USN04.
+3. **Movie camera substitutions:**
+   - one 00798C80 fixed step per frame;
+   - the per-step stream-1 draw 00798D07 is not taken;
+   - plane+810h is taken as zero;
+   - `+5Eh` is read through `alive_and_visible`;
+   - the destructor's wall-clock reseed 0079A2FB is a record.
+   The pairing ids (`+20h`/`+DAh`) are not modelled; they are not read by the pose.
+4. **`ForceSelectUnit` 008AAF30 -> 006485A0** is read (section 8.7) and unbound. It needs the HUD
+   root's unit lists `+8Ch`/`+9Ch` and cursor `+C2h`/`+C4h` (00648290, 00645710, 00644A60). No
+   measured mission reaches it.
+5. **`SetSelectedUnit`'s records:**
+   - 005251C0, the screen reset at `[manager+CCh]`;
+   - the 00645600 broadcasts 00817380 and 0080E290, the 006952A0/00694A60 observer pair and the
+     00954990 audio;
+   - `vtable[124h]` for non-ship classes.
+6. **From the cc9-init-passes handoff** (`docs/SENTITY_INIT_ATTACH_ORDER.md` 16.2), untouched:
+   - the XLive slots `54h` and `184h` callers;
+   - the deck-tick launch-lag demonstration run on a mission with a queued `LaunchSquadron`;
+   - the loopback drain's per-poster contract.
+
+### 9.3 Local files in the worktree
+
+- **Pair binaries:** `local\bin\{ss,mi,rs,mv,fl,wl,wj,jf}_{off,on}`, each with its logs beside it
+  in `local\` under the same prefix.
+- **Scripts and message files:** `local\cc9-movie-camera-*`.
+- **Raw listings and decompiles:** `local\mc\`.
