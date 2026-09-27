@@ -1031,3 +1031,37 @@ USN04 4700/4500:
 USN04's reference rows through the seat and the identity prediction failed. The recommendation is
 ON, once someone reads the 46h `+20h` observer clearing (the 00694A60 registration at 0064DCxx and
 its callback).
+
+**The screen 46h observer, read (lead ruling 2026-09-27: flip if confirmed).**
+- 0064DA40 registers the ShipCaptain with the observer embedded at screen 46h's `+8h`
+  (0064DBA5 `LEA EDX,[ESI+8]`, 0064DBD1 CALL 00694A60).
+- That observer's vtable is 00CF7960, stored by the Init at 0068D0A4 over the base 00CE3CD4. Its
+  slot `+4h` is **0064A4C0**, `__thiscall(observer, entity)`, RET 4:
+  - when the entity is `[observer+14h]` (screen `+1Ch`, the unit), it clears that field;
+  - otherwise, when it is `[observer+18h]` (screen `+20h`, the ShipCaptain), it clears that.
+- **Slot `+4h` is the destruction notice.**
+  - 004BC410's 00926D90(2) on the outgoing mover queues it for the on-killed dispatch
+    (`docs/ENTITY_EVENT_QUEUES.md`).
+  - That dispatch, 009274DE..00927510, calls 00696330(entity) while the entity's `+8h` observer
+    list is non-empty.
+  - 00696330 selects callback 00693550 `BSP_ObserverEndpoint_InvokeCallbackSlot04`, which calls
+    `observer->vtable[4h](entity)`.
+- So when the movie camera replaces it, the ShipCaptain's destruction clears 46h's `+20h`. The
+  next 0064DA40 finds `+20h` null (0064DAB6) and builds a new ShipCaptain (0064DAC5..0064DB02),
+  which gets the retarget seed. **The inferred step is confirmed**, and the host's
+  `camera_bound = false` at the movie build models it.
+- **Expected with the switch ON:**
+  - USN04 moves through the player seat, as in the recorded pair (deaths 40 -> 41, hits
+    799 -> 808, shots 6395 -> 6374 on that base). The exact rows may shift with main since then.
+  - USN01's gameplay stays identical.
+
+**Switch 3 verdict: ON** (`kMovieMoverBound = true`). The same tree at 04b3b0247, switch only,
+streams ON and `BSP_DEATH_TABLE=1`, binaries `local\bin\fl_off` and `fl_on`.
+
+| pair | `pair_diff` | result |
+| --- | --- | --- |
+| USN01 3200/3000 | exit 1 | gameplay identical (7 death rows, 28 unit rows) |
+| USN04 4700/4500 | exit 3 | the expected move: deaths 40 -> 41, hit records 799 -> 808, damage 11621.4 -> 11721.4, shots 6395 -> 6374, torpedo-task releases 7 -> 6 of 16 (14 death rows changed, 1 only ON) |
+
+USN04's move comes through the player seat's camera ray, from the ShipCaptain rebuilt at 25 s.
+The observer read above confirms that rebuild.
