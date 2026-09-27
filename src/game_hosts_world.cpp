@@ -12,6 +12,7 @@
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/game_hosts_hud.hpp"
 
 #include "bsp/in_mission_subsystem_tick.hpp"
 #include "bsp/local_player_unit_lists.hpp"
@@ -316,6 +317,10 @@ void GameWorldHost::run_world_entity_update_00904bf0(float scaled_delta) {
     bsp::run_spawn_queue_step_0094c8f0(scaled_delta);
 }
 
+void GameWorldHost::request_scene_load_force_select_004e05b7() {
+    impl_->summary.scene_load_force_select_pending = true;
+}
+
 void GameWorldHost::build_local_player_unit_lists_004c3cb0() {
     Impl& host = *impl_;
     ++host.summary.list_guard_calls;
@@ -355,6 +360,21 @@ void GameWorldHost::build_local_player_unit_lists_004c3cb0() {
     if (!ran) return;
     ++host.summary.list_builds;
     host.summary.lists_built = true;
+    if (kInitialControlledUnitBound && host.summary.scene_load_force_select_pending
+        && host.walk_triple_sizes[0] >= 0) {
+        // 004E05AE..004E05B7: [00E198C4]+40h, then 006485A0. SUBSTITUTION
+        // (labelled): the image runs it at the end of scene load, after its own
+        // 008073C0 on the local slot; here it runs after the first list build
+        // whose own triple the gunnery host has published (the first tick).
+        if (hud_force_select_unit_006485a0()) {
+            host.summary.scene_load_force_select_pending = false;
+            ++host.summary.scene_load_force_selects;
+            host.done("SceneLoad::force_select_unit_006485a0", 0x004e05b7u);
+        } else {
+            // No HUD attached yet: kept pending for the next build.
+            host.record("SceneLoad::force_select_no_hud", 0x004e05b7u);
+        }
+    }
     host.summary.list_walk0_units = host.units.count();
     for (std::size_t index = 0; index < bsp::kLocalPlayerUnitListCount; ++index) {
         host.summary.list_counts[index] = host.lists[index].size();
@@ -412,6 +432,10 @@ void GameWorldHost::report() {
         "cc9_local_player_unit_list): bound=%d builds=%llu clears_recon=%llu clears_kill=%llu",
         kLocalPlayerUnitListRuleBound ? 1 : 0, host.summary.list_builds,
         host.summary.list_clears_recon, host.summary.list_clears_kill);
+    host.log.notef("summary world initial controlled unit (packet cc9_initial_controlled_unit, "
+        "004E05B7): bound=%d scene_load_force_selects=%llu pending_at_end=%d",
+        kInitialControlledUnitBound ? 1 : 0, host.summary.scene_load_force_selects,
+        host.summary.scene_load_force_select_pending ? 1 : 0);
 }
 
 const GameWorldSummary& GameWorldHost::summary() const noexcept { return impl_->summary; }

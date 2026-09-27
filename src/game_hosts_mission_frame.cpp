@@ -1953,7 +1953,17 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
                     static_cast<double>(recalc));
             }
             host.units->issue_authored_commands();
-            if (host.units->count() > 0) host.units->set_controlled_unit_004c0890(0);
+            if constexpr (kInitialControlledUnitBound) {
+                // Packet cc9_initial_controlled_unit: scene load step 19's
+                // 006485A0 (004E05B7) picks the controlled unit from the HUD
+                // root's +8Ch; the world host runs it after the first list
+                // build. No first-created-unit stand-in.
+                if (host.world_host != nullptr) {
+                    host.world_host->request_scene_load_force_select_004e05b7();
+                }
+            } else {
+                if (host.units->count() > 0) host.units->set_controlled_unit_004c0890(0);
+            }
             // Milestone 2l: one `thisTable` slot per created instance, which is
             // what 00928a00 builds for an entity and what the entity tail at
             // 0089903c pushes. Without it the mission's own script resolves
