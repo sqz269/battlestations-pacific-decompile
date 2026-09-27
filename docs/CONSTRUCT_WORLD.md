@@ -2605,3 +2605,44 @@ of it.
 - **USN04 and USN02.** Identical, exit 0, as predicted: no key.
 
 **Verdict: ON.** Every census row moved as predicted, and no reference gameplay row moved.
+
+## 33. The SpawnNew bag's `HomeBase`: never set (packet `cc9_spawn_new_bag_home_base`, read only, no switch)
+
+2026-09-27, worker cc9-init2, on 986087b16. Ghidra was read only. This closes section 32's
+"SpawnNew bag (narrowed, not closed)".
+
+### What a SpawnNew squadron's pass C reads
+
+- **The bag it reads.** 007F4BA0 loads the entity's property-bag holder at 007F4C30 (`MOV
+  EDX,[ESI+C0h]`) and its bag at 007F4C40 (`MOV ECX,[EDX+8]`). It finds `HomeBase` (00CF8820) at
+  007F4C4A and accepts it only when the record's type is 5, a reference (007F4C55 `CMP
+  [EDI+4],5`), with a non-empty name (007F4C5D..007F4C70).
+- **Where SpawnNew's bag comes from.** 009483D0 builds each member's holder from the member
+  element's `+Ch` (009486B6 CALL 00922E20) and stores it at `entity+C0h` (009486BF). 00922E20
+  clones its source bag (008F41F0), so the holder carries a private copy of the member's bag.
+- **What fills the member's bag.** `BSP_SpawnMember_Construct` 00945C30 allocates the 114h bag
+  into `+0Ch`. Its filler 00944210 first copies the script's member table into it through
+  `BSP_LuaTable_CopyIntoPropertyBag` 0043D8F0, then reads `Type` and `Name` back out.
+- **The copy cannot make a reference.** 0043D8F0 walks the Lua table and dispatches on the value's
+  Lua type to five setters only: 008F3710 (integer, type 0), 008F3770 (float, type 1), 008F38A0
+  (string, type 2), 008F3940 (bool, type 3) and 008F3B60 (sub-bag). The two type-5 setters,
+  008F3AC0 and 008F0420, are the scene parser's (docs/SCENE_PROPERTY_BAG.md), and 0043D8F0 calls
+  neither.
+
+**So a SpawnNew squadron never takes a home base from its bag.** Even a member table written with
+`HomeBase = "name"` gives a type-2 record, and 007F4C59 skips it, so +404h stays null there.
+
+### This installation's scripts
+
+No script writes a `HomeBase` key at all (no `HomeBase *=` in any `.lua`). Missions set a home
+through `SquadronSetHomeBase` instead, for example `usn_04_defend_guadalcanal.lua` 317-318 and
+`jm08.lua` 1785.
+
+### The host
+
+The host's SpawnNew member records carry no key (section 31, "The failed prediction"). That is
+already the image's result, so nothing is bound. The held-back `PlaneSquadronGen` row created by
+GenerateObject is a different path: its bag is the scene row's, which does carry a type-5
+`HomeBase`. Section 31's contract carries that key on the spawn-pool entry.
+
+**Prediction for any binding:** identity on every mission. No switch is added.
