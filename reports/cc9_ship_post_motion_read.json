@@ -1,0 +1,26 @@
+{
+  "packet": "cc9_ship_post_motion_read",
+  "doc": "docs/SHIP_POST_MOTION.md",
+  "ghidra": "read-only; no renames, comments or saves",
+  "answer": "00826B84 is unit->vtable[1ECh](dt) = 008160B0 (no Ghidra function), a gated repair tick into 0093CA20 that the gunnery host already runs elsewhere. The rest of the tail (00826C34..00826D69) is reconstructed (ship_motion_tail_00826c34) but unbound: unit+1050h heading, 0092E5B0 (network-only), the wake's yaw rate from 00811890(unit+984h) (the host passes a provisional steering rate), the 10 s formation slot swap 0070DB60, and the unit+308h expiry 0077A650. Plan in three switches.",
+  "steps": [
+    {"address": "00826b6a", "native": "0092be80", "function": "00825f20", "rule": "controller step"},
+    {"address": "00826b84", "native": "008160b0", "function": "00825f20", "rule": "vtable+1ECh, indirect"},
+    {"address": "00826c5c", "native": "0092e5b0", "function": "00825f20", "rule": "network correction, gate closed in single player"},
+    {"address": "00826c75", "native": "00811890", "function": "00825f20", "rule": "yaw rate of the ordered rudder unit+984h"},
+    {"address": "00826cee", "native": "00810190", "function": "00825f20", "rule": "wake sample"},
+    {"address": "00826cf5", "native": "00778890", "function": "00825f20", "rule": "unit leads its group"},
+    {"address": "00826d3e", "native": "0070db60", "function": "00825f20", "rule": "formation slot swap every settings+430h"},
+    {"address": "00826d5a", "native": "0077a650", "function": "00825f20", "rule": "expiry when unit+308h != 0"}
+  ],
+  "routines": [
+    {"address": "008160b0", "coverage": "complete (read)"},
+    {"address": "0092e5b0", "coverage": "gate and argument-0 arm read from pseudocode"},
+    {"address": "0070db60", "coverage": "read from pseudocode; x87 not checked against the listing"},
+    {"address": "0077a650", "coverage": "complete (read)"}
+  ],
+  "no_ghidra_function": [{"start": "008160b0", "end_inclusive": "008160ec", "what": "ship vtable slot 1ECh, BSP_UnitInstance_TickRepairTask"}],
+  "names_added": {"008160b0": "BSP_UnitInstance_TickRepairTask", "0070db60": "BSP_UnitGroup_SwapSlotsByDistance", "0077a650": "BSP_UnitInstance_ExpireAtScheduledTime", "0092e5b0": "BSP_UnitController_ApplyNetworkCorrection"},
+  "switches_planned": ["kShipMotionTailBound", "kFormationSlotSwapBound", "kShipPostMotionRepairOrder"],
+  "source_touched": false
+}
