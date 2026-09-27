@@ -110,7 +110,7 @@ inline constexpr bool kGeneratedEntityPartyBound = true;  // ON: identity pairs 
 // squadron's Party and Race. While true, a generated squadron's wing nodes take
 // the squadron node's party and race and pass A writes them as it does for the
 // squadron; while false they carry none.
-inline constexpr bool kGeneratedWingPartyBound = false;
+inline constexpr bool kGeneratedWingPartyBound = true;  // ON: identity pairs (section 23.6)
 
 inline constexpr bool kObjectiveStatusBound = true;  // ON: identity pairs (docs/MISSION_OBJECTIVES.md 8)
 

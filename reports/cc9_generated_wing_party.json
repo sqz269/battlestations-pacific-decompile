@@ -3,10 +3,28 @@
   "worker": "cc9-hud3",
   "base": "ac9efa4ef",
   "switch": "kGeneratedWingPartyBound",
-  "state": "OFF",
+  "state": "ON",
   "doc": "docs/SENTITY_INIT_ATTACH_ORDER.md 23.5",
-  "substitutions": ["The wing plane Party/Race Lua write is at its pass A, as for the squadron; the image mirror 00928F50 call site is unread."],
+  "substitutions": [
+    "The wing plane Party/Race Lua write is at its pass A, as for the squadron; the image mirror 00928F50 call site is unread."
+  ],
   "no_ghidra_function": [],
   "names_added": [],
-  "pairs": "pending"
+  "pairs": [
+    {
+      "mission": "USN01",
+      "pair_diff": 1,
+      "result": "ScoutDauntless|.-2 Party=0 Race=2; writes 1->2; identical"
+    },
+    {
+      "mission": "USN04",
+      "pair_diff": 0
+    },
+    {
+      "mission": "USN02",
+      "pair_diff": 0
+    }
+  ],
+  "off_commit": "0c0ed16c7",
+  "failed_predictions": []
 }

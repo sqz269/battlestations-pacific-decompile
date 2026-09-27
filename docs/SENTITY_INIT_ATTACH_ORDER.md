@@ -2144,3 +2144,17 @@ Worker cc9-hud3, 2026-09-27, base ac9efa4ef. Ghidra was read only.
   - **gameplay identical, exit 1.**
 - **USN04 4700/4500 and USN02 9200/9000:** no GenerateObject, so no change. **Identity** (exit 0
   or 1).
+
+### 23.6 Pairs and verdict
+
+- **The pairs.** The OFF side is this tree's build at 0c0ed16c7 (`local\wg_off_*`). The ON side is
+  `local\wg_on`, an export of the same commit with only the switch flipped.
+- **Run parameters:** streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05 and an idle player.
+
+| pair | `pair_diff` | result |
+| --- | --- | --- |
+| USN01 3200/3000 | exit 1 | `thisTable[64]` ("ScoutDauntless\|.-2") `Party=0 Race=2`; `writes 1 -> 2`. Gameplay, 7 death rows and 28 unit rows identical |
+| USN04 4700/4500 | exit 0 | identical |
+| USN02 9200/9000 | exit 0 | identical |
+
+**Every prediction held.** **Verdict: `kGeneratedWingPartyBound = true`.**

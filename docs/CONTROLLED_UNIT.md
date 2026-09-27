@@ -1347,6 +1347,7 @@ Worker cc9-hud3, 2026-09-27. The branch is `agent/cc9-hud3` and the worktree
 | `kPlaneInFlightTestBound` | same | ON | `docs/IN_GAME_INTERFACE_SCREEN_SETS.md`, "007BB9A0 in the plane arm" |
 | `kGeneratedEntityPartyBound` | `include/bsp/game_hosts_lua.hpp` | ON | `docs/SENTITY_INIT_ATTACH_ORDER.md` 23 |
 | `kObjectiveStatusBound` | same | ON | `docs/MISSION_OBJECTIVES.md` 8 |
+| `kGeneratedWingPartyBound` | same | ON | `docs/SENTITY_INIT_ATTACH_ORDER.md` 23.5-23.6 |
 
 Reads closed without a switch:
 - the 47h create path (SENTITY 22.7);
@@ -1381,7 +1382,8 @@ Reads closed without a switch:
 6. **GenerateObject's party.**
    - The image's 00928F50 call site on that route is unread, so the host writes Party and Race at
      pass A (labelled).
-   - The wing planes of a generated squadron get no Party.
+   - The wing planes of a generated squadron now get the squadron's Party and Race
+     (`kGeneratedWingPartyBound`, ON, packet `cc9_generated_wing_party`, SENTITY 23.5-23.6).
    - 0046D930's bag handling 0046DA33..0046DB02 is unread.
 7. **Objectives.** The kind `+18h` is not recorded, so 008DFE50's hidden-objective early return is
    not applied. No measured objective holds a unit. The announcement 008E1D30 (sound) and the
