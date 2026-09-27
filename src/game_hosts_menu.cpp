@@ -793,6 +793,12 @@ public:
             owner_.log.implemented("PressStartScreen::enter", "0067cb40");
             return;
         }
+        // Packet cc9_force_select_unit: screen 44h's +18h, 006488D0 (vtable
+        // 00CF5A9C +18h = 00CF5AB4), for its 00648290 list rebuild.
+        if (kForceSelectUnitBound && owner_.hud != nullptr && slot == 0x44) {
+            owner_.hud->enter_hud_root_screen_006488d0();
+            return;
+        }
         // Packet cc9_role_retake_4bh: screen 2Eh's +18h, 005494C0.
         if (kHudWeaponGroupEnterExitBound && owner_.hud != nullptr && slot == 0x2e) {
             owner_.hud->enter_weapon_group_screen_005494c0();

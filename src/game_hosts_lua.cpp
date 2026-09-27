@@ -308,9 +308,13 @@ int binding_trampoline(lua_State* state) {
         = bsp::game::kSetSelectedUnitBound && dispatch_row.address == 0x008ab260u;
     const bool movie_add_row
         = bsp::game::kMovieMoverBound && dispatch_row.address == 0x008b79f0u;
+    // Packet cc9_force_select_unit: ForceSelectUnit 008AAF30 takes no argument
+    // and calls 006485A0 on [00E198C4]+40h (008AB014..008AB01F).
+    const bool force_select_row
+        = bsp::game::kForceSelectUnitBound && dispatch_row.address == 0x008aaf30u;
     const bool handled = avoidance_setting || objective_row || get_property_row || ready_row
         || launch_row || generate_row || spawn_new_row || scoring_play_time_row
-        || select_unit_row || movie_add_row
+        || select_unit_row || movie_add_row || force_select_row
         || (orders != nullptr && GameScriptOrdersHost::handles(dispatch_row.name));
     // The replay of a failed named call, which the executable makes only to
     // recover the error message, must not count a second time.
@@ -436,6 +440,12 @@ int binding_trampoline(lua_State* state) {
                 bsp::game::hud_set_selected_unit_00647300(unit, reached);
             }
         }
+        return 0;
+    }
+    if (force_select_row) {
+        // 008AB01F CALL 006485A0; the native returns its empty call frame's
+        // result count, 0.
+        if (!host->error_replay()) bsp::game::hud_force_select_unit_006485a0();
         return 0;
     }
     if (scoring_play_time_row) {

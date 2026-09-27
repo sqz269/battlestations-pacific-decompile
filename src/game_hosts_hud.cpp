@@ -30,6 +30,8 @@
 #include "bsp/game_hosts_ai.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
+#include "bsp/hud_root_rows.hpp"
+#include "bsp/local_player_unit_lists.hpp"
 
 #include "bsp/hud_screens.hpp"
 #include "bsp/in_mission_interface_runtime.hpp"
@@ -165,6 +167,12 @@ struct GameHudHost::Impl {
     // Packet cc9_set_selected_unit: 00647300's calls, acceptances, and the
     // 20h pushes it made (serviced through the same pending/applied pair).
     unsigned long long select_calls{0};
+    // Packet cc9_force_select_unit: the HUD root's unit vectors and cursor.
+    bsp::HudRootUnitLists root_lists{};
+    unsigned long long root_rebuilds{0};
+    unsigned long long force_calls{0};
+    unsigned long long force_selects{0};
+    void run_root_lists(bool force);
     unsigned long long select_accepted{0};
     unsigned long long select_pushes{0};
     bool pick_first_basis_logged{false};
@@ -1369,6 +1377,13 @@ bool hud_set_selected_unit_00647300(std::size_t unit, bool& reached) {
     return hud->set_selected_unit_00647300(unit);
 }
 
+bool hud_force_select_unit_006485a0() {
+    GameHudHost* hud = attached_hud_for_selection();
+    if (hud == nullptr) return false;
+    hud->force_select_unit_006485a0();
+    return true;
+}
+
 void GameHudHost::attach_world_2k(GameUnitsHost& units, GameMissionLuaHost& lua) {
     Impl& impl = *impl_;
     impl.units = &units;
@@ -1874,6 +1889,153 @@ bool GameHudHost::set_selected_unit_00647300(std::size_t unit) {
         name.c_str(), before.c_str(), name.c_str(), result.released_previous ? 1 : 0,
         result.refreshed_in_place ? 1 : 0);
     return true;
+}
+
+namespace {
+// Packet cc9_force_select_unit: bsp::HudRootUnitListsHost over the units host.
+// Handles are unit index + 1; 0 is null.
+class HudRootListsBinding final : public bsp::HudRootUnitListsHost {
+public:
+    explicit HudRootListsBinding(GameHudHost::Impl& owner) : owner_(owner) {}
+    std::uint32_t controlled_unit() override {
+        return owner_.units->controlled_bound()
+            ? static_cast<std::uint32_t>(owner_.units->controlled_index() + 1) : 0u;
+    }
+    const std::vector<std::uint32_t>& local_unit_list_1970() override {
+        // game+1974h is the head of game+1970h, which the world host's last
+        // 004C3CB0 body built (walk 0 minus ordnance, UnitRef = index + 1).
+        list_.clear();
+        const bsp::LocalPlayerUnitLists* lists = game_local_player_unit_lists();
+        if (lists == nullptr) {
+            owner_.record("HudRootLists::list_1970", 0x00648369u);
+            return list_;
+        }
+        for (const bsp::UnitRef ref : (*lists)[static_cast<std::size_t>(
+                 bsp::LocalPlayerUnitList::kWalk0Rest)]) {
+            list_.push_back(ref);
+        }
+        return list_;
+    }
+    bool unit_selectable_00645060(std::uint32_t unit) override {
+        if (unit == 0 || unit > owner_.units->count()) return false;
+        return bsp::unit_is_selectable_00645060(owner_.selectable_inputs_00645060(unit - 1));
+    }
+    bool unit_is_group_leader_00778890(std::uint32_t unit) override {
+        const std::int32_t group = group_of(unit);
+        return group >= 0 && owner_.units->formation_leader_0014(group) == unit - 1;
+    }
+    bool unit_is_group_member_007788b0(std::uint32_t unit) override {
+        return unit != 0 && owner_.units->unit_is_formation_follower_007788b0(unit - 1);
+    }
+    std::uint32_t group_leader_007788d0(std::uint32_t unit) override {
+        const std::int32_t group = group_of(unit);
+        if (group < 0) return 0;
+        const std::size_t leader = owner_.units->formation_leader_0014(group);
+        return leader == SIZE_MAX ? 0u : static_cast<std::uint32_t>(leader + 1);
+    }
+    bool role_word_188_open(std::uint32_t unit) override {
+        // [unit+188h] == 9 or == [game+18ECh]. SUBSTITUTION (labelled, as
+        // selectable_inputs_00645060 takes it): the local player index is 0.
+        std::int32_t word = 0;
+        if (unit == 0 || !owner_.units->unit_role_permission(unit - 1, 0, word)) return false;
+        return word == 9 || word == 0;
+    }
+    int group_member_count_4f8(std::uint32_t leader) override {
+        const std::int32_t group = group_of(leader);
+        return group < 0 ? 0 : owner_.units->formation_member_count(group);
+    }
+    std::uint32_t group_member_at_0070d060(std::uint32_t leader, int slot) override {
+        const std::int32_t group = group_of(leader);
+        if (group < 0) return 0;
+        const std::size_t member = owner_.units->formation_member_unit(group, slot);
+        return member == SIZE_MAX ? 0u : static_cast<std::uint32_t>(member + 1);
+    }
+    void set_controlled_unit_00645600(std::uint32_t unit) override {
+        const std::size_t index = unit != 0 ? unit - 1 : 0;
+        const bool selectable = unit != 0 && unit_selectable_00645060(unit);
+        SelectControlledUnitBinding binding(owner_, index, selectable);
+        bsp::select_controlled_unit_00645600(unit != 0, binding);
+        owner_.done("ForceSelectUnit::set_controlled_unit_00645600", 0x00645600u);
+    }
+    bool multiplayer_1fe4() override { return false; }
+    // SUBSTITUTION (labelled): the manager's +4h/+20h/+1Ch/+38h are not read
+    // here. They matter only on an empty +8Ch vector, where the answers
+    // (applied 0, pending -1) take neither push; that arm is a record.
+    int manager_applied_04() override {
+        owner_.record("ForceSelectUnit::empty_list_manager_state", 0x006485d7u);
+        return 0;
+    }
+    int manager_pending_20() override { return -1; }
+    bool manager_1c_equals_38() override { return false; }
+    void push_interface_request_004cc460(int) override {
+        owner_.record("ForceSelectUnit::push_limbo", 0x004cc460u);
+    }
+    void push_controlled_unit_interface_00647040() override {
+        // The same 00647040 as SetSelectedUnit's tail: 005251C0 is recorded,
+        // then 004CC460(20h, the unit) re-arms the pending/applied pair.
+        owner_.record("ForceSelectUnit::screen_reset_005251c0", 0x005251c0u);
+        owner_.unit_request_pending = true;
+        owner_.unit_request_applied = false;
+        owner_.pending_interface_id = 0;
+        ++owner_.force_selects;
+        owner_.done("ForceSelectUnit::push_interface_20h", 0x00647077u);
+    }
+
+private:
+    std::int32_t group_of(std::uint32_t unit) const {
+        return unit == 0 ? -1 : owner_.units->unit_formation_group_0284(unit - 1);
+    }
+    GameHudHost::Impl& owner_;
+    std::vector<std::uint32_t> list_;
+};
+}  // namespace
+
+void GameHudHost::Impl::run_root_lists(bool force) {
+    HudRootListsBinding binding(*this);
+    const std::string before = units->controlled_bound()
+        ? units->unit_row(units->controlled_index())->name : std::string("none");
+    if (force) {
+        bsp::hud_root_force_select_unit_006485a0(root_lists, binding);
+    } else {
+        bsp::hud_root_rebuild_unit_lists_00648290(root_lists, binding);
+    }
+    ++root_rebuilds;
+    const std::uint32_t at = bsp::hud_root_cursor_unit_00644a60(root_lists);
+    const GameUnitRow* at_row = at != 0 ? units->unit_row(at - 1) : nullptr;
+    const std::string after = units->controlled_bound()
+        ? units->unit_row(units->controlled_index())->name : std::string("none");
+    log.notef("hud root unit lists %s (hud update frame %llu): +8Ch %zu units, +9Ch %zu units, "
+        "cursor (%d,%d) at \"%s\"; controlled \"%s\" -> \"%s\"",
+        force ? "006485A0 ForceSelectUnit" : "00648290 rebuild at the 44h enter",
+        summary.update_frames, root_lists.primary_8c.size(), root_lists.secondary_9c.size(),
+        root_lists.cursor.secondary ? 1 : 0,
+        root_lists.cursor.index == 0xffffu ? -1 : static_cast<int>(root_lists.cursor.index),
+        at_row != nullptr ? at_row->name.c_str() : "none", before.c_str(), after.c_str());
+}
+
+void GameHudHost::enter_hud_root_screen_006488d0() {
+    Impl& impl = *impl_;
+    if (impl.units == nullptr) {
+        impl.record("HudRootScreen::enter", 0x006488d0u);
+        return;
+    }
+    // 006488D0..00648923: the three widget +4Ch(0.0f) calls, game mode into
+    // +24h and +F4h = 0 are not performed (records, as before this packet);
+    // 00648913 00648290 is.
+    impl.record("HudRootScreen::enter_widgets_mode_counter", 0x006488d0u);
+    impl.run_root_lists(false);
+    impl.done("HudRootScreen::rebuild_unit_lists_00648290", 0x00648913u);
+}
+
+void GameHudHost::force_select_unit_006485a0() {
+    Impl& impl = *impl_;
+    ++impl.force_calls;
+    if (impl.units == nullptr) {
+        impl.record("ForceSelectUnit::no_units", 0x006485a0u);
+        return;
+    }
+    impl.run_root_lists(true);
+    impl.done("ForceSelectUnit::force_select_006485a0", 0x006485a0u);
 }
 
 void GameHudHost::update_minimap_screen_005c0f20(float seconds) {
@@ -3375,6 +3537,11 @@ void GameHudHost::report() {
         "step_draw_bound=%d step_draws=%llu parent_killed_byte_bound=%d "
         "terrain_avoid_bound=%d", kMovieStepDrawBound ? 1 : 0, impl.movie_step_draws,
         kMovieParentKilledByteBound ? 1 : 0, kMovieTerrainAvoidBound ? 1 : 0);
+    impl.log.notef("summary mission hud force select unit (packet cc9_force_select_unit, "
+        "008AAF30 / 006485A0 / 00648290): bound=%d calls=%llu selects=%llu rebuilds=%llu "
+        "primary_8c=%zu secondary_9c=%zu", kForceSelectUnitBound ? 1 : 0, impl.force_calls,
+        impl.force_selects, impl.root_rebuilds, impl.root_lists.primary_8c.size(),
+        impl.root_lists.secondary_9c.size());
     // Milestone 2j. `minimap_islandmap_Icon` of GUI_minimap names the texture
     // `error.tga` with the material `minimap_terrain.mshd`, and milestone 2h
     // read that as the page's own authored texture. It is, and the material is

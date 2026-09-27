@@ -200,6 +200,10 @@ public:
     void update_role_screen_0067bb50();
     // Packet cc9_role_retake_4bh: screen 2Eh's enter 005494C0 and exit 005470A0.
     void enter_weapon_group_screen_005494c0();
+    // Packet cc9_force_select_unit. Screen 44h's enter 006488D0 (only its
+    // 00648290 list rebuild is bound) and ForceSelectUnit's 006485A0.
+    void enter_hud_root_screen_006488d0();
+    void force_select_unit_006485a0();
     void exit_weapon_group_screen_005470a0();
 
     // One summary line for the run log.
@@ -224,6 +228,15 @@ inline constexpr bool kSetSelectedUnitBound = true;
 // while a world is attached (attach_world_2k / detach_world_2k). Returns false
 // with `reached` false when no HUD is attached.
 bool hud_set_selected_unit_00647300(std::size_t unit, bool& reached);
+
+// Packet cc9_force_select_unit (docs/CONTROLLED_UNIT.md, "ForceSelectUnit"),
+// committed OFF with predictions. While true: the Lua host routes
+// ForceSelectUnit 008AAF30 to 006485A0 on the HUD root, and screen 44h's enter
+// 006488D0 runs its 00648290 rebuild of the root's unit vectors (+8Ch, +9Ch)
+// and cursor (+C2h/+C4h). While false the native and the enter stay records.
+inline constexpr bool kForceSelectUnitBound = false;
+// Returns false when no HUD is attached.
+bool hud_force_select_unit_006485a0();
 
 // Packet cc9_movie_interface_and_reseed, switch 1, committed OFF (eaa9a301b), set ON by the
 // USN01/USN04 pair verdict (docs/HUD_PICK_SEGMENT_QUERY.md 8.7): while true

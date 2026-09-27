@@ -358,3 +358,122 @@ log shows the harness override lines and its own module directory.
 
 **Verdict: ON.** Gameplay is identical on both missions, and every change is the binding's own
 row. `kSetSelectedUnitBound` is set true in the verdict commit.
+
+## ForceSelectUnit and 006485A0 (packet `cc9_force_select_unit`, `kForceSelectUnitBound`)
+
+Worker cc9-hud2, 2026-09-27, base main 34f7f95cd. Ghidra was read only.
+
+### The path (V, listings)
+
+- **008AAF30 `ForceSelectUnit`** takes no argument. It loads `[00E198C4]+40h`, the HUD root
+  (screen 44h), and calls 006485A0 at 008AB01F. It returns its empty call frame's result count, 0.
+- **006485A0** (`__fastcall(root)`, 006485A0..00648644):
+  1. It clears `+C0h` (006485A4), then runs 00648290 and 00645710.
+  2. **Empty `+8Ch` vector:** it calls 00645600(null). Then:
+     - with `[mgr+4] == 34h` in multiplayer, it pushes 2Ah when `[mgr+20h]` is also 34h and
+       `[mgr+1Ch] == [mgr+38h]`;
+     - otherwise, with `[mgr+4] == [mgr+20h]` and `[mgr+1Ch] == [mgr+38h]`, it pushes 34h.
+  3. **Otherwise** it calls 00645600(00644A60()), the unit at the cursor. With a controlled unit
+     it tail-jumps to 00647040, the same 20h push as `SetSelectedUnit`'s tail.
+- **00648290, the rebuild** (`__fastcall(root)`, 00648290..00648598). Screen 44h's enter 006488D0
+  also calls it, at 00648913 (vtable 00CF5A9C `+18h` = 00CF5AB4 holds 006488D0).
+  1. **The re-find flag.** It is set when a controlled unit exists and its list kind has changed.
+     That is either cursor `+C2h` set and the unit not a formation follower (007788B0), or `+C2h`
+     clear, the unit a follower and the *old* `+9Ch` vector longer than one.
+  2. **Both vectors are cleared** (00645CA0).
+  3. **`+8Ch`** comes from the walk of `[game+1974h]`, the head of game+1970h. That is 004C3CB0's
+     walk 0 without ordnance (`docs/LOCAL_PLAYER_UNIT_LISTS.md`). A unit is appended when
+     00645060(unit, `[game+18ECh]`, 1) accepts it and either it is no follower, or its leader
+     (007788D0) exists and 00645060 **rejects** the leader.
+  4. **`+9Ch`** is filled only with a controlled unit whose leader (007788D0) exists:
+     - first the leader, when `[leader+188h]` is 9 or `[game+18ECh]`;
+     - then each group member (0070D060, `[[leader+284h]+4F8h]` slots) that is not null, not the
+       leader, and has the same role word.
+  5. **With the flag set**, the entry at the cursor in the new vectors is read. When it is the
+     controlled unit, the cursor becomes 00644CC0(controlled). If that has index -1, the cursor
+     becomes 00644C20(controlled).
+  6. It then runs 00645710, and tail-jumps to 006485A0 when `+C0h` is set.
+- **00645710, the settle** (00645710..0064582B). Indices are compared unsigned after sign
+  extension, so -1 is out of range.
+  1. With `+C4h == -1` and a non-empty `+8Ch`, the cursor becomes (0, 0).
+  2. An index out of range of its own vector becomes (0, 0).
+  3. Then the cursor unit is read (00644A60):
+     - null gives (0, -1);
+     - a unit that 00645060 accepts stays;
+     - a rejected unit becomes (0, 0) when `+8Ch` holds more than one unit, else (0, -1).
+- **00644A60** returns 0 for index -1. Otherwise it returns entry `+C4h` of `+9Ch` when `+C2h` is
+  set, else of `+8Ch`, or 0 when out of range.
+- **Nothing else moves the cursor on an idle run.**
+  - 00644DB0, the poll, writes `+C2h`/`+C4h`/`+C0h` only on actions 8Ch..8Fh.
+  - The update's 0064A114..0064A153 re-find follows a pending `MW_MultiSelectUnit` handle, which
+    stays 0 here.
+  - The root's register 00645F10 clears `+C0h` only. No constructor store of `+C2h`/`+C4h` was
+    found. The settle maps either a zero or a -1 start to (0, 0) on the first non-empty rebuild,
+    so the host starts at (0, -1).
+
+### The binding
+
+- **Switch:** `kForceSelectUnitBound` in `include/bsp/game_hosts_hud.hpp`, committed OFF.
+- **The reconstruction** is in `src/hud_root_rows.cpp`:
+  - `hud_root_rebuild_unit_lists_00648290`, `hud_root_settle_cursor_00645710`,
+    `hud_root_cursor_unit_00644a60` and `hud_root_force_select_unit_006485a0`;
+  - the existing `hud_root_find_unit`/`hud_root_find_primary_unit` (00644CC0/00644C20, packet
+    orch2_hud_root_unit_rows).
+- **Routes:**
+  - the Lua row 008AAF30 goes to `GameHudHost::force_select_unit_006485a0`;
+  - the menu host's 44h enter goes to `enter_hud_root_screen_006488d0`, which runs only its
+    00648290 call.
+- **Sources:**
+  - game+1970h is the world host's last 004C3CB0 build (`game_local_player_unit_lists`, walk 0
+    rest);
+  - 00645060 is `selectable_inputs_00645060`, as `SetSelectedUnit` uses it;
+  - the group queries are the units host's `unit_formation_group_0284` family;
+  - 00645600 goes through the same `SelectControlledUnitBinding` as `SetSelectedUnit`.
+- **SUBSTITUTIONS, labelled:**
+  - `[game+18ECh]` is the local player index 0, as `SetSelectedUnit` takes it.
+  - The 44h enter's other steps stay records: its three widget `+4Ch(0.0f)` calls, `+24h` and
+    `+F4h = 0`.
+  - The empty-vector arm is a record: 00645600(null) does not clear the units host's controlled
+    unit, and the manager fields are not read, so neither push is made.
+  - The initial cursor is (0, -1) (see above).
+
+### Reach
+
+No idle run of USN01 3200/3000, USN02 or USN04 4700/4500 calls `ForceSelectUnit`.
+- USN04 (`usn_19_coralus.lua`) calls it from `luaMoveToPh2` (line 2195, then `GetSelectedUnit`)
+  and `luaEndShohoMovie` (line 2225, after `SetSelectedUnit(Mission.SelUnit)`).
+- It also calls it from the Zuikaku movies (lines 998, 1032, 1967), which need later phases.
+- Phase 2 starts when the fourth bomber wave has spawned or the Lexington's bombers are all dead
+  (lines 560..587).
+- An idle USN04 9200/9000 run on base 2026-09-19 (`gh_on_usn04_long.log`, worker
+  cc8-gunnery-host) ran the `luaMoveToPh2` callback and logged `ForceSelectUnit` UNIMPLEMENTED
+  calls=2.
+- The other callers in this installation are training grounds, `ijn/ESMP` and `usn/LOMP`
+  missions, which the harness has not run.
+
+### Predictions (written before any run; streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player)
+
+**Regression pairs, USN01 3200/3000 and USN04 4700/4500: gameplay identical, `pair_diff` exit 1.**
+- The only changes are the 44h enters.
+  - `FrontEndScreen::enter` falls by one per 44h enter. Each OFF log has two 44h enters: on
+    USN04 at the first 25h and at `SetSelectedUnit` at 25 s, and on USN01 at its two 25h applies.
+  - Each enter logs one `hud root unit lists 00648290` line and one concrete
+    `HudRootScreen::rebuild_unit_lists_00648290`.
+- Nothing reads the vectors, so every other row is identical.
+- The summary line shows `calls=0 selects=0`.
+
+**Measuring pair, USN04 9200/9000 (the handoff budget):**
+- **OFF:** `ForceSelectUnit` UNIMPLEMENTED calls=2, if phase 2 still starts on this base. If it does
+  not, the pair measures nothing and is reported as such.
+- **ON:** `calls=2`.
+  - At each call the cursor is (0, 0), and entry 0 of `+8Ch` is the Lexington. It is the first
+    selectable own unit, because game+1970h follows the recon triple's unit order, in which the
+    first created unit comes first.
+  - 00645600 refreshes the Lexington in place (it is already controlled since
+    `SetSelectedUnit` at 25 s). 00647040 then re-pushes 20h, so `selects=2`.
+  - The controlled unit does not change. `Mission.SelUnit` is the Lexington on both sides.
+- **Gameplay identical, exit 1.** The re-pushed 20h re-applies 25h with the same unit. 0064DA40
+  finds 46h's `+20h` set and keeps the ShipCaptain, so the camera and the player seat do not
+  move.
+- **The risk,** named in advance: if the re-apply rebuilds the ShipCaptain, USN04 moves through
+  the seat, as in the 25 s case of `docs/HUD_PICK_SEGMENT_QUERY.md` 8.7.

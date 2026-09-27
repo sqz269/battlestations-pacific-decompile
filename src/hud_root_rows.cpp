@@ -71,6 +71,141 @@ void hud_root_poll_selection(HudRootSelectionState& state, HudUnitListView prima
     state.pending = true;
 }
 
+// ---- packet cc9_force_select_unit ----
+namespace {
+HudUnitListView view(const std::vector<std::uint32_t>& v) noexcept {
+    return {v.empty() ? nullptr : v.data(), static_cast<std::uint32_t>(v.size())};
+}
+// The unsigned compare of the sign-extended word (MOVSX, then JBE/JAE).
+bool cursor_in(std::uint16_t index, std::size_t count) noexcept {
+    return signed_index_as_unsigned(index) < count;
+}
+// hud_root_find_unit / hud_root_find_primary_unit need only the three group
+// queries of HudRootSelectionHost.
+class FindAdapter final : public HudRootSelectionHost {
+public:
+    explicit FindAdapter(HudRootUnitListsHost& host) : host_(host) {}
+    bool unit_is_group_leader(std::uint32_t u) override {
+        return host_.unit_is_group_leader_00778890(u);
+    }
+    bool unit_is_group_member(std::uint32_t u) override {
+        return host_.unit_is_group_member_007788b0(u);
+    }
+    std::uint32_t group_leader(std::uint32_t u) override { return host_.group_leader_007788d0(u); }
+    bool input_action_pressed(int) override { return false; }
+    bool base_screen_active() override { return false; }
+    bool panel_54_active() override { return false; }
+    std::uint32_t controlled_unit() override { return host_.controlled_unit(); }
+    bool unit_virtual_124(std::uint32_t) override { return false; }
+    std::uint32_t selected_unit() override { return 0; }
+private:
+    HudRootUnitListsHost& host_;
+};
+}  // namespace
+
+std::uint32_t hud_root_cursor_unit_00644a60(const HudRootUnitLists& lists) noexcept {
+    const std::uint16_t index = lists.cursor.index;
+    if (index == 0xffffu) return 0;                              // 00644A6B
+    const std::vector<std::uint32_t>& list =
+        lists.cursor.secondary ? lists.secondary_9c : lists.primary_8c;
+    if (!cursor_in(index, list.size())) return 0;                // 00644AA7
+    return list[index];
+}
+
+void hud_root_settle_cursor_00645710(HudRootUnitLists& lists, HudRootUnitListsHost& host) {
+    HudUnitSelection& c = lists.cursor;
+    const std::size_t a = lists.primary_8c.size();
+    if (c.index == 0xffffu && a != 0) c = {false, 0};            // 0064571B..00645741
+    if (a != 0) {                                                 // 00645748..0064575D
+        if (c.secondary) {                                        // 0064575F..0064578F
+            if (!cursor_in(c.index, lists.secondary_9c.size())) c = {false, 0};
+        } else if (!cursor_in(c.index, a)) {                      // 00645791..006457B5
+            c = {false, 0};
+        }
+    }
+    const std::uint32_t unit = hud_root_cursor_unit_00644a60(lists);   // 006457C4
+    if (unit != 0) {
+        if (c.index == 0xffffu) return;                           // 006457CD
+        if (host.unit_selectable_00645060(unit)) return;          // 006457E6
+        if (a > 1) {                                              // 006457EF..00645807
+            c = {false, 0};                                       // 0064580A/00645811
+            return;
+        }
+    }
+    c = {false, 0xffffu};                                         // 0064581B/00645822
+}
+
+void hud_root_rebuild_unit_lists_00648290(HudRootUnitLists& lists, HudRootUnitListsHost& host) {
+    const std::uint32_t controlled = host.controlled_unit();      // 00648295
+    bool refind = false;                                          // [ESP+0Bh]
+    if (controlled != 0) {
+        if (lists.cursor.secondary) {                             // 006482AE..006482C9
+            if (!host.unit_is_group_member_007788b0(controlled)) refind = true;
+        } else if (host.unit_is_group_member_007788b0(controlled)   // 006482CB..006482EE
+                   && lists.secondary_9c.size() > 1) {
+            refind = true;                                        // the old +9Ch vector
+        }
+    }
+    lists.primary_8c.clear();                                     // 00648328 00645CA0
+    lists.secondary_9c.clear();                                   // 0064835E 00645CA0
+    for (const std::uint32_t unit : host.local_unit_list_1970()) {   // 00648363..006483EA
+        if (!host.unit_selectable_00645060(unit)) continue;       // 00648396
+        if (host.unit_is_group_member_007788b0(unit)) {           // 006483A1
+            const std::uint32_t leader = host.group_leader_007788d0(unit);   // 006483AC
+            if (leader == 0) continue;
+            if (host.unit_selectable_00645060(leader)) continue;  // 006483CC
+        }
+        lists.primary_8c.push_back(unit);                         // 006483E0 00647C20
+    }
+    if (controlled != 0) {                                        // 006483EC
+        const std::uint32_t leader = host.group_leader_007788d0(controlled);   // 006483FA
+        if (leader != 0) {
+            if (host.role_word_188_open(leader)) lists.secondary_9c.push_back(leader);   // 00648438
+            const int count = host.group_member_count_4f8(leader);           // 0064843D
+            for (int slot = 0; slot < count; ++slot) {
+                const std::uint32_t member = host.group_member_at_0070d060(leader, slot);
+                if (member == 0 || member == leader) continue;    // 00648458..00648462
+                if (host.role_word_188_open(member)) lists.secondary_9c.push_back(member);
+            }
+        }
+    }
+    if (refind) {                                                 // 00648492
+        // 0064849D..0064853C: the entry at the cursor in the NEW vectors.
+        const std::uint32_t at = hud_root_cursor_unit_00644a60(lists);
+        if (at == controlled) {                                   // 0064853C
+            FindAdapter adapter(host);
+            lists.cursor = hud_root_find_unit(view(lists.primary_8c), view(lists.secondary_9c),
+                controlled, adapter);                             // 0064854A 00644CC0
+            if (lists.cursor.index == 0xffffu) {                  // 00648557
+                lists.cursor = hud_root_find_primary_unit(view(lists.primary_8c), controlled,
+                    adapter);                                     // 00648569 00644C20
+            }
+        }
+    }
+    hud_root_settle_cursor_00645710(lists, host);                 // 00648578
+    if (lists.force_pending_c0) hud_root_force_select_unit_006485a0(lists, host);   // 0064858F
+}
+
+void hud_root_force_select_unit_006485a0(HudRootUnitLists& lists, HudRootUnitListsHost& host) {
+    lists.force_pending_c0 = false;                               // 006485A4
+    hud_root_rebuild_unit_lists_00648290(lists, host);
+    hud_root_settle_cursor_00645710(lists, host);
+    if (lists.primary_8c.empty()) {
+        host.set_controlled_unit_00645600(0);
+        if (host.manager_applied_04() == 0x34 && host.multiplayer_1fe4()) {
+            if (host.manager_pending_20() == 0x34 && host.manager_1c_equals_38()) {
+                host.push_interface_request_004cc460(0x2a);
+            }
+        } else if (host.manager_applied_04() == host.manager_pending_20()
+                   && host.manager_1c_equals_38()) {
+            host.push_interface_request_004cc460(0x34);
+        }
+        return;
+    }
+    host.set_controlled_unit_00645600(hud_root_cursor_unit_00644a60(lists));
+    if (host.controlled_unit() != 0) host.push_controlled_unit_interface_00647040();
+}
+
 void hud_root_toggle_closed(HudClosedRowsState& state, HudClosedRowsHost& host) {
     if (state.closed == 0) {
         if (state.interface_id == 0x22) {

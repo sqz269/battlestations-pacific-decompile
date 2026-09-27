@@ -1,0 +1,30 @@
+{
+ "packet": "cc9_force_select_unit",
+ "worker": "agent/cc9-hud2",
+ "doc": "docs/CONTROLLED_UNIT.md, section \"ForceSelectUnit and 006485A0\"",
+ "switch": "kForceSelectUnitBound, include/bsp/game_hosts_hud.hpp, committed false",
+ "steps": [
+  {"address": "008ab01f", "native": "006485a0", "function": "008aaf30", "what": "ForceSelectUnit calls 006485A0 on [00E198C4]+40h"},
+  {"address": "006485ab", "native": "00648290", "function": "006485a0", "what": "rebuild both vectors"},
+  {"address": "006485b2", "native": "00645710", "function": "006485a0", "what": "settle the cursor"},
+  {"address": "006485d2", "native": "00645600", "function": "006485a0", "what": "empty vector: release control (record)"},
+  {"address": "0064861e", "native": "004cc460", "function": "006485a0", "what": "empty vector: push 34h (record)"},
+  {"address": "00648913", "native": "00648290", "function": "006488d0", "what": "44h enter's rebuild"},
+  {"address": "00648396", "native": "00645060", "function": "00648290", "what": "+8Ch filter"},
+  {"address": "006483ac", "native": "007788d0", "function": "00648290", "what": "follower's leader"},
+  {"address": "00648453", "native": "0070d060", "function": "00648290", "what": "+9Ch group members"},
+  {"address": "0064854a", "native": "00644cc0", "function": "00648290", "what": "re-find the controlled unit"},
+  {"address": "00648569", "native": "00644c20", "function": "00648290", "what": "primary re-find"},
+  {"address": "00648578", "native": "00645710", "function": "00648290", "what": "settle"},
+  {"address": "006457c4", "native": "00644a60", "function": "00645710", "what": "cursor unit"},
+  {"address": "006457e6", "native": "00645060", "function": "00645710", "what": "cursor unit still selectable"}
+ ],
+ "names_added": {},
+ "no_ghidra_function": [],
+ "substitutions": [
+  "[game+18ECh] is local player index 0, as SetSelectedUnit takes it",
+  "the 44h enter's widget +4Ch calls, +24h and +F4h = 0 stay records; only 00648290 runs",
+  "empty +8Ch arm: 00645600(null) does not clear the units host's controlled unit and the manager fields are not read, so neither push is made (record)",
+  "initial cursor (0, -1): no constructor store of +C2h/+C4h found; the settle maps either start to (0, 0) on a non-empty rebuild"
+ ]
+}
