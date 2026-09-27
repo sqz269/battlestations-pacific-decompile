@@ -761,3 +761,43 @@ commandhelpers.lua 16796 are spawn parameter tables, not reads.
     equal to `written`;
   - pair_diff exit 1: every gameplay row, the death, plane and unit tables and every other
     summary line identical, the two census lines apart.
+
+### 11.6 The first pair, and what it caught
+
+The first pair was run on `81318497d`:
+- exports `local\ri_off` (SHA-256 prefix `8021B739520A`) and `local\ri_on` (`D76E077E7FEE`);
+- logs `local\ri_{off,on}_{usn04,usn02}.log`.
+
+It held on gameplay: pair_diff exit 1 on both, with identical death, plane and unit tables. But
+the scripts moved:
+- CreateScript 13 -> 10 on USN04 and 16 -> 13 on USN02, three `luaDoTimeTable` entities fewer;
+- `mission script state: Party 0 -> 2` on USN02.
+
+**The cause was the binding, not the image.**
+- `luaInit(this)` runs `this.Party = SetParty(this, PARTY_ALLIED)` (usn_2_java.lua 54,
+  usn_19_coralus.lua 60) inside CreateScript's own call.
+- The first binding then wrote the constant Party 2 on the next frame, over the 0.
+- In the image, SetParty on the script entity reaches its `vtable[2Ch]`, which is 00928F50
+  (00D11164). It works in two steps:
+  - **The store.** Its base 00923B80 stores the first argument at `+54h` (00923B92). The second
+    argument goes to `+58h` (00923B95), and 008A8ADF pushes the entity's own `+58h` there, so the
+    race comes back unchanged.
+  - **The mirror.** 00928F50 then mirrors Race and Party.
+- So pass C's 00928100 later writes the Party that SetParty left, 0, not the base's 2.
+
+**The fix** (still under the switch):
+- each script entity keeps its `+54h` and `+58h` (2 and -1 from the base);
+- SetParty on a script entity stores the party and mirrors both fields now (00928F50);
+- pass C writes the entity's current values.
+
+SetParty on any other entity stays the unimplemented record it was.
+
+**Added predictions for the re-run** (written before it):
+- CreateScript, SetThink and the timetable counts are identical OFF and ON (13 on USN04, 16 on
+  USN02);
+- `mission script state` keeps `Party=0`;
+- `party_sets=1` on both missions (`luaInit`'s own call);
+- `races_fed` 24 on USN04 and 30 on USN02, as the first pair measured;
+- `written` 13 on USN04 and 16 on USN02;
+- pair_diff exit 1, with the two census lines and the 00928100 / 00928F50 native rows the only
+  changes.
