@@ -10341,3 +10341,82 @@ not 8. The flag quoted the `1eaedc668` control (`local\ap_ctl_usn01.log`: 8).
   spawn is the image's behaviour for the Mavis' platform, or a host gap in the rack-to-spawn
   step, is not established. The candidate landing in that window is the Val rack route
   `5c25befbe` (`cc9_release_issue_stage_vals`).
+
+## Mission reference baselines, 2026-09-27 d (main df7f875c7)
+
+Packet `cc9_reference_rebaseline_4`, worker cc9-ships. **It replaces the 2026-09-26 c rows
+above.** The runs are under "The runs" below.
+
+**Run parameters:**
+- one binary, `local\rb4\build\win32\Release\bsp_game.exe` in worktree cc9-ships: a clean
+  `tools/pair_export.py` export of main `df7f875c7` with no flip, so every switch is in its landed
+  state (SHA-256 prefix under "The runs");
+- `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1`, lockstep `--mission-frame-seconds 0.05`, no
+  frame jitter, idle player, one run at a time through `tools/run_game.ps1`;
+- USN04 4700/4500, E2 = USN04 9200/9000, USN01 3200/3000 and USN02 9200/9000, each
+  `--press-start-frame 30 --menu-select <mission>`.
+
+### The landings since c, and what their pairs moved
+
+"=" means the pair was identical on that mission; "-" means it was not paired there. Values are
+deaths / hit records.
+
+| landing (merge) | pair doc | USN04 4500 | E2 9000 | USN01 3000 | USN02 9000 |
+| --- | --- | --- | --- | --- | --- |
+| torpedo rack drop `kReleaseIssueStageBound` (cbf39c3de) | `docs/RELEASE_ISSUE_STAGE.md`, "The pair, measured" | 41 / 727 -> 41 / 743 | 51 / 836 -> 51 / 843 | torpedo drops 2 -> 8 (attribution control in c) | - |
+| pick squadron members (e500bfb70) | `docs/PICK_SQUADRON_MEMBERS.md` | = | = | - | - |
+| world active byte, ScanProximity, gated fan-out, traffic walk (85485c48a, 5269065b0, 1cc12718e, b7fc4773d) | `docs/CONSTRUCT_WORLD.md` sections 10, 12, 14, 15 | = | - | - | = |
+| Val rack route `kReleaseIssueStageValsBound` (9f3b0e680) | `docs/RELEASE_ISSUE_STAGE.md`, Vals | = | = | - | - |
+| carried rounds `kDiveBombCarriedRoundsBound` (b6688794a) | `docs/RELEASE_ISSUE_STAGE.md`, carried rounds; drift pair (a) in c | = | = | = | - |
+| neighbour count `kShipAiNeighbourCountBound` (74b5552e7, cd9264a68) | `docs/SHIP_AI_TAILS.md` 13.4 | - | = | - | 22 / 440 -> 22 / 439 |
+| avoid-zone layer sample `kAvoidZoneLayerSampleBound` (817cf051d) | `docs/AVOID_ZONE_REGISTRY.md`; drift pair (b) in c | = | = | 7 / 141 -> 7 / 150, shots 447 -> 583, drops 2 -> 0 | = |
+| ring-scan probe (a3916014b) | `docs/SHIP_AI_TAILS.md` 14.5 | - | = | = (probe pair in c) | = |
+| unit death route `kUnitDeathRouteBound` (7eb3679dd) | `docs/UNIT_DEATH_ROUTE.md` section 4 | - | = | - | = |
+| InitAll `kSEntityInitAllBound` (114dd603b) | `docs/CONSTRUCT_WORLD.md` section 17 | = | = | - | = |
+| units contracts `kUnitsContractsBound` (508ccb82a) | `docs/AVOID_ZONE_REGISTRY.md`, units contracts | = | - | - | = |
+| scene Path and Landscape, Landscape terrain (563c25efc, 78d24c150) | `docs/SCENE_CONTENTS_HOSTS.md` sections 5 and 6 | = (41 / 743) | - | = (7 / 150) | - |
+| ship motion tail's three switches (53f3c6c65, f71e2b653, 47f79cd31) | `docs/SHIP_POST_MOTION.md` sections 12-14 | **not paired at 4500** | 51 / 843 -> 52 / 875 | - | 22 / 439 -> 22 / 411 |
+| proximity scan's units entries, loss warning (88d3a76f8, fe93be072) | `docs/CONSTRUCT_WORLD.md` sections 18, 19 | = | = | - | = |
+| Landscape spatial attach, scene and gunnery halves (b3bc3238f, 44f6a9b33) | `docs/SCENE_CONTENTS_HOSTS.md` section 8 | = (43 / 788) | - | = | - |
+| sunk-ship flush `kSunkShipFlushBound` (bcaee249b) | `docs/CONSTRUCT_WORLD.md` section 21 | - | = (52 / 875) | - | 22 / 411 -> 20 / 329 |
+| destroy step `kDeathRouteDestroyBound` (bb6a76f67) | `docs/CONSTRUCT_WORLD.md` section 22 | - | = | - | = |
+| ground-height hunks `kGroundHeightHunksBound` (7226c3505) | `docs/SCENE_CONTENTS_HOSTS.md` 7a | = | - | = | - |
+| init attach order, pass E, identity gaps, dedup, load-time InitAll (0c86989b7 .. 9db5c5290) | `docs/SENTITY_INIT_ATTACH_ORDER.md` sections 6-10 | = (43 / 788) | = (attach order) | - | = (20 / 329) |
+| Mavis racks `kRackRoundsPerRackBound` (10b1b7043) | `docs/RELEASE_ISSUE_STAGE.md`, Mavis | = | - | = (7 / 150) | - |
+| KillDepth kill `kSunkShipKillDepthBound` (ad2c11cb0) | `docs/CONSTRUCT_WORLD.md` section 24 | - | = | - | = |
+| sink descent `kShipSinkDescentBound` (af9eab355) | `docs/CONSTRUCT_WORLD.md` section 25 | - | = | - | 20 / 329 -> 21 / 354 |
+| ship director enables `kShipDirectorEnablesBound` (ce806c6df) | `docs/SENTITY_INIT_PASSES.md` section 8 | - | = | - | 20 / 329 -> 22 / 597 (on the base **before** the sink descent) |
+
+### Predictions, committed before the runs
+
+- **USN04 4500** from `lt_on_usn04.log` (cc9-init-passes, the load-time InitAll pair, identical
+  to every later pair on USN04): 11917.1 damage, 43 deaths, 788 hit records (331 hull), 5075
+  shots, first hit 93.00 s, torpedo-task 4 of 16 / dive-bomb 1 of 19, 1 torpedo drop, 16 water
+  contacts, Lexington 3514.72 m, no mission end.
+  - Four landings after that log were not paired on USN04: the Mavis racks (paired, identical,
+    on `MR_ON_USN04.log`), the KillDepth kill, the sink descent and the director flip. The last
+    three were identical on E2, whose first 4500 frames are this mission, so the row is predicted
+    unchanged.
+- **E2** from `tm_on_e2.log` (cc9-ships, the director-flip pair): 13618.3 damage, 52 deaths, 875
+  hit records (345 hull), 6092 shots, first hit 93.00 s, 4 of 16 / 1 of 19, 1 torpedo drop, 19
+  water contacts, Lexington 6017.22 m, no mission end, **phase 1 only**. The KillDepth kill and
+  the sink descent were identical on E2 too.
+- **USN01 3000** from `MR_ON_USN01.log` (cc9-units2, the Mavis pair): 2690.0 damage, 7 deaths,
+  150 hit records (85 hull), 583 shots, first hit 53.75 s, 3 of 5 / 0 of 2, 0 torpedo drops, 3
+  water contacts. The init passes, the KillDepth kill, the sink descent and the director flip were
+  not paired on USN01. USN01 has ships, so a move there is possible; any move is **flagged as
+  unpaired** and settled by an export pair.
+- **USN02 9000: no single log predicts it.** The sink descent (21 / 354) was paired without the
+  director flip, and the director flip (22 / 597) without the sink descent.
+  - The failure stays at **39.65 s**: Exeter is torpedoed by Tokitsukaze at 35.95 s on both
+    pairs' ON sides, before any wreck sinks.
+  - The first three death rows are the director pair's: Exeter 35.95 s, Yamakaze about 42.5 s,
+    Houston about 74.6 s.
+  - Band: deaths 19..25, hit records 450..700, gyro launches 180..240.
+  - It is settled by an export of the same commit with `kShipDirectorEnablesBound=false`, which
+    should read 21 / 354, the sink-descent pair's ON side.
+- **The USN04 4500 step 41 / 743 -> 43 / 788** is attributed to the ship motion tail by its E2
+  pair only. An export of the same commit with `kShipMotionTailBound=false` on USN04 4500 should
+  return to 41 / 743 with 3 of 19 dive releases and 5 of 16 torpedo releases.
+- **Unimplemented rows:** within +/- 5 of USN04 545, E2 546, USN01 463 and USN02 516.
+- **Per-entity death tables:** equal to the source logs' `death row` lines on USN04, E2 and USN01.
