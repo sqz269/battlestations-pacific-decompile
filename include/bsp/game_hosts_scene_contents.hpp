@@ -406,7 +406,8 @@ inline constexpr bool kSceneLandscapeTerrainBound = true;
 // 00903BC0 asks every Landscape's slot 3Ch (full inverse frame, rotation
 // included) in place of its world-space march. The vertical case 00AECC40 is
 // still the march (its sub-walk 00AECA60 is unread; labelled).
-inline constexpr bool kTerrainSegmentQuadtreeBound = false;
+// ON since the pairs (docs/SCENE_CONTENTS_HOSTS.md 10.5).
+inline constexpr bool kTerrainSegmentQuadtreeBound = true;
 
 // One 33x33 sample block of a `NODE` tile (00ADFD70: 00ADC420(21h, 21h), block
 // vtable 00D5D314, 2 bytes per sample). 00ADC6C0 reads `offset` (+2Ch) and
