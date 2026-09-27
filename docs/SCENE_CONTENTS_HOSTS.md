@@ -2216,3 +2216,51 @@ Diagnostics added, printed in both builds unless noted:
   - `pe.py` reads floats and doubles from the image on disk;
   - `pairs.ps1` runs USN13/USN01/USN04/USN02 pairs, and `pairs2.ps1` runs JM08/USN01/USN04/USN02;
   - the `edit*.py` files are the applied edits.
+
+## 16. The entity reader normalises every `localframe` (read, 2026-09-27)
+
+Worker cc9-terrain2, on main 26fa4ca42. Ghidra was read only. This closes item 2 of section 15.
+
+- **Where.** `BSP_SceneFile_ReadEntityBlock` (0046CF40..0046D927) reads the 16 floats into its
+  frame (0046D150..0046D166, 008D9B40 per float). Before anything uses them it rebuilds the basis:
+  - s = sqrt(row0 · row0), stored float (0046D168..0046D1A5); s = 0 when the square is not above
+    1e-10 [00CE3820];
+  - `BSP_Matrix_OrthonormalizeBasisRows` 0085DC80 on the frame (0046D1BA). Row 2 is the authority
+    and is renormalised; row 1 is made orthogonal to it; row 0 = row1 x row2 (the host's
+    `orthonormalize_basis_rows_0085dc80`, `src/plane_pose_commit.cpp`);
+  - rows 0..2 (elements 0-2, 4-6, 8-10) are multiplied by s (0046D1BF..0046D222). The translation
+    row is untouched.
+- **Then** the normalised frame is what 0046D592 passes to the class creator. PlaceInWorld 00928860
+  hands it to 009258F0, which copies it verbatim into the node's +74h (004134F0). The terrain node's
+  frame comes from that (00ADE820).
+- **This applies to every entity the scene file reads,** not only Landscapes.
+
+### What it does to the five frames of 13.3
+
+| frame | authored | in the image |
+| --- | --- | --- |
+| usn_13_truk 07, yamato 07, shogo_four 02, bulls_run 01 | `-0.866 0 0.5 / 0 1 0 / -0.5 0 0` | rows (0, 0, 1) / (0, 1, 0) / (-1, 0, 0), s = 1: an exact yaw of -90 degrees, no shear |
+| us_osumi 01 | `0.559 0 0.829 / 0 1 0 / 0 0 1` | identity, s = 1: the intended -56 degrees is dropped because row 2 is (0, 0, 1) |
+
+- **So the image has no sheared island.** The segment test's scaled transpose (13.3) and the
+  general inverse agree on these normalised frames.
+- **The host's gap is upstream.** `src/scene_file.cpp` composes the authored frame as read, with
+  no 0085DC80 step, so the host places and traces these five islands sheared or wrongly rotated.
+  `kLandscapeScaledTransposeInverseBound` answers the image's inverse of a frame the image never
+  builds. It stays correct once the frames are normalised, and harmless before.
+- **The census `yaw=-90.0` for usn_13_truk 07 (13.2)** came from row 2, which is the row the image
+  keeps.
+- **Every other authored frame** is orthonormal to about 1e-4 (four-decimal authoring), so
+  normalisation moves it by about 1e-4. That is the same scale as the 13.5 failed prediction.
+
+### Proposed packet (not bound here)
+
+- **Name:** `cc9_scene_frame_normalise`. At the point where the host takes an entity's
+  `localframe` (`parse_entity` in `src/scene_file.cpp`, before the 00413920 composition),
+  apply s = |row 0|, then `orthonormalize_basis_rows_0085dc80`, then scale rows 0..2 by s.
+  Put it behind one switch.
+- **Expected effect:**
+  - usn_13_truk, yamato, shogo_four, bulls_run and us_osumi change island placement;
+  - every ship and plane's start frame moves by about 1e-4;
+  - so gameplay rows on USN01, USN02 and USN04 may move slightly and must be judged per entity.
+  It needs its own pairs on those three and on USN13.
