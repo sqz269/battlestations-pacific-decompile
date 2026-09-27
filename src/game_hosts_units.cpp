@@ -1335,6 +1335,12 @@ struct GameUnitSlot {
     float leak_rate_cap_08{0.0f};     // +08h
     float leak_capacity_0c{0.0f};     // +0Ch = controller+84h / 10
     float leak_rate_34{0.0f};         // +34h
+    // Packet cc9_live_hull_leak: +38h (DamageToDeath, 200.0 from 0074E7B0 unless
+    // the class authors both keys), +2Ch (the total rate 0074F930 last summed)
+    // and +04h (Length / 3.0, 0074F4F6), the three fields 0074F090 reads.
+    float leak_damage_to_death_38{200.0f};
+    float leak_total_rate_2c{0.0f};
+    float leak_station_04{0.0f};
     float controller_reserve_84{0.0f}; // controller+84h, 00937F74
     bool leak_redistributed{false};   // 0074EC50 ran (the wreck handler)
     float leak_first_water_t{-1.0f};
@@ -1878,7 +1884,9 @@ struct GameUnitsHost::Impl {
             damage_to_death = d;
             time_to_death = t;
         }
-        static_cast<void>(damage_to_death);  // +30h = +34h / +38h has no reader here
+        s.leak_damage_to_death_38 = damage_to_death;  // +38h, read by 0074F090
+        s.leak_station_04 = static_cast<float>(
+            static_cast<double>(length) / 3.0);         // +04h, 0074F4F0..0074F4FC
         const float r34 = kEnnyiVizEsKeszPercentSubstitute * s.leak_capacity_0c;
         s.leak_rate_34 = (r34 + r34) / time_to_death;
         if (s.leak_rate_cap_08 < s.leak_rate_34) s.leak_rate_cap_08 = s.leak_rate_34;
@@ -3850,6 +3858,23 @@ struct GameUnitsHost::Impl {
     // USN02 wrecks reach -200 m 106..117 s after +5Dh (91..98 s on the
     // stand-in); E2 gameplay moves through live flotation (51 vs 52 deaths).
     static constexpr bool kShipBuoyancyElementsBound = true;
+    // Packet cc9_live_hull_leak, docs/UNIT_MESSAGE_ARMS.md ("90h, bound"). ON:
+    // add_leak_0074f440 runs 0074F090 on the leak manager for a hit's 90h
+    // message (008221A7: amount = (float)(uint32)n * 10.0). OFF: it counts
+    // the call and does nothing. The sender is the gunnery host's R10 / R11c
+    // (0082755F, and the inline build at 00827663..), a follow-up there.
+    static constexpr bool kLiveHullLeakBound = false;
+    // SUBSTITUTION, labelled: GameSettings +40Ch VizbeomlesDolgok.DologSzorzo
+    // is this installation's scripts/datatables/shipglobals.lua line 388
+    // (2024-07-13): 2. The loader default is 4.0 (0083EEBE).
+    static constexpr float kDologSzorzoSubstitute = 2.0f;
+    unsigned long long hull_leak_calls = 0;
+    unsigned long long hull_leak_no_model = 0;
+    unsigned long long hull_leak_gated_live = 0;
+    unsigned long long hull_leak_applied = 0;
+    unsigned long long hull_leak_applied_wreck = 0;
+    double hull_leak_rate_added = 0.0;
+
     // Packet cc9_scene_home_base_key, docs/CONSTRUCT_WORLD.md section 29. ON:
     // squadron pass C (007F4BA0) takes a scene row's `HomeBase` (00CF8820, read
     // at 007F4C43): a non-empty name resolves through 00925A90 (the host: the
@@ -5498,6 +5523,7 @@ public:
                 slot_.leak_rate_cap_08, slot_.leak_capacity_0c,
                 GameUnitsHost::Impl::kEnnyiVizEsKeszPercentSubstitute, 1.0f, gate_5d, dt);
             leak_water_mass_10fc = r.total_water;
+            slot_.leak_total_rate_2c = r.total_rate;  // +2Ch, 0074F984
             if (r.total_water > 0.0f && slot_.leak_first_water_t < 0.0f)
                 slot_.leak_first_water_t = owner_.summary.simulated_seconds;
         } else {
@@ -18267,6 +18293,105 @@ void GameUnitsHost::set_squadron_scene_home_base(std::size_t squadron_index,
     if (!home_base.empty()) ++impl_->scene_home_keys_set;
 }
 
+bool GameUnitsHost::add_leak_0074f440(std::size_t index, std::uint32_t count,
+    const float world_point[3]) {
+    // Packet cc9_live_hull_leak. The 90h arm 008221A7 and its callee chain:
+    //   008221A7  FILD [msg+1Ch], unsigned fixup (00CE3978), FMUL 10.0 (00CE3DC0)
+    //   0074F440  refresh the owner pose, transform msg+20h by pose+CCh, call 0074F090
+    // SUBSTITUTION, labelled: the sender takes the hit's world point into the
+    // hull frame (00414E10 / the cached inverse at unit+110h) and 0074F440 takes
+    // it back with pose+CCh; the host applies the message at once on one pose,
+    // so the world point is passed through unchanged.
+    Impl& host = *impl_;
+    ++host.hull_leak_calls;
+    if constexpr (!Impl::kLiveHullLeakBound) {
+        static_cast<void>(index);
+        static_cast<void>(count);
+        static_cast<void>(world_point);
+        host.record("LeakManager::add_leak_0074f440", 0x0074f440u);
+        return false;
+    } else {
+        if (index >= host.slots.size()) return false;
+        GameUnitSlot& s = *host.slots[index];
+        if (!s.leak_ready) {
+            ++host.hull_leak_no_model;
+            return false;
+        }
+        const float amount = static_cast<float>(static_cast<double>(count) * 10.0);
+        // 0074F09A..0074F0BF: a live unit (+5Ch set, +5Dh / +60h / +5Eh clear)
+        // takes the leak only when its class `Repair` byte (+D0h) is set.
+        // SUBSTITUTION, labelled: this host does not load `Repair` (the Lua host
+        // has no boolean class reader yet), so every class answers 0 here and no
+        // live hull floods; a wreck (+5Dh set) always takes the leak.
+        const bool live = s.state != nullptr && s.state->active != 0 &&
+                          s.state->simulate == 0 && s.scene_destroyed_005e == 0 &&
+                          s.scene_pending_destroy_0060 == 0;
+        const bool class_repair = false;
+        if (live && !class_repair) {
+            ++host.hull_leak_gated_live;
+            host.done("LeakManager::add_leak_0074f440", 0x0074f440u);
+            return false;
+        }
+        // 0074F0D5..0074F102: d = point - pose translation (pose+FCh).
+        const float d[3] = {world_point[0] - s.motion.position[0],
+                            world_point[1] - s.motion.position[1],
+                            world_point[2] - s.motion.position[2]};
+        // 0074F10F..0074F170: along = forward . d (row 2 of pose+CCh, stored as a
+        // float), plus Length * 0.5 (00D7A280).
+        const float* f = s.motion.pose_row2;
+        const float along = static_cast<float>(static_cast<double>(f[1]) * d[1] +
+            static_cast<double>(f[0]) * d[0] + static_cast<double>(f[2]) * d[2]);
+        const float shifted = static_cast<float>(static_cast<double>(along) +
+            static_cast<double>(s.motion_class.hull_length) * 0.5);
+        // 0074F174..0074F193: 00BF7420 truncates; below 0 -> 0; at or past
+        // count/2 -> count/2 - 1.
+        const int half = static_cast<int>(s.leaks.size()) >> 1;
+        int leak = s.leak_station_04 != 0.0f
+            ? static_cast<int>(static_cast<double>(shifted) / s.leak_station_04) : 0;
+        if (leak < 0) leak = 0; else if (leak >= half) leak = half - 1;
+        // 0074F196..0074F1AB: the +x side takes the second half.
+        const double side = static_cast<double>(d[0]) * f[2] - static_cast<double>(f[0]) * d[2];
+        if (side > 0.0) leak += half;
+        // 0074F4A1..0074F4EA: k = ln(sqrt(DologSzorzo)) / ln(2.0), stored as a float.
+        const float k = static_cast<float>(
+            std::log(static_cast<double>(static_cast<float>(
+                std::sqrt(static_cast<double>(Impl::kDologSzorzoSubstitute))))) /
+            std::log(2.0));
+        // 0074F1AD..0074F22C: u = |D / R| ^ (1 / k), 0 when D / R is 0.
+        const float ratio = static_cast<float>(
+            static_cast<double>(s.leak_total_rate_2c) / s.leak_rate_34);
+        const float inv_k = static_cast<float>(1.0 / static_cast<double>(k));
+        float u = 0.0f;
+        if (ratio != 0.0f) {
+            u = static_cast<float>(std::exp2(static_cast<double>(inv_k) *
+                std::log2(std::fabs(static_cast<double>(ratio)))));
+        }
+        // 0074F22C..0074F24B: z = (T * u + amount) / T, T = +38h.
+        const float t = s.leak_damage_to_death_38;
+        const float tu = static_cast<float>(static_cast<double>(t) * u);
+        const float z = static_cast<float>(
+            (static_cast<double>(tu) + amount) / static_cast<double>(t));
+        // 0074F24F..0074F2A4: w = |z| ^ k, 0 when z is 0.
+        float w = 0.0f;
+        if (z != 0.0f) {
+            w = static_cast<float>(std::exp2(static_cast<double>(k) *
+                std::log2(std::fabs(static_cast<double>(z)))));
+        }
+        // 0074F2AA..0074F2D1: D' = w * R; rates[leak] += D' - D; +2Ch = D'.
+        const float next = static_cast<float>(static_cast<double>(w) * s.leak_rate_34);
+        const float delta = static_cast<float>(
+            static_cast<double>(next) - s.leak_total_rate_2c);
+        s.leak_total_rate_2c = next;
+        s.leaks[static_cast<std::size_t>(leak)].rate = static_cast<float>(
+            static_cast<double>(s.leaks[static_cast<std::size_t>(leak)].rate) + delta);
+        ++host.hull_leak_applied;
+        if (!live) ++host.hull_leak_applied_wreck;
+        host.hull_leak_rate_added += delta;
+        host.done("LeakManager::add_leak_0074f440", 0x0074f440u);
+        return true;
+    }
+}
+
 bool GameUnitsHost::ship_wreck_sink_00824fe5(const void* identity) {
     if constexpr (!Impl::kShipSinkDescentBound) {
         static_cast<void>(identity);
@@ -18802,6 +18927,9 @@ void GameUnitsHost::report() {
             "redistributions=%llu (00824FE5 / 0074F490, packet cc9_ship_sink_descent)",
             Impl::kShipSinkDescentBound ? 1 : 0, host.leak_models_built,
             host.leak_redistributions);
+        host.log.notef("summary live hull leak bound=%d calls=%llu no_model=%llu gated_live=%llu applied=%llu applied_wreck=%llu rate_added=%.3f (008221A7 / 0074F440 / 0074F090, packet cc9_live_hull_leak)", Impl::kLiveHullLeakBound ? 1 : 0,
+            host.hull_leak_calls, host.hull_leak_no_model, host.hull_leak_gated_live,
+            host.hull_leak_applied, host.hull_leak_applied_wreck, host.hull_leak_rate_added);
         host.log.notef("summary sunk ship kill depth bound=%d wrecks=%zu lowest_end_y=%.2f "
             "tests=%llu kills=%zu unlinked_nodes=%llu list6=%u kill_depth=%.1f (00826628, "
             "packet cc9_sunk_ship_kill_depth)", Impl::kSunkShipKillDepthBound ? 1 : 0,
