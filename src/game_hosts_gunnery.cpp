@@ -1478,6 +1478,7 @@ struct GameGunneryHost::Impl {
     unsigned long long wreck_hits_delivered{0};  // passed on by 009239A0's rule
     unsigned long long wreck_hits_past_window{0}; // hull shapes out of the index
     unsigned long long wreck_shapes_offered{0};   // shape_count answered 1 for a wreck
+    std::vector<std::uint8_t> class_repair_flags;  // class+D0h per unit (cc9_live_hull_repair)
     // Packet cc9_wreck_hit_delivery: a dead ship whose hull shapes are still in
     // the collision index (flag 8 until 008263E2: 60 s, 20 s for kind 0Eh).
     bool wreck_in_hit_window(std::size_t index) const {
@@ -2549,6 +2550,10 @@ void GameGunneryHost::Impl::build_guns(std::size_t first_unit) {
             DamageControl& dc = damage_control[i];
             dc.enabled = flat(type_id, "repair", 1) != 0
                 && units.unit_is_kind_of(i, bsp::kUnitGunneryKindShipBase);
+            // Packet cc9_live_hull_repair: the class byte itself, for the leak gate.
+            if (class_repair_flags.size() < unit_state.size())
+                class_repair_flags.resize(unit_state.size(), 0);
+            class_repair_flags[i] = flat(type_id, "repair", 1) != 0 ? 1 : 0;
             dc.water_tick = flat_scaled(type_id, "dcwater", kMilliScale, 0.0f);
             dc.fire_tick = flat_scaled(type_id, "dcfire", kMilliScale, 0.0f);
             // settings+3B4h as the loader stores it (0083E243 divides by 100.0,
@@ -6946,6 +6951,21 @@ void GameGunneryHost::Impl::run_damage_control(float dt) {
                 kill_unit(unit);
             }
         }
+    }
+    // Packet cc9_live_hull_repair: the leak manager's two inputs, every step, for
+    // every unit. The Repair byte is the class flag dc.enabled already reads
+    // (00962E16: 1 unless the class authors false); the health is 00923BE0's
+    // clamped current / maximum, 0 for a dead unit.
+    for (std::size_t i = 0; i < unit_state.size(); ++i) {
+        const UnitState& st = unit_state[i];
+        float fraction = 0.0f;
+        if (!st.dead && st.max_health > 0.0f) {
+            fraction = st.health / st.max_health;
+            if (!(fraction > 0.0f)) fraction = 0.0f;
+            if (fraction > 1.0f) fraction = 1.0f;
+        }
+        const bool repair = i < class_repair_flags.size() && class_repair_flags[i] != 0;
+        units.set_unit_leak_inputs(i, fraction, repair);
     }
     if (!(dt > 0.0f)) return;
     const std::size_t n = std::min(damage_control.size(), unit_state.size());

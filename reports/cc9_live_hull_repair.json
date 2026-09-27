@@ -1,0 +1,83 @@
+{
+  "packet": "cc9_live_hull_repair",
+  "doc": "docs/UNIT_MESSAGE_ARMS.md",
+  "calls": [
+    {
+      "address": "0074F47A",
+      "native": "0074F090",
+      "function": "0074F440",
+      "note": "the gate that reads class+D0h (0074F0B2..0074F0BF)"
+    }
+  ],
+  "coverage": [
+    {
+      "routine": "00923BE0",
+      "coverage": "used as the gunnery row's clamped current / maximum, 0 when dead (header in bsp/ai_close_attack_tick.hpp)"
+    }
+  ],
+  "substitutions": [
+    {
+      "what": "00923BE0's torn-down arm (+5Dh -> 0.0)",
+      "is": "the gunnery host's dead flag -> 0.0",
+      "where": "run_damage_control"
+    }
+  ],
+  "corrections": [],
+  "switches": [
+    {
+      "name": "kLiveHullRepairBound",
+      "committed": "OFF, flipped ON after the pairs",
+      "file": "src/game_hosts_units.cpp"
+    }
+  ],
+  "failed_predictions": [
+    {
+      "row": "USN02 wreck descents",
+      "predicted": "hit-over-time 65..90 s; one-hit 5..20 s faster",
+      "measured": "Kawakaze 82.2; others 93..103; one-hit deaths 7..57 s slower (Exeter 160.71, Houston 146.35, Perth 142.15)",
+      "cause": "0074EC50 shares 2 x cap by each leak's water; live water in one leak sends most of it to that leak, which 0074F930 clips at cap"
+    },
+    {
+      "row": "USN02 kills / list 6",
+      "predicted": "16..19 / 13..16",
+      "measured": "15 / 17",
+      "cause": "the same"
+    },
+    {
+      "row": "USN04 Lexington floods",
+      "predicted": "to about 14813 at 15/8000",
+      "measured": "dry; 8000/8000 on current main, no hull send",
+      "cause": "stale knife-edge premise"
+    }
+  ],
+  "no_ghidra_function": [],
+  "ledger_names_added": [],
+  "pairs": {
+    "USN02_9200": {
+      "exit": 3,
+      "deaths": [
+        20,
+        20
+      ],
+      "hit_records": [
+        674,
+        664
+      ],
+      "kills": [
+        15,
+        15
+      ]
+    },
+    "USN04_4700": {
+      "exit": 3,
+      "deaths": [
+        41,
+        41
+      ],
+      "hit_records": [
+        812,
+        812
+      ]
+    }
+  }
+}

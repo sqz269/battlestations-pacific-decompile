@@ -1341,6 +1341,9 @@ struct GameUnitSlot {
     float leak_damage_to_death_38{200.0f};
     float leak_total_rate_2c{0.0f};
     float leak_station_04{0.0f};
+    // Packet cc9_live_hull_repair: set by the gunnery host every step.
+    float leak_health_fraction{1.0f};  // 00923BE0
+    bool class_repair_00d0{false};     // class+D0h
     float controller_reserve_84{0.0f}; // controller+84h, 00937F74
     bool leak_redistributed{false};   // 0074EC50 ran (the wreck handler)
     float leak_first_water_t{-1.0f};
@@ -3870,6 +3873,15 @@ struct GameUnitsHost::Impl {
     // is this installation's scripts/datatables/shipglobals.lua line 388
     // (2024-07-13): 2. The loader default is 4.0 (0083EEBE).
     static constexpr float kDologSzorzoSubstitute = 2.0f;
+    // Packet cc9_live_hull_repair, docs/UNIT_MESSAGE_ARMS.md ("90h: the Repair
+    // byte and the health"). ON: 0074F090's live gate reads the class Repair
+    // byte and 0074F930's live cap reads the unit's health fraction, both as
+    // the gunnery host hands them over. OFF: Repair 0 and health 1.0, the
+    // labelled substitutions of packets cc9_live_hull_leak and
+    // cc9_ship_sink_descent.
+    // ON since the USN02 / USN04 pairs (f27fb079a): live hulls flood to their
+    // cap; one-hit wrecks sink slower (0074EC50 weights by water).
+    static constexpr bool kLiveHullRepairBound = true;
     unsigned long long hull_leak_calls = 0;
     unsigned long long hull_leak_no_model = 0;
     unsigned long long hull_leak_gated_live = 0;
@@ -5520,10 +5532,13 @@ public:
             // are zero here (no 90h leak is bound), so its water stays zero and
             // the health does not matter: 1.0 is passed, labelled.
             const bool gate_5d = slot_.state != nullptr && slot_.state->simulate != 0;
+            // Packet cc9_live_hull_repair: 00923BE0 under its switch, else 1.0.
+            const float health = GameUnitsHost::Impl::kLiveHullRepairBound
+                ? slot_.leak_health_fraction : 1.0f;
             const bsp::UnitLeakTickResult r = bsp::unit_leak_tick_0074f930(
                 slot_.leaks.data(), static_cast<std::uint32_t>(slot_.leaks.size()),
                 slot_.leak_rate_cap_08, slot_.leak_capacity_0c,
-                GameUnitsHost::Impl::kEnnyiVizEsKeszPercentSubstitute, 1.0f, gate_5d, dt);
+                GameUnitsHost::Impl::kEnnyiVizEsKeszPercentSubstitute, health, gate_5d, dt);
             leak_water_mass_10fc = r.total_water;
             slot_.leak_total_rate_2c = r.total_rate;  // +2Ch, 0074F984
             if (r.total_water > 0.0f && slot_.leak_first_water_t < 0.0f)
@@ -18295,6 +18310,14 @@ void GameUnitsHost::set_squadron_scene_home_base(std::size_t squadron_index,
     if (!home_base.empty()) ++impl_->scene_home_keys_set;
 }
 
+void GameUnitsHost::set_unit_leak_inputs(std::size_t index, float health_fraction,
+    bool class_repair) {
+    if (index >= impl_->slots.size()) return;
+    GameUnitSlot& s = *impl_->slots[index];
+    s.leak_health_fraction = health_fraction;
+    s.class_repair_00d0 = class_repair;
+}
+
 bool GameUnitsHost::add_leak_0074f440(std::size_t index, std::uint32_t count,
     const float world_point[3]) {
     // Packet cc9_live_hull_leak. The 90h arm 008221A7 and its callee chain:
@@ -18330,7 +18353,7 @@ bool GameUnitsHost::add_leak_0074f440(std::size_t index, std::uint32_t count,
         const bool live = s.state != nullptr && s.state->active != 0 &&
                           s.state->simulate == 0 && s.scene_destroyed_005e == 0 &&
                           s.scene_pending_destroy_0060 == 0;
-        const bool class_repair = false;
+        const bool class_repair = Impl::kLiveHullRepairBound && s.class_repair_00d0;
         if (live && !class_repair) {
             ++host.hull_leak_gated_live;
             host.done("LeakManager::add_leak_0074f440", 0x0074f440u);
@@ -18934,6 +18957,24 @@ void GameUnitsHost::report() {
         host.log.notef("summary live hull leak bound=%d calls=%llu no_model=%llu gated_live=%llu applied=%llu applied_wreck=%llu rate_added=%.3f (008221A7 / 0074F440 / 0074F090, packet cc9_live_hull_leak)", Impl::kLiveHullLeakBound ? 1 : 0,
             host.hull_leak_calls, host.hull_leak_no_model, host.hull_leak_gated_live,
             host.hull_leak_applied, host.hull_leak_applied_wreck, host.hull_leak_rate_added);
+        {
+            std::size_t flooded = 0;
+            for (const auto& slot : host.slots) {
+                if (!slot->leak_ready || slot->leak_water_mass_10fc <= 0.0f) continue;
+                ++flooded;
+                const bool dead = slot->state != nullptr && slot->state->simulate != 0;
+                host.log.notef("  hull water %-18s water=%.1f capacity=%.1f health=%.4f "
+                    "repair=%d dead=%d first_water_t=%.2f", slot->row.name.c_str(),
+                    static_cast<double>(slot->leak_water_mass_10fc),
+                    static_cast<double>(slot->leak_capacity_0c),
+                    static_cast<double>(slot->leak_health_fraction),
+                    slot->class_repair_00d0 ? 1 : 0, dead ? 1 : 0,
+                    static_cast<double>(slot->leak_first_water_t));
+            }
+            host.log.notef("summary live hull repair bound=%d flooded_hulls=%zu (00962E16 / "
+                "00923BE0, packet cc9_live_hull_repair)", Impl::kLiveHullRepairBound ? 1 : 0,
+                flooded);
+        }
         host.log.notef("summary sunk ship kill depth bound=%d wrecks=%zu lowest_end_y=%.2f "
             "tests=%llu kills=%zu unlinked_nodes=%llu list6=%u kill_depth=%.1f (00826628, "
             "packet cc9_sunk_ship_kill_depth)", Impl::kSunkShipKillDepthBound ? 1 : 0,
