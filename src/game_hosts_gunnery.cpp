@@ -1169,6 +1169,8 @@ struct GameGunneryHost::Impl {
     // 0072F6E0's per-gun cache: (gun, target) -> clear.
     std::map<std::pair<std::size_t, std::size_t>, bool> line_of_fire_cache;
     unsigned long long impacts_land{0};   // packet cc9_landscape_spatial_attach
+    unsigned long long landscape_traces{0};  // Landscape shapes reached past 0085CAD0
+    unsigned long long pick_rays_logged{0};
     unsigned long long line_of_fire_queries{0};
     unsigned long long line_of_fire_blocked{0};
     unsigned long long line_of_fire_refusals{0};
@@ -5244,6 +5246,7 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
         // the Landscape (00470370 at 0087FFD9), kind 0Ah, segment -1.
         const float f[3] = {from.x, from.y, from.z};
         const float t[3] = {to.x, to.y, to.z};
+        ++owner_.landscape_traces;
         LandscapeSegmentHit land;
         if (!landscape_entry_segment_hit(static_cast<std::size_t>(landscape_entry(index)),
                 f, t, land)) return false;
@@ -5451,6 +5454,12 @@ bool GameGunneryHost::query_segment_units(const float from[3], const float to[3]
         &land);
     if constexpr (kLandscapeSpatialAttachBound) {
         note_land_hit_query(LandHitConsumer::PickRay, land);
+        if (impl_->pick_rays_logged < 3) {
+            ++impl_->pick_rays_logged;
+            impl_->log.notef("  landscape attach pick ray from=(%.1f,%.1f,%.1f) "
+                "to=(%.1f,%.1f,%.1f) land=%d unit=%zu", from[0], from[1], from[2],
+                to[0], to[1], to[2], land ? 1 : 0, hit_unit);
+        }
     }
     return hit;
 }
@@ -7935,6 +7944,8 @@ void GameGunneryHost::report() {
             kLandscapeSpatialAttachBound ? 1 : 0,
             kLandscapeSpatialAttachBound ? landscape_segment_entry_count() : std::size_t{0},
             format_land_hit_census().c_str(), host.impacts_land);
+        host.log.notef("summary mission gunnery landscape attach traces=%llu",
+            host.landscape_traces);
         host.log.notef("summary mission gunnery aabb 0085cdb0 line_of_fire_tests=%llu "
             "narrowphase_box_hits=%llu bound=%d (0098B130/00929B80, packet cc9_aabb_0085cdb0)",
             host.line_of_fire_aabb_tests, host.narrowphase_box_0085cdb0, kAabb0085cdb0Bound ? 1 : 0);

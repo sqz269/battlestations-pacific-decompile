@@ -2884,7 +2884,17 @@ void GameSceneContentsHost::run_load_scene_contents_004d4df0(const std::string& 
             if (!land.terrain) continue;
             ++loaded;
             blocks += land.terrain->blocks.size();
-            std::size_t mine = 0, close = 0, same_landscape = 0;
+            std::size_t mine = 0, close = 0, same_landscape = 0, probe_hits = 0;
+            std::size_t probe_close = 0;
+            std::size_t entry_of_land = static_cast<std::size_t>(-1);
+            {
+                const std::size_t entries = landscape_segment_entry_count();
+                for (std::size_t e = 0; e < entries; ++e) {
+                    if (landscape_segment_entry_object(e) == static_cast<int>(index)) {
+                        entry_of_land = e;
+                    }
+                }
+            }
             double worst = 0.0;
             for (const GameSceneEntityRecord& entity : impl.entities) {
                 if (entity.parent_scene_id != land.scene_id || !entity.generated) continue;
@@ -2896,6 +2906,19 @@ void GameSceneContentsHost::run_load_scene_contents_004d4df0(const std::string& 
                 world_ground_height_00903860(point, ground);
                 world_ground_normal_009038f0(point, normal);
                 if (world_landscape_at_009039d0(point) == static_cast<int>(index)) ++same_landscape;
+                // Packet cc9_landscape_spatial_attach: the entry trace straight
+                // down through the object, 50 m either side.
+                if (entry_of_land != static_cast<std::size_t>(-1)) {
+                    const float top[3] = {point[0], point[1] + 50.0f, point[2]};
+                    const float bottom[3] = {point[0], point[1] - 50.0f, point[2]};
+                    LandscapeSegmentHit probe;
+                    if (landscape_entry_segment_hit(entry_of_land, top, bottom, probe)) {
+                        ++probe_hits;
+                        if (std::fabs(static_cast<double>(probe.point[1]) - ground) < 0.05) {
+                            ++probe_close;
+                        }
+                    }
+                }
                 ++mine;
                 const double diff = std::fabs(static_cast<double>(ground) - point[1]);
                 if (diff < 0.01) ++close;
@@ -2904,8 +2927,9 @@ void GameSceneContentsHost::run_load_scene_contents_004d4df0(const std::string& 
             children += mine;
             within += close;
             impl.log.notef("scene terrain self-check: landscape=%s objects=%zu on_ground_1cm=%zu "
-                "worst=%.3f landscape_at_self=%zu (00903860 / 009038f0 / 009039d0)",
-                land.name.c_str(), mine, close, worst, same_landscape);
+                "worst=%.3f landscape_at_self=%zu segment_probe_hits=%zu segment_probe_on_ground=%zu "
+                "(00903860 / 009038f0 / 009039d0 / 0087ff80)",
+                land.name.c_str(), mine, close, worst, same_landscape, probe_hits, probe_close);
         }
         const SceneTerrainQueryCensus& census = scene_terrain_query_census();
         impl.log.notef("summary scene terrain bound=%d landscapes=%zu loaded=%zu blocks=%zu "
