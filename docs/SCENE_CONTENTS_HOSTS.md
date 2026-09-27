@@ -2924,8 +2924,8 @@ unverified step.
   - `0077FAD0` is the squadron entity's own init slot. 007F4BA0 BSP_PlaneSquadron_SEntityInitSlotA4
     calls it on the squadron (ESI = this), and it joins a unit group.
   - The `+170h` virtual at 007F4BD8..007F4BE6 is called on the sub-object at +170h of the pointer
-    held in squadron+3D0h. It is not read further here; it takes no pose argument.
-  - Neither writes a member's pose.
+    held in squadron+3D0h. Its body was not read, so it is the one unverified step.
+  - 0077FAD0 writes no member pose.
 - **So seat 3 really starts 280.9 m ahead of its (-200, 0, -200) station,** as the section 25 log
   showed. The stacked reading holds and nothing is bound.
 
