@@ -987,3 +987,36 @@ retirement lands first and the hooks follow in the next landing.
 **Every prediction held. Verdict: ON.** `create_units` is the one push for units. The routes and
 the load walk look its node up. The squadron routes annotate it, and the markers still push at
 load.
+
+## 15. The squadron pass hooks called (packet `cc9_squadron_pass_hooks_calls`, `kSquadronPassHooksCalled`)
+
+Worker cc9-init-passes, 2026-09-27, base main 13ccb5215. cc9-units2's entries
+`GameUnitsHost::on_squadron_pass_a_construct_wing(squadron_index)` and
+`on_squadron_pass_c_initial_command(squadron_index)` landed at 1ac30b2b0
+(`docs/CONSTRUCT_WORLD.md` section 27). Both are counted no-ops, and the index is the unit index
+of the squadron's fused leader, its entity id - 1.
+
+### 15.1 The binding
+
+- **Pass A** (`entity_attach_lua_self_vcall_9c`): for a squadron node, the walk calls the pass A
+  entry after the slot attach and before the wing append, at 007F4580's plane constructions. The
+  native row is `SEntity::InitAll pass A squadron_construct_wing hook` (007f4580).
+- **Pass C** (`entity_init_third_vcall_a4`): for a squadron node, the walk calls the pass C entry,
+  007F4BA0's initial command at 007F4E9E. The native row is `SEntity::InitAll pass C
+  squadron_initial_command hook` (007f4e9e).
+- **Access.** The mission frame hands the Lua host the units host, writable, when it creates it
+  (`attach_units_hooks`), and clears it with the orders host.
+- **Which nodes are squadrons.** Only the route squadrons (GenerateObject of a PlaneSquadronGen,
+  SpawnNew and air-ops creation) are squadron nodes. cc9-units2's read (section 27, b9d3f64da)
+  settles USN02: the host builds no squadron there. So no load-node squadron test is added.
+
+### 15.2 Predictions (written before the pairs; the same tree, switch only, both variables set)
+
+- **USN04 4700/4500:**
+  - `summary squadron pass hooks` goes from `pass_a=0 pass_c=0` to `pass_a=20 pass_c=20`, the 16
+    SpawnNew and 4 air-ops squadrons.
+  - The two new native rows have 20 calls each.
+  - Nothing else moves, and gameplay is identical.
+- **E2 (USN04 9200/9000):** the same 20 and 20. Not run in this packet.
+- **USN02 9200/9000:** no squadron node, so both counts stay 0, no row is added, and `pair_diff`
+  exits 0.

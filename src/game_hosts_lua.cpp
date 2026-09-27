@@ -2846,6 +2846,17 @@ public:
         }
         host_.log_.implemented("SEntity::InitAll pass A attach_self_table", "0092604e");
         if (!node.squadron || host_.script_orders_ == nullptr) return;
+        if constexpr (kSquadronPassHooksCalled) {
+            // Packet cc9_squadron_pass_hooks_calls: 007F4580, where the image
+            // constructs the wing; the append below stands in for it until the
+            // units host does (section 9.3).
+            if (host_.units_hooks_ != nullptr && node.entity_id > 0) {
+                host_.units_hooks_->on_squadron_pass_a_construct_wing(
+                    static_cast<std::size_t>(node.entity_id - 1));
+                host_.log_.implemented("SEntity::InitAll pass A squadron_construct_wing hook",
+                    "007f4580");
+            }
+        }
         // 007F4580 constructs each plane of the wing, and each construction
         // reaches 00928760 CALL 00926BE0: the planes join the tail now, after
         // every node already pending, and this same pass reaches them.
@@ -2898,6 +2909,17 @@ public:
     }
     void entity_init_third_vcall_a4(void* entity) override {
         host_.log_.unimplemented("SEntity::InitAll pass C init_slot_a4", "009261a1");
+        if constexpr (kSquadronPassHooksCalled) {
+            // Packet cc9_squadron_pass_hooks_calls: the squadron's pass C
+            // 007F4BA0 issues its initial command at 007F4E9E.
+            const GameMissionLuaHost::PendingEntity& squadron = at(entity);
+            if (squadron.squadron && host_.units_hooks_ != nullptr && squadron.entity_id > 0) {
+                host_.units_hooks_->on_squadron_pass_c_initial_command(
+                    static_cast<std::size_t>(squadron.entity_id - 1));
+                host_.log_.implemented("SEntity::InitAll pass C squadron_initial_command hook",
+                    "007f4e9e");
+            }
+        }
         if constexpr (kSEntityInitThisTableStepsBound) {
             // Packet cc9_init_attach_order. 007C9770: when plane+9D4h is set,
             // thisTable[plane].SquadronID = that squadron's +174h id. Only

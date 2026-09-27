@@ -126,6 +126,16 @@ inline constexpr bool kPendingListDedupBound = true;
 // (section 14.4).
 inline constexpr bool kRoutePushesRetiredBound = true;
 
+// Packet cc9_squadron_pass_hooks_calls (docs/SENTITY_INIT_ATTACH_ORDER.md
+// section 15). The InitAll walk calls the units host's two squadron entries
+// (docs/CONSTRUCT_WORLD.md section 27) for a plane-squadron node, with its unit
+// index (the fused leader's entity id - 1): on_squadron_pass_a_construct_wing
+// at 007F4580's point, before the wing append that stands in for its plane
+// constructions, and on_squadron_pass_c_initial_command at 007F4E9E's point in
+// the squadron's pass C 007F4BA0. Both entries are counted no-ops today. False:
+// neither is called.
+inline constexpr bool kSquadronPassHooksCalled = false;
+
 // Packet cc9_load_time_init_all (docs/SENTITY_INIT_ATTACH_ORDER.md section 10).
 // BSP_SceneFile_Read 0046DF00 runs InitAll once per instantiate pass, at the
 // first of 0046EB4B / 0046EB88 / 0046EBC6 / 0046ED0F it reaches (the latch

@@ -58,6 +58,7 @@ namespace bsp::game {
 class GameHostLog;
 class GameVfsHost;
 class GameScriptOrdersHost;
+class GameUnitsHost;
 
 // One binding the running scripts actually reached, with the row address the
 // table at 00e0b7b8 carries for it.
@@ -823,7 +824,11 @@ private:
     GameScriptOrdersHost* script_orders_{nullptr};
     // Packet cc9_run_extra_fixed_step: the fixed-step host's 00874D00.
     GameExtraFixedStepRunner* extra_fixed_step_{nullptr};
+    // Packet cc9_squadron_pass_hooks_calls: the units host, writable, for its
+    // two squadron entries (the orders host hands out a const view only).
+    GameUnitsHost* units_hooks_{nullptr};
 public:
+    void attach_units_hooks(GameUnitsHost* units) noexcept { units_hooks_ = units; }
     void attach_extra_fixed_step(GameExtraFixedStepRunner* runner) noexcept {
         extra_fixed_step_ = runner;
     }
