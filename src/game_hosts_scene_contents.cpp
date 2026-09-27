@@ -4,6 +4,8 @@
 #include "bsp/game_hosts_avoid_zones.hpp"
 
 #include "bsp/air_operations.hpp"
+#include "bsp/camera_affine.hpp"
+#include "bsp/camera_inverse.hpp"
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_vfs.hpp"
@@ -2638,6 +2640,29 @@ bool frame_inverse_point(const float m[16], const float p[3], double out[3]) noe
     return true;
 }
 
+// Packet cc9_terrain_rotation_measure (docs/SCENE_CONTENTS_HOSTS.md section 13):
+// 00ADA240 takes both world points to local space through the node's inverse
+// world matrix, 00B6E0D0, whose inverse is 00B63B30 (00B6E0F0): each row scaled
+// by 1/|row|^2 and transposed, with no shear fallback. It is the true inverse only
+// for a frame with mutually orthogonal rows. Then 004142E0 (00ADA262, 00ADA283).
+// ON: the segment test uses that inverse. OFF: the general 3x3 inverse above.
+// The two differ only on the 5 of 763 authored Landscape frames that are not
+// orthonormal (section 13.3). ASSUMPTION, labelled: the node's world matrix +F0h
+// is the authored localframe as the host composes it.
+constexpr bool kLandscapeScaledTransposeInverseBound = false;
+
+bool frame_inverse_point_00b63b30(const float m[16], const float p[3], double out[3]) noexcept {
+    bsp::CameraMatrix frame{};
+    for (int k = 0; k < 16; ++k) frame[k] = m[k];
+    bsp::CameraMatrix inverse{};
+    bsp::invert_camera_affine_00b63b30(inverse, frame);          // 00B6E0F0
+    const std::array<float, 3> source{p[0], p[1], p[2]};
+    std::array<float, 3> local{};
+    bsp::transform_point_004142e0(source, inverse, local);      // 00ADA262 / 00ADA283
+    for (int c = 0; c < 3; ++c) out[c] = local[c];
+    return true;
+}
+
 // The height field in the Landscape's local frame. The field answers world
 // positions relative to its node translation, so local = world - node, and
 // the node y it adds is taken back off. LABELLED: the native slot 3Ch walks the
@@ -3076,7 +3101,11 @@ bool landscape_entry_segment_hit(std::size_t entry, const float from[3],
         = scene_world_class_lists().objects()[static_cast<std::size_t>(object_index)];
     const SceneTerrainHeightField& field = *object.terrain;
     double a[3], b[3];
-    if (!frame_inverse_point(object.world, from, a) || !frame_inverse_point(object.world, to, b)) {
+    if constexpr (kLandscapeScaledTransposeInverseBound) {
+        frame_inverse_point_00b63b30(object.world, from, a);
+        frame_inverse_point_00b63b30(object.world, to, b);
+    } else if (!frame_inverse_point(object.world, from, a)
+               || !frame_inverse_point(object.world, to, b)) {
         return false;
     }
     const double d[3] = {b[0] - a[0], b[1] - a[1], b[2] - a[2]};
@@ -3487,6 +3516,81 @@ void GameSceneContentsHost::run_load_scene_contents_004d4df0(const std::string& 
             census.height_fallbacks, census.normal_calls, census.normal_hits,
             census.landscape_calls, census.landscape_hits, census.segment_calls,
             landscape_segment_entry_count(), format_land_hit_census().c_str());
+        // Packet cc9_terrain_rotation_measure (docs/SCENE_CONTENTS_HOSTS.md section 13):
+        // the image's two answers over each island's drawn footprint. A 48 x 48 grid
+        // of local points (origin + [0, tiles * 300]) is taken to the world through
+        // the Landscape's frame. At each point the ground height 00903860 (the
+        // translation-only point query over every Landscape) and this Landscape's
+        // slot 3Ch (00ADA240, the full inverse frame; a near-vertical trace from
+        // y 3000 to -500 with a 0.5 m run in x so it takes the quadtree walk) are
+        // asked. Land is a surface above y 0. Printed after the load summary, so
+        // that line's counts are unchanged; a diagnostic, no switch.
+        if constexpr (kTerrainSegmentQuadtreeBound) {
+            const std::size_t entries = landscape_segment_entry_count();
+            for (std::size_t e = 0; e < entries; ++e) {
+                const int object_index = landscape_segment_entry_object(e);
+                if (object_index < 0) continue;
+                const SceneWorldObject& land = lists.objects()[static_cast<std::size_t>(object_index)];
+                if (!land.terrain) continue;
+                const SceneTerrainHeightField& field = *land.terrain;
+                constexpr int kGrid = 48;
+                const double span_x = static_cast<double>(field.tiles_wide) * 300.0;
+                const double span_z = static_cast<double>(field.tiles_deep) * 300.0;
+                std::size_t points = 0, seg_land = 0, height_land = 0, both = 0;
+                std::size_t seg_only = 0, height_only = 0;
+                // The same against this Landscape's own 00ADA900 (translation only),
+                // without the other islands the world query maximises over.
+                std::size_t own_land = 0, own_both = 0, own_seg_only = 0, own_height_only = 0;
+                double worst = 0.0, sum = 0.0;
+                for (int i = 0; i < kGrid; ++i) {
+                    for (int j = 0; j < kGrid; ++j) {
+                        const double local[3] = {field.origin_x + span_x * (i + 0.5) / kGrid, 0.0,
+                                                 field.origin_z + span_z * (j + 0.5) / kGrid};
+                        double w[3];
+                        frame_point(land.world, local, w);
+                        const float x = static_cast<float>(w[0]);
+                        const float z = static_cast<float>(w[2]);
+                        ++points;
+                        float ground = 0.0f;
+                        const float at[3] = {x, 0.0f, z};
+                        world_ground_height_00903860(at, ground);
+                        const float top[3] = {x, 3000.0f, z};
+                        const float bottom[3] = {x + 0.5f, -500.0f, z};
+                        LandscapeSegmentHit hit;
+                        const bool seg = landscape_entry_segment_hit(e, top, bottom, hit)
+                            && hit.point[1] > 0.0f;
+                        const bool high = ground > 0.0f;
+                        const bool own = field.height_00ada900(x, z) > 0.0f;
+                        if (own) ++own_land;
+                        if (seg && own) ++own_both;
+                        else if (seg) ++own_seg_only;
+                        else if (own) ++own_height_only;
+                        if (seg) ++seg_land;
+                        if (high) ++height_land;
+                        if (seg && high) {
+                            ++both;
+                            const double d = std::fabs(static_cast<double>(hit.point[1]) - ground);
+                            sum += d;
+                            worst = std::max(worst, d);
+                        } else if (seg) {
+                            ++seg_only;
+                        } else if (high) {
+                            ++height_only;
+                        }
+                    }
+                }
+                const double yaw = std::atan2(static_cast<double>(land.world[8]),
+                                              static_cast<double>(land.world[10])) * 57.29577951308232;
+                impl.log.notef("scene terrain rotation census: landscape=%s yaw=%.1f tiles=%dx%d "
+                    "points=%zu segment_land=%zu height_land=%zu both=%zu segment_only=%zu "
+                    "height_only=%zu both_mean_dy=%.3f both_worst_dy=%.3f | own_height_land=%zu "
+                    "own_both=%zu own_segment_only=%zu own_height_only=%zu (00ADA240 full frame "
+                    "against 00903860 / 00ADA900 translation only, packet cc9_terrain_rotation_measure)",
+                    land.name.c_str(), yaw, field.tiles_wide, field.tiles_deep, points, seg_land,
+                    height_land, both, seg_only, height_only, both ? sum / both : 0.0, worst,
+                    own_land, own_both, own_seg_only, own_height_only);
+            }
+        }
         scene_terrain_query_census() = SceneTerrainQueryCensus{};
         scene_terrain_quadtree_census() = SceneTerrainQuadtreeCensus{};
     }

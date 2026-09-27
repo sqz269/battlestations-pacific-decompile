@@ -1849,3 +1849,103 @@ water near land would be its first measurement.
 - **00609BD0's Ghidra body is truncated** at 0060ABCC. The code runs on to the `RET 4` at
   0060C5A9 (INT3 from 0060C5AC), and it holds 007C3CB0's only call (0060AC1A). The lead redefines it.
 - **007C3CB0** stays unbound: its caller, the player-plane GUI update, has no host counterpart.
+
+## 13. The rotated islands measured (packet `cc9_terrain_rotation_measure`, `kLandscapeScaledTransposeInverseBound`)
+
+Worker cc9-terrain2, 2026-09-27, on main 50e601f97. Ghidra was read only.
+
+**Correction to 12.1 and 12.6.** 00609BD0 does end where Ghidra first said: `RET 0Ch` at 0060ABCA,
+then INT3 at 0060ABCD..0060ABCF. The call to 007C3CB0 at 0060AC1A belongs to a separate function
+at 0060ABD0..0060C5AB, inclusive:
+- it opens with an SEH prologue (handler 00C77557, `sub esp, 1B8h`) and ends in `RET 4` at 0060C5A9;
+- it has no direct caller; its one reference is the vtable slot 00CF43CC;
+- it calls 00609BD0 at 0060C35F.
+
+So 007C3CB0's caller is that virtual method, not the player-plane GUI update, and its class is
+unidentified. The earlier range repair of 00609BD0 should be undone.
+
+### 13.1 The smoke run, USN13 (usn_13_truk) 3200/3000
+
+The run used both variables, lockstep 0.05 and an idle player; the log is `local\ROT2_USN13.log`
+in worktree cc9-terrain2.
+
+- **The four checks.**
+  - The milestone line reads `menu_select=USN13 frames=3200 mission_frames=3000`.
+  - The module directory is `local\bin\rot\`.
+  - The final `native renderer final COM release: device=0 api=0` is printed.
+  - There is no crash record.
+- **Totals.** 34 deaths, 204 hit records, 2551 shots; 12 Landscapes and 2151 blocks loaded.
+- **The ground queries in play.**
+  - 00903BC0 made 13968 calls, with 167616 Landscape entries asked and 0 blocks.
+  - The gunnery line has pick 4809/0, seat 4647/0, line-of-fire 547/0 and projectile 74493/0,
+    with 181483 slot 3Ch walks and 0 hits.
+  - No trace in play touches land on USN13.
+- **Identity.** A second run of the same binary (`local\ROT_USN13.log`, before the `own_*` fields
+  were added) matches on gameplay, so the mission is stable.
+
+### 13.2 The census: segment test against ground height on each island
+
+The load self-check gains one line per Landscape: `scene terrain rotation census`.
+- **The grid.** 48 x 48 points across the drawn footprint: local (origin + [0, tiles·300]),
+  taken to the world through the Landscape's frame.
+- **The two answers at each point.**
+  - The segment test: this Landscape's slot 3Ch (full inverse frame), on a trace from y 3000 to
+    -500 with a 0.5 m run in x, so it takes the quadtree.
+  - The ground height: 00903860, the maximum over all Landscapes, translation only.
+  - `own_*` compares against this Landscape's own 00ADA900, translation only, which removes the
+    neighbouring islands.
+- **Land** means a surface above y 0.
+
+| Landscape | frame | segment land | own height land | both | segment only | height only | mean / worst dy on both (m) |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 01, 02, 03, 04, 06, 08, 09, 10, Shipyard | identity | 26..163 | same +-2 | all but <= 2 | <= 2 | <= 2 | 0.8..3.0 / 3.7..37.4 |
+| 05 | yaw 180 (tilt 3e-4) | 92 | 88 | 18 | 74 | 70 | 45.1 / 136.6 |
+| 07 | sheared (13.3) | 90 | 231 | 3 | 87 | 228 | 36.7 / 96.3 |
+| 11 | yaw 91.5 (tilt 0.02) | 87 | 89 | 4 | 83 | 85 | 68.6 / 118.7 |
+
+- **The rotated islands.** The image's two answers overlap on 18, 3 and 4 points out of about 90.
+  - The segment test finds each island where it is drawn.
+  - The height query finds it un-rotated about its node, so at most points one answer says land
+    and the other says sea.
+  - Where both say land, the heights differ by 37 to 69 m on average.
+  - The host reproduces this faithfully; it is the image's behaviour (10.2), not a host gap.
+- **The identity islands** agree to within 2 points, which is the control. A few steep cells
+  differ by up to 37 m because the trace runs 0.5 m in x.
+- **Neighbours.** The world query's extra `height_only` points on 04, 08 and Shipyard (122, 158,
+  316) are neighbouring islands inside the footprint grid. The `own_*` columns remove them.
+
+### 13.3 A bindable gap: the image's inverse is a scaled transpose
+
+- **The inverse.** 00ADA240 takes its points to local space through 00B6E0D0. 00B6E0D0's inverse is
+  00B63B30 (called at 00B6E0F0), `BSP_Matrix_InvertOrthogonalScaledAffine`: each row divided by
+  its squared length, transposed, with no shear fallback. The host's `frame_inverse_point` is a
+  general 3x3 inverse. The two agree only when the rows are mutually orthogonal.
+- **The frames that are not orthonormal.** 5 of the 763 authored Landscape `localframe` rows in
+  this installation's scenes:
+  - usn_13_truk 07, yamato 07, shogo_four 02 and bulls_run 01: the "-150" rows of 10.2. Each is
+    `-0.866 0 0.5 / 0 1 0 / -0.5 0 0`: the third row has lost its z (-0.866), so its length is
+    0.5, it is 0.433 off orthogonal and the determinant is 0.25.
+  - us_osumi 01: unit rows, 0.829 off orthogonal.
+- **What the image does with them.** For usn_13_truk 07 the scaled transpose maps a drawn local
+  point (lx, lz) to (lx + 0.433 lz, 1.732 lx + lz). So the image's segment test sees a sheared
+  island that is not where the island is drawn. The host's general inverse sees the drawn one.
+- **The binding.** `kLandscapeScaledTransposeInverseBound` (committed OFF) makes
+  `landscape_entry_segment_hit` use 00B63B30 and 004142E0 through the host's existing
+  `invert_camera_affine_00b63b30` and `transform_point_004142e0`. The forward transform of the
+  hit (+F0h) is unchanged.
+- **ASSUMPTION, labelled:** the node's world matrix is the authored `localframe` as the host
+  composes it. Whether the loader re-orthonormalises it is unread.
+
+### 13.4 Predictions (written before the pairs)
+
+- **USN13 3200/3000.**
+  - Landscape 07's census row moves: `segment_land` falls from 90 into 0..60, and `both` stays
+    below 20.
+  - The other eleven rows are identical. For 05 and 11 the scaled transpose equals the inverse to
+    about 1e-7.
+  - 00903BC0's 13968 calls stay at 0 blocks, and picks, line-of-fire and projectile stay at 0
+    land hits.
+  - Gameplay identical; `pair_diff` exit 1 (the census line).
+- **USN01 3200/3000.** No frame is sheared, so everything is identical, including picks 5357/22
+  and walks 5564/22. `pair_diff` exit 0.
+- **USN04 4700/4500 and USN02 9200/9000** have no Landscape: `pair_diff` exit 0.
