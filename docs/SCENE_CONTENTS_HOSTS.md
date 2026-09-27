@@ -1184,6 +1184,35 @@ four the packet names:
 - **Band:** none until the counters of the hunk exist: static refusals, shells ended on land,
   and pick and seat land hits.
 
+### The scene-host half, in place (packet `cc9_landscape_attach_scene_half`)
+
+These entries are committed in `include/bsp/game_hosts_scene_contents.hpp` and have no caller
+yet. The gunnery hunk is the loose entries plus the calls, under one switch.
+
+| entry | contract |
+| --- | --- |
+| `std::size_t landscape_segment_entry_count()` | Landscapes of list 44h with a loaded height field, in list order (the order 00884078 appended them) |
+| `int landscape_segment_entry_object(std::size_t entry)` | the entry's index into `scene_world_class_lists().objects()`, or -1 |
+| `bool landscape_segment_entry_bounds(entry, float min[3], float max[3])` | the tile grid by the sample range, through the Landscape's world frame; the analogue of 0098A920's box |
+| `bool landscape_entry_segment_hit(entry, from, to, LandscapeSegmentHit&)` | 0087FF80 -> 00ADA240's analogue, below |
+| `bool landscape_segment_hit(from, to, float hit_point[3], int& landscape_index)` | the nearest hit over all entries, as 0098ADD0 keeps the nearest |
+| `SceneLandHitCensus& scene_land_hit_census()`, `note_land_hit_query(LandHitConsumer, bool)`, `std::string format_land_hit_census()` | calls and land hits for `PickRay`, `GunSeat`, `LineOfFire` and `Projectile`, and the line-of-fire blocks |
+
+**`landscape_entry_segment_hit`.**
+- **The transform.** Both endpoints go into the Landscape's local frame through the full inverse
+  of its world frame, as 00ADA240 does. So unlike the ground height, the segment test respects
+  rotation.
+- **LABELLED STAND-IN for the quadtree.** A half-cell march in local space against the height
+  field. The first sample below the surface is refined by 24 bisections; a segment that starts
+  below the surface hits at its start.
+- **The hit.** The point goes back to world through the frame. The record gets
+  `landscape_object`, `shape_kind` = 0Ah and `hull_segment` = -1 (0087FFDE, 0087FFE5), and
+  `fraction` is the place along the segment.
+
+**The census.** `summary scene terrain` gains `segment_entries=<n>` and the `land_hits` block
+(`pick=calls/hits seat=... line_of_fire=... blocked=n projectile=...`). At load the block is zero
+until a consumer calls. The gunnery hunk prints the same block in its end-of-mission summary.
+
 ## Ledger names recorded
 
 | Address | Name |

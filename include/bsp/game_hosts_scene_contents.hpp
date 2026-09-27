@@ -390,6 +390,8 @@ struct SceneTerrainHeightField {
     int tiles_deep{0};              // +3Ch
     std::vector<int> block_index;   // +40h: tiles_wide*tz + tx -> blocks, or -1
     std::vector<SceneTerrainBlock> blocks;
+    float sample_min{0.0f};         // lowest non-hole sample (load census)
+    float sample_max{0.0f};         // highest non-hole sample
     float origin_x{0.0f};           // +80h
     float origin_z{0.0f};           // +84h
     float box_min_x{0.0f};          // +68h (see the doc: the model's BoundingBox)
@@ -431,6 +433,60 @@ struct SceneTerrainQueryCensus {
     unsigned long long segment_sweep_blocks{0};
 };
 SceneTerrainQueryCensus& scene_terrain_query_census() noexcept;
+
+// ---------------------------------------------------------------------------
+// Packet cc9_landscape_attach_scene_half: the scene-host half of the
+// Landscape's entry in the segment query (docs/SCENE_CONTENTS_HOSTS.md
+// section 8). No caller yet: the SegmentBinding hunk in
+// src/game_hosts_gunnery.cpp adds one loose entry per Landscape and calls these.
+//
+// Entries are the Landscapes of list 44h whose height field loaded, in list
+// order (the order 00884078 appended their nodes to the loose array).
+std::size_t landscape_segment_entry_count() noexcept;
+// The entry's index into scene_world_class_lists().objects(), or -1.
+int landscape_segment_entry_object(std::size_t entry) noexcept;
+// The node's world box: the tile grid [origin, origin + tiles*300] by the
+// sample range, through the Landscape's world frame (8 corners). The native
+// box is 0098A920's from the terrain's vt+0Ch (00884066); this is its analogue.
+bool landscape_segment_entry_bounds(std::size_t entry, float box_min[3],
+                                    float box_max[3]) noexcept;
+
+// What 0087FF80 writes on a hit: the point (record+8h..+10h), the entity (the
+// Landscape, 00470370 at 0087FFD9), the shape kind 0Ah (+30h) and the hull
+// segment -1 (+34h). `fraction` is the hit's place along from->to.
+struct LandscapeSegmentHit {
+    float point[3]{0.0f, 0.0f, 0.0f};
+    int landscape_object{-1};
+    std::size_t entry{0};
+    int shape_kind{0x0a};
+    int hull_segment{-1};
+    float fraction{1.0f};
+};
+
+// One entry's shape trace, the analogue of 0087FF80 -> terrain slot 3Ch
+// 00ADA240. As 00ADA240 does, both endpoints go into the Landscape's local
+// frame through the full inverse of its world frame (rotation included).
+// LABELLED STAND-IN for 00ADA240's quadtree walk 00AEA2B0 / 00AE9D80 and its
+// vertical case 00AECC40: a half-cell march in local space against the height
+// field, the first sample below the surface refined by bisection. The hit
+// point goes back to world through the frame.
+bool landscape_entry_segment_hit(std::size_t entry, const float from[3],
+                                 const float to[3], LandscapeSegmentHit& hit) noexcept;
+// The nearest hit over every entry, as 0098ADD0 keeps the nearest.
+bool landscape_segment_hit(const float from[3], const float to[3], float hit_point[3],
+                           int& landscape_index) noexcept;
+
+// The per-consumer counters the SegmentBinding hunk fills and prints.
+enum class LandHitConsumer { PickRay = 0, GunSeat = 1, LineOfFire = 2, Projectile = 3 };
+struct SceneLandHitCensus {
+    unsigned long long calls[4]{0, 0, 0, 0};
+    unsigned long long land_hits[4]{0, 0, 0, 0};
+    unsigned long long line_of_fire_blocked{0};   // 0072CE91 answered AL = 1 on land
+};
+SceneLandHitCensus& scene_land_hit_census() noexcept;
+void note_land_hit_query(LandHitConsumer consumer, bool land_hit) noexcept;
+// "pick=<calls>/<land hits> seat=... line_of_fire=... blocked=<n> projectile=...".
+std::string format_land_hit_census();
 
 // The world's per-class entity lists (world+18h + class*0Ch, 97 heads built by
 // 004CB030) for the two classes this packet creates, appended in creation

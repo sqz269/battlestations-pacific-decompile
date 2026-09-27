@@ -1194,6 +1194,8 @@ static void create_scene_world_object(GameSceneContentsHost::Impl& owner,
                     field->tiles_wide, field->tiles_deep, field->blocks.size(),
                     field->box_min_x, field->box_min_z, field->origin_x, field->origin_z,
                     field->node_x, field->node_y, field->node_z, lo, hi);
+                field->sample_min = lo;
+                field->sample_max = hi;
                 owner.log.implemented("Landscape::load_height_field", "00adda60");
                 object.terrain = std::move(field);
             } else {
@@ -2527,6 +2529,186 @@ int world_landscape_at_009039d0(const float point[3]) noexcept {
 // 00903BC0: blocked when the ground under `from` is above from.y (00903BD8 then
 // JBE at 00903BE8), when the ground under `to` is above to.y (00903C08, JA at
 // 00903C18), or when any list-44h terrain's slot 3Ch reports the segment.
+
+// ---------------------------------------------------------------------------
+// Packet cc9_landscape_attach_scene_half: the Landscape's entry in the segment
+// query. Unreferenced until the SegmentBinding hunk lands.
+
+namespace {
+std::vector<std::size_t> landscape_entries() {
+    std::vector<std::size_t> out;
+    const SceneWorldClassLists& lists = scene_world_class_lists();
+    for (std::size_t index : lists.list(kSceneLandscapeClassId)) {
+        if (lists.objects()[index].terrain) out.push_back(index);
+    }
+    return out;
+}
+
+// Row-vector frame (translation in 12..14), as the scene records store it.
+void frame_point(const float m[16], const double p[3], double out[3]) noexcept {
+    for (int c = 0; c < 3; ++c) {
+        out[c] = p[0] * m[c] + p[1] * m[4 + c] + p[2] * m[8 + c] + m[12 + c];
+    }
+}
+
+// The inverse of the frame's 3x3 part (general, the frames are not all
+// orthonormal: Landscape 05 carries a slight tilt), applied to p - t.
+bool frame_inverse_point(const float m[16], const float p[3], double out[3]) noexcept {
+    const double a = m[0], b = m[1], c = m[2];
+    const double d = m[4], e = m[5], f = m[6];
+    const double g = m[8], h = m[9], i = m[10];
+    const double det = a * (e * i - f * h) - b * (d * i - f * g) + c * (d * h - e * g);
+    if (det == 0.0) return false;
+    const double inv[9] = {
+        (e * i - f * h) / det, (c * h - b * i) / det, (b * f - c * e) / det,
+        (f * g - d * i) / det, (a * i - c * g) / det, (c * d - a * f) / det,
+        (d * h - e * g) / det, (b * g - a * h) / det, (a * e - b * d) / det};
+    const double q[3] = {static_cast<double>(p[0]) - m[12],
+        static_cast<double>(p[1]) - m[13], static_cast<double>(p[2]) - m[14]};
+    // Row vector: q = local * M3, so local = q * inverse(M3).
+    for (int col = 0; col < 3; ++col) {
+        out[col] = q[0] * inv[col] + q[1] * inv[3 + col] + q[2] * inv[6 + col];
+    }
+    return true;
+}
+
+// The height field in the Landscape's local frame. The field answers world
+// positions relative to its node translation, so local = world - node, and
+// the node y it adds is taken back off. LABELLED: the native slot 3Ch walks the
+// samples in local space directly; this reuses the slot 28h sampler.
+double local_ground(const SceneTerrainHeightField& field, double lx, double lz) noexcept {
+    return static_cast<double>(field.height_00ada900(static_cast<float>(lx + field.node_x),
+        static_cast<float>(lz + field.node_z))) - field.node_y;
+}
+}  // namespace
+
+std::size_t landscape_segment_entry_count() noexcept {
+    return landscape_entries().size();
+}
+
+int landscape_segment_entry_object(std::size_t entry) noexcept {
+    const std::vector<std::size_t> entries = landscape_entries();
+    return entry < entries.size() ? static_cast<int>(entries[entry]) : -1;
+}
+
+bool landscape_segment_entry_bounds(std::size_t entry, float box_min[3],
+                                    float box_max[3]) noexcept {
+    const int object_index = landscape_segment_entry_object(entry);
+    if (object_index < 0) return false;
+    const SceneWorldObject& object
+        = scene_world_class_lists().objects()[static_cast<std::size_t>(object_index)];
+    const SceneTerrainHeightField& field = *object.terrain;
+    const double lo[3] = {field.origin_x, field.sample_min, field.origin_z};
+    const double hi[3] = {field.origin_x + field.tiles_wide * 300.0, field.sample_max,
+        field.origin_z + field.tiles_deep * 300.0};
+    for (int k = 0; k < 3; ++k) { box_min[k] = 1e30f; box_max[k] = -1e30f; }
+    for (int corner = 0; corner < 8; ++corner) {
+        const double p[3] = {(corner & 1) ? hi[0] : lo[0], (corner & 2) ? hi[1] : lo[1],
+            (corner & 4) ? hi[2] : lo[2]};
+        double w[3];
+        frame_point(object.world, p, w);
+        for (int k = 0; k < 3; ++k) {
+            box_min[k] = std::min(box_min[k], static_cast<float>(w[k]));
+            box_max[k] = std::max(box_max[k], static_cast<float>(w[k]));
+        }
+    }
+    return true;
+}
+
+bool landscape_entry_segment_hit(std::size_t entry, const float from[3],
+                                 const float to[3], LandscapeSegmentHit& hit) noexcept {
+    const int object_index = landscape_segment_entry_object(entry);
+    if (object_index < 0) return false;
+    const SceneWorldObject& object
+        = scene_world_class_lists().objects()[static_cast<std::size_t>(object_index)];
+    const SceneTerrainHeightField& field = *object.terrain;
+    double a[3], b[3];
+    if (!frame_inverse_point(object.world, from, a) || !frame_inverse_point(object.world, to, b)) {
+        return false;
+    }
+    const double d[3] = {b[0] - a[0], b[1] - a[1], b[2] - a[2]};
+    const double length = std::sqrt(d[0] * d[0] + d[1] * d[1] + d[2] * d[2]);
+    const int steps = std::max(1, static_cast<int>(std::ceil(length / (kTerrainCellSize * 0.5))));
+    auto below = [&](double t) {
+        const double p[3] = {a[0] + d[0] * t, a[1] + d[1] * t, a[2] + d[2] * t};
+        return p[1] < local_ground(field, p[0], p[2]);
+    };
+    // A segment that starts below the surface hits at its start, as a ray
+    // walk entering the field from beneath would at its first cell.
+    double t_hit = -1.0;
+    if (below(0.0)) {
+        t_hit = 0.0;
+    } else {
+        double previous = 0.0;
+        for (int k = 1; k <= steps; ++k) {
+            const double t = static_cast<double>(k) / steps;
+            if (below(t)) {
+                double lo_t = previous, hi_t = t;
+                for (int it = 0; it < 24; ++it) {
+                    const double mid = 0.5 * (lo_t + hi_t);
+                    if (below(mid)) hi_t = mid; else lo_t = mid;
+                }
+                t_hit = hi_t;
+                break;
+            }
+            previous = t;
+        }
+    }
+    if (t_hit < 0.0) return false;
+    const double local[3] = {a[0] + d[0] * t_hit, a[1] + d[1] * t_hit, a[2] + d[2] * t_hit};
+    double world[3];
+    frame_point(object.world, local, world);   // 00ADA240's +F0h transform back
+    for (int k = 0; k < 3; ++k) hit.point[k] = static_cast<float>(world[k]);
+    hit.landscape_object = object_index;
+    hit.entry = entry;
+    hit.shape_kind = 0x0a;      // 0087FFDE
+    hit.hull_segment = -1;      // 0087FFE5
+    hit.fraction = static_cast<float>(t_hit);
+    return true;
+}
+
+bool landscape_segment_hit(const float from[3], const float to[3], float hit_point[3],
+                           int& landscape_index) noexcept {
+    landscape_index = -1;
+    bool any = false;
+    float best = 2.0f;
+    const std::size_t count = landscape_segment_entry_count();
+    for (std::size_t entry = 0; entry < count; ++entry) {
+        LandscapeSegmentHit hit;
+        if (!landscape_entry_segment_hit(entry, from, to, hit)) continue;
+        if (hit.fraction < best) {
+            best = hit.fraction;
+            any = true;
+            landscape_index = hit.landscape_object;
+            for (int k = 0; k < 3; ++k) hit_point[k] = hit.point[k];
+        }
+    }
+    return any;
+}
+
+SceneLandHitCensus& scene_land_hit_census() noexcept {
+    static SceneLandHitCensus census;
+    return census;
+}
+
+void note_land_hit_query(LandHitConsumer consumer, bool land_hit) noexcept {
+    SceneLandHitCensus& census = scene_land_hit_census();
+    const int k = static_cast<int>(consumer);
+    ++census.calls[k];
+    if (land_hit) ++census.land_hits[k];
+    if (land_hit && consumer == LandHitConsumer::LineOfFire) ++census.line_of_fire_blocked;
+}
+
+std::string format_land_hit_census() {
+    const SceneLandHitCensus& c = scene_land_hit_census();
+    char text[256];
+    std::snprintf(text, sizeof(text),
+        "pick=%llu/%llu seat=%llu/%llu line_of_fire=%llu/%llu blocked=%llu projectile=%llu/%llu",
+        c.calls[0], c.land_hits[0], c.calls[1], c.land_hits[1], c.calls[2], c.land_hits[2],
+        c.line_of_fire_blocked, c.calls[3], c.land_hits[3]);
+    return text;
+}
+
 bool world_segment_blocked_00903bc0(const float from[3], const float to[3]) noexcept {
     SceneTerrainQueryCensus& census = scene_terrain_query_census();
     ++census.segment_calls;
@@ -2729,11 +2911,13 @@ void GameSceneContentsHost::run_load_scene_contents_004d4df0(const std::string& 
         impl.log.notef("summary scene terrain bound=%d landscapes=%zu loaded=%zu blocks=%zu "
             "self_check_objects=%zu on_ground_1cm=%zu height calls=%llu hits=%llu fallbacks=%llu "
             "normal calls=%llu hits=%llu landscape_at calls=%llu hits=%llu segment calls=%llu "
+            "segment_entries=%zu land_hits %s "
             "(packet cc9_landscape_terrain; the 30 consumer sites are unbound)",
             kSceneLandscapeTerrainBound ? 1 : 0, lists.list(kSceneLandscapeClassId).size(),
             loaded, blocks, children, within, census.height_calls, census.height_hits,
             census.height_fallbacks, census.normal_calls, census.normal_hits,
-            census.landscape_calls, census.landscape_hits, census.segment_calls);
+            census.landscape_calls, census.landscape_hits, census.segment_calls,
+            landscape_segment_entry_count(), format_land_hit_census().c_str());
         scene_terrain_query_census() = SceneTerrainQueryCensus{};
     }
     // The wings 007F4580 spawned, flushed after the census loops so the scene
