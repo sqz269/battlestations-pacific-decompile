@@ -477,3 +477,54 @@ No idle run of USN01 3200/3000, USN02 or USN04 4700/4500 calls `ForceSelectUnit`
   move.
 - **The risk,** named in advance: if the re-apply rebuilds the ShipCaptain, USN04 moves through
   the seat, as in the 25 s case of `docs/HUD_PICK_SEGMENT_QUERY.md` 8.7.
+
+### Pairs and verdict
+
+The OFF side is this tree's build at 39e587a19. The ON side is the `tools/pair_export.py`
+export `local\fs_on` of the same commit with the switch flipped. Streams are ON, with
+`BSP_DEATH_TABLE=1`, lockstep 0.05 and an idle player.
+
+| pair | `pair_diff` | result |
+| --- | --- | --- |
+| USN01 3200/3000 | exit 1 | gameplay, death rows and unit table identical. Two 44h enter rebuilds (frames 1 and 403); `FrontEndScreen::enter` 16 -> 14. At frame 403: `+8Ch` 0 units, `+9Ch` 3 units (Northampton's group), cursor (0, -1). Also `SetSelectedUnit::unit_vtable_124` 1 -> 39 (see below) |
+| USN04 4700/4500 | exit 1 | gameplay, death rows and unit table identical. Two 44h enter rebuilds (frames 1 and 502), each with `+8Ch` = {Lexington}, `+9Ch` = {Lexington} and cursor (0, 0) at the Lexington; `FrontEndScreen::enter` 22 -> 20 |
+| USN04 9200/9000, OFF only | no pair | `ForceSelectUnit` was **not called**: phase 2 never started (below) |
+
+**Predictions.**
+- Identity held on both regression pairs, and so did the 44h enter counts.
+- The Lexington at cursor (0, 0) on USN04 held for the enters.
+- **Failed detail:** "every other row identical". The rebuild's 00645060 calls reuse
+  `selectable_inputs_00645060`. That function records `SetSelectedUnit::unit_vtable_124` for
+  every non-ship it tests, so that record grew from 1 to 39 on USN01. It is a record count only.
+- **Unpredicted:** USN01's `+8Ch` is empty.
+
+**Why USN01's `+8Ch` is empty.** This finding is upstream of this packet.
+- The host's game+1970h on USN01 is the **Japanese** side for the whole run: Katori, the convoy,
+  the Mavis flying boats, CB2, the coastal guns and Airfield2, 26 units that are all not party 0.
+- The world host builds the lists from the recon triple of the side of the controlled unit.
+  That is a labelled substitution for the local slot `[game+18CCh + game+18ECh*4]`, in
+  `include/bsp/game_hosts_world.hpp`.
+- On USN01 the list was built once, while the host's first controlled unit was Airfield2, and it
+  is never rebuilt after `SetSelectedUnit(Northampton)`.
+- So 00645060 rejects every entry (`party0=0`). The image walks the local player's own units and
+  would hold Northampton there.
+- The same list feeds the 29h pick (`UnitPickScreen::list_1970`).
+- This binding reads that list as it is and does not correct it.
+
+**Why the measuring pair measured nothing.**
+- On this base `Blackout(true, "luaMoveToPh2", 3)` is armed 75 times from t = 225 s. Each arm
+  resets the remaining time to 3.0 s, and the callback never runs.
+- `summary mission blackout`: `arms=81 completions=5 callbacks=2`. On base 2026-09-19 it was
+  `arms=35 completions=9 callbacks=4`, with `blackout callback luaMoveToPh2 ran`.
+- `Objectives_Completed` 008BD340 is UNIMPLEMENTED and is called once. The re-arms therefore
+  come from later passes of the phase-1 check (`usn_19_coralus.lua` 560..587).
+- The cause of the difference from the 09-19 base was not traced in this packet.
+- No other mission within the budget that the harness has run calls `ForceSelectUnit`.
+
+**Verdict: ON** (`kForceSelectUnitBound = true`).
+- Both regression pairs are gameplay-identical, and the binding is the image's path over the
+  host's inputs.
+- `ForceSelectUnit` itself is **not measured**: no measured run reaches it.
+- On USN04 its `+8Ch` would hold only the Lexington, so a call would re-select the controlled unit
+  and re-push 20h.
+- On USN01 it would take the empty-vector arm (a record) until the game+1970h side is corrected.
