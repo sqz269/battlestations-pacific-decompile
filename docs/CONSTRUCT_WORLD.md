@@ -900,6 +900,27 @@ come from cc9_units_contracts (a3c7096e1). Ghidra was read only.
   a host record that nothing else reads. Deaths, hit records and releases do not move. The new
   `WarningManager::proximity_effect_0096c070` record calls appear only when hits do.
 
+### Part 10 pairs and verdict
+
+One tree, 718254fe0: `local\bin\sc_off` against `local\bin\sc_on`, differing only by the
+switch. Both variables were set. All four logs show the fit line, the final COM release, and a
+module directory inside this tree.
+
+| field | USN04 OFF | USN04 ON | USN02 OFF | USN02 ON |
+| --- | ---: | ---: | ---: | ---: |
+| ships scanned, records | 990, 18 | 990, 18 | 3,524, 32 | 3,524, 32 |
+| `part_rejects` | 0 | 0 | 0 | 0 |
+| `list24_nodes` | 0 | 10,576 | 0 | 0 |
+| hits, expiries | 0, 0 | 444, 16 | 0, 0 | 0, 0 |
+| `list24_no_leader` | 0 | 0 | 0 | 0 |
+| native table | 1,581 rows | +2 records: `proximity_effect_0096c070` 444, `proximity_effect_stop_00867b10` 16 | 1,481 rows | identical |
+| deaths, hit records | 41, 743 | identical | 22, 439 | identical |
+
+**Every prediction held.** The masked whole-log diff leaves only the summary line, the two
+record rows on USN04, and the ignored refills counter.
+
+**Verdict: ON.** `kScanProximityUnitsEntriesBound` is set true.
+
 ## 19. Part 11: the loss warning 009813A0 bound past its guard (`kLossWarningBound`, committed OFF)
 
 Packet `cc9_loss_warning`, worker cc9-world-init, from the plan in `docs/LOSS_WARNING.md`.

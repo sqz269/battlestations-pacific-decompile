@@ -146,7 +146,9 @@ constexpr bool kScanProximityBound = true;
 // [+3D0h] (squadron_list_24_leader) gives the position (00977A76); the squared
 // distance is summed in the x87 order, (dx^2 + dy^2) + dz^2, and stored to a
 // float before the double compare (00977AC8..00977AEA). False: the stand-ins.
-constexpr bool kScanProximityUnitsEntriesBound = false;
+// ON by the verdict: USN04 444 hits over 10,576 list-24 nodes, USN02 identical,
+// gameplay identical on both (docs/CONSTRUCT_WORLD.md section 18).
+constexpr bool kScanProximityUnitsEntriesBound = true;
 
 // Packet cc9_construct_world_p8 (docs/CONSTRUCT_WORLD.md section 15). True:
 // 00481640's call is the walk 00487270 itself: the std::list whose sentinel is

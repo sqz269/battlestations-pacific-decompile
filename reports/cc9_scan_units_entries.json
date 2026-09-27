@@ -1,0 +1,44 @@
+{
+  "packet": "cc9_scan_units_entries",
+  "doc": "docs/CONSTRUCT_WORLD.md section 18",
+  "switch": "kScanProximityUnitsEntriesBound (src/game_hosts_mission_frame.cpp): committed OFF in 718254fe0, set ON by the verdict",
+  "calls": [],
+  "routines": [
+    {
+      "address": "00977990",
+      "coverage": "complete for the single-player scan: part test, list-24 walk, leader position, x87 distance order; the point effect 0096C070 and its stop 00867B10 are records"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "the host summed the squared distance as dz*dz + dy*dy + dx*dx in float",
+      "is": "(dx*dx + dy*dy) + dz*dz on the x87 at 53-bit precision, stored to a float, compared with the double 4.0e6",
+      "evidence": "00977AC8..00977AD8 FLD/FMULP/FXCH/FADDP; 00977AD8 FSTP float; 00977AE0 FLD double [00D09FE8]"
+    }
+  ],
+  "no_ghidra_function": [],
+  "names": [],
+  "verdict": "ON",
+  "pairs": {
+    "tree": "718254fe0, local/bin/sc_off vs sc_on",
+    "usn04": {
+      "list24_nodes": "0 -> 10576",
+      "hits": "0 -> 444",
+      "expiries": "0 -> 16",
+      "ships_records": "990/18 unchanged",
+      "part_rejects": 0,
+      "deaths": 41,
+      "hit_records": 743,
+      "gameplay": "identical"
+    },
+    "usn02": {
+      "list24_nodes": 0,
+      "hits": 0,
+      "ships_records": "3524/32 unchanged",
+      "deaths": 22,
+      "hit_records": 439,
+      "gameplay": "identical"
+    },
+    "unpredicted": "none"
+  }
+}
