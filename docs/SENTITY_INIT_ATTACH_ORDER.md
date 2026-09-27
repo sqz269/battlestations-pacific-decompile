@@ -1430,3 +1430,49 @@ units host's squadron hooks, so a squadron built from a scene row never reads it
   2 and `movetos` rises by 2 if both leaders are active. **Gameplay moves:** the two squadrons are
   ordered to their airfield, and two entries join the deck's assign queue (006CC7B0).
 - **USN04 and USN02.** No key, so identity (`pair_diff` exits 0, or 1 on noise only).
+
+### 19.5 Pairs and verdict (step 1)
+
+- **The runs.** The OFF binary is `local\bin\lsh_off` (a build of 913a9061b). The ON binary is
+  `pair_export` of a04aa3998 with the switch flipped (`local\lsh_on`, SHA-256 45F7BD959143).
+  a04aa3998 changes nothing with the switch OFF, so the OFF logs stand. `BSP_GUNNERY_RNG_STREAMS=1`
+  and `BSP_DEATH_TABLE=1` were set, lockstep 0.05, idle player, and each log has its module
+  directory under this tree and the final native table.
+- **The first JM08 pair caught a gap.** The ON export of 913a9061b ran pass C six times but pass A
+  never. The Lua pass A returned when the script-orders host was absent, and it is absent during
+  the scene read's walk. a04aa3998 limits that guard to the legacy wing append, the only code that
+  reads that host. **Failed prediction, recorded.**
+
+| row | JM08 OFF | JM08 ON | USN04 OFF | USN04 ON | USN02 OFF | USN02 ON |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| load squadron hooks `squadrons` | 0 | 6 | 0 | 1 | 0 | 0 |
+| `pass_a` / `pass_c` (and the two native rows) | 0 / 0 | 6 / 6 | 20 / 20 | 21 / 21 | 0 / 0 | 0 / 0 |
+| wing construction `staged builds planes` | 0 0 0 | 0 0 0 | unchanged | unchanged | 0 | 0 |
+| `skipped_current` | 0 | 3 | 0 | 0 | 0 | 0 |
+| `no_home` | 0 | 3 | 16 | 17 | 0 | 0 |
+| `movetos` / `stops` | 0 / 0 | 0 / 0 | 4 / 0 | 4 / 0 | 0 / 0 | 0 / 0 |
+| home base `unresolved` | 0 | 2 | 0 | 0 | 0 | 0 |
+| deaths, hit records | 2, 127 | identical | 44, 789 | identical | 21, 652 | identical |
+| death rows, plane death modes, unit table | 2, 1, 43 | identical | 44, 44, 81 | identical | 21, 0, 32 | identical |
+| `pair_diff` exit | | 1 | | 1 | | 1 |
+
+- **JM08.** Every row moved as predicted. Movie Mavis took `no_home`, not the water stop. The two
+  `names no entity` lines for Ki-43 Oscar 01 and Gekko 01 are ON only.
+- **USN04.** `movieval` is the one load squadron, and only the predicted rows moved.
+- **USN02.** Only the new summary line's `bound` field differs, so `pair_diff` exits 1 where 0 was
+  predicted. **Failed prediction, recorded;** nothing else moved.
+- **Noise found on JM08.** The same OFF binary ran twice gave `ShipAiSectorScan::clip_arc_zones`
+  calls of 12000 and 0 (and `zone_segment_crossing` 6000 and 0). The first ON run gave 6000.
+  Gameplay was identical in all three, so these two rows vary between identical JM08 runs and are
+  not this switch's.
+
+**Verdict: ON.**
+
+### 19.6 Open: the load wing planes carry no squadron id
+
+A scene squadron's wing planes (for example `Ki-43 Oscar 01|.-2`, `movieval|.-2`) are plain load
+nodes. The pass A hook pushes nothing for them, so `kWingConstructionLuaActive`'s marking never
+sets their `wing_member`, `squadron_id` (007F4B49's plane+9D4h) or `class_index`. So pass C writes
+no `SquadronID` into their `thisTable` (007C9770), and JM08 reads `squadron_ids=0`. In the image
+the planes are constructed inside the squadron's pass A and carry +9D4h. The follow-up: in the load
+walk, mark the registry record's other `member_units` as that squadron's wing.

@@ -1,0 +1,43 @@
+{
+  "packet": "cc9_load_time_squadron_hooks",
+  "doc": "docs/SENTITY_INIT_ATTACH_ORDER.md, section 19",
+  "calls": [
+    {
+      "address": "0046EB4B",
+      "native": "00925F20",
+      "function": "0046DF00",
+      "note": "scene read InitAll before the traffic block, CL=0 (0046EB49)"
+    },
+    {
+      "address": "0046ED0F",
+      "native": "00925F20",
+      "function": "0046DF00",
+      "note": "scene read InitAll at the end of the file, CL=0 (0046ED0D), before 0046AAB0 at 0046ED1E"
+    }
+  ],
+  "vtable_slots": [
+    {"vtable": "00D087C0", "slot": "9Ch", "entry": "00D0885C", "target": "007F4580", "note": "PlaneSquadron pass A, wing construction"},
+    {"vtable": "00D087C0", "slot": "A4h", "entry": "00D08864", "target": "007F4BA0", "note": "PlaneSquadron pass C, HomeBase read 007F4C43, initial command 007F4E9E"}
+  ],
+  "switches": [
+    {
+      "name": "kLoadTimeSquadronHooksBound",
+      "state": "ON",
+      "pair": "local/LSH_OFF_{JM08,USN04,USN02}.log (build of 913a9061b, local/bin/lsh_off) against local/LSH_ON2_JM08.log, LSH_ON_USN04.log, LSH_ON_USN02.log (pair_export of a04aa3998, SHA-256 45F7BD959143). JM08 exit 1: pass_a/pass_c 0 -> 6, skipped_current 0 -> 3, no_home 0 -> 3, unresolved 0 -> 2; USN04 exit 1: hooks 20 -> 21, no_home 16 -> 17; USN02 exit 1 on the new summary line's bound field only. Gameplay, death rows, plane death modes and unit tables identical on all three."
+    }
+  ],
+  "no_ghidra_function": [],
+  "names_added": [],
+  "substitutions": [
+    "the plane-squadron registry's scene record (not an air-ops launch, squadron_unit == the node's unit) stands in for the vtable 00D087C0 test",
+    "a scene squadron's wing is built by create_units at load, not inside pass A (007F4580); the pass A hook finds nothing staged (existing substitution)",
+    "the host issues authored commands before the load walk; the image issues them at 0046AAB0 after the InitAll, so a row authoring Command takes 007F4E0C's skip in the host (the three JM08 H6K Mavis rows)"
+  ],
+  "failed_predictions": [
+    "first JM08 pair (ON export of 913a9061b): pass_a stayed 0, because the Lua pass A returned when the script-orders host was absent at load; fixed in a04aa3998 and re-paired",
+    "USN02 pair_diff exit 0 predicted, exit 1 measured: only the new summary line's bound field differs"
+  ],
+  "noise_observed": [
+    "JM08: ShipAiSectorScan::clip_arc_zones_00415970 / zone_segment_crossing_004158e0 calls vary between identical runs of one binary (12000/6000 and 0/0 on local/bin/lsh_off; 6000/3000 on one ON run); gameplay identical in all"
+  ]
+}

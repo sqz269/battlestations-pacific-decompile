@@ -16,6 +16,7 @@
 #include "bsp/air_operations.hpp"
 #include "bsp/game_hosts_ai.hpp"
 #include "bsp/objective_units.hpp"
+#include "bsp/plane_squadron_host.hpp"
 
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
@@ -3009,7 +3010,11 @@ public:
             }
         }
         host_.log_.implemented("SEntity::InitAll pass A attach_self_table", "0092604e");
-        if (!node.squadron || host_.script_orders_ == nullptr) return;
+        if (!node.squadron) return;
+        // Packet cc9_load_time_squadron_hooks: the scene read's walk runs
+        // before the script-orders host exists, and neither the hook nor the
+        // wing marking below needs it; only the legacy wing append does.
+        if (!kLoadTimeSquadronHooksBound && host_.script_orders_ == nullptr) return;
         // Packet cc9_wing_construction_lua: the list size before 007F4580.
         const std::size_t pending_before = host_.pending_entities_.size();
         if constexpr (kSquadronPassHooksCalled) {
@@ -3046,6 +3051,7 @@ public:
         const int class_index = node.class_index;
         const std::size_t first = node.units_before;
         const std::size_t end = node.units_end;
+        if (host_.script_orders_ == nullptr) return;
         const GameUnitsHost& units = host_.script_orders_->units();
         for (std::size_t index = first; index < end && index < units.count(); ++index) {
             const int id = static_cast<int>(index) + 1;
@@ -3347,6 +3353,26 @@ std::size_t GameMissionLuaHost::run_scene_load_init_all_0046eb4b(
             node->party = entity.party;
             node->race = entity.race;
             ++summary_.load_init_all_pushes;
+            if constexpr (kLoadTimeSquadronHooksBound) {
+                // Packet cc9_load_time_squadron_hooks. A PlaneSquadronGen row
+                // the scene read constructed: its registry record (not an
+                // air-ops launch) names this unit as the fused leader, slot 0.
+                // create_units resolved the members before this walk.
+                // SUBSTITUTION, labelled: the host has no PlaneSquadron object
+                // to test for vtable 00D087C0, so the registry stands in.
+                if (entity.class_index >= 0 && entity.id > 0) {
+                    const std::size_t index = static_cast<std::size_t>(entity.id - 1);
+                    for (const bsp::PlaneSquadronHostRecord& record :
+                         bsp::plane_squadron_registry().records()) {
+                        if (record.from_air_ops_launch || record.squadron_unit != index) {
+                            continue;
+                        }
+                        node->squadron = true;
+                        ++summary_.load_squadron_nodes;
+                        break;
+                    }
+                }
+            }
         }
     }
     run_sentity_init_all_00925f20(false, 0x0046eb4bu);
@@ -4500,6 +4526,9 @@ void GameMissionLuaHost::report_mission_script_state() {
     log_.notef("summary SEntity::InitAll load walk bound=%d pushes=%llu mirrored=%llu",
         kLoadTimeInitAllBound ? 1 : 0, summary_.load_init_all_pushes,
         summary_.init_all_identity_mirrored);
+    log_.notef("summary SEntity::InitAll load squadron hooks bound=%d squadrons=%llu "
+        "(007F4580 / 007F4BA0 at 0046EB4B, packet cc9_load_time_squadron_hooks)",
+        kLoadTimeSquadronHooksBound ? 1 : 0, summary_.load_squadron_nodes);
     log_.notef("summary SceneLoad thisTable identity bound=%d class_bound=%llu mirrored=%llu",
         kSceneLoadThisTableIdentityBound ? 1 : 0, summary_.load_class_bound,
         summary_.load_identity_mirrored);
