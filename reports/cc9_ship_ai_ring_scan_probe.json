@@ -1,0 +1,16 @@
+{
+  "packet": "cc9_ship_ai_ring_scan_probe",
+  "doc": "docs/SHIP_AI_TAILS.md section 14",
+  "ghidra": "read-only; no renames, comments or saves",
+  "answer": "009E6640's probe asks vtable[218h] (006DFD90 -> 0082ADA0 -> 004120D0 on [class+560h]) for the zone group, offsets the start with 00417B10(group, 3.0f, 1) and casts 0041B4E0 -> 004179D0 on that group. Bound over GameAvoidZoneRuntime with two new methods (offset, group_segment_point) under kShipAiRingScanProbeBound (committed OFF). The measured missions have groups=1 zones=0, so the probe cannot differ from the stand-in.",
+  "steps": [
+    {"address": "009e66eb", "native": "006dfd90", "function": "009e6640", "rule": "vtable+218h, the navigation group"},
+    {"address": "009e673e", "native": "00417b10", "function": "009e6640", "rule": "offset the start, push 3.0f, test 1"},
+    {"address": "009e6808", "native": "0041b4e0", "function": "009e6640", "rule": "group segment hit"}
+  ],
+  "routines": [{"address": "009e6640", "coverage": "complete for the three probe calls; the rest was bound before"}],
+  "switch": {"name": "kShipAiRingScanProbeBound", "file": "src/game_hosts_ship_ai.cpp", "committed": false},
+  "no_ghidra_function": [],
+  "names_added": [],
+  "pairs": "pending"
+}

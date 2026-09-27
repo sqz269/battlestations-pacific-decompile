@@ -37,6 +37,15 @@ public:
         const std::array<float, 2>& from, std::uint32_t& zone, std::int32_t& edge) const;
     bool segment_point(std::uint32_t layer, const std::array<float, 2>& toward,
         const std::array<float, 2>& from, std::array<float, 2>& hit) const;
+    // Packet cc9_ship_ai_ring_scan_probe. 00417B10 on one group (the 1-based
+    // token group_for_layer returns): copy `point`, then push the running
+    // output out of every zone of the group in order, by `push`.
+    std::array<float, 2> offset(std::uint32_t group, const std::array<float, 2>& point,
+        float push, bool test_containment) const;
+    // 0041B4E0 -> 004179D0 on one group: `running` starts as `from` and ends
+    // at the crossing nearest `toward` when AL (the return) is set.
+    bool group_segment_point(std::uint32_t group, const std::array<float, 2>& toward,
+        const std::array<float, 2>& from, std::array<float, 2>& running) const;
     AvoidZoneTangentCorners detour(std::uint32_t zone,
         const std::array<float, 2>& far_point, std::int32_t edge,
         std::int32_t near_hint, std::int32_t side_hint, float margin) const;

@@ -5,6 +5,7 @@
 #include "bsp/avoid_zone_manager_queries.hpp"
 #include "bsp/avoid_zone_query_binding.hpp"
 #include "bsp/game_hosts.hpp"
+#include "bsp/ship_ai_layer_selection.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/native_renderer_worker_lifetime.hpp"
 #include "bsp/native_tracked_critical_section_release.hpp"
@@ -261,6 +262,29 @@ bool GameAvoidZoneRuntime::segment_point(std::uint32_t layer, const std::array<f
     const std::array<float, 2>& from, std::array<float, 2>& hit) const {
     impl_->require_ready(); return avoid_zone_manager_segment_hit_point_00417ef0(impl_->table,
         static_cast<std::int32_t>(layer), toward, from, hit);
+}
+std::array<float, 2> GameAvoidZoneRuntime::offset(std::uint32_t group,
+    const std::array<float, 2>& point, float push, bool test_containment) const {
+    impl_->require_ready();
+    const AvoidZoneLayerGroup& g = impl_->table.groups.at(group - 1);
+    const auto& native = impl_->groups.at(group - 1).native;
+    const AvoidZoneClearanceGroupView view{native.data(),
+        static_cast<std::uint32_t>(native.size())};
+    std::array<float, 2> out = point;
+    avoid_zone_group_offset_00417b10(g, view, out, point, push,
+        static_cast<std::uint8_t>(test_containment ? 1 : 0));
+    return out;
+}
+bool GameAvoidZoneRuntime::group_segment_point(std::uint32_t group,
+    const std::array<float, 2>& toward, const std::array<float, 2>& from,
+    std::array<float, 2>& running) const {
+    impl_->require_ready();
+    // 004179D4..004179E6: the running point starts as *from.
+    running = from;
+    const AvoidZoneGroupHit hit = avoid_zone_group_segment_hit_004179d0(
+        impl_->table.groups.at(group - 1), toward, from);
+    if (hit.hit) running = hit.point;
+    return hit.hit;
 }
 AvoidZoneTangentCorners GameAvoidZoneRuntime::detour(std::uint32_t token,
     const std::array<float, 2>& far_point, std::int32_t edge, std::int32_t near_hint,

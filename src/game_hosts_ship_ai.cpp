@@ -222,6 +222,13 @@ inline constexpr bool kShipAiSnapshotBound = true;
 // count is 0 and the walk never steps (the milestone 2r stand-in). ON: the
 // USN02 and E2 pairs held (docs/SHIP_AI_TAILS.md section 13.4).
 inline constexpr bool kShipAiNeighbourCountBound = true;
+// Packet cc9_ship_ai_ring_scan_probe, docs/SHIP_AI_TAILS.md section 14. True:
+// 009E6640's avoid-zone probe asks the manager: 009E66EB vtable[218h] =
+// 006DFD90 -> 0082ADA0(desc, 0) -> 004120D0(manager, [class+560h]); 009E673E
+// 00417B10(group, out, start, 3.0f, 1); 009E6808 0041B4E0 -> 004179D0 on that
+// group. The manager is GameAvoidZoneRuntime (docs/AVOID_ZONE_REGISTRY.md).
+// False: no space, the start point unchanged, no hit (the stand-ins).
+inline constexpr bool kShipAiRingScanProbeBound = false;
 // Packet cc9_ship_ai_turn_clearance, docs/SHIP_AI_TAILS.md section 6. True:
 //  * 009ED3E0's head (009ED3E0..009ED498) builds the two corridor widths from
 //    the unit's formation group: 00778890 (the unit leads its group, entity+284h
@@ -2894,8 +2901,16 @@ public:
         return bsp::wrapped_angle_add_00438aa0(value, 0.0f);
     }
     std::uint32_t probe_space_vtable_0218() override {
-        owner_.record("ShipAiRingScan::probe_space_vtable_0218", 0x009e66ebu);
-        return 0u;
+        // 006DFD90: ECX = [unit+538h]; 0082ADA0(0) = 004120D0(manager,
+        // [desc+560h]). 004120D0 never returns null; the runtime throws unless
+        // ready(), so an unready runtime keeps the stand-in.
+        if (!kShipAiRingScanProbeBound || !owner_.zones.ready()) {
+            owner_.record("ShipAiRingScan::probe_space_vtable_0218", 0x009e66ebu);
+            return 0u;
+        }
+        owner_.done("ShipAiRingScan::probe_space_vtable_0218", 0x009e66ebu);
+        ++owner_.summary.ring_probe_spaces;
+        return owner_.zones.group_for_layer(ctl_.leaf_tuning.array[0]);  // [class+560h]
     }
     bool unit_pose_fresh_00c8() override {
         return owner_.units.unit_pose_valid_00c8(index_);
@@ -2912,19 +2927,41 @@ public:
         out.z = z;
         return out;
     }
-    bsp::ShipAiAttackMoveXZ probe_origin_00417b10(std::uint32_t,
+    bsp::ShipAiAttackMoveXZ probe_origin_00417b10(std::uint32_t space,
                                                   const bsp::ShipAiAttackMoveXZ& point,
-                                                  float, int) override {
-        // 009E673E, 00417B10 on the probe space. No space exists here, so the
-        // start point is the query point itself.
-        owner_.record("ShipAiRingScan::probe_origin_00417b10", 0x00417b10u);
-        return point;
+                                                  float push, int mode) override {
+        // 009E673E, 00417B10(group, &out, &start, 3.0f (00CE3854), 1).
+        if (!kShipAiRingScanProbeBound || space == 0u) {
+            // No space: the start point is the query point itself.
+            owner_.record("ShipAiRingScan::probe_origin_00417b10", 0x00417b10u);
+            return point;
+        }
+        owner_.done("ShipAiRingScan::probe_origin_00417b10", 0x00417b10u);
+        const std::array<float, 2> out = owner_.zones.offset(space, {point.x, point.z}, push,
+            mode != 0);
+        if (out[0] != point.x || out[1] != point.z) ++owner_.summary.ring_probe_moved_starts;
+        bsp::ShipAiAttackMoveXZ result{};
+        result.x = out[0];
+        result.z = out[1];
+        return result;
     }
-    bool probe_hit_0041b4e0(std::uint32_t, const bsp::ShipAiAttackMoveXZ&,
-                            const bsp::ShipAiAttackMoveXZ&,
-                            bsp::ShipAiAttackMoveXZ&) override {
-        owner_.record("ShipAiRingScan::probe_hit_0041b4e0", 0x0041b4e0u);
-        return false;
+    bool probe_hit_0041b4e0(std::uint32_t space, const bsp::ShipAiAttackMoveXZ& start,
+                            const bsp::ShipAiAttackMoveXZ& end,
+                            bsp::ShipAiAttackMoveXZ& hit) override {
+        // 009E6808: 0041B4E0(group)(&start = toward, &end = from, &hit = running).
+        if (!kShipAiRingScanProbeBound || space == 0u) {
+            owner_.record("ShipAiRingScan::probe_hit_0041b4e0", 0x0041b4e0u);
+            return false;
+        }
+        owner_.done("ShipAiRingScan::probe_hit_0041b4e0", 0x0041b4e0u);
+        std::array<float, 2> running{};
+        const bool blocked = owner_.zones.group_segment_point(space, {start.x, start.z},
+            {end.x, end.z}, running);
+        hit.x = running[0];
+        hit.z = running[1];
+        ++owner_.summary.ring_probe_casts;
+        if (blocked) ++owner_.summary.ring_probe_hits;
+        return blocked;
     }
     float planar_length_00414c60(const bsp::ShipAiAttackMoveXZ& delta) override {
         return bsp::length_2d_00414c60(std::array<float, 2>{delta.x, delta.z});
@@ -8317,6 +8354,11 @@ void GameShipAiHost::report() {
             : 0.0,
         host.summary.traffic_count_max, host.summary.traffic_scans, host.summary.traffic_steps,
         kShipAiNeighbourCountBound ? 1 : 0);
+    host.log.notef("summary mission ship ai ring probe spaces=%llu moved_starts=%llu casts=%llu "
+        "hits=%llu bound=%d (009E66EB/00417B10/0041B4E0, packet cc9_ship_ai_ring_scan_probe)",
+        host.summary.ring_probe_spaces, host.summary.ring_probe_moved_starts,
+        host.summary.ring_probe_casts, host.summary.ring_probe_hits,
+        kShipAiRingScanProbeBound ? 1 : 0);
     for (const GameShipAiRow& row : host.rows) {
         if (row.traffic_scans == 0) continue;
         host.log.notef("ship ai traffic setback unit=%s scans=%llu steps=%llu max_setback=%.1f",

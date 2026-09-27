@@ -428,6 +428,11 @@ struct GameShipAiSummary {
     unsigned long long traffic_kind_passes{0};   // entities past 009EEBCC and 009EEBDA
     unsigned long long traffic_scans{0};
     unsigned long long traffic_steps{0};
+    // Packet cc9_ship_ai_ring_scan_probe.
+    unsigned long long ring_probe_spaces{0};
+    unsigned long long ring_probe_moved_starts{0};
+    unsigned long long ring_probe_casts{0};
+    unsigned long long ring_probe_hits{0};
     std::size_t units_accepting_new_target{0};
     unsigned long long thinks{0};
     unsigned long long scans{0};
