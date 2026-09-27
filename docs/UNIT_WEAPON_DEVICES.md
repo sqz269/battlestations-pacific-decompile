@@ -746,3 +746,55 @@ Worker cc9-ships2, on main `5eab91a79`. Ghidra was read-only. The switch is in
   unload loop through 0081DCB0 down to the requested 0.
 - The reference missions were identity (the pairs above).
 - The think's later stop at line 683 (`Scoring_GetPlayerShotDown`) does not reach this path.
+
+## NavigatorForceTorpedo, 008A7200 (packet `cc9_navigator_force_torpedo`, `kNavigatorForceTorpedoBound`, committed OFF)
+
+Worker cc9-ships2, on main `ca39e028f`. Ghidra was read-only. The switch is in
+`include/bsp/game_hosts_script_orders.hpp`.
+
+### The read
+
+- **008A7200** is a `lua_CFunction` (error prefix "luaMW_NavigatorForceTorpedo failed:").
+  - It resolves argument 0 through 00888AA0.
+  - With more than one argument, it reads argument 1 through BSP_LuaObject_GetBoolean.
+  - It then walks the unit's direct children at `unit+48h` (next at `+44h`). Every child that
+    answers `IsKindOf(20h)` with Function `[[dev+3F4h]+80h] == 7` gets `vtable[1D8h](0, 0, 0)`, and
+    a true argument 1 stops the walk after the first.
+  - It pushes nothing.
+- **`vtable[1D8h]` is 00730160 BSP_Gun_Fire** in the whole turning-gun family
+  (`docs/GUN_AIMING.md`: no class overrides it). So the native fires the tube at once, with mode 0
+  and no throw.
+  - It bypasses the torpedo bot, the fire request 0072D2C0/0072D130 and CanFire 0085A830.
+  - It also bypasses the director mask this file's section 8 describes.
+
+### Callers in this installation's Lua (read-only)
+
+- The callers are `jm06.lua` (three copies: `COTP-IJN`, `COTP-IJN/PRCPIJN` and `ijn/JM`) and the
+  multiplayer `competitive12.lua` / `competitive14.lua`.
+- JM06 (missiontree.lua:4861, scene `COTP-IJN/PRCPIJN/ijn_06_prelude_to_midway.scn`) calls it at
+  jm06.lua:2582:
+  - it is in `luaJM6SubShot`, `NavigatorForceTorpedo(unit, true)` on a Japanese submarine;
+  - it is scheduled twice (3 s and 5 s) by `luaJM6ConvoyDestroyedMovie` (2484), after the convoy
+    is destroyed.
+- USN01, USN02, USN04 and BSM01 do not call it.
+
+### The binding (under `kNavigatorForceTorpedoBound`)
+
+- The script-orders host handles the native. `GameGunneryHost::force_torpedo_fire_008a7200` marks
+  the unit's torpedo guns: all of them, or the first.
+- At the unit's next aim-and-fire pass a marked gun takes the host's 00730160 arm:
+  - next ready barrel, projectile, timers, stock provider and spread;
+  - it skips `0072D130`'s send test and CanFire.
+- **LABELLED:**
+  - the host's gun rows in build order stand for the child list;
+  - the shot is queued to the next pass instead of fired inside the native.
+- **Census:** `summary mission gunnery forced torpedo marks=.. fires=..`, and one
+  `NavigatorForceTorpedo:` line per call.
+
+### Predictions (written before the pairs; same tree, switch only, streams and the death table on)
+
+| row | prediction |
+| --- | --- |
+| USN02 `pair_diff` | 1; `marks=0 fires=0` |
+| USN04 `pair_diff` | 1; `marks=0 fires=0` |
+| JM06 (the only selectable caller; OFF smoke run first, 9200/9000) | the call is not reached: `luaJM6ConvoyDestroyedMovie` needs the convoy destroyed, and the idle player destroys nothing. So the NavigatorForceTorpedo row is absent on OFF, and `pair_diff` is 1 with `marks=0` |

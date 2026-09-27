@@ -222,6 +222,9 @@ struct GameGunRow {
     float seat_horz{0.0f};
     float seat_vert{0.0f};
     bool seat_trigger{false};
+    // Packet cc9_navigator_force_torpedo: a pending vtable[1D8h](0, 0, 0), the
+    // direct 00730160 BSP_Gun_Fire NavigatorForceTorpedo (008A7200) makes.
+    bool force_fire_008a7200{false};
     unsigned long long seat_handovers{0};
     unsigned long long seat_returns{0};
 };
@@ -849,6 +852,15 @@ public:
         float water_travel_speed{0.0f};
     };
     std::vector<LiveTorpedo> live_torpedoes() const;
+    // Packet cc9_navigator_force_torpedo. 008A7200's device walk: every gun of
+    // the unit (the direct children at unit+48h answering IsKindOf(20h)) whose
+    // Function ([[dev+3F4h]+80h]) is 7 gets vtable[1D8h](0, 0, 0), 00730160,
+    // stopping after the first when `first_only`. LABELLED: the host's gun rows
+    // in their build order stand for the child list, and the fire is queued for
+    // the unit's next aim-and-fire pass, where it takes 00730160's arm without
+    // the bot, the fire request 0072D2C0/0072D130 or CanFire 0085A830.
+    // Answers the number of guns marked.
+    int force_torpedo_fire_008a7200(std::size_t unit_index, bool first_only);
     // Packet cc9_torpedo_gate_bytes (docs/SENTITY_INIT_PASSES.md section 10).
     // 008637D0, 00863840, 00863920 and 008638B0 are one loop over the category
     // lists 00E0A510 (AA {1,5,6}), 00E0A4F8 (artillery {1,2,3,4,6}), 00E0A520

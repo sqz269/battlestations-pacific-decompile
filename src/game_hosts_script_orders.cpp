@@ -108,6 +108,10 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // the PT boats and rescue craft onto their path points. Handled only with
     // kPutToBound.
     {"PutTo", 0x008a9f90u},
+    // Packet cc9_navigator_force_torpedo: jm06.lua:2582 (the two submarine
+    // shots after the convoy movie) and competitive12/14. Handled only with
+    // kNavigatorForceTorpedoBound.
+    {"NavigatorForceTorpedo", 0x008a7200u},
     {"GetMeasure", 0x0088d8e0u},
     {"GameTime", 0x008a9320u},
     {"random", 0x0088c160u},
@@ -320,6 +324,9 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
         return kScoringPlayerShotDownBound;
     }
     if (std::strcmp(binding->name, "PutTo") == 0) return kPutToBound;
+    if (std::strcmp(binding->name, "NavigatorForceTorpedo") == 0) {
+        return kNavigatorForceTorpedoBound;
+    }
     if (std::strcmp(binding->name, "EntityTurnToEntity") == 0 ||
         std::strcmp(binding->name, "UnitSetFireStance") == 0) {
         return bsp::kMissionTurnAndStanceBound;
@@ -1892,6 +1899,18 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             log_.notef("  TorpedoEnable: %s director+222h=%d changed=%d (0089C8F0 -> 0071E0D0 "
                 "-> 0071C25B)", row.unit.c_str(), enabled ? 1 : 0, changed ? 1 : 0);
         }
+    } else if (std::strcmp(binding->name, "NavigatorForceTorpedo") == 0) {
+        // 008A7200: argument 0 through 00888AA0; with more than one argument,
+        // argument 1 through BSP_LuaObject_GetBoolean (008A7288..); then the
+        // device walk. No result is pushed.
+        void* entity = entity_from_argument(0);
+        const bool first_only = argument_count_ > 1 && argument_boolean(1);
+        const std::size_t index = index_of(entity);
+        GameGunneryHost* gunnery = units_.gunnery();
+        if (entity != nullptr && index < units_.count() && gunnery != nullptr) {
+            gunnery->force_torpedo_fire_008a7200(index, first_only);
+        }
+        results = 0;
     } else if (std::strcmp(binding->name, "PutTo") == 0) {
         // 008A9F90: argument 0 through 00888AA0, 007788B0 when it answers
         // IsKindOf(2) (result unused, 008AA0BF), argument 1 through 00888760 as
