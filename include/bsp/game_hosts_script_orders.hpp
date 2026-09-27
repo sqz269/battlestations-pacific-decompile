@@ -136,6 +136,28 @@ inline constexpr bool kMissionEndBound = true;
 // stays an unimplemented record and answers nothing (the script sees nil).
 inline constexpr bool kFillPathPointsBound = true;
 
+// Packet cc9_bsm01_think_natives (docs/LUA_BINDING_MISSION.md,
+// "Scoring_GetPlayerShotDown and PutTo"). True: Scoring_GetPlayerShotDown
+// (008BC9B0) answers slot argument 0's (default 0) count of enemy aircraft
+// kills credited to that player slot's own kill tree (record+B4h, level-1 key
+// ENEMY, level-3 keys 7..0Ch; docs/SCORING_BODIES.md section 6). False: the
+// native stays an unimplemented record and answers nothing.
+// LABELLED SUBSTITUTION: this process keeps no scoring record. The count is
+// taken from the gunnery host's death rows: a sunk unit of the plane family
+// (IsKindOf(0Fh)) whose killer is the controlled unit (player slot 0; no
+// other unit carries a player slot in this process) and whose side is ENEMY
+// to the killer's (00803510). Other slots answer 0.
+inline constexpr bool kScoringPlayerShotDownBound = false;
+
+// Packet cc9_bsm01_think_natives. True: PutTo (008A9F90) places a unit through
+// its vtable slot +118h (008193A0, GameUnitsHost::place_at_world_position_008193a0)
+// in the single-player arm ([00E188A8]+1FE4h == 0, 008AA164..008AA16F).
+// LABELLED: the optional third argument, degrees turned to radians
+// (008AA136..008AA14D) and handed to vtable slot +11Ch (008196B0, no Ghidra
+// function, unread), is recorded and not applied. False: the native stays an
+// unimplemented record.
+inline constexpr bool kPutToBound = false;
+
 // Packet cc9_frame_delta_jitter, docs/GAME_EXECUTABLE.md. True: the script think
 // walk 00929460 runs once per 0.05f fixed step, as the image's fan-out row 8 does
 // (00875E64 inside 00875BB0), while the Blackout fade still steps once per frame
@@ -539,6 +561,11 @@ private:
     // Packet cc9_fill_path_points.
     unsigned long long fill_path_points_calls_{0};
     unsigned long long fill_path_points_empty_{0};
+    // Packet cc9_bsm01_think_natives.
+    unsigned long long shot_down_calls_{0};
+    int shot_down_last_{0};
+    unsigned long long put_to_calls_{0};
+    unsigned long long put_to_placed_{0};
     // 008A4C90's tally. `calls` counts what the scripts asked for; the two
     // `resolved` counters say whether the Lua argument path actually reached a
     // unit and a target, which was the open question the wiring settles.

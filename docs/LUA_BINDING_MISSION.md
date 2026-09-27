@@ -491,3 +491,83 @@ BSM01's four PT paths in the scene, with the host's retention lines agreeing:
 **Verdict: `kFillPathPointsBound` ON.** The native answers the image's table on every call, the
 reference missions are identical, and BSM01 now loads its script and runs `luaStartMission`.
 BSM01's think still needs `Scoring_GetPlayerShotDown` and `PutTo`; that is a separate packet.
+
+## Scoring_GetPlayerShotDown and PutTo, BSM01's think natives (packet `cc9_bsm01_think_natives`, committed OFF)
+
+Worker cc9-ships2, on main `c247b2476`. Ghidra was read-only. The two switches are
+`kScoringPlayerShotDownBound` and `kPutToBound` in `include/bsp/game_hosts_script_orders.hpp`.
+
+### Scoring_GetPlayerShotDown, 008BC9B0
+
+`docs/SCORING_BODIES.md` section 6 has the read.
+- The native takes the slot from Lua argument 0 as an integer, and 0 when there is none
+  (008BCAA7..008BCAAE).
+- It walks record `slot*284h+4h`'s tree at `+B4h`, level-1 key 1 (ENEMY), every level-2 key, and
+  sums the level-3 keys 7..0Ch, the six aircraft classes.
+- The tree is written by 0091BDA0 at a kill. It goes to the credited player slot `[unit+2D8h]`,
+  into `+B4h` when that equals the originating slot `+2DCh`.
+
+**The binding** counts from the gunnery host's death rows. It takes a sunk unit of the plane
+family whose `killed_by` is the controlled unit and whose side is ENEMY to it (00803510). Other
+slots answer 0.
+
+**LABELLED:** this process keeps no scoring record and no per-unit player slot. The controlled
+unit stands for slot 0, and "the six aircraft classes" is the plane family (`IsKindOf(0Fh)`),
+since the unit class ids here (10h..17h for planes) are not the scoring enum.
+
+### PutTo, 008A9F90
+
+- The native reads argument 0 through 00888AA0 and argument 1 through 00888760 as a Vector3. With
+  three arguments it reads argument 2 as degrees and turns it to radians (`* pi / 180`,
+  008AA136..008AA14D).
+- 007788B0 is called when the entity answers `IsKindOf(2)`; its answer is unused (008AA0BF).
+- Single player (`[00E188A8]+1FE4h == 0`, 008AA164..008AA16F) calls the entity's `vtable[118h](pos)`,
+  then `vtable[11Ch](heading)` when a heading was given. Otherwise the placement goes out as a
+  session message (00888F30 or 007EDF00, then 0077C2A0 at 008AA19D / 008AA1C7).
+- `vtable[118h]` is 008193A0 SetWorldPosition, read in `docs/SHIP_ESCORT_SCREEN.md` section 1.
+- `vtable[11Ch]` is **008196B0..0081983A, no Ghidra function**. It starts after 008193A0's `RET 4`
+  at 008196A8 and INT3 padding 008196AB..008196AF, and ends with `RET 4` at 00819838 and INT3 from
+  0081983B. It is unread here.
+
+**The binding:**
+- `GameUnitsHost::place_at_world_position_008193a0` is 008193A0's arm for a unit that is not a
+  formation follower: the position store 009583C0 and the wake refill 00818EA0 along the current
+  heading.
+- **LABELLED:**
+  - a follower is not placed;
+  - a leader's group snap is recorded, not applied;
+  - `vtable[0D8h]` (00955970, the scene-node refresh) and `unit+0BCCh = 1.25` have no host
+    counterpart;
+  - the heading argument is recorded, not applied.
+
+### Callers in this installation's Lua (read-only)
+
+- **BSM01:**
+  - line 681 calls Scoring_GetPlayerShotDown on every `lua_Think` pass, and line 683 compares the
+    result with 0;
+  - lines 1849..1858 call PutTo on the four PT boats and four rescue craft (two arguments);
+  - the OFF log (`fpp_on_bsm01.log`, FillPathPoints ON) shows `PutTo calls=8` and
+    `Scoring_GetPlayerShotDown calls=149`, both unimplemented.
+- **USN02:** calls neither.
+- **USN04:** usn_19_coralus.lua calls PutTo at 1242..2253, but no USN04 log has a PutTo row, so
+  none of those arms runs in the harness.
+
+### Predictions (written before the pairs; streams and the death table on)
+
+The pairs are three sides of one commit:
+- OFF;
+- `S`, only `kScoringPlayerShotDownBound=true`;
+- `SP`, both switches true.
+
+BSM01 runs at 9200/9000; USN02 and USN04 run OFF against `SP`.
+
+| row | prediction |
+| --- | --- |
+| USN02 / USN04 `pair_diff` (OFF vs SP) | 1; `shot down calls=0` and `put to calls=0` on both |
+| BSM01 OFF vs S: `lua_Think` failures at line 683 | 149 -> 0 |
+| BSM01 OFF vs S: shot-down calls | at least 149 (one per think pass); `last` is 0 or small |
+| BSM01 OFF vs S: the timer census | `failures` at most 1 on S (any later stop is a different line, reported by name) |
+| BSM01 OFF vs S: `pair_diff` | 3, since the think now runs past line 683 and its phases proceed |
+| BSM01 S vs SP: `put to` | `calls=8 placed=8`: PT-21..PT-24 (the pt_path1..4 boats of `luaGenerateHarborTrafic`) and the four rescue craft, each at a point `pathTbl[random(2,10)]` of its path, y 0 |
+| BSM01 S vs SP: `pair_diff` | 3, since the eight craft start at their path points instead of their generated positions |
+| BSM01 deaths / hit records | predicted to move on both pairs; OFF has 0 and 0 |

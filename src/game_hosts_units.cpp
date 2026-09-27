@@ -17469,6 +17469,29 @@ std::size_t GameUnitsHost::formation_leader_0014(std::int32_t group) const noexc
     return host.formation_groups[static_cast<std::size_t>(group)].leader;
 }
 
+bool GameUnitsHost::place_at_world_position_008193a0(std::size_t index, const float pos[3]) {
+    Impl& host = *impl_;
+    if (index >= host.slots.size() || host.slots[index] == nullptr) return false;
+    GameUnitSlot& slot = *host.slots[index];
+    if (unit_is_formation_follower_007788b0(index)) {
+        // 00819430 refuses a far point outright; 0081945D would replace a near
+        // one with the station. Neither placement is modelled for a follower.
+        host.record("UnitPlace::follower_arms_008193a0", 0x0081945du);
+        return false;
+    }
+    for (int lane = 0; lane < 3; ++lane) slot.motion.position[lane] = pos[lane];   // 009583C0
+    const float heading = static_cast<float>(
+        std::atan2(static_cast<double>(slot.motion.pose_row2[0]),
+                   static_cast<double>(slot.motion.pose_row2[2])));
+    bsp::ship_ai_wake_fill_00810020(slot.wake, slot.motion.position, heading);   // 00818EA0
+    host.done("UnitPlace::set_world_position_008193a0", 0x008193a0u);
+    if (slot.formation_group >= 0 &&
+        formation_leader_0014(slot.formation_group) == index) {
+        host.record("UnitPlace::group_snap_0081963e", 0x0081963eu);
+    }
+    return true;
+}
+
 bool GameUnitsHost::unit_is_formation_follower_007788b0(std::size_t index) const noexcept {
     // 007788B0 whole: g = [unit+284h]; g && [g+14h] != unit.
     const std::int32_t group = unit_formation_group_0284(index);

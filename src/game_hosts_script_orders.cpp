@@ -9,6 +9,7 @@
 #include "bsp/air_operations.hpp"
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/scoring_bodies.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/game_hosts_units.hpp"
 #include "bsp/game_hosts_fixed_step.hpp"
@@ -100,6 +101,13 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // usn_2_java.lua:867 (luaShowPath, never called) and five commandhelpers
     // helpers. Handled only with kFillPathPointsBound.
     {"FillPathPoints", 0x0089a190u},
+    // Packet cc9_bsm01_think_natives: bsm_01_stationed_at_pearl.lua:681, every
+    // think pass. Handled only with kScoringPlayerShotDownBound.
+    {"Scoring_GetPlayerShotDown", 0x008bc9b0u},
+    // Packet cc9_bsm01_think_natives: bsm_01_stationed_at_pearl.lua 1849..1858,
+    // the PT boats and rescue craft onto their path points. Handled only with
+    // kPutToBound.
+    {"PutTo", 0x008a9f90u},
     {"GetMeasure", 0x0088d8e0u},
     {"GameTime", 0x008a9320u},
     {"random", 0x0088c160u},
@@ -277,6 +285,10 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
     if (std::strcmp(binding->name, "TorpedoEnable") == 0) return kShipDirectorEnablesBound;
     if (std::strcmp(binding->name, "ShipSetTorpedoStock") == 0) return kShipSetTorpedoStockBound;
     if (std::strcmp(binding->name, "FillPathPoints") == 0) return kFillPathPointsBound;
+    if (std::strcmp(binding->name, "Scoring_GetPlayerShotDown") == 0) {
+        return kScoringPlayerShotDownBound;
+    }
+    if (std::strcmp(binding->name, "PutTo") == 0) return kPutToBound;
     if (std::strcmp(binding->name, "EntityTurnToEntity") == 0 ||
         std::strcmp(binding->name, "UnitSetFireStance") == 0) {
         return bsp::kMissionTurnAndStanceBound;
@@ -1819,6 +1831,66 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             log_.notef("  TorpedoEnable: %s director+222h=%d changed=%d (0089C8F0 -> 0071E0D0 "
                 "-> 0071C25B)", row.unit.c_str(), enabled ? 1 : 0, changed ? 1 : 0);
         }
+    } else if (std::strcmp(binding->name, "PutTo") == 0) {
+        // 008A9F90: argument 0 through 00888AA0, 007788B0 when it answers
+        // IsKindOf(2) (result unused, 008AA0BF), argument 1 through 00888760 as
+        // a Vector3, and with three arguments argument 2 * pi / 180. Single
+        // player: vtable[118h](pos), then vtable[11Ch](heading) when given.
+        void* entity = entity_from_argument(0);
+        float pos[3] = {0.0f, 0.0f, 0.0f};
+        const bool have_pos = argument_vector3(1, pos);
+        const std::size_t index = index_of(entity);
+        ++put_to_calls_;
+        bool placed = false;
+        if (entity != nullptr && have_pos && index < units_.count()) {
+            placed = units_.place_at_world_position_008193a0(index, pos);
+            if (placed) ++put_to_placed_;
+        }
+        if (argument_count_ >= 3) {
+            log_.unimplemented("PutTo::set_heading_vtable_011c", "008196b0");
+        }
+        log_.notef("  PutTo: %s pos=(%.1f, %.1f, %.1f) placed=%d (008A9F90 -> 008193A0)",
+            index < units_.count() ? name_of(entity).c_str() : "?",
+            static_cast<double>(pos[0]), static_cast<double>(pos[1]),
+            static_cast<double>(pos[2]), placed ? 1 : 0);
+        results = 0;
+    } else if (std::strcmp(binding->name, "Scoring_GetPlayerShotDown") == 0) {
+        // 008BC9B0: slot = argument 0 as an integer, 0 when absent (not
+        // game+18ECh); record slot*284h+4h, tree +B4h, level-1 key 1 (ENEMY),
+        // every level-2 key, level-3 keys 7..0Ch summed at 008BCCBF; one result.
+        const int slot = argument_count_ >= 1 ? argument_integer(0) : 0;
+        int count = 0;
+        const GameGunneryHost* gunnery = units_.gunnery();
+        if (slot == 0 && gunnery != nullptr && units_.controlled_bound()) {
+            const std::size_t player = units_.controlled_index();
+            const std::vector<GameGunneryUnitRow>& rows = gunnery->unit_rows();
+            const GameGunneryUnitRow* killer_row = nullptr;
+            for (const GameGunneryUnitRow& r : rows) {
+                if (r.unit_index == player) { killer_row = &r; break; }
+            }
+            if (killer_row != nullptr) {
+                for (const GameGunneryUnitRow& r : rows) {
+                    if (!r.sunk || r.killed_by != killer_row->name) continue;
+                    if (r.unit_index >= units_.count() ||
+                        !units_.unit_is_kind_of(r.unit_index, bsp::kUnitGunneryKindPlaneBase)) {
+                        continue;
+                    }
+                    if (bsp::scoring_relative_party_00803510(killer_row->side, r.side)
+                            != bsp::kScoringPartyEnemy) {
+                        continue;
+                    }
+                    ++count;
+                }
+            }
+        }
+        ++shot_down_calls_;
+        shot_down_last_ = count;
+        if (state_ != nullptr) {
+            lua_pushnumber(state_, static_cast<lua_Number>(count));
+            results = 1;
+        } else {
+            results = 0;
+        }
     } else if (std::strcmp(binding->name, "FillPathPoints") == 0) {
         // 0089A190: argument 0 through 00888AA0 and 007AC9D0 (the path
         // interface), 00B67930's new table, then for i < 00415870's count
@@ -2894,6 +2966,12 @@ void GameScriptOrdersHost::run_script_timers(float step) {
 }
 
 void GameScriptOrdersHost::report() {
+    log_.notef("summary mission script player shot down bound=%d calls=%llu last=%d "
+        "(008BC9B0, packet cc9_bsm01_think_natives)", kScoringPlayerShotDownBound ? 1 : 0,
+        shot_down_calls_, shot_down_last_);
+    log_.notef("summary mission script put to bound=%d calls=%llu placed=%llu (008A9F90 -> "
+        "008193A0, packet cc9_bsm01_think_natives)", kPutToBound ? 1 : 0, put_to_calls_,
+        put_to_placed_);
     log_.notef("summary mission script fill path points bound=%d calls=%llu empty=%llu "
         "(0089A190, packet cc9_fill_path_points)", kFillPathPointsBound ? 1 : 0,
         fill_path_points_calls_, fill_path_points_empty_);

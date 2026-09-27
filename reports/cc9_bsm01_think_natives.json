@@ -1,0 +1,61 @@
+{
+  "packet": "cc9_bsm01_think_natives",
+  "doc": "docs/LUA_BINDING_MISSION.md, Scoring_GetPlayerShotDown and PutTo",
+  "calls": [
+    {
+      "address": "008AA098",
+      "native": "00888AA0",
+      "function": "008A9F90",
+      "note": "entity from argument 0"
+    },
+    {
+      "address": "008AA0BF",
+      "native": "007788B0",
+      "function": "008A9F90",
+      "note": "formation follower, result unused"
+    },
+    {
+      "address": "008AA0E2",
+      "native": "00888760",
+      "function": "008A9F90",
+      "note": "argument 1 as Vector3"
+    },
+    {
+      "address": "008AA18A",
+      "native": "00888F30",
+      "function": "008A9F90",
+      "note": "session arm with heading"
+    },
+    {
+      "address": "008AA1B4",
+      "native": "007EDF00",
+      "function": "008A9F90",
+      "note": "session arm without heading"
+    }
+  ],
+  "switches": [
+    {
+      "name": "kScoringPlayerShotDownBound",
+      "state": "OFF",
+      "pair": "pending"
+    },
+    {
+      "name": "kPutToBound",
+      "state": "OFF",
+      "pair": "pending"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "008196B0",
+      "end": "0081983A",
+      "note": "unit vtable slot +11Ch (00CFC4EC), the heading setter PutTo calls with a third argument; RET 4 at 00819838, INT3 0081983B..0081983F; body not read in this packet"
+    }
+  ],
+  "names_added": [],
+  "substitutions": [
+    "shot-down count from the gunnery death rows: plane-family victims killed by the controlled unit (slot 0), ENEMY by 00803510",
+    "PutTo places only non-follower units; group snap, scene-node refresh, +0BCCh and the heading argument not applied"
+  ],
+  "failed_predictions": []
+}
