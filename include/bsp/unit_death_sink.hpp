@@ -2,6 +2,8 @@
 #include <array>
 #include <cstdint>
 
+#include "bsp/unit_state_message.hpp"  // UnitOrderRing
+
 // The death message receiver, the wreck handler behind vtable slot 7Ch and the
 // sink state. docs/UNIT_DEATH_MESSAGE_AND_SINK.md, reports/unit_death_sink.json.
 //
@@ -241,5 +243,24 @@ struct WreckPhysicsHost {
 void on_wrecked_00824fe5(WreckPhysicsHost& host,
                          const WreckedUnit& wreck,
                          const WreckBubbleSettings& settings);
+
+// Packet cc9_wreck_pre_sink (docs/UNIT_DEATH_MESSAGE_AND_SINK.md, "The rest of
+// 00824B60"). The only write the wreck handler makes to a ship's controls:
+//   0082523F  MOV EDX,[ESI+97Ch]          ; the order ring's write cursor
+//   00825245  XORPS XMM0,XMM0
+//   00825248  SHL EDX,5
+//   0082524B  MOVSS [EDX+ESI+838h],XMM0   ; slot+00h, the throttle, = 0.0f
+// the same store as 0080E170 with a zero argument, unconditional (every path
+// through the handler reaches 0082523F). The rudder slot (+04h), the live pair
+// at ring+148h / +14Ch and the cursors are untouched, so the ring carries the
+// zero forward and the ship motion's live throttle reaches it after the ring's
+// lag. The pre-sink part 00824B60..00824F38 writes no control or AI field: it
+// only builds one or two point effects (unit+74Ch..+760h, 008687C0, one draw
+// of 00BD2F10 each), which this host does not model.
+//
+// Committed OFF with predictions; the units host calls this from its row-15
+// wreck entry once wired (a one-line follow-up in src/game_hosts_units.cpp).
+inline constexpr bool kWreckThrottleCutBound = false;
+void wreck_throttle_cut_0082524b(UnitOrderRing& ring) noexcept;
 
 }  // namespace bsp
