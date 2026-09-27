@@ -227,8 +227,9 @@ inline constexpr bool kShipAiNeighbourCountBound = true;
 // 006DFD90 -> 0082ADA0(desc, 0) -> 004120D0(manager, [class+560h]); 009E673E
 // 00417B10(group, out, start, 3.0f, 1); 009E6808 0041B4E0 -> 004179D0 on that
 // group. The manager is GameAvoidZoneRuntime (docs/AVOID_ZONE_REGISTRY.md).
-// False: no space, the start point unchanged, no hit (the stand-ins).
-inline constexpr bool kShipAiRingScanProbeBound = false;
+// False: no space, the start point unchanged, no hit (the stand-ins). ON: the
+// USN02 and E2 pairs held (docs/SHIP_AI_TAILS.md section 14.5).
+inline constexpr bool kShipAiRingScanProbeBound = true;
 // Packet cc9_ship_ai_turn_clearance, docs/SHIP_AI_TAILS.md section 6. True:
 //  * 009ED3E0's head (009ED3E0..009ED498) builds the two corridor widths from
 //    the unit's formation group: 00778890 (the unit leads its group, entity+284h

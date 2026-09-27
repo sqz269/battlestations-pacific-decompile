@@ -790,3 +790,23 @@ USN02 9200/9000 and E2 = USN04 9200/9000.
   There are no bands: the claim is identity.
 - **Would falsify the reading:** any hit or moved start (a zone would then exist), or any moved
   gameplay line.
+
+### 14.5 The pairs and the verdict
+
+One tree (main `2731f0283` plus `e6efbf13a`), `local\rs_off` against `local\rs_on` (SHA-256
+prefixes `1CB7DFE04F27` / `9AB2FF004FD6`). Streams and the death table on. Logs:
+`local\rs_{off,on}_{usn04,usn02}.log`. Every log shows the 1600x900 override and its own module
+directory, and every run exited 0.
+
+| line | E2 OFF | E2 ON | USN02 OFF | USN02 ON |
+| --- | ---: | ---: | ---: | ---: |
+| the three `ShipAiRingScan::probe_*` rows | 21,660 UNIMPLEMENTED | 21,660 concrete | 165,960 UNIMPLEMENTED | 165,960 concrete |
+| ring probe spaces / moved starts / casts / hits | 0 / 0 / 0 / 0 | 21,660 / 0 / 21,660 / 0 | 0 / 0 / 0 / 0 | 165,960 / 0 / 165,960 / 0 |
+
+- Both ways, the whole native table (1,538 rows on E2, 1,436 on USN02), every other summary line
+  and every `death row` / `plane death mode` line are identical.
+- USN02 is 22 deaths and 439 hit records, failing at 39.65 s, on both sides.
+
+**Verdict: held, every prediction.** The probe asks the image's group and casts through the image's
+two group routines. With `zones=0` on both missions it answers what the open-sea stand-in
+answered. `kShipAiRingScanProbeBound` is ON, and ranking 3 rows 9 to 11 are closed.
