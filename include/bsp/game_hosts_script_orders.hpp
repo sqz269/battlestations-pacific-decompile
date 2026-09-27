@@ -134,7 +134,7 @@ inline constexpr bool kMissionEndBound = true;
 // points are the scene path registry's, which applies the same 007AF800 step
 // to the authored PathPoints/Point%02i/Pos at scene load. False: the native
 // stays an unimplemented record and answers nothing (the script sees nil).
-inline constexpr bool kFillPathPointsBound = false;
+inline constexpr bool kFillPathPointsBound = true;
 
 // Packet cc9_frame_delta_jitter, docs/GAME_EXECUTABLE.md. True: the script think
 // walk 00929460 runs once per 0.05f fixed step, as the image's fan-out row 8 does

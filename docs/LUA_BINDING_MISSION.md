@@ -458,3 +458,36 @@ BSM01's four PT paths in the scene, with the host's retention lines agreeing:
 | BSM01 `luaStartMission` | reached on ON: the native table's `ShipSetTorpedoStock` row shows `calls=1` (an unimplemented record, since `kShipSetTorpedoStockBound` is still OFF), where OFF has no row |
 | BSM01 script failures after init | none, so `failures=0` on ON |
 | BSM01 `pair_diff` | 3: the PT boats and rescue craft are generated and put on the paths only on ON |
+
+### The pairs, measured, and the verdict
+
+- OFF is this tree's `build\` at `215640b92`; ON is `pair_export --flip kFillPathPointsBound=true`
+  of the same commit (SHA-256 `067803BF3411`).
+- All sides ran with the streams and the death table on. Logs: `local\fpp_{off,on}_{bsm01,usn02,usn04}.log`.
+- Every log was checked for its milestone line, its module directory and its final COM release
+  line.
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| USN02 `pair_diff` | - | 1, `calls=0` both sides | 1 | holds |
+| USN04 `pair_diff` | - | 1, `calls=0` both sides | 1 | holds |
+| BSM01 FillPathPoints lines | none | pt_path1 16, pt_path2 11, pt_path3 18, pt_path4 12; `calls=4 empty=0` | the first four as listed, `empty=0` | holds |
+| BSM01 think registrations | 0, `failures=1` | 3 | at least 1 | holds |
+| BSM01 `ShipSetTorpedoStock` row | none | `UNIMPLEMENTED calls=1` | `calls=1` | holds |
+| BSM01 script failures after init | - | **149**, every one at line 683 | none | **failed** |
+| BSM01 `pair_diff` | - | 3 (the controlled unit is HenryPT; 201 native rows added) | 3 | holds |
+
+**The next blocker is `Scoring_GetPlayerShotDown` (008BC9B0).**
+- bsm_01_stationed_at_pearl.lua:681 reads `local sd = Scoring_GetPlayerShotDown()`, and line 683
+  compares `sd > 0`.
+- The native is unimplemented here and answers nothing, so every `lua_Think` pass from the first
+  one on stops at 683 (149 calls, 149 failures).
+- `luaStartMission` (line 650) runs before that point, on the first pass, so the ShipSetTorpedoStock
+  call is reached.
+- `PutTo` (008A9F90, 8 calls) is also unimplemented. The PT boats and rescue craft are generated
+  and given their paths through NavigatorMoveOnPath (10 calls), but they are not placed at the
+  path points.
+
+**Verdict: `kFillPathPointsBound` ON.** The native answers the image's table on every call, the
+reference missions are identical, and BSM01 now loads its script and runs `luaStartMission`.
+BSM01's think still needs `Scoring_GetPlayerShotDown` and `PutTo`; that is a separate packet.
