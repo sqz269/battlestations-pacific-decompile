@@ -1,0 +1,57 @@
+{
+  "packet": "cc9_fill_path_points",
+  "doc": "docs/LUA_BINDING_MISSION.md, FillPathPoints",
+  "calls": [
+    {
+      "address": "0089A28F",
+      "native": "00888AA0",
+      "function": "0089A190",
+      "note": "entity from argument 0"
+    },
+    {
+      "address": "0089A296",
+      "native": "007AC9D0",
+      "function": "0089A190",
+      "note": "path interface"
+    },
+    {
+      "address": "0089A2B7",
+      "native": "00B67930",
+      "function": "0089A190",
+      "note": "new result table"
+    },
+    {
+      "address": "0089A2C7",
+      "native": "00415870",
+      "function": "0089A190",
+      "note": "point count"
+    },
+    {
+      "address": "0089A2FC",
+      "native": "007AF800",
+      "function": "0089A190",
+      "note": "point i to world"
+    },
+    {
+      "address": "0089A307",
+      "native": "0088BA30",
+      "function": "0089A190",
+      "note": "x, y, z fields"
+    }
+  ],
+  "switches": [
+    {
+      "name": "kFillPathPointsBound",
+      "state": "OFF",
+      "pair": "pending"
+    }
+  ],
+  "no_ghidra_function": [],
+  "names_added": [
+    "0089A190 BSP_LuaBinding_FillPathPoints"
+  ],
+  "substitutions": [
+    "an argument that is not a retained path answers an empty table"
+  ],
+  "failed_predictions": []
+}
