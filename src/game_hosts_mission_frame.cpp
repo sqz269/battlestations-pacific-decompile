@@ -195,6 +195,7 @@ struct GameMissionFrameHost::Impl {
         // Release every outward borrow before destroying the canonical slots.
         if (hud != nullptr && units != nullptr) hud->detach_world_2k();
         lua.attach_script_orders(nullptr);
+        lua.attach_units_hooks(nullptr);
         if (step_subsystems != nullptr) step_subsystems->attach_units(nullptr);
         if (units != nullptr) units->set_ship_ai(nullptr);
         ship_ai.reset();
@@ -1904,6 +1905,8 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             // authored `Command` token is then queued, and the first created
             // instance becomes the controlled unit through 004c0890.
             host.units = std::make_unique<GameUnitsHost>(host.log, host.lua);
+            // Packet cc9_squadron_pass_hooks_calls: the InitAll walk's squadron hooks.
+            host.lua.attach_units_hooks(host.units.get());
             if (host.observer_runtime != nullptr)
                 host.units->bind_observer_runtime(*host.observer_runtime);
             // Milestone 2j: the gameplay settings singleton's rudder curve block

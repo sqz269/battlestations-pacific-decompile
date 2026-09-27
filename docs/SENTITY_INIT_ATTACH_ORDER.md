@@ -987,3 +987,89 @@ retirement lands first and the hooks follow in the next landing.
 **Every prediction held. Verdict: ON.** `create_units` is the one push for units. The routes and
 the load walk look its node up. The squadron routes annotate it, and the markers still push at
 load.
+
+## 15. The squadron pass hooks called (packet `cc9_squadron_pass_hooks_calls`, `kSquadronPassHooksCalled`)
+
+Worker cc9-init-passes, 2026-09-27, base main 13ccb5215. cc9-units2's entries
+`GameUnitsHost::on_squadron_pass_a_construct_wing(squadron_index)` and
+`on_squadron_pass_c_initial_command(squadron_index)` landed at 1ac30b2b0
+(`docs/CONSTRUCT_WORLD.md` section 27). Both are counted no-ops, and the index is the unit index
+of the squadron's fused leader, its entity id - 1.
+
+### 15.1 The binding
+
+- **Pass A** (`entity_attach_lua_self_vcall_9c`): for a squadron node, the walk calls the pass A
+  entry after the slot attach and before the wing append, at 007F4580's plane constructions. The
+  native row is `SEntity::InitAll pass A squadron_construct_wing hook` (007f4580).
+- **Pass C** (`entity_init_third_vcall_a4`): for a squadron node, the walk calls the pass C entry,
+  007F4BA0's initial command at 007F4E9E. The native row is `SEntity::InitAll pass C
+  squadron_initial_command hook` (007f4e9e).
+- **Access.** The mission frame hands the Lua host the units host, writable, when it creates it
+  (`attach_units_hooks`), and clears it with the orders host.
+- **Which nodes are squadrons.** Only the route squadrons (GenerateObject of a PlaneSquadronGen,
+  SpawnNew and air-ops creation) are squadron nodes. cc9-units2's read (section 27, b9d3f64da)
+  settles USN02: the host builds no squadron there. So no load-node squadron test is added.
+
+### 15.2 Predictions (written before the pairs; the same tree, switch only, both variables set)
+
+- **USN04 4700/4500:**
+  - `summary squadron pass hooks` goes from `pass_a=0 pass_c=0` to `pass_a=20 pass_c=20`, the 16
+    SpawnNew and 4 air-ops squadrons.
+  - The two new native rows have 20 calls each.
+  - Nothing else moves, and gameplay is identical.
+- **E2 (USN04 9200/9000):** the same 20 and 20. Not run in this packet.
+- **USN02 9200/9000:** no squadron node, so both counts stay 0, no row is added, and `pair_diff`
+  exits 0.
+
+### 15.3 Pairs and verdict
+
+- **The runs.** The binaries are `local\bin\sh_off` (the committed OFF, 20e3d4387) and
+  `local\bin\sh_on` (flipped locally, then reverted). `BSP_GUNNERY_RNG_STREAMS=1` and
+  `BSP_DEATH_TABLE=1` were set. All four logs have the fit line, the immediate present interval
+  and the final COM release, and each module directory is under `local\bin\sh_*` in this tree.
+- **USN04 4700/4500.** `pair_diff` exits 1.
+  - The two hook rows are added, 20 calls each.
+  - `squadron pass hooks` goes from `pass_a=0 pass_c=0` to `pass_a=20 pass_c=20`.
+  - Nothing else moves: 43 deaths and 788 hit records on both sides, and the death rows, plane
+    death modes and 81 unit rows are identical.
+- **USN02 9200/9000.** `pair_diff` exits 0: identical apart from noise, with no squadron node.
+- **The report's pass A call site** is 00926054 (`CALL EAX` after the `+9Ch` load at 0092604E),
+  corrected from the OFF commit's 0092604E.
+
+**Every prediction held. Verdict: ON.**
+
+### 15.4 The Lua half of the wing construction (section 9.3), for when units2 builds the wing in the pass A hook
+
+When `on_squadron_pass_a_construct_wing` constructs the wing, `create_units` pushes each plane
+while the walk is inside pass A. The walk re-reads the list's size, so it reaches those planes in
+this same pass A, as 007F4580's constructions are reached in the image. The Lua host then changes
+in five places, all in `src/game_hosts_lua.cpp`, under one switch landed with units2's.
+
+1. **Retire the wing append in pass A.** The loop over `[units_before, units_end)` in
+   `entity_attach_lua_self_vcall_9c` goes. The planes arrive as construction pushes instead.
+2. **Mark the hook's pushes as this squadron's wing.** The append set three fields on each wing
+   node, and a plain construction push has none of them:
+   - `wing_member`, which the `wing_member_tables` count and pass C's `SquadronID` need;
+   - `squadron_id` = the leader's id (007F4B49's `+9D4h`);
+   - `class_index` = the squadron's class.
+   So pass A records the list size before the hook call, and marks every node appended during the
+   call with them.
+3. **Retire the wing-range annotation and the wing deferral.** Once the creator batch builds no
+   wing, `route_push_squadron`'s `units_before`/`units_end` has nothing to describe, and the
+   dedup's `wing_deferred` rule (section 9.2) finds nothing to drop. Both go.
+4. **The squadron flag stays** until `create_units` can mark a construction push as a squadron:
+   the route's annotation is what makes pass A call the hook and pass C call the initial command.
+   Moving that flag to the units push is the step after.
+5. **`wing_append_skipped` and the load-walk path are unaffected.** No load-time squadron exists
+   in the reference missions, and a load squadron's wing would be built by the same hook.
+
+**Predictions for that landing:**
+- `wing_appended` 40 -> 0;
+- the units host's construction pushes are unchanged in total (81 on USN04), with 40 of them now
+  made during pass A;
+- `wing_deferred` 40 -> 0;
+- `entities=86`, `self_table_entities=86` and `wing_member_tables=40` are unchanged;
+- `squadron_ids` stays 40;
+- gameplay identical, **unless** the wing's construction time moves something. The planes would
+  now exist from pass A of the InitAll that follows their squadron's creation, instead of from
+  the creator batch. On USN04 both are inside the same Lua call, so identity is expected.
