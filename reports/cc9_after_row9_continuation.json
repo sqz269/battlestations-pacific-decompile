@@ -1,0 +1,12 @@
+{
+  "packet": "cc9_after_row9_continuation",
+  "worker": "cc9-hud3",
+  "base": "0fd4e5a45",
+  "switch": "kAfterRow9OrderQueueBound",
+  "state": "OFF",
+  "doc": "docs/SENTITY_INIT_ATTACH_ORDER.md sections 22.7 (predictions) and 22.8",
+  "substitutions": ["The host installs bot tasks at the order delivery; the image installs at the bot tick 0099ACD0 behind +7Ch, one tick later."],
+  "no_ghidra_function": [],
+  "names_added": [],
+  "pairs": "pending"
+}

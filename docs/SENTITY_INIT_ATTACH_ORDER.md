@@ -1884,3 +1884,30 @@ script-orders files are free):
   - Exit 3, with a small move in hits and shots; the reference is 150 hit records and 561 shots.
 - **USN04 4700/4500:** census `(none)`, identity, exit 1.
 - **USN02 9200/9000:** census `(none)`, identity, exit 1.
+
+### 22.8 The delivery continuation (packet `cc9_after_row9_continuation`, committed OFF)
+
+Worker cc9-hud3, 2026-09-27, base 0fd4e5a45. This binds the fix section 22.7 designed, still
+behind `kAfterRow9OrderQueueBound`.
+- **The continuation.** `DeferredOrder` carries `after_apply`. `after_order_delivery` runs a
+  binding's receiver-side block at once when `entity_issue_command` applied the order, and attaches
+  it to the queued order when the order was deferred (`last_issue_deferred_`).
+- **The drain.** `drain_deferred_orders_0076c600` runs each continuation right after
+  `apply_issued_order`. While it runs, the poster flag and the current binding row are cleared:
+  - The pump can run inside a Blackout callback, through GenerateObject's 00874D00.
+  - What the delivery issues in turn, the squadron fan-out's wingman orders, belongs to the
+    receiver. So it applies there rather than being queued again.
+  - The delivery also stopped writing its outcome onto whatever binding row was being run.
+- **The three receiver-side blocks moved behind it:**
+  - `run_pilot_set_target`: the 0099A170 install and the 007ECF80 fan-out. The fan-out keeps the
+    running row's leader outcome through `row_`, not the binding's reference.
+  - `run_pilot_move_to_range`: the install, and the range and target stores. The binding's
+    `tasks` count covers only the installs made before it returns.
+  - `session_route_path_order_message`: the 0071C1B0 follow pair and the 0071F600 build.
+- **Direct orders are unchanged.** OFF never defers, so each block runs at the same point as
+  before, and an OFF run is identical to the previous build.
+- **The census** gains `continuations=` on the `after-row-9 order queue` summary line.
+- **Labelled substitution**, unchanged from 22.7: the install happens at the delivery, one bot
+  tick before the image's `+7Ch` route in 0099ACD0.
+
+The predictions are 22.7's.

@@ -296,15 +296,49 @@ std::size_t GameScriptOrdersHost::drain_deferred_orders_0076c600() {
     if (deferred_orders_.empty()) return 0;
     std::vector<DeferredOrder> batch;
     batch.swap(deferred_orders_);
+    // Packet cc9_after_row9_continuation. The drain is the delivery, not a
+    // script call: the pump can run inside a Blackout callback (GenerateObject's
+    // 00874D00 with CL = 1), and what a delivery issues in turn (the squadron
+    // fan-out's wingman orders) is the receiver's, so it applies here rather
+    // than being queued again. Nor does the delivery belong to the binding row
+    // being run, if any.
+    const std::string outer_poster = after_row9_poster_;
+    GameScriptOrderRow* const outer_row = row_;
+    after_row9_poster_.clear();
+    row_ = nullptr;
     for (const DeferredOrder& o : batch) {
         apply_issued_order(o.index, o.command_object, o.target, o.flags, o.source,
             o.target_name);
         ++deferred_applied_;
         log_.notef("  after-row-9 queue: %s's order for unit %zu applied at the step's pump "
-            "(0076C600)", o.poster.c_str(), o.index);
+            "(0076C600)%s", o.poster.c_str(), o.index,
+            o.after_apply ? ", then its delivery continuation" : "");
+        if (o.after_apply) {
+            ++deferred_continuations_;
+            o.after_apply();
+        }
     }
+    after_row9_poster_ = outer_poster;
+    row_ = outer_row;
     log_.implemented("Session::drain_loopback_queue_0076c600", "00778542");
     return batch.size();
+}
+
+void GameScriptOrdersHost::after_order_delivery(std::function<void()> fn) {
+    if (last_issue_deferred_ && !deferred_orders_.empty()) {
+        DeferredOrder& o = deferred_orders_.back();
+        if (o.after_apply) {
+            std::function<void()> first = std::move(o.after_apply);
+            o.after_apply = [first = std::move(first), fn = std::move(fn)]() {
+                first();
+                fn();
+            };
+        } else {
+            o.after_apply = std::move(fn);
+        }
+        return;
+    }
+    fn();
 }
 
 bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
@@ -1102,10 +1136,20 @@ int GameScriptOrdersHost::run_pilot_set_target(GameScriptOrderRow& row) {
     if (chosen != 0u && unit != nullptr) {
         entity_issue_command(unit, chosen, target, 1);
         ++pilot_set_target_issued_;
+        // Packet cc9_after_row9_continuation (docs/SENTITY_INIT_ATTACH_ORDER.md
+        // 22.7). What follows is the receiver's side: 0099A170 reads the command
+        // the director holds, so it runs once the order is delivered. A direct
+        // order is delivered at once; a queued one at the drain. SUBSTITUTION,
+        // labelled: the image installs in the bot's tick 0099ACD0 behind +7Ch,
+        // one bot tick after the delivery; this host installs at the delivery.
+        const std::size_t leader_index = row.unit_index;
+        const std::string leader_name = row.unit;
+        after_order_delivery([this, leader_index, leader_name, chosen, target,
+                              target_index]() {
         // 0099A170: the command the director now holds becomes a bot task. The
         // routine is src/attack_commands.cpp's; this only feeds it.
         const std::uint32_t unit_token =
-            static_cast<std::uint32_t>(row.unit_index + 1u);
+            static_cast<std::uint32_t>(leader_index + 1u);
         const std::uint32_t target_token = target_index < units_.count()
             ? static_cast<std::uint32_t>(target_index + 1u) : 0u;
         ScriptOrderAttackCommandHost bot_host(units_, log_, chosen, target_token);
@@ -1114,10 +1158,10 @@ int GameScriptOrdersHost::run_pilot_set_target(GameScriptOrderRow& row) {
         // The class the task was built from, kept on the unit so a per-class
         // arm can ask whether its own task exists rather than guessing from
         // ordnance. docs/DIVE_BOMB_TASK.md, "The class gate".
-        if (task != 0u) units_.store_unit_attack_command_class(row.unit_index, chosen);
+        if (task != 0u) units_.store_unit_attack_command_class(leader_index, chosen);
         if (task != 0u) ++pilot_set_target_tasks_;
         log_.notef("  PilotSetTarget task: 0099A170 -> %u (unit=%s command=%08lx "
-            "target_token=%u refusals=%u)", task, row.unit.c_str(),
+            "target_token=%u refusals=%u)", task, leader_name.c_str(),
             static_cast<unsigned long>(chosen), target_token, bot_host.refusals());
 
         // 007ECF80, the squadron's own vtable slot +128h: a squadron applies what
@@ -1133,22 +1177,20 @@ int GameScriptOrdersHost::run_pilot_set_target(GameScriptOrderRow& row) {
         // The ordered unit is the fused flight leader and already has its task
         // from the block above, so the fan-out starts at slot 1.
         bsp::PlaneSquadronHostRecord* squadron =
-            bsp::plane_squadron_registry().find_by_member_unit(row.unit_index);
+            bsp::plane_squadron_registry().find_by_member_unit(leader_index);
         std::size_t fanned = 0;
         if (squadron != nullptr) {
-            // entity_issue_command writes the outcome onto the binding row, and
-            // the row belongs to the call the script made, which named the
-            // leader. Keep the leader's outcome and let the wingmen's show up in
-            // the summary counters and the fan-out line below.
-            const std::string leader_command = row.command;
-            const std::string leader_target = row.target;
-            const bool leader_issued = row.issued;
-            const bool leader_reached = row.reached_director;
-            const std::string leader_blocked = row.blocked;
+            // entity_issue_command writes the outcome onto the binding row being
+            // run, which named the leader. Keep the leader's outcome and let the
+            // wingmen's show up in the summary counters and the fan-out line
+            // below. At a drain no row is being run.
+            GameScriptOrderRow* const leader_row = row_;
+            GameScriptOrderRow saved;
+            if (leader_row != nullptr) saved = *leader_row;
             for (std::size_t slot = 0; slot < squadron->member_units.size(); ++slot) {
                 const std::size_t member = squadron->member_units[slot];
                 if (member == bsp::kPlaneSquadronNoUnit) continue;
-                if (member == row.unit_index) continue;
+                if (member == leader_index) continue;
                 void* const member_handle =
                     reinterpret_cast<void*>(static_cast<std::uintptr_t>(member + 1u));
                 entity_issue_command(member_handle, chosen, target, 1);
@@ -1162,16 +1204,19 @@ int GameScriptOrdersHost::run_pilot_set_target(GameScriptOrderRow& row) {
                     ++fanned;
                 }
             }
-            row.command = leader_command;
-            row.target = leader_target;
-            row.issued = leader_issued;
-            row.reached_director = leader_reached;
-            row.blocked = leader_blocked;
+            if (leader_row != nullptr) {
+                leader_row->command = saved.command;
+                leader_row->target = saved.target;
+                leader_row->issued = saved.issued;
+                leader_row->reached_director = saved.reached_director;
+                leader_row->blocked = saved.blocked;
+            }
             log_.notef("  PilotSetTarget fan-out 007ECF80: squadron=%s +3CCh=%d "
                 "-> %zu wingman task(s) beside the leader %s",
                 squadron->name.c_str(), squadron->live_count(), fanned,
-                row.unit.c_str());
+                leader_name.c_str());
         }
+        });
     }
     log_.notef("  PilotSetTarget: unit=%s target_object_id=%u target_valid=%d "
         "pos=(%.1f %.1f %.1f) attack_type=%d prefer_ordnance=%d allow_guns=%d "
@@ -1219,15 +1264,22 @@ int GameScriptOrdersHost::run_pilot_move_to_range(GameScriptOrderRow& row) {
     std::size_t tasks = 0;
     auto order_one = [&](std::size_t index, void* handle) {
         entity_issue_command(handle, cls, target, 1);
-        ScriptOrderAttackCommandHost bot_host(units_, log_, cls, target_token);
-        const std::uint32_t task = bsp::bot_install_command_task_0099a170(
-            static_cast<std::uint32_t>(index + 1u), bot_host);
-        if (task != 0u) {
-            units_.store_unit_attack_command_class(index, cls);
-            units_.store_unit_moveto_range(index, target.trailing);
-            units_.store_unit_moveto_target(index, target_index);
-            ++tasks;
-        }
+        // Packet cc9_after_row9_continuation: the install follows the delivery
+        // (a queued order's at the drain), as in run_pilot_set_target. `tasks`
+        // counts only the installs made before this binding returns.
+        std::size_t* const now_tasks = last_issue_deferred_ ? nullptr : &tasks;
+        after_order_delivery([this, index, cls, target, target_index, target_token,
+                              now_tasks]() {
+            ScriptOrderAttackCommandHost bot_host(units_, log_, cls, target_token);
+            const std::uint32_t task = bsp::bot_install_command_task_0099a170(
+                static_cast<std::uint32_t>(index + 1u), bot_host);
+            if (task != 0u) {
+                units_.store_unit_attack_command_class(index, cls);
+                units_.store_unit_moveto_range(index, target.trailing);
+                units_.store_unit_moveto_target(index, target_index);
+                if (now_tasks != nullptr) ++*now_tasks;
+            }
+        });
     };
     if (unit != nullptr && row.unit_index < units_.count()) {
         order_one(row.unit_index, unit);
@@ -1407,6 +1459,7 @@ void* GameScriptOrdersHost::argument_ptr_field(int index) {
 
 void GameScriptOrdersHost::entity_issue_command(void* entity,
     std::uint32_t command_object, const bsp::SceneCommandTarget& target, int flags) {
+    last_issue_deferred_ = false;
     const std::size_t index = index_of(entity);
     if (index >= units_.count()) return;
     if (!logged_path_) {
@@ -1446,6 +1499,7 @@ void GameScriptOrdersHost::entity_issue_command(void* entity,
         }
         if (!counted) deferred_by_poster_.emplace_back(o.poster, 1ull);
         deferred_orders_.push_back(std::move(o));
+        last_issue_deferred_ = true;
         if (row_ != nullptr) {
             row_->command = name;
             row_->target = target_name;
@@ -1555,10 +1609,15 @@ void GameScriptOrdersHost::session_route_path_order_message(void* entity,
     // The order is the executable's: the queue of step 3, then 0071C1B0 at
     // 00721ADB, and the build only when the command is begun, which is why the
     // build reads the pair rather than being handed it.
+    // Packet cc9_after_row9_continuation: the receiver makes the pair and the
+    // build on delivery (00721ADB), so a queued order carries them to the drain.
+    const auto follow_mode = order.follow_mode;
+    const auto path_parameter = order.path_parameter;
+    after_order_delivery([this, entity, path_entity, follow_mode, path_parameter]() {
     const std::size_t index = index_of(entity);
     if (index < units_.count()) {
-        units_.commands().set_path_follow_pair_0071c1b0(index, order.follow_mode,
-                                                        order.path_parameter);
+        units_.commands().set_path_follow_pair_0071c1b0(index, follow_mode,
+                                                        path_parameter);
         // The marker registry first, not name_of(). A Path entity is always a
         // scene marker, and marker ids are handed out from the unit count as it
         // stood at scene load (21 on USN04); by the time the script issues these
@@ -1584,6 +1643,7 @@ void GameScriptOrdersHost::session_route_path_order_message(void* entity,
                 "and the ship holds its heading", path_name.c_str());
         }
     }
+    });
 }
 
 // The pair at *(entity+73Ch)+24h and +28h, 008a3901 and 008a3912. The same
@@ -3065,8 +3125,8 @@ void GameScriptOrdersHost::report() {
         }
         log_.notef("summary mission script after-row-9 order queue (packet "
             "cc9_after_row9_order_queue, 0076C600): bound=%d applied=%llu pending=%zu "
-            "deferred_by_poster: %s", kAfterRow9OrderQueueBound ? 1 : 0, deferred_applied_,
-            deferred_orders_.size(), per.empty() ? "(none)" : per.c_str());
+            "continuations=%llu deferred_by_poster: %s", kAfterRow9OrderQueueBound ? 1 : 0,
+            deferred_applied_, deferred_orders_.size(), deferred_continuations_, per.empty() ? "(none)" : per.c_str());
     }
     log_.notef("summary mission script unit health reads bound=%d reads=%llu dead=%llu "
         "markers=%llu (00923BE0 -> 00876260, packet cc9_get_hp_percentage)",
