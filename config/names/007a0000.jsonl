@@ -1,4 +1,5 @@
 {"address": "007a0770", "name": "MovieCameraTrack_Append", "evidence": "docs/HUD_PICK_SEGMENT_QUERY.md section 8.6, listing read (cc9-movie-camera); hypothesis"}
+{"address": "007a0860", "name": "HudMovieCamera_SeedFromMatrix", "evidence": "docs/HUD_PICK_SEGMENT_QUERY.md section 8.7 (cc9-movie-camera); hypothesis"}
 {"address": "007a0eb0", "name": "MovieCameraKeyframe_ParseLua", "evidence": "docs/HUD_PICK_SEGMENT_QUERY.md section 8.6, listing read (cc9-movie-camera); hypothesis"}
 {"address": "007a2cd0", "name": "HudMovieCamera_InsertKeyframe", "evidence": "docs/HUD_PICK_SEGMENT_QUERY.md section 8.6, listing read (cc9-movie-camera); hypothesis"}
 {"address": "007a42c0", "name": "HudMovieCamera_AddPosition", "evidence": "Hypothesis, not a recovered symbol. postype camera / target / cameraandtarget (case-insensitive): builds one or two 104h keyframes (00799B00; +28h = 1 camera, 0 target; paired through +20h and the id +DAh from camera+3C0h), parses each through 007A0EB0 and inserts it through 007A2CD0. docs/HUD_PICK_SEGMENT_QUERY.md section 8"}
