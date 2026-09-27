@@ -959,42 +959,6 @@ struct GameShipAiHost::Impl {
         }
         return true;
     }
-    // 00863920(unit, target): the group 00E0A520 = {7}. Byte +70h+7 is +77h,
-    // which the stance push sets from +222h (00861DB7); [+60h]->vtable[4] is
-    // 00861BE0, `MOV AL,1`; 008633D0 is 00862820 then mask[7], which 00861D70
-    // stores as 3 or 0 from the same +222h. LABELLED: recomputed here from the
-    // same inputs the gunnery host's stance push uses (a live-state accessor
-    // would need src/game_hosts_gunnery.cpp); the liveness, class and rank
-    // tests follow the gunnery host's score_candidate_00863990.
-    bool torpedo_group_accepts_target_00863920(std::size_t index, std::size_t target) const {
-        if (target >= units.count()) return false;
-        bsp::DirectorGunneryStance stance;
-        stance.torpedo = director_torpedo_enable_0222(index);
-        int countdown = 0;
-        bool allow_fire_cache = false;
-        const bsp::UnitGunneryCategoryState state = bsp::apply_director_stance_008624c0(
-            bsp::unit_gunnery_initial_category_state_00864580(), stance, false, true,
-            countdown, allow_fire_cache);
-        if (!state.torpedo_group_flag) return false;          // byte +77h
-        bsp::GunneryTargetLiveness liveness;
-        liveness.registered = units.unit_active(target);
-        liveness.dead = gunnery != nullptr && gunnery->unit_dead(target);
-        if (!bsp::target_is_engageable_00862820(liveness)) return false;
-        const int class_id = units.unit_class_id(target);
-        if (class_id < 0) return false;
-        static const std::vector<int> ranks = [] {
-            std::vector<int> table(static_cast<std::size_t>(bsp::kUnitGunneryCategoryCount) *
-                                   static_cast<std::size_t>(bsp::kUnitGunneryClassIdCount), 0);
-            bsp::build_rank_table_00727bd0(bsp::kGunneryPreferenceLists, table.data());
-            return table;
-        }();
-        if (bsp::gunnery_rank(ranks.data(), bsp::kTorpedoStandoffWeaponKind, class_id) == 0) {
-            return false;
-        }
-        const bool plane = units.unit_is_kind_of(target, bsp::kUnitGunneryKindPlaneBase);
-        return bsp::category_mask_admits_target_008633d0(
-            state.mask[static_cast<std::size_t>(bsp::kTorpedoStandoffWeaponKind)], plane);
-    }
     // 00814390(unit, target) when `own` (torpedoes whose owner +4F8h is
     // `owner_handle`), 00814420 on the target otherwise (owner != the target):
     // the live torpedoes target->vtable[1D0h] 008173E0 calls a threat.
@@ -3711,13 +3675,16 @@ public:
             row->max_health > 0.0f);
     }
     bool torpedo_group_accepts_target_00863920() override {
-        if (bsp::kShipAiQueryGateBytesBound && owner_.gunnery != nullptr) {
-            // Packet cc9_torpedo_gate_bytes: the gunnery host's live pass state.
-            owner_.done("ShipAiTorpedoStandoff::torpedo_group_00863920", 0x00863920u);
-            return owner_.gunnery->group_accepts_target_008637d0(index_,
-                bsp::kUnitGunneryTorpedoGroupAddress, target_);
+        // Packets cc9_torpedo_gate_bytes / cc9_torpedo_supply_tick: the gunnery
+        // host's live pass state. The stance-push recomputation section 9 used
+        // was retired once the accessor landed ON.
+        if (owner_.gunnery == nullptr) {
+            owner_.record("ShipAiTorpedoStandoff::torpedo_group_00863920", 0x00863920u);
+            return false;
         }
-        return owner_.torpedo_group_accepts_target_00863920(index_, target_);
+        owner_.done("ShipAiTorpedoStandoff::torpedo_group_00863920", 0x00863920u);
+        return owner_.gunnery->group_accepts_target_008637d0(index_,
+            bsp::kUnitGunneryTorpedoGroupAddress, target_);
     }
     bool torpedo_projectile_00814350(bsp::ShipAiFirepowerProjectileClass& out) override {
         // 00814350(unit, 7): the category-7 count, the first node's device, its

@@ -562,6 +562,8 @@ struct GameGunneryHost::Impl {
         int max_torpedo_stock{0};
         int torpedo_spare{-1};
         bool torpedo_stock_set{false};
+        // Packet cc9_torpedo_supply_tick: 00825450's three unit fields.
+        bsp::TorpedoSupplyTickState supply{};
         float torpedo_spread{0.0f};      // unit+6D4h, 0 from 0095CE11
         float max_health{0.0f};
         float health{0.0f};
@@ -731,6 +733,7 @@ struct GameGunneryHost::Impl {
         torpedo_gyro = 13,    // 00900830 / 0090083E, the launch heading jitter, key (gun, 0|1)
         component_failure = 14, // 0093BF98, the failure roll, key (victim unit, 0)
         ranging = 15,         // 00864880 / 00862CD0, key (owner unit, target unit)
+        torpedo_unload = 16,  // 0081DD85, 0081DCB0's pick, key (unit, 0)
     };
     unsigned long long next_projectile_serial{0};
     static bool rng_streams_enabled() {
@@ -1567,6 +1570,53 @@ struct GameGunneryHost::Impl {
         return loaded;
     }
 
+    // Packet cc9_torpedo_supply_tick. 0081DCB0: every loaded {gun, barrel} of
+    // the category-7 list in list order (0081DD10..0081DD44), one picked by
+    // trunc(00BD2F10(1, 0, n)) (0081DD85..0081DDA6), pinned at FLT_MAX by
+    // 0072CF00 (0081DDDD).
+    void unload_random_torpedo_barrel_0081dcb0(std::size_t unit) {
+        std::vector<std::pair<std::size_t, std::size_t>> loaded;
+        for (std::size_t g = 0; g < guns.size(); ++g) {
+            const GameGunRow& gun = guns[g];
+            if (gun.unit_index != unit || gun.category != bsp::kUnitGunneryTorpedoCategory) continue;
+            for (std::size_t b = 0; b < gun.fire.barrel_timers.size(); ++b) {
+                if (static_cast<double>(gun.fire.barrel_timers[b]) < static_cast<double>(FLT_MAX)) {
+                    loaded.emplace_back(g, b);
+                }
+            }
+        }
+        if (loaded.empty()) return;
+        const float u = draw(Draw::torpedo_unload, unit, 0, 0.0f,
+                             static_cast<float>(loaded.size()));
+        std::size_t pick = static_cast<std::size_t>(u);   // FISTP with RC = truncate
+        if (pick >= loaded.size()) pick = loaded.size() - 1;
+        guns[loaded[pick].first].fire.barrel_timers[loaded[pick].second] = FLT_MAX;
+        ++torpedo_barrels_unloaded;
+        log.notef("  torpedo stock: %s unloads gun %zu barrel %zu (0081DCB0)",
+            unit_state[unit].row.name.c_str(), loaded[pick].first, loaded[pick].second);
+    }
+
+    // Packet cc9_torpedo_supply_tick. 00825450 for one ship, once per step.
+    void run_torpedo_supply_tick_00825450(std::size_t unit, float dt) {
+        UnitState& us = unit_state[unit];
+        bsp::TorpedoSupplyTickInputs in;
+        in.seconds = dt;
+        in.area = 0;   // 00809C50 over the empty registry 00F874F0 (see the switch)
+        in.session_kind_2 = false;
+        in.spare_104c = us.torpedo_stock_set ? us.torpedo_spare : -1;
+        in.loaded_00810e90 = in.spare_104c >= 0 ? loaded_torpedo_barrels_00810e90(unit) : 0;
+        in.max_torpedo_stock_07a0 = us.max_torpedo_stock;
+        const std::int32_t stock = bsp::torpedo_supply_tick_00825450(us.supply, in);
+        ++torpedo_supply_ticks;
+        if (us.supply.area_112c != 0) ++torpedo_supply_in_area;
+        if (stock >= 0) {
+            // Unreached while the registry is empty: 0081F8B0(stock) and the
+            // session message 96h are not modelled for a resupply.
+            ++torpedo_supply_calls;
+            record("Gunnery::torpedo_supply_set_0081f8b0", 0x0082550du);
+        }
+    }
+
     // 0072D520 for a fired torpedo barrel: the provider pair 00810D80 /
     // 00810DA0 on the unit's spare. Returns the timer to store.
     float torpedo_stock_rearm_0072d520(std::size_t unit, float reload) {
@@ -1578,6 +1628,19 @@ struct GameGunneryHost::Impl {
             const int loaded = loaded_torpedo_barrels_00810e90(unit);
             us.torpedo_spare = us.max_torpedo_stock < loaded ? 0
                                                               : us.max_torpedo_stock - loaded;
+            if (kTorpedoSupplyTickBound && us.max_torpedo_stock < loaded) {
+                // 0081F8B0's unload loop, 0081DCB0 while stock < loaded. LABELLED:
+                // at the first shot rather than pass C, so the barrel about to
+                // fire can be among those drawn (it then fires once more).
+                const int stock = us.max_torpedo_stock < 0 ? 0 : us.max_torpedo_stock;
+                int current = loaded;
+                while (stock < current) {
+                    unload_random_torpedo_barrel_0081dcb0(unit);
+                    const int next = loaded_torpedo_barrels_00810e90(unit);
+                    if (next == current) break;   // the native loop has no guard
+                    current = next;
+                }
+            }
             ++torpedo_stock_sets;
             log.notef("  torpedo stock: %s MaxTorpedoStock=%d loaded=%d spare=%d (0081F8B0)",
                 us.row.name.c_str(), us.max_torpedo_stock, loaded, us.torpedo_spare);
@@ -1626,6 +1689,11 @@ struct GameGunneryHost::Impl {
     unsigned long long torpedo_spares_spent{0};
     unsigned long long torpedo_barrels_emptied{0};
     unsigned long long torpedo_ships_dry{0};
+    // Packet cc9_torpedo_supply_tick.
+    unsigned long long torpedo_barrels_unloaded{0};
+    unsigned long long torpedo_supply_ticks{0};
+    unsigned long long torpedo_supply_in_area{0};
+    unsigned long long torpedo_supply_calls{0};
 
     void run_gunnery_pass(std::size_t index, float dt);
     void refresh_command_targets();
@@ -7430,6 +7498,16 @@ void GameGunneryHost::fixed_step(float step_seconds) {
     for (std::size_t i = 0; i < host.unit_state.size(); ++i) {
         host.run_gunnery_pass(i, step_seconds);
     }
+    if constexpr (kTorpedoSupplyTickBound) {
+        // 00826182 in UpdateShipMotion 00825F20: every ship, every step.
+        // LABELLED: run here, after the gunnery passes, not inside the motion
+        // update; nothing in the tick reads motion state.
+        for (std::size_t i = 0; i < host.unit_state.size(); ++i) {
+            if (host.units.unit_is_kind_of(i, bsp::kUnitGunneryKindShipBase)) {
+                host.run_torpedo_supply_tick_00825450(i, step_seconds);
+            }
+        }
+    }
     host.run_gun_aim_and_fire(step_seconds);
     host.run_projectiles(step_seconds);
     if constexpr (kShipDamageControlTickBound || kShipHullRepairBound
@@ -8053,6 +8131,11 @@ void GameGunneryHost::report() {
             "emptied_barrels=%llu ships_dry=%llu (0081F8B0 / 0072D520 / 00810D80 / 00810DA0, "
             "packet cc9_torpedo_stock)", kTorpedoStockBound ? 1 : 0, host.torpedo_stock_sets,
             host.torpedo_spares_spent, host.torpedo_barrels_emptied, host.torpedo_ships_dry);
+            host.log.notef("summary mission gunnery torpedo supply bound=%d ticks=%llu in_area=%llu "
+                "sets=%llu unloaded=%llu (00825450 / 00809C50 / 0081DCB0, packet "
+                "cc9_torpedo_supply_tick)", kTorpedoSupplyTickBound ? 1 : 0,
+                host.torpedo_supply_ticks, host.torpedo_supply_in_area,
+                host.torpedo_supply_calls, host.torpedo_barrels_unloaded);
         host.log.notef("summary mission gunnery ship director torpedo writes lua_enable=%llu "
                 "lua_disable=%llu close_attack_sends=%llu changed=%llu bound=%d (0071E0D0 from "
                 "0089C8F0 and 00A11AF0, packet cc9_ship_torpedo_mask_read)",

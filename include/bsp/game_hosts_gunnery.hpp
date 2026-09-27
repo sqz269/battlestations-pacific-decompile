@@ -291,6 +291,19 @@ inline constexpr bool kShipDirectorEnablesBound = true;
 // tubes reload without limit, as before.
 inline constexpr bool kTorpedoStockBound = true;
 
+// Packet cc9_torpedo_supply_tick (docs/UNIT_WEAPON_DEVICES.md, "The supply
+// tick"). True: every ship runs 00825450 once per fixed step, and the stock
+// set of kTorpedoStockBound unloads random loaded barrels (0081DCB0, shared
+// generator stream 1) while the stock is below the loaded count. False: no
+// tick, and a stock below the loaded count only clears the spare.
+// LABELLED SUBSTITUTION: the supply-area registry 00F874F0 stays empty.
+// 00809880 registers an area only for a non-empty `RepairZoneArea`
+// (00809BC0 with a mode-1 bag), and every one of the 83 `RepairZoneArea`
+// rows in this installation's .scn files is "", as are the ship.props and
+// landfort.props defaults. A savegame bag (mode 2) could still carry one; the
+// harness never loads one.
+inline constexpr bool kTorpedoSupplyTickBound = false;
+
 // Session message 79h as 00954A10 builds it in 005484F0 (section 32 of
 // docs/SHIP_SCREEN_UPDATE.md): +1Ch group, +20h..+28h the camera mover's
 // world position, +2Ch yaw and +30h pitch of its forward row (00521370),

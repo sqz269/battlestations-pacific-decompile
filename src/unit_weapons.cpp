@@ -159,25 +159,25 @@ void set_torpedo_stock_0081f8b0(UnitWeaponHost& host, NativeHandle unit, int sto
         return;
     }
     int wanted = stock;
-    const int live = host.torpedo_count(unit);
-    if (wanted < live) {
-        // Fewer than are already out: the spare counter is cleared and the
-        // difference is spawned up to the requested number.
+    const int loaded = host.loaded_torpedo_barrels_00810e90(unit);
+    if (wanted < loaded) {
+        // A stock below the loaded barrels: the spare is cleared and random
+        // loaded barrels are unloaded (0081DCB0) until only `stock` remain.
         host.unit_set_torpedo_spare(unit, 0);
         if (wanted < 0) {
             wanted = 0;
         }
-        int current = host.torpedo_count(unit);
+        int current = host.loaded_torpedo_barrels_00810e90(unit);
         while (wanted < current) {
-            host.torpedo_spawn_one(unit);
-            const int next = host.torpedo_count(unit);
+            host.unload_random_torpedo_barrel_0081dcb0(unit);
+            const int next = host.loaded_torpedo_barrels_00810e90(unit);
             if (next == current) {
                 break; // the native loop has no such guard; see the doc's note
             }
             current = next;
         }
     } else {
-        host.unit_set_torpedo_spare(unit, wanted - live);
+        host.unit_set_torpedo_spare(unit, wanted - loaded);
     }
 
     // Then every direct child that is a torpedo gun has its empty barrels
@@ -300,6 +300,30 @@ int lua_torpedo_enable_0089c8f0(UnitWeaponHost& host) {
         host.route_weapon_enable(torpedo_enable_message_0071e0d0(enabled));
     }
     return host.lua_result_count();
+}
+
+std::int32_t torpedo_supply_tick_00825450(TorpedoSupplyTickState& state,
+                                          const TorpedoSupplyTickInputs& in) noexcept {
+    // 00825479: 00809C10 on unit+72Ch, the unit's own area holder, steps its
+    // area when it has one ([+8h]); no area, nothing. The caller's.
+    state.area_112c = in.area;                          // 0082549F
+    if (in.session_kind_2) return -1;                    // 008254AB
+    if (in.area == 0) {
+        state.restock_timer_1154 = 0.0f;                 // 008254B9
+        state.repair_multiplier_1150 = 1.0f;             // 008254C3, 00D7A24C
+        return -1;
+    }
+    state.repair_multiplier_1150 = in.repair_zone_multiplier_0494;
+    state.restock_timer_1154 = static_cast<float>(
+        static_cast<double>(state.restock_timer_1154) - in.seconds);
+    if (!(state.restock_timer_1154 < 0.0f)) return -1;
+    std::int32_t stock = in.spare_104c;
+    if (stock >= 0) stock += in.loaded_00810e90;       // -1 stays unlimited
+    std::int32_t call = -1;
+    if (stock < in.max_torpedo_stock_07a0) call = stock + 1;
+    state.restock_timer_1154 = static_cast<float>(
+        static_cast<double>(in.torpedo_restock_time_0498) + state.restock_timer_1154);
+    return call;
 }
 
 int lua_ship_set_torpedo_stock_0089eee0(UnitWeaponHost& host) {

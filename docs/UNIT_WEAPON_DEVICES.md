@@ -511,3 +511,91 @@ go.
 - `cc9-ships-stock.py` / `cc9-ships-scnclass.py` (class `MaxTorpedoStock` against a scene's
   `Type` rows);
 - the `cc9-ships-edit*.py` edit scripts.
+
+## The supply tick (packet `cc9_torpedo_supply_tick`, `kTorpedoSupplyTickBound`, committed OFF)
+
+Worker cc9-ships2, on main `088805f9a`. Ghidra was read-only. The switch is in
+`include/bsp/game_hosts_gunnery.hpp`.
+
+### The read
+
+**00825450**, `__thiscall(unit)(float seconds)`, body 00825450..0082558F. It is called from
+UpdateShipMotion 00825F20 at 00826182, so every ship runs it every motion step.
+1. 00825479: 00809C10 on `unit+72Ch`, the unit's own area holder. It steps the area in `[+8h]`
+   when the unit owns one.
+2. 0082549A: `unit+112Ch = 00809C50(unit, [unit+54h], &unit+0FCh)`.
+3. When `[[00E188A8]+1FE4h] == 2`, nothing else happens.
+4. With no area: `+1154h = 0` and `+1150h = 1.0` (00D7A24C).
+5. With an area:
+   - `+1150h` becomes `settings+494h` (Repair.RepairZoneMultiplier, 5.00 in shipglobals.lua:437).
+   - `+1154h` becomes `+1154h - seconds`.
+   - When that falls below 0: `s = +104Ch`, plus 00810E90's loaded barrels when `s >= 0`.
+     If `s < [class+7A0h]` (MaxTorpedoStock), the tick calls `0081F8B0(s + 1)` and sends the
+     session message 96h (0080FE10, 0077C7B0).
+   - Then `+1154h += settings+498h` (Repair.TorpedoRestockTime, 1.00, shipglobals.lua:438).
+
+`+1150h` is the repair-zone multiplier. The same tick resets it to 1.0 outside an area.
+
+**00809C50**, the area test, walks the vector at 00F874F0 (count 00F874F4). 00809A80 accepts an
+area when all of these hold:
+- its owner `+14h` is live and is not the unit;
+- the owner is of the same party (BSP_Party_RelativeTo answers 0);
+- the unit's x/z lies inside the bounding circle (`+3Ch`, `+44h`, radius squared `+48h`);
+- the unit is within `+34h` of the segment `+1Ch..+30h`.
+
+**Who registers an area.**
+- The vector's only writers are 00809740 (add) and 00809820 (remove), in an absolute-dword scan.
+- 00809740's only caller is 00809880, and 00809880's only caller is 00809BC0.
+- 00809BC0 is called from pass C (0081F980) and from 00748CC0.
+- 00809BC0 builds an area for a mode-2 (savegame) bag. For a mode-1 (fresh scene) bag it builds
+  one only when `RepairZoneArea` is found and non-empty.
+
+**This installation has no supply area on any fresh mission.**
+- `universe/library/ship.props:23` and `landfort.props:4` default `RepairZoneArea` to `R ""`.
+- A recursive search of `universe/scenes` finds `RepairZoneArea` in every mission directory (bsm,
+  chg, usn, ijn, multi, COTP). No row has a non-empty value.
+- usn_2_java.scn has 42 rows and usn_19_coralus.scn 41, all `""`.
+
+So 00809C50 answers 0 on every mission the harness can run, the tick never supplies, and **no
+measuring pair exists**. Only a savegame could carry an area.
+
+**0081DCB0** collects every loaded {gun, barrel} of the category-7 list `unit+3ECh`, in list and
+barrel order (0081DD10..0081DD44). It picks one with `trunc(00BD2F10(stream 1, 0, n))`
+(0081DD7B..0081DDA6, FISTP under RC = truncate) and pins it through
+`0072CF00(gun, barrel, FLT_MAX, 0)` (0081DDDD).
+
+### The binding (under `kTorpedoSupplyTickBound`)
+
+- `bsp::torpedo_supply_tick_00825450` (`src/unit_weapons.cpp`) is steps 2..5. The gunnery host
+  runs it for every ship once per fixed step.
+- **LABELLED:** the area registry is empty. The tick runs after the gunnery passes rather than
+  inside the motion update, which it does not read. A resupply's 0081F8B0 call and message 96h are
+  recorded, not performed (unreachable while the registry is empty).
+- The stock set of `kTorpedoStockBound` now runs 0081F8B0's unload loop with 0081DCB0 while the
+  stock is below the loaded count.
+  - The draw is `Draw::torpedo_unload`, keyed (unit, 0) under `BSP_GUNNERY_RNG_STREAMS=1`, and the
+    shared generator otherwise.
+  - **LABELLED:** it runs at the first shot, not at pass C, so the barrel about to fire can be one
+    of those drawn.
+- **Census:** `summary mission gunnery torpedo supply bound=.. ticks=.. in_area=.. sets=..
+  unloaded=..`, and one `torpedo stock: <ship> unloads gun .. barrel ..` line per unload.
+
+**Folded into the same commit** (identity by construction; the pairs below cover both):
+- `src/unit_weapons.cpp` / `include/bsp/unit_weapons.hpp`:
+  - `torpedo_count` is renamed `loaded_torpedo_barrels_00810e90`, and `torpedo_spawn_one`
+    `unload_random_torpedo_barrel_0081dcb0`.
+  - Their comments and the one caller, `set_torpedo_stock_0081f8b0`, are updated.
+  - `UnitWeaponHost` has no implementer in the tree.
+- The ship AI host's stance-push recomputation of 00863920 is removed; the standoff always asks
+  the gunnery host's accessor. It was reached only with `kShipAiQueryGateBytesBound` off, which
+  landed ON.
+
+### Predictions (written before the pairs; same tree, switch only, streams and the death table on)
+
+| row | prediction |
+| --- | --- |
+| USN02 `pair_diff` | 1, gameplay identical: no area, and no USN02 ship has stock below loaded (the stock lines show loaded 5..16 against stock 18..30) |
+| USN02 `torpedo supply` | `in_area=0 sets=0 unloaded=0`; `ticks` = ship units times the steps they live (nonzero) |
+| USN04 `pair_diff` | 1: no area, and no ship fires a torpedo, so no stock is ever set |
+| USN04 `torpedo supply` | `in_area=0 sets=0 unloaded=0`, `ticks` nonzero |
+| both | the torpedo stock lines (`sets`, `spent`, `emptied_barrels`, `ships_dry`) identical |
