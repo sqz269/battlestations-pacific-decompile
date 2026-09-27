@@ -1330,6 +1330,10 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
     int party_id = -1;
     if (type.present) owner.library.resolve_symbol(type.table, type.symbol, type_id);
     if (party.present) owner.library.resolve_symbol(party.table, party.symbol, party_id);
+    // Packet cc9_scene_race_and_script_identity: 0092708F pushes "Race" (00CE8EE0).
+    const SceneEnumProperty race = scene_enum_property(bag, "Race");
+    int race_id = -1;
+    if (race.present) owner.library.resolve_symbol(race.table, race.symbol, race_id);
 
     if (pass == SceneFilePass::Registration) {
         if (!gate.generate) return;
@@ -1434,6 +1438,7 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
     record.type_id = type_id;
     record.party_symbol = party.symbol;
     record.party = party_id;
+    record.race = race_id;
     record.generated = gate.generate;
     record.gate_rule = rule_name;
     std::memcpy(record.world, world_frame, sizeof(record.world));

@@ -1,0 +1,30 @@
+{
+  "packet": "cc9_scene_race_and_script_identity",
+  "doc": "docs/SENTITY_INIT_ATTACH_ORDER.md section 11",
+  "calls": [
+    {"address": "00927094", "native": "008F2260", "function": "00927050", "note": "the bag's Race (00CE8EE0) -> +58h at 0092709C"},
+    {"address": "009270AD", "native": "008F2260", "function": "00927050", "note": "the bag's Party (00CE5804) -> +54h"},
+    {"address": "0089886F", "native": "00928630", "function": "00898750", "note": "CreateScript's construct; +C4h = 3 at 00898892"},
+    {"address": "009297E4", "native": "00928100", "function": "009295B0", "note": "default pass C with +C0h null"}
+  ],
+  "coverage": [
+    {"routine": "00927050", "coverage": "partial: the kind-1 arm's Race and Party stores 0092707D..009270B8"},
+    {"routine": "00928100", "coverage": "partial: the gates and stores at 00928103, 0092814B, 00928162, 00928179"},
+    {"routine": "00898750", "coverage": "partial: 00898834..008989F6, the construction and the calls up to the slot push"},
+    {"routine": "008F2260", "coverage": "partial: the miss return 008F2345..008F2359"}
+  ],
+  "substitutions": [
+    {"what": "the script entity's 00928100 fields", "is": "written on the first mission frame after CreateScript", "evidence": "the image writes them at the next fixed step's InitAll (row 12) pass C"}
+  ],
+  "corrections": [
+    {"was": "a marker's Race is the authored value, else -1 (section 8.4)", "is": "the bag value, authored or properties Common's Neutral 0; Party likewise defaults to Allied 0", "evidence": "global.enums 1753-1761; 00927050 stores both with no presence test; 008F2260 returns 0 on a miss"},
+    {"was": "whether CreateScript's entity is named: contract unread (section 8.4)", "is": "unnamed at its InitAll, so 00928100 writes no Name", "evidence": "zeroed allocation; no +154h/+158h write in 00928630, 00927610, 009290A0; no call to slot +0Ch 004313D0"}
+  ],
+  "switches": [
+    {"name": "kSceneRaceAndScriptIdentityBound", "state": "OFF", "pair": "pending"}
+  ],
+  "pair_diff": {},
+  "failed_predictions": [],
+  "no_ghidra_function": [],
+  "ledger_names_added": []
+}

@@ -1469,6 +1469,7 @@ struct GameSceneMarkerSeed {
     std::uint32_t attach{0};
     float position[3]{0.0f, 0.0f, 0.0f};
     int party{-1};  // packet cc9_init_identity_gaps: the record's authored Party
+    int race{-1};   // packet cc9_scene_race_and_script_identity: the record's Race
 };
 
 // Packet cc_lua_find_entity: the scene entities that are not units but that
@@ -1503,6 +1504,7 @@ std::vector<GameSceneMarkerSeed> collect_scene_markers(
         seed.findable = row->findable_by_name;
         seed.attach = row->attach;
         seed.party = entity.party;
+        seed.race = entity.race;
         // 008A7C3C reads the world matrix translation row at entity+0FCh.
         seed.position[0] = entity.world[12];
         seed.position[1] = entity.world[13];
@@ -1960,11 +1962,29 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
             {
                 std::vector<GameMissionLuaHost::SceneEntity> entities;
                 entities.reserve(host.units->count());
+                // Packet cc9_scene_race_and_script_identity: a scene unit's Race
+                // by name, from the record 00927050 read it from.
+                std::map<std::string, int> record_races;
+                std::size_t races_fed = 0;
+                if constexpr (kSceneRaceAndScriptIdentityBound) {
+                    for (const GameSceneEntityRecord& record : host.scene_contents->entities()) {
+                        if (!record.name.empty() && record.race >= 0) {
+                            record_races.emplace(record.name, record.race);
+                        }
+                    }
+                }
                 for (std::size_t unit = 0; unit < host.units->count(); ++unit) {
                     const GameUnitRow* row = host.units->unit_row(unit);
                     if (row == nullptr || row->name.empty()) continue;
                     entities.push_back(GameMissionLuaHost::SceneEntity{row->name,
                         static_cast<int>(unit) + 1, row->type_id, true});
+                    if constexpr (kSceneRaceAndScriptIdentityBound) {
+                        const auto found = record_races.find(row->name);
+                        if (found != record_races.end()) {
+                            entities.back().race = found->second;  // 00928FD9
+                            ++races_fed;
+                        }
+                    }
                 }
                 // Packet cc_lua_find_entity: the pending-entity pass 00925F20
                 // calls entity virtual slot 39 on every node at 0092604E, not
@@ -1987,8 +2007,18 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
                         marker.id, -1, marker.findable};
                     seed.marker_class_id = marker.class_id;
                     seed.marker_authored_party = marker.party;
+                    if constexpr (kSceneRaceAndScriptIdentityBound) {
+                        if (marker.race >= 0) {
+                            seed.race = marker.race;  // 0092814B, 00928100's Race
+                            ++races_fed;
+                        }
+                    }
                     entities.push_back(seed);
                 }
+                host.log.notef("summary SceneLoad race identity bound=%d races_fed=%zu "
+                    "(00927050 +58h -> 00928F50 / 00928100, packet "
+                    "cc9_scene_race_and_script_identity)",
+                    kSceneRaceAndScriptIdentityBound ? 1 : 0, races_fed);
                 if constexpr (kLoadTimeInitAllBound) {
                     // Packet cc9_load_time_init_all: the scene read's InitAll
                     // (0046EB4B), over the load-time instances.

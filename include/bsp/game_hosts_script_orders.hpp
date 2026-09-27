@@ -199,6 +199,9 @@ struct GameScriptEntity {
     bool blocked_60{false};       // +60h
     bool dead{false};             // thisTable[key].Dead, set by 00929800 on the kill
     unsigned long long thinks{0};
+    // Packet cc9_scene_race_and_script_identity: pushed by 00928630 and not yet
+    // through an InitAll's pass C (00928100).
+    bool identity_pending{true};
 };
 
 // Packet cc_mission_blackout: what the fade at `*(00E198C4 + A4h) + C0h` did
@@ -570,6 +573,8 @@ private:
     std::uint32_t random_state_{0x13579BDFu};
     unsigned long long random_draws_{0};
     GameScriptTimerSummary timers_{};
+    std::size_t script_identity_writes_{0};  // packet cc9_scene_race_and_script_identity
+    void mirror_script_identity_00928100();
 
     // Packet cc_mission_blackout. The five fields at `*(00E198C4 + A4h) + C0h`,
     // and the widget colour the +54h getter would answer with. 005BA7B0 leaves

@@ -2721,6 +2721,44 @@ void GameScriptOrdersHost::run_script_think_pass(float step) {
     state_ = nullptr;
 }
 
+// Packet cc9_scene_race_and_script_identity. A CreateScript entity is class 3
+// (00898892 MOV [ESI+C4h],EBX with EBX 3); its pass C slot +A4h (00D111DC) is
+// 009295B0, which with +C0h null (009295D2..009295DC) calls 00928100 at 009297E4.
+// 00928100 needs +178h, the self object 00928A00 (pass A, slot +9Ch 00D111D4)
+// builds at 00928A36, then writes Race = +58h and Party = +54h as numbers
+// (0092814B, 00928162): the base 00925CE0's -1 and 2, since no spawn descriptor
+// reaches 00927050's kind-1 arm. Name only when +154h is set (00928179): nothing
+// on CreateScript's path writes +154h/+158h, and it never calls the name setter
+// slot +0Ch (004313D0), so there is no Name. Type is 00E0CD80[3] = SCRIPTENTITY.
+// SUBSTITUTION: run on the first mission frame after the creation, not at the
+// next fixed step's InitAll row 12.
+void GameScriptOrdersHost::mirror_script_identity_00928100() {
+    for (GameScriptEntity& script : script_entities_) {
+        if (!script.identity_pending) continue;
+        script.identity_pending = false;
+        lua_State* const state = machine_state_;
+        const int base = lua_gettop(state);
+        lua_getfield(state, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);
+        char key[16];
+        std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat,
+            static_cast<int>(script.id));
+        if (lua_istable(state, -1)) {
+            lua_getfield(state, -1, key);
+            if (lua_istable(state, -1)) {
+                lua_pushnumber(state, -1.0);
+                lua_setfield(state, -2, "Race");
+                lua_pushnumber(state, 2.0);
+                lua_setfield(state, -2, "Party");
+                lua_pushstring(state, "SCRIPTENTITY");
+                lua_setfield(state, -2, "Type");
+                ++script_identity_writes_;
+            }
+        }
+        lua_settop(state, base);
+        log_.implemented("ScriptEntity::InitAll pass C mirror_identity", "00928100");
+    }
+}
+
 void GameScriptOrdersHost::run_script_timers(float step) {
     // Packet cc9_deck_tick_in_step: with the switch on, the fixed step runs the
     // deck tick at its owner's motion instead (bsp/game_hosts_fixed_step.hpp).
@@ -2728,6 +2766,9 @@ void GameScriptOrdersHost::run_script_timers(float step) {
     if (machine_state_ == nullptr) return;
     observe_mission_end();
     publish_unit_deaths_00929800();
+    if constexpr (kSceneRaceAndScriptIdentityBound) {
+        mirror_script_identity_00928100();
+    }
     if (script_entities_.empty()) {
         run_blackout_update(step);
         return;
@@ -2806,6 +2847,10 @@ void GameScriptOrdersHost::report() {
             timers_.clears, timers_.deletes, timers_.passes, timers_.timed_fires,
             timers_.call_failures,
             timers_.first_error.empty() ? "" : timers_.first_error.c_str());
+        log_.notef("summary mission script entity identity bound=%d written=%zu "
+            "(00928100: Race -1, Party 2, Type SCRIPTENTITY; packet "
+            "cc9_scene_race_and_script_identity)",
+            kSceneRaceAndScriptIdentityBound ? 1 : 0, script_identity_writes_);
     }
     if (blackout_summary_.arms != 0 || blackout_summary_.updates != 0) {
         log_.notef("summary mission blackout (packet cc_mission_blackout, 008D1340 / "

@@ -1154,3 +1154,91 @@ cc9-units2 holds `docs/CONSTRUCT_WORLD.md` and `src/game_hosts_units.cpp`
 - **Local files:** the pair binaries are in `local\bin\{ao,pe,ig,dd,lt,rx,dt,rp,sh}_{off,on}`, with
   their logs beside them in `local\`, and the scripts are the `local\cc9-init-passes-*` files.
 - **Leases:** none after this landing.
+
+## 11. Race on the scene record, and the script entity's identity (packet `cc9_scene_race_and_script_identity`, `kSceneRaceAndScriptIdentityBound`)
+
+Worker cc9-ships, 2026-09-27, base main `df7f875c7`. Ghidra was read only. This packet takes the
+two contracts of section 8.4. The Lua host files (`src/game_hosts_lua.cpp` and its header) are
+leased to cc9-units3, so the binding feeds the Lua host's existing `race` field and does not edit
+the mirror.
+
+### 11.1 Race (V)
+
+- **00927050's kind-1 arm** reads two keys with no presence test:
+  - `Race` (00CE8EE0, pushed at 0092708F) is stored at `+58h` (0092709C);
+  - `Party` (00CE5804, at 009270A8) is stored at `+54h`.
+  - The find, 008F2260, returns 0 on a miss (008F2348), so an absent key would fault at
+    00927099. Every kind-1 bag therefore carries both keys.
+- **Where they come from.** This installation's `universe/library/global.enums` declares them in
+  `properties Common`: `Party = E Party:Allied` and `Race = E Races : Neutral` (lines 1755-1756,
+  `enum Races` at 1712, Neutral 0 .. French 6).
+  - Every class group that reaches the arm derives from `Common`: `Ship(Common)`, `Path(Common)`,
+    `PlaneSquadronWNavpoint(Common)`, `LandConvoy(Common)` and the rest.
+  - The scenes author Race per object: usn_2_java.scn has 40 `Race` lines (Japan 18, USA 13,
+    GB 5, Dutch 4), usn_19_coralus.scn 61 and usn_1_marshall.scn 51.
+- **Correction to 8.4.** A marker's `Race` is the bag value, authored or `Common`'s Neutral 0. It
+  is not "authored, else -1". The same holds for `Party`: `Common` makes it Allied 0 by default,
+  and the base's 2 (00925E1D) survives only on an entity with no kind-1 descriptor.
+- **The two writers.** 00928F50 (vtable `+2Ch`, the party-set mirror) writes `Race = +58h` at
+  00928FD9 for a unit. 00928100 (pass C of the seven marker classes) writes it at 0092814B.
+
+### 11.2 The script entity (V)
+
+- **CreateScript 00898750:**
+  - allocates 1E4h zeroed bytes (00898834, 00BF79F0);
+  - constructs through 00928630;
+  - writes the vtable 00D11138 and friends (00898874..00898888) and `+C4h` = 3 (00898892).
+- **Pass A,** slot `+9Ch` = 00928A00 (00D111D4), builds the self object at `+178h` (00928A36).
+  00928100 tests it at 00928103, so the mirror does write.
+- **Pass C,** slot `+A4h` = 009295B0 (00D111DC). With `+C0h` null (009295D2..009295DC) it calls
+  00928100 at 009297E4.
+- **00928100** writes:
+  - `Race = +58h` (0092814B) and `Party = +54h` (00928162) as numbers. No spawn descriptor
+    reaches 00927050's kind-1 arm, so these are the base 00925CE0's -1 and 2.
+  - `Type = 00E0CD80[3]` = 00D19034 `SCRIPTENTITY`.
+- **The name gate.** `Name` is written only when `+154h` is set (00928179).
+  - The allocation is zeroed. 00928630, 00927610 and 009290A0 write neither `+154h` nor `+158h`.
+  - CreateScript never calls the name setter slot `+0Ch` (004313D0), and 00927050's kind-1 arm,
+    which does, does not run for it.
+  - `vtable[10h]` is 0042E950, the same `+158h` getter Path uses.
+  - **So the script entity is unnamed at its InitAll, and no `Name` is written.** This closes
+    8.4's "contract: unread".
+
+### 11.3 The binding
+
+`kSceneRaceAndScriptIdentityBound` (`include/bsp/game_hosts_scene_contents.hpp`), committed OFF.
+- **The record.** `GameSceneEntityRecord::race` resolves the bag's `Race` enum like `Party`. It is
+  filled whatever the switch says; it has no reader when the switch is off.
+- **Scene units.** Under the switch, the mission frame looks each unit's record up by name and
+  sets `SceneEntity::race`. The marker seeds take their record's race too.
+  - The Lua host already writes `thisTable[key].Race` for any `race >= 0`: at pass A through
+    `write_party_race_fields` on the load-time InitAll, or at the attach when that switch is off.
+  - The image writes a unit's Race at 00928F50 and a marker's at pass C; both run before the
+    first Think.
+- **Script entities.** Under the switch, each CreateScript entity gets Race -1, Party 2 and Type
+  `SCRIPTENTITY` on the first mission frame after its creation.
+  - **LABELLED SUBSTITUTION:** the image writes them at the next fixed step's InitAll, row 12,
+    pass C.
+  - The host's CreateScript runs the named global inside the call, as the image does (009290A0).
+    So in both, the global's first body sees no Type.
+- **The census:**
+  - `summary SceneLoad race identity bound=.. races_fed=..`;
+  - `summary mission script entity identity bound=.. written=..`.
+
+### 11.4 Script readers
+
+Section 8.3's reader census covers `.Race`, `.Type` and `.Name`. No reached script path reads
+them from an entity table. The `["Race"] = Japan` rows in usn_19_coralus.lua (1061..1141) and
+commandhelpers.lua 16796 are spawn parameter tables, not reads.
+
+### 11.5 Predictions (written before the pairs; the same tree, switch only, both variables set)
+
+- **USN04 4700/4500:**
+  - `races_fed` 19..24: 19 created scene units, plus up to 5 markers whose group carries `Race`;
+  - `written=13`, one per script entity created (13 in reference d).
+- **USN02 9200/9000:** `races_fed` 28..30 (28 units, 2 markers) and `written=16`.
+- **Both missions:**
+  - one new native row, `ScriptEntity::InitAll pass C mirror_identity` (00928100), with calls
+    equal to `written`;
+  - pair_diff exit 1: every gameplay row, the death, plane and unit tables and every other
+    summary line identical, the two census lines apart.
