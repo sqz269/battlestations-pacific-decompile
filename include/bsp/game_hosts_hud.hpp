@@ -262,7 +262,19 @@ inline constexpr bool kControlledUnitObserverBound = true;  // ON: lead ruling, 
 //    false.
 // While true the HUD answers vtable[124h] by that map. While false it answers
 // the four bytes for ships (IsKindOf(6)) and false for every other class.
-inline constexpr bool kUnitVtable124MapBound = true;  // ON by the identity pairs (docs/CONTROLLED_UNIT.md, "The unit vtable[124h] map")
+inline constexpr bool kUnitVtable124MapBound = true;
+
+// Packet cc9_squadron_slot_class (docs/CONTROLLED_UNIT.md, "The squadron slot
+// in the selection tests"), committed OFF with predictions. This host fuses a
+// PlaneSquadronGen entity (class 18h) with its wing-0 plane in one unit slot
+// (PlaneSquadronHostRecord::squadron_unit) that carries the plane's class. The
+// image's selection tests see the squadron: 00645060's IsKindOf(2)/(0Fh)/
+// (2Ah)/(46h)/(45h), its vtable[124h] (007EE670) and 00645600's IsKindOf(1).
+// While true, the HUD's selection tests (and so SetSelectedUnit, ForceSelectUnit
+// and the root lists) answer class 18h for a squadron's slot. Everything else
+// (the interface classifier, which the image redispatches from 18h to the
+// +3D0h plane at 0068AF18, the units host, gunnery) keeps the plane's class.
+inline constexpr bool kSquadronSlotClassBound = false;  // ON by the identity pairs (docs/CONTROLLED_UNIT.md, "The unit vtable[124h] map")
 // Returns false when no HUD is attached.
 bool hud_force_select_unit_006485a0();
 
