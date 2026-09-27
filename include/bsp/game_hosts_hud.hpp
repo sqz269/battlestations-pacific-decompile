@@ -235,6 +235,14 @@ bool hud_set_selected_unit_00647300(std::size_t unit, bool& reached);
 // 006488D0 runs its 00648290 rebuild of the root's unit vectors (+8Ch, +9Ch)
 // and cursor (+C2h/+C4h). While false the native and the enter stay records.
 inline constexpr bool kForceSelectUnitBound = true;
+
+// Packet cc9_controlled_unit_observer (docs/CONTROLLED_UNIT.md, "The controlled
+// unit's destruction notice"), committed OFF with predictions. While true:
+// 00645600's 00694A60/006952A0 register the HUD root's observer (root+8h,
+// vtable 00CF5A84) on the controlled unit, and that unit's destruction notice
+// runs the observer's slot +4h 00644A20: root+1Ch = 0, 004C0890(null) and the
+// cursor (+C2h, +C4h) = (0, -1).
+inline constexpr bool kControlledUnitObserverBound = false;
 // Returns false when no HUD is attached.
 bool hud_force_select_unit_006485a0();
 
