@@ -1,0 +1,36 @@
+{
+  "packet": "cc9_loss_warning_read",
+  "doc": "docs/LOSS_WARNING.md",
+  "ghidra": "read-only",
+  "steps": [
+    {
+      "address": "00981403",
+      "native": "009ffd20",
+      "function": "009813a0",
+      "rule": "loss counting slot"
+    },
+    {
+      "address": "00959507",
+      "native": "009813a0",
+      "function": "00959450",
+      "rule": "the death route's call"
+    },
+    {
+      "address": "007f3b56",
+      "native": "009813a0",
+      "function": "007f3b10",
+      "rule": "the aircraft/squadron death's call"
+    }
+  ],
+  "routines": [
+    {
+      "address": "009813a0",
+      "coverage": "structure complete from pseudocode; helper argument lists after the lock uncertain; 005CF3D0, 00975D00/0096AE90/00975E30, 006E6670, 006E0860 unread"
+    }
+  ],
+  "no_ghidra_function": [],
+  "names_added": {
+    "009813a0": "BSP_WarningManager_ReportLoss"
+  },
+  "source_touched": false
+}
