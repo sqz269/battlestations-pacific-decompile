@@ -997,9 +997,9 @@ public:
             // 004D7EDE / 004D7EFC call the same 00903670.
             owner_.flush_unit_kills_00903670();
             owner_.done("MissionCompletion::world_post_tick", 0x00903670u);
-            return;
+        } else {
+            owner_.record("MissionCompletion::world_post_tick", 0x00903670u);
         }
-        owner_.record("MissionCompletion::world_post_tick", 0x00903670u);
     }
     void show_mission_result_gui(float local_z) override {
         // 004d7f1d..004d7f42: the result's +8h float, 004f8a20 with it as the
@@ -1328,11 +1328,10 @@ public:
     void flush_entity_activations_00903670() override {
         if constexpr (kSunkShipFlushBound) {
             owner_.flush_unit_kills_00903670();
-            owner_.done("MissionFrame::flush_entity_activations", 0x00903670u);
-            return;
+        } else {
+            WorldTickBinding& world = world_;
+            bsp::flush_entity_activations_00903670(owner_.world, world);
         }
-        WorldTickBinding& world = world_;
-        bsp::flush_entity_activations_00903670(owner_.world, world);
         owner_.done("MissionFrame::flush_entity_activations", 0x00903670u);
     }
     bool check_mission_completion_004d7ea0() override {
