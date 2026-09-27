@@ -1037,3 +1037,39 @@ of the squadron's fused leader, its entity id - 1.
   corrected from the OFF commit's 0092604E.
 
 **Every prediction held. Verdict: ON.**
+
+### 15.4 The Lua half of the wing construction (section 9.3), for when units2 builds the wing in the pass A hook
+
+When `on_squadron_pass_a_construct_wing` constructs the wing, `create_units` pushes each plane
+while the walk is inside pass A. The walk re-reads the list's size, so it reaches those planes in
+this same pass A, as 007F4580's constructions are reached in the image. The Lua host then changes
+in five places, all in `src/game_hosts_lua.cpp`, under one switch landed with units2's.
+
+1. **Retire the wing append in pass A.** The loop over `[units_before, units_end)` in
+   `entity_attach_lua_self_vcall_9c` goes. The planes arrive as construction pushes instead.
+2. **Mark the hook's pushes as this squadron's wing.** The append set three fields on each wing
+   node, and a plain construction push has none of them:
+   - `wing_member`, which the `wing_member_tables` count and pass C's `SquadronID` need;
+   - `squadron_id` = the leader's id (007F4B49's `+9D4h`);
+   - `class_index` = the squadron's class.
+   So pass A records the list size before the hook call, and marks every node appended during the
+   call with them.
+3. **Retire the wing-range annotation and the wing deferral.** Once the creator batch builds no
+   wing, `route_push_squadron`'s `units_before`/`units_end` has nothing to describe, and the
+   dedup's `wing_deferred` rule (section 9.2) finds nothing to drop. Both go.
+4. **The squadron flag stays** until `create_units` can mark a construction push as a squadron:
+   the route's annotation is what makes pass A call the hook and pass C call the initial command.
+   Moving that flag to the units push is the step after.
+5. **`wing_append_skipped` and the load-walk path are unaffected.** No load-time squadron exists
+   in the reference missions, and a load squadron's wing would be built by the same hook.
+
+**Predictions for that landing:**
+- `wing_appended` 40 -> 0;
+- the units host's construction pushes are unchanged in total (81 on USN04), with 40 of them now
+  made during pass A;
+- `wing_deferred` 40 -> 0;
+- `entities=86`, `self_table_entities=86` and `wing_member_tables=40` are unchanged;
+- `squadron_ids` stays 40;
+- gameplay identical, **unless** the wing's construction time moves something. The planes would
+  now exist from pass A of the InitAll that follows their squadron's creation, instead of from
+  the creator batch. On USN04 both are inside the same Lua call, so identity is expected.
