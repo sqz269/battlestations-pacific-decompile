@@ -2905,3 +2905,39 @@ None does, so nothing was run:
   Section 21 item 2 records that no reference run was found to do so.
 
 Each needs a built scenario, which the lead ruled out for this pass.
+
+## 26. The stacked spawn verified (packet `cc9_squadron_spawn_seats_check`, read, nothing bound)
+
+Worker cc9-plane2, 2026-09-27, on main 3c6d89753. Ghidra was read only. This closes section 25.4's
+unverified step.
+
+### 26.1 007F4580 places every member at one point
+
+- **The placement arms carry no seat.** 007F4800..007F48D2 (disk bytes) create the member through
+  `[this]->vtable[28h]` (007F4811), then place it through `vtable[98h]` in one of two arms:
+  - with a parent (007F481D..007F48BA), an identity 4x4 built on the stack at ESP+64h, local to
+    the parent;
+  - without one (007F48BE..007F48D2), the squadron's own matrix at `squadron+74h`.
+- **Neither arm reads a member index or an offset.**
+- **The tail moves nothing.** docs/SQUADRON_SPAWN_SEATS.md section 1's claim about 007F4B43.. is
+  confirmed for its two callees:
+  - `0077FAD0` is the squadron entity's own init slot. 007F4BA0 BSP_PlaneSquadron_SEntityInitSlotA4
+    calls it on the squadron (ESI = this), and it joins a unit group.
+  - The `+170h` virtual at 007F4BD8..007F4BE6 is called on the sub-object at +170h of the pointer
+    held in squadron+3D0h. Its body was not read, so it is the one unverified step.
+  - 0077FAD0 writes no member pose.
+- **So seat 3 really starts 280.9 m ahead of its (-200, 0, -200) station,** as the section 25 log
+  showed. The stacked reading holds and nothing is bound.
+
+### 26.2 Two of docs/SQUADRON_SPAWN_SEATS.md 6's questions, closed by evidence
+
+1. **"Does 007DF4F0 separate two aircraft at zero offset?"** No.
+   - Its aircraft arm keeps only a closing contact: `dot(lp, lv) < 0` at 007DFAB6.
+   - Two coincident planes have lp = 0, so the dot is 0 and the pair is skipped.
+   - Stacked members separate only through their follow states.
+3. **"Why do the carrier flights not follow in their first 20 s?"** It no longer reproduces. On the
+   current base (`local\FP_ON_*.log`, worktree cc9-plane2), none of the 46 squadrons of USN01,
+   USN02, USN04 and USN13 keeps identical pairwise spacing between report ticks 400 and 1600
+   (script `local\cc9-plane2-static.py`).
+
+Question 2 was answered by docs/PILOT_MOVETO_TASK.md parts 1-4 (section 6a there).
