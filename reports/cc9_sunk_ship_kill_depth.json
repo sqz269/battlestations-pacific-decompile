@@ -2,26 +2,78 @@
   "packet": "cc9_sunk_ship_kill_depth",
   "doc": "docs/CONSTRUCT_WORLD.md",
   "calls": [
-    {"address": "008265FA", "native": "00424C40", "function": "00825F20", "note": "GameSettings singleton for +3F4h KillDepth, first end"},
-    {"address": "0082660F", "native": "00424C40", "function": "00825F20", "note": "GameSettings singleton for +3F4h KillDepth, second end"},
-    {"address": "00826628", "native": "00926D90", "function": "00825F20", "note": "Kill(1) once both hull ends are below KillDepth"},
-    {"address": "00826633", "native": "0092BD30", "function": "00825F20", "note": "controller hull-shape clear, then RET 4"},
-    {"address": "006D3623", "native": "00928570", "function": "006D3620", "note": "early list detach (list 1)"},
-    {"address": "006E0063", "native": "006DFFC0", "function": "006E0060", "note": "Battleship vt[134h] detaches lists 5 and 6 first"}
+    {
+      "address": "008265FA",
+      "native": "00424C40",
+      "function": "00825F20",
+      "note": "GameSettings singleton for +3F4h KillDepth, first end"
+    },
+    {
+      "address": "0082660F",
+      "native": "00424C40",
+      "function": "00825F20",
+      "note": "GameSettings singleton for +3F4h KillDepth, second end"
+    },
+    {
+      "address": "00826628",
+      "native": "00926D90",
+      "function": "00825F20",
+      "note": "Kill(1) once both hull ends are below KillDepth"
+    },
+    {
+      "address": "00826633",
+      "native": "0092BD30",
+      "function": "00825F20",
+      "note": "controller hull-shape clear, then RET 4"
+    },
+    {
+      "address": "006D3623",
+      "native": "00928570",
+      "function": "006D3620",
+      "note": "early list detach (list 1)"
+    },
+    {
+      "address": "006E0063",
+      "native": "006DFFC0",
+      "function": "006E0060",
+      "note": "Battleship vt[134h] detaches lists 5 and 6 first"
+    }
   ],
   "coverage": [
-    {"routine": "00825F20", "coverage": "partial: 008263C1..00826642 bound (sinkTime, hull ends, kill); flag-8 shape drop 00826410..0082645A a record; 00826645..00826663 (+82Ch) not bound"},
-    {"routine": "006E0060", "coverage": "complete as a list erase of the unit's first node in each registrar list"}
+    {
+      "routine": "00825F20",
+      "coverage": "partial: 008263C1..00826642 bound (sinkTime, hull ends, kill); flag-8 shape drop 00826410..0082645A a record; 00826645..00826663 (+82Ch) not bound"
+    },
+    {
+      "routine": "006E0060",
+      "coverage": "complete as a list erase of the unit's first node in each registrar list"
+    }
   ],
   "substitutions": [
-    {"what": "KillDepth GameSettings+3F4h", "is": "-200.0, this installation's shipglobals.lua line 377", "where": "src/game_hosts_units.cpp kKillDepthSubstitute"},
-    {"what": "kill list 00F899B4 and its row-15 drain", "is": "removal 009263C0 and the vt[80h] unlink applied at the kill", "where": "src/game_hosts_units.cpp motion_step_00825f20"}
+    {
+      "what": "KillDepth GameSettings+3F4h",
+      "is": "-200.0, this installation's shipglobals.lua line 377",
+      "where": "src/game_hosts_units.cpp kKillDepthSubstitute"
+    },
+    {
+      "what": "kill list 00F899B4 and its row-15 drain",
+      "is": "removal 009263C0 and the vt[80h] unlink applied at the kill",
+      "where": "src/game_hosts_units.cpp motion_step_00825f20"
+    }
   ],
   "corrections": [
-    {"was": "the free three passes later unlinks the ship from the world lists (docs/CONSTRUCT_WORLD.md section 21 step 7, contract unread)", "is": "the unlink is vt[134h] called at 00928F2C from the on-killed base 00928C80, reached from the row-15 kill drain's vt[80h], before the free", "evidence": "00928F1C..00928F2C listing; ship vt[80h] = 00951FB0 in all five ship vtables; callsite_census 006e0060 only the vtable entry"}
+    {
+      "was": "the free three passes later unlinks the ship from the world lists (docs/CONSTRUCT_WORLD.md section 21 step 7, contract unread)",
+      "is": "the unlink is vt[134h] called at 00928F2C from the on-killed base 00928C80, reached from the row-15 kill drain's vt[80h], before the free",
+      "evidence": "00928F1C..00928F2C listing; ship vt[80h] = 00951FB0 in all five ship vtables; callsite_census 006e0060 only the vtable entry"
+    }
   ],
   "switches": [
-    {"name": "GameUnitsHost::Impl::kSunkShipKillDepthBound", "state": "OFF", "pair": "pending"}
+    {
+      "name": "GameUnitsHost::Impl::kSunkShipKillDepthBound",
+      "state": "ON",
+      "pair": "local/SK_OFF_USN02.log vs local/SK_ON_USN02.log, local/SK_OFF_E2.log vs local/SK_ON_E2.log"
+    }
   ],
   "failed_predictions": [],
   "no_ghidra_function": [],

@@ -1413,7 +1413,7 @@ the dedup keeps the list at one node per entity whichever side pushes first.
 the instances each route constructs, `self_table_entities` unchanged (86 / 34), InitAll rows
 unchanged in count, identical gameplay.
 
-## 24. The KillDepth kill and the world-list unlink (packet `cc9_sunk_ship_kill_depth`, `kSunkShipKillDepthBound`, committed OFF)
+## 24. The KillDepth kill and the world-list unlink (packet `cc9_sunk_ship_kill_depth`, `kSunkShipKillDepthBound`, committed OFF, ON since the pairs)
 
 2026-09-27, worker cc9-units2, on main 10b1b7043. Ghidra was read only. This is the units-host
 contract of section 21 (steps 3 and 4, and the unlink).
@@ -1482,3 +1482,34 @@ manager +10D4h) is bound, and the hydrodynamics `009329C0` keeps every element's
 leaves list 6 at the step it passes (list 6 falls by one per kill, with 6 unlinked nodes each),
 the neighbour count's mean falls by about one per kill for the steps after it, and the
 setback rows move. Deaths and the failure time stay identical, because a wreck is already dead.
+
+### The pairs, measured
+
+One tree, `ec440301f`: `local\sk_off` against `local\sk_on`, the switch only, both variables set.
+Logs `local\SK_OFF_USN02.log` / `SK_ON_USN02.log` and `SK_OFF_E2.log` / `SK_ON_E2.log` in worktree
+cc9-units2. All four show the fit line, the immediate present interval, a module directory in
+this tree and the final COM release. `tools/pair_diff.py` exits 1 on both pairs: gameplay, the
+death rows and the unit table are identical.
+
+| row | USN02 OFF / ON | E2 OFF / ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| `wrecks` | 20 / 20 | 0 / 0 | 20, 0 | held |
+| lowest hull end | −47.04 m (Kawakaze, from 113.15 s); Yudachi, Samidare and Murasame −0.25 m; the other 16 at 0.00 m | - | above −50 m | held |
+| passes −200 m | none | - | never | held |
+| `kills`, `unlinked_nodes` | 0, 0 | 0, 0 | 0, 0 | held |
+| list 6 at the end | 32 / 32 | 18 / 18 | unchanged | held |
+| neighbour count (`traffic setback ... mean_count`) | 31.97 both | - | unchanged | held |
+| station keeping | 208 calls both | - | identical | held |
+| deaths, hit records, failure | 20, 329, 39.65 s both | 52, 875, none both | identical | held |
+| natives | `ShipMotion::sunk_hull_shape_flag8` 77,003 calls ON; `tests` 0 -> 99,866 | no change | the flag-8 record | held |
+
+The first +5Dh times follow the section-21 death times by the row-15 step (DeRuyter 30.30 s, Java
+32.45 s, Exeter 36.00 s), so the census reads the flushed bytes.
+
+**Verdict: ON.** It is the image's rule, and it changes nothing today.
+
+**Open:** host wrecks have no descent. The sink `008110F0` is a record, and neither flooding nor
+the leak manager is bound. So the kill, the removal, the unlink and the expiry release have run
+in no mission here, and neither has the −1 retirement in `src/game_hosts_ready.cpp`. The first
+descent model to land should re-run USN02 and expect each wreck to leave list 6 as it passes
+−200 m.

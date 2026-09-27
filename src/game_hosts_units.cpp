@@ -3564,7 +3564,10 @@ struct GameUnitsHost::Impl {
     // registrar). ON: all of that, the removal and the unlink applied at the
     // kill (SUBSTITUTION, labelled: the host's row-15 kill list cannot take a
     // host entity). OFF: nothing; the census of hull ends prints in both builds.
-    static constexpr bool kSunkShipKillDepthBound = false;
+    // ON since the USN02 and E2 9200/9000 pairs: identical gameplay. No host wreck
+    // descends (USN02: 20 wrecks, lowest hull end -47.04 m), so the kill and the
+    // unlink have not run in any measured mission.
+    static constexpr bool kSunkShipKillDepthBound = true;
     // SUBSTITUTION, labelled: GameSettings+3F4h is not loaded into this host
     // (the reader 0083EA71 is in the Lua host's settings load, not bound).
     // This installation's scripts/datatables/shipglobals.lua line 377
