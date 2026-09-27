@@ -29,6 +29,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import branch_sync  # noqa: E402
 import coordination  # noqa: E402
 import ledger  # noqa: E402
 import workspace  # noqa: E402
@@ -1094,6 +1095,7 @@ CHEATSHEET = """bsp.py in one screen. Every read is capped at 2000 tokens; over 
 local/output/ and prints the path. --full or BSP_OUTPUT_BUDGET=0 lifts the cap.
 
   brief                          start every turn here: state + dirty files + ready packets, one call
+  sync                           fetch; fast-forward this branch to origin/main, or list the unlanded commits and refuse
   state [--limit N]              snapshot, ledgers, leases, index freshness
   lookup <addr>                  everything known about one address (name, recon, callers, docs)
   show <addr> [--asm] [--lines N] [--start N]   capped export excerpt; --start pages, --asm for listing
@@ -1131,6 +1133,11 @@ def cheatsheet(args):
     print(CHEATSHEET, end='')
 
 
+def sync_cmd(args):
+    """A refused --ff-only means this branch has a commit main lacks, not that main moved."""
+    sys.exit(branch_sync.sync(ROOT, fetch=not args.no_fetch))
+
+
 def brief(args):
     """Replaces the state + git status + index + lease ritual that opened most sessions."""
     state(args)
@@ -1152,6 +1159,7 @@ def brief(args):
             print(f"unmerged: {pending} patches on {branch} not in main, oldest {when}{flag}")
         else:
             print(f"unmerged: none ({branch} fully in main)")
+    print(branch_sync.tip_line(ROOT))
     packets, _ = load_packets()
     leased = {l['packet'] for l in coordination.active_leases()}
     ready = [pid for pid, p in (packets or {}).items()
@@ -1184,6 +1192,8 @@ def main():
     p = sub.add_parser('brief', help='state + dirty files + ready packets in one call; start a turn here')
     p.add_argument('--limit', type=int, default=8); p.set_defaults(func=brief)
     sub.add_parser('cheatsheet', help='every subcommand on one screen').set_defaults(func=cheatsheet)
+    p = sub.add_parser('sync', help='fetch, then fast-forward to origin/main or list the unlanded commits and refuse')
+    p.add_argument('--no-fetch', action='store_true'); p.set_defaults(func=sync_cmd)
     p = sub.add_parser('lookup'); p.add_argument('address'); p.add_argument('--limit', type=int, default=12); p.add_argument('--width', type=int, default=300); p.set_defaults(func=lookup)
     p = sub.add_parser('show'); p.add_argument('address'); p.add_argument('--asm', action='store_true'); p.add_argument('--live', action='store_true')
     p.add_argument('--lines', '--limit', dest='lines', type=int, default=80); p.add_argument('--start', default='0', help='lines to skip, or with --asm a hex instruction address (8 digits or 0x...) to start at'); p.set_defaults(func=show)

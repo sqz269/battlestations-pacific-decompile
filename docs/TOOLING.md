@@ -9,6 +9,7 @@ or a reconstructed body.
 | --- | --- |
 | `tools/pair_diff.py` | `python tools/pair_diff.py local\X_OFF.log local\X_ON.log [--json out.json] [--limit N]` |
 | `tools/pair_export.py` | `python tools/pair_export.py --commit <sha> --flip kSwitch=true [--flip ...] --out local\<name> [--mission E2] [--no-build]` |
+| `bsp.py sync` | `python tools/bsp.py sync [--no-fetch]` (and one line in `bsp.py brief`) |
 
 ## 1. `tools/pair_diff.py`: the same-tree pair comparison
 
@@ -117,3 +118,26 @@ landed tree with every switch as landed.
 
 No switch name is defined twice in the tree today, so the duplicate refusal has been exercised
 only by reading the code, not on a real tree.
+
+## 3. `bsp.py sync` and the `brief` tip line
+
+`git merge --ff-only main` refused has one cause in this workflow: the branch carries a commit
+main does not have. On 2026-09-27 four workers read that refusal as "main moved". `sync` answers
+the real question first.
+
+- `python tools/bsp.py sync` fetches `origin`. If the branch tip is an ancestor of `origin/main`
+  it fast-forwards to `origin/main` and prints the first-parent commits that moved and a
+  shortstat. Otherwise it lists every commit not on `origin/main` (short sha and subject), prints
+  `unlanded: report to the lead`, merges nothing and exits 1. `--no-fetch` skips the fetch.
+- `python tools/bsp.py brief` prints `branch tip is on main` or `N commits not on main: <shas>`.
+  It does not fetch, and a commit counts as on main when `main` or `origin/main` contains it.
+
+The logic is in `tools/branch_sync.py`. `tests/test_pair_tools.py` is the one test: it builds a
+bare origin, a lead clone and a worker clone. It checks that the worker fast-forwards when only
+main moved, and that it refuses, keeps its HEAD and names its own sha once it has an unlanded
+commit.
+
+**Validation in this worktree.** At `7e7b78339`, `sync` printed `already at origin/main` and
+`brief` printed `branch tip is on main`. At `7edcebad5`, before landing, `sync` printed the one
+unlanded commit and `unlanded: report to the lead` and exited 1, and `brief` printed
+`1 commits not on main: 7edcebad5`.
