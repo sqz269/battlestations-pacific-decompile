@@ -242,3 +242,30 @@ only, `BSP_GUNNERY_RNG_STREAMS=1`, `BSP_DEATH_TABLE=1`, one run at a time. The p
 | identical rows | everything except the lines above; the follow state's release arm (`BotStateFollow::release_arm`, reads C20h) stays as OFF unless a dead Val is still in follow | same |
 
 A failed prediction of "identical" would mean something reads unit+C20h on a dead Val.
+
+### The pairs, measured
+
+Logs in worktree cc9-plane-release: `local\RV_OFF_9000.log` / `RV_ON_9000.log` and
+`RV_OFF_4500.log` / `RV_ON_4500.log`. All four show the 1600x900 line and a module directory in
+that tree. The OFF runs use the binary of `dadc05b84`. The first ON run of 4500
+(`RV_ON1_4500.log`, same commit) raised unit+C20h twice per round; the fix is `a1de87bda`, and
+both ON logs above are from it. Apart from pointers, the harness slot lines and the ignored
+`ship avoidance search refills` counter, each pair differs in exactly the lines in this table.
+
+| row | USN04 9000 OFF -> ON | USN04 4500 OFF -> ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| Val requests and times | identical: #1.1\|.-4 2 rounds at 128.10 s, #1.1\|.-2 1 at 129.60 s, #5.1\|.-2 1 at 205.66 s, all nose-down (pitch −0.91, −0.85, −0.76 rad) | same | identical | held |
+| bombs spawned, gunnery `bomb_drops` | 0 -> 0 | 0 -> 0 | 0 -> 0 | held |
+| `dead_releases_refused` and the three refusal lines | 4 -> 0, the lines go | same | same | held |
+| the three dead Vals' rack lines | `deferred` 0 -> 2/1/1; `C20h` 2/1/1 on both sides; `issues=0`, `drops=0` | same | OFF C20h 0 | **failed** for OFF C20h: the dive task's request hook already raises C20h per call through the torpedo binding. The first ON run doubled it to 4/2/2; fixed in `a1de87bda` |
+| rack census | 19 D3A `single=1 multi=0` on both | same | same | held |
+| rack drops, gate refusals, roll curve | 0, 0, absent | same | same | held |
+| natives | `release_spawn_deferred_to_rack` 5 -> 9; `Plane::issue_block_c3a` 326734 -> 326731 (the request-side refusal's three calls go); no `drop_dispersion` | 5 -> 9; 183224 -> 183221 | +4; the c3a move not predicted | held; the c3a move is the refusal leaving the request |
+| deaths, hit records, death table, torpedo rows, the Lexington's line | identical | identical | identical | held |
+| second-round timing | not observable | same | not observable | no live Val releases on either mission, nor in any recent USN01 log |
+
+**Verdict: `kReleaseIssueStageValsBound` ON.** The dead Vals' requests are now refused where the
+image refuses them, by the stage's death guard. Every behaviour row is identical. **Not
+run-time evidenced:** the live Val's issue, rack drop, roll curve and the one-round consequence.
+No mission in this tree currently has a live Val release. The first mission that does is the
+test, and it should show one bomb per Val where OFF spawned two from a two-round glide.

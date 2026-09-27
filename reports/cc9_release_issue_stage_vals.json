@@ -1,0 +1,55 @@
+{
+  "packet": "cc9_release_issue_stage_vals",
+  "doc": "docs/RELEASE_ISSUE_STAGE.md",
+  "calls": [
+    {"address": "007C0EC9", "native": "006E3F90", "function": "007C0D90", "note": "the only caller of the rack target-point setter; reached only after IsKindOf(10h) at 007C0E1C (level bomber)"},
+    {"address": "007C0EC1", "native": "007BCCF0", "function": "007C0D90", "note": "builds the setter's argument; roles not read"},
+    {"address": "007C0E88", "native": "00BD2F10", "function": "007C0D90", "note": "level bomber next-rack delay draw, times class+1F4h"},
+    {"address": "006E5609", "native": "00923810", "function": "006E4D50", "note": "drop tail: owner lookup"},
+    {"address": "006E4F91", "native": "00BD2F10", "function": "006E4D50", "note": "drop: first orientation draw (rack+400h)"},
+    {"address": "006E4FB1", "native": "00BD2F10", "function": "006E4D50", "note": "drop: second orientation draw (rack+404h)"},
+    {"address": "006E513C", "native": "00BD2F10", "function": "006E4D50", "note": "drop: velocity scatter draw"},
+    {"address": "006E51AC", "native": "00BD2F10", "function": "006E4D50", "note": "drop: velocity scatter draw"},
+    {"address": "006E54B2", "native": "007AB230", "function": "006E4D50", "note": "drop: target point handed to a kind 31h round when rack+4F8h is set"},
+    {"address": "006E55D2", "native": "009555A0", "function": "006E4D50", "note": "drop: the round handed to the world"},
+    {"address": "006E585F", "native": "007CC8E0", "function": "006E56F0", "note": "rack tick: the gate, argument = platform byte +0Eh MainPlatform"},
+    {"address": "007CC99F", "native": "007C7600", "function": "007CC8E0", "note": "not a level bomber: the dive drop gate"},
+    {"address": "007C7725", "native": "00419010", "function": "007C7600", "note": "the roll curve, RET 14h"},
+    {"address": "007CD9D9", "native": "005471B0", "function": "007CD9A0", "note": "platform vector resize guard"}
+  ],
+  "coverage": [
+    {"routine": "007C7600", "coverage": "partial: the pitch limits and the roll curve bound; the bay-door test (007C760D-007C7641) and the rocket arm (007C764B-007C7675) are not (not reached for a Val: MainPlatform 0, no rocket)"},
+    {"routine": "006E4D50", "coverage": "read, not reconstructed: the host's bomb spawn stands in; scatter draws are a record"},
+    {"routine": "006E3F90", "coverage": "complete (read); not bound: its caller is the level bomber's branch"},
+    {"routine": "007CD9A0", "coverage": "complete (read); not bound: the bay test that reads its output is not reached for a Val"},
+    {"routine": "007C0D90", "coverage": "partial: the first idle rack for a torpedo or a general bomb; the level-bomber next-rack walk and target point 007C0E1C-007C0ECE not bound"}
+  ],
+  "substitutions": [
+    {"what": "the drop's scatter draws 006E4F91/006E4FB1/006E513C/006E51AC", "is": "not taken; record Rack::drop_dispersion_006e4f91", "evidence": "the host spawn has no dispersion"},
+    {"what": "the bomb's predicted impact and fall time", "is": "009C7D71 from the aircraft's state at the drop tick", "evidence": "the image carries no aim point to a dive bomber's rack (006E3F90 caller 007C0EC9)"},
+    {"what": "the stage's interval draw 007CEAB3", "is": "the low end 0.9", "evidence": "the torpedo binding's convention"},
+    {"what": "ammo", "is": "one round per single rack", "evidence": "agrees with this installation's D3A Equipments[1][50].Ammo = 1; the equipment-to-006E3530 link is unread"},
+    {"what": "kDiveBombCarriedRoundsSubstitute (007C1DB0)", "is": "unchanged at 2", "evidence": "the image's value for a D3A would be 1; next gap"}
+  ],
+  "corrections": [
+    {"was": "a Val's bomb needs the dive task's release-tick aim point and fall time carried to the rack (docs/RELEASE_ISSUE_STAGE.md, Vals not bound here)", "is": "the image carries no aim point to a dive bomber's rack; the bomb is ballistic from the drop", "evidence": "006E3F90 is the only +4F8h setter (scan C6 ?? F8 04 00 00) and its only caller 007C0EC9 is in the level bomber's branch"},
+    {"was": "a Val's next round waits a drawn BombDelay interval plus the attitude gate", "is": "a D3A has one round in this installation; the second request issues nothing, and the gate passes every nose-down attitude", "evidence": "Equipments[1][50].Ammo = 1, device class 87 BombPlatform; 006E3410; 007C76AB with C64h negative nose-down"}
+  ],
+  "switches": [
+    {"name": "GameUnitsHost::Impl::kReleaseIssueStageValsBound", "state": "ON",
+     "pair": "local/RV_OFF_9000.log vs local/RV_ON_9000.log, local/RV_OFF_4500.log vs local/RV_ON_4500.log"}
+  ],
+  "failed_predictions": [
+    {"row": "OFF unit+C20h on the dead Vals", "predicted": "0", "measured": "2/1/1", "why": "the dive task's request hook already raises C20h per 007BBBA0 call through release_ordnance_007bbba0; the first ON build raised it again (4/2/2), fixed in a1de87bda"}
+  ],
+  "no_ghidra_function": [
+    {"start": "006E3530", "end_inclusive": "006E3542", "evidence": "rack SetAmmo, single rack vtable slot 00CF9864; RET 4 (C2 04 00) at 006E3540; INT3 006E3527-006E352F and from 006E3543"}
+  ],
+  "ledger_names_added": [
+    {"address": "006E3F90", "name": "BSP_MBombPlatform_SetTargetPoint"},
+    {"address": "007CD9A0", "name": "BSP_Plane_BayDoorRackHoldsBomb"},
+    {"address": "006E3500", "name": "BSP_MBombPlatform_RoundCount"},
+    {"address": "006E3410", "name": "BSP_MBombPlatform_Rearm"},
+    {"address": "006E3530", "name": "BSP_MBombPlatform_SetAmmo"}
+  ]
+}

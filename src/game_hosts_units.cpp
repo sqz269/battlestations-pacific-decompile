@@ -3234,7 +3234,10 @@ struct GameUnitsHost::Impl {
     // point setter 006E3F90 is called only from the level bomber's branch
     // 007C0EC9). The roll curve of 007C7600 (00419010 over tuning +554h..+560h)
     // is bound under this switch too. OFF: the bomb spawns at the request.
-    static constexpr bool kReleaseIssueStageValsBound = false;
+    // ON since the USN04 9000 / 4500 pairs: every behaviour row identical, the
+    // dead Vals' requests held by the stage's guard. The live Val's drop has no
+    // run-time evidence yet (no mission here has a live Val release).
+    static constexpr bool kReleaseIssueStageValsBound = true;
     // Packet cc9_plane_death_modes: 007CA8A0's death mode, 007CAF10's dead-step
     // terms, the kill that takes the aircraft out of the world, and the release
     // refusal of a dead aircraft (007CEA1C). docs/PLANE_DEATH_MODES.md.
