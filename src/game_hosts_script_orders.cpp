@@ -410,6 +410,7 @@ std::uint32_t GameScriptOrdersHost::create_air_ops_squadron_006c5050(
     const std::size_t before = units_.count();
     std::vector<GameSceneEntityRecord> batch;
     batch.push_back(record);
+    std::vector<GameSceneEntityRecord> wing_records;
     for (std::size_t wing = 1; wing < plan.members.size(); ++wing) {
         GameSceneEntityRecord wing_record = record;
         wing_record.name = plan.members[wing].name;
@@ -418,7 +419,12 @@ std::uint32_t GameScriptOrdersHost::create_air_ops_squadron_006c5050(
         // plane, not a second PlaneSquadronGen.
         wing_record.class_name = "PlaneUnitInstance";
         wing_record.class_id = -1;
-        batch.push_back(std::move(wing_record));
+        // Packet cc9_wing_construction: held for the squadron's pass A.
+        if constexpr (kWingConstructionInPassABound) {
+            wing_records.push_back(std::move(wing_record));
+        } else {
+            batch.push_back(std::move(wing_record));
+        }
     }
     // The registry record is built BEFORE create_units, not after it. That
     // placement was made when create_units constructed a fresh
@@ -450,10 +456,15 @@ std::uint32_t GameScriptOrdersHost::create_air_ops_squadron_006c5050(
     squadron.member_names.clear();
     squadron.member_units.clear();
     squadron.member_spawn_index.clear();
-    for (std::size_t wing = 0; wing < plan.members.size() && wing < batch.size(); ++wing) {
+    const std::size_t registered = kWingConstructionInPassABound
+        ? plan.members.size() : batch.size();
+    for (std::size_t wing = 0; wing < plan.members.size() && wing < registered; ++wing) {
         squadron.member_names.push_back(wing == 0 ? record.name
                                                   : plan.members[wing].name);
-        squadron.member_units.push_back(before + wing);   // +3D0h[wing]
+        // +3D0h[wing]. Packet cc9_wing_construction: a wing plane's index is the
+        // one the pass A hook gives it, so the slot waits empty until then.
+        const bool held = kWingConstructionInPassABound && wing > 0;
+        squadron.member_units.push_back(held ? bsp::kPlaneSquadronNoUnit : before + wing);
         squadron.member_spawn_index.push_back(plan.members[wing].spawn_index);
     }
 
@@ -477,6 +488,9 @@ std::uint32_t GameScriptOrdersHost::create_air_ops_squadron_006c5050(
         if (squadron.member_units[wing] >= units_.count()) {
             squadron.member_units[wing] = bsp::kPlaneSquadronNoUnit;
         }
+    }
+    if constexpr (kWingConstructionInPassABound) {
+        if (!wing_records.empty()) units_.stage_squadron_wing(before, std::move(wing_records));
     }
     AirOpsSquadron made;
     made.unit_index = before;
@@ -567,6 +581,7 @@ std::uint32_t GameScriptOrdersHost::create_unit_from_scene_record_0046db4b(
     // in its frame budget, so this seam is reconstructed to the same rule as the
     // other two and measured by neither. docs/PLANE_SQUADRON_HOST.md.
     bsp::PlaneSquadronSpawnPlan plan;
+    std::vector<GameSceneEntityRecord> held_wing;  // packet cc9_wing_construction
     const bool is_squadron = copy.class_id == 0x18;
     if (is_squadron) {
         bsp::PlaneSquadronSpawnRequest request;
@@ -583,7 +598,12 @@ std::uint32_t GameScriptOrdersHost::create_unit_from_scene_record_0046db4b(
             wing_record.name = plan.members[wing].name;
             wing_record.class_name = "PlaneUnitInstance";
             wing_record.class_id = -1;
-            batch.push_back(std::move(wing_record));
+            // Packet cc9_wing_construction: held for the squadron's pass A.
+            if constexpr (kWingConstructionInPassABound) {
+                held_wing.push_back(std::move(wing_record));
+            } else {
+                batch.push_back(std::move(wing_record));
+            }
         }
     }
 
@@ -603,11 +623,17 @@ std::uint32_t GameScriptOrdersHost::create_unit_from_scene_record_0046db4b(
         squadron.member_spawn_index.clear();
         for (std::size_t wing = 0; wing < plan.members.size(); ++wing) {
             const std::size_t unit = index + wing;
-            if (unit >= units_.count()) break;
+            // Packet cc9_wing_construction: a held wing plane's slot waits for
+            // the index the pass A hook gives it.
+            const bool held = kWingConstructionInPassABound && wing > 0;
+            if (!held && unit >= units_.count()) break;
             squadron.member_names.push_back(wing == 0 ? copy.name
                                                       : plan.members[wing].name);
-            squadron.member_units.push_back(unit);
+            squadron.member_units.push_back(held ? bsp::kPlaneSquadronNoUnit : unit);
             squadron.member_spawn_index.push_back(plan.members[wing].spawn_index);
+        }
+        if constexpr (kWingConstructionInPassABound) {
+            if (!held_wing.empty()) units_.stage_squadron_wing(index, std::move(held_wing));
         }
         log_.notef("GenerateObject squadron %s: WingCount=%d -> %d member plane(s) "
             "(007F4580 mode 1 on the held-back row)", copy.name.c_str(),

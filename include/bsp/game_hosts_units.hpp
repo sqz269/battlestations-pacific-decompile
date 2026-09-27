@@ -67,6 +67,17 @@
 
 namespace bsp::game {
 
+// Packet cc9_wing_construction (docs/CONSTRUCT_WORLD.md section 30). True: the
+// script-orders creator batches (the air-ops launch 006C5050 and the
+// GenerateObject/SpawnNew creator 0046DB4B) build a plane squadron's leader
+// only and stage its wing records here; the squadron's InitAll pass A hook
+// builds them through create_units, as 007F4580 constructs the wing in the
+// squadron's slot-39 attach, so each plane is pushed during pass A. The Lua
+// half (marking those pushes as wing members, retiring the wing append) is
+// cc9-movie-camera's and flips with this one. False: the creator batches build
+// the wing, as before.
+inline constexpr bool kWingConstructionInPassABound = false;
+
 class GameHostLog;
 class GameMissionLuaHost;
 class GameObserverRuntime;
@@ -617,6 +628,12 @@ public:
     //   moveto (00E08F68) toward the home base +404h when one is set.
     void on_squadron_pass_a_construct_wing(std::size_t squadron_index);
     void on_squadron_pass_c_initial_command(std::size_t squadron_index);
+    // Packet cc9_wing_construction: the wing records a creator batch holds back
+    // for the squadron whose fused leader is `leader_index`, built by the pass A
+    // hook above. Wing i+1 of the registry record's member_units is written
+    // when it is built.
+    void stage_squadron_wing(std::size_t leader_index,
+                             std::vector<GameSceneEntityRecord> wing);
     // Packet cc9_scene_home_base_key (docs/CONSTRUCT_WORLD.md section 29).
     // CONTRACT for the owner that builds a plane squadron from a scene row
     // (PlaneSquadronGen, class 18h): call this once, before the squadron's

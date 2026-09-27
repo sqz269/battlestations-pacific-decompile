@@ -2229,3 +2229,116 @@ airfield "Landscape 01\MainAirFieldEntity 01". **Open, for that mission:** wheth
 registers an air-ops deck under that name, and whether a unit slot carries it. If no slot
 carries it, the moveto arm counts `no_home` and the squadron is queued but not ordered (the
 substitution above).
+
+## 30. The wing built in the squadron's pass A: the units and script-orders half (packet `cc9_wing_construction`, `kWingConstructionInPassABound`, committed OFF)
+
+Worker cc9-ships, 2026-09-27, base main `f73bca10f`. The plan is in `docs/RELEASE_ISSUE_STAGE.md`,
+"Handoff: cc9-units2's queue", item 1. The Lua half is in `docs/SENTITY_INIT_ATTACH_ORDER.md`
+section 15.4, owned by cc9-movie-camera. Both halves flip together.
+
+### 30.1 What the image does, and what the host did
+
+- **The image.** A plane squadron's slot-39 attach, 007F4580, constructs each wing plane in the
+  squadron's InitAll pass A, through the vehicle class's `vtable[28h]` (007CFD20 for a plane
+  Type) at 007F4811. Each construction reaches 00928760 CALL 00926BE0, so the planes join the
+  pending list while that pass A walks it, and the walk reaches them in the same pass.
+- **The host until now.** The script-orders creator batches built the wing beside the leader, in
+  the creator's own `create_units` call:
+  - the air-ops launch 006C5050, `create_air_ops_squadron_006c5050`;
+  - GenerateObject and SpawnNew, `create_unit_from_scene_record_0046db4b`.
+  The Lua host's pass A then appended the batch's range as the wing.
+
+### 30.2 The binding (this half)
+
+- **The creator batches** build the leader only. The plan's wing records go to
+  `GameUnitsHost::stage_squadron_wing(leader_index, records)`.
+- **The registry record's member slots.** Both batches pre-register `member_units` as
+  `{leader, NoUnit, ...}` in plan order, together with `member_names` and `member_spawn_index`.
+- **The pass A hook,** `on_squadron_pass_a_construct_wing(leader)`, takes the staged records and
+  builds them through `create_units`. That pushes each plane (00928760) while the walk is inside
+  pass A. The hook then writes wing i's new index into `member_units[i]` (007F4B49's `+3D0h`).
+- **Unit ids of wing planes change.**
+  - A SpawnNew group constructs every member squadron's leader first. The walk's pass A then
+    builds the wings squadron by squadron, so every wing plane's index and id come after all
+    leaders of its group.
+  - An air-ops launch's wing now follows everything built before its InitAll.
+  - Everything that names a plane by index reads it from `member_units`, which the hook fills. The
+    per-unit rows (gunnery, logs) are keyed by name.
+- **The census:** `summary squadron wing construction bound=.. staged=.. builds=.. planes=..
+  left_staged=..`.
+
+### 30.3 Predictions (written before the pairs; the same tree, switch only, both variables set)
+
+**This half alone** (the Lua half OFF), USN04 4700/4500:
+- `staged=40 planes=40 left_staged=0`; `builds` is the number of squadrons with a wing, at most
+  20 (the hook's 20 calls);
+- the Lua host's `wing_appended` 40 -> 0: the route's range holds only the leader. `wing_deferred`
+  (the dedup's drop of an append a construction push already queued) goes to 0 as well;
+- the units host's construction pushes are unchanged in total, 40 of them now made during pass A;
+- InitAll `entities=86` and `self_table_entities=86` unchanged;
+- **`wing_member_tables` 40 -> 0 and `squadron_ids` 40 -> 0.** Marking the hook's pushes as wing
+  nodes is the Lua half (15.4 point 2). Until it lands, a wing plane gets its slot but not
+  `SquadronID`;
+- gameplay: identical is expected. A plane's behaviour does not depend on its index. **The risk:**
+  anything that walks units in index order, or draws RNG per index, sees the wing planes later.
+  Any move is reported with its first diverging row.
+
+**USN02 9200/9000:** no squadron is created (the hooks ran 0 times on USN02), so identical,
+`staged=0`.
+
+**The joint landing** (both halves ON), from 15.4:
+- `wing_appended` 40 -> 0 and `wing_deferred` 40 -> 0;
+- construction pushes 81 unchanged, with 40 during pass A;
+- `entities`, `self_table_entities` and `wing_member_tables` unchanged; `squadron_ids` 40;
+- identical gameplay.
+
+### 30.4 The pairs, measured (this half alone)
+
+- **Builds.** `tools/pair_export.py` of `212eac5a3`: `local\ri_off` (SHA-256 prefix
+  `B9C6C653C435`) and `local\ri_on` (`2049997AB2E5`, `kWingConstructionInPassABound` flipped).
+- **Logs.** `local\wc_{off,on}_{usn04,usn02}.log` in worktree cc9-ships. Each shows the 1600x900
+  fit, the immediate present interval, its own module directory and the final COM release.
+
+**USN02 9200/9000: pair_diff exit 1.**
+- Gameplay, the death table (22 rows) and the unit table are identical.
+- The native table is identical, and 0 other lines are only OFF or only ON.
+- The census moved only `bound 0 -> 1`, with `staged=0`.
+
+**USN04 4700/4500: pair_diff exit 3.** Every census prediction held:
+
+| row | OFF | ON | predicted | held |
+| --- | --- | --- | --- | --- |
+| staged / builds / planes / left_staged | 0 / 0 / 0 / 0 | 40 / 20 / 40 / 0 | 40 / at most 20 / 40 / 0 | yes |
+| `wing_appended` | 40 | 0 | 0 | yes |
+| `wing_deferred` | 40 | 0 | 0 | yes |
+| InitAll pushes, entities, `self_table_entities` | 81, 86, 86 | 81, 86, 86 | unchanged | yes |
+| `wing_member_tables`, `squadron_ids` | 40, 40 | 0, 0 | 0, 0 (the Lua half's job) | yes |
+
+**The gameplay prediction failed.**
+
+```
+  deaths                                 40                                       40
+* hit records                            799                                      801
+* hull hits                              306                                      308
+* damage                                 11621.4                                  11662.6
+* shots                                  6395                                     6388
+  first hit                              93.00 s                                  93.00 s
+* torpedo-task releases                  7 of 16                                  5 of 16
+* dive-bomb-task releases                3 of 19                                  5 of 19
+  torpedo drops                          1                                        1
+DEATH ROWS: 40 -> 40 rows, 0 only ON, 0 only OFF, 12 changed
+```
+
+- **The same 40 victims die.** Twelve death rows move in range, altitude or credit.
+- **The draws.** Twenty-six plane death modes change. Their draws are mostly the OFF run's values
+  handed to other planes: 36 of the 40 values are shared, and 4 differ on each side.
+- **The likely cause is the order, not the construction.**
+  - ON, every wing plane's unit index comes after all leaders of its group. The per-step plane
+    walk and the shared RNG stream (00BD2F10)
+    now see the planes in a different order.
+  - This is the order the image creates them in: leaders by the SpawnNew loop, then each wing in
+    its squadron's pass A.
+- **Not separated.** The missing `SquadronID` (the Lua half's) could also move a script path.
+  The joint pair, with both halves ON, is the first measurement of the whole change. This half's
+  pair shows only that the index order moves USN04's air battle within its usual bands.
+- **State: committed OFF, held for the joint flip** with cc9-movie-camera's Lua half.

@@ -27,9 +27,11 @@
   "open_flags": [
     "E2 594 -> 595 hit records (before c) not isolated",
     "E2 ends in phase 1 under lockstep (Blackout re-issued 76 times, docs/MISSION_BLACKOUT.md)",
-    "USN01 torpedo drops 8 -> 2 between 1eaedc668 and e3aba0f36, unpaired",
     "the Marshall .nav is the generic layer",
     "USN02 sink timing belongs to the buoyancy stand-in (docs/CONSTRUCT_WORLD.md section 25)"
+  ],
+  "closed_flags": [
+    {"flag": "USN01 torpedo drops 8 -> 2 between 1eaedc668 and e3aba0f36", "closed_by": "the Val rack route 5c25befbe (kReleaseIssueStageValsBound)", "evidence": "boundary pair a1de87bda against 5c25befbe on USN01 3200/3000 (local/vb_{parent,landing}_usn01.log, cc9-ships): drops 8 -> 2, every other gameplay row and table identical; docs/GAME_EXECUTABLE.md reference d section, commit 3364dcaa2"}
   ],
   "failed_predictions": []
 }
