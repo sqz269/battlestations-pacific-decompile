@@ -1802,3 +1802,60 @@ void GameUnitsHost::on_squadron_pass_c_initial_command(std::size_t squadron_inde
 - **Pass C** is the squadron's `007F4BA0`. The call goes at the point of `007F4E9E`, after passes
   A and B. The entry will issue the initial command described above.
 - Each entry gets its own switch, committed OFF with predictions, once the calls land.
+
+### The initial command, read for step 2 (packet `cc9_squadron_initial_command_read`)
+
+**The image, re-read from the listing (007F4E06..007F4EA3).**
+- `007F4E06` `MOV ECX,[ESI+348h]`, `007F4E0C` `CALL 0071BE40`: the squadron's own command
+  controller at +348h answers its current command. A non-zero answer skips the block (`007F4E13`).
+- `007F4E19`..`007F4E24`: lobby mode `[00E188A8]+1FE4h` compared with EDI (the 2 of the other
+  lobby tests). Single player passes.
+- `007F4E26`..`007F4E37`: `[squadron+3D0h]+900h == 6` (the first member on the water) takes the
+  stop arm.
+- **The stop arm** (`007F4E5D`..`007F4E97`): the squadron's OWN pose is refreshed (`00414DB0`
+  when +C8h is 0). The target is built from `&squadron+FCh` (its position) through `007EF8F0`
+  (with `[00E188A8]`) and `00468560`. The command class is `stop` `00E08F88`.
+  **Correction** to the first read above: the position is the squadron's, not the first member's.
+- **The moveto arm** (`007F4E39`..`007F4E56`): home base +404h non-null. `00465080(home, 0.0f,
+  1)` builds an object target. The command class is `moveto` `00E08F68`.
+- `007F4E9C`: ECX = the squadron, then `0077D600` (flags 1). The squadron's MT_COMMAND handler
+  fans out to its members (`007ECF80`'s shape).
+
+**The host's equivalents.**
+
+| image | host |
+| --- | --- |
+| `0071BE40` on squadron+348h | `GameUnitsHost::director_current_command_0071be40(leader)`. The host fuses the squadron with its leader plane, so the leader's director stands in for the squadron's controller (labelled) |
+| `[squadron+3D0h]+900h` | the first member's `plane_control_mode_900` (the registry's `member_units[0]`) |
+| the squadron's position +FCh | the leader's pose |
+| `00465080` object target | `bsp::SceneCommandTarget{kind 1, object = the carrier's unit identity, object_id = its id}`, `target_name` = the carrier's name, as `GameScriptOrdersHost::entity_issue_command` builds one |
+| `0077D600` + the squadron fan-out | `issue_script_command(member, 0x00E08F68 or kCommandStop 0x00E08F88, target, 1, "squadron_pass_c", name)` once per live member, as the AI command tick's squadron arm does (`src/game_hosts_ai.cpp`, `tick_issue_moveto`) |
+| home base +404h | the air-ops launch's `home=` (`air_operations.cpp`, 006C5050's `HomeBase` bag key = the owner); from a scene row, the bag's `HomeBase` read at pass C (`00CF8820`) |
+
+**Who gets what on the reference missions.**
+- **USN04: the four air-ops launches.** They are `Lexington-class01_sqn01` / `_sqn03` and
+  `Yorktown-class01_sqn02` / `_sqn04`, with `home=` their carrier on the launch line. They are
+  airborne at 150 m, so +900h is 7, not 6. At pass C (inside `LaunchSquadron`'s InitAll at
+  `0089E613`) no command is current. The AI group's `dogfight` arrives about 29 fixed steps later
+  (`order_attack` then `player command issued ... token="dogfight"`, lines 8235-8243 of
+  `local\PP_ON_USN04.log`). So each gets a **moveto toward its carrier**: 4 squadrons, 12 member
+  orders.
+- **USN04: the 16 SpawnNew squadrons.** No home base. `usn_19_coralus.scn` (2024-08-09) carries
+  `HomeBase = RFort ""` only in its two `PlaneSquadronWNavpoint` templates (byte offsets 67170
+  and 67760), and no row fills it. Their planes fly, not float. So **nothing** is issued, whether
+  a command is current or not.
+- **USN02:** the host builds no plane squadron (`ai squadrons: this mission created no unit
+  answering IsKindOf(0Fh)`). So `pass_c` is 0, and the Kingfisher named in
+  docs/SENTITY_INIT_PASSES.md is not a squadron here. **Nothing** is issued.
+
+**Predictions for the initial-command pair** (same tree, switch only, both variables set; the
+pass C call landed by cc9-init-passes in both builds):
+
+| row | USN04 4700/4500 | E2 = USN04 9200/9000 | USN02 9200/9000 |
+| --- | --- | --- | --- |
+| `pass_c` calls | 20 both | 20 both | 0 both |
+| initial commands | 0 -> 4 moveto (12 member orders), 0 stop | the same | 0 |
+| the launched Wildcats' first order | moveto toward their carrier, replaced by the AI group's `dogfight` about 1.5 s later (their current command then changes as today) | the same | - |
+| deaths, hit records | 43 ± 3, 788 ± 8 %: a 1.5 s heading change on 12 fighters shifts their intercepts | 52 ± 3, 875 ± 8 % | identical |
+| torpedo-task and dive-bomb-task releases | unchanged ± 1 | unchanged ± 1 | - |
+| pair_diff exit | 3 if an intercept moves, else 1 | same | 1 |
