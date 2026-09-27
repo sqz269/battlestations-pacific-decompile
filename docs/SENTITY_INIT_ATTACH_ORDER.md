@@ -1690,3 +1690,34 @@ Worker cc9-hud2, 2026-09-27, base e7aacfb4c.
     `blackout:luaMoveToPh2` = the number of its `NavigatorAttackMove` calls.
   - **Gameplay moves, exit 3,** because the ships' attack paths start 0.05 s later. `luaIn` defers
     nothing: `SetSelectedUnit` stays direct.
+
+### 22.4 Addendum: the three posters section 21.3 left unplaced (read)
+
+Worker cc9-hud2, 2026-09-27, base 02b0c988f. **All three post before fan-out row 9**, so direct
+delivery is exact for them and the deferral binding leaves them alone.
+
+**The mechanism** they share (V):
+- The ship AI controller and the weapon director are both controllers of one base family.
+  - Slot `+4h` attaches the object to its unit's tick-node sub-list through 00876020:
+    `BSP_GunBot_Attach` 008FBC80 for the ship AI controller (vtable 00D21AE8), and 0071C470
+    (`CALL 00876020`, `RET 4`) for the director (vtables 00CFDA40, 00D09EC0).
+  - Slot `+8h` is the shared 0071C480.
+  - Slot `+0Ch` is the tick.
+- The fixed step's job waves call the sub-list's `+0Ch` with the wave's 0.05f, before the fan-out
+  (`docs/FIXED_STEP_JOB_WAVES.md`, "Correction from docs/GUN_BOT_TICKS.md").
+
+| poster | chain | position | fires on an idle run |
+| --- | --- | --- | --- |
+| **8Fh pass-side** | 009D66B0 <- 009D8C60 <- 009F0100 <- 009F4D10 `BSP_ShipAi_PublishOrderSlot` (009F5227) <- **009F50E0 `BSP_ShipAi_ControllerStep`**, slot `+0Ch` of 00D21AE8 (the pointer at 00D21AF4) | **before row 9** (job waves) | yes: the ship AI runs on every AI ship |
+| **5Eh, the per-director think** | 00835740 <- 00835860 <- 009F5DA0 (the selector's `tick`, slot `+4h` of 00D21B48), called at **0071F381** by `BSP_CommandControllerBase_Update` 0071F290 (`[+38h]->vtable[4](dt)`, arm 7), which is slot `+0Ch` of the director vtables | **before row 9** (job waves) | when the think selects a target; `docs/GAME_EXECUTABLE.md` records that the host's neutral predicate stops every think |
+| **5Ah, director** | the senders 0071C5E5..0071E171 and 00835940..00835A61 run from the director's own step: arm 7's `vtable[7Ch]` = 00836920 `BSP_WeaponDirector_Step`, in the same update | **before row 9** (job waves) | yes, whenever a director executes a command |
+| 5Ah from Lua | 008A6C30 | the Lua rule of 21.3 (before, except from Blackout callbacks) | as the script calls it |
+
+**Correction to `docs/DIRECTOR_UPDATE_ARMS.md`:** it said arm 7 is "driven once per frame with the
+frame delta". The director's update is the tick-node sub-list's `+0Ch`, so it runs in the fixed
+step's job waves with 0.05f, as the gun bots do.
+
+**For the deferral binding:** only the after-row-9 posters of 22.1 are deferred:
+- Lua run from Blackout callbacks;
+- the HUD screens (input only);
+- the squadron's row-12 initial command (a no-op in the host).

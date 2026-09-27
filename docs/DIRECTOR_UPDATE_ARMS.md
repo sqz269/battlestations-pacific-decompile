@@ -411,3 +411,10 @@ ABI-compatible and not game-validated.
 - **Was:** open question: 008637D0, the per-weapon availability test 009F1BC0 ANDs with aaEnabled
   **Is:** __thiscall(unit, Entity* target), RET 4: true when any category in the list at 00E0A510 is present on the unit, accepted by [unit+60h]->vtable[4h], and willing to engage the target
   **Evidence:** 008637D5 and 0086381A bound the loop with CMP ... ,0Ch; 008637F2 CMP byte [EAX+EDI+70h],0; 008637F9-00863802 the vtable[4h] call; 0086380E CALL 008633D0; 00863837 MOV AL,1
+
+## Correction from docs/SENTITY_INIT_ATTACH_ORDER.md section 22.4 (packet cc9_after_row9_order_queue)
+
+- **Was:** arm 7's auto-target think is "driven once per frame with the frame delta".
+- **Is:** 0071F290 is slot `+0Ch` of the director vtables, whose slot `+4h` 0071C470 attaches the
+  director to its unit's tick-node sub-list through 00876020. The fixed step's job waves call that
+  slot with 0.05f, before the fan-out, as they do the gun bots.
