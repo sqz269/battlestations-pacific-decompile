@@ -174,14 +174,15 @@
     }
   ],
   "flags": [
-    "new: E2 902 -> 854 only partly paired",
+    "closed: E2 902 -> 854 is the query gate bytes entire (flip-off pair e2gb, exit 1 against e's E2)",
+    "new, open: USN13 670 plane water contacts - 21 live torpedo bombers stall into the sea (host flight/formation question, SCENE_CONTENTS_HOSTS 19)",
     "new: USN02 664 -> 640 bracketed to merge e4dbf38b2",
-    "new: USN13 670 plane water contacts in 3000 frames (smoke row)",
     "carried: USN02 torpedo stock on top of the throttle cut",
     "carried: what enabled kSetSelectedUnitBound between fc14864c9 and the throttle-cut base",
     "carried: E2 594 -> 595 before c",
     "carried: E2 ends in phase 1 under lockstep",
-    "carried: the Marshall .nav is the generic layer"
+    "carried: the Marshall .nav is the generic layer",
+    "note: the frame normalisation (93e12f5a4) moved USN02 to 19 deaths / 573 hits on the current base"
   ],
   "verdicts": {
     "USN04": "held: pair_diff exit 1 vs local/dm_on_usn04.log",
@@ -209,7 +210,24 @@
       "attribution_rule": "flip-off E2 = 902 exactly -> the whole drop is the gate bytes; 877..901 -> gate bytes plus a remainder from the later landings; below 877 -> the USN04 analogue does not carry to E2",
       "rows_that_move": "Lexington's distance and the ship death rows of the first half; plane releases 3 of 16 / 4 of 19 unchanged (gate bytes is ship AI)"
     },
-    "predictions_commit": "pending",
-    "result": "pending"
+    "predictions_commit": "a7056db34",
+    "result": {
+      "main": "51 deaths, 854 hit records (307 hull), 7202 shots, 13339.4 damage, Lexington 5760.25; pair_diff exit 1 against local/rb6_e2.log",
+      "gate_bytes_off": "51 deaths, 902 hit records (320 hull), 7339 shots, 13369.3 damage, Lexington 5789.15, releases 4 of 16 / 5 of 19",
+      "at_4500_frames": "off 41 deaths / 812 hits / 6341 shots (e's USN04), main 44 / 789 / 6321",
+      "main_vs_off": "pair_diff exit 3; 39 of 51 death rows changed",
+      "e_vs_off": "pair_diff exit 1 against e's local/rb5_e2.log (worktree cc9-units3): death rows identical, only the host method counts differ"
+    },
+    "logs": {
+      "main": "local/e2gb_main.log",
+      "gate_bytes_off": "local/e2gb_off.log"
+    },
+    "verdicts": {
+      "main_side": "held (51 / 854 exactly)",
+      "first_4500_frames": "held (41 deaths, e's USN04)",
+      "totals": "held (902 in 877..902, 51 in 49..52), at the top of the band",
+      "attribution": "the whole E2 902 -> 854 drop is the query gate bytes (fb44fcf1d); nothing else since e moved E2",
+      "rows_that_move": "FAILED in part: Lexington moved as predicted, but the plane releases moved too (torpedo-task 4 -> 3 of 16, dive-bomb-task 5 -> 4 of 19 with the gate bytes on)"
+    }
   }
 }

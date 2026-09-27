@@ -11015,10 +11015,11 @@ and phase 2 is no longer reached:
 
 **Flags:**
 - **New:**
-  - **E2 902 -> 854**: only the gate bytes' USN04 share is paired; the rest is unpaired on E2.
+  - **E2 902 -> 854: closed, it is the query gate bytes entire.** See the E2 pair below.
   - **USN02 664 -> 640**: bracketed to merge `e4dbf38b2`, not paired on the e base.
-  - **USN13's 670 plane water contacts** in 3000 frames: a smoke row with no earlier reference, but
-    far above any other mission. Worth a look before USN13 is used for measurement.
+  - **USN13's 670 plane water contacts** in 3000 frames, open: 21 live torpedo bombers stall into
+    the sea (host flight/formation question, SCENE_CONTENTS_HOSTS 19). The 670 is the
+    unimplemented `Plane::water_contact_007cb7f0` record count, not the image's behaviour.
 - **Carried from e:**
   - USN02, the torpedo stock on top of the throttle cut: open (the mover was not it).
   - What enabled `kSetSelectedUnitBound`'s effect between `fc14864c9` and the throttle-cut base:
@@ -11026,3 +11027,30 @@ and phase 2 is no longer reached:
   - E2 594 -> 595 (before c): not isolated.
   - E2 ends in phase 1 under lockstep (known).
   - The Marshall `.nav` is the generic layer.
+- **Note:** the frame normalisation (`93e12f5a4`) moved USN02 to 19 deaths / 573 hits on the current
+  base. That is later than this section's binary and is not in its rows.
+
+### E2 with the query gate bytes off (closes the E2 flag)
+
+One flip-off pair on E2 (USN04 9200/9000, the same run parameters):
+- **Main side:** this tree's `build\` at main `cd35f79de`.
+- **Flipped side:** `tools/pair_export.py --commit cd35f79de --flip kShipAiQueryGateBytesBound=false`
+  into `local\e2gb`.
+- **Logs:** `local\e2gb_main.log` and `local\e2gb_off.log`. The predictions were committed at
+  `a7056db34`.
+
+| side | deaths | hit records (hull) | shots | damage | torpedo / dive-bomb releases | Lexington | at 4500 frames |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| main (gate bytes on) | 51 | 854 (307) | 7202 | 13339.4 | 3 of 16 / 4 of 19 | 5760.25 | 44 / 789 |
+| gate bytes off | 51 | 902 (320) | 7339 | 13369.3 | 4 of 16 / 5 of 19 | 5789.15 | 41 / 812 |
+
+- **The main side reproduces reference f's E2 row:** `pair_diff` exits 1 against `local\rb6_e2.log`.
+- **With the gate bytes off, E2 is e's E2:** `pair_diff` exits 1 against e's `local\rb5_e2.log`
+  (worktree cc9-units3). The 51 death rows are identical, and only the host method counts differ.
+- **Attribution:** the whole E2 drop from 902 to 854 is the query gate bytes (`fb44fcf1d`). No other
+  landing since e moved E2. The flag is closed.
+- **Predictions:**
+  - The main side, the 4500-frame state and the totals held. 902 sits at the top of the 877..902
+    band.
+  - "Plane releases unchanged" failed. The gate bytes also move the torpedo-task and dive-bomb-task
+    releases, by one each.
