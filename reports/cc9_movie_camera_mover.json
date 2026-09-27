@@ -1,0 +1,39 @@
+{
+  "packet": "cc9_movie_camera_mover",
+  "doc": "docs/HUD_PICK_SEGMENT_QUERY.md section 8",
+  "switch": "none yet (part 1 is docs only; the binding is planned in section 8.4)",
+  "calls": [
+    {"address": "005CC2A9", "native": "004BC410", "function": "005CC170", "kind": "call", "host": "GameHudHost ensure_movie_camera (no mover installed yet)"},
+    {"address": "005CDC72", "native": "004BC410", "function": "005CDC50", "kind": "call", "host": "none (screen 38h slot +18h, the null mover)"},
+    {"address": "0079B2A8", "native": "00798130", "function": "0079A3B0", "kind": "call", "host": "none (the look-at track +414h)"},
+    {"address": "0079B2D7", "native": "00798130", "function": "0079A3B0", "kind": "call", "host": "none (the camera track +498h)"},
+    {"address": "0079B833", "native": "00B6FBB0", "function": "0079A3B0", "kind": "call", "host": "none (FOV on the node)"},
+    {"address": "0079B854", "native": "00435410", "function": "0079A3B0", "kind": "call", "host": "none (the base mover step)"}
+  ],
+  "routines": [
+    {"address": "008B79F0", "coverage": "complete"},
+    {"address": "007A44D0", "coverage": "complete"},
+    {"address": "007A42C0", "coverage": "complete"},
+    {"address": "005CC170", "coverage": "complete"},
+    {"address": "005CDC50", "coverage": "partial: 005CDC50..005CDCF0 (the null mover and the first five pushes)"},
+    {"address": "0079A3B0", "coverage": "partial: structure, clock, tracks, basis, FOV and pose; the editor stepper 0079A4xx..0079B270 and the multiplayer tail after 0079B866 unread"},
+    {"address": "00798130", "coverage": "unread"},
+    {"address": "00797DA0", "coverage": "unread"},
+    {"address": "007A0EB0", "coverage": "unread"}
+  ],
+  "corrections": [],
+  "no_ghidra_function": [
+    {"start": "0079A340", "end_inclusive": "0079A34C", "note": "movie camera vtable 00D04750 slot +124h (hand-over): +3B8h = previous mover; RET 4 at 0079A34A"}
+  ],
+  "names": [
+    {"address": "008B79F0", "name": "LuaBinding_MovCamNew_AddPosition"},
+    {"address": "007A44D0", "name": "HudMovieCamera_AddPositionChecked"},
+    {"address": "007A42C0", "name": "HudMovieCamera_AddPosition"},
+    {"address": "0079A3B0", "name": "HudMovieCamera_Update"},
+    {"address": "00798130", "name": "MovieCameraTrack_Evaluate"},
+    {"address": "00797DA0", "name": "MovieCameraTrack_SetTime"},
+    {"address": "005CDC50", "name": "HudScreen38_ClearCameraMover"}
+  ],
+  "verdict": "part 1 read only; binding deferred to a follow-up packet (section 8.4)",
+  "pairs": {}
+}
