@@ -1221,3 +1221,58 @@ step (00926CD5, 0092639B). The OFF behaviour, with wrecks sailing, planning and 
 is the deviation. The failed bands are recorded above. The neighbour count's walk has no live
 test, so wrecks stay in it in both builds, as in the image until the KillDepth kill.
 
+## 22. Part 13: Destroy at the kill in the gunnery death route (`kDeathRouteDestroyBound`, committed OFF)
+
+Packet `cc9_death_route_destroy`, worker cc9-scene-entities, on main 1c9730a29. It takes up the
+section 21 contract for the gunnery death route.
+
+**The hunk.** `GameGunneryHost::Impl::kill_unit` (`src/game_hosts_gunnery.cpp`), after the sink
+record and the kill credit and before the `unit_death_00959450` model:
+- For a ship (kind 6) whose `+60h` is clear, it stores `+60h = 1` through the units host
+  (`store_pending_destroy_0060`). That is 00926C80's store at 00926CD5, behind its 00926CBF
+  already-set test, reached as 00958A30 -> `vt[70h](1)` = 0077D1A0.
+- It counts `death_route_destroys` and prints
+  `summary mission gunnery death route destroys=.. bound=..`.
+- **What stays with the flush.** The cause `+70h` and the destroy-list append stay with the row-15
+  flush (`src/game_hosts_ready.cpp`). The flush still sets `+5Dh` through 00926390. Its
+  already-delivered test (`torn_down && pending`) does not skip a ship whose `+60h` alone is set,
+  so its count is unchanged.
+- **Planes are untouched.** They already get both bytes in the units host
+  (`kPlaneDeathFlagsBound`).
+
+**Who reads `+60h` between the kill and row 15 in the same step?**
+
+*In the image:*
+- the damage, and so the death step, is at row 6 or row 14 (the two 00926700 drains, 00875E44 and
+  00875EC4);
+- a row-14 kill leaves no reader before row 15 (00875EC9);
+- a row-6 kill leaves rows 7..14. There, the Lua-call drain 00888230 (00875E55) and the entity
+  think pass 00929460 (00875E64) run scripts and bot thinks, which may test the four-byte gate
+  0043F080. So in the image those can see the kill one flush earlier.
+
+*In this process:*
+- the kill happens inside the units host's fixed step (job wave 2), in the gunnery pass's projectile
+  and damage-control steps, before `run_subsystems_00875e0c` runs rows 1..15;
+- **no host consumer of `+60h` runs in that window**:
+  - the gunnery pass's own `unit_alive_and_visible` users (the contact sweep at 3172 and the recon
+    sensor pass at 3896) run before the projectiles in the same step, and also test the gunnery
+    `dead` flag;
+  - the ship AI's controller step (with the torpedo warning 00977690 at 009DA90E) and the AI host's
+    step run before the gunnery pass;
+  - `publish_ai_weapon_facts` reads hit points and barrels only;
+  - the remaining units-host loop only stores `+60h` for planes;
+  - the host's think list (row 8) and Lua-call drain (row 7) are empty;
+  - the proximity scan 00977990 and the HUD read in the frame, after the step, when the flush has
+    run.
+
+### Predictions (written before the pairs; same tree, switch only, streams and the death table on)
+
+- **USN02 9200/9000.**
+  - `death route destroys` = 0 OFF and **20** ON: every death on this base is a ship.
+  - `ship_destroy_flags` = 20 on both sides, unchanged in count.
+  - **Gameplay identical:** 20 deaths, every death row, the unit table and the native table apart
+    from the new `Death::destroy_00926c80` row (20 calls, ON only). pair_diff exit 1.
+- **E2 = USN04 9200/9000.** Every death is an aircraft, so destroys are 0 on both sides and
+  `ship_destroy_flags=0`. Identity on every row: 52 deaths, 875 hit records. The only difference
+  is the summary's `bound` field.
+

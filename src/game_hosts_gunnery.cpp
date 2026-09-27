@@ -1043,6 +1043,7 @@ struct GameGunneryHost::Impl {
     unsigned long long seat_segment_aims{0};
     // Packet cc9_unit_death_route.
     unsigned long long death_route_calls{0};
+    unsigned long long death_route_destroys{0};   // packet cc9_death_route_destroy
     unsigned long long death_route_reported{0};
     unsigned long long death_route_child_triggers{0};
     unsigned long long loss_reports[2]{0, 0};        // by side, 009813A0's own guard passed
@@ -6932,6 +6933,24 @@ void GameGunneryHost::Impl::kill_unit(std::size_t victim) {
         ++unit_state[target.last_attacker - 1].row.kill_credits;
     }
 
+    if constexpr (kDeathRouteDestroyBound) {
+        // 00958A30 -> vt[70h](1) = 0077D1A0 -> 00926C80 Destroy, at the kill:
+        // nothing when +60h is already set (00926CBF), else +60h = 1 (00926CD5).
+        // The cause +70h and the destroy-list append (00926D33..00926D66) are
+        // what the row-15 flush already stands for; it finds +60h set and still
+        // sets +5Dh through 00926390.
+        if (units.unit_is_kind_of(victim, 6)) {
+            bool pending = false;
+            const void* identity = units.unit_identity(victim);
+            if (identity != nullptr && units.unit_pending_destroy_0060(victim, pending)
+                && !pending) {
+                units.store_pending_destroy_0060(identity, true);
+                ++death_route_destroys;
+                done("Death::destroy_00926c80", 0x00926cd5u);
+            }
+        }
+    }
+
     if constexpr (kUnitDeathRouteBound) {
         // 00959450 BSP_Unit_OnDestroyed, reached from 00825271 (OnWrecked) for
         // a ship and 007BCAD9 (Plane_OnDestroyed) for a plane.
@@ -7863,6 +7882,9 @@ void GameGunneryHost::report() {
             host.death_route_calls, host.death_route_reported, host.death_route_child_triggers,
             host.loss_report_calls, host.loss_reports[0], host.loss_reports[1], host.limbo_pages,
             kUnitDeathRouteBound ? 1 : 0);
+        host.log.notef("summary mission gunnery death route destroys=%llu bound=%d "
+            "(00926C80 at the kill, packet cc9_death_route_destroy)",
+            host.death_route_destroys, kDeathRouteDestroyBound ? 1 : 0);
         host.log.notef("summary mission gunnery player seat segment casts=%llu hits=%llu "
             "aims=%llu bound=%d (00957DA0, packet cc9_player_gun_seat_segment_query)",
             host.seat_segment_casts, host.seat_segment_hits, host.seat_segment_aims,
