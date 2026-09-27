@@ -207,3 +207,232 @@ endpoint, so the window is not created, the D3D device returns `0x80004005` and 
 initialise its output, which is what makes a 2688-byte bank that is otherwise intact fail to
 create. The bank is unmodified (13 Jul 2024) and nothing under the game root changed after 15:00.
 The build is clean and both ctest suites pass.
+
+## 9. Every reader behind vtable+138h (packet `cc9_get_property_keys`, a read)
+
+Worker cc9-lua2, 2026-09-27. Docs only; no code changes. This section answers the Uncertainty
+bullet on `00815870` above, and finds the reader behind the `reconlevel` risk that
+`docs/RECON_SENSOR_PASS_BINDING.md` raises.
+
+### 9.1 How the readers were found
+
+- **The readers chain.** Each derived reader first calls its base reader with the same
+  `(frame, key)`, then tests its own keys case-insensitively (`__stricmp` for the first key,
+  `BSP_NativeString_EqualsCStringInsensitive` for the rest).
+  - A class answers the union of its chain's keys.
+  - Every reader returns through `RET 8`, as section 1 says.
+- **The census is by disk bytes, not by Ghidra's callers.** The script
+  `local/cc9-lua2-readers.py` in the cc9-lua2 tree scans the image for two things:
+  - every rel32 `CALL`/`JMP` to a reader;
+  - every absolute dword equal to a reader. Each such dword is a vtable slot, so the vtable
+    starts at slot-138h.
+- **Classes come from `docs/ENTITY_CLASS_IDS.md`,** matched on the vtable column. The image
+  carries no RTTI names.
+- **The root is `00927AD0`.** It calls no other reader. The census from it and from
+  `006D0E60` closes on the nine readers below.
+
+### 9.2 The readers and their keys
+
+| reader | calls first | classes (vtables) | keys, in test order |
+| --- | --- | --- | --- |
+| `00927AD0` | none | 11 vtables: Path 47, CameraPath 4A, NavPoint 41, MovieCamPos 42, MovieCamLookat 43, LandingPoint 1D, Landscape 44, 4 unmapped | `unitcommand` |
+| `00779BB0` | `00927AD0` (`00779BD7`) | 29 vtables: planes 10-17, SpawnPoint 4D, gun and launcher emplacements 21-28, MCommandBuilding 1C, MLandFort 1B, MLandVehicle 19, 9 unmapped | `reconlevel` |
+| `006E2AC0` (no Ghidra function) | `00779BB0` (`006E2AE7`) | 10 vtables: MBomb 2A, MTorpedo 2B, MDepthCharge 2C, MDummyTarget 2E, MDummyKamikazePlane 2F, MDummySubmarine 30, MParatrooper 31, MRocket 33, MWaterMine 34, 1 unmapped | `owner` |
+| `007416F0` | `00779BB0` (`007416FF`) | LandConvoy 1A (`00CEA570`) | `InitialSize`, `ActualSize`, `CollectedDamage`, `LastHit`, `Reverse`, `Speed`, `Offset`, `DistanceTraveled` |
+| `007EF1C0` | `00779BB0` (`007EF1CF`) | PlaneSquadronGen 18 (`00D087C0`) | `ammoType`, `state`, `TargetIsHome` |
+| `00815870` | `00779BB0` (`0081587F`) | 8 ship vtables: MDestroyer 07, MSubmarine 08, MCruiser 0A, MCargo 0B, MLandingShip 0C, MBattleship 0D, MTorpedoBoat 0E, 1 unmapped (`00D09678`) | `TorpedoStock` |
+| `00758340` | `00815870` (`0075834F`), then `006C6630` (`0075835C`) | MMothership 09 (`00D01630`) | `TorpedoStock`, then section 3's four keys |
+| `006D0E60` | `00779BB0` (`006D0E6F`), then `006C6630` (`006D0E7C`) | MAirfield 45 (`00CF8C08`) | section 3's four keys |
+| `00846640` `BSP_Shipyard_ReadStockProperties` | `00779BB0` (`00846667`) | MShipyard 46 (`00D0B770`) | `stock`, with its own layout |
+
+A class inherits every key above it. A ship answers `unitcommand`, `reconlevel` and `TorpedoStock`.
+A squadron answers `unitcommand`, `reconlevel`, `ammoType`, `state` and `TargetIsHome`.
+
+### 9.3 What each key pushes
+
+- **`unitcommand`, `00927AD0`.**
+  - The reader calls the entity's `vtable[114h]()`, its director.
+  - With no director it pushes nothing, so the script sees nil.
+  - With a director it calls `0071BE40 BSP_WeaponDirector_CurrentCommand(director)`. A current
+    command pushes that command's `vtable[4]()` name string through `00B66710`.
+  - With a director and no current command, it pushes the literal `nocommand` (`00D1926C`).
+  - The names are the command objects' own strings: `moveto`, `attackmove`, `retreat`, `land`
+    and the rest of `src/entity_orders.cpp`'s table.
+- **`reconlevel`, `00779BB0`.**
+  - `00B67930` opens a new table as the frame's result (`00779C03`).
+  - For party 0, 1 and 2 it then pushes `table[party] = level` through `00B665D0`, a number key
+    and a number value (`00779C12`..`00779C33`).
+  - Each record is `34h` bytes from `unit+1E8h`. The level is the forced level `+8h` when the
+    force byte `+10h` is set, else the detected level `+4h`. These are the same records
+    `00805AF0` writes (`docs/RECON_SENSOR_PASS_BINDING.md`).
+  - **It always writes all three parties, 0 included.** The self table that `0077B0C0` fills
+    keeps a party nil until that party first detects the unit. The two differ for a unit no one
+    has seen.
+- **`owner`, `006E2AC0`.**
+  - It reads the projectile's owner at `+3BCh`. If that owner is null, it pushes nil through
+    `00B66430` at `006E2BE5`.
+  - It then tests `owner->vtable[5Ch](1)`. On false it pushes nothing.
+  - On true it pushes `thisTable[tostring(owner+174h)]`, the owner's Lua self table: `0x174`
+    is the entity id word, formatted by `004260B0`.
+- **`ammoType`, `007EDAD0`.** This belongs to the squadron.
+  - It walks the `+3CCh` planes at `+3D0h` and returns the first ordnance kind it finds: torpedo
+    2, depth charge 3, `007B9400` 4, level bomb 5, drop kamikaze 6, general bomb 1.
+  - It returns 0 when no plane carries any ordnance.
+- **`state`, squadron.** It counts the planes at `+3D0h` for which `plane+72Ch->vtable[38h]()`
+  is true (A) or false (B). It pushes 2 when B is 0, else 1 when A is non-zero, else 0.
+- **`TargetIsHome`, `007EEE20`.** It pushes true when `+348h` is set and `+404h` equals the
+  resolved command target.
+- **`TorpedoStock`, `00815870`.**
+  - It reads the spare stock `unit+104Ch`. A negative spare stock is pushed as it is.
+  - Otherwise it pushes `spare + 00810E90(unit)`. `00810E90` counts the tubes in every launcher
+    on the `+3ECh` list whose reload value is below `FLT_MAX`: the double at `00D7A278` is
+    `3.4028234663852886e38`.
+- **The LandConvoy keys** read `+3B8h`, `+3BCh`, `+3C0h`, `+3C4h` (as `now - value`), `+3A9h`,
+  `+368h`, `+3ACh` and `+3B4h`. The last three are pushed as booleans (value `!= 0.0f`, from
+  `00D7A218`). No mission this packet measures reads them.
+
+### 9.4 What the host serves today
+
+`GameMissionLuaHost::run_get_property_0088bf80` serves `slots`, `numSlots`, `stock` and `planes`
+for every entity. That is section 7's permissive deviation, and it is unchanged. Every other key
+returns no value and counts as `unserved`. The keys the host does not serve are:
+
+- `unitcommand`
+- `reconlevel`
+- `ammoType`, `state` and `TargetIsHome`
+- `TorpedoStock`
+- `owner`
+- the eight LandConvoy keys
+
+The shipyard's `stock` is also answered with the deck layout, not with `00846640`'s own layout.
+
+### 9.5 Which measured missions ask, and for what
+
+Two sources were checked. The first is `GetProperty` in each mission's own script, in this
+installation (read-only). The second is the host's own counts in cc9-ships2's latest OFF logs.
+The `rb6_*` logs are from 2026-09-27 13:27-13:31, and `sdl_off_lomp06` is from 15:02.
+
+| mission | script | keys in the mission file | measured calls / served / unserved |
+| --- | --- | --- | --- |
+| USN01 | `usn_1_marshall.lua` | none | 0 / 0 / 0 |
+| USN02 | `usn_2_java.lua` | none | 0 / 0 / 0 |
+| USN04 | `usn_19_coralus.lua` | `slots` x26 | 136 / 136 / 0 |
+| BSM01 | `bsm_01_stationed_at_pearl.lua` | `ammoType` (:1302, :1346) | 0 / 0 / 0 |
+| JM06 | `COTP-IJN/PRCPIJN/JM06.lua` | `ammoType` (:1013, :1057), `unitcommand` (:1056, :1162), `TorpedoStock` (:1482, :2342) | 17 / 0 / 17 |
+| JM08 | `COTP-IJN/PRCPIJN/prcpjm08.lua` | none | 0 / 0 / 0 |
+| USN13 | `usn_13_truk.lua` | `slots` (:293, :350, :401) | 9 / 9 / 0 |
+| LOMP06 | `LOMP/06_crucial_cargo.lua` | `unitcommand`, `ammoType` (:746, :747); `luaGetReconLevel` (:701) | 0 / 0 / 0 |
+
+The shared helpers in `scripts/global/commandhelpers.lua` and `messagesender.lua` also ask for
+`ammoType`, `TorpedoStock`, `unitcommand`, `state`, `reconlevel`, `planes`, `slots`, `NumSlots`
+and `Stock`. None of them reaches a GetProperty call in these runs, beyond the counts above.
+
+- **JM06's 17 are all `unitcommand` at :1162,** in `luaJM6CheckUSNSubs`. The line is
+  `GetProperty(unit,"unitcommand") ~= "attackmove"`.
+  - nil is never equal to `"attackmove"`, so every check within 3000 m re-issues
+    `NavigatorAttackMove(unit, Mission.PlayerUnit, {})`.
+  - The log confirms this: 17 `NavigatorAttackMove` calls, all on
+    `Narwhal-class Submarine 01 -> PlayerSub 01`. The first 12 unserved-key notes, which is the
+    host's log cap, all name `unitcommand`.
+- **LOMP06 reaches neither line in 1000 frames.**
+  - :701 runs only when `UnitGetAttackTarget(Mission.PlayerUnit)` is not nil. The player is idle.
+  - :746 is in `luaSubC1CheckSeaPlanes`, a later stage.
+  - The `reconlevel` risk is on the target unit's table, not on `Mission.PlayerUnit`'s. The
+    :531 read is `Mission.PlayerUnit.reconlevel[PARTY_JAPANESE]`, which `luaGetReconLevel` does
+    not touch unless the player is its argument.
+  - So a LOMP06 1200/1000 pair **cannot resolve** "reconlevel survives luaGetReconLevel". It
+    needs a run in which the player has an attack target.
+
+**Ranking by measured demand:**
+1. `unitcommand`: JM06 17, the only unserved key any measured mission asks for.
+2. `reconlevel`: no measured call. It is the correctness risk behind `kReconLevelTableBound`.
+3. `ammoType`: no measured call. JM06, BSM01 and LOMP06 ask for it in code that does not run.
+4. `TorpedoStock`: no measured call, JM06 code only.
+5. `state` and `TargetIsHome` (commandhelpers only), then `owner` and the LandConvoy keys (no
+   caller in these missions).
+
+### 9.6 The binding plan (not yet written; `src/game_hosts_lua.cpp` is held)
+
+A single switch, `kGetPropertyClassReadersBound`, in `include/bsp/game_hosts_lua.hpp`, committed
+OFF.
+
+- **Dispatch.** The host resolves the entity id to a units-host slot and its class id, and walks
+  9.2's chain for that class. A key outside the chain returns no value, as now. The deck keys
+  keep section 7's any-entity deviation; narrowing them to classes 09 and 45 is a separate
+  change.
+- **`unitcommand`.** This uses `GameUnitsHost::director_current_command_0071be40(index)` and
+  `command_name_of(object)`.
+  - An empty name or no current command gives `nocommand`.
+  - An entity with no units-host slot gives nothing. This is a labelled substitution: every
+    host unit slot is assumed to have a director.
+- **`reconlevel`.** This builds a new table with number keys 0, 1 and 2.
+  - The own side gets 2, or 0 once dead, and every other side gets `recon_pass.level(side, unit)`.
+    These are the same sources `sync_recon_level_tables_0077b0c0` uses.
+  - A side the pass does not cover gets 0.
+  - Forced levels are not modelled. This is labelled.
+- **`ammoType` and `state`.** These use the squadron's planes and their ordnance, and are bound
+  only if the units host carries the ordnance flags 007EDAD0 tests. Otherwise they stay unserved
+  and are named in the report.
+- **`TorpedoStock`.** This is the gunnery host's spare stock plus its loaded tubes (packet
+  `cc9_torpedo_stock`).
+- **Not bound.** `TargetIsHome`, `owner`, the LandConvoy keys and the shipyard's `stock` have no
+  measured caller.
+- **Summary line.** The existing summary gains `class_keys=N`, with a per-key count.
+
+### 9.7 Predictions, written before any code
+
+The switch is ON against OFF, both on the same tree. The run lines are those of the cc9-ships2
+logs named above, with lockstep 0.05 and an idle player.
+
+| row | prediction |
+| --- | --- |
+| USN01 3200/3000 | identical: 0 GetProperty calls (exit 0, or 1 for masked noise) |
+| USN02 9200/9000 | identical: 0 calls |
+| USN04 4700/4500 | identical: 136 calls, all `slots`, all already served |
+| LOMP06 1200/1000 | identical: 0 calls. The `reconlevel` row is unresolved here; see 9.5 |
+| JM06 3200/3000 | served 0 -> 17, unserved 17 -> 0, all `unitcommand` |
+| JM06, the orders | `NavigatorAttackMove` 17 -> fewer. After the first order the key reads `attackmove` while that command is current, so a check re-issues only after the command ends |
+| JM06, gameplay | may move, but only through `Narwhal-class Submarine 01`'s order stream. Every other moved row would be a failed prediction |
+
+The rows are resolved from `summary mission getproperty 0088bf80`, the `NavigatorAttackMove`
+census row, and `pair_diff`'s per-entity tables.
+
+### 9.8 no_ghidra_function
+
+- **`006E2AC0`..`006E2BFD`, inclusive.** This is the projectile `owner` reader,
+  `__thiscall(this, LuaFrame* frame, NativeString* key)`.
+  - It has two `RET 8` exits, at `006E2BE0` and `006E2BFB`, followed by `INT3` at
+    `006E2BFE`..`006E2BFF`.
+  - Ghidra reports no function containing `006E2AC0`. The index's nearest preceding start is
+    `006E2A20`, and the bytes before `006E2AC0` end in a `RET` at `006E2AB8` and `INT3` padding.
+    The body was read from disk (`disasm-raw`), not from a Ghidra listing.
+  - It sits in 10 vtables at +138h (9.2).
+
+### 9.9 Proposed names (not added)
+
+The ledger shards (`config/names`) were leased to cc9-plane2 when this read was written, so no
+names were added. These are proposed; each is a descriptive hypothesis, not a recovered symbol.
+
+| address | proposed name |
+| --- | --- |
+| `00927AD0` | `BSP_Entity_GetPropertyUnitCommand` |
+| `00779BB0` | `BSP_Unit_GetPropertyReconLevel` |
+| `006E2AC0` | `BSP_Projectile_GetPropertyOwner` |
+| `007416F0` | `BSP_LandConvoy_GetProperty` |
+| `007EF1C0` | `BSP_PlaneSquadron_GetProperty` |
+| `007EDAD0` | `BSP_PlaneSquadron_AmmoType` |
+| `007EEE20` | `BSP_PlaneSquadron_TargetIsHome` |
+| `00815870` | `BSP_Ship_GetPropertyTorpedoStock` |
+| `00810E90` | `BSP_Ship_CountLoadedTorpedoTubes` |
+| `00758340` | `BSP_Mothership_GetProperty` |
+| `006D0E60` | `BSP_Airfield_GetProperty` |
+
+### 9.10 Uncertainty
+
+- **Readers that do not chain.** The census finds only readers that chain back to `00927AD0`,
+  plus the airfield. A class whose +138h slot holds an unrelated routine would be missed. The
+  table in `docs/ENTITY_CLASS_IDS.md` was not walked slot by slot.
+- **Unconfirmed callee ABIs.** `00B66710` (push string), `00B67930` (new table as result) and
+  `00B665D0` (set number key) are named here from their use at these sites, not from their bodies.
+- **`007B9400`** is the fourth ordnance test in `007EDAD0` (kind 4). It was not read, and a rocket
+  test is only a guess.

@@ -1,0 +1,48 @@
+{
+  "packet": "cc9_get_property_keys",
+  "kind": "read, docs only",
+  "doc": "docs/MISSION_LUA_GETPROPERTY.md section 9",
+  "calls": [
+    {"address": "00779BD7", "native": "00927AD0", "function": "00779BB0", "note": "reconlevel reader chains to the unitcommand base reader"},
+    {"address": "007416FF", "native": "00779BB0", "function": "007416F0", "note": "LandConvoy reader chains to the reconlevel reader"},
+    {"address": "007EF1CF", "native": "00779BB0", "function": "007EF1C0", "note": "squadron reader chains to the reconlevel reader"},
+    {"address": "0081587F", "native": "00779BB0", "function": "00815870", "note": "ship TorpedoStock reader chains to the reconlevel reader"},
+    {"address": "0075834F", "native": "00815870", "function": "00758340", "note": "mothership reader: ship reader first"},
+    {"address": "0075835C", "native": "006C6630", "function": "00758340", "note": "mothership reader: air-operations reader second"},
+    {"address": "006D0E6F", "native": "00779BB0", "function": "006D0E60", "note": "airfield reader: reconlevel reader first"},
+    {"address": "006D0E7C", "native": "006C6630", "function": "006D0E60", "note": "airfield reader: air-operations reader second"},
+    {"address": "00846667", "native": "00779BB0", "function": "00846640", "note": "shipyard stock reader chains to the reconlevel reader"},
+    {"address": "007EF1F4", "native": "007EDAD0", "function": "007EF1C0", "note": "ammoType producer"}
+  ],
+  "keys": {
+    "00927AD0": ["unitcommand"],
+    "00779BB0": ["reconlevel"],
+    "006E2AC0": ["owner"],
+    "007416F0": ["InitialSize", "ActualSize", "CollectedDamage", "LastHit", "Reverse", "Speed", "Offset", "DistanceTraveled"],
+    "007EF1C0": ["ammoType", "state", "TargetIsHome"],
+    "00815870": ["TorpedoStock"],
+    "006C6630": ["planes", "stock", "slots", "numSlots"],
+    "00846640": ["stock (shipyard layout)"]
+  },
+  "host_unserved_keys": ["unitcommand", "reconlevel", "ammoType", "state", "TargetIsHome", "TorpedoStock", "owner", "LandConvoy x8"],
+  "measured_demand": {
+    "source": "cc9-ships2 local/rb6_*.log (2026-09-27 13:27-13:31) and sdl_off_lomp06.log (15:02)",
+    "USN01": "0/0/0", "USN02": "0/0/0", "USN04": "136/136/0 slots", "BSM01": "0/0/0",
+    "JM06": "17/0/17, all unitcommand at JM06.lua:1162, each re-issuing NavigatorAttackMove (17 calls)",
+    "JM08": "0/0/0", "USN13": "9/9/0 slots", "LOMP06": "0/0/0"
+  },
+  "switches": [
+    {"name": "kGetPropertyClassReadersBound", "state": "planned, not written; src/game_hosts_lua.cpp held"}
+  ],
+  "predictions": "docs/MISSION_LUA_GETPROPERTY.md 9.7",
+  "failed_predictions": [],
+  "flags": [
+    "The lead's LOMP06 1200/1000 row 'reconlevel survives luaGetReconLevel' cannot be resolved on that pair: 0 GetProperty calls; luaGetReconLevel at :701 needs a player attack target"
+  ],
+  "substitutions": [],
+  "no_ghidra_function": [
+    {"start": "006E2AC0", "end_inclusive": "006E2BFD", "abi": "__thiscall(this, LuaFrame* frame, NativeString* key), RET 8 at 006E2BE0 and 006E2BFB, INT3 006E2BFE-006E2BFF", "what": "projectile owner reader, vtable+138h in 10 vtables"}
+  ],
+  "ledger_names_added": [],
+  "ledger_names_proposed": "docs/MISSION_LUA_GETPROPERTY.md 9.9 (config/names leased to cc9-plane2)"
+}
