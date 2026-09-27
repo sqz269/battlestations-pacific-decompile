@@ -285,3 +285,49 @@ A binding needs one of three reads first:
 2. **The node's construction** and its initial world, if the movie restores "no mover".
 3. **The camera-control input path**, since a player on the airfield interface can move the view.
 
+### 7.1 The node's own pose, and what the intro leaves installed (ruling (b), 2026-09-27)
+
+**The node before any mover is a constant.** Two instructions write `game+19FCh`:
+- **004DE78E, inside construct_world 004DE610.** It stores the result of 00B71A80
+  `BSP_Camera_Construct` (the "Operator" camera, 004DE75E pushes 00CE7E04 = `Operator`), called at
+  004DE782 when EDI is non-null, or 0.
+  - The camera's base 00B6F5A0 `BSP_Node_Construct` writes identity into its matrices at `+B0h`,
+    `+F0h` and `+60h` (ledger record).
+  - So before any mover the node's world is identity. The pick would cast from (0,0,0) along row 2 =
+    (0,0,1), 10,000 units.
+- **004DAB7C**, the release through 00B6DFA0.
+
+**But USN01's pick does not see that pose after the intro.** The mission runs `luaIntroMovie`
+(`usn_1_marshall.lua` line 440). This installation's `scripts/global/commandhelpers.lua` then
+takes the movie through these steps:
+- `luaIngameMovie` (line 7747) arms the `luaIngameMovieBOStart` blackout. This host logs it running
+  twice on USN01.
+- `luaIngameMovieBOStart` (line 7802) starts `luaCamIngameMovieAuto` (line 7648). That feeds every
+  keyframe to `MovCamNew_AddPosition`, the new movie camera, which is the interface
+  runtime's `kMovieCameraNewInterface` path (`src/interface_runtime_tail.cpp`). Its mover is
+  installed by the movie screen through 004BC410 at 005CC2A9 (005CC170
+  `BSP_HudMovieScreen_EnsureCamera`).
+- At the movie's end `luaCamOnTargetExt` (line 7824) does three things: it removes the input
+  listener, kills the camera script and the delay, and calls the mission's callback. **It sets no
+  camera and requests no interface.**
+- The airfield's 2Eh arm installs no mover of its own. **So after the intro the movie mover stays
+  installed.** The node carries the last keyframe's pose, relative to `CB2` in USN01's intro
+  (lines 627..630), for the rest of the run, unless the mission's callback or a later movie changes
+  it. The callback was not read.
+
+**This host has neither mover.**
+- `toggle_movie_camera` 0068A160 and `toggle_new_movie_camera` 0068A1F0 are records in
+  `src/game_hosts_hud.cpp`.
+- `ensure_movie_camera` returns the screen's handle without a pose.
+- Only the ShipCaptain mover publishes.
+
+**Verdict: not bound.** On an airfield mission the image's pick ray depends on the movie mover's
+keyframes. It is not the node's constant identity pose, which the intro replaces in its first
+frames. Binding identity would be a pose the image never casts from after the intro.
+- **The pick stays unbound on airfield missions.** The camera record `UnitPickScreen::camera_basis`
+  00526B71 remains, with its zero ray, and is labelled as such.
+- **Ship missions are unchanged and correct.** USN02 and USN04 cast from the ShipCaptain mover,
+  so a pair there is identity by construction. None was run.
+- **The movie camera becomes a later HUD packet:** `MovCamNew_AddPosition`'s keyframe mover and
+  its pose at the last keyframe.
+
