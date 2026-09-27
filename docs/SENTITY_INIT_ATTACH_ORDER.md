@@ -912,3 +912,78 @@ reasons follow.
 
 Names added (hypotheses): `XLiveSystem_StepCountdown` 00A42A50, `XLiveSystem_ArmCountdown`
 00A43650, `XLiveSystem_OnCountdownExpired` 00A435E0.
+
+## 14. Step 3: the route and load-walk pushes retired (packet `cc9_pending_list_dedup` step 3, `kRoutePushesRetiredBound`)
+
+Worker cc9-init-passes, 2026-09-27, base main 4a1d8e428. This follows cc9-units2's construction
+push (`docs/CONSTRUCT_WORLD.md` section 26, ON at 34191e927): `create_units` pushes every
+constructed unit, as 00928630 does at 00928760.
+
+### 14.1 What is retired, and what stays
+
+- **GenerateObject's plain push** is a lookup. It pushes nothing when `create_units`'s node is
+  pending. So is **the load walk's push of each scene unit**, which then labels that node
+  (`load_scene`, `findable` and the rest), as before.
+- **The squadron routes keep their call:** GenerateObject of a `PlaneSquadronGen`, SpawnNew,
+  LaunchSquadron and the air-ops creation. It is no longer a push. It marks the pending leader
+  node as a squadron and records its wing range (the dedup's upgrade), which pass A's wing append
+  needs. In the image this knowledge is the squadron object itself, 007F4580's `this`.
+- **The markers' load pushes stay.** Their constructor is in the scene-contents host, which does
+  not push yet (section 10.2's contract).
+- **A fallback.** If a route finds no pending node, it pushes one and counts it
+  (`fallback_pushes`). None is expected while `create_units` pushes.
+- **Summary line:** `summary SEntity::InitAll route pushes retired bound=<0|1> retired=N
+  squadron_annotations=N fallback_pushes=N`.
+
+### 14.2 The two squadron hooks (not in this landing)
+
+cc9-units2's `on_squadron_pass_a_construct_wing` and `on_squadron_pass_c_initial_command`
+(`docs/CONSTRUCT_WORLD.md` section 27) were not on main at 4a1d8e428. As the lead directed, the
+retirement lands first and the hooks follow in the next landing.
+
+- **The Kingfisher.** USN02's Kingfisher is a load-time unit, and the load walk marks no node as
+  a squadron. So the pass C hook needs a squadron test for load nodes, such as the row's scene
+  class 18h. That is checked when the hooks land.
+
+### 14.3 Predictions (written before the pairs; the same tree, switch only, both variables set)
+
+- **USN04 4700/4500:**
+  - `retired` 0 -> 21 (the load walk's scene units), `squadron_annotations` 0 -> 20 (16 SpawnNew
+    and 4 air-ops), `fallback_pushes` 0 on both sides.
+  - Dedup: `skipped_pending` 21 -> 0. Unchanged: `squadron_upgrades=20`, `wing_deferred=40`,
+    `wing_append_skipped=0`, `load_dropped=0` and `skipped_attached=0`.
+  - Unchanged: InitAll calls / with work / entities / pushes 4,513 / 13 / 86 / 86, and
+    `wing_appended=40`. Load walk pushes and mirrors stay 26 / 5, and `self_table_entities`
+    stays 86.
+  - The native table is identical: no row is added and no count moves.
+  - Gameplay identical.
+- **USN02 9200/9000:**
+  - `retired` 0 -> 32 (28 at load and 4 at GenerateObject), `squadron_annotations` 0,
+    `fallback_pushes` 0.
+  - `skipped_pending` 32 -> 0.
+  - InitAll 9,009 / 5 / 34 / 34, load walk 30 / 2 and `self_table_entities=34`, all unchanged.
+  - Native table identical, gameplay identical.
+- **If `fallback_pushes` is not 0,** a route runs without `create_units`'s push first, and that
+  route's order must be read before ON.
+
+### 14.4 Pairs and verdict
+
+- **The runs.** The binaries are `local\bin\rp_off` (the committed OFF, 886959c2e) and
+  `local\bin\rp_on` (flipped locally, then reverted). `BSP_GUNNERY_RNG_STREAMS=1` and
+  `BSP_DEATH_TABLE=1` were set. All four logs have the fit line, the immediate present interval
+  and the final COM release, and each module directory is under `local\bin\rp_*` in this tree.
+- **What `tools/pair_diff.py` reports.** It exits 1 on both pairs. The native tables are
+  identical, and so are gameplay, death rows, plane death modes and the unit table. The clock
+  offset is +0.00 s. The masked multiset of other lines is empty.
+
+| row | USN04 OFF | USN04 ON | USN02 OFF | USN02 ON |
+| --- | ---: | ---: | ---: | ---: |
+| `retired` / `squadron_annotations` / `fallback_pushes` | 0 / 0 / 0 | 21 / 20 / 0 | 0 / 0 / 0 | 32 / 0 / 0 |
+| `skipped_pending` | 21 | 0 | 32 | 0 |
+| `squadron_upgrades` / `wing_deferred` | 20 / 40 | 20 / 40 | 0 / 0 | 0 / 0 |
+| InitAll calls / with work / entities / pushes | 4,513 / 13 / 86 / 86 | identical | 9,009 / 5 / 34 / 34 | identical |
+| deaths, hit records | 43, 788 | identical | 21, 566 | identical |
+
+**Every prediction held. Verdict: ON.** `create_units` is the one push for units. The routes and
+the load walk look its node up. The squadron routes annotate it, and the markers still push at
+load.

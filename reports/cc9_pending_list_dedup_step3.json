@@ -1,0 +1,98 @@
+{
+  "packet": "cc9_pending_list_dedup_step3",
+  "doc": "docs/SENTITY_INIT_ATTACH_ORDER.md section 14",
+  "switch": "kRoutePushesRetiredBound (include/bsp/game_hosts_fixed_step.hpp): committed OFF in 886959c2e, set ON by the verdict",
+  "calls": [
+    {
+      "address": "00928760",
+      "native": "00926BE0",
+      "function": "00928630",
+      "kind": "call",
+      "host": "GameUnitsHost::create_units (cc9-units2) is the one push; GameMissionLuaHost::route_push_entity / route_push_squadron look it up"
+    }
+  ],
+  "routines": [
+    {
+      "address": "00926BE0",
+      "coverage": "as docs/CONSTRUCT_WORLD.md section 17"
+    }
+  ],
+  "corrections": [],
+  "no_ghidra_function": [],
+  "names": [],
+  "verdict": "ON: only the dedup and retirement summary lines moved; native tables, gameplay and per-entity tables identical",
+  "pairs": {
+    "binaries": "local/bin/rp_off, local/bin/rp_on (one tree, 886959c2e, switch only)",
+    "env": "BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1",
+    "usn04_4700_4500": {
+      "retired": [
+        0,
+        21
+      ],
+      "squadron_annotations": [
+        0,
+        20
+      ],
+      "fallback_pushes": [
+        0,
+        0
+      ],
+      "skipped_pending": [
+        21,
+        0
+      ],
+      "init_all_pushes": [
+        86,
+        86
+      ],
+      "entities": [
+        86,
+        86
+      ],
+      "deaths": [
+        43,
+        43
+      ],
+      "hit_records": [
+        788,
+        788
+      ],
+      "pair_diff_exit": 1
+    },
+    "usn02_9200_9000": {
+      "retired": [
+        0,
+        32
+      ],
+      "squadron_annotations": [
+        0,
+        0
+      ],
+      "fallback_pushes": [
+        0,
+        0
+      ],
+      "skipped_pending": [
+        32,
+        0
+      ],
+      "init_all_pushes": [
+        34,
+        34
+      ],
+      "entities": [
+        34,
+        34
+      ],
+      "deaths": [
+        21,
+        21
+      ],
+      "hit_records": [
+        566,
+        566
+      ],
+      "pair_diff_exit": 1
+    }
+  }
+}
