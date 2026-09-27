@@ -2713,7 +2713,7 @@ Worker cc9-plane2, 2026-09-27, on main 2d4862ea0. Ghidra was read only. This pac
 - **The squares** are 009481A0's block+14h/+18h.
 - **00948CC0's row maxima now take the class extents** (+A0h `Length`, +A4h `Width`).
 
-### 23.3 What the host needs (hunk pending)
+### 23.3 What the host needs (applied in 23.6)
 
 The unit list and the class rows are reachable only from the Lua host, `src/game_hosts_lua.cpp`,
 which cc9-hud3 held at the time of writing. The prepared hunk
@@ -2758,3 +2758,27 @@ the retry are inert and the first candidate is taken. Environment as in 22.5. Lo
 - **The switch is ON with the test inert.** Applying the 23.3 hunk activates the test and the
   retry. Its own pair is predicted to be identical on all four missions, with the first candidate
   accepted.
+
+### 23.6 The full binding (hunk applied, stays ON)
+
+The 23.3 hunk is applied to `src/game_hosts_lua.cpp` at be664aa2f, with one log line per solved
+request that names the accepted candidate, the entity count and the nearest entity. OFF is
+`pair_export --flip kSpawnNewPlacementBound=false` from be664aa2f; ON is this tree's build. Logs
+are `local\FP_{OFF,ON}_<mission>.log` in worktree cc9-plane2.
+
+| row | OFF | ON | predicted (23.4, with the hunk) | verdict |
+| --- | --- | --- | --- | --- |
+| USN13 accepted candidate | - | first (angle 0, d 200), 313 entities, nearest 2316 m | first candidate | holds |
+| USN13 deaths / hits / shots | 20 / 460 / 4033 | 27 / 527 / 4180 | as the axes-only run | holds |
+| USN13 sea crashes | 0 | 0 | 0..2 | holds |
+| USN04 eight requests | - | all first candidates, 21..73 entities, nearest 2051..8032 m | first candidates | holds |
+| USN04 gameplay | - | pair_diff 1 (log lines only) | identical | holds |
+| USN01, USN02 | - | pair_diff 0 | identical | holds |
+
+- **The full binding is gameplay-identical to the axes-only run** of 23.5 on all four missions. The
+  OFF side also matches 23.5's OFF (pair_diff 0 on USN13).
+- **The test is not vacuous.** It walked 313 live units on USN13 and 21..73 on USN04, but every
+  unit was over 2 km from every member, beyond the 500 m and 150 m radii. So no reference mission
+  exercises the refusal and retry path; a mission that spawns a wave on top of existing units
+  would be the first measurement.
+- **No failed prediction.**

@@ -188,6 +188,10 @@ struct SolvedPlacement {
 SolvedPlacement g_solved;
 }  // namespace
 
+const SpawnPlacementResult* last_spawn_placement_0094a140() noexcept {
+    return g_solved.valid ? &g_solved.result : nullptr;
+}
+
 void set_spawn_placement_world(const SpawnPlacementWorld* world) noexcept {
     g_spawn_placement_world = world;
 }
@@ -301,6 +305,24 @@ SpawnPlacementResult solve_spawn_placement_0094a140(const SpawnNewRequest& reque
         }
         return true;
     };
+    out.entities = static_cast<int>(entities.size());
+    auto nearest = [&](const SpawnGroupFrame& frame) {
+        double best = -1.0;
+        for (std::size_t i = 0; i < request.members.size(); ++i) {
+            float off[3] = {0.0f, 0.0f, 0.0f};
+            if (!spawn_member_offset_00948cc0(request, i, off)) off[0] = off[1] = off[2] = 0.0f;
+            float pos[3];
+            spawn_member_position_00949300(frame, off, pos);
+            for (const SpawnPlacementEntity& e : entities) {
+                const double dx = e.position[0] - pos[0];
+                const double dy = e.position[1] - pos[1];
+                const double dz = e.position[2] - pos[2];
+                const double d = std::sqrt(dx * dx + dy * dy + dz * dz);
+                if (best < 0.0 || d < best) best = d;
+            }
+        }
+        return static_cast<float>(best);
+    };
     const float dist_low = std::max(kSpawnNewDistRangeLowMinimum, request.dist_low);
     for (float d = dist_low; d <= request.dist_high; d += 250.0f) {      // [00CF8850]
         const float arc_max = d * halfwidth;
@@ -311,14 +333,14 @@ SpawnPlacementResult solve_spawn_placement_0094a140(const SpawnNewRequest& reque
             SpawnGroupFrame f = spawn_candidate_frame_0094a140(ref, plus, d);
             ++out.candidates;
             if (legal(f)) {
-                out.accepted = true; out.frame = f; out.angle = plus; out.distance = d;
+                out.accepted = true; out.frame = f; out.angle = plus; out.distance = d; out.nearest = nearest(f);
                 return out;
             }
             if (arc > 0.0f) {                                         // [00D7A218] < arc
                 f = spawn_candidate_frame_0094a140(ref, minus, d);
                 ++out.candidates;
                 if (legal(f)) {
-                    out.accepted = true; out.frame = f; out.angle = minus; out.distance = d;
+                    out.accepted = true; out.frame = f; out.angle = minus; out.distance = d; out.nearest = nearest(f);
                     return out;
                 }
             }

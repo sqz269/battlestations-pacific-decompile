@@ -296,6 +296,9 @@ DEVIATIONS, each labelled in the source where it is taken:
    The image's member layout is now read: the record constructor `00948CC0` builds per-member
    offsets from `formationHorizontal`, bound behind `kSpawnNewMemberOffsetsBound`
    (docs/SCENE_CONTENTS_HOSTS.md section 22).
+   Since packet cc9_spawn_new_placement the group frame, the placement test `00941D30` and
+   `0094A140`'s retry run too, behind `kSpawnNewPlacementBound` (docs/SCENE_CONTENTS_HOSTS.md
+   section 23). The paragraph above, which says no placement test runs, predates it.
 4. **Member names carry the request serial.** The scripts reuse names across requests
    (`"Lexkiller 1"` at both line 1059 and line 1115) and the squadron registry is keyed by name, so
    `" #<serial>.<index>"` is appended. The script never sees the string; it addresses the unit

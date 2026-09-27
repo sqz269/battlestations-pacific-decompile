@@ -340,7 +340,7 @@ bool spawn_member_offset_00948cc0(const SpawnNewRequest& request, std::size_t me
 // With the switch on, the group frame is 0094A140's own and the members pass
 // through 00941D30 with 0094A140's retry. Off, section 22's frame runs.
 // ---------------------------------------------------------------------------
-inline constexpr bool kSpawnNewPlacementBound = true;   // 23.5; the test is inert until the host registers a world
+inline constexpr bool kSpawnNewPlacementBound = true;   // 23.5 and 23.6
 
 // A row-major 4x4: rows 0/1/2 right/up/forward, row 3 the translation, which
 // is the order BSP_Matrix_Multiply4x4 (00413920) and 00B646E0 use.
@@ -421,7 +421,13 @@ struct SpawnPlacementResult {
     float angle{0.0f};
     float distance{0.0f};
     int candidates{0};
+    // Evidence for the log: the entities 00941D30 walked and, for the accepted
+    // frame, the nearest of them to any member (3-D, metres; -1 when none).
+    int entities{0};
+    float nearest{-1.0f};
 };
 SpawnPlacementResult solve_spawn_placement_0094a140(const SpawnNewRequest& request) noexcept;
+// The last request's solved placement (for the host's log), or null.
+const SpawnPlacementResult* last_spawn_placement_0094a140() noexcept;
 
 }  // namespace bsp
