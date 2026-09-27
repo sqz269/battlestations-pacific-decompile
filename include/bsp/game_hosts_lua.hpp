@@ -280,6 +280,9 @@ struct GameMissionLuaSummary {
     unsigned long long init_all_squadron_ids{0};
     // Packet cc9_init_pass_e_property_bag: pass E releases taken as exact.
     unsigned long long init_all_holders_released{0};
+    // Packet cc9_init_identity_gaps: load-time 009292B0 binds and 00928100 mirrors.
+    unsigned long long load_class_bound{0};
+    unsigned long long load_identity_mirrored{0};
     unsigned long long init_all_pushes{0};
     unsigned long long spawn_new_callbacks{0};   // named globals actually called
     unsigned long long spawn_new_callback_missing{0};
@@ -577,8 +580,18 @@ public:
         // not run, which is the state of every marker.
         int party{-1};
         int race{-1};
+        // Packet cc9_init_identity_gaps. A marker's scene class id (+C4h, set by
+        // its constructor, e.g. 0047B6C8 for Path), -1 for a unit, and the
+        // authored `Party` its pass A copies to +54h (00927050's kind-1 arm),
+        // -1 when the bag has none. Read only under
+        // kSceneLoadThisTableIdentityBound.
+        int marker_class_id{-1};
+        int marker_authored_party{-1};
     };
     std::size_t attach_scene_entities_00928a00(const std::vector<SceneEntity>& entities);
+    // Packet cc9_init_identity_gaps: 00928100 on a slot that already exists.
+    bool mirror_identity_00928100(int entity_id, int party, const std::string& name,
+        const char* type_name);
 
     // Packet cc_lua_find_entity: the `recon` shell, through the already
     // reconstructed bsp::install_recon_values_00803a40. 004E0305 sets the global

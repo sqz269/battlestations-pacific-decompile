@@ -1456,6 +1456,7 @@ struct GameSceneMarkerSeed {
     bool findable{false};
     std::uint32_t attach{0};
     float position[3]{0.0f, 0.0f, 0.0f};
+    int party{-1};  // packet cc9_init_identity_gaps: the record's authored Party
 };
 
 // Packet cc_lua_find_entity: the scene entities that are not units but that
@@ -1489,6 +1490,7 @@ std::vector<GameSceneMarkerSeed> collect_scene_markers(
         seed.class_id = entity.class_id;
         seed.findable = row->findable_by_name;
         seed.attach = row->attach;
+        seed.party = entity.party;
         // 008A7C3C reads the world matrix translation row at entity+0FCh.
         seed.position[0] = entity.world[12];
         seed.position[1] = entity.world[13];
@@ -1967,8 +1969,11 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
                 markers = collect_scene_markers(host.scene_contents->entities(),
                     kSceneMarkerIdBase);
                 for (const GameSceneMarkerSeed& marker : markers) {
-                    entities.push_back(GameMissionLuaHost::SceneEntity{marker.name,
-                        marker.id, -1, marker.findable});
+                    GameMissionLuaHost::SceneEntity seed{marker.name,
+                        marker.id, -1, marker.findable};
+                    seed.marker_class_id = marker.class_id;
+                    seed.marker_authored_party = marker.party;
+                    entities.push_back(seed);
                 }
                 host.lua.attach_scene_entities_00928a00(entities);
                 if (!markers.empty()) report_scene_markers(host.log, markers);
