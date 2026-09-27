@@ -1,0 +1,17 @@
+{
+  "packet": "cc9_ship_ai_neighbour_count",
+  "doc": "docs/SHIP_AI_TAILS.md section 13",
+  "ghidra": "read-only; no renames, comments or saves",
+  "answer": "009EEB8B reads world list 6 ([[00E188A8]+19CCh]+60h); the walk takes each element through 009DBBC0, keeps IsKindOf(6) entities other than [blk+3FCh], and takes [entity+9C8h] and 00427EB0's +FCh position. Bound from the units host's list 6 under kShipAiNeighbourCountBound (committed OFF, pair pending).",
+  "steps": [
+    {"address": "009eebb0", "native": "009dbbc0", "function": "009ed6b0", "rule": "ElementAt(list 6, index)"},
+    {"address": "009eebc8", "native": "00cfc3d0+vtable5c", "function": "009ed6b0", "rule": "IsKindOf(6)"},
+    {"address": "009eec41", "native": "00427eb0", "function": "009ed6b0", "rule": "&entity+FCh"}
+  ],
+  "routines": [
+    {"address": "009eeaab", "name": "ShipAi navigation arm tail", "coverage": "complete for 009EEB80..009EEC52 (the neighbour loop's inputs); the rest was bound by milestone 2q"}
+  ],
+  "substitutions": ["the units host never drops a unit from list 6, so sunk ships stay at their last position"],
+  "switch": {"name": "kShipAiNeighbourCountBound", "file": "src/game_hosts_ship_ai.cpp", "committed": false},
+  "pairs": "pending"
+}

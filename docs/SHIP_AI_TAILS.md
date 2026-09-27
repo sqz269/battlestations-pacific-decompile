@@ -574,3 +574,83 @@ table on, logs `local\ap_{ctl,sn_off}_usn02.log`.
 - So the switch accounts for the whole b -> c USN02 step.
 - As in section 5, the astern latch is the mechanism. On this tree the Allied side loses 2
   **fewer** ships OFF, not more, against section 5's 14 -> 11 on an older base.
+
+## 13. The traffic setback's neighbour list 009EEB8B (packet `cc9_ship_ai_neighbour_count`)
+
+Part 4 of the plan in `docs/CONSTRUCT_WORLD.md` section 7. Ghidra was read only.
+
+### 13.1 What the image reads (009EEB80..009EEC52, in 009ED6B0)
+
+The walk runs only when the four-way gate at 009EEAB7..009EEAF8 is open. One of the gate's terms is
+`blk+604h > 0`, which the host now writes (009F0E69 / 009F114E, host lines setting
+`neighbour_count_604`). That is why the stand-in's record ran 41,037 times on USN02.
+
+| step | address | what the image does | host binding (switch ON) |
+| --- | --- | --- | --- |
+| count | 009EEB80..009EEB8B | `[[00E188A8]+19CCh]+60h`: world list 6, ships. It is re-read on every pass, and `JLE` leaves the loop at 0 | `GameUnitsHost::world_list_size(6)` |
+| element | 009EEBA0..009EEBB0, 009DBBC0 `BSP_LinkedList_ElementAt` | `ElementAt(list+60h, index)`: 0 when index < 0 or >= count, otherwise the value of the node reached by `index` next links (+4h) | the same walk over `world_list_head(6)` / `world_list_node_next`, returning `world_list_node_unit` |
+| null skip | 009EEBB9 | a null element is skipped | - |
+| kind | 009EEBBF..009EEBCC | `entity->vtable[5Ch](6)`, IsKindOf of class 06 (the ship base, `docs/ENTITY_CLASS_IDS.md`) | `unit_is_kind_of(index, 6)` |
+| own unit | 009EEBD2..009EEBDA | the entity is skipped when it equals `[blk+3FCh]`, the brain's unit | `unit_identity(index)`, the identity the list nodes carry |
+| radius | 009EEBE0 | `FLD [entity+9C8h]` (the value 0081106E / 0081FA4D produce), then `[own+9C8h]` and 00CEB4B0 / 00D7A280 in `ship_ai_traffic_clearance_009eec15` | `unit_hull_length_09c8` |
+| position | 009EEC41, 00427EB0 `BSP_EntityPose_GetWorldPositionRefreshed` | `&entity+FCh`, after 00414DB0 when `[entity+C8h]` is 0. x is +FCh and z is +104h | `unit_position_00fc`. The pose is always valid here |
+
+**What the count feeds.** When the path point lies inside another ship's clearance circle,
+009EED62 steps it back along the pose-to-goal direction, and the walk rescans from the top. The
+accumulated setback then feeds three things:
+- the stop test `blk+330h < stop radius + setback` (009EEF5C);
+- the stop release `start radius + setback < blk+330h` (009EEF14);
+- the walk's end when the setback eats the remaining path (009EEED8).
+
+A ship with traffic near its goal therefore stops earlier and waits longer before it leaves the
+stop.
+
+**Substitution.** The units host never removes a unit from its world lists, so a sunk ship stays in
+list 6 at its last position, and its circle keeps pushing goals back. Whether the image unlinks a
+sinking ship before its entity is freed was not read. This is labelled in the code.
+
+### 13.2 The binding (switch `kShipAiNeighbourCountBound`, committed OFF)
+
+- **Records.** The five `ArmTailBinding` hooks answer as in the table above. OFF keeps the
+  milestone 2r stand-in: count 0, null elements, kind false, and zero radius and position (all
+  records).
+- **Own unit.** ON returns the unit identity where OFF returned `index + 1`. Only the walk
+  compares it.
+- **New lines, printed on both sides:**
+  - the summary line `ship ai traffic setback count_reads= mean_count= max_count= scans=
+    steps= bound=`;
+  - one `ship ai traffic setback unit=... scans= steps= max_setback=` line per ship whose gate
+    opened.
+
+### 13.3 Predictions, written before the pair
+
+Two builds of one tree, differing only by the switch. Streams and the death table on,
+USN02 9200/9000 and E2 = USN04 9200/9000.
+
+- **The count.** The list never shrinks in this host, so every read gives the registered ship
+  count: `mean_count` = `max_count` = **18 on E2** and **32 on USN02** (the `world lists
+  6=18 / 6=32` lines). The distribution is the same for every ship. `count_reads` is at least
+  the gate-open walks: 23,186 on E2 and 41,037 on USN02, plus one per rescan after a step.
+- **Records.** The five `ShipAiArmTail::*` rows go from UNIMPLEMENTED to concrete, and
+  `neighbour_list_count` keeps a call count at or above today's.
+- **Steps.**
+  - `steps` > 0 on both missions.
+  - More on USN02, where the Allied and Japanese columns steam in line with their goals near the
+    next ship, and later near wrecks: USN02 steps at least 1 per 100 scans.
+  - On E2, the carrier group's escorts hold stations around the Lexington, so steps happen there
+    too, but fewer per scan than on USN02.
+- **The rows that move:**
+  - `arm tail stops` and `arrival_latches` rise, because the stop radius grows by the setback;
+  - `station_keeping`, `path_picks` and the per-ship positions move from the first step on;
+  - `dir=astern` stays 0 on USN02 ON (the snapshot is ON on both sides).
+- **Gameplay bands.**
+  - **USN02:** deaths 18..26 (22 OFF), hit records 350..550 (440 OFF). The failure stays a
+    torpedo death of Exeter or Houston, between 30 s and 60 s (39.65 s OFF).
+  - **E2:** no ship sinks on either side. Aircraft deaths 45..57 (51 OFF), and hit records
+    750..920 (836 OFF), moving through the escorts' AA positions.
+  - The direction of each is not predicted; the bands are the claim.
+- **Would falsify the binding:**
+  - any `mean_count` other than 18 / 32;
+  - steps of 0 on USN02;
+  - a ship-AI row moving with steps = 0;
+  - a sinking on E2.
