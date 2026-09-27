@@ -10224,3 +10224,24 @@ explained**, and it was reported to the integrator.
     the values of the switch pair above; that tree lacks later landings, so small differences in
     the counts are possible.
   - Deaths, hit records, shots and the death table are identical between the two.
+
+**The boundary pair, measured.**
+- **Builds:** `local\bd_parent` (`e9053b7db`, SHA-256 prefix `2C671E1029F7`) against
+  `local\bd_landing` (`7edcb4c78`, `2B470758E174`).
+- **Logs:** `local\bd_{parent,landing}_usn01.log`. Both show the 1600x900 override and their own
+  module directory, and both exited 0.
+
+| line | parent | landing |
+| --- | ---: | ---: |
+| recon aggregates group records | 0 | 293 (all planes) |
+| window refusals | 385 | 754 |
+| `gunnery contacts` admit_plane / dead | 3922 / 156 | 7466 / 348 |
+| candidates / rejected | 152 / 5796 | 291 / 8145 |
+
+- Every other summary line and the death table are identical.
+- **Held exactly.** The landing 7edcb4c78, at its own boundary, moves USN01's refusals from 385
+  to 754, with nothing after it in the way. This matches the switch pair on `e3aba0f36`.
+- **The USN01 refusal flag is closed.** Reference c's USN01 row now has every move attributed:
+  - the shots and the scout wingman's death time to the placement teleport OFF;
+  - the unit lists to the recon call sites;
+  - the refusals to the recon aggregates.

@@ -237,3 +237,10 @@ change.
   records reach the AA scan as extra candidates, which the fire window then refuses.
 - This closes reference c's USN01 refusal flag (`docs/GAME_EXECUTABLE.md`, reference c).
 - The first OFF run crashed once, at 121.40 s. The repeat was clean (see the reference c section).
+
+- **Boundary pair (the integrator's ruling).** `e9053b7db` against `7edcb4c78`, USN01 3200/3000,
+  logs `local\bd_{parent,landing}_usn01.log`: 0 -> 293 group records, 385 -> 754 refusals,
+  3922 -> 7466 admit_plane. Everything else, the death table included, is identical.
+- **The OFF arm's crash** was one run in two on the same binary and did not reproduce. It is
+  recorded in the reference c section. One crash is not a finding, and the OFF arm is not marked
+  unsupported.
