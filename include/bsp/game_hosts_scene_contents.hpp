@@ -496,6 +496,10 @@ struct SceneTerrainQuadtreeCensus {
     unsigned long long walks{0}, walk_hits{0};
     unsigned long long vertical{0}, vertical_hits{0};
     unsigned long long leaves{0}, cells{0};
+    // Packet cc9_terrain_vertical_subwalk: 00AECC40's equal-point answers, its
+    // 00AECA60 walks, and the tiles and cells those walks tested.
+    unsigned long long vertical_equal{0}, vertical_walks{0};
+    unsigned long long vertical_tiles{0}, vertical_cells{0};
 };
 SceneTerrainQuadtreeCensus& scene_terrain_quadtree_census() noexcept;
 SceneTerrainQueryCensus& scene_terrain_query_census() noexcept;
