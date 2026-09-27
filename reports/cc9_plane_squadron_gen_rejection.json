@@ -1,0 +1,17 @@
+{
+  "packet": "cc9_plane_squadron_gen_rejection",
+  "doc": "docs/PLANE_SQUADRON_GEN.md",
+  "switch": "none: the rejection is the image's Hidden hold-back at 0046D3C5, which the host already reproduces",
+  "calls": [
+    {"address": "0046D3BC", "native": "008F2260", "function": "0046CF40", "kind": "call", "host": "scene reader Hidden lookup (already reconstructed, docs/LUA_GENERATE_OBJECT_HOST.md)"}
+  ],
+  "installation": "universe/Scenes/missions/USN/usn_19_coralus.scn 2024-08-09: entity moviefisher (PlaneSquadronGen, OS2U Kingfisher) Hidden = B true, no Party, no WingCount; movieval not hidden, WingCount 3. scripts/missions/usn/usn_19_coralus.lua 2024-08-26: GenerateObject(\"moviefisher\") at line 2178 inside luaMoveToPh2, a Blackout callback (lines 573, 579, 585)",
+  "runs": "existing pairs local/psm_off_e2.log and local/psm_on_e2.log: Blackout(true, luaMoveToPh2) armed 73 times, callback never ran (summary arms=79 completions=5 callbacks=2); USN04 4500: no arms",
+  "routines": [
+    {"address": "0046CF40", "coverage": "partial: only 0046D39D..0046D3C5, the Hidden gate, read here"}
+  ],
+  "no_ghidra_function": [],
+  "names": [],
+  "verdict": "no binding: host matches image; the Kingfisher is a phase-2 cutscene prop that lockstep runs never reach (docs/MISSION_BLACKOUT.md re-arm section)",
+  "pairs": {}
+}
