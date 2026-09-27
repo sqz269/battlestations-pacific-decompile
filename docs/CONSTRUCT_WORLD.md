@@ -971,3 +971,38 @@ and one hunk in `src/game_hosts_gunnery.cpp`). With the switch on:
 - **Both.** Gameplay identical: deaths, the per-entity death table, hit records and releases.
   Nothing the cancel or the erase touches is read by gameplay, and the Lua listeners stay
   records.
+
+### Part 11 pairs and verdict
+
+One tree, cd0197e41 plus the scan verdict e5bc4dc3d: `local\bin\lw_off` against
+`local\bin\lw_on`, differing only by the switch. Both variables were set. All four logs show the
+fit line, the final COM release, and a module directory inside this tree.
+
+| field | USN02 OFF | USN02 ON | E2 OFF | E2 ON |
+| --- | ---: | ---: | ---: | ---: |
+| entries, guard passes (side 0 / 1) | record 22 | 22, 22 (12 / 10) | record 51 | 51, 0 |
+| text keys `warn_uslost` / `warn_japanlost` | - | 12 / 10 | - | 0 / 0 |
+| `cancelled`, `proximity_erased` | - | 0, 22 | - | 0, 0 |
+| proximity `records` | 32 | **54** | unchanged | unchanged |
+| native table | 1,481 | 1,487 | 1,585 | 1,585 (record row replaced by the entry row) |
+| deaths, hit records | 22, 439 | identical | 51, 843 | identical |
+
+**One prediction failed: USN02 `records` 32 -> 54.**
+- **The wrong premise.** The prediction assumed a dead ship is never scanned again. In this
+  process it is: `ships` scanned is 3,524 in both runs, so a sunk ship still passes the scan's
+  four live bytes. Each of the 22 erased records was created again at the next scan.
+- **The binding is not at fault.** It does what 0098168D..009816C5 do.
+- **Open question.** Does the image's dead ship still pass `+5Ch` set and `+5Dh`/`+60h`/`+5Eh`
+  clear when the next scan runs? The kill routine 00922FD0 clears `+5Ch`, but it is reached from
+  00903670 `EntityWorld_FlushActivations` and a destructor, not from the death route 00959450.
+  So when a sunk ship leaves the scan in the image is not established.
+- **Effect.** Gameplay is unaffected: the records feed only the render-side proximity effect.
+
+**Everything else held.** The masked whole-log diff leaves only:
+- the rows and summaries above;
+- the ignored refills counter;
+- in E2, the pre-window sound-startup `fmod_calls` 129 against 130, which was also seen in the
+  InitAll E2 pair.
+
+**Verdict: ON.** `kLossWarningBound` is set true. The text post, 006E6670, the `kill` channel's
+Lua listeners and the teardown stay named records, so USN02's own failure path runs once.

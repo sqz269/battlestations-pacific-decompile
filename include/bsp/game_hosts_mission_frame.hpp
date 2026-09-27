@@ -63,8 +63,10 @@ void game_warning_report_loss_009813a0(std::size_t unit);
 // record's removal (00975D00 -> 0096AE90 -> 00975E30); the text post 005CF3D0
 // and the `kill` channel's Lua listeners (0097B8C0 -> 00887E50) stay named
 // records, so a mission's own failure path does not run twice. False: the
-// death route keeps its record and the entry runs the guard only.
-inline constexpr bool kLossWarningBound = false;
+// death route keeps its record and the entry runs the guard only. ON by the
+// verdict: USN02 22 entries (12/10 by side), E2 51 entries and 0 passes,
+// gameplay identical on both (docs/CONSTRUCT_WORLD.md section 19).
+inline constexpr bool kLossWarningBound = true;
 
 // Packet cc9_bot_scheduler_writers (docs/BOT_SCHEDULER_WRITERS.md). True: the
 // three writers of the side-AI scheduler's gate and periods run - 0091B2E0's

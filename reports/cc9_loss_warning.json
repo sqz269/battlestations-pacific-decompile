@@ -1,0 +1,92 @@
+{
+  "packet": "cc9_loss_warning",
+  "doc": "docs/CONSTRUCT_WORLD.md section 19; plan docs/LOSS_WARNING.md",
+  "switch": "kLossWarningBound (include/bsp/game_hosts_mission_frame.hpp): committed OFF in cd0197e41, set ON by the verdict",
+  "calls": [
+    {
+      "address": "00959507",
+      "native": "009813A0",
+      "function": "00959450",
+      "kind": "call",
+      "host": "GameGunneryHost death route -> game_warning_report_loss_009813a0"
+    },
+    {
+      "address": "00981688",
+      "native": "00976F10",
+      "function": "009813A0",
+      "kind": "call",
+      "host": "game_warning_report_loss_009813a0: cancel over warning.pending, +15Ch stamp"
+    },
+    {
+      "address": "009816AD",
+      "native": "00975D00",
+      "function": "009813A0",
+      "kind": "call",
+      "host": "game_warning_report_loss_009813a0: proximity record lookup"
+    },
+    {
+      "address": "009816B5",
+      "native": "0096AE90",
+      "function": "009813A0",
+      "kind": "call",
+      "host": "game_warning_report_loss_009813a0: live effect stop"
+    },
+    {
+      "address": "009816C5",
+      "native": "00975E30",
+      "function": "009813A0",
+      "kind": "call",
+      "host": "game_warning_report_loss_009813a0: proximity record erase"
+    },
+    {
+      "address": "00981602",
+      "native": "005CF3D0",
+      "function": "009813A0",
+      "kind": "call",
+      "host": "record WarningManager::loss_text_005cf3d0"
+    },
+    {
+      "address": "00981869",
+      "native": "0097B8C0",
+      "function": "009813A0",
+      "kind": "call",
+      "host": "record WarningManager::kill_channel_0097b8c0"
+    }
+  ],
+  "routines": [
+    {
+      "address": "009813A0",
+      "coverage": "partial: guard, cancel (00976F10) and ship proximity erase bound; text 009813FA..00981602, 006E6670, the kill channel 00981750..00981D6C and the teardown are named records"
+    },
+    {
+      "address": "00976F10",
+      "coverage": "complete"
+    }
+  ],
+  "corrections": [],
+  "no_ghidra_function": [],
+  "names": [],
+  "verdict": "ON",
+  "pairs": {
+    "tree": "cd0197e41 + e5bc4dc3d, local/bin/lw_off vs lw_on",
+    "usn02": {
+      "entries": 22,
+      "guard_passes": "22 (side0 12, side1 10)",
+      "cancelled": 0,
+      "proximity_erased": 22,
+      "proximity_records": "32 -> 54 (failed prediction)",
+      "deaths": 22,
+      "hit_records": 439,
+      "gameplay": "identical"
+    },
+    "e2": {
+      "entries": 51,
+      "guard_passes": 0,
+      "deaths": 51,
+      "hit_records": 843,
+      "gameplay": "identical"
+    },
+    "failed_predictions": "USN02 proximity records 32 -> 54: a sunk ship still passes the scan live test in this process, so each erased record is recreated; the image timing of that test is an open question",
+    "unpredicted": "E2 pre-window sound startup fmod_calls 129 vs 130"
+  }
+}
