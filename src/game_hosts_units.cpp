@@ -3701,6 +3701,11 @@ struct GameUnitsHost::Impl {
     // This installation's scripts/datatables/shipglobals.lua line 377
     // (2024-07-13): VizbeomlesDolgok.KillDepth = -200.0.
     static constexpr float kKillDepthSubstitute = -200.0f;
+    // Packet cc9_units_push_pending, docs/CONSTRUCT_WORLD.md section 26:
+    // create_units pushes each instance it constructs onto the pending list, as
+    // 00928760 does. OFF: only the Lua routes and the load walk push.
+    static constexpr bool kUnitsPendingPushBound = false;
+    unsigned long long construction_pushes = 0;
     // Packet cc9_ship_sink_descent, docs/CONSTRUCT_WORLD.md section 25. ON: the
     // leak manager at unit+10D4h is built (0074F490 with controller+84h from the
     // displacement sum 00937DBB..00937F74 over the hull's element list), the
@@ -7376,6 +7381,18 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
         host.register_in_world_lists(*slot);
         Impl::publish_pose(*slot);
         host.slots.push_back(std::move(slot));
+        if constexpr (Impl::kUnitsPendingPushBound) {
+            // Packet cc9_units_push_pending: the base constructor 00928630, at 00928760,
+            // pushes every entity onto 00F899D0 through 00926BE0. The id is the
+            // unit id (index + 1), the class the VehicleClass row. The Lua
+            // host's dedup (docs/SENTITY_INIT_ATTACH_ORDER.md section 9) keeps
+            // one node per id while the routes and the load walk still push.
+            const GameUnitRow& made = host.slots.back()->row;
+            host.lua.push_pending_entity_00926be0(static_cast<int>(host.slots.size()),
+                made.name, made.type_id);
+            ++host.construction_pushes;
+            host.done("UnitInstance::construct_push_00926be0", 0x00928760u);
+        }
     }
     host.summary.units = host.slots.size();
     // Milestone 2l: the entities 0046aab0's target lookup would find, and the
@@ -18350,6 +18367,9 @@ void GameUnitsHost::report() {
                 static_cast<double>(slot->leak_first_water_t),
                 static_cast<double>(slot->motion_class.hull_mass));
         }
+        host.log.notef("summary units construction push bound=%d pushes=%llu (00928760 -> "
+            "00926BE0, packet cc9_units_push_pending)", Impl::kUnitsPendingPushBound ? 1 : 0,
+            host.construction_pushes);
         host.log.notef("summary ship sink descent bound=%d leak_models=%llu "
             "redistributions=%llu (00824FE5 / 0074F490, packet cc9_ship_sink_descent)",
             Impl::kShipSinkDescentBound ? 1 : 0, host.leak_models_built,

@@ -1655,3 +1655,51 @@ Haguro die.
 and the kill, the unlink and the expiry release now run. **Caveat:** the descent's rate comes from
 controller+84h over the host's stand-in element list (capacity = Mass / 3), so the ~97 s descent is
 a property of the stand-in. It will move when the element producer is read.
+
+## 26. The pending-list push moves to create_units (packet `cc9_units_push_pending`, `kUnitsPendingPushBound`, committed OFF)
+
+2026-09-27, worker cc9-units2, on main af9eab355, after cc9-init-passes' dedup list (docs/
+SENTITY_INIT_ATTACH_ORDER.md section 9, 338c8b4e3) and load-time InitAll (section 10,
+9db5c5290), both ON. This implements section 23's contract.
+
+**The binding.** `create_units` calls `push_pending_entity_00926be0(index + 1, row name, row
+type_id)` right after it stores each slot. That is the base constructor 00928630's push at 00928760 through 00926BE0, once per
+constructed instance: a squadron's leader as a plain node, and each wing plane as a plain node.
+The routes' pushes and the load walk's pushes stay. The dedup list turns them into:
+- skips, for a plain push whose id is pending;
+- upgrades, for a squadron push over its leader's plain node;
+- a drop of the wing's plain nodes, which pass A re-appends at the tail.
+
+A summary line `units construction push` counts the pushes.
+
+**Order.** At load, `create_units` pushes the scene units in unit order. The load walk then
+finds them pending, marks them `load_scene`, and appends the markers after them: the same order
+as before. At a route, `create_units` pushes the leader and its wing. The route's squadron push
+drops the wing nodes and upgrades the leader. Pass A appends the wing, as before.
+
+**Still a contract (section 9.3, not taken here):** construct the wing from the squadron's pass A
+through a units-host call the Lua host makes at `entity_attach_lua_self_vcall_9c`. It is shared
+with the script-orders owner. Until then the wing is constructed in the creator batch, and its
+construction pushes are dropped in favour of pass A's append.
+
+### Predictions (written before the runs)
+
+Same tree, `local\pp_off` against `local\pp_on`, the switch only, both variables set. OFF
+matches section 10.4's ON column.
+
+| row | USN04 4700/4500 OFF -> ON | USN02 9200/9000 OFF -> ON |
+| --- | --- | --- |
+| `units construction push` | 0 -> 81 (21 scene, 20 leaders, 40 wing planes) | 0 -> 32 (28 scene, 4 GenerateObject) |
+| `skipped_pending` | 0 -> 21 (the load walk's unit pushes) | 0 -> 32 (28 at load, 4 at GenerateObject) |
+| `squadron_upgrades` / `wing_deferred` / `wing_append_skipped` | 0 -> 20 / 40 / 0 | 0 / 0 / 0 |
+| `load_dropped` / `skipped_attached` | 0 / 0 (the load attach is retired) | 0 / 0 |
+| InitAll `pushes` | 46 -> 86 (81 construction + 5 markers) | 34 -> 34 (32 construction + 2 NavPoints) |
+| InitAll calls / with work / entities / `wing_appended` | 4,513 / 13 / 86 / 40, unchanged | 9,009 / 5 / 34 / 0, unchanged |
+| load walk pushes / mirrored | 26 / 5, unchanged | 30 / 2, unchanged |
+| `self_table_entities` | 86, unchanged | 34, unchanged |
+| InitAll pass rows (A..E, start branch, loading progress) | unchanged in count | unchanged |
+| gameplay: deaths, hit records, death rows, unit table | identical | identical |
+| pair_diff exit | 1 | 1 |
+
+These differ from section 9.5's forecast (`load_dropped=21`/`28`, `skipped_pending=4`), which was
+written before the load walk replaced the load attach.
