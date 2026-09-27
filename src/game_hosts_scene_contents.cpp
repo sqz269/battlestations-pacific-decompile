@@ -2727,7 +2727,7 @@ void GameSceneContentsHost::run_load_scene_contents_004d4df0(const std::string& 
         }
         const SceneTerrainQueryCensus& census = scene_terrain_query_census();
         impl.log.notef("summary scene terrain bound=%d landscapes=%zu loaded=%zu blocks=%zu "
-            "self_check objects=%zu on_ground_1cm=%zu height calls=%llu hits=%llu fallbacks=%llu "
+            "self_check_objects=%zu on_ground_1cm=%zu height calls=%llu hits=%llu fallbacks=%llu "
             "normal calls=%llu hits=%llu landscape_at calls=%llu hits=%llu segment calls=%llu "
             "(packet cc9_landscape_terrain; the 30 consumer sites are unbound)",
             kSceneLandscapeTerrainBound ? 1 : 0, lists.list(kSceneLandscapeClassId).size(),
