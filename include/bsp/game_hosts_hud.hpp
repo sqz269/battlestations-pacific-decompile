@@ -150,6 +150,15 @@ public:
     // own 00649860, 006485a0 and 00647300, none of which this process owns, so
     // 004cc460 is recorded and the recovered service path runs from there.
     void request_scene_interface_for_unit_004cc460();
+    // Packet cc9_set_selected_unit (docs/CONTROLLED_UNIT.md section 8). Lua
+    // SetSelectedUnit 008AB260 hands its unit to 00647300 on the HUD root
+    // (__thiscall(hudRoot, unit), RET 4): 00645060(unit, [game+18ECh], 1) at
+    // 00647317; when it accepts, 00645600 SetControlledUnit at 00647323; then,
+    // with a controlled unit, 00647040's 004CC460(20h, unit->vtable[140h]()) at
+    // 00647077, which the host's 0068aca0 classifier services next pump. With no
+    // controlled unit and the manager idle it pushes 34h INTF_LIMBO (0064734B).
+    // `unit` is the units host's index. Returns whether 00645060 accepted it.
+    bool set_selected_unit_00647300(std::size_t unit);
     // The update virtual of one HUD screen, called by the recovered pump 004f8830
     // for every screen the applied interface published into level 1.
     void update_minimap_screen_005c0f20(float seconds);
@@ -185,5 +194,16 @@ public:
 private:
     std::unique_ptr<Impl> impl_;
 };
+
+// Packet cc9_set_selected_unit, committed OFF. While true the Lua host routes
+// SetSelectedUnit 008AB260 to GameHudHost::set_selected_unit_00647300 through
+// the slot below; while false the native stays the UNIMPLEMENTED record.
+inline constexpr bool kSetSelectedUnitBound = false;
+
+// The image reaches the HUD root through the global manager [00E198C4]+40h.
+// The Lua host holds no HUD pointer, so the HUD host publishes itself here
+// while a world is attached (attach_world_2k / detach_world_2k). Returns false
+// with `reached` false when no HUD is attached.
+bool hud_set_selected_unit_00647300(std::size_t unit, bool& reached);
 
 }  // namespace bsp::game
