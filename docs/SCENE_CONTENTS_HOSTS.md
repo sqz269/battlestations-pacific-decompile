@@ -862,6 +862,114 @@ and the death table are on, and the commands are as in section 5.
 field reproduces the authored ground to 1 cm on the island that has objects. The queries now
 answer for the consumers listed under the contracts above.
 
+## 7. The ground-query consumers (packet `cc9_ground_height_consumers_1`, 2026-09-27)
+
+**No consumer of the four queries sits in a free file, so this packet binds nothing.** The rest of
+this section is the reading of every consumer the executable reaches, and the exact hunks for its
+owner.
+
+### Where the 36 call sites land in this process
+
+The section 6 census lists 30 sites of 00903860, one each of 009038F0 and 009039D0, and four of
+00903BC0. Searched against `src/` and `include/bsp/` (every body address and every site address),
+they fall into three groups.
+
+**The executable reaches them, all through `src/game_hosts_units.cpp`**, leased by
+cc9-plane-release for `cc9_ship_motion_tail`:
+- 009D16D1 and 009D2265, the torpedo aim tick: `AimTickBinding::ground_height_00903860`, which
+  returns 0.0.
+- 009D39D3, the torpedo approach's short-range probe: the `segment_blocked_00903bc0` binding. It
+  uses the water surface as the ground, and its sweep is a record.
+- 009A15C1 and 009A172E, AvoidTerrain branch A: `terrain_avoidance_0099f1c0` returns before the
+  probe. That is a labelled substitution ("no ground model").
+- 0099FA2C, 009A0624 and 009A0E56, AvoidTerrain's height reads: never reached in the image
+  either (below).
+
+**Named in an unleased file, but not reached on the measured missions:**
+- `IsLandscape` (00894820) and `IsAreaEmpty` (00894C00) are in `src/mission_lua_host.cpp`'s
+  native table. They are called only from `scripts/global/commandhelpers.lua` (lines 4719..5029,
+  9165 and 13459: move-order and spawn helpers). Neither native has a row in the section 6 logs
+  of USN01 or USN04.
+- The Lua files are cc9-world-init's in any case.
+
+**No host counterpart:** the remaining 20 sites (section 6 table), among them 004B2131 (009039D0)
+and 007AC244 (009038F0).
+
+**None of the named free files has a site.**
+- The ship AI calls none of the four; its 009E/009F bodies are not in the census.
+- Gunnery's segment query is 0098ADD0, over the spatial index, a different body.
+- The avoid-zone runtime reads `.nav` layers.
+
+### What the image does with each reached result
+
+| site | routine | use of the result | no-terrain answer | host today |
+| --- | --- | --- | --- | --- |
+| 009D16D1 | torpedo aim tick | altitude floor = max(sea 5.0 or land 30.0, alt pair, ground + 5.0) (009D16D6..009D16F8); AL not tested | -1000, so ground + 5 = -995 never wins | 0.0, so ground + 5 = 5.0, which equals the sea floor under a strict `>`: **no effect at sea** |
+| 009D2265 | torpedo aim tick | arm the release timer when 1.0 [00D7A24C] > ground (009D2272); AL not tested | 1 > -1000: arms | 1 > 0: arms, **the same at sea** |
+| 009D39D3 | 009D3420 torpedo approach | `00903BC0(target point, (px, 1.0, pz))` for a sector ray inside 400 m; blocked unmarks the sector (009D39E0) | endpoints clear against -1000 and no terrain to sweep: **never blocked at sea** | blocked when either endpoint is below the **water surface** (`ocean_water_height_0078cf20`), plus the record `World::segment_occluders_00903bc0` |
+| 009A15C1, 009A172E | 0099F1C0 AvoidTerrain branch A (unit+900h == 6, on the water) | +-30 degree heading probe at y = 0.1; a clear probe returns (`JE 009A17A1`) and a blocked one steers | clear at sea | returns before probing |
+| 0099FA2C, 009A0624, 009A0E56 | 0099F1C0 | reached only when pilot+268h > 0.0 (`JBE` at 0099FA11); AL = 0 substitutes 10.0 [00CE38B8] (0099FA35, 009A062D, 009A0E5F); the ground is then blended with the 0041BC20 layer sample by pilot+268h (00419010 at 0099FA6B) | **the image uses the boolean here**: no terrain means 10.0, not -1000 | never reached: pilot+268h is only ever stored as 0 (`docs/ATTACKER_EVASION.md`) |
+
+The hot site is the torpedo approach probe: 1,152 record calls on USN01 and 7,164 on USN04 in the
+section 6 logs (`World::segment_occluders_00903bc0`). Its target point is the target ship's
+position (`approach_target_point`). So the host's water test can block a sector whenever the
+ship's origin sits below the local wave height, which the image never does at sea.
+
+### The hunks for `src/game_hosts_units.cpp` (cc9-plane-release; not applied here)
+
+Both hunks need `#include "bsp/game_hosts_scene_contents.hpp"` for the queries.
+
+1. **Torpedo aim, `AimTickBinding::ground_height_00903860`** (about line 13950):
+
+   ```cpp
+   float ground_height_00903860() override {
+       // 009D16D1 / 009D2265: 00903860(world, unit+FCh, &out). Over no terrain
+       // the image leaves out = -1000.0 (00903876) with AL clear, and neither
+       // site tests AL (docs/SCENE_CONTENTS_HOSTS.md section 7).
+       float out = 0.0f;
+       bsp::game::world_ground_height_00903860(s_.motion.position, out);
+       return out;
+   }
+   ```
+
+2. **Torpedo approach, `segment_blocked_00903bc0`** (about line 8613). Replace the water-surface
+   body with the world query:
+
+   ```cpp
+   bool segment_blocked_00903bc0(const float from[3], const float to[3]) override {
+       // 00903BC0: the two ground tests against 00903860 (-1000.0 over no
+       // terrain), then each Landscape's slot 3Ch (a labelled half-cell
+       // stand-in in the scene host). docs/SCENE_CONTENTS_HOSTS.md 6 and 7.
+       return bsp::game::world_segment_blocked_00903bc0(from, to);
+   }
+   ```
+
+3. **AvoidTerrain branch A** (about line 5722) is a larger change. The probe geometry after
+   009A1420 is not reconstructed in the host, so the early return stays. The contract for it is
+   `world_segment_blocked_00903bc0` at y = 0.1: clear, then return; blocked, then steer.
+4. **AvoidTerrain height reads**: no hunk. If pilot+268h ever becomes non-zero, they need
+   `world_ground_height_00903860` with **AL tested**, and 10.0 substituted when it is false.
+
+### Predictions for the owner's pair (hunks 1 and 2, switch only)
+
+**USN04 4700/4500** has no Landscape, so the queries answer -1000 / false everywhere.
+- **Hunk 1:** identity. At sea the floor and the arm test are unchanged, as the table shows.
+- **Hunk 2 is NOT expected to be identity.** Every probe the water test blocked now clears. That
+  leaves more sectors marked clear at 009D39E0 and changes the torpedo approach's sector choice.
+  - Direction: blocked sectors go to 0; torpedo drops and hit records move in either direction.
+  - Band: unknown. The host keeps no count of blocked probes, and 7,164 probes ran. A counter of
+    blocked results in both builds should come first.
+
+**USN01 3200/3000** has four islands.
+- **Hunk 1** moves an aim tick only over land where the ground is above 0 m. That raises the
+  floor to ground + 5 and closes the arm (1 > ground fails above 1 m).
+- **Hunk 2** clears the sea-level blocks as on USN04. Probes that cross an island now block. The
+  label is that the stand-in sweep marches the height rather than the quadtree.
+
+  USN01's torpedo drops are 0 on this base (section 5 pairs), so the aim tick's release path is
+  not exercised. The expected movement is in sector choice and in the approach geometry, not in
+  the drop count.
+
 ## Ledger names recorded
 
 | Address | Name |

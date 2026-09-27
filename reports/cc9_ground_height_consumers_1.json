@@ -1,0 +1,29 @@
+{
+  "packet": "cc9_ground_height_consumers_1",
+  "doc": "docs/SCENE_CONTENTS_HOSTS.md",
+  "outcome": "no consumer site in a free file; nothing bound; contracts and hunks for src/game_hosts_units.cpp written in section 7",
+  "calls": [
+    {"address": "009D16D1", "native": "00903860", "note": "torpedo aim altitude floor; host AimTickBinding::ground_height_00903860 returns 0.0"},
+    {"address": "009D2265", "native": "00903860", "note": "torpedo aim ground arm 1.0 > ground"},
+    {"address": "009D39D3", "native": "00903BC0", "note": "torpedo approach short-range sector probe; host uses the water surface"},
+    {"address": "009A15C1", "native": "00903BC0", "function": "0099F1C0", "note": "AvoidTerrain branch A probe; host returns before it"},
+    {"address": "009A172E", "native": "00903BC0", "function": "0099F1C0", "note": "AvoidTerrain branch A probe"},
+    {"address": "0099FA2C", "native": "00903860", "function": "0099F1C0", "note": "reached only when pilot+268h > 0; AL=0 -> 10.0"},
+    {"address": "009A0624", "native": "00903860", "function": "0099F1C0", "note": "same"},
+    {"address": "009A0E56", "native": "00903860", "function": "0099F1C0", "note": "same"}
+  ],
+  "coverage": [
+    {"routine": "0099F1C0 ground reads", "coverage": "partial: the three height sites and the two branch-A probe tests; the steering after a blocked probe unread"},
+    {"routine": "009D3420 probe", "coverage": "complete for the 00903BC0 use (from src/torpedo_approach_update.cpp)"},
+    {"routine": "torpedo aim tick ground uses", "coverage": "complete for 009D16D1 / 009D2265 (from src/torpedo_aim_tick.cpp)"}
+  ],
+  "substitutions": [],
+  "corrections": [
+    {"was": "the torpedo approach's segment test treats an endpoint below the water surface as blocked (game_hosts_units.cpp segment_blocked_00903bc0)", "is": "the image's ground is -1000.0 with no terrain, so a sea-level probe is never blocked", "evidence": "00903BC0 compares each endpoint with 00903860, which seeds -1000.0 at 00903876"},
+    {"was": "AvoidTerrain's no-terrain ground would be -1000", "is": "the three AvoidTerrain sites test AL and substitute 10.0 [00CE38B8]", "evidence": "0099FA31..0099FA3D, 009A0629..009A062D, 009A0E5B..009A0E5F"}
+  ],
+  "switches": [],
+  "failed_predictions": [],
+  "no_ghidra_function": [],
+  "ledger_names_added": []
+}
