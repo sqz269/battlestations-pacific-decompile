@@ -1657,6 +1657,9 @@ controller+84h over the host's stand-in element list (capacity = Mass / 3), so t
 a property of the stand-in. It will move when the element producer is read.
 **Resolved in section 28:** with the image's list the descent is 106..117 s on USN02.
 
+**See also** `docs/WRECK_MOTION_AVOIDANCE.md` (cc9-units3): how a wreck's motion reaches live
+ships' avoidance.
+
 ## 26. The pending-list push moves to create_units (packet `cc9_units_push_pending`, `kUnitsPendingPushBound`, committed OFF, ON since the pairs)
 
 2026-09-27, worker cc9-units2, on main af9eab355, after cc9-init-passes' dedup list (docs/

@@ -321,7 +321,7 @@ ScenePathRegistry& scene_path_registry() noexcept;
 inline constexpr bool kScenePathLandscapeCreatorsBound = true;
 
 // Packet cc9_scene_race_and_script_identity (docs/SENTITY_INIT_ATTACH_ORDER.md
-// section 11). True: (1) the mission frame hands each scene unit and each marker
+// section 17). True: (1) the mission frame hands each scene unit and each marker
 // its record's Race, which the Lua host's load-time pass A writes into
 // thisTable[key].Race (00928F50 for a unit, 00928100 for a marker; both read
 // entity+58h, which 00927050 set from the bag); (2) a CreateScript entity gets
