@@ -91,8 +91,9 @@ inline constexpr bool kSEntityInitPassEReleaseBound = true;
 // length, is not 0) and `Type` (00E0CD80[+C4h], +C4h = the class id). The
 // attach then seeds units without its `Class` stand-in. `Race` (+58h) is not
 // written: the scene record does not carry an authored Race (contract,
-// section 8). False: today's load attach.
-inline constexpr bool kSceneLoadThisTableIdentityBound = false;
+// section 8). False: today's load attach. ON by the verdict: the USN04 and
+// USN02 pairs moved only the two new rows and the summary line (section 8.6).
+inline constexpr bool kSceneLoadThisTableIdentityBound = true;
 
 // The owner of the pending list and of 00925F20's per-entity work. The Lua host
 // is the one, because pass A is its `thisTable` attach.

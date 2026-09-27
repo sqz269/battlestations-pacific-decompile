@@ -1,7 +1,7 @@
 {
   "packet": "cc9_init_identity_gaps",
   "doc": "docs/SENTITY_INIT_ATTACH_ORDER.md section 8",
-  "switch": "kSceneLoadThisTableIdentityBound (include/bsp/game_hosts_fixed_step.hpp): committed OFF",
+  "switch": "kSceneLoadThisTableIdentityBound (include/bsp/game_hosts_fixed_step.hpp): committed OFF in 4c3864299, set ON by the verdict",
   "calls": [
     {
       "address": "009297E4",
@@ -26,17 +26,75 @@
     }
   ],
   "routines": [
-    {"address": "00928100", "coverage": "complete; bound for scene markers except Race (not carried by the record)"},
-    {"address": "00928630", "coverage": "partial: the +C4h = 1 store 009286C1 and the 00925CE0 call only"},
-    {"address": "00925CE0", "coverage": "partial: the +54h = 2 and +58h = -1 stores 00925E1D/00925E24 and +C4h at 00925DFC only"}
+    {
+      "address": "00928100",
+      "coverage": "complete; bound for scene markers except Race (not carried by the record)"
+    },
+    {
+      "address": "00928630",
+      "coverage": "partial: the +C4h = 1 store 009286C1 and the 00925CE0 call only"
+    },
+    {
+      "address": "00925CE0",
+      "coverage": "partial: the +54h = 2 and +58h = -1 stores 00925E1D/00925E24 and +C4h at 00925DFC only"
+    }
   ],
   "corrections": [],
   "no_ghidra_function": [],
   "names": [],
   "contracts": [
-    {"owner": "cc9-ships", "file": "src/game_hosts_scene_contents.cpp", "contract": "carry the authored Race on GameSceneEntityRecord (00927050 kind-1 arm into +58h)"},
-    {"owner": "script-orders owner (cc9-ships lease)", "file": "src/game_hosts_script_orders.cpp", "contract": "CreateScript's script entity: 00928100 at its InitAll pass C writes Race -1, Party 2, Type SCRIPTENTITY, Name if named (naming unread)"}
+    {
+      "owner": "cc9-ships",
+      "file": "src/game_hosts_scene_contents.cpp",
+      "contract": "carry the authored Race on GameSceneEntityRecord (00927050 kind-1 arm into +58h)"
+    },
+    {
+      "owner": "script-orders owner (cc9-ships lease)",
+      "file": "src/game_hosts_script_orders.cpp",
+      "contract": "CreateScript's script entity: 00928100 at its InitAll pass C writes Race -1, Party 2, Type SCRIPTENTITY, Name if named (naming unread)"
+    }
   ],
-  "verdict": "pending",
-  "pairs": {}
+  "verdict": "ON: only the two added rows and the summary line moved; gameplay and per-entity tables identical",
+  "pairs": {
+    "binaries": "local/bin/ig_off, local/bin/ig_on (one tree, 4c3864299, switch only)",
+    "env": "BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1",
+    "usn04_4700_4500": {
+      "class_bound": [
+        0,
+        21
+      ],
+      "mirrored": [
+        0,
+        5
+      ],
+      "deaths": [
+        43,
+        43
+      ],
+      "hit_records": [
+        788,
+        788
+      ],
+      "pair_diff_exit": 1
+    },
+    "usn02_9200_9000": {
+      "class_bound": [
+        0,
+        28
+      ],
+      "mirrored": [
+        0,
+        2
+      ],
+      "deaths": [
+        20,
+        20
+      ],
+      "hit_records": [
+        329,
+        329
+      ],
+      "pair_diff_exit": 1
+    }
+  }
 }

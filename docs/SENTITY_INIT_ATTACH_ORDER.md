@@ -415,3 +415,23 @@ hit was then checked for a real call.
   - Gameplay identical, and the Game Over at 39.65 s on both sides.
 - **If a gameplay row moves,** a script reached one of these fields. The switch stays OFF, and
   the reader is traced.
+
+### 8.6 Pairs and verdict
+
+- **The runs.** The binaries are `local\bin\ig_off` (the committed OFF, 4c3864299) and
+  `local\bin\ig_on` (flipped locally, then reverted). `BSP_GUNNERY_RNG_STREAMS=1` and
+  `BSP_DEATH_TABLE=1` were set. All four logs have the fit line, the immediate present interval
+  and the final COM release, and each module directory is under `local\bin\ig_*` in this tree.
+- **What `tools/pair_diff.py` reports.** It exits 1 on both pairs, and the clock offset is
+  +0.00 s. The only changes are the two added rows and the summary line. The masked multiset of
+  other lines shows 0 lines only OFF and 0 only ON.
+
+| row | USN04 OFF | USN04 ON | USN02 OFF | USN02 ON |
+| --- | ---: | ---: | ---: | ---: |
+| `SceneLoad::pass B bind_lua_class` 009292b0 | - | concrete 21 | - | concrete 28 |
+| `SceneLoad::pass C mirror_identity` 00928100 | - | concrete 5 | - | concrete 2 |
+| `class_bound` / `mirrored` | 0 / 0 | 21 / 5 | 0 / 0 | 28 / 2 |
+| deaths, hit records | 43, 788 | identical | 20, 329 | identical |
+| death rows, plane death modes, unit table | 43, 43, 81 | identical | 20, 0, 32 | identical |
+
+**Every prediction held. Verdict: ON.**
