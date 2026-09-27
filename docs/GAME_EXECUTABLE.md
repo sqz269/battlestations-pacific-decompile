@@ -10833,3 +10833,31 @@ runs. The logs are `local\FL_*.log` in worktree cc9-units3, and all pass the fou
   current base (predicted: hits −20..−40, **failed**), and the mover is identical. No single
   switch of that window reproduces the step on the current base. It was an interaction on a base
   now changed by the wreck-hit and Repair landings.
+- **USN02 552 -> 579: closed by a first-parent bisect (packet `cc9_usn02_torpedo_stock_flag`,
+  worker cc9-init2, 2026-09-27).** Every point is a `tools/pair_export.py` build of that commit
+  with no flip. Runs: USN02 9200/9000, both variables set, lockstep 0.05, idle player, logs
+  `local\BIS_<commit>_USN02.log` in worktree cc9-init2.
+
+| commit (main first parent) | hit records | against |
+| --- | ---: | --- |
+| 1dae0cf67, the throttle cut ON | 552 | `TC_ON_USN02` (cc9-units3): `pair_diff` exit 0 |
+| e26db34df | 552 | |
+| d1bde0cb7, the movie mover ON | 552 | |
+| 93786e63e, the torpedo stock merge | **579** | |
+| 27cc522b2, the leak pair's OFF base | 579 | `LK_OFF_USN02` (cc9-units3): `pair_diff` exit 0 |
+
+  - **Both endpoints reproduce exactly.**
+  - **The step is one switch.** Between d1bde0cb7 and 93786e63e the only other first-parent
+    commits are de6a05285 (a ledger name) and 6a209456c (a definitions file). Against 6a209456c,
+    the merge's only code change is `kTorpedoStockBound = false -> true`
+    (include/bsp/game_hosts_gunnery.hpp).
+  - **So d1bde0cb7 against 93786e63e is a same-code pair of that switch.** `pair_diff` exits 3 with
+    22 / 552 / 278 hull hits / 1121 shots -> 22 / 579 / 290 / 1142. The same eight death rows
+    (Yudachi, Samidare, Murasame, John1, Harusame, Jintsu, Alden, Haguro) and nine unit rows move
+    as between the two original logs.
+  - **Attribution: the torpedo stock alone,** on the base with the throttle cut and the movie
+    mover. The mover's own step (e26db34df -> d1bde0cb7) is identical in hits.
+  - **The current-base flip moved only shots.** cc9_reference_e_flags flipped the stock on
+    e4dbf38b2, after the wreck-hit delivery and Repair landings, so the two results are on
+    different bases. The step was real on its own base. Which later landing removes its effect on
+    hits was not measured.
