@@ -377,3 +377,78 @@ For the game executable's 13 `stop` ships: creating the group they would expect 
 
 none. Every address named, documented or reconstructed here is inside an existing Ghidra function
 whose body range is quoted in the Coverage table and in `reports/ship_ai_formation.json`.
+
+## A dead member leaves its group (packet `cc9_dead_member_group_removal`, read and predictions; binding blocked)
+
+Worker cc9-ships2, on main `43aa5b56e`. Ghidra was read-only. **The binding is not written.**
+`src/game_hosts_units.cpp`, which owns the host's formation groups, is leased to cc9-terrain2
+(`cc9_terrain_segment_consumers`, until 2026-09-28T04:47). This section holds the read and the
+predictions for the switch, `kDeadMemberLeavesGroupBound`, when that file is free.
+
+### The read: the image removes a dead unit at its destroy, through a leave message
+
+1. **The send.** `0077D1A0` BSP_UnitInstance_DestroyAndBroadcast is the unit's `vtable[70h]`, which
+   a gunnery kill reaches (`00958A30 -> vt[70h](1)`). It runs two things only when the byte
+   `00E0AF20` is set and the session mode `[00E188A8]+1FE4h` is 0 or 1:
+   - It sends message 4Eh.
+   - It calls `0077C980(this, 0)`. That builds session message **77h** with a null target and routes
+     it (`0075B430(77h)`, `BSP_Session_RouteMessage(msg, 7, 0)`) when `this+284h` is non-null. With
+     a slot below 8 it also bumps `BSP_SlotCounter_Increment([this+1ACh])`.
+
+   `00E0AF20` is cleared at the start of BSP_Game_LoadMissionScene (004E0150) and set to 1 once the
+   scene is loaded (004E0864). So during any mission every destroyed grouped unit sends it.
+2. **The delivery.** `0077FE80` BSP_Session_DispatchEntityKindMessage maps kind 77h through the
+   byte table at 0078005C to arm 3 (0077FEE4). That arm resolves the 16-bit target (0 here) and
+   calls `0077BD70(this, target)`. Kind 76h, arm 2, is the join, `0077F940`.
+3. **`0077BD70(unit, null)`, the leave:**
+   - `successor = 0070D8D0(group, unit)`. When the unit is a follower this returns the current
+     leader. When the unit is the leader (or the group has none), and the group is not type 18h:
+     - it resets `group+500h` (the column) to 0;
+     - it returns the living member (`entity != 0`, `+5Dh` clear, not the unit) with the smallest
+       record `+20h` (`axial[0]`), the first on a tie.
+   - `unit->vtable[114h]()->vtable[5Ch](successor)`: the unit's weapon director is told the
+     successor. It is unread and records only.
+   - If `successor != 0` and it is not already the leader:
+     `0070D0C0 SetLeader(ship(successor), ship(unit))`. When they differ,
+     `00815E20(new = successor, old = unit)` runs and `group+14h = successor`.
+     - `00815E20` has the new leader take a copy of the old leader's wake ring (`00815680` on
+       `old+0BD0h`).
+     - It sets `new+FA0h = old.x - new.x + old+FA0h`, `new+FA4h = 0` and
+       `new+FA8h = old.z - new.z + old+FA8h`.
+   - `0070E4C0 DetachMember(group, unit, 0)`:
+     - its own re-election does nothing, since the unit is no longer the leader;
+     - it clears `unit+284h` and unregisters the observer pair (00694A60);
+     - it compacts the record array: each later 34h record moves down one and the count
+       (`group+4F8h`) drops by one;
+     - at count 0 the group deletes itself (`vtable[0](1)`), otherwise 0070DA00 refreshes the
+       speed ceiling over the live members.
+   - `unit+284h = 0`.
+
+No other path removes a dead member:
+- The group's `vtable[4]` (0070ECA0) has no caller that loads `+284h` and calls through `+4`. A
+  scan of all 93 `mov reg, [reg+284h]` loads in `.text` found only a serializer (0077C160).
+- The slot swap 0070DB60 does not skip dead members.
+
+### The host today
+
+- The host never sends 77h at a kill. Every dead ship stays in its `formation_groups` record: USN02's
+  group 0 keeps all 14 names to the end.
+- Its dead members keep their stale member speeds (frozen at their last controller step) in the
+  0070D140 minimum.
+- A dead leader stays the leader, and its wake ring is the one the followers measure against.
+- The only host detach is `join_formation_0077f940`'s reduced one (`src/game_hosts_units.cpp`). It
+  empties the record without re-electing a leader.
+
+### Predictions for the binding (when it can be written; same tree, switch only, streams and the death table on)
+
+The base is main's current USN02: 20 deaths, 611 hit records, 865 shots
+(`local\hp_on_usn02.log`, `kUnitHealthFractionBound` ON).
+
+| row | prediction |
+| --- | --- |
+| USN02 group 0 membership | 14 -> 6 by 450 s. It loses Exeter (35.80 s), Kortenaer (68.30), Electra (108.60), John3 (172.46), DeRuyter (177.36), Java (199.46), Encounter (280.56) and Perth (301.00), each at the session pump after its death |
+| USN02 leadership | DeRuyter's death hands group 0 to the living member with the smallest `axial[0]` among Java, Houston, Alden, John1, John2, Witte, Jupiter, Perth and Encounter. The column resets to 0, and the new leader inherits DeRuyter's wake ring |
+| USN02 slot-swap lines | none on either side: the controlled Houston survives on this base and stays a member, so 0070DB60 stays gated |
+| USN02 `pair_diff` | 3: the followers' stations and the group speed ceiling move from the first removal (Exeter at 35.8 s); deaths, hit records and death rows move |
+| USN04 `pair_diff` | 1: its group 0 (Lexington's) holds only ships, and every USN04 death is a plane |
+| USN01 `pair_diff` | 1: its groups (Convoy1's, Northampton's and Enterprise's) lose no member; its deaths (Mav1..5) are not grouped |
