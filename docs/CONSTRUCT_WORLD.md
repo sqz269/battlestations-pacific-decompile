@@ -1358,3 +1358,57 @@ summary's `bound` field.
 **Verdict: ON.** Gameplay is identical on both missions. The one presentation difference moves
 the host toward the image, and the destroy count is unchanged.
 
+
+## 23. Contract: the pending-list push moves to create_units (packet `cc9_units_push_pending`, held)
+
+2026-09-27, worker cc9-units2, on main 10b1b7043. No code. The packet is held until the list side
+below lands (the lead's decision). Then the units host's push becomes the one push the image
+makes: the base constructor 00928760 pushes every entity onto 00F899D0 through 00926BE0.
+
+### Three facts (USN04 4700/4500, `local\MR_ON_USN04.log` in worktree cc9-units2)
+
+The host makes 81 units through three callers of `GameUnitsHost::create_units`.
+
+1. **Scene load** (`src/game_hosts_mission_frame.cpp`, the instantiate step) makes 21. They never
+   go on the pending list: the mission frame's `attach_scene_entities_00928a00` stands in for the
+   scene read's four InitAll calls (0046EB4B, 0046EB88, 0046EBC6, 0046ED0F). A push from
+   create_units would leave them pending, and the first row 12 (00875EA2) would attach them a
+   second time.
+2. **The script routes** (`GameScriptOrdersHost::create_unit_from_scene_record_0046db4b` for
+   GenerateObject and SpawnNew, and the air-ops squadron creation) make the other 60: 20
+   squadrons (each fused with its leader plane) and 40 wing planes. Each Lua route pushes its
+   entity AFTER create_units returns, and a squadron's pass A appends its wing. The summary line
+   reads `pushes=20 wing_appended=40 entities=60`. A push from create_units cannot see the
+   route's later push, so it would double all 60.
+3. **Wing order.** The host constructs the wing planes in the create_units batch. The image
+   constructs them inside the squadron's pass A (007F4580), so their pushes land at the tail after
+   the squadron is attached. A construction-time push today would put them BEFORE their
+   squadron's pass A, a worse order than the wing-append substitution gives.
+
+So no guard inside `src/game_hosts_units.cpp` alone can make the push both real and single.
+
+### The design (list side: cc9-init-passes; units side: cc9-units2)
+
+**List side, in `src/game_hosts_lua.cpp`, first:**
+- `push_pending_entity_00926be0` skips a push whose entity id is already pending or already
+  attached (`init_all_attached_`).
+- `push_pending_squadron_00926be0` upgrades a pending plain node with the same id: it sets
+  `squadron`, `units_before` and `units_end`, and does not append.
+- Pass A's wing append skips ids already pending.
+- The route pushes (GenerateObject, SpawnNew, LaunchSquadron, the air-ops `create_squadron`) are
+  retired.
+- Wing construction moves into the squadron's pass A, so each wing plane is constructed, and
+  therefore pushed, where 007F4580 constructs it.
+
+**Units side, after that lands:** `create_units` calls `push_pending_entity_00926be0` once for
+each instance it constructs, as 00928760 does. A squadron's leader goes as a plain node, and the
+squadron upgrade marks it. Scene-load instances stay out until the mission frame's
+`attach_scene_entities_00928a00` is retired in favour of the scene read's InitAll calls. That is
+a second contract, for the mission frame's owner.
+
+**The guard while both sides push** is the list's dedup by entity id. The image pushes once, and
+the dedup keeps the list at one node per entity whichever side pushes first.
+
+**Predictions to carry** (USN04 4700/4500, USN02 9200/9000): pushes per creation route equal to
+the instances each route constructs, `self_table_entities` unchanged (86 / 34), InitAll rows
+unchanged in count, identical gameplay.
