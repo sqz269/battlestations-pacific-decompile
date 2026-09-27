@@ -103,3 +103,82 @@ with the existing loaded map. The adapter rejects an empty manager table.
 This supplies a concrete cache dependency; the ship controller's sector gates
 remain pending persistent director state and00415970 arc clipping. No new
 runtime steering or native singleton-ABI claim follows from these methods.
+
+## The zone creators on the measured missions (packet `cc9_ring_scan_probe_usn01`, 2026-09-27)
+
+`docs/AVOID_ZONE_REGISTRY.md` is leased to cc9-plane-release, so this finding is recorded here.
+It is doc-only, and no source changed.
+
+**The creation is already bound.** `GameAvoidZoneRuntime::rebuild` reproduces 00424D00's walk
+over the world entity list (`[world+370h]`). An entity named `AvoidZoneG <word> <layer> #nnn`
+goes through these steps:
+- 00424DAE parses the layer;
+- 00424DBE `00417CA0(layer)` finds or creates its group;
+- 0041D1E0 adds the entity when its Party `+54h` is 2 and its path interface answers;
+- 0041CCD0 builds the polygon from the class-47h path, with its class-44h parent's matrix.
+
+**What the three scenes author** (this installation, `universe/Scenes/missions/USN/`):
+
+| scene | date | `AvoidZone` entities | `landscape` lines | include / `.scn` lines | runtime census |
+| --- | --- | ---: | ---: | ---: | --- |
+| `usn_19_coralus.scn` (USN04, E2) | 2024-08-09 | 0 | 0 | 0 | `groups=1 zones=0` |
+| `usn_2_java.scn` (USN02) | 2024-07-13 | 0 | 0 | 0 | `groups=1 zones=0` |
+| `usn_1_marshall.scn` (USN01) | - | 21 (the first `AvoidZoneG all 1 #001` at line 3450) | 47 | 0 | `groups=6 zones=21 corners=2193` |
+
+So `zones=0` is exact for the two reference missions: nothing is missing there.
+
+**What `native_scene_creators=unresolved` means.** It is a separate gap: the image's native
+creation of the Path and Landscape scene entities themselves.
+- **Landscape**, class 44h: creator 004F1460, IsKindOf answer 004F1360, vtable 00CEA090.
+- **Path**, class 47h: creator 004EA650, IsKindOf answer 00480930, vtable 00CE6290 (both from
+  `docs/ENTITY_CLASS_IDS.md`).
+
+The runtime reads those records as data from the retained scene parse, and sets no native
+`created` flag on them. The zones it builds are the image's, as long as no later reader needs a
+live Path or Landscape object. Binding the two creators (their constructors, the path interface
+007AC9D0 on a live object, and the landscape matrix) would be a scene-contents packet of its own.
+It moves nothing on USN02 or E2, which author neither class.
+
+### The USN01 probe pair: predictions, written before the runs
+
+One tree (main `7eb3679dd`), with `kShipAiRingScanProbeBound` false against true (its landed
+state). USN01 3200/3000, streams and the death table on.
+- **Zones.** Both sides have 6 groups and 21 zones. The ships' navigation layer, class+560h = 11
+  (`docs/AVOID_ZONE_ESCAPE.md`), is the group holding 4 zones: `AvoidZoneG all 11 #008` and the
+  three `#011` copies under parents 93, 99 and 105.
+- **The probe is never reached on USN01.** The day's USN01 control (`local\fp2_ctl_usn01.log`)
+  has `ring_scans=0` and no `ShipAiRingScan::*` row. 009E6640 runs from the approach ring scan
+  009E76D0, and no USN01 ship enters it.
+- **So:**
+  - `ring probe spaces=0 moved_starts=0 casts=0 hits=0` on both sides;
+  - the whole native table, every summary line and every death row identical, with 7 deaths, 141
+    hit records and 447 shots;
+  - the rack drop's 8 torpedo drops appear on both sides. That move belongs to the control
+    against reference c, not to this pair.
+- **Consequence.** The probe cannot be measured against real zones on any of the four reference
+  missions. A mission that both authors zones and puts ships into an approach would be needed;
+  none was surveyed here.
+
+### The USN01 probe pair, measured
+
+- **Builds:** a `git archive` export of main `7eb3679dd` plus the finding commit `76d9e3ecf`, in
+  `local\ap_src`. The switch is flipped in the export only: `local\pu_off`
+  (`1F97F05CB460`) against `local\pu_on` (`B4DA67FE2547`).
+- **Logs:** `local\pu_{off,on}_usn01.log`. Both show the 1600x900 override and their own module
+  directory, and both exited 0.
+
+**Identity, as predicted.**
+- Both sides load `groups=6 zones=21`. Both read `ring probe spaces=0 moved_starts=0 casts=0
+  hits=0`: no USN01 ship reaches the approach ring scan.
+- The whole native table (1,299 rows), every summary line but the probe line's `bound=` field,
+  and every death row are identical.
+
+**A failed prediction, on absolute values.** Both sides read 7 deaths, **150** hit records (85
+hull), **583** shots and **0** torpedo drops. That differs from the afternoon's control
+(`local\fp2_ctl_usn01.log` on `e3aba0f36`: 141 / 447 / 8 drops).
+- The move is between the two trees, not inside this pair. Main gained other landings between
+  `e3aba0f36` and `7eb3679dd`.
+- The USN01-relevant candidates were paired only on USN04 and USN02: the planes' avoid-zone layer
+  sample `0d02479e5` (Marshall has terrain, unlike the reference seas) and the dive bombers'
+  carried rounds `e3f5d58ab`.
+- This is flagged for reference d (`docs/GAME_EXECUTABLE.md`, reference c section).

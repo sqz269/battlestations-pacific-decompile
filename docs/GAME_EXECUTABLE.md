@@ -10245,3 +10245,13 @@ explained**, and it was reported to the integrator.
   - the shots and the scout wingman's death time to the placement teleport OFF;
   - the unit lists to the recon call sites;
   - the refusals to the recon aggregates.
+
+**The USN01 probe pair** (packet `cc9_ring_scan_probe_usn01`, `docs/GAME_AVOID_ZONE_RUNTIME.md`).
+- `kShipAiRingScanProbeBound` OFF against ON on main `7eb3679dd` moves nothing on USN01. No ship
+  reaches the approach ring scan, so the probe runs 0 times, although USN01 is the one reference
+  mission with zones (21).
+- The probe landing therefore has no effect on USN01.
+- **Flagged for reference d:** both sides of that pair read USN01 at 7 deaths / 150 hit records /
+  583 shots / 0 torpedo drops, against the 7 / 141 / 447 / 8 of the `e3aba0f36` control. It is
+  unpaired. The candidates are the planes' avoid-zone layer sample `0d02479e5` and the carried
+  rounds `e3f5d58ab`, both paired only on USN04 and USN02.
