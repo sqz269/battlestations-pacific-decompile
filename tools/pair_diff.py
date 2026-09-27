@@ -108,6 +108,18 @@ NOISE = [
         "pattern": re.compile(r"^(\s*ship avoidance search:.*\brefills=)\d+"),
     },
     {
+        "id": "sector-scan-clip-arc-zones",
+        "why": "ShipAiSectorScan::clip_arc_zones_00415970 varies between identical JM08 runs of one binary (12000, then absent; cc9-init2 LSH_OFF/LSH_OFF2_JM08); its count and its presence are ignored",
+        "kind": "native-calls",
+        "name": "ShipAiSectorScan::clip_arc_zones",
+    },
+    {
+        "id": "sector-scan-zone-segment-crossing",
+        "why": "ShipAiSectorScan::zone_segment_crossing_004158e0 varies with clip_arc_zones (6000, then absent, on the same JM08 pair); count and presence ignored",
+        "kind": "native-calls",
+        "name": "ShipAiSectorScan::zone_segment_crossing",
+    },
+    {
         "id": "pretranslate-count",
         "why": "PlatformLoopCallbacks::pretranslate counts window messages (focus, paint), which depend on the desktop",
         "kind": "native-calls",
@@ -129,7 +141,13 @@ def mask(line: str) -> str:
     return HEX_RE.sub(_mask_hex, line)
 
 
-NATIVE_CALL_NOISE = {r["name"] for r in NOISE if r["kind"] == "native-calls"}
+NATIVE_CALL_NOISE = tuple(r["name"] for r in NOISE if r["kind"] == "native-calls")
+
+
+def native_noise(name: str) -> bool:
+    """Native rows whose count (and, since a zero-call row is not printed, presence) is noise;
+    matched by prefix because a row name may carry an address suffix."""
+    return name.startswith(NATIVE_CALL_NOISE)
 DROP_PATTERNS = [r["pattern"] for r in NOISE if r["kind"] == "drop"]
 
 # ---------------------------------------------------------------------------
@@ -336,7 +354,10 @@ class Run:
         rows["units"] = world.get("units") or world.get("mission world units")
         rows["mission end"] = None if end is None else end[len("mission end:"):].strip()
         if self.native_header:
-            rows["host methods concrete/unimplemented"] = "%d / %d" % self.native_header
+            # counted from the rows, without the noise rows, which may be absent in one run
+            kept = [st for (name, _addr), (st, _c) in self.native.items() if not native_noise(name)]
+            rows["host methods concrete/unimplemented"] = "%d / %d" % (
+                kept.count("concrete"), kept.count("UNIMPLEMENTED"))
         return rows
 
 
@@ -409,16 +430,22 @@ def compare_native(off: Run, on: Run):
     res = {"added": [], "removed": [], "status": [], "calls": [], "noise": []}
     for key, (st, calls) in on.native.items():
         if key not in off.native:
-            res["added"].append((key, st, calls))
+            if native_noise(key[0]):
+                res["noise"].append((key, "absent", calls))
+            else:
+                res["added"].append((key, st, calls))
     for key, (st, calls) in off.native.items():
         if key not in on.native:
-            res["removed"].append((key, st, calls))
+            if native_noise(key[0]):
+                res["noise"].append((key, calls, "absent"))
+            else:
+                res["removed"].append((key, st, calls))
             continue
         st2, calls2 = on.native[key]
         if st != st2:
             res["status"].append((key, st, st2, calls, calls2))
         elif calls != calls2:
-            bucket = "noise" if key[0] in NATIVE_CALL_NOISE else "calls"
+            bucket = "noise" if native_noise(key[0]) else "calls"
             res[bucket].append((key, calls, calls2))
     return res
 

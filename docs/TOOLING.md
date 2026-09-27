@@ -32,7 +32,8 @@ a report in order of importance:
    shots (the last `gunnery step` line), first hit, torpedo-task and dive-bomb-task releases (of
    aircraft), torpedo drops, plane water contacts (the `Plane::water_contact*` native calls), the
    controlled unit's distance moved, units, the mission end or failure time, and the native
-   table's concrete / unimplemented header.
+   table's concrete / unimplemented counts. These are counted from the rows, without the noise rows,
+   so they read one or two below the log's own `host methods` header.
 4. **Per-entity tables, row by row.** `death row` lines keyed by victim, `plane death mode` lines
    keyed by unit, and the end-of-run unit table (`unit side guns cats ... sunk_at killed_by`).
    Each reports rows only OFF, only ON, and the changed fields. `death row` lines need
@@ -68,6 +69,8 @@ Each item is masked (or, for the one native row, its count ignored) before anyth
 | present-interval-header | the line `present interval <x> (harness override)`, dropped | printed only when `--present-interval` overrides the options file (section 7) |
 | present-interval-device | `interval=` on `device created by full native startup` | the D3D present interval the override sets; lockstep frames make it a wall-time setting only |
 | avoidance-refills | `refills=` on `ship avoidance search:` | differs between identical runs of one binary (257 against 265, 2026-09-22) |
+| sector-scan-clip-arc-zones | the `ShipAiSectorScan::clip_arc_zones_00415970` native row: its count, and its presence | differs between identical JM08 runs of one binary (3200/3000, streams on, lockstep 0.05): 12,000 calls in `LSH_OFF_JM08.log`, no row at all in `LSH_OFF2_JM08.log` (worktree cc9-init2), with gameplay, death rows and unit table identical; 6,000 and 12,000 on two ON runs. A row with no calls is not printed, so presence is noise too |
+| sector-scan-zone-segment-crossing | the `ShipAiSectorScan::zone_segment_crossing_004158e0` native row: count and presence | moves with the row above: 6,000 then absent on the same OFF pair, 3,000 and 6,000 on the ON runs |
 | pretranslate-count | calls of the `PlatformLoopCallbacks::pretranslate` native row | window messages (focus, paint) depend on the desktop; printed as `(noise)` |
 
 ### Validation
