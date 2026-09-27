@@ -158,5 +158,59 @@
       "evidence": "a wreck's speed projects its neighbour box (009EAECA, 009EB1FE): Kortenaer's sector scan blocked by the cruising DeRuyter from step 1015, Minegumo diverging behind its dead leader Yamakaze at step 1060; diagnostic local/PK_OFF_USN02.log (cc9-units3) reproduces SD_OFF_USN02"
     }
   ],
-  "failed_predictions": []
+  "failed_predictions": [],
+  "flag_pairs": {
+    "packet": "cc9_reference_e_flags",
+    "base": "main e4dbf38b2, the tree's own build (every switch landed); each pair = tools/pair_export.py --commit e4dbf38b2 --flip <switch>=false against it; BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1, one run at a time",
+    "predictions_written_before_the_runs": [
+      {
+        "flag": "USN02 21/596 -> 22/603 and DeRuyter -> Houston",
+        "flip": "kMovieInterfacePushBound=false",
+        "mission": "USN02 9200/9000",
+        "prediction": "the controlled unit returns to DeRuyter (the 2Ch push is what hands the ship screen its unit); deaths and hit records move (exit 3), direction toward d's DeRuyter-controlled rows"
+      },
+      {
+        "flag": "same",
+        "flip": "kMovieReseedBound=false",
+        "mission": "USN02 9200/9000",
+        "prediction": "the controlled unit stays Houston; deaths +-2 and hit records +-8 % move through the reseeded streams (exit 3), or identical if no USN02 draw is reseeded"
+      },
+      {
+        "flag": "USN02 torpedo stock on top of the throttle cut, 22/552 -> 22/579",
+        "flip": "kTorpedoStockBound=false",
+        "mission": "USN02 9200/9000",
+        "prediction": "hit records move by about the step's size (20..40), direction down; deaths +-2; gyro launches up (no ship runs dry)"
+      },
+      {
+        "flag": "E2 894 -> 902",
+        "flip": "kMovieMoverBound=false",
+        "mission": "E2 9200/9000",
+        "prediction": "hit records fall by 4..9 of the 8 (the mover's USN04 4500 share was +9); deaths 50..52"
+      },
+      {
+        "flag": "E2 894 -> 902",
+        "flip": "kWingConstructionInPassABound=false and kWingConstructionLuaBound=false",
+        "mission": "E2 9200/9000",
+        "prediction": "hit records fall by about 4 (the wing flip's USN04 share); deaths 51 +-1"
+      },
+      {
+        "flag": "E2 894 -> 902",
+        "flip": "kLiveHullRepairBound=false",
+        "mission": "E2 9200/9000",
+        "prediction": "hit records within +-2; hull hits -1; shots up by about 25 (its USN04 share)"
+      },
+      {
+        "flag": "USN01 shots 583 -> 561",
+        "flip": "kShipBuoyancyElementsBound=false",
+        "mission": "USN01 3200/3000",
+        "prediction": "shots return toward 583 (exit 3), deaths 7 and hit records 150 unchanged"
+      },
+      {
+        "flag": "USN01 shots 583 -> 561",
+        "flip": "kSceneRaceAndScriptIdentityBound=false",
+        "mission": "USN01 3200/3000",
+        "prediction": "identical (exit 0 or 1): its own pairs were identical on USN04 and USN02"
+      }
+    ]
+  }
 }
