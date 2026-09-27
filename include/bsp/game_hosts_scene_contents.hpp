@@ -506,4 +506,22 @@ private:
 
 SceneWorldClassLists& scene_world_class_lists() noexcept;
 
+// Packet cc9_ship_weapon_director_enable (docs/SENTITY_INIT_PASSES.md section
+// 7). The ship's pass B, 00822C20's property-bag arm, reads `ArtilleryDirector`,
+// `AADirector`, `TorpedoDirector` and `DCDirector` (008238F0..008239A3, finds
+// through 008F2260, +0Ch tested) and hands them to the weapon director through
+// 007214C0 / vt[3Ch] 00835690 -> 007219C0, which stores them at +220h..+223h
+// (007219DB..007219ED). This keeps the merged bag's four values per entity name
+// (group defaults included: universe/library/ship.props has TorpedoDirector =
+// B false), for the gunnery host to read. Cleared with the scene.
+struct SceneDirectorEnables {
+    bool artillery{true};
+    bool anti_air{true};
+    bool torpedo{true};
+    bool depth_charge{true};
+};
+void scene_director_enables_clear() noexcept;
+void scene_director_enables_set(const std::string& name, const SceneDirectorEnables& enables);
+const SceneDirectorEnables* scene_director_enables_find(const std::string& name) noexcept;
+
 }  // namespace bsp::game

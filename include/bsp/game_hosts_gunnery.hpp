@@ -262,6 +262,17 @@ inline constexpr bool kUnitDeathRouteBound = true;
 // HUD markers stop drawing a dead ship one frame earlier, as in the image. ON.
 inline constexpr bool kDeathRouteDestroyBound = true;
 
+// Packet cc9_ship_weapon_director_enable, docs/SENTITY_INIT_PASSES.md section 7.
+// True: a ship's weapon director carries the four enables its pass B sets from
+// the scene bag (00822C20 -> 007214C0 at 00823A9F -> vt[3Ch] 00835690 ->
+// 007219C0 at +220h..+223h), so the stance 008624C0 pushes masks off every
+// category the ship's bag disables; this installation's ship.props defaults
+// TorpedoDirector to false. SUBSTITUTION: read at the stance push from the
+// scene host's per-name table rather than stored on the controller at creation
+// (the values never change after pass B in these missions: no script calls a
+// director setter). False: all four stay the constructor's 1 (007202FD).
+inline constexpr bool kShipDirectorEnablesBound = false;
+
 // Session message 79h as 00954A10 builds it in 005484F0 (section 32 of
 // docs/SHIP_SCREEN_UPDATE.md): +1Ch group, +20h..+28h the camera mover's
 // world position, +2Ch yaw and +30h pitch of its forward row (00521370),
