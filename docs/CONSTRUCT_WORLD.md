@@ -414,3 +414,102 @@ device-lost ending the rules say not to reject, and its mission rows are complet
 
 **Verdict: ON.** The walk, the tests and the record map are the image's. The squadron arm stays
 unreachable until list 24 exists (the contract in section 11).
+
+## 13. Part 7: four gated fan-out bodies (`kGatedFanoutBodiesBound`, committed OFF), and the 00925F20 plan
+
+Packet `cc9_construct_world_p7`. Ghidra was read only. `session+F4h` is `game+1FE4h`
+(`docs/SESSION_MESSAGE_DISPATCH.md`). It is 0 in this single-player host, and each body's
+single-player arm is what is bound.
+
+| row | body | single-player arm (V) | binding |
+| --- | --- | --- | --- |
+| 9 | 00778450 `BSP_Session_PumpStep` | 0077845B sets `00F876A1`. The countdown at `+278h` runs only while above 0.0 (00778462). The session constructor arms it to -1.0 (0076EE67, `[00D7A260]`), and only the 0076FE47 arm of `BSP_Session_SetMode` writes 2.0 (`00CE3958`), so its expiry branch (delete `+188h`/`+18Ch`, re-arm) is not taken. It then calls `[00F8A2FC]->vtable[5Ch](step)` at 007784F6. With `+F4h` clear it calls **0076C600 at 00778542**, the loopback-queue drain. **Correction:** `docs/FIXED_STEP_FANOUT.md` row 9 omits this else arm. | concrete. The countdown is held at -1.0. The two calls are named records: `Session::global_object_step_00f8a2fc` (the object is not built here) and `Session::drain_loopback_queue_0076c600`. The only loopback messages this host posts are the kind-8Fh pass-side ones. The ship-AI host delivers those at the start of its controller step (`kShipPassSideMessageBound`), which is the same order: after the pump, before the world tick. |
+| 10 | 0077EC20 `BSP_Replication_ApplyPendingEntityCreates` | 0077EC23 `CMP [00F871A8],0`, and `JE` to the return. The list is filled only by 0076C600's entity-create arm (00780670 category 47h). | concrete. No host path posts an entity-create message, so the count is 0. |
+| 11 | 00874C90 `BSP_TickRegistry_FlushPendingGroups` | 00874C95: the head `00E0B6D8` equals the sentinel `00E0B704`, and `JE 00874CDE`, which resets the headers. The list is filled only by 00875890. | concrete over the empty list. No host path runs 00875890 (`src/game_hosts_fixed_step.cpp`, fact 2). |
+| 13 | 0076FFC0 `BSP_Session_FlushOutboundStep` | 0076FFC3 `CMP [ESI+F4h],0`, then 0076FFCA `JE` to the restore of `00F876A1`. Every outbound call, and the end-of-mission request `BSP_Game_RequestState(10h)`, sits under it. | concrete: nothing to send. |
+
+**Outputs and their readers.** In single player the only output is the loopback drain. It
+delivers queued local messages to their entities through 00780670, and the host's one message
+kind is already delivered by the ship AI. No other body produces anything. So nothing new can
+reach gameplay.
+
+**Predictions** (written before the pairs; the same tree, switch only, both variables set):
+
+| row | USN04 4700/4500 OFF -> ON | USN02 9200/9000 OFF -> ON |
+| --- | --- | --- |
+| `FixedStepFanout::pump_session`, `apply_pending_entity_creates`, `flush_tick_registrations`, `flush_outbound_session` | UNIMPLEMENTED 4,500 each -> concrete 4,500 | 9,000 -> concrete 9,000 |
+| `Session::global_object_step_00f8a2fc`, `Session::drain_loopback_queue_0076c600` | absent -> 4,500 records each | absent -> 9,000 each |
+| `FixedStepFanout::init_pending_entities` | 4,500 records, unchanged | 9,000, unchanged |
+| `summary fixed step body` concrete / records | 40,500 / 27,000 -> 58,500 / 9,000 | 81,000 / 54,000 -> 117,000 / 18,000 |
+| every other native row, per-entity rows, death rows, gunnery and summary lines | identical, zero clock offset | identical |
+
+### 00925F20 `SEntity_InitAll`: read and plan (not bound)
+
+**What it does** (`__fastcall void(char)`, body 00925F20..0092638A). It is guarded by the count
+`00F899D4` and walks the circular pending-entity list at `00F899D0` (node next `+0h`, prev `+4h`,
+entity `+8h`):
+- **Pass A**, 00925FC4..00926062: the name accessor `[vt+10h]`, progress through 0057C1A0, then
+  **`[vt+9Ch]`** at 0092604E. That is the Lua `thisTable` attach, 00928A00 by default. It is the
+  only call through slot 39 in the image.
+- **Pass B**: **`[vt+A0h]`** at 0092610A.
+- **Pass C**: **`[vt+A4h]`** at 00926194, then the spawn-descriptor start branch. With the
+  descriptor `entity+C0h` of kind 2 and byte `[[+C0h]+8h]+3Ch`, it sets `entity+5Ch` and calls
+  `[vt+68h]` or `[vt+6Ch]` with 0. Then it walks the `+48h`/`+44h` child chain through 00922F30
+  or 00922F80 with 1.
+- **Pass D**: `[vt+5Ch](2)` gates 0077F090.
+- **Pass E**: it destroys `entity+C0h` through its slot 0 with 1 and nulls it.
+- **The end.** The list is emptied and the count zeroed at 00926335..00926365. `00F899A5` is set
+  across passes B and C.
+
+**Callers (rel32 census, 15 sites).**
+- The fixed-step row 12 at 00875EA2.
+- `BSP_Game_RunExtraFixedStep` at 00874D79, reached from the Lua Spawn, GenerateObject and
+  LaunchAirBaseSlot bindings.
+- Synchronous calls after:
+  - the scene file read: 0046EB4B, 0046EB88, 0046EBC6, 0046ED0F;
+  - `BSP_SceneDatabase_CreateEntityByName` (0046DBE8, the GenerateObject path);
+  - `BSP_SceneDatabase_CreateHiddenEntityAt` (0046DEDD);
+  - `BSP_SpawnRequest_CreateMembers` (0094879A);
+  - 00467370, 0046B730 (twice), 00898610, 0089E3C0 and 00927610.
+
+So the fixed-step row finds work only for entities built inside a step without one of those
+calls. Examples are the planes of a squadron that an air-ops launch or 007F4580 spawns during the
+world tick, and projectiles that are entities.
+
+**What the host does today.** `src/game_hosts_lua.cpp` covers pass A alone, at creation time:
+- `GenerateObject` calls `attach_created_entity_00928a00` right after
+  `create_unit_from_scene_record_0046db4b` (about line 2153). The image does the same through
+  0046DBE8 -> 00925F20.
+- `attach_wing_member_tables` (about line 2641) attaches each wing member of an air-ops squadron
+  at creation. The image does it at the next row 12, in the same fixed step.
+
+Passes B to E have no host counterpart at all. What `[vt+A0h]`, `[vt+A4h]`, the start branch and
+0077F090 do per class is unread.
+
+**Where the two differ.**
+- **Order.** The image runs A over the whole list, then B, then C. The host runs A per entity as
+  it is made.
+- **Timing.** An air-ops wing is attached at 006C5050 in the host. The image attaches it at the
+  next row 12 of that fixed step, at most one step later.
+- **Coverage.** B to E are missing.
+
+**Units it would affect in the two missions** (`local\cw_on_*.log`):
+- **USN04:** the 4 air-ops launches (Lexington-class01 and Yorktown-class01, sqn01 to sqn04, 3
+  wings each). The 16 `GenerateObject` squadrons and the 16 SpawnNew units already get the
+  synchronous call in the image, so for them only passes B to E would add anything.
+- **USN02:** no launch, no GenerateObject squadron, no SpawnNew unit, so only B to E on the
+  load-time scene entities. Those were already initialised by the scene-read calls, so the row
+  would find an empty list.
+
+**Plan for the successor** (packet `cc9_seentity_initall`):
+1. Read `[vt+A0h]`, `[vt+A4h]` and the start branch for the plane, squadron and ship classes.
+   Read 0077F090.
+2. Give the host a pending-entity list, the image's `00F899D0`. A unit enters it at creation
+   (the units host's `create_units`, owned by cc9-plane-release) and leaves it at InitAll.
+3. Run 00925F20 at all four call routes: fixed-step row 12 in `src/game_hosts_fixed_step.cpp`
+   (free); GenerateObject and SpawnNew in `src/game_hosts_lua.cpp` (free); air-ops launch in
+   `src/game_hosts_script_orders.cpp`. Retire `attach_created_entity_00928a00`'s creation-time
+   call and `attach_wing_member_tables` in favour of pass A.
+4. Pairs: USN04 4700/4500 and E2, where launches and GenerateObject happen. USN02 would stay
+   identical. Predict the `thisTable` attach counts unchanged (pass A), and each B to E arm by
+   class.
