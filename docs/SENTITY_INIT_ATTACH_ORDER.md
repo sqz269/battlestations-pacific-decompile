@@ -819,3 +819,18 @@ Worker cc9-init-passes, 2026-09-27. Ghidra was read only.
   ±2, and gameplay is identical.
 - **If a gameplay row moves,** the likely cause is `resolve_plane_squadron_members`, which now
   runs before ship motion in the frame instead of after it. The switch stays OFF.
+
+### 12.5 Pairs and verdict
+
+- **The runs.** The binaries are `local\bin\dt_off` (the committed OFF, a909d98dd) and
+  `local\bin\dt_on` (flipped locally, then reverted). Their SHA-256 prefixes differ:
+  `6ec7c4a94dbe` and `5256240b14b9`. `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1` were
+  set. All four logs have the fit line, the immediate present interval and the final COM release,
+  and each module directory is under `local\bin\dt_*` in this tree.
+- **What `tools/pair_diff.py` reports.** It exits 0 on both pairs: identical apart from noise.
+  The native tables are equal row for row. `AirOps::update` is 4,500 calls on both sides of
+  USN04, so the ON tick ran once per fixed step from the job waves, where OFF ran it once per
+  frame from the timers.
+- **The lag itself is not shown** by these pairs. See 12.3 for the run that would show it.
+
+**Every prediction held. Verdict: ON.**

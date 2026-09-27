@@ -148,8 +148,9 @@ inline constexpr bool kRunExtraFixedStepBound = true;
 // in the same step. True: the deck tick runs once per fixed step right after
 // the job waves, and the per-frame script timers no longer run it. False: the
 // script timers run it after the frame's fixed step, and such a launch
-// attaches one step later.
-inline constexpr bool kDeckTickInFixedStepBound = false;
+// attaches one step later. ON by the verdict: identity on USN04 and USN02
+// (section 12.5).
+inline constexpr bool kDeckTickInFixedStepBound = true;
 
 // The fixed-step host's 00874D00, for the Lua routes that call it.
 class GameExtraFixedStepRunner {
