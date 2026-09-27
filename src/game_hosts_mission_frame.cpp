@@ -137,6 +137,17 @@ constexpr bool kWorldActiveByteBound = true;
 // the verdict: USN04 and USN02 pairs identical but for the scan row (section 12).
 constexpr bool kScanProximityBound = true;
 
+// Packet cc9_scan_units_entries (docs/CONSTRUCT_WORLD.md section 18). True: the
+// two stand-ins above are retired with the units host's entries from
+// cc9_units_contracts. The part test is the image's 009779FB..00977A03,
+// (+34Ch - +348h) >> 2 >= 2, through unit_part_descriptor_count; list 24 is
+// world_list_entry(24, i), one node per plane squadron, whose own live bytes,
+// side and 00803CE0 rating are tested (00977A36..00977A74) and whose leader
+// [+3D0h] (squadron_list_24_leader) gives the position (00977A76); the squared
+// distance is summed in the x87 order, (dx^2 + dy^2) + dz^2, and stored to a
+// float before the double compare (00977AC8..00977AEA). False: the stand-ins.
+constexpr bool kScanProximityUnitsEntriesBound = false;
+
 // Packet cc9_construct_world_p8 (docs/CONSTRUCT_WORLD.md section 15). True:
 // 00481640's call is the walk 00487270 itself: the std::list whose sentinel is
 // group+10h (group = [TrafficConfig+8h], the 20h object 0049D690 builds), each
@@ -232,6 +243,10 @@ struct GameMissionFrameHost::Impl {
     };
     std::map<std::size_t, ProximityRecord> proximity_records;
     unsigned long long proximity_ships_scanned{0};
+    // Packet cc9_scan_units_entries.
+    unsigned long long proximity_part_rejects{0};
+    unsigned long long proximity_list24_nodes{0};
+    unsigned long long proximity_list24_no_leader{0};
     unsigned long long proximity_records_created{0};
     unsigned long long proximity_hits{0};
     unsigned long long proximity_expiries{0};
@@ -433,12 +448,55 @@ public:
             // 009779B8..009779EB: +5Ch set, +5Dh, +60h, +5Eh clear (0043F080's
             // four bytes), then +348h non-null and (+34Ch - +348h) >> 2 > 1.
             if (!units.unit_alive_and_visible(ship)) continue;
-            // SUBSTITUTION: the part-descriptor table size has no units-host
-            // entry; every list-6 entity (the eight ship kinds that register
-            // id 6) is taken to carry more than one part.
+            if constexpr (kScanProximityUnitsEntriesBound) {
+                // 009779E7..00977A03: +348h non-null and (+34Ch - +348h) >> 2
+                // not below 2.
+                if (units.unit_part_descriptor_count(ship) < 2) {
+                    ++owner_.proximity_part_rejects;
+                    continue;
+                }
+            }
+            // With the switch off, SUBSTITUTION: every list-6 entity (the eight
+            // ship kinds that register id 6) is taken to carry more than one part.
             ++owner_.proximity_ships_scanned;
             const int side = units.unit_side_0054(ship);
             bool hit = false;
+            if constexpr (kScanProximityUnitsEntriesBound) {
+                // 00977A25 MOV EBP,[ECX+13Ch]: list 24 from its head, one node
+                // per plane squadron.
+                const std::size_t nodes = units.world_list_size(24);
+                for (std::size_t node = 0; node < nodes && !hit; ++node) {
+                    const std::size_t squadron = units.world_list_entry(24, node);
+                    if (squadron >= units.count()) break;
+                    ++owner_.proximity_list24_nodes;
+                    // 00977A36..00977A58: the node's own four live bytes.
+                    if (!units.unit_alive_and_visible(squadron)) continue;
+                    // 00977A5E..00977A64: the sides differ.
+                    if (units.unit_side_0054(squadron) == side) continue;
+                    // 00977A6A..00977A74: 00803CE0(ECX = ship side, EDX = node) == 1.
+                    if (relation_00803ce0(side, squadron) != 1) continue;
+                    // 00977A76 MOV ESI,[ESI+3D0h]: the flight leader.
+                    const std::size_t leader = units.squadron_list_24_leader(squadron);
+                    if (leader >= units.count()) {
+                        // SUBSTITUTION: the image reads [+3D0h] unguarded; this
+                        // process answers "none alive" and the node is skipped.
+                        ++owner_.proximity_list24_no_leader;
+                        continue;
+                    }
+                    float sx = 0.0f, sy = 0.0f, sz = 0.0f, qx = 0.0f, qy = 0.0f, qz = 0.0f;
+                    units.unit_position_00fc(ship, sx, sy, sz);
+                    units.unit_position_00fc(leader, qx, qy, qz);
+                    // 00977A8C..00977AB8: each difference is stored to a float.
+                    const float dx = sx - qx, dy = sy - qy, dz = sz - qz;
+                    // 00977AC8..00977AD8: (dx*dx + dy*dy) + dz*dz on the x87 at
+                    // 53-bit precision, FSTP to a float.
+                    const double wide = (static_cast<double>(dx) * dx
+                        + static_cast<double>(dy) * dy) + static_cast<double>(dz) * dz;
+                    const float d2 = static_cast<float>(wide);
+                    // 00977AE0 FLD double [00D09FE8] / FCOMI / JA: 4.0e6 > d2.
+                    if (4.0e6 > static_cast<double>(d2)) hit = true;
+                }
+            } else {
             // 00977A25 MOV EBP,[ECX+13Ch]: list 24, the plane squadrons.
             // SUBSTITUTION: no host registrar fills list 24, so the walk has no
             // entry (docs/CONSTRUCT_WORLD.md section 11, contract for the units
@@ -459,6 +517,7 @@ public:
                     hit = true;
                     break;
                 }
+            }
             }
             // 00977B04 ADD ECX,184h; CALL 00975D00: the record, created with the
             // default deadline -1.0e10 (00CE4ADC) when absent.
@@ -2381,9 +2440,12 @@ void GameMissionFrameHost::report(long requested_frames) {
         "(packet cc9_construct_world, [game+19CCh]+4ACh)", kWorldActiveByteBound ? 1 : 0,
         host.world.world_gate.enabled ? 1 : 0, host.frames.traffic_walks);
     host.log.notef("summary mission proximity scan bound=%d scans=%llu ships=%llu records=%llu "
-        "hits=%llu expiries=%llu list24=stand-in-empty (packet cc9_construct_world_p3, 00977990)",
+        "hits=%llu expiries=%llu units_entries=%d part_rejects=%llu list24_nodes=%llu "
+        "list24_no_leader=%llu (packets cc9_construct_world_p3, cc9_scan_units_entries, 00977990)",
         kScanProximityBound ? 1 : 0, host.warning_scans, host.proximity_ships_scanned,
-        host.proximity_records_created, host.proximity_hits, host.proximity_expiries);
+        host.proximity_records_created, host.proximity_hits, host.proximity_expiries,
+        kScanProximityUnitsEntriesBound ? 1 : 0, host.proximity_part_rejects,
+        host.proximity_list24_nodes, host.proximity_list24_no_leader);
     host.log.notef("summary mission warning manager bound=%d scans=%llu torpedo_reports=%llu "
         "accepted=%llu effect_calls=%llu effects=%llu deadline_expiries=%llu loss_reports=%llu "
         "loss_side0=%llu loss_side1=%llu loss_other=%llu (packet cc9_warning_manager_tick; "

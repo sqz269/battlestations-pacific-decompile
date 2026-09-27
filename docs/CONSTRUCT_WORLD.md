@@ -852,3 +852,50 @@ All six logs show the fit line, the final COM release, and a module directory in
 
 **Verdict: ON.** `kSEntityInitAllBound` is set true. Passes B, C and E stay named records, and
 their per-class bodies are the successor's.
+
+## 18. Part 10: the proximity scan's two stand-ins retired (`kScanProximityUnitsEntriesBound`, committed OFF)
+
+Packet `cc9_scan_units_entries`, worker cc9-world-init, on main 297fcf7fe. The units entries
+come from cc9_units_contracts (a3c7096e1). Ghidra was read only.
+
+**What 00977990 tests, per list-24 node (V, 00977A25..00977AF9).**
+- **Where each test reads.** The walk starts at `[world+13Ch]` and steps through the node's
+  `+4h`. The node's entity (`+8h`) is the squadron:
+  - its own four live bytes (00977A36..00977A58);
+  - its own side against the ship's (00977A5E..00977A64);
+  - `00803CE0(ECX = ship side, EDX = squadron) == 1` (00977A6A..00977A74).
+- **Position.** Only the position comes from the flight leader `[squadron+3D0h]` (00977A76),
+  after its pose refresh 00414DB0.
+- **Distance.** The squared distance is `(dx*dx + dy*dy) + dz*dz` on the x87, with each
+  difference stored to a float first. The sum is stored to a float at 00977AD8 and compared
+  against the double 4.0e6 at 00D09FE8. The old host code summed the other way round in float,
+  which could only matter at the rounding edge.
+- **The part test** is 009779E7..00977A03: `+348h` non-null and `(+34Ch - +348h) >> 2` not below
+  2.
+
+**The binding** (`src/game_hosts_mission_frame.cpp`):
+- The part test becomes `unit_part_descriptor_count(ship) < 2`, which rejects the ship.
+- List 24 is `world_list_entry(24, i)`. The side, live bytes and rating are read on that unit.
+- The position comes from `squadron_list_24_leader(unit)`.
+- **Substitution:** the image reads `[+3D0h]` unguarded, but when the host answers "none alive"
+  the node is skipped and counted in `list24_no_leader`.
+- The switch off keeps the two stand-ins. The summary line gains `units_entries`,
+  `part_rejects`, `list24_nodes` and `list24_no_leader`.
+
+### Predictions (written before the pairs; the same tree, switch only, both variables set)
+
+- **Part test.** It passes for every ship: the plane-release census counts 18/18 and 32/32 ships
+  with more than one section. So `part_rejects=0`, and `ships` and `records` are unchanged
+  against the OFF run of the same tree.
+- **USN04 4700/4500.**
+  - `list24_nodes` goes from 0 to a positive count. List 24 holds up to 21 nodes, pushed at
+    0.00 s, 25.1 to 30.1 s and 105.1 to 106.6 s. It is walked for each scanned ship until the
+    first hit.
+  - `hits` goes above 0, because Japanese strikes close to within 2 km of Allied ships and are
+    identified. `expiries` may rise with them.
+  - `list24_no_leader` is small, 0 until a squadron loses every plane.
+- **USN02 9200/9000.** No squadron registers on list 24 in this scene, so `list24_nodes=0`,
+  `hits=0` and the whole log is identical apart from the summary fields.
+- **Gameplay identical on both.** The hit arm only spawns a render-side point effect and holds
+  a host record that nothing else reads. Deaths, hit records and releases do not move. The new
+  `WarningManager::proximity_effect_0096c070` record calls appear only when hits do.
