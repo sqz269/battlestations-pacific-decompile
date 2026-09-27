@@ -601,6 +601,11 @@ public:
     bool store_scene_node_flags(const void* identity, const bsp::SceneNodeFlags& flags) noexcept;
     bool unit_pending_destroy_0060(std::size_t index, bool& out) const noexcept;
     bool store_pending_destroy_0060(const void* identity, bool pending) noexcept;
+    // Packet cc9_ship_sink_descent: the ship wreck handler 00824B60's sink block
+    // 00824FE5..00825086 (the leak redistribution 0074EC50, inertia x2 and the
+    // two dampings), run by the row-15 flush at vt[7Ch]. False when the switch is
+    // off, the identity is not a unit, or its leak model was never built.
+    bool ship_wreck_sink_00824fe5(const void* identity);
     // Instance vtable+5Ch dispatch using the class selected by VehicleClass.Type
     // and the compiled predicates in unit_kind_query.hpp. Missing/unrecognized
     // identity and invalid indices answer false. docs/GAME_UNIT_KIND_BINDING.md.

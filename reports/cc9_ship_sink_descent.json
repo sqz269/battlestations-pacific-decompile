@@ -1,0 +1,126 @@
+{
+  "packet": "cc9_ship_sink_descent",
+  "doc": "docs/CONSTRUCT_WORLD.md",
+  "calls": [
+    {
+      "address": "0081F15F",
+      "native": "0074E7B0",
+      "function": "0081ED40",
+      "note": "leak manager constructor, +38h 200.0, +3Ch 60.0"
+    },
+    {
+      "address": "00823780",
+      "native": "0074F490",
+      "function": "00822C20",
+      "note": "leak manager init: count 6, capacity, rate cap, points"
+    },
+    {
+      "address": "00824FEB",
+      "native": "0074EC50",
+      "function": "00824B60",
+      "note": "wreck handler redistributes the leak rates"
+    },
+    {
+      "address": "0074ECA5",
+      "native": "00BD2F10",
+      "function": "0074EC50",
+      "note": "one U(0,1) draw per leak, ECX = 1"
+    },
+    {
+      "address": "0082221B",
+      "native": "0074E860",
+      "function": "00821E80",
+      "note": "92h MT_SHIP_SINK arm loads the rates"
+    },
+    {
+      "address": "00933A01",
+      "native": "0074F930",
+      "function": "009329C0",
+      "note": "leak tick in the hydrodynamic tail"
+    },
+    {
+      "address": "00933A52",
+      "native": "0074F2E0",
+      "function": "009329C0",
+      "note": "leak heel torque"
+    }
+  ],
+  "coverage": [
+    {
+      "routine": "0074F490",
+      "coverage": "complete for count 6 (the unrolled 4-wide arm 0074F5A4.. is not reached)"
+    },
+    {
+      "routine": "0074EC50",
+      "coverage": "complete; the 92h routing is applied at once"
+    },
+    {
+      "routine": "00824B60",
+      "coverage": "partial: 00824FE5..00825086 bound; 00824B60..00824FE4 and 0082508E.. not bound"
+    },
+    {
+      "routine": "00937C90",
+      "coverage": "partial: 00937DBB..00937F74 (controller+84h) evaluated over the host's element list"
+    }
+  ],
+  "substitutions": [
+    {
+      "what": "GameSettings +400h MaxLeakPercent and +404h EnnyiVizEsKeszPercent",
+      "is": "0.02 and 0.2, this installation's shipglobals.lua lines 383 and 381",
+      "where": "src/game_hosts_units.cpp kMaxLeakPercentSubstitute / kEnnyiVizEsKeszPercentSubstitute"
+    },
+    {
+      "what": "00BD2F10 draws in 0074EC50",
+      "is": "the units host keyed release stream, key <ship>#leak",
+      "where": "ship_wreck_sink_block_00824fe5"
+    },
+    {
+      "what": "message 92h routing",
+      "is": "rates applied at once",
+      "where": "ship_wreck_sink_block_00824fe5"
+    },
+    {
+      "what": "the buoyancy element list feeding controller+84h",
+      "is": "the host's eight stand-in elements",
+      "where": "build_leak_model_0074f490"
+    },
+    {
+      "what": "0074F930 health argument",
+      "is": "1.0 (read only by the cap while +5Dh is clear; live rates are zero)",
+      "where": "ShipHydroBinding::leak_tick_0074f930"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "008110F0 is the sink to bind for a wreck's descent (packet brief)",
+      "is": "008110F0 is the Lua sink entry (Destroy and two zero stores); the descent is the leak manager flooding after 0074EC50 plus the hull body under the element buoyancy",
+      "evidence": "008110F0 body; 00824FE5 call; 0074F930 +5Dh cap gate"
+    }
+  ],
+  "switches": [
+    {
+      "name": "GameUnitsHost::Impl::kShipSinkDescentBound",
+      "state": "ON",
+      "pair": "local/SD_OFF_USN02.log vs local/SD_ON_USN02.log (exit 3), local/SD_OFF_E2.log vs local/SD_ON_E2.log (exit 1)"
+    }
+  ],
+  "failed_predictions": [
+    {
+      "prediction": "neighbour mean_count 27..31.9",
+      "is": "25.48",
+      "evidence": "summary mission ship ai traffic setback, SD_ON_USN02.log"
+    },
+    {
+      "prediction": "gameplay moves only after the first kill (~105 s)",
+      "is": "Kawakaze death 113.10 -> 111.15 s (first damage 104.05 -> 102.10 s), before the first kill at 127.90 s",
+      "evidence": "pair_diff death rows"
+    },
+    {
+      "prediction": "controlled distance not predicted",
+      "is": "DeRuyter 316.14 -> 711.72 m while sinking",
+      "evidence": "pair_diff gameplay rows"
+    }
+  ],
+  "no_ghidra_function": [],
+  "ledger_names_added": []
+}

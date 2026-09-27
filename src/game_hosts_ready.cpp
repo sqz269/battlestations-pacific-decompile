@@ -583,6 +583,9 @@ void GameStepSubsystemsHost::flush_pending_entity_queues_009273a0() {
                 // 009263AE JMP [vt+7Ch], the ship's wreck handler 00824B60: the
                 // gunnery death route already does its physics writes.
                 log_.unimplemented("EntityQueues::wreck_handler_vtable7c", "00824b60");
+                // Packet cc9_ship_sink_descent: its sink block 00824FE5..00825086.
+                if (units_->ship_wreck_sink_00824fe5(identity))
+                    log_.implemented("EntityQueues::wreck_sink_block", "00824fe5");
                 ++summary_.ship_destroy_flags;
             }
         }
