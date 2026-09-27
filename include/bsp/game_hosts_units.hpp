@@ -76,7 +76,9 @@ namespace bsp::game {
 // half (marking those pushes as wing members, retiring the wing append) is
 // cc9-movie-camera's and flips with this one. False: the creator batches build
 // the wing, as before.
-inline constexpr bool kWingConstructionInPassABound = false;
+// ON since the joint flip (docs/CONSTRUCT_WORLD.md 30.7), by the lead's ruling
+// on 30.6's pairs.
+inline constexpr bool kWingConstructionInPassABound = true;
 
 class GameHostLog;
 class GameMissionLuaHost;
