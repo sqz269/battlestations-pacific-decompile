@@ -73,6 +73,15 @@ inline constexpr bool kWingConstructionLuaBound = true;
 // the units host's two hooks for it as for a route squadron.
 // ON since the pairs (docs/SENTITY_INIT_ATTACH_ORDER.md 19.5).
 inline constexpr bool kLoadTimeSquadronHooksBound = true;
+// Packet cc9_load_wing_squadron_id (docs/SENTITY_INIT_ATTACH_ORDER.md 20).
+// 007F4580 stores the squadron in every plane it constructs (007F4B49 MOV
+// [EBX+9D4h],ESI), and the plane's pass C 007C9770 reads it at 007C97E8 to
+// write thisTable[plane].SquadronID. A scene squadron's wing is built by
+// create_units, so its planes reach the load walk as plain nodes. When set,
+// the load walk marks members 1.. of each scene squadron record as that
+// squadron's wing, as the mission-time pass A marks a hook-built wing.
+// ON since the pairs (docs/SENTITY_INIT_ATTACH_ORDER.md 20.4).
+inline constexpr bool kLoadWingSquadronIdBound = true;
 
 class GameHostLog;
 class GameVfsHost;
@@ -320,6 +329,8 @@ struct GameMissionLuaSummary {
     unsigned long long load_init_all_pushes{0};
     // Packet cc9_load_time_squadron_hooks: load nodes marked squadrons.
     unsigned long long load_squadron_nodes{0};
+    // Packet cc9_load_wing_squadron_id: load wing planes marked.
+    unsigned long long load_wing_marked{0};
     // Packet cc9_pending_list_dedup step 3: route and load-walk calls that found
     // create_units's node (retired plain pushes, squadron annotations), and the
     // ones that found none and pushed.
