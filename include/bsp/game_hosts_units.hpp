@@ -617,6 +617,16 @@ public:
     //   moveto (00E08F68) toward the home base +404h when one is set.
     void on_squadron_pass_a_construct_wing(std::size_t squadron_index);
     void on_squadron_pass_c_initial_command(std::size_t squadron_index);
+    // Packet cc9_scene_home_base_key (docs/CONSTRUCT_WORLD.md section 29).
+    // CONTRACT for the owner that builds a plane squadron from a scene row
+    // (PlaneSquadronGen, class 18h): call this once, before the squadron's
+    // InitAll pass C, with the row's `HomeBase` property as authored (the
+    // RFort's name string, "" when empty or absent). Pass C (007F4BA0) reads the
+    // bag key `HomeBase` (00CF8820) at 007F4C43, resolves a non-empty name
+    // through 00925A90 and hands it to 007F1C00. An air-ops launch does not need
+    // this: its bag's `HomeBase` is the deck owner, which the host finds from
+    // the deck slot that launched the squadron.
+    void set_squadron_scene_home_base(std::size_t squadron_index, const std::string& home_base);
     // Instance vtable+5Ch dispatch using the class selected by VehicleClass.Type
     // and the compiled predicates in unit_kind_query.hpp. Missing/unrecognized
     // identity and invalid indices answer false. docs/GAME_UNIT_KIND_BINDING.md.

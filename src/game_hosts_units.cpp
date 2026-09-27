@@ -1385,6 +1385,11 @@ struct GameUnitSlot {
     // and 009329C0 adds it to the hull mass at 00932B78; an undamaged hull
     // holds it at zero.
     float leak_water_mass_10fc{0.0f};
+    // Packet cc9_scene_home_base_key. The scene row's `HomeBase` string as the
+    // scene-contents owner hands it over (set_squadron_scene_home_base), and the
+    // home base 007F1C00 stored at squadron+404h from it at pass C, by name.
+    std::string scene_home_base_key;
+    std::string scene_home_base_404;
 
     // unit+C4h is the most-derived instance class selected by VehicleClass.Type.
     // -1 means its identity is unresolved; it is not a native class-id stamp.
@@ -3838,6 +3843,19 @@ struct GameUnitsHost::Impl {
     // USN02 wrecks reach -200 m 106..117 s after +5Dh (91..98 s on the
     // stand-in); E2 gameplay moves through live flotation (51 vs 52 deaths).
     static constexpr bool kShipBuoyancyElementsBound = true;
+    // Packet cc9_scene_home_base_key, docs/CONSTRUCT_WORLD.md section 29. ON:
+    // squadron pass C (007F4BA0) takes a scene row's `HomeBase` (00CF8820, read
+    // at 007F4C43): a non-empty name resolves through 00925A90 (the host: the
+    // air-ops deck and the unit of that name), 007F1C00 at 007F4CFA stores it
+    // at +404h and pushes the squadron onto that deck's campaign queue
+    // (006CC7B0 at 007F1C69), and the initial command's moveto arm then targets
+    // it. OFF: only an air-ops launch has a home base (the deck search).
+    static constexpr bool kSceneHomeBaseBound = false;
+    unsigned long long scene_home_keys_set = 0;
+    unsigned long long scene_home_resolved = 0;
+    unsigned long long scene_home_unresolved = 0;
+    unsigned long long scene_home_not_airbase = 0;
+    unsigned long long scene_home_queue_pushes = 0;
     std::map<int, ClassBuoyancyList> class_buoyancy_lists;
     unsigned long long buoyancy_lists_image = 0;
     unsigned long long buoyancy_lists_stand_in = 0;
@@ -18019,6 +18037,75 @@ void GameUnitsHost::on_squadron_pass_c_initial_command(std::size_t squadron_inde
         // controller +348h (SUBSTITUTION, labelled).
         Impl& host = *impl_;
         if (squadron_index >= host.slots.size()) return;
+        if constexpr (Impl::kSceneHomeBaseBound) {
+            // Packet cc9_scene_home_base_key: 007F4C40..007F4CFA, before the
+            // command test. `HomeBase` (00CF8820) of type 5 with a non-empty
+            // name -> 00925A90 by name (007F4C85); no `SpawnPoint` override
+            // (00CE56B8, 007F4C95), which no scene row in this installation
+            // authors; the flag is `State` <= 1 (007F4C12..007F4C3C), and no
+            // scene row authors `State`, so it is the default 7 -> 0. Then
+            // 007F1C00(home, flag) at 007F4CFA.
+            GameUnitSlot& squadron = *host.slots[squadron_index];
+            const std::string& key = squadron.scene_home_base_key;
+            if (!key.empty()) {
+                bsp::AirOpsDeckRegistry& decks = bsp::air_ops_decks();
+                bsp::AirOpsDeck* deck = nullptr;
+                for (std::size_t d = 0; d < decks.size(); ++d) {
+                    if (decks.name_at(d) == key) {
+                        deck = decks.mutable_at(d);
+                        break;
+                    }
+                }
+                bool named_unit = false;
+                for (const auto& owned : host.slots) {
+                    if (owned->row.name == key) {
+                        named_unit = true;
+                        break;
+                    }
+                }
+                if (deck == nullptr && !named_unit) {
+                    // 00925A90 answers 0: 007F1C00(0) keeps +404h null.
+                    ++host.scene_home_unresolved;
+                    host.log.notef("squadron scene home base: squadron=%s HomeBase=\"%s\" "
+                        "names no entity; +404h stays null (00925A90 -> 0, packet "
+                        "cc9_scene_home_base_key)", squadron.row.name.c_str(), key.c_str());
+                } else if (deck == nullptr) {
+                    // 007F1C40 006BCD20 answers null for an entity that is not
+                    // an MMothership (9) or MAirfield (45h), and 007F1C69 then
+                    // calls 006CC7B0 on it: the original faults. REFUSAL,
+                    // labelled: the host keeps +404h null.
+                    ++host.scene_home_not_airbase;
+                    host.log.notef("squadron scene home base: squadron=%s HomeBase=\"%s\" "
+                        "has no air-operations block; the image would fault in "
+                        "006CC7B0, the host keeps +404h null (packet "
+                        "cc9_scene_home_base_key)", squadron.row.name.c_str(), key.c_str());
+                } else {
+                    squadron.scene_home_base_404 = key;
+                    ++host.scene_home_resolved;
+                    // 007F1C4B: [00E188A8]+1FE4h is zero in this campaign
+                    // process, so 006CC7B0 (007F1C69) queues the squadron on the
+                    // block+74h list 006C58A0 drains. The flag is 0, so +408h is
+                    // not written and 007ED6E0 is not called (007F1C74).
+                    // SUBSTITUTION, labelled: +35Ch / +3CCh are the record's
+                    // `Type` and its member count.
+                    const bsp::PlaneSquadronHostRecord* rec =
+                        bsp::plane_squadron_registry().find_by_member_unit(squadron_index);
+                    const std::uint32_t vehicle_class = rec != nullptr
+                        ? static_cast<std::uint32_t>(rec->type_class_id)
+                        : static_cast<std::uint32_t>(squadron.row.type_id);
+                    const std::int32_t count = rec != nullptr
+                        ? static_cast<std::int32_t>(rec->member_units.size()) : 1;
+                    bsp::air_ops_push_assign_queue_006cc7b0(*deck,
+                        static_cast<std::uint32_t>(squadron_index + 1), vehicle_class, count);
+                    ++host.scene_home_queue_pushes;
+                    host.log.notef("squadron scene home base: squadron=%s HomeBase=\"%s\" "
+                        "stored at +404h and queued on its deck (007F1C00 at 007F4CFA, "
+                        "006CC7B0; packet cc9_scene_home_base_key)",
+                        squadron.row.name.c_str(), key.c_str());
+                    host.done("Squadron::set_home_air_base_007f1c00", 0x007f1c00u);
+                }
+            }
+        }
         // 007F4E0C 0071BE40: a current command skips the block.
         if (director_current_command_0071be40(squadron_index) != 0u) {
             ++host.initial_command_skipped_current;
@@ -18058,6 +18145,10 @@ void GameUnitsHost::on_squadron_pass_c_initial_command(std::size_t squadron_inde
             // knows it for an air-ops launch: the deck whose slot launched this
             // squadron (entity id = index + 1) is owned by the home base.
             std::string home;
+            if constexpr (Impl::kSceneHomeBaseBound) {
+                // A scene row's `HomeBase`, stored by 007F1C00 above.
+                home = host.slots[squadron_index]->scene_home_base_404;
+            }
             const std::uint32_t id = static_cast<std::uint32_t>(squadron_index + 1);
             bsp::AirOpsDeckRegistry& decks = bsp::air_ops_decks();
             for (std::size_t d = 0; d < decks.size() && home.empty(); ++d) {
@@ -18109,6 +18200,17 @@ void GameUnitsHost::on_squadron_pass_c_initial_command(std::size_t squadron_inde
             on_water ? "stop" : "moveto", target_name.c_str(), placed);
         host.done("Squadron::initial_command_007f4e9e", 0x007f4e9eu);
     }
+}
+
+void GameUnitsHost::set_squadron_scene_home_base(std::size_t squadron_index,
+    const std::string& home_base) {
+    // Packet cc9_scene_home_base_key: the scene row's `HomeBase` value, held on
+    // the squadron until its pass C reads it (the image keeps the row's bag at
+    // squadron+C0h and reads the key at 007F4C43). Stored in both builds; only
+    // the ON build acts on it.
+    if (squadron_index >= impl_->slots.size()) return;
+    impl_->slots[squadron_index]->scene_home_base_key = home_base;
+    if (!home_base.empty()) ++impl_->scene_home_keys_set;
 }
 
 bool GameUnitsHost::ship_wreck_sink_00824fe5(const void* identity) {
@@ -18624,6 +18726,11 @@ void GameUnitsHost::report() {
             host.initial_command_movetos, host.initial_command_stops,
             host.initial_command_member_orders, host.initial_command_skipped_current,
             host.initial_command_no_home);
+        host.log.notef("summary squadron scene home base bound=%d keys=%llu resolved=%llu "
+            "unresolved=%llu not_airbase=%llu queue_pushes=%llu (007F4C43 / 007F1C00, packet "
+            "cc9_scene_home_base_key)", Impl::kSceneHomeBaseBound ? 1 : 0,
+            host.scene_home_keys_set, host.scene_home_resolved, host.scene_home_unresolved,
+            host.scene_home_not_airbase, host.scene_home_queue_pushes);
         host.log.notef("summary units construction push bound=%d pushes=%llu (00928760 -> "
             "00926BE0, packet cc9_units_push_pending)", Impl::kUnitsPendingPushBound ? 1 : 0,
             host.construction_pushes);

@@ -2105,3 +2105,102 @@ hit is identical (93.00 s).
 own model and class row. The capacity is exactly the closed form, with no fallback on either
 mission. The descent of section 25 is now 106..117 s from first +5Dh to −200 m on USN02, not
 91..98 s. The caveat in section 25 is resolved by this section.
+
+## 29. A scene row's `HomeBase` at squadron pass C (packet `cc9_scene_home_base_key`, `kSceneHomeBaseBound`, committed OFF)
+
+2026-09-27, worker cc9-units3, on main b4687c7a1. Ghidra was read only.
+
+Section 27's initial command knows only the air-ops carrier as a home base. This packet reads
+how the image fills squadron+404h from a scene row.
+
+### How the image sets the home base (V)
+
+Pass C is `007F4BA0`, the same routine whose tail issues the initial command. Before that test it
+reads three keys from the squadron's property bag at +C0h. It proceeds only when the bag's type
+word `[+C0h]+4` is 1 (`007F4C05`). `008F2260` is the key lookup.
+
+| step | site | what |
+| --- | --- | --- |
+| `State` (`00CF8818`) | `007F4C12..007F4C3C` | an integer value (type 0) or the default 7; the flag argument is `State <= 1` |
+| `HomeBase` (`00CF8820`) | `007F4C43..007F4C8A` | a value of type 5 with a non-empty name (`008F0E20`) is looked up by `00925A90`, `BSP_EntityRegistry_FindEntityByName` on `[00E188A8]+19CCh`; the result, possibly 0, is the home |
+| `SpawnPoint` (`00CE56B8`) | `007F4C8C..007F4CF0` | a non-empty name is looked up the same way, **without a null check**; its `[entity+3Ch]` replaces the home and sets the flag when `006BCD20` gives it an air-operations block |
+| `007F1C00` | `007F4CFA` | `(home, flag)`: store +404h behind the observer pair at +3F0h, then queue the squadron on the home's block |
+
+`007F1C00` (`007F1C00..007F1C93`, `RET 8`):
+- A null home clears +408h (`007F1C89`).
+- Otherwise `006BCD20(home, 0)` (`007F1C40`) returns the block: MMothership (9) gives +1188h,
+  MAirfield (45h) gives +72Ch, anything else null.
+- Then `[00E188A8]+1FE4h` chooses the queue:
+  - non-zero: `006CC760`, the spotting queue;
+  - zero: `006CC7B0` (`007F1C69`), the campaign queue at block+74h.
+- On the campaign arm, a set flag writes +408h and calls `007ED6E0`.
+- **There is no null check on the block.** A home that is not an air base faults in the queue
+  call.
+
+The other callers of `007F1C00` are `007F1FE0` and `0089E220`, the `SquadronSetHomeBase` Lua
+binding. Neither reference mission calls the binding: no native row in `local\BU_OFF_E2.log` or
+`BU_OFF_USN02.log`. An air-ops launch's bag carries `HomeBase` = the deck owner (`006C518D` in
+`006C5050`), so a launched squadron comes through the same `HomeBase` read.
+
+### Who authors a `HomeBase` in this installation
+
+There are 259 loose `.scn` files. Every `HomeBase` occurrence was counted:
+
+| value | occurrences | where |
+| --- | ---: | --- |
+| `RFort ""` | 1512 | templates and rows, empty |
+| `R ""` | 610 | empty |
+| `RFort "Landscape 01\MainAirFieldEntity 01"` | 8 | IJN08 only: two `PlaneSquadronGen` rows ("Ki-43 Oscar 01", "Gekko 01") in each of four copies of the scene |
+
+The four IJN08 copies:
+- `COTP-IJN/ijn_08_defend_guadalcanal.scn`, lines 26214 and 26233, 2024-07-13;
+- `ijn/JM/ijn_08_defend_guadalcanal.scn`, the same lines, 2024-07-13;
+- `COTP-IJN/PRCPIJN/ijn_08_defend_guadalcanal.scn`, lines 26768 and 26787, 2024-07-13;
+- `COTP-IJN/PRCPIJN/prcpijn_08_defend_guadalcanal.scn`, the same lines, 2024-08-09.
+
+No scene authors a squadron `SpawnPoint` or `State`. `usn_19_coralus.scn` (USN04) has two
+`HomeBase` lines, both `RFort ""` in its `PlaneSquadronWNavpoint` templates. `usn_2_java.scn`
+(USN02) has none.
+
+### The binding
+
+- **Contract for the scene-contents owner (cc9-ships).** Call
+  `GameUnitsHost::set_squadron_scene_home_base(squadron_index, home_base)` once per squadron
+  built from a `PlaneSquadronGen` row, before its pass C. `home_base` is the row's `HomeBase`
+  name as authored ("" when empty). For a row held back and created later by
+  `GenerateObject` / `SpawnNew`, the key must travel on the spawn-pool entry, as `WingCount`
+  already does (`src/game_hosts_scene_contents.cpp`, the held-back `PlaneSquadronGen` block).
+  The entry stores the key in both builds and counts `keys`.
+- **ON, at pass C before the command test** (`kSceneHomeBaseBound`, `src/game_hosts_units.cpp`,
+  committed OFF), for a non-empty key:
+  - it looks up an air-ops deck of that name and a unit of that name (the host's `00925A90` and
+    `006BCD20`);
+  - **neither:** `unresolved`; +404h stays null, as `00925A90` returning 0 leaves it;
+  - **a unit but no deck:** `not_airbase`, a labelled **REFUSAL**: the image faults in
+    `006CC7B0`, and the host keeps +404h null;
+  - **a deck:** +404h = the name; the squadron is pushed through
+    `air_ops_push_assign_queue_006cc7b0` (the campaign arm, since this process asserts a campaign
+    session); `resolved` and `queue_pushes` are counted.
+  - The initial command's moveto arm then prefers this home over the deck-slot search.
+- **SUBSTITUTIONS, labelled:**
+  - the squadron's +35Ch and +3CCh for the queue are the registry record's `Type` and its
+    member count;
+  - an airfield without a unit slot has no object target, so the moveto arm counts `no_home`
+    and issues nothing;
+  - `SpawnPoint` and `State` are not read: no scene row authors them, and the launch bag's
+    values stay the air-ops path's.
+- **Census:** `summary squadron scene home base` (bound, keys, resolved, unresolved,
+  not_airbase, queue_pushes), in both builds.
+
+### Predictions (written before the runs)
+
+Same tree, the switch only, both variables set. Nothing calls the entry until the contract is
+wired, and neither mission authors a non-empty `HomeBase`, so the two builds must be identical.
+
+| row | USN04 4700/4500 | USN02 9200/9000 |
+| --- | --- | --- |
+| `summary squadron scene home base` | `bound` 0 -> 1; keys 0, resolved 0, the other counts 0 | the same |
+| initial command `movetos` / `no_home` | unchanged (4 / 16) | unchanged (0 / 0) |
+| deaths, hit records, releases, every per-entity row | identical | identical |
+| native table | identical (the `set_home_air_base_007f1c00` row is never reached) | identical |
+| pair_diff exit | 1 (only the summary line's `bound`) | 1 |
