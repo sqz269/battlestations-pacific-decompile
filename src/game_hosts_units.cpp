@@ -3490,7 +3490,8 @@ struct GameUnitsHost::Impl {
     // ON: the row evaluates 008160B0's entity gate (+5Ch set; +5Dh, +60h, +5Eh
     // clear) and is concrete; the class flag +D0h has no host field and is taken
     // as set. OFF: the record. Bookkeeping only; the repair order is not moved.
-    static constexpr bool kShipPostMotionRepairOrder = false;
+    // ON since the USN02 / USN04 pairs: identical gameplay.
+    static constexpr bool kShipPostMotionRepairOrder = true;
     unsigned long long post_motion_gate_passes = 0;
     std::vector<unsigned long long> slot_swap_runs_by_group;
     std::vector<unsigned long long> slot_swaps_by_group;

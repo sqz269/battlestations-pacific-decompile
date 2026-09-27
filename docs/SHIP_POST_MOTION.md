@@ -357,3 +357,17 @@ on):
 | `ShipMotion::unit_post_motion` | UNIMPLEMENTED -> concrete at the motion-tick count, 285,540 | 162,000 |
 | `post_motion_gate` | 0 -> the live ships' ticks, below 285,540 | below 162,000 |
 | every other row | identical | identical |
+
+**8c measured** (logs `local\PM_OFF_USN02.log` / `PM_ON_USN02.log`, `PM_OFF_USN04.log` /
+`PM_ON_USN04.log`, all four with the fit line, the module directory in this tree and the final
+COM release):
+
+| row | USN02 9000 | USN04 9000 | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| `ShipMotion::unit_post_motion` | UNIMPLEMENTED -> concrete 285,540 | UNIMPLEMENTED -> concrete 162,000 | as written | held |
+| `post_motion_gate` | 285,540, every tick | 162,000, every tick | below the tick count | **failed**. On USN02 the 22 sunk ships still pass: the host's four entity bytes (`+5Ch` active, `+5Dh`, `+5Eh`, `+60h`) never mark a sunk ship. USN04 sinks none |
+| everything else | identical (a pre-window FMOD count differs by 2) | identical | identical | held |
+
+**Verdict: `kShipPostMotionRepairOrder` ON.** Bookkeeping only. The failed row says the
+host's entity bytes do not follow a ship's death, which the gunnery host's own "not dead" test
+covers for the repair itself.
