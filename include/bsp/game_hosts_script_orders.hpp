@@ -147,7 +147,7 @@ inline constexpr bool kFillPathPointsBound = true;
 // (IsKindOf(0Fh)) whose killer is the controlled unit (player slot 0; no
 // other unit carries a player slot in this process) and whose side is ENEMY
 // to the killer's (00803510). Other slots answer 0.
-inline constexpr bool kScoringPlayerShotDownBound = false;
+inline constexpr bool kScoringPlayerShotDownBound = true;
 
 // Packet cc9_bsm01_think_natives. True: PutTo (008A9F90) places a unit through
 // its vtable slot +118h (008193A0, GameUnitsHost::place_at_world_position_008193a0)
@@ -156,7 +156,7 @@ inline constexpr bool kScoringPlayerShotDownBound = false;
 // (008AA136..008AA14D) and handed to vtable slot +11Ch (008196B0, no Ghidra
 // function, unread), is recorded and not applied. False: the native stays an
 // unimplemented record.
-inline constexpr bool kPutToBound = false;
+inline constexpr bool kPutToBound = true;
 
 // Packet cc9_frame_delta_jitter, docs/GAME_EXECUTABLE.md. True: the script think
 // walk 00929460 runs once per 0.05f fixed step, as the image's fan-out row 8 does

@@ -571,3 +571,43 @@ BSM01 runs at 9200/9000; USN02 and USN04 run OFF against `SP`.
 | BSM01 S vs SP: `put to` | `calls=8 placed=8`: PT-21..PT-24 (the pt_path1..4 boats of `luaGenerateHarborTrafic`) and the four rescue craft, each at a point `pathTbl[random(2,10)]` of its path, y 0 |
 | BSM01 S vs SP: `pair_diff` | 3, since the eight craft start at their path points instead of their generated positions |
 | BSM01 deaths / hit records | predicted to move on both pairs; OFF has 0 and 0 |
+
+### The pairs, measured, and the verdicts
+
+- Three builds of `9df07aa60`:
+  - OFF, this tree's `build\`;
+  - `S`, `pair_export --flip kScoringPlayerShotDownBound=true`, SHA-256 `01B64C27E428`;
+  - `SP`, both flips, SHA-256 `542464D48C01`.
+- All runs had the streams and the death table on. Logs: `local\bt_{off,s,sp}_bsm01.log` and
+  `local\bt_{off,sp}_{usn02,usn04}.log`.
+- Every log was checked for its milestone line, its module directory and its final COM release
+  line.
+
+| row | OFF | S | SP | prediction | verdict |
+| --- | --- | --- | --- | --- | --- |
+| USN02 `pair_diff` (OFF vs SP) | - | - | 1; both natives `calls=0` | 1 | holds |
+| USN04 `pair_diff` (OFF vs SP) | - | - | 1; both natives `calls=0` | 1 | holds |
+| BSM01 `lua_Think` failures at line 683 | 149 | 0 | 0 | 149 -> 0 | holds |
+| BSM01 shot-down calls / last | 0 | 149 / 0 | 149 / 0 | at least 149, last 0 or small | holds |
+| BSM01 timer census | `failures=149` | `failures=0`, 4 think registrations | the same | at most 1 failure | holds |
+| BSM01 script work | script calls 621, dialogs started 1 | 2545, 3 | the same | the think runs past 683 | holds |
+| BSM01 `pair_diff` OFF vs S | - | 1, gameplay identical | - | 3 | **failed** |
+| BSM01 `put to` | - | `calls=0` | `calls=8 placed=8`, at the eight path points (y 0) | 8 of 8 | holds |
+| BSM01 craft positions | - | every PT and Rescue at the generated spawn (2428.8, -3072.4) | at their path points; the unit rows and the formation column lines move | placed | holds |
+| BSM01 `pair_diff` S vs SP | - | - | 1, gameplay identical | 3 | **failed** |
+| BSM01 deaths / hit records | 0 / 0 | 0 / 0 | 0 / 0 | move | **failed** |
+
+**Why the three rows failed.**
+- Past line 683 the think reaches natives this host does not implement: Effect (32 calls),
+  ExplodeToParts (15), SetDamagedGFXLevel (8), DisablePhysics (8), AddMatrixInterpolator (9), and
+  `GetHpPercentage` through the unimplemented health slot 00923BF6. These are the scripted Pearl
+  Harbor explosions, so nothing in the gunnery tables moves.
+- The eight craft are placed, but they fight nothing in 450 s. `pair_diff`'s gameplay rows are the
+  gunnery and death tables, so a moved position alone is "gameplay identical".
+
+**Verdicts.**
+- **`kScoringPlayerShotDownBound` ON.** The native answers the read's count, the think runs through
+  every pass, and the reference missions are identical.
+- **`kPutToBound` ON.** All eight placements land where the script asks, and the reference missions
+  are identical.
+- BSM01's next gaps are the effect natives listed above; they are outside this packet.
