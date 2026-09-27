@@ -53,11 +53,46 @@
   "switches": [
     {
       "name": "kShipBuoyancyElementsBound",
-      "committed": "OFF",
+      "committed": "OFF, flipped ON after the pairs",
       "file": "src/game_hosts_units.cpp"
     }
   ],
-  "failed_predictions": [],
+  "failed_predictions": [
+    {
+      "row": "USN02 time from first +5Dh to -200 m",
+      "predicted": "140..152 s, band 115..200",
+      "measured": "106.25..117.35 s; 13 of 16 below the band",
+      "cause": "drag force (00933018, class Mass / count) is divided by Mass + water (00932B72); a real-list wreck carries 3..5 x Mass of water, so it falls faster once under"
+    }
+  ],
   "no_ghidra_function": [],
-  "ledger_names_added": []
+  "ledger_names_added": [],
+  "pairs": {
+    "USN02": {
+      "exit": 3,
+      "deaths": [
+        21,
+        21
+      ],
+      "hit_records": [
+        566,
+        596
+      ],
+      "kills": [
+        19,
+        16
+      ]
+    },
+    "E2": {
+      "exit": 3,
+      "deaths": [
+        52,
+        51
+      ],
+      "hit_records": [
+        875,
+        894
+      ]
+    }
+  }
 }

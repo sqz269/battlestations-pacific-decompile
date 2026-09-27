@@ -3833,7 +3833,11 @@ struct GameUnitsHost::Impl {
     // from. OFF: the eight-element stand-in (still reachable, and still the
     // fallback ON for a class whose model lacks either node or whose Segments
     // is not positive; those are counted as `fallbacks`).
-    static constexpr bool kShipBuoyancyElementsBound = false;
+    // ON since the USN02 / E2 9200/9000 pairs: every hull on both missions
+    // takes the image list (no fallback); capacity = Mass r / (1 - r) exactly;
+    // USN02 wrecks reach -200 m 106..117 s after +5Dh (91..98 s on the
+    // stand-in); E2 gameplay moves through live flotation (51 vs 52 deaths).
+    static constexpr bool kShipBuoyancyElementsBound = true;
     std::map<int, ClassBuoyancyList> class_buoyancy_lists;
     unsigned long long buoyancy_lists_image = 0;
     unsigned long long buoyancy_lists_stand_in = 0;
