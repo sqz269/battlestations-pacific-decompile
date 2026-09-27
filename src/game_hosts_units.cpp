@@ -4361,6 +4361,38 @@ struct GameUnitsHost::Impl {
                     static_cast<double>(in.displacement[1]),
                     static_cast<double>(in.displacement[2]),
                     bomber ? 1 : 0);
+                // Every seat's station, not only seat 1's (packet
+                // cc9_torpedo_approach_leader_speed): the formation index,
+                // 007F23A0's local offset and the member's distance to it.
+                std::string seats;
+                for (std::size_t k = 1; k < wing.size(); ++k) {
+                    if (wing[k] >= slots.size() || slots[wing[k]] == nullptr) continue;
+                    if (k >= squadron->member_formation_index.size()) continue;
+                    bsp::PlaneFormationStationInputs sin = in;
+                    sin.formation_index = squadron->member_formation_index[k];
+                    const bsp::PlaneFormationStation st = bsp::plane_formation_station_007f23a0(sin);
+                    if (!st.produced) continue;
+                    const GameUnitSlot& um = *slots[wing[k]];
+                    float d2 = 0.0f;
+                    for (int i = 0; i < 3; ++i) {
+                        const float dv = um.motion.position[i] - st.world[i];
+                        d2 += dv * dv;
+                    }
+                    char buf[128];
+                    std::snprintf(buf, sizeof buf, "%s%zu:index=%d local=(%.1f %.1f %.1f) dist=%.1f",
+                        seats.empty() ? "" : " ", k, sin.formation_index,
+                        static_cast<double>(st.local[0]), static_cast<double>(st.local[1]),
+                        static_cast<double>(st.local[2]), static_cast<double>(std::sqrt(d2)));
+                    seats += buf;
+                }
+                const GameUnitSlot& ul = *slots[wing[0]];
+                const double lspd = std::sqrt(
+                    static_cast<double>(ul.plane_world_velocity[0]) * ul.plane_world_velocity[0] +
+                    static_cast<double>(ul.plane_world_velocity[1]) * ul.plane_world_velocity[1] +
+                    static_cast<double>(ul.plane_world_velocity[2]) * ul.plane_world_velocity[2]);
+                log.notef("plane formation seats: squadron %s tick=%d leader 2b4=%.2f speed=%.2f [%s]",
+                    squadron->name.c_str(), static_cast<int>(tick),
+                    static_cast<double>(ul.plane_desired_speed_2b4), lspd, seats.c_str());
             }
         }
 
