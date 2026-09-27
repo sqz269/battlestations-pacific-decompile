@@ -2808,8 +2808,9 @@ public:
         const int leader = node.entity_id;
         const int class_index = node.class_index;
         const std::size_t first = node.units_before;
+        const std::size_t end = node.units_end;
         const GameUnitsHost& units = host_.script_orders_->units();
-        for (std::size_t index = first; index < units.count(); ++index) {
+        for (std::size_t index = first; index < end && index < units.count(); ++index) {
             const int id = static_cast<int>(index) + 1;
             if (id == leader) continue;
             const GameUnitRow* const row = units.unit_row(index);
@@ -2899,6 +2900,7 @@ void GameMissionLuaHost::push_pending_squadron_00926be0(int entity_id,
     node.class_index = class_index;
     node.squadron = true;
     node.units_before = units_before;
+    node.units_end = script_orders_ != nullptr ? script_orders_->units().count() : units_before;
     pending_entities_.push_back(std::move(node));
     ++summary_.init_all_pushes;
 }

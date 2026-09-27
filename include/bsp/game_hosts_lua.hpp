@@ -775,6 +775,10 @@ private:
         bool squadron{false};
         bool wing_member{false};
         std::size_t units_before{0};
+        // The unit count right after this squadron's creator returned: its wing
+        // is [units_before, units_end). A later creation before InitAll (the
+        // next SpawnNew member) must not be taken for this squadron's wing.
+        std::size_t units_end{0};
     };
     friend class GameMissionLuaInitAllBinding;
     std::deque<PendingEntity> pending_entities_;  // 00F899D0, count 00F899D4
