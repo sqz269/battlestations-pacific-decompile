@@ -1422,3 +1422,17 @@ switch only, streams on, `tools/pair_diff.py`):
 | torpedo aim tick | identical: ground + 5 = −995 never wins over the 5.0 sea floor, and 1 > −1000 arms as 1 > 0 did | identical at sea |
 | torpedo sectors, releases, drops | identical if OFF blocks 0. Otherwise sector choice moves: torpedo releases ± 2, drops ± 1 | same, with island blocking added ON |
 | deaths, hit records | identical if nothing moves; otherwise within ± 10 % and ± 15 % | same |
+
+**7a measured** (`local\GH_OFF_USN01.log` / `GH_ON_USN01.log`, `local\GH_OFF_USN04.log` /
+`GH_ON_USN04.log`, from `43ca22c1f`; `tools/pair_diff.py` says "DIFFERENT, gameplay identical"
+for both):
+
+| row | USN01 3000 OFF -> ON | USN04 4500 OFF -> ON | verdict |
+| --- | --- | --- | --- |
+| probes 009D39D3 | 1,152 -> 1,152 | 7,092 -> 7,092 | held |
+| blocked | 0 -> 0 | 0 -> 0 | held for ON. OFF was the "0" end of the band: the water stand-in never blocked on these runs, so section 7's expectation that hunk 2 moves sector choice at sea does not arise here. The island crossings on USN01 do not block either: no Landscape stand-in lies on a probed segment |
+| aim tick | `World::ground_height_00903860` concrete 1,567 / 3,369 | - | held (identity) |
+| gameplay (pair_diff) | identical: 7 deaths, 150 hit records, 3 of 5 torpedo releases, 0 drops | identical: 43 deaths, 788 hit records, 4 of 16 releases, 1 drop | held |
+
+**Verdict: `kGroundHeightHunksBound` ON.** The two torpedo sites ask the scene's world queries, as
+the image does. On these missions the answer equals the old stand-ins.

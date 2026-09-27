@@ -3498,7 +3498,8 @@ struct GameUnitsHost::Impl {
     // approach's 00903BC0 probe (009D39D3) answer from the scene's world queries
     // (-1000 over no terrain, the Landscape sweep). OFF: 0.0 and the water
     // surface as the ground.
-    static constexpr bool kGroundHeightHunksBound = false;
+    // ON since the USN01 / USN04 pairs: identical gameplay (0 blocked probes both sides).
+    static constexpr bool kGroundHeightHunksBound = true;
     // Packet cc9_ground_height_hunks: the torpedo approach's 009D39D3 probe.
     unsigned long long segment_probes = 0;
     unsigned long long segment_probes_blocked = 0;

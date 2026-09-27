@@ -1,0 +1,24 @@
+{
+  "packet": "cc9_ground_height_hunks",
+  "doc": "docs/SCENE_CONTENTS_HOSTS.md",
+  "calls": [
+    {"address": "009D16D1", "native": "00903860", "function": "009D15F0", "note": "torpedo aim tick altitude floor"},
+    {"address": "009D2265", "native": "00903860", "function": "009D15F0", "note": "torpedo aim tick release-timer arm"},
+    {"address": "009D39D3", "native": "00903BC0", "function": "009D3420", "note": "torpedo approach short-range segment probe"}
+  ],
+  "coverage": [
+    {"routine": "009D15F0", "coverage": "partial: its two ground reads bound"},
+    {"routine": "009D3420", "coverage": "partial: its segment probe bound"}
+  ],
+  "substitutions": [],
+  "corrections": [
+    {"was": "hunk 2 moves sector choice even on Coral Sea (docs/SCENE_CONTENTS_HOSTS.md section 7)", "is": "the water stand-in blocked 0 of 7,092 probes on USN04 and 0 of 1,152 on USN01, so nothing moves", "evidence": "summary mission ground queries lines in local/GH_OFF_USN04.log and GH_OFF_USN01.log"}
+  ],
+  "switches": [
+    {"name": "GameUnitsHost::Impl::kGroundHeightHunksBound", "state": "ON",
+     "pair": "local/GH_OFF_USN01.log vs local/GH_ON_USN01.log, local/GH_OFF_USN04.log vs local/GH_ON_USN04.log"}
+  ],
+  "failed_predictions": [],
+  "no_ghidra_function": [],
+  "ledger_names_added": []
+}
