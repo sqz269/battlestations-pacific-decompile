@@ -343,6 +343,17 @@ constexpr bool kShipHullRepairBound = true;
 //    failure after its seconds at rate 1.0 (priority 0). OFF: 0093BED0 is a
 //    record. Packet cc9_component_failures, docs/COMPONENT_FAILURES.md.
 constexpr bool kComponentFailureBound = true;
+// Packet cc9_wreck_hit_delivery (docs/PROJECTILE_IMPACT.md, "Hits on a wreck").
+// ON: a hit on a dead ship is delivered to its hit record path, because the
+// image's dispatcher 009239A0 refuses only +5Eh / +5Fh (009239A6..009239B4),
+// not the released / destroyed bytes a wreck carries, while its hull shapes
+// are still in the collision index: 60.0 s after sinkTime starts (00CE3D68,
+// 008263E2), 20.0 s for kind 0Eh (00CE3930). SUBSTITUTION, labelled: the
+// window starts at this host's death time (row.sunk_seconds), not at the
+// wreck handler's sinkTime zero (0082507E), which the row-15 flush reaches in
+// the same step. OFF: apply_hit returns for a dead victim, as before.
+// ON since the USN02 / USN04 pairs (affb843c3): 90 wreck hits on USN02.
+constexpr bool kWreckHitDeliveryBound = true;
 //  * kBlastElementEntriesBound: a burst on a ship with a GeomMesh builds the
 //    record's part-hit array the image's sphere shape builds (0070F720 ->
 //    00723F80 -> 00723B70 -> 006D2E30): one 10h entry per element whose
@@ -1463,6 +1474,18 @@ struct GameGunneryHost::Impl {
     double seg_damage{0.0};
     void apply_segment_damage_0092d1f0(std::size_t unit, int index, float damage);
     unsigned long long cf_rolls{0};        // 0093BED0 entered past the gate
+    unsigned long long wreck_hits_reaching{0};   // apply_hit with a dead victim
+    unsigned long long wreck_hits_delivered{0};  // passed on by 009239A0's rule
+    unsigned long long wreck_hits_past_window{0}; // hull shapes out of the index
+    unsigned long long wreck_shapes_offered{0};   // shape_count answered 1 for a wreck
+    // Packet cc9_wreck_hit_delivery: a dead ship whose hull shapes are still in
+    // the collision index (flag 8 until 008263E2: 60 s, 20 s for kind 0Eh).
+    bool wreck_in_hit_window(std::size_t index) const {
+        if (index >= unit_state.size() || !unit_state[index].dead) return false;
+        if (!units.unit_is_kind_of(index, 6)) return false;
+        const float window = units.unit_is_kind_of(index, 0x0E) ? 20.0f : 60.0f;
+        return clock_seconds - unit_state[index].row.sunk_seconds <= window;
+    }
     unsigned long long cf_resolved{0};     // 008782A0 found a section
     unsigned long long cf_started{0};
     unsigned long long cf_explosions{0};
@@ -5260,7 +5283,17 @@ public:
         if (landscape_entry(index) >= 0) return 1;   // the shape +344h
         if (index == exclude_) return 0;
         if (index >= owner_.unit_state.size()) return 0;
-        if (owner_.unit_state[index].dead) return 0;
+        if (owner_.unit_state[index].dead) {
+            // Packet cc9_wreck_hit_delivery: a ship wreck keeps its hull shapes in
+            // the index until 008263E2 clears flag 8; 009239A0 then delivers.
+            if constexpr (kWreckHitDeliveryBound) {
+                if (owner_.wreck_in_hit_window(index)) {
+                    ++owner_.wreck_shapes_offered;
+                    return 1;
+                }
+            }
+            return 0;
+        }
         if (!owner_.units.unit_alive_and_visible(index)) return 0;
         return 1;
     }
@@ -6243,7 +6276,20 @@ void GameGunneryHost::Impl::apply_hit(std::size_t shooter, std::size_t gun_row,
     const bsp::HitRecord* blast_record) {
     if (victim >= unit_state.size() || shooter >= unit_state.size()) return;
     UnitState& target = unit_state[victim];
-    if (target.dead) return;
+    if (target.dead) {
+        ++wreck_hits_reaching;
+        if constexpr (!kWreckHitDeliveryBound) {
+            return;
+        } else {
+            // 009239A6..009239B4: only +5Eh / +5Fh refuse; a ship wreck keeps
+            // its hull shapes in the index until 008263E2 clears flag 8.
+            if (!wreck_in_hit_window(victim)) {
+                ++wreck_hits_past_window;
+                return;
+            }
+            ++wreck_hits_delivered;
+        }
+    }
     const GameGunRow& gun = guns[gun_row];
     const int priced_class = round_bullet_class >= 0 ? round_bullet_class : gun.bullet_class;
     if (gun.category == 7 && victim != shooter
@@ -8060,6 +8106,11 @@ void GameGunneryHost::report() {
         host.ranging_error_samples != 0 ? host.ranging_error_sum
             / static_cast<double>(host.ranging_error_samples) : 0.0,
         host.ranging_error_samples);
+        host.log.notef("summary mission gunnery wreck hits bound=%d reaching=%llu delivered=%llu "
+            "past_window=%llu shapes_offered=%llu (009239A0 / 00826F10, packet "
+            "cc9_wreck_hit_delivery)", kWreckHitDeliveryBound ? 1 : 0,
+            host.wreck_hits_reaching, host.wreck_hits_delivered,
+            host.wreck_hits_past_window, host.wreck_shapes_offered);
         host.log.notef("summary mission gunnery kill credit zero-damage hits not attributed=%llu bound=%d "
             "(0077CEB7, packet cc9_kill_credit)", host.summary_zero_damage_attributions_skipped,
             kKillCreditDamageGateBound ? 1 : 0);

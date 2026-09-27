@@ -1,0 +1,79 @@
+{
+  "packet": "cc9_wreck_hit_delivery",
+  "doc": "docs/PROJECTILE_IMPACT.md",
+  "calls": [
+    {
+      "address": "00923A70",
+      "native": "007BBCF0",
+      "function": "009239A0",
+      "note": "vtable[ECh] delivery after the +5Eh/+5Fh test"
+    },
+    {
+      "address": "0082642E",
+      "native": "00C47F60",
+      "function": "00825F20",
+      "note": "hull shapes lose flag 8 past 60 s of sinkTime"
+    }
+  ],
+  "coverage": [
+    {
+      "routine": "009239A0",
+      "coverage": "gate 009239A6..009239B4 re-read; rest as in the doc's table"
+    }
+  ],
+  "substitutions": [
+    {
+      "what": "the hittable window start (sinkTime zero at 0082507E)",
+      "is": "the gunnery host's death time row.sunk_seconds",
+      "where": "apply_hit in src/game_hosts_gunnery.cpp"
+    }
+  ],
+  "corrections": [],
+  "switches": [
+    {
+      "name": "kWreckHitDeliveryBound",
+      "committed": "OFF, flipped ON after the pairs",
+      "file": "src/game_hosts_gunnery.cpp"
+    }
+  ],
+  "failed_predictions": [
+    {
+      "row": "first pair reaching",
+      "predicted": "20..150",
+      "measured": "0",
+      "cause": "SegmentBinding::shape_count answered 0 shapes for a dead unit; binding revised at affb843c3"
+    },
+    {
+      "row": "applied_wreck",
+      "predicted": "about 135",
+      "measured": "71",
+      "cause": "a hit under 10 damage sends no 90h"
+    },
+    {
+      "row": "wreck descent",
+      "predicted": "0..-5 s",
+      "measured": "Encounter -5.45, Amatsukaze -11.95 s",
+      "cause": "more wreck hits than assumed"
+    }
+  ],
+  "no_ghidra_function": [],
+  "ledger_names_added": [],
+  "pairs": {
+    "USN02_9200": {
+      "exit": 3,
+      "delivered": 90,
+      "deaths": [
+        22,
+        20
+      ],
+      "hit_records": [
+        579,
+        674
+      ]
+    },
+    "USN04_4700": {
+      "exit": 1,
+      "delivered": 0
+    }
+  }
+}
