@@ -2173,8 +2173,13 @@ int GameMissionLuaHost::run_generate_object_00944fd0(lua_State* state, int argum
         run_sentity_init_all_00925f20(false, 0x0046dbe8u);  // 0046DBE6 XOR CL,CL
         // 00945311 MOV CL,1 / CALL 00874D00, BSP_Game_RunExtraFixedStep, whose
         // 00874D77 XOR CL,CL / 00874D79 CALL 00925F20 finds the list the
-        // creator's own call just emptied. Only that row of 00874D00 is run.
-        run_sentity_init_all_00925f20(false, 0x00874d79u);
+        // creator's own call just emptied. Only that row of 00874D00 is run,
+        // unless packet cc9_run_extra_fixed_step's switch runs the whole body.
+        if (kRunExtraFixedStepBound && extra_fixed_step_ != nullptr) {
+            extra_fixed_step_->run_extra_fixed_step_00874d00(true, 0x00945311u);
+        } else {
+            run_sentity_init_all_00925f20(false, 0x00874d79u);
+        }
         attached = init_all_attached(static_cast<int>(entity_id));
     } else {
         static_cast<void>(units_before);
