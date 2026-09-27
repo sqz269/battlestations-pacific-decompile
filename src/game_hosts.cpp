@@ -262,13 +262,26 @@ void GameHostLog::notef(const char* format, ...) {
 
 GameHostMethodRecord& GameHostLog::record(const char* method, const char* native_address,
     bool implemented) {
-    for (auto& entry : records_) {
-        if (entry.method == method) {
-            ++entry.calls;
-            return entry;
-        }
+    // Packet cc9_tooling_record_index: the same first-match-by-name semantics as the linear
+    // walk this replaces (first native address and status kept, calls counted), through an
+    // index. The walk cost 98.6% of a USN04 run's wall time (docs/TOOLING.md section 5).
+    const auto pointer_hit = by_pointer_.find(method);
+    if (pointer_hit != by_pointer_.end() && records_[pointer_hit->second].method == method) {
+        GameHostMethodRecord& entry = records_[pointer_hit->second];
+        ++entry.calls;
+        return entry;
     }
+    const auto name_hit = by_name_.find(method);
+    if (name_hit != by_name_.end()) {
+        by_pointer_[method] = name_hit->second;
+        GameHostMethodRecord& entry = records_[name_hit->second];
+        ++entry.calls;
+        return entry;
+    }
+    const std::size_t slot = records_.size();
     records_.push_back(GameHostMethodRecord{method, native_address, 1ull, implemented});
+    by_name_.emplace(records_.back().method, slot);
+    by_pointer_[method] = slot;
     return records_.back();
 }
 

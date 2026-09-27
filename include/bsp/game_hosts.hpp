@@ -32,6 +32,7 @@ struct IGameExplorer;
 #include <functional>
 #include <memory>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 #include "bsp/app_bootstrap.hpp"
@@ -135,6 +136,12 @@ private:
     void emit(const char* text);
 
     std::vector<GameHostMethodRecord> records_;
+    // Harness only (packet cc9_tooling_record_index): slots into records_, which keeps its
+    // first-call order for the printed table. by_pointer_ caches the caller's name pointer
+    // (the literals are stable); a hit is confirmed by one string compare, so a reused
+    // buffer falls back to by_name_, the authoritative name -> slot map.
+    std::unordered_map<const char*, std::size_t> by_pointer_;
+    std::unordered_map<std::string, std::size_t> by_name_;
     std::FILE* file_{};
 };
 

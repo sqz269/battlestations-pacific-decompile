@@ -11,6 +11,7 @@ or a reconstructed body.
 | `tools/pair_export.py` | `python tools/pair_export.py --commit <sha> --flip kSwitch=true [--flip ...] --out local\<name> [--mission E2] [--no-build]` |
 | `bsp.py sync` | `python tools/bsp.py sync [--no-fetch]` (and one line in `bsp.py brief`) |
 | crash record | `./tools/run_game.ps1 -Log local\crash_test.log -- ... --crash-test [N]` (the record itself is always on) |
+| `tools/sample_main_thread.py` | `python tools/sample_main_thread.py --log local\X.log` (start it, then the run with the same -Log) |
 
 ## 1. `tools/pair_diff.py`: the same-tree pair comparison
 
@@ -245,3 +246,72 @@ calls. The largest rows are `ShipMotion::ocean_wave_field` and `ShipMotion::ocea
 to the vector slot with a string-keyed fallback. Keep the vector order so the printed table does
 not change, and use `tools/pair_diff.py` to show the log is identical. The expected speed-up is
 several-fold. It is an estimate, not a measurement.
+
+## 6. The record index (packet `cc9_tooling_record_index`)
+
+**The change.** `GameHostLog::record` (`src/game_hosts.cpp`) no longer walks `records_`. It is
+harness only.
+- **The index.** Two maps sit beside the vector (`include/bsp/game_hosts.hpp`). One is keyed on
+  the caller's name pointer: the host names are string literals, so the pointer is stable. The
+  other is keyed on the name string and is authoritative.
+- **Pointer hits.** A hit is confirmed with one string compare. So a caller that reuses a buffer
+  for different names falls through to the string map and cannot be miscounted.
+- **Semantics.** They are those of the old walk: the first record with a name keeps its native
+  address and status, and every later call with that name adds to its count.
+- **Order.** The vector keeps its first-call order, so the printed native table is unchanged.
+
+**Identity proof.** Two binaries were built:
+- *before*: `tools/pair_export.py` of `76962df1b` with no flip (`local\pe_on`, SHA-256
+  `CBBB08C87561`);
+- *after*: this worktree with only this change.
+
+Each ran once through `tools/run_game.ps1` with USN04 4700/4500, `BSP_GUNNERY_RNG_STREAMS=1`,
+`BSP_DEATH_TABLE=1` and lockstep 0.05. The logs are `local\ri_before_usn04.log` and
+`local\ri_after_usn04.log`.
+- `python tools/pair_diff.py local\ri_before_usn04.log local\ri_after_usn04.log` exits 0,
+  identical apart from noise: 43 death rows, 43 plane death modes, 81 unit rows, 1,591 native rows
+  and 209 summary lines, with 0 other lines differing.
+- The native table, header included, is byte-identical row for row (1,592 lines). That includes
+  the `PlatformLoopCallbacks::pretranslate` count, which this time did not move.
+
+**Reference rows are unaffected in content.** The record only counts calls, and no simulation code
+reads it. A run is faster, not different.
+
+| launcher wall time, USN04 4700/4500 | seconds |
+| --- | ---: |
+| before (`local\ri_before_usn04.log`) | 493.6 |
+| after (`local\ri_after_usn04.log`) | 89.1 |
+| after, with the sampler attached (`local\ri_prof_usn04.log`) | 89.6 |
+
+**The profile after the change** comes from `tools/sample_main_thread.py`: 619 main-thread samples
+over 85 s of the mission phase.
+- **Rendering is now 57% of samples.** 328 of them sit inside `nvd3dum.dll` under
+  `end_native_renderer_frame_00b2d8e0`, in ntdll. This tool cannot name ntdll functions, so these
+  are counted as rendering, not as waits.
+- **The run is paced by vsync.** 4,699 presented frames in about 83 s is about 57 fps, and the
+  options file this installation uses has `vsync=1`.
+- **Logging is 31% (191 samples).** 155 of them are in `record` itself: hashing, the confirming
+  compare and the counter.
+- **Interface is 12%.** 61 samples are in `MarkerRuntimeBinding::gui_extent`.
+
+The next lever would be presenting without vsync in harness runs. It is not implemented, and the
+options file is not to be edited.
+
+## `tools/sample_main_thread.py`
+
+The sampler from section 5, promoted. It needs no elevation.
+
+```
+python tools/sample_main_thread.py --log local\X.log [--out local\X_samples.jsonl] [--map build\win32\bsp_game.map] [--period-ms 5] [--report-only]
+```
+
+Start it first, then launch the run through `tools/run_game.ps1` with the same `-Log` path. It
+waits for that run's bootstrap child, samples until the process exits and prints the section-5
+split. `--report-only` re-reads a samples file.
+
+Known limits:
+- ntdll leaves show as `?`, so a wait inside the driver counts under its caller's category, not
+  as a wait;
+- about 7 Hz on the main thread, because thread enumeration is slow;
+- the first few seconds of startup are not sampled;
+- the render worker thread is not identified.
