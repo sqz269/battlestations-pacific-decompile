@@ -435,3 +435,109 @@ hit was then checked for a real call.
 | death rows, plane death modes, unit table | 43, 43, 81 | identical | 20, 0, 32 | identical |
 
 **Every prediction held. Verdict: ON.**
+
+## 9. One node per entity on the pending list (packet `cc9_pending_list_dedup`, `kPendingListDedupBound`)
+
+Worker cc9-init-passes, 2026-09-27, base main af680b4c0. There were no Ghidra reads beyond
+section 17's: 00926BE0 is a locked `push_back` and does not deduplicate. The image never needs
+to, because only the base constructor pushes, once, at 00928760.
+
+### 9.1 Why the host needs it
+
+The host will have two pushers for one construction:
+- the Lua routes (section 17 of `docs/CONSTRUCT_WORLD.md`), which push after `create_units`
+  returns;
+- `create_units` itself, once cc9-units2 lands its push (`docs/RELEASE_ISSUE_STAGE.md` part 2).
+
+This causes two problems:
+- **Doubled nodes.** Without a rule, every route instance would be on the list twice.
+- **Wrong wing order.** Wing planes would be pushed in the `create_units` batch, before their
+  squadron's pass A. The image pushes them from 007F4580's constructions, at the tail, during
+  that pass A.
+
+### 9.2 The rules (`src/game_hosts_lua.cpp`)
+
+- **A plain push** (`push_pending_entity_00926be0`) is skipped in two cases:
+  - its id is pending (`skipped_pending`);
+  - its id was already attached by a pass A or by the load attach (`skipped_attached`).
+- **A squadron push** (`push_pending_squadron_00926be0`):
+  - first drops the pending plain nodes of its own wing, the ids in
+    `[units_before + 1, units_end]` other than its own (`wing_deferred`), so that its pass A
+    appends them at the tail. It never does this during a walk (`init_active_00f899a5_`).
+  - then upgrades a pending plain node of its own id in place (`squadron_upgrades`), or pushes a
+    new node.
+- **Pass A's wing append** skips an id that is already pending (`wing_append_skipped`).
+- **The load attach** (`attach_scene_entities_00928a00`) records its ids as attached and drops
+  any pending node of those ids (`load_dropped`). The load-time instances stay outside the list,
+  as today.
+- **Summary line:** `summary SEntity::InitAll pending dedup bound=<0|1> skipped_pending=N
+  skipped_attached=N squadron_upgrades=N wing_deferred=N wing_append_skipped=N
+  load_dropped=N`.
+
+**Consequence.** Once `create_units` pushes, the list keeps the image's order without moving
+construction: a squadron node, then its wing appended by its pass A. The route pushes can then
+be retired, which is the third step, after cc9-units2's push lands.
+
+### 9.3 Contract: wing construction in pass A (cc9-units2 and the script-orders owner)
+
+- **Where it lives.** The wing units are built by the creator batch:
+  - `src/game_hosts_script_orders.cpp` near 400..403 for SpawnNew and near 571 for GenerateObject
+    (the `wing_record` copies);
+  - `create_units` in `src/game_hosts_units.cpp`.
+  Both run before InitAll. In the image, 007F4580 (the squadron's pass A) constructs each plane,
+  which pushes it, after every node already pending.
+- **The contract.** Hold the squadron's wing records on the squadron (its `PendingEntity` or its
+  registry record), and construct them from the squadron's pass A through a units-host call.
+  The Lua host would call it at `entity_attach_lua_self_vcall_9c`, before its wing append.
+  `create_units` then pushes each plane as it constructs it.
+- **What moves.** Construction time only: unit ids and anything a constructor does. List order is
+  already the image's under 9.2. Until this lands, the pass A append remains the stand-in for
+  007F4580's constructions.
+
+### 9.4 Predictions (written before the pairs; the same tree, switch only, both variables set)
+
+With the Lua routes as the only pusher, no rule fires.
+- **USN04 4700/4500:**
+  - Every dedup counter is 0.
+  - Unchanged: `pushes=20`, `wing_appended=40`, `entities=60`, `self_table_entities=86` and
+    `wing_member_tables=40`.
+  - The InitAll rows (calls 4,512, with work 12) and every native row are unchanged. The only
+    moved line is the summary's `bound 0 -> 1`.
+  - Gameplay identical.
+- **USN02 9200/9000:** the same, with `pushes=4`, `entities=4`, `self_table_entities=34` and
+  InitAll 9,008 / 4. Gameplay identical.
+
+### 9.5 Pairs and verdict
+
+- **The runs.** The binaries are `local\bin\dd_off` (the committed OFF, cbaf29bc9) and
+  `local\bin\dd_on` (flipped locally, then reverted). `BSP_GUNNERY_RNG_STREAMS=1` and
+  `BSP_DEATH_TABLE=1` were set. All four logs have the fit line, the immediate present interval
+  and the final COM release, and each module directory is under `local\bin\dd_*` in this tree.
+- **What `tools/pair_diff.py` reports.** It exits 1 on both pairs, and the clock offset is
+  +0.00 s. The native table is identical in both. The only moved line is the dedup summary's
+  `bound 0 -> 1`. The masked multiset of other lines shows 0 lines only OFF and 0 only ON.
+
+| row | USN04 OFF | USN04 ON | USN02 OFF | USN02 ON |
+| --- | ---: | ---: | ---: | ---: |
+| InitAll calls / with work / entities | 4,512 / 12 / 60 | identical | 9,008 / 4 / 4 | identical |
+| pushes / wing appended | 20 / 40 | identical | 4 / 0 | identical |
+| `self_table_entities` | 86 | 86 | 34 | 34 |
+| every dedup counter | 0 | 0 | 0 | 0 |
+| deaths, hit records | 43, 788 | identical | 20, 329 | identical |
+| death rows, plane death modes, unit table | 43, 43, 81 | identical | 20, 0, 32 | identical |
+
+**Every prediction held. Verdict: ON.**
+
+**The rules are not exercised yet:** no counter fired, because the Lua routes are still the only
+pusher. The pair that exercises them is cc9-units2's `create_units` push. With that push in
+place, the counters should read as follows, on the same missions:
+- **USN04:** `create_units` pushes the 20 squadrons' leader units and their 40 wing planes as
+  plain nodes. The routes' 20 squadron pushes then drop the 40 wing nodes (`wing_deferred=40`)
+  and upgrade the 20 leader nodes (`squadron_upgrades=20`). Pass A appends the 40 again
+  (`wing_appended=40`, `wing_append_skipped=0`). So `entities=60` and `self_table_entities=86`
+  are unchanged. The load-time scene units, pushed by `create_units` at load, are dropped by the
+  load attach (`load_dropped` = the scene unit count, 21). Gameplay identical.
+- **USN02:** the 4 GenerateObject ships are pushed by `create_units`, and the route's plain
+  push is skipped (`skipped_pending=4`). `load_dropped=28`, and gameplay identical.
+- **If a count differs,** the push order in `create_units` differs from the one assumed here,
+  which is squadron before its wing, both before the route's push.

@@ -283,6 +283,15 @@ struct GameMissionLuaSummary {
     // Packet cc9_init_identity_gaps: load-time 009292B0 binds and 00928100 mirrors.
     unsigned long long load_class_bound{0};
     unsigned long long load_identity_mirrored{0};
+    // Packet cc9_pending_list_dedup: pushes skipped (pending / attached),
+    // squadron upgrades, wing nodes deferred to pass A, wing appends skipped,
+    // and pending nodes the load attach dropped.
+    unsigned long long dedup_skipped_pending{0};
+    unsigned long long dedup_skipped_attached{0};
+    unsigned long long dedup_squadron_upgrades{0};
+    unsigned long long dedup_wing_deferred{0};
+    unsigned long long dedup_wing_append_skipped{0};
+    unsigned long long dedup_load_dropped{0};
     unsigned long long init_all_pushes{0};
     unsigned long long spawn_new_callbacks{0};   // named globals actually called
     unsigned long long spawn_new_callback_missing{0};
@@ -812,6 +821,10 @@ private:
     };
     friend class GameMissionLuaInitAllBinding;
     std::deque<PendingEntity> pending_entities_;  // 00F899D0, count 00F899D4
+    // Packet cc9_pending_list_dedup: the node of `entity_id`, or nullptr.
+    PendingEntity* find_pending(int entity_id);
+    // Ids attached by the load-time attach (attach_scene_entities_00928a00).
+    std::set<int> load_attached_;
     std::set<int> init_all_attached_;
     bool init_active_00f899a5_{false};
     bool error_replay_{false};
