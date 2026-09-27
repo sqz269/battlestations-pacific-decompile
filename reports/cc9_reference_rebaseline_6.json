@@ -1,0 +1,48 @@
+{
+  "packet": "cc9_reference_rebaseline_6",
+  "doc": "docs/GAME_EXECUTABLE.md, Mission reference baselines, 2026-09-28 f (main 2dd253a5a)",
+  "tree": "2dd253a5a",
+  "predictions_commit": "pending",
+  "binary": {
+    "path": "local/rb6/build/win32/Release/bsp_game.exe",
+    "sha256_prefix": "pending",
+    "export": "tools/pair_export.py --commit 2dd253a5a, no flip"
+  },
+  "run_parameters": "BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1, --mission-frame-seconds 0.05, --press-start-frame 30, idle player, present interval immediate, one run at a time through tools/run_game.ps1",
+  "predictions": {
+    "USN04": {
+      "deaths": 44,
+      "hit_records": 789,
+      "hull": 292,
+      "shots": 6321,
+      "damage": 11985.6,
+      "first_hit": "93.00 s",
+      "source": "local/dm_on_usn04.log"
+    },
+    "USN02": {
+      "deaths": 19,
+      "hit_records": 566,
+      "hull": 217,
+      "shots": 850,
+      "damage": 36102.3,
+      "mission_end": "failed at 39.65 s",
+      "source": "local/dm_on_usn02.log"
+    },
+    "USN01": {
+      "deaths": 7,
+      "hit_records": 150,
+      "hull": 85,
+      "shots": 561,
+      "damage": 2690.0,
+      "source": "local/dm_on_usn01.log"
+    },
+    "E2": {
+      "deaths": "50..58",
+      "hit_records": "860..930",
+      "phase": "1 only"
+    },
+    "smoke": "JM06, JM08, USN13, BSM01 at 3200/3000: final COM release, StageScript script loads, script_calls > 0; BSM01 PutTo 8/8, no sinking natives"
+  },
+  "rows": [],
+  "flags": []
+}
