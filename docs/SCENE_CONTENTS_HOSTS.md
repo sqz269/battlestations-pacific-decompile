@@ -2782,3 +2782,55 @@ are `local\FP_{OFF,ON}_<mission>.log` in worktree cc9-plane2.
   exercises the refusal and retry path; a mission that spawns a wave on top of existing units
   would be the first measurement.
 - **No failed prediction.**
+
+## 24. The follow-state station keeping on the new spacing (packet `cc9_follow_station_keeping`, read, nothing bound)
+
+Worker cc9-plane2, 2026-09-27, on c056d9112 (sections 22 and 23 ON). Ghidra was read only. This
+is section 19.4's read 1, re-measured.
+- **The trace.** `local\cc9-plane2-pitchtrace2.patch` in worktree cc9-plane2, uncommitted. It is
+  the section 22 trace plus a `geotrace` line: position, station, heading, leader heading and the
+  yaw slot.
+- **The runs.** `local\T3_USN13.log` and `local\T5_USN13.log` trace `bruh #1.12|.-4`;
+  `local\T4_USN13.log` traces the leader `bruh #1.12`. All are USN13 3200/3000.
+
+### 24.1 The clustering is gone
+
+- **`bruh #1.12` holds its wing on the new spacing** (`plane formation geometry`, `FP_ON_USN13`):
+  0-1 145.8..148.4 m and 0-2 147.8..149.5 m from tick 400 to 2800. That is the 141 m seat of
+  (-100, 0, -100) plus a few metres.
+- **Section 19's 0-2 = 12..41 m and 1-3 = 15..68 m do not recur.** They were the other squadrons'
+  avoidance bands of section 22, not a station-keeping defect.
+- **Across the wave at tick 800**, 0-1 and 0-2 are 65..300 m in every squadron.
+
+### 24.2 What remains: member 3 runs ahead of its station
+
+- **It never latches.** `bruh #1.12|.-4` is on the fly-to arm on all 1268 thinks (fw_arm 2). It
+  starts 281 m from its station, closes to 154 m, then opens steadily to 441 m.
+- **It is ahead, not behind.** The bearing to the station is 0.79..1.02 rad while the heading is
+  -2.33..-2.47 rad, so the station is almost directly astern. The member flies the leader's
+  heading to within 0.03 rad.
+- **It is faster than the leader.** It holds 64..69 m/s at throttle 1.0, while the leader holds
+  about 63 m/s at throttle 0.81..0.98.
+- **The mechanism is 009BEE30's alignment ramp**, already read in docs/PLANE_FOLLOW_LAW.md:
+  - with the station astern, the cosine is -1;
+  - that is below `MaxFollowSpdTargetDir` = DEG(30) = 0.5236, used as a cosine (section 5.4
+    there);
+  - so the command is the distance ramp's catch-up end, turbo x leader speed, since len > 100 m =
+    `GoodPositionDist`.
+- **Same run-ahead as before.** docs/PLANE_FOLLOW_LAW.md section 16.1 measured this "wing runs
+  away ahead of a slow leader" on USN04. Here the leader's torpedo-approach speed of 63 m/s is
+  only a little below what the member reaches, so the drift is slow (about 160 m over two
+  minutes).
+- **Not a new defect.** The units asymmetry of 5.4 is the image's own arithmetic, recorded there
+  and not corrected.
+
+### 24.3 Open, for the plane owners
+
+1. **The torpedo approach leader's commanded speed** in the follow state. Its throttle stays below
+   1 at about 63 m/s. Whether the image's approach flies faster, as docs/PLANE_FOLLOW_LAW.md 16.2
+   found for the moveto slot, would decide whether seat 3 ever reaches its station.
+2. **The seat-3 station itself.** It is 281 m from the stacked spawn point. Only seat 1's local
+   offset is logged (`seat1 local=(-100, 0, -100)`); seat 3's offset from 007ED260 / 007F23A0 was
+   not printed.
+
+Nothing was bound in this packet.
