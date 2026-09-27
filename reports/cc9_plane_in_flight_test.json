@@ -1,0 +1,32 @@
+{
+  "packet": "cc9_plane_in_flight_test",
+  "worker": "cc9-hud3",
+  "switch": "kPlaneInFlightTestBound",
+  "state": "ON",
+  "doc": "docs/IN_GAME_INTERFACE_SCREEN_SETS.md, 007BB9A0 in the plane arm",
+  "substitutions": [
+    "+C0Ch: 007C11E0's flight-state rule over plane_control_mode_900; the other writers (007B8C30, 007C6760, 007CC0E5) are not modelled; +904h taken clear.",
+    "+AA0h: not carried, taken as 0.0f (5.0f only for a ShipYardLaunch)."
+  ],
+  "no_ghidra_function": [],
+  "names_added": [],
+  "pairs": [
+    {
+      "mission": "alone",
+      "result": "arm unreachable with the slot class OFF: no 007BB9A0 line in any OFF log; no separate export"
+    },
+    {
+      "mission": "USN01 combined",
+      "pair_diff": 3,
+      "result": "007BB9A0 -> 1, interface 22h INTF_PLANE"
+    },
+    {
+      "mission": "USN04/USN02 combined",
+      "pair_diff": 1,
+      "result": "identical"
+    }
+  ],
+  "failed_predictions": [
+    "Channel A value 0.00, not -1.00; the channel is disabled, so the answer does not depend on it."
+  ]
+}

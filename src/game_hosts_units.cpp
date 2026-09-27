@@ -18813,6 +18813,40 @@ bool GameUnitsHost::unit_is_kind_of(std::size_t index, int class_id) const {
     return bsp::unit_is_kind_of(impl_->slots[index]->class_id, class_id);
 }
 
+// Packet cc9_plane_in_flight_test. 007BB9A0's inputs (docs/PILOT_COMMAND_PATH.md,
+// docs/IN_GAME_INTERFACE_SCREEN_SETS.md):
+//  1. +C0Ch: its last writer on an airborne plane is 007C11E0 (the flight-state
+//     notify of 007C1430/007C6340/007C7110 and the rest), which stores 1 when
+//     +900h is 7, 6 or 3, or 4 with +904h clear (007C13CB..007C140C).
+//     SUBSTITUTION, labelled: this host keeps no +C0Ch byte, so the rule is
+//     applied to the current plane_control_mode_900; the other writers
+//     (007B8C30 through 008A5BD0, 007C6760's launch, the ground roll 007CC0E5)
+//     are not modelled. +904h (the landing byte) is not carried: taken clear.
+//  2. +AA0h: 5.0f for a ShipYardLaunch (007D6355/007D645A), else -1.0f or the
+//     0.0f of 007D614B. SUBSTITUTION, labelled: not carried, taken as 0.0f.
+//  3. [+DECh]+44h/+48h: the actuator block's channel A (the host's block).
+//  4. [+9D4h]+3B0h: only ever cleared (007F2DD3, 007EFB69): false.
+//  5. 00604A20(unit): the same flight-state test, true outside those states.
+//  6. +5Dh.
+bool GameUnitsHost::plane_local_input_gate_007bb9a0(std::size_t index,
+    bsp::PilotCmdLocalInputGate& gate) const {
+    if (index >= impl_->slots.size()) return false;
+    const GameUnitSlot& u = *impl_->slots[index];
+    if (!bsp::unit_is_kind_of(u.class_id, 0x0f)) return false;
+    const std::int32_t mode = u.plane_control_mode_900;
+    constexpr bool kLanding904 = false;
+    const bool active = mode == 7 || mode == 6 || mode == 3 || (mode == 4 && !kLanding904);
+    gate.enable_byte_c0c = active;
+    gate.gate_float_aa0 = 0.0f;
+    gate.gate_block_present = u.actuator_block_dec.channel_a.enabled;
+    gate.gate_block_value = u.actuator_block_dec.channel_a.value;
+    gate.controller_present = false;
+    gate.controller_blocks = false;
+    gate.global_block_00604a20 = !active;
+    gate.unit_suppressed = unit_flag_005d(index);
+    return true;
+}
+
 int GameUnitsHost::unit_class_id(std::size_t index) const noexcept {
     if (index >= impl_->slots.size()) return -1;
     return impl_->slots[index]->class_id;

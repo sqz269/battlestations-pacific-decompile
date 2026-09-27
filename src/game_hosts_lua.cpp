@@ -2335,6 +2335,16 @@ int GameMissionLuaHost::run_generate_object_00944fd0(lua_State* state, int argum
         } else {
             route_push_entity(static_cast<int>(entity_id), name, record.type_id);
         }
+        // Packet cc9_generated_entity_party: the record's bag values, as
+        // 00927050's kind-1 arm reads them at pass A (00928A1E).
+        if (PendingEntity* node = find_pending(static_cast<int>(entity_id))) {
+            ++summary_.generated_party_nodes;
+            if constexpr (kGeneratedEntityPartyBound) {
+                node->party = record.party;
+                node->race = record.race;
+                node->generated_party = true;
+            }
+        }
         run_sentity_init_all_00925f20(false, 0x0046dbe8u);  // 0046DBE6 XOR CL,CL
         // 00945311 MOV CL,1 / CALL 00874D00, BSP_Game_RunExtraFixedStep, whose
         // 00874D77 XOR CL,CL / 00874D79 CALL 00925F20 finds the list the
@@ -3005,8 +3015,15 @@ public:
                 node.class_index, !kSEntityInitThisTableStepsBound, node.findable)) {
             host_.init_all_attached_.insert(node.entity_id);
             if (node.wing_member) ++host_.summary_.wing_member_tables;
-            if (node.load_scene && (node.party >= 0 || node.race >= 0)) {
+            if ((node.load_scene || node.generated_party) &&
+                (node.party >= 0 || node.race >= 0)) {
                 host_.write_party_race_fields(node.entity_id, node.party, node.race);
+                if (node.generated_party) {
+                    ++host_.summary_.generated_party_writes;
+                    host_.log_.notef("  generated entity party: thisTable[%d] (\"%s\") Party=%d "
+                        "Race=%d written at pass A (packet cc9_generated_entity_party)",
+                        node.entity_id, node.name.c_str(), node.party, node.race);
+                }
             }
         }
         host_.log_.implemented("SEntity::InitAll pass A attach_self_table", "0092604e");
@@ -4537,6 +4554,10 @@ void GameMissionLuaHost::report_mission_script_state() {
         "squadron_ids=%llu think_names=0",
         kSEntityInitThisTableStepsBound ? 1 : 0, summary_.init_all_class_bound,
         summary_.init_all_squadron_ids);
+    log_.notef("summary mission script generated entity party (packet "
+        "cc9_generated_entity_party, 00944FD0 -> 00928A00): bound=%d nodes=%llu writes=%llu",
+        kGeneratedEntityPartyBound ? 1 : 0, summary_.generated_party_nodes,
+        summary_.generated_party_writes);
     log_.notef("summary SEntity::InitAll pass E bound=%d released=%llu",
         kSEntityInitPassEReleaseBound ? 1 : 0, summary_.init_all_holders_released);
     log_.notef("summary SEntity::InitAll pending dedup bound=%d skipped_pending=%llu "

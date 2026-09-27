@@ -2036,3 +2036,78 @@ Worker cc9-terrain2, 2026-09-27, on main 6dac89994. Ghidra was read only. This c
 
 **Verdict: ON.** Pass C now sees the image's order. No gameplay row moved on any of the four
 missions.
+
+## 23. Party and Race on a generated entity's table (packet `cc9_generated_entity_party`, `kGeneratedEntityPartyBound`)
+
+Worker cc9-hud3, 2026-09-27, base c1dfab89b. Ghidra was read only.
+
+### 23.1 The rule (V where cited)
+
+- **The values.** 00944FD0 GenerateObject creates from the held-back scene record through
+  0046D930 or 0046DC10. The record's kind-1 bag carries `Party` and `Race`: every group derives
+  from `Common` (17.1).
+- **Where they are read.** Pass A's attach 00928A00 opens with `CALL 00927050` (00928A1E), whose
+  kind-1 arm stores `Race` at `+58h` and `Party` at `+54h` (17.1).
+- **Where they reach Lua.** The Lua fields come from the 00928F50 mirror (vtable `+2Ch`, through
+  the thunk 00951F30). No direct caller of either was found, so its call site on this route is
+  **not read**.
+  - The host's load route writes the fields at pass A (`write_party_race_fields`, section 17.3).
+    This packet writes a generated node's fields at the same point.
+  - **LABELLED SUBSTITUTION:** the exact moment of the image's mirror call on this route is
+    unread. It must come before any script can read the table, because GenerateObject's InitAll
+    completes inside the call.
+- **The host before this packet.** The GenerateObject route pushed its node with `party` and
+  `race` at -1, so pass A wrote neither. `thisTable[key].Party` was nil.
+- **The consumer.** USN01's `luaCheckObjectives` calls `luaCheckMusic(GetSelectedUnit())`, and
+  `luaGetShipsAround` (`commandhelpers.lua` 330) reads `recon[targetUnit.Party][allegiance]`. With
+  a generated unit selected, this failed five times in the squadron-slot pair (CONTROLLED_UNIT.md,
+  "The squadron slot in the selection tests").
+
+### 23.2 The binding
+
+- **Switch:** `kGeneratedEntityPartyBound` in `include/bsp/game_hosts_lua.hpp`, committed OFF.
+- While true, `run_generate_object_00944fd0` copies `record.party` and `record.race` onto its
+  pending node (`generated_party`). Pass A then writes them through `write_party_race_fields`, as
+  it does for a load node.
+- **The census** (on both sides):
+  - `summary mission script generated entity party ... bound=.. nodes=.. writes=..`;
+  - one `generated entity party:` line per write.
+- **Not covered:** the wing planes pass A builds for a generated squadron. Their Lua tables come
+  from 007F4580's construction and pass C, and whether the image mirrors their party there was not
+  read.
+
+### 23.3 Predictions (streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player)
+
+The generated entities come from the OFF logs of this base: USN01 generates ScoutDauntless only.
+USN04 and USN02 call GenerateObject never, in these runs.
+- **USN01 3200/3000** (`kSquadronSlotClassBound` OFF):
+  - census `nodes=1 writes=1`, with `thisTable[63]` ("ScoutDauntless") `Party=0 Race=2`. The scene
+    authors no `Party` (`Common`'s Allied 0) and `Race = E Races : USA` (2).
+  - No reached script reads a generated entity's `Party` while the squadron is not selected.
+    **Gameplay identical, exit 1.**
+- **USN01 with `kSquadronSlotClassBound` also ON** (the re-pair after 23 and 24): the five
+  `commandhelpers.lua:330` failures go to 0.
+- **USN04 4700/4500 and USN02 9200/9000:** census `nodes=0 writes=0`. **Identity, exit 1.**
+
+### 23.4 Pairs and verdict
+
+- **The pairs.** The OFF side is this tree's build at 519df06ec, with every switch of this and the
+  next packet off (`local\gp_off_*`). The ON side is `local\gp_on`, an export of fd82be77f with
+  only `kGeneratedEntityPartyBound` flipped.
+  - Between those commits only packet `cc9_plane_in_flight_test` landed, OFF.
+  - Its one code path is the 20h classifier's plane arm, which no OFF run reaches (no
+    `InGameInterface 007BB9A0` line in any `gp_off` log).
+- **Run parameters:** streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05 and an idle player.
+
+| pair | `pair_diff` | result |
+| --- | --- | --- |
+| USN01 3200/3000 | exit 1 | gameplay, 7 death rows and 28 unit rows identical. The census goes `writes 0 -> 1`: `thisTable[63]` ("ScoutDauntless") `Party=0 Race=2` |
+| USN04 4700/4500 | exit 1 | census `nodes=0`; identical |
+| USN02 9200/9000 | exit 1 | census `nodes=0`; identical |
+
+**The combined re-pair.** `local\all_on` is an export of 519df06ec with this switch,
+`kPlaneInFlightTestBound` and `kSquadronSlotClassBound` all ON, run against the same OFF logs. On
+USN01 the five `commandhelpers.lua:330` failures are gone (`failures=0`, fires 85 as on OFF).
+Details are in `docs/CONTROLLED_UNIT.md`, "The squadron slot in the selection tests".
+
+**Every prediction held.** **Verdict: `kGeneratedEntityPartyBound = true`.**

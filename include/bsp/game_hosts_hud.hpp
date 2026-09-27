@@ -274,7 +274,15 @@ inline constexpr bool kUnitVtable124MapBound = true;
 // and the root lists) answer class 18h for a squadron's slot. Everything else
 // (the interface classifier, which the image redispatches from 18h to the
 // +3D0h plane at 0068AF18, the units host, gunnery) keeps the plane's class.
-inline constexpr bool kSquadronSlotClassBound = false;  // ON by the identity pairs (docs/CONTROLLED_UNIT.md, "The unit vtable[124h] map")
+inline constexpr bool kSquadronSlotClassBound = true;  // ON: re-pair with the party and 007BB9A0 switches (docs/CONTROLLED_UNIT.md)
+
+// Packet cc9_plane_in_flight_test (docs/IN_GAME_INTERFACE_SCREEN_SETS.md,
+// "007BB9A0"), committed OFF with predictions. The 20h classifier's plane arm
+// (0068AE84) picks INTF_PLANE (22h) when 007BB9A0 answers true and
+// INTF_PLANESPAWN (24h) otherwise. While true the HUD answers it with
+// bsp::pilot_cmd_local_input_enabled_007bb9a0 over the units host's inputs;
+// while false it is a record answering false.
+inline constexpr bool kPlaneInFlightTestBound = true;  // ON: the combined re-pair (docs/IN_GAME_INTERFACE_SCREEN_SETS.md)  // ON by the identity pairs (docs/CONTROLLED_UNIT.md, "The unit vtable[124h] map")
 // Returns false when no HUD is attached.
 bool hud_force_select_unit_006485a0();
 

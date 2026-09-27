@@ -1,0 +1,37 @@
+{
+  "packet": "cc9_generated_entity_party",
+  "worker": "cc9-hud3",
+  "base": "c1dfab89b",
+  "switch": "kGeneratedEntityPartyBound",
+  "state": "ON",
+  "doc": "docs/SENTITY_INIT_ATTACH_ORDER.md section 23",
+  "substitutions": [
+    "A generated node's Party/Race are written at pass A, the load route's point; the image's 00928F50 call site on the GenerateObject route is unread."
+  ],
+  "no_ghidra_function": [],
+  "names_added": [],
+  "pairs": [
+    {
+      "mission": "USN01 3200/3000",
+      "pair_diff": 1,
+      "result": "identical; thisTable[63] ScoutDauntless Party=0 Race=2"
+    },
+    {
+      "mission": "USN04 4700/4500",
+      "pair_diff": 1,
+      "result": "identical, nodes=0"
+    },
+    {
+      "mission": "USN02 9200/9000",
+      "pair_diff": 1,
+      "result": "identical, nodes=0"
+    },
+    {
+      "mission": "USN01 combined (party+in-flight+slot class ON)",
+      "pair_diff": 3,
+      "result": "script timer failures 0 (were 5 without this switch); combat identical"
+    }
+  ],
+  "off_commit": "fd82be77f (OFF runs from 519df06ec)",
+  "failed_predictions": []
+}

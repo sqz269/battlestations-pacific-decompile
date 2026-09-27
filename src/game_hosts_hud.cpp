@@ -260,8 +260,25 @@ public:
         return false;
     }
     bool plane_is_in_flight() override {
-        owner_.record("InGameInterface::plane_is_in_flight", 0x007bb9a0u);
-        return false;
+        // 0068AE84 007BB9A0(unit) (packet cc9_plane_in_flight_test).
+        bsp::PilotCmdLocalInputGate gate{};
+        const bool plane = owner_.units != nullptr && owner_.units->controlled_bound()
+            && owner_.units->plane_local_input_gate_007bb9a0(
+                owner_.units->controlled_index(), gate);
+        const bool answer = plane && bsp::pilot_cmd_local_input_enabled_007bb9a0(gate);
+        owner_.log.notef("InGameInterface 007BB9A0 for the 20h payload: plane=%d c0c=%d aa0=%.1f "
+            "chA=%d/%.2f 00604a20=%d 5d=%d -> %d (bound=%d)", plane ? 1 : 0,
+            gate.enable_byte_c0c ? 1 : 0, static_cast<double>(gate.gate_float_aa0),
+            gate.gate_block_present ? 1 : 0, static_cast<double>(gate.gate_block_value),
+            gate.global_block_00604a20 ? 1 : 0, gate.unit_suppressed ? 1 : 0, answer ? 1 : 0,
+            kPlaneInFlightTestBound ? 1 : 0);
+        if constexpr (kPlaneInFlightTestBound) {
+            owner_.done("InGameInterface::plane_is_in_flight", 0x007bb9a0u);
+            return answer;
+        } else {
+            owner_.record("InGameInterface::plane_is_in_flight", 0x007bb9a0u);
+            return false;
+        }
     }
     bool has_delegate_unit() override {
         owner_.record("InGameInterface::has_delegate_unit", 0x0068af18u);
