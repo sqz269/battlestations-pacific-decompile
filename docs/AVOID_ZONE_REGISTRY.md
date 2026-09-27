@@ -131,3 +131,55 @@ one run at a time.
 | the Lexington's movement line | ± 200 m | - |
 | ship rows | move only through the plane attacks above | **identical**: the registry's construction moves no ship row, and no ship reads the sample while the probe is unbound |
 | identical rows | everything before the first plane sample over a nonzero cell | every ship row; plane rows may move if a USN02 plane flies over the layer |
+
+## The ring-scan probe's contract over the manager (for cc9-gunnery2)
+
+Rows 9-11 of `docs/UNIMPLEMENTED_RANKING_3.md` are the three calls of `009E6640`
+`BSP_ShipAi_ApproachProbeSlotClearance` that `RingScanProbeBinding` in
+`src/game_hosts_ship_ai.cpp` records. The manager they reach is `[00E17624]`, which is
+`GameAvoidZoneRuntime` (`include/bsp/game_avoid_zone_runtime.hpp`) in this host. None of the
+three touches the registry.
+
+| call | image | ABI | contract | over the runtime |
+| --- | --- | --- | --- | --- |
+| `009E66EB` `unit->vtable[218h]()` | `006DFD90` in every ship vtable at +218h: `00CF92C8`, `00CFA990`, `00CFB950`, `00CFC5E8` (`MDestroyer` `00CFC3D0` + 218h), `00CFFC48`, `00D01848`, `00D09890` (ship base `00D09678` + 218h), `00D0C860` | `__thiscall(unit)`, no arguments, `RET`; body `006DFD90`-`006DFD9D` inclusive (**no Ghidra function**; INT3 at `006DFD8D`-`006DFD8F` and from `006DFD9E`) | `ECX = [unit+538h]` (the class descriptor); `0082ADA0(0)`: `004218E0` fetches the manager, then `004120D0(manager, [desc + 0*4 + 560h])` returns the **zone group** for the class's navigation layer (class+560h is 11 for every surface class in this installation, `docs/AVOID_ZONE_ESCAPE.md`) | `runtime.group_for_layer(class_560h)` returns the 1-based group token that `004120D0` names. It throws unless `ready()`, so the binding checks `ready()` first |
+| `0082ADA0` | `__thiscall(desc)(int depth_index)`, tail-jumps to `004120D0` | ECX descriptor; stack index; returns EAX group | `004120D0(manager, [desc + index*4 + 560h])`; callers `00812C90`, `00852FF0`, `00941D30`, `00A02020`, and `006DFD90` with index 0 | as above, with `[desc+560h+4*index]` |
+| `0082ADC0` | `__thiscall(desc)()`, `RET` | - | `004120D0(manager, [desc+570h])`; callers `009E1950`, `009E85B0`, `009F1BC0` | `runtime.group_for_layer(class_570h)` |
+| `009E673E` `00417B10` | `BSP_AvoidZoneGroup_OffsetPointSequential` | `__thiscall(group)(float2* out, const float2* point, float push, char test_containment)`, `RET 10h`, EAX = out; the probe passes (out, in, 3.0f, 1) | copies the point, then walks every zone of the group in order and pushes the running output out of each zone it lies in, by `push` | **gap:** the runtime has no method for it. The reconstruction exists (`avoid_zone_group_offset_00417b10`, `include/bsp/ship_ai_layer_selection.hpp`), and a runtime method `offset(group, point, push, test)` over the runtime's own group views is the missing piece |
+| `009E6808` `0041B4E0` | a thunk, body `0041B4E0`-`0041B500` | `__thiscall(group)(const float2* toward, const float2* from, float2* running)`, `RET 0Ch`, AL = hit | forwards to `004179D0` `BSP_AvoidZoneGroup_SegmentHit(toward, from, running, &zone, &edge)`, using its own argument slots as the zone and edge outputs (discarded); `running` holds the hit point when AL is set | the runtime's `segment_point(layer, toward, from, hit)` goes through the manager's all-group `00417EF0`, not one group. The group-level twin (`avoid_zone_group_segment_hit_004179d0` on `groups[token-1]`) is the faithful binding and is not exposed yet |
+
+Two further notes:
+- **Order.** `009E6640` asks for the space, refreshes the pose when `[unit+0C8h]` is clear
+  (`00414DB0`), offsets the start point with `00417B10`, then casts the probe with `0041B4E0`.
+  The binding needs the runtime to be `ready()`, which it is after `load_avoid_zone_geometry`.
+- **A second consumer of `0041B4E0`** is `006AC5D0` (not a ship AI routine; contract unread).
+
+## The pairs, measured
+
+The logs are in worktree cc9-plane-release: `local\AZ_OFF_9000.log` / `AZ_ON_9000.log`,
+`AZ_OFF_4500.log` / `AZ_ON_4500.log` and `AZ_OFF_USN02.log` / `AZ_ON_USN02.log`. All six show the
+1600x900 line and a module directory in that tree. The OFF binary is `f49d492e5`'s. The ON binary
+is `697e8cc48`'s source with the switch set, which only moves the sea return into an `else` arm
+(C4702 under /WX). The diffs ignore pointers, the harness slot lines and the refill counter.
+
+| row | USN04 9000 OFF -> ON | USN04 4500 OFF -> ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| census | `registry_layers=4 scene_loads=1 squadron_34c=3 (n=240 cell=100.0 scale=2.0022 slope=2.747478)`; samples 2,627,020 -> 2,619,271; layer nonzero in 761,112 -> 753,859; `layer_max` 394.61 m | same shape; 1,878,897 -> 1,871,170 samples, 371,235 -> 364,018 nonzero, max 330.36 m | as written; `layer_max` 150-400 m | held |
+| what the sea returned | **exactly 0.000** at every sample (`sea=[0.000 0.000]`), not ± 1 m | same | ± 1 m | **failed**, harmlessly: the stand-in was a flat 0, so the layer's value is the whole difference (mean 24-25 m) |
+| terrain avoidance (0099F1C0) | ticks 1284 -> 1720, bands 3520 -> 4538; the only planes that now avoid are the Yorktown's own squadrons (`Yorktown-class01_sqn02`, `sqn04`: 26-114 terrain ticks each, `min_margin` 61-64 m) | same | more bands near the Yorktown group | held |
+| torpedo approach scans (009D37AE) | Kate flights #4.1 and #8.1: clear sectors 36 -> 30-32 and 36 -> 23 of 36, home sector 0 -> 5 or 6 | same | may change | held |
+| torpedo drop | identical (Kate #4.1\|.-4, 13 m, 73.1 m/s) | same | may be refused or moved | held; not moved |
+| dive releases, bombs | identical: 3, 0 | same | 3 ± 1 | held |
+| deaths, death table, hit records | identical | identical | ± 10, ± 150 | held; nothing moved |
+| the Lexington's movement line | identical | identical | ± 200 m | held |
+| plane motion | distance 838,451.16 -> 838,448.31 m; the Yorktown CAP's final ranges move by about 3 m | 609,018.97 -> 609,020.32 m | - | - |
+
+| row | USN02 9000 OFF -> ON | prediction | verdict |
+| --- | --- | --- | --- |
+| registry | built (`registry_layers=4 scene_loads=1`; the scene's `.nav` parsed into 3 layers) | built | held |
+| samples | 0 on both: no plane samples the layer in this run | plane rows may move | held |
+| every ship row | identical | identical | held |
+
+**Verdict: `kAvoidZoneLayerSampleBound` ON.** The planes read the scene's avoid-zone layer where
+the image reads it, and its only measured consequence is the Yorktown's fighters flying their
+terrain avoidance over the eastern block. No death, hit or release moved on either mission.
