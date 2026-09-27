@@ -279,3 +279,37 @@ So no gameplay path in this host tests the byte except the two gates bound here.
 
 Every consumer behind the two gates is a record, so nothing can reach a unit. The ignored
 counters are `ship avoidance search refills` and `pretranslate`.
+
+## 10. Part 2 pairs and verdict
+
+One tree, f86198484, with `local\bin\cw_off` against `local\bin\cw_on`. The two builds differ
+only by the switch. `BSP_GUNNERY_RNG_STREAMS=1` and `BSP_DEATH_TABLE=1` were set. All four logs
+show the 1600x900 fit line, the module directory in this tree and the final COM release.
+
+| row | USN04 OFF | USN04 ON | USN02 OFF | USN02 ON |
+| --- | ---: | ---: | ---: | ---: |
+| native table rows | 1,530 | 1,537 (+7, the predicted ones) | 1,431 | 1,438 (+7) |
+| `World::active_byte_004cb098` | absent | 1, concrete | absent | 1 |
+| the five `FixedStepFanout::*` gated rows | absent | 4,500 each, records | absent | 9,000 each |
+| `TrafficConfig::group_walk_00487270` | absent | 4,500 | absent | 9,000 |
+| `summary fixed step body` gate_closed / skipped / records | 4,500 / 22,500 / 4,500 | 0 / 0 / 27,000 | 9,000 / 45,000 / 9,000 | 0 / 0 / 54,000 |
+| `summary mission world` active / traffic_walks | 0 / 0 | 1 / 4,500 | 0 / 0 | 1 / 9,000 |
+| deaths, death rows | 41, 41 | 41, 41 equal | 22, 22 | 22, 22 equal |
+| gunnery damage line | 727 hits | identical | 440 hits | identical |
+
+**Every prediction held.** One counter moved that the predictions did not list: `fanout_sites`
+went from 49,500 to 72,000 and from 99,000 to 144,000. Those are the 22,500 and 45,000 gated
+sites now visited, so this is the same fact counted a second way.
+
+A whole-log diff with heap addresses masked leaves these lines:
+- the per-step fan-out lines ("world gate closed" against "open", "skipped (world gate)"
+  against "record");
+- the ignored `ship avoidance search` refills and `pretranslate` counters;
+- the pre-mission press-start blink alpha;
+- one pre-window FMOD call count in USN04 (132 against 131), before the mission.
+
+Every per-entity row, death row, gunnery line and other summary line is identical, and the
+clock offset is zero.
+
+**Verdict: ON.** Both gates now read the image's byte. The rows behind them are named records,
+waiting for parts 7 and 8.

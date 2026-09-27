@@ -1,27 +1,198 @@
 {
   "packet": "cc9_construct_world",
-  "part": 1,
+  "part": 2,
   "doc": "docs/CONSTRUCT_WORLD.md",
-  "switch": "none in part 1 (docs only)",
+  "switch": "kWorldActiveByteBound (src/game_hosts_mission_frame.cpp): committed OFF in f86198484, set ON by the verdict",
   "calls": [
-    {"address": "004E01DE", "native": "004DE610", "function": "004DFB70", "kind": "call", "host": "MissionSceneLoadHost::construct_world (load record)"},
-    {"address": "004DE69C", "native": "009037F0", "function": "004DE610", "kind": "call", "host": "not bound (chain headers are the executable's own, milestone 2i)"},
-    {"address": "004E52F4", "native": "00481640", "function": "004E4A40", "kind": "call", "host": "update_entity_manager_00481640 behind world_gate.enabled (never true)"},
-    {"address": "004E5382", "native": "00903670", "function": "004E4A40", "kind": "call", "host": "kill pass"},
-    {"address": "00875EDA", "native": "00903610", "function": "00875BB0", "kind": "call", "host": "release_expired_world_objects_00903610, ungated"}
+    {
+      "address": "004E01DE",
+      "native": "004DE610",
+      "function": "004DFB70",
+      "kind": "call",
+      "host": "MissionSceneLoadHost::construct_world (load record)"
+    },
+    {
+      "address": "004DE69C",
+      "native": "009037F0",
+      "function": "004DE610",
+      "kind": "call",
+      "host": "not bound (chain headers are the executable's own, milestone 2i)"
+    },
+    {
+      "address": "004E52F4",
+      "native": "00481640",
+      "function": "004E4A40",
+      "kind": "call",
+      "host": "update_entity_manager_00481640 behind world_gate.enabled (never true)"
+    },
+    {
+      "address": "004E5382",
+      "native": "00903670",
+      "function": "004E4A40",
+      "kind": "call",
+      "host": "kill pass"
+    },
+    {
+      "address": "00875EDA",
+      "native": "00903610",
+      "function": "00875BB0",
+      "kind": "call",
+      "host": "release_expired_world_objects_00903610, ungated"
+    }
   ],
   "world_fields": [
-    {"offset": "+4ACh", "writers": ["004CB098 (1)", "00904C67 (0)"], "readers": ["00875E78", "0048164B", "00874D3A", "00534BCB", "007D0C75", "007F3A7A", "007F3B2A", "00806F12", "0095948A", "00959537", "0047F130 (no Ghidra function)"]},
-    {"offset": "+18h+n*0Ch", "writers": ["vtable+130h registrars via 00928860, e.g. 006FE620, 007F10B0"], "readers": ["00977990 (+64h, +13Ch)", "009EEB80 (+60h)", "about 45 functions; see doc section 4"]}
+    {
+      "offset": "+4ACh",
+      "writers": [
+        "004CB098 (1)",
+        "00904C67 (0)"
+      ],
+      "readers": [
+        "00875E78",
+        "0048164B",
+        "00874D3A",
+        "00534BCB",
+        "007D0C75",
+        "007F3A7A",
+        "007F3B2A",
+        "00806F12",
+        "0095948A",
+        "00959537",
+        "0047F130 (no Ghidra function)"
+      ]
+    },
+    {
+      "offset": "+18h+n*0Ch",
+      "writers": [
+        "vtable+130h registrars via 00928860, e.g. 006FE620, 007F10B0"
+      ],
+      "readers": [
+        "00977990 (+64h, +13Ch)",
+        "009EEB80 (+60h)",
+        "about 45 functions; see doc section 4"
+      ]
+    }
   ],
-  "census": {"sites_19cc": 287, "renderer_sites": 3, "world_functions": 189, "sites_without_function": ["0042367C", "00434F50", "00434F86", "00517A3B", "00534BC5", "0053DE63", "006E5CF4", "006EDBA3", "007AB428", "007F4C7F", "007F4CCF", "00806F0A", "00814426", "009412DE", "009503D3", "00A1FC51"]},
+  "census": {
+    "sites_19cc": 287,
+    "renderer_sites": 3,
+    "world_functions": 189,
+    "sites_without_function": [
+      "0042367C",
+      "00434F50",
+      "00434F86",
+      "00517A3B",
+      "00534BC5",
+      "0053DE63",
+      "006E5CF4",
+      "006EDBA3",
+      "007AB428",
+      "007F4C7F",
+      "007F4CCF",
+      "00806F0A",
+      "00814426",
+      "009412DE",
+      "009503D3",
+      "00A1FC51"
+    ]
+  },
   "corrections": [
-    {"was": "the world grid [game+19CCh]+84h (009043A0)", "is": "the spatial index singleton [0042E630()]+84h; on the world +84h is list 9's count", "evidence": "009043AA CALL 0042E630, 009043D2 MOV ECX,EDI, 009043D4 CALL 0098ADD0; ECX never read"},
-    {"was": "the entity manager at game+21A0h is null (host log text)", "is": "00481640 runs on game+21D0h (TrafficConfig); what is missing is world+4ACh", "evidence": "0048164B CMP byte [EDX+4ACh],0; ECX from 004E52F4"},
-    {"was": "the world lists are not built (host comments)", "is": "the units host fills every list its registrars reach, list 6 included; list 24 is still empty", "evidence": "include/bsp/game_hosts_units.hpp world_list_*; src/game_hosts_ship_ai.cpp brain pre-pass reads list 6"},
-    {"was": "rows 9-11 and 15 wait on the world", "is": "they read the avoid-zone manager [00E17624] and registry [00E17620]", "evidence": "006DFD90 -> 0082ADA0 -> 004218E0; 007CE88C [EAX+34Ch] written at 007F1DCA from 0041DF40"}
+    {
+      "was": "the world grid [game+19CCh]+84h (009043A0)",
+      "is": "the spatial index singleton [0042E630()]+84h; on the world +84h is list 9's count",
+      "evidence": "009043AA CALL 0042E630, 009043D2 MOV ECX,EDI, 009043D4 CALL 0098ADD0; ECX never read"
+    },
+    {
+      "was": "the entity manager at game+21A0h is null (host log text)",
+      "is": "00481640 runs on game+21D0h (TrafficConfig); what is missing is world+4ACh",
+      "evidence": "0048164B CMP byte [EDX+4ACh],0; ECX from 004E52F4"
+    },
+    {
+      "was": "the world lists are not built (host comments)",
+      "is": "the units host fills every list its registrars reach, list 6 included; list 24 is still empty",
+      "evidence": "include/bsp/game_hosts_units.hpp world_list_*; src/game_hosts_ship_ai.cpp brain pre-pass reads list 6"
+    },
+    {
+      "was": "rows 9-11 and 15 wait on the world",
+      "is": "they read the avoid-zone manager [00E17624] and registry [00E17620]",
+      "evidence": "006DFD90 -> 0082ADA0 -> 004218E0; 007CE88C [EAX+34Ch] written at 007F1DCA from 0041DF40"
+    }
   ],
-  "no_ghidra_function": [],
+  "no_ghidra_function": [
+    {
+      "start": "00534BC0",
+      "end": "00534BF7",
+      "evidence": "RET 4 at 00534BF5, INT3 before at 00534BB5..00534BBF; slot 1 of vtable 00CED6E0 (pointer at 00CED6E4), installed by 00538A80 at 00538AB1; reads [[game+19CCh]+4ACh] at 00534BCB"
+    },
+    {
+      "start": "00806F00",
+      "end": "008073B9",
+      "evidence": "RET 4 at 008073B7, INT3 at 00806EF5..00806EFF and 008073BA..008073BF, next function 008073C0; slot 1 of the recon slot vtable 00D08E94 (pointer at 00D08E98), installed by 008050E0 at 00805139 and 00805267; reads the byte at 00806F12"
+    }
+  ],
   "names": [],
-  "verdict": "part 1: plan only"
+  "verdict": "part 2: ON",
+  "plus_4ac_readers": [
+    {
+      "site": "00874D3A",
+      "function": "00874D00",
+      "reached": false,
+      "gates": "re-running nine fan-out rows outside the driver"
+    },
+    {
+      "site": "00534BCB",
+      "function": "00534BC0 (no Ghidra function)",
+      "reached": false,
+      "gates": "[this-64h] slots 1Ch and 18h when this+D4h"
+    },
+    {
+      "site": "007D0C75",
+      "function": "007D0B80",
+      "reached": false,
+      "gates": "00498F80(unit) on the TrafficConfig"
+    },
+    {
+      "site": "007F3A7A",
+      "function": "007F3A60",
+      "reached": false,
+      "gates": "release of the controlled squadron"
+    },
+    {
+      "site": "007F3B2A",
+      "function": "007F3B10",
+      "reached": false,
+      "gates": "kill report 009813A0"
+    },
+    {
+      "site": "00806F12",
+      "function": "00806F00 (no Ghidra function)",
+      "reached": false,
+      "gates": "the whole body, a walk over the scanned classes"
+    },
+    {
+      "site": "0095948A, 00959537",
+      "function": "00959450",
+      "reached": false,
+      "gates": "kill report and limbo page; unit_death_00959450 has no caller"
+    }
+  ],
+  "pairs": {
+    "usn04": {
+      "rows": "1530 -> 1537, only the seven predicted",
+      "gated_rows": 4500,
+      "traffic_walks": 4500,
+      "deaths": 41,
+      "hit_records": 727,
+      "gameplay": "identical"
+    },
+    "usn02": {
+      "rows": "1431 -> 1438, only the seven predicted",
+      "gated_rows": 9000,
+      "traffic_walks": 9000,
+      "deaths": 22,
+      "hit_records": 440,
+      "gameplay": "identical"
+    },
+    "unpredicted": "fanout_sites 49500 -> 72000 and 99000 -> 144000, the gated sites now visited; masked whole-log diff otherwise the per-step gate lines, ignored counters, pre-mission blink alpha and one pre-window FMOD count"
+  }
 }

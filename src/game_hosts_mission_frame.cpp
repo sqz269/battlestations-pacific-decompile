@@ -115,8 +115,9 @@ constexpr bool kWarningManagerTickBound = true;
 // stays the load record; the 97 lists are the units host's own. The teardown
 // 004D2BB0 clears the byte through the destructor (00904C67); this host runs
 // no teardown, so the byte stays set to the end of the run. False: the byte is
-// never set and both gates stay closed.
-constexpr bool kWorldActiveByteBound = false;
+// never set and both gates stay closed. ON by the verdict: the USN04 and
+// USN02 pairs moved only the predicted record rows (docs section 10).
+constexpr bool kWorldActiveByteBound = true;
 
 // Packet cc9_scaled_delta_write (docs/SCALED_DELTA_WRITE.md). True: the frame
 // writes game+21F0h, the scaled delta 004C6E30 stores at 004E4D45, into the
