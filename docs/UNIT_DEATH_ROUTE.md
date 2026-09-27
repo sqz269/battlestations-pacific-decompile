@@ -84,3 +84,26 @@ USN02 9200/9000 and E2 = USN04 9200/9000.
 - **New rows:** `Death::unit_on_destroyed_00959450` and `Death::child_trigger_off_vtable1e8`
   (concrete), and `WarningManager::report_loss_009813a0` and `LimboScreen::take_unit_00565fb0`
   (records).
+
+## 4. The pairs and the verdict
+
+One tree (main `a3916014b` plus `93103dfcb`), `local\dr_off` against `local\dr_on` (SHA-256
+prefixes `C9BA4FB81AE3` / `13D327CC4B1E`). Streams and the death table on. Logs:
+`local\dr_{off,on}_{usn02,usn04}.log`. Every log shows the 1600x900 override and its own module
+directory, and every run exited 0.
+
+| line | USN02 OFF -> ON | E2 OFF -> ON |
+| --- | --- | --- |
+| death route calls / reported | 0 -> 22 / 22 | 0 -> 51 / 51 |
+| loss report calls; side0 / side1 | 0 -> 22; 12 / 10 | 0 -> 51; 0 / 0 |
+| limbo pages | 0 -> 1 (DeRuyter) | 0 -> 0 |
+| child triggers | 0 -> 309 | 0 -> 236 |
+| new rows | `Death::unit_on_destroyed_00959450` 22, `Death::child_trigger_off_vtable1e8` 22, `WarningManager::report_loss_009813a0` 22 (record), `LimboScreen::take_unit_00565fb0` 1 (record) | the same, at 51, and no limbo row |
+
+- Every other native row, every other summary line, and every `death row` and `plane death
+  mode` line are identical both ways.
+- The kill credit keeps its count and order: 22 / 51.
+
+**Verdict: held, every prediction.** `kUnitDeathRouteBound` is ON. The loss report and the
+limbo page stay named records until the warning manager gains the entry in section 2's
+contract, and the limbo screen its own.

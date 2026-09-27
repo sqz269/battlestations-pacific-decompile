@@ -31,8 +31,41 @@
   "switch": {
     "name": "kUnitDeathRouteBound",
     "file": "include/bsp/game_hosts_gunnery.hpp",
-    "committed": false
+    "committed": true
   },
   "contract": "include/bsp/game_hosts_mission_frame.hpp: game_warning_report_loss_009813a0(std::size_t unit), for the frame file's owner",
-  "pairs": "pending"
+  "pairs": {
+    "tree": "main a3916014b + 93103dfcb",
+    "logs": "local/dr_{off,on}_{usn02,usn04}.log",
+    "USN02": {
+      "calls_reported": [
+        22,
+        22
+      ],
+      "loss_reports_side0_side1": [
+        12,
+        10
+      ],
+      "limbo_pages": 1,
+      "child_triggers": 309,
+      "other_lines_moved": 0
+    },
+    "E2": {
+      "calls_reported": [
+        51,
+        51
+      ],
+      "loss_reports_side0_side1": [
+        0,
+        0
+      ],
+      "limbo_pages": 0,
+      "child_triggers": 236,
+      "other_lines_moved": 0
+    },
+    "verdict": "held; switch ON",
+    "failed_predictions": []
+  },
+  "no_ghidra_function": [],
+  "names_added": []
 }

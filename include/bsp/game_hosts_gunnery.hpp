@@ -248,8 +248,8 @@ inline constexpr bool kPlayerGunSeatSegmentQueryBound = true;
 // report 009813A0 (a named record: the warning manager has no entry for it),
 // the kill credit 0091BDA0 when the gate passes, and the limbo page 00565FB0
 // for the controlled unit (a named record). False: the sink goes straight to
-// the kill credit. Committed OFF until its pair runs.
-inline constexpr bool kUnitDeathRouteBound = false;
+// the kill credit. ON: the USN02 and E2 pairs held (docs/UNIT_DEATH_ROUTE.md s4).
+inline constexpr bool kUnitDeathRouteBound = true;
 
 // Session message 79h as 00954A10 builds it in 005484F0 (section 32 of
 // docs/SHIP_SCREEN_UPDATE.md): +1Ch group, +20h..+28h the camera mover's
