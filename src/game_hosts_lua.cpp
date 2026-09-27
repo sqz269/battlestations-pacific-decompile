@@ -2652,13 +2652,59 @@ void GameMissionLuaHost::run_spawn_queue_0094c490(float step_seconds) {
     complete_spawn_request_0094c777(request);
 }
 
+namespace {
+// Packet cc9_spawn_new_placement: what 00941D30 walks, from this process's
+// units. [[00E188A8]+19CCh]+58h is taken as every live unit; party is the row's,
+// position unit+FCh..+104h (unit_position_00fc).
+// SUBSTITUTION, labelled: 0071C4F0's world bounds are held by the zone runtime,
+// which this host does not reach, so no member is refused as outside the map.
+class SpawnPlacementUnits final : public bsp::SpawnPlacementWorld {
+public:
+    explicit SpawnPlacementUnits(const GameUnitsHost& units) : units_(units) {}
+    bool point_outside_map_0071c4f0(const float*) const override { return false; }
+    void placement_entities(std::vector<bsp::SpawnPlacementEntity>& out) const override {
+        out.clear();
+        for (std::size_t i = 0; i < units_.count(); ++i) {
+            const GameUnitRow* row = units_.unit_row(i);
+            if (row == nullptr || !units_.unit_alive_and_visible(i)) continue;
+            bsp::SpawnPlacementEntity e;
+            e.party = row->party;
+            units_.unit_position_00fc(i, e.position[0], e.position[1], e.position[2]);
+            out.push_back(e);
+        }
+    }
+private:
+    const GameUnitsHost& units_;
+};
+}  // namespace
+
 void GameMissionLuaHost::fulfil_spawn_request_009483d0(bsp::SpawnNewRequest& request) {
     // 00949300 creates nothing unless EVERY member's placement passes; 009483D0
     // then makes them all and sets record+C0h. The all-or-nothing rule is kept;
-    // the placement test itself is not, because this process runs no occupancy
-    // or exclusion test - see docs/LUA_SPAWN_NEW_HOST.md, "What is not tested".
+    // with kSpawnNewPlacementBound the placement test 00941D30 and 0094A140's
+    // retry run too (docs/SCENE_CONTENTS_HOSTS.md section 23).
     if (request.members.empty()) return;
     if (!request.has_ref_pos) return;
+
+    std::optional<SpawnPlacementUnits> placement_world;
+    if constexpr (bsp::kSpawnNewPlacementBound) {
+        // 00948CC0 reads each member's class +A0h `Length` / +A4h `Width`:
+        // VehicleClass[Type] from the installed table.
+        // VehicleClass[Type] through read_vehicle_class_row; an absent key
+        // reads as 0, as the class field's zero default does.
+        for (bsp::SpawnNewGroupMember& m : request.members) {
+            const GameVehicleClassRow row = read_vehicle_class_row(m.type_class_id);
+            if (!row.found) continue;
+            m.class_length_a0 = row.length;
+            m.class_width_a4 = row.width;
+            m.has_class_extents = true;
+        }
+        placement_world.emplace(script_orders_->units());
+        bsp::set_spawn_placement_world(&*placement_world);
+    }
+    struct ClearWorld {
+        ~ClearWorld() { bsp::set_spawn_placement_world(nullptr); }
+    } clear_world;
 
     std::vector<std::uint32_t> made;
     made.reserve(request.members.size());
@@ -2666,6 +2712,19 @@ void GameMissionLuaHost::fulfil_spawn_request_009483d0(bsp::SpawnNewRequest& req
         const bsp::SpawnNewGroupMember& member = request.members[i];
         if (member.type_class_id <= 0) break;
         const bsp::SpawnNewFrame frame = bsp::spawn_member_frame_0094a140(request, i);
+        if constexpr (bsp::kSpawnNewPlacementBound) {
+            if (i == 0 && request.exclude.present) {
+                if (const bsp::SpawnPlacementResult* p = bsp::last_spawn_placement_0094a140()) {
+                    log_.notef("  spawn placement 0094a140: serial %u attempt %u candidates %d "
+                        "accepted %d angle %.4f distance %.1f",
+                        request.serial, request.attempts, p->candidates, p->accepted ? 1 : 0,
+                        static_cast<double>(p->angle), static_cast<double>(p->distance));
+                }
+            }
+        }
+        // 00949300's `bVar4 &= ...`: no candidate passed, so nothing is made
+        // and 0094C5AD requeues the record.
+        if (frame.refused) break;
 
         bsp::game::GameSceneEntityRecord record;
         // The script's own `Name` twice over in one mission ("Lexkiller 1" at

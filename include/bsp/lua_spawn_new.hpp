@@ -423,5 +423,7 @@ struct SpawnPlacementResult {
     int candidates{0};
 };
 SpawnPlacementResult solve_spawn_placement_0094a140(const SpawnNewRequest& request) noexcept;
+// The last request's solved placement (for the host's log), or null.
+const SpawnPlacementResult* last_spawn_placement_0094a140() noexcept;
 
 }  // namespace bsp

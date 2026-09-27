@@ -188,6 +188,10 @@ struct SolvedPlacement {
 SolvedPlacement g_solved;
 }  // namespace
 
+const SpawnPlacementResult* last_spawn_placement_0094a140() noexcept {
+    return g_solved.valid ? &g_solved.result : nullptr;
+}
+
 void set_spawn_placement_world(const SpawnPlacementWorld* world) noexcept {
     g_spawn_placement_world = world;
 }
