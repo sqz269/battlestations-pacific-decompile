@@ -331,3 +331,127 @@ frames. Binding identity would be a pose the image never casts from after the in
 - **The movie camera becomes a later HUD packet:** `MovCamNew_AddPosition`'s keyframe mover and
   its pose at the last keyframe.
 
+
+## 8. The new movie camera, part 1: the read (packet `cc9_movie_camera_mover`, docs only)
+
+Worker cc9-init-passes, 2026-09-27, base main 27ab3a4b4. Ghidra was read only. This covers what
+the movie camera is, how keyframes reach it, and how it poses the node. The interpolation bodies
+(about 11 KB, mostly x87) are **unread**, so nothing is bound here. Section 8.4 is the plan for the
+binding packet.
+
+### 8.1 How USN01's intro starts the movie (V, this installation's scripts)
+
+- **The script path.** `usn_1_marshall.lua` `luaIntroMovie` (line 609) calls `luaIngameMovie`
+  with eight keyframes and `bo = true` (lines 618..631). `luaIngameMovie`
+  (`commandhelpers.lua` 7747) arms `Blackout(true, "luaIngameMovieBOStart", 1)`. Then
+  `luaIngameMovieBOStart` (7802) runs `luaCamIngameMovieAuto` (7648).
+- **The keyframes.** `luaCamIngameMovieAuto` turns each entry into `{postype, position, starttime
+  = sum of the earlier moveTimes, blendtime = moveTime, nonlinearblend, wanderer, smoothtime,
+  transformtype, zoom}` and calls `MovCamNew_AddPosition` once per entry.
+  - USN01 uses only `postype` camera/target, `position = {pos, parent}`, `moveTime` 0 or 7 and
+    `transformtype = "keepall"`.
+  - The parents are `SaltLakeCity` for keyframes 1..4 and `CB2` for 5..8.
+  - The start times run 0, 0, 0, 0, 7, 7, 7, 7, and the total is 14 s.
+  - The callback `luaCamOnTargetExt` is delayed to `starttime - 1` = 13 s.
+- **No other native starts or stops the movie camera.** `EnableInput(false)` and
+  `BlackBars(true)` come first. `luaCamOnTargetExt` (7824) removes the listener, kills the script
+  and calls `luaIntroMovieEnd`, which is `Blackout(true, "luaIn", 3)` (mission line 648). `luaIn`
+  (654) issues orders only.
+
+### 8.2 The native side (V)
+
+- **`MovCamNew_AddPosition` 008B79F0** (`LuaBinding_MovCamNew_AddPosition`) calls
+  005CD240 `BSP_HudMovieScreen_GetCamera`.
+  - On first use that engages the movie interface through 005CD1A0, which pushes
+    `kMovieCameraNewInterface`. It then runs 005CC170, and returns `screen+1Ch`.
+  - When the camera is non-null, 008B79F0 hands the table to 007A44D0.
+  - **So the first keyframe starts the movie.** Nothing else does.
+- **005CC170 `BSP_HudMovieScreen_EnsureCamera`**, once, while `screen+1Ch` is null:
+  - allocates 570h bytes and constructs them through 0079D020 (vtable 00D04750, base 00432750);
+  - places the camera in the world (00923870 with identity);
+  - copies the camera node's current world `[[game+19FCh]+F0h]` (16 floats, after 00B6DB70) into
+    the camera through 007A0860, so the movie starts from wherever the node was;
+  - installs it as the mover through 004BC410 at 005CC2A9;
+  - registers an observer pair.
+- **Keyframe store.** 007A44D0 checks that `postype` is a string, then calls 007A42C0, which
+  matches it case-insensitively:
+  - `camera` builds one 104h keyframe (00799B00) with `+28h = 1`;
+  - `target` builds one with `+28h = 0`;
+  - `cameraandtarget` builds both, paired through `+20h` with the id `+DAh` taken from
+    `camera+3C0h`.
+  Each keyframe is parsed by 007A0EB0 (5 KB, unread) and inserted by 007A2CD0.
+- **The mover update, slot `+DCh` = 0079A3B0** (`HudMovieCamera_Update`,
+  0079A3B0..0079BBE1). ShipCaptain's is 00432ED0.
+  - **Clock.** `+3B0h += dt` while `+391h` is set, else it is zeroed. With no keyframes in either
+    track (`+508h` or `+484h` zero), the clock is zeroed and the update returns.
+  - **Editor mode.** `+568h`, the input actions and the `CAMERA EDITOR` overlay (0079A4xx..,
+    the `004C7070` prints) are a debug stepper, reached only while paused (`dt == 0`) with a
+    selected keyframe `+514h`.
+  - **Tracks.** Track `+414h` is the look-at: 00797DA0 sets it to `+3B0h` at 0079B288, and
+    00798130 evaluates it at 0079B2A8 into `+418h..+420h`. That result is copied to
+    `+384h..+38Ch`. Track `+498h` is the camera: set at 0079B29D and evaluated at 0079B2D7 into
+    `+49Ch..+4A4h`, with the up vector at `+4A8h..+4B0h`.
+  - **Ground clearance** (0079B2FB..0079B684), with the world present and `+4FCh` set: it samples
+    `BSP_World_GroundHeightAt` along the camera's horizontal move and smooths the height offset
+    `+520h`/`+524h` through 0078FAF0 (0079B691).
+  - **Basis.** The forward is `(+418h..) - (+49Ch.. + (0, +524h, 0))`, normalized, or (0, 0, 1)
+    when the length is under `[00D7A350]`. With `+4F4h` clear, the forward and the camera up go
+    to `+548h..` and `+538h..`, 0085DC80 builds the basis, and the position is kept at
+    `+558h..+560h`. Otherwise a matrix copy is used.
+  - **FOV.** `+410h / +4F8h` goes to `[mover+1BCh]` (the node) through 00B6FBB0 at 0079B833.
+  - **Pose.** The built matrix is copied into `mover+74h` (0079B83C), `+3B8h` is cleared, and
+    00435410(dt) runs, the base mover step (0043541F end). The base tail 004329D0 then pushes the
+    mover's pose into the node (`docs/MISSION_CAMERA.md` section 2).
+- **Hand-over, slot `+124h` = 0079A340** (no Ghidra function, 0079A340..0079A34C): it stores the
+  previous mover at `+3B8h`.
+- **005CDC50 clears the mover.** `HudScreen38_ClearCameraMover` is slot `+18h` of screen 38h's
+  vtable 00CF17D0 (entry 00CF17E8). Screen 38h is `GUI_movie` page 2. It calls 004BC410 with a
+  null mover at 005CDC72, then five 00442190 pushes (36h, 37h, 38h, 53h, 33h). **When it runs on
+  USN01 is unread.** If it runs at the movie's end, the node keeps the pose the movie mover last
+  pushed, because nothing pushes after the clear. If it never runs, the movie mover keeps
+  pushing its last-keyframe pose. Either way the pick ray casts from the movie's final pose, as
+  long as the track evaluation holds the last keyframe after the clock passes it. That holding
+  is unread in 00798130.
+
+### 8.3 Why no binding in this packet
+
+- **What a faithful pose needs:**
+  - 007A0EB0's parse: which keys it reads (`pos`, `parent`, `polar`, `starttime`, `blendtime`,
+    `nonlinearblend`, `smoothtime`, `transformtype`, `zoom`), and how `keepall` makes `pos`
+    relative to the parent's full transform;
+  - 007A2CD0's insertion order;
+  - 00797DA0 and 00798130: the segment search, the blend and its curve, and the hold after the
+    last keyframe;
+  - 0078FAF0's smoothing, and `+4FCh`'s default;
+  - 007A0860's seed.
+  That is about 11 KB of x87 bodies. A binding from the Lua script's shape alone would be a
+  modelled camera, not the image's.
+- **The node's pose after the movie** also depends on when 005CDC50 runs.
+
+### 8.4 Plan for the binding packet
+
+1. Read 007A0EB0, 007A2CD0, 00799B00, 00797DA0, 00798130, 0078FAF0 and 007A0860, in that order,
+   with the assembly where the pseudocode shows register inputs. The track calls are
+   `__thiscall` on `camera+414h`/`+498h`, so their `ECX` is dropped by the decompiler.
+2. Find what runs screen 38h's slot `+18h`: the screen manager's deactivate path in
+   `docs/IN_MISSION_INTERFACE_MANAGER.md` (line 275: `screen->[5h]` then its `+1Ch`). Decide
+   whether USN01's intro reaches it.
+3. Bind in the HUD host: `ensure_movie_camera` builds the camera state, `MovCamNew_AddPosition`
+   stores keyframes, and a per-frame update evaluates both tracks and publishes the pose as the
+   mission camera. That last part is `camera_basis`'s other source besides the ShipCaptain
+   publication.
+4. Measure:
+   - **USN01 3200/3000:** predict the logged pick-ray endpoints following the eight keyframes,
+     then the final pose relative to `CB2`: pos (-60, 13, 0) in `CB2`'s frame, looking at
+     (-50, 12, 0). Also predict land hits within the island bounds, `owner_140`, and gameplay
+     identical unless a resolved pick reaches the weapon-group fire path.
+   - **USN04 4700/4500:** identity.
+
+### 8.5 Bodies without a Ghidra function, and names
+
+- **No Ghidra function:** 0079A340..0079A34C inclusive (`RET 4` at 0079A34A, `INT3` from
+  0079A34D), the movie camera's `+124h` hand-over.
+- **Names added** (hypotheses): 008B79F0 `LuaBinding_MovCamNew_AddPosition`, 007A44D0
+  `HudMovieCamera_AddPositionChecked`, 007A42C0 `HudMovieCamera_AddPosition`, 0079A3B0
+  `HudMovieCamera_Update`, 00798130 `MovieCameraTrack_Evaluate`, 00797DA0
+  `MovieCameraTrack_SetTime` and 005CDC50 `HudScreen38_ClearCameraMover`.
