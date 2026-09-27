@@ -4,14 +4,101 @@
   "ghidra": "read-only; no renames, comments or saves",
   "answer": "009EEB8B reads world list 6 ([[00E188A8]+19CCh]+60h); the walk takes each element through 009DBBC0, keeps IsKindOf(6) entities other than [blk+3FCh], and takes [entity+9C8h] and 00427EB0's +FCh position. Bound from the units host's list 6 under kShipAiNeighbourCountBound (committed OFF, pair pending).",
   "steps": [
-    {"address": "009eebb0", "native": "009dbbc0", "function": "009ed6b0", "rule": "ElementAt(list 6, index)"},
-    {"address": "009eebc8", "native": "00cfc3d0+vtable5c", "function": "009ed6b0", "rule": "IsKindOf(6)"},
-    {"address": "009eec41", "native": "00427eb0", "function": "009ed6b0", "rule": "&entity+FCh"}
+    {
+      "address": "009eebb0",
+      "native": "009dbbc0",
+      "function": "009ed6b0",
+      "rule": "ElementAt(list 6, index)"
+    },
+    {
+      "address": "009eebc8",
+      "native": "00cfc3d0+vtable5c",
+      "function": "009ed6b0",
+      "rule": "IsKindOf(6)"
+    },
+    {
+      "address": "009eec41",
+      "native": "00427eb0",
+      "function": "009ed6b0",
+      "rule": "&entity+FCh"
+    }
   ],
   "routines": [
-    {"address": "009eeaab", "name": "ShipAi navigation arm tail", "coverage": "complete for 009EEB80..009EEC52 (the neighbour loop's inputs); the rest was bound by milestone 2q"}
+    {
+      "address": "009eeaab",
+      "name": "ShipAi navigation arm tail",
+      "coverage": "complete for 009EEB80..009EEC52 (the neighbour loop's inputs); the rest was bound by milestone 2q"
+    }
   ],
-  "substitutions": ["the units host never drops a unit from list 6, so sunk ships stay at their last position"],
-  "switch": {"name": "kShipAiNeighbourCountBound", "file": "src/game_hosts_ship_ai.cpp", "committed": false},
-  "pairs": "pending"
+  "substitutions": [
+    "the units host never drops a unit from list 6, so sunk ships stay at their last position"
+  ],
+  "switch": {
+    "name": "kShipAiNeighbourCountBound",
+    "file": "src/game_hosts_ship_ai.cpp",
+    "committed": true
+  },
+  "pairs": {
+    "tree": "main e3aba0f36 + e75f14ee5",
+    "logs": "local/nc_{off,on}_{usn02,usn04}.log",
+    "USN02": {
+      "count_calls": [
+        41037,
+        78340
+      ],
+      "mean_max_count_on": [
+        31.99,
+        32
+      ],
+      "steps_on": 44884,
+      "stops": [
+        307,
+        8372
+      ],
+      "deaths": [
+        22,
+        22
+      ],
+      "hit_records": [
+        440,
+        439
+      ],
+      "damage": [
+        59209.2,
+        58822.3
+      ],
+      "end": "failed 39.65 s both",
+      "death_table": "identical to 330.24 s; order and credits shift after"
+    },
+    "E2": {
+      "count_calls": [
+        22926,
+        24375
+      ],
+      "mean_max_count_on": [
+        18.0,
+        18
+      ],
+      "steps_on": 2262,
+      "stops": [
+        74,
+        538
+      ],
+      "deaths": [
+        51,
+        51
+      ],
+      "hit_records": [
+        843,
+        843
+      ],
+      "death_table": "identical"
+    },
+    "verdict": "held; switch ON",
+    "failed_predictions": [
+      "USN02 mean_count 31.99, not 32: four IJN ships register in list 6 after the first world frame"
+    ]
+  },
+  "no_ghidra_function": [],
+  "names_added": []
 }

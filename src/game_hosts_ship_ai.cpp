@@ -219,8 +219,9 @@ inline constexpr bool kShipAiSnapshotBound = true;
 // brain's own unit [blk+3FCh] (009EEBD2), and takes [entity+9C8h] (009EEBE0)
 // and 00427EB0's +FCh position (009EEC41) from the units host. SUBSTITUTION:
 // the host's list 6 never drops a unit, so a sunk ship stays in it. False: the
-// count is 0 and the walk never steps (the milestone 2r stand-in).
-inline constexpr bool kShipAiNeighbourCountBound = false;
+// count is 0 and the walk never steps (the milestone 2r stand-in). ON: the
+// USN02 and E2 pairs held (docs/SHIP_AI_TAILS.md section 13.4).
+inline constexpr bool kShipAiNeighbourCountBound = true;
 // Packet cc9_ship_ai_turn_clearance, docs/SHIP_AI_TAILS.md section 6. True:
 //  * 009ED3E0's head (009ED3E0..009ED498) builds the two corridor widths from
 //    the unit's formation group: 00778890 (the unit leads its group, entity+284h
