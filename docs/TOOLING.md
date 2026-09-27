@@ -8,6 +8,7 @@ or a reconstructed body.
 | tool | usage |
 | --- | --- |
 | `tools/pair_diff.py` | `python tools/pair_diff.py local\X_OFF.log local\X_ON.log [--json out.json] [--limit N]` |
+| `tools/pair_export.py` | `python tools/pair_export.py --commit <sha> --flip kSwitch=true [--flip ...] --out local\<name> [--mission E2] [--no-build]` |
 
 ## 1. `tools/pair_diff.py`: the same-tree pair comparison
 
@@ -79,3 +80,40 @@ recorded verdict's rows.
 
 Clock offsets were zero in every pair above. The subtraction of a non-zero offset has not been
 exercised on a real pair.
+
+## 2. `tools/pair_export.py`: an export-flip build
+
+It builds a switch's other state without editing the file that holds it, which is usually leased
+by another worker.
+
+1. `git archive <commit>` of this repository is unpacked into `--out` (a directory under this
+   worktree's `local\`). On a re-export only files whose bytes differ are rewritten and files the
+   commit no longer has are removed. `build/` is never touched, so the CMake build there stays
+   incremental. `.pair_export.json` in the export records the commit, the flips and the file list.
+2. Each `--flip kName=<true|false|1|0>` rewrites the one `[static|inline] constexpr bool kName =
+   true|false;` definition in the exported bytes, before they are compared with the disk. So
+   dropping or changing a flip on a later export rewrites that file too. A name that is absent,
+   or defined more than once in the tree's sources, fails before anything is written.
+3. It runs the export's own `scripts/build.ps1`, which builds `<out>\build\win32` and runs ctest.
+   The output goes to `<out>\pair_export_build.log`.
+4. It prints the SHA-256 prefix of `<out>\build\win32\Release\bsp_game.exe` and the
+   `./tools/run_game.ps1 -Exe ... -Log local\<name>_<mission>.log -- ...` line. It never runs the
+   game. A failed build prints the log's tail. A binary older than a failed build is called STALE.
+
+**Reference rows are never taken from an export with a flip.** A flipped export measures one
+switch against its control, the same export with no flip. Reference rows come from a build of the
+landed tree with every switch as landed.
+
+### Validation (main `7e7b78339`, `kPlaneFormationPlacementEnabled`, src/game_hosts_units.cpp)
+
+| step | result |
+| --- | --- |
+| `--flip kPlaneFormationPlacementEnabled=true --out local\pe_on` into an empty directory | 11,007 files written; flip `false -> true` at src/game_hosts_units.cpp:3104; fresh build and ctest ok in 11 min 12 s; SHA-256 `11D0194D8910` |
+| the same commit, no flip, `--no-build --out local\pe_ctl` | `git diff --no-index --diff-filter=M local\pe_ctl local\pe_on`: two files. One is the manifest; the other is the single line `kPlaneFormationPlacementEnabled = false` -> `true`. Every other difference is an added file under `build\`, the build log or ctest's Python caches |
+| the same flip again into `local\pe_on` | 0 written, 11,007 unchanged; the binary kept its SHA-256 and mtime (55 s, mostly ctest) |
+| no flip into `local\pe_on` | 1 written (`src/game_hosts_units.cpp`); incremental build 14 s; SHA-256 `D6BDA657D168` |
+| `--flip kNoSuchSwitch=true` | refused, `found 0 (nowhere)`, nothing written, exit 1 |
+| `--flip kPlaneFormationPlacementEnabled=maybe` | refused, exit 1 |
+
+No switch name is defined twice in the tree today, so the duplicate refusal has been exercised
+only by reading the code, not on a real tree.
