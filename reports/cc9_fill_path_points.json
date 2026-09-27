@@ -42,8 +42,8 @@
   "switches": [
     {
       "name": "kFillPathPointsBound",
-      "state": "OFF",
-      "pair": "pending"
+      "state": "ON",
+      "pair": "local/fpp_{off,on}_{bsm01,usn02,usn04}.log: BSM01 exit 3 (calls=4, think registered), USN02 exit 1, USN04 exit 1; pair_export of 215640b92, ON 067803BF3411"
     }
   ],
   "no_ghidra_function": [],
@@ -53,5 +53,12 @@
   "substitutions": [
     "an argument that is not a retained path answers an empty table"
   ],
-  "failed_predictions": []
+  "failed_predictions": [
+    {
+      "row": "BSM01 script failures after init",
+      "predicted": "none",
+      "measured": "149 at line 683",
+      "why": "Scoring_GetPlayerShotDown 008BC9B0 is unimplemented and answers nothing; line 683 compares it with 0"
+    }
+  ]
 }
