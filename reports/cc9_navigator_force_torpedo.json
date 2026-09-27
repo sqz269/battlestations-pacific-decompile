@@ -6,7 +6,7 @@
     {
       "name": "kNavigatorForceTorpedoBound",
       "state": "OFF",
-      "pair": "pending"
+      "pair": "build-tested only: JM06 (the only selectable caller) never loads its script (local/nft_off_jm06.log: chunk error in luaStageInit, script_calls=0)"
     }
   ],
   "no_ghidra_function": [],
@@ -15,5 +15,12 @@
     "gun rows in build order stand for the unit+48h child list",
     "the forced shot is queued to the unit's next aim-and-fire pass"
   ],
-  "failed_predictions": []
+  "failed_predictions": [
+    {
+      "row": "JM06 smoke",
+      "predicted": "script runs, call not reached",
+      "measured": "script never loads (chunk errors)",
+      "why": "the same luaStageInit chunk failure as LOMP06"
+    }
+  ]
 }
