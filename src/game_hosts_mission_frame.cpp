@@ -330,6 +330,29 @@ struct GameMissionFrameHost::Impl {
     bool exit_path_finished{false};
     bool drain_skip_reported{false};
 
+    // Packet cc9_sunk_ship_flush: 00903670 over the unit slots, in unit order
+    // (the image walks [world+4h] along +38h). 00903680..00903697: +5Eh set,
+    // +6Ch clear, and no parent (a unit slot has none here), then 00922FD0:
+    // +5Eh = 1, +5Dh = 1, +5Ch = 0, +6Ch = 1 (00922FDE..00922FE8), the children
+    // at +48h (none here) and vt[84h] (ship 00819880, plane 007CC580).
+    std::size_t unit_kills{0};
+    void flush_unit_kills_00903670() {
+        if (units == nullptr || step_subsystems == nullptr) return;
+        for (std::size_t unit = 0; unit < units->count(); ++unit) {
+            bsp::SceneNodeFlags flags;
+            if (!units->unit_scene_node_flags(unit, flags)) continue;
+            if (!flags.destroyed || step_subsystems->killed_counter_006c(unit) != 0) continue;
+            const void* identity = units->unit_identity(unit);
+            if (identity == nullptr) continue;
+            flags.destroyed = true;
+            flags.torn_down = true;
+            flags.active = false;
+            units->store_scene_node_flags(identity, flags);
+            step_subsystems->mark_killed_006c(unit);
+            ++unit_kills;
+            record("Entities::kill_vtable84", 0x00923010u);
+        }
+    }
     void record(const char* method, std::uint32_t address) {
         char text[16];
         format_address(address, text);
@@ -970,6 +993,12 @@ public:
         owner_.record("MissionCompletion::world_final_tick", 0x00904bf0u);
     }
     void world_post_tick() override {
+        if constexpr (kSunkShipFlushBound) {
+            // 004D7EDE / 004D7EFC call the same 00903670.
+            owner_.flush_unit_kills_00903670();
+            owner_.done("MissionCompletion::world_post_tick", 0x00903670u);
+            return;
+        }
         owner_.record("MissionCompletion::world_post_tick", 0x00903670u);
     }
     void show_mission_result_gui(float local_z) override {
@@ -1297,6 +1326,11 @@ public:
         owner_.record("MissionFrame::update_effect_manager", 0x00867ee0u);
     }
     void flush_entity_activations_00903670() override {
+        if constexpr (kSunkShipFlushBound) {
+            owner_.flush_unit_kills_00903670();
+            owner_.done("MissionFrame::flush_entity_activations", 0x00903670u);
+            return;
+        }
         WorldTickBinding& world = world_;
         bsp::flush_entity_activations_00903670(owner_.world, world);
         owner_.done("MissionFrame::flush_entity_activations", 0x00903670u);
@@ -2506,6 +2540,8 @@ void GameMissionFrameHost::report(long requested_frames) {
         host.proximity_records_created, host.proximity_hits, host.proximity_expiries,
         kScanProximityUnitsEntriesBound ? 1 : 0, host.proximity_part_rejects,
         host.proximity_list24_nodes, host.proximity_list24_no_leader);
+    host.log.notef("summary mission unit kills 00903670 bound=%d kills=%zu (packet "
+        "cc9_sunk_ship_flush)", kSunkShipFlushBound ? 1 : 0, host.unit_kills);
     host.log.notef("summary mission warning manager bound=%d scans=%llu torpedo_reports=%llu "
         "accepted=%llu effect_calls=%llu effects=%llu deadline_expiries=%llu loss_reports=%llu "
         "loss_side0=%llu loss_side1=%llu loss_other=%llu loss_bound=%d text_uslost=%llu "

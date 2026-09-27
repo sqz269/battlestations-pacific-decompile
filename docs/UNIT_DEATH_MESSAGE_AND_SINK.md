@@ -305,3 +305,13 @@ physics library's `00C31DC0`, `00C48020`, `00C48050`.
   was found. A Lua script or a property binding writing it is the remaining candidate.
 - The seed and reload argument orders for `+BC8h` differ; `00BD2F10`'s body settles it.
 - `00824B60`'s first `480h` bytes, and `00935D30`, which is where the visible breakup lives.
+
+## Correction (packet `cc9_sunk_ship_flush`, docs/CONSTRUCT_WORLD.md section 21)
+
+`+828h` (`sinkTime`) **is** advanced. `00825F20 BSP_UnitInstance_UpdateShipMotion` runs with
+ECX = unit+310h, and while the unit's `+5Dh` is set (`008263C1 CMP byte ptr [EDI-2B3h],0`) it adds
+the delta to `[EDI+518h]` = unit+828h (008263CE..008263DC). The displacement search above could
+not see a store made through that sub-object base.
+- After 60.0 s (double 00CE3D68), or 20.0 s (00CE3930) for kind 0Eh, the hull shapes lose flag 8.
+- Once both hull ends are below `VizbeomlesDolgok.KillDepth` (GameSettings `+3F4h`, -200.0 in
+  this installation), 00826628 calls Kill 00926D90(1).

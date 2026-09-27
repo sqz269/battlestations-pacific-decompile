@@ -10,6 +10,7 @@
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/game_hosts_gunnery.hpp"
 #include "bsp/game_pending_entity_runtime.hpp"
 #include "bsp/mission_load_hosts.hpp"
 #include "bsp/spatial_index.hpp"
@@ -539,7 +540,46 @@ void GameStepSubsystemsHost::run_due_entity_think_00929460(float step) {
     ++summary_.think_passes;
 }
 
+int GameStepSubsystemsHost::killed_counter_006c(std::size_t unit) const noexcept {
+    return unit < expiry_counters_.size() ? expiry_counters_[unit] : 0;
+}
+
+void GameStepSubsystemsHost::mark_killed_006c(std::size_t unit) {
+    const std::size_t count = (units_ != nullptr) ? units_->count() : 0;
+    if (expiry_counters_.size() != count) expiry_counters_.assign(count, 0);
+    if (unit < expiry_counters_.size()) expiry_counters_[unit] = 1;  // 00922FE8
+}
+
 void GameStepSubsystemsHost::flush_pending_entity_queues_009273a0() {
+    if constexpr (kSunkShipFlushBound) {
+        // Packet cc9_sunk_ship_flush. SUBSTITUTION (see kSunkShipFlushBound):
+        // the destroy each ship death queued, and its 00926390 delivery.
+        const GameGunneryHost* gunnery = (units_ != nullptr) ? units_->gunnery() : nullptr;
+        if (gunnery != nullptr) {
+            for (std::size_t unit = 0; unit < units_->count(); ++unit) {
+                if (!gunnery->unit_dead(unit) || !units_->unit_is_kind_of(unit, 6)) continue;
+                const void* identity = units_->unit_identity(unit);
+                bsp::SceneNodeFlags flags;
+                bool pending = false;
+                if (identity == nullptr || !units_->unit_scene_node_flags(unit, flags)
+                    || !units_->unit_pending_destroy_0060(unit, pending)) continue;
+                if (flags.torn_down && pending) continue;  // already delivered
+                // 00926CBF..00926CD5: Destroy sets +60h once.
+                units_->store_pending_destroy_0060(identity, true);
+                log_.implemented("Entity::destroy_00926c80", "00926cd5");
+                // 00926393..0092639E: 00926390 on the destroy list, +5Dh then +60h.
+                if (!flags.torn_down) {
+                    flags.torn_down = true;
+                    units_->store_scene_node_flags(identity, flags);
+                }
+                log_.implemented("EntityQueues::on_entity_destroyed_00926390", "0092639b");
+                // 009263AE JMP [vt+7Ch], the ship's wreck handler 00824B60: the
+                // gunnery death route already does its physics writes.
+                log_.unimplemented("EntityQueues::wreck_handler_vtable7c", "00824b60");
+                ++summary_.ship_destroy_flags;
+            }
+        }
+    }
     PendingQueueBinding binding(log_, units_);
     bsp::flush_pending_entity_queues_009273a0(binding);
     ++summary_.pending_queue_passes;
@@ -567,6 +607,8 @@ void GameStepSubsystemsHost::report() {
         summary_.think_passes, summary_.thinks_run,
         summary_.pending_queue_passes,
         summary_.expiry_passes, summary_.expiry_entities, summary_.expiry_released);
+    log_.notef("summary sunk ship flush bound=%d ship_destroy_flags=%zu (00926C80 / 00926390, "
+        "packet cc9_sunk_ship_flush)", kSunkShipFlushBound ? 1 : 0, summary_.ship_destroy_flags);
     const auto& pending = game_pending_entity_owners();
     log_.notef("pending entity owner audit: destroy=%s kill=%s counts=%u/%u "
         "frame_passes=%llu storage=process_raw24h",

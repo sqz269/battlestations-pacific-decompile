@@ -1095,3 +1095,81 @@ identity. JM01 is the measuring run, once 0049A360's tick is bound.
    block it.
 4. Bind the commit through the contract above. Pair USN04 and USN02 for identity, and run JM01
    ON against OFF as the measuring run.
+
+## 21. Part 12: a sunk ship's live bytes and 00903670 (`kSunkShipFlushBound`, committed OFF)
+
+Packet `cc9_sunk_ship_flush`, worker cc9-world-init, on main fe93be072. Ghidra was read only.
+
+### When the image's dead ship leaves each walk (V)
+
+| step | when | site | what |
+| --- | --- | --- | --- |
+| 1 | the death step, at the damage (row 6 or 14) | 00958A30 -> `vt[70h](1)` = 0077D1A0 -> 00926C80 | Destroy. It does nothing when `+60h` is already set (00926CBF). Otherwise it sets **`+60h = 1`** (00926CD5) and the cause `+70h` (1, or the parent's). With the argument, it passes `vt[70h](1)` to each child whose `vt[78h](this)` agrees. It then appends to the destroy list 00F899A8 (00926D33..00926D66). |
+| 2 | the same step, row 15 | 009273A0 -> `vt[74h]` = 00926390 | **`+5Dh = 1`** (0092639B) and `+60h = 1` (0092639E), then the wreck handler `vt[7Ch]` 00824B60 (docs/UNIT_DEATH_MESSAGE_AND_SINK.md) |
+| 3 | every step while `+5Dh` is set | 00825F20 `UpdateShipMotion` (ECX = unit+310h, so `[EDI-2B3h]` at 008263C1 is `+5Dh`) | `sinkTime +828h` (`[EDI+518h]`) grows by the delta. After 60.0 s (double 00CE3D68), or for kind 0Eh after 20.0 s (00CE3930), the hull shapes lose flag 8 (00826410..0082643B). |
+| 4 | once the hull is wholly below KillDepth | 008265EC..00826628 | `y +/- up.y * 0.5 * [[desc+228h]+A0h]` both below GameSettings `+3F4h` = `VizbeomlesDolgok.KillDepth` = **-200.0** in this installation (`shipglobals.lua` line 377) -> Kill 00926D90(1): `+5Fh`, the kill list |
+| 5 | the next row 15 | 009273A0 -> 009263C0 | the removal stores `+5Dh`, `+5Eh`, `+5Fh`, `+5Ch = 0` |
+| 6 | the next frame's world post-tick | 00903670 (from 004E5382 `OnMove`, 004D7EDE / 004D7EFC) | for a node with `+5Eh` set, `+6Ch` clear and no removed parent: 00922FD0 sets `+5Eh`, `+5Dh`, `+5Ch = 0`, `+6Ch = 1`, recurses into `+48h` along `+44h`, and tail-jumps `vt[84h]` (ship 00819880) |
+| 7 | three expiry passes later | 00903610 | the entity is freed. That is where it leaves the world lists (contract: unread) |
+
+- **The four-byte live test** (0043F080; 00977990's own copy) fails from **step 1**: `+60h` is
+  set at the damage.
+- **The neighbour walk** 009EEB8B..009EEBDA has **no** live test. It checks only the list entry,
+  IsKindOf 6 and not-itself. So in the image a wreck stays in the neighbour count until it is
+  freed at step 7, after sinking below -200 m. The label on `kShipAiNeighbourCountBound` ("the
+  host's list 6 never drops a unit") is right about this process, but the image drops the wreck
+  only at step 7, not at death.
+- **Correction to `docs/UNIT_DEATH_MESSAGE_AND_SINK.md`.** `+828h` (`sinkTime`) is advanced. It is
+  written through the sub-object base `unit+310h` (displacement 518h), which a search for the
+  displacement `28 08 00 00` cannot see.
+
+### What this process did before this packet
+
+- **Ships:** no step at all. The gunnery death route kills the ship in its own state, and the
+  units host keeps `+5Ch` set and `+5Dh`/`+60h` clear. The scan 00977990, the gunnery validity
+  tests, the ship AI's neighbour-view flags and the recon union all read a wreck as alive.
+- **Planes:** steps 1 and 2 already happen, in the units host (packet cc9_plane_death_flags).
+- **The flush 00903670** ran over an activation vector nothing fills. The old reconstruction
+  names `+5Eh` "spawned" and `+6Ch` "activated", but 00922FD0's stores show they are the removed
+  byte and the killed flag.
+
+### The binding
+
+With the switch on:
+- **Steps 1 and 2, for ships.** The row-15 flush (`GameStepSubsystemsHost`,
+  `src/game_hosts_ready.cpp`) applies `+60h` and `+5Dh` through the units host's stores to each
+  ship the gunnery host holds dead. The wreck handler is a record. **Substitution:** the gunnery
+  death route cannot call Destroy (the file is leased to cc9-scene-entities). So `+60h` lands at
+  row 15 instead of at the damage, which is the same step whenever the damage is applied before
+  row 15.
+- **Step 6.** 00903670 runs over the unit slots, from both of its host sites. The kill stores the
+  bytes, and the step-subsystems expiry counter is `+6Ch`. `vt[84h]` is a record.
+- **Contracts:**
+  - **Gunnery death route** (for its next owner): call the Destroy entry at the kill, in place of
+    the row-15 substitution.
+  - **Units host** (cc9-plane-release): steps 3 and 4. `sinkTime` and the KillDepth kill in the
+    ship's motion update feed the kill list. Unlink from the world lists at the free (step 7).
+    Until then no unit reaches step 6, so the bound 00903670 finds nothing on these missions.
+
+### Predictions (written before the pairs; the same tree, switch only, both variables set)
+
+- **E2 = USN04 9200/9000.** All 51 deaths are aircraft, and planes already carry both bytes, so
+  `ship_destroy_flags=0` and `kills=0`. **The whole log is identical** apart from the new rows and
+  summary lines: the post-tick row `MissionCompletion::world_post_tick` goes from record to
+  concrete.
+- **USN02 9200/9000.**
+  - `ship_destroy_flags=22` and `kills=0`.
+  - Proximity `records` go from 54 back to **32**. `ships` scanned falls, because a dead ship
+    leaves the scan the step it dies.
+  - The run is identical up to the first death, DeRuyter at 30.25 s. After it:
+    - the gunnery validity tests and the ship AI's avoidance and recon reads drop wrecks;
+    - the neighbour count is **unchanged** by this binding, since its walk has no live test;
+    - the setback and station-keeping rows that read the neighbour view's `+5Dh`/`+60h` flags may
+      move.
+  - **Bands:**
+    - mission failure at 39.65 s within +/-5 s (Exeter at 35.95 s is the trigger);
+    - deaths 22 +/-4, direction up or flat, since guns stop taking wrecks as live targets;
+    - hit records 439 within +/-15%, direction up or flat;
+    - the per-entity death rows identical up to 30.25 s.
+- **If the neighbour count moves**, the binding reached something outside the prediction and the
+  switch stays OFF until that is explained.
