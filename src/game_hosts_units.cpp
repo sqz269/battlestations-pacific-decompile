@@ -3482,7 +3482,8 @@ struct GameUnitsHost::Impl {
     float formacio_update_interval = -1.0f;   // -1 until read
     // Packet cc9_ship_motion_tail part 8b: 0070DB60 on the group the expired
     // leader timer names. OFF: a record.
-    static constexpr bool kFormationSlotSwapBound = false;
+    // ON since the USN02 / USN04 pairs: identical; both missions gate every call.
+    static constexpr bool kFormationSlotSwapBound = true;
     std::vector<unsigned long long> slot_swap_runs_by_group;
     std::vector<unsigned long long> slot_swaps_by_group;
     std::vector<unsigned char> slot_swap_gated_by_group;

@@ -324,3 +324,20 @@ and death table on.
 | follower stations | move after the first swap, if any | same |
 | deaths, hit records | 45..57 aircraft deaths, 780..900 hit records, no ship sinks | 18..26 deaths, 380..500 hit records, the failure between 30 and 60 s |
 | identical | everything, if the only group whose timer runs is gated | same |
+
+### 8b, the pairs measured
+
+The logs are `local\SS_OFF_USN02.log` / `SS_ON_USN02.log` and `SS_OFF_USN04.log` /
+`SS_ON_USN04.log`, from `b79da7a51` (8a ON) with the switch only, streams and death table on.
+All four show the fit line, the module directory in this tree and the final COM release.
+
+| row | USN02 9000 | USN04 9000 | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| membership | group 0: DeRuyter leads all 14 ships; groups 1 (Houston) and 2 (Exeter) are empty | group 0: the Lexington leads every ship; group 1 (the Yorktown) is empty | - | - |
+| `0070DB60` | record 46 -> concrete 46, all on group 0, `gated`: DeRuyter is the controlled unit | the same, on the Lexington's group | the controlled group gated, 0 swaps | held |
+| swaps, pairs compared | 0, 0 | 0, 0 | 0..20 for an ungated group | not reached: no ungated group runs its timer |
+| everything else | identical: 22 deaths, 411 hit records, failure at 39.65 s | identical: 52 deaths, 875 hit records | identical if only the gated group runs | held |
+
+**Verdict: `kFormationSlotSwapBound` ON.** It is the image's gate and loop, but on these two
+missions the gate ends every call. The distance test and the swap have no run-time evidence
+yet. The first mission with an uncontrolled multi-ship group is their test.
