@@ -1006,3 +1006,92 @@ fit line, the final COM release, and a module directory inside this tree.
 
 **Verdict: ON.** `kLossWarningBound` is set true. The text post, 006E6670, the `kill` channel's
 Lua listeners and the teardown stay named records, so USN02's own failure path runs once.
+
+## 20. Scene traffic commit: read and plan (packet `cc9_scene_traffic_commit`, not bound)
+
+Worker cc9-world-init. Ghidra was read only. `src/game_hosts_scene_contents.cpp` is leased to
+cc9-scene-entities (cc9_landscape_terrain, until 2026-09-27T15:57Z), so nothing is bound here.
+The call site is written below as a contract.
+
+### 004A50D0, the 170h runtime's constructor (V, listing 004A50D0..004A5438, `RET 8`)
+
+`__thiscall(this = the 170h block, record, group)`. The group is `[manager+8h]`, pushed by
+004A5620.
+1. **Base and identity.** 004A4B70(record, group) is the base constructor, 1.3 KB and unread.
+   Then vtable 00CE68E4 and `+14Ch = group` (004A510A).
+2. **The path box.** The path is `[+20h]`, and its point range is `min(+24h, +28h)` to
+   `max(+24h, +28h)` (004A5110..004A512B).
+   - Point i comes from 007AF800 on the path; the first one seeds both corners.
+   - 00427D10 grows the box `+150h..+164h` over the rest (min at `+150h`, max at `+15Ch`).
+   - The box is then widened by the extent vector at `+138h..+140h`: subtracted from the min,
+     added to the max (004A519D..004A51FF).
+3. **The nearest anchor.**
+   - `+168h = 0`. For each child of `[+D8h]+48h` along `+44h` that answers IsKindOf 1Ch
+     (004A5229), the child's world pose is refreshed and copied into `+CCh..+108h` when stale.
+     That uses 00414DB0, or 00413920 with the parent `[+3Ch]+CCh`, and sets `+C8h = 1`.
+   - The child's smallest squared distance to any path point is taken. The x87 order is
+     `(dx*dx + dy*dy) + dz*dz`, stored to a float, with the running minimum seeded from
+     00CE4970.
+   - `+168h` becomes the child with the smallest distance, if that is below the seed 00CE6A04.
+4. **The state machine.** `+16Ch = 0`, then 00487470; `+16Ch = 1`, then 00487470 again. It ends
+   at `+16Ch = 3` (004A53FC..004A541E). 00487470 is 0.75 KB and unread.
+
+### What the TrafficConfig walk calls
+
+- **The runtime's vtable 00CE68E4** reads, from the PE:
+  - slot 0: 004A5440, the deleting destructor;
+  - slot 1: 0049A360;
+  - slot 2: 004969D0;
+  - slot 3: 0048A650.
+- **The walk.** 00487270 calls slot 1 with the delta on each node's payload `+8h`, so a
+  committed runtime is ticked through 0049A360.
+- **What 0049A360 does** (0049A360..0049A404, from the pseudocode only, which drops a branch):
+  - it picks a time scale against `[+18h]` and `[00F876A4]` minus the double 00CE6840, and
+    stores it at `+130h`;
+  - it advances `+84h` by delta times that scale;
+  - it calls slot 3, 0048A650, then 00496BD0.
+- **Size.** That is the traffic simulation itself (spawning and moving along the path), and it
+  is unread. With 004A4B70 and 00487470 it is several packets, not one.
+- **Is the runtime on the walked list?** Whether the runtime puts itself on the group's walked
+  list (`group+10h`) is not established. It is either the base constructor 004A4B70 or 00487470.
+  That is the first thing the next read must settle, because it decides whether committing a
+  runtime makes the walk tick it.
+
+### The measuring mission
+
+38 scenes in this installation author 172 traffic items (`local/traffic_census.py`, the same
+tokenizer walk as `docs/SCENE_TRAFFIC_BLOCK.md`). Among the mission-tree ids:
+- **JM01**, "Vanilla - Attack on Pearl Harbor": `ijn/JM/ijn_01_attack_on_pearl_harbor.scn`, 5
+  items, file dated 2024-07-13 like the untouched bulk. This is the recommended measuring
+  mission.
+- **USNRM01**: `usn/USNRM/usn_1_pearl.scn`, 5 items, but modified 2024-10-29.
+- **BSM02**: `bsm/bsm_02_defense_of_the_philippines.scn`, 10 items, modified 2024-08-03.
+
+USN04 and USN02 author an empty block, so they can only show identity.
+
+### Contract for the scene-contents owner (`src/game_hosts_scene_contents.cpp`)
+
+The scene-contents host keeps `SceneContents::load_traffic_block` 009514B0 as a record. The hunk,
+once the runtime exists as its own reconstruction:
+
+```cpp
+// SceneContents, where 0046DF00's pass-2 `traffic` arm runs (0046EB3B..0046EBDD):
+// 009514B0 parses the block into the 4Ch records (docs/SCENE_TRAFFIC_BLOCK.md), then
+// 004A5620 builds one 170h runtime per record through 004A50D0 with [manager+8h].
+void load_traffic_block_009514b0(const SceneTrafficBlock& block);   // the reader
+void commit_traffic_runtimes_004a5620();                            // the commit
+```
+
+Both would live under a switch in that file, committed OFF. On USN04 and USN02 the pairs show
+identity. JM01 is the measuring run, once 0049A360's tick is bound.
+
+### Plan
+
+1. Read 004A4B70 and 00487470. Settle whether the runtime joins `group+10h`.
+2. Read 0049A360, 0048A650 and 00496BD0 from the listing. The pseudocode drops a branch at
+   0049A3xx.
+3. Put the runtime in new files, `src/scene_traffic_runtime.cpp` and its header, registered in
+   `cmake/startup.cmake` (append-only), so that the lease on the scene-contents file does not
+   block it.
+4. Bind the commit through the contract above. Pair USN04 and USN02 for identity, and run JM01
+   ON against OFF as the measuring run.
