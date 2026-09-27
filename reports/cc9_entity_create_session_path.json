@@ -1,0 +1,28 @@
+{
+  "packet": "cc9_entity_create_session_path",
+  "worker": "cc9-hud3",
+  "kind": "read",
+  "base": "ca39e028f",
+  "doc": "docs/SENTITY_INIT_ATTACH_ORDER.md section 22.7",
+  "code_changed": false,
+  "ghidra_mutated": false,
+  "findings": [
+    "Category 47h create messages are sent by 007B3960, 00780AE0 and the body 007C2680..007C2805, each through 00779FC0, which tail-jumps to 00770B50 BSP_Session_SendMessageToNonlocalPeer; 0080E2C0 is reached only from the receive factory 00768530. In single player none reaches the loopback queue.",
+    "0077EC20 is the network client's apply: an occupied id slot logs 'Duplicated Create %d received'; the list at 00F871A0 is empty in single player.",
+    "GenerateObject 00944FD0 creates directly (0046D930/0046DC10, InitAll 00925F20) and then calls 00874D00 with CL=1 at 00945311, whose session pump 00778450(0.0) drains the loopback queue through 0076C600 inline.",
+    "The USN01 move of section 22.6 comes from the host installing bot tasks (0099A170) at issue time, before the deferred order is applied: ScoutDauntless 0099A170 -> 0 and 0 wingman tasks on ON.",
+    "The image installs in 0099ACD0 BSP_PilotBot_Tick behind bot byte +7Ch, zeroed by the constructor 0099A880 at 0099A91E; the setter was not found."
+  ],
+  "substitutions": [
+    "The host installs the bot task at order delivery; the image installs at the bot's next tick through +7Ch (one tick early)."
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "007C2680",
+      "end_inclusive": "007C2805",
+      "abi": "RET 4 at 007C2803 (one stack argument); ECX use not read",
+      "note": "builds a 47h-family message through 007BD3E0 at 007C270A and sends it through 00779FC0 at 007C2729 and 007C27C2; Ghidra attributes it to 007C2610, which ends at 007C2674"
+    }
+  ],
+  "names_added": []
+}

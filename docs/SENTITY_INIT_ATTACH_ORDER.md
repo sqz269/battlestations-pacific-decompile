@@ -1790,3 +1790,97 @@ an idle player.
 - Alternatively, keep the deferral off for orders to units created in the same callback. That
   would be a substitution to label and pair.
 - `luaIn`'s five `PilotSetTarget` alone were not isolated in this pair.
+
+### 22.7 The entity-create session path, and why the USN01 pair really moved (packet `cc9_entity_create_session_path`, a read)
+
+Worker cc9-hud3, 2026-09-27, base ca39e028f. No code changed. Ghidra was read only.
+
+**22.6's premise does not hold in single player.** Nothing there routes a creation through
+category 47h.
+- **The 47h builders send to a remote peer only.** 47h is a base message class: the `IsA`
+  bodies 00767710 (D8h, 47h, 46h) and 007677E0 (C0h, 47h, 46h) answer it for their subclasses.
+  The send-side builders are:
+  - 007B3960, which builds through 007B2950;
+  - 00780AE0;
+  - the body 007C2680..007C2805, which builds through 007BD3E0 at 007C270A. It has **no Ghidra
+    function** (the listing attributes it to 007C2610, which ends at 007C2674). It is
+    ends in `RET 4` at 007C2803 (one stack argument; its `ECX` use was not read), then INT3 padding.
+
+  Each writes its message through 00779FC0 (007C2680 does so twice, at 007C2729 and 007C27C2).
+  00779FC0 stores the entity id `[entity+174h]` at `msg+18h` and tail-jumps to 00770B50
+  `BSP_Session_SendMessageToNonlocalPeer`, with the peer `[arg+50h]`. None of them reaches
+  0077C2A0 `BSP_Session_RouteMessage`, the only caller of the loopback enqueue 0076E520.
+  0080E2C0 and the base constructor 00766F60 are also reached from the bitstream factory 00768530,
+  directly or through 00759920 and 00766EF0: that is the receive side.
+- **0077EC20 is the network client's apply.** For each record it resolves the 16-bit id against
+  the id tables. A free slot instantiates through the record's `vtable[1Ch]`, and an occupied slot
+  logs `Duplicated Create %d received`. A locally created entity already fills its slot. So the
+  list at 00F871A0 is empty in single player, and the host's no-op row 10 is exact
+  (`docs/CONSTRUCT_WORLD.md` row 10 already said so).
+- **GenerateObject creates directly, then pumps inline.** 00944FD0 creates through 004C6BA0 or
+  004C6BE0, then 0046D930 or 0046DC10, whose tail runs InitAll 00925F20
+  (`docs/LUA_BINDING_GENERATE_OBJECT.md`). It then calls 00874D00 with `CL = 1` at 00945311. That
+  body drains the queued Lua calls 00888230 and, behind the world gate, calls the session pump
+  00778450 with 0.0. The pump drains the loopback queue through 0076C600 at 00778542. It then runs
+  0077EC20, 00874C90, InitAll and 0076FFC0, and returns before the event queues.
+  - So inside a Blackout callback, an order posted **before** `GenerateObject` is delivered at
+    that inline pump, before the new unit exists.
+  - An order posted **after** it stays queued until the next step's row 9.
+- **The host already does this.** `GameFixedStepHost::run_extra_fixed_step_00874d00`
+  (`kRunExtraFixedStepBound`, ON) calls `pump_session_00778450`. With `kAfterRow9OrderQueueBound`
+  set, that pump calls `script_orders_drain_loopback_0076c600`. Creation ordering was never the
+  gap.
+
+**What moved USN01 in 22.6: the host's early task install.** `run_pilot_set_target` calls
+`entity_issue_command` and then, right away, `bsp::bot_install_command_task_0099a170`. It then runs
+the 007ECF80 wingman fan-out, which is the same pair per member. 0099A170 reads the director's
+current command (`director_current_command_0071be40`). Under the queue that command has not been
+applied yet. The same holds for `run_pilot_move_to_range`. Evidence from cc9-hud2's
+`local\aq_{off,on}_usn01.log`:
+
+| unit | OFF | ON |
+| --- | --- | --- |
+| Mav1..Mav5 (`luaIn`) | `0099A170 -> 1`, from the new attack command | `-> 1`, but built from each unit's **previous** command |
+| ScoutDauntless (`luaMoveToPh2`, created in the same callback) | `-> 1`, fan-out `1 wingman task(s)` | `-> 0`, fan-out `0 wingman task(s)` |
+
+The drain applies the order but never repeats the install. So the ScoutDauntless squadron holds
+its attack command with no bot task and never attacks. That is the two missing deaths and about
+110 missing shots.
+
+**When the image installs a task.** 0099ACD0 `BSP_PilotBot_Tick` calls 0099A170 only while the
+bot's byte `+7Ch` is set, and then clears it. The constructor 0099A880 zeroes it at 0099A91E. The
+instruction that sets it on a command change was **not found**.
+- The `C6 ?? 7C 01` and `88 ?? 7C` scans show no store in the bot range other than the
+  constructor.
+- 009BDD30 (`MOV byte ptr [ECX+7Ch],1`, `RET`) has no rel32 or absolute reference
+  (`tools/callsite_census.py`).
+
+So in the image the install follows the delivery, at the bot's next tick. The host's install at
+issue time is a **substitution** that the direct path hides and the queue exposes.
+
+**The continuation fix** (to be bound behind `kAfterRow9OrderQueueBound`, still OFF, when the
+script-orders files are free):
+- `DeferredOrder` gains a continuation. A binding's post-issue block runs through one helper: it
+  runs at once when the order was applied directly, and it is attached to the queued order when
+  the order was deferred.
+- `script_orders_drain_loopback_0076c600` runs the continuation right after `apply_issued_order`.
+  The flag is clear at the drain, so the wingman orders the fan-out issues apply directly there,
+  in post order.
+- Three post-issue blocks move behind it:
+  - PilotSetTarget's install and fan-out;
+  - PilotMoveToRange's install and its range and target stores;
+  - MoveOnPath's receiver effects, the 0071C1B0 follow pair and the 0071F600 path build. The image
+    makes both on delivery (00721ADB).
+- **Labelled substitution:** the host installs at delivery. The image installs at the bot's next
+  tick through `+7Ch`, so the host is one bot tick early. That was already true of every direct
+  order.
+
+**Predictions for the pair** (streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player):
+- **USN01 3200/3000:**
+  - Census `blackout:luaIn=5 blackout:luaMoveToPh2=3`, applied 8.
+  - At the drain, the ScoutDauntless install answers 1 with `1 wingman task(s)`, and the Mavis
+    installs are built from the attack command.
+  - Deaths stay 7, with the Mavis and ScoutDauntless rows moving by about one step.
+  - Exit 3, with a small move in hits and shots; the reference is 150 hit records and 561 shots.
+- **USN04 4700/4500:** census `(none)`, identity, exit 1.
+- **USN02 9200/9000:** census `(none)`, identity, exit 1.
