@@ -798,3 +798,21 @@ Worker cc9-ships2, on main `ca39e028f`. Ghidra was read-only. The switch is in
 | USN02 `pair_diff` | 1; `marks=0 fires=0` |
 | USN04 `pair_diff` | 1; `marks=0 fires=0` |
 | JM06 (the only selectable caller; OFF smoke run first, 9200/9000) | the call is not reached: `luaJM6ConvoyDestroyedMovie` needs the convoy destroyed, and the idle player destroys nothing. So the NavigatorForceTorpedo row is absent on OFF, and `pair_diff` is 1 with `marks=0` |
+
+### The smoke run, and the verdict
+
+- **The JM06 OFF smoke run.** `local\nft_off_jm06.log`, this tree's `build\` at `6be1c7682`,
+  9200/9000, streams and the death table on. It has its milestone line (`menu_select=JM06`), its
+  module directory and its final COM release line.
+- **The script never runs.** The mission tree resolves JM06 (group 3, mission 4, "PRCP - Hunt for
+  the Hornet", scene `COTP-IJN/PRCPIJN/ijn_06_prelude_to_midway.scn`). But `luaStageInit` logs
+  `chunk error` for the script chunks (17 lines), every mission frame reports `script_calls=0`,
+  and the native table has no MissionLuaNative row at all. This is the same failure as LOMP06's.
+- **So NavigatorForceTorpedo is unreachable** in this harness: its only selectable caller is
+  jm06.lua's `luaJM6SubShot`, scheduled by `luaJM6ConvoyDestroyedMovie`, and JM06's script does not
+  load.
+- USN02 and USN04 (`local\nft_off_usn0{2,4}.log`) do not call it, so no pair was run on them.
+
+**Verdict: `kNavigatorForceTorpedoBound` stays OFF, build-tested only.** Measuring it needs JM06's
+script to load (the `chunk error` in `luaStageInit`), and then a run that destroys the convoy so
+that `luaJM6ConvoyDestroyedMovie` schedules the two shots.
