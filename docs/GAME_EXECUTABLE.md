@@ -10067,3 +10067,52 @@ phase 1:
   signature of the recon call-sites landing (710efc679, `docs/RECON_CALL_SITES.md`, paired on
   USN04 and USN02 only). The placement teleport OFF is the other candidate.
 - Neither was paired on USN01.
+
+### Attribution pairs for the flags above (packet `cc9_reference_attribution_pairs`)
+
+**Method.**
+- **One tree:** a `git archive` export of main `1eaedc668` in `local\ap_src` (worktree
+  cc9-gunnery2), built with `scripts/build.ps1`. The control is that build unchanged: every switch
+  as landed. Each treatment flips one constant in the export only, rebuilds incrementally and
+  reverts; no worktree source file is edited.
+  - `kReconUnitListSourcesBound` (include/bsp/game_hosts_world.hpp) is set false.
+  - `kPlaneFormationPlacementEnabled` (src/game_hosts_units.cpp, cc9-plane-release's file) is set
+    true.
+  - `kShipAiSnapshotBound` (src/game_hosts_ship_ai.cpp) is set false.
+- **Runs:** `BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1`, lockstep 0.05, idle player, one run at a
+  time through `tools/run_game.ps1`.
+- **The control differs from reference c.** Main gained the torpedo rack drop (e76314e91) and the
+  pick-screen squadron members (5810d0de2) after c. The control is compared with c first, and any
+  difference goes to those two landings.
+
+**Predictions, committed before the runs.**
+1. **USN01 3200/3000, recon unit-list sources.** The treatment is ON (the control) against OFF.
+   - The world unit list line reads `counts=7/26` ON and `14/62` OFF. This is the binding's
+     signature: +1964h/+1970h hold the player's side only (`docs/RECON_CALL_SITES.md` section 5).
+   - As on USN04 and USN02, **no gameplay line moves**: shots, window refusals, deaths, hit
+     records and the death table are identical both ways.
+   - The b -> c move on USN01 is therefore not this switch. The unit-list change explains only the
+     list, minimap and HUD rows.
+2. **USN01 3200/3000, placement teleport.** The treatment is OFF (the control) against true.
+   - The teleport puts spawned wingmen on their stations. In USN01 only the wingman's death moved
+     b -> c: `ScoutDauntless|.-2` died at 130.50 s and now dies at 129.50 s, while the leader
+     stays at 124.25 s.
+   - **Prediction:** the true side reproduces the b values: shots 457, window refusals 385, and
+     the wingman's death at 130.50 s (within 0.1 s), with 7 deaths, 141 hit records and 2690.0
+     damage unchanged.
+   - This pair then closes the USN01 flag, unless the control itself moved away from c.
+3. **USN02 9200/9000, ship-AI snapshot.** The treatment is ON (the control) against OFF.
+   - The older pair (`docs/SHIP_AI_TAILS.md` section 5) showed that without the snapshot the
+     +1D0h throttle snap builds up and the astern latch engages. There were 520 `dir=astern`
+     trace lines OFF against 0 ON, and 14 Allied sinkings against 11.
+   - **Prediction on today's tree:**
+     - OFF traces `dir=astern` (at least 100 lines), and the `ShipAi::drive_astern_heading` row
+       returns. ON keeps 0.
+     - OFF sinks at least 2 more Allied ships than ON's 12.
+     - Station keeping moves (20778 ON).
+   - **Attribution test for the 20 / 487 -> 22 / 440 flag:**
+     - If OFF gives 20 deaths, 487 hit records and 53671.0 damage failing at 39.65 s (the b row),
+       the snapshot explains the whole step.
+     - If OFF moves toward b but does not reach it, the residue stays flagged with its rows.
+     - If OFF lands far from both, the step has another cause as well, which stays flagged.
+   - I expect a partial match: the older pair's OFF side was 22 deaths failing at 44.60 s, not b's.
