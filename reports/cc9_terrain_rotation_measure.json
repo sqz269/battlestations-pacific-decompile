@@ -1,0 +1,21 @@
+{
+  "packet": "cc9_terrain_rotation_measure",
+  "doc": "docs/SCENE_CONTENTS_HOSTS.md, section 13",
+  "calls": [
+    {"address": "00ADA262", "native": "004142E0", "function": "00ADA240", "note": "from point through the node inverse"},
+    {"address": "00ADA283", "native": "004142E0", "function": "00ADA240", "note": "to point through the node inverse"},
+    {"address": "00B6E0F0", "native": "00B63B30", "function": "00B6E0D0", "note": "scaled-transpose inverse, no shear fallback"}
+  ],
+  "switches": [
+    {
+      "name": "kLandscapeScaledTransposeInverseBound",
+      "state": "ON",
+      "pair": "local/INV_OFF_{USN13,USN01,USN04,USN02}.log (build of 49f44fcff, local/bin/inv_off) against local/INV_ON_*.log (pair_export of 49f44fcff, SHA-256 06F975244F58), worktree cc9-terrain2. USN13 exit 1 (census rows of Landscapes 07 and 11), USN01 exit 1 (census row of Landscape 05, cm level), USN04 / USN02 exit 0; gameplay identical everywhere.",
+      "failed_predictions": ["91.5-degree frames predicted identical; census dy moved at cm level (4-decimal authored frames are ~1e-4 off orthonormal)", "USN01 pair_diff predicted exit 0, was exit 1"]
+    }
+  ],
+  "smoke": "USN13 3200/3000: milestone ok, module directory local\\bin\\rot, final COM release printed, no crash record; 34 deaths, 204 hits, 2551 shots",
+  "substitutions": ["ASSUMPTION: the node world matrix +F0h is the authored localframe as the host composes it"],
+  "no_ghidra_function": [],
+  "names_added": []
+}

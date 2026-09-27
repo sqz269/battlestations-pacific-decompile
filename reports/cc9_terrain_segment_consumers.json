@@ -90,9 +90,9 @@
   ],
   "no_ghidra_function": [
     {
-      "start": "0060ABCD",
+      "start": "0060ABD0",
       "end_inclusive": "0060C5AB",
-      "note": "tail of 00609BD0 (player-plane GUI update): Ghidra's body stops at 0060ABCC but the code runs on (0060AC0A JMP 0060C591, epilogue RET 4 at 0060C5A9, INT3 from 0060C5AC); no function starts between them (bsp.py range). It holds the only call to 007C3CB0 at 0060AC1A. Proposed: extend 00609BD0 to 00609BD0..0060C5AB, __thiscall-like RET 4; the embedded structure was not swept"
+      "note": "CORRECTED 2026-09-27 (docs/SCENE_CONTENTS_HOSTS.md 13): a separate virtual method (vtable slot 00CF43CC), SEH prologue, RET 4 at 0060C5A9, INT3 from 0060C5AC; holds 007C3CB0's only call (0060AC1A) and calls 00609BD0 at 0060C35F. 00609BD0 itself ends at 0060ABCC (RET 0Ch at 0060ABCA, INT3 0060ABCD..0060ABCF), as Ghidra first had it."
     }
   ],
   "names_added": []
