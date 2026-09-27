@@ -60,8 +60,9 @@ constexpr float kDynamicsDampingScale = 1.0f;
 //  * 0076FFC0: every call sits under +F4h != 0 (0076FFC3); with it clear the
 //    routine only saves and restores 00F876A1.
 // 00925F20 SEntity_InitAll stays the record (section 13 plan). False: the
-// four are records, as before.
-constexpr bool kGatedFanoutBodiesBound = false;
+// four are records, as before. ON by the verdict: USN04 and USN02 pairs moved
+// only the predicted rows (docs/CONSTRUCT_WORLD.md section 14).
+constexpr bool kGatedFanoutBodiesBound = true;
 
 const char* owner_name(bsp::FixedStepFanoutOwner owner) {
     switch (owner) {
