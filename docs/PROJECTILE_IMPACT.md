@@ -478,7 +478,7 @@ The sub-type at descriptor `+8h` is set by the class constructors, not by Lua: 1
   **Is:** 0077CE60 is not called by 00826F10 at all; it is step 7 of the dispatcher 009239A0, which runs after the handler returns
   **Evidence:** python tools/bsp.py callees 00826f10 lists 23 callees and 0077CE60 is not among them
 
-## Hits on a wreck (packet `cc9_wreck_hit_delivery`, `kWreckHitDeliveryBound`, committed OFF)
+## Hits on a wreck (packet `cc9_wreck_hit_delivery`, `kWreckHitDeliveryBound`, committed OFF, ON since the pairs)
 
 2026-09-27, worker cc9-units3, on main c4d0a915a. Ghidra was read only. The open question from
 docs/UNIT_MESSAGE_ARMS.md ("90h, bound"): does the image deliver hits to a wreck's `00826F10` at
@@ -562,3 +562,32 @@ collision index keeps the wreck's shapes the same way.
 | wreck descent | 0..−5 s for the wrecks that were hit | - |
 | deaths | identical ± 2: rounds a wreck absorbs no longer reach the ship behind it | identical |
 | pair_diff exit | 3 | 1 or 0 |
+
+### The revised pairs, measured (`affb843c3`)
+
+The OFF build is the tree's own `build\`; the ON build is `tools/pair_export.py --flip
+kWreckHitDeliveryBound=true --out local\bu_on`. Both variables were set. The logs are
+`local\WH2_{OFF,ON}_{USN02,USN04}.log` in worktree cc9-units3. All four show the fit line, the
+immediate present interval, a module directory in this tree and the final COM release.
+
+| row | USN02 OFF | USN02 ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| `shapes_offered` | 0 | 1092 | above 0 | held |
+| `reaching` = `delivered` | 0 | 90 = 90 (none past the window) | 10..150 | held |
+| hit records, hull hits | 579, 290 | 674 (+95), 295 | up by about `delivered` | held |
+| live hull leak `applied_wreck` | 0 | 71 (rate added 147.8) | about 135 | **failed** (low: a hit under 10 damage sends none) |
+| wreck descent per common wreck | - | 0.00..−3.95 s on 13 of 15; Encounter −5.45 s, Amatsukaze −11.95 s | 0..−5 s | **failed** for 2 of 15 |
+| deaths | 22 | 20 (John2 and Alden survive) | identical ± 2 | held at the edge |
+| kills, list 6 | 16, 16 | 15, 17 | - | - |
+| pair_diff exit | - | 3 | 3 | held |
+
+USN04 4700/4500: `shapes_offered` 0, `reaching` 0, gameplay and every table identical (exit 1),
+as predicted.
+
+- **Survivors.** Rounds that now stop in a wreck no longer reach the live ship behind it, so two
+  deaths go away on USN02.
+- **Amatsukaze.** It took the most wreck hits: its inflow grows with each 90h, which is the
+  image's rule.
+
+**Verdict: ON.** A wreck is hittable for its first 60 s, as the image's dispatcher and collision
+index make it. Its hits flood it through the live-hull leak path and absorb rounds.

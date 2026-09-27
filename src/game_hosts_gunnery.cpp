@@ -352,7 +352,8 @@ constexpr bool kComponentFailureBound = true;
 // window starts at this host's death time (row.sunk_seconds), not at the
 // wreck handler's sinkTime zero (0082507E), which the row-15 flush reaches in
 // the same step. OFF: apply_hit returns for a dead victim, as before.
-constexpr bool kWreckHitDeliveryBound = false;
+// ON since the USN02 / USN04 pairs (affb843c3): 90 wreck hits on USN02.
+constexpr bool kWreckHitDeliveryBound = true;
 //  * kBlastElementEntriesBound: a burst on a ship with a GeomMesh builds the
 //    record's part-hit array the image's sphere shape builds (0070F720 ->
 //    00723F80 -> 00723B70 -> 006D2E30): one 10h entry per element whose
