@@ -3493,6 +3493,12 @@ struct GameUnitsHost::Impl {
     // ON since the USN02 / USN04 pairs: identical gameplay.
     static constexpr bool kShipPostMotionRepairOrder = true;
     unsigned long long post_motion_gate_passes = 0;
+    // Packet cc9_ground_height_hunks, docs/SCENE_CONTENTS_HOSTS.md section 7:
+    // the torpedo aim tick's 00903860 (009D16D1 / 009D2265) and the torpedo
+    // approach's 00903BC0 probe (009D39D3) answer from the scene's world queries
+    // (-1000 over no terrain, the Landscape sweep). OFF: 0.0 and the water
+    // surface as the ground.
+    static constexpr bool kGroundHeightHunksBound = false;
     // Packet cc9_ground_height_hunks: the torpedo approach's 009D39D3 probe.
     unsigned long long segment_probes = 0;
     unsigned long long segment_probes_blocked = 0;
@@ -8818,21 +8824,32 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // the same list may intersect the segment through
                             // vtable +3Ch. The occluder sweep is contract:
                             // unread; the two ground tests are modelled.
-                            owner_.log.unimplemented(
-                                "World::segment_occluders_00903bc0", "00903bc0");
-                            OceanFieldBinding sea(owner_);
-                            const float ga =
-                                bsp::ocean_water_height_0078cf20(from[0], from[2], sea);
-                            ++owner_.segment_probes;
-                            if (from[1] < ga) {              // 009D390E
-                                ++owner_.segment_probes_blocked;
-                                return true;
+                            if constexpr (GameUnitsHost::Impl::kGroundHeightHunksBound) {
+                                // 00903BC0: the two ground tests against 00903860
+                                // (-1000.0 over no terrain), then each Landscape's
+                                // slot 3Ch (the scene host's labelled stand-in).
+                                ++owner_.segment_probes;
+                                const bool b = world_segment_blocked_00903bc0(from, to);
+                                if (b) ++owner_.segment_probes_blocked;
+                                owner_.done("World::segment_occluders_00903bc0", 0x009d39d3u);
+                                return b;
+                            } else {
+                                owner_.log.unimplemented(
+                                    "World::segment_occluders_00903bc0", "00903bc0");
+                                OceanFieldBinding sea(owner_);
+                                const float ga =
+                                    bsp::ocean_water_height_0078cf20(from[0], from[2], sea);
+                                ++owner_.segment_probes;
+                                if (from[1] < ga) {              // 009D390E
+                                    ++owner_.segment_probes_blocked;
+                                    return true;
+                                }
+                                const float gb =
+                                    bsp::ocean_water_height_0078cf20(to[0], to[2], sea);
+                                const bool blocked = to[1] < gb; // 009D3946
+                                if (blocked) ++owner_.segment_probes_blocked;
+                                return blocked;
                             }
-                            const float gb =
-                                bsp::ocean_water_height_0078cf20(to[0], to[2], sea);
-                            const bool blocked = to[1] < gb; // 009D3946
-                            if (blocked) ++owner_.segment_probes_blocked;
-                            return blocked;
                         }
                         bool target_reachable_007df360(const float[3]) override {
                             owner_.log.unimplemented(
@@ -14151,7 +14168,19 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             return aim_target() != nullptr;
                         }
                         void refresh_world_pose_00414db0(bool) override {}
-                        float ground_height_00903860() override { return 0.0f; }
+                        float ground_height_00903860() override {
+                            if constexpr (GameUnitsHost::Impl::kGroundHeightHunksBound) {
+                                // 009D16D1 / 009D2265: 00903860(world, unit+FCh,
+                                // &out); over no terrain out = -1000.0 (00903876)
+                                // with AL clear, and neither site tests AL.
+                                float out = 0.0f;
+                                world_ground_height_00903860(s_.motion.position, out);
+                                owner_.done("World::ground_height_00903860", 0x009d16d1u);
+                                return out;
+                            } else {
+                                return 0.0f;
+                            }
+                        }
                         void update_run_time_009d1360() override {
                             ++s_.torpedo_aim_run_time_updates;
                         }

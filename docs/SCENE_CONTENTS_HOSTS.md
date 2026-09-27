@@ -1403,3 +1403,22 @@ alone.
 - `004D0EE0`'s effect names, the cloud block and the remap textures are all
   consumer-side reads; the `.scn` keys behind `record+C24h..CB0h` remain unknown
   (inherited from `docs/MISSION_SCENE_CONTENTS.md`).
+
+### 7a. The two hunks bound (packet `cc9_ground_height_hunks`, `kGroundHeightHunksBound`, committed OFF)
+
+2026-09-27, worker cc9-plane-release. Both hunks of section 7 are in `src/game_hosts_units.cpp`
+under one switch, with the old bodies as the OFF arm. A census line,
+`summary mission ground queries: torpedo approach segment probes 009D39D3=N blocked=M`, prints
+in both builds. The counter landed first, in `c15c609b2`.
+
+**Predictions** (written before the runs; pairs `local\gh_off` against `local\gh_on`, the
+switch only, streams on, `tools/pair_diff.py`):
+
+| row | USN04 4700/4500 | USN01 3200/3000 |
+| --- | --- | --- |
+| probes 009D39D3 | about 7,164 OFF, and within ± 20 % ON if the approach paths move | about 1,152, within ± 20 % |
+| blocked, OFF | somewhere in 0..all. The water stand-in blocks whenever a ship's origin sits below the wave height, and the avoid-zone census has shown the stand-in answers 0.0, so it blocks when a hull origin is below 0 | same |
+| blocked, ON | 0 at sea (ground −1000, no Landscape on the path) | the island crossings may block: 0..the probe count |
+| torpedo aim tick | identical: ground + 5 = −995 never wins over the 5.0 sea floor, and 1 > −1000 arms as 1 > 0 did | identical at sea |
+| torpedo sectors, releases, drops | identical if OFF blocks 0. Otherwise sector choice moves: torpedo releases ± 2, drops ± 1 | same, with island blocking added ON |
+| deaths, hit records | identical if nothing moves; otherwise within ± 10 % and ± 15 % | same |
