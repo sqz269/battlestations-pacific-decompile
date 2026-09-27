@@ -10255,3 +10255,41 @@ explained**, and it was reported to the integrator.
   583 shots / 0 torpedo drops, against the 7 / 141 / 447 / 8 of the `e3aba0f36` control. It is
   unpaired. The candidates are the planes' avoid-zone layer sample `0d02479e5` and the carried
   rounds `e3f5d58ab`, both paired only on USN04 and USN02.
+
+**The USN01 drift pairs** (packet `cc9_usn01_drift_pairs`).
+
+**Setup.** One export of main `471d3d74b` (`local\ap_src`, synced by content). The control is
+every switch as landed. The two treatments are built one at a time, flipped in the export only:
+- (a) `kDiveBombCarriedRoundsBound` false (e3f5d58ab);
+- (b) `kAvoidZoneLayerSampleBound` false (0d02479e5).
+
+The runs are USN01 3200/3000 with streams and the death table on.
+
+**What the drift looks like** (`local\fp2_ctl_usn01.log` on `e3aba0f36` against
+`local\pu_on_usn01.log` on `7eb3679dd`):
+- torpedo-task releases 4 -> 3, but torpedo drops 8 -> 0;
+- `Plane::release_spawn_deferred_to_rack` 4 -> 3 calls;
+- `Rack::tick_006e56f0` 8 -> absent, and `Rack::can_fire_00729a80` 10 -> absent.
+
+So the releases still happen, and no rack ever ticks.
+
+**The authored count.** USN01's torpedo aircraft are the Allied `Devastator` squadrons
+(`PlaneClasses:Devastator=112 ... x4`), not Kates. This installation's
+`scripts/datatables/autoload/vehicleclasses.lua` (dated 2026-05-09, modified locally) sets
+`VehicleClass[112]` (line 47310, `-- TBD Devastator`) to `DefaultEquipment = 1`, and
+`Equipments[1][50] = { Ammo = 1, Platform = 75, ReloadTime = 80 }` (lines 47365-47381). The
+authored Ammo is **1**, not 0.
+
+**Predictions, before the runs:**
+- **(a) carried rounds OFF.** The count falls back to the substitute (2 rounds, spent at the
+  request), so each release drops 2 torpedoes: **drops = 2 x releases, 6..8**, with the rack
+  rows back.
+  - The afternoon's 8 drops were therefore 4 releases x the substitute's 2. The image, with
+    Ammo 1, would drop one torpedo per aircraft.
+  - Since ON gives 0 and not 1 per release, ON's count path reads **0 rounds** for the
+    Devastator's platform key 50 / Platform 75. That is a host bug, to be reported with the
+    exact reading.
+- **(b) avoid-zone sample OFF.** Drops stay 0, because the count path is independent of the
+  terrain. Releases may move by 1 (4 against 3), and plane paths over Marshall's terrain move.
+- **Gameplay.** Deaths stay 7 on all three builds. Hit records and shots may move with (b) and
+  with the torpedoes of (a).
