@@ -62,6 +62,17 @@ inline constexpr bool kLocalPlayerUnitListRuleBound = true;
 // +28h names), as src/game_hosts_hud.cpp's 00645060 inputs take it.
 inline constexpr int kLocalPlayerParty = 0;
 
+// Packet cc9_initial_controlled_unit (docs/CONTROLLED_UNIT.md, "The initial
+// controlled unit"), committed OFF with predictions. Scene load step 19
+// (004E0565..004E05B7, single player included): 008073C0 on the local slot,
+// game+193Ch = 0, 004C3CB0, then 006485A0 ForceSelectUnit, which controls
+// +8Ch at the cursor. True: the mission frame no longer makes the first
+// created unit the controlled unit; the world host runs 006485A0 right after
+// the first 004C3CB0 build over a published own triple. False: the first
+// created unit through 004C0890. Needs kLocalPlayerUnitListRuleBound and
+// kForceSelectUnitBound.
+inline constexpr bool kInitialControlledUnitBound = false;
+
 // The eight lists the last 004c3cb0 body built ([00E188A8]+1964h..+19B8h, a
 // field of the process-wide game object); nullptr before the first build or
 // after the world host is gone.
@@ -87,6 +98,8 @@ struct GameWorldSummary {
     unsigned long long interpolator_passes{0};
     std::size_t interpolator_records{0};
     bool lists_built{false};             // 004c3cb0 ran its body once
+    bool scene_load_force_select_pending{false};
+    unsigned long long scene_load_force_selects{0};
     unsigned long long list_guard_calls{0};
     // Packet cc9_local_player_unit_list: latch clears by cause, and builds.
     unsigned long long list_builds{0};
@@ -115,6 +128,9 @@ public:
 
     // 004c3cb0 at 004c40b4: the guard, the clear, the three walks and the merge.
     void build_local_player_unit_lists_004c3cb0();
+    // Packet cc9_initial_controlled_unit: arms the scene-load 006485A0
+    // (004E05B7), run after the next build over a published own triple.
+    void request_scene_load_force_select_004e05b7();
 
     // One per-frame line: entities walked, units updated, list counts.
     void log_frame(unsigned long long mission_frame);

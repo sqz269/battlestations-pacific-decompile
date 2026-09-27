@@ -528,3 +528,76 @@ export `local\fs_on` of the same commit with the switch flipped. Streams are ON,
 - On USN04 its `+8Ch` would hold only the Lexington, so a call would re-select the controlled unit
   and re-push 20h.
 - On USN01 it would take the empty-vector arm (a record) until the game+1970h side is corrected.
+
+## The initial controlled unit (packet `cc9_initial_controlled_unit`, `kInitialControlledUnitBound`)
+
+Worker cc9-hud2, 2026-09-27, base 718162a82 (the list rule and `ForceSelectUnit` ON). Ghidra was
+read only.
+
+### The image (V, listings)
+
+- **The candidate named in the packet brief does not run in single player.** 004C9CA0's
+  mission-entry arm tests `CMP [ESI+1FE4h],EBX` / `JZ 004C9EA2` at 004C9E32..004C9E38. It
+  therefore skips 00A933F0, 008053C0, 008073C0, the latch clear, 004C3CB0 and 006485A0 unless
+  game+1FE4h is set, which is a network session. The host's comment in `apply_in_game_interface_004c9ca0`
+  already says so.
+- **The scene load's step 19 does run in single player.** It is 004DFB70 at 004E0565..004E05B7
+  (`docs/MISSION_SCENE_LOAD.md` step 19), gated only on the local slot being in [0, 8):
+  1. 008053C0 into the local slot's `+30h` (004E0583);
+  2. 008073C0 on it (004E059B);
+  3. `game+193Ch = 0` (004E05A2);
+  4. 004C3CB0 (004E05A9);
+  5. then 006485A0 on `[00E198C4]+40h` (004E05AE..004E05B7).
+- So the image's first controlled unit is the HUD root's `+8Ch` at its cursor, the first
+  selectable unit of the local player's game+1970h. It is not the first created unit.
+
+### The binding
+
+- **Switch:** `kInitialControlledUnitBound` in `include/bsp/game_hosts_world.hpp`, committed OFF.
+  It needs `kLocalPlayerUnitListRuleBound` and `kForceSelectUnitBound`, which are both ON.
+- **ON behaviour:**
+  - The mission frame's `set_controlled_unit_004c0890(0)` (the first created unit) is not made.
+  - It arms `GameWorldHost::request_scene_load_force_select_004e05b7`.
+  - The world host then calls `hud_force_select_unit_006485a0` after the first 004C3CB0 build
+    over a published own triple.
+  - With no HUD attached yet, the request stays armed for the next build.
+- **SUBSTITUTION, labelled:** the image runs step 19 at the end of scene load, after its own
+  008073C0 on the local slot. Here it runs at the first in-mission list build, when the gunnery
+  host has published the own triple. On the OFF logs that is mission clock 0.05, the first tick.
+  Until then no unit is controlled.
+
+### Predictions (written before any run; streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player)
+
+The initial unit is taken from `cc9_local_player_unit_list`'s ON runs, whose first 44h-enter
+rebuild at frame 1 shows `+8Ch`. That vector does not depend on the controlled unit, except
+through followers of the controlled unit's group.
+
+**USN01 3200/3000:**
+- **The initial controlled unit is Northampton, instead of Airfield2** (a Japanese airfield,
+  wrongly the first created unit). `+8Ch` = {Northampton} and the cursor is (0, 0).
+- **`SetSelectedUnit(Northampton)` at 20.1 s still lands.** 00645060 accepts, and 00645600
+  refreshes Northampton in place.
+- **Gameplay moves, exit 3.** From t = 0:
+  - The 20h push gives 25h on Northampton, so the ShipCaptain and the player gun seat run on
+    Northampton from the first frames instead of from 20.1 s. The intro movie still replaces the
+    ShipCaptain at 4 s.
+  - Northampton's ship AI and seat behaviour as the player's unit start 20 s early, so its path
+    and its gunnery in 0..20 s move.
+  - The later combat follows from that. No band is predicted for the size of the move.
+
+**USN04 4700/4500:**
+- The initial controlled unit is the Lexington, the same as the first created unit. `+8Ch` =
+  {Lexington}.
+- `SetSelectedUnit(Lex)` at 25 s refreshes it in place, as today.
+- **Gameplay identical, exit 1,** apart from the rows of the moved call. The controlled unit is
+  bound at the first tick instead of at load, and one more 20h push is made at the first tick.
+- **The risk,** named in advance: if that one-tick gap or the extra 20h shifts the first 25h
+  apply or the ShipCaptain's seed, USN04 moves through the seat.
+
+**USN02 9200/9000:**
+- **The initial controlled unit is Alden, instead of DeRuyter.** `+8Ch` holds 10 units and the
+  cursor is (0, 0) at Alden.
+- **`SetSelectedUnit(Houston)` at about 25 s still lands.** It moves control from Alden to
+  Houston.
+- **Gameplay moves, exit 3.** Alden, not DeRuyter, is the player's ship for the first 25 s, so
+  the seat, the ShipCaptain and the ship AI exemption move from DeRuyter to Alden in that window.
