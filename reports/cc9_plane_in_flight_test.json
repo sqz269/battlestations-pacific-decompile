@@ -1,0 +1,14 @@
+{
+  "packet": "cc9_plane_in_flight_test",
+  "worker": "cc9-hud3",
+  "switch": "kPlaneInFlightTestBound",
+  "state": "OFF",
+  "doc": "docs/IN_GAME_INTERFACE_SCREEN_SETS.md, 007BB9A0 in the plane arm",
+  "substitutions": [
+    "+C0Ch: 007C11E0's flight-state rule over plane_control_mode_900; the other writers (007B8C30, 007C6760, 007CC0E5) are not modelled; +904h taken clear.",
+    "+AA0h: not carried, taken as 0.0f (5.0f only for a ShipYardLaunch)."
+  ],
+  "no_ghidra_function": [],
+  "names_added": [],
+  "pairs": "pending"
+}

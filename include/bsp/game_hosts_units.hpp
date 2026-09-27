@@ -58,6 +58,7 @@
 #include <utility>
 #include <vector>
 
+#include "bsp/pilot_command_path.hpp"
 #include "bsp/game_hosts_commands.hpp"
 #include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/hit_narrowphase.hpp"
@@ -396,6 +397,11 @@ public:
     // 2i holds unit+5Dh clear for a live ship; unit+61h has no writer anywhere
     // in .text outside the constructor (docs/UNIT_AUTOPILOT_PAIR.md).
     bool unit_flag_005d(std::size_t index) const;
+    // Packet cc9_plane_in_flight_test: 007BB9A0's six inputs for a plane slot
+    // (include/bsp/pilot_command_path.hpp). False when the slot is not a
+    // plane (IsKindOf(0Fh)). docs/IN_GAME_INTERFACE_SCREEN_SETS.md.
+    bool plane_local_input_gate_007bb9a0(std::size_t index,
+        bsp::PilotCmdLocalInputGate& gate) const;
     // The unit's ordnance inventory, as the 007ED7E0 family aggregates it over
     // the weapon controller's slots: the union of its guns' projectile
     // descriptor answer sets. docs/ORDNANCE_KIND_IDENTITY.md. The gunnery host

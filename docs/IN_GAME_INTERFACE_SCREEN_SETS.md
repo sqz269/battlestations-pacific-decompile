@@ -306,3 +306,38 @@ none — every routine read for the `cc_interface_runtime` extension has a Ghidr
 | Start | End (inclusive) | Note |
 | --- | --- | --- |
 | 0068aca0 | 0068b38f | *(closed)* defined since the first pass; last instruction 0068b38b, jump table at 0068b390 |
+
+## 007BB9A0 in the plane arm (packet `cc9_plane_in_flight_test`, `kPlaneInFlightTestBound`)
+
+Worker cc9-hud3, 2026-09-27. Ghidra was read only. This closes the "Uncertainties" row on
+007BB9A0: it is `BSP_Plane_IsLocalInputEnabled`, read whole in `docs/PILOT_COMMAND_PATH.md` and
+reconstructed as `bsp::pilot_cmd_local_input_enabled_007bb9a0`.
+
+**The inputs on a selected airborne plane (V where cited):**
+
+| test | producer | host |
+| --- | --- | --- |
+| `+C0Ch` set | 007C11E0, the flight-state notify of 007C1430, 007C6340, 007C7110 and six more, stores 1 when `+900h` is 7, 6 or 3, or 4 with `+904h` clear (007C13CB..007C140C). The other writers are 007B8C30 (from 008A5BD0), 007C6871 (`MOV byte [EBP+C0Ch],1` in 007C6760, from 006C3E50) and the ground roll 007CC0E5. 007D5D52 clears it at the property-bag read | **SUBSTITUTION:** 007C11E0's rule over `plane_control_mode_900`; `+904h` taken as clear |
+| `+AA0h <= 0` | 007D5D20 stores 0.0 (007D614B), then 5.0 for a `ShipYardLaunch` bag or a kind-2 descriptor's `+12Ah`, else -1.0 (007D6355, 007D645A). 007B83F0 (from `BSP_Plane_HandleMessage`) stores 5.0 or -1.0. Nothing counts it down; 007BC5B0 reads it as a flag | **SUBSTITUTION:** not carried, taken as 0.0 (passes) |
+| channel A (`[+DECh]+44h`) clear, or its value (`+48h`) = 1.0 | the actuator block 007EABC0 | the host's `actuator_block_dec.channel_a` |
+| squadron `+3B0h` clear | only ever cleared (CONTROLLED_UNIT.md, the vtable[124h] map) | false |
+| 00604A20 false | `__thiscall(unit)`: the same flight-state test, true outside 7, 6, 3 and (4, `+904h` clear) | the same rule |
+| `+5Dh` clear | | `unit_flag_005d` |
+
+So a plane in free flight (`+900h` 7) that has not taken a shipyard launch and is not out of action
+answers true, and the classifier picks INTF_PLANE (22h).
+
+**The binding.**
+- **Switch:** `kPlaneInFlightTestBound` in `include/bsp/game_hosts_hud.hpp`, committed OFF.
+- `GameUnitsHost::plane_local_input_gate_007bb9a0` fills the six inputs, and the HUD's
+  `plane_is_in_flight` answers through the reconstruction.
+- **The census** is one `InGameInterface 007BB9A0 for the 20h payload` line per call, with every
+  input.
+
+**Predictions** (streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player):
+- **With `kSquadronSlotClassBound` OFF:** no mission selects a plane, so the arm is never reached
+  (no census line). **USN01, USN04 and USN02 are identical, exit 1.**
+- **With `kSquadronSlotClassBound` ON (the re-pair):** USN01's `SetSelectedUnit(ScoutDauntless)`
+  reaches the arm once, at mission frame 2003. ScoutDauntless is in free flight (`+900h` 7, seeded
+  at creation), so the line reads `c0c=1 aa0=0.0 chA=0/-1.00 00604a20=0 5d=0 -> 1`. The interface
+  becomes 22h INTF_PLANE, where it was 24h.
