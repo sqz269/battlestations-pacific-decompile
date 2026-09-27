@@ -629,6 +629,13 @@ public:
     // 0074F090's live-unit gate refuses it.
     bool add_leak_0074f440(std::size_t index, std::uint32_t count,
         const float world_point[3]);
+    // Packet cc9_live_hull_repair. The two unit inputs the leak manager reads that
+    // live in the gunnery host: the class `Repair` byte (class+D0h, 00962E16;
+    // 1 unless the class authors Repair = false) that 0074F090's live gate tests,
+    // and the health fraction 00923BE0 (clamped current / maximum, 0 once
+    // torn down) that 0074F930's live cap reads. The gunnery host sets both every
+    // step; the units host uses them only under kLiveHullRepairBound.
+    void set_unit_leak_inputs(std::size_t index, float health_fraction, bool class_repair);
     // Packet cc9_squadron_pass_hooks (docs/CONSTRUCT_WORLD.md section 27). Two
     // entries the Lua host's InitAll calls for a plane-squadron node, by unit
     // index of the squadron (its fused leader). Both are no-ops for now and

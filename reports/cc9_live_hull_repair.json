@@ -1,0 +1,18 @@
+{
+  "packet": "cc9_live_hull_repair",
+  "doc": "docs/UNIT_MESSAGE_ARMS.md",
+  "calls": [
+    {"address": "0074F47A", "native": "0074F090", "function": "0074F440", "note": "the gate that reads class+D0h (0074F0B2..0074F0BF)"}
+  ],
+  "coverage": [
+    {"routine": "00923BE0", "coverage": "used as the gunnery row's clamped current / maximum, 0 when dead (header in bsp/ai_close_attack_tick.hpp)"}
+  ],
+  "substitutions": [
+    {"what": "00923BE0's torn-down arm (+5Dh -> 0.0)", "is": "the gunnery host's dead flag -> 0.0", "where": "run_damage_control"}
+  ],
+  "corrections": [],
+  "switches": [{"name": "kLiveHullRepairBound", "committed": "OFF", "file": "src/game_hosts_units.cpp"}],
+  "failed_predictions": [],
+  "no_ghidra_function": [],
+  "ledger_names_added": []
+}
