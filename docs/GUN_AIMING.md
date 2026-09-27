@@ -39,7 +39,7 @@ windows and two flag bits, one for "may traverse here" and one for "may fire her
 The table is `1F0h` bytes (124 slots); `00CFE298` onwards is float and string data, not code.
 The slots that matter here, with what each derived class installs. `-` means the class inherits.
 
-| Slot | base gun `00CFE0A8` | `22h`/`23h` turning | `24h`/`27h` MRT/MST | Role |
+| Slot | base gun `00CFE0A8` | `22h` turning base / `23h` `MRTGun` | `24h` `MSTGun` / `27h` `MDepthChargeLauncher` | Role |
 | --- | --- | --- | --- | --- |
 | `00h` | `0072DD00` | `006FDEB0`/`00730F50` | `006FDFA0`/`006FE0B0` | scalar deleting destructor |
 | `5Ch` | `006E3D50` | - | - | class-id test, `20h` selects any gun |
@@ -63,13 +63,14 @@ Slot `A0h` of the base is `BSP_Gun_SetupFromDescriptor`, already established in
 `docs/UNIT_WEAPON_DEVICES.md`; `0085A3D0` calls it first (`0085A3D8`) and then seeds the angles,
 which is why the turning classes all carry `0085A3D0` there.
 
-Only `21h` `MMultipleBombPlatform` (`00CFE308`) is outside the turning branch; it was not read
-for this packet - **contract: unread**.
+Only `21h` `MRFSGun` (`00CFE308`, constructor `00730B80`, which calls the base gun `0072E510`) is
+outside the turning branch; it was not read for this packet - **contract: unread**.
+(Names corrected by packet `cc9_gun_aiming_names`: see "Class names" at the end.)
 
 ### The second vtable at `+310h`
 
 `006FDDA0` and every derived constructor store a pointer at instance `+310h`
-(`param_1[0xC4]`), and for `MRFSGun` that pointer is `00CFE504`. The block's slot `+4h` is
+(`param_1[0xC4]`), and for `MRTGun` (`23h`) that pointer is `00CFE504`. The block's slot `+4h` is
 `0085AD80`. This is the same "tick element" mechanism `docs/TICK_ELEMENT_OVERRIDES.md` describes
 for the unit at `unit+310h`: the routine's `ECX` is the sub-object and the body reaches the gun
 with a `-310h` bias, which is why Ghidra prints `param_1 + 0xE0` for `gun+3F0h` and
@@ -205,7 +206,7 @@ transforms a world direction into the gun's frame, clamps the `y` component to `
 | 7 | `0085AE99` | platform lookup, bounds-checked as above |
 | 8 | `0085AEDA` | `007F6530(horz, vert, tHorz, tVert, &stepH, &stepV)` on the platform: the arc-aware signed deltas, **contract: unread** for how it routes around a blocked window |
 | 9 | `0085AEEB` | `rate = descriptor[+88h]`; `if (dt * rate < abs(stepH)) stepH = sign(stepH) * rate * dt` - the per-step clamp; the sign branch collapses to `+rate*dt` when `stepH >= 0` and `-rate*dt` otherwise |
-| 10 | `0085AF76`, `0085AFA6` | `if (!gun->vtable[5Ch](23h)) step *= BSP_Math_InterpolateClamped(0, 0.5, 0.174533, 1.0, dH)` - every class except `MRFSGun` scales the step from 1.0 down to 0.5 as the remaining angle falls below ten degrees (`00CE3990` = `0.17453294`, `00CE3800` = `0.5`) |
+| 10 | `0085AF76`, `0085AFA6` | `if (!gun->vtable[5Ch](23h)) step *= BSP_Math_InterpolateClamped(0, 0.5, 0.174533, 1.0, dH)` - every class except `MRTGun` (`23h`) scales the step from 1.0 down to 0.5 as the remaining angle falls below ten degrees (`00CE3990` = `0.17453294`, `00CE3800` = `0.5`) |
 | 11 | `0085AFC0`-`0085AFD1` | `gun+480h += stepH` |
 | 12 | `0085AFE2`-`0085B0AB` | the same clamp, the same `23h` test and the same scale for the vertical axis with `descriptor[+8Ch]`, then `gun+484h += stepV` |
 | 13 | `0085B0C5` | `if (!007F6840(horz, vert)) gun+480h = <pre-step value>` - a final platform test restores the traverse angle when the stepped pair left the arc; **contract: unread** for `007F6840`'s exact predicate |
@@ -215,7 +216,7 @@ So the aim rule, per fixed step, per axis:
 ```
 delta      = wrap(target - current)                    // BSP_Math_SubtractWrappedAngle
 step       = clamp(delta, -rate * dt, +rate * dt)      // rate = HorzRotSpeed / VertRotSpeed
-if class != MRFSGun:
+if class != MRTGun (23h):
     step  *= lerp(0.5, 1.0, min(|delta|, 10deg) / 10deg)
 current   += step
 ```
@@ -335,9 +336,9 @@ Failing any of 1-7 returns false; 8 is the only path that returns true, so a gun
 `barrelNum == 0` never fires.
 
 `FireIfReady` is reached from the network message handler `0072D830`, opcode `0ADh`
-(`0072D860`). The MRT/MST override `0084C7E0` adds opcode `0B0h` -> `0084C6E0`, which sets the
+(`0072D860`). The `MSTGun`/`MDepthChargeLauncher` (`24h`/`27h`) override `0084C7E0` adds opcode `0B0h` -> `0084C6E0`, which sets the
 angles through `0085B0F0` and then calls `vtable[1D8h](fire, throwA, throwB)` from the message's
-`+2Ch`/`+30h`/`+34h`; `MRFSGun`'s `00803480` adds opcode `0AFh` and tail-calls the base for
+`+2Ch`/`+30h`/`+34h`; `MRTGun`'s (`23h`) `00803480` adds opcode `0AFh` and tail-calls the base for
 everything else. `008BE440` `BSP_LuaBinding_GunForceFire` is the scripted entry, already
 documented. No other `1D8h` dispatch exists in the image outside those and two unrelated classes
 (`004650F0`, `004654D0`, `00B5FE60`, `00B5FE90` are not gun vtables).
@@ -377,7 +378,7 @@ them; `ret` is what the native caller consumes.
 | `0085B0C5` | `007F6840` | `platform_pair_still_valid` | platform, `h`, `v` / bool | after both axes stepped |
 | `0085AF76`, `0085B064` | `gun->vtable[5Ch]` | `is_class` | gun, `23h` / bool | once per axis |
 | `0085AE19`, `0085AE42` | `BSP_Math_SubtractWrappedAngle` `00438B10` | `wrapped_difference` | `a`, `b` / float | always |
-| `0085AFA6`, `0085B094` | `BSP_Math_InterpolateClamped` `00419010` | `approach_scale` | `0`, `0.5`, `10deg`, `1.0`, `dH` / float | non-`MRFSGun` only |
+| `0085AFA6`, `0085B094` | `BSP_Math_InterpolateClamped` `00419010` | `approach_scale` | `0`, `0.5`, `10deg`, `1.0`, `dH` / float | non-`MRTGun` (`23h`) only |
 | `0085AC78`, `0085A867`, `0085AE99` | `005471B0` | `platform_index_out_of_range` | vector, `index+1` / noreturn | index at or past the count |
 | `0085ABBD`, `0085AC0E` | `00BF857A` `fmod` | `wrap_two_pi` | `a`, `2pi` / float | always, twice |
 | `0085A27E` | `0072B2D0` | `base_gun_update` | gun, `dt` / void | always |
@@ -408,22 +409,22 @@ them; `ret` is what the native caller consumes.
 | `00803480`, `0084C800`, `006FDC90`, `006FDCD0`, `006FE160`, `008598B0`, `00859A20` | contract: unread |
 | target selection and lead | contract: unread, in `008FFA20`, `008FFF20`, `00902920`, `009030C0`, `00959C20`, `006DF520` |
 
-## The MRFSGun difference
+## The MRTGun difference
 
-`MRFSGun` (`23h`, vtable `00CFE548`, constructor `00730E80`) adds no field of its own: its
+`MRTGun` (`23h`, `Rapid_Turning_Gun`, vtable `00CFE548`, constructor `00730E80`) adds no field of its own: its
 constructor calls `006FDDA0` and writes only the class id and five secondary vtable pointers.
 Its vtable differs from the `22h` turning base in exactly two slots, the destructor and the
 network handler `164h` (`00803480`, which adds opcode `0AFh`). Everything about how it aims is
 therefore shared code, and its one behavioural difference is the class test inside the step:
-`0085AD80` asks `gun->vtable[5Ch](23h)` before scaling each axis' step, and an `MRFSGun` skips the
+`0085AD80` asks `gun->vtable[5Ch](23h)` before scaling each axis' step, and an `MRTGun` skips the
 `BSP_Math_InterpolateClamped` soft approach. It turns at the full `HorzRotSpeed`/`VertRotSpeed`
 right up to the target instead of easing to half rate inside ten degrees.
 
-The "fixed" and "slave" parts of `Rapid_Fixed_Slave_Gun` are data, not code: a platform whose
-`Windows` arcs are a single point, or a weapon class with a zero `HorzRotSpeed`, makes
-`0085ABA0` refuse every target and leaves the gun at its seeded angles. The follow relationship
-implied by "slave" is the platform record's `DefaultGun`/`DirectorFollowPlatforms`
-(`docs/VEHICLE_CLASS_FIELDS.md`) and was not read: **contract: unread**.
+`Rapid_Fixed_Slave_Gun` is `MRFSGun` (`21h`), a separate class directly under the base gun, not
+a turning gun. It is outside this document. In this installation only `PLANEGUN` devices use it
+(docs/GUN_REST_ANGLES.md 4.1). Independently of class, a platform whose `Windows` arcs are a single
+point, or a weapon class with a zero `HorzRotSpeed`, makes `0085ABA0` refuse every target and leaves
+a turning gun at its seeded angles.
 
 ## Plane guns
 
@@ -449,3 +450,21 @@ plane mounts. That expectation is not evidence: **contract: unread**.
 - **Was:** the aiming doc lists 00730A20 as swallowed by BSP_Gun_Fire's body
   **Is:** BSP_Gun_Fire's Ghidra body is 00730160-00730A1D, so 00730A20 follows it after INT3 padding rather than sitting inside it. The same holds for 004F17F0 against BSP_ClassId02_IsKindOf and for 006E3DC0/006E3DE0 against BSP_ClassId20_IsKindOf (body 006E3D50-006E3D85).
   **Evidence:** python tools/bsp.py ghidra proto on each address reports no containing function.
+
+## Class names (packet `cc9_gun_aiming_names`, 2026-09-27)
+
+Earlier text here paired the class names with the wrong ids, following docs/GUN_CLASS_FAMILY.md
+before docs/ENTITY_CLASS_IDS.md corrected it. The ids, vtables and addresses were right; only the
+names moved. Each constructor's `+C4h` stamp and each class test were re-read from disk bytes:
+
+| Id | Name | Vtable | Constructor (base), stamp | Class test `vtable[5Ch]` |
+| --- | --- | --- | --- | --- |
+| `21h` | `MRFSGun`, `Rapid_Fixed_Slave_Gun` | `00CFE308` | `00730B80` (`0072E510`), `00730BBF` | - |
+| `22h` | turning base, no factory record | `00CFBD20` | `006FDDA0` (`0072E510`), `006FDE09` | - |
+| `23h` | `MRTGun`, `Rapid_Turning_Gun` | `00CFE548` | `00730E80` (`006FDDA0`), `00730EBF` | `00730ED0`: `23h 22h 20h 1Eh 4 2 1 0` |
+| `24h` | `MSTGun`, `Single_Turning_Gun` | `00CFBF58` | `006FDED0` (`006FDDA0`), `006FDF0F` | `006FDF20`: `24h 22h 20h ...` |
+| `27h` | `MDepthChargeLauncher`, `Depth_Charge_Launcher` | `00CFC190` | `006FDFC0` (`006FDED0`), `006FE006` | `006FE050` (slot `00CFC1EC`): `27h 24h 22h 20h ...` |
+
+So the soft-approach exception in `0085AD80` belongs to `Rapid_Turning_Gun`, the AA machine gun in
+this installation, and the `0B0h` handler `0084C7E0` belongs to `Single_Turning_Gun` and the
+depth-charge launcher.
