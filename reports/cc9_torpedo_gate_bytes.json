@@ -36,8 +36,8 @@
   "switches": [
     {
       "name": "kShipAiQueryGateBytesBound",
-      "state": "OFF",
-      "pair": "pending"
+      "state": "ON",
+      "pair": "local/gb_{off,on}_{usn02,usn04}.log: USN02 exit 3, USN04 exit 3 (pair_export of ee0753acc, ON 3BC8815489D0)"
     }
   ],
   "no_ghidra_function": [],
@@ -46,5 +46,18 @@
     "byte +77h/+78h read from the host's torpedo_group_flag/depth_charge_group_flag",
     "[+60h]->vtable[4] is 00861BE0 (always 1) as category_gate_slot4 has it"
   ],
-  "failed_predictions": []
+  "failed_predictions": [
+    {
+      "row": "USN02 torpedo launches",
+      "predicted": "unchanged (220)",
+      "measured": "221",
+      "why": "moved positions change one bot's opening"
+    },
+    {
+      "row": "USN04 standoff rows",
+      "predicted": "Fletcher-class01..04 and York-class01/02 change",
+      "measured": "only Fletcher-class01/02 (last 1500 -> 1450)",
+      "why": "tubes and depth charges rate zero against a plane target either way"
+    }
+  ]
 }

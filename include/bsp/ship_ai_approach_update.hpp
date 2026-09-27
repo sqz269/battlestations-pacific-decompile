@@ -961,7 +961,7 @@ ShipAiTorpedoStandoffResult ship_ai_torpedo_standoff_009f2ac9(
 // block, the torpedo one being +12BAh; 00863920 is the gunnery host's live
 // answer. False: all four gates are 1 in both queries (the earlier labelled
 // substitution) and 00863920 is recomputed from the stance-push inputs.
-inline constexpr bool kShipAiQueryGateBytesBound = false;
+inline constexpr bool kShipAiQueryGateBytesBound = true;
 
 // The calls 009F2AD1..009F2B8A and 009F2DF7..009F2E43 make for the three
 // bytes. The group tests are [unit+6DCh]->008637D0 / 00863840 / 008638B0 on the
