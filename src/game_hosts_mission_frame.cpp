@@ -261,6 +261,14 @@ struct GameMissionFrameHost::Impl {
     unsigned long long warning_loss_side0{0};
     unsigned long long warning_loss_side1{0};
     unsigned long long warning_loss_other{0};
+    // Packet cc9_loss_warning: the text keys chosen, the pending records the
+    // cancel removed, the proximity records a ship's loss erased, and the
+    // manager+15Ch stamp per unit (now + 2.0, 00976FBE..00976FE8).
+    unsigned long long warning_loss_text_uslost{0};
+    unsigned long long warning_loss_text_japanlost{0};
+    unsigned long long warning_loss_cancelled{0};
+    unsigned long long warning_loss_proximity_erased{0};
+    std::map<std::size_t, float> warning_loss_stamp_15c{};
     bool device_edge_injected{false};         // the executable's own injection
     // Packet cc_mission_tick's reconstruction of the four-call opener of every
     // simulated frame, and the dynamics list behind its fourth call.
@@ -1528,6 +1536,7 @@ void game_warning_report_loss_009813a0(std::size_t unit) {
     GameMissionFrameHost::Impl* host = g_warning_owner;
     if (host == nullptr || host->units == nullptr) return;
     ++host->warning_loss_calls;
+    if constexpr (kLossWarningBound) host->done("WarningManager::report_loss", 0x009813a0u);
     const GameUnitsHost& units = *host->units;
     // 009813C6..009813D2: [entity+54h] against 2, signed; a negative side passes.
     const int side = units.unit_side_0054(unit);
@@ -1542,10 +1551,59 @@ void game_warning_report_loss_009813a0(std::size_t unit) {
     } else {
         ++host->warning_loss_other;
     }
-    // 009813FA..00982110: unread past the guard here; docs/LOSS_WARNING.md has
-    // the plan (the 00976F10 cancel, the 009FFD20 text posted by 005CF3D0, and
-    // the "kill" channel's Lua listeners through 00887E50).
-    host->record("WarningManager::report_loss_body", 0x009813fau);
+    if constexpr (!kLossWarningBound) {
+        // 009813FA..00982110 as one record; docs/LOSS_WARNING.md has the plan.
+        host->record("WarningManager::report_loss_body", 0x009813fau);
+        return;
+    }
+    // 009813FA..00981602: the text. 009FFD20 picks the unit's player slot; with
+    // a named slot the line is "[" + slot+78h + "] " + slot+58h, otherwise
+    // globals.warn_uslost (side 0) or globals.warn_japanlost (side 1), then
+    // globals.warn_<class>_lost from 00E0B630. SUBSTITUTION: no player slot is
+    // resolved here, so the key is counted by side; the post is the record.
+    if (side == 0) ++host->warning_loss_text_uslost;
+    if (side == 1) ++host->warning_loss_text_japanlost;
+    host->record("WarningManager::loss_text_005cf3d0", 0x00981602u);
+    // 00981658..00981688: under the manager's lock, 00976F10 CancelByTarget with
+    // the unit. 00976F34..00976FB9 walk the +E0h list and destroy every record
+    // whose kind (vt[10h]) is 4 and whose +80h is the unit; 00976FBE..00976FE8
+    // then store now + 2.0 (00F876A4 + double 00D7A308) under the unit in the
+    // map at +15Ch, whose readers are unread.
+    auto& pending = host->warning.pending;
+    const std::uint32_t target = static_cast<std::uint32_t>(unit);
+    for (auto it = pending.begin(); it != pending.end();) {
+        if (it->kind == 4 && it->target_id == target) {
+            it = pending.erase(it);
+            ++host->warning_loss_cancelled;
+        } else {
+            ++it;
+        }
+    }
+    host->warning_loss_stamp_15c[unit] = static_cast<float>(
+        static_cast<double>(host->world_clock) + 2.0);
+    host->done("WarningManager::cancel_by_target", 0x00976f10u);
+    // 0098168D..009816C5: a ship (IsKindOf 6) loses its proximity record at
+    // manager+184h: 00975D00 finds it (creating one if absent), 0096AE90 stops
+    // a live effect (00867B10, effect+9 = 1) and releases it, 00975E30 erases.
+    if (units.unit_is_kind_of(unit, 6)) {
+        auto found = host->proximity_records.find(unit);
+        if (found != host->proximity_records.end()) {
+            if (found->second.effect_live) {
+                host->record("WarningManager::proximity_effect_stop_00867b10", 0x00867b10u);
+            }
+            host->proximity_records.erase(found);
+            ++host->warning_loss_proximity_erased;
+        }
+        host->done("WarningManager::proximity_record_erase", 0x00975e30u);
+    }
+    // 009816CA..009816D5: 006E6670 over unit+2B0h, not read.
+    host->record("WarningManager::loss_handle_006e6670", 0x006e6670u);
+    // 00981750..00981D6C: the `kill` channel twice (00980150, 0097B8C0), each
+    // listener through 00887E50. Kept a record: the host fails a mission through
+    // its own script-order path, which must not run twice.
+    host->record("WarningManager::kill_channel_0097b8c0", 0x0097b8c0u);
+    // Teardown 0077EDF0, 006952A0, 00695870, 006E0860.
+    host->record("WarningManager::loss_teardown", 0x0077edf0u);
 }
 
 void game_scoring_set_real_play_time_running_00905340(bool running) {
@@ -2448,12 +2506,16 @@ void GameMissionFrameHost::report(long requested_frames) {
         host.proximity_list24_nodes, host.proximity_list24_no_leader);
     host.log.notef("summary mission warning manager bound=%d scans=%llu torpedo_reports=%llu "
         "accepted=%llu effect_calls=%llu effects=%llu deadline_expiries=%llu loss_reports=%llu "
-        "loss_side0=%llu loss_side1=%llu loss_other=%llu (packet cc9_warning_manager_tick; "
-        "009813a0 guard, cc9_loss_report_entry)", kWarningManagerTickBound ? 1 : 0,
+        "loss_side0=%llu loss_side1=%llu loss_other=%llu loss_bound=%d text_uslost=%llu "
+        "text_japanlost=%llu cancelled=%llu proximity_erased=%llu (packet "
+        "cc9_warning_manager_tick; 009813a0, cc9_loss_report_entry, cc9_loss_warning)",
+        kWarningManagerTickBound ? 1 : 0,
         host.warning_scans, host.warning_torpedo_calls, host.warning_torpedo_accepted,
         host.warning_effect_calls, host.warning_effects, host.warning_deadline_expiries,
         host.warning_loss_calls, host.warning_loss_side0, host.warning_loss_side1,
-        host.warning_loss_other);
+        host.warning_loss_other, kLossWarningBound ? 1 : 0, host.warning_loss_text_uslost,
+        host.warning_loss_text_japanlost, host.warning_loss_cancelled,
+        host.warning_loss_proximity_erased);
     host.log.notef("summary mission fixed steps=%llu at %.3f s each (00875bb0's own clock "
         "at 00f876a4/00f876ac)", host.fixed_steps,
         static_cast<double>(bsp::kFixedSimulationStepFloat));

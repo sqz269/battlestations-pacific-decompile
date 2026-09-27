@@ -899,3 +899,54 @@ come from cc9_units_contracts (a3c7096e1). Ghidra was read only.
 - **Gameplay identical on both.** The hit arm only spawns a render-side point effect and holds
   a host record that nothing else reads. Deaths, hit records and releases do not move. The new
   `WarningManager::proximity_effect_0096c070` record calls appear only when hits do.
+
+## 19. Part 11: the loss warning 009813A0 bound past its guard (`kLossWarningBound`, committed OFF)
+
+Packet `cc9_loss_warning`, worker cc9-world-init, from the plan in `docs/LOSS_WARNING.md`.
+Ghidra was read only.
+
+**Read for this packet (V).**
+- **00976F10 `CancelByTarget`** (00976F10..00976FF0, `RET 4`). The argument is the unit pointer:
+  0098167A `PUSH EDI`, with EDI the unit since 009813BF.
+  - It walks the `+E0h` pending list. A record is destroyed through its slot 0 with 1, unlinked,
+    and the count at `+E8h` dropped, when its `vt[10h]()` kind is 4 and its `+80h` is the unit.
+  - It then stores `now + 2.0` (`[00F876A4]` plus the double 00D7A308) under the unit in the map
+    at `+15Ch` (00975C40). The readers of that map are unread.
+- **The ship arm, 0098168D..009816C5.** IsKindOf 6, then three calls on manager+184h, which is
+  the per-ship proximity record map the scan 00977990 keeps:
+  - 00975D00 finds the record;
+  - 0096AE90 stops a live effect (00867B10, effect+9 = 1), releases it and nulls it;
+  - 00975E30 erases the record.
+
+**The binding** (`include/bsp/game_hosts_mission_frame.hpp`, `src/game_hosts_mission_frame.cpp`,
+and one hunk in `src/game_hosts_gunnery.cpp`). With the switch on:
+- The death route calls `game_warning_report_loss_009813a0` in place of its record. That is plan
+  step 5; the gunnery file was unleased, and its loss counters are unchanged.
+- **Bound:** past the guard, the cancel runs over `warning.pending` and stamps the `+15Ch` map. A
+  ship's proximity record is erased.
+- **Named records:** the text post (`loss_text_005cf3d0`), 006E6670, the `kill` channel
+  (`kill_channel_0097b8c0`) and the teardown.
+- **Substitution:** no player slot is resolved, so the text key is counted by side,
+  `warn_uslost` or `warn_japanlost`.
+- The host keeps no channel-subscription store, so the plan's listener count cannot be given.
+
+### Predictions (written before the pairs; the same tree, switch only, both variables set)
+
+- **USN02 9200/9000.**
+  - 22 entries: every death reaches the entry.
+  - The guard passes 22 times, as `loss_side0=12 loss_side1=10`; the text keys are 12
+    `warn_uslost` and 10 `warn_japanlost`.
+  - `cancelled=0`: no host path queues a pending warning, so the list is always empty.
+  - `proximity_erased=22`. Every ship that dies has been scanned at least once, since deaths come
+    after 27 s and a scan runs every 4 s, so each has a record. A dead ship is never scanned
+    again, so `records` does not move.
+  - Native table: the gunnery row `WarningManager::report_loss_009813a0` (22 records) goes. The
+    entry row (22 concrete) and six rows, 22 each, come in: text, cancel, erase, 006E6670, kill
+    channel and teardown.
+- **E2 = USN04 9200/9000.**
+  - 51 entries with 0 guard passes: every loss is an aircraft, which fails IsKindOf 18h and 6.
+  - The gunnery record row (51) is replaced by the entry row (51 concrete), and nothing else
+    moves.
+- **Both.** Gameplay identical: deaths, the per-entity death table, hit records and releases.
+  Nothing the cancel or the erase touches is read by gameplay, and the Lua listeners stay
+  records.
