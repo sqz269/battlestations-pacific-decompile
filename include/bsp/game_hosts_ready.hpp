@@ -87,8 +87,10 @@ struct GameStepSubsystemsSummary {
 // SUBSTITUTION: the gunnery death route (a file leased elsewhere) does not call
 // Destroy; the row-15 flush applies both bytes to each ship newly dead at that
 // point. False: dead ships keep both bytes clear, and 00903670 walks the empty
-// activation vector.
-inline constexpr bool kSunkShipFlushBound = false;
+// activation vector. ON by the verdict: E2 identical; USN02 moved (wrecks stop
+// sailing, planning and taking rounds; deaths 22 -> 20, hit records 411 -> 329,
+// failure time unchanged), docs/CONSTRUCT_WORLD.md section 21.
+inline constexpr bool kSunkShipFlushBound = true;
 
 // The six fan-out rows whose reconstructions are on main, as one owner. Held for
 // the whole run because every one of them keeps a container across steps.

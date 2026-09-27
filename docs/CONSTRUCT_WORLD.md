@@ -1173,3 +1173,51 @@ With the switch on:
     - the per-entity death rows identical up to 30.25 s.
 - **If the neighbour count moves**, the binding reached something outside the prediction and the
   switch stays OFF until that is explained.
+
+### Part 12 pairs and verdict
+
+One tree, 50a713e32: `local\bin\ss_off` against `local\bin\ss_on`, differing only by the
+switch. Both variables were set. The diff is `tools/pair_diff.py`. All four logs show the fit
+line, the final COM release, and a module directory inside this tree.
+
+**E2 = USN04 9200/9000: identical** (pair_diff exit 1, "gameplay identical"). The pair has 52
+deaths and 875 hit records on both sides, and the death rows, plane death modes and unit table
+are all identical. Only the two `bound` fields moved. The predicted post-tick row change did not
+appear: the native table did not move at all, because `MissionCompletion::world_post_tick` was
+not reached in these runs.
+
+**USN02 9200/9000: gameplay moved** (pair_diff exit 3).
+
+| row | OFF | ON | predicted |
+| --- | ---: | ---: | --- |
+| `ship_destroy_flags`, `kills` | 0, 0 | 20, 0 | 22, 0 (one per ON death: held) |
+| proximity `records`, `ships` scanned | 54, 3,524 | **32**, 2,283 | 32, falling: held |
+| mission failure | 39.65 s | 39.65 s | +/-5 s: held |
+| first hit, first death | 30.25 s | 30.25 s | identical to 30.25 s: held |
+| deaths | 22 | 20 | 22 +/-4, up or flat: **direction failed** |
+| hit records | 411 | 329 | +/-15%: **failed (-20%)** |
+| shots | 759 | 807 | - |
+| controlled DeRuyter distance moved | 2,897 m | 316 m | not predicted |
+| ship AI steps (gated) | 252,000 (0) | 152,134 (99,866) | not predicted |
+
+**What moved, and why.** None of it was predicted: I read the scan and ship-AI consumers of the
+bytes, and not the rest. Every path below is a host consumer that already gates on the bytes the
+image writes in the death step.
+- **The ship AI stops stepping a dead ship.** 99,866 brain steps are gated. OFF, a wreck kept
+  planning and steering: the player's DeRuyter, sunk at 30.25 s, travelled 2,897 m afterwards.
+- **The units host takes the +5Dh-gated wreck branch** of its ship-motion reconstruction.
+  `UnitInstance::wake_setting 00424c40` is reached 99,866 times: that is 008265FA's GameSettings
+  read for KillDepth.
+- **The mission script retargets.** New `command target` lines, such as Yamakaze -> Alden and
+  Tokitsukaze -> Exeter, appear once a target reads as dead.
+- **Guns stop landing on wrecks.** Shots rise and hit records fall. The gunnery validity tests
+  at 0043F080 now reject a wreck. OFF, rounds were landing on dead hulls; the per-hit share
+  cannot be read from this log.
+- **Deaths.** Harusame, Jintsu and Haguro survive, and Witte dies. Twelve death times move, from
+  Kortenaer at 70.30 s onward.
+
+**Verdict: ON.** Every moved path is a consumer reading the state the image has from the death
+step (00926CD5, 0092639B). The OFF behaviour, with wrecks sailing, planning and absorbing rounds,
+is the deviation. The failed bands are recorded above. The neighbour count's walk has no live
+test, so wrecks stay in it in both builds, as in the image until the KillDepth kill.
+
