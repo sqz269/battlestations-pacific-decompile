@@ -1213,6 +1213,69 @@ yet. The gunnery hunk is the loose entries plus the calls, under one switch.
 (`pick=calls/hits seat=... line_of_fire=... blocked=n projectile=...`). At load the block is zero
 until a consumer calls. The gunnery hunk prints the same block in its end-of-mission summary.
 
+### The gunnery hunk and its predictions (written before the runs)
+
+`kLandscapeSpatialAttachBound` in `src/game_hosts_gunnery.cpp` is committed **false**. With it
+true:
+- **`SegmentBinding` entries.** It adds the Landscapes as loose entries after the units, with
+  handles N+1.., the bounds of `landscape_segment_entry_bounds` and one shape.
+- **The Landscape trace.** Its `shape_trace_segment` calls `landscape_entry_segment_hit` and fills
+  the record: point, entity, kind 0Ah, segment -1. A unit hit clears `hit_landscape`, and a land
+  hit clears `hit_unit`.
+- **`query_segment_units_impl`** reports a land hit through a new `land_hit` flag and returns
+  false.
+  - **The pick** (`GameGunneryHost::query_segment_units`) sees no unit, which is 00526DAF.
+  - **The seat** takes the land point as its hit, subject to the unchanged y > 0 test at 00957DAF.
+- **The shell sweep.** A land hit ends the round: it runs `apply_impact_blast`, applies no hit and
+  records `Landscape::on_hit_0087f9a0`. The new counter is `impacts_land`.
+- **`line_of_fire_blocked_0072cdd0`** runs `landscape_segment_hit` from the raised muzzle to the
+  clamped target first (0072CE91), and a land hit blocks. The existing per (gun, target) cache
+  holds the answer.
+- **The census.** `summary mission gunnery landscape attach bound=.. entries=.. pick=c/h
+  seat=c/h line_of_fire=c/h blocked=n projectile=c/h impacts_land=n`.
+- **Untouched:** the death route's `kLossWarningBound` call site, and the trace counters
+  (`shell_mesh_hits` and `narrowphase_box_0085cdb0` are restored around the pick and the seat as
+  before).
+
+**The base for USN01 3200/3000** (section 6 ON log):
+
+| consumer | volume |
+| --- | --- |
+| `UnitPickScreen::segment_query` | 6,160 calls |
+| gun seat casts | 0 (the idle player never takes a seat) |
+| AA line-of-fire queries | 144, 0 blocked |
+| shell sweeps | 18,854 |
+
+The shells break down as 583 created, 103 entity impacts, 451 expired and 0 water. The outcome is
+7 deaths, 150 hit records and 583 shots.
+
+**Predictions, USN01:**
+- **Entries.** `entries=4`.
+- **Pick.** 6,160 calls, and land hits between 1,000 and 6,160. The camera sits over the player's
+  `Airfield2` on `Landscape 03`, so the 10,000-unit forward ray meets the island often.
+- **Seat.** `0/0`.
+- **Line of fire.** 144 queries, 0..40 blocked. AA on the island's forts fires upward at planes,
+  and ships firing across `Landscape 03` can be cut.
+- **Shells.** `impacts_land` between 0 and 150 of the 18,854 sweeps: rounds from the coastal forts
+  and rounds crossing the island.
+
+  **Uncertain:** `Coastal Gun 01` sits 66 m inside the hill (section 6 self-check). A segment
+  that starts below the surface hits at its start in the stand-in, so its rounds and its line of
+  fire end at once. Whether 00ADA240's quadtree walk reports a start below the surface was not
+  read.
+- **Outcome, with bands:**
+  - deaths down or equal, 4..7;
+  - hit records down or equal, 90..150;
+  - shots 450..700, direction uncertain: refusals remove shots, but fewer kills keep targets alive
+    longer;
+  - torpedo drops 0 on both sides.
+
+**Predictions, USN04 4700/4500.**
+- `usn_19_coralus.scn` has no Landscape, so `entries=0`.
+- The pick calls are counted with 0 land hits, and line of fire and shells show 0 land hits.
+- Identity on every gameplay row: 41 deaths, 743 hit records, 5,603 shots. The census line is the
+  only difference.
+
 ## Ledger names recorded
 
 | Address | Name |

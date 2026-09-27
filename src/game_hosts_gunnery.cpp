@@ -40,6 +40,7 @@
 #include "bsp/unit_rudder.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_mission_frame.hpp"
+#include "bsp/game_hosts_scene_contents.hpp"
 #include "bsp/game_hosts_ship_ai.hpp"
 #include "bsp/session_participant_pools.hpp"
 #include "bsp/game_hosts_units.hpp"
@@ -155,6 +156,19 @@ constexpr bool kShipPlatformAttachmentBound = true;
 //    since nothing static stands between ships at sea. OFF: always clear.
 //    docs/SHIP_PLATFORM_ATTACHMENT.md.
 constexpr bool kAaLineOfFireBound = true;
+//  * kLandscapeSpatialAttachBound: packet cc9_landscape_spatial_attach
+//    (docs/SCENE_CONTENTS_HOSTS.md section 8). Each Landscape joins the segment
+//    query as a loose entry after the units (00884078 attaches its collision
+//    node +1E4h as a static root), traced by the scene host's
+//    landscape_entry_segment_hit (0087FF80 -> 00ADA240; a labelled half-cell
+//    march for the quadtree). Then: the pick ray loses what lies behind land
+//    (00526DAF, a land hit is no pick); the gun seat aims at a land point above
+//    y 0 (00957DAF); a shell that meets land ends there with its blast and no
+//    hit record (0084BC99 mode 3, 009239A0 finds no handler); and 0072CDD0's
+//    static half (0098ADD0 at 0072CE91, kind filter 44h) blocks the line of
+//    fire on any Landscape hit, before the friendly-unit walk. OFF: the units
+//    only, as before.
+constexpr bool kLandscapeSpatialAttachBound = false;
 //  * kAabb0085cdb0Bound: packet cc9_aabb_0085cdb0 (docs/AABB_0085CDB0.md).
 //    0098B130 tests each unit's spatial-index WORLD AABB (0098A750: the
 //    oriented box's axis-aligned hull) with 0085CDB0, nearest hit first;
@@ -1154,6 +1168,7 @@ struct GameGunneryHost::Impl {
     std::map<int, ShipModelSlots> ship_slots_by_class;
     // 0072F6E0's per-gun cache: (gun, target) -> clear.
     std::map<std::pair<std::size_t, std::size_t>, bool> line_of_fire_cache;
+    unsigned long long impacts_land{0};   // packet cc9_landscape_spatial_attach
     unsigned long long line_of_fire_queries{0};
     unsigned long long line_of_fire_blocked{0};
     unsigned long long line_of_fire_refusals{0};
@@ -1171,6 +1186,15 @@ struct GameGunneryHost::Impl {
         const float from[3] = {muzzle[0], muzzle[1] + 5.0f, muzzle[2]};      // 00D7A370
         const float to[3] = {target_pos[0], std::max(5.0f, target_pos[1] + 5.0f),  // 00CE3850
             target_pos[2]};
+        if constexpr (kLandscapeSpatialAttachBound) {
+            // 0072CE7C..0072CE98: 0098ADD0(from, to, 0, record, 44h); AL set
+            // jumps to 0072CEE5, MOV AL,1: blocked by a Landscape.
+            float land_point[3];
+            int land_object = -1;
+            const bool land = landscape_segment_hit(from, to, land_point, land_object);
+            note_land_hit_query(LandHitConsumer::LineOfFire, land);
+            if (land) return true;
+        }
         const float dir[3] = {to[0] - from[0], to[1] - from[1], to[2] - from[2]};
         float best = 2.0f;
         std::size_t best_unit = static_cast<std::size_t>(-1);
@@ -5110,7 +5134,13 @@ public:
     const void* cell_first_node(int, int) override { return nullptr; }
     const void* cell_next_node(const void*) override { return nullptr; }
     const void* cell_node_entity(const void*) override { return nullptr; }
-    int loose_entity_count() override { return static_cast<int>(owner_.units.count()); }
+    // Units are handles 1..N; with kLandscapeSpatialAttachBound the Landscapes
+    // follow as N+1.. (00884078 put their nodes in the loose array).
+    int loose_entity_count() override {
+        std::size_t count = owner_.units.count();
+        if constexpr (kLandscapeSpatialAttachBound) count += landscape_segment_entry_count();
+        return static_cast<int>(count);
+    }
     const void* loose_entity(int slot) override {
         return reinterpret_cast<const void*>(static_cast<std::size_t>(slot) + 1);
     }
@@ -5119,6 +5149,14 @@ public:
     bsp::HitQueryBounds entity_bounds(const void* entity) override {
         bsp::HitQueryBounds bounds;
         const std::size_t index = reinterpret_cast<std::size_t>(entity) - 1;
+        if (landscape_entry(index) >= 0) {
+            float lo[3], hi[3];
+            if (!landscape_segment_entry_bounds(static_cast<std::size_t>(landscape_entry(index)),
+                    lo, hi)) return bounds;
+            bounds.min.x = lo[0]; bounds.min.y = lo[1]; bounds.min.z = lo[2];
+            bounds.max.x = hi[0]; bounds.max.y = hi[1]; bounds.max.z = hi[2];
+            return bounds;
+        }
         float centre[3], half[3];
         if (!box_of(index, centre, half)) return bounds;
         bounds.min.x = centre[0] - half[0];
@@ -5131,6 +5169,7 @@ public:
     }
     int shape_count(const void* entity) override {
         const std::size_t index = reinterpret_cast<std::size_t>(entity) - 1;
+        if (landscape_entry(index) >= 0) return 1;   // the shape +344h
         if (index == exclude_) return 0;
         if (index >= owner_.unit_state.size()) return 0;
         if (owner_.unit_state[index].dead) return 0;
@@ -5143,8 +5182,23 @@ public:
     const void* child_entity(const void*, int) override { return nullptr; }
 
     std::size_t hit_unit{0};   // one based
+    // One based index into scene_world_class_lists().objects() of the
+    // Landscape the nearest hit landed on; 0 when the nearest hit is a unit.
+    std::size_t hit_landscape{0};
 
 private:
+    // The Landscape entry of a handle index, or -1 for a unit.
+    int landscape_entry(std::size_t index) const {
+        if constexpr (kLandscapeSpatialAttachBound) {
+            const std::size_t units = owner_.units.count();
+            if (index < units) return -1;
+            const std::size_t entry = index - units;
+            return entry < landscape_segment_entry_count() ? static_cast<int>(entry) : -1;
+        } else {
+            static_cast<void>(index);
+            return -1;
+        }
+    }
     bool box_of(std::size_t index, float centre[3], float half[3]) const;
 
     GameGunneryHost::Impl& owner_;
@@ -5185,6 +5239,26 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
     const bsp::HitQueryPoint& from, const bsp::HitQueryPoint& to,
     bsp::HitRecordFill& record) {
     const std::size_t index = reinterpret_cast<std::size_t>(entity) - 1;
+    if (landscape_entry(index) >= 0) {
+        // 0087FF80: the terrain's slot 3Ch, then the record: point, entity =
+        // the Landscape (00470370 at 0087FFD9), kind 0Ah, segment -1.
+        const float f[3] = {from.x, from.y, from.z};
+        const float t[3] = {to.x, to.y, to.z};
+        LandscapeSegmentHit land;
+        if (!landscape_entry_segment_hit(static_cast<std::size_t>(landscape_entry(index)),
+                f, t, land)) return false;
+        bsp::HitQueryPoint point;
+        point.x = land.point[0];
+        point.y = land.point[1];
+        point.z = land.point[2];
+        bsp::shape_hit_fill_0087fec0(record, point, entity);
+        record.shape_kind = land.shape_kind;       // 0087FFDE
+        record.hull_segment = land.hull_segment;   // 0087FFE5
+        bsp::hit_record_set_entity_00470370(record, entity);
+        hit_unit = 0;
+        hit_landscape = static_cast<std::size_t>(land.landscape_object) + 1;
+        return true;
+    }
     float centre[3], half[3];
     if (!box_of(index, centre, half)) return false;
     // The hull box in its own frame: a slab test along the three pose rows.
@@ -5250,6 +5324,7 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
         record.hull_segment = best_index;
         bsp::hit_record_set_entity_00470370(record, entity);
         hit_unit = index + 1;
+        hit_landscape = 0;
         ++owner_.shell_mesh_hits;
         return true;
     }
@@ -5293,6 +5368,7 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
         record.hull_segment = kDirectHitHullSegment;
         bsp::hit_record_set_entity_00470370(record, entity);
         hit_unit = index + 1;
+        hit_landscape = 0;
         return true;
     }
     float enter = 0.0f;
@@ -5320,6 +5396,7 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
     record.hull_segment = kDirectHitHullSegment;
     bsp::hit_record_set_entity_00470370(record, entity);
     hit_unit = index + 1;
+    hit_landscape = 0;
     return true;
 }
 
@@ -5330,7 +5407,9 @@ bool SegmentBinding::shape_trace_segment(const void* entity, int,
 // for by the unit itself. The binding counts its mesh and 0085CDB0 hits; the
 // query restores both so the gunnery summary reports shots only.
 bool query_segment_units_impl(GameGunneryHost::Impl& host, const float from[3],
-    const float to[3], std::size_t exclude, std::size_t& hit_unit, float hit_point[3]) {
+    const float to[3], std::size_t exclude, std::size_t& hit_unit, float hit_point[3],
+    bool* land_hit = nullptr) {
+    if (land_hit != nullptr) *land_hit = false;
     const unsigned long long mesh_hits = host.shell_mesh_hits;
     const unsigned long long box_hits = host.narrowphase_box_0085cdb0;
     hit_unit = 0;
@@ -5344,6 +5423,14 @@ bool query_segment_units_impl(GameGunneryHost::Impl& host, const float from[3],
     const bool hit = bsp::query_segment_0098add0(query, args, record);
     host.shell_mesh_hits = mesh_hits;
     host.narrowphase_box_0085cdb0 = box_hits;
+    if (hit && query.hit_landscape != 0) {
+        // A land hit: no unit (the pick's 00526DAF), the point for the seat.
+        if (land_hit != nullptr) *land_hit = true;
+        hit_point[0] = record.position.x;
+        hit_point[1] = record.position.y;
+        hit_point[2] = record.position.z;
+        return false;
+    }
     if (!hit || query.hit_unit == 0) return false;
     hit_unit = query.hit_unit;
     hit_point[0] = record.position.x;
@@ -5359,7 +5446,13 @@ bool GameGunneryHost::query_segment_units(const float from[3], const float to[3]
     // Integrator arbitration 2026-09-26: the HUD's one const query over
     // SegmentBinding (packet cc9_player_gun_seat_segment_query moved the body
     // into query_segment_units_impl so the seat shares it).
-    return query_segment_units_impl(*impl_, from, to, exclude, hit_unit, hit_point);
+    bool land = false;
+    const bool hit = query_segment_units_impl(*impl_, from, to, exclude, hit_unit, hit_point,
+        &land);
+    if constexpr (kLandscapeSpatialAttachBound) {
+        note_land_hit_query(LandHitConsumer::PickRay, land);
+    }
+    return hit;
 }
 
 void GameGunneryHost::Impl::run_projectiles(float dt) {
@@ -5481,6 +5574,33 @@ void GameGunneryHost::Impl::run_projectiles(float dt) {
         bsp::hit_record_reset_00470470(record);
         const bool hit = bsp::query_segment_0098add0(query, args, record);
         done("Projectile::sweep_entities_0098add0", 0x0098add0u);
+        if constexpr (kLandscapeSpatialAttachBound) {
+            note_land_hit_query(LandHitConsumer::Projectile, hit && query.hit_landscape != 0);
+        }
+        if (hit && query.hit_landscape != 0) {
+            // 0084BC99..0084BCA1: mode 3. The round is moved to the point
+            // (0084BCD4) and killed (0084BE00); the record queued at 0084BE20
+            // reaches Landscape vt[24h] 0087F9A0 and vt[ECh] 0042BAF0, which
+            // accepts nothing, so no unit takes a hit. The blast (0084BE32,
+            // classDesc+6Ch) still runs.
+            const float point[3] = {record.position.x, record.position.y,
+                record.position.z};
+            const float direction[3] = {shot.flight.velocity.x, shot.flight.velocity.y,
+                shot.flight.velocity.z};
+            ++impacts_land;
+            if (trace) {
+                log.notef("  torpedo trace %llu exit=land_impact at=(%.1f,%.2f,%.1f) life=%.2f",
+                    shot.torpedo_trace_id, static_cast<double>(point[0]),
+                    static_cast<double>(point[1]), static_cast<double>(point[2]),
+                    static_cast<double>(shot.life));
+            }
+            this->record("Landscape::on_hit_0087f9a0", 0x0087f9a0u);
+            round_bullet_class = shot.bullet_class;
+            apply_impact_blast(shot.owner_unit - 1, shot.gun_row, point, direction);
+            round_bullet_class = -1;
+            shot.alive = false;
+            continue;
+        }
 
         if (hit && query.hit_unit != 0) {
             const float point[3] = {record.position.x, record.position.y,
@@ -6975,7 +7095,15 @@ void GameGunneryHost::Impl::apply_gun_aim_message(std::size_t unit,
         std::size_t hit_unit = 0;
         ++seat_segment_casts;
         done("PlayerGunSeat::segment_query", 0x00957da0u);
-        if (query_segment_units_impl(*this, m.camera, to, unit + 1, hit_unit, seat_hit)) {
+        bool seat_land = false;
+        const bool seat_unit_hit = query_segment_units_impl(*this, m.camera, to, unit + 1,
+            hit_unit, seat_hit, &seat_land);
+        if constexpr (kLandscapeSpatialAttachBound) {
+            note_land_hit_query(LandHitConsumer::GunSeat, seat_land);
+        }
+        // 00957DA5..00957DD2 test AL and the point's y only, not the entity:
+        // a land hit above y 0 is the aim point too.
+        if (seat_unit_hit || seat_land) {
             ++seat_segment_hits;
             if (seat_hit[1] > 0.0f) {                              // 00957DAF
                 seat_has_hit = true;
@@ -7802,6 +7930,11 @@ void GameGunneryHost::report() {
             "refusals=%llu bound=%d (0072F6E0/0072CDD0/0098B130, packet cc9_ship_platform_attachment)",
             host.line_of_fire_queries, host.line_of_fire_blocked, host.line_of_fire_refusals,
             kAaLineOfFireBound ? 1 : 0);
+        host.log.notef("summary mission gunnery landscape attach bound=%d entries=%zu %s "
+            "impacts_land=%llu (00884078/0087FF80/0072CE91, packet cc9_landscape_spatial_attach)",
+            kLandscapeSpatialAttachBound ? 1 : 0,
+            kLandscapeSpatialAttachBound ? landscape_segment_entry_count() : std::size_t{0},
+            format_land_hit_census().c_str(), host.impacts_land);
         host.log.notef("summary mission gunnery aabb 0085cdb0 line_of_fire_tests=%llu "
             "narrowphase_box_hits=%llu bound=%d (0098B130/00929B80, packet cc9_aabb_0085cdb0)",
             host.line_of_fire_aabb_tests, host.narrowphase_box_0085cdb0, kAabb0085cdb0Bound ? 1 : 0);
