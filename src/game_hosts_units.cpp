@@ -959,6 +959,12 @@ struct GameUnitSlot {
     int rack_requests_deferred{0};     // 007BBBA0 requests whose spawn waits
     int rack_bomb_drops{0};            // packet cc9_release_issue_stage_vals
     int rack_rounds_authored{0};       // packet cc9_dive_bomb_carried_rounds
+    // Packet cc9_mavis_rack_drops: each single rack's own ammo +484h, in census
+    // order (the child-list order is unread), and the rack the last issue fired.
+    std::vector<int> rack_authored_per_rack;  // authored Ammo per single rack, -1 absent
+    std::vector<int> rack_ammo_per_rack;      // seeded with rack_ammo
+    int rack_active{-1};
+    int rack_drops_unspawned{0};       // drops whose host torpedo spawn returned false
     float plane_height_rate_9b8{0.0f}; // unit+9B8h, packet cc9_units_contracts
     float hull_heading_1050{0.0f};     // unit+1050h, written at 00826C56
     float occupant_timer_1158{0.0f};   // unit+1158h, 0 from 00823C30
@@ -3500,6 +3506,16 @@ struct GameUnitsHost::Impl {
     // surface as the ground.
     // ON since the USN01 / USN04 pairs: identical gameplay (0 blocked probes both sides).
     static constexpr bool kGroundHeightHunksBound = true;
+    // Packet cc9_mavis_rack_drops, docs/RELEASE_ISSUE_STAGE.md section "Mavis rack
+    // drops": 007C0D90 fires ONE rack per issue (007C0E17 vtable[1F0h] = 006E3550
+    // on the first IsKindOf(25h) child holding 2Ah and not busy, then returns for
+    // any aircraft that is not a level bomber 10h), and that rack's tick 006E56F0
+    // clears its dropBombs once ITS ammo [ESI+174h] = rack+484h is spent
+    // (006E58D8-006E58E1). ON: the host keeps one ammo count per single rack and
+    // the issue fires the first rack with rounds left, so one issue is one drop
+    // for a rack of one round. OFF: the single racks' rounds are one pool, and one
+    // issue drops until the pool is empty (an H6K Mavis' four racks: four drops).
+    static constexpr bool kRackRoundsPerRackBound = false;
     // Packet cc9_ground_height_hunks: the torpedo approach's 009D39D3 probe.
     unsigned long long segment_probes = 0;
     unsigned long long segment_probes_blocked = 0;
@@ -8520,11 +8536,22 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                 // 007C0DE3-007C0DEF: the first rack holding 2Ah that
                                 // is not busy. The host's rack census and ammo.
                                 if (slot_.rack_ammo < 0) {
-                                    slot_.rack_ammo =
-                                        (GameUnitsHost::Impl::kDiveBombCarriedRoundsBound &&
-                                         slot_.rack_rounds_authored > 0)
+                                    const bool authored =
+                                        GameUnitsHost::Impl::kDiveBombCarriedRoundsBound &&
+                                        slot_.rack_rounds_authored > 0;
+                                    slot_.rack_ammo = authored
                                             ? slot_.rack_rounds_authored
                                             : slot_.rack_single_count;
+                                    if constexpr (GameUnitsHost::Impl::kRackRoundsPerRackBound) {
+                                        // Each rack's own +484h: its authored Ammo,
+                                        // or one round per rack where the census
+                                        // found none (the pool's own fallback).
+                                        slot_.rack_ammo_per_rack.clear();
+                                        for (const int a : slot_.rack_authored_per_rack) {
+                                            slot_.rack_ammo_per_rack.push_back(
+                                                authored ? (a > 0 ? a : 0) : 1);
+                                        }
+                                    }
                                 }
                                 // 007C0DCB vtable[210h](2Ah, 0): a torpedo and a
                                 // general bomb both answer 2Ah. With the Vals
@@ -13771,6 +13798,7 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                                     type_id, "BSPGun", key, -1);
                                 const int ammo = owner_.read_equipment_ammo(type_id, pkey);
                                 if (ammo > 0) unit_.rack_rounds_authored += ammo;
+                                unit_.rack_authored_per_rack.push_back(ammo);
                             } else if (type == "MultiBombPlatform") {
                                 ++unit_.rack_multi_count;
                             }
@@ -13805,7 +13833,15 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                         // not modelled for a rack; a rack can fire while it has
                         // ammo.
                         owner_.record("Rack::can_fire_00729a80", 0x00729a80u);
-                        if (unit_.rack_ammo <= 0) {
+                        int rounds_left = unit_.rack_ammo;
+                        if constexpr (GameUnitsHost::Impl::kRackRoundsPerRackBound) {
+                            // 006E58D8: the fired rack's own ammo [ESI+174h].
+                            const int a = unit_.rack_active;
+                            rounds_left = (a >= 0 &&
+                                           static_cast<std::size_t>(a) < unit_.rack_ammo_per_rack.size())
+                                ? unit_.rack_ammo_per_rack[static_cast<std::size_t>(a)] : 0;
+                        }
+                        if (rounds_left <= 0) {
                             unit_.rack_dropping = false;  // 006E58D8-006E58E1
                             return;
                         }
@@ -13868,7 +13904,12 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             if (index < owner_.slots.size() &&
                                 owner_.gunnery->release_ordnance_drop(index)) {
                                 ++unit_.torpedo_drops_spawned;
+                            } else {
+                                ++unit_.rack_drops_unspawned;
                             }
+                        }
+                        if constexpr (GameUnitsHost::Impl::kRackRoundsPerRackBound) {
+                            --unit_.rack_ammo_per_rack[static_cast<std::size_t>(unit_.rack_active)];
                         }
                         --unit_.rack_ammo;
                         ++unit_.rack_drops;
@@ -13986,6 +14027,17 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // 006E3550 via 007C0E17: toRepeatTime += delay (0 for
                             // a single torpedo), dropBombs = 1.
                             if (unit_.rack_single_count > 0) unit_.rack_dropping = true;
+                            if constexpr (GameUnitsHost::Impl::kRackRoundsPerRackBound) {
+                                // 007C0DE3-007C0E17: the first rack holding a
+                                // round and not busy is the one fired.
+                                unit_.rack_active = -1;
+                                for (std::size_t i = 0; i < unit_.rack_ammo_per_rack.size(); ++i) {
+                                    if (unit_.rack_ammo_per_rack[i] > 0) {
+                                        unit_.rack_active = static_cast<int>(i);
+                                        break;
+                                    }
+                                }
+                            }
                         }
                         ++unit_.torpedo_orders_issue_ticks;
                         unit_.torpedo_orders_issued += r.units_raised;
@@ -18970,6 +19022,19 @@ void GameUnitsHost::report() {
                                 slot->rack_requests_deferred, slot->rack_drops,
                                 slot->rack_ammo, slot->rack_dropping ? 1 : 0,
                                 slot->rack_gate_refused);
+                            // Packet cc9_mavis_rack_drops.
+                            std::string per_rack;
+                            for (const int a : slot->rack_ammo_per_rack) {
+                                if (!per_rack.empty()) per_rack += ',';
+                                per_rack += std::to_string(a);
+                            }
+                            host.log.notef("  torpedo %-12s rack rounds: per_rack=bound=%d [%s] "
+                                "authored=%d active=%d drops_unspawned=%d spawned=%d",
+                                slot->row.name.c_str(),
+                                GameUnitsHost::Impl::kRackRoundsPerRackBound ? 1 : 0,
+                                per_rack.c_str(), slot->rack_rounds_authored,
+                                slot->rack_active, slot->rack_drops_unspawned,
+                                slot->torpedo_drops_spawned);
                         }
                     }
                     host.log.notef("  torpedo %-12s issue gate 007EEF40: "

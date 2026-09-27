@@ -1,0 +1,28 @@
+{
+  "packet": "cc9_mavis_rack_drops",
+  "doc": "docs/RELEASE_ISSUE_STAGE.md",
+  "calls": [
+    {"address": "007C0E17", "native": "006E3550", "function": "007C0D90", "note": "the issue fires the first rack holding 2Ah and not busy through vtable[1F0h]; one rack per issue for a non-level bomber"},
+    {"address": "007F1DC5", "native": "0041DF40", "function": "007F1D90", "note": "squadron+34Ch = 0041DF40(1.5, true), stored at 007F1DCA"},
+    {"address": "007F2114", "native": "007F1D90", "function": "007F1FE0", "note": "layer selection call site 1 of 3"},
+    {"address": "007F4699", "native": "007F1D90", "function": "007F4580", "note": "layer selection call site 2 of 3"},
+    {"address": "007F46F3", "native": "007F1D90", "function": "007F4580", "note": "layer selection call site 3 of 3"}
+  ],
+  "coverage": [
+    {"routine": "006E56F0", "coverage": "partial: the ammo end test 006E58CF-006E58E1 per rack bound; 00729A80 gun gates and the descriptor +E0h repeat time not bound"},
+    {"routine": "007C0D90", "coverage": "partial: which rack is fired (first with a round left, census order assumed); the six vtable slots are named not read"}
+  ],
+  "substitutions": [
+    {"what": "rack child-list order", "is": "census order of the BSPGun platforms", "where": "src/game_hosts_units.cpp run_release_order_issue_007c0d90"}
+  ],
+  "corrections": [
+    {"was": "whether drops=4 with one torpedo spawned is the image's behaviour for the Mavis' platform is not established (docs/GAME_EXECUTABLE.md reference c)", "is": "a host gap: the image fires one rack per issue and each rack stops when its own ammo +484h is spent; the host pooled the four racks' rounds", "evidence": "007C0D90 decompile (return after the first rack for non-10h aircraft); 006E58D8 CMP [ESI+174h],0 with ESI = rack+310h; vehicleclasses.lua VehicleClass[174] Equipments[1][50..53] Ammo 1 on device 85 BombPlatform"}
+  ],
+  "switches": [
+    {"name": "GameUnitsHost::Impl::kRackRoundsPerRackBound", "state": "OFF",
+     "pair": "pending"}
+  ],
+  "failed_predictions": [],
+  "no_ghidra_function": [],
+  "ledger_names_added": []
+}

@@ -338,6 +338,87 @@ them #1.1|.-4's or the census they sum into.
 **Verdict: `kDiveBombCarriedRoundsBound` ON.** The count is the rack's, as `007C1DB0` reads it.
 The only moved rows belong to the one dead Val whose two-round glide became one.
 
+## Mavis rack drops (packet cc9_mavis_rack_drops)
+
+2026-09-27, worker cc9-units2. Switch `kRackRoundsPerRackBound`, committed OFF with the
+predictions below.
+
+**The symptom.** In the layer-OFF USN01 runs of `docs/GAME_EXECUTABLE.md` (reference c,
+`local\ud_az_off_usn01.log` in worktree cc9-gunnery2) Mav1 reports `issues=1`, `fired=1`,
+`drops=4`, `ammo=0` for one request, and only one torpedo spawns. Mav4 is the same.
+
+**This installation's data.** `scripts/datatables/autoload/vehicleclasses.lua` (modified
+2026-05-09 21:52), `VehicleClass[174]` "H6K Mavis" (line 57020): `DefaultEquipment = 1`
+(line 57095), and `Equipments[1]` mounts four platforms, keys 50 to 53, each
+`{ Ammo = 1, Platform = 85, ReloadTime = 80 }` (lines 57103-57126). Device class 85 in
+`classtables/realistic/deviceclasses.lua` (line 4374, 2024-07-13) is "Torpedo platform Japan
+weak", `Function = "BOMBPLATFORM"`, `Type = "BombPlatform"`: a single rack. So a Mavis carries
+four single racks of one torpedo each. Equipments 2 and 3 (devices 88 and 86) are not the default.
+
+**What the image does per issue.**
+- `007C0D90` walks the plane's children and stops at the first `IsKindOf(25h)` rack that holds
+  2Ah (`vtable[210h]`) and is not busy (`vtable[1FCh]`). It fires that rack through
+  `vtable[1F0h]` = `006E3550` (`dropBombs` +498h = 1, `toRepeatTime` += delay). For an aircraft
+  that is not a level bomber (`IsKindOf(10h)` false) it then sets unit+C25h and returns, so one
+  issue fires one rack. `callsite_census.py` finds `006E3550` only as the two vtable entries
+  `00CF9898` and `00CF9B08`.
+- The rack's tick `006E56F0` runs with ESI = rack+310h. Its end test `006E58D8`
+  `CMP [ESI+174h], 0` reads the rack's own ammo +484h, and `006E58E1` clears its own `dropBombs`.
+  So a rack of one round drops once and stops. The other three racks stay loaded.
+
+**The host gap.** The host keeps one rack state per aircraft: `rack_ammo` is the sum of the
+single racks' rounds (4 for a Mavis), and one issue sets one `rack_dropping`. The tick then drops
+on every fixed step (`toRepeatTime` stays 0) until the pool is empty: four drops for one issue.
+The first drop spawns the torpedo. The next three call `release_ordnance_drop`, which fails
+because kind 2Bh was cleared by the first, yet `rack_drops` still counts them. The image drops one
+round per issue and the host drops four. That is a host divergence, not the image's behaviour.
+
+**The binding.** ON: the census keeps each single rack's authored Ammo in census order. The
+child-list order is unread, so that is an assumption. The issue's first check seeds one ammo per
+rack: its authored Ammo, or one round per rack where the census found none (the pool's own
+fallback). The issue fires the first rack with a round left, and the tick tests and spends that
+rack's ammo only. The pool `rack_ammo` is still spent by each drop, so `007C1DB0`'s count and the
+walk's "holds 2Ah" test read the same sum as before. A new line `rack rounds:` prints the per-rack
+ammo, the fired rack and `drops_unspawned`, the drops whose host torpedo spawn returned false. It
+prints in both builds.
+
+Every aircraft on USN04 and USN02 with a rack has one single rack (the D3A Vals, movievals and
+B5N Kates), where one rack and the pool are the same thing. The Mavis and USN01's ScoutDauntless
+(`single=3 authored=1`) are the multi-rack aircraft in the measured missions.
+
+### The squadron's layer, re-checked
+
+- `007F1D90` stores `0041DF40(1.5, true)` at squadron+34Ch. `007F1DB7` loads `[00CE380C]`,
+  bytes `00 00 C0 3F` = 1.5f, and `007F1DBD` pushes 1. Its three call sites (rel32, by
+  `tools/callsite_census.py`) are `007F2114` in `007F1FE0` and `007F4699` / `007F46F3` in
+  `007F4580`. None passes a squadron value to the +34Ch query, so the Mavis squadrons and the
+  Devastators get the same layer.
+- `0041DF40` primes the result with the first layer, then keeps the largest slope limit strictly
+  below tan(1.5 rad) = 14.10. The registry holds the constructor's tan(10°) layer and then the
+  `.nav`'s tan(10°), tan(20°) and tan(70°) layers, so the answer is index 3, tan(70°) = 2.747478.
+  That is the host's `squadron_34c=3 ... slope=2.747478` on USN01 (`local\GH_OFF_USN01.log` in
+  worktree cc9-plane-release). **Held.**
+- All 13 `.nav` files under `universe/Scenes/missions/USN/` are 172,939 bytes with md5 prefix
+  `ec09b4bbff20`. Eleven are dated 2024-07-13. `usn_ormoc.nav` and `usn_sibuyan.nav` are dated
+  2024-10-29 but hold the same bytes. So Marshall (USN01) samples the generic layer, not its atolls.
+
+### Predictions (written before the runs)
+
+Same-tree pairs `local\mr_off` against `local\mr_on`, the switch only, streams and death table
+on, one run at a time. On main the layer sample is ON, and with it no Mavis issues a release on
+USN01 (`issues=0` on all five), so the main pairs cannot reach the fix. A third pair,
+`local\mrl_off` against `local\mrl_on`, builds both sides with `kAvoidZoneLayerSampleBound`
+false (not committed) to reach the Mavis drops.
+
+| row | USN01 3200/3000 | USN04 4700/4500 | USN01, layer OFF both sides |
+| --- | --- | --- | --- |
+| `rack rounds:` line | `bound=0` -> `bound=1`; `per_rack` empty on both unless a rack's issue check runs | same; a Kate that reaches its check shows `[1]` ON | Mav1, Mav4: OFF `[]` `drops_unspawned=3`; ON `[0,1,1,1]` `active=0` `drops_unspawned=0` |
+| rack line `drops` | identical (0) | identical | Mav1, Mav4: 4 -> 1; `ammo` 0 -> 3 |
+| torpedo drops (spawned) | identical | identical | 2 -> 2, at the same times |
+| cleanup of unit+C25h | identical | identical | Mav1, Mav4: 3 fixed steps earlier ON (busy clears after one drop) |
+| releases, deaths, death rows, hit records | identical | identical | identical; band ± 5 hit records if the earlier C25h cleanup moves a Mavis |
+| pair_diff exit | 1 | 1 | 1 (3 only if the band is used) |
+
 ## Handoff: the rest of cc9-plane-release's queue (2026-09-27)
 
 Worker cc9-plane-release stopped at about 80 % context after `cc9_ground_height_hunks`. The
