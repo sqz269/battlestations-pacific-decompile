@@ -274,6 +274,10 @@ struct GameMissionLuaSummary {
     unsigned long long init_all_nonempty{0};
     unsigned long long init_all_entities{0};
     unsigned long long init_all_wing_appended{0};
+    // Packet cc9_init_attach_order: pass B 009292B0 binds and pass C
+    // SquadronID stores that found a slot.
+    unsigned long long init_all_class_bound{0};
+    unsigned long long init_all_squadron_ids{0};
     unsigned long long init_all_pushes{0};
     unsigned long long spawn_new_callbacks{0};   // named globals actually called
     unsigned long long spawn_new_callback_missing{0};
@@ -676,8 +680,15 @@ public:
     // just made (the squadron's wing members), keyed by unit id.
     void attach_wing_member_tables(std::size_t units_before, std::uint32_t leader_entity,
         int class_index);
+    // `seed_class` false: only the three fields 00928A00 itself seeds (packet
+    // cc9_init_attach_order, where pass B's 009292B0 writes `Class`).
     bool attach_created_entity_00928a00(int entity_id, const std::string& name,
-        int class_index);
+        int class_index, bool seed_class = true);
+    // Packet cc9_init_attach_order: 009292B0 BSP_Unit_BindLuaClass over the
+    // entity's existing `thisTable` slot (ClassID, Name, Class), and the plane
+    // pass C store 007C97E3..007C9805 (SquadronID). False when there is no slot.
+    bool bind_lua_class_009292b0(int entity_id, int class_index, const std::string& name);
+    bool set_plane_squadron_id_007c97e3(int plane_id, int squadron_id);
 
     // --- Packet cc9_sentity_init_all: the pending list 00F899D0 --------------
     // 00926BE0, the push_back the base constructor makes at 00928760 for every
@@ -774,6 +785,10 @@ private:
         int class_index{-1};
         bool squadron{false};
         bool wing_member{false};
+        // A wing plane's squadron: the id plane+9D4h's +174h would give
+        // (007F4B49 stores the squadron there in its pass A). This process
+        // keys the squadron's slot by its leader unit's id.
+        int squadron_id{0};
         std::size_t units_before{0};
         // The unit count right after this squadron's creator returned: its wing
         // is [units_before, units_end). A later creation before InitAll (the

@@ -46,6 +46,24 @@ class GameNativeGameRuntime;
 // (docs/CONSTRUCT_WORLD.md section 17).
 inline constexpr bool kSEntityInitAllBound = true;
 
+// Packet cc9_init_attach_order (docs/SENTITY_INIT_ATTACH_ORDER.md). Needs
+// kSEntityInitAllBound. True: the passes B and C of the InitAll walk run the
+// steps that read the `thisTable` slot pass A made, after every pass A of the
+// walk, as 00925F20 orders them:
+//   - pass B, 009292B0 BSP_Unit_BindLuaClass on every node: `ClassID` (integer),
+//     `Name` (the vt+10h name) and `Class` = VehicleClass[ClassID]. The
+//     squadron reaches it at 007F218E; ships, carriers, planes and airfields
+//     through 00955420 at 00955498;
+//   - pass C, the plane's `thisTable.SquadronID` = the squadron's +174h id
+//     (007C97E3..007C9805), for a plane whose +9D4h holds its squadron.
+// The attach then seeds only `ID`, `Dead` and `Ptr`, as 00928A00 does. The
+// default pass C 009295B0 reads a think-script name only from a kind-3 holder
+// (the saved-game `_savedata._entities` data), so that step is not taken on a
+// fresh mission start, and no node this process pushes uses 009295B0.
+// False: pass A's attach writes `Class` (the stand-in for 009292B0's third
+// field), and no `ClassID`, `Name` or `SquadronID` is written.
+inline constexpr bool kSEntityInitThisTableStepsBound = false;
+
 // The owner of the pending list and of 00925F20's per-entity work. The Lua host
 // is the one, because pass A is its `thisTable` attach.
 class GameEntityInitAllRunner {
