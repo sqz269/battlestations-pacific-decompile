@@ -1,0 +1,27 @@
+{
+  "packet": "cc9_submarine_depth_level",
+  "doc": "docs/SUBMARINE_MODEL.md section 11",
+  "switch": "kSubmarineDepthLevelBound (include/bsp/game_hosts_script_orders.hpp)",
+  "read_commit": "310080a0b",
+  "addresses": {
+    "00894100": "GetSubmarineDepthLevel Lua native: argument 0 via 00888AA0, EDI = unit+1268h (0089421E); +1281h / +5Dh / 008522C0 gate with the class+510h/+514h kamikaze exception (0089425A); push integer 0089425C -> 00B664B0",
+    "00853630": "the submarine slot 0A0h seed: stage 1 kamikaze (00853A31..00853A81), stage 2 Dive 00D0B6A4 / TargetDive 00CFCCF0 on a kind-1 holder (00853B05..00853BAA), stage 3 nearest band (00853BEB..)"
+  },
+  "calls": [],
+  "substitutions": [
+    "needAir (+1281h) reads false: no host air model",
+    "008522C0 reads false: no host catapult children",
+    "class kamikaze test reads false: class+510h/+514h are not on the host's class row",
+    "the Dive hull move to bands[level] is not applied",
+    "stage 3 (non-scene units) not modelled; no depth writer modelled, so the level stays at its seed",
+    "a unit that is not a submarine answers 0"
+  ],
+  "predictions": {
+    "source": "docs/SUBMARINE_MODEL.md section 11, committed at 310080a0b (failure line corrected to 531)",
+    "LOMP06_1200_1000": "Narwhal seed 1 (Dive = Periscope); the six failures at 06_crucial_cargo.lua:713 go to 0; the failures move to :531 (reconlevel index, nil) at the same frames; gameplay identical (pair_diff exit 1) apart from the native row and the failure lines",
+    "USN02_9200_9000": "identical (exit 0 or 1): no call",
+    "USN04_4700_4500": "identical (exit 0 or 1): no call"
+  },
+  "off_commit": "pending",
+  "results": "pending"
+}

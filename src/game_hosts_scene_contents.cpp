@@ -1719,6 +1719,31 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
             }
             ++owner.summary.start_speed_entities;
         }
+        // Packet cc9_submarine_depth_level: 00853630's two scene finds, kept
+        // for the submarine seed in the units host. An enum symbol resolves
+        // through the library (`Depth : Periscope` -> 1); an `I` value is
+        // its own integer.
+        const auto depth_value = [&](const char* key, bool& present,
+                                     std::int32_t& level) {
+            const SceneProperty* prop = bag.find(key);
+            if (prop == nullptr || prop->values.empty()) return;
+            if (prop->type_letter == "I") {
+                std::int32_t v = 0;
+                if (scene_scan_int(prop->values.back(), v)) {
+                    present = true;
+                    level = v;
+                }
+                return;
+            }
+            const SceneEnumProperty e = scene_enum_property(bag, key);
+            int v = 0;
+            if (e.present && owner.library.resolve_symbol(e.table, e.symbol, v)) {
+                present = true;
+                level = static_cast<std::int32_t>(v);
+            }
+        };
+        depth_value("Dive", stored.dive_present, stored.dive_level);
+        depth_value("TargetDive", stored.target_dive_present, stored.target_dive_level);
     } else {
         stored.skipped_because = "the creator returned no instance";
     }

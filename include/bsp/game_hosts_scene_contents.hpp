@@ -110,6 +110,16 @@ struct GameSceneEntityRecord {
     float start_speed_float{0.0f};  // record +0Ch read as float32, 008235A5
     std::int32_t start_speed_int{0};  // record +0Ch read as int, 0082359E
     bool shipyard_launch{false};    // 0082357F, the found record's +0Ch byte
+    // Packet cc9_submarine_depth_level: the two finds of 00853630's scene stage
+    // (00853B18 `Dive` 00D0B6A4, 00853B94 `TargetDive` 00CFCCF0). Each is taken
+    // only when found with type word 0 (00853B26 / 00853BA2); an `E` value is
+    // resolved through the library's enum table (`Depth`, global.enums) and its
+    // integer is the record's +0Ch. `Sub(Ship)` defaults `Dive` to Surface, so
+    // every scene submarine carries one.
+    bool dive_present{false};
+    std::int32_t dive_level{0};
+    bool target_dive_present{false};
+    std::int32_t target_dive_level{0};
 };
 
 // Per class token of the scene, the counts the milestone reports.

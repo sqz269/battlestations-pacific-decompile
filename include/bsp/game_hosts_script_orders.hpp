@@ -168,6 +168,16 @@ inline constexpr bool kPutToBound = true;
 // every unit reads 0% to the scripts.
 inline constexpr bool kUnitHealthFractionBound = true;
 
+// Packet cc9_submarine_depth_level (docs/SUBMARINE_MODEL.md section 11).
+// True: the Lua native GetSubmarineDepthLevel (00894100) pushes the unit's
+// seeded depthLevel (+1268h, GameUnitRow::submarine_depth_level), forced to
+// 0 when the death flag (+5Dh, the gunnery host's death) is set and the class
+// is not kamikaze. LABELLED: needAir (+1281h) and 008522C0 read false (no air
+// or catapult model), the kamikaze test reads false, and a unit that is not
+// a submarine answers 0. False: the native stays an unimplemented record and
+// pushes nothing, which 06_crucial_cargo.lua:713 compares as nil.
+inline constexpr bool kSubmarineDepthLevelBound = false;
+
 // Packet cc9_navigator_force_torpedo (docs/UNIT_WEAPON_DEVICES.md,
 // "NavigatorForceTorpedo"). True: the Lua native NavigatorForceTorpedo
 // (008A7200) fires the unit's torpedo guns through 00730160, all of them or
@@ -604,6 +614,10 @@ private:
     unsigned long long shot_down_calls_{0};
     int shot_down_last_{0};
     unsigned long long put_to_calls_{0};
+    // Packet cc9_submarine_depth_level.
+    unsigned long long depth_level_calls_{0};
+    unsigned long long depth_level_forced_{0};
+    int depth_level_last_{-1};
     unsigned long long put_to_placed_{0};
     // Packet cc9_get_hp_percentage.
     unsigned long long health_reads_{0};
