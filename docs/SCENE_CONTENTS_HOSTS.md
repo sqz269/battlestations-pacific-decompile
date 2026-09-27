@@ -2160,3 +2160,59 @@ lands on the ground where it runs.
 **What it means for callers.** An exactly vertical slot 3Ch trace misses in the image unless the
 tile-unit vt+48h sample happens to fall between its y values. 007C3CB0's spray test (12.1) is such
 a trace, so in the image its land suppression would almost never fire.
+
+## 15. Handoff: cc9-terrain2 stops here (2026-09-27)
+
+Worker cc9-terrain2 stops after four packets. Items 1 to 4 of section 11 are closed.
+
+### What this worker landed (all ON)
+
+| switch | doc | what |
+| --- | --- | --- |
+| `kAvoidTerrainWaterProbeBound` | this doc, 12 | 0099F1C0's branch A (009A1420..009A17A1): a live plane on the water probes +-30 degrees through 00903BC0, then a 15-degree fan, a band and the throttle |
+| `kLandscapeScaledTransposeInverseBound` | this doc, 13 | slot 3Ch's inverse is 00B63B30's scaled transpose; it differs on the 5 sheared or skewed authored Landscape frames |
+| `kTerrainVerticalSubwalkBound` | this doc, 14 | the vertical case 00AECC40 and its sub-walk 00AECA60 (tile and cell grid walks), in place of the half-cell march |
+| `kAuthoredCommandsAfterLoadWalkBound` | SENTITY_INIT_ATTACH_ORDER.md 23 | authored commands are issued after the load walk (0046ED0F, then 0046ED1E) |
+
+Diagnostics added, printed in both builds unless noted:
+- `summary mission world segment 00903BC0`: every call in play, and branch A's probes.
+- `scene terrain rotation census`: segment test against ground height over each island.
+- `scene terrain vertical self-check`: ON only, a near-vertical trace per authored object.
+- The `vsub` fields on the gunnery `landscape attach` line.
+
+### Open items, in order
+
+1. **Two noise-list candidates for `tools/pair_diff.py`.**
+   - The rows are `ShipAiClearance::category_enabled_009ec770` (6999 / 7026) and
+     `avoidance_enabled_0080e160` (1108 / 1109).
+   - They differ between two USN13 3200/3000 runs of ONE binary: `local\bin\vs_on2`, SHA-256
+     B544BC1BA071, logs `local\VS_ON2_USN13.log` and `local\VS_ON3_USN13.log`.
+   - Both times they moved together with the listed `static_zone_*` and `sector_scan` rows
+     (absent / present). Gameplay was identical.
+2. **Does the scene loader re-orthonormalise `localframe`?** Section 13.3 assumes the node's world
+   matrix is the authored frame as the host composes it.
+   - If the loader normalises the frame, the 5 non-orthonormal frames (usn_13_truk 07, yamato 07,
+     shogo_four 02, bulls_run 01, us_osumi 01) are not sheared in the image, and the
+     scaled-transpose binding changes nothing on them.
+   - Where to read: the path from the `localframe` record to node +F0h.
+3. **007C3CB0's caller.** It is the virtual 0060ABD0..0060C5AB, vtable slot 00CF43CC (neighbours
+   00605CC0, 00606230, 006067E0). Its class is unidentified. The statement "player-plane GUI path"
+   in 12.1 is provisional. 007C3CB0 stays unbound, and its vertical segment would miss in the image
+   (14.7).
+4. **Branch A has never run.** No reference mission has a live plane in mode 6. A mission with a
+   flying boat taxiing near land would give its first measurement.
+5. **Unexercised and unverified.**
+   - The tile and cell stepping loops (00AEB6D0 and its steps 00AEB0B0, 00AEB1F0, 00AEB310) cannot
+     be reached from the vertical case.
+   - The x87 rounding of the walks (10.3, 14.5) is not bit-verified.
+   - 00419260's zero-length answer is taken as 0.
+6. **Carried from section 11:** item 5, the bit-exact rounding of the slot 3Ch walk, and the rest
+   of its list after item 4.
+
+### State left by this worker
+
+- Worktree cc9-terrain2 is clean after this commit. No lease is held after the report.
+- Scripts are under `local\` with the prefix `cc9-terrain2-`:
+  - `pe.py` reads floats and doubles from the image on disk;
+  - `pairs.ps1` runs USN13/USN01/USN04/USN02 pairs, and `pairs2.ps1` runs JM08/USN01/USN04/USN02;
+  - the `edit*.py` files are the applied edits.

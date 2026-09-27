@@ -1961,3 +1961,78 @@ Worker cc9-hud3, 2026-09-27.
   receiver side following the delivery, all three pairs keep gameplay identical.
 - **Labelled substitution, as in 22.7:** the task install happens at the delivery. The image
   installs one bot tick later, through `+7Ch` in 0099ACD0.
+
+## 23. The authored commands after the load walk (packet `cc9_authored_command_order`, `kAuthoredCommandsAfterLoadWalkBound`)
+
+Worker cc9-terrain2, 2026-09-27, on main 6dac89994. Ghidra was read only. This closes the
+"Not reproduced" order of 19.1.
+
+### 23.1 The image and the host
+
+- **The image.** `BSP_SceneFile_Read` (0046DF00..0046EF62) runs the load InitAll at 0046ED0F
+  (`XOR CL,CL`, `CALL 00925F20`). Only then, at 0046ED1E, does it call the deferred-reference
+  resolver through [[ESP+38h]] with arg 1. That resolver is 0046AAB0 (section 10), which issues
+  each unit's authored `Command`. So a load squadron's pass C, 007F4BA0, reaches its
+  current-command test at 007F4E0C before any authored command exists.
+- **The host before this packet.** `issue_authored_commands` ran in the mission frame before the
+  load walk (`src/game_hosts_mission_frame.cpp`). So a squadron row that authors a `Command` reached
+  pass C with a current command and took the skip: `skipped_current=3` on JM08, the three H6K Mavis
+  rows with `Command = Stop`.
+- **What differs when both exist.** In the image, pass C runs its whole block for those rows:
+  - the water stop at the leader's position when the leader's +900h is 6 (007F4E30);
+  - else the home base: a `moveto` to +404h, or nothing when there is no home;
+  - only then does 0046AAB0 issue the authored command, which becomes the current command and
+    replaces anything pass C issued.
+  - The home-base read and 007F1C00 at 007F4CFA come before the skip test, so they run in both
+    orders.
+
+### 23.2 The binding (`kAuthoredCommandsAfterLoadWalkBound`, committed OFF)
+
+- ON moves `issue_authored_commands` from before the load walk to just after it, where 0046ED1E
+  sits.
+- Nothing else is reordered. The ship start-speed seed that the `Cruise` latch captures (docs/CRUISE_SPEED_SETTING.md) runs at unit creation, before both positions.
+- A load line `summary SceneLoad authored command order after_load_walk=<0|1>` is printed in both
+  builds.
+
+### 23.3 Predictions (written before the pairs; both variables set, lockstep 0.05, idle player)
+
+- **JM08 3200/3000.** OFF on the current base should read `movetos=2 stops=0 member_orders=6
+  skipped_current=3 no_home=1`, as the last JM08 log in worktree cc9-init2 did.
+  - ON: `skipped_current` 3 -> 0.
+  - The three H6K rows author no `HomeBase`. So they add 3 to `no_home` (1 -> 4), or 3 to `stops`
+    if their leaders are in water mode at load, or to neither if a leader is inactive.
+  - `movetos` stays 2, for Oscar 01 and Gekko 01.
+  - The authored `Stop` is still issued after, so the H6K rows end with the same current command.
+  - Deaths, hit records, death rows and the unit table are identical; `pair_diff` exit 1 (the new
+    line and the pass C census).
+- **USN04 4700/4500, USN02 9200/9000, USN01 3200/3000.** No squadron row authors a `Command`.
+  - The pass C census does not move, and `cruise_orders` is unchanged.
+  - Gameplay is identical. `pair_diff` exit 1 from the new line alone.
+  - **Risk, stated:** a `Cruise` latch captures the order ring when it is issued. If a load InitAll
+    pass writes a ship's ring, the captured values change. None is known to.
+
+### 23.4 Pairs and verdict
+
+- **The runs.** OFF is `local\bin\ac_off`, a build of 90c96a65d. ON is `pair_export` of 90c96a65d
+  with the switch flipped (SHA-256 A9CD0850337A). Both variables were set, lockstep 0.05, idle
+  player. Logs: `local\AC_{OFF,ON}_{JM08,USN01,USN04,USN02}.log` in worktree cc9-terrain2.
+
+| row | OFF | ON | prediction | verdict |
+| --- | --- | --- | --- | --- |
+| JM08 `skipped_current` | 3 | 0 | 3 -> 0 | held |
+| JM08 `no_home` | 4 | 7 | +3 (1 -> 4) | the +3 held; the OFF base was 4, not 1: **failed** (base drift since cc9-init2's log) |
+| JM08 `movetos` / `stops` / `member_orders` | 2 / 0 / 6 | 2 / 0 / 6 | unchanged | held |
+| JM08 deaths, hit records, shots | 2, 127, 1351 | identical | identical | held |
+| JM08 death rows, plane death modes, unit table | 2, 1, 52 | identical | identical | held |
+| USN01 deaths, hits, shots | 7, 150, 561 | identical | identical | held |
+| USN04 deaths, hits, shots | 44, 789, 6321 | identical | identical | held |
+| USN02 deaths, hits, shots | 19, 566, 850 | identical | identical | held |
+| `pair_diff` (all four) | | exit 1: the new line, and on JM08 the pass C census | exit 1 | held |
+
+- **The H6K Mavis rows** took `no_home`: no water stop at load, and no home base. So pass C issues
+  nothing for them, and the authored `Stop` that follows is the same current command as before.
+- **Noise.** JM08's `ShipAiSectorScan` rows went from absent to 6000/3000 (listed noise). USN01's
+  `pretranslate` count is listed noise too.
+
+**Verdict: ON.** Pass C now sees the image's order. No gameplay row moved on any of the four
+missions.

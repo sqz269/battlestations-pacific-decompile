@@ -1,0 +1,27 @@
+{
+  "packet": "cc9_authored_command_order",
+  "doc": "docs/SENTITY_INIT_ATTACH_ORDER.md, section 23",
+  "calls": [
+    {
+      "address": "0046ED0F",
+      "native": "00925F20",
+      "function": "0046DF00",
+      "note": "the scene read's load InitAll, CL = 0"
+    }
+  ],
+  "switches": [
+    {
+      "name": "kAuthoredCommandsAfterLoadWalkBound",
+      "state": "ON",
+      "pair": "local/AC_OFF_{JM08,USN01,USN04,USN02}.log (build of 90c96a65d, local/bin/ac_off) against local/AC_ON_*.log (pair_export of 90c96a65d, SHA-256 A9CD0850337A), worktree cc9-terrain2; all exit 1, gameplay identical; JM08 skipped_current 3 -> 0, no_home 4 -> 7",
+      "failed_predictions": [
+        "JM08 OFF no_home predicted 1 from the older cc9-init2 log; the base reads 4 (the +3 delta held)"
+      ]
+    }
+  ],
+  "notes": [
+    "0046ED1E is an indirect call ([[ESP+38h]], arg 1); its target 0046AAB0 is section 10's resolution"
+  ],
+  "no_ghidra_function": [],
+  "names_added": []
+}

@@ -68,6 +68,10 @@
 #include <vector>
 
 namespace bsp::game {
+// Packet cc9_authored_command_order: see the call sites below.
+// ON since the JM08 / USN01 / USN04 / USN02 pairs (SENTITY_INIT_ATTACH_ORDER.md 23.4).
+constexpr bool kAuthoredCommandsAfterLoadWalkBound = true;
+
 namespace {
 
 // 004e53ad's argument: the global clock in milliseconds, 00f876a4 times the
@@ -1952,7 +1956,15 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
                     read ? "read" : "not reached (defaults)", static_cast<double>(update),
                     static_cast<double>(recalc));
             }
-            host.units->issue_authored_commands();
+            // Packet cc9_authored_command_order (docs/SENTITY_INIT_ATTACH_ORDER.md
+            // section 21): the scene read runs its InitAll at 0046ED0F and only
+            // then resolves the deferred references at 0046ED1E, which issue each
+            // unit's authored `Command` (0046AAB0). ON: the host issues them after
+            // its load walk, so a load squadron's pass C (007F4E0C) sees no current
+            // command. OFF: before the walk (the earlier labelled order).
+            if constexpr (!kAuthoredCommandsAfterLoadWalkBound) {
+                host.units->issue_authored_commands();
+            }
             if constexpr (kInitialControlledUnitBound) {
                 // Packet cc9_initial_controlled_unit(_load): no first-created-unit
                 // stand-in. Scene load step 19 picks the controlled unit after
@@ -2034,6 +2046,12 @@ void GameMissionFrameHost::run_scene_load_004dfb70(const std::string& scene_path
                 }
                 if (!markers.empty()) report_scene_markers(host.log, markers);
             }
+            if constexpr (kAuthoredCommandsAfterLoadWalkBound) {
+                host.units->issue_authored_commands();                  // 0046ED1E
+            }
+            host.log.notef("summary SceneLoad authored command order after_load_walk=%d "
+                "(0046ED0F then 0046ED1E, packet cc9_authored_command_order)",
+                kAuthoredCommandsAfterLoadWalkBound ? 1 : 0);
             // Milestone 2m: with the slots built, the eight binding bodies
             // src/lua_binding_navigator.cpp reconstructs can run over the
             // created instances instead of being counted as records.
