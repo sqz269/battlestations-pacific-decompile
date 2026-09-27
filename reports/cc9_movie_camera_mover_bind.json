@@ -1,7 +1,7 @@
 {
   "packet": "cc9_movie_camera_mover_bind",
   "doc": "docs/HUD_PICK_SEGMENT_QUERY.md sections 8.6 and 8.7 (switch 3)",
-  "switch": "kMovieMoverBound (include/bsp/game_hosts_hud.hpp): committed OFF in 93e87be80; not flipped, pending the lead's ruling on the USN04 move",
+  "switch": "kMovieMoverBound (include/bsp/game_hosts_hud.hpp): committed OFF in 93e87be80; ON after the screen 46h observer read (0064A4C0 clears +20h on the ShipCaptain's destruction)",
   "calls": [
     {"address": "005CC1CB", "native": "0079D020", "function": "005CC170", "kind": "call", "host": "bsp::movie_camera_construct_0079d020"},
     {"address": "005CC29A", "native": "007A0860", "function": "005CC170", "kind": "call", "host": "bsp::movie_camera_seed_007a0860"},
@@ -27,7 +27,7 @@
     {"address": "007A0860", "coverage": "complete"}
   ],
   "no_ghidra_function": [],
-  "verdict": "not flipped (recommend ON after the 46h +20h observer is read)",
+  "verdict": "ON",
   "pairs": {
     "usn01": {"exit": 1, "gameplay": "identical", "builds": 2, "destroys": 1, "keyframes": 16, "owner_140": [0, 2404], "ray_pick_other": [0, 2240], "land_hits": [0, 22]},
     "usn04": {"exit": 3, "gameplay": "moved: deaths 40 -> 41, hits 799 -> 808, shots 6395 -> 6374, first difference t=110 s", "cause": "rebuilt ShipCaptain at 25 s; the player seat aims from the camera (held ticks 7071 -> 5707)"}

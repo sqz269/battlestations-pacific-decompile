@@ -238,11 +238,12 @@ inline constexpr bool kMovieReseedBound = true;
 // Returns false when no HUD is attached.
 bool hud_movie_screen_camera_005cd240();
 
-// Switch 3, committed OFF: 005CC170 builds the 570h movie camera and installs
+// Switch 3, committed OFF (93e87be80), ON after the 46h observer read and the
+// USN01/USN04 pairs (docs/HUD_PICK_SEGMENT_QUERY.md 8.7): 005CC170 builds the 570h movie camera and installs
 // it as the mover (004BC410 destroys the ShipCaptain, whose next 0064DA40
 // rebuilds it and destroys the movie camera in turn); 007A44D0 stores the
 // keyframes; 0079A3B0 poses the node every frame. bsp/hud_movie_camera.hpp.
-inline constexpr bool kMovieMoverBound = false;
+inline constexpr bool kMovieMoverBound = true;
 // Returns the keyframes added, or -1 when no HUD is attached.
 int hud_movie_add_position_007a44d0(const bsp::MovieKeyframeInput& in);
 

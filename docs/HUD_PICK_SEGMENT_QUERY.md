@@ -1054,3 +1054,14 @@ its callback).
   - USN04 moves through the player seat, as in the recorded pair (deaths 40 -> 41, hits
     799 -> 808, shots 6395 -> 6374 on that base). The exact rows may shift with main since then.
   - USN01's gameplay stays identical.
+
+**Switch 3 verdict: ON** (`kMovieMoverBound = true`). The same tree at 04b3b0247, switch only,
+streams ON and `BSP_DEATH_TABLE=1`, binaries `local\bin\fl_off` and `fl_on`.
+
+| pair | `pair_diff` | result |
+| --- | --- | --- |
+| USN01 3200/3000 | exit 1 | gameplay identical (7 death rows, 28 unit rows) |
+| USN04 4700/4500 | exit 3 | the expected move: deaths 40 -> 41, hit records 799 -> 808, damage 11621.4 -> 11721.4, shots 6395 -> 6374, torpedo-task releases 7 -> 6 of 16 (14 death rows changed, 1 only ON) |
+
+USN04's move comes through the player seat's camera ray, from the ShipCaptain rebuilt at 25 s.
+The observer read above confirms that rebuild.
