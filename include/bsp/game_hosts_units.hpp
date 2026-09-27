@@ -152,6 +152,16 @@ struct GameUnitRow {
     float start_speed{0.0f};           // the authored value, m/s
     float start_speed_ratio{0.0f};     // 008235CA, the float32 ring throttle
     float start_speed_axial{0.0f};     // 008235EC, the hull's axial velocity
+    // Packet cc9_submarine_depth_level (docs/SUBMARINE_MODEL.md section 11):
+    // unit+1268h `depthLevel` as 00853630 seeds it on a submarine. Stage 1
+    // (00853A31..00853A81) is the kamikaze test, stage 2 (00853B05..00853BAA)
+    // the scene's `Dive` then `TargetDive`. LABELLED: nothing in this host
+    // writes the level after the seed (008528B0's callers are not modelled),
+    // stage 3 (the nearest band, non-scene units) is not modelled, and the
+    // kamikaze test reads false: class+510h/+514h are not on the host's class
+    // row. `submarine_depth_seeded` is false on every other class.
+    bool submarine_depth_seeded{false};
+    std::int32_t submarine_depth_level{0};
     // Milestone 2s: what 009329C0 staged on this unit's last substep, read back
     // off the two accumulators controller+378h and controller+384h before the
     // AddForce / AddTorque flush at 00933B01 / 00933B38.

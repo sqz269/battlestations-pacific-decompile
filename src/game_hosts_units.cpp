@@ -7641,6 +7641,29 @@ void GameUnitsHost::create_units(const std::vector<GameSceneEntityRecord>& entit
             }
         }
 
+        // Packet cc9_submarine_depth_level: 00853630, the submarine's slot
+        // 0A0h override, picks unit+1268h after 00822C20. Stage 1: 1 for a
+        // kamikaze class, else 0 (LABELLED false here, see GameUnitRow).
+        // Stage 2, a kind-1 holder (every host unit is scene-sourced): `Dive`
+        // then `TargetDive`, each only when found. The hull move to
+        // bands[level] that `Dive` also makes (00853B44..00853B84) is not
+        // applied: the host hull keeps its authored Y.
+        if (bsp::unit_is_kind_of(slot->class_id, 0x08)) {
+            row.submarine_depth_seeded = true;
+            row.submarine_depth_level = 0;
+            if (entity.dive_present) row.submarine_depth_level = entity.dive_level;
+            if (entity.target_dive_present) {
+                row.submarine_depth_level = entity.target_dive_level;
+            }
+            host.log.notef("submarine depth seed: unit=%s level=%d dive=%d:%d "
+                "target_dive=%d:%d (00853630 stages 1-2, packet "
+                "cc9_submarine_depth_level)", row.name.c_str(),
+                static_cast<int>(row.submarine_depth_level),
+                entity.dive_present ? 1 : 0, static_cast<int>(entity.dive_level),
+                entity.target_dive_present ? 1 : 0,
+                static_cast<int>(entity.target_dive_level));
+        }
+
         // Milestone 2r: the hull body the game builds, replacing milestone 2h's
         // freshly constructed one and the 1.0e30f speed clamps that stood in
         // for M+18h / M+1Ch. 00939E2A calls 00937C90 last in the controller

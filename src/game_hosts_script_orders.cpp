@@ -132,6 +132,10 @@ constexpr ScriptOrderBinding kScriptOrderBindings[] = {
     // shots after the convoy movie) and competitive12/14. Handled only with
     // kNavigatorForceTorpedoBound.
     {"NavigatorForceTorpedo", 0x008a7200u},
+    // Packet cc9_submarine_depth_level: 06_crucial_cargo.lua:700/713/755 and
+    // eleven other shipped scripts. Handled only with
+    // kSubmarineDepthLevelBound.
+    {"GetSubmarineDepthLevel", 0x00894100u},
     {"GetMeasure", 0x0088d8e0u},
     {"GameTime", 0x008a9320u},
     {"random", 0x0088c160u},
@@ -380,6 +384,9 @@ bool GameScriptOrdersHost::handles(const char* binding_name) noexcept {
         return kScoringPlayerShotDownBound;
     }
     if (std::strcmp(binding->name, "PutTo") == 0) return kPutToBound;
+    if (std::strcmp(binding->name, "GetSubmarineDepthLevel") == 0) {
+        return kSubmarineDepthLevelBound;
+    }
     if (std::strcmp(binding->name, "DisablePhysics") == 0) return kDisablePhysicsBound;
     if (std::strcmp(binding->name, "AddMatrixInterpolator") == 0) {
         return kAddMatrixInterpolatorBound;
@@ -2047,6 +2054,33 @@ int GameScriptOrdersHost::dispatch(lua_State* state, const char* binding_name,
             log_.notef("  ExplodeToParts: %s (0088E1B0 -> 00935C70, queued)",
                 units_.unit_row(index) != nullptr ? units_.unit_row(index)->name.c_str() : "?");
         }
+    } else if (std::strcmp(binding->name, "GetSubmarineDepthLevel") == 0) {
+        // 00894100: argument 0 through 00888AA0 with no kind check, EDI =
+        // unit+1268h (0089421E). If +1281h, +5Dh or 008522C0 is set, the class
+        // is asked: +510h or +514h above 0 keeps the level, else 0
+        // (0089425A). One integer result (0089425C -> 00B664B0).
+        void* entity = entity_from_argument(0);
+        const std::size_t index = index_of(entity);
+        ++depth_level_calls_;
+        std::int32_t level = 0;
+        if (entity != nullptr && index < units_.count()) {
+            const GameUnitRow* unit_row = units_.unit_row(index);
+            if (unit_row != nullptr && unit_row->submarine_depth_seeded) {
+                level = unit_row->submarine_depth_level;
+            }
+            const GameGunneryHost* gunnery = units_.gunnery();
+            const bool need_air = false;        // +1281h, LABELLED
+            const bool catapult = false;        // 008522C0, LABELLED
+            const bool dead = gunnery != nullptr && gunnery->unit_dead(index);
+            const bool kamikaze = false;        // class+510h/+514h, LABELLED
+            if ((need_air || dead || catapult) && !kamikaze && level != 0) {
+                level = 0;
+                ++depth_level_forced_;
+            }
+        }
+        depth_level_last_ = static_cast<int>(level);
+        push_number(static_cast<int>(level));
+        results = 1;
     } else if (std::strcmp(binding->name, "PutTo") == 0) {
         // 008A9F90: argument 0 through 00888AA0, 007788B0 when it answers
         // IsKindOf(2) (result unused, 008AA0BF), argument 1 through 00888760 as
@@ -3233,6 +3267,10 @@ void GameScriptOrdersHost::report() {
     log_.notef("summary mission script put to bound=%d calls=%llu placed=%llu (008A9F90 -> "
         "008193A0, packet cc9_bsm01_think_natives)", kPutToBound ? 1 : 0, put_to_calls_,
         put_to_placed_);
+    log_.notef("summary mission script submarine depth level bound=%d calls=%llu "
+        "forced=%llu last=%d (00894100, packet cc9_submarine_depth_level)",
+        kSubmarineDepthLevelBound ? 1 : 0, depth_level_calls_, depth_level_forced_,
+        depth_level_last_);
     log_.notef("summary mission script fill path points bound=%d calls=%llu empty=%llu "
         "(0089A190, packet cc9_fill_path_points)", kFillPathPointsBound ? 1 : 0,
         fill_path_points_calls_, fill_path_points_empty_);
