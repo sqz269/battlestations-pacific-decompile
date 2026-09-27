@@ -10524,7 +10524,7 @@ the 836 -> 843 step is the torpedo rack drop's E2 pair.
 | --- | --- | --- | --- | --- | --- | --- |
 | c section | 7 | 141 | 447 | 2 | - | - |
 | torpedo rack drop ON | 7 | 141 | 447 | 8 | cbf39c3de | c's attribution control |
-| drops 8 -> 2 between `1eaedc668` and `e3aba0f36` | 7 | 141 | 447 | 2 | **flagged in c, unpaired** (the Val route is the candidate) | c's drift pairs |
+| Val rack route ON | 7 | 141 | 447 | 2 | 9f3b0e680 (5c25befbe) | the boundary pair below |
 | avoid-zone layer sample ON | 7 | 150 | 583 | 0 | 817cf051d (0d02479e5) | c's drift pair (b) |
 | every later landing (identical, or measured identical here) = this section | 7 | 150 | 583 | 0 | - | as in the landing table |
 
@@ -10578,3 +10578,35 @@ reference parameters.
 - If both hold, the 8 -> 2 step belongs to the Val rack route. The rack route sends a kind-2Ah
   drop through the rack stage, and the Mavis' surplus drop requests are among those. If the
   parent also reads 2, the flag stays open, and the step lies elsewhere in the window.
+
+**The boundary pair, measured.**
+- **Builds.** One export directory `local\vb`:
+  - the parent `a1de87bda` built whole, SHA-256 prefix `BE38401D067B`;
+  - then synced forward to `5c25befbe` (3 files written, 10966 unchanged) and rebuilt,
+    `16EDE4462C82`.
+- **Logs.** `local\vb_{parent,landing}_usn01.log` in worktree cc9-ships. Both show the 1600x900
+  fit line, a module directory under `local\vb\` and the final COM release.
+  - Both binaries predate `--present-interval`, so the runs set `BSP_PRESENT_INTERVAL=immediate`
+    to keep the harness from passing the option.
+  - Their logs therefore have no `present interval immediate (harness override)` line. Both sides
+    ran the same way.
+- **`tools/pair_diff.py`: exit 3.** The one moved gameplay row is torpedo drops, 8 -> 2.
+  - Deaths 7, hit records 141 (90 hull), damage 2690.0, shots 447, first hit 53.70 s and 4 of 5
+    releases are identical.
+  - The death, plane and unit tables are identical (7, 7 and 28 rows).
+- **The racks** read `drops=4` for Mav1 and for Mav4 on both sides.
+- **What the landing changes.** Mav1's and Mav4's three surplus rack drops each no longer spawn a
+  torpedo. They take the kind-2Ah route, where they are refused: `bomb_drops refusals` 0 -> 6,
+  and six `Rack::drop_dispersion_006e4f91` records are new. So swims fall from 8 to 2.
+  - The ship AI's torpedo-track rows (`ShipAiThrottleProfile::track_*`, 1975 -> 502) and the
+    projectile steps fall with the missing swims. They move no gameplay row.
+
+**Every prediction held. The USN01 torpedo-drop flag is closed:** the 8 -> 2 step between
+`1eaedc668` and `e3aba0f36` is the Val rack route 5c25befbe (`kReleaseIssueStageValsBound`,
+`docs/RELEASE_ISSUE_STAGE.md`, Vals). USN01's chain from c now reads:
+- torpedo rack drop: 2 -> 8;
+- Val rack route: 8 -> 2;
+- avoid-zone layer sample: 2 -> 0.
+
+The surplus drops themselves were retired later by the Mavis per-rack ammo
+(`kRackRoundsPerRackBound`, `docs/RELEASE_ISSUE_STAGE.md`, "Mavis rack drops").
