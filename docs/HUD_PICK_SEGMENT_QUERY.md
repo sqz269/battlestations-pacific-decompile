@@ -827,3 +827,73 @@ and `local\bin\rs_on`.
 - **Warning for reference rows.** Any reference run on the default path (streams unset) now draws
   from 12345 from the first movie on. Default-path rows taken before this commit are not
   comparable with rows taken after it.
+
+### Switch 3, the movie camera mover: handoff (not bound)
+
+The lead's ruling let switch 3 become a handoff if needed. It stops here on one open question,
+not on context. What is read so far:
+
+- **0079D020, the constructor** (0079D020..0079D1C3), fields after the base 00432750:
+  - vtables 00D04750 / `+10h` 00D04738 / `+24h` 00D04730 / `+170h` 00D04718;
+  - input latches `+394h..+39Bh` = 0; `+39Ch..+3A8h` = 0.0 and `+3ACh` = 1.0;
+  - the tracks `+414h` and `+498h` (vtable 00D04714), each with an empty list (007967E0) and its
+    camera back-pointer (`+488h`, `+50Ch`);
+  - ground clearance `+4FCh` = 0 (off by default); `+51Ch`/`+520h`/`+524h` = 0.0;
+  - clock `+3B0h` and `+3B4h` = 0.0; `+390h` = 0, **`+391h` = 0**; pair counter `+3C0h` = 0;
+    editor `+568h` = 0; `+404h` = 0;
+  - FOV `+410h` = [00CE7D20] (0.6981317, 40 degrees);
+  - then 00BD2FD0(1, 123) at 0079D1AB, with EDX = EBX + 7Bh and EBX zeroed at 0079D065.
+- **007A0860, the seed** (`__thiscall(camera, matrix)`, RET 4). It copies the 16 floats into
+  `+528h` through 004134F0. When the camera track is empty, it inserts one camera keyframe and
+  one target keyframe. Both have `+24h` = 0 (no parent), `+D8h` = 1 (take the camera's current
+  pose at begin, 00791020's `+D8h` arm) and start = blend = 0. So each track starts with a
+  seed keyframe, and USN01's track insertion gains one:
+  - camera: seed 0, kf1 0, kf4 0.001, kf5 7, kf8 7.001;
+  - target: seed 0, kf2 0, kf3 0.001, kf6 7, kf7 7.001.
+- **Vtable 00D04750:**
+  - `+5Ch` 0079A380 (IsKindOf 54h);
+  - `+A0h` 0078E8E0, the stop: 0042A910, then `+391h` = 0 and `+410h` = 40 degrees;
+  - `+DCh` 0079A3B0, the update;
+  - `+124h` 0079A340, the hand-over.
+
+**The open question: what sets `+391h`?**
+- 0079A3B0 advances the clock `+3B0h += dt` only while `+391h` is non-zero (`CMP byte ptr
+  [ESI+391h],0; JNZ` at 0079A3C3). Otherwise it stores 0.0.
+- `scan-bytes "91 03 00 00" --limit 4000` finds ten sites image-wide. Only three touch this
+  class: the constructor's `MOV [ESI+391h],BL` with BL = 0 at 0079D197, the stop slot's
+  `MOV byte ptr [ESI+391h],0` at 0078E8F0, and the update's read.
+  - The rest are rel32 bytes: 00548E46, 005D7F2C, 0067315B.
+  - Or other classes: 007A9318 is in the old movie camera (00797070's class, whose `+390h` is a
+    pointer), plus 009AA641, 00B0B1C0 and 00B5309D.
+- A second scan finds no `LEA`/`ADD` of a `+390h`/`+391h` sub-object base in this class, and no
+  word or dword write at `+390h`.
+- By the listing, then, the new movie camera's clock stays 0. Only keyframes with start 0 are
+  active: the seed, kf1 and kf2. USN01's intro would hold kf1's shot (SaltLakeCity plus
+  (0, 8, 100)) and never cut to CB2.
+- That contradicts what a scripted cinematic is for, so **the writer is probably one the scans
+  cannot see**:
+  - a block copy or memset over the object;
+  - a write through a pointer to `+390h` held elsewhere;
+  - or a base-class slot writing through a computed offset.
+  See the memory notes on block-copy writers and sub-object bases.
+- Static reading has not settled it, and the original executable must not be run. **Do not bind
+  a clock rule until the writer is found.**
+
+**Still unread:**
+- the rest of 0079A3B0 past the clock and editor blocks (0079A584..0079BBE1);
+- 0078FAF0, which ground clearance needs only when `+4FCh` is set;
+- 00435410 and 004329D0, the base step and publish (`docs/MISSION_CAMERA.md` has the ShipCaptain
+  side);
+- keepnone and keepy (004142A0, 0085DAD0) and the polar arm's degree constant 00D046D8, which
+  USN04's movies and USN01's phase-2 movie use;
+- the 00694A60 observer that is thought to clear the screen's `+1Ch` when 004BC410 destroys the
+  camera.
+
+**What binding the mover would change on the pairs** (for whoever takes it):
+- **USN04.** The ShipCaptain is destroyed at t = 4 s and rebuilt by 0064DA40 at t = 25 s (a new
+  construct, then a retarget seed).
+- **USN01.** The phase-2 movie at t = 91 s rebuilds the movie camera under 25h and replaces the
+  ShipCaptain. The pick then casts from the movie camera for the rest of the run, because the
+  later `SetSelectedUnit(ScoutBomba)` is rejected.
+- **Both.** The camera's own reseeds (123, then 12345 and 54321 at the first step, then wall-clock
+  at the destructor) join switch 2's.

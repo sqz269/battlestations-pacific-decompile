@@ -1,0 +1,37 @@
+{
+  "packet": "cc9_movie_interface_and_reseed",
+  "doc": "docs/HUD_PICK_SEGMENT_QUERY.md section 8.7",
+  "switches": {
+    "kMovieInterfacePushBound": "committed OFF in eaa9a301b, ON by the USN01/USN04 verdict in 2a5458d7e",
+    "kMovieReseedBound": "committed OFF in 9637882a8, ON by the streams-on USN01/USN04 verdict in 6c9ec4026",
+    "mover": "not bound: handoff in 8.7 (no writer of a nonzero +391h found)"
+  },
+  "calls": [
+    {"address": "008B7941", "native": "005CD240", "function": "008B7850", "kind": "call", "host": "binding_trampoline -> hud_movie_screen_camera_005cd240"},
+    {"address": "008B7AE1", "native": "005CD240", "function": "008B79F0", "kind": "call", "host": "binding_trampoline -> hud_movie_screen_camera_005cd240"},
+    {"address": "008B7C92", "native": "005CD240", "function": "008B7BA0", "kind": "call", "host": "binding_trampoline -> hud_movie_screen_camera_005cd240"},
+    {"address": "005CD24F", "native": "005CD1A0", "function": "005CD240", "kind": "call", "host": "bsp::movie_screen_camera_005cd240 -> engage_movie_interface_005cd1a0"},
+    {"address": "005CD1B0", "native": "00BD2FD0", "function": "005CD1A0", "kind": "call", "host": "MovieInterfaceBinding::seed_random_stream -> GameGunneryHost::reseed_shared_stream_00bd2fd0 (stream 1, substitution)"},
+    {"address": "005CD1BC", "native": "00BD2FD0", "function": "005CD1A0", "kind": "call", "host": "MovieInterfaceBinding::seed_random_stream (stream 0: record)"},
+    {"address": "005CD1CE", "native": "004CC460", "function": "005CD1A0", "kind": "call", "host": "MovieInterfaceBinding::push_interface_request -> pending_interface_id, serviced by apply_pending_interface_0068aca0"},
+    {"address": "005CD1FD", "native": "005CC170", "function": "005CD1A0", "kind": "call", "host": "record MovieInterface::ensure_movie_camera"}
+  ],
+  "routines": [
+    {"address": "005CD240", "coverage": "complete"},
+    {"address": "005CD1A0", "coverage": "complete; 005CC170 and 0077C470 records"},
+    {"address": "005CD9C0", "coverage": "read, not bound (screen 37h enter)"},
+    {"address": "005CDB00", "coverage": "read, not bound (screen 37h exit)"},
+    {"address": "006485A0", "coverage": "read, not bound (ForceSelectUnit; no measured mission reaches it)"},
+    {"address": "0079D020", "coverage": "read (constructor fields)"},
+    {"address": "007A0860", "coverage": "read (seed keyframes)"},
+    {"address": "0079A3B0", "coverage": "partial: 0079A3B0..0079A584 read; 0079A584..0079BBE1 unread"}
+  ],
+  "ghidra": "read-only; listings of 005CD1A0, 005CD9C0 (disk bytes), 005CDB00, 006485A0, 00644A60, 00645710, 0079D020, 007A0860, 0079A3B0 head; bytes of vtables 00CF17A8 and 00D04750; scan-bytes over +390h/+391h encodings",
+  "no_ghidra_function": [
+    {"start": "005CD9C0", "end_inclusive": "005CDAF5", "what": "movie screen 37h enter (vtable 00CF17A8 +18h); RET at 005CDAF5"}
+  ],
+  "verdicts": {
+    "switch1": {"usn01": "exit 1, gameplay identical; pick casts 5999 -> 5357", "usn04": "exit 1, gameplay identical; pick 8999 -> 8159, seat 8997 -> 8157"},
+    "switch2": {"usn01_streams": "exit 1, identical", "usn04_streams": "exit 1, identical", "usn04_default_not_reference": "exit 3: shots 6355 -> 5607, hits 754 -> 747, 40 death rows changed"}
+  }
+}
