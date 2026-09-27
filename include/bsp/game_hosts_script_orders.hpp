@@ -156,7 +156,7 @@ inline constexpr bool kScoringPlayerShotDownBound = true;
 // (008AA136..008AA14D) and handed to vtable slot +11Ch (008196B0, no Ghidra
 // function, unread), is recorded and not applied. False: the native stays an
 // unimplemented record.
-inline constexpr bool kPutToBound = false;
+inline constexpr bool kPutToBound = true;
 
 // Packet cc9_frame_delta_jitter, docs/GAME_EXECUTABLE.md. True: the script think
 // walk 00929460 runs once per 0.05f fixed step, as the image's fan-out row 8 does
