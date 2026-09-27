@@ -1803,7 +1803,7 @@ category 47h.
   - 007B3960, which builds through 007B2950;
   - 00780AE0;
   - the body 007C2680..007C2805, which builds through 007BD3E0 at 007C270A. It has **no Ghidra
-    function** (the listing attributes it to 007C2610, which ends at 007C2674). It is
+    function** at this base (`lookup` named 007C2610 only as the nearest preceding function; that body ends at 007C2674). The lead has since defined it (0f53a48f5). It
     ends in `RET 4` at 007C2803 (one stack argument; its `ECX` use was not read), then INT3 padding.
 
   Each writes its message through 00779FC0 (007C2680 does so twice, at 007C2729 and 007C27C2).

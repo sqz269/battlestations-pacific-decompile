@@ -1,0 +1,12 @@
+{
+  "packet": "cc9_intro_camera_noise",
+  "worker": "cc9-hud3",
+  "kind": "read and diagnostic runs",
+  "base": "961dd9645",
+  "doc": "docs/HUD_PICK_SEGMENT_QUERY.md section 10.5",
+  "code_changed": false,
+  "verdict": "closed as not reproducible: 14 current runs and 9 current logs over six binaries carry one set of USN01 intro poses; the first publish moved from frame 81 (clock 0.00, degenerate forward) to frame 82 (clock 0.05); the landing that moved it and the old ulp-level source were not identified",
+  "diagnostic_logs": ["local/cam_a_usn01.log", "local/cam_b_usn01.log", "local/cam_c_usn01.log", "local/cam_d_usn01.log", "local/cam_e_usn01.log", "local/cam_f_usn01.log", "local/cam_g_usn01.log", "local/cam_h_usn01.log"],
+  "no_ghidra_function": [],
+  "names_added": []
+}

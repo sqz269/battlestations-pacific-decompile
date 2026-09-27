@@ -1234,3 +1234,53 @@ unless marked otherwise.
 - `kMovieParentKilledByteBound = true`.
 - `kMovieTerrainAvoidBound = true`. No measured mission reaches the key, so it is build-tested
   and identity-tested only.
+
+### 10.5 USN01's intro pose noise: gone at the current base, source not identified (packet `cc9_intro_camera_noise`)
+
+Worker cc9-hud3, 2026-09-27, base 961dd9645. No code changed. The diagnostic below was built
+locally and reverted.
+
+**The noise no longer occurs.** These are the intro `movie camera pose` lines of USN01, frames up
+to 339.
+
+| logs | first publish | intro pose lines |
+| --- | --- | --- |
+| cc9-hud2 `kk_off`, `kk_off2`, `fs_off`, `lp_off`, `ic_off`, `ic2_off`, `ld_off` (07:19..10:48) | frame 81, clock 0.00 | 6 distinct sets in 7 logs over several binaries; the same-binary pair `kk_off`/`kk_off2` differs; `kk_off2` and `ic2_off` match |
+| cc9-hud2 `ic2_on`, `ld_on`, `ob_off`, `ob_on`, `aq_off`, `aq_on`, and this tree's `cq_off`, `cq_on`, `cq_on2` | frame 82, clock 0.05 | one set in all nine logs (six binaries) |
+| this tree, five 500/300 runs of one diagnostic build (`cam_a` to `cam_e`) | frame 82 | identical, including hex dumps of every key's start, blend, state, evaluated point and parent pose |
+| this tree, three runs with `kLoadTimeInitAllBound` flipped off locally (`cam_f` to `cam_h`) | frame 82 | identical |
+
+**What the old noise was.**
+- At frame 81 the first publish came before the fixed-step latch.
+  - The update saw the camera not running and reset its clock to 0.0.
+  - Camera key 2 (the 7 s move, start 0.001 after `kDuplicateStartStep`) then had weight 0.
+  - So the camera stood exactly on its look-at point, and the forward normalised a vector at or
+    below the floor. The fallback printed as (0,0,-1).
+- In the other runs the forward was a unit vector along the parent's heading, (-0.5547,0,-0.8321)
+  or (-0.3714,-0.0007,-0.9285). That is the direction camera key 2 moves, so key 2 had a tiny
+  non-zero weight, or the parent pose differed by a few ulps.
+- The later lines (frames 161 and 241) also differed at the fourth decimal. That points to a
+  parent pose that varied by ulps, which the degenerate frame only amplified.
+
+**Ruled out at the current base:**
+- The camera's `seconds` is 0.05 on every step: the mission frame substitutes
+  `--mission-frame-seconds` before the interface pump.
+- The parent pose is a plain copy of the unit's world matrix (`GameUnitsHost::unit_pose`).
+- The keyframe fields are all value-initialised.
+- The track evaluation is straight-line float code.
+
+**Why it stopped is not established.**
+- The first run at frame 82 is `ic2_on` at 10:43, while `ic_on` (10:40) and `ld_off` (10:48) are
+  still at frame 81.
+- Flipping `kLoadTimeInitAllBound` off at this base does not bring frame 81 back. So a landing on
+  main between those runs changed the start frame, not that switch.
+- The frame-81 and frame-82 logs of one period came from different trees and bases. The varying
+  input (a ulp-level parent pose) was not caught in a dump, because no current run shows it.
+- **Status:** closed as not reproducible.
+- **If it returns:** dump both tracks in hex at the first three publishes, and each
+  `step_mission_camera` call's `seconds`, running flag and clock. That is the diagnostic used
+  here: a block after `publish_mission_camera` in `step_movie_camera`, and one before it in
+  `step_mission_camera`. Diff two runs of one binary.
+
+**For pairs:** USN01's intro pose lines are no longer known noise at this base. A moved intro pose
+line in a same-tree pair now belongs to the change. `tools/pair_diff.py` never masked them.
