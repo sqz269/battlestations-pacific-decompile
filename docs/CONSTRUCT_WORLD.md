@@ -1785,3 +1785,20 @@ host's pass C (below). So no switch is added.
      commands them;
    - USN02's Kingfisher row (on the water) gets a `stop` unless it carries an authored command.
    - Gameplay moves only through those squadrons.
+
+### The two entries (packet `cc9_squadron_pass_hooks`)
+
+They are declared in `include/bsp/game_hosts_units.hpp` as no-ops that only count their calls
+(summary `squadron pass hooks pass_a=N pass_c=N`). The Lua host's InitAll calls them for a
+plane-squadron node. The argument is the squadron's unit index: its fused leader, id - 1.
+
+```cpp
+void GameUnitsHost::on_squadron_pass_a_construct_wing(std::size_t squadron_index);
+void GameUnitsHost::on_squadron_pass_c_initial_command(std::size_t squadron_index);
+```
+
+- **Pass A** is the squadron's `007F4580`. The call goes before the Lua host's wing append. The
+  entry will construct the wing there (docs/SENTITY_INIT_ATTACH_ORDER.md section 9.3).
+- **Pass C** is the squadron's `007F4BA0`. The call goes at the point of `007F4E9E`, after passes
+  A and B. The entry will issue the initial command described above.
+- Each entry gets its own switch, committed OFF with predictions, once the calls land.
