@@ -1,0 +1,107 @@
+{
+  "packet": "cc9_sunk_ship_flush",
+  "doc": "docs/CONSTRUCT_WORLD.md section 21; correction in docs/UNIT_DEATH_MESSAGE_AND_SINK.md",
+  "switch": "kSunkShipFlushBound (include/bsp/game_hosts_ready.hpp): committed OFF in 150e2ab3a (fix 50a713e32), set ON by the verdict",
+  "calls": [
+    {
+      "address": "0092747F",
+      "native": "00926390",
+      "function": "009273A0",
+      "kind": "call",
+      "host": "GameStepSubsystemsHost::flush_pending_entity_queues_009273a0"
+    },
+    {
+      "address": "0090369B",
+      "native": "00922FD0",
+      "function": "00903670",
+      "kind": "call",
+      "host": "GameMissionFrameHost::Impl::flush_unit_kills_00903670"
+    },
+    {
+      "address": "004E5382",
+      "native": "00903670",
+      "function": "004E4A40",
+      "kind": "call",
+      "host": "flush_entity_activations_00903670 -> flush_unit_kills_00903670"
+    },
+    {
+      "address": "004D7EDE",
+      "native": "00903670",
+      "function": "004D7EA0",
+      "kind": "call",
+      "host": "world_post_tick -> flush_unit_kills_00903670"
+    },
+    {
+      "address": "00826628",
+      "native": "00926D90",
+      "function": "00825F20",
+      "kind": "call",
+      "host": "contract for the units host: the KillDepth kill"
+    }
+  ],
+  "routines": [
+    {
+      "address": "00903670",
+      "coverage": "complete over unit slots (units have no parent here)"
+    },
+    {
+      "address": "00922FD0",
+      "coverage": "stores bound; the child recursion has no unit children here; vt[84h] is a record"
+    },
+    {
+      "address": "00926C80",
+      "coverage": "partial: the +60h store; the +70h cause, the child propagation and the list append are not bound; the +60h store at 00926CD5 is applied at row 15 by GameStepSubsystemsHost::flush_pending_entity_queues_009273a0 (substitution)"
+    },
+    {
+      "address": "00926390",
+      "coverage": "stores bound; 00925C90 and vt[7Ch] (00824B60) are records"
+    },
+    {
+      "address": "00825F20",
+      "coverage": "read 008263C1..00826628 only (sinkTime, the shape flag, the KillDepth kill)"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "docs/UNIT_DEATH_MESSAGE_AND_SINK.md: +828h (sinkTime) is never advanced",
+      "is": "advanced every step while +5Dh is set, through the sub-object base unit+310h",
+      "evidence": "00825F2A MOV EDI,ECX; 00825F32 LEA ESI,[EDI-310h]; 008263C1 CMP [EDI-2B3h],0; 008263CE FADD [EDI+518h]; 008263DC FST [EDI+518h]"
+    },
+    {
+      "was": "src/world_entities.cpp names +5Eh spawned and +6Ch activated",
+      "is": "+5Eh is the removed byte and +6Ch the killed/expiry counter",
+      "evidence": "00922FDE..00922FE8 stores; 00903620 ages +6Ch"
+    },
+    {
+      "was": "the neighbour count sees wrecks only because the host never unlinks",
+      "is": "the walk 009EEB8B..009EEBDA has no live test; the image also sees a wreck until it is freed after the KillDepth kill",
+      "evidence": "009EEBB0 CALL 009DBBC0; 009EEBC8 IsKindOf 6; 009EEBD8 CMP own unit"
+    }
+  ],
+  "no_ghidra_function": [],
+  "names": [],
+  "verdict": "ON",
+  "pairs": {
+    "tree": "50a713e32, local/bin/ss_off vs ss_on, tools/pair_diff.py",
+    "e2": {
+      "exit": 1,
+      "deaths": 52,
+      "hit_records": 875,
+      "gameplay": "identical"
+    },
+    "usn02": {
+      "exit": 3,
+      "ship_destroy_flags": 20,
+      "proximity_records": "54 -> 32",
+      "ships_scanned": "3524 -> 2283",
+      "deaths": "22 -> 20",
+      "hit_records": "411 -> 329",
+      "shots": "759 -> 807",
+      "failure": "39.65 s both",
+      "controlled_moved": "DeRuyter 2897 -> 316 m",
+      "ship_ai_steps": "252000 -> 152134 (99866 gated)"
+    },
+    "failed_predictions": "USN02 deaths direction (predicted up or flat, fell 22 -> 20) and hit-record band (predicted +/-15%, fell 20%); the ship-AI gating, the wreck motion and the script retargeting were not predicted; E2 post-tick row did not move (not reached)",
+    "unpredicted": "see failed_predictions"
+  }
+}

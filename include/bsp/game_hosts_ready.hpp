@@ -72,7 +72,25 @@ struct GameStepSubsystemsSummary {
     unsigned long long expiry_passes{0};
     unsigned long long expiry_entities{0};
     std::size_t expiry_released{0};
+    // Packet cc9_sunk_ship_flush: dead ships given +60h (00926C80) and +5Dh
+    // (00926390) at the destroy-list flush.
+    std::size_t ship_destroy_flags{0};
 };
+
+// Packet cc9_sunk_ship_flush (docs/CONSTRUCT_WORLD.md section 21). True: a ship
+// the gunnery host has killed takes the two bytes the image writes in its death
+// step - Destroy 00926C80 sets +60h at 00926CD5 (unless already set) and the
+// row-15 flush 009273A0 dispatches vt[74h] = 00926390, which sets +5Dh at
+// 0092639B and +60h at 0092639E - so every four-byte live test (00977990's
+// scan, 0043F080) drops it; and 00903670 runs over the unit slots (the kill
+// 00922FD0 for a removed, not yet killed unit; +6Ch is the expiry counter).
+// SUBSTITUTION: the gunnery death route (a file leased elsewhere) does not call
+// Destroy; the row-15 flush applies both bytes to each ship newly dead at that
+// point. False: dead ships keep both bytes clear, and 00903670 walks the empty
+// activation vector. ON by the verdict: E2 identical; USN02 moved (wrecks stop
+// sailing, planning and taking rounds; deaths 22 -> 20, hit records 411 -> 329,
+// failure time unchanged), docs/CONSTRUCT_WORLD.md section 21.
+inline constexpr bool kSunkShipFlushBound = true;
 
 // The six fan-out rows whose reconstructions are on main, as one owner. Held for
 // the whole run because every one of them keeps a container across steps.
@@ -92,6 +110,10 @@ public:
     void drain_queued_lua_calls_00888230();
     void run_due_entity_think_00929460(float step);
     void flush_pending_entity_queues_009273a0();
+    // Packet cc9_sunk_ship_flush: entity+6Ch per unit, the counter 00922FD0
+    // sets to 1 and 00903610 ages.
+    int killed_counter_006c(std::size_t unit) const noexcept;
+    void mark_killed_006c(std::size_t unit);
     void release_expired_world_objects_00903610();
 
     void report();
