@@ -11,6 +11,7 @@
 // file supplies, and labels, is listed in include/bsp/game_hosts_units.hpp.
 
 #include "bsp/game_hosts_units.hpp"
+#include "bsp/game_hosts_avoid_zones.hpp"
 #include "bsp/plane_flight.hpp"
 #include "bsp/plane_death_modes.hpp"
 #include "bsp/gun_aim_terms.hpp"
@@ -3284,6 +3285,19 @@ struct GameUnitsHost::Impl {
     // ON since the USN04 9000 / 4500 pairs: only the dead Val #1.1|.-4's rows
     // moved (its two-round glide became one), deaths and hits identical.
     static constexpr bool kDiveBombCarriedRoundsBound = true;
+    // Packet cc9_avoid_zone_registry, docs/AVOID_ZONE_REGISTRY.md: 0041BC20
+    // samples the avoid-zone layer at squadron+34Ch (0041DF40(1.5, true), the
+    // scene `.nav`'s tan(70 deg) layer) at the fixed step's unit+9B4h writer
+    // 007CE8FF, AvoidTerrain's 0099F9F3 / 009A05DF / 009A0E1A and the torpedo
+    // approach's 009D36A9 / 009D386D / 009D3A42. OFF: the water surface stands in.
+    static constexpr bool kAvoidZoneLayerSampleBound = false;
+    // Diagnostic census of both heights at every sample, in both builds.
+    unsigned long long az_samples = 0;
+    unsigned long long az_samples_layer_nonzero = 0;
+    double az_layer_max = 0.0;
+    double az_sea_min = 0.0, az_sea_max = 0.0;
+    double az_diff_abs_max = 0.0;
+    double az_diff_abs_sum = 0.0;
     // Packet cc9_plane_death_modes: 007CA8A0's death mode, 007CAF10's dead-step
     // terms, the kill that takes the aircraft out of the world, and the release
     // refusal of a dead aircraft (007CEA1C). docs/PLANE_DEATH_MODES.md.
@@ -5272,8 +5286,34 @@ bool GameUnitsHost::Impl::avoid_in_dive(const GameUnitSlot& u) {
 // avoid-zone layer at squadron+34Ch (0041BC20) and, subtracted from the
 // altitude, the height above ground at unit+9B4h. SUBSTITUTION, labelled.
 float GameUnitsHost::Impl::avoid_surface_height(float x, float z) {
+    // Packet cc9_avoid_zone_registry: 0041BC20 on the registry's squadron+34Ch
+    // layer. Both heights are computed in both builds for the census; the
+    // switch picks which one the plane reads. Every plane is sampled here,
+    // while the image's 007CE87F skips unit+9B4h's update for a plane whose
+    // unit+9D4h is null (its old value stands). Labelled.
     OceanFieldBinding sea(*this);
-    return bsp::ocean_water_height_0078cf20(x, z, sea);
+    const float sea_h = bsp::ocean_water_height_0078cf20(x, z, sea);
+    const GameAvoidZoneRegistry& reg = GameAvoidZoneRegistry::instance();
+    const bsp::TerrainGridLayerRecord* layer = reg.layer(reg.squadron_layer_34c());
+    const float layer_h = layer != nullptr ? avoid_zone_sample_0041bc20(*layer, x, z) : 0.0f;
+    if (az_samples == 0) {
+        az_sea_min = az_sea_max = sea_h;
+    } else {
+        if (sea_h < az_sea_min) az_sea_min = sea_h;
+        if (sea_h > az_sea_max) az_sea_max = sea_h;
+    }
+    ++az_samples;
+    if (layer_h != 0.0f) ++az_samples_layer_nonzero;
+    if (layer_h > az_layer_max) az_layer_max = layer_h;
+    const double d = std::fabs(static_cast<double>(layer_h) - sea_h);
+    az_diff_abs_sum += d;
+    if (d > az_diff_abs_max) az_diff_abs_max = d;
+    if constexpr (kAvoidZoneLayerSampleBound) {
+        done("AvoidZoneLayer::sample_0041bc20", 0x0041bc20u);
+        return layer_h;
+    } else {
+        return sea_h;
+    }
 }
 
 // 0099B670 -> 007DF4F0 (__thiscall(neighbours = unit+C50h, pilot), RET 4,
@@ -5606,7 +5646,13 @@ void GameUnitsHost::Impl::terrain_avoidance_0099f1c0(GameUnitSlot& u, float /*dt
     // layer's 100 m (docs/TORPEDO_RUN_IN_PATH.md), and its height is the water
     // surface. SUBSTITUTION, labelled.
     if (bsp::plane_squadron_registry().find_by_member_unit(u.process_index) == nullptr) return;
-    const float cell = 100.0f;                                       // min(layer+0Ch, 120.0)
+    float cell = 100.0f;                                             // min(layer+0Ch, 120.0)
+    if constexpr (kAvoidZoneLayerSampleBound) {
+        const GameAvoidZoneRegistry& reg = GameAvoidZoneRegistry::instance();
+        if (const bsp::TerrainGridLayerRecord* layer = reg.layer(reg.squadron_layer_34c())) {
+            cell = layer->cell_size < 120.0f ? layer->cell_size : 120.0f;
+        }
+    }
 
     const float pitch_spd = u.plane_pitch_spd > 0.0f ? u.plane_pitch_spd : 0.5235988f;
     float look_t = static_cast<float>(1.5 / pitch_spd);              // double [00CE3D78]
@@ -8461,10 +8507,13 @@ void GameUnitsHost::motion_step_00825f20(float step_seconds) {
                             // docs/TORPEDO_RUN_IN_PATH.md. USN01 is open water,
                             // where the layer has nothing to report, so the sea
                             // surface stands in for it here.
-                            owner_.log.unimplemented(
-                                "AvoidZoneLayer::sample_0041bc20", "0041bc20");
-                            OceanFieldBinding sea(owner_);
-                            return bsp::ocean_water_height_0078cf20(x, z, sea);
+                            // Packet cc9_avoid_zone_registry: the same
+                            // squadron+34Ch layer, through the shared sample.
+                            if constexpr (!GameUnitsHost::Impl::kAvoidZoneLayerSampleBound) {
+                                owner_.log.unimplemented(
+                                    "AvoidZoneLayer::sample_0041bc20", "0041bc20");
+                            }
+                            return owner_.avoid_surface_height(x, z);
                         }
                         bool segment_blocked_00903bc0(const float from[3],
                                                       const float to[3]) override {
@@ -18274,6 +18323,29 @@ void GameUnitsHost::report() {
                     host.log.notef("summary mission plane squadron leaves=%d promotions=%d "
                         "(007BCAA0 -> 007F3970 at death, packet cc9_val_squadron_registry)",
                         host.squadron_leaves_, host.squadron_promotions_);
+                    {
+                        // Packet cc9_avoid_zone_registry: both heights at every
+                        // 0041BC20 site, whichever the switch picks.
+                        const GameAvoidZoneRegistry& reg = GameAvoidZoneRegistry::instance();
+                        const int li = reg.squadron_layer_34c();
+                        const bsp::TerrainGridLayerRecord* layer = reg.layer(li);
+                        host.log.notef("summary mission avoid-zone layer 0041BC20: bound=%d "
+                            "registry_layers=%zu scene_loads=%zu squadron_34c=%d "
+                            "(n=%d cell=%.1f scale=%.4f slope=%.6f) samples=%llu "
+                            "layer_nonzero=%llu layer_max=%.2f sea=[%.3f %.3f] "
+                            "|layer-sea| max=%.2f mean=%.4f",
+                            GameUnitsHost::Impl::kAvoidZoneLayerSampleBound ? 1 : 0,
+                            reg.layer_count(), reg.scene_loads(), li,
+                            layer ? layer->dimension : 0,
+                            layer ? static_cast<double>(layer->cell_size) : 0.0,
+                            layer ? static_cast<double>(layer->file_scalar) : 0.0,
+                            layer ? static_cast<double>(layer->slope_limit) : 0.0,
+                            host.az_samples, host.az_samples_layer_nonzero,
+                            host.az_layer_max, host.az_sea_min, host.az_sea_max,
+                            host.az_diff_abs_max,
+                            host.az_samples > 0 ? host.az_diff_abs_sum /
+                                static_cast<double>(host.az_samples) : 0.0);
+                    }
                     if constexpr (bsp::kPilotMoveToTaskBound && bsp::kMoveToTaskTickBound) {
                         std::size_t tasks = 0;
                         unsigned long long ticks = 0, changes = 0, arrivals = 0;
