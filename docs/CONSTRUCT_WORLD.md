@@ -2570,3 +2570,38 @@ The image's bag reader on that path was not read.
   - ON: `resolved=2`, `queue_pushes=2`, and the moveto arm finds the unit "MainAirFieldEntity 01".
   - Whether that unit is a slot the moveto can target, and what the two squadrons then do, is for
     that pair.
+
+### Pairs and verdict (step 2 of `cc9_load_time_squadron_hooks`, worker cc9-init2, 2026-09-27)
+
+docs/SENTITY_INIT_ATTACH_ORDER.md section 19 wired gap 1: the load walk now calls both squadron
+hooks, and `kLoadTimeSquadronHooksBound` is ON at 3d4b44269. This pair flips the name match on top
+of it.
+
+- **The runs.** The OFF side is step 1's ON logs (`local\LSH_ON2_JM08.log`, `LSH_ON_USN04.log`,
+  `LSH_ON_USN02.log` in worktree cc9-init2). That binary is `pair_export` of a04aa3998 with the
+  hooks switch flipped, and 3d4b44269 differs from it only by a comment. The ON side is
+  `pair_export` of 3d4b44269 with `kSceneHomeBaseQualifiedNameBound` flipped (SHA-256
+  E6CDF9F3A93B, `local\QN_ON_*.log`). Both variables were set, lockstep 0.05, idle player.
+
+| row | JM08 OFF | JM08 ON | predicted |
+| --- | ---: | ---: | --- |
+| home base `resolved` / `unresolved` | 0 / 2 | 2 / 0 | 2 / 0 |
+| `queue_pushes` | 0 | 2 | 2 |
+| initial command `movetos` / `member_orders` | 0 / 0 | 2 / 6 | +2 movetos |
+| `no_home` | 3 | 1 | falls by 2 |
+| mission commands issued | 40 | 46 | not predicted |
+| director `idle_reissues` / `stop` | 359 / 359 | 353 / 353 | not predicted |
+| deaths, hit records, death rows, plane death modes, unit table | 2, 127, 2, 1, 43 | identical | **moves** |
+| `pair_diff` exit | | 1 | 3 |
+| USN04 / USN02 `pair_diff` exit | | 0 / 0 | 0 or 1 |
+
+- **JM08.** Both keys match the deck "MainAirFieldEntity 01". `Squadron::set_home_air_base_007f1c00`
+  (2 calls) and `Squadron::initial_command_007f4e9e` (2 calls) are added. Ki-43 Oscar 01 and Gekko
+  01 and their four wing planes now carry `moveto -> MainAirFieldEntity 01`, issued by
+  `squadron_pass_c`, in place of the director's idle `stop`.
+- **Failed prediction, recorded.** "Gameplay moves" did not hold as `pair_diff` measures it. No
+  death, hit, plane death mode or unit-table row moved in 3000 frames. The host's log carries no
+  per-plane position row, so whether the six planes fly a different path is not measured here.
+- **USN04 and USN02.** Identical, exit 0, as predicted: no key.
+
+**Verdict: ON.** Every census row moved as predicted, and no reference gameplay row moved.
