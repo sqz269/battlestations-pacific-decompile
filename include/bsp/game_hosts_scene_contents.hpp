@@ -112,6 +112,10 @@ struct GameSceneClassTally {
     std::uint32_t create_address{0};     // descriptor[1]
     std::uint32_t register_address{0};   // descriptor[2]
     std::string creator_state;           // concrete | record, with the owner area
+    // Packet cc9_scene_path_landscape: scene objects the bound Path (004EA650)
+    // and Landscape (004F1460) creators built. Kept apart from `created`, which
+    // create_units reads as "make a unit from this record".
+    std::size_t objects{0};
 };
 
 struct GameSceneContentsSummary {
@@ -272,5 +276,91 @@ private:
 };
 
 ScenePathRegistry& scene_path_registry() noexcept;
+
+// ---------------------------------------------------------------------------
+// Packet cc9_scene_path_landscape: the Path and Landscape scene creators.
+// docs/SCENE_CONTENTS_HOSTS.md section 5 has the evidence and the contracts.
+//
+// 004EA650 (Path, class 47h) and 004F1460 (Landscape, class 44h) are the same
+// template, both __fastcall with EDX = name and four stack arguments (RET 10h
+// at 004EA753 and 004F1553): operator new (210h / 430h) and memset, the base
+// constructor 00928630 with network id 0 (006AF3D0 consumes the name string and
+// returns XOR AX,AX at 006AF40F), the class constructor (0047B660 / 004F11C0),
+// then vtable+98h = 00928860 BSP_GameEntity_PlaceInWorld(stack arg 1, the world
+// [[00E188A8]+19CCh], the frame), then the name copied to entity+154h.
+// PlaceInWorld stores the world at entity+30h and calls the class's slot 130h:
+//   Path      00487210: 00928560 (world+24h, every entity) then world+36Ch;
+//   Landscape 004F1400: 00928560 (world+24h) then world+348h.
+// The world's list heads sit at world+18h + class*0Ch, so both lists are the
+// class's own; 00424D00 reads the Path list's head at world+370h, and
+// 00903860 / 009038F0 / 009039D0 / 00903BC0 read the Landscape list's head at
+// world+34Ch. The properties are not read by the creators: the Path's Party and
+// PathPoints load in 00925F20 pass B (slot A0h = 007B38D0) and the Landscape's
+// FilePath / ModelPath / terrain load in pass A (slot 9Ch = 00883BB0).
+//
+// True binds the two creators: the instantiate pass builds a SceneWorldObject
+// for each generated row and appends it to the class list below, and the
+// Landscape's terrain file names are resolved against the VFS as a census.
+// Nothing consumes the objects yet (see the doc's contracts). Committed false
+// with the prediction that no measured row moves; the USN01 and USN04 pairs were
+// identity on every death, hit and shot row, so it is ON. False keeps
+// the record path: `SceneContents::class_creator` stays UNIMPLEMENTED.
+inline constexpr bool kScenePathLandscapeCreatorsBound = true;
+
+inline constexpr int kScenePathClassId = 0x47;       // 0047B660 stores [+C4h] = 47h
+inline constexpr int kSceneLandscapeClassId = 0x44;  // 004F11C0 stores [+C4h] = 44h
+
+// A host stand-in for the native Path (210h bytes, vtable 00CE6290) or
+// Landscape (430h bytes, vtable 00CEA090) entity. The comments give the native
+// field each member stands for; this is not the native layout.
+struct SceneWorldObject {
+    int class_id{-1};                // +C4h
+    std::string name;                // +154h (length) / +158h (buffer)
+    std::size_t scene_id{0};         // the record's visitation id, not a pointer
+    std::size_t parent_scene_id{0};  // the authored parent's record id, 0 = none
+    std::uint32_t vtable{0};         // +0h
+    std::uint32_t object_size{0};    // the operator new size
+    std::uint16_t network_id{0};     // 006AF3D0's answer, always 0
+    std::uint32_t class_list_offset{0};  // world+36Ch (Path) or world+348h (Landscape)
+    float world[16]{};               // the composed frame (see the doc, "frame")
+
+    // Path, 00925F20 pass B (007B38D0), taken from the retained record.
+    int party{-1};                   // +54h, 007B38FC
+    std::size_t path_points{0};      // the +1E4h component's point count
+    bool path_points_valid{false};
+
+    // Landscape, 00925F20 pass A (00883BB0), read from the merged bag.
+    std::string file_path;           // +3C4h, `FilePath` (00883C5E)
+    std::string model_path;          // +424h, `ModelPath` (00883C7B)
+    bool shallow_water_block{false}; // `ShallowWater` (00883E1D) is authored
+    // 00882AC0's three names, built from FilePath, and whether this process's
+    // VFS resolves each one. A census: the terrain object +3D0h, the model
+    // +41Ch / +420h, the render node +3CCh and the part instance +418h are not
+    // built.
+    std::string heightmap_name;      // "terrain/" FilePath "_heightmap.tdt"
+    std::string colormap_name;       // "terrain/" FilePath "_colormap.dds"
+    std::string model_name;          // "models/terrain/" FilePath ".mmod"
+    bool heightmap_resolved{false};
+    bool colormap_resolved{false};
+    bool model_resolved{false};
+};
+
+// The world's per-class entity lists (world+18h + class*0Ch, 97 heads built by
+// 004CB030) for the two classes this packet creates, appended in creation
+// order as 00484540 appends at the tail. Process-level for the same reason
+// scene_path_registry() is, and cleared with the rest of the scene state.
+class SceneWorldClassLists {
+public:
+    void clear() noexcept;
+    void append(SceneWorldObject object);
+    const std::vector<SceneWorldObject>& objects() const noexcept;
+    // Indices into objects() of the class's list, head first.
+    std::vector<std::size_t> list(int class_id) const;
+
+private:
+    std::vector<SceneWorldObject> objects_;
+};
+
+SceneWorldClassLists& scene_world_class_lists() noexcept;
 
 }  // namespace bsp::game

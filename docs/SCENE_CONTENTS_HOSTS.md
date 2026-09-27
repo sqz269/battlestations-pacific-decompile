@@ -4,6 +4,9 @@ Addresses: 004d0ee0 004c17d0 004248a0 004239e0 00424680 00424730 00423960 00423a
 0041df40 00412e20 004ba870 0046df00 0041ef90 004219a0 004cb160 004caf50 00bd2f10
 00b6a020 00b69d40 00b66bd0 00b669a0 00b67980 00b67800 00b67720 00b65fb0 00b662b0
 00b66270 008f41a0 008f2260 008f3370 008f5a00 008d9cf0
+004ea650 004f1460 0047b660 004f11c0 006af3d0 00928860 00487210 00487230 004f1400
+004f1420 004f1390 00883bb0 00882ac0 00880000 00880cd0 0087f9a0 00903860 009038f0
+009039d0 00903bc0
 
 The four steps `004D4DF0 BSP_Game_LoadSceneContents` delegates to and that
 `docs/MISSION_SCENE_CONTENTS.md` records only as unimplemented host methods.
@@ -343,6 +346,277 @@ So the weather descriptor is the **base property set the `header` block of the
 `.scn` is read over**, and it dies with the reader call. `00469BF0` writes only
 `record+905h` and `record+1098h`, which `docs/SCENE_FILE_READER.md` already
 records.
+
+## 5. The Path and Landscape creators (packet `cc9_scene_path_landscape`, 2026-09-27)
+
+Before this packet, both classes reached `SceneContents::class_creator` as a record
+(`native_scene_creators=unresolved` in the avoid-zone summary). Read-only analysis of the image,
+plus a host binding under `kScenePathLandscapeCreatorsBound` in
+`include/bsp/game_hosts_scene_contents.hpp`.
+
+### What the two creators build
+
+The two creators share one template. Path is 004EA650..004EA753 and Landscape is
+004F1460..004F1553. Both are `__fastcall` with EDX = the name and four stack arguments.
+- **Arguments.** Argument 1 is the hierarchy parent and argument 2 the frame. Arguments 3 and 4
+  are unread. `RET 10h` ends both.
+- **The creator call.** It is `CALL [row+4]` at 0046D5A4. It pushes `[ESP+1B8h]`, the bag (EBX),
+  the local frame at `ESP+50h` and the parent `[ESP+1B4h]`, with EDX = the name.
+
+| step | Path | Landscape |
+| --- | --- | --- |
+| allocate + zero | 210h | 430h (004F147B, 004F1487) |
+| network id | 006AF3D0 on `[game+21D8h]` consumes the name string and returns `XOR AX,AX` (006AF40F), so the id is 0 | same |
+| constructor | 0047B660 at 004EA6BC | 004F11C0 at 004F14CE |
+| place | `vtable+98h` = 00928860 `BSP_GameEntity_PlaceInWorld(arg1, [[00E188A8]+19CCh], frame)` at 004EA6FB; the Path copies the frame to a local first (004EA6D0 `REP MOVSD`, 10h dwords) | same call at 004F1502, frame passed as is |
+| name | `entity+154h` length, `+158h` buffer (004EA6FF, 004EA724) | same (004F1506, 004F1527) |
+
+**Layout.** Both are one 00928630 `BSP_GameEntity_Construct(0, 0)` base.
+- **Path** (0047B660): vtable 00CE6290 at +0h, 00CE6274 at +10h, 00CE626C at +24h and
+  00CE6268 at +170h. The path component at +1E4h is built by 007B28C0 and has vtable 00CE63E8.
+  `+C4h` = 47h.
+- **Landscape** (004F11C0):
+  - vtable 00CEA090 at +0h (004F1272);
+  - the collision node at +1E4h, vtable 00CEA05C, fields by 004E6480, with `+230h` = self;
+  - `+344h`, the segment-trace sub-object (vtable 00CEA050);
+  - `+360h` = &node;
+  - `+348h..+35Ch`, two copies of the float3 at 00F87574;
+  - `+B4h` = `+B8h` = 1 and `+C4h` = 44h (004F1338).
+
+**Lists (PlaceInWorld, slot 130h).**
+- PlaceInWorld stores the world at `entity+30h` and calls the class's slot 130h at 009288F1
+  (`docs/UNIT_WORLD_REGISTRATION.md`).
+- **Path** 00487210: 00928560 (`world+24h`, every entity), then 00484540 on `world+36Ch`.
+- **Landscape** 004F1400: 00928560, then `world+348h`. Both appends are at the tail.
+- **The list heads.** 004CB030 builds them at `world+18h + class*0Ch`, so `36Ch` is list 47h and
+  `348h` is list 44h. The ledger's "kind 41h" wording for 00487210 is a bucket label, not this
+  index.
+- **The unregister slots.** Slot 134h is 00487230 for a Path and 004F1420 for a Landscape; each
+  unlinks from the same list.
+
+**The properties load in InitAll, not in the creator.** 00925F20 runs after the scene read at
+0046EB4B. It calls slot 9Ch on every pending entity, then 0A0h, then 0A4h
+(`include/bsp/lua_binding_mission_2.hpp`).
+- **Path pass A** is 00928A00, the base `thisTable` attach, which the scene markers already
+  model.
+- **Path pass B** is 007B38D0: `Party` goes to `+54h` (007B38FC), and 007B34F0 loads `PathPoints`
+  into the +1E4h component (`docs/SCENE_LANDSCAPE_CLASS.md`, `docs/GAME_SCENE_ZONE_PATHS.md`).
+- **Landscape pass A** is 00883BB0 (**no Ghidra function**, 00883BB0..008840A0, `RET` at
+  008840A0 followed by `INT3` padding). It runs:
+  - it zeroes `+3CCh..+3DCh` and `+418h..+420h`, then calls 00928A00 and 00881A70;
+  - `FilePath` goes to `+3C4h` (00883C5E) and `ModelPath` to `+424h` (00883C7B);
+  - 00882AC0 (FilePath) runs at 00883DD3;
+  - then the `ShallowWater` block (`Texture`, `Pos`, `Size`) becomes a decal at `+42Ch`,
+    registered on `[[game+19F0h]+A8h]` vtable+1Ch (00883E15);
+  - 00883F88..00883FA1 adds the segment-trace shape `+344h` to the collision node's shape array
+    (`[+1E4h + [+2DCh]*4 + D0h]`, count at `node+F8h`), and 00883FAE sets `+230h` = self;
+  - the terrain's box (terrain vt+0Ch at 00883FBE, less the pose translation `+CCh+30h..38h`)
+    goes to 0098A920 `BSP_SpatialNode_SetLocalBounds` on `+1E4h` (00884066);
+  - **00884078 calls 0098BA10 `(index 0042E630(), node +1E4h, parent 0, matrix +384h,
+    static 1)`**: the island is a static root of the spatial index. This is a fourth attach site
+    that `docs/SPATIAL_INDEX.md`'s table of three lacks, because the body has no Ghidra function;
+  - `+168h` = 00740FE0 on `[00E1AEA0]` (00884083..0088408D).
+- **Landscape pass B** is 009277E0, the base inherit-race thunk.
+
+**00882AC0, the terrain load** (00882AC0..00883BA5) builds three names from FilePath:
+- `terrain/<FilePath>_heightmap.tdt` and `terrain/<FilePath>_colormap.dds`;
+- `models/terrain/<FilePath>.mmod`.
+
+It then builds these objects:
+- **+3D0h**, the terrain object, from 00ADD290 on `[game+19ECh]`. Its vtable+28h is height(x, z),
+  +38h the normal and +40h the render geometry.
+- **+41Ch**, the `.mmod` resource, from 007188A0 `BSP_Resource_LoadWithGameFactory`
+  (00882FC8), and **+420h**, its instance (vtable+8h).
+- **+3CCh**, a render node, built only when `[game+19F0h]` exists.
+- **+418h**, from 007135C0 `BSP_UnitPartInstance_Construct` (008830F1). Its spatial-index
+  attach at 00710B6D passes the static flag because the pose answers 44h
+  (`docs/SPATIAL_INDEX.md`).
+
+So an island enters the spatial index the segment queries walk twice: as the terrain node
+(pass A, 00884078) and as the model's parts (00710B6D).
+
+00882EE6..00882EFD test `[0109CEECh]` vtable+8h on a name and skip to 00883A1B when it answers
+false. That branch, and the part loop after +418h, were not read.
+
+**The two remaining Landscape slots.**
+- **Slot DCh** (00880000..0088007A, **no Ghidra function**) is the per-frame tick:
+  - `+3DCh += dt`;
+  - 00BB0A90 on `+3D4h` and 00BAEC50 on `+3D8h`;
+  - 00ADA0C0 on the terrain with `[game+19FCh]`;
+  - `+3CCh` vtable+38h with `entity+74h`.
+- **Slot 84h** (00880CD0) is the teardown:
+  - 0098A500 detaches `+1E4h` from the spatial index;
+  - 00423AF0 resets the avoid-zone registry's layers on 004C17D0's singleton;
+  - it clears `+2DCh`, then tail-jumps to 009277F0.
+
+**Timing.** In the load routine, construct_world is called at 004E01DE and load_scene_contents at
+004E03E5 (scene read 0046EB0F, InitAll 0046EB4B). The avoid-zone rebuild follows at 004E07BE
+(rel32 census, one caller each). So both classes exist and are initialised before the zones are
+built and before any unit ticks. A Landscape's terrain exists before any ground-height query.
+
+### Who reads them
+
+| reader | what it reads | host today |
+| --- | --- | --- |
+| 00424D00 avoid-zone walk | list 47h, head `world+370h`; 0041D1E0 path interface 007AC9D0 = `+1E4h`, Party `+54h`; 0041CCD0 parent `vt+5Ch(44h)` | `GameAvoidZoneRuntime::rebuild` walks the records instead, in scene order; list 47h's head-first order is the same order |
+| 00903860 `BSP_World_GroundHeightAt` | list 44h head `world+34Ch`, max of `[node+8h]+3D0h` vt+28h(x, z), seeded -1000.0 [00D7A240]; 30 rel32 call sites | `ground_height_00903860() { return 0.0f; }` in `src/game_hosts_units.cpp` (cc9-plane-release) |
+| 009038F0 | same walk, then the winner's terrain vt+38h normal | none |
+| 009039D0 | same walk; returns the winning Landscape | none |
+| 00903BC0 segment test | two ground tests through 00903860, then an occluder sweep of list 44h via vt+3Ch; callers 007C3E00, 009A15C1, 009A172E (AvoidTerrain 0099F1C0), 009D39D3 (torpedo approach) | `World::segment_occluders_00903bc0` record in `src/game_hosts_units.cpp` |
+| 009043A0 / 0098ADD0 segment query | the spatial index; an island is there through the terrain node (00884078, shape `+344h`, slot E4h 0087FEC0 `BSP_CollisionShape_TraceSegment_Extruded`) and the parts (00710B6D) | the query runs over the gunnery host's units only (`query_segment_units_impl`, `src/game_hosts_gunnery.cpp`) |
+| 0084BC99 impact effect | a hit entity answering 44h selects mode 3, the terrain effect slot (`docs/PROJECTILE_IMPACT.md`) | only reachable once an island is in the query |
+| the renderer | `+3CCh`, `+420h`, the decal `+42Ch` | none |
+
+**The avoid-zone layer sample 0041BC20 is not a Landscape reader.** It samples the `.nav` layers
+of 004C17D0. A Landscape only resets those layers at teardown.
+
+### The binding
+
+`kScenePathLandscapeCreatorsBound` (committed false for the pairs, **ON** after them) is declared in
+`include/bsp/game_hosts_scene_contents.hpp` and used in `src/game_hosts_scene_contents.cpp`.
+- **The object.** For each generated row of class 47h or 44h, `create_scene_world_object`
+  builds a `SceneWorldObject`, the host stand-in for the native entity. It appends the object to
+  `scene_world_class_lists()`, the stand-in for lists 47h and 44h.
+- **Path fields.** Party and the point count come from the retained record, the projection of
+  pass B.
+- **Landscape fields.** FilePath, ModelPath and ShallowWater come from the merged bag, as pass A
+  reads them. The three 00882AC0 names are resolved against this process's VFS as a census.
+- **`created` stays false.** `create_units` makes a unit of every created record, and the marker
+  pass keys on `generated && !created`. In the image both classes still get their `thisTable`
+  slot through pass A.
+- **Named records on the ON path:**
+  - `Landscape::load_terrain` 00882AC0;
+  - `Landscape::attach_terrain_vcall_9c` 00883BB0.
+- **Labelled substitutions** (in the code and here):
+  - **Timing.** The pass A and pass B fields are filled at creation, where the image fills them
+    in InitAll after the whole scene is read. Nothing reads them in between.
+  - **The frame.** The object keeps the record's composed world frame with no hierarchy parent,
+    the convention of this file's unit creators. The native passes the authored localframe and
+    the parent.
+- **OFF** keeps the record path unchanged: `SceneContents::class_creator` stays UNIMPLEMENTED
+  for 004EA650 and 004F1460.
+- **The census line** `summary scene path/landscape creators` is printed in both states.
+
+**Contracts for the other owners** (nothing here edits their files):
+- **Units host** (cc9-plane-release). `ground_height_00903860` is:
+  - the max over `scene_world_class_lists().list(0x44)` of the terrain height at (x, z);
+  - -1000.0 when the list is empty or no terrain answers.
+
+  Until a terrain object exists, the correct stand-in for an island mission is not 0.0. It is
+  "no terrain", -1000.0, and the answer only moves once the `.tdt` height field is read.
+  `segment_blocked_00903bc0` needs the same terrain and the occluder vt+3Ch.
+- **Gunnery host.** The segment query gains islands when a Landscape's terrain node joins the
+  index (00884078), which needs the terrain object's bounds and its segment-trace shape. The
+  `.mmod` parts (00882AC0 -> +418h -> 00710B6D) are a second, separate source of island hits.
+- **Avoid-zone runtime.** Once this lands ON, the summary's `native_scene_creators=unresolved`
+  can read `bound`. The rebuild may walk list 47h instead of the records: the census proves the
+  two orders equal.
+
+### Names and bodies
+
+Ledger names added (hypotheses): `004F1460 BSP_SceneDatabase_CreateLandscape`,
+`004F11C0 BSP_Landscape_Construct`, `0047B660 BSP_Path_Construct`,
+`004F1400 BSP_Landscape_RegisterInWorldLists`, `004F1420 BSP_Landscape_UnregisterFromWorldLists`,
+`00487230 BSP_Path_UnregisterFromWorldLists`, `004F1390 BSP_Landscape_GetCollisionNode`,
+`00883BB0 BSP_Landscape_InitAttachTerrain`, `00882AC0 BSP_Landscape_LoadTerrain`,
+`00880000 BSP_Landscape_TickTerrain`, `00880CD0 BSP_Landscape_Teardown`,
+`009038F0 BSP_World_GroundHeightAndNormalAt`, `009039D0 BSP_World_LandscapeAt` and
+`006AF3D0 BSP_EntityNetworkId_FromNameStub`.
+
+Bodies with no Ghidra function (`ghidra proto --brief` answers `?`), all Landscape vtable slots:
+
+| start | end (inclusive) | slot | evidence |
+| --- | --- | --- | --- |
+| 00883BB0 | 008840A0 | 9Ch | `RET` at 008840A0, `INT3` from 008840A1 |
+| 00880000 | 0088007A | DCh | `RET 4` at 00880078, `INT3` 0088007B..0088007F |
+| 004F1390 | 004F139D | B0h | `RET` at 004F139D, `INT3` 004F139E..004F139F |
+| 0087F9A0 | 0087F9CE | 24h | `RET 0Ch` at 0087F9CC; calls `[+3D0h]` vt+40h, then 007407C0 on `+168h` |
+| 0087F9F0 | 0087F9F0 | E0h | a lone `RET`, `INT3` to 0087F9FF |
+
+### Predictions, written before the runs
+
+One tree, one base, the switch false against true. Every run uses streams and the death table on,
+with `--frames <F> --press-start-frame 30 --menu-select <M> --mission-frames <N>
+--mission-frame-seconds 0.05`.
+
+**USN01 3200/3000** (`usn_1_marshall.scn`: 4 Landscape, 55 Path, of which 21 are `AvoidZoneG`).
+- **Census, OFF:** `bound=0 path seen=55 generated=55 rejected=0 created=0 landscape seen=4
+  generated=4 rejected=0 created=0 list47=0 list44=0`.
+- **Census, ON:** `path ... created=55`, `landscape ... created=4`, `list47=55 list44=4
+  avoid_zone_paths=21 list_order_matches_records=1`.
+- **Terrain files, ON:**
+  - `models/terrain/islands/m07_a.mmod` resolves, and so do the three `dlc_l_03_s.mmod`
+    (loose files exist in this installation): `models=4/4`.
+  - `m07_a_heightmap.tdt` exists only under `models/terrain/islands/`, and the native name has no
+    `models/` prefix. So whether `terrain/...` resolves depends on the search registration.
+    Prediction, low confidence: `heightmaps=0/4 colormaps=0/4`.
+- **Zones:** `groups=6 zones=21` on both sides.
+- **Consumers:** no consumer moves.
+  - Ground height stays 0.0 and the segment query has no islands.
+  - The avoid-zone probe line and the gunnery segment rows are identical.
+- **Outcome:** identity, a zero band, on deaths (7), hit records (150), shots (583) and torpedo
+  drops (0). Every native row and death row is identical except:
+  - the four implementation rows the switch adds (`create_path`, `create_landscape` and the two
+    Landscape records);
+  - the `class_creator [004f1460]` / `[004ea650]` record calls, which disappear.
+
+  The two `scene class` rows' creator column and the census line also change.
+
+**USN04 4700/4500** (`usn_19_coralus.scn`, no rows).
+- **Census:** zero on both sides, `path seen=0 ... landscape seen=0`.
+- **Outcome:** identity on every row.
+
+### The pairs, measured
+
+- **Builds.** One tree (`agent/cc9-scene-entities` at `0e10276ef`, which is main `76c08fbe2` plus
+  this packet), built twice with only the switch flipped:
+  - `local\pl_off`, SHA-256 prefix `7CA40E879BC2`;
+  - `local\pl_on`, SHA-256 prefix `6ECF040F016B`.
+- **Logs.** `local\pl_{off,on}_{usn01,usn04}.log`. Each shows the 1600x900 override and its own
+  module directory in this tree, and each exited 0.
+
+**USN01 3200/3000: identity on every measured row.**
+- **Census.**
+  - OFF: `bound=0 path seen=55 generated=55 rejected=0 created=0 landscape seen=4 generated=4
+    rejected=0 created=0 list47=0 list44=0`.
+  - ON: `bound=1 ... created=55 ... created=4 list47=55 list44=4 avoid_zone_paths=21
+    list_order_matches_records=1 terrain heightmaps=4/4 colormaps=0/4 models=4/4`.
+- **Zones.** Both sides: `groups=6 zones=21 source_points=2193 corners=2193 associated=21`.
+- **Outcome.** Both sides: 7 deaths, 150 hit records, 583 shots and `damage=2690.0`. All 23
+  death rows and every summary line are identical, except the census line.
+- **Native table.** Six rows differ, all as predicted:
+  - `create_path` 004EA650 (55) and `create_landscape` 004F1460 (4) appear;
+  - `Landscape::load_terrain` 00882AC0 (4) and `Landscape::attach_terrain_vcall_9c` 00883BB0 (4)
+    appear;
+  - the `SceneContents::class_creator` record goes from 70 calls to 11.
+
+  The native table keys that record by name and shows the first caller's address. OFF lists it
+  as 004F1460 with 70 calls: 4 Landscape, 55 Path and 11 others. ON lists it as 004E9D40 with the
+  11 others.
+- **The four Landscapes:**
+  - `Landscape 03`, FilePath `islands/m07_a`;
+  - `Landscape 04..06`, FilePath `islands/DLC_L_03_S`.
+
+  Each has a `ShallowWater` block and an empty `ModelPath`.
+
+**Failed prediction: the heightmaps resolve, 4/4, not 0/4.** The native name
+`terrain/islands/<F>_heightmap.tdt`, with no `models/` prefix, is found by this process's VFS
+search, including the DLC island's, which has no loose file. So the `.tdt` height field is
+reachable for a later terrain reader. The colormaps resolve 0/4 as predicted, and the models 4/4.
+
+**USN04 4700/4500: identity on every measured row.**
+- **Outcome.** Both sides: 41 deaths, 743 hit records, 5,603 shots and `damage=11494.8`. All 112
+  death rows and every summary line are identical, except the census line.
+- **Native table.** Three rows differ: `create_path` 004EA650 appears with 4 calls, and the
+  `class_creator` record changes from 004EA650 (5) to 004E99B0 (1).
+
+**Failed prediction: USN04 has four Path rows, not none.** `usn_19_coralus.scn` authors no
+`AvoidZone` path and no Landscape, but it has four non-zone paths, `CarrierPath1..4`, with party 2
+and 6, 6, 8 and 8 points. The census reads `path seen=4 created=4 list47=4 avoid_zone_paths=0`.
+
+**Verdict: ON.** Both pairs are identity on every death, hit-record and shot row, and the census is
+exact. The objects now exist for the consumers listed under the contracts above. No consumer reads
+them yet, so no measured row moves.
 
 ## Ledger names recorded
 

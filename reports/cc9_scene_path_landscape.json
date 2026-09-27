@@ -1,0 +1,318 @@
+{
+  "packet": "cc9_scene_path_landscape",
+  "doc": "docs/SCENE_CONTENTS_HOSTS.md",
+  "calls": [
+    {
+      "address": "004EA6B1",
+      "native": "006AF3D0",
+      "function": "004EA650",
+      "note": "network id, always 0"
+    },
+    {
+      "address": "004EA6BC",
+      "native": "0047B660",
+      "function": "004EA650",
+      "note": "Path constructor"
+    },
+    {
+      "address": "004EA6FB",
+      "native": "00CE6290+vtable98",
+      "function": "004EA650",
+      "note": "00928860 PlaceInWorld(arg1, [[00E188A8]+19CCh], &frame copy)"
+    },
+    {
+      "address": "004F14C3",
+      "native": "006AF3D0",
+      "function": "004F1460",
+      "note": "network id, always 0"
+    },
+    {
+      "address": "004F14CE",
+      "native": "004F11C0",
+      "function": "004F1460",
+      "note": "Landscape constructor"
+    },
+    {
+      "address": "004F1502",
+      "native": "00CEA090+vtable98",
+      "function": "004F1460",
+      "note": "00928860 PlaceInWorld(arg1, [[00E188A8]+19CCh], frame)"
+    },
+    {
+      "address": "00487213",
+      "native": "00928560",
+      "function": "00487210",
+      "note": "world+24h, every entity"
+    },
+    {
+      "address": "00487222",
+      "native": "00484540",
+      "function": "00487210",
+      "note": "append to world+36Ch, list 47h"
+    },
+    {
+      "address": "004F1403",
+      "native": "00928560",
+      "function": "004F1400",
+      "note": "world+24h, every entity"
+    },
+    {
+      "address": "004F1412",
+      "native": "00484540",
+      "function": "004F1400",
+      "note": "append to world+348h, list 44h"
+    },
+    {
+      "address": "00880CE9",
+      "native": "0098A500",
+      "function": "00880CD0",
+      "note": "detach collision node +1E4h"
+    },
+    {
+      "address": "00880CEE",
+      "native": "004C17D0",
+      "function": "00880CD0",
+      "note": "avoid-zone registry singleton"
+    },
+    {
+      "address": "00880CF5",
+      "native": "00423AF0",
+      "function": "00880CD0",
+      "note": "reset the layers"
+    },
+    {
+      "address": "00882FC8",
+      "native": "007188A0",
+      "function": "00882AC0",
+      "note": "the .mmod resource, +41Ch"
+    },
+    {
+      "address": "008830F1",
+      "native": "007135C0",
+      "function": "00882AC0",
+      "note": "part instance +418h"
+    },
+    {
+      "address": "004E01DE",
+      "native": "004DE610",
+      "note": "construct_world, before the scene"
+    },
+    {
+      "address": "004E03E5",
+      "native": "004D4DF0",
+      "note": "load_scene_contents: creators, then InitAll"
+    },
+    {
+      "address": "004E07BE",
+      "native": "00424D00",
+      "note": "avoid-zone rebuild, after both"
+    },
+    {
+      "address": "0046EB4B",
+      "native": "00925F20",
+      "note": "InitAll after the scene read: passes 9Ch, A0h, A4h"
+    },
+    {
+      "address": "00903BD8",
+      "native": "00903860",
+      "function": "00903BC0",
+      "note": "ground test, endpoint 1"
+    },
+    {
+      "address": "00903C08",
+      "native": "00903860",
+      "function": "00903BC0",
+      "note": "ground test, endpoint 2"
+    }
+  ],
+  "coverage": [
+    {
+      "routine": "004EA650",
+      "coverage": "complete"
+    },
+    {
+      "routine": "004F1460",
+      "coverage": "complete"
+    },
+    {
+      "routine": "004F11C0",
+      "coverage": "complete (stores listed; 004E6480 field init taken as a contract)"
+    },
+    {
+      "routine": "0047B660",
+      "coverage": "complete (007B28C0 component constructor taken as a contract)"
+    },
+    {
+      "routine": "004F1400",
+      "coverage": "complete"
+    },
+    {
+      "routine": "00487210",
+      "coverage": "complete"
+    },
+    {
+      "routine": "00883BB0",
+      "coverage": "partial: 00883C5E-00883DD3 and 00883F88-008840A0 read; the ShallowWater arm 00883DD8-00883F83 read by its calls and strings only"
+    },
+    {
+      "routine": "00882AC0",
+      "coverage": "partial: names, +3D0h, +41Ch, +420h, +3CCh, +418h; the branch 00882EE6-00883A1B and the part loop after 008830F1 unread"
+    },
+    {
+      "routine": "00880000",
+      "coverage": "complete"
+    },
+    {
+      "routine": "00880CD0",
+      "coverage": "complete"
+    },
+    {
+      "routine": "009038F0",
+      "coverage": "partial: the list walk 009038F0-00903968; the normal arm read by its call only"
+    },
+    {
+      "routine": "009039D0",
+      "coverage": "complete"
+    }
+  ],
+  "substitutions": [
+    {
+      "what": "the Path / Landscape entity",
+      "is": "a SceneWorldObject record in scene_world_class_lists(), not the 210h / 430h object",
+      "evidence": "this process has no native entities; the object carries the fields the lists' readers need"
+    },
+    {
+      "what": "InitAll pass A (00883BB0) and pass B (007B38D0) fields",
+      "is": "filled at creation",
+      "evidence": "the image fills them at 0046EB4B after the whole scene read; nothing reads them in between"
+    },
+    {
+      "what": "the creator's frame argument",
+      "is": "the record's composed world frame, no hierarchy parent",
+      "evidence": "0046D592 passes the authored localframe and 0046D585 the parent; the unit creators in the same file already use the composed frame"
+    },
+    {
+      "what": "the terrain files",
+      "is": "resolved against this process's VFS as a census, not loaded",
+      "evidence": "00882AC0 hands them to 00ADD290 / 007188A0, which are not reconstructed"
+    }
+  ],
+  "corrections": [
+    {
+      "was": "docs/SPATIAL_INDEX.md lists three 0098BA10 attach sites",
+      "is": "a fourth: 00884078 in 00883BB0 (no Ghidra function) attaches the Landscape's collision node +1E4h as a static root",
+      "evidence": "00884066 0098A920 bounds, 0088406B-00884078 PUSH 1, PUSH EBX(+384h), PUSH 0, PUSH EDI(+1E4h), ECX = 0042E630()"
+    },
+    {
+      "was": "the ledger text of 00487210 calls world+36Ch the bucket for kind 41h",
+      "is": "world+36Ch is list 47h, the Path class id (world+18h + 47h*0Ch)",
+      "evidence": "004F1400 uses +348h = 18h + 44h*0Ch for class 44h; 004CB030 builds 61h heads of 0Ch at +18h"
+    }
+  ],
+  "switches": [
+    {
+      "name": "kScenePathLandscapeCreatorsBound",
+      "state": "ON",
+      "pair": "local/pl_off_usn01.log vs local/pl_on_usn01.log, local/pl_off_usn04.log vs local/pl_on_usn04.log (binaries local/pl_off 7CA40E879BC2, local/pl_on 6ECF040F016B); identity on deaths, hit records, shots and every death row"
+    }
+  ],
+  "failed_predictions": [
+    {
+      "row": "USN01 terrain heightmaps",
+      "predicted": "0/4 resolve (no models/ prefix in the native name)",
+      "measured": "4/4",
+      "why": "the VFS search finds terrain/islands/<F>_heightmap.tdt, the DLC island's included"
+    },
+    {
+      "row": "USN04 Path rows",
+      "predicted": "none",
+      "measured": "4 (CarrierPath1..4, party 2, 6/6/8/8 points)",
+      "why": "the scene authors no AvoidZone path but has four carrier paths"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "00883BB0",
+      "end_inclusive": "008840A0",
+      "evidence": "Landscape vtable slot 9Ch (00CEA090+9Ch); RET at 008840A0, INT3 from 008840A1; calls 00882AC0 at 00883DD3 and 0098BA10 at 00884078"
+    },
+    {
+      "start": "00880000",
+      "end_inclusive": "0088007A",
+      "evidence": "Landscape vtable slot DCh; RET 4 at 00880078, INT3 0088007B-0088007F, 00880080 is FUN_00880080"
+    },
+    {
+      "start": "004F1390",
+      "end_inclusive": "004F139D",
+      "evidence": "Landscape vtable slot B0h; RET at 004F139D, INT3 004F139E-004F139F, 004F13A0 is FUN_004f13a0"
+    },
+    {
+      "start": "0087F9A0",
+      "end_inclusive": "0087F9CE",
+      "evidence": "Landscape vtable slot 24h; RET 0Ch at 0087F9CC, INT3 at 0087F9CF; calls [+3D0h] vt+40h then 007407C0 on +168h; enclosing candidate 0087D7B0 does not contain it"
+    },
+    {
+      "start": "0087F9F0",
+      "end_inclusive": "0087F9F0",
+      "evidence": "Landscape vtable slot E0h; a lone RET, INT3 0087F9F1-0087F9FF"
+    }
+  ],
+  "ledger_names_added": [
+    {
+      "address": "004F1460",
+      "name": "BSP_SceneDatabase_CreateLandscape"
+    },
+    {
+      "address": "004F11C0",
+      "name": "BSP_Landscape_Construct"
+    },
+    {
+      "address": "0047B660",
+      "name": "BSP_Path_Construct"
+    },
+    {
+      "address": "004F1400",
+      "name": "BSP_Landscape_RegisterInWorldLists"
+    },
+    {
+      "address": "004F1420",
+      "name": "BSP_Landscape_UnregisterFromWorldLists"
+    },
+    {
+      "address": "00487230",
+      "name": "BSP_Path_UnregisterFromWorldLists"
+    },
+    {
+      "address": "004F1390",
+      "name": "BSP_Landscape_GetCollisionNode"
+    },
+    {
+      "address": "00883BB0",
+      "name": "BSP_Landscape_InitAttachTerrain"
+    },
+    {
+      "address": "00882AC0",
+      "name": "BSP_Landscape_LoadTerrain"
+    },
+    {
+      "address": "00880000",
+      "name": "BSP_Landscape_TickTerrain"
+    },
+    {
+      "address": "00880CD0",
+      "name": "BSP_Landscape_Teardown"
+    },
+    {
+      "address": "009038F0",
+      "name": "BSP_World_GroundHeightAndNormalAt"
+    },
+    {
+      "address": "009039D0",
+      "name": "BSP_World_LandscapeAt"
+    },
+    {
+      "address": "006AF3D0",
+      "name": "BSP_EntityNetworkId_FromNameStub"
+    }
+  ]
+}
