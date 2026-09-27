@@ -1,0 +1,31 @@
+{
+  "packet": "cc9_reference_attribution_pairs",
+  "doc": "docs/GAME_EXECUTABLE.md, reference c section, 'Attribution pairs for the flags above'",
+  "ghidra": "not used",
+  "tree": "git archive export of main 1eaedc668 in local/ap_src; flips in the export only",
+  "env": "BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1, lockstep 0.05, idle player",
+  "pairs": [
+    {
+      "mission": "USN01 3200/3000",
+      "switch": "kReconUnitListSourcesBound",
+      "control": true,
+      "treatment": false,
+      "prediction": "unit lists 7/26 vs 14/62; no gameplay line moves"
+    },
+    {
+      "mission": "USN01 3200/3000",
+      "switch": "kPlaneFormationPlacementEnabled",
+      "control": false,
+      "treatment": true,
+      "prediction": "true reproduces b: shots 457, window refusals 385, ScoutDauntless|.-2 death 130.50 s"
+    },
+    {
+      "mission": "USN02 9200/9000",
+      "switch": "kShipAiSnapshotBound",
+      "control": true,
+      "treatment": false,
+      "prediction": "OFF: dir=astern >= 100 lines, >= 2 more Allied sinkings; b row 20/487/53671.0 at 39.65 s would close the flag; partial match expected"
+    }
+  ],
+  "results": "pending"
+}
