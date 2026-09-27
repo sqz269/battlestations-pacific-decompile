@@ -202,6 +202,8 @@ struct GameScriptEntity {
     // Packet cc9_scene_race_and_script_identity: pushed by 00928630 and not yet
     // through an InitAll's pass C (00928100).
     bool identity_pending{true};
+    int party{2};   // +54h: 00925CE0's 2 (00925E1D), then SetParty's 00923B80
+    int race{-1};   // +58h: 00925CE0's -1 (00925E24); SetParty passes it back unchanged
 };
 
 // Packet cc_mission_blackout: what the fade at `*(00E198C4 + A4h) + C0h` did
@@ -574,7 +576,17 @@ private:
     unsigned long long random_draws_{0};
     GameScriptTimerSummary timers_{};
     std::size_t script_identity_writes_{0};  // packet cc9_scene_race_and_script_identity
+    std::size_t script_party_sets_{0};
     void mirror_script_identity_00928100();
+    void write_script_identity_fields(const GameScriptEntity& script, bool type);
+
+public:
+    // SetParty's vtable +2Ch on a CreateScript entity (00D11164 = 00928F50):
+    // 00923B80 stores +54h = party (00923B92), then 00928F50 mirrors Race and
+    // Party. Answers false when the entity is not a script entity.
+    bool set_script_entity_party_00928f50(void* entity, int party);
+
+private:
 
     // Packet cc_mission_blackout. The five fields at `*(00E198C4 + A4h) + C0h`,
     // and the widget colour the +54h getter would answer with. 005BA7B0 leaves

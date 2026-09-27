@@ -192,9 +192,13 @@ public:
         return false;
     }
     void entity_vcall_2c(void* entity, int party, std::uint32_t field_58) override {
-        static_cast<void>(entity);
-        static_cast<void>(party);
         static_cast<void>(field_58);
+        if constexpr (kSceneRaceAndScriptIdentityBound) {
+            // Packet cc9_scene_race_and_script_identity: the script entity's
+            // slot is 00928F50; 008A8ADF pushes the entity's own +58h, so the
+            // race is handed back unchanged.
+            if (owner_.set_script_entity_party_00928f50(entity, party)) return;
+        }
         owner_.record_unimplemented("LuaBindingCore::entity_set_party_vtable_2c",
             "008a8ae3");
     }
@@ -2732,29 +2736,47 @@ void GameScriptOrdersHost::run_script_think_pass(float step) {
 // slot +0Ch (004313D0), so there is no Name. Type is 00E0CD80[3] = SCRIPTENTITY.
 // SUBSTITUTION: run on the first mission frame after the creation, not at the
 // next fixed step's InitAll row 12.
-void GameScriptOrdersHost::mirror_script_identity_00928100() {
-    for (GameScriptEntity& script : script_entities_) {
-        if (!script.identity_pending) continue;
-        script.identity_pending = false;
-        lua_State* const state = machine_state_;
-        const int base = lua_gettop(state);
-        lua_getfield(state, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);
-        char key[16];
-        std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat,
-            static_cast<int>(script.id));
+void GameScriptOrdersHost::write_script_identity_fields(const GameScriptEntity& script,
+    bool type) {
+    lua_State* const state = state_ != nullptr ? state_ : machine_state_;
+    if (state == nullptr) return;
+    const int base = lua_gettop(state);
+    lua_getfield(state, LUA_GLOBALSINDEX, bsp::kMissionLuaSelfTable);
+    char key[16];
+    std::snprintf(key, sizeof(key), bsp::kMissionLuaEntityKeyFormat,
+        static_cast<int>(script.id));
+    if (lua_istable(state, -1)) {
+        lua_getfield(state, -1, key);
         if (lua_istable(state, -1)) {
-            lua_getfield(state, -1, key);
-            if (lua_istable(state, -1)) {
-                lua_pushnumber(state, -1.0);
-                lua_setfield(state, -2, "Race");
-                lua_pushnumber(state, 2.0);
-                lua_setfield(state, -2, "Party");
+            lua_pushnumber(state, static_cast<lua_Number>(script.race));
+            lua_setfield(state, -2, "Race");
+            lua_pushnumber(state, static_cast<lua_Number>(script.party));
+            lua_setfield(state, -2, "Party");
+            if (type) {
                 lua_pushstring(state, "SCRIPTENTITY");
                 lua_setfield(state, -2, "Type");
                 ++script_identity_writes_;
             }
         }
-        lua_settop(state, base);
+    }
+    lua_settop(state, base);
+}
+
+bool GameScriptOrdersHost::set_script_entity_party_00928f50(void* entity, int party) {
+    GameScriptEntity* script = script_entity(entity);
+    if (script == nullptr) return false;
+    script->party = party;                     // 00923B92
+    write_script_identity_fields(*script, false);  // 00928FD9, 00929046
+    ++script_party_sets_;
+    log_.implemented("ScriptEntity::set_party_race_lua_mirror", "00928f50");
+    return true;
+}
+
+void GameScriptOrdersHost::mirror_script_identity_00928100() {
+    for (GameScriptEntity& script : script_entities_) {
+        if (!script.identity_pending) continue;
+        script.identity_pending = false;
+        write_script_identity_fields(script, true);
         log_.implemented("ScriptEntity::InitAll pass C mirror_identity", "00928100");
     }
 }
@@ -2848,9 +2870,10 @@ void GameScriptOrdersHost::report() {
             timers_.call_failures,
             timers_.first_error.empty() ? "" : timers_.first_error.c_str());
         log_.notef("summary mission script entity identity bound=%d written=%zu "
-            "(00928100: Race -1, Party 2, Type SCRIPTENTITY; packet "
-            "cc9_scene_race_and_script_identity)",
-            kSceneRaceAndScriptIdentityBound ? 1 : 0, script_identity_writes_);
+            "party_sets=%zu (00928100: Race +58h, Party +54h, Type SCRIPTENTITY; "
+            "00928F50 on SetParty; packet cc9_scene_race_and_script_identity)",
+            kSceneRaceAndScriptIdentityBound ? 1 : 0, script_identity_writes_,
+            script_party_sets_);
     }
     if (blackout_summary_.arms != 0 || blackout_summary_.updates != 0) {
         log_.notef("summary mission blackout (packet cc_mission_blackout, 008D1340 / "

@@ -1242,3 +1242,72 @@ commandhelpers.lua 16796 are spawn parameter tables, not reads.
     equal to `written`;
   - pair_diff exit 1: every gameplay row, the death, plane and unit tables and every other
     summary line identical, the two census lines apart.
+
+### 11.6 The first pair, and what it caught
+
+The first pair was run on `81318497d`:
+- exports `local\ri_off` (SHA-256 prefix `8021B739520A`) and `local\ri_on` (`D76E077E7FEE`);
+- logs `local\ri_{off,on}_{usn04,usn02}.log`.
+
+It held on gameplay: pair_diff exit 1 on both, with identical death, plane and unit tables. But
+the scripts moved:
+- CreateScript 13 -> 10 on USN04 and 16 -> 13 on USN02, three `luaDoTimeTable` entities fewer;
+- `mission script state: Party 0 -> 2` on USN02.
+
+**The cause was the binding, not the image.**
+- `luaInit(this)` runs `this.Party = SetParty(this, PARTY_ALLIED)` (usn_2_java.lua 54,
+  usn_19_coralus.lua 60) inside CreateScript's own call.
+- The first binding then wrote the constant Party 2 on the next frame, over the 0.
+- In the image, SetParty on the script entity reaches its `vtable[2Ch]`, which is 00928F50
+  (00D11164). It works in two steps:
+  - **The store.** Its base 00923B80 stores the first argument at `+54h` (00923B92). The second
+    argument goes to `+58h` (00923B95), and 008A8ADF pushes the entity's own `+58h` there, so the
+    race comes back unchanged.
+  - **The mirror.** 00928F50 then mirrors Race and Party.
+- So pass C's 00928100 later writes the Party that SetParty left, 0, not the base's 2.
+
+**The fix** (still under the switch):
+- each script entity keeps its `+54h` and `+58h` (2 and -1 from the base);
+- SetParty on a script entity stores the party and mirrors both fields now (00928F50);
+- pass C writes the entity's current values.
+
+SetParty on any other entity stays the unimplemented record it was.
+
+**Added predictions for the re-run** (written before it):
+- CreateScript, SetThink and the timetable counts are identical OFF and ON (13 on USN04, 16 on
+  USN02);
+- `mission script state` keeps `Party=0`;
+- `party_sets=1` on both missions (`luaInit`'s own call);
+- `races_fed` 24 on USN04 and 30 on USN02, as the first pair measured;
+- `written` 13 on USN04 and 16 on USN02;
+- pair_diff exit 1, with the two census lines and the 00928100 / 00928F50 native rows the only
+  changes.
+
+### 11.7 The re-run pair, and the verdict
+
+- **Builds.** `tools/pair_export.py` of `9e5aaf488`: `local\ri_off` (SHA-256 prefix
+  `52F7C5EB76B4`) and `local\ri_on` (`4CBB89D2C0A3`, the switch flipped).
+- **Logs.** `local\ri2_{off,on}_{usn04,usn02}.log`. Each shows the 1600x900 fit, the immediate
+  present interval, its own module directory and the final COM release.
+- **`tools/pair_diff.py`: exit 1 on both, gameplay identical.**
+  - The death, plane and unit tables are identical: USN04 43 / 43 / 81 rows, USN02 21 / 0 / 32.
+  - The masked multiset of other lines shows 0 lines only OFF and 0 only ON.
+
+| row | USN04 4700/4500 | USN02 9200/9000 | predicted | held |
+| --- | --- | --- | --- | --- |
+| `races_fed` | 0 -> 24 | 0 -> 30 | 24 / 30 | yes |
+| `written` | 0 -> 13 | 0 -> 16 | 13 / 16 | yes |
+| `party_sets` | 0 -> 1 | 0 -> 1 | 1 / 1 | yes |
+| native rows | + `ScriptEntity::InitAll pass C mirror_identity` 13, + `ScriptEntity::set_party_race_lua_mirror` 1, - `LuaBindingCore::entity_set_party_vtable_2c` 1 | the same, with 16 | as predicted | yes |
+| CreateScript, SetThink, timetable counts | identical | identical | identical | yes |
+| `mission script state` Party | 0 both | 0 both | 0 | yes |
+
+**Verdict: `kSceneRaceAndScriptIdentityBound` ON.**
+- Scene units and markers carry the bag's Race into `thisTable`.
+- A script entity carries 00928100's Race, Party and Type, with SetParty's value kept as the image
+  keeps it.
+- No reference mission reads the fields, so nothing else moves.
+- **Open:**
+  - the marker mirror in `src/game_hosts_lua.cpp` still writes Party only; Race reaches markers
+    through the pass-A write instead, on a file this packet could not lease;
+  - SetParty on a non-script entity (`vtable[2Ch]` for units) is still a record.

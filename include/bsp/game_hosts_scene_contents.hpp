@@ -322,7 +322,7 @@ inline constexpr bool kScenePathLandscapeCreatorsBound = true;
 // the mission frame after its creation. SUBSTITUTION for (2): the image writes
 // them at the next InitAll's pass C, fixed-step row 12. False: neither is
 // written, as before.
-inline constexpr bool kSceneRaceAndScriptIdentityBound = false;
+inline constexpr bool kSceneRaceAndScriptIdentityBound = true;
 
 inline constexpr int kScenePathClassId = 0x47;       // 0047B660 stores [+C4h] = 47h
 inline constexpr int kSceneLandscapeClassId = 0x44;  // 004F11C0 stores [+C4h] = 44h
