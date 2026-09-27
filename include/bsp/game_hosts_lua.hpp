@@ -65,6 +65,13 @@ namespace bsp::game {
 // ON since the joint flip (docs/CONSTRUCT_WORLD.md 30.7), by the lead's ruling
 // on 30.6's pairs.
 inline constexpr bool kWingConstructionLuaBound = true;
+// Packet cc9_load_time_squadron_hooks (docs/SENTITY_INIT_ATTACH_ORDER.md 19).
+// The scene read's InitAll (0046EB4B..0046ED0F, CL=0) is the same 00925F20
+// walk, so a squadron the scene read constructs runs its vtable 00D087C0
+// slots +9Ch (007F4580, pass A) and +A4h (007F4BA0, pass C). When set, the
+// load walk marks a scene squadron's node a squadron, so passes A and C call
+// the units host's two hooks for it as for a route squadron.
+inline constexpr bool kLoadTimeSquadronHooksBound = false;
 
 class GameHostLog;
 class GameVfsHost;
@@ -310,6 +317,8 @@ struct GameMissionLuaSummary {
     // Packet cc9_load_time_init_all: load-time pushes, and 00928100 mirrors
     // the walk's pass C made.
     unsigned long long load_init_all_pushes{0};
+    // Packet cc9_load_time_squadron_hooks: load nodes marked squadrons.
+    unsigned long long load_squadron_nodes{0};
     // Packet cc9_pending_list_dedup step 3: route and load-walk calls that found
     // create_units's node (retired plain pushes, squadron annotations), and the
     // ones that found none and pushed.
