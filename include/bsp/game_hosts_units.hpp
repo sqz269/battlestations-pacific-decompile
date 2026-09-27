@@ -617,6 +617,16 @@ public:
     // two dampings), run by the row-15 flush at vt[7Ch]. False when the switch is
     // off, the identity is not a unit, or its leak model was never built.
     bool ship_wreck_sink_00824fe5(const void* identity);
+    // Packet cc9_live_hull_leak (docs/UNIT_MESSAGE_ARMS.md, "90h, bound"): the
+    // 90h message's receiver 008221A7 -> 0074F440 -> 0074F090 on the unit's
+    // leak manager. `count` is msg+1Ch, the sender's trunc(clamp(damage / 10,
+    // 0, 63)); `world_point` is the hit's world point (hit+08h). CONTRACT for
+    // the gunnery host: call it from ShipHitBinding::route_hull_impact_effect
+    // (R10, 0082755F) and route_part_impact_effect (R11c) with the victim's
+    // unit index. False when the switch is off, there is no leak model, or
+    // 0074F090's live-unit gate refuses it.
+    bool add_leak_0074f440(std::size_t index, std::uint32_t count,
+        const float world_point[3]);
     // Packet cc9_squadron_pass_hooks (docs/CONSTRUCT_WORLD.md section 27). Two
     // entries the Lua host's InitAll calls for a plane-squadron node, by unit
     // index of the squadron (its fused leader). Both are no-ops for now and

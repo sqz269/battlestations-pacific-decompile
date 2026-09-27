@@ -291,7 +291,7 @@ provenance - but their triggers are unresolved.
 | `0080F710`, `008141A0`, `00957450`, `0080DC10`, `00815010` | complete |
 | `00939FD0`, `0064A270`, `0074E830`, `007BA2E0`, `006E0B40` | complete |
 | `0093AA90` | complete for both branches; the middle argument's use not isolated |
-| `0074F440` | complete, `RET 8` from `0074F484`; `0074F090` unread |
+| `0074F440` | complete, `RET 8` from `0074F484`; `0074F090` complete (packet `cc9_live_hull_leak`, section "90h, bound") |
 | `00953F60`, `00954000`, `009540D0`, `00954170` | complete for the walks and filters; `00729F70` and `0072D5B0` unread |
 | `0074E860` | partial: the strided copy loop `0074E860-0074E8B0`; the tail unread |
 | `00819A20` | partial: the entry gate `00819A20-00819A7F`; the effect body unread |
@@ -332,3 +332,131 @@ provenance - but their triggers are unresolved.
 - **Was:** 6Ch MT_SHIP_SET_ENGINEJAMFAILURE producer: unresolved, kind computed
   **Is:** the kind is a byte immediate inside the dedicated constructor 007619B0, and the producer is FUN_008132C0's "EngineJam" branch
   **Evidence:** 007619C8 C6 40 10 6C MOV byte ptr [EAX+10h],6Ch; 00813519 PUSH 0CF6124h ("EngineJam"), 00813530 CALL 007619B0, 00813546 CALL 0077C2A0 with (unit, msg, 7, 0); the sibling kinds are PUSH 6Ah at 008133D5 and PUSH 6Bh at 008134C4 in the same function
+
+## 90h, bound: the live-hull leak (packet `cc9_live_hull_leak`, `kLiveHullLeakBound`, committed OFF)
+
+2026-09-27, worker cc9-units3, on main 5b551235c. Ghidra was read only. This packet binds the
+receiver half of the contract in docs/CONSTRUCT_WORLD.md section 25 ("Contract for the gunnery
+host").
+
+### The sender (V)
+
+`0080FF80` (body `0080FF80..0080FFC4`, `RET 8`) builds the message:
+- `0075B430(90h)`;
+- `+18h..+1Ah` cleared;
+- `+1Ch` = the dword argument;
+- `+4h` = 1, and the vtable `00D034A0`;
+- `+20h..+28h` = the float3 argument.
+
+It has two callers:
+- `0082755F` in `00826F10` `BSP_ShipEntity_ApplyHitRecord`: step R10 of docs/SHIP_HIT_RECORD.md,
+  which that doc calls the "hull impact effect". It is this leak.
+- `0089361D` in `00893380`, not read.
+
+R11c (`00827663..`) builds the same message inline, for each part hit.
+
+At R10 (`0082749C..0082757B`):
+- The gate is `hullDamage > 0.0f` (`00D7A218` is 0.0) and a hull that fails `vtable[5Ch](8)`, so
+  a submarine sends none.
+- `n = trunc(clamp(hullDamage / 10.0, 0.0, 63.0))`. The constants are the double 10.0 at
+  `00CE3DC0`, the float 63.0 at `00D099A8` (`0x427C0000`), and the rounding mode `OR 0C00h` at
+  `00827502`.
+- On `n != 0`, the hit's `hit+08h..+10h` goes through `00414E10(this)` into the hull frame. The
+  message is routed with `0077C2A0(msg, 7, 0)` at `00827576`.
+
+The gunnery host's `ShipHitBinding` already has the two callbacks,
+`route_hull_impact_effect(count, point)` and `route_part_impact_effect(count, point)`, both empty
+today.
+
+### The receiver (V)
+
+- **`008221A7`:** `amount = (float)(uint32)msg+1Ch × 10.0`, then `0074F440(unit+10D4h, amount,
+  &msg+20h)`.
+- **`0074F440`** (`RET 8`): refreshes the owner pose (`00414DB0` when `+C8h` is 0), transforms
+  the point by `pose+CCh` (`004142E0`), and calls `0074F090(amount, &world)`.
+- **`0074F090`** (`0074F090..0074F2DA`, `RET 8`), read from the listing because the pseudocode
+  mangles the x87 stack:
+  1. **The gate** (`0074F09A..0074F0BF`): a unit with `+5Ch` set and `+5Dh`, `+60h`, `+5Eh`
+     clear is refused unless its class `Repair` byte (`class+D0h`, `00962E16`) is set. Any other
+     unit takes the leak, a wreck (`+5Dh` set) included.
+  2. **The leak index** (`0074F0D5..0074F1AB`):
+     - `d = point − pose+FCh`, and `along = dot(row2, d)` with row 2 of `pose+CCh`;
+     - `i = trunc((along + Length × 0.5) / leak+04h)` (`00BF7420`), clamped to
+       `[0, count/2 − 1]`;
+     - `+ count/2` when `d.x × fwd.z − fwd.x × d.z > 0`, the `+x` side.
+     - `leak+04h = Length / 3.0` (`0074F4F0..0074F4FC`), so with count 6 the index is one of three
+       stations on each side.
+  3. **The rate** (`0074F1AD..0074F2D1`), with `D = leak+2Ch` (the total rate the tick last
+     summed), `R = leak+34h`, `T = leak+38h` (DamageToDeath, 200.0 unless authored) and
+     `k = [00E1AECC]`:
+     - `u = |D / R|^(1/k)`, or 0 when `D / R` is 0;
+     - `z = (T × u + amount) / T`;
+     - `D' = R × |z|^k`;
+     - `rates[i] += D' − D`, and `leak+2Ch = D'`.
+     - `k` is written by `0074F490` at `0074F4EA`: `ln(sqrt(settings+40Ch)) / ln(2.0)`
+       (`00BF7030`, `00BFA910`, the double 2.0 at `00D7A308`). `settings+40Ch` is
+       `VizbeomlesDolgok.DologSzorzo`: 2 in this installation (`shipglobals.lua` line 388,
+       2024-07-13), so `k = 0.5`.
+  4. So accumulated hull damage `Σ amount` gives a total rate `R × sqrt(Σ amount / T)` once the
+     leaks started from zero. The water then comes from the tick `0074F930`, which caps a live
+     hull at `(1 − health) × EnnyiVizEsKeszPercent × capacity`.
+
+### Which hulls can flood in this installation
+
+`Repair = true` is authored on 30 classes of `vehicleclasses.lua`. They are the submarines, the
+PT and landing craft, the cargo ships, tankers and troop transports, and a few others: I400, LSM,
+Elco PT Boat, Gato, Cachalot, US Tanker, US Cargo Ship, Hospital Ship, Higgins, US LST, Shinyo,
+Gyoriatei, the Kaiten and midget-submarine carriers, IJN Tanker, IJN Cargo Ship, Daihatsu, IJN LST,
+Junk, Command Ship, Yacht, Rescue Ship, Type VII U-Boat, the two strafeable troop transports,
+Fish boat, US LST (Strafeable) and Type B No Jake.
+
+No destroyer, cruiser, battleship or carrier has it. **A live warship never floods from a hit in
+the image.** Only its wreck does.
+
+### The binding
+
+- **The entry.** `GameUnitsHost::add_leak_0074f440(index, count, world_point)` runs the gate, the
+  index and the rate update above, behind `kLiveHullLeakBound` (committed OFF). OFF it only
+  counts the call.
+- **New host fields:** `+38h` (kept at init), `+04h` (Length / 3.0) and `+2Ch` (the tick's total
+  rate, now stored).
+- **SUBSTITUTIONS, labelled:**
+  - `DologSzorzo` = 2.0, from this installation's `shipglobals.lua` line 388.
+  - The point round trip, world → hull frame (sender) → world (`0074F440`), is skipped: the host
+    applies the message at once on one pose.
+  - **`Repair` is taken as 0 for every class.** The host does not load it (the HUD's
+    `controlled_class_repair` records the same gap), and the Lua host has no boolean class reader.
+    So no live hull floods in the host, although the image floods the 30 classes above. A contract
+    follows.
+  - The leak tick still passes a health of 1.0. It matters only once a live hull can take a leak:
+    with health 1.0 its cap is 0.
+- **Contract for the gunnery host (cc9-ships), the sender half.** In `ShipHitBinding`, call
+  `owner_.units.add_leak_0074f440(victim_, count, point)` from `route_hull_impact_effect` (R10)
+  and `route_part_impact_effect` (R11c). The point is the hit's world point. The pair runs after
+  that wiring.
+- **Contract for the Lua host, then the units host.**
+  - A boolean `VehicleClass[i][key]` reader (`Repair`, `00962DBC`).
+  - Then `class_repair` in `add_leak_0074f440` reads it.
+  - Then the leak tick passes the unit's real health fraction (`00923BE0`, from the gunnery
+    host's health).
+- **Census:** `summary live hull leak` (bound, calls, no_model, gated_live, applied,
+  applied_wreck, rate_added), in both builds.
+
+### Predictions (written before the runs; the pairs run after the gunnery wiring)
+
+Same tree, the switch only, both variables set, against current main.
+
+On a wreck the handler's redistribution makes `D` about `2 × cap = 0.04 × capacity`, while
+`R = 0.4 × capacity / 60`, so `D / R ≈ 6` and `u ≈ 36`. One hit of about 100 damage adds 0.5 to
+`u`, and `D` rises by about 0.7 %. A wreck needs several dozen hits to sink measurably faster.
+
+| row | USN02 9200/9000 | USN04 4700/4500 |
+| --- | --- | --- |
+| `calls` | about the hull hits with damage of 10 or more, plus the part hits: 250..400 | about the ship hull hits: 250..400 |
+| `gated_live` / `applied_wreck` | most calls are gated (live warships); `applied_wreck` 0..40 | every call gated (no ship dies) |
+| flooding of live hulls | none (every class here has Repair 0 or absent) | none in the host. The image would flood the JapPT, cargo and troop-transport classes; they are held at 0 by the Repair substitution |
+| wreck descent, first +5Dh to −200 m | each wreck 0..−2 s | - |
+| deaths, kills | identical ± 1 | identical |
+| hit records | ± 3 % | identical |
+| the idle Lexington | - | unchanged: its class has no Repair, so the live gate refuses every hit. **It does not sink from this binding** |
+| pair_diff exit | 1 if no wreck's timing crosses a scan, else 3 | 1 (the native row and the summary only) |
