@@ -112,6 +112,19 @@ inline constexpr bool kSceneLoadThisTableIdentityBound = true;
 // rule fired (section 9.5); the create_units push is what exercises it.
 inline constexpr bool kPendingListDedupBound = true;
 
+// Packet cc9_pending_list_dedup, step 3 (docs/SENTITY_INIT_ATTACH_ORDER.md
+// section 14). create_units pushes every constructed unit (00928630's push at
+// 00928760, docs/CONSTRUCT_WORLD.md section 26), so the Lua routes' and the
+// load walk's pushes of the same units are duplicates. True: GenerateObject's
+// plain push and the load walk's unit pushes only look up the node create_units
+// queued (a push is made, and counted as a fallback, only when none is
+// pending); the squadron routes (GenerateObject of a PlaneSquadronGen, SpawnNew,
+// LaunchSquadron and the air-ops creation) keep their call, which is now only
+// the annotation of that node as a squadron with its wing range. The markers'
+// load pushes stay (their constructor is the scene-contents host's). False: the
+// routes push and the dedup list skips the repeats.
+inline constexpr bool kRoutePushesRetiredBound = false;
+
 // Packet cc9_load_time_init_all (docs/SENTITY_INIT_ATTACH_ORDER.md section 10).
 // BSP_SceneFile_Read 0046DF00 runs InitAll once per instantiate pass, at the
 // first of 0046EB4B / 0046EB88 / 0046EBC6 / 0046ED0F it reaches (the latch

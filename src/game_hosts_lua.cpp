@@ -2165,10 +2165,10 @@ int GameMissionLuaHost::run_generate_object_00944fd0(lua_State* state, int argum
         // Packet cc9_sentity_init_all. The creator's construction pushed the
         // entity (00928760); a plane squadron's pass A then pushes its wing.
         if (record.class_id == 0x18) {
-            push_pending_squadron_00926be0(static_cast<int>(entity_id), name,
+            route_push_squadron(static_cast<int>(entity_id), name,
                 record.type_id, units_before);
         } else {
-            push_pending_entity_00926be0(static_cast<int>(entity_id), name, record.type_id);
+            route_push_entity(static_cast<int>(entity_id), name, record.type_id);
         }
         run_sentity_init_all_00925f20(false, 0x0046dbe8u);  // 0046DBE6 XOR CL,CL
         // 00945311 MOV CL,1 / CALL 00874D00, BSP_Game_RunExtraFixedStep, whose
@@ -2530,7 +2530,7 @@ void GameMissionLuaHost::fulfil_spawn_request_009483d0(bsp::SpawnNewRequest& req
             // is 0094879A's InitAll after the whole member loop, so every
             // member squadron is attached before any plane (each squadron's
             // pass A appends its wing to the tail).
-            push_pending_squadron_00926be0(static_cast<int>(entity), record.name,
+            route_push_squadron(static_cast<int>(entity), record.name,
                 member.type_class_id, units_before);
         } else {
             if (!attach_created_entity_00928a00(static_cast<int>(entity), record.name,
@@ -2671,7 +2671,7 @@ std::uint32_t GameMissionLuaHost::create_squadron(const bsp::AirOpsSquadronReque
         // Packet cc9_sentity_init_all. 006C5050 returns the squadron whatever
         // its attach will do; the attach is the next InitAll: 0089E613 when a
         // LaunchSquadron call started it, row 12 of the step otherwise.
-        push_pending_squadron_00926be0(static_cast<int>(entity), name,
+        route_push_squadron(static_cast<int>(entity), name,
             static_cast<int>(request.type), units_before);
         ++summary_.air_ops_squadrons_created;
         return entity;
@@ -3127,7 +3127,14 @@ std::size_t GameMissionLuaHost::run_scene_load_init_all_0046eb4b(
     if (state_ == nullptr || entities.empty()) return 0;
     const unsigned long long before = summary_.init_all_entities;
     for (const SceneEntity& entity : entities) {
-        push_pending_entity_00926be0(entity.id, entity.name, entity.class_index);
+        if (entity.class_index >= 0) {
+            // A scene unit: create_units pushed it (docs/CONSTRUCT_WORLD.md 26).
+            route_push_entity(entity.id, entity.name, entity.class_index);
+        } else {
+            // A marker: its constructor is the scene-contents host's, which
+            // does not push yet (section 10.2's contract).
+            push_pending_entity_00926be0(entity.id, entity.name, entity.class_index);
+        }
         if (PendingEntity* const node = find_pending(entity.id)) {
             node->load_scene = true;
             node->findable = entity.findable;
@@ -3140,6 +3147,33 @@ std::size_t GameMissionLuaHost::run_scene_load_init_all_0046eb4b(
     }
     run_sentity_init_all_00925f20(false, 0x0046eb4bu);
     return static_cast<std::size_t>(summary_.init_all_entities - before);
+}
+
+void GameMissionLuaHost::route_push_entity(int entity_id, const std::string& name,
+    int class_index) {
+    if constexpr (kRoutePushesRetiredBound) {
+        if (find_pending(entity_id) != nullptr) {
+            ++summary_.route_pushes_retired;
+            return;
+        }
+        ++summary_.route_fallback_pushes;
+    }
+    push_pending_entity_00926be0(entity_id, name, class_index);
+}
+
+void GameMissionLuaHost::route_push_squadron(int entity_id, const std::string& name,
+    int class_index, std::size_t units_before) {
+    if constexpr (kRoutePushesRetiredBound) {
+        // The squadron's own push is create_units's; this call marks the node
+        // a squadron and records its wing range (the dedup upgrade), which pass
+        // A's wing append needs.
+        if (find_pending(entity_id) != nullptr) {
+            ++summary_.route_squadron_annotations;
+        } else {
+            ++summary_.route_fallback_pushes;
+        }
+    }
+    push_pending_squadron_00926be0(entity_id, name, class_index, units_before);
 }
 
 void GameMissionLuaHost::push_pending_entity_00926be0(int entity_id,
@@ -4226,6 +4260,10 @@ void GameMissionLuaHost::report_mission_script_state() {
         summary_.dedup_skipped_attached, summary_.dedup_squadron_upgrades,
         summary_.dedup_wing_deferred, summary_.dedup_wing_append_skipped,
         summary_.dedup_load_dropped);
+    log_.notef("summary SEntity::InitAll route pushes retired bound=%d retired=%llu "
+        "squadron_annotations=%llu fallback_pushes=%llu",
+        kRoutePushesRetiredBound ? 1 : 0, summary_.route_pushes_retired,
+        summary_.route_squadron_annotations, summary_.route_fallback_pushes);
     log_.notef("summary SEntity::InitAll load walk bound=%d pushes=%llu mirrored=%llu",
         kLoadTimeInitAllBound ? 1 : 0, summary_.load_init_all_pushes,
         summary_.init_all_identity_mirrored);

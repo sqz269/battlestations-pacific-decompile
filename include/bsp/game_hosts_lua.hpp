@@ -295,6 +295,12 @@ struct GameMissionLuaSummary {
     // Packet cc9_load_time_init_all: load-time pushes, and 00928100 mirrors
     // the walk's pass C made.
     unsigned long long load_init_all_pushes{0};
+    // Packet cc9_pending_list_dedup step 3: route and load-walk calls that found
+    // create_units's node (retired plain pushes, squadron annotations), and the
+    // ones that found none and pushed.
+    unsigned long long route_pushes_retired{0};
+    unsigned long long route_squadron_annotations{0};
+    unsigned long long route_fallback_pushes{0};
     unsigned long long init_all_identity_mirrored{0};
     unsigned long long init_all_pushes{0};
     unsigned long long spawn_new_callbacks{0};   // named globals actually called
@@ -733,6 +739,12 @@ public:
         int class_index);
     void push_pending_squadron_00926be0(int entity_id, const std::string& name,
         int class_index, std::size_t units_before);
+    // Packet cc9_pending_list_dedup step 3: the routes' calls. Under
+    // kRoutePushesRetiredBound a plain one pushes nothing when the node is
+    // pending, and a squadron one annotates the pending node.
+    void route_push_entity(int entity_id, const std::string& name, int class_index);
+    void route_push_squadron(int entity_id, const std::string& name, int class_index,
+        std::size_t units_before);
     // GameEntityInitAllRunner: 00925F20 over that list (bsp/lua_binding_mission_2.hpp).
     void run_sentity_init_all_00925f20(bool flag, std::uint32_t call_site) override;
     // True once a pass A of this process gave the entity its `thisTable` slot.

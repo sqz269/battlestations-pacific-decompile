@@ -1,0 +1,16 @@
+{
+  "packet": "cc9_pending_list_dedup_step3",
+  "doc": "docs/SENTITY_INIT_ATTACH_ORDER.md section 14",
+  "switch": "kRoutePushesRetiredBound (include/bsp/game_hosts_fixed_step.hpp): committed OFF",
+  "calls": [
+    {"address": "00928760", "native": "00926BE0", "function": "00928630", "kind": "call", "host": "GameUnitsHost::create_units (cc9-units2) is the one push; GameMissionLuaHost::route_push_entity / route_push_squadron look it up"}
+  ],
+  "routines": [
+    {"address": "00926BE0", "coverage": "as docs/CONSTRUCT_WORLD.md section 17"}
+  ],
+  "corrections": [],
+  "no_ghidra_function": [],
+  "names": [],
+  "verdict": "pending",
+  "pairs": {}
+}
