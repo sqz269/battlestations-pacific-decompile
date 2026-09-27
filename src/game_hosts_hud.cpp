@@ -29,6 +29,7 @@
 #include "bsp/game_hosts_world.hpp"
 #include "bsp/game_hosts_ai.hpp"
 #include "bsp/game_hosts_gunnery.hpp"
+#include "bsp/game_hosts_scene_contents.hpp"
 
 #include "bsp/hud_screens.hpp"
 #include "bsp/in_mission_interface_runtime.hpp"
@@ -187,6 +188,7 @@ struct GameHudHost::Impl {
     unsigned long long movie_keyframes{0};
     unsigned long long movie_publishes{0};
     unsigned long long movie_unsupported{0};
+    unsigned long long movie_step_draws{0};   // switch 4, 00798D07
     unsigned long long movie_last_pose_log{0};
     int pick_basis_source{0};   // 0 none, 1 ShipCaptain, 2 movie camera
     bool build_movie_camera_005cc170();
@@ -1603,9 +1605,20 @@ class MovieParentBinding final : public bsp::MovieCameraParentHost {
 public:
     explicit MovieParentBinding(GameHudHost::Impl& owner) : owner_(owner) {}
     bool destroyed_5e(std::size_t unit) override {
-        // SUBSTITUTION: 00799D70 reads +5Eh alone; the units host answers the
-        // four bytes of 0043F080 together.
-        return owner_.units == nullptr || !owner_.units->unit_alive_and_visible(unit);
+        if constexpr (kMovieParentKilledByteBound) {
+            // Switch 5 (packet cc9_movie_camera_keys): 00799D70's CMP byte
+            // [entity+5Eh], 0 alone, from the units host's scene-node flags.
+            // A unit the host cannot resolve keeps the OFF answer (no parent).
+            bsp::SceneNodeFlags flags;
+            if (owner_.units != nullptr && owner_.units->unit_scene_node_flags(unit, flags)) {
+                return flags.destroyed;
+            }
+            return true;
+        } else {
+            // SUBSTITUTION: 00799D70 reads +5Eh alone; the units host answers the
+            // four bytes of 0043F080 together.
+            return owner_.units == nullptr || !owner_.units->unit_alive_and_visible(unit);
+        }
     }
     bool is_kind(std::size_t unit, int kind) override {
         return owner_.units != nullptr && owner_.units->unit_is_kind_of(unit, kind);
@@ -1638,6 +1651,11 @@ public:
         const GameUnitRow* row = owner_.units != nullptr ? owner_.units->unit_row(unit) : nullptr;
         if (row == nullptr || owner_.lua == nullptr) return 0.0f;
         return owner_.lua->read_vehicle_class_number(row->type_id, "Height", 0.0f);
+    }
+    bool ground_height_00903860(const std::array<float, 3>& point, float& out) override {
+        // Switch 6 (packet cc9_movie_camera_keys): the scene-contents host's
+        // Landscape query, the same 00903860 the image calls at 00795B62.
+        return world_ground_height_00903860(point.data(), out);
     }
     std::array<float, 3> plane_velocity_810(std::size_t) override {
         // SUBSTITUTION: plane+810h..818h has no traced writer
@@ -1714,13 +1732,34 @@ void GameHudHost::Impl::step_movie_camera(float seconds) {
     // SUBSTITUTION: the tick element's wave-3 slot 00798C80 runs once per
     // fixed step; this host runs one 0.05 s fixed step per frame, so it is
     // called once per frame here, before the frame's 0079A3B0.
+    const bool latched_before = movie.running_391;   // 00798C8A CMP byte [ESI+221h]
     if (bsp::movie_camera_fixed_step_00798c80(movie, 0.05f)) {
         reseed_stream(1, 12345u, 0x00798cadu);          // 00798CAD
         reseed_stream(0, 54321u, 0x00798cb9u);          // 00798CB9
     }
-    // 00798D07: one stream-1 draw per step into a 16-entry ring. SUBSTITUTION:
-    // not taken (the ring feeds nothing this host reads).
-    record("MovieCamera::fixed_step_draw", 0x00798d07u);
+    if constexpr (kMovieStepDrawBound) {
+        // Switch 4 (packet cc9_movie_camera_keys): the else arm runs on every
+        // step after the latch step. 00798D07 is 00BD2F10(ECX = 1, 0.0,
+        // [00D046A8] = 65535.0). SUBSTITUTION, labelled: the draw goes through
+        // the gunnery host's death-mode entry point with stream 1, which is the
+        // shared stand-in generator on the default path. Under
+        // BSP_GUNNERY_RNG_STREAMS=1 its key is (death_mode, FFFFFFh), an index
+        // no unit has, so no other draw reads it. A dedicated entry point waits
+        // on src/game_hosts_gunnery.cpp's lease.
+        GameGunneryHost* gunnery = units != nullptr ? units->gunnery() : nullptr;
+        if (latched_before && gunnery != nullptr) {
+            const float draw = gunnery->death_mode_draw_00bd2f10(1, 0xFFFFFFu, 0.0f, 65535.0f);
+            bsp::movie_camera_store_step_draw_00798cd9(movie, 0.05f, draw);
+            ++movie_step_draws;
+            done("MovieCamera::fixed_step_draw", 0x00798d07u);
+        } else if (latched_before) {
+            record("MovieCamera::fixed_step_draw", 0x00798d07u);
+        }
+    } else {
+        // 00798D07: one stream-1 draw per step into a 16-entry ring. SUBSTITUTION:
+        // not taken (the ring feeds nothing this host reads).
+        record("MovieCamera::fixed_step_draw", 0x00798d07u);
+    }
     MovieParentBinding parents(*this);
     std::array<float, 16> world{};
     float fov = 0.0f;
@@ -3332,6 +3371,10 @@ void GameHudHost::report() {
         "publishes=%llu unsupported=%llu active_at_end=%d", kMovieMoverBound ? 1 : 0,
         impl.movie_builds, impl.movie_destroys, impl.movie_keyframes, impl.movie_publishes,
         impl.movie_unsupported, impl.movie_active ? 1 : 0);
+    impl.log.notef("summary mission hud movie camera keys (packet cc9_movie_camera_keys): "
+        "step_draw_bound=%d step_draws=%llu parent_killed_byte_bound=%d "
+        "terrain_avoid_bound=%d", kMovieStepDrawBound ? 1 : 0, impl.movie_step_draws,
+        kMovieParentKilledByteBound ? 1 : 0, kMovieTerrainAvoidBound ? 1 : 0);
     // Milestone 2j. `minimap_islandmap_Icon` of GUI_minimap names the texture
     // `error.tga` with the material `minimap_terrain.mshd`, and milestone 2h
     // read that as the page's own authored texture. It is, and the material is

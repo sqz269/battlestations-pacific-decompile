@@ -1,0 +1,30 @@
+{
+ "packet": "cc9_movie_camera_keys",
+ "worker": "agent/cc9-hud2",
+ "doc": "docs/HUD_PICK_SEGMENT_QUERY.md section 10",
+ "switches": {
+  "kMovieStepDrawBound": "include/bsp/game_hosts_hud.hpp, committed false",
+  "kMovieParentKilledByteBound": "include/bsp/game_hosts_hud.hpp, committed false",
+  "kMovieTerrainAvoidBound": "include/bsp/game_hosts_hud.hpp, committed false"
+ },
+ "steps": [
+  {"address": "00798d07", "native": "00bd2f10", "function": "00798c80", "what": "per-step stream-1 draw U(0, 65535), switch 4"},
+  {"address": "00798d0c", "native": "00bf7420", "function": "00798c80", "what": "float-to-integer conversion of the draw into the ring"},
+  {"address": "00798cad", "native": "00bd2fd0", "function": "00798c80", "what": "first-step reseed stream 1 = 12345 (switch 2)"},
+  {"address": "00795b62", "native": "00903860", "function": "00795650", "what": "terrainavoid ground height, switch 6"},
+  {"address": "007cfdc6", "native": "007c4560", "function": "007cfd20", "what": "plane wanderer construct on plane+810h"},
+  {"address": "007ce0d2", "native": "007be060", "function": "007ce040", "what": "plane wanderer fixed step, sole caller"},
+  {"address": "0079a2fb", "native": "00bd2fd0", "function": "0079a260", "what": "destructor wall-clock reseed, kept as a record"}
+ ],
+ "names_added": {
+  "007c4560": "BSP_PlaneWanderer_Construct (hypothesis)",
+  "007be060": "BSP_PlaneWanderer_FixedStep (hypothesis)"
+ },
+ "no_ghidra_function": [],
+ "substitutions": [
+  "switch 4 draws through GameGunneryHost::death_mode_draw_00bd2f10(1, FFFFFFh, ...) because src/game_hosts_gunnery.cpp is leased; shared stand-in LCG on the default path, key (death_mode, FFFFFFh) under BSP_GUNNERY_RNG_STREAMS=1",
+  "00BF7420 taken as truncation (the ring has no reader)",
+  "plane+810h stays zero: its writer 007BE060 (the plane wanderer) is not bound in the host, and the host plane pose also takes it as zero",
+  "one 00798C80 step per frame: exact under lockstep 0.05 (00D0DE84)"
+ ]
+}

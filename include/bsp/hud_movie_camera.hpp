@@ -13,8 +13,9 @@
 // - 007911E0 step, 00791020 begin, 00795C10 weight, 0078FCF0 ease,
 //   00798130 evaluate: complete apart from modifiers and flyalt.
 // - 00795650 position: keepnone, keepy, keepz and keepall, the ship and plane
-//   wanderer offsets; relativetotarget, the kind-20h sub-object matrix and
-//   terrainavoid are unsupported.
+//   wanderer offsets; relativetotarget and the kind-20h sub-object matrix
+//   are unsupported. `terrainavoid` and its clamp 00795B45 are modelled
+//   under kMovieTerrainAvoidBound (packet cc9_movie_camera_keys, doc 10).
 // - 0079D020 constructor, 007A0860 seed, 00798C80 fixed step (the +391h
 //   latch), 0079A3B0 update up to 0079B866 (the single-player end; the editor
 //   block 0079A584..0079B2A2 is unreachable without a selected keyframe).
@@ -54,6 +55,7 @@ struct MovieKeyframe {
     float smooth_d0{1.0f};
     float nonlinear_d4{0.5f};         // 00CE3800
     bool use_current_d8{false};
+    bool terrain_avoid_d9{false};     // `terrainavoid`, 007A1488; 00799C4B stores 0
     float start_f0{0.0f};
     float blend_f4{0.0f};
     int state_f8{0};                  // 0 waiting, 1 blending, 2 held, 3 retired
@@ -82,6 +84,14 @@ struct HudMovieCamera {
     std::array<float, 16> matrix_528{};
     std::array<float, 16> local_74{};
     unsigned long long fixed_steps{0};
+    // 00798C80's else arm (camera+3C4h..+40Fh, the +170h sub-object's
+    // +254h..+29Fh): a 16-entry ring of truncated stream-1 draws, its index,
+    // a step count and a dt sum. No reader was found for any of them (the
+    // disp32 scans of 0078D880..007A4860 find only 00798C80's own accesses).
+    std::array<std::int32_t, 16> draw_ring_3c4{};
+    int draw_index_404{0};
+    int steps_408{0};
+    float step_seconds_40c{0.0f};
 };
 
 // What the keyframes ask of their parent entity.
@@ -94,6 +104,9 @@ struct MovieCameraParentHost {
     virtual bool world(std::size_t unit, std::array<float, 16>& m) = 0;
     virtual float class_height_a8(std::size_t unit) = 0;      // [[unit+538h]+A8h]
     virtual std::array<float, 3> plane_velocity_810(std::size_t unit) = 0;
+    // 00903860(world+19CCh)(point, &out), the terrain height under `point`;
+    // false when no Landscape answers. Read only for a `terrainavoid` keyframe.
+    virtual bool ground_height_00903860(const std::array<float, 3>& point, float& out) = 0;
     virtual void unsupported(const char* what, std::uint32_t address) = 0;
 };
 
@@ -108,6 +121,10 @@ struct MovieKeyframeInput {
     std::optional<float> starttime, blendtime, linearblend, nonlinearblend, zoom, smoothtime;
     std::optional<std::string> transformtype;
     std::optional<bool> wanderer;
+    // `position.terrainavoid` when it is a boolean (007A1470..007A1488). The
+    // Lua parse fills it only under kMovieTerrainAvoidBound; OFF lists the key
+    // in unsupported_keys instead.
+    std::optional<bool> terrainavoid;
     std::vector<std::string> unsupported_keys;
 };
 
@@ -122,6 +139,13 @@ int movie_camera_add_position_007a42c0(HudMovieCamera& camera, const MovieKeyfra
 // 00798C80, the tick element's +8h slot (wave 3). Returns true on the first
 // step with dt > 0, when it latches +391h and reseeds streams 1 and 0.
 bool movie_camera_fixed_step_00798c80(HudMovieCamera& camera, float dt) noexcept;
+// 00798CD9..00798D36, the else arm of 00798C80 on a step after the latch:
+// +408h += 1, +40Ch += dt, then the 00798D07 draw (the caller's, stream 1,
+// 0.0 to 65535.0 at 00D046A8) converted by 00BF7420 into +3C4h[+404h], the
+// index wrapping after 15. The caller runs it only when +391h was already set
+// on entry to 00798C80.
+void movie_camera_store_step_draw_00798cd9(HudMovieCamera& camera, float dt,
+                                           float draw) noexcept;
 // 0079A3B0 up to 0079B866. Returns false when a track is empty (0079BBD5).
 // On true, `world` is +74h after the 004134F0 copy and `fov` is 00B6FBB0's
 // argument, +410h / zoom.

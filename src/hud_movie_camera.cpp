@@ -95,11 +95,24 @@ void begin_00791020(MovieKeyframe& k, const HudMovieCamera& camera) {
     k.work_40 = k.local_34;
 }
 
+// 00795B45..00795BAE, the `terrainavoid` clearance every arm but the null
+// parent joins: y = ground + 1.0 unless y is already above it. The sum is
+// rounded to float at 00795B75 (FSTP [ESP+10h]) before the compare.
+void terrain_avoid_00795b45(MovieKeyframe& k, MovieCameraParentHost& host) {
+    if (!k.terrain_avoid_d9) return;                   // 00795B45
+    float ground = 0.0f;
+    if (!host.ground_height_00903860(k.eval_4c, ground)) return;   // 00795B62..00795B69
+    const float floor = static_cast<float>(static_cast<double>(ground) + 1.0);   // 00D7A210
+    if (k.eval_4c[1] > floor) return;                  // 00795B88 FCOMPI, JBE
+    k.eval_4c[1] = floor;                              // 00795BA9
+}
+
 // 00795650: the keyframe's world position and up.
 void evaluate_position_00795650(MovieKeyframe& k, MovieCameraParentHost& host) {
     if (!k.parent_attached_24) {
         k.eval_4c = k.work_40;
         k.eval_up_70 = k.work_up_64;
+        terrain_avoid_00795b45(k, host);               // the unattached arm joins 00795B45
         return;
     }
     if (k.parent_1c == kMovieNoParent) return;       // 00795677
@@ -178,6 +191,7 @@ void evaluate_position_00795650(MovieKeyframe& k, MovieCameraParentHost& host) {
             k.eval_4c[static_cast<std::size_t>(i)] -= offset[static_cast<std::size_t>(i)];
         }
     }
+    terrain_avoid_00795b45(k, host);
 }
 
 // 00795C10, weight(track, dt).
@@ -387,6 +401,7 @@ void parse_007a0eb0(MovieKeyframe& k, HudMovieCamera& camera, const MovieKeyfram
             k.parent_1c = resolve_parent_00799d70(entity, host);
             k.parent_attached_24 = k.parent_1c != kMovieNoParent;
         }
+        if (in.terrainavoid) k.terrain_avoid_d9 = *in.terrainavoid;   // 007A1488
         k.local_34 = {};                                // 007A1500: no integer `deckpos`
         if (k.camera_28 || named) {
             if (in.pos) {
@@ -499,6 +514,18 @@ bool movie_camera_fixed_step_00798c80(HudMovieCamera& camera, float dt) noexcept
     if (!(dt > 0.0f)) return false;                      // 00798C93 COMISS 0.0
     camera.running_391 = true;                           // 00798CA6
     return true;
+}
+
+void movie_camera_store_step_draw_00798cd9(HudMovieCamera& camera, float dt,
+                                           float draw) noexcept {
+    ++camera.steps_408;                                  // 00798CDF
+    camera.step_seconds_40c = camera.step_seconds_40c + dt;   // 00798CE6..00798CF2
+    // 00798D0C 00BF7420: the float-to-integer conversion of the draw, taken as
+    // truncation (unverified; the value has no reader).
+    camera.draw_ring_3c4[static_cast<std::size_t>(camera.draw_index_404 & 15)] =
+        static_cast<std::int32_t>(draw);                 // 00798D17
+    camera.draw_index_404 += 1;                          // 00798D1E
+    if (camera.draw_index_404 > 15) camera.draw_index_404 = 0;   // 00798D25..00798D2E
 }
 
 bool movie_camera_update_0079a3b0(HudMovieCamera& camera, MovieCameraParentHost& host,
