@@ -292,7 +292,7 @@ physics library's `00C31DC0`, `00C48020`, `00C48050`.
 | --- | --- |
 | `00814560`, `0092BD30`, `00814520`, `00926390`, `00761310`, `00780090` | complete |
 | `008110F0` | complete (re-read from the listing) |
-| `00824B60` | partial: `00824FE5-0082523F` complete, `00824B60-00824FE4` outline, `00825240-008252B0` unread |
+| `00824B60` | partial: `00824FE5-0082523F` complete; `00824B60-00824F38` read in full (packet `cc9_wreck_pre_sink`, section at the end), effects not bound; `00824F39-00824FE4` in docs/NATIVE_UNIT_WRECK_TAIL.md; `0082523F-0082524B` read and bound behind `kWreckThrottleCutBound`; `00825254-008252B0` read in outline |
 | `007F0030` | partial: the `4Bh` arm only |
 | `00827A90` | complete for the selector and both message branches, from this packet's re-read |
 
@@ -315,3 +315,90 @@ not see a store made through that sub-object base.
 - After 60.0 s (double 00CE3D68), or 20.0 s (00CE3930) for kind 0Eh, the hull shapes lose flag 8.
 - Once both hull ends are below `VizbeomlesDolgok.KillDepth` (GameSettings `+3F4h`, -200.0 in
   this installation), 00826628 calls Kill 00926D90(1).
+
+## The rest of 00824B60: the pre-sink part and the throttle cut (packet `cc9_wreck_pre_sink`, `kWreckThrottleCutBound`, committed OFF)
+
+2026-09-27, worker cc9-units3, on main 2872fab7b. Ghidra was read only. This packet follows
+docs/WRECK_MOTION_AVOIDANCE.md, which found that a host wreck keeps cruising under its last
+throttle.
+
+### `00824B60..00824F38` changes no control or AI state (V)
+
+A census of the stored listing finds six stores to the unit, all to two containers:
+- `00824C7F` / `00824CDE` / `00824D17` store unit+754h / +74Ch / +750h, a float3 vector;
+- `00824E0E` / `00824EBC` / `00824EFA` store unit+760h / +758h / +75Ch, a vector of effect
+  references.
+
+The calls are `00BD2F10` (`00824C5C`), `008687C0` `BSP_PointEffect_CreateWithParentMatrix`
+(`00824DE4`), the CRT allocator and free (`00BF55BE`, `00BF6989`), and the interlocked reference
+counts.
+
+What it does, gated on the class effect `[desc+55Ch]` and `[00E188A8]+19FCh`:
+- n = round(clamp(Length × 0.2 / 10.0, 1.0, 2.0)). The constants are the double 0.2 at
+  `00CE6648`, the double 10.0 at `00CE3DC0`, the float 1.0 at `00D7A24C` and the float 2.0 at
+  `00CE3958`.
+- Each of the n effects draws z = U(−0.2 L, +0.2 L) from `00BD2F10` (ECX = 1).
+- It stores the point (0, 0.6 H, z) (the double 0.6 at `00D09990`) and creates the effect on the
+  model `[unit+4A4h]`.
+
+It touches no throttle, rudder, steering or AI field. The segment's `steeringjam` / `enginejam`
+keywords belong to other routines in the band. `00824F39..00824FE4` is the effect-handle release
+of docs/NATIVE_UNIT_WRECK_TAIL.md.
+
+### The throttle cut is in the tail, at `0082524B` (V)
+
+```
+0082523F  MOV EDX,[ESI+97Ch]          ; the order ring's write cursor (ring+144h)
+00825245  XORPS XMM0,XMM0
+00825248  SHL EDX,5
+0082524B  MOVSS [EDX+ESI+838h],XMM0   ; slot+00h, the throttle
+00825254  MOV ECX,[ESI+740h]          ; then the +740h release and 00959450
+```
+
+- The ring is at unit+838h (`kUnitLayoutOffOrderRing`, `0081EE95`). The store is `0080E170`'s
+  with a zero argument (`include/bsp/ship_ai_throttle_ring.hpp`).
+- It is unconditional: every path through the handler reaches `0082523F`.
+- The rudder slot +04h, the live pair (ring+148h / +14Ch) and the cursors are not touched.
+- The ring carries the zero forward. With the lag of 4 ticks and the slew of 8.0 per second
+  (`kUnitOrderRingSyncLagTicks`, `kUnitOrderRingSlewADefault`), the live throttle reaches 0
+  about 0.25 s after the handler.
+- Nothing rewrites a dead ship's slot in the host: the ship AI stops stepping a dead unit.
+
+### What the host does today
+
+At the row-15 flush the host runs the sink block (section 25 of docs/CONSTRUCT_WORLD.md) but
+never cuts the throttle. On current main (`local\HB_OFF_USN02.log`, worktree cc9-units3):
+- the controlled DeRuyter dies at 183.71 s;
+- from about 200 s it keeps a throttle of 0.425 and circles at 2.86 m/s, the equilibrium of that
+  throttle against the linear damping of 0.5;
+- it is frozen from about 300 s, at (209.59, −803.69).
+
+The 16.45 m/s at 52.5 s and Kortenaer's block at step 1015 (docs/WRECK_MOTION_AVOIDANCE.md) belong
+to the pre-sink-descent tree `2e58c646c`. On current main DeRuyter is alive at 52.5 s, and a wreck
+is already damped.
+
+### The binding
+
+- `kWreckThrottleCutBound` and `wreck_throttle_cut_0082524b(UnitOrderRing&)` in
+  `include/bsp/unit_death_sink.hpp` / `src/unit_death_sink.cpp`, committed OFF.
+- **Wiring, a follow-up** applied when `src/game_hosts_units.cpp` is free: one line at the head
+  of `GameUnitsHost::ship_wreck_sink_00824fe5`, inside the identity match and before the
+  `leak_ready` test, because the cut does not depend on the leak model:
+  `if constexpr (bsp::kWreckThrottleCutBound) bsp::wreck_throttle_cut_0082524b(owned->ring);`
+- **Not bound, labelled:** the pre-sink effects. They are not rendered in this host, and their
+  1..2 shared-RNG draws per wreck are not made. A binding of them would shift every later draw of
+  `00BD2F10` on a shared stream.
+
+### Predictions (written before the runs; the pairs run after the wiring)
+
+Same tree, the switch only, both variables set, against current main.
+
+| row | USN02 9200/9000 | USN04 4700/4500 |
+| --- | --- | --- |
+| DeRuyter after its death (about 183.7 s) | throttle 0.425 -> 0 within 0.3 s; fwd 2.86 -> below 0.5 m/s by 200 s; no circling after that (heading changes by less than 1 degree between 220 and 280 s) | - |
+| controlled distance | 2196.68 m -> about 1900 m (band 1800..2050): the crawl from 184 to 300 s is gone | no ship death: unchanged |
+| wreck descent (first +5Dh to −200 m) | unchanged within ± 3 s (106..117 s): the cut is horizontal | - |
+| first moved gameplay row | after Exeter's death (35.85 s); a crawling wreck's neighbour box moves less than 2 m, so the first move may come much later | none |
+| deaths, hit records | 21 ± 2, 596 ± 5 % | identical (40, 799) |
+| kills | 16 ± 2 | 0 |
+| pair_diff exit | 3 (the controlled distance alone moves) | 1, or 0 if no census line changes |

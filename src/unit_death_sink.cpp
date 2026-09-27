@@ -1,4 +1,5 @@
 #include "bsp/unit_death_sink.hpp"
+#include "bsp/ship_ai_throttle_ring.hpp"
 
 // docs/UNIT_DEATH_MESSAGE_AND_SINK.md, reports/unit_death_sink.json.
 // Read-only analysis; descriptive names are hypotheses.
@@ -148,6 +149,12 @@ void on_wrecked_00824fe5(WreckPhysicsHost& host,
         point[1] = host.random_range(ranges.y_lo, ranges.y_hi);
         host.store_anchor_point(wreck.unit, index, point);
     }
+}
+
+// 0082523F..0082524B: the write-cursor throttle slot of the order ring set to
+// zero, the same store 0080E170 makes.
+void wreck_throttle_cut_0082524b(UnitOrderRing& ring) noexcept {
+    ship_ai_ring_set_write_slot_throttle_0080e170(ring, 0.0f);
 }
 
 }  // namespace bsp
