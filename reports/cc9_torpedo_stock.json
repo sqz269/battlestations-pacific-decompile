@@ -2,11 +2,74 @@
   "packet": "cc9_torpedo_stock",
   "doc": "docs/UNIT_WEAPON_DEVICES.md, Torpedo stock, bound",
   "calls": [
-    {"address": "008201B8", "native": "0081F8B0", "function": "0081F980", "note": "pass C with class+7A0h"},
-    {"address": "0081F8B4", "native": "00810E90", "function": "0081F8B0", "note": "loaded torpedo barrels"},
-    {"address": "00826182", "native": "00825450", "function": "00825F20", "note": "the supply tick"}
+    {
+      "address": "008201B8",
+      "native": "0081F8B0",
+      "function": "0081F980",
+      "note": "pass C with class+7A0h"
+    },
+    {
+      "address": "0081F8B4",
+      "native": "00810E90",
+      "function": "0081F8B0",
+      "note": "loaded torpedo barrels"
+    },
+    {
+      "address": "00826182",
+      "native": "00825450",
+      "function": "00825F20",
+      "note": "the supply tick"
+    }
   ],
-  "switches": [{"name": "kTorpedoStockBound", "state": "OFF", "pair": "pending"}],
-  "no_ghidra_function": [{"start": "00810D80", "end": "00810D9F", "note": "unit vtable+1F4h, round available"}, {"start": "00810DA0", "end": "00810DC2", "note": "unit vtable+1F8h, consume"}],
-  "failed_predictions": []
+  "switches": [
+    {
+      "name": "kTorpedoStockBound",
+      "state": "ON",
+      "pair": "local/ts_{off,on}_{usn02,usn04}.log: USN02 exit 3, USN04 exit 1 (pair_export of 52a3c4e6f: ri_off 8071D701F196, ri_on E14C7AFCF9C3)"
+    }
+  ],
+  "no_ghidra_function": [
+    {
+      "start": "00810D80",
+      "end": "00810D9F",
+      "note": "unit vtable+1F4h, round available"
+    },
+    {
+      "start": "00810DA0",
+      "end": "00810DC2",
+      "note": "unit vtable+1F8h, consume"
+    }
+  ],
+  "failed_predictions": [
+    {
+      "row": "ships_dry",
+      "predicted": "2",
+      "measured": "1",
+      "why": "on this base Tokitsukaze launches 24, not reference d's 32"
+    },
+    {
+      "row": "emptied_barrels",
+      "predicted": "16",
+      "measured": "22",
+      "why": "pinning starts when the spare reaches 0 (after stock - loaded launches): 4 each for Amatsukaze and Tokitsukaze, 8 for Minegumo, and more"
+    },
+    {
+      "row": "gyro launches / first divergence",
+      "predicted": "down to ~201, identical until 364.18 s",
+      "measured": "201 -> 203, first divergence 344.24 s",
+      "why": "pinned barrels change the cadence before any ship is dry"
+    }
+  ],
+  "pair_diff": {
+    "usn02": [
+      "deaths 22 -> 21",
+      "hit records 603 -> 623",
+      "shots 1115 -> 1124",
+      "failed at 39.65 s both",
+      "DEATH ROWS: 22 -> 21 rows, 1 only OFF (John2), 2 changed"
+    ],
+    "usn04": [
+      "GAMEPLAY: identical"
+    ]
+  }
 }

@@ -384,3 +384,130 @@ Reference d's launches per shooter (`local\rb4_usn02.log`, 209 in all):
 
 **USN04 4700/4500.** No ship launches a torpedo (reference d has 0 launch lines). So `sets=0`,
 and the pair is identical (exit 1).
+
+### The pairs, measured, and the verdict
+
+- **Builds.** `tools/pair_export.py` of `52a3c4e6f`: `local\ri_off` (SHA-256 prefix
+  `8071D701F196`) and `local\ri_on` (`E14C7AFCF9C3`).
+- **Logs.** `local\ts_{off,on}_{usn02,usn04}.log` in worktree cc9-ships. Each shows the 1600x900
+  fit, the immediate present interval, its own module directory and the final COM release.
+
+**USN04 4700/4500: pair_diff exit 1.** `sets=0`, no ship launches, identical.
+
+**USN02 9200/9000: pair_diff exit 3.**
+
+```
+* deaths                                 22                                       21
+* hit records                            603                                      623
+* hull hits                              305                                      313
+* damage                                 56330.1                                  55393.8
+* shots                                  1115                                     1124
+  first hit                              35.65 s                                  35.65 s
+  mission end                            failed at 39.65 s (Mission.EndMission) text="Game Over" e... failed at 39.65 s (Mission.EndMission) text="Game Over" e...
+DEATH ROWS: 22 -> 21 rows, 0 only ON, 1 only OFF, 2 changed
+```
+
+- **The census.** `sets=19 spent=181 emptied_barrels=22 ships_dry=1`; gyro launches 201 -> 203.
+- **Launches per shooter, OFF -> ON:**
+  - Minegumo 32 -> 28. It runs dry, with its last torpedo pinned.
+  - Amatsukaze and Tokitsukaze 24 -> 24.
+  - John2 6 -> 12.
+  - Every other ship is unchanged.
+- **The first diverging launch is #176 at 344.24 s.** John3 fires there ON; Alden fires at
+  347.89 s OFF.
+- **The deaths.** John2 survives ON. Haguro dies at 395.93 s to a torpedo (category 7) instead of
+  at 382.18 s to a shell. Jintsu moves by 0.35 s. The mission still fails at 39.65 s.
+
+**Predictions against the measurement:**
+
+| row | predicted | measured | held |
+| --- | --- | --- | --- |
+| USN04 | identity | identity | yes |
+| `sets` | 19 | 19 | yes |
+| `ships_dry` | 2 (Tokitsukaze, Minegumo) | 1 (Minegumo) | **no** |
+| `emptied_barrels` | 16 | 22 | **no** |
+| gyro launches | about 201, down | 201 -> 203, up | **no** |
+| identical until 364.18 s | yes | first divergence at 344.24 s | **no** |
+
+**Why they failed.**
+1. **The base moved since reference d.** On this tree Tokitsukaze launches 24, not 32, so it never
+   runs dry.
+2. **Pinning starts when the spare reaches 0, not at the last torpedo.**
+   - A Kagero's spare is 20, so from its 21st launch every fired barrel is pinned. That is 4
+     barrels each for Amatsukaze and Tokitsukaze, and the last 8 for Minegumo.
+   - Those barrels no longer reload, which changes the later cadence before any ship is dry, so
+     the battle moves from about 344 s.
+   - The prediction confused "dry" with "no spare".
+
+**Verdict: `kTorpedoStockBound` ON.**
+- A ship now fires exactly its class's `MaxTorpedoStock`, as 0081F8B0 and 0072D520's provider pair
+  allow.
+- The moves are late in the run (after 344 s) and follow from the pinned barrels.
+- **Open:**
+  - the supply tick 00825450 and its area test 00809C50;
+  - the unload 0081DCB0, which needs stock below the loaded count;
+  - the Lua `TorpedoStock` property 00815870 and the HUD gauge 00815850, which read spare +
+    loaded;
+  - `ShipSetTorpedoStock` (`set_torpedo_stock_0081f8b0` in `src/unit_weapons.cpp`), which is
+    still not wired to this spare.
+
+## Handoff: cc9-ships retires after `cc9_torpedo_stock` (2026-09-27)
+
+Worker cc9-ships, successor of cc9-scene-entities. Every switch below was measured by same-tree
+pairs (`tools/pair_export.py` + `tools/pair_diff.py`).
+
+**Landed or committed ON:**
+
+| switch | file | doc |
+| --- | --- | --- |
+| `kShipDirectorEnablesBound` (+ TorpedoEnable, CLOSEATTACK 00A11AF0) | `include/bsp/game_hosts_gunnery.hpp` | `docs/SENTITY_INIT_PASSES.md` section 8 |
+| `kSceneRaceAndScriptIdentityBound` | `include/bsp/game_hosts_scene_contents.hpp` | `docs/SENTITY_INIT_ATTACH_ORDER.md` section 17 |
+| `kSceneHomeBaseContractBound` | same | `docs/CONSTRUCT_WORLD.md` section 31 |
+| `kTorpedoStockBound` | `include/bsp/game_hosts_gunnery.hpp` | this file, "Torpedo stock, bound" |
+
+Reference d is in `docs/GAME_EXECUTABLE.md`, "Mission reference baselines, 2026-09-27 d". The
+USN01 drop flag is closed there.
+
+**Committed OFF, owned by this line: the joint wing flip.** `kWingConstructionInPassABound`
+(`include/bsp/game_hosts_units.hpp`, `docs/CONSTRUCT_WORLD.md` section 30) flips together with
+cc9-movie-camera's Lua half (`docs/WING_CONSTRUCTION_LUA.md`, when it lands). The lead sends the
+go.
+- This half alone moved USN04's air battle within its bands: the wing planes now follow all
+  leaders in index order.
+- The joint pair should expect `squadron_ids` and `wing_member_tables` back at 40, and that small
+  air move rather than identity.
+
+**Open items, in the order I would take them:**
+1. **The ship AI's torpedo standoff** (`docs/SENTITY_INIT_PASSES.md` 8, "Open").
+   - 009F1BC0 caches `director+222h` at `nested+12BAh` and a value at `+12B4h` (009F2D46..009F2D8C,
+     arithmetic unread).
+   - 009E6E80 caps the standoff at `+12B4h` minus the turn radius when both are set.
+   - The host never writes `clearance_12b4`, and it names `+12BAh` `clearance_valid_12ba`
+     (`src/ship_ai_approach_update.cpp:465`, no image store).
+   - This is the largest remaining torpedo-behaviour gap.
+2. **Torpedo supply and wiring** (this file):
+   - the supply tick 00825450 and its area test 00809C50;
+   - `ShipSetTorpedoStock` (`set_torpedo_stock_0081f8b0`) is not yet wired to the gunnery host's
+     spare;
+   - the unload 0081DCB0;
+   - `TorpedoStock` 00815870 and the HUD gauge 00815850;
+   - rename `torpedo_count` / `torpedo_spawn_one` in `unit_weapons.*` to what they are.
+3. **Bypass launches not reached on the reference missions:** `NavigatorForceTorpedo` 008A7200
+   (`vtable[1D8h]` unread) and `SubmarineAttack` 00894440. Both are used by jm05/jm06.
+4. **00A11B80**, CLOSEATTACK's and DEFENDPOSITION's middle call: unread and unbound.
+5. **Identity:**
+   - the Lua host's marker mirror should write Race itself (`src/game_hosts_lua.cpp`);
+   - SetParty's `vtable[2Ch]` on units;
+   - whether the image's SpawnNew bag carries a `HomeBase` (unread; IJN08 measures the scene side).
+6. **From the scene-entities handoff, not started:** the quadtree segment walk 00ADA240 (00AEA2B0 /
+   00AE9D80 / 00AECC40), and the island-rotation question
+   (`docs/SCENE_CONTENTS_HOSTS.md` section 9).
+
+**Tools kept in this worktree's `local\`** (not committed):
+- `cc9-ships-disp.py` (displacement census);
+- `cc9-ships-abs.py` (absolute-dword census);
+- `cc9-ships-dw.py` / `cc9-ships-str.py` (PE dword and string readers);
+- `cc9-ships-sect.py` (doc section grep);
+- `cc9-ships-stock.py` / `cc9-ships-scnclass.py` (class `MaxTorpedoStock` against a scene's
+  `Type` rows);
+- the `cc9-ships-edit*.py` edit scripts.
