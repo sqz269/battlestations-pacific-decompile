@@ -403,15 +403,24 @@ today.
 
 ### Which hulls can flood in this installation
 
-`Repair = true` is authored on 30 classes of `vehicleclasses.lua`. They are the submarines, the
-PT and landing craft, the cargo ships, tankers and troop transports, and a few others: I400, LSM,
-Elco PT Boat, Gato, Cachalot, US Tanker, US Cargo Ship, Hospital Ship, Higgins, US LST, Shinyo,
-Gyoriatei, the Kaiten and midget-submarine carriers, IJN Tanker, IJN Cargo Ship, Daihatsu, IJN LST,
-Junk, Command Ship, Yacht, Rescue Ship, Type VII U-Boat, the two strafeable troop transports,
-Fish boat, US LST (Strafeable) and Type B No Jake.
+**Corrected (packet `cc9_repair_default_fix`, 2026-09-27).** The first version of this section
+counted only the classes that author `Repair = true` (30 of them) and concluded that no warship
+has the byte. That was wrong: the loader sets it when the key is **absent**.
 
-No destroyer, cruiser, battleship or carrier has it. **A live warship never floods from a hit in
-the image.** Only its wreck does.
+```
+00962DBC  CALL 00B67800            ; row["Repair"]  (the literal at 00D0AA7C)
+00962DCF  CALL 00B65FB0            ; BSP_LuaObject_IsNil
+00962DD6  JE   00962DDC
+00962DD8  MOV  AL,1                ; nil -> 1
+00962E05  CALL 00B66250            ; otherwise the Lua boolean
+00962E16  MOV  [EDI+0D0h],AL       ; class+D0h
+```
+
+The gunnery host's class script already reads it this way (`f.repair = (row.Repair == false)
+and 0 or 1`, packet `cc9_ship_fire_flooding`). In this installation only **Kaiten** (class 4)
+authors `Repair = false`; 30 classes author `true` and every other class leaves it out. So
+**in the image nearly every live ship, warships included, floods from its hits.** Only a Kaiten,
+or a hull the gate's other bytes exclude, is refused.
 
 ### The binding
 
@@ -424,10 +433,11 @@ the image.** Only its wreck does.
   - `DologSzorzo` = 2.0, from this installation's `shipglobals.lua` line 388.
   - The point round trip, world → hull frame (sender) → world (`0074F440`), is skipped: the host
     applies the message at once on one pose.
-  - **`Repair` is taken as 0 for every class.** The host does not load it (the HUD's
-    `controlled_class_repair` records the same gap), and the Lua host has no boolean class reader.
-    So no live hull floods in the host, although the image floods the 30 classes above. A contract
-    follows.
+  - **`Repair` is taken as 0 for every class.** The host does not load it into the units host
+    (the HUD's `controlled_class_repair` records the same gap). **Corrected:** the image's byte
+    is 1 for every class but Kaiten, so this substitution holds back live flooding on nearly
+    every ship, not on 30 classes. The gunnery rows already carry the value (`flat(type_id,
+    "repair", 1)`); the follow-up passes it, and the health, to the units host.
   - The leak tick still passes a health of 1.0. It matters only once a live hull can take a leak:
     with health 1.0 its cap is 0.
 - **Contract for the gunnery host (cc9-ships), the sender half.** In `ShipHitBinding`, call
@@ -489,6 +499,8 @@ directory in this tree and the final COM release.
   element list. These are most likely aircraft victims routed through the same binding, not read
   further.
 
-**Verdict: ON.** The 90h receiver runs as the image's: every live warship hit is refused by
-0074F090's gate. The Repair substitution (0 for every class) and the host's dead-victim return
+**Verdict: ON.** The 90h receiver runs as the image's, apart from the Repair substitution.
+**Corrected:** the refusals in these pairs come from the substitution, not from the image. The
+image's gate would pass every one of the 664 USN02 sends and the 5 USN04 hull sends (no Kaiten on
+either mission). The Repair substitution (0 for every class) and the host's dead-victim return
 leave nothing to flood on these two missions today.
