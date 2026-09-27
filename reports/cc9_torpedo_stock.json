@@ -1,0 +1,12 @@
+{
+  "packet": "cc9_torpedo_stock",
+  "doc": "docs/UNIT_WEAPON_DEVICES.md, Torpedo stock, bound",
+  "calls": [
+    {"address": "008201B8", "native": "0081F8B0", "function": "0081F980", "note": "pass C with class+7A0h"},
+    {"address": "0081F8B4", "native": "00810E90", "function": "0081F8B0", "note": "loaded torpedo barrels"},
+    {"address": "00826182", "native": "00825450", "function": "00825F20", "note": "the supply tick"}
+  ],
+  "switches": [{"name": "kTorpedoStockBound", "state": "OFF", "pair": "pending"}],
+  "no_ghidra_function": [{"start": "00810D80", "end": "00810D9F", "note": "unit vtable+1F4h, round available"}, {"start": "00810DA0", "end": "00810DC2", "note": "unit vtable+1F8h, consume"}],
+  "failed_predictions": []
+}
