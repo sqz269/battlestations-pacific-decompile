@@ -1,0 +1,18 @@
+{
+  "packet": "cc9_stage_init_chunk_errors",
+  "doc": "docs/MISSION_LUA_MACHINE.md, The mission script name comes from the scene header",
+  "calls": [],
+  "switches": [
+    {
+      "name": "kSceneStageScriptBound",
+      "state": "OFF",
+      "pair": "pending"
+    }
+  ],
+  "no_ghidra_function": [],
+  "names_added": [],
+  "substitutions": [
+    "only slot 8 of the +928h table is filled (the single-player slot)"
+  ],
+  "failed_predictions": []
+}

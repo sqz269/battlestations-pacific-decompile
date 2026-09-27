@@ -1221,6 +1221,18 @@ void GameMissionHost::Impl::read_scene_file(SceneRecord& record,
     log.implemented("SetPendingScene::load_scene_header_pass", "0046df00");
     if (document.has_header && document.header.has_properties) {
         const auto table = bsp::read_scene_record_slot_table_004f1d70(document.header.properties);
+        // Packet cc9_stage_init_chunk_errors: 004F1D70's `GameStageScript` /
+        // `StageScript` arm into record+968h, slot 8 of the +928h table. The
+        // other StageScript* keys are not needed by a single-player load.
+        {
+            const bsp::SceneProperty* stage =
+                document.header.properties.find("GameStageScript");
+            if (stage == nullptr) stage = document.header.properties.find("StageScript");
+            if (stage != nullptr && !stage->values.empty()) {
+                if (record.script_names.size() < 11) record.script_names.resize(11);
+                record.script_names[8] = stage->values.front();
+            }
+        }
         participant_scene_counts.emplace(scene_path, table.max_player_num);
         log.notef("scene participant scalar: path=%s available=1 max_players=%d "
             "authored=%d", scene_path.c_str(), table.max_player_num,
@@ -1631,6 +1643,16 @@ void GameMissionHost::build_top_level_page_00584ae0() {
 // it from the scene path and checks the result against the mounted tree**: the
 // scene file's own parent directory folded to lower case, then, if that does
 // not resolve, each of the eight installed subdirectories in turn.
+// Packet cc9_stage_init_chunk_errors (docs/MISSION_LUA_MACHINE.md, "The mission
+// script name"). True: the mission script is the scene record's own name,
+// record+928h slot 8 (+968h), which 004F1D70 fills from the header property
+// `GameStageScript`, or `StageScript` when that is absent, and which a
+// single-player load selects (004E087B normalises the slot to 8). 008860B0
+// takes the name verbatim. False: the name is derived from the scene path, as
+// before; that misses every script whose folder differs from the scene's
+// (JM06's `COTP-IJN\PRCPIJN\JM06`, LOMP06's `USN\LOMP\06_crucial_cargo`).
+inline constexpr bool kSceneStageScriptBound = false;
+
 void GameMissionHost::Impl::finish_scene_load() {
     if (load.records.empty()) return;
     const SceneRecord& record = load.records.front();
@@ -1669,6 +1691,13 @@ void GameMissionHost::Impl::finish_scene_load() {
         }
     }
     if (script_name.empty() && !candidates.empty()) script_name = candidates.front();
+    if (kSceneStageScriptBound && record.script_names.size() > 8
+        && !record.script_names[8].empty()) {
+        const std::string authored = record.script_names[8];
+        log.notef("mission script name from the scene header: %s (record+968h; the path "
+            "derivation answered %s)", authored.c_str(), script_name.c_str());
+        script_name = authored;
+    }
     summary.lua_script_path = bsp::mission_script_path(script_name);
     // Correction to the line the scene summary printed: milestone 2e derived the
     // mission script path from the scene stem alone, which is the bare form no

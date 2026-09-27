@@ -4755,6 +4755,8 @@ int GameMissionLuaHost::luaL_loadbuffer(const char* buffer, int size, const char
     if (state_ == nullptr) return 1;
     const int status = ::luaL_loadbuffer(state_, buffer != nullptr ? buffer : "",
         static_cast<std::size_t>(size < 0 ? 0 : size), chunk_name);
+    last_status_ = status;
+    last_chunk_ = chunk_name != nullptr ? chunk_name : "";
     if (status == 0 && chunk_name != nullptr
         && std::strcmp(chunk_name, bsp::kMissionLuaPlatformChunk) == 0) {
         summary_.platform_chunk_ran = true;
@@ -4764,19 +4766,23 @@ int GameMissionLuaHost::luaL_loadbuffer(const char* buffer, int size, const char
 
 int GameMissionLuaHost::lua_pcall(int nargs, int nresults, int errfunc_index) {
     if (state_ == nullptr) return 1;
-    return ::lua_pcall(state_, nargs, nresults, errfunc_index);
+    last_status_ = ::lua_pcall(state_, nargs, nresults, errfunc_index);
+    return last_status_;
 }
 
 std::string GameMissionLuaHost::lua_tolstring_at_top() {
     if (state_ == nullptr) return {};
     const char* text = lua_tolstring(state_, -1, nullptr);
     const std::string message = text != nullptr ? text : std::string();
-    if (!message.empty()) {
+    // Packet cc9_stage_init_chunk_errors: the top of the stack after a
+    // successful load and call is a result, not an error message.
+    if (!message.empty() && last_status_ != 0) {
         note_error(message);
         if (phase_ == "global folders") ++summary_.global_folder_errors;
         if (phase_ == "mission chunk") summary_.mission_chunk_error = message;
-        log_.notef("  chunk error in %s: %s", phase_.empty() ? "(none)" : phase_.c_str(),
-            message.c_str());
+        log_.notef("  chunk error in %s [%s] status=%d: %s",
+            phase_.empty() ? "(none)" : phase_.c_str(),
+            last_chunk_.empty() ? "?" : last_chunk_.c_str(), last_status_, message.c_str());
     }
     return message;
 }

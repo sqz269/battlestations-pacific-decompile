@@ -857,6 +857,12 @@ private:
     lua_State* state_{nullptr};
     OpenScript script_;
     std::string phase_;
+    // Packet cc9_stage_init_chunk_errors: the last luaL_loadbuffer / lua_pcall
+    // status and chunk name, so lua_tolstring_at_top reports an error only after
+    // a failed load or call. The units host reads its query chunks' results
+    // through the same accessor, and those numbers were logged as errors.
+    int last_status_{0};
+    std::string last_chunk_;
     int call_stack_marker_{0};  // game+1A18h
     int reentrancy_depth_{0};   // 00f87900
     std::map<std::string, std::size_t> native_index_;
