@@ -48,6 +48,20 @@ namespace bsp::game {
 // the minimap over every unit).
 inline constexpr bool kReconUnitListSourcesBound = true;
 
+// Packet cc9_local_player_unit_list (docs/LOCAL_PLAYER_UNIT_LISTS.md, "The
+// local slot and the rebuilds"), committed OFF with predictions.
+// True: the local slot is the local player's (party 0 in single player, the
+// labelled substitution the HUD's 00645060 inputs use) instead of the side of
+// the controlled unit, and the 004C3CB0 latch game+193Ch is cleared as the
+// image clears it: at the end of each 008073C0 rebuild of the local team's
+// recon slot (00807995) and on every kill (0077D295, the generic OnKilled),
+// so the next in-mission tick rebuilds the eight lists. False: one build,
+// from the side of the controlled unit at the first tick.
+inline constexpr bool kLocalPlayerUnitListRuleBound = false;
+// The local player's party in single player (the side game+18ECh's record
+// +28h names), as src/game_hosts_hud.cpp's 00645060 inputs take it.
+inline constexpr int kLocalPlayerParty = 0;
+
 // The eight lists the last 004c3cb0 body built ([00E188A8]+1964h..+19B8h, a
 // field of the process-wide game object); nullptr before the first build or
 // after the world host is gone.
@@ -74,6 +88,10 @@ struct GameWorldSummary {
     std::size_t interpolator_records{0};
     bool lists_built{false};             // 004c3cb0 ran its body once
     unsigned long long list_guard_calls{0};
+    // Packet cc9_local_player_unit_list: latch clears by cause, and builds.
+    unsigned long long list_builds{0};
+    unsigned long long list_clears_recon{0};
+    unsigned long long list_clears_kill{0};
     std::size_t list_counts[8]{};
     std::size_t list_walk0_units{0};
 };

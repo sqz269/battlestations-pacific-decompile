@@ -340,3 +340,103 @@ a `__thiscall` on the objective set, never a completion test). The three constan
 - **Was:** 008073C0 coverage row 'partial: only the five 008042B0 clears at 008073D0..00807416 and the list-1-to-list-3 move at 00807634..008076E2 were read', with the follow-up packet unit_registry_five_lists asking what the five triples separate
   **Is:** answered and complete. The five triples are own (+DD8h), enemy (+DE4h), neutral (+DF0h), unknown (+DFCh) and the union of those four (+E08h); the 1-to-3 move is the detection drain that copies level-1 records into the unknown triple and removes anything below level 2 from the relation triple
   **Evidence:** the whole body 008073C0-008079A5 is read in docs/RECON_SLOT_LISTS.md section 3; 00806B10's four 00805D90 calls at 00806BE4, 00806C1A, 00806C50 and 00806C86 fix the names; 00807647 and 00807823 are the level compares. That doc's reading that 004C3CB0 walks triples 0, 1 and 3 and the HUD triple 4 is consistent and not superseded.
+
+## The local slot and the rebuilds (packet `cc9_local_player_unit_list`, `kLocalPlayerUnitListRuleBound`)
+
+Worker cc9-hud2, 2026-09-27, base main 6de0d8c6b. Ghidra was read only.
+
+### The image's rule (V, listings)
+
+**The source is the local player's slot.**
+- 004C3CB0 walks the recon triples of the slot `[game+18CCh + [game+18ECh]*4]` (004C3CF8, 004C3D61,
+  004C3EB4). That is the local player's own record, whose `+28h` is its team.
+- The controlled unit plays no part in it.
+- The host's stand-in used the side (`+54h`) of the controlled unit when the lists were built
+  (`game_local_recon_triple`). On USN01 that unit is the Japanese Airfield2 until 20.1 s, so
+  game+1970h held 26 Japanese units for the whole run (`docs/CONTROLLED_UNIT.md`, "Pairs and
+  verdict").
+
+**The latch `game+193Ch` is cleared in many places.**
+- An operand scan of every `[reg+193Ch]` access finds 17 clears in the game class, not one. They
+  are listed in the next table.
+- The rebuild runs on the next in-mission tick (004C40B4) after any clear.
+
+| site | function | condition |
+| --- | --- | --- |
+| 00807995 | 008073C0 `BSP_Recon_RebuildSlotLists`, its tail | the rebuilt slot's `+28h` equals the local slot's `+28h` (0080798D..00807993) |
+| 00807393 | the same slot walk, earlier | the same team test (00807384..00807391) |
+| 00803BD0 | 00803BA0 `BSP_Recon_MarkSlotDirty` | the marked team is the local slot's |
+| 004C9E89 | 004C9CA0 `BSP_Game_ApplyInGameInterface`, mission entry | unconditional. It follows 008073C0 on the local slot (004C9E82), and then 004C3CB0 runs at once (004C9E8F) |
+| 004E0360, 004E05A2 | 004DFB70 `BSP_Game_LoadMissionScene` | unconditional |
+| 0077D295 | 0077D270 `BSP_UnitInstance_OnKilledLua`, the generic OnKilled | unconditional, first instruction after the prologue |
+| 00779B1F | 00779AF0 `BSP_MissionEntity_OnKilledPlayerUnit` | not read |
+| 007CA5CE, 007CC809 | 007CA3F0 plane touchdown or crash; 007CC7A0 plane flight state 2 | not read |
+| 0045C460, 0045C470, 0045F725, 004C3C98, 006EDC1A, 007712F0 (at 0077134A), 007F1CA0 (at 007F1D25), 004D2C24 (world destroy) | | not read |
+
+**Correction to `docs/IN_MISSION_SUBSYSTEM_TICK.md`**, "Call 2", and its corrections list.
+- It said `game+193Ch` is cleared only by 004DFB70, so 004C3CB0 runs once per scene load.
+- It is cleared at least at every local-team recon rebuild (every 3 s, `docs/RECON_SLOT_LISTS.md`)
+  and at every kill, so the lists are rebuilt through the mission.
+
+### The binding
+
+- **Switch:** `kLocalPlayerUnitListRuleBound` in `include/bsp/game_hosts_world.hpp`, committed OFF.
+- **The local slot.** `game_local_recon_triple` reads the recon slot of `kLocalPlayerParty` (0)
+  instead of the controlled unit's side. That serves all three callers: 004C3CB0's walks, the
+  minimap's union triple (005C1610) and the pick through the lists.
+- **The latch.** Before each 004C3CB0 guard, the world host clears it (00807995 or 0077D295) in
+  two cases:
+  - when the gunnery host's 008073C0 pass counter has advanced and the pass covered party 0;
+  - when the units host's destroyed-unit record has grown.
+- **SUBSTITUTIONS, labelled:**
+  - The local party is 0 in single player, as the HUD's 00645060 inputs take it.
+  - The kill clear stands on the destroyed-unit record, not on the OnKilled call itself.
+  - The other clears in the table stay unmodelled: mission entry's own 008073C0 and 004C3CB0, the
+    plane events, and the unread sites. The first periodic pass stands for mission entry.
+
+### Predictions (written before any run; streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05, idle player)
+
+**USN01 3200/3000:**
+- **game+1970h** is the Allied side from the first build. It holds the party-0 units of the own
+  triple: Enterprise, Northampton, SaltLakeCity, the four destroyers, the Allied forts and
+  hangars, and the squadrons once they exist. No Japanese unit is in it.
+- **It is rebuilt about every 3 s.** That is about 50 builds over the 150 s, plus one per kill;
+  there are 7 deaths.
+- **game+19B8h (merged)** fills from the enemy and unknown triples as the recon passes publish
+  them. It was 0 in every OFF build.
+- **`+8Ch` at the 44h enter after `SetSelectedUnit(Northampton)`** (frame 403) holds Northampton.
+  SaltLakeCity and Dunlap follow Northampton, whose 00645060 accepts, so they are skipped. Any
+  other party-0 ship is there only if its role word is 9 or 0. The cursor is (0, 0), on
+  Northampton if it is entry 0. `+9Ch` stays 3.
+- **The 29h pick.** Its `list=1970` census changes from the 26 Japanese units to the Allied list,
+  and `list=19b8` becomes non-empty.
+  - `owner_140` moves from 2,404, because the lock-radius walk sees different candidates. The
+    direction is not predicted.
+  - `ray_pick_other` and `ray_pick_own` (2,240 and 160) come from the segment query, not the
+    lists. They stay unless a lock changes the camera, and nothing here does.
+- **Minimap:** before 20.1 s the union triple is the Allied side instead of the Japanese one.
+  This changes log lines only.
+- **Gameplay identical, `pair_diff` exit 1.** The lists feed the HUD, the pick and the minimap.
+  None of them reaches orders without input.
+
+**USN04 4700/4500:**
+- The Lexington is controlled from the start, so the side is already 0. game+1970h keeps the same
+  members at the first build.
+- It is rebuilt about every 3 s and on each kill, so launched squadrons enter it. game+19B8h
+  fills from the enemy triples.
+- `+8Ch` at both 44h enters stays {Lexington}.
+- Pick `owner_140` (1) and the pick censuses may move. **Gameplay identical, exit 1.**
+
+**USN02 9200/9000:**
+- DeRuyter, then Houston, are party 0, so the side is unchanged. Only the rebuild cadence
+  changes: game+1970h grows from its single 14-unit build as squadrons and new units appear, and
+  game+19B8h fills.
+- Pick rows may move. **Gameplay identical, exit 1.**
+
+**Why gameplay should not move.** The host's only readers of the lists and the triple are in the
+HUD (grep, base 6de0d8c6b):
+- `src/game_hosts_hud.cpp`: the 29h pick and the 006485A0 lists;
+- `src/game_hosts_hud_world.cpp`: the minimap union walk.
+
+A move in gameplay would therefore mean one of these reaches a gameplay host, and would be
+reported as a failed prediction.

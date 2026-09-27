@@ -1,0 +1,63 @@
+{
+ "packet": "cc9_local_player_unit_list",
+ "worker": "agent/cc9-hud2",
+ "doc": "docs/LOCAL_PLAYER_UNIT_LISTS.md, section \"The local slot and the rebuilds\"",
+ "switch": "kLocalPlayerUnitListRuleBound, include/bsp/game_hosts_world.hpp, committed false",
+ "steps": [
+  {
+   "address": "004c9e82",
+   "native": "008073c0",
+   "function": "004c9ca0",
+   "what": "mission entry: recon rebuild of the local slot"
+  },
+  {
+   "address": "004c9e8f",
+   "native": "004c3cb0",
+   "function": "004c9ca0",
+   "what": "mission entry: immediate list build after the latch clear 004C9E89"
+  }
+ ],
+ "latch_clears": [
+  "00807995",
+  "00807393",
+  "00803bd0",
+  "004c9e89",
+  "004e0360",
+  "004e05a2",
+  "0077d295",
+  "00779b1f",
+  "007ca5ce",
+  "007cc809",
+  "0045c460",
+  "0045c470",
+  "0045f725",
+  "004c3c98",
+  "006edc1a",
+  "0077134a",
+  "007f1d25",
+  "004d2c24"
+ ],
+ "names_added": {},
+ "no_ghidra_function": [
+  {
+   "start": "0045c460",
+   "end_inclusive": "0045c467",
+   "evidence": "MOV byte [ECX+193Ch],0; RET at 0045C467; INT3 after; no rel32 or absolute reference found"
+  },
+  {
+   "start": "0045c470",
+   "end_inclusive": "0045c47b",
+   "evidence": "MOV byte [ECX+193Ch],0; JMP 004C3CB0 at 0045C477..0045C47B; INT3 after; no reference found"
+  },
+  {
+   "start": "006edb40",
+   "end_inclusive": "006edc35",
+   "evidence": "INT3 before; flips the local slot's +28h team (0<->1), 008053C0, 008073C0, walks world+19CCh+34h, clears game+193Ch at 006EDC1A, 004C3CB0, then JMP 006485A0 at 006EDC31..006EDC35; INT3 after; one rel32 caller at 006EF12C, itself without a Ghidra function (not bounded)"
+  }
+ ],
+ "substitutions": [
+  "local player party 0 (single player) for the slot [game+18CCh + game+18ECh*4]",
+  "0077D295 stands on the units host's destroyed-unit record",
+  "the other latch clears (mission entry's own 008073C0 + 004C3CB0, plane events, unread sites) are not modelled; the first periodic pass stands for entry"
+ ]
+}

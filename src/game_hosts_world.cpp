@@ -15,6 +15,7 @@
 
 #include "bsp/in_mission_subsystem_tick.hpp"
 #include "bsp/local_player_unit_lists.hpp"
+#include "bsp/recon_sensor_pass.hpp"
 #include "bsp/lua_spawn_new.hpp"
 #include "bsp/unit_instance.hpp"
 #include "bsp/world_entity_update.hpp"
@@ -40,7 +41,13 @@ bool game_local_recon_triple(const GameUnitsHost& units, int triple,
     std::vector<std::size_t>& out) {
     out.clear();
     const GameGunneryHost* gunnery = units.gunnery();
-    if (gunnery == nullptr || !units.controlled_bound()) return false;
+    if (gunnery == nullptr) return false;
+    if constexpr (kLocalPlayerUnitListRuleBound) {
+        // [game+18CCh + game+18ECh*4], the local player's slot, whose +28h
+        // (the recon slot's team) is the local party.
+        return gunnery->recon_triple_units(kLocalPlayerParty, triple, out);
+    }
+    if (!units.controlled_bound()) return false;
     const int side = units.unit_side_0054(units.controlled_index());
     return gunnery->recon_triple_units(side, triple, out);
 }
@@ -70,6 +77,9 @@ struct GameWorldHost::Impl {
     // Packet cc9_recon_call_sites census: each walk's triple size when the
     // body ran (-1: not published).
     int walk_triple_sizes[4]{-1, -1, -1, -1};
+    // Packet cc9_local_player_unit_list: what the latch clears last saw.
+    unsigned long long seen_recon_passes{0};
+    std::size_t seen_deaths{0};
 
     void record(const char* method, std::uint32_t address) {
         char text[16];
@@ -310,10 +320,40 @@ void GameWorldHost::build_local_player_unit_lists_004c3cb0() {
     Impl& host = *impl_;
     ++host.summary.list_guard_calls;
     host.gate.slot_index = 0;
+    if constexpr (kLocalPlayerUnitListRuleBound) {
+        // 00807984..00807995: 008073C0 ends by clearing game+193Ch when the
+        // slot it rebuilt is the local player's team. Here a new pass of the
+        // gunnery host's 008073C0 that covered the local party stands for it.
+        if (const GameGunneryHost* gunnery = host.units.gunnery()) {
+            const bsp::ReconSensorPassState& pass = gunnery->recon_sensor_pass_state();
+            if (pass.passes != host.seen_recon_passes) {
+                host.seen_recon_passes = pass.passes;
+                if (pass.side_covered(kLocalPlayerParty) && host.gate.already_built) {
+                    host.gate.already_built = false;
+                    ++host.summary.list_clears_recon;
+                    host.done("UnitLists::latch_clear_recon_rebuild", 0x00807995u);
+                }
+            }
+        }
+        // 0077D295: the generic OnKilled override clears the latch for any
+        // unit. SUBSTITUTION (labelled): the units host's destroyed-unit
+        // record standing for that call; the ship override 006FD8B0 and the
+        // other clears (docs/LOCAL_PLAYER_UNIT_LISTS.md) are not separated.
+        const std::size_t deaths = host.units.destroyed_units().size();
+        if (deaths != host.seen_deaths) {
+            host.seen_deaths = deaths;
+            if (host.gate.already_built) {
+                host.gate.already_built = false;
+                ++host.summary.list_clears_kill;
+                host.done("UnitLists::latch_clear_on_killed", 0x0077d295u);
+            }
+        }
+    }
     LocalPlayerUnitListsBinding binding(host);
     const bool ran = bsp::build_local_player_unit_lists_004c3cb0(host.gate, binding);
     host.done("InMissionTick::unit_lists", 0x004c3cb0u);
     if (!ran) return;
+    ++host.summary.list_builds;
     host.summary.lists_built = true;
     host.summary.list_walk0_units = host.units.count();
     for (std::size_t index = 0; index < bsp::kLocalPlayerUnitListCount; ++index) {
@@ -368,6 +408,10 @@ void GameWorldHost::report() {
         host.summary.list_counts[1], host.summary.list_counts[2], host.summary.list_counts[3],
         host.summary.list_counts[4], host.summary.list_counts[5], host.summary.list_counts[6],
         host.summary.list_counts[7]);
+    host.log.notef("summary world local player unit list rule (packet "
+        "cc9_local_player_unit_list): bound=%d builds=%llu clears_recon=%llu clears_kill=%llu",
+        kLocalPlayerUnitListRuleBound ? 1 : 0, host.summary.list_builds,
+        host.summary.list_clears_recon, host.summary.list_clears_kill);
 }
 
 const GameWorldSummary& GameWorldHost::summary() const noexcept { return impl_->summary; }

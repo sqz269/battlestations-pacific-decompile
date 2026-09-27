@@ -187,6 +187,11 @@ re-deriving the loop.
   describes the site correctly). Is: the site passes it, the callee discards it.
 - **`004C3CB0` is not per-frame work.** Its latch `game+193Ch` is cleared only by
   `004DFB70`. Was: implied per-frame by its position in the tick. Is: once per mission scene load.
+- **Superseded (packet `cc9_local_player_unit_list`, 2026-09-27):** `game+193Ch` has at least 17
+  clears in the game class, among them the local-team tail of 008073C0 (00807995) and the generic
+  OnKilled 0077D295. So 004C3CB0 rebuilds after every local recon refresh and every kill. The
+  byte-pattern search above missed them. `docs/LOCAL_PLAYER_UNIT_LISTS.md`, "The local slot and
+  the rebuilds", has the table.
 - **The per-frame integration of the dynamics list is `00447B80`, and its fixed-step integration is
   `004462D0`; `00447060` is the release.** `docs/MISSION_STATE_FRAME.md`'s follow-up row for
   `game_dynamics_list` names "the per-frame integration 00447060". Evidence: `00447060`'s two
