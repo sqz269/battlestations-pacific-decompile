@@ -245,22 +245,22 @@ bool hud_movie_screen_camera_005cd240();
 // keyframes; 0079A3B0 poses the node every frame. bsp/hud_movie_camera.hpp.
 inline constexpr bool kMovieMoverBound = true;
 // Packet cc9_movie_camera_keys (docs/HUD_PICK_SEGMENT_QUERY.md section 10),
-// both committed OFF with predictions before the pairs.
+// committed OFF at f8496adb7 with predictions, ON by the pair verdicts (10.4).
 // Switch 4: 00798C80's else arm, once per fixed step after the +221h latch,
 // draws 00BD2F10(stream 1, 0.0, 65535.0) at 00798D07 and truncates it into a
 // 16-entry ring nothing reads. ON takes that draw on the shared stream-1
 // stand-in. Under BSP_GUNNERY_RNG_STREAMS=1 the draw is key-local and no
 // other draw reads it.
-inline constexpr bool kMovieStepDrawBound = false;
+inline constexpr bool kMovieStepDrawBound = true;
 // Switch 5: 00799D70 drops a keyframe parent whose +5Eh byte is set. ON reads
 // that one byte (the units host's scene-node flags); OFF reads the four-byte
 // 0043F080 gate, which also drops a parent with +5Ch clear or +5Dh/+60h set.
-inline constexpr bool kMovieParentKilledByteBound = false;
+inline constexpr bool kMovieParentKilledByteBound = true;
 // Switch 6: `position.terrainavoid` (007A1488, keyframe +D9h) and its clamp in
 // 00795650 (00795B45: y = 00903860 ground + 1.0 when y is not above it). ON
 // parses the key and answers the ground from world_ground_height_00903860;
 // OFF counts the key as unsupported.
-inline constexpr bool kMovieTerrainAvoidBound = false;
+inline constexpr bool kMovieTerrainAvoidBound = true;
 // Returns the keyframes added, or -1 when no HUD is attached.
 int hud_movie_add_position_007a44d0(const bsp::MovieKeyframeInput& in);
 

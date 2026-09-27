@@ -1195,3 +1195,42 @@ default-path USN04 pair (streams unset), which is a record and not a reference p
   Keyframes stay 16 and 12, and every `movie camera pose` line is identical.
 - Neither mission has a `terrainavoid` key, so `unsupported` stays 0 on both sides.
 - Pick counts and casts are unchanged.
+
+### 10.4 Pairs and verdicts
+
+The OFF side is this tree's build at f8496adb7. The ON sides are `tools/pair_export.py` exports
+of the same commit: `local\sd_on` flips switch 4, and `local\pt_on` flips switches 5 and 6
+together. All runs use `BSP_DEATH_TABLE=1`, lockstep 0.05 and an idle player, with streams ON
+unless marked otherwise.
+
+| pair | `pair_diff` | result |
+| --- | --- | --- |
+| switch 4, USN01 3200/3000 | exit 1 | gameplay, 7 death rows and 28 unit rows identical. `step_draws` 0 -> 1,496; `MovieCamera::fixed_step_draw` UNIMPLEMENTED 1,498 -> concrete 1,496 |
+| switch 4, USN04 4700/4500 | exit 1 | gameplay, 41 death rows and 81 unit rows identical; every other line identical. `step_draws` 0 -> 419; the record goes from UNIMPLEMENTED 420 to concrete 419 |
+| switch 4, USN04, **default path** (streams unset; a record, not a reference protocol) | exit 3 | deaths 39 -> 45 (+15%); hit records 777 -> 789; hull hits 283 -> 347; damage 11168.6 -> 12153.0 (+8.8%); shots 6074 -> 5836 (-3.9%); first hit 92.70 -> 93.20 s; torpedo-task releases 3 -> 8 of 16; 39 death rows changed and 6 only ON; clock offset 0 |
+| switches 5 and 6, USN01 | exit 1 | gameplay and every table identical; keyframes 16, `unsupported=0` on both sides; only the packet summary line changed |
+| switches 5 and 6, USN04 | exit 1 | the same: keyframes 12, `unsupported=0`, every other line identical |
+
+**Every prediction held,** including all the default-path bands.
+
+**USN01's intro poses vary from run to run.** Every USN01 pair showed two to four differing
+`movie camera pose` lines, all between frames 81 and 321, the intro camera's life.
+- The differences are in `forward` at the fourth decimal. At frame 81 the camera sits exactly on
+  its look-at point, so the direction of a sub-millimetre difference flips completely.
+- **This does not come from the switches.** Two runs of the same OFF binary
+  (`kk_off_usn01.log`, `kk_off2_usn01.log`) differ in the same way, and the two exports also
+  differ from each other.
+- Gameplay, the native table and every summary line are identical in all of these pairs.
+- USN04's poses and USN01's phase-2 poses (after 91 s, where the pick casts from the camera) are
+  identical across all runs.
+- The source is not found. It is an open item: a value the intro keyframes read, such as the
+  node seed or a parent pose at 4 s, differs by a few ulps between runs.
+
+**Verdicts: all three switches ON.**
+- `kMovieStepDrawBound = true`, judged on the streams-ON pairs like switch 2.
+  - **Warning for reference rows.** From this commit, a default-path run draws 1,496 (USN01) or
+    419 (USN04) extra stream-1 values during the movies. Default-path rows taken before this commit
+    are not comparable with rows taken after it.
+- `kMovieParentKilledByteBound = true`.
+- `kMovieTerrainAvoidBound = true`. No measured mission reaches the key, so it is build-tested
+  and identity-tested only.
