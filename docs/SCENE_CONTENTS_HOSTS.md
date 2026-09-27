@@ -1989,3 +1989,128 @@ so no gameplay row measures the change yet.
   matrix (the 13.3 assumption).
 - The vertical case 00AECC40 transforms again through the same inverse. The host's stand-in
   already takes the local points from the switched inverse.
+
+## 14. The vertical case read and bound (packet `cc9_terrain_vertical_subwalk`, `kTerrainVerticalSubwalkBound`)
+
+Worker cc9-terrain2, 2026-09-27, on main 15e669ebd. Ghidra was read only. Every body below is
+a defined Ghidra function whose listing ends where Ghidra says (RET, then INT3), so there is no
+`no_ghidra_function` body.
+
+### 14.1 00AECC40 (fastcall ECX terrain, EDX world from; world to, out; `RET 8`)
+
+- **World y test.** It returns 0 when both world y values are above terrain `+14h` (1e10). That
+  cannot happen.
+- **Tile units.** Both points go to local space through the node inverse (00B6E0D0, then
+  004142E0), the same transform 00ADA240 applies. Then x and z are taken to tile units:
+  f32(f32(1/`+18h`) * f32(local - origin)), with `+18h` = 300. y stays local.
+- **Equal points** (float-equal x and z in tile units): it calls vt+48h, which is 00ADB480, with
+  the TILE coordinates. 00ADB480 expects cell units (00ADA900 passes (x - node - origin) / 9.375).
+  So the height comes from the cell at index = tile coordinate, near the grid origin.
+  - When lo < h < hi (the two local y values), it writes (x tile, h, z tile) to `out` in tile
+    units, with no transform back (00AECE22..00AECE3F), and returns 1.
+  - Otherwise it falls through to the walk. This behaviour is the image's own and is kept.
+- **The walk.** Otherwise it calls 00AECA60(from, to, out) in tile units. On return it maps x and z
+  back with `x*300 + origin`, refreshes the node and transforms through node `+F0h`
+  (00AECE66..00AECEB8).
+
+### 14.2 00AECA60 (ECX terrain, EDX from; to, out; `RET 8`)
+
+- **Clip.** 00AEBD20 clips the segment to [0, `+38h`] x [0, `+3Ch`]; a clipped-out segment
+  returns 0.
+  - 00AEBA00 is the lower bound and 00AEBB90 the upper; each is __thiscall(segment; value, axis,
+    an unused dword), `RET 0Ch`, all SSE float.
+  - A segment wholly outside a bound returns 0, and one wholly inside returns 1.
+  - Otherwise it moves the outside endpoint along the segment onto the bound, unless |delta| < 1e-8
+    [00CF7FE8].
+- **Edge exits.** It returns 0 when both x equal the tile count, or both z do (double compares).
+- **Walker set-up.** 00AEB770 fills {terrain, `+38h`, `+3Ch`, node `+124h` world y}. 00AEADE0
+  copies 54h bytes of which only those 10h are initialised. The pair then goes to walker
+  +54h..+68h, and 00AEB890 sets the 2-D segment (+6Ch..+78h), y0 and y1 (+7Ch, +80h) and the slope
+  f32(double(y1 - y0) / f32 2-D length) at +84h.
+- **Then** 00AEC7C0.
+
+### 14.3 The grid iterator (shared by both levels)
+
+- **00AEB430** (fastcall ECX iterator, `RET`) sets up the per-axis crossing parameters:
+  - the 2-D delta, the length (sqrt of the float sum of float squares) and the unit direction
+    through 00419260;
+  - per axis with |dir| > 0.001: tDelta = f32(sqrt(f32((dz/dx)² + 1))) and the first crossing
+    (1 - fmod(x0, 1)) · tDelta, or fmod(x0, 1) · tDelta when dir < 0;
+  - otherwise both are 2 · length.
+- **00AEB680** is false when the length ends before the first crossing.
+- **00AEAB30** snaps a start that sits within 0.001 of a line. It sets trunc(p + 0.5) with 00BF7420
+  truncation, bumps that axis's count and flag (+74h), and advances its crossing.
+- **00AEB6D0** picks the step:
+  - a corner, 00AEB0B0, when |tMaxX - tMaxZ| < 0.001;
+  - x, 00AEB1F0, when tMaxX < tMaxZ;
+  - otherwise z, 00AEB310.
+- **Each step** records:
+  - the new point, snapped on the crossed line (trunc(p + 0.5));
+  - the cell left behind (+58h, +5Ch): the smaller of the old and new line index, and floor of
+    the other coordinate;
+  - the crossed edge's two corners (+60h..+6Ch), with k and k+1, or k twice when the coordinate is
+    integral;
+  - the fraction along it (+70h, fmod; a corner step leaves it as it was);
+  - t at the crossing (+34h);
+  - the next crossing, tDelta · count + first.
+
+### 14.4 The two walks
+
+- **00AEC7C0, tiles** (thiscall walker; out; `RET 4`).
+  - Returns 0 for equal 2-D ends.
+  - When y0 < -1000 it answers (x0, -1000, z0).
+  - A length of 0.001 or less, or no crossing, gives 00AEC660: the whole segment in the tile of its
+    minimum corner.
+  - Otherwise 00AEAB30, then per crossing: the tile left behind, y = slope · t + y0 and the new
+    point, then 00AEC3F0.
+  - The last piece is 00AEC700, which returns 0 for a tile outside the grid.
+- **00AEC3F0, one tile** (fastcall walker; `RET`).
+  - It takes the tile record at `+40h[+38h·j + i]`, unchecked in the image. A null record is a miss.
+  - It is a miss unless tile max `+18h` + node y > min(y at the two ends).
+  - It rescales the piece to cells: (p - tile) · 32, with [00D5D658] = 32 in `.rdata`.
+  - It clips to [0, 32]², **ignoring the result** (00AEC544).
+  - It builds the cell walker: {tile record, node y}, copied by 00AEAE70; the piece; 00AEB7E0
+    slope. Then it runs 00AEC120 and maps the hit back to tile units (x/32 + i, z/32 + j).
+- **00AEC120, cells** (thiscall walker; out; `RET 4`). It has the same structure. Two differences:
+  - It answers the start itself when the bilinear ground there (00AEBDE0) is above y0.
+  - Each crossing ends on a cell edge. 00AEC090 takes the ground there from the edge's two samples
+    lerped by +70h (00AEAFA0), or from the corner sample.
+  - Its whole and last pieces use 00AEBFF0 and 00AEC050 with the bilinear ground.
+- **The crossing, 00AEB940 then 00AEAAA0** (ECX = &t; h0, y0, h1, y1; `RET 10h`).
+  - False when both ends are above ground.
+  - t = 0 when the start is below.
+  - Else t = (y0 - h0) / (f32(h1 - h0) - f32(y1 - y0)), with no zero guard.
+  - The hit is 005803E0's lerp of the GROUND points (x0, h0, z0) to (x1, h1, z1) by t.
+- **00AEBDE0**: the bilinear ground at a cell point. Four samples go through the tile record's
+  +1Ch sampler vt+8h (00ADC5F0) plus the node y, with the +1 index held at 32.
+
+### 14.5 The binding (`kTerrainVerticalSubwalkBound`, committed OFF)
+
+- `vsub_vertical_00aecc40` and the bodies above are in `src/game_hosts_scene_contents.cpp`, and
+  `landscape_entry_segment_hit` calls them for the vertical case.
+  - They reuse the host's `quad_tile`, `tile_range_00aed020`, `block_sample_00adc5f0`,
+    `cell_height_00adb3a0` and `main_menu_map_lerp_005803e0`.
+  - They reuse the local points already taken through the switched inverse (13.3).
+- **LABELLED:**
+  - a tile index outside the grid reads as missing, where the image reads the table unchecked;
+  - 00419260's zero-length answer is taken as 0;
+  - x87 chains are evaluated in double and not bit-verified;
+  - `fraction` is the world-space projection of the answer.
+- **Census.** The gunnery `landscape attach` line gains
+  `vsub bound equal walks tiles cells`.
+
+### 14.6 Predictions (written before the pairs)
+
+- **Exactly vertical traces now almost never hit.** The load self-check's straight-down probe
+  through each authored object is float-equal in x and z, so it takes the equal-point test at the
+  wrong cell. When that fails, the walk sees a zero-length 2-D segment and returns 0.
+- **USN01 3200/3000.**
+  - Load summary `vertical=51/51` becomes `vertical=51/0..5`, and Landscape 03's
+    `segment_probe_hits` falls from 51 to 0..5. `equal` = 51 at load.
+  - The slanted slot 3Ch self-check (51 hits) and the rotation census do not move: neither is
+    vertical.
+  - In play: `vertical=3/0` stays 3 calls and 0 hits; picks stay 5357/22.
+  - Gameplay identical; `pair_diff` exit 1.
+- **USN13 3200/3000.** In play `vertical=4/0` stays 4/0. The load probe hits (204 objects over 12
+  Landscapes) fall the same way; the rotation census does not move; gameplay identical.
+- **USN04 4700/4500 and USN02 9200/9000.** No Landscape: exit 1, only the `vsub bound` field.

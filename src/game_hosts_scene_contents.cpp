@@ -6,6 +6,7 @@
 #include "bsp/air_operations.hpp"
 #include "bsp/camera_affine.hpp"
 #include "bsp/camera_inverse.hpp"
+#include "bsp/main_menu_map_point_geometry.hpp"
 #include "bsp/game_hosts.hpp"
 #include "bsp/game_hosts_lua.hpp"
 #include "bsp/game_hosts_vfs.hpp"
@@ -2653,6 +2654,12 @@ bool frame_inverse_point(const float m[16], const float p[3], double out[3]) noe
 // 07's census row moved as predicted (section 13.5).
 constexpr bool kLandscapeScaledTransposeInverseBound = true;
 
+// Packet cc9_terrain_vertical_subwalk (docs/SCENE_CONTENTS_HOSTS.md section 14):
+// slot 3Ch's vertical case 00AECC40 answers through its equal-point test (vt+48h
+// in tile units) and the sub-walk 00AECA60 (tiles 00AEC7C0, cells 00AEC120).
+// OFF: the half-cell march (the labelled stand-in of 10.3).
+constexpr bool kTerrainVerticalSubwalkBound = false;
+
 bool frame_inverse_point_00b63b30(const float m[16], const float p[3], double out[3]) noexcept {
     bsp::CameraMatrix frame{};
     for (int k = 0; k < 16; ++k) frame[k] = m[k];
@@ -3095,6 +3102,574 @@ bool landscape_segment_entry_bounds(std::size_t entry, float box_min[3],
     return true;
 }
 
+namespace {
+// ---------------------------------------------------------------------------
+// Packet cc9_terrain_vertical_subwalk (docs/SCENE_CONTENTS_HOSTS.md section 14):
+// slot 3Ch's vertical case 00AECC40 and its sub-walk 00AECA60, in place of the
+// half-cell march. Stored floats are kept as floats; x87 register chains are
+// evaluated in double (not bit-verified). The walk is in TILE units (1/300 of the
+// local frame after the origin) and, inside a tile, in CELL units (x 32).
+
+constexpr float kVsubCells = 32.0f;      // [00D5D658], int 32 in .rdata
+constexpr double kVsubEps = 0.001;       // [00CF3F30] double
+constexpr float kVsubClipEps = 1e-8f;    // [00CF7FE8] float
+
+// The two-axis grid iterator 00AEB430 builds on the stack (00AEC7C0 at
+// ESP+14h, 00AEC120 at ESP+18h); offsets are the image's.
+struct VsubIter {
+    float x0{0}, z0{0}, x1{0}, z1{0};     // +0 .. +Ch
+    float dx{0}, dz{0};                   // +10h, +14h
+    float tdx{0}, tdz{0};                 // +18h, +1Ch  t per unit step
+    float tmx0{0}, tmz0{0};               // +20h, +24h  first crossing
+    float dirx{0}, dirz{0};               // +28h, +2Ch
+    float len{0};                         // +30h
+    float t{0};                           // +34h  t at the last crossing
+    float tmx{0}, tmz{0};                 // +38h, +3Ch  next crossing
+    int cx{0}, cz{0};                     // +40h, +44h  steps taken
+    float px{0}, pz{0};                   // +48h, +4Ch  current point
+    float nx{0}, nz{0};                   // +50h, +54h  next point
+    int ci{0}, cj{0};                     // +58h, +5Ch  cell left behind
+    int e0i{0}, e0j{0}, e1i{0}, e1j{0};   // +60h .. +6Ch the crossed edge
+    float frac{0};                        // +70h  position along that edge
+    int flags{0};                         // +74h  00AEAB30's snap bits
+};
+
+int vsub_trunc(double v) noexcept { return static_cast<int>(v); }   // 00BF7420, CVTTSS2SI
+
+// 00AEB430 (fastcall ECX = iterator, plain RET).
+void vsub_iter_init_00aeb430(VsubIter& it) noexcept {
+    it.dx = terrain_f32(static_cast<double>(it.x1) - it.x0);
+    it.dz = terrain_f32(static_cast<double>(it.z1) - it.z0);
+    const float xx = terrain_f32(static_cast<double>(it.dx) * it.dx);
+    const float zz = terrain_f32(static_cast<double>(it.dz) * it.dz);
+    it.len = terrain_f32(std::sqrt(static_cast<double>(terrain_f32(static_cast<double>(xx) + zz))));
+    // 00419260: the same squared sum, sqrt, then 1/length. LABELLED: its zero
+    // test is taken as "0 when the length is not positive".
+    const float r = it.len > 0.0f ? terrain_f32(1.0 / it.len) : 0.0f;
+    it.dirx = terrain_f32(static_cast<double>(it.dx) * r);
+    it.dirz = terrain_f32(static_cast<double>(r) * it.dz);
+    if (std::fabs(it.dirx) > kQuadMinDirection) {
+        const float a = terrain_f32(static_cast<double>(it.dirz) / it.dirx);
+        it.tdx = terrain_f32(std::sqrt(static_cast<double>(terrain_f32(static_cast<double>(a) * a + 1.0))));
+        double f = terrain_f32(std::fmod(static_cast<double>(it.x0), 1.0));   // 00BF857A
+        if (!(0.0f > it.dirx)) f = 1.0 - f;
+        it.tmx0 = terrain_f32(f * it.tdx);
+    } else {
+        it.tdx = terrain_f32(static_cast<double>(it.len) + it.len);
+        it.tmx0 = it.tdx;
+    }
+    if (std::fabs(it.dirz) > kQuadMinDirection) {
+        const float b = terrain_f32(static_cast<double>(it.dirx) / it.dirz);
+        it.tdz = terrain_f32(std::sqrt(static_cast<double>(terrain_f32(static_cast<double>(b) * b + 1.0))));
+        double f = terrain_f32(std::fmod(static_cast<double>(it.z0), 1.0));
+        if (!(0.0f > it.dirz)) f = 1.0 - f;
+        it.tmz0 = terrain_f32(f * it.tdz);
+    } else {
+        it.tdz = terrain_f32(static_cast<double>(it.len) + it.len);
+        it.tmz0 = it.tdz;
+    }
+}
+
+// The start the two walks give the iterator after 00AEB430 (00AEC828..00AEC85B,
+// 00AEC188..00AEC1CE).
+void vsub_iter_start(VsubIter& it) noexcept {
+    it.t = 0.0f;
+    it.tmx = it.tmx0;
+    it.tmz = it.tmz0;
+    it.cx = it.cz = 0;
+    it.px = it.x0;
+    it.pz = it.z0;
+}
+
+// 00AEB680: false when the segment ends before its first crossing.
+bool vsub_iter_crosses_00aeb680(const VsubIter& it) noexcept {
+    float m = it.tmz;
+    if (it.tmx < m) m = it.tmx;
+    return !(it.len < m);
+}
+
+// 00AEAB30: a start within 0.001 of a grid line is snapped onto it.
+void vsub_iter_snap_00aeab30(VsubIter& it) noexcept {
+    it.flags = 0;
+    if (it.tmx < kVsubEps) {
+        it.px = static_cast<float>(vsub_trunc(static_cast<double>(it.px) + 0.5));   // [00D7A280]
+        ++it.cx;
+        it.flags += 1;
+        it.tmx = terrain_f32(static_cast<double>(it.tdx) * it.cx + it.tmx0);
+    }
+    if (it.tmz < kVsubEps) {
+        it.pz = static_cast<float>(vsub_trunc(static_cast<double>(it.pz) + 0.5));
+        ++it.cz;
+        it.flags += 2;
+        it.tmz = terrain_f32(static_cast<double>(it.tdz) * it.cz + it.tmz0);
+    }
+}
+
+void vsub_iter_point(VsubIter& it, float t) noexcept {
+    it.nx = terrain_f32(static_cast<double>(it.x0) + terrain_f32(static_cast<double>(t) * it.dirx));
+    it.nz = terrain_f32(static_cast<double>(it.z0) + terrain_f32(static_cast<double>(t) * it.dirz));
+}
+
+// 00AEB1F0, a step across an x line.
+void vsub_iter_step_x_00aeb1f0(VsubIter& it) noexcept {
+    const float t = it.tmx;
+    vsub_iter_point(it, t);
+    it.nx = static_cast<float>(vsub_trunc(static_cast<double>(it.nx) + 0.5));
+    const float pz = it.nz;
+    const int k = static_cast<int>(std::floor(static_cast<double>(pz)));   // 00BF85B0, FISTP
+    const int k2 = static_cast<double>(k) == static_cast<double>(pz) ? k : k + 1;
+    const int ix = static_cast<int>(it.nx);
+    it.e0i = ix; it.e0j = k; it.e1i = ix; it.e1j = k2;
+    it.frac = terrain_f32(std::fmod(static_cast<double>(pz), 1.0));
+    const int cur = static_cast<int>(it.px);
+    it.ci = cur < ix ? cur : ix;
+    it.cj = k;
+    ++it.cx;
+    it.t = t;
+    it.tmx = terrain_f32(static_cast<double>(it.tdx) * it.cx + it.tmx0);
+}
+
+// 00AEB310, a step across a z line.
+void vsub_iter_step_z_00aeb310(VsubIter& it) noexcept {
+    const float t = it.tmz;
+    vsub_iter_point(it, t);
+    it.nz = static_cast<float>(vsub_trunc(static_cast<double>(it.nz) + 0.5));
+    const float px = it.nx;
+    const int k = static_cast<int>(std::floor(static_cast<double>(px)));
+    const int k2 = static_cast<double>(k) == static_cast<double>(px) ? k : k + 1;
+    const int iz = static_cast<int>(it.nz);
+    it.e0i = k; it.e0j = iz; it.e1i = k2; it.e1j = iz;
+    it.frac = terrain_f32(std::fmod(static_cast<double>(px), 1.0));
+    const int cur = static_cast<int>(it.pz);
+    it.ci = k;
+    it.cj = cur < iz ? cur : iz;
+    ++it.cz;
+    it.t = t;
+    it.tmz = terrain_f32(static_cast<double>(it.tdz) * it.cz + it.tmz0);
+}
+
+// 00AEB0B0, a step through a grid corner (both crossings within 0.001).
+void vsub_iter_step_xz_00aeb0b0(VsubIter& it) noexcept {
+    const float t = it.tmz > it.tmx ? it.tmz : it.tmx;
+    ++it.cz;
+    ++it.cx;
+    it.t = t;
+    it.tmz = terrain_f32(static_cast<double>(it.tdz) * it.cz + it.tmz0);
+    it.tmx = terrain_f32(static_cast<double>(it.tdx) * it.cx + it.tmx0);
+    vsub_iter_point(it, t);
+    it.nx = static_cast<float>(vsub_trunc(static_cast<double>(it.nx) + 0.5));
+    it.nz = static_cast<float>(vsub_trunc(static_cast<double>(it.nz) + 0.5));
+    const int a = vsub_trunc(static_cast<double>(it.nx) + 0.5);
+    const int b = vsub_trunc(static_cast<double>(it.nz) + 0.5);
+    it.e0i = a; it.e1i = a; it.e0j = b; it.e1j = b;   // +70h is left as it was
+    const int cz = static_cast<int>(it.pz);
+    it.cj = cz < b ? cz : b;
+    const int cx = static_cast<int>(it.px);
+    it.ci = cx < a ? cx : a;
+}
+
+// 00AEB6D0.
+void vsub_iter_step_00aeb6d0(VsubIter& it) noexcept {
+    if (std::fabs(static_cast<double>(it.tmx) - it.tmz) < kVsubEps) {
+        vsub_iter_step_xz_00aeb0b0(it);
+    } else if (it.tmx < it.tmz) {
+        vsub_iter_step_x_00aeb1f0(it);
+    } else {
+        vsub_iter_step_z_00aeb310(it);
+    }
+}
+
+// 00AEBA00 (lower bound) and 00AEBB90 (upper bound), __thiscall(segment
+// {x0,y0,z0,x1,y1,z1}; value, axis 0 or 2, and an unused third dword), RET 0Ch.
+bool vsub_clip_00aeba00(float s[6], float v, int axis, bool upper) noexcept {
+    const float p0 = s[axis];
+    const float p1 = s[axis + 3];
+    if (upper) {
+        if (v < p0 && v < p1) return false;
+        if (p0 <= v && p1 <= v) return true;
+    } else {
+        if (p0 < v && p1 < v) return false;
+        if (v <= p0 && v <= p1) return true;
+    }
+    const float d[3] = {s[3] - s[0], s[4] - s[1], s[5] - s[2]};
+    float m = d[axis];
+    if (m <= 0.0f) m = -0.0f - m;                              // [00D7A218] [00D7A208]
+    if (!(kVsubClipEps <= m)) return true;
+    const bool move_end = upper ? (p0 <= v) : (v <= p0);
+    if (move_end) {
+        const float f = (p1 - v) / d[axis];
+        for (int k = 0; k < 3; ++k) s[3 + k] = s[3 + k] - f * d[k];
+        s[axis + 3] = v;
+    } else {
+        const float f = (v - p0) / d[axis];
+        for (int k = 0; k < 3; ++k) s[k] = s[k] + f * d[k];
+        s[axis] = v;
+    }
+    return true;
+}
+
+// 00AEBD20 (thiscall segment; min pair, max pair), RET 8.
+bool vsub_clip_00aebd20(float s[6], const float lo[2], const float hi[2]) noexcept {
+    if (!vsub_clip_00aeba00(s, lo[0], 0, false)) return false;
+    if (!vsub_clip_00aeba00(s, hi[0], 0, true)) return false;
+    if (!vsub_clip_00aeba00(s, lo[1], 2, false)) return false;
+    return vsub_clip_00aeba00(s, hi[1], 2, true);
+}
+
+// 00AEB7E0 / 00AEB890: dy (double) over the 2-D length (float).
+float vsub_slope(float x0, float z0, float y0, float x1, float z1, float y1) noexcept {
+    const float dx = terrain_f32(static_cast<double>(x1) - x0);
+    const float dz = terrain_f32(static_cast<double>(z1) - z0);
+    const double dy = static_cast<double>(y1) - y0;
+    const float xx = terrain_f32(static_cast<double>(dx) * dx);
+    const float zz = terrain_f32(static_cast<double>(dz) * dz);
+    const float len = terrain_f32(std::sqrt(static_cast<double>(terrain_f32(static_cast<double>(xx) + zz))));
+    return terrain_f32(dy / len);
+}
+
+// The cell walker 00AEC3F0 builds (48h bytes copied by 00AEAE70); only the
+// fields the cell tests read are kept.
+struct VsubCellWalker {
+    const SceneTerrainBlock* block{nullptr};   // +0h (its +1Ch sampler, 00ADEA70)
+    float node_y{0};                           // +4h
+    float ax{0}, az{0};                        // +8h, +Ch   piece start
+    float bx{0}, bz{0};                        // +10h, +14h piece end
+    int e0i{0}, e0j{0}, e1i{0}, e1j{0};        // +18h .. +24h
+    float frac{0};                             // +28h
+    float ha{0}, hb{0};                        // +2Ch, +30h ground at the ends
+    float ya{0}, yb{0};                        // +34h, +38h segment y at the ends
+    float hit[3]{};                            // +3Ch .. +44h
+    float sx{0}, sz{0}, ex{0}, ez{0};          // +60h .. +6Ch (2-D segment)
+    float y0{0}, y1{0}, slope{0};              // +70h, +74h, +78h
+};
+
+float vsub_sample(const VsubCellWalker& w, int i, int j) noexcept {
+    // vt+8h of block+1Ch (00ADC5F0) plus the node y, stored float.
+    return terrain_f32(static_cast<double>(block_sample_00adc5f0(*w.block, i, j)) + w.node_y);
+}
+
+// 00AEBDE0 (thiscall walker; point), RET 4: bilinear ground at a cell point.
+float vsub_ground_00aebde0(const VsubCellWalker& w, float x, float z) noexcept {
+    const int i = static_cast<int>(x);
+    const float fx = terrain_f32(static_cast<double>(x) - i);
+    const int j = static_cast<int>(z);
+    const float fz = terrain_f32(static_cast<double>(z) - j);
+    const int i1 = i == 32 ? i : i + 1;
+    const int j1 = j == 32 ? j : j + 1;
+    const float s11 = vsub_sample(w, i1, j1);
+    const float s01 = vsub_sample(w, i, j1);
+    const float s10 = vsub_sample(w, i1, j);
+    const float s00 = vsub_sample(w, i, j);
+    const float a = terrain_f32(s00 + (static_cast<double>(s10) - s00) * fx);
+    const float b = terrain_f32(s01 + static_cast<double>(fx) * (static_cast<double>(s11) - s01));
+    return terrain_f32(a + (static_cast<double>(b) - a) * fz);
+}
+
+// 00AEAAA0 (ECX = &t; h0, y0, h1, y1), RET 10h.
+bool vsub_cross_00aeaaa0(float h0, float y0, float h1, float y1, float& t) noexcept {
+    if (y0 > h0 && y1 > h1) return false;
+    if (h0 > y0) {
+        t = 0.0f;
+        return true;
+    }
+    const double d0 = static_cast<double>(y0) - h0;
+    const float dh = terrain_f32(static_cast<double>(h1) - h0);
+    const float dy = terrain_f32(static_cast<double>(y1) - y0);
+    t = terrain_f32(d0 / (static_cast<double>(dh) - dy));   // no zero guard in the image
+    return true;
+}
+
+// 00AEB940 (fastcall walker): the crossing, and the hit lerped between the two
+// ground points by 005803E0.
+bool vsub_cross_00aeb940(VsubCellWalker& w) noexcept {
+    float t = 0.0f;
+    if (!vsub_cross_00aeaaa0(w.ha, w.ya, w.hb, w.yb, t)) return false;
+    const std::array<float, 3> a{w.ax, w.ha, w.az};
+    const std::array<float, 3> b{w.bx, w.hb, w.bz};
+    const std::array<float, 3> r = bsp::main_menu_map_lerp_005803e0(a, b, t);
+    for (int k = 0; k < 3; ++k) w.hit[k] = r[k];
+    return true;
+}
+
+// 00AEBFF0 (a, b, ya, yb), RET 10h: the whole piece inside one cell.
+bool vsub_cell_whole_00aebff0(VsubCellWalker& w, float ax, float az, float bx, float bz,
+                              float ya, float yb) noexcept {
+    w.ya = ya; w.ax = ax; w.az = az; w.yb = yb; w.bx = bx; w.bz = bz;
+    w.ha = vsub_ground_00aebde0(w, ax, az);
+    w.hb = vsub_ground_00aebde0(w, bx, bz);
+    return vsub_cross_00aeb940(w);
+}
+
+// 00AEC050 (b, yb), RET 8: the last piece.
+bool vsub_cell_last_00aec050(VsubCellWalker& w, float bx, float bz, float yb) noexcept {
+    w.yb = yb; w.bx = bx; w.bz = bz;
+    w.hb = vsub_ground_00aebde0(w, bx, bz);
+    return vsub_cross_00aeb940(w);
+}
+
+// 00AEC090 (b, yb), RET 8: a piece ending on a cell edge; the ground there is
+// the edge's two samples lerped by +28h (00AEAFA0), or the corner sample.
+bool vsub_cell_edge_00aec090(VsubCellWalker& w, float bx, float bz, float yb) noexcept {
+    w.yb = yb; w.bx = bx; w.bz = bz;
+    if (w.e0i == w.e1i && w.e0j == w.e1j) {
+        w.hb = vsub_sample(w, w.e0i, w.e0j);
+    } else {
+        const float s0 = vsub_sample(w, w.e0i, w.e0j);
+        const float s1 = vsub_sample(w, w.e1i, w.e1j);
+        w.hb = terrain_f32(static_cast<double>(s1) * w.frac + (1.0 - w.frac) * s0);
+    }
+    return vsub_cross_00aeb940(w);
+}
+
+// 00AEC120 (thiscall cell walker; out), RET 4: the walk over the 32 x 32 cells.
+bool vsub_cell_walk_00aec120(VsubCellWalker& w, float out[3], unsigned long long& cells) noexcept {
+    if (w.sx == w.ex && w.sz == w.ez) return false;
+    VsubIter it;
+    it.x0 = w.sx; it.z0 = w.sz; it.x1 = w.ex; it.z1 = w.ez;
+    vsub_iter_init_00aeb430(it);
+    vsub_iter_start(it);
+    float h = vsub_ground_00aebde0(w, w.sx, w.sz);
+    if (h > w.y0) {                                              // 00AEC1FA
+        out[0] = w.sx; out[1] = h; out[2] = w.sz;
+        return true;
+    }
+    bool hit = false;
+    if (!(kVsubEps < it.len) || !vsub_iter_crosses_00aeb680(it)) {
+        hit = vsub_cell_whole_00aebff0(w, w.sx, w.sz, w.ex, w.ez, w.y0, w.y1);
+    } else {
+        vsub_iter_snap_00aeab30(it);
+        if (it.flags > 0) h = vsub_ground_00aebde0(w, it.px, it.pz);
+        w.ax = it.px; w.az = it.pz; w.ha = h; w.ya = w.y0;
+        for (;;) {
+            const float m = it.tmz > it.tmx ? it.tmx : it.tmz;
+            if (it.len < m) {
+                hit = vsub_cell_last_00aec050(w, w.ex, w.ez, w.y1);
+                break;
+            }
+            vsub_iter_step_00aeb6d0(it);
+            ++cells;
+            w.e0i = it.e0i; w.e0j = it.e0j; w.e1i = it.e1i; w.e1j = it.e1j; w.frac = it.frac;
+            const float y = terrain_f32(static_cast<double>(w.slope) * it.t + w.y0);
+            if (vsub_cell_edge_00aec090(w, it.nx, it.nz, y)) {
+                hit = true;
+                break;
+            }
+            w.ax = w.bx; it.px = it.nx; w.az = w.bz; it.pz = it.nz; w.ha = w.hb; w.ya = w.yb;
+        }
+    }
+    if (!hit) return false;
+    for (int k = 0; k < 3; ++k) out[k] = w.hit[k];
+    return true;
+}
+
+// The tile walker 00AECA60 builds on its stack (54h bytes from 00AEB770 /
+// 00AEADE0; only the first 10h are initialised there).
+struct VsubTileWalker {
+    const SceneTerrainHeightField* field{nullptr};   // +0h
+    float node_y{0};                                 // +Ch, node +124h
+    float ax{0}, az{0}, bx{0}, bz{0};                // +20h .. +2Ch
+    int ti{0}, tj{0};                                // +30h, +34h
+    float ya{0}, yb{0};                              // +40h, +44h
+    float hit[3]{};                                  // +48h .. +50h
+    float sx{0}, sz{0}, ex{0}, ez{0};                // +6Ch .. +78h
+    float y0{0}, y1{0}, slope{0};                    // +7Ch, +80h, +84h
+};
+
+// 00AEC3F0 (fastcall tile walker): one tile.
+bool vsub_tile_00aec3f0(VsubTileWalker& w, unsigned long long& tiles,
+                        unsigned long long& cells) noexcept {
+    // The image reads +40h[+38h * j + i] unchecked; the host answers a tile
+    // outside the grid as missing. LABELLED.
+    const SceneTerrainBlock* block = quad_tile(*w.field, w.ti, w.tj);
+    if (block == nullptr) return false;
+    ++tiles;
+    float tile_lo = 0.0f, tile_hi = 0.0f;
+    tile_range_00aed020(*block, tile_lo, tile_hi);               // tile +18h
+    const float top = terrain_f32(static_cast<double>(tile_hi) + w.node_y);
+    const float ymin = w.yb > w.ya ? w.ya : w.yb;
+    if (!(top > ymin)) return false;                             // 00AEC45D
+    const float fi = static_cast<float>(w.ti);
+    const float fj = static_cast<float>(w.tj);
+    const float n = kVsubCells;
+    float s[6] = {
+        terrain_f32(static_cast<double>(terrain_f32(static_cast<double>(w.ax) - fi)) * n), w.ya,
+        terrain_f32(static_cast<double>(terrain_f32(static_cast<double>(w.az) - fj)) * n),
+        terrain_f32(static_cast<double>(terrain_f32(static_cast<double>(w.bx) - fi)) * n), w.yb,
+        terrain_f32(static_cast<double>(n) * terrain_f32(static_cast<double>(w.bz) - fj))};
+    const float lo[2] = {0.0f, 0.0f};
+    const float hi[2] = {n, n};
+    (void)vsub_clip_00aebd20(s, lo, hi);                         // 00AEC544, AL not tested
+    VsubCellWalker c;
+    c.block = block;
+    c.node_y = w.node_y;
+    c.sx = s[0]; c.sz = s[2]; c.ex = s[3]; c.ez = s[5];
+    c.y0 = s[1]; c.y1 = s[4];
+    c.slope = vsub_slope(s[0], s[2], s[1], s[3], s[5], s[4]);  // 00AEB7E0
+    float out[3];
+    if (!vsub_cell_walk_00aec120(c, out, cells)) return false;
+    w.hit[1] = out[1];
+    w.hit[0] = terrain_f32(static_cast<double>(out[0]) / n + fi);
+    w.hit[2] = terrain_f32(static_cast<double>(out[2]) / n + fj);
+    return true;
+}
+
+// 00AEC660 (a, b, ya, yb), RET 10h: the whole segment in the tile of its
+// minimum corner.
+bool vsub_tile_whole_00aec660(VsubTileWalker& w, float ax, float az, float bx, float bz,
+                              float ya, float yb, unsigned long long& tiles,
+                              unsigned long long& cells) noexcept {
+    w.ya = ya; w.ax = ax; w.az = az; w.yb = yb; w.bx = bx; w.bz = bz;
+    w.ti = static_cast<int>(bx <= ax ? bx : ax);
+    w.tj = static_cast<int>(bz <= az ? bz : az);
+    return vsub_tile_00aec3f0(w, tiles, cells);
+}
+
+// 00AEC700 (b, yb), RET 8: the last piece, in the grid only.
+bool vsub_tile_last_00aec700(VsubTileWalker& w, float bx, float bz, float yb,
+                             unsigned long long& tiles, unsigned long long& cells) noexcept {
+    const float mz = bz <= w.az ? bz : w.az;
+    const float mx = bx <= w.ax ? bx : w.ax;
+    w.ti = static_cast<int>(mx);
+    w.tj = static_cast<int>(mz);
+    if (w.ti < 0 || w.ti >= w.field->tiles_wide || w.tj < 0 || w.tj >= w.field->tiles_deep) {
+        return false;
+    }
+    w.yb = yb; w.bx = bx; w.bz = bz;
+    return vsub_tile_00aec3f0(w, tiles, cells);
+}
+
+// 00AEC7C0 (thiscall tile walker; out), RET 4: the walk over the tiles.
+bool vsub_tile_walk_00aec7c0(VsubTileWalker& w, float out[3], unsigned long long& tiles,
+                             unsigned long long& cells) noexcept {
+    if (w.ex == w.sx && w.ez == w.sz) return false;
+    VsubIter it;
+    it.x0 = w.sx; it.z0 = w.sz; it.x1 = w.ex; it.z1 = w.ez;
+    vsub_iter_init_00aeb430(it);
+    vsub_iter_start(it);
+    if (-1000.0 > w.y0) {                                        // [00CE6658]
+        out[0] = w.sx; out[1] = kTerrainNoGround; out[2] = w.sz;
+        return true;
+    }
+    bool hit = false;
+    if (!(kVsubEps < it.len) || !vsub_iter_crosses_00aeb680(it)) {
+        hit = vsub_tile_whole_00aec660(w, w.sx, w.sz, w.ex, w.ez, w.y0, w.y1, tiles, cells);
+    } else {
+        vsub_iter_snap_00aeab30(it);
+        w.ax = it.px; w.az = it.pz; w.ya = w.y0;
+        for (;;) {
+            const float m = it.tmz > it.tmx ? it.tmx : it.tmz;
+            if (it.len < m) {
+                hit = vsub_tile_last_00aec700(w, w.ex, w.ez, w.y1, tiles, cells);
+                break;
+            }
+            vsub_iter_step_00aeb6d0(it);
+            w.ti = it.ci; w.tj = it.cj;
+            w.yb = terrain_f32(static_cast<double>(w.slope) * it.t + w.y0);
+            w.bx = it.nx; w.bz = it.nz;
+            if (vsub_tile_00aec3f0(w, tiles, cells)) {
+                hit = true;
+                break;
+            }
+            w.ax = w.bx; w.az = w.bz; it.px = it.nx; it.pz = it.nz; w.ya = w.yb;
+        }
+    }
+    if (!hit) return false;
+    for (int k = 0; k < 3; ++k) out[k] = w.hit[k];
+    return true;
+}
+
+// 00AECA60 (ECX terrain, EDX from, stack to and out; RET 8), in tile units.
+bool vsub_subwalk_00aeca60(const SceneTerrainHeightField& field, const float from[3],
+                           const float to[3], float out[3], unsigned long long& tiles,
+                           unsigned long long& cells) noexcept {
+    float s[6] = {from[0], from[1], from[2], to[0], to[1], to[2]};
+    const float lo[2] = {0.0f, 0.0f};
+    const float hi[2] = {static_cast<float>(field.tiles_wide), static_cast<float>(field.tiles_deep)};
+    if (!vsub_clip_00aebd20(s, lo, hi)) return false;
+    // 00AECAFA..00AECB90: both x on the far x edge, or both z on the far z edge.
+    if (static_cast<double>(s[0]) == field.tiles_wide && static_cast<double>(s[3]) == field.tiles_wide) {
+        return false;
+    }
+    if (static_cast<double>(s[2]) == field.tiles_deep && static_cast<double>(s[5]) == field.tiles_deep) {
+        return false;
+    }
+    VsubTileWalker w;
+    w.field = &field;
+    w.node_y = field.node_y;                                     // 00AEB770, node +124h
+    w.sx = s[0]; w.sz = s[2]; w.ex = s[3]; w.ez = s[5];          // 00AEB890
+    w.y0 = s[1]; w.y1 = s[4];
+    w.slope = vsub_slope(s[0], s[2], s[1], s[3], s[5], s[4]);
+    return vsub_tile_walk_00aec7c0(w, out, tiles, cells);
+}
+
+// Terrain vt+48h 00ADB480 at (u, v) in its own units (cells).
+float vsub_bilinear_00adb480(const SceneTerrainHeightField& field, float u, float v) noexcept {
+    const int i = static_cast<int>(u);
+    const int j = static_cast<int>(v);
+    const float fu = terrain_f32(static_cast<double>(u) - i);
+    const float h11 = field.cell_height_00adb3a0(i + 1, j + 1);
+    const float h01 = field.cell_height_00adb3a0(i, j + 1);
+    const float h10 = field.cell_height_00adb3a0(i + 1, j);
+    const float h00 = field.cell_height_00adb3a0(i, j);
+    const float a = terrain_f32(h00 + static_cast<double>(fu) * (static_cast<double>(h10) - h00));
+    const float b = terrain_f32(h01 + static_cast<double>(fu) * (static_cast<double>(h11) - h01));
+    const float fv = terrain_f32(static_cast<double>(v) - j);
+    return terrain_f32(a + static_cast<double>(fv) * (static_cast<double>(b) - a));
+}
+
+// 00AECC40 (fastcall terrain, EDX world from; world to, out; RET 8) after its
+// two transforms (the local points here). `raw` is set when the answer is the
+// equal-point case, which 00AECC40 writes in TILE units with no transform back.
+struct VsubAnswer {
+    bool hit{false};
+    bool raw{false};
+    float point[3]{};   // raw: tile units as written; otherwise origin-relative local
+};
+
+VsubAnswer vsub_vertical_00aecc40(const SceneTerrainHeightField& field, const float la[3],
+                                  const float lb[3], SceneTerrainQuadtreeCensus& census) noexcept {
+    VsubAnswer answer;
+    const float fx = terrain_f32(static_cast<double>(la[0]) - field.origin_x);
+    const float fz = terrain_f32(static_cast<double>(la[2]) - field.origin_z);
+    const float tx = terrain_f32(static_cast<double>(lb[0]) - field.origin_x);
+    const float tz = terrain_f32(static_cast<double>(lb[2]) - field.origin_z);
+    const float size = kQuadTileSize;                            // +18h
+    const float inv = terrain_f32(1.0 / size);
+    const float from_t[3] = {terrain_f32(static_cast<double>(inv) * fx), la[1],
+                             terrain_f32(static_cast<double>(inv) * fz)};
+    const float to_t[3] = {terrain_f32(static_cast<double>(inv) * tx), lb[1],
+                           terrain_f32(static_cast<double>(inv) * tz)};
+    if (to_t[0] == from_t[0] && to_t[2] == from_t[2]) {
+        // 00AECDB5: vt+48h in TILE units, where it expects cells. The image's own
+        // behaviour, kept.
+        ++census.vertical_equal;
+        const float h = vsub_bilinear_00adb480(field, from_t[0], from_t[2]);
+        const float lo = lb[1] > la[1] ? la[1] : lb[1];
+        const float hi = lb[1] > la[1] ? lb[1] : la[1];
+        if (h > lo && hi > h) {
+            answer.hit = true;
+            answer.raw = true;
+            answer.point[0] = from_t[0];
+            answer.point[1] = h;
+            answer.point[2] = from_t[2];
+            return answer;
+        }
+    }
+    ++census.vertical_walks;
+    float out[3];
+    if (!vsub_subwalk_00aeca60(field, from_t, to_t, out, census.vertical_tiles,
+                               census.vertical_cells)) {
+        return answer;
+    }
+    answer.hit = true;
+    answer.point[0] = terrain_f32(static_cast<double>(out[0]) * size + field.origin_x);
+    answer.point[1] = out[1];
+    answer.point[2] = terrain_f32(static_cast<double>(size) * out[2] + field.origin_z);
+    return answer;
+}
+
+}  // namespace
+
 bool landscape_entry_segment_hit(std::size_t entry, const float from[3],
                                  const float to[3], LandscapeSegmentHit& hit) noexcept {
     const int object_index = landscape_segment_entry_object(entry);
@@ -3121,11 +3696,41 @@ bool landscape_entry_segment_hit(std::size_t entry, const float from[3],
         const float adx = std::fabs(terrain_f32(static_cast<double>(la[0]) - lb[0]));
         const float adz = std::fabs(terrain_f32(static_cast<double>(la[2]) - lb[2]));
         if (adx < kQuadMinDirection && adz < kQuadMinDirection) {
-            // 00ADA2EE -> 00AECC40 with the WORLD from (EDX) and to. Its
-            // sub-walk 00AECA60 and the terrain's vt+48h are unread: LABELLED
+            // 00ADA2EE -> 00AECC40 with the WORLD from (EDX) and to. OFF: LABELLED
             // STAND-IN, the march below answers this case.
             ++census.vertical;
             vertical_case = true;
+            if constexpr (kTerrainVerticalSubwalkBound) {
+                // 00AECC40 transforms both world points through the same inverse
+                // (00AECC7F, 00AECCB4) as 00ADA240, so the local points are reused.
+                // Its first test, both world y above terrain +14h (1e10), cannot pass.
+                const VsubAnswer v = vsub_vertical_00aecc40(field, la, lb, census);
+                if (!v.hit) return false;
+                ++census.vertical_hits;
+                double world[3];
+                if (v.raw) {
+                    // 00AECE22..00AECE3F: the equal-point answer is written in TILE
+                    // units with no transform back. The image's own behaviour, kept.
+                    for (int k = 0; k < 3; ++k) world[k] = v.point[k];
+                } else {
+                    // 00AECE66..00AECEB8: tile units back to local, then node +F0h.
+                    const double local[3] = {v.point[0], v.point[1], v.point[2]};
+                    frame_point(object.world, local, world);
+                }
+                for (int k = 0; k < 3; ++k) hit.point[k] = static_cast<float>(world[k]);
+                hit.landscape_object = object_index;
+                hit.entry = entry;
+                hit.shape_kind = 0x0a;
+                hit.hull_segment = -1;
+                // SUBSTITUTION, labelled: the projection of the answer on from->to,
+                // in world space, as the host's `fraction`.
+                const double wd[3] = {static_cast<double>(to[0]) - from[0],
+                    static_cast<double>(to[1]) - from[1], static_cast<double>(to[2]) - from[2]};
+                const double wdd = wd[0] * wd[0] + wd[1] * wd[1] + wd[2] * wd[2];
+                hit.fraction = static_cast<float>(wdd > 0.0 ? ((world[0] - from[0]) * wd[0]
+                    + (world[1] - from[1]) * wd[1] + (world[2] - from[2]) * wd[2]) / wdd : 0.0);
+                return true;
+            }
         } else {
             ++census.walks;
             if (field.quadtree.empty()) build_quadtree_00aea820(field);
@@ -3236,10 +3841,13 @@ std::string format_land_hit_census() {
     char text[512];
     std::snprintf(text, sizeof(text),
         "pick=%llu/%llu seat=%llu/%llu line_of_fire=%llu/%llu blocked=%llu projectile=%llu/%llu "
-        "slot3c bound=%d walks=%llu/%llu vertical=%llu/%llu leaves=%llu cells=%llu",
+        "slot3c bound=%d walks=%llu/%llu vertical=%llu/%llu leaves=%llu cells=%llu "
+        "vsub bound=%d equal=%llu walks=%llu tiles=%llu cells=%llu",
         c.calls[0], c.land_hits[0], c.calls[1], c.land_hits[1], c.calls[2], c.land_hits[2],
         c.line_of_fire_blocked, c.calls[3], c.land_hits[3], kTerrainSegmentQuadtreeBound ? 1 : 0,
-        t.walks, t.walk_hits, t.vertical, t.vertical_hits, t.leaves, t.cells);
+        t.walks, t.walk_hits, t.vertical, t.vertical_hits, t.leaves, t.cells,
+        kTerrainVerticalSubwalkBound ? 1 : 0, t.vertical_equal, t.vertical_walks,
+        t.vertical_tiles, t.vertical_cells);
     return text;
 }
 
