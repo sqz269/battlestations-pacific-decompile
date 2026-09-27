@@ -1,6 +1,7 @@
 // bsp_game.exe milestone 2h: the scene contents pass.
 // See include/bsp/game_hosts_scene_contents.hpp for the address list and the evidence.
 #include "bsp/game_hosts_scene_contents.hpp"
+#include "bsp/game_hosts_avoid_zones.hpp"
 
 #include "bsp/air_operations.hpp"
 #include "bsp/game_hosts.hpp"
@@ -1966,6 +1967,9 @@ void SceneContentsBinding::load_avoid_zones(StreamHandle stream) {
     NavStream reader(owner_, *bytes);
     bsp::load_avoid_zones_004248a0(reader);
     owner_.log.implemented("SceneContents::load_avoid_zones", "004c17d0");
+    // Packet cc9_avoid_zone_registry: the layers go into the registry singleton
+    // [00E17620] the image's 004248A0 fills, where the planes' samples read them.
+    GameAvoidZoneRegistry::instance().load_scene_layers(owner_.avoid_zone_layers);
     const bsp::TerrainGridLayerRecord* first = owner_.avoid_zone_layers.empty()
         ? nullptr : &owner_.avoid_zone_layers.front();
     owner_.log.notef("avoid zones: %zu byte(s) of the scene's `.nav` parsed into %zu "
