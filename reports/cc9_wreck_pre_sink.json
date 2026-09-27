@@ -2,19 +2,88 @@
   "packet": "cc9_wreck_pre_sink",
   "doc": "docs/UNIT_DEATH_MESSAGE_AND_SINK.md",
   "calls": [
-    {"address": "00824C5C", "native": "00BD2F10", "function": "00824B60", "note": "one U(-0.2L, 0.2L) draw per wreck effect, ECX = 1"},
-    {"address": "00824DE4", "native": "008687C0", "function": "00824B60", "note": "point effect on the model [unit+4A4h]"},
-    {"address": "00825271", "native": "00959450", "function": "00824B60", "note": "the base notification after the +740h release"}
+    {
+      "address": "00824C5C",
+      "native": "00BD2F10",
+      "function": "00824B60",
+      "note": "one U(-0.2L, 0.2L) draw per wreck effect, ECX = 1"
+    },
+    {
+      "address": "00824DE4",
+      "native": "008687C0",
+      "function": "00824B60",
+      "note": "point effect on the model [unit+4A4h]"
+    },
+    {
+      "address": "00825271",
+      "native": "00959450",
+      "function": "00824B60",
+      "note": "the base notification after the +740h release"
+    }
   ],
   "coverage": [
-    {"routine": "00824B60", "coverage": "partial: 00824B60..00824F38 read in full (effects, not bound); 0082523F..0082524B bound behind kWreckThrottleCutBound; 00824FE5..0082523F bound earlier (sink block); 00824F39..00824FE4 in docs/NATIVE_UNIT_WRECK_TAIL.md; 00825254..008252B0 outline"}
+    {
+      "routine": "00824B60",
+      "coverage": "partial: 00824B60..00824F38 read in full (effects, not bound); 0082523F..0082524B bound behind kWreckThrottleCutBound; 00824FE5..0082523F bound earlier (sink block); 00824F39..00824FE4 in docs/NATIVE_UNIT_WRECK_TAIL.md; 00825254..008252B0 outline"
+    }
   ],
   "substitutions": [
-    {"what": "the pre-sink point effects and their 1..2 00BD2F10 draws per wreck", "is": "not made (effects are not rendered in this host)", "where": "docs/UNIT_DEATH_MESSAGE_AND_SINK.md, the pre-sink section"}
+    {
+      "what": "the pre-sink point effects and their 1..2 00BD2F10 draws per wreck",
+      "is": "not made (effects are not rendered in this host)",
+      "where": "docs/UNIT_DEATH_MESSAGE_AND_SINK.md, the pre-sink section"
+    }
   ],
   "corrections": [],
-  "switches": [{"name": "kWreckThrottleCutBound", "committed": "OFF", "file": "include/bsp/unit_death_sink.hpp"}],
-  "failed_predictions": [],
+  "switches": [
+    {
+      "name": "kWreckThrottleCutBound",
+      "committed": "OFF, flipped ON after the pairs",
+      "file": "include/bsp/unit_death_sink.hpp"
+    }
+  ],
+  "failed_predictions": [
+    {
+      "row": "USN02 hit records",
+      "predicted": "596 +-5%",
+      "measured": "603 -> 552 (-8.5%)",
+      "cause": "a stopped wreck changes neighbour boxes and lines of fire from the first death on; two survivors swap"
+    },
+    {
+      "row": "controlled distance",
+      "predicted": "DeRuyter 2196.68 -> about 1900",
+      "measured": "not applicable: main now controls Houston on USN02 (1239.15 -> 1165.78)",
+      "cause": "the controlled unit changed on main between prediction and run"
+    }
+  ],
   "no_ghidra_function": [],
-  "ledger_names_added": []
+  "ledger_names_added": [],
+  "pairs": {
+    "USN02_9200": {
+      "exit": 3,
+      "deaths": [
+        22,
+        22
+      ],
+      "hit_records": [
+        603,
+        552
+      ],
+      "kills": [
+        17,
+        16
+      ]
+    },
+    "USN04_4700": {
+      "exit": 0,
+      "deaths": [
+        40,
+        40
+      ],
+      "hit_records": [
+        799,
+        799
+      ]
+    }
+  }
 }
