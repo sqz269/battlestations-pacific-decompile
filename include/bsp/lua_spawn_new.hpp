@@ -169,6 +169,12 @@ struct SpawnNewGroupMember {
     std::int32_t race{0};
     std::int32_t wing_count{0};
     std::int32_t equipment{0};
+    // The member class's `Length` (+A0h) and `Width` (+A4h), which 00948CC0
+    // reads through the element's class object. Filled by the host when it can
+    // resolve the class; without them 00948CC0's offsets take both as 0.
+    bool has_class_extents{false};
+    float class_length_a0{0.0f};
+    float class_width_a4{0.0f};
 };
 
 // `excludeRadiusOverride`. The record keeps one float of this block at +ACh,
@@ -282,6 +288,9 @@ void run_spawn_queue_step_0094c8f0(float scaled_delta);
 struct SpawnNewFrame {
     float position[3]{0.0f, 0.0f, 0.0f};
     float yaw{0.0f};  // radians
+    // kSpawnNewPlacementBound: no candidate of 0094A140's search passed
+    // 00941D30, so 00949300 creates nothing and the record stays queued.
+    bool refused{false};
 };
 
 // The first candidate frame for `member` of `request`. The angle is taken
@@ -325,5 +334,94 @@ inline constexpr bool kSpawnNewMemberOffsetsBound = true;
 // when fH <= 0, where the class extents would decide.
 bool spawn_member_offset_00948cc0(const SpawnNewRequest& request, std::size_t member,
                                   float offset[3]) noexcept;
+
+// ---------------------------------------------------------------------------
+// Packet cc9_spawn_new_placement (docs/SCENE_CONTENTS_HOSTS.md section 23).
+// With the switch on, the group frame is 0094A140's own and the members pass
+// through 00941D30 with 0094A140's retry. Off, section 22's frame runs.
+// ---------------------------------------------------------------------------
+inline constexpr bool kSpawnNewPlacementBound = false;
+
+// A row-major 4x4: rows 0/1/2 right/up/forward, row 3 the translation, which
+// is the order BSP_Matrix_Multiply4x4 (00413920) and 00B646E0 use.
+struct SpawnGroupFrame {
+    float m[16]{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
+};
+
+// The reference frame record+10h hands 0094A140 through 008F8680:
+//  - a position-table `refPos` is the identity basis at that point
+//    (00949BC7..00949C5F build it, 008F84D0 stores it at object+18h);
+//  - `lookAt` then writes lookAt - refPos into row 2, WITH its vertical part
+//    (00949E82..00949EE0), and orthonormalises through 0085DC80: row 1 is made
+//    orthogonal to row 2 and row 0 = normalize(row1 x row2);
+//  - 0094A140 normalises rows 0, 1 and 2 again (0094A17A, 0094A1F9, 0094A278).
+// SUBSTITUTION, labelled: an entity `refPos` would hand that entity's world
+// matrix (008F8680's +14h arm); the request keeps only a position, so its
+// basis is taken as the identity. No reference-mission call site passes one.
+SpawnGroupFrame spawn_reference_frame_0094a140(const SpawnNewRequest& request) noexcept;
+
+// One candidate of 0094A140's retry: RotY(a) * T(0, 0, d) * RotY(-a) * R in
+// row-vector order (the three 00413920 calls at 0094A6A0..0094A6AE, left
+// operand in ECX). Its basis is R's; its origin is
+// R.origin + d * (-sin a * R.row0 + cos a * R.row2), with 00B646E0's
+// rows (cos, 0, -sin) / (0, 1, 0) / (sin, 0, cos).
+SpawnGroupFrame spawn_candidate_frame_0094a140(const SpawnGroupFrame& reference,
+                                               float angle, float distance) noexcept;
+
+// 00949300's member frame, T(offset) * candidate (00949380..009493E4, left
+// operand the offset): the translation is origin + offset . basis.
+void spawn_member_position_00949300(const SpawnGroupFrame& frame, const float offset[3],
+                                    float out[3]) noexcept;
+
+// One entity 00941D30's walk visits ([[00E188A8]+19CCh]+58h): its party
+// (entity+54h) and world translation (entity+FCh..+104h).
+struct SpawnPlacementEntity {
+    std::int32_t party{-1};
+    float position[3]{0.0f, 0.0f, 0.0f};
+};
+
+// What 00941D30 needs from the world. The host registers one; with none
+// registered every candidate is legal (labelled at the solver).
+class SpawnPlacementWorld {
+public:
+    virtual ~SpawnPlacementWorld() = default;
+    // 0071C4F0 BSP_Game_PointOutsideMapBounds.
+    virtual bool point_outside_map_0071c4f0(const float position[3]) const = 0;
+    virtual void placement_entities(std::vector<SpawnPlacementEntity>& out) const = 0;
+};
+void set_spawn_placement_world(const SpawnPlacementWorld* world) noexcept;
+
+// 00941D30, __fastcall(ECX = record+78h party, EDX = the member's translation
+// row, stack: aircraft flag (vtable+18h(0Fh) at 00949420), class, frame,
+// record+9Ch block), RET 10h. Refuses outside the map; for a non-aircraft
+// member runs terrain/depth probes (not modelled: every member here is created
+// as a plane squadron, docs/LUA_SPAWN_NEW_HOST.md section 8 deviation 1); then
+// for each entity with dy = p.y - e.y: same party and |dy| <= ownVertical and
+// |p - e|^2 < ownHorizontal^2 refuses; other party and |dy| <= enemyVertical
+// and |p - e|^2 < enemyHorizontal^2 refuses. The squares are 009481A0's
+// block+14h/+18h.
+bool spawn_member_placement_legal_00941d30(const float position[3], std::int32_t party,
+                                           const SpawnNewExcludeRadius& exclude,
+                                           const std::vector<SpawnPlacementEntity>& entities,
+                                           bool outside_map) noexcept;
+
+// 0094A140's search. d runs from record+70h (distLow) while d <= record+74h
+// in steps of 250 (double [00CF8850]); for each d the arc runs from 0 while
+// arc <= d * halfwidth, step 250, where halfwidth = |angleHigh - angleLow| / 2
+// and mid = (angleLow + angleHigh) / 2 ([00D7A280] 0.5). Each arc tries
+// a = mid + arc/d, then (arc > 0 only, 0094B26x) a = mid - arc/d, and stops at
+// the first candidate whose every member passes 00941D30 (00949300's
+// all-or-nothing). The aircraft distance loop at 0094A6C3..0094ABxx runs only
+// when game+1FE4h != 0, which is 0 in single player
+// (docs/CONSTRUCT_WORLD.md), so it is not reproduced. A kind-6 first member
+// would zero the frame's y (0094B24x); every member here is a plane.
+struct SpawnPlacementResult {
+    bool accepted{false};
+    SpawnGroupFrame frame{};
+    float angle{0.0f};
+    float distance{0.0f};
+    int candidates{0};
+};
+SpawnPlacementResult solve_spawn_placement_0094a140(const SpawnNewRequest& request) noexcept;
 
 }  // namespace bsp

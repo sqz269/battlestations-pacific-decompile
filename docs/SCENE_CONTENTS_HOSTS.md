@@ -2661,3 +2661,77 @@ Logs `local\SP_{OFF,ON}_<mission>.log` in worktree cc9-plane2.
   frame's axes and the class extents are the two labelled substitutions of 22.3. Section 19.4's
   read 1 (the follow-state station keeping, pairs 0-2 and 1-3 at 12..68 m) should be re-measured
   on this binding, because the other squadrons' avoidance bands are gone.
+
+## 23. 0094A140's frame, 00941D30 and the retry (packet `cc9_spawn_new_placement`, `kSpawnNewPlacementBound`)
+
+Worker cc9-plane2, 2026-09-27, on main 2d4862ea0. Ghidra was read only. This packet retires section
+22.3's three labels. Addresses: 0094A140, 00949300, 00941D30, 00948CC0, 00949750, 008F8680,
+0085DC80, 00B646E0, 00413920.
+
+### 23.1 The group frame
+
+- **The reference frame R is record+10h through 008F8680.** 008F8680 answers an entity's world
+  matrix (+14h set) or the matrix at object+18h. A position-table `refPos` stores the identity basis
+  at that point (00949BC7..00949C5F, then 008F84D0).
+- **`lookAt` rewrites R's row 2** as lookAt - refPos, vertical part included (00949E82..00949EE0).
+  0085DC80 then orthonormalises: row 1 is made orthogonal to row 2 and row 0 = normalize(row1 x
+  row2). 0094A140 normalises the three rows again (0094A17A, 0094A1F9, 0094A278).
+- **A candidate is RotY(a) T(0, 0, d) RotY(-a) R**, in row-vector order. This is read from the
+  three 00413920 calls at 0094A6A0..0094A6AE, whose left operand is in ECX. 00B646E0's rows are
+  (cos, 0, -sin), (0, 1, 0), (sin, 0, cos). So the candidate keeps R's basis, and its origin is
+  refPos + d (-sin a R.row0 + cos a R.row2).
+- **The member frame is T(offset) candidate** (00949380..009493E4, offset as the left operand).
+- **Consequence on USN13.** R pitches 8.7 degrees down toward Enterprise, so the first candidate
+  sits 200 m along that slope, at 1169.8 m. The rows of 22.2 trail up the slope at
+  1169.8 / 1283.9 / 1398.0 / 1512.2 / 1626.3 m instead of flat at 1200.
+- **Consequence on USN04.** The bomber groups pass no `lookAt`, so R is the identity basis and the
+  frame is section 22's.
+- **SUBSTITUTION, labelled:** an entity `refPos` would bring that entity's own basis; the request
+  keeps only its position. No reference call site passes one.
+- **SUBSTITUTION, labelled:** the created entity is built from a heading (SpawnNewFrame), so the
+  frame's pitch does not reach it.
+
+### 23.2 The search and the test
+
+- **0094A140's search.** d runs from distLow (record+70h, at least 10) while d <= distHigh, in
+  steps of 250 (double [00CF8850]). The arc runs from 0 while arc <= d x halfwidth, also in steps
+  of 250. Each arc tries a = mid + arc/d, then a = mid - arc/d when arc > 0. The search returns
+  at the first candidate that 00949300 accepts.
+- **The aircraft distance loop runs only in multiplayer.** 0094A6C3.. pulls the distance in by
+  globalConfig+2E4h while a same-party aircraft is within globalConfig+2E0h, but only when
+  game+1FE4h != 0. That word is 0 in single player (docs/CONSTRUCT_WORLD.md), so the loop is not
+  reproduced.
+- **00941D30's registers.** ECX is record+78h, the party. EDX is the member's translation row. The
+  stack carries the member's aircraft flag (vtable+18h(0Fh), 00949420), the class, the frame and
+  the exclude block. It returns with RET 10h.
+- **What 00941D30 refuses.** It refuses outside the map (0071C4F0). An aircraft skips the terrain
+  and depth probes. Then, over [[00E188A8]+19CCh]+58h:
+  - a same-party entity with |dy| <= ownVertical and a squared 3-D distance below ownHorizontal
+    squared;
+  - an other-party entity with |dy| <= enemyVertical and a squared 3-D distance below
+    enemyHorizontal squared.
+- **The squares** are 009481A0's block+14h/+18h.
+- **00948CC0's row maxima now take the class extents** (+A0h `Length`, +A4h `Width`).
+
+### 23.3 What the host needs (hunk pending)
+
+The unit list and the class rows are reachable only from the Lua host, `src/game_hosts_lua.cpp`,
+which cc9-hud3 held at the time of writing. The prepared hunk
+(`local\cc9-plane2-luahost.patch`, worktree cc9-plane2) does three things:
+- registers a SpawnPlacementWorld over the live units (row party, unit_position_00fc);
+- fills each member's `Length`/`Width` through read_vehicle_class_row;
+- stops the member loop on `frame.refused`, so the record is requeued as 0094C5AD does.
+
+**SUBSTITUTION, labelled in the hunk:** 0071C4F0's bounds live in the zone runtime, which the Lua
+host does not reach, so no member is refused as outside the map. Without the hunk, the solver has
+no world and takes the first candidate.
+
+### 23.4 Predictions (written before the pairs)
+
+| row | OFF | predicted ON, axes only (no hunk) | predicted ON, with the hunk |
+| --- | --- | --- | --- |
+| USN13 member altitudes | 1200 flat | 1169.8 .. 1626.3 by row, member 1 at (-4855.5, 1169.8, -5398.7) | same, first candidate accepted |
+| USN13 deaths / hits | 20 / 460 | move, deaths within 12..30 | as the axes-only run |
+| USN13 sea crashes | 0 | 0..2 | 0..2 |
+| USN04 4700/4500 | 44 deaths, releases 6 / 8 | identical | identical: first candidates accepted, extents under fH 100 |
+| USN01, USN02 | - | identical | identical |

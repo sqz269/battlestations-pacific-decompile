@@ -116,13 +116,39 @@ bool spawn_member_offset_00948cc0(const SpawnNewRequest& request, std::size_t me
     const std::size_t count = request.members.size();
     if (member >= count) return false;
     const float fh = request.exclude.formation_horizontal;   // record+ACh, >= 0
-    // Class extents taken as 0 (labelled in the header), so both maxima are fH.
-    const float lateral = static_cast<float>(static_cast<double>(fh) * 2.5 + 5.0);
-    const float gap = static_cast<float>(5.0 + static_cast<double>(fh) * 1.5);
     const std::size_t row = member / 3u;
     const std::size_t seat = member % 3u;
+    // The class extents enter only under kSpawnNewPlacementBound, so section
+    // 22's measured state is what the OFF side keeps.
+    auto length = [&](std::size_t i) {
+        return kSpawnNewPlacementBound && request.members[i].has_class_extents
+            ? request.members[i].class_length_a0 : 0.0f;
+    };
+    auto width = [&](std::size_t i) {
+        return kSpawnNewPlacementBound && request.members[i].has_class_extents
+            ? request.members[i].class_width_a4 : 0.0f;
+    };
+    auto half = [](float a, float b) {
+        return static_cast<float>((static_cast<double>(a) + b) * 0.5);   // [00D7A280]
+    };
+    auto row_lateral = [&](std::size_t r) {
+        const std::size_t a = 3u * r;
+        float l = fh;                                          // local_50 = max(0, +ACh)
+        if (a + 1u < count) l = std::max(l, half(width(a + 1u), width(a)));
+        if (a + 2u < count) l = std::max(l, half(width(a + 2u), width(a)));
+        return static_cast<float>(static_cast<double>(l) * 2.5 + 5.0);   // [00CE3DE0] [00D7A370]
+    };
+    auto row_gap = [&](std::size_t r) {
+        const std::size_t a = 3u * r;
+        float g = fh;                                          // local_4c = max(0, +ACh)
+        g = std::max(g, half(length(a - 3u), length(a)));
+        if (a + 1u < count) g = std::max(g, half(length(a - 2u), length(a + 1u)));
+        if (a + 2u < count) g = std::max(g, half(length(a - 1u), length(a + 2u)));
+        return static_cast<float>(5.0 + static_cast<double>(g) * 1.5);   // [00D7A370] [00CE3D78]
+    };
+    const float lateral = row_lateral(row);
     float z = 0.0f;
-    for (std::size_t r = 1; r <= row; ++r) z -= gap;   // 00949209 area, param_2 -= G
+    for (std::size_t r = 1; r <= row; ++r) z -= row_gap(r);   // param_2 -= G per row
     const bool has_b = 3u * row + 1u < count;
     const bool has_c = 3u * row + 2u < count;
     float x = 0.0f;
@@ -130,8 +156,8 @@ bool spawn_member_offset_00948cc0(const SpawnNewRequest& request, std::size_t me
         if (seat == 1u) x = -lateral;          // 0.0 - L, [00D7A208] -0.0
         else if (seat == 2u) x = lateral;
     } else {
-        const float half = static_cast<float>(static_cast<double>(lateral) * 0.5);
-        x = seat == 0u ? -half : half;         // the two-member row
+        const float half_l = static_cast<float>(static_cast<double>(lateral) * 0.5);
+        x = seat == 0u ? -half_l : half_l;        // the two-member row
     }
     offset[0] = x;
     offset[1] = 0.0f;
@@ -139,8 +165,195 @@ bool spawn_member_offset_00948cc0(const SpawnNewRequest& request, std::size_t me
     return true;
 }
 
+namespace {
+const SpawnPlacementWorld* g_spawn_placement_world = nullptr;
+
+void normalize_row(float* r) noexcept {
+    // 0094A140's per-row normalise: 00419440 length, reciprocal 0 at length <= 0.
+    const double n = std::sqrt(static_cast<double>(r[0]) * r[0] +
+                               static_cast<double>(r[1]) * r[1] +
+                               static_cast<double>(r[2]) * r[2]);
+    const float inv = n > 0.0 ? static_cast<float>(1.0 / n) : 0.0f;
+    for (int i = 0; i < 3; ++i) r[i] *= inv;
+}
+
+// One solved request, so every member of a request is placed on the same
+// frame and the members created first do not change the later members' test.
+struct SolvedPlacement {
+    std::uint32_t serial{0};
+    unsigned attempts{0};
+    bool valid{false};
+    SpawnPlacementResult result{};
+};
+SolvedPlacement g_solved;
+}  // namespace
+
+void set_spawn_placement_world(const SpawnPlacementWorld* world) noexcept {
+    g_spawn_placement_world = world;
+}
+
+SpawnGroupFrame spawn_reference_frame_0094a140(const SpawnNewRequest& request) noexcept {
+    SpawnGroupFrame f;
+    f.m[12] = request.ref_pos[0];
+    f.m[13] = request.ref_pos[1];
+    f.m[14] = request.ref_pos[2];
+    if (request.has_look_at) {
+        // 00949E96..00949EE0: row 2 = lookAt - refPos, unnormalised.
+        f.m[8] = request.look_at[0] - request.ref_pos[0];
+        f.m[9] = request.look_at[1] - request.ref_pos[1];
+        f.m[10] = request.look_at[2] - request.ref_pos[2];
+        // 0085DC80: row 1 orthogonalised against row 2, row 0 = row1 x row2.
+        float fwd[3] = {f.m[8], f.m[9], f.m[10]};
+        normalize_row(fwd);
+        float* up = f.m + 4;
+        const float d = up[0] * fwd[0] + up[1] * fwd[1] + up[2] * fwd[2];
+        if (std::fabs(d) < 0.9990000128746033f) {
+            for (int i = 0; i < 3; ++i) up[i] -= d * fwd[i];
+            normalize_row(up);
+            f.m[0] = up[1] * fwd[2] - up[2] * fwd[1];
+            f.m[1] = up[2] * fwd[0] - up[0] * fwd[2];
+            f.m[2] = up[0] * fwd[1] - up[1] * fwd[0];
+            normalize_row(f.m);
+        }
+        // The near-vertical arm (|up . fwd| >= 0.999, 0085DD26) is not
+        // reproduced: a lookAt straight below refPos keeps the identity rows 0/1.
+    }
+    normalize_row(f.m);
+    normalize_row(f.m + 4);
+    normalize_row(f.m + 8);
+    return f;
+}
+
+SpawnGroupFrame spawn_candidate_frame_0094a140(const SpawnGroupFrame& r, float angle,
+                                               float distance) noexcept {
+    SpawnGroupFrame c = r;
+    const double s = std::sin(static_cast<double>(angle));
+    const double co = std::cos(static_cast<double>(angle));
+    // (0, 0, d) . RotY(-a) = d * (sin(-a), 0, cos(-a)), then into R.
+    const double lx = -s * distance;
+    const double lz = co * distance;
+    for (int i = 0; i < 3; ++i) {
+        c.m[12 + i] = static_cast<float>(r.m[12 + i] + lx * r.m[i] + lz * r.m[8 + i]);
+    }
+    return c;
+}
+
+void spawn_member_position_00949300(const SpawnGroupFrame& f, const float o[3],
+                                    float out[3]) noexcept {
+    for (int i = 0; i < 3; ++i) {
+        out[i] = static_cast<float>(static_cast<double>(o[0]) * f.m[i] +
+                                    static_cast<double>(o[1]) * f.m[4 + i] +
+                                    static_cast<double>(o[2]) * f.m[8 + i] + f.m[12 + i]);
+    }
+}
+
+bool spawn_member_placement_legal_00941d30(const float p[3], std::int32_t party,
+                                           const SpawnNewExcludeRadius& ex,
+                                           const std::vector<SpawnPlacementEntity>& entities,
+                                           bool outside_map) noexcept {
+    if (outside_map) return false;                                 // 00941D48
+    const float own_h2 = ex.own_horizontal * ex.own_horizontal;     // block+14h
+    const float enemy_h2 = ex.enemy_horizontal * ex.enemy_horizontal;   // block+18h
+    for (const SpawnPlacementEntity& e : entities) {
+        const float dy = p[1] - e.position[1];
+        float limit2;
+        if (e.party == party) {
+            if (std::fabs(dy) > ex.own_vertical) continue;          // block+8h
+            limit2 = own_h2;
+        } else {
+            if (!(std::fabs(dy) <= ex.enemy_vertical)) continue;    // block+Ch
+            limit2 = enemy_h2;
+        }
+        const float dx = e.position[0] - p[0];
+        const float dz = e.position[2] - p[2];
+        const float ey = e.position[1] - p[1];
+        if (dz * dz + ey * ey + dx * dx < limit2) return false;
+    }
+    return true;
+}
+
+SpawnPlacementResult solve_spawn_placement_0094a140(const SpawnNewRequest& request) noexcept {
+    SpawnPlacementResult out;
+    const SpawnGroupFrame ref = spawn_reference_frame_0094a140(request);
+    const float lo = request.has_angle_range ? request.angle_low : 0.0f;
+    const float hi = request.has_angle_range ? request.angle_high : 0.0f;
+    const float mid = static_cast<float>((static_cast<double>(hi) + lo) * 0.5);
+    float halfwidth = hi - lo;
+    if (halfwidth <= 0.0f) halfwidth = -0.0f - halfwidth;           // [00D7A208]
+    halfwidth = static_cast<float>(0.5 * halfwidth);
+    std::vector<SpawnPlacementEntity> entities;
+    if (g_spawn_placement_world != nullptr) g_spawn_placement_world->placement_entities(entities);
+    auto legal = [&](const SpawnGroupFrame& frame) {
+        // SUBSTITUTION, labelled: with no world registered every candidate
+        // passes, which is 0094A140's first candidate.
+        if (g_spawn_placement_world == nullptr) return true;
+        for (std::size_t i = 0; i < request.members.size(); ++i) {
+            float off[3] = {0.0f, 0.0f, 0.0f};
+            if (!spawn_member_offset_00948cc0(request, i, off)) {
+                off[0] = off[1] = off[2] = 0.0f;
+            }
+            float pos[3];
+            spawn_member_position_00949300(frame, off, pos);
+            if (!spawn_member_placement_legal_00941d30(pos, request.party, request.exclude,
+                    entities, g_spawn_placement_world->point_outside_map_0071c4f0(pos))) {
+                return false;
+            }
+        }
+        return true;
+    };
+    const float dist_low = std::max(kSpawnNewDistRangeLowMinimum, request.dist_low);
+    for (float d = dist_low; d <= request.dist_high; d += 250.0f) {      // [00CF8850]
+        const float arc_max = d * halfwidth;
+        if (!(0.0f <= arc_max)) continue;
+        for (float arc = 0.0f; arc <= arc_max; arc += 250.0f) {
+            const float plus = static_cast<float>(mid + arc / d);
+            const float minus = static_cast<float>(mid - arc / d);
+            SpawnGroupFrame f = spawn_candidate_frame_0094a140(ref, plus, d);
+            ++out.candidates;
+            if (legal(f)) {
+                out.accepted = true; out.frame = f; out.angle = plus; out.distance = d;
+                return out;
+            }
+            if (arc > 0.0f) {                                         // [00D7A218] < arc
+                f = spawn_candidate_frame_0094a140(ref, minus, d);
+                ++out.candidates;
+                if (legal(f)) {
+                    out.accepted = true; out.frame = f; out.angle = minus; out.distance = d;
+                    return out;
+                }
+            }
+        }
+    }
+    return out;
+}
+
 SpawnNewFrame spawn_member_frame_0094a140(const SpawnNewRequest& request,
                                           std::size_t member) noexcept {
+    if constexpr (kSpawnNewPlacementBound) {
+        if (request.exclude.present) {
+            if (!(g_solved.valid && g_solved.serial == request.serial &&
+                  g_solved.attempts == request.attempts)) {
+                g_solved.serial = request.serial;
+                g_solved.attempts = request.attempts;
+                g_solved.result = solve_spawn_placement_0094a140(request);
+                g_solved.valid = true;
+            }
+            SpawnNewFrame frame;
+            frame.refused = !g_solved.result.accepted;
+            const SpawnGroupFrame& f = g_solved.result.frame;
+            float off[3] = {0.0f, 0.0f, 0.0f};
+            if (!spawn_member_offset_00948cc0(request, member, off)) {
+                off[0] = off[1] = off[2] = 0.0f;
+            }
+            spawn_member_position_00949300(f, off, frame.position);
+            // The host builds the entity from a heading only (SpawnNewFrame);
+            // SUBSTITUTION, labelled: the frame's pitch (lookAt below refPos) is
+            // not carried into the created entity, only row 2's heading.
+            frame.yaw = static_cast<float>(std::atan2(static_cast<double>(f.m[8]),
+                                                      static_cast<double>(f.m[10])));
+            return frame;
+        }
+    }
     if constexpr (kSpawnNewMemberOffsetsBound) {
         float offset[3];
         if (spawn_member_offset_00948cc0(request, member, offset)) {
