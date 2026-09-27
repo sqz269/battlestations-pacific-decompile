@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include <vector>
 
 namespace bsp {
 // Value projections only, not native layouts or ABI replacements. Addresses and
@@ -149,4 +150,51 @@ struct HudRootRowsHost {
 // native string allocator/SEH machinery and host callees are not reconstructed.
 // No Medal_Icon (+5Ch) or Medal_Text (+60h) writes exist in this function.
 void hud_root_update_rows(HudRootRowState& state, HudRootRowsHost& host);
+
+// ---- packet cc9_force_select_unit (docs/CONTROLLED_UNIT.md, "ForceSelectUnit") ----
+// The HUD root's two unit vectors and cursor. Units are nonzero handles; 0 is
+// null. Descriptive names are hypotheses.
+struct HudRootUnitLists {
+    std::vector<std::uint32_t> primary_8c;    // +8Ch..+94h
+    std::vector<std::uint32_t> secondary_9c;  // +9Ch..+A4h
+    HudUnitSelection cursor;                  // +C2h byte, +C4h signed word
+    bool force_pending_c0{false};             // +C0h, set only by 00644DB0 (input)
+};
+struct HudRootUnitListsHost {
+    virtual ~HudRootUnitListsHost() = default;
+    virtual std::uint32_t controlled_unit() = 0;                  // [00E188D8]
+    // [game+1974h], the head of game+1970h (004C3CB0's walk 0, not ordnance),
+    // in list order.
+    virtual const std::vector<std::uint32_t>& local_unit_list_1970() = 0;
+    // 00645060(ECX = unit, EDX = [game+18ECh], 1), AL.
+    virtual bool unit_selectable_00645060(std::uint32_t unit) = 0;
+    virtual bool unit_is_group_leader_00778890(std::uint32_t unit) = 0;
+    virtual bool unit_is_group_member_007788b0(std::uint32_t unit) = 0;
+    virtual std::uint32_t group_leader_007788d0(std::uint32_t unit) = 0; // 0 without a group
+    // [unit+188h] == 9 or == [game+18ECh] (00648418..0064842F, 00648464..00648473).
+    virtual bool role_word_188_open(std::uint32_t unit) = 0;
+    virtual int group_member_count_4f8(std::uint32_t leader) = 0;     // [[leader+284h]+4F8h]
+    virtual std::uint32_t group_member_at_0070d060(std::uint32_t leader, int slot) = 0;
+    // 006485A0's tail.
+    virtual void set_controlled_unit_00645600(std::uint32_t unit) = 0; // 0 releases
+    virtual bool multiplayer_1fe4() = 0;                              // game+1FE4h
+    // The interface manager [00E198C4]: +4h (applied id), +20h (pending id),
+    // and whether +1Ch equals +38h.
+    virtual int manager_applied_04() = 0;
+    virtual int manager_pending_20() = 0;
+    virtual bool manager_1c_equals_38() = 0;
+    virtual void push_interface_request_004cc460(int interface_id) = 0; // 34h or 2Ah, payload 0
+    virtual void push_controlled_unit_interface_00647040() = 0;
+};
+// 00644A60, __fastcall(root): the list entry at the cursor, or 0.
+std::uint32_t hud_root_cursor_unit_00644a60(const HudRootUnitLists& lists) noexcept;
+// 00645710, __fastcall(root), RET: settles the cursor on the rebuilt lists.
+void hud_root_settle_cursor_00645710(HudRootUnitLists& lists, HudRootUnitListsHost& host);
+// 00648290, __fastcall(root), RET: rebuilds both vectors, re-finds the cursor
+// on the controlled unit when its list kind changed, settles it, then
+// tail-jumps to 006485A0 when +C0h is set.
+void hud_root_rebuild_unit_lists_00648290(HudRootUnitLists& lists, HudRootUnitListsHost& host);
+// 006485A0, __fastcall(root), RET: clears +C0h, rebuilds, and controls the
+// unit at the cursor (or releases control and pushes 34h/2Ah on an empty list).
+void hud_root_force_select_unit_006485a0(HudRootUnitLists& lists, HudRootUnitListsHost& host);
 }
