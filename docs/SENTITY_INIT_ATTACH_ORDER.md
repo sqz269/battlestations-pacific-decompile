@@ -1756,3 +1756,37 @@ Worker cc9-hud2, 2026-09-27, base 16233b564.
   **Identity, exit 1.**
 - **USN02 9200/9000:** census `(none)`. `luaIn` is only `SetSelectedUnit(Houston)`, and
   `luaIngameMovieBOStart` is movie-only. **Identity, exit 1.**
+
+### 22.6 Pairs and verdict
+
+The same tree at d0c69fbbb, switch only, with streams ON, `BSP_DEATH_TABLE=1`, lockstep 0.05 and
+an idle player.
+
+| pair | `pair_diff` | census | result |
+| --- | --- | --- | --- |
+| USN01 3200/3000 | **exit 3** | `blackout:luaIn=5 blackout:luaMoveToPh2=3`, applied 8 | deaths 7 -> 5 (ScoutDauntless and ScoutDauntless\|.-2 survive ON), hit records 150 -> 133, hull hits 85 -> 68, damage 2690.0 -> 2250.0, shots 561 -> 451; 12 unit rows changed |
+| USN04 4700/4500 | exit 1 | `(none)` | identical |
+| USN02 9200/9000 | exit 1 | `(none)` | identical (20 deaths, 611 hits) |
+
+**Predictions.** USN04 and USN02 held (census none, identity). **USN01 failed twice:**
+1. **The census missed `luaMoveToPh2`.** USN01 has its own phase-2 Blackout callback
+   (`usn_1_marshall.lua`), at about 91 s. 22.2 listed USN01's callbacks from the script's intro
+   only. It defers three orders, to units 55, 62 and 63; 62 and 63 are the generated ScoutDauntless
+   squadrons.
+2. **The size of the move.** It is not "slight": the two ScoutDauntless deaths vanish and 110
+   shots with them. The move comes from those orders.
+   - `luaMoveToPh2` calls `GenerateObject` and then orders the new squadrons.
+   - `GenerateObject` stays direct here, so the unit exists at once and runs its own first step
+     before the deferred order lands.
+   - In the image, creation is also a session category (47h, applied by row 10,
+     `BSP_Replication_ApplyPendingEntityCreates`), so creation and order stay ordered relative to
+     each other.
+   - Deferring the order alone breaks that ordering. That makes the binding unfaithful for a
+     callback that creates and orders in one go.
+
+**Verdict: not flipped** (`kAfterRow9OrderQueueBound` stays false).
+- A faithful deferral needs the entity-create path (47h, 0077EC20) modelled together with the
+  order queue.
+- Alternatively, keep the deferral off for orders to units created in the same callback. That
+  would be a substitution to label and pair.
+- `luaIn`'s five `PilotSetTarget` alone were not isolated in this pair.
