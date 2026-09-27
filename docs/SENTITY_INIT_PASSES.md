@@ -221,3 +221,91 @@ The loss-report entry 009813A0 is in the mission-frame header and has no switch 
 - `pairdiff.py` is superseded by `tools/pair_diff.py`.
 
 Promote any of them through the tooling worker if they are wanted.
+
+## 7. The ship's weapon-director enables at pass B (packet `cc9_ship_weapon_director_enable`)
+
+Worker cc9-scene-entities, on main bb6a76f67. It takes up section 4's gunnery contract.
+
+### What 007214C0 is, and what pass B does with it
+
+- **007214C0 `BSP_WeaponDirectorStateMessage_BuildEnables` sets nothing on the director.**
+  - `__thiscall(message)(controller)`, `RET 4`.
+  - It builds a state message **from** the controller: 00721280, then the enables
+    `+220h..+223h` into msg+40h..+43h and `+240h..+242h` into +44h..+46h, then 008356C0 into
+    +47h and two floats into +48h and +4Ch.
+- **The ship's pass B, 00822C20's property-bag arm, overwrites that message and sends it back.**
+  - It reads nine keys from the merged bag with 008F2260, testing `+0Ch`:
+    - `ArtilleryDirector` (00D09944), `AADirector` (00D09928), `TorpedoDirector` (00D09934) and
+      `DCDirector` (00D0991C), at 008238F0..008239A3;
+    - `FireStance` and `PlayerCommandsEnabled`;
+    - `TorpedoEvasion`, `ShipCollAvoid` and `LandCollAvoid`.
+  - `NavigatorAllowMa...` goes to `[unit+73Ch]+20h` (00823A8E).
+  - After the build at 00823A9F it overwrites the message:
+
+    | message field | value |
+    | --- | --- |
+    | +40h | `ArtilleryDirector` |
+    | +41h | `AADirector` |
+    | +42h | `TorpedoDirector` |
+    | +43h | `DCDirector` |
+    | +44h..+46h | the evasion and collision-avoid keys |
+    | +47h | 0 |
+    | +48h, +4Ch | 0.0 and `unit+980h` |
+    | +8h | 1FFh or 0 |
+    | +4h, +5h | director slots 24h and 28h (00823AB0, 00823AC5) |
+
+  - It passes the message to the controller's `vt[3Ch]` at 00823B6B.
+- **The controller's `vt[3Ch]`** (derived vtable 00D09F58) is 00835690. It forwards to the
+  message's slot 8h, 007219C0.
+- **007219C0** runs 00721890 (the inbound base, which clears the command slots) and stores
+  msg+40h..+43h into **`+220h..+223h`** (007219DB..007219ED) and msg+44h..+46h into `+240h..+242h`.
+
+**What this installation authors.**
+- `universe/library/ship.props` (2024-07-13), group `Ship`, sets `ArtilleryDirector = B true`,
+  **`TorpedoDirector = B false`**, `AADirector = B true` and `DCDirector = B true`.
+- Neither `usn_2_java.scn` nor `usn_19_coralus.scn` overrides any of them.
+- No script calls a director setter: there is no `SetWeaponDirector*` in the two mission scripts
+  or `commandhelpers.lua`.
+- **So after pass B, every ship's torpedo enable `+222h` is 0.**
+
+**Who reads it.**
+- 008624C0 (`docs/DIRECTOR_UPDATE_ARMS.md`, `src/unit_gunnery_pass.cpp`) pushes `+222h` into the
+  masks of the torpedo categories (`kTorpedoCategories`, category 7) at 00861D70. **The gunnery
+  pass fires no category-7 gun of a ship whose mask is off.**
+- 009F1BC0 (the ship AI's per-pass cache) and 00720450 read the same bytes. What the ship AI's
+  own attack orders do with a masked torpedo category was not read.
+- The host keeps all four at the constructor's 1 (007202FD, `DirectorGunneryStance` defaults).
+
+### The binding
+
+`kShipDirectorEnablesBound` (`include/bsp/game_hosts_gunnery.hpp`, committed **false**):
+- **The table.** The scene host keeps each entity's four merged-bag values by name
+  (`scene_director_enables_*`, `src/game_hosts_scene_contents.cpp`).
+- **The stance.** The gunnery pass's stance push reads them for a ship.
+- **LABELLED SUBSTITUTION.** The values are read at the push, not stored on the controller at
+  pass B. They never change afterwards on these missions.
+- **The census:** `summary mission gunnery ship director enables torpedo_disabled_pushes=.. bound=..`.
+
+### Predictions (written before the pairs; same tree, switch only, streams and the death table on)
+
+**USN02 9200/9000.** OFF, on bb6a76f67: 20 deaths, 329 hit records, 807 shots, and 314 torpedo
+gyro launches. The mission fails at 39.65 s after DeRuyter's death at 30.25 s (`killer=Jintsu
+killer_cat=7`, a torpedo).
+- **Every ship's torpedo category is masked:** 0 torpedo gyro launches, and no death with
+  `killer_cat=7`. OFF has 10 such deaths, DeRuyter's among them.
+- **DeRuyter survives its 30.25 s death.** The 39.65 s `Game Over` does not happen at that time.
+- **Outcome, with bands:**
+  - deaths down, 5..16;
+  - hit records down, 150..329;
+  - shots down, 350..700 (the torpedo launches are shots);
+  - pair_diff exit 3, gameplay moved.
+- **Uncertain.** A ship-AI attack order may still launch torpedoes in the image. The host routes
+  every launch through the masked pass, so it will show none.
+
+**E2 = USN04 9200/9000.**
+- OFF has 0 torpedo gyro launches. The fleet's tube-carrying ships never launch, and its 52
+  deaths are all aircraft.
+- The torpedo mask changes nothing, and the other three enables are 1.
+- **Identity on every gameplay row:** 52 deaths, 875 hit records, 6,092 shots. Only the census
+  pushes and the native row differ.
+

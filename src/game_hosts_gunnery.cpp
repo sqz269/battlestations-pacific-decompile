@@ -1044,6 +1044,7 @@ struct GameGunneryHost::Impl {
     // Packet cc9_unit_death_route.
     unsigned long long death_route_calls{0};
     unsigned long long death_route_destroys{0};   // packet cc9_death_route_destroy
+    unsigned long long director_torpedo_disabled_pushes{0};  // cc9_ship_weapon_director_enable
     unsigned long long death_route_reported{0};
     unsigned long long death_route_child_triggers{0};
     unsigned long long loss_reports[2]{0, 0};        // by side, 009813A0's own guard passed
@@ -3081,6 +3082,20 @@ public:
         bsp::DirectorGunneryStance stance;
         const bool plane = owner_.units.unit_is_kind_of(unit_,
             bsp::kUnitGunneryKindPlaneBase);
+        if constexpr (kShipDirectorEnablesBound) {
+            // 007219DB..007219ED: +220h..+223h from the ship's pass B message.
+            if (owner_.units.unit_is_kind_of(unit_, 6)) {
+                if (const SceneDirectorEnables* e
+                        = scene_director_enables_find(owner_.unit_state[unit_].row.name)) {
+                    stance.artillery = e->artillery;
+                    stance.anti_air = e->anti_air;
+                    stance.torpedo = e->torpedo;
+                    stance.depth_charge = e->depth_charge;
+                    if (!e->torpedo) ++owner_.director_torpedo_disabled_pushes;
+                    owner_.done("Gunnery::ship_director_enables_007219c0", 0x007219c0u);
+                }
+            }
+        }
         state_.category = bsp::apply_director_stance_008624c0(state_.category, stance,
             plane, false, state_.bridge_countdown, state_.allow_fire_cache);
         ++owner_.summary.bridge_applies;
@@ -7885,6 +7900,9 @@ void GameGunneryHost::report() {
         host.log.notef("summary mission gunnery death route destroys=%llu bound=%d "
             "(00926C80 at the kill, packet cc9_death_route_destroy)",
             host.death_route_destroys, kDeathRouteDestroyBound ? 1 : 0);
+        host.log.notef("summary mission gunnery ship director enables torpedo_disabled_pushes=%llu "
+            "bound=%d (007214C0 / 007219C0, packet cc9_ship_weapon_director_enable)",
+            host.director_torpedo_disabled_pushes, kShipDirectorEnablesBound ? 1 : 0);
         host.log.notef("summary mission gunnery player seat segment casts=%llu hits=%llu "
             "aims=%llu bound=%d (00957DA0, packet cc9_player_gun_seat_segment_query)",
             host.seat_segment_casts, host.seat_segment_hits, host.seat_segment_aims,

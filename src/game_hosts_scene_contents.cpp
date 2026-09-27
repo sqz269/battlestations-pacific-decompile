@@ -1411,6 +1411,20 @@ void SceneReaderBinding::instantiate_entity(const SceneEntity& entity,
     }
 
     // The instantiate pass, 0046d57e.
+    // Packet cc9_ship_weapon_director_enable: the four director keys pass B
+    // reads (008238F0..008239A3), kept by name when the bag carries any.
+    {
+        const SceneProperty* keys[4] = {bag.find("ArtilleryDirector"), bag.find("AADirector"),
+            bag.find("TorpedoDirector"), bag.find("DCDirector")};
+        if (keys[0] != nullptr || keys[1] != nullptr || keys[2] != nullptr || keys[3] != nullptr) {
+            SceneDirectorEnables enables;
+            if (keys[0] != nullptr) enables.artillery = scene_property_bool(keys[0]);
+            if (keys[1] != nullptr) enables.anti_air = scene_property_bool(keys[1]);
+            if (keys[2] != nullptr) enables.torpedo = scene_property_bool(keys[2]);
+            if (keys[3] != nullptr) enables.depth_charge = scene_property_bool(keys[3]);
+            scene_director_enables_set(entity.name, enables);
+        }
+    }
     GameSceneEntityRecord record;
     record.name = entity.name;
     record.class_name = entity.class_name;
@@ -2377,6 +2391,24 @@ SceneWorldClassLists& scene_world_class_lists() noexcept {
     return lists;
 }
 
+namespace {
+std::map<std::string, SceneDirectorEnables>& director_enables_table() {
+    static std::map<std::string, SceneDirectorEnables> table;
+    return table;
+}
+}  // namespace
+
+void scene_director_enables_clear() noexcept { director_enables_table().clear(); }
+
+void scene_director_enables_set(const std::string& name, const SceneDirectorEnables& enables) {
+    director_enables_table()[name] = enables;
+}
+
+const SceneDirectorEnables* scene_director_enables_find(const std::string& name) noexcept {
+    const auto it = director_enables_table().find(name);
+    return it == director_enables_table().end() ? nullptr : &it->second;
+}
+
 // ---------------------------------------------------------------------------
 // Packet cc9_landscape_terrain: the terrain slots and the four world queries.
 
@@ -2779,6 +2811,7 @@ void GameSceneContentsHost::run_load_scene_contents_004d4df0(const std::string& 
     // Same reason again: the authored Path entities belong to this scene.
     scene_path_registry().clear();
     scene_world_class_lists().clear();
+    scene_director_enables_clear();
     // Same reason as the pool above: the squadron table belongs to the scene
     // being loaded, and a second mission must not inherit the first one's wings.
     bsp::plane_squadron_registry().clear();
