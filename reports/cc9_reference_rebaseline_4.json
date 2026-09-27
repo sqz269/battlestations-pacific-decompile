@@ -27,11 +27,12 @@
   "open_flags": [
     "E2 594 -> 595 hit records (before c) not isolated",
     "E2 ends in phase 1 under lockstep (Blackout re-issued 76 times, docs/MISSION_BLACKOUT.md)",
-    "the Marshall .nav is the generic layer",
-    "USN02 sink timing belongs to the buoyancy stand-in (docs/CONSTRUCT_WORLD.md section 25)"
+    "the Marshall .nav is the generic layer"
   ],
   "closed_flags": [
-    {"flag": "USN01 torpedo drops 8 -> 2 between 1eaedc668 and e3aba0f36", "closed_by": "the Val rack route 5c25befbe (kReleaseIssueStageValsBound)", "evidence": "boundary pair a1de87bda against 5c25befbe on USN01 3200/3000 (local/vb_{parent,landing}_usn01.log, cc9-ships): drops 8 -> 2, every other gameplay row and table identical; docs/GAME_EXECUTABLE.md reference d section, commit 3364dcaa2"}
+    {"flag": "USN01 torpedo drops 8 -> 2 between 1eaedc668 and e3aba0f36", "closed_by": "the Val rack route 5c25befbe (kReleaseIssueStageValsBound)", "evidence": "boundary pair a1de87bda against 5c25befbe on USN01 3200/3000 (local/vb_{parent,landing}_usn01.log, cc9-ships): drops 8 -> 2, every other gameplay row and table identical; docs/GAME_EXECUTABLE.md reference d section, commit 3364dcaa2"},
+    {"flag": "USN02 sink timing belongs to the buoyancy stand-in (docs/CONSTRUCT_WORLD.md section 25)", "closed_by": "the image's element list 0082D040 (kShipBuoyancyElementsBound, 972f0e1a1)", "evidence": "docs/CONSTRUCT_WORLD.md section 28: capacity = Mass r / (1 - r) exactly on every class; USN02 wrecks reach -200 m 106..117 s after +5Dh (local/BU_{OFF,ON}_USN02.log, cc9-units3)"},
+    {"flag": "the sink-descent pair moved Kawakaze's first damage 104.05 -> 102.10 s before any kill, not isolated", "closed_by": "docs/WRECK_MOTION_AVOIDANCE.md (179699af8)", "evidence": "a wreck's speed projects its neighbour box (009EAECA, 009EB1FE): Kortenaer's sector scan blocked by the cruising DeRuyter from step 1015, Minegumo diverging behind its dead leader Yamakaze at step 1060; diagnostic local/PK_OFF_USN02.log (cc9-units3) reproduces SD_OFF_USN02"}
   ],
   "failed_predictions": []
 }
