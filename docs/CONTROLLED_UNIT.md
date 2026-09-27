@@ -435,7 +435,8 @@ Worker cc9-hud2, 2026-09-27, base main 34f7f95cd. Ghidra was read only.
     `+F4h = 0`.
   - The empty-vector arm is a record: 00645600(null) does not clear the units host's controlled
     unit, and the manager fields are not read, so neither push is made.
-  - The initial cursor is (0, -1) (see above).
+  - The initial cursor is (0, -1) (see above). Settled later: the root constructor stores it at
+    0068BFDC..0068BFE2 ("SetSelectedUnit's records" below), so it is the image's value.
 
 ### Reach
 
@@ -765,3 +766,34 @@ leader.
 existing contract, not re-read here.
 
 **Outcome:** no binding. The doubt recorded in "Pairs and verdict (load-time fix)" is withdrawn.
+
+## SetSelectedUnit's records (packet `cc9_set_selected_unit_records`, read)
+
+Worker cc9-hud2, 2026-09-27, base 03a43858b. Ghidra was read only.
+
+The path is 008AB260 -> 00647300 -> 00645600 -> 00647040. Each record the host still leaves on it
+was read and given one outcome: bind, display-only, subsumed, unreachable, or blocked. **No
+binding lands in this packet**, so there are no pairs.
+
+| record | what the image does (V) | outcome |
+| --- | --- | --- |
+| 00817380 `SetControlledUnit::release_unit_parts` (00645622) | stores the flag at unit+1008h, then `BSP_EffectGroup_SetScalar` 00815370 on each effect group of `[unit+FFCh]`. unit+1008h's one reader, 0081C8CF (body 0081C830..0081C938, no Ghidra function), builds the same effect scalar | **display-only** (effects) |
+| 00954990 `SetControlledUnit::controlled_audio` (006456B9, tail 006456FA) | the engine emitter `[unit+BBCh]->vtable[20h]`, 0072B540 on each child (a gun's effect mix), and the flag at unit+6B4h. Its readers 0072F98E/0072FAEF in `BSP_Gun_SpawnShotAndEffects` pick an effect scalar | **display/audio-only** |
+| 0080E290 `SetControlledUnit::release_unit_nodes` (0064562D) | each child on unit+48h answering `IsKindOf(22h)` gets 0085AD00 `BSP_TurningGun_AimToRestAngles`, target = RestAngles unless `+94h` is FLT_MAX | **gameplay state, subsumed.** The gunnery host's gun bot aims every targetless gun at `rest_horz`/`rest_vert` each tick (`src/game_hosts_gunnery.cpp`, `want_horz = gun.rest_horz`), so a binding would move a released gun's target at most one tick early. **Difference noted for the gunnery owner:** the image skips a gun whose RestAngles were not authored (FLT_MAX at 00D7A278), while the host's `rest_horz` defaults to 0.0 |
+| 00645637 root `+1Ch` = 0; 006952A0 / 00694A60, the root observer at `+8h` (vtable 00CF5A84, stored by the constructor at 0068BF99) | the observer's slot `+4h` is **00644A20** (body 00644A20..00644A50, no Ghidra function). On the destruction notice of the controlled unit it sets `+14h` (root+1Ch) to 0, calls **004C0890(null)**, the controlled unit is released, and sets the cursor `+BAh`/`+BCh` (root+C2h/+C4h) to (0, -1) | **gameplay state, blocked.** A binding needs a units-host way to clear the controlled unit, and `include/bsp/game_hosts_units.hpp`/`src/game_hosts_units.cpp` are leased to cc9-ships2 (cc9_bsm01_think_natives) |
+| 005251C0 `SetSelectedUnit::screen_reset_005251c0` (0064A0DE, and 00647040's) | on `[manager+CCh]`, the 29h pick screen: `+C0h` = 0, clears the vector `+C4h`, `+D4h` = -1, and in modes 4..6 sets input context levels 4 and 0Eh | **display/input-only** for an idle player: the pick's lock branches are input-driven records in this host |
+| 0064734B `SetSelectedUnit::push_limbo_34h` | 34h when no unit is controlled after 00645600 | **unreachable:** 00645600 binds an accepted unit |
+| `SetSelectedUnit::unit_vtable_124` (00645110), non-ship classes | 006D1EF0, the four-byte liveness test, is the `+124h` slot of **23** vtables, among them the plane unit's (00D05F20) and the ship's (00CFB738). It is the base implementation, not ship-only | **open.** The host answers false for every non-ship, which is wrong wherever the class shares 006D1EF0. It needs a class-to-instance-vtable map the host lacks. On the measured missions it can only add forts and airfields behind the ships in `+8Ch` (higher class ids), so the initial unit would not change |
+
+**Predictions for the blocked observer binding**, written now for whoever binds it:
+- USN01 and USN04: identity. Northampton and the Lexington are not destroyed within 3,000 and
+  4,500 frames.
+- USN02 9200/9000: Houston, controlled, dies at 74.55 s. From its destruction notice the
+  controlled unit is null and the cursor is (0, -1). The player seat, the ShipCaptain's unit and
+  the pick then lose their unit.
+- Whether gameplay moves depends on what the seat and camera do with no unit. The mission has
+  already failed at 39.65 s.
+
+**Also settled:** the root constructor stores `+C2h` = 0 and `+C4h` = 0FFFFh at
+0068BFDC..0068BFE2. So the initial cursor (0, -1) that `ForceSelectUnit`'s binding took as a
+substitution is the image's value.
