@@ -1403,3 +1403,36 @@ alone.
 - `004D0EE0`'s effect names, the cloud block and the remap textures are all
   consumer-side reads; the `.scn` keys behind `record+C24h..CB0h` remain unknown
   (inherited from `docs/MISSION_SCENE_CONTENTS.md`).
+
+### 7a. The two hunks bound (packet `cc9_ground_height_hunks`, `kGroundHeightHunksBound`, committed OFF)
+
+2026-09-27, worker cc9-plane-release. Both hunks of section 7 are in `src/game_hosts_units.cpp`
+under one switch, with the old bodies as the OFF arm. A census line,
+`summary mission ground queries: torpedo approach segment probes 009D39D3=N blocked=M`, prints
+in both builds. The counter landed first, in `c15c609b2`.
+
+**Predictions** (written before the runs; pairs `local\gh_off` against `local\gh_on`, the
+switch only, streams on, `tools/pair_diff.py`):
+
+| row | USN04 4700/4500 | USN01 3200/3000 |
+| --- | --- | --- |
+| probes 009D39D3 | about 7,164 OFF, and within ± 20 % ON if the approach paths move | about 1,152, within ± 20 % |
+| blocked, OFF | somewhere in 0..all. The water stand-in blocks whenever a ship's origin sits below the wave height, and the avoid-zone census has shown the stand-in answers 0.0, so it blocks when a hull origin is below 0 | same |
+| blocked, ON | 0 at sea (ground −1000, no Landscape on the path) | the island crossings may block: 0..the probe count |
+| torpedo aim tick | identical: ground + 5 = −995 never wins over the 5.0 sea floor, and 1 > −1000 arms as 1 > 0 did | identical at sea |
+| torpedo sectors, releases, drops | identical if OFF blocks 0. Otherwise sector choice moves: torpedo releases ± 2, drops ± 1 | same, with island blocking added ON |
+| deaths, hit records | identical if nothing moves; otherwise within ± 10 % and ± 15 % | same |
+
+**7a measured** (`local\GH_OFF_USN01.log` / `GH_ON_USN01.log`, `local\GH_OFF_USN04.log` /
+`GH_ON_USN04.log`, from `43ca22c1f`; `tools/pair_diff.py` says "DIFFERENT, gameplay identical"
+for both):
+
+| row | USN01 3000 OFF -> ON | USN04 4500 OFF -> ON | verdict |
+| --- | --- | --- | --- |
+| probes 009D39D3 | 1,152 -> 1,152 | 7,092 -> 7,092 | held |
+| blocked | 0 -> 0 | 0 -> 0 | held for ON. OFF was the "0" end of the band: the water stand-in never blocked on these runs, so section 7's expectation that hunk 2 moves sector choice at sea does not arise here. The island crossings on USN01 do not block either: no Landscape stand-in lies on a probed segment |
+| aim tick | `World::ground_height_00903860` concrete 1,567 / 3,369 | - | held (identity) |
+| gameplay (pair_diff) | identical: 7 deaths, 150 hit records, 3 of 5 torpedo releases, 0 drops | identical: 43 deaths, 788 hit records, 4 of 16 releases, 1 drop | held |
+
+**Verdict: `kGroundHeightHunksBound` ON.** The two torpedo sites ask the scene's world queries, as
+the image does. On these missions the answer equals the old stand-ins.

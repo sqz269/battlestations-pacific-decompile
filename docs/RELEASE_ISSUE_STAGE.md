@@ -337,3 +337,97 @@ them #1.1|.-4's or the census they sum into.
 
 **Verdict: `kDiveBombCarriedRoundsBound` ON.** The count is the rack's, as `007C1DB0` reads it.
 The only moved rows belong to the one dead Val whose two-round glide became one.
+
+## Handoff: the rest of cc9-plane-release's queue (2026-09-27)
+
+Worker cc9-plane-release stopped at about 80 % context after `cc9_ground_height_hunks`. The
+queue below is in the lead's order. Every item is in `src/game_hosts_units.cpp`, the units file.
+
+**Before starting any item:**
+- Run `python tools/bsp.py sync` and `python tools/bsp.py brief`.
+- Keep edit scripts under your own tree's `local\`, named with your worker name, and re-read each
+  before running it. The shared scratchpad collides between sessions (memory
+  `shared-scratchpad-script-collisions`).
+- Diff every pair with `python tools/pair_diff.py <off.log> <on.log>`.
+- Each switch needs both variants built. MSVC `/WX` turns an unreachable `return` after an
+  `if constexpr` arm into error C4702, so put the OFF body in an `else`.
+- Stage the binaries into `local\<tag>_off` and `local\<tag>_on`, and run with
+  `./tools/run_game.ps1 -Exe local\<tag>_<v>\bsp_game.exe -Log local\<TAG>_<V>_<M>.log -- ...`.
+
+### 1. `cc9_mavis_rack_drops`
+
+- **The symptom.** On USN01 3200/3000 with the layer sample OFF, the IJN Mavis flying boats Mav1
+  and Mav4 each report `drops=4` on their racks: eight rack drops but only two torpedoes spawn.
+  The gunnery successor's drift pairs at 435e8bb87 found it (docs/GAME_EXECUTABLE.md,
+  reference c).
+- **Where to look.** The rack route is `run_rack_tick_006e56f0`. The census is
+  `plane_rack_census()`, which counts only `"BombPlatform"` single racks and lists
+  `"MultiBombPlatform"` separately; the issue binding is `TorpedoReleaseOrderBinding`. The torpedo
+  arm of the tick calls `gunnery->release_ordnance_drop(index)`, whose failures (no torpedo row,
+  or kind 2Bh already cleared after the first drop) return false while `rack_drops` still
+  increments. That is the likely host gap: `--rack_ammo; ++rack_drops` run whatever the spawn
+  returned.
+- **What to read.** This installation's Mavis class row in
+  `scripts/datatables/autoload/vehicleclasses.lua` (modified 2026-05-09 21:52): its
+  `Equipments[DefaultEquipment]` Ammo per torpedo platform, and the platform device's `Type`
+  (single or multi) in `classtables/realistic/deviceclasses.lua`. Then the image per drop: the
+  drop `006E4D50` takes one loaded child (`IsKindOf(2Ah)`, `006E4EC0`), and with ammo left it
+  reloads through `vtable[224h]` (`006E55F0`), so one drop is one round. Also `006E3500` (rounds)
+  and `006E3410` (rearm), in `docs/RELEASE_ISSUE_STAGE.md`'s Vals section.
+- **The second item.** Check that squadron+34Ch = 3 is 0041DF40(1.5, true)'s choice on USN01. All
+  13 USN `.nav` files are one file (md5 prefix ec09b4bbff20); say so in
+  `docs/AVOID_ZONE_REGISTRY.md` where it describes the layer.
+- **Pairs.** USN01 3200/3000, and USN04 4700/4500 for no change.
+
+### 2. The pending-list push from `create_units` (the lead's third queued item)
+
+- **The contract.** docs/CONSTRUCT_WORLD.md section 17 (world-init, 114dd603b):
+  `create_units` calls `push_pending_entity_00926be0` for every constructed instance, as the
+  image's base constructor 00928760 pushes onto 00F899D0 through 00926BE0.
+- **The switch.** Use the existing `kSEntityInitAllBound` or a sibling.
+- **Predictions.** Pending-list pushes per creation route, with `self_table_entities` 86 / 34
+  unchanged, the InitAll row counts unchanged, and identical gameplay.
+- **Pairs.** USN04 4700/4500 and USN02 9200/9000.
+- **Out of scope.** Retiring the Lua host's own pushes and the wing-append substitution at pass A
+  is cc9-world-init's (mission-frame, fixed-step and Lua files). Write it as a contract.
+
+### 3. `cc9_sunk_ship_kill_depth`
+
+- **What the image does.** A dead ship keeps sinking while +5Dh is set: 00825F20 advances
+  sinkTime +828h through the sub-object base (ECX = unit+310h, `[EDI+518h]`). Once the hull is
+  wholly below GameSettings+3F4h, `VizbeomlesDolgok.KillDepth` (−200 in this installation's
+  shipglobals.lua line 377), `00826628` calls Kill. The 009263C0 removal follows, and three passes
+  later the free unlinks the ship from the world lists through the +130h registrar.
+- **The binding.** Put it in the ship motion path. The tail binding is `ShipMotionTailBinding`;
+  the sinking step is inside `ship_motion_step_00825f20`'s host `ShipMotionBinding`.
+- **The contract.** docs/CONSTRUCT_WORLD.md section 21 (the flush landed ON at bcaee249b).
+- **Pairs.** USN02 9200/9000, where twenty ships sink, so predict each wreck's time to −200 m and
+  its leaving list 6. Also E2.
+- **Note.** 8c's `post_motion_gate` census will then fall below the tick count.
+
+### 4. `cc9_units_init_pass_gaps` (docs/SENTITY_INIT_PASSES.md section 4)
+
+- **The order change comes first.** It is being written by cc9-init-passes: the thisTable attach
+  (pass A) runs over the whole pending list before any pass B or C.
+- **Then the per-class gaps, largest gameplay effect first:**
+  - ship pass C's immediate rudder 0080DA00 and torpedo stock 0081F8B0;
+  - the squadron's avoid-zone layers 007F1D90 / 0041DF40 (the registry's
+    `select_layer_by_slope_0041df40` already exists; squadron+350h needs the squadron record's
+    slope value);
+  - whether 007F4BA0's initial command 0077D600 at 007F4E9E duplicates the host's
+    authored-command path;
+  - plane pass B's body 00C5D580, the flight-controller setters, actuators, neighbours, the
+    firing-gun registration 007C74A0, and a 00BD2F10 draw on the shared generator. Check
+    `src/plane_flight.cpp` first, since some may exist under other addresses.
+
+### State left by this worker
+
+- **On main:** every switch this worker added is ON.
+  - `kReleaseIssueStageValsBound`, `kDiveBombCarriedRoundsBound`;
+  - `kAvoidZoneLayerSampleBound`, `kUnitsContractsBound`;
+  - `kShipMotionTailBound`, `kFormationSlotSwapBound`, `kShipPostMotionRepairOrder`.
+  - `kGroundHeightHunksBound` too (docs/SCENE_CONTENTS_HOSTS.md 7a; identical gameplay, 0 blocked probes).
+- **Open run-time evidence:**
+  - a live Val's rack drop (no mission here has a live Val release);
+  - the slot swap's distance test (both missions gate every call);
+  - unit+9B8h has no host reader.
