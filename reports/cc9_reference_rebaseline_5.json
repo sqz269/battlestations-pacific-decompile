@@ -1,0 +1,162 @@
+{
+  "packet": "cc9_reference_rebaseline_5",
+  "doc": "docs/GAME_EXECUTABLE.md, Mission reference baselines, 2026-09-27 e (main 7711f353f)",
+  "tree": "7711f353f",
+  "predictions_commit": "1963d12cf",
+  "binary": {
+    "path": "local/rb5/build/win32/Release/bsp_game.exe",
+    "sha256_prefix": "6617D44CB4A9",
+    "export": "tools/pair_export.py --commit 7711f353f, no flip"
+  },
+  "run_parameters": "BSP_GUNNERY_RNG_STREAMS=1 BSP_DEATH_TABLE=1, --mission-frame-seconds 0.05, --press-start-frame 30, idle player, present interval immediate, one run at a time through tools/run_game.ps1",
+  "rows": [
+    {
+      "mission": "USN04",
+      "frames": "4700/4500",
+      "deaths": 41,
+      "hit_records": 812,
+      "hull": 307,
+      "damage": 11758.0,
+      "shots": 6341,
+      "first_hit": "93.00 s",
+      "releases": "4 of 16 / 5 of 19",
+      "controlled": "Lexington 3497.48 m",
+      "mission_end": "none",
+      "unimplemented": 561,
+      "log": "local/rb5_usn04.log"
+    },
+    {
+      "mission": "USN01",
+      "frames": "3200/3000",
+      "deaths": 7,
+      "hit_records": 150,
+      "hull": 85,
+      "damage": 2690.0,
+      "shots": 561,
+      "first_hit": "53.75 s",
+      "releases": "3 of 5 / 0 of 2",
+      "controlled": "Northampton 0.00",
+      "mission_end": "none",
+      "unimplemented": 520,
+      "log": "local/rb5_usn01.log"
+    },
+    {
+      "mission": "E2",
+      "frames": "9200/9000",
+      "deaths": 51,
+      "hit_records": 902,
+      "hull": 320,
+      "damage": 13369.3,
+      "shots": 7339,
+      "first_hit": "93.00 s",
+      "releases": "4 of 16 / 5 of 19",
+      "controlled": "Lexington 5789.15 m",
+      "mission_end": "none, phase 1 only (known)",
+      "unimplemented": 563,
+      "log": "local/rb5_e2.log"
+    },
+    {
+      "mission": "USN02",
+      "frames": "9200/9000",
+      "deaths": 20,
+      "hit_records": 664,
+      "hull": 305,
+      "damage": 53370.4,
+      "shots": 1163,
+      "first_hit": "35.65 s",
+      "releases": "-",
+      "controlled": "Houston 1167.61 m (known)",
+      "mission_end": "failed at 39.65 s",
+      "unimplemented": 542,
+      "log": "local/rb5_usn02.log"
+    }
+  ],
+  "prediction_checks": [
+    {
+      "mission": "USN04",
+      "against": "cc9-units3 local/RP_ON_USN04.log",
+      "pair_diff_exit": 0,
+      "held": true
+    },
+    {
+      "mission": "USN02",
+      "against": "cc9-units3 local/RP_ON_USN02.log",
+      "pair_diff_exit": 0,
+      "held": true
+    },
+    {
+      "mission": "E2",
+      "against": "band deaths 49..55, hit records 860..940",
+      "held": true
+    },
+    {
+      "mission": "USN01",
+      "against": "band deaths 6..9, hit records 140..175",
+      "held": true
+    }
+  ],
+  "attribution": {
+    "USN04": [
+      "buoyancy elements 972f0e1a1 (bracketed): 43/788 -> 40/799",
+      "mover b5861c09a: -> 41/808",
+      "joint wing flip dcbe56b74: -> 41/812",
+      "live hull Repair fd49aa9a4: hull 306 -> 307, shots 6366 -> 6341"
+    ],
+    "E2": [
+      "buoyancy elements 972f0e1a1: 52/875 -> 51/894",
+      "mover, wing flip, Repair (unpaired on E2): 894 -> 902"
+    ],
+    "USN01": [
+      "set-selected unit 0995a2e16: controlled Airfield2 -> Northampton",
+      "buoyancy or race identity (bracketed): shots 583 -> 561"
+    ],
+    "USN02": [
+      "buoyancy elements 972f0e1a1: 21/566 -> 21/596",
+      "movie interface switches (bracketed): -> 22/603, controlled DeRuyter -> Houston",
+      "wreck throttle cut 1dae0cf67: -> 22/552",
+      "torpedo stock f3a9d8d2d on top of the cut: -> 22/579",
+      "wreck-hit delivery d6256bb43: -> 20/674",
+      "live hull Repair fd49aa9a4: -> 20/664"
+    ]
+  },
+  "export_pairs": [],
+  "corrections": [
+    {
+      "was": "the lead's list named a 'torpedo director mask' landing",
+      "is": "no landing by that name between df7f875c7 and 7711f353f",
+      "evidence": "git log df7f875c7..7711f353f"
+    },
+    {
+      "was": "USN02's Houston control follows kSetSelectedUnitBound",
+      "is": "the switch is in fc14864c9, which still controls DeRuyter; Houston appears by the throttle-cut base, bracketed with the movie interface switches",
+      "evidence": "HB_OFF_USN02 (DeRuyter) and TC_OFF_USN02 (Houston), cc9-units3"
+    }
+  ],
+  "open_flags": [
+    "E2 594 -> 595 hit records (before c) not isolated",
+    "E2 ends in phase 1 under lockstep (Blackout re-issued 76 times, docs/MISSION_BLACKOUT.md)",
+    "the Marshall .nav is the generic layer",
+    "USN02 21/596 -> 22/603 and the controlled unit DeRuyter -> Houston, bracketed to the movie interface switches (2a5458d7e, 6c9ec4026), not paired on USN02",
+    "USN02 torpedo stock on top of the throttle cut, 22/552 -> 22/579, not paired as a combination",
+    "E2 894 -> 902 across the mover, the wing flip and Repair, not paired on E2",
+    "USN01 shots 583 -> 561, bracketed to the buoyancy elements or the scene race and identity, not paired on USN01"
+  ],
+  "closed_flags": [
+    {
+      "flag": "USN01 torpedo drops 8 -> 2 between 1eaedc668 and e3aba0f36",
+      "closed_by": "the Val rack route 5c25befbe (kReleaseIssueStageValsBound)",
+      "evidence": "boundary pair a1de87bda against 5c25befbe on USN01 3200/3000 (local/vb_{parent,landing}_usn01.log, cc9-ships): drops 8 -> 2, every other gameplay row and table identical; docs/GAME_EXECUTABLE.md reference d section, commit 3364dcaa2"
+    },
+    {
+      "flag": "USN02 sink timing belongs to the buoyancy stand-in (docs/CONSTRUCT_WORLD.md section 25)",
+      "closed_by": "the image's element list 0082D040 (kShipBuoyancyElementsBound, 972f0e1a1)",
+      "evidence": "docs/CONSTRUCT_WORLD.md section 28: capacity = Mass r / (1 - r) exactly on every class; USN02 wrecks reach -200 m 106..117 s after +5Dh (local/BU_{OFF,ON}_USN02.log, cc9-units3)"
+    },
+    {
+      "flag": "the sink-descent pair moved Kawakaze's first damage 104.05 -> 102.10 s before any kill, not isolated",
+      "closed_by": "docs/WRECK_MOTION_AVOIDANCE.md (179699af8)",
+      "evidence": "a wreck's speed projects its neighbour box (009EAECA, 009EB1FE): Kortenaer's sector scan blocked by the cruising DeRuyter from step 1015, Minegumo diverging behind its dead leader Yamakaze at step 1060; diagnostic local/PK_OFF_USN02.log (cc9-units3) reproduces SD_OFF_USN02"
+    }
+  ],
+  "failed_predictions": []
+}
